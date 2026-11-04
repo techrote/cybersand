@@ -1,0 +1,97 @@
+{
+  "checked_inputs_after": {
+    "docs/audits/2026-11-04-sol364b-corridor-registration.md": "a40f2d00c22b97a06641ccfc167b286c6d3334c0ce007e8d5ef338da93c2a3be",
+    "native/include/cybersand/solid_contact_geometry.hpp": "53f8852cfe658fa37bb419ef4380e2c2bb4ebdf66af02e77e952813664a44c54",
+    "tools/sol281/penetration_corridor.hpp": "6bb0f2641dd911f2fac99d124ff2b2483bfb4519a41f0cbc6d1fdb650bb3e82e",
+    "tools/sol281/penetration_corridor_probe.cpp": "172d4ee97c47caec5c44a925401437c9d9a2f5bcf2a3f96c5821953029e7844c",
+    "tools/sol281/run_penetration_corridor.py": "69363d823fe4c361c99f13d622cee4cad7bb1daa52cc7629af7a6dedbcde55e2",
+    "tools/sol281/test_penetration_corridor.cpp": "737ca13fe155bd4d91dc02f46b05f21d1458ff05cb009d96801834e15fc398e6"
+  },
+  "checked_inputs_before": {
+    "docs/audits/2026-11-04-sol364b-corridor-registration.md": "a40f2d00c22b97a06641ccfc167b286c6d3334c0ce007e8d5ef338da93c2a3be",
+    "native/include/cybersand/solid_contact_geometry.hpp": "53f8852cfe658fa37bb419ef4380e2c2bb4ebdf66af02e77e952813664a44c54",
+    "tools/sol281/penetration_corridor.hpp": "6bb0f2641dd911f2fac99d124ff2b2483bfb4519a41f0cbc6d1fdb650bb3e82e",
+    "tools/sol281/penetration_corridor_probe.cpp": "172d4ee97c47caec5c44a925401437c9d9a2f5bcf2a3f96c5821953029e7844c",
+    "tools/sol281/run_penetration_corridor.py": "69363d823fe4c361c99f13d622cee4cad7bb1daa52cc7629af7a6dedbcde55e2",
+    "tools/sol281/test_penetration_corridor.cpp": "737ca13fe155bd4d91dc02f46b05f21d1458ff05cb009d96801834e15fc398e6"
+  },
+  "commands": [
+    {
+      "command": [
+        "g++-13",
+        "-std=c++20",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "-Wpedantic",
+        "-I",
+        "native/include",
+        "tools/sol281/penetration_corridor_probe.cpp",
+        "-o",
+        "/workspace/scratch/4b0fc6bf4ee0/physics-build/final-local/probe.bin"
+      ],
+      "executable_sha256": "1f4ef123ff96fc72c219773d402c443c37dd12ce3bba1b54e838d48c48c6af81",
+      "exit_code": 0,
+      "name": "probe",
+      "stderr": "",
+      "stdout": ""
+    },
+    {
+      "command": [
+        "g++-13",
+        "-std=c++20",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "-Wpedantic",
+        "-I",
+        "native/include",
+        "tools/sol281/test_penetration_corridor.cpp",
+        "-o",
+        "/workspace/scratch/4b0fc6bf4ee0/physics-build/final-local/tests.bin"
+      ],
+      "executable_sha256": "4846eb55c5016ab473b12a782c0efd313990aa9da6b568873c43e5db786faec1",
+      "exit_code": 0,
+      "name": "tests",
+      "stderr": "",
+      "stdout": "",
+      "test_exit_code": 0,
+      "test_stderr": "",
+      "test_stdout": "{\"schema\":\"cybersand.sol364b.corridor-native-tests.v1\",\"groups\":6,\"checks\":142,\"failures\":0,\"live_application\":false}\n"
+    },
+    {
+      "command": [
+        "g++-13",
+        "-std=c++20",
+        "-O1",
+        "-g",
+        "-fno-omit-frame-pointer",
+        "-fsanitize=address,undefined",
+        "-Wall",
+        "-Wextra",
+        "-Wpedantic",
+        "-I",
+        "native/include",
+        "tools/sol281/test_penetration_corridor.cpp",
+        "-o",
+        "/workspace/scratch/4b0fc6bf4ee0/physics-build/final-local/sanitize.bin"
+      ],
+      "executable_sha256": "3d1b881b8be26d56f541c6e6c54cbd02fd1207116cb18911fe3604afaf05daf0",
+      "exit_code": 0,
+      "name": "sanitize",
+      "sanitizer_environment": {
+        "ASAN_OPTIONS": "detect_leaks=0"
+      },
+      "stderr": "",
+      "stdout": "",
+      "test_exit_code": 0,
+      "test_stderr": "",
+      "test_stdout": "{\"schema\":\"cybersand.sol364b.corridor-native-tests.v1\",\"groups\":6,\"checks\":142,\"failures\":0,\"live_application\":false}\n"
+    }
+  ],
+  "compiler": "g++-13 (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+  "git_head": "9f3bc7c9523ba153de0144ef4f49b7e531a985d3",
+  "git_tree": "16e79d4fe2e0cf3790ba83a712fdb0290a1a9d8f",
+  "schema": "cybersand.sol364b.local-compile.v1",
+  "utc": "2026-11-04T14:13:28.402604+00:00"
+}

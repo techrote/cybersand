@@ -1,0 +1,665 @@
+{
+  "checked_inputs": {
+    "docs/audits/2026-11-04-sol364b-corridor-registration.md": "a40f2d00c22b97a06641ccfc167b286c6d3334c0ce007e8d5ef338da93c2a3be",
+    "native/include/cybersand/solid_contact_geometry.hpp": "53f8852cfe658fa37bb419ef4380e2c2bb4ebdf66af02e77e952813664a44c54",
+    "tools/sol281/penetration_corridor.hpp": "6bb0f2641dd911f2fac99d124ff2b2483bfb4519a41f0cbc6d1fdb650bb3e82e",
+    "tools/sol281/penetration_corridor_probe.cpp": "172d4ee97c47caec5c44a925401437c9d9a2f5bcf2a3f96c5821953029e7844c",
+    "tools/sol281/run_penetration_corridor.py": "69363d823fe4c361c99f13d622cee4cad7bb1daa52cc7629af7a6dedbcde55e2",
+    "tools/sol281/test_penetration_corridor.cpp": "737ca13fe155bd4d91dc02f46b05f21d1458ff05cb009d96801834e15fc398e6"
+  },
+  "compilation_binding": {
+    "all_checked_files_identical_to_reviewed_git_objects": true,
+    "all_checked_files_unchanged_before_after_compilation_and_replay": true,
+    "commands": [
+      {
+        "command": [
+          "g++-13",
+          "-std=c++20",
+          "-O2",
+          "-Wall",
+          "-Wextra",
+          "-Wpedantic",
+          "-I",
+          "native/include",
+          "tools/sol281/penetration_corridor_probe.cpp",
+          "-o",
+          "/workspace/scratch/4b0fc6bf4ee0/physics-build/final-local/probe.bin"
+        ],
+        "executable_sha256": "1f4ef123ff96fc72c219773d402c443c37dd12ce3bba1b54e838d48c48c6af81",
+        "exit_code": 0,
+        "name": "probe"
+      },
+      {
+        "command": [
+          "g++-13",
+          "-std=c++20",
+          "-O2",
+          "-Wall",
+          "-Wextra",
+          "-Wpedantic",
+          "-I",
+          "native/include",
+          "tools/sol281/test_penetration_corridor.cpp",
+          "-o",
+          "/workspace/scratch/4b0fc6bf4ee0/physics-build/final-local/tests.bin"
+        ],
+        "executable_sha256": "4846eb55c5016ab473b12a782c0efd313990aa9da6b568873c43e5db786faec1",
+        "exit_code": 0,
+        "name": "tests"
+      },
+      {
+        "command": [
+          "g++-13",
+          "-std=c++20",
+          "-O1",
+          "-g",
+          "-fno-omit-frame-pointer",
+          "-fsanitize=address,undefined",
+          "-Wall",
+          "-Wextra",
+          "-Wpedantic",
+          "-I",
+          "native/include",
+          "tools/sol281/test_penetration_corridor.cpp",
+          "-o",
+          "/workspace/scratch/4b0fc6bf4ee0/physics-build/final-local/sanitize.bin"
+        ],
+        "executable_sha256": "3d1b881b8be26d56f541c6e6c54cbd02fd1207116cb18911fe3604afaf05daf0",
+        "exit_code": 0,
+        "name": "sanitize"
+      }
+    ],
+    "compile_recorded_head": "33203c5d5928ac53e5cc624e5dc1c3d26255f45b",
+    "compiler": "g++-13 (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+    "manifest": {
+      "bytes": 3492,
+      "path": "/workspace/scratch/4b0fc6bf4ee0/physics-build/final-local/compile.json",
+      "sha256": "c8099a85fd9d76cf7ac17b02880ce1a8e535ada38a0bf1cb836feab1c7d5cdb8"
+    },
+    "qualification": "Compilation began with HEAD at preregistration commit 33203c5 and the new source files uncommitted. Retained before/after SHA256 manifests independently equal the final committed 9f3b file objects, and replay records 9f3b. This does not relabel compilation as checkout-at-final-HEAD execution; hosted final-HEAD qualification is separate.",
+    "reviewed_commit": "9f3bc7c9523ba153de0144ef4f49b7e531a985d3",
+    "status": "PASS_BY_EXACT_CONTENT_BINDING"
+  },
+  "default_leak_sanitizer_attempt": {
+    "combined_output": "==5==Can't open /proc/2/task for reading.\n==2==LeakSanitizer has encountered a fatal error.\n==2==HINT: For debugging, try setting environment variable LSAN_OPTIONS=verbosity=1:log_threads=1\n==2==HINT: LeakSanitizer does not work under ptrace (strace, gdb, etc)\n",
+    "command": [
+      "/workspace/scratch/4b0fc6bf4ee0/physics-build/final-local/sanitize.bin"
+    ],
+    "cwd": "/workspace/scratch/4b0fc6bf4ee0/physics-review",
+    "evidence_origin": "Prior direct tools.exec_command execution in this same review; exact returned combined output retained without omission.",
+    "executable_sha256": "3d1b881b8be26d56f541c6e6c54cbd02fd1207116cb18911fe3604afaf05daf0",
+    "exit_code": 1,
+    "explicit_environment": {},
+    "scope": "Default LeakSanitizer was attempted and failed because it could not inspect the executor process tree. This is not converted into a pass by the separate detect_leaks=0 ASan/UBSan execution.",
+    "status": "UNAVAILABLE_EXECUTOR_PTRACE_PROC_RESTRICTION"
+  },
+  "disposition": "NO-GO retained; diagnostic finite-family rejection reviewed with no unresolved blocker in this scope.",
+  "engineering_findings": [
+    "Four-axis SAT open intervals cover the registered fixed-orientation rectangle/cell translation family continuously. The depth maximum uses endpoints and intersections of eight affine depth branches.",
+    "Independent recorded-polygon bounds and C++ common-rigid-transform bounds reject every registered initial direction. They differ numerically in some directions because the C++ positive final-separation margin additionally constrains touching or near pairs; the independent stored bounds are necessary exits of initially positive-overlap pairs.",
+    "C++ reconstruction retains differences of roughly four millionths of a cell from recorded float32 corners. Retain those differences; reconstructed area and tiny hard-contact classification are not exact identity to historical native measurements.",
+    "The native v1 contact packet omits interior pair identities and prospective nonoverlapping obstacles. Unsupported or hot overlaps can coexist with complete=true. This cannot authorize a positional corridor.",
+    "Future live application requires native-owner-held corridor reservation or equivalent serialization through actual mutation. Equality between a packet revision and its enclosing old snapshot revision is insufficient.",
+    "The work helper implements a proposed finite introduced repair-energy account, not calibrated physical Sand elasticity. It does not persist or issue live token/epoch authority. The diagnostic has no RID or mutation entry point.",
+    "A future positive geometry-only route would still need original area/depth, work/readback, ownership and lifecycle acceptance. Current initial-area reporting and continuous-depth checks do not constitute the full original live physical gate."
+  ],
+  "final_replay": {
+    "geometry_only_unique_routes": 0,
+    "initial_states": [
+      {
+        "all_direction_distances_with_margin": [
+          7.000016185403103,
+          27.000023814796897,
+          5.0000200001,
+          5.0000200001
+        ],
+        "fixture": "nine_cell_interior",
+        "geometric_routes": 0,
+        "minimum_required_distance_with_margin": 5.0000200001,
+        "outcome": "InitialExcludedOverlap",
+        "platform": "Linux",
+        "shared_rigid_reconstruction_max_corner_difference": 3.8146968961427774e-06,
+        "workers": 1
+      },
+      {
+        "all_direction_distances_with_margin": [
+          6.462192021884148,
+          6.507826190149353,
+          19.979724233475203,
+          15.859476317596693,
+          15.902199886939673,
+          5.776490510707956,
+          22.04387299170116,
+          19.636661354168282
+        ],
+        "fixture": "embedded_stationary",
+        "geometric_routes": 0,
+        "minimum_required_distance_with_margin": 5.776490510707956,
+        "outcome": "InitialExcludedOverlap",
+        "platform": "Linux",
+        "shared_rigid_reconstruction_max_corner_difference": 4.402944431150127e-06,
+        "workers": 1
+      },
+      {
+        "all_direction_distances_with_margin": [
+          5.631850852220516,
+          5.626652738151217,
+          14.289473117334333,
+          14.350339410321643,
+          29.62085004998836,
+          5.245882111396893,
+          22.130196128727988,
+          18.45911921553046
+        ],
+        "fixture": "rotated_compound",
+        "geometric_routes": 0,
+        "minimum_required_distance_with_margin": 5.245882111396893,
+        "outcome": "NoRegisteredCorridor",
+        "platform": "Linux",
+        "shared_rigid_reconstruction_max_corner_difference": 4.208346680471723e-06,
+        "workers": 1
+      },
+      {
+        "all_direction_distances_with_margin": [
+          7.000016185403103,
+          27.000023814796897,
+          5.0000200001,
+          5.0000200001
+        ],
+        "fixture": "nine_cell_interior",
+        "geometric_routes": 0,
+        "minimum_required_distance_with_margin": 5.0000200001,
+        "outcome": "InitialExcludedOverlap",
+        "platform": "Linux",
+        "shared_rigid_reconstruction_max_corner_difference": 3.8146968961427774e-06,
+        "workers": 4
+      },
+      {
+        "all_direction_distances_with_margin": [
+          6.462192021884148,
+          6.507826190149353,
+          19.979724233475203,
+          15.859476317596693,
+          15.902199886939673,
+          5.776490510707956,
+          22.04387299170116,
+          19.636661354168282
+        ],
+        "fixture": "embedded_stationary",
+        "geometric_routes": 0,
+        "minimum_required_distance_with_margin": 5.776490510707956,
+        "outcome": "InitialExcludedOverlap",
+        "platform": "Linux",
+        "shared_rigid_reconstruction_max_corner_difference": 4.402944431150127e-06,
+        "workers": 4
+      },
+      {
+        "all_direction_distances_with_margin": [
+          5.631850852220516,
+          5.626652738151217,
+          14.289473117334333,
+          14.350339410321643,
+          29.62085004998836,
+          5.245882111396893,
+          22.130196128727988,
+          18.45911921553046
+        ],
+        "fixture": "rotated_compound",
+        "geometric_routes": 0,
+        "minimum_required_distance_with_margin": 5.245882111396893,
+        "outcome": "NoRegisteredCorridor",
+        "platform": "Linux",
+        "shared_rigid_reconstruction_max_corner_difference": 4.208346680471723e-06,
+        "workers": 4
+      },
+      {
+        "all_direction_distances_with_margin": [
+          7.000016185403103,
+          27.000023814796897,
+          5.0000200001,
+          5.0000200001
+        ],
+        "fixture": "nine_cell_interior",
+        "geometric_routes": 0,
+        "minimum_required_distance_with_margin": 5.0000200001,
+        "outcome": "InitialExcludedOverlap",
+        "platform": "Windows",
+        "shared_rigid_reconstruction_max_corner_difference": 3.8146968961427774e-06,
+        "workers": 1
+      },
+      {
+        "all_direction_distances_with_margin": [
+          6.46219202188453,
+          6.507826190149379,
+          19.979724233475103,
+          15.859476317596794,
+          15.902199886939673,
+          5.77649051070835,
+          22.043872991701058,
+          19.636661354168385
+        ],
+        "fixture": "embedded_stationary",
+        "geometric_routes": 0,
+        "minimum_required_distance_with_margin": 5.77649051070835,
+        "outcome": "InitialExcludedOverlap",
+        "platform": "Windows",
+        "shared_rigid_reconstruction_max_corner_difference": 4.402944480866552e-06,
+        "workers": 1
+      },
+      {
+        "all_direction_distances_with_margin": [
+          5.631850852220516,
+          5.626652738151217,
+          14.289473117334333,
+          14.350339410321643,
+          29.62085004998836,
+          5.245882111396893,
+          22.130196128727988,
+          18.45911921553046
+        ],
+        "fixture": "rotated_compound",
+        "geometric_routes": 0,
+        "minimum_required_distance_with_margin": 5.245882111396893,
+        "outcome": "NoRegisteredCorridor",
+        "platform": "Windows",
+        "shared_rigid_reconstruction_max_corner_difference": 4.208346680471723e-06,
+        "workers": 1
+      },
+      {
+        "all_direction_distances_with_margin": [
+          7.000016185403103,
+          27.000023814796897,
+          5.0000200001,
+          5.0000200001
+        ],
+        "fixture": "nine_cell_interior",
+        "geometric_routes": 0,
+        "minimum_required_distance_with_margin": 5.0000200001,
+        "outcome": "InitialExcludedOverlap",
+        "platform": "Windows",
+        "shared_rigid_reconstruction_max_corner_difference": 3.8146968961427774e-06,
+        "workers": 4
+      },
+      {
+        "all_direction_distances_with_margin": [
+          6.46219202188453,
+          6.507826190149379,
+          19.979724233475103,
+          15.859476317596794,
+          15.902199886939673,
+          5.77649051070835,
+          22.043872991701058,
+          19.636661354168385
+        ],
+        "fixture": "embedded_stationary",
+        "geometric_routes": 0,
+        "minimum_required_distance_with_margin": 5.77649051070835,
+        "outcome": "InitialExcludedOverlap",
+        "platform": "Windows",
+        "shared_rigid_reconstruction_max_corner_difference": 4.402944480866552e-06,
+        "workers": 4
+      },
+      {
+        "all_direction_distances_with_margin": [
+          5.631850852220516,
+          5.626652738151217,
+          14.289473117334333,
+          14.350339410321643,
+          29.62085004998836,
+          5.245882111396893,
+          22.130196128727988,
+          18.45911921553046
+        ],
+        "fixture": "rotated_compound",
+        "geometric_routes": 0,
+        "minimum_required_distance_with_margin": 5.245882111396893,
+        "outcome": "NoRegisteredCorridor",
+        "platform": "Windows",
+        "shared_rigid_reconstruction_max_corner_difference": 4.208346680471723e-06,
+        "workers": 4
+      }
+    ],
+    "live_candidate_applications": 0,
+    "native_tests": {
+      "result": {
+        "checks": 142,
+        "failures": 0,
+        "groups": 6,
+        "live_application": false,
+        "schema": "cybersand.sol364b.corridor-native-tests.v1"
+      },
+      "sha256": "4846eb55c5016ab473b12a782c0efd313990aa9da6b568873c43e5db786faec1",
+      "status": "PASS",
+      "stderr": ""
+    },
+    "outcome_counts": {
+      "InitialExcludedOverlap": 728,
+      "NoRegisteredCorridor": 724
+    },
+    "probe_sha256": "1f4ef123ff96fc72c219773d402c443c37dd12ce3bba1b54e838d48c48c6af81",
+    "reports": 4,
+    "retained_states_evaluated": 1452,
+    "source_receipts": [
+      {
+        "backend": "Rapier2D",
+        "bytes": 21992708,
+        "engine": "4.7-stable (official)",
+        "historical_head": "957ce67df859315ed238b6bbec1eebc9a743aaba",
+        "original_clearance_failures": 21,
+        "original_physical_cases": 21,
+        "path": "docs/audits/sol281-20261103/hosted/9edc4f8f7d8cd8fc65119d176c9e1981ab6ea77d/cohorts/linux/mechanism/host/synchronized-contact-w1.json",
+        "platform": "Linux",
+        "sha256": "7b91158f0d4652cb415e9dfd614cda4ab535685f39cfbcf663457c26cf513724",
+        "source_kind": "historical_git_blob",
+        "source_sha256": "4d50009873e094b5201fc47b05c6d2232f071b86225d2e0b35117218040bd2ef",
+        "workers": 1
+      },
+      {
+        "backend": "Rapier2D",
+        "bytes": 21992353,
+        "engine": "4.7-stable (official)",
+        "historical_head": "957ce67df859315ed238b6bbec1eebc9a743aaba",
+        "original_clearance_failures": 21,
+        "original_physical_cases": 21,
+        "path": "docs/audits/sol281-20261103/hosted/9edc4f8f7d8cd8fc65119d176c9e1981ab6ea77d/cohorts/linux/mechanism/host/synchronized-contact-w4.json",
+        "platform": "Linux",
+        "sha256": "8893d6905bd1eb9592ae6d4ccc2ee1e33b463548a45266bf02ec2d25219db119",
+        "source_kind": "historical_git_blob",
+        "source_sha256": "4d50009873e094b5201fc47b05c6d2232f071b86225d2e0b35117218040bd2ef",
+        "workers": 4
+      },
+      {
+        "backend": "Rapier2D",
+        "bytes": 21979508,
+        "engine": "4.7-stable (official)",
+        "historical_head": "957ce67df859315ed238b6bbec1eebc9a743aaba",
+        "original_clearance_failures": 21,
+        "original_physical_cases": 21,
+        "path": "docs/audits/sol281-20261103/hosted/9edc4f8f7d8cd8fc65119d176c9e1981ab6ea77d/cohorts/windows/mechanism/synchronized-contact-w1.json",
+        "platform": "Windows",
+        "sha256": "6b023bf1ce50efc1ac419c1787f6ca51548859ae7f126564d942406b56726ba3",
+        "source_kind": "historical_git_blob",
+        "source_sha256": "4d50009873e094b5201fc47b05c6d2232f071b86225d2e0b35117218040bd2ef",
+        "workers": 1
+      },
+      {
+        "backend": "Rapier2D",
+        "bytes": 21979389,
+        "engine": "4.7-stable (official)",
+        "historical_head": "957ce67df859315ed238b6bbec1eebc9a743aaba",
+        "original_clearance_failures": 21,
+        "original_physical_cases": 21,
+        "path": "docs/audits/sol281-20261103/hosted/9edc4f8f7d8cd8fc65119d176c9e1981ab6ea77d/cohorts/windows/mechanism/synchronized-contact-w4.json",
+        "platform": "Windows",
+        "sha256": "4aee577848d3a8d8b08e433da41945e27695320080da9bc0b86214881b2b69fb",
+        "source_kind": "historical_git_blob",
+        "source_sha256": "4d50009873e094b5201fc47b05c6d2232f071b86225d2e0b35117218040bd2ef",
+        "workers": 4
+      }
+    ],
+    "states": {
+      "bytes": 5791916,
+      "path": "/workspace/scratch/4b0fc6bf4ee0/physics-build/final-local/replay/states.json",
+      "sha256": "84c4034e69f49f59db3a63f5ff1144fcce28fb62f18a36cd827a5c23821263f6"
+    },
+    "summary": {
+      "bytes": 37650,
+      "path": "/workspace/scratch/4b0fc6bf4ee0/physics-build/final-local/replay/summary.json",
+      "sha256": "ee153d60d37d7799f540b792b8af00dc5c3c14fbedd61bff613e40a2b0940a2f"
+    },
+    "unique_geometric_inputs": 349
+  },
+  "gate_outcomes": [
+    {
+      "gate": "Historical four-host raw source authentication",
+      "scope": "Exact retained 957ce67d Git blobs with original runtime identities.",
+      "status": "PASS"
+    },
+    {
+      "gate": "Independent original initial geometric rejection",
+      "scope": "All 12 original target states reject the bounded family; this supports NO-GO.",
+      "status": "PASS"
+    },
+    {
+      "gate": "Registered bounded-family admission",
+      "scope": "No route in 1,452 retained states: 728 initial-exclusion and 724 no-corridor outcomes.",
+      "status": "FAIL"
+    },
+    {
+      "gate": "GCC diagnostic adversarial tests",
+      "scope": "Six groups and 142 checks; independently executed exact source-bound binary.",
+      "status": "PASS"
+    },
+    {
+      "gate": "AddressSanitizer and UBSan diagnostic tests",
+      "scope": "Six groups and 142 checks with ASAN_OPTIONS=detect_leaks=0; zero exit and empty stderr.",
+      "status": "PASS"
+    },
+    {
+      "gate": "LeakSanitizer",
+      "scope": "Default run failed due executor /proc/2/task access and ptrace restriction; failure retained separately.",
+      "status": "UNAVAILABLE"
+    },
+    {
+      "gate": "Proposed work arithmetic",
+      "scope": "Synthetic arithmetic only; no actual mechanical projection or repair work applied.",
+      "status": "PASS"
+    },
+    {
+      "gate": "Original 84 physical clearance cases",
+      "scope": "Original physical outcomes remain unchanged; successful test execution does not establish clearance.",
+      "status": "FAIL_RETAINED"
+    },
+    {
+      "gate": "New live 120-step clearance plus 60-step sustained area/depth acceptance",
+      "scope": "No live mechanism is admitted; original limits remain mandatory.",
+      "status": "NOT_RUN"
+    },
+    {
+      "gate": "New live owner, duplicate/partial RID, async correction and work/readback lifecycle",
+      "scope": "No correction/lease implementation; diagnostic geometry cannot qualify lifecycle behavior.",
+      "status": "NOT_RUN"
+    },
+    {
+      "gate": "New 24-group live CPU qualification",
+      "scope": "Offline probe elapsed wall time is not live CPU evidence.",
+      "status": "NOT_RUN"
+    },
+    {
+      "gate": "New Windows/MSVC and Godot/Rapier runtime qualification",
+      "scope": "Historical Windows reports are inputs, not fresh Windows executions. Parent may provide a separate final-HEAD qualification.",
+      "status": "NOT_RUN_IN_THIS_REVIEW"
+    },
+    {
+      "gate": "MAT-AUTH/SOL compatibility",
+      "scope": "Independent compatibility lane owns source-qualified disposition.",
+      "status": "OUTSIDE_REVIEW_SCOPE"
+    },
+    {
+      "gate": "Integration, merge and downstream restoration",
+      "scope": "Keep PR #347 draft and #364/#281/#12 open; #365 restoration does not follow this review.",
+      "status": "NOT_AUTHORIZED"
+    }
+  ],
+  "historical_evidence_head": "957ce67df859315ed238b6bbec1eebc9a743aaba",
+  "historical_executed_source": "9edc4f8f7d8cd8fc65119d176c9e1981ab6ea77d",
+  "independent_initial_geometry": {
+    "all_twelve_target_states_reject": true,
+    "method": "independent normalized convex-polygon SAT projection intervals and Sutherland-Hodgman clipping; no candidate imports",
+    "minimum_necessary_distance_without_positive_margin": {
+      "embedded_stationary": 5.776413071014029,
+      "rotated_compound": 5.245864147052716
+    },
+    "nine_cell_initial_topology": "Nine Sand cells and sixteen hard enclosure cells initially overlap the real compound; 25 total unit-cell area versus 9 Sand unit-cell area. Preserve this as a hard-topology negative.",
+    "raw_report": {
+      "bytes": 1905073,
+      "path": "/workspace/scratch/4b0fc6bf4ee0/physics-review/independent_corridor_review.json",
+      "sha256": "873b7bcf0e9e88ab5d581c40977ff9c853a00f3c377bfe45b7a8f0e9b8a2fe19"
+    },
+    "sanity_checks": {
+      "analytic_checks": 6,
+      "scope": "independent axis-aligned containment, separation, touching and swept-interior sanity",
+      "status": "pass"
+    },
+    "script": {
+      "bytes": 15618,
+      "path": "/workspace/scratch/4b0fc6bf4ee0/physics-review/independent_corridor_review.py",
+      "sha256": "e92c554b105931c42cd6bc0799f9c5b7ec5d46f4d3b1e2c845c84e6d909fd6f7"
+    },
+    "source_and_field_equivalence": {
+      "fixtures": {
+        "embedded_stationary": {
+          "native_material_fields_equal": true,
+          "necessary_distances_equal": true,
+          "recorded_geometries_equal": false,
+          "recorded_polygons_and_pose_equal": false
+        },
+        "nine_cell_interior": {
+          "native_material_fields_equal": true,
+          "necessary_distances_equal": true,
+          "recorded_geometries_equal": true,
+          "recorded_polygons_and_pose_equal": true
+        },
+        "rotated_compound": {
+          "native_material_fields_equal": true,
+          "necessary_distances_equal": true,
+          "recorded_geometries_equal": false,
+          "recorded_polygons_and_pose_equal": false
+        }
+      },
+      "source_payloads_equal": true
+    }
+  },
+  "independent_test_executions": [
+    {
+      "command": [
+        "/workspace/scratch/4b0fc6bf4ee0/physics-build/final-local/tests.bin"
+      ],
+      "cwd": "/workspace/scratch/4b0fc6bf4ee0/physics-review",
+      "executable_sha256_after": "4846eb55c5016ab473b12a782c0efd313990aa9da6b568873c43e5db786faec1",
+      "executable_sha256_before": "4846eb55c5016ab473b12a782c0efd313990aa9da6b568873c43e5db786faec1",
+      "exit_code": 0,
+      "explicit_environment": {},
+      "result": {
+        "checks": 142,
+        "failures": 0,
+        "groups": 6,
+        "live_application": false,
+        "schema": "cybersand.sol364b.corridor-native-tests.v1"
+      },
+      "scope": "Independent execution of author-built, source-hash-bound diagnostic tests; no live application. Address/UB sanitizer run excludes LeakSanitizer.",
+      "stderr": "",
+      "stdout": "{\"schema\":\"cybersand.sol364b.corridor-native-tests.v1\",\"groups\":6,\"checks\":142,\"failures\":0,\"live_application\":false}\n"
+    },
+    {
+      "command": [
+        "/workspace/scratch/4b0fc6bf4ee0/physics-build/final-local/sanitize.bin"
+      ],
+      "cwd": "/workspace/scratch/4b0fc6bf4ee0/physics-review",
+      "executable_sha256_after": "3d1b881b8be26d56f541c6e6c54cbd02fd1207116cb18911fe3604afaf05daf0",
+      "executable_sha256_before": "3d1b881b8be26d56f541c6e6c54cbd02fd1207116cb18911fe3604afaf05daf0",
+      "exit_code": 0,
+      "explicit_environment": {
+        "ASAN_OPTIONS": "detect_leaks=0"
+      },
+      "result": {
+        "checks": 142,
+        "failures": 0,
+        "groups": 6,
+        "live_application": false,
+        "schema": "cybersand.sol364b.corridor-native-tests.v1"
+      },
+      "scope": "Independent execution of author-built, source-hash-bound diagnostic tests; no live application. Address/UB sanitizer run excludes LeakSanitizer.",
+      "stderr": "",
+      "stdout": "{\"schema\":\"cybersand.sol364b.corridor-native-tests.v1\",\"groups\":6,\"checks\":142,\"failures\":0,\"live_application\":false}\n"
+    }
+  ],
+  "limits": [
+    "NO-GO covers only fixed orientation, eight-or-fewer straight axis directions, a four-cell lifetime bound and no-new-pair policy. It is not arbitrary curved/rotating-path impossibility.",
+    "Historical material RLE cannot reconstruct temperature, state, residency or foreign-owner masks from a hash; it is geometry evidence, not current native authority.",
+    "This review provides no live acceptance, integration approval, compatibility admission or runtime promotion. Any later composed tree needs independent review and qualification at its own exact source identity."
+  ],
+  "receipt_generator": {
+    "bytes": 16075,
+    "path": "/workspace/scratch/4b0fc6bf4ee0/physics-review/finalize_source_review.py",
+    "sha256": "28d87b1f0ab2fedcf16f57b8129663f57b20a2e11fc9553ef95f77e3742cb69b"
+  },
+  "registration_commit": "33203c5d5928ac53e5cc624e5dc1c3d26255f45b",
+  "registration_tree": "d7f87bd1212ba258b07ec3ce4c207b782237458a",
+  "resolved_review_findings": [
+    {
+      "finding": "Finite mass could overflow proposed reservoir E_cap and bypass its upper bound.",
+      "resolution": "Explicit finite energy-cap refusal plus regression at mass 5e305."
+    },
+    {
+      "finding": "Default historical Windows paths included the Linux-only host/ directory.",
+      "resolution": "Platform-specific DEFAULT_REPORTS uses authenticated, present Windows paths; all four reports execute."
+    },
+    {
+      "finding": "Test executable initially hashed only after execution.",
+      "resolution": "Runner now hashes before execution, verifies immediately after and again after replay, and records that hash."
+    },
+    {
+      "finding": "Executable hashes alone do not bind binary outputs to checked C++ sources.",
+      "resolution": "Separate compiler manifest records exact commands, immutable source hashes and output hashes. All checked source hashes independently matched 9f3b Git objects and replay binary hashes."
+    }
+  ],
+  "reviewed_at_utc": "2026-11-04T14:18:31.143050+00:00",
+  "reviewed_source": "9f3bc7c9523ba153de0144ef4f49b7e531a985d3",
+  "reviewed_tree": "16e79d4fe2e0cf3790ba83a712fdb0290a1a9d8f",
+  "reviewer": "Independent physics_review agent; no edits to repository source, branches or GitHub.",
+  "reviewer_runtime": {
+    "platform": "Linux-6.18.57-x86_64-with-glibc2.39",
+    "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+    "python_executable": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3.12",
+    "python_executable_sha256": "fa67443527ed9647f760d807e2a38f26340757123e643c4639cf273ed15d5ea7"
+  },
+  "schema": "cybersand.sol364b.independent-source-review.v1",
+  "source_locations": {
+    "bounded_complete_geometry": {
+      "line": 149,
+      "path": "tools/sol281/penetration_corridor.hpp",
+      "source_head": "9f3bc7c9523ba153de0144ef4f49b7e531a985d3"
+    },
+    "continuous_depth_maximum": {
+      "line": 123,
+      "path": "tools/sol281/penetration_corridor.hpp",
+      "source_head": "9f3bc7c9523ba153de0144ef4f49b7e531a985d3"
+    },
+    "continuous_sat_interval": {
+      "line": 90,
+      "path": "tools/sol281/penetration_corridor.hpp",
+      "source_head": "9f3bc7c9523ba153de0144ef4f49b7e531a985d3"
+    },
+    "exact_source_partition": {
+      "line": 96,
+      "path": "tools/sol281/run_penetration_corridor.py",
+      "source_head": "9f3bc7c9523ba153de0144ef4f49b7e531a985d3"
+    },
+    "float32_geometry_correspondence": {
+      "line": 121,
+      "path": "tools/sol281/run_penetration_corridor.py",
+      "source_head": "9f3bc7c9523ba153de0144ef4f49b7e531a985d3"
+    },
+    "historical_source_authentication": {
+      "line": 57,
+      "path": "tools/sol281/run_penetration_corridor.py",
+      "source_head": "9f3bc7c9523ba153de0144ef4f49b7e531a985d3"
+    },
+    "native_hot_overlap": {
+      "line": 258,
+      "path": "godot/native_extension/solid_contact_adapter.inc",
+      "source_head": "9f3bc7c9523ba153de0144ef4f49b7e531a985d3"
+    },
+    "native_unsupported_overlap": {
+      "line": 255,
+      "path": "godot/native_extension/solid_contact_adapter.inc",
+      "source_head": "9f3bc7c9523ba153de0144ef4f49b7e531a985d3"
+    },
+    "proposed_work_accounting": {
+      "line": 313,
+      "path": "tools/sol281/penetration_corridor.hpp",
+      "source_head": "9f3bc7c9523ba153de0144ef4f49b7e531a985d3"
+    }
+  }
+}

@@ -10,6 +10,27 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+## SOL364-B bounded corridor NO-GO — 2026-11-04
+
+The [existing-penetration result](../audits/2026-11-04-sol364b-corridor-result.md)
+rejects the one prospectively registered fixed-orientation translation family.
+All original target controls and 1,452 retained host/worker states refuse before
+application; necessary stationary/rotated distances exceed its four-cell budget.
+No new production constraint or live work is applied. Diagnostic test success
+does not meet the original 120+60-step clearance, full CPU, live ownership or
+compatibility gates. Historical runtime successes and negatives retain their
+identities, and the frozen MAT-AUTH source guard still fails. Independent
+compatibility review remains a separate branch. Keep #347 draft, #364/#281/#12
+open and #365 blocked; changing the route family or recomposing the lanes requires
+a separately admitted, exact-source task.
+
+Fresh source `9597abd7` passes the actual-host execution inventory and all 24 CPU
+groups (worst `1.8502254098360655 ms`) while retaining 84 clearance and 64 depth
+failures. The workflow fails at source-archive publication capacity, with no
+runtime/provenance child. Separate compatibility draft #386 at `b661a6f3` concludes
+REPAIR and leaves the frozen guard authoritative. The completed evidence ledger
+keeps scientific, execution, publication and integration outcomes distinct.
+
 ## SOL364 bounded witness and CPU repair — 2026-11-04
 
 The [SOL364 ledger](../audits/2026-11-04-sol364-recovery.md) records ordinary

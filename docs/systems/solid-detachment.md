@@ -10,6 +10,50 @@ related-documents: [../operations/soliding-programme.md, ../architecture/solidin
 
 # Native structural detachment
 
+## SOL364-B existing-penetration corridor — 2026-11-04
+
+The [registered fixed-orientation translation experiment](../audits/2026-11-04-sol364b-corridor-registration.md)
+ends in a [bounded family NO-GO](../audits/2026-11-04-sol364b-corridor-result.md).
+Its eight-or-fewer signed world/body axes, four-cell lifetime distance and
+no-new-cell/proxy-pair rule admit none of the original nine-cell, stationary or
+rotated controls. A source-bound C++ diagnostic rejects all 1,452 retained states
+from Linux/Windows workers 1/4; these are reevaluated historical observations,
+not newly executed Rapier trajectories. Six groups/142 adversarial checks and
+independent polygon analysis qualify the diagnostic's negative conclusion only.
+
+The nine-cell Sand pocket also intersects 16 hard cells in its original enclosure.
+Stationary embedding retains a tiny excluded corner above the original area
+filter; separately, necessary escape distance exceeds 5.7764 cells. The rotated
+case needs at least 5.2458 cells. Both lower bounds exceed four cells even before
+new blockers. Original 84 clearance failures remain failed. No larger budget,
+filled hull, changed tolerance, cell deletion or rotating/curved search is inferred.
+The conclusion is limited to this registered family, not all possible mechanisms.
+
+The proposed correction has explicit introduced repair energy, not free
+projection work: a finite `mass * 92.12 * 4` reservoir, signed potential change,
+kinetic change and residual dissipation. Only its arithmetic/refusal rules are
+tested. No live correction, positional work or recovery toggle is applied, so
+new live energy/readback/lifecycle and recovery CPU gates are unexecuted.
+Historical 24/24 cost success remains scoped to `9edc4f8f`; original Windows and
+Linux cost failures remain retained. Current v1 exterior-witness packets lack
+complete interior/swept-space eligibility and a revision lease held through RID
+application. An age bound or cached revision alone is insufficient live authority.
+
+The frozen MAT-AUTH guard still fails on the same two SOL consumers. Independent
+compatibility investigation has its own branch and source receipt; nothing is
+imported here. #347 stays draft, #364/#281/#12 stay open and #365 stays blocked.
+Any later mechanism or two-lane composition needs separate admission and fresh
+exact-head physical, CPU, compatibility, ownership and platform qualification.
+
+Fresh hosted source `9597abd7` passes both builds, all eight actual Linux/Windows
+cohorts and the unchanged 24-group CPU matrix, worst `1.8502254098360655 ms`.
+GCC, strict ASan/UBSan and actual Windows MSVC each pass 142 diagnostic checks.
+All 84 sustained-clearance cases and 64 depth gates still fail. Publication then
+refuses the 144,679,823-byte source archive under the unchanged 128 MiB file cap;
+the workflow is FAILURE and has no runtime/provenance child. Old checked-in
+runtime identities and every original negative remain. Independent draft #386
+records REPAIR for the two consumer contracts, with no compatibility transition.
+
 ## SOL364 bounded witness recovery — 2026-11-04
 
 The [prospective SOL364 registration](../audits/2026-11-04-sol364-registration.md)

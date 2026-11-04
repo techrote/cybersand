@@ -12,6 +12,22 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 ## Native structural detachment
 
+The [SOL364-B existing-penetration result](audits/2026-11-04-sol364b-corridor-result.md)
+is **bounded family NO-GO** under its
+[prospective corridor/work registration](audits/2026-11-04-sol364b-corridor-registration.md).
+The original controls have no safe route in the four-cell fixed-angle family;
+1,452 retained states reject and no live correction is applied. Original physical
+failures, source locks and draft/blocked issue state remain. The independent
+compatibility lane is not imported; a later composition needs owner admission and
+new exact-head qualification. Prior runtime records below keep their dated scope.
+
+Fresh source `9597abd7` passes the hosted execution inventory and all 24 original
+CPU groups; all 84 clearance and 64 depth gates still fail. Source-archive capacity
+blocks runtime publication, so the overall workflow fails without a new runtime
+child. Separate [draft #386](https://github.com/techrote/cybersand/pull/386) records
+the source-qualified compatibility REPAIR decision. Full original manifests and
+independent reviews are linked from the SOL364-B result.
+
 The [4 November SOL364 continuation](audits/2026-11-04-sol364-recovery.md)
 ordinarily incorporates accepted MAT-AUTH main `7ef4856e`, corrects lost exterior
 contact witnesses and optimizes immutable native observation. Its synchronized

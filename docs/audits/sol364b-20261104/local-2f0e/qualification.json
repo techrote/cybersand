@@ -1,0 +1,259 @@
+{
+  "commands": [
+    {
+      "command": [
+        "/usr/bin/g++-13",
+        "--version"
+      ],
+      "elapsed_seconds": 0.001890895000542514,
+      "environment_overrides": {},
+      "label": "compiler-version",
+      "policy_key": "operation_seconds",
+      "returncode": 0,
+      "stderr": "",
+      "stderr_bytes_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout": "g++-13 (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+      "stdout_bytes_sha256": "e2af14a68ff5165728a70bba5b972e6e8b9c428b5e75e9255f5d86ee0c3201bf",
+      "timeout_seconds": 300.0
+    },
+    {
+      "command": [
+        "/usr/bin/g++-13",
+        "-std=c++20",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "-Wpedantic",
+        "-I",
+        "native/include",
+        "tools/sol281/penetration_corridor_probe.cpp",
+        "-o",
+        "/workspace/scratch/4b0fc6bf4ee0/physics-build/final-ci-local/bin/probe"
+      ],
+      "elapsed_seconds": 1.651200559004792,
+      "environment_overrides": {},
+      "label": "compile-probe",
+      "policy_key": "native_compile_seconds",
+      "returncode": 0,
+      "stderr": "",
+      "stderr_bytes_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout": "",
+      "stdout_bytes_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "timeout_seconds": 3600.0
+    },
+    {
+      "command": [
+        "/usr/bin/g++-13",
+        "-std=c++20",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "-Wpedantic",
+        "-I",
+        "native/include",
+        "tools/sol281/test_penetration_corridor.cpp",
+        "-o",
+        "/workspace/scratch/4b0fc6bf4ee0/physics-build/final-ci-local/bin/tests"
+      ],
+      "elapsed_seconds": 1.326613119992544,
+      "environment_overrides": {},
+      "label": "compile-tests",
+      "policy_key": "native_compile_seconds",
+      "returncode": 0,
+      "stderr": "",
+      "stderr_bytes_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout": "",
+      "stdout_bytes_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "timeout_seconds": 3600.0
+    },
+    {
+      "command": [
+        "/usr/bin/g++-13",
+        "-std=c++20",
+        "-O1",
+        "-g",
+        "-fno-omit-frame-pointer",
+        "-fsanitize=address,undefined",
+        "-Wall",
+        "-Wextra",
+        "-Wpedantic",
+        "-I",
+        "native/include",
+        "tools/sol281/test_penetration_corridor.cpp",
+        "-o",
+        "/workspace/scratch/4b0fc6bf4ee0/physics-build/final-ci-local/bin/tests-sanitize"
+      ],
+      "elapsed_seconds": 2.9150905330025125,
+      "environment_overrides": {},
+      "label": "compile-sanitizers",
+      "policy_key": "native_compile_seconds",
+      "returncode": 0,
+      "stderr": "",
+      "stderr_bytes_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout": "",
+      "stdout_bytes_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "timeout_seconds": 3600.0
+    },
+    {
+      "command": [
+        "/workspace/scratch/4b0fc6bf4ee0/physics-build/final-ci-local/bin/tests-sanitize"
+      ],
+      "elapsed_seconds": 0.01091871400421951,
+      "environment_overrides": {
+        "ASAN_OPTIONS": "detect_leaks=0:strict_string_checks=1:abort_on_error=1",
+        "UBSAN_OPTIONS": "halt_on_error=1:print_stacktrace=1"
+      },
+      "label": "address-undefined-tests",
+      "policy_key": "native_case_seconds",
+      "returncode": 0,
+      "stderr": "",
+      "stderr_bytes_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout": "{\"schema\":\"cybersand.sol364b.corridor-native-tests.v1\",\"groups\":6,\"checks\":142,\"failures\":0,\"live_application\":false}\n",
+      "stdout_bytes_sha256": "90ea31e0141974f38df433297e3aff54fe2d10d7bb0c893d02f7a7f137c5c335",
+      "timeout_seconds": 3600.0
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "tools/sol281/run_penetration_corridor.py",
+        "--probe",
+        "/workspace/scratch/4b0fc6bf4ee0/physics-build/final-ci-local/bin/probe",
+        "--tests",
+        "/workspace/scratch/4b0fc6bf4ee0/physics-build/final-ci-local/bin/tests",
+        "--output",
+        "/workspace/scratch/4b0fc6bf4ee0/physics-build/final-ci-local/replay"
+      ],
+      "elapsed_seconds": 5.619009959002142,
+      "environment_overrides": {},
+      "label": "retained-state-replay",
+      "policy_key": "native_case_seconds",
+      "returncode": 0,
+      "stderr": "",
+      "stderr_bytes_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout": "{\"analysis_git_head\": \"2f0ea3bdba5b7aef2fddef7d3a70f7e8d21adab9\", \"disposition\": \"BOUNDED_FAMILY_NO_GO\", \"geometry_only_unique_routes\": 0, \"live_candidate_applications\": 0, \"outcome_counts\": {\"InitialExcludedOverlap\": 728, \"NoRegisteredCorridor\": 724}, \"reports\": 4, \"retained_states_evaluated\": 1452, \"schema\": \"cybersand.sol364b.retained-corridor-admission.v1\", \"unique_geometric_inputs\": 349}\n",
+      "stdout_bytes_sha256": "dec33c5e34dc171212e688015c1c8c7bdb7915f2015cc4dabcfc708ffc8e7a9c",
+      "timeout_seconds": 3600.0
+    }
+  ],
+  "compiler_path": "/usr/bin/g++-13",
+  "executables": {
+    "probe": {
+      "bytes": 35608,
+      "path": "/workspace/scratch/4b0fc6bf4ee0/physics-build/final-ci-local/bin/probe",
+      "sha256": "1f4ef123ff96fc72c219773d402c443c37dd12ce3bba1b54e838d48c48c6af81"
+    },
+    "sanitizers": {
+      "bytes": 977072,
+      "path": "/workspace/scratch/4b0fc6bf4ee0/physics-build/final-ci-local/bin/tests-sanitize",
+      "sha256": "3d1b881b8be26d56f541c6e6c54cbd02fd1207116cb18911fe3604afaf05daf0"
+    },
+    "tests": {
+      "bytes": 44800,
+      "path": "/workspace/scratch/4b0fc6bf4ee0/physics-build/final-ci-local/bin/tests",
+      "sha256": "4846eb55c5016ab473b12a782c0efd313990aa9da6b568873c43e5db786faec1"
+    }
+  },
+  "execution_policy": {
+    "advisories": {
+      "drift_ratio": 1.2,
+      "drift_window": 5,
+      "minimum_baseline_samples": 3,
+      "prominent_ratio": 2.0,
+      "rolling_window": 10,
+      "warning_ratio": 1.5
+    },
+    "path": "godot/tests/support/ci_execution_policy.json",
+    "policy_id": "github-hosted-complete-execution-v1",
+    "scale": 1.0,
+    "schema_version": 1,
+    "sha256": "9eaec2e6318073bff7cfbac209d2d959a751b85ffd63cb94c147e9be237516dc",
+    "watchdogs": {
+      "aggregate_headroom_seconds": 600.0,
+      "complex_fixture_seconds": 3600.0,
+      "dependency_prepare_seconds": 1200.0,
+      "diagnostic_capture_seconds": 30.0,
+      "godot_import_seconds": 1200.0,
+      "godot_job_minutes": 360.0,
+      "godot_metadata_seconds": 900.0,
+      "godot_setup_seconds": 4200.0,
+      "graphical_case_seconds": 1200.0,
+      "hosted_job_minutes": 180.0,
+      "main_ack_seconds": 600.0,
+      "native_case_seconds": 3600.0,
+      "native_compile_seconds": 3600.0,
+      "native_suite_seconds": 7200.0,
+      "operation_seconds": 300.0,
+      "ordinary_case_seconds": 1200.0,
+      "terminate_grace_seconds": 10.0
+    }
+  },
+  "inputs_after": {
+    ".github/workflows/sol281-current-main.yml": "b534cc98903ec7a58ed1014c5c97bc797bee06a3e85f67eb09dfac4082a64de1",
+    "docs/audits/2026-11-04-sol364b-corridor-registration.md": "a40f2d00c22b97a06641ccfc167b286c6d3334c0ce007e8d5ef338da93c2a3be",
+    "godot/tests/support/ci_execution_policy.json": "9eaec2e6318073bff7cfbac209d2d959a751b85ffd63cb94c147e9be237516dc",
+    "native/include/cybersand/solid_contact_geometry.hpp": "53f8852cfe658fa37bb419ef4380e2c2bb4ebdf66af02e77e952813664a44c54",
+    "tools/ci/execution_policy.py": "7bf7c89f51b8edc6c14e9b600a843c6b56f4806c902b09058912a32c881b63d6",
+    "tools/sol281/penetration_corridor.hpp": "6bb0f2641dd911f2fac99d124ff2b2483bfb4519a41f0cbc6d1fdb650bb3e82e",
+    "tools/sol281/penetration_corridor_probe.cpp": "172d4ee97c47caec5c44a925401437c9d9a2f5bcf2a3f96c5821953029e7844c",
+    "tools/sol281/qualify_penetration_corridor.py": "0ecd757f267b87c629378095c60f4aa615a9c9fc9143b8dd34aee1645cb9dadd",
+    "tools/sol281/run_msvc_contact.cmd": "175bf8b2244e24d6a3e64e004d9bcdcc0422e4cfa83e54f6062b10c16b4a7b72",
+    "tools/sol281/run_penetration_corridor.py": "293699a77f06138e12a9ccd06474ffd0c6f6ece5341d6a39fcbfa7d225236d32",
+    "tools/sol281/test_penetration_corridor.cpp": "737ca13fe155bd4d91dc02f46b05f21d1458ff05cb009d96801834e15fc398e6"
+  },
+  "inputs_before": {
+    ".github/workflows/sol281-current-main.yml": "b534cc98903ec7a58ed1014c5c97bc797bee06a3e85f67eb09dfac4082a64de1",
+    "docs/audits/2026-11-04-sol364b-corridor-registration.md": "a40f2d00c22b97a06641ccfc167b286c6d3334c0ce007e8d5ef338da93c2a3be",
+    "godot/tests/support/ci_execution_policy.json": "9eaec2e6318073bff7cfbac209d2d959a751b85ffd63cb94c147e9be237516dc",
+    "native/include/cybersand/solid_contact_geometry.hpp": "53f8852cfe658fa37bb419ef4380e2c2bb4ebdf66af02e77e952813664a44c54",
+    "tools/ci/execution_policy.py": "7bf7c89f51b8edc6c14e9b600a843c6b56f4806c902b09058912a32c881b63d6",
+    "tools/sol281/penetration_corridor.hpp": "6bb0f2641dd911f2fac99d124ff2b2483bfb4519a41f0cbc6d1fdb650bb3e82e",
+    "tools/sol281/penetration_corridor_probe.cpp": "172d4ee97c47caec5c44a925401437c9d9a2f5bcf2a3f96c5821953029e7844c",
+    "tools/sol281/qualify_penetration_corridor.py": "0ecd757f267b87c629378095c60f4aa615a9c9fc9143b8dd34aee1645cb9dadd",
+    "tools/sol281/run_msvc_contact.cmd": "175bf8b2244e24d6a3e64e004d9bcdcc0422e4cfa83e54f6062b10c16b4a7b72",
+    "tools/sol281/run_penetration_corridor.py": "293699a77f06138e12a9ccd06474ffd0c6f6ece5341d6a39fcbfa7d225236d32",
+    "tools/sol281/test_penetration_corridor.cpp": "737ca13fe155bd4d91dc02f46b05f21d1458ff05cb009d96801834e15fc398e6"
+  },
+  "leak_sanitizer": "NOT_EXERCISED; detect_leaks=0 explicitly recorded",
+  "live_candidate_applications": 0,
+  "physical_disposition": "NO_GO; no live recovery has been implemented or admitted",
+  "platform": "Linux",
+  "platform_detail": "Linux-6.18.57-x86_64-with-glibc2.39",
+  "result": {
+    "disposition": "BOUNDED_FAMILY_NO_GO",
+    "live_candidate_applications": 0,
+    "outcome_counts": {
+      "InitialExcludedOverlap": 728,
+      "NoRegisteredCorridor": 724
+    },
+    "reports": 4,
+    "retained_states_evaluated": 1452,
+    "unique_geometric_inputs": 349
+  },
+  "run_attempt": null,
+  "run_id": null,
+  "schema": "cybersand.sol364b.diagnostic-qualification.v1",
+  "scope": "fresh actual-host C++ diagnostic execution; original Linux/Windows Rapier states are historical inputs",
+  "source": {
+    "sha": "2f0ea3bdba5b7aef2fddef7d3a70f7e8d21adab9",
+    "tree": "11e986214f056f3f39631bb0331b3cd4930c3d1c"
+  },
+  "source_after": {
+    "sha": "2f0ea3bdba5b7aef2fddef7d3a70f7e8d21adab9",
+    "tree": "11e986214f056f3f39631bb0331b3cd4930c3d1c"
+  },
+  "status": "passed",
+  "summary_sha256": "384c82cba453a1bae2476c556f6e1523a22894b0b09c5f2ea25dd49b3956dd26",
+  "tool_executables": {
+    "compiler": {
+      "bytes": 1027128,
+      "path": "/usr/bin/g++-13",
+      "sha256": "52f1ddb33fe78b9441e0f42e9cd22c571f1101938e046c8a26582494e041cc73"
+    },
+    "python": {
+      "bytes": 30894944,
+      "path": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "sha256": "fa67443527ed9647f760d807e2a38f26340757123e643c4639cf273ed15d5ea7",
+      "version": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]"
+    }
+  }
+}

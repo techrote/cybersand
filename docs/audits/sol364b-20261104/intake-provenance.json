@@ -1,0 +1,25 @@
+{
+  "schema": "cybersand.sol364b.intake-provenance.v1",
+  "source": "33203c5d5928ac53e5cc624e5dc1c3d26255f45b",
+  "tree": "d7f87bd1212ba258b07ec3ce4c207b782237458a",
+  "runtime_provenance": [
+    {
+      "path": "godot/addons/cybersand_native/runtime-provenance.linux.json",
+      "manifest_sha256": "dfa22f5c22426687b3c960f848c9c6185661cb75797237f027e9e1ca79b507aa",
+      "historical_source": "9edc4f8f7d8cd8fc65119d176c9e1981ab6ea77d",
+      "runtime_sha256": "de38c0de458b2a30d43cb36c633cb7ee3b469f8d84f7a3e512fafc9838bb82a5",
+      "source_input_count": 88,
+      "mismatched_current_native_inputs": [],
+      "current_scripts_execution_qualified": false
+    },
+    {
+      "path": "godot/addons/cybersand_native/runtime-provenance.json",
+      "manifest_sha256": "392bf970215062f3986e57928e95a9a12e1ad40eb67d330ffddf3bc424cdcb08",
+      "historical_source": "9edc4f8f7d8cd8fc65119d176c9e1981ab6ea77d",
+      "runtime_sha256": "a5e616c0e72eee56c84f66151499d401dd3f4fb7faab347adbc6335493fefd61",
+      "source_input_count": 88,
+      "mismatched_current_native_inputs": [],
+      "current_scripts_execution_qualified": false
+    }
+  ]
+}

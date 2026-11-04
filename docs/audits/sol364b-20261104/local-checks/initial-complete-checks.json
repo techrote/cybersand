@@ -1,0 +1,59 @@
+{
+  "scope": "Current working documentation and untouched production source, before final code publication. Initial missing companion setup errors retained separately.",
+  "source_head": "9f3bc7c9523ba153de0144ef4f49b7e531a985d3",
+  "results": [
+    {
+      "label": "docs",
+      "command": [
+        "python3",
+        "tools/ci/check_docs.py"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 1.1325469919975149,
+      "stdout": "{\n  \"status\": \"passed\",\n  \"documents\": 120,\n  \"navigation_link_documents\": 8,\n  \"canonical_claims\": 238,\n  \"local_links\": 3656,\n  \"heading_anchors\": 701,\n  \"questions\": 32,\n  \"errors\": [],\n  \"warnings\": [],\n  \"limitations\": [\n    \"Does not verify source semantics or runtime claims\",\n    \"Does not fetch external URLs\",\n    \"Does not rewrite or reattest historical audits\",\n    \"Retrieval quality requires the separate lexical evaluation and expected-fact review\"\n  ]\n}\n",
+      "stderr": "",
+      "stdout_sha256": "7a19ed1cdbdb25a211b9b2e48432bbdc6b163a62275862b322eb9a137d89ed1e",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "repository",
+      "command": [
+        "python3",
+        "tools/ci/check_repository.py"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 1.5503414039994823,
+      "stdout": "{\n  \"status\": \"passed\",\n  \"scope\": \"current source/documentation and artifact identity\",\n  \"documentation\": {\n    \"status\": \"passed\",\n    \"documents\": 120,\n    \"navigation_link_documents\": 8,\n    \"canonical_claims\": 238,\n    \"local_links\": 3656,\n    \"heading_anchors\": 701,\n    \"questions\": 32,\n    \"errors\": [],\n    \"warnings\": [],\n    \"limitations\": [\n      \"Does not verify source semantics or runtime claims\",\n      \"Does not fetch external URLs\",\n      \"Does not rewrite or reattest historical audits\",\n      \"Retrieval quality requires the separate lexical evaluation and expected-fact review\"\n    ]\n  },\n  \"materialized_runtime_files\": [\n    \"godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so\"\n  ],\n  \"unmaterialized_runtime_files\": [\n    \"godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll\",\n    \"godot/addons/godot-rapier2d/bin/godot_rapier.wasm\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.android.aarch64-linux-android.so\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.android.armv7-linux-androideabi.so\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.android.i686-linux-android.so\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.android.x86_64-linux-android.so\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.arm64.framework/libgodot_rapier.ios.arm64\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.x86_64.framework/libgodot_rapier.ios.x86_64\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.aarch64-unknown-linux-gnu.so\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.armv7-unknown-linux-gnueabihf.so\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.i686-unknown-linux-gnu.so\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.macos.framework/libgodot_rapier.macos.dylib\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.aarch64-pc-windows-msvc.dll\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.i686-pc-windows-msvc.dll\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll\",\n    \"godot/addons/godot-rapier2d/bin/wasm-nothreads/godot_rapier.wasm\"\n  ],\n  \"errors\": [],\n  \"limitations\": [\n    \"Identity is not execution evidence; read the dated runtime acceptance report\",\n    \"Retained vendor binaries and platform execution have separate dated provenance\",\n    \"Historical M11 integrity is checked separately by check_m11_consistency.py\"\n  ]\n}\n",
+      "stderr": "",
+      "stdout_sha256": "2b5047eb321611064cbd25d4c90cda432575baa686e328a796aaaa8577694460",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "historical-m11",
+      "command": [
+        "python3",
+        "tools/ci/check_m11_consistency.py"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.16261356200266164,
+      "stdout": "{\n  \"status\": \"passed\",\n  \"scope\": \"historical M11 integrity; no current runtime acceptance\",\n  \"historical_source_commit\": \"05ea45fda7bdd7b0150eb86c4922c202e89e08f4\",\n  \"records_checked\": 18,\n  \"source_hashes_checked\": 28,\n  \"compare_working_tree\": false,\n  \"working_tree_differences\": [],\n  \"errors\": []\n}\n",
+      "stderr": "",
+      "stdout_sha256": "8a902e9528f585b5d77d40881ac2df4076bff609ad23191bf56b26a0b8d79f3d",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "frozen-mat-guard",
+      "command": [
+        "python3",
+        "tools/material_catalogue/compatibility.py",
+        "--check"
+      ],
+      "exit_code": 1,
+      "elapsed_seconds": 0.1559082369931275,
+      "stdout": "",
+      "stderr": "compatibility: native/src/world.cpp: LF source-byte drift (legacy movement, chemistry, thermal and scheduling authority); expected b7a129f44eccc7c33dbd2f0d84802ab096140dcaa9b5b3a83d45dd3bf85fbad1, got 91cecf308d01ef214f491f3dc1f353f10c9db17a55162b983fc4ecf80e6363e6. #353-A preserves this consumer; cutover/identity transition needs separate review\n",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e847ded365c2e088fff81954249ea378be8b1727dd8a6d6ceb15caa33984a496"
+    }
+  ]
+}

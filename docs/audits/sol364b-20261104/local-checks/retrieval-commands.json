@@ -1,0 +1,66 @@
+[
+  {
+    "label": "frozen32",
+    "command": [
+      "python3",
+      "tools/docs/retrieval_eval.py",
+      "--queries",
+      "docs/reference/retrieval-questions.json",
+      "--output",
+      "/workspace/scratch/4b0fc6bf4ee0/physics-lane/docs/audits/sol364b-20261104/local-checks/retrieval-frozen32.json"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.4862831369973719,
+    "stdout": "{\n  \"documents\": 120,\n  \"chunks\": 1624,\n  \"questions\": 32,\n  \"canonical_hit_at_1\": 19,\n  \"canonical_hit_at_k\": 32,\n  \"mrr_at_k\": 0.7536,\n  \"answer_sufficiency\": \"Requires separate human/model source review. Canonical hits are not answer correctness.\"\n}\nQ01 rank=1 operations/source-checkpoint-and-recovery.md :: Source checkpoint and recovery > Water leveling follow-up\nQ02 rank=2 architecture/chunk-tile-and-buffer-model.md :: Chunk, tile, and buffer model > How are writes into a neighboring tile made safe?\nQ03 rank=3 operations/troubleshooting.md :: Troubleshooting simulation and integration > Establish the failing path first\nQ04 rank=2 reference/configuration-reference.md :: Configuration reference > Adapter worker policy\nQ05 rank=1 architecture/simulation-tick-and-threading.md :: Simulation tick and threading > Current desktop worker loop\nQ06 rank=1 architecture/simulation-tick-and-threading.md :: Simulation tick and threading > What happens when a tick fails or overloads?\nQ07 rank=1 operations/rapier-2d-migration-runbook.md :: Rapier2D dependency and validation runbook > Web packaging and browser fixture\nQ08 rank=2 decisions/ADR-007-rigid-body-cellular-coupling.md :: ADR-007: Separate rigid-body occupancy coupling > Why not remove and restore body pixels?\nQ09 rank=1 architecture/rigid-body-and-cellular-coupling.md :: Rigid-body and cellular coupling > Who resolves hard terrain and thin floors?\nQ10 rank=2 decisions/ADR-007-rigid-body-cellular-coupling.md :: ADR-007: Separate rigid-body occupancy coupling > Decision and implementation status\nQ11 rank=1 reference/level-saves-and-replay.md :: Level saves and exact replay > Does an identical save reproduce the next tick?\nQ12 rank=1 reference/level-saves-and-replay.md :: Level saves and exact replay > What is stored in CYSD1?\nQ13 rank=1 reference/level-saves-and-replay.md :: Level saves and exact replay > May saving run concurrently with a tick?\nQ14 rank=1 architecture/determinism-and-boundary-transfers.md :: Determinism and boundary transfers > Replay state coverage\nQ15 rank=4 systems/themed-construction-materials.md :: Themed construction material palette > Appearance boundaries\nQ16 rank=1 architecture/rendering-and-gameplay-bridges.md :: Rendering and gameplay bridges > What does native publication return under pressure?\nQ17 rank=3 operations/profiling-observability-and-performance.md :: Profiling, observability, and performance > Avoid common misreadings\nQ18 rank=1 architecture/chunk-tile-and-buffer-model.md :: Chunk, tile, and buffer model > Are simulation tiles double buffered?\nQ19 rank=5 operations/deepworks-exhibition.md :: Deepworks \u2014 the exhibition below > Four full-size worlds and independent clocks\nQ20 rank=1 operations/configuration-and-capacity-budgets.md :: Configuration and capacity budgets > Explosion queue rejection and exhausted simulation space\nQ21 rank=3 architecture/lcb-pressure-inertial-handoff.md :: LCB pressure and inertial implementation handoff > Inertial (`inertial_cellular_v1`, #212)\nQ22 rank=1 systems/water-design.md :: Water design > Coherent emission and surface adhesion\nQ23 rank=1 systems/water-design.md :: Water design > How should I diagnose a shimmering pool?\nQ24 rank=3 reference/invariants.md :: Architectural and simulation invariants > Fidelity invariants\nQ25 rank=1 architecture/principles-and-non-goals.md :: Architectural principles and non-goals > Can materials run on GPU compute or arbitrary JavaScript?\nQ26 rank=2 architecture/overview.md :: Architecture overview > Are the named production modules already separate classes?\nQ27 rank=1 systems/smoke-heat-pressure-roadmap.md :: Smoke, heat, and pressure roadmap\nQ28 rank=1 operations/local-build-and-validation.md :: Local build and validation > Windows development commands\nQ29 rank=3 operations/source-checkpoint-and-recovery.md :: Source checkpoint and recovery > Which earlier identity statements are historical?\nQ30 rank=1 reference/validation-evidence.md :: Validation evidence ledger > Which gates remain absent or failing?\nQ31 rank=1 operations/current-and-historical-validation.md :: Current validation and retained M11 integrity > Why did the old consistency check report hash mismatches?\nQ32 rank=2 operations/microscenarios-programme.md :: CyberSand MicroScenarios and intermaterial-interactions programme > Agent checkpoint protocol\n",
+    "stderr": "",
+    "question_sha256": "f2727cbe26633359798736537e06c7754db8c5588af90627f79c6bd798bbb6ec"
+  },
+  {
+    "label": "contact6",
+    "command": [
+      "python3",
+      "tools/docs/retrieval_eval.py",
+      "--queries",
+      "docs/reference/retrieval-questions-sol281-contact.json",
+      "--output",
+      "/workspace/scratch/4b0fc6bf4ee0/physics-lane/docs/audits/sol364b-20261104/local-checks/retrieval-contact6.json"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.3566640350036323,
+    "stdout": "{\n  \"documents\": 120,\n  \"chunks\": 1624,\n  \"questions\": 6,\n  \"canonical_hit_at_1\": 6,\n  \"canonical_hit_at_k\": 6,\n  \"mrr_at_k\": 1.0,\n  \"answer_sufficiency\": \"Requires separate human/model source review. Canonical hits are not answer correctness.\"\n}\nSOL281-CONTACT-001 rank=1 architecture/rigid-body-and-cellular-coupling.md :: Rigid-body and cellular coupling > Opt-in detached compounds \u2014 2026-11-01 > Separately enabled supported-Sand constraint \u2014 2026-11-03\nSOL281-CONTACT-002 rank=1 architecture/rigid-body-and-cellular-coupling.md :: Rigid-body and cellular coupling > Opt-in detached compounds \u2014 2026-11-01 > Separately enabled supported-Sand constraint \u2014 2026-11-03\nSOL281-CONTACT-003 rank=1 architecture/rigid-body-and-cellular-coupling.md :: Rigid-body and cellular coupling > What are the current numerical bounds and units?\nSOL281-CONTACT-004 rank=1 systems/solid-detachment.md :: Native structural detachment > Opt-in supported-Sand resistance\nSOL281-CONTACT-005 rank=1 systems/solid-detachment.md :: Native structural detachment > Opt-in supported-Sand resistance > Physical measurements and their denominators\nSOL281-CONTACT-006 rank=1 systems/solid-detachment.md :: Native structural detachment > Embedded Sand and reversible restoration limits\n",
+    "stderr": "",
+    "question_sha256": "fb4019fc6b9a5b53ddd9973872a01e0164bf2ef31a2742c2d6db849e89513aa0"
+  },
+  {
+    "label": "sol364",
+    "command": [
+      "python3",
+      "tools/docs/retrieval_eval.py",
+      "--queries",
+      "docs/reference/retrieval-questions-sol364.json",
+      "--output",
+      "/workspace/scratch/4b0fc6bf4ee0/physics-lane/docs/audits/sol364b-20261104/local-checks/retrieval-sol364.json"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.32381838900619186,
+    "stdout": "{\n  \"documents\": 120,\n  \"chunks\": 1624,\n  \"questions\": 5,\n  \"canonical_hit_at_1\": 3,\n  \"canonical_hit_at_k\": 5,\n  \"mrr_at_k\": 0.75,\n  \"answer_sufficiency\": \"Requires separate human/model source review. Canonical hits are not answer correctness.\"\n}\nSOL364-WITNESS-001 rank=2 architecture/rigid-body-and-cellular-coupling.md :: Rigid-body and cellular coupling > Opt-in detached compounds \u2014 2026-11-01 > Separately enabled supported-Sand constraint \u2014 2026-11-03\nSOL364-BURIAL-001 rank=1 systems/solid-detachment.md :: Native structural detachment > SOL364 bounded witness recovery \u2014 2026-11-04\nSOL364-SYNCHRONIZED-001 rank=1 systems/solid-detachment.md :: Native structural detachment > SOL364 bounded witness recovery \u2014 2026-11-04\nSOL364-COST-001 rank=1 systems/solid-detachment.md :: Native structural detachment > Opt-in supported-Sand resistance > Physical measurements and their denominators\nSOL364-INTEGRATION-001 rank=4 operations/cybersand-codex-development-handover.md :: Development handover > SOL364 synchronized repair continuation \u2014 2026-11-04\n",
+    "stderr": "",
+    "question_sha256": "8e3cadece764c35cd8700aa4fcb739333528d7ae996431d350f4caf6666dea07"
+  },
+  {
+    "label": "sol364b",
+    "command": [
+      "python3",
+      "tools/docs/retrieval_eval.py",
+      "--queries",
+      "docs/reference/retrieval-questions-sol364b.json",
+      "--output",
+      "/workspace/scratch/4b0fc6bf4ee0/physics-lane/docs/audits/sol364b-20261104/local-checks/retrieval-sol364b.json"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.33799174599698745,
+    "stdout": "{\n  \"documents\": 120,\n  \"chunks\": 1624,\n  \"questions\": 3,\n  \"canonical_hit_at_1\": 1,\n  \"canonical_hit_at_k\": 3,\n  \"mrr_at_k\": 0.6111,\n  \"answer_sufficiency\": \"Requires separate human/model source review. Canonical hits are not answer correctness.\"\n}\nSOL364B-CORRIDOR-001 rank=2 reference/status-and-roadmap.md :: Status and foundational roadmap > SOL364-B bounded corridor NO-GO \u2014 2026-11-04\nSOL364B-WORK-001 rank=1 systems/solid-detachment.md :: Native structural detachment > SOL364-B existing-penetration corridor \u2014 2026-11-04\nSOL364B-HANDOVER-001 rank=3 reference/status-and-roadmap.md :: Status and foundational roadmap > SOL364-B bounded corridor NO-GO \u2014 2026-11-04\n",
+    "stderr": "",
+    "question_sha256": "30124d90eea3de024390d07767127d9ec9e3d734e5444dd9b67089bc90cd6053"
+  }
+]

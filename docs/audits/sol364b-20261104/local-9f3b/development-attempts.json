@@ -1,0 +1,35 @@
+{
+  "attempts": [
+    {
+      "checks_before_failure": 48,
+      "id": "native-tests-initial",
+      "reason": "capacity negative authored three strips requiring7548 probes, below8192; fourth disjoint strip corrected fixture, capacity unchanged",
+      "result": "FAIL"
+    },
+    {
+      "id": "runner-initial",
+      "reason": "historical physical gate key was sustained_clearance_pass, not sustained_clearance; reader corrected",
+      "result": "FAIL"
+    },
+    {
+      "id": "runner-windows-layout",
+      "reason": "Windows retained mechanism path has nohost directory; mistaken Linux layout corrected; no missing Git object claim retained",
+      "result": "FAIL"
+    },
+    {
+      "checks": 140,
+      "groups": 6,
+      "id": "native-tests-corrected",
+      "result": "PASS"
+    },
+    {
+      "asan_options": "detect_leaks=0",
+      "checks": 140,
+      "groups": 6,
+      "id": "ASan-UBSan-corrected",
+      "limit": "LeakSanitizer not exercised",
+      "result": "PASS"
+    }
+  ],
+  "schema": "cybersand.sol364b.development-attempts.v1"
+}

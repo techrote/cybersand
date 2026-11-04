@@ -1,0 +1,37 @@
+{
+  "schema": "sol364b-independent-two-lane-handover-v1",
+  "integration_performed": false,
+  "owner_integration_admission": false,
+  "main": "7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1",
+  "physics": {
+    "source": "9597abd76c01e4a940ff3ea26ff01fca43bf55a6",
+    "tree": "11e986214f056f3f39631bb0331b3cd4930c3d1c",
+    "branch": "sol-detach-001-current-main",
+    "pr": 347,
+    "disposition": "BOUNDED_FAMILY_NO_GO",
+    "scope": "separate fixed-orientation diagnostic and evidence; no production recovery application"
+  },
+  "compatibility": {
+    "source": "b661a6f354f8c51e79759d22ad4573a875964b43",
+    "tree": "2675ec1af94371e9c1e1441e5e50e8dd8e9a3fba",
+    "branch": "audit/mat-sol-protected-consumer-20261104",
+    "pr": 386,
+    "disposition": "REPAIR",
+    "packet_manifest_sha256": "6725382c1f9a078b34a7a0d3c4a9f65fac54d7030e67d071ddfd42fddc9f2454",
+    "independently_verified_packet_entries": 78,
+    "parent": "7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1",
+    "no_transition_implemented": true
+  },
+  "frozen_source": "0fd4af5987e77db4da3e37c757cf2c0917ae9e15",
+  "protected_lock_sha256": "8b4d3351cbe4380e976655d10dc34c4bf9e81d95442719a53770b62d219183dc",
+  "source_refresh_required": "A future integrator must independently inspect the then-active trees and rerun new exact-source gates. This receipt is not a composition approval.",
+  "main_scope": "Accepted lane-intake main; later observed remote main is recorded separately without import.",
+  "final_remote_main": {
+    "source": "01f9b7c8e382ca6bdbaf0bf70c7847adc12fe0bc",
+    "tree": "4cf99921dc2b33233c3a254f4b6f27ed7cb0f204",
+    "receipt": "final-main-freshness.json",
+    "native_and_protected_source_containment": "PASS",
+    "combined_runtime_qualification": "NOT_RUN",
+    "imported": false
+  }
+}

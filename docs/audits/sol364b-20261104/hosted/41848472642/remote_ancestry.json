@@ -1,0 +1,81 @@
+{
+  "utc": "2026-11-04T14:36:07.911Z",
+  "entries": [
+    {
+      "requested": "1778278a700820d713da7922a06546f4790aba3c",
+      "response": {
+        "sha": "1778278a700820d713da7922a06546f4790aba3c",
+        "node_id": "C_kwDOUHiL-9oAKDE3NzgyNzhhNzAwODIwZDcxM2RhNzkyMmEwNjU0NmY0NzkwYWJhM2M",
+        "url": "https://api.github.com/repos/techrote/cybersand/git/commits/1778278a700820d713da7922a06546f4790aba3c",
+        "html_url": "https://github.com/techrote/cybersand/commit/1778278a700820d713da7922a06546f4790aba3c",
+        "author": {
+          "name": "tom",
+          "email": "261801702+techrote@users.noreply.github.com",
+          "date": "2026-11-04T14:19:43Z"
+        },
+        "committer": {
+          "name": "tom",
+          "email": "261801702+techrote@users.noreply.github.com",
+          "date": "2026-11-04T14:19:43Z"
+        },
+        "tree": {
+          "sha": "16e79d4fe2e0cf3790ba83a712fdb0290a1a9d8f",
+          "url": "https://api.github.com/repos/techrote/cybersand/git/trees/16e79d4fe2e0cf3790ba83a712fdb0290a1a9d8f"
+        },
+        "message": "test(sol364b): certify bounded corridor refusal on retained penetration states",
+        "parents": [
+          {
+            "sha": "c0f48c4ad2a168a56d7feaaf25cb743b8ef03006",
+            "url": "https://api.github.com/repos/techrote/cybersand/git/commits/c0f48c4ad2a168a56d7feaaf25cb743b8ef03006",
+            "html_url": "https://github.com/techrote/cybersand/commit/c0f48c4ad2a168a56d7feaaf25cb743b8ef03006"
+          }
+        ],
+        "verification": {
+          "verified": false,
+          "reason": "unsigned",
+          "signature": null,
+          "payload": null,
+          "verified_at": null
+        }
+      }
+    },
+    {
+      "requested": "c0f48c4ad2a168a56d7feaaf25cb743b8ef03006",
+      "response": {
+        "sha": "c0f48c4ad2a168a56d7feaaf25cb743b8ef03006",
+        "node_id": "C_kwDOUHiL-9oAKGMwZjQ4YzRhZDJhMTY4YTU2ZDdmZWFhZjI1Y2I3NDNiOGVmMDMwMDY",
+        "url": "https://api.github.com/repos/techrote/cybersand/git/commits/c0f48c4ad2a168a56d7feaaf25cb743b8ef03006",
+        "html_url": "https://github.com/techrote/cybersand/commit/c0f48c4ad2a168a56d7feaaf25cb743b8ef03006",
+        "author": {
+          "name": "tom",
+          "email": "261801702+techrote@users.noreply.github.com",
+          "date": "2026-11-04T13:58:12Z"
+        },
+        "committer": {
+          "name": "tom",
+          "email": "261801702+techrote@users.noreply.github.com",
+          "date": "2026-11-04T13:58:12Z"
+        },
+        "tree": {
+          "sha": "d7f87bd1212ba258b07ec3ce4c207b782237458a",
+          "url": "https://api.github.com/repos/techrote/cybersand/git/trees/d7f87bd1212ba258b07ec3ce4c207b782237458a"
+        },
+        "message": "docs(sol364b): preregister bounded penetration corridor and work budget",
+        "parents": [
+          {
+            "sha": "957ce67df859315ed238b6bbec1eebc9a743aaba",
+            "url": "https://api.github.com/repos/techrote/cybersand/git/commits/957ce67df859315ed238b6bbec1eebc9a743aaba",
+            "html_url": "https://github.com/techrote/cybersand/commit/957ce67df859315ed238b6bbec1eebc9a743aaba"
+          }
+        ],
+        "verification": {
+          "verified": false,
+          "reason": "unsigned",
+          "signature": null,
+          "payload": null,
+          "verified_at": null
+        }
+      }
+    }
+  ]
+}

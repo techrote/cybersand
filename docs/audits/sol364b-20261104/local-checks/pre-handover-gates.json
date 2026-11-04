@@ -1,0 +1,65 @@
+{
+  "source": {
+    "sha": "2f0ea3bdba5b7aef2fddef7d3a70f7e8d21adab9",
+    "tree": "11e986214f056f3f39631bb0331b3cd4930c3d1c"
+  },
+  "scope": "Reviewed documentation/evidence working delta over final committed compiler/CI source; final hosted and publication receipts remain separate.",
+  "checks": [
+    {
+      "label": "documentation",
+      "command": [
+        "python3",
+        "tools/ci/check_docs.py"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 1.2363700489950133,
+      "stdout": "{\n  \"status\": \"passed\",\n  \"documents\": 120,\n  \"navigation_link_documents\": 8,\n  \"canonical_claims\": 238,\n  \"local_links\": 3656,\n  \"heading_anchors\": 701,\n  \"questions\": 32,\n  \"errors\": [],\n  \"warnings\": [],\n  \"limitations\": [\n    \"Does not verify source semantics or runtime claims\",\n    \"Does not fetch external URLs\",\n    \"Does not rewrite or reattest historical audits\",\n    \"Retrieval quality requires the separate lexical evaluation and expected-fact review\"\n  ]\n}\n",
+      "stderr": ""
+    },
+    {
+      "label": "repository",
+      "command": [
+        "python3",
+        "tools/ci/check_repository.py"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 1.7714891520008678,
+      "stdout": "{\n  \"status\": \"passed\",\n  \"scope\": \"current source/documentation and artifact identity\",\n  \"documentation\": {\n    \"status\": \"passed\",\n    \"documents\": 120,\n    \"navigation_link_documents\": 8,\n    \"canonical_claims\": 238,\n    \"local_links\": 3656,\n    \"heading_anchors\": 701,\n    \"questions\": 32,\n    \"errors\": [],\n    \"warnings\": [],\n    \"limitations\": [\n      \"Does not verify source semantics or runtime claims\",\n      \"Does not fetch external URLs\",\n      \"Does not rewrite or reattest historical audits\",\n      \"Retrieval quality requires the separate lexical evaluation and expected-fact review\"\n    ]\n  },\n  \"materialized_runtime_files\": [\n    \"godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so\"\n  ],\n  \"unmaterialized_runtime_files\": [\n    \"godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll\",\n    \"godot/addons/godot-rapier2d/bin/godot_rapier.wasm\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.android.aarch64-linux-android.so\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.android.armv7-linux-androideabi.so\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.android.i686-linux-android.so\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.android.x86_64-linux-android.so\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.arm64.framework/libgodot_rapier.ios.arm64\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.x86_64.framework/libgodot_rapier.ios.x86_64\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.aarch64-unknown-linux-gnu.so\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.armv7-unknown-linux-gnueabihf.so\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.i686-unknown-linux-gnu.so\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.macos.framework/libgodot_rapier.macos.dylib\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.aarch64-pc-windows-msvc.dll\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.i686-pc-windows-msvc.dll\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll\",\n    \"godot/addons/godot-rapier2d/bin/wasm-nothreads/godot_rapier.wasm\"\n  ],\n  \"errors\": [],\n  \"limitations\": [\n    \"Identity is not execution evidence; read the dated runtime acceptance report\",\n    \"Retained vendor binaries and platform execution have separate dated provenance\",\n    \"Historical M11 integrity is checked separately by check_m11_consistency.py\"\n  ]\n}\n",
+      "stderr": ""
+    },
+    {
+      "label": "historical-m11",
+      "command": [
+        "python3",
+        "tools/ci/check_m11_consistency.py"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 0.20796728300047107,
+      "stdout": "{\n  \"status\": \"passed\",\n  \"scope\": \"historical M11 integrity; no current runtime acceptance\",\n  \"historical_source_commit\": \"05ea45fda7bdd7b0150eb86c4922c202e89e08f4\",\n  \"records_checked\": 18,\n  \"source_hashes_checked\": 28,\n  \"compare_working_tree\": false,\n  \"working_tree_differences\": [],\n  \"errors\": []\n}\n",
+      "stderr": ""
+    },
+    {
+      "label": "ci-provider",
+      "command": [
+        "python3",
+        "tools/ci/check_ci_provider_policy.py"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 0.07312582900340203,
+      "stdout": "{\n  \"status\": \"passed\",\n  \"scope\": \"active CI provider and runner routing\",\n  \"errors\": [],\n  \"policy\": {\n    \"routine_provider\": \"GitHub-hosted Actions\",\n    \"external_provider_config\": \"forbidden unless policy is explicitly changed\",\n    \"runner_indirection\": \"forbidden\"\n  }\n}\n",
+      "stderr": ""
+    },
+    {
+      "label": "whitespace",
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 0.5846634460031055,
+      "stdout": "",
+      "stderr": ""
+    }
+  ]
+}

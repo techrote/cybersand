@@ -1,0 +1,489 @@
+{
+  "schema": "sol364b-final-documentation-evidence-packet-v1",
+  "source_scope": "Execution at9597abd76c01e4a940ff3ea26ff01fca43bf55a6/tree11e986214f056f3f39631bb0331b3cd4930c3d1c. Final handover changes documentation/evidence only. Later main01f9 independently source-qualified but not imported or runtime-qualified. No runtime publication or integration admission.",
+  "manifest_exclusion": "This file is excluded from its own list; final Git tree authenticates it.",
+  "file_count": 80,
+  "bytes": 25220013,
+  "files": [
+    {
+      "path": "docs/README.md",
+      "bytes": 55189,
+      "sha256": "3779c9015ad19278c645f90b84dd5a46b2628559136fa124579ae1fc706c88ef",
+      "git_blob": "2a19ec3cb9336ae25b884bf9a865cacbadea7c84"
+    },
+    {
+      "path": "docs/audits/2026-11-04-sol364-recovery.md",
+      "bytes": 40501,
+      "sha256": "cc68291ba70d11e20b97381d49f9d1af9c1faa8afd61d553cdd842cc55d06d7c",
+      "git_blob": "7fbd3b7527345d55ba9cb07a9442626a7e57d49f"
+    },
+    {
+      "path": "docs/audits/2026-11-04-sol364b-corridor-result.md",
+      "bytes": 32326,
+      "sha256": "a269c727412ee1f402c35a0a1a9fae1e92c81ea40c4d09c3e79cedc800dc8bf6",
+      "git_blob": "ea985e029e69fbf1853164cf44dbe64dfd472755"
+    },
+    {
+      "path": "docs/audits/sol364b-20261104/companion-custody.json",
+      "bytes": 2068,
+      "sha256": "d77304f5f04cc74d43356a7cfc289a452bea434cc7dee99c410d776b9fbafb08",
+      "git_blob": "51ae206e473e5c2f6da2e4cffdb19ff49eb7c7e4"
+    },
+    {
+      "path": "docs/audits/sol364b-20261104/final-execution-equivalence.json",
+      "bytes": 2147,
+      "sha256": "a1f71f9bb4ae59274fa6aa1b3e003254dcd0f47f7de618d255d94aed53e17bc1",
+      "git_blob": "b4d39596c885854b575e9cf317000c39c5f841b6"
+    },
+    {
+      "path": "docs/audits/sol364b-20261104/final-main-freshness.json",
+      "bytes": 3689,
+      "sha256": "67ffe7ae9ec735e1b731e1bb4c41ae2466c82ae867e886cd09b5f99d2d3d0532",
+      "git_blob": "bd8638f22b9140414a4848fb46f9db30c9d170b6"
+    },
+    {
+      "path": "docs/audits/sol364b-20261104/hosted/41848472642/artifact-inventories.json",
+      "bytes": 315986,
+      "sha256": "c24b1e7485b94746a1bacc01f7d59cac28148387e39144923be634c98b5f2f03",
+      "git_blob": "20d4a69bf89e893efe55b2025f928e8d98e6b7aa"
+    },
+    {
+      "path": "docs/audits/sol364b-20261104/hosted/41848472642/close_hosted_review.py",
+      "bytes": 13673,
+      "sha256": "e2948024a0366733b33d9d897043e14a6248902ecd21200e65018e6f19822b88",
+      "git_blob": "5e5e809a94074dd139d7391f1bc2b2afd9b941b4"
+    },
+    {
+      "path": "docs/audits/sol364b-20261104/hosted/41848472642/create_handover_manifest_v2.py",
+      "bytes": 4773,
+      "sha256": "5e707d9fd3affe15f2bad5cfc6797ba5de520a76ad41ae4430aa534a380d565f",
+      "git_blob": "549d6be2eb410f4800ec4e969b43e5451c6e9d53"
+    },
+    {
+      "path": "docs/audits/sol364b-20261104/hosted/41848472642/diagnostic_linux_review.json",
+      "bytes": 6029,
+      "sha256": "2ed146219de4d1a117524f039238e7ca8365d122ecf057f10f4c74dded36a078",
+      "git_blob": "93a0d6adde3f4babb84b48691a95ca603699de66"
+    },
+    {
+      "path": "docs/audits/sol364b-20261104/hosted/41848472642/handover_manifest_v2.json",
+      "bytes": 905494,
+      "sha256": "266e6e18385ceba99d3b1de22e7cebcf18b3be597787badc4eb6fdb7c1a8d307",
+      "git_blob": "d00b8865dfcc2e62423dd60fe92660a8363db0de"
+    },
+    {
+      "path": "docs/audits/sol364b-20261104/hosted/41848472642/independent_hosted_closure.json",
+      "bytes": 390726,
+      "sha256": "14c3b7701bcaa3d2aadf7d6d85df4c6aa1630aac4711cf2de83f7a5250902595",
+      "git_blob": "f7aad8f6dc11c45d14a6dbd71f505b8af35f30af"
+    },
+    {
+      "path": "docs/audits/sol364b-20261104/hosted/41848472642/independent_hosted_review_final.json",
+      "bytes": 121026,
+      "sha256": "3ece790129e4ae96fb3638f5c01d63072ea6d09d748f912fbf611256332dc0c8",
+      "git_blob": "33f253845c293a1422f3dd6755f95acb7a8323fd"
+    },
+    {
+      "path": "docs/audits/sol364b-20261104/hosted/41848472642/independent_hosted_review_provisional.json",
+      "bytes": 119516,
+      "sha256": "3ad5c627bc00e252e286068b4200068a9783ef23238e292754267a71d5388971",
+      "git_blob": "e303ec9560291bb27a5972d5a8bc270d71fe6266"
+    },
+    {
+      "path": "docs/audits/sol364b-20261104/hosted/41848472642/linux/certificates.json",
+      "bytes": 2135198,
+      "sha256": "ed1fe214362d2de3292833a23d1b64ee839ccb6e9b3d2eeadf7ae8991b60d9eb",
+      "git_blob": "c15f553b783202c69e0bbf7597b4eebff40eb5e7"
+    },
+    {
+      "path": "docs/audits/sol364b-20261104/hosted/41848472642/linux/manifest.json",
+      "bytes": 131369,
+      "sha256": "030861f651f456449011e9a8eaa4a1b4bb64c63e4907109d681c5110cbde1b90",
+      "git_blob": "522b85a9af4b876d57d676b9b5a745c7e48bd4da"
+    },
+    {
+      "path": "docs/audits/sol364b-20261104/hosted/41848472642/linux/qualification-original.json",
+      "bytes": 15466,
+      "sha256": "c44e0c108bb0da9741006598085ef392526e241ccf5fe47ec8513f0ed196359a",
+      "git_blob": "3113885d479e126af8498b3aa0c2311b4cf76deb"
+    },
+    {
+      "path": "docs/audits/sol364b-20261104/hosted/41848472642/linux/summary.json",
+      "bytes": 37650,
+      "sha256": "52f3ae12dcdc9da1b354a92ea7d6d60aa092bdb65152764b36f19f61f8c28e86",
+      "git_blob": "8fd571614f77c2d3cd55d7110481c35101abe73c"
+    },
+    {
+      "path": "docs/audits/sol364b-20261104/hosted/41848472642/original-manifests.json",
+      "bytes": 2464283,
+      "sha256": "70014477bbf4d9452b514ea679df296773fe7e1d6f2937e4066fc25d19ec496c",
+      "git_blob": "064c3c08589f5ab113e90b41e0e246ade98e0bad"
+    },
+    {
+      "path": "docs/audits/sol364b-20261104/hosted/41848472642/package_diagnostic_receipts.py",
+      "bytes": 6000,
+      "sha256": "41781892b227e529be1616863da9d725af1923a424a9f1372f0338904a697708",
+      "git_blob": "88ca92d8ad74ec4f2372ec37971c635d7aa08151"
+    },
+    {
+      "path": "docs/audits/sol364b-20261104/hosted/41848472642/publisher-failure.json",
+      "bytes": 73241,
+      "sha256": "05a368a2a5b25d822f2201d8afab0feff544fcf67b103f097aeca9a556c9fe25",
+      "git_blob": "9b1ad53846dec832201731b5490a1d1dd3a79ff1"
+    },
+    {
+      "path": "docs/audits/sol364b-20261104/hosted/41848472642/remote_ancestry.json",
+      "bytes": 3368,
+      "sha256": "69f6463e8be8597ef4e9ee15960d8b3e6c193bbfbac049607414aefb2c57c58b",
+      "git_blob": "523e64dfb8c8d391ecabd49a94cd1d1ae78463c4"
+    },
+    {
+      "path": "docs/audits/sol364b-20261104/hosted/41848472642/review_hosted_receipts.py",
+      "bytes": 21443,
+      "sha256": "a2a8503be94bca851125162941fa0715d27c2d9af1ffd96277c9576e0133906d",
+      "git_blob": "a8cc2d32a742760c6990018dbfea33ecc450fcff"
+    },
+    {
+      "path": "docs/audits/sol364b-20261104/hosted/41848472642/windows/certificates.json",
+      "bytes": 2131921,
+      "sha256": "7d40fbfe91e8d21da1d49c457322243ffee797b8bbe3f69b20c95b48c7976670",
+      "git_blob": "6032974e88f44fa61a5f511f65df4e6b0f1abbe8"
+    },
+    {
+      "path": "docs/audits/sol364b-20261104/hosted/41848472642/windows/manifest.json",
+      "bytes": 131364,
+      "sha256": "1afbdccabe4c4ceba3f42aed71f058a2a144626783d24ede9a1336890b81935e",
+      "git_blob": "6ef65edf14106e146ae8fa2536a942a1906e8ac3"
+    },
+    {
+      "path": "docs/audits/sol364b-20261104/hosted/41848472642/windows/qualification-original.json",
+      "bytes": 18690,
+      "sha256": "2b08ca60595a5f473e3368eb560bbdf54674b80a4b5d16f0f99a8efb63b6eeb6",
+      "git_blob": "f64461a50925f84ee7aed25f4126eae0970d3b6f"
+    },
+    {
+      "path": "docs/audits/sol364b-20261104/hosted/41848472642/windows/summary.json",
+      "bytes": 37650,
+      "sha256": "04de968a776a4d4e62a749899d7793d4e5723e01fb25582f3d94378951faec20",
+      "git_blob": "c2db4b3415e9aff3acd9349c4501f8b6425240cd"
+    },
+    {
+      "path": "docs/audits/sol364b-20261104/independent-review/independent_ci_review.json",
+      "bytes": 78955,
+      "sha256": "73f5ae2e916edc7d83a5d21462af1f9e2035bc6c85bfbb8203d54724ad79075c",
+      "git_blob": "02ebc394352bae6bb8ebf85592f476f2ed1c8357"
+    },
+    {
+      "path": "docs/audits/sol364b-20261104/independent-review/independent_corridor_review.json",
+      "bytes": 1905073,
+      "sha256": "873b7bcf0e9e88ab5d581c40977ff9c853a00f3c377bfe45b7a8f0e9b8a2fe19",
+      "git_blob": "21918937ac13a3553a166511675f5611bbe4afc9"
+    },
+    {
+      "path": "docs/audits/sol364b-20261104/independent-review/independent_corridor_review.py",
+      "bytes": 15618,
+      "sha256": "e92c554b105931c42cd6bc0799f9c5b7ec5d46f4d3b1e2c845c84e6d909fd6f7",
+      "git_blob": "b41857ceeca67e146d8a31cdf61d91f00e0cb37b"
+    },
+    {
+      "path": "docs/audits/sol364b-20261104/independent-review/independent_corridor_review_portable.json",
+      "bytes": 1905475,
+      "sha256": "7d8fd05fb7f40af2e6a6c563545bafe9ccb76aa683e3df000cbf3ced526d15b5",
+      "git_blob": "5b43b192f6f7660b63c176855494d9209fedbd2a"
+    },
+    {
+      "path": "docs/audits/sol364b-20261104/independent-review/independent_corridor_review_portable.py",
+      "bytes": 17771,
+      "sha256": "159b8b2e823ba0026ba2e24efe2c8fff6973f63ef2b5a055aef4d986dd6b6ed9",
+      "git_blob": "f8d36da3c20e61513727d8344bb9e7bf1e6abd44"
+    },
+    {
+      "path": "docs/audits/sol364b-20261104/independent-review/independent_source_review.json",
+      "bytes": 29080,
+      "sha256": "056f329f76f07e7f55f637af4db388773a120206bfe2bae5500eb9aa0d32fba2",
+      "git_blob": "c877693d3a284f78e30d15d13f2b91c0363480b0"
+    },
+    {
+      "path": "docs/audits/sol364b-20261104/independent-review/main-01f9-compatibility-review.json",
+      "bytes": 21986,
+      "sha256": "d93e2e0666b3281631dc5a32d589972847f630fc11cc19aaa97a3144af5e8a36",
+      "git_blob": "2f03f85dba3ab15f26956f74d2e37e3d1184fab7"
+    },
+    {
+      "path": "docs/audits/sol364b-20261104/independent-review/main-01f9-physics-review.json",
+      "bytes": 14358,
+      "sha256": "ff09365aa50d223806c777984d5a9ef7e7e603d3f7f458358754924971d34c7c",
+      "git_blob": "5e6820c177b3f69290e3eb5a7d1f6d87a931486e"
+    },
+    {
+      "path": "docs/audits/sol364b-20261104/independent-review/packet-reconstruction.json",
+      "bytes": 525,
+      "sha256": "cbe3b5af4e64dbe580437e31d09f4aeb5ecc8d79b3b59f6bc606b334a28d6ffc",
+      "git_blob": "a31fa98e6ee6a78eab0cc8452a5e02b0c752bd34"
+    },
+    {
+      "path": "docs/audits/sol364b-20261104/independent-review/portable_review_equivalence.json",
+      "bytes": 2632,
+      "sha256": "261d03adc0c42f2a9c8e0e30502dcca597ea570e5611a2fa01e29f353ee77393",
+      "git_blob": "f282b765ff558a427d6249bef862072baf296a0c"
+    },
+    {
+      "path": "docs/audits/sol364b-20261104/intake-provenance.json",
+      "bytes": 1141,
+      "sha256": "71b2d928ebe5c96da41d26976d6b0f1e9f404847bab440f9a99ef71bc33ccf2a",
+      "git_blob": "a9849f51bfe8e052cbd45c1c6fe5cc16ea3121fb"
+    },
+    {
+      "path": "docs/audits/sol364b-20261104/lane-handover.json",
+      "bytes": 1775,
+      "sha256": "3c929c21418d6a11e5ab0d5cb63c2a77e3d77bbd0feafe25ad7914fd2f570532",
+      "git_blob": "6c5ad0810329db140b652664c99538947feda58a"
+    },
+    {
+      "path": "docs/audits/sol364b-20261104/local-2f0e/certificates.json",
+      "bytes": 2135187,
+      "sha256": "887af9382eb0ded124609a9abb84ebe70659abf22e5dfecc41e0e4231cdbfcd9",
+      "git_blob": "939eda0e9e213b03b6a82658139942cfa90ca4d9"
+    },
+    {
+      "path": "docs/audits/sol364b-20261104/local-2f0e/custody.json",
+      "bytes": 135621,
+      "sha256": "f92f367b5c478ee32520c4c48d77a95ee57d06f4398e7a7dfa8d9ad9808af892",
+      "git_blob": "30bfecd9b18f19f0eba2f16dfedf10ab6b4b7b9b"
+    },
+    {
+      "path": "docs/audits/sol364b-20261104/local-2f0e/outer-command-receipt.json",
+      "bytes": 2231,
+      "sha256": "01f860d050bf2b3f341743fa7770cad9f34d6b35d155e3c1ce230bfdf86337aa",
+      "git_blob": "5e7fcd1fc912cdcc8767f9ed004bd95f7dd60580"
+    },
+    {
+      "path": "docs/audits/sol364b-20261104/local-2f0e/qualification.json",
+      "bytes": 11689,
+      "sha256": "efe24ced12e8da70ec5571ebab7b6db73b33b960d78d22179108774fd250d8ef",
+      "git_blob": "e727e94c28d4239bf30bd4e7657137d073394d22"
+    },
+    {
+      "path": "docs/audits/sol364b-20261104/local-2f0e/summary.json",
+      "bytes": 37650,
+      "sha256": "384c82cba453a1bae2476c556f6e1523a22894b0b09c5f2ea25dd49b3956dd26",
+      "git_blob": "5db8accbce3f4e437fded18c8652cdba6e29a9a4"
+    },
+    {
+      "path": "docs/audits/sol364b-20261104/local-9f3b/certificates.json",
+      "bytes": 2135188,
+      "sha256": "d2bd4cf4e3298fc18d0d682a8226d2a7b95ee8e1e18cdd9c4ee7ea587c5223f1",
+      "git_blob": "ade1b42f805b32c84c45d124ad193a50ab7fdcd3"
+    },
+    {
+      "path": "docs/audits/sol364b-20261104/local-9f3b/development-attempts.json",
+      "bytes": 1053,
+      "sha256": "5e19e3886583fb8252a2aa8112d48268ed416e534cd9179a8808212966993b51",
+      "git_blob": "11525b4a7e605d24e85e958f6647a472e868c571"
+    },
+    {
+      "path": "docs/audits/sol364b-20261104/local-9f3b/inputs.json",
+      "bytes": 192502,
+      "sha256": "525bc79ad49e195d012b36989b0e27f3128966f519c5117d8e564d53643f25a6",
+      "git_blob": "f3274a1509ddad6ce5318b398e628d25b77d13e1"
+    },
+    {
+      "path": "docs/audits/sol364b-20261104/local-9f3b/manifest.json",
+      "bytes": 134276,
+      "sha256": "3a9c5d52bcbcfae9aeb69476526b90fa606b7aabece2ad1cdaa24395bc7b2c1c",
+      "git_blob": "a21a8d785e2e2632f10048fb1cd4f081036d7b94"
+    },
+    {
+      "path": "docs/audits/sol364b-20261104/local-9f3b/native-tests.json",
+      "bytes": 4169,
+      "sha256": "ec2aed280b231f14b478f9916d67bd7000323ef3ba6a0a3a3a7df2cf1729c4b6",
+      "git_blob": "e5f24c8948544cb9595296ebd4ebd1ba78e41fce"
+    },
+    {
+      "path": "docs/audits/sol364b-20261104/local-9f3b/states.json",
+      "bytes": 4228663,
+      "sha256": "d196bae3b7d34199efddf31687c682af2bc08c69d892f708c00d0bea3e568565",
+      "git_blob": "13584d5cb9086e881e200d075784c4c25ea27b43"
+    },
+    {
+      "path": "docs/audits/sol364b-20261104/local-9f3b/summary.json",
+      "bytes": 37650,
+      "sha256": "ee153d60d37d7799f540b792b8af00dc5c3c14fbedd61bff613e40a2b0940a2f",
+      "git_blob": "6b844e7339afd764b08c731ab5d219e7cd9679d8"
+    },
+    {
+      "path": "docs/audits/sol364b-20261104/local-checks/final-freshness-handover-gates.json",
+      "bytes": 4734,
+      "sha256": "5167ccbbfbb43dcc1eb52c5d9757b598264ba8bae174150932e85e665eb48cfc",
+      "git_blob": "388475dbff2fae81140c9f054061166c4de98907"
+    },
+    {
+      "path": "docs/audits/sol364b-20261104/local-checks/final-handover-gates.json",
+      "bytes": 4672,
+      "sha256": "20fdadc01fc5189177b6be74bcf4237a58453969400261f4d1d99ad41439ff5f",
+      "git_blob": "8418b8c0954d9c6e67c2855a89a36e6e240cac7b"
+    },
+    {
+      "path": "docs/audits/sol364b-20261104/local-checks/final-retrieval-commands.json",
+      "bytes": 10299,
+      "sha256": "86176120e5c66d8ec0177331bb5dbc9cc47004989353f9f51face165623f7a6d",
+      "git_blob": "6e022f5d808564265403060b627b3154a03f282e"
+    },
+    {
+      "path": "docs/audits/sol364b-20261104/local-checks/final-retrieval-contact6.contexts.md",
+      "bytes": 80304,
+      "sha256": "2e5970a6e53850bfed75be106aba4459074e4cdd62a140e0472331d215229c24",
+      "git_blob": "ea5f42917ab354a4d1208a67bdbb7eb0ddbec755"
+    },
+    {
+      "path": "docs/audits/sol364b-20261104/local-checks/final-retrieval-contact6.json",
+      "bytes": 112236,
+      "sha256": "3b73e6992784d916779cec8a9e87a20164d64f1de6f92cab055e742ac8864537",
+      "git_blob": "9bb66b1a80ceb33efcb2dfc3e7f6826d47e8f921"
+    },
+    {
+      "path": "docs/audits/sol364b-20261104/local-checks/final-retrieval-frozen32.contexts.md",
+      "bytes": 349476,
+      "sha256": "47c433f8689517c62e81f16c737ca9037f29856983cd77f1102dddf06cc5e1bd",
+      "git_blob": "39870c574e571072b0be7dd6f4c0651023eacb3e"
+    },
+    {
+      "path": "docs/audits/sol364b-20261104/local-checks/final-retrieval-frozen32.json",
+      "bytes": 417908,
+      "sha256": "f5a7a04fb31a354fbdc78a91077f6ccc25e05d07311ee3cb123ecc60d564ea5b",
+      "git_blob": "d138dbd5f0e260a85f6f5a9e47edcbca123560b3"
+    },
+    {
+      "path": "docs/audits/sol364b-20261104/local-checks/final-retrieval-sol364.contexts.md",
+      "bytes": 75763,
+      "sha256": "986030cf7fec4c66d5586642d80539d418e08b61cd223b041fa7dac5702ebc4c",
+      "git_blob": "d7682f55a4dbdad611622d6cc9f238e26f7d4a58"
+    },
+    {
+      "path": "docs/audits/sol364b-20261104/local-checks/final-retrieval-sol364.json",
+      "bytes": 106129,
+      "sha256": "9308b17339e98681552433ba94b6c6f91c8b50fc8ddb5d9fee3fb25928c94f99",
+      "git_blob": "97b0c529e38bf8e561627fac15ca2d603eaf9d6d"
+    },
+    {
+      "path": "docs/audits/sol364b-20261104/local-checks/final-retrieval-sol364b.contexts.md",
+      "bytes": 44523,
+      "sha256": "61cf01b032242cb393eb8eb10821d030297e2340504e78f93116b6d937df18c0",
+      "git_blob": "6ecb5406c99d9e44d803d8e19b7fc94c9c66aca4"
+    },
+    {
+      "path": "docs/audits/sol364b-20261104/local-checks/final-retrieval-sol364b.json",
+      "bytes": 71637,
+      "sha256": "e54886c7f6a1184eb35efce6981bca889eefc0b39bc3ac240fd5654420a1f1cd",
+      "git_blob": "ff53949ab5dc4833762eb08097a467734eb613a6"
+    },
+    {
+      "path": "docs/audits/sol364b-20261104/local-checks/initial-complete-checks.json",
+      "bytes": 5843,
+      "sha256": "ef731cf0e68a66aef7ae8b3ae5d2ad760e1a6f28282e039a38916b596d068acc",
+      "git_blob": "22c8414fcc57f622d892fde15830e43c56d907be"
+    },
+    {
+      "path": "docs/audits/sol364b-20261104/local-checks/pre-handover-gates.json",
+      "bytes": 5345,
+      "sha256": "3e851929be64947afa255d7347acdba8206f769e310236b7e37ebe0c353c99b5",
+      "git_blob": "ec341592151a26a7d50f4f6aee10cb9f1f1818d9"
+    },
+    {
+      "path": "docs/audits/sol364b-20261104/local-checks/retrieval-commands.json",
+      "bytes": 9598,
+      "sha256": "09bad390d7719bfdc9aa9a7fb265ba9acd999128dca2eec76fa71e9f95553d00",
+      "git_blob": "3d786c13ec5bc4b7813d3dd3de0729b70c3a602b"
+    },
+    {
+      "path": "docs/audits/sol364b-20261104/local-checks/retrieval-contact6.contexts.md",
+      "bytes": 81286,
+      "sha256": "096e795e8184770aaac8525ff199d460ac7622339bd691b44e4ebae088394f0e",
+      "git_blob": "842956b90ec88d7a0aac131d48f73301a133785e"
+    },
+    {
+      "path": "docs/audits/sol364b-20261104/local-checks/retrieval-contact6.json",
+      "bytes": 113222,
+      "sha256": "7655ed6682ba231c2ddf6a1ce94cc313f43ab87f2dac4ffd651f5dc3cf124a8b",
+      "git_blob": "df0e74c4f68770b051c2af6d09e7d39dd92fc135"
+    },
+    {
+      "path": "docs/audits/sol364b-20261104/local-checks/retrieval-frozen32.contexts.md",
+      "bytes": 349476,
+      "sha256": "47c433f8689517c62e81f16c737ca9037f29856983cd77f1102dddf06cc5e1bd",
+      "git_blob": "39870c574e571072b0be7dd6f4c0651023eacb3e"
+    },
+    {
+      "path": "docs/audits/sol364b-20261104/local-checks/retrieval-frozen32.json",
+      "bytes": 417906,
+      "sha256": "5cea27e7f02bdb697844b3540818812a8175d56f84c3be019ecb8caef1e8a246",
+      "git_blob": "569f16a96453943d14f1e8e7e273828bada2d5e7"
+    },
+    {
+      "path": "docs/audits/sol364b-20261104/local-checks/retrieval-sol364.contexts.md",
+      "bytes": 74557,
+      "sha256": "9147092ea65c2d2a2592c43b21f2977316f7d74529c9ff59e922c733ad6a43f3",
+      "git_blob": "52db224d499cb602d61fd77dfe1e76fd4372b6d2"
+    },
+    {
+      "path": "docs/audits/sol364b-20261104/local-checks/retrieval-sol364.json",
+      "bytes": 104921,
+      "sha256": "2839f9ec7b2c5de8c741050ba2c89e0a6e55a9a2fe3024166c27c58abb4708f9",
+      "git_blob": "6c1b07f2fd2db42de644f02e79d85d396f4e65a2"
+    },
+    {
+      "path": "docs/audits/sol364b-20261104/local-checks/retrieval-sol364b.contexts.md",
+      "bytes": 40637,
+      "sha256": "500406456c2cca353c5a4c77bdcb143c7c9b22577351c83b63d64158b7a8e7ce",
+      "git_blob": "34d54e91a1777f4cbe57c5add9545db5d94b0a78"
+    },
+    {
+      "path": "docs/audits/sol364b-20261104/local-checks/retrieval-sol364b.json",
+      "bytes": 67694,
+      "sha256": "a1162221075fa49265822f721f762aacf9ab6d18e091520d97969975eb839ef6",
+      "git_blob": "32a9d94136df426ce1952421e5b089642e99e80d"
+    },
+    {
+      "path": "docs/audits/sol364b-20261104/publication-equivalence.json",
+      "bytes": 1442,
+      "sha256": "9b205e3d74339e853c06b83c1da48e203fd53ec9831becfffa06358d55d8dab2",
+      "git_blob": "966884e960528da13550de604dac9cfbff6fc2f0"
+    },
+    {
+      "path": "docs/operations/cybersand-codex-development-handover.md",
+      "bytes": 119464,
+      "sha256": "3f55e55eabb8d890bca60b4c6c5be7059fd30fdf279df2da17b3829b395f5aa7",
+      "git_blob": "39c8cc7d55fbae7baf671e470ff94a413ff2676d"
+    },
+    {
+      "path": "docs/reference/retrieval-corpus.json",
+      "bytes": 40497,
+      "sha256": "962a60188c56333e7b299cbee4a7f2f23b83cc0249605c374d8e125a7a8cb1b7",
+      "git_blob": "8beb4165c3c6a78d69808196ed40458004cb0fab"
+    },
+    {
+      "path": "docs/reference/retrieval-index.md",
+      "bytes": 60875,
+      "sha256": "9859667142c24c3f7aa8c8699c183fa9361c50e8bf45cca56c63900f432f43ec",
+      "git_blob": "7c2fab8a4ce85ad58928db9fd849d92bbe1c5a72"
+    },
+    {
+      "path": "docs/reference/retrieval-questions-sol364b.json",
+      "bytes": 3087,
+      "sha256": "30124d90eea3de024390d07767127d9ec9e3d734e5444dd9b67089bc90cd6053",
+      "git_blob": "3f93aeba8dc5611386b14c94ad48a83042a82dc6"
+    },
+    {
+      "path": "docs/reference/status-and-roadmap.md",
+      "bytes": 138669,
+      "sha256": "1654b56f51591b134c428f1397c1620ca3d94c4b84c9dfa82f18161a0954f1c3",
+      "git_blob": "6c1747da7ea62a216e7b7491ea638ab5d9af043c"
+    },
+    {
+      "path": "docs/systems/solid-detachment.md",
+      "bytes": 36759,
+      "sha256": "e820d08106c81e25aa9139a9bf7dea3f9da8c0d79313627da30c6f56e6f20472",
+      "git_blob": "3b12dea7547f04bc036bc728fe0a58fc5ee6ff26"
+    }
+  ]
+}

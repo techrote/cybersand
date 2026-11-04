@@ -1,0 +1,2969 @@
+{
+  "asynchronous_candidate_final_positive_samples": 36,
+  "attempt": 1,
+  "builds": [
+    {
+      "bindings": {
+        "filename": "libgodot-cpp.windows.template_debug.x86_64.a",
+        "revision": "101ae38034304346a46ea9ea84ae156d3e860496",
+        "sha256": "24d2abc523e803faf85e98571b3ca180a622a57322142def323fd07140969be3"
+      },
+      "checkout_verification": {
+        "all_match_exact_tree_or_its_committed_checkout_rules": true,
+        "checked_manifest_sha256": "6991159d76d4fe023ea068f006af2522da4f37071f80df015aa8aa552fed2e61",
+        "committed_crlf_conversions": [
+          {
+            "actual_checkout_sha256": "396f63f54b23e38b6b2b87d0dfb5fb887e96adca0950b11ad946c1b73357b570",
+            "canonical_git_sha256": "48ef1027a257b0639954e3b6a17c4f67555b8b3cdddcd91a7d553ca513de7f29",
+            "committed_eol": "crlf",
+            "path": "tools/launch_desktop.ps1"
+          }
+        ],
+        "count": 1112,
+        "direct_git_byte_matches": 1111,
+        "git_tree": "11e986214f056f3f39631bb0331b3cd4930c3d1c",
+        "local_equal_tree_commit": "2f0ea3bdba5b7aef2fddef7d3a70f7e8d21adab9",
+        "status": "PASS"
+      },
+      "compiler": "clang version 23.1.0 (https://github.com/llvm/llvm-project.git ea7d852a70e8bdfaf601d6626a760f9771b2c4b4)\nTarget: x86_64-w64-windows-gnu\nThread model: posix\nInstalledDir: /home/runner/work/_temp/llvm-mingw/bin\nConfiguration file: /home/runner/work/_temp/llvm-mingw/bin/x86_64-w64-windows-gnu.cfg",
+      "input_verification": {
+        "all_match_exact_tree_or_its_committed_checkout_rules": true,
+        "checked_manifest_sha256": "6060f78e60e2a96494a8e83fee1a18b9b160152eb41be8236dab0fd04ea223ee",
+        "committed_crlf_conversions": [],
+        "count": 1112,
+        "direct_git_byte_matches": 1112,
+        "git_tree": "11e986214f056f3f39631bb0331b3cd4930c3d1c",
+        "local_equal_tree_commit": "2f0ea3bdba5b7aef2fddef7d3a70f7e8d21adab9",
+        "status": "PASS"
+      },
+      "receipt": {
+        "bytes": 264492,
+        "path": "/workspace/scratch/4b0fc6bf4ee0/physics-review/hosted-41848472642/artifacts/sol281-build-windows-41848472642-1/build.json",
+        "sha256": "fef9d1c9768e27cc025d6a318c0ac7f9208f8d9fbeb6c754ed0ea46d0ade40c4"
+      },
+      "runtime": {
+        "filename": "cybersand_native.windows.x86_64.dll",
+        "sha256": "461db5c3fded9d609088f8916b761ea72145ac3aba8a08f9975edd3200f8196c",
+        "size": 4925952
+      },
+      "source": {
+        "sha": "9597abd76c01e4a940ff3ea26ff01fca43bf55a6",
+        "tree": "11e986214f056f3f39631bb0331b3cd4930c3d1c"
+      }
+    }
+  ],
+  "cpu_matrix": {
+    "complete": true,
+    "definition": "For each of all 24 groups: largest of three repeat means. Each numerator is all owner observation/envelope attempts plus all main response attempts; denominator is complete consumed observations. No nested native stage is counted twice. Elapsed work intervals, not OS thread CPU.",
+    "expected_groups": 24,
+    "failed_groups": [],
+    "groups": [
+      {
+        "candidate": false,
+        "limit_ms": 2.0,
+        "maximum_repeat_mean_ms": 0.6532416918429004,
+        "passed": true,
+        "platform": "Linux",
+        "raw_report": {
+          "bytes": 12666330,
+          "path": "/workspace/scratch/4b0fc6bf4ee0/physics-review/hosted-41848472642/artifacts/sol281-host-linux-contact-w1-41848472642-1/host/contact-recovery-w1.json",
+          "sha256": "75c744513adec3aa10c89c04e5200d2c3a2c202d7c0567d96dcd3a83ecac98b6"
+        },
+        "repeats": [
+          {
+            "complete_consumed_observations": 331,
+            "energy_violations": 0,
+            "final_sample_sand_area": 447.301719185168,
+            "id": "embedded_sand/baseline/r0",
+            "maximum_sampled_sand_depth": 4.20138070566228,
+            "owner_all_attempt_ms": 216.223,
+            "repeat": 0,
+            "response_all_attempt_ms": 0.0,
+            "unrounded_repeat_mean_ms": 0.6532416918429004
+          },
+          {
+            "complete_consumed_observations": 360,
+            "energy_violations": 0,
+            "final_sample_sand_area": 131.086694575657,
+            "id": "embedded_sand/baseline/r1",
+            "maximum_sampled_sand_depth": 3.58292176026315,
+            "owner_all_attempt_ms": 118.603,
+            "repeat": 1,
+            "response_all_attempt_ms": 0.0,
+            "unrounded_repeat_mean_ms": 0.32945277777777776
+          },
+          {
+            "complete_consumed_observations": 357,
+            "energy_violations": 0,
+            "final_sample_sand_area": 131.095111342978,
+            "id": "embedded_sand/baseline/r2",
+            "maximum_sampled_sand_depth": 3.57145058713919,
+            "owner_all_attempt_ms": 119.865,
+            "repeat": 2,
+            "response_all_attempt_ms": 0.0,
+            "unrounded_repeat_mean_ms": 0.3357563025210084
+          }
+        ],
+        "surroundings": "embedded_sand",
+        "workers": 1
+      },
+      {
+        "candidate": true,
+        "limit_ms": 2.0,
+        "maximum_repeat_mean_ms": 0.8616835016835017,
+        "passed": true,
+        "platform": "Linux",
+        "raw_report": {
+          "bytes": 12666330,
+          "path": "/workspace/scratch/4b0fc6bf4ee0/physics-review/hosted-41848472642/artifacts/sol281-host-linux-contact-w1-41848472642-1/host/contact-recovery-w1.json",
+          "sha256": "75c744513adec3aa10c89c04e5200d2c3a2c202d7c0567d96dcd3a83ecac98b6"
+        },
+        "repeats": [
+          {
+            "complete_consumed_observations": 297,
+            "energy_violations": 0,
+            "final_sample_sand_area": 60.1786056000296,
+            "id": "embedded_sand/candidate/r0",
+            "maximum_sampled_sand_depth": 2.6298610744049,
+            "owner_all_attempt_ms": 67.552,
+            "repeat": 0,
+            "response_all_attempt_ms": 188.368,
+            "unrounded_repeat_mean_ms": 0.8616835016835017
+          },
+          {
+            "complete_consumed_observations": 310,
+            "energy_violations": 0,
+            "final_sample_sand_area": 45.285703939729,
+            "id": "embedded_sand/candidate/r1",
+            "maximum_sampled_sand_depth": 2.59909303020883,
+            "owner_all_attempt_ms": 55.973,
+            "repeat": 1,
+            "response_all_attempt_ms": 191.149,
+            "unrounded_repeat_mean_ms": 0.7971677419354839
+          },
+          {
+            "complete_consumed_observations": 355,
+            "energy_violations": 0,
+            "final_sample_sand_area": 38.8200550521199,
+            "id": "embedded_sand/candidate/r2",
+            "maximum_sampled_sand_depth": 2.59538693598708,
+            "owner_all_attempt_ms": 56.956,
+            "repeat": 2,
+            "response_all_attempt_ms": 229.854,
+            "unrounded_repeat_mean_ms": 0.8079154929577465
+          }
+        ],
+        "surroundings": "embedded_sand",
+        "workers": 1
+      },
+      {
+        "candidate": false,
+        "limit_ms": 2.0,
+        "maximum_repeat_mean_ms": 0.29035223880597016,
+        "passed": true,
+        "platform": "Linux",
+        "raw_report": {
+          "bytes": 12666330,
+          "path": "/workspace/scratch/4b0fc6bf4ee0/physics-review/hosted-41848472642/artifacts/sol281-host-linux-contact-w1-41848472642-1/host/contact-recovery-w1.json",
+          "sha256": "75c744513adec3aa10c89c04e5200d2c3a2c202d7c0567d96dcd3a83ecac98b6"
+        },
+        "repeats": [
+          {
+            "complete_consumed_observations": 335,
+            "energy_violations": 0,
+            "final_sample_sand_area": 51.202838976179,
+            "id": "mixed/baseline/r0",
+            "maximum_sampled_sand_depth": 2.7066124978745,
+            "owner_all_attempt_ms": 97.268,
+            "repeat": 0,
+            "response_all_attempt_ms": 0.0,
+            "unrounded_repeat_mean_ms": 0.29035223880597016
+          },
+          {
+            "complete_consumed_observations": 359,
+            "energy_violations": 0,
+            "final_sample_sand_area": 23.4292319628859,
+            "id": "mixed/baseline/r1",
+            "maximum_sampled_sand_depth": 2.70146941396378,
+            "owner_all_attempt_ms": 71.46,
+            "repeat": 1,
+            "response_all_attempt_ms": 0.0,
+            "unrounded_repeat_mean_ms": 0.19905292479108633
+          },
+          {
+            "complete_consumed_observations": 359,
+            "energy_violations": 0,
+            "final_sample_sand_area": 23.4408253618468,
+            "id": "mixed/baseline/r2",
+            "maximum_sampled_sand_depth": 2.69490721034694,
+            "owner_all_attempt_ms": 75.012,
+            "repeat": 2,
+            "response_all_attempt_ms": 0.0,
+            "unrounded_repeat_mean_ms": 0.20894707520891365
+          }
+        ],
+        "surroundings": "mixed",
+        "workers": 1
+      },
+      {
+        "candidate": true,
+        "limit_ms": 2.0,
+        "maximum_repeat_mean_ms": 0.6245069637883008,
+        "passed": true,
+        "platform": "Linux",
+        "raw_report": {
+          "bytes": 12666330,
+          "path": "/workspace/scratch/4b0fc6bf4ee0/physics-review/hosted-41848472642/artifacts/sol281-host-linux-contact-w1-41848472642-1/host/contact-recovery-w1.json",
+          "sha256": "75c744513adec3aa10c89c04e5200d2c3a2c202d7c0567d96dcd3a83ecac98b6"
+        },
+        "repeats": [
+          {
+            "complete_consumed_observations": 267,
+            "energy_violations": 0,
+            "final_sample_sand_area": 11.5148984829244,
+            "id": "mixed/candidate/r0",
+            "maximum_sampled_sand_depth": 2.22333595615648,
+            "owner_all_attempt_ms": 60.732,
+            "repeat": 0,
+            "response_all_attempt_ms": 97.502,
+            "unrounded_repeat_mean_ms": 0.5926367041198501
+          },
+          {
+            "complete_consumed_observations": 317,
+            "energy_violations": 0,
+            "final_sample_sand_area": 1.02060379105376,
+            "id": "mixed/candidate/r1",
+            "maximum_sampled_sand_depth": 2.70521425177144,
+            "owner_all_attempt_ms": 52.887,
+            "repeat": 1,
+            "response_all_attempt_ms": 143.862,
+            "unrounded_repeat_mean_ms": 0.6206593059936908
+          },
+          {
+            "complete_consumed_observations": 359,
+            "energy_violations": 0,
+            "final_sample_sand_area": 22.1991850859619,
+            "id": "mixed/candidate/r2",
+            "maximum_sampled_sand_depth": 2.7006881903167,
+            "owner_all_attempt_ms": 54.442,
+            "repeat": 2,
+            "response_all_attempt_ms": 169.756,
+            "unrounded_repeat_mean_ms": 0.6245069637883008
+          }
+        ],
+        "surroundings": "mixed",
+        "workers": 1
+      },
+      {
+        "candidate": false,
+        "limit_ms": 2.0,
+        "maximum_repeat_mean_ms": 0.516170278637771,
+        "passed": true,
+        "platform": "Linux",
+        "raw_report": {
+          "bytes": 12666330,
+          "path": "/workspace/scratch/4b0fc6bf4ee0/physics-review/hosted-41848472642/artifacts/sol281-host-linux-contact-w1-41848472642-1/host/contact-recovery-w1.json",
+          "sha256": "75c744513adec3aa10c89c04e5200d2c3a2c202d7c0567d96dcd3a83ecac98b6"
+        },
+        "repeats": [
+          {
+            "complete_consumed_observations": 323,
+            "energy_violations": 0,
+            "final_sample_sand_area": 289.052950119789,
+            "id": "packed_sand/baseline/r0",
+            "maximum_sampled_sand_depth": 4.19820548254488,
+            "owner_all_attempt_ms": 166.723,
+            "repeat": 0,
+            "response_all_attempt_ms": 0.0,
+            "unrounded_repeat_mean_ms": 0.516170278637771
+          },
+          {
+            "complete_consumed_observations": 314,
+            "energy_violations": 0,
+            "final_sample_sand_area": 288.492271716117,
+            "id": "packed_sand/baseline/r1",
+            "maximum_sampled_sand_depth": 4.19689825456161,
+            "owner_all_attempt_ms": 146.772,
+            "repeat": 1,
+            "response_all_attempt_ms": 0.0,
+            "unrounded_repeat_mean_ms": 0.46742675159235664
+          },
+          {
+            "complete_consumed_observations": 356,
+            "energy_violations": 0,
+            "final_sample_sand_area": 47.3219754370444,
+            "id": "packed_sand/baseline/r2",
+            "maximum_sampled_sand_depth": 2.70019767815129,
+            "owner_all_attempt_ms": 75.263,
+            "repeat": 2,
+            "response_all_attempt_ms": 0.0,
+            "unrounded_repeat_mean_ms": 0.21141292134831463
+          }
+        ],
+        "surroundings": "packed_sand",
+        "workers": 1
+      },
+      {
+        "candidate": true,
+        "limit_ms": 2.0,
+        "maximum_repeat_mean_ms": 1.076086956521739,
+        "passed": true,
+        "platform": "Linux",
+        "raw_report": {
+          "bytes": 12666330,
+          "path": "/workspace/scratch/4b0fc6bf4ee0/physics-review/hosted-41848472642/artifacts/sol281-host-linux-contact-w1-41848472642-1/host/contact-recovery-w1.json",
+          "sha256": "75c744513adec3aa10c89c04e5200d2c3a2c202d7c0567d96dcd3a83ecac98b6"
+        },
+        "repeats": [
+          {
+            "complete_consumed_observations": 342,
+            "energy_violations": 0,
+            "final_sample_sand_area": 18.4308523746797,
+            "id": "packed_sand/candidate/r0",
+            "maximum_sampled_sand_depth": 2.69776482640522,
+            "owner_all_attempt_ms": 56.943,
+            "repeat": 0,
+            "response_all_attempt_ms": 178.747,
+            "unrounded_repeat_mean_ms": 0.6891520467836257
+          },
+          {
+            "complete_consumed_observations": 230,
+            "energy_violations": 0,
+            "final_sample_sand_area": 53.9792242351044,
+            "id": "packed_sand/candidate/r1",
+            "maximum_sampled_sand_depth": 3.53089771899432,
+            "owner_all_attempt_ms": 72.139,
+            "repeat": 1,
+            "response_all_attempt_ms": 175.361,
+            "unrounded_repeat_mean_ms": 1.076086956521739
+          },
+          {
+            "complete_consumed_observations": 359,
+            "energy_violations": 0,
+            "final_sample_sand_area": 19.2679897506223,
+            "id": "packed_sand/candidate/r2",
+            "maximum_sampled_sand_depth": 2.69734088893324,
+            "owner_all_attempt_ms": 54.327,
+            "repeat": 2,
+            "response_all_attempt_ms": 171.074,
+            "unrounded_repeat_mean_ms": 0.627857938718663
+          }
+        ],
+        "surroundings": "packed_sand",
+        "workers": 1
+      },
+      {
+        "candidate": false,
+        "limit_ms": 2.0,
+        "maximum_repeat_mean_ms": 0.6576211699164346,
+        "passed": true,
+        "platform": "Linux",
+        "raw_report": {
+          "bytes": 12581500,
+          "path": "/workspace/scratch/4b0fc6bf4ee0/physics-review/hosted-41848472642/artifacts/sol281-host-linux-contact-w4-41848472642-1/host/contact-recovery-w4.json",
+          "sha256": "9a5dee45c1fab5957afe708ee2ceec1b86575e27a7d6c50e0ea7b63286683903"
+        },
+        "repeats": [
+          {
+            "complete_consumed_observations": 331,
+            "energy_violations": 0,
+            "final_sample_sand_area": 463.332828869649,
+            "id": "embedded_sand/baseline/r0",
+            "maximum_sampled_sand_depth": 4.20375804730185,
+            "owner_all_attempt_ms": 184.692,
+            "repeat": 0,
+            "response_all_attempt_ms": 0.0,
+            "unrounded_repeat_mean_ms": 0.5579818731117825
+          },
+          {
+            "complete_consumed_observations": 359,
+            "energy_violations": 0,
+            "final_sample_sand_area": 330.354241395812,
+            "id": "embedded_sand/baseline/r1",
+            "maximum_sampled_sand_depth": 4.20505210181982,
+            "owner_all_attempt_ms": 236.086,
+            "repeat": 1,
+            "response_all_attempt_ms": 0.0,
+            "unrounded_repeat_mean_ms": 0.6576211699164346
+          },
+          {
+            "complete_consumed_observations": 352,
+            "energy_violations": 0,
+            "final_sample_sand_area": 139.118211278349,
+            "id": "embedded_sand/baseline/r2",
+            "maximum_sampled_sand_depth": 3.72045166789718,
+            "owner_all_attempt_ms": 152.003,
+            "repeat": 2,
+            "response_all_attempt_ms": 0.0,
+            "unrounded_repeat_mean_ms": 0.4318267045454545
+          }
+        ],
+        "surroundings": "embedded_sand",
+        "workers": 4
+      },
+      {
+        "candidate": true,
+        "limit_ms": 2.0,
+        "maximum_repeat_mean_ms": 1.7244627450980394,
+        "passed": true,
+        "platform": "Linux",
+        "raw_report": {
+          "bytes": 12581500,
+          "path": "/workspace/scratch/4b0fc6bf4ee0/physics-review/hosted-41848472642/artifacts/sol281-host-linux-contact-w4-41848472642-1/host/contact-recovery-w4.json",
+          "sha256": "9a5dee45c1fab5957afe708ee2ceec1b86575e27a7d6c50e0ea7b63286683903"
+        },
+        "repeats": [
+          {
+            "complete_consumed_observations": 353,
+            "energy_violations": 0,
+            "final_sample_sand_area": 40.236492968957,
+            "id": "embedded_sand/candidate/r0",
+            "maximum_sampled_sand_depth": 2.60177764817717,
+            "owner_all_attempt_ms": 73.63,
+            "repeat": 0,
+            "response_all_attempt_ms": 370.385,
+            "unrounded_repeat_mean_ms": 1.2578328611898018
+          },
+          {
+            "complete_consumed_observations": 340,
+            "energy_violations": 0,
+            "final_sample_sand_area": 41.5673943964359,
+            "id": "embedded_sand/candidate/r1",
+            "maximum_sampled_sand_depth": 2.59315160748513,
+            "owner_all_attempt_ms": 69.815,
+            "repeat": 1,
+            "response_all_attempt_ms": 380.224,
+            "unrounded_repeat_mean_ms": 1.3236441176470588
+          },
+          {
+            "complete_consumed_observations": 255,
+            "energy_violations": 0,
+            "final_sample_sand_area": 44.3211886623121,
+            "id": "embedded_sand/candidate/r2",
+            "maximum_sampled_sand_depth": 2.62810042278128,
+            "owner_all_attempt_ms": 84.441,
+            "repeat": 2,
+            "response_all_attempt_ms": 355.297,
+            "unrounded_repeat_mean_ms": 1.7244627450980394
+          }
+        ],
+        "surroundings": "embedded_sand",
+        "workers": 4
+      },
+      {
+        "candidate": false,
+        "limit_ms": 2.0,
+        "maximum_repeat_mean_ms": 0.5919928825622776,
+        "passed": true,
+        "platform": "Linux",
+        "raw_report": {
+          "bytes": 12581500,
+          "path": "/workspace/scratch/4b0fc6bf4ee0/physics-review/hosted-41848472642/artifacts/sol281-host-linux-contact-w4-41848472642-1/host/contact-recovery-w4.json",
+          "sha256": "9a5dee45c1fab5957afe708ee2ceec1b86575e27a7d6c50e0ea7b63286683903"
+        },
+        "repeats": [
+          {
+            "complete_consumed_observations": 339,
+            "energy_violations": 0,
+            "final_sample_sand_area": 67.6708278430554,
+            "id": "mixed/baseline/r0",
+            "maximum_sampled_sand_depth": 2.70388306362306,
+            "owner_all_attempt_ms": 136.109,
+            "repeat": 0,
+            "response_all_attempt_ms": 0.0,
+            "unrounded_repeat_mean_ms": 0.4015014749262537
+          },
+          {
+            "complete_consumed_observations": 335,
+            "energy_violations": 0,
+            "final_sample_sand_area": 62.4817545720538,
+            "id": "mixed/baseline/r1",
+            "maximum_sampled_sand_depth": 2.69975594977312,
+            "owner_all_attempt_ms": 123.918,
+            "repeat": 1,
+            "response_all_attempt_ms": 0.0,
+            "unrounded_repeat_mean_ms": 0.36990447761194034
+          },
+          {
+            "complete_consumed_observations": 281,
+            "energy_violations": 0,
+            "final_sample_sand_area": 101.942492330351,
+            "id": "mixed/baseline/r2",
+            "maximum_sampled_sand_depth": 2.70508004069155,
+            "owner_all_attempt_ms": 166.35,
+            "repeat": 2,
+            "response_all_attempt_ms": 0.0,
+            "unrounded_repeat_mean_ms": 0.5919928825622776
+          }
+        ],
+        "surroundings": "mixed",
+        "workers": 4
+      },
+      {
+        "candidate": true,
+        "limit_ms": 2.0,
+        "maximum_repeat_mean_ms": 1.0212191011235956,
+        "passed": true,
+        "platform": "Linux",
+        "raw_report": {
+          "bytes": 12581500,
+          "path": "/workspace/scratch/4b0fc6bf4ee0/physics-review/hosted-41848472642/artifacts/sol281-host-linux-contact-w4-41848472642-1/host/contact-recovery-w4.json",
+          "sha256": "9a5dee45c1fab5957afe708ee2ceec1b86575e27a7d6c50e0ea7b63286683903"
+        },
+        "repeats": [
+          {
+            "complete_consumed_observations": 359,
+            "energy_violations": 0,
+            "final_sample_sand_area": 18.2403178526209,
+            "id": "mixed/candidate/r0",
+            "maximum_sampled_sand_depth": 2.7000994557401,
+            "owner_all_attempt_ms": 63.521,
+            "repeat": 0,
+            "response_all_attempt_ms": 293.821,
+            "unrounded_repeat_mean_ms": 0.9953816155988859
+          },
+          {
+            "complete_consumed_observations": 232,
+            "energy_violations": 0,
+            "final_sample_sand_area": 7.23869939090299,
+            "id": "mixed/candidate/r1",
+            "maximum_sampled_sand_depth": 2.02581421414506,
+            "owner_all_attempt_ms": 72.679,
+            "repeat": 1,
+            "response_all_attempt_ms": 137.609,
+            "unrounded_repeat_mean_ms": 0.9064137931034483
+          },
+          {
+            "complete_consumed_observations": 356,
+            "energy_violations": 0,
+            "final_sample_sand_area": 17.6500000763266,
+            "id": "mixed/candidate/r2",
+            "maximum_sampled_sand_depth": 2.69927453172929,
+            "owner_all_attempt_ms": 62.939,
+            "repeat": 2,
+            "response_all_attempt_ms": 300.615,
+            "unrounded_repeat_mean_ms": 1.0212191011235956
+          }
+        ],
+        "surroundings": "mixed",
+        "workers": 4
+      },
+      {
+        "candidate": false,
+        "limit_ms": 2.0,
+        "maximum_repeat_mean_ms": 0.43392857142857144,
+        "passed": true,
+        "platform": "Linux",
+        "raw_report": {
+          "bytes": 12581500,
+          "path": "/workspace/scratch/4b0fc6bf4ee0/physics-review/hosted-41848472642/artifacts/sol281-host-linux-contact-w4-41848472642-1/host/contact-recovery-w4.json",
+          "sha256": "9a5dee45c1fab5957afe708ee2ceec1b86575e27a7d6c50e0ea7b63286683903"
+        },
+        "repeats": [
+          {
+            "complete_consumed_observations": 322,
+            "energy_violations": 0,
+            "final_sample_sand_area": 60.7441849975981,
+            "id": "packed_sand/baseline/r0",
+            "maximum_sampled_sand_depth": 4.15413770912607,
+            "owner_all_attempt_ms": 100.815,
+            "repeat": 0,
+            "response_all_attempt_ms": 0.0,
+            "unrounded_repeat_mean_ms": 0.31309006211180124
+          },
+          {
+            "complete_consumed_observations": 337,
+            "energy_violations": 0,
+            "final_sample_sand_area": 86.0946126991894,
+            "id": "packed_sand/baseline/r1",
+            "maximum_sampled_sand_depth": 4.1932297926814,
+            "owner_all_attempt_ms": 124.535,
+            "repeat": 1,
+            "response_all_attempt_ms": 0.0,
+            "unrounded_repeat_mean_ms": 0.369540059347181
+          },
+          {
+            "complete_consumed_observations": 294,
+            "energy_violations": 0,
+            "final_sample_sand_area": 143.582719365682,
+            "id": "packed_sand/baseline/r2",
+            "maximum_sampled_sand_depth": 4.17252151119931,
+            "owner_all_attempt_ms": 127.575,
+            "repeat": 2,
+            "response_all_attempt_ms": 0.0,
+            "unrounded_repeat_mean_ms": 0.43392857142857144
+          }
+        ],
+        "surroundings": "packed_sand",
+        "workers": 4
+      },
+      {
+        "candidate": true,
+        "limit_ms": 2.0,
+        "maximum_repeat_mean_ms": 1.4977743190661479,
+        "passed": true,
+        "platform": "Linux",
+        "raw_report": {
+          "bytes": 12581500,
+          "path": "/workspace/scratch/4b0fc6bf4ee0/physics-review/hosted-41848472642/artifacts/sol281-host-linux-contact-w4-41848472642-1/host/contact-recovery-w4.json",
+          "sha256": "9a5dee45c1fab5957afe708ee2ceec1b86575e27a7d6c50e0ea7b63286683903"
+        },
+        "repeats": [
+          {
+            "complete_consumed_observations": 359,
+            "energy_violations": 0,
+            "final_sample_sand_area": 17.1925390113029,
+            "id": "packed_sand/candidate/r0",
+            "maximum_sampled_sand_depth": 2.69936398273244,
+            "owner_all_attempt_ms": 70.216,
+            "repeat": 0,
+            "response_all_attempt_ms": 307.296,
+            "unrounded_repeat_mean_ms": 1.051565459610028
+          },
+          {
+            "complete_consumed_observations": 257,
+            "energy_violations": 0,
+            "final_sample_sand_area": 35.444269538163,
+            "id": "packed_sand/candidate/r1",
+            "maximum_sampled_sand_depth": 2.70533303049042,
+            "owner_all_attempt_ms": 84.6,
+            "repeat": 1,
+            "response_all_attempt_ms": 300.328,
+            "unrounded_repeat_mean_ms": 1.4977743190661479
+          },
+          {
+            "complete_consumed_observations": 316,
+            "energy_violations": 0,
+            "final_sample_sand_area": 22.7636193943226,
+            "id": "packed_sand/candidate/r2",
+            "maximum_sampled_sand_depth": 2.61165717893691,
+            "owner_all_attempt_ms": 82.168,
+            "repeat": 2,
+            "response_all_attempt_ms": 308.099,
+            "unrounded_repeat_mean_ms": 1.235022151898734
+          }
+        ],
+        "surroundings": "packed_sand",
+        "workers": 4
+      },
+      {
+        "candidate": false,
+        "limit_ms": 2.0,
+        "maximum_repeat_mean_ms": 0.41267688022284127,
+        "passed": true,
+        "platform": "Windows",
+        "raw_report": {
+          "bytes": 13287607,
+          "path": "/workspace/scratch/4b0fc6bf4ee0/physics-review/hosted-41848472642/artifacts/sol281-host-windows-contact-w1-41848472642-1/contact-recovery-w1.json",
+          "sha256": "c01df951d067e36f6b37dcaa7d48aa77de1768c229f697a0e084559bb388d8bc"
+        },
+        "repeats": [
+          {
+            "complete_consumed_observations": 355,
+            "energy_violations": 0,
+            "final_sample_sand_area": 131.070718051449,
+            "id": "embedded_sand/baseline/r0",
+            "maximum_sampled_sand_depth": 3.57008499586551,
+            "owner_all_attempt_ms": 117.338,
+            "repeat": 0,
+            "response_all_attempt_ms": 0.0,
+            "unrounded_repeat_mean_ms": 0.3305295774647887
+          },
+          {
+            "complete_consumed_observations": 359,
+            "energy_violations": 0,
+            "final_sample_sand_area": 131.086694575657,
+            "id": "embedded_sand/baseline/r1",
+            "maximum_sampled_sand_depth": 3.58292176026315,
+            "owner_all_attempt_ms": 148.151,
+            "repeat": 1,
+            "response_all_attempt_ms": 0.0,
+            "unrounded_repeat_mean_ms": 0.41267688022284127
+          },
+          {
+            "complete_consumed_observations": 357,
+            "energy_violations": 0,
+            "final_sample_sand_area": 131.093424243989,
+            "id": "embedded_sand/baseline/r2",
+            "maximum_sampled_sand_depth": 3.58121453706367,
+            "owner_all_attempt_ms": 119.543,
+            "repeat": 2,
+            "response_all_attempt_ms": 0.0,
+            "unrounded_repeat_mean_ms": 0.3348543417366947
+          }
+        ],
+        "surroundings": "embedded_sand",
+        "workers": 1
+      },
+      {
+        "candidate": true,
+        "limit_ms": 2.0,
+        "maximum_repeat_mean_ms": 1.245173184357542,
+        "passed": true,
+        "platform": "Windows",
+        "raw_report": {
+          "bytes": 13287607,
+          "path": "/workspace/scratch/4b0fc6bf4ee0/physics-review/hosted-41848472642/artifacts/sol281-host-windows-contact-w1-41848472642-1/contact-recovery-w1.json",
+          "sha256": "c01df951d067e36f6b37dcaa7d48aa77de1768c229f697a0e084559bb388d8bc"
+        },
+        "repeats": [
+          {
+            "complete_consumed_observations": 358,
+            "energy_violations": 0,
+            "final_sample_sand_area": 38.8027332527366,
+            "id": "embedded_sand/candidate/r0",
+            "maximum_sampled_sand_depth": 2.58538096341491,
+            "owner_all_attempt_ms": 50.795,
+            "repeat": 0,
+            "response_all_attempt_ms": 394.977,
+            "unrounded_repeat_mean_ms": 1.245173184357542
+          },
+          {
+            "complete_consumed_observations": 359,
+            "energy_violations": 0,
+            "final_sample_sand_area": 41.2808552683038,
+            "id": "embedded_sand/candidate/r1",
+            "maximum_sampled_sand_depth": 2.59910000446595,
+            "owner_all_attempt_ms": 53.199,
+            "repeat": 1,
+            "response_all_attempt_ms": 388.625,
+            "unrounded_repeat_mean_ms": 1.230707520891365
+          },
+          {
+            "complete_consumed_observations": 350,
+            "energy_violations": 0,
+            "final_sample_sand_area": 44.6203717270142,
+            "id": "embedded_sand/candidate/r2",
+            "maximum_sampled_sand_depth": 2.61412705325886,
+            "owner_all_attempt_ms": 49.707,
+            "repeat": 2,
+            "response_all_attempt_ms": 297.089,
+            "unrounded_repeat_mean_ms": 0.9908457142857142
+          }
+        ],
+        "surroundings": "embedded_sand",
+        "workers": 1
+      },
+      {
+        "candidate": false,
+        "limit_ms": 2.0,
+        "maximum_repeat_mean_ms": 0.20385893416927903,
+        "passed": true,
+        "platform": "Windows",
+        "raw_report": {
+          "bytes": 13287607,
+          "path": "/workspace/scratch/4b0fc6bf4ee0/physics-review/hosted-41848472642/artifacts/sol281-host-windows-contact-w1-41848472642-1/contact-recovery-w1.json",
+          "sha256": "c01df951d067e36f6b37dcaa7d48aa77de1768c229f697a0e084559bb388d8bc"
+        },
+        "repeats": [
+          {
+            "complete_consumed_observations": 353,
+            "energy_violations": 0,
+            "final_sample_sand_area": 23.5471579512253,
+            "id": "mixed/baseline/r0",
+            "maximum_sampled_sand_depth": 2.69806067517576,
+            "owner_all_attempt_ms": 67.725,
+            "repeat": 0,
+            "response_all_attempt_ms": 0.0,
+            "unrounded_repeat_mean_ms": 0.1918555240793201
+          },
+          {
+            "complete_consumed_observations": 319,
+            "energy_violations": 0,
+            "final_sample_sand_area": 40.9464598756196,
+            "id": "mixed/baseline/r1",
+            "maximum_sampled_sand_depth": 2.70199743963527,
+            "owner_all_attempt_ms": 65.031,
+            "repeat": 1,
+            "response_all_attempt_ms": 0.0,
+            "unrounded_repeat_mean_ms": 0.20385893416927903
+          },
+          {
+            "complete_consumed_observations": 358,
+            "energy_violations": 0,
+            "final_sample_sand_area": 23.429492253324,
+            "id": "mixed/baseline/r2",
+            "maximum_sampled_sand_depth": 2.70106577192168,
+            "owner_all_attempt_ms": 62.526,
+            "repeat": 2,
+            "response_all_attempt_ms": 0.0,
+            "unrounded_repeat_mean_ms": 0.1746536312849162
+          }
+        ],
+        "surroundings": "mixed",
+        "workers": 1
+      },
+      {
+        "candidate": true,
+        "limit_ms": 2.0,
+        "maximum_repeat_mean_ms": 0.9615798319327731,
+        "passed": true,
+        "platform": "Windows",
+        "raw_report": {
+          "bytes": 13287607,
+          "path": "/workspace/scratch/4b0fc6bf4ee0/physics-review/hosted-41848472642/artifacts/sol281-host-windows-contact-w1-41848472642-1/contact-recovery-w1.json",
+          "sha256": "c01df951d067e36f6b37dcaa7d48aa77de1768c229f697a0e084559bb388d8bc"
+        },
+        "repeats": [
+          {
+            "complete_consumed_observations": 358,
+            "energy_violations": 0,
+            "final_sample_sand_area": 17.1447993368062,
+            "id": "mixed/candidate/r0",
+            "maximum_sampled_sand_depth": 2.70257491484909,
+            "owner_all_attempt_ms": 42.682,
+            "repeat": 0,
+            "response_all_attempt_ms": 283.826,
+            "unrounded_repeat_mean_ms": 0.9120335195530728
+          },
+          {
+            "complete_consumed_observations": 357,
+            "energy_violations": 0,
+            "final_sample_sand_area": 25.8430261727149,
+            "id": "mixed/candidate/r1",
+            "maximum_sampled_sand_depth": 2.69834489755368,
+            "owner_all_attempt_ms": 45.759,
+            "repeat": 1,
+            "response_all_attempt_ms": 258.255,
+            "unrounded_repeat_mean_ms": 0.8515798319327731
+          },
+          {
+            "complete_consumed_observations": 357,
+            "energy_violations": 0,
+            "final_sample_sand_area": 19.6388865594985,
+            "id": "mixed/candidate/r2",
+            "maximum_sampled_sand_depth": 2.70102278733572,
+            "owner_all_attempt_ms": 44.12,
+            "repeat": 2,
+            "response_all_attempt_ms": 299.164,
+            "unrounded_repeat_mean_ms": 0.9615798319327731
+          }
+        ],
+        "surroundings": "mixed",
+        "workers": 1
+      },
+      {
+        "candidate": false,
+        "limit_ms": 2.0,
+        "maximum_repeat_mean_ms": 0.2362857142857143,
+        "passed": true,
+        "platform": "Windows",
+        "raw_report": {
+          "bytes": 13287607,
+          "path": "/workspace/scratch/4b0fc6bf4ee0/physics-review/hosted-41848472642/artifacts/sol281-host-windows-contact-w1-41848472642-1/contact-recovery-w1.json",
+          "sha256": "c01df951d067e36f6b37dcaa7d48aa77de1768c229f697a0e084559bb388d8bc"
+        },
+        "repeats": [
+          {
+            "complete_consumed_observations": 352,
+            "energy_violations": 0,
+            "final_sample_sand_area": 48.1211871864789,
+            "id": "packed_sand/baseline/r0",
+            "maximum_sampled_sand_depth": 2.70157441265875,
+            "owner_all_attempt_ms": 69.971,
+            "repeat": 0,
+            "response_all_attempt_ms": 0.0,
+            "unrounded_repeat_mean_ms": 0.19878125000000002
+          },
+          {
+            "complete_consumed_observations": 353,
+            "energy_violations": 0,
+            "final_sample_sand_area": 47.3241972282192,
+            "id": "packed_sand/baseline/r1",
+            "maximum_sampled_sand_depth": 2.70039078178006,
+            "owner_all_attempt_ms": 67.211,
+            "repeat": 1,
+            "response_all_attempt_ms": 0.0,
+            "unrounded_repeat_mean_ms": 0.19039943342776203
+          },
+          {
+            "complete_consumed_observations": 357,
+            "energy_violations": 0,
+            "final_sample_sand_area": 156.547138583464,
+            "id": "packed_sand/baseline/r2",
+            "maximum_sampled_sand_depth": 4.20322175630594,
+            "owner_all_attempt_ms": 84.354,
+            "repeat": 2,
+            "response_all_attempt_ms": 0.0,
+            "unrounded_repeat_mean_ms": 0.2362857142857143
+          }
+        ],
+        "surroundings": "packed_sand",
+        "workers": 1
+      },
+      {
+        "candidate": true,
+        "limit_ms": 2.0,
+        "maximum_repeat_mean_ms": 1.1542284768211921,
+        "passed": true,
+        "platform": "Windows",
+        "raw_report": {
+          "bytes": 13287607,
+          "path": "/workspace/scratch/4b0fc6bf4ee0/physics-review/hosted-41848472642/artifacts/sol281-host-windows-contact-w1-41848472642-1/contact-recovery-w1.json",
+          "sha256": "c01df951d067e36f6b37dcaa7d48aa77de1768c229f697a0e084559bb388d8bc"
+        },
+        "repeats": [
+          {
+            "complete_consumed_observations": 326,
+            "energy_violations": 0,
+            "final_sample_sand_area": 30.8457799612223,
+            "id": "packed_sand/candidate/r0",
+            "maximum_sampled_sand_depth": 2.70631444139162,
+            "owner_all_attempt_ms": 49.538,
+            "repeat": 0,
+            "response_all_attempt_ms": 242.394,
+            "unrounded_repeat_mean_ms": 0.8954969325153375
+          },
+          {
+            "complete_consumed_observations": 328,
+            "energy_violations": 0,
+            "final_sample_sand_area": 28.7254253973725,
+            "id": "packed_sand/candidate/r1",
+            "maximum_sampled_sand_depth": 2.70326176955554,
+            "owner_all_attempt_ms": 48.942,
+            "repeat": 1,
+            "response_all_attempt_ms": 242.01,
+            "unrounded_repeat_mean_ms": 0.8870487804878049
+          },
+          {
+            "complete_consumed_observations": 302,
+            "energy_violations": 0,
+            "final_sample_sand_area": 20.5452204197575,
+            "id": "packed_sand/candidate/r2",
+            "maximum_sampled_sand_depth": 2.42935841976933,
+            "owner_all_attempt_ms": 50.729,
+            "repeat": 2,
+            "response_all_attempt_ms": 297.848,
+            "unrounded_repeat_mean_ms": 1.1542284768211921
+          }
+        ],
+        "surroundings": "packed_sand",
+        "workers": 1
+      },
+      {
+        "candidate": false,
+        "limit_ms": 2.0,
+        "maximum_repeat_mean_ms": 1.0561983122362868,
+        "passed": true,
+        "platform": "Windows",
+        "raw_report": {
+          "bytes": 11901638,
+          "path": "/workspace/scratch/4b0fc6bf4ee0/physics-review/hosted-41848472642/artifacts/sol281-host-windows-contact-w4-41848472642-1/contact-recovery-w4.json",
+          "sha256": "a2245c3424c1c4dd36857d124221858683c8cfde5675cd596adcc554d3d19320"
+        },
+        "repeats": [
+          {
+            "complete_consumed_observations": 251,
+            "energy_violations": 0,
+            "final_sample_sand_area": 445.96585191855,
+            "id": "embedded_sand/baseline/r0",
+            "maximum_sampled_sand_depth": 4.20609136375772,
+            "owner_all_attempt_ms": 251.57,
+            "repeat": 0,
+            "response_all_attempt_ms": 0.0,
+            "unrounded_repeat_mean_ms": 1.0022709163346613
+          },
+          {
+            "complete_consumed_observations": 237,
+            "energy_violations": 0,
+            "final_sample_sand_area": 446.359768295972,
+            "id": "embedded_sand/baseline/r1",
+            "maximum_sampled_sand_depth": 4.20457807732605,
+            "owner_all_attempt_ms": 250.319,
+            "repeat": 1,
+            "response_all_attempt_ms": 0.0,
+            "unrounded_repeat_mean_ms": 1.0561983122362868
+          },
+          {
+            "complete_consumed_observations": 341,
+            "energy_violations": 0,
+            "final_sample_sand_area": 468.208378139497,
+            "id": "embedded_sand/baseline/r2",
+            "maximum_sampled_sand_depth": 4.20688492269649,
+            "owner_all_attempt_ms": 239.133,
+            "repeat": 2,
+            "response_all_attempt_ms": 0.0,
+            "unrounded_repeat_mean_ms": 0.7012697947214076
+          }
+        ],
+        "surroundings": "embedded_sand",
+        "workers": 4
+      },
+      {
+        "candidate": true,
+        "limit_ms": 2.0,
+        "maximum_repeat_mean_ms": 1.8502254098360655,
+        "passed": true,
+        "platform": "Windows",
+        "raw_report": {
+          "bytes": 11901638,
+          "path": "/workspace/scratch/4b0fc6bf4ee0/physics-review/hosted-41848472642/artifacts/sol281-host-windows-contact-w4-41848472642-1/contact-recovery-w4.json",
+          "sha256": "a2245c3424c1c4dd36857d124221858683c8cfde5675cd596adcc554d3d19320"
+        },
+        "repeats": [
+          {
+            "complete_consumed_observations": 358,
+            "energy_violations": 0,
+            "final_sample_sand_area": 36.7434274819173,
+            "id": "embedded_sand/candidate/r0",
+            "maximum_sampled_sand_depth": 2.58577763967042,
+            "owner_all_attempt_ms": 58.262,
+            "repeat": 0,
+            "response_all_attempt_ms": 360.189,
+            "unrounded_repeat_mean_ms": 1.1688575418994414
+          },
+          {
+            "complete_consumed_observations": 244,
+            "energy_violations": 0,
+            "final_sample_sand_area": 49.9874656656362,
+            "id": "embedded_sand/candidate/r1",
+            "maximum_sampled_sand_depth": 2.62672699023521,
+            "owner_all_attempt_ms": 82.976,
+            "repeat": 1,
+            "response_all_attempt_ms": 368.479,
+            "unrounded_repeat_mean_ms": 1.8502254098360655
+          },
+          {
+            "complete_consumed_observations": 359,
+            "energy_violations": 0,
+            "final_sample_sand_area": 35.6749721550779,
+            "id": "embedded_sand/candidate/r2",
+            "maximum_sampled_sand_depth": 2.58273796992538,
+            "owner_all_attempt_ms": 56.292,
+            "repeat": 2,
+            "response_all_attempt_ms": 356.681,
+            "unrounded_repeat_mean_ms": 1.150342618384401
+          }
+        ],
+        "surroundings": "embedded_sand",
+        "workers": 4
+      },
+      {
+        "candidate": false,
+        "limit_ms": 2.0,
+        "maximum_repeat_mean_ms": 0.5557529411764707,
+        "passed": true,
+        "platform": "Windows",
+        "raw_report": {
+          "bytes": 11901638,
+          "path": "/workspace/scratch/4b0fc6bf4ee0/physics-review/hosted-41848472642/artifacts/sol281-host-windows-contact-w4-41848472642-1/contact-recovery-w4.json",
+          "sha256": "a2245c3424c1c4dd36857d124221858683c8cfde5675cd596adcc554d3d19320"
+        },
+        "repeats": [
+          {
+            "complete_consumed_observations": 357,
+            "energy_violations": 0,
+            "final_sample_sand_area": 23.44310840974,
+            "id": "mixed/baseline/r0",
+            "maximum_sampled_sand_depth": 2.69831702159365,
+            "owner_all_attempt_ms": 82.533,
+            "repeat": 0,
+            "response_all_attempt_ms": 0.0,
+            "unrounded_repeat_mean_ms": 0.23118487394957984
+          },
+          {
+            "complete_consumed_observations": 255,
+            "energy_violations": 0,
+            "final_sample_sand_area": 87.1098104875034,
+            "id": "mixed/baseline/r1",
+            "maximum_sampled_sand_depth": 2.70391489804916,
+            "owner_all_attempt_ms": 141.717,
+            "repeat": 1,
+            "response_all_attempt_ms": 0.0,
+            "unrounded_repeat_mean_ms": 0.5557529411764707
+          },
+          {
+            "complete_consumed_observations": 359,
+            "energy_violations": 0,
+            "final_sample_sand_area": 26.9363481910928,
+            "id": "mixed/baseline/r2",
+            "maximum_sampled_sand_depth": 2.70120834843301,
+            "owner_all_attempt_ms": 81.732,
+            "repeat": 2,
+            "response_all_attempt_ms": 0.0,
+            "unrounded_repeat_mean_ms": 0.22766573816155988
+          }
+        ],
+        "surroundings": "mixed",
+        "workers": 4
+      },
+      {
+        "candidate": true,
+        "limit_ms": 2.0,
+        "maximum_repeat_mean_ms": 0.9554495798319327,
+        "passed": true,
+        "platform": "Windows",
+        "raw_report": {
+          "bytes": 11901638,
+          "path": "/workspace/scratch/4b0fc6bf4ee0/physics-review/hosted-41848472642/artifacts/sol281-host-windows-contact-w4-41848472642-1/contact-recovery-w4.json",
+          "sha256": "a2245c3424c1c4dd36857d124221858683c8cfde5675cd596adcc554d3d19320"
+        },
+        "repeats": [
+          {
+            "complete_consumed_observations": 244,
+            "energy_violations": 0,
+            "final_sample_sand_area": 10.2089726956843,
+            "id": "mixed/candidate/r0",
+            "maximum_sampled_sand_depth": 1.88227106377484,
+            "owner_all_attempt_ms": 64.279,
+            "repeat": 0,
+            "response_all_attempt_ms": 157.068,
+            "unrounded_repeat_mean_ms": 0.9071598360655738
+          },
+          {
+            "complete_consumed_observations": 238,
+            "energy_violations": 0,
+            "final_sample_sand_area": 17.122977139574,
+            "id": "mixed/candidate/r1",
+            "maximum_sampled_sand_depth": 2.39917028773211,
+            "owner_all_attempt_ms": 67.087,
+            "repeat": 1,
+            "response_all_attempt_ms": 160.31,
+            "unrounded_repeat_mean_ms": 0.9554495798319327
+          },
+          {
+            "complete_consumed_observations": 355,
+            "energy_violations": 0,
+            "final_sample_sand_area": 16.9086996060451,
+            "id": "mixed/candidate/r2",
+            "maximum_sampled_sand_depth": 2.68961599172904,
+            "owner_all_attempt_ms": 52.267,
+            "repeat": 2,
+            "response_all_attempt_ms": 232.124,
+            "unrounded_repeat_mean_ms": 0.8011014084507043
+          }
+        ],
+        "surroundings": "mixed",
+        "workers": 4
+      },
+      {
+        "candidate": false,
+        "limit_ms": 2.0,
+        "maximum_repeat_mean_ms": 0.9522117117117117,
+        "passed": true,
+        "platform": "Windows",
+        "raw_report": {
+          "bytes": 11901638,
+          "path": "/workspace/scratch/4b0fc6bf4ee0/physics-review/hosted-41848472642/artifacts/sol281-host-windows-contact-w4-41848472642-1/contact-recovery-w4.json",
+          "sha256": "a2245c3424c1c4dd36857d124221858683c8cfde5675cd596adcc554d3d19320"
+        },
+        "repeats": [
+          {
+            "complete_consumed_observations": 338,
+            "energy_violations": 0,
+            "final_sample_sand_area": 197.925215647312,
+            "id": "packed_sand/baseline/r0",
+            "maximum_sampled_sand_depth": 4.17537901978694,
+            "owner_all_attempt_ms": 109.46,
+            "repeat": 0,
+            "response_all_attempt_ms": 0.0,
+            "unrounded_repeat_mean_ms": 0.32384615384615384
+          },
+          {
+            "complete_consumed_observations": 222,
+            "energy_violations": 0,
+            "final_sample_sand_area": 289.053214713238,
+            "id": "packed_sand/baseline/r1",
+            "maximum_sampled_sand_depth": 4.1997065521961,
+            "owner_all_attempt_ms": 211.391,
+            "repeat": 1,
+            "response_all_attempt_ms": 0.0,
+            "unrounded_repeat_mean_ms": 0.9522117117117117
+          },
+          {
+            "complete_consumed_observations": 355,
+            "energy_violations": 0,
+            "final_sample_sand_area": 47.318346972124,
+            "id": "packed_sand/baseline/r2",
+            "maximum_sampled_sand_depth": 2.70014173159935,
+            "owner_all_attempt_ms": 86.158,
+            "repeat": 2,
+            "response_all_attempt_ms": 0.0,
+            "unrounded_repeat_mean_ms": 0.24269859154929577
+          }
+        ],
+        "surroundings": "packed_sand",
+        "workers": 4
+      },
+      {
+        "candidate": true,
+        "limit_ms": 2.0,
+        "maximum_repeat_mean_ms": 1.2548023255813952,
+        "passed": true,
+        "platform": "Windows",
+        "raw_report": {
+          "bytes": 11901638,
+          "path": "/workspace/scratch/4b0fc6bf4ee0/physics-review/hosted-41848472642/artifacts/sol281-host-windows-contact-w4-41848472642-1/contact-recovery-w4.json",
+          "sha256": "a2245c3424c1c4dd36857d124221858683c8cfde5675cd596adcc554d3d19320"
+        },
+        "repeats": [
+          {
+            "complete_consumed_observations": 258,
+            "energy_violations": 0,
+            "final_sample_sand_area": 46.5262964835085,
+            "id": "packed_sand/candidate/r0",
+            "maximum_sampled_sand_depth": 3.22271482653206,
+            "owner_all_attempt_ms": 67.573,
+            "repeat": 0,
+            "response_all_attempt_ms": 256.166,
+            "unrounded_repeat_mean_ms": 1.2548023255813952
+          },
+          {
+            "complete_consumed_observations": 359,
+            "energy_violations": 0,
+            "final_sample_sand_area": 9.9645443189178,
+            "id": "packed_sand/candidate/r1",
+            "maximum_sampled_sand_depth": 2.23103878205091,
+            "owner_all_attempt_ms": 53.805,
+            "repeat": 1,
+            "response_all_attempt_ms": 250.879,
+            "unrounded_repeat_mean_ms": 0.8487019498607241
+          },
+          {
+            "complete_consumed_observations": 345,
+            "energy_violations": 0,
+            "final_sample_sand_area": 19.2142699831759,
+            "id": "packed_sand/candidate/r2",
+            "maximum_sampled_sand_depth": 2.69425655472403,
+            "owner_all_attempt_ms": 53.352,
+            "repeat": 2,
+            "response_all_attempt_ms": 284.624,
+            "unrounded_repeat_mean_ms": 0.979640579710145
+          }
+        ],
+        "surroundings": "packed_sand",
+        "workers": 4
+      }
+    ],
+    "maximum_unrounded_repeat_mean_ms": 1.8502254098360655,
+    "passed_groups": 24,
+    "verdict": "PASS"
+  },
+  "diagnostic_host_inventory_complete": true,
+  "diagnostics": [
+    {
+      "certificates_verified": 349,
+      "compiler_version": {
+        "command": [
+          "/usr/bin/g++-13",
+          "--version"
+        ],
+        "elapsed_seconds": 0.0013861889999589039,
+        "environment_overrides": {},
+        "label": "compiler-version",
+        "policy_key": "operation_seconds",
+        "returncode": 0,
+        "stderr": "",
+        "stderr_bytes_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "g++-13 (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+        "stdout_bytes_sha256": "b240ade48d7a4743cb2e7940990dd5a8dbc15120543c7eadd9541435edd2efd2",
+        "timeout_seconds": 300.0
+      },
+      "executables": {
+        "probe": {
+          "bytes": 35608,
+          "path": "/home/runner/work/cybersand/cybersand/build/sol364b/linux/bin/probe",
+          "sha256": "27d053f7f915c4e7d213c8cb08ff0ab67b269f73bf58278e38ae08fec7f7ca3d"
+        },
+        "sanitizers": {
+          "bytes": 977064,
+          "path": "/home/runner/work/cybersand/cybersand/build/sol364b/linux/bin/tests-sanitize",
+          "sha256": "03f0b8a15240eed208192ee3f3afea741ed762dad44afe6ba3763db4c85653a0"
+        },
+        "tests": {
+          "bytes": 44800,
+          "path": "/home/runner/work/cybersand/cybersand/build/sol364b/linux/bin/tests",
+          "sha256": "fdaae547ddab17f7ca52418d487d7ea6698e3d1ee26e4694ad6c54217f9b9c61"
+        }
+      },
+      "input_verification": {
+        "all_match_exact_tree_or_its_committed_checkout_rules": true,
+        "checked_manifest_sha256": "3be4b75b37c01a797a71dde8e317f76b40871c24d82dfcd56dfcd196bf5d0729",
+        "committed_crlf_conversions": [],
+        "count": 11,
+        "direct_git_byte_matches": 11,
+        "git_tree": "11e986214f056f3f39631bb0331b3cd4930c3d1c",
+        "local_equal_tree_commit": "2f0ea3bdba5b7aef2fddef7d3a70f7e8d21adab9",
+        "status": "PASS"
+      },
+      "native_tests": {
+        "result": {
+          "checks": 142,
+          "failures": 0,
+          "groups": 6,
+          "live_application": false,
+          "schema": "cybersand.sol364b.corridor-native-tests.v1"
+        },
+        "sha256": "fdaae547ddab17f7ca52418d487d7ea6698e3d1ee26e4694ad6c54217f9b9c61",
+        "status": "PASS",
+        "stderr": ""
+      },
+      "platform": "Linux",
+      "platform_detail": "Linux-7.0.0-1017-azure-x86_64-with-glibc2.39",
+      "qualification": {
+        "bytes": 14036,
+        "path": "/workspace/scratch/4b0fc6bf4ee0/physics-review/hosted-41848472642/artifacts/sol364b-diagnostic-linux-41848472642-1/linux/qualification.json",
+        "sha256": "fde4be7bb5e3f7b324afe47bbad97314cbe41627589caba25f1a7f1acdbceac3"
+      },
+      "query_hashes_and_LF_bytes_verified": 349,
+      "result": {
+        "disposition": "BOUNDED_FAMILY_NO_GO",
+        "live_candidate_applications": 0,
+        "outcome_counts": {
+          "InitialExcludedOverlap": 728,
+          "NoRegisteredCorridor": 724
+        },
+        "reports": 4,
+        "retained_states_evaluated": 1452,
+        "unique_geometric_inputs": 349
+      },
+      "sanitizers": {
+        "command": {
+          "command": [
+            "/home/runner/work/cybersand/cybersand/build/sol364b/linux/bin/tests-sanitize"
+          ],
+          "elapsed_seconds": 0.0122046929999442,
+          "environment_overrides": {
+            "ASAN_OPTIONS": "detect_leaks=0:strict_string_checks=1:abort_on_error=1",
+            "UBSAN_OPTIONS": "halt_on_error=1:print_stacktrace=1"
+          },
+          "label": "address-undefined-tests",
+          "policy_key": "native_case_seconds",
+          "returncode": 0,
+          "stderr": "",
+          "stderr_bytes_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout": "{\"schema\":\"cybersand.sol364b.corridor-native-tests.v1\",\"groups\":6,\"checks\":142,\"failures\":0,\"live_application\":false}\n",
+          "stdout_bytes_sha256": "90ea31e0141974f38df433297e3aff54fe2d10d7bb0c893d02f7a7f137c5c335",
+          "timeout_seconds": 3600.0
+        },
+        "leak_check": "NOT_EXERCISED; detect_leaks=0 explicitly recorded",
+        "status": "PASS_ADDRESS_AND_UB_ONLY"
+      },
+      "source": {
+        "sha": "9597abd76c01e4a940ff3ea26ff01fca43bf55a6",
+        "tree": "11e986214f056f3f39631bb0331b3cd4930c3d1c"
+      },
+      "summary": {
+        "bytes": 37650,
+        "path": "/workspace/scratch/4b0fc6bf4ee0/physics-review/hosted-41848472642/artifacts/sol364b-diagnostic-linux-41848472642-1/linux/replay/summary.json",
+        "sha256": "52f3ae12dcdc9da1b354a92ea7d6d60aa092bdb65152764b36f19f61f8c28e86"
+      },
+      "tool_executables": {
+        "compiler": {
+          "bytes": 1027128,
+          "path": "/usr/bin/g++-13",
+          "sha256": "1353e9bdd29a7295c7226bf6c63abccce056d8cac31f112e5cdbecc3f28c2769"
+        },
+        "python": {
+          "bytes": 8020928,
+          "path": "/usr/bin/python3",
+          "sha256": "e50d468e8b0adfb05733f5b87b3cff34829c4a8c1aea50c865aa8bdfe4bb150f",
+          "version": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]"
+        }
+      }
+    },
+    {
+      "certificates_verified": 349,
+      "compiler_version": {
+        "command": [
+          "C:\\Program Files\\Microsoft Visual Studio\\2022\\Enterprise\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\cl.EXE"
+        ],
+        "elapsed_seconds": 0.014999999999986358,
+        "environment_overrides": {},
+        "label": "compiler-version",
+        "policy_key": "operation_seconds",
+        "returncode": 0,
+        "stderr": "Microsoft (R) C/C++ Optimizing Compiler Version 19.44.35229 for x64\r\nCopyright (C) Microsoft Corporation.  All rights reserved.\r\n\r\n",
+        "stderr_bytes_sha256": "8e29834a4f5a5cbf82a6436414d68d51c3bdeb68d2dff0023409cdedc21e862c",
+        "stdout": "usage: cl [ option... ] filename... [ /link linkoption... ]\r\n",
+        "stdout_bytes_sha256": "ed6ca56a976bc0dd695904a59a423f36064632694b947125ff73cb68f125f840",
+        "timeout_seconds": 300.0
+      },
+      "executables": {
+        "probe": {
+          "bytes": 331776,
+          "path": "D:\\a\\cybersand\\cybersand\\build\\sol364b\\windows\\bin\\probe.exe",
+          "sha256": "530637e5404c57763a7273ad5a88de0230e2b19bc8ef550ed9d53e1e7732a2b5"
+        },
+        "tests": {
+          "bytes": 305152,
+          "path": "D:\\a\\cybersand\\cybersand\\build\\sol364b\\windows\\bin\\tests.exe",
+          "sha256": "94894eb071ec3625bb40728fb8672ef00f3bcc10dd59474e17640ab73c6c4928"
+        }
+      },
+      "input_verification": {
+        "all_match_exact_tree_or_its_committed_checkout_rules": true,
+        "checked_manifest_sha256": "3be4b75b37c01a797a71dde8e317f76b40871c24d82dfcd56dfcd196bf5d0729",
+        "committed_crlf_conversions": [],
+        "count": 11,
+        "direct_git_byte_matches": 11,
+        "git_tree": "11e986214f056f3f39631bb0331b3cd4930c3d1c",
+        "local_equal_tree_commit": "2f0ea3bdba5b7aef2fddef7d3a70f7e8d21adab9",
+        "status": "PASS"
+      },
+      "native_tests": {
+        "result": {
+          "checks": 142,
+          "failures": 0,
+          "groups": 6,
+          "live_application": false,
+          "schema": "cybersand.sol364b.corridor-native-tests.v1"
+        },
+        "sha256": "94894eb071ec3625bb40728fb8672ef00f3bcc10dd59474e17640ab73c6c4928",
+        "status": "PASS",
+        "stderr": ""
+      },
+      "platform": "Windows",
+      "platform_detail": "Windows-2022Server-10.0.20348-SP0",
+      "qualification": {
+        "bytes": 16375,
+        "path": "/workspace/scratch/4b0fc6bf4ee0/physics-review/hosted-41848472642/artifacts/sol364b-diagnostic-windows-41848472642-1/qualification.json",
+        "sha256": "54e3fa414a3fabdb061764d6a9cd9ec917cc13eff3de702c1534e13b72d8caa1"
+      },
+      "query_hashes_and_LF_bytes_verified": 349,
+      "result": {
+        "disposition": "BOUNDED_FAMILY_NO_GO",
+        "live_candidate_applications": 0,
+        "outcome_counts": {
+          "InitialExcludedOverlap": 728,
+          "NoRegisteredCorridor": 724
+        },
+        "reports": 4,
+        "retained_states_evaluated": 1452,
+        "unique_geometric_inputs": 349
+      },
+      "sanitizers": {
+        "status": "NOT_APPLICABLE_TO_MSVC_COHORT"
+      },
+      "source": {
+        "sha": "9597abd76c01e4a940ff3ea26ff01fca43bf55a6",
+        "tree": "11e986214f056f3f39631bb0331b3cd4930c3d1c"
+      },
+      "summary": {
+        "bytes": 37650,
+        "path": "/workspace/scratch/4b0fc6bf4ee0/physics-review/hosted-41848472642/artifacts/sol364b-diagnostic-windows-41848472642-1/replay/summary.json",
+        "sha256": "04de968a776a4d4e62a749899d7793d4e5723e01fb25582f3d94378951faec20"
+      },
+      "tool_executables": {
+        "compiler": {
+          "bytes": 677776,
+          "path": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Enterprise\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\cl.EXE",
+          "sha256": "fe251ef50a1545b1b0835ee17b1e785459712b38d79e45b5c1d3d28970a36619"
+        },
+        "python": {
+          "bytes": 104952,
+          "path": "C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\python.exe",
+          "sha256": "4d6f5f81a4bca11191c4c7c6b43632694d0a4ce74e068619d8fdc161d469859a",
+          "version": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]"
+        }
+      }
+    }
+  ],
+  "errors": [
+    {
+      "error": "Missing or ambiguous downloaded source-build receipt",
+      "path": "/workspace/scratch/4b0fc6bf4ee0/physics-review/hosted-41848472642/artifacts/sol281-host-linux-contact-w1-41848472642-1/host/report.json"
+    },
+    {
+      "error": "Missing or ambiguous downloaded source-build receipt",
+      "path": "/workspace/scratch/4b0fc6bf4ee0/physics-review/hosted-41848472642/artifacts/sol281-host-linux-contact-w4-41848472642-1/host/report.json"
+    },
+    {
+      "error": "Missing or ambiguous downloaded source-build receipt",
+      "path": "/workspace/scratch/4b0fc6bf4ee0/physics-review/hosted-41848472642/artifacts/sol281-host-linux-core-41848472642-1/host/report.json"
+    },
+    {
+      "error": "Missing or ambiguous downloaded source-build receipt",
+      "path": "/workspace/scratch/4b0fc6bf4ee0/physics-review/hosted-41848472642/artifacts/sol281-host-linux-mechanism-41848472642-1/host/report.json"
+    }
+  ],
+  "host_receipts": [
+    {
+      "build_manifest_sha256": "f8bb3cacf7e0c26584118bbdf7f95e5e2e2d5ad3cca07772caa23dca0dbfac14",
+      "cohort": "contact-w1",
+      "engine": {
+        "archive_algorithm": "sha256",
+        "archive_hash": "0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c",
+        "executables": {
+          "Godot_v4.7-stable_linux.x86_64": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75"
+        },
+        "version": "4.7.stable.official.5b4e0cb0f"
+      },
+      "platform": "Linux",
+      "rapier": {
+        "lock_sha256": "df24cf6fb1adc17b2c1675b1387db19c93ee31d6cbf497c9295647ec98371285",
+        "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+        "sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+        "size": 117275416
+      },
+      "receipt": {
+        "bytes": 77761,
+        "path": "/workspace/scratch/4b0fc6bf4ee0/physics-review/hosted-41848472642/artifacts/sol281-host-linux-contact-w1-41848472642-1/host/report.json",
+        "sha256": "65484a30f19bf442fb67969611030f255da5bc254c2868e71cfb1271aaaee57d"
+      },
+      "records": 11,
+      "runtime": {
+        "filename": "libcybersand_native.linux.x86_64.so",
+        "sha256": "de38c0de458b2a30d43cb36c633cb7ee3b469f8d84f7a3e512fafc9838bb82a5",
+        "size": 4343256
+      },
+      "source": {
+        "sha": "9597abd76c01e4a940ff3ea26ff01fca43bf55a6",
+        "tree": "11e986214f056f3f39631bb0331b3cd4930c3d1c"
+      },
+      "status": "passed"
+    },
+    {
+      "build_manifest_sha256": "f8bb3cacf7e0c26584118bbdf7f95e5e2e2d5ad3cca07772caa23dca0dbfac14",
+      "cohort": "contact-w4",
+      "engine": {
+        "archive_algorithm": "sha256",
+        "archive_hash": "0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c",
+        "executables": {
+          "Godot_v4.7-stable_linux.x86_64": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75"
+        },
+        "version": "4.7.stable.official.5b4e0cb0f"
+      },
+      "platform": "Linux",
+      "rapier": {
+        "lock_sha256": "df24cf6fb1adc17b2c1675b1387db19c93ee31d6cbf497c9295647ec98371285",
+        "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+        "sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+        "size": 117275416
+      },
+      "receipt": {
+        "bytes": 77729,
+        "path": "/workspace/scratch/4b0fc6bf4ee0/physics-review/hosted-41848472642/artifacts/sol281-host-linux-contact-w4-41848472642-1/host/report.json",
+        "sha256": "67a37d1f578dcd7b15468923ab1e381c482b98f401e421ee8eed8fa7a29d0d15"
+      },
+      "records": 11,
+      "runtime": {
+        "filename": "libcybersand_native.linux.x86_64.so",
+        "sha256": "de38c0de458b2a30d43cb36c633cb7ee3b469f8d84f7a3e512fafc9838bb82a5",
+        "size": 4343256
+      },
+      "source": {
+        "sha": "9597abd76c01e4a940ff3ea26ff01fca43bf55a6",
+        "tree": "11e986214f056f3f39631bb0331b3cd4930c3d1c"
+      },
+      "status": "passed"
+    },
+    {
+      "build_manifest_sha256": "f8bb3cacf7e0c26584118bbdf7f95e5e2e2d5ad3cca07772caa23dca0dbfac14",
+      "cohort": "core",
+      "engine": {
+        "archive_algorithm": "sha256",
+        "archive_hash": "0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c",
+        "executables": {
+          "Godot_v4.7-stable_linux.x86_64": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75"
+        },
+        "version": "4.7.stable.official.5b4e0cb0f"
+      },
+      "platform": "Linux",
+      "rapier": {
+        "lock_sha256": "df24cf6fb1adc17b2c1675b1387db19c93ee31d6cbf497c9295647ec98371285",
+        "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+        "sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+        "size": 117275416
+      },
+      "receipt": {
+        "bytes": 54294,
+        "path": "/workspace/scratch/4b0fc6bf4ee0/physics-review/hosted-41848472642/artifacts/sol281-host-linux-core-41848472642-1/host/report.json",
+        "sha256": "3388435f635f7a277e3b21ee84aa5738ee122d3784750fc3f78a256f4a6d6606"
+      },
+      "records": 11,
+      "runtime": {
+        "filename": "libcybersand_native.linux.x86_64.so",
+        "sha256": "de38c0de458b2a30d43cb36c633cb7ee3b469f8d84f7a3e512fafc9838bb82a5",
+        "size": 4343256
+      },
+      "source": {
+        "sha": "9597abd76c01e4a940ff3ea26ff01fca43bf55a6",
+        "tree": "11e986214f056f3f39631bb0331b3cd4930c3d1c"
+      },
+      "status": "passed"
+    },
+    {
+      "build_manifest_sha256": "f8bb3cacf7e0c26584118bbdf7f95e5e2e2d5ad3cca07772caa23dca0dbfac14",
+      "cohort": "mechanism",
+      "engine": {
+        "archive_algorithm": "sha256",
+        "archive_hash": "0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c",
+        "executables": {
+          "Godot_v4.7-stable_linux.x86_64": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75"
+        },
+        "version": "4.7.stable.official.5b4e0cb0f"
+      },
+      "platform": "Linux",
+      "rapier": {
+        "lock_sha256": "df24cf6fb1adc17b2c1675b1387db19c93ee31d6cbf497c9295647ec98371285",
+        "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+        "sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+        "size": 117275416
+      },
+      "receipt": {
+        "bytes": 80163,
+        "path": "/workspace/scratch/4b0fc6bf4ee0/physics-review/hosted-41848472642/artifacts/sol281-host-linux-mechanism-41848472642-1/host/report.json",
+        "sha256": "34635cb075dcd10dff673e14997ce4de5a56266785153cc5b7a03123d82cd210"
+      },
+      "records": 4,
+      "runtime": {
+        "filename": "libcybersand_native.linux.x86_64.so",
+        "sha256": "de38c0de458b2a30d43cb36c633cb7ee3b469f8d84f7a3e512fafc9838bb82a5",
+        "size": 4343256
+      },
+      "source": {
+        "sha": "9597abd76c01e4a940ff3ea26ff01fca43bf55a6",
+        "tree": "11e986214f056f3f39631bb0331b3cd4930c3d1c"
+      },
+      "status": "passed"
+    },
+    {
+      "build_manifest_sha256": "fef9d1c9768e27cc025d6a318c0ac7f9208f8d9fbeb6c754ed0ea46d0ade40c4",
+      "cohort": "contact-w1",
+      "engine": {
+        "archive_algorithm": "sha512",
+        "archive_hash": "41645a908eb3181d6f2d1201ed7b6d6f095f6a23aaed8903d5d255277cc8d142814f3e6817f865b3cac142c39b8aff99280091d3bbdaa301517730b3ba0522b9",
+        "executables": {
+          "Godot_v4.7-stable_win64.exe": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+          "Godot_v4.7-stable_win64_console.exe": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c"
+        },
+        "version": "4.7.stable.official.5b4e0cb0f"
+      },
+      "platform": "Windows",
+      "rapier": {
+        "lock_sha256": "df24cf6fb1adc17b2c1675b1387db19c93ee31d6cbf497c9295647ec98371285",
+        "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+        "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+        "size": 9987072
+      },
+      "receipt": {
+        "bytes": 79119,
+        "path": "/workspace/scratch/4b0fc6bf4ee0/physics-review/hosted-41848472642/artifacts/sol281-host-windows-contact-w1-41848472642-1/report.json",
+        "sha256": "2e5fe5557bdb070a1a9dad57e5e0ba9dfdd564404198efb0477c98dfc6b54380"
+      },
+      "records": 11,
+      "runtime": {
+        "filename": "cybersand_native.windows.x86_64.dll",
+        "sha256": "461db5c3fded9d609088f8916b761ea72145ac3aba8a08f9975edd3200f8196c",
+        "size": 4925952
+      },
+      "source": {
+        "sha": "9597abd76c01e4a940ff3ea26ff01fca43bf55a6",
+        "tree": "11e986214f056f3f39631bb0331b3cd4930c3d1c"
+      },
+      "status": "passed"
+    },
+    {
+      "build_manifest_sha256": "fef9d1c9768e27cc025d6a318c0ac7f9208f8d9fbeb6c754ed0ea46d0ade40c4",
+      "cohort": "contact-w4",
+      "engine": {
+        "archive_algorithm": "sha512",
+        "archive_hash": "41645a908eb3181d6f2d1201ed7b6d6f095f6a23aaed8903d5d255277cc8d142814f3e6817f865b3cac142c39b8aff99280091d3bbdaa301517730b3ba0522b9",
+        "executables": {
+          "Godot_v4.7-stable_win64.exe": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+          "Godot_v4.7-stable_win64_console.exe": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c"
+        },
+        "version": "4.7.stable.official.5b4e0cb0f"
+      },
+      "platform": "Windows",
+      "rapier": {
+        "lock_sha256": "df24cf6fb1adc17b2c1675b1387db19c93ee31d6cbf497c9295647ec98371285",
+        "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+        "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+        "size": 9987072
+      },
+      "receipt": {
+        "bytes": 79119,
+        "path": "/workspace/scratch/4b0fc6bf4ee0/physics-review/hosted-41848472642/artifacts/sol281-host-windows-contact-w4-41848472642-1/report.json",
+        "sha256": "edf4e157b31d236563bdcc8ce69a8e5d6f69ffc6479e188c6c7ab3c01cfc94ca"
+      },
+      "records": 11,
+      "runtime": {
+        "filename": "cybersand_native.windows.x86_64.dll",
+        "sha256": "461db5c3fded9d609088f8916b761ea72145ac3aba8a08f9975edd3200f8196c",
+        "size": 4925952
+      },
+      "source": {
+        "sha": "9597abd76c01e4a940ff3ea26ff01fca43bf55a6",
+        "tree": "11e986214f056f3f39631bb0331b3cd4930c3d1c"
+      },
+      "status": "passed"
+    },
+    {
+      "build_manifest_sha256": "fef9d1c9768e27cc025d6a318c0ac7f9208f8d9fbeb6c754ed0ea46d0ade40c4",
+      "cohort": "core",
+      "engine": {
+        "archive_algorithm": "sha512",
+        "archive_hash": "41645a908eb3181d6f2d1201ed7b6d6f095f6a23aaed8903d5d255277cc8d142814f3e6817f865b3cac142c39b8aff99280091d3bbdaa301517730b3ba0522b9",
+        "executables": {
+          "Godot_v4.7-stable_win64.exe": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+          "Godot_v4.7-stable_win64_console.exe": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c"
+        },
+        "version": "4.7.stable.official.5b4e0cb0f"
+      },
+      "platform": "Windows",
+      "rapier": {
+        "lock_sha256": "df24cf6fb1adc17b2c1675b1387db19c93ee31d6cbf497c9295647ec98371285",
+        "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+        "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+        "size": 9987072
+      },
+      "receipt": {
+        "bytes": 55137,
+        "path": "/workspace/scratch/4b0fc6bf4ee0/physics-review/hosted-41848472642/artifacts/sol281-host-windows-core-41848472642-1/report.json",
+        "sha256": "6f85dfe9c3859136e1fa1f9262a86a77b3b17d7acf524ed5f7fb3c14fe9b5e3a"
+      },
+      "records": 11,
+      "runtime": {
+        "filename": "cybersand_native.windows.x86_64.dll",
+        "sha256": "461db5c3fded9d609088f8916b761ea72145ac3aba8a08f9975edd3200f8196c",
+        "size": 4925952
+      },
+      "source": {
+        "sha": "9597abd76c01e4a940ff3ea26ff01fca43bf55a6",
+        "tree": "11e986214f056f3f39631bb0331b3cd4930c3d1c"
+      },
+      "status": "passed"
+    },
+    {
+      "build_manifest_sha256": "fef9d1c9768e27cc025d6a318c0ac7f9208f8d9fbeb6c754ed0ea46d0ade40c4",
+      "cohort": "mechanism",
+      "engine": {
+        "archive_algorithm": "sha512",
+        "archive_hash": "41645a908eb3181d6f2d1201ed7b6d6f095f6a23aaed8903d5d255277cc8d142814f3e6817f865b3cac142c39b8aff99280091d3bbdaa301517730b3ba0522b9",
+        "executables": {
+          "Godot_v4.7-stable_win64.exe": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+          "Godot_v4.7-stable_win64_console.exe": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c"
+        },
+        "version": "4.7.stable.official.5b4e0cb0f"
+      },
+      "platform": "Windows",
+      "rapier": {
+        "lock_sha256": "df24cf6fb1adc17b2c1675b1387db19c93ee31d6cbf497c9295647ec98371285",
+        "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+        "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+        "size": 9987072
+      },
+      "receipt": {
+        "bytes": 81841,
+        "path": "/workspace/scratch/4b0fc6bf4ee0/physics-review/hosted-41848472642/artifacts/sol281-host-windows-mechanism-41848472642-1/report.json",
+        "sha256": "1ba85f2ee2a8d7238b0e421aa357f22a4423d7ff4c9391e863ed2ea9ce193685"
+      },
+      "records": 4,
+      "runtime": {
+        "filename": "cybersand_native.windows.x86_64.dll",
+        "sha256": "461db5c3fded9d609088f8916b761ea72145ac3aba8a08f9975edd3200f8196c",
+        "size": 4925952
+      },
+      "source": {
+        "sha": "9597abd76c01e4a940ff3ea26ff01fca43bf55a6",
+        "tree": "11e986214f056f3f39631bb0331b3cd4930c3d1c"
+      },
+      "status": "passed"
+    }
+  ],
+  "live_host_inventory_complete": true,
+  "live_process_records": 74,
+  "review_program": {
+    "bytes": 21443,
+    "path": "/workspace/scratch/4b0fc6bf4ee0/physics-review/hosted-41848472642/review_hosted_receipts.py",
+    "sha256": "a2a8503be94bca851125162941fa0715d27c2d9af1ffd96277c9576e0133906d"
+  },
+  "reviewed_at_utc": "2026-11-04T14:51:35.512307+00:00",
+  "run_id": 41848472642,
+  "schema": "cybersand.sol364b.independent-hosted-review.v1",
+  "scope": "Fresh actual-host evidence at the exact published source. Diagnostic success and CPU success do not establish recovery or integration admission. Historical negatives retain their original identities.",
+  "source": "9597abd76c01e4a940ff3ea26ff01fca43bf55a6",
+  "source_manifest_verifications": [
+    {
+      "all_match_exact_tree_or_its_committed_checkout_rules": true,
+      "checked_manifest_sha256": "6060f78e60e2a96494a8e83fee1a18b9b160152eb41be8236dab0fd04ea223ee",
+      "committed_crlf_conversions": [],
+      "count": 1112,
+      "direct_git_byte_matches": 1112,
+      "git_tree": "11e986214f056f3f39631bb0331b3cd4930c3d1c",
+      "local_equal_tree_commit": "2f0ea3bdba5b7aef2fddef7d3a70f7e8d21adab9",
+      "status": "PASS"
+    },
+    {
+      "all_match_exact_tree_or_its_committed_checkout_rules": true,
+      "checked_manifest_sha256": "6991159d76d4fe023ea068f006af2522da4f37071f80df015aa8aa552fed2e61",
+      "committed_crlf_conversions": [
+        {
+          "actual_checkout_sha256": "396f63f54b23e38b6b2b87d0dfb5fb887e96adca0950b11ad946c1b73357b570",
+          "canonical_git_sha256": "48ef1027a257b0639954e3b6a17c4f67555b8b3cdddcd91a7d553ca513de7f29",
+          "committed_eol": "crlf",
+          "path": "tools/launch_desktop.ps1"
+        }
+      ],
+      "count": 1112,
+      "direct_git_byte_matches": 1111,
+      "git_tree": "11e986214f056f3f39631bb0331b3cd4930c3d1c",
+      "local_equal_tree_commit": "2f0ea3bdba5b7aef2fddef7d3a70f7e8d21adab9",
+      "status": "PASS"
+    },
+    {
+      "all_match_exact_tree_or_its_committed_checkout_rules": true,
+      "checked_manifest_sha256": "3be4b75b37c01a797a71dde8e317f76b40871c24d82dfcd56dfcd196bf5d0729",
+      "committed_crlf_conversions": [],
+      "count": 11,
+      "direct_git_byte_matches": 11,
+      "git_tree": "11e986214f056f3f39631bb0331b3cd4930c3d1c",
+      "local_equal_tree_commit": "2f0ea3bdba5b7aef2fddef7d3a70f7e8d21adab9",
+      "status": "PASS"
+    }
+  ],
+  "synchronized_physics": {
+    "clearance_failures": 84,
+    "complete": true,
+    "depth_failures": 64,
+    "reports": [
+      {
+        "cases": [
+          {
+            "allowed_depth": 2.7824706190427,
+            "clearance_start_step": -1,
+            "depth_pass": true,
+            "first_valid_impact_step": -1,
+            "id": "embedded_stationary/conservative_baseline",
+            "initial_sand_depth": 2.5324706190427,
+            "introduced_position_work": 0.0,
+            "longest_clear_run": 0,
+            "maximum_sand_depth": 2.5324706190427,
+            "positive_observation_steps": 180,
+            "sustained_clearance_pass": false
+          },
+          {
+            "allowed_depth": 2.7824706190427,
+            "clearance_start_step": -1,
+            "depth_pass": true,
+            "first_valid_impact_step": -1,
+            "id": "embedded_stationary/velocity_control",
+            "initial_sand_depth": 2.5324706190427,
+            "introduced_position_work": 0.0,
+            "longest_clear_run": 0,
+            "maximum_sand_depth": 2.5324706190427,
+            "positive_observation_steps": 180,
+            "sustained_clearance_pass": false
+          },
+          {
+            "allowed_depth": 2.7824706190427,
+            "clearance_start_step": -1,
+            "depth_pass": true,
+            "first_valid_impact_step": -1,
+            "id": "embedded_stationary/candidate",
+            "initial_sand_depth": 2.5324706190427,
+            "introduced_position_work": 0.0,
+            "longest_clear_run": 0,
+            "maximum_sand_depth": 2.5324706190427,
+            "positive_observation_steps": 180,
+            "sustained_clearance_pass": false
+          },
+          {
+            "allowed_depth": 1.0,
+            "clearance_start_step": -1,
+            "depth_pass": false,
+            "first_valid_impact_step": 20,
+            "id": "packed_impact/conservative_baseline",
+            "initial_sand_depth": 0.0,
+            "introduced_position_work": 0.0,
+            "longest_clear_run": 0,
+            "maximum_sand_depth": 2.49995422363281,
+            "positive_observation_steps": 180,
+            "sustained_clearance_pass": false
+          },
+          {
+            "allowed_depth": 1.0,
+            "clearance_start_step": -1,
+            "depth_pass": false,
+            "first_valid_impact_step": 20,
+            "id": "packed_impact/velocity_control",
+            "initial_sand_depth": 0.0,
+            "introduced_position_work": 0.0,
+            "longest_clear_run": 0,
+            "maximum_sand_depth": 1.0037012640894,
+            "positive_observation_steps": 180,
+            "sustained_clearance_pass": false
+          },
+          {
+            "allowed_depth": 1.0,
+            "clearance_start_step": -1,
+            "depth_pass": false,
+            "first_valid_impact_step": 20,
+            "id": "packed_impact/candidate",
+            "initial_sand_depth": 0.0,
+            "introduced_position_work": 0.0,
+            "longest_clear_run": 0,
+            "maximum_sand_depth": 1.00370910657881,
+            "positive_observation_steps": 180,
+            "sustained_clearance_pass": false
+          },
+          {
+            "allowed_depth": 1.0,
+            "clearance_start_step": -1,
+            "depth_pass": false,
+            "first_valid_impact_step": 20,
+            "id": "offcenter_impact/conservative_baseline",
+            "initial_sand_depth": 0.0,
+            "introduced_position_work": 0.0,
+            "longest_clear_run": 0,
+            "maximum_sand_depth": 2.49995422363281,
+            "positive_observation_steps": 180,
+            "sustained_clearance_pass": false
+          },
+          {
+            "allowed_depth": 1.0,
+            "clearance_start_step": -1,
+            "depth_pass": false,
+            "first_valid_impact_step": 20,
+            "id": "offcenter_impact/velocity_control",
+            "initial_sand_depth": 0.0,
+            "introduced_position_work": 0.0,
+            "longest_clear_run": 0,
+            "maximum_sand_depth": 1.0037012640894,
+            "positive_observation_steps": 180,
+            "sustained_clearance_pass": false
+          },
+          {
+            "allowed_depth": 1.0,
+            "clearance_start_step": -1,
+            "depth_pass": false,
+            "first_valid_impact_step": 20,
+            "id": "offcenter_impact/candidate",
+            "initial_sand_depth": 0.0,
+            "introduced_position_work": 0.0,
+            "longest_clear_run": 0,
+            "maximum_sand_depth": 1.00370910657881,
+            "positive_observation_steps": 180,
+            "sustained_clearance_pass": false
+          },
+          {
+            "allowed_depth": 2.88596496943871,
+            "clearance_start_step": -1,
+            "depth_pass": false,
+            "first_valid_impact_step": 0,
+            "id": "rotated_compound/conservative_baseline",
+            "initial_sand_depth": 2.63596496943871,
+            "introduced_position_work": 0.0,
+            "longest_clear_run": 0,
+            "maximum_sand_depth": 4.14515443602114,
+            "positive_observation_steps": 180,
+            "sustained_clearance_pass": false
+          },
+          {
+            "allowed_depth": 2.88596496943871,
+            "clearance_start_step": -1,
+            "depth_pass": true,
+            "first_valid_impact_step": 0,
+            "id": "rotated_compound/velocity_control",
+            "initial_sand_depth": 2.63596496943871,
+            "introduced_position_work": 0.0,
+            "longest_clear_run": 0,
+            "maximum_sand_depth": 2.63596496943871,
+            "positive_observation_steps": 180,
+            "sustained_clearance_pass": false
+          },
+          {
+            "allowed_depth": 2.88596496943871,
+            "clearance_start_step": -1,
+            "depth_pass": true,
+            "first_valid_impact_step": 0,
+            "id": "rotated_compound/candidate",
+            "initial_sand_depth": 2.63596496943871,
+            "introduced_position_work": 0.0,
+            "longest_clear_run": 0,
+            "maximum_sand_depth": 2.63596496943871,
+            "positive_observation_steps": 180,
+            "sustained_clearance_pass": false
+          },
+          {
+            "allowed_depth": 1.0,
+            "clearance_start_step": -1,
+            "depth_pass": false,
+            "first_valid_impact_step": 20,
+            "id": "missed_publication/conservative_baseline",
+            "initial_sand_depth": 0.0,
+            "introduced_position_work": 0.0,
+            "longest_clear_run": 0,
+            "maximum_sand_depth": 2.49995422363281,
+            "positive_observation_steps": 180,
+            "sustained_clearance_pass": false
+          },
+          {
+            "allowed_depth": 1.0,
+            "clearance_start_step": -1,
+            "depth_pass": false,
+            "first_valid_impact_step": 20,
+            "id": "missed_publication/velocity_control",
+            "initial_sand_depth": 0.0,
+            "introduced_position_work": 0.0,
+            "longest_clear_run": 0,
+            "maximum_sand_depth": 1.00387543314864,
+            "positive_observation_steps": 180,
+            "sustained_clearance_pass": false
+          },
+          {
+            "allowed_depth": 1.0,
+            "clearance_start_step": -1,
+            "depth_pass": false,
+            "first_valid_impact_step": 20,
+            "id": "missed_publication/candidate",
+            "initial_sand_depth": 0.0,
+            "introduced_position_work": 0.0,
+            "longest_clear_run": 0,
+            "maximum_sand_depth": 1.00388378836434,
+            "positive_observation_steps": 180,
+            "sustained_clearance_pass": false
+          },
+          {
+            "allowed_depth": 1.0,
+            "clearance_start_step": -1,
+            "depth_pass": false,
+            "first_valid_impact_step": 21,
+            "id": "delayed_publication/conservative_baseline",
+            "initial_sand_depth": 0.0,
+            "introduced_position_work": 0.0,
+            "longest_clear_run": 0,
+            "maximum_sand_depth": 2.49995422363281,
+            "positive_observation_steps": 180,
+            "sustained_clearance_pass": false
+          },
+          {
+            "allowed_depth": 1.0,
+            "clearance_start_step": -1,
+            "depth_pass": false,
+            "first_valid_impact_step": 21,
+            "id": "delayed_publication/velocity_control",
+            "initial_sand_depth": 0.0,
+            "introduced_position_work": 0.0,
+            "longest_clear_run": 0,
+            "maximum_sand_depth": 1.07270699715721,
+            "positive_observation_steps": 180,
+            "sustained_clearance_pass": false
+          },
+          {
+            "allowed_depth": 1.0,
+            "clearance_start_step": -1,
+            "depth_pass": false,
+            "first_valid_impact_step": 21,
+            "id": "delayed_publication/candidate",
+            "initial_sand_depth": 0.0,
+            "introduced_position_work": 0.0,
+            "longest_clear_run": 0,
+            "maximum_sand_depth": 1.07270699715721,
+            "positive_observation_steps": 180,
+            "sustained_clearance_pass": false
+          },
+          {
+            "allowed_depth": 1.0,
+            "clearance_start_step": -1,
+            "depth_pass": false,
+            "first_valid_impact_step": -1,
+            "id": "stale_publication/conservative_baseline",
+            "initial_sand_depth": 0.0,
+            "introduced_position_work": 0.0,
+            "longest_clear_run": 0,
+            "maximum_sand_depth": 2.49995422363281,
+            "positive_observation_steps": 180,
+            "sustained_clearance_pass": false
+          },
+          {
+            "allowed_depth": 1.0,
+            "clearance_start_step": -1,
+            "depth_pass": false,
+            "first_valid_impact_step": -1,
+            "id": "stale_publication/velocity_control",
+            "initial_sand_depth": 0.0,
+            "introduced_position_work": 0.0,
+            "longest_clear_run": 0,
+            "maximum_sand_depth": 2.49995422363281,
+            "positive_observation_steps": 180,
+            "sustained_clearance_pass": false
+          },
+          {
+            "allowed_depth": 1.0,
+            "clearance_start_step": -1,
+            "depth_pass": false,
+            "first_valid_impact_step": -1,
+            "id": "stale_publication/candidate",
+            "initial_sand_depth": 0.0,
+            "introduced_position_work": 0.0,
+            "longest_clear_run": 0,
+            "maximum_sand_depth": 2.49995422363281,
+            "positive_observation_steps": 180,
+            "sustained_clearance_pass": false
+          }
+        ],
+        "clearance_failures": 21,
+        "depth_failures": 16,
+        "platform": "Linux",
+        "raw_report": {
+          "bytes": 21988914,
+          "path": "/workspace/scratch/4b0fc6bf4ee0/physics-review/hosted-41848472642/artifacts/sol281-host-linux-mechanism-41848472642-1/host/synchronized-contact-w1.json",
+          "sha256": "23c41f6ff36269576f693254a89f5981761619cbb6e646fc2c79caa7616ae539"
+        },
+        "workers": 1
+      },
+      {
+        "cases": [
+          {
+            "allowed_depth": 2.7824706190427,
+            "clearance_start_step": -1,
+            "depth_pass": true,
+            "first_valid_impact_step": -1,
+            "id": "embedded_stationary/conservative_baseline",
+            "initial_sand_depth": 2.5324706190427,
+            "introduced_position_work": 0.0,
+            "longest_clear_run": 0,
+            "maximum_sand_depth": 2.5324706190427,
+            "positive_observation_steps": 180,
+            "sustained_clearance_pass": false
+          },
+          {
+            "allowed_depth": 2.7824706190427,
+            "clearance_start_step": -1,
+            "depth_pass": true,
+            "first_valid_impact_step": -1,
+            "id": "embedded_stationary/velocity_control",
+            "initial_sand_depth": 2.5324706190427,
+            "introduced_position_work": 0.0,
+            "longest_clear_run": 0,
+            "maximum_sand_depth": 2.5324706190427,
+            "positive_observation_steps": 180,
+            "sustained_clearance_pass": false
+          },
+          {
+            "allowed_depth": 2.7824706190427,
+            "clearance_start_step": -1,
+            "depth_pass": true,
+            "first_valid_impact_step": -1,
+            "id": "embedded_stationary/candidate",
+            "initial_sand_depth": 2.5324706190427,
+            "introduced_position_work": 0.0,
+            "longest_clear_run": 0,
+            "maximum_sand_depth": 2.5324706190427,
+            "positive_observation_steps": 180,
+            "sustained_clearance_pass": false
+          },
+          {
+            "allowed_depth": 1.0,
+            "clearance_start_step": -1,
+            "depth_pass": false,
+            "first_valid_impact_step": 20,
+            "id": "packed_impact/conservative_baseline",
+            "initial_sand_depth": 0.0,
+            "introduced_position_work": 0.0,
+            "longest_clear_run": 0,
+            "maximum_sand_depth": 2.49995422363281,
+            "positive_observation_steps": 180,
+            "sustained_clearance_pass": false
+          },
+          {
+            "allowed_depth": 1.0,
+            "clearance_start_step": -1,
+            "depth_pass": false,
+            "first_valid_impact_step": 20,
+            "id": "packed_impact/velocity_control",
+            "initial_sand_depth": 0.0,
+            "introduced_position_work": 0.0,
+            "longest_clear_run": 0,
+            "maximum_sand_depth": 1.0037012640894,
+            "positive_observation_steps": 180,
+            "sustained_clearance_pass": false
+          },
+          {
+            "allowed_depth": 1.0,
+            "clearance_start_step": -1,
+            "depth_pass": false,
+            "first_valid_impact_step": 20,
+            "id": "packed_impact/candidate",
+            "initial_sand_depth": 0.0,
+            "introduced_position_work": 0.0,
+            "longest_clear_run": 0,
+            "maximum_sand_depth": 1.00370910657881,
+            "positive_observation_steps": 180,
+            "sustained_clearance_pass": false
+          },
+          {
+            "allowed_depth": 1.0,
+            "clearance_start_step": -1,
+            "depth_pass": false,
+            "first_valid_impact_step": 20,
+            "id": "offcenter_impact/conservative_baseline",
+            "initial_sand_depth": 0.0,
+            "introduced_position_work": 0.0,
+            "longest_clear_run": 0,
+            "maximum_sand_depth": 2.49995422363281,
+            "positive_observation_steps": 180,
+            "sustained_clearance_pass": false
+          },
+          {
+            "allowed_depth": 1.0,
+            "clearance_start_step": -1,
+            "depth_pass": false,
+            "first_valid_impact_step": 20,
+            "id": "offcenter_impact/velocity_control",
+            "initial_sand_depth": 0.0,
+            "introduced_position_work": 0.0,
+            "longest_clear_run": 0,
+            "maximum_sand_depth": 1.0037012640894,
+            "positive_observation_steps": 180,
+            "sustained_clearance_pass": false
+          },
+          {
+            "allowed_depth": 1.0,
+            "clearance_start_step": -1,
+            "depth_pass": false,
+            "first_valid_impact_step": 20,
+            "id": "offcenter_impact/candidate",
+            "initial_sand_depth": 0.0,
+            "introduced_position_work": 0.0,
+            "longest_clear_run": 0,
+            "maximum_sand_depth": 1.00370910657881,
+            "positive_observation_steps": 180,
+            "sustained_clearance_pass": false
+          },
+          {
+            "allowed_depth": 2.88596496943871,
+            "clearance_start_step": -1,
+            "depth_pass": false,
+            "first_valid_impact_step": 0,
+            "id": "rotated_compound/conservative_baseline",
+            "initial_sand_depth": 2.63596496943871,
+            "introduced_position_work": 0.0,
+            "longest_clear_run": 0,
+            "maximum_sand_depth": 4.14515443602114,
+            "positive_observation_steps": 180,
+            "sustained_clearance_pass": false
+          },
+          {
+            "allowed_depth": 2.88596496943871,
+            "clearance_start_step": -1,
+            "depth_pass": true,
+            "first_valid_impact_step": 0,
+            "id": "rotated_compound/velocity_control",
+            "initial_sand_depth": 2.63596496943871,
+            "introduced_position_work": 0.0,
+            "longest_clear_run": 0,
+            "maximum_sand_depth": 2.63596496943871,
+            "positive_observation_steps": 180,
+            "sustained_clearance_pass": false
+          },
+          {
+            "allowed_depth": 2.88596496943871,
+            "clearance_start_step": -1,
+            "depth_pass": true,
+            "first_valid_impact_step": 0,
+            "id": "rotated_compound/candidate",
+            "initial_sand_depth": 2.63596496943871,
+            "introduced_position_work": 0.0,
+            "longest_clear_run": 0,
+            "maximum_sand_depth": 2.63596496943871,
+            "positive_observation_steps": 180,
+            "sustained_clearance_pass": false
+          },
+          {
+            "allowed_depth": 1.0,
+            "clearance_start_step": -1,
+            "depth_pass": false,
+            "first_valid_impact_step": 20,
+            "id": "missed_publication/conservative_baseline",
+            "initial_sand_depth": 0.0,
+            "introduced_position_work": 0.0,
+            "longest_clear_run": 0,
+            "maximum_sand_depth": 2.49995422363281,
+            "positive_observation_steps": 180,
+            "sustained_clearance_pass": false
+          },
+          {
+            "allowed_depth": 1.0,
+            "clearance_start_step": -1,
+            "depth_pass": false,
+            "first_valid_impact_step": 20,
+            "id": "missed_publication/velocity_control",
+            "initial_sand_depth": 0.0,
+            "introduced_position_work": 0.0,
+            "longest_clear_run": 0,
+            "maximum_sand_depth": 1.00387543314864,
+            "positive_observation_steps": 180,
+            "sustained_clearance_pass": false
+          },
+          {
+            "allowed_depth": 1.0,
+            "clearance_start_step": -1,
+            "depth_pass": false,
+            "first_valid_impact_step": 20,
+            "id": "missed_publication/candidate",
+            "initial_sand_depth": 0.0,
+            "introduced_position_work": 0.0,
+            "longest_clear_run": 0,
+            "maximum_sand_depth": 1.00388378836434,
+            "positive_observation_steps": 180,
+            "sustained_clearance_pass": false
+          },
+          {
+            "allowed_depth": 1.0,
+            "clearance_start_step": -1,
+            "depth_pass": false,
+            "first_valid_impact_step": 21,
+            "id": "delayed_publication/conservative_baseline",
+            "initial_sand_depth": 0.0,
+            "introduced_position_work": 0.0,
+            "longest_clear_run": 0,
+            "maximum_sand_depth": 2.49995422363281,
+            "positive_observation_steps": 180,
+            "sustained_clearance_pass": false
+          },
+          {
+            "allowed_depth": 1.0,
+            "clearance_start_step": -1,
+            "depth_pass": false,
+            "first_valid_impact_step": 21,
+            "id": "delayed_publication/velocity_control",
+            "initial_sand_depth": 0.0,
+            "introduced_position_work": 0.0,
+            "longest_clear_run": 0,
+            "maximum_sand_depth": 1.07270699715721,
+            "positive_observation_steps": 180,
+            "sustained_clearance_pass": false
+          },
+          {
+            "allowed_depth": 1.0,
+            "clearance_start_step": -1,
+            "depth_pass": false,
+            "first_valid_impact_step": 21,
+            "id": "delayed_publication/candidate",
+            "initial_sand_depth": 0.0,
+            "introduced_position_work": 0.0,
+            "longest_clear_run": 0,
+            "maximum_sand_depth": 1.07270699715721,
+            "positive_observation_steps": 180,
+            "sustained_clearance_pass": false
+          },
+          {
+            "allowed_depth": 1.0,
+            "clearance_start_step": -1,
+            "depth_pass": false,
+            "first_valid_impact_step": -1,
+            "id": "stale_publication/conservative_baseline",
+            "initial_sand_depth": 0.0,
+            "introduced_position_work": 0.0,
+            "longest_clear_run": 0,
+            "maximum_sand_depth": 2.49995422363281,
+            "positive_observation_steps": 180,
+            "sustained_clearance_pass": false
+          },
+          {
+            "allowed_depth": 1.0,
+            "clearance_start_step": -1,
+            "depth_pass": false,
+            "first_valid_impact_step": -1,
+            "id": "stale_publication/velocity_control",
+            "initial_sand_depth": 0.0,
+            "introduced_position_work": 0.0,
+            "longest_clear_run": 0,
+            "maximum_sand_depth": 2.49995422363281,
+            "positive_observation_steps": 180,
+            "sustained_clearance_pass": false
+          },
+          {
+            "allowed_depth": 1.0,
+            "clearance_start_step": -1,
+            "depth_pass": false,
+            "first_valid_impact_step": -1,
+            "id": "stale_publication/candidate",
+            "initial_sand_depth": 0.0,
+            "introduced_position_work": 0.0,
+            "longest_clear_run": 0,
+            "maximum_sand_depth": 2.49995422363281,
+            "positive_observation_steps": 180,
+            "sustained_clearance_pass": false
+          }
+        ],
+        "clearance_failures": 21,
+        "depth_failures": 16,
+        "platform": "Linux",
+        "raw_report": {
+          "bytes": 21988991,
+          "path": "/workspace/scratch/4b0fc6bf4ee0/physics-review/hosted-41848472642/artifacts/sol281-host-linux-mechanism-41848472642-1/host/synchronized-contact-w4.json",
+          "sha256": "38605e47380ece50a18e4f5fd9a99fdf2d31ce877b6acb823510723b36734d26"
+        },
+        "workers": 4
+      },
+      {
+        "cases": [
+          {
+            "allowed_depth": 2.7824706190427,
+            "clearance_start_step": -1,
+            "depth_pass": true,
+            "first_valid_impact_step": -1,
+            "id": "embedded_stationary/conservative_baseline",
+            "initial_sand_depth": 2.5324706190427,
+            "introduced_position_work": 0.0,
+            "longest_clear_run": 0,
+            "maximum_sand_depth": 2.5324706190427,
+            "positive_observation_steps": 180,
+            "sustained_clearance_pass": false
+          },
+          {
+            "allowed_depth": 2.7824706190427,
+            "clearance_start_step": -1,
+            "depth_pass": true,
+            "first_valid_impact_step": -1,
+            "id": "embedded_stationary/velocity_control",
+            "initial_sand_depth": 2.5324706190427,
+            "introduced_position_work": 0.0,
+            "longest_clear_run": 0,
+            "maximum_sand_depth": 2.5324706190427,
+            "positive_observation_steps": 180,
+            "sustained_clearance_pass": false
+          },
+          {
+            "allowed_depth": 2.7824706190427,
+            "clearance_start_step": -1,
+            "depth_pass": true,
+            "first_valid_impact_step": -1,
+            "id": "embedded_stationary/candidate",
+            "initial_sand_depth": 2.5324706190427,
+            "introduced_position_work": 0.0,
+            "longest_clear_run": 0,
+            "maximum_sand_depth": 2.5324706190427,
+            "positive_observation_steps": 180,
+            "sustained_clearance_pass": false
+          },
+          {
+            "allowed_depth": 1.0,
+            "clearance_start_step": -1,
+            "depth_pass": false,
+            "first_valid_impact_step": 20,
+            "id": "packed_impact/conservative_baseline",
+            "initial_sand_depth": 0.0,
+            "introduced_position_work": 0.0,
+            "longest_clear_run": 0,
+            "maximum_sand_depth": 2.49995422363281,
+            "positive_observation_steps": 180,
+            "sustained_clearance_pass": false
+          },
+          {
+            "allowed_depth": 1.0,
+            "clearance_start_step": -1,
+            "depth_pass": false,
+            "first_valid_impact_step": 20,
+            "id": "packed_impact/velocity_control",
+            "initial_sand_depth": 0.0,
+            "introduced_position_work": 0.0,
+            "longest_clear_run": 0,
+            "maximum_sand_depth": 1.0037012640894,
+            "positive_observation_steps": 180,
+            "sustained_clearance_pass": false
+          },
+          {
+            "allowed_depth": 1.0,
+            "clearance_start_step": -1,
+            "depth_pass": false,
+            "first_valid_impact_step": 20,
+            "id": "packed_impact/candidate",
+            "initial_sand_depth": 0.0,
+            "introduced_position_work": 0.0,
+            "longest_clear_run": 0,
+            "maximum_sand_depth": 1.00370905322855,
+            "positive_observation_steps": 180,
+            "sustained_clearance_pass": false
+          },
+          {
+            "allowed_depth": 1.0,
+            "clearance_start_step": -1,
+            "depth_pass": false,
+            "first_valid_impact_step": 20,
+            "id": "offcenter_impact/conservative_baseline",
+            "initial_sand_depth": 0.0,
+            "introduced_position_work": 0.0,
+            "longest_clear_run": 0,
+            "maximum_sand_depth": 2.49995422363281,
+            "positive_observation_steps": 180,
+            "sustained_clearance_pass": false
+          },
+          {
+            "allowed_depth": 1.0,
+            "clearance_start_step": -1,
+            "depth_pass": false,
+            "first_valid_impact_step": 20,
+            "id": "offcenter_impact/velocity_control",
+            "initial_sand_depth": 0.0,
+            "introduced_position_work": 0.0,
+            "longest_clear_run": 0,
+            "maximum_sand_depth": 1.0037012640894,
+            "positive_observation_steps": 180,
+            "sustained_clearance_pass": false
+          },
+          {
+            "allowed_depth": 1.0,
+            "clearance_start_step": -1,
+            "depth_pass": false,
+            "first_valid_impact_step": 20,
+            "id": "offcenter_impact/candidate",
+            "initial_sand_depth": 0.0,
+            "introduced_position_work": 0.0,
+            "longest_clear_run": 0,
+            "maximum_sand_depth": 1.00370905322855,
+            "positive_observation_steps": 180,
+            "sustained_clearance_pass": false
+          },
+          {
+            "allowed_depth": 2.88596496943871,
+            "clearance_start_step": -1,
+            "depth_pass": false,
+            "first_valid_impact_step": 0,
+            "id": "rotated_compound/conservative_baseline",
+            "initial_sand_depth": 2.63596496943871,
+            "introduced_position_work": 0.0,
+            "longest_clear_run": 0,
+            "maximum_sand_depth": 4.14515443602114,
+            "positive_observation_steps": 180,
+            "sustained_clearance_pass": false
+          },
+          {
+            "allowed_depth": 2.88596496943871,
+            "clearance_start_step": -1,
+            "depth_pass": true,
+            "first_valid_impact_step": 0,
+            "id": "rotated_compound/velocity_control",
+            "initial_sand_depth": 2.63596496943871,
+            "introduced_position_work": 0.0,
+            "longest_clear_run": 0,
+            "maximum_sand_depth": 2.63596496943871,
+            "positive_observation_steps": 180,
+            "sustained_clearance_pass": false
+          },
+          {
+            "allowed_depth": 2.88596496943871,
+            "clearance_start_step": -1,
+            "depth_pass": true,
+            "first_valid_impact_step": 0,
+            "id": "rotated_compound/candidate",
+            "initial_sand_depth": 2.63596496943871,
+            "introduced_position_work": 0.0,
+            "longest_clear_run": 0,
+            "maximum_sand_depth": 2.63596496943871,
+            "positive_observation_steps": 180,
+            "sustained_clearance_pass": false
+          },
+          {
+            "allowed_depth": 1.0,
+            "clearance_start_step": -1,
+            "depth_pass": false,
+            "first_valid_impact_step": 20,
+            "id": "missed_publication/conservative_baseline",
+            "initial_sand_depth": 0.0,
+            "introduced_position_work": 0.0,
+            "longest_clear_run": 0,
+            "maximum_sand_depth": 2.49995422363281,
+            "positive_observation_steps": 180,
+            "sustained_clearance_pass": false
+          },
+          {
+            "allowed_depth": 1.0,
+            "clearance_start_step": -1,
+            "depth_pass": false,
+            "first_valid_impact_step": 20,
+            "id": "missed_publication/velocity_control",
+            "initial_sand_depth": 0.0,
+            "introduced_position_work": 0.0,
+            "longest_clear_run": 0,
+            "maximum_sand_depth": 1.00388933863183,
+            "positive_observation_steps": 180,
+            "sustained_clearance_pass": false
+          },
+          {
+            "allowed_depth": 1.0,
+            "clearance_start_step": -1,
+            "depth_pass": false,
+            "first_valid_impact_step": 20,
+            "id": "missed_publication/candidate",
+            "initial_sand_depth": 0.0,
+            "introduced_position_work": 0.0,
+            "longest_clear_run": 0,
+            "maximum_sand_depth": 1.00388378836434,
+            "positive_observation_steps": 180,
+            "sustained_clearance_pass": false
+          },
+          {
+            "allowed_depth": 1.0,
+            "clearance_start_step": -1,
+            "depth_pass": false,
+            "first_valid_impact_step": 21,
+            "id": "delayed_publication/conservative_baseline",
+            "initial_sand_depth": 0.0,
+            "introduced_position_work": 0.0,
+            "longest_clear_run": 0,
+            "maximum_sand_depth": 2.49995422363281,
+            "positive_observation_steps": 180,
+            "sustained_clearance_pass": false
+          },
+          {
+            "allowed_depth": 1.0,
+            "clearance_start_step": -1,
+            "depth_pass": false,
+            "first_valid_impact_step": 21,
+            "id": "delayed_publication/velocity_control",
+            "initial_sand_depth": 0.0,
+            "introduced_position_work": 0.0,
+            "longest_clear_run": 0,
+            "maximum_sand_depth": 1.07270699715721,
+            "positive_observation_steps": 180,
+            "sustained_clearance_pass": false
+          },
+          {
+            "allowed_depth": 1.0,
+            "clearance_start_step": -1,
+            "depth_pass": false,
+            "first_valid_impact_step": 21,
+            "id": "delayed_publication/candidate",
+            "initial_sand_depth": 0.0,
+            "introduced_position_work": 0.0,
+            "longest_clear_run": 0,
+            "maximum_sand_depth": 1.07270699715721,
+            "positive_observation_steps": 180,
+            "sustained_clearance_pass": false
+          },
+          {
+            "allowed_depth": 1.0,
+            "clearance_start_step": -1,
+            "depth_pass": false,
+            "first_valid_impact_step": -1,
+            "id": "stale_publication/conservative_baseline",
+            "initial_sand_depth": 0.0,
+            "introduced_position_work": 0.0,
+            "longest_clear_run": 0,
+            "maximum_sand_depth": 2.49995422363281,
+            "positive_observation_steps": 180,
+            "sustained_clearance_pass": false
+          },
+          {
+            "allowed_depth": 1.0,
+            "clearance_start_step": -1,
+            "depth_pass": false,
+            "first_valid_impact_step": -1,
+            "id": "stale_publication/velocity_control",
+            "initial_sand_depth": 0.0,
+            "introduced_position_work": 0.0,
+            "longest_clear_run": 0,
+            "maximum_sand_depth": 2.49995422363281,
+            "positive_observation_steps": 180,
+            "sustained_clearance_pass": false
+          },
+          {
+            "allowed_depth": 1.0,
+            "clearance_start_step": -1,
+            "depth_pass": false,
+            "first_valid_impact_step": -1,
+            "id": "stale_publication/candidate",
+            "initial_sand_depth": 0.0,
+            "introduced_position_work": 0.0,
+            "longest_clear_run": 0,
+            "maximum_sand_depth": 2.49995422363281,
+            "positive_observation_steps": 180,
+            "sustained_clearance_pass": false
+          }
+        ],
+        "clearance_failures": 21,
+        "depth_failures": 16,
+        "platform": "Windows",
+        "raw_report": {
+          "bytes": 21979892,
+          "path": "/workspace/scratch/4b0fc6bf4ee0/physics-review/hosted-41848472642/artifacts/sol281-host-windows-mechanism-41848472642-1/synchronized-contact-w1.json",
+          "sha256": "714efa8e7009aeda7a5d69fe7aa441f5dca0a3f0e497aa62e73a745446e5c561"
+        },
+        "workers": 1
+      },
+      {
+        "cases": [
+          {
+            "allowed_depth": 2.7824706190427,
+            "clearance_start_step": -1,
+            "depth_pass": true,
+            "first_valid_impact_step": -1,
+            "id": "embedded_stationary/conservative_baseline",
+            "initial_sand_depth": 2.5324706190427,
+            "introduced_position_work": 0.0,
+            "longest_clear_run": 0,
+            "maximum_sand_depth": 2.5324706190427,
+            "positive_observation_steps": 180,
+            "sustained_clearance_pass": false
+          },
+          {
+            "allowed_depth": 2.7824706190427,
+            "clearance_start_step": -1,
+            "depth_pass": true,
+            "first_valid_impact_step": -1,
+            "id": "embedded_stationary/velocity_control",
+            "initial_sand_depth": 2.5324706190427,
+            "introduced_position_work": 0.0,
+            "longest_clear_run": 0,
+            "maximum_sand_depth": 2.5324706190427,
+            "positive_observation_steps": 180,
+            "sustained_clearance_pass": false
+          },
+          {
+            "allowed_depth": 2.7824706190427,
+            "clearance_start_step": -1,
+            "depth_pass": true,
+            "first_valid_impact_step": -1,
+            "id": "embedded_stationary/candidate",
+            "initial_sand_depth": 2.5324706190427,
+            "introduced_position_work": 0.0,
+            "longest_clear_run": 0,
+            "maximum_sand_depth": 2.5324706190427,
+            "positive_observation_steps": 180,
+            "sustained_clearance_pass": false
+          },
+          {
+            "allowed_depth": 1.0,
+            "clearance_start_step": -1,
+            "depth_pass": false,
+            "first_valid_impact_step": 20,
+            "id": "packed_impact/conservative_baseline",
+            "initial_sand_depth": 0.0,
+            "introduced_position_work": 0.0,
+            "longest_clear_run": 0,
+            "maximum_sand_depth": 2.49995422363281,
+            "positive_observation_steps": 180,
+            "sustained_clearance_pass": false
+          },
+          {
+            "allowed_depth": 1.0,
+            "clearance_start_step": -1,
+            "depth_pass": false,
+            "first_valid_impact_step": 20,
+            "id": "packed_impact/velocity_control",
+            "initial_sand_depth": 0.0,
+            "introduced_position_work": 0.0,
+            "longest_clear_run": 0,
+            "maximum_sand_depth": 1.0037012640894,
+            "positive_observation_steps": 180,
+            "sustained_clearance_pass": false
+          },
+          {
+            "allowed_depth": 1.0,
+            "clearance_start_step": -1,
+            "depth_pass": false,
+            "first_valid_impact_step": 20,
+            "id": "packed_impact/candidate",
+            "initial_sand_depth": 0.0,
+            "introduced_position_work": 0.0,
+            "longest_clear_run": 0,
+            "maximum_sand_depth": 1.00370905322855,
+            "positive_observation_steps": 180,
+            "sustained_clearance_pass": false
+          },
+          {
+            "allowed_depth": 1.0,
+            "clearance_start_step": -1,
+            "depth_pass": false,
+            "first_valid_impact_step": 20,
+            "id": "offcenter_impact/conservative_baseline",
+            "initial_sand_depth": 0.0,
+            "introduced_position_work": 0.0,
+            "longest_clear_run": 0,
+            "maximum_sand_depth": 2.49995422363281,
+            "positive_observation_steps": 180,
+            "sustained_clearance_pass": false
+          },
+          {
+            "allowed_depth": 1.0,
+            "clearance_start_step": -1,
+            "depth_pass": false,
+            "first_valid_impact_step": 20,
+            "id": "offcenter_impact/velocity_control",
+            "initial_sand_depth": 0.0,
+            "introduced_position_work": 0.0,
+            "longest_clear_run": 0,
+            "maximum_sand_depth": 1.0037012640894,
+            "positive_observation_steps": 180,
+            "sustained_clearance_pass": false
+          },
+          {
+            "allowed_depth": 1.0,
+            "clearance_start_step": -1,
+            "depth_pass": false,
+            "first_valid_impact_step": 20,
+            "id": "offcenter_impact/candidate",
+            "initial_sand_depth": 0.0,
+            "introduced_position_work": 0.0,
+            "longest_clear_run": 0,
+            "maximum_sand_depth": 1.00370905322855,
+            "positive_observation_steps": 180,
+            "sustained_clearance_pass": false
+          },
+          {
+            "allowed_depth": 2.88596496943871,
+            "clearance_start_step": -1,
+            "depth_pass": false,
+            "first_valid_impact_step": 0,
+            "id": "rotated_compound/conservative_baseline",
+            "initial_sand_depth": 2.63596496943871,
+            "introduced_position_work": 0.0,
+            "longest_clear_run": 0,
+            "maximum_sand_depth": 4.14515443602114,
+            "positive_observation_steps": 180,
+            "sustained_clearance_pass": false
+          },
+          {
+            "allowed_depth": 2.88596496943871,
+            "clearance_start_step": -1,
+            "depth_pass": true,
+            "first_valid_impact_step": 0,
+            "id": "rotated_compound/velocity_control",
+            "initial_sand_depth": 2.63596496943871,
+            "introduced_position_work": 0.0,
+            "longest_clear_run": 0,
+            "maximum_sand_depth": 2.63596496943871,
+            "positive_observation_steps": 180,
+            "sustained_clearance_pass": false
+          },
+          {
+            "allowed_depth": 2.88596496943871,
+            "clearance_start_step": -1,
+            "depth_pass": true,
+            "first_valid_impact_step": 0,
+            "id": "rotated_compound/candidate",
+            "initial_sand_depth": 2.63596496943871,
+            "introduced_position_work": 0.0,
+            "longest_clear_run": 0,
+            "maximum_sand_depth": 2.63596496943871,
+            "positive_observation_steps": 180,
+            "sustained_clearance_pass": false
+          },
+          {
+            "allowed_depth": 1.0,
+            "clearance_start_step": -1,
+            "depth_pass": false,
+            "first_valid_impact_step": 20,
+            "id": "missed_publication/conservative_baseline",
+            "initial_sand_depth": 0.0,
+            "introduced_position_work": 0.0,
+            "longest_clear_run": 0,
+            "maximum_sand_depth": 2.49995422363281,
+            "positive_observation_steps": 180,
+            "sustained_clearance_pass": false
+          },
+          {
+            "allowed_depth": 1.0,
+            "clearance_start_step": -1,
+            "depth_pass": false,
+            "first_valid_impact_step": 20,
+            "id": "missed_publication/velocity_control",
+            "initial_sand_depth": 0.0,
+            "introduced_position_work": 0.0,
+            "longest_clear_run": 0,
+            "maximum_sand_depth": 1.00388933863183,
+            "positive_observation_steps": 180,
+            "sustained_clearance_pass": false
+          },
+          {
+            "allowed_depth": 1.0,
+            "clearance_start_step": -1,
+            "depth_pass": false,
+            "first_valid_impact_step": 20,
+            "id": "missed_publication/candidate",
+            "initial_sand_depth": 0.0,
+            "introduced_position_work": 0.0,
+            "longest_clear_run": 0,
+            "maximum_sand_depth": 1.00388378836434,
+            "positive_observation_steps": 180,
+            "sustained_clearance_pass": false
+          },
+          {
+            "allowed_depth": 1.0,
+            "clearance_start_step": -1,
+            "depth_pass": false,
+            "first_valid_impact_step": 21,
+            "id": "delayed_publication/conservative_baseline",
+            "initial_sand_depth": 0.0,
+            "introduced_position_work": 0.0,
+            "longest_clear_run": 0,
+            "maximum_sand_depth": 2.49995422363281,
+            "positive_observation_steps": 180,
+            "sustained_clearance_pass": false
+          },
+          {
+            "allowed_depth": 1.0,
+            "clearance_start_step": -1,
+            "depth_pass": false,
+            "first_valid_impact_step": 21,
+            "id": "delayed_publication/velocity_control",
+            "initial_sand_depth": 0.0,
+            "introduced_position_work": 0.0,
+            "longest_clear_run": 0,
+            "maximum_sand_depth": 1.07270699715721,
+            "positive_observation_steps": 180,
+            "sustained_clearance_pass": false
+          },
+          {
+            "allowed_depth": 1.0,
+            "clearance_start_step": -1,
+            "depth_pass": false,
+            "first_valid_impact_step": 21,
+            "id": "delayed_publication/candidate",
+            "initial_sand_depth": 0.0,
+            "introduced_position_work": 0.0,
+            "longest_clear_run": 0,
+            "maximum_sand_depth": 1.07270699715721,
+            "positive_observation_steps": 180,
+            "sustained_clearance_pass": false
+          },
+          {
+            "allowed_depth": 1.0,
+            "clearance_start_step": -1,
+            "depth_pass": false,
+            "first_valid_impact_step": -1,
+            "id": "stale_publication/conservative_baseline",
+            "initial_sand_depth": 0.0,
+            "introduced_position_work": 0.0,
+            "longest_clear_run": 0,
+            "maximum_sand_depth": 2.49995422363281,
+            "positive_observation_steps": 180,
+            "sustained_clearance_pass": false
+          },
+          {
+            "allowed_depth": 1.0,
+            "clearance_start_step": -1,
+            "depth_pass": false,
+            "first_valid_impact_step": -1,
+            "id": "stale_publication/velocity_control",
+            "initial_sand_depth": 0.0,
+            "introduced_position_work": 0.0,
+            "longest_clear_run": 0,
+            "maximum_sand_depth": 2.49995422363281,
+            "positive_observation_steps": 180,
+            "sustained_clearance_pass": false
+          },
+          {
+            "allowed_depth": 1.0,
+            "clearance_start_step": -1,
+            "depth_pass": false,
+            "first_valid_impact_step": -1,
+            "id": "stale_publication/candidate",
+            "initial_sand_depth": 0.0,
+            "introduced_position_work": 0.0,
+            "longest_clear_run": 0,
+            "maximum_sand_depth": 2.49995422363281,
+            "positive_observation_steps": 180,
+            "sustained_clearance_pass": false
+          }
+        ],
+        "clearance_failures": 21,
+        "depth_failures": 16,
+        "platform": "Windows",
+        "raw_report": {
+          "bytes": 21979143,
+          "path": "/workspace/scratch/4b0fc6bf4ee0/physics-review/hosted-41848472642/artifacts/sol281-host-windows-mechanism-41848472642-1/synchronized-contact-w4.json",
+          "sha256": "42865148cc89ac05ce4c751c8882cdf3ab1d8c2fe33a1c1d541ac038f68f5fb7"
+        },
+        "workers": 4
+      }
+    ]
+  },
+  "tree": "11e986214f056f3f39631bb0331b3cd4930c3d1c"
+}

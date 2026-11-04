@@ -1,0 +1,20 @@
+{
+  "schema": "sol364b-independent-packet-reconstruction-v1",
+  "status": "PASS",
+  "files": [
+    "inputs.json",
+    "certificates.json",
+    "states.json",
+    "summary.json",
+    "native-tests.json",
+    "development-attempts.json"
+  ],
+  "lossless_inputs": 349,
+  "lossless_certificates": 349,
+  "states": 1452,
+  "outcomes": {
+    "InitialExcludedOverlap": 728,
+    "NoRegisteredCorridor": 724
+  },
+  "scope": "Independent byte-for-byte reconstruction and inventory verification, not new live physics or CPU evidence"
+}

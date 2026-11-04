@@ -1,0 +1,439 @@
+{
+  "schema": "mat-sol-main-advance-compatibility-review-v1",
+  "review_kind": "Independent read-only source/authority qualification; no rebase, import, recomposition, branch or PR write",
+  "accepted_main": {
+    "sha": "7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1",
+    "tree": "36ce5a01e754a141c321f41cac7f1c6b6059c371"
+  },
+  "new_main": {
+    "sha": "01f9b7c8e382ca6bdbaf0bf70c7847adc12fe0bc",
+    "tree": "4cf99921dc2b33233c3a254f4b6f27ed7cb0f204",
+    "parents": [
+      "7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1",
+      "5296596212e3868a598b90b1af2a94c0d1757b49"
+    ],
+    "subject": "Merge pull request #374 from techrote/claude/lcb201-pressure-idle-cost"
+  },
+  "ancestry": {
+    "accepted_main_is_ancestor": true,
+    "frozen_authority_is_ancestor": true,
+    "support_merge_base": "7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1",
+    "support_is_ancestor_of_new_main": false,
+    "new_main_is_ancestor_of_support": false
+  },
+  "agents_md_read": true,
+  "unchanged_identities": [
+    {
+      "path": "AGENTS.md",
+      "git_blob": "fa1bb770cd5585e58cf5b434afe6b6bdc67f1f8f",
+      "raw_sha256": "fa3597c0dcbbb5d18c2384b2f3ceae579301c8d0edb91792ae800ad213e5d495",
+      "unchanged_from_accepted": true
+    },
+    {
+      "path": "tools/material_catalogue/compatibility.py",
+      "git_blob": "10da0afbe8190840c36ffe5d6d14ff4aa5eec2d0",
+      "raw_sha256": "32c6c4c289a91a1e19498b21bfbca9dcc2b58e1040489653942fd7160ec1bd5a",
+      "unchanged_from_accepted": true
+    },
+    {
+      "path": "tools/material_catalogue/compiler.py",
+      "git_blob": "60c69c2e26b19352998f30e88386fb0b2f54993c",
+      "raw_sha256": "81a0658655574ee5e65ecc144db9750b9128380595d51af70c2b04d0a209a098",
+      "unchanged_from_accepted": true
+    },
+    {
+      "path": "materials/catalogue/compatibility-lock.json",
+      "git_blob": "119d94c125fd229c080a21a494647acf924ddbc8",
+      "raw_sha256": "8b4d3351cbe4380e976655d10dc34c4bf9e81d95442719a53770b62d219183dc",
+      "unchanged_from_accepted": true
+    },
+    {
+      "path": "materials/catalogue/catalogue.json",
+      "git_blob": "d7a47d60721598a16589daf177a6ff4401b84b43",
+      "raw_sha256": "3a5250a07912dc9530172cb2fccecd526606e242209d666cb2da202e1cfc9f14",
+      "unchanged_from_accepted": true
+    }
+  ],
+  "protected_sources": [
+    {
+      "path": "native/include/cybersand/material.hpp",
+      "role": "stable IDs and descriptor bytes",
+      "frozen_git_blob": "dcf05895da3015a2e999e3d1cbbae0fdc7fe32b3",
+      "new_main_git_blob": "dcf05895da3015a2e999e3d1cbbae0fdc7fe32b3",
+      "new_main_raw_sha256": "3e40f970e3205853a43643b4163041935ccd64d8a018d35a7473c3f95a1d0375",
+      "lf_sha256": "3e40f970e3205853a43643b4163041935ccd64d8a018d35a7473c3f95a1d0375",
+      "unchanged_from_accepted_and_frozen": true
+    },
+    {
+      "path": "native/include/cybersand/interaction_rules.hpp",
+      "role": "reaction, family and ordinal identity",
+      "frozen_git_blob": "b70fc9dc2599f648e5374f06e4cc0ae9cb868d79",
+      "new_main_git_blob": "b70fc9dc2599f648e5374f06e4cc0ae9cb868d79",
+      "new_main_raw_sha256": "aaffab99ddc7413f82a77de69b9d97aea37bd8cf46211b867ed303a6776448a5",
+      "lf_sha256": "aaffab99ddc7413f82a77de69b9d97aea37bd8cf46211b867ed303a6776448a5",
+      "unchanged_from_accepted_and_frozen": true
+    },
+    {
+      "path": "native/include/cybersand/material_rules.hpp",
+      "role": "material query interface",
+      "frozen_git_blob": "7ddd89aea49c9f22c3afedb329ab5b6efde0650b",
+      "new_main_git_blob": "7ddd89aea49c9f22c3afedb329ab5b6efde0650b",
+      "new_main_raw_sha256": "175b44abd8585b909cb1a85f31b0ba810cf2f7050898bf8b6006a8cc17577362",
+      "lf_sha256": "175b44abd8585b909cb1a85f31b0ba810cf2f7050898bf8b6006a8cc17577362",
+      "unchanged_from_accepted_and_frozen": true
+    },
+    {
+      "path": "native/src/material_rules.cpp",
+      "role": "capability and pair-query semantics",
+      "frozen_git_blob": "23483fc8e70b7902ad9fe9416716f371df2aa013",
+      "new_main_git_blob": "23483fc8e70b7902ad9fe9416716f371df2aa013",
+      "new_main_raw_sha256": "8fd1509bfcef162c5cb6028e9af38c563ad651822b9fcfcc2e79a569d185afa3",
+      "lf_sha256": "8fd1509bfcef162c5cb6028e9af38c563ad651822b9fcfcc2e79a569d185afa3",
+      "unchanged_from_accepted_and_frozen": true
+    },
+    {
+      "path": "native/include/cybersand/material_appearance.hpp",
+      "role": "visual state projection",
+      "frozen_git_blob": "91b74415ffafbf667b3a4beeabcf0ec28ff51c5b",
+      "new_main_git_blob": "91b74415ffafbf667b3a4beeabcf0ec28ff51c5b",
+      "new_main_raw_sha256": "512ae47aeb6e4d3d88d9e5388c6954ae1150cc1ebdfd5bef01483984da9fb0a0",
+      "lf_sha256": "512ae47aeb6e4d3d88d9e5388c6954ae1150cc1ebdfd5bef01483984da9fb0a0",
+      "unchanged_from_accepted_and_frozen": true
+    },
+    {
+      "path": "native/include/cybersand/precision_storage.hpp",
+      "role": "Cell layout and state widths",
+      "frozen_git_blob": "92788b111182b977ba7a781f367732560fefb8fc",
+      "new_main_git_blob": "92788b111182b977ba7a781f367732560fefb8fc",
+      "new_main_raw_sha256": "7b7bbdfa6ac5618665b22cf619bbba64c03caeea997a24c94ebdff9902dd4266",
+      "lf_sha256": "7b7bbdfa6ac5618665b22cf619bbba64c03caeea997a24c94ebdff9902dd4266",
+      "unchanged_from_accepted_and_frozen": true
+    },
+    {
+      "path": "native/include/cybersand/quantity_ledger.hpp",
+      "role": "quantity schema and positional slots",
+      "frozen_git_blob": "2e211f9a2e59e594cc1a6f1c63b2d34a02118c3a",
+      "new_main_git_blob": "2e211f9a2e59e594cc1a6f1c63b2d34a02118c3a",
+      "new_main_raw_sha256": "4345032e718b601a33ac3ffb69a456cd91bcf05ee3ab503650dcb7c06a59c6ad",
+      "lf_sha256": "4345032e718b601a33ac3ffb69a456cd91bcf05ee3ab503650dcb7c06a59c6ad",
+      "unchanged_from_accepted_and_frozen": true
+    },
+    {
+      "path": "native/src/world_quantity.inc",
+      "role": "quantity codec, endpoints and specialized ordinal mapping",
+      "frozen_git_blob": "f44dbdc0ea4c04cd3d7e19f460e86bb095bcc2f9",
+      "new_main_git_blob": "f44dbdc0ea4c04cd3d7e19f460e86bb095bcc2f9",
+      "new_main_raw_sha256": "627936a33c9ed58b6841f04466bf83aefe83b451ceb0da22baa19269ed5ef074",
+      "lf_sha256": "627936a33c9ed58b6841f04466bf83aefe83b451ceb0da22baa19269ed5ef074",
+      "unchanged_from_accepted_and_frozen": true
+    },
+    {
+      "path": "native/src/world.cpp",
+      "role": "legacy movement, chemistry, thermal and scheduling authority",
+      "frozen_git_blob": "a6afd8cad4264ac2eca0362d14711158e3606760",
+      "new_main_git_blob": "a6afd8cad4264ac2eca0362d14711158e3606760",
+      "new_main_raw_sha256": "b7a129f44eccc7c33dbd2f0d84802ab096140dcaa9b5b3a83d45dd3bf85fbad1",
+      "lf_sha256": "b7a129f44eccc7c33dbd2f0d84802ab096140dcaa9b5b3a83d45dd3bf85fbad1",
+      "unchanged_from_accepted_and_frozen": true
+    },
+    {
+      "path": "native/src/world_pressure.inc",
+      "role": "policy admission, physical hash and CYPS restoration",
+      "frozen_git_blob": "1218ae4931708d78eb7b5f5c202587808487a577",
+      "new_main_git_blob": "1218ae4931708d78eb7b5f5c202587808487a577",
+      "new_main_raw_sha256": "c8cb11512e935d05e099d8f155c1659473a7f61aa301e2e4900e55bdcfe4024b",
+      "lf_sha256": "c8cb11512e935d05e099d8f155c1659473a7f61aa301e2e4900e55bdcfe4024b",
+      "unchanged_from_accepted_and_frozen": true
+    },
+    {
+      "path": "native/src/world_inertial.inc",
+      "role": "IN sidecar and state authority",
+      "frozen_git_blob": "efd7602fbb4b8dde0e056474b141ce17cd73dcd0",
+      "new_main_git_blob": "efd7602fbb4b8dde0e056474b141ce17cd73dcd0",
+      "new_main_raw_sha256": "f9e891dafa9c61e76460b5b3a720e3e522e7b63c381e81539e5e508b2719a0dd",
+      "lf_sha256": "f9e891dafa9c61e76460b5b3a720e3e522e7b63c381e81539e5e508b2719a0dd",
+      "unchanged_from_accepted_and_frozen": true
+    },
+    {
+      "path": "native/include/cybersand/transport_policy.hpp",
+      "role": "transport v1 dimensions and wire contract",
+      "frozen_git_blob": "9998aa1c327bc58b98f64e24813a8dc51aa73674",
+      "new_main_git_blob": "9998aa1c327bc58b98f64e24813a8dc51aa73674",
+      "new_main_raw_sha256": "5943ae6a9479813768d1a62f54895e468288fc19ccb9c2f4b29f4a13aa41dd29",
+      "lf_sha256": "5943ae6a9479813768d1a62f54895e468288fc19ccb9c2f4b29f4a13aa41dd29",
+      "unchanged_from_accepted_and_frozen": true
+    },
+    {
+      "path": "native/include/cybersand/liquid_solver_policy.hpp",
+      "role": "native stale-identity refusal",
+      "frozen_git_blob": "052b6ea6ba7c18ca5997c310abb1951f6b56cd77",
+      "new_main_git_blob": "052b6ea6ba7c18ca5997c310abb1951f6b56cd77",
+      "new_main_raw_sha256": "c1f2e6b19ad57313eb1c5dd1a4ad56501140d4574f15b26463b4fb513a53827e",
+      "lf_sha256": "c1f2e6b19ad57313eb1c5dd1a4ad56501140d4574f15b26463b4fb513a53827e",
+      "unchanged_from_accepted_and_frozen": true
+    },
+    {
+      "path": "native/include/cybersand/liquid_policy_catalogue.hpp",
+      "role": "generated native policy identities",
+      "frozen_git_blob": "c7b68513b14335bf33ffcbe96ed77118a55529d0",
+      "new_main_git_blob": "c7b68513b14335bf33ffcbe96ed77118a55529d0",
+      "new_main_raw_sha256": "ec9153f5cf921d2834116831908e9feb16148695aa433a21b0e62a0981072303",
+      "lf_sha256": "ec9153f5cf921d2834116831908e9feb16148695aa433a21b0e62a0981072303",
+      "unchanged_from_accepted_and_frozen": true
+    },
+    {
+      "path": "native/include/cybersand/water_experiment_policy.hpp",
+      "role": "Water quantity defaults and bounds",
+      "frozen_git_blob": "009664f99889797242522b3a76240ebde8867316",
+      "new_main_git_blob": "009664f99889797242522b3a76240ebde8867316",
+      "new_main_raw_sha256": "60b6ef5e611ba39eb0d6220115eb2f0662bc58e02b56c0966a239e30ad57dfaf",
+      "lf_sha256": "60b6ef5e611ba39eb0d6220115eb2f0662bc58e02b56c0966a239e30ad57dfaf",
+      "unchanged_from_accepted_and_frozen": true
+    },
+    {
+      "path": "godot/scripts/cell_world.gd",
+      "role": "fallback identity, capabilities and separate physics",
+      "frozen_git_blob": "ea8da8c902f5bb6f68a2c92231b104d9fb26d229",
+      "new_main_git_blob": "ea8da8c902f5bb6f68a2c92231b104d9fb26d229",
+      "new_main_raw_sha256": "763f5047c2f028ec71109a3f44a420bab75122e3ce15cfbad9b6fb3787bee035",
+      "lf_sha256": "763f5047c2f028ec71109a3f44a420bab75122e3ce15cfbad9b6fb3787bee035",
+      "unchanged_from_accepted_and_frozen": true
+    },
+    {
+      "path": "godot/scripts/interaction_policy.gd",
+      "role": "fallback granular support",
+      "frozen_git_blob": "27c128dfd39695af4da86c64c56962635b76a713",
+      "new_main_git_blob": "27c128dfd39695af4da86c64c56962635b76a713",
+      "new_main_raw_sha256": "ba4acd7587b044ca412caaa75c740a6487f59ed6cae09c4d9d271a7342d06742",
+      "lf_sha256": "ba4acd7587b044ca412caaa75c740a6487f59ed6cae09c4d9d271a7342d06742",
+      "unchanged_from_accepted_and_frozen": true
+    },
+    {
+      "path": "godot/scripts/material_appearance_lut.gd",
+      "role": "palette bytes and Godot appearance calculations",
+      "frozen_git_blob": "689633f9b82c297763b0615b7fa8c0364ed11623",
+      "new_main_git_blob": "689633f9b82c297763b0615b7fa8c0364ed11623",
+      "new_main_raw_sha256": "1033dbe5e61e330578aa8a3bb2d3d7c98a8b7b4c42775b91d50b5a87fd443b0a",
+      "lf_sha256": "1033dbe5e61e330578aa8a3bb2d3d7c98a8b7b4c42775b91d50b5a87fd443b0a",
+      "unchanged_from_accepted_and_frozen": true
+    },
+    {
+      "path": "godot/scripts/transport_profiles.gd",
+      "role": "transport ownership, precedence and validation",
+      "frozen_git_blob": "19369f053e956f2f8a69787cda914b7e0d43ff6a",
+      "new_main_git_blob": "19369f053e956f2f8a69787cda914b7e0d43ff6a",
+      "new_main_raw_sha256": "5497757c0950082b57be0f95760680cb05c631422940a1d6efcbff010a42b6a0",
+      "lf_sha256": "5497757c0950082b57be0f95760680cb05c631422940a1d6efcbff010a42b6a0",
+      "unchanged_from_accepted_and_frozen": true
+    },
+    {
+      "path": "godot/shaders/material_palette.gdshader",
+      "role": "hand-coded appearance programme",
+      "frozen_git_blob": "9f421c9130d2f03936bd07301befa5f426555418",
+      "new_main_git_blob": "9f421c9130d2f03936bd07301befa5f426555418",
+      "new_main_raw_sha256": "f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1",
+      "lf_sha256": "f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1",
+      "unchanged_from_accepted_and_frozen": true
+    },
+    {
+      "path": "tools/lcb/derive_capability_matrix.py",
+      "role": "literal-source parser contract",
+      "frozen_git_blob": "d38647630f1731c4fdd800d412f39c15007580b3",
+      "new_main_git_blob": "d38647630f1731c4fdd800d412f39c15007580b3",
+      "new_main_raw_sha256": "8ccea6c3bca94116e1714fd4a2ae0b3bbef046e604c4ffe734bca46c54b5d5ea",
+      "lf_sha256": "8ccea6c3bca94116e1714fd4a2ae0b3bbef046e604c4ffe734bca46c54b5d5ea",
+      "unchanged_from_accepted_and_frozen": true
+    },
+    {
+      "path": "tools/lcb/policy_contract.py",
+      "role": "catalogue, capability and policy digest contract",
+      "frozen_git_blob": "cd3ecffb3582731c5b32775ef72bf9a6cac75c9f",
+      "new_main_git_blob": "cd3ecffb3582731c5b32775ef72bf9a6cac75c9f",
+      "new_main_raw_sha256": "3b9d6634f884621a3506cea761af7500e484d513b0e5bb75e2a81361fe9a81b2",
+      "lf_sha256": "3b9d6634f884621a3506cea761af7500e484d513b0e5bb75e2a81361fe9a81b2",
+      "unchanged_from_accepted_and_frozen": true
+    },
+    {
+      "path": "tools/lcb/native_policy_artifacts.py",
+      "role": "existing native identity generator",
+      "frozen_git_blob": "e1f84d81326f3238160024d1bc8a9a255d92013a",
+      "new_main_git_blob": "e1f84d81326f3238160024d1bc8a9a255d92013a",
+      "new_main_raw_sha256": "1eba32bb3e3e80a4d6cb62219287421abee454b32865cde183bd2d451523c230",
+      "lf_sha256": "1eba32bb3e3e80a4d6cb62219287421abee454b32865cde183bd2d451523c230",
+      "unchanged_from_accepted_and_frozen": true
+    },
+    {
+      "path": "docs/reference/liquid-solver-capability-matrix.json",
+      "role": "capability identity bytes",
+      "frozen_git_blob": "f1ac46c097a4fec977b9efdf930e6ab2e79e51eb",
+      "new_main_git_blob": "f1ac46c097a4fec977b9efdf930e6ab2e79e51eb",
+      "new_main_raw_sha256": "3d7a471391ffa551d8580fd83625bdf3b40954adfa8f683045dd1e168abdcddb",
+      "lf_sha256": "3d7a471391ffa551d8580fd83625bdf3b40954adfa8f683045dd1e168abdcddb",
+      "unchanged_from_accepted_and_frozen": true
+    },
+    {
+      "path": "docs/reference/liquid-policy-wire-vectors.json",
+      "role": "retained policy wire oracle",
+      "frozen_git_blob": "220315235757fefaa6de26d2fc701f6ee875bb69",
+      "new_main_git_blob": "220315235757fefaa6de26d2fc701f6ee875bb69",
+      "new_main_raw_sha256": "cac210f88ca96078d9920de80505e9e28c63a630df87fd1d5c16801bde5a8c31",
+      "lf_sha256": "cac210f88ca96078d9920de80505e9e28c63a630df87fd1d5c16801bde5a8c31",
+      "unchanged_from_accepted_and_frozen": true
+    },
+    {
+      "path": "docs/reference/water-normalization-vectors.json",
+      "role": "retained normalization oracle",
+      "frozen_git_blob": "42aba04323395f52d24494223daa8c9be44f150c",
+      "new_main_git_blob": "42aba04323395f52d24494223daa8c9be44f150c",
+      "new_main_raw_sha256": "ec6541c726b534a016dba5fd9d5eb22bf2a2ff07d9da9ed4ca802fbb9f1d8c17",
+      "lf_sha256": "ec6541c726b534a016dba5fd9d5eb22bf2a2ff07d9da9ed4ca802fbb9f1d8c17",
+      "unchanged_from_accepted_and_frozen": true
+    },
+    {
+      "path": "docs/reference/liquid-run-receipt-vectors.json",
+      "role": "retained receipt oracle",
+      "frozen_git_blob": "4828694db27503a20ba2872f4d5c3bcb2ea2e334",
+      "new_main_git_blob": "4828694db27503a20ba2872f4d5c3bcb2ea2e334",
+      "new_main_raw_sha256": "5c07d0fe8d79bcbfbc76bfc3b7675926ebc3860cb3a062147559e4487cb6c0a8",
+      "lf_sha256": "5c07d0fe8d79bcbfbc76bfc3b7675926ebc3860cb3a062147559e4487cb6c0a8",
+      "unchanged_from_accepted_and_frozen": true
+    }
+  ],
+  "protected_source_count": 27,
+  "frozen_authority": "0fd4af5987e77db4da3e37c757cf2c0917ae9e15",
+  "lock_schema_version": 1,
+  "lock_catalogue_digest": "82b5ab9a6e87ae817072390105052f8a5ac6d0ee22b3301cd973efdfc7fdbad3",
+  "lock_capability_digest": "33c608f875e3d8b5730f1d3b81a54dbeff9579b433e061535610a8bfa276e237",
+  "unchanged_subtrees": [
+    {
+      "path": "native/src",
+      "git_tree": "7644ea6ec7ca7cf30564a3dc7833eb7a862945b0",
+      "unchanged_from_accepted_main": true
+    },
+    {
+      "path": "native/include",
+      "git_tree": "177ab0d4ccba3e747f5b3016137f1765aba6ef8f",
+      "unchanged_from_accepted_main": true
+    },
+    {
+      "path": "godot",
+      "git_tree": "5fc7c727804ff63614ced2ec77054ea04645e3b6",
+      "unchanged_from_accepted_main": true
+    },
+    {
+      "path": "materials",
+      "git_tree": "41a9d5df00c35e4bd306dd798f4ce69e268cfe9d",
+      "unchanged_from_accepted_main": true
+    },
+    {
+      "path": "tools/material_catalogue",
+      "git_tree": "7e1994797dfa29c3a854ef75644443b806e13324",
+      "unchanged_from_accepted_main": true
+    },
+    {
+      "path": ".github",
+      "git_tree": "947563ac2a5b9c334599155161594b62ca20e796",
+      "unchanged_from_accepted_main": true
+    }
+  ],
+  "published_main_runtime_source_inputs_checked": 80,
+  "published_main_runtime_source_input_mismatches": [],
+  "changed_paths": [
+    {
+      "path": "docs/README.md",
+      "git_blob": "17da6e8a52a7e52299256a4c038898af3831b275",
+      "raw_sha256": "220af496ccd07d313dd5e8c82d326d2d9e71500cb877fd0491c1d9b71de89353"
+    },
+    {
+      "path": "docs/architecture/pressure-optimization.md",
+      "git_blob": "086f1e21772ae6593ec593787759c6f65742e9c3",
+      "raw_sha256": "5af03d86e970ba5166bd56da15d8d431d272b771a96218cbbdfc2902781c0564"
+    },
+    {
+      "path": "docs/audits/2026-11-04-lcb201-pressure-idle-cost.md",
+      "git_blob": "39eafaadc4601395c2bf779442fcc98dac8f9161",
+      "raw_sha256": "d6dd0f41878c914e1220c8120c9f373cc338fc0864eb26d8943fcefdc2da85b1"
+    },
+    {
+      "path": "docs/audits/lcb201-idle-cost-2026-11-04/plan.json",
+      "git_blob": "0af44c7bbdedca6c8c8999b4200938cdf87c3ed9",
+      "raw_sha256": "ac5137469daf739df8f7f8ea0ef6a7a1c550fb2d281b605e42863e83280be867"
+    },
+    {
+      "path": "docs/audits/lcb201-idle-cost-2026-11-04/summary.json",
+      "git_blob": "03cf860dc9b6dbbe01a8b9b521a32c033789b997",
+      "raw_sha256": "4fdb0b3f127bbbad39983ebe76067b96a7cc6f6802f27fd4d0301bd83e385dbe"
+    },
+    {
+      "path": "docs/reference/retrieval-index.md",
+      "git_blob": "cd2c0debf3b6cefd5367e87527fb485eae61c934",
+      "raw_sha256": "a1c7371537938f710237395d4f876ffbad93e97a8de190b04fddfc3721715aca"
+    },
+    {
+      "path": "docs/reference/status-and-roadmap.md",
+      "git_blob": "7958e4e1087e9c60ac9f07c92a1fbc214063f123",
+      "raw_sha256": "2358369c266c737217b8ad8c64628376859a1f1e95074582e02bdd75be4b3710"
+    },
+    {
+      "path": "native/bench/lcb201_pressure_idle_cost.cpp",
+      "git_blob": "d251777990a137d42264275e7eb25a6ab6760af7",
+      "raw_sha256": "872c65fdc684a01ace9b55bfb6e92181070c21b34503f4460e4d8f8cf0297e6d"
+    },
+    {
+      "path": "tools/lcb/pressure_idle_cost.py",
+      "git_blob": "d41992c7e0920a001393b07b6bc3aa478d901f5c",
+      "raw_sha256": "153bdc443f4642148bc4a0b0535efbb4c5bc66c35b03a89238a0e0c17834ee16"
+    }
+  ],
+  "classification": "Seven documentation/evidence changes plus one standalone native pressure idle-cost benchmark and its tools/lcb runner. Production native src/include, entire Godot/material/material-tooling/CI subtrees are unchanged. P1/P2 optimizations remain Planned in new documentation.",
+  "guard_execution": {
+    "command": [
+      "python3",
+      "tools/material_catalogue/compatibility.py",
+      "--root",
+      "/workspace/scratch/4b0fc6bf4ee0/compatibility-lane/main-01f9-readonly-export",
+      "--check"
+    ],
+    "cwd": "/workspace/scratch/4b0fc6bf4ee0/compatibility-lane/worktree",
+    "deadline_seconds": 120,
+    "returncode": 0,
+    "stdout": "{\n  \"baseline\": \"0fd4af5987e77db4da3e37c757cf2c0917ae9e15\",\n  \"capability_digest\": \"33c608f875e3d8b5730f1d3b81a54dbeff9579b433e061535610a8bfa276e237\",\n  \"catalogue_digest\": \"82b5ab9a6e87ae817072390105052f8a5ac6d0ee22b3301cd973efdfc7fdbad3\",\n  \"fallback_slush_density\": 1100,\n  \"production_cutover\": false,\n  \"protected_sources\": 27,\n  \"runtime_execution\": false,\n  \"status\": \"PASS\"\n}\n",
+    "stderr": "",
+    "elapsed_seconds": 0.25327516900142655,
+    "candidate_export_source_sha": "01f9b7c8e382ca6bdbaf0bf70c7847adc12fe0bc",
+    "candidate_export_paths": [
+      "native",
+      "godot",
+      "materials",
+      "tools/lcb",
+      "docs/reference/liquid-policy-wire-vectors.json",
+      "docs/reference/liquid-run-receipt-vectors.json",
+      "docs/reference/liquid-solver-capability-matrix.json",
+      "docs/reference/water-normalization-vectors.json"
+    ],
+    "baseline_git_repository": "/workspace/scratch/4b0fc6bf4ee0/compatibility-lane/worktree",
+    "original_checker_identical_to_new_main": true
+  },
+  "impact_on_support": {
+    "support_head": "b661a6f354f8c51e79759d22ad4573a875964b43",
+    "support_tree": "2675ec1af94371e9c1e1441e5e50e8dd8e9a3fba",
+    "disposition": "REPAIR unchanged for both historical SOL consumers; no facade repair, source-lock refresh or executable checkpoint introduced by new main",
+    "runtime_matrix_identity": "122-process matrix remains bound to SOL957ce67d and retained runtime de38c0de, not reattested to a future composed tree",
+    "overlapping_documentation_paths_with_support": [
+      "docs/README.md",
+      "docs/reference/retrieval-index.md"
+    ],
+    "integration_limit": "New main is not in support ancestry. A future admitted integration must reconcile normal ancestry and run resulting-head gates; old support CI and retrieval measurements are historical for b661 only."
+  },
+  "local_source_preservation": {
+    "head": "39f0554b368d296de38489eb1fa477f485f3654a",
+    "branch": "audit/mat-sol-protected-consumer-20261104",
+    "status_porcelain": "",
+    "working_tree_clean": true
+  },
+  "unexecuted": [
+    "No new benchmark or material runtime test was executed",
+    "No merge/rebase/cherry-pick or virtual composition was performed",
+    "No PR or issue was updated"
+  ]
+}

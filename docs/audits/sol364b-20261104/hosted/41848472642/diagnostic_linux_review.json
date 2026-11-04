@@ -1,0 +1,152 @@
+{
+  "certificates_verified": 349,
+  "compiler_version": {
+    "command": [
+      "/usr/bin/g++-13",
+      "--version"
+    ],
+    "elapsed_seconds": 0.0013861889999589039,
+    "environment_overrides": {},
+    "label": "compiler-version",
+    "policy_key": "operation_seconds",
+    "returncode": 0,
+    "stderr": "",
+    "stderr_bytes_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stdout": "g++-13 (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+    "stdout_bytes_sha256": "b240ade48d7a4743cb2e7940990dd5a8dbc15120543c7eadd9541435edd2efd2",
+    "timeout_seconds": 300.0
+  },
+  "executables": {
+    "probe": {
+      "bytes": 35608,
+      "path": "/home/runner/work/cybersand/cybersand/build/sol364b/linux/bin/probe",
+      "sha256": "27d053f7f915c4e7d213c8cb08ff0ab67b269f73bf58278e38ae08fec7f7ca3d"
+    },
+    "sanitizers": {
+      "bytes": 977064,
+      "path": "/home/runner/work/cybersand/cybersand/build/sol364b/linux/bin/tests-sanitize",
+      "sha256": "03f0b8a15240eed208192ee3f3afea741ed762dad44afe6ba3763db4c85653a0"
+    },
+    "tests": {
+      "bytes": 44800,
+      "path": "/home/runner/work/cybersand/cybersand/build/sol364b/linux/bin/tests",
+      "sha256": "fdaae547ddab17f7ca52418d487d7ea6698e3d1ee26e4694ad6c54217f9b9c61"
+    }
+  },
+  "input_verification": {
+    "all_match_exact_tree_or_its_committed_checkout_rules": true,
+    "checked_manifest_sha256": "3be4b75b37c01a797a71dde8e317f76b40871c24d82dfcd56dfcd196bf5d0729",
+    "committed_crlf_conversions": [],
+    "count": 11,
+    "direct_git_byte_matches": 11,
+    "git_tree": "11e986214f056f3f39631bb0331b3cd4930c3d1c",
+    "local_equal_tree_commit": "2f0ea3bdba5b7aef2fddef7d3a70f7e8d21adab9",
+    "status": "PASS"
+  },
+  "native_tests": {
+    "result": {
+      "checks": 142,
+      "failures": 0,
+      "groups": 6,
+      "live_application": false,
+      "schema": "cybersand.sol364b.corridor-native-tests.v1"
+    },
+    "sha256": "fdaae547ddab17f7ca52418d487d7ea6698e3d1ee26e4694ad6c54217f9b9c61",
+    "status": "PASS",
+    "stderr": ""
+  },
+  "outer_owner": {
+    "elapsed_seconds": 11.35600991399997,
+    "identity": {
+      "bytes": 2276,
+      "path": "/workspace/scratch/4b0fc6bf4ee0/physics-review/hosted-41848472642/artifacts/sol364b-diagnostic-linux-41848472642-1/linux-command/receipt.json",
+      "sha256": "6c2e347353d4685ae532d1e3bc9242c05609951204bb5e5adf7f273791987513"
+    },
+    "log": {
+      "bytes": 462,
+      "path": "/workspace/scratch/4b0fc6bf4ee0/physics-review/hosted-41848472642/artifacts/sol364b-diagnostic-linux-41848472642-1/linux-command/command.log",
+      "sha256": "52328fcb43fee497f43782e8d0f142a770bc1acd5d8eb823a0dadf7f01e0a142"
+    },
+    "natural_completion": true,
+    "resources": {
+      "available": true,
+      "cpu_seconds": 0.07,
+      "peak_rss_bytes": 28311552,
+      "scope": "direct_process_only"
+    },
+    "source": {
+      "commit": "9597abd76c01e4a940ff3ea26ff01fca43bf55a6",
+      "job": "build",
+      "run_attempt": "1",
+      "run_id": "41848472642",
+      "runner_name_sha256": "2dc03591136b8e822d11640a9e518dfa3dcd5b610c6a2cc323735645440c9aa4",
+      "tracked_delta_sha256": null,
+      "tree": "11e986214f056f3f39631bb0331b3cd4930c3d1c"
+    },
+    "status": "passed",
+    "timeout_seconds": 7200.0
+  },
+  "platform": "Linux",
+  "platform_detail": "Linux-7.0.0-1017-azure-x86_64-with-glibc2.39",
+  "qualification": {
+    "bytes": 14036,
+    "path": "/workspace/scratch/4b0fc6bf4ee0/physics-review/hosted-41848472642/artifacts/sol364b-diagnostic-linux-41848472642-1/linux/qualification.json",
+    "sha256": "fde4be7bb5e3f7b324afe47bbad97314cbe41627589caba25f1a7f1acdbceac3"
+  },
+  "query_hashes_and_LF_bytes_verified": 349,
+  "result": {
+    "disposition": "BOUNDED_FAMILY_NO_GO",
+    "live_candidate_applications": 0,
+    "outcome_counts": {
+      "InitialExcludedOverlap": 728,
+      "NoRegisteredCorridor": 724
+    },
+    "reports": 4,
+    "retained_states_evaluated": 1452,
+    "unique_geometric_inputs": 349
+  },
+  "sanitizers": {
+    "command": {
+      "command": [
+        "/home/runner/work/cybersand/cybersand/build/sol364b/linux/bin/tests-sanitize"
+      ],
+      "elapsed_seconds": 0.0122046929999442,
+      "environment_overrides": {
+        "ASAN_OPTIONS": "detect_leaks=0:strict_string_checks=1:abort_on_error=1",
+        "UBSAN_OPTIONS": "halt_on_error=1:print_stacktrace=1"
+      },
+      "label": "address-undefined-tests",
+      "policy_key": "native_case_seconds",
+      "returncode": 0,
+      "stderr": "",
+      "stderr_bytes_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout": "{\"schema\":\"cybersand.sol364b.corridor-native-tests.v1\",\"groups\":6,\"checks\":142,\"failures\":0,\"live_application\":false}\n",
+      "stdout_bytes_sha256": "90ea31e0141974f38df433297e3aff54fe2d10d7bb0c893d02f7a7f137c5c335",
+      "timeout_seconds": 3600.0
+    },
+    "leak_check": "NOT_EXERCISED; detect_leaks=0 explicitly recorded",
+    "status": "PASS_ADDRESS_AND_UB_ONLY"
+  },
+  "source": {
+    "sha": "9597abd76c01e4a940ff3ea26ff01fca43bf55a6",
+    "tree": "11e986214f056f3f39631bb0331b3cd4930c3d1c"
+  },
+  "summary": {
+    "bytes": 37650,
+    "path": "/workspace/scratch/4b0fc6bf4ee0/physics-review/hosted-41848472642/artifacts/sol364b-diagnostic-linux-41848472642-1/linux/replay/summary.json",
+    "sha256": "52f3ae12dcdc9da1b354a92ea7d6d60aa092bdb65152764b36f19f61f8c28e86"
+  },
+  "tool_executables": {
+    "compiler": {
+      "bytes": 1027128,
+      "path": "/usr/bin/g++-13",
+      "sha256": "1353e9bdd29a7295c7226bf6c63abccce056d8cac31f112e5cdbecc3f28c2769"
+    },
+    "python": {
+      "bytes": 8020928,
+      "path": "/usr/bin/python3",
+      "sha256": "e50d468e8b0adfb05733f5b87b3cff34829c4a8c1aea50c865aa8bdfe4bb150f",
+      "version": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]"
+    }
+  }
+}

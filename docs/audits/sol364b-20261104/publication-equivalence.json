@@ -1,0 +1,28 @@
+{
+  "schema": "sol364b-publication-equivalence-v1",
+  "reason": "Normal Git data API publication preserves exact reviewed Git trees and ordered parent mapping; server-generated commit metadata changes IDs. No force push or recomposition.",
+  "pairs": [
+    {
+      "local_commit": "33203c5d5928ac53e5cc624e5dc1c3d26255f45b",
+      "published_commit": "c0f48c4ad2a168a56d7feaaf25cb743b8ef03006",
+      "tree": "d7f87bd1212ba258b07ec3ce4c207b782237458a",
+      "local_parent": "957ce67df859315ed238b6bbec1eebc9a743aaba",
+      "published_parent": "957ce67df859315ed238b6bbec1eebc9a743aaba"
+    },
+    {
+      "local_commit": "9f3bc7c9523ba153de0144ef4f49b7e531a985d3",
+      "published_commit": "1778278a700820d713da7922a06546f4790aba3c",
+      "tree": "16e79d4fe2e0cf3790ba83a712fdb0290a1a9d8f",
+      "local_parent": "33203c5d5928ac53e5cc624e5dc1c3d26255f45b",
+      "published_parent": "c0f48c4ad2a168a56d7feaaf25cb743b8ef03006"
+    },
+    {
+      "local_commit": "2f0ea3bdba5b7aef2fddef7d3a70f7e8d21adab9",
+      "published_commit": "9597abd76c01e4a940ff3ea26ff01fca43bf55a6",
+      "tree": "11e986214f056f3f39631bb0331b3cd4930c3d1c",
+      "local_parent": "9f3bc7c9523ba153de0144ef4f49b7e531a985d3",
+      "published_parent": "1778278a700820d713da7922a06546f4790aba3c"
+    }
+  ],
+  "source_scope": "Final source/evidence descendants have their own PR/CI identity and are not silently substituted for these original diagnostic receipts."
+}

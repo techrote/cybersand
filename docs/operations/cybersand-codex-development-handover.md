@@ -10,6 +10,35 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## SOL364-B independent lanes and negative corridor result — 2026-11-04
+
+Start with the [SOL364-B result and receipt ledger](../audits/2026-11-04-sol364b-corridor-result.md)
+and its immutable [preregistration](../audits/2026-11-04-sol364b-corridor-registration.md).
+The selected fixed-angle translation family cannot clear the original controls
+inside its four-cell lifetime budget. New diagnostic execution over 1,452
+retained states yields zero admissible routes and zero live applications;
+independent direct-polygon review agrees. This is an executable bounded NO-GO,
+not a recovery trajectory or a proof against every possible path. The original
+84 clearance/64 depth failures, all historical cost results and 27-consumer
+MAT-AUTH lock remain unchanged.
+
+The physics worktree owns existing draft #347; the compatibility investigation
+has an independent branch from accepted main `7ef4856e`. Neither lane imports
+the other. Preserve exact local/published tree mappings, raw compiler/test/replay
+manifests and unavailable gate labels. Fresh compiler/host checks have their own
+source identities; prior `9edc4f8f` runtimes remain historical controls. #347 stays
+draft, #364/#281/#12 open and #365 blocked. A later owner-approved integration
+task must independently inspect both trees, reconcile normal ancestry and qualify
+the resulting implementation; this handover authorizes no merge or composition.
+
+Source `9597abd7` completes fresh hosted execution: both builds, all eight actual
+host cohorts, GCC/sanitizer/MSVC diagnostic and 24/24 CPU groups pass; 84 clearance
+and 64 depth gates fail. Runtime publication fails before installation because
+the source archive exceeds the existing 128 MiB per-file limit. No runtime child
+is created or old provenance relabelled. The evidence-only handover preserves
+that failure. Separate draft #386 at `b661a6f3` is REPAIR and has passing scoped
+documentation; neither its green checks nor the new CPU result admits integration.
+
 ## SOL364 synchronized repair continuation — 2026-11-04
 
 Continue from the [SOL364 source and evidence ledger](../audits/2026-11-04-sol364-recovery.md),

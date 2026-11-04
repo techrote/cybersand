@@ -1,0 +1,50 @@
+{
+  "all_compared_fields_identical": true,
+  "compared_fields": [
+    "hosts",
+    "source_and_field_equivalence",
+    "bounds",
+    "method",
+    "sanity",
+    "disposition",
+    "all_original_target_states_reject_registered_family",
+    "reviewed_source",
+    "reviewed_tree",
+    "historical_runtime_source",
+    "preregistration_sha256"
+  ],
+  "negative_registration_guard": {
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/workspace/scratch/4b0fc6bf4ee0/physics-review/independent_corridor_review_portable.py",
+      "--repository",
+      "/workspace/scratch/4b0fc6bf4ee0/physics-lane",
+      "--registration",
+      "957ce67df859315ed238b6bbec1eebc9a743aaba"
+    ],
+    "exit_code": 1,
+    "status": "PASS_EXPECTED_REFUSAL_BEFORE_GEOMETRY_ANALYSIS",
+    "stderr": "Traceback (most recent call last):\n  File \"/workspace/scratch/4b0fc6bf4ee0/physics-review/independent_corridor_review_portable.py\", line 332, in <module>\n    print(json.dumps(run(args.repository.resolve(), args.registration), sort_keys=True, indent=2, allow_nan=False))\n                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/scratch/4b0fc6bf4ee0/physics-review/independent_corridor_review_portable.py\", line 239, in run\n    raise ValueError(\"selected registration tree differs from the original preregistered tree\")\nValueError: selected registration tree differs from the original preregistered tree\n",
+    "stdout": ""
+  },
+  "portable_files": {
+    "independent_corridor_review_portable.json": {
+      "bytes": 1905475,
+      "sha256": "7d8fd05fb7f40af2e6a6c563545bafe9ccb76aa683e3df000cbf3ced526d15b5"
+    },
+    "independent_corridor_review_portable.py": {
+      "bytes": 17771,
+      "sha256": "159b8b2e823ba0026ba2e24efe2c8fff6973f63ef2b5a055aef4d986dd6b6ed9"
+    }
+  },
+  "registered_file_sha256": "a40f2d00c22b97a06641ccfc167b286c6d3334c0ce007e8d5ef338da93c2a3be",
+  "registered_source_commit": "c0f48c4ad2a168a56d7feaaf25cb743b8ef03006",
+  "registered_source_tree": "d7f87bd1212ba258b07ec3ce4c207b782237458a",
+  "schema": "cybersand.sol364b.portable-independent-review-equivalence.v1",
+  "scope": "Portable reproduction is a separate new diagnostic receipt. Original source-local registration identity, script bytes and report remain unchanged.",
+  "unchanged_original_files": {
+    "independent_corridor_review.json": "873b7bcf0e9e88ab5d581c40977ff9c853a00f3c377bfe45b7a8f0e9b8a2fe19",
+    "independent_corridor_review.py": "e92c554b105931c42cd6bc0799f9c5b7ec5d46f4d3b1e2c845c84e6d909fd6f7"
+  },
+  "utc": "2026-11-04T14:23:15.594489+00:00"
+}

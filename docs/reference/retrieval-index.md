@@ -12,6 +12,15 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 
 ## Structural detachment routing
 
+For SOL364-B bounded existing-penetration recovery, retrieve the
+[current diagnostic boundary](../systems/solid-detachment.md#sol364-b-existing-penetration-corridor--2026-11-04)
+and [negative result](../audits/2026-11-04-sol364b-corridor-result.md).
+Its [prospective registration](../audits/2026-11-04-sol364b-corridor-registration.md)
+fixes the finite route family, four-cell budget and introduced-work account.
+The [supplementary questions](retrieval-questions-sol364b.json) preserve all
+earlier question sets. Reexecuted geometry over retained states is not a new
+Rapier trajectory, live ownership lease, CPU pass or integration admission.
+
 For the current SOL364 continuation, retained-witness reclip, initial stationary
 burial, synchronized every-step evidence and unchanged all-attempt cost accounting,
 retrieve the [current contract](../systems/solid-detachment.md#sol364-bounded-witness-recovery--2026-11-04)

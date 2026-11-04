@@ -1,0 +1,960 @@
+{
+  "created_utc": "2026-11-04T15:07:49.713041+00:00",
+  "corpus_root": "/workspace/scratch/4b0fc6bf4ee0/physics-lane",
+  "method": {
+    "name": "heading-chunk BM25 lexical development baseline",
+    "k": 5,
+    "maximum_body_words": 420,
+    "overlap_words": 0,
+    "k1": 1.2,
+    "b": 0.75,
+    "metadata": "title, path, document-kind, status, scope, canonical-for, last-reviewed, heading path on every chunk when present",
+    "query_expansion": false,
+    "stemming": false,
+    "reranker": false,
+    "embeddings": false,
+    "corpus_policy": "explicit retrieval-corpus.json documents if present; otherwise frozen focused-directory policy plus navigation README/AGENTS; historical audit/uppercase legacy excluded"
+  },
+  "fixture_sha256": "8e3cadece764c35cd8700aa4fcb739333528d7ae996431d350f4caf6666dea07",
+  "evaluator_sha256": "a68ebed677cdd2916b18dfc065fe59245c4690707f2d6083e07d108a7b523e59",
+  "corpus_manifest_sha256": "962a60188c56333e7b299cbee4a7f2f23b83cc0249605c374d8e125a7a8cb1b7",
+  "corpus": [
+    {
+      "path": "docs/MATERIAL_LAB.md",
+      "sha256": "aaa9671c20d06d65cd0e6b2306a53cd6ea89ba64dde50ac2948abffc92f170bf",
+      "bytes": 12759
+    },
+    {
+      "path": "docs/architecture/chunk-tile-and-buffer-model.md",
+      "sha256": "2e1ed6542e984366519dd782687980f0c8445052ef11b8afef06877972730d81",
+      "bytes": 8752
+    },
+    {
+      "path": "docs/architecture/data-ownership-and-lifetimes.md",
+      "sha256": "97c0dfe83f6495eba9a1cbe5dd3b6f6d273987756c13041dae7ef6df0c40628b",
+      "bytes": 38828
+    },
+    {
+      "path": "docs/architecture/determinism-and-boundary-transfers.md",
+      "sha256": "915b4a914e39e41304592b8b9873856b7c9b9714a043ac9384669ee9163d200a",
+      "bytes": 7295
+    },
+    {
+      "path": "docs/architecture/inertial-cellular-v1.md",
+      "sha256": "bc403bddd45e3abb14baf91b98cc3a03e007dce712314270d47d6e9e2bbd6082",
+      "bytes": 30392
+    },
+    {
+      "path": "docs/architecture/item-authored-material-programs.md",
+      "sha256": "facc6f3209743cafff997bd775ab1b77114f05439bead78c17624e62c32ecd72",
+      "bytes": 5204
+    },
+    {
+      "path": "docs/architecture/lcb-pressure-inertial-handoff.md",
+      "sha256": "35babd6fcd79d74fb4b895af5b7bf835403435f1ba6f65c96907dab7621da337",
+      "bytes": 22243
+    },
+    {
+      "path": "docs/architecture/liquid-prepared-setup-and-receipts.md",
+      "sha256": "231b1dec6ee5993a6c399d235c669534a90c44f292fbe19576113f9ab1f1566c",
+      "bytes": 82558
+    },
+    {
+      "path": "docs/architecture/liquid-solver-family-policy.md",
+      "sha256": "2f47a361564cf4a9f9ab4acd59f7968776a7c5b3ba3c3bea6b53bbf86bd24f6b",
+      "bytes": 65640
+    },
+    {
+      "path": "docs/architecture/liquid-state-transition-matrix.md",
+      "sha256": "d0b9f71b86dffdd2755703029209f5f5e2ce1ef93afe5b56f3d58f4553f83fd3",
+      "bytes": 26899
+    },
+    {
+      "path": "docs/architecture/material-authoring-catalogue-plan.md",
+      "sha256": "43d73ffea957d6da8c84799bd4a69d1e2897f932da4f1ada3ce2b4c603e68b92",
+      "bytes": 54011
+    },
+    {
+      "path": "docs/architecture/module-boundaries.md",
+      "sha256": "50d887de70b5cc49f7e2a0504ce3e08415c9900b4b437e036345a0181aebd3c6",
+      "bytes": 9775
+    },
+    {
+      "path": "docs/architecture/overview.md",
+      "sha256": "4fb7c0c48e043786ba0bab144d9fbb0cf1bee1facac60303357bac907dd1e730",
+      "bytes": 5948
+    },
+    {
+      "path": "docs/architecture/pressure-flow-v1.md",
+      "sha256": "98cb68fb1f7d808cd0b00b1f70c81021d1b608a0432c16d0a3d2aa32d8f9ffcd",
+      "bytes": 29887
+    },
+    {
+      "path": "docs/architecture/pressure-optimization.md",
+      "sha256": "775199fd0f696dc455c5305b6c9788a2d2c3dd7c467b6472ab398619efbdb444",
+      "bytes": 15426
+    },
+    {
+      "path": "docs/architecture/principles-and-non-goals.md",
+      "sha256": "8dd55cf5b315f460b844fa66307296f4f77eb8f5e29fc2ba5ad9d1f2df60c377",
+      "bytes": 6556
+    },
+    {
+      "path": "docs/architecture/rendering-and-gameplay-bridges.md",
+      "sha256": "0efb1084fd68eba7c69e31e9271be717153de3693d1b17cb4e0036028563c439",
+      "bytes": 8923
+    },
+    {
+      "path": "docs/architecture/rigid-body-and-cellular-coupling.md",
+      "sha256": "8854eeece4340b529c181d52f1e0605d78e9a395657694e4479a15acebdf4ce9",
+      "bytes": 17593
+    },
+    {
+      "path": "docs/architecture/simulation-tick-and-threading.md",
+      "sha256": "41d571eb23b50322c8964be66e7af7226d0796f982500dbf66e4677bdeefb6ca",
+      "bytes": 19202
+    },
+    {
+      "path": "docs/architecture/soliding-lifecycle.md",
+      "sha256": "f1ebc92ea8145ffe71dbf2980f2bd78ae987cb16005d46e1cda1f85e6e796eae",
+      "bytes": 20059
+    },
+    {
+      "path": "docs/decisions/ADR-001-native-simulation-core.md",
+      "sha256": "183256ad4f0bb86477ebb52917ef5f39dbb473befe42a2ca9c8af7a1388cd0bf",
+      "bytes": 3490
+    },
+    {
+      "path": "docs/decisions/ADR-002-double-buffered-tile-jobs.md",
+      "sha256": "b621c6eac703579ed9c737e07fe67516f04b8e02deb90bc10745aba759ce2991",
+      "bytes": 3876
+    },
+    {
+      "path": "docs/decisions/ADR-003-godot-bridge-and-immutable-snapshots.md",
+      "sha256": "5f6f4317020f9b423a326945dbc54d3d04d50ace0a911aa66d2d5228d333c343",
+      "bytes": 4207
+    },
+    {
+      "path": "docs/decisions/ADR-004-interest-region-and-reconfiguration.md",
+      "sha256": "9d445644a387b0ebcb75d2488409d52e1cf5739b8c79b4d063bb73be12689c3c",
+      "bytes": 5074
+    },
+    {
+      "path": "docs/decisions/ADR-005-water-model.md",
+      "sha256": "ca741af1d41237c2c6cc70c80e5f098bf10b4cca3098183168a1f386aa0ab9bc",
+      "bytes": 4594
+    },
+    {
+      "path": "docs/decisions/ADR-006-gpu-compute-deferral.md",
+      "sha256": "de55bb1adf6d8bdb3324c80558ccdbb71e422a4e494df09dccbfcb0bf909ca00",
+      "bytes": 3351
+    },
+    {
+      "path": "docs/decisions/ADR-007-rigid-body-cellular-coupling.md",
+      "sha256": "4176beaad08fca041922b87f8f8451a5a3b7b4831946d117119eeb21c7e466e9",
+      "bytes": 4438
+    },
+    {
+      "path": "docs/decisions/ADR-008-bounded-approximate-fidelity.md",
+      "sha256": "f57b275187490cdc12c28456f9417a6eb4a73d2daf4a97ba9e6950e07568efe5",
+      "bytes": 6062
+    },
+    {
+      "path": "docs/decisions/ADR-009-rapier-2d-rigid-body-backend.md",
+      "sha256": "cf30e85c27ee2a63785ceac700c766b14f1227e761398d42d60c301d3d3c85ac",
+      "bytes": 5903
+    },
+    {
+      "path": "docs/decisions/ADR-010-failed-tick-quarantine.md",
+      "sha256": "7c3e320ab521c0dbfffc5f8831507f948c6614775dc294ca6f77aa5c742b7000",
+      "bytes": 2879
+    },
+    {
+      "path": "docs/decisions/ADR-011-granular-interaction-policy.md",
+      "sha256": "79b0d6bb92c5bc624f3d24b76b51837d2bf81ee22b277d88f8e5d0675b828c00",
+      "bytes": 4669
+    },
+    {
+      "path": "docs/decisions/ADR-013-canonical-semantic-generation.md",
+      "sha256": "208ba8ca556dda6d5d52f867986d379c9bb8a2a2dbcc5e0c1a515ee7b61fc07a",
+      "bytes": 4168
+    },
+    {
+      "path": "docs/decisions/ADR-014-semantic-plane-admission.md",
+      "sha256": "f43cf3261ead2dfe86e895c3b73c5df7a173c48997a2989f5a254502184857a4",
+      "bytes": 2636
+    },
+    {
+      "path": "docs/operations/architecture-programme-water-feel-addendum.md",
+      "sha256": "ace6c7f6d05d1fbc8087bbbfb9ed93481df88835f9bf974eaa6b0e0e10f6ea51",
+      "bytes": 8984
+    },
+    {
+      "path": "docs/operations/architecture-programme.md",
+      "sha256": "b5ddf2a279d68287130b4a3d96674336818cfe11da4c0c2c3230762b36f0c58d",
+      "bytes": 54792
+    },
+    {
+      "path": "docs/operations/blacksite-nine-demo.md",
+      "sha256": "f94c5f0241a0ed0bfa022e448a0a973977681f4310238132c2982d18e5c76d97",
+      "bytes": 13714
+    },
+    {
+      "path": "docs/operations/cell-layout-experiment.md",
+      "sha256": "92d2ae798728bbd5203ed648b36dc16cf69c436880ac78a3f7af07e7ca3c6e58",
+      "bytes": 26101
+    },
+    {
+      "path": "docs/operations/ci-execution-and-performance.md",
+      "sha256": "67402f42648e34c95c98afa59dc03de57a7dd56d087e9e8d680540c73e4051d1",
+      "bytes": 13537
+    },
+    {
+      "path": "docs/operations/configuration-and-capacity-budgets.md",
+      "sha256": "f874fc79105848b921964c5b5dcdb5d04fbe984b25cbcdb1b8b8b4bb8e72226d",
+      "bytes": 12639
+    },
+    {
+      "path": "docs/operations/current-and-historical-validation.md",
+      "sha256": "37d75f33ea23ef837d0661df3ce81324ba07941181cd506ebd1d502e81317b0c",
+      "bytes": 7539
+    },
+    {
+      "path": "docs/operations/cybersand-codex-development-handover.md",
+      "sha256": "3f55e55eabb8d890bca60b4c6c5be7059fd30fdf279df2da17b3829b395f5aa7",
+      "bytes": 119464
+    },
+    {
+      "path": "docs/operations/deepworks-exhibition.md",
+      "sha256": "5f646c5eed80101d8bdc36be38985ee34898ed145ed28f2aa01d3ae1bbb3ffc7",
+      "bytes": 17395
+    },
+    {
+      "path": "docs/operations/development-claims-remediation-programme.md",
+      "sha256": "91508be4c98b959775070251a3a2f7b8f7a2bda9d93876564b582294f4d47711",
+      "bytes": 14706
+    },
+    {
+      "path": "docs/operations/documentation-maintenance.md",
+      "sha256": "f3de7a4bab92bc23e8efbf1c8540c74ca124c3c56314c4ca793fd41ad2ef6068",
+      "bytes": 6809
+    },
+    {
+      "path": "docs/operations/experiment-tower.md",
+      "sha256": "71a70c087f71062db5d417562ae4e3cad3c50e26233c63dee264d0555c377865",
+      "bytes": 14079
+    },
+    {
+      "path": "docs/operations/gameplay-recording.md",
+      "sha256": "4af142f26f132ca52d7d28e56719f97827b2934f7601559df30140366872fa06",
+      "bytes": 12266
+    },
+    {
+      "path": "docs/operations/github-development-and-release.md",
+      "sha256": "923a9f27fa09241f198fe149d56dbf6c228255e3fdfdd90b17d2b656b6992dde",
+      "bytes": 16874
+    },
+    {
+      "path": "docs/operations/lcb-manual-comparison-ux.md",
+      "sha256": "e8e92b94b6484a504ccb885bf5952a06bff56e6c437d5081a52881d57dc0b9d4",
+      "bytes": 36321
+    },
+    {
+      "path": "docs/operations/lcb-scenario-catalogue.md",
+      "sha256": "aebe1afadaea2858edfbd9d88391eec77f4f992b83bc484170bab9820378ecbc",
+      "bytes": 25219
+    },
+    {
+      "path": "docs/operations/lcb-water-comparison-and-fixtures.md",
+      "sha256": "1cba76d2f57befebe84f1c8aa5fc3ed227f134b8144da0636c508f8ec8027259",
+      "bytes": 23019
+    },
+    {
+      "path": "docs/operations/liquid-characterization.md",
+      "sha256": "d18df9a9ed150165d6f51fff5469f77ce531374a4c7673a020955a194a826147",
+      "bytes": 4710
+    },
+    {
+      "path": "docs/operations/local-build-and-validation.md",
+      "sha256": "dfaa83efa876f59bf355316ff050f71ab9db6d096ee4abf47136804d64d168ca",
+      "bytes": 112630
+    },
+    {
+      "path": "docs/operations/material-catalogue-shadow.md",
+      "sha256": "331364c480f4ea6dc8b8ad9dbe34f90c45fef75db482f36d8acfe292749bcfb6",
+      "bytes": 14823
+    },
+    {
+      "path": "docs/operations/microscenario-reference-pack.md",
+      "sha256": "dfddad77cd621573fa8e29254b90765552fc8e2ec00159f008c27cb4f7ed1820",
+      "bytes": 16807
+    },
+    {
+      "path": "docs/operations/microscenarios-programme.md",
+      "sha256": "c8c713f43a8ccb4bcd7f5428456c70abcab9564bb221ed35563eb82dbda881ae",
+      "bytes": 29208
+    },
+    {
+      "path": "docs/operations/microscenarios.md",
+      "sha256": "37a3dc17233192b630252c72647194b07f429b018e49982bb285df0711d2459e",
+      "bytes": 20649
+    },
+    {
+      "path": "docs/operations/neon-reliquary-demo.md",
+      "sha256": "db57bf8976427464069e8dab42a05b78e5876a3be31feaa90a1ba9e1ba5e84ca",
+      "bytes": 14168
+    },
+    {
+      "path": "docs/operations/physical-actor-programme.md",
+      "sha256": "383b894b238bfd883e786f6f2f2cf10423e4c9c960e44fd64efbed4b348aab10",
+      "bytes": 15666
+    },
+    {
+      "path": "docs/operations/physics-characterisation-plan.md",
+      "sha256": "c306e1e0539835caefa668c72f5a118f2d34f0fb0235305ce7462aaca75d3a0d",
+      "bytes": 22957
+    },
+    {
+      "path": "docs/operations/physics-characterisation.md",
+      "sha256": "cec934e26ddc204d538ad2cfb79b9a670b9c62a0d3464b13695de0894ca634f3",
+      "bytes": 22281
+    },
+    {
+      "path": "docs/operations/play-desktop-manual-qualification.md",
+      "sha256": "67b59b8c82feb2ddf269a60fb418f36a92990f169f8856ce8ea72b4e7c09c784",
+      "bytes": 9578
+    },
+    {
+      "path": "docs/operations/procedural-qualification.md",
+      "sha256": "15cfd957d8f8763c06aa635533757e991b154d373b5b4e5a821ba01acb6dd414",
+      "bytes": 21341
+    },
+    {
+      "path": "docs/operations/profiling-observability-and-performance.md",
+      "sha256": "536521336ace40ddbfc713f789b91bd6af785eddad891e03dd5754583534ac8e",
+      "bytes": 10947
+    },
+    {
+      "path": "docs/operations/rapier-2d-migration-runbook.md",
+      "sha256": "9ed786d3217f87a1ec6641b9744b8b196009da59cf8d56f673b6537a8efb98e7",
+      "bytes": 6574
+    },
+    {
+      "path": "docs/operations/semantic-depth-authoring.md",
+      "sha256": "be6b9a9f6c2d1a4893a1a136e18544ec38a57c21ef6938b9c1d5e96d76314dc6",
+      "bytes": 10897
+    },
+    {
+      "path": "docs/operations/soliding-macro-fracture-fixture.md",
+      "sha256": "a5f29551330843705a1360108965609a9973d0d167604755dd9ba5b9d8ffdd43",
+      "bytes": 8314
+    },
+    {
+      "path": "docs/operations/soliding-measurement.md",
+      "sha256": "029b9fc75960e23e00737fd4a8ef5de4d93a9b68b53173a31b144890246f7127",
+      "bytes": 16631
+    },
+    {
+      "path": "docs/operations/soliding-programme.md",
+      "sha256": "fdd2f4b2c74555ef4dcdfc66a4094e86bfc3ab00f4d4b24f80e92b02e73e7200",
+      "bytes": 11959
+    },
+    {
+      "path": "docs/operations/soliding-stage3-freeze.md",
+      "sha256": "e9bb416fbc00534936f31ec823ff4200084b9839e29b104ca06c6e5842a8f855",
+      "bytes": 25036
+    },
+    {
+      "path": "docs/operations/soliding-stage3b-production-plan.md",
+      "sha256": "a2c8b0df12e69eaddb5e36200fdac89d978d43ce5190242022cf83a6bef43919",
+      "bytes": 22377
+    },
+    {
+      "path": "docs/operations/source-checkpoint-and-recovery.md",
+      "sha256": "9b140c00a949cd9d3a3753c0c5f079cf188d7f23c55018a87161c3650fc3b431",
+      "bytes": 27552
+    },
+    {
+      "path": "docs/operations/state-precision-experiment.md",
+      "sha256": "5ec8493d0aea4114c3049380cd6eae3be4d34a0dfc4ca8bfbebc67df3e800c0a",
+      "bytes": 10075
+    },
+    {
+      "path": "docs/operations/testing-validation-and-replay.md",
+      "sha256": "e5e5a9528fe8e0fd0327c8bddc6d0d8edbe235e1b4b6d264687e661960aeccd7",
+      "bytes": 29266
+    },
+    {
+      "path": "docs/operations/troubleshooting.md",
+      "sha256": "eddf1c8591c8396dc22c2d257410e249caee20d189ff998601d472784f731b7d",
+      "bytes": 5027
+    },
+    {
+      "path": "docs/operations/water-feel-lab-experiment.md",
+      "sha256": "6591cef26939419b7421ad5ddd25c7164ce08869f76b181aef6a8223c3e6e3d9",
+      "bytes": 15503
+    },
+    {
+      "path": "docs/operations/water-hybrid-pressure-extension-programme.md",
+      "sha256": "d8f703b16bf61620571828f117dc7fcaee950b5dd0d051f6f7488b792970399d",
+      "bytes": 39009
+    },
+    {
+      "path": "docs/operations/web-threading.md",
+      "sha256": "47c5c6b5e10363f9d5a8bf18c643470e94bcbc70e92d15337310cfa341ec55c4",
+      "bytes": 6183
+    },
+    {
+      "path": "docs/reference/configuration-reference.md",
+      "sha256": "0f2b29f121a8080b5436617aa932c3018381d2b63fc6847f9759decefc60762b",
+      "bytes": 86690
+    },
+    {
+      "path": "docs/reference/glossary.md",
+      "sha256": "123cb43131703c15362ff8f85ef5e343844db526c3107d90937e7c8288debdde",
+      "bytes": 6071
+    },
+    {
+      "path": "docs/reference/interfaces-and-message-contracts.md",
+      "sha256": "c0b7e0b26725cfbc2e6a5c4ce4c4cf08628bc5ab6eca63f8d0bf3e8eb25fb0b2",
+      "bytes": 94746
+    },
+    {
+      "path": "docs/reference/invariants.md",
+      "sha256": "c135744916f021c23296df4d3f6cbcc1cc4283fff07c8050044092a77ad88081",
+      "bytes": 46406
+    },
+    {
+      "path": "docs/reference/level-saves-and-replay.md",
+      "sha256": "1d1b1d91b406d62e6de05266d662b83135e179aefa011c8af8b59ca815c2a3c0",
+      "bytes": 13257
+    },
+    {
+      "path": "docs/reference/material-effects-register.md",
+      "sha256": "21f4071dd5d558ad5e85f7b7f273dc56bc3f8a30d33141faed77faac0e0bc00b",
+      "bytes": 12618
+    },
+    {
+      "path": "docs/reference/procedural-spatial-operators.md",
+      "sha256": "2aa8a05ab1566fae6b5cf9a187954a3d16bb6b95b999aa15f89d24e1c31e1037",
+      "bytes": 11102
+    },
+    {
+      "path": "docs/reference/product-intent-and-priorities.md",
+      "sha256": "b2865c060ae1130f09b90d545a65cd5b70ce1d50824ba37f0c82e7d1ebc2aa6d",
+      "bytes": 19657
+    },
+    {
+      "path": "docs/reference/status-and-roadmap.md",
+      "sha256": "1654b56f51591b134c428f1397c1620ca3d94c4b84c9dfa82f18161a0954f1c3",
+      "bytes": 138669
+    },
+    {
+      "path": "docs/reference/validation-evidence.md",
+      "sha256": "d1c586895522a62fb480acaaa4a086fe30a85a9bc6ef6a7d8b818c425221c016",
+      "bytes": 74361
+    },
+    {
+      "path": "docs/research/bounded-decompression-impulse-events.md",
+      "sha256": "f7e168691be4c3534894004f1c11c0e4c35e1016eda94825a74c884f3fe5e102",
+      "bytes": 16290
+    },
+    {
+      "path": "docs/research/lumped-gas-region-pressure-bookkeeping.md",
+      "sha256": "dfa36ee21cb19208fd7bc2bd30992381df0ff780f5c86c474e23e3f26473c550",
+      "bytes": 20849
+    },
+    {
+      "path": "docs/research/sandspiel-performance-and-material-port.md",
+      "sha256": "239d4fc9ca44d86a0971659305c61decec2dcd7c14b5a3d17a0f79844fa61791",
+      "bytes": 7166
+    },
+    {
+      "path": "docs/systems/activity-dirty-regions-and-waking.md",
+      "sha256": "372ef8d576bfc265d28dcea6be754d938c717e790adc678823904f70df98db8f",
+      "bytes": 11757
+    },
+    {
+      "path": "docs/systems/actor-control-prototypes.md",
+      "sha256": "8138d39e7323c4fdfa22b93eb8718a7dddaa3f1ac972f01c8deedde1b961495f",
+      "bytes": 18075
+    },
+    {
+      "path": "docs/systems/actor-rigs.md",
+      "sha256": "3d8894b3be355871c4b1086e91c9ca53445ca447354996587c7adac5b4945f6c",
+      "bytes": 25275
+    },
+    {
+      "path": "docs/systems/actor-usables.md",
+      "sha256": "5d8b808400fa16719ff978c5b661a439670080961043f0c45eced329186356cc",
+      "bytes": 16427
+    },
+    {
+      "path": "docs/systems/building-material-catalogue.md",
+      "sha256": "d6c8ade8fdc3783919ac92f4b3b2a310adeba3f1ed903c00b86ea25b67b10afd",
+      "bytes": 13193
+    },
+    {
+      "path": "docs/systems/depth-layers-and-parallax.md",
+      "sha256": "9f31c71e5608871265a0cabd8dcbba43040294ccdd9c67180b2844c5c10af446",
+      "bytes": 12257
+    },
+    {
+      "path": "docs/systems/flow-transport-and-profiles.md",
+      "sha256": "fd452353ab27a31c73cbffa72afeecf447af16d05cd7b211dcc2db03761d2e4c",
+      "bytes": 7881
+    },
+    {
+      "path": "docs/systems/generation-workbench-2.md",
+      "sha256": "c9aef9a878d100bcf61a4d8c01e752487b3056a6e16a6763fcf8c159fe4a5503",
+      "bytes": 21430
+    },
+    {
+      "path": "docs/systems/granular-interaction-policy.md",
+      "sha256": "d3c64b172e1b701471cf4a4823cc1919f9a1dcf9cb49be5dad5805c387644688",
+      "bytes": 12363
+    },
+    {
+      "path": "docs/systems/intermaterial-interactions.md",
+      "sha256": "7438daa1478dd70b7ed1d7769ffdc36c750acc4521c42c81037bb8d86bcfcfad",
+      "bytes": 11701
+    },
+    {
+      "path": "docs/systems/material-appearance-and-rendering.md",
+      "sha256": "6e1f9612e46f72fdc97080132ff789c50d9570e56ca49c76f389ba691e834e6f",
+      "bytes": 18581
+    },
+    {
+      "path": "docs/systems/material-visual-pattern-library.md",
+      "sha256": "ec9f21593de8f92af9499ba217993330378782abddf1e3481f1a8e9943206b8a",
+      "bytes": 23049
+    },
+    {
+      "path": "docs/systems/materials-and-rule-kernels.md",
+      "sha256": "d3e619b3737e810de3543cb66a0738d7a527a1cc862758835a1796acc8b2c919",
+      "bytes": 12999
+    },
+    {
+      "path": "docs/systems/physical-actor-rigs.md",
+      "sha256": "e9dc3d9719cb5e592d3882a644a1d996535b9393c99b830573dbb89ba8588767",
+      "bytes": 17777
+    },
+    {
+      "path": "docs/systems/physical-flight-lab.md",
+      "sha256": "aef00ef8bef9327a46491c20b00ce093273ac16305adce440655ac019f4b9874",
+      "bytes": 17283
+    },
+    {
+      "path": "docs/systems/physical-free-flight.md",
+      "sha256": "da8dc262e3bba975e04f9fc2706ce0cf82aeb4afb17a899a04570146eb2c33b3",
+      "bytes": 21218
+    },
+    {
+      "path": "docs/systems/player-control-playground.md",
+      "sha256": "c313c6c6de8c3e3e541e9879d69ff2e4a8567f62998120f079cca760251ca1ec",
+      "bytes": 53035
+    },
+    {
+      "path": "docs/systems/player-environment-profiles-and-traversal.md",
+      "sha256": "d2d3b683c30868f4f9161ad9a8b7b9b26146e99049be950443f3557554f38042",
+      "bytes": 6898
+    },
+    {
+      "path": "docs/systems/procedural-generation-fields-and-modifiers.md",
+      "sha256": "9b0d490b8d0e1f94e600d355f3574782f520edb6e0f64a2cb99d8cd044cbf6ba",
+      "bytes": 22273
+    },
+    {
+      "path": "docs/systems/procedural-hierarchical-generation.md",
+      "sha256": "c5a17691ee02b1eeb3c132093f71596b0f7fe2011e39b41b55f758ecd4ba0897",
+      "bytes": 20322
+    },
+    {
+      "path": "docs/systems/procedural-semantic-planes.md",
+      "sha256": "5f5877cf5deb48f29a18f7aecc48dcddb84a441162166416074fb912c7a98fa1",
+      "bytes": 12923
+    },
+    {
+      "path": "docs/systems/procedural-typed-spatial-fields.md",
+      "sha256": "5062c1899617444cc02a2d9d0a743ab5507bda4f776e2583f200eec275f373eb",
+      "bytes": 23376
+    },
+    {
+      "path": "docs/systems/procedural-world-generation.md",
+      "sha256": "c3ba36a03a706d64b1a1fe697526a931814d4ca0a3980bddb73a45d3d9ca216e",
+      "bytes": 27978
+    },
+    {
+      "path": "docs/systems/settled-region-discovery.md",
+      "sha256": "1bb29704ecd99425abadfbd2dd58d753bb12bbbdb00679f70562e8821778c1ba",
+      "bytes": 22753
+    },
+    {
+      "path": "docs/systems/smoke-heat-pressure-roadmap.md",
+      "sha256": "a147e13269dac95dd5b4d57c329686c2761acec4c64209c6a49c2e2d8ba2019c",
+      "bytes": 6117
+    },
+    {
+      "path": "docs/systems/solid-detachment.md",
+      "sha256": "e820d08106c81e25aa9139a9bf7dea3f9da8c0d79313627da30c6f56e6f20472",
+      "bytes": 36759
+    },
+    {
+      "path": "docs/systems/themed-construction-materials.md",
+      "sha256": "8b9f5995299aef16d2d94939ea904b8445c6b738495d8a6653763f9a02a63170",
+      "bytes": 9963
+    },
+    {
+      "path": "docs/systems/thunderbowl-control-reference.md",
+      "sha256": "71c2487a64b566b0a708a79278e47ce2303778c014a3e94a7fe922b24a0f9107",
+      "bytes": 41184
+    },
+    {
+      "path": "docs/systems/water-design.md",
+      "sha256": "a4407b765d29a36a0b26be7cec74a065076cd299792172b96ffc11fcf12e8b9b",
+      "bytes": 20422
+    },
+    {
+      "path": "docs/systems/world-storage-and-interest-region.md",
+      "sha256": "3aa36c9771645fe972228d9d4144cc46b2d05a3d14401bc72c94e659e48c9ba9",
+      "bytes": 12383
+    }
+  ],
+  "document_count": 120,
+  "chunk_count": 1624,
+  "summary": {
+    "questions": 5,
+    "canonical_hit_at_1": 3,
+    "canonical_hit_at_k": 5,
+    "mrr_at_k": 0.74,
+    "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+  },
+  "results": [
+    {
+      "id": "SOL364-WITNESS-001",
+      "query": "Why can the old contact midpoint leave a Sand cell while a valid exterior witness remains, and what does SOL364 repair?",
+      "canonical": [
+        "systems/solid-detachment.md"
+      ],
+      "facts": [
+        "The planner transports and reclips only the original authenticated exterior segment at the present pose.",
+        "Current clipped midpoint and length determine force weighting and torque; the repair never extends to unobserved face area or fills a hole.",
+        "All original records and duplicates are validated before cleared segments are filtered; source/current pose and identity fences remain."
+      ],
+      "sources": [
+        "../godot/scripts/solid_contact_response.gd",
+        "../godot/tests/test_solid_contact_response.gd"
+      ],
+      "canonical_rank": 2,
+      "hits": [
+        {
+          "rank": 1,
+          "score": 39.858933,
+          "path": "architecture/rigid-body-and-cellular-coupling.md",
+          "title": "Rigid-body and cellular coupling",
+          "heading": "Rigid-body and cellular coupling > Opt-in detached compounds — 2026-11-01 > Separately enabled supported-Sand constraint — 2026-11-03",
+          "part": 1,
+          "text": "Document: Rigid-body and cellular coupling\nPath: architecture/rigid-body-and-cellular-coupling.md\ndocument-kind: contract\nstatus: Current\nscope: Rectangle occupancy, bounded displacement/impulses and Rapier hard contact, plus an opt-in detached-aggregate Sand constraint; generalized physics and exact replay remain absent\ncanonical-for: [rigid-body-cellular-coupling]\nlast-reviewed: 2026-11-04\nSection: Rigid-body and cellular coupling > Opt-in detached compounds — 2026-11-01 > Separately enabled supported-Sand constraint — 2026-11-03\n**Current experimental source:** the detachment session can additionally enable `sand_resistance`; its default remains `false`. The exclusive native owner publishes whole-cell/rotated-proxy SAT depth, clipped overlap area and supported ambient-Sand exterior face segments. The observer removes internal compound seams and preserves the six proxies and both tree holes. Its copied immutable payload is separate from the unchanged 11/9 ABI and conservative material transactions. Water, MAT chemistry, hard contact, ordinary granular defaults and the unaccepted Y1 #343 policy are unchanged. The existing main-thread bridge authenticates snapshot, tick, **revision**, epoch, token/generation and sample order before applying any candidate impulse. The pure planner validates all geometry against the observed and current poses, refuses sample age over one or corner drift over 0.25 cells, and constructs an effective-mass, zero-restitution normal response. Parallel segments use only currently approaching point velocities in each of four fixed sweeps; symmetric falling contact therefore retains zero artificial torque while rotating approach cannot disappear at the group's center. Energy nonincrease is preflighted for every impulse and checked against actual Rapier readback. No candidate position correction, friction gain, ejection radius or native material mutation is added. The [4 November SOL364 correction](../systems/solid-detachment.md#sol364-bounded-witness-recovery--2026-11-04) transports and reclips only the original authenticated exterior segment at the present pose. Its old midpoint may have left the cell while a valid span remains. All source records and duplicates are checked before cleared spans are discarded; current span length and midpoint determine weighting and torque. Native scalar payloads are frozen once, with the older recursive fallback preserved. Exact-step replay proves that this witness repair still cannot clear stationary interior burial; no new granular law or position work is introduced. This is a bounded dissipative resistance experiment, not a calibrated granular momentum law or completed penetration recovery. Deep embedding, residual contact after the fixed sweeps, rejected stale geometry and asynchronous contact latency remain measurable limitations. Geometry work is bounded by 8,192 cell/proxy probes and 256 contact segments. Capacity, malformed compound geometry or unknown residency refuse the observation. Hot or unsupported native materials remain in the geometric measurement but supply no new supported-Sand response segment; their presence does not necessarily refuse the entire observation. The [canonical detachment contract](../systems/solid-detachment.md#opt-in-supported-sand-resistance) owns the full algorithm, capacity, controls, metric denominators and lifecycle limits. The [dated ledger](../audits/2026-11-03-sol281-dense-contact.md) separates local iterations from completed source-qualified Linux/Windows evidence and the [later recovery qualification](../audits/2026-11-03-sol281-takeover.md)."
+        },
+        {
+          "rank": 2,
+          "score": 38.571425,
+          "path": "systems/solid-detachment.md",
+          "title": "Native structural detachment, conservative displacement and experimental Sand resistance",
+          "heading": "Native structural detachment > SOL364 bounded witness recovery — 2026-11-04",
+          "part": 1,
+          "text": "Document: Native structural detachment, conservative displacement and experimental Sand resistance\nPath: systems/solid-detachment.md\ndocument-kind: contract\nstatus: Current\nscope: Opt-in single native aggregate, conservative Sand/Water displacement, exact contact observations and separately enabled supported-Sand resistance; draft implementation, not full issue acceptance\ncanonical-for: [native-structural-detachment-runtime, conservative-detachment-displacement, detachment-sand-contact-experiment]\nlast-reviewed: 2026-11-04\nSection: Native structural detachment > SOL364 bounded witness recovery — 2026-11-04\nThe [prospective SOL364 registration](../audits/2026-11-04-sol364-registration.md) continues existing #364 on draft #347 and ordinarily reconciles accepted MAT-AUTH shadow main `7ef4856e`. The compiler and its frozen compatibility locks remain unchanged. New code retains and reclips the original exterior witness at the current pose when its old midpoint has left a cell. A fully cleared record no longer suppresses other valid records, but every source witness and duplicate is checked before filtering. No new face area, native mutation, positional correction, impulse energy or relaxed pose/identity bound is added. Stationary initial burial remains a distinct clearance gate. Native observation now seals its scalar-only contact/proxy records and arrays before handing values to the worker. The worker seals metadata separately, with a safe recursive-freeze fallback for the older runtime contract. Cumulative all-attempt stage timings preserve the inclusive cost numerator and complete consumed-observation denominator. Executed source `9edc4f8f`, tree `b5baf8b23ff947c2d7b70e69745c10f18fbe9ebe`, completes the scoped Linux/Windows qualification with 74 test processes, eight imports, 38,296 structured checks and eight ordinary controls. Published runtime/evidence child `5f6360a9` retains that executed identity. The [SOL364 recovery ledger](../audits/2026-11-04-sol364-recovery.md) records the executable interior-burial and lost-midpoint counterexamples, independent geometry review, a corrected sleep-controlled replay and complete cost gates. All 24 original hosted cost groups now pass, worst 1.6449498327759198 ms per complete observation. The old Windows 2.145915178571 ms and local Linux 2.012693486590038 ms failures remain failed evidence; asynchronous before/after histories are not matched causal speedups. The synchronized replay freezes the native field and measures every declared 1/60-second Rapier step. Its no-extra-response, frozen-old-planner and repaired planner arms share initial conditions, disabled sleeping and exact compound geometry, with zero external gravity/damping and declared fixture velocities. This causal control is not gravitational settling. Delayed/missed delivery never suppresses the independent geometry measurement; only these complete traces use cell-ticks. The ordinary asynchronous conservative-displacement sessions retain cell-samples/area-samples and separate native worker/publication coverage. Their divergent histories are not paired causal comparisons. Fresh stationary contact can be accepted without an impulse: the dissipative velocity constraint supplies no work to remove existing burial. The four source-matched hosted replays record 84 failed sustained-clearance cases and 64 failed depth gates: 21 and 16 per OS/worker configuration. One-step delay recovers 11 valid acceptances without new impulse or a clearance gain; the rotated case increases safe planner refusals. Current response diagnostics separate planner, RID state reads, impulse application and guarded readback within the unchanged inclusive attempt cost. Complete asynchronous witness JSON remains mandatory even when console output is a concise footer; lossless deduplication of evidence does not change gate inputs. The packed replay's first overlapping Sand column is below the unchanged eight-cell support"
+        },
+        {
+          "rank": 3,
+          "score": 27.254471,
+          "path": "systems/solid-detachment.md",
+          "title": "Native structural detachment, conservative displacement and experimental Sand resistance",
+          "heading": "Native structural detachment > SOL364 bounded witness recovery — 2026-11-04",
+          "part": 2,
+          "text": "Document: Native structural detachment, conservative displacement and experimental Sand resistance\nPath: systems/solid-detachment.md\ndocument-kind: contract\nstatus: Current\nscope: Opt-in single native aggregate, conservative Sand/Water displacement, exact contact observations and separately enabled supported-Sand resistance; draft implementation, not full issue acceptance\ncanonical-for: [native-structural-detachment-runtime, conservative-detachment-displacement, detachment-sand-contact-experiment]\nlast-reviewed: 2026-11-04\nSection: Native structural detachment > SOL364 bounded witness recovery — 2026-11-04\nthreshold, so positive overlap can precede an eligible face witness even with fresh delivery. A separate supported nine-cell interior control proves overlap without an exterior crossing. Neither eligibility nor stationary burial is repaired by transporting a source segment more accurately. The current composition fails the preserved MAT-AUTH source guard on two historical SOL consumers, `world.cpp` and `world_pressure.inc`. All other 25 protected consumers match. The frozen lock and catalogue are unchanged; resolving the two-consumer compatibility checkpoint remains a merge blocker. Run 41815817333 also retains a final HTTP 500 documentation-dispatch failure after successful runtime/evidence push; it is not an all-green workflow. #347 remains draft/unmerged, #364/#281/#12 open and #365 blocked despite cost recovery."
+        },
+        {
+          "rank": 4,
+          "score": 26.212562,
+          "path": "operations/cybersand-codex-development-handover.md",
+          "title": "Development handover",
+          "heading": "Development handover > SOL364 synchronized repair continuation — 2026-11-04",
+          "part": 1,
+          "text": "Document: Development handover\nPath: operations/cybersand-codex-development-handover.md\ndocument-kind: guide\nstatus: Current\nscope: Short onboarding sequence and checkpoint protocol; product intent, source identity and contracts have canonical homes\ncanonical-for: [development-onboarding]\nlast-reviewed: 2026-11-04\nSection: Development handover > SOL364 synchronized repair continuation — 2026-11-04\nContinue from the [SOL364 source and evidence ledger](../audits/2026-11-04-sol364-recovery.md), which ordinarily merges accepted MAT-AUTH main `7ef4856e` into existing draft #347. It retains exterior witness spans at the current pose, freezes scalar native contact payloads once and accounts every owner/response attempt. The synchronized fixture preserves 520 members, six shapes and both geometric voids, with independently measured every-step geometry and explicit delivery schedules. First sleep-confounded traces and the new local 2.012693 ms cost failure remain failed evidence. Stationary burial needs separate bounded recovery work; neither process success nor a candidate-only cost result accepts sustained clearance. Executed source `9edc4f8f` completes 74 actual-host test processes and 38,296 structured checks; published runtime/evidence child is `5f6360a9`. All 24 original hosted cost groups pass, worst 1.644949833 ms, while 84/84 synchronized clearance cases fail. The old Windows 2.145915 ms failure remains retained. The unchanged MAT-AUTH guard rejects two historical SOL consumer deltas, and the qualification workflow ends failed on an HTTP 500 documentation dispatch after its successful publication push. Use the ledger's exact source/runtime/platform receipts and these distinct gate results. Next is bounded existing-penetration recovery plus the separate two-consumer integration decision. #347 stays draft, #365 blocked and #283 frozen."
+        },
+        {
+          "rank": 5,
+          "score": 26.071891,
+          "path": "reference/status-and-roadmap.md",
+          "title": "Status and foundational roadmap",
+          "heading": "Status and foundational roadmap > SOL364 bounded witness and CPU repair — 2026-11-04",
+          "part": 1,
+          "text": "Document: Status and foundational roadmap\nPath: reference/status-and-roadmap.md\ndocument-kind: reference\nstatus: Current\nscope: Current implementation map, unresolved correctness and policy decisions, and bounded next checkpoints\ncanonical-for: [implementation-status, foundational-priorities, open-decisions]\nlast-reviewed: 2026-11-04\nSection: Status and foundational roadmap > SOL364 bounded witness and CPU repair — 2026-11-04\nThe [SOL364 ledger](../audits/2026-11-04-sol364-recovery.md) records ordinary reconciliation of accepted main `7ef4856e`, including merged MAT-AUTH #371, the existing exterior-witness repair, immutable native observation optimization and synchronized 520-cell/six-proxy replay. Executed source `9edc4f8f` and published runtime/evidence child `5f6360a9` complete the scoped actual-host execution. All 24 original cost groups pass, worst 1.6449498327759198 ms, but stationary initial burial remains unresolved: 84/84 synchronized clearance cases and 64 depth gates fail. The unchanged MAT-AUTH guard rejects two historical SOL consumer deltas; final documentation dispatch also fails HTTP 500 after the successful publication push. The local Linux 2.012693486590038 ms, historical Windows 2.145915 ms and earlier publication failures stay retained. #347 stays draft/unmerged; #364, #281 and #12 stay open, #365 stays blocked, and Y1/GCR policy is unchanged."
+        }
+      ]
+    },
+    {
+      "id": "SOL364-BURIAL-001",
+      "query": "Does accepting a fresh stationary Sand contact or repairing its witness guarantee sustained clearance of a buried aggregate?",
+      "canonical": [
+        "systems/solid-detachment.md"
+      ],
+      "facts": [
+        "Interior overlap can exist without an exterior-face witness.",
+        "An accepted stationary contact can produce no impulse because the dissipative velocity constraint supplies no positional recovery work.",
+        "Sustained clearance remains a separate failed or unpassed gate; draft PR347 and blocked restoration365 are not promoted by execution success."
+      ],
+      "sources": [
+        "../godot/native_extension/solid_contact_adapter.inc",
+        "../godot/scripts/solid_contact_response.gd",
+        "../godot/tests/test_solid_contact_synchronized.gd"
+      ],
+      "canonical_rank": 1,
+      "hits": [
+        {
+          "rank": 1,
+          "score": 27.430432,
+          "path": "systems/solid-detachment.md",
+          "title": "Native structural detachment, conservative displacement and experimental Sand resistance",
+          "heading": "Native structural detachment > SOL364 bounded witness recovery — 2026-11-04",
+          "part": 1,
+          "text": "Document: Native structural detachment, conservative displacement and experimental Sand resistance\nPath: systems/solid-detachment.md\ndocument-kind: contract\nstatus: Current\nscope: Opt-in single native aggregate, conservative Sand/Water displacement, exact contact observations and separately enabled supported-Sand resistance; draft implementation, not full issue acceptance\ncanonical-for: [native-structural-detachment-runtime, conservative-detachment-displacement, detachment-sand-contact-experiment]\nlast-reviewed: 2026-11-04\nSection: Native structural detachment > SOL364 bounded witness recovery — 2026-11-04\nThe [prospective SOL364 registration](../audits/2026-11-04-sol364-registration.md) continues existing #364 on draft #347 and ordinarily reconciles accepted MAT-AUTH shadow main `7ef4856e`. The compiler and its frozen compatibility locks remain unchanged. New code retains and reclips the original exterior witness at the current pose when its old midpoint has left a cell. A fully cleared record no longer suppresses other valid records, but every source witness and duplicate is checked before filtering. No new face area, native mutation, positional correction, impulse energy or relaxed pose/identity bound is added. Stationary initial burial remains a distinct clearance gate. Native observation now seals its scalar-only contact/proxy records and arrays before handing values to the worker. The worker seals metadata separately, with a safe recursive-freeze fallback for the older runtime contract. Cumulative all-attempt stage timings preserve the inclusive cost numerator and complete consumed-observation denominator. Executed source `9edc4f8f`, tree `b5baf8b23ff947c2d7b70e69745c10f18fbe9ebe`, completes the scoped Linux/Windows qualification with 74 test processes, eight imports, 38,296 structured checks and eight ordinary controls. Published runtime/evidence child `5f6360a9` retains that executed identity. The [SOL364 recovery ledger](../audits/2026-11-04-sol364-recovery.md) records the executable interior-burial and lost-midpoint counterexamples, independent geometry review, a corrected sleep-controlled replay and complete cost gates. All 24 original hosted cost groups now pass, worst 1.6449498327759198 ms per complete observation. The old Windows 2.145915178571 ms and local Linux 2.012693486590038 ms failures remain failed evidence; asynchronous before/after histories are not matched causal speedups. The synchronized replay freezes the native field and measures every declared 1/60-second Rapier step. Its no-extra-response, frozen-old-planner and repaired planner arms share initial conditions, disabled sleeping and exact compound geometry, with zero external gravity/damping and declared fixture velocities. This causal control is not gravitational settling. Delayed/missed delivery never suppresses the independent geometry measurement; only these complete traces use cell-ticks. The ordinary asynchronous conservative-displacement sessions retain cell-samples/area-samples and separate native worker/publication coverage. Their divergent histories are not paired causal comparisons. Fresh stationary contact can be accepted without an impulse: the dissipative velocity constraint supplies no work to remove existing burial. The four source-matched hosted replays record 84 failed sustained-clearance cases and 64 failed depth gates: 21 and 16 per OS/worker configuration. One-step delay recovers 11 valid acceptances without new impulse or a clearance gain; the rotated case increases safe planner refusals. Current response diagnostics separate planner, RID state reads, impulse application and guarded readback within the unchanged inclusive attempt cost. Complete asynchronous witness JSON remains mandatory even when console output is a concise footer; lossless deduplication of evidence does not change gate inputs. The packed replay's first overlapping Sand column is below the unchanged eight-cell support"
+        },
+        {
+          "rank": 2,
+          "score": 23.948818,
+          "path": "systems/solid-detachment.md",
+          "title": "Native structural detachment, conservative displacement and experimental Sand resistance",
+          "heading": "Native structural detachment > SOL364-B existing-penetration corridor — 2026-11-04",
+          "part": 1,
+          "text": "Document: Native structural detachment, conservative displacement and experimental Sand resistance\nPath: systems/solid-detachment.md\ndocument-kind: contract\nstatus: Current\nscope: Opt-in single native aggregate, conservative Sand/Water displacement, exact contact observations and separately enabled supported-Sand resistance; draft implementation, not full issue acceptance\ncanonical-for: [native-structural-detachment-runtime, conservative-detachment-displacement, detachment-sand-contact-experiment]\nlast-reviewed: 2026-11-04\nSection: Native structural detachment > SOL364-B existing-penetration corridor — 2026-11-04\nThe [registered fixed-orientation translation experiment](../audits/2026-11-04-sol364b-corridor-registration.md) ends in a [bounded family NO-GO](../audits/2026-11-04-sol364b-corridor-result.md). Its eight-or-fewer signed world/body axes, four-cell lifetime distance and no-new-cell/proxy-pair rule admit none of the original nine-cell, stationary or rotated controls. A source-bound C++ diagnostic rejects all 1,452 retained states from Linux/Windows workers 1/4; these are reevaluated historical observations, not newly executed Rapier trajectories. Six groups/142 adversarial checks and independent polygon analysis qualify the diagnostic's negative conclusion only. The nine-cell Sand pocket also intersects 16 hard cells in its original enclosure. Stationary embedding retains a tiny excluded corner above the original area filter; separately, necessary escape distance exceeds 5.7764 cells. The rotated case needs at least 5.2458 cells. Both lower bounds exceed four cells even before new blockers. Original 84 clearance failures remain failed. No larger budget, filled hull, changed tolerance, cell deletion or rotating/curved search is inferred. The conclusion is limited to this registered family, not all possible mechanisms. The proposed correction has explicit introduced repair energy, not free projection work: a finite `mass * 92.12 * 4` reservoir, signed potential change, kinetic change and residual dissipation. Only its arithmetic/refusal rules are tested. No live correction, positional work or recovery toggle is applied, so new live energy/readback/lifecycle and recovery CPU gates are unexecuted. Historical 24/24 cost success remains scoped to `9edc4f8f`; original Windows and Linux cost failures remain retained. Current v1 exterior-witness packets lack complete interior/swept-space eligibility and a revision lease held through RID application. An age bound or cached revision alone is insufficient live authority. The frozen MAT-AUTH guard still fails on the same two SOL consumers. Independent compatibility investigation has its own branch and source receipt; nothing is imported here. #347 stays draft, #364/#281/#12 stay open and #365 stays blocked. Any later mechanism or two-lane composition needs separate admission and fresh exact-head physical, CPU, compatibility, ownership and platform qualification. Fresh hosted source `9597abd7` passes both builds, all eight actual Linux/Windows cohorts and the unchanged 24-group CPU matrix, worst `1.8502254098360655 ms`. GCC, strict ASan/UBSan and actual Windows MSVC each pass 142 diagnostic checks. All 84 sustained-clearance cases and 64 depth gates still fail. Publication then refuses the 144,679,823-byte source archive under the unchanged 128 MiB file cap; the workflow is FAILURE and has no runtime/provenance child. Old checked-in runtime identities and every original negative remain. Independent draft #386 records REPAIR for the two consumer contracts, with no compatibility transition."
+        },
+        {
+          "rank": 3,
+          "score": 22.447222,
+          "path": "systems/solid-detachment.md",
+          "title": "Native structural detachment, conservative displacement and experimental Sand resistance",
+          "heading": "Native structural detachment > SOL364 bounded witness recovery — 2026-11-04",
+          "part": 2,
+          "text": "Document: Native structural detachment, conservative displacement and experimental Sand resistance\nPath: systems/solid-detachment.md\ndocument-kind: contract\nstatus: Current\nscope: Opt-in single native aggregate, conservative Sand/Water displacement, exact contact observations and separately enabled supported-Sand resistance; draft implementation, not full issue acceptance\ncanonical-for: [native-structural-detachment-runtime, conservative-detachment-displacement, detachment-sand-contact-experiment]\nlast-reviewed: 2026-11-04\nSection: Native structural detachment > SOL364 bounded witness recovery — 2026-11-04\nthreshold, so positive overlap can precede an eligible face witness even with fresh delivery. A separate supported nine-cell interior control proves overlap without an exterior crossing. Neither eligibility nor stationary burial is repaired by transporting a source segment more accurately. The current composition fails the preserved MAT-AUTH source guard on two historical SOL consumers, `world.cpp` and `world_pressure.inc`. All other 25 protected consumers match. The frozen lock and catalogue are unchanged; resolving the two-consumer compatibility checkpoint remains a merge blocker. Run 41815817333 also retains a final HTTP 500 documentation-dispatch failure after successful runtime/evidence push; it is not an all-green workflow. #347 remains draft/unmerged, #364/#281/#12 open and #365 blocked despite cost recovery."
+        },
+        {
+          "rank": 4,
+          "score": 19.90978,
+          "path": "systems/solid-detachment.md",
+          "title": "Native structural detachment, conservative displacement and experimental Sand resistance",
+          "heading": "Native structural detachment > Embedded Sand and reversible restoration limits",
+          "part": 1,
+          "text": "Document: Native structural detachment, conservative displacement and experimental Sand resistance\nPath: systems/solid-detachment.md\ndocument-kind: contract\nstatus: Current\nscope: Opt-in single native aggregate, conservative Sand/Water displacement, exact contact observations and separately enabled supported-Sand resistance; draft implementation, not full issue acceptance\ncanonical-for: [native-structural-detachment-runtime, conservative-detachment-displacement, detachment-sand-contact-experiment]\nlast-reviewed: 2026-11-04\nSection: Native structural detachment > Embedded Sand and reversible restoration limits\nImproved contact does not establish deep-embedding recovery. A native Sand cell can remain inside the compound without crossing an exterior face, producing measured overlap but no candidate normal impulse. No moving or sleeping aggregate is rasterized back into terrain by this experiment. Sleeping retains native aggregate payload ownership and a live Rapier body; it is not native restoration. The existing [#364 / SOL-CONTACT-002](https://github.com/techrote/cybersand/issues/364) now has the synchronized reproduction, registered limits, bounded exterior-witness repair and a passing new 24-group cost matrix. Its remaining bounded action is aggregate-side recovery for already embedded material, including the zero-velocity interior case, under an explicit penetration-work and topology contract. Reuse the source-matched stationary and rotated counterexamples; retain every failed gate and all ownership, pose/sample, kinetic-energy and invalid-readback fences. The next correction must qualify its resulting source, and the historical CPU failures are not erased by the new matrix pass. [#365 / SOL-RESTORE-001](https://github.com/techrote/cybersand/issues/365) remains blocked until applicable contact/ownership gates justify its one-aggregate, lattice-congruent restoration prototype. **Deferred:** reactive Wood/bark, heterogeneous bonds, arbitrary fracture, multiple persistent aggregates, transformed rest-to-cell restoration, normal gameplay integration and Web qualification. Sleeping is still aggregate ownership. The existing inactive rollback is not dynamic desoliding. Representative hardware GPU pacing and human physical acceptance remain separate from headless host timing. The dated audit assigns each #281 gate; neither #281 nor #12 is closed by this functional increment."
+        },
+        {
+          "rank": 5,
+          "score": 18.901268,
+          "path": "operations/cybersand-codex-development-handover.md",
+          "title": "Development handover",
+          "heading": "Development handover > SOL364 synchronized repair continuation — 2026-11-04",
+          "part": 1,
+          "text": "Document: Development handover\nPath: operations/cybersand-codex-development-handover.md\ndocument-kind: guide\nstatus: Current\nscope: Short onboarding sequence and checkpoint protocol; product intent, source identity and contracts have canonical homes\ncanonical-for: [development-onboarding]\nlast-reviewed: 2026-11-04\nSection: Development handover > SOL364 synchronized repair continuation — 2026-11-04\nContinue from the [SOL364 source and evidence ledger](../audits/2026-11-04-sol364-recovery.md), which ordinarily merges accepted MAT-AUTH main `7ef4856e` into existing draft #347. It retains exterior witness spans at the current pose, freezes scalar native contact payloads once and accounts every owner/response attempt. The synchronized fixture preserves 520 members, six shapes and both geometric voids, with independently measured every-step geometry and explicit delivery schedules. First sleep-confounded traces and the new local 2.012693 ms cost failure remain failed evidence. Stationary burial needs separate bounded recovery work; neither process success nor a candidate-only cost result accepts sustained clearance. Executed source `9edc4f8f` completes 74 actual-host test processes and 38,296 structured checks; published runtime/evidence child is `5f6360a9`. All 24 original hosted cost groups pass, worst 1.644949833 ms, while 84/84 synchronized clearance cases fail. The old Windows 2.145915 ms failure remains retained. The unchanged MAT-AUTH guard rejects two historical SOL consumer deltas, and the qualification workflow ends failed on an HTTP 500 documentation dispatch after its successful publication push. Use the ledger's exact source/runtime/platform receipts and these distinct gate results. Next is bounded existing-penetration recovery plus the separate two-consumer integration decision. #347 stays draft, #365 blocked and #283 frozen."
+        }
+      ]
+    },
+    {
+      "id": "SOL364-SYNCHRONIZED-001",
+      "query": "When can detached-body overlap be reported as cell-ticks, and how do synchronized contact controls differ from asynchronous sessions?",
+      "canonical": [
+        "systems/solid-detachment.md"
+      ],
+      "facts": [
+        "Only a complete every-declared-step exact-geometry trace supports cell-ticks; deliberately missed response delivery does not omit geometry measurement.",
+        "The synchronized fixture freezes the native field, disables body sleeping in all arms and compares the retained planner with the repair on identical frozen observations.",
+        "Ordinary asynchronous native and conservative-displacement trials retain cell-sample/area-sample metrics and are not matched causal trajectories."
+      ],
+      "sources": [
+        "../godot/tests/test_solid_contact_synchronized.gd",
+        "../godot/tests/support/solid_contact_synchronized_fixture.gd",
+        "../godot/tests/test_solid_detachment_contact_recovery.gd"
+      ],
+      "canonical_rank": 1,
+      "hits": [
+        {
+          "rank": 1,
+          "score": 18.188399,
+          "path": "systems/solid-detachment.md",
+          "title": "Native structural detachment, conservative displacement and experimental Sand resistance",
+          "heading": "Native structural detachment > SOL364 bounded witness recovery — 2026-11-04",
+          "part": 1,
+          "text": "Document: Native structural detachment, conservative displacement and experimental Sand resistance\nPath: systems/solid-detachment.md\ndocument-kind: contract\nstatus: Current\nscope: Opt-in single native aggregate, conservative Sand/Water displacement, exact contact observations and separately enabled supported-Sand resistance; draft implementation, not full issue acceptance\ncanonical-for: [native-structural-detachment-runtime, conservative-detachment-displacement, detachment-sand-contact-experiment]\nlast-reviewed: 2026-11-04\nSection: Native structural detachment > SOL364 bounded witness recovery — 2026-11-04\nThe [prospective SOL364 registration](../audits/2026-11-04-sol364-registration.md) continues existing #364 on draft #347 and ordinarily reconciles accepted MAT-AUTH shadow main `7ef4856e`. The compiler and its frozen compatibility locks remain unchanged. New code retains and reclips the original exterior witness at the current pose when its old midpoint has left a cell. A fully cleared record no longer suppresses other valid records, but every source witness and duplicate is checked before filtering. No new face area, native mutation, positional correction, impulse energy or relaxed pose/identity bound is added. Stationary initial burial remains a distinct clearance gate. Native observation now seals its scalar-only contact/proxy records and arrays before handing values to the worker. The worker seals metadata separately, with a safe recursive-freeze fallback for the older runtime contract. Cumulative all-attempt stage timings preserve the inclusive cost numerator and complete consumed-observation denominator. Executed source `9edc4f8f`, tree `b5baf8b23ff947c2d7b70e69745c10f18fbe9ebe`, completes the scoped Linux/Windows qualification with 74 test processes, eight imports, 38,296 structured checks and eight ordinary controls. Published runtime/evidence child `5f6360a9` retains that executed identity. The [SOL364 recovery ledger](../audits/2026-11-04-sol364-recovery.md) records the executable interior-burial and lost-midpoint counterexamples, independent geometry review, a corrected sleep-controlled replay and complete cost gates. All 24 original hosted cost groups now pass, worst 1.6449498327759198 ms per complete observation. The old Windows 2.145915178571 ms and local Linux 2.012693486590038 ms failures remain failed evidence; asynchronous before/after histories are not matched causal speedups. The synchronized replay freezes the native field and measures every declared 1/60-second Rapier step. Its no-extra-response, frozen-old-planner and repaired planner arms share initial conditions, disabled sleeping and exact compound geometry, with zero external gravity/damping and declared fixture velocities. This causal control is not gravitational settling. Delayed/missed delivery never suppresses the independent geometry measurement; only these complete traces use cell-ticks. The ordinary asynchronous conservative-displacement sessions retain cell-samples/area-samples and separate native worker/publication coverage. Their divergent histories are not paired causal comparisons. Fresh stationary contact can be accepted without an impulse: the dissipative velocity constraint supplies no work to remove existing burial. The four source-matched hosted replays record 84 failed sustained-clearance cases and 64 failed depth gates: 21 and 16 per OS/worker configuration. One-step delay recovers 11 valid acceptances without new impulse or a clearance gain; the rotated case increases safe planner refusals. Current response diagnostics separate planner, RID state reads, impulse application and guarded readback within the unchanged inclusive attempt cost. Complete asynchronous witness JSON remains mandatory even when console output is a concise footer; lossless deduplication of evidence does not change gate inputs. The packed replay's first overlapping Sand column is below the unchanged eight-cell support"
+        },
+        {
+          "rank": 2,
+          "score": 17.825571,
+          "path": "architecture/rigid-body-and-cellular-coupling.md",
+          "title": "Rigid-body and cellular coupling",
+          "heading": "Rigid-body and cellular coupling > Opt-in detached compounds — 2026-11-01 > Separately enabled supported-Sand constraint — 2026-11-03",
+          "part": 1,
+          "text": "Document: Rigid-body and cellular coupling\nPath: architecture/rigid-body-and-cellular-coupling.md\ndocument-kind: contract\nstatus: Current\nscope: Rectangle occupancy, bounded displacement/impulses and Rapier hard contact, plus an opt-in detached-aggregate Sand constraint; generalized physics and exact replay remain absent\ncanonical-for: [rigid-body-cellular-coupling]\nlast-reviewed: 2026-11-04\nSection: Rigid-body and cellular coupling > Opt-in detached compounds — 2026-11-01 > Separately enabled supported-Sand constraint — 2026-11-03\n**Current experimental source:** the detachment session can additionally enable `sand_resistance`; its default remains `false`. The exclusive native owner publishes whole-cell/rotated-proxy SAT depth, clipped overlap area and supported ambient-Sand exterior face segments. The observer removes internal compound seams and preserves the six proxies and both tree holes. Its copied immutable payload is separate from the unchanged 11/9 ABI and conservative material transactions. Water, MAT chemistry, hard contact, ordinary granular defaults and the unaccepted Y1 #343 policy are unchanged. The existing main-thread bridge authenticates snapshot, tick, **revision**, epoch, token/generation and sample order before applying any candidate impulse. The pure planner validates all geometry against the observed and current poses, refuses sample age over one or corner drift over 0.25 cells, and constructs an effective-mass, zero-restitution normal response. Parallel segments use only currently approaching point velocities in each of four fixed sweeps; symmetric falling contact therefore retains zero artificial torque while rotating approach cannot disappear at the group's center. Energy nonincrease is preflighted for every impulse and checked against actual Rapier readback. No candidate position correction, friction gain, ejection radius or native material mutation is added. The [4 November SOL364 correction](../systems/solid-detachment.md#sol364-bounded-witness-recovery--2026-11-04) transports and reclips only the original authenticated exterior segment at the present pose. Its old midpoint may have left the cell while a valid span remains. All source records and duplicates are checked before cleared spans are discarded; current span length and midpoint determine weighting and torque. Native scalar payloads are frozen once, with the older recursive fallback preserved. Exact-step replay proves that this witness repair still cannot clear stationary interior burial; no new granular law or position work is introduced. This is a bounded dissipative resistance experiment, not a calibrated granular momentum law or completed penetration recovery. Deep embedding, residual contact after the fixed sweeps, rejected stale geometry and asynchronous contact latency remain measurable limitations. Geometry work is bounded by 8,192 cell/proxy probes and 256 contact segments. Capacity, malformed compound geometry or unknown residency refuse the observation. Hot or unsupported native materials remain in the geometric measurement but supply no new supported-Sand response segment; their presence does not necessarily refuse the entire observation. The [canonical detachment contract](../systems/solid-detachment.md#opt-in-supported-sand-resistance) owns the full algorithm, capacity, controls, metric denominators and lifecycle limits. The [dated ledger](../audits/2026-11-03-sol281-dense-contact.md) separates local iterations from completed source-qualified Linux/Windows evidence and the [later recovery qualification](../audits/2026-11-03-sol281-takeover.md)."
+        },
+        {
+          "rank": 3,
+          "score": 17.638163,
+          "path": "systems/solid-detachment.md",
+          "title": "Native structural detachment, conservative displacement and experimental Sand resistance",
+          "heading": "Native structural detachment > Opt-in supported-Sand resistance > Physical measurements and their denominators",
+          "part": 1,
+          "text": "Document: Native structural detachment, conservative displacement and experimental Sand resistance\nPath: systems/solid-detachment.md\ndocument-kind: contract\nstatus: Current\nscope: Opt-in single native aggregate, conservative Sand/Water displacement, exact contact observations and separately enabled supported-Sand resistance; draft implementation, not full issue acceptance\ncanonical-for: [native-structural-detachment-runtime, conservative-detachment-displacement, detachment-sand-contact-experiment]\nlast-reviewed: 2026-11-04\nSection: Native structural detachment > Opt-in supported-Sand resistance > Physical measurements and their denominators\nEach complete consumed observation records exact overlap area, maximum penetration, unique overlapping cells and per-proxy values at its source pose. The live trace distinguishes source and current Rapier poses and retains their identity fields. Summed asynchronous measurements are **overlap-cell-samples** and **area-samples**, with the complete consumed observation count as denominator. They are not native cell-ticks or a synchronized per-step trajectory. Three repeats per arm and environment report ranges; unmatched live paths are not controlled causal comparisons. Contact cost includes all native-owner observation attempts, including refused or unconsumed publications and payload freezing, plus every main response attempt. Cumulative owner timing prevents dropped publications from disappearing from the cost account. The proposed CPU feasibility gate divides that total contact work by complete consumed geometry observations and requires a mean no greater than 2 ms on the disclosed host. Evaluate that gate from the recorded measurements, independently of workflow status; the execution checks do not enforce the 2 ms threshold. Report native-worker, Rapier-step, synchronization and publication latency separately. Headless CPU results do not establish GPU frame pacing or human gameplay acceptance. SOL364 records cumulative native-call and worker-envelope time separately; their sum equals the inclusive owner total. Native geometry/value-construction and native payload freezing are nested stages of the native call, so they are not added again. Complete and refused owner attempt totals remain visible, including attempts not represented in the consumed trace. Time from the sealed owner envelope to main receipt is measured for baseline and refused observations as well as accepted candidates. These are elapsed monotonic work/latency intervals, not operating-system thread CPU counters. The analysis reports per-repeat means, variance and all 24 original groups; an absent platform or worker cohort is INCOMPLETE, never a passing full matrix."
+        },
+        {
+          "rank": 4,
+          "score": 16.809039,
+          "path": "architecture/rigid-body-and-cellular-coupling.md",
+          "title": "Rigid-body and cellular coupling",
+          "heading": "Rigid-body and cellular coupling > What does REM-002 establish on Current source?",
+          "part": 1,
+          "text": "Document: Rigid-body and cellular coupling\nPath: architecture/rigid-body-and-cellular-coupling.md\ndocument-kind: contract\nstatus: Current\nscope: Rectangle occupancy, bounded displacement/impulses and Rapier hard contact, plus an opt-in detached-aggregate Sand constraint; generalized physics and exact replay remain absent\ncanonical-for: [rigid-body-cellular-coupling]\nlast-reviewed: 2026-11-04\nSection: Rigid-body and cellular coupling > What does REM-002 establish on Current source?\n**Current bounded baseline, 2026-09-24:** [REM-002 evidence](../audits/2026-09-24-rem002-issue11-integration-forensics.md) reconciles the never-integrated historical #11 repair into current main without claiming broad body/granular gameplay acceptance. Current semantics are: - a stored cell beneath a transient body mask remains material authority and does not execute its normal cellular kernel as the body Wall proxy; - ejection endpoints and their bounded path reject hard terrain and foreign body masks; if no legal target exists, the complete payload stays at the source and unresolved overlap is reported; - an ordinary rectangle may receive a bounded cellular-owned granular-bearing contribution from current support-capable packed material; - bearing is recomputed from current cells every accepted sample and disappears after excavation/support loss; there is no support cache or granular Rapier collider; - hard terrain remains Rapier/static-terrain contact, and liquids do not become granular bearing; - the existing 11-float input / 9-float result ABI and sample-age policy remain unchanged. On frozen source `df54e927...`, the focused real-Rapier Linux regression measured one-height Sand peak/final depth **3.748/0.000 cells**, four-height **6.652/1.472 cells**, and explicit excavation released the body into substantial downward travel. The exact runtime/platform qualifications and retained hashes are in the dated REM-002 audit. This is still a bounded ordinary rectangle/load baseline. General shapes, high energy/thin beds, crowding, sustained publication delay, calibrated force/torque, fracture and broad body↔granular gameplay acceptance remain outside this contract and are owned by REM-004 / #83 where applicable."
+        },
+        {
+          "rank": 5,
+          "score": 15.375889,
+          "path": "architecture/rigid-body-and-cellular-coupling.md",
+          "title": "Rigid-body and cellular coupling",
+          "heading": "Rigid-body and cellular coupling > What are the current numerical bounds and units?",
+          "part": 1,
+          "text": "Document: Rigid-body and cellular coupling\nPath: architecture/rigid-body-and-cellular-coupling.md\ndocument-kind: contract\nstatus: Current\nscope: Rectangle occupancy, bounded displacement/impulses and Rapier hard contact, plus an opt-in detached-aggregate Sand constraint; generalized physics and exact replay remain absent\ncanonical-for: [rigid-body-cellular-coupling]\nlast-reviewed: 2026-11-04\nSection: Rigid-body and cellular coupling > What are the current numerical bounds and units?\nBody centres/sizes/corrections use cell/pixel coordinates; rotation is radians, linear velocity is pixels per second, angular velocity is radians per second. Mass and returned central impulses use the Godot physics adapter's quantities; there is no approved production SI calibration or generalized force/torque unit contract. Packed fields are documented in [interfaces](../reference/interfaces-and-message-contracts.md). | Operation | Current bound or response | |---|---| | Translation sweep | More than 32 pixels between samples is treated as a teleport: endpoint only | | Sweep sampling | Approximately one-cell spacing, capped at 24 intervals/25 samples; interpolates centre, shortest rotation and size | | Endpoint overlap | Search outward from nearest face and along its tangent, at most eight cells; the bounded half-cell path may not cross hard terrain or another body's transient mask | | Swept-only overlap | Prefer ejection in body-travel direction; rotational response remains approximate | | No valid destination | Retain the complete stored cell payload and report unresolved overlap plus reaction; no particle fallback or silent deletion | | Granular bearing | Exposed downward body cells query the version-1 granular support predicate against stored material; response is recomputed each accepted sample, capped at 20 impulse units and uses at most 0.5-cell low-speed correction | | Native impulse | Contact/displacement/density pressure terms retain the ordinary cap; the bounded bearing term shares the cellular coupling owner rather than becoming a second collider/solver | | Stale results | Reject age above eight body samples; suppress correction above one; scale impulse by `1/(1+0.25*age)` | Ejection transfers the compact cell state including Water mass. Pure closed Water conservation does not establish general body/cell energy conservation. Duplicate sample serials are not applied twice. Sample wrap and age constants are in [Rapier `apply_cellular_results`](../../godot/scripts/rapier_physics_bridge.gd). The internal [4LY free-flight chassis](../systems/physical-free-flight.md) reuses this same rectangle publication and cellular response. Its authored propulsion force cap is separate from the native impulse cap above. Raising a flight thrust limit does not repair or requalify body/material coupling. Flight receipts report only their own applied assistance; they cannot decompose Rapier contact, passive damping or delayed cellular impulses into a claimed total-force measurement."
+        }
+      ]
+    },
+    {
+      "id": "SOL364-COST-001",
+      "query": "How does native contact freezing reduce work without hiding refused or overwritten attempts or changing the original full-matrix cost gate?",
+      "canonical": [
+        "systems/solid-detachment.md"
+      ],
+      "facts": [
+        "Native scalar contact/proxy records are sealed at construction; the worker seals metadata and preserves a recursive fallback for markerless runtimes.",
+        "All owner and main response attempt work remains in the numerator and complete consumed observations remain the denominator.",
+        "All 24 original baseline/candidate host groups retain the 2 ms limit; incomplete cohorts and candidate-only success cannot establish the complete gate."
+      ],
+      "sources": [
+        "../godot/native_extension/solid_contact_adapter.inc",
+        "../godot/scripts/solid_detachment_worker.gd",
+        "../tools/sol281/analyze_contact_recovery.py"
+      ],
+      "canonical_rank": 1,
+      "hits": [
+        {
+          "rank": 1,
+          "score": 32.468228,
+          "path": "systems/solid-detachment.md",
+          "title": "Native structural detachment, conservative displacement and experimental Sand resistance",
+          "heading": "Native structural detachment > Opt-in supported-Sand resistance > Physical measurements and their denominators",
+          "part": 1,
+          "text": "Document: Native structural detachment, conservative displacement and experimental Sand resistance\nPath: systems/solid-detachment.md\ndocument-kind: contract\nstatus: Current\nscope: Opt-in single native aggregate, conservative Sand/Water displacement, exact contact observations and separately enabled supported-Sand resistance; draft implementation, not full issue acceptance\ncanonical-for: [native-structural-detachment-runtime, conservative-detachment-displacement, detachment-sand-contact-experiment]\nlast-reviewed: 2026-11-04\nSection: Native structural detachment > Opt-in supported-Sand resistance > Physical measurements and their denominators\nEach complete consumed observation records exact overlap area, maximum penetration, unique overlapping cells and per-proxy values at its source pose. The live trace distinguishes source and current Rapier poses and retains their identity fields. Summed asynchronous measurements are **overlap-cell-samples** and **area-samples**, with the complete consumed observation count as denominator. They are not native cell-ticks or a synchronized per-step trajectory. Three repeats per arm and environment report ranges; unmatched live paths are not controlled causal comparisons. Contact cost includes all native-owner observation attempts, including refused or unconsumed publications and payload freezing, plus every main response attempt. Cumulative owner timing prevents dropped publications from disappearing from the cost account. The proposed CPU feasibility gate divides that total contact work by complete consumed geometry observations and requires a mean no greater than 2 ms on the disclosed host. Evaluate that gate from the recorded measurements, independently of workflow status; the execution checks do not enforce the 2 ms threshold. Report native-worker, Rapier-step, synchronization and publication latency separately. Headless CPU results do not establish GPU frame pacing or human gameplay acceptance. SOL364 records cumulative native-call and worker-envelope time separately; their sum equals the inclusive owner total. Native geometry/value-construction and native payload freezing are nested stages of the native call, so they are not added again. Complete and refused owner attempt totals remain visible, including attempts not represented in the consumed trace. Time from the sealed owner envelope to main receipt is measured for baseline and refused observations as well as accepted candidates. These are elapsed monotonic work/latency intervals, not operating-system thread CPU counters. The analysis reports per-repeat means, variance and all 24 original groups; an absent platform or worker cohort is INCOMPLETE, never a passing full matrix."
+        },
+        {
+          "rank": 2,
+          "score": 17.205426,
+          "path": "operations/cybersand-codex-development-handover.md",
+          "title": "Development handover",
+          "heading": "Development handover > Active manual PLAY continuation — 2026-10-31",
+          "part": 1,
+          "text": "Document: Development handover\nPath: operations/cybersand-codex-development-handover.md\ndocument-kind: guide\nstatus: Current\nscope: Short onboarding sequence and checkpoint protocol; product intent, source identity and contracts have canonical homes\ncanonical-for: [development-onboarding]\nlast-reviewed: 2026-11-04\nSection: Development handover > Active manual PLAY continuation — 2026-10-31\nFresh reconciliation began from accepted main `0bf28d5760aed989a79386de03ef4fc6171fef42`. PR #317's original scoped 515/0 per-OS result was not full integration qualification. Independent review found and corrected an offline parser-negative false pass; corrected head `ca426a63d14f7b604799c7fa5cba1197240caa55` has a stricter v2 contract and bounded teardown. Its dedicated run41173057126 records Linux520/0 and Windows523/0; full pre-merge Documentation, Native and Windows/Linux Godot gates passed before guarded merge at `5c709f837a0e2b3248bc9df85baf6da9c8a88a0b`, tree `901166624bfde7cf2691c57a8937e59d3402febc`. Its post-merge Godot run41175311073 passed206 Windows and218 Linux cases. Post-merge Native41175310972 **failed**: the unchanged600-second worldgen-sanitize build/run bound interrupted the ninth sanitized executable after eight completed. That original result remains incomplete; a separate bounded build-scheduling repair is under review. Original source1686, run41171088500, cancelled ordinary attempts and all raw artifacts retain their original status and identities. PR #318 at `12380a590d1bc301a9700ec4af78cbc72ca027e0` adds the independently reproduced immediate-pause cancellation correction. Its own complete exact-head matrix and independent original-artifact review passed, including515 INPUT010 assertions and50 actual LIFE001 lifetimes per OS. It was guardedly merged at `afa8185c8dc57405ef54765a6cdf71cb7bfbf6e4`, tree `6ec0ca07a9f49c4c3039b52c87d15414582c31e5`; original post-merge runs41178118495 (Documentation),41178118533 (Native) and41178118530 (Godot) are separately tracked in the live ledger. The different-tree #317 failure is not relabelled by this qualification. The [UI007 desktop package](../audits/2026-10-31-play-ui007-desktop-readiness.md) adds authored target visibility, optional sampled task participation, publication accounting and visible launcher return. The [manual packet](play-desktop-manual-qualification.md) prepares exact-source launch/checklist files without executing Godot or claiming physical qualification. Consult the live PR and #305 ledgers for guarded merge and post-merge receipts; these source descriptions are not green-gate claims. The original #319 full matrix remains failed: Windows86/0 then0xC0000005 in the unchanged desktop-default fixture, and a separate TSan15-minute timeout after153/164 case passes. Its independently reviewed immutable-empty-publication correction is a distinct defect; no cause/cure for those failures is asserted. Continue #268 → #269 → #270 → #263 without another gameplay owner. Keep native World exclusive to the existing worker, immutable publications and main-thread Rapier. Preserve 50 actual lifetimes per platform and unchanged deadlines. Keep #308/#310 held, #312/#316 frozen, all shader/cache/decomposition work deferred, and Scheduswarm paused. No physical device or human feel pass exists in this automated continuation; failed cold graphical attempts remain failed."
+        },
+        {
+          "rank": 3,
+          "score": 16.437656,
+          "path": "systems/solid-detachment.md",
+          "title": "Native structural detachment, conservative displacement and experimental Sand resistance",
+          "heading": "Native structural detachment > Embedded Sand and reversible restoration limits",
+          "part": 1,
+          "text": "Document: Native structural detachment, conservative displacement and experimental Sand resistance\nPath: systems/solid-detachment.md\ndocument-kind: contract\nstatus: Current\nscope: Opt-in single native aggregate, conservative Sand/Water displacement, exact contact observations and separately enabled supported-Sand resistance; draft implementation, not full issue acceptance\ncanonical-for: [native-structural-detachment-runtime, conservative-detachment-displacement, detachment-sand-contact-experiment]\nlast-reviewed: 2026-11-04\nSection: Native structural detachment > Embedded Sand and reversible restoration limits\nImproved contact does not establish deep-embedding recovery. A native Sand cell can remain inside the compound without crossing an exterior face, producing measured overlap but no candidate normal impulse. No moving or sleeping aggregate is rasterized back into terrain by this experiment. Sleeping retains native aggregate payload ownership and a live Rapier body; it is not native restoration. The existing [#364 / SOL-CONTACT-002](https://github.com/techrote/cybersand/issues/364) now has the synchronized reproduction, registered limits, bounded exterior-witness repair and a passing new 24-group cost matrix. Its remaining bounded action is aggregate-side recovery for already embedded material, including the zero-velocity interior case, under an explicit penetration-work and topology contract. Reuse the source-matched stationary and rotated counterexamples; retain every failed gate and all ownership, pose/sample, kinetic-energy and invalid-readback fences. The next correction must qualify its resulting source, and the historical CPU failures are not erased by the new matrix pass. [#365 / SOL-RESTORE-001](https://github.com/techrote/cybersand/issues/365) remains blocked until applicable contact/ownership gates justify its one-aggregate, lattice-congruent restoration prototype. **Deferred:** reactive Wood/bark, heterogeneous bonds, arbitrary fracture, multiple persistent aggregates, transformed rest-to-cell restoration, normal gameplay integration and Web qualification. Sleeping is still aggregate ownership. The existing inactive rollback is not dynamic desoliding. Representative hardware GPU pacing and human physical acceptance remain separate from headless host timing. The dated audit assigns each #281 gate; neither #281 nor #12 is closed by this functional increment."
+        },
+        {
+          "rank": 4,
+          "score": 16.1886,
+          "path": "operations/ci-execution-and-performance.md",
+          "title": "CI execution watchdogs and advisory performance",
+          "heading": "CI execution watchdogs and advisory performance > Scheduling estimates and hosted safety boundaries",
+          "part": 1,
+          "text": "Document: CI execution watchdogs and advisory performance\nPath: operations/ci-execution-and-performance.md\ndocument-kind: runbook\nstatus: Current\nscope: Independent scheduling estimates, Godot and native watchdogs, hosted safety boundaries, retained failures and comparable performance history\ncanonical-for: [ci-execution-watchdogs, advisory-performance-history, ci-scheduling]\nlast-reviewed: 2026-11-03\nSection: CI execution watchdogs and advisory performance > Scheduling estimates and hosted safety boundaries\n[The Godot planner](../../tools/ci/godot_job_plan.py) discovers every current fixture and derives a deterministic complete matrix from expected execution cost. The 2026-11-01 scheduling change separates that estimate from each case's unchanged generous watchdog and from the six-hour hosted-job safety boundary. The previous sum-of-watchdogs partition multiplied short hosted jobs; its historical arithmetic remains in the 2026-10-31 audit. **Current:** every admitted case retains its full process allowance, 300 seconds for independent readback and 240 seconds for sequential diagnostics/cleanup. The shared `godot_process_cleanup_seconds()` includes up to three legacy snapshots, capture-owner retirement and engine-tree retirement. Import retains its own full allowance. Three metadata operations, 70 minutes for setup/artifact steps and 10 minutes of headroom remain reserved. A shard admits its next case only when that case's full allowance fits the remaining execution boundary. Unstarted cases are explicitly incomplete and fail coverage; an underestimate never shortens a running case's watchdog or silently counts missing work. The source inventory at intake is 246 Linux cases, including 13 rendered cases, and 233 applicable Windows cases. Machine discovery remains authoritative as the game expands. The dated [scheduling qualification](../audits/2026-11-01-ci-scheduling-qualification.md) records estimator inputs, selected counts, original results and limitations. The [hosted job limit](https://docs.github.com/en/actions/reference/limits) remains six hours; an individual case that cannot fit or an oversized matrix is rejected. The six Native families retain the exact original 20 commands and scientific inputs. [Their planner](../../tools/ci/native_execution_policy.py) derives 180/350/180/333/284/223-minute parents for TSan, normal, ASan, worldgen, soliding-normal and soliding-ASan respectively. The physics CLI inventory still contains all 154 original invocations, each with a 300-second operation budget; a bounded eight-process dispatch preserves arguments and output identity while all assertions run in their original order on the main test thread. The source inventory and family receipts remain required by the stable `native` gate. All independent matrices use `fail-fast: false`. New PR commits cancel superseded automatic checks for that PR; manual qualification and main push runs have unique run groups and retain their original attempts. Required aggregate jobs run after an admitted matrix or scope classifier failure. A skipped job is not accepted as a successful behavioral gate. The retired optional four-shard serial-migration job is replaced by mandatory [Linux coverage verification](../../tools/ci/verify_linux_godot_shards.py) on every admitted run. It checks the complete original inventory, source/tree, runtime, policy, run/attempt, real rendered commands, natural completion, unchanged raw logs and required independent PLAY readbacks. The existing Windows coverage reader derives its complete plan from the same source."
+        },
+        {
+          "rank": 5,
+          "score": 15.808838,
+          "path": "systems/solid-detachment.md",
+          "title": "Native structural detachment, conservative displacement and experimental Sand resistance",
+          "heading": "Native structural detachment > Qualification and remaining limits",
+          "part": 1,
+          "text": "Document: Native structural detachment, conservative displacement and experimental Sand resistance\nPath: systems/solid-detachment.md\ndocument-kind: contract\nstatus: Current\nscope: Opt-in single native aggregate, conservative Sand/Water displacement, exact contact observations and separately enabled supported-Sand resistance; draft implementation, not full issue acceptance\ncanonical-for: [native-structural-detachment-runtime, conservative-detachment-displacement, detachment-sand-contact-experiment]\nlast-reviewed: 2026-11-04\nSection: Native structural detachment > Qualification and remaining limits\nMeasurements separate sampled healthy worker/native publications, main-thread consume/publish segments, manual Rapier stepping and collider refresh. Sampled worker totals do not represent every native tick. These headless metrics cannot establish graphical frame pacing or target-GPU acceptance. The complete source-matched Linux/Windows matrix at `8e86ffd4` passed on GitHub-hosted runners, including workers 1 and 4. Its qualified development runtimes and original six-cohort evidence were published in `bdd751dc`. The dated audit records exact identities and preserves the earlier failed Windows checkout attempt. Passing populated cases establish material quantities, aggregate payload, ownership and actual interaction; they do not establish acceptable dense resistance. That historical matrix did not measure live penetration depth or overlap area. The 3 November experiment adds those measurements and local impulse/energy accounting, with its own qualification required. Dry impact produces real rotation and horizontal displacement; a calibrated no-slip rolling criterion is not qualified. Focused native ownership and displacement tests, deterministic frozen contacts, actual Rapier motion/failure/worker-replacement cases, populated environments, excavation and shared response tests are distinct gates. Frozen #338 contacts retain their original source metadata and negative outcomes; four new shallow boundary controls demonstrate accepted relocation, including three multi-parcel paths. No historical result is relabelled as a current execution. The scoped GitHub-hosted workflow authenticates build inputs and every declared Linux/Windows cohort, then reopens their original evidence before publishing the two development runtimes on this draft branch. Publication requires an exact branch-head lease; its commit is a child of the qualified source. Provenance continues to name the original build/execution commit and tree. Raw Windows evidence retains its original line endings. A later metadata commit does not become a newly executed physics source by relabelling the records. Source `5944c130` completed the eight-cohort Linux/Windows matrix and qualified runtime publication `3ac7701`; the [3 November ledger](../audits/2026-11-03-sol281-dense-contact.md) retains its original platform, compiler, cost and physical measurements. Recovery source `2457f5ecb945c60cd5118526f48734e82576ba49`, tree `42b4926b3e15dcbf34b436eff41de50fad54c50a`, passed both builds, eight actual-host cohorts and reduction in [run 41742950418](https://github.com/techrote/cybersand/actions/runs/41742950418). Its runtime publication failed on an unchanged correct Linux pointer; no runtime-publication child exists for that run. Its independently calculated 24 cost groups pass the proposed 2 ms gate; sustained clearance remains unresolved. At the preceding bounded-publisher-repair checkpoint, compiled and executed source is `749fb8b597ad866f7535f26442e904207c4f7611`, tree `77a7bc2ed4d1f7ab339dd4a16fd082fccf56f0ce`. Its fresh run is [41746597077](https://github.com/techrote/cybersand/actions/runs/41746597077) — **Scoped execution, reduction and runtime publication PASS (all 12 jobs); full-matrix CPU acceptance NOT MET**, with qualified publication child `89d2eb6d280183e495a94b559776dfd8f1cdc196`. The [recovery handover](../audits/2026-11-03-sol281-takeover.md) owns source/runtime receipts, actual measurements and separate gate decisions. Preceding measurements do not qualify this source. Scoped qualification does not establish accepted gameplay physics; metadata/publication children never replace executed identity. For `749fb8b5`, the"
+        }
+      ]
+    },
+    {
+      "id": "SOL364-INTEGRATION-001",
+      "query": "Why does SOL364 remain blocked for integration after merging MAT-AUTH main and passing the new hosted contact-cost matrix?",
+      "canonical": [
+        "systems/solid-detachment.md"
+      ],
+      "facts": [
+        "All 24 new hosted cost groups pass, while sustained clearance still fails and PR347 remains draft and unmerged.",
+        "The preserved MAT-AUTH source guard rejects historical SOL changes in world.cpp and world_pressure.inc; the other 25 protected consumers match.",
+        "The frozen baseline and catalogue remain unchanged. A source-pinned compatibility-checkpoint decision is required for those two existing consumer deltas, rather than a silent hash refresh.",
+        "Runtime and evidence publication succeeded, but the subsequent documentation dispatch failed HTTP 500; execution, publication, workflow completion and physical acceptance have separate outcomes."
+      ],
+      "sources": [
+        "../tools/material_catalogue/compatibility.py",
+        "../native/src/world.cpp",
+        "../native/src/world_pressure.inc",
+        "../.github/workflows/sol281-current-main.yml"
+      ],
+      "canonical_rank": 5,
+      "hits": [
+        {
+          "rank": 1,
+          "score": 35.704037,
+          "path": "operations/cybersand-codex-development-handover.md",
+          "title": "Development handover",
+          "heading": "Development handover > SOL364 synchronized repair continuation — 2026-11-04",
+          "part": 1,
+          "text": "Document: Development handover\nPath: operations/cybersand-codex-development-handover.md\ndocument-kind: guide\nstatus: Current\nscope: Short onboarding sequence and checkpoint protocol; product intent, source identity and contracts have canonical homes\ncanonical-for: [development-onboarding]\nlast-reviewed: 2026-11-04\nSection: Development handover > SOL364 synchronized repair continuation — 2026-11-04\nContinue from the [SOL364 source and evidence ledger](../audits/2026-11-04-sol364-recovery.md), which ordinarily merges accepted MAT-AUTH main `7ef4856e` into existing draft #347. It retains exterior witness spans at the current pose, freezes scalar native contact payloads once and accounts every owner/response attempt. The synchronized fixture preserves 520 members, six shapes and both geometric voids, with independently measured every-step geometry and explicit delivery schedules. First sleep-confounded traces and the new local 2.012693 ms cost failure remain failed evidence. Stationary burial needs separate bounded recovery work; neither process success nor a candidate-only cost result accepts sustained clearance. Executed source `9edc4f8f` completes 74 actual-host test processes and 38,296 structured checks; published runtime/evidence child is `5f6360a9`. All 24 original hosted cost groups pass, worst 1.644949833 ms, while 84/84 synchronized clearance cases fail. The old Windows 2.145915 ms failure remains retained. The unchanged MAT-AUTH guard rejects two historical SOL consumer deltas, and the qualification workflow ends failed on an HTTP 500 documentation dispatch after its successful publication push. Use the ledger's exact source/runtime/platform receipts and these distinct gate results. Next is bounded existing-penetration recovery plus the separate two-consumer integration decision. #347 stays draft, #365 blocked and #283 frozen."
+        },
+        {
+          "rank": 2,
+          "score": 30.047108,
+          "path": "operations/cybersand-codex-development-handover.md",
+          "title": "Development handover",
+          "heading": "Development handover > SOL364-B independent lanes and negative corridor result — 2026-11-04",
+          "part": 1,
+          "text": "Document: Development handover\nPath: operations/cybersand-codex-development-handover.md\ndocument-kind: guide\nstatus: Current\nscope: Short onboarding sequence and checkpoint protocol; product intent, source identity and contracts have canonical homes\ncanonical-for: [development-onboarding]\nlast-reviewed: 2026-11-04\nSection: Development handover > SOL364-B independent lanes and negative corridor result — 2026-11-04\nStart with the [SOL364-B result and receipt ledger](../audits/2026-11-04-sol364b-corridor-result.md) and its immutable [preregistration](../audits/2026-11-04-sol364b-corridor-registration.md). The selected fixed-angle translation family cannot clear the original controls inside its four-cell lifetime budget. New diagnostic execution over 1,452 retained states yields zero admissible routes and zero live applications; independent direct-polygon review agrees. This is an executable bounded NO-GO, not a recovery trajectory or a proof against every possible path. The original 84 clearance/64 depth failures, all historical cost results and 27-consumer MAT-AUTH lock remain unchanged. The physics worktree owns existing draft #347; the compatibility investigation has an independent branch from accepted main `7ef4856e`. Neither lane imports the other. Preserve exact local/published tree mappings, raw compiler/test/replay manifests and unavailable gate labels. Fresh compiler/host checks have their own source identities; prior `9edc4f8f` runtimes remain historical controls. #347 stays draft, #364/#281/#12 open and #365 blocked. A later owner-approved integration task must independently inspect both trees, reconcile normal ancestry and qualify the resulting implementation; this handover authorizes no merge or composition. Source `9597abd7` completes fresh hosted execution: both builds, all eight actual host cohorts, GCC/sanitizer/MSVC diagnostic and 24/24 CPU groups pass; 84 clearance and 64 depth gates fail. Runtime publication fails before installation because the source archive exceeds the existing 128 MiB per-file limit. No runtime child is created or old provenance relabelled. The evidence-only handover preserves that failure. Separate draft #386 at `b661a6f3` is REPAIR and has passing scoped documentation; neither its green checks nor the new CPU result admits integration."
+        },
+        {
+          "rank": 3,
+          "score": 27.939589,
+          "path": "operations/soliding-programme.md",
+          "title": "Scalable reversible soliding programme",
+          "heading": "Scalable reversible soliding programme > Structural detachment track — 2026-11-01",
+          "part": 1,
+          "text": "Document: Scalable reversible soliding programme\nPath: operations/soliding-programme.md\ndocument-kind: design\nstatus: Planned\nscope: Issue 12 stage dependencies, acceleration and macro-dynamics objectives, and current-main successor admission\ncanonical-for: [scalable-soliding-programme]\nlast-reviewed: 2026-09-20\nSection: Scalable reversible soliding programme > Structural detachment track — 2026-11-01\n**Current experimental source / broader Approved direction:** the bounded [structural detachment runtime](../systems/solid-detachment.md) now ports the real native-tree ownership proof onto accepted main `a8f08a67` and adds conservative local Sand/Water relocation. Its [dated qualification](../audits/2026-11-01-sol281-current-main.md) keeps partial source/host gates distinct from complete #281/#12 acceptance. The owner prioritizes native support loss → genuine Rapier toppling/rolling. Track A does not wait for Stage3B #66–#70 or GCR completion. Track B retains its existing #66 → #67 → #68 → #70 and separate Stage4 gates. The frozen #283 archive and unmerged #282 specification retain their original identities. Reactive cohesion, fracture, active restoration and persistence remain deferred here. The [4 November SOL364 source and gate ledger](../audits/2026-11-04-sol364-recovery.md) qualifies synchronized contact replay and one original-witness correction on accepted MAT-AUTH main. The new complete 24-group cost gate passes; sustained clearance still fails, and the preserved two-consumer compatibility guard blocks integration. #364's next bounded recovery constraint must address existing penetration with explicit work accounting. #365 remains blocked, #281/#12 open, and #347 draft/unmerged; Stage 3B and the separate Y1/GCR paths are unchanged."
+        },
+        {
+          "rank": 4,
+          "score": 27.671084,
+          "path": "reference/status-and-roadmap.md",
+          "title": "Status and foundational roadmap",
+          "heading": "Status and foundational roadmap > SOL364 bounded witness and CPU repair — 2026-11-04",
+          "part": 1,
+          "text": "Document: Status and foundational roadmap\nPath: reference/status-and-roadmap.md\ndocument-kind: reference\nstatus: Current\nscope: Current implementation map, unresolved correctness and policy decisions, and bounded next checkpoints\ncanonical-for: [implementation-status, foundational-priorities, open-decisions]\nlast-reviewed: 2026-11-04\nSection: Status and foundational roadmap > SOL364 bounded witness and CPU repair — 2026-11-04\nThe [SOL364 ledger](../audits/2026-11-04-sol364-recovery.md) records ordinary reconciliation of accepted main `7ef4856e`, including merged MAT-AUTH #371, the existing exterior-witness repair, immutable native observation optimization and synchronized 520-cell/six-proxy replay. Executed source `9edc4f8f` and published runtime/evidence child `5f6360a9` complete the scoped actual-host execution. All 24 original cost groups pass, worst 1.6449498327759198 ms, but stationary initial burial remains unresolved: 84/84 synchronized clearance cases and 64 depth gates fail. The unchanged MAT-AUTH guard rejects two historical SOL consumer deltas; final documentation dispatch also fails HTTP 500 after the successful publication push. The local Linux 2.012693486590038 ms, historical Windows 2.145915 ms and earlier publication failures stay retained. #347 stays draft/unmerged; #364, #281 and #12 stay open, #365 stays blocked, and Y1/GCR policy is unchanged."
+        },
+        {
+          "rank": 5,
+          "score": 26.742452,
+          "path": "systems/solid-detachment.md",
+          "title": "Native structural detachment, conservative displacement and experimental Sand resistance",
+          "heading": "Native structural detachment > SOL364 bounded witness recovery — 2026-11-04",
+          "part": 1,
+          "text": "Document: Native structural detachment, conservative displacement and experimental Sand resistance\nPath: systems/solid-detachment.md\ndocument-kind: contract\nstatus: Current\nscope: Opt-in single native aggregate, conservative Sand/Water displacement, exact contact observations and separately enabled supported-Sand resistance; draft implementation, not full issue acceptance\ncanonical-for: [native-structural-detachment-runtime, conservative-detachment-displacement, detachment-sand-contact-experiment]\nlast-reviewed: 2026-11-04\nSection: Native structural detachment > SOL364 bounded witness recovery — 2026-11-04\nThe [prospective SOL364 registration](../audits/2026-11-04-sol364-registration.md) continues existing #364 on draft #347 and ordinarily reconciles accepted MAT-AUTH shadow main `7ef4856e`. The compiler and its frozen compatibility locks remain unchanged. New code retains and reclips the original exterior witness at the current pose when its old midpoint has left a cell. A fully cleared record no longer suppresses other valid records, but every source witness and duplicate is checked before filtering. No new face area, native mutation, positional correction, impulse energy or relaxed pose/identity bound is added. Stationary initial burial remains a distinct clearance gate. Native observation now seals its scalar-only contact/proxy records and arrays before handing values to the worker. The worker seals metadata separately, with a safe recursive-freeze fallback for the older runtime contract. Cumulative all-attempt stage timings preserve the inclusive cost numerator and complete consumed-observation denominator. Executed source `9edc4f8f`, tree `b5baf8b23ff947c2d7b70e69745c10f18fbe9ebe`, completes the scoped Linux/Windows qualification with 74 test processes, eight imports, 38,296 structured checks and eight ordinary controls. Published runtime/evidence child `5f6360a9` retains that executed identity. The [SOL364 recovery ledger](../audits/2026-11-04-sol364-recovery.md) records the executable interior-burial and lost-midpoint counterexamples, independent geometry review, a corrected sleep-controlled replay and complete cost gates. All 24 original hosted cost groups now pass, worst 1.6449498327759198 ms per complete observation. The old Windows 2.145915178571 ms and local Linux 2.012693486590038 ms failures remain failed evidence; asynchronous before/after histories are not matched causal speedups. The synchronized replay freezes the native field and measures every declared 1/60-second Rapier step. Its no-extra-response, frozen-old-planner and repaired planner arms share initial conditions, disabled sleeping and exact compound geometry, with zero external gravity/damping and declared fixture velocities. This causal control is not gravitational settling. Delayed/missed delivery never suppresses the independent geometry measurement; only these complete traces use cell-ticks. The ordinary asynchronous conservative-displacement sessions retain cell-samples/area-samples and separate native worker/publication coverage. Their divergent histories are not paired causal comparisons. Fresh stationary contact can be accepted without an impulse: the dissipative velocity constraint supplies no work to remove existing burial. The four source-matched hosted replays record 84 failed sustained-clearance cases and 64 failed depth gates: 21 and 16 per OS/worker configuration. One-step delay recovers 11 valid acceptances without new impulse or a clearance gain; the rotated case increases safe planner refusals. Current response diagnostics separate planner, RID state reads, impulse application and guarded readback within the unchanged inclusive attempt cost. Complete asynchronous witness JSON remains mandatory even when console output is a concise footer; lossless deduplication of evidence does not change gate inputs. The packed replay's first overlapping Sand column is below the unchanged eight-cell support"
+        }
+      ]
+    }
+  ]
+}

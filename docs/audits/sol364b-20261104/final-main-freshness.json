@@ -1,0 +1,99 @@
+{
+  "schema": "sol364b-final-main-freshness-v1",
+  "checked_at_utc": "2026-11-04T15:19:42.256991+00:00",
+  "accepted_intake_main": "7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1",
+  "observed_remote_main": "01f9b7c8e382ca6bdbaf0bf70c7847adc12fe0bc",
+  "observed_main_tree": "4cf99921dc2b33233c3a254f4b6f27ed7cb0f204",
+  "observed_main_parents": [
+    "7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1",
+    "5296596212e3868a598b90b1af2a94c0d1757b49"
+  ],
+  "unchanged_scope": {
+    "AGENTS.md": {
+      "accepted_main": "fa1bb770cd5585e58cf5b434afe6b6bdc67f1f8f",
+      "new_main": "fa1bb770cd5585e58cf5b434afe6b6bdc67f1f8f"
+    },
+    "native/src": {
+      "accepted_main": "7644ea6ec7ca7cf30564a3dc7833eb7a862945b0",
+      "new_main": "7644ea6ec7ca7cf30564a3dc7833eb7a862945b0"
+    },
+    "native/include": {
+      "accepted_main": "177ab0d4ccba3e747f5b3016137f1765aba6ef8f",
+      "new_main": "177ab0d4ccba3e747f5b3016137f1765aba6ef8f"
+    },
+    "godot": {
+      "accepted_main": "5fc7c727804ff63614ced2ec77054ea04645e3b6",
+      "new_main": "5fc7c727804ff63614ced2ec77054ea04645e3b6"
+    },
+    "materials": {
+      "accepted_main": "41a9d5df00c35e4bd306dd798f4ce69e268cfe9d",
+      "new_main": "41a9d5df00c35e4bd306dd798f4ce69e268cfe9d"
+    },
+    "tools/material_catalogue": {
+      "accepted_main": "7e1994797dfa29c3a854ef75644443b806e13324",
+      "new_main": "7e1994797dfa29c3a854ef75644443b806e13324"
+    },
+    ".github": {
+      "accepted_main": "947563ac2a5b9c334599155161594b62ca20e796",
+      "new_main": "947563ac2a5b9c334599155161594b62ca20e796"
+    }
+  },
+  "changed_paths": [
+    {
+      "status": "M",
+      "path": "docs/README.md"
+    },
+    {
+      "status": "M",
+      "path": "docs/architecture/pressure-optimization.md"
+    },
+    {
+      "status": "A",
+      "path": "docs/audits/2026-11-04-lcb201-pressure-idle-cost.md"
+    },
+    {
+      "status": "A",
+      "path": "docs/audits/lcb201-idle-cost-2026-11-04/plan.json"
+    },
+    {
+      "status": "A",
+      "path": "docs/audits/lcb201-idle-cost-2026-11-04/summary.json"
+    },
+    {
+      "status": "M",
+      "path": "docs/reference/retrieval-index.md"
+    },
+    {
+      "status": "M",
+      "path": "docs/reference/status-and-roadmap.md"
+    },
+    {
+      "status": "A",
+      "path": "native/bench/lcb201_pressure_idle_cost.cpp"
+    },
+    {
+      "status": "A",
+      "path": "tools/lcb/pressure_idle_cost.py"
+    }
+  ],
+  "independent_reviews": [
+    {
+      "path": "independent-review/main-01f9-physics-review.json",
+      "sha256": "ff09365aa50d223806c777984d5a9ef7e7e603d3f7f458358754924971d34c7c"
+    },
+    {
+      "path": "independent-review/main-01f9-compatibility-review.json",
+      "sha256": "d93e2e0666b3281631dc5a32d589972847f630fc11cc19aaa97a3144af5e8a36"
+    }
+  ],
+  "disposition": "SOURCE_CONTAINED_FOR_THESE_LANES; no import or runtime acceptance of a composition",
+  "scope_caveat": "All main native runtime inputs and protected consumers remain unchanged, but broad SOL execution SCOPES includes all native and tools. New benchmark and runner would add two execution inputs in a later composition; current 1112-input execution receipt does not qualify that tree.",
+  "overlapping_physics_documentation_paths": [
+    "docs/README.md",
+    "docs/reference/retrieval-index.md",
+    "docs/reference/status-and-roadmap.md"
+  ],
+  "root_read_limit": "Local diff --stat could not hydrate blob086f1e21772ae6593ec593787759c6f65742e9c3 (pressure-optimization documentation). Root conclusions use complete Git tree identities and diff-tree path identity; independent API reviews retain the changed content qualification.",
+  "source_trees_imported": false,
+  "runtime_requalification_performed": false
+}

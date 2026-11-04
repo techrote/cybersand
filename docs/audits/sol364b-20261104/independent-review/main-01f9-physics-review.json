@@ -1,0 +1,290 @@
+{
+  "actions": {
+    "git_fetch_or_ref_write": false,
+    "github_write": false,
+    "merge_or_import": false,
+    "source_or_worktree_edits": false,
+    "test_or_build_execution": false
+  },
+  "actual_AGENTS": {
+    "blob_sha1": "fa1bb770cd5585e58cf5b434afe6b6bdc67f1f8f",
+    "bytes": 8628,
+    "governing_requirements": [
+      "Exact source/runtime and platform attribution; source-sensitive stale provenance blocks acceptance.",
+      "Preserve historical evidence and failures; bounded work and explicit capacity outcomes remain required.",
+      "Main-thread ownership of live Rapier objects and native worker isolation remain required.",
+      "Draft PR qualification remains distinct from implementation acceptance."
+    ],
+    "read": true,
+    "sha256": "fa3597c0dcbbb5d18c2384b2f3ceae579301c8d0edb91792ae800ad213e5d495",
+    "unchanged_from_accepted_main": true,
+    "unchanged_from_physics_source": true
+  },
+  "api_refs": [
+    "https://api.github.com/repos/techrote/cybersand/git/ref/heads/main",
+    "https://api.github.com/repos/techrote/cybersand/git/commits/01f9b7c8e382ca6bdbaf0bf70c7847adc12fe0bc",
+    "https://api.github.com/repos/techrote/cybersand/compare/7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1...01f9b7c8e382ca6bdbaf0bf70c7847adc12fe0bc",
+    "https://api.github.com/repos/techrote/cybersand/contents/AGENTS.md?ref=01f9b7c8e382ca6bdbaf0bf70c7847adc12fe0bc"
+  ],
+  "assessment": {
+    "added_apparatus": [
+      "native/bench/lcb201_pressure_idle_cost.cpp",
+      "tools/lcb/pressure_idle_cost.py"
+    ],
+    "broad_SOL_input_fence": {
+      "additional_inputs_if_a_future_composition_contains_both_added_files": [
+        "native/bench/lcb201_pressure_idle_cost.cpp",
+        "tools/lcb/pressure_idle_cost.py"
+      ],
+      "current_recorded_inputs": 1112,
+      "new_combined_inventory_or_head_qualification_claimed": false,
+      "reviewed_at_local_equal_tree": "2f0ea3bdba5b7aef2fddef7d3a70f7e8d21adab9",
+      "source": "tools/sol281/run_qualification.py:SCOPES and source_inputs"
+    },
+    "changed_paths_also_modified_in_physics_lineage": [
+      "docs/README.md",
+      "docs/reference/retrieval-index.md",
+      "docs/reference/status-and-roadmap.md"
+    ],
+    "current_physics_disposition": "NO_GO unchanged",
+    "impact_on_existing9597_receipts": "The receipts remain exact-source observations of 9597. Neither new main nor a combined tree inherits their admission.",
+    "native_runtime_input_fence": "native_input_paths covers native/include, native/src and godot/native_extension; the added benchmark is outside that runtime-source set. This narrower fact does not override the broader SOL source or full Git-tree identity.",
+    "new_doc_proposals": "P1 wake-summary elision and P2 narrowed gas revocation are explicitly Planned and not implemented; pressure execution version 3 remains Current.",
+    "production_change_from_main_advance": false,
+    "recomposition": "Later owner-approved normal-ancestry composition must reconcile the resulting exact tree, including overlapping documentation, then requalify all registered gates. No merge conflict resolution was attempted.",
+    "runtime_provenance": "Existing branch runtime/provenance files remain unchanged. Fresh native binaries from run 41848472642 remain run artifacts because its publisher failed. The source tree of new main differs, so exact-head runtime provenance is not refreshed by this review.",
+    "unchanged_production_scopes": [
+      "native/src",
+      "native/include",
+      "native/data",
+      "native/tests",
+      "godot",
+      "materials",
+      "third_party",
+      ".github",
+      "Makefile",
+      "tools/ci",
+      "native build scripts"
+    ]
+  },
+  "changed_file_inventory_basis": "API compare returns nine files, below its 300-file cap; exact nonrecursive root/native/tools trees independently verify unaffected subtrees.",
+  "changed_file_inventory_complete": true,
+  "changed_files": [
+    {
+      "additions": 1,
+      "blob": "17da6e8a52a7e52299256a4c038898af3831b275",
+      "deletions": 1,
+      "path": "docs/README.md",
+      "status": "modified"
+    },
+    {
+      "additions": 21,
+      "blob": "086f1e21772ae6593ec593787759c6f65742e9c3",
+      "deletions": 2,
+      "path": "docs/architecture/pressure-optimization.md",
+      "status": "modified"
+    },
+    {
+      "additions": 622,
+      "blob": "39eafaadc4601395c2bf779442fcc98dac8f9161",
+      "deletions": 0,
+      "path": "docs/audits/2026-11-04-lcb201-pressure-idle-cost.md",
+      "status": "added"
+    },
+    {
+      "additions": 55,
+      "blob": "0af44c7bbdedca6c8c8999b4200938cdf87c3ed9",
+      "deletions": 0,
+      "path": "docs/audits/lcb201-idle-cost-2026-11-04/plan.json",
+      "status": "added"
+    },
+    {
+      "additions": 38775,
+      "blob": "03cf860dc9b6dbbe01a8b9b521a32c033789b997",
+      "deletions": 0,
+      "path": "docs/audits/lcb201-idle-cost-2026-11-04/summary.json",
+      "status": "added"
+    },
+    {
+      "additions": 1,
+      "blob": "cd2c0debf3b6cefd5367e87527fb485eae61c934",
+      "deletions": 0,
+      "path": "docs/reference/retrieval-index.md",
+      "status": "modified"
+    },
+    {
+      "additions": 15,
+      "blob": "7958e4e1087e9c60ac9f07c92a1fbc214063f123",
+      "deletions": 0,
+      "path": "docs/reference/status-and-roadmap.md",
+      "status": "modified"
+    },
+    {
+      "additions": 331,
+      "blob": "d251777990a137d42264275e7eb25a6ab6760af7",
+      "deletions": 0,
+      "path": "native/bench/lcb201_pressure_idle_cost.cpp",
+      "status": "added"
+    },
+    {
+      "additions": 319,
+      "blob": "d41992c7e0920a001393b07b6bc3aa478d901f5c",
+      "deletions": 0,
+      "path": "tools/lcb/pressure_idle_cost.py",
+      "status": "added"
+    }
+  ],
+  "lineage": {
+    "ahead_by": 5,
+    "behind_by": 0,
+    "commits": [
+      {
+        "message": "test(lcb201): register scale-matched PressureFlow idle-cost cohort\n\nPreregisters the #201 quiet-water discrimination before qualifying runs:\nfive #370-scale pool profiles (reference/cached/dormant plus FreeMass\ncontext) reusing the LCB-002 apparatus translation unit unchanged, three\nexisting small-scale LCB-002 profiles, a WSL2 platform check and one perf\nattribution run. Five mechanism/smoke diagnostic runs are recorded and\nexcluded from the registered summary.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+        "parents": [
+          "3da7e7be4a6af4c85e03a7d8a0ed57229e5db33d"
+        ],
+        "sha": "69eef3f136e9f9cb327cfc973aaf594be69bdeb7"
+      },
+      {
+        "message": "docs(lcb201): record PressureFlow idle-cost discrimination and Planned P1/P2\n\nRecords the registered #201 cohort on main 3da7e7be: 48 Windows and 4 WSL2\nchildren with full same-law parity every tick, perf attribution, and 34\nnative pressure regression tests. At #370 quiet-pool scale PF reference\ncosts 36-40 ms/tick of serial preparation; cached/dormant cut it to\n9-12 ms, leaving the sleeping-block wake scan; gas-input edits and moving\nmasks return them toward reference cost. Outcome B: two cached-only\nproposals (wake-summary elision, narrowed gas revocation) are Planned with\nproof obligations. No production source, default, host or CI change.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+        "parents": [
+          "69eef3f136e9f9cb327cfc973aaf594be69bdeb7"
+        ],
+        "sha": "d3d320db3686370848aed86cc6c36fdfe6ae77ce"
+      },
+      {
+        "message": "docs(lcb201): apply independent review corrections\n\nRelabel historical ratios as execution1 beside execution3 and the c97f68ec\nrepeat; widen the reference range to 31-41 ms; separate the cold residual;\ndescribe the cyclic-shift order and cache-cold limits; cite draft #370 as\nconsistent-with; qualify the outcome label; complete P1/P2 proof\nobligations; correct a post-execution driver comment only.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+        "parents": [
+          "d3d320db3686370848aed86cc6c36fdfe6ae77ce"
+        ],
+        "sha": "a012bfa05f3e98bfb128f0f5c51fb26b1a8ddef4"
+      },
+      {
+        "message": "Merge remote-tracking branch 'origin/main' into claude/lcb201-pressure-idle-cost\n\n# Conflicts:\n#\tdocs/reference/status-and-roadmap.md",
+        "parents": [
+          "a012bfa05f3e98bfb128f0f5c51fb26b1a8ddef4",
+          "7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1"
+        ],
+        "sha": "5296596212e3868a598b90b1af2a94c0d1757b49"
+      },
+      {
+        "message": "Merge pull request #374 from techrote/claude/lcb201-pressure-idle-cost\n\nLCB-002 #201: current-main PressureFlow idle-cost discrimination and Planned P1/P2",
+        "parents": [
+          "7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1",
+          "5296596212e3868a598b90b1af2a94c0d1757b49"
+        ],
+        "sha": "01f9b7c8e382ca6bdbaf0bf70c7847adc12fe0bc"
+      }
+    ],
+    "merge_base": "7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1",
+    "status": "ahead"
+  },
+  "new_main": "01f9b7c8e382ca6bdbaf0bf70c7847adc12fe0bc",
+  "new_main_title": "Merge pull request #374 from techrote/claude/lcb201-pressure-idle-cost\n\nLCB-002 #201: current-main PressureFlow idle-cost discrimination and Planned P1/P2",
+  "new_main_tree": "4cf99921dc2b33233c3a254f4b6f27ed7cb0f204",
+  "observed_at_utc": "2026-11-04T15:16:48.915Z",
+  "old_accepted_main": "7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1",
+  "parents": [
+    "7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1",
+    "5296596212e3868a598b90b1af2a94c0d1757b49"
+  ],
+  "physics_source": {
+    "branch_ref_observed_unchanged": true,
+    "current_conclusions": "All 24 CPU groups PASS; 84 sustained-clearance failures; 64 depth failures; 36 asynchronous candidate final samples retain positive overlap; bounded-family NO-GO and publisher capacity failure remain scoped only to the exact 9597 tree.",
+    "qualified_run": 41848472642,
+    "relation_to_new_main": {
+      "ahead_by": 41,
+      "behind_by": 5,
+      "files_ignored_because_truncated_at_api_cap": 300,
+      "merge_base": "7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1",
+      "status": "diverged"
+    },
+    "sha": "9597abd76c01e4a940ff3ea26ff01fca43bf55a6",
+    "tree": "11e986214f056f3f39631bb0331b3cd4930c3d1c"
+  },
+  "primary_inputs": {
+    "bytes": 37869,
+    "path": "/workspace/scratch/4b0fc6bf4ee0/physics-review/main-01f9-readonly-inputs.json",
+    "sha256": "74705cd5fa24772121b40b3fc601d9d135d9f285553b1d68bd04005f1bf1744e"
+  },
+  "reviewed_at_utc": "2026-11-04T15:17:49.917035+00:00",
+  "schema": "cybersand.sol364b.independent-main-advance-review.v1",
+  "unchanged_scope_proofs": [
+    {
+      "changed_children": [
+        "docs",
+        "native",
+        "tools"
+      ],
+      "scope": "root",
+      "status": "EXACT_GIT_OBJECT_IDENTITY",
+      "unchanged_children": {
+        ".codex": "7d0944300f10ff13a280b1e7e638e2c5af390452",
+        ".gitattributes": "3cb6e8b68de493888625dc44119e3a13de373bac",
+        ".github": "947563ac2a5b9c334599155161594b62ca20e796",
+        ".gitignore": "552232f6ab578614f3f93bf9be10602fbbdf17fd",
+        "AGENTS.md": "fa1bb770cd5585e58cf5b434afe6b6bdc67f1f8f",
+        "CONTRIBUTING.md": "3ef2434b9ea6f30dcdde61f42e8d68354931e2d8",
+        "LICENSE_STATUS.md": "02990b16026b63b91a0c498afc5c57c1010d5a2e",
+        "Makefile": "d2055ceda648388a57fdcc6ee2547e81a80bdf9c",
+        "README.md": "12879a31f9742033c786069b81bf4835697c356c",
+        "SCHEDUSWARM.md": "6443accf5b84f96e2d0ea52fe89d9649dc4e5bba",
+        "THIRD_PARTY_NOTICES.md": "03fc1b455b577e463485b16ae8c51b6daf45b12a",
+        "build_windows_msvc.bat": "916a43c2b0619e74b4076d60ca327c6bf9eef9e2",
+        "examples": "7ab834cb209bd7fb0ed626044684d261eb766753",
+        "godot": "5fc7c727804ff63614ced2ec77054ea04645e3b6",
+        "launch-desktop.cmd": "19545a297312ddd0541ca69a6368273ef1f67fdb",
+        "materials": "41a9d5df00c35e4bd306dd798f4ce69e268cfe9d",
+        "third_party": "01a8de3cd15508c37d2949aedf81a6364e2c8b32"
+      }
+    },
+    {
+      "changed_children": [
+        "bench"
+      ],
+      "scope": "native",
+      "status": "EXACT_GIT_OBJECT_IDENTITY",
+      "unchanged_children": {
+        "data": "5b1fe21de3d073057c8dee014d0b6662e381ed05",
+        "include": "177ab0d4ccba3e747f5b3016137f1765aba6ef8f",
+        "src": "7644ea6ec7ca7cf30564a3dc7833eb7a862945b0",
+        "tests": "5d20aa9c4ef9a6c93b3b1b716da9ead4ac326bc1"
+      }
+    },
+    {
+      "changed_children": [
+        "lcb"
+      ],
+      "scope": "tools",
+      "status": "EXACT_GIT_OBJECT_IDENTITY",
+      "unchanged_children": {
+        "build_native_extension.sh": "7b105f34ad5dd02a1089c840d3c3b74a74c598f6",
+        "build_native_extension_windows.sh": "7ada744f6694ff9ae11e041912f3223bf3938807",
+        "build_pinned_godot_cpp.sh": "0101f96c42e52b1a795f559a811f9373148221b9",
+        "build_web.py": "cbe83e586cc314ee177b242a7d2609ef2615c3e7",
+        "check_linux_runtime_floor.sh": "34f167867d54deb45dde088606d58fd82b13add1",
+        "ci": "ee4508c10589a81defd4f07be707641f06addc57",
+        "docs": "a9e158b19f1c58f86a2b66c06abb0ca08eb68181",
+        "experiments": "a9872777a05996c683c6d3ea2174c0082214781b",
+        "interactions": "6ee5815951b56b2a0e09524dbf8f37d26d039423",
+        "launch_desktop.ps1": "64f22deedefe1bf648cc2832990efe04ff3cfe2c",
+        "material_catalogue": "7e1994797dfa29c3a854ef75644443b806e13324",
+        "material_review": "00ba4e4e2b3e7d66b27cb272e3f55b5460738cd3",
+        "physics": "69974e8785c932527cc9fa81c5018cb88685e0ea",
+        "play": "86c41ddcbcb329eb420d8ed0abc3b44a6c0d46c6",
+        "prepare_native_build_env.sh": "5cb05558cdbf58fe7af8ac6f97fe87dd18d7706d",
+        "render_copy": "abeba752256213a5d2743939388c28ee000d9e31",
+        "render_worldgen_fields.gd": "b9443a90e7b67ceffc282bde1eff673e89655a1a",
+        "render_worldgen_typed.gd": "b7bcc0a556b72c9a3af4ee93a9d52813f8f5fa09",
+        "requirements-build.txt": "821fb1eea3b1029e16664f0babb61ae735e719fa",
+        "requirements-ci-audit.txt": "66255df957646cf84906a7866e45905d6361ae78",
+        "serve_web.py": "b03824bf820a1051c3004d11fc5971e5a3d794e5",
+        "thunderbowl": "5c918e05fcd90727419b742404d419a62acb3453",
+        "toolchains": "ea8ce549399b420d8a8e704060befc4f7f8b252c",
+        "verify_pinned_source_tree.py": "4bb67693722150fb8eb04118ce593632ee22556d",
+        "web": "2a9f2cc4a34ef1ecccccd0f97993b4897f8c840f",
+        "worldgen": "ebea64df80ae388840e9a136ddc669bab65330c1"
+      }
+    }
+  ]
+}

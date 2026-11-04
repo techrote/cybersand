@@ -1,0 +1,2371 @@
+# Retrieval contexts for independent answer review
+
+Source-backed expected facts and the complete top-five contexts follow. A canonical route hit alone is not an answer pass.
+
+## Q01: Which exact local version do we have, and can I recover its uncommitted changes?
+
+Canonical rank: 1
+
+Expected facts:
+
+- Distinguish the actual inspected local checkpoint and dirty tree from the reconstructed upstream base and historical M11 source.
+- Name verified recovery coverage and limitations; a base hash or export identity does not prove current commit or backup coverage.
+
+### Rank 1: operations/source-checkpoint-and-recovery.md — Source checkpoint and recovery > Water leveling follow-up
+
+Document: Source checkpoint and recovery
+Path: operations/source-checkpoint-and-recovery.md
+document-kind: guide
+status: Current
+scope: Actual local Git roots, preserved baseline, recovery boundaries and source-versus-artifact identity
+canonical-for: [source-identity, local-checkpoints, recovery-coverage]
+last-reviewed: 2026-10-25
+Section: Source checkpoint and recovery > Water leveling follow-up
+The owner feedback branch `codex/water-sideways-leveling` starts from completed #13 checkpoint `4bead5501d902c424820814e7b5bcf1f9abea324`. Its **Speed up Water lateral leveling and document Coal residue** checkpoint changes Water relaxation; resolve the commit from branch history. [Dated evidence](../audits/2026-09-10-water-leveling.md) records source deltas, rebuilt desktop/both-Web identities and preserved intake DLLs under `C:/kybersand/validation/local/2026-09-10-water-leveling/`. Runtime DLLs remain deliberately uncommitted; published provenance remains historical.
+
+
+### Rank 2: operations/source-checkpoint-and-recovery.md — Source checkpoint and recovery > Issue #10 intake
+
+Document: Source checkpoint and recovery
+Path: operations/source-checkpoint-and-recovery.md
+document-kind: guide
+status: Current
+scope: Actual local Git roots, preserved baseline, recovery boundaries and source-versus-artifact identity
+canonical-for: [source-identity, local-checkpoints, recovery-coverage]
+last-reviewed: 2026-10-25
+Section: Source checkpoint and recovery > Issue #10 intake
+**Current:** Issue #9 baseline is committed at 10e8153064f64272680696cce2b830791ecad2c3. The new branch is codex/issue-10-player-and-exchange. The sole intake delta was the diagnostic Windows DLL, copied to C:/kybersand/validation/local/2026-09-09-issue-10/intake/ with SHA-256 45f4ba78787a9e2d4daefb9b3ba24b1e476cb496343f63e77dd75a3e1c712eb7. Source/artifact manifests and source snapshots are in support-checkpoint/ in that same evidence directory. Fresh builds remain uncommitted. See the [granular/player policy](../systems/granular-interaction-policy.md). Support commit `1fba848bd2b624ec99974ffa896e34e01c39575e` is the first focused increment. The second commit contains exchange rules and their acceptance data. `runtime-final-reset/` retains the tested HEAD-plus-delta, tracked patch and new source snapshots; per-matrix manifests preserve earlier fixture inputs. The [dated audit](../audits/2026-09-09-issue-10-granular-policy.md) links curated identities and records the deliberately uncommitted rebuilt DLL. Rebuild from branch history before reusing runtime evidence; published manifests were not rewritten or treated as current-source attestations.
+
+
+### Rank 3: operations/source-checkpoint-and-recovery.md — Source checkpoint and recovery > Unmerged desktop native-default owner — 2026-10-25
+
+Document: Source checkpoint and recovery
+Path: operations/source-checkpoint-and-recovery.md
+document-kind: guide
+status: Current
+scope: Actual local Git roots, preserved baseline, recovery boundaries and source-versus-artifact identity
+canonical-for: [source-identity, local-checkpoints, recovery-coverage]
+last-reviewed: 2026-10-25
+Section: Source checkpoint and recovery > Unmerged desktop native-default owner — 2026-10-25
+Recover `codex/lcb003-desktop-default` at native705a2e2d and owner/test66bf30f8, whose full identity and immutable local evidence are recorded in the [dated checkpoint](../audits/2026-10-25-lcb003-desktop-native-default-host.md). The original dirty source checkout and companion pins are untouched. This source requires final normal integration with repaired Brine/Water-IN and the application branch, fresh source-matched Windows/Linux runtimes and actual Web/full-host gates. The development DLL and preserved failed shutdown experiments are not released runtime acceptance. Native capacity and owner/test changes are separate commits; documentation is an additive follow-up checkpoint.
+
+
+### Rank 4: operations/source-checkpoint-and-recovery.md — Source checkpoint and recovery > Issue #13 experiment checkpoint
+
+Document: Source checkpoint and recovery
+Path: operations/source-checkpoint-and-recovery.md
+document-kind: guide
+status: Current
+scope: Actual local Git roots, preserved baseline, recovery boundaries and source-versus-artifact identity
+canonical-for: [source-identity, local-checkpoints, recovery-coverage]
+last-reviewed: 2026-10-25
+Section: Source checkpoint and recovery > Issue #13 experiment checkpoint
+Issue #13 starts at verified `372bfb3ac3cbbb8005b594cd0995ed5e71d6c530` on separate branch `codex/issue-13-experiment-tower`. Intake DLL bytes and dated source snapshots remain under `C:/kybersand/validation/local/2026-09-09-issue-13/`; see [its audit](../audits/2026-09-09-issue-13-transport.md). Focused local checkpoints are `f88423f` (references/tower), `af80634` (profiles), and `1290e0a` (shared motion). The subsequent **Measure lateral sampling and complete Experiment Tower validation (#13)** checkpoint contains the measured approximation, recipe-4 usability corrections and final evidence. Resolve its actual commit from branch history rather than treating a build's old acquisition label as a source revision. Its audit manifest records tested HEAD plus exact local file hashes; the final committed-identity capture remains under the raw evidence prefix. Rebuilt DLL bytes stay intentionally uncommitted; intake bytes are preserved separately and `C:/cybersand` is unchanged.
+
+
+### Rank 5: systems/granular-interaction-policy.md — Granular interaction and sampled player policy > How does the sampled character move and recover? > REM-003 sampled-player landing response
+
+Document: Granular interaction and sampled player policy
+Path: systems/granular-interaction-policy.md
+document-kind: contract
+status: Current
+scope: Version 1 material capability, sampled player support, pair exchange and deterministic permeability wakes
+canonical-for: [granular-support-policy, granular-pair-policy, sampled-player-collision]
+last-reviewed: 2026-09-25
+Section: Granular interaction and sampled player policy > How does the sampled character move and recover? > REM-003 sampled-player landing response
+**Current candidate C1:** the version-1 8/9 downward and 9/9 side/upward support classification is unchanged. REM-003 source-matched characterization found that packed standing, flat traversal, representative powders and excavation release worked within their registered cases, while materially different Sand landing speeds resolved to nearly the same rigid support height with no granular response. C1 therefore changes the sampled-character response rather than retuning the shared support predicate used by REM-002 generic body bearing. On a downward sampled-player collision, impact speed below 24 cells/second causes no disturbance. From 24 through less than 72, at most one supported foot-edge grain may move; at 72 or above, at most two may move. Only the left/right contact edge is considered. A candidate grain must be a stored support-capable granular material that currently satisfies the existing packing/stability predicate. It may move exactly one cell diagonally outward/up only through the existing whole-cell conservative relocation path into real Empty storage not occupied by another transient body. Material state and temperature move with the cell and the normal wake/dirty machinery runs. Hard terrain anywhere in the sampled collision volume fails this disturbance path closed; liquids, loose/unsupported grains and ordinary resting contact likewise do not trigger it. The player still stops on the accepted support surface; C1 does not introduce character-owned material, a granular Rapier collider, a pressure/velocity field, per-cell character physics or a second body-bearing solver. The native adapter and fallback mirror the bounded operation under their existing serialized owners. The resulting grain may subsequently move under ordinary cellular rules, so the disturbance count is not a promise of permanent crater geometry. Broad generic body↔granular acceptance remains REM-004 / #83. Owner gameplay acceptance of C1 is a separate REM-003 gate and is not implied by automated tests.
+
+## Q02: Who is allowed to mutate the cells, and can a worker touch a Godot object?
+
+Canonical rank: 2
+
+Expected facts:
+
+- Native World owns authoritative cellular state.
+- Desktop Godot worker exclusively calls its adapter/value APIs; internal native workers call no Godot APIs; live scene-tree and Rapier objects remain on the allowed Godot thread.
+- Web has synchronous main-thread ownership.
+
+### Rank 1: architecture/chunk-tile-and-buffer-model.md — Chunk, tile, and buffer model > How are writes into a neighboring tile made safe?
+
+Document: Chunk, tile, and buffer model
+Path: architecture/chunk-tile-and-buffer-model.md
+document-kind: contract
+status: Current
+scope: Native storage, activity, scheduling and write-domain geometry; explicit fallback and buffered distinctions
+canonical-for: [spatial-scheduling-geometry]
+last-reviewed: 2026-10-21
+Section: Chunk, tile, and buffer model > How are writes into a neighboring tile made safe?
+With the Current native defaults, each job scans a 64×64 core and may write within its core expanded by the catalogue maximum radius of two cells. `SchedulerGeometry::phase` uses global core-coordinate parity. Same-phase cores are separated enough that their expanded half-open write rectangles do not share cells; geometry rejects a radius greater than half a core. World also validates compatible chunk/core/activity alignment for its parallel path. See [geometry implementation](../../native/src/scheduler_geometry.cpp). `World::scan_rect` visits cells inside the core; an operation may touch the expanded domain only within the enforced rule radius. Every affected cell must be owned. Out-of-domain attempts are rejected by the operation's checks; they are not automatically enqueued into a transfer system. Later visits may make them eligible. General deferred boundary policies remain **Planned**. The coordinator prepares structural storage before phase dispatch. Jobs mutate cells in place and accumulate local effects; the barrier precedes deterministic metadata merge. No next-state cell array or ordinary movement-transfer record is needed for this backend. A storage or activity edge is not itself an extra physics rule. Boundary fixtures must verify that geometry changes do not introduce unintended seams; intended scan/phase order can still affect results.
+
+
+### Rank 2: architecture/data-ownership-and-lifetimes.md — Data ownership and lifetimes > Who may mutate each resource?
+
+Document: Data ownership and lifetimes
+Path: architecture/data-ownership-and-lifetimes.md
+document-kind: contract
+status: Current
+scope: Current resource owners, mutation windows, publication retirement and allocation limits; proposed resources are explicitly separated
+canonical-for: [resource-ownership-and-lifetimes]
+last-reviewed: 2026-10-25
+Section: Data ownership and lifetimes > Who may mutate each resource?
+**Current:** each selected cellular world has one external owner. In the ordinary desktop sandbox that is `CyberSimulationWorker`; on Web it is the main-thread controller. Native World coordinates its internal jobs. Queries, export, publication and mutation require serialization by that owner; calling a method through GDExtension does not make World generally thread-safe. Native pool workers call no Godot APIs. The desktop Godot owner may call exclusive adapter/value APIs, but must not touch live scene-tree or Rapier objects. | Resource | Owner and permitted mutation | Lifetime and pressure | |---|---|---| | `World::chunks_` and chunk cell arrays | World coordinator creates/reserves chunks; serial work or phase-exclusive jobs mutate cells | Until World/chunk destruction; construction capacity bounds growth | | Optional temperatures | Chunk owns optional SoA; owner prepares it, permitted rules/movement use it | Allocated on demand or reservation; counted tick allocations | | Activity/dirty metadata and job effects | Job-local observations, then coordinator merge after the phase barrier | Persistent chunk metadata and reusable bounded scratch; dirty bounds survive unsuccessful publication | | Delayed pair deadline | Workers report through fixed disjoint job spans into two preallocated `ParallelState` flag/deadline buffers; the coordinator reduces the earliest deadline into shared block metadata after the phase barrier and wakes it at healthy tick entry | One persistent scalar per block plus bounded scheduler scratch; buffers outlive job spans and pool, excluded blocks retain deadlines, clear/replacement discards them | | Native snapshot slots | One serialized producer writes only an unleased slot | Shared exchange state outlives its facade while leases exist; no-slot/capacity failure retains dirty state | | Desktop world, sampled character and optional actor prototypes | Godot pacing Thread after startup handoff | Worker lifetime; stopped/joined before destruction; actor session reset invalidates old input epochs | | Controlled liquid preparation candidate and token (experimental #202 source) | The exclusive native adapter owns one pending World, render exchange, final setup and copied native receipt | Final configuration precedes capture; one-use token commit checks retained state and the desktop queue-mutex request/reset/stop fence. Discard/supersession/refusal retain the applied session; [sampled owners](liquid-prepared-setup-and-receipts.md#staged-sampled-actors-and-exploratory-owners) and [desktop articulated physical owners](liquid-prepared-setup-and-receipts.md#staged-articulated-physical-owners) prepare before commit. Physical graph/space stays main-owned, frozen and permanent; copied readiness and actual initial masks bind its nonblocking continuation. Other constructors and full evidence stay open | | Live body nodes, RIDs and physics state | Main-thread Rapier bridge and PhysicsServer2D | Scene/bridge lifetime; never passed to cellular workers | | Physical actor rigs, joints and local controllers | Main-thread `CyberPhysicalActorSession`; at most eight rigs/eight total parts each | Run/actor/epoch-bound
+
+
+### Rank 3: reference/interfaces-and-message-contracts.md — Interfaces and message contracts > Workbench replay and genuine stage interfaces
+
+Document: Interfaces and message contracts
+Path: reference/interfaces-and-message-contracts.md
+document-kind: contract
+status: Current
+scope: Current C ABI, procedural-generation C++/Godot surfaces and private packed layouts; proposed gameplay/reconfiguration contracts remain distinct
+canonical-for: [public-and-adapter-interface-layouts]
+last-reviewed: 2026-10-25
+Section: Interfaces and message contracts > Workbench replay and genuine stage interfaces
+[GEN-007](../systems/generation-workbench-2.md) adds `inspect_generation(position, plane, expected_revision, expected_fingerprint)` to `CyberWorldGenerator`. The method rejects stale caller identities and returns copied deterministic replay with native material, initial context, effective parameters, scalar/typed values, ordered masks/modifiers/aggregate decisions, semantic ancestry/constraints, plane projections, fixtures/links, precedence, proposal identity and explicit truncation/unavailable metadata. It does not read a live simulation World or imply a stored historical execution log. `stage:<name>` chunk diagnostics keep final `cells` and actual intermediate `stage_cells` separately and bind them in the native receipt. The six base names are `candidate`, `guided_candidate`, `grammar`, `modifiers`, `connectivity` and `final`. `begin_stage_region(bounds, plane, stage)`, `advance_stage_region(budget)` and `cancel_stage_region()` supply bounded private finite-region stage jobs. Plane stages also include `policy`, `base` and `projections`; a plane without the base generator rejects its unavailable source stages. Stages are sampled from the real pipeline, never from a modified final recipe. Adapter revision, native recipe/plane fingerprint, UI session/view token and owner World generation are distinct identities. Workbench comparison binds the same seed and coordinates for both recipes and rejects stale result serials. `adopt_configuration(prepared_owner, expected_revision)` transfers immutable plans only after the caller has joined the private preparation worker. It rejects null, self, unconfigured, pending or stale owners. The receiving adapter serial advances; the native recipe revision and its material/diagnostic receipt remain unchanged and are reported separately. Subsequent changes to the private owner cannot mutate the adopted plans. Neither explanation nor stage output supplies authority to install or mutate a World; existing material/semantic admission interfaces keep that responsibility.
+
+
+### Rank 4: architecture/data-ownership-and-lifetimes.md — Data ownership and lifetimes > Who owns opt-in physics observations?
+
+Document: Data ownership and lifetimes
+Path: architecture/data-ownership-and-lifetimes.md
+document-kind: contract
+status: Current
+scope: Current resource owners, mutation windows, publication retirement and allocation limits; proposed resources are explicitly separated
+canonical-for: [resource-ownership-and-lifetimes]
+last-reviewed: 2026-10-25
+Section: Data ownership and lifetimes > Who owns opt-in physics observations?
+**Current:** [physics diagnostics](../operations/physics-characterisation.md) allocate fixed per-job histograms when constructing the World. Each job writes its exclusive counter table; the coordinator merges after existing barriers. Counters cannot mutate authoritative cells or alter random streams. Adapter snapshots copy stored cells and aggregates at the serialized owner boundary; they expose no mutable World storage. Overflow drops observations, never work. The test-only asynchronous worker records a fixed trace from its exclusive adapter. The main thread reads that trace only after joining the worker, and continues to own Rapier. Diagnostic variants require fresh fixture construction; they are not live unsynchronized descriptor edits or representation handoffs.
+
+
+### Rank 5: architecture/data-ownership-and-lifetimes.md — Data ownership and lifetimes > Who may mutate each resource?
+
+Document: Data ownership and lifetimes
+Path: architecture/data-ownership-and-lifetimes.md
+document-kind: contract
+status: Current
+scope: Current resource owners, mutation windows, publication retirement and allocation limits; proposed resources are explicitly separated
+canonical-for: [resource-ownership-and-lifetimes]
+last-reviewed: 2026-10-25
+Section: Data ownership and lifetimes > Who may mutate each resource?
+command leases; cancel discards future work, close retires bodies/joints | | 4LY profile and local force/torque response | Validated copied profile and a main-thread pure controller under the same physical session; own velocity/attitude inputs only | Single chassis with explicit absent equipment; cancellation/expiry reset response state and select passive fallback without changing body momentum; see [free-flight contract](../systems/physical-free-flight.md) | | Player material field commands and centre | Dedicated main-thread `CyberPlayerPlaygroundRuntime`; native World alone relocates selected Sand/Water cells | One current command, at most six ticks from its issued observation; reset/cancel retires authority, while native material remains ordinary World state | | Physical usable effect requests | Copied by the physical owner; exclusively validated/consumed by the native-world owner | Epoch/sequence/source-bound, bounded per actor and batch; consumed refusals cannot replay after an obstacle disappears | | Physical equipment chassis and mount | Main-thread `CyberPhysicalUsableEquipment` through its actor rig; the same part/body ID is held, released, fixed, deployed and picked up | At most one equipment part per actor within the eight-part limit; equipment epochs invalidate superseded use and deployment authority without deleting velocity | | Physical usable frame, request and receipt mailbox | Main thread supplies copied physical poses/identity; the serialized cellular owner admits and applies usable work, then publishes copied results | Eight pending requests globally, one per actor including extracted work; run/actor/generation/equipment/body/request identity fences cancellation and recoil | | Physical projectile and processor state | `CyberPhysicalUsableRuntime` on the exclusive native-world owner; no live body or scene object crosses the boundary | 64 projectiles, 16 active objects globally and four per actor; bounded per-actor/per-processor history retains stock, age, cycles and cooldown across physical pickup/redeployment | | Body samples and observations | Adapter owns copied samples and native transient occupancy; results are copied into publication | Mask rebuilt at coupling preparation; sample IDs identify result application | | Godot CPU image and textures | Main thread validates patches and updates resources | Application lifetime; upload never borrows mutable World bytes | | Compiled procedural recipe, field graph and prepared modules | Immutable `generation::Generator`, independent of World | Jobs retain shared ownership; replacing the caller's recipe cannot mutate existing jobs | | Typed spatial graph, geometry and prepared region assignment | Immutable `generation::SpatialGraph`; copied typed parameters, routes and bounded complete solver results | No per-cell context or mutable World access; transforms and derivatives resample absolute-coordinate functions | | Semantic hierarchy, sockets, routes and constraint receipts | Immutable `generation::GrammarPlan`, prepared before rasterization for a finite world-anchored region window | Stable owner/rule/slot identities are separate from
+
+## Q03: Does enabling browser threads let drawing continue while the simulation tick is still running?
+
+Canonical rank: 3
+
+Expected facts:
+
+- No: Web waits synchronously for each native cellular tick.
+- Pthreads parallelize native tick work; publication cadence is separate but asynchronous Web simulation/render ownership is unimplemented.
+- Desktop has an asynchronous Godot worker.
+
+### Rank 1: operations/troubleshooting.md — Troubleshooting simulation and integration > Establish the failing path first
+
+Document: Troubleshooting simulation and integration
+Path: operations/troubleshooting.md
+document-kind: guide
+status: Current
+scope: Symptom routing and discriminating checks; fixes require a separate implementation checkpoint
+canonical-for: [symptom-routing]
+last-reviewed: 2026-09-08
+Section: Troubleshooting simulation and integration > Establish the failing path first
+Record source/runtime identity, native versus GDScript fallback, desktop versus Web, profile, worker count and first failing tick. Use [build checks](local-build-and-validation.md) and the [evidence ledger](../reference/validation-evidence.md) to distinguish a new failure from an old result. Preserve a minimal fixture before changing behavior. A source diagnostic explains a defect; it does not approve a fix. | Symptom | Discriminating check and canonical contract | |---|---| | Web drawing stalls despite pthreads | The outer callback still waits for native work; [threading](../architecture/simulation-tick-and-threading.md) distinguishes desktop ownership | | One core dominates | Confirm backend/count, eligible jobs per phase, threshold and serial planning; [profiling](profiling-observability-and-performance.md) | | Simulation freezes after camera returns | Check failed-world status/capacity first; phased re-entry should wake new coverage once without catch-up; [storage/re-entry contract](../systems/world-storage-and-interest-region.md) | | Native tick fails or appears to continue | Both owners stop; World is quarantined and may contain partial mutations. Preserve diagnostics, then explicitly reset or replace; never retry the partial World; [tick failure](../architecture/simulation-tick-and-threading.md) | | Every other falling row is Empty | Inspect source/destination update stamps and bottom-up vacancies; [materials](../systems/materials-and-rule-kernels.md) | | Water changes while apparently settled | Compare exact mass, content hash and dirty/activity counts; full state hash advances with time; [Water](../systems/water-design.md) | | Stable cells look dithered or shimmer | Separate render animation from authority; [appearance](../systems/material-appearance-and-rendering.md) | | Water forms a heap | Identify native conserved mass versus discrete fallback, pressure bounds and sleep; preserve closed-basin fixture; [Water](../systems/water-design.md) | | Smoke fails to rise through a medium | Inspect directional exchange/target traits and activity; do not make all solids permeable; [materials](../systems/materials-and-rule-kernels.md) | | Boundary seam or worker-count divergence | Compare first divergent phase, write domain, stamps, merge effects and conserved totals in shifted/negative-coordinate fixtures; [determinism](../architecture/determinism-and-boundary-transfers.md) | | Body tunnels, traps or deletes cells | Separate stale samples, sweep limits, terrain backlog, displacement exhaustion and backend selection; [coupling](../architecture/rigid-body-and-cellular-coupling.md) | | Rapier class missing or body does not step | Run dependency preflight, then isolated automatic/manual fixtures; [Rapier runbook](rapier-2d-migration-runbook.md) | | Snapshot rejected or Image expects nonzero bytes | Record serial, rectangle, offset, stride and byte count; reject/retain until full-refresh recovery; [render handoff](../architecture/rendering-and-gameplay-bridges.md) | | Low FPS with small bridge payloads | Dirty bridge patches still end in a full RG8 GPU texture update; distinguish copy/upload/render time; [render handoff](../architecture/rendering-and-gameplay-bridges.md) | | Capacity exhausted or steady memory grows | Inspect category/use/capacity and lazy chunk/job storage; do not infer atomic rollback or zero allocations; [capacity](configuration-and-capacity-budgets.md) | | Identical saves diverge after load | CYSD1 restores level fields, not all future-affecting state; [save/replay contract](../reference/level-saves-and-replay.md) | | Unsafe Godot thread warning
+
+
+### Rank 2: systems/player-control-playground.md — Player control playground > Integrated playable-session selection and device rearm > Course target visibility and optional worker details
+
+Document: Player control playground
+Path: systems/player-control-playground.md
+document-kind: contract
+status: Current
+scope: Experimental movement controls and shared asynchronous desktop composition, input and lap lifetime, lifecycle and bounded native failure validation; isolated Sand and Water player fields
+canonical-for: [player-control-playground, player-movement-presets, player-material-field]
+last-reviewed: 2026-11-02
+Section: Player control playground > Integrated playable-session selection and device rearm > Course target visibility and optional worker details
+The shared course now reuses the authored checkpoint drawing: the next gate is accented, future gates are faint and completed gates are marked. The overlay receives copied lap identity and the same camera/content transform as the actor. It neither queries a native World nor awards checkpoints. Invalid/retired actor or World identity, pending reconstruction, fault, free play and clean-view mode clear the targets. Completed native ticks and actual main-thread Rapier observations still own timing and visits; visual rings are not traversal proof. F3 expanded details in a running Play course request an optional owner-side statistics sample at most four times per second. Main only receives the frozen copy, including a retained read-only empty value when sampling is off or unavailable. Replacing the owner slot preserves earlier published values. The display separates the constructor's requested worker setting, capacity, observed **task participants**, source native tick and sample age. Participants mean the maximum distinct task-claiming workers in one phase dispatch of that tick; an inline nonempty phase counts the owner as one. This does not measure simultaneous execution or utilization. Sampling defaults off, stops when details close, and Main sends a request only when that choice changes. Owner-publication serial gaps count snapshots coalesced before Main consumed them. They are separate from native tick deltas, rejected serials and rejected render payloads. An unavailable sample is labelled unavailable, not replaced by the configured capacity. No production shader, default solver, mechanical tuning or additional simulation owner is introduced. The [UI007 audit](../audits/2026-10-31-play-ui007-desktop-readiness.md) retains the original missing-overlay negative, five actual-host headless regressions, separate overlay-only pixel tests and failed shared-Main graphical startup. The [manual packet](../operations/play-desktop-manual-qualification.md) binds all five rig entry points and physical checks to a reviewed source/runtime; generating it proves identity only and leaves every human row untested. The [course event bridge](../../godot/scripts/playable_course_gamepad_events.gd) observes `Input.joy_connection_changed`. Loss, replacement or addition of the selected first controller cancels the current physical command and pending button edges through the existing owner, including its native-effect cancellation signal, and requires neutral input before rearming. An unrelated secondary controller event does not revoke the selected controller. A keyboard-only session ignores gamepad connection changes. This is a source behavior claim; physical disconnect/reconnect still needs the manual checklist. The [real-host regression](../../godot/tests/test_play_ui005_session_selection.gd) constructs all five rigs with alternating Current/Water-pressure policies, checks one transaction and unchanged prior owner/options while pending, actual native receipts, original map, newer identities, prior Rapier retirement, camera/rule/control selection, running native/Rapier clocks and policy-retaining reset. It also exercises native Oil/pressure refusal, protected-fixture and deferred-swarm refusal, selected/unselected device signals and focus rearm. It also sends viewport mouse events to
+
+
+### Rank 3: operations/web-threading.md — Web worker profiles and reference tests > Current profiles
+
+Document: Web worker profiles and reference tests
+Path: operations/web-threading.md
+document-kind: runbook
+status: Current
+scope: Compatibility/threaded Web build and hosting, fixed worker policy, synchronous ownership, and reference-test interpretation
+canonical-for: [web-worker-profiles, worker-reference-benchmark]
+last-reviewed: 2026-09-08
+Section: Web worker profiles and reference tests > Current profiles
+[build_web.py](../../tools/build_web.py) stages the same native solver, assets, and Web controller with matching thread/no-thread Godot templates and Rapier WASM. [CyberNativeCellWorld::create_world](../../godot/native_extension/cyber_native_cell_world.cpp) resolves worker policy at world construction. | Profile | Cellular workers | Output | Ownership | |---|---|---|---| | Compatibility, default | Forced 1 | `source/build/web` | Synchronous Godot callback | | Threaded | Auto or explicit request | `source/build/web-threaded` | Same callback; phased jobs may run concurrently | Auto chooses 2/4/6 at reported logical-thread thresholds 4 and 12, including two when only one logical thread is reported. Exact settings, clamps, and the 32-prewarmed-pthread/two-Godot-worker distinction belong to [configuration](../reference/configuration-reference.md#adapter-worker-policy). Prewarmed spare threads support overlapping current/replacement/test worlds; they are not all simulation workers. Web diagnostics use `navigator.hardwareConcurrency` for the browser's reported logical count; the no-thread C runtime's fixed 1 is not physical-core detection. Neither Auto nor the reference benchmark tunes a running pool from timings.
+
+
+### Rank 4: operations/testing-validation-and-replay.md — Testing, validation, and replay > Issue #2 and combined regressions
+
+Document: Testing, validation, and replay
+Path: operations/testing-validation-and-replay.md
+document-kind: guide
+status: Current
+scope: Executable test selection and future gates; dated results and save format live in separate references
+canonical-for: [test-inventory, test-selection, future-validation-gates]
+last-reviewed: 2026-10-31
+Section: Testing, validation, and replay > Issue #2 and combined regressions
+The same runner now also tests actual adapter re-entry at one/four workers, a desktop owner leave/re-entry sequence after drained ownership handoff, and Web controller resume. Browser `?test=1&tickfault=1` requires both `tick_failure_test.ok` and `interest_region_test.ok`; frame yields between probe world replacements let threaded browser workers recycle. Native source fixtures cover negative/core/chunk boundaries, previously sleeping blocks, overlap/disjoint moves, unchanged/equivalent/coalesced regions, neighbor wake, custom straddling geometry, conserved Water/Sand, retained temperature, 1/4/4 state-hash equality, and event/no-event capacity failure during re-entry followed by clear.
+
+
+### Rank 5: operations/gameplay-recording.md — Desktop gameplay state recording > Queue pressure, drops and failures
+
+Document: Desktop gameplay state recording
+Path: operations/gameplay-recording.md
+document-kind: contract
+status: Current
+scope: REC-001 desktop material-state recording, ownership, bounded pressure, evidence format, controls and validation limits
+canonical-for: [gameplay-state-recording]
+last-reviewed: 2026-10-18
+Section: Desktop gameplay state recording > Queue pressure, drops and failures
+The queue has one producer (presentation consumption) and one writer. It is explicitly finite. If full when a capture is due, the recorder records a `queue-full` drop event containing the completed tick and both publication and capture-observation monotonic timestamps. It does not wait for the writer and does not ask the simulation worker to skip or slow a tick. Material publications continue to update the recorder's private ROI even when a capture frame is dropped. The next retained frame therefore represents the latest consumed publication rather than a stale queued state. Worker snapshots that repeat an already-consumed render serial do not reapply material patches. They may still satisfy capture cadence when the actor sample has advanced; the resulting frame explicitly points back to the unchanged material generation. Malformed recorder input or a writer failure stops admission and marks the session incomplete. A simulation failure likewise stops admission and records the attempted failed tick plus the last retained completed tick. Existing queued frames may drain. None of these recorder outcomes changes the simulation failure/recovery contract.
+
+## Q04: What CPU counts does Auto choose in compatibility and threaded Web builds?
+
+Canonical rank: 2
+
+Expected facts:
+
+- Compatibility forces one cellular worker.
+- Auto chooses 2 for logical thread count below 4, 4 for counts from 4 through 11, and 6 from 12 upward in the threaded profile.
+- Worker count does not imply concurrent Web presentation ownership.
+
+### Rank 1: reference/configuration-reference.md — Configuration reference > Adapter worker policy
+
+Document: Configuration reference
+Path: reference/configuration-reference.md
+document-kind: reference
+status: Current
+scope: Exact native, adapter, fallback, presentation, and Web defaults; construction constraints and unimplemented production schema
+canonical-for: [current-configuration-values, adapter-worker-policy]
+last-reviewed: 2026-10-25
+Section: Configuration reference > Adapter worker policy
+The project setting is `cybersand/native_worker_threads=0`. `auto_worker_threads` implements the owner's 2026-09-08 policy: | Reported logical processors | Auto workers | |---|---:| | Below 4 | 2 | | 4–11 | 4 | | 12 or more | 6 | A positive explicit request is clamped to 1 through `min(32, reported logical processors)`; the adapter clamps its processor input to at least 1. Nonpositive requests take Auto. Auto can intentionally choose two on a one-processor report. Counts are resolved when constructing a world, not retuned during play. No-thread Web forces one cellular worker. Threaded Web keeps Auto and separately stages `threads/emscripten_pool_size=32` plus `threads/godot_pool_size=2` in [build_web.py](../../tools/build_web.py). Prewarmed slots are not all cellular workers. Browser UI reports `navigator.hardwareConcurrency`; it does not detect physical cores.
+
+
+### Rank 2: operations/web-threading.md — Web worker profiles and reference tests > Current profiles
+
+Document: Web worker profiles and reference tests
+Path: operations/web-threading.md
+document-kind: runbook
+status: Current
+scope: Compatibility/threaded Web build and hosting, fixed worker policy, synchronous ownership, and reference-test interpretation
+canonical-for: [web-worker-profiles, worker-reference-benchmark]
+last-reviewed: 2026-09-08
+Section: Web worker profiles and reference tests > Current profiles
+[build_web.py](../../tools/build_web.py) stages the same native solver, assets, and Web controller with matching thread/no-thread Godot templates and Rapier WASM. [CyberNativeCellWorld::create_world](../../godot/native_extension/cyber_native_cell_world.cpp) resolves worker policy at world construction. | Profile | Cellular workers | Output | Ownership | |---|---|---|---| | Compatibility, default | Forced 1 | `source/build/web` | Synchronous Godot callback | | Threaded | Auto or explicit request | `source/build/web-threaded` | Same callback; phased jobs may run concurrently | Auto chooses 2/4/6 at reported logical-thread thresholds 4 and 12, including two when only one logical thread is reported. Exact settings, clamps, and the 32-prewarmed-pthread/two-Godot-worker distinction belong to [configuration](../reference/configuration-reference.md#adapter-worker-policy). Prewarmed spare threads support overlapping current/replacement/test worlds; they are not all simulation workers. Web diagnostics use `navigator.hardwareConcurrency` for the browser's reported logical count; the no-thread C runtime's fixed 1 is not physical-core detection. Neither Auto nor the reference benchmark tunes a running pool from timings.
+
+
+### Rank 3: operations/web-threading.md — Web worker profiles and reference tests > Build and preview
+
+Document: Web worker profiles and reference tests
+Path: operations/web-threading.md
+document-kind: runbook
+status: Current
+scope: Compatibility/threaded Web build and hosting, fixed worker policy, synchronous ownership, and reference-test interpretation
+canonical-for: [web-worker-profiles, worker-reference-benchmark]
+last-reviewed: 2026-09-08
+Section: Web worker profiles and reference tests > Build and preview
+From `C:/kybersand`: ```powershell .\dev.cmd web --profile threaded .local/python/Scripts/python.exe source/tools/serve_web.py --directory source/build/web-threaded --port 8002 --open ``` While the preview server is running: ```powershell .\dev.cmd http-smoke --profile threaded --url http://127.0.0.1:8002/ ``` `dev.cmd web` builds compatibility. Use export-only only with a matching fresh side module; successful packaging does not prove source-to-binary freshness. The [build guide](github-development-and-release.md) owns exact dependency pins and unresolved CI/toolchain drift. Native/Web generated bindings stay separate. The supplied server sets COOP `same-origin`, COEP `require-corp`, appropriate WASM MIME and no-cache behavior. Threaded hosting needs a secure context (HTTPS or localhost) and cross-origin isolation. Serve the complete export, including worker JavaScript, PCK, WASM, notices and manifest. HTTP/checksum success is structural evidence; open the actual browser for execution. Local delivery is a separate explicit workflow after acceptance: `Deliver-Web.ps1 -Profile threaded` copies to `C:/cybersand/web-threaded`; compatibility uses `C:/cybersand/web`. Documenting this command does not execute delivery or remote publication.
+
+
+### Rank 4: architecture/simulation-tick-and-threading.md — Simulation tick and threading > Who advances simulation on each platform?
+
+Document: Simulation tick and threading
+Path: architecture/simulation-tick-and-threading.md
+document-kind: contract
+status: Current
+scope: Desktop, Web and native stage ordering, fixed quanta, failure behavior and permitted thread access
+canonical-for: [simulation-step-order-and-threading]
+last-reviewed: 2026-11-03
+Section: Simulation tick and threading > Who advances simulation on each platform?
+**Current:** desktop has a dedicated Godot pacing Thread. Web advances native cells synchronously from the main-thread `_physics_process`. Native World's persistent pool is a separate layer: it parallelizes eligible cellular jobs inside either owner's tick, without calling Godot APIs. Compatibility Web forces one cellular worker; threaded Web and native Auto select 2/4/6 at reported logical-processor thresholds 4 and 12. This is startup selection, not a live adaptive policy. See [Web profiles](../operations/web-threading.md).
+
+
+### Rank 5: operations/web-threading.md — Web worker profiles and reference tests > Reference benchmark and parity checks
+
+Document: Web worker profiles and reference tests
+Path: operations/web-threading.md
+document-kind: runbook
+status: Current
+scope: Compatibility/threaded Web build and hosting, fixed worker policy, synchronous ownership, and reference-test interpretation
+canonical-for: [web-worker-profiles, worker-reference-benchmark]
+last-reviewed: 2026-09-08
+Section: Web worker profiles and reference tests > Reference benchmark and parity checks
+Open Web **Performance**: - **Benchmark:** supported actual worker counts from requested 1, 2, 4, 6; deterministic 480×480 and 960×960 Sand/Water worlds; ten warmup ticks then 120 measured ticks per case with deterministic replenishment. - **Stress test:** Auto at 960×960, ten warmup then 600 measured ticks. - **Cancel/Escape:** checked between ticks, with a two-minute case limit. A native tick already running must finish before cancellation. [worker_benchmark.gd](../../godot/scripts/worker_benchmark.gd) uses temporary worlds, restores the process worker setting, and compares final exported-level hashes. Reports include requested/actual workers, mean/p95/max native time, test frame intervals, moves, parallel phases, and level hash. Frame intervals include test/UI scheduling, not normal gameplay rendering. Copy results selects JSON and attempts clipboard copy; the last successful report is stored at `user://last_worker_benchmark.json`. Local commands use the same headless Godot fixture: ```powershell .\dev.cmd benchmark .\dev.cmd stress-test ``` Logs/reports go to `validation/local/<timestamp>/`. Compare native tick timings with browser tick timings, not headless versus browser frame intervals. The opt-in URL `?test=1&parity=1` additionally runs the one/four-worker four-demo probe: 30 ticks each, 120 exported-level hashes. It is also [test_web_worker_parity.gd](../../godot/tests/test_web_worker_parity.gd). Neither this nor the performance hash comparison proves complete replay state, Rapier trajectory equivalence, or all-platform equality.
+
+## Q05: Are body physics, the player, and cellular updates ordered the same on desktop and Web?
+
+Canonical rank: 1
+
+Expected facts:
+
+- No shared exact lockstep is established.
+- Desktop character update precedes cells in the asynchronous owner; main-thread Rapier exchanges samples/results.
+- Web applies previous results, steps Rapier, prepares the mask, ticks cells, then moves the character; pending terrain chunks gate Web advancement.
+
+### Rank 1: architecture/simulation-tick-and-threading.md — Simulation tick and threading > Current desktop worker loop
+
+Document: Simulation tick and threading
+Path: architecture/simulation-tick-and-threading.md
+document-kind: contract
+status: Current
+scope: Desktop, Web and native stage ordering, fixed quanta, failure behavior and permitted thread access
+canonical-for: [simulation-step-order-and-threading]
+last-reviewed: 2026-11-03
+Section: Simulation tick and threading > Current desktop worker loop
+Source: [CyberSimulationWorker `_worker_loop`](../../godot/scripts/simulation_worker.gd). 1. Latch frame state, copied body samples, reset and drained emissions under the mutex; apply selected window and Water options on the exclusive owner. 2. Reset if requested. Prepare body coupling, including overlap response when unpaused. Apply material emissions even while paused. 3. If unpaused, advance the sampled character by `1/60` second, then call the selected world's `simulation_tick`. 4. On success publish copied character/cellular results and eligible render updates. On failure publish stopped status with the previous valid payload; see below. 5. Advance the wall-clock deadline by `TICK_INTERVAL_USEC = 16667`. When lateness exceeds `MAX_BACKLOG_TICKS = 3` intervals, increment the overrun counter and reset the deadline to now. This discards wall-clock backlog, not World tick indices through an explicit skip operation. The main thread renders the newest immutable snapshot while this work runs. Separately, its physics callback applies the newest unapplied cellular response, steps Rapier once, batch-reads transforms/flushes queries and sends copied body state to the worker. Body and cellular timelines may lag by multiple samples; serial checks prevent duplicate application. See [main `_physics_process`](../../godot/scripts/main.gd) and [Rapier `step`](../../godot/scripts/rapier_physics_bridge.gd).
+
+
+### Rank 2: architecture/simulation-tick-and-threading.md — Simulation tick and threading > Current Web owner: body, player and cellular update order
+
+Document: Simulation tick and threading
+Path: architecture/simulation-tick-and-threading.md
+document-kind: contract
+status: Current
+scope: Desktop, Web and native stage ordering, fixed quanta, failure behavior and permitted thread access
+canonical-for: [simulation-step-order-and-threading]
+last-reviewed: 2026-11-03
+Section: Simulation tick and threading > Current Web owner: body, player and cellular update order
+Source: [web_demo_controller `_physics_process`](../../godot/scripts/web_demo_controller.gd). 1. Return when unavailable, the menu is open or focus is lost. Set the current simulation window and allow armed painting before the pause guard. 2. Return if paused. If Rapier is active, also return while hard-terrain packets remain pending; this gates both solvers and the character. 3. Apply preceding cellular results, step Rapier, pack body state and prepare the native body mask. Without Rapier, prepare an empty mask. 4. Complete one native cellular tick. On success advance the sampled character by `1/60` second. On failure pause, open the menu and report the error. Web's callback waits for all native jobs. `_process` consumes terrain work and publishes display data at a separate cadence; a slow cellular tick can still block rendering. **Deferred:** fully asynchronous Web ownership. Desktop advances the character **before** cells; Web advances it **after** cells. Desktop does not share Web's continuous pending-terrain gate; its new articulated owners have the one-time installation fence described above. These schedules are not an equivalence guarantee; a common production order remains undecided.
+
+
+### Rank 3: architecture/overview.md — Architecture overview > How does data move on desktop and Web?
+
+Document: Architecture overview
+Path: architecture/overview.md
+document-kind: contract
+status: Current
+scope: Current execution paths and authority map; routes to the contracts that govern changes
+canonical-for: [architecture-entry-point]
+last-reviewed: 2026-10-20
+Section: Architecture overview > How does data move on desktop and Web?
+Desktop rendering reads immutable published snapshots while a dedicated Godot Thread advances the character and cells. Rapier steps on the main thread and exchanges copied body samples/results with that asynchronous owner. A cellular result can therefore lag behind body motion. Web runs Rapier, body masking, cells and the character sequentially in `_physics_process`. Compatibility Web has one cellular worker; threaded Web can dispatch the same native pool while the main thread waits. Separate render publication cadence does not make Web simulation asynchronous. Character order, terrain gating and failure handling differ between controllers; use the [tick contract](simulation-tick-and-threading.md) before changing either. Both native paths use sparse storage and bounded phased jobs. Dirty RG8 material/condition copies update a persistent CPU image, followed by a full GPU texture update. Render-only shaders derive colour, motion and lighting. The [bridge contract](rendering-and-gameplay-bridges.md) explains payloads and publication failures; the [coupling contract](rigid-body-and-cellular-coupling.md) defines rectangle displacement and Rapier hard contact.
+
+
+### Rank 4: architecture/liquid-prepared-setup-and-receipts.md — Native liquid prepared setup, receipts and quantity accounting > Synchronous Physics Pit reference bodies
+
+Document: Native liquid prepared setup, receipts and quantity accounting
+Path: architecture/liquid-prepared-setup-and-receipts.md
+document-kind: design
+status: Current
+scope: Accepted main LCB-001 native construction contract — immutable final tuples, explicit Water normalization, prepared World ownership, typed native outcomes, native run and attempt receipts, exact quantity aggregates, physical hash/CYPS2 and source-matched Windows/Linux acceptance; application-host proof and downstream family work remain open
+canonical-for: [liquid-prepared-setup, liquid-native-run-receipt, liquid-quantity-accounting]
+last-reviewed: 2026-10-25
+Section: Native liquid prepared setup, receipts and quantity accounting > Synchronous Physics Pit reference bodies
+**Current bounded unmerged #202 source:**5d5c75ed adds explicit Exploratory **Apply & rebuild active** for the actual authored Physics Pit constructor. It uses the exact existing ordered rectangle recipe, sampled player(24,222) and three original8×14 scene templates at(124,90),(244,90),(384,90), all initially unrotated and at rest. This is a separate physical route from the four body-free demos above. Imported same-label physical saves cannot gain authored identity; other bodies/imports and generic physical MicroScenarios remain separate admission work. [Dated local evidence](../audits/2026-10-25-lcb003-synchronous-reference-body.md) records actual normal menu/panel callbacks and remaining platform limits. [`prepared_synchronous_reference_session.gd`](../../godot/scripts/prepared_synchronous_reference_session.gd) owns one copied definition/policy/options request, native token, privately frozen permanent body space and staged sampled player. Native preparation receives the actual packed initial bodies and final current view/cadence/adhesion. Its token-bound copied terrain drives bounded collider setup while at least two actual physics frames verify frozen poses. The retained World/player/body graph and presentation stay held during this preparation; no queued user edit or live graph is consumed to build the candidate. Readiness has an explicit20-second refusal bound. Construction spans main-thread frames; synchronous native runtime ownership and the Deferred asynchronous Web simulation policy do not change. Final owner serial/source/native generation, copied configuration and lifetime guards precede the same-request host observation and native retained-state commit fence. Body readiness is rechecked after the optional deterministic test barrier. Success adopts the same permanent graph/space and sampled player without fallible physics rebind; old bodies close only after native commit. Newer choices, settings, terrain/player refusal or readiness expiry discard the pending token and graph while retaining old World/player/receipt/cursors/record. Cancellation copies the actual native attempt readback; host-only refusal never invents one. Accepted Restart reconstructs the copied original recipe/selection and original poses. Current replacement or legacy import retires prepared physical identity; the source-generation tag is supplied only by actual authored construction. Known prepared Baseline retains the same actual native component/generation/ applied-receipt binding as other ordinary routes. Native-v1 qualifications15 and false native/host full matched eligibility remain. Same-policy quarantined Restart still requires shared lifecycle work; explicit Current recovery remains. Fresh local Windows proof includes32 actual held frames and three PF variants through240 synchronous native/Rapier ticks, reaching the original tank contents and consuming positive signed feedback with exact Water/gas accounting. The earlier96-tick apparatus premise is retained as failed: bodies had not reached the liquid. This is functional execution, not complete trace parity/performance, actual Wasm/visual or source-matched release qualification. Existing desktop Water Feel and IN motion/rest-contact qualifications remain separately scoped.
+
+
+### Rank 5: operations/neon-reliquary-demo.md — Neon Reliquary and the city below > Presentation and ownership
+
+Document: Neon Reliquary and the three district tiles below
+Path: operations/neon-reliquary-demo.md
+document-kind: runbook
+status: Current
+scope: Four authored district tiles, vertical ordering, desktop and Web selection, viewpoints, presentation and reproducible capture; no physics qualification
+canonical-for: [neon-reliquary-demo, showcase-scene-authoring, showcase-presentation, showcase-district-stack]
+last-reviewed: 2026-10-18
+Section: Neon Reliquary and the city below > Presentation and ownership
+[`CyberShowcasePresentation`](../../godot/scripts/showcase_presentation.gd) creates district/viewpoint controls and one backdrop for the accepted tile. It reads the existing accepted current/previous render textures and the existing player rectangle. It adds no native queries, mutable world image, simulation thread or cell fields. The normal material palette, emission and glow shaders remain the foreground renderer. The [backdrop shader](../../godot/shaders/neon_reliquary_backdrop.gdshader) draws a restrained distant skyline, coloured haze, shafts and sparse dust only in empty cells. Current material occupancy, unfinished previous-material transitions and the sampled player are excluded. Material paint/erase therefore updates its mask through the ordinary render publication. The atmosphere does not show through occupied glass, gas or partial Water cells; those continue using the existing material renderer. These lights and skyline silhouettes are decorative scenery, with no collision, heat or illumination authority. The backdrop is disabled for an edited definition that enables rigid bodies; the authored scene has none. The top tile keeps its original cyan atmosphere. Middle Cyberberbia adds warm rose/amber haze around the inhabited bridge; Sewertech Alley shifts toward utility teal; Industrial Underswamp uses muted green and rust-coloured haze. The selected palette derives from the accepted district identity, with the same material/player/transition mask for all four. New scene installation uses the established desktop worker acknowledgement or synchronous Web host. A pending reset or open experiment/definition modal blocks the showcase shortcut. On desktop, this also includes an open actor selector or an actor installation awaiting acknowledgement. Viewpoint popups block paint underneath them and require mouse release before paint resumes. F8 also hides the player/environment and actor launchers and dismisses their tuning panels, preserving the promised clean view. Accepted showcase installation clears ordinary sandbox actor prototypes through the existing MicroScenario transition.
+
+## Q06: What happens to play when a native simulation tick fails?
+
+Canonical rank: 1
+
+Expected facts:
+
+- Failed ticks may advance attempted tick/epoch and mutate cells/events; there is no rollback.
+- World latches failure and rejects further ticks/gameplay writes/publication; completed tick identity does not advance.
+- Desktop publishes stopped status retaining its last valid payload; Web pauses/menu-reports and suppresses partial output; Rapier stays main-thread owned.
+- Explicit reset/clear or validated replacement is required; accepted events are never automatically replayed and invalid replacement retains the fault.
+
+### Rank 1: architecture/simulation-tick-and-threading.md — Simulation tick and threading > What happens when a tick fails or overloads?
+
+Document: Simulation tick and threading
+Path: architecture/simulation-tick-and-threading.md
+document-kind: contract
+status: Current
+scope: Desktop, Web and native stage ordering, fixed quanta, failure behavior and permitted thread access
+canonical-for: [simulation-step-order-and-threading]
+last-reviewed: 2026-11-03
+Section: Simulation tick and threading > What happens when a tick fails or overloads?
+lanes, sleeping and interest rejection reduce work. Phased rejection retains activity; newly included blocks wake once without catch-up. SerialInPlace ignores the region. Transition, capacity and failed-world semantics are in [interest-region behavior](../systems/world-storage-and-interest-region.md). No general strict/gameplay switch, fidelity hysteresis or command-pressure policy exists. **Approved:** future adaptation must preserve explicit ownership, local collision and conservation, and report its policy. [ADR-008](../decisions/ADR-008-bounded-approximate-fidelity.md) records that intent. Actual platform execution evidence is in the [validation ledger](../reference/validation-evidence.md).
+
+
+### Rank 2: architecture/data-ownership-and-lifetimes.md — Data ownership and lifetimes > Failed-world ownership and recovery
+
+Document: Data ownership and lifetimes
+Path: architecture/data-ownership-and-lifetimes.md
+document-kind: contract
+status: Current
+scope: Current resource owners, mutation windows, publication retirement and allocation limits; proposed resources are explicitly separated
+canonical-for: [resource-ownership-and-lifetimes]
+last-reviewed: 2026-10-25
+Section: Data ownership and lifetimes > Failed-world ownership and recovery
+**Current:** failure quarantines the existing World under its same exclusive owner. Workers drain before exception propagation; no background retry is spawned. Raw serialized queries see partial diagnostic state. Successful snapshot leases retain their bytes; failure cannot publish new cell/terrain/body payloads. Desktop retains the last valid snapshot in a new failure-status wrapper and keeps its owner thread available for reset. Web gates directly on its adapter fault. Main-thread Rapier stops on observed failure, without rewinding an earlier step. `clear()` or validated replacement abandons the failed world's events and state. Replacement candidates allocate/validate before ownership swap; see [failure contract](simulation-tick-and-threading.md#what-happens-when-a-tick-fails-or-overloads). Region setters are serialized owner operations that latch requested coverage, including while failed. Healthy tick entry applies transition wakes in the existing metadata pass; native pool jobs consume the resulting selection. No Godot or Rapier API is introduced in native workers. Failed ticks cannot apply a later region request; recovery abandons old activity before fresh setup.
+
+
+### Rank 3: architecture/simulation-tick-and-threading.md — Simulation tick and threading > What happens when a tick fails or overloads?
+
+Document: Simulation tick and threading
+Path: architecture/simulation-tick-and-threading.md
+document-kind: contract
+status: Current
+scope: Desktop, Web and native stage ordering, fixed quanta, failure behavior and permitted thread access
+canonical-for: [simulation-step-order-and-threading]
+last-reviewed: 2026-11-03
+Section: Simulation tick and threading > What happens when a tick fails or overloads?
+**Current, chosen for issue #1:** a thrown tick latches `World::has_failed()`. There is no transactional rollback. Tick/epoch, accepted explosion edits, dirty metadata, chunk preparation and even earlier completed phases may already have changed. `tick_index()` identifies the attempted tick; `completed_tick_index()` advances only after successful execution and activity finalization. No partial `TickStats` is returned as success. See [ADR-010](../decisions/ADR-010-failed-tick-quarantine.md). Failure clears the in-progress guard after any dispatched phase has drained. Further ticks, gameplay writes, reservations and snapshot publication are rejected. Serialized reads remain diagnostic access to partial state, not a valid save or playable continuation. The last successful immutable lease remains usable. Accepted explosions apply in enqueue order at tick entry. A completed batch drains; if application itself throws, the retained batch may include applied or partial events. Neither batch is ever automatically replayed: the world cannot be retried. An explicit `clear()` discards cells, activity, pending events, masks and tick identity, retains construction options/latest requested region, and permits fresh setup. Destruction/reconstruction is the other native recovery path. No allocation failure, capacity change or camera move implicitly recovers a world. **Current desktop:** the exclusive GDScript owner checks native false, latches failure and publishes a fresh status wrapper around its previous valid publication. It withholds partial character, cell, terrain and body results, rejects new emissions and clears pending prototype emissions. The pacing thread stays alive to receive reset; main-thread Rapier stops when the failure status is observed. This is asynchronous notification, not rollback of Rapier or character work that preceded the fault. The fallback's void successful tick path is unchanged. **Current Web:** the synchronous owner pauses, opens the menu, reports restart/load recovery, and suppresses painting, ticks, terrain/render publication and further Rapier stepping while failed. Closing the menu or toggling pause cannot retry. Rapier's preceding step is not rolled back. Reset/restart or a validated saved-level replacement creates fresh activity and clears the fault; invalid import preserves it. The adapter returns `false` with first-error telemetry, zeroes unsuccessful tick statistics, exposes attempted/completed identity separately, and does not count rejected repeat calls as new failures. Its reset prepares a candidate before swap. Godot level export rejects failed state; CYSD1 replacement is level recovery, not exact replay. Region/configuration requests may be latched while failed, but cannot wake or advance that world. Fresh setup uses the latest requested region. **Rejected for this fix:** rollback, automatic retry, resuming partial state and silent event replay. **Planned separately:** state-preserving live capacity growth and complete replay. [Dated regression evidence](../audits/2026-09-08-issue-1-failed-ticks.md) separates source tests, Windows owners and browser coverage. Eligible native transport runs each tick; fixed staggered secondary
+
+
+### Rank 4: operations/microscenario-reference-pack.md — MS-001 reference MicroScenario pack > Flood-Control Puzzle
+
+Document: MS-001 reference MicroScenario pack
+Path: operations/microscenario-reference-pack.md
+document-kind: runbook
+status: Current
+scope: Exploratory Materials Laboratory, Flood-Control Puzzle and Simulation Stress Test definitions on the shared host, with fresh-reset A/B, world-state objectives and bounded telemetry
+canonical-for: [microscenario-reference-pack, materials-laboratory-readiness, flood-control-scenario, simulation-stress-test, microscenario-workbench-controls]
+last-reviewed: 2026-09-25
+Section: MS-001 reference MicroScenario pack > Flood-Control Puzzle
+Catalogue ID `ms001/flood-control` is a compact hydraulic world with a finite reservoir, a scheduled ordinary gate removal at tick 20 and a protected generator zone. The only objective is the declared `protected-water` observation at tick 180: zero completes; any positive Water quantity fails. The untreated seed-0 control records **5,031 integer Water units** in that zone and therefore fails. Three retained acceptance witnesses preserve the exact same objective and change ordinary setup geometry only: | Witness | Physical intervention | Seed-0 protected Water at tick 180 | |---|---|---:| | `containment` | reinforce the reservoir aperture before scheduled release | 0 | | `berm` | freestanding upstream barrier across the main channel | 0 | | `diversion` | deflector plus bounded side sump routing flow away from the target | 0 | The three final native content hashes are distinct, so these are not three labels for one scripted solution state. The witnesses are test/evidence definitions, not runtime solution flags. The selectable puzzle admits ordinary paint/erase tools so a user can discover other solutions; organic edits are not silently treated as a matched benchmark input. Play, Inspect and Benchmark produce the same untreated seed-0 native content/Water state at tick 180. One-worker instrumented and four-worker observer-off runs also match. No pump, drain, flood-specific solver hook or scenario callback is added.
+
+
+### Rank 5: systems/player-control-playground.md — Player control playground > Stopped composed-session recovery
+
+Document: Player control playground
+Path: systems/player-control-playground.md
+document-kind: contract
+status: Current
+scope: Experimental movement controls and shared asynchronous desktop composition, input and lap lifetime, lifecycle and bounded native failure validation; isolated Sand and Water player fields
+canonical-for: [player-control-playground, player-movement-presets, player-material-field]
+last-reviewed: 2026-11-02
+Section: Player control playground > Stopped composed-session recovery
+**Current implementation; exact-source qualification is recorded in [PR #332](https://github.com/techrote/cybersand/pull/332):** when a composed Play session's native World fails, **Restart applied session** retires the whole failed Main scene before the replacement starts its exclusive simulation worker. The existing [`main.gd`](../../godot/scripts/main.gd) exit path disposes accepted and pending Rapier graphs and joins its exclusive simulation worker. Recovery then uses ordinary session admission, with the accepted recipe, rig, solver policy/setup, options and owner settings copied by `_queue_failed_playable_restart`. Pending selector edits, failed cells, snapshots, native pointers, commands and lap state are not recovery inputs. The replacement starts paused at simulation tick zero. Main consumes its recovery envelope once, before startup's early returns. Repeated Restart requests latch one deferred replacement. F2 and the visible **Return to launcher** action use [`FeatureNavigation`](../../godot/scripts/feature_navigation.gd) to cancel both a queued request and an envelope between old-scene exit and replacement entry. The selector's separate PopupPanel viewport forwards F2 to that same owner. Failure and reload-error text stay visible; retries require explicit input. Native failed-World quarantine and main-thread Rapier ownership are unchanged. The [dated recovery audit](../audits/2026-10-31-play-stopped-session-recovery.md) preserves the original failure and earlier local results. LIFE007 exercises all five mechanical rigs with real capacity faults, accepted/pending graph disposal, stale-command refusal and fresh paused owners. LIFE008 covers three navigation orderings, including the no-current-scene boundary. The injected construction limit is removed before replacement; this is not a remedy for a persistently invalid configuration. Reload-error presentation includes a synthetic control. Resulting-head Linux/Windows, complete native and actual-backend shader gates remain source-specific; physical devices, OS focus, display cadence and human feel require separate acceptance. Downstream PACE004 #334 is a separate task.
+
+## Q07: Are we using Rapier or Godot physics, which version, and who advances it?
+
+Canonical rank: 1
+
+Expected facts:
+
+- Rapier2D 0.35.2 single precision is the selected backend.
+- The main Godot thread manually steps Rapier; workers receive values, not live physics objects.
+- Both Web profiles include Rapier by default; separate dated platform evidence is required.
+
+### Rank 1: operations/rapier-2d-migration-runbook.md — Rapier2D dependency and validation runbook > Web packaging and browser fixture
+
+Document: Rapier2D dependency and validation runbook
+Path: operations/rapier-2d-migration-runbook.md
+document-kind: guide
+status: Current
+scope: Current pinned backend verification and change procedure; migration history and coupling semantics are linked separately
+canonical-for: [rapier-dependency-validation, rapier-packaging]
+last-reviewed: 2026-10-24
+Section: Rapier2D dependency and validation runbook > Web packaging and browser fixture
+Both default compatibility and optional threaded exports include Rapier and Physics Pit after a real manual-step/CCD capability probe. The [builder](../../tools/build_web.py) verifies selected WASM hashes before staging and after export; the lock is their canonical home. Exported files include `godot_rapier.wasm`, `RAPIER_LICENSE.txt` and `RAPIER_THIRDPARTY.txt`. `--cellular-only` remains an explicit diagnostic path. Build/serve the selected profile using [Web threading](web-threading.md), then open a fresh URL with `?test=1&rapier=1`. Read `rapier_test` in the opt-in `cybersand-test-state` DOM node or the `WEB_RAPIER_TEST` console record. The fixture temporarily owns the test scene and returns to Neon Works; normal play URLs do not run it. Native headless execution of this scene does not establish Web WASM execution. Capture browser version, export hashes, profile/worker count and console.
+
+
+### Rank 2: decisions/ADR-009-rapier-2d-rigid-body-backend.md — ADR-009: Rapier2D rigid-body backend > Why choose an explicit adapter owner?
+
+Document: ADR-009 — Rapier2D rigid-body backend
+Path: decisions/ADR-009-rapier-2d-rigid-body-backend.md
+document-kind: decision
+status: Current
+scope: Accepted Rapier backend/version selection, manual owner and remaining platform/physics/replay work
+canonical-for: [decision-rapier2d-backend]
+last-reviewed: 2026-10-24
+Section: ADR-009: Rapier2D rigid-body backend > Why choose an explicit adapter owner?
+The earlier proof applied delayed cellular results through scene properties. Direct PhysicsServer state avoids treating cached presentation transforms as physics truth. Manual stepping, batch active transforms and a controlled query flush make the integration order inspectable. Stable value samples preserve backend independence and keep live RIDs off cellular workers. The [threading contract](../architecture/simulation-tick-and-threading.md) owns exact desktop/Web order. Desktop coupling is asynchronous; Web sequences both solvers on the main thread. Fully asynchronous Web ownership is **Deferred**. Neither path proves complete coupled replay merely by using a dependency advertised as deterministic.
+
+
+### Rank 3: architecture/simulation-tick-and-threading.md — Simulation tick and threading > Current Web owner: body, player and cellular update order
+
+Document: Simulation tick and threading
+Path: architecture/simulation-tick-and-threading.md
+document-kind: contract
+status: Current
+scope: Desktop, Web and native stage ordering, fixed quanta, failure behavior and permitted thread access
+canonical-for: [simulation-step-order-and-threading]
+last-reviewed: 2026-11-03
+Section: Simulation tick and threading > Current Web owner: body, player and cellular update order
+Source: [web_demo_controller `_physics_process`](../../godot/scripts/web_demo_controller.gd). 1. Return when unavailable, the menu is open or focus is lost. Set the current simulation window and allow armed painting before the pause guard. 2. Return if paused. If Rapier is active, also return while hard-terrain packets remain pending; this gates both solvers and the character. 3. Apply preceding cellular results, step Rapier, pack body state and prepare the native body mask. Without Rapier, prepare an empty mask. 4. Complete one native cellular tick. On success advance the sampled character by `1/60` second. On failure pause, open the menu and report the error. Web's callback waits for all native jobs. `_process` consumes terrain work and publishes display data at a separate cadence; a slow cellular tick can still block rendering. **Deferred:** fully asynchronous Web ownership. Desktop advances the character **before** cells; Web advances it **after** cells. Desktop does not share Web's continuous pending-terrain gate; its new articulated owners have the one-time installation fence described above. These schedules are not an equivalence guarantee; a common production order remains undecided.
+
+
+### Rank 4: systems/actor-control-prototypes.md — SetA actor controls and legacy policy compatibility > Who owns actor state and collision?
+
+Document: SetA actor controls and legacy policy compatibility
+Path: systems/actor-control-prototypes.md
+document-kind: contract
+status: Current
+scope: Original SetA Runner, Skimmer and Crawler motors and version-1 policy compatibility; the actor-rigs contract owns additional sets and version-2 actions
+canonical-for: [actor-control-prototypes, actor-policy-input-v1]
+last-reviewed: 2026-10-18
+Section: SetA actor controls and legacy policy compatibility > Who owns actor state and collision?
+**Current:** the desktop simulation worker owns the prototype actors and advances their movement alongside the sampled-player stage, outside internal native jobs. The main thread owns keyboard/UI input and drawing. It sends copied value commands and consumes copied actor publications; it never reads a live worker actor or calls World queries for a policy. Each model uses the existing sampled character's **8 by 14 cell** rectangle. Movement checks bounded increments against current material-aware support and body occupancy under the same exclusive World owner. The prototype does not create a scene-tree physics node or native job per actor. Rapier objects stay on the main thread and retain their existing generic coupling contract. Runtime enclosure is distinct from spawn validation. A prototype may be immobilized by material entering its occupied space; movement rules must not silently relocate it through terrain. Explicit reset/spawn recovery is a separate bounded operation. The existing ordinary sampled-player recovery behavior still belongs to [PCHAR and the granular policy](granular-interaction-policy.md). Crawler clamber requires clearance throughout its admitted vertical path and a supported destination. A free endpoint alone is insufficient: a low ceiling or intervening obstruction must reject the traversal. The fixed maximum clamber height bounds the candidate search and preserves a clear limit to that mechanic.
+
+
+### Rank 5: architecture/simulation-tick-and-threading.md — Simulation tick and threading > Physical actor scheduling
+
+Document: Simulation tick and threading
+Path: architecture/simulation-tick-and-threading.md
+document-kind: contract
+status: Current
+scope: Desktop, Web and native stage ordering, fixed quanta, failure behavior and permitted thread access
+canonical-for: [simulation-step-order-and-threading]
+last-reviewed: 2026-11-03
+Section: Simulation tick and threading > Physical actor scheduling
+**Current ACT-004/ACT-005 desktop:** live bodies, joints and [`CyberPhysicalActorSession`](../../godot/scripts/physical_actor_session.gd) stay on the main thread. The owner installs a complete physical assembly with a new epoch for the selected reset. The sandbox can create it while reset is pending; scenario installation waits for acknowledgement. Before its first step, the host requires the matching reset acknowledgement and actor epoch, the current hard-terrain revision and an empty collider-installation queue. An early Play request cannot release this initial terrain fence. Subsequent terrain changes keep the desktop's existing bounded asynchronous installation. The worker binds retained geometry to its physical epoch, refreshes full/reset publications and invalidates the cache when replacing a scenario. Equal revision numbers in different worlds do not authorize reuse of the previous geometry. The physics callback admits permitted input, applies matching cellular feedback, advances bounded actor actuation, manually steps Rapier, reads the resulting parts and publishes their copied states with drained usable requests. Equipment poses, muzzle directions, generations and body states enter the worker together through `set_physical_usable_state`; the worker never obtains a Rapier object. Demo decisions run every six physical ticks from copied actor views collected before any demo output is submitted. The internal [4LY flight profile](../systems/physical-free-flight.md) reuses this main-thread owner and requires a 1/60-second actuation step. Its pure controller produces bounded force/torque from own velocity/attitude before the shared Rapier step. The rig owns a constant-force/torque channel for that one integration; `Session.complete_step` calls `Rig.complete_step` to clear the channel after Rapier advances. Cancellation clears unconsumed force immediately. Copied post-step motion and completed-step history remain distinct from a prepared actuator request/receipt. A session containing 4LY binds preparation/completion to the bridge's actual manual-step counter: duplicate preparation or no-step completion is refused, and unexpected physical steps produce a sticky session fault requiring replacement. Cancellation after physics preserves the original completed receipt even if producer ownership changes before accounting. The initial 4LY demo emits neutral conformance requests at the existing six-tick decision cadence. Invalid cadence, cancellation or expiry removes actuation authority, rather than clamping a different step into the flight contract. No new cellular worker, body solver or independent world clock is introduced. The desktop worker prepares the native body mask before consuming copied usable effects under exclusive cellular ownership. ACT-005 validates the captured physical source against the current equipment identity, lease and native body mask, charges source/part-mask queries against the usable work budget, and applies tools, projectile sweeps or fixed processor work before the material tick. It then advances materials when unpaused and publishes usable readback, request receipts and body responses with the actor epoch. Matching accepted, consumed
+
+## Q08: When a crate moves across sand, do we erase its old pixels and put them back?
+
+Canonical rank: 2
+
+Expected facts:
+
+- No: the rectangle proof builds a separate sampled obstacle projection.
+- Movable overlap cells use bounded ordered ejection; unresolved cells remain and are counted.
+- General fracture and particle fallback are not Current.
+
+### Rank 1: decisions/ADR-007-rigid-body-cellular-coupling.md — ADR-007: Separate rigid-body occupancy coupling > Why not remove and restore body pixels?
+
+Document: ADR-007 — Separate rigid-body occupancy coupling
+Path: decisions/ADR-007-rigid-body-cellular-coupling.md
+document-kind: decision
+status: Current
+scope: Accepted independent body representation and value-data coupling; rectangle proof is not generalized physics
+canonical-for: [decision-separate-rigid-body-occupancy]
+last-reviewed: 2026-09-09
+Section: ADR-007: Separate rigid-body occupancy coupling > Why not remove and restore body pixels?
+Temporarily erasing a crate's old pixels while simulating sand would expose false Empty space. Restoring its transformed pixels cannot undo all movement through that space and leaves overwriting ambiguous. Separate occupancy lets cellular rules see a stable body without transferring ownership of its material or physics state. A mask alone is insufficient for the complete interaction: material impacts, displacement and approximate pressure must also affect the body. Ordered observations make that feedback explicit and testable without workers calling PhysicsServer2D. Hard terrain contact is solved by Rapier rather than duplicated by delayed cellular correction.
+
+
+### Rank 2: architecture/rigid-body-and-cellular-coupling.md — Rigid-body and cellular coupling > When a crate moves through sand, are its pixels erased and restored?
+
+Document: Rigid-body and cellular coupling
+Path: architecture/rigid-body-and-cellular-coupling.md
+document-kind: contract
+status: Current
+scope: Rectangle occupancy, bounded displacement/impulses and Rapier hard contact, plus an opt-in detached-aggregate Sand constraint; generalized physics and exact replay remain absent
+canonical-for: [rigid-body-cellular-coupling]
+last-reviewed: 2026-11-04
+Section: Rigid-body and cellular coupling > When a crate moves through sand, are its pixels erased and restored?
+**Current:** native World owns cellular materials; Rapier2D owns independent rigid bodies. Bodies are never erased from/restored into the material array. `CyberNativeCellWorld` projects copied rectangles into a separate transient body-ID field. Sand, liquids, Smoke, painting and the sampled character read that endpoint field as occupied. The retained three 8×14 reference bodies are drawn through shader transforms. ACT-004 instead draws each articulated part from its actual collider and copied Rapier transform; body colour is not stored in the cell texture. Moved-body overlap is resolved by bounded material ejection; if no destination fits, the material stays in place and unresolved overlap is counted. The body receives bounded reaction observations instead of silently deleting trapped sand. [CyberRapierPhysicsBridge](../../godot/scripts/rapier_physics_bridge.gd) owns live Nodes/RIDs and manual stepping on the main thread. The native adapter receives values only. Desktop samples asynchronously; Web sequences both solvers and waits behind pending terrain colliders. Exact controller order belongs in [threading](simulation-tick-and-threading.md), not a universal coupling schedule.
+
+
+### Rank 3: systems/player-control-playground.md — Player control playground > Native Sand cloud and Water blob ownership
+
+Document: Player control playground
+Path: systems/player-control-playground.md
+document-kind: contract
+status: Current
+scope: Experimental movement controls and shared asynchronous desktop composition, input and lap lifetime, lifecycle and bounded native failure validation; isolated Sand and Water player fields
+canonical-for: [player-control-playground, player-movement-presets, player-material-field]
+last-reviewed: 2026-11-02
+Section: Player control playground > Native Sand cloud and Water blob ownership
+The [playground runtime](../../godot/scripts/player_playground_runtime.gd) exclusively owns one synchronous native World for a material preset. Setup seeds 256 Sand or Water cells. Each admitted step applies the native field before the ordinary material tick; normal kernels still own gravity, Water flow and reactions. Mechanical presets instead use the existing synchronous physical arena and its main-thread Rapier session. Neither lane borrows the asynchronous sandbox worker's World. `World::apply_player_material_field` moves complete stored cells through `relocate_stored_cell`, preserving compact state, temperature and exact partial Water quantity within that call. It does not erase/repaint the cloud, create per-cell physics bodies, or introduce a Water pressure/flow rule. The next normal tick can redistribute Water and apply ordinary interactions. A field therefore does not promise conservation across unrelated chemistry or authoring actions. Selection is **matching material within a local radius**, not a persistent collection of owned particles. Nearby environmental Sand/Water can join; material that leaves the field is no longer controlled. The field follows the returned quantity-weighted material centroid with a bounded centre adjustment. WASD moves material rather than a remote selection cursor. The visible ring shows this local selection boundary. The native call scans at most 4,225 candidate positions within a radius-32 selection, captures at most 512 source parcels once, and attempts at most four axis-adjacent moves per parcel. Stable ordering and phase-based scan rotation prevent repeated source processing. Occupied cells, hard terrain, transient bodies, world bounds and unavailable destination storage stop a step. No occupied cell is overwritten. Invalid commands and failed/in-tick Worlds are refused before mutation. Exact API, receipt and limits are in [interfaces](../reference/interfaces-and-message-contracts.md#player-material-field-control) and [configuration](../reference/configuration-reference.md#player-playground-values).
+
+
+### Rank 4: research/sandspiel-performance-and-material-port.md — Sandspiel performance study and material port ledger > Historical upstream study
+
+Document: Sandspiel performance study and material port ledger
+Path: research/sandspiel-performance-and-material-port.md
+document-kind: reference
+status: Current
+scope: Current CyberSand adaptation inventory plus explicitly historical upstream study and hosted performance observations
+canonical-for: [sandspiel-attribution-and-port-status, imported-material-ids]
+last-reviewed: 2026-09-08
+Section: Sandspiel performance study and material port ledger > Historical upstream study
+The recorded study covered `crate/src/lib.rs`, `species.rs`, `utils.rs`, `Cargo.toml`, `js/render.js`, `js/fluid.js`, `js/glsl/sand.glsl`, license, and the development article. Retained primary references are [Making Sandspiel](https://maxbittker.com/making-sandspiel/), [pinned rules](https://github.com/MaxBittker/sandspiel/blob/dc77827b36adc5c04ea063515de4173ce28dbf2c/crate/src/species.rs), [pinned state/scan](https://github.com/MaxBittker/sandspiel/blob/dc77827b36adc5c04ea063515de4173ce28dbf2c/crate/src/lib.rs), and [pinned release settings](https://github.com/MaxBittker/sandspiel/blob/dc77827b36adc5c04ea063515de4173ce28dbf2c/crate/Cargo.toml). The study reported compact four-byte dense cells, native Rust/WASM rules with radius-two access, one-byte update clocks, optimization level 3/LTO/ `wasm-opt -O4`, and typed-array texture upload from WASM memory. It also described a 300×300 (90,000-cell) serial dense scan. These observations motivated compact native state and bulk rendering; they do not prove large sparse-world scalability. The recorded WebGL field pipeline used advection, curl/vorticity, divergence, pressure iterations and gradient subtraction, with cell/burn upload and velocity readback (pixel buffer/fence when available). CyberSand has not adopted this feedback as terrain authority. The supplied historical Noita comparison mentioned 64×64 dirty regions and a four-phase cross/checker pattern, but recorded no exact primary source. Treat that as design context, not independently verified Noita implementation evidence.
+
+
+### Rank 5: systems/solid-detachment.md — Native structural detachment > Conservative displacement and the GCR interface
+
+Document: Native structural detachment, conservative displacement and experimental Sand resistance
+Path: systems/solid-detachment.md
+document-kind: contract
+status: Current
+scope: Opt-in single native aggregate, conservative Sand/Water displacement, exact contact observations and separately enabled supported-Sand resistance; draft implementation, not full issue acceptance
+canonical-for: [native-structural-detachment-runtime, conservative-detachment-displacement, detachment-sand-contact-experiment]
+last-reviewed: 2026-11-04
+Section: Native structural detachment > Conservative displacement and the GCR interface
+The strict policy is selected only by diagnostic setup `conservative_displacement=true`; the detachment session selects it by default. It replaces **all** ejection attempts in that session. It never falls back to the permissive ordinary direct relocation. The ordinary body interface remains 11 input / 9 result floats, so GCR need not change its packed protocol. [`conservative_displacement_adapter.inc`](../../godot/native_extension/conservative_displacement_adapter.inc) validates a contact normal, ownership, full cell-square geometry and a bounded vacancy route. [`World::conservative_displace_cells`](../../native/src/world_conservative_displacement.inc) revalidates tick, optional active aggregate lease, every expected tuple, masks, residency, inclusion, policy and thermal capacity before changing any cell. | Rule | Implemented bound / refusal | |---|---| | Path | Two to five distinct positions, at most four cardinal one-cell parcel moves; no cycles. | | Search | Deterministic breadth-first depth four using fixed 81-site scratch; no wider ejection-radius tuning. | | Direction | Each edge has nonnegative projection on the outward normal; the complete path has positive outward progress. | | Parcels | Ambient Sand or ordinary FreeMass Water; no pressure/inertial sidecars, gas, reactive or unsupported material. | | Destination | Full closed unit square has more than `1e-6` cell separation from every current oriented proxy rectangle, and no transient swept/body mask. Exact touch and ambiguous geometry refuse. | | Source | Exact source mask ownership; overlap with a foreign body's square geometry refuses even when first-writer mask sampling hides it. Sibling shapes of the active aggregate share physical ownership. | | Terminal | Canonical ambient Empty, without hidden state or temperature to overwrite. | | Per sample | At most 64 search attempts and 320 touched-coordinate slots. Every source, intermediate and terminal of an accepted path is reserved across repeated preparations of that sample. | | Commit | Shift the vacancy backwards through ordinary `move_cell`, preserving each parcel's material, semantic state and temperature and all dirty/activity/discovery bookkeeping. Scheduling epochs update normally. | There is no allocation in search or admitted chain commit. Resident chunks and any needed thermal fields are preflighted. Expected refusals change no payload. An unexpected commit exception quarantines the World and reports actual partial progress; it is not safe to retry it as an ordinary refusal. **Baseline force/torque ownership (`sand_resistance=false`):** detachment supplies geometry and an ownership lease. The existing cellular coupling supplies exactly one ordinary contact reaction, not one reaction per shifted parcel. The shared Rapier bridge reduces the proxy results to one bounded aggregate correction and applies each existing impulse at its rotated proxy centre, preserving attributable off-centre torque. Duplicate, mixed, incomplete or stale samples refuse before Rapier mutation. Age scaling, correction age
+
+## Q09: What prevents terrain contacts and sand coupling from pushing a body twice?
+
+Canonical rank: 1
+
+Expected facts:
+
+- Rapier owns hard-terrain contacts in the current adapter.
+- The Rapier path suppresses duplicate cellular Wall correction/support; capped cellular impact, pressure and displacement contributions remain.
+- Generalized backend-neutral coupling contracts are separate from this rectangle proof.
+
+### Rank 1: architecture/rigid-body-and-cellular-coupling.md — Rigid-body and cellular coupling > Who resolves hard terrain and thin floors?
+
+Document: Rigid-body and cellular coupling
+Path: architecture/rigid-body-and-cellular-coupling.md
+document-kind: contract
+status: Current
+scope: Rectangle occupancy, bounded displacement/impulses and Rapier hard contact, plus an opt-in detached-aggregate Sand constraint; generalized physics and exact replay remain absent
+canonical-for: [rigid-body-cellular-coupling]
+last-reviewed: 2026-11-04
+Section: Rigid-body and cellular coupling > Who resolves hard terrain and thin floors?
+**Current:** hard-surface pixels, including construction materials, are merged into static Rapier rectangle shapes. Cellular hard-contact correction/support is disabled to avoid double-solving delayed contacts. The demo bodies already have cast-shape CCD enabled and zero restitution; see [body configuration](../../godot/main.tscn). A future adaptive CCD/substep controller is a separate **Planned** feature. Hard-terrain extraction creates 64×64 packets: 256 units for the 1024² demo. The consumer checks a 32-chunk/750-microsecond soft rebuild budget between units. The preceding native `get_hard_surface_chunk_rectangles` extraction is outside that budget, and one indivisible changed chunk may exceed it. This is bounded consumer granularity, not an end-to-end frame-time guarantee. Source: [native extraction](../../godot/native_extension/cyber_native_cell_world.cpp), [Rapier `process_hard_surface_collider_budget`](../../godot/scripts/rapier_physics_bridge.gd).
+
+
+### Rank 2: systems/solid-detachment.md — Native structural detachment > Conservative displacement and the GCR interface
+
+Document: Native structural detachment, conservative displacement and experimental Sand resistance
+Path: systems/solid-detachment.md
+document-kind: contract
+status: Current
+scope: Opt-in single native aggregate, conservative Sand/Water displacement, exact contact observations and separately enabled supported-Sand resistance; draft implementation, not full issue acceptance
+canonical-for: [native-structural-detachment-runtime, conservative-detachment-displacement, detachment-sand-contact-experiment]
+last-reviewed: 2026-11-04
+Section: Native structural detachment > Conservative displacement and the GCR interface
+and opposing-velocity handling use the ordinary bridge policy. Conservative displacement introduces no friction, bearing gain or yielding law. Ordinary GCR retains its normal response, friction and granular yielding policy. The independently enabled experiment below adds a supported-Sand normal constraint for this aggregate only; it does not import or promote Y1 #343. Accepted GCR integration needs its own combined-source qualification. Exact material accounting does **not** establish calibrated momentum/energy conservation. This bounded corrective rearrangement is not a bulk granular solver. Fully buried contacts without a nearby admissible vacancy remain unresolved, retain all material, and use the existing contact response. The dedicated worker refuses native-only reset/scenario replacement for its entire session. Reset joins that worker and retires the Rapier body together. A copied native failure latches the session stopped, including mask priming and held-tick waits; unpause cannot bypass the latch. An unexpected native chain quarantine stops preparation before further mask mutation or force publication. Compound feedback admits only forward modular sample identities, preventing a nonconsecutive replay from applying an impulse twice.
+
+
+### Rank 3: architecture/rigid-body-and-cellular-coupling.md — Rigid-body and cellular coupling > What are the current numerical bounds and units?
+
+Document: Rigid-body and cellular coupling
+Path: architecture/rigid-body-and-cellular-coupling.md
+document-kind: contract
+status: Current
+scope: Rectangle occupancy, bounded displacement/impulses and Rapier hard contact, plus an opt-in detached-aggregate Sand constraint; generalized physics and exact replay remain absent
+canonical-for: [rigid-body-cellular-coupling]
+last-reviewed: 2026-11-04
+Section: Rigid-body and cellular coupling > What are the current numerical bounds and units?
+Body centres/sizes/corrections use cell/pixel coordinates; rotation is radians, linear velocity is pixels per second, angular velocity is radians per second. Mass and returned central impulses use the Godot physics adapter's quantities; there is no approved production SI calibration or generalized force/torque unit contract. Packed fields are documented in [interfaces](../reference/interfaces-and-message-contracts.md). | Operation | Current bound or response | |---|---| | Translation sweep | More than 32 pixels between samples is treated as a teleport: endpoint only | | Sweep sampling | Approximately one-cell spacing, capped at 24 intervals/25 samples; interpolates centre, shortest rotation and size | | Endpoint overlap | Search outward from nearest face and along its tangent, at most eight cells; the bounded half-cell path may not cross hard terrain or another body's transient mask | | Swept-only overlap | Prefer ejection in body-travel direction; rotational response remains approximate | | No valid destination | Retain the complete stored cell payload and report unresolved overlap plus reaction; no particle fallback or silent deletion | | Granular bearing | Exposed downward body cells query the version-1 granular support predicate against stored material; response is recomputed each accepted sample, capped at 20 impulse units and uses at most 0.5-cell low-speed correction | | Native impulse | Contact/displacement/density pressure terms retain the ordinary cap; the bounded bearing term shares the cellular coupling owner rather than becoming a second collider/solver | | Stale results | Reject age above eight body samples; suppress correction above one; scale impulse by `1/(1+0.25*age)` | Ejection transfers the compact cell state including Water mass. Pure closed Water conservation does not establish general body/cell energy conservation. Duplicate sample serials are not applied twice. Sample wrap and age constants are in [Rapier `apply_cellular_results`](../../godot/scripts/rapier_physics_bridge.gd). The internal [4LY free-flight chassis](../systems/physical-free-flight.md) reuses this same rectangle publication and cellular response. Its authored propulsion force cap is separate from the native impulse cap above. Raising a flight thrust limit does not repair or requalify body/material coupling. Flight receipts report only their own applied assistance; they cannot decompose Rapier contact, passive damping or delayed cellular impulses into a claimed total-force measurement.
+
+
+### Rank 4: systems/physical-free-flight.md — 4LY physical free-flight and assisted velocity control > Who owns the chassis, contacts and equipment?
+
+Document: 4LY physical free-flight and assisted velocity control
+Path: systems/physical-free-flight.md
+document-kind: contract
+status: Current
+scope: Shared single-chassis flight plant, strict two-output control, four 4LY-002 handling candidates and ordinary-game selection; measured calibration and downstream flight lab/policy qualification are separate
+canonical-for: [physical-free-flight, 4ly-programme, 4ly-assisted-velocity-control]
+last-reviewed: 2026-10-23
+Section: 4LY physical free-flight and assisted velocity control > Who owns the chassis, contacts and equipment?
+The shared [rig](../../godot/scripts/physical_actor_rig.gd) creates one actual rectangular `RigidBody2D` with authored mass/inertia, gravity, passive drag and real contacts. There are no rotor bodies, payload joints, mounts or mandatory equipment. The explicit empty loadout and no-equipment preparation path prevent ACT-005 from silently adding its usual held chassis. An empty usable selection on a legacy actor remains a different contract: it can still retain its physical equipment chassis. The existing main-thread [session](../../godot/scripts/physical_actor_session.gd) and [Rapier bridge](../../godot/scripts/rapier_physics_bridge.gd) retain live-body ownership, manual stepping, copied rectangular body publication and native material coupling. Graphics use the same collider dimensions and published physical transform. There are no per-cell physics bodies, transform-driven locomotion, position snaps, direct velocity assignments, erased contacts or ground-clearance forces. Free flight does not depend on a supporting surface. The [generic coupling contract](../architecture/rigid-body-and-cellular-coupling.md) still owns occupancy, hard-terrain contact, bounded native material response and their known limits. 4LY neither changes Water behavior nor closes generic-body, granular or soliding acceptance.
+
+
+### Rank 5: architecture/rigid-body-and-cellular-coupling.md — Rigid-body and cellular coupling > When a crate moves through sand, are its pixels erased and restored?
+
+Document: Rigid-body and cellular coupling
+Path: architecture/rigid-body-and-cellular-coupling.md
+document-kind: contract
+status: Current
+scope: Rectangle occupancy, bounded displacement/impulses and Rapier hard contact, plus an opt-in detached-aggregate Sand constraint; generalized physics and exact replay remain absent
+canonical-for: [rigid-body-cellular-coupling]
+last-reviewed: 2026-11-04
+Section: Rigid-body and cellular coupling > When a crate moves through sand, are its pixels erased and restored?
+**Current:** native World owns cellular materials; Rapier2D owns independent rigid bodies. Bodies are never erased from/restored into the material array. `CyberNativeCellWorld` projects copied rectangles into a separate transient body-ID field. Sand, liquids, Smoke, painting and the sampled character read that endpoint field as occupied. The retained three 8×14 reference bodies are drawn through shader transforms. ACT-004 instead draws each articulated part from its actual collider and copied Rapier transform; body colour is not stored in the cell texture. Moved-body overlap is resolved by bounded material ejection; if no destination fits, the material stays in place and unresolved overlap is counted. The body receives bounded reaction observations instead of silently deleting trapped sand. [CyberRapierPhysicsBridge](../../godot/scripts/rapier_physics_bridge.gd) owns live Nodes/RIDs and manual stepping on the main thread. The native adapter receives values only. Desktop samples asynchronously; Web sequences both solvers and waits behind pending terrain colliders. Exact controller order belongs in [threading](simulation-tick-and-threading.md), not a universal coupling schedule.
+
+## Q10: What exactly crosses the rigid body bridge, and how many bodies can it handle?
+
+Canonical rank: 2
+
+Expected facts:
+
+- The prototype packed float32 input/result strides are 11 and 9, with at most 64 accepted bodies after ACT-004; every admitted field is finite and body IDs are exact integers 1 through 64.
+- Values carry body/sample identity and numeric rectangle state/results; no Node, RID or live direct state crosses.
+- This is a prototype layout, not the approved generalized native ABI.
+
+### Rank 1: decisions/ADR-007-rigid-body-cellular-coupling.md — ADR-007: Separate rigid-body occupancy coupling > Decision and implementation status
+
+Document: ADR-007 — Separate rigid-body occupancy coupling
+Path: decisions/ADR-007-rigid-body-cellular-coupling.md
+document-kind: decision
+status: Current
+scope: Accepted independent body representation and value-data coupling; rectangle proof is not generalized physics
+canonical-for: [decision-separate-rigid-body-occupancy]
+last-reviewed: 2026-09-09
+Section: ADR-007: Separate rigid-body occupancy coupling > Decision and implementation status
+**Approved and Current for rectangles:** independent rigid bodies project a separate stable obstacle mask into cellular work. Materials remain in their own authoritative grid. Only packed value samples/results cross the worker boundary; live physics objects stay with the main-thread adapter. Moved-body overlap has an explicit bounded reconciliation outcome. Current implementation sources are [native coupling](../../godot/native_extension/cyber_native_cell_world.cpp) and [Rapier bridge](../../godot/scripts/rapier_physics_bridge.gd). Exact geometry, sweep/impulse bounds and numerical limits belong in the [coupling contract](../architecture/rigid-body-and-cellular-coupling.md). **Planned:** generalized shapes, torque, fracture membership and particle fallback.
+
+
+### Rank 2: architecture/rigid-body-and-cellular-coupling.md — Rigid-body and cellular coupling > When a crate moves through sand, are its pixels erased and restored?
+
+Document: Rigid-body and cellular coupling
+Path: architecture/rigid-body-and-cellular-coupling.md
+document-kind: contract
+status: Current
+scope: Rectangle occupancy, bounded displacement/impulses and Rapier hard contact, plus an opt-in detached-aggregate Sand constraint; generalized physics and exact replay remain absent
+canonical-for: [rigid-body-cellular-coupling]
+last-reviewed: 2026-11-04
+Section: Rigid-body and cellular coupling > When a crate moves through sand, are its pixels erased and restored?
+**Current:** native World owns cellular materials; Rapier2D owns independent rigid bodies. Bodies are never erased from/restored into the material array. `CyberNativeCellWorld` projects copied rectangles into a separate transient body-ID field. Sand, liquids, Smoke, painting and the sampled character read that endpoint field as occupied. The retained three 8×14 reference bodies are drawn through shader transforms. ACT-004 instead draws each articulated part from its actual collider and copied Rapier transform; body colour is not stored in the cell texture. Moved-body overlap is resolved by bounded material ejection; if no destination fits, the material stays in place and unresolved overlap is counted. The body receives bounded reaction observations instead of silently deleting trapped sand. [CyberRapierPhysicsBridge](../../godot/scripts/rapier_physics_bridge.gd) owns live Nodes/RIDs and manual stepping on the main thread. The native adapter receives values only. Desktop samples asynchronously; Web sequences both solvers and waits behind pending terrain colliders. Exact controller order belongs in [threading](simulation-tick-and-threading.md), not a universal coupling schedule.
+
+
+### Rank 3: reference/interfaces-and-message-contracts.md — Interfaces and message contracts > What crosses the rigid-body bridge, and which limits apply?
+
+Document: Interfaces and message contracts
+Path: reference/interfaces-and-message-contracts.md
+document-kind: contract
+status: Current
+scope: Current C ABI, procedural-generation C++/Godot surfaces and private packed layouts; proposed gameplay/reconfiguration contracts remain distinct
+canonical-for: [public-and-adapter-interface-layouts]
+last-reviewed: 2026-10-25
+Section: Interfaces and message contracts > What crosses the rigid-body bridge, and which limits apply?
+**Current private adapter format:** `PackedFloat32Array`, not a versioned C ABI. Source: [rigid_body_coupling.gd](../../godot/scripts/rigid_body_coupling.gd), [native parser/results](../../godot/native_extension/cyber_native_cell_world.cpp). Offsets below are float indices within each record. | Input stride 11 | Field | Result stride 9 | Field | |---|---|---|---| | 0 | Body ID | 0 | Body ID | | 1–2 | Centre x/y | 1–2 | Central impulse x/y | | 3 | Rotation | 3–4 | Positional correction x/y | | 4–5 | Full rectangle size x/y | 5 | Contact count | | 6–7 | Linear velocity x/y | 6 | Displaced-cell count | | 8 | Angular velocity | 7 | Unresolved-cell count | | 9 | Mass | 8 | Sample serial | | 10 | Sample serial | — | — | Positions/sizes/corrections use pixels/cells, rotation radians, velocities pixels/second and radians/second. Mass/impulse use the Godot adapter's quantities; production physical-unit calibration remains unresolved. IDs/counts/serials travel as floats. ACT-004 parsing considers at most 64 complete records, accepts integer IDs 1–64 and integer sample serials 0–16,777,215, rejects any nonfinite field or nonpositive size/mass, ignores trailing partial records and retains the first duplicate. Accepted full sizes clamp to at least one cell and mass to 0.001. The same finite-record predicate is used by the fallback and bridge. The physical session rejects a complete assembly beyond capacity before spawning. SetP circular wheels supply their diameter as a circumscribed square in this unchanged rectangle layout. Rapier hard contact and graphics use circles; native masks and displacement retain the explicit conservative approximation. General contours and cellular torque feedback remain Planned; these private packed records are not an unrestricted public network protocol. Numerical response and sample-age policy belong in [coupling](../architecture/rigid-body-and-cellular-coupling.md).
+
+
+### Rank 4: architecture/rigid-body-and-cellular-coupling.md — Rigid-body and cellular coupling > Who resolves hard terrain and thin floors?
+
+Document: Rigid-body and cellular coupling
+Path: architecture/rigid-body-and-cellular-coupling.md
+document-kind: contract
+status: Current
+scope: Rectangle occupancy, bounded displacement/impulses and Rapier hard contact, plus an opt-in detached-aggregate Sand constraint; generalized physics and exact replay remain absent
+canonical-for: [rigid-body-cellular-coupling]
+last-reviewed: 2026-11-04
+Section: Rigid-body and cellular coupling > Who resolves hard terrain and thin floors?
+**Current:** hard-surface pixels, including construction materials, are merged into static Rapier rectangle shapes. Cellular hard-contact correction/support is disabled to avoid double-solving delayed contacts. The demo bodies already have cast-shape CCD enabled and zero restitution; see [body configuration](../../godot/main.tscn). A future adaptive CCD/substep controller is a separate **Planned** feature. Hard-terrain extraction creates 64×64 packets: 256 units for the 1024² demo. The consumer checks a 32-chunk/750-microsecond soft rebuild budget between units. The preceding native `get_hard_surface_chunk_rectangles` extraction is outside that budget, and one indivisible changed chunk may exceed it. This is bounded consumer granularity, not an end-to-end frame-time guarantee. Source: [native extraction](../../godot/native_extension/cyber_native_cell_world.cpp), [Rapier `process_hard_surface_collider_budget`](../../godot/scripts/rapier_physics_bridge.gd).
+
+
+### Rank 5: systems/physical-free-flight.md — 4LY physical free-flight and assisted velocity control > Who owns the chassis, contacts and equipment?
+
+Document: 4LY physical free-flight and assisted velocity control
+Path: systems/physical-free-flight.md
+document-kind: contract
+status: Current
+scope: Shared single-chassis flight plant, strict two-output control, four 4LY-002 handling candidates and ordinary-game selection; measured calibration and downstream flight lab/policy qualification are separate
+canonical-for: [physical-free-flight, 4ly-programme, 4ly-assisted-velocity-control]
+last-reviewed: 2026-10-23
+Section: 4LY physical free-flight and assisted velocity control > Who owns the chassis, contacts and equipment?
+The shared [rig](../../godot/scripts/physical_actor_rig.gd) creates one actual rectangular `RigidBody2D` with authored mass/inertia, gravity, passive drag and real contacts. There are no rotor bodies, payload joints, mounts or mandatory equipment. The explicit empty loadout and no-equipment preparation path prevent ACT-005 from silently adding its usual held chassis. An empty usable selection on a legacy actor remains a different contract: it can still retain its physical equipment chassis. The existing main-thread [session](../../godot/scripts/physical_actor_session.gd) and [Rapier bridge](../../godot/scripts/rapier_physics_bridge.gd) retain live-body ownership, manual stepping, copied rectangular body publication and native material coupling. Graphics use the same collider dimensions and published physical transform. There are no per-cell physics bodies, transform-driven locomotion, position snaps, direct velocity assignments, erased contacts or ground-clearance forces. Free flight does not depend on a supporting surface. The [generic coupling contract](../architecture/rigid-body-and-cellular-coupling.md) still owns occupancy, hard-terrain contact, bounded native material response and their known limits. 4LY neither changes Water behavior nor closes generic-body, granular or soliding acceptance.
+
+## Q11: If importing a level gives the exact same save string, will the next tick replay exactly too?
+
+Canonical rank: 1
+
+Expected facts:
+
+- No: CYSD1 reconstructs a finite level; identical re-export proves saved payload restoration only.
+- Tick/epoch, scheduler activity, complete configuration, pending commands and Rapier internal solver state are omitted.
+- A full durable exact-replay checkpoint and general strict mode remain Planned.
+
+### Rank 1: reference/level-saves-and-replay.md — Level saves and exact replay > Does an identical save reproduce the next tick?
+
+Document: Level saves and exact replay
+Path: reference/level-saves-and-replay.md
+document-kind: contract
+status: Current
+scope: CYSD1 finite-level format, ownership and omitted continuation state; accepted main LCB CYPS2 exact accounting/continuation, explicit historical CYPS1 refusal and remaining application replay gaps
+canonical-for: [cysd1-level-format, save-import-export, replay-persistence]
+last-reviewed: 2026-10-25
+Section: Level saves and exact replay > Does an identical save reproduce the next tick?
+**Current: no such guarantee.** CYSD1 restores a fixed demo level and selected metadata. Identical re-export proves equality of what the format stores. It does not prove that cells, characters or Rapier will follow the original future trajectory: tick/epoch/activity, complete simulation configuration, pending authoritative events/commands and Rapier contact caches are omitted. Complete durable replay and a selectable strict runtime policy are **Planned** implementations of the **Approved** exact-validation requirement. The native fixture hashes are also incomplete replay identities. Their precise coverage belongs to [determinism](../architecture/determinism-and-boundary-transfers.md#replay-state-coverage).
+
+
+### Rank 2: reference/level-saves-and-replay.md — Level saves and exact replay > May saving run concurrently with a tick?
+
+Document: Level saves and exact replay
+Path: reference/level-saves-and-replay.md
+document-kind: contract
+status: Current
+scope: CYSD1 finite-level format, ownership and omitted continuation state; accepted main LCB CYPS2 exact accounting/continuation, explicit historical CYPS1 refusal and remaining application replay gaps
+canonical-for: [cysd1-level-format, save-import-export, replay-persistence]
+last-reviewed: 2026-10-25
+Section: Level saves and exact replay > May saving run concurrently with a tick?
+**Current: no.** Call construction/export/import at a safe boundary with exclusive World ownership. `copy_level(World&, ...)` clears transient obstacles so temperature sampling reads stored cells. The caller must rebuild the body projection before the next cellular tick. Export is therefore not a concurrent const query, even though it does not change saved material bytes. The Web controller performs these operations on its synchronous owner. A future asynchronous save service needs an explicit capture/handoff contract; borrowing mutable World storage from a writer is **Rejected**.
+
+
+### Rank 3: reference/level-saves-and-replay.md — Level saves and exact replay > What is stored in CYSD1?
+
+Document: Level saves and exact replay
+Path: reference/level-saves-and-replay.md
+document-kind: contract
+status: Current
+scope: CYSD1 finite-level format, ownership and omitted continuation state; accepted main LCB CYPS2 exact accounting/continuation, explicit historical CYPS1 refusal and remaining application replay gaps
+canonical-for: [cysd1-level-format, save-import-export, replay-persistence]
+last-reviewed: 2026-10-25
+Section: Level saves and exact replay > What is stored in CYSD1?
+Source: [CyberDemoSaveCodec](../../godot/scripts/demo_save_codec.gd), [demo::copy_level/reconstruct](../../native/include/cybersand/demo_snapshot.hpp) and [CyberDemoBridge](../../godot/native_extension/cyber_demo_bridge.hpp). | Component | Current contract | |---|---| | World extent | Exactly 1024×1024, row-major; not arbitrary signed sparse storage | | Per-cell payload | Material ID, `state_a`, `state_b`, and signed temperature encoded as little-endian 16 bits: five bytes per cell, 5,242,880 bytes total | | Header | 56 bytes: magic `CYSD1`, format/compression flags, dimensions, metadata/raw/compressed lengths, SHA-256 digest | | Integrity | Digest covers the first 24 header bytes plus JSON metadata and compressed world bytes | | Compression/text | DEFLATE binary payload; Base64 portable text | | Limits | Metadata ≤16,384 bytes; binary ≤8 MiB; text ≤12 MiB | | Metadata | Demo ID, player position/velocity, selected material, quality, coherent emission, adhesion and glow options | | Body records | At most three Physics Pit bodies: position, angle, linear/angular velocity, sleeping flag | | Local slot | `user://web_demo_slot_1.cys`; browser storage is origin/profile dependent | The five save bytes encode logical material/state values and temperature from the optional field; they exclude the update epoch. Current authoritative cells use the [eight-byte storage carrier](../architecture/chunk-tile-and-buffer-model.md#what-is-stored-per-cell-and-per-chunk). CYSD1's five-byte save layout is separate from the in-memory `Cell` ABI.
+
+
+### Rank 4: reference/level-saves-and-replay.md — Level saves and exact replay > Can a failed world be saved or recovered?
+
+Document: Level saves and exact replay
+Path: reference/level-saves-and-replay.md
+document-kind: contract
+status: Current
+scope: CYSD1 finite-level format, ownership and omitted continuation state; accepted main LCB CYPS2 exact accounting/continuation, explicit historical CYPS1 refusal and remaining application replay gaps
+canonical-for: [cysd1-level-format, save-import-export, replay-persistence]
+last-reviewed: 2026-10-25
+Section: Level saves and exact replay > Can a failed world be saved or recovered?
+**Current:** ordinary Godot level export rejects a quarantined World; it must not label partial tick state as a valid level. Raw serialized native reads remain diagnostic. A previously saved, validated level or explicit fresh level/reset can replace the failed World. Invalid replacement leaves the fault and partial state intact. Successful replacement clears pending events/failure/tick identity and uses the latest requested region; it does not resume the failed attempt or replay accepted events. See [failure policy](../decisions/ADR-010-failed-tick-quarantine.md).
+
+
+### Rank 5: reference/level-saves-and-replay.md — Level saves and exact replay > What does import validate, and what stays intact on failure?
+
+Document: Level saves and exact replay
+Path: reference/level-saves-and-replay.md
+document-kind: contract
+status: Current
+scope: CYSD1 finite-level format, ownership and omitted continuation state; accepted main LCB CYPS2 exact accounting/continuation, explicit historical CYPS1 refusal and remaining application replay gaps
+canonical-for: [cysd1-level-format, save-import-export, replay-persistence]
+last-reviewed: 2026-10-25
+Section: Level saves and exact replay > What does import validate, and what stays intact on failure?
+also retains its own original recipe/body poses and selection privately for Restart. This does not admit a saved physical level for family conversion: an imported same-label three-body graph has no authored source-generation identity, and its direct experimental apply refuses.
+
+## Q12: What is inside a CYSD1 file, and can it save an arbitrary sparse world?
+
+Canonical rank: 1
+
+Expected facts:
+
+- Current encoding is fixed at 1024 by 1024 with five native bytes per cell: material, state_a, state_b and LE16 temperature.
+- A 56-byte header, bounded JSON metadata, DEFLATE payload, SHA-256 integrity and Base64 text form the container.
+- General sparse-world persistence is Planned.
+
+### Rank 1: reference/level-saves-and-replay.md — Level saves and exact replay > What is stored in CYSD1?
+
+Document: Level saves and exact replay
+Path: reference/level-saves-and-replay.md
+document-kind: contract
+status: Current
+scope: CYSD1 finite-level format, ownership and omitted continuation state; accepted main LCB CYPS2 exact accounting/continuation, explicit historical CYPS1 refusal and remaining application replay gaps
+canonical-for: [cysd1-level-format, save-import-export, replay-persistence]
+last-reviewed: 2026-10-25
+Section: Level saves and exact replay > What is stored in CYSD1?
+Source: [CyberDemoSaveCodec](../../godot/scripts/demo_save_codec.gd), [demo::copy_level/reconstruct](../../native/include/cybersand/demo_snapshot.hpp) and [CyberDemoBridge](../../godot/native_extension/cyber_demo_bridge.hpp). | Component | Current contract | |---|---| | World extent | Exactly 1024×1024, row-major; not arbitrary signed sparse storage | | Per-cell payload | Material ID, `state_a`, `state_b`, and signed temperature encoded as little-endian 16 bits: five bytes per cell, 5,242,880 bytes total | | Header | 56 bytes: magic `CYSD1`, format/compression flags, dimensions, metadata/raw/compressed lengths, SHA-256 digest | | Integrity | Digest covers the first 24 header bytes plus JSON metadata and compressed world bytes | | Compression/text | DEFLATE binary payload; Base64 portable text | | Limits | Metadata ≤16,384 bytes; binary ≤8 MiB; text ≤12 MiB | | Metadata | Demo ID, player position/velocity, selected material, quality, coherent emission, adhesion and glow options | | Body records | At most three Physics Pit bodies: position, angle, linear/angular velocity, sleeping flag | | Local slot | `user://web_demo_slot_1.cys`; browser storage is origin/profile dependent | The five save bytes encode logical material/state values and temperature from the optional field; they exclude the update epoch. Current authoritative cells use the [eight-byte storage carrier](../architecture/chunk-tile-and-buffer-model.md#what-is-stored-per-cell-and-per-chunk). CYSD1's five-byte save layout is separate from the in-memory `Cell` ABI.
+
+
+### Rank 2: systems/world-storage-and-interest-region.md — World storage and interest region > Persistence boundary
+
+Document: World storage and interest region
+Path: systems/world-storage-and-interest-region.md
+document-kind: contract
+status: Current
+scope: Sparse native storage, finite adapters, interest pause/resume and fresh generated-chunk admission; general persistence/reconfiguration/streaming remain separate
+canonical-for: [world-storage, camera-interest-region]
+last-reviewed: 2026-10-18
+Section: World storage and interest region > Persistence boundary
+**Current:** CYSD1 reconstructs a fixed demo level. It is neither a general WorldStorage format nor exact continuation. Its cell layout, validation, exclusive export ownership, state omissions, and body tolerance belong to the [level-save contract](../reference/level-saves-and-replay.md). **Planned:** sparse persistence, schema migration, general serialized configuration, replay capture and I/O backpressure. **Deferred implementation:** broad streamed loading/eviction until local material behavior is mature.
+
+
+### Rank 3: reference/level-saves-and-replay.md — Level saves and exact replay > What continuation state is missing?
+
+Document: Level saves and exact replay
+Path: reference/level-saves-and-replay.md
+document-kind: contract
+status: Current
+scope: CYSD1 finite-level format, ownership and omitted continuation state; accepted main LCB CYPS2 exact accounting/continuation, explicit historical CYPS1 refusal and remaining application replay gaps
+canonical-for: [cysd1-level-format, save-import-export, replay-persistence]
+last-reviewed: 2026-10-25
+Section: Level saves and exact replay > What continuation state is missing?
+CYSD1 omits tick/epoch, scheduler activity and sleep state, queued explosions and future input ordering, complete WorldConfig/interest state, render leases, transient body masks, and Rapier solver/contact caches. Import resets character grounded state and reconstructs physics bodies. Body metadata round-trips are checked with `1e-5` tolerance; exact floating-point trajectory replay is not claimed. **Planned:** versioned general sparse-world persistence, replay input capture, complete state/configuration identity, migration, I/O pressure policy and an explicit strict-mode implementation. Do not infer those contracts from CYSD1.
+
+
+### Rank 4: reference/level-saves-and-replay.md — Level saves and exact replay > How does CYPS2 differ from CYSD1?
+
+Document: Level saves and exact replay
+Path: reference/level-saves-and-replay.md
+document-kind: contract
+status: Current
+scope: CYSD1 finite-level format, ownership and omitted continuation state; accepted main LCB CYPS2 exact accounting/continuation, explicit historical CYPS1 refusal and remaining application replay gaps
+canonical-for: [cysd1-level-format, save-import-export, replay-persistence]
+last-reviewed: 2026-10-25
+Section: Level saves and exact replay > How does CYPS2 differ from CYSD1?
+**Current on main through accepted PR #246 (`ec58d919`, 2026-10-25).** `World::save_physical_state()`/`restore_physical_state()` and the bridge's `export_physical_state`/`import_physical_state` write and read **CYPS2** (`kPhysicalStateFormatVersion` 2), an exact tick-boundary continuation for LCB comparison Worlds. Its canonical description is the [pressure persistence contract](../architecture/pressure-flow-v1.md#persistence-cyps-v2) and [shared native setup/accounting contract](../architecture/liquid-prepared-setup-and-receipts.md). | | CYSD1 | CYPS2 | |---|---|---| | Purpose | finite level exchange | exact continuation of a comparison World | | Liquid policy | not stored; import always reconstructs on default families (NC-10) | policy envelope stored and re-admitted by the running build | | Clock, epochs, regions, pending events, activity blocks | omitted | stored | | Pressure sidecars and gas table | n/a (lossy; never a continuation) | stored | | Shared quantity accounting and construction binding | omitted | exact source/sink and rule totals, visible+overfill, separate material cell counts, prepared/normalization identities | | Integrity | codec checksum and native validation | SHA-256 of the body, then range and invariant checks | | Failure | live World intact | `invalid_argument`/`LiquidPolicyRefused`; live World intact ("running world preserved") | | Continuation | none claimed | bit-identical physical and state hash, including at another worker count | CYPS omits execution settings (workers, capacities come from the caller), host-owned transient body masks and Rapier state, and requires settled discovery to be disabled. It is not general sparse-world persistence, replay input capture or full application replay. The owner-requested native codec freeze does not freeze production Cell/global ABI or those missing host contracts; CYSD1 is unchanged. Historical CYPS1 belongs to the #245 source/artifact evidence and is explicitly refused by this decoder. A valid digest does not excuse inconsistent accounting: restore validates closure, roles, quanta and actual stored authority. The native prepared builder can normalize final setup tuples only with explicit opt-in and a bound receipt. It cannot normalize a live World. Godot's normal level import still reconstructs defaults; native candidate CYSD1 ingress preflights nonzero fractional W-CY Water and returns `normalization_required` rather than silently rounding. The old Godot dictionary run getter is not the typed native receipt and provides no full host-replay proof.
+
+
+### Rank 5: reference/validation-evidence.md — Validation evidence ledger > What do the Rapier and save passes not prove?
+
+Document: Validation evidence ledger
+Path: reference/validation-evidence.md
+document-kind: reference
+status: Current
+scope: Dated source and runtime evidence with platform, artifact identity, coverage and missing gates
+canonical-for: [validation-results, platform-evidence, historical-evidence-boundaries]
+last-reviewed: 2026-11-04
+Section: Validation evidence ledger > What do the Rapier and save passes not prove?
+The three-rectangle fixture permits transient floor penetration: maximum body centre y=160.317276, settled y=159.000656, approximately 1.32 pixels transient penetration, within the fixture's two-pixel acceptance bound. It is not zero-penetration, arbitrary-shape, high-count or universal CCD coverage. Body restoration allows `1e-5` error. Exact cellular payload restoration is not full next-tick or Rapier replay; see [level saves](level-saves-and-replay.md). A Windows headless runner named `test_web_rapier.gd` executes the Web scene on Windows. Browser WASM execution requires a separately identified exported build. Nine groups inside `test_cell_world.gd` count as one runner, not nine extra files.
+
+## Q13: Can saving the level alter anything, and does a bad import damage the running world?
+
+Canonical rank: 1
+
+Expected facts:
+
+- Export requires exclusive safe-boundary ownership and clears the transient obstacle projection while copying stored-cell temperatures.
+- Coupling must rebuild before the next cellular tick.
+- Import validates and constructs a fresh World before swapping, preserving the old world on invalid input.
+
+### Rank 1: reference/level-saves-and-replay.md — Level saves and exact replay > May saving run concurrently with a tick?
+
+Document: Level saves and exact replay
+Path: reference/level-saves-and-replay.md
+document-kind: contract
+status: Current
+scope: CYSD1 finite-level format, ownership and omitted continuation state; accepted main LCB CYPS2 exact accounting/continuation, explicit historical CYPS1 refusal and remaining application replay gaps
+canonical-for: [cysd1-level-format, save-import-export, replay-persistence]
+last-reviewed: 2026-10-25
+Section: Level saves and exact replay > May saving run concurrently with a tick?
+**Current: no.** Call construction/export/import at a safe boundary with exclusive World ownership. `copy_level(World&, ...)` clears transient obstacles so temperature sampling reads stored cells. The caller must rebuild the body projection before the next cellular tick. Export is therefore not a concurrent const query, even though it does not change saved material bytes. The Web controller performs these operations on its synchronous owner. A future asynchronous save service needs an explicit capture/handoff contract; borrowing mutable World storage from a writer is **Rejected**.
+
+
+### Rank 2: reference/level-saves-and-replay.md — Level saves and exact replay > How does CYPS2 differ from CYSD1?
+
+Document: Level saves and exact replay
+Path: reference/level-saves-and-replay.md
+document-kind: contract
+status: Current
+scope: CYSD1 finite-level format, ownership and omitted continuation state; accepted main LCB CYPS2 exact accounting/continuation, explicit historical CYPS1 refusal and remaining application replay gaps
+canonical-for: [cysd1-level-format, save-import-export, replay-persistence]
+last-reviewed: 2026-10-25
+Section: Level saves and exact replay > How does CYPS2 differ from CYSD1?
+**Current on main through accepted PR #246 (`ec58d919`, 2026-10-25).** `World::save_physical_state()`/`restore_physical_state()` and the bridge's `export_physical_state`/`import_physical_state` write and read **CYPS2** (`kPhysicalStateFormatVersion` 2), an exact tick-boundary continuation for LCB comparison Worlds. Its canonical description is the [pressure persistence contract](../architecture/pressure-flow-v1.md#persistence-cyps-v2) and [shared native setup/accounting contract](../architecture/liquid-prepared-setup-and-receipts.md). | | CYSD1 | CYPS2 | |---|---|---| | Purpose | finite level exchange | exact continuation of a comparison World | | Liquid policy | not stored; import always reconstructs on default families (NC-10) | policy envelope stored and re-admitted by the running build | | Clock, epochs, regions, pending events, activity blocks | omitted | stored | | Pressure sidecars and gas table | n/a (lossy; never a continuation) | stored | | Shared quantity accounting and construction binding | omitted | exact source/sink and rule totals, visible+overfill, separate material cell counts, prepared/normalization identities | | Integrity | codec checksum and native validation | SHA-256 of the body, then range and invariant checks | | Failure | live World intact | `invalid_argument`/`LiquidPolicyRefused`; live World intact ("running world preserved") | | Continuation | none claimed | bit-identical physical and state hash, including at another worker count | CYPS omits execution settings (workers, capacities come from the caller), host-owned transient body masks and Rapier state, and requires settled discovery to be disabled. It is not general sparse-world persistence, replay input capture or full application replay. The owner-requested native codec freeze does not freeze production Cell/global ABI or those missing host contracts; CYSD1 is unchanged. Historical CYPS1 belongs to the #245 source/artifact evidence and is explicitly refused by this decoder. A valid digest does not excuse inconsistent accounting: restore validates closure, roles, quanta and actual stored authority. The native prepared builder can normalize final setup tuples only with explicit opt-in and a bound receipt. It cannot normalize a live World. Godot's normal level import still reconstructs defaults; native candidate CYSD1 ingress preflights nonzero fractional W-CY Water and returns `normalization_required` rather than silently rounding. The old Godot dictionary run getter is not the typed native receipt and provides no full host-replay proof.
+
+
+### Rank 3: architecture/data-ownership-and-lifetimes.md — Data ownership and lifetimes > Explicit imported-level ownership
+
+Document: Data ownership and lifetimes
+Path: architecture/data-ownership-and-lifetimes.md
+document-kind: contract
+status: Current
+scope: Current resource owners, mutation windows, publication retirement and allocation limits; proposed resources are explicitly separated
+canonical-for: [resource-ownership-and-lifetimes]
+last-reviewed: 2026-10-25
+Section: Data ownership and lifetimes > Explicit imported-level ownership
+The unmerged #202 synchronous [normal import route](liquid-prepared-setup-and-receipts.md#explicit-ordinary-level-import-and-retained-restart) keeps the running World/player/receipt/record until native preparation, private sampled-player configuration, qualified observation and final serial guard all pass. Native exclusively owns the pending World; the private level session owns copied decoded payload/metadata/selection. Commit consumes the token once, then the controller adopts staged values. Restart reconstructs that retained input; ordinary default replacement retires it. Unsupported physical/tower/showcase owners refuse without detaching or rebinding their actual graph. No live scene object crosses a worker boundary, and this synchronous route adds no tick work.
+
+
+### Rank 4: architecture/liquid-prepared-setup-and-receipts.md — Native liquid prepared setup, receipts and quantity accounting > Explicit ordinary level import and retained restart
+
+Document: Native liquid prepared setup, receipts and quantity accounting
+Path: architecture/liquid-prepared-setup-and-receipts.md
+document-kind: design
+status: Current
+scope: Accepted main LCB-001 native construction contract — immutable final tuples, explicit Water normalization, prepared World ownership, typed native outcomes, native run and attempt receipts, exact quantity aggregates, physical hash/CYPS2 and source-matched Windows/Linux acceptance; application-host proof and downstream family work remain open
+canonical-for: [liquid-prepared-setup, liquid-native-run-receipt, liquid-quantity-accounting]
+last-reviewed: 2026-10-25
+Section: Native liquid prepared setup, receipts and quantity accounting > Explicit ordinary level import and retained restart
+**Current bounded unmerged #202 source:** the synchronous normal application [`web_demo_controller.gd`](../../godot/scripts/web_demo_controller.gd) routes the existing Save/Load Import button through `prepare_liquid_level` only after the user selects **Exploratory** and **Use selection for next level import** in the liquid panel. Arming copies policy, normalization and explicit geometry; it does not mutate the running World. Unarmed imports keep the original Current constructor. **Use Current defaults for next import** clears the pending choice. The [dated Windows proof](../audits/2026-10-25-lcb003-level-import-host.md) exercises those actual menu/panel callbacks; it is not browser qualification. [`prepared_level_session.gd`](../../godot/scripts/prepared_level_session.gd) owns the copied accepted payload/metadata/selection and a private sampled player. Native owns the exclusive pending World and token. Saved position/velocity, current sampled profile/recovery policy, final quality/view buffers, clamped camera, interest region, cadence and adhesion are complete before receipt capture. The actual raw payload digest comes from native copied readback. Qualified host observation collection precedes the final owner serial/lifetime guard and native retained-state commit fence. Success adopts only staged values; refusal retains the old World, player, applied native bytes and owner record. The native-v1 qualifications and false native/host full matched eligibility stay unchanged; outer metadata/player claims remain explicitly unverified host values. This route supports ordinary body-free demos. Current Tower, showcase, Blacksite, physical owners and saved physical/tower/showcase/body routes refuse before replacement. Controlled/active apparatus retain their existing import guard. No body is detached or physics space rebound by an import attempt. These refusal boundaries are remaining constructor ownership, not implemented body conversion. The subsequent settings correction reads native run-component v1 before creating a token. Only production interaction8:9:30 and diagnostic law0:−1 are supported; other support/period/exchange/viscosity settings explicitly refuse instead of resetting. Independent configured transport also refuses. Production unconfigured Baseline is admitted; a private accepted level may retain its own configured Baseline only while actual transport component, native generation and copied applied receipt hash still match. A retained object alone grants no exemption. The builder's existing enabled observational telemetry remains explicit; this does not preserve arbitrary diagnostics/transport or convert another tuned run. The original44-assertion proof covers normal Baseline only. The later73 assertions add actual nondefault refusal and retired-generation controls. Accepted import starts paused. **R / Restart world** rebuilds its original copied payload with its accepted policy/normalization/geometry and metadata after edits, creating a new native generation and owner observation. Ordinary default import or demo construction retires that prepared identity. CYSD1 still stores no liquid policy or complete continuation state: exporting does not persist this private in-memory reconstruction request. Mixed PF Water/Oil/Brine IN runs through the ordinary synchronous owner with explicit radius3 and actual damping readback; Water IN remains unsupported. Physical imports, complete host identity, later
+
+
+### Rank 5: operations/lcb-manual-comparison-ux.md — LCB manual liquid comparison UX flow > Current controls and ownership
+
+Document: LCB manual liquid comparison UX flow
+Path: operations/lcb-manual-comparison-ux.md
+document-kind: design
+status: Current
+scope: LCB-003 (#202) bounded experimental comparison UI, native availability, explicit normalization and constructor coverage, followed by remaining planned manual feel-testing flow
+canonical-for: [lcb-manual-comparison-ux]
+last-reviewed: 2026-11-03
+Section: LCB manual liquid comparison UX flow > Current controls and ownership
+The subsequent [synchronous Physics Pit route](../architecture/liquid-prepared-setup-and-receipts.md#synchronous-physics-pit-reference-bodies) enables explicit Exploratory active apply for its actual authored constructor. The original three bodies and sampled player stage privately; the existing UI shows a pending request while actual frozen frames and bounded terrain readiness complete. Old state stays held. Success starts paused with the original recipe, poses and current view/cadence; Restart retains the accepted selection. Imported same-label bodies and other physical maps remain outside this route; the later Water Feel route has its own checked owner. Native/host qualifications remain visible, and [local Windows proof](../audits/2026-10-25-lcb003-synchronous-reference-body.md) is not browser acceptance. The subsequent [ordinary synchronous demo route](../architecture/liquid-prepared-setup-and-receipts.md#explicit-ordinary-synchronous-demo-rebuilding) enables **Apply & rebuild active** for Material Lab, Waterworks, Foundry and Neon Works after choosing Exploratory. It retains the exact original recipe, sampled player, ordinary tools and actual quality/view/cadence; it starts paused. **R / Restart world** retains the accepted recipe/policy/normalization/geometry after edits. Choosing an original Current demo retires prepared identity and restores default radius2. A save sharing a demo label is not treated as its authored recipe. Physics Pit/showcase/body routes remain outside this allowlist. The [117-assertion local proof](../audits/2026-10-25-lcb003-ordinary-demo-host.md) includes actual native failure: prepared Restart requires a healthy retained World, so the stopped hint names explicit Current demo/unarmed-import recovery. Same-policy quarantine recovery and final browser/publication remain open. The subsequent [ordinary level-import route](../architecture/liquid-prepared-setup-and-receipts.md#explicit-ordinary-level-import-and-retained-restart) adds two controls in the synchronous normal application's liquid panel. Choose Exploratory, policy, normalization and geometry, then **Use selection for next level import**; the running World stays unchanged. The normal Save/Load Import button then stages an ordinary body-free level and sampled player. It starts paused, and **R / Restart world** reconstructs that accepted input after edits. **Use Current defaults for next import** clears the pending choice; default imports and ordinary demo choices retire prepared identity. Physical/Tower/ showcase imports explicitly refuse. The [local menu proof](../audits/2026-10-25-lcb003-level-import-host.md) is Windows headless execution, with full host and final platform gates open. Unsupported inherited interaction/diagnostic laws and independent transport profiles also refuse before preparation. A known accepted Baseline restart binds its actual native component, generation and applied receipt; existing optional diagnostic telemetry is observational, not an implicit physics-law selection. The subsequent [qualified host-observation foundation](../architecture/liquid-prepared-setup-and-receipts.md#qualified-host-observation-foundation) separates actual API path/current file observations from publication claims and unverified caller values. The [subsequent owner slice](../architecture/liquid-prepared-setup-and-receipts.md#owner-bound-construction-observation) stages it before commit, carries its compact record hash/native receipt identity through normal apply and restart, and retains the old record on refusal. It keeps native/host full matched eligibility false. A Windows editor shadow DLL makes the distinction between API path and mapped module observable. This does not complete another constructor row or qualify
+
+## Q14: Do matching state hashes prove complete deterministic replay, including bodies and future inputs?
+
+Canonical rank: 1
+
+Expected facts:
+
+- No: exact comparisons cover specified repeated or worker-parity cellular fixtures.
+- state_hash includes tick/epoch, selected config, cell/activity state and queued explosions but omits relevant external/controller/body state and some settings.
+- content_hash excludes scheduling/tick details and is the rest-stability check; neither is complete replay persistence.
+
+### Rank 1: architecture/determinism-and-boundary-transfers.md — Determinism and boundary transfers > Replay state coverage
+
+Document: Determinism and boundary transfers
+Path: architecture/determinism-and-boundary-transfers.md
+document-kind: contract
+status: Current
+scope: Native scheduling and hash semantics for declared fixture inputs; explicitly excludes complete replay guarantees
+canonical-for: [native-determinism-and-hash-coverage]
+last-reviewed: 2026-09-09
+Section: Determinism and boundary transfers > Replay state coverage
+**Current:** `World::state_hash` and `World::content_hash` use the FNV-style byte mixer in `world.cpp::hash_byte` (seed `1469598103934665603`, multiplier `1099511628211`). The name is not a versioned durable compatibility promise. | Hash | Included | Intended comparison | |---|---|---| | `state_hash` | Attempted/completed tick identity, failed latch and epoch; requested/applied core coverage; selected geometry, sleep/temperature/backend and capacity settings; ordered pending explosions; sorted chunk coordinates; chunk/block activity and quiet counts; cell material/state/epoch and resolved temperature | Same declared native fixture and scheduling state | | `content_hash` | Chunk size and ambient temperature; coordinates, material, compact state and temperature of non-empty/non-ambient cells | Settled content while time and scheduler bookkeeping advance | `state_hash` includes normalized requested/applied interest core coverage (not raw pixel bounds with identical coverage), granular policy version/settings and pending pair deadlines. Mercury opportunities share the global tick modulo lane; excluded ticks create no accumulated movement debt. See the [pair policy](../systems/granular-interaction-policy.md). The existing integer mixer uses native integer widths, including `size_t`. Windows and Wasm hashes are therefore not a cross-platform byte-identity oracle; compare worker counts within the declared platform and compare explicit observed values across those platforms. `state_hash` **omits** liquid-surface-adhesion option, transient obstacles/contact inputs, compiled rule identity and external body/controller state. Worker count is intentionally omitted for parity tests. A matching hash is therefore insufficient to prove that every future-affecting input matches. Record these omitted inputs independently. `content_hash` omits tick/epoch, activity, pending events and ordinary empty/ambient storage. It intentionally cannot detect a change in scheduling or pending behavior. Neither hash captures Rapier solver internals. Full replay requirements and CYSD1 level-byte comparison belong in [level saves versus replay](../reference/level-saves-and-replay.md).
+
+
+### Rank 2: reference/level-saves-and-replay.md — Level saves and exact replay > Does an identical save reproduce the next tick?
+
+Document: Level saves and exact replay
+Path: reference/level-saves-and-replay.md
+document-kind: contract
+status: Current
+scope: CYSD1 finite-level format, ownership and omitted continuation state; accepted main LCB CYPS2 exact accounting/continuation, explicit historical CYPS1 refusal and remaining application replay gaps
+canonical-for: [cysd1-level-format, save-import-export, replay-persistence]
+last-reviewed: 2026-10-25
+Section: Level saves and exact replay > Does an identical save reproduce the next tick?
+**Current: no such guarantee.** CYSD1 restores a fixed demo level and selected metadata. Identical re-export proves equality of what the format stores. It does not prove that cells, characters or Rapier will follow the original future trajectory: tick/epoch/activity, complete simulation configuration, pending authoritative events/commands and Rapier contact caches are omitted. Complete durable replay and a selectable strict runtime policy are **Planned** implementations of the **Approved** exact-validation requirement. The native fixture hashes are also incomplete replay identities. Their precise coverage belongs to [determinism](../architecture/determinism-and-boundary-transfers.md#replay-state-coverage).
+
+
+### Rank 3: architecture/determinism-and-boundary-transfers.md — Determinism and boundary transfers > Which ordering is part of simulation semantics?
+
+Document: Determinism and boundary transfers
+Path: architecture/determinism-and-boundary-transfers.md
+document-kind: contract
+status: Current
+scope: Native scheduling and hash semantics for declared fixture inputs; explicitly excludes complete replay guarantees
+canonical-for: [native-determinism-and-hash-coverage]
+last-reviewed: 2026-09-09
+Section: Determinism and boundary transfers > Which ordering is part of simulation semantics?
+- Global core-coordinate parity assigns four phases. First phase is `tick_index % 4`; a barrier completes every phase before the next. - Rows scan bottom-up with deterministic alternating horizontal direction. Job effects merge in sorted core order, not completion order. - `deterministic_random` hashes coordinates, tick and a rule stream identifier into a byte. It has no mutable global random generator or wall-clock input. - Fixed secondary-interaction lanes are part of the compiled policy. They are exercised by exact fixtures; no global switch disables all such sampling. - Ordinary bounded movement/reactions write directly inside exclusive domains. Their in-place traversal and pairwise arithmetic resolve local competition. Scheduler/storage edges do not create a general transfer queue. See [geometry](chunk-tile-and-buffer-model.md) for domain enforcement and [step order](simulation-tick-and-threading.md) for controller differences. The atomic job distributor may assign different workers without changing these ordering inputs. General completion-order perturbation coverage must be named by an actual test; repeat/worker-count fixtures alone do not prove every schedule.
+
+
+### Rank 4: operations/testing-validation-and-replay.md — Testing, validation, and replay > What does equality establish?
+
+Document: Testing, validation, and replay
+Path: operations/testing-validation-and-replay.md
+document-kind: guide
+status: Current
+scope: Executable test selection and future gates; dated results and save format live in separate references
+canonical-for: [test-inventory, test-selection, future-validation-gates]
+last-reviewed: 2026-10-31
+Section: Testing, validation, and replay > What does equality establish?
+Native repeat and worker-count fixtures use `World::state_hash()` for their selected inputs; settled Water uses `content_hash()` plus exact mass checks. Neither hash covers the entire coupled game's future. Their omissions and timing semantics belong to [determinism](../architecture/determinism-and-boundary-transfers.md#replay-state-coverage). CYSD1 and browser benchmark hashes compare serialized level payloads; body restore uses a numeric tolerance. [Level saves and replay](../reference/level-saves-and-replay.md) owns the format and omitted continuation state. Complete replay persistence and a selectable strict runtime policy remain **Planned**.
+
+
+### Rank 5: operations/testing-validation-and-replay.md — Testing, validation, and replay > Which checks support the measured physics baseline?
+
+Document: Testing, validation, and replay
+Path: operations/testing-validation-and-replay.md
+document-kind: guide
+status: Current
+scope: Executable test selection and future gates; dated results and save format live in separate references
+canonical-for: [test-inventory, test-selection, future-validation-gates]
+last-reviewed: 2026-10-31
+Section: Testing, validation, and replay > Which checks support the measured physics baseline?
+**Current, 2026-09-09:** the [dated issue #9 report](../audits/2026-09-09-physics-characterisation.md) records 49 native tests and 19 Godot runners on a freshly rebuilt Windows adapter. The earlier 46/16 totals above remain the dated #1/#2 checkpoint. New tests cover bounded observer/worker parity, viscosity isolation, masked-source contact, stored Water under a body mask, invalid diagnostic reset, duplicate application and hard-floor controls. The asynchronous smoke runner is only 120 ticks by default; the separate evidence series uses five seeds and 1,800 completed ticks. Run [tools/physics/verify.py](../../tools/physics/verify.py) on the complete raw series to check conservation controls, completed budgets, floor censoring and matching-profile state/trajectory equality. See the [runbook](physics-characterisation.md) for experiment commands and bounds. Existing F01/F02, save, render ownership and meaningful conservation checks remain required. No trace here upgrades CYSD1 into full deterministic replay.
+
+## Q15: Can the renderer read live cells or reuse a patch buffer before upload finishes?
+
+Canonical rank: 4
+
+Expected facts:
+
+- No: published patches have immutable snapshot or lease-owned lifetime, and the Godot adapter copies values.
+- Consumer validates metadata and bytes before Image construction/blit; acknowledgement follows successful consumption.
+- Malformed/rejected patches request a full refresh rather than reading mutable World storage.
+
+### Rank 1: systems/themed-construction-materials.md — Themed construction material palette > Appearance boundaries
+
+Document: Themed construction material palette
+Path: systems/themed-construction-materials.md
+document-kind: reference
+status: Current
+scope: Complete stable IDs 38–80, authored roles, native hard-surface and combustion behavior, and visual limitations
+canonical-for: [construction-material-ids, construction-material-physics-and-finish]
+last-reviewed: 2026-10-18
+Section: Themed construction material palette > Appearance boundaries
+The finishes in the tables are presentation-only programs, with world-anchored courses, seams, and grain. Timber/pipes currently read most clearly horizontally; corrugation is vertical. Rough/hammered metals stay matte; smooth manufactured surfaces can use restrained moving glints. Wet construction and glass finishes are fixed in time (2026-10-18); neon and LED effects use presentation time. Pipes, hazard stripes, insulation, cables, Oak Timber, corrugation, Stained Glass, neon, brick, tile and reinforced concrete adapt to the shape of the run they are painted in (orientation, cross-section, edges); see the [appearance contract](material-appearance-and-rendering.md). None changes physics or wakes cells. Selected finish arithmetic is separate from the common four-neighbor relief stage. Neither creates a second world image or per-cell light. Exact LUT, projection, shader, glow, and full GPU upload semantics belong to the [appearance contract](material-appearance-and-rendering.md).
+
+
+### Rank 2: systems/material-appearance-and-rendering.md — Material appearance and rendering > Dirty bytes versus GPU upload
+
+Document: Material appearance and rendering
+Path: systems/material-appearance-and-rendering.md
+document-kind: contract
+status: Current
+scope: Native RG8 presentation, palette/program LUTs, shader flair, temporal smoothing, glow, and current GPU upload limitation
+canonical-for: [material-visual-projection, palette-program-appearance, render-upload-cost]
+last-reviewed: 2026-10-19
+Section: Material appearance and rendering > Dirty bytes versus GPU upload
+[CyberNativeCellWorld](../../godot/native_extension/cyber_native_cell_world.cpp) copies published RG8 patches. [Desktop worker](../../godot/scripts/simulation_worker.gd) retention/acknowledgement prevents a slow consumer losing intermediate updates; bounded full refresh replaces excessive pending copies. The [Web controller](../../godot/scripts/web_demo_controller.gd) consumes synchronously and requests a full refresh after rejection. Pthreads do not create a mutable render read path. [main.gd](../../godot/scripts/main.gd) validates patches and updates a persistent CPU Image, then calls `ImageTexture.update(image)`. At 1024² RG8 this uploads 2,097,152 bytes for each changed publication, even for a small dirty patch. Patch count/copied KiB therefore measures bridge work, not GPU upload traffic. No second mutable world image is introduced by shader neighbor sampling.
+
+
+### Rank 3: decisions/ADR-003-godot-bridge-and-immutable-snapshots.md — ADR-003: Godot bridge and immutable snapshots > Why require immutable copies?
+
+Document: ADR-003 — Godot bridge and immutable snapshots
+Path: decisions/ADR-003-godot-bridge-and-immutable-snapshots.md
+document-kind: decision
+status: Current
+scope: Accepted immutable publication boundary and remaining generalized gameplay bridge work
+canonical-for: [decision-immutable-godot-bridge]
+last-reviewed: 2026-09-08
+Section: ADR-003: Godot bridge and immutable snapshots > Why require immutable copies?
+Simulation and presentation progress at different rates and have different object lifetimes. Borrowing mutable native storage makes consumer delay a race or forces rendering to lock authoritative work. Independently owned immutable publication permits delayed/repeated consumption without blocking native rules. The historical render-patch race showed why a writable wrapper described as immutable is insufficient: producer buffer reuse can invalidate payload bytes. The Current desktop implementation deep-copies changed pending generations and validates complete packets before image construction. The [handoff regression](../../godot/tests/test_render_patch_handoff_regression.gd) protects this boundary; historical results remain in the [evidence ledger](../reference/validation-evidence.md).
+
+
+### Rank 4: architecture/rendering-and-gameplay-bridges.md — Rendering and gameplay bridges > Does a small dirty patch mean a small GPU upload?
+
+Document: Rendering and gameplay bridges
+Path: architecture/rendering-and-gameplay-bridges.md
+document-kind: contract
+status: Current
+scope: Native publication outcomes, Godot render consumption and current gameplay commands; resource lifetime and wire layouts are linked
+canonical-for: [render-publication-and-gameplay-bridge-behavior]
+last-reviewed: 2026-10-19
+Section: Rendering and gameplay bridges > Does a small dirty patch mean a small GPU upload?
+No. **Current:** [main `apply_render_patches_to_image`](../../godot/scripts/main.gd) validates dimensions, channel count, offsets and exact byte sizes for the full packet before constructing/blitting patches. It updates a persistent CPU Image. `upload_texture_patches` then calls `ImageTexture.update` on the **full** backing image. A 1024×1024 RG8 upload is 2,097,152 bytes regardless of a tiny edit. Desktop acknowledges a render serial only after successful consumption. Malformed/empty/stale or unacceptable full-refresh data is rejected and requests resynchronization. The worker retains unacknowledged changes and substitutes an explicit full refresh when accumulation exceeds its patch/byte thresholds. The historical handoff race is guarded by [test_render_patch_handoff_regression](../../godot/tests/test_render_patch_handoff_regression.gd). Do not reuse pending buffers while a published generation remains observable. **Current desktop reset identity:** the exclusive GDScript owner advances a World generation only after an accepted World reset or scenario replacement. It retains `render_world_generation` with the exact render publication, forcing a complete replacement payload even when a new World reuses the old revision or paused tick index. The main thread invalidates vapour history only after it successfully uploads that generation. A newer physics/status snapshot carrying an older render publication cannot advance the displayed reset identity. `render_full_refresh` describes transport coverage, not World lifetime. Native resynchronization and ordinary R8 fallback publications can be full images of the same World; they preserve presentation history. Rejected reset requests do not advance the World generation. The [owner regression](../../godot/tests/test_render_world_generation.gd) checks native and fallback paints, resyncs, accepted/rejected resets and repeated identical paused scenario replacements; the [actual-pixel pipeline regression](../../godot/tests/test_material_vapour_pipeline_render.gd) checks the corresponding visible history behavior. Evidence is in the [2026-10-19 review](../audits/2026-10-19-mat002-review-and-validation.md). Temporal smoothing ping-pongs presentation textures. Palette/program LUTs, Water dither, liquid motion, material flair, relief and glow derive appearance without changing cell state. `K` controls presentation smoothing; `H` controls publication cadence. Neither is a strict simulation-accuracy switch. [Appearance](../systems/material-appearance-and-rendering.md) owns shader details. **Planned:** true GPU subregion submission, palette-change records, measured compression/coalescing and tuned production snapshot defaults. Lower native copy volume does not establish any of those features.
+
+
+### Rank 5: operations/profiling-observability-and-performance.md — Profiling, observability, and performance > Current observations and their limits
+
+Document: Profiling, observability, and performance
+Path: operations/profiling-observability-and-performance.md
+document-kind: runbook
+status: Current
+scope: Current native/Godot observations, benchmark procedure, metric boundaries, and unimplemented production telemetry
+canonical-for: [performance-measurement, metric-interpretation]
+last-reviewed: 2026-10-31
+Section: Profiling, observability, and performance > Current observations and their limits
+| Observation/source | What it measures | What it does not establish | |---|---|---| | [World::TickStats](../../native/include/cybersand/world.hpp) | Visited/moved cells, activity, scheduled cores, per-phase jobs, deferred events, owned chunk/temperature allocation counts | Per-worker utilization, barrier time, all process allocations | | [World::resident_cell_bytes](../../native/src/world.cpp) | Cell, optional-temperature, and activity capacity bytes | Hash-map/node overhead, all scheduler/snapshot buffers, total RSS | | [RenderSnapshotExchange](../../native/include/cybersand/render_snapshot.hpp) | Required/capacity/high-water patch and byte counts; pressure/failure counts | GPU upload bytes or renderer memory | | [Desktop worker](../../godot/scripts/simulation_worker.gd) | Worker/cellular/snapshot-copy timing, snapshot age, overruns | Synchronous Web timing semantics | | [Desktop controller](../../godot/scripts/main.gd) | FPS, texture update, dirty patch count/KiB, collider timing, body observations, Rapier step/flush | Stable telemetry schema, isolated GPU frame time | | [Web controller](../../godot/scripts/web_demo_controller.gd) | Native tick/upload and profile observations | Independent asynchronous simulation/render owner | “Moved cells” counts successful updates and can include reactions/state changes; it is not a conserved quantity or physical mass. Native facade counters with fallback-like names are not automatically equivalent to fallback activity metrics. The 2026-10-25 [worker activity repair](../audits/2026-10-25-water-inertial-native.md#worker-activity-publication-repair--2026-10-25) adds geometry-bounded per-job signal grids, flag clearing and serial reduction. Its [capacity accounting](../reference/configuration-reference.md) includes real setup storage and work even for jobs that emit no activity signal. Earlier pressure/cache/dormancy timings retain their original source and do not qualify this scheduler's total cost. The follow-up contiguous layout preserves the same payload and clear/reduction work while reducing grid ownership to two buffers per World; its constructor-allocation counts and failure-sweep timings are source-bound correctness evidence, not controlled speedup ratios. The earlier unpacked pressure campaign keeps its own source. The [fresh packed-source repeat](../audits/2026-10-25-water-inertial-native.md#fresh-packed-source-total-cost-repeat) has its own prospective registration, complete total-cost accounting and independent reduction; it retains faster awake warm medians and slower disturbed churn/forced-head intervals, rather than implying a universal improvement. `TickStats` chunk/temperature allocation counters also do not count all ordinary heap allocations; explicit probes and source inspection have their own recorded boundary.
+
+## Q16: If all snapshot slots are still in use or a patch is too large, is dirty data lost?
+
+Canonical rank: 1
+
+Expected facts:
+
+- No: native publish returns Backpressure or CapacityExceeded and preserves unacknowledged dirty state.
+- Required patch/byte counts and high-water observations are explicit; no mutable fallback or hidden growth.
+- Published slots stay immutable until the final lease releases.
+
+### Rank 1: architecture/rendering-and-gameplay-bridges.md — Rendering and gameplay bridges > What does native publication return under pressure?
+
+Document: Rendering and gameplay bridges
+Path: architecture/rendering-and-gameplay-bridges.md
+document-kind: contract
+status: Current
+scope: Native publication outcomes, Godot render consumption and current gameplay commands; resource lifetime and wire layouts are linked
+canonical-for: [render-publication-and-gameplay-bridge-behavior]
+last-reviewed: 2026-10-19
+Section: Rendering and gameplay bridges > What does native publication return under pressure?
+**Current:** the single producer serializes publication with World mutation. It copies dirty rectangles in deterministic chunk-coordinate order into preallocated slots, with tightly packed two-byte material/condition rows. The condition byte is a material-selected projection of compact state, not a second authoritative simulation field. | `RenderPublishStatus` | Meaning | Dirty state | |---|---|---| | `Published` | A complete payload fits an unleased slot | Acknowledged after successful capture | | `NoChanges` | Nothing dirty to publish | No lost pending changes | | `Backpressure` | All slots are leased | Retained for later publication | | `CapacityExceeded` | Required patch or byte capacity exceeds a slot | Retained; required counts reported | Slot selection reuses the oldest unleased slot. Publication does not block waiting for consumers. Required counts, high-water use and failure totals are observable. Snapshot capacities are explicit caller choices, not universal production defaults. Native ordinary dirty extraction likewise checks capacity before clearing dirty metadata.
+
+
+### Rank 2: reference/interfaces-and-message-contracts.md — Interfaces and message contracts > Immutable dirty snapshot contract
+
+Document: Interfaces and message contracts
+Path: reference/interfaces-and-message-contracts.md
+document-kind: contract
+status: Current
+scope: Current C ABI, procedural-generation C++/Godot surfaces and private packed layouts; proposed gameplay/reconfiguration contracts remain distinct
+canonical-for: [public-and-adapter-interface-layouts]
+last-reviewed: 2026-10-25
+Section: Interfaces and message contracts > Immutable dirty snapshot contract
+**Current native:** `cybersand_render_patch` stores `int64_t` x/y/width/height plus byte offset and row stride. Payload is two bytes/cell: material ID and read-only condition projection. `take_dirty_chunks` with null/insufficient output returns required count without clearing; failure uses `CYBERSAND_SIZE_ERROR`, not zero. `cybersand_world_publish_render_snapshot` returns call success (1/0), separately from its output status: NoChanges=0, Published=1, Backpressure=2, CapacityExceeded=3. Call success therefore does not mean a snapshot published. Result includes serial and required patch/byte counts. `acquire_latest(after_serial)` returns a lease or null; lease bytes remain valid until lease destruction even if the exchange handle is destroyed. Publication must serialize with World. **Current Godot:** six `PackedInt32Array` values per patch are x, y, width, height, byte offset, row stride. Snapshot also carries render serial, channels, full-refresh flag and copied byte array. Native is RG8; fallback is R8. The adapter selects three slots, 64 patches/slot and 2,097,152 bytes/slot for its finite world. These are prototype defaults, not universal production budgets. **Current desktop additive metadata:** `CyberSimulationSnapshot.render_world_generation` identifies the accepted World/reset incarnation represented by the retained render bytes. The exclusive owner increments its counter after successful reset/replacement, then copies it into the pending render generation only when those replacement bytes are published. It is independent of native revision numbers, actor/body epochs, render serials and `render_full_refresh`. Full-image transport resyncs and ordinary R8 fallback frames retain the same World generation. Consumers update their displayed generation only after successful upload of the corresponding render serial; main uses that transition to invalidate vapour history. This is private GDScript snapshot metadata and does not change the native C ABI. See [snapshot fields](../../godot/scripts/simulation_snapshot.gd), [lifetime](../architecture/data-ownership-and-lifetimes.md) and [consumption/failure](../architecture/rendering-and-gameplay-bridges.md).
+
+
+### Rank 3: operations/profiling-observability-and-performance.md — Profiling, observability, and performance > Avoid common misreadings
+
+Document: Profiling, observability, and performance
+Path: operations/profiling-observability-and-performance.md
+document-kind: runbook
+status: Current
+scope: Current native/Godot observations, benchmark procedure, metric boundaries, and unimplemented production telemetry
+canonical-for: [performance-measurement, metric-interpretation]
+last-reviewed: 2026-10-31
+Section: Profiling, observability, and performance > Avoid common misreadings
+| Pattern | Next investigation | |---|---| | One core busy, others idle | Phase job count versus dispatch threshold; a persistent pool can intentionally run sparse phases serially | | Small dirty patch KiB but low FPS | Full GPU texture update, synchronization, palette/glow, or unrelated presentation work | | Large collider peak, small Rapier step | Separate geometry extraction, packet copy/validation, and indivisible collider rebuild | | High snapshot pressure/age | Consumer lag and retained dirty payload | | Material appears still after camera return | Check failure status and selected cores against the [pause/re-entry contract](../systems/world-storage-and-interest-region.md#interest-filtering-and-re-entry); retained offscreen activity is not selected work | | Active work never settles | Equivalent state changes, wake feedback, or genuine lifecycle work | | Persistent unresolved body pixels | Bounded ejection exhausted, stale samples, or dense surroundings | | Visually moving surface with stable content | Presentation-time shader motion; inspect authority before changing simulation | The collider consumer's 32-chunk/750 µs limits are checked between chunks and exclude extraction/packet handling; one chunk may exceed the time budget. `ImageTexture.update` still uploads the full 2,097,152-byte RG8 image for a changed native publication. Dirty bridge bytes cannot substitute for that cost.
+
+
+### Rank 4: operations/configuration-and-capacity-budgets.md — Configuration and capacity budgets > Explosion queue rejection and exhausted simulation space
+
+Document: Configuration and capacity budgets
+Path: operations/configuration-and-capacity-budgets.md
+document-kind: runbook
+status: Current
+scope: Existing construction/reservation and capacity outcomes; approved preparation discipline and unimplemented live resize
+canonical-for: [capacity-preparation-and-failure, safe-reconfiguration-requirements]
+last-reviewed: 2026-09-10
+Section: Configuration and capacity budgets > Explosion queue rejection and exhausted simulation space
+**Current:** enqueueing too many explosions returns false; accepted events apply at tick entry. Running out of resident or active simulation capacity throws and may leave a partially advanced tick. Such a World is latched failed: subsequent ticks, writes, reservation and publication are rejected until explicit clear or replacement. Accepted events are never automatically replayed. Reserved space reduces allocation pressure; lazy preparation may still allocate chunks or temperature fields. Adapter limits differ from standalone WorldConfig defaults, and live resizing is **Planned**. Avoiding hot tick allocation is an **Approved** requirement; the **Current** zero-allocation evidence is limited to prepared fixtures and their World-owned chunk/temperature counters, not every caller or allocation category. The API-specific outcomes are: | Boundary | Current outcome | Limitation | |---|---|---| | Invalid World construction | Throws before a usable World is returned | Constructor constraints are in `World::World` | | Resident/active chunk or core capacity | Explicit exception | Work may already have mutated this tick; no atomic rollback guarantee | | Explosion queue full/invalid request | Enqueue returns false | Caller must inspect acceptance | | Snapshot slots unavailable | `Backpressure` | Dirty state retained | | Snapshot patch/byte capacity insufficient | `CapacityExceeded`, exact requirements | Dirty state retained | | Native Godot tick exception | Adapter reports false/error once and latches failure | Desktop/Web stop and retain last valid publication; reset/replacement required | | Generalized command/transfer queue | **Planned** | No complete shared queue-pressure contract | Sources: [World](../../native/src/world.cpp), [snapshot publication](../../native/src/world.cpp), and [native adapter](../../godot/native_extension/cyber_native_cell_world.cpp). Core candidates are capacity-checked before deduplication, so the bound is not simply the number of unique output jobs. The [threading contract](../architecture/simulation-tick-and-threading.md) owns desktop/Web tick-failure handling. **Rejected as a future policy:** silently clipping requested regions, dropping accepted commands/dirty state, or hiding hot growth as safe expansion. These prohibitions are requirements, not a promise that every current failure preserves a pre-tick snapshot.
+
+
+### Rank 5: systems/activity-dirty-regions-and-waking.md — Activity, dirty regions, and waking > Render-dirty lifecycle
+
+Document: Activity, dirty regions, and waking
+Path: systems/activity-dirty-regions-and-waking.md
+document-kind: contract
+status: Current
+scope: Native activity and dirty-state lifecycle; separate fallback behavior and future wake requirements
+canonical-for: [cell-activity-sleep-wake, simulation-render-dirty-state]
+last-reviewed: 2026-10-25
+Section: Activity, dirty regions, and waking > Render-dirty lifecycle
+[RenderSnapshotExchange::publish](../../native/src/world.cpp) captures dirty rectangles in deterministic chunk order into an available preallocated snapshot slot. Capture clears native dirty state only after every patch is copied. `Backpressure` and `CapacityExceeded` preserve it. A published immutable lease, desktop copied-patch retention, and successful renderer acknowledgement are separate lifetimes. Desktop retains copied unacknowledged patches; Web consumes snapshots synchronously. Their exact ownership is defined by the [render bridge](../architecture/rendering-and-gameplay-bridges.md). An unconsumed snapshot must never be made safe by dropping dirtiness. | State | Meaning | |---|---| | Active block | Eligible for scheduling; it need not produce a write this tick | | Sleeping block | Stored cells remain authoritative and queryable; ordinary scheduling stops | | Render dirty | Committed presentation projection must be captured | | Serialization dirty | **Planned**; no general persistence acknowledgement exists |
+
+## Q17: Dirty rectangles are small, so are we uploading only those pixels to the GPU?
+
+Canonical rank: 3
+
+Expected facts:
+
+- Current RG8 CPU patches are sparse, but ImageTexture.update uploads the whole 1024-square two-byte texture (2,097,152 bytes).
+- True GPU subregion upload is not implemented; patch work and GPU upload cost must be measured separately.
+
+### Rank 1: operations/profiling-observability-and-performance.md — Profiling, observability, and performance > Avoid common misreadings
+
+Document: Profiling, observability, and performance
+Path: operations/profiling-observability-and-performance.md
+document-kind: runbook
+status: Current
+scope: Current native/Godot observations, benchmark procedure, metric boundaries, and unimplemented production telemetry
+canonical-for: [performance-measurement, metric-interpretation]
+last-reviewed: 2026-10-31
+Section: Profiling, observability, and performance > Avoid common misreadings
+| Pattern | Next investigation | |---|---| | One core busy, others idle | Phase job count versus dispatch threshold; a persistent pool can intentionally run sparse phases serially | | Small dirty patch KiB but low FPS | Full GPU texture update, synchronization, palette/glow, or unrelated presentation work | | Large collider peak, small Rapier step | Separate geometry extraction, packet copy/validation, and indivisible collider rebuild | | High snapshot pressure/age | Consumer lag and retained dirty payload | | Material appears still after camera return | Check failure status and selected cores against the [pause/re-entry contract](../systems/world-storage-and-interest-region.md#interest-filtering-and-re-entry); retained offscreen activity is not selected work | | Active work never settles | Equivalent state changes, wake feedback, or genuine lifecycle work | | Persistent unresolved body pixels | Bounded ejection exhausted, stale samples, or dense surroundings | | Visually moving surface with stable content | Presentation-time shader motion; inspect authority before changing simulation | The collider consumer's 32-chunk/750 µs limits are checked between chunks and exclude extraction/packet handling; one chunk may exceed the time budget. `ImageTexture.update` still uploads the full 2,097,152-byte RG8 image for a changed native publication. Dirty bridge bytes cannot substitute for that cost.
+
+
+### Rank 2: reference/glossary.md — Glossary > Publication and physics
+
+Document: Glossary
+Path: reference/glossary.md
+document-kind: contract
+status: Current
+scope: Short definitions and canonical routes; implemented types, planned concepts and evidence terms are distinguished
+canonical-for: [project-terminology]
+last-reviewed: 2026-09-08
+Section: Glossary > Publication and physics
+| Term | Meaning and canonical route | |---|---| | Dirty | Pending render change bounds; distinct from activity and Planned serialization dirtiness | | Immutable snapshot / lease | Copied publication plus lifetime token; consumer delay cannot mutate bytes. [Lifetimes](../architecture/data-ownership-and-lifetimes.md) | | RenderBridge | Current native leases and copied Godot patches; GPU update remains full texture | | GameplayBridge | Current narrow commands/results; general bounded typed queues Planned | | Backpressure | Native publication finds every slot leased and retains dirty state | | Dirty bytes / upload bytes | CPU packet volume / GPU submission volume, currently different. [Bridges](../architecture/rendering-and-gameplay-bridges.md) | | Body occupancy mask | Separate endpoint body-ID field, not erased/restored material pixels | | Coupling sample / sweep / CCD | Copied pose identity / bounded sampled reconciliation / Rapier cast-shape contact safeguard; adaptive substeps remain Planned. [Coupling](../architecture/rigid-body-and-cellular-coupling.md) |
+
+
+### Rank 3: systems/material-appearance-and-rendering.md — Material appearance and rendering > Dirty bytes versus GPU upload
+
+Document: Material appearance and rendering
+Path: systems/material-appearance-and-rendering.md
+document-kind: contract
+status: Current
+scope: Native RG8 presentation, palette/program LUTs, shader flair, temporal smoothing, glow, and current GPU upload limitation
+canonical-for: [material-visual-projection, palette-program-appearance, render-upload-cost]
+last-reviewed: 2026-10-19
+Section: Material appearance and rendering > Dirty bytes versus GPU upload
+[CyberNativeCellWorld](../../godot/native_extension/cyber_native_cell_world.cpp) copies published RG8 patches. [Desktop worker](../../godot/scripts/simulation_worker.gd) retention/acknowledgement prevents a slow consumer losing intermediate updates; bounded full refresh replaces excessive pending copies. The [Web controller](../../godot/scripts/web_demo_controller.gd) consumes synchronously and requests a full refresh after rejection. Pthreads do not create a mutable render read path. [main.gd](../../godot/scripts/main.gd) validates patches and updates a persistent CPU Image, then calls `ImageTexture.update(image)`. At 1024² RG8 this uploads 2,097,152 bytes for each changed publication, even for a small dirty patch. Patch count/copied KiB therefore measures bridge work, not GPU upload traffic. No second mutable world image is introduced by shader neighbor sampling.
+
+
+### Rank 4: architecture/rendering-and-gameplay-bridges.md — Rendering and gameplay bridges > Does a small dirty patch mean a small GPU upload?
+
+Document: Rendering and gameplay bridges
+Path: architecture/rendering-and-gameplay-bridges.md
+document-kind: contract
+status: Current
+scope: Native publication outcomes, Godot render consumption and current gameplay commands; resource lifetime and wire layouts are linked
+canonical-for: [render-publication-and-gameplay-bridge-behavior]
+last-reviewed: 2026-10-19
+Section: Rendering and gameplay bridges > Does a small dirty patch mean a small GPU upload?
+No. **Current:** [main `apply_render_patches_to_image`](../../godot/scripts/main.gd) validates dimensions, channel count, offsets and exact byte sizes for the full packet before constructing/blitting patches. It updates a persistent CPU Image. `upload_texture_patches` then calls `ImageTexture.update` on the **full** backing image. A 1024×1024 RG8 upload is 2,097,152 bytes regardless of a tiny edit. Desktop acknowledges a render serial only after successful consumption. Malformed/empty/stale or unacceptable full-refresh data is rejected and requests resynchronization. The worker retains unacknowledged changes and substitutes an explicit full refresh when accumulation exceeds its patch/byte thresholds. The historical handoff race is guarded by [test_render_patch_handoff_regression](../../godot/tests/test_render_patch_handoff_regression.gd). Do not reuse pending buffers while a published generation remains observable. **Current desktop reset identity:** the exclusive GDScript owner advances a World generation only after an accepted World reset or scenario replacement. It retains `render_world_generation` with the exact render publication, forcing a complete replacement payload even when a new World reuses the old revision or paused tick index. The main thread invalidates vapour history only after it successfully uploads that generation. A newer physics/status snapshot carrying an older render publication cannot advance the displayed reset identity. `render_full_refresh` describes transport coverage, not World lifetime. Native resynchronization and ordinary R8 fallback publications can be full images of the same World; they preserve presentation history. Rejected reset requests do not advance the World generation. The [owner regression](../../godot/tests/test_render_world_generation.gd) checks native and fallback paints, resyncs, accepted/rejected resets and repeated identical paused scenario replacements; the [actual-pixel pipeline regression](../../godot/tests/test_material_vapour_pipeline_render.gd) checks the corresponding visible history behavior. Evidence is in the [2026-10-19 review](../audits/2026-10-19-mat002-review-and-validation.md). Temporal smoothing ping-pongs presentation textures. Palette/program LUTs, Water dither, liquid motion, material flair, relief and glow derive appearance without changing cell state. `K` controls presentation smoothing; `H` controls publication cadence. Neither is a strict simulation-accuracy switch. [Appearance](../systems/material-appearance-and-rendering.md) owns shader details. **Planned:** true GPU subregion submission, palette-change records, measured compression/coalescing and tuned production snapshot defaults. Lower native copy volume does not establish any of those features.
+
+
+### Rank 5: systems/activity-dirty-regions-and-waking.md — Activity, dirty regions, and waking > Render-dirty lifecycle
+
+Document: Activity, dirty regions, and waking
+Path: systems/activity-dirty-regions-and-waking.md
+document-kind: contract
+status: Current
+scope: Native activity and dirty-state lifecycle; separate fallback behavior and future wake requirements
+canonical-for: [cell-activity-sleep-wake, simulation-render-dirty-state]
+last-reviewed: 2026-10-25
+Section: Activity, dirty regions, and waking > Render-dirty lifecycle
+[RenderSnapshotExchange::publish](../../native/src/world.cpp) captures dirty rectangles in deterministic chunk order into an available preallocated snapshot slot. Capture clears native dirty state only after every patch is copied. `Backpressure` and `CapacityExceeded` preserve it. A published immutable lease, desktop copied-patch retention, and successful renderer acknowledgement are separate lifetimes. Desktop retains copied unacknowledged patches; Web consumes snapshots synchronously. Their exact ownership is defined by the [render bridge](../architecture/rendering-and-gameplay-bridges.md). An unconsumed snapshot must never be made safe by dropping dirtiness. | State | Meaning | |---|---| | Active block | Eligible for scheduling; it need not produce a write this tick | | Sleeping block | Stored cells remain authoritative and queryable; ordinary scheduling stops | | Render dirty | Committed presentation projection must be captured | | Serialization dirty | **Planned**; no general persistence acknowledgement exists |
+
+## Q18: Are simulation tiles double buffered, and how are writes into a neighboring tile made safe?
+
+Canonical rank: 1
+
+Expected facts:
+
+- Current default is phased in-place: 64-square scheduling cores, four parity phases, bounded radius-two ownership.
+- Workers write exclusively within their phase domains and effects merge deterministically.
+- A buffered backend enum/name does not mean the planned buffered algorithm or transfer sort tuple exists.
+
+### Rank 1: architecture/chunk-tile-and-buffer-model.md — Chunk, tile, and buffer model > Are simulation tiles double buffered?
+
+Document: Chunk, tile, and buffer model
+Path: architecture/chunk-tile-and-buffer-model.md
+document-kind: contract
+status: Current
+scope: Native storage, activity, scheduling and write-domain geometry; explicit fallback and buffered distinctions
+canonical-for: [spatial-scheduling-geometry]
+last-reviewed: 2026-10-21
+Section: Chunk, tile, and buffer model > Are simulation tiles double buffered?
+**Planned:** `SimulationBackend::Buffered` reserves a candidate name; `World::tick` currently throws if selected. It is not a runnable rollback. Executable alternatives are SerialInPlace and one-worker PhasedInPlace. The retained design gives only active fields/regions isolated next/output storage, uses read-only neighborhood views, then resolves cross-output effects deterministically. Halo representation, transfer schema, conflict ordering and capacity-recovery behavior remain unspecified. It cannot share mutable ownership of a field with phased updates without a new explicit contract. **Rejected:** full-world double buffering as the ordinary model, per-cell locks, and a second competing liquid world. **Deferred:** alternative coarse-field or hexagonal work experiments; local occupancy coarsening remains Rejected. [ADR-002](../decisions/ADR-002-double-buffered-tile-jobs.md) explains the selection.
+
+
+### Rank 2: architecture/chunk-tile-and-buffer-model.md — Chunk, tile, and buffer model > How are writes into a neighboring tile made safe?
+
+Document: Chunk, tile, and buffer model
+Path: architecture/chunk-tile-and-buffer-model.md
+document-kind: contract
+status: Current
+scope: Native storage, activity, scheduling and write-domain geometry; explicit fallback and buffered distinctions
+canonical-for: [spatial-scheduling-geometry]
+last-reviewed: 2026-10-21
+Section: Chunk, tile, and buffer model > How are writes into a neighboring tile made safe?
+With the Current native defaults, each job scans a 64×64 core and may write within its core expanded by the catalogue maximum radius of two cells. `SchedulerGeometry::phase` uses global core-coordinate parity. Same-phase cores are separated enough that their expanded half-open write rectangles do not share cells; geometry rejects a radius greater than half a core. World also validates compatible chunk/core/activity alignment for its parallel path. See [geometry implementation](../../native/src/scheduler_geometry.cpp). `World::scan_rect` visits cells inside the core; an operation may touch the expanded domain only within the enforced rule radius. Every affected cell must be owned. Out-of-domain attempts are rejected by the operation's checks; they are not automatically enqueued into a transfer system. Later visits may make them eligible. General deferred boundary policies remain **Planned**. The coordinator prepares structural storage before phase dispatch. Jobs mutate cells in place and accumulate local effects; the barrier precedes deterministic metadata merge. No next-state cell array or ordinary movement-transfer record is needed for this backend. A storage or activity edge is not itself an extra physics rule. Boundary fixtures must verify that geometry changes do not introduce unintended seams; intended scan/phase order can still affect results.
+
+
+### Rank 3: decisions/ADR-002-double-buffered-tile-jobs.md — ADR-002: Benchmark-gated cellular scheduling backends > Why did phased work replace mandatory buffering?
+
+Document: ADR-002 — Benchmark-gated cellular scheduling backends
+Path: decisions/ADR-002-double-buffered-tile-jobs.md
+document-kind: decision
+status: Current
+scope: Accepted phased scheduler selection, retained buffered candidate and criteria for reconsideration
+canonical-for: [decision-phased-in-place-scheduler]
+last-reviewed: 2026-09-08
+Section: ADR-002: Benchmark-gated cellular scheduling backends > Why did phased work replace mandatory buffering?
+The earlier plan favored isolated next-state output because its concurrent ownership was straightforward. Noita-inspired spatial exclusivity made a lower-traffic option credible: direct bounded mutation avoids per-cell atomics, ordinary movement-transfer records and next-buffer copying. External inspiration did not prove an optimum for CyberSand; the executable phased implementation and measured fixtures supported its provisional selection. No instrumented Buffered comparison exists. Building it is not a prerequisite for further work; a demonstrated field need or unacceptable phased behavior can justify that cost. The historical measurements retain their original scope in the [validation ledger](../reference/validation-evidence.md).
+
+
+### Rank 4: architecture/module-boundaries.md — Module boundaries > What remains undecided?
+
+Document: Module boundaries
+Path: architecture/module-boundaries.md
+document-kind: design
+status: Approved design
+scope: Approved responsibility boundaries mapped to current source; no claim that every named module is a class
+canonical-for: [module-responsibilities-and-dependencies]
+last-reviewed: 2026-10-21
+Section: Module boundaries > What remains undecided?
+**Planned:** final class/API extraction, production command/result schemas, stable generalized entity IDs, bounded public rule views, generalized serialization and safe live reconfiguration. Their names are architectural concepts; no signature or failure policy is approved by this page. The rationale is recorded in [ADR-001](../decisions/ADR-001-native-simulation-core.md), [ADR-002](../decisions/ADR-002-double-buffered-tile-jobs.md) and [ADR-003](../decisions/ADR-003-godot-bridge-and-immutable-snapshots.md). Runtime confidence must come from the [evidence ledger](../reference/validation-evidence.md).
+
+
+### Rank 5: architecture/chunk-tile-and-buffer-model.md — Chunk, tile, and buffer model > How does a generation chunk relate to simulation geometry?
+
+Document: Chunk, tile, and buffer model
+Path: architecture/chunk-tile-and-buffer-model.md
+document-kind: contract
+status: Current
+scope: Native storage, activity, scheduling and write-domain geometry; explicit fallback and buffered distinctions
+canonical-for: [spatial-scheduling-geometry]
+last-reviewed: 2026-10-21
+Section: Chunk, tile, and buffer model > How does a generation chunk relate to simulation geometry?
+**Current GEN-001/GEN-002 source:** an opt-in [`generation::Recipe`](../../native/include/cybersand/world_generation.hpp) chooses the square output partition for a procedural proposal. Sampling uses global coordinates, so requesting neighboring chunks in a different order or partitioning the same region does not change its material proposals. Generation neither runs the scheduler nor reads which neighbors happen to be resident. Flow Network and District Grammar derive shared macrocell ports from seed and global topology independently of output chunk size. Theme/brush changes cannot change that topology parameter locally; modules run before the connective skeleton is restored, while a final hard material override can intentionally close a route. These are generated layout relationships, not simulation write domains or new cellular transfer rules. The [generation contract](../systems/procedural-world-generation.md) owns their bounds/precedence; World admission separately requires its configured chunk size and a previously absent destination. Finite Hilbert/Morton tiles, aggregate grains, mask shapes and output chunks are separate spatial partitions. GEN-002 addresses each from absolute coordinates with signed floor division; changing output chunk size does not reset a field tile or grain. Consecutive Hilbert ranks connect only within one finite tile, while Morton ranks are not a continuous route. Neither substitutes for the generator's macrocell port network or the simulation scheduler's write domains. See the [field/curve contract](../systems/procedural-generation-fields-and-modifiers.md). GEN-004 adds a finite authored window of canonical world-zero region addresses. Its `region_size` defines semantic ownership independently of output chunks; changing that grid size intentionally changes the semantic identity namespace. A region-owned building can span many storage chunks. Neighboring regions derive the same shared boundary socket without observing chunk residency, and explicit passages and utility routes carry the cross-region connection. The [hierarchy contract](../systems/procedural-hierarchical-generation.md) distinguishes these finite plans from future persistent-world streaming.
+
+## Q19: Is the world really limited to 1024 pixels or twice the camera size?
+
+Canonical rank: 5
+
+Expected facts:
+
+- Native World uses sparse chunks with signed coordinates and explicit capacities; 1024-square is the current demo/save adapter scope.
+- The interest region and storage capacity differ; the 2x validation target is not a permanent world-size limit.
+- General safe live capacity reconfiguration and sparse persistence remain Planned.
+
+### Rank 1: operations/deepworks-exhibition.md — Deepworks — the exhibition below > Four full-size worlds and independent clocks
+
+Document: Deepworks exhibition
+Path: operations/deepworks-exhibition.md
+document-kind: guide
+status: Current
+scope: The 1024 by 1024 Deepworks map, sixteen districts, native foreground and rear exhibits, four-plane coverage, controls and authored source programme
+canonical-for: [deepworks-exhibition, deepworks-map-controls, deepworks-exhibition-programme]
+last-reviewed: 2026-10-20
+Section: Deepworks — the exhibition below > Four full-size worlds and independent clocks
+Every plane owns a separate **1024 × 1024 native material world**. The displayed map remains 1024 × 1024 in total; the four overlapping planes do not form a 2048 × 2048 terrain or sixteen separately loaded scenes. | Internal plane | UI name | Running target | Authority and coverage | |---|---|---:|---| | `play` | Foreground | 30 Hz | Full map, cleared circulation and sixteen interactive foreground apparatuses. | | `scripted` | Rear reactions & machinery | 20 Hz | Full map, independent rear scenery and sixteen native apparatuses. | | `effects` | Atmosphere | 15 Hz | Authored atmospheric material and bounded local environmental sources across every district. | | `background` | Distant architecture | 0 Hz | Full authored distant map, never ticked; the first copied material publication is cached. | The **rear layer** is the interacting background set: it runs real native material drops, reactions and transport. The fourth plane, whose internal key is `background`, is deliberately frozen distant architecture. Its pixels are rendered through the same canonical material appearance system. Hiding a plane only changes visibility; it does not pause its native clock or source schedule. All districts run together, including those outside the camera. The host serializes adapter calls into its four isolated worlds. Rendering consumes copied RG8 packets, never mutable native storage. Failure of a native step or publication stops the exhibition and freezes presentation; it is not silently replaced with a successful frame. Layer visibility, parallax, relief, haze and liquid reflections do not transfer cells, charge, mass or collisions between worlds. The [depth contract](../systems/depth-layers-and-parallax.md) owns their rendering and publication rules. Source: [`CyberDeepworks.reset_exhibition()` and `_fault()`](../../godot/scripts/exhibition/deepworks.gd), [`CyberDeepworksRuntime`](../../godot/scripts/exhibition/deepworks_runtime.gd) and [`CyberDepthLayerRuntime`](../../godot/scripts/depth/depth_layer_runtime.gd).
+
+
+### Rank 2: systems/depth-layers-and-parallax.md — Depth layers and parallax prototypes > Parallax and authoring coordinates
+
+Document: Depth layers and parallax prototypes
+Path: systems/depth-layers-and-parallax.md
+document-kind: contract
+status: Current
+scope: Opt-in Strata Theatre and Deepworks material-world layering, authored dimensions, foreground-derived relief and explicit interlayer events; separate from production world ownership
+canonical-for: [depth-layer-prototype, parallax-prototype, quantized-relief, interlayer-events]
+last-reviewed: 2026-10-20
+Section: Depth layers and parallax prototypes > Parallax and authoring coordinates
+**Strata Theatre defaults** to a 640 × 360 authored ROI over the existing 1024 × 1024 native backing. Its initial scale/parallax factors are: - play 1.00 / 1.00; - scripted 0.94 / 0.70; - effects 0.88 / 0.44; - background 0.78 / 0.18. **Current parameterized API:** [`CyberDepthLayerRuntime.reset(definitions, authored_size)`](../../godot/scripts/depth/depth_layer_runtime.gd) accepts each authored axis from 8 through 1024, including non-square worlds. Omitting the size retains 640 × 360. It validates the whole candidate before replacement; rejected dimensions, geometry or material ID 10 leave the existing worlds, clocks, cached background, queued edits and reset generation intact. Guard cells, effects sinks, weather, authoring bounds and simulation interest all use the accepted `world_size`. [`CyberDepthCompositor.configure(authored_size)`](../../godot/scripts/depth/depth_compositor.gd) configures that size before the compositor enters the scene tree. `set_view(origin, extent)` synchronizes the view uniforms and layout, clamps the camera to the authored extent and refuses invalid/non-finite views before mutation. An already configured compositor cannot be resized to a different world. `CyberDepthLayerSurface.configure(id, frozen, authored_size)` likewise sets the complete material viewport ROI while retaining the 1024 × 1024 RG8 backing. Each plane has its own canvas and material surface. Deepworks sets all layer scales to 1, with closely spaced parallax factors so rear apparatus remains associated with its district at every corner of the map. The [configuration reference](../reference/configuration-reference.md#depth-host-and-deepworks-configuration) owns exact dimensions, rate, event and presentation limits. `screen_to_layer()` is the exact inverse of the rendered layer transform. Painting therefore addresses the selected world's cell under the pointer.
+
+
+### Rank 3: reference/configuration-reference.md — Configuration reference > Native WorldConfig defaults
+
+Document: Configuration reference
+Path: reference/configuration-reference.md
+document-kind: reference
+status: Current
+scope: Exact native, adapter, fallback, presentation, and Web defaults; construction constraints and unimplemented production schema
+canonical-for: [current-configuration-values, adapter-worker-policy]
+last-reviewed: 2026-10-25
+Section: Configuration reference > Native WorldConfig defaults
+Scene-specific exception: each of the four [Neon Reliquary district tiles](../operations/neon-reliquary-demo.md) opens a 960 × 540 overview at `(32,16)`, with four 480 × 270 detail views and fixed `[32,16,960,540]` simulation interest. The stack order is Neon Reliquary, Middle Cyberberbia, Sewertech Alley, Industrial Underswamp. One finite 1024 × 1024 world is installed at a time; district selection loads the original paused layout. Each has no Rapier bodies or scheduled events and retains Baseline transport and Water8/coherence12. Per-tile capacities and ordinary sandbox defaults are unchanged. The scene guide owns viewpoints and controls. The separate [Blacksite Nine complex](../operations/blacksite-nine-demo.md) uses one 960 × 960 composition at `(32,32)` inside the same 1024 × 1024 native world. Its nine camera tiles are 320 × 320, with twelve reciprocal 28-cell-wide clear passages. Fixed interest is `[32,32,960,960]`; the ordinary owner execution policy and transport controls remain. The overview is 960 × 960, individual tile views are 320 × 320, and player follow uses 480 × 270. Camera selection preserves the whole world; reset restores all nine tiles. The existing schema-2 limits apply to the complete complex: 4,096 rectangles, eight world areas of construction writes, 1 MiB JSON and at most twelve presentation regions (nine are used). Source: [world.hpp::WorldConfig](../../native/include/cybersand/world.hpp). All members are construction-time; `cybersand_config_v2` mirrors its declared subset, with the separate liquid-policy entry point noted below. | Member | Default | Meaning | |---|---:|---| | `chunk_size` | 128 | Storage chunk edge | | `sleep_after_quiet_ticks` | 3 | Activity-block quiet threshold | | `ambient_temperature` | 200 | Initial signed temperature; physical units undefined | | `initial_chunk_reserve` | 64 | Initial reservation hint, not maximum/resident count | | `backend` | `PhasedInPlace` | Serial and phased implemented; Buffered tick throws | | `activity_block_size` | 32 | Activity/sleep block edge | | `scheduling_core_size` | 64 | Four-phase core edge | | `maximum_rule_radius` | 2 | Prepared write expansion; active catalogue requires at least 2 | | `worker_threads` | 1 | Standalone worker count; adapter overrides below | | `parallel_job_threshold` | 8 | Minimum phase jobs before pool dispatch | | `active_core_capacity` | 4096 | Gathered core candidates/results; checked before deduplication | | `active_chunk_capacity` | 4096 | Active-chunk scratch bound | | `maximum_chunk_count` | 4096 | Resident chunk limit | | `deferred_event_capacity` | 1024 | Accepted explosion queue bound | | `maximum_explosion_radius` | 64 | Largest accepted radius | | `liquid_solver_policy` | every liquid's current default | Immutable LCB-001 policy; construction refuses any mapping this build has not qualified ([foundation](../architecture/liquid-solver-family-policy.md#native-policy-foundation-current-2026-10-24)). Not mirrored by `cybersand_config_v2`; use `cybersand_world_create_with_liquid_policy_v1`. | **LCB pressure family block (#245 law, retained
+
+
+### Rank 4: operations/local-build-and-validation.md — Local build and validation > Deepworks and depth dimensions
+
+Document: Local build and validation
+Path: operations/local-build-and-validation.md
+document-kind: guide
+status: Current
+scope: Pinned source build entry points, Windows workspace wrappers, platform boundaries and freshness limits
+canonical-for: [build-entry-points, dependency-pins, build-freshness]
+last-reviewed: 2026-10-31
+Section: Local build and validation > Deepworks and depth dimensions
+The [Deepworks guide](deepworks-exhibition.md) owns the map and interactive controls; the [depth contract](../systems/depth-layers-and-parallax.md) owns parameterized surfaces, independent worlds and publication. The new scene uses the current materialized native runtime without changing its ABI or dependency pins. Open it with `godot --path godot -- --deepworks` or `godot --path godot res://deepworks.tscn`. Run focused headless checks with the pinned engine, for example: ```sh godot --headless --audio-driver Dummy --path godot --script res://tests/test_deepworks.gd godot --headless --audio-driver Dummy --path godot --script res://tests/test_deepworks_controller.gd godot --headless --audio-driver Dummy --path godot --script res://tests/test_deepworks_reactions.gd godot --headless --audio-driver Dummy --path godot --script res://tests/test_depth_dimensions.gd godot --headless --audio-driver Dummy --path godot --script res://tests/test_depth_compositor.gd ``` | Case | Meaningful scope | |---|---| | `test_deepworks.gd` | Full recipe, all districts/planes, passage openings, catalogue coverage, bounded programme and rejected-install atomicity. | | `test_deepworks_controller.gd` | Production host controls, view changes, input transforms, pause/reset/tour and foreground/rear painting. | | `test_deepworks_reactions.gd` | Actual full-map native simulation through the production source scheduler, copied material observations, reaction products and transport away from feeds. | | `test_depth_dimensions.gd` | Default, non-square, minimum and 1024 × 1024 worlds; failed reset preserves prior state; guards, weather, far-edge camera and input. | | `test_depth_compositor.gd` | Packet admission and surfaces, including an older generation with a higher serial leaving pixels and identity untouched. | | `test_depth_dimensions_render.gd` | Actual far-edge pixels across all four planes, full-size composition, pointer mapping and MAT-002 relief bands. | | `test_deepworks_render.gd` | Actual production scene pixels, usable HUD area, per-district rear/distant contribution and atmospheric visibility. | The two new `*_render.gd` cases require a graphical compatibility renderer: ```sh godot --audio-driver Dummy --rendering-method gl_compatibility --path godot \ --script res://tests/test_depth_dimensions_render.gd godot --audio-driver Dummy --rendering-method gl_compatibility --path godot \ --script res://tests/test_deepworks_render.gd ``` Use a 180-second per-test deadline, as in the shared regression runner. The retained depth runtime, default lab and material-surface regressions remain applicable. Linux suite discovery includes every new `test_*.gd`; rendered suffixes require a display and cannot pass by skipping headless pixels. The Windows lane separately discovers the applicable headless cases. Discovery does not establish that either platform executed this source successfully. Reaction acceptance additionally requires all 32 expected district/plane identities to complete and pass their mechanism checks. Check both the process exit status and the complete log for `SCRIPT ERROR:` / `ERROR:`. The original 626-plus-one summary was invalid despite exit 0; the [PR #185 correction](../audits/2026-10-20-deepworks-pr185-completion.md) records the missed transport assertions and repaired rear Stone chute. When saving `CYBERSAND_DEEPWORKS_REACTION_REPORT`, require `verified_exhibit_count == 32` and every record's `oracle_completed`, positive `oracle_assertions` and `verified` result in addition to zero failures. [`capture_deepworks.gd`](../../godot/tools/capture_deepworks.gd) creates review images and a manifest from the actual
+
+
+### Rank 5: systems/world-storage-and-interest-region.md — World storage and interest region
+
+Document: World storage and interest region
+Path: systems/world-storage-and-interest-region.md
+document-kind: contract
+status: Current
+scope: Sparse native storage, finite adapters, interest pause/resume and fresh generated-chunk admission; general persistence/reconfiguration/streaming remain separate
+canonical-for: [world-storage, camera-interest-region]
+last-reviewed: 2026-10-18
+Section: World storage and interest region
+**Current:** native World supports sparse signed-coordinate storage and explicit capacity limits. Desktop and Web use finite 1024×1024 adapters. Camera-interest filtering in the phased backend pauses excluded work and wakes newly included resident activity blocks once at tick entry, without elapsed-time catch-up. Safe live capacity expansion is **Planned**; broad world streaming is **Deferred** until the local foundation is mature. General sparse-world persistence is also **Planned**; the existing CYSD1 format reconstructs only a finite demo level. **Current GEN-001/GEN-002 source:** opt-in native procedural generators can prepare complete deterministic chunks on demand, and `World::install_generated_chunk` can admit one absent chunk through the exclusive owner. The workbench generates copied previews in its own bounded cache. These additions do not supply the Deferred manager for loading/evicting simulation residents or the Planned serializer for modified sparse worlds. See [procedural generation](procedural-world-generation.md) for that implemented candidate scope, [field/mask controls](procedural-generation-fields-and-modifiers.md) for the extension, and the dated [GEN-001](../audits/2026-10-18-gen001-procedural-generation.md)/[GEN-002](../audits/2026-10-18-gen002-fields-and-aggregates.md) evidence for validation limits. A “2×” workload is a validation target whose dimensions must be stated; it is not a maximum world size or proof that storage streaming exists. Current finite demo dimensions and reserved capacities do not define the future stored-world limit. Source identity is recorded in the [checkpoint](../operations/source-checkpoint-and-recovery.md); dated execution and artifact limits are in the [evidence ledger](../reference/validation-evidence.md).
+
+## Q20: What happens if I enqueue too many explosions or run out of reserved simulation space?
+
+Canonical rank: 1
+
+Expected facts:
+
+- Explosion enqueue rejects invalid/full input explicitly; effects are tick-boundary bounded work.
+- Capacity behavior is API-specific and must be reported. Avoiding hot tick allocation is an Approved target and Current only for preallocated fixture scope; lazy coordinator preparation may allocate chunks or temperature storage.
+- WorldConfig capacity defaults are not universal runtime adapter defaults; live resize is not already implemented.
+
+### Rank 1: operations/configuration-and-capacity-budgets.md — Configuration and capacity budgets > Explosion queue rejection and exhausted simulation space
+
+Document: Configuration and capacity budgets
+Path: operations/configuration-and-capacity-budgets.md
+document-kind: runbook
+status: Current
+scope: Existing construction/reservation and capacity outcomes; approved preparation discipline and unimplemented live resize
+canonical-for: [capacity-preparation-and-failure, safe-reconfiguration-requirements]
+last-reviewed: 2026-09-10
+Section: Configuration and capacity budgets > Explosion queue rejection and exhausted simulation space
+**Current:** enqueueing too many explosions returns false; accepted events apply at tick entry. Running out of resident or active simulation capacity throws and may leave a partially advanced tick. Such a World is latched failed: subsequent ticks, writes, reservation and publication are rejected until explicit clear or replacement. Accepted events are never automatically replayed. Reserved space reduces allocation pressure; lazy preparation may still allocate chunks or temperature fields. Adapter limits differ from standalone WorldConfig defaults, and live resizing is **Planned**. Avoiding hot tick allocation is an **Approved** requirement; the **Current** zero-allocation evidence is limited to prepared fixtures and their World-owned chunk/temperature counters, not every caller or allocation category. The API-specific outcomes are: | Boundary | Current outcome | Limitation | |---|---|---| | Invalid World construction | Throws before a usable World is returned | Constructor constraints are in `World::World` | | Resident/active chunk or core capacity | Explicit exception | Work may already have mutated this tick; no atomic rollback guarantee | | Explosion queue full/invalid request | Enqueue returns false | Caller must inspect acceptance | | Snapshot slots unavailable | `Backpressure` | Dirty state retained | | Snapshot patch/byte capacity insufficient | `CapacityExceeded`, exact requirements | Dirty state retained | | Native Godot tick exception | Adapter reports false/error once and latches failure | Desktop/Web stop and retain last valid publication; reset/replacement required | | Generalized command/transfer queue | **Planned** | No complete shared queue-pressure contract | Sources: [World](../../native/src/world.cpp), [snapshot publication](../../native/src/world.cpp), and [native adapter](../../godot/native_extension/cyber_native_cell_world.cpp). Core candidates are capacity-checked before deduplication, so the bound is not simply the number of unique output jobs. The [threading contract](../architecture/simulation-tick-and-threading.md) owns desktop/Web tick-failure handling. **Rejected as a future policy:** silently clipping requested regions, dropping accepted commands/dirty state, or hiding hot growth as safe expansion. These prohibitions are requirements, not a promise that every current failure preserves a pre-tick snapshot.
+
+
+### Rank 2: architecture/determinism-and-boundary-transfers.md — Determinism and boundary transfers > How are explosions and future transfers ordered?
+
+Document: Determinism and boundary transfers
+Path: architecture/determinism-and-boundary-transfers.md
+document-kind: contract
+status: Current
+scope: Native scheduling and hash semantics for declared fixture inputs; explicitly excludes complete replay guarantees
+canonical-for: [native-determinism-and-hash-coverage]
+last-reviewed: 2026-09-09
+Section: Determinism and boundary transfers > How are explosions and future transfers ordered?
+**Current:** `ExplosionCommand` stores signed centre coordinates, bounded positive radius and byte collapse strength. Enqueue rejects invalid bounds or a full preallocated queue or failed world by returning false. Accepted events commit in enqueue order during `begin_tick`, before active work gathering. The blast removes its core, writes Fire at an available centre and converts eligible Wall in the two-cell shell into granular Stone (`state_b = 1`). Event-written cells carry the current epoch and start ordinary material execution next successful tick. If that attempt fails, the World is quarantined and cannot replay events; explicit reset/replacement discards the failed state and any retained pending batch. **Planned:** buffered transfers and generalized worker-produced fracture, structural or long-range events. Their schema, canonical sort tuple and conflict rules are not approved by the existing explosion queue. The reserved Buffered backend cannot run. Accepted future transfers must have explicit conservation, capacity and conflict semantics; worker timing is not a permissible resolver.
+
+
+### Rank 3: architecture/simulation-tick-and-threading.md — Simulation tick and threading > What happens when a tick fails or overloads?
+
+Document: Simulation tick and threading
+Path: architecture/simulation-tick-and-threading.md
+document-kind: contract
+status: Current
+scope: Desktop, Web and native stage ordering, fixed quanta, failure behavior and permitted thread access
+canonical-for: [simulation-step-order-and-threading]
+last-reviewed: 2026-11-03
+Section: Simulation tick and threading > What happens when a tick fails or overloads?
+**Current, chosen for issue #1:** a thrown tick latches `World::has_failed()`. There is no transactional rollback. Tick/epoch, accepted explosion edits, dirty metadata, chunk preparation and even earlier completed phases may already have changed. `tick_index()` identifies the attempted tick; `completed_tick_index()` advances only after successful execution and activity finalization. No partial `TickStats` is returned as success. See [ADR-010](../decisions/ADR-010-failed-tick-quarantine.md). Failure clears the in-progress guard after any dispatched phase has drained. Further ticks, gameplay writes, reservations and snapshot publication are rejected. Serialized reads remain diagnostic access to partial state, not a valid save or playable continuation. The last successful immutable lease remains usable. Accepted explosions apply in enqueue order at tick entry. A completed batch drains; if application itself throws, the retained batch may include applied or partial events. Neither batch is ever automatically replayed: the world cannot be retried. An explicit `clear()` discards cells, activity, pending events, masks and tick identity, retains construction options/latest requested region, and permits fresh setup. Destruction/reconstruction is the other native recovery path. No allocation failure, capacity change or camera move implicitly recovers a world. **Current desktop:** the exclusive GDScript owner checks native false, latches failure and publishes a fresh status wrapper around its previous valid publication. It withholds partial character, cell, terrain and body results, rejects new emissions and clears pending prototype emissions. The pacing thread stays alive to receive reset; main-thread Rapier stops when the failure status is observed. This is asynchronous notification, not rollback of Rapier or character work that preceded the fault. The fallback's void successful tick path is unchanged. **Current Web:** the synchronous owner pauses, opens the menu, reports restart/load recovery, and suppresses painting, ticks, terrain/render publication and further Rapier stepping while failed. Closing the menu or toggling pause cannot retry. Rapier's preceding step is not rolled back. Reset/restart or a validated saved-level replacement creates fresh activity and clears the fault; invalid import preserves it. The adapter returns `false` with first-error telemetry, zeroes unsuccessful tick statistics, exposes attempted/completed identity separately, and does not count rejected repeat calls as new failures. Its reset prepares a candidate before swap. Godot level export rejects failed state; CYSD1 replacement is level recovery, not exact replay. Region/configuration requests may be latched while failed, but cannot wake or advance that world. Fresh setup uses the latest requested region. **Rejected for this fix:** rollback, automatic retry, resuming partial state and silent event replay. **Planned separately:** state-preserving live capacity growth and complete replay. [Dated regression evidence](../audits/2026-09-08-issue-1-failed-ticks.md) separates source tests, Windows owners and browser coverage. Eligible native transport runs each tick; fixed staggered secondary
+
+
+### Rank 4: architecture/simulation-tick-and-threading.md — Simulation tick and threading > Current native scheduler
+
+Document: Simulation tick and threading
+Path: architecture/simulation-tick-and-threading.md
+document-kind: contract
+status: Current
+scope: Desktop, Web and native stage ordering, fixed quanta, failure behavior and permitted thread access
+canonical-for: [simulation-step-order-and-threading]
+last-reviewed: 2026-11-03
+Section: Simulation tick and threading > Current native scheduler
+Source: [World `begin_tick`, `tick_phased`, `finish_tick`, `tick`](../../native/src/world.cpp). 1. Increment tick and compact update epoch; clear all cell epochs at wrap. Reset change observations and apply phased interest transitions in the same metadata pass, then apply queued external explosions in enqueue order before gathering active work. Event-written cells carry this epoch and begin ordinary material rules on the following tick. 2. Gather eligible cores. For each of four phases, starting at `tick_index % 4`, prepare write-domain storage and job-local results before dispatch. 3. Execute same-phase exclusive jobs, using the persistent pool only when the configured job threshold is met. Wait for completion, then merge local effects in deterministic core order before the next phase. 4. Finalize activity/sleep only for fully eligible blocks (retaining excluded activity), then statistics. Mark completed tick identity only on success. Render publication is an explicit caller operation after serialized mutation, outside `World::tick`; failed Worlds reject publication. Geometry and write restrictions are defined in [chunk/tile model](chunk-tile-and-buffer-model.md); scan/random/merge semantics and hash limits belong in [determinism](determinism-and-boundary-transfers.md). `SerialInPlace` is executable. `Buffered` throws as unimplemented.
+
+
+### Rank 5: operations/soliding-measurement.md — Soliding measurement contract > Reproduction and interpretation
+
+Document: Soliding measurement contract
+Path: operations/soliding-measurement.md
+document-kind: runbook
+status: Planned
+scope: Stage 3 discovery and Stage 4 acceleration measurements, beginning with immutable Current ordinary-sleep controls
+canonical-for: [soliding-measurement-contract]
+last-reviewed: 2026-09-19
+Section: Soliding measurement contract > Reproduction and interpretation
+Run from the dedicated issue #12 worktree using the workspace Python. Evidence and build outputs stay under `C:/kybersand/validation/local/issue-12-2026-09-19/`; use a new child name for every attempt. First prepare immutable input: ```powershell C:/kybersand/.local/python/Scripts/python.exe tools/experiments/run_soliding_baseline.py prepare --source-ref de332ea --out C:/kybersand/validation/local/issue-12-2026-09-19/baseline-artifact ``` After all independent compilation has stopped, run the registered matrix: ```powershell C:/kybersand/.local/python/Scripts/python.exe tools/experiments/run_soliding_baseline.py run --artifact C:/kybersand/validation/local/issue-12-2026-09-19/baseline-artifact/artifact.json --out C:/kybersand/validation/local/issue-12-2026-09-19/baseline-matrix --uncontended-note "Owner checked no concurrent build, Godot or benchmark; local host reserved for this campaign" ``` For a short correctness smoke, use a new output directory and add `--sizes 128 --repeats 1 --settle 4 --warmup 4 --ticks 8`. For a behavior-only translation supplement use `--sizes 128 --repeats 1 --ticks 2048 --offsets 0:0,127:1,-129:-1,65:64,-257:1`; its single repetition is not a timing claim. The artifact manifest pins inputs and compile command; registration pins configurations; each attempt has separate stdout/stderr and execution metadata; `completed.json` retains all results and failure counts. Evidence summaries must identify the actual full source commit, harness delta, executable, host and limitations. Windows native evidence does not satisfy Linux/runtime-floor, desktop asynchronous ownership or Web compatibility / threaded browser gates. No broader acceptance follows from this control alone.
+
+## Q21: Does native Water move twenty-four cells per update, and what does viscosity mean?
+
+Canonical rank: 3
+
+Expected facts:
+
+- The 24-cell travel rule belongs to the discrete GDScript fallback, not native Water.
+- Native Water stores 1-255 mass in state_a and performs conserved pairwise gravity/diagonal/lateral transfers.
+- Viscosity scales native lateral transfer rate independently of yield and adhesion; Water viscosity is zero.
+
+### Rank 1: architecture/lcb-pressure-inertial-handoff.md — LCB pressure and inertial implementation handoff > Inertial (`inertial_cellular_v1`, #212)
+
+Document: LCB pressure and inertial implementation handoff
+Path: architecture/lcb-pressure-inertial-handoff.md
+document-kind: design
+status: Approved design
+scope: LCB-001 pressure/W-CY and shared-native handoff plus Planned LCB-005 inertial requirements — material hooks, state, laws, boundaries, invalidating failures and campaign APIs; detailed setup/receipt/accounting codecs have their own canonical owner
+canonical-for: [lcb-pressure-inertial-handoff]
+last-reviewed: 2026-10-25
+Section: LCB pressure and inertial implementation handoff > Inertial (`inertial_cellular_v1`, #212)
+**What it must add.** Retained motion between ticks. "Faster CellularYield" is **not** inertia: `flow_as_yielding_liquid` (L2779) only changes a per-update lateral probability, `(256−viscosity)/256`, and keeps no velocity (mechanism report §E). **State** (optional, per owning cell): - signed vx/vy in fixed point (e.g. 1/16 cell per tick; width frozen per Gate B before code); - signed subcell accumulators; - saturation at a declared maximum (≤ the bounded write radius per tick); - default 0, and reset to 0 on product, paint or reconstruction. **Laws:** one ordered update, `inertial-update-v1` ([transition matrix §5](liquid-state-transition-matrix.md#5-velocity-and-momentum-in-pf-flow); executable contract model `tools/lcb/inertial_contract.py`). Per tick: 1. U1: the support test runs before any velocity change. 2. U2: exactly one gravity application. 3. U3: for a supported cell, either diagonal re-aim **(A)**, or support cancellation of this tick's gravity followed by blocked-fall deflection **(B)** of the velocity *carried in* from earlier ticks. 4. U4: saturation. 5. U5: damping, truncated toward zero. 6. U6: accumulator travel with a recheck of every target. The first contact ends travel. Wall, body mask and same-material cells block; same-material contact is inelastic in v1. Lighter foreign material may still exchange only on eligible downward moves, including when both materials select IN. Family equality alone does not make a foreign material an inelastic same-material contact. 7. U7: rest and sleep eligibility. Properties of this update: - **Horizontal momentum from rest comes only from (A) and (B).** There is no pressure or column-height term. - **A supported cell at rest whose diagonals are blocked carries no `vy`, so it never drifts sideways.** If a diagonal target is eligible, U3a re-aims from rest by design. The mandatory static closed-pool regression is unchanged. - **Eligibility is directional** (re-review N1). A lighter foreign liquid is entered only by a move with `dy = +1`, straight or diagonal down, which is the vertical density exchange of Current `can_density_exchange`. A horizontal move never swaps; a lighter neighbour is a horizontal contact. - **Deflection loss** (re-review N2) is `|vx| + vy_in − |vx + s·d|`. The signed impulses `(s·d, −vy_in)` are booked separately. - At a released dam, face cells whose diagonal target becomes Empty re-aim and gain vx. Cells that fall farther carry more speed into the turn or the landing, so depth dependence *can* emerge kinematically, but it is not guaranteed. Ledgers: - the **signed per-component momentum** ledger `v_after = v_before + g + Σ impulses` closes exactly; - a **separate non-negative L1 speed-loss** ledger books dissipation and the support constraint; - truncation remainders are audited. Also: - no velocity is written
+
+
+### Rank 2: architecture/lcb-pressure-inertial-handoff.md — LCB pressure and inertial implementation handoff > Shared integration points (both families)
+
+Document: LCB pressure and inertial implementation handoff
+Path: architecture/lcb-pressure-inertial-handoff.md
+document-kind: design
+status: Approved design
+scope: LCB-001 pressure/W-CY and shared-native handoff plus Planned LCB-005 inertial requirements — material hooks, state, laws, boundaries, invalidating failures and campaign APIs; detailed setup/receipt/accounting codecs have their own canonical owner
+canonical-for: [lcb-pressure-inertial-handoff]
+last-reviewed: 2026-10-25
+Section: LCB pressure and inertial implementation handoff > Shared integration points (both families)
+| Need | Where today | Requirement | |---|---|---| | Per-World policy | `WorldConfig::liquid_solver_policy` beside `WaterExperimentPolicy` | **Current foundation (2026-10-24):** `LiquidSolverPolicy` with the [canonical hashing](liquid-solver-family-policy.md#native-policy-object-proposed), validated before allocation ([foundation](liquid-solver-family-policy.md#native-policy-foundation-current-2026-10-24)). **Current on main:** Water × `pressure_flow_v1/reference` with one optional family block. Accepted main also qualifies Water × `cellular_yield_v1/reference` with its v2 viscosity block. Further candidate families must extend the running build's qualified cells and schemas. | | Construction | Native `PreparedWorldBuilder`; bridge `build_liquid_policy_world`; other #202 constructors | Native explicit normalization and actual payload/quantity checks occur on an unexposed candidate. Native-issued outcome preserves retained World/generation. Godot typed normalization opt-in and remaining #202 constructors are Planned. | | Family dispatch | `update_rule_kernel` L2829 (`RuleKernel` switch), after generic pair chemistry L2797 | Dispatch motion by family only for liquids with a non-default assignment. Keep stages 1, 2, 4 and 5 from the [material hooks](liquid-solver-family-policy.md#material-hooks-versus-motion-gate-c-correction-2026-10-23) unchanged. **Current on main:** `RuleKernel::Water` calls `update_water_pressure` in a pressure World; accepted main also dispatches W-CY explicitly. | | Moves and swaps | `move_cell` L2323, `try_move` L2446, `transfer_water` L2481, `relocate_stored_cell` L1840 | Optional state moves atomically with its tuple; retired on Empty/conversion (R1). | | Writes and products | `write_cell`, `set_cell_state`, generic pair products | Current native: reset family state even for same-material products, retain family-only mutation witnesses, book gross visible+overfill Water and initialized output per catalogue rule; separate material populations. | | Transport coupling | `mix_after_motion` L2568 | Called with the real moved quantity (`maximum()` for a whole cell). | | Body masks | `transient_obstacle_at`, `update_cell` L3500 skip | Masks are solid for motion and head. No new Rapier force. | | Scheduling | `begin_tick` L3524+, block sleep after 3 quiet ticks | Sleep only when family state is at rest. Count work by visited cells and scheduled cores, not active-chunk flags (mechanism report §C). | | Hashing/persistence | `physical_state_hash`, `save_physical_state`, `restore_physical_state` | Current main native hash2/CYPS2 include shared accounting and construction bindings; historical content/state hashes unchanged; old CYPS1 explicitly refuses ([definition](pressure-flow-v1.md#physical-state-hash-v2)). | **APIs required to unblock the registered tests** (in `lcb-physics-contracts.json`): - policy readback (Current foundation; the #245 pressure adapter adds `family_parameters`); - versioned physical-state hash (`get_physical_state_hash()`, Current main version 2); - `inspect_cell` extended with family state (`family_state` in pressure Worlds, Current on main); - `inspect_gas_compartments()` returning id, generation, ancestry, amount, volume, vent state and topology revision (Current on main); - native bounded per-reaction quantity aggregates and separate material-cell counts (not ordered replay); #202 owns their complete host collection; - a front/centroid observation metric (optional; the tests currently scan with `material_at`).
+
+
+### Rank 3: systems/water-design.md — Water design > Current native representation and flow
+
+Document: Water design
+Path: systems/water-design.md
+document-kind: contract
+status: Current
+scope: Native conserved Water, coherent emission and adhesion, rest/hash fixtures, fallback differences, and future reaction accounting
+canonical-for: [native-water-semantics, native-fallback-water-differences]
+last-reviewed: 2026-10-24
+Section: Water design > Current native representation and flow
+[World::update_water and transfer_water](../../native/src/world.cpp) own the rules; [MaterialRules](../../native/include/cybersand/material.hpp) supplies immutable descriptors. | Value | Meaning | |---|---| | Material ID 3, `state_a` 1–255 | Water with that many fixed-point mass units | | Empty | Zero Water mass | | `state_b` | Remaining coherent-emission lateral delay | | Viscosity | Dimensionless gameplay rate; Water uses 0, the fastest setting | | Lateral rest tolerance | No lateral transfer when source mass is at most target mass + 1 | | Lateral relaxation | Request three quarters of the positive mass difference, rounded down | Painting ordinary Water initializes a full 255-unit cell. Gravity attempts down, then both diagonals in deterministic order. It merges into Water or moves/swaps whole cell state into a permitted destination; directional density exchange lets Water move through lighter accepting media. Lateral equalization requests three quarters of the positive mass difference, scaled by viscosity. This crosses the pair midpoint but contracts its imbalance; the one-unit rest tolerance remains. A transfer is capped by the requested amount, source mass, and destination capacity. Zero remaining source mass converts the source to Empty. Water has no persistent native lateral direction or travel budget. Transfers stay inside the phase-owned bounded write domain and mark source/destination activity and render dirtiness. Viscosity does not expand the kernel radius.
+
+
+### Rank 4: reference/configuration-reference.md — Configuration reference > Desktop fallback simulation constants
+
+Document: Configuration reference
+Path: reference/configuration-reference.md
+document-kind: reference
+status: Current
+scope: Exact native, adapter, fallback, presentation, and Web defaults; construction constraints and unimplemented production schema
+canonical-for: [current-configuration-values, adapter-worker-policy]
+last-reviewed: 2026-10-25
+Section: Configuration reference > Desktop fallback simulation constants
+Source: [cell_world.gd](../../godot/scripts/cell_world.gd). These are not native Water/activity semantics; the Web compatibility profile still uses native cells. | Exact name | Value | |---|---:| | `WORLD_WIDTH` / `WORLD_HEIGHT` | 1024 / 1024 | | `ACTIVITY_BLOCK_SIZE` / `CELL_SLEEP_TICKS` | 16 / 8 | | `SPARSE_FLIGHT_ACTIVE_BLOCK_THRESHOLD` / `SPARSE_FLIGHT_DISTANCE` | 12 / 2 | | `FREE_LIQUID_LATERAL_FLOW` | 255 (directed-flow sentinel, not native mass) | | `YIELDING_LIQUID_LATERAL_BUDGET` / `YIELDING_LIQUID_PRESSURE_YIELD` | 6 / 1 | | `PASTE_LIQUID_LATERAL_BUDGET` / `PASTE_LIQUID_PRESSURE_YIELD` | 3 / 3 | | `WATER_VISCOSITY` / `SLUSH_VISCOSITY` / `PASTE_VISCOSITY` | 0 / 192 / 240 | | `MAX_LIQUID_LATERAL_FLOW_RATE` | 24 cells per serial update | | `COHERENT_LIQUID_LATERAL_FLOW_RATE` | 1 | | `WATER_SURFACE_ADHESION` / `SLUSH_SURFACE_ADHESION` / `PASTE_SURFACE_ADHESION` | true / true / true | | `LIQUID_PRESSURE_SAMPLE_DEPTH` / `LIQUID_LEVEL_SEARCH_DISTANCE` | 32 / 256 | The threshold enables isolated-cell alternate-tick free flight, not the removed load-derived block stride. Current fallback reports stride one and zero deferred blocks; excluded blocks retain wake flags. Native Water's three-quarter lateral mass-difference relaxation, 12-tick coherence delay, 48-unit supported-film threshold and separate fallback mechanics belong to the [Water contract](../systems/water-design.md). Material cadence, including specialized Ice sampling, belongs to [material kernels](../systems/materials-and-rule-kernels.md#kernel-execution-and-cadence).
+
+
+### Rank 5: architecture/liquid-solver-family-policy.md — Liquid solver family policy and API specification > Material hooks versus motion (Gate C correction, 2026-10-23) > Whole-cell Water law (Current main)
+
+Document: Liquid solver family policy and API specification
+Path: architecture/liquid-solver-family-policy.md
+document-kind: design
+status: Approved design
+scope: Current-main four-family identities, immutable per-World per-material policy, material/variant admission and readback, W-CY material block v2 and IN family block v2; historical design checkpoints and source/platform qualification remain separately scoped
+canonical-for: [liquid-solver-family-policy]
+last-reviewed: 2026-11-03
+Section: Liquid solver family policy and API specification > Material hooks versus motion (Gate C correction, 2026-10-23) > Whole-cell Water law (Current main)
+`World::update_water_cellular_yield` keeps material identity, generic pair chemistry, coherence countdown, density exchange, temperature, body contact and actual-moved-mass coupling. Its stage 3 moves whole tuples only: gravity then diagonals, followed by cadence-gated lateral yield into Empty. There is no same-Water merge, FreeMass relaxation, fractional adhesion film or Paste/Slush-descriptor fallback. Every Water cell contains `maximum()`. [`WaterCellularYieldParameters`](../../native/include/cybersand/water_cellular_yield.hpp) declares law version 1 and optional Water material block **version 2**: `viscosity_index` 0..255, default 0. The deterministic lateral roll succeeds with probability `(256 - viscosity_index) / 256`. Coherence suppresses lateral motion for its full delay while gravity remains responsive. Configured Water cadence and one-/two-side transport settings retain their own meanings. A legal future side keeps an interaction deadline when cadence defers work, a viscosity roll misses, or one-side sampling chooses the blocked side. Thus a slow/stochastic lane cannot sleep permanently before its next opportunity; permanently blocked pools can still reach ordinary block sleep. Regressions are [`test_water_cellular_yield.cpp`](../../native/tests/test_water_cellular_yield.cpp), including liveness, material hooks and 1/4-worker continuation. Fractional ingress, explicit normalization and exact source/sink accounting are owned by [native prepared setup](liquid-prepared-setup-and-receipts.md).
+
+## Q22: How do calm water emission and the adhesion toggle differ?
+
+Canonical rank: 1
+
+Expected facts:
+
+- Calm/coherent emission uses an explicit command flag and a 12-tick state_b delay on lateral spread, not a new material.
+- The native adhesion toggle independently retains supported Water film at or below 48/255 when enabled.
+- Viscosity, yield and adhesion are distinct; fallback rules differ.
+
+### Rank 1: systems/water-design.md — Water design > Coherent emission and surface adhesion
+
+Document: Water design
+Path: systems/water-design.md
+document-kind: contract
+status: Current
+scope: Native conserved Water, coherent emission and adhesion, rest/hash fixtures, fallback differences, and future reaction accounting
+canonical-for: [native-water-semantics, native-fallback-water-differences]
+last-reviewed: 2026-10-24
+Section: Water design > Coherent emission and surface adhesion
+Coherent/calm emission is a command flag on Water, not a second material ID. [CyberNativeCellWorld::emit_disc](../../godot/native_extension/cyber_native_cell_world.cpp) initializes a 12-tick countdown. It travels with mass; merging takes the larger delay. The current update decrements it but uses its pre-decrement value to suppress that update's lateral equalization. Gravity and density exchange still operate. Later edge falls regain ordinary spray after the delay expires. Adhesion is independent of viscosity and emission mode. When enabled, remaining Water mass at or below 48/255 skips lateral spreading if the cell below is neither Empty nor Water. Gravity was already attempted. Disabling adhesion removes that supported-film threshold; it does not select a different gravity solver. **Approved owner intent:** preserve fast fronts, airborne spray, and supported slope film as useful behavior. Paste/Slush intentionally retain heap-capable whole-cell yield. Per-material native adhesion traits remain **Planned**. <a id="conservation-stable-rest-and-the-correct-hash"></a>
+
+
+### Rank 2: MATERIAL_LAB.md — 1024² material lab > Desktop controls
+
+Document: 1024² material lab
+Path: MATERIAL_LAB.md
+document-kind: runbook
+status: Current
+scope: Desktop and Web manual controls, repeatable interaction observations, construction recipes, and finite-demo limits
+canonical-for: [material-lab-controls, manual-material-recipes]
+last-reviewed: 2026-10-18
+Section: 1024² material lab > Desktop controls
+The detailed [Neon Reliquary demo](operations/neon-reliquary-demo.md) is available through **F11** or its launcher. It opens a paused machine-cathedral scene with five viewpoints; **F8** supplies a clean view and **P** resumes its materials. **Below / Above** and the district selector navigate its four-tile descent: Neon Reliquary, Middle Cyberberbia, Sewertech Alley and Industrial Underswamp. Changing district loads that tile's original paused layout; changing its camera view preserves edits. **Shift+F11** or **Blacksite Nine** opens the separate [connected 3×3 complex](operations/blacksite-nine-demo.md). Use its **3×3 tile map** to frame any district, **Whole complex** for the overview, and **F** to follow the player. A/D and held Space move through the twelve connecting galleries and shafts. Tile framing preserves edits everywhere; **R** restores the entire nine-tile world. Source: [main.gd::_unhandled_key_input, update_camera, update_worker_frame_state](../godot/scripts/main.gd). | Control | Effect | |---|---| | LMB / RMB | Emit selected material / erase | | A / D; Space | Move character left/right; jetpack | | Arrow keys; F | Pan camera (disables follow); toggle character follow | | 1–6 | Quick slots: Sand, Water, Wall, Smoke, Paste, Slush | | Q / E or Page Up / Page Down | Cycle all paintable materials | | Shift plus those cycling keys | Jump core/reactive, medieval, industrial, luminous, woods, stone/earth, metals and glass/chemical groups | | V / B | Cycle logical view / independent per-side simulation margins | | L | Toggle camera-interest / whole finite-world simulation | | C | Toggle ordinary Water emission / coherent lateral-delay emission | | T | Toggle native Water supported-film adhesion | | K | Toggle render smoothing; also forwards fallback sparse-flight sampling option | | H | Cycle render publication target through 30/45/60 Hz | | G | Toggle glow overlay and glow SubViewport updates (desktop and Web) | | F3 | Toggle statistics and periodic status-string construction | | P / R | Pause / reset | Paint slots map to stable material IDs; slot 5 is Paste ID 20 and slot 6 is Slush ID 21. The status line identifies the selected material. View/margin presets and defaults are owned by the [configuration reference](reference/configuration-reference.md). The 1920×1080 window aspect-fits the logical view, and mouse mapping uses the same fitted rectangle. Changing H or K does not change native fixed-tick semantics or enable a strict simulation mode. Target cadence is not guaranteed wall-clock progress.
+
+
+### Rank 3: systems/water-design.md — Water design > Isolated Issue17 experiment branch
+
+Document: Water design
+Path: systems/water-design.md
+document-kind: contract
+status: Current
+scope: Native conserved Water, coherent emission and adhesion, rest/hash fixtures, fallback differences, and future reaction accounting
+canonical-for: [native-water-semantics, native-fallback-water-differences]
+last-reviewed: 2026-10-24
+Section: Water design > Isolated Issue17 experiment branch
+The [precision registration](../operations/state-precision-experiment.md) defines a native-only experimental build on codex/issue-17-state-precision. That branch uses a fixed wide carrier and uint16 native mass access for all precision arms. Production semantics described above remain the reference; compact adapters, render projection and saves are not precision-aware migration paths.
+
+
+### Rank 4: systems/water-design.md — Water design > Current Water Feel Lab policy
+
+Document: Water design
+Path: systems/water-design.md
+document-kind: contract
+status: Current
+scope: Native conserved Water, coherent emission and adhesion, rest/hash fixtures, fallback differences, and future reaction accounting
+canonical-for: [native-water-semantics, native-fallback-water-differences]
+last-reviewed: 2026-10-24
+Section: Water design > Current Water Feel Lab policy
+**Current, experiment-only, 2026-09-12:** issue #19 adds an immutable World-creation policy that emulates Water mass semantics from 3..8 bits and coherent emission from 0..12 ticks in the existing superset carrier. Production/default Water remains mass8/coherence12. The candidate setting is validated and applied only through a fresh-world transaction at the desktop worker or Web main-thread owner boundary; invalid application preserves the current World. The policy, scenario/seed and provenance are normalized once for profile/config, launch and panel selection. Four-level and oriented interface modes are derived presentation and do not change mass, collision, waking or state hashes. The [Water Feel Lab runbook](../operations/experiment-tower.md#current-19-water-feel-lab-extension) and [dated evidence](../audits/2026-09-12-issue-19-water-feel-lab.md) own candidate procedure and acceptance. This experiment neither repacks Cell nor allocates bits.
+
+
+### Rank 5: systems/water-design.md — Water design > Planned and deferred changes
+
+Document: Water design
+Path: systems/water-design.md
+document-kind: contract
+status: Current
+scope: Native conserved Water, coherent emission and adhesion, rest/hash fixtures, fallback differences, and future reaction accounting
+canonical-for: [native-water-semantics, native-fallback-water-differences]
+last-reviewed: 2026-10-24
+Section: Water design > Planned and deferred changes
+**Planned:** explicit source/sink reaction accounting, mass-return commands, general replay capture, and complete mirrored/edge acceptance. **Deferred:** a general fluid solver. Active-only buffered flux is a retained **Planned** candidate only if measured bias or a future field justifies it; no buffered solver is selectable today. **Rejected:** a competing liquid world, equivalent swaps to animate rest, or finite travel history as free Water equilibrium.
+
+## Q23: How should I tell whether a shimmering pool is a fluid bug or just its shader?
+
+Canonical rank: 1
+
+Expected facts:
+
+- Inspect content changes/mass/dirty observations; state_hash advances with ticks and is not a stable-rest oracle.
+- Stable coordinate/mass dithering is presentation-only and must not wake or mutate cells.
+- Settling/conservation evidence applies to bounded named fixtures, not arbitrary mixtures.
+
+### Rank 1: systems/water-design.md — Water design > How should I diagnose a shimmering pool?
+
+Document: Water design
+Path: systems/water-design.md
+document-kind: contract
+status: Current
+scope: Native conserved Water, coherent emission and adhesion, rest/hash fixtures, fallback differences, and future reaction accounting
+canonical-for: [native-water-semantics, native-fallback-water-differences]
+last-reviewed: 2026-10-24
+Section: Water design > How should I diagnose a shimmering pool?
+**Current diagnostic:** compare exact Water mass, `World::content_hash()`, and dirty/activity observations before treating shimmer as a fluid bug. If authority is stable while the pool visibly changes, inspect its shader, presentation-time animation, and render-only dither. If a closed pure-Water fixture loses mass or continues changing cell content after its rest criterion, investigate simulation transfers, conversions, or waking. Appearance alone cannot decide which path failed. Water coverage dither derives from stable world coordinates and mass; it cannot mutate authoritative cells or wake the simulation. `transfer_water` conserves exact integer mass for each Water pair. A closed pure-Water fixture must preserve the exact total every tick, including sleep, wake, and boundary crossings. Consuming/producing reactions are a separate accounting problem; no general conserved reaction-mass model is implemented. Use `World::content_hash()` to observe rest: it includes material/state/ temperature at meaningful coordinates and excludes tick/epoch/activity. `state_hash()` includes advancing tick and update epoch plus additional scheduler state, so it is expected to change during otherwise resting ticks. Compare state hashes at matching ticks/configurations for supported fixture parity; neither hash is a complete replay checkpoint. [Native tests](../../native/tests/test_world.cpp) provide explicit bounds: - `test_conserved_water_levels_and_sleeps`: four-worker phased fixture, 48×255 initial mass, at most 2,000 ticks to reach 40 unchanged content hashes, then 40 further mass/rest checks and zero active chunks. - `test_water_surface_column_mass_is_level`: settled column-mass difference at most 8/255 of a cell. - `test_water_conserves_across_storage_boundaries`: exact boundary conservation. These are fixture bounds, not universal settling-time guarantees. Additional mirrored, shifted, mixed-material, and every-direction edge cases remain needed.
+
+
+### Rank 2: operations/microscenarios-programme.md — CyberSand MicroScenarios and intermaterial-interactions programme > Discovery-to-regression loop
+
+Document: CyberSand MicroScenarios and intermaterial-interactions programme
+Path: operations/microscenarios-programme.md
+document-kind: design
+status: Planned
+scope: Canonical development-order graph for reusable exploratory MicroScenarios, anomaly triage, non-kinetic intermaterial-interaction authoring/tuning, and staged showcase work
+canonical-for: [microscenarios-programme, microscenarios-development-order, intermaterial-interaction-programme]
+last-reviewed: 2026-09-20
+Section: CyberSand MicroScenarios and intermaterial-interactions programme > Discovery-to-regression loop
+When an interesting world exposes odd behavior, use this loop: ```text play/explore a MicroScenario | v capture anomaly + exact identities | v reduce to the smallest reproducible scenario/fixture | v triage ownership +----+---------+-----------+-------------+ | | | | kinetic/ intermaterial state/phase cross-system contact interaction bug integration physics | | | | +--------------+-----------+-------------+ | v bounded fix/tuning issue | v retain regression + evidence | v return to the larger world ``` Do not classify first and force the symptom into that subsystem. Capture and reduce first. For example, "Lava sinks through the Stone it created" could be contact/support, permeability/density exchange, product-state initialization, update ordering, an intermaterial rule, or a cross-system defect. Every retained observation/fixture should identify at least: - scenario ID/schema/recipe version and deterministic seed; - source revision and tested runtime artifact/platform; - material catalogue/version identity; - kinetic/transport profile and relevant Water/material policy; - intermaterial-interaction profile/version/hash once INT-000 exists; - scheduled inputs and relevant user actions; - expected/observed outcome and whether it is exploratory, accepted, limited or awaiting revalidation.
+
+
+### Rank 3: operations/architecture-programme.md — CyberSand architecture experimental programme > G. Measurement protocol
+
+Document: CyberSand architecture synthesis and experimental programme
+Path: operations/architecture-programme.md
+document-kind: design
+status: Planned
+scope: Evidence gates for Cell representation, liquid state and transport, presentation, and conditional sparse motion; no production architecture selection
+canonical-for: [architecture-experimental-programme]
+last-reviewed: 2026-10-24
+Section: CyberSand architecture experimental programme > G. Measurement protocol
+Before candidate implementation, commit a small experiment registration: question, variants, semantic comparator, selected seeds/scenes, physical units, fixed knobs, run horizon, capacity limits, instrumentation cost check, primary metric and gate. Use fresh worlds and pinned release builds. Record source HEAD plus delta, compiler/flags, CPU/OS, artifact/profile hashes, worker count and exact commands. Do not measure while other builds run. Keep raw logs in `C:/kybersand/validation/local/<dated-experiment>/`; retain compact tables and interpretation under source documentation. Missing PMU/GPU counters are named gaps, never estimated misses presented as measurements. Default bounded screen: 5 deterministic seed/translation cases, 1 and 4 workers, 1,800 fixed ticks for behavior; epoch tests at least 2,048 ticks with sleepers and retained inactive chunks. Performance uses 7 interleaved baseline/candidate process pairs after a declared 120-tick warmup in the steady workload; startup and initial settling are measured separately. Registration can reduce redundant cases using retained evidence, with reasons recorded before candidate results. Finalists use up to 20 seeds/7,200 ticks only for a specific unresolved long-tail or drift concern, not an automatic broad campaign. **Performance:** p50/p95/p99/max microseconds per completed tick and total cost; ns/visited cell; processed/visited distinction; aggregate active blocks and actual visited-cell ticks (do not relabel blocks*1024 as exact active cells); successful transfers/writes/lateral probes; scheduled cores and worker scaling; wake/sleep churn; epoch clear duration/frequency; cell/sidecar/metadata/snapshot bytes and total process memory; preparation versus worker allocation, pool high-water and overflow; stage times/cache/bandwidth where instrumented. Separate render upload, coupling and full frame pacing from core tick timing. **Behavior:** exact material ledger and explicit reaction/ROI source/sinks; normalized Water column-mass spread and levelness; front/discharge/spread; content-stable time and residual work; supported-film lifetime and tiny residues; jet range/COM/direction persistence; spray size distribution; species interface mixing/transport/deposition; penetration/barrier/overlap results; repeat/parity; render coverage error and temporal artifacts. For B/#12 account for material in cells, promoted pool/membership, retained pending owner and explicit outputs. Record momentum separately from intentionally decaying bias. Research screening defaults (new programme proposals, not existing physics policy): flag >15% paired p95 core cost regression, >1 ms additional epoch-clear excess over neighboring ordinary ticks, or unbounded active lifetime for explicit review. For M/B register a concrete target such as directional COM displacement/range and a minimum useful improvement before runs; there is no evidence-backed universal jet-distance target yet. If no target can be justified, return no-go at admission. Report paired distributions/ranges and measurement noise, not just one percentage. These flags do not prove a candidate unacceptable for every feature; G compares benefit and whole cost. A changed budget is a new registered experiment, not a post-hoc waiver. No production migration is authorized by passing these
+
+
+### Rank 4: operations/profiling-observability-and-performance.md — Profiling, observability, and performance > Run a useful comparison
+
+Document: Profiling, observability, and performance
+Path: operations/profiling-observability-and-performance.md
+document-kind: runbook
+status: Current
+scope: Current native/Godot observations, benchmark procedure, metric boundaries, and unimplemented production telemetry
+canonical-for: [performance-measurement, metric-interpretation]
+last-reviewed: 2026-10-31
+Section: Profiling, observability, and performance > Run a useful comparison
+1. Record [source/artifact identity](source-checkpoint-and-recovery.md), platform, tool versions, profile, logical-thread report, actual worker count, and whether the tested binary was rebuilt. 2. Freeze the geometry, material/input sequence, tick count, warmup, cadence, view/margins, preallocation and presentation options. Define exactly what current and 2× fixtures mean. 3. Establish correctness first: the relevant hash at matching ticks, exact conserved quantities, and required collision/lifetime checks. 4. Repeat comparable runs, preferably interleaved with the known baseline. Keep mean, p95, maximum, work counts, memory/pressure, and environment caveats. 5. Profile simulation, bridge copies, collider extraction/processing, texture update, and shader/glow cost separately. Set acceptance thresholds from representative hardware and preserve raw failures/outliers. Timings are observations, not hidden authoritative inputs. Auto is a fixed policy; benchmark results do not retune it. No selectable strict runtime fidelity mode exists.
+
+
+### Rank 5: operations/profiling-observability-and-performance.md — Profiling, observability, and performance > Avoid common misreadings
+
+Document: Profiling, observability, and performance
+Path: operations/profiling-observability-and-performance.md
+document-kind: runbook
+status: Current
+scope: Current native/Godot observations, benchmark procedure, metric boundaries, and unimplemented production telemetry
+canonical-for: [performance-measurement, metric-interpretation]
+last-reviewed: 2026-10-31
+Section: Profiling, observability, and performance > Avoid common misreadings
+| Pattern | Next investigation | |---|---| | One core busy, others idle | Phase job count versus dispatch threshold; a persistent pool can intentionally run sparse phases serially | | Small dirty patch KiB but low FPS | Full GPU texture update, synchronization, palette/glow, or unrelated presentation work | | Large collider peak, small Rapier step | Separate geometry extraction, packet copy/validation, and indivisible collider rebuild | | High snapshot pressure/age | Consumer lag and retained dirty payload | | Material appears still after camera return | Check failure status and selected cores against the [pause/re-entry contract](../systems/world-storage-and-interest-region.md#interest-filtering-and-re-entry); retained offscreen activity is not selected work | | Active work never settles | Equivalent state changes, wake feedback, or genuine lifecycle work | | Persistent unresolved body pixels | Bounded ejection exhausted, stale samples, or dense surroundings | | Visually moving surface with stable content | Presentation-time shader motion; inspect authority before changing simulation | The collider consumer's 32-chunk/750 µs limits are checked between chunks and exclude extraction/packet handling; one chunk may exceed the time budget. `ImageTexture.update` still uploads the full 2,097,152-byte RG8 image for a changed native publication. Dirty bridge bytes cannot substitute for that cost.
+
+## Q24: Can we approximate interactions to keep frame times stable, and is strict mode available now?
+
+Canonical rank: 3
+
+Expected facts:
+
+- Bounded explicit approximation is Approved for runtime secondary work, preserving ownership, collision/occupancy and conservation constraints.
+- Exact fixture validation remains required.
+- A general selectable strict runtime mode and complete exact replay are Planned, not Current; local 2x2 occupancy coarsening is Rejected.
+
+### Rank 1: reference/invariants.md — Architectural and simulation invariants > Fidelity invariants
+
+Document: Architectural and simulation invariants
+Path: reference/invariants.md
+document-kind: contract
+status: Approved design
+scope: Stable review IDs with current enforcement, known exceptions and approved requirements; this register is not a test-result ledger
+canonical-for: [invariant-register]
+last-reviewed: 2026-10-25
+Section: Architectural and simulation invariants > Fidelity invariants
+Contract: [ADR-008](../decisions/ADR-008-bounded-approximate-fidelity.md). | ID | Status and requirement | |---|---| | FID-001 | Approved, incomplete: policies must be explicit, bounded, observable and reversible; current fixed lanes lack a universal disable switch | | FID-002 | Approved: local occupancy, ownership, closed conservation and capacity checks cannot be sampled away | | FID-003 | Current: fixed-policy native fixtures compare exact hashes; full strict/replay mode remains Planned | | FID-004 | Rejected: naive coarsening that alters local topology or creates checkerboard holes |
+
+
+### Rank 2: systems/materials-and-rule-kernels.md — Materials and rule kernels > Kernel execution and cadence
+
+Document: Materials and rule kernels
+Path: systems/materials-and-rule-kernels.md
+document-kind: contract
+status: Current
+scope: Native material identity, descriptors, mutable state, kernel execution, current interactions, and extension boundaries
+canonical-for: [material-runtime-model, material-kernel-cadence, reactive-material-families]
+last-reviewed: 2026-10-19
+Section: Materials and rule kernels > Kernel execution and cadence
+[World::update_cell, update_rule_kernel, and rule_is_active](../../native/src/world.cpp) dispatch compact families. Private methods still couple storage access, traversal, movement, and wake/dirty handling; a public bounded `RuleContext` does not yet enforce that separation by type. Active descriptors declare at most radius two; inert descriptors declare zero. Phased jobs must remain within exclusive write domains and use deterministic coordinate/tick/rule streams. A material may not select behavior from worker identity or completion timing. | Work lane | Current period | Scope | |---|---:|---| | Eligible transport/density motion | Each selected tick, except Mercury/powder permeability | Empty movement and native Water transfer remain full rate; [granular policy](granular-interaction-policy.md) owns pair exclusions and deadlines | | Selected burn/charge/lifecycle work | 2 ticks | Kernel-specific, not every lifetime; Fire/Foam have full-rate portions | | Pair chemistry, thermal/growth/capture checks | 4 ticks | Persistent contacts can react; brief contacts can be missed | | Smoke lifetime/crowding | 8 ticks | Coordinate-staggered decay | | Ice freezing sample | 16 ticks | Specialized sub-lane after the four-tick thermal gate | | Ambient Fire ignition sample | 120 ticks | One sampled neighbor on the due lane | Some waiting rules keep blocks active without a false render write. Persistent compact-pair and Ice contacts use a scheduled block wake instead; other specialized kernels retain their existing waiting behavior. Activity and contact persistence therefore still matter outside that repaired scope. This deterministic cadence is Current approximate runtime behavior; it is not a selectable strict-every-contact mode or full replay capture.
+
+
+### Rank 3: decisions/ADR-008-bounded-approximate-fidelity.md — ADR-008: Bounded approximate fidelity under load > Decision and implementation status
+
+Document: ADR-008 — Bounded approximate fidelity under load
+Path: decisions/ADR-008-bounded-approximate-fidelity.md
+document-kind: decision
+status: Approved design
+scope: Accepted fidelity direction and constraints; fixed current cadence is separate from planned adaptive policy
+canonical-for: [decision-bounded-approximate-fidelity]
+last-reviewed: 2026-09-08
+Section: ADR-008: Bounded approximate fidelity under load > Decision and implementation status
+**Approved:** interactive frame pacing may take priority over calculating every secondary interaction each tick. Explicit bounded sampling/deferral is allowed; local collision, ownership, conservation and accepted authoritative commands must remain correct. Universal bit-identical gameplay across fidelity policies is not required. **Current:** native eligible transport, fixed staggered secondary lanes, activity sleeping and interest filtering. These are compiled policy, not an overload-triggered adaptive controller. **Planned:** selectable strict/runtime policies, hysteresis, work targets, coarser optional fields and distant aggregates. Exact native fixtures remain Current; complete replay is not implemented. Sources: [World rules](../../native/src/world.cpp), [hash coverage](../architecture/determinism-and-boundary-transfers.md).
+
+
+### Rank 4: decisions/ADR-008-bounded-approximate-fidelity.md — ADR-008: Bounded approximate fidelity under load > Which fidelity tiers are intended?
+
+Document: ADR-008 — Bounded approximate fidelity under load
+Path: decisions/ADR-008-bounded-approximate-fidelity.md
+document-kind: decision
+status: Approved design
+scope: Accepted fidelity direction and constraints; fixed current cadence is separate from planned adaptive policy
+canonical-for: [decision-bounded-approximate-fidelity]
+last-reviewed: 2026-09-08
+Section: ADR-008: Bounded approximate fidelity under load > Which fidelity tiers are intended?
+| Approved scope | Intended constraint | |---|---| | Immediate interaction | Full local occupancy/collision and prompt known-contact resolution | | Active surroundings | Explicit interest-weighted cadence or sampled secondary searches | | Secondary fields | Lower cadence/resolution only with declared conservation/transfer boundaries | | Distant world | Sleep or future conserved summaries that expand before interaction | | Strict validation | Fixed declared policy, stable random/order inputs and exact fixture comparison | Policies must be bounded, observable and independently reversible. Good candidates include slow ignition, corrosion, growth and distant fields. Poor candidates include capacity checks, synchronization, accepted explosions, closed-boundary conservation or detected penetration. Stateless seeded choices are preferred; worker timing must never become a hidden random input.
+
+
+### Rank 5: operations/lcb-manual-comparison-ux.md — LCB manual liquid comparison UX flow > Status and scope
+
+Document: LCB manual liquid comparison UX flow
+Path: operations/lcb-manual-comparison-ux.md
+document-kind: design
+status: Current
+scope: LCB-003 (#202) bounded experimental comparison UI, native availability, explicit normalization and constructor coverage, followed by remaining planned manual feel-testing flow
+canonical-for: [lcb-manual-comparison-ux]
+last-reviewed: 2026-11-03
+Section: LCB manual liquid comparison UX flow > Status and scope
+**Historical first experimental, unmerged source:** `0a702eb304ebf1e9e1302a15250cdd159f0371f7` on `codex/lcb003-application-host`, based on frozen #246 head `9e91a9f7`. The normal application now has a bounded liquid-comparison panel for fixed, actor-free schema-2 MicroScenarios. Subsequent source `da800552` adds the explicit Exploratory mode and privately staged sampled ownership described below. The [UI evidence](../audits/2026-10-25-lcb003-liquid-comparison-ui.md) records the source-matched local Windows development runtime and exact tested scope. This does not complete [#202](https://github.com/techrote/cybersand/issues/202). **Integration update, 2026-10-25:** the branch now includes accepted main `ec58d919` and stable IN source `028fc7b6`. Its subsequent [IN adapter/control checkpoint](../audits/2026-10-25-lcb003-integrated-inertial-host.md) adds actual Brine IN readback and explicit matched geometry; prior dated UI and physical evidence retains its earlier source qualification. The subsequent [ordinary Tower slice](../architecture/liquid-prepared-setup-and-receipts.md#ordinary-experiment-tower-preparation) makes **Apply & rebuild active** available in explicit Exploratory mode on the existing Experiment Tower. It retains that Tower's floor, release, schedule, manual tools and independent transport controls. Final floor/player/camera are prepared before capture; reset and profile rebuild retain accepted solver, normalization and geometry. Controlled mode still requires a fixed actor-free setup. Existing **Original Current control** continues to load the selected protected comparison fixture through its original constructor.
+
+## Q25: Can we move authoritative materials to GPU compute, or author their rules in arbitrary JavaScript?
+
+Canonical rank: 1
+
+Expected facts:
+
+- Authoritative local occupancy remains native CPU; GPU compute is Deferred pending ownership/readback/replay evidence.
+- An item-authored bounded native program is Planned; arbitrary per-cell JavaScript is Rejected.
+- Presentation-only GPU effects do not confer authority.
+
+### Rank 1: architecture/principles-and-non-goals.md — Architectural principles and non-goals > Can materials run on GPU compute or arbitrary JavaScript?
+
+Document: Architectural principles and non-goals
+Path: architecture/principles-and-non-goals.md
+document-kind: design
+status: Approved design
+scope: Accepted architectural constraints, explicit current exceptions, deferred scope and rejected approaches
+canonical-for: [architectural-constraints-and-rejected-shortcuts]
+last-reviewed: 2026-09-08
+Section: Architectural principles and non-goals > Can materials run on GPU compute or arbitrary JavaScript?
+**Current:** authoritative material rules execute in native CPU kernels. **Rejected at this stage:** GPU terrain authority and arbitrary JavaScript or other scripts in the per-cell hot loop. **Deferred:** GPU field experiments. **Planned:** a validated bounded material-program compiler; see [item-authored programs](item-authored-material-programs.md). Visual graphs would compile before play and obey the same radius/work bounds, rather than grant unrestricted scripting access.
+
+
+### Rank 2: decisions/ADR-006-gpu-compute-deferral.md — ADR-006: GPU compute deferral > Why defer authority?
+
+Document: ADR-006 — GPU compute deferral
+Path: decisions/ADR-006-gpu-compute-deferral.md
+document-kind: decision
+status: Approved design
+scope: Accepted CPU authority, deferred GPU field experiments and conditions for reconsideration
+canonical-for: [decision-gpu-compute-deferral]
+last-reviewed: 2026-09-08
+Section: ADR-006: GPU compute deferral > Why defer authority?
+Terrain interacts with CPU collision queries, material rules, commands, saves and future streaming/replay. Moving those bytes to a GPU without a complete ownership design risks readback latency, stalls and competing CPU/GPU truths. A small fast kernel alone does not establish a faster integrated simulation. Native ownership and fixtures are the immediate foundation. The decision leaves room for resident derived fields whose consumers tolerate their latency and non-authoritative nature. It selects no API, shader language, field format, cadence or target hardware. That specificity belongs to a later proposal with measured end-to-end cost.
+
+
+### Rank 3: decisions/ADR-006-gpu-compute-deferral.md — ADR-006: GPU compute deferral > Decision and implementation status
+
+Document: ADR-006 — GPU compute deferral
+Path: decisions/ADR-006-gpu-compute-deferral.md
+document-kind: decision
+status: Approved design
+scope: Accepted CPU authority, deferred GPU field experiments and conditions for reconsideration
+canonical-for: [decision-gpu-compute-deferral]
+last-reviewed: 2026-09-08
+Section: ADR-006: GPU compute deferral > Decision and implementation status
+**Approved:** keep native CPU authority for material occupancy and collision. **Rejected at this stage:** GPU-authoritative terrain. **Deferred:** isolated GPU experiments for suitable non-authoritative or separately designed fields. This is not a permanent ban on GPU compute. **Current:** Godot uses presentation shaders under GL Compatibility; no compute-simulation backend is implemented. Sources: [project renderer](../../godot/project.godot), [material shader](../../godot/shaders/material_palette.gdshader) and [native World](../../native/src/world.cpp). Rich shader motion/glow is visual derivation, not evidence of GPU simulation or GPU saturation.
+
+
+### Rank 4: decisions/ADR-006-gpu-compute-deferral.md — ADR-006: GPU compute deferral > What would justify a new decision?
+
+Document: ADR-006 — GPU compute deferral
+Path: decisions/ADR-006-gpu-compute-deferral.md
+document-kind: decision
+status: Approved design
+scope: Accepted CPU authority, deferred GPU field experiments and conditions for reconsideration
+canonical-for: [decision-gpu-compute-deferral]
+last-reviewed: 2026-09-08
+Section: ADR-006: GPU compute deferral > What would justify a new decision?
+Name the field and authority level; define CPU/GPU ownership, synchronization, collision/query latency, save/replay behavior, device loss and fallback. Compare representative current/larger fixtures including compute, transfer, synchronization, readback and memory. A non-authoritative experiment must leave native fixture state unchanged; an authoritative field requires a new explicit ADR. No future experiment is considered validated merely because shaders compile or a headless scene runs. Use [validation evidence](../reference/validation-evidence.md) and [profiling guidance](../operations/profiling-observability-and-performance.md) to distinguish actual device measurements from source inspection.
+
+
+### Rank 5: decisions/ADR-006-gpu-compute-deferral.md — ADR-006: GPU compute deferral > Consequences and alternatives
+
+Document: ADR-006 — GPU compute deferral
+Path: decisions/ADR-006-gpu-compute-deferral.md
+document-kind: decision
+status: Approved design
+scope: Accepted CPU authority, deferred GPU field experiments and conditions for reconsideration
+canonical-for: [decision-gpu-compute-deferral]
+last-reviewed: 2026-09-08
+Section: ADR-006: GPU compute deferral > Consequences and alternatives
+CPU authority simplifies collision access and independent tests, while initial scale depends on CPU memory bandwidth and scheduling. A future GPU path will need separate platform/fallback evidence. A derived visual field must not silently start deciding authoritative motion. **Rejected:** immediate GPU terrain authority and a permanent prohibition on all GPU compute. **Deferred:** wholesale PhysX-like material offload; no such compatible implementation is demonstrated here. **Current:** GPU rendering from immutable simulation publication. The [bridge contract](../architecture/rendering-and-gameplay-bridges.md) remains applicable regardless of visual sophistication.
+
+## Q26: Do SimulationCore and GameplayBridge already exist as reusable implementation modules?
+
+Canonical rank: 2
+
+Expected facts:
+
+- These are target semantic module names, not an assertion of implemented classes/APIs.
+- Current native World, C ABI, GDExtension, GDScript worker and rectangle proof are concrete surfaces.
+- Generalized interfaces need design review; map Approved/Planned names to actual source.
+
+### Rank 1: architecture/overview.md — Architecture overview > Are the named production modules already separate classes?
+
+Document: Architecture overview
+Path: architecture/overview.md
+document-kind: contract
+status: Current
+scope: Current execution paths and authority map; routes to the contracts that govern changes
+canonical-for: [architecture-entry-point]
+last-reviewed: 2026-10-20
+Section: Architecture overview > Are the named production modules already separate classes?
+**Approved:** SimulationCore, SimulationScheduler, WorldStorage, TileJob, MaterialRules, RenderBridge and GameplayBridge name intended responsibilities. **Current:** World still combines much of the core, storage and scheduler. Material descriptors and native snapshot exchange already have separate APIs; a generalized bounded gameplay queue does not exist. The [module boundary map](module-boundaries.md) distinguishes actual symbols from the proposed extraction. Renaming World alone would not complete it.
+
+
+### Rank 2: architecture/module-boundaries.md — Module boundaries > Where should new code belong?
+
+Document: Module boundaries
+Path: architecture/module-boundaries.md
+document-kind: design
+status: Approved design
+scope: Approved responsibility boundaries mapped to current source; no claim that every named module is a class
+canonical-for: [module-responsibilities-and-dependencies]
+last-reviewed: 2026-10-21
+Section: Module boundaries > Where should new code belong?
+**Approved:** use the responsibility map below when extending or extracting the native engine. **Current:** `cybersand::World` combines storage, scheduling, rules, activity and dirty tracking; the table does not assert separate C++ classes. Sources are [World declarations](../../native/include/cybersand/world.hpp) and [implementation](../../native/src/world.cpp). | Boundary | Approved responsibility | Current implementation and remaining separation | |---|---|---| | SimulationCore | Authoritative cell/field semantics and invariants | World kernels and tick entry; extraction remains incomplete | | SimulationScheduler | Work planning, pool, barriers, deterministic coordination and overload metrics | `World::tick_phased`, `ParallelState`; desktop wall-clock pacing is still GDScript and Web owns synchronous callbacks | | WorldStorage | Chunk lifetime, optional fields, activity and capacity; future persistence | `World::Chunk`, `chunks_`, reservation/query methods and explicit fresh generated-chunk admission; general streaming and live resize are absent | | Procedural generator | Compile generation guidance and prepare complete deterministic material proposals | Opt-in `generation::Generator`/`GenerationJob`, immutable scalar/typed graphs, canonical semantic plans, aggregates and prepared modules; no mutable World access; [generation contract](../systems/procedural-world-generation.md) | | TileJob | Temporary bounded work assignment and local observations | Core indices, `JobEffects`, local `TickStats`; no public type-enforced bounded rule context | | MaterialRules | Immutable descriptors, traits and kernel selection | Descriptor/pair-reaction APIs are separate; executable kernels remain inside World | | RenderBridge | Consume immutable simulation publication and update presentation | Native `RenderSnapshotExchange`, copied Godot packets and CPU-image consumer; GPU subregion writes are absent | | GameplayBridge | Translate intent into tick-boundary data and immutable results | Narrow emission/input/body methods; generalized typed queues and pressure policy are absent | | Rigid-body adapter | Own backend calls and translate body value data | `CyberRapierPhysicsBridge` plus native rectangle projection; general shape and torque interfaces are absent | Adding a native class is justified when it establishes a usable responsibility or lifetime boundary. A cosmetic rename is not architectural progress.
+
+
+### Rank 3: decisions/ADR-001-native-simulation-core.md — ADR-001: Native SimulationCore > Why place authority here?
+
+Document: ADR-001 — Native SimulationCore
+Path: decisions/ADR-001-native-simulation-core.md
+document-kind: decision
+status: Current
+scope: Accepted native authority decision, current integration and incomplete module extraction
+canonical-for: [decision-native-cellular-authority]
+last-reviewed: 2026-09-08
+Section: ADR-001: Native SimulationCore > Why place authority here?
+The engine needs dense cell-scale rules, shared spatial scheduling and native fixtures independent of a scene runtime. Godot is valuable for presentation, input and adapters, but its object lifetimes must not determine worker storage or update order. A reusable native core also supports standalone tools, benchmarks and alternative presentations. The chosen boundary keeps Godot/Rapier types outside core headers. Immutable render publication and data-only gameplay commands/results cross adapters. The exact resource contract is in [data ownership](../architecture/data-ownership-and-lifetimes.md).
+
+
+### Rank 4: decisions/ADR-001-native-simulation-core.md — ADR-001: Native SimulationCore > Decision and implementation status
+
+Document: ADR-001 — Native SimulationCore
+Path: decisions/ADR-001-native-simulation-core.md
+document-kind: decision
+status: Current
+scope: Accepted native authority decision, current integration and incomplete module extraction
+canonical-for: [decision-native-cellular-authority]
+last-reviewed: 2026-09-08
+Section: ADR-001: Native SimulationCore > Decision and implementation status
+**Approved and Current:** authoritative cellular state and rules belong in native C++. `cybersand::World` supplies that authority through `CyberNativeCellWorld`. Desktop selects the GDScript fallback when the native class is absent; Web requires native support. The alternatives are not synchronized authorities and do not promise identical Water behavior. **Approved, incomplete:** separate SimulationCore, storage, scheduler and bridge responsibilities. World still combines several of them. A class called SimulationCore is not required to make native authority real, and renaming World would not complete the [module boundaries](../architecture/module-boundaries.md). Source: [World](../../native/include/cybersand/world.hpp), [desktop selector](../../godot/scripts/simulation_worker.gd), [Web owner](../../godot/scripts/web_demo_controller.gd). Actual platform evidence is separate in the [validation ledger](../reference/validation-evidence.md).
+
+
+### Rank 5: operations/microscenarios-programme.md — CyberSand MicroScenarios and intermaterial-interactions programme > INT-000: intermaterial interactions, not kinetic physics > Sparse layered authoring
+
+Document: CyberSand MicroScenarios and intermaterial-interactions programme
+Path: operations/microscenarios-programme.md
+document-kind: design
+status: Planned
+scope: Canonical development-order graph for reusable exploratory MicroScenarios, anomaly triage, non-kinetic intermaterial-interaction authoring/tuning, and staged showcase work
+canonical-for: [microscenarios-programme, microscenarios-development-order, intermaterial-interaction-programme]
+last-reviewed: 2026-09-20
+Section: CyberSand MicroScenarios and intermaterial-interactions programme > INT-000: intermaterial interactions, not kinetic physics > Sparse layered authoring
+Do not make humans maintain a dense N×N table. With 64 materials there are 4096 ordered pairs; with 256 there are 65536. A dense resolved runtime lookup may be perfectly reasonable if measurement favors it; **dense manual authoring is not**. The landed INT-000 implementation from PR #55 extends the useful #13 profile precedent: ```text intrinsic material properties/state | family/default interaction rules | material-specific adjustments | sparse directed/symmetric pair overrides | context/state modifiers | validated resolver/compiler | compact runtime lookup representation ``` Explicit pair entries exist for genuine exceptions, not because every Cartesian cell needs bespoke content.
+
+## Q27: What smoke, pressure and heat simulation actually runs today?
+
+Canonical rank: 1
+
+Expected facts:
+
+- Current native Smoke has bounded lifetime/crowd collapse and cannot burn or host Fire.
+- Current temperature storage/material reactions are not a complete generalized heat/pressure field solver.
+- Future fields and visual tuning must remain separately marked Planned or Deferred.
+
+### Rank 1: systems/smoke-heat-pressure-roadmap.md — Smoke, heat, and pressure roadmap
+
+Document: Smoke, heat, and pressure roadmap
+Path: systems/smoke-heat-pressure-roadmap.md
+document-kind: design
+status: Current
+scope: Implemented native and fallback Smoke, limited temperature use, and unimplemented heat/pressure/composition fields
+canonical-for: [smoke-behavior, optional-heat-pressure-fields]
+last-reviewed: 2026-09-08
+Section: Smoke, heat, and pressure roadmap
+**Current:** Smoke is a discrete material with buoyancy and intentional non-conserved decay. Optional temperature storage exists and Rocket reads it, but there is no heat-conduction solver. General pressure and gas-composition fields are **Planned**. Local body-pressure impulses and liquid comparisons do not establish such fields. These are source claims for the [secured checkpoint](../operations/source-checkpoint-and-recovery.md). Dated runs are in the [evidence ledger](../reference/validation-evidence.md).
+
+
+### Rank 2: systems/smoke-heat-pressure-roadmap.md — Smoke, heat, and pressure roadmap > Desktop fallback Smoke
+
+Document: Smoke, heat, and pressure roadmap
+Path: systems/smoke-heat-pressure-roadmap.md
+document-kind: design
+status: Current
+scope: Implemented native and fallback Smoke, limited temperature use, and unimplemented heat/pressure/composition fields
+canonical-for: [smoke-behavior, optional-heat-pressure-fields]
+last-reviewed: 2026-09-08
+Section: Smoke, heat, and pressure roadmap > Desktop fallback Smoke
+[CyberCellWorld](../../godot/scripts/cell_world.gd) lacks the native authoritative lifetime byte. Its hazard is disabled for the first 64 world ticks, then uses a slower coordinate/tick sample. This is not a 64-tick grace period for every newly painted Smoke cell. It approximates the appearance intent but does not preserve native decay timing or state equality. Web requires the native cellular adapter; “compatibility Web” does not mean this GDScript fallback.
+
+
+### Rank 3: systems/smoke-heat-pressure-roadmap.md — Smoke, heat, and pressure roadmap > Current native Smoke
+
+Document: Smoke, heat, and pressure roadmap
+Path: systems/smoke-heat-pressure-roadmap.md
+document-kind: design
+status: Current
+scope: Implemented native and fallback Smoke, limited temperature use, and unimplemented heat/pressure/composition fields
+canonical-for: [smoke-behavior, optional-heat-pressure-fields]
+last-reviewed: 2026-09-08
+Section: Smoke, heat, and pressure roadmap > Current native Smoke
+[MaterialRules](../../native/include/cybersand/material.hpp) names material ID 4 `Smoke`, with `Gas` as an alias. In [World::update_rule_kernel, RuleKernel::Gas](../../native/src/world.cpp), Smoke attempts up, both up-diagonals, then lateral movement. An Empty target permits a move; a denser movable target permits an exchange only when its descriptor accepts density exchange. Wall and the Mite/Rocket agents opt out. Numeric density alone does not imply permeability. Smoke starts with `state_a = 240`. On its coordinate-staggered eight-tick lane, it loses one lifetime unit, or two when at least five of the eight neighbors are Smoke. At the final decay sample it becomes Empty. Movement changes the coordinate-dependent phase, so this is not a universal lifetime in seconds. Trapped Smoke uses `keep_cell_active` between samples. The ignition helper excludes Smoke: ordinary heat-contact/Fire ignition does not turn it into Fire. The owner-approved visual intent is a lingering cloud with slow internal collapse, substantially slower than Foam, without an extra full-world age scan. Further artistic tuning is **Planned**.
+
+
+### Rank 4: systems/smoke-heat-pressure-roadmap.md — Smoke, heat, and pressure roadmap > Planned field work
+
+Document: Smoke, heat, and pressure roadmap
+Path: systems/smoke-heat-pressure-roadmap.md
+document-kind: design
+status: Current
+scope: Implemented native and fallback Smoke, limited temperature use, and unimplemented heat/pressure/composition fields
+canonical-for: [smoke-behavior, optional-heat-pressure-fields]
+last-reviewed: 2026-09-08
+Section: Smoke, heat, and pressure roadmap > Planned field work
+| Field | Implemented boundary | Missing design | |---|---|---| | Heat | Optional temperature storage; Rocket threshold | Units, conduction, energy accounting, cadence, phase transitions | | Pressure | Local liquid/body coupling heuristics | General pressure storage, equation/update, room/breach semantics | | Gas composition | Discrete Smoke/Steam material occupants | Mixture representation, quantities, conservation, vacuum behavior | | Field-based Smoke | Current discrete Smoke reference | Whether to replace occupancy with an optional density/composition field | **Approved:** future fields share native world authority, scheduler ownership, activity, bounded capacity, and immutable publication. Optional data should be allocated where required. Existing Water/Sand/Smoke already use World; they do not need a new port before this design work. For each proposed field, define one stage and cadence, numeric representation, read/write reach, in-place or buffered ownership, conservation or explicit error bounds, wake/interest behavior, serialization/hash coverage, and failure behavior. Then add a reference fixture, edge/worker comparison, and current/2× load measurements. Production interaction ordering across fields is not approved.
+
+
+### Rank 5: systems/smoke-heat-pressure-roadmap.md — Smoke, heat, and pressure roadmap > Planned field work > WEX-003 compartment-pressure research
+
+Document: Smoke, heat, and pressure roadmap
+Path: systems/smoke-heat-pressure-roadmap.md
+document-kind: design
+status: Current
+scope: Implemented native and fallback Smoke, limited temperature use, and unimplemented heat/pressure/composition fields
+canonical-for: [smoke-behavior, optional-heat-pressure-fields]
+last-reviewed: 2026-09-08
+Section: Smoke, heat, and pressure roadmap > Planned field work > WEX-003 compartment-pressure research
+The [WEX-003 feasibility result](../research/lumped-gas-region-pressure-bookkeeping.md) does **not** implement the general Pressure row above. It identifies a narrower optional architecture: resolved connected gas regions own amount/free-volume bookkeeping and derive a compartment boundary pressure, while closures use affected-component reconstruction and unresolved topology returns no authoritative pressure. The result admits only the bounded #94 decompression research proof. Per-cell gas pressure/velocity, composition, heat coupling and production field integration remain unimplemented. **Deferred:** GPU-resident derived fields may be benchmarked after their authority and synchronization are explicit. **Rejected for the current architecture:** GPU-only terrain/collision authority, unsynchronized gameplay reads, and routine GPU readback as a prerequisite for authoritative ticks. These dispositions are owned by [ADR-006](../decisions/ADR-006-gpu-compute-deferral.md), not a permanent ban on every GPU experiment.
+
+## Q28: Which exact tools should I build with, and can I share the native and Web bindings checkout?
+
+Canonical rank: 1
+
+Expected facts:
+
+- Use pinned Godot 4.7 official 5b4e0cb0f, godot-cpp 101ae38034304346a46ea9ea84ae156d3e860496 and Emscripten 4.0.20; local Windows LLVM-MinGW and SCons pins are explicit.
+- Keep native and Web generated bindings separate.
+- Use local dev wrappers and distinguish local override from historical release provenance.
+
+### Rank 1: operations/local-build-and-validation.md — Local build and validation > Windows development commands
+
+Document: Local build and validation
+Path: operations/local-build-and-validation.md
+document-kind: guide
+status: Current
+scope: Pinned source build entry points, Windows workspace wrappers, platform boundaries and freshness limits
+canonical-for: [build-entry-points, dependency-pins, build-freshness]
+last-reviewed: 2026-10-31
+Section: Local build and validation > Windows development commands
+From `C:/kybersand`, the companion workspace provides `dev.cmd` / `tools/dev.py`. Host paths, installation and environment overrides belong to `C:/kybersand/docs/LOCAL_DEVELOPMENT.md`. Source-only clones do not contain these wrappers; the repository-native scripts are listed below. ```powershell .\dev.cmd doctor .\dev.cmd native-bindings .\dev.cmd native-build .\dev.cmd native-test .\dev.cmd godot-test .\dev.cmd web # Optional internally parallel Web profile: .\dev.cmd web --profile threaded ``` The repository also contains `launch-desktop.cmd` / `tools/launch_desktop.ps1` for source-only Windows checkouts. It validates the pinned Godot/runtime inputs, prints checkout/runtime identity, exports the exact checkout SHA to the child Godot process as `CYBERSAND_SOURCE_REVISION` for recording provenance, and does **not** rebuild or replace retained runtimes. `native-bindings` builds pinned Windows godot-cpp; `native-build` builds the GDExtension. `native-test` compiles/runs the C header check and native tests; `godot-test` imports the project then runs all `test_*.gd` runners. Godot tests load the installed DLL: running them alone does **not** rebuild that DLL. Record its hash and source identity with the result. The wrapper allows 240 s for import, 180 s per Godot runner, and rejects Godot error output even with exit 0.
+
+
+### Rank 2: operations/cell-layout-experiment.md — Cell layout experiment > Status and boundaries
+
+Document: Cell layout experiment registration and execution
+Path: operations/cell-layout-experiment.md
+document-kind: runbook
+status: Current
+scope: Issue 16 staged native representation research, preregistered before candidate code; no production migration
+canonical-for: [cell-layout-experiment]
+last-reviewed: 2026-09-11
+Section: Cell layout experiment > Status and boundaries
+**Current research checkpoint:** issue16's local research is complete. L1/L2/L3/L4 finish196/448/280/1400 registered timing processes with exact scoped comparisons. L5 records compatibility limits; L6 has a supported non-admission. The [dated evidence and final G-L](../audits/2026-09-10-issue-16-cell-layout.md#l4-measured-results-and-final-g-l-september11) retain methods, failures, cost screens and uncertainties. G-L establishes experimental carriers; it selects no production layout, epoch width or larger-ID catalogue. The owner released the uncontended windows in the active task. No merge, deployment, remote mutation or loaded DLL replacement occurred. Stage registrations below remain the pre-code contracts and historical review sequence. Editing/build root: `C:/kybersand/worktrees/issue-16-cell-layout`, branch `codex/issue-16-cell-layout`, base `b16408c28de67e3b30ebb1f0172e78d594296052`. The baseline checkout `C:/kybersand/source` is read-only. All generated files go in the experiment worktree's ignored `build/issue-16` and `validation/local/issue-16`. Use the configured pinned workspace Python/LLVM environment via `tools/dev.py`; its default source path must be overridden in the experiment driver, never invoke its build actions against the baseline. Native and Web bindings stay distinct.
+
+
+### Rank 3: operations/local-build-and-validation.md — Local build and validation > Which build inputs are required?
+
+Document: Local build and validation
+Path: operations/local-build-and-validation.md
+document-kind: guide
+status: Current
+scope: Pinned source build entry points, Windows workspace wrappers, platform boundaries and freshness limits
+canonical-for: [build-entry-points, dependency-pins, build-freshness]
+last-reviewed: 2026-10-31
+Section: Local build and validation > Which build inputs are required?
+**Current:** build scripts and locks select the following inputs. A pin is a requirement, not evidence that every platform artifact was built or tested. | Input | Required identity and authoritative reference | |---|---| | Godot editor/runtime | `4.7.stable.official.5b4e0cb0f`; [runtime lock](../../third_party/godot-runtime.lock.json) | | godot-cpp / API | `101ae38034304346a46ea9ea84ae156d3e860496` / `4.7`; [native lock](../../third_party/native-toolchain.lock.json) | | SCons | `4.10.1`; [hash-pinned requirement](../../tools/requirements-build.txt) | | Windows compiler | LLVM-MinGW 20260826, Clang 23.1.0, UCRT; native lock pins the Linux-host archive; local Windows ZIP is a distinct input | | Linux compiler/linker | GCC/G++ 13.3.0 / binutils 2.42; native lock | | Web compiler | Emscripten **4.0.20**, checked by [build_web.py](../../tools/build_web.py) | | Rapier2D | Single-precision 2D **v0.35.2** base; qualified cooperative deferred-BVH join backport on Windows/Linux x86_64, official bytes on other targets; [Rapier lock](../../godot/third_party/rapier2d.lock.json) | | Web templates | Exact Godot 4.7 dlink templates: `web_dlink_nothreads_{debug,release}.zip` for compat, `web_dlink_{debug,release}.zip` for threaded | Keep native and Web godot-cpp checkouts separate: generated bindings and archives are target-specific. Python 3.12.14 was used locally; the workspace helper requires Python 3.10+. Do not silently update pins while debugging a simulation change. The historical runtime lock still labels templates `absent-and-unpinned` although the local Windows setup has exact templates. This is an unresolved release-lock gap. The configured Web CI also disagrees with the builder; see [release prerequisites](github-development-and-release.md#unresolved-ci-contradictions).
+
+
+### Rank 4: operations/web-threading.md — Web worker profiles and reference tests > Build and preview
+
+Document: Web worker profiles and reference tests
+Path: operations/web-threading.md
+document-kind: runbook
+status: Current
+scope: Compatibility/threaded Web build and hosting, fixed worker policy, synchronous ownership, and reference-test interpretation
+canonical-for: [web-worker-profiles, worker-reference-benchmark]
+last-reviewed: 2026-09-08
+Section: Web worker profiles and reference tests > Build and preview
+From `C:/kybersand`: ```powershell .\dev.cmd web --profile threaded .local/python/Scripts/python.exe source/tools/serve_web.py --directory source/build/web-threaded --port 8002 --open ``` While the preview server is running: ```powershell .\dev.cmd http-smoke --profile threaded --url http://127.0.0.1:8002/ ``` `dev.cmd web` builds compatibility. Use export-only only with a matching fresh side module; successful packaging does not prove source-to-binary freshness. The [build guide](github-development-and-release.md) owns exact dependency pins and unresolved CI/toolchain drift. Native/Web generated bindings stay separate. The supplied server sets COOP `same-origin`, COEP `require-corp`, appropriate WASM MIME and no-cache behavior. Threaded hosting needs a secure context (HTTPS or localhost) and cross-origin isolation. Serve the complete export, including worker JavaScript, PCK, WASM, notices and manifest. HTTP/checksum success is structural evidence; open the actual browser for execution. Local delivery is a separate explicit workflow after acceptance: `Deliver-Web.ps1 -Profile threaded` copies to `C:/cybersand/web-threaded`; compatibility uses `C:/cybersand/web`. Documenting this command does not execute delivery or remote publication.
+
+
+### Rank 5: operations/github-development-and-release.md — Repository development and release > Unresolved CI contradictions
+
+Document: Repository development and release
+Path: operations/github-development-and-release.md
+document-kind: guide
+status: Current
+scope: Local repository policy and unresolved remote CI and release prerequisites
+canonical-for: [repository-policy, ci-contradictions, release-prerequisites]
+last-reviewed: 2026-10-31
+Section: Repository development and release > Unresolved CI contradictions
+**Current inspected configuration, not a remote execution result:** | Conflict | Source evidence | Required next checkpoint | |---|---|---| | Web CI chooses Emscripten 4.0.11; builder requires 4.0.20 | [web-toolchain.yml](../../.github/workflows/web-toolchain.yml), [web-demo.yml](../../.github/workflows/web-demo.yml), [build_web.py](../../tools/build_web.py) | Align pinned toolchain and artifact producer/consumer, then execute CI | | Workflow passes `--native-tests` without separate `--native-cpp` | Same builder argument validation and Web workflow | Supply isolated native bindings; confirm intended host support | | `--compile-only --native-tests` does not run runtime fixtures/export | Builder returns after compilation before those stages | Choose explicit coverage and test that the workflow actually executes it | | Runtime lock says templates absent; local export uses exact retained templates | [runtime lock](../../third_party/godot-runtime.lock.json) and local setup report | Create current export provenance; preserve historical lock scope | | Wrapper export `source_commit` remains acquisition base | Companion `C:/kybersand/tools/dev.py::web_command`; builder's `--source-commit` | Bind builds to actual HEAD plus local changes and artifact hashes | These Web changes remain **Planned**, tracked by issue #3. Current source/runtime identity, retained historical integrity and fresh Linux Godot CI are now [separate validation gates](current-and-historical-validation.md). This resolves the M11/current gate conflict without changing historical hashes. Native and sanitizer execution is recorded in the [dated reconciliation](../audits/2026-09-08-validation-reconciliation.md); workflow presence alone is never a pass.
+
+## Q29: If an export checksum passes or build-info names the base commit, is the browser build proven current?
+
+Canonical rank: 3
+
+Expected facts:
+
+- No: export-only structural validation/checksums do not prove fresh source-to-artifact build or browser execution.
+- source_commit records a snapshot base, not full local changes; retain current source and binary identities with dated evidence.
+- HTTP checks, headless fixtures, actual browser runtime and visual inspection are different validation scopes.
+
+### Rank 1: operations/source-checkpoint-and-recovery.md — Source checkpoint and recovery > Which earlier identity statements are historical?
+
+Document: Source checkpoint and recovery
+Path: operations/source-checkpoint-and-recovery.md
+document-kind: guide
+status: Current
+scope: Actual local Git roots, preserved baseline, recovery boundaries and source-versus-artifact identity
+canonical-for: [source-identity, local-checkpoints, recovery-coverage]
+last-reviewed: 2026-10-25
+Section: Source checkpoint and recovery > Which earlier identity statements are historical?
+The [first documentation audit](../audits/2026-09-08-documentation-audit.md) correctly found no source Git checkout at its intake. That record remains unchanged; the checkpoint above supersedes its *current-state applicability*. `SOURCE-PROVENANCE.json` identifies original acquired blobs, not current HEAD. M11 `05ea45f...` and [BUILD_ID](../BUILD_ID.md) identify an older audited milestone. Web `build-info.json` records the acquisition base and a generic declaration that local setup changes exist. It contains no actual local-change hash manifest and does not prove the export contains today's source or documentation commit.
+
+
+### Rank 2: operations/local-build-and-validation.md — Local build and validation > Web compile, export and execution are different checks
+
+Document: Local build and validation
+Path: operations/local-build-and-validation.md
+document-kind: guide
+status: Current
+scope: Pinned source build entry points, Windows workspace wrappers, platform boundaries and freshness limits
+canonical-for: [build-entry-points, dependency-pins, build-freshness]
+last-reviewed: 2026-10-31
+Section: Local build and validation > Web compile, export and execution are different checks
+From source, with the SDK active and paths adapted to the host: ```text python tools/build_web.py --cpp <web-godot-cpp> --compile-only python tools/build_web.py --cpp <web-godot-cpp> --godot <godot> --templates <templates> ``` The default profile is compatibility. Add `--profile threaded` for pthreads. Both normal profiles package Rapier; `--cellular-only` is a diagnostic option. `--native-tests` requires a separate `--native-cpp` directory. `--compile-only` returns before runtime tests/export even if `--native-tests` is present. `--export-only` checks existing WASM structure, not freshness against source. The workspace wrapper still supplies the acquisition base as `--source-commit`; that export field is not current HEAD. Capture current source and artifact hashes separately until the producer is repaired in an implementation checkpoint. See [source identity](source-checkpoint-and-recovery.md). Preview generated output through HTTP with WASM MIME and profile headers, then run the actual browser fixture. Checksums/HTTP checks prove packaging; native headless Godot proves native execution; only browser execution tests Web behavior. The [Web guide](web-threading.md) owns hosting requirements, and the [validation ledger](../reference/validation-evidence.md) owns dated outcomes.
+
+
+### Rank 3: operations/github-development-and-release.md — Repository development and release > Unresolved CI contradictions
+
+Document: Repository development and release
+Path: operations/github-development-and-release.md
+document-kind: guide
+status: Current
+scope: Local repository policy and unresolved remote CI and release prerequisites
+canonical-for: [repository-policy, ci-contradictions, release-prerequisites]
+last-reviewed: 2026-10-31
+Section: Repository development and release > Unresolved CI contradictions
+**Current inspected configuration, not a remote execution result:** | Conflict | Source evidence | Required next checkpoint | |---|---|---| | Web CI chooses Emscripten 4.0.11; builder requires 4.0.20 | [web-toolchain.yml](../../.github/workflows/web-toolchain.yml), [web-demo.yml](../../.github/workflows/web-demo.yml), [build_web.py](../../tools/build_web.py) | Align pinned toolchain and artifact producer/consumer, then execute CI | | Workflow passes `--native-tests` without separate `--native-cpp` | Same builder argument validation and Web workflow | Supply isolated native bindings; confirm intended host support | | `--compile-only --native-tests` does not run runtime fixtures/export | Builder returns after compilation before those stages | Choose explicit coverage and test that the workflow actually executes it | | Runtime lock says templates absent; local export uses exact retained templates | [runtime lock](../../third_party/godot-runtime.lock.json) and local setup report | Create current export provenance; preserve historical lock scope | | Wrapper export `source_commit` remains acquisition base | Companion `C:/kybersand/tools/dev.py::web_command`; builder's `--source-commit` | Bind builds to actual HEAD plus local changes and artifact hashes | These Web changes remain **Planned**, tracked by issue #3. Current source/runtime identity, retained historical integrity and fresh Linux Godot CI are now [separate validation gates](current-and-historical-validation.md). This resolves the M11/current gate conflict without changing historical hashes. Native and sanitizer execution is recorded in the [dated reconciliation](../audits/2026-09-08-validation-reconciliation.md); workflow presence alone is never a pass.
+
+
+### Rank 4: operations/web-threading.md — Web worker profiles and reference tests > Build and preview
+
+Document: Web worker profiles and reference tests
+Path: operations/web-threading.md
+document-kind: runbook
+status: Current
+scope: Compatibility/threaded Web build and hosting, fixed worker policy, synchronous ownership, and reference-test interpretation
+canonical-for: [web-worker-profiles, worker-reference-benchmark]
+last-reviewed: 2026-09-08
+Section: Web worker profiles and reference tests > Build and preview
+From `C:/kybersand`: ```powershell .\dev.cmd web --profile threaded .local/python/Scripts/python.exe source/tools/serve_web.py --directory source/build/web-threaded --port 8002 --open ``` While the preview server is running: ```powershell .\dev.cmd http-smoke --profile threaded --url http://127.0.0.1:8002/ ``` `dev.cmd web` builds compatibility. Use export-only only with a matching fresh side module; successful packaging does not prove source-to-binary freshness. The [build guide](github-development-and-release.md) owns exact dependency pins and unresolved CI/toolchain drift. Native/Web generated bindings stay separate. The supplied server sets COOP `same-origin`, COEP `require-corp`, appropriate WASM MIME and no-cache behavior. Threaded hosting needs a secure context (HTTPS or localhost) and cross-origin isolation. Serve the complete export, including worker JavaScript, PCK, WASM, notices and manifest. HTTP/checksum success is structural evidence; open the actual browser for execution. Local delivery is a separate explicit workflow after acceptance: `Deliver-Web.ps1 -Profile threaded` copies to `C:/cybersand/web-threaded`; compatibility uses `C:/cybersand/web`. Documenting this command does not execute delivery or remote publication.
+
+
+### Rank 5: reference/interfaces-and-message-contracts.md — Interfaces and message contracts > Current public surfaces > Native C API
+
+Document: Interfaces and message contracts
+Path: reference/interfaces-and-message-contracts.md
+document-kind: contract
+status: Current
+scope: Current C ABI, procedural-generation C++/Godot surfaces and private packed layouts; proposed gameplay/reconfiguration contracts remain distinct
+canonical-for: [public-and-adapter-interface-layouts]
+last-reviewed: 2026-10-25
+Section: Interfaces and message contracts > Current public surfaces > Native C API
+**Current:** [c_api.h](../../native/include/cybersand/c_api.h) defines the exported `cybersand_` functions; [c_api.cpp](../../native/src/c_api.cpp) defines validation and failures. The header is the source of exact C types/alignment. These host-ABI structs are not a portable serialized file/network format. Signed `int64_t` positions and rectangle dimensions are cell coordinates; `size_t` capacity/stride/offset widths depend on the target ABI. Start v2 construction from `cybersand_default_config_v2()`. `create_v2` checks `struct_size >= sizeof(cybersand_config_v2)`, `abi_version == 2`, valid backend range and checked conversion of 64-bit capacities to host `size_t`, then World validates geometry/capacities. It returns null on invalid configuration or caught construction failure. Buffered is a representable backend value, but its tick implementation throws. | Versioned surface | Current additional fields/behavior | |---|---| | `cybersand_config_v2` | Size/version; chunk/activity/core/radius; sleep and ambient temperature; backend/workers; chunk reserve, job threshold, active-core/chunk/max-chunk/event capacities and maximum explosion radius | | `cybersand_tick_stats_v2` | Legacy tick/visited/moved/active/dirty counts plus scheduled cores, four phase-job counts, owned chunk/temperature allocations and committed deferred events | | `cybersand_material_info_v2` | Base material metadata plus kernel, initial state bytes and write radius | | `cybersand_material_info_v3` | v2 base plus density-motion direction, target exchange acceptance and lateral-flow mode | | `cybersand_material_info_v4` | v3 base plus dimensionless 0–255 viscosity index | Material-info v3/v4 are additive query layouts; they do not change the config ABI version from 2. Valid material queries return 1; invalid ID or null output returns 0. Density metadata is a gameplay scale, not a declared physical density unit. Native optional temperature is signed 16-bit storage; physical thermal calibration/conduction is not defined by this API. Checked set/tick/reservation/explosion/copy methods return 1/0; legacy set/tick surfaces provide weaker error reporting. `tick_v2` zeroes output after a caught exception, but **does not roll World back**. Null input/output also fails; no structured C error reason is returned. Additive `has_failed`, `completed_tick_index` and `clear` queries/operation expose quarantine and explicit reset without changing v2 struct layout. Native `tick_index` remains attempted identity; `completed_tick_index` is the last successful tick. Hash and resident-byte queries are [scoped diagnostics](../architecture/determinism-and-boundary-transfers.md), not complete replay capture or process-memory accounting.
+
+## Q30: Do the old sanitizer results and current Windows fixtures prove Linux, Firefox and Safari work?
+
+Canonical rank: 1
+
+Expected facts:
+
+- No: M11 sanitizer/results are historical with their recorded revision/platform scope; current Windows tests do not prove other platforms.
+- Dated Chromium compatibility/threaded evidence is separate. Current Linux native, headless and rendered-fixture results have their own source/runtime records, including the MAT-002 review; old sanitizer or Windows results do not establish them. Firefox/Safari execution remains unestablished by these records.
+- LFS pointer files are not usable runtime binaries and historical totals must not be relabelled as fresh passes.
+
+### Rank 1: reference/validation-evidence.md — Validation evidence ledger > Which gates remain absent or failing?
+
+Document: Validation evidence ledger
+Path: reference/validation-evidence.md
+document-kind: reference
+status: Current
+scope: Dated source and runtime evidence with platform, artifact identity, coverage and missing gates
+canonical-for: [validation-results, platform-evidence, historical-evidence-boundaries]
+last-reviewed: 2026-11-04
+Section: Validation evidence ledger > Which gates remain absent or failing?
+- No macOS/WSL or Firefox/Safari runtime acceptance. All 18 required local LFS payloads are now materialized; rebuilt platform execution has separate evidence. - Current Chromium compatibility/threaded acceptance is recorded by E-F02. - Linux ASan/UBSan and TSan passed in the publication run; LeakSanitizer was disabled, and these do not attest to every platform or toolchain. - No full replay persistence, generalized shapes, exhaustive boundary matrix or transactional tick-failure guarantee. - The issue #1 run of the unchanged M11 checker reports 12 historical source/hash mismatches (the earlier audit reported seven). Those failures remain preserved; the [reconciliation](../audits/2026-09-08-validation-reconciliation.md) verifies all original hashes against M11 and separates current acceptance. Strict current-versus-M11 comparison still reports differences; no hashes were rewritten. - Web CI arguments/toolchain and historical template-lock metadata conflict with the local builder; [build guide](../operations/local-build-and-validation.md) records those exact gaps. New results belong in a new evidence record with command, timeout, date, platform/profile, source identity, input/worker configuration, artifact hashes, exit status and explicit limits. Historical records are never rewritten to make a later checkpoint look validated.
+
+
+### Rank 2: reference/validation-evidence.md — Validation evidence ledger > MAT-002 review and test completion — 2026-10-19
+
+Document: Validation evidence ledger
+Path: reference/validation-evidence.md
+document-kind: reference
+status: Current
+scope: Dated source and runtime evidence with platform, artifact identity, coverage and missing gates
+canonical-for: [validation-results, platform-evidence, historical-evidence-boundaries]
+last-reviewed: 2026-11-04
+Section: Validation evidence ledger > MAT-002 review and test completion — 2026-10-19
+The [PR #179 review record](../audits/2026-10-19-mat002-review-and-validation.md) records catalogue-boundary failures and their regressions, actual rendered execution, sanitizer scope and source-matched runtime publication. Its complete local Linux suite passed import plus 93 cases, including six rendered fixtures; native World tests passed 78 normally and under ASan/UBSan/LeakSanitizer, and the standalone CLI passed 154 executable invocations normally and sanitized. Publication `8f841a2` retains matching Linux/Windows runtimes from source `6684017`; the actual Windows DLL passed import plus 87 applicable headless cases in [run 39183102017](https://github.com/techrote/cybersand/actions/runs/39183102017). The audit preserves the earlier material-pass record and separates each artifact and platform. Final branch-head workflow and published-Linux suite results are recorded in [PR #179](https://github.com/techrote/cybersand/pull/179). A draft-skipped job or headless pixel-test skip is not a behavior pass.
+
+
+### Rank 3: operations/local-build-and-validation.md — Local build and validation > Repository-native build and test commands
+
+Document: Local build and validation
+Path: operations/local-build-and-validation.md
+document-kind: guide
+status: Current
+scope: Pinned source build entry points, Windows workspace wrappers, platform boundaries and freshness limits
+canonical-for: [build-entry-points, dependency-pins, build-freshness]
+last-reviewed: 2026-10-31
+Section: Local build and validation > Repository-native build and test commands
+From the source root on a configured Linux host: ```sh timeout 120 make test timeout 300 make sanitize timeout 300 make thread-sanitize # GODOT_CPP_ROOT and SCONS_PYTHON identify the pinned dependencies: timeout 3600 tools/build_pinned_godot_cpp.sh linux timeout 3600 tools/build_native_extension.sh timeout 60 tools/check_linux_runtime_floor.sh ``` These are executable entry points, **not current Linux pass claims**. [Makefile](../../Makefile) defines Debug `-O0 -g3` tests, ASan+UBSan and TSan. The default sanitizer target enables leak detection; the historical M11 run disabled it after a hosted `/proc` limitation. Preserve that distinction. Windows cross-builds use `build_pinned_godot_cpp.sh windows` and [build_native_extension_windows.sh](../../tools/build_native_extension_windows.sh) with `LLVM_MINGW_ROOT`/`WINDOWS_CXX`. PE/import inspection alone cannot prove a Windows runtime launch. Each GitHub-hosted Native family job retains a 90-minute overall allowance; the separate policy job has 5 minutes and the `native` evidence aggregate has 10 minutes. The original individual build, test and benchmark commands retain their separate deadlines; increasing the job allowance does not skip cases or relax sanitizer failures. The [pressure-reference acceptance](../audits/2026-10-24-lcb001-pressure-reference-publication.md#exact-head-acceptance-and-merge) records the 45-minute aggregate cancellation and successful 50-minute rerun. The [MAT-002 completion audit](../audits/2026-10-19-mat002-review-and-validation.md#completion-resumed--2258-utc) retains the earlier 35-minute cancellation and preceding successful durations.
+
+
+### Rank 4: operations/cybersand-codex-development-handover.md — Development handover > Publication and legacy validation follow-up
+
+Document: Development handover
+Path: operations/cybersand-codex-development-handover.md
+document-kind: guide
+status: Current
+scope: Short onboarding sequence and checkpoint protocol; product intent, source identity and contracts have canonical homes
+canonical-for: [development-onboarding]
+last-reviewed: 2026-11-04
+Section: Development handover > Publication and legacy validation follow-up
+The owner authorized finalising issues #1/#2 in PR #6. Preserve their separate commits and contracts. [Current validation and M11 retention](current-and-historical-validation.md) now have independent gates; original historical hashes stay unchanged. [Publication evidence](../audits/2026-09-08-validation-reconciliation.md) records Linux native/sanitizer results and the rebuilt-runtime CI transition. Remaining Web CI/export identity work remains issue #3.
+
+
+### Rank 5: reference/validation-evidence.md — Validation evidence ledger > What has actually passed?
+
+Document: Validation evidence ledger
+Path: reference/validation-evidence.md
+document-kind: reference
+status: Current
+scope: Dated source and runtime evidence with platform, artifact identity, coverage and missing gates
+canonical-for: [validation-results, platform-evidence, historical-evidence-boundaries]
+last-reviewed: 2026-11-04
+Section: Validation evidence ledger > What has actually passed?
+| E-M11, 2026-08-28 | Historical audited M11: 34 passed, one inconclusive LeakSanitizer run | Linux-era audit; Windows format/import inspection was not runtime execution. [Retained records](../audits/m11/README.md) | | E-SETUP, 2026-09-07 | 39 native tests, 11 Godot fixture runners; Chromium compatibility demo/save checks | Before threaded/Rapier Web work. `C:/kybersand/LOCAL-DEV-SETUP-REPORT.md` retains original results | | E-RAPIER-WEB, 2026-09-08 | Windows/Chromium compatibility 1-worker and threaded 6-worker rectangle proof: 600 ticks, 308,087 contacts, 151 displaced cells; no recorded browser errors/warnings | Retained browser record lacks complete immutable source/export binding; not a fresh browser run at the current HEAD. `validation/local/rapier-web-20260908/browser-results.json` | | E-AUDIT-TOOLS, 2026-09-08 | Six `dev.cmd doctor` version checks passed | `validation/local/20260908-201008/` | | E-AUDIT-NATIVE, 2026-09-08 | 39/39 freshly compiled native Debug tests plus C11 header check, 21.621 s | Windows x86_64, Clang 23.1.0; one unused-capture warning at `world.cpp:1419`, no sanitizer run. `validation/local/20260908-201010/native-test.json` | | E-AUDIT-GODOT, 2026-09-08 | Import and 15/15 fixture runners, 48.473 s fixture total | Windows Godot 4.7, retained extension DLL, not rebuilt. 240 s import/180 s per-fixture timeouts. `validation/local/20260908-201106/godot-fixtures.json` | | E-AUDIT-EXPORT, 2026-09-08 | Existing compatibility and threaded exports each matched 18/18 manifest entries | Checksum evidence only; no new compile, HTTP or browser execution. [Audit evidence JSON](../audits/2026-09-08-documentation-audit-evidence.json) | | E-INTEREST, 2026-09-08 | Fresh native diagnostic confirms excluded phased blocks can sleep without re-entry wake, and serial ignores region filtering | A reproduced limitation, not a pass for intended waking. [Canonical behavior](../systems/world-storage-and-interest-region.md), [diagnostic record](../audits/2026-09-08-foundation-diagnostics.md); `validation/local/20260908-rag-interest-probe/result.json` | | E-TICK-FAIL, 2026-09-08 | Fresh source-built diagnostic confirms planning failure advances tick identity and retains an applied explosion while draining its queue | Windows x86_64, Clang 23.1.0 Debug, one worker/core capacity one; compile/run exits 0 with 60 s/10 s limits. Reproduced limitation, not transactional acceptance. [Diagnostic record](../audits/2026-09-08-foundation-diagnostics.md) | Local `validation/...` paths above are relative to `C:/kybersand` and are retained outside source history. The curated audit JSON preserves command and artifact references when those local logs are unavailable.
+
+## Q31: Why is the old consistency check red, and should I update its hashes to make the release pass?
+
+Canonical rank: 1
+
+Expected facts:
+
+- The old check compares current files to M11; strict comparison still reports drift, including unresolved payload pointers. Preserve previous failures.
+- M11 integrity now checks all 28 original source hashes against the audited Git revision and 18 retained records. Never rewrite historical hashes.
+- Current checks independently validate documentation, dependency versions and source-bound runtime/LFS identity; identity does not prove execution.
+- Web CI/toolchain/template/export provenance contradictions remain separate issue #3 obligations.
+
+### Rank 1: operations/current-and-historical-validation.md — Current validation and retained M11 integrity > Why did the old consistency check report hash mismatches?
+
+Document: Current validation and retained M11 integrity
+Path: operations/current-and-historical-validation.md
+document-kind: guide
+status: Current
+scope: Separate current source and runtime acceptance from immutable historical M11 evidence
+canonical-for: [current-validation-gates, m11-retention-policy]
+last-reviewed: 2026-10-20
+Section: Current validation and retained M11 integrity > Why did the old consistency check report hash mismatches?
+The old checker compared today's source and binaries with the M11 hash table. Later implementation changes necessarily differ. An unresolved LFS pointer also differs from a materialized library. Neither comparison establishes corruption of the historical record. **Rejected:** editing M11 hashes or suppressing integrity errors to declare current success. **Current:** [check_m11_consistency.py](../../tools/ci/check_m11_consistency.py) verifies all 28 original [BUILD_ID](../BUILD_ID.md) source hashes against Git blobs at audited commit `05ea45fda7bdd7b0150eb86c4922c202e89e08f4`. It additionally verifies 18 retained records, including the original checker, against the [retention manifest](../audits/m11-retention.json). Text uses canonical Git LF bytes across Windows/Linux checkouts. Missing historical Git objects fail the check; fetch complete history. The historical tag and original hashes stay intact. `--compare-working-tree` explicitly requests the strict legacy comparison. It still exits nonzero when current files differ; its output is diagnostic drift, not the current release gate. The [dated reconciliation](../audits/2026-09-08-validation-reconciliation.md) preserves the previous failures and explains their resolution.
+
+
+### Rank 2: operations/documentation-maintenance.md — Documentation maintenance and retrieval contract > Documentation-update checklist
+
+Document: Documentation maintenance and retrieval contract
+Path: operations/documentation-maintenance.md
+document-kind: guide
+status: Current
+scope: Required documentation synchronization, canonical ownership, retrieval corpus and evidence workflow
+canonical-for: [documentation-update-checklist, rag-schema, retrieval-policy]
+last-reviewed: 2026-09-18
+Section: Documentation maintenance and retrieval contract > Documentation-update checklist
+Apply this at every implementation checkpoint, including tuning-only changes. 1. **Identify the actual inputs.** Record source Git root/HEAD/branch/status, relevant LFS objects and dirty paths; name a recoverable checkpoint. Preserve user work. Use [source checkpoint guidance](source-checkpoint-and-recovery.md). 2. **Map changed claims.** Search symbols, old values, aliases and reverse links. Review the affected subsystem, ownership/lifetime, interface layout, invariants, configuration/capacity, ADR, roadmap, build/test guide and user controls. A change matrix should name each affected page or explain why it is unaffected. 3. **Edit canonical homes first.** Attach source path plus symbol to important Current claims; use stable named sections for cross-links. Explain native, desktop, Web and fallback differences wherever they change the answer. 4. **Reconcile statuses and uncertainty.** Distinguish code from Approved intent. Record partial enforcement, failures, missing tests and decisions precisely. An observed defect must not become a promised invariant by omission. 5. **Synchronize routes and execution order.** Update the manifest, retrieval question destinations, documentation/retrieval indexes and roadmap. Update the handover for operational changes and owner-intent reference for new preferences. When a dependency/order/scope decision changes, update its canonical programme graph and all affected GitHub issue mirrors/comments in the same checkpoint; issue numbers and creation dates are never an ordering authority. Preserve old anchors that still have useful incoming links or update every caller. 6. **Record evidence separately.** Include date, command, timeout, OS/architecture, tool/dependency versions, fixture/configuration/profile/worker count, source revision plus dirty-file identity, artifact hashes and actual outcome. Identify whether evidence is inspection, compile, checksum, HTTP, native runtime, browser runtime or visual acceptance. Name exactly what was compared: level bytes, content/state hash, conservation, body tolerance or full replay. 7. **Preserve history.** Keep past results, failures, inconclusive runs and release hashes intact. Add a new evidence record and scope/link the old one. Never update historical hashes to make a new revision look validated. 8. **Check structure and retrieval.** Run the commands below. Inspect answers to affected natural questions for factual completeness and wrong-status/platform substitution, not only keyword hits. Add questions for newly discovered gaps; report them separately from a previously frozen evaluation set. 9. **Review the final diff and checkpoint.** Verify implementation scope, generated files and history preservation. Commit the authorized change locally with its validation report. State unresolved contradictions and readiness limits.
+
+
+### Rank 3: operations/physics-characterisation-plan.md — Physics characterisation and soliding plan > Planning checkpoint validation, 2026-09-08
+
+Document: Physics characterisation and soliding plan
+Path: operations/physics-characterisation-plan.md
+document-kind: runbook
+status: Planned
+scope: Proposed experiments for material penetration, player support, barrel settling and reversible aggregate physics; inspection is not runtime acceptance
+canonical-for: [physics-characterisation-plan, soliding-investigation]
+last-reviewed: 2026-09-09
+Section: Physics characterisation and soliding plan > Planning checkpoint validation, 2026-09-08
+**Current documentation-only evidence:** Windows PowerShell, bundled Python 3.12 environment, source baseline and pre-existing DLL delta identified above. No physics runtime tests, rebuilds or visual acceptance were performed. The canonical owner-intent, roadmap, coupling route, indexes and corpus were updated; C05/C06 are new supplementary questions, separate from the frozen 32-question set. Ownership/API/configuration/save formats, dependencies, UI and solver implementation remain unchanged, so their implementation contracts need no edit. Executed from the source root with ordinary 10-second command timeouts: `tools/ci/check_docs.py` passed (49 documents, zero errors/warnings); `tools/ci/check_m11_consistency.py` reported 12 historical BUILD_ID hash mismatches; historical hashes were preserved. `tools/docs/retrieval_eval.py` found canonical pages in the top five for 32/32 frozen and 6/6 supplementary questions (top one: 23/32 and 5/6 respectively). C05 and C06 both route first to this plan. Manual source/answer review confirmed the player predicate and viscosity distinction; C06's first chunk alone does not explain the handoff, so its soliding subsections are needed for an adequate answer. These lexical hits are not semantic or runtime acceptance. `git diff --check` passed. Raw checker logs and retrieval JSON are retained under `C:/kybersand/validation/local/2026-09-08-physics-plan/`. This plan is a local, uncommitted documentation delta to the recoverable source baseline, not a new release or published checkpoint.
+
+
+### Rank 4: operations/documentation-maintenance.md — Documentation maintenance and retrieval contract > Checks and evaluation interpretation
+
+Document: Documentation maintenance and retrieval contract
+Path: operations/documentation-maintenance.md
+document-kind: guide
+status: Current
+scope: Required documentation synchronization, canonical ownership, retrieval corpus and evidence workflow
+canonical-for: [documentation-update-checklist, rag-schema, retrieval-policy]
+last-reviewed: 2026-09-18
+Section: Documentation maintenance and retrieval contract > Checks and evaluation interpretation
+From the source root: ```text python tools/ci/check_docs.py python tools/ci/check_repository.py python tools/ci/check_m11_consistency.py python tools/docs/retrieval_eval.py --output <local-output.json> git diff --check ``` [check_docs.py](../../tools/ci/check_docs.py) checks metadata, unique ownership, corpus coverage, local links/anchors and frozen question references. It cannot validate source semantics, external sites or runtime claims. The M11 checker verifies immutable records against the audited Git revision. Current provenance and explicit strict historical comparison are [separate gates](current-and-historical-validation.md); report integrity failures and current-file drift with their distinct scope. [retrieval_eval.py](../../tools/docs/retrieval_eval.py) evaluates deterministic heading chunks with BM25 against the [frozen questions](../reference/retrieval-questions.json). Report hit@1/hit@5 and rank metrics with manual expected-fact sufficiency. A canonical hit alone can still omit a crucial qualifier. This is a development-set lexical baseline, not proof about an embedding model, a deployed vector database, or unseen questions. Keep fixture wording stable during before/after comparisons; disclose corrected expectations and iterations. Add independent future questions before the next implementation checkpoint to avoid tuning only to this set.
+
+
+### Rank 5: operations/github-development-and-release.md — Repository development and release > Parallel validation and source-scope advice — 2026-10-31
+
+Document: Repository development and release
+Path: operations/github-development-and-release.md
+document-kind: guide
+status: Current
+scope: Local repository policy and unresolved remote CI and release prerequisites
+canonical-for: [repository-policy, ci-contradictions, release-prerequisites]
+last-reviewed: 2026-10-31
+Section: Repository development and release > Parallel validation and source-scope advice — 2026-10-31
+The [shared execution policy](ci-execution-and-performance.md) now supersedes historical short command limits. Six Native families preserve every original command and scientific input, with complete derived parent budgets. Godot uses source-derived Linux/Windows matrices balanced by expected execution cost, full-watchdog admission within a hosted safety boundary, and independent exact-coverage readers. Historical elapsed-time weights and rolling performance warnings are advisory; assertions, crashes, incomplete readbacks and cleanup failures remain failures. Independent matrices continue after failures, and superseded automatic PR runs are cancelled. Main and explicit manual runs have unique concurrency groups to preserve qualification evidence without same-reference blocking. See the [scheduling audit](../audits/2026-11-01-ci-scheduling-qualification.md) for the measured baseline and the [complete workflow audit](../audits/2026-11-01-ci-workflow-audit.md) for matrix caps, remaining limitations and reproduction commands. The stable `native`, `linux x86_64`, Windows cross-build and complete Windows execution/coverage gates remain required. A failed ready-scope classifier cannot make an admitted required aggregate pass by skipping it. The old optional four-shard serial-migration check is replaced by mandatory original-log, source/runtime and unique-case Linux coverage. Full resulting-source execution and independent review remain necessary; predecessor results are not successor qualification. The [Native source-scope advisory](../../.github/workflows/native-scope-advisory.yml) is informational. Its classifier authenticates immutable base/executed-head commits, trees, clean checkout and committed classifier bytes, and examines both sides of renames using Git `--no-renames`. Raw unsafe paths, unknown inputs and empty/duplicate inventories cannot recommend an exemption. The advice always sets `native_skip_authorized=false`; no required job consumes a candidate exemption. Actual dependency-aware skipping would require a separate owner policy decision and audit. The [production integration audit](../audits/2026-10-31-ci-parallel-production-integration.md) separates predecessor trials from exact resulting-head qualification and the [guarded integration ledger](https://github.com/techrote/cybersand/issues/305#issuecomment-6537154140). The owner requested promotion on2026-10-31. The original branch-only drafts, original failed trials and historical Native timeout remain retained. Provider, scientific/training and source/runtime policies are unchanged. There is no Scheduswarm restart, new external provider or relaxation of PLAY graphical gates.
+
+## Q32: After changing physics ownership, which documentation and evidence must I update before a checkpoint?
+
+Canonical rank: 2
+
+Expected facts:
+
+- Map affected canonical contracts, ownership/lifetimes, invariants, configuration, ADR, roadmap, build/test guide and retrieval routes.
+- Record actual source/checkpoint identity and scoped validation; search aliases and reverse links for stale duplicate claims.
+- Keep historical records intact and run structural/link/retrieval checks plus relevant behavioral checks.
+
+### Rank 1: operations/microscenarios-programme.md — CyberSand MicroScenarios and intermaterial-interactions programme > Agent checkpoint protocol
+
+Document: CyberSand MicroScenarios and intermaterial-interactions programme
+Path: operations/microscenarios-programme.md
+document-kind: design
+status: Planned
+scope: Canonical development-order graph for reusable exploratory MicroScenarios, anomaly triage, non-kinetic intermaterial-interaction authoring/tuning, and staged showcase work
+canonical-for: [microscenarios-programme, microscenarios-development-order, intermaterial-interaction-programme]
+last-reviewed: 2026-09-20
+Section: CyberSand MicroScenarios and intermaterial-interactions programme > Agent checkpoint protocol
+Before starting any issue in or adjacent to this programme: 1. Read root `AGENTS.md`, the development handover, status/roadmap and this page. 2. Inspect actual branch/HEAD/status and active overlapping PRs. 3. Read the target issue plus its **named** dependencies; do not sort issue numbers. 4. State which hard prerequisites are satisfied and which lanes are merely parallel. 5. Preserve current source/ADR ownership. A scenario need is not permission to implement an engine feature inside scenario code. 6. When an exploratory anomaly appears, capture/reduce/triage before assigning it to a subsystem. 7. At every checkpoint, update this programme, roadmap, retrieval routes/corpus and affected issue mirrors together if dependency/order/scope changed. 8. Preserve dated/historical evidence; never rewrite old results to make them match the new scenario/profile/source. 9. Run documentation/retrieval/repository checks required by `documentation-maintenance.md` and report inherited failures separately. If an autonomous agent cannot reconcile the issue body with this programme and the architecture programme, it must treat that as a planning contradiction, record it, and resolve the documentation/issue mirror before changing physics.
+
+
+### Rank 2: operations/documentation-maintenance.md — Documentation maintenance and retrieval contract > Documentation-update checklist
+
+Document: Documentation maintenance and retrieval contract
+Path: operations/documentation-maintenance.md
+document-kind: guide
+status: Current
+scope: Required documentation synchronization, canonical ownership, retrieval corpus and evidence workflow
+canonical-for: [documentation-update-checklist, rag-schema, retrieval-policy]
+last-reviewed: 2026-09-18
+Section: Documentation maintenance and retrieval contract > Documentation-update checklist
+Apply this at every implementation checkpoint, including tuning-only changes. 1. **Identify the actual inputs.** Record source Git root/HEAD/branch/status, relevant LFS objects and dirty paths; name a recoverable checkpoint. Preserve user work. Use [source checkpoint guidance](source-checkpoint-and-recovery.md). 2. **Map changed claims.** Search symbols, old values, aliases and reverse links. Review the affected subsystem, ownership/lifetime, interface layout, invariants, configuration/capacity, ADR, roadmap, build/test guide and user controls. A change matrix should name each affected page or explain why it is unaffected. 3. **Edit canonical homes first.** Attach source path plus symbol to important Current claims; use stable named sections for cross-links. Explain native, desktop, Web and fallback differences wherever they change the answer. 4. **Reconcile statuses and uncertainty.** Distinguish code from Approved intent. Record partial enforcement, failures, missing tests and decisions precisely. An observed defect must not become a promised invariant by omission. 5. **Synchronize routes and execution order.** Update the manifest, retrieval question destinations, documentation/retrieval indexes and roadmap. Update the handover for operational changes and owner-intent reference for new preferences. When a dependency/order/scope decision changes, update its canonical programme graph and all affected GitHub issue mirrors/comments in the same checkpoint; issue numbers and creation dates are never an ordering authority. Preserve old anchors that still have useful incoming links or update every caller. 6. **Record evidence separately.** Include date, command, timeout, OS/architecture, tool/dependency versions, fixture/configuration/profile/worker count, source revision plus dirty-file identity, artifact hashes and actual outcome. Identify whether evidence is inspection, compile, checksum, HTTP, native runtime, browser runtime or visual acceptance. Name exactly what was compared: level bytes, content/state hash, conservation, body tolerance or full replay. 7. **Preserve history.** Keep past results, failures, inconclusive runs and release hashes intact. Add a new evidence record and scope/link the old one. Never update historical hashes to make a new revision look validated. 8. **Check structure and retrieval.** Run the commands below. Inspect answers to affected natural questions for factual completeness and wrong-status/platform substitution, not only keyword hits. Add questions for newly discovered gaps; report them separately from a previously frozen evaluation set. 9. **Review the final diff and checkpoint.** Verify implementation scope, generated files and history preservation. Commit the authorized change locally with its validation report. State unresolved contradictions and readiness limits.
+
+
+### Rank 3: architecture/inertial-cellular-v1.md — Inertial cellular reference > Standalone Godot readback and explicit geometry
+
+Document: Inertial cellular reference
+Path: architecture/inertial-cellular-v1.md
+document-kind: reference
+status: Current
+scope: Current-main Water and Brine inertial reference, retained integer momentum, whole-cell admission, carrier ownership, radius and state costs; source-bound native/application evidence remains distinct from scientific comparison and human acceptance
+canonical-for: [inertial-cellular-v1-brine, inertial-cellular-v1-water]
+last-reviewed: 2026-11-03
+Section: Inertial cellular reference > Standalone Godot readback and explicit geometry
+populations use cell counts. That standalone checkpoint added no prepared token, UI, constructor coordinator, verified provenance, Web qualification or new physics. Its then-pending merge gates subsequently passed; later #256/#257/PLAY supply bounded application integration. Full scientific, graphical/manual and source-verified host acceptance remain separately qualified, as recorded in the current checkpoint above. The `lcb005-inertial-runtime-publication.yml` profile reuses the accepted shared-contract verifier in an isolated module. Its initial preparation left `tools/ci/lcb005_inertial_publish_request.json` absent. An explicit committed request, exact candidate branch/source/workflow lease and unchanged source are required before either target build. After the separately frozen #201 checkpoint is integrated, both actual Windows and Linux executions must pass all fourteen scoped cases plus import, including the twelve retained cases, all six pressure-optimization sections and all six standalone IN sections. The IN-only checkpoint cannot qualify that union. Only the two runtime LFS paths and their two manifests may append in one source-parent commit; the atomic branch lease refuses a changed remote tip. Local preparation does not publish, arm a request or replace ready-PR acceptance. The later explicit request and actual import-plus14-case execution on both OSes are recorded in the union publication ledger; no fresh publication is started by this documentation update.
+
+
+### Rank 4: operations/documentation-maintenance.md — Documentation maintenance and retrieval contract > What makes a page independently retrievable?
+
+Document: Documentation maintenance and retrieval contract
+Path: operations/documentation-maintenance.md
+document-kind: guide
+status: Current
+scope: Required documentation synchronization, canonical ownership, retrieval corpus and evidence workflow
+canonical-for: [documentation-update-checklist, rag-schema, retrieval-policy]
+last-reviewed: 2026-09-18
+Section: Documentation maintenance and retrieval contract > What makes a page independently retrievable?
+Every focused page has one clear purpose and frontmatter with `title`, `status`, `document-kind`, `scope`, `canonical-for`, `last-reviewed`, and `related-documents`. Use ISO dates and inline lists. `canonical-for` contains unique topic identifiers; another page may summarize and link that topic but must not become a second owner. Use informative headings, short source-backed paragraphs and explicit platform names. Keep constants at their canonical configuration/API home. The default corpus is the explicit [retrieval manifest](../reference/retrieval-corpus.json). It selects contracts, design decisions, guides and references. Navigation pages route readers; historical records require an explicit historical question and are excluded from default answers. When chunking, attach title, scope, status, date, canonical topics and heading path to **every** chunk. A whole-page status alone does not make a mixed Current/Planned subsection safe to retrieve. | Claim label | Meaning | |---|---| | **Current** | Inspected executable source/configuration; runtime outcomes additionally require dated artifact/platform evidence | | **Approved** | Accepted requirement or direction; implementation may be partial | | **Planned** | Intended future work, not implemented or validated merely by being listed | | **Deferred** | Deliberately postponed with the applicable scope stated | | **Rejected** | Considered and intentionally declined; not silently reopened | Frontmatter `Approved design` is the existing checker-compatible alias for Approved. `Ambiguous` marks unresolved evidence or intent, not approval. A page's status describes its purpose; label conflicting or future claims individually. Source establishes present behavior; ADRs establish accepted direction. If they disagree, record both and the missing decision before changing implementation.
+
+
+### Rank 5: operations/soliding-stage3-freeze.md — Issue 12 Stage 3 execution freeze > Authority, checkpoint and purpose
+
+Document: Issue 12 Stage 3 execution freeze
+Path: operations/soliding-stage3-freeze.md
+document-kind: runbook
+status: Approved design
+scope: Frozen execution contract for completing scalable settled-region discovery after PR #43; read-only discovery only, no acceleration or material ownership transfer
+canonical-for: [soliding-stage3-execution-freeze]
+last-reviewed: 2026-09-19
+Section: Issue 12 Stage 3 execution freeze > Authority, checkpoint and purpose
+This page freezes the dependency-ready implementation contract for issue #12 Stage 3 after PR #43 head `90903355f5880e8f141ee6caea34840ad8b4990c`. PR #43 remains a foundation checkpoint: lifecycle, bounded tile journal, producer audit, ordinary-sleep control and synthetic journal-cost evidence exist, but production World notifications and cross-block connected-region discovery do not. Before executing this packet, re-read actual main, PR #43 CI/merge state and #12. If main or PR #43 has advanced, reconcile source identity without silently changing the architecture below. A runner/CI update alone does not invalidate the frozen native design, but implementation must still target the actual source being changed. This freeze exists so a supervising Sol parent can delegate bounded implementation to Spark workers without asking those workers to make architecture decisions. **Stage 3 remains read-only discovery. Cells are the sole material owner.** No scheduler skip, stationary proxy, compact payload, cohesion, Rapier aggregate, fracture, persistence migration or material-rule change is admitted here.

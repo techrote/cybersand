@@ -1,0 +1,56 @@
+{
+  "version": 1,
+  "frozen_date": "2026-11-04",
+  "purpose": "Supplementary SOL364-B questions for the registered negative corridor result. All earlier frozen/SOL364/contact question sets stay unchanged. Lexical retrieval does not imply factual or physical acceptance.",
+  "questions": [
+    {
+      "id": "SOL364B-CORRIDOR-001",
+      "query": "Why does the SOL364-B fixed-orientation four-cell penetration corridor refuse the original stationary and rotated controls, and what does its NO-GO prove?",
+      "canonical": [
+        "systems/solid-detachment.md"
+      ],
+      "facts": [
+        "Only the finite signed world/body axis family, four-cell lifetime budget and no-new-cell/proxy-pair policy are rejected; arbitrary rotating or curved paths are not disproved.",
+        "Stationary and rotated necessary distances exceed 5.7764 and 5.2458 cells before new blockers, while the nine-cell control retains 16 hard overlaps.",
+        "All 1,452 retained states refuse with zero live correction; original 84 clearance failures remain failed."
+      ],
+      "sources": [
+        "../tools/sol281/penetration_corridor.hpp",
+        "../tools/sol281/run_penetration_corridor.py"
+      ]
+    },
+    {
+      "id": "SOL364B-WORK-001",
+      "query": "What energy and ownership authority would SOL364-B need before applying a positional penetration correction?",
+      "canonical": [
+        "systems/solid-detachment.md"
+      ],
+      "facts": [
+        "The proposed finite repair reservoir is explicitly introduced energy with kinetic, signed potential and dissipation accounts, not free positional work or calibrated Sand elasticity.",
+        "Current v1 exterior contact packets lack complete interior/swept-space eligibility and a World revision lease held through RID application; cached identity and age alone cannot authorize concurrent mutation.",
+        "Arithmetic and geometry checks do not qualify live work, readback or recovery lifecycle because no application occurs."
+      ],
+      "sources": [
+        "../tools/sol281/penetration_corridor.hpp",
+        "../godot/native_extension/solid_contact_adapter.inc"
+      ]
+    },
+    {
+      "id": "SOL364B-HANDOVER-001",
+      "query": "Does successful SOL364-B retained-state diagnostic execution accept a new live CPU matrix, compatibility composition or restoration?",
+      "canonical": [
+        "systems/solid-detachment.md"
+      ],
+      "facts": [
+        "Historical Linux/Windows reports are authenticated inputs to a new diagnostic, not fresh Rapier trajectories or live recovery CPU measurements.",
+        "Original 24/24 CPU success remains scoped to 9edc4f8f and old Windows/Linux cost failures remain retained.",
+        "Independent compatibility review is not imported; frozen source guard still fails and a later owner-approved exact-tree composition needs new gates.",
+        "PR #347 remains draft, #364/#281/#12 open and #365 blocked."
+      ],
+      "sources": [
+        "../tools/sol281/run_penetration_corridor.py",
+        "../tools/material_catalogue/compatibility.py"
+      ]
+    }
+  ]
+}
