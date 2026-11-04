@@ -1,0 +1,59 @@
+{
+  "question_id": "USABLE02",
+  "kind": "manual_expected_fact_and_source_review",
+  "observed_at_utc": "2026-11-04T15:37:45.377502+00:00",
+  "source_head": "01f9b7c8e382ca6bdbaf0bf70c7847adc12fe0bc",
+  "source_scope": "Precommit ledger-only worktree; listed production and canonical contract sources unchanged from accepted head.",
+  "canonical_rank_before": 5,
+  "canonical_rank_after": 5,
+  "top_five_paths_and_text_byte_identical_to_baseline": true,
+  "retrieval_fixture_and_evaluator_unchanged": true,
+  "fact_reviews": [
+    {
+      "fact": 1,
+      "top_five_sufficiency": "supported",
+      "source_sufficiency": "supported",
+      "evidence": "Canonical rank5 includes issued-observation envelope, usable_index/instance_id/equipment_epoch, run/actor/generation/body/request identities; runtime REQUEST_KEYS and equipment accept_receipt enforce them.",
+      "source_anchors": [
+        "docs/reference/interfaces-and-message-contracts.md:1302-1363",
+        "godot/scripts/physical_usable_runtime.gd:10-14,601-631",
+        "godot/scripts/physical_usable_equipment.gd:400-406"
+      ]
+    },
+    {
+      "fact": 2,
+      "top_five_sufficiency": "supported",
+      "source_sufficiency": "supported",
+      "evidence": "Rank2 and rank5 state eight requests and one pending/in-flight per actor with atomic batch refusal preserving existing work. Worker mutex owns admission; owners and inflight checks prevent duplicates, and eight actor slots bound total in-flight work.",
+      "source_anchors": [
+        "docs/architecture/data-ownership-and-lifetimes.md:291-297",
+        "docs/reference/interfaces-and-message-contracts.md:1352-1355",
+        "godot/scripts/simulation_worker.gd:1209-1285"
+      ]
+    },
+    {
+      "fact": 3,
+      "top_five_sufficiency": "partial_source_expansion_required",
+      "source_sufficiency": "supported",
+      "evidence": "Top5 supports cancellation, late-receipt retirement and persistence of already committed entities, but canonical part1 truncates before complete receipt/cancellation paragraphs. Full-source inspection confirms one mutex serializes cancellation and bounded material consumption; requests revalidate current admission identity; pending token is consumed before recoil; no pending token, generation mismatch or expired lease refuses replay. This limitation is identical in the supplied baseline.",
+      "source_anchors": [
+        "docs/reference/interfaces-and-message-contracts.md:1357-1378",
+        "godot/scripts/simulation_worker.gd:1288-1347",
+        "godot/scripts/physical_usable_equipment.gd:368-440",
+        "godot/scripts/physical_usable_runtime.gd:601-631"
+      ]
+    }
+  ],
+  "verdict": "No retrieval or source-authority regression. Full source supports all three expected facts; a top-five canonical hit alone does not certify complete answer sufficiency. The third fact still requires existing canonical-source expansion.",
+  "limitations": [
+    "Read-only source inspection, not new physical-equipment execution.",
+    "No query, threshold, ranking, production source or historical result changed by this review."
+  ],
+  "source_sha256": {
+    "docs/reference/interfaces-and-message-contracts.md": "f5a110e89417b120b4c594dc5a998f70398733dedcb0c80446b69a3d6c97171a",
+    "docs/architecture/data-ownership-and-lifetimes.md": "97c0dfe83f6495eba9a1cbe5dd3b6f6d273987756c13041dae7ef6df0c40628b",
+    "godot/scripts/simulation_worker.gd": "7facdb0cd1a59a039fb78c22298b7422f656f733082228ea178d7917234a2dd0",
+    "godot/scripts/physical_usable_equipment.gd": "5804fbda0a5ba055eae5e0bbecbb18fb2949bc844ed58988560095cde0352deb",
+    "godot/scripts/physical_usable_runtime.gd": "37dcf991061b19d183131a3160f80f24e6d080fa0373df6c895f16585f87b314"
+  }
+}

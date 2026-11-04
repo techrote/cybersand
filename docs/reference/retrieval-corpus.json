@@ -131,9 +131,15 @@
     "../CONTRIBUTING.md",
     "../third_party/README.md",
     "../godot/native_extension/README.md",
-    "../.github/pull_request_template.md"
+    "../.github/pull_request_template.md",
+    "operations/cybersand-active-work-ledger.md",
+    "operations/active-work-ledger-maintenance.md"
   ],
   "excluded": [
+    {
+      "path": "audits/2026-11-04-active-ledger-001.md",
+      "reason": "Dated coordination bootstrap and tooling evidence; not a Current behavior answer owner"
+    },
     {
       "path": "audits/2026-11-04-mat-auth371-integration.md",
       "reason": "Dated A-only adopted-main reconciliation, compiler repair and integration evidence. Retrieve through the shadow guide and validation ledger with exact source/backend limits; final hosted and merge outcomes belong to PR371."

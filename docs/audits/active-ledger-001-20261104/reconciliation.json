@@ -1,0 +1,138 @@
+{
+  "schema_version": 1,
+  "kind": "dated_read_only_reconciliation_receipt",
+  "repository": "techrote/cybersand",
+  "accepted_main": {
+    "sha": "01f9b7c8e382ca6bdbaf0bf70c7847adc12fe0bc",
+    "tree": "4cf99921dc2b33233c3a254f4b6f27ed7cb0f204",
+    "url": "https://github.com/techrote/cybersand/commit/01f9b7c8e382ca6bdbaf0bf70c7847adc12fe0bc"
+  },
+  "source_snapshot_utc": "2026-11-04T15:27:12Z",
+  "inventory": {
+    "observed_at": "2026-11-04T15:11:52Z",
+    "page_size": 100,
+    "pages": [
+      {
+        "page": 1,
+        "count": 77,
+        "url": "https://api.github.com/repos/techrote/cybersand/pulls?state=open&sort=created&direction=asc&per_page=100&page=1"
+      },
+      {
+        "page": 2,
+        "count": 0,
+        "url": "https://api.github.com/repos/techrote/cybersand/pulls?state=open&sort=created&direction=asc&per_page=100&page=2"
+      }
+    ],
+    "exhaustive": true,
+    "observed_open_count": 77
+  },
+  "classification_counts": {
+    "active_relevant": 5,
+    "evidence_only": 15,
+    "held_no_go": 14,
+    "historical": 20,
+    "stacked": 17,
+    "unknown": 6
+  },
+  "unknown_prs": [
+    148,
+    184,
+    224,
+    258,
+    260,
+    327
+  ],
+  "detailed_workstream_count": 30,
+  "seed_ids": [
+    "IN361-ADMISSION",
+    "IN361-DRAIN",
+    "LCB360-FEEL",
+    "PF201-COST",
+    "PF201-P1",
+    "WCONTACT362-A",
+    "MAT353-A",
+    "MAT353-B",
+    "MAT354-LIVENESS",
+    "MAT358-PAIRED",
+    "SOL364-CONTACT",
+    "GCR-FLYER-BASE",
+    "GCR-SCOOPER",
+    "PLAY262-MAPS",
+    "SOL364-B",
+    "MATSOL-SOURCE",
+    "IN361-VALVE",
+    "IN361-NOZZLE",
+    "MAT354-FIX",
+    "MAT355-REACTIONS",
+    "MAT356-LAB",
+    "SOL365-RESTORE",
+    "LCB363-DECISION",
+    "PLAY270-ACCEPT"
+  ],
+  "additional_workstream_ids": [
+    "GCR-CAUSAL",
+    "GCR-EVENT-OFF",
+    "GCR-SELECTIVE",
+    "GCR-POWDER-REVIEW",
+    "GCR-FLEET",
+    "GCR-CARRY"
+  ],
+  "evidence_count": 182,
+  "input_sha256": [
+    {
+      "filename": "CyberSand_ACTIVE-LEDGER-001_GPT6Pro_Implementation_20261104.md",
+      "sha256": "41b20c18d8cf251490385a4c81949660e1693d0ef668aeea98dc2e1459f7e659",
+      "role": "owner-supplied historical planning input; live mutable state revalidated"
+    },
+    {
+      "filename": "CyberSand_active_work_ledger_plan_2026-11-04.md",
+      "sha256": "1cd93cb5e0800bcbc9e9236f35953b6cc48f7e5095d3f155cab537e83b00602b",
+      "role": "owner-supplied historical planning input; live mutable state revalidated"
+    },
+    {
+      "filename": "CyberSand_active_work_ledger_seed_2026-11-04.yaml",
+      "sha256": "55c1cedd0558e04e42ecaf89929572de1745ec8b60aebf0132ad358c29b0e81a",
+      "role": "owner-supplied historical planning input; live mutable state revalidated"
+    },
+    {
+      "filename": "CyberSand_project_assessment_20261104_1418.txt",
+      "sha256": "a008d8112a7c6d89a91f58dcf7ad64add6cc351d2a468a8b1ba6a63b46260254",
+      "role": "owner-supplied historical planning input; live mutable state revalidated"
+    }
+  ],
+  "read_only_independent_inventory_comparison": "77 records compared; 77+0 exhaustion; later PR347 head corrected without relabelling executed sources",
+  "limitations": [
+    "This is a dated coordination snapshot, not live session telemetry or current gameplay/physics/material authority.",
+    "77 PR enumeration completed before this ledger draft was created. The ledger publication itself will add a PR after this snapshot; no self-referential head is invented.",
+    "All open PR metadata/bodies were inventoried; deep CI/source review is limited to detailed lanes. Unknown classifications remain visible.",
+    "Independent reconciliation inspected GitHub metadata, selected logs and immutable receipts. Earlier campaigns were not rerun or all raw archives reauthenticated.",
+    "PR API base SHAs are recorded literally and may predate accepted main; a base label main is not current-main qualification.",
+    "Historical FAIL, draft SKIPPED, UNKNOWN, NOT_RUN and INAPPLICABLE are distinct. A passed subgate cannot lift unresolved physical/source gates.",
+    "Owner-supplied chat-start reports are historical reports. GitHub author techrote does not identify a sole branch-writing agent.",
+    "No feature integration approval, issue closure, source-lock refresh, CI dispatch or scheduled agent is authorized by this ledger.",
+    "Independent full-inventory comparison after initial capture found one later head movement in PR347. Reconciled at 2026-11-04T15:27:12Z; metadata observation times remain per-record and original executions keep their sources."
+  ],
+  "prepublication_read_only_refresh": {
+    "observed_at_utc": "2026-11-04T15:38:49Z",
+    "accepted_main": {
+      "sha": "01f9b7c8e382ca6bdbaf0bf70c7847adc12fe0bc",
+      "tree": "4cf99921dc2b33233c3a254f4b6f27ed7cb0f204"
+    },
+    "page_counts": [
+      77,
+      0
+    ],
+    "compared_pr_count": 77,
+    "changed_fields": [],
+    "compared_fields": [
+      "head_sha",
+      "base_sha",
+      "head_ref",
+      "base_ref",
+      "draft",
+      "state",
+      "title"
+    ],
+    "limitation": "Metadata refresh only; earlier per-record source-qualified execution times remain unchanged."
+  }
+}

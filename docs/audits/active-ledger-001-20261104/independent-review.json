@@ -1,0 +1,434 @@
+{
+  "schema_version": 1,
+  "review_id": "ACTIVE-LEDGER-001-independent-readonly-20261104",
+  "reviewed_at_utc": "2026-11-04T15:46:19Z",
+  "reviewer": "Independent read-only review agent /root/independent_ledger_review, separate from canonical-data author and tooling implementer",
+  "disposition": "GO_FOR_DRAFT_DOCUMENTATION_TOOLING_PUBLICATION",
+  "blocking_findings_remaining": [],
+  "permission_boundary": "This is independent technical review of the listed core files for one documentation/tooling-only draft PR. It is not owner approval, GitHub review approval, Ready transition, ledger merge permission or feature integration authorization.",
+  "review_method": {
+    "read_only": true,
+    "project_edits": false,
+    "git_mutations": false,
+    "github_mutations": false,
+    "expensive_workflow_dispatches": false,
+    "scratch_outputs": "review-temp only",
+    "python_bytecode_writes_disabled": true,
+    "basis": "Read all four supplied assignment inputs, repository AGENTS.md and schema contract; inspect code/data/dashboard/guide/nav; independently execute adversarial probes and project tests; read live GitHub metadata and selected source receipts/logs."
+  },
+  "reviewed_files": [
+    {
+      "path": "tools/operations/active_work_ledger.py",
+      "sha256": "caf5422d7c30462eb7a4992c8dc02fb388c261541cfbaaf3fb207df5bc3e2a2b",
+      "bytes": 73804
+    },
+    {
+      "path": "tools/operations/tests/test_active_work_ledger.py",
+      "sha256": "f052721866df82526ece3b34f549d290cf0acc4544f4d07cd420479607edbb22",
+      "bytes": 38613
+    },
+    {
+      "path": "tools/operations/tests/fixtures/seed_template.yaml",
+      "sha256": "3fbf7e4df8b9a6c62a300f073379137455c9edfc83b91cf6589f1c2459d5a869",
+      "bytes": 5311
+    },
+    {
+      "path": "docs/operations/cybersand-active-work-ledger.yaml",
+      "sha256": "554aade8383d17dd64685e8b157f5acf48ad15e653451a6690a067985ed9d126",
+      "bytes": 247153
+    },
+    {
+      "path": "docs/operations/cybersand-active-work-ledger.md",
+      "sha256": "0a32bdfa25b54a574ce54cec2e02fa9ee94157ef4f269e68357e4a87aa47a30f",
+      "bytes": 206140
+    },
+    {
+      "path": "docs/operations/active-work-ledger-maintenance.md",
+      "sha256": "c95f86df2202b565053aa235b8c8362f05b6ad43cc24fcd513eaf4bbd0959ef3",
+      "bytes": 12176
+    },
+    {
+      "path": "docs/README.md",
+      "sha256": "5644df00046f02df8f8c3a8a8d2fe7b5e292bd2fd0fd1974eef8fab41d506e7e",
+      "bytes": 51702
+    },
+    {
+      "path": "docs/operations/cybersand-codex-development-handover.md",
+      "sha256": "b7b1661eb66cfea829a2fd63e29953770353a85908b8422c80b0fd5d94ab7aea",
+      "bytes": 112605
+    },
+    {
+      "path": "docs/reference/retrieval-corpus.json",
+      "sha256": "361f894eac4ed25f816718857fdcc73c97b4f9d73f815186952241bb98eadeec",
+      "bytes": 38820
+    }
+  ],
+  "source_identity": {
+    "worktree_branch": "docs/active-work-ledger-001-20261104",
+    "local_head_before_publication": "01f9b7c8e382ca6bdbaf0bf70c7847adc12fe0bc",
+    "accepted_main": {
+      "sha": "01f9b7c8e382ca6bdbaf0bf70c7847adc12fe0bc",
+      "tree": "4cf99921dc2b33233c3a254f4b6f27ed7cb0f204",
+      "url": "https://github.com/techrote/cybersand/commit/01f9b7c8e382ca6bdbaf0bf70c7847adc12fe0bc"
+    },
+    "canonical_snapshot": "2026-11-04T15:27:12Z",
+    "manifest_basis": "Uncommitted core-file contents at review time. This manifest binds their bytes; it does not invent a later commit or the review receipt own publication hash."
+  },
+  "data_census": {
+    "workstreams": 30,
+    "retained_seed_ids": 24,
+    "open_prs": 77,
+    "pr_metadata_records": 79,
+    "classifications": {
+      "active_relevant": 5,
+      "evidence_only": 15,
+      "held_no_go": 14,
+      "historical": 20,
+      "stacked": 17,
+      "unknown": 6
+    },
+    "granted_merge_approvals": 0
+  },
+  "independent_live_check": {
+    "observed_at_utc": "2026-11-04T15:43:02.640Z",
+    "accepted_main": {
+      "sha": "01f9b7c8e382ca6bdbaf0bf70c7847adc12fe0bc",
+      "tree": "4cf99921dc2b33233c3a254f4b6f27ed7cb0f204",
+      "url": "https://github.com/techrote/cybersand/commit/01f9b7c8e382ca6bdbaf0bf70c7847adc12fe0bc"
+    },
+    "page_size": 100,
+    "pages": [
+      {
+        "page": 1,
+        "count": 77,
+        "url": "https://api.github.com/repos/techrote/cybersand/pulls?state=open&sort=created&direction=asc&per_page=100&page=1"
+      },
+      {
+        "page": 2,
+        "count": 0,
+        "url": "https://api.github.com/repos/techrote/cybersand/pulls?state=open&sort=created&direction=asc&per_page=100&page=2"
+      }
+    ],
+    "compared_fields": [
+      "number",
+      "title",
+      "head_sha",
+      "head_ref",
+      "base_ref",
+      "base_sha",
+      "state",
+      "draft"
+    ],
+    "metadata_differences": [],
+    "selected_checks": "PR374 merged; PR379 and262 conflict; PR382 targets current main but retained source guard failure; PR386 REPAIR dossier; PR387 stacked on385. PR347 late docs head retains older executed identities."
+  },
+  "source_receipt_spot_checks": [
+    {
+      "source": "https://github.com/techrote/cybersand/blob/b661a6f354f8c51e79759d22ad4573a875964b43/docs/audits/mat-sol-20261104/godot-boundary-matrix.json",
+      "result": "Independently counted122 records:38 PROCESS_ABORT,8 AUTHORITY_MISMATCH,66 PASS_EXECUTION,10 SAFE_REFUSAL. Source957ce67d/tree4ae59cb4, Linux native-facade/synthetic reservation only; REPAIR retained."
+    },
+    {
+      "source": "https://github.com/techrote/cybersand/actions/runs/41842117272",
+      "result": "Independently read actual Windows/Linux job logs: checked out58b8d27b,552 cases each;95 tests each with Windows5 skipped and Linux none. No production fix inferred."
+    },
+    {
+      "source": "https://github.com/techrote/cybersand/actions/runs/41848472642",
+      "result": "Independently read job list/reducer/publisher logs: source9597abd7/tree11e98621;2 builds,8 host cohorts,reducer success;84 sustained-clearance failures and64 depth failures; publisher refused bounded artifact capacity. Diagnostic execution does not establish physical acceptance."
+    },
+    {
+      "source": "https://github.com/techrote/cybersand/actions/runs/41837446750/job/126599922018",
+      "result": "Independently read actual fda1a74f synthetic checkout and world_pressure.inc frozen source hash failure. Later accepted-main movement does not turn it into a rerun."
+    },
+    {
+      "source": "https://github.com/techrote/cybersand/commit/c83984c029080b49ad1776a2b3de8c16f7ad5892",
+      "result": "Independent commit read confirms separate qualification audit sole parent73b10f9b; reported Linux evidence remains separate from Windows/input and production-review gaps."
+    }
+  ],
+  "validation": {
+    "runtime": {
+      "python": "3.12.14",
+      "PyYAML": "6.0.2"
+    },
+    "focused_tests": {
+      "result": "PASS",
+      "tests": 99,
+      "command": "PYTHONDONTWRITEBYTECODE=1 TMPDIR=<review-temp> <pinned-python> -m unittest discover -s tools/operations/tests -p 'test_*.py' -v",
+      "independent_execution": true
+    },
+    "independent_probes": {
+      "result": "PASS",
+      "total": 14,
+      "positive_controls": 2,
+      "negative_controls": 12,
+      "controls": [
+        {
+          "name": "baseline_synthetic",
+          "accepted": true,
+          "expected": true
+        },
+        {
+          "name": "positive_ready",
+          "accepted": true,
+          "expected": true
+        },
+        {
+          "name": "ready_mixed_authority_platform_union",
+          "accepted": false,
+          "expected": false
+        },
+        {
+          "name": "ready_review_for_wrong_pr",
+          "accepted": false,
+          "expected": false
+        },
+        {
+          "name": "closed_issue_from_unrelated_pr",
+          "accepted": false,
+          "expected": false
+        },
+        {
+          "name": "published_activity_without_linked_pr",
+          "accepted": false,
+          "expected": false
+        },
+        {
+          "name": "stopped_from_start_report",
+          "accepted": false,
+          "expected": false
+        },
+        {
+          "name": "ready_analysis_pass",
+          "accepted": false,
+          "expected": false
+        },
+        {
+          "name": "ready_runtime_literal_not_executed",
+          "accepted": false,
+          "expected": false
+        },
+        {
+          "name": "wrong_pr_approval",
+          "accepted": false,
+          "expected": false
+        },
+        {
+          "name": "changed_tested_sha",
+          "accepted": false,
+          "expected": false
+        },
+        {
+          "name": "skipped_evidence_as_pass",
+          "accepted": false,
+          "expected": false
+        },
+        {
+          "name": "physical_no_go_ready",
+          "accepted": false,
+          "expected": false
+        },
+        {
+          "name": "malformed_stage_list",
+          "accepted": false,
+          "expected": false
+        }
+      ]
+    },
+    "canonical_validate": {
+      "result": "PASS",
+      "workstreams": 30,
+      "classified_open_prs": 77
+    },
+    "canonical_check": {
+      "result": "PASS",
+      "meaning": "Tracked Markdown is byte-identical to deterministic canonical rendering; command does not write."
+    },
+    "whitespace_diff": {
+      "result": "PASS",
+      "command": "git diff --check"
+    },
+    "retrieval": {
+      "independent_execution": true,
+      "frozen": {
+        "summary": {
+          "questions": 32,
+          "canonical_hit_at_1": 19,
+          "canonical_hit_at_k": 32,
+          "mrr_at_k": 0.7536,
+          "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+        },
+        "rank_or_hit_differences": [],
+        "misses": []
+      },
+      "challenges": {
+        "summary": {
+          "questions": 157,
+          "canonical_hit_at_1": 124,
+          "canonical_hit_at_k": 156,
+          "mrr_at_k": 0.8734,
+          "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+        },
+        "rank_or_hit_differences": [],
+        "misses": [
+          "LCB03"
+        ]
+      },
+      "USABLE02": {
+        "canonical_rank": 5,
+        "hits": [
+          {
+            "rank": 1,
+            "path": "systems/actor-usables.md",
+            "heading": "Actor usables — 32-item catalogue and physical equipment > Desktop controls",
+            "is_current": true
+          },
+          {
+            "rank": 2,
+            "path": "reference/configuration-reference.md",
+            "heading": "Configuration reference > Actor usable values",
+            "is_current": true
+          },
+          {
+            "rank": 3,
+            "path": "systems/player-control-playground.md",
+            "heading": "Player control playground > Live adversarial delivery qualification",
+            "is_current": true
+          },
+          {
+            "rank": 4,
+            "path": "architecture/simulation-tick-and-threading.md",
+            "heading": "Simulation tick and threading > Physical actor scheduling",
+            "is_current": true
+          },
+          {
+            "rank": 5,
+            "path": "reference/interfaces-and-message-contracts.md",
+            "heading": "Interfaces and message contracts > Physical actor control and effects > Physical equipment actions and results",
+            "is_current": true
+          }
+        ]
+      },
+      "comparison": "Compared all189 canonical ranks and top-five path/heading identities with stored pre-change baseline: unchanged. Exact numeric scores are not claimed identical. Ledger/guide remain navigation; neither enters answer corpus."
+    }
+  },
+  "findings_and_corrections": [
+    {
+      "id": "IR-01",
+      "title": "Late PR347 source movement",
+      "severity": "material data correction",
+      "before": "PR347 moved from9597abd7 to1598115c after the first snapshot.",
+      "correction": "Current metadata now records1598115c9065239cc1eaec11e99077274b457be1/treeeff31c3597347f06a4b23193cd64b58350386c29. Executed9597abd7 and CPU9edc4f8f receipts remain historical, with no new-head runtime pass inferred.",
+      "verification": "Independent live PR/commit read and final all-open metadata comparison.",
+      "status": "resolved"
+    },
+    {
+      "id": "IR-02",
+      "title": "Broken generated maintenance link",
+      "severity": "documentation defect",
+      "before": "Renderer emitted a nonexistent cybersand-active-work-ledger-maintenance.md target.",
+      "correction": "Frontmatter and visible link now use active-work-ledger-maintenance.md.",
+      "verification": "Reviewed corrected renderer and generated dashboard; target exists.",
+      "status": "resolved"
+    },
+    {
+      "id": "IR-03",
+      "title": "Reported platform widened verified readiness",
+      "severity": "authority bypass",
+      "before": "A required Linux+Windows PASS could combine verified Linux evidence with merely reported Windows evidence and still qualify ready.",
+      "correction": "Every platform claimed by a required PASS now needs matching verified source/result/scope evidence.",
+      "verification": "ready_mixed_authority_platform_union rejects; positive_ready remains valid.",
+      "status": "resolved"
+    },
+    {
+      "id": "IR-04",
+      "title": "Review for another PR accepted",
+      "severity": "authority bypass",
+      "before": "A same-SHA/tree independent_review with subject_pr999 could qualify primary PR379.",
+      "correction": "Accepted independent review must identify the current primary PR as well as its exact head/tree.",
+      "verification": "ready_review_for_wrong_pr rejects.",
+      "status": "resolved"
+    },
+    {
+      "id": "IR-05",
+      "title": "Issue closure could borrow unrelated PR metadata",
+      "severity": "authority bypass",
+      "before": "Issue361 could be marked closed using PR379 metadata.",
+      "correction": "Issue evidence now binds subject_issue, issue_state and matching issue URL; actual issue evidence was migrated.",
+      "verification": "closed_issue_from_unrelated_pr rejects; canonical ledger validates with explicit issue identities.",
+      "status": "resolved"
+    },
+    {
+      "id": "IR-06",
+      "title": "A launch report could establish stopped activity",
+      "severity": "authority bypass",
+      "before": "A user_report with decision started was accepted as evidence for explicitly_stopped.",
+      "correction": "Started, stopped and released dispositions are explicit; stopped activity requires stopped or released evidence.",
+      "verification": "stopped_from_start_report rejects; SOL364-B retains the source-qualified released-worker record.",
+      "status": "resolved"
+    },
+    {
+      "id": "IR-07",
+      "title": "Analysis record could stand in for executed PASS",
+      "severity": "authority hardening",
+      "before": "A verified analysis-kind record could establish a required execution PASS.",
+      "correction": "Qualification PASS evidence must have source_receipt or workflow_result kind.",
+      "verification": "ready_analysis_pass rejects.",
+      "status": "resolved"
+    },
+    {
+      "id": "IR-08",
+      "title": "Unexecuted runtime sentinel accepted for PASS",
+      "severity": "source consistency hardening",
+      "before": "A required PASS accepted runtime exactly not executed.",
+      "correction": "Explicit unexecuted/unknown runtime sentinels cannot establish a PASS. Free-form source/runtime descriptions still require human source review.",
+      "verification": "ready_runtime_literal_not_executed rejects.",
+      "status": "resolved"
+    },
+    {
+      "id": "IR-09",
+      "title": "Known owner questions absent from owner table",
+      "severity": "coordination data correction",
+      "before": "MAT354-FIX requested explicit production-fix approval and SOL364-B retained writer arbitration while owner_decision_required was false.",
+      "correction": "The separate MAT354-FIX admission question and SOL364-B sole-writer question now explicitly populate the owner-decision queue. Neither grants assignment or merge permission.",
+      "verification": "Inspected final canonical next_action fields and regenerated dashboard.",
+      "status": "resolved"
+    },
+    {
+      "id": "IR-10",
+      "title": "PR272 historical rationale could imply implementation",
+      "severity": "wording correction",
+      "before": "Its rationale could read as though the dedicated-owner architecture proposal itself had been implemented.",
+      "correction": "Rationale now preserves accepted-main historical/conditional-fallback classification.",
+      "verification": "Compared accepted-main handover/roadmap wording and final coverage rationale.",
+      "status": "resolved"
+    }
+  ],
+  "scope_check": {
+    "observed_changed_paths": [
+      "docs/README.md",
+      "docs/audits/2026-11-04-active-ledger-001.md",
+      "docs/audits/active-ledger-001-20261104/reconciliation.json",
+      "docs/audits/active-ledger-001-20261104/retrieval-review.json",
+      "docs/operations/active-work-ledger-maintenance.md",
+      "docs/operations/cybersand-active-work-ledger.md",
+      "docs/operations/cybersand-active-work-ledger.yaml",
+      "docs/operations/cybersand-codex-development-handover.md",
+      "docs/reference/retrieval-corpus.json",
+      "tools/operations/active_work_ledger.py",
+      "tools/operations/tests/fixtures/seed_template.yaml",
+      "tools/operations/tests/test_active_work_ledger.py"
+    ],
+    "production_or_ci_edits_observed": false,
+    "core_manifest_is_exhaustive_for_reviewed_code_data_dashboard_and_navigation": true,
+    "audit_note": "New dated audit and validation/reconciliation receipts are coordinator-owned publication evidence. Their finalized narrative and this receipt publication metadata are outside this core-file manifest."
+  },
+  "limitations": [
+    "The offline validator checks declared structure, identity, scope and authority consistency. It does not authenticate arbitrary URLs, prove who wrote a report, verify binary runtime bytes, or infer live chat activity. The steward must read original evidence.",
+    "The independent reviewer read all open PR metadata and selected high-priority receipts/logs. This is not a reexecution of every historical physical/native/Godot campaign or reauthentication of every raw archive.",
+    "Actual Windows, Web, graphical input and production physics qualification were not executed by this review. Existing claims retain their own source/runtime/platform labels.",
+    "Retrieval baseline retains LCB03 miss:156/157 supplementary canonical top-five hits. Canonical retrieval hits alone are not full semantic answer correctness.",
+    "No hosted result for the not-yet-created ledger PR is asserted. Final draft-triggered hosted skips and production runtime materialization limits must be reported separately by the coordinator.",
+    "The77-PR inventory is a dated snapshot before this ledger PR is created. Its own later publication must be reported separately, without a self-referential head claim.",
+    "Any subsequent change to the nine reviewed core files invalidates their exact byte manifest and needs proportionate re-review. Final audit narrative or copy of this receipt is not implicitly independently reviewed."
+  ],
+  "next_boundary": "Coordinator may commit/publish the reviewed documentation/tooling draft with actual validation receipts. Stop before Ready/merge or any feature/source-lock/production action; owner adoption/merge decision remains pending."
+}
