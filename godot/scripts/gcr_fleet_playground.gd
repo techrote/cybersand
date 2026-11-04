@@ -19,14 +19,90 @@ var control_status: Label
 var control_error: String = ""
 var thruster_fire: CheckButton
 var event_runtime_identity: String = ""
+var spawn_position := Vector2(178,304)
+var spawn_fields: Dictionary = {}
+var review_column: VBoxContainer
+var review_details: VBoxContainer
+
+func _build_ui() -> void:
+	var background := ColorRect.new()
+	background.color=Color("0a101a")
+	background.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	background.mouse_filter=Control.MOUSE_FILTER_IGNORE
+	add_child(background)
+	var margin:=MarginContainer.new()
+	margin.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	for side: String in ["left","right","top","bottom"]: margin.add_theme_constant_override("margin_"+side,8)
+	add_child(margin)
+	review_column=VBoxContainer.new()
+	review_column.add_theme_constant_override("separation",4)
+	margin.add_child(review_column)
+	var header:=HFlowContainer.new()
+	header.add_theme_constant_override("h_separation",4)
+	header.add_theme_constant_override("v_separation",2)
+	review_column.add_child(header)
+	_label(header,"FLYER LAB · EXPERIMENTAL",13,Color("f7c579"))
+	for index: int in range(7):
+		var button:=_button(header,"%d %s" % [index+1,Fleet.NAMES[index]],func() -> void: select_preset(index))
+		_buttons.append(button)
+	_button(header,"Reset [R]",_restart)
+	_pause_button=_button(header,"Pause [P]",_toggle_pause)
+	_button(header,"Camera [F]",_toggle_camera)
+	_button(header,"Details",func() -> void: review_details.visible=not review_details.visible)
+	_button(header,"Menu [F2]",func() -> void: get_tree().change_scene_to_file("res://feature_launcher.tscn"))
+	var right:=VBoxContainer.new()
+	right.add_theme_constant_override("separation",2)
+	right.size_flags_vertical=Control.SIZE_EXPAND_FILL
+	right.size_flags_horizontal=Control.SIZE_EXPAND_FILL
+	review_column.add_child(right)
+	_canvas=Control.new()
+	_canvas.custom_minimum_size=Vector2(512,256)
+	_canvas.size_flags_vertical=Control.SIZE_EXPAND_FILL
+	_canvas.size_flags_horizontal=Control.SIZE_EXPAND_FILL
+	_canvas.mouse_filter=Control.MOUSE_FILTER_STOP
+	right.add_child(_canvas)
+	_terrain=TextureRect.new()
+	_terrain.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	_terrain.expand_mode=TextureRect.EXPAND_IGNORE_SIZE
+	_terrain.stretch_mode=TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	_terrain.texture_filter=CanvasItem.TEXTURE_FILTER_NEAREST
+	_terrain.mouse_filter=Control.MOUSE_FILTER_IGNORE
+	_canvas.add_child(_terrain)
+	_overlay=Overlay.new()
+	_canvas.add_child(_overlay)
+	_status=_label(right,"",12,Color("e0e8ed"))
+	_status.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
+	_hint=_label(right,"",12,Color("9bb0bf"))
+	_hint.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
+	review_details=VBoxContainer.new()
+	review_details.visible=false
+	review_column.add_child(review_details)
+	_title=_label(review_details,"",14,Color.WHITE)
+	_tagline=_label(review_details,"",12,Color("adc0ce"))
+	_controls=_label(review_details,"",12,Color("e0e8ed"))
+	_timing=_label(review_details,"",12,Color("a3e8f4"))
+	_label(review_details,"Gamepad: stick WASD · A/B/X Space/Ctrl/C · shoulders Q/E · Start pause. Keyboard 1–7 / Tab selects. B bursts at the fixed source; Shift boosts; Ctrl brakes.",12,Color("adc0ce"))
+
+func _button(parent: Node, text: String, pressed: Callable) -> Button:
+	var button: Button=super._button(parent,text,pressed)
+	button.custom_minimum_size.y=24
+	button.add_theme_font_size_override("font_size",12)
+	for state: String in ["normal","hover","pressed"]:
+		var style: StyleBoxFlat=button.get_theme_stylebox(state).duplicate()
+		style.content_margin_left=6
+		style.content_margin_right=6
+		style.set_corner_radius_all(2)
+		button.add_theme_stylebox_override(state,style)
+	return button
+
+func _label(parent: Node, text: String, font_size: int, color: Color) -> Label:
+	return super._label(parent,text,mini(font_size,13),color)
 
 func _ready() -> void:
 	super._ready()
-	_fit_roster_panel()
 	_overlay.free()
 	_overlay = FleetOverlay.new()
 	_canvas.add_child(_overlay)
-	for index: int in range(7): _buttons[index].text = "%d   %s" % [index+1,Fleet.NAMES[index]]
 	_build_comparison_controls()
 	select_preset(0)
 	DisplayServer.window_set_title("CyberSand — flyer budget playground + painting")
@@ -35,109 +111,103 @@ func _ready() -> void:
 func _set_review_window_title() -> void:
 	DisplayServer.window_set_title("CyberSand — flyer review · "+OS.get_environment("CYBERSAND_SOURCE_REVISION").left(12))
 
-func _fit_roster_panel() -> void:
-	# The long craft/help column must not dictate the map's minimum height.
-	var row: HBoxContainer=_canvas.get_parent().get_parent()
-	var sidebar: Control=row.get_child(0)
-	for child in sidebar.get_children():
-		if child is Label and child.text.begins_with("Left stick = WASD"):
-			child.text=child.text.replace("Space / Shift / C","Space / Ctrl / C")
-	row.remove_child(sidebar)
-	var scroll:=ScrollContainer.new()
-	scroll.custom_minimum_size.x=320
-	scroll.size_flags_vertical=Control.SIZE_EXPAND_FILL
-	scroll.horizontal_scroll_mode=ScrollContainer.SCROLL_MODE_DISABLED
-	scroll.vertical_scroll_mode=ScrollContainer.SCROLL_MODE_AUTO
-	row.add_child(scroll)
-	row.move_child(scroll,0)
-	scroll.add_child(sidebar)
-
 func _build_comparison_controls() -> void:
-	var column: Control = _canvas.get_parent().get_parent().get_parent()
+	var column: Control = review_column
 	var panel := VBoxContainer.new()
 	column.add_child(panel)
 	column.move_child(panel,1)
-	var row := HBoxContainer.new()
-	row.add_theme_constant_override("separation",12)
+	panel.add_theme_constant_override("separation",2)
+	var row := HFlowContainer.new()
+	row.add_theme_constant_override("h_separation",8)
+	row.add_theme_constant_override("v_separation",2)
 	panel.add_child(row)
-	var responses := VBoxContainer.new()
-	row.add_child(responses)
-	_label(responses,"EXPERIMENTAL RESPONSE",12,Color("f7c579"))
 	response_select=OptionButton.new()
 	response_select.focus_mode=Control.FOCUS_NONE
-	response_select.add_item("LA / A1 · budget comparison")
-	response_select.add_item("RFT / R2 reference · fixed 20")
-	response_select.add_item("LA · events OFF (experimental)")
-	response_select.add_item("LA · selective arrivals (experimental)")
+	response_select.add_theme_font_size_override("font_size",12)
+	response_select.add_item("LA / A1")
+	response_select.add_item("RFT / R2 · fixed 20")
+	response_select.add_item("LA · events OFF")
+	response_select.add_item("LA · selective arrivals")
+	response_select.tooltip_text="Experimental response. Changes apply with Apply/reset; native material laws remain unchanged."
 	response_select.set_item_tooltip(3,"Retained experiment: misses registered creep, finite-batch loading and late edge-rebound gates. Recovers continuous-stream response. Compare with LA and events OFF; applies on reset.")
 	response_select.set_item_tooltip(2,"Reduces measured bank burial. Moving-grain loading and torque are deficient; late barrel motion can increase. Compare with LA. Applies on reset.")
 	response_select.select(["LA","RFT","LA-EVENT-OFF","LA-SELECTIVE"].find(applied_controls.response))
-	responses.add_child(response_select)
-	for key: String in ["budget","mass_multiplier","inertia_multiplier"]:
-		var field := VBoxContainer.new()
+	row.add_child(response_select)
+	for key: String in ["budget","mass_multiplier","inertia_multiplier","thrust_multiplier","torque_multiplier","boost_multiplier"]:
+		var field := HBoxContainer.new()
+		field.add_theme_constant_override("separation",3)
 		row.add_child(field)
-		_label(field,{"budget":"Impulse budget","mass_multiplier":"Mass × authored","inertia_multiplier":"Inertia × mass-scaled shape"}[key],12,Color("adc0ce"))
+		_label(field,{"budget":"Budget","mass_multiplier":"Mass ×","inertia_multiplier":"Inertia ×","thrust_multiplier":"Thrust ×","torque_multiplier":"Torque ×","boost_multiplier":"Shift ×"}[key],12,Color("adc0ce"))
 		var input := SpinBox.new()
-		input.min_value=5.0 if key=="budget" else 0.01
-		input.max_value=80.0 if key=="budget" else 64.0
-		input.step=1.0 if key=="budget" else 0.01
-		input.value=applied_controls[key]
-		input.custom_minimum_size.x=130
-		field.add_child(input)
-		control_fields[key]=input
-	_button(row,"Apply + reset room",apply_controls)
-	_button(row,"Restore flyer defaults",restore_controls)
-	var actuator_row := HBoxContainer.new()
-	actuator_row.add_theme_constant_override("separation",12)
-	panel.add_child(actuator_row)
-	for key: String in ["thrust_multiplier","torque_multiplier","boost_multiplier"]:
-		var field := VBoxContainer.new()
-		actuator_row.add_child(field)
-		_label(field,{"thrust_multiplier":"Thrust limit × authored","torque_multiplier":"Torque limit × authored","boost_multiplier":"Shift thrust multiplier"}[key],12,Color("adc0ce"))
-		var input := SpinBox.new()
-		input.min_value=1.0 if key=="boost_multiplier" else 0.0
-		input.max_value=8.0 if key=="boost_multiplier" else 64.0
-		input.step=0.25 if key=="boost_multiplier" else 0.01
+		input.min_value=5.0 if key=="budget" else (1.0 if key=="boost_multiplier" else (0.0 if key in ["thrust_multiplier","torque_multiplier"] else 0.01))
+		input.max_value=80.0 if key=="budget" else (8.0 if key=="boost_multiplier" else 64.0)
+		input.step=1.0 if key=="budget" else (0.25 if key=="boost_multiplier" else 0.01)
 		input.value=float(applied_controls.get(key,2.0 if key=="boost_multiplier" else 1.0))
-		input.custom_minimum_size.x=190
+		input.custom_minimum_size.x=86
+		input.add_theme_font_size_override("font_size",12)
+		input.get_line_edit().add_theme_font_size_override("font_size",12)
+		input.get_line_edit().focus_entered.connect(_cancel_input)
+		input.tooltip_text="Staged %s; Apply rebuilds terrain and flyer at the saved spawn." % key
 		field.add_child(input)
 		control_fields[key]=input
-	var explanation := _label(actuator_row,"Shift: configured thrust multiplier. Ctrl: brake. Base ceilings stay separately adjustable.",13,Color("adc0ce"))
-	explanation.size_flags_horizontal=Control.SIZE_EXPAND_FILL
-	explanation.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
+	_button(row,"Apply + reset",apply_controls)
+	_button(row,"Defaults",restore_controls)
+	var source_row := HFlowContainer.new()
+	source_row.add_theme_constant_override("h_separation",6)
+	source_row.add_theme_constant_override("v_separation",2)
+	panel.add_child(source_row)
+	_label(source_row,"Reset spawn",12,Color("adc0ce"))
+	for axis: String in ["x","y"]:
+		var field:=HBoxContainer.new()
+		field.add_theme_constant_override("separation",2)
+		source_row.add_child(field)
+		_label(field,axis.to_upper(),12,Color("adc0ce"))
+		var input:=SpinBox.new()
+		input.min_value=22; input.max_value=1002 if axis=="x" else 475
+		input.step=0.01; input.value=spawn_position.x if axis=="x" else spawn_position.y
+		input.custom_minimum_size.x=96
+		input.get_line_edit().add_theme_font_size_override("font_size",12)
+		input.get_line_edit().focus_entered.connect(_cancel_input)
+		input.tooltip_text="Flyer centre in world cells (0.01 precision), applied on reset/selection. Saved across response and craft changes."
+		field.add_child(input)
+		spawn_fields[axis]=input
+	_button(source_row,"Use flyer",capture_spawn_position).tooltip_text="Save the current centre without moving the flyer. Reset starts upright with zero velocity."
+	_button(source_row,"Default spawn",reset_spawn_position)
 	thruster_fire=CheckButton.new()
-	thruster_fire.text="Thrusters emit real Fire"
+	thruster_fire.text="Fire"
+	thruster_fire.add_theme_font_size_override("font_size",12)
 	thruster_fire.focus_mode=Control.FOCUS_NONE
 	thruster_fire.tooltip_text="Live developer toggle. Fire reacts with the world; blocked nozzles do not overwrite material."
 	thruster_fire.toggled.connect(func(enabled: bool) -> void:
 		if runtime != null: runtime.set_review_thruster_fire(enabled))
-	panel.add_child(thruster_fire)
-	var powder_row := HBoxContainer.new()
-	powder_row.add_theme_constant_override("separation",8)
-	panel.add_child(powder_row)
-	_button(powder_row,"Powder burst · reset paused",func() -> void: start_powder_test("burst"))
-	_button(powder_row,"Continuous stream · reset paused",func() -> void: start_powder_test("stream"))
-	_button(powder_row,"Painting room",return_to_painting)
-	powder_test_status=_label(panel,"Repeatable loading tests: Kestrel, body gravity off, pilot off. P starts/pauses; R repeats.",13,Color("adc0ce"))
-	powder_test_status.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
-	var source_row := HBoxContainer.new()
-	source_row.add_theme_constant_override("separation",8)
-	panel.add_child(source_row)
+	source_row.add_child(thruster_fire)
 	room_source_enabled=CheckButton.new()
-	room_source_enabled.text="Room powder source"
+	room_source_enabled.text="Powder source"
+	room_source_enabled.add_theme_font_size_override("font_size",12)
 	room_source_enabled.focus_mode=Control.FOCUS_NONE
 	room_source_enabled.toggled.connect(_toggle_room_source)
 	source_row.add_child(room_source_enabled)
-	room_source_buttons.append(_button(source_row,"Place above flyer · use palette",place_room_source))
-	room_source_buttons.append(_button(source_row,"Burst",emit_room_burst))
+	room_source_buttons.append(_button(source_row,"Place above flyer",place_room_source))
+	room_source_buttons[0].tooltip_text="Capture palette material and a fixed world origin above the flyer."
+	room_source_buttons.append(_button(source_row,"Burst [B]",emit_room_burst))
 	room_stream=CheckButton.new()
-	room_stream.text="Stream · up to 10 s"
+	room_stream.text="Stream ≤10s"
+	room_stream.add_theme_font_size_override("font_size",12)
 	room_stream.focus_mode=Control.FOCUS_NONE
 	room_stream.toggled.connect(set_room_stream)
 	source_row.add_child(room_stream)
+	var powder_row := HFlowContainer.new()
+	powder_row.add_theme_constant_override("h_separation",6)
+	panel.add_child(powder_row)
+	_label(powder_row,"Isolated Kestrel fixtures:",12,Color("adc0ce"))
+	_button(powder_row,"Burst test",func() -> void: start_powder_test("burst"))
+	_button(powder_row,"Stream test",func() -> void: start_powder_test("stream"))
+	_button(powder_row,"Painting room",return_to_painting)
+	powder_test_status=_label(review_details,"",12,Color("adc0ce"))
+	powder_test_status.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
 	room_source_status=_label(panel,"Room source off. Choose a powder in the palette, then place above any flyer.",13,Color("adc0ce"))
 	room_source_status.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
-	control_status=_label(panel,"",14,Color("f7c579"))
+	control_status=_label(panel,"",12,Color("f7c579"))
 	control_status.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
 	var provenance: Variant = JSON.parse_string(FileAccess.get_file_as_string("res://addons/cybersand_native/runtime-provenance.json" if OS.get_name()=="Windows" else "res://addons/cybersand_native/runtime-provenance.linux.json"))
 	if provenance is Dictionary:
@@ -146,7 +216,43 @@ func _build_comparison_controls() -> void:
 
 func _release_edit_focus() -> void:
 	var focused: Control = get_viewport().gui_get_focus_owner()
-	if focused != null: focused.release_focus()
+	if focused != null:
+		if focused is LineEdit and focused.get_parent() is SpinBox: focused.get_parent().apply()
+		focused.release_focus()
+
+func _valid_room_spawn(point: Vector2, index: int) -> bool:
+	if not preload("res://scripts/physical_actor_arena.gd").valid_review_fleet_spawn(point,index): return false
+	var size: Vector2=Fleet.ROWS[index][0]
+	var hull:=Rect2(point-size*0.5,size)
+	for rect: Rect2i in crash_hard_rects():
+		if hull.intersects(Rect2(rect)): return false
+	return true
+
+func set_spawn_position(point: Vector2) -> bool:
+	# Store the same authoring precision shown by the fields, so capturing a
+	# subpixel pose cannot silently change its spawn on the following reset.
+	if point.is_finite(): point=point.snapped(Vector2(0.01,0.01))
+	if not _valid_room_spawn(point,selected):
+		control_error="Spawn refused: upright hull must fit inside the room without overlapping hard terrain."
+		if control_status!=null: control_status.text=control_error
+		return false
+	spawn_position=point
+	if not spawn_fields.is_empty():
+		spawn_fields.x.set_value_no_signal(point.x)
+		spawn_fields.y.set_value_no_signal(point.y)
+	control_error=""
+	return true
+
+func capture_spawn_position() -> bool:
+	_release_edit_focus()
+	if runtime==null or not runtime.active() or runtime._arena==null: return false
+	var body: RigidBody2D=runtime._arena.session.bodies()[0]
+	var pose: Transform2D=PhysicsServer2D.body_get_state(body.get_rid(),PhysicsServer2D.BODY_STATE_TRANSFORM)
+	return set_spawn_position(pose.origin)
+
+func reset_spawn_position() -> void:
+	_release_edit_focus()
+	set_spawn_position(Vector2(178,304))
 
 func apply_controls() -> bool:
 	_release_edit_focus()
@@ -191,6 +297,15 @@ func _input(event: InputEvent) -> void:
 			_release_edit_focus()
 			get_viewport().set_input_as_handled()
 		return
+	if event is InputEventKey:
+		var key: Key=event.physical_keycode if event.physical_keycode!=0 else event.keycode
+		if key==KEY_B:
+			if event.pressed and not event.echo and _focused and runtime!=null and runtime.active() and not runtime.failed and not powder_test.active(): emit_room_burst()
+			get_viewport().set_input_as_handled()
+			return
+	# Review buttons do not revoke a held flight command. SpinBox editor focus
+	# cancels immediately; OS focus loss/pause/reset keep their existing rearm.
+	if event is InputEventMouseButton and not _content_rect().has_point(_canvas.get_local_mouse_position()): return
 	super._input(event)
 
 func _review_ports() -> Dictionary:
@@ -256,7 +371,7 @@ func advance_frame(action: Dictionary, allowed: bool) -> void:
 	# A held dispenser must be released after focus/edit/pause cancellation,
 	# even when Q+E cancels the signed trim or Kestrel S leaves move neutral.
 	var ports: Dictionary = _review_ports()
-	if _rearm and (ports.q or ports.e or ports.s or ports.boost): allowed=false
+	if _rearm and (ports.q or ports.e or ports.s or ports.get("boost",false)): allowed=false
 	if room_source.armed and runtime!=null and runtime.active() and not runtime.paused and not runtime.failed:
 		if not room_source.before_step(runtime._arena):
 			control_error=room_source.error
@@ -265,14 +380,21 @@ func advance_frame(action: Dictionary, allowed: bool) -> void:
 
 func select_preset(index: int) -> bool:
 	if not Fleet.valid_index(index): return false
-	_cancel_input()
 	_release_edit_focus()
-	if not runtime.configure_review_fleet(index,applied_controls):
+	var point: Vector2=spawn_position if spawn_fields.is_empty() else Vector2(spawn_fields.x.value,spawn_fields.y.value)
+	if not _valid_room_spawn(point,index):
+		control_error="Spawn refused for %s: choose a centre clear of hard terrain and room walls." % Fleet.NAMES[index]
+		if _status!=null: _status.text=control_error
+		return false
+	_cancel_input()
+	if not runtime.configure_review_fleet(index,applied_controls,point):
 		_status.text = "Fleet refused: "+runtime.last_error
 		if powder_test.active():
 			runtime.set_paused(true)
 			_pause_button.text="Resume  ·  P"
 		return false
+	spawn_position=point
+	control_error=""
 	powder_test.clear()
 	_reset_room_source(false)
 	if thruster_fire != null: thruster_fire.disabled=false
@@ -386,11 +508,10 @@ func _present(state: Dictionary, force: bool = false) -> void:
 	if control_status != null and runtime._arena != null:
 		var body: RigidBody2D = runtime._arena.session.bodies()[0]
 		var profile: Dictionary = runtime._arena.session._rigs[0]._profile
-		control_status.text="Applied: %s · budget %.0f · mass %.5f (×%.2f) · inertia %.5f (×%.2f) · thrust cap %.3f · torque cap %.3f\nApply/reset rebuilds terrain and craft. Settings persist across craft; material laws and sleep unchanged." % [applied_controls.response,applied_controls.budget,body.mass,applied_controls.mass_multiplier,body.inertia,applied_controls.inertia_multiplier,profile.fleet_force,profile.fleet_torque]
+		control_status.text="%s · %s / %.0f · mass %.5f · inertia %.5f · force %.3f · torque %.3f · Shift ×%.2f · spawn (%.2f, %.2f)" % [Fleet.NAMES[selected],applied_controls.response,applied_controls.budget,body.mass,body.inertia,profile.fleet_force,profile.fleet_torque,float(applied_controls.get("boost_multiplier",2.0)),spawn_position.x,spawn_position.y]
 		if not control_error.is_empty(): control_status.text+="\n"+control_error
-		control_status.text+="\nShift thrust ×%.2f · Ctrl brake" % float(applied_controls.get("boost_multiplier",2.0))
-		control_status.text+="\n"+event_runtime_identity
-		if applied_controls.response=="LA-EVENT-OFF": control_status.text+=" · Experimental: moving-grain loading/torque incomplete."
+		control_status.tooltip_text="Applied settings; Apply/reset rebuilds terrain and craft. Saved spawn persists for this room session. Ctrl brakes. Material laws and sleep unchanged.\n"+event_runtime_identity
+		_timing.text+="\n"+event_runtime_identity
 	if _overlay is FleetOverlay:
 		_overlay.room_source_origin=Vector2(room_source.origin) if room_source.armed else Vector2.INF
 	if room_source_status!=null:
@@ -399,7 +520,7 @@ func _present(state: Dictionary, force: bool = false) -> void:
 		if room_source.armed:
 			var material_name: String=MATERIAL_NAMES[MATERIALS.find(room_source.material)]
 			room_source_status.text="Source %s at (%d,%d) · fixed in world · %d inserted / %d attempted (%d blocked) · stream %d/600%s" % [material_name,room_source.origin.x,room_source.origin.y,room_source.inserted,room_source.attempted,room_source.blocked,room_source.stream_ticks," · burst queued" if room_source.burst_queued else ""]
-		else: room_source_status.text="Room source off. Choose powder in the palette; Place above flyer arms at a fixed world position. Focus loss disarms."
+		else: room_source_status.text="Source off · palette → Place / B to arm · fixed world origin · focus loss disarms"
 		if not room_source.error.is_empty(): room_source_status.text+=" "+room_source.error
 	if powder_test_status!=null:
 		if powder_test.active():
@@ -408,6 +529,9 @@ func _present(state: Dictionary, force: bool = false) -> void:
 			_controls.text="LOADING TEST\nBody gravity OFF · pilot OFF\nSand falls under native rules\nP  Run / pause\nR  Repeat from tick zero\nPainting room  Return to flight"
 		else:
 			powder_test_status.text="Repeatable loading tests: Kestrel, body gravity off, pilot off. P starts/pauses; R repeats."
+			_hint.text="WASD / Space fly · Shift boost · Ctrl brake · B burst · LMB paint / RMB erase · wheel brush · R reset at saved spawn · P pause · F camera"
+		if powder_test.active():
+			_hint.text=powder_test_status.text
 
 func _reset_room_source(disabled: bool) -> void:
 	room_source.clear()
@@ -446,6 +570,7 @@ func place_room_source() -> bool:
 
 func emit_room_burst() -> bool:
 	if powder_test.active(): return false
+	_release_edit_focus()
 	if not room_source.armed and not place_room_source(): return false
 	var accepted: bool=room_source.queue_burst()
 	_present(runtime.snapshot(),true)

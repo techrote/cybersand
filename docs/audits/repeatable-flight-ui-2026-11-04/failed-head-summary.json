@@ -1,0 +1,84 @@
+{
+  "reason": "Optional review controls incorrectly required by compact toolbar; errored retained test explicitly stopped after logging failure",
+  "completion": {
+    "source": "55d52b776c4ce0eb7a717ae8ed3e40749a80c1ab",
+    "inputs_unchanged": true,
+    "ok": false,
+    "results": [
+      {
+        "platform": "windows",
+        "ok": false
+      },
+      {
+        "platform": "linux",
+        "ok": false
+      }
+    ]
+  },
+  "platforms": {
+    "windows": {
+      "gates_sha256": "a17dd1795c2f373f8a4dd8452122f03e963460a0371cd07fcf5a2ccb9babc1c7",
+      "failed": [
+        {
+          "command": [
+            "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+            "--headless",
+            "--audio-driver",
+            "Dummy",
+            "--path",
+            "C:\\Users\\_\\.codex\\worktrees\\gcr-repeatable-flight\\khybersand\\build\\repeatable-final-head-01\\windows\\godot",
+            "--script",
+            "res://tests/test_gcr_review_fleet.gd"
+          ],
+          "pid": 28824,
+          "started_utc": "2026-11-04T11:45:35.471571+00:00",
+          "ended_utc": "2026-11-04T11:48:22.533801+00:00",
+          "timeout_seconds": 300,
+          "elapsed_seconds": 167.06224739999743,
+          "exit": 4294967295,
+          "timed_out": false,
+          "log_sha256": "3306f7cb0e1f80137c16f0790a3897d9ffcb5765badb3e68e7641bba6a4126b8",
+          "ok": false,
+          "test": "test_gcr_review_fleet"
+        }
+      ]
+    },
+    "linux": {
+      "gates_sha256": "a6a4f8338078aa9a3b098f7e5930267a4d8dac51345e4a76434417d26a15c001",
+      "failed": [
+        {
+          "command": [
+            "wsl",
+            "-d",
+            "Ubuntu-24.04",
+            "--",
+            "env",
+            "CYBERSAND_SOURCE_REVISION=55d52b776c4ce0eb7a717ae8ed3e40749a80c1ab",
+            "timeout",
+            "--signal=TERM",
+            "--kill-after=10s",
+            "300s",
+            "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+            "--headless",
+            "--audio-driver",
+            "Dummy",
+            "--path",
+            "/mnt/c/Users/_/.codex/worktrees/gcr-repeatable-flight/khybersand/build/repeatable-final-head-01/linux/godot",
+            "--script",
+            "res://tests/test_gcr_review_fleet.gd"
+          ],
+          "pid": 39916,
+          "started_utc": "2026-11-04T11:46:39.364412+00:00",
+          "ended_utc": "2026-11-04T11:48:22.614273+00:00",
+          "timeout_seconds": 300,
+          "elapsed_seconds": 103.24987600004533,
+          "exit": 15,
+          "timed_out": false,
+          "log_sha256": "2785b0b85b841128e28dec47670f2b8854687760423fd9bec07bf89b16d551d0",
+          "ok": false,
+          "test": "test_gcr_review_fleet"
+        }
+      ]
+    }
+  }
+}

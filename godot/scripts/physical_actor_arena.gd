@@ -19,6 +19,7 @@ const VERSION: int = 2
 const PHYSICS_HZ: int = 60
 const MAX_TICKS: int = 36000
 const ARENA_RECT := Rect2i(128, 128, 512, 256)
+const REVIEW_FLEET_SPAWN_RECT := Rect2(22,22,980,453)
 const FLOOR_Y: int = 352
 const SCHEDULE: String = "synchronous-mask-actuation-effects-material-feedback-terrain-rapier/v1"
 
@@ -82,7 +83,15 @@ static func usable_course_config(model: StringName = &"digger", count: int = 8) 
 	return UsableCourse.config(model, count)
 
 
-func _validated_config(value: Variant) -> Dictionary:
+static func valid_review_fleet_spawn(position: Vector2, fleet_index: int) -> bool:
+	var fleet = preload("res://scripts/gcr_review_fleet.gd")
+	if not position.is_finite() or not fleet.valid_index(fleet_index): return false
+	# The explicit developer painting room admits a fresh, level hull anywhere
+	# inside its walls. Ordinary actor admission retains ARENA_RECT below.
+	var size: Vector2=fleet.ROWS[fleet_index][0]
+	return REVIEW_FLEET_SPAWN_RECT.encloses(Rect2(position-size*0.5,size))
+
+func _validated_config(value: Variant, review_fleet_index: int = -1, powder_review: bool = false) -> Dictionary:
 	if not value is Dictionary or value.size() > 8:
 		return {}
 	for key: Variant in value:
@@ -121,8 +130,12 @@ func _validated_config(value: Variant) -> Dictionary:
 		if position is Array and position.size() == 2 \
 			and (position[0] is int or position[0] is float) and (position[1] is int or position[1] is float):
 			position = Vector2(float(position[0]), float(position[1]))
-		if not position is Vector2 or not position.is_finite() or not Rect2(ARENA_RECT).has_point(position):
+		if not position is Vector2 or not position.is_finite():
 			return {}
+		var painting_fleet: bool=review_fleet_index!=-1 and not powder_review and str(value.get("course",""))==PlayerCourse.ID
+		if painting_fleet:
+			if not valid_review_fleet_spawn(position,review_fleet_index): return {}
+		elif not Rect2(ARENA_RECT).has_point(position): return {}
 		definitions.append({"model": model, "producer": producer, "position": position})
 	if not Session.valid_definitions(definitions):
 		return {}
@@ -163,7 +176,7 @@ func configure_review_fleet(value: Variant, candidate: String, token: String, fl
 func _configure_granular(value: Variant, granular_candidate: String, spawn_offset: Vector2 = Vector2.ZERO,
 		review_fleet_index: int = -1, review_options: Dictionary = {}, powder_review: bool = false) -> bool:
 	if powder_review and (review_fleet_index!=2 or granular_candidate!="GCR-REST" or review_options.get("response","") not in ["LA","LA-EVENT-OFF","LA-SELECTIVE"]): return false
-	var validated: Dictionary = _validated_config(value)
+	var validated: Dictionary = _validated_config(value,review_fleet_index,powder_review)
 	if validated.is_empty() or not is_inside_tree():
 		last_error = "invalid_config_or_owner"
 		return false

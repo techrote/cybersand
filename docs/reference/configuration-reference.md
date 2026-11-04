@@ -12,6 +12,16 @@ related-documents: [../operations/configuration-and-capacity-budgets.md, ../syst
 
 ## Flyer review modifiers and live powder sources
 
+The [repeatable room controls](../systems/granular-review-flight-fleet.md#saved-spawn-burst-key-and-compact-comparison-controls)
+retain a normal-room spawn centre, default(178,304), across reset, craft,
+response/property changes, Defaults and the isolated-test round trip. X/Y edits
+apply on the next construction; Use flyer captures the live centre without a
+teleport. The complete upright hull must fit x22..1002/y22..475 and avoid authored
+hard platforms. Invalid points refuse construction; granular overlap is allowed.
+The value is scene-lifetime memory, not a persisted save; fixed powder fixtures
+keep(512,256). B queues one live burst per non-echo press; numeric edit/focus guards
+remain. Compact wrapping controls and collapsed Details preserve canvas space.
+
 The [fleet guide](../systems/granular-review-flight-fleet.md#shift-thrust-multiplier-ctrl-brake-and-painting-room-powder-sources)
 owns the room-only controls. Review option boost_multiplier is finite1..8,
 default2, and remains staged until Apply/reset. It scales propulsion and the held

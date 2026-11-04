@@ -10,7 +10,7 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 
 # Retrieval question index
 
-- [How do Shift/Ctrl, full-roster painting-room powder sources and edge alignment work?](../systems/granular-review-flight-fleet.md#shift-thrust-multiplier-ctrl-brake-and-painting-room-powder-sources)
+- [How do saved flyer spawn, B bursts and compact painting-room controls work?](../systems/granular-review-flight-fleet.md#saved-spawn-burst-key-and-compact-comparison-controls)
   Room-only leased thrust multiplier, unchanged brake law on Ctrl, fixed-world
   palette sources and the material/overlay texture-footprint mapping.
 

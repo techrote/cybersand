@@ -4,10 +4,12 @@ from pathlib import Path
 from run_gcr_causal import run
 from run_gcr_creep import ROOT,git,read,write,sha,source_inputs,verify_project,native_identity,linux
 
-GATES=['test_gcr_fleet_alignment','test_gcr_fleet_boost','test_gcr_painting_source','test_gcr_fleet_room_controls',
+GATES=['test_gcr_fleet_spawn','test_gcr_fleet_repeatable_ui',
+       'test_gcr_fleet_alignment','test_gcr_fleet_boost','test_gcr_painting_source','test_gcr_fleet_room_controls',
        'test_gcr_powder_review','test_gcr_selective_events','test_gcr_granular_events_playground',
        'test_gcr_fleet_controls','test_gcr_fleet_emissions','test_gcr_fleet_side_thrusters',
-       'test_actor_rig_integration','test_gcr_rest_bridge','test_gcr_rest_material_freshness','test_gcr_review_navigation']
+       'test_actor_rig_integration','test_physical_actor_arena','test_gcr_review_fleet','test_gcr_crash_playground',
+       'test_gcr_rest_bridge','test_gcr_rest_material_freshness','test_gcr_review_navigation']
 
 def main():
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('--output',type=Path,required=True);a=p.parse_args()

@@ -13,6 +13,19 @@ last-reviewed: 2026-11-04
 
 ## Flyer review modifier and painting-source values
 
+The [saved-spawn interface](../systems/granular-review-flight-fleet.md#saved-spawn-burst-key-and-compact-comparison-controls)
+is `PlayerPlaygroundRuntime.configure_review_fleet(index, options={},
+spawn_position=Vector2(178,304))`. Its optional backward-compatible position is
+authored before owner construction. `PhysicalActorArena.valid_review_fleet_spawn`
+requires finite coordinates and the complete upright hull inside the painting
+room's inner walls; the frontend also refuses authored hard-platform overlap.
+Only the explicit normal-room fleet route receives the wider spawn envelope;
+ordinary actors retain their old arena bounds. Arena reset retains the admitted
+position in configuration. Scene methods `set_spawn_position(Vector2)`,
+`capture_spawn_position()` and `reset_spawn_position()` own the saved next-spawn
+value; they do not mutate a live Rapier pose. Canned fixtures retain their fixed
+centre independently. No packed/native interface or material law is added.
+
 The [fleet interface](../systems/granular-review-flight-fleet.md#shift-thrust-multiplier-ctrl-brake-and-painting-room-powder-sources)
 adds optional boolean boost beside q/e/s review ports. It is validated before
 sequence consumption and bound to the same accepted command lease identity;
@@ -41,7 +54,7 @@ unchanged.
 The public review entry is
 `PlayerPlaygroundRuntime.configure_review_powder_test(options)`. It accepts only
 the existing LA/E/S review options and fixes Kestrel index2; the ordinary
-`configure_review_fleet(index, options)` path retains its previous38 gravity.
+`configure_review_fleet(index, options, spawn_position)` path retains its previous38 gravity.
 Scene methods `start_powder_test("burst"/"stream")`, `return_to_painting()` and
 `powder_test_receipt()` own test selection and copied diagnostic receipt access.
 

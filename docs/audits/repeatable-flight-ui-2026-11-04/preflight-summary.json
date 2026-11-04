@@ -1,0 +1,313 @@
+{
+  "scope": "Original local-delta preflights, not final-head acceptance",
+  "records": [
+    {
+      "local_path": "build/agent-repeatable-preflight-01",
+      "base_source": "dff9032397900a2c411c6d7b27ac89ef340d7063",
+      "identity_sha256": "832638cd6a58be36ab8d080019bcd3c2c56c341210f87b9978c84f9840b9c362",
+      "local_delta_sha256": "f2b80d77fab6ae92069410bcae9e8eac7c6bbb9687aa8fa7b82a744e4e443362",
+      "changed_project_inputs": {
+        "godot/scripts/gcr_crash_playground.gd": "54856c564c4ab55e8f1932b536b34894e5e1c18d9919f1fec8b6330cfd50e605",
+        "godot/scripts/gcr_fleet_playground.gd": "d832ddbf7fe06e06f961fd4963e35197a0b9513f8293739d64ade26c6aa69879",
+        "godot/scripts/physical_actor_arena.gd": "f5b97669ed5582f9de75d6a24ac7f2beb7609388c7d2e0161627ecc3a238aec5",
+        "godot/scripts/player_playground_runtime.gd": "f86da3971270816c5defc713d49324af4b23dde3690ed600003a9854dd658973",
+        "godot/tests/test_gcr_fleet_repeatable_ui.gd": "8905e768b9059ccd92198bacb76111a88c4cef323db9a20a42ec4389a66b4bb3",
+        "godot/tests/test_gcr_fleet_spawn.gd": "584ba6ed95cfbda4694f7c41a7197e3f6f847c99f872019ebe1ea20a04d7bf0c"
+      },
+      "platforms": {
+        "windows": {
+          "gates": [
+            {
+              "command": [
+                "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+                "--headless",
+                "--audio-driver",
+                "Dummy",
+                "--path",
+                "C:\\Users\\_\\.codex\\worktrees\\gcr-repeatable-flight\\khybersand\\build\\agent-repeatable-preflight-01\\windows\\godot",
+                "--editor",
+                "--quit"
+              ],
+              "pid": 40688,
+              "started_utc": "2026-11-04T11:35:53.152032+00:00",
+              "ended_utc": "2026-11-04T11:36:04.178170+00:00",
+              "timeout_seconds": 300,
+              "elapsed_seconds": 11.026157500047702,
+              "exit": 0,
+              "timed_out": false,
+              "log_sha256": "d146933fe5ba881d61dc1f04126ca86f5389ac5d0d0728d6ebf4497ec95dbba8",
+              "ok": true,
+              "test": "import"
+            },
+            {
+              "command": [
+                "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+                "--headless",
+                "--audio-driver",
+                "Dummy",
+                "--path",
+                "C:\\Users\\_\\.codex\\worktrees\\gcr-repeatable-flight\\khybersand\\build\\agent-repeatable-preflight-01\\windows\\godot",
+                "--script",
+                "res://tests/test_gcr_fleet_repeatable_ui.gd"
+              ],
+              "pid": 29836,
+              "started_utc": "2026-11-04T11:36:04.179521+00:00",
+              "ended_utc": "2026-11-04T11:36:07.305234+00:00",
+              "timeout_seconds": 300,
+              "elapsed_seconds": 3.1257314999820665,
+              "exit": 1,
+              "timed_out": false,
+              "log_sha256": "d40d6323cc0498ce57778717f8a95611a965c5892a5bd8e6e0f30d05325ae9c8",
+              "ok": false,
+              "test": "test_gcr_fleet_repeatable_ui"
+            }
+          ],
+          "runtime": {
+            "native_build_source": "856c49371b37b3921bf859a67a883336252134ee",
+            "native_sha256": "f4f788c44d1b7e0271555725dea0d92ac257a69abb52f1f9a6daa4d1d47f9b30",
+            "rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+            "engine_version": "4.7.stable.official.5b4e0cb0f"
+          },
+          "native_input_count": 88,
+          "native_input_map_sha256": "3a5154101d5f19efecb29efd5dafe911a581691470054ffa2efd95757eafb57a"
+        }
+      }
+    },
+    {
+      "local_path": "build/agent-repeatable-preflight-02",
+      "base_source": "dff9032397900a2c411c6d7b27ac89ef340d7063",
+      "identity_sha256": "e0171b75cd02379533655dccd545810f3c6321b7ed533b6d7bcf4002f94db213",
+      "local_delta_sha256": "b4dd03590d4eee743e5b4cb4a1d65e3c8a8c1bb7ff49de14b050e972b50a6f12",
+      "changed_project_inputs": {
+        "godot/scripts/gcr_crash_playground.gd": "54856c564c4ab55e8f1932b536b34894e5e1c18d9919f1fec8b6330cfd50e605",
+        "godot/scripts/gcr_fleet_playground.gd": "d832ddbf7fe06e06f961fd4963e35197a0b9513f8293739d64ade26c6aa69879",
+        "godot/scripts/physical_actor_arena.gd": "f5b97669ed5582f9de75d6a24ac7f2beb7609388c7d2e0161627ecc3a238aec5",
+        "godot/scripts/player_playground_runtime.gd": "f86da3971270816c5defc713d49324af4b23dde3690ed600003a9854dd658973",
+        "godot/tests/test_gcr_fleet_repeatable_ui.gd": "23617b18a89be19fcd0c81d911eb9c49f64f95eb3b9a4d803249bddda699625a",
+        "godot/tests/test_gcr_fleet_spawn.gd": "584ba6ed95cfbda4694f7c41a7197e3f6f847c99f872019ebe1ea20a04d7bf0c"
+      },
+      "platforms": {
+        "windows": {
+          "gates": [
+            {
+              "command": [
+                "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+                "--headless",
+                "--audio-driver",
+                "Dummy",
+                "--path",
+                "C:\\Users\\_\\.codex\\worktrees\\gcr-repeatable-flight\\khybersand\\build\\agent-repeatable-preflight-02\\windows\\godot",
+                "--editor",
+                "--quit"
+              ],
+              "pid": 42604,
+              "started_utc": "2026-11-04T11:37:44.783108+00:00",
+              "ended_utc": "2026-11-04T11:37:56.119343+00:00",
+              "timeout_seconds": 300,
+              "elapsed_seconds": 11.336250099993777,
+              "exit": 0,
+              "timed_out": false,
+              "log_sha256": "d146933fe5ba881d61dc1f04126ca86f5389ac5d0d0728d6ebf4497ec95dbba8",
+              "ok": true,
+              "test": "import"
+            },
+            {
+              "command": [
+                "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+                "--headless",
+                "--audio-driver",
+                "Dummy",
+                "--path",
+                "C:\\Users\\_\\.codex\\worktrees\\gcr-repeatable-flight\\khybersand\\build\\agent-repeatable-preflight-02\\windows\\godot",
+                "--script",
+                "res://tests/test_gcr_fleet_repeatable_ui.gd"
+              ],
+              "pid": 39324,
+              "started_utc": "2026-11-04T11:37:56.120522+00:00",
+              "ended_utc": "2026-11-04T11:38:00.371018+00:00",
+              "timeout_seconds": 300,
+              "elapsed_seconds": 4.250513300008606,
+              "exit": 1,
+              "timed_out": false,
+              "log_sha256": "49ee16738f54abb25a37e166f72a5eb53180a556cc3bb87494daa62c7b62162a",
+              "ok": false,
+              "test": "test_gcr_fleet_repeatable_ui"
+            }
+          ],
+          "runtime": {
+            "native_build_source": "856c49371b37b3921bf859a67a883336252134ee",
+            "native_sha256": "f4f788c44d1b7e0271555725dea0d92ac257a69abb52f1f9a6daa4d1d47f9b30",
+            "rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+            "engine_version": "4.7.stable.official.5b4e0cb0f"
+          },
+          "native_input_count": 88,
+          "native_input_map_sha256": "3a5154101d5f19efecb29efd5dafe911a581691470054ffa2efd95757eafb57a"
+        }
+      }
+    },
+    {
+      "local_path": "build/agent-repeatable-preflight-03",
+      "base_source": "dff9032397900a2c411c6d7b27ac89ef340d7063",
+      "identity_sha256": "c7786844c7869f1e6dda3f64df91458b5d43363a6616967c32b4427bc3947d5e",
+      "local_delta_sha256": "8f8b7e22c45b1b4f639f60e45cdb164142f71e5b8316364b5ce8aa79ac72aec6",
+      "changed_project_inputs": {
+        "godot/scripts/gcr_crash_playground.gd": "54856c564c4ab55e8f1932b536b34894e5e1c18d9919f1fec8b6330cfd50e605",
+        "godot/scripts/gcr_fleet_playground.gd": "d832ddbf7fe06e06f961fd4963e35197a0b9513f8293739d64ade26c6aa69879",
+        "godot/scripts/physical_actor_arena.gd": "f5b97669ed5582f9de75d6a24ac7f2beb7609388c7d2e0161627ecc3a238aec5",
+        "godot/scripts/player_playground_runtime.gd": "f86da3971270816c5defc713d49324af4b23dde3690ed600003a9854dd658973",
+        "godot/tests/test_gcr_fleet_repeatable_ui.gd": "a0c0dd93d0611deb02b8b2b3e26e28bd815d804a9ad5dcc17f9d18b584963d6b",
+        "godot/tests/test_gcr_fleet_spawn.gd": "584ba6ed95cfbda4694f7c41a7197e3f6f847c99f872019ebe1ea20a04d7bf0c"
+      },
+      "platforms": {
+        "windows": {
+          "gates": [
+            {
+              "command": [
+                "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+                "--headless",
+                "--audio-driver",
+                "Dummy",
+                "--path",
+                "C:\\Users\\_\\.codex\\worktrees\\gcr-repeatable-flight\\khybersand\\build\\agent-repeatable-preflight-03\\windows\\godot",
+                "--editor",
+                "--quit"
+              ],
+              "pid": 32140,
+              "started_utc": "2026-11-04T11:39:20.996130+00:00",
+              "ended_utc": "2026-11-04T11:39:30.155523+00:00",
+              "timeout_seconds": 300,
+              "elapsed_seconds": 9.159412999986671,
+              "exit": 0,
+              "timed_out": false,
+              "log_sha256": "d146933fe5ba881d61dc1f04126ca86f5389ac5d0d0728d6ebf4497ec95dbba8",
+              "ok": true,
+              "test": "import"
+            },
+            {
+              "command": [
+                "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+                "--headless",
+                "--audio-driver",
+                "Dummy",
+                "--path",
+                "C:\\Users\\_\\.codex\\worktrees\\gcr-repeatable-flight\\khybersand\\build\\agent-repeatable-preflight-03\\windows\\godot",
+                "--script",
+                "res://tests/test_gcr_fleet_repeatable_ui.gd"
+              ],
+              "pid": 29300,
+              "started_utc": "2026-11-04T11:39:30.156921+00:00",
+              "ended_utc": "2026-11-04T11:39:33.463421+00:00",
+              "timeout_seconds": 300,
+              "elapsed_seconds": 3.3065174999646842,
+              "exit": 0,
+              "timed_out": false,
+              "log_sha256": "086dd1c09011b76c09d62d7cd3c49c137e6b7da72598deb6075097509e1ca5a8",
+              "ok": true,
+              "test": "test_gcr_fleet_repeatable_ui"
+            }
+          ],
+          "runtime": {
+            "native_build_source": "856c49371b37b3921bf859a67a883336252134ee",
+            "native_sha256": "f4f788c44d1b7e0271555725dea0d92ac257a69abb52f1f9a6daa4d1d47f9b30",
+            "rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+            "engine_version": "4.7.stable.official.5b4e0cb0f"
+          },
+          "native_input_count": 88,
+          "native_input_map_sha256": "3a5154101d5f19efecb29efd5dafe911a581691470054ffa2efd95757eafb57a"
+        },
+        "linux": {
+          "gates": [
+            {
+              "command": [
+                "wsl",
+                "-d",
+                "Ubuntu-24.04",
+                "--",
+                "env",
+                "CYBERSAND_SOURCE_REVISION=dff9032397900a2c411c6d7b27ac89ef340d7063",
+                "timeout",
+                "--signal=TERM",
+                "--kill-after=10s",
+                "300s",
+                "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+                "--headless",
+                "--audio-driver",
+                "Dummy",
+                "--path",
+                "/mnt/c/Users/_/.codex/worktrees/gcr-repeatable-flight/khybersand/build/agent-repeatable-preflight-03/linux/godot",
+                "--editor",
+                "--quit"
+              ],
+              "pid": 30120,
+              "started_utc": "2026-11-04T11:39:42.480795+00:00",
+              "ended_utc": "2026-11-04T11:40:29.501952+00:00",
+              "timeout_seconds": 300,
+              "elapsed_seconds": 47.02117189997807,
+              "exit": 0,
+              "timed_out": false,
+              "log_sha256": "9ad65ec5f7e3d8542c1757837925d780e6cd9277b3a2ffd7c0ff62915604f2c4",
+              "ok": true,
+              "test": "import"
+            },
+            {
+              "command": [
+                "wsl",
+                "-d",
+                "Ubuntu-24.04",
+                "--",
+                "env",
+                "CYBERSAND_SOURCE_REVISION=dff9032397900a2c411c6d7b27ac89ef340d7063",
+                "timeout",
+                "--signal=TERM",
+                "--kill-after=10s",
+                "300s",
+                "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+                "--headless",
+                "--audio-driver",
+                "Dummy",
+                "--path",
+                "/mnt/c/Users/_/.codex/worktrees/gcr-repeatable-flight/khybersand/build/agent-repeatable-preflight-03/linux/godot",
+                "--script",
+                "res://tests/test_gcr_fleet_repeatable_ui.gd"
+              ],
+              "pid": 9688,
+              "started_utc": "2026-11-04T11:40:29.502858+00:00",
+              "ended_utc": "2026-11-04T11:40:34.324971+00:00",
+              "timeout_seconds": 300,
+              "elapsed_seconds": 4.822127300023567,
+              "exit": 0,
+              "timed_out": false,
+              "log_sha256": "0fd3341ba0b0c1cb809a2f268c83d44109383abb507caa3c86c47bd1e0e7a26d",
+              "ok": true,
+              "test": "test_gcr_fleet_repeatable_ui"
+            }
+          ],
+          "runtime": {
+            "native_build_source": "856c49371b37b3921bf859a67a883336252134ee",
+            "native_sha256": "69356eb582558b1c2006c7ccdd4dbeed04f361ebbead6d9f35b60d9d6b3f643a",
+            "rapier_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+            "engine_version": "4.7.stable.official.5b4e0cb0f"
+          },
+          "native_input_count": 88,
+          "native_input_map_sha256": "3a5154101d5f19efecb29efd5dafe911a581691470054ffa2efd95757eafb57a"
+        }
+      },
+      "completion": {
+        "base_source": "dff9032397900a2c411c6d7b27ac89ef340d7063",
+        "ok": true,
+        "results": [
+          {
+            "platform": "windows",
+            "ok": true,
+            "gates_sha256": "944d969b7853fb0db487acd19919d6fd5694d888795ad8900e44c532f5d67016"
+          },
+          {
+            "platform": "linux",
+            "ok": true,
+            "gates_sha256": "19454529970743ac77a9566b46b2a7fc60b18776e048f3dc65c79d5032922ff0"
+          }
+        ]
+      }
+    }
+  ]
+}

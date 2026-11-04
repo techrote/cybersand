@@ -2,7 +2,7 @@
 title: Lightweight flight fleet for granular owner review
 status: Current
 document-kind: contract
-scope: Developer-only editable flyer room with staged LA budget and actuator controls, bounded material dispensers and optional real Fire; retained RFT reference and separate qualification limits
+scope: Developer-only editable flyer room with repeatable spawn, compact controls, staged LA budget and actuators, bounded material sources and optional real Fire; retained RFT reference and separate qualification limits
 canonical-for: [granular-review-flight-fleet]
 last-reviewed: 2026-11-04
 related-documents: [../architecture/granular-contact-rest.md, ../architecture/compound-granular-coupling.md, player-control-playground.md, ../operations/gcr-rest-registration.md]
@@ -10,9 +10,58 @@ related-documents: [../architecture/granular-contact-rest.md, ../architecture/co
 
 # Lightweight flight fleet for granular owner review
 
+## Saved spawn, Burst key and compact comparison controls
+
+**Current source:** the normal painting room has **Reset spawn X/Y** fields and
+**Use flyer** to capture the current authoritative Rapier centre, rounded to the
+same0.01-cell authoring precision as the fields. Saving a point
+does not move the live flyer. **R**, craft selection, **Apply + reset** and return
+from a canned test construct a fresh upright, stationary flyer at that point.
+The saved point survives response/budget/property changes and **Defaults**;
+**Default spawn** separately restores(178,304) for the next construction.
+This memory lasts for the room scene's lifetime; F2/new scene or process restart
+does not load it from disk. Edited X/Y values take effect on the next reset or
+selection. The live applied receipt identifies the saved construction centre.
+
+Spawn admission requires finite coordinates and the complete upright selected
+hull inside the inner walls(x22..1002, y22..475), clear of authored hard platforms.
+An invalid point or a point unsuitable for a larger selected craft refuses the
+new construction and keeps the current owner. Granular overlap remains available
+for exploratory setup; the tool does not erase material, relocate an existing
+body or guarantee a quiet initial contact. The ordinary actor arena keeps its
+previous admission bounds. The fixed-Kestrel powder fixtures still start at
+(512,256); they do not overwrite the saved normal-room point.
+
+Press **B** for a live powder burst. It uses the placed source, or attempts to
+place one above the flyer using the current granular palette if none is armed.
+One non-repeated key press queues at most one burst; holding B does not repeat.
+It may queue while paused, with material added only when simulation resumes.
+B is suppressed while editing numbers, while the window is unfocused and in the
+isolated powder fixtures. The **Burst [B]** button remains available. Non-text
+review clicks preserve held flight input; numeric editing cancels input and
+requires neutral rearm. Window focus loss, pause and reset retain cancellation
+and source lifetime rules. The inherited mouse cancellation no longer makes a
+Burst click force the pilot to release held thrust before continuing.
+
+The room uses dense wrapping toolbars: seven small craft buttons, response and
+six property fields, reset coordinates, Fire and live sources. Nominal text is
+12px and buttons24px high; the canvas occupies the full width beneath them.
+**Details** expands the craft description, controls, runtime/source identity and
+fixture explanation; it starts collapsed. Palette/brush controls and concise
+applied/source counters remain visible. This is a room-scoped arrangement, not a
+global player UI or material-law change. Source is
+[gcr_fleet_playground.gd](../../godot/scripts/gcr_fleet_playground.gd), especially
+`_build_ui`, `_input`, `set_spawn_position`, `capture_spawn_position` and
+`select_preset`; construction is
+[configure_review_fleet](../../godot/scripts/player_playground_runtime.gd).
+Source availability is separate from exact-head host execution and owner feel
+acceptance. Sleep and all granular response/material laws remain unchanged.
+The [dated qualification record](../audits/2026-11-04-repeatable-flight-spawn-ui.md)
+keeps original preflight failures, source distinctions and final-head PR routing.
+
 ## Shift thrust multiplier, Ctrl brake and painting-room powder sources
 
-**Current source; integrated Windows/Linux controls passed:** the fleet
+**Current controls; earlier integrated Windows/Linux checkpoint passed:** the fleet
 room moves its previous Shift brake to **Ctrl**. Hold **Shift** for the staged
 **Shift thrust ×** multiplier, default2 and range1..8. Apply/reset commits that
 setting with the existing base thrust/torque ceilings. The multiplier scales
@@ -31,11 +80,11 @@ For a live source in the normal painting room:
 
 1. Choose any of the seven flyers and one of the nine granular materials in the
    palette: Sand, Dust, Rust, Stone, Seed, Salt, Sodium, Gunpowder or Coal.
-2. Enable **Room powder source**, or click **Place above flyer · use palette**.
+2. Enable **Powder source**, or click **Place above flyer**.
    Placement captures that palette material and places the source48 cells above
    the rotated hull's top. It stays fixed in world space as the flyer moves.
-3. Click **Burst** for a four-column,24-row request or toggle **Stream · up to
-   10 s** for four source-cell requests per simulation tick, for at most600ticks.
+3. Press **B** or click **Burst [B]** for a four-column,24-row request, or toggle
+   **Stream ≤10s** for four source-cell requests per simulation tick, for at most600ticks.
    Enabling another stream interval requires an explicit toggle after cutoff.
 
 These live sources preserve normal gravity38, pilot control, the full flyer
@@ -53,8 +102,9 @@ emitting through objects. Actual attempted/inserted/blocked counts remain exact;
 a256-row ring retains recent diagnostic edits and reports dropped rows. Sources
 are explicit external material authoring, with no new recoil or arrival authority.
 
-The original **Powder burst · reset paused** and **Continuous stream · reset
-paused** buttons remain separate fixed-Kestrel, zero-body-gravity comparisons.
+The **Burst test** and **Stream test** buttons under **Isolated Kestrel fixtures**
+remain separate fixed-Kestrel, zero-body-gravity comparisons (previously labelled
+Powder burst / Continuous stream · reset paused).
 Their no-pilot setup and prior qualification are not replaced by these live tools.
 
 The edge-alignment repair makes overlay and painting coordinates use the actual
@@ -84,7 +134,7 @@ source/runtime validation;6605 new Windows/Linux checks per platform now pass.
 These controls do not repeat or supersede the earlier
 scientific qualification or its registered NO-GO.
 
-**Powder burst · reset paused** and **Continuous stream · reset paused** reconstruct a fresh Kestrel
+**Burst test** and **Stream test** reconstruct a fresh Kestrel
 (craft3/index2) at position(512,256), angle0, with zero linear/angular velocity.
 Both use an empty bounded test room and Sand2. The burst seeds four columns by24
 rows at(514,224); the stream supplies a four-cell row at(514,224) before native
@@ -101,7 +151,7 @@ leases, Fire, Q/E/S dispensers and automatic control assistance are disabled;
 neutral controller input is not used as a substitute for zero actuation.
 Normal painting-room gravity remains38 and its manual controls remain available.
 
-Select LA, events off or selective arrivals, then **Apply + reset room** to repeat
+Select LA, events off or selective arrivals, then **Apply + reset** to repeat
 the selected test using the same starting geometry and source schedule. **R**
 also repeats it. Budget, mass and inertia multipliers stay at the applied values;
 compare equal values across responses. The initial pose/material hash, actual
@@ -128,13 +178,13 @@ experimental; source-lock compatibility and owner review remain open.
 
 ## Selective arrivals — implemented comparison with failed joint gates
 
-The [selective event registration](../operations/gcr-selective-events-registration.md) owns the implemented fourth response **LA · selective arrivals (experimental)** (LA-SELECTIVE). Use **Apply + reset room** to construct fresh native authority; painted edits are discarded. LA remains initial/Restore, RFT and event-off remain separate references, and existing painting, seven flyers, physical/actuator controls, Fire and dispensers remain intact. The host requires native selective/arrival-witness acknowledgement; unsupported runtimes refuse. Test bank rest and powered contact separately from material falling onto one side of a craft. The84-capture qualification misses registered creep preservation, finite-batch loading/torque recovery and late operational edge-rebound gates. Continuous-stream response, excavation release and direct-paint exclusion pass. The candidate is retained for comparison under a registered NO-GO; no owner acceptance is claimed. Sleep, production-default promotion, latest-Astra compound acceptance and merges remain excluded.
+The [selective event registration](../operations/gcr-selective-events-registration.md) owns the implemented fourth response **LA · selective arrivals** (LA-SELECTIVE; experimental). Use **Apply + reset** to construct fresh native authority; painted edits are discarded. LA remains initial/Defaults, RFT and event-off remain separate references, and existing painting, seven flyers, physical/actuator controls, Fire and dispensers remain intact. The host requires native selective/arrival-witness acknowledgement; unsupported runtimes refuse. Test bank rest and powered contact separately from material falling onto one side of a craft. The84-capture qualification misses registered creep preservation, finite-batch loading/torque recovery and late operational edge-rebound gates. Continuous-stream response, excavation release and direct-paint exclusion pass. The candidate is retained for comparison under a registered NO-GO; no owner acceptance is claimed. Sleep, production-default promotion, latest-Astra compound acceptance and merges remain excluded.
 
 ## Granular-only event comparison — November4
 
 The [registered event successor](../operations/gcr-granular-events-registration.md)
-adds **LA · events OFF (experimental)** to EXPERIMENTAL RESPONSE. Select it and
-use **Apply + reset room**; this discards painted edits. It omits only granular
+adds **LA · events OFF** (experimental) to the response selector. Select it and
+use **Apply + reset**; this discards painted edits. It omits only granular
 blocked-attempt impulses/torque/cost before passive recomputation. The legacy
 contact gain and material laws remain. LA remains initial/Restore; RFT remains
 the fixed20 reference. All existing physical and actuator controls are retained.
@@ -252,10 +302,11 @@ the changed mass before the independent inertia multiplier is applied. These
 are visibly experimental actor overrides; they do not rescale detached buildings
 or rewrite their payload-derived properties.
 
-Values remain staged until **Apply + reset room**. Applying rebuilds both the
+Values remain staged until **Apply + reset**. Applying rebuilds both the
 current craft and terrain, discarding painted edits. Keys 1–7, Tab and R also
-rebuild the room while retaining the applied comparison values. **Restore flyer
-defaults** selects LA/20 and all multipliers 1. The applied receipt displays actual
+rebuild the room at the saved spawn while retaining the applied comparison values.
+**Defaults** selects LA/20, base multipliers1 and Shift multiplier2; it retains
+the saved spawn. The applied receipt displays actual
 mass, inertia, response, budget and controller caps. Numeric text editing suppresses craft-selection
 shortcuts and leased flight input, so typing 40 or 64 cannot select another flyer.
 Enter/Escape leaves text editing.
@@ -327,13 +378,13 @@ Those rest modes are not exposed here. Painting and varied propulsion do not
 convert prior closed-fixture conservation or passive-energy results into claims
 about this editable room.
 
-The application extension reuses native SDK source
+The earlier2 November application-extension checkpoint reused native SDK source
 `181a8257a93f82d64fbeb97e9c413ef52d44f13d`, with its 88 compiled inputs unchanged.
 Native runtime SHA256 identities remain Windows
 `65c1d2a35134c44aea539a0e8441d66b3b4db92cba7c5477d038b842fe7c889e` and Linux
 `8bfe51214643c626dd5800f66ecff86f3348a166b55551e0674d1b4f762cfbf5`.
-New GDScript authoring/owner/UI routes require their own source-matched host
-checks; old fleet execution is not relabelled as current proof. The focused
+Later GDScript authoring/owner/UI routes require their own source-matched host
+checks and runtime identity; these older hashes are not current-head proof. The focused
 controls are `test_gcr_fleet_controls.gd`, `test_gcr_review_fleet.gd` and
 `test_gcr_crash_playground.gd`, alongside relevant ordinary actor-host regressions.
 Test definitions alone do not establish execution or human feel acceptance.

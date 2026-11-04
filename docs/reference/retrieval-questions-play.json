@@ -256,11 +256,13 @@
     },
     {
       "id": "GCRFLIGHT01",
-      "query": "How do I use the configurable Shift thrust multiplier, Ctrl brake and burst or stream sources with all seven flyers in the painting room, and why were edge graphics misaligned?",
+      "query": "How do I keep the same flyer spawn across resets and response changes, use B for powder bursts without losing flight control, and find the compact painting-room controls with Shift boost and Ctrl brake?",
       "canonical": [
         "systems/granular-review-flight-fleet.md"
       ],
       "facts": [
+        "Reset spawn X/Y or Use flyer saves a normal-room centre without moving the live body. R, craft/response/property changes, Defaults and a canned-test round trip retain it within the room scene; Default spawn restores178,304. Fresh upright stationary hulls must fit the inner walls and avoid hard platforms; ordinary arena admission is unchanged and canned tests keep512,256. F2/new scene/process restart does not persist it to disk.",
+        "B queues one live burst per non-echo press and is suppressed during numeric editing, lost window focus and canned fixtures. Non-text UI clicks retain held pilot input; numeric editing, OS focus loss, pause/reset retain cancellation and rearm. Dense wrapping toolbars use full canvas width with Details initially collapsed.",
         "In the flyer review room Shift holds a staged1..8 propulsion/force-cap multiplier(default2); Ctrl keeps the old brake and takes precedence. Torque, hover compensation and passive damping are unchanged; the optional review port follows the accepted command lease without widening shared actor actions.",
         "Live sources capture a powder palette material and a fixed origin48 cells above any selected hull, retaining gravity38 and pilot control. Burst4x24 coalesces; stream4x1 stops after600ticks; source starts off, reset/focus disarm, pause freezes, guards prevent overwrites and a256-row recent ledger reports dropped rows plus exact cumulative counts.",
         "Overlay/painting now use the actual992x480 texture footprint rather than512x256 follow aspect, correcting inward edge drift without changing physics. The owner reported positive LA/A1 feel plus Sand/Rust/Coal burial; relative mass remains unproven and earlier selective NO-GO/sleep/merge boundaries remain."
