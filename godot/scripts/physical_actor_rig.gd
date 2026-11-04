@@ -330,6 +330,13 @@ func configure(definition: Dictionary, origin: Vector2, slot: int = 0, incarnati
 		var material: PhysicsMaterial = PhysicsMaterial.new()
 		material.friction = clampf(float(part.get("friction", 0.8)), 0.0, 1.0)
 		material.bounce = clampf(float(part.get("bounce", 0.02)), 0.0, 0.6)
+		if rig_id == &"reference_barrel":
+			body.gravity_scale = 0.094
+			_gravity = body.gravity_scale * float(ProjectSettings.get_setting("physics/2d/default_gravity"))
+			body.linear_damp_mode = RigidBody2D.DAMP_MODE_COMBINE
+			body.angular_damp_mode = RigidBody2D.DAMP_MODE_COMBINE
+			material.rough = true
+			material.absorbent = true
 		body.physics_material_override = material
 		var collider: CollisionShape2D = CollisionShape2D.new()
 		if str(part.get("shape", "rectangle")) == "circle":
@@ -372,7 +379,7 @@ func configure(definition: Dictionary, origin: Vector2, slot: int = 0, incarnati
 	_tick = 0
 	_effect_sequence = 0
 	_tool_cooldown = 0.0
-	_power_enabled = true
+	_power_enabled = rig_id != &"reference_barrel"
 	_coast_mode = false
 	_previous_buttons = Vector3i.ZERO
 	_smoothed_move = Vector2.ZERO

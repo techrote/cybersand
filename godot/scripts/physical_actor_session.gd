@@ -65,7 +65,11 @@ static func valid_definitions(definitions: Array) -> bool:
 		if not value is Dictionary:
 			return false
 		var model := StringName(str(value.get("model", "")))
-		if not Catalog.has_rig(model) or StringName(str(value.get("producer", ""))) not in PRODUCERS:
+		var producer := StringName(str(value.get("producer", "")))
+		if model == Catalog.PASSIVE_BARREL:
+			if producer != &"passive" or value.get("usable_index", -1) != -1:
+				return false
+		elif not Catalog.has_rig(model) or producer not in PRODUCERS:
 			return false
 		if not value.get("position") is Vector2 or not value.position.is_finite():
 			return false
@@ -177,7 +181,7 @@ func takeover(actor_id: int, expected_epoch: int, producer: StringName) -> bool:
 	# Ownership changes revoke issued observations before the replacement source
 	# can request a fresh lease. Physical state is not reconstructed here.
 	if not _active or actor_id < 0 or actor_id >= _rigs.size() or expected_epoch != epoch \
-		or producer not in PRODUCERS:
+		or producer not in PRODUCERS or _definitions[actor_id].model == Catalog.PASSIVE_BARREL:
 		return false
 	if not cancel_input(actor_id, expected_epoch, StringName(str(_definitions[actor_id].producer))):
 		return false
@@ -327,6 +331,8 @@ func submit(command: Variant, producer: StringName = &"policy") -> bool:
 	if not _integer(command.get("actor_id"), 0, _rigs.size() - 1):
 		return _reject("actor_id")
 	var actor_id: int = int(command.actor_id)
+	if _definitions[actor_id].model == Catalog.PASSIVE_BARREL:
+		return _reject("passive_prop")
 	if producer != StringName(str(_definitions[actor_id].producer)):
 		return _reject("producer")
 	if command.get("run_id") != run_id or not _integer(command.get("epoch"), epoch, epoch):
