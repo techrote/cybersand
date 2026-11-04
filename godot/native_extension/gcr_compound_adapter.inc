@@ -10,6 +10,7 @@ bool CyberNativeCellWorld::compound_lease_current() const {
 
 bool CyberNativeCellWorld::prepare_gcr_compound_coupling(const PackedFloat64Array& states,
     const Dictionary& lease, bool resolve_overlaps, const Dictionary& rest_context) {
+    if (gcr_granular_events_off_) { invalidate_gcr_response(); return false; }
     if (!gcr_enabled_ || !conservative_displacement_ || !world_ || world_->has_failed() ||
         world_->solid_detachment_fenced() || !gcr_compound_workspace_) return false;
     const auto refuse=[this]() { invalidate_gcr_response(); return false; };

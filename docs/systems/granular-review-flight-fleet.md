@@ -10,6 +10,24 @@ related-documents: [../architecture/granular-contact-rest.md, ../architecture/co
 
 # Lightweight flight fleet for granular owner review
 
+## Granular-only event comparison — November4
+
+The [registered event successor](../operations/gcr-granular-events-registration.md)
+adds **LA · events OFF (experimental)** to EXPERIMENTAL RESPONSE. Select it and
+use **Apply + reset room**; this discards painted edits. It omits only granular
+blocked-attempt impulses/torque/cost before passive recomputation. The legacy
+contact gain and material laws remain. LA remains initial/Restore; RFT remains
+the fixed20 reference. All existing physical and actuator controls are retained.
+
+The [source-matched qualification](../audits/2026-11-04-gcr-granular-event-successor.md)
+finds much less burial in Sand/Salt/Dust and the powered bank, with passing tested
+barrel impact guards. Falling grains produce no measured translation/rotation
+in the candidate control, and some late motion increases. The panel tooltip
+flags this loading/torque gap, shows verified native source/binary and a room
+script fingerprint, and refuses event-off construction on an old runtime that
+cannot acknowledge the selector. Owner review remains pending. This is an
+independent-flyer comparison; current Astra compound response is separately owned.
+
 The [dated host qualification](../audits/2026-11-02-flyer-budget-playground.md)
 records the current tested application checkpoint, retained failures and native
 SDK reuse separately from earlier physical qualification.

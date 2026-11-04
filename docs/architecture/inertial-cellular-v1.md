@@ -2,22 +2,63 @@
 title: Inertial cellular reference
 status: Current
 document-kind: reference
-scope: Accepted-main Brine IN and source-matched published Water IN successor with bounded application-owner integration; exact copied identities, whole-cell admission and carrier semantics retain separate final ready-PR, host, Web and scientific qualification
+scope: Current-main Water and Brine inertial reference, retained integer momentum, whole-cell admission, carrier ownership, radius and state costs; source-bound native/application evidence remains distinct from scientific comparison and human acceptance
 canonical-for: [inertial-cellular-v1-brine, inertial-cellular-v1-water]
-last-reviewed: 2026-10-25
+last-reviewed: 2026-11-03
 related-documents: [lcb-pressure-inertial-handoff.md, liquid-solver-family-policy.md, liquid-state-transition-matrix.md, liquid-prepared-setup-and-receipts.md, ../audits/2026-10-24-lcb005-native-brine-checkpoint.md]
 ---
 
 # Inertial cellular reference
 
+## Current-main availability and physical limits — 2026-11-03
+
+At main `89020b9eb6d540383a5bb64b58dcd29a87592c32`, Water3 and Brine24 can select
+`inertial_cellular_v1/reference`: Brine landed through #250, Water through #254.
+The normal liquid comparison panel and shared PLAY session select explicit
+radius3 and rebuild the World transactionally. The
+[#359 reassessment](../audits/2026-11-03-lcb-reassessment.md) records merged
+application paths, actual worker evidence and bounded successor handovers.
+The dated branch/publication sections below retain their original evidence;
+their former pending-merge statements do not describe current availability.
+
+The reference law in [`inertial_cellular.hpp`](../../native/include/cybersand/inertial_cellular.hpp)
+and [`world_inertial.inc`](../../native/src/world_inertial.inc) uses signed
+horizontal velocity but **downward-positive vertical velocity restricted to
+0..32 q16**, with gravity4 q16. Negative vertical velocity is refused by the
+setter and restore validation. Persistent velocity/remainders support gravity,
+lateral travel, contact deflection and draining. There is no IN gas-compartment
+pressure or buoyancy operator. Apparent bubbles can be vacant cells and material
+displacement; their appearance alone establishes neither real gas pressure nor
+upward ballistic liquid momentum.
+
+Rapier overlap repair in [`world.cpp`](../../native/src/world.cpp) relocates the
+existing liquid payload through `relocate_stored_cell` / `move_cell`, carrying
+its IN state. It does not inject body impact velocity into that state. Fresh
+painting/emission starts with zero IN motion; a projectile's velocity is not
+the velocity of its deposited material. A velocity inlet or negative-vy spray
+law therefore needs a separate, bounded design and qualification in #361/#362.
+
+One shared dense six-byte IN array covers every resident cell whenever any
+material selects IN, including Empty cells. Water and Brine share it. A 1024²
+resident World uses 6,291,456 array bytes, before owner/World/job-ledger storage,
+base cells, other sidecars or host memory. IN needs read3/write2 and explicit
+radius3. Hash3/CYPS3 retain authoritative IN motion; non-IN Worlds remain2.
+CYPS also persists the IN and pressure diagnostic ledgers, which are not part of
+the physical hash; compare them independently when checking continuation/parity.
+Current native Brine tests explicitly prove four task claimants for the large
+boundary fixture; Water tests prove more than one in their own fixtures.
+Configured four workers alone is not four actual participants or a gameplay
+frame-rate measurement. No fresh runtime or human acceptance follows from this
+source reassessment.
+
 ## Water IN native successor — 2026-10-25
 
-**Current only on isolated `codex/lcb005-water-inertial`:** Water3 and Brine24
+**Historical pre-merge checkpoint on `codex/lcb005-water-inertial`:** Water3 and Brine24
 can select `inertial_cellular_v1/reference`; Current Water remains FreeMass.
 Water uses its own whole-cell adapter around the shared integer IN law. Its
 [prospective registration and complete path model](../audits/2026-10-25-water-inertial-registration.md)
 start from reviewed Brine contact repair `68f74906`. Brine IN is accepted on main
-through PR #250 (`dc915f2b`); Water IN remains isolated in draft PR #254. Later
+through PR #250 (`dc915f2b`); Water IN was then isolated in draft PR #254. Later
 [actual Water publication](../audits/2026-10-25-water-inertial-publication.md#actual-sequence2-windowslinux-publication--2026-10-25)
 qualifies sequence2 sourceaa8af247 and runtime-only bot03cccd8f on Windows/Linux. It does
 not qualify normal hosts, common-Water scientific screens, owner feel or full
@@ -30,7 +71,7 @@ its exact source scope.
 Independent native/tooling reviews have no open findings in those bounded
 scopes. Actual publication passes15 processes perOS/642 policy assertions, with
 independent sequence2 artifact review `d2da3ffd` and no actionable bounded finding. Full
-exact-head ready acceptance remains pending; approval-held bot follow-ups are
+exact-head ready acceptance was pending at that checkpoint; approval-held bot follow-ups are
 not greens.
 
 Water executes shared chemistry first, records WaterUpdate and decrements its
@@ -229,9 +270,11 @@ The new fixture is `godot/tests/fixtures/lcb/inertial-adapter-parameters.json`;
 it is an observation oracle, not a new native schema. Water quantity remains
 visible+overfill, while whole-cell Oil/Brine populations use cell counts.
 
-This adds no prepared token, UI, constructor coordinator, verified provenance,
-Web qualification or new physics. Full application integration remains #202;
-exact-head ready-PR acceptance remains pending after the recorded scoped publication.
+That standalone checkpoint added no prepared token, UI, constructor coordinator,
+verified provenance, Web qualification or new physics. Its then-pending merge
+gates subsequently passed; later #256/#257/PLAY supply bounded application
+integration. Full scientific, graphical/manual and source-verified host acceptance
+remain separately qualified, as recorded in the current checkpoint above.
 
 The `lcb005-inertial-runtime-publication.yml` profile reuses the accepted
 shared-contract verifier in an isolated module. Its initial preparation left

@@ -2,7 +2,9 @@
 # Avoid mirror acquisition when the hosted image already has the display stack.
 # The caller retains its generous whole-step watchdog; network stalls are bounded.
 set -euo pipefail
-packages=(xvfb xauth libgl1-mesa-dri mesa-utils)
+# Only the X server, its auth helper and Mesa's software DRI driver are needed.
+# mesa-utils diagnostics are never invoked and are absent from the hosted image.
+packages=(xvfb xauth libgl1-mesa-dri)
 missing=()
 for package in "${packages[@]}"; do
   if [[ "$(dpkg-query -W -f='${db:Status-Status}' "$package" 2>/dev/null || true)" != installed ]]; then

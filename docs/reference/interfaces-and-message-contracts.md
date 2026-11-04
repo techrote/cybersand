@@ -11,6 +11,16 @@ last-reviewed: 2026-11-02
 
 # Interfaces and message contracts
 
+**Experimental granular event selector, November4:** the
+[registered interface](../operations/gcr-granular-events-registration.md) adds
+fresh diagnostic construction options gcr_granular_events=off/control plus the
+exact GCR-EVT-001-2026-11-04 token. Both require GCR-REST/control. Packed body/result
+strides and rest-authority checks remain unchanged. Added diagnostic/receipt
+selector strings report the fresh native setting; no live setter or worker
+ownership transfer is introduced. The event-off candidate refuses unsupported
+compound preparation. The painting host requires actual selector readback, so an
+older runtime cannot silently accept the option while running the control.
+
 ## Experimental compound granular value route
 
 The unmerged [compound contract](../architecture/compound-granular-coupling.md)

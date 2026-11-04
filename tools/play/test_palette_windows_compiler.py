@@ -3,6 +3,7 @@
 import copy
 import ctypes
 import json
+import math
 import subprocess
 import sys
 import unittest
@@ -147,13 +148,111 @@ class HelperOwnershipTests(unittest.TestCase):
 
     def test_actual_hung_helper_is_terminated_and_observed_joined(self):
         # Explicit adverse-control budget, never the production observation policy.
-        output, facts = observer._run_bounded([sys.executable, "-I", "-c", "import time; time.sleep(20)"], .03, 1)
+        command = [sys.executable, "-I", "-c", "import time; time.sleep(20)"]
+        children, communications, kills, events = [], [], [], []
+        started = observer.time.perf_counter()
+
+        def launch(*args, **kwargs):
+            child = subprocess.Popen(*args, **kwargs)
+            children.append(child)
+            communicate, kill = child.communicate, child.kill
+
+            def observed_communicate(*call_args, **call_kwargs):
+                try:
+                    result = communicate(*call_args, **call_kwargs)
+                except subprocess.TimeoutExpired:
+                    events.append("timeout")
+                    communications.append(("timeout", call_kwargs["timeout"], child.returncode))
+                    raise
+                events.append("joined")
+                communications.append(("joined", call_kwargs["timeout"], child.returncode))
+                return result
+
+            def observed_kill():
+                events.append("kill")
+                kills.append((child.pid, child.poll(), observer.time.perf_counter() - started))
+                return kill()
+
+            # Observe the real handle's operations without supplying a reply,
+            # return code, timeout, or join result on its behalf.
+            child.communicate = observed_communicate
+            child.kill = observed_kill
+            return child
+
+        try:
+            output, facts = observer._run_bounded(command, .03, 1, launch=launch)
+            self.assertEqual(len(children), 1)
+            child = children[0]
+            self.assertEqual(child.args, command)
+            self.assertEqual(facts["helper_pid"], child.pid)
+            self.assertEqual(len(kills), 1)
+            self.assertEqual(kills[0][:2], (child.pid, None))  # Alive at owned kill.
+            self.assertIsNone(output)
+            self.assertEqual(facts["reason"], "observer capture deadline exceeded")
+            self.assertTrue(facts["helper_terminated"])
+            self.assertTrue(facts["helper_joined"])
+            self.assertFalse(facts["helper_natural_completion"])
+            # Observe completion before any test cleanup could make it true.
+            self.assertIsNotNone(child.returncode)
+            self.assertNotEqual(child.returncode, 0)
+            self.assertEqual(facts["helper_returncode"], child.returncode)
+            self.assertEqual(child.poll(), child.returncode)
+            self.assertIn(len(communications), (1, 2))
+            self.assertEqual(communications[-1], ("joined", 1, child.returncode))
+            if len(communications) == 2:
+                self.assertEqual(events, ["timeout", "kill", "joined"])
+                self.assertEqual(communications[0][0], "timeout")
+                self.assertIsNone(communications[0][2])
+                self.assertGreater(communications[0][1], 0)
+                self.assertLessEqual(communications[0][1], .03)
+            else:
+                # The only path without communicate timing out is process
+                # creation consuming the capture budget. Check that path with
+                # the same clock, before kill; an immediate kill cannot pass.
+                self.assertEqual(events, ["kill", "joined"])
+                self.assertGreaterEqual(kills[0][2], .03)
+            self.assertTrue(child.stdout.closed)
+            self.assertTrue(child.stderr.closed)
+            # Windows waits can expire early relative to perf_counter. Elapsed
+            # time is telemetry, not proof that the intended child was joined.
+            self.assertTrue(math.isfinite(facts["elapsed_seconds"]))
+            self.assertGreaterEqual(facts["elapsed_seconds"], 0)
+        finally:
+            # Failed controls must not leak a child; this cannot satisfy any of
+            # the assertions above or turn their failure into a passing result.
+            for child in children:
+                if child.poll() is None:
+                    child.kill()
+                    child.communicate(timeout=1)
+                for stream in (child.stdout, child.stderr):
+                    if stream is not None:
+                        stream.close()
+
+    def test_early_timeout_preserves_requested_capture_and_cleanup_budgets(self):
+        child = mock.Mock(pid=999, returncode=None)
+        capture, grace = .03, 1
+        started, after_launch, after_cleanup = 10.0, 10.01, 10.018
+        remaining = capture - (after_launch - started)
+
+        def communicate(*, timeout):
+            if child.communicate.call_count == 1:
+                raise subprocess.TimeoutExpired(["synthetic"], timeout)
+            child.returncode = -9
+            return b"", b""
+
+        child.communicate.side_effect = communicate
+        clock = mock.Mock(perf_counter=mock.Mock(side_effect=[started, after_launch, after_cleanup]))
+        with mock.patch.object(observer, "time", clock):
+            output, facts = observer._run_bounded(["synthetic"], capture, grace,
+                                                 launch=mock.Mock(return_value=child))
         self.assertIsNone(output)
-        self.assertTrue(facts["helper_terminated"])
+        self.assertEqual(child.communicate.call_args_list,
+                         [mock.call(timeout=remaining), mock.call(timeout=grace)])
+        child.kill.assert_called_once_with()
         self.assertTrue(facts["helper_joined"])
         self.assertFalse(facts["helper_natural_completion"])
-        self.assertNotEqual(facts["helper_returncode"], 0)
-        self.assertGreaterEqual(facts["elapsed_seconds"], .03)
+        self.assertEqual(facts["helper_returncode"], -9)
+        self.assertEqual(facts["elapsed_seconds"], after_cleanup - started)
 
     def test_unobserved_join_remains_explicit_cleanup_failure(self):
         child = mock.Mock(pid=999, returncode=None)

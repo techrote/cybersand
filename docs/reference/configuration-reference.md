@@ -10,6 +10,14 @@ related-documents: [../operations/configuration-and-capacity-budgets.md, ../syst
 
 # Configuration reference
 
+The [granular event successor](../operations/gcr-granular-events-registration.md)
+owns the explicit development selector and current qualification limits. The
+painting playground adds LA-EVENT-OFF beside LA and RFT; initial/Restore remains
+LA, and every change rebuilds the room. Existing budget5..80, physical/actuator
+multipliers and material laws remain their earlier values. Legacy contact gain
+stays0.025; omitted granular event response is a separate native choice. Sleep,
+general event-free production acceptance and compound promotion remain excluded.
+
 ## Experimental detached-terrain contact selection
 
 The development-only `solid_detachment_lab.tscn` defaults to legacy/B0.

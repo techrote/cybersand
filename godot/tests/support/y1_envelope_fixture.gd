@@ -99,6 +99,9 @@ func setup(host: Node, configuration: Dictionary, arm: String, telemetry: bool =
 		construction["gcr_rest_mode"]=str(spec.get("rest_mode","control"))
 		construction["gcr_base_budget"]=float(spec.get("base_budget",20.0))
 		construction["gcr_rest_gravity"]=float(spec.get("gravity",92.12))
+		if spec.get("granular_events","")=="off":
+			construction["gcr_granular_events"]="off"
+			construction["gcr_event_experiment"]="GCR-EVT-001-2026-11-04"
 	if world == null or not world.diagnostic_reset(construction):
 		error = "fresh candidate construction refused: " + arm
 		return false
