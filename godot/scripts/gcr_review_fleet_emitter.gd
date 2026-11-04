@@ -9,12 +9,14 @@ const WORLD_LIMIT: int = 1024
 const MAX_TRACE_CELLS: int = 64
 const MAX_READS: int = 1024
 const PORT_KEYS: Array[String] = ["q", "e", "s"]
+const Fleet = preload("res://scripts/gcr_review_fleet.gd")
 var fire_enabled: bool = false
 var _identity: Dictionary = {}
 var _ports: Dictionary = {}
 var _last_tick: int = -1
 var _receipts: Array = []
 var _totals: Dictionary = {}
+var _own_mask_count: int = 1
 
 class Guard extends RefCounted:
 	var world: Object
@@ -38,6 +40,7 @@ func _init() -> void:
 
 func reset() -> void:
 	fire_enabled = false
+	_own_mask_count=1
 	revoke()
 	_last_tick = -1
 	_receipts.clear()
@@ -65,7 +68,7 @@ func snapshot() -> Dictionary:
 		"maximum_nozzles":MAX_NOZZLES,"receipts":_receipts.duplicate(true),"totals":_totals.duplicate(true)}
 
 func step(world: Object, index: int, pose: Transform2D, size: Vector2,
-		action: Dictionary, controller: Dictionary, force_cap: float, view: Dictionary) -> void:
+		action: Dictionary, controller: Dictionary, force_cap: float, view: Dictionary, authored_profile: Dictionary = {}) -> void:
 	_receipts.clear()
 	_totals.frames += 1
 	var tick: int = int(view.get("tick",-1))
@@ -81,28 +84,31 @@ func step(world: Object, index: int, pose: Transform2D, size: Vector2,
 		if view.get(key) != _identity.get(key):
 			_totals.stale_frames += 1
 			return
-	if index < 0 or index > 6 or not pose.is_finite() or not size.is_finite() or size.x <= 0 or size.y <= 0 or size.x > 30 or size.y > 12:
+	if not Fleet.valid_index(index) or not pose.is_finite() or not size.is_finite() or size.x <= 0 or size.y <= 0 or size.x > 128 or size.y > 128:
 		return
+	var capabilities: Dictionary=Fleet.capabilities(index)
+	var q_material: int=int(authored_profile.get("fleet_dispenser_q",capabilities.dispenser_q))
+	var e_material: int=int(authored_profile.get("fleet_dispenser_e",capabilities.dispenser_e))
+	var s_material: int=int(authored_profile.get("fleet_dispenser_s",capabilities.dispenser_s))
+	var board: bool=str(authored_profile.get("fleet_control_mode","hoverboard" if Fleet.is_hoverboard(index) else "body_thrust"))=="hoverboard"
+	var side_jets: bool=bool(authored_profile.get("fleet_side_thrusters",capabilities.side_thrusters))
+	_own_mask_count=clampi(int(authored_profile.get("fleet_proxy_count",1)),1,8)
 	var nozzles: Array = []
 	var half: Vector2 = size*.5
-	if index in [0,5,6]:
-		if _ports.q:
-			nozzles.append({"nozzle":"q-left","offset":Vector2(-half.x-2.,0),"material":12 if index==0 else 3 if index==5 else 8})
-		if _ports.e:
-			nozzles.append({"nozzle":"e-right","offset":Vector2(half.x+2.,0),"material":8 if index in [0,6] else 3})
-	if index==2 and _ports.s:
-		nozzles.append({"nozzle":"s-rear","offset":Vector2(half.x*.65,half.y+3.),"material":26})
+	if q_material!=0 and _ports.q: nozzles.append({"nozzle":"q-left","offset":Vector2(-half.x-2.,0),"material":q_material})
+	if e_material!=0 and _ports.e: nozzles.append({"nozzle":"e-right","offset":Vector2(half.x+2.,0),"material":e_material})
+	if s_material!=0 and _ports.s: nozzles.append({"nozzle":"s-rear","offset":Vector2(half.x*.65,half.y+3.),"material":s_material})
 	var live_force: bool = fire_enabled and force_cap > 0 and float(action.get("effort",1.)) > 0 and Vector2(controller.get("applied_force",Vector2.ZERO)).length_squared() > 0
 	if live_force:
 		var thrust: float = float(controller.get("thrust",0.))
-		if index==3:
+		if board:
 			# Suppress Fire for idle lift compensation. A commanded descent uses
 			# the top nozzle; primary lift takes precedence over descent.
 			thrust = 1. if bool(action.get("primary",false)) else -Vector2(action.get("move",Vector2.ZERO)).y
 		if absf(thrust) > .01:
 			nozzles.append({"nozzle":"main-fire","offset":Vector2(0,(half.y+2.)*signf(thrust)),"material":6})
 		var side: float = float(controller.get("side_thrust",0.))
-		if index in [1,2,4] and absf(side)>.01:
+		if side_jets and absf(side)>.01:
 			nozzles.append({"nozzle":"side-fire","offset":Vector2(-(half.x+2.)*signf(side),0),"material":6})
 	var proxy := Guard.new()
 	proxy.world = world
@@ -119,7 +125,7 @@ func step(world: Object, index: int, pose: Transform2D, size: Vector2,
 			reason="world_failed"
 		elif not _inside(target) or not _inside(pose.origin):
 			reason="bounds"
-		elif not _path_clear(proxy,pose.origin,target):
+		elif not _path_clear(proxy,pose*Vector2(authored_profile.get("fleet_emitter_origin",Vector2.ZERO)),target):
 			reason="blocked"
 		# emit_disc overwrites: require Empty and no body mask again at the
 		# actual write boundary, including after earlier nozzles this frame.
@@ -143,13 +149,15 @@ func _inside(point: Vector2) -> bool:
 func _cell_clear(proxy: Guard, cell: Vector2i, own_prefix: bool) -> bool:
 	if cell.x<0 or cell.y<0 or cell.x>=WORLD_LIMIT or cell.y>=WORLD_LIMIT: return false
 	var mask: int = proxy.mask(cell)
-	if mask!=0: return own_prefix and mask==1
+	if mask!=0: return own_prefix and _own_mask(mask)
 	return proxy.material(cell)==0
+
+func _own_mask(mask: int) -> bool: return mask>=1 and mask<=_own_mask_count
 
 func _path_clear(proxy: Guard, source: Vector2, target: Vector2) -> bool:
 	var cell := Vector2i(floori(source.x),floori(source.y))
 	var end := Vector2i(floori(target.x),floori(target.y))
-	var own_prefix: bool = proxy.mask(cell)==1
+	var own_prefix: bool = _own_mask(proxy.mask(cell))
 	if not _cell_clear(proxy,cell,own_prefix): return false
 	var ray: Vector2 = target-source
 	var direction := Vector2i(signi(end.x-cell.x),signi(end.y-cell.y))
@@ -163,7 +171,7 @@ func _path_clear(proxy: Guard, source: Vector2, target: Vector2) -> bool:
 			var side_x: Vector2i = cell+Vector2i(direction.x,0)
 			var side_y: Vector2i = cell+Vector2i(0,direction.y)
 			if not _cell_clear(proxy,side_x,own_prefix) or not _cell_clear(proxy,side_y,own_prefix): return false
-			if proxy.mask(side_x)!=1 or proxy.mask(side_y)!=1: own_prefix=false
+			if not _own_mask(proxy.mask(side_x)) or not _own_mask(proxy.mask(side_y)): own_prefix=false
 			cell += direction
 			next_x += delta_x
 			next_y += delta_y
@@ -174,5 +182,5 @@ func _path_clear(proxy: Guard, source: Vector2, target: Vector2) -> bool:
 			cell.y += direction.y
 			next_y += delta_y
 		if not _cell_clear(proxy,cell,own_prefix): return false
-		if proxy.mask(cell)!=1: own_prefix=false
+		if not _own_mask(proxy.mask(cell)): own_prefix=false
 	return false

@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "id": "observatory",
+  "name": "Observatory",
+  "description": "Sensor platform. Lumbering attitude response and a wide instrument bay.",
+  "color": "e9dba5",
+  "control_mode": "body_thrust",
+  "markings": "science",
+  "capabilities": {
+    "side_thrusters": false,
+    "reverse_thrust": true,
+    "dispenser_q": 8,
+    "dispenser_e": 8,
+    "dispenser_s": 0
+  },
+  "physics": {
+    "mass": 0.32,
+    "friction": 0.8,
+    "bounce": 0.04,
+    "gravity": 38,
+    "angular_drag": 0.18
+  },
+  "flight": {
+    "acceleration": 70,
+    "speed": 60,
+    "turn_speed": 1.15,
+    "turn_acceleration": 2.6,
+    "throttle_slew": 1,
+    "linear_drag": 0.2,
+    "force_limit": 28,
+    "torque_limit": 82,
+    "attitude_gain": 10,
+    "attitude_damping": 4,
+    "trim_angle": 0.4
+  },
+  "hull": {
+    "kind": "rectangle",
+    "size": [
+      30,
+      12
+    ]
+  }
+}

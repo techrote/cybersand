@@ -14,7 +14,9 @@ var _force_cap: float = 0.0
 func advance(rig, action: Dictionary, dt: float, effort: float) -> void:
 	var profile: Dictionary = rig._profile
 	var fleet_index: int = int(profile.fleet_index)
-	var board: bool = fleet_index == 3
+	# Current definitions copy these capabilities into the owner. Index fallbacks
+	# retain the original controller ABI for archived seven-flyer fixtures.
+	var board: bool = str(profile.get("fleet_control_mode","hoverboard" if fleet_index==3 else "body_thrust"))=="hoverboard"
 	var move: Vector2 = action.get("move",Vector2.ZERO)
 	var brake: bool = bool(action.get("secondary",false))
 	var assist: bool = bool(action.get("auxiliary",false))
@@ -23,9 +25,9 @@ func advance(rig, action: Dictionary, dt: float, effort: float) -> void:
 	var velocity: Vector2 = rig._velocities[0]
 	var wanted: float = maxf(-move.y,1. if primary else 0.)
 	# Kestrel's S is a dispenser action, so it does not also reverse thrust.
-	if fleet_index!=2 and move.y > 0. and not primary: wanted = -move.y*.4
+	if bool(profile.get("fleet_reverse_thrust",fleet_index!=2)) and move.y > 0. and not primary: wanted = -move.y*.4
 	_throttle = move_toward(_throttle,wanted,float(profile.fleet_slew)*dt)
-	_side_throttle = clampf(float(action.get("trim",0.)),-1.,1.) if fleet_index in [1,2,4] else 0.
+	_side_throttle = clampf(float(action.get("trim",0.)),-1.,1.) if bool(profile.get("fleet_side_thrusters",fleet_index in [1,2,4])) else 0.
 	var acceleration: Vector2
 	if board:
 		# Antigravity is a bounded actuator, not a contact or position constraint.
@@ -54,8 +56,8 @@ func advance(rig, action: Dictionary, dt: float, effort: float) -> void:
 	var alpha: float = 0.
 	var omega: float = rig._angular_velocities[0]
 	if board or assist:
-		var target: float = float(action.get("trim",0.))*.4 if board else 0.
-		alpha = wrapf(target-angle,-PI,PI)*10.-omega*4.
+		var target: float = float(action.get("trim",0.))*float(profile.get("fleet_trim_angle",.4)) if board else 0.
+		alpha = wrapf(target-angle,-PI,PI)*float(profile.get("fleet_attitude_gain",10.))-omega*float(profile.get("fleet_attitude_damping",4.))
 	elif absf(lean)>.01:
 		alpha = (lean*float(profile.fleet_turn_speed)-omega)*4.
 	elif brake:

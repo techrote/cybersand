@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
   "artifact": "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
-  "source_commit": "856c49371b37b3921bf859a67a883336252134ee",
-  "build_commit": "856c49371b37b3921bf859a67a883336252134ee",
-  "native_build_commit": "856c49371b37b3921bf859a67a883336252134ee",
-  "source_tree": "057a89fe2a4af41c3402d2daf4e771a44c6633c7",
+  "source_commit": "a6bf8ec4e75cd1105ab40b927d909b888f42280f",
+  "build_commit": "a6bf8ec4e75cd1105ab40b927d909b888f42280f",
+  "native_build_commit": "a6bf8ec4e75cd1105ab40b927d909b888f42280f",
+  "source_tree": "e5eaa0fb6a330ec097aed6d63317b9a8ea6ba0f2",
   "source_input_hash_kind": "SHA256 canonical LF for production native inputs",
   "source_inputs": {
     "native/src/c_api.cpp": "48d079c7787ad6f555f23d38b85f0b27e1e937483c32cf2c8e9a4bfa8b0f4ec4",
@@ -77,14 +77,15 @@
     "native/include/cybersand/world_generation.hpp": "28007e89dc009d68af125e2c04d77a5fb6aec48ec9758a4079affa016f3dca5c",
     "godot/native_extension/conservative_displacement_adapter.inc": "91b06a2c4e273aad56af883525dc2466e4caac64a1b0660aeb1201d625b85b30",
     "godot/native_extension/cyber_demo_bridge.hpp": "c0614af94edb4c004e83e2ae6579d780201ebe3713ff66120b59606b06405565",
-    "godot/native_extension/cyber_native_cell_world.cpp": "3a29992b12403c5c204d9671f9c60f14d7a05d5d38b919facac22105cd1040b3",
-    "godot/native_extension/cyber_native_cell_world.hpp": "27fb80e497246d9c57d197dfc28305f2380247544521d17ceee5a9c1a7cd1401",
+    "godot/native_extension/cyber_native_cell_world.cpp": "c2cc449b4eddd378026b57928febfa494d5418c5389bb9c266ef89c17f6fcd0e",
+    "godot/native_extension/cyber_native_cell_world.hpp": "55dc228f47151428f1799dab488533b9a223d78d5a266c97d752f9d9c1059146",
     "godot/native_extension/cyber_observation_values.hpp": "47af553dafed4129aa689fef0e33214d3612148bbcb6b2c10dd6164dbcc3768f",
     "godot/native_extension/cyber_prepared_level_payload.hpp": "bb414a0f5d2b6272dec3c9f386cee99eb70e1c2f1b5ce74b23fd5953f06c1b5a",
     "godot/native_extension/cyber_prepared_liquid_world.hpp": "6a1f3b8b1d096b177dba8c70fafe167707db91714994d3539d7ab08a0aee7ccf",
     "godot/native_extension/cyber_world_generator.cpp": "c819ab654d8bc53a04a3362b2dc8f44415238f0b58753882ae993c0ac6dfd64b",
     "godot/native_extension/cyber_world_generator.hpp": "8be2561cb5e81dee79b55fbe6431f3f50fca1ba89e4ec693fe12f4bed71e0822",
-    "godot/native_extension/gcr_compound_adapter.inc": "31beace0ff2d7274c554b7d57683d539ee653b526298a4b65d16c6b679d05b47",
+    "godot/native_extension/gcr_authored_compound_adapter.inc": "ac725ceaa6d8b229dd5ac69fdc609077e5ee2927f56619e039af0d3743ddf176",
+    "godot/native_extension/gcr_compound_adapter.inc": "e0eac4b66f15bf4f30f4629d60421a5333badee1a3c24afbf7b68fe0e761f81d",
     "godot/native_extension/generation_grammar_adapter.inc": "363255bf521f90435b620052ee8be288da5cefc4e7afe18f6871512949716b53",
     "godot/native_extension/generation_grammar_inspection.inc": "5557ce1ef75f72862315ea69a196fd8c8449b7a6c9748e9bf57ee42dbfd3664c",
     "godot/native_extension/generation_planes_adapter.inc": "f4b2eeba64b57140fb8e9f4f1ca5830cb12fc19b27c2b60367d65d51ff0e4d6b",
@@ -94,124 +95,37 @@
     "godot/native_extension/generation_workbench_methods.inc": "a7b74a41d6282777bd77220e6480258720dfde698938d3bef75d68a2841ae0d8",
     "godot/native_extension/pressure_optimization_inspection.inc": "e31280bec687c478d37b6dd169d46593adb4397c6584c9c597c98d6cb2d9420e",
     "godot/native_extension/register_types.cpp": "2a225e31225918746121285f79f5dc91b3808ac3ec0a980d4eac62467e81c5c1",
-    "godot/native_extension/solid_detachment_adapter.inc": "0f1cb226cf5ad624b6d77a7068ea8a9cb1c7d287e37cb0b48b707a0a499541b0"
+    "godot/native_extension/solid_detachment_adapter.inc": "429c42c4b569e8662da779e2291df8a7ce241f36d732b408c7e32b9106346947"
   },
-  "sha256": "f4f788c44d1b7e0271555725dea0d92ac257a69abb52f1f9a6daa4d1d47f9b30",
-  "size": 5037056,
+  "sha256": "5f92abb3a2541655aec552795d0adfadba12f6278c133f8331b6f87c1af41372",
+  "size": 5056000,
   "platform": "windows",
-  "validated_platform": "windows x86_64 source-matched experimental build",
-  "status": "Experimental selective transport-witness granular event successor; new host and physical qualification recorded separately",
-  "acceptance": "No production/default, compound, sleep or owner gameplay acceptance",
+  "validated_platform": "windows x86_64 source-matched experimental build; execution recorded separately",
+  "status": "Experimental authored compound hull admission; builds are distinct from host and physical qualification",
+  "acceptance": "No production/default, sleep, structural-detachment or owner gameplay acceptance",
   "build_record": {
     "command": [
       "C:/Program Files/Git/bin/bash.exe",
       "tools/build_native_extension_windows.sh"
     ],
-    "pid": 26492,
-    "started_utc": "2026-11-04T02:53:36.779635+00:00",
-    "ended_utc": "2026-11-04T02:54:33.918315+00:00",
+    "pid": 19052,
+    "started_utc": "2026-11-04T12:28:02.489759+00:00",
+    "ended_utc": "2026-11-04T12:29:06.740858+00:00",
     "timeout_seconds": 1200,
-    "elapsed_seconds": 57.13870150002185,
+    "elapsed_seconds": 64.25111760001164,
     "exit": 0,
     "timed_out": false,
-    "log_sha256": "e00aa0a2ae02daaf7e3aae03f2594c61e4cccfb28e97c1899d53b3f7b628fe80",
+    "log_sha256": "e5b9fc59e7cfe10d934db168a96221ee8eaba073e7ea35cd745196cdf2a261ac",
     "ok": true,
-    "source": "856c49371b37b3921bf859a67a883336252134ee",
+    "source": "a6bf8ec4e75cd1105ab40b927d909b888f42280f",
     "platform": "windows",
-    "sha256": "f4f788c44d1b7e0271555725dea0d92ac257a69abb52f1f9a6daa4d1d47f9b30",
-    "bytes": 5037056
+    "sha256": "5f92abb3a2541655aec552795d0adfadba12f6278c133f8331b6f87c1af41372",
+    "bytes": 5056000
   },
-  "build_receipt_sha256": "144ceb319cf52ba56493c9e60e8944c9c65cf4c8e53afc3cc16a7a121bf53bf6",
+  "build_receipt_sha256": "a2c66acd8b3fb776e661b9f2a16454b60300bfb25eff06fdea798e022c012f80",
   "build_script": "tools/build_native_extension_windows.sh",
   "build_script_sha256": "3308b5aeebb4064130d3d6fe36a23b02c2709f0793dd7e3de1e4e73df4c8b940",
-  "dependencies": "Pinned Godot4.7 godot-cpp101ae380; LLVM-MinGW23.1 Windows / GCC13.3 Linux; build scripts enforce pins",
-  "limitations": [
-    "Other platforms retain historical provenance",
-    "No native source from Astra PR347 imported or replaced",
-    "No old qualification is relabelled as new execution"
-  ],
-  "dependency_inputs": {
-    "LICENSE_STATUS.md": "3bfb7c5ddd1418ab38621d1e5b841c9e9c4845e9166a196143c8a71f3cd46b70",
-    "THIRD_PARTY_NOTICES.md": "df8aa85bb2be5b09eb92b1660f03db12484cf685ffc44ee8802c7334180e0c6c",
-    "godot/addons/cybersand_native/LICENSE-godot-cpp.md": "26a5b210d90760156ce886267ce9df235787dcc6cebfd7ecd95ef5b6fdcc95bf",
-    "godot/addons/godot-rapier2d/LICENSE": "b876a61b43cc648b56428d56a484784a88d4231809e4d7f4fd8dbdb6772400e8",
-    "godot/addons/godot-rapier2d/THIRDPARTY.txt": "63405a03af6a0a85dace7cc08001b34f28e8792dd2b7fb4de09137a6b58392df",
-    "godot/third_party/rapier2d.lock.json": "df24cf6fb1adc17b2c1675b1387db19c93ee31d6cbf497c9295647ec98371285",
-    "third_party/godot-runtime.lock.json": "38addc53f9c4e64afc024a7ce5dc1bef9c6238148ce6e66dcc63e9ec70d106fe",
-    "third_party/rapier-bvh-build.lock.json": "0951b69d1b59c70c915f59bcae8390291ad9b89b4eb976ac8f3dfbed0fa7c46b"
-  },
-  "toolchain_record": {
-    "linux": {
-      "files": {
-        "/home/i/render-publication-abc-tools/godot-cpp-101ae38034304346a46ea9ea84ae156d3e860496/bin/libgodot-cpp.linux.template_debug.x86_64.a": {
-          "resolved_path": "/home/i/render-publication-abc-tools/godot-cpp-101ae38034304346a46ea9ea84ae156d3e860496/bin/libgodot-cpp.linux.template_debug.x86_64.a",
-          "sha256": "bc5f860471475c745ebad2b45988607a15c9a35c6996b0f08fea37570e6ef666",
-          "size": 84962728
-        },
-        "/usr/bin/g++-13": {
-          "resolved_path": "/usr/bin/x86_64-linux-gnu-g++-13",
-          "sha256": "1353e9bdd29a7295c7226bf6c63abccce056d8cac31f112e5cdbecc3f28c2769",
-          "size": 1027128
-        },
-        "/usr/bin/ld": {
-          "resolved_path": "/usr/bin/x86_64-linux-gnu-ld.bfd",
-          "sha256": "e9ceb054c12207970f2726dfc07e9a66b411602748628baf27399f02a9bbb31b",
-          "size": 1359128
-        },
-        "/usr/libexec/gcc/x86_64-linux-gnu/13/cc1plus": {
-          "resolved_path": "/usr/libexec/gcc/x86_64-linux-gnu/13/cc1plus",
-          "sha256": "840b332fb62ec6f694ac77d91fe69ef7f80b0d69512ed89374af0ee7a506255d",
-          "size": 32675168
-        }
-      },
-      "godot_cpp_markers": {
-        ".cybersand-source-archive-sha256": "f55d1cd5a2d528a9dc72fc54c1ef2b3d4dd90a0570dd8841d6766cbd4912dad8",
-        ".cybersand-source-revision": "101ae38034304346a46ea9ea84ae156d3e860496"
-      },
-      "versions": {
-        "/usr/bin/g++-13": "g++-13 (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
-        "/usr/bin/ld": "GNU ld (GNU Binutils for Ubuntu) 2.42"
-      }
-    },
-    "measured_utc": "2026-11-04T02:55:08.320384+00:00",
-    "scope": "Post-build re-verification of every retained compiler/linker/static-library file hash against the unchanged pinned toolchain record. Not build-time tracing or M11 exact artifact equality.",
-    "windows_files": {
-      "C:\\Users\\_\\lcb-local-toolchain\\env\\godot-cpp-101ae38034304346a46ea9ea84ae156d3e860496\\bin\\libgodot-cpp.windows.template_debug.x86_64.a": {
-        "sha256": "2629ba35adc7b1263deeb1155d674252e1e4188c2c89d1d7158e816d18f957df",
-        "size": 66374316
-      },
-      "C:\\Users\\_\\lcb-local-toolchain\\llvm-mingw-20260826\\bin\\clang-23.exe": {
-        "sha256": "981e3fc62c949bad1132a1f5f76428495e69109a7603a1e878aa227cfbf731b7",
-        "size": 96256
-      },
-      "C:\\Users\\_\\lcb-local-toolchain\\llvm-mingw-20260826\\bin\\clang.exe": {
-        "sha256": "bf58cf0e544a308660645aad1fe65ae9cbc44b0871e4010278f3d9551f86a690",
-        "size": 14336
-      },
-      "C:\\Users\\_\\lcb-local-toolchain\\llvm-mingw-20260826\\bin\\ld.lld.exe": {
-        "sha256": "284daba5d41833c41d164d3b8b4715a41a11f0c8fd22c19eabc0929cbf081db8",
-        "size": 5184512
-      },
-      "C:\\Users\\_\\lcb-local-toolchain\\llvm-mingw-20260826\\bin\\libclang-cpp.dll": {
-        "sha256": "b3585afae005a6aa7e576d46de3d37581a9a877d0c11c02010e4a8c3c7aa8dc3",
-        "size": 49632768
-      },
-      "C:\\Users\\_\\lcb-local-toolchain\\llvm-mingw-20260826\\bin\\x86_64-w64-mingw32-g++.exe": {
-        "sha256": "bf58cf0e544a308660645aad1fe65ae9cbc44b0871e4010278f3d9551f86a690",
-        "size": 14336
-      }
-    },
-    "windows_godot_cpp_markers": {
-      ".cybersand-source-archive-sha256": "f55d1cd5a2d528a9dc72fc54c1ef2b3d4dd90a0570dd8841d6766cbd4912dad8",
-      ".cybersand-source-revision": "101ae38034304346a46ea9ea84ae156d3e860496"
-    },
-    "windows_versions": {
-      "C:\\Users\\_\\lcb-local-toolchain\\llvm-mingw-20260826\\bin\\clang.exe": "clang version 23.1.0 (https://github.com/llvm/llvm-project.git ea7d852a70e8bdfaf601d6626a760f9771b2c4b4)",
-      "C:\\Users\\_\\lcb-local-toolchain\\llvm-mingw-20260826\\bin\\ld.lld.exe": "LLD 23.1.0 (https://github.com/llvm/llvm-project.git ea7d852a70e8bdfaf601d6626a760f9771b2c4b4) (compatible with GNU linkers)",
-      "C:\\Users\\_\\lcb-local-toolchain\\llvm-mingw-20260826\\bin\\x86_64-w64-mingw32-g++.exe": "clang version 23.1.0 (https://github.com/llvm/llvm-project.git ea7d852a70e8bdfaf601d6626a760f9771b2c4b4)"
-    },
-    "prior_measurement_utc": "2026-11-02T21:24:17.959884+00:00"
-  },
+  "dependencies": "Pinned Godot4.7 godot-cpp101ae380; LLVM-MinGW23.1 Windows and GCC13.3 Linux; scripts enforce source/compiler pins",
   "build_inputs": {
     ".gitattributes": "05c9fbe5f823c51aec0ae542d0c7641a117fb0b95cd1d7fb511fffe9f8cbdbaa",
     "godot/addons/cybersand_native/cybersand_native.gdextension": "9f02ab03e73abbe65eed39c55dd6af9bd7c35953893165067e0dcafa570297c7",
@@ -222,5 +136,10 @@
     "tools/requirements-build.txt": "6ef2d94fd9f11d4b4e95730c9c14468c739f51f22d175212b5019edd9dbe7409",
     "tools/toolchains/g++": "eda84507126d2e657dfd20386a0da6eecc5ebe8d650102075f5b539da8334b09",
     "tools/verify_pinned_source_tree.py": "a0524839c9a2857906013c9cef6327dfd3fd1878372da05ca16c34a497eaea97"
-  }
+  },
+  "limitations": [
+    "Other platforms retain their historical provenance",
+    "Native core World and Astra PR347 sources are unchanged",
+    "No earlier execution is relabelled as new proof"
+  ]
 }
