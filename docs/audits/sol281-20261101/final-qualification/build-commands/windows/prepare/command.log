@@ -1,0 +1,22 @@
+Collecting SCons==4.10.1 (from -r tools/requirements-build.txt (line 2))
+  Downloading scons-4.10.1-py3-none-any.whl (4.1 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 4.1/4.1 MB 63.9 MB/s eta 0:00:00
+Installing collected packages: SCons
+Successfully installed SCons-4.10.1
+hint: Using 'master' as the name for the initial branch. This default branch name
+hint: will change to "main" in Git 3.0. To configure the initial branch name
+hint: to use in all of your new repositories, which will suppress this warning,
+hint: call:
+hint:
+hint: 	git config --global init.defaultBranch <name>
+hint:
+hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+hint: 'development'. The just-created branch can be renamed via this command:
+hint:
+hint: 	git branch -m <name>
+hint:
+hint: Disable this message with "git config set advice.defaultBranchName false"
+Initialized empty Git repository in /home/runner/work/_temp/godot-cpp/.git/
+From https://github.com/godotengine/godot-cpp
+ * branch            101ae38034304346a46ea9ea84ae156d3e860496 -> FETCH_HEAD
+HEAD is now at 101ae38 Merge pull request #2047 from marcozee03/sync-godot-math-structs

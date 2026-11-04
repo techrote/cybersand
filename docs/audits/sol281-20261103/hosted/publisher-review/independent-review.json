@@ -1,0 +1,41 @@
+{
+  "reviewer": "/root/implementation_review/native_review",
+  "date": "2026-11-04",
+  "disposition": "No blocking correctness issue found in the final two-file publisher patch.",
+  "base": "2457f5ecb945c60cd5118526f48734e82576ba49",
+  "reviewed_commit": "2bfeb60b60cfd07b7fa7d53447d9265af6b31e85",
+  "reviewed_tree": "bd0803f50ec471e0b1e8dac7c3b77b56080dd4bc",
+  "files": {
+    "tools/sol281/publish_runtime.py": {
+      "sha256": "87752af50352843da6f83fc6c51cb0f77c2371f04cf7f8d18d026611418c5198",
+      "git_blob": "947f4dddc14db8ab92cbb4e8c894523b24d40cf6"
+    },
+    "tools/sol281/test_publish_runtime.py": {
+      "sha256": "d225644cbc902bba4bc59f563fb43433c073b0c12653056541846351f75a078e",
+      "git_blob": "a36c7dd94699850d7238dac5d6727bf8a534f1b7"
+    }
+  },
+  "invariants_confirmed": [
+    "All planned index entries, including unchanged entries, retain the exact regular mode 100644, stage-zero, canonical LFS pointer or evidence/provenance hash-and-size validation.",
+    "Those exact target entry checks make the changed-path subset condition equivalent to the intended complete final index state. Missing staging leaves old target bytes or an absent entry and therefore refuses.",
+    "Explicit HEAD and --no-renames expose unplanned source deletions even when Git otherwise represents the change as R100 into a planned evidence path.",
+    "No changes to artifact attribution, prepared-content verification, qualified-source validation or verify_checkout.",
+    "Only the authorized publisher and publisher-test files changed."
+  ],
+  "regression_coverage_inspected": [
+    "Unchanged runtime wrong SHA-256",
+    "Unchanged runtime wrong size",
+    "Unchanged malformed LFS pointer",
+    "Unchanged stale provenance bytes",
+    "Missing staging of changed provenance",
+    "Missing staging of new evidence",
+    "Deleted runtime index entry",
+    "Executable runtime index mode",
+    "Unplanned staged source edit",
+    "Unplanned staged source deletion with actual R100 rename folding",
+    "Unstaged source edit rejected by unchanged verify_checkout contract",
+    "Unchanged correct runtime, both changed and unchanged correct metadata"
+  ],
+  "execution_scope": "Read-only independent diff and exact-file-identity review. Reviewer did not independently execute the 13-test suite. Passing suite, baseline reproduction and retained fixture-failure log are implementation-agent execution evidence.",
+  "remaining": "Full resulting-source hosted qualification and publication remain root-owned required gates."
+}

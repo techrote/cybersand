@@ -1,0 +1,14 @@
+Tool-output transcript reconstructed from this reviewer's tool history.
+This is not an original byte-for-byte process log. The output below is a
+faithfully transcribed process-output excerpt, without tool-envelope metadata.
+No command was rerun to manufacture this transcript.
+
+Command(s):
+g++ -std=c++20 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -O2 -Werror -Inative/include native/tests/test_solid_contact_geometry.cpp -o /tmp/sol281-independent-native-geometry
+/tmp/sol281-independent-native-geometry
+
+Observed output:
+SOL281_CONTACT_GEOMETRY 6 groups / 6817 checks passed
+
+Disposition:
+Native geometry passed. The combined shell cell also printed compiler and file hashes; those are preserved in native-review.json.

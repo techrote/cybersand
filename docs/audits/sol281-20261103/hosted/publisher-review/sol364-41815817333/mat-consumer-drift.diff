@@ -1,0 +1,232 @@
+diff --git a/native/src/world.cpp b/native/src/world.cpp
+index a6afd8ca..d55f59ad 100644
+--- a/native/src/world.cpp
++++ b/native/src/world.cpp
+@@ -1602,8 +1602,22 @@ bool World::granular_support_at(std::int64_t x, std::int64_t y, bool side,
+         for (int dx = -1; dx <= 1; ++dx) around += stable(x + dx, y + dy);
+     return around >= config_.interaction_policy.side_support_cells;
+ }
+ 
++bool World::contact_cell_available(std::int64_t x, std::int64_t y) const noexcept {
++    constexpr std::int64_t limit = 1'000'000'000;
++    if (has_failed() || x < -limit || x > limit || y < -limit || y > limit ||
++        selected_core_region_ != applied_core_region_) return false;
++    if (find_chunk(address(x, y).chunk) == nullptr) return false;
++    if (selected_core_region_) {
++        const auto core = scheduler_geometry_.core_for_cell(x, y);
++        const auto& region = *selected_core_region_;
++        if (core.x < region.min_x || core.x > region.max_x ||
++            core.y < region.min_y || core.y > region.max_y) return false;
++    }
++    return true;
++}
++
+ Material World::stored_material(std::int64_t x, std::int64_t y) const noexcept {
+     const auto target = address(x, y);
+     const auto* chunk = find_chunk(target.chunk);
+     return chunk == nullptr ? Material::Empty : chunk->cells[target.index].material_value();
+@@ -1933,8 +1947,9 @@ void World::set(std::int64_t x, std::int64_t y, Material material) {
+ }
+ 
+ void World::set_with_quantity_kind(std::int64_t x, std::int64_t y, Material material,
+                                     QuantityKind kind) {
++    require_solid_mutation_allowed();
+     require_healthy();
+     if (!valid_material(static_cast<std::uint16_t>(material))) {
+         throw std::invalid_argument("invalid material identifier");
+     }
+@@ -1996,8 +2011,9 @@ void World::set_with_quantity_kind(std::int64_t x, std::int64_t y, Material mate
+ 
+ bool World::set_cell_state(std::int64_t x, std::int64_t y, Material material,
+                            std::uint16_t state_a_value,
+                            std::uint8_t state_b_value) {
++    if (solid_detachment_fenced()) return false;
+     // Setup normalization is an explicit pre-construction operation. A live
+     // partial write never rounds, allocates a chunk or mutates the prior cell.
+     if (material == Material::Water && whole_cell_water_enabled() && state_a_value != 0U &&
+         state_a_value != config_.water_experiment_policy.maximum()) return false;
+@@ -2019,8 +2035,9 @@ bool World::set_cell_state(std::int64_t x, std::int64_t y, Material material,
+     return write_cell(x, y, material, state_a_value, state_b_value, nullptr, true);
+ }
+ 
+ void World::set_simulation_region(std::optional<RectI64> region) {
++    require_solid_mutation_allowed();
+     if (region.has_value() && (region->width <= 0 || region->height <= 0)) {
+         throw std::invalid_argument("simulation region dimensions must be positive");
+     }
+     std::optional<CoreRange> selected;
+@@ -2046,8 +2063,9 @@ void World::set_simulation_region(std::optional<RectI64> region) {
+     }
+ }
+ 
+ void World::set_liquid_surface_adhesion_enabled(bool enabled) noexcept {
++    if (solid_detachment_fenced()) return;
+     if (liquid_surface_adhesion_enabled_ == enabled) return;
+     liquid_surface_adhesion_enabled_ = enabled;
+     if (pressure_ != nullptr && pressure_->cache != nullptr) pressure_->cache->cold();
+     fence_discovery(soliding::ProducerReason::SemanticFence);
+@@ -2059,8 +2077,9 @@ bool World::liquid_surface_adhesion_enabled() const noexcept {
+     return liquid_surface_adhesion_enabled_;
+ }
+ 
+ void World::configure_transient_obstacles(RectI64 region) {
++    require_solid_mutation_allowed();
+     require_healthy();
+     if (region.width <= 0 || region.height <= 0) {
+         throw std::invalid_argument("transient obstacle dimensions must be positive");
+     }
+@@ -2083,8 +2102,9 @@ void World::configure_transient_obstacles(RectI64 region) {
+         region, soliding::ProducerReason::TransientMask, 0);
+ }
+ 
+ void World::clear_transient_obstacles() {
++    require_solid_mutation_allowed();
+     require_healthy();
+     auto& state = *transient_obstacles_;
+     const auto width = state.region.width;
+     if (width > 0) {
+@@ -2125,8 +2145,9 @@ std::uint16_t World::transient_obstacle_at(std::int64_t x, std::int64_t y) const
+ }
+ 
+ bool World::set_transient_obstacle(std::int64_t x, std::int64_t y,
+                                    std::uint16_t body_id) {
++    if (solid_detachment_fenced()) return false;
+     if (tick_failed_) return false;
+     auto& state = *transient_obstacles_;
+     if (body_id == 0U || body_id > kMaximumTransientBodies ||
+         state.region.width <= 0 || state.region.height <= 0 ||
+@@ -2153,8 +2174,9 @@ bool World::set_transient_obstacle(std::int64_t x, std::int64_t y,
+ }
+ 
+ bool World::relocate_stored_cell(std::int64_t from_x, std::int64_t from_y,
+                                  std::int64_t to_x, std::int64_t to_y) {
++    if (solid_detachment_fenced()) return false;
+     if (tick_failed_) return false;
+     if (stored_material(from_x, from_y) == Material::Empty ||
+         stored_material(to_x, to_y) != Material::Empty ||
+         transient_obstacle_at(to_x, to_y) != 0U) {
+@@ -2165,8 +2187,9 @@ bool World::relocate_stored_cell(std::int64_t from_x, std::int64_t from_y,
+ }
+ 
+ PlayerMaterialFieldResult World::apply_player_material_field(
+     const PlayerMaterialFieldCommand& command) {
++    if (solid_detachment_fenced()) return {};
+     PlayerMaterialFieldResult result;
+     if (tick_failed_) {
+         result.outcome = PlayerMaterialFieldOutcome::WorldFailed;
+         return result;
+@@ -2369,8 +2392,9 @@ void World::record_transient_contact(std::uint16_t body_id, Material material,
+                                                         std::memory_order_relaxed);
+ }
+ 
+ void World::set_temperature(std::int64_t x, std::int64_t y, std::int16_t value) {
++    require_solid_mutation_allowed();
+     require_healthy();
+     const auto target = address(x, y);
+     if (value == config_.ambient_temperature) {
+         auto* existing = find_chunk(target.chunk);
+@@ -2391,8 +2415,9 @@ void World::set_temperature(std::int64_t x, std::int64_t y, std::int16_t value)
+     dirty_discovery_cell(x, y, soliding::ProducerReason::DirectMutation);
+ }
+ 
+ void World::paint_disc(std::int64_t centre_x, std::int64_t centre_y, std::int32_t radius, Material material) {
++    require_solid_mutation_allowed();
+     require_healthy();
+     if (radius < 0) {
+         throw std::invalid_argument("radius must not be negative");
+     }
+@@ -2408,8 +2433,9 @@ void World::paint_disc(std::int64_t centre_x, std::int64_t centre_y, std::int32_
+     }
+ }
+ 
+ void World::reserve_region(RectI64 region) {
++    require_solid_mutation_allowed();
+     require_healthy();
+     if (region.width <= 0 || region.height <= 0) {
+         throw std::invalid_argument("reserve region dimensions must be positive");
+     }
+@@ -2447,8 +2473,9 @@ void World::reserve_region(RectI64 region) {
+     }
+ }
+ 
+ void World::reserve_temperature_region(RectI64 region) {
++    require_solid_mutation_allowed();
+     require_healthy();
+     reserve_region(region);
+     const auto minimum_address = address(region.x, region.y);
+     const auto maximum_address =
+@@ -2461,8 +2488,9 @@ void World::reserve_temperature_region(RectI64 region) {
+ }
+ 
+ ChunkInstallOutcome World::install_generated_chunk(
+     ChunkCoord coord, std::span<const Material> row_major_materials) {
++    require_solid_mutation_allowed();
+     if (tick_failed_) return ChunkInstallOutcome::WorldFailed;
+     if (tick_in_progress_) return ChunkInstallOutcome::TickInProgress;
+     const auto size = static_cast<std::int64_t>(config_.chunk_size);
+     const auto cell_count = static_cast<std::size_t>(size) *
+@@ -2518,8 +2546,9 @@ ChunkInstallOutcome World::install_generated_chunk(
+ }
+ 
+ bool World::queue_explosion(std::int64_t x, std::int64_t y, std::int32_t radius,
+                             std::uint8_t collapse_strength) {
++    if (solid_detachment_fenced()) return false;
+     if (tick_failed_) return false;
+     if (radius <= 0 || radius > config_.maximum_explosion_radius ||
+         pending_explosions_.size() >= config_.deferred_event_capacity) {
+         return false;
+@@ -2608,8 +2637,9 @@ void World::apply_pending_explosions(TickStats& stats) {
+ 
+ void World::clear() {
+     if (physics_totals_ != nullptr) *physics_totals_ = {};
+     if (tick_in_progress_) throw std::logic_error("cannot clear during a world tick");
++    solid_detachment_.reset();
+ 
+     // Retire every observation before destructive World reset begins. reset() is
+     // allocation-free; if replacement construction later throws, discovery stays
+     // unavailable rather than exposing the old incarnation over cleared authority.
+@@ -4624,8 +4654,9 @@ TickStats World::tick_phased() {
+     return stats;
+ }
+ 
+ TickStats World::tick() {
++    require_solid_mutation_allowed();
+     require_healthy();
+     if (tick_in_progress_) throw std::logic_error("world tick is not reentrant");
+     tick_in_progress_ = true;
+     tick_chunk_allocations_ = 0;
+@@ -4967,5 +4998,8 @@ void World::copy_rgba(RectI64 region, std::span<std::uint8_t> destination, std::
+ #include "world_pressure_gas_cache.inc"
+ #include "world_pressure.inc"
+ #include "world_inertial.inc"
+ 
++#include "world_solid_detachment.inc"
++#include "world_conservative_displacement.inc"
++
+ }  // namespace cybersand
+diff --git a/native/src/world_pressure.inc b/native/src/world_pressure.inc
+index 1218ae49..d42a2403 100644
+--- a/native/src/world_pressure.inc
++++ b/native/src/world_pressure.inc
+@@ -1525,8 +1525,10 @@ std::uint64_t World::liquid_comparison_hash(LiquidStateProjection projection) co
+     return physical_state_hash_impl(projection);
+ }
+ 
+ std::uint64_t World::physical_state_hash_impl(std::optional<LiquidStateProjection> projection) const {
++    if (solid_detachment_ && solid_detachment_->snapshot.phase != soliding::SolidPhase::Idle)
++        throw std::logic_error("solid aggregate/transaction is not serializable in CYPS2/3");
+     const bool quiescent = projection == LiquidStateProjection::QuiescentPhysicalContentV1;
+     std::uint64_t hash = 1469598103934665603ULL;
+     if (projection) {
+         for (const char c : liquid_state_projection_domain(*projection))
+@@ -1743,8 +1745,10 @@ void refuse_state(const char* detail) {
+ 
+ }  // namespace
+ 
+ std::vector<std::uint8_t> World::save_physical_state() const {
++    if (solid_detachment_ && solid_detachment_->snapshot.phase != soliding::SolidPhase::Idle)
++        throw std::logic_error("solid aggregate/transaction is not serializable in CYPS2/3");
+     require_healthy();
+     if (tick_in_progress_) throw std::logic_error("cannot save during a world tick");
+     if (settled_discovery_ != nullptr)
+         throw std::invalid_argument("physical state persistence does not support settled discovery");

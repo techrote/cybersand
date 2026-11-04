@@ -1,0 +1,137 @@
+{
+  "schema": "cybersand.sol364.independent-cohort-review.v1",
+  "source": {
+    "sha": "9edc4f8f7d8cd8fc65119d176c9e1981ab6ea77d",
+    "tree": "b5baf8b23ff947c2d7b70e69745c10f18fbe9ebe"
+  },
+  "run_id": "41815817333",
+  "run_attempt": "1",
+  "status": "passed-execution-verification",
+  "platform": "Windows",
+  "cohort": "contact-w4",
+  "cases": 11,
+  "report_sha256": "e963e70aa5091de0fc1cf87c68947a5b7888088bf16dd99286c92e63b75ce73e",
+  "runtime": {
+    "filename": "cybersand_native.windows.x86_64.dll",
+    "sha256": "a5e616c0e72eee56c84f66151499d401dd3f4fb7faab347adbc6335493fefd61",
+    "size": 4925952
+  },
+  "imports": 1,
+  "structured_checks": 849,
+  "ordinary_controls": 0,
+  "source_and_raw_checkout_unchanged": true,
+  "engine": {
+    "archive_algorithm": "sha512",
+    "archive_hash": "41645a908eb3181d6f2d1201ed7b6d6f095f6a23aaed8903d5d255277cc8d142814f3e6817f865b3cac142c39b8aff99280091d3bbdaa301517730b3ba0522b9",
+    "executables": {
+      "Godot_v4.7-stable_win64.exe": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+      "Godot_v4.7-stable_win64_console.exe": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c"
+    },
+    "version": "4.7.stable.official.5b4e0cb0f"
+  },
+  "rapier": {
+    "lock_sha256": "df24cf6fb1adc17b2c1675b1387db19c93ee31d6cbf497c9295647ec98371285",
+    "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+    "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+    "size": 9987072
+  },
+  "records": [
+    {
+      "name": "coupling-w4",
+      "checks": 33,
+      "original_log_sha256": "42ba76ef69f6ea022bfec4c958ea00e81b5aba6da97dc7f98fa2e709a3fe8b41",
+      "result": {
+        "path": "coupling-w4.json",
+        "sha256": "325d18a9bcdc23891282a6b8d7d27ba214d24f434c2e6253adcb8b21004ddc36"
+      }
+    },
+    {
+      "name": "displacement-w4",
+      "checks": 292,
+      "original_log_sha256": "f63dc1ee0c12c019c3d4017ec51d1a507a102360e2a26b2a447ad3c1c64bdb1b",
+      "result": {
+        "path": "displacement-w4.json",
+        "sha256": "324e9f37e82b9c670dc8bee9fcc8d4636ebb3abaaf8b7c9e30d296593142dd5d"
+      }
+    },
+    {
+      "name": "terrain-w4",
+      "checks": 8,
+      "original_log_sha256": "63ae4f81c5a033b56f85cc63e15825eb1e298a5bdcb01d2e297faeba281b0f47",
+      "result": null
+    },
+    {
+      "name": "packed_sand-candidate-w4",
+      "checks": 14,
+      "original_log_sha256": "4fe0a8d41b4933dc34e3ee08802bfcd509f3bf46201e57cac310b4b8740f9703",
+      "result": {
+        "path": "packed_sand-candidate-w4.json",
+        "sha256": "6355a19d9bcefca105b7aeb32750aa5e476358daba4ebce2bea27d3c762eaece"
+      }
+    },
+    {
+      "name": "packed_sand-baseline-w4",
+      "checks": 14,
+      "original_log_sha256": "bc6911348452b42397ffa8507dd39075a26a0bc7540ec9a51c42bbf288005688",
+      "result": {
+        "path": "packed_sand-baseline-w4.json",
+        "sha256": "00792f03095da66500bdae31eb6d9e51da40e0d4bc3d2b28f27a88193f5a5313"
+      }
+    },
+    {
+      "name": "embedded_sand-candidate-w4",
+      "checks": 14,
+      "original_log_sha256": "09858a582d6c1eb6033f74dd332106c8335ab74f8836af206b4ca06f288e4075",
+      "result": {
+        "path": "embedded_sand-candidate-w4.json",
+        "sha256": "aac48f9c0ca3863f4f630d8a2c532a1a161864360f562832a36bf65de5e27f4a"
+      }
+    },
+    {
+      "name": "embedded_sand-baseline-w4",
+      "checks": 14,
+      "original_log_sha256": "4c0a9ef2027e95890dd3f1e86d7c7c0539de092c343e820e749d862bc68e8df1",
+      "result": {
+        "path": "embedded_sand-baseline-w4.json",
+        "sha256": "e0c607fb6d3deaf7b6e93d9eb1944da9cb72498f7405cd857779426c1a336438"
+      }
+    },
+    {
+      "name": "mixed-candidate-w4",
+      "checks": 14,
+      "original_log_sha256": "0e1a82aa0202ff778de7cf6aa37ae466ff0985a0f4f8e15dd489263e5f99f670",
+      "result": {
+        "path": "mixed-candidate-w4.json",
+        "sha256": "3d4e71a40fc91b05e525a102b52597d97c7b4959eb684426874b1abba9676869"
+      }
+    },
+    {
+      "name": "mixed-baseline-w4",
+      "checks": 14,
+      "original_log_sha256": "57276bb323a0a78b5690e87962a983ff17fab1e5836c0a03e42c053bc20d8815",
+      "result": {
+        "path": "mixed-baseline-w4.json",
+        "sha256": "27d42722f1c0246247b19c7d0b784f56a578530e257f7aeebfddc278133247ce"
+      }
+    },
+    {
+      "name": "contact-observation-w4",
+      "checks": 142,
+      "original_log_sha256": "fa0ff2da04e6f1710b378e0163fbb804d5fc82e064f1b06eb6564f8eba3686b9",
+      "result": {
+        "path": "contact-observation-w4.json",
+        "sha256": "ad4e76d9ac48caebe23a861ddc0653d9e1483e0cb2badb251e742e4791bc0031"
+      }
+    },
+    {
+      "name": "contact-recovery-w4",
+      "checks": 290,
+      "original_log_sha256": "b26773fdd9c8ffa0195cbdafc1b958de819fad195b34ef5f5eb9ac285cf2eea1",
+      "result": {
+        "path": "contact-recovery-w4.json",
+        "sha256": "c23d37dd77c6209cd3231d7109846a5e69ab4b0f47d02d17df6cea458e5bfe4b"
+      }
+    }
+  ],
+  "scope": "Actual hosted source-bound headless runtime execution; physical acceptance, GPU pacing and compatibility gates remain separate."
+}

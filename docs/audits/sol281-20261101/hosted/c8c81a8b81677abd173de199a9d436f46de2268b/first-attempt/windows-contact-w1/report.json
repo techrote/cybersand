@@ -1,0 +1,49 @@
+{
+  "cohort": "contact-w1",
+  "errors": [
+    "RuntimeError: Checkout .gitattributes differs from Git"
+  ],
+  "execution_policy": {
+    "advisories": {
+      "drift_ratio": 1.2,
+      "drift_window": 5,
+      "minimum_baseline_samples": 3,
+      "prominent_ratio": 2.0,
+      "rolling_window": 10,
+      "warning_ratio": 1.5
+    },
+    "path": "godot/tests/support/ci_execution_policy.json",
+    "policy_id": "github-hosted-complete-execution-v1",
+    "scale": 1.0,
+    "schema_version": 1,
+    "sha256": "9eaec2e6318073bff7cfbac209d2d959a751b85ffd63cb94c147e9be237516dc",
+    "watchdogs": {
+      "aggregate_headroom_seconds": 600.0,
+      "complex_fixture_seconds": 3600.0,
+      "dependency_prepare_seconds": 1200.0,
+      "diagnostic_capture_seconds": 30.0,
+      "godot_import_seconds": 1200.0,
+      "godot_job_minutes": 360.0,
+      "godot_metadata_seconds": 900.0,
+      "godot_setup_seconds": 4200.0,
+      "graphical_case_seconds": 1200.0,
+      "hosted_job_minutes": 180.0,
+      "main_ack_seconds": 600.0,
+      "native_case_seconds": 3600.0,
+      "native_compile_seconds": 3600.0,
+      "native_suite_seconds": 7200.0,
+      "operation_seconds": 300.0,
+      "ordinary_case_seconds": 1200.0,
+      "terminate_grace_seconds": 10.0
+    }
+  },
+  "platform": "Windows",
+  "records": [],
+  "schema": "cybersand.sol281.qualification.v1",
+  "scope": "actual source-matched headless native/Rapier; GPU frame pacing and milestone completion not established",
+  "source": {
+    "sha": "c8c81a8b81677abd173de199a9d436f46de2268b",
+    "tree": "214f927af0e9feeb65c664e981b32b7fbc15e39b"
+  },
+  "status": "failed"
+}

@@ -1,0 +1,2063 @@
+{
+  "checkout_before": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/publication-checkout-before.json",
+  "files": {
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/build/linux/before.json": {
+      "sha256": "7aa9d9866d479de5068eeae29611749c1e01a38a221ce466931a8328aa48bdad",
+      "size": 255393
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/build/linux/build.json": {
+      "sha256": "ab0bf4aa96555cffe67cc78b5c34bc240753a4c3c827e42eb03e4cd7a246b5f9",
+      "size": 256158
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/build/windows/before.json": {
+      "sha256": "7aa9d9866d479de5068eeae29611749c1e01a38a221ce466931a8328aa48bdad",
+      "size": 255393
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/build/windows/build.json": {
+      "sha256": "fbc83b4d8f0ef704509c31edd63192942bc6f358a28f3b860b285d5f60386bd5",
+      "size": 256208
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/host/checkout-inputs-after.json": {
+      "sha256": "fe3a37345a07238f0d5624e8dd6c64512df5655581384cc2eae00080f2840d76",
+      "size": 125403
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/host/checkout-inputs-before.json": {
+      "sha256": "fe3a37345a07238f0d5624e8dd6c64512df5655581384cc2eae00080f2840d76",
+      "size": 125403
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/host/contact-observation-w1.json": {
+      "sha256": "a49de75594abf93fbe79eb7f4a363646c92edfa6a3db9f3de89bd3f361e790ce",
+      "size": 722
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/host/contact-observation-w1.log": {
+      "sha256": "39a454cfc315f36ef5ce0a32d57d1b8595a3cde93424f3919cc7b790f894d153",
+      "size": 854
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/host/contact-recovery-w1.json": {
+      "sha256": "228e4c831e731b978c4153967fb11a365d5118deb369ce32f19cc2cfec7a24af",
+      "size": 9208597
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/host/contact-recovery-w1.log": {
+      "sha256": "1c20dee4b67eda32db21da1810fbd1090fc87b65bb8e808c2e5ff8f6f383047c",
+      "size": 6212850
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/host/coupling-w1.json": {
+      "sha256": "4c196cb5361438981d43a2f01dca148775a0f36dd7c01a048f729b28395b2588",
+      "size": 2373
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/host/coupling-w1.log": {
+      "sha256": "3453dbc606f327ca4e791033244232fd220f74d41d204e5195fae330a5fb4462",
+      "size": 2276
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/host/displacement-w1.json": {
+      "sha256": "e29b3e02d698cb4e3033b2dd35f76718a04d09b92fb2caf6592b18b94edfcbab",
+      "size": 26071
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/host/displacement-w1.log": {
+      "sha256": "81d5ceaa79a0e29bf0a7622dbdf8274b7b57516aa9b27a01e2a04310e830cdcc",
+      "size": 336
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/host/embedded_sand-baseline-w1.json": {
+      "sha256": "ca94df872eab13a04a9ad8fbeda74ab119c058e4f8e704e83e7139da1b4c6226",
+      "size": 3179
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/host/embedded_sand-baseline-w1.log": {
+      "sha256": "64e08daaf8747905b0b197408accb29488e7e29640d59d5815adddc659aefe18",
+      "size": 2880
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/host/embedded_sand-candidate-w1.json": {
+      "sha256": "c9ee4b1744c4d957b93d365b61f098119164c4538a57d17d3a7c4e37adb39821",
+      "size": 3207
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/host/embedded_sand-candidate-w1.log": {
+      "sha256": "2a5921d842d4f18dc860f90716ff6a3650ec6fec91c2a58de9024e29a73ebf61",
+      "size": 2908
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/host/import.log": {
+      "sha256": "82a265e8d8395148566f66f51856a85eb323fdeb587fc7caaf930f1ff347f1dc",
+      "size": 34786
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/host/inputs-after.json": {
+      "sha256": "e259e5812c5570a9f8ee3945ea1fc3453c5cf4593bf95b8cb2b0d44be037371c",
+      "size": 125403
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/host/inputs-before.json": {
+      "sha256": "e259e5812c5570a9f8ee3945ea1fc3453c5cf4593bf95b8cb2b0d44be037371c",
+      "size": 125403
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/host/mixed-baseline-w1.json": {
+      "sha256": "d75b8476b437398159dbea7e4a4f1d9ccb25f24c51dd67435a884a32040f313a",
+      "size": 3170
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/host/mixed-baseline-w1.log": {
+      "sha256": "4ce6cba1cdfff877a84ae9c738cb705f75dbfaeebb52c6c271b960d51da915b4",
+      "size": 2871
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/host/mixed-candidate-w1.json": {
+      "sha256": "389ba81f4ac4563a495b344f13c53dcd1501c101e24e080e8bb3fd7cd3e416a6",
+      "size": 3213
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/host/mixed-candidate-w1.log": {
+      "sha256": "123fdce45859f748457b82ad794331c7307975ab7e7955efe14e868c29314c28",
+      "size": 2914
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/host/packed_sand-baseline-w1.json": {
+      "sha256": "3aa32fda8affd9da14060985424c3b0de2f05d6a1b821abebe8e44d40ca00f73",
+      "size": 3175
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/host/packed_sand-baseline-w1.log": {
+      "sha256": "10af1a953b1dece39dbfb0a7228a98c19bb0c704c20c66df1828ce9e3ee34d98",
+      "size": 2876
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/host/packed_sand-candidate-w1.json": {
+      "sha256": "4cb4040eb97d27555b0c9f71769558d346bfc6d07f7a51e06b5442fabb65c48e",
+      "size": 3202
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/host/packed_sand-candidate-w1.log": {
+      "sha256": "0238587fcb117474223eae12e9fef2774e0a5d0f651a4e39a94adc40cb556323",
+      "size": 2903
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/host/performance.jsonl": {
+      "sha256": "540cc24efa580315f738ddf9e720b56b6e6f34fd11bdf4b3a1ebadd8d609b9df",
+      "size": 89302
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/host/report.json": {
+      "sha256": "cb96216628359ba913dd286b6aadd5fabdf75339407e438e8ac0bdd98036660a",
+      "size": 13930264
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/host/terrain-w1.log": {
+      "sha256": "d6ba81a2c979d41472a3370af8df09ee69a4f69747d3fa42ced19413348cc9d5",
+      "size": 3514
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/prepare-engine/command.log": {
+      "sha256": "775150dca1b4cfb8e7701ce221b58544269f5a9810f6b881286bd31917ad38a1",
+      "size": 397
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/prepare-engine/performance.jsonl": {
+      "sha256": "219e8c98efc183d3e232770f872d424d0725e0a150f98f2acb20b80a26f3215b",
+      "size": 2725
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/prepare-engine/receipt.json": {
+      "sha256": "1aa33a07670972f4d70691c76c44a86d57dd5841c57e209db2b823ced78421b5",
+      "size": 2441
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/prepare-rapier/command.log": {
+      "sha256": "4fea4bc2b3b77e0192bd58ef65c3a0c982ecc7409dbffab6873bb6e04be6a875",
+      "size": 40
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/prepare-rapier/performance.jsonl": {
+      "sha256": "0ccba92317760aa7eb6f980b4db601ff123b52fa57dbf5dfa200260fce5dead8",
+      "size": 2726
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/prepare-rapier/receipt.json": {
+      "sha256": "67ac663510d91df5458eb888f7eb581fa46322ab6d68fa31c7271451913a9c04",
+      "size": 2247
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w4/host/checkout-inputs-after.json": {
+      "sha256": "fe3a37345a07238f0d5624e8dd6c64512df5655581384cc2eae00080f2840d76",
+      "size": 125403
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w4/host/checkout-inputs-before.json": {
+      "sha256": "fe3a37345a07238f0d5624e8dd6c64512df5655581384cc2eae00080f2840d76",
+      "size": 125403
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w4/host/contact-observation-w4.json": {
+      "sha256": "9a78f0d443334e1385ec26e8c727d011fc047134e00f058f0ec60f0623719e25",
+      "size": 722
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w4/host/contact-observation-w4.log": {
+      "sha256": "cd2c7346f10033ee0adba37a8cca052cf9f00402f6f119380bf6c280cefb6f51",
+      "size": 854
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w4/host/contact-recovery-w4.json": {
+      "sha256": "a004b755e46d29f6079f9fb1f0968be75f7747ceea39c7e6b67787187822d567",
+      "size": 9130055
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w4/host/contact-recovery-w4.log": {
+      "sha256": "7c79337f0d3156e72c18b800f9d7b8e4f0213e5c8cea9de1eb3f338d13a06f56",
+      "size": 6172107
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w4/host/coupling-w4.json": {
+      "sha256": "c664c420189e9246ade19ab24e646c69928e36ca1846c2b40210805600864a3c",
+      "size": 2379
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w4/host/coupling-w4.log": {
+      "sha256": "8de88e8790d5b058defbad1e6b93c911334d10550971618a41c38e7f411470ac",
+      "size": 2282
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w4/host/displacement-w4.json": {
+      "sha256": "e7bb4d4a6638e4a6468dbab6a5557033d6324b524453ed1e42beab03e141dd1a",
+      "size": 26071
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w4/host/displacement-w4.log": {
+      "sha256": "4431a88b4a9d15e849a50ca544a22fdac762f4820509024d073a6d93d0f213fd",
+      "size": 336
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w4/host/embedded_sand-baseline-w4.json": {
+      "sha256": "00f6b31056b8bd6cd75f5540eefb4c52eba6084bbc129467e2a99288ae931e57",
+      "size": 3181
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w4/host/embedded_sand-baseline-w4.log": {
+      "sha256": "5ed2bb77b9617fd4898e5fc8e88d80d2cf0939798541cbd2f7312db0dcc1d1c7",
+      "size": 2882
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w4/host/embedded_sand-candidate-w4.json": {
+      "sha256": "6ccdd0b78e53f75df16206655d5c93c9872886d90bd0d8f144754dafd3b9a0f2",
+      "size": 3216
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w4/host/embedded_sand-candidate-w4.log": {
+      "sha256": "fc77ff365f430973dd51f02e9961e376aab0bbe6514a6c67b90053fec162d403",
+      "size": 2917
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w4/host/import.log": {
+      "sha256": "82a265e8d8395148566f66f51856a85eb323fdeb587fc7caaf930f1ff347f1dc",
+      "size": 34786
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w4/host/inputs-after.json": {
+      "sha256": "e259e5812c5570a9f8ee3945ea1fc3453c5cf4593bf95b8cb2b0d44be037371c",
+      "size": 125403
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w4/host/inputs-before.json": {
+      "sha256": "e259e5812c5570a9f8ee3945ea1fc3453c5cf4593bf95b8cb2b0d44be037371c",
+      "size": 125403
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w4/host/mixed-baseline-w4.json": {
+      "sha256": "a397c49dc3b0389412f9481f60d612584e7bebe88ce246ae174977dff1657776",
+      "size": 3171
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w4/host/mixed-baseline-w4.log": {
+      "sha256": "64a2e59436bff76e95ed64f9bcf3e38d2fb98da907e513930ac097a8d1442d04",
+      "size": 2872
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w4/host/mixed-candidate-w4.json": {
+      "sha256": "bd187d0573a9c156c9283d3cd413e4e248baf8f6c04deb5a65176eeebefe3fe9",
+      "size": 3211
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w4/host/mixed-candidate-w4.log": {
+      "sha256": "6293564612e845d07a160aff0473bfe12b14a9fceab1ac1f502eafa57600ea67",
+      "size": 2912
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w4/host/packed_sand-baseline-w4.json": {
+      "sha256": "a78f41fa3512aeccc5616deec42c55dec5cd83ad976445d6424391324e66d682",
+      "size": 3175
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w4/host/packed_sand-baseline-w4.log": {
+      "sha256": "a52650353731fab01c812689e5076a891bc5be6bd2b78d570ece8c1488fc7861",
+      "size": 2876
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w4/host/packed_sand-candidate-w4.json": {
+      "sha256": "133a350fea5bd855a166ccf116f8b347ceacc3f064d33f744f1ae5bdc24cd350",
+      "size": 3207
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w4/host/packed_sand-candidate-w4.log": {
+      "sha256": "9ece37a009e0eb8e116e1c75b00151af26c818a5839ba57c7350411f1669db84",
+      "size": 2908
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w4/host/performance.jsonl": {
+      "sha256": "b195e4475105f3b2d324c3f0726ba3eb88c3f2467423c073c6ecb798d4149934",
+      "size": 89301
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w4/host/report.json": {
+      "sha256": "a627038ebd534707ff061bc559b9579ead2953a86c9019231b51dbc2d2b27db7",
+      "size": 13792648
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w4/host/terrain-w4.log": {
+      "sha256": "6be166216876ca2d4a11df3c76bfd24932baf09d00b63cfc06b651816a99c14f",
+      "size": 3501
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w4/prepare-engine/command.log": {
+      "sha256": "366148ed9a29c0b53d0e41962e1f0ed2df0f903c3b288846ca64dccab019009d",
+      "size": 476
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w4/prepare-engine/performance.jsonl": {
+      "sha256": "530eac63609dee21498aeff94ceebbbe269f855d50afc0141b28297df8fbee93",
+      "size": 2732
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w4/prepare-engine/receipt.json": {
+      "sha256": "97f0a685d5d558432e1dabcd6902446d3bc6044141fd9a2b866e12b1bdcd4601",
+      "size": 2448
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w4/prepare-rapier/command.log": {
+      "sha256": "4fea4bc2b3b77e0192bd58ef65c3a0c982ecc7409dbffab6873bb6e04be6a875",
+      "size": 40
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w4/prepare-rapier/performance.jsonl": {
+      "sha256": "f865351bbe56ab078074d5a0db182f454b9c289b501dee1115a2fd6f6f81afe3",
+      "size": 2733
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w4/prepare-rapier/receipt.json": {
+      "sha256": "85642df04981103a8f309f8488b5aacb89928993d8501dd503d41b43be5cee11",
+      "size": 2254
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/core/host/checkout-inputs-after.json": {
+      "sha256": "fe3a37345a07238f0d5624e8dd6c64512df5655581384cc2eae00080f2840d76",
+      "size": 125403
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/core/host/checkout-inputs-before.json": {
+      "sha256": "fe3a37345a07238f0d5624e8dd6c64512df5655581384cc2eae00080f2840d76",
+      "size": 125403
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/core/host/compound-response.log": {
+      "sha256": "c7a610a6f67e6301f2fbe9aa7827bbe22c57525b088573cc511706e0dd6af537",
+      "size": 293
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/core/host/failure-w1.log": {
+      "sha256": "203eb5ee1e2033e53dfe29a8a36d3fc0385b2298e9cec7e44c021e848d3646e8",
+      "size": 413
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/core/host/failure-w4.log": {
+      "sha256": "1811a1728119844ac02ca975106e7e3ec309fa3315da37a4e35b6992c9d5ea9a",
+      "size": 413
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/core/host/import.log": {
+      "sha256": "82a265e8d8395148566f66f51856a85eb323fdeb587fc7caaf930f1ff347f1dc",
+      "size": 34786
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/core/host/inputs-after.json": {
+      "sha256": "e259e5812c5570a9f8ee3945ea1fc3453c5cf4593bf95b8cb2b0d44be037371c",
+      "size": 125403
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/core/host/inputs-before.json": {
+      "sha256": "e259e5812c5570a9f8ee3945ea1fc3453c5cf4593bf95b8cb2b0d44be037371c",
+      "size": 125403
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/core/host/lifecycle.log": {
+      "sha256": "d5e2dc240cd13633dc3a51459a218e19e1ecaf78f91d1c44e7038aef3533f79d",
+      "size": 422
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/core/host/material-image.log": {
+      "sha256": "af1c47892862e3da708d7c0dad15a136e7ef9370e685ef3f34dca069bd2c3094",
+      "size": 435
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/core/host/motion-w1.json": {
+      "sha256": "f132094cdd7e30fbc579366627d0c725fa1d2855c54f7414ea7170fbda50864e",
+      "size": 1955
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/core/host/motion-w1.log": {
+      "sha256": "1f405edc30b08e09cb9694f5ec4e80b9bf545ad90e21010040cb67431c975633",
+      "size": 1825
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/core/host/motion-w4.json": {
+      "sha256": "199a2190c2f4139389793886fd3c55dbb26b9429ac9b390a5c1b767a488af3bc",
+      "size": 1955
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/core/host/motion-w4.log": {
+      "sha256": "f9a2d0bfc7a5a4ba3dfc200263986a3b13204b43caaf0204152ad3f20f9e0fda",
+      "size": 1825
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/core/host/ordinary-capacity.log": {
+      "sha256": "348967c9fdbcf3bfc500ff80a5969fc64894ce072aba2df18109af554f2bc867",
+      "size": 411
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/core/host/ordinary-failure.log": {
+      "sha256": "333f1dd618e51df3ae3980d63fad6ef5f995127f08f433800d73d3fbfc891859",
+      "size": 1148
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/core/host/ordinary-observer.log": {
+      "sha256": "c8fb193284d1e4d14eef32071ba747b3fa991ef0c7f7f6f27948bfc683ebdc5e",
+      "size": 296
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/core/host/ordinary-rapier.log": {
+      "sha256": "919623e3c65bf2262b30590338c66087a0522e311e93d6ed64f3c8faaebe9684",
+      "size": 266
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/core/host/performance.jsonl": {
+      "sha256": "9b70f46f1532f667bc419ab5941496637e04befbce880852a161c70aa8aac0ad",
+      "size": 36652
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/core/host/report.json": {
+      "sha256": "28b1a71acb915f688abde84ef587bbb21cd3fc9d645dfb49ba17077c49105ad9",
+      "size": 40453
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/core/prepare-engine/command.log": {
+      "sha256": "219019ea4d0d097522d7f61dad207b88265e8e2b487e29423d0208056cc1dfd4",
+      "size": 476
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/core/prepare-engine/performance.jsonl": {
+      "sha256": "c2ec3d4bba9d2f14b5b636346993e4e7fca429ce0f82278e612c499f026d3677",
+      "size": 2725
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/core/prepare-engine/receipt.json": {
+      "sha256": "3df8bb88fdf91dd0050a74fc122151eb5c67cda382d9007eddc37544fc9074e9",
+      "size": 2448
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/core/prepare-rapier/command.log": {
+      "sha256": "4fea4bc2b3b77e0192bd58ef65c3a0c982ecc7409dbffab6873bb6e04be6a875",
+      "size": 40
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/core/prepare-rapier/performance.jsonl": {
+      "sha256": "2254d0ee3bae31565b41906c333c503d0089d231bd739166a270998a696c80c7",
+      "size": 2723
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/core/prepare-rapier/receipt.json": {
+      "sha256": "501d95ef711558e76d750eb37f8a6c0c3b7774f8b57262b5f466af8f74bab8e7",
+      "size": 2251
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/mechanism/host/checkout-inputs-after.json": {
+      "sha256": "fe3a37345a07238f0d5624e8dd6c64512df5655581384cc2eae00080f2840d76",
+      "size": 125403
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/mechanism/host/checkout-inputs-before.json": {
+      "sha256": "fe3a37345a07238f0d5624e8dd6c64512df5655581384cc2eae00080f2840d76",
+      "size": 125403
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/mechanism/host/import.log": {
+      "sha256": "82a265e8d8395148566f66f51856a85eb323fdeb587fc7caaf930f1ff347f1dc",
+      "size": 34786
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/mechanism/host/inputs-after.json": {
+      "sha256": "e259e5812c5570a9f8ee3945ea1fc3453c5cf4593bf95b8cb2b0d44be037371c",
+      "size": 125403
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/mechanism/host/inputs-before.json": {
+      "sha256": "e259e5812c5570a9f8ee3945ea1fc3453c5cf4593bf95b8cb2b0d44be037371c",
+      "size": 125403
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/mechanism/host/performance.jsonl": {
+      "sha256": "4bcfd579ebb2313c23ec9b54622f5a91b16db297021b40491ebeda45a5f24121",
+      "size": 9089
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/mechanism/host/report.json": {
+      "sha256": "2cdc9c7960e6aa7467fa1480af0bc0d1446200156901d912220998063ea3f274",
+      "size": 18476
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/mechanism/host/sand-contact-fences.log": {
+      "sha256": "285031cd66711249af4cedf66f59349c24efe6989ef9ea7aab2b02360539091b",
+      "size": 336
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/mechanism/host/sand-contact-response.json": {
+      "sha256": "3a793dbca3551d133bd2dd3cbcda7379a6f30743a49575a998d372ade6b12ef1",
+      "size": 6231
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/mechanism/host/sand-contact-response.log": {
+      "sha256": "7efeb47dd55d06c276300898e78dc82270c1daab1a6973d403992e2c870ecb51",
+      "size": 5464
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/mechanism/prepare-engine/command.log": {
+      "sha256": "631dd47d2dcb4066ef235da7f2d8fb9f05aab1fe565f2d03a1a9934c56bb4712",
+      "size": 476
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/mechanism/prepare-engine/performance.jsonl": {
+      "sha256": "0a300f2ee542f89edd2f3ca3e549c4cce1b2f4084770c71f73514df73d796293",
+      "size": 2732
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/mechanism/prepare-engine/receipt.json": {
+      "sha256": "1c939e2075991435c2525730e3f272b90817e1a4524b72a9c731851bd943f09f",
+      "size": 2448
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/mechanism/prepare-rapier/command.log": {
+      "sha256": "4fea4bc2b3b77e0192bd58ef65c3a0c982ecc7409dbffab6873bb6e04be6a875",
+      "size": 40
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/mechanism/prepare-rapier/performance.jsonl": {
+      "sha256": "cc5c95ee75250fc8224c9bb46f1d8a8d984ec140051146e4b4b22e9236fe3669",
+      "size": 2732
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/mechanism/prepare-rapier/receipt.json": {
+      "sha256": "e4bd8e2b8f1f4ecf6763cb9692cf868db9fac9585bfa8aba96356ced9123c307",
+      "size": 2253
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w1/checkout-inputs-after.json": {
+      "sha256": "7e7a482e7e1d26e8792964e2b9e4cee5bd6f0a12426833fa1197ccdb89fd0c70",
+      "size": 126482
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w1/checkout-inputs-before.json": {
+      "sha256": "7e7a482e7e1d26e8792964e2b9e4cee5bd6f0a12426833fa1197ccdb89fd0c70",
+      "size": 126482
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w1/contact-observation-w1.json": {
+      "sha256": "e7888fb5deeb68be128fda152f235daeab8a868821460160fa89450f8e892516",
+      "size": 724
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w1/contact-observation-w1.log": {
+      "sha256": "52793cfc0c63b20072ec1f60f489a786979bfc29fec8e69df1187ded517a72a2",
+      "size": 860
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w1/contact-recovery-w1.json": {
+      "sha256": "3561b08b8582604925ab6e414f8d3a3e480a42fc4a4242e61c7aa5e9943f8100",
+      "size": 8210083
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w1/contact-recovery-w1.log": {
+      "sha256": "f1c3d19f607ac44f8275a52815316e984f3d59bce0fd314e8db0b0c69a75941b",
+      "size": 5566878
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w1/coupling-w1.json": {
+      "sha256": "9d932737e0c140398ea82829cf5f8992f135a5e62824e3725eae930eabe04765",
+      "size": 2374
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w1/coupling-w1.log": {
+      "sha256": "82239a0469138692052087778c2c66abeca15b6325fd0c2358e1814d318b9ce3",
+      "size": 2281
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w1/displacement-w1.json": {
+      "sha256": "085ae2e2e0e77022ef3923cad6cdbfe5b5d6055c62b0db87ca21093d6673279a",
+      "size": 26073
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w1/displacement-w1.log": {
+      "sha256": "f1ab7e910fbd13e03b6d220c3e950e8f6a44d077beee8f00c6e8e6c53997fd85",
+      "size": 342
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w1/embedded_sand-baseline-w1.json": {
+      "sha256": "301f97fd50da8c860165800353a46a0bd03a62124ad36d8f92cc8bcae2d2200d",
+      "size": 3164
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w1/embedded_sand-baseline-w1.log": {
+      "sha256": "d078469978ff04267f4a6bcead93c28f1c7f08b4dca1979a2a55db3d100a96dc",
+      "size": 2869
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w1/embedded_sand-candidate-w1.json": {
+      "sha256": "8338021133da59defdb18d17000fffe3d6eabdd7d314f7f18c751e031083c52d",
+      "size": 3210
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w1/embedded_sand-candidate-w1.log": {
+      "sha256": "755f2fcc430eead6d13dc685762d2dc1a3c4e016e5f885bb4b807c7c94860ac2",
+      "size": 2915
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w1/import.log": {
+      "sha256": "414151532e90742107fbce802ad29f44e8a8ace7fd1f91310c79546ec24bd731",
+      "size": 35335
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w1/inputs-after.json": {
+      "sha256": "d555dea04338e9cbbe2c4543969b5862a68922ca7603c4c66401f34bd66b4264",
+      "size": 126482
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w1/inputs-before.json": {
+      "sha256": "d555dea04338e9cbbe2c4543969b5862a68922ca7603c4c66401f34bd66b4264",
+      "size": 126482
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w1/mixed-baseline-w1.json": {
+      "sha256": "9025a96604174bb48f685068d7f5127dc2e717953e029389a7b7b334dc9af163",
+      "size": 3172
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w1/mixed-baseline-w1.log": {
+      "sha256": "e530b4724a32a5fd7431771eb455b7ba82933dc2fa7213aca46fd1e138a95e36",
+      "size": 2877
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w1/mixed-candidate-w1.json": {
+      "sha256": "66136d1fdc5d7cc812efb2c8b14b935ec5c8fedc1b9a47fbd5b1e91e17ee631c",
+      "size": 3197
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w1/mixed-candidate-w1.log": {
+      "sha256": "234594b5821d033ebef7d94cefaf9578bee59c5125f33ad5f9979d0a52a8c7d0",
+      "size": 2902
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w1/packed_sand-baseline-w1.json": {
+      "sha256": "69cabb2dd4f4819abbd39b581b7ffa5d50f286c54f5181d5f974e21f703041a0",
+      "size": 3163
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w1/packed_sand-baseline-w1.log": {
+      "sha256": "836ace23643e61cf5feffdf7870a368020875c13743085ef47255d36a6052d5f",
+      "size": 2868
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w1/packed_sand-candidate-w1.json": {
+      "sha256": "5bc66e648ec6de3d87bea54b74468e410eb0c5f4cab6ab042b6a8840a817e3e1",
+      "size": 3203
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w1/packed_sand-candidate-w1.log": {
+      "sha256": "7d5e1edcf46e7cf7244a6fe2d7ef6abd20d0a43939576ad51d9fde2e627315d7",
+      "size": 2908
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w1/performance.jsonl": {
+      "sha256": "8ca8d2b598879e58e7f5035311cdeb086b7f2a60d88b5e263999ea32cf46449a",
+      "size": 87924
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w1/report.json": {
+      "sha256": "c2b1228d4222623b5eb4f088546f23755e54b0020ab597aab84a3e5dea1fce34",
+      "size": 12730469
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w1/terrain-w1.log": {
+      "sha256": "506e00676a61387a65ba74095c34ce8086d99b36a5ea0cb6dbda5eabca0285be",
+      "size": 3508
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w4/checkout-inputs-after.json": {
+      "sha256": "7e7a482e7e1d26e8792964e2b9e4cee5bd6f0a12426833fa1197ccdb89fd0c70",
+      "size": 126482
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w4/checkout-inputs-before.json": {
+      "sha256": "7e7a482e7e1d26e8792964e2b9e4cee5bd6f0a12426833fa1197ccdb89fd0c70",
+      "size": 126482
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w4/contact-observation-w4.json": {
+      "sha256": "dd0e238914a3ef881d4e94bc376b32c855e874e32a83b805ecd0a15f26f3dfec",
+      "size": 724
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w4/contact-observation-w4.log": {
+      "sha256": "b4099aa8bc1317444004c78ad06939048eacfd852c3f7d23d95e64a024bd5bc7",
+      "size": 860
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w4/contact-recovery-w4.json": {
+      "sha256": "4ea9e6d845659df7ceecd9880e35c3834f23406e5f3a7b33b5afdbf6f0f66494",
+      "size": 8880925
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w4/contact-recovery-w4.log": {
+      "sha256": "712207d8347a72ace5794524de71ddfaa483db6379fb74e0bb6052914f086632",
+      "size": 6009413
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w4/coupling-w4.json": {
+      "sha256": "5aaf8b9af3f555ea7773997fe582f2bd146841765da18a9f7d5dd3d65cce37c9",
+      "size": 2367
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w4/coupling-w4.log": {
+      "sha256": "bc73ddd22d9dc8d4b1a12586bf6b508f68a3184146ab41c7e17c9b06a5217680",
+      "size": 2274
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w4/displacement-w4.json": {
+      "sha256": "324e9f37e82b9c670dc8bee9fcc8d4636ebb3abaaf8b7c9e30d296593142dd5d",
+      "size": 26073
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w4/displacement-w4.log": {
+      "sha256": "f63dc1ee0c12c019c3d4017ec51d1a507a102360e2a26b2a447ad3c1c64bdb1b",
+      "size": 342
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w4/embedded_sand-baseline-w4.json": {
+      "sha256": "9f297ad357c66956589f4ff36fa8fccf1c64af71260265f7e29e2865e4ce60d6",
+      "size": 3166
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w4/embedded_sand-baseline-w4.log": {
+      "sha256": "03e3bbff95a9e885ad1cf918aa46b06a1689a1cb9d6a2d5ca8ea26b035ab37c2",
+      "size": 2871
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w4/embedded_sand-candidate-w4.json": {
+      "sha256": "f03520124fbbf33b2f0559f37566a4c9db69fc12245b300d96a099f8a5aa78bf",
+      "size": 3218
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w4/embedded_sand-candidate-w4.log": {
+      "sha256": "67076f917044ddec57e8f7e1108ea57074f275d2775f435511af0201a30f6856",
+      "size": 2923
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w4/import.log": {
+      "sha256": "414151532e90742107fbce802ad29f44e8a8ace7fd1f91310c79546ec24bd731",
+      "size": 35335
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w4/inputs-after.json": {
+      "sha256": "d555dea04338e9cbbe2c4543969b5862a68922ca7603c4c66401f34bd66b4264",
+      "size": 126482
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w4/inputs-before.json": {
+      "sha256": "d555dea04338e9cbbe2c4543969b5862a68922ca7603c4c66401f34bd66b4264",
+      "size": 126482
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w4/mixed-baseline-w4.json": {
+      "sha256": "8196e51a0ed279f5262ba642f4074788e6c726c6c41490d2b2508a3e4a7d1098",
+      "size": 3173
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w4/mixed-baseline-w4.log": {
+      "sha256": "bce400a6e4bf03cd26dacc70e1da128fb5037a12b0671d2666b0f2153e1fe3d9",
+      "size": 2878
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w4/mixed-candidate-w4.json": {
+      "sha256": "b7ead41c80bf5f5a0be88695a58e7f9936f481ce0a57228e786ae498048447ab",
+      "size": 3210
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w4/mixed-candidate-w4.log": {
+      "sha256": "d7d097cb2216047179abb4042f59180bf622261adee7341516aa999f483b624a",
+      "size": 2915
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w4/packed_sand-baseline-w4.json": {
+      "sha256": "245a90c1bbe39fe00ac9a8c9fe5c1a6397282576584a895166f2726b93d45fc3",
+      "size": 3180
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w4/packed_sand-baseline-w4.log": {
+      "sha256": "2fc100d143a6f73b325c8d18c874c5a41a763eb97f64a0f70270edcced250cb3",
+      "size": 2885
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w4/packed_sand-candidate-w4.json": {
+      "sha256": "aa35aaa8edce2f32dc5a250447200e7840d1ac9d92841486ec9b2bb7c6418eac",
+      "size": 3198
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w4/packed_sand-candidate-w4.log": {
+      "sha256": "4782e6dc0f68007d60c338515a42e910aaa8c381b04b59f4255c4faa6fc452cd",
+      "size": 2903
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w4/performance.jsonl": {
+      "sha256": "c7e1688478f8524b14b826b054f907be5446471ec9f7ad0b170c1e6b83d1fd8c",
+      "size": 87950
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w4/report.json": {
+      "sha256": "212413bc3b1183c0aa9fe11d45b2da0f700cbdc36a668242548052c03568b208",
+      "size": 13785529
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w4/terrain-w4.log": {
+      "sha256": "4793da169fce7e3f7d9f9a6478826c47224e21fe02de5028c4cddfe4c9db9211",
+      "size": 3510
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/core/checkout-inputs-after.json": {
+      "sha256": "7e7a482e7e1d26e8792964e2b9e4cee5bd6f0a12426833fa1197ccdb89fd0c70",
+      "size": 126482
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/core/checkout-inputs-before.json": {
+      "sha256": "7e7a482e7e1d26e8792964e2b9e4cee5bd6f0a12426833fa1197ccdb89fd0c70",
+      "size": 126482
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/core/compound-response.log": {
+      "sha256": "04629217945cada8d57bcf8352c42d670b35b7a79725f8ae9bd71967f0e9f6cd",
+      "size": 299
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/core/failure-w1.log": {
+      "sha256": "f72c1fa5ab5dd35e702dd5cea21cbf3002febe41ef6a806fca6e22d54e7a515b",
+      "size": 419
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/core/failure-w4.log": {
+      "sha256": "db6114d84161a641db5ca2184e0b1ee6ccb6ec3e7affb77ec28959f778749cd8",
+      "size": 419
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/core/import.log": {
+      "sha256": "414151532e90742107fbce802ad29f44e8a8ace7fd1f91310c79546ec24bd731",
+      "size": 35335
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/core/inputs-after.json": {
+      "sha256": "d555dea04338e9cbbe2c4543969b5862a68922ca7603c4c66401f34bd66b4264",
+      "size": 126482
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/core/inputs-before.json": {
+      "sha256": "d555dea04338e9cbbe2c4543969b5862a68922ca7603c4c66401f34bd66b4264",
+      "size": 126482
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/core/lifecycle.log": {
+      "sha256": "72fbd55f39162519ad2bfb356210eaf2778965cfb67f7aa72e86ed3e5d99708b",
+      "size": 428
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/core/material-image.log": {
+      "sha256": "e53e187224d88518c6f6fcd03a5e7ce66b163848e7822191203575708c5542ac",
+      "size": 441
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/core/motion-w1.json": {
+      "sha256": "b4566a77038755aa1d01c7eff9f17e9883c6ed4571c251f16b93d30bec476303",
+      "size": 1957
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/core/motion-w1.log": {
+      "sha256": "e7094035eb96f7d0f5fe13a2473bd803fce58dbb972fda5a3f7cd82de241102d",
+      "size": 1831
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/core/motion-w4.json": {
+      "sha256": "4a521f581ed73227a7da12652e7e2e6a42be95cd1eb8daa3f5bffec8bd2c977a",
+      "size": 1957
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/core/motion-w4.log": {
+      "sha256": "6b106ebb4bad8b5c4be4c93d07bacc2a6eda9eeaf87bad1222519017294209c4",
+      "size": 1831
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/core/ordinary-capacity.log": {
+      "sha256": "bdc11569c0cd527546b01aa400703b2fde723f1a68e98810da0c1c0461cd231a",
+      "size": 417
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/core/ordinary-failure.log": {
+      "sha256": "9dfae6c21c7e673c0920911c53058e96cde3505a749917d503efef0af6e87fa2",
+      "size": 1161
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/core/ordinary-observer.log": {
+      "sha256": "d6a816703db80a04567ddd522d21c3d9371b5beb3049313c2831f8c8646e7738",
+      "size": 300
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/core/ordinary-rapier.log": {
+      "sha256": "2543f4f43dac52aaabb314d376995262a03a2623753148ea8775d2e0c2dd4cf4",
+      "size": 270
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/core/performance.jsonl": {
+      "sha256": "ed5b017dcacc65a7ae56b161063ce3f35184003be7f8ff44e46a348ee3e5e8bd",
+      "size": 35766
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/core/report.json": {
+      "sha256": "67b50b2a0bc2bf85bfcee159725360db05de092a952708ea5e8ed9ba75d63195",
+      "size": 40851
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/mechanism/checkout-inputs-after.json": {
+      "sha256": "7e7a482e7e1d26e8792964e2b9e4cee5bd6f0a12426833fa1197ccdb89fd0c70",
+      "size": 126482
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/mechanism/checkout-inputs-before.json": {
+      "sha256": "7e7a482e7e1d26e8792964e2b9e4cee5bd6f0a12426833fa1197ccdb89fd0c70",
+      "size": 126482
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/mechanism/import.log": {
+      "sha256": "414151532e90742107fbce802ad29f44e8a8ace7fd1f91310c79546ec24bd731",
+      "size": 35335
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/mechanism/inputs-after.json": {
+      "sha256": "d555dea04338e9cbbe2c4543969b5862a68922ca7603c4c66401f34bd66b4264",
+      "size": 126482
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/mechanism/inputs-before.json": {
+      "sha256": "d555dea04338e9cbbe2c4543969b5862a68922ca7603c4c66401f34bd66b4264",
+      "size": 126482
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/mechanism/performance.jsonl": {
+      "sha256": "a798b1ec53170f3495bcba756bf9ce50c5f6bf1b511b4b8f883b67d7f9b74c1d",
+      "size": 8845
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/mechanism/report.json": {
+      "sha256": "2bd39a009660f15f1f9c0900d34151fcbc3cf29b4accca8df5a7c319d139c2e2",
+      "size": 18925
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/mechanism/sand-contact-fences.log": {
+      "sha256": "064fb5c31717c9ff1adb98004cd2451f9b04908b2c42eb9d76bcf71188f919a6",
+      "size": 342
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/mechanism/sand-contact-response.json": {
+      "sha256": "3d0f92689c00f468b73bd041466be0fe92b8a10ff0dad1b6b8e48b9431dac050",
+      "size": 6233
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/mechanism/sand-contact-response.log": {
+      "sha256": "712f00e02390d48ce27b2bede6f1d07d90dcf9720b1eb72bf3e3c41b92fe618b",
+      "size": 5470
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/linux-validation.json": {
+      "sha256": "f5625cd00293b649f55e9cf609fbde7b8a5a8907fd71fba6b40b07d4241c2b36",
+      "size": 2428
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/publication-checkout-before.json": {
+      "sha256": "fe3a37345a07238f0d5624e8dd6c64512df5655581384cc2eae00080f2840d76",
+      "size": 125403
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/qualification.json": {
+      "sha256": "f3d614a81989d031e0adb9857afa8752671aa0bc33206c06478a848fedda567b",
+      "size": 3354
+    },
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/windows-validation.json": {
+      "sha256": "7bad3d23391075728f7eeec597cda104e52212560a35d1c7678071c9810e3d46",
+      "size": 2418
+    },
+    "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll": {
+      "sha256": "9f936b41d0c5ce179ecac8f5ef6ae88a8ae5feaaae094c9230443e69ec39fd6f",
+      "size": 4924416
+    },
+    "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so": {
+      "sha256": "5877f1ac8b3e1bc3548d415bbd3890f2b804df4d03f4eef4c961170780b47b3a",
+      "size": 4343064
+    },
+    "godot/addons/cybersand_native/runtime-provenance.json": {
+      "sha256": "2e53f88055fbdfb426194ffe242587d0806b9d83a35c017123c59c771332f271",
+      "size": 130516
+    },
+    "godot/addons/cybersand_native/runtime-provenance.linux.json": {
+      "sha256": "4262b2d7af9b9b636bc08572bb228e30f2173761130c659cb21d35a239a9c9c8",
+      "size": 130408
+    }
+  },
+  "native_inputs": {
+    "godot/native_extension/conservative_displacement_adapter.inc": "91b06a2c4e273aad56af883525dc2466e4caac64a1b0660aeb1201d625b85b30",
+    "godot/native_extension/cyber_demo_bridge.hpp": "bbfb59ad74c9156b3b70d5c973159d9d1a5a4f9cf2865620a1ca273036084371",
+    "godot/native_extension/cyber_native_cell_world.cpp": "4980c4c937f5d49d321730236201ff6988b8b47687491632c0f24453a0ff9d83",
+    "godot/native_extension/cyber_native_cell_world.hpp": "99c8d46ed03f6310e31b07acfc081890938ed032178a52d0378de41e94431aae",
+    "godot/native_extension/cyber_observation_values.hpp": "47af553dafed4129aa689fef0e33214d3612148bbcb6b2c10dd6164dbcc3768f",
+    "godot/native_extension/cyber_prepared_level_payload.hpp": "bb414a0f5d2b6272dec3c9f386cee99eb70e1c2f1b5ce74b23fd5953f06c1b5a",
+    "godot/native_extension/cyber_prepared_liquid_world.hpp": "3ab805a5276fdc4da7785287137b8db2e16ea977893b5472031b4a986ea542c2",
+    "godot/native_extension/cyber_world_generator.cpp": "c819ab654d8bc53a04a3362b2dc8f44415238f0b58753882ae993c0ac6dfd64b",
+    "godot/native_extension/cyber_world_generator.hpp": "8be2561cb5e81dee79b55fbe6431f3f50fca1ba89e4ec693fe12f4bed71e0822",
+    "godot/native_extension/generation_grammar_adapter.inc": "363255bf521f90435b620052ee8be288da5cefc4e7afe18f6871512949716b53",
+    "godot/native_extension/generation_grammar_inspection.inc": "5557ce1ef75f72862315ea69a196fd8c8449b7a6c9748e9bf57ee42dbfd3664c",
+    "godot/native_extension/generation_planes_adapter.inc": "f4b2eeba64b57140fb8e9f4f1ca5830cb12fc19b27c2b60367d65d51ff0e4d6b",
+    "godot/native_extension/generation_planes_inspection.inc": "299e87cf74bac6a4ace81e78e8ee052d4be8487f34be2e4c419680a07f9b0f72",
+    "godot/native_extension/generation_planes_methods.inc": "fcbffa284c0d2955bfcbf4ec40961f4ac4432400803470fa6f5f2984df6bf051",
+    "godot/native_extension/generation_workbench_inspection.inc": "13efa68f55fe2273ecf07a041ffcd5b4a274f808c9cb8f18fd260c4302c4e3cf",
+    "godot/native_extension/generation_workbench_methods.inc": "a7b74a41d6282777bd77220e6480258720dfde698938d3bef75d68a2841ae0d8",
+    "godot/native_extension/pressure_optimization_inspection.inc": "e31280bec687c478d37b6dd169d46593adb4397c6584c9c597c98d6cb2d9420e",
+    "godot/native_extension/register_types.cpp": "2a225e31225918746121285f79f5dc91b3808ac3ec0a980d4eac62467e81c5c1",
+    "godot/native_extension/solid_contact_adapter.inc": "fbdfa5c16ff66445161de708079e4f624b4180613a498c16ff92712936a54c2d",
+    "godot/native_extension/solid_detachment_adapter.inc": "0f1cb226cf5ad624b6d77a7068ea8a9cb1c7d287e37cb0b48b707a0a499541b0",
+    "native/include/cybersand/bounded_ordered_index.hpp": "79105fd5fe6f3a7f1bda463984aec01b2d067400957c60f88e38db86cc180147",
+    "native/include/cybersand/c_api.h": "7d62023cc3dc611fadc92a56cf26f050965b5c5b32ab8e1fd001b0c3469934b1",
+    "native/include/cybersand/conservative_displacement.hpp": "79b94c394ed3ed7fb7f114a1808bb35182f77d8320dd16470a0de19dbf7ba0b3",
+    "native/include/cybersand/default_demo_recipe.hpp": "1ca54bd4939c2e7e458279fbd928c700cf835be5f72772472f7f01e911c69df4",
+    "native/include/cybersand/demo_snapshot.hpp": "95362db4821cc50f1591384ea67f4b8a263016222eb79671e09573e983429163",
+    "native/include/cybersand/generation_fields.hpp": "e405c49a96e912ce07535c57fc42467849384eddb43d405718bbefa98356da79",
+    "native/include/cybersand/generation_grammar.hpp": "c44524b7523b93f403fb5e8cf751040197e7689850c980fe21bb9dd8a8c922a0",
+    "native/include/cybersand/generation_numeric.hpp": "231fd8547985397103388d863297009aee8df944d3be453e6a88ca24ee18bb3a",
+    "native/include/cybersand/generation_planes.hpp": "b0a2cf2c045664cff32818f0e3a6a36b64e95a61d52923091fe1201673968947",
+    "native/include/cybersand/generation_spatial.hpp": "8e02a001775915dc8d8fe9b79c0a1ffb65b51989ffd424a7b847d741a49065e2",
+    "native/include/cybersand/generation_typed_fields.hpp": "012dc286192086b134b1b0e21811aac25ca4cb62b20fd742895698c90d13f151",
+    "native/include/cybersand/inertial_cellular.hpp": "5349dbdf709720bcc560da8c75cc1b2a2c9e2e9d10f52fc4ee4b51eede1d77b1",
+    "native/include/cybersand/interaction_policy.hpp": "d959a2ef74afee0f9c2f794ef5ee5362f1d8cfe6fc86a733acf2a17fec54d5ff",
+    "native/include/cybersand/interaction_rules.hpp": "aaffab99ddc7413f82a77de69b9d97aea37bd8cf46211b867ed303a6776448a5",
+    "native/include/cybersand/liquid_comparison.hpp": "9212e0833cd5d2ff07ec37584a1579440991e87bcba7ee4aae88e4fc798e3105",
+    "native/include/cybersand/liquid_construction_refusal.hpp": "542db1338fc6bb86abf8d7b5c9eda664a4f172e19c99c94c9ee0da737d9f0c61",
+    "native/include/cybersand/liquid_policy_catalogue.hpp": "ec9153f5cf921d2834116831908e9feb16148695aa433a21b0e62a0981072303",
+    "native/include/cybersand/liquid_run_receipt.hpp": "2ec1203c3b5e20355d6dcd716b4c729beb353612e83ddfaf9cb9c0c9d1b46f67",
+    "native/include/cybersand/liquid_run_receipt_native_capture.hpp": "2c67c60aacb4ed160d69deef995f4d628fdc1714cdaadfadda80492b035901c2",
+    "native/include/cybersand/liquid_solver_policy.hpp": "c1f2e6b19ad57313eb1c5dd1a4ad56501140d4574f15b26463b4fb513a53827e",
+    "native/include/cybersand/material.hpp": "3e40f970e3205853a43643b4163041935ccd64d8a018d35a7473c3f95a1d0375",
+    "native/include/cybersand/material_appearance.hpp": "512ae47aeb6e4d3d88d9e5388c6954ae1150cc1ebdfd5bef01483984da9fb0a0",
+    "native/include/cybersand/material_rules.hpp": "175b44abd8585b909cb1a85f31b0ba810cf2f7050898bf8b6006a8cc17577362",
+    "native/include/cybersand/physics_diagnostics.hpp": "f027346b04b12ca67a1d38d1e772ff3992ab0a1807f710ca4b709631dac7f0e4",
+    "native/include/cybersand/precision_storage.hpp": "7b7bbdfa6ac5618665b22cf619bbba64c03caeea997a24c94ebdff9902dd4266",
+    "native/include/cybersand/prepared_setup_identity.hpp": "febd9208b89ef3d35cfc12dae2c6be9a511e30a9c2c9fae7180f8621611c98ae",
+    "native/include/cybersand/prepared_world.hpp": "e2c6e7c1f579355463aeee0c4d0f4f6f6bddc25cbdc615cb61aeb3af7e6a0985",
+    "native/include/cybersand/pressure_flow.hpp": "706e6726f6e5799d45dce9c163592d3a9964b8dac0028f2b7099cae1a0bed38e",
+    "native/include/cybersand/pressure_optimization.hpp": "89186e3b79b9ab0c87ae7e0b9c9c0210358774980e32b2d5e8c38c622eb62092",
+    "native/include/cybersand/pressure_setup_capacity.hpp": "e6ce75ad3c2f89368be7b7b936d648196d3004d597bf7674301da03551e02a72",
+    "native/include/cybersand/quantity_ledger.hpp": "4345032e718b601a33ac3ffb69a456cd91bcf05ee3ab503650dcb7c06a59c6ad",
+    "native/include/cybersand/render_snapshot.hpp": "116733aa9b0a384bd739764fb099bc2a95ac19022ba6688e085229898c0db7a3",
+    "native/include/cybersand/scheduler_geometry.hpp": "69ad265aa5cb9823131b46c533a511c71fe089c2f2e3cae3d9950086f6f51460",
+    "native/include/cybersand/settled_discovery.hpp": "e98d772de9ed42397da48b30dc20cd8527ef1100a71757cf0b8a0a6811b150c3",
+    "native/include/cybersand/settled_regions.hpp": "05577c38da9e7fa6f2bbf1e6d589ee104dba71a840974843ff582326900493a1",
+    "native/include/cybersand/settled_world_discovery.hpp": "ab71dc2e0e13b0cc580ba3ce981a321f36b7b83d7904dd899f8746fd0e8d7138",
+    "native/include/cybersand/sha256.hpp": "0dd46c3dd8d3222c659b6b602e0c798f3c22afc034a7f1587d6ca7bcb5b1fcf7",
+    "native/include/cybersand/solid_contact_geometry.hpp": "53f8852cfe658fa37bb419ef4380e2c2bb4ebdf66af02e77e952813664a44c54",
+    "native/include/cybersand/solid_detachment.hpp": "887e78d0dca8414c4eef8443ba5ebbc78cf5a62e65db71fc85e46fd9f53a533d",
+    "native/include/cybersand/soliding_lifecycle.hpp": "044335712b4bfcec62a239a57092f11bc5598cc1b9a2427ef0ddbaf1d1d214cd",
+    "native/include/cybersand/transport_policy.hpp": "5943ae6a9479813768d1a62f54895e468288fc19ccb9c2f4b29f4a13aa41dd29",
+    "native/include/cybersand/water_cellular_yield.hpp": "64166e69983a5373a5d61539126e813d7797a69b61abd2d314f723bedd4fdd85",
+    "native/include/cybersand/water_experiment_policy.hpp": "60b6ef5e611ba39eb0d6220115eb2f0662bc58e02b56c0966a239e30ad57dfaf",
+    "native/include/cybersand/water_normalization.hpp": "2f9a658621443f817dc6674690f58c213ff81a6f134f68b606d641852f05df05",
+    "native/include/cybersand/world.hpp": "a9aa6e51cd8c432526376b49ae15e02e4a7838aa296287bf3db6f1b10de99d31",
+    "native/include/cybersand/world_generation.hpp": "28007e89dc009d68af125e2c04d77a5fb6aec48ec9758a4079affa016f3dca5c",
+    "native/src/c_api.cpp": "48d079c7787ad6f555f23d38b85f0b27e1e937483c32cf2c8e9a4bfa8b0f4ec4",
+    "native/src/generation_fields.cpp": "0f4139421792d9e17c069b542620356a2978a09f7254bc4f11c1b725729a4df3",
+    "native/src/generation_grammar.cpp": "9c0367c885f1107c00cc143334c57b49617bb7b0e7a02f5373fdd4d4bdf40453",
+    "native/src/generation_planes.cpp": "fde22fa3495dacefc779a6187dd954289c9e0fc4c5ba83036a036f42d537a7cb",
+    "native/src/generation_spatial.cpp": "8f99e577b7bec07142daf7c0e273146991528cdc3a13e6bf2301f14a7f049961",
+    "native/src/generation_typed_fields.cpp": "c3d2c2767cd0a10af967e8c975f11cbad9761e2b819d013fc5f7cf91bd832f5d",
+    "native/src/material_rules.cpp": "8fd1509bfcef162c5cb6028e9af38c563ad651822b9fcfcc2e79a569d185afa3",
+    "native/src/render_snapshot.cpp": "b905363461d4aa31ffbeb94bd6717993597b9da23b5ea5d8fc717a56662dbf04",
+    "native/src/render_snapshot_internal.hpp": "c36e3b4f41db0f4ac96788a74f66b92407690dccc8609951428ec7b54c292998",
+    "native/src/scheduler_geometry.cpp": "6ddfd5c5601a63edbcc1a8c430dcfe6332cbe54109c6b1d3763f933a6be38764",
+    "native/src/settled_world_discovery.cpp": "5f56ab11ac22eb6af105f52a3abca4ef91a0db1d0046855793123fa941e728b6",
+    "native/src/world.cpp": "91cecf308d01ef214f491f3dc1f353f10c9db17a55162b983fc4ecf80e6363e6",
+    "native/src/world_conservative_displacement.inc": "c9dd8dc0da262dc0a20f2c193c4714fa3de4e3ab0ebe66731550dac8563bf6d9",
+    "native/src/world_generation.cpp": "cf9eb2efef6ac9a9e49bd40eb9fac1915fd967071920816100703d1ae306b535",
+    "native/src/world_inertial.inc": "f9e891dafa9c61e76460b5b3a720e3e522e7b63c381e81539e5e508b2719a0dd",
+    "native/src/world_pressure.inc": "0e6c8b916d9a457fc09d63f496b9acb5b8b61f55c3c09311d8bcf90bbf92b947",
+    "native/src/world_pressure_cache.inc": "e1c7d24a4aff4827ce1d55de3120523b63428c38b0ac350d6aa94132389113fc",
+    "native/src/world_pressure_cache_state.inc": "91da78af36e78e07f1cc3de2c9899b0ad98c171df9b418a6170f6372816279e0",
+    "native/src/world_pressure_gas_cache.inc": "1372e7696d14653ddfd099bb07c24f9255080ce0d09b4304e267162d7d53e2d8",
+    "native/src/world_pressure_state.inc": "4a70898ee23d1fbcb07a7771498156049113816f8699322001d847087336b50c",
+    "native/src/world_quantity.inc": "627936a33c9ed58b6841f04466bf83aefe83b451ceb0da22baa19269ed5ef074",
+    "native/src/world_solid_detachment.inc": "68499bf17ebb836c87fe45fa81262eef6bffa4cf3f3da33bf5fa774d93fc7c17"
+  },
+  "original_artifacts": {
+    "builds/sol281-build-linux-41713932288-1/before.json": {
+      "sha256": "7aa9d9866d479de5068eeae29611749c1e01a38a221ce466931a8328aa48bdad",
+      "size": 255393
+    },
+    "builds/sol281-build-linux-41713932288-1/bindings/command.log": {
+      "sha256": "ebb02fbc91b91fc07d8c7367f066c581bfa9d80ace188d85def631ca0ac5260c",
+      "size": 59960
+    },
+    "builds/sol281-build-linux-41713932288-1/bindings/performance.jsonl": {
+      "sha256": "f7ec9bda5a95e5d3b33e427ff1a965f256ec50d356ac215e98a55bafa3ad627a",
+      "size": 2715
+    },
+    "builds/sol281-build-linux-41713932288-1/bindings/receipt.json": {
+      "sha256": "c938f694dd7aacbf2f88d1b16fb0b576a447640db1b393f491258ce7ea7d4f0d",
+      "size": 2100
+    },
+    "builds/sol281-build-linux-41713932288-1/build.json": {
+      "sha256": "ab0bf4aa96555cffe67cc78b5c34bc240753a4c3c827e42eb03e4cd7a246b5f9",
+      "size": 256158
+    },
+    "builds/sol281-build-linux-41713932288-1/extension/command.log": {
+      "sha256": "d7b3431de45c015ec506e9b0f998e8184aeb83cb84777b64a7841fab34aafd2b",
+      "size": 23716
+    },
+    "builds/sol281-build-linux-41713932288-1/extension/performance.jsonl": {
+      "sha256": "3351d40f70405ac22cb6df8c6ff568cd75af88efee19f5e98868bd3feaeec83c",
+      "size": 2729
+    },
+    "builds/sol281-build-linux-41713932288-1/extension/receipt.json": {
+      "sha256": "808b718c42ec1127d4d6e2a848b5da1d38f1bfe355029753f4e0178cad52cc43",
+      "size": 2101
+    },
+    "builds/sol281-build-linux-41713932288-1/libcybersand_native.linux.x86_64.so": {
+      "sha256": "5877f1ac8b3e1bc3548d415bbd3890f2b804df4d03f4eef4c961170780b47b3a",
+      "size": 4343064
+    },
+    "builds/sol281-build-linux-41713932288-1/native-regressions/command.log": {
+      "sha256": "57b01164b7019c69390a80e9b802de685ac640dda4be4e53b78d2085f7eb09a7",
+      "size": 13913
+    },
+    "builds/sol281-build-linux-41713932288-1/native-regressions/performance.jsonl": {
+      "sha256": "4d84084ee8e3db22b813c60d66789ca2c60184f18a89d4b55c0d54625eef2f1c",
+      "size": 2728
+    },
+    "builds/sol281-build-linux-41713932288-1/native-regressions/receipt.json": {
+      "sha256": "be75423d7f224fc44207e8741c0c4a676d6142f149f3692faad208f177c5c6ec",
+      "size": 2316
+    },
+    "builds/sol281-build-linux-41713932288-1/prepare/command.log": {
+      "sha256": "92a97e4ce759a8980206a9dcbe1f072171f1366994b1cb8a5c34693c01aacae6",
+      "size": 1230
+    },
+    "builds/sol281-build-linux-41713932288-1/prepare/performance.jsonl": {
+      "sha256": "b1823cc9497e609908387e109e1ed8de53ed43e018ee9e012d31cf6622433b04",
+      "size": 2731
+    },
+    "builds/sol281-build-linux-41713932288-1/prepare/receipt.json": {
+      "sha256": "57a8d22d19b682b0f8e9a618559de9bc9528e7f80dfa81a16305a249d85af548",
+      "size": 2597
+    },
+    "builds/sol281-build-linux-41713932288-1/source.tar.gz": {
+      "sha256": "bd38504e140d3070bc5241c72e7af6652aaa03fcb814e016010088285d8e7416",
+      "size": 79600723
+    },
+    "builds/sol281-build-linux-41713932288-1/source.tar.gz.sha256": {
+      "sha256": "9f69fbb20aeea2cbe867b3ae252ea400a6e221aff53b6649d7b0971e00ed1f47",
+      "size": 105
+    },
+    "builds/sol281-build-windows-41713932288-1/before.json": {
+      "sha256": "7aa9d9866d479de5068eeae29611749c1e01a38a221ce466931a8328aa48bdad",
+      "size": 255393
+    },
+    "builds/sol281-build-windows-41713932288-1/bindings/command.log": {
+      "sha256": "3a150366d18190000911ec53ff9dfe6291122270bd7d80a0da062e53a05aada1",
+      "size": 60046
+    },
+    "builds/sol281-build-windows-41713932288-1/bindings/performance.jsonl": {
+      "sha256": "ed970664b3946f6e8d43feb8a5754f7d4686401e0b6254b259c74de41716ba33",
+      "size": 2718
+    },
+    "builds/sol281-build-windows-41713932288-1/bindings/receipt.json": {
+      "sha256": "466c7af7e71a20ba886c000b7f07c56e6bc6d8f5f8dd2d51ca609ff4f1071912",
+      "size": 2105
+    },
+    "builds/sol281-build-windows-41713932288-1/build.json": {
+      "sha256": "fbc83b4d8f0ef704509c31edd63192942bc6f358a28f3b860b285d5f60386bd5",
+      "size": 256208
+    },
+    "builds/sol281-build-windows-41713932288-1/compiler/command.log": {
+      "sha256": "ebcb2668715b93e089e221fa26ea80254e3b31e480b26515d1966ca88a976cd0",
+      "size": 443
+    },
+    "builds/sol281-build-windows-41713932288-1/compiler/performance.jsonl": {
+      "sha256": "110a4d6f865f7d0341e53804e9ea99994f579b8253289b431bfa8a4bba3167bc",
+      "size": 2723
+    },
+    "builds/sol281-build-windows-41713932288-1/compiler/receipt.json": {
+      "sha256": "62e300d827df4cb7c997de0892afa088b9f77e0700af36c1940dcb1b5b4a120f",
+      "size": 2564
+    },
+    "builds/sol281-build-windows-41713932288-1/cybersand_native.windows.x86_64.dll": {
+      "sha256": "9f936b41d0c5ce179ecac8f5ef6ae88a8ae5feaaae094c9230443e69ec39fd6f",
+      "size": 4924416
+    },
+    "builds/sol281-build-windows-41713932288-1/extension/command.log": {
+      "sha256": "ad9e774439dcb55e7dfd39775a335fd10356d4a51aeb3c2d335d17a92b6102ad",
+      "size": 1858
+    },
+    "builds/sol281-build-windows-41713932288-1/extension/performance.jsonl": {
+      "sha256": "a76b2e65b4d1f9c4d742c91b684c4d08dee20159e55d31eb63eb134bca487db4",
+      "size": 2727
+    },
+    "builds/sol281-build-windows-41713932288-1/extension/receipt.json": {
+      "sha256": "41a5fb25ff6f28ffeb74ee29ac4304dc677f1bc27d9a604e2a60613130f2c728",
+      "size": 2108
+    },
+    "builds/sol281-build-windows-41713932288-1/prepare/command.log": {
+      "sha256": "7ca80d48152ebaf1f26c6bd09b17921a2ced38cee3df71f195af314d65f1a70d",
+      "size": 1230
+    },
+    "builds/sol281-build-windows-41713932288-1/prepare/performance.jsonl": {
+      "sha256": "64b2c8581f6d491dd927c1de00c464e95e10a7a9e29b6e13066395986b5ff40f",
+      "size": 2732
+    },
+    "builds/sol281-build-windows-41713932288-1/prepare/receipt.json": {
+      "sha256": "00a017d99f2351a2223594b4536213cea4bc92728f4aef9efaa52dd8bfaf581c",
+      "size": 2598
+    },
+    "hosts/sol281-host-linux-contact-w1-41713932288-1/host/checkout-inputs-after.json": {
+      "sha256": "fe3a37345a07238f0d5624e8dd6c64512df5655581384cc2eae00080f2840d76",
+      "size": 125403
+    },
+    "hosts/sol281-host-linux-contact-w1-41713932288-1/host/checkout-inputs-before.json": {
+      "sha256": "fe3a37345a07238f0d5624e8dd6c64512df5655581384cc2eae00080f2840d76",
+      "size": 125403
+    },
+    "hosts/sol281-host-linux-contact-w1-41713932288-1/host/contact-observation-w1.json": {
+      "sha256": "a49de75594abf93fbe79eb7f4a363646c92edfa6a3db9f3de89bd3f361e790ce",
+      "size": 722
+    },
+    "hosts/sol281-host-linux-contact-w1-41713932288-1/host/contact-observation-w1.log": {
+      "sha256": "39a454cfc315f36ef5ce0a32d57d1b8595a3cde93424f3919cc7b790f894d153",
+      "size": 854
+    },
+    "hosts/sol281-host-linux-contact-w1-41713932288-1/host/contact-recovery-w1.json": {
+      "sha256": "228e4c831e731b978c4153967fb11a365d5118deb369ce32f19cc2cfec7a24af",
+      "size": 9208597
+    },
+    "hosts/sol281-host-linux-contact-w1-41713932288-1/host/contact-recovery-w1.log": {
+      "sha256": "1c20dee4b67eda32db21da1810fbd1090fc87b65bb8e808c2e5ff8f6f383047c",
+      "size": 6212850
+    },
+    "hosts/sol281-host-linux-contact-w1-41713932288-1/host/coupling-w1.json": {
+      "sha256": "4c196cb5361438981d43a2f01dca148775a0f36dd7c01a048f729b28395b2588",
+      "size": 2373
+    },
+    "hosts/sol281-host-linux-contact-w1-41713932288-1/host/coupling-w1.log": {
+      "sha256": "3453dbc606f327ca4e791033244232fd220f74d41d204e5195fae330a5fb4462",
+      "size": 2276
+    },
+    "hosts/sol281-host-linux-contact-w1-41713932288-1/host/displacement-w1.json": {
+      "sha256": "e29b3e02d698cb4e3033b2dd35f76718a04d09b92fb2caf6592b18b94edfcbab",
+      "size": 26071
+    },
+    "hosts/sol281-host-linux-contact-w1-41713932288-1/host/displacement-w1.log": {
+      "sha256": "81d5ceaa79a0e29bf0a7622dbdf8274b7b57516aa9b27a01e2a04310e830cdcc",
+      "size": 336
+    },
+    "hosts/sol281-host-linux-contact-w1-41713932288-1/host/embedded_sand-baseline-w1.json": {
+      "sha256": "ca94df872eab13a04a9ad8fbeda74ab119c058e4f8e704e83e7139da1b4c6226",
+      "size": 3179
+    },
+    "hosts/sol281-host-linux-contact-w1-41713932288-1/host/embedded_sand-baseline-w1.log": {
+      "sha256": "64e08daaf8747905b0b197408accb29488e7e29640d59d5815adddc659aefe18",
+      "size": 2880
+    },
+    "hosts/sol281-host-linux-contact-w1-41713932288-1/host/embedded_sand-candidate-w1.json": {
+      "sha256": "c9ee4b1744c4d957b93d365b61f098119164c4538a57d17d3a7c4e37adb39821",
+      "size": 3207
+    },
+    "hosts/sol281-host-linux-contact-w1-41713932288-1/host/embedded_sand-candidate-w1.log": {
+      "sha256": "2a5921d842d4f18dc860f90716ff6a3650ec6fec91c2a58de9024e29a73ebf61",
+      "size": 2908
+    },
+    "hosts/sol281-host-linux-contact-w1-41713932288-1/host/import.log": {
+      "sha256": "82a265e8d8395148566f66f51856a85eb323fdeb587fc7caaf930f1ff347f1dc",
+      "size": 34786
+    },
+    "hosts/sol281-host-linux-contact-w1-41713932288-1/host/inputs-after.json": {
+      "sha256": "e259e5812c5570a9f8ee3945ea1fc3453c5cf4593bf95b8cb2b0d44be037371c",
+      "size": 125403
+    },
+    "hosts/sol281-host-linux-contact-w1-41713932288-1/host/inputs-before.json": {
+      "sha256": "e259e5812c5570a9f8ee3945ea1fc3453c5cf4593bf95b8cb2b0d44be037371c",
+      "size": 125403
+    },
+    "hosts/sol281-host-linux-contact-w1-41713932288-1/host/mixed-baseline-w1.json": {
+      "sha256": "d75b8476b437398159dbea7e4a4f1d9ccb25f24c51dd67435a884a32040f313a",
+      "size": 3170
+    },
+    "hosts/sol281-host-linux-contact-w1-41713932288-1/host/mixed-baseline-w1.log": {
+      "sha256": "4ce6cba1cdfff877a84ae9c738cb705f75dbfaeebb52c6c271b960d51da915b4",
+      "size": 2871
+    },
+    "hosts/sol281-host-linux-contact-w1-41713932288-1/host/mixed-candidate-w1.json": {
+      "sha256": "389ba81f4ac4563a495b344f13c53dcd1501c101e24e080e8bb3fd7cd3e416a6",
+      "size": 3213
+    },
+    "hosts/sol281-host-linux-contact-w1-41713932288-1/host/mixed-candidate-w1.log": {
+      "sha256": "123fdce45859f748457b82ad794331c7307975ab7e7955efe14e868c29314c28",
+      "size": 2914
+    },
+    "hosts/sol281-host-linux-contact-w1-41713932288-1/host/packed_sand-baseline-w1.json": {
+      "sha256": "3aa32fda8affd9da14060985424c3b0de2f05d6a1b821abebe8e44d40ca00f73",
+      "size": 3175
+    },
+    "hosts/sol281-host-linux-contact-w1-41713932288-1/host/packed_sand-baseline-w1.log": {
+      "sha256": "10af1a953b1dece39dbfb0a7228a98c19bb0c704c20c66df1828ce9e3ee34d98",
+      "size": 2876
+    },
+    "hosts/sol281-host-linux-contact-w1-41713932288-1/host/packed_sand-candidate-w1.json": {
+      "sha256": "4cb4040eb97d27555b0c9f71769558d346bfc6d07f7a51e06b5442fabb65c48e",
+      "size": 3202
+    },
+    "hosts/sol281-host-linux-contact-w1-41713932288-1/host/packed_sand-candidate-w1.log": {
+      "sha256": "0238587fcb117474223eae12e9fef2774e0a5d0f651a4e39a94adc40cb556323",
+      "size": 2903
+    },
+    "hosts/sol281-host-linux-contact-w1-41713932288-1/host/performance.jsonl": {
+      "sha256": "540cc24efa580315f738ddf9e720b56b6e6f34fd11bdf4b3a1ebadd8d609b9df",
+      "size": 89302
+    },
+    "hosts/sol281-host-linux-contact-w1-41713932288-1/host/report.json": {
+      "sha256": "cb96216628359ba913dd286b6aadd5fabdf75339407e438e8ac0bdd98036660a",
+      "size": 13930264
+    },
+    "hosts/sol281-host-linux-contact-w1-41713932288-1/host/terrain-w1.log": {
+      "sha256": "d6ba81a2c979d41472a3370af8df09ee69a4f69747d3fa42ced19413348cc9d5",
+      "size": 3514
+    },
+    "hosts/sol281-host-linux-contact-w1-41713932288-1/prepare-engine/command.log": {
+      "sha256": "775150dca1b4cfb8e7701ce221b58544269f5a9810f6b881286bd31917ad38a1",
+      "size": 397
+    },
+    "hosts/sol281-host-linux-contact-w1-41713932288-1/prepare-engine/performance.jsonl": {
+      "sha256": "219e8c98efc183d3e232770f872d424d0725e0a150f98f2acb20b80a26f3215b",
+      "size": 2725
+    },
+    "hosts/sol281-host-linux-contact-w1-41713932288-1/prepare-engine/receipt.json": {
+      "sha256": "1aa33a07670972f4d70691c76c44a86d57dd5841c57e209db2b823ced78421b5",
+      "size": 2441
+    },
+    "hosts/sol281-host-linux-contact-w1-41713932288-1/prepare-rapier/command.log": {
+      "sha256": "4fea4bc2b3b77e0192bd58ef65c3a0c982ecc7409dbffab6873bb6e04be6a875",
+      "size": 40
+    },
+    "hosts/sol281-host-linux-contact-w1-41713932288-1/prepare-rapier/performance.jsonl": {
+      "sha256": "0ccba92317760aa7eb6f980b4db601ff123b52fa57dbf5dfa200260fce5dead8",
+      "size": 2726
+    },
+    "hosts/sol281-host-linux-contact-w1-41713932288-1/prepare-rapier/receipt.json": {
+      "sha256": "67ac663510d91df5458eb888f7eb581fa46322ab6d68fa31c7271451913a9c04",
+      "size": 2247
+    },
+    "hosts/sol281-host-linux-contact-w4-41713932288-1/host/checkout-inputs-after.json": {
+      "sha256": "fe3a37345a07238f0d5624e8dd6c64512df5655581384cc2eae00080f2840d76",
+      "size": 125403
+    },
+    "hosts/sol281-host-linux-contact-w4-41713932288-1/host/checkout-inputs-before.json": {
+      "sha256": "fe3a37345a07238f0d5624e8dd6c64512df5655581384cc2eae00080f2840d76",
+      "size": 125403
+    },
+    "hosts/sol281-host-linux-contact-w4-41713932288-1/host/contact-observation-w4.json": {
+      "sha256": "9a78f0d443334e1385ec26e8c727d011fc047134e00f058f0ec60f0623719e25",
+      "size": 722
+    },
+    "hosts/sol281-host-linux-contact-w4-41713932288-1/host/contact-observation-w4.log": {
+      "sha256": "cd2c7346f10033ee0adba37a8cca052cf9f00402f6f119380bf6c280cefb6f51",
+      "size": 854
+    },
+    "hosts/sol281-host-linux-contact-w4-41713932288-1/host/contact-recovery-w4.json": {
+      "sha256": "a004b755e46d29f6079f9fb1f0968be75f7747ceea39c7e6b67787187822d567",
+      "size": 9130055
+    },
+    "hosts/sol281-host-linux-contact-w4-41713932288-1/host/contact-recovery-w4.log": {
+      "sha256": "7c79337f0d3156e72c18b800f9d7b8e4f0213e5c8cea9de1eb3f338d13a06f56",
+      "size": 6172107
+    },
+    "hosts/sol281-host-linux-contact-w4-41713932288-1/host/coupling-w4.json": {
+      "sha256": "c664c420189e9246ade19ab24e646c69928e36ca1846c2b40210805600864a3c",
+      "size": 2379
+    },
+    "hosts/sol281-host-linux-contact-w4-41713932288-1/host/coupling-w4.log": {
+      "sha256": "8de88e8790d5b058defbad1e6b93c911334d10550971618a41c38e7f411470ac",
+      "size": 2282
+    },
+    "hosts/sol281-host-linux-contact-w4-41713932288-1/host/displacement-w4.json": {
+      "sha256": "e7bb4d4a6638e4a6468dbab6a5557033d6324b524453ed1e42beab03e141dd1a",
+      "size": 26071
+    },
+    "hosts/sol281-host-linux-contact-w4-41713932288-1/host/displacement-w4.log": {
+      "sha256": "4431a88b4a9d15e849a50ca544a22fdac762f4820509024d073a6d93d0f213fd",
+      "size": 336
+    },
+    "hosts/sol281-host-linux-contact-w4-41713932288-1/host/embedded_sand-baseline-w4.json": {
+      "sha256": "00f6b31056b8bd6cd75f5540eefb4c52eba6084bbc129467e2a99288ae931e57",
+      "size": 3181
+    },
+    "hosts/sol281-host-linux-contact-w4-41713932288-1/host/embedded_sand-baseline-w4.log": {
+      "sha256": "5ed2bb77b9617fd4898e5fc8e88d80d2cf0939798541cbd2f7312db0dcc1d1c7",
+      "size": 2882
+    },
+    "hosts/sol281-host-linux-contact-w4-41713932288-1/host/embedded_sand-candidate-w4.json": {
+      "sha256": "6ccdd0b78e53f75df16206655d5c93c9872886d90bd0d8f144754dafd3b9a0f2",
+      "size": 3216
+    },
+    "hosts/sol281-host-linux-contact-w4-41713932288-1/host/embedded_sand-candidate-w4.log": {
+      "sha256": "fc77ff365f430973dd51f02e9961e376aab0bbe6514a6c67b90053fec162d403",
+      "size": 2917
+    },
+    "hosts/sol281-host-linux-contact-w4-41713932288-1/host/import.log": {
+      "sha256": "82a265e8d8395148566f66f51856a85eb323fdeb587fc7caaf930f1ff347f1dc",
+      "size": 34786
+    },
+    "hosts/sol281-host-linux-contact-w4-41713932288-1/host/inputs-after.json": {
+      "sha256": "e259e5812c5570a9f8ee3945ea1fc3453c5cf4593bf95b8cb2b0d44be037371c",
+      "size": 125403
+    },
+    "hosts/sol281-host-linux-contact-w4-41713932288-1/host/inputs-before.json": {
+      "sha256": "e259e5812c5570a9f8ee3945ea1fc3453c5cf4593bf95b8cb2b0d44be037371c",
+      "size": 125403
+    },
+    "hosts/sol281-host-linux-contact-w4-41713932288-1/host/mixed-baseline-w4.json": {
+      "sha256": "a397c49dc3b0389412f9481f60d612584e7bebe88ce246ae174977dff1657776",
+      "size": 3171
+    },
+    "hosts/sol281-host-linux-contact-w4-41713932288-1/host/mixed-baseline-w4.log": {
+      "sha256": "64a2e59436bff76e95ed64f9bcf3e38d2fb98da907e513930ac097a8d1442d04",
+      "size": 2872
+    },
+    "hosts/sol281-host-linux-contact-w4-41713932288-1/host/mixed-candidate-w4.json": {
+      "sha256": "bd187d0573a9c156c9283d3cd413e4e248baf8f6c04deb5a65176eeebefe3fe9",
+      "size": 3211
+    },
+    "hosts/sol281-host-linux-contact-w4-41713932288-1/host/mixed-candidate-w4.log": {
+      "sha256": "6293564612e845d07a160aff0473bfe12b14a9fceab1ac1f502eafa57600ea67",
+      "size": 2912
+    },
+    "hosts/sol281-host-linux-contact-w4-41713932288-1/host/packed_sand-baseline-w4.json": {
+      "sha256": "a78f41fa3512aeccc5616deec42c55dec5cd83ad976445d6424391324e66d682",
+      "size": 3175
+    },
+    "hosts/sol281-host-linux-contact-w4-41713932288-1/host/packed_sand-baseline-w4.log": {
+      "sha256": "a52650353731fab01c812689e5076a891bc5be6bd2b78d570ece8c1488fc7861",
+      "size": 2876
+    },
+    "hosts/sol281-host-linux-contact-w4-41713932288-1/host/packed_sand-candidate-w4.json": {
+      "sha256": "133a350fea5bd855a166ccf116f8b347ceacc3f064d33f744f1ae5bdc24cd350",
+      "size": 3207
+    },
+    "hosts/sol281-host-linux-contact-w4-41713932288-1/host/packed_sand-candidate-w4.log": {
+      "sha256": "9ece37a009e0eb8e116e1c75b00151af26c818a5839ba57c7350411f1669db84",
+      "size": 2908
+    },
+    "hosts/sol281-host-linux-contact-w4-41713932288-1/host/performance.jsonl": {
+      "sha256": "b195e4475105f3b2d324c3f0726ba3eb88c3f2467423c073c6ecb798d4149934",
+      "size": 89301
+    },
+    "hosts/sol281-host-linux-contact-w4-41713932288-1/host/report.json": {
+      "sha256": "a627038ebd534707ff061bc559b9579ead2953a86c9019231b51dbc2d2b27db7",
+      "size": 13792648
+    },
+    "hosts/sol281-host-linux-contact-w4-41713932288-1/host/terrain-w4.log": {
+      "sha256": "6be166216876ca2d4a11df3c76bfd24932baf09d00b63cfc06b651816a99c14f",
+      "size": 3501
+    },
+    "hosts/sol281-host-linux-contact-w4-41713932288-1/prepare-engine/command.log": {
+      "sha256": "366148ed9a29c0b53d0e41962e1f0ed2df0f903c3b288846ca64dccab019009d",
+      "size": 476
+    },
+    "hosts/sol281-host-linux-contact-w4-41713932288-1/prepare-engine/performance.jsonl": {
+      "sha256": "530eac63609dee21498aeff94ceebbbe269f855d50afc0141b28297df8fbee93",
+      "size": 2732
+    },
+    "hosts/sol281-host-linux-contact-w4-41713932288-1/prepare-engine/receipt.json": {
+      "sha256": "97f0a685d5d558432e1dabcd6902446d3bc6044141fd9a2b866e12b1bdcd4601",
+      "size": 2448
+    },
+    "hosts/sol281-host-linux-contact-w4-41713932288-1/prepare-rapier/command.log": {
+      "sha256": "4fea4bc2b3b77e0192bd58ef65c3a0c982ecc7409dbffab6873bb6e04be6a875",
+      "size": 40
+    },
+    "hosts/sol281-host-linux-contact-w4-41713932288-1/prepare-rapier/performance.jsonl": {
+      "sha256": "f865351bbe56ab078074d5a0db182f454b9c289b501dee1115a2fd6f6f81afe3",
+      "size": 2733
+    },
+    "hosts/sol281-host-linux-contact-w4-41713932288-1/prepare-rapier/receipt.json": {
+      "sha256": "85642df04981103a8f309f8488b5aacb89928993d8501dd503d41b43be5cee11",
+      "size": 2254
+    },
+    "hosts/sol281-host-linux-core-41713932288-1/host/checkout-inputs-after.json": {
+      "sha256": "fe3a37345a07238f0d5624e8dd6c64512df5655581384cc2eae00080f2840d76",
+      "size": 125403
+    },
+    "hosts/sol281-host-linux-core-41713932288-1/host/checkout-inputs-before.json": {
+      "sha256": "fe3a37345a07238f0d5624e8dd6c64512df5655581384cc2eae00080f2840d76",
+      "size": 125403
+    },
+    "hosts/sol281-host-linux-core-41713932288-1/host/compound-response.log": {
+      "sha256": "c7a610a6f67e6301f2fbe9aa7827bbe22c57525b088573cc511706e0dd6af537",
+      "size": 293
+    },
+    "hosts/sol281-host-linux-core-41713932288-1/host/failure-w1.log": {
+      "sha256": "203eb5ee1e2033e53dfe29a8a36d3fc0385b2298e9cec7e44c021e848d3646e8",
+      "size": 413
+    },
+    "hosts/sol281-host-linux-core-41713932288-1/host/failure-w4.log": {
+      "sha256": "1811a1728119844ac02ca975106e7e3ec309fa3315da37a4e35b6992c9d5ea9a",
+      "size": 413
+    },
+    "hosts/sol281-host-linux-core-41713932288-1/host/import.log": {
+      "sha256": "82a265e8d8395148566f66f51856a85eb323fdeb587fc7caaf930f1ff347f1dc",
+      "size": 34786
+    },
+    "hosts/sol281-host-linux-core-41713932288-1/host/inputs-after.json": {
+      "sha256": "e259e5812c5570a9f8ee3945ea1fc3453c5cf4593bf95b8cb2b0d44be037371c",
+      "size": 125403
+    },
+    "hosts/sol281-host-linux-core-41713932288-1/host/inputs-before.json": {
+      "sha256": "e259e5812c5570a9f8ee3945ea1fc3453c5cf4593bf95b8cb2b0d44be037371c",
+      "size": 125403
+    },
+    "hosts/sol281-host-linux-core-41713932288-1/host/lifecycle.log": {
+      "sha256": "d5e2dc240cd13633dc3a51459a218e19e1ecaf78f91d1c44e7038aef3533f79d",
+      "size": 422
+    },
+    "hosts/sol281-host-linux-core-41713932288-1/host/material-image.log": {
+      "sha256": "af1c47892862e3da708d7c0dad15a136e7ef9370e685ef3f34dca069bd2c3094",
+      "size": 435
+    },
+    "hosts/sol281-host-linux-core-41713932288-1/host/motion-w1.json": {
+      "sha256": "f132094cdd7e30fbc579366627d0c725fa1d2855c54f7414ea7170fbda50864e",
+      "size": 1955
+    },
+    "hosts/sol281-host-linux-core-41713932288-1/host/motion-w1.log": {
+      "sha256": "1f405edc30b08e09cb9694f5ec4e80b9bf545ad90e21010040cb67431c975633",
+      "size": 1825
+    },
+    "hosts/sol281-host-linux-core-41713932288-1/host/motion-w4.json": {
+      "sha256": "199a2190c2f4139389793886fd3c55dbb26b9429ac9b390a5c1b767a488af3bc",
+      "size": 1955
+    },
+    "hosts/sol281-host-linux-core-41713932288-1/host/motion-w4.log": {
+      "sha256": "f9a2d0bfc7a5a4ba3dfc200263986a3b13204b43caaf0204152ad3f20f9e0fda",
+      "size": 1825
+    },
+    "hosts/sol281-host-linux-core-41713932288-1/host/ordinary-capacity.log": {
+      "sha256": "348967c9fdbcf3bfc500ff80a5969fc64894ce072aba2df18109af554f2bc867",
+      "size": 411
+    },
+    "hosts/sol281-host-linux-core-41713932288-1/host/ordinary-failure.log": {
+      "sha256": "333f1dd618e51df3ae3980d63fad6ef5f995127f08f433800d73d3fbfc891859",
+      "size": 1148
+    },
+    "hosts/sol281-host-linux-core-41713932288-1/host/ordinary-observer.log": {
+      "sha256": "c8fb193284d1e4d14eef32071ba747b3fa991ef0c7f7f6f27948bfc683ebdc5e",
+      "size": 296
+    },
+    "hosts/sol281-host-linux-core-41713932288-1/host/ordinary-rapier.log": {
+      "sha256": "919623e3c65bf2262b30590338c66087a0522e311e93d6ed64f3c8faaebe9684",
+      "size": 266
+    },
+    "hosts/sol281-host-linux-core-41713932288-1/host/performance.jsonl": {
+      "sha256": "9b70f46f1532f667bc419ab5941496637e04befbce880852a161c70aa8aac0ad",
+      "size": 36652
+    },
+    "hosts/sol281-host-linux-core-41713932288-1/host/report.json": {
+      "sha256": "28b1a71acb915f688abde84ef587bbb21cd3fc9d645dfb49ba17077c49105ad9",
+      "size": 40453
+    },
+    "hosts/sol281-host-linux-core-41713932288-1/prepare-engine/command.log": {
+      "sha256": "219019ea4d0d097522d7f61dad207b88265e8e2b487e29423d0208056cc1dfd4",
+      "size": 476
+    },
+    "hosts/sol281-host-linux-core-41713932288-1/prepare-engine/performance.jsonl": {
+      "sha256": "c2ec3d4bba9d2f14b5b636346993e4e7fca429ce0f82278e612c499f026d3677",
+      "size": 2725
+    },
+    "hosts/sol281-host-linux-core-41713932288-1/prepare-engine/receipt.json": {
+      "sha256": "3df8bb88fdf91dd0050a74fc122151eb5c67cda382d9007eddc37544fc9074e9",
+      "size": 2448
+    },
+    "hosts/sol281-host-linux-core-41713932288-1/prepare-rapier/command.log": {
+      "sha256": "4fea4bc2b3b77e0192bd58ef65c3a0c982ecc7409dbffab6873bb6e04be6a875",
+      "size": 40
+    },
+    "hosts/sol281-host-linux-core-41713932288-1/prepare-rapier/performance.jsonl": {
+      "sha256": "2254d0ee3bae31565b41906c333c503d0089d231bd739166a270998a696c80c7",
+      "size": 2723
+    },
+    "hosts/sol281-host-linux-core-41713932288-1/prepare-rapier/receipt.json": {
+      "sha256": "501d95ef711558e76d750eb37f8a6c0c3b7774f8b57262b5f466af8f74bab8e7",
+      "size": 2251
+    },
+    "hosts/sol281-host-linux-mechanism-41713932288-1/host/checkout-inputs-after.json": {
+      "sha256": "fe3a37345a07238f0d5624e8dd6c64512df5655581384cc2eae00080f2840d76",
+      "size": 125403
+    },
+    "hosts/sol281-host-linux-mechanism-41713932288-1/host/checkout-inputs-before.json": {
+      "sha256": "fe3a37345a07238f0d5624e8dd6c64512df5655581384cc2eae00080f2840d76",
+      "size": 125403
+    },
+    "hosts/sol281-host-linux-mechanism-41713932288-1/host/import.log": {
+      "sha256": "82a265e8d8395148566f66f51856a85eb323fdeb587fc7caaf930f1ff347f1dc",
+      "size": 34786
+    },
+    "hosts/sol281-host-linux-mechanism-41713932288-1/host/inputs-after.json": {
+      "sha256": "e259e5812c5570a9f8ee3945ea1fc3453c5cf4593bf95b8cb2b0d44be037371c",
+      "size": 125403
+    },
+    "hosts/sol281-host-linux-mechanism-41713932288-1/host/inputs-before.json": {
+      "sha256": "e259e5812c5570a9f8ee3945ea1fc3453c5cf4593bf95b8cb2b0d44be037371c",
+      "size": 125403
+    },
+    "hosts/sol281-host-linux-mechanism-41713932288-1/host/performance.jsonl": {
+      "sha256": "4bcfd579ebb2313c23ec9b54622f5a91b16db297021b40491ebeda45a5f24121",
+      "size": 9089
+    },
+    "hosts/sol281-host-linux-mechanism-41713932288-1/host/report.json": {
+      "sha256": "2cdc9c7960e6aa7467fa1480af0bc0d1446200156901d912220998063ea3f274",
+      "size": 18476
+    },
+    "hosts/sol281-host-linux-mechanism-41713932288-1/host/sand-contact-fences.log": {
+      "sha256": "285031cd66711249af4cedf66f59349c24efe6989ef9ea7aab2b02360539091b",
+      "size": 336
+    },
+    "hosts/sol281-host-linux-mechanism-41713932288-1/host/sand-contact-response.json": {
+      "sha256": "3a793dbca3551d133bd2dd3cbcda7379a6f30743a49575a998d372ade6b12ef1",
+      "size": 6231
+    },
+    "hosts/sol281-host-linux-mechanism-41713932288-1/host/sand-contact-response.log": {
+      "sha256": "7efeb47dd55d06c276300898e78dc82270c1daab1a6973d403992e2c870ecb51",
+      "size": 5464
+    },
+    "hosts/sol281-host-linux-mechanism-41713932288-1/prepare-engine/command.log": {
+      "sha256": "631dd47d2dcb4066ef235da7f2d8fb9f05aab1fe565f2d03a1a9934c56bb4712",
+      "size": 476
+    },
+    "hosts/sol281-host-linux-mechanism-41713932288-1/prepare-engine/performance.jsonl": {
+      "sha256": "0a300f2ee542f89edd2f3ca3e549c4cce1b2f4084770c71f73514df73d796293",
+      "size": 2732
+    },
+    "hosts/sol281-host-linux-mechanism-41713932288-1/prepare-engine/receipt.json": {
+      "sha256": "1c939e2075991435c2525730e3f272b90817e1a4524b72a9c731851bd943f09f",
+      "size": 2448
+    },
+    "hosts/sol281-host-linux-mechanism-41713932288-1/prepare-rapier/command.log": {
+      "sha256": "4fea4bc2b3b77e0192bd58ef65c3a0c982ecc7409dbffab6873bb6e04be6a875",
+      "size": 40
+    },
+    "hosts/sol281-host-linux-mechanism-41713932288-1/prepare-rapier/performance.jsonl": {
+      "sha256": "cc5c95ee75250fc8224c9bb46f1d8a8d984ec140051146e4b4b22e9236fe3669",
+      "size": 2732
+    },
+    "hosts/sol281-host-linux-mechanism-41713932288-1/prepare-rapier/receipt.json": {
+      "sha256": "e4bd8e2b8f1f4ecf6763cb9692cf868db9fac9585bfa8aba96356ced9123c307",
+      "size": 2253
+    },
+    "hosts/sol281-host-windows-contact-w1-41713932288-1/checkout-inputs-after.json": {
+      "sha256": "7e7a482e7e1d26e8792964e2b9e4cee5bd6f0a12426833fa1197ccdb89fd0c70",
+      "size": 126482
+    },
+    "hosts/sol281-host-windows-contact-w1-41713932288-1/checkout-inputs-before.json": {
+      "sha256": "7e7a482e7e1d26e8792964e2b9e4cee5bd6f0a12426833fa1197ccdb89fd0c70",
+      "size": 126482
+    },
+    "hosts/sol281-host-windows-contact-w1-41713932288-1/contact-observation-w1.json": {
+      "sha256": "e7888fb5deeb68be128fda152f235daeab8a868821460160fa89450f8e892516",
+      "size": 724
+    },
+    "hosts/sol281-host-windows-contact-w1-41713932288-1/contact-observation-w1.log": {
+      "sha256": "52793cfc0c63b20072ec1f60f489a786979bfc29fec8e69df1187ded517a72a2",
+      "size": 860
+    },
+    "hosts/sol281-host-windows-contact-w1-41713932288-1/contact-recovery-w1.json": {
+      "sha256": "3561b08b8582604925ab6e414f8d3a3e480a42fc4a4242e61c7aa5e9943f8100",
+      "size": 8210083
+    },
+    "hosts/sol281-host-windows-contact-w1-41713932288-1/contact-recovery-w1.log": {
+      "sha256": "f1c3d19f607ac44f8275a52815316e984f3d59bce0fd314e8db0b0c69a75941b",
+      "size": 5566878
+    },
+    "hosts/sol281-host-windows-contact-w1-41713932288-1/coupling-w1.json": {
+      "sha256": "9d932737e0c140398ea82829cf5f8992f135a5e62824e3725eae930eabe04765",
+      "size": 2374
+    },
+    "hosts/sol281-host-windows-contact-w1-41713932288-1/coupling-w1.log": {
+      "sha256": "82239a0469138692052087778c2c66abeca15b6325fd0c2358e1814d318b9ce3",
+      "size": 2281
+    },
+    "hosts/sol281-host-windows-contact-w1-41713932288-1/displacement-w1.json": {
+      "sha256": "085ae2e2e0e77022ef3923cad6cdbfe5b5d6055c62b0db87ca21093d6673279a",
+      "size": 26073
+    },
+    "hosts/sol281-host-windows-contact-w1-41713932288-1/displacement-w1.log": {
+      "sha256": "f1ab7e910fbd13e03b6d220c3e950e8f6a44d077beee8f00c6e8e6c53997fd85",
+      "size": 342
+    },
+    "hosts/sol281-host-windows-contact-w1-41713932288-1/embedded_sand-baseline-w1.json": {
+      "sha256": "301f97fd50da8c860165800353a46a0bd03a62124ad36d8f92cc8bcae2d2200d",
+      "size": 3164
+    },
+    "hosts/sol281-host-windows-contact-w1-41713932288-1/embedded_sand-baseline-w1.log": {
+      "sha256": "d078469978ff04267f4a6bcead93c28f1c7f08b4dca1979a2a55db3d100a96dc",
+      "size": 2869
+    },
+    "hosts/sol281-host-windows-contact-w1-41713932288-1/embedded_sand-candidate-w1.json": {
+      "sha256": "8338021133da59defdb18d17000fffe3d6eabdd7d314f7f18c751e031083c52d",
+      "size": 3210
+    },
+    "hosts/sol281-host-windows-contact-w1-41713932288-1/embedded_sand-candidate-w1.log": {
+      "sha256": "755f2fcc430eead6d13dc685762d2dc1a3c4e016e5f885bb4b807c7c94860ac2",
+      "size": 2915
+    },
+    "hosts/sol281-host-windows-contact-w1-41713932288-1/import.log": {
+      "sha256": "414151532e90742107fbce802ad29f44e8a8ace7fd1f91310c79546ec24bd731",
+      "size": 35335
+    },
+    "hosts/sol281-host-windows-contact-w1-41713932288-1/inputs-after.json": {
+      "sha256": "d555dea04338e9cbbe2c4543969b5862a68922ca7603c4c66401f34bd66b4264",
+      "size": 126482
+    },
+    "hosts/sol281-host-windows-contact-w1-41713932288-1/inputs-before.json": {
+      "sha256": "d555dea04338e9cbbe2c4543969b5862a68922ca7603c4c66401f34bd66b4264",
+      "size": 126482
+    },
+    "hosts/sol281-host-windows-contact-w1-41713932288-1/mixed-baseline-w1.json": {
+      "sha256": "9025a96604174bb48f685068d7f5127dc2e717953e029389a7b7b334dc9af163",
+      "size": 3172
+    },
+    "hosts/sol281-host-windows-contact-w1-41713932288-1/mixed-baseline-w1.log": {
+      "sha256": "e530b4724a32a5fd7431771eb455b7ba82933dc2fa7213aca46fd1e138a95e36",
+      "size": 2877
+    },
+    "hosts/sol281-host-windows-contact-w1-41713932288-1/mixed-candidate-w1.json": {
+      "sha256": "66136d1fdc5d7cc812efb2c8b14b935ec5c8fedc1b9a47fbd5b1e91e17ee631c",
+      "size": 3197
+    },
+    "hosts/sol281-host-windows-contact-w1-41713932288-1/mixed-candidate-w1.log": {
+      "sha256": "234594b5821d033ebef7d94cefaf9578bee59c5125f33ad5f9979d0a52a8c7d0",
+      "size": 2902
+    },
+    "hosts/sol281-host-windows-contact-w1-41713932288-1/packed_sand-baseline-w1.json": {
+      "sha256": "69cabb2dd4f4819abbd39b581b7ffa5d50f286c54f5181d5f974e21f703041a0",
+      "size": 3163
+    },
+    "hosts/sol281-host-windows-contact-w1-41713932288-1/packed_sand-baseline-w1.log": {
+      "sha256": "836ace23643e61cf5feffdf7870a368020875c13743085ef47255d36a6052d5f",
+      "size": 2868
+    },
+    "hosts/sol281-host-windows-contact-w1-41713932288-1/packed_sand-candidate-w1.json": {
+      "sha256": "5bc66e648ec6de3d87bea54b74468e410eb0c5f4cab6ab042b6a8840a817e3e1",
+      "size": 3203
+    },
+    "hosts/sol281-host-windows-contact-w1-41713932288-1/packed_sand-candidate-w1.log": {
+      "sha256": "7d5e1edcf46e7cf7244a6fe2d7ef6abd20d0a43939576ad51d9fde2e627315d7",
+      "size": 2908
+    },
+    "hosts/sol281-host-windows-contact-w1-41713932288-1/performance.jsonl": {
+      "sha256": "8ca8d2b598879e58e7f5035311cdeb086b7f2a60d88b5e263999ea32cf46449a",
+      "size": 87924
+    },
+    "hosts/sol281-host-windows-contact-w1-41713932288-1/report.json": {
+      "sha256": "c2b1228d4222623b5eb4f088546f23755e54b0020ab597aab84a3e5dea1fce34",
+      "size": 12730469
+    },
+    "hosts/sol281-host-windows-contact-w1-41713932288-1/terrain-w1.log": {
+      "sha256": "506e00676a61387a65ba74095c34ce8086d99b36a5ea0cb6dbda5eabca0285be",
+      "size": 3508
+    },
+    "hosts/sol281-host-windows-contact-w4-41713932288-1/checkout-inputs-after.json": {
+      "sha256": "7e7a482e7e1d26e8792964e2b9e4cee5bd6f0a12426833fa1197ccdb89fd0c70",
+      "size": 126482
+    },
+    "hosts/sol281-host-windows-contact-w4-41713932288-1/checkout-inputs-before.json": {
+      "sha256": "7e7a482e7e1d26e8792964e2b9e4cee5bd6f0a12426833fa1197ccdb89fd0c70",
+      "size": 126482
+    },
+    "hosts/sol281-host-windows-contact-w4-41713932288-1/contact-observation-w4.json": {
+      "sha256": "dd0e238914a3ef881d4e94bc376b32c855e874e32a83b805ecd0a15f26f3dfec",
+      "size": 724
+    },
+    "hosts/sol281-host-windows-contact-w4-41713932288-1/contact-observation-w4.log": {
+      "sha256": "b4099aa8bc1317444004c78ad06939048eacfd852c3f7d23d95e64a024bd5bc7",
+      "size": 860
+    },
+    "hosts/sol281-host-windows-contact-w4-41713932288-1/contact-recovery-w4.json": {
+      "sha256": "4ea9e6d845659df7ceecd9880e35c3834f23406e5f3a7b33b5afdbf6f0f66494",
+      "size": 8880925
+    },
+    "hosts/sol281-host-windows-contact-w4-41713932288-1/contact-recovery-w4.log": {
+      "sha256": "712207d8347a72ace5794524de71ddfaa483db6379fb74e0bb6052914f086632",
+      "size": 6009413
+    },
+    "hosts/sol281-host-windows-contact-w4-41713932288-1/coupling-w4.json": {
+      "sha256": "5aaf8b9af3f555ea7773997fe582f2bd146841765da18a9f7d5dd3d65cce37c9",
+      "size": 2367
+    },
+    "hosts/sol281-host-windows-contact-w4-41713932288-1/coupling-w4.log": {
+      "sha256": "bc73ddd22d9dc8d4b1a12586bf6b508f68a3184146ab41c7e17c9b06a5217680",
+      "size": 2274
+    },
+    "hosts/sol281-host-windows-contact-w4-41713932288-1/displacement-w4.json": {
+      "sha256": "324e9f37e82b9c670dc8bee9fcc8d4636ebb3abaaf8b7c9e30d296593142dd5d",
+      "size": 26073
+    },
+    "hosts/sol281-host-windows-contact-w4-41713932288-1/displacement-w4.log": {
+      "sha256": "f63dc1ee0c12c019c3d4017ec51d1a507a102360e2a26b2a447ad3c1c64bdb1b",
+      "size": 342
+    },
+    "hosts/sol281-host-windows-contact-w4-41713932288-1/embedded_sand-baseline-w4.json": {
+      "sha256": "9f297ad357c66956589f4ff36fa8fccf1c64af71260265f7e29e2865e4ce60d6",
+      "size": 3166
+    },
+    "hosts/sol281-host-windows-contact-w4-41713932288-1/embedded_sand-baseline-w4.log": {
+      "sha256": "03e3bbff95a9e885ad1cf918aa46b06a1689a1cb9d6a2d5ca8ea26b035ab37c2",
+      "size": 2871
+    },
+    "hosts/sol281-host-windows-contact-w4-41713932288-1/embedded_sand-candidate-w4.json": {
+      "sha256": "f03520124fbbf33b2f0559f37566a4c9db69fc12245b300d96a099f8a5aa78bf",
+      "size": 3218
+    },
+    "hosts/sol281-host-windows-contact-w4-41713932288-1/embedded_sand-candidate-w4.log": {
+      "sha256": "67076f917044ddec57e8f7e1108ea57074f275d2775f435511af0201a30f6856",
+      "size": 2923
+    },
+    "hosts/sol281-host-windows-contact-w4-41713932288-1/import.log": {
+      "sha256": "414151532e90742107fbce802ad29f44e8a8ace7fd1f91310c79546ec24bd731",
+      "size": 35335
+    },
+    "hosts/sol281-host-windows-contact-w4-41713932288-1/inputs-after.json": {
+      "sha256": "d555dea04338e9cbbe2c4543969b5862a68922ca7603c4c66401f34bd66b4264",
+      "size": 126482
+    },
+    "hosts/sol281-host-windows-contact-w4-41713932288-1/inputs-before.json": {
+      "sha256": "d555dea04338e9cbbe2c4543969b5862a68922ca7603c4c66401f34bd66b4264",
+      "size": 126482
+    },
+    "hosts/sol281-host-windows-contact-w4-41713932288-1/mixed-baseline-w4.json": {
+      "sha256": "8196e51a0ed279f5262ba642f4074788e6c726c6c41490d2b2508a3e4a7d1098",
+      "size": 3173
+    },
+    "hosts/sol281-host-windows-contact-w4-41713932288-1/mixed-baseline-w4.log": {
+      "sha256": "bce400a6e4bf03cd26dacc70e1da128fb5037a12b0671d2666b0f2153e1fe3d9",
+      "size": 2878
+    },
+    "hosts/sol281-host-windows-contact-w4-41713932288-1/mixed-candidate-w4.json": {
+      "sha256": "b7ead41c80bf5f5a0be88695a58e7f9936f481ce0a57228e786ae498048447ab",
+      "size": 3210
+    },
+    "hosts/sol281-host-windows-contact-w4-41713932288-1/mixed-candidate-w4.log": {
+      "sha256": "d7d097cb2216047179abb4042f59180bf622261adee7341516aa999f483b624a",
+      "size": 2915
+    },
+    "hosts/sol281-host-windows-contact-w4-41713932288-1/packed_sand-baseline-w4.json": {
+      "sha256": "245a90c1bbe39fe00ac9a8c9fe5c1a6397282576584a895166f2726b93d45fc3",
+      "size": 3180
+    },
+    "hosts/sol281-host-windows-contact-w4-41713932288-1/packed_sand-baseline-w4.log": {
+      "sha256": "2fc100d143a6f73b325c8d18c874c5a41a763eb97f64a0f70270edcced250cb3",
+      "size": 2885
+    },
+    "hosts/sol281-host-windows-contact-w4-41713932288-1/packed_sand-candidate-w4.json": {
+      "sha256": "aa35aaa8edce2f32dc5a250447200e7840d1ac9d92841486ec9b2bb7c6418eac",
+      "size": 3198
+    },
+    "hosts/sol281-host-windows-contact-w4-41713932288-1/packed_sand-candidate-w4.log": {
+      "sha256": "4782e6dc0f68007d60c338515a42e910aaa8c381b04b59f4255c4faa6fc452cd",
+      "size": 2903
+    },
+    "hosts/sol281-host-windows-contact-w4-41713932288-1/performance.jsonl": {
+      "sha256": "c7e1688478f8524b14b826b054f907be5446471ec9f7ad0b170c1e6b83d1fd8c",
+      "size": 87950
+    },
+    "hosts/sol281-host-windows-contact-w4-41713932288-1/report.json": {
+      "sha256": "212413bc3b1183c0aa9fe11d45b2da0f700cbdc36a668242548052c03568b208",
+      "size": 13785529
+    },
+    "hosts/sol281-host-windows-contact-w4-41713932288-1/terrain-w4.log": {
+      "sha256": "4793da169fce7e3f7d9f9a6478826c47224e21fe02de5028c4cddfe4c9db9211",
+      "size": 3510
+    },
+    "hosts/sol281-host-windows-core-41713932288-1/checkout-inputs-after.json": {
+      "sha256": "7e7a482e7e1d26e8792964e2b9e4cee5bd6f0a12426833fa1197ccdb89fd0c70",
+      "size": 126482
+    },
+    "hosts/sol281-host-windows-core-41713932288-1/checkout-inputs-before.json": {
+      "sha256": "7e7a482e7e1d26e8792964e2b9e4cee5bd6f0a12426833fa1197ccdb89fd0c70",
+      "size": 126482
+    },
+    "hosts/sol281-host-windows-core-41713932288-1/compound-response.log": {
+      "sha256": "04629217945cada8d57bcf8352c42d670b35b7a79725f8ae9bd71967f0e9f6cd",
+      "size": 299
+    },
+    "hosts/sol281-host-windows-core-41713932288-1/failure-w1.log": {
+      "sha256": "f72c1fa5ab5dd35e702dd5cea21cbf3002febe41ef6a806fca6e22d54e7a515b",
+      "size": 419
+    },
+    "hosts/sol281-host-windows-core-41713932288-1/failure-w4.log": {
+      "sha256": "db6114d84161a641db5ca2184e0b1ee6ccb6ec3e7affb77ec28959f778749cd8",
+      "size": 419
+    },
+    "hosts/sol281-host-windows-core-41713932288-1/import.log": {
+      "sha256": "414151532e90742107fbce802ad29f44e8a8ace7fd1f91310c79546ec24bd731",
+      "size": 35335
+    },
+    "hosts/sol281-host-windows-core-41713932288-1/inputs-after.json": {
+      "sha256": "d555dea04338e9cbbe2c4543969b5862a68922ca7603c4c66401f34bd66b4264",
+      "size": 126482
+    },
+    "hosts/sol281-host-windows-core-41713932288-1/inputs-before.json": {
+      "sha256": "d555dea04338e9cbbe2c4543969b5862a68922ca7603c4c66401f34bd66b4264",
+      "size": 126482
+    },
+    "hosts/sol281-host-windows-core-41713932288-1/lifecycle.log": {
+      "sha256": "72fbd55f39162519ad2bfb356210eaf2778965cfb67f7aa72e86ed3e5d99708b",
+      "size": 428
+    },
+    "hosts/sol281-host-windows-core-41713932288-1/material-image.log": {
+      "sha256": "e53e187224d88518c6f6fcd03a5e7ce66b163848e7822191203575708c5542ac",
+      "size": 441
+    },
+    "hosts/sol281-host-windows-core-41713932288-1/motion-w1.json": {
+      "sha256": "b4566a77038755aa1d01c7eff9f17e9883c6ed4571c251f16b93d30bec476303",
+      "size": 1957
+    },
+    "hosts/sol281-host-windows-core-41713932288-1/motion-w1.log": {
+      "sha256": "e7094035eb96f7d0f5fe13a2473bd803fce58dbb972fda5a3f7cd82de241102d",
+      "size": 1831
+    },
+    "hosts/sol281-host-windows-core-41713932288-1/motion-w4.json": {
+      "sha256": "4a521f581ed73227a7da12652e7e2e6a42be95cd1eb8daa3f5bffec8bd2c977a",
+      "size": 1957
+    },
+    "hosts/sol281-host-windows-core-41713932288-1/motion-w4.log": {
+      "sha256": "6b106ebb4bad8b5c4be4c93d07bacc2a6eda9eeaf87bad1222519017294209c4",
+      "size": 1831
+    },
+    "hosts/sol281-host-windows-core-41713932288-1/ordinary-capacity.log": {
+      "sha256": "bdc11569c0cd527546b01aa400703b2fde723f1a68e98810da0c1c0461cd231a",
+      "size": 417
+    },
+    "hosts/sol281-host-windows-core-41713932288-1/ordinary-failure.log": {
+      "sha256": "9dfae6c21c7e673c0920911c53058e96cde3505a749917d503efef0af6e87fa2",
+      "size": 1161
+    },
+    "hosts/sol281-host-windows-core-41713932288-1/ordinary-observer.log": {
+      "sha256": "d6a816703db80a04567ddd522d21c3d9371b5beb3049313c2831f8c8646e7738",
+      "size": 300
+    },
+    "hosts/sol281-host-windows-core-41713932288-1/ordinary-rapier.log": {
+      "sha256": "2543f4f43dac52aaabb314d376995262a03a2623753148ea8775d2e0c2dd4cf4",
+      "size": 270
+    },
+    "hosts/sol281-host-windows-core-41713932288-1/performance.jsonl": {
+      "sha256": "ed5b017dcacc65a7ae56b161063ce3f35184003be7f8ff44e46a348ee3e5e8bd",
+      "size": 35766
+    },
+    "hosts/sol281-host-windows-core-41713932288-1/report.json": {
+      "sha256": "67b50b2a0bc2bf85bfcee159725360db05de092a952708ea5e8ed9ba75d63195",
+      "size": 40851
+    },
+    "hosts/sol281-host-windows-mechanism-41713932288-1/checkout-inputs-after.json": {
+      "sha256": "7e7a482e7e1d26e8792964e2b9e4cee5bd6f0a12426833fa1197ccdb89fd0c70",
+      "size": 126482
+    },
+    "hosts/sol281-host-windows-mechanism-41713932288-1/checkout-inputs-before.json": {
+      "sha256": "7e7a482e7e1d26e8792964e2b9e4cee5bd6f0a12426833fa1197ccdb89fd0c70",
+      "size": 126482
+    },
+    "hosts/sol281-host-windows-mechanism-41713932288-1/import.log": {
+      "sha256": "414151532e90742107fbce802ad29f44e8a8ace7fd1f91310c79546ec24bd731",
+      "size": 35335
+    },
+    "hosts/sol281-host-windows-mechanism-41713932288-1/inputs-after.json": {
+      "sha256": "d555dea04338e9cbbe2c4543969b5862a68922ca7603c4c66401f34bd66b4264",
+      "size": 126482
+    },
+    "hosts/sol281-host-windows-mechanism-41713932288-1/inputs-before.json": {
+      "sha256": "d555dea04338e9cbbe2c4543969b5862a68922ca7603c4c66401f34bd66b4264",
+      "size": 126482
+    },
+    "hosts/sol281-host-windows-mechanism-41713932288-1/performance.jsonl": {
+      "sha256": "a798b1ec53170f3495bcba756bf9ce50c5f6bf1b511b4b8f883b67d7f9b74c1d",
+      "size": 8845
+    },
+    "hosts/sol281-host-windows-mechanism-41713932288-1/report.json": {
+      "sha256": "2bd39a009660f15f1f9c0900d34151fcbc3cf29b4accca8df5a7c319d139c2e2",
+      "size": 18925
+    },
+    "hosts/sol281-host-windows-mechanism-41713932288-1/sand-contact-fences.log": {
+      "sha256": "064fb5c31717c9ff1adb98004cd2451f9b04908b2c42eb9d76bcf71188f919a6",
+      "size": 342
+    },
+    "hosts/sol281-host-windows-mechanism-41713932288-1/sand-contact-response.json": {
+      "sha256": "3d0f92689c00f468b73bd041466be0fe92b8a10ff0dad1b6b8e48b9431dac050",
+      "size": 6233
+    },
+    "hosts/sol281-host-windows-mechanism-41713932288-1/sand-contact-response.log": {
+      "sha256": "712f00e02390d48ce27b2bede6f1d07d90dcf9720b1eb72bf3e3c41b92fe618b",
+      "size": 5470
+    }
+  },
+  "publication_paths": [
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/build/linux/before.json",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/build/linux/build.json",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/build/windows/before.json",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/build/windows/build.json",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/host/checkout-inputs-after.json",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/host/checkout-inputs-before.json",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/host/contact-observation-w1.json",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/host/contact-observation-w1.log",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/host/contact-recovery-w1.json",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/host/contact-recovery-w1.log",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/host/coupling-w1.json",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/host/coupling-w1.log",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/host/displacement-w1.json",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/host/displacement-w1.log",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/host/embedded_sand-baseline-w1.json",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/host/embedded_sand-baseline-w1.log",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/host/embedded_sand-candidate-w1.json",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/host/embedded_sand-candidate-w1.log",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/host/import.log",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/host/inputs-after.json",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/host/inputs-before.json",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/host/mixed-baseline-w1.json",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/host/mixed-baseline-w1.log",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/host/mixed-candidate-w1.json",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/host/mixed-candidate-w1.log",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/host/packed_sand-baseline-w1.json",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/host/packed_sand-baseline-w1.log",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/host/packed_sand-candidate-w1.json",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/host/packed_sand-candidate-w1.log",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/host/performance.jsonl",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/host/report.json",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/host/terrain-w1.log",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/prepare-engine/command.log",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/prepare-engine/performance.jsonl",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/prepare-engine/receipt.json",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/prepare-rapier/command.log",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/prepare-rapier/performance.jsonl",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/prepare-rapier/receipt.json",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w4/host/checkout-inputs-after.json",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w4/host/checkout-inputs-before.json",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w4/host/contact-observation-w4.json",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w4/host/contact-observation-w4.log",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w4/host/contact-recovery-w4.json",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w4/host/contact-recovery-w4.log",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w4/host/coupling-w4.json",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w4/host/coupling-w4.log",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w4/host/displacement-w4.json",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w4/host/displacement-w4.log",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w4/host/embedded_sand-baseline-w4.json",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w4/host/embedded_sand-baseline-w4.log",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w4/host/embedded_sand-candidate-w4.json",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w4/host/embedded_sand-candidate-w4.log",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w4/host/import.log",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w4/host/inputs-after.json",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w4/host/inputs-before.json",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w4/host/mixed-baseline-w4.json",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w4/host/mixed-baseline-w4.log",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w4/host/mixed-candidate-w4.json",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w4/host/mixed-candidate-w4.log",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w4/host/packed_sand-baseline-w4.json",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w4/host/packed_sand-baseline-w4.log",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w4/host/packed_sand-candidate-w4.json",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w4/host/packed_sand-candidate-w4.log",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w4/host/performance.jsonl",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w4/host/report.json",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w4/host/terrain-w4.log",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w4/prepare-engine/command.log",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w4/prepare-engine/performance.jsonl",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w4/prepare-engine/receipt.json",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w4/prepare-rapier/command.log",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w4/prepare-rapier/performance.jsonl",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w4/prepare-rapier/receipt.json",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/core/host/checkout-inputs-after.json",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/core/host/checkout-inputs-before.json",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/core/host/compound-response.log",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/core/host/failure-w1.log",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/core/host/failure-w4.log",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/core/host/import.log",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/core/host/inputs-after.json",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/core/host/inputs-before.json",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/core/host/lifecycle.log",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/core/host/material-image.log",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/core/host/motion-w1.json",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/core/host/motion-w1.log",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/core/host/motion-w4.json",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/core/host/motion-w4.log",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/core/host/ordinary-capacity.log",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/core/host/ordinary-failure.log",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/core/host/ordinary-observer.log",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/core/host/ordinary-rapier.log",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/core/host/performance.jsonl",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/core/host/report.json",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/core/prepare-engine/command.log",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/core/prepare-engine/performance.jsonl",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/core/prepare-engine/receipt.json",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/core/prepare-rapier/command.log",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/core/prepare-rapier/performance.jsonl",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/core/prepare-rapier/receipt.json",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/mechanism/host/checkout-inputs-after.json",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/mechanism/host/checkout-inputs-before.json",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/mechanism/host/import.log",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/mechanism/host/inputs-after.json",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/mechanism/host/inputs-before.json",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/mechanism/host/performance.jsonl",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/mechanism/host/report.json",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/mechanism/host/sand-contact-fences.log",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/mechanism/host/sand-contact-response.json",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/mechanism/host/sand-contact-response.log",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/mechanism/prepare-engine/command.log",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/mechanism/prepare-engine/performance.jsonl",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/mechanism/prepare-engine/receipt.json",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/mechanism/prepare-rapier/command.log",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/mechanism/prepare-rapier/performance.jsonl",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/mechanism/prepare-rapier/receipt.json",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w1/checkout-inputs-after.json",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w1/checkout-inputs-before.json",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w1/contact-observation-w1.json",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w1/contact-observation-w1.log",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w1/contact-recovery-w1.json",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w1/contact-recovery-w1.log",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w1/coupling-w1.json",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w1/coupling-w1.log",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w1/displacement-w1.json",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w1/displacement-w1.log",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w1/embedded_sand-baseline-w1.json",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w1/embedded_sand-baseline-w1.log",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w1/embedded_sand-candidate-w1.json",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w1/embedded_sand-candidate-w1.log",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w1/import.log",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w1/inputs-after.json",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w1/inputs-before.json",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w1/mixed-baseline-w1.json",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w1/mixed-baseline-w1.log",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w1/mixed-candidate-w1.json",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w1/mixed-candidate-w1.log",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w1/packed_sand-baseline-w1.json",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w1/packed_sand-baseline-w1.log",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w1/packed_sand-candidate-w1.json",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w1/packed_sand-candidate-w1.log",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w1/performance.jsonl",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w1/report.json",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w1/terrain-w1.log",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w4/checkout-inputs-after.json",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w4/checkout-inputs-before.json",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w4/contact-observation-w4.json",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w4/contact-observation-w4.log",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w4/contact-recovery-w4.json",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w4/contact-recovery-w4.log",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w4/coupling-w4.json",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w4/coupling-w4.log",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w4/displacement-w4.json",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w4/displacement-w4.log",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w4/embedded_sand-baseline-w4.json",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w4/embedded_sand-baseline-w4.log",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w4/embedded_sand-candidate-w4.json",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w4/embedded_sand-candidate-w4.log",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w4/import.log",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w4/inputs-after.json",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w4/inputs-before.json",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w4/mixed-baseline-w4.json",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w4/mixed-baseline-w4.log",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w4/mixed-candidate-w4.json",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w4/mixed-candidate-w4.log",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w4/packed_sand-baseline-w4.json",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w4/packed_sand-baseline-w4.log",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w4/packed_sand-candidate-w4.json",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w4/packed_sand-candidate-w4.log",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w4/performance.jsonl",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w4/report.json",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w4/terrain-w4.log",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/core/checkout-inputs-after.json",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/core/checkout-inputs-before.json",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/core/compound-response.log",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/core/failure-w1.log",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/core/failure-w4.log",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/core/import.log",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/core/inputs-after.json",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/core/inputs-before.json",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/core/lifecycle.log",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/core/material-image.log",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/core/motion-w1.json",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/core/motion-w1.log",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/core/motion-w4.json",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/core/motion-w4.log",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/core/ordinary-capacity.log",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/core/ordinary-failure.log",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/core/ordinary-observer.log",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/core/ordinary-rapier.log",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/core/performance.jsonl",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/core/report.json",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/mechanism/checkout-inputs-after.json",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/mechanism/checkout-inputs-before.json",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/mechanism/import.log",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/mechanism/inputs-after.json",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/mechanism/inputs-before.json",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/mechanism/performance.jsonl",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/mechanism/report.json",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/mechanism/sand-contact-fences.log",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/mechanism/sand-contact-response.json",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/mechanism/sand-contact-response.log",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/linux-validation.json",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/publication-checkout-before.json",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/qualification.json",
+    "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/windows-validation.json",
+    "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+    "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+    "godot/addons/cybersand_native/runtime-provenance.json",
+    "godot/addons/cybersand_native/runtime-provenance.linux.json"
+  ],
+  "ref": "refs/heads/sol-detach-001-current-main",
+  "repository": "techrote/cybersand",
+  "run_attempt": "1",
+  "run_id": "41713932288",
+  "schema": "cybersand.sol281.runtime-publication.v1",
+  "scope": "All four SOL-281 actual-host cohorts on this target OS, including workers 1 and 4, native structural ownership, lifecycle, compound response, conservative replay, exact rotated geometry, registered unilateral-contact mechanisms, repeated populated conservation and ordinary compatibility controls. Complete dense-contact physical quality, general restoration/fracture/gameplay, full repository CI and representative GPU pacing remain separate gates.",
+  "source": {
+    "sha": "5944c13079356fedf96da78c78e83b3898379fee",
+    "tree": "ff889678e5ef24cf7185561aa60b696f95df98d5"
+  },
+  "status": "prepared",
+  "workflow_run": "https://github.com/techrote/cybersand/actions/runs/41713932288"
+}

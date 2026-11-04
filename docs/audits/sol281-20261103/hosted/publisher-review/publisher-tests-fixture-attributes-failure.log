@@ -1,0 +1,28 @@
+......fatal: path '.gitattributes' does not exist in 'HEAD'
+E......
+======================================================================
+ERROR: test_real_git_checkout_still_rejects_unstaged_source_edits (__main__.PublicationTests.test_real_git_checkout_still_rejects_unstaged_source_edits)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/fc488e61157a/cybersand-publisher-review/tools/sol281/test_publish_runtime.py", line 340, in test_real_git_checkout_still_rejects_unstaged_source_edits
+    subject.verify_checkout(inputs, generated)
+  File "/workspace/scratch/fc488e61157a/cybersand-publisher-review/tools/sol281/publish_runtime.py", line 322, in verify_checkout
+    permitted = qualification.committed_crlf_paths(paths)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/fc488e61157a/cybersand-publisher-review/tools/sol281/run_qualification.py", line 56, in committed_crlf_paths
+    attributes = git("show", "HEAD:.gitattributes")
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/fc488e61157a/cybersand-publisher-review/tools/sol281/run_qualification.py", line 44, in git
+    return subprocess.check_output(["git", "-C", str(ROOT), *args],
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/subprocess.py", line 466, in check_output
+    return run(*popenargs, stdout=PIPE, timeout=timeout, check=True,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/subprocess.py", line 571, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['git', '-C', '/tmp/sol281-publish-test-wns0bi0w/unstaged-source', 'show', 'HEAD:.gitattributes']' returned non-zero exit status 128.
+
+----------------------------------------------------------------------
+Ran 13 tests in 0.478s
+
+FAILED (errors=1)

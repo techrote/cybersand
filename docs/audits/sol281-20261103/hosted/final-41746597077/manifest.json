@@ -1,0 +1,197 @@
+{
+  "schema": "cybersand.sol281.final-evidence-manifest.v1",
+  "status": "complete",
+  "source": "749fb8b597ad866f7535f26442e904207c4f7611",
+  "source_tree": "77a7bc2ed4d1f7ab339dd4a16fd082fccf56f0ce",
+  "run_id": 41746597077,
+  "run_attempt": 1,
+  "publication": "89d2eb6d280183e495a94b559776dfd8f1cdc196",
+  "disposition": "Scoped actual-host execution and runtime publication PASS; full-matrix CPU acceptance FAIL (23/24 groups, all12 candidate groups pass); physical/lifecycle acceptance and merge NO-GO.",
+  "retention_scope": "Compact original qualification/publication/native evidence and independent complete host/build/measurement audit. The196 original host files are already byte-authenticated in the publication subtree; no duplicate host or large build archives are added here.",
+  "published_host_subtree": "docs/audits/sol281-20261103/hosted/749fb8b597ad866f7535f26442e904207c4f7611",
+  "original_native_path_mapping": "Scratch compact-linux-native/* is retained byte-for-byte as originals/linux-native/*; three original ZIPs are retained under originals/.",
+  "excluded": "Transient signed download references, large Linux/Windows build archives, duplicate host archives/extractions, optional scratch helper scripts and stale phase files.",
+  "manifest_self_hash_excluded": true,
+  "files": [
+    {
+      "path": "artifact-inventory.json",
+      "bytes": 10886,
+      "sha256": "22d03cf31af33daa3ee92784df1a85d00dc199bda8b986eb2370211371bd827a"
+    },
+    {
+      "path": "build-artifact-inventory.json",
+      "bytes": 3515,
+      "sha256": "20b2e80c2bf6e8d29120552eff089db64f3cfd3864dec0ba533f8ecf4e5baabc"
+    },
+    {
+      "path": "contact-recovery-case-summary.json",
+      "bytes": 250660,
+      "sha256": "35bae2ba1ea1bc3889e83f8e3ea1b933925ac536743ae7750dc8fa353d91bcca"
+    },
+    {
+      "path": "contact-recovery-original-analysis.json",
+      "bytes": 107794,
+      "sha256": "628d12298d2a2fa4140bfd7a7cbc5804c446f4768968487255703e07be52c1f9"
+    },
+    {
+      "path": "final-docs.json",
+      "bytes": 470,
+      "sha256": "d57da61f028b502627a962511cb1f751c862505511bb1d11325af2fc8953450d"
+    },
+    {
+      "path": "final-documentation-validation.json",
+      "bytes": 5057,
+      "sha256": "7263d5ed42db4183977956c50f25515f0faac3d671b05b01b71397da3ffae804"
+    },
+    {
+      "path": "final-evidence-conclusion-review.json",
+      "bytes": 8722,
+      "sha256": "ae679f2323404b3a4eb17df60d70ea8787a55635c4603b0932fdff013c89beff"
+    },
+    {
+      "path": "final-m11.json",
+      "bytes": 308,
+      "sha256": "8a902e9528f585b5d77d40881ac2df4076bff609ad23191bf56b26a0b8d79f3d"
+    },
+    {
+      "path": "final-prose-review.json",
+      "bytes": 6253,
+      "sha256": "5c0000da73aaef0a9add85a751dbfb3e425cbec6b28e270ecd701b63cbc23a53"
+    },
+    {
+      "path": "final-provenance.json",
+      "bytes": 2544,
+      "sha256": "a426abed38932b05e10f58f2b258926104c583a91bc36e6deb732d2bc5ef49aa"
+    },
+    {
+      "path": "final-retrieval-contact.json",
+      "bytes": 108832,
+      "sha256": "9273e7f0de5f57b08854df564f68e41b830d1bbdae358130a965905712e310c0"
+    },
+    {
+      "path": "final-retrieval-default.json",
+      "bytes": 418593,
+      "sha256": "fda19f8eaba93102b5688bdbd71f09638f2b1a32da4e64e5e465264a91ce4935"
+    },
+    {
+      "path": "final-retrieval-structural.json",
+      "bytes": 59578,
+      "sha256": "8cb8f99611ad3fcb27b8c1eee175d06a8a61ace0a6959be6efff3ff78280c59d"
+    },
+    {
+      "path": "host-artifact-member-verification.json",
+      "bytes": 101450,
+      "sha256": "fe0eedacb1150e2b8796aa6d70221916f96d741ad01c5785bbd946466960c7f9"
+    },
+    {
+      "path": "host-download-verification.json",
+      "bytes": 4893,
+      "sha256": "0415a079ef60028c56a594c785c90578a8c1cd5c3cb308b0ecd092c4e204f1aa"
+    },
+    {
+      "path": "independent-build-verification.json",
+      "bytes": 14020,
+      "sha256": "e50f3004e3895d87899b0f5d971eacc6e2b0e872c71b40dd965c3c2d190224bf"
+    },
+    {
+      "path": "independent-contact-retrieval-semantic-review.json",
+      "bytes": 16406,
+      "sha256": "632ac07f68a23a660b6c96c1793e62e124d276f84288aee2c833f86b98f8ba50"
+    },
+    {
+      "path": "independent-final-metric-summary.md",
+      "bytes": 7587,
+      "sha256": "d01ebabc03527287f70a2cb8a955fb264b3642be3b4a6de9419863643815e89d"
+    },
+    {
+      "path": "independent-final-review.json",
+      "bytes": 44768,
+      "sha256": "204a12fcf48156e5969b1012b7a12afeb00ad34e12a0be6601c31e9890c16597"
+    },
+    {
+      "path": "independent-native-artifact-review.json",
+      "bytes": 5711,
+      "sha256": "01668771574d78e75a1f6746b65da207808eb5fbb75d8d8dab44b71092cd949f"
+    },
+    {
+      "path": "independent-qualified-summary-verification.json",
+      "bytes": 3967,
+      "sha256": "93c11b8c4ea38949765cd7f37f733a8d659893e64fd26014f45ca59070721c9b"
+    },
+    {
+      "path": "integration-boundaries.json",
+      "bytes": 1073,
+      "sha256": "f64e6dda8b796322dab5678e7e312b70771a5f8cdf9936b4026fce346cd6c9b5"
+    },
+    {
+      "path": "originals/linux-native/command.log",
+      "bytes": 13913,
+      "sha256": "57b01164b7019c69390a80e9b802de685ac640dda4be4e53b78d2085f7eb09a7"
+    },
+    {
+      "path": "originals/linux-native/performance.jsonl",
+      "bytes": 2728,
+      "sha256": "ccb0d932ce58e855776b3487f4aa17a93fa13a478f6febcec031a4bc1b30c7ab"
+    },
+    {
+      "path": "originals/linux-native/receipt.json",
+      "bytes": 2316,
+      "sha256": "298b2695fbef29e74e03509dea6a4dfd0796e83ce771f7a93bff98fc77d4d468"
+    },
+    {
+      "path": "originals/sol281-msvc-41746597077-1.zip",
+      "bytes": 213196,
+      "sha256": "f6741f935ca499dfe3ece94246bdc693645271ec315833ee42885d868ae3955b"
+    },
+    {
+      "path": "originals/sol281-publication-41746597077-1.zip",
+      "bytes": 24070,
+      "sha256": "ed1b67493aa6212e46d24c03fbebc8b9456344b81e33e9022ca51c9cc8f38624"
+    },
+    {
+      "path": "originals/sol281-qualified-41746597077-1.zip",
+      "bytes": 988,
+      "sha256": "5de0ed25d6f6d25669bfb0418dd979a7f7c60edba3b9391884d6bcda0c25a6ff"
+    },
+    {
+      "path": "publication-documentation-ci.json",
+      "bytes": 19567,
+      "sha256": "af76d2fae936b444f779eebe6c98b87f9e5d49a64e70f9667f9b28bf9b043b64"
+    },
+    {
+      "path": "publication-original.json",
+      "bytes": 132985,
+      "sha256": "1e85c19778cf5e132c1f7e04a445adb6bb6ac15508298f4cc8e756050e5c1822"
+    },
+    {
+      "path": "publisher-repair-publication-map.json",
+      "bytes": 824,
+      "sha256": "98aa52dbf87e5dd939d8d42f99e93219b1293541e26eb05fc8a5636dcfb222af"
+    },
+    {
+      "path": "qualification-original-artifacts.json",
+      "bytes": 3354,
+      "sha256": "c155f59eae1c85c6ef46118078d82a10912fef786a026c45b30fd35ccfd04315"
+    },
+    {
+      "path": "qualification-original-artifacts.log",
+      "bytes": 3354,
+      "sha256": "989fd5b8b3848915cab0c30cef8e01c715a3b8ff8828193bcd77ac2b82736f52"
+    },
+    {
+      "path": "qualification-original.json",
+      "bytes": 3354,
+      "sha256": "c155f59eae1c85c6ef46118078d82a10912fef786a026c45b30fd35ccfd04315"
+    },
+    {
+      "path": "workflow-jobs.json",
+      "bytes": 25618,
+      "sha256": "eadcb148df7ebac62961988dccdd8f9d84c82653fbd42101b866594182860736"
+    },
+    {
+      "path": "workflow-run.json",
+      "bytes": 14087,
+      "sha256": "6bdcec12f680581044da119622b6922cbdc356f3abac5d59fede034b8a8c10da"
+    }
+  ]
+}

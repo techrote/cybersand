@@ -1,0 +1,84 @@
+{
+  "schema": "cybersand.sol364.development-apparatus-failure.v1",
+  "status": "failed_apparatus_comparison",
+  "reason": "Default auto-sleep at Rapier step31 removes baseline/stale kinetic energy without contact response; traces must not qualify contact-caused arrest. Final fixture disables sleep uniformly, retains all physical thresholds, records per-step sleeping and integration-energy changes.",
+  "source_scope": "uncommitted fixture input bytes retained exactly; not exact-head qualification",
+  "runtime_native_sha256": "a013aa7148be8716badf41fb2bb1f3ae28e19862b970b390e2f8930493a92a0f",
+  "files": [
+    {
+      "path": "README.txt",
+      "sha256": "d590fc6fb5c717c663e9c9c0c07a6e1e07ff9ddda3bde2e1ae53665abb8e7b4d",
+      "bytes": 523
+    },
+    {
+      "path": "sol364-sync-w1-first.json.gz",
+      "sha256": "1078ce33027621b0d829ee5e83abaf6432a889a6dd74e81b11e8d185a5b30392",
+      "bytes": 1381883,
+      "uncompressed_path": "sol364-sync-w1-first.json",
+      "uncompressed_sha256": "a3b444b92b2b7245ce6af3771b31588d6cbbab14ecab904cd89d21f9c4b6cd86",
+      "uncompressed_bytes": 15078220
+    },
+    {
+      "path": "sol364-sync-w4-first.json.gz",
+      "sha256": "68f0a73203c320a67714441ed03d87be68858b193c7a38d399b3dff29e75d6a6",
+      "bytes": 1380767,
+      "uncompressed_path": "sol364-sync-w4-first.json",
+      "uncompressed_sha256": "0fdaeba8a9ffe10cf38f7a28f539e42647c4d70e7ce1a10831576a2273957dcd",
+      "uncompressed_bytes": 15073302
+    },
+    {
+      "path": "solid_contact_response_749fb8b.gd",
+      "sha256": "d5bebb75d81cf5bc0dce756f7a844f19ad9f145fbd9ca96775ad8f999a061d6d",
+      "bytes": 18934
+    },
+    {
+      "path": "solid_contact_synchronized_fixture.gd",
+      "sha256": "f8a40446138f128bee7b336a5be00f6f39b1c082d3af593d60f6c552d6aef5e0",
+      "bytes": 9300
+    },
+    {
+      "path": "synchronized_contacts.json",
+      "sha256": "3d3ad92bc7d03d4cc89506ead7ce69f7a0bd3d3ebb8a254eca03b00f2e140cdd",
+      "bytes": 2322
+    },
+    {
+      "path": "test_solid_contact_synchronized.gd",
+      "sha256": "cafbe5363f1fac9a8fe8b8dbd798aa3a0eaccb30cf83a727ae1ebdf929f47ff6",
+      "bytes": 32592
+    },
+    {
+      "path": "scripts__solid_contact_response.gd",
+      "original_path": "godot/scripts/solid_contact_response.gd",
+      "sha256": "4fa2e74e5cef1f5b211e1a71287acc358d2984e6fb8bdb03cd977adbed473be1",
+      "bytes": 20154
+    },
+    {
+      "path": "scripts__rapier_physics_bridge.gd",
+      "original_path": "godot/scripts/rapier_physics_bridge.gd",
+      "sha256": "1988bbfe56a91c35a27a91726345358e26ee39839c747a131151e9a53f6b28a6",
+      "bytes": 44555
+    }
+  ],
+  "input_hashes": {
+    "scripts/rapier_physics_bridge.gd": "1988bbfe56a91c35a27a91726345358e26ee39839c747a131151e9a53f6b28a6",
+    "scripts/solid_contact_response.gd": "4fa2e74e5cef1f5b211e1a71287acc358d2984e6fb8bdb03cd977adbed473be1",
+    "tests/fixtures/sol364/synchronized_contacts.json": "3d3ad92bc7d03d4cc89506ead7ce69f7a0bd3d3ebb8a254eca03b00f2e140cdd",
+    "tests/support/solid_contact_response_749fb8b.gd": "d5bebb75d81cf5bc0dce756f7a844f19ad9f145fbd9ca96775ad8f999a061d6d",
+    "tests/support/solid_contact_synchronized_fixture.gd": "f8a40446138f128bee7b336a5be00f6f39b1c082d3af593d60f6c552d6aef5e0",
+    "tests/test_solid_contact_synchronized.gd": "cafbe5363f1fac9a8fe8b8dbd798aa3a0eaccb30cf83a727ae1ebdf929f47ff6"
+  },
+  "omitted_console_log_hashes": [
+    {
+      "path": "sol364-sync-w1-first.log",
+      "sha256": "252ec414d41f537e23d4e03745f0521021452c005906ef1e9b95964df92be5ed",
+      "bytes": 3187,
+      "reason": "redundant console footer; complete raw trace report retained losslessly"
+    },
+    {
+      "path": "sol364-sync-w4-first.log",
+      "sha256": "cb03f8f2b341f7f2f30c0742ceafba47d4a85c020e687bac7c39601ac8bc846d",
+      "bytes": 3187,
+      "reason": "redundant console footer; complete raw trace report retained losslessly"
+    }
+  ]
+}

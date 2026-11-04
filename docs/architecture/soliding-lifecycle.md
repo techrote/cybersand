@@ -10,6 +10,19 @@ related-documents: [data-ownership-and-lifetimes.md, rigid-body-and-cellular-cou
 
 # Scalable soliding representation lifecycle
 
+## Bounded live structural ownership — 2026-11-01
+
+**Current opt-in implementation:** [native structural detachment](../systems/solid-detachment.md)
+implements one homogeneous ambient Wall/RedBrick aggregate using real World
+payload, an inactive compound Rapier reservation and fenced static-collision
+replacement. This is separate from the historical standalone lifecycle model
+and global settled-region acceleration. Inactive rollback is supported; sleeping
+or moved aggregates remain aggregate-owned, with transformed desoliding,
+fracture and persistence explicitly deferred. Sand/Current Water may remain
+noncohesive boundary contacts. See the runtime contract for exact refusal,
+capacity, generation and local displacement rules.
+
+
 ## What is implemented, and what is the approved direction?
 
 **Approved requirement:** [issue #12](https://github.com/techrote/cybersand/issues/12)

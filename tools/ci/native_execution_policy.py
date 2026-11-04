@@ -52,7 +52,8 @@ COMMANDS = {
             f"build/test_{name}_sanitized" for name in (
                 "soliding_lifecycle", "settled_discovery", "settled_regions",
                 "settled_world_discovery", "stage3b_runtime_storage", "stage3b_bounded_spatial_index",
-                "stage3b_sparse_mutation_witness", "stage3b_sparse_activity_deadline")]]),
+                "stage3b_sparse_mutation_witness", "stage3b_sparse_activity_deadline",
+                "solid_detachment", "conservative_displacement")]]),
         ("soliding-sanitize", "native_case_seconds", [*ASAN, "make", "soliding-sanitize"]),
     ],
 }

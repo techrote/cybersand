@@ -10,6 +10,20 @@ related-documents: [source-checkpoint-and-recovery.md, testing-validation-and-re
 
 # Local build and validation
 
+## Structural detachment qualification — 2026-11-01
+
+Build a source-matched native extension before opening
+`godot/solid_detachment_lab.tscn`; retained main libraries do not implement the
+new API. `make solid-detachment-test conservative-displacement-test` and their
+`-sanitize` counterparts exercise native ownership/transactions. The scoped
+`tools/sol281/run_qualification.py` runner and
+[GitHub-hosted workflow](../../.github/workflows/sol281-current-main.yml) qualify
+actual Linux/Windows Godot/Rapier with workers1/4 and retain exact source/runtime
+identities. The [runtime guide](../systems/solid-detachment.md) owns controls;
+the [dated ledger](../audits/2026-11-01-sol281-current-main.md) records failures,
+results and remaining graphical/hardware gates. Headless timing is not GPU FPS.
+
+
 ## PLAY LIFE010 raw-evidence gate — 2026-10-31
 
 The five `test_play_life010_<rig>.gd` wrappers are discovered by the unchanged

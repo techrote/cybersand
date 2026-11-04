@@ -1,0 +1,113 @@
+{
+  "schema": "cybersand.sol364.independent-cohort-review.v1",
+  "source": {
+    "sha": "9edc4f8f7d8cd8fc65119d176c9e1981ab6ea77d",
+    "tree": "b5baf8b23ff947c2d7b70e69745c10f18fbe9ebe"
+  },
+  "run_id": "41815817333",
+  "run_attempt": "1",
+  "status": "passed-execution-verification",
+  "platform": "Windows",
+  "cohort": "core",
+  "cases": 11,
+  "report_sha256": "e8e2d8210ec47fafb1148da9d39b6865fc284e1c9f984c8221ad5b605c45d5da",
+  "runtime": {
+    "filename": "cybersand_native.windows.x86_64.dll",
+    "sha256": "a5e616c0e72eee56c84f66151499d401dd3f4fb7faab347adbc6335493fefd61",
+    "size": 4925952
+  },
+  "imports": 1,
+  "structured_checks": 538,
+  "ordinary_controls": 4,
+  "source_and_raw_checkout_unchanged": true,
+  "engine": {
+    "archive_algorithm": "sha512",
+    "archive_hash": "41645a908eb3181d6f2d1201ed7b6d6f095f6a23aaed8903d5d255277cc8d142814f3e6817f865b3cac142c39b8aff99280091d3bbdaa301517730b3ba0522b9",
+    "executables": {
+      "Godot_v4.7-stable_win64.exe": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+      "Godot_v4.7-stable_win64_console.exe": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c"
+    },
+    "version": "4.7.stable.official.5b4e0cb0f"
+  },
+  "rapier": {
+    "lock_sha256": "df24cf6fb1adc17b2c1675b1387db19c93ee31d6cbf497c9295647ec98371285",
+    "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+    "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+    "size": 9987072
+  },
+  "records": [
+    {
+      "name": "motion-w1",
+      "checks": 22,
+      "original_log_sha256": "e7094035eb96f7d0f5fe13a2473bd803fce58dbb972fda5a3f7cd82de241102d",
+      "result": {
+        "path": "motion-w1.json",
+        "sha256": "b4566a77038755aa1d01c7eff9f17e9883c6ed4571c251f16b93d30bec476303"
+      }
+    },
+    {
+      "name": "motion-w4",
+      "checks": 22,
+      "original_log_sha256": "77c72236df6c639361e9eb005f0a20a0d7980dd1e0ed6ab3018c298d75ebd78c",
+      "result": {
+        "path": "motion-w4.json",
+        "sha256": "7ce1f2b335f01e31643a571c46029f72ca3f2b12249867707910fd03d83393f5"
+      }
+    },
+    {
+      "name": "failure-w1",
+      "checks": 58,
+      "original_log_sha256": "322c3104fe346738872ac364fec53974cfa647758d067ed89486a1170527f9d9",
+      "result": null
+    },
+    {
+      "name": "failure-w4",
+      "checks": 58,
+      "original_log_sha256": "4b133014ceaafb0bd51f8879d48c7b1ba707cc963ed24011c476659fa9c8bb99",
+      "result": null
+    },
+    {
+      "name": "lifecycle",
+      "checks": 328,
+      "original_log_sha256": "72fbd55f39162519ad2bfb356210eaf2778965cfb67f7aa72e86ed3e5d99708b",
+      "result": null
+    },
+    {
+      "name": "compound-response",
+      "checks": 33,
+      "original_log_sha256": "04629217945cada8d57bcf8352c42d670b35b7a79725f8ae9bd71967f0e9f6cd",
+      "result": null
+    },
+    {
+      "name": "material-image",
+      "checks": 17,
+      "original_log_sha256": "e53e187224d88518c6f6fcd03a5e7ce66b163848e7822191203575708c5542ac",
+      "result": null
+    },
+    {
+      "name": "ordinary-observer",
+      "checks": 0,
+      "original_log_sha256": "d6a816703db80a04567ddd522d21c3d9371b5beb3049313c2831f8c8646e7738",
+      "result": null
+    },
+    {
+      "name": "ordinary-rapier",
+      "checks": 0,
+      "original_log_sha256": "2543f4f43dac52aaabb314d376995262a03a2623753148ea8775d2e0c2dd4cf4",
+      "result": null
+    },
+    {
+      "name": "ordinary-failure",
+      "checks": 0,
+      "original_log_sha256": "9dfae6c21c7e673c0920911c53058e96cde3505a749917d503efef0af6e87fa2",
+      "result": null
+    },
+    {
+      "name": "ordinary-capacity",
+      "checks": 0,
+      "original_log_sha256": "bdc11569c0cd527546b01aa400703b2fde723f1a68e98810da0c1c0461cd231a",
+      "result": null
+    }
+  ],
+  "scope": "Actual hosted source-bound headless runtime execution; physical acceptance, GPU pacing and compatibility gates remain separate."
+}

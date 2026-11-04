@@ -10,6 +10,28 @@ related-documents: [architecture-programme.md, ../architecture/soliding-lifecycl
 
 # Scalable reversible soliding programme
 
+## Structural detachment track — 2026-11-01
+
+**Current experimental source / broader Approved direction:** the bounded
+[structural detachment runtime](../systems/solid-detachment.md) now ports the real
+native-tree ownership proof onto accepted main `a8f08a67` and adds conservative local
+Sand/Water relocation. Its [dated qualification](../audits/2026-11-01-sol281-current-main.md)
+keeps partial source/host gates distinct from complete #281/#12 acceptance.
+The owner prioritizes native support loss → genuine Rapier toppling/rolling.
+Track A does not wait for Stage3B #66–#70 or GCR completion. Track B retains its
+existing #66 → #67 → #68 → #70 and separate Stage4 gates. The frozen #283 archive
+and unmerged #282 specification retain their original identities. Reactive
+cohesion, fracture, active restoration and persistence remain deferred here.
+
+The [4 November SOL364 source and gate ledger](../audits/2026-11-04-sol364-recovery.md)
+qualifies synchronized contact replay and one original-witness correction on
+accepted MAT-AUTH main. The new complete 24-group cost gate passes; sustained
+clearance still fails, and the preserved two-consumer compatibility guard blocks
+integration. #364's next bounded recovery constraint must address existing
+penetration with explicit work accounting. #365 remains blocked, #281/#12 open,
+and #347 draft/unmerged; Stage 3B and the separate Y1/GCR paths are unchanged.
+
+
 ## What does issue 12 now own?
 
 **Approved owner direction, implementation Planned:** [issue #12](https://github.com/techrote/cybersand/issues/12)

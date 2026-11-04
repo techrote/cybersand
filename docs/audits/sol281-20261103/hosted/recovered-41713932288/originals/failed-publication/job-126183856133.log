@@ -1,0 +1,628 @@
+﻿2026-11-03T20:25:57.1673797Z Current runner version: '2.338.2'
+2026-11-03T20:25:57.1699957Z ##[group]Runner Image Provisioner
+2026-11-03T20:25:57.1701179Z Hosted Compute Agent
+2026-11-03T20:25:57.1701935Z Version: 20261028.624
+2026-11-03T20:25:57.1702614Z Commit: 54898b74c23fde5556c9b3c3a2290865feef0dfe
+2026-11-03T20:25:57.1703457Z Build Date: 2026-10-28T21:51:42Z
+2026-11-03T20:25:57.1704160Z Worker ID: {5a2dcfb3-7f24-4b93-8a92-9b479d9903d1}
+2026-11-03T20:25:57.1704865Z Region: eastus2
+2026-11-03T20:25:57.1705485Z Cloud: Azure
+2026-11-03T20:25:57.1706074Z ##[endgroup]
+2026-11-03T20:25:57.1708201Z ##[group]Operating System
+2026-11-03T20:25:57.1708902Z Ubuntu
+2026-11-03T20:25:57.1709440Z 24.04.5
+2026-11-03T20:25:57.1710023Z LTS
+2026-11-03T20:25:57.1711226Z ##[endgroup]
+2026-11-03T20:25:57.1712055Z ##[group]Runner Image
+2026-11-03T20:25:57.1712696Z Image: ubuntu-24.04
+2026-11-03T20:25:57.1713276Z Version: 20261101.360.1
+2026-11-03T20:25:57.1714641Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261101.360/images/ubuntu/Ubuntu2404-Readme.md
+2026-11-03T20:25:57.1716233Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261101.360
+2026-11-03T20:25:57.1717365Z ##[endgroup]
+2026-11-03T20:25:57.1718540Z ##[group]GITHUB_TOKEN Permissions
+2026-11-03T20:25:57.1721241Z Actions: write
+2026-11-03T20:25:57.1721866Z Contents: write
+2026-11-03T20:25:57.1722537Z Metadata: read
+2026-11-03T20:25:57.1723149Z ##[endgroup]
+2026-11-03T20:25:57.1725224Z Secret source: Actions
+2026-11-03T20:25:57.1726371Z Cache mode: write
+2026-11-03T20:25:57.1727315Z Prepare workflow directory
+2026-11-03T20:25:57.2129147Z Prepare all required actions
+2026-11-03T20:25:57.2177468Z Getting action download info
+2026-11-03T20:25:57.4887163Z Download action repository 'actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683' (SHA:11bd71901bbe5b1630ceea73d27597364c9af683)
+2026-11-03T20:25:57.5872630Z Download action repository 'actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093' (SHA:d3f86a106a0bac45b974a628896c90dbdf5c8093)
+2026-11-03T20:25:57.7942920Z Download action repository 'actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+2026-11-03T20:25:58.0127870Z Complete job name: publish qualified development runtimes on the draft branch
+2026-11-03T20:25:58.1132495Z ##[group]Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+2026-11-03T20:25:58.1133563Z with:
+2026-11-03T20:25:58.1133999Z   fetch-depth: 0
+2026-11-03T20:25:58.1134450Z   lfs: false
+2026-11-03T20:25:58.1134962Z   repository: techrote/cybersand
+2026-11-03T20:25:58.1138938Z   token: ***
+2026-11-03T20:25:58.1139378Z   ssh-strict: true
+2026-11-03T20:25:58.1139823Z   ssh-user: git
+2026-11-03T20:25:58.1140514Z   persist-credentials: true
+2026-11-03T20:25:58.1141007Z   clean: true
+2026-11-03T20:25:58.1141457Z   sparse-checkout-cone-mode: true
+2026-11-03T20:25:58.1141986Z   fetch-tags: false
+2026-11-03T20:25:58.1142436Z   show-progress: true
+2026-11-03T20:25:58.1142894Z   submodules: false
+2026-11-03T20:25:58.1143362Z   set-safe-directory: true
+2026-11-03T20:25:58.1144123Z env:
+2026-11-03T20:25:58.1144576Z   CYBERSAND_CI_WATCHDOG_SCALE: 1
+2026-11-03T20:25:58.1145118Z   GODOT_SILENCE_ROOT_WARNING: 1
+2026-11-03T20:25:58.1145621Z   PYTHONUTF8: 1
+2026-11-03T20:25:58.1146200Z   GODOT_CPP_COMMIT: 101ae38034304346a46ea9ea84ae156d3e860496
+2026-11-03T20:25:58.1147411Z   LLVM_MINGW_URL: https://github.com/mstorsjo/llvm-mingw/releases/download/20260826/llvm-mingw-20260826-ucrt-ubuntu-22.04-x86_64.tar.xz
+2026-11-03T20:25:58.1148759Z   LLVM_MINGW_SHA256: cee8d2ce3da5145ce4dc882e70d0b0719a783d53a99752c60948fc0659975a65
+2026-11-03T20:25:58.1149550Z ##[endgroup]
+2026-11-03T20:25:58.4503443Z Syncing repository: techrote/cybersand
+2026-11-03T20:25:58.4505319Z ##[group]Getting Git version info
+2026-11-03T20:25:58.4506106Z Working directory is '/home/runner/work/cybersand/cybersand'
+2026-11-03T20:25:58.4507159Z [command]/usr/bin/git version
+2026-11-03T20:25:58.4689370Z git version 2.56.0
+2026-11-03T20:25:58.4712000Z ##[endgroup]
+2026-11-03T20:25:58.4727461Z Temporarily overriding HOME='/home/runner/work/_temp/79f17dac-aa1f-44d1-aca2-f0f1c9add757' before making global git config changes
+2026-11-03T20:25:58.4730083Z Adding repository directory to the temporary git global config as a safe directory
+2026-11-03T20:25:58.4732518Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/cybersand/cybersand
+2026-11-03T20:25:58.4796045Z Deleting the contents of '/home/runner/work/cybersand/cybersand'
+2026-11-03T20:25:58.4801319Z ##[group]Initializing the repository
+2026-11-03T20:25:58.4805788Z [command]/usr/bin/git init /home/runner/work/cybersand/cybersand
+2026-11-03T20:25:58.4925965Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-11-03T20:25:58.4928246Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-11-03T20:25:58.4930094Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-11-03T20:25:58.4931870Z hint: call:
+2026-11-03T20:25:58.4932781Z hint:
+2026-11-03T20:25:58.4933813Z hint: 	git config --global init.defaultBranch <name>
+2026-11-03T20:25:58.4935011Z hint:
+2026-11-03T20:25:58.4936186Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-11-03T20:25:58.4937974Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-11-03T20:25:58.4939310Z hint:
+2026-11-03T20:25:58.4940056Z hint: 	git branch -m <name>
+2026-11-03T20:25:58.4941089Z hint:
+2026-11-03T20:25:58.4942192Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-11-03T20:25:58.4943983Z Initialized empty Git repository in /home/runner/work/cybersand/cybersand/.git/
+2026-11-03T20:25:58.4955992Z [command]/usr/bin/git remote add origin https://github.com/techrote/cybersand
+2026-11-03T20:25:58.5008716Z ##[endgroup]
+2026-11-03T20:25:58.5010432Z ##[group]Disabling automatic garbage collection
+2026-11-03T20:25:58.5014409Z [command]/usr/bin/git config --local gc.auto 0
+2026-11-03T20:25:58.5051526Z ##[endgroup]
+2026-11-03T20:25:58.5053281Z ##[group]Setting up auth
+2026-11-03T20:25:58.5059600Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-03T20:25:58.5099195Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-03T20:25:58.5532510Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-03T20:25:58.5578955Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-03T20:25:58.5826213Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-11-03T20:25:58.5878635Z ##[endgroup]
+2026-11-03T20:25:58.5879589Z ##[group]Fetching the repository
+2026-11-03T20:25:58.5893309Z [command]/usr/bin/git -c protocol.version=2 fetch --prune --no-recurse-submodules origin +refs/heads/*:refs/remotes/origin/* +refs/tags/*:refs/tags/*
+2026-11-03T20:28:33.4943515Z From https://github.com/techrote/cybersand
+2026-11-03T20:28:33.4944744Z  * [new branch]        avrea/convert-09ccaeffecbe  -> origin/avrea/convert-09ccaeffecbe
+2026-11-03T20:28:33.4945904Z  * [new branch]        avrea/convert-6905f97e81b2  -> origin/avrea/convert-6905f97e81b2
+2026-11-03T20:28:33.4946908Z  * [new branch]        avrea/convert-b12ea4f16103  -> origin/avrea/convert-b12ea4f16103
+2026-11-03T20:28:33.4948271Z  * [new branch]        avrea/convert-df472865011b  -> origin/avrea/convert-df472865011b
+2026-11-03T20:28:33.4949781Z  * [new branch]        bench/weekend-slim-avrea-2026-09-19 -> origin/bench/weekend-slim-avrea-2026-09-19
+2026-11-03T20:28:33.4951669Z  * [new branch]        chatgpt/issue-233-physical-timeout-diagnostics -> origin/chatgpt/issue-233-physical-timeout-diagnostics
+2026-11-03T20:28:33.4953873Z  * [new branch]        chatgpt/lcb001-pressure-publisher-prep -> origin/chatgpt/lcb001-pressure-publisher-prep
+2026-11-03T20:28:33.4955216Z  * [new branch]        ci/circleci-windows-cutover -> origin/ci/circleci-windows-cutover
+2026-11-03T20:28:33.4956053Z  * [new branch]        ci/circleci-windows-gdext   -> origin/ci/circleci-windows-gdext
+2026-11-03T20:28:33.5042602Z  * [new branch]        ci/draft-pr-cost-guard      -> origin/ci/draft-pr-cost-guard
+2026-11-03T20:28:33.5044503Z  * [new branch]        ci/fix-gdextension-ready-regressions -> origin/ci/fix-gdextension-ready-regressions
+2026-11-03T20:28:33.5046223Z  * [new branch]        ci/gdextension-linux-shards-stage-a -> origin/ci/gdextension-linux-shards-stage-a
+2026-11-03T20:28:33.5047717Z  * [new branch]        ci/native-parallel-isolated-20261030 -> origin/ci/native-parallel-isolated-20261030
+2026-11-03T20:28:33.5049036Z  * [new branch]        ci/native-scope-advisory-20261030 -> origin/ci/native-scope-advisory-20261030
+2026-11-03T20:28:33.5050743Z  * [new branch]        ci/parallel-production-integration-20261031 -> origin/ci/parallel-production-integration-20261031
+2026-11-03T20:28:33.5052047Z  * [new branch]        ci/restore-github-hosted-runners -> origin/ci/restore-github-hosted-runners
+2026-11-03T20:28:33.5053096Z  * [new branch]        ci/sengi-benchmark-run      -> origin/ci/sengi-benchmark-run
+2026-11-03T20:28:33.5054063Z  * [new branch]        ci/sengi-defaults           -> origin/ci/sengi-defaults
+2026-11-03T20:28:33.5061566Z  * [new branch]        ci/windows-four-shard-isolated-20261030 -> origin/ci/windows-four-shard-isolated-20261030
+2026-11-03T20:28:33.5062815Z  * [new branch]        circleci-project-setup      -> origin/circleci-project-setup
+2026-11-03T20:28:33.5063875Z  * [new branch]        circleci/pilot-issue61      -> origin/circleci/pilot-issue61
+2026-11-03T20:28:33.5064883Z  * [new branch]        claude/dazzling-nobel-943f75 -> origin/claude/dazzling-nobel-943f75
+2026-11-03T20:28:33.5066125Z  * [new branch]        claude/lcb-physics-prepass  -> origin/claude/lcb-physics-prepass
+2026-11-03T20:28:33.5067176Z  * [new branch]        claude/lcb000-comparison-design -> origin/claude/lcb000-comparison-design
+2026-11-03T20:28:33.5068616Z  * [new branch]        claude/lcb000-water-architecture -> origin/claude/lcb000-water-architecture
+2026-11-03T20:28:33.5069735Z  * [new branch]        claude/lcb001-pressure-reference -> origin/claude/lcb001-pressure-reference
+2026-11-03T20:28:33.5071218Z  * [new branch]        claude/lcb003-scenario-qualification -> origin/claude/lcb003-scenario-qualification
+2026-11-03T20:28:33.5072302Z  * [new branch]        claude/lcb005-inertial      -> origin/claude/lcb005-inertial
+2026-11-03T20:28:33.5073378Z  * [new branch]        claude/palette-fxc-cost     -> origin/claude/palette-fxc-cost
+2026-11-03T20:28:33.5074556Z  * [new branch]        claude/render-copy-per-run  -> origin/claude/render-copy-per-run
+2026-11-03T20:28:33.5075662Z  * [new branch]        claude/ui005-real-cursor-click -> origin/claude/ui005-real-cursor-click
+2026-11-03T20:28:33.5076844Z  * [new branch]        claude/water-pressure-prototype -> origin/claude/water-pressure-prototype
+2026-11-03T20:28:33.5077927Z  * [new branch]        claude/window-placement     -> origin/claude/window-placement
+2026-11-03T20:28:33.5079028Z  * [new branch]        codex/act001-actor-control-prototypes -> origin/codex/act001-actor-control-prototypes
+2026-11-03T20:28:33.5080463Z  * [new branch]        codex/act002-actor-rig-sets -> origin/codex/act002-actor-rig-sets
+2026-11-03T20:28:33.5081660Z  * [new branch]        codex/act003-thunderbowl-control-lab -> origin/codex/act003-thunderbowl-control-lab
+2026-11-03T20:28:33.5082855Z  * [new branch]        codex/act004-complete-41-rigs -> origin/codex/act004-complete-41-rigs
+2026-11-03T20:28:33.5083950Z  * [new branch]        codex/c128-workflow-publication -> origin/codex/c128-workflow-publication
+2026-11-03T20:28:33.5085277Z  * [new branch]        codex/ci-scheduling-rehabilitation-20261101 -> origin/codex/ci-scheduling-rehabilitation-20261101
+2026-11-03T20:28:33.5086943Z  * [new branch]        codex/ci-worker-parity-shard-fix -> origin/codex/ci-worker-parity-shard-fix
+2026-11-03T20:28:33.5088143Z  * [new branch]        codex/combined-feature-launcher -> origin/codex/combined-feature-launcher
+2026-11-03T20:28:33.5089371Z  * [new branch]        codex/exploratory-actor-selection -> origin/codex/exploratory-actor-selection
+2026-11-03T20:28:33.5090804Z  * [new branch]        codex/gcr-admission-only-20261101 -> origin/codex/gcr-admission-only-20261101
+2026-11-03T20:28:33.5091666Z  * [new branch]        codex/gcr-detachment-integration-20261101 -> origin/codex/gcr-detachment-integration-20261101
+2026-11-03T20:28:33.5092441Z  * [new branch]        codex/gcr-load-aware-20261102 -> origin/codex/gcr-load-aware-20261102
+2026-11-03T20:28:33.5093100Z  * [new branch]        codex/gcr-rest-comparison-20261102 -> origin/codex/gcr-rest-comparison-20261102
+2026-11-03T20:28:33.5093833Z  * [new branch]        codex/gcr001-category-contact-20261101 -> origin/codex/gcr001-category-contact-20261101
+2026-11-03T20:28:33.5094558Z  * [new branch]        codex/gen007-source-checkpoint -> origin/codex/gen007-source-checkpoint
+2026-11-03T20:28:33.5095265Z  * [new branch]        codex/gen007-workbench-qualification -> origin/codex/gen007-workbench-qualification
+2026-11-03T20:28:33.5096098Z  * [new branch]        codex/granular-bearing-candidates-20261101 -> origin/codex/granular-bearing-candidates-20261101
+2026-11-03T20:28:33.5097009Z  * [new branch]        codex/granular-bearing-pre-overlap-20261101 -> origin/codex/granular-bearing-pre-overlap-20261101
+2026-11-03T20:28:33.5097765Z  * [new branch]        codex/h-gate-capture-ux     -> origin/codex/h-gate-capture-ux
+2026-11-03T20:28:33.5098422Z  * [new branch]        codex/issue-10-player-and-exchange -> origin/codex/issue-10-player-and-exchange
+2026-11-03T20:28:33.5099271Z  * [new branch]        codex/issue-11-repair       -> origin/codex/issue-11-repair
+2026-11-03T20:28:33.5099985Z  * [new branch]        codex/issue-12-incremental-foundation -> origin/codex/issue-12-incremental-foundation
+2026-11-03T20:28:33.5101185Z  * [new branch]        codex/issue-12-soliding     -> origin/codex/issue-12-soliding
+2026-11-03T20:28:33.5102697Z  * [new branch]        codex/issue-12-stage3-freeze -> origin/codex/issue-12-stage3-freeze
+2026-11-03T20:28:33.5104028Z  * [new branch]        codex/issue-12-stage3-integration -> origin/codex/issue-12-stage3-integration
+2026-11-03T20:28:33.5105430Z  * [new branch]        codex/issue-12-stage3b-architecture-packet -> origin/codex/issue-12-stage3b-architecture-packet
+2026-11-03T20:28:33.5106850Z  * [new branch]        codex/issue-12-stage3b-production-plan -> origin/codex/issue-12-stage3b-production-plan
+2026-11-03T20:28:33.5108100Z  * [new branch]        codex/issue-135-gameplay-recording -> origin/codex/issue-135-gameplay-recording
+2026-11-03T20:28:33.5109392Z  * [new branch]        codex/issue-15-liquid-characterization -> origin/codex/issue-15-liquid-characterization
+2026-11-03T20:28:33.5110955Z  * [new branch]        codex/issue-16-cell-layout  -> origin/codex/issue-16-cell-layout
+2026-11-03T20:28:33.5112154Z  * [new branch]        codex/issue-160-contact-fixture-20261019 -> origin/codex/issue-160-contact-fixture-20261019
+2026-11-03T20:28:33.5113405Z  * [new branch]        codex/issue-17-state-precision -> origin/codex/issue-17-state-precision
+2026-11-03T20:28:33.5114568Z  * [new branch]        codex/issue-182-physical-usables -> origin/codex/issue-182-physical-usables
+2026-11-03T20:28:33.5115681Z  * [new branch]        codex/issue-19-water-feel-lab -> origin/codex/issue-19-water-feel-lab
+2026-11-03T20:28:33.5117074Z  * [new branch]        codex/issue-19-water-feel-lab-sync -> origin/codex/issue-19-water-feel-lab-sync
+2026-11-03T20:28:33.5117713Z  * [new branch]        codex/issue-24-focus-fix    -> origin/codex/issue-24-focus-fix
+2026-11-03T20:28:33.5118305Z  * [new branch]        codex/issue-26-water-leveling -> origin/codex/issue-26-water-leveling
+2026-11-03T20:28:33.5119239Z  * [new branch]        codex/issue-26-water-leveling-2026-09-19 -> origin/codex/issue-26-water-leveling-2026-09-19
+2026-11-03T20:28:33.5120011Z  * [new branch]        codex/issue-27-microscenarios-harness -> origin/codex/issue-27-microscenarios-harness
+2026-11-03T20:28:33.5121091Z  * [new branch]        codex/issue-27-ms000-validated -> origin/codex/issue-27-ms000-validated
+2026-11-03T20:28:33.5121724Z  * [new branch]        codex/issue-28-finalize-review -> origin/codex/issue-28-finalize-review
+2026-11-03T20:28:33.5122287Z  * [new branch]        codex/issue-28-ms001        -> origin/codex/issue-28-ms001
+2026-11-03T20:28:33.5122796Z  * [new branch]        codex/issue-29-int000       -> origin/codex/issue-29-int000
+2026-11-03T20:28:33.5123329Z  * [new branch]        codex/issue-29-preflight    -> origin/codex/issue-29-preflight
+2026-11-03T20:28:33.5124119Z  * [new branch]        codex/issue-49-water-apparatus-correction-records -> origin/codex/issue-49-water-apparatus-correction-records
+2026-11-03T20:28:33.5124942Z  * [new branch]        codex/issue-49-water-apparatus-v2 -> origin/codex/issue-49-water-apparatus-v2
+2026-11-03T20:28:33.5125619Z  * [new branch]        codex/issue-57-stage3b-event-halo -> origin/codex/issue-57-stage3b-event-halo
+2026-11-03T20:28:33.5126283Z  * [new branch]        codex/issue-58-stage3b-lifecycle -> origin/codex/issue-58-stage3b-lifecycle
+2026-11-03T20:28:33.5127051Z  * [new branch]        codex/issue-59-stage3b-runtime-sized-storage -> origin/codex/issue-59-stage3b-runtime-sized-storage
+2026-11-03T20:28:33.5128735Z  * [new branch]        codex/issue-60-stage3b-bounded-spatial-index -> origin/codex/issue-60-stage3b-bounded-spatial-index
+2026-11-03T20:28:33.5130375Z  * [new branch]        codex/issue-61-stage3b-sparse-mutation-witness -> origin/codex/issue-61-stage3b-sparse-mutation-witness
+2026-11-03T20:28:33.5131526Z  * [new branch]        codex/issue-62-stage3b-activity-deadline-sparse-state -> origin/codex/issue-62-stage3b-activity-deadline-sparse-state
+2026-11-03T20:28:33.5132531Z  * [new branch]        codex/issue-63-stage3b-sparse-coverage-witnesses -> origin/codex/issue-63-stage3b-sparse-coverage-witnesses
+2026-11-03T20:28:33.5133352Z  * [new branch]        codex/issue-64-runtime-publication -> origin/codex/issue-64-runtime-publication
+2026-11-03T20:28:33.5134235Z  * [new branch]        codex/issue-64-stage3b-local-graph -> origin/codex/issue-64-stage3b-local-graph
+2026-11-03T20:28:33.5135017Z  * [new branch]        codex/issue-65-stage3b-exact-reconstruction -> origin/codex/issue-65-stage3b-exact-reconstruction
+2026-11-03T20:28:33.5135773Z  * [new branch]        codex/issue-69-stage3b-validation -> origin/codex/issue-69-stage3b-validation
+2026-11-03T20:28:33.5136421Z  * [new branch]        codex/issue-80-remediation-rag -> origin/codex/issue-80-remediation-rag
+2026-11-03T20:28:33.5137124Z  * [new branch]        codex/issue-9-physics-characterisation -> origin/codex/issue-9-physics-characterisation
+2026-11-03T20:28:33.5137907Z  * [new branch]        codex/issue-91-wex001-water-body-baseline -> origin/codex/issue-91-wex001-water-body-baseline
+2026-11-03T20:28:33.5138632Z  * [new branch]        codex/issue-93-wex003-gas-regions -> origin/codex/issue-93-wex003-gas-regions
+2026-11-03T20:28:33.5139375Z  * [new branch]        codex/issue-94-wex004-decompression-proof -> origin/codex/issue-94-wex004-decompression-proof
+2026-11-03T20:28:33.5140067Z  * [new branch]        codex/issue18-subagent-config -> origin/codex/issue18-subagent-config
+2026-11-03T20:28:33.5140937Z  * [new branch]        codex/issue233-evidence     -> origin/codex/issue233-evidence
+2026-11-03T20:28:33.5141507Z  * [new branch]        codex/issue234-qualification -> origin/codex/issue234-qualification
+2026-11-03T20:28:33.5142040Z  * [new branch]        codex/issues-1-2            -> origin/codex/issues-1-2
+2026-11-03T20:28:33.5142642Z  * [new branch]        codex/lcb-pressure-moving-body-gas -> origin/codex/lcb-pressure-moving-body-gas
+2026-11-03T20:28:33.5143265Z  * [new branch]        codex/lcb-session-handover  -> origin/codex/lcb-session-handover
+2026-11-03T20:28:33.5144031Z  * [new branch]        codex/lcb-status-reconciliation -> origin/codex/lcb-status-reconciliation
+2026-11-03T20:28:33.5144680Z  * [new branch]        codex/lcb001-accepted-checkpoint -> origin/codex/lcb001-accepted-checkpoint
+2026-11-03T20:28:33.5145299Z  * [new branch]        codex/lcb001-shared-contract -> origin/codex/lcb001-shared-contract
+2026-11-03T20:28:33.5145895Z  * [new branch]        codex/lcb002-pressure-variants -> origin/codex/lcb002-pressure-variants
+2026-11-03T20:28:33.5146459Z  * [new branch]        codex/lcb003-actor-host     -> origin/codex/lcb003-actor-host
+2026-11-03T20:28:33.5147019Z  * [new branch]        codex/lcb003-application-host -> origin/codex/lcb003-application-host
+2026-11-03T20:28:33.5147611Z  * [new branch]        codex/lcb003-desktop-default -> origin/codex/lcb003-desktop-default
+2026-11-03T20:28:33.5148201Z  * [new branch]        codex/lcb003-final-integration -> origin/codex/lcb003-final-integration
+2026-11-03T20:28:33.5148782Z  * [new branch]        codex/lcb003-thermal-import -> origin/codex/lcb003-thermal-import
+2026-11-03T20:28:33.5149322Z  * [new branch]        codex/lcb003-trial-body     -> origin/codex/lcb003-trial-body
+2026-11-03T20:28:33.5149836Z  * [new branch]        codex/lcb004-observer       -> origin/codex/lcb004-observer
+2026-11-03T20:28:33.5150582Z  * [new branch]        codex/lcb004-science        -> origin/codex/lcb004-science
+2026-11-03T20:28:33.5151084Z  * [new branch]        codex/lcb005-inertial       -> origin/codex/lcb005-inertial
+2026-11-03T20:28:33.5151617Z  * [new branch]        codex/lcb005-water-inertial -> origin/codex/lcb005-water-inertial
+2026-11-03T20:28:33.5152228Z  * [new branch]        codex/mat-003prepass-foundation -> origin/codex/mat-003prepass-foundation
+2026-11-03T20:28:33.5152899Z  * [new branch]        codex/mat-003prepass-s2-feasibility -> origin/codex/mat-003prepass-s2-feasibility
+2026-11-03T20:28:33.5153518Z  * [new branch]        codex/mat003-continuation   -> origin/codex/mat003-continuation
+2026-11-03T20:28:33.5154176Z  * [new branch]        codex/mat003-overnight-requalification -> origin/codex/mat003-overnight-requalification
+2026-11-03T20:28:33.5155130Z  * [new branch]        codex/mat003-readback-verifier-repair-20261023 -> origin/codex/mat003-readback-verifier-repair-20261023
+2026-11-03T20:28:33.5155893Z  * [new branch]        codex/microscenarios-programme -> origin/codex/microscenarios-programme
+2026-11-03T20:28:33.5156648Z  * [new branch]        codex/native-worldgen-bounded-build-20261031 -> origin/codex/native-worldgen-bounded-build-20261031
+2026-11-03T20:28:33.5157412Z  * [new branch]        codex/paired-materials-20261103 -> origin/codex/paired-materials-20261103
+2026-11-03T20:28:33.5158043Z  * [new branch]        codex/physical-actor-timeouts -> origin/codex/physical-actor-timeouts
+2026-11-03T20:28:33.5158726Z  * [new branch]        codex/physical-detachment-a2-20261031 -> origin/codex/physical-detachment-a2-20261031
+2026-11-03T20:28:33.5159844Z  * [new branch]        codex/physical-detachment-abc-20261031 -> origin/codex/physical-detachment-abc-20261031
+2026-11-03T20:28:33.5161554Z  * [new branch]        codex/play-acceptance-20261029 -> origin/codex/play-acceptance-20261029
+2026-11-03T20:28:33.5162875Z  * [new branch]        codex/play-async-001-architecture -> origin/codex/play-async-001-architecture
+2026-11-03T20:28:33.5164356Z  * [new branch]        codex/play-auto002-publisher-retirement -> origin/codex/play-auto002-publisher-retirement
+2026-11-03T20:28:33.5165890Z  * [new branch]        codex/play-auto003-local-six-evidence -> origin/codex/play-auto003-local-six-evidence
+2026-11-03T20:28:33.5167307Z  * [new branch]        codex/play-auto004-wsl-six-evidence -> origin/codex/play-auto004-wsl-six-evidence
+2026-11-03T20:28:33.5168697Z  * [new branch]        codex/play-busy001a-pool-20261029 -> origin/codex/play-busy001a-pool-20261029
+2026-11-03T20:28:33.5170366Z  * [new branch]        codex/play-busy001c-cleanup-20261103 -> origin/codex/play-busy001c-cleanup-20261103
+2026-11-03T20:28:33.5171972Z  * [new branch]        codex/play-busy001c-rendered-20261029 -> origin/codex/play-busy001c-rendered-20261029
+2026-11-03T20:28:33.5173538Z  * [new branch]        codex/play-comp001-existing-host-spike-20261026 -> origin/codex/play-comp001-existing-host-spike-20261026
+2026-11-03T20:28:33.5174971Z  * [new branch]        codex/play-comp002-course-solvers-20261027 -> origin/codex/play-comp002-course-solvers-20261027
+2026-11-03T20:28:33.5176297Z  * [new branch]        codex/play-comp002-five-rig-course-20261027 -> origin/codex/play-comp002-five-rig-course-20261027
+2026-11-03T20:28:33.5177732Z  * [new branch]        codex/play-input010-pause-transitions-20261031 -> origin/codex/play-input010-pause-transitions-20261031
+2026-11-03T20:28:33.5179141Z  * [new branch]        codex/play-input011-authority-20261031 -> origin/codex/play-input011-authority-20261031
+2026-11-03T20:28:33.5180937Z  * [new branch]        codex/play-integration-handoff-final-20261031 -> origin/codex/play-integration-handoff-final-20261031
+2026-11-03T20:28:33.5182383Z  * [new branch]        codex/play-life002-solver-stress -> origin/codex/play-life002-solver-stress
+2026-11-03T20:28:33.5183646Z  * [new branch]        codex/play-life003-prepared-shutdown -> origin/codex/play-life003-prepared-shutdown
+2026-11-03T20:28:33.5184991Z  * [new branch]        codex/play-life004-populated-retirement -> origin/codex/play-life004-populated-retirement
+2026-11-03T20:28:33.5186306Z  * [new branch]        codex/play-life005-failure-recovery -> origin/codex/play-life005-failure-recovery
+2026-11-03T20:28:33.5187716Z  * [new branch]        codex/play-life006-integrated-stress-20261030 -> origin/codex/play-life006-integrated-stress-20261030
+2026-11-03T20:28:33.5189172Z  * [new branch]        codex/play-life009-pause-resume-20261031 -> origin/codex/play-life009-pause-resume-20261031
+2026-11-03T20:28:33.5190807Z  * [new branch]        codex/play-life010-live-delivery-20261031 -> origin/codex/play-life010-live-delivery-20261031
+2026-11-03T20:28:33.5192239Z  * [new branch]        codex/play-life011-solver-matrix-20261031 -> origin/codex/play-life011-solver-matrix-20261031
+2026-11-03T20:28:33.5193757Z  * [new branch]        codex/play-pace001-shared-host-20261029 -> origin/codex/play-pace001-shared-host-20261029
+2026-11-03T20:28:33.5195244Z  * [new branch]        codex/play-pace002-constructed-policies-20261029 -> origin/codex/play-pace002-constructed-policies-20261029
+2026-11-03T20:28:33.5196097Z  * [new branch]        codex/play-pace003-cold-start-20261030 -> origin/codex/play-pace003-cold-start-20261030
+2026-11-03T20:28:33.5196946Z  * [new branch]        codex/play-pace003-palette-decomposition-20261031 -> origin/codex/play-pace003-palette-decomposition-20261031
+2026-11-03T20:28:33.5197849Z  * [new branch]        codex/play-pace003-windows-diagnosis-20261030 -> origin/codex/play-pace003-windows-diagnosis-20261030
+2026-11-03T20:28:33.5198684Z  * [new branch]        codex/play-pace004-input-custody-20261031 -> origin/codex/play-pace004-input-custody-20261031
+2026-11-03T20:28:33.5199442Z  * [new branch]        codex/play-pace004-qualified-20261031 -> origin/codex/play-pace004-qualified-20261031
+2026-11-03T20:28:33.5200522Z  * [new branch]        codex/play-recovery-qualified-20261031 -> origin/codex/play-recovery-qualified-20261031
+2026-11-03T20:28:33.5201301Z  * [new branch]        codex/play-shader-qualified-20261031 -> origin/codex/play-shader-qualified-20261031
+2026-11-03T20:28:33.5202247Z  * [new branch]        codex/play-ui005-integrated-session-20261030 -> origin/codex/play-ui005-integrated-session-20261030
+2026-11-03T20:28:33.5203085Z  * [new branch]        codex/play-ui007-desktop-readiness-20261031 -> origin/codex/play-ui007-desktop-readiness-20261031
+2026-11-03T20:28:33.5203884Z  * [new branch]        codex/play-wait001-snapshot-lock-20261029 -> origin/codex/play-wait001-snapshot-lock-20261029
+2026-11-03T20:28:33.5204577Z  * [new branch]        codex/play-watchdogs-20261031 -> origin/codex/play-watchdogs-20261031
+2026-11-03T20:28:33.5205933Z  * [new branch]        codex/play-windows-capture-successor-20261031 -> origin/codex/play-windows-capture-successor-20261031
+2026-11-03T20:28:33.5207546Z  * [new branch]        codex/play-windows-exception-capture-20261031 -> origin/codex/play-windows-exception-capture-20261031
+2026-11-03T20:28:33.5208336Z  * [new branch]        codex/player-playground-maps -> origin/codex/player-playground-maps
+2026-11-03T20:28:33.5208992Z  * [new branch]        codex/reconcile-architecture-gates -> origin/codex/reconcile-architecture-gates
+2026-11-03T20:28:33.5209665Z  * [new branch]        codex/release-hash-artifact-name -> origin/codex/release-hash-artifact-name
+2026-11-03T20:28:33.5210654Z  * [new branch]        codex/render-copy-production-20261101 -> origin/codex/render-copy-production-20261101
+2026-11-03T20:28:33.5211396Z  * [new branch]        codex/render-publication-abc-20261031 -> origin/codex/render-publication-abc-20261031
+2026-11-03T20:28:33.5212167Z  * [new branch]        codex/render-retention-production-20261101 -> origin/codex/render-retention-production-20261101
+2026-11-03T20:28:33.5212950Z  * [new branch]        codex/research-preparation-2026-09-12 -> origin/codex/research-preparation-2026-09-12
+2026-11-03T20:28:33.5213628Z  * [new branch]        codex/s2p-workflow-publication -> origin/codex/s2p-workflow-publication
+2026-11-03T20:28:33.5214194Z  * [new branch]        codex/usables-set-a         -> origin/codex/usables-set-a
+2026-11-03T20:28:33.5214832Z  * [new branch]        codex/water-h-gate-synthesis-2026-09-18 -> origin/codex/water-h-gate-synthesis-2026-09-18
+2026-11-03T20:28:33.5215621Z  * [new branch]        codex/water-hybrid-pressure-extension-rag -> origin/codex/water-hybrid-pressure-extension-rag
+2026-11-03T20:28:33.5216352Z  * [new branch]        codex/wclear-workflow-publication -> origin/codex/wclear-workflow-publication
+2026-11-03T20:28:33.5216943Z  * [new branch]        codex/workspace-docs        -> origin/codex/workspace-docs
+2026-11-03T20:28:33.5217466Z  * [new branch]        codex/worldgen-candidates   -> origin/codex/worldgen-candidates
+2026-11-03T20:28:33.5218108Z  * [new branch]        codex/worldgen-fields-and-aggregates -> origin/codex/worldgen-fields-and-aggregates
+2026-11-03T20:28:33.5219597Z  * [new branch]        codex/y1-post-arrest-clearance-20261101 -> origin/codex/y1-post-arrest-clearance-20261101
+2026-11-03T20:28:33.5221384Z  * [new branch]        codex/y1-production-envelope-20261101 -> origin/codex/y1-production-envelope-20261101
+2026-11-03T20:28:33.5222814Z  * [new branch]        compare/owner-five-windows-20260926 -> origin/compare/owner-five-windows-20260926
+2026-11-03T20:28:33.5224117Z  * [new branch]        docs/map-authoring-guide-20261020 -> origin/docs/map-authoring-guide-20261020
+2026-11-03T20:28:33.5225397Z  * [new branch]        docs/mat-auth-catalogue-plan-20261102 -> origin/docs/mat-auth-catalogue-plan-20261102
+2026-11-03T20:28:33.5226920Z  * [new branch]        docs/mat003prepass-gen006-state-contract-20261023 -> origin/docs/mat003prepass-gen006-state-contract-20261023
+2026-11-03T20:28:33.5228447Z  * [new branch]        docs/materials-wiki-2026-11-02 -> origin/docs/materials-wiki-2026-11-02
+2026-11-03T20:28:33.5229781Z  * [new branch]        docs/polished-map-production-guide -> origin/docs/polished-map-production-guide
+2026-11-03T20:28:33.5231554Z  * [new branch]        docs/sol-structural-detachment-primary-20261027 -> origin/docs/sol-structural-detachment-primary-20261027
+2026-11-03T20:28:33.5232915Z  * [new branch]        docs/stage3b-close-g2-open-60 -> origin/docs/stage3b-close-g2-open-60
+2026-11-03T20:28:33.5233936Z  * [new branch]        feat/4ly-001-physical-flight -> origin/feat/4ly-001-physical-flight
+2026-11-03T20:28:33.5234992Z  * [new branch]        feat/4ly-002-profiles-selection -> origin/feat/4ly-002-profiles-selection
+2026-11-03T20:28:33.5235980Z  * [new branch]        feat/4ly-003-flight-lab     -> origin/feat/4ly-003-flight-lab
+2026-11-03T20:28:33.5236903Z  * [new branch]        feat/act-ik-001-joint-owner -> origin/feat/act-ik-001-joint-owner
+2026-11-03T20:28:33.5238228Z  * [new branch]        feat/gen003-typed-spatial-fields -> origin/feat/gen003-typed-spatial-fields
+2026-11-03T20:28:33.5239360Z  * [new branch]        feat/gen004-hierarchical-grammar -> origin/feat/gen004-hierarchical-grammar
+2026-11-03T20:28:33.5240679Z  * [new branch]        feat/gen005-semantic-planes -> origin/feat/gen005-semantic-planes
+2026-11-03T20:28:33.5241778Z  * [new branch]        feat/player-control-playground -> origin/feat/player-control-playground
+2026-11-03T20:28:33.5243094Z  * [new branch]        fix/4ly003-episode-lease-expiry -> origin/fix/4ly003-episode-lease-expiry
+2026-11-03T20:28:33.5243947Z  * [new branch]        fix/gen007-acceptance-water-exit -> origin/fix/gen007-acceptance-water-exit
+2026-11-03T20:28:33.5244482Z  * [new branch]        main                        -> origin/main
+2026-11-03T20:28:33.5244991Z  * [new branch]        mat/material-fidelity-pass-2 -> origin/mat/material-fidelity-pass-2
+2026-11-03T20:28:33.5245678Z  * [new branch]        mat/material-readability-shader-pass -> origin/mat/material-readability-shader-pass
+2026-11-03T20:28:33.5246411Z  * [new branch]        mat/persistent-reaction-progress -> origin/mat/persistent-reaction-progress
+2026-11-03T20:28:33.5247018Z  * [new branch]        mat/phase-quantity-quench   -> origin/mat/phase-quantity-quench
+2026-11-03T20:28:33.5247705Z  * [new branch]        pchar/issue-137-barrel-player-experiment -> origin/pchar/issue-137-barrel-player-experiment
+2026-11-03T20:28:33.5248507Z  * [new branch]        penv/issue-138-player-environment-profiles -> origin/penv/issue-138-player-environment-profiles
+2026-11-03T20:28:33.5249214Z  * [new branch]        penv/issue-138-reconcile-pchar -> origin/penv/issue-138-reconcile-pchar
+2026-11-03T20:28:33.5249826Z  * [new branch]        penv/issue-138-reconcile-testux -> origin/penv/issue-138-reconcile-testux
+2026-11-03T20:28:33.5250801Z  * [new branch]        penv/issue-147-local-contour-traversal -> origin/penv/issue-147-local-contour-traversal
+2026-11-03T20:28:33.5251550Z  * [new branch]        play-266-auto-host-readback-20261027 -> origin/play-266-auto-host-readback-20261027
+2026-11-03T20:28:33.5252223Z  * [new branch]        play-266-worker-matrix-20261027 -> origin/play-266-worker-matrix-20261027
+2026-11-03T20:28:33.5253019Z  * [new branch]        play-268-course-camera-20261027 -> origin/play-268-course-camera-20261027
+2026-11-03T20:28:33.5254133Z  * [new branch]        play-268-course-lap-ticks-20261027 -> origin/play-268-course-lap-ticks-20261027
+2026-11-03T20:28:33.5255495Z  * [new branch]        play-268-course-shared-input-20261027 -> origin/play-268-course-shared-input-20261027
+2026-11-03T20:28:33.5256291Z  * [new branch]        play-268-gamepad-event-edges-20261028 -> origin/play-268-gamepad-event-edges-20261028
+2026-11-03T20:28:33.5257036Z  * [new branch]        play-269-shared-host-lifecycle-20261027 -> origin/play-269-shared-host-lifecycle-20261027
+2026-11-03T20:28:33.5257840Z  * [new branch]        playval/issue-139-selectable-player-fixtures -> origin/playval/issue-139-selectable-player-fixtures
+2026-11-03T20:28:33.5258721Z  * [new branch]        prep/render-copy290-lfs-publish-gate-20261029 -> origin/prep/render-copy290-lfs-publish-gate-20261029
+2026-11-03T20:28:33.5259526Z  * [new branch]        prep/render-copy290-publisher-20261029 -> origin/prep/render-copy290-publisher-20261029
+2026-11-03T20:28:33.5260573Z  * [new branch]        prep/render-copy290-runtime-writer-20261029 -> origin/prep/render-copy290-runtime-writer-20261029
+2026-11-03T20:28:33.5261475Z  * [new branch]        prepass/render-copy290-play-integration-20261031 -> origin/prepass/render-copy290-play-integration-20261031
+2026-11-03T20:28:33.5262229Z  * [new branch]        prototype/depth-parallax-lab -> origin/prototype/depth-parallax-lab
+2026-11-03T20:28:33.5262903Z  * [new branch]        publish/render-copy290-runtime-20261029 -> origin/publish/render-copy290-runtime-20261029
+2026-11-03T20:28:33.5263734Z  * [new branch]        qualification/render-production-harness-20261101 -> origin/qualification/render-production-harness-20261101
+2026-11-03T20:28:33.5264902Z  * [new branch]        qualification/render-retention-paired-harness-20261101 -> origin/qualification/render-retention-paired-harness-20261101
+2026-11-03T20:28:33.5265979Z  * [new branch]        qualification/render-retention-paired-harness-v2b-20261101 -> origin/qualification/render-retention-paired-harness-v2b-20261101
+2026-11-03T20:28:33.5267052Z  * [new branch]        qualification/render-retention-slow250-harness-20261101 -> origin/qualification/render-retention-slow250-harness-20261101
+2026-11-03T20:28:33.5267940Z  * [new branch]        rec/issue-135-actor-capture-integration -> origin/rec/issue-135-actor-capture-integration
+2026-11-03T20:28:33.5268619Z  * [new branch]        recovery/issue-94-wex004-clean -> origin/recovery/issue-94-wex004-clean
+2026-11-03T20:28:33.5269215Z  * [new branch]        recovery/rec-007-ci-guardrails -> origin/recovery/rec-007-ci-guardrails
+2026-11-03T20:28:33.5269867Z  * [new branch]        recovery/rec-007-ci-guardrails-final -> origin/recovery/rec-007-ci-guardrails-final
+2026-11-03T20:28:33.5270760Z  * [new branch]        recovery/rec-007-policy-final -> origin/recovery/rec-007-policy-final
+2026-11-03T20:28:33.5271354Z  * [new branch]        recovery/rec-007-ready-scope -> origin/recovery/rec-007-ready-scope
+2026-11-03T20:28:33.5271968Z  * [new branch]        recovery/rec-007-validation-scope -> origin/recovery/rec-007-validation-scope
+2026-11-03T20:28:33.5272652Z  * [new branch]        recovery/rec-007-validation-scope-fix -> origin/recovery/rec-007-validation-scope-fix
+2026-11-03T20:28:33.5273278Z  * [new branch]        recovery/rec-008-final-audit -> origin/recovery/rec-008-final-audit
+2026-11-03T20:28:33.5273963Z  * [new branch]        rem/issue-81-body-coupling-reconciliation -> origin/rem/issue-81-body-coupling-reconciliation
+2026-11-03T20:28:33.5274782Z  * [new branch]        rem/issue-82-player-granular-acceptance -> origin/rem/issue-82-player-granular-acceptance
+2026-11-03T20:28:33.5275459Z  * [new branch]        rem/issue-82-web-acceptance -> origin/rem/issue-82-web-acceptance
+2026-11-03T20:28:33.5276180Z  * [new branch]        review/lcb000-gatea-gateb-s2a-refresh-20261023 -> origin/review/lcb000-gatea-gateb-s2a-refresh-20261023
+2026-11-03T20:28:33.5277137Z  * [new branch]        review/lcb000-sol-admission-20261023 -> origin/review/lcb000-sol-admission-20261023
+2026-11-03T20:28:33.5277967Z  * [new branch]        review/mat003prepass-c-carrier-synthesis-20261023 -> origin/review/mat003prepass-c-carrier-synthesis-20261023
+2026-11-03T20:28:33.5278749Z  * [new branch]        review/pr179-validation-progress -> origin/review/pr179-validation-progress
+2026-11-03T20:28:33.5279335Z  * [new branch]        scene/blacksite-nine        -> origin/scene/blacksite-nine
+2026-11-03T20:28:33.5279907Z  * [new branch]        scene/deepworks-exhibition-1024 -> origin/scene/deepworks-exhibition-1024
+2026-11-03T20:28:33.5280757Z  * [new branch]        scene/grey-area-51          -> origin/scene/grey-area-51
+2026-11-03T20:28:33.5281288Z  * [new branch]        scene/neon-reliquary-demo   -> origin/scene/neon-reliquary-demo
+2026-11-03T20:28:33.5281897Z  * [new branch]        scheduswarm/adopt-policy-20261030 -> origin/scheduswarm/adopt-policy-20261030
+2026-11-03T20:28:33.5282494Z  * [new branch]        scheduswarm/queue           -> origin/scheduswarm/queue
+2026-11-03T20:28:33.5283083Z  * [new branch]        sol-detach-001-compound-interface -> origin/sol-detach-001-compound-interface
+2026-11-03T20:28:33.5283710Z  * [new branch]        sol-detach-001-current-main -> origin/sol-detach-001-current-main
+2026-11-03T20:28:33.5284298Z  * [new branch]        tmp/4ly003-248-rebase-20261025 -> origin/tmp/4ly003-248-rebase-20261025
+2026-11-03T20:28:33.5284855Z  * [new branch]        ux/issue-136-test-ux-001    -> origin/ux/issue-136-test-ux-001
+2026-11-03T20:28:33.5285468Z  * [new branch]        verify/render-copy-per-run-20261029 -> origin/verify/render-copy-per-run-20261029
+2026-11-03T20:28:33.5286209Z  * [new branch]        verify/render-copy-per-run-godot-20261029 -> origin/verify/render-copy-per-run-godot-20261029
+2026-11-03T20:28:33.5287153Z  * [new branch]        verify/render-copy-production-20261101 -> origin/verify/render-copy-production-20261101
+2026-11-03T20:28:33.5287932Z  * [new branch]        verify/render-copy290-fixed-godot-20261029 -> origin/verify/render-copy290-fixed-godot-20261029
+2026-11-03T20:28:33.5288747Z  * [new branch]        verify/render-copy290-fixed-native-20261029 -> origin/verify/render-copy290-fixed-native-20261029
+2026-11-03T20:28:33.5289572Z  * [new branch]        verify/render-copy290-host-producer-20261029 -> origin/verify/render-copy290-host-producer-20261029
+2026-11-03T20:28:33.5290653Z  * [new branch]        verify/render-copy290-live-custody-20261029 -> origin/verify/render-copy290-live-custody-20261029
+2026-11-03T20:28:33.5291590Z  * [new branch]        verify/render-copy290-live-custody-integrated-20261029 -> origin/verify/render-copy290-live-custody-integrated-20261029
+2026-11-03T20:28:33.5292578Z  * [new branch]        verify/render-copy290-monolithic-sanitizer-20261029 -> origin/verify/render-copy290-monolithic-sanitizer-20261029
+2026-11-03T20:28:33.5293494Z  * [new branch]        verify/render-copy290-postpublication-20261029 -> origin/verify/render-copy290-postpublication-20261029
+2026-11-03T20:28:33.5294378Z  * [new branch]        verify/render-copy290-sanitizer-shards-20261029 -> origin/verify/render-copy290-sanitizer-shards-20261029
+2026-11-03T20:28:33.5295186Z  * [new branch]        verify/render-retention-final-20261101 -> origin/verify/render-retention-final-20261101
+2026-11-03T20:28:33.5296003Z  * [new branch]        verify/render-retention-paired-windows-20261101 -> origin/verify/render-retention-paired-windows-20261101
+2026-11-03T20:28:33.5296664Z  * [new branch]        web-demo-m11                -> origin/web-demo-m11
+2026-11-03T20:28:33.5297214Z  * [new branch]        wex/issue-92-blocked-disposition -> origin/wex/issue-92-blocked-disposition
+2026-11-03T20:28:33.5297898Z  * [new branch]        work/pr304-cleanup-prepare-20261103 -> origin/work/pr304-cleanup-prepare-20261103
+2026-11-03T20:28:33.5298635Z  * [new branch]        work/sol281-native-detachment-20261027 -> origin/work/sol281-native-detachment-20261027
+2026-11-03T20:28:33.5299573Z  * [new branch]        work/sol281-render-ack-consumer-20261028-run4 -> origin/work/sol281-render-ack-consumer-20261028-run4
+2026-11-03T20:28:33.5300478Z  * [new branch]        workspace-build             -> origin/workspace-build
+2026-11-03T20:28:33.5300988Z  * [new tag]           codex/c128-70-001-authorized -> codex/c128-70-001-authorized
+2026-11-03T20:28:33.5301479Z  * [new tag]           codex/s2p-56-001-authorized -> codex/s2p-56-001-authorized
+2026-11-03T20:28:33.5302020Z  * [new tag]           codex/wclear-001-672-001-authorized -> codex/wclear-001-672-001-authorized
+2026-11-03T20:28:33.5302546Z  * [new tag]           correctness-2026-09-08      -> correctness-2026-09-08
+2026-11-03T20:28:33.5303017Z  * [new tag]           docs-correctness-2026-09-08 -> docs-correctness-2026-09-08
+2026-11-03T20:28:33.5303465Z  * [new tag]           m11-audited                 -> m11-audited
+2026-11-03T20:28:33.5303957Z  * [new tag]           workspace-correctness-2026-09-08 -> workspace-correctness-2026-09-08
+2026-11-03T20:28:33.5304594Z  * [new tag]           workspace-docs-correctness-2026-09-08 -> workspace-docs-correctness-2026-09-08
+2026-11-03T20:28:33.5306051Z [command]/usr/bin/git branch --list --remote origin/sol-detach-001-current-main
+2026-11-03T20:28:33.5306482Z   origin/sol-detach-001-current-main
+2026-11-03T20:28:33.5307202Z [command]/usr/bin/git rev-parse refs/remotes/origin/sol-detach-001-current-main
+2026-11-03T20:28:33.5307739Z 3e9749854a9bf52a0efd7e017dad901bdfae5b6d
+2026-11-03T20:28:33.5308478Z ##[endgroup]
+2026-11-03T20:28:33.5308841Z ##[group]Determining the checkout info
+2026-11-03T20:28:33.5309255Z ##[endgroup]
+2026-11-03T20:28:33.5309499Z [command]/usr/bin/git sparse-checkout disable
+2026-11-03T20:28:33.5310512Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-11-03T20:28:33.5311596Z ##[group]Checking out the ref
+2026-11-03T20:28:33.5312194Z [command]/usr/bin/git checkout --progress --force -B sol-detach-001-current-main refs/remotes/origin/sol-detach-001-current-main
+2026-11-03T20:28:34.0846356Z Switched to a new branch 'sol-detach-001-current-main'
+2026-11-03T20:28:34.0852732Z branch 'sol-detach-001-current-main' set up to track 'origin/sol-detach-001-current-main'.
+2026-11-03T20:28:34.1261818Z ##[endgroup]
+2026-11-03T20:28:34.1323901Z [command]/usr/bin/git log -1 --format=%H
+2026-11-03T20:28:34.1365094Z 3e9749854a9bf52a0efd7e017dad901bdfae5b6d
+2026-11-03T20:28:34.1660770Z ##[group]Run actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+2026-11-03T20:28:34.1661225Z with:
+2026-11-03T20:28:34.1661454Z   pattern: sol281-build-*-41710177371-1
+2026-11-03T20:28:34.1661746Z   path: build/sol281/publication-builds
+2026-11-03T20:28:34.1662029Z   merge-multiple: false
+2026-11-03T20:28:34.1662264Z   repository: techrote/cybersand
+2026-11-03T20:28:34.1662529Z   run-id: 41710177371
+2026-11-03T20:28:34.1662734Z env:
+2026-11-03T20:28:34.1662931Z   CYBERSAND_CI_WATCHDOG_SCALE: 1
+2026-11-03T20:28:34.1663193Z   GODOT_SILENCE_ROOT_WARNING: 1
+2026-11-03T20:28:34.1663430Z   PYTHONUTF8: 1
+2026-11-03T20:28:34.1663695Z   GODOT_CPP_COMMIT: 101ae38034304346a46ea9ea84ae156d3e860496
+2026-11-03T20:28:34.1664380Z   LLVM_MINGW_URL: https://github.com/mstorsjo/llvm-mingw/releases/download/20260826/llvm-mingw-20260826-ucrt-ubuntu-22.04-x86_64.tar.xz
+2026-11-03T20:28:34.1665156Z   LLVM_MINGW_SHA256: cee8d2ce3da5145ce4dc882e70d0b0719a783d53a99752c60948fc0659975a65
+2026-11-03T20:28:34.1665604Z ##[endgroup]
+2026-11-03T20:28:34.3447688Z (node:2403) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-11-03T20:28:34.3448988Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-11-03T20:28:34.5158586Z Found 12 artifact(s)
+2026-11-03T20:28:34.5160386Z Filtering artifacts by pattern 'sol281-build-*-41710177371-1'
+2026-11-03T20:28:34.5187154Z Preparing to download the following artifacts:
+2026-11-03T20:28:34.5188970Z - sol281-build-linux-41710177371-1 (ID: 13267408531, Size: 81497950, Expected Digest: sha256:1aeba9a576c679cccd519e18ea9501f924ac04101ac816b13e7caa459ec4d762)
+2026-11-03T20:28:34.5191346Z - sol281-build-windows-41710177371-1 (ID: 13266708236, Size: 2043188, Expected Digest: sha256:590f0721b9ecb8a0ab3a1dea57dc99e65f4cefef6aaf99a79a5b89ebad279965)
+2026-11-03T20:28:34.6721350Z Redirecting to blob download url: https://productionresultssa5.blob.core.windows.net/actions-results/941f7eca-d9c5-8016-8b76-f5674247264d/workflow-job-run-2609e06e-1898-5100-9de4-4fa909887a5e/artifacts/01e144d52d942dbf636750876c9d5ecec91c9fe50b03c8f098f1f8054b02b7dd.zip
+2026-11-03T20:28:34.6723628Z Starting download of artifact to: /home/runner/work/cybersand/cybersand/build/sol281/publication-builds/sol281-build-linux-41710177371-1
+2026-11-03T20:28:34.6857887Z Redirecting to blob download url: https://productionresultssa5.blob.core.windows.net/actions-results/941f7eca-d9c5-8016-8b76-f5674247264d/workflow-job-run-79b891a9-169a-5d65-87fa-1202323830d3/artifacts/4195ef8d388767d824c76826d26be563f0fad503867d173f9b0d0ce4ce334f8b.zip
+2026-11-03T20:28:34.6861232Z Starting download of artifact to: /home/runner/work/cybersand/cybersand/build/sol281/publication-builds/sol281-build-windows-41710177371-1
+2026-11-03T20:28:34.7355190Z (node:2403) [DEP0005] DeprecationWarning: Buffer() is deprecated due to security and usability issues. Please use the Buffer.alloc(), Buffer.allocUnsafe(), or Buffer.from() methods instead.
+2026-11-03T20:28:34.8642237Z SHA256 digest of downloaded artifact is 590f0721b9ecb8a0ab3a1dea57dc99e65f4cefef6aaf99a79a5b89ebad279965
+2026-11-03T20:28:34.8643448Z Artifact download completed successfully.
+2026-11-03T20:28:35.8357237Z SHA256 digest of downloaded artifact is 1aeba9a576c679cccd519e18ea9501f924ac04101ac816b13e7caa459ec4d762
+2026-11-03T20:28:35.8358243Z Artifact download completed successfully.
+2026-11-03T20:28:35.8359064Z Total of 2 artifact(s) downloaded
+2026-11-03T20:28:35.8364120Z Download artifact has finished successfully
+2026-11-03T20:28:35.8593117Z ##[group]Run actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+2026-11-03T20:28:35.8593561Z with:
+2026-11-03T20:28:35.8593809Z   pattern: sol281-host-*-41710177371-1
+2026-11-03T20:28:35.8594102Z   path: build/sol281/publication-hosts
+2026-11-03T20:28:35.8594376Z   merge-multiple: false
+2026-11-03T20:28:35.8594625Z   repository: techrote/cybersand
+2026-11-03T20:28:35.8594875Z   run-id: 41710177371
+2026-11-03T20:28:35.8595093Z env:
+2026-11-03T20:28:35.8595294Z   CYBERSAND_CI_WATCHDOG_SCALE: 1
+2026-11-03T20:28:35.8595558Z   GODOT_SILENCE_ROOT_WARNING: 1
+2026-11-03T20:28:35.8595810Z   PYTHONUTF8: 1
+2026-11-03T20:28:35.8596080Z   GODOT_CPP_COMMIT: 101ae38034304346a46ea9ea84ae156d3e860496
+2026-11-03T20:28:35.8596770Z   LLVM_MINGW_URL: https://github.com/mstorsjo/llvm-mingw/releases/download/20260826/llvm-mingw-20260826-ucrt-ubuntu-22.04-x86_64.tar.xz
+2026-11-03T20:28:35.8597552Z   LLVM_MINGW_SHA256: cee8d2ce3da5145ce4dc882e70d0b0719a783d53a99752c60948fc0659975a65
+2026-11-03T20:28:35.8598017Z ##[endgroup]
+2026-11-03T20:28:36.0325227Z (node:2416) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-11-03T20:28:36.0326506Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-11-03T20:28:36.1555707Z Found 12 artifact(s)
+2026-11-03T20:28:36.1556704Z Filtering artifacts by pattern 'sol281-host-*-41710177371-1'
+2026-11-03T20:28:36.1591554Z Preparing to download the following artifacts:
+2026-11-03T20:28:36.1593168Z - sol281-host-linux-contact-w4-41710177371-1 (ID: 13268455821, Size: 7045178, Expected Digest: sha256:9386d34e7314766702e6c1a13f840ffa98246445a36dd447e0d00c6a1c5e893f)
+2026-11-03T20:28:36.1595816Z - sol281-host-linux-contact-w1-41710177371-1 (ID: 13268271062, Size: 7033069, Expected Digest: sha256:1abe277ec577b954ada70c204f268b07c0112d198be127045d3bdf965cfc2161)
+2026-11-03T20:28:36.1598659Z - sol281-host-windows-mechanism-41710177371-1 (ID: 13268241151, Size: 216073, Expected Digest: sha256:f8c3857a269baa7470061a2b8f30a68be2ef0a111b595a35fe8edd71f6408f21)
+2026-11-03T20:28:36.1602335Z - sol281-host-windows-contact-w1-41710177371-1 (ID: 13267259290, Size: 2898447, Expected Digest: sha256:498bdc522740efb6ff9875fea85acc44af9dcb8a27a78680d0c8c7df88b60f0e)
+2026-11-03T20:28:36.1604393Z - sol281-host-linux-core-41710177371-1 (ID: 13266654157, Size: 3488564, Expected Digest: sha256:6abc32c13125b3f7c123cad60dd649a0fc6e1b10377418be0857e76d8fc03d58)
+2026-11-03T20:28:36.1606466Z - sol281-host-linux-mechanism-41710177371-1 (ID: 13266334266, Size: 3483811, Expected Digest: sha256:401ca6b570beb829b53ccec2e4c40fdf62a4b2f798cde5c19cf09f48ed448673)
+2026-11-03T20:28:36.1608553Z - sol281-host-windows-core-41710177371-1 (ID: 13266334154, Size: 220490, Expected Digest: sha256:eef8a1260a1e1cbb4e16a885fc0c7a14cc7cde93bd84d712ce27b3db5930eb9b)
+2026-11-03T20:28:36.1610852Z - sol281-host-windows-contact-w4-41710177371-1 (ID: 13266174584, Size: 2953809, Expected Digest: sha256:091e22c222ebcf903bd46222653f5505a8e669940b65dc1436b39ff8546a8314)
+2026-11-03T20:28:36.3087421Z Redirecting to blob download url: https://productionresultssa5.blob.core.windows.net/actions-results/941f7eca-d9c5-8016-8b76-f5674247264d/workflow-job-run-0668e2c6-a29c-5ffe-9f7b-5a4a5f88a181/artifacts/894345eed4818f0e1c639b1ac9dedf724ee7cf37db82bb93ec44a65a7230b5b3.zip
+2026-11-03T20:28:36.3089595Z Starting download of artifact to: /home/runner/work/cybersand/cybersand/build/sol281/publication-hosts/sol281-host-linux-contact-w4-41710177371-1
+2026-11-03T20:28:36.3263072Z Redirecting to blob download url: https://productionresultssa5.blob.core.windows.net/actions-results/941f7eca-d9c5-8016-8b76-f5674247264d/workflow-job-run-46252789-1063-536f-889c-b4810e607528/artifacts/72f4b904d13b30bf69011335022848533ce0703e41663fb82312fb754d46a5d1.zip
+2026-11-03T20:28:36.3265456Z Starting download of artifact to: /home/runner/work/cybersand/cybersand/build/sol281/publication-hosts/sol281-host-windows-contact-w1-41710177371-1
+2026-11-03T20:28:36.3356339Z Redirecting to blob download url: https://productionresultssa5.blob.core.windows.net/actions-results/941f7eca-d9c5-8016-8b76-f5674247264d/workflow-job-run-90a3c181-09de-5e7c-bbd5-f00eb69b05c8/artifacts/7112c5100021c7e83fdb695a3653aea898913e647cab2e4dc875b0e1e1877124.zip
+2026-11-03T20:28:36.3359462Z Starting download of artifact to: /home/runner/work/cybersand/cybersand/build/sol281/publication-hosts/sol281-host-windows-mechanism-41710177371-1
+2026-11-03T20:28:36.3435806Z Redirecting to blob download url: https://productionresultssa5.blob.core.windows.net/actions-results/941f7eca-d9c5-8016-8b76-f5674247264d/workflow-job-run-bc7c614d-1e74-5020-b5b5-e30022c08c38/artifacts/021302a885428fcb31ed1e9c2c67b230992a02930590ae9431fbff2b1ef0c250.zip
+2026-11-03T20:28:36.3438708Z Starting download of artifact to: /home/runner/work/cybersand/cybersand/build/sol281/publication-hosts/sol281-host-windows-core-41710177371-1
+2026-11-03T20:28:36.3490960Z Redirecting to blob download url: https://productionresultssa5.blob.core.windows.net/actions-results/941f7eca-d9c5-8016-8b76-f5674247264d/workflow-job-run-478a1ae6-197c-5a94-b302-b3a419eaf5eb/artifacts/363f61b0794f7c488ab3b6b0fa282253803e009088c3a11dc8ce5b18013d5959.zip
+2026-11-03T20:28:36.3493946Z Starting download of artifact to: /home/runner/work/cybersand/cybersand/build/sol281/publication-hosts/sol281-host-linux-mechanism-41710177371-1
+2026-11-03T20:28:36.3525332Z Redirecting to blob download url: https://productionresultssa5.blob.core.windows.net/actions-results/941f7eca-d9c5-8016-8b76-f5674247264d/workflow-job-run-ff79bc16-bcc2-57c9-854a-80a8d349181e/artifacts/262e317297592fa768fef7234446ecd527c35f9598ca38b18634c5f547c7161c.zip
+2026-11-03T20:28:36.3527120Z Starting download of artifact to: /home/runner/work/cybersand/cybersand/build/sol281/publication-hosts/sol281-host-linux-core-41710177371-1
+2026-11-03T20:28:36.3619514Z (node:2416) [DEP0005] DeprecationWarning: Buffer() is deprecated due to security and usability issues. Please use the Buffer.alloc(), Buffer.allocUnsafe(), or Buffer.from() methods instead.
+2026-11-03T20:28:36.3929479Z Redirecting to blob download url: https://productionresultssa5.blob.core.windows.net/actions-results/941f7eca-d9c5-8016-8b76-f5674247264d/workflow-job-run-4bdc32be-ff1c-54ba-b42c-05e9d0a1cbfd/artifacts/a1904c232b477861db316bde5983a7ae1e9b0f99afdeedecc0981a4b2bd36686.zip
+2026-11-03T20:28:36.3933471Z Starting download of artifact to: /home/runner/work/cybersand/cybersand/build/sol281/publication-hosts/sol281-host-windows-contact-w4-41710177371-1
+2026-11-03T20:28:36.4083851Z SHA256 digest of downloaded artifact is f8c3857a269baa7470061a2b8f30a68be2ef0a111b595a35fe8edd71f6408f21
+2026-11-03T20:28:36.4085015Z Artifact download completed successfully.
+2026-11-03T20:28:36.4092076Z SHA256 digest of downloaded artifact is eef8a1260a1e1cbb4e16a885fc0c7a14cc7cde93bd84d712ce27b3db5930eb9b
+2026-11-03T20:28:36.4092988Z Artifact download completed successfully.
+2026-11-03T20:28:36.4671788Z Redirecting to blob download url: https://productionresultssa5.blob.core.windows.net/actions-results/941f7eca-d9c5-8016-8b76-f5674247264d/workflow-job-run-533175aa-5148-59d3-9a83-af55ff55cd66/artifacts/28de6feaaba748022809b60d8fb68f12c9caf3aa7561dd854aafc3e598708cc1.zip
+2026-11-03T20:28:36.4673942Z Starting download of artifact to: /home/runner/work/cybersand/cybersand/build/sol281/publication-hosts/sol281-host-linux-contact-w1-41710177371-1
+2026-11-03T20:28:36.5952027Z SHA256 digest of downloaded artifact is 401ca6b570beb829b53ccec2e4c40fdf62a4b2f798cde5c19cf09f48ed448673
+2026-11-03T20:28:36.5952734Z Artifact download completed successfully.
+2026-11-03T20:28:36.6338664Z SHA256 digest of downloaded artifact is 6abc32c13125b3f7c123cad60dd649a0fc6e1b10377418be0857e76d8fc03d58
+2026-11-03T20:28:36.6339377Z Artifact download completed successfully.
+2026-11-03T20:28:36.8917700Z SHA256 digest of downloaded artifact is 498bdc522740efb6ff9875fea85acc44af9dcb8a27a78680d0c8c7df88b60f0e
+2026-11-03T20:28:36.8919311Z Artifact download completed successfully.
+2026-11-03T20:28:36.8938619Z SHA256 digest of downloaded artifact is 091e22c222ebcf903bd46222653f5505a8e669940b65dc1436b39ff8546a8314
+2026-11-03T20:28:36.8939781Z Artifact download completed successfully.
+2026-11-03T20:28:36.9691678Z SHA256 digest of downloaded artifact is 1abe277ec577b954ada70c204f268b07c0112d198be127045d3bdf965cfc2161
+2026-11-03T20:28:36.9693100Z Artifact download completed successfully.
+2026-11-03T20:28:36.9722105Z SHA256 digest of downloaded artifact is 9386d34e7314766702e6c1a13f840ffa98246445a36dd447e0d00c6a1c5e893f
+2026-11-03T20:28:36.9723613Z Artifact download completed successfully.
+2026-11-03T20:28:36.9724570Z Total of 8 artifact(s) downloaded
+2026-11-03T20:28:36.9729500Z Download artifact has finished successfully
+2026-11-03T20:28:36.9943374Z ##[group]Run git lfs install --local
+2026-11-03T20:28:36.9943838Z [36;1mgit lfs install --local[0m
+2026-11-03T20:28:36.9944255Z [36;1mpython3 tools/sol281/test_publish_runtime.py[0m
+2026-11-03T20:28:36.9945184Z [36;1mpython3 tools/sol281/publish_runtime.py --build-root build/sol281/publication-builds --evidence-root build/sol281/publication-hosts --output build/sol281/publication.json[0m
+2026-11-03T20:28:36.9946046Z [36;1mpython3 - <<'PY'[0m
+2026-11-03T20:28:36.9946353Z [36;1mimport json, subprocess[0m
+2026-11-03T20:28:36.9946822Z [36;1mpaths = json.load(open('build/sol281/publication.json'))['publication_paths'][0m
+2026-11-03T20:28:36.9947393Z [36;1msubprocess.run(['git', 'add', '-f', '--', *paths], check=True)[0m
+2026-11-03T20:28:36.9947806Z [36;1mPY[0m
+2026-11-03T20:28:36.9948647Z [36;1mpython3 tools/sol281/publish_runtime.py --build-root build/sol281/publication-builds --evidence-root build/sol281/publication-hosts --output build/sol281/publication.json --verify-staged[0m
+2026-11-03T20:28:36.9973635Z shell: /usr/bin/bash -e {0}
+2026-11-03T20:28:36.9973955Z env:
+2026-11-03T20:28:36.9974222Z   CYBERSAND_CI_WATCHDOG_SCALE: 1
+2026-11-03T20:28:36.9974555Z   GODOT_SILENCE_ROOT_WARNING: 1
+2026-11-03T20:28:36.9974853Z   PYTHONUTF8: 1
+2026-11-03T20:28:36.9975182Z   GODOT_CPP_COMMIT: 101ae38034304346a46ea9ea84ae156d3e860496
+2026-11-03T20:28:36.9975924Z   LLVM_MINGW_URL: https://github.com/mstorsjo/llvm-mingw/releases/download/20260826/llvm-mingw-20260826-ucrt-ubuntu-22.04-x86_64.tar.xz
+2026-11-03T20:28:36.9976748Z   LLVM_MINGW_SHA256: cee8d2ce3da5145ce4dc882e70d0b0719a783d53a99752c60948fc0659975a65
+2026-11-03T20:28:36.9977229Z ##[endgroup]
+2026-11-03T20:28:37.0399393Z Updated Git hooks.
+2026-11-03T20:28:37.0399964Z Git LFS initialized.
+2026-11-03T20:28:37.2422297Z ........
+2026-11-03T20:28:37.2423464Z ----------------------------------------------------------------------
+2026-11-03T20:28:37.2424318Z Ran 8 tests in 0.046s
+2026-11-03T20:28:37.2424736Z 
+2026-11-03T20:28:37.2424976Z OK
+2026-11-03T20:28:42.3193082Z {"publication_paths": ["docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/build/linux/before.json", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/build/linux/build.json", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/build/windows/before.json", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/build/windows/build.json", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/contact-w1/host/checkout-inputs-after.json", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/contact-w1/host/checkout-inputs-before.json", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/contact-w1/host/contact-observation-w1.json", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/contact-w1/host/contact-observation-w1.log", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/contact-w1/host/contact-recovery-w1.json", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/contact-w1/host/contact-recovery-w1.log", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/contact-w1/host/coupling-w1.json", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/contact-w1/host/coupling-w1.log", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/contact-w1/host/displacement-w1.json", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/contact-w1/host/displacement-w1.log", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/contact-w1/host/embedded_sand-baseline-w1.json", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/contact-w1/host/embedded_sand-baseline-w1.log", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/contact-w1/host/embedded_sand-candidate-w1.json", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/contact-w1/host/embedded_sand-candidate-w1.log", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/contact-w1/host/import.log", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/contact-w1/host/inputs-after.json", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/contact-w1/host/inputs-before.json", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/contact-w1/host/mixed-baseline-w1.json", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/contact-w1/host/mixed-baseline-w1.log", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/contact-w1/host/mixed-candidate-w1.json", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/contact-w1/host/mixed-candidate-w1.log", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/contact-w1/host/packed_sand-baseline-w1.json", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/contact-w1/host/packed_sand-baseline-w1.log", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/contact-w1/host/packed_sand-candidate-w1.json", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/contact-w1/host/packed_sand-candidate-w1.log", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/contact-w1/host/performance.jsonl", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/contact-w1/host/report.json", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/contact-w1/host/terrain-w1.log", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/contact-w1/prepare-engine/command.log", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/contact-w1/prepare-engine/performance.jsonl", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/contact-w1/prepare-engine/receipt.json", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/contact-w1/prepare-rapier/command.log", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/contact-w1/prepare-rapier/performance.jsonl", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/contact-w1/prepare-rapier/receipt.json", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/contact-w4/host/checkout-inputs-after.json", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/contact-w4/host/checkout-inputs-before.json", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/contact-w4/host/contact-observation-w4.json", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/contact-w4/host/contact-observation-w4.log", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/contact-w4/host/contact-recovery-w4.json", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/contact-w4/host/contact-recovery-w4.log", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/contact-w4/host/coupling-w4.json", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/contact-w4/host/coupling-w4.log", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/contact-w4/host/displacement-w4.json", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/contact-w4/host/displacement-w4.log", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/contact-w4/host/embedded_sand-baseline-w4.json", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/contact-w4/host/embedded_sand-baseline-w4.log", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/contact-w4/host/embedded_sand-candidate-w4.json", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/contact-w4/host/embedded_sand-candidate-w4.log", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/contact-w4/host/import.log", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/contact-w4/host/inputs-after.json", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/contact-w4/host/inputs-before.json", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/contact-w4/host/mixed-baseline-w4.json", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/contact-w4/host/mixed-baseline-w4.log", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/contact-w4/host/mixed-candidate-w4.json", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/contact-w4/host/mixed-candidate-w4.log", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/contact-w4/host/packed_sand-baseline-w4.json", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/contact-w4/host/packed_sand-baseline-w4.log", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/contact-w4/host/packed_sand-candidate-w4.json", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/contact-w4/host/packed_sand-candidate-w4.log", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/contact-w4/host/performance.jsonl", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/contact-w4/host/report.json", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/contact-w4/host/terrain-w4.log", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/contact-w4/prepare-engine/command.log", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/contact-w4/prepare-engine/performance.jsonl", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/contact-w4/prepare-engine/receipt.json", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/contact-w4/prepare-rapier/command.log", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/contact-w4/prepare-rapier/performance.jsonl", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/contact-w4/prepare-rapier/receipt.json", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/core/host/checkout-inputs-after.json", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/core/host/checkout-inputs-before.json", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/core/host/compound-response.log", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/core/host/failure-w1.log", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/core/host/failure-w4.log", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/core/host/import.log", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/core/host/inputs-after.json", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/core/host/inputs-before.json", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/core/host/lifecycle.log", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/core/host/material-image.log", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/core/host/motion-w1.json", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/core/host/motion-w1.log", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/core/host/motion-w4.json", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/core/host/motion-w4.log", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/core/host/ordinary-capacity.log", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/core/host/ordinary-failure.log", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/core/host/ordinary-observer.log", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/core/host/ordinary-rapier.log", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/core/host/performance.jsonl", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/core/host/report.json", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/core/prepare-engine/command.log", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/core/prepare-engine/performance.jsonl", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/core/prepare-engine/receipt.json", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/core/prepare-rapier/command.log", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/core/prepare-rapier/performance.jsonl", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/core/prepare-rapier/receipt.json", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/mechanism/host/checkout-inputs-after.json", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/mechanism/host/checkout-inputs-before.json", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/mechanism/host/import.log", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/mechanism/host/inputs-after.json", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/mechanism/host/inputs-before.json", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/mechanism/host/performance.jsonl", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/mechanism/host/report.json", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/mechanism/host/sand-contact-fences.log", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/mechanism/host/sand-contact-response.json", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/mechanism/host/sand-contact-response.log", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/mechanism/prepare-engine/command.log", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/mechanism/prepare-engine/performance.jsonl", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/mechanism/prepare-engine/receipt.json", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/mechanism/prepare-rapier/command.log", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/mechanism/prepare-rapier/performance.jsonl", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/linux/mechanism/prepare-rapier/receipt.json", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/contact-w1/checkout-inputs-after.json", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/contact-w1/checkout-inputs-before.json", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/contact-w1/contact-observation-w1.json", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/contact-w1/contact-observation-w1.log", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/contact-w1/contact-recovery-w1.json", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/contact-w1/contact-recovery-w1.log", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/contact-w1/coupling-w1.json", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/contact-w1/coupling-w1.log", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/contact-w1/displacement-w1.json", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/contact-w1/displacement-w1.log", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/contact-w1/embedded_sand-baseline-w1.json", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/contact-w1/embedded_sand-baseline-w1.log", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/contact-w1/embedded_sand-candidate-w1.json", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/contact-w1/embedded_sand-candidate-w1.log", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/contact-w1/import.log", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/contact-w1/inputs-after.json", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/contact-w1/inputs-before.json", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/contact-w1/mixed-baseline-w1.json", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/contact-w1/mixed-baseline-w1.log", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/contact-w1/mixed-candidate-w1.json", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/contact-w1/mixed-candidate-w1.log", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/contact-w1/packed_sand-baseline-w1.json", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/contact-w1/packed_sand-baseline-w1.log", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/contact-w1/packed_sand-candidate-w1.json", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/contact-w1/packed_sand-candidate-w1.log", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/contact-w1/performance.jsonl", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/contact-w1/report.json", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/contact-w1/terrain-w1.log", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/contact-w4/checkout-inputs-after.json", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/contact-w4/checkout-inputs-before.json", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/contact-w4/contact-observation-w4.json", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/contact-w4/contact-observation-w4.log", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/contact-w4/contact-recovery-w4.json", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/contact-w4/contact-recovery-w4.log", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/contact-w4/coupling-w4.json", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/contact-w4/coupling-w4.log", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/contact-w4/displacement-w4.json", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/contact-w4/displacement-w4.log", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/contact-w4/embedded_sand-baseline-w4.json", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/contact-w4/embedded_sand-baseline-w4.log", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/contact-w4/embedded_sand-candidate-w4.json", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/contact-w4/embedded_sand-candidate-w4.log", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/contact-w4/import.log", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/contact-w4/inputs-after.json", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/contact-w4/inputs-before.json", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/contact-w4/mixed-baseline-w4.json", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/contact-w4/mixed-baseline-w4.log", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/contact-w4/mixed-candidate-w4.json", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/contact-w4/mixed-candidate-w4.log", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/contact-w4/packed_sand-baseline-w4.json", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/contact-w4/packed_sand-baseline-w4.log", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/contact-w4/packed_sand-candidate-w4.json", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/contact-w4/packed_sand-candidate-w4.log", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/contact-w4/performance.jsonl", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/contact-w4/report.json", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/contact-w4/terrain-w4.log", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/core/checkout-inputs-after.json", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/core/checkout-inputs-before.json", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/core/compound-response.log", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/core/failure-w1.log", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/core/failure-w4.log", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/core/import.log", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/core/inputs-after.json", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/core/inputs-before.json", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/core/lifecycle.log", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/core/material-image.log", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/core/motion-w1.json", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/core/motion-w1.log", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/core/motion-w4.json", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/core/motion-w4.log", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/core/ordinary-capacity.log", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/core/ordinary-failure.log", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/core/ordinary-observer.log", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/core/ordinary-rapier.log", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/core/performance.jsonl", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/core/report.json", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/mechanism/checkout-inputs-after.json", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/mechanism/checkout-inputs-before.json", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/mechanism/import.log", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/mechanism/inputs-after.json", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/mechanism/inputs-before.json", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/mechanism/performance.jsonl", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/mechanism/report.json", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/mechanism/sand-contact-fences.log", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/mechanism/sand-contact-response.json", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/mechanism/sand-contact-response.log", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/linux-validation.json", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/publication-checkout-before.json", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/qualification.json", "docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/windows-validation.json", "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll", "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so", "godot/addons/cybersand_native/runtime-provenance.json", "godot/addons/cybersand_native/runtime-provenance.linux.json"], "source": {"sha": "3e9749854a9bf52a0efd7e017dad901bdfae5b6d", "tree": "dfedd91500e17124e575ad62d865c1ce14ee921c"}, "status": "prepared"}
+2026-11-03T20:28:43.0324293Z warning: in the working copy of 'docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/contact-w1/checkout-inputs-after.json', CRLF will be replaced by LF the next time Git touches it
+2026-11-03T20:28:43.0328591Z warning: in the working copy of 'docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/contact-w1/checkout-inputs-before.json', CRLF will be replaced by LF the next time Git touches it
+2026-11-03T20:28:43.0335276Z warning: in the working copy of 'docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/contact-w1/contact-observation-w1.log', CRLF will be replaced by LF the next time Git touches it
+2026-11-03T20:28:43.1278238Z warning: in the working copy of 'docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/contact-w1/contact-recovery-w1.log', CRLF will be replaced by LF the next time Git touches it
+2026-11-03T20:28:43.1951601Z warning: in the working copy of 'docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/contact-w1/coupling-w1.log', CRLF will be replaced by LF the next time Git touches it
+2026-11-03T20:28:43.1955570Z warning: in the working copy of 'docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/contact-w1/displacement-w1.log', CRLF will be replaced by LF the next time Git touches it
+2026-11-03T20:28:43.1959441Z warning: in the working copy of 'docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/contact-w1/embedded_sand-baseline-w1.log', CRLF will be replaced by LF the next time Git touches it
+2026-11-03T20:28:43.1963584Z warning: in the working copy of 'docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/contact-w1/embedded_sand-candidate-w1.log', CRLF will be replaced by LF the next time Git touches it
+2026-11-03T20:28:43.1966372Z warning: in the working copy of 'docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/contact-w1/import.log', CRLF will be replaced by LF the next time Git touches it
+2026-11-03T20:28:43.1968167Z warning: in the working copy of 'docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/contact-w1/inputs-after.json', CRLF will be replaced by LF the next time Git touches it
+2026-11-03T20:28:43.1970802Z warning: in the working copy of 'docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/contact-w1/inputs-before.json', CRLF will be replaced by LF the next time Git touches it
+2026-11-03T20:28:43.1976934Z warning: in the working copy of 'docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/contact-w1/mixed-baseline-w1.log', CRLF will be replaced by LF the next time Git touches it
+2026-11-03T20:28:43.1980664Z warning: in the working copy of 'docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/contact-w1/mixed-candidate-w1.log', CRLF will be replaced by LF the next time Git touches it
+2026-11-03T20:28:43.1984565Z warning: in the working copy of 'docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/contact-w1/packed_sand-baseline-w1.log', CRLF will be replaced by LF the next time Git touches it
+2026-11-03T20:28:43.1988040Z warning: in the working copy of 'docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/contact-w1/packed_sand-candidate-w1.log', CRLF will be replaced by LF the next time Git touches it
+2026-11-03T20:28:43.1990466Z warning: in the working copy of 'docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/contact-w1/performance.jsonl', CRLF will be replaced by LF the next time Git touches it
+2026-11-03T20:28:43.2112156Z warning: in the working copy of 'docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/contact-w1/report.json', CRLF will be replaced by LF the next time Git touches it
+2026-11-03T20:28:43.3346248Z warning: in the working copy of 'docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/contact-w1/terrain-w1.log', CRLF will be replaced by LF the next time Git touches it
+2026-11-03T20:28:43.3350070Z warning: in the working copy of 'docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/contact-w4/checkout-inputs-after.json', CRLF will be replaced by LF the next time Git touches it
+2026-11-03T20:28:43.3355114Z warning: in the working copy of 'docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/contact-w4/checkout-inputs-before.json', CRLF will be replaced by LF the next time Git touches it
+2026-11-03T20:28:43.3361125Z warning: in the working copy of 'docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/contact-w4/contact-observation-w4.log', CRLF will be replaced by LF the next time Git touches it
+2026-11-03T20:28:43.4349636Z warning: in the working copy of 'docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/contact-w4/contact-recovery-w4.log', CRLF will be replaced by LF the next time Git touches it
+2026-11-03T20:28:43.5051257Z warning: in the working copy of 'docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/contact-w4/coupling-w4.log', CRLF will be replaced by LF the next time Git touches it
+2026-11-03T20:28:43.5054557Z warning: in the working copy of 'docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/contact-w4/displacement-w4.log', CRLF will be replaced by LF the next time Git touches it
+2026-11-03T20:28:43.5057978Z warning: in the working copy of 'docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/contact-w4/embedded_sand-baseline-w4.log', CRLF will be replaced by LF the next time Git touches it
+2026-11-03T20:28:43.5062311Z warning: in the working copy of 'docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/contact-w4/embedded_sand-candidate-w4.log', CRLF will be replaced by LF the next time Git touches it
+2026-11-03T20:28:43.5066121Z warning: in the working copy of 'docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/contact-w4/import.log', CRLF will be replaced by LF the next time Git touches it
+2026-11-03T20:28:43.5069145Z warning: in the working copy of 'docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/contact-w4/inputs-after.json', CRLF will be replaced by LF the next time Git touches it
+2026-11-03T20:28:43.5072138Z warning: in the working copy of 'docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/contact-w4/inputs-before.json', CRLF will be replaced by LF the next time Git touches it
+2026-11-03T20:28:43.5076923Z warning: in the working copy of 'docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/contact-w4/mixed-baseline-w4.log', CRLF will be replaced by LF the next time Git touches it
+2026-11-03T20:28:43.5079646Z warning: in the working copy of 'docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/contact-w4/mixed-candidate-w4.log', CRLF will be replaced by LF the next time Git touches it
+2026-11-03T20:28:43.5083595Z warning: in the working copy of 'docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/contact-w4/packed_sand-baseline-w4.log', CRLF will be replaced by LF the next time Git touches it
+2026-11-03T20:28:43.5086759Z warning: in the working copy of 'docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/contact-w4/packed_sand-candidate-w4.log', CRLF will be replaced by LF the next time Git touches it
+2026-11-03T20:28:43.5089456Z warning: in the working copy of 'docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/contact-w4/performance.jsonl', CRLF will be replaced by LF the next time Git touches it
+2026-11-03T20:28:43.5216773Z warning: in the working copy of 'docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/contact-w4/report.json', CRLF will be replaced by LF the next time Git touches it
+2026-11-03T20:28:43.6523429Z warning: in the working copy of 'docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/contact-w4/terrain-w4.log', CRLF will be replaced by LF the next time Git touches it
+2026-11-03T20:28:43.6526832Z warning: in the working copy of 'docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/core/checkout-inputs-after.json', CRLF will be replaced by LF the next time Git touches it
+2026-11-03T20:28:43.6532636Z warning: in the working copy of 'docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/core/checkout-inputs-before.json', CRLF will be replaced by LF the next time Git touches it
+2026-11-03T20:28:43.6536903Z warning: in the working copy of 'docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/core/compound-response.log', CRLF will be replaced by LF the next time Git touches it
+2026-11-03T20:28:43.6539804Z warning: in the working copy of 'docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/core/failure-w1.log', CRLF will be replaced by LF the next time Git touches it
+2026-11-03T20:28:43.6542448Z warning: in the working copy of 'docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/core/failure-w4.log', CRLF will be replaced by LF the next time Git touches it
+2026-11-03T20:28:43.6544254Z warning: in the working copy of 'docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/core/import.log', CRLF will be replaced by LF the next time Git touches it
+2026-11-03T20:28:43.6546041Z warning: in the working copy of 'docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/core/inputs-after.json', CRLF will be replaced by LF the next time Git touches it
+2026-11-03T20:28:43.6550875Z warning: in the working copy of 'docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/core/inputs-before.json', CRLF will be replaced by LF the next time Git touches it
+2026-11-03T20:28:43.6555335Z warning: in the working copy of 'docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/core/lifecycle.log', CRLF will be replaced by LF the next time Git touches it
+2026-11-03T20:28:43.6557417Z warning: in the working copy of 'docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/core/material-image.log', CRLF will be replaced by LF the next time Git touches it
+2026-11-03T20:28:43.6559288Z warning: in the working copy of 'docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/core/motion-w1.log', CRLF will be replaced by LF the next time Git touches it
+2026-11-03T20:28:43.6562125Z warning: in the working copy of 'docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/core/motion-w4.log', CRLF will be replaced by LF the next time Git touches it
+2026-11-03T20:28:43.6564972Z warning: in the working copy of 'docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/core/ordinary-capacity.log', CRLF will be replaced by LF the next time Git touches it
+2026-11-03T20:28:43.6566470Z warning: in the working copy of 'docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/core/ordinary-failure.log', CRLF will be replaced by LF the next time Git touches it
+2026-11-03T20:28:43.6568003Z warning: in the working copy of 'docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/core/ordinary-observer.log', CRLF will be replaced by LF the next time Git touches it
+2026-11-03T20:28:43.6570435Z warning: in the working copy of 'docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/core/ordinary-rapier.log', CRLF will be replaced by LF the next time Git touches it
+2026-11-03T20:28:43.6572088Z warning: in the working copy of 'docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/core/performance.jsonl', CRLF will be replaced by LF the next time Git touches it
+2026-11-03T20:28:43.6573549Z warning: in the working copy of 'docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/core/report.json', CRLF will be replaced by LF the next time Git touches it
+2026-11-03T20:28:43.6577138Z warning: in the working copy of 'docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/mechanism/checkout-inputs-after.json', CRLF will be replaced by LF the next time Git touches it
+2026-11-03T20:28:43.6583131Z warning: in the working copy of 'docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/mechanism/checkout-inputs-before.json', CRLF will be replaced by LF the next time Git touches it
+2026-11-03T20:28:43.6587862Z warning: in the working copy of 'docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/mechanism/import.log', CRLF will be replaced by LF the next time Git touches it
+2026-11-03T20:28:43.6591000Z warning: in the working copy of 'docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/mechanism/inputs-after.json', CRLF will be replaced by LF the next time Git touches it
+2026-11-03T20:28:43.6596743Z warning: in the working copy of 'docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/mechanism/inputs-before.json', CRLF will be replaced by LF the next time Git touches it
+2026-11-03T20:28:43.6601303Z warning: in the working copy of 'docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/mechanism/performance.jsonl', CRLF will be replaced by LF the next time Git touches it
+2026-11-03T20:28:43.6603709Z warning: in the working copy of 'docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/mechanism/report.json', CRLF will be replaced by LF the next time Git touches it
+2026-11-03T20:28:43.6607689Z warning: in the working copy of 'docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/mechanism/sand-contact-fences.log', CRLF will be replaced by LF the next time Git touches it
+2026-11-03T20:28:43.6611025Z warning: in the working copy of 'docs/audits/sol281-20261103/hosted/3e9749854a9bf52a0efd7e017dad901bdfae5b6d/cohorts/windows/mechanism/sand-contact-response.log', CRLF will be replaced by LF the next time Git touches it
+2026-11-03T20:28:48.9017894Z SOL281 runtime publication refused: Staged evidence/provenance bytes changed (including EOL conversion)
+2026-11-03T20:28:48.9195130Z ##[error]Process completed with exit code 1.
+2026-11-03T20:28:48.9277055Z ##[group]Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+2026-11-03T20:28:48.9277539Z with:
+2026-11-03T20:28:48.9277813Z   name: sol281-publication-41710177371-1
+2026-11-03T20:28:48.9278374Z   path: build/sol281/publication.json
+2026-11-03T20:28:48.9278709Z   if-no-files-found: warn
+2026-11-03T20:28:48.9279004Z   retention-days: 90
+2026-11-03T20:28:48.9279290Z   compression-level: 6
+2026-11-03T20:28:48.9279568Z   overwrite: false
+2026-11-03T20:28:48.9279846Z   include-hidden-files: false
+2026-11-03T20:28:48.9280325Z env:
+2026-11-03T20:28:48.9280590Z   CYBERSAND_CI_WATCHDOG_SCALE: 1
+2026-11-03T20:28:48.9280913Z   GODOT_SILENCE_ROOT_WARNING: 1
+2026-11-03T20:28:48.9281224Z   PYTHONUTF8: 1
+2026-11-03T20:28:48.9281553Z   GODOT_CPP_COMMIT: 101ae38034304346a46ea9ea84ae156d3e860496
+2026-11-03T20:28:48.9282295Z   LLVM_MINGW_URL: https://github.com/mstorsjo/llvm-mingw/releases/download/20260826/llvm-mingw-20260826-ucrt-ubuntu-22.04-x86_64.tar.xz
+2026-11-03T20:28:48.9283160Z   LLVM_MINGW_SHA256: cee8d2ce3da5145ce4dc882e70d0b0719a783d53a99752c60948fc0659975a65
+2026-11-03T20:28:48.9283653Z ##[endgroup]
+2026-11-03T20:28:49.1068596Z (node:2821) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-11-03T20:28:49.1070554Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-11-03T20:28:49.1118054Z With the provided path, there will be 1 file uploaded
+2026-11-03T20:28:49.1138483Z Artifact name is valid!
+2026-11-03T20:28:49.1145072Z Root directory input is valid!
+2026-11-03T20:28:49.3461226Z Beginning upload of artifact content to blob storage
+2026-11-03T20:28:49.3690915Z (node:2821) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+2026-11-03T20:28:49.3953909Z Uploaded bytes 24140
+2026-11-03T20:28:49.4088702Z Finished uploading artifact content to blob storage!
+2026-11-03T20:28:49.4090608Z SHA256 digest of uploaded artifact zip is dc0bdde5a4617ef29b6cd842581badd5bef399635257d3538ea0c7f240067154
+2026-11-03T20:28:49.4092558Z Finalizing artifact upload
+2026-11-03T20:28:49.8460835Z Artifact sol281-publication-41710177371-1.zip successfully finalized. Artifact ID 13268885967
+2026-11-03T20:28:49.8462435Z Artifact sol281-publication-41710177371-1 has been successfully uploaded! Final size is 24140 bytes. Artifact ID is 13268885967
+2026-11-03T20:28:49.8468201Z Artifact download URL: https://github.com/techrote/cybersand/actions/runs/41710177371/artifacts/13268885967
+2026-11-03T20:28:49.8736636Z Post job cleanup.
+2026-11-03T20:28:49.9608117Z [command]/usr/bin/git version
+2026-11-03T20:28:49.9686599Z git version 2.56.0
+2026-11-03T20:28:49.9727290Z Temporarily overriding HOME='/home/runner/work/_temp/f994c669-7701-49f3-a705-06e6ebeca2b1' before making global git config changes
+2026-11-03T20:28:49.9728764Z Adding repository directory to the temporary git global config as a safe directory
+2026-11-03T20:28:49.9732560Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/cybersand/cybersand
+2026-11-03T20:28:49.9777419Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-03T20:28:49.9818495Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-03T20:28:50.0117865Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-03T20:28:50.0148675Z http.https://github.com/.extraheader
+2026-11-03T20:28:50.0167124Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-11-03T20:28:50.0207103Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-03T20:28:50.0685278Z Cleaning up orphan processes
+2026-11-03T20:28:50.1201116Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683, actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093, actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+

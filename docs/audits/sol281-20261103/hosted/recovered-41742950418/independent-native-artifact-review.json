@@ -1,0 +1,80 @@
+{
+  "broad_inputs_authenticated": 1089,
+  "failed_publication": {
+    "diagnosis_sha256": "459477c66b1ba640a59d6cb66e0ea2f7ecefd57d48c9b27e53fb020d75612b69",
+    "observed_error": "Staged path set differs from exact publication inventory",
+    "original_failure_log_sha256": "b2f3ab7db90055ac9a3e2b11bd99520a6b1e6c2d2046cae511971d5df71c700f",
+    "scope": "Head/plan byte comparison and original CI failure log. The failed job did not retain its index; expected changed-path count is an inference, reproduced independently with real Git staging in the corrective regression."
+  },
+  "limits": "No new native executable or compiler invocation. MSVC executable identities are recorded but binary files are absent from that artifact. Actual Windows native suites and Linux-built LLVM-MinGW Windows GDExtension are distinct.",
+  "linux": {
+    "checks": {
+      "conservative_displacement": {
+        "checks_per_execution": 281,
+        "executions": 2
+      },
+      "solid_contact_geometry": {
+        "checks_per_execution": 6817,
+        "executions": 2
+      },
+      "solid_detachment": {
+        "checks_per_execution": 19338,
+        "executions": 2
+      }
+    },
+    "original_native_command_sha256": "57b01164b7019c69390a80e9b802de685ac640dda4be4e53b78d2085f7eb09a7",
+    "original_native_receipt_sha256": "fd51a637042fa83f7e842657f5f56c96777859075a42452fd77c0a9508333b36",
+    "receipt_natural_pass": true,
+    "scope": "Existing source-pinned native ownership, conservative displacement and geometry driver executes normal and ASan/UBSan modes; this review only rereads original command evidence."
+  },
+  "msvc": {
+    "actual_platform": "Windows",
+    "checks": {
+      "conservative_displacement": {
+        "checks": 281,
+        "original_log_sha256": "ddce6479d8b7b74e644b25d6c27228274dd13e504dd54aadcee55f9c19648e6b"
+      },
+      "solid_contact_geometry": {
+        "checks": 6817,
+        "original_log_sha256": "459f51c9128d03da1bf61b8bdc6db3626faece86b6682af438de6af941c99b86"
+      },
+      "solid_detachment": {
+        "checks": 19338,
+        "original_log_sha256": "d9148d6b0607fb45082ee0a85b0c663a01b6879f69090402e20866e04ae1e306"
+      }
+    },
+    "compiler_produced_executable_identity_record": {
+      "conservative_displacement": {
+        "path": "build/sol281/msvc-bin/test_conservative_displacement.exe",
+        "sha256": "7DF775979BC119EC83AE44FE69B228D5D6A04AD76D5564A493EAB6737313288D",
+        "size": 2863104
+      },
+      "solid_contact_geometry": {
+        "path": "build/sol281/msvc-bin/test_solid_contact_geometry.exe",
+        "sha256": "F197DE42A19C956C4AE0E4510CF0E1D6285462201FA3A24F31D5BA7727F196E0",
+        "size": 1431040
+      },
+      "solid_detachment": {
+        "path": "build/sol281/msvc-bin/test_solid_detachment.exe",
+        "sha256": "EAF71A25E2EDFF158C2B5A9920EEB071559B33AE1D7288481B48FDDA108722F8",
+        "size": 2883072
+      }
+    },
+    "elapsed_seconds": 49.449763,
+    "executable_bytes_in_artifact": false,
+    "github_digest_matched": true,
+    "original_artifact_id": 13283490729,
+    "original_artifact_sha256": "82afef91fda931054fda6ca5e8b71b01d21df1c7bbaf08b46f0fab2730f2b5b6",
+    "original_members": 14,
+    "owner_review_sha256": "ee01678c77f9dbeecf987147312324fd31f73e56dd888487d12bdaa1ac24710e",
+    "receipt_natural_pass": true,
+    "source_and_raw_before_after_inputs_verified": true
+  },
+  "run_attempt": "1",
+  "run_id": "41742950418",
+  "schema": "cybersand.sol281.independent-native-artifact-review.v1",
+  "source": {
+    "sha": "2457f5ecb945c60cd5118526f48734e82576ba49",
+    "tree": "42b4926b3e15dcbf34b436eff41de50fad54c50a"
+  }
+}

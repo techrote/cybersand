@@ -1,0 +1,1005 @@
+{
+  "audit_helper_sha256": "9e5a22ae22b1ca746996f8b6fc1584132e1f41b5f5364c55dfc457951aee9dde",
+  "canonical_reducer": {
+    "cohorts": 8,
+    "imports": 8,
+    "numbered_assertions": 4798,
+    "ordinary_controls": 8,
+    "receipt_byte_identical": true,
+    "receipt_sha256": "c155f59eae1c85c6ef46118078d82a10912fef786a026c45b30fd35ccfd04315",
+    "status": "passed",
+    "test_processes": 70
+  },
+  "denominators": {
+    "contact_cost": "All worker geometry/freeze attempts, including refused and unconsumed publications, plus every main candidate-response attempt, divided by complete consumed observations.",
+    "duration": "Span between consecutive positive sampled publications; it does not establish continuity between unobserved native steps.",
+    "impulse_energy": "New response only; ordinary coupling, gravity, hard contacts and damping are separate.",
+    "live_design": "2 platforms x 2 worker settings x 3 surroundings x 2 arms x 3 repeats x 360 actual Rapier steps",
+    "other_costs": "Native and worker means use consumed timed snapshots; Rapier uses actual steps; main synchronization uses its measured segments.",
+    "overlap": "Complete unique consumed native-publication geometry observations, not simulation ticks. Report area-samples and cell-samples."
+  },
+  "derived_outputs": {
+    "contact-recovery-case-summary.json": "35bae2ba1ea1bc3889e83f8e3ea1b933925ac536743ae7750dc8fa353d91bcca",
+    "contact-recovery-original-analysis.json": "628d12298d2a2fa4140bfd7a7cbc5804c446f4768968487255703e07be52c1f9",
+    "qualification-original-artifacts.json": "c155f59eae1c85c6ef46118078d82a10912fef786a026c45b30fd35ccfd04315"
+  },
+  "deterministic_comparisons": {
+    "conservative_complete_case_dictionaries_equal": true,
+    "conservative_replay_cases": 17,
+    "frozen_response_numeric_case_dictionaries_equal": true,
+    "mechanical_trajectory_differences": [
+      {
+        "absolute_difference": 9.992007221626409e-16,
+        "float32_ulp_distance": 0,
+        "linux": 0.449905395507812,
+        "path": "/trajectory/0/baseline_depth",
+        "windows": 0.449905395507813
+      },
+      {
+        "absolute_difference": 9.992007221626409e-16,
+        "float32_ulp_distance": 0,
+        "linux": 0.449905395507812,
+        "path": "/trajectory/0/off_center_baseline_area",
+        "windows": 0.449905395507813
+      },
+      {
+        "absolute_difference": 2.9802321999117254e-08,
+        "float32_ulp_distance": 1,
+        "linux": -0.299964874982834,
+        "path": "/trajectory/3/off_center_candidate_rotation",
+        "windows": -0.299964904785156
+      },
+      {
+        "absolute_difference": 1.1102230246251565e-15,
+        "float32_ulp_distance": 0,
+        "linux": -0.599929809570312,
+        "path": "/trajectory/7/off_center_candidate_rotation",
+        "windows": -0.599929809570313
+      }
+    ],
+    "native_observation_complete_case_dictionaries_equal": true
+  },
+  "disposition": "Exact-source hosted mechanism and evidence integrity confirmed, but proposed CPU gates failed in the listed groups. CPU feasibility, broad physical/lifecycle acceptance and merge remain NO-GO.",
+  "execution_inputs": 1089,
+  "failed_cost_groups": [
+    {
+      "candidate": false,
+      "platform": "Windows",
+      "surroundings": "embedded_sand",
+      "workers": 4,
+      "worst_mean_ms": 2.1459151785714288
+    }
+  ],
+  "findings_for_completion": [
+    "Each hosted cohort uses the exact durable executed source and its original runtime build; this receipt does not borrow old5944c130 qualification.",
+    "Prior run41742950418 at2457f5ec remains a recorded publication failure. This report qualifies only the new executed source and its actual publication child.",
+    "The twelve named copied-readback fault cases are required and passed separately from live contact sessions; these synthetic faults do not assert that Rapier produced NaN or infinity.",
+    "All 24 CPU gates are calculated here independently; the hosted publication workflow does not enforce the 2 ms threshold.",
+    "Live penetration and positive-overlap spans remain descriptive asynchronous observations, not continuous clearance proofs or paired causal comparisons.",
+    "The registered experiment has no general live-depth acceptance cutoff. Broad physical/lifecycle/human acceptance cannot be inferred from green mechanism CI."
+  ],
+  "independent_native_artifact_review_sha256": "01668771574d78e75a1f6746b65da207808eb5fbb75d8d8dab44b71092cd949f",
+  "live_totals": {
+    "actual_rapier_steps": 25920,
+    "candidate_cases": 36,
+    "energy_violations": 0,
+    "live_cases": 72,
+    "observations": 23606,
+    "refused_observations": 0,
+    "response_accepts": 10721,
+    "response_attempts": 11454,
+    "response_failures": 0,
+    "response_refusal_ClearedContact": 381,
+    "response_refusal_InvalidGeometryWitness": 3,
+    "response_refusal_NonDissipativeResponse": 332,
+    "response_refusal_PoseDrift": 17,
+    "worker_observation_attempts": 26549
+  },
+  "original_build_artifact_review_sha256": "e50f3004e3895d87899b0f5d971eacc6e2b0e872c71b40dd965c3c2d190224bf",
+  "original_host_archives": [
+    {
+      "artifact_id": 13285140223,
+      "github_digest_matched": true,
+      "name": "sol281-host-linux-contact-w1-41746597077-1",
+      "omitted_ephemeral_host_state_files": [
+        "host/host-state/cache/godot/editor_doc_cache-4.7.res",
+        "host/host-state/config/godot/editor_settings-4.7.tres",
+        "host/host-state/data/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+        "host/host-state/data/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot2026-11-04T00.37.03.log",
+        "host/host-state/data/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot2026-11-04T00.37.10.log",
+        "host/host-state/data/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot2026-11-04T00.36.57.log",
+        "host/host-state/data/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot2026-11-04T00.37.11.log",
+        "host/host-state/data/godot/keystores/debug.keystore"
+      ],
+      "original_bytes_verified": true,
+      "original_files_verified": 34,
+      "published_bytes_verified": true,
+      "sha256": "c85ed906d1038c9c1b289e8221820cb1b8527a6cfa7fe98fc7d925cf92ac9c04",
+      "size": 7057109
+    },
+    {
+      "artifact_id": 13285275374,
+      "github_digest_matched": true,
+      "name": "sol281-host-linux-contact-w4-41746597077-1",
+      "omitted_ephemeral_host_state_files": [
+        "host/host-state/cache/godot/editor_doc_cache-4.7.res",
+        "host/host-state/config/godot/editor_settings-4.7.tres",
+        "host/host-state/data/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+        "host/host-state/data/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot2026-11-04T00.37.01.log",
+        "host/host-state/data/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot2026-11-04T00.37.08.log",
+        "host/host-state/data/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot2026-11-04T00.37.15.log",
+        "host/host-state/data/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot2026-11-04T00.37.16.log",
+        "host/host-state/data/godot/keystores/debug.keystore"
+      ],
+      "original_bytes_verified": true,
+      "original_files_verified": 34,
+      "published_bytes_verified": true,
+      "sha256": "d823a3bea747268bc3878a7f1b45f6200b40b904b2f31ae8b35db21074467c63",
+      "size": 6934357
+    },
+    {
+      "artifact_id": 13284970721,
+      "github_digest_matched": true,
+      "name": "sol281-host-linux-core-41746597077-1",
+      "omitted_ephemeral_host_state_files": [
+        "host/host-state/cache/godot/editor_doc_cache-4.7.res",
+        "host/host-state/config/godot/editor_settings-4.7.tres",
+        "host/host-state/data/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+        "host/host-state/data/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot2026-11-04T00.36.39.log",
+        "host/host-state/data/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot2026-11-04T00.36.40.log",
+        "host/host-state/data/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot2026-11-04T00.36.42.log",
+        "host/host-state/data/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot2026-11-04T00.36.46.log",
+        "host/host-state/data/godot/keystores/debug.keystore"
+      ],
+      "original_bytes_verified": true,
+      "original_files_verified": 26,
+      "published_bytes_verified": true,
+      "sha256": "8c43579278f2885d8025d36e43c1f912d88c3288140d35f1fc5c9a9124e38a72",
+      "size": 3490673
+    },
+    {
+      "artifact_id": 13284676936,
+      "github_digest_matched": true,
+      "name": "sol281-host-linux-mechanism-41746597077-1",
+      "omitted_ephemeral_host_state_files": [
+        "host/host-state/cache/godot/editor_doc_cache-4.7.res",
+        "host/host-state/config/godot/editor_settings-4.7.tres",
+        "host/host-state/data/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+        "host/host-state/data/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot2026-11-04T00.37.18.log",
+        "host/host-state/data/godot/keystores/debug.keystore"
+      ],
+      "original_bytes_verified": true,
+      "original_files_verified": 16,
+      "published_bytes_verified": true,
+      "sha256": "029291775e27285b70a87d327c851975ee06e26426a9b1c12c10cd55ba363e0d",
+      "size": 3486407
+    },
+    {
+      "artifact_id": 13283989575,
+      "github_digest_matched": true,
+      "name": "sol281-host-windows-contact-w1-41746597077-1",
+      "omitted_ephemeral_host_state_files": [],
+      "original_bytes_verified": true,
+      "original_files_verified": 28,
+      "published_bytes_verified": true,
+      "sha256": "6e12bc2b1d163b38610004291ec7d82015e37ba480ad8e88fa784a593bc9fb60",
+      "size": 2949656
+    },
+    {
+      "artifact_id": 13284911291,
+      "github_digest_matched": true,
+      "name": "sol281-host-windows-contact-w4-41746597077-1",
+      "omitted_ephemeral_host_state_files": [],
+      "original_bytes_verified": true,
+      "original_files_verified": 28,
+      "published_bytes_verified": true,
+      "sha256": "93b302d4565a9e09a3de7d1c3d01695d1acd9100d5427341488c020ac2e97451",
+      "size": 2964897
+    },
+    {
+      "artifact_id": 13284187496,
+      "github_digest_matched": true,
+      "name": "sol281-host-windows-core-41746597077-1",
+      "omitted_ephemeral_host_state_files": [],
+      "original_bytes_verified": true,
+      "original_files_verified": 20,
+      "published_bytes_verified": true,
+      "sha256": "0d0c4a339b4061af961e34f64eb31ef2a1e541b950e849c4ce9f9db12b825a50",
+      "size": 222611
+    },
+    {
+      "artifact_id": 13284104273,
+      "github_digest_matched": true,
+      "name": "sol281-host-windows-mechanism-41746597077-1",
+      "omitted_ephemeral_host_state_files": [],
+      "original_bytes_verified": true,
+      "original_files_verified": 10,
+      "published_bytes_verified": true,
+      "sha256": "8be270633748546d16082297af08a7bd6d3d94bf1e583a7c9f9c180aa77e6bcc",
+      "size": 218537
+    }
+  ],
+  "original_host_bytes_verified": 120485349,
+  "original_host_files_verified": 196,
+  "publication_attempt": {
+    "all_declared_git_entries_are_regular_mode_100644": true,
+    "all_declared_git_files_verified": 208,
+    "changed_git_paths_within_declared_scope": 207,
+    "native_lfs_pointers_bound_to_original_binary_hashes": [
+      {
+        "git_pointer_blob_sha256": "bdb81e3a08c2ba7b8914086d58cecc4aa82d7782a9985ce536d3dc1c3e642958",
+        "original_binary_sha256": "4c0612b07395089c38696099998f60699a1477d997b95a568d503195a606a6d9",
+        "original_binary_size": 4924416,
+        "path": "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll"
+      },
+      {
+        "git_pointer_blob_sha256": "26e08d4c26d1df3020982936972fdc1e242459c09e3ab819d6ea8e4d102d79f3",
+        "original_binary_sha256": "5877f1ac8b3e1bc3548d415bbd3890f2b804df4d03f4eef4c961170780b47b3a",
+        "original_binary_size": 4343064,
+        "path": "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so"
+      }
+    ],
+    "original_artifact_id": 13285081091,
+    "original_artifact_sha256": "ed1b67493aa6212e46d24c03fbebc8b9456344b81e33e9022ca51c9cc8f38624",
+    "original_receipt_sha256": "1e85c19778cf5e132c1f7e04a445adb6bb6ac15508298f4cc8e756050e5c1822",
+    "prepared_file_inventory": 208,
+    "rename_folding_disabled": true,
+    "source_and_history_unchanged_outside_declared_publication": true,
+    "status": "published"
+  },
+  "publication_commit": "89d2eb6d280183e495a94b559776dfd8f1cdc196",
+  "publication_status": "published",
+  "publisher_independent_review_sha256": "1987a6a965b2fa025a7043c1e93f9db45f3df6104d0d481fed9f2304dad46b15",
+  "publisher_reviewed_files": {
+    "tools/sol281/publish_runtime.py": {
+      "git_blob": "947f4dddc14db8ab92cbb4e8c894523b24d40cf6",
+      "sha256": "87752af50352843da6f83fc6c51cb0f77c2371f04cf7f8d18d026611418c5198"
+    },
+    "tools/sol281/test_publish_runtime.py": {
+      "git_blob": "a36c7dd94699850d7238dac5d6727bf8a534f1b7",
+      "sha256": "d225644cbc902bba4bc59f563fb43433c073b0c12653056541846351f75a078e"
+    }
+  },
+  "readback_fault_inventory": [
+    {
+      "checks": 135,
+      "failure_cases": [
+        "velocity_x_nan",
+        "velocity_y_inf",
+        "velocity_negative_inf",
+        "omega_nan",
+        "omega_inf",
+        "omega_negative_inf",
+        "energy_nan",
+        "energy_inf",
+        "energy_negative_inf",
+        "momentum_nan",
+        "angular_momentum_inf",
+        "finite_energy_increase"
+      ],
+      "platform": "Linux"
+    },
+    {
+      "checks": 135,
+      "failure_cases": [
+        "velocity_x_nan",
+        "velocity_y_inf",
+        "velocity_negative_inf",
+        "omega_nan",
+        "omega_inf",
+        "omega_negative_inf",
+        "energy_nan",
+        "energy_inf",
+        "energy_negative_inf",
+        "momentum_nan",
+        "angular_momentum_inf",
+        "finite_energy_increase"
+      ],
+      "platform": "Windows"
+    }
+  ],
+  "reader_regressions": "No redundant local rerun by this evidence reviewer. The source-bound build/publication workflow executes its existing reader and publisher gates; original receipts are retained by the recovery owner.",
+  "registered_mechanism_gates": {
+    "all_24_live_arm_group_cost_gates": false,
+    "conservation": "All 72 live cases preserve Sand quantity, Water mass and exact 520-cell aggregate tuple ownership assertions; 24 separate populated controls and 17-case replay remain separately qualified.",
+    "controlled_off_centre_overlap_reduction": {
+      "measured": 0.911883194468342,
+      "passed": true,
+      "threshold": 0.25
+    },
+    "controlled_plane_overlap_reduction": {
+      "measured": 1.0,
+      "passed": true,
+      "threshold": 0.25
+    },
+    "cost_threshold_ms": 2.0,
+    "geometry_and_supported_contact_fences": "Retained native/Godot cases passed; original host inputs and before/after bytes authenticate exact source.",
+    "live_matrix_complete": true,
+    "response_energy": "PASS within registered planner/readback tolerances; zero recorded live response-energy violations. Full two-way granular momentum and whole-session mechanical energy are not qualified.",
+    "single_contact_and_separating_control": "PASS on both actual hosts; pure frozen response numeric case dictionaries agree."
+  },
+  "remaining_gates": [
+    "Full-matrix CPU feasibility: Windows four-worker embedded baseline r0 exceeds unchanged 2 ms gate",
+    "Sustained embedding and unresolved penetration",
+    "Dense-material resistance calibration and rotation/rolling feel",
+    "Human graphical acceptance and representative GPU pacing",
+    "Safe restoration and later structural lifecycle features",
+    "Applicable ready-for-review CI",
+    "Explicit owner merge approval"
+  ],
+  "review_amendment": {
+    "additional_execution": false,
+    "change": "Explicitly carry the already recorded CPU-gate failure into the remaining-gates list. Measured values, original artifacts, thresholds and execution status are unchanged.",
+    "prior_review_sha256": "1b98d478f517bccd6ec046e77eb236ad43963868940176ede046fdc9c7aa8974"
+  },
+  "reviewer": {
+    "human_gameplay_acceptance": false,
+    "identity": "/root/evidence_audit",
+    "kind": "independent AI subagent",
+    "source_edits": false
+  },
+  "run_attempt": "1",
+  "run_id": "41746597077",
+  "runtime_host_bindings": [
+    {
+      "build_manifest_sha256": "05d82f2dcd2ffaddfc885d5e3f753a9b9755101890fd715cc74c5157b3efd029",
+      "checkout_inputs_unchanged": true,
+      "cohort": "contact-w1",
+      "engine": {
+        "archive_algorithm": "sha256",
+        "archive_hash": "0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c",
+        "executables": {
+          "Godot_v4.7-stable_linux.x86_64": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75"
+        },
+        "version": "4.7.stable.official.5b4e0cb0f"
+      },
+      "execution_policy": {
+        "advisories": {
+          "drift_ratio": 1.2,
+          "drift_window": 5,
+          "minimum_baseline_samples": 3,
+          "prominent_ratio": 2.0,
+          "rolling_window": 10,
+          "warning_ratio": 1.5
+        },
+        "path": "godot/tests/support/ci_execution_policy.json",
+        "policy_id": "github-hosted-complete-execution-v1",
+        "scale": 1.0,
+        "schema_version": 1,
+        "sha256": "9eaec2e6318073bff7cfbac209d2d959a751b85ffd63cb94c147e9be237516dc",
+        "watchdogs": {
+          "aggregate_headroom_seconds": 600.0,
+          "complex_fixture_seconds": 3600.0,
+          "dependency_prepare_seconds": 1200.0,
+          "diagnostic_capture_seconds": 30.0,
+          "godot_import_seconds": 1200.0,
+          "godot_job_minutes": 360.0,
+          "godot_metadata_seconds": 900.0,
+          "godot_setup_seconds": 4200.0,
+          "graphical_case_seconds": 1200.0,
+          "hosted_job_minutes": 180.0,
+          "main_ack_seconds": 600.0,
+          "native_case_seconds": 3600.0,
+          "native_compile_seconds": 3600.0,
+          "native_suite_seconds": 7200.0,
+          "operation_seconds": 300.0,
+          "ordinary_case_seconds": 1200.0,
+          "terminate_grace_seconds": 10.0
+        }
+      },
+      "platform": "Linux",
+      "rapier": {
+        "lock_sha256": "df24cf6fb1adc17b2c1675b1387db19c93ee31d6cbf497c9295647ec98371285",
+        "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+        "sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+        "size": 117275416
+      },
+      "runtime": {
+        "filename": "libcybersand_native.linux.x86_64.so",
+        "sha256": "5877f1ac8b3e1bc3548d415bbd3890f2b804df4d03f4eef4c961170780b47b3a",
+        "size": 4343064
+      },
+      "source": {
+        "sha": "749fb8b597ad866f7535f26442e904207c4f7611",
+        "tree": "77a7bc2ed4d1f7ab339dd4a16fd082fccf56f0ce"
+      },
+      "source_unchanged": true
+    },
+    {
+      "build_manifest_sha256": "05d82f2dcd2ffaddfc885d5e3f753a9b9755101890fd715cc74c5157b3efd029",
+      "checkout_inputs_unchanged": true,
+      "cohort": "contact-w4",
+      "engine": {
+        "archive_algorithm": "sha256",
+        "archive_hash": "0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c",
+        "executables": {
+          "Godot_v4.7-stable_linux.x86_64": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75"
+        },
+        "version": "4.7.stable.official.5b4e0cb0f"
+      },
+      "execution_policy": {
+        "advisories": {
+          "drift_ratio": 1.2,
+          "drift_window": 5,
+          "minimum_baseline_samples": 3,
+          "prominent_ratio": 2.0,
+          "rolling_window": 10,
+          "warning_ratio": 1.5
+        },
+        "path": "godot/tests/support/ci_execution_policy.json",
+        "policy_id": "github-hosted-complete-execution-v1",
+        "scale": 1.0,
+        "schema_version": 1,
+        "sha256": "9eaec2e6318073bff7cfbac209d2d959a751b85ffd63cb94c147e9be237516dc",
+        "watchdogs": {
+          "aggregate_headroom_seconds": 600.0,
+          "complex_fixture_seconds": 3600.0,
+          "dependency_prepare_seconds": 1200.0,
+          "diagnostic_capture_seconds": 30.0,
+          "godot_import_seconds": 1200.0,
+          "godot_job_minutes": 360.0,
+          "godot_metadata_seconds": 900.0,
+          "godot_setup_seconds": 4200.0,
+          "graphical_case_seconds": 1200.0,
+          "hosted_job_minutes": 180.0,
+          "main_ack_seconds": 600.0,
+          "native_case_seconds": 3600.0,
+          "native_compile_seconds": 3600.0,
+          "native_suite_seconds": 7200.0,
+          "operation_seconds": 300.0,
+          "ordinary_case_seconds": 1200.0,
+          "terminate_grace_seconds": 10.0
+        }
+      },
+      "platform": "Linux",
+      "rapier": {
+        "lock_sha256": "df24cf6fb1adc17b2c1675b1387db19c93ee31d6cbf497c9295647ec98371285",
+        "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+        "sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+        "size": 117275416
+      },
+      "runtime": {
+        "filename": "libcybersand_native.linux.x86_64.so",
+        "sha256": "5877f1ac8b3e1bc3548d415bbd3890f2b804df4d03f4eef4c961170780b47b3a",
+        "size": 4343064
+      },
+      "source": {
+        "sha": "749fb8b597ad866f7535f26442e904207c4f7611",
+        "tree": "77a7bc2ed4d1f7ab339dd4a16fd082fccf56f0ce"
+      },
+      "source_unchanged": true
+    },
+    {
+      "build_manifest_sha256": "05d82f2dcd2ffaddfc885d5e3f753a9b9755101890fd715cc74c5157b3efd029",
+      "checkout_inputs_unchanged": true,
+      "cohort": "core",
+      "engine": {
+        "archive_algorithm": "sha256",
+        "archive_hash": "0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c",
+        "executables": {
+          "Godot_v4.7-stable_linux.x86_64": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75"
+        },
+        "version": "4.7.stable.official.5b4e0cb0f"
+      },
+      "execution_policy": {
+        "advisories": {
+          "drift_ratio": 1.2,
+          "drift_window": 5,
+          "minimum_baseline_samples": 3,
+          "prominent_ratio": 2.0,
+          "rolling_window": 10,
+          "warning_ratio": 1.5
+        },
+        "path": "godot/tests/support/ci_execution_policy.json",
+        "policy_id": "github-hosted-complete-execution-v1",
+        "scale": 1.0,
+        "schema_version": 1,
+        "sha256": "9eaec2e6318073bff7cfbac209d2d959a751b85ffd63cb94c147e9be237516dc",
+        "watchdogs": {
+          "aggregate_headroom_seconds": 600.0,
+          "complex_fixture_seconds": 3600.0,
+          "dependency_prepare_seconds": 1200.0,
+          "diagnostic_capture_seconds": 30.0,
+          "godot_import_seconds": 1200.0,
+          "godot_job_minutes": 360.0,
+          "godot_metadata_seconds": 900.0,
+          "godot_setup_seconds": 4200.0,
+          "graphical_case_seconds": 1200.0,
+          "hosted_job_minutes": 180.0,
+          "main_ack_seconds": 600.0,
+          "native_case_seconds": 3600.0,
+          "native_compile_seconds": 3600.0,
+          "native_suite_seconds": 7200.0,
+          "operation_seconds": 300.0,
+          "ordinary_case_seconds": 1200.0,
+          "terminate_grace_seconds": 10.0
+        }
+      },
+      "platform": "Linux",
+      "rapier": {
+        "lock_sha256": "df24cf6fb1adc17b2c1675b1387db19c93ee31d6cbf497c9295647ec98371285",
+        "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+        "sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+        "size": 117275416
+      },
+      "runtime": {
+        "filename": "libcybersand_native.linux.x86_64.so",
+        "sha256": "5877f1ac8b3e1bc3548d415bbd3890f2b804df4d03f4eef4c961170780b47b3a",
+        "size": 4343064
+      },
+      "source": {
+        "sha": "749fb8b597ad866f7535f26442e904207c4f7611",
+        "tree": "77a7bc2ed4d1f7ab339dd4a16fd082fccf56f0ce"
+      },
+      "source_unchanged": true
+    },
+    {
+      "build_manifest_sha256": "05d82f2dcd2ffaddfc885d5e3f753a9b9755101890fd715cc74c5157b3efd029",
+      "checkout_inputs_unchanged": true,
+      "cohort": "mechanism",
+      "engine": {
+        "archive_algorithm": "sha256",
+        "archive_hash": "0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c",
+        "executables": {
+          "Godot_v4.7-stable_linux.x86_64": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75"
+        },
+        "version": "4.7.stable.official.5b4e0cb0f"
+      },
+      "execution_policy": {
+        "advisories": {
+          "drift_ratio": 1.2,
+          "drift_window": 5,
+          "minimum_baseline_samples": 3,
+          "prominent_ratio": 2.0,
+          "rolling_window": 10,
+          "warning_ratio": 1.5
+        },
+        "path": "godot/tests/support/ci_execution_policy.json",
+        "policy_id": "github-hosted-complete-execution-v1",
+        "scale": 1.0,
+        "schema_version": 1,
+        "sha256": "9eaec2e6318073bff7cfbac209d2d959a751b85ffd63cb94c147e9be237516dc",
+        "watchdogs": {
+          "aggregate_headroom_seconds": 600.0,
+          "complex_fixture_seconds": 3600.0,
+          "dependency_prepare_seconds": 1200.0,
+          "diagnostic_capture_seconds": 30.0,
+          "godot_import_seconds": 1200.0,
+          "godot_job_minutes": 360.0,
+          "godot_metadata_seconds": 900.0,
+          "godot_setup_seconds": 4200.0,
+          "graphical_case_seconds": 1200.0,
+          "hosted_job_minutes": 180.0,
+          "main_ack_seconds": 600.0,
+          "native_case_seconds": 3600.0,
+          "native_compile_seconds": 3600.0,
+          "native_suite_seconds": 7200.0,
+          "operation_seconds": 300.0,
+          "ordinary_case_seconds": 1200.0,
+          "terminate_grace_seconds": 10.0
+        }
+      },
+      "platform": "Linux",
+      "rapier": {
+        "lock_sha256": "df24cf6fb1adc17b2c1675b1387db19c93ee31d6cbf497c9295647ec98371285",
+        "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+        "sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+        "size": 117275416
+      },
+      "runtime": {
+        "filename": "libcybersand_native.linux.x86_64.so",
+        "sha256": "5877f1ac8b3e1bc3548d415bbd3890f2b804df4d03f4eef4c961170780b47b3a",
+        "size": 4343064
+      },
+      "source": {
+        "sha": "749fb8b597ad866f7535f26442e904207c4f7611",
+        "tree": "77a7bc2ed4d1f7ab339dd4a16fd082fccf56f0ce"
+      },
+      "source_unchanged": true
+    },
+    {
+      "build_manifest_sha256": "d161e3956ad48182e9318fa256de31cf07e27d062067c83d42a0238c35359017",
+      "checkout_inputs_unchanged": true,
+      "cohort": "contact-w1",
+      "engine": {
+        "archive_algorithm": "sha512",
+        "archive_hash": "41645a908eb3181d6f2d1201ed7b6d6f095f6a23aaed8903d5d255277cc8d142814f3e6817f865b3cac142c39b8aff99280091d3bbdaa301517730b3ba0522b9",
+        "executables": {
+          "Godot_v4.7-stable_win64.exe": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+          "Godot_v4.7-stable_win64_console.exe": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c"
+        },
+        "version": "4.7.stable.official.5b4e0cb0f"
+      },
+      "execution_policy": {
+        "advisories": {
+          "drift_ratio": 1.2,
+          "drift_window": 5,
+          "minimum_baseline_samples": 3,
+          "prominent_ratio": 2.0,
+          "rolling_window": 10,
+          "warning_ratio": 1.5
+        },
+        "path": "godot/tests/support/ci_execution_policy.json",
+        "policy_id": "github-hosted-complete-execution-v1",
+        "scale": 1.0,
+        "schema_version": 1,
+        "sha256": "9eaec2e6318073bff7cfbac209d2d959a751b85ffd63cb94c147e9be237516dc",
+        "watchdogs": {
+          "aggregate_headroom_seconds": 600.0,
+          "complex_fixture_seconds": 3600.0,
+          "dependency_prepare_seconds": 1200.0,
+          "diagnostic_capture_seconds": 30.0,
+          "godot_import_seconds": 1200.0,
+          "godot_job_minutes": 360.0,
+          "godot_metadata_seconds": 900.0,
+          "godot_setup_seconds": 4200.0,
+          "graphical_case_seconds": 1200.0,
+          "hosted_job_minutes": 180.0,
+          "main_ack_seconds": 600.0,
+          "native_case_seconds": 3600.0,
+          "native_compile_seconds": 3600.0,
+          "native_suite_seconds": 7200.0,
+          "operation_seconds": 300.0,
+          "ordinary_case_seconds": 1200.0,
+          "terminate_grace_seconds": 10.0
+        }
+      },
+      "platform": "Windows",
+      "rapier": {
+        "lock_sha256": "df24cf6fb1adc17b2c1675b1387db19c93ee31d6cbf497c9295647ec98371285",
+        "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+        "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+        "size": 9987072
+      },
+      "runtime": {
+        "filename": "cybersand_native.windows.x86_64.dll",
+        "sha256": "4c0612b07395089c38696099998f60699a1477d997b95a568d503195a606a6d9",
+        "size": 4924416
+      },
+      "source": {
+        "sha": "749fb8b597ad866f7535f26442e904207c4f7611",
+        "tree": "77a7bc2ed4d1f7ab339dd4a16fd082fccf56f0ce"
+      },
+      "source_unchanged": true
+    },
+    {
+      "build_manifest_sha256": "d161e3956ad48182e9318fa256de31cf07e27d062067c83d42a0238c35359017",
+      "checkout_inputs_unchanged": true,
+      "cohort": "contact-w4",
+      "engine": {
+        "archive_algorithm": "sha512",
+        "archive_hash": "41645a908eb3181d6f2d1201ed7b6d6f095f6a23aaed8903d5d255277cc8d142814f3e6817f865b3cac142c39b8aff99280091d3bbdaa301517730b3ba0522b9",
+        "executables": {
+          "Godot_v4.7-stable_win64.exe": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+          "Godot_v4.7-stable_win64_console.exe": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c"
+        },
+        "version": "4.7.stable.official.5b4e0cb0f"
+      },
+      "execution_policy": {
+        "advisories": {
+          "drift_ratio": 1.2,
+          "drift_window": 5,
+          "minimum_baseline_samples": 3,
+          "prominent_ratio": 2.0,
+          "rolling_window": 10,
+          "warning_ratio": 1.5
+        },
+        "path": "godot/tests/support/ci_execution_policy.json",
+        "policy_id": "github-hosted-complete-execution-v1",
+        "scale": 1.0,
+        "schema_version": 1,
+        "sha256": "9eaec2e6318073bff7cfbac209d2d959a751b85ffd63cb94c147e9be237516dc",
+        "watchdogs": {
+          "aggregate_headroom_seconds": 600.0,
+          "complex_fixture_seconds": 3600.0,
+          "dependency_prepare_seconds": 1200.0,
+          "diagnostic_capture_seconds": 30.0,
+          "godot_import_seconds": 1200.0,
+          "godot_job_minutes": 360.0,
+          "godot_metadata_seconds": 900.0,
+          "godot_setup_seconds": 4200.0,
+          "graphical_case_seconds": 1200.0,
+          "hosted_job_minutes": 180.0,
+          "main_ack_seconds": 600.0,
+          "native_case_seconds": 3600.0,
+          "native_compile_seconds": 3600.0,
+          "native_suite_seconds": 7200.0,
+          "operation_seconds": 300.0,
+          "ordinary_case_seconds": 1200.0,
+          "terminate_grace_seconds": 10.0
+        }
+      },
+      "platform": "Windows",
+      "rapier": {
+        "lock_sha256": "df24cf6fb1adc17b2c1675b1387db19c93ee31d6cbf497c9295647ec98371285",
+        "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+        "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+        "size": 9987072
+      },
+      "runtime": {
+        "filename": "cybersand_native.windows.x86_64.dll",
+        "sha256": "4c0612b07395089c38696099998f60699a1477d997b95a568d503195a606a6d9",
+        "size": 4924416
+      },
+      "source": {
+        "sha": "749fb8b597ad866f7535f26442e904207c4f7611",
+        "tree": "77a7bc2ed4d1f7ab339dd4a16fd082fccf56f0ce"
+      },
+      "source_unchanged": true
+    },
+    {
+      "build_manifest_sha256": "d161e3956ad48182e9318fa256de31cf07e27d062067c83d42a0238c35359017",
+      "checkout_inputs_unchanged": true,
+      "cohort": "core",
+      "engine": {
+        "archive_algorithm": "sha512",
+        "archive_hash": "41645a908eb3181d6f2d1201ed7b6d6f095f6a23aaed8903d5d255277cc8d142814f3e6817f865b3cac142c39b8aff99280091d3bbdaa301517730b3ba0522b9",
+        "executables": {
+          "Godot_v4.7-stable_win64.exe": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+          "Godot_v4.7-stable_win64_console.exe": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c"
+        },
+        "version": "4.7.stable.official.5b4e0cb0f"
+      },
+      "execution_policy": {
+        "advisories": {
+          "drift_ratio": 1.2,
+          "drift_window": 5,
+          "minimum_baseline_samples": 3,
+          "prominent_ratio": 2.0,
+          "rolling_window": 10,
+          "warning_ratio": 1.5
+        },
+        "path": "godot/tests/support/ci_execution_policy.json",
+        "policy_id": "github-hosted-complete-execution-v1",
+        "scale": 1.0,
+        "schema_version": 1,
+        "sha256": "9eaec2e6318073bff7cfbac209d2d959a751b85ffd63cb94c147e9be237516dc",
+        "watchdogs": {
+          "aggregate_headroom_seconds": 600.0,
+          "complex_fixture_seconds": 3600.0,
+          "dependency_prepare_seconds": 1200.0,
+          "diagnostic_capture_seconds": 30.0,
+          "godot_import_seconds": 1200.0,
+          "godot_job_minutes": 360.0,
+          "godot_metadata_seconds": 900.0,
+          "godot_setup_seconds": 4200.0,
+          "graphical_case_seconds": 1200.0,
+          "hosted_job_minutes": 180.0,
+          "main_ack_seconds": 600.0,
+          "native_case_seconds": 3600.0,
+          "native_compile_seconds": 3600.0,
+          "native_suite_seconds": 7200.0,
+          "operation_seconds": 300.0,
+          "ordinary_case_seconds": 1200.0,
+          "terminate_grace_seconds": 10.0
+        }
+      },
+      "platform": "Windows",
+      "rapier": {
+        "lock_sha256": "df24cf6fb1adc17b2c1675b1387db19c93ee31d6cbf497c9295647ec98371285",
+        "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+        "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+        "size": 9987072
+      },
+      "runtime": {
+        "filename": "cybersand_native.windows.x86_64.dll",
+        "sha256": "4c0612b07395089c38696099998f60699a1477d997b95a568d503195a606a6d9",
+        "size": 4924416
+      },
+      "source": {
+        "sha": "749fb8b597ad866f7535f26442e904207c4f7611",
+        "tree": "77a7bc2ed4d1f7ab339dd4a16fd082fccf56f0ce"
+      },
+      "source_unchanged": true
+    },
+    {
+      "build_manifest_sha256": "d161e3956ad48182e9318fa256de31cf07e27d062067c83d42a0238c35359017",
+      "checkout_inputs_unchanged": true,
+      "cohort": "mechanism",
+      "engine": {
+        "archive_algorithm": "sha512",
+        "archive_hash": "41645a908eb3181d6f2d1201ed7b6d6f095f6a23aaed8903d5d255277cc8d142814f3e6817f865b3cac142c39b8aff99280091d3bbdaa301517730b3ba0522b9",
+        "executables": {
+          "Godot_v4.7-stable_win64.exe": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+          "Godot_v4.7-stable_win64_console.exe": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c"
+        },
+        "version": "4.7.stable.official.5b4e0cb0f"
+      },
+      "execution_policy": {
+        "advisories": {
+          "drift_ratio": 1.2,
+          "drift_window": 5,
+          "minimum_baseline_samples": 3,
+          "prominent_ratio": 2.0,
+          "rolling_window": 10,
+          "warning_ratio": 1.5
+        },
+        "path": "godot/tests/support/ci_execution_policy.json",
+        "policy_id": "github-hosted-complete-execution-v1",
+        "scale": 1.0,
+        "schema_version": 1,
+        "sha256": "9eaec2e6318073bff7cfbac209d2d959a751b85ffd63cb94c147e9be237516dc",
+        "watchdogs": {
+          "aggregate_headroom_seconds": 600.0,
+          "complex_fixture_seconds": 3600.0,
+          "dependency_prepare_seconds": 1200.0,
+          "diagnostic_capture_seconds": 30.0,
+          "godot_import_seconds": 1200.0,
+          "godot_job_minutes": 360.0,
+          "godot_metadata_seconds": 900.0,
+          "godot_setup_seconds": 4200.0,
+          "graphical_case_seconds": 1200.0,
+          "hosted_job_minutes": 180.0,
+          "main_ack_seconds": 600.0,
+          "native_case_seconds": 3600.0,
+          "native_compile_seconds": 3600.0,
+          "native_suite_seconds": 7200.0,
+          "operation_seconds": 300.0,
+          "ordinary_case_seconds": 1200.0,
+          "terminate_grace_seconds": 10.0
+        }
+      },
+      "platform": "Windows",
+      "rapier": {
+        "lock_sha256": "df24cf6fb1adc17b2c1675b1387db19c93ee31d6cbf497c9295647ec98371285",
+        "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+        "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+        "size": 9987072
+      },
+      "runtime": {
+        "filename": "cybersand_native.windows.x86_64.dll",
+        "sha256": "4c0612b07395089c38696099998f60699a1477d997b95a568d503195a606a6d9",
+        "size": 4924416
+      },
+      "source": {
+        "sha": "749fb8b597ad866f7535f26442e904207c4f7611",
+        "tree": "77a7bc2ed4d1f7ab339dd4a16fd082fccf56f0ce"
+      },
+      "source_unchanged": true
+    }
+  ],
+  "schema": "cybersand.sol281.independent-final-review.v1",
+  "scope": "Independent source-bound reread of successor hosted artifacts; reviewer ran no new Godot processes or optional unit tests. No gameplay/default/merge approval.",
+  "source": {
+    "sha": "749fb8b597ad866f7535f26442e904207c4f7611",
+    "tree": "77a7bc2ed4d1f7ab339dd4a16fd082fccf56f0ce"
+  },
+  "source_review": {
+    "all_six_questions_eighteen_facts_supported": true,
+    "all_six_reviewed_code_test_reader_hashes_match": true,
+    "historical_hash_status": [
+      {
+        "historical_sha256": "fbdfa5c16ff66445161de708079e4f624b4180613a498c16ff92712936a54c2d",
+        "path": "godot/native_extension/solid_contact_adapter.inc",
+        "successor_sha256": "fbdfa5c16ff66445161de708079e4f624b4180613a498c16ff92712936a54c2d",
+        "unchanged": true
+      },
+      {
+        "historical_sha256": "53f8852cfe658fa37bb419ef4380e2c2bb4ebdf66af02e77e952813664a44c54",
+        "path": "native/include/cybersand/solid_contact_geometry.hpp",
+        "successor_sha256": "53f8852cfe658fa37bb419ef4380e2c2bb4ebdf66af02e77e952813664a44c54",
+        "unchanged": true
+      },
+      {
+        "historical_sha256": "a9aa6e51cd8c432526376b49ae15e02e4a7838aa296287bf3db6f1b10de99d31",
+        "path": "native/include/cybersand/world.hpp",
+        "successor_sha256": "a9aa6e51cd8c432526376b49ae15e02e4a7838aa296287bf3db6f1b10de99d31",
+        "unchanged": true
+      },
+      {
+        "historical_sha256": "91cecf308d01ef214f491f3dc1f353f10c9db17a55162b983fc4ecf80e6363e6",
+        "path": "native/src/world.cpp",
+        "successor_sha256": "91cecf308d01ef214f491f3dc1f353f10c9db17a55162b983fc4ecf80e6363e6",
+        "unchanged": true
+      },
+      {
+        "historical_sha256": "d5bebb75d81cf5bc0dce756f7a844f19ad9f145fbd9ca96775ad8f999a061d6d",
+        "path": "godot/scripts/solid_contact_response.gd",
+        "successor_sha256": "d5bebb75d81cf5bc0dce756f7a844f19ad9f145fbd9ca96775ad8f999a061d6d",
+        "unchanged": true
+      },
+      {
+        "historical_sha256": "f607fad0d6b6c89af3b8738489f956c73e8f64148e17d34c1fd3ede0718cba51",
+        "path": "godot/scripts/solid_detachment_worker.gd",
+        "successor_sha256": "f607fad0d6b6c89af3b8738489f956c73e8f64148e17d34c1fd3ede0718cba51",
+        "unchanged": true
+      },
+      {
+        "historical_sha256": "996d912f7cfe6f8bd4c276bb8ee966da1bf6affbb1579413a69f9ef4b9a401e7",
+        "path": "godot/scripts/rapier_physics_bridge.gd",
+        "successor_sha256": "9ea0736c16db5089b817728388c88be2ef8e5fc6db8545992608473cf526851d",
+        "unchanged": false
+      },
+      {
+        "historical_sha256": "7bfc35d89e6942022a9d80453b587bfbfedfdc6072bd8d2e65f9dadbf290845b",
+        "path": "godot/scripts/solid_detachment_session.gd",
+        "successor_sha256": "9edd54f21013a2bcd30d1e332496248dc9da38d319ad96342bafecefd6f91310",
+        "unchanged": false
+      },
+      {
+        "historical_sha256": "d7cc8f2cdafc421e48dfa9ceea69aca2a6534248d55b3bdeeb2fe3f83a46a210",
+        "path": "godot/scripts/simulation_snapshot.gd",
+        "successor_sha256": "d7cc8f2cdafc421e48dfa9ceea69aca2a6534248d55b3bdeeb2fe3f83a46a210",
+        "unchanged": true
+      },
+      {
+        "historical_sha256": "92d8966df1c4638157323a078713b0dc25504b3c1d2b87af5118c34649eca2d2",
+        "path": "godot/scripts/simulation_worker.gd",
+        "successor_sha256": "92d8966df1c4638157323a078713b0dc25504b3c1d2b87af5118c34649eca2d2",
+        "unchanged": true
+      },
+      {
+        "historical_sha256": "211551bc38bb3b0db21938a630f0f0926829ffa75687408306c8f4410aa1afaf",
+        "path": "godot/tests/test_solid_contact_fences.gd",
+        "successor_sha256": "fce75140e61fb7826d18e2596a39a4ac6486a48a02c75ec4434f24f675eb54cb",
+        "unchanged": false
+      },
+      {
+        "historical_sha256": "9a7fa0c7ce6ca2dd75c7c4ff60d3722ad671a441427829965f20506babb76656",
+        "path": "godot/tests/test_solid_detachment_contact_recovery.gd",
+        "successor_sha256": "e5967594fa5a4315f265e5a69762a107b839f32bd9ac062304d8f35c11fdfc99",
+        "unchanged": false
+      },
+      {
+        "historical_sha256": "0c6b6a223ba7b17c610d8659dec811f4d904c6c65d7291ee9290cad0814f9b54",
+        "path": "tools/sol281/analyze_contact_recovery.py",
+        "successor_sha256": "0c6b6a223ba7b17c610d8659dec811f4d904c6c65d7291ee9290cad0814f9b54",
+        "unchanged": true
+      }
+    ],
+    "historical_receipt": "docs/audits/sol281-20261103/independent-review.json",
+    "historical_receipt_sha256": "ed25f24e57f9fc9bf483b24db089dfaca3ee3ce95c915048602a1b3f970c2e08",
+    "readback_repair_files": [
+      {
+        "path": "godot/scripts/rapier_physics_bridge.gd",
+        "sha256": "9ea0736c16db5089b817728388c88be2ef8e5fc6db8545992608473cf526851d"
+      },
+      {
+        "path": "godot/scripts/solid_detachment_session.gd",
+        "sha256": "9edd54f21013a2bcd30d1e332496248dc9da38d319ad96342bafecefd6f91310"
+      },
+      {
+        "path": "godot/tests/test_solid_contact_fences.gd",
+        "sha256": "fce75140e61fb7826d18e2596a39a4ac6486a48a02c75ec4434f24f675eb54cb"
+      },
+      {
+        "path": "godot/tests/test_solid_detachment_contact_recovery.gd",
+        "sha256": "e5967594fa5a4315f265e5a69762a107b839f32bd9ac062304d8f35c11fdfc99"
+      },
+      {
+        "path": "tools/sol281/run_qualification.py",
+        "sha256": "bebc2a959504dc565735d04e340f9d7252aae1efd9afe5c9cea0d7361f4828a1"
+      },
+      {
+        "path": "tools/sol281/test_qualification.py",
+        "sha256": "5d3d3c98b6fb92298edb2ae2aedf597e750fb4d19e582f5a06026f89b78d5fdd"
+      }
+    ],
+    "readback_repair_receipt": "docs/audits/sol281-20261103/hosted/readback-review/review-and-local-validation.json",
+    "readback_repair_receipt_sha256": "9a01c4408c6d92251a0db2489e433b5f143ccfc3984d6c2bff9d96fb1ee9245a",
+    "semantic_review_sha256": "632ac07f68a23a660b6c96c1793e62e124d276f84288aee2c833f86b98f8ba50",
+    "semantic_reviewed_source": {
+      "sha": "749fb8b597ad866f7535f26442e904207c4f7611",
+      "tree": "77a7bc2ed4d1f7ab339dd4a16fd082fccf56f0ce"
+    },
+    "semantic_source_files_match": true
+  },
+  "tool_hashes": {
+    "tools/sol281/analyze_contact_recovery.py": "0c6b6a223ba7b17c610d8659dec811f4d904c6c65d7291ee9290cad0814f9b54",
+    "tools/sol281/publish_runtime.py": "87752af50352843da6f83fc6c51cb0f77c2371f04cf7f8d18d026611418c5198",
+    "tools/sol281/run_qualification.py": "bebc2a959504dc565735d04e340f9d7252aae1efd9afe5c9cea0d7361f4828a1",
+    "tools/sol281/test_publish_runtime.py": "d225644cbc902bba4bc59f563fb43433c073b0c12653056541846351f75a078e",
+    "tools/sol281/test_qualification.py": "5d3d3c98b6fb92298edb2ae2aedf597e750fb4d19e582f5a06026f89b78d5fdd"
+  },
+  "workflow_api_verification": {
+    "all_targeted_jobs_success": true,
+    "created_at": "2026-11-04T00:24:36Z",
+    "jobs": 12,
+    "jobs_record_sha256": "eadcb148df7ebac62961988dccdd8f9d84c82653fbd42101b866594182860736",
+    "run_record_sha256": "6bdcec12f680581044da119622b6922cbdc356f3abac5d59fede034b8a8c10da",
+    "source_head": "749fb8b597ad866f7535f26442e904207c4f7611",
+    "updated_at": "2026-11-04T00:40:36Z"
+  },
+  "workflow_conclusion": "success",
+  "worst_candidate_mean_contact_ms_per_complete_observation": 1.782429487179487
+}

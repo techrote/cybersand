@@ -10,13 +10,71 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+## SOL364 bounded witness and CPU repair — 2026-11-04
+
+The [SOL364 ledger](../audits/2026-11-04-sol364-recovery.md) records ordinary
+reconciliation of accepted main `7ef4856e`, including merged MAT-AUTH #371,
+the existing exterior-witness repair, immutable native observation optimization
+and synchronized 520-cell/six-proxy replay. Executed source `9edc4f8f` and
+published runtime/evidence child `5f6360a9` complete the scoped actual-host
+execution. All 24 original cost groups pass, worst 1.6449498327759198 ms, but
+stationary initial burial remains unresolved: 84/84 synchronized clearance
+cases and 64 depth gates fail. The unchanged MAT-AUTH guard rejects two
+historical SOL consumer deltas; final documentation dispatch also fails HTTP 500
+after the successful publication push. The local Linux 2.012693486590038 ms,
+historical Windows 2.145915 ms and earlier publication failures stay retained.
+#347 stays draft/unmerged; #364,
+#281 and #12 stay open, #365 stays blocked, and Y1/GCR policy is unchanged.
+
+## SOL281 completed recovery and remaining physics — 2026-11-04
+
+The [takeover record](../audits/2026-11-03-sol281-takeover.md) preserves earlier
+evidence, merges accepted main `0fd4af59`, and completes the finite-readback and
+publication repairs. Executed `749fb8b5` passes the eight actual Linux/Windows
+cohorts and publishes runtime/evidence child `89d2eb6d`; source-matched
+documentation/provenance passes separately.
+
+**At the preceding `749fb8b5` checkpoint, full-matrix CPU acceptance is NOT MET:** 23/24 groups pass the unchanged 2 ms
+mean gate. Windows four-worker embedded baseline r0 measures 2.145915178571 ms;
+all 12 candidate groups pass, worst 1.782429487179 ms. Candidate packed/embedded
+depth reaches 4.046731639982 / 2.642792455422 cells. Sustained clearance, resistance
+calibration and graphical/human feel remain unpassed. Existing #364 owns the
+bounded reproduction/repair and retained cost failure; #365 restoration stays
+blocked. #347 remains draft, #281/#12 remain open, and ready-PR CI and explicit
+owner merge approval remain required.
+
+## Dense-contact recovery experiment — 2026-11-03
+
+The [new SOL281 checkpoint](../audits/2026-11-03-sol281-dense-contact.md) advances
+draft #347 with exact rotated native overlap measurements and bounded unilateral
+resistance to supported ambient Sand. It preserves the six compound proxies,
+both holes, conservative transfer ownership and existing contact defaults.
+Accepted main `89020b9e` is reconciled without rewriting historical qualification.
+Controlled contact gates and asynchronous populated trials have distinct evidence
+denominators; none implies complete dense-bed gameplay acceptance. Restoration,
+multiple aggregate ownership, reactive cohesion, fracture and persistence remain
+separate follow-on work. #281/#12 remain open and no merge is authorized.
+
+## Structural detachment increment — 2026-11-01
+
+**Current unmerged experiment:** [SOL-DETACH-001](../systems/solid-detachment.md)
+recovers real native-cell support loss, exact aggregate ownership and compound
+Rapier motion on accepted main `a8f08a67`, plus a conservative local Sand/Water
+transaction. [Draft PR #347](https://github.com/techrote/cybersand/pull/347)
+includes source-matched Linux/Windows worker 1/4 qualification at `8e86ffd4`
+and qualified runtime publication `bdd751dc`.
+The [gate ledger](../audits/2026-11-01-sol281-current-main.md) keeps #281 and #12
+open: dense-bed resistance, reactive cohesion, fracture, moved-body restoration,
+persistence, normal gameplay and hardware physical acceptance remain incomplete.
+No automatic Stage3B or GCR dependency is added; frozen #283 and other PLAY/GCR
+branches remain separate.
+
 ## Material shadow foundation and integration — 2026-11-04
 
 [#357 is merged](https://github.com/techrote/cybersand/pull/357#issuecomment-6619591556)
 and the [corrected architecture is owner-adopted as Planned](../architecture/material-authoring-catalogue-plan.md#12-owner-adoption-and-shadow-compiler-handover--2026-11-04).
 [#353-A's shadow compiler](../operations/material-catalogue-shadow.md) is already
-implemented in #371 and is undergoing adopted-main reconciliation and guarded
-integration qualification. It provides deterministic candidate metadata,
+implemented and merged through #371 as accepted main `7ef4856e`. It provides deterministic candidate metadata,
 independent native parity and frozen source/identity guards; it does not replace
 production material authority. The [current boundary](../architecture/material-authoring-catalogue-plan.md#13-bounded-compatibility-tooling-and-adopted-main-reconciliation--2026-11-04)
 and [#371 ledger](https://github.com/techrote/cybersand/pull/371) separate code,
@@ -25,7 +83,7 @@ resulting-head acceptance and actual merge status.
 | Programme slice | Current disposition |
 |---|---|
 | #357 architecture | Owner-adopted Planned baseline, documentation merged |
-| #353-A / #371 | Shadow implementation exists; reconciled-source qualification and guarded integration are this assignment |
+| #353-A / #371 | A-only shadow implementation merged as main `7ef4856e`; this SOL composition has a separate two-consumer protected-source mismatch, not an approved baseline refresh |
 | #353-B | Separate consumer-migration admission required; no production switch authorized |
 | #354 / #355 | Separate liveness and endpoint-effects work; serialize overlapping World/quantity writes |
 | #356 | Separate inspector/editing work; effective controls need actual native consumers and applied readback |

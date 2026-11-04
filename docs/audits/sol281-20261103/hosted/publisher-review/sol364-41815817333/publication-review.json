@@ -1,0 +1,91 @@
+{
+  "schema": "cybersand.sol364.independent-publication-review.v1",
+  "reviewed_utc": "2026-11-04T11:10:05.826270+00:00",
+  "source": {
+    "sha": "9edc4f8f7d8cd8fc65119d176c9e1981ab6ea77d",
+    "tree": "b5baf8b23ff947c2d7b70e69745c10f18fbe9ebe"
+  },
+  "published_commit": "5f6360a9713ff791f09bc8b05e265b3e626c2ae1",
+  "published_tree": "04befb089a75bfffcf1aa5a4bb6100c3ef0715ba",
+  "parents": [
+    "9edc4f8f7d8cd8fc65119d176c9e1981ab6ea77d"
+  ],
+  "status": "runtime-and-evidence-published; post-push-documentation-dispatch-failed",
+  "run_id": 41815817333,
+  "run_attempt": 1,
+  "publisher_job_id": 126533352690,
+  "workflow_conclusion": "failure",
+  "publisher_revalidation_step": "success",
+  "publication_receipt_sha256": "b1d68ce6faf771b9d5fcefdce366e84af1eb70d58a945d367e42a9755481c183",
+  "planned_paths": 216,
+  "all_planned_git_blobs_or_lfs_pointers_verified": true,
+  "all_modes": "100644",
+  "actual_original_artifact_files_verified": 236,
+  "planned_payload_bytes": 154332687,
+  "unchanged_publication_cap_bytes": 268435456,
+  "runtime_lfs_pointers": [
+    {
+      "path": "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+      "sha256": "a5e616c0e72eee56c84f66151499d401dd3f4fb7faab347adbc6335493fefd61",
+      "size": 4925952,
+      "git_blob_sha256": "412a8a939847f3d2c49c14391c84b22f59a9dc50858b7d5c1ca74785af404aef",
+      "git_lfs_pointer": true
+    },
+    {
+      "path": "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+      "sha256": "de38c0de458b2a30d43cb36c633cb7ee3b469f8d84f7a3e512fafc9838bb82a5",
+      "size": 4343256,
+      "git_blob_sha256": "15ea5fe8ca8c485f70103a1ed8b108d7c7ef670b7c70a56884e76f766bdc88df",
+      "git_lfs_pointer": true
+    }
+  ],
+  "qualified_source_checked_inputs": 1107,
+  "publication_checked_inputs": 1107,
+  "unchanged_checked_inputs": 1105,
+  "allowed_provenance_updates": [
+    {
+      "path": "godot/addons/cybersand_native/runtime-provenance.json",
+      "before_sha256": "674047de437f3dbb85fdacfd0a413d5c86ac266a0c75104b899c856f96dce81a",
+      "after_sha256": "392bf970215062f3986e57928e95a9a12e1ad40eb67d330ffddf3bc424cdcb08",
+      "qualified_source": "9edc4f8f7d8cd8fc65119d176c9e1981ab6ea77d",
+      "native_source_input_count": 88,
+      "additional_build_input_count": 1019,
+      "runtime": "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+      "runtime_sha256": "a5e616c0e72eee56c84f66151499d401dd3f4fb7faab347adbc6335493fefd61",
+      "validation": "docs/audits/sol281-20261103/hosted/9edc4f8f7d8cd8fc65119d176c9e1981ab6ea77d/windows-validation.json",
+      "validation_sha256": "f1e519ffce97dac04483c6e9af62697e41c5f520d8b7247501d5ab00dfdd335c"
+    },
+    {
+      "path": "godot/addons/cybersand_native/runtime-provenance.linux.json",
+      "before_sha256": "70576874affbbede2311696981e860e962cddb54c6a1c234c3549c35af3ef81b",
+      "after_sha256": "dfa22f5c22426687b3c960f848c9c6185661cb75797237f027e9e1ca79b507aa",
+      "qualified_source": "9edc4f8f7d8cd8fc65119d176c9e1981ab6ea77d",
+      "native_source_input_count": 88,
+      "additional_build_input_count": 1019,
+      "runtime": "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+      "runtime_sha256": "de38c0de458b2a30d43cb36c633cb7ee3b469f8d84f7a3e512fafc9838bb82a5",
+      "validation": "docs/audits/sol281-20261103/hosted/9edc4f8f7d8cd8fc65119d176c9e1981ab6ea77d/linux-validation.json",
+      "validation_sha256": "0caaee3b27a1e99e384298708908c3fde651a2d5e2588ddb4b954f3611a42d91"
+    }
+  ],
+  "native_inputs_unchanged": 88,
+  "post_push_failure": {
+    "action": "gh workflow run documentation.yml --ref sol-detach-001-current-main",
+    "http_status": 500,
+    "log": "publisher-41815817333-dispatch-failure-excerpt.log",
+    "log_sha256": "4f8d046fbb0aa4435c5fec6e0752989ac7c019b46896f0b254cf41615ad3d467",
+    "original_log_lines": {
+      "first_line": 818,
+      "last_line": 824,
+      "total_lines": 869
+    }
+  },
+  "disposition": "All216 runtime/evidence publication paths are authenticated, with two source-bound runtime manifests refreshed. The overall workflow failed solely at subsequent documentation dispatch; original MAT-AUTH guard failure remains an independent merge blocker. Executed source identity remains9ed, not the metadata/evidence child5f.",
+  "commit_api_identity": {
+    "sha": "5f6360a9713ff791f09bc8b05e265b3e626c2ae1",
+    "tree": "04befb089a75bfffcf1aa5a4bb6100c3ef0715ba",
+    "parents": [
+      "9edc4f8f7d8cd8fc65119d176c9e1981ab6ea77d"
+    ]
+  }
+}

@@ -1,0 +1,74 @@
+{
+  "schema": "sol281-independent-compound-interface-host-v1",
+  "source_commit": "02e8a09aa14646c168610438df965d2f3fb3ec7f",
+  "source_tree": "09b6aa5498889b020592aff23baf0ae18e1f4c45",
+  "recorded_utc": "2026-11-01T17:16:28.045414+00:00",
+  "platform": "Linux",
+  "scope": "isolated shared bridge against current-main native R and pinned Rapier; no independent Windows claim",
+  "engine": {
+    "path": "/tmp/cybersand-r-engine/Godot_v4.7-stable_linux.x86_64",
+    "sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+    "version": "4.7.stable.official.5b4e0cb0f"
+  },
+  "runtime_inputs": {
+    "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so": {
+      "sha256": "0f60213c7fc3f9a1b1d7ad5143fdb22d453a452cddefd3fe4d7a7cb4d7b6cf45",
+      "size": 4222424,
+      "source_path": "/workspace/scratch/be82eeed0828/cybersand/godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+      "matches_isolated_HEAD_LFS": true
+    },
+    "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so": {
+      "sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+      "size": 117275416,
+      "source_path": "/workspace/scratch/59ce0c87fdea/cybersand/godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+      "matches_isolated_HEAD_LFS": true
+    }
+  },
+  "records": [
+    {
+      "name": "import",
+      "command": [
+        "/tmp/cybersand-r-engine/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/workspace/scratch/59ce0c87fdea/sol281-interface-isolated/godot",
+        "--editor",
+        "--import",
+        "--quit"
+      ],
+      "returncode": 0,
+      "timed_out": false,
+      "elapsed_seconds": 4.929598422997515,
+      "log": "import.log",
+      "log_sha256": "8cb7a11c322b99f25df197f66903ff8c308005c214205cb327ee4b0d4524f8c2",
+      "status": "passed"
+    },
+    {
+      "name": "compound-response",
+      "command": [
+        "/tmp/cybersand-r-engine/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/workspace/scratch/59ce0c87fdea/sol281-interface-isolated/godot",
+        "--script",
+        "res://tests/test_solid_detachment_compound_response.gd"
+      ],
+      "returncode": 0,
+      "timed_out": false,
+      "elapsed_seconds": 0.3160571560001699,
+      "log": "compound-response.log",
+      "log_sha256": "c7a610a6f67e6301f2fbe9aa7827bbe22c57525b088573cc511706e0dd6af537",
+      "status": "passed",
+      "readback": {
+        "checks": 33,
+        "failures": [],
+        "platform": "Linux"
+      }
+    }
+  ],
+  "status": "passed",
+  "tracked_source_unchanged": true,
+  "runtime_bytes_unchanged": true,
+  "source_verification_sha256": "30667ff2a4df82dff4877b5d9a4cb27eecbe5f109f9b0eb36504ce5d81378646",
+  "runner_sha256": "2bbdbbeefb1bd0595f7023ed9d42f167977182fe33d3e7a6d63e5d7e4d1e7d37"
+}

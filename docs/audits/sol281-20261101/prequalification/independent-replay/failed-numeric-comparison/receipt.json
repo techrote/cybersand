@@ -1,0 +1,247 @@
+{
+  "native_runtime_sha256": "0b5b21be466441e613d314da62905ef565e9e57d5aab6cb296aa31184e864d27",
+  "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+  "git_head": "809fd30dfac0c5e127302997075be9c4b279e5aa",
+  "source_files": {
+    "godot/native_extension/conservative_displacement_adapter.inc": "91b06a2c4e273aad56af883525dc2466e4caac64a1b0660aeb1201d625b85b30",
+    "native/src/world_conservative_displacement.inc": "c9dd8dc0da262dc0a20f2c193c4714fa3de4e3ab0ebe66731550dac8563bf6d9",
+    "native/include/cybersand/conservative_displacement.hpp": "79b94c394ed3ed7fb7f114a1808bb35182f77d8320dd16470a0de19dbf7ba0b3",
+    "godot/tests/test_solid_detachment_displacement.gd": "493af9b5d61b4d9b9373bde7adc6ceeafed79a577e811eac1b453ae52c9a216c",
+    "godot/tests/fixtures/sol281/conservative_contacts.json": "0ed32d72c2bd3681bb003d7fe0c5d3f0f870598d487614dd36a4a816778604ce"
+  },
+  "runs": [
+    {
+      "workers": 1,
+      "exit_code": 1,
+      "elapsed_seconds": 0.7664955360014574,
+      "command": [
+        "/tmp/cybersand-r-engine/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/workspace/scratch/59ce0c87fdea/cybersand/godot",
+        "--script",
+        "res://tests/test_solid_detachment_displacement.gd",
+        "--",
+        "--workers=1",
+        "--report=/workspace/scratch/59ce0c87fdea/evidence/independent-replay/workers-1.json"
+      ],
+      "log_sha256": "e6b8a851bc1503976652ec6e7c982069ba5d32ec3bb1d8567ec7e845fc1f7575",
+      "checks": 292,
+      "failures": [
+        "boundary_sand_one_hop: unique conservative path matches the independent fixture",
+        "boundary_sand_one_hop: chain starts at the captured contact",
+        "boundary_sand_three_parcels: unique conservative path matches the independent fixture",
+        "boundary_sand_three_parcels: chain starts at the captured contact",
+        "boundary_partial_water_three_parcels: unique conservative path matches the independent fixture",
+        "boundary_partial_water_three_parcels: chain starts at the captured contact",
+        "boundary_mixed_sand_water: unique conservative path matches the independent fixture",
+        "boundary_mixed_sand_water: chain starts at the captured contact"
+      ],
+      "report_sha256": "8826f822ea6917e5dd486d3b89b4ee80323cadc8bce576e60e7edc2223f8203b",
+      "outcomes": [
+        {
+          "case": "jammed_no_void",
+          "outcome": "GeometryBlocked",
+          "moved_cells": 0
+        },
+        {
+          "case": "outer_ring_only",
+          "outcome": "ForeignOccupancy",
+          "moved_cells": 0
+        },
+        {
+          "case": "permissive_cost1",
+          "outcome": "GeometryBlocked",
+          "moved_cells": 0
+        },
+        {
+          "case": "permissive_cost2",
+          "outcome": "ForeignOccupancy",
+          "moved_cells": 0
+        },
+        {
+          "case": "direct_production_success",
+          "outcome": "ForeignOccupancy",
+          "moved_cells": 0
+        },
+        {
+          "case": "strict_empty_rear",
+          "outcome": "GeometryBlocked",
+          "moved_cells": 0
+        },
+        {
+          "case": "center_only_false_clearance_tick106",
+          "outcome": "GeometryBlocked",
+          "moved_cells": 0
+        },
+        {
+          "case": "center_only_false_clearance_tick103",
+          "outcome": "GeometryBlocked",
+          "moved_cells": 0
+        },
+        {
+          "case": "boundary_sand_one_hop",
+          "outcome": "Applied",
+          "moved_cells": 1
+        },
+        {
+          "case": "boundary_sand_three_parcels",
+          "outcome": "Applied",
+          "moved_cells": 3
+        },
+        {
+          "case": "boundary_partial_water_three_parcels",
+          "outcome": "Applied",
+          "moved_cells": 3
+        },
+        {
+          "case": "boundary_mixed_sand_water",
+          "outcome": "Applied",
+          "moved_cells": 3
+        },
+        {
+          "case": "same_path_foreign_mask",
+          "outcome": "ForeignOccupancy",
+          "moved_cells": 0
+        },
+        {
+          "case": "same_path_hot_parcel",
+          "outcome": "ForeignOccupancy",
+          "moved_cells": 0
+        },
+        {
+          "case": "same_path_second_proxy_square_overlap",
+          "outcome": "GeometryBlocked",
+          "moved_cells": 0
+        },
+        {
+          "case": "same_path_exact_touch",
+          "outcome": "GeometryBlocked",
+          "moved_cells": 0
+        },
+        {
+          "case": "source_square_foreign_body_despite_first_writer_mask",
+          "outcome": "SourceOwnership",
+          "moved_cells": 0
+        }
+      ]
+    },
+    {
+      "workers": 4,
+      "exit_code": 1,
+      "elapsed_seconds": 0.6675449809990823,
+      "command": [
+        "/tmp/cybersand-r-engine/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/workspace/scratch/59ce0c87fdea/cybersand/godot",
+        "--script",
+        "res://tests/test_solid_detachment_displacement.gd",
+        "--",
+        "--workers=4",
+        "--report=/workspace/scratch/59ce0c87fdea/evidence/independent-replay/workers-4.json"
+      ],
+      "log_sha256": "60edc7e007595f0def21de1145f30a261b8066954a842da2478c7f39cf833a6d",
+      "checks": 292,
+      "failures": [
+        "boundary_sand_one_hop: unique conservative path matches the independent fixture",
+        "boundary_sand_one_hop: chain starts at the captured contact",
+        "boundary_sand_three_parcels: unique conservative path matches the independent fixture",
+        "boundary_sand_three_parcels: chain starts at the captured contact",
+        "boundary_partial_water_three_parcels: unique conservative path matches the independent fixture",
+        "boundary_partial_water_three_parcels: chain starts at the captured contact",
+        "boundary_mixed_sand_water: unique conservative path matches the independent fixture",
+        "boundary_mixed_sand_water: chain starts at the captured contact"
+      ],
+      "report_sha256": "0e9d99faec6a27a78002a8bf8c52d2125d064cd586bdfc941037b3e425e19c44",
+      "outcomes": [
+        {
+          "case": "jammed_no_void",
+          "outcome": "GeometryBlocked",
+          "moved_cells": 0
+        },
+        {
+          "case": "outer_ring_only",
+          "outcome": "ForeignOccupancy",
+          "moved_cells": 0
+        },
+        {
+          "case": "permissive_cost1",
+          "outcome": "GeometryBlocked",
+          "moved_cells": 0
+        },
+        {
+          "case": "permissive_cost2",
+          "outcome": "ForeignOccupancy",
+          "moved_cells": 0
+        },
+        {
+          "case": "direct_production_success",
+          "outcome": "ForeignOccupancy",
+          "moved_cells": 0
+        },
+        {
+          "case": "strict_empty_rear",
+          "outcome": "GeometryBlocked",
+          "moved_cells": 0
+        },
+        {
+          "case": "center_only_false_clearance_tick106",
+          "outcome": "GeometryBlocked",
+          "moved_cells": 0
+        },
+        {
+          "case": "center_only_false_clearance_tick103",
+          "outcome": "GeometryBlocked",
+          "moved_cells": 0
+        },
+        {
+          "case": "boundary_sand_one_hop",
+          "outcome": "Applied",
+          "moved_cells": 1
+        },
+        {
+          "case": "boundary_sand_three_parcels",
+          "outcome": "Applied",
+          "moved_cells": 3
+        },
+        {
+          "case": "boundary_partial_water_three_parcels",
+          "outcome": "Applied",
+          "moved_cells": 3
+        },
+        {
+          "case": "boundary_mixed_sand_water",
+          "outcome": "Applied",
+          "moved_cells": 3
+        },
+        {
+          "case": "same_path_foreign_mask",
+          "outcome": "ForeignOccupancy",
+          "moved_cells": 0
+        },
+        {
+          "case": "same_path_hot_parcel",
+          "outcome": "ForeignOccupancy",
+          "moved_cells": 0
+        },
+        {
+          "case": "same_path_second_proxy_square_overlap",
+          "outcome": "GeometryBlocked",
+          "moved_cells": 0
+        },
+        {
+          "case": "same_path_exact_touch",
+          "outcome": "GeometryBlocked",
+          "moved_cells": 0
+        },
+        {
+          "case": "source_square_foreign_body_despite_first_writer_mask",
+          "outcome": "SourceOwnership",
+          "moved_cells": 0
+        }
+      ]
+    }
+  ],
+  "scope": "independent frozen-contact native transaction execution; local source delta; no final commit, actual Rapier trajectory or graphical pacing claim"
+}

@@ -1,0 +1,49 @@
+{
+  "schema": "cybersand.sol281.review-preservation.v1",
+  "reviewer": "/root/implementation_review/native_review",
+  "preservation_only": true,
+  "tests_rerun_during_preservation": false,
+  "manifest_self_hash_excluded": true,
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 2507,
+      "sha256": "b46b7f03df3a4b43905a14ecba87e096db18b93f4161d09bfc993b1a1df09f26"
+    },
+    {
+      "path": "inspected-evidence/sol281-readback-fences.log",
+      "bytes": 721,
+      "sha256": "75258fcc3883fb9219c2f25402ffad078a1d9e94101f1f3c89eb8b4ccdb1f3c0"
+    },
+    {
+      "path": "native-review.json",
+      "bytes": 5886,
+      "sha256": "bebac5165037ab5e9986f9a4b7f817e313a2361a491252c3aa916f5059413eda"
+    },
+    {
+      "path": "readback-guard-review.json",
+      "bytes": 5955,
+      "sha256": "5c5098b2b4bc7ec852a95ac973e495a6129e2a7348ca702bc318841025bd7494"
+    },
+    {
+      "path": "transcripts/native-geometry-asan-ubsan-no-lsan.tool-output.txt",
+      "bytes": 617,
+      "sha256": "3d7bc67d793b0df0f731788dba04df92610b921149d0efbff0d1509ef44c6444"
+    },
+    {
+      "path": "transcripts/native-geometry-normal.tool-output.txt",
+      "bytes": 725,
+      "sha256": "70e7f00b452ab4807402bd2630a4c963265a7a1c281585ae6f49344e38069b92"
+    },
+    {
+      "path": "transcripts/native-geometry-sanitizer-original.tool-output.txt",
+      "bytes": 972,
+      "sha256": "ce41c9af47baeb81aba137b4c1809cdc71745ca75b7ba3289b9881f6933d3fc7"
+    },
+    {
+      "path": "transcripts/qualification-reader-11.tool-output.txt",
+      "bytes": 600,
+      "sha256": "26ca6d02a804a4dab5de0caef0dcdd31e914259e560914c58ba762f7580267e2"
+    }
+  ]
+}

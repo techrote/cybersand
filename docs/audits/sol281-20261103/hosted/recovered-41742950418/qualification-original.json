@@ -1,0 +1,100 @@
+{
+  "cohorts": [
+    {
+      "cases": 11,
+      "cohort": "contact-w1",
+      "platform": "Linux",
+      "report_sha256": "d6d8c308234408c42baadf2fc1852f888f613352ffa2b0dde33cd5a9e8bf2087",
+      "runtime": {
+        "filename": "libcybersand_native.linux.x86_64.so",
+        "sha256": "5877f1ac8b3e1bc3548d415bbd3890f2b804df4d03f4eef4c961170780b47b3a",
+        "size": 4343064
+      }
+    },
+    {
+      "cases": 11,
+      "cohort": "contact-w4",
+      "platform": "Linux",
+      "report_sha256": "976f3ce78b51a2dd64b823a366599766dcfd977852f77624e8ab0980df609a03",
+      "runtime": {
+        "filename": "libcybersand_native.linux.x86_64.so",
+        "sha256": "5877f1ac8b3e1bc3548d415bbd3890f2b804df4d03f4eef4c961170780b47b3a",
+        "size": 4343064
+      }
+    },
+    {
+      "cases": 11,
+      "cohort": "core",
+      "platform": "Linux",
+      "report_sha256": "178c221173e3553625b290c3e625ef3a56e1244f7e5947a83491e00498fe640d",
+      "runtime": {
+        "filename": "libcybersand_native.linux.x86_64.so",
+        "sha256": "5877f1ac8b3e1bc3548d415bbd3890f2b804df4d03f4eef4c961170780b47b3a",
+        "size": 4343064
+      }
+    },
+    {
+      "cases": 2,
+      "cohort": "mechanism",
+      "platform": "Linux",
+      "report_sha256": "51562a402fddc6eb1c430b727a9fe865b2aa0f1069b034b473109785d6327d46",
+      "runtime": {
+        "filename": "libcybersand_native.linux.x86_64.so",
+        "sha256": "5877f1ac8b3e1bc3548d415bbd3890f2b804df4d03f4eef4c961170780b47b3a",
+        "size": 4343064
+      }
+    },
+    {
+      "cases": 11,
+      "cohort": "contact-w1",
+      "platform": "Windows",
+      "report_sha256": "32e9338fc2ec4a0e656ffa1e4bb06277a35a3e35f8f968e38acfbc50d4d8e3e8",
+      "runtime": {
+        "filename": "cybersand_native.windows.x86_64.dll",
+        "sha256": "aaebd3b3eb2f903eea2622c0b0faa56574b5af2a5297a4535b4b0fd2440c86f5",
+        "size": 4924416
+      }
+    },
+    {
+      "cases": 11,
+      "cohort": "contact-w4",
+      "platform": "Windows",
+      "report_sha256": "f952d849f9ae29620274f2ddadac957dde728ee4a933463b045626d9a53b69d3",
+      "runtime": {
+        "filename": "cybersand_native.windows.x86_64.dll",
+        "sha256": "aaebd3b3eb2f903eea2622c0b0faa56574b5af2a5297a4535b4b0fd2440c86f5",
+        "size": 4924416
+      }
+    },
+    {
+      "cases": 11,
+      "cohort": "core",
+      "platform": "Windows",
+      "report_sha256": "a5c606e2388d469afa60c5fa16d2a7957e4e9919f7bae021d8b357752ef7d3d5",
+      "runtime": {
+        "filename": "cybersand_native.windows.x86_64.dll",
+        "sha256": "aaebd3b3eb2f903eea2622c0b0faa56574b5af2a5297a4535b4b0fd2440c86f5",
+        "size": 4924416
+      }
+    },
+    {
+      "cases": 2,
+      "cohort": "mechanism",
+      "platform": "Windows",
+      "report_sha256": "bf97114095790a574d3e29b40c688e120bf9dbec181eda561ff11f20a609461b",
+      "runtime": {
+        "filename": "cybersand_native.windows.x86_64.dll",
+        "sha256": "aaebd3b3eb2f903eea2622c0b0faa56574b5af2a5297a4535b4b0fd2440c86f5",
+        "size": 4924416
+      }
+    }
+  ],
+  "errors": [],
+  "schema": "cybersand.sol281.complete-qualification.v1",
+  "scope": "source-matched headless qualification; no graphical frame-rate or milestone completion claim",
+  "source": {
+    "sha": "2457f5ecb945c60cd5118526f48734e82576ba49",
+    "tree": "42b4926b3e15dcbf34b436eff41de50fad54c50a"
+  },
+  "status": "passed"
+}

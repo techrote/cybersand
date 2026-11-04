@@ -1,0 +1,17 @@
+{
+  "scope": "Focused publication verifier tests, including real Git index staging and unchanged source-checkout refusal; synthetic metadata, no physics qualification.",
+  "command": [
+    "python3",
+    "tools/sol281/test_publish_runtime.py"
+  ],
+  "cwd": "/workspace/scratch/fc488e61157a/cybersand-publisher-review",
+  "returncode": 1,
+  "elapsed_seconds": 0.5988540489997831,
+  "log": "publisher-tests-fixture-attributes-failure.log",
+  "log_sha256": "e7a2100965bb0a68ef6c0dfc0cae6a69ca04c410cc689e827632940a121363fa",
+  "files": {
+    "tools/sol281/publish_runtime.py": "87752af50352843da6f83fc6c51cb0f77c2371f04cf7f8d18d026611418c5198",
+    "tools/sol281/test_publish_runtime.py": "680d532deb238e9d5f1a7988a3f7773d0e3e91b3d9feca778935de6621f36f17"
+  },
+  "diagnosis": "New synthetic Git fixture omitted committed .gitattributes required by unchanged verify_checkout; fixture now supplies explicit raw-byte attributes. Production source verification unchanged."
+}

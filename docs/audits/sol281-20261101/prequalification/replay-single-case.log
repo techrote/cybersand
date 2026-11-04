@@ -1,0 +1,8 @@
+Initialize godot-rust (API v4.7.stable.official, runtime v4.7.stable.official, safeguards balanced)
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[92mPHYSICS ENGINE 2D: Rapier2D v0.35.2[39m[0m
+RESET true
+SINGLE boundary_sand_one_hop {"counters":{"accepted":0,"attempts":1,"foreign_blockers":0,"geometry_blockers":0,"material_blockers":0,"maximum_attempts_per_sample":64,"maximum_parcel_moves":4,"moved_cells":0,"native_transaction_outcomes":[0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0],"node_probes":1,"outcomes":{"AlreadyTouched":0,"Applied":0,"Capacity":0,"ForeignOccupancy":0,"GeometryBlocked":0,"InvalidNormal":0,"NoVacancy":0,"Quarantined":0,"SourceEmpty":0,"SourceOwnership":0,"StaleSample":0,"ThermalPolicy":0,"TransactionRefused":1,"UnsupportedMaterial":0},"policy":"bounded-cardinal-chain-v1","touched_coordinates":0},"moved_cells":0,"native_outcome":12,"ok":true,"outcome":"TransactionRefused","path":[],"workers":1}
+RESET true
+SINGLE boundary_sand_three_parcels {"counters":{"accepted":0,"attempts":1,"foreign_blockers":1,"geometry_blockers":0,"material_blockers":0,"maximum_attempts_per_sample":64,"maximum_parcel_moves":4,"moved_cells":0,"native_transaction_outcomes":[0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0],"node_probes":5,"outcomes":{"AlreadyTouched":0,"Applied":0,"Capacity":0,"ForeignOccupancy":0,"GeometryBlocked":0,"InvalidNormal":0,"NoVacancy":0,"Quarantined":0,"SourceEmpty":0,"SourceOwnership":0,"StaleSample":0,"ThermalPolicy":0,"TransactionRefused":1,"UnsupportedMaterial":0},"policy":"bounded-cardinal-chain-v1","touched_coordinates":0},"moved_cells":0,"native_outcome":12,"ok":true,"outcome":"TransactionRefused","path":[],"workers":1}

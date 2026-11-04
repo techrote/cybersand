@@ -1,0 +1,586 @@
+{
+  "schema": "cybersand.sol364.mat-consumer-drift-review.v1",
+  "reviewed_utc": "2026-11-04T10:50:00.710187+00:00",
+  "review_scope": "Read-only source authentication and hunk classification; no compatibility approval or policy change.",
+  "source_commit": "9edc4f8f7d8cd8fc65119d176c9e1981ab6ea77d",
+  "source_tree": "b5baf8b23ff947c2d7b70e69745c10f18fbe9ebe",
+  "references": {
+    "frozen_baseline": "0fd4af5987e77db4da3e37c757cf2c0917ae9e15",
+    "accepted_main": "7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1",
+    "previous_pr347": "5b9b5a982e4638f4609309f996b92825d3dc36e4",
+    "previous_qualified": "749fb8b597ad866f7535f26442e904207c4f7611",
+    "current_combined": "9edc4f8f7d8cd8fc65119d176c9e1981ab6ea77d"
+  },
+  "protected_consumers": [
+    {
+      "path": "native/include/cybersand/material.hpp",
+      "protected_role": "stable IDs and descriptor bytes",
+      "lf_sha256": {
+        "frozen_baseline": "3e40f970e3205853a43643b4163041935ccd64d8a018d35a7473c3f95a1d0375",
+        "accepted_main": "3e40f970e3205853a43643b4163041935ccd64d8a018d35a7473c3f95a1d0375",
+        "previous_pr347": "3e40f970e3205853a43643b4163041935ccd64d8a018d35a7473c3f95a1d0375",
+        "previous_qualified": "3e40f970e3205853a43643b4163041935ccd64d8a018d35a7473c3f95a1d0375",
+        "current_combined": "3e40f970e3205853a43643b4163041935ccd64d8a018d35a7473c3f95a1d0375"
+      },
+      "matches_frozen": {
+        "frozen_baseline": true,
+        "accepted_main": true,
+        "previous_pr347": true,
+        "previous_qualified": true,
+        "current_combined": true
+      },
+      "unchanged_since_previous_pr347": true
+    },
+    {
+      "path": "native/include/cybersand/interaction_rules.hpp",
+      "protected_role": "reaction, family and ordinal identity",
+      "lf_sha256": {
+        "frozen_baseline": "aaffab99ddc7413f82a77de69b9d97aea37bd8cf46211b867ed303a6776448a5",
+        "accepted_main": "aaffab99ddc7413f82a77de69b9d97aea37bd8cf46211b867ed303a6776448a5",
+        "previous_pr347": "aaffab99ddc7413f82a77de69b9d97aea37bd8cf46211b867ed303a6776448a5",
+        "previous_qualified": "aaffab99ddc7413f82a77de69b9d97aea37bd8cf46211b867ed303a6776448a5",
+        "current_combined": "aaffab99ddc7413f82a77de69b9d97aea37bd8cf46211b867ed303a6776448a5"
+      },
+      "matches_frozen": {
+        "frozen_baseline": true,
+        "accepted_main": true,
+        "previous_pr347": true,
+        "previous_qualified": true,
+        "current_combined": true
+      },
+      "unchanged_since_previous_pr347": true
+    },
+    {
+      "path": "native/include/cybersand/material_rules.hpp",
+      "protected_role": "material query interface",
+      "lf_sha256": {
+        "frozen_baseline": "175b44abd8585b909cb1a85f31b0ba810cf2f7050898bf8b6006a8cc17577362",
+        "accepted_main": "175b44abd8585b909cb1a85f31b0ba810cf2f7050898bf8b6006a8cc17577362",
+        "previous_pr347": "175b44abd8585b909cb1a85f31b0ba810cf2f7050898bf8b6006a8cc17577362",
+        "previous_qualified": "175b44abd8585b909cb1a85f31b0ba810cf2f7050898bf8b6006a8cc17577362",
+        "current_combined": "175b44abd8585b909cb1a85f31b0ba810cf2f7050898bf8b6006a8cc17577362"
+      },
+      "matches_frozen": {
+        "frozen_baseline": true,
+        "accepted_main": true,
+        "previous_pr347": true,
+        "previous_qualified": true,
+        "current_combined": true
+      },
+      "unchanged_since_previous_pr347": true
+    },
+    {
+      "path": "native/src/material_rules.cpp",
+      "protected_role": "capability and pair-query semantics",
+      "lf_sha256": {
+        "frozen_baseline": "8fd1509bfcef162c5cb6028e9af38c563ad651822b9fcfcc2e79a569d185afa3",
+        "accepted_main": "8fd1509bfcef162c5cb6028e9af38c563ad651822b9fcfcc2e79a569d185afa3",
+        "previous_pr347": "8fd1509bfcef162c5cb6028e9af38c563ad651822b9fcfcc2e79a569d185afa3",
+        "previous_qualified": "8fd1509bfcef162c5cb6028e9af38c563ad651822b9fcfcc2e79a569d185afa3",
+        "current_combined": "8fd1509bfcef162c5cb6028e9af38c563ad651822b9fcfcc2e79a569d185afa3"
+      },
+      "matches_frozen": {
+        "frozen_baseline": true,
+        "accepted_main": true,
+        "previous_pr347": true,
+        "previous_qualified": true,
+        "current_combined": true
+      },
+      "unchanged_since_previous_pr347": true
+    },
+    {
+      "path": "native/include/cybersand/material_appearance.hpp",
+      "protected_role": "visual state projection",
+      "lf_sha256": {
+        "frozen_baseline": "512ae47aeb6e4d3d88d9e5388c6954ae1150cc1ebdfd5bef01483984da9fb0a0",
+        "accepted_main": "512ae47aeb6e4d3d88d9e5388c6954ae1150cc1ebdfd5bef01483984da9fb0a0",
+        "previous_pr347": "512ae47aeb6e4d3d88d9e5388c6954ae1150cc1ebdfd5bef01483984da9fb0a0",
+        "previous_qualified": "512ae47aeb6e4d3d88d9e5388c6954ae1150cc1ebdfd5bef01483984da9fb0a0",
+        "current_combined": "512ae47aeb6e4d3d88d9e5388c6954ae1150cc1ebdfd5bef01483984da9fb0a0"
+      },
+      "matches_frozen": {
+        "frozen_baseline": true,
+        "accepted_main": true,
+        "previous_pr347": true,
+        "previous_qualified": true,
+        "current_combined": true
+      },
+      "unchanged_since_previous_pr347": true
+    },
+    {
+      "path": "native/include/cybersand/precision_storage.hpp",
+      "protected_role": "Cell layout and state widths",
+      "lf_sha256": {
+        "frozen_baseline": "7b7bbdfa6ac5618665b22cf619bbba64c03caeea997a24c94ebdff9902dd4266",
+        "accepted_main": "7b7bbdfa6ac5618665b22cf619bbba64c03caeea997a24c94ebdff9902dd4266",
+        "previous_pr347": "7b7bbdfa6ac5618665b22cf619bbba64c03caeea997a24c94ebdff9902dd4266",
+        "previous_qualified": "7b7bbdfa6ac5618665b22cf619bbba64c03caeea997a24c94ebdff9902dd4266",
+        "current_combined": "7b7bbdfa6ac5618665b22cf619bbba64c03caeea997a24c94ebdff9902dd4266"
+      },
+      "matches_frozen": {
+        "frozen_baseline": true,
+        "accepted_main": true,
+        "previous_pr347": true,
+        "previous_qualified": true,
+        "current_combined": true
+      },
+      "unchanged_since_previous_pr347": true
+    },
+    {
+      "path": "native/include/cybersand/quantity_ledger.hpp",
+      "protected_role": "quantity schema and positional slots",
+      "lf_sha256": {
+        "frozen_baseline": "4345032e718b601a33ac3ffb69a456cd91bcf05ee3ab503650dcb7c06a59c6ad",
+        "accepted_main": "4345032e718b601a33ac3ffb69a456cd91bcf05ee3ab503650dcb7c06a59c6ad",
+        "previous_pr347": "4345032e718b601a33ac3ffb69a456cd91bcf05ee3ab503650dcb7c06a59c6ad",
+        "previous_qualified": "4345032e718b601a33ac3ffb69a456cd91bcf05ee3ab503650dcb7c06a59c6ad",
+        "current_combined": "4345032e718b601a33ac3ffb69a456cd91bcf05ee3ab503650dcb7c06a59c6ad"
+      },
+      "matches_frozen": {
+        "frozen_baseline": true,
+        "accepted_main": true,
+        "previous_pr347": true,
+        "previous_qualified": true,
+        "current_combined": true
+      },
+      "unchanged_since_previous_pr347": true
+    },
+    {
+      "path": "native/src/world_quantity.inc",
+      "protected_role": "quantity codec, endpoints and specialized ordinal mapping",
+      "lf_sha256": {
+        "frozen_baseline": "627936a33c9ed58b6841f04466bf83aefe83b451ceb0da22baa19269ed5ef074",
+        "accepted_main": "627936a33c9ed58b6841f04466bf83aefe83b451ceb0da22baa19269ed5ef074",
+        "previous_pr347": "627936a33c9ed58b6841f04466bf83aefe83b451ceb0da22baa19269ed5ef074",
+        "previous_qualified": "627936a33c9ed58b6841f04466bf83aefe83b451ceb0da22baa19269ed5ef074",
+        "current_combined": "627936a33c9ed58b6841f04466bf83aefe83b451ceb0da22baa19269ed5ef074"
+      },
+      "matches_frozen": {
+        "frozen_baseline": true,
+        "accepted_main": true,
+        "previous_pr347": true,
+        "previous_qualified": true,
+        "current_combined": true
+      },
+      "unchanged_since_previous_pr347": true
+    },
+    {
+      "path": "native/src/world.cpp",
+      "protected_role": "legacy movement, chemistry, thermal and scheduling authority",
+      "lf_sha256": {
+        "frozen_baseline": "b7a129f44eccc7c33dbd2f0d84802ab096140dcaa9b5b3a83d45dd3bf85fbad1",
+        "accepted_main": "b7a129f44eccc7c33dbd2f0d84802ab096140dcaa9b5b3a83d45dd3bf85fbad1",
+        "previous_pr347": "91cecf308d01ef214f491f3dc1f353f10c9db17a55162b983fc4ecf80e6363e6",
+        "previous_qualified": "91cecf308d01ef214f491f3dc1f353f10c9db17a55162b983fc4ecf80e6363e6",
+        "current_combined": "91cecf308d01ef214f491f3dc1f353f10c9db17a55162b983fc4ecf80e6363e6"
+      },
+      "matches_frozen": {
+        "frozen_baseline": true,
+        "accepted_main": true,
+        "previous_pr347": false,
+        "previous_qualified": false,
+        "current_combined": false
+      },
+      "unchanged_since_previous_pr347": true
+    },
+    {
+      "path": "native/src/world_pressure.inc",
+      "protected_role": "policy admission, physical hash and CYPS restoration",
+      "lf_sha256": {
+        "frozen_baseline": "c8cb11512e935d05e099d8f155c1659473a7f61aa301e2e4900e55bdcfe4024b",
+        "accepted_main": "c8cb11512e935d05e099d8f155c1659473a7f61aa301e2e4900e55bdcfe4024b",
+        "previous_pr347": "0e6c8b916d9a457fc09d63f496b9acb5b8b61f55c3c09311d8bcf90bbf92b947",
+        "previous_qualified": "0e6c8b916d9a457fc09d63f496b9acb5b8b61f55c3c09311d8bcf90bbf92b947",
+        "current_combined": "0e6c8b916d9a457fc09d63f496b9acb5b8b61f55c3c09311d8bcf90bbf92b947"
+      },
+      "matches_frozen": {
+        "frozen_baseline": true,
+        "accepted_main": true,
+        "previous_pr347": false,
+        "previous_qualified": false,
+        "current_combined": false
+      },
+      "unchanged_since_previous_pr347": true
+    },
+    {
+      "path": "native/src/world_inertial.inc",
+      "protected_role": "IN sidecar and state authority",
+      "lf_sha256": {
+        "frozen_baseline": "f9e891dafa9c61e76460b5b3a720e3e522e7b63c381e81539e5e508b2719a0dd",
+        "accepted_main": "f9e891dafa9c61e76460b5b3a720e3e522e7b63c381e81539e5e508b2719a0dd",
+        "previous_pr347": "f9e891dafa9c61e76460b5b3a720e3e522e7b63c381e81539e5e508b2719a0dd",
+        "previous_qualified": "f9e891dafa9c61e76460b5b3a720e3e522e7b63c381e81539e5e508b2719a0dd",
+        "current_combined": "f9e891dafa9c61e76460b5b3a720e3e522e7b63c381e81539e5e508b2719a0dd"
+      },
+      "matches_frozen": {
+        "frozen_baseline": true,
+        "accepted_main": true,
+        "previous_pr347": true,
+        "previous_qualified": true,
+        "current_combined": true
+      },
+      "unchanged_since_previous_pr347": true
+    },
+    {
+      "path": "native/include/cybersand/transport_policy.hpp",
+      "protected_role": "transport v1 dimensions and wire contract",
+      "lf_sha256": {
+        "frozen_baseline": "5943ae6a9479813768d1a62f54895e468288fc19ccb9c2f4b29f4a13aa41dd29",
+        "accepted_main": "5943ae6a9479813768d1a62f54895e468288fc19ccb9c2f4b29f4a13aa41dd29",
+        "previous_pr347": "5943ae6a9479813768d1a62f54895e468288fc19ccb9c2f4b29f4a13aa41dd29",
+        "previous_qualified": "5943ae6a9479813768d1a62f54895e468288fc19ccb9c2f4b29f4a13aa41dd29",
+        "current_combined": "5943ae6a9479813768d1a62f54895e468288fc19ccb9c2f4b29f4a13aa41dd29"
+      },
+      "matches_frozen": {
+        "frozen_baseline": true,
+        "accepted_main": true,
+        "previous_pr347": true,
+        "previous_qualified": true,
+        "current_combined": true
+      },
+      "unchanged_since_previous_pr347": true
+    },
+    {
+      "path": "native/include/cybersand/liquid_solver_policy.hpp",
+      "protected_role": "native stale-identity refusal",
+      "lf_sha256": {
+        "frozen_baseline": "c1f2e6b19ad57313eb1c5dd1a4ad56501140d4574f15b26463b4fb513a53827e",
+        "accepted_main": "c1f2e6b19ad57313eb1c5dd1a4ad56501140d4574f15b26463b4fb513a53827e",
+        "previous_pr347": "c1f2e6b19ad57313eb1c5dd1a4ad56501140d4574f15b26463b4fb513a53827e",
+        "previous_qualified": "c1f2e6b19ad57313eb1c5dd1a4ad56501140d4574f15b26463b4fb513a53827e",
+        "current_combined": "c1f2e6b19ad57313eb1c5dd1a4ad56501140d4574f15b26463b4fb513a53827e"
+      },
+      "matches_frozen": {
+        "frozen_baseline": true,
+        "accepted_main": true,
+        "previous_pr347": true,
+        "previous_qualified": true,
+        "current_combined": true
+      },
+      "unchanged_since_previous_pr347": true
+    },
+    {
+      "path": "native/include/cybersand/liquid_policy_catalogue.hpp",
+      "protected_role": "generated native policy identities",
+      "lf_sha256": {
+        "frozen_baseline": "ec9153f5cf921d2834116831908e9feb16148695aa433a21b0e62a0981072303",
+        "accepted_main": "ec9153f5cf921d2834116831908e9feb16148695aa433a21b0e62a0981072303",
+        "previous_pr347": "ec9153f5cf921d2834116831908e9feb16148695aa433a21b0e62a0981072303",
+        "previous_qualified": "ec9153f5cf921d2834116831908e9feb16148695aa433a21b0e62a0981072303",
+        "current_combined": "ec9153f5cf921d2834116831908e9feb16148695aa433a21b0e62a0981072303"
+      },
+      "matches_frozen": {
+        "frozen_baseline": true,
+        "accepted_main": true,
+        "previous_pr347": true,
+        "previous_qualified": true,
+        "current_combined": true
+      },
+      "unchanged_since_previous_pr347": true
+    },
+    {
+      "path": "native/include/cybersand/water_experiment_policy.hpp",
+      "protected_role": "Water quantity defaults and bounds",
+      "lf_sha256": {
+        "frozen_baseline": "60b6ef5e611ba39eb0d6220115eb2f0662bc58e02b56c0966a239e30ad57dfaf",
+        "accepted_main": "60b6ef5e611ba39eb0d6220115eb2f0662bc58e02b56c0966a239e30ad57dfaf",
+        "previous_pr347": "60b6ef5e611ba39eb0d6220115eb2f0662bc58e02b56c0966a239e30ad57dfaf",
+        "previous_qualified": "60b6ef5e611ba39eb0d6220115eb2f0662bc58e02b56c0966a239e30ad57dfaf",
+        "current_combined": "60b6ef5e611ba39eb0d6220115eb2f0662bc58e02b56c0966a239e30ad57dfaf"
+      },
+      "matches_frozen": {
+        "frozen_baseline": true,
+        "accepted_main": true,
+        "previous_pr347": true,
+        "previous_qualified": true,
+        "current_combined": true
+      },
+      "unchanged_since_previous_pr347": true
+    },
+    {
+      "path": "godot/scripts/cell_world.gd",
+      "protected_role": "fallback identity, capabilities and separate physics",
+      "lf_sha256": {
+        "frozen_baseline": "763f5047c2f028ec71109a3f44a420bab75122e3ce15cfbad9b6fb3787bee035",
+        "accepted_main": "763f5047c2f028ec71109a3f44a420bab75122e3ce15cfbad9b6fb3787bee035",
+        "previous_pr347": "763f5047c2f028ec71109a3f44a420bab75122e3ce15cfbad9b6fb3787bee035",
+        "previous_qualified": "763f5047c2f028ec71109a3f44a420bab75122e3ce15cfbad9b6fb3787bee035",
+        "current_combined": "763f5047c2f028ec71109a3f44a420bab75122e3ce15cfbad9b6fb3787bee035"
+      },
+      "matches_frozen": {
+        "frozen_baseline": true,
+        "accepted_main": true,
+        "previous_pr347": true,
+        "previous_qualified": true,
+        "current_combined": true
+      },
+      "unchanged_since_previous_pr347": true
+    },
+    {
+      "path": "godot/scripts/interaction_policy.gd",
+      "protected_role": "fallback granular support",
+      "lf_sha256": {
+        "frozen_baseline": "ba4acd7587b044ca412caaa75c740a6487f59ed6cae09c4d9d271a7342d06742",
+        "accepted_main": "ba4acd7587b044ca412caaa75c740a6487f59ed6cae09c4d9d271a7342d06742",
+        "previous_pr347": "ba4acd7587b044ca412caaa75c740a6487f59ed6cae09c4d9d271a7342d06742",
+        "previous_qualified": "ba4acd7587b044ca412caaa75c740a6487f59ed6cae09c4d9d271a7342d06742",
+        "current_combined": "ba4acd7587b044ca412caaa75c740a6487f59ed6cae09c4d9d271a7342d06742"
+      },
+      "matches_frozen": {
+        "frozen_baseline": true,
+        "accepted_main": true,
+        "previous_pr347": true,
+        "previous_qualified": true,
+        "current_combined": true
+      },
+      "unchanged_since_previous_pr347": true
+    },
+    {
+      "path": "godot/scripts/material_appearance_lut.gd",
+      "protected_role": "palette bytes and Godot appearance calculations",
+      "lf_sha256": {
+        "frozen_baseline": "1033dbe5e61e330578aa8a3bb2d3d7c98a8b7b4c42775b91d50b5a87fd443b0a",
+        "accepted_main": "1033dbe5e61e330578aa8a3bb2d3d7c98a8b7b4c42775b91d50b5a87fd443b0a",
+        "previous_pr347": "1033dbe5e61e330578aa8a3bb2d3d7c98a8b7b4c42775b91d50b5a87fd443b0a",
+        "previous_qualified": "1033dbe5e61e330578aa8a3bb2d3d7c98a8b7b4c42775b91d50b5a87fd443b0a",
+        "current_combined": "1033dbe5e61e330578aa8a3bb2d3d7c98a8b7b4c42775b91d50b5a87fd443b0a"
+      },
+      "matches_frozen": {
+        "frozen_baseline": true,
+        "accepted_main": true,
+        "previous_pr347": true,
+        "previous_qualified": true,
+        "current_combined": true
+      },
+      "unchanged_since_previous_pr347": true
+    },
+    {
+      "path": "godot/scripts/transport_profiles.gd",
+      "protected_role": "transport ownership, precedence and validation",
+      "lf_sha256": {
+        "frozen_baseline": "5497757c0950082b57be0f95760680cb05c631422940a1d6efcbff010a42b6a0",
+        "accepted_main": "5497757c0950082b57be0f95760680cb05c631422940a1d6efcbff010a42b6a0",
+        "previous_pr347": "5497757c0950082b57be0f95760680cb05c631422940a1d6efcbff010a42b6a0",
+        "previous_qualified": "5497757c0950082b57be0f95760680cb05c631422940a1d6efcbff010a42b6a0",
+        "current_combined": "5497757c0950082b57be0f95760680cb05c631422940a1d6efcbff010a42b6a0"
+      },
+      "matches_frozen": {
+        "frozen_baseline": true,
+        "accepted_main": true,
+        "previous_pr347": true,
+        "previous_qualified": true,
+        "current_combined": true
+      },
+      "unchanged_since_previous_pr347": true
+    },
+    {
+      "path": "godot/shaders/material_palette.gdshader",
+      "protected_role": "hand-coded appearance programme",
+      "lf_sha256": {
+        "frozen_baseline": "f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1",
+        "accepted_main": "f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1",
+        "previous_pr347": "f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1",
+        "previous_qualified": "f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1",
+        "current_combined": "f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1"
+      },
+      "matches_frozen": {
+        "frozen_baseline": true,
+        "accepted_main": true,
+        "previous_pr347": true,
+        "previous_qualified": true,
+        "current_combined": true
+      },
+      "unchanged_since_previous_pr347": true
+    },
+    {
+      "path": "tools/lcb/derive_capability_matrix.py",
+      "protected_role": "literal-source parser contract",
+      "lf_sha256": {
+        "frozen_baseline": "8ccea6c3bca94116e1714fd4a2ae0b3bbef046e604c4ffe734bca46c54b5d5ea",
+        "accepted_main": "8ccea6c3bca94116e1714fd4a2ae0b3bbef046e604c4ffe734bca46c54b5d5ea",
+        "previous_pr347": "8ccea6c3bca94116e1714fd4a2ae0b3bbef046e604c4ffe734bca46c54b5d5ea",
+        "previous_qualified": "8ccea6c3bca94116e1714fd4a2ae0b3bbef046e604c4ffe734bca46c54b5d5ea",
+        "current_combined": "8ccea6c3bca94116e1714fd4a2ae0b3bbef046e604c4ffe734bca46c54b5d5ea"
+      },
+      "matches_frozen": {
+        "frozen_baseline": true,
+        "accepted_main": true,
+        "previous_pr347": true,
+        "previous_qualified": true,
+        "current_combined": true
+      },
+      "unchanged_since_previous_pr347": true
+    },
+    {
+      "path": "tools/lcb/policy_contract.py",
+      "protected_role": "catalogue, capability and policy digest contract",
+      "lf_sha256": {
+        "frozen_baseline": "3b9d6634f884621a3506cea761af7500e484d513b0e5bb75e2a81361fe9a81b2",
+        "accepted_main": "3b9d6634f884621a3506cea761af7500e484d513b0e5bb75e2a81361fe9a81b2",
+        "previous_pr347": "3b9d6634f884621a3506cea761af7500e484d513b0e5bb75e2a81361fe9a81b2",
+        "previous_qualified": "3b9d6634f884621a3506cea761af7500e484d513b0e5bb75e2a81361fe9a81b2",
+        "current_combined": "3b9d6634f884621a3506cea761af7500e484d513b0e5bb75e2a81361fe9a81b2"
+      },
+      "matches_frozen": {
+        "frozen_baseline": true,
+        "accepted_main": true,
+        "previous_pr347": true,
+        "previous_qualified": true,
+        "current_combined": true
+      },
+      "unchanged_since_previous_pr347": true
+    },
+    {
+      "path": "tools/lcb/native_policy_artifacts.py",
+      "protected_role": "existing native identity generator",
+      "lf_sha256": {
+        "frozen_baseline": "1eba32bb3e3e80a4d6cb62219287421abee454b32865cde183bd2d451523c230",
+        "accepted_main": "1eba32bb3e3e80a4d6cb62219287421abee454b32865cde183bd2d451523c230",
+        "previous_pr347": "1eba32bb3e3e80a4d6cb62219287421abee454b32865cde183bd2d451523c230",
+        "previous_qualified": "1eba32bb3e3e80a4d6cb62219287421abee454b32865cde183bd2d451523c230",
+        "current_combined": "1eba32bb3e3e80a4d6cb62219287421abee454b32865cde183bd2d451523c230"
+      },
+      "matches_frozen": {
+        "frozen_baseline": true,
+        "accepted_main": true,
+        "previous_pr347": true,
+        "previous_qualified": true,
+        "current_combined": true
+      },
+      "unchanged_since_previous_pr347": true
+    },
+    {
+      "path": "docs/reference/liquid-solver-capability-matrix.json",
+      "protected_role": "capability identity bytes",
+      "lf_sha256": {
+        "frozen_baseline": "3d7a471391ffa551d8580fd83625bdf3b40954adfa8f683045dd1e168abdcddb",
+        "accepted_main": "3d7a471391ffa551d8580fd83625bdf3b40954adfa8f683045dd1e168abdcddb",
+        "previous_pr347": "3d7a471391ffa551d8580fd83625bdf3b40954adfa8f683045dd1e168abdcddb",
+        "previous_qualified": "3d7a471391ffa551d8580fd83625bdf3b40954adfa8f683045dd1e168abdcddb",
+        "current_combined": "3d7a471391ffa551d8580fd83625bdf3b40954adfa8f683045dd1e168abdcddb"
+      },
+      "matches_frozen": {
+        "frozen_baseline": true,
+        "accepted_main": true,
+        "previous_pr347": true,
+        "previous_qualified": true,
+        "current_combined": true
+      },
+      "unchanged_since_previous_pr347": true
+    },
+    {
+      "path": "docs/reference/liquid-policy-wire-vectors.json",
+      "protected_role": "retained policy wire oracle",
+      "lf_sha256": {
+        "frozen_baseline": "cac210f88ca96078d9920de80505e9e28c63a630df87fd1d5c16801bde5a8c31",
+        "accepted_main": "cac210f88ca96078d9920de80505e9e28c63a630df87fd1d5c16801bde5a8c31",
+        "previous_pr347": "cac210f88ca96078d9920de80505e9e28c63a630df87fd1d5c16801bde5a8c31",
+        "previous_qualified": "cac210f88ca96078d9920de80505e9e28c63a630df87fd1d5c16801bde5a8c31",
+        "current_combined": "cac210f88ca96078d9920de80505e9e28c63a630df87fd1d5c16801bde5a8c31"
+      },
+      "matches_frozen": {
+        "frozen_baseline": true,
+        "accepted_main": true,
+        "previous_pr347": true,
+        "previous_qualified": true,
+        "current_combined": true
+      },
+      "unchanged_since_previous_pr347": true
+    },
+    {
+      "path": "docs/reference/water-normalization-vectors.json",
+      "protected_role": "retained normalization oracle",
+      "lf_sha256": {
+        "frozen_baseline": "ec6541c726b534a016dba5fd9d5eb22bf2a2ff07d9da9ed4ca802fbb9f1d8c17",
+        "accepted_main": "ec6541c726b534a016dba5fd9d5eb22bf2a2ff07d9da9ed4ca802fbb9f1d8c17",
+        "previous_pr347": "ec6541c726b534a016dba5fd9d5eb22bf2a2ff07d9da9ed4ca802fbb9f1d8c17",
+        "previous_qualified": "ec6541c726b534a016dba5fd9d5eb22bf2a2ff07d9da9ed4ca802fbb9f1d8c17",
+        "current_combined": "ec6541c726b534a016dba5fd9d5eb22bf2a2ff07d9da9ed4ca802fbb9f1d8c17"
+      },
+      "matches_frozen": {
+        "frozen_baseline": true,
+        "accepted_main": true,
+        "previous_pr347": true,
+        "previous_qualified": true,
+        "current_combined": true
+      },
+      "unchanged_since_previous_pr347": true
+    },
+    {
+      "path": "docs/reference/liquid-run-receipt-vectors.json",
+      "protected_role": "retained receipt oracle",
+      "lf_sha256": {
+        "frozen_baseline": "5c07d0fe8d79bcbfbc76bfc3b7675926ebc3860cb3a062147559e4487cb6c0a8",
+        "accepted_main": "5c07d0fe8d79bcbfbc76bfc3b7675926ebc3860cb3a062147559e4487cb6c0a8",
+        "previous_pr347": "5c07d0fe8d79bcbfbc76bfc3b7675926ebc3860cb3a062147559e4487cb6c0a8",
+        "previous_qualified": "5c07d0fe8d79bcbfbc76bfc3b7675926ebc3860cb3a062147559e4487cb6c0a8",
+        "current_combined": "5c07d0fe8d79bcbfbc76bfc3b7675926ebc3860cb3a062147559e4487cb6c0a8"
+      },
+      "matches_frozen": {
+        "frozen_baseline": true,
+        "accepted_main": true,
+        "previous_pr347": true,
+        "previous_qualified": true,
+        "current_combined": true
+      },
+      "unchanged_since_previous_pr347": true
+    }
+  ],
+  "drift_counts": {
+    "frozen_baseline": 0,
+    "accepted_main": 0,
+    "previous_pr347": 2,
+    "previous_qualified": 2,
+    "current_combined": 2
+  },
+  "offending_paths": [
+    "native/src/world.cpp",
+    "native/src/world_pressure.inc"
+  ],
+  "all_current_guard_drift_predates_continuation": true,
+  "origins": [
+    {
+      "commit": "83a12466f624780a2455e8adafa70e26719ccf59",
+      "date": "2026-11-01",
+      "changes": {
+        "native/src/world.cpp": {
+          "added_lines": 20,
+          "deleted_lines": 0,
+          "classification": "SOL mutation/transaction refusal fences; aggregate reset; SOL detachment/displacement implementation includes"
+        },
+        "native/src/world_pressure.inc": {
+          "added_lines": 4,
+          "deleted_lines": 0,
+          "classification": "Explicit refusal of physical-state hash and CYPS save for non-idle SOL aggregate/transaction"
+        }
+      }
+    },
+    {
+      "commit": "3e9749854a9bf52a0efd7e017dad901bdfae5b6d",
+      "date": "2026-11-03",
+      "changes": {
+        "native/src/world.cpp": {
+          "added_lines": 14,
+          "deleted_lines": 0,
+          "classification": "Read-only contact_cell_available residency/health/region/bounds check"
+        }
+      }
+    }
+  ],
+  "diff": {
+    "file": "mat-consumer-drift.diff",
+    "sha256": "d0f53e4ff2b24d5e97220db548d17268cea8e1c15fdabde453b0d6226ddb8d43",
+    "bytes": 10901
+  },
+  "documentation_run": {
+    "run_id": 41815830370,
+    "job_id": 126526204779,
+    "conclusion": "failure",
+    "first_failure": "Check material catalogue shadow compatibility",
+    "first_offender": "native/src/world.cpp",
+    "second_offender": "native/src/world_pressure.inc is independently detected; command stopped after first error",
+    "downstream_status": "Scenario/docs/provenance/M11/failure-contract/evidence-integrity/retrieval/LFS steps skipped; not passing."
+  },
+  "disposition": "Guard preserved. This source composition is experimentally qualified separately from MAT-AUTH compatibility and remains blocked for merge.",
+  "smallest_integration_action": "Explicit source-pinned dual-owner review of these two historical SOL consumer deltas and an approved compatibility-checkpoint decision; no catalogue edits, automatic lock refresh or broad exception."
+}

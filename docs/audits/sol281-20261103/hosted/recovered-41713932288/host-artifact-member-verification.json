@@ -1,0 +1,1693 @@
+{
+  "archives": [
+    {
+      "artifact_id": 13270765670,
+      "github_digest_matched": true,
+      "name": "sol281-host-linux-contact-w1-41713932288-1",
+      "omitted_ephemeral_host_state_files": [
+        "host/host-state/cache/godot/editor_doc_cache-4.7.res",
+        "host/host-state/config/godot/editor_settings-4.7.tres",
+        "host/host-state/data/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+        "host/host-state/data/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot2026-11-03T20.50.28.log",
+        "host/host-state/data/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot2026-11-03T20.50.35.log",
+        "host/host-state/data/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot2026-11-03T20.50.42.log",
+        "host/host-state/data/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot2026-11-03T20.50.50.log",
+        "host/host-state/data/godot/keystores/debug.keystore"
+      ],
+      "published_bytes_match_original": true,
+      "published_files_verified": 34,
+      "sha256": "200e67b6039ffaa36aeac4f2698fd0a64733b03a768aeab676ff8908caf40f5b",
+      "size": 7194892
+    },
+    {
+      "artifact_id": 13269084903,
+      "github_digest_matched": true,
+      "name": "sol281-host-linux-contact-w4-41713932288-1",
+      "omitted_ephemeral_host_state_files": [
+        "host/host-state/cache/godot/editor_doc_cache-4.7.res",
+        "host/host-state/config/godot/editor_settings-4.7.tres",
+        "host/host-state/data/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+        "host/host-state/data/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot2026-11-03T20.50.34.log",
+        "host/host-state/data/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot2026-11-03T20.50.41.log",
+        "host/host-state/data/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot2026-11-03T20.50.48.log",
+        "host/host-state/data/godot/keystores/debug.keystore",
+        "host/host-state/data/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot2026-11-03T20.50.55.log"
+      ],
+      "published_bytes_match_original": true,
+      "published_files_verified": 34,
+      "sha256": "ce276d1d3938998b04b0fa6bd458d3825e24465906a4ff0eb6dd3289ee37100b",
+      "size": 7081006
+    },
+    {
+      "artifact_id": 13269324608,
+      "github_digest_matched": true,
+      "name": "sol281-host-linux-core-41713932288-1",
+      "omitted_ephemeral_host_state_files": [
+        "host/host-state/cache/godot/editor_doc_cache-4.7.res",
+        "host/host-state/config/godot/editor_settings-4.7.tres",
+        "host/host-state/data/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+        "host/host-state/data/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot2026-11-03T20.50.20.log",
+        "host/host-state/data/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot2026-11-03T20.50.21.log",
+        "host/host-state/data/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot2026-11-03T20.50.23.log",
+        "host/host-state/data/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot2026-11-03T20.50.26.log",
+        "host/host-state/data/godot/keystores/debug.keystore"
+      ],
+      "published_bytes_match_original": true,
+      "published_files_verified": 26,
+      "sha256": "4657114aee6a165f765aaf6b83bb48de33eb50666005f6e3c7e85e21715a9292",
+      "size": 3488592
+    },
+    {
+      "artifact_id": 13270540908,
+      "github_digest_matched": true,
+      "name": "sol281-host-linux-mechanism-41713932288-1",
+      "omitted_ephemeral_host_state_files": [
+        "host/host-state/cache/godot/editor_doc_cache-4.7.res",
+        "host/host-state/config/godot/editor_settings-4.7.tres",
+        "host/host-state/data/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+        "host/host-state/data/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot2026-11-03T20.52.11.log",
+        "host/host-state/data/godot/keystores/debug.keystore"
+      ],
+      "published_bytes_match_original": true,
+      "published_files_verified": 16,
+      "sha256": "1884a233d3fba87d14edbde1c71f1956ddf39bc459f77d43a91c06bab0e94359",
+      "size": 3483825
+    },
+    {
+      "artifact_id": 13269223208,
+      "github_digest_matched": true,
+      "name": "sol281-host-windows-contact-w1-41713932288-1",
+      "omitted_ephemeral_host_state_files": [],
+      "published_bytes_match_original": true,
+      "published_files_verified": 28,
+      "sha256": "37a5740ad5ffd37a76b12a8734c0c9fe5ee9c431316dc46a7c7eea0168ee8888",
+      "size": 2853206
+    },
+    {
+      "artifact_id": 13268814828,
+      "github_digest_matched": true,
+      "name": "sol281-host-windows-contact-w4-41713932288-1",
+      "omitted_ephemeral_host_state_files": [],
+      "published_bytes_match_original": true,
+      "published_files_verified": 28,
+      "sha256": "8841435d49627a79c3980aa0be75c2efa1de355c757f69f06fd11e3c4c91170a",
+      "size": 2965110
+    },
+    {
+      "artifact_id": 13269024879,
+      "github_digest_matched": true,
+      "name": "sol281-host-windows-core-41713932288-1",
+      "omitted_ephemeral_host_state_files": [],
+      "published_bytes_match_original": true,
+      "published_files_verified": 20,
+      "sha256": "3e3f8972035e84144b9e705ddb82c1309ea035b0c8a74461df3be99fc67c2721",
+      "size": 220449
+    },
+    {
+      "artifact_id": 13269299992,
+      "github_digest_matched": true,
+      "name": "sol281-host-windows-mechanism-41713932288-1",
+      "omitted_ephemeral_host_state_files": [],
+      "published_bytes_match_original": true,
+      "published_files_verified": 10,
+      "sha256": "223d2ba964bfeffb967384bfcf039cd144e85cf72e8c9370e589c3a885558df6",
+      "size": 216067
+    }
+  ],
+  "members": [
+    {
+      "archive_member": "host/checkout-inputs-after.json",
+      "artifact_id": 13270765670,
+      "publication_git_blob": "6e3a69bb2089078dbd3f282d93762577c11e3da5",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/host/checkout-inputs-after.json",
+      "sha256": "fe3a37345a07238f0d5624e8dd6c64512df5655581384cc2eae00080f2840d76",
+      "size": 125403
+    },
+    {
+      "archive_member": "host/contact-observation-w1.json",
+      "artifact_id": 13270765670,
+      "publication_git_blob": "67fd02fc4467fa963a8fa2aee359918131689ca8",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/host/contact-observation-w1.json",
+      "sha256": "a49de75594abf93fbe79eb7f4a363646c92edfa6a3db9f3de89bd3f361e790ce",
+      "size": 722
+    },
+    {
+      "archive_member": "host/checkout-inputs-before.json",
+      "artifact_id": 13270765670,
+      "publication_git_blob": "6e3a69bb2089078dbd3f282d93762577c11e3da5",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/host/checkout-inputs-before.json",
+      "sha256": "fe3a37345a07238f0d5624e8dd6c64512df5655581384cc2eae00080f2840d76",
+      "size": 125403
+    },
+    {
+      "archive_member": "host/contact-observation-w1.log",
+      "artifact_id": 13270765670,
+      "publication_git_blob": "61114126b607a05ca57dc16f1d4167662e56b561",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/host/contact-observation-w1.log",
+      "sha256": "39a454cfc315f36ef5ce0a32d57d1b8595a3cde93424f3919cc7b790f894d153",
+      "size": 854
+    },
+    {
+      "archive_member": "host/contact-recovery-w1.json",
+      "artifact_id": 13270765670,
+      "publication_git_blob": "4637bee89ebfdd50e3a82ff19b4cef2189474dde",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/host/contact-recovery-w1.json",
+      "sha256": "228e4c831e731b978c4153967fb11a365d5118deb369ce32f19cc2cfec7a24af",
+      "size": 9208597
+    },
+    {
+      "archive_member": "host/contact-recovery-w1.log",
+      "artifact_id": 13270765670,
+      "publication_git_blob": "46ea48d06608eb722704a036eaa86469079415e4",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/host/contact-recovery-w1.log",
+      "sha256": "1c20dee4b67eda32db21da1810fbd1090fc87b65bb8e808c2e5ff8f6f383047c",
+      "size": 6212850
+    },
+    {
+      "archive_member": "host/coupling-w1.json",
+      "artifact_id": 13270765670,
+      "publication_git_blob": "9e7c19d7728dc8713c8119170ae9fd686c1a193b",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/host/coupling-w1.json",
+      "sha256": "4c196cb5361438981d43a2f01dca148775a0f36dd7c01a048f729b28395b2588",
+      "size": 2373
+    },
+    {
+      "archive_member": "host/coupling-w1.log",
+      "artifact_id": 13270765670,
+      "publication_git_blob": "656ade03a4f7927e7c443e8b63e70ffb047b8947",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/host/coupling-w1.log",
+      "sha256": "3453dbc606f327ca4e791033244232fd220f74d41d204e5195fae330a5fb4462",
+      "size": 2276
+    },
+    {
+      "archive_member": "host/displacement-w1.json",
+      "artifact_id": 13270765670,
+      "publication_git_blob": "48e5db029ff2a764424e1e6b8ab6c9d2e26c53fe",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/host/displacement-w1.json",
+      "sha256": "e29b3e02d698cb4e3033b2dd35f76718a04d09b92fb2caf6592b18b94edfcbab",
+      "size": 26071
+    },
+    {
+      "archive_member": "host/displacement-w1.log",
+      "artifact_id": 13270765670,
+      "publication_git_blob": "d96bb61ea440707fe2a53dc1b41bf14aae670a69",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/host/displacement-w1.log",
+      "sha256": "81d5ceaa79a0e29bf0a7622dbdf8274b7b57516aa9b27a01e2a04310e830cdcc",
+      "size": 336
+    },
+    {
+      "archive_member": "host/embedded_sand-baseline-w1.json",
+      "artifact_id": 13270765670,
+      "publication_git_blob": "e613b235be33708a71c8540254eb4441e216c3b5",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/host/embedded_sand-baseline-w1.json",
+      "sha256": "ca94df872eab13a04a9ad8fbeda74ab119c058e4f8e704e83e7139da1b4c6226",
+      "size": 3179
+    },
+    {
+      "archive_member": "host/embedded_sand-baseline-w1.log",
+      "artifact_id": 13270765670,
+      "publication_git_blob": "1de1f8dc9d2f8f5ff442bba26fa781564a9b4564",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/host/embedded_sand-baseline-w1.log",
+      "sha256": "64e08daaf8747905b0b197408accb29488e7e29640d59d5815adddc659aefe18",
+      "size": 2880
+    },
+    {
+      "archive_member": "host/embedded_sand-candidate-w1.json",
+      "artifact_id": 13270765670,
+      "publication_git_blob": "1d375b149537f3508bd80c0733e734d7cb350a64",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/host/embedded_sand-candidate-w1.json",
+      "sha256": "c9ee4b1744c4d957b93d365b61f098119164c4538a57d17d3a7c4e37adb39821",
+      "size": 3207
+    },
+    {
+      "archive_member": "host/embedded_sand-candidate-w1.log",
+      "artifact_id": 13270765670,
+      "publication_git_blob": "28257ff47d79a3b3b97ba573eccb06c0bcc5b9a9",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/host/embedded_sand-candidate-w1.log",
+      "sha256": "2a5921d842d4f18dc860f90716ff6a3650ec6fec91c2a58de9024e29a73ebf61",
+      "size": 2908
+    },
+    {
+      "archive_member": "host/import.log",
+      "artifact_id": 13270765670,
+      "publication_git_blob": "1e65a779c77ab3a41a2e0aa6a127520a858b1f68",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/host/import.log",
+      "sha256": "82a265e8d8395148566f66f51856a85eb323fdeb587fc7caaf930f1ff347f1dc",
+      "size": 34786
+    },
+    {
+      "archive_member": "host/inputs-after.json",
+      "artifact_id": 13270765670,
+      "publication_git_blob": "4cd630f984f8674fa2bf52fe6b135f4ea41640cc",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/host/inputs-after.json",
+      "sha256": "e259e5812c5570a9f8ee3945ea1fc3453c5cf4593bf95b8cb2b0d44be037371c",
+      "size": 125403
+    },
+    {
+      "archive_member": "host/inputs-before.json",
+      "artifact_id": 13270765670,
+      "publication_git_blob": "4cd630f984f8674fa2bf52fe6b135f4ea41640cc",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/host/inputs-before.json",
+      "sha256": "e259e5812c5570a9f8ee3945ea1fc3453c5cf4593bf95b8cb2b0d44be037371c",
+      "size": 125403
+    },
+    {
+      "archive_member": "host/mixed-baseline-w1.log",
+      "artifact_id": 13270765670,
+      "publication_git_blob": "d049a750fc7492650a822d5a82a1e3220c247f60",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/host/mixed-baseline-w1.log",
+      "sha256": "4ce6cba1cdfff877a84ae9c738cb705f75dbfaeebb52c6c271b960d51da915b4",
+      "size": 2871
+    },
+    {
+      "archive_member": "host/mixed-baseline-w1.json",
+      "artifact_id": 13270765670,
+      "publication_git_blob": "17ff370306d72e1021641557e93d605016ee264f",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/host/mixed-baseline-w1.json",
+      "sha256": "d75b8476b437398159dbea7e4a4f1d9ccb25f24c51dd67435a884a32040f313a",
+      "size": 3170
+    },
+    {
+      "archive_member": "host/mixed-candidate-w1.json",
+      "artifact_id": 13270765670,
+      "publication_git_blob": "c280f7f011cad8da48142ec6973b741dd125d0e8",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/host/mixed-candidate-w1.json",
+      "sha256": "389ba81f4ac4563a495b344f13c53dcd1501c101e24e080e8bb3fd7cd3e416a6",
+      "size": 3213
+    },
+    {
+      "archive_member": "host/mixed-candidate-w1.log",
+      "artifact_id": 13270765670,
+      "publication_git_blob": "8ec856400b89319dd153caa76843a96642a99174",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/host/mixed-candidate-w1.log",
+      "sha256": "123fdce45859f748457b82ad794331c7307975ab7e7955efe14e868c29314c28",
+      "size": 2914
+    },
+    {
+      "archive_member": "host/packed_sand-baseline-w1.json",
+      "artifact_id": 13270765670,
+      "publication_git_blob": "f02683a784b675b985fce022b5ec87408e423ae4",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/host/packed_sand-baseline-w1.json",
+      "sha256": "3aa32fda8affd9da14060985424c3b0de2f05d6a1b821abebe8e44d40ca00f73",
+      "size": 3175
+    },
+    {
+      "archive_member": "host/packed_sand-baseline-w1.log",
+      "artifact_id": 13270765670,
+      "publication_git_blob": "86083e6897cb9af77974842088b3740f779bb816",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/host/packed_sand-baseline-w1.log",
+      "sha256": "10af1a953b1dece39dbfb0a7228a98c19bb0c704c20c66df1828ce9e3ee34d98",
+      "size": 2876
+    },
+    {
+      "archive_member": "host/packed_sand-candidate-w1.json",
+      "artifact_id": 13270765670,
+      "publication_git_blob": "5927cd249e216e1d12e26d19ef77c9fbd6f524a6",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/host/packed_sand-candidate-w1.json",
+      "sha256": "4cb4040eb97d27555b0c9f71769558d346bfc6d07f7a51e06b5442fabb65c48e",
+      "size": 3202
+    },
+    {
+      "archive_member": "host/packed_sand-candidate-w1.log",
+      "artifact_id": 13270765670,
+      "publication_git_blob": "9b03d5caa45ba23bfa95f3a19c442d074fdfd479",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/host/packed_sand-candidate-w1.log",
+      "sha256": "0238587fcb117474223eae12e9fef2774e0a5d0f651a4e39a94adc40cb556323",
+      "size": 2903
+    },
+    {
+      "archive_member": "host/performance.jsonl",
+      "artifact_id": 13270765670,
+      "publication_git_blob": "57e31be243547d8b83471ef574d04f3cf0cb474b",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/host/performance.jsonl",
+      "sha256": "540cc24efa580315f738ddf9e720b56b6e6f34fd11bdf4b3a1ebadd8d609b9df",
+      "size": 89302
+    },
+    {
+      "archive_member": "host/report.json",
+      "artifact_id": 13270765670,
+      "publication_git_blob": "78f34b60f75bdb004541434250adae6d9bce0bb2",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/host/report.json",
+      "sha256": "cb96216628359ba913dd286b6aadd5fabdf75339407e438e8ac0bdd98036660a",
+      "size": 13930264
+    },
+    {
+      "archive_member": "host/terrain-w1.log",
+      "artifact_id": 13270765670,
+      "publication_git_blob": "34709c39e98ddb6449d584601d5b007067922519",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/host/terrain-w1.log",
+      "sha256": "d6ba81a2c979d41472a3370af8df09ee69a4f69747d3fa42ced19413348cc9d5",
+      "size": 3514
+    },
+    {
+      "archive_member": "prepare-rapier/command.log",
+      "artifact_id": 13270765670,
+      "publication_git_blob": "8f3b9c54cfe92c3c999a6da16ece47ae7565c600",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/prepare-rapier/command.log",
+      "sha256": "4fea4bc2b3b77e0192bd58ef65c3a0c982ecc7409dbffab6873bb6e04be6a875",
+      "size": 40
+    },
+    {
+      "archive_member": "prepare-rapier/performance.jsonl",
+      "artifact_id": 13270765670,
+      "publication_git_blob": "1c4b0a42f5323c2fa897c6d714d70e7b6eafbdf2",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/prepare-rapier/performance.jsonl",
+      "sha256": "0ccba92317760aa7eb6f980b4db601ff123b52fa57dbf5dfa200260fce5dead8",
+      "size": 2726
+    },
+    {
+      "archive_member": "prepare-rapier/receipt.json",
+      "artifact_id": 13270765670,
+      "publication_git_blob": "4b8272ce41f1eae818ce40109f816f5e33b9214f",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/prepare-rapier/receipt.json",
+      "sha256": "67ac663510d91df5458eb888f7eb581fa46322ab6d68fa31c7271451913a9c04",
+      "size": 2247
+    },
+    {
+      "archive_member": "prepare-engine/command.log",
+      "artifact_id": 13270765670,
+      "publication_git_blob": "3dcb5ef8d4f57611e137adc63e8103e0f0f0774f",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/prepare-engine/command.log",
+      "sha256": "775150dca1b4cfb8e7701ce221b58544269f5a9810f6b881286bd31917ad38a1",
+      "size": 397
+    },
+    {
+      "archive_member": "prepare-engine/performance.jsonl",
+      "artifact_id": 13270765670,
+      "publication_git_blob": "21b39c11a8627a10fffec00fa8c4aac496dabaa3",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/prepare-engine/performance.jsonl",
+      "sha256": "219e8c98efc183d3e232770f872d424d0725e0a150f98f2acb20b80a26f3215b",
+      "size": 2725
+    },
+    {
+      "archive_member": "prepare-engine/receipt.json",
+      "artifact_id": 13270765670,
+      "publication_git_blob": "ba8f7cf3ffdf5e34cb162c04929f4d4717d0ef3f",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/prepare-engine/receipt.json",
+      "sha256": "1aa33a07670972f4d70691c76c44a86d57dd5841c57e209db2b823ced78421b5",
+      "size": 2441
+    },
+    {
+      "archive_member": "host/checkout-inputs-after.json",
+      "artifact_id": 13269084903,
+      "publication_git_blob": "6e3a69bb2089078dbd3f282d93762577c11e3da5",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w4/host/checkout-inputs-after.json",
+      "sha256": "fe3a37345a07238f0d5624e8dd6c64512df5655581384cc2eae00080f2840d76",
+      "size": 125403
+    },
+    {
+      "archive_member": "host/contact-observation-w4.json",
+      "artifact_id": 13269084903,
+      "publication_git_blob": "9f6f296d3978068b2fbc87ccc17c28c3128e2aa0",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w4/host/contact-observation-w4.json",
+      "sha256": "9a78f0d443334e1385ec26e8c727d011fc047134e00f058f0ec60f0623719e25",
+      "size": 722
+    },
+    {
+      "archive_member": "host/checkout-inputs-before.json",
+      "artifact_id": 13269084903,
+      "publication_git_blob": "6e3a69bb2089078dbd3f282d93762577c11e3da5",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w4/host/checkout-inputs-before.json",
+      "sha256": "fe3a37345a07238f0d5624e8dd6c64512df5655581384cc2eae00080f2840d76",
+      "size": 125403
+    },
+    {
+      "archive_member": "host/contact-observation-w4.log",
+      "artifact_id": 13269084903,
+      "publication_git_blob": "ba464fda48c5e51f85c9c4a43e03738383d12934",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w4/host/contact-observation-w4.log",
+      "sha256": "cd2c7346f10033ee0adba37a8cca052cf9f00402f6f119380bf6c280cefb6f51",
+      "size": 854
+    },
+    {
+      "archive_member": "host/contact-recovery-w4.json",
+      "artifact_id": 13269084903,
+      "publication_git_blob": "f480d4f4520894beee83846a01e020ea3e416199",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w4/host/contact-recovery-w4.json",
+      "sha256": "a004b755e46d29f6079f9fb1f0968be75f7747ceea39c7e6b67787187822d567",
+      "size": 9130055
+    },
+    {
+      "archive_member": "host/contact-recovery-w4.log",
+      "artifact_id": 13269084903,
+      "publication_git_blob": "47423e51aa30db56364ef8ed21e75ef6a1e8a397",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w4/host/contact-recovery-w4.log",
+      "sha256": "7c79337f0d3156e72c18b800f9d7b8e4f0213e5c8cea9de1eb3f338d13a06f56",
+      "size": 6172107
+    },
+    {
+      "archive_member": "host/coupling-w4.json",
+      "artifact_id": 13269084903,
+      "publication_git_blob": "07c6522ca64566ac544e3f72e77b5f6095ec9db2",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w4/host/coupling-w4.json",
+      "sha256": "c664c420189e9246ade19ab24e646c69928e36ca1846c2b40210805600864a3c",
+      "size": 2379
+    },
+    {
+      "archive_member": "host/coupling-w4.log",
+      "artifact_id": 13269084903,
+      "publication_git_blob": "c79b3ad2e8a06c01872fc5233fe131302e0fff9f",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w4/host/coupling-w4.log",
+      "sha256": "8de88e8790d5b058defbad1e6b93c911334d10550971618a41c38e7f411470ac",
+      "size": 2282
+    },
+    {
+      "archive_member": "host/displacement-w4.json",
+      "artifact_id": 13269084903,
+      "publication_git_blob": "d5390ace44464cbf924f6018168bc73b21fa4138",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w4/host/displacement-w4.json",
+      "sha256": "e7bb4d4a6638e4a6468dbab6a5557033d6324b524453ed1e42beab03e141dd1a",
+      "size": 26071
+    },
+    {
+      "archive_member": "host/displacement-w4.log",
+      "artifact_id": 13269084903,
+      "publication_git_blob": "108718e240f4cf174eae5c39b86998028145ffb8",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w4/host/displacement-w4.log",
+      "sha256": "4431a88b4a9d15e849a50ca544a22fdac762f4820509024d073a6d93d0f213fd",
+      "size": 336
+    },
+    {
+      "archive_member": "host/embedded_sand-baseline-w4.json",
+      "artifact_id": 13269084903,
+      "publication_git_blob": "cc1152214e4e716ce529e6e8621ef873ab565104",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w4/host/embedded_sand-baseline-w4.json",
+      "sha256": "00f6b31056b8bd6cd75f5540eefb4c52eba6084bbc129467e2a99288ae931e57",
+      "size": 3181
+    },
+    {
+      "archive_member": "host/embedded_sand-baseline-w4.log",
+      "artifact_id": 13269084903,
+      "publication_git_blob": "ca6c83946f815bf68568d3d85af9a9bffb1c8f6d",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w4/host/embedded_sand-baseline-w4.log",
+      "sha256": "5ed2bb77b9617fd4898e5fc8e88d80d2cf0939798541cbd2f7312db0dcc1d1c7",
+      "size": 2882
+    },
+    {
+      "archive_member": "host/embedded_sand-candidate-w4.json",
+      "artifact_id": 13269084903,
+      "publication_git_blob": "eb7d20fcaaaeedf5684b7e1dbace830bb77d7780",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w4/host/embedded_sand-candidate-w4.json",
+      "sha256": "6ccdd0b78e53f75df16206655d5c93c9872886d90bd0d8f144754dafd3b9a0f2",
+      "size": 3216
+    },
+    {
+      "archive_member": "host/embedded_sand-candidate-w4.log",
+      "artifact_id": 13269084903,
+      "publication_git_blob": "992a3d0e9028f240598d06e8439eb11a160ffc37",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w4/host/embedded_sand-candidate-w4.log",
+      "sha256": "fc77ff365f430973dd51f02e9961e376aab0bbe6514a6c67b90053fec162d403",
+      "size": 2917
+    },
+    {
+      "archive_member": "host/import.log",
+      "artifact_id": 13269084903,
+      "publication_git_blob": "1e65a779c77ab3a41a2e0aa6a127520a858b1f68",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w4/host/import.log",
+      "sha256": "82a265e8d8395148566f66f51856a85eb323fdeb587fc7caaf930f1ff347f1dc",
+      "size": 34786
+    },
+    {
+      "archive_member": "host/inputs-after.json",
+      "artifact_id": 13269084903,
+      "publication_git_blob": "4cd630f984f8674fa2bf52fe6b135f4ea41640cc",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w4/host/inputs-after.json",
+      "sha256": "e259e5812c5570a9f8ee3945ea1fc3453c5cf4593bf95b8cb2b0d44be037371c",
+      "size": 125403
+    },
+    {
+      "archive_member": "host/inputs-before.json",
+      "artifact_id": 13269084903,
+      "publication_git_blob": "4cd630f984f8674fa2bf52fe6b135f4ea41640cc",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w4/host/inputs-before.json",
+      "sha256": "e259e5812c5570a9f8ee3945ea1fc3453c5cf4593bf95b8cb2b0d44be037371c",
+      "size": 125403
+    },
+    {
+      "archive_member": "host/mixed-baseline-w4.json",
+      "artifact_id": 13269084903,
+      "publication_git_blob": "cd96b38d33285fb15ed4aa1a1c8b9c4a96b96bb3",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w4/host/mixed-baseline-w4.json",
+      "sha256": "a397c49dc3b0389412f9481f60d612584e7bebe88ce246ae174977dff1657776",
+      "size": 3171
+    },
+    {
+      "archive_member": "host/mixed-baseline-w4.log",
+      "artifact_id": 13269084903,
+      "publication_git_blob": "1239ef8e7acb6fb1a9572776900434e4335d5bb1",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w4/host/mixed-baseline-w4.log",
+      "sha256": "64a2e59436bff76e95ed64f9bcf3e38d2fb98da907e513930ac097a8d1442d04",
+      "size": 2872
+    },
+    {
+      "archive_member": "host/mixed-candidate-w4.json",
+      "artifact_id": 13269084903,
+      "publication_git_blob": "755b49ed681612abafafc66e625ef3cd1a551e20",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w4/host/mixed-candidate-w4.json",
+      "sha256": "bd187d0573a9c156c9283d3cd413e4e248baf8f6c04deb5a65176eeebefe3fe9",
+      "size": 3211
+    },
+    {
+      "archive_member": "host/mixed-candidate-w4.log",
+      "artifact_id": 13269084903,
+      "publication_git_blob": "61905cb29bbd0012f1459f041b6bcfa2d2bf1e52",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w4/host/mixed-candidate-w4.log",
+      "sha256": "6293564612e845d07a160aff0473bfe12b14a9fceab1ac1f502eafa57600ea67",
+      "size": 2912
+    },
+    {
+      "archive_member": "host/packed_sand-baseline-w4.json",
+      "artifact_id": 13269084903,
+      "publication_git_blob": "6d44089ecc980c4572705615e4f4e7cabb03e12f",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w4/host/packed_sand-baseline-w4.json",
+      "sha256": "a78f41fa3512aeccc5616deec42c55dec5cd83ad976445d6424391324e66d682",
+      "size": 3175
+    },
+    {
+      "archive_member": "host/packed_sand-baseline-w4.log",
+      "artifact_id": 13269084903,
+      "publication_git_blob": "6d262f338587bcb58b0a9870b904d87dc0b17482",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w4/host/packed_sand-baseline-w4.log",
+      "sha256": "a52650353731fab01c812689e5076a891bc5be6bd2b78d570ece8c1488fc7861",
+      "size": 2876
+    },
+    {
+      "archive_member": "host/packed_sand-candidate-w4.json",
+      "artifact_id": 13269084903,
+      "publication_git_blob": "115af08e7011c5b6f9b79fd6f46ab11f5eb75ef3",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w4/host/packed_sand-candidate-w4.json",
+      "sha256": "133a350fea5bd855a166ccf116f8b347ceacc3f064d33f744f1ae5bdc24cd350",
+      "size": 3207
+    },
+    {
+      "archive_member": "host/packed_sand-candidate-w4.log",
+      "artifact_id": 13269084903,
+      "publication_git_blob": "e7e73870d15b5b64eda982d5ad2eb65ecb8a3175",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w4/host/packed_sand-candidate-w4.log",
+      "sha256": "9ece37a009e0eb8e116e1c75b00151af26c818a5839ba57c7350411f1669db84",
+      "size": 2908
+    },
+    {
+      "archive_member": "host/performance.jsonl",
+      "artifact_id": 13269084903,
+      "publication_git_blob": "536ee9fee721690b17233320e2a48bbfc28be461",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w4/host/performance.jsonl",
+      "sha256": "b195e4475105f3b2d324c3f0726ba3eb88c3f2467423c073c6ecb798d4149934",
+      "size": 89301
+    },
+    {
+      "archive_member": "host/report.json",
+      "artifact_id": 13269084903,
+      "publication_git_blob": "1e1d8d5bc6c3423864cd778da1176c676956a7f1",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w4/host/report.json",
+      "sha256": "a627038ebd534707ff061bc559b9579ead2953a86c9019231b51dbc2d2b27db7",
+      "size": 13792648
+    },
+    {
+      "archive_member": "host/terrain-w4.log",
+      "artifact_id": 13269084903,
+      "publication_git_blob": "b64ff052231d263e88efbdf166b935ae60e7593c",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w4/host/terrain-w4.log",
+      "sha256": "6be166216876ca2d4a11df3c76bfd24932baf09d00b63cfc06b651816a99c14f",
+      "size": 3501
+    },
+    {
+      "archive_member": "prepare-rapier/performance.jsonl",
+      "artifact_id": 13269084903,
+      "publication_git_blob": "b7fa8522ba27dc285813de526c3ba72e29ad099a",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w4/prepare-rapier/performance.jsonl",
+      "sha256": "f865351bbe56ab078074d5a0db182f454b9c289b501dee1115a2fd6f6f81afe3",
+      "size": 2733
+    },
+    {
+      "archive_member": "prepare-rapier/receipt.json",
+      "artifact_id": 13269084903,
+      "publication_git_blob": "704b155a04b8132b57d9e9632fc2b011e58509e0",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w4/prepare-rapier/receipt.json",
+      "sha256": "85642df04981103a8f309f8488b5aacb89928993d8501dd503d41b43be5cee11",
+      "size": 2254
+    },
+    {
+      "archive_member": "prepare-rapier/command.log",
+      "artifact_id": 13269084903,
+      "publication_git_blob": "8f3b9c54cfe92c3c999a6da16ece47ae7565c600",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w4/prepare-rapier/command.log",
+      "sha256": "4fea4bc2b3b77e0192bd58ef65c3a0c982ecc7409dbffab6873bb6e04be6a875",
+      "size": 40
+    },
+    {
+      "archive_member": "prepare-engine/command.log",
+      "artifact_id": 13269084903,
+      "publication_git_blob": "7b0dc1183c7bbc1d7da603327fef9b415eb216b5",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w4/prepare-engine/command.log",
+      "sha256": "366148ed9a29c0b53d0e41962e1f0ed2df0f903c3b288846ca64dccab019009d",
+      "size": 476
+    },
+    {
+      "archive_member": "prepare-engine/performance.jsonl",
+      "artifact_id": 13269084903,
+      "publication_git_blob": "516ec31be7545c2061e92b6e737f4995dc2f59d2",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w4/prepare-engine/performance.jsonl",
+      "sha256": "530eac63609dee21498aeff94ceebbbe269f855d50afc0141b28297df8fbee93",
+      "size": 2732
+    },
+    {
+      "archive_member": "prepare-engine/receipt.json",
+      "artifact_id": 13269084903,
+      "publication_git_blob": "6f96e62629fc7acd58308a84da2fbb85485caf60",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w4/prepare-engine/receipt.json",
+      "sha256": "97f0a685d5d558432e1dabcd6902446d3bc6044141fd9a2b866e12b1bdcd4601",
+      "size": 2448
+    },
+    {
+      "archive_member": "host/checkout-inputs-after.json",
+      "artifact_id": 13269324608,
+      "publication_git_blob": "6e3a69bb2089078dbd3f282d93762577c11e3da5",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/core/host/checkout-inputs-after.json",
+      "sha256": "fe3a37345a07238f0d5624e8dd6c64512df5655581384cc2eae00080f2840d76",
+      "size": 125403
+    },
+    {
+      "archive_member": "host/checkout-inputs-before.json",
+      "artifact_id": 13269324608,
+      "publication_git_blob": "6e3a69bb2089078dbd3f282d93762577c11e3da5",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/core/host/checkout-inputs-before.json",
+      "sha256": "fe3a37345a07238f0d5624e8dd6c64512df5655581384cc2eae00080f2840d76",
+      "size": 125403
+    },
+    {
+      "archive_member": "host/compound-response.log",
+      "artifact_id": 13269324608,
+      "publication_git_blob": "a64aca70c7f0f6114049c1b222ce9a8b0c51d6c4",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/core/host/compound-response.log",
+      "sha256": "c7a610a6f67e6301f2fbe9aa7827bbe22c57525b088573cc511706e0dd6af537",
+      "size": 293
+    },
+    {
+      "archive_member": "host/failure-w1.log",
+      "artifact_id": 13269324608,
+      "publication_git_blob": "9881f8ae89839b8e0eb980426da4ff1f3599bb8d",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/core/host/failure-w1.log",
+      "sha256": "203eb5ee1e2033e53dfe29a8a36d3fc0385b2298e9cec7e44c021e848d3646e8",
+      "size": 413
+    },
+    {
+      "archive_member": "host/failure-w4.log",
+      "artifact_id": 13269324608,
+      "publication_git_blob": "be87a67995d922726ca14e675f3a21cece376f77",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/core/host/failure-w4.log",
+      "sha256": "1811a1728119844ac02ca975106e7e3ec309fa3315da37a4e35b6992c9d5ea9a",
+      "size": 413
+    },
+    {
+      "archive_member": "host/import.log",
+      "artifact_id": 13269324608,
+      "publication_git_blob": "1e65a779c77ab3a41a2e0aa6a127520a858b1f68",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/core/host/import.log",
+      "sha256": "82a265e8d8395148566f66f51856a85eb323fdeb587fc7caaf930f1ff347f1dc",
+      "size": 34786
+    },
+    {
+      "archive_member": "host/inputs-after.json",
+      "artifact_id": 13269324608,
+      "publication_git_blob": "4cd630f984f8674fa2bf52fe6b135f4ea41640cc",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/core/host/inputs-after.json",
+      "sha256": "e259e5812c5570a9f8ee3945ea1fc3453c5cf4593bf95b8cb2b0d44be037371c",
+      "size": 125403
+    },
+    {
+      "archive_member": "host/inputs-before.json",
+      "artifact_id": 13269324608,
+      "publication_git_blob": "4cd630f984f8674fa2bf52fe6b135f4ea41640cc",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/core/host/inputs-before.json",
+      "sha256": "e259e5812c5570a9f8ee3945ea1fc3453c5cf4593bf95b8cb2b0d44be037371c",
+      "size": 125403
+    },
+    {
+      "archive_member": "host/lifecycle.log",
+      "artifact_id": 13269324608,
+      "publication_git_blob": "2d35ac0a09f9e07376448224716244e5b29d26b8",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/core/host/lifecycle.log",
+      "sha256": "d5e2dc240cd13633dc3a51459a218e19e1ecaf78f91d1c44e7038aef3533f79d",
+      "size": 422
+    },
+    {
+      "archive_member": "host/material-image.log",
+      "artifact_id": 13269324608,
+      "publication_git_blob": "dc986e4c2e6c2b733d2301bbd7e9e0f060bc826f",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/core/host/material-image.log",
+      "sha256": "af1c47892862e3da708d7c0dad15a136e7ef9370e685ef3f34dca069bd2c3094",
+      "size": 435
+    },
+    {
+      "archive_member": "host/motion-w1.json",
+      "artifact_id": 13269324608,
+      "publication_git_blob": "308440db65e22efc72f282fd7fed241975ffabb1",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/core/host/motion-w1.json",
+      "sha256": "f132094cdd7e30fbc579366627d0c725fa1d2855c54f7414ea7170fbda50864e",
+      "size": 1955
+    },
+    {
+      "archive_member": "host/motion-w1.log",
+      "artifact_id": 13269324608,
+      "publication_git_blob": "2edd820797aff19f2ad1dd600deb65645a416269",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/core/host/motion-w1.log",
+      "sha256": "1f405edc30b08e09cb9694f5ec4e80b9bf545ad90e21010040cb67431c975633",
+      "size": 1825
+    },
+    {
+      "archive_member": "host/motion-w4.json",
+      "artifact_id": 13269324608,
+      "publication_git_blob": "25160ce1975469e19d198cabc0e94f1199ff3a2e",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/core/host/motion-w4.json",
+      "sha256": "199a2190c2f4139389793886fd3c55dbb26b9429ac9b390a5c1b767a488af3bc",
+      "size": 1955
+    },
+    {
+      "archive_member": "host/motion-w4.log",
+      "artifact_id": 13269324608,
+      "publication_git_blob": "a1adb8803e07d28ce12853df00f1efcd0c16d881",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/core/host/motion-w4.log",
+      "sha256": "f9a2d0bfc7a5a4ba3dfc200263986a3b13204b43caaf0204152ad3f20f9e0fda",
+      "size": 1825
+    },
+    {
+      "archive_member": "host/ordinary-capacity.log",
+      "artifact_id": 13269324608,
+      "publication_git_blob": "f85abc4e418ae243d3ba6040cfc6f8d635ba67a2",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/core/host/ordinary-capacity.log",
+      "sha256": "348967c9fdbcf3bfc500ff80a5969fc64894ce072aba2df18109af554f2bc867",
+      "size": 411
+    },
+    {
+      "archive_member": "host/ordinary-failure.log",
+      "artifact_id": 13269324608,
+      "publication_git_blob": "5819e04c7cee8892b01dedd3ce6eef86b184b8c6",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/core/host/ordinary-failure.log",
+      "sha256": "333f1dd618e51df3ae3980d63fad6ef5f995127f08f433800d73d3fbfc891859",
+      "size": 1148
+    },
+    {
+      "archive_member": "host/ordinary-observer.log",
+      "artifact_id": 13269324608,
+      "publication_git_blob": "ab4ae1e839af02fb838d3ab6194d18c6b0fb492c",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/core/host/ordinary-observer.log",
+      "sha256": "c8fb193284d1e4d14eef32071ba747b3fa991ef0c7f7f6f27948bfc683ebdc5e",
+      "size": 296
+    },
+    {
+      "archive_member": "host/ordinary-rapier.log",
+      "artifact_id": 13269324608,
+      "publication_git_blob": "ef8604368588fe89e0ab0ba4672d78842f14b833",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/core/host/ordinary-rapier.log",
+      "sha256": "919623e3c65bf2262b30590338c66087a0522e311e93d6ed64f3c8faaebe9684",
+      "size": 266
+    },
+    {
+      "archive_member": "host/performance.jsonl",
+      "artifact_id": 13269324608,
+      "publication_git_blob": "ded563085804b2401bfe6ec71d4e80d28667c7d0",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/core/host/performance.jsonl",
+      "sha256": "9b70f46f1532f667bc419ab5941496637e04befbce880852a161c70aa8aac0ad",
+      "size": 36652
+    },
+    {
+      "archive_member": "host/report.json",
+      "artifact_id": 13269324608,
+      "publication_git_blob": "a1061210705e0d15dd9b13a2c3d8b2745aa31e5f",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/core/host/report.json",
+      "sha256": "28b1a71acb915f688abde84ef587bbb21cd3fc9d645dfb49ba17077c49105ad9",
+      "size": 40453
+    },
+    {
+      "archive_member": "prepare-rapier/command.log",
+      "artifact_id": 13269324608,
+      "publication_git_blob": "8f3b9c54cfe92c3c999a6da16ece47ae7565c600",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/core/prepare-rapier/command.log",
+      "sha256": "4fea4bc2b3b77e0192bd58ef65c3a0c982ecc7409dbffab6873bb6e04be6a875",
+      "size": 40
+    },
+    {
+      "archive_member": "prepare-rapier/performance.jsonl",
+      "artifact_id": 13269324608,
+      "publication_git_blob": "85161334e8e6819e8437292d89ba9bd38aa82411",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/core/prepare-rapier/performance.jsonl",
+      "sha256": "2254d0ee3bae31565b41906c333c503d0089d231bd739166a270998a696c80c7",
+      "size": 2723
+    },
+    {
+      "archive_member": "prepare-rapier/receipt.json",
+      "artifact_id": 13269324608,
+      "publication_git_blob": "5ae86c9fe764fd7b83a59f12b1ca3d354d41f737",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/core/prepare-rapier/receipt.json",
+      "sha256": "501d95ef711558e76d750eb37f8a6c0c3b7774f8b57262b5f466af8f74bab8e7",
+      "size": 2251
+    },
+    {
+      "archive_member": "prepare-engine/performance.jsonl",
+      "artifact_id": 13269324608,
+      "publication_git_blob": "2fa2002e7d691e34a0d5b4e54dc96f595bd43228",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/core/prepare-engine/performance.jsonl",
+      "sha256": "c2ec3d4bba9d2f14b5b636346993e4e7fca429ce0f82278e612c499f026d3677",
+      "size": 2725
+    },
+    {
+      "archive_member": "prepare-engine/receipt.json",
+      "artifact_id": 13269324608,
+      "publication_git_blob": "6605a4bcbae7083375c0dc3072cf32385fb13a1a",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/core/prepare-engine/receipt.json",
+      "sha256": "3df8bb88fdf91dd0050a74fc122151eb5c67cda382d9007eddc37544fc9074e9",
+      "size": 2448
+    },
+    {
+      "archive_member": "prepare-engine/command.log",
+      "artifact_id": 13269324608,
+      "publication_git_blob": "70713f4e10440a7786026feb936afa3cb47a7408",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/core/prepare-engine/command.log",
+      "sha256": "219019ea4d0d097522d7f61dad207b88265e8e2b487e29423d0208056cc1dfd4",
+      "size": 476
+    },
+    {
+      "archive_member": "host/checkout-inputs-after.json",
+      "artifact_id": 13270540908,
+      "publication_git_blob": "6e3a69bb2089078dbd3f282d93762577c11e3da5",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/mechanism/host/checkout-inputs-after.json",
+      "sha256": "fe3a37345a07238f0d5624e8dd6c64512df5655581384cc2eae00080f2840d76",
+      "size": 125403
+    },
+    {
+      "archive_member": "host/checkout-inputs-before.json",
+      "artifact_id": 13270540908,
+      "publication_git_blob": "6e3a69bb2089078dbd3f282d93762577c11e3da5",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/mechanism/host/checkout-inputs-before.json",
+      "sha256": "fe3a37345a07238f0d5624e8dd6c64512df5655581384cc2eae00080f2840d76",
+      "size": 125403
+    },
+    {
+      "archive_member": "host/import.log",
+      "artifact_id": 13270540908,
+      "publication_git_blob": "1e65a779c77ab3a41a2e0aa6a127520a858b1f68",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/mechanism/host/import.log",
+      "sha256": "82a265e8d8395148566f66f51856a85eb323fdeb587fc7caaf930f1ff347f1dc",
+      "size": 34786
+    },
+    {
+      "archive_member": "host/inputs-after.json",
+      "artifact_id": 13270540908,
+      "publication_git_blob": "4cd630f984f8674fa2bf52fe6b135f4ea41640cc",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/mechanism/host/inputs-after.json",
+      "sha256": "e259e5812c5570a9f8ee3945ea1fc3453c5cf4593bf95b8cb2b0d44be037371c",
+      "size": 125403
+    },
+    {
+      "archive_member": "host/inputs-before.json",
+      "artifact_id": 13270540908,
+      "publication_git_blob": "4cd630f984f8674fa2bf52fe6b135f4ea41640cc",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/mechanism/host/inputs-before.json",
+      "sha256": "e259e5812c5570a9f8ee3945ea1fc3453c5cf4593bf95b8cb2b0d44be037371c",
+      "size": 125403
+    },
+    {
+      "archive_member": "host/performance.jsonl",
+      "artifact_id": 13270540908,
+      "publication_git_blob": "7f35c0f026d1802a192ae6f5b727cc46452f30f2",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/mechanism/host/performance.jsonl",
+      "sha256": "4bcfd579ebb2313c23ec9b54622f5a91b16db297021b40491ebeda45a5f24121",
+      "size": 9089
+    },
+    {
+      "archive_member": "host/report.json",
+      "artifact_id": 13270540908,
+      "publication_git_blob": "2923de24df4cabf447037ec0846d0de215dede33",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/mechanism/host/report.json",
+      "sha256": "2cdc9c7960e6aa7467fa1480af0bc0d1446200156901d912220998063ea3f274",
+      "size": 18476
+    },
+    {
+      "archive_member": "host/sand-contact-fences.log",
+      "artifact_id": 13270540908,
+      "publication_git_blob": "ffeff2cc1daeadfd3f5d8d803613fc3b0c98b42e",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/mechanism/host/sand-contact-fences.log",
+      "sha256": "285031cd66711249af4cedf66f59349c24efe6989ef9ea7aab2b02360539091b",
+      "size": 336
+    },
+    {
+      "archive_member": "host/sand-contact-response.json",
+      "artifact_id": 13270540908,
+      "publication_git_blob": "5cd4a28eadf23e085abd444f160ebd92c98bb0dc",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/mechanism/host/sand-contact-response.json",
+      "sha256": "3a793dbca3551d133bd2dd3cbcda7379a6f30743a49575a998d372ade6b12ef1",
+      "size": 6231
+    },
+    {
+      "archive_member": "host/sand-contact-response.log",
+      "artifact_id": 13270540908,
+      "publication_git_blob": "6356f431a79c574707482bea95ac1715736ff69c",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/mechanism/host/sand-contact-response.log",
+      "sha256": "7efeb47dd55d06c276300898e78dc82270c1daab1a6973d403992e2c870ecb51",
+      "size": 5464
+    },
+    {
+      "archive_member": "prepare-rapier/command.log",
+      "artifact_id": 13270540908,
+      "publication_git_blob": "8f3b9c54cfe92c3c999a6da16ece47ae7565c600",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/mechanism/prepare-rapier/command.log",
+      "sha256": "4fea4bc2b3b77e0192bd58ef65c3a0c982ecc7409dbffab6873bb6e04be6a875",
+      "size": 40
+    },
+    {
+      "archive_member": "prepare-rapier/performance.jsonl",
+      "artifact_id": 13270540908,
+      "publication_git_blob": "2f407d801c80f9ffe644b1be5492c9befefe1844",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/mechanism/prepare-rapier/performance.jsonl",
+      "sha256": "cc5c95ee75250fc8224c9bb46f1d8a8d984ec140051146e4b4b22e9236fe3669",
+      "size": 2732
+    },
+    {
+      "archive_member": "prepare-rapier/receipt.json",
+      "artifact_id": 13270540908,
+      "publication_git_blob": "1c69ea2f98bc086aff218ef1195cd18f5b65dd6b",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/mechanism/prepare-rapier/receipt.json",
+      "sha256": "e4bd8e2b8f1f4ecf6763cb9692cf868db9fac9585bfa8aba96356ced9123c307",
+      "size": 2253
+    },
+    {
+      "archive_member": "prepare-engine/command.log",
+      "artifact_id": 13270540908,
+      "publication_git_blob": "2c9d9c41ed04bc037f760b682a6dd3314bfe61ef",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/mechanism/prepare-engine/command.log",
+      "sha256": "631dd47d2dcb4066ef235da7f2d8fb9f05aab1fe565f2d03a1a9934c56bb4712",
+      "size": 476
+    },
+    {
+      "archive_member": "prepare-engine/performance.jsonl",
+      "artifact_id": 13270540908,
+      "publication_git_blob": "f06446ece04ff32bdceacb8f26fa815d045494c8",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/mechanism/prepare-engine/performance.jsonl",
+      "sha256": "0a300f2ee542f89edd2f3ca3e549c4cce1b2f4084770c71f73514df73d796293",
+      "size": 2732
+    },
+    {
+      "archive_member": "prepare-engine/receipt.json",
+      "artifact_id": 13270540908,
+      "publication_git_blob": "ef81e5d2975cd8976730a7070521a3ad9d27681a",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/mechanism/prepare-engine/receipt.json",
+      "sha256": "1c939e2075991435c2525730e3f272b90817e1a4524b72a9c731851bd943f09f",
+      "size": 2448
+    },
+    {
+      "archive_member": "checkout-inputs-after.json",
+      "artifact_id": 13269223208,
+      "publication_git_blob": "bc3ed787506cfcf607a11835ae237bbdbff271b1",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w1/checkout-inputs-after.json",
+      "sha256": "7e7a482e7e1d26e8792964e2b9e4cee5bd6f0a12426833fa1197ccdb89fd0c70",
+      "size": 126482
+    },
+    {
+      "archive_member": "checkout-inputs-before.json",
+      "artifact_id": 13269223208,
+      "publication_git_blob": "bc3ed787506cfcf607a11835ae237bbdbff271b1",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w1/checkout-inputs-before.json",
+      "sha256": "7e7a482e7e1d26e8792964e2b9e4cee5bd6f0a12426833fa1197ccdb89fd0c70",
+      "size": 126482
+    },
+    {
+      "archive_member": "contact-observation-w1.json",
+      "artifact_id": 13269223208,
+      "publication_git_blob": "be49295c01b8fb37ea41fd2586f9000ba5d62c79",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w1/contact-observation-w1.json",
+      "sha256": "e7888fb5deeb68be128fda152f235daeab8a868821460160fa89450f8e892516",
+      "size": 724
+    },
+    {
+      "archive_member": "contact-observation-w1.log",
+      "artifact_id": 13269223208,
+      "publication_git_blob": "0015858e15f4e2f9cc4f58046b717a8cf2875b74",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w1/contact-observation-w1.log",
+      "sha256": "52793cfc0c63b20072ec1f60f489a786979bfc29fec8e69df1187ded517a72a2",
+      "size": 860
+    },
+    {
+      "archive_member": "contact-recovery-w1.json",
+      "artifact_id": 13269223208,
+      "publication_git_blob": "69f4eae19238057519e00e20a098c8783f76f6ba",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w1/contact-recovery-w1.json",
+      "sha256": "3561b08b8582604925ab6e414f8d3a3e480a42fc4a4242e61c7aa5e9943f8100",
+      "size": 8210083
+    },
+    {
+      "archive_member": "coupling-w1.json",
+      "artifact_id": 13269223208,
+      "publication_git_blob": "a76990265397eb46bd99377e587874dfb22b4aca",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w1/coupling-w1.json",
+      "sha256": "9d932737e0c140398ea82829cf5f8992f135a5e62824e3725eae930eabe04765",
+      "size": 2374
+    },
+    {
+      "archive_member": "coupling-w1.log",
+      "artifact_id": 13269223208,
+      "publication_git_blob": "ac481036616971a46b69a6794e67fdbf2683a342",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w1/coupling-w1.log",
+      "sha256": "82239a0469138692052087778c2c66abeca15b6325fd0c2358e1814d318b9ce3",
+      "size": 2281
+    },
+    {
+      "archive_member": "contact-recovery-w1.log",
+      "artifact_id": 13269223208,
+      "publication_git_blob": "38e5f5150bd1d269064c1701fb38e00608655d0b",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w1/contact-recovery-w1.log",
+      "sha256": "f1c3d19f607ac44f8275a52815316e984f3d59bce0fd314e8db0b0c69a75941b",
+      "size": 5566878
+    },
+    {
+      "archive_member": "displacement-w1.json",
+      "artifact_id": 13269223208,
+      "publication_git_blob": "f52cd584b4db80107ae325af4af9909feceefcd8",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w1/displacement-w1.json",
+      "sha256": "085ae2e2e0e77022ef3923cad6cdbfe5b5d6055c62b0db87ca21093d6673279a",
+      "size": 26073
+    },
+    {
+      "archive_member": "displacement-w1.log",
+      "artifact_id": 13269223208,
+      "publication_git_blob": "08eff3d1bc4a48cfd4ab40def74f2a4d586426cb",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w1/displacement-w1.log",
+      "sha256": "f1ab7e910fbd13e03b6d220c3e950e8f6a44d077beee8f00c6e8e6c53997fd85",
+      "size": 342
+    },
+    {
+      "archive_member": "embedded_sand-baseline-w1.json",
+      "artifact_id": 13269223208,
+      "publication_git_blob": "7a7a8efdaeffd47a1cd327a7706a6cf4525114df",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w1/embedded_sand-baseline-w1.json",
+      "sha256": "301f97fd50da8c860165800353a46a0bd03a62124ad36d8f92cc8bcae2d2200d",
+      "size": 3164
+    },
+    {
+      "archive_member": "embedded_sand-baseline-w1.log",
+      "artifact_id": 13269223208,
+      "publication_git_blob": "a8f20564b54f2bc3f44a8c48dd3cd38904d6594e",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w1/embedded_sand-baseline-w1.log",
+      "sha256": "d078469978ff04267f4a6bcead93c28f1c7f08b4dca1979a2a55db3d100a96dc",
+      "size": 2869
+    },
+    {
+      "archive_member": "embedded_sand-candidate-w1.json",
+      "artifact_id": 13269223208,
+      "publication_git_blob": "a56adad0c003e658de6155ea7993423624b0f30b",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w1/embedded_sand-candidate-w1.json",
+      "sha256": "8338021133da59defdb18d17000fffe3d6eabdd7d314f7f18c751e031083c52d",
+      "size": 3210
+    },
+    {
+      "archive_member": "embedded_sand-candidate-w1.log",
+      "artifact_id": 13269223208,
+      "publication_git_blob": "63ec397035e6ec882a43c3bc3d473b2cf518395d",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w1/embedded_sand-candidate-w1.log",
+      "sha256": "755f2fcc430eead6d13dc685762d2dc1a3c4e016e5f885bb4b807c7c94860ac2",
+      "size": 2915
+    },
+    {
+      "archive_member": "import.log",
+      "artifact_id": 13269223208,
+      "publication_git_blob": "db0b680040434926b03da042524e3f733aa6fd16",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w1/import.log",
+      "sha256": "414151532e90742107fbce802ad29f44e8a8ace7fd1f91310c79546ec24bd731",
+      "size": 35335
+    },
+    {
+      "archive_member": "inputs-after.json",
+      "artifact_id": 13269223208,
+      "publication_git_blob": "5a9c9e572dc21cabe9f3b25075b687b6299c4e77",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w1/inputs-after.json",
+      "sha256": "d555dea04338e9cbbe2c4543969b5862a68922ca7603c4c66401f34bd66b4264",
+      "size": 126482
+    },
+    {
+      "archive_member": "inputs-before.json",
+      "artifact_id": 13269223208,
+      "publication_git_blob": "5a9c9e572dc21cabe9f3b25075b687b6299c4e77",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w1/inputs-before.json",
+      "sha256": "d555dea04338e9cbbe2c4543969b5862a68922ca7603c4c66401f34bd66b4264",
+      "size": 126482
+    },
+    {
+      "archive_member": "mixed-baseline-w1.json",
+      "artifact_id": 13269223208,
+      "publication_git_blob": "652ba360623321dfdf56841a8c35241101967613",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w1/mixed-baseline-w1.json",
+      "sha256": "9025a96604174bb48f685068d7f5127dc2e717953e029389a7b7b334dc9af163",
+      "size": 3172
+    },
+    {
+      "archive_member": "mixed-baseline-w1.log",
+      "artifact_id": 13269223208,
+      "publication_git_blob": "1816146221e1a257662a3f09a0a9ccde6e1679f5",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w1/mixed-baseline-w1.log",
+      "sha256": "e530b4724a32a5fd7431771eb455b7ba82933dc2fa7213aca46fd1e138a95e36",
+      "size": 2877
+    },
+    {
+      "archive_member": "mixed-candidate-w1.log",
+      "artifact_id": 13269223208,
+      "publication_git_blob": "5af0eb8e91ce135fecf4efd76919e80d72be621f",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w1/mixed-candidate-w1.log",
+      "sha256": "234594b5821d033ebef7d94cefaf9578bee59c5125f33ad5f9979d0a52a8c7d0",
+      "size": 2902
+    },
+    {
+      "archive_member": "packed_sand-baseline-w1.json",
+      "artifact_id": 13269223208,
+      "publication_git_blob": "e8577d4d46604a4a161b2b2deb77e9ceac9abd8c",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w1/packed_sand-baseline-w1.json",
+      "sha256": "69cabb2dd4f4819abbd39b581b7ffa5d50f286c54f5181d5f974e21f703041a0",
+      "size": 3163
+    },
+    {
+      "archive_member": "packed_sand-baseline-w1.log",
+      "artifact_id": 13269223208,
+      "publication_git_blob": "c9ef41471ba49647c29ab60540efc5ab8adf2fac",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w1/packed_sand-baseline-w1.log",
+      "sha256": "836ace23643e61cf5feffdf7870a368020875c13743085ef47255d36a6052d5f",
+      "size": 2868
+    },
+    {
+      "archive_member": "mixed-candidate-w1.json",
+      "artifact_id": 13269223208,
+      "publication_git_blob": "e74fc40ba0469fc61f6994ddba02c77969164ad7",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w1/mixed-candidate-w1.json",
+      "sha256": "66136d1fdc5d7cc812efb2c8b14b935ec5c8fedc1b9a47fbd5b1e91e17ee631c",
+      "size": 3197
+    },
+    {
+      "archive_member": "packed_sand-candidate-w1.log",
+      "artifact_id": 13269223208,
+      "publication_git_blob": "3dca99de36e10238900fe6503ed6d1f46ba1f7a6",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w1/packed_sand-candidate-w1.log",
+      "sha256": "7d5e1edcf46e7cf7244a6fe2d7ef6abd20d0a43939576ad51d9fde2e627315d7",
+      "size": 2908
+    },
+    {
+      "archive_member": "performance.jsonl",
+      "artifact_id": 13269223208,
+      "publication_git_blob": "d1606e288342c7f30be333c2fa7f94a04e75bb1c",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w1/performance.jsonl",
+      "sha256": "8ca8d2b598879e58e7f5035311cdeb086b7f2a60d88b5e263999ea32cf46449a",
+      "size": 87924
+    },
+    {
+      "archive_member": "report.json",
+      "artifact_id": 13269223208,
+      "publication_git_blob": "4640ca2f77f853ae30bc18e662435ef42fd3af4e",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w1/report.json",
+      "sha256": "c2b1228d4222623b5eb4f088546f23755e54b0020ab597aab84a3e5dea1fce34",
+      "size": 12730469
+    },
+    {
+      "archive_member": "terrain-w1.log",
+      "artifact_id": 13269223208,
+      "publication_git_blob": "ae1c1d413f9acadde09d6607fb91c8576c11383c",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w1/terrain-w1.log",
+      "sha256": "506e00676a61387a65ba74095c34ce8086d99b36a5ea0cb6dbda5eabca0285be",
+      "size": 3508
+    },
+    {
+      "archive_member": "packed_sand-candidate-w1.json",
+      "artifact_id": 13269223208,
+      "publication_git_blob": "f767d2742f04c372b803ed50c95e327739297929",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w1/packed_sand-candidate-w1.json",
+      "sha256": "5bc66e648ec6de3d87bea54b74468e410eb0c5f4cab6ab042b6a8840a817e3e1",
+      "size": 3203
+    },
+    {
+      "archive_member": "checkout-inputs-after.json",
+      "artifact_id": 13268814828,
+      "publication_git_blob": "bc3ed787506cfcf607a11835ae237bbdbff271b1",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w4/checkout-inputs-after.json",
+      "sha256": "7e7a482e7e1d26e8792964e2b9e4cee5bd6f0a12426833fa1197ccdb89fd0c70",
+      "size": 126482
+    },
+    {
+      "archive_member": "checkout-inputs-before.json",
+      "artifact_id": 13268814828,
+      "publication_git_blob": "bc3ed787506cfcf607a11835ae237bbdbff271b1",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w4/checkout-inputs-before.json",
+      "sha256": "7e7a482e7e1d26e8792964e2b9e4cee5bd6f0a12426833fa1197ccdb89fd0c70",
+      "size": 126482
+    },
+    {
+      "archive_member": "contact-observation-w4.json",
+      "artifact_id": 13268814828,
+      "publication_git_blob": "c9d04accf56128846485c09594b5b296c081a40b",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w4/contact-observation-w4.json",
+      "sha256": "dd0e238914a3ef881d4e94bc376b32c855e874e32a83b805ecd0a15f26f3dfec",
+      "size": 724
+    },
+    {
+      "archive_member": "contact-observation-w4.log",
+      "artifact_id": 13268814828,
+      "publication_git_blob": "c8477d5a30323dc07f79dcfee537d885d9ba9ab8",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w4/contact-observation-w4.log",
+      "sha256": "b4099aa8bc1317444004c78ad06939048eacfd852c3f7d23d95e64a024bd5bc7",
+      "size": 860
+    },
+    {
+      "archive_member": "contact-recovery-w4.json",
+      "artifact_id": 13268814828,
+      "publication_git_blob": "117000499fcc79f3481e4916f2110dae1007ce46",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w4/contact-recovery-w4.json",
+      "sha256": "4ea9e6d845659df7ceecd9880e35c3834f23406e5f3a7b33b5afdbf6f0f66494",
+      "size": 8880925
+    },
+    {
+      "archive_member": "contact-recovery-w4.log",
+      "artifact_id": 13268814828,
+      "publication_git_blob": "6cc2bb26a2789d4b3196c3864e35f5c41d7dd5f8",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w4/contact-recovery-w4.log",
+      "sha256": "712207d8347a72ace5794524de71ddfaa483db6379fb74e0bb6052914f086632",
+      "size": 6009413
+    },
+    {
+      "archive_member": "coupling-w4.json",
+      "artifact_id": 13268814828,
+      "publication_git_blob": "ec36eeaeb7a1c436a84ee67a43fa95594477d9ba",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w4/coupling-w4.json",
+      "sha256": "5aaf8b9af3f555ea7773997fe582f2bd146841765da18a9f7d5dd3d65cce37c9",
+      "size": 2367
+    },
+    {
+      "archive_member": "coupling-w4.log",
+      "artifact_id": 13268814828,
+      "publication_git_blob": "7fa63c91fd5fe70e16c0f74d336cba426ff30208",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w4/coupling-w4.log",
+      "sha256": "bc73ddd22d9dc8d4b1a12586bf6b508f68a3184146ab41c7e17c9b06a5217680",
+      "size": 2274
+    },
+    {
+      "archive_member": "displacement-w4.json",
+      "artifact_id": 13268814828,
+      "publication_git_blob": "2d26be347d8fb460f190298839a0487feb913562",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w4/displacement-w4.json",
+      "sha256": "324e9f37e82b9c670dc8bee9fcc8d4636ebb3abaaf8b7c9e30d296593142dd5d",
+      "size": 26073
+    },
+    {
+      "archive_member": "displacement-w4.log",
+      "artifact_id": 13268814828,
+      "publication_git_blob": "5d7e9dedaf6a8687909b4423d8ce3b0c4344c02e",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w4/displacement-w4.log",
+      "sha256": "f63dc1ee0c12c019c3d4017ec51d1a507a102360e2a26b2a447ad3c1c64bdb1b",
+      "size": 342
+    },
+    {
+      "archive_member": "embedded_sand-baseline-w4.json",
+      "artifact_id": 13268814828,
+      "publication_git_blob": "6d0f5f97cc048a0e1198535d053e9166a0dea7bb",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w4/embedded_sand-baseline-w4.json",
+      "sha256": "9f297ad357c66956589f4ff36fa8fccf1c64af71260265f7e29e2865e4ce60d6",
+      "size": 3166
+    },
+    {
+      "archive_member": "embedded_sand-baseline-w4.log",
+      "artifact_id": 13268814828,
+      "publication_git_blob": "e2f7f0cf789f6abdad31b589c6fa95fc20c8ee10",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w4/embedded_sand-baseline-w4.log",
+      "sha256": "03e3bbff95a9e885ad1cf918aa46b06a1689a1cb9d6a2d5ca8ea26b035ab37c2",
+      "size": 2871
+    },
+    {
+      "archive_member": "embedded_sand-candidate-w4.json",
+      "artifact_id": 13268814828,
+      "publication_git_blob": "6bf5826a16c1f8ce853048a43a5c2a9f95756594",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w4/embedded_sand-candidate-w4.json",
+      "sha256": "f03520124fbbf33b2f0559f37566a4c9db69fc12245b300d96a099f8a5aa78bf",
+      "size": 3218
+    },
+    {
+      "archive_member": "embedded_sand-candidate-w4.log",
+      "artifact_id": 13268814828,
+      "publication_git_blob": "a61b8c74d9ef8935671016c1dd2023978c3073c5",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w4/embedded_sand-candidate-w4.log",
+      "sha256": "67076f917044ddec57e8f7e1108ea57074f275d2775f435511af0201a30f6856",
+      "size": 2923
+    },
+    {
+      "archive_member": "import.log",
+      "artifact_id": 13268814828,
+      "publication_git_blob": "db0b680040434926b03da042524e3f733aa6fd16",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w4/import.log",
+      "sha256": "414151532e90742107fbce802ad29f44e8a8ace7fd1f91310c79546ec24bd731",
+      "size": 35335
+    },
+    {
+      "archive_member": "inputs-after.json",
+      "artifact_id": 13268814828,
+      "publication_git_blob": "5a9c9e572dc21cabe9f3b25075b687b6299c4e77",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w4/inputs-after.json",
+      "sha256": "d555dea04338e9cbbe2c4543969b5862a68922ca7603c4c66401f34bd66b4264",
+      "size": 126482
+    },
+    {
+      "archive_member": "inputs-before.json",
+      "artifact_id": 13268814828,
+      "publication_git_blob": "5a9c9e572dc21cabe9f3b25075b687b6299c4e77",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w4/inputs-before.json",
+      "sha256": "d555dea04338e9cbbe2c4543969b5862a68922ca7603c4c66401f34bd66b4264",
+      "size": 126482
+    },
+    {
+      "archive_member": "mixed-baseline-w4.json",
+      "artifact_id": 13268814828,
+      "publication_git_blob": "1d1eee8af119ccf042cc1df87b55e9fc101ba2ef",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w4/mixed-baseline-w4.json",
+      "sha256": "8196e51a0ed279f5262ba642f4074788e6c726c6c41490d2b2508a3e4a7d1098",
+      "size": 3173
+    },
+    {
+      "archive_member": "mixed-baseline-w4.log",
+      "artifact_id": 13268814828,
+      "publication_git_blob": "84a7fb719c219db58517c1d45f1b45d661ea697c",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w4/mixed-baseline-w4.log",
+      "sha256": "bce400a6e4bf03cd26dacc70e1da128fb5037a12b0671d2666b0f2153e1fe3d9",
+      "size": 2878
+    },
+    {
+      "archive_member": "mixed-candidate-w4.json",
+      "artifact_id": 13268814828,
+      "publication_git_blob": "5696a0419d0f9a62d4433537f1e1dc49dafbcbb1",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w4/mixed-candidate-w4.json",
+      "sha256": "b7ead41c80bf5f5a0be88695a58e7f9936f481ce0a57228e786ae498048447ab",
+      "size": 3210
+    },
+    {
+      "archive_member": "mixed-candidate-w4.log",
+      "artifact_id": 13268814828,
+      "publication_git_blob": "ede76e5e293c19b143aac4872307f96c52378719",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w4/mixed-candidate-w4.log",
+      "sha256": "d7d097cb2216047179abb4042f59180bf622261adee7341516aa999f483b624a",
+      "size": 2915
+    },
+    {
+      "archive_member": "packed_sand-baseline-w4.json",
+      "artifact_id": 13268814828,
+      "publication_git_blob": "98a04e074b2ffacac1045b02a2cdde038eb6af51",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w4/packed_sand-baseline-w4.json",
+      "sha256": "245a90c1bbe39fe00ac9a8c9fe5c1a6397282576584a895166f2726b93d45fc3",
+      "size": 3180
+    },
+    {
+      "archive_member": "packed_sand-baseline-w4.log",
+      "artifact_id": 13268814828,
+      "publication_git_blob": "af95da3031497fddc9b998ff889d48f78868f59c",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w4/packed_sand-baseline-w4.log",
+      "sha256": "2fc100d143a6f73b325c8d18c874c5a41a763eb97f64a0f70270edcced250cb3",
+      "size": 2885
+    },
+    {
+      "archive_member": "packed_sand-candidate-w4.json",
+      "artifact_id": 13268814828,
+      "publication_git_blob": "f6a6b2648423da246d9543a22746b93bee2312e3",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w4/packed_sand-candidate-w4.json",
+      "sha256": "aa35aaa8edce2f32dc5a250447200e7840d1ac9d92841486ec9b2bb7c6418eac",
+      "size": 3198
+    },
+    {
+      "archive_member": "packed_sand-candidate-w4.log",
+      "artifact_id": 13268814828,
+      "publication_git_blob": "80096871db6c901500529a5080e762ab3969879a",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w4/packed_sand-candidate-w4.log",
+      "sha256": "4782e6dc0f68007d60c338515a42e910aaa8c381b04b59f4255c4faa6fc452cd",
+      "size": 2903
+    },
+    {
+      "archive_member": "performance.jsonl",
+      "artifact_id": 13268814828,
+      "publication_git_blob": "4edaa8d97472361d8913dd3d476c844da07c3049",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w4/performance.jsonl",
+      "sha256": "c7e1688478f8524b14b826b054f907be5446471ec9f7ad0b170c1e6b83d1fd8c",
+      "size": 87950
+    },
+    {
+      "archive_member": "report.json",
+      "artifact_id": 13268814828,
+      "publication_git_blob": "24b1b33e2fd0df3f4271d75bb38dd675008eb501",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w4/report.json",
+      "sha256": "212413bc3b1183c0aa9fe11d45b2da0f700cbdc36a668242548052c03568b208",
+      "size": 13785529
+    },
+    {
+      "archive_member": "terrain-w4.log",
+      "artifact_id": 13268814828,
+      "publication_git_blob": "fc5341d67ad56a81262c8138fba60f8139daa236",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/contact-w4/terrain-w4.log",
+      "sha256": "4793da169fce7e3f7d9f9a6478826c47224e21fe02de5028c4cddfe4c9db9211",
+      "size": 3510
+    },
+    {
+      "archive_member": "checkout-inputs-before.json",
+      "artifact_id": 13269024879,
+      "publication_git_blob": "bc3ed787506cfcf607a11835ae237bbdbff271b1",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/core/checkout-inputs-before.json",
+      "sha256": "7e7a482e7e1d26e8792964e2b9e4cee5bd6f0a12426833fa1197ccdb89fd0c70",
+      "size": 126482
+    },
+    {
+      "archive_member": "checkout-inputs-after.json",
+      "artifact_id": 13269024879,
+      "publication_git_blob": "bc3ed787506cfcf607a11835ae237bbdbff271b1",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/core/checkout-inputs-after.json",
+      "sha256": "7e7a482e7e1d26e8792964e2b9e4cee5bd6f0a12426833fa1197ccdb89fd0c70",
+      "size": 126482
+    },
+    {
+      "archive_member": "failure-w1.log",
+      "artifact_id": 13269024879,
+      "publication_git_blob": "37e57fba5d3f555efea9c1da7d8614ca00a49d12",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/core/failure-w1.log",
+      "sha256": "f72c1fa5ab5dd35e702dd5cea21cbf3002febe41ef6a806fca6e22d54e7a515b",
+      "size": 419
+    },
+    {
+      "archive_member": "compound-response.log",
+      "artifact_id": 13269024879,
+      "publication_git_blob": "ef941c1ca1a8093da5cce0e66923f15d6fb50feb",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/core/compound-response.log",
+      "sha256": "04629217945cada8d57bcf8352c42d670b35b7a79725f8ae9bd71967f0e9f6cd",
+      "size": 299
+    },
+    {
+      "archive_member": "failure-w4.log",
+      "artifact_id": 13269024879,
+      "publication_git_blob": "5d0dedcc6f3a4b9b0db7b8dbd65a13afc9ff60cb",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/core/failure-w4.log",
+      "sha256": "db6114d84161a641db5ca2184e0b1ee6ccb6ec3e7affb77ec28959f778749cd8",
+      "size": 419
+    },
+    {
+      "archive_member": "import.log",
+      "artifact_id": 13269024879,
+      "publication_git_blob": "db0b680040434926b03da042524e3f733aa6fd16",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/core/import.log",
+      "sha256": "414151532e90742107fbce802ad29f44e8a8ace7fd1f91310c79546ec24bd731",
+      "size": 35335
+    },
+    {
+      "archive_member": "inputs-before.json",
+      "artifact_id": 13269024879,
+      "publication_git_blob": "5a9c9e572dc21cabe9f3b25075b687b6299c4e77",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/core/inputs-before.json",
+      "sha256": "d555dea04338e9cbbe2c4543969b5862a68922ca7603c4c66401f34bd66b4264",
+      "size": 126482
+    },
+    {
+      "archive_member": "inputs-after.json",
+      "artifact_id": 13269024879,
+      "publication_git_blob": "5a9c9e572dc21cabe9f3b25075b687b6299c4e77",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/core/inputs-after.json",
+      "sha256": "d555dea04338e9cbbe2c4543969b5862a68922ca7603c4c66401f34bd66b4264",
+      "size": 126482
+    },
+    {
+      "archive_member": "lifecycle.log",
+      "artifact_id": 13269024879,
+      "publication_git_blob": "8a3eb51acc2d657c4b767da71c755325c3561f35",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/core/lifecycle.log",
+      "sha256": "72fbd55f39162519ad2bfb356210eaf2778965cfb67f7aa72e86ed3e5d99708b",
+      "size": 428
+    },
+    {
+      "archive_member": "material-image.log",
+      "artifact_id": 13269024879,
+      "publication_git_blob": "8bd4db3912c22ca18af7be760114dbf771a312c8",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/core/material-image.log",
+      "sha256": "e53e187224d88518c6f6fcd03a5e7ce66b163848e7822191203575708c5542ac",
+      "size": 441
+    },
+    {
+      "archive_member": "motion-w1.json",
+      "artifact_id": 13269024879,
+      "publication_git_blob": "122b96d672e718e94eb736183e692528f79014b0",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/core/motion-w1.json",
+      "sha256": "b4566a77038755aa1d01c7eff9f17e9883c6ed4571c251f16b93d30bec476303",
+      "size": 1957
+    },
+    {
+      "archive_member": "motion-w1.log",
+      "artifact_id": 13269024879,
+      "publication_git_blob": "d7f23614b3f7a4b4503219d9cf9d6f4edf6bd46b",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/core/motion-w1.log",
+      "sha256": "e7094035eb96f7d0f5fe13a2473bd803fce58dbb972fda5a3f7cd82de241102d",
+      "size": 1831
+    },
+    {
+      "archive_member": "motion-w4.json",
+      "artifact_id": 13269024879,
+      "publication_git_blob": "b443ea0c15186027c2f596e775c0abfd61e99f37",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/core/motion-w4.json",
+      "sha256": "4a521f581ed73227a7da12652e7e2e6a42be95cd1eb8daa3f5bffec8bd2c977a",
+      "size": 1957
+    },
+    {
+      "archive_member": "motion-w4.log",
+      "artifact_id": 13269024879,
+      "publication_git_blob": "f2e4eca9e8370961f1f4b78cda2ad0d6d6f5f0f1",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/core/motion-w4.log",
+      "sha256": "6b106ebb4bad8b5c4be4c93d07bacc2a6eda9eeaf87bad1222519017294209c4",
+      "size": 1831
+    },
+    {
+      "archive_member": "ordinary-capacity.log",
+      "artifact_id": 13269024879,
+      "publication_git_blob": "f6f1ad5f3cd5b3bb926447d61a0f9a34b33df2b0",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/core/ordinary-capacity.log",
+      "sha256": "bdc11569c0cd527546b01aa400703b2fde723f1a68e98810da0c1c0461cd231a",
+      "size": 417
+    },
+    {
+      "archive_member": "ordinary-observer.log",
+      "artifact_id": 13269024879,
+      "publication_git_blob": "0400cf5c05a10bf2ad727a2d3ef56b254c161705",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/core/ordinary-observer.log",
+      "sha256": "d6a816703db80a04567ddd522d21c3d9371b5beb3049313c2831f8c8646e7738",
+      "size": 300
+    },
+    {
+      "archive_member": "ordinary-failure.log",
+      "artifact_id": 13269024879,
+      "publication_git_blob": "d2df59248366f01a2af335b645769a4e2c8262e4",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/core/ordinary-failure.log",
+      "sha256": "9dfae6c21c7e673c0920911c53058e96cde3505a749917d503efef0af6e87fa2",
+      "size": 1161
+    },
+    {
+      "archive_member": "ordinary-rapier.log",
+      "artifact_id": 13269024879,
+      "publication_git_blob": "55e646f89473b00932acc990d5f1a1017f88d22f",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/core/ordinary-rapier.log",
+      "sha256": "2543f4f43dac52aaabb314d376995262a03a2623753148ea8775d2e0c2dd4cf4",
+      "size": 270
+    },
+    {
+      "archive_member": "performance.jsonl",
+      "artifact_id": 13269024879,
+      "publication_git_blob": "d67991a1b3f1bc4061d575e043a2c6182c5217ec",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/core/performance.jsonl",
+      "sha256": "ed5b017dcacc65a7ae56b161063ce3f35184003be7f8ff44e46a348ee3e5e8bd",
+      "size": 35766
+    },
+    {
+      "archive_member": "report.json",
+      "artifact_id": 13269024879,
+      "publication_git_blob": "4be71ae1e437f3fcc6093bb08cb11d6d7edea9c0",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/core/report.json",
+      "sha256": "67b50b2a0bc2bf85bfcee159725360db05de092a952708ea5e8ed9ba75d63195",
+      "size": 40851
+    },
+    {
+      "archive_member": "import.log",
+      "artifact_id": 13269299992,
+      "publication_git_blob": "db0b680040434926b03da042524e3f733aa6fd16",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/mechanism/import.log",
+      "sha256": "414151532e90742107fbce802ad29f44e8a8ace7fd1f91310c79546ec24bd731",
+      "size": 35335
+    },
+    {
+      "archive_member": "checkout-inputs-before.json",
+      "artifact_id": 13269299992,
+      "publication_git_blob": "bc3ed787506cfcf607a11835ae237bbdbff271b1",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/mechanism/checkout-inputs-before.json",
+      "sha256": "7e7a482e7e1d26e8792964e2b9e4cee5bd6f0a12426833fa1197ccdb89fd0c70",
+      "size": 126482
+    },
+    {
+      "archive_member": "checkout-inputs-after.json",
+      "artifact_id": 13269299992,
+      "publication_git_blob": "bc3ed787506cfcf607a11835ae237bbdbff271b1",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/mechanism/checkout-inputs-after.json",
+      "sha256": "7e7a482e7e1d26e8792964e2b9e4cee5bd6f0a12426833fa1197ccdb89fd0c70",
+      "size": 126482
+    },
+    {
+      "archive_member": "inputs-after.json",
+      "artifact_id": 13269299992,
+      "publication_git_blob": "5a9c9e572dc21cabe9f3b25075b687b6299c4e77",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/mechanism/inputs-after.json",
+      "sha256": "d555dea04338e9cbbe2c4543969b5862a68922ca7603c4c66401f34bd66b4264",
+      "size": 126482
+    },
+    {
+      "archive_member": "inputs-before.json",
+      "artifact_id": 13269299992,
+      "publication_git_blob": "5a9c9e572dc21cabe9f3b25075b687b6299c4e77",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/mechanism/inputs-before.json",
+      "sha256": "d555dea04338e9cbbe2c4543969b5862a68922ca7603c4c66401f34bd66b4264",
+      "size": 126482
+    },
+    {
+      "archive_member": "performance.jsonl",
+      "artifact_id": 13269299992,
+      "publication_git_blob": "6b6f026b745e627f4888d63825bbdab050c055c5",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/mechanism/performance.jsonl",
+      "sha256": "a798b1ec53170f3495bcba756bf9ce50c5f6bf1b511b4b8f883b67d7f9b74c1d",
+      "size": 8845
+    },
+    {
+      "archive_member": "report.json",
+      "artifact_id": 13269299992,
+      "publication_git_blob": "d9f8ed743f6bbba9e1d5f358f531ff23fdc94de4",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/mechanism/report.json",
+      "sha256": "2bd39a009660f15f1f9c0900d34151fcbc3cf29b4accca8df5a7c319d139c2e2",
+      "size": 18925
+    },
+    {
+      "archive_member": "sand-contact-fences.log",
+      "artifact_id": 13269299992,
+      "publication_git_blob": "6241a6fe4640ed1537820521a75484a766133969",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/mechanism/sand-contact-fences.log",
+      "sha256": "064fb5c31717c9ff1adb98004cd2451f9b04908b2c42eb9d76bcf71188f919a6",
+      "size": 342
+    },
+    {
+      "archive_member": "sand-contact-response.json",
+      "artifact_id": 13269299992,
+      "publication_git_blob": "ceccd5ff11fb6193b818a155328149d0dbc67acb",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/mechanism/sand-contact-response.json",
+      "sha256": "3d0f92689c00f468b73bd041466be0fe92b8a10ff0dad1b6b8e48b9431dac050",
+      "size": 6233
+    },
+    {
+      "archive_member": "sand-contact-response.log",
+      "artifact_id": 13269299992,
+      "publication_git_blob": "622965f494b47604bc1c7a37334ee0a28581105c",
+      "published_path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/windows/mechanism/sand-contact-response.log",
+      "sha256": "712f00e02390d48ce27b2bede6f1d07d90dcf9720b1eb72bf3e3c41b92fe618b",
+      "size": 5470
+    }
+  ],
+  "publication_commit": "3ac7701f013452c94a8c08b0746e1b13523e7234",
+  "run_id": "41713932288",
+  "source": {
+    "sha": "5944c13079356fedf96da78c78e83b3898379fee",
+    "tree": "ff889678e5ef24cf7185561aa60b696f95df98d5"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "schema": "cybersand.sol281.late-main-publication-map.v1",
+  "scope": "Local and authenticated API commits differ only in commit metadata; trees verified exactly. Both precede the final documentation-validation child.",
+  "entries": [
+    {
+      "local_sha": "eb83b008982a2aaeca99d88816cee0b4cfac0fae",
+      "published_sha": "1a01b3edf5b8b73c3a3f90430633f78eb3650718",
+      "tree": "9fbc3240b2e4f3815ba6f361d0d52ca6b30ee2ae",
+      "parent": "9195577dc8b689ca907ccfa03554e38ac6953226"
+    },
+    {
+      "local_sha": "cd376452ef2a6c2f1dc4f2fc097692b3e4245252",
+      "published_sha": "04274706616a8d61b628272a6320ecc28d25362c",
+      "tree": "9aaa6b2efc578dcf5ca0f2bbb6d535cbca79cad9",
+      "parents": [
+        "1a01b3edf5b8b73c3a3f90430633f78eb3650718",
+        "3da7e7be4a6af4c85e03a7d8a0ed57229e5db33d"
+      ]
+    }
+  ]
+}

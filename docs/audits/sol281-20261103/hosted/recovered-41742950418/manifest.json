@@ -1,0 +1,152 @@
+{
+  "schema": "cybersand.sol281.failed-publication-evidence-manifest.v1",
+  "source": "2457f5ecb945c60cd5118526f48734e82576ba49",
+  "source_tree": "42b4926b3e15dcbf34b436eff41de50fad54c50a",
+  "run_id": 41742950418,
+  "run_attempt": 1,
+  "scope": "Original failed publication log/receipt and exact qualification record, independent complete host/build/native audit, source validation and complete per-case measured summaries. Workflow remains failed in publication; compiled/executed scopes passed.",
+  "host_originals": "Eight positive original host ZIPs are retained as the identified GitHub workflow artifacts; this compact failed-publication packet retains their authenticated inventories and complete per-case metric summaries, not a fabricated publication copy.",
+  "manifest_self_hash_excluded": true,
+  "files": [
+    {
+      "path": "artifact-inventory.json",
+      "bytes": 11156,
+      "sha256": "11c7aca9a5831a1ec326ecb4b1c88e1893fa089eb308f6553c1770fe88786ec0"
+    },
+    {
+      "path": "contact-recovery-case-summary.json",
+      "bytes": 250801,
+      "sha256": "db305afe6e0e44db4ea1f6b3b7f177e15ad5e06f049bfa5b22b5f449d4a547ac"
+    },
+    {
+      "path": "contact-recovery-original-analysis.json",
+      "bytes": 107752,
+      "sha256": "3d557041cc264fe0ea4246ca9fb122f741d7134f5b5d1cd6c476140b4504377e"
+    },
+    {
+      "path": "final-source-docs.json",
+      "bytes": 470,
+      "sha256": "d57da61f028b502627a962511cb1f751c862505511bb1d11325af2fc8953450d"
+    },
+    {
+      "path": "final-source-provenance.json",
+      "bytes": 2544,
+      "sha256": "a426abed38932b05e10f58f2b258926104c583a91bc36e6deb732d2bc5ef49aa"
+    },
+    {
+      "path": "host-artifact-member-verification.json",
+      "bytes": 101616,
+      "sha256": "6ce8b14618d925ddcb10bff77799c27ca3f3ca71626354441dcdd1b8f9d86516"
+    },
+    {
+      "path": "host-download-verification.json",
+      "bytes": 4853,
+      "sha256": "0cc49788c62ee0e52ce1ff9ecd517b4bbc247d395eeba11f2f0fc652ac8bc005"
+    },
+    {
+      "path": "independent-2457-metric-summary.md",
+      "bytes": 6936,
+      "sha256": "b57a0f8ad82cd1f43b67fcbad648140c1dbde5c87e041a9c1efc23c881b0b432"
+    },
+    {
+      "path": "independent-build-verification.json",
+      "bytes": 4188,
+      "sha256": "a2888866e55028bf52e4f900234429d3104e9fdba408396c5f12c857f58fd348"
+    },
+    {
+      "path": "independent-contact-retrieval-semantic-review.json",
+      "bytes": 15442,
+      "sha256": "dba00fa3bd6df51fc0a022cebee3aa1295969d62378fc33b7e08ebf29bce753f"
+    },
+    {
+      "path": "independent-native-artifact-review.json",
+      "bytes": 3625,
+      "sha256": "e5cb4b7b3d27eddbec869503a360888938097cb595f7878fed4591dd13ef2e0e"
+    },
+    {
+      "path": "independent-successor-review.json",
+      "bytes": 43032,
+      "sha256": "8a280daf14fbdb69204f3b973fad71c55e64fc7e5fc6c26ddb05fb4f9fff47c4"
+    },
+    {
+      "path": "msvc-independent-verification.json",
+      "bytes": 2071,
+      "sha256": "ee01678c77f9dbeecf987147312324fd31f73e56dd888487d12bdaa1ac24710e"
+    },
+    {
+      "path": "originals/failed-publication/job.log",
+      "bytes": 92346,
+      "sha256": "b2f3ab7db90055ac9a3e2b11bd99520a6b1e6c2d2046cae511971d5df71c700f"
+    },
+    {
+      "path": "originals/failed-publication/publication.json",
+      "bytes": 132985,
+      "sha256": "cf6a6272adf410510399bcd34bde3a5849e200ca92bb79813fde064d0b671587"
+    },
+    {
+      "path": "originals/linux-native/command.log",
+      "bytes": 13913,
+      "sha256": "57b01164b7019c69390a80e9b802de685ac640dda4be4e53b78d2085f7eb09a7"
+    },
+    {
+      "path": "originals/linux-native/performance.jsonl",
+      "bytes": 2728,
+      "sha256": "68127140eaee4f24cf576cc5f1d643eaa9a70461c8a5a2bdc45cb56ea0da064d"
+    },
+    {
+      "path": "originals/linux-native/receipt.json",
+      "bytes": 2316,
+      "sha256": "fd51a637042fa83f7e842657f5f56c96777859075a42452fd77c0a9508333b36"
+    },
+    {
+      "path": "originals/sol281-msvc-41742950418-1.zip",
+      "bytes": 213189,
+      "sha256": "82afef91fda931054fda6ca5e8b71b01d21df1c7bbaf08b46f0fab2730f2b5b6"
+    },
+    {
+      "path": "originals/sol281-qualified-41742950418-1.zip",
+      "bytes": 991,
+      "sha256": "5dbd1442a9281a89b59430ac83d6c5f07ab155efd5aa782defcbdd7972334745"
+    },
+    {
+      "path": "prepublication-independent-summary.json",
+      "bytes": 1321,
+      "sha256": "64fca10fe0736f1634ca890eef3d2473ebd4b50300dd0325e28086ed7de4092d"
+    },
+    {
+      "path": "publication-failure-diagnosis.json",
+      "bytes": 1397,
+      "sha256": "459477c66b1ba640a59d6cb66e0ea2f7ecefd57d48c9b27e53fb020d75612b69"
+    },
+    {
+      "path": "qualification-original.json",
+      "bytes": 3354,
+      "sha256": "e03c4331fec82b1b9e62298def55161464110a2b42dc3ca9ecdd18936f07264d"
+    },
+    {
+      "path": "source-checkpoint-validation.json",
+      "bytes": 3595,
+      "sha256": "2a65dcc740e8a413425ea4eb9afdd848d1334432199c24906cd9ba6e4908b799"
+    },
+    {
+      "path": "source-retrieval-contact.json",
+      "bytes": 110776,
+      "sha256": "32cc53446949af05b1630cc37c317b0436709863e9347bcd6a24ccc7fe62cad0"
+    },
+    {
+      "path": "source-retrieval-default.json",
+      "bytes": 418597,
+      "sha256": "6bb8fd12f03b4a2857d892862e0ba7273baa2379e9fff5cc1180a36dec80ec31"
+    },
+    {
+      "path": "source-retrieval-sol281.json",
+      "bytes": 61247,
+      "sha256": "03fc6fa9186c884c492f7489e3dd16c3a32cc3075bf0c9de456a207b1b7fc808"
+    },
+    {
+      "path": "takeover-publication-map.json",
+      "bytes": 2685,
+      "sha256": "28f4c1e904f0285553a117559afb262a6e44d275e31dd138804317783a5f4ddd"
+    }
+  ]
+}

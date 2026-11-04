@@ -10,6 +10,48 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 
 # Retrieval question index
 
+## Structural detachment routing
+
+For the current SOL364 continuation, retained-witness reclip, initial stationary
+burial, synchronized every-step evidence and unchanged all-attempt cost accounting,
+retrieve the [current contract](../systems/solid-detachment.md#sol364-bounded-witness-recovery--2026-11-04)
+and [4 November recovery ledger](../audits/2026-11-04-sol364-recovery.md).
+The [prospective registration](../audits/2026-11-04-sol364-registration.md)
+distinguishes proposed physical limits from immutable energy/ownership/2 ms gates.
+The [SOL364 retrieval questions](retrieval-questions-sol364.json) supplement the
+earlier fixed questions without rewriting their dated claims. Version 2 retains
+the four original questions verbatim and adds the discovered MAT-AUTH integration
+boundary; version 1 remains at executed source `9edc4f8f`.
+For executed source `9edc4f8f` and runtime/evidence child `5f6360a9`, distinguish
+the passing 24-group CPU matrix from 84 failed synchronized clearance cases,
+the preserved two-consumer MAT-AUTH compatibility failure, and the HTTP 500
+documentation dispatch after successful publication. Runtime custody, old
+failures, all-attempt denominators and the remaining bounded recovery task are
+in the current contract and ledger; green execution does not imply merge readiness.
+
+For native terrain support loss, compound Rapier motion, conservative local
+Sand/Water displacement or the diagnostic controls, retrieve
+[Native structural detachment](../systems/solid-detachment.md). For historical
+failed experiments and tested identities, retrieve the
+[3 November contact ledger](../audits/2026-11-03-sol281-dense-contact.md)
+and [earlier SOL281 qualification](../audits/2026-11-01-sol281-current-main.md).
+For current #281 gates, recovered receipts, latest-main reconciliation and terminal
+post-impulse readback and publisher repairs, final executed `749fb8b5` and the
+retained Windows baseline CPU failure, retrieve the
+[recovery handover](../audits/2026-11-03-sol281-takeover.md). Its 23/24 full-matrix
+cost disposition supersedes neither the original measurements nor their source
+scope; all 12 final candidate groups pass.
+Global acceleration and Stage3B ordering remain in the
+[soliding programme](../operations/soliding-programme.md).
+
+For exact rotated overlap, supported-Sand resistance, revision and replay fences,
+**V** / `--sand-resistance`, contact cost or overlap-cell-sample denominators,
+retrieve the [opt-in contact contract](../systems/solid-detachment.md#opt-in-supported-sand-resistance).
+The [supplementary contact questions](retrieval-questions-sol281-contact.json)
+exercise those new claims separately from the unchanged 1 November questions.
+Passing a narrow mechanism gate does not establish buried-body clearance,
+native restoration, GPU pacing, human feel or #281 completion.
+
 ## Material catalogue compiler and compatibility guards — 2026-11-04
 
 Use the [shadow compiler guide](../operations/material-catalogue-shadow.md)

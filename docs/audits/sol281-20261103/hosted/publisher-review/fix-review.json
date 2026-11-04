@@ -1,0 +1,64 @@
+{
+  "status": "committed_focused_tests_passed_independent_review_no_blocker",
+  "review_date": "2026-11-04",
+  "commit": "2bfeb60b60cfd07b7fa7d53447d9265af6b31e85",
+  "tree": "bd0803f50ec471e0b1e8dac7c3b77b56080dd4bc",
+  "parent": "2457f5ecb945c60cd5118526f48734e82576ba49",
+  "branch": "fix/sol281-unchanged-runtime-publication",
+  "worktree": "/workspace/scratch/fc488e61157a/cybersand-publisher-review",
+  "failure_scope": {
+    "run": "https://github.com/techrote/cybersand/actions/runs/41742950418",
+    "publisher_job": "126296327496",
+    "observed_error": "Staged path set differs from exact publication inventory",
+    "parent_diagnosis": "208 planned paths; Linux runtime pointer equals HEAD, so git add yields only 207 changed paths. Builds, 8 actual-host cohorts and reducer passed, publication failed."
+  },
+  "repair_invariant": "Actual staged changes must stay within the planned paths. Every planned index entry, including unchanged entries, must independently be regular mode 100644 at stage zero and match its trusted artifact bytes or canonical exact LFS pointer. Those constraints uniquely fix the valid final diff against explicit HEAD. --no-renames exposes unplanned source deletions.",
+  "unchanged_contracts": [
+    "verify_prepared source/run/artifact/runtime/provenance validation",
+    "verify_checkout exact qualified-source and raw-checkout validation",
+    "Every planned index blob, size, hash, regular-file mode and stage-zero check",
+    "No scientific threshold, runtime, worker, workflow or process policy change"
+  ],
+  "tests": {
+    "publisher_suite": "13 tests passed",
+    "real_git_positive": "Unchanged correct runtime, both changed and unchanged correct metadata",
+    "real_git_negative": [
+      "Unchanged runtime wrong SHA-256",
+      "Unchanged runtime wrong size",
+      "Unchanged malformed LFS pointer",
+      "Unchanged stale provenance bytes",
+      "Missing staging of changed provenance",
+      "Missing staging of new evidence",
+      "Deleted runtime index entry",
+      "Executable runtime index mode",
+      "Unplanned staged source edit",
+      "Unplanned staged source deletion with actual R100 rename folding",
+      "Unstaged source edit rejected by unchanged verify_checkout contract"
+    ],
+    "pre_fix_reproduction": "Original publisher at2457f5ec rejects valid real-Git no-op publication; original failure retained.",
+    "iteration_failure": "First full run omitted committed .gitattributes in the new synthetic Git fixture; corrected fixture only and original failure retained.",
+    "diff_check": "passed",
+    "scope": "Synthetic publication metadata and real Git staging; no Godot/native execution or successor hosted qualification."
+  },
+  "files": {
+    "tools/sol281/publish_runtime.py": {
+      "sha256": "87752af50352843da6f83fc6c51cb0f77c2371f04cf7f8d18d026611418c5198",
+      "git_blob": "947f4dddc14db8ab92cbb4e8c894523b24d40cf6"
+    },
+    "tools/sol281/test_publish_runtime.py": {
+      "sha256": "d225644cbc902bba4bc59f563fb43433c073b0c12653056541846351f75a078e",
+      "git_blob": "a36c7dd94699850d7238dac5d6727bf8a534f1b7"
+    }
+  },
+  "patch": {
+    "path": "publisher-fix.patch",
+    "sha256": "f0dee5ba787f8add168b224820ee15a8e89e1c5fbd90684db9a01b83e6a9df05"
+  },
+  "independent_review": {
+    "reviewer": "/root/implementation_review/native_review",
+    "status": "no_blocker",
+    "receipt": "independent-review.json",
+    "additional_tests_executed": false
+  },
+  "remaining": "Root integrates and requalifies exact resulting source through the existing workflow. Prior2457 run remains a publication failure; earlier documentation drafts must retain it as precursor evidence, then bind final tables to the new source/run."
+}

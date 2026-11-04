@@ -1,0 +1,813 @@
+{
+  "created_utc": "2026-11-01T17:41:55.487014+00:00",
+  "corpus_root": "/workspace/scratch/59ce0c87fdea/cybersand",
+  "method": {
+    "name": "heading-chunk BM25 lexical development baseline",
+    "k": 5,
+    "maximum_body_words": 420,
+    "overlap_words": 0,
+    "k1": 1.2,
+    "b": 0.75,
+    "metadata": "title, path, document-kind, status, scope, canonical-for, last-reviewed, heading path on every chunk when present",
+    "query_expansion": false,
+    "stemming": false,
+    "reranker": false,
+    "embeddings": false,
+    "corpus_policy": "explicit retrieval-corpus.json documents if present; otherwise frozen focused-directory policy plus navigation README/AGENTS; historical audit/uppercase legacy excluded"
+  },
+  "fixture_sha256": "d185cb8fa550eb548f5a9d68bd5de2fc9a25b2345862a8336b0080d18f15ca68",
+  "evaluator_sha256": "a68ebed677cdd2916b18dfc065fe59245c4690707f2d6083e07d108a7b523e59",
+  "corpus_manifest_sha256": "bfec03b04078313f15fc0684c396f0ad48af65d1c2b76fbfe91d5cee6db19474",
+  "corpus": [
+    {
+      "path": "docs/MATERIAL_LAB.md",
+      "sha256": "aaa9671c20d06d65cd0e6b2306a53cd6ea89ba64dde50ac2948abffc92f170bf",
+      "bytes": 12759
+    },
+    {
+      "path": "docs/architecture/chunk-tile-and-buffer-model.md",
+      "sha256": "2e1ed6542e984366519dd782687980f0c8445052ef11b8afef06877972730d81",
+      "bytes": 8752
+    },
+    {
+      "path": "docs/architecture/data-ownership-and-lifetimes.md",
+      "sha256": "97c0dfe83f6495eba9a1cbe5dd3b6f6d273987756c13041dae7ef6df0c40628b",
+      "bytes": 38828
+    },
+    {
+      "path": "docs/architecture/determinism-and-boundary-transfers.md",
+      "sha256": "915b4a914e39e41304592b8b9873856b7c9b9714a043ac9384669ee9163d200a",
+      "bytes": 7295
+    },
+    {
+      "path": "docs/architecture/inertial-cellular-v1.md",
+      "sha256": "527effac33f96d4ea30959e6c2da2e54e13ff3ef039786134bb9a2a50285dd8e",
+      "bytes": 27529
+    },
+    {
+      "path": "docs/architecture/item-authored-material-programs.md",
+      "sha256": "facc6f3209743cafff997bd775ab1b77114f05439bead78c17624e62c32ecd72",
+      "bytes": 5204
+    },
+    {
+      "path": "docs/architecture/lcb-pressure-inertial-handoff.md",
+      "sha256": "35babd6fcd79d74fb4b895af5b7bf835403435f1ba6f65c96907dab7621da337",
+      "bytes": 22243
+    },
+    {
+      "path": "docs/architecture/liquid-prepared-setup-and-receipts.md",
+      "sha256": "231b1dec6ee5993a6c399d235c669534a90c44f292fbe19576113f9ab1f1566c",
+      "bytes": 82558
+    },
+    {
+      "path": "docs/architecture/liquid-solver-family-policy.md",
+      "sha256": "29ceb7e08549049a6a59a8efbd0dc142d64368a995a270006bebe17a3e124669",
+      "bytes": 63432
+    },
+    {
+      "path": "docs/architecture/liquid-state-transition-matrix.md",
+      "sha256": "d0b9f71b86dffdd2755703029209f5f5e2ce1ef93afe5b56f3d58f4553f83fd3",
+      "bytes": 26899
+    },
+    {
+      "path": "docs/architecture/module-boundaries.md",
+      "sha256": "50d887de70b5cc49f7e2a0504ce3e08415c9900b4b437e036345a0181aebd3c6",
+      "bytes": 9775
+    },
+    {
+      "path": "docs/architecture/overview.md",
+      "sha256": "4fb7c0c48e043786ba0bab144d9fbb0cf1bee1facac60303357bac907dd1e730",
+      "bytes": 5948
+    },
+    {
+      "path": "docs/architecture/pressure-flow-v1.md",
+      "sha256": "bb51fd2ab84210343a1668a27c7bea60d110c14845b822c37e023ebc2ec345f2",
+      "bytes": 28693
+    },
+    {
+      "path": "docs/architecture/pressure-optimization.md",
+      "sha256": "775199fd0f696dc455c5305b6c9788a2d2c3dd7c467b6472ab398619efbdb444",
+      "bytes": 15426
+    },
+    {
+      "path": "docs/architecture/principles-and-non-goals.md",
+      "sha256": "8dd55cf5b315f460b844fa66307296f4f77eb8f5e29fc2ba5ad9d1f2df60c377",
+      "bytes": 6556
+    },
+    {
+      "path": "docs/architecture/rendering-and-gameplay-bridges.md",
+      "sha256": "0efb1084fd68eba7c69e31e9271be717153de3693d1b17cb4e0036028563c439",
+      "bytes": 8923
+    },
+    {
+      "path": "docs/architecture/rigid-body-and-cellular-coupling.md",
+      "sha256": "43db3c69160ba84ffb67aa67458179c876479c89c1cd93fe0f8b7724785bb405",
+      "bytes": 14368
+    },
+    {
+      "path": "docs/architecture/simulation-tick-and-threading.md",
+      "sha256": "bd4e3f638e5cf880ed51718d02bcc4bc9e18bdf4ecc68ea09d30166102ad371b",
+      "bytes": 18295
+    },
+    {
+      "path": "docs/architecture/soliding-lifecycle.md",
+      "sha256": "f1ebc92ea8145ffe71dbf2980f2bd78ae987cb16005d46e1cda1f85e6e796eae",
+      "bytes": 20059
+    },
+    {
+      "path": "docs/decisions/ADR-001-native-simulation-core.md",
+      "sha256": "183256ad4f0bb86477ebb52917ef5f39dbb473befe42a2ca9c8af7a1388cd0bf",
+      "bytes": 3490
+    },
+    {
+      "path": "docs/decisions/ADR-002-double-buffered-tile-jobs.md",
+      "sha256": "b621c6eac703579ed9c737e07fe67516f04b8e02deb90bc10745aba759ce2991",
+      "bytes": 3876
+    },
+    {
+      "path": "docs/decisions/ADR-003-godot-bridge-and-immutable-snapshots.md",
+      "sha256": "5f6f4317020f9b423a326945dbc54d3d04d50ace0a911aa66d2d5228d333c343",
+      "bytes": 4207
+    },
+    {
+      "path": "docs/decisions/ADR-004-interest-region-and-reconfiguration.md",
+      "sha256": "9d445644a387b0ebcb75d2488409d52e1cf5739b8c79b4d063bb73be12689c3c",
+      "bytes": 5074
+    },
+    {
+      "path": "docs/decisions/ADR-005-water-model.md",
+      "sha256": "ca741af1d41237c2c6cc70c80e5f098bf10b4cca3098183168a1f386aa0ab9bc",
+      "bytes": 4594
+    },
+    {
+      "path": "docs/decisions/ADR-006-gpu-compute-deferral.md",
+      "sha256": "de55bb1adf6d8bdb3324c80558ccdbb71e422a4e494df09dccbfcb0bf909ca00",
+      "bytes": 3351
+    },
+    {
+      "path": "docs/decisions/ADR-007-rigid-body-cellular-coupling.md",
+      "sha256": "4176beaad08fca041922b87f8f8451a5a3b7b4831946d117119eeb21c7e466e9",
+      "bytes": 4438
+    },
+    {
+      "path": "docs/decisions/ADR-008-bounded-approximate-fidelity.md",
+      "sha256": "f57b275187490cdc12c28456f9417a6eb4a73d2daf4a97ba9e6950e07568efe5",
+      "bytes": 6062
+    },
+    {
+      "path": "docs/decisions/ADR-009-rapier-2d-rigid-body-backend.md",
+      "sha256": "cf30e85c27ee2a63785ceac700c766b14f1227e761398d42d60c301d3d3c85ac",
+      "bytes": 5903
+    },
+    {
+      "path": "docs/decisions/ADR-010-failed-tick-quarantine.md",
+      "sha256": "7c3e320ab521c0dbfffc5f8831507f948c6614775dc294ca6f77aa5c742b7000",
+      "bytes": 2879
+    },
+    {
+      "path": "docs/decisions/ADR-011-granular-interaction-policy.md",
+      "sha256": "79b0d6bb92c5bc624f3d24b76b51837d2bf81ee22b277d88f8e5d0675b828c00",
+      "bytes": 4669
+    },
+    {
+      "path": "docs/decisions/ADR-013-canonical-semantic-generation.md",
+      "sha256": "208ba8ca556dda6d5d52f867986d379c9bb8a2a2dbcc5e0c1a515ee7b61fc07a",
+      "bytes": 4168
+    },
+    {
+      "path": "docs/decisions/ADR-014-semantic-plane-admission.md",
+      "sha256": "f43cf3261ead2dfe86e895c3b73c5df7a173c48997a2989f5a254502184857a4",
+      "bytes": 2636
+    },
+    {
+      "path": "docs/operations/architecture-programme-water-feel-addendum.md",
+      "sha256": "ace6c7f6d05d1fbc8087bbbfb9ed93481df88835f9bf974eaa6b0e0e10f6ea51",
+      "bytes": 8984
+    },
+    {
+      "path": "docs/operations/architecture-programme.md",
+      "sha256": "b5ddf2a279d68287130b4a3d96674336818cfe11da4c0c2c3230762b36f0c58d",
+      "bytes": 54792
+    },
+    {
+      "path": "docs/operations/blacksite-nine-demo.md",
+      "sha256": "f94c5f0241a0ed0bfa022e448a0a973977681f4310238132c2982d18e5c76d97",
+      "bytes": 13714
+    },
+    {
+      "path": "docs/operations/cell-layout-experiment.md",
+      "sha256": "92d2ae798728bbd5203ed648b36dc16cf69c436880ac78a3f7af07e7ca3c6e58",
+      "bytes": 26101
+    },
+    {
+      "path": "docs/operations/ci-execution-and-performance.md",
+      "sha256": "12b1968ae9e99d50d34f3c7627650daef4557746dce8727672b61e77579fec68",
+      "bytes": 12759
+    },
+    {
+      "path": "docs/operations/configuration-and-capacity-budgets.md",
+      "sha256": "f874fc79105848b921964c5b5dcdb5d04fbe984b25cbcdb1b8b8b4bb8e72226d",
+      "bytes": 12639
+    },
+    {
+      "path": "docs/operations/current-and-historical-validation.md",
+      "sha256": "37d75f33ea23ef837d0661df3ce81324ba07941181cd506ebd1d502e81317b0c",
+      "bytes": 7539
+    },
+    {
+      "path": "docs/operations/cybersand-codex-development-handover.md",
+      "sha256": "9b110bdbc5189a02a4ea93c82d35cd396a18e9a97d47c0b68350f54dc0f95867",
+      "bytes": 106183
+    },
+    {
+      "path": "docs/operations/deepworks-exhibition.md",
+      "sha256": "5f646c5eed80101d8bdc36be38985ee34898ed145ed28f2aa01d3ae1bbb3ffc7",
+      "bytes": 17395
+    },
+    {
+      "path": "docs/operations/development-claims-remediation-programme.md",
+      "sha256": "91508be4c98b959775070251a3a2f7b8f7a2bda9d93876564b582294f4d47711",
+      "bytes": 14706
+    },
+    {
+      "path": "docs/operations/documentation-maintenance.md",
+      "sha256": "f3de7a4bab92bc23e8efbf1c8540c74ca124c3c56314c4ca793fd41ad2ef6068",
+      "bytes": 6809
+    },
+    {
+      "path": "docs/operations/experiment-tower.md",
+      "sha256": "71a70c087f71062db5d417562ae4e3cad3c50e26233c63dee264d0555c377865",
+      "bytes": 14079
+    },
+    {
+      "path": "docs/operations/gameplay-recording.md",
+      "sha256": "4af142f26f132ca52d7d28e56719f97827b2934f7601559df30140366872fa06",
+      "bytes": 12266
+    },
+    {
+      "path": "docs/operations/github-development-and-release.md",
+      "sha256": "923a9f27fa09241f198fe149d56dbf6c228255e3fdfdd90b17d2b656b6992dde",
+      "bytes": 16874
+    },
+    {
+      "path": "docs/operations/lcb-manual-comparison-ux.md",
+      "sha256": "b4aa66f3b07a531d6e62423af40007ec7c89c3611b27efd283dccd389b403e76",
+      "bytes": 33595
+    },
+    {
+      "path": "docs/operations/lcb-scenario-catalogue.md",
+      "sha256": "02d92c8ae11db093e7245311b40a9ed9007532d6140fb7824e69b55ae62348d8",
+      "bytes": 22926
+    },
+    {
+      "path": "docs/operations/lcb-water-comparison-and-fixtures.md",
+      "sha256": "1cba76d2f57befebe84f1c8aa5fc3ed227f134b8144da0636c508f8ec8027259",
+      "bytes": 23019
+    },
+    {
+      "path": "docs/operations/liquid-characterization.md",
+      "sha256": "d18df9a9ed150165d6f51fff5469f77ce531374a4c7673a020955a194a826147",
+      "bytes": 4710
+    },
+    {
+      "path": "docs/operations/local-build-and-validation.md",
+      "sha256": "dfaa83efa876f59bf355316ff050f71ab9db6d096ee4abf47136804d64d168ca",
+      "bytes": 112630
+    },
+    {
+      "path": "docs/operations/microscenario-reference-pack.md",
+      "sha256": "dfddad77cd621573fa8e29254b90765552fc8e2ec00159f008c27cb4f7ed1820",
+      "bytes": 16807
+    },
+    {
+      "path": "docs/operations/microscenarios-programme.md",
+      "sha256": "c8c713f43a8ccb4bcd7f5428456c70abcab9564bb221ed35563eb82dbda881ae",
+      "bytes": 29208
+    },
+    {
+      "path": "docs/operations/microscenarios.md",
+      "sha256": "37a3dc17233192b630252c72647194b07f429b018e49982bb285df0711d2459e",
+      "bytes": 20649
+    },
+    {
+      "path": "docs/operations/neon-reliquary-demo.md",
+      "sha256": "db57bf8976427464069e8dab42a05b78e5876a3be31feaa90a1ba9e1ba5e84ca",
+      "bytes": 14168
+    },
+    {
+      "path": "docs/operations/physical-actor-programme.md",
+      "sha256": "383b894b238bfd883e786f6f2f2cf10423e4c9c960e44fd64efbed4b348aab10",
+      "bytes": 15666
+    },
+    {
+      "path": "docs/operations/physics-characterisation-plan.md",
+      "sha256": "c306e1e0539835caefa668c72f5a118f2d34f0fb0235305ce7462aaca75d3a0d",
+      "bytes": 22957
+    },
+    {
+      "path": "docs/operations/physics-characterisation.md",
+      "sha256": "cec934e26ddc204d538ad2cfb79b9a670b9c62a0d3464b13695de0894ca634f3",
+      "bytes": 22281
+    },
+    {
+      "path": "docs/operations/play-desktop-manual-qualification.md",
+      "sha256": "67b59b8c82feb2ddf269a60fb418f36a92990f169f8856ce8ea72b4e7c09c784",
+      "bytes": 9578
+    },
+    {
+      "path": "docs/operations/procedural-qualification.md",
+      "sha256": "15cfd957d8f8763c06aa635533757e991b154d373b5b4e5a821ba01acb6dd414",
+      "bytes": 21341
+    },
+    {
+      "path": "docs/operations/profiling-observability-and-performance.md",
+      "sha256": "536521336ace40ddbfc713f789b91bd6af785eddad891e03dd5754583534ac8e",
+      "bytes": 10947
+    },
+    {
+      "path": "docs/operations/rapier-2d-migration-runbook.md",
+      "sha256": "9ed786d3217f87a1ec6641b9744b8b196009da59cf8d56f673b6537a8efb98e7",
+      "bytes": 6574
+    },
+    {
+      "path": "docs/operations/semantic-depth-authoring.md",
+      "sha256": "be6b9a9f6c2d1a4893a1a136e18544ec38a57c21ef6938b9c1d5e96d76314dc6",
+      "bytes": 10897
+    },
+    {
+      "path": "docs/operations/soliding-macro-fracture-fixture.md",
+      "sha256": "a5f29551330843705a1360108965609a9973d0d167604755dd9ba5b9d8ffdd43",
+      "bytes": 8314
+    },
+    {
+      "path": "docs/operations/soliding-measurement.md",
+      "sha256": "029b9fc75960e23e00737fd4a8ef5de4d93a9b68b53173a31b144890246f7127",
+      "bytes": 16631
+    },
+    {
+      "path": "docs/operations/soliding-programme.md",
+      "sha256": "ae7b525ffbde463dbbccda8173375d7d3f127690fc4ac29d60abb86ed487034e",
+      "bytes": 11400
+    },
+    {
+      "path": "docs/operations/soliding-stage3-freeze.md",
+      "sha256": "e9bb416fbc00534936f31ec823ff4200084b9839e29b104ca06c6e5842a8f855",
+      "bytes": 25036
+    },
+    {
+      "path": "docs/operations/soliding-stage3b-production-plan.md",
+      "sha256": "a2c8b0df12e69eaddb5e36200fdac89d978d43ce5190242022cf83a6bef43919",
+      "bytes": 22377
+    },
+    {
+      "path": "docs/operations/source-checkpoint-and-recovery.md",
+      "sha256": "9b140c00a949cd9d3a3753c0c5f079cf188d7f23c55018a87161c3650fc3b431",
+      "bytes": 27552
+    },
+    {
+      "path": "docs/operations/state-precision-experiment.md",
+      "sha256": "5ec8493d0aea4114c3049380cd6eae3be4d34a0dfc4ca8bfbebc67df3e800c0a",
+      "bytes": 10075
+    },
+    {
+      "path": "docs/operations/testing-validation-and-replay.md",
+      "sha256": "e5e5a9528fe8e0fd0327c8bddc6d0d8edbe235e1b4b6d264687e661960aeccd7",
+      "bytes": 29266
+    },
+    {
+      "path": "docs/operations/troubleshooting.md",
+      "sha256": "eddf1c8591c8396dc22c2d257410e249caee20d189ff998601d472784f731b7d",
+      "bytes": 5027
+    },
+    {
+      "path": "docs/operations/water-feel-lab-experiment.md",
+      "sha256": "6591cef26939419b7421ad5ddd25c7164ce08869f76b181aef6a8223c3e6e3d9",
+      "bytes": 15503
+    },
+    {
+      "path": "docs/operations/water-hybrid-pressure-extension-programme.md",
+      "sha256": "d8f703b16bf61620571828f117dc7fcaee950b5dd0d051f6f7488b792970399d",
+      "bytes": 39009
+    },
+    {
+      "path": "docs/operations/web-threading.md",
+      "sha256": "47c5c6b5e10363f9d5a8bf18c643470e94bcbc70e92d15337310cfa341ec55c4",
+      "bytes": 6183
+    },
+    {
+      "path": "docs/reference/configuration-reference.md",
+      "sha256": "0f2b29f121a8080b5436617aa932c3018381d2b63fc6847f9759decefc60762b",
+      "bytes": 86690
+    },
+    {
+      "path": "docs/reference/glossary.md",
+      "sha256": "123cb43131703c15362ff8f85ef5e343844db526c3107d90937e7c8288debdde",
+      "bytes": 6071
+    },
+    {
+      "path": "docs/reference/interfaces-and-message-contracts.md",
+      "sha256": "c0b7e0b26725cfbc2e6a5c4ce4c4cf08628bc5ab6eca63f8d0bf3e8eb25fb0b2",
+      "bytes": 94746
+    },
+    {
+      "path": "docs/reference/invariants.md",
+      "sha256": "c135744916f021c23296df4d3f6cbcc1cc4283fff07c8050044092a77ad88081",
+      "bytes": 46406
+    },
+    {
+      "path": "docs/reference/level-saves-and-replay.md",
+      "sha256": "1d1b1d91b406d62e6de05266d662b83135e179aefa011c8af8b59ca815c2a3c0",
+      "bytes": 13257
+    },
+    {
+      "path": "docs/reference/material-effects-register.md",
+      "sha256": "21f4071dd5d558ad5e85f7b7f273dc56bc3f8a30d33141faed77faac0e0bc00b",
+      "bytes": 12618
+    },
+    {
+      "path": "docs/reference/procedural-spatial-operators.md",
+      "sha256": "2aa8a05ab1566fae6b5cf9a187954a3d16bb6b95b999aa15f89d24e1c31e1037",
+      "bytes": 11102
+    },
+    {
+      "path": "docs/reference/product-intent-and-priorities.md",
+      "sha256": "b2865c060ae1130f09b90d545a65cd5b70ce1d50824ba37f0c82e7d1ebc2aa6d",
+      "bytes": 19657
+    },
+    {
+      "path": "docs/reference/status-and-roadmap.md",
+      "sha256": "195a06ffff83efd878d49d249c52f323e54415c752167ab9c0fc20b2f3f41136",
+      "bytes": 127561
+    },
+    {
+      "path": "docs/reference/validation-evidence.md",
+      "sha256": "e0084d17e2dd4c746eae5f212929fb22fa7c57c55d7e6b55a6737b54ca34410d",
+      "bytes": 68168
+    },
+    {
+      "path": "docs/research/bounded-decompression-impulse-events.md",
+      "sha256": "f7e168691be4c3534894004f1c11c0e4c35e1016eda94825a74c884f3fe5e102",
+      "bytes": 16290
+    },
+    {
+      "path": "docs/research/lumped-gas-region-pressure-bookkeeping.md",
+      "sha256": "dfa36ee21cb19208fd7bc2bd30992381df0ff780f5c86c474e23e3f26473c550",
+      "bytes": 20849
+    },
+    {
+      "path": "docs/research/sandspiel-performance-and-material-port.md",
+      "sha256": "239d4fc9ca44d86a0971659305c61decec2dcd7c14b5a3d17a0f79844fa61791",
+      "bytes": 7166
+    },
+    {
+      "path": "docs/systems/activity-dirty-regions-and-waking.md",
+      "sha256": "372ef8d576bfc265d28dcea6be754d938c717e790adc678823904f70df98db8f",
+      "bytes": 11757
+    },
+    {
+      "path": "docs/systems/actor-control-prototypes.md",
+      "sha256": "8138d39e7323c4fdfa22b93eb8718a7dddaa3f1ac972f01c8deedde1b961495f",
+      "bytes": 18075
+    },
+    {
+      "path": "docs/systems/actor-rigs.md",
+      "sha256": "3d8894b3be355871c4b1086e91c9ca53445ca447354996587c7adac5b4945f6c",
+      "bytes": 25275
+    },
+    {
+      "path": "docs/systems/actor-usables.md",
+      "sha256": "5d8b808400fa16719ff978c5b661a439670080961043f0c45eced329186356cc",
+      "bytes": 16427
+    },
+    {
+      "path": "docs/systems/building-material-catalogue.md",
+      "sha256": "d6c8ade8fdc3783919ac92f4b3b2a310adeba3f1ed903c00b86ea25b67b10afd",
+      "bytes": 13193
+    },
+    {
+      "path": "docs/systems/depth-layers-and-parallax.md",
+      "sha256": "9f31c71e5608871265a0cabd8dcbba43040294ccdd9c67180b2844c5c10af446",
+      "bytes": 12257
+    },
+    {
+      "path": "docs/systems/flow-transport-and-profiles.md",
+      "sha256": "fd452353ab27a31c73cbffa72afeecf447af16d05cd7b211dcc2db03761d2e4c",
+      "bytes": 7881
+    },
+    {
+      "path": "docs/systems/generation-workbench-2.md",
+      "sha256": "c9aef9a878d100bcf61a4d8c01e752487b3056a6e16a6763fcf8c159fe4a5503",
+      "bytes": 21430
+    },
+    {
+      "path": "docs/systems/granular-interaction-policy.md",
+      "sha256": "d3c64b172e1b701471cf4a4823cc1919f9a1dcf9cb49be5dad5805c387644688",
+      "bytes": 12363
+    },
+    {
+      "path": "docs/systems/intermaterial-interactions.md",
+      "sha256": "7438daa1478dd70b7ed1d7769ffdc36c750acc4521c42c81037bb8d86bcfcfad",
+      "bytes": 11701
+    },
+    {
+      "path": "docs/systems/material-appearance-and-rendering.md",
+      "sha256": "6e1f9612e46f72fdc97080132ff789c50d9570e56ca49c76f389ba691e834e6f",
+      "bytes": 18581
+    },
+    {
+      "path": "docs/systems/material-visual-pattern-library.md",
+      "sha256": "ec9f21593de8f92af9499ba217993330378782abddf1e3481f1a8e9943206b8a",
+      "bytes": 23049
+    },
+    {
+      "path": "docs/systems/materials-and-rule-kernels.md",
+      "sha256": "d3e619b3737e810de3543cb66a0738d7a527a1cc862758835a1796acc8b2c919",
+      "bytes": 12999
+    },
+    {
+      "path": "docs/systems/physical-actor-rigs.md",
+      "sha256": "e9dc3d9719cb5e592d3882a644a1d996535b9393c99b830573dbb89ba8588767",
+      "bytes": 17777
+    },
+    {
+      "path": "docs/systems/physical-flight-lab.md",
+      "sha256": "aef00ef8bef9327a46491c20b00ce093273ac16305adce440655ac019f4b9874",
+      "bytes": 17283
+    },
+    {
+      "path": "docs/systems/physical-free-flight.md",
+      "sha256": "da8dc262e3bba975e04f9fc2706ce0cf82aeb4afb17a899a04570146eb2c33b3",
+      "bytes": 21218
+    },
+    {
+      "path": "docs/systems/player-control-playground.md",
+      "sha256": "8b38ee023f0e15ac5be4da07bb5e370e0d08a56b7131411e5c9a769af73fa391",
+      "bytes": 50666
+    },
+    {
+      "path": "docs/systems/player-environment-profiles-and-traversal.md",
+      "sha256": "d2d3b683c30868f4f9161ad9a8b7b9b26146e99049be950443f3557554f38042",
+      "bytes": 6898
+    },
+    {
+      "path": "docs/systems/procedural-generation-fields-and-modifiers.md",
+      "sha256": "9b0d490b8d0e1f94e600d355f3574782f520edb6e0f64a2cb99d8cd044cbf6ba",
+      "bytes": 22273
+    },
+    {
+      "path": "docs/systems/procedural-hierarchical-generation.md",
+      "sha256": "c5a17691ee02b1eeb3c132093f71596b0f7fe2011e39b41b55f758ecd4ba0897",
+      "bytes": 20322
+    },
+    {
+      "path": "docs/systems/procedural-semantic-planes.md",
+      "sha256": "5f5877cf5deb48f29a18f7aecc48dcddb84a441162166416074fb912c7a98fa1",
+      "bytes": 12923
+    },
+    {
+      "path": "docs/systems/procedural-typed-spatial-fields.md",
+      "sha256": "5062c1899617444cc02a2d9d0a743ab5507bda4f776e2583f200eec275f373eb",
+      "bytes": 23376
+    },
+    {
+      "path": "docs/systems/procedural-world-generation.md",
+      "sha256": "c3ba36a03a706d64b1a1fe697526a931814d4ca0a3980bddb73a45d3d9ca216e",
+      "bytes": 27978
+    },
+    {
+      "path": "docs/systems/settled-region-discovery.md",
+      "sha256": "1bb29704ecd99425abadfbd2dd58d753bb12bbbdb00679f70562e8821778c1ba",
+      "bytes": 22753
+    },
+    {
+      "path": "docs/systems/smoke-heat-pressure-roadmap.md",
+      "sha256": "a147e13269dac95dd5b4d57c329686c2761acec4c64209c6a49c2e2d8ba2019c",
+      "bytes": 6117
+    },
+    {
+      "path": "docs/systems/solid-detachment.md",
+      "sha256": "8575149977ca62d17f80bec7d261e7448a12bfece29552fc78e33be04a1a359b",
+      "bytes": 13193
+    },
+    {
+      "path": "docs/systems/themed-construction-materials.md",
+      "sha256": "8b9f5995299aef16d2d94939ea904b8445c6b738495d8a6653763f9a02a63170",
+      "bytes": 9963
+    },
+    {
+      "path": "docs/systems/thunderbowl-control-reference.md",
+      "sha256": "71c2487a64b566b0a708a79278e47ce2303778c014a3e94a7fe922b24a0f9107",
+      "bytes": 41184
+    },
+    {
+      "path": "docs/systems/water-design.md",
+      "sha256": "a4407b765d29a36a0b26be7cec74a065076cd299792172b96ffc11fcf12e8b9b",
+      "bytes": 20422
+    },
+    {
+      "path": "docs/systems/world-storage-and-interest-region.md",
+      "sha256": "3aa36c9771645fe972228d9d4144cc46b2d05a3d14401bc72c94e659e48c9ba9",
+      "bytes": 12383
+    }
+  ],
+  "document_count": 118,
+  "chunk_count": 1548,
+  "summary": {
+    "questions": 3,
+    "canonical_hit_at_1": 2,
+    "canonical_hit_at_k": 3,
+    "mrr_at_k": 0.7333,
+    "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+  },
+  "results": [
+    {
+      "id": "SOL281-001",
+      "query": "Can a real native cellular tree lose support and move as a Rapier aggregate, and what remains incomplete?",
+      "canonical": [
+        "systems/solid-detachment.md"
+      ],
+      "facts": [
+        "Real native RedBrick cells transfer exact payload after support cut.",
+        "One aggregate and exact compound holes; normal gameplay, fracture, active restoration remain deferred."
+      ],
+      "sources": [
+        "../native/src/world_solid_detachment.inc",
+        "../godot/scripts/solid_detachment_session.gd"
+      ],
+      "canonical_rank": 5,
+      "hits": [
+        {
+          "rank": 1,
+          "score": 16.642879,
+          "path": "operations/physics-characterisation-plan.md",
+          "title": "Physics characterisation and soliding plan",
+          "heading": "Physics characterisation and soliding plan > Phase 4: reversible soliding > D. Dissolve, fracture and recover",
+          "part": 1,
+          "text": "Document: Physics characterisation and soliding plan\nPath: operations/physics-characterisation-plan.md\ndocument-kind: runbook\nstatus: Planned\nscope: Proposed experiments for material penetration, player support, barrel settling and reversible aggregate physics; inspection is not runtime acceptance\ncanonical-for: [physics-characterisation-plan, soliding-investigation]\nlast-reviewed: 2026-09-09\nSection: Physics characterisation and soliding plan > Phase 4: reversible soliding > D. Dissolve, fracture and recover\nReturn to cells when stress, damage, heat, chemistry or fragmentation exceeds policy. Before release, reserve all destination cells and any bounded overflow representation. Never overwrite existing cells. If placement cannot conserve membership, retain the aggregate and report a deferred transition; do not delete or silently truncate it. Rotated rasterization must not duplicate/lose cells. Reconcile momentum explicitly: either support a bounded moving-fragment/particle representation, or restrict demotion to near-rest with documented energy error. Repeated promote/move/rotate/demote cycles must not create mass or energy. Test unsupported collapse, bridges, split/merge, high-speed impacts, clustered barrels, saturated capacity, out-of-order acknowledgements, failed ticks, save/load and offscreen re-entry. Persist membership, representation state, pending handoffs and policy versions in a new schema before claiming continuation. Start with one small coherent material island and one barrel, then scale."
+        },
+        {
+          "rank": 2,
+          "score": 15.772627,
+          "path": "systems/granular-interaction-policy.md",
+          "title": "Granular interaction and sampled player policy",
+          "heading": "Granular interaction and sampled player policy > How does the sampled character move and recover? > REM-003 sampled-player landing response",
+          "part": 1,
+          "text": "Document: Granular interaction and sampled player policy\nPath: systems/granular-interaction-policy.md\ndocument-kind: contract\nstatus: Current\nscope: Version 1 material capability, sampled player support, pair exchange and deterministic permeability wakes\ncanonical-for: [granular-support-policy, granular-pair-policy, sampled-player-collision]\nlast-reviewed: 2026-09-25\nSection: Granular interaction and sampled player policy > How does the sampled character move and recover? > REM-003 sampled-player landing response\n**Current candidate C1:** the version-1 8/9 downward and 9/9 side/upward support classification is unchanged. REM-003 source-matched characterization found that packed standing, flat traversal, representative powders and excavation release worked within their registered cases, while materially different Sand landing speeds resolved to nearly the same rigid support height with no granular response. C1 therefore changes the sampled-character response rather than retuning the shared support predicate used by REM-002 generic body bearing. On a downward sampled-player collision, impact speed below 24 cells/second causes no disturbance. From 24 through less than 72, at most one supported foot-edge grain may move; at 72 or above, at most two may move. Only the left/right contact edge is considered. A candidate grain must be a stored support-capable granular material that currently satisfies the existing packing/stability predicate. It may move exactly one cell diagonally outward/up only through the existing whole-cell conservative relocation path into real Empty storage not occupied by another transient body. Material state and temperature move with the cell and the normal wake/dirty machinery runs. Hard terrain anywhere in the sampled collision volume fails this disturbance path closed; liquids, loose/unsupported grains and ordinary resting contact likewise do not trigger it. The player still stops on the accepted support surface; C1 does not introduce character-owned material, a granular Rapier collider, a pressure/velocity field, per-cell character physics or a second body-bearing solver. The native adapter and fallback mirror the bounded operation under their existing serialized owners. The resulting grain may subsequently move under ordinary cellular rules, so the disturbance count is not a promise of permanent crater geometry. Broad generic body↔granular acceptance remains REM-004 / #83. Owner gameplay acceptance of C1 is a separate REM-003 gate and is not implied by automated tests."
+        },
+        {
+          "rank": 3,
+          "score": 14.70871,
+          "path": "reference/status-and-roadmap.md",
+          "title": "Status and foundational roadmap",
+          "heading": "Status and foundational roadmap > Structural detachment increment — 2026-11-01",
+          "part": 1,
+          "text": "Document: Status and foundational roadmap\nPath: reference/status-and-roadmap.md\ndocument-kind: reference\nstatus: Current\nscope: Current implementation map, unresolved correctness and policy decisions, and bounded next checkpoints\ncanonical-for: [implementation-status, foundational-priorities, open-decisions]\nlast-reviewed: 2026-11-01\nSection: Status and foundational roadmap > Structural detachment increment — 2026-11-01\n**Current unmerged experiment:** [SOL-DETACH-001](../systems/solid-detachment.md) recovers real native-cell support loss, exact aggregate ownership and compound Rapier motion on accepted main `a8f08a67`, plus a conservative local Sand/Water transaction. [Draft PR #347](https://github.com/techrote/cybersand/pull/347) includes source-matched Linux/Windows worker 1/4 qualification at `8e86ffd4` and qualified runtime publication `bdd751dc`. The [gate ledger](../audits/2026-11-01-sol281-current-main.md) keeps #281 and #12 open: dense-bed resistance, reactive cohesion, fracture, moved-body restoration, persistence, normal gameplay and hardware physical acceptance remain incomplete. No automatic Stage3B or GCR dependency is added; frozen #283 and other PLAY/GCR branches remain separate. The 2026-11-01 [CI scheduling qualification](../audits/2026-11-01-ci-scheduling-qualification.md) and [repository-wide workflow audit](../audits/2026-11-01-ci-workflow-audit.md) separate expected shard cost, generous individual watchdogs and aggregate hosted safety. Eight jobs per platform bound GDExtension fan-out; superseded PR checks cancel while explicit qualification keeps distinct run groups. The owner authorized final review and conditional integration; [PR #340](https://github.com/techrote/cybersand/pull/340) records exact-head and post-merge gates. Historical draft qualification remains distinct from final integration acceptance."
+        },
+        {
+          "rank": 4,
+          "score": 14.362268,
+          "path": "decisions/ADR-001-native-simulation-core.md",
+          "title": "ADR-001 — Native SimulationCore",
+          "heading": "ADR-001: Native SimulationCore > Decision and implementation status",
+          "part": 1,
+          "text": "Document: ADR-001 — Native SimulationCore\nPath: decisions/ADR-001-native-simulation-core.md\ndocument-kind: decision\nstatus: Current\nscope: Accepted native authority decision, current integration and incomplete module extraction\ncanonical-for: [decision-native-cellular-authority]\nlast-reviewed: 2026-09-08\nSection: ADR-001: Native SimulationCore > Decision and implementation status\n**Approved and Current:** authoritative cellular state and rules belong in native C++. `cybersand::World` supplies that authority through `CyberNativeCellWorld`. Desktop selects the GDScript fallback when the native class is absent; Web requires native support. The alternatives are not synchronized authorities and do not promise identical Water behavior. **Approved, incomplete:** separate SimulationCore, storage, scheduler and bridge responsibilities. World still combines several of them. A class called SimulationCore is not required to make native authority real, and renaming World would not complete the [module boundaries](../architecture/module-boundaries.md). Source: [World](../../native/include/cybersand/world.hpp), [desktop selector](../../godot/scripts/simulation_worker.gd), [Web owner](../../godot/scripts/web_demo_controller.gd). Actual platform evidence is separate in the [validation ledger](../reference/validation-evidence.md)."
+        },
+        {
+          "rank": 5,
+          "score": 14.226087,
+          "path": "systems/solid-detachment.md",
+          "title": "Native structural detachment and conservative local displacement",
+          "heading": "Native structural detachment > Conservative displacement and the GCR interface",
+          "part": 1,
+          "text": "Document: Native structural detachment and conservative local displacement\nPath: systems/solid-detachment.md\ndocument-kind: contract\nstatus: Current\nscope: Opt-in single native aggregate, asynchronous ownership, compound Rapier motion and bounded conservative Sand/Water contact; draft implementation, not full issue acceptance\ncanonical-for: [native-structural-detachment-runtime, conservative-detachment-displacement]\nlast-reviewed: 2026-11-01\nSection: Native structural detachment > Conservative displacement and the GCR interface\nThe strict policy is selected only by diagnostic setup `conservative_displacement=true`; the detachment session selects it by default. It replaces **all** ejection attempts in that session. It never falls back to the permissive ordinary direct relocation. The ordinary body interface remains 11 input / 9 result floats, so GCR need not change its packed protocol. [`conservative_displacement_adapter.inc`](../../godot/native_extension/conservative_displacement_adapter.inc) validates a contact normal, ownership, full cell-square geometry and a bounded vacancy route. [`World::conservative_displace_cells`](../../native/src/world_conservative_displacement.inc) revalidates tick, optional active aggregate lease, every expected tuple, masks, residency, inclusion, policy and thermal capacity before changing any cell. | Rule | Implemented bound / refusal | |---|---| | Path | Two to five distinct positions, at most four cardinal one-cell parcel moves; no cycles. | | Search | Deterministic breadth-first depth four using fixed 81-site scratch; no wider ejection-radius tuning. | | Direction | Each edge has nonnegative projection on the outward normal; the complete path has positive outward progress. | | Parcels | Ambient Sand or ordinary FreeMass Water; no pressure/inertial sidecars, gas, reactive or unsupported material. | | Destination | Full closed unit square has more than `1e-6` cell separation from every current oriented proxy rectangle, and no transient swept/body mask. Exact touch and ambiguous geometry refuse. | | Source | Exact source mask ownership; overlap with a foreign body's square geometry refuses even when first-writer mask sampling hides it. Sibling shapes of the active aggregate share physical ownership. | | Terminal | Canonical ambient Empty, without hidden state or temperature to overwrite. | | Per sample | At most 64 search attempts and 320 touched-coordinate slots. Every source, intermediate and terminal of an accepted path is reserved across repeated preparations of that sample. | | Commit | Shift the vacancy backwards through ordinary `move_cell`, preserving each parcel's material, semantic state and temperature and all dirty/activity/discovery bookkeeping. Scheduling epochs update normally. | There is no allocation in search or admitted chain commit. Resident chunks and any needed thermal fields are preflighted. Expected refusals change no payload. An unexpected commit exception quarantines the World and reports actual partial progress; it is not safe to retry it as an ordinary refusal. **Force/torque ownership:** detachment supplies geometry and an ownership lease. The existing cellular coupling supplies exactly one ordinary contact reaction, not one reaction per shifted parcel. The shared Rapier bridge reduces the proxy results to one bounded aggregate correction and applies each existing impulse at its rotated proxy centre, preserving attributable off-centre torque. Duplicate, mixed, incomplete or stale samples refuse before Rapier mutation. Age scaling, correction age and opposing-velocity"
+        }
+      ]
+    },
+    {
+      "id": "SOL281-002",
+      "query": "Does conservative chain displacement solve packed granular penetration or alter ordinary GCR forces?",
+      "canonical": [
+        "systems/solid-detachment.md",
+        "architecture/rigid-body-and-cellular-coupling.md"
+      ],
+      "facts": [
+        "Only opt-in detachment changes displacement, with at most four adjacent parcel moves and full-square clearance.",
+        "Ordinary11/9 ABI and GCR force/torque ownership remain. Dense-bed resistance is not solved."
+      ],
+      "sources": [
+        "../godot/native_extension/conservative_displacement_adapter.inc",
+        "../native/src/world_conservative_displacement.inc"
+      ],
+      "canonical_rank": 1,
+      "hits": [
+        {
+          "rank": 1,
+          "score": 30.425147,
+          "path": "systems/solid-detachment.md",
+          "title": "Native structural detachment and conservative local displacement",
+          "heading": "Native structural detachment > Conservative displacement and the GCR interface",
+          "part": 2,
+          "text": "Document: Native structural detachment and conservative local displacement\nPath: systems/solid-detachment.md\ndocument-kind: contract\nstatus: Current\nscope: Opt-in single native aggregate, asynchronous ownership, compound Rapier motion and bounded conservative Sand/Water contact; draft implementation, not full issue acceptance\ncanonical-for: [native-structural-detachment-runtime, conservative-detachment-displacement]\nlast-reviewed: 2026-11-01\nSection: Native structural detachment > Conservative displacement and the GCR interface\nhandling use the ordinary bridge policy. No new friction, bearing gain, yielding law or alternate motion authority is introduced. GCR remains responsible for normal response, friction and granular yielding; accepted GCR integration needs its own combined-source qualification. Exact material accounting does **not** establish calibrated momentum/energy conservation. This bounded corrective rearrangement is not a bulk granular solver. Fully buried contacts without a nearby admissible vacancy remain unresolved, retain all material, and use the existing contact response. The dedicated worker refuses native-only reset/scenario replacement for its entire session. Reset joins that worker and retires the Rapier body together. A copied native failure latches the session stopped, including mask priming and held-tick waits; unpause cannot bypass the latch. An unexpected native chain quarantine stops preparation before further mask mutation or force publication. Compound feedback admits only forward modular sample identities, preventing a nonconsecutive replay from applying an impulse twice."
+        },
+        {
+          "rank": 2,
+          "score": 25.453866,
+          "path": "systems/solid-detachment.md",
+          "title": "Native structural detachment and conservative local displacement",
+          "heading": "Native structural detachment > Conservative displacement and the GCR interface",
+          "part": 1,
+          "text": "Document: Native structural detachment and conservative local displacement\nPath: systems/solid-detachment.md\ndocument-kind: contract\nstatus: Current\nscope: Opt-in single native aggregate, asynchronous ownership, compound Rapier motion and bounded conservative Sand/Water contact; draft implementation, not full issue acceptance\ncanonical-for: [native-structural-detachment-runtime, conservative-detachment-displacement]\nlast-reviewed: 2026-11-01\nSection: Native structural detachment > Conservative displacement and the GCR interface\nThe strict policy is selected only by diagnostic setup `conservative_displacement=true`; the detachment session selects it by default. It replaces **all** ejection attempts in that session. It never falls back to the permissive ordinary direct relocation. The ordinary body interface remains 11 input / 9 result floats, so GCR need not change its packed protocol. [`conservative_displacement_adapter.inc`](../../godot/native_extension/conservative_displacement_adapter.inc) validates a contact normal, ownership, full cell-square geometry and a bounded vacancy route. [`World::conservative_displace_cells`](../../native/src/world_conservative_displacement.inc) revalidates tick, optional active aggregate lease, every expected tuple, masks, residency, inclusion, policy and thermal capacity before changing any cell. | Rule | Implemented bound / refusal | |---|---| | Path | Two to five distinct positions, at most four cardinal one-cell parcel moves; no cycles. | | Search | Deterministic breadth-first depth four using fixed 81-site scratch; no wider ejection-radius tuning. | | Direction | Each edge has nonnegative projection on the outward normal; the complete path has positive outward progress. | | Parcels | Ambient Sand or ordinary FreeMass Water; no pressure/inertial sidecars, gas, reactive or unsupported material. | | Destination | Full closed unit square has more than `1e-6` cell separation from every current oriented proxy rectangle, and no transient swept/body mask. Exact touch and ambiguous geometry refuse. | | Source | Exact source mask ownership; overlap with a foreign body's square geometry refuses even when first-writer mask sampling hides it. Sibling shapes of the active aggregate share physical ownership. | | Terminal | Canonical ambient Empty, without hidden state or temperature to overwrite. | | Per sample | At most 64 search attempts and 320 touched-coordinate slots. Every source, intermediate and terminal of an accepted path is reserved across repeated preparations of that sample. | | Commit | Shift the vacancy backwards through ordinary `move_cell`, preserving each parcel's material, semantic state and temperature and all dirty/activity/discovery bookkeeping. Scheduling epochs update normally. | There is no allocation in search or admitted chain commit. Resident chunks and any needed thermal fields are preflighted. Expected refusals change no payload. An unexpected commit exception quarantines the World and reports actual partial progress; it is not safe to retry it as an ordinary refusal. **Force/torque ownership:** detachment supplies geometry and an ownership lease. The existing cellular coupling supplies exactly one ordinary contact reaction, not one reaction per shifted parcel. The shared Rapier bridge reduces the proxy results to one bounded aggregate correction and applies each existing impulse at its rotated proxy centre, preserving attributable off-centre torque. Duplicate, mixed, incomplete or stale samples refuse before Rapier mutation. Age scaling, correction age and opposing-velocity"
+        },
+        {
+          "rank": 3,
+          "score": 14.67918,
+          "path": "operations/cybersand-codex-development-handover.md",
+          "title": "Development handover",
+          "heading": "Development handover > SOL281 current-main branch — 2026-11-01",
+          "part": 1,
+          "text": "Document: Development handover\nPath: operations/cybersand-codex-development-handover.md\ndocument-kind: guide\nstatus: Current\nscope: Short onboarding sequence and checkpoint protocol; product intent, source identity and contracts have canonical homes\ncanonical-for: [development-onboarding]\nlast-reviewed: 2026-11-01\nSection: Development handover > SOL281 current-main branch — 2026-11-01\nThe owner authorized implementation and a draft PR from current main for [structural detachment](../systems/solid-detachment.md), preserving archive #283 at `254235ec` and leaving merge approval to the owner. Draft [PR #347](https://github.com/techrote/cybersand/pull/347) starts from accepted main `a8f08a67` with production R and PLAY #331 intact. Source `8e86ffd4` passed the scoped Linux/Windows host matrix; `bdd751dc` publishes its qualified development runtimes and original evidence. Its [qualification ledger](../audits/2026-11-01-sol281-current-main.md) records selective provenance, negative results, source/runtime gates and unresolved physics. Do not promote local conservative chains as a packed-bed solution or copy GCR/PLAY implementations into this branch. The 11/9 coupling ABI remains. Dense resistance/penetration and representative GPU pacing remain unpassed; active restoration, fracture and normal gameplay remain deferred. The 2026-11-01 [CI scheduling qualification](../audits/2026-11-01-ci-scheduling-qualification.md) starts from main `15b3a401`. Expected regression cost now determines grouping while unchanged watchdogs and explicit incomplete-work failure protect correctness. The [workflow audit](../audits/2026-11-01-ci-workflow-audit.md) covers all 24 workflows. The owner subsequently authorized final independent review, ready-for-review qualification, merge only after all required exact-head gates pass, and post-merge verification. [PR #340](https://github.com/techrote/cybersand/pull/340) records the final source/run identities and integration disposition; the earlier draft run alone is not merge acceptance. Main development remains paused."
+        },
+        {
+          "rank": 4,
+          "score": 14.34267,
+          "path": "systems/solid-detachment.md",
+          "title": "Native structural detachment and conservative local displacement",
+          "heading": "Native structural detachment > Implemented scope and source authority",
+          "part": 1,
+          "text": "Document: Native structural detachment and conservative local displacement\nPath: systems/solid-detachment.md\ndocument-kind: contract\nstatus: Current\nscope: Opt-in single native aggregate, asynchronous ownership, compound Rapier motion and bounded conservative Sand/Water contact; draft implementation, not full issue acceptance\ncanonical-for: [native-structural-detachment-runtime, conservative-detachment-displacement]\nlast-reviewed: 2026-11-01\nSection: Native structural detachment > Implemented scope and source authority\n**Current experimental source:** the `sol-detach-001-current-main` branch starts from accepted main and fast-forwarded to `a8f08a67fea3c58f6df7473cbae1831334fcc04e` before its first implementation commit, retaining production render-copy #344 and accepted PLAY #331. It recovers the finite native ownership kernel and compound host from frozen #283, then adds a local conservative displacement transaction. The [dated qualification record](../audits/2026-11-01-sol281-current-main.md) owns exact executed sources, runtime hashes, failures and platform outcomes. Source availability alone is not a passing physics or platform gate. The frozen archive remains at `254235ec4c3d58782bba44b478caca86bf57c856`. Documentation predecessor #282 remains unmerged. Neither branch is rebased, merged or used as the production baseline. Historical B=289 ejection is still **Rejected / NO-GO**; render-retention experiments are not imported. Current-main ordinary granular, liquid, render and independent-body policies remain in force. The playable diagnostic starts with actual native RedBrick terrain, an asymmetric crown, two open geometric regions, a cuttable trunk, a floor and an unrelated control structure. A real native cut triggers local support discovery. Exactly 520 eligible cells can become one six-shape Rapier aggregate. This is an explicit local diagnostic trigger, not automatic general gameplay fracture."
+        },
+        {
+          "rank": 5,
+          "score": 13.587484,
+          "path": "architecture/rigid-body-and-cellular-coupling.md",
+          "title": "Rigid-body and cellular coupling",
+          "heading": "Rigid-body and cellular coupling > Opt-in detached compounds — 2026-11-01",
+          "part": 1,
+          "text": "Document: Rigid-body and cellular coupling\nPath: architecture/rigid-body-and-cellular-coupling.md\ndocument-kind: contract\nstatus: Current\nscope: Rectangle occupancy, bounded displacement/impulses and Rapier hard contact; generalized physics and exact replay remain absent\ncanonical-for: [rigid-body-cellular-coupling]\nlast-reviewed: 2026-10-22\nSection: Rigid-body and cellular coupling > Opt-in detached compounds — 2026-11-01\n**Current experimental source:** the [structural detachment host](../systems/solid-detachment.md) publishes an exact rectangle union for one genuine native-derived Rapier body. Its opt-in strict contact policy uses at most four one-cell cardinal parcel moves and requires full unit-square clearance against every oriented proxy. Ordinary independent-body ejection, material/Water rules and the11/9 packed ABI remain unchanged. The shared Rapier bridge owns both ordinary and compound response; the latter applies existing proxy impulses at rotated offsets and one weighted correction, refusing duplicate/mixed/stale samples. This is not a new bearing/friction law or a claim that dense-bed penetration is solved."
+        }
+      ]
+    },
+    {
+      "id": "SOL281-003",
+      "query": "How can I cut a native tree and inspect packed Sand and mixed Water contacts in the detachment lab?",
+      "canonical": [
+        "systems/solid-detachment.md"
+      ],
+      "facts": [
+        "Run source-matched solid_detachment_lab.tscn.",
+        "Space cuts;1-4 environments;W workers;X excavation;I inspection."
+      ],
+      "sources": [
+        "../godot/scripts/solid_detachment_lab.gd"
+      ],
+      "canonical_rank": 1,
+      "hits": [
+        {
+          "rank": 1,
+          "score": 33.031906,
+          "path": "systems/solid-detachment.md",
+          "title": "Native structural detachment and conservative local displacement",
+          "heading": "Native structural detachment > Diagnostic scene and controls",
+          "part": 1,
+          "text": "Document: Native structural detachment and conservative local displacement\nPath: systems/solid-detachment.md\ndocument-kind: contract\nstatus: Current\nscope: Opt-in single native aggregate, asynchronous ownership, compound Rapier motion and bounded conservative Sand/Water contact; draft implementation, not full issue acceptance\ncanonical-for: [native-structural-detachment-runtime, conservative-detachment-displacement]\nlast-reviewed: 2026-11-01\nSection: Native structural detachment > Diagnostic scene and controls\nUse a freshly built source-matched extension and pinned Godot 4.7/Rapier: ```text godot --path godot res://solid_detachment_lab.tscn ``` | Control | Action | |---|---| | 1 / 2 / 3 / 4 | Reset into dry / packed Sand / partially embedded Sand / mixed Sand–Water surroundings. | | Space | Apply the native support cut and attempt the fenced release. | | P | Pause/resume. | | R | Reset the whole session. | | W | Reset with one or four native workers. | | X | Excavate supporting terrain through the native owner. | | I | Request copied conservation/contact inspection. | | Escape | Exit. | The lab consumes immutable material packets and acknowledges only successfully consumed publications. It draws aggregate members from the actual body transform. Terrain edits refresh derived hard collision before another Rapier step. The lab is an inspectable diagnostic, not normal launcher/gameplay acceptance."
+        },
+        {
+          "rank": 2,
+          "score": 18.562913,
+          "path": "systems/solid-detachment.md",
+          "title": "Native structural detachment and conservative local displacement",
+          "heading": "Native structural detachment > Implemented scope and source authority",
+          "part": 1,
+          "text": "Document: Native structural detachment and conservative local displacement\nPath: systems/solid-detachment.md\ndocument-kind: contract\nstatus: Current\nscope: Opt-in single native aggregate, asynchronous ownership, compound Rapier motion and bounded conservative Sand/Water contact; draft implementation, not full issue acceptance\ncanonical-for: [native-structural-detachment-runtime, conservative-detachment-displacement]\nlast-reviewed: 2026-11-01\nSection: Native structural detachment > Implemented scope and source authority\n**Current experimental source:** the `sol-detach-001-current-main` branch starts from accepted main and fast-forwarded to `a8f08a67fea3c58f6df7473cbae1831334fcc04e` before its first implementation commit, retaining production render-copy #344 and accepted PLAY #331. It recovers the finite native ownership kernel and compound host from frozen #283, then adds a local conservative displacement transaction. The [dated qualification record](../audits/2026-11-01-sol281-current-main.md) owns exact executed sources, runtime hashes, failures and platform outcomes. Source availability alone is not a passing physics or platform gate. The frozen archive remains at `254235ec4c3d58782bba44b478caca86bf57c856`. Documentation predecessor #282 remains unmerged. Neither branch is rebased, merged or used as the production baseline. Historical B=289 ejection is still **Rejected / NO-GO**; render-retention experiments are not imported. Current-main ordinary granular, liquid, render and independent-body policies remain in force. The playable diagnostic starts with actual native RedBrick terrain, an asymmetric crown, two open geometric regions, a cuttable trunk, a floor and an unrelated control structure. A real native cut triggers local support discovery. Exactly 520 eligible cells can become one six-shape Rapier aggregate. This is an explicit local diagnostic trigger, not automatic general gameplay fracture."
+        },
+        {
+          "rank": 3,
+          "score": 18.533705,
+          "path": "systems/solid-detachment.md",
+          "title": "Native structural detachment and conservative local displacement",
+          "heading": "Native structural detachment > Qualification and remaining limits",
+          "part": 1,
+          "text": "Document: Native structural detachment and conservative local displacement\nPath: systems/solid-detachment.md\ndocument-kind: contract\nstatus: Current\nscope: Opt-in single native aggregate, asynchronous ownership, compound Rapier motion and bounded conservative Sand/Water contact; draft implementation, not full issue acceptance\ncanonical-for: [native-structural-detachment-runtime, conservative-detachment-displacement]\nlast-reviewed: 2026-11-01\nSection: Native structural detachment > Qualification and remaining limits\nMeasurements separate sampled healthy worker/native publications, main-thread consume/publish segments, manual Rapier stepping and collider refresh. Sampled worker totals do not represent every native tick. These headless metrics cannot establish graphical frame pacing or target-GPU acceptance. The complete source-matched Linux/Windows matrix at `8e86ffd4` passed on GitHub-hosted runners, including workers 1 and 4. Its qualified development runtimes and original six-cohort evidence were published in `bdd751dc`. The dated audit records exact identities and preserves the earlier failed Windows checkout attempt. Passing populated cases establish material quantities, aggregate payload, ownership and actual interaction; they do not establish acceptable dense resistance. Live penetration depth/overlap area and calibrated contact work are not measured. Dry impact produces real rotation and horizontal displacement; a calibrated no-slip rolling criterion is not qualified. Focused native ownership and displacement tests, deterministic frozen contacts, actual Rapier motion/failure/worker-replacement cases, populated environments, excavation and shared response tests are distinct gates. Frozen #338 contacts retain their original source metadata and negative outcomes; four new shallow boundary controls demonstrate real multi-parcel movement. No historical result is relabelled as a current execution. The scoped GitHub-hosted workflow authenticates build inputs and all six actual Linux/Windows cohorts, then reopens their original evidence before publishing the two development runtimes on this draft branch. Publication requires an exact branch-head lease; its commit is a child of the qualified source. Provenance continues to name the original build/execution commit and tree. Raw Windows evidence retains its original line endings. A later metadata commit does not become a newly executed physics source by relabelling the records. **Deferred:** reactive Wood/bark, heterogeneous bonds, arbitrary fracture, multiple persistent aggregates, transformed rest-to-cell restoration, normal gameplay integration and Web qualification. Sleeping is still aggregate ownership. The existing inactive rollback is not dynamic desoliding. Representative hardware GPU pacing and human physical acceptance remain separate from headless host timing. The dated audit assigns each #281 gate; neither #281 nor #12 is closed by this functional increment."
+        },
+        {
+          "rank": 4,
+          "score": 17.146217,
+          "path": "systems/solid-detachment.md",
+          "title": "Native structural detachment and conservative local displacement",
+          "heading": "Native structural detachment > Conservative displacement and the GCR interface",
+          "part": 1,
+          "text": "Document: Native structural detachment and conservative local displacement\nPath: systems/solid-detachment.md\ndocument-kind: contract\nstatus: Current\nscope: Opt-in single native aggregate, asynchronous ownership, compound Rapier motion and bounded conservative Sand/Water contact; draft implementation, not full issue acceptance\ncanonical-for: [native-structural-detachment-runtime, conservative-detachment-displacement]\nlast-reviewed: 2026-11-01\nSection: Native structural detachment > Conservative displacement and the GCR interface\nThe strict policy is selected only by diagnostic setup `conservative_displacement=true`; the detachment session selects it by default. It replaces **all** ejection attempts in that session. It never falls back to the permissive ordinary direct relocation. The ordinary body interface remains 11 input / 9 result floats, so GCR need not change its packed protocol. [`conservative_displacement_adapter.inc`](../../godot/native_extension/conservative_displacement_adapter.inc) validates a contact normal, ownership, full cell-square geometry and a bounded vacancy route. [`World::conservative_displace_cells`](../../native/src/world_conservative_displacement.inc) revalidates tick, optional active aggregate lease, every expected tuple, masks, residency, inclusion, policy and thermal capacity before changing any cell. | Rule | Implemented bound / refusal | |---|---| | Path | Two to five distinct positions, at most four cardinal one-cell parcel moves; no cycles. | | Search | Deterministic breadth-first depth four using fixed 81-site scratch; no wider ejection-radius tuning. | | Direction | Each edge has nonnegative projection on the outward normal; the complete path has positive outward progress. | | Parcels | Ambient Sand or ordinary FreeMass Water; no pressure/inertial sidecars, gas, reactive or unsupported material. | | Destination | Full closed unit square has more than `1e-6` cell separation from every current oriented proxy rectangle, and no transient swept/body mask. Exact touch and ambiguous geometry refuse. | | Source | Exact source mask ownership; overlap with a foreign body's square geometry refuses even when first-writer mask sampling hides it. Sibling shapes of the active aggregate share physical ownership. | | Terminal | Canonical ambient Empty, without hidden state or temperature to overwrite. | | Per sample | At most 64 search attempts and 320 touched-coordinate slots. Every source, intermediate and terminal of an accepted path is reserved across repeated preparations of that sample. | | Commit | Shift the vacancy backwards through ordinary `move_cell`, preserving each parcel's material, semantic state and temperature and all dirty/activity/discovery bookkeeping. Scheduling epochs update normally. | There is no allocation in search or admitted chain commit. Resident chunks and any needed thermal fields are preflighted. Expected refusals change no payload. An unexpected commit exception quarantines the World and reports actual partial progress; it is not safe to retry it as an ordinary refusal. **Force/torque ownership:** detachment supplies geometry and an ownership lease. The existing cellular coupling supplies exactly one ordinary contact reaction, not one reaction per shifted parcel. The shared Rapier bridge reduces the proxy results to one bounded aggregate correction and applies each existing impulse at its rotated proxy centre, preserving attributable off-centre torque. Duplicate, mixed, incomplete or stale samples refuse before Rapier mutation. Age scaling, correction age and opposing-velocity"
+        },
+        {
+          "rank": 5,
+          "score": 16.89561,
+          "path": "systems/solid-detachment.md",
+          "title": "Native structural detachment and conservative local displacement",
+          "heading": "Native structural detachment > Conservative displacement and the GCR interface",
+          "part": 2,
+          "text": "Document: Native structural detachment and conservative local displacement\nPath: systems/solid-detachment.md\ndocument-kind: contract\nstatus: Current\nscope: Opt-in single native aggregate, asynchronous ownership, compound Rapier motion and bounded conservative Sand/Water contact; draft implementation, not full issue acceptance\ncanonical-for: [native-structural-detachment-runtime, conservative-detachment-displacement]\nlast-reviewed: 2026-11-01\nSection: Native structural detachment > Conservative displacement and the GCR interface\nhandling use the ordinary bridge policy. No new friction, bearing gain, yielding law or alternate motion authority is introduced. GCR remains responsible for normal response, friction and granular yielding; accepted GCR integration needs its own combined-source qualification. Exact material accounting does **not** establish calibrated momentum/energy conservation. This bounded corrective rearrangement is not a bulk granular solver. Fully buried contacts without a nearby admissible vacancy remain unresolved, retain all material, and use the existing contact response. The dedicated worker refuses native-only reset/scenario replacement for its entire session. Reset joins that worker and retires the Rapier body together. A copied native failure latches the session stopped, including mask priming and held-tick waits; unpause cannot bypass the latch. An unexpected native chain quarantine stops preparation before further mask mutation or force publication. Compound feedback admits only forward modular sample identities, preventing a nonconsecutive replay from applying an impulse twice."
+        }
+      ]
+    }
+  ]
+}

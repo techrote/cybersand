@@ -1,0 +1,11 @@
+2026-11-04T10:42:00.6710294Z [36;1mtimeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 tools/material_catalogue/compatibility.py --check[0m
+2026-11-04T10:42:00.6711273Z [36;1mtimeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 tools/material_catalogue/compiler.py --check[0m
+2026-11-04T10:42:00.6712289Z [36;1mtimeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 -m unittest discover -s tools/material_catalogue -p 'test_*.py'[0m
+2026-11-04T10:42:00.6713520Z [36;1mtimeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 tools/material_catalogue/check_native_parity.py --output build/material-catalogue/native-parity.json[0m
+2026-11-04T10:42:00.6734082Z shell: /usr/bin/bash -e {0}
+2026-11-04T10:42:00.6734383Z ##[endgroup]
+2026-11-04T10:42:00.8223791Z compatibility: native/src/world.cpp: LF source-byte drift (legacy movement, chemistry, thermal and scheduling authority); expected b7a129f44eccc7c33dbd2f0d84802ab096140dcaa9b5b3a83d45dd3bf85fbad1, got 91cecf308d01ef214f491f3dc1f353f10c9db17a55162b983fc4ecf80e6363e6. #353-A preserves this consumer; cutover/identity transition needs separate review
+2026-11-04T10:42:00.8308196Z ##[error]Process completed with exit code 1.
+2026-11-04T10:42:00.8438326Z ##[group]Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+2026-11-04T10:42:00.8438747Z with:
+2026-11-04T10:42:00.8438992Z   name: material-catalogue-parity-41815830370-1

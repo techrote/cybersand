@@ -1,0 +1,71 @@
+{
+  "schema": "cybersand.sol364.independent-build-review.v1",
+  "source": {
+    "sha": "9edc4f8f7d8cd8fc65119d176c9e1981ab6ea77d",
+    "tree": "b5baf8b23ff947c2d7b70e69745c10f18fbe9ebe"
+  },
+  "run_id": "41815817333",
+  "run_attempt": "1",
+  "target": "windows",
+  "status": "passed-build-verification",
+  "scope": "Cross-built Windows DLL; actual Windows runtime/MSVC execution not established by this build artifact.",
+  "artifact": {
+    "id": 13314478289,
+    "sha256": "87cca289a5e1d1ad6dff5e76794fdaf464d4ada806fbfad14db3bedc56fcc04c"
+  },
+  "runtime": {
+    "filename": "cybersand_native.windows.x86_64.dll",
+    "sha256": "a5e616c0e72eee56c84f66151499d401dd3f4fb7faab347adbc6335493fefd61",
+    "size": 4925952
+  },
+  "compiler": "clang version 23.1.0 (https://github.com/llvm/llvm-project.git ea7d852a70e8bdfaf601d6626a760f9771b2c4b4)\nTarget: x86_64-w64-windows-gnu\nThread model: posix\nInstalledDir: /home/runner/work/_temp/llvm-mingw/bin\nConfiguration file: /home/runner/work/_temp/llvm-mingw/bin/x86_64-w64-windows-gnu.cfg",
+  "bindings": {
+    "filename": "libgodot-cpp.windows.template_debug.x86_64.a",
+    "revision": "101ae38034304346a46ea9ea84ae156d3e860496",
+    "sha256": "c5693178d3e02d3e6a24d13cb46406a63a13e0ab1d261a0e59fc9e5ce927a130"
+  },
+  "canonical_execution_inputs": 1107,
+  "canonical_native_inputs": 88,
+  "source_inventory_recomputed_from_exact_git_objects": true,
+  "raw_checkout_unchanged": true,
+  "source_reader_sha256": "07a841b4bf0c67572776eb468a2e289eb6a518a1175fa4e826ac46d17a4b36ec",
+  "publisher_reader_sha256": "87752af50352843da6f83fc6c51cb0f77c2371f04cf7f8d18d026611418c5198",
+  "commands": {
+    "prepare": {
+      "status": "passed",
+      "returncode": 0,
+      "complete": true,
+      "natural_completion": true,
+      "timed_out": false,
+      "elapsed_seconds": 5.191676449999989,
+      "log_sha256": "76379273f8e05743b50aab80816c65e60d27848ea2b56ae43e04593d6d30cacd"
+    },
+    "compiler": {
+      "status": "passed",
+      "returncode": 0,
+      "complete": true,
+      "natural_completion": true,
+      "timed_out": false,
+      "elapsed_seconds": 4.969510600000007,
+      "log_sha256": "9ca396f19736d38e72ef7295540c9e710f991dff53c6bae271831262aff9b87e"
+    },
+    "bindings": {
+      "status": "passed",
+      "returncode": 0,
+      "complete": true,
+      "natural_completion": true,
+      "timed_out": false,
+      "elapsed_seconds": 181.88039365799997,
+      "log_sha256": "b04594636f3c5b45e14be9caeb92d5abae3258c152221c20ef021d72b699255a"
+    },
+    "extension": {
+      "status": "passed",
+      "returncode": 0,
+      "complete": true,
+      "natural_completion": true,
+      "timed_out": false,
+      "elapsed_seconds": 41.78982978099998,
+      "log_sha256": "1bb60f8d8e4dc60e97f05a2bf84ae63a0940cc318b3afd480d2975cfdde5e3f0"
+    }
+  }
+}

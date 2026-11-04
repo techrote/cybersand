@@ -1,0 +1,48 @@
+{
+  "cohorts": [
+    {
+      "cases": 11,
+      "cohort": "core",
+      "report": "docs/audits/sol281-20261103/hosted/9edc4f8f7d8cd8fc65119d176c9e1981ab6ea77d/cohorts/windows/core/report.json",
+      "report_sha256": "e8e2d8210ec47fafb1148da9d39b6865fc284e1c9f984c8221ad5b605c45d5da"
+    },
+    {
+      "cases": 11,
+      "cohort": "contact-w1",
+      "report": "docs/audits/sol281-20261103/hosted/9edc4f8f7d8cd8fc65119d176c9e1981ab6ea77d/cohorts/windows/contact-w1/report.json",
+      "report_sha256": "73e63970909d8990492d0d3d1c85ea29e62ead90285f16c3d119c6cdf18899eb"
+    },
+    {
+      "cases": 11,
+      "cohort": "contact-w4",
+      "report": "docs/audits/sol281-20261103/hosted/9edc4f8f7d8cd8fc65119d176c9e1981ab6ea77d/cohorts/windows/contact-w4/report.json",
+      "report_sha256": "e963e70aa5091de0fc1cf87c68947a5b7888088bf16dd99286c92e63b75ce73e"
+    },
+    {
+      "cases": 4,
+      "cohort": "mechanism",
+      "report": "docs/audits/sol281-20261103/hosted/9edc4f8f7d8cd8fc65119d176c9e1981ab6ea77d/cohorts/windows/mechanism/report.json",
+      "report_sha256": "e69070b1c2b89a5804220e6e7ed5f521840d126fe1c2d095ccd96c7e8bb3f32e"
+    }
+  ],
+  "completed": true,
+  "platform": "windows",
+  "qualification": "docs/audits/sol281-20261103/hosted/9edc4f8f7d8cd8fc65119d176c9e1981ab6ea77d/qualification.json",
+  "ref": "refs/heads/sol-detach-001-current-main",
+  "repository": "techrote/cybersand",
+  "run_attempt": "1",
+  "run_id": "41815817333",
+  "runtime": {
+    "artifact": "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+    "sha256": "a5e616c0e72eee56c84f66151499d401dd3f4fb7faab347adbc6335493fefd61",
+    "size": 4925952
+  },
+  "schema": "cybersand.sol281.platform-publication.v1",
+  "scope": "All four SOL-281 actual-host cohorts on this target OS, including workers 1 and 4, native structural ownership, lifecycle, compound response, conservative replay, exact rotated geometry, registered unilateral-contact mechanisms, repeated populated conservation and ordinary compatibility controls. Complete dense-contact physical quality, general restoration/fracture/gameplay, full repository CI and representative GPU pacing remain separate gates.",
+  "source": {
+    "sha": "9edc4f8f7d8cd8fc65119d176c9e1981ab6ea77d",
+    "tree": "b5baf8b23ff947c2d7b70e69745c10f18fbe9ebe"
+  },
+  "status": "passed",
+  "workflow_run": "https://github.com/techrote/cybersand/actions/runs/41815817333"
+}

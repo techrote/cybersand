@@ -65,7 +65,7 @@ case "$suite" in
     ;;
   soliding-asan)
     # Preserve the resource-characterised settled-region build, followed by
-    # the full eight-binary sanitizer contract suite.
+    # the full ten-binary sanitizer contract suite.
     native_command build-settled-regions-sanitized native_compile_seconds /usr/bin/time -v make build/test_settled_regions_sanitized
     native_command build-soliding-sanitized native_compile_seconds make \
       build/test_soliding_lifecycle_sanitized \
@@ -75,7 +75,9 @@ case "$suite" in
       build/test_stage3b_runtime_storage_sanitized \
       build/test_stage3b_bounded_spatial_index_sanitized \
       build/test_stage3b_sparse_mutation_witness_sanitized \
-      build/test_stage3b_sparse_activity_deadline_sanitized
+      build/test_stage3b_sparse_activity_deadline_sanitized \
+      build/test_solid_detachment_sanitized \
+      build/test_conservative_displacement_sanitized
     native_command soliding-sanitize native_case_seconds env ASAN_OPTIONS=detect_leaks=0:strict_string_checks=1 UBSAN_OPTIONS=halt_on_error=1 make soliding-sanitize
     ;;
 esac

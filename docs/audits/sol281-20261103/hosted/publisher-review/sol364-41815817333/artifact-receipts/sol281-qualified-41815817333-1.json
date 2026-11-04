@@ -1,0 +1,16 @@
+{
+  "id": 13315971161,
+  "name": "sol281-qualified-41815817333-1",
+  "size_in_bytes": 3116,
+  "digest": "sha256:f14ac5150fd965988b774f0661f69e09d81f564260a75bfe1de79b63a55b4d61",
+  "extracted_to": "/workspace/scratch/b45094545f38/sol364-hosted-review-41815817333/reducer",
+  "file_count": 1,
+  "files": [
+    {
+      "path": "qualification.json",
+      "size": 103656,
+      "sha256": "f1da5f52943e044ea9e5c57bca0904803a940a091d9292b2a88bb6098b9c7651"
+    }
+  ],
+  "archive_authentication": "Exact GitHub Actions artifact digest and byte size verified before extraction"
+}

@@ -1,0 +1,103 @@
+{
+  "schema": "cybersand.sol281.final-documentation-validation.v1",
+  "status": "passed",
+  "executed_source": "749fb8b597ad866f7535f26442e904207c4f7611",
+  "executed_tree": "77a7bc2ed4d1f7ab339dd4a16fd082fccf56f0ce",
+  "publication_parent": "89d2eb6d280183e495a94b559776dfd8f1cdc196",
+  "publication_tree": "2c52766489573a7db8dcba162d17daac4dbe6acc",
+  "date_utc": "2026-11-04",
+  "scope": "Seven canonical/navigation/evidence Markdown files plus compact audit packet; documentation/evidence-only working delta on the exact publication parent. No newly executed runtime or full ready-PR CI is claimed.",
+  "validation_checkout": "/workspace/scratch/fc488e61157a/cybersand-validation-workspace/source",
+  "companion_workspace_commit": "6a58311982941b75f46e22109a0829e5acb83c7e",
+  "canonical_document_delta": [
+    {
+      "path": "docs/README.md",
+      "bytes": 52053,
+      "sha256": "1cc9d66f17a15cb8dd1792c574fd7ee6c841d5696247cd20898e95e23cdd8ca5"
+    },
+    {
+      "path": "docs/audits/2026-11-03-sol281-dense-contact.md",
+      "bytes": 22620,
+      "sha256": "73e860e783225202384f7f3ef4ee7c38f021329b1c9f489ec8e9303a5d39eef9"
+    },
+    {
+      "path": "docs/audits/2026-11-03-sol281-takeover.md",
+      "bytes": 15940,
+      "sha256": "3632ef8ca6849c2db1822a150bb88cb9a30fb1395fb6c3c001520c1fddf04345"
+    },
+    {
+      "path": "docs/operations/cybersand-codex-development-handover.md",
+      "bytes": 111446,
+      "sha256": "3f809d8241510f170dac4833770989bdc9d8397d37284b442b97e6de728a6edc"
+    },
+    {
+      "path": "docs/reference/retrieval-index.md",
+      "bytes": 56719,
+      "sha256": "858d639831bdc9106b7f66be09c4d2f0c49763bc72da1100984ee1ab87c53ee3"
+    },
+    {
+      "path": "docs/reference/status-and-roadmap.md",
+      "bytes": 132022,
+      "sha256": "9bb264bcf40d469c9b7f08822427d16f3e1cc1074f97ca9f047a746a3cf425a3"
+    },
+    {
+      "path": "docs/systems/solid-detachment.md",
+      "bytes": 27353,
+      "sha256": "e5437bec94c614f45dbd029d248baa51251a6de493926e901c0091e506e71ba0"
+    }
+  ],
+  "commands": [
+    {
+      "command": "python3 tools/ci/check_docs.py --json final-metadata-checks/docs.json",
+      "exit_code": 0,
+      "receipt": "final-docs.json"
+    },
+    {
+      "command": "python3 tools/ci/check_repository.py --json final-metadata-checks/provenance.json",
+      "exit_code": 0,
+      "receipt": "final-provenance.json"
+    },
+    {
+      "command": "python3 tools/ci/check_m11_consistency.py --json final-metadata-checks/m11.json",
+      "exit_code": 0,
+      "receipt": "final-m11.json"
+    },
+    {
+      "command": "python3 tools/docs/retrieval_eval.py --output final-metadata-checks/retrieval-default.json",
+      "exit_code": 0,
+      "receipt": "final-retrieval-default.json"
+    },
+    {
+      "command": "python3 tools/docs/retrieval_eval.py --queries docs/reference/retrieval-questions-sol281-contact.json --output final-metadata-checks/retrieval-contact.json",
+      "exit_code": 0,
+      "receipt": "final-retrieval-contact.json"
+    },
+    {
+      "command": "python3 tools/docs/retrieval_eval.py --queries docs/reference/retrieval-questions-sol281.json --output final-metadata-checks/retrieval-structural.json",
+      "exit_code": 0,
+      "receipt": "final-retrieval-structural.json"
+    }
+  ],
+  "commands_note": "Receipt paths are compact equivalents of the absolute scratch output paths; commands ran from the companion source checkout. No test thresholds or runner restrictions changed.",
+  "execution_input_continuity": {
+    "broad_inputs": 1089,
+    "native_inputs": 88,
+    "all_tracked_execution_checkout_bytes_match_publication_head": true,
+    "broad_canonical_json_sha256": "c43b11ff7e0700ce8068577020d8e7bb55e93188e4504c78125b1307d7abda16",
+    "native_canonical_json_sha256": "d6e1ed5ec5a46319875c02bf33cb32f1189ae997eda779850d23363ec521c753",
+    "executed_source_to_publication_scoped_delta": [
+      "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+      "godot/addons/cybersand_native/runtime-provenance.json",
+      "godot/addons/cybersand_native/runtime-provenance.linux.json"
+    ]
+  },
+  "local_provenance_limit": "All 18 runtime entries are unmaterialized LFS pointers in the local validation checkout. Local check confirms pins/pointer/provenance identity, not all runtime bytes. Publication CI 41748585125 independently passes the materialized requirement.",
+  "publication_ci": {
+    "run_id": 41748585125,
+    "source": "89d2eb6d280183e495a94b559776dfd8f1cdc196",
+    "conclusion": "success",
+    "receipt": "publication-documentation-ci.json"
+  },
+  "semantic_review": "Canonical hits are not answer correctness. The separately retained independent contact retrieval review checks all 18 expected facts against source and evidence; final prose review is separate.",
+  "self_reference_boundary": "This receipt binds exact Markdown bytes and the publication parent, not its own eventual commit. Evidence-only receipt/manifest completion does not change execution inputs. Final metadata-head CI is linked from PR #347 after publication."
+}

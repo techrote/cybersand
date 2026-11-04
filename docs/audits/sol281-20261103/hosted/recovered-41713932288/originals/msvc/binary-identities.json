@@ -1,0 +1,17 @@
+{
+  "solid_detachment": {
+    "path": "build/sol281/msvc-bin/test_solid_detachment.exe",
+    "size": 2883072,
+    "sha256": "F6F0D6128D6EBFFB91B44B42755F31384A3EFE843AB77DAEE1CBAADC1BF065C7"
+  },
+  "conservative_displacement": {
+    "path": "build/sol281/msvc-bin/test_conservative_displacement.exe",
+    "size": 2863104,
+    "sha256": "6943B74DDCEAD94012AD8A1F76AA9C1E89E1942F9EA881BF0BCD2425AEDDFDE3"
+  },
+  "solid_contact_geometry": {
+    "path": "build/sol281/msvc-bin/test_solid_contact_geometry.exe",
+    "size": 1431040,
+    "sha256": "EA183A0B7FB0E7FC6AD496736E3CEE4301E38585CD383139B24EF874D31385C5"
+  }
+}

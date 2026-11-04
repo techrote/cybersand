@@ -1,0 +1,527 @@
+{
+  "build_manifest_sha256": "05d82f2dcd2ffaddfc885d5e3f753a9b9755101890fd715cc74c5157b3efd029",
+  "checkout_inputs_unchanged": true,
+  "cohort": "mechanism",
+  "engine": {
+    "archive_algorithm": "sha256",
+    "archive_hash": "0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c",
+    "executables": {
+      "Godot_v4.7-stable_linux.x86_64": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75"
+    },
+    "version": "4.7.stable.official.5b4e0cb0f"
+  },
+  "errors": [],
+  "execution_policy": {
+    "advisories": {
+      "drift_ratio": 1.2,
+      "drift_window": 5,
+      "minimum_baseline_samples": 3,
+      "prominent_ratio": 2.0,
+      "rolling_window": 10,
+      "warning_ratio": 1.5
+    },
+    "path": "godot/tests/support/ci_execution_policy.json",
+    "policy_id": "github-hosted-complete-execution-v1",
+    "scale": 1.0,
+    "schema_version": 1,
+    "sha256": "9eaec2e6318073bff7cfbac209d2d959a751b85ffd63cb94c147e9be237516dc",
+    "watchdogs": {
+      "aggregate_headroom_seconds": 600.0,
+      "complex_fixture_seconds": 3600.0,
+      "dependency_prepare_seconds": 1200.0,
+      "diagnostic_capture_seconds": 30.0,
+      "godot_import_seconds": 1200.0,
+      "godot_job_minutes": 360.0,
+      "godot_metadata_seconds": 900.0,
+      "godot_setup_seconds": 4200.0,
+      "graphical_case_seconds": 1200.0,
+      "hosted_job_minutes": 180.0,
+      "main_ack_seconds": 600.0,
+      "native_case_seconds": 3600.0,
+      "native_compile_seconds": 3600.0,
+      "native_suite_seconds": 7200.0,
+      "operation_seconds": 300.0,
+      "ordinary_case_seconds": 1200.0,
+      "terminate_grace_seconds": 10.0
+    }
+  },
+  "expected_cases": [
+    "sand-contact-response",
+    "sand-contact-fences"
+  ],
+  "import": {
+    "capture_error": null,
+    "command": [
+      "/home/runner/work/_temp/godot/Godot_v4.7-stable_linux.x86_64",
+      "--headless",
+      "--path",
+      "/home/runner/work/cybersand/cybersand/godot",
+      "--editor",
+      "--import",
+      "--quit"
+    ],
+    "diagnostic_error": false,
+    "diagnostic_seconds": 0.0,
+    "diagnostics": null,
+    "execution_policy": {
+      "advisories": {
+        "drift_ratio": 1.2,
+        "drift_window": 5,
+        "minimum_baseline_samples": 3,
+        "prominent_ratio": 2.0,
+        "rolling_window": 10,
+        "warning_ratio": 1.5
+      },
+      "path": "godot/tests/support/ci_execution_policy.json",
+      "policy_id": "github-hosted-complete-execution-v1",
+      "scale": 1.0,
+      "schema_version": 1,
+      "sha256": "9eaec2e6318073bff7cfbac209d2d959a751b85ffd63cb94c147e9be237516dc",
+      "watchdogs": {
+        "aggregate_headroom_seconds": 600.0,
+        "complex_fixture_seconds": 3600.0,
+        "dependency_prepare_seconds": 1200.0,
+        "diagnostic_capture_seconds": 30.0,
+        "godot_import_seconds": 1200.0,
+        "godot_job_minutes": 360.0,
+        "godot_metadata_seconds": 900.0,
+        "godot_setup_seconds": 4200.0,
+        "graphical_case_seconds": 1200.0,
+        "hosted_job_minutes": 180.0,
+        "main_ack_seconds": 600.0,
+        "native_case_seconds": 3600.0,
+        "native_compile_seconds": 3600.0,
+        "native_suite_seconds": 7200.0,
+        "operation_seconds": 300.0,
+        "ordinary_case_seconds": 1200.0,
+        "terminate_grace_seconds": 10.0
+      }
+    },
+    "last_heartbeat": null,
+    "last_progress": null,
+    "launch_error": null,
+    "log": "import.log",
+    "log_sha256": "5d253520379885a5edcde0fd96cb189ef991471a16f7c927e1d458601b1bde6e",
+    "name": "import",
+    "natural_completion": true,
+    "pid": 2509,
+    "requires_display": false,
+    "resources": {
+      "available": true,
+      "cpu_seconds": 5.26,
+      "peak_rss_bytes": 750256128,
+      "scope": "direct_process_only"
+    },
+    "returncode": 0,
+    "role": "import",
+    "seconds": 7.606,
+    "skip_messages": [],
+    "status": "passed",
+    "timeout_diagnostic_error": null,
+    "timeout_diagnostics": null,
+    "timeout_kind": null,
+    "timeout_seconds": 1200.0
+  },
+  "maximum_allowance_seconds": 8220.0,
+  "platform": "Linux",
+  "rapier": {
+    "lock_sha256": "df24cf6fb1adc17b2c1675b1387db19c93ee31d6cbf497c9295647ec98371285",
+    "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+    "sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+    "size": 117275416
+  },
+  "records": [
+    {
+      "capture_error": null,
+      "command": [
+        "/home/runner/work/_temp/godot/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/home/runner/work/cybersand/cybersand/godot",
+        "--script",
+        "res://tests/test_solid_contact_response.gd",
+        "--",
+        "/home/runner/work/cybersand/cybersand/build/sol281/host/sand-contact-response.json"
+      ],
+      "diagnostic_error": false,
+      "diagnostic_seconds": 0.0,
+      "diagnostics": null,
+      "execution_policy": {
+        "advisories": {
+          "drift_ratio": 1.2,
+          "drift_window": 5,
+          "minimum_baseline_samples": 3,
+          "prominent_ratio": 2.0,
+          "rolling_window": 10,
+          "warning_ratio": 1.5
+        },
+        "path": "godot/tests/support/ci_execution_policy.json",
+        "policy_id": "github-hosted-complete-execution-v1",
+        "scale": 1.0,
+        "schema_version": 1,
+        "sha256": "9eaec2e6318073bff7cfbac209d2d959a751b85ffd63cb94c147e9be237516dc",
+        "watchdogs": {
+          "aggregate_headroom_seconds": 600.0,
+          "complex_fixture_seconds": 3600.0,
+          "dependency_prepare_seconds": 1200.0,
+          "diagnostic_capture_seconds": 30.0,
+          "godot_import_seconds": 1200.0,
+          "godot_job_minutes": 360.0,
+          "godot_metadata_seconds": 900.0,
+          "godot_setup_seconds": 4200.0,
+          "graphical_case_seconds": 1200.0,
+          "hosted_job_minutes": 180.0,
+          "main_ack_seconds": 600.0,
+          "native_case_seconds": 3600.0,
+          "native_compile_seconds": 3600.0,
+          "native_suite_seconds": 7200.0,
+          "operation_seconds": 300.0,
+          "ordinary_case_seconds": 1200.0,
+          "terminate_grace_seconds": 10.0
+        }
+      },
+      "last_heartbeat": null,
+      "last_progress": null,
+      "launch_error": null,
+      "log": "sand-contact-response.log",
+      "log_sha256": "7efeb47dd55d06c276300898e78dc82270c1daab1a6973d403992e2c870ecb51",
+      "name": "sand-contact-response",
+      "natural_completion": true,
+      "pid": 2593,
+      "readback": {
+        "cases": {
+          "central": {
+            "energy_after": 0.0,
+            "energy_before": 37440.0,
+            "impulse_y": -6240.0
+          },
+          "grouped_falling_spin": {
+            "energy_after": 20454.545557164,
+            "energy_before": 61440.0,
+            "impulses": 2,
+            "maximum_sampled_approach": 0.0,
+            "omega": 3.40909090169271,
+            "velocity_y": -3.40909099578857
+          },
+          "grouped_pure_spin": {
+            "energy_after": 20454.545557164,
+            "energy_before": 24000.0,
+            "impulses": 1,
+            "maximum_sampled_approach": 0.0,
+            "omega": 3.40909090169271,
+            "velocity_y": -3.40909099578857
+          },
+          "off_center": {
+            "energy_after": 14040.0,
+            "energy_before": 37440.0,
+            "omega": -4.5,
+            "torque_impulse": -3900.0,
+            "velocity_y": 4.5
+          },
+          "symmetric": {
+            "groups": 1,
+            "omega": 0.0,
+            "velocity_y": 0.0
+          }
+        },
+        "checks": 90,
+        "engine": {
+          "build": "official",
+          "hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+          "hex": 263936,
+          "major": 4,
+          "minor": 7,
+          "patch": 0,
+          "status": "stable",
+          "string": "4.7-stable (official)",
+          "timestamp": 0
+        },
+        "failures": [],
+        "mechanical": {
+          "baseline": "3-unit aggregate impulse ceiling, fully upward on every step",
+          "baseline_added_overlap_area_steps": 56.75390625,
+          "baseline_max_penetration": 2.64250183105469,
+          "candidate_added_overlap_area_steps": 0.0,
+          "candidate_max_penetration": 0.25,
+          "fixture": "single-plane-zero-gravity-actual-Rapier",
+          "gate_passed": true,
+          "inertia": 866.666666666667,
+          "initial_penetration": 0.25,
+          "initial_velocity_y": 12.0,
+          "mass": 520.0,
+          "off_center": {
+            "baseline_added_overlap_area_steps": 14.1884765625,
+            "candidate_added_overlap_area_steps": 1.25024323004829,
+            "fixture": "one-cell-wide-supported-column-zero-gravity-actual-Rapier",
+            "gate_passed": true,
+            "initial_overlap_area": 0.25,
+            "maximum_rotation": 0.899894714355469,
+            "proposed_gate_minimum_reduction": 0.25,
+            "reduction": 0.911883194468342
+          },
+          "proposed_gate_minimum_reduction": 0.25,
+          "reduction": 1.0,
+          "scope": "controlled impulse/overlap mechanism; populated native and asynchronous acceptance are separate",
+          "step_seconds": 0.0166666666666667,
+          "steps": 12,
+          "trajectory": [
+            {
+              "baseline_area": 1.79962158203125,
+              "baseline_depth": 0.449905395507812,
+              "candidate_area": 1.0,
+              "candidate_depth": 0.25,
+              "off_center_baseline_area": 0.449905395507812,
+              "off_center_candidate_area": 0.252683341503143,
+              "off_center_candidate_rotation": -0.0749912187457085,
+              "step": 1
+            },
+            {
+              "baseline_area": 2.59884643554688,
+              "baseline_depth": 0.649711608886719,
+              "candidate_area": 1.0,
+              "candidate_depth": 0.25,
+              "off_center_baseline_area": 0.649711608886719,
+              "off_center_candidate_area": 0.260230213403702,
+              "off_center_candidate_rotation": -0.149982422590256,
+              "step": 2
+            },
+            {
+              "baseline_area": 3.397705078125,
+              "baseline_depth": 0.84942626953125,
+              "candidate_area": 1.0,
+              "candidate_depth": 0.25,
+              "off_center_baseline_area": 0.84942626953125,
+              "off_center_candidate_area": 0.271995507180691,
+              "off_center_candidate_rotation": -0.224973663687706,
+              "step": 3
+            },
+            {
+              "baseline_area": 4.1961669921875,
+              "baseline_depth": 1.04904174804688,
+              "candidate_area": 1.0,
+              "candidate_depth": 0.25,
+              "off_center_baseline_area": 1.04904174804688,
+              "off_center_candidate_area": 0.28743015229702,
+              "off_center_candidate_rotation": -0.299964874982834,
+              "step": 4
+            },
+            {
+              "baseline_area": 4.99423217773438,
+              "baseline_depth": 1.24855804443359,
+              "candidate_area": 1.0,
+              "candidate_depth": 0.25,
+              "off_center_baseline_area": 1.24855804443359,
+              "off_center_candidate_area": 0.306073471903801,
+              "off_center_candidate_rotation": -0.374956130981445,
+              "step": 5
+            },
+            {
+              "baseline_area": 5.79193115234375,
+              "baseline_depth": 1.44798278808594,
+              "candidate_area": 1.0,
+              "candidate_depth": 0.25,
+              "off_center_baseline_area": 1.44798278808594,
+              "off_center_candidate_area": 0.327520713210106,
+              "off_center_candidate_rotation": -0.449947416782379,
+              "step": 6
+            },
+            {
+              "baseline_area": 6.5892333984375,
+              "baseline_depth": 1.64730834960938,
+              "candidate_area": 1.0,
+              "candidate_depth": 0.25,
+              "off_center_baseline_area": 1.64730834960938,
+              "off_center_candidate_area": 0.351436451077461,
+              "off_center_candidate_rotation": -0.524938583374023,
+              "step": 7
+            },
+            {
+              "baseline_area": 7.38616943359375,
+              "baseline_depth": 1.84654235839844,
+              "candidate_area": 1.0,
+              "candidate_depth": 0.25,
+              "off_center_baseline_area": 1.84654235839844,
+              "off_center_candidate_area": 0.377509757526486,
+              "off_center_candidate_rotation": -0.599929809570312,
+              "step": 8
+            },
+            {
+              "baseline_area": 8.0,
+              "baseline_depth": 2.04567718505859,
+              "candidate_area": 1.0,
+              "candidate_depth": 0.25,
+              "off_center_baseline_area": 2.0,
+              "off_center_candidate_area": 0.405490040779114,
+              "off_center_candidate_rotation": -0.674921035766602,
+              "step": 9
+            },
+            {
+              "baseline_area": 8.0,
+              "baseline_depth": 2.24471282958984,
+              "candidate_area": 1.0,
+              "candidate_depth": 0.25,
+              "off_center_baseline_area": 2.0,
+              "off_center_candidate_area": 0.435625380511787,
+              "off_center_candidate_rotation": -0.749912202358246,
+              "step": 10
+            },
+            {
+              "baseline_area": 8.0,
+              "baseline_depth": 2.44365692138672,
+              "candidate_area": 1.0,
+              "candidate_depth": 0.25,
+              "off_center_baseline_area": 2.0,
+              "off_center_candidate_area": 0.468816190958023,
+              "off_center_candidate_rotation": -0.824903428554535,
+              "step": 11
+            },
+            {
+              "baseline_area": 8.0,
+              "baseline_depth": 2.64250183105469,
+              "candidate_area": 1.0,
+              "candidate_depth": 0.25,
+              "off_center_baseline_area": 2.0,
+              "off_center_candidate_area": 0.50543200969696,
+              "off_center_candidate_rotation": -0.899894714355469,
+              "step": 12
+            }
+          ]
+        },
+        "planner_source_sha256": "d5bebb75d81cf5bc0dce756f7a844f19ad9f145fbd9ca96775ad8f999a061d6d",
+        "platform": "Linux",
+        "schema": "cybersand.sol281.contact-response.v1",
+        "scope": "pure complete-record planner plus actual Rapier impulse readback and registered mechanism control",
+        "test_source_sha256": "dbba6c297336eafeea4ef4b7d2e425d4ccba33485a5f244e6bc0b7d473f0abea"
+      },
+      "requires_display": false,
+      "resources": {
+        "available": true,
+        "cpu_seconds": 0.27,
+        "peak_rss_bytes": 139702272,
+        "scope": "direct_process_only"
+      },
+      "result": {
+        "path": "sand-contact-response.json",
+        "sha256": "3a793dbca3551d133bd2dd3cbcda7379a6f30743a49575a998d372ade6b12ef1"
+      },
+      "returncode": 0,
+      "role": "qualification",
+      "seconds": 0.366,
+      "skip_messages": [],
+      "status": "passed",
+      "timeout_diagnostic_error": null,
+      "timeout_diagnostics": null,
+      "timeout_kind": null,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "capture_error": null,
+      "command": [
+        "/home/runner/work/_temp/godot/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/home/runner/work/cybersand/cybersand/godot",
+        "--script",
+        "res://tests/test_solid_contact_fences.gd",
+        "--",
+        "/home/runner/work/cybersand/cybersand/build/sol281/host/sand-contact-fences.json"
+      ],
+      "diagnostic_error": false,
+      "diagnostic_seconds": 0.0,
+      "diagnostics": null,
+      "execution_policy": {
+        "advisories": {
+          "drift_ratio": 1.2,
+          "drift_window": 5,
+          "minimum_baseline_samples": 3,
+          "prominent_ratio": 2.0,
+          "rolling_window": 10,
+          "warning_ratio": 1.5
+        },
+        "path": "godot/tests/support/ci_execution_policy.json",
+        "policy_id": "github-hosted-complete-execution-v1",
+        "scale": 1.0,
+        "schema_version": 1,
+        "sha256": "9eaec2e6318073bff7cfbac209d2d959a751b85ffd63cb94c147e9be237516dc",
+        "watchdogs": {
+          "aggregate_headroom_seconds": 600.0,
+          "complex_fixture_seconds": 3600.0,
+          "dependency_prepare_seconds": 1200.0,
+          "diagnostic_capture_seconds": 30.0,
+          "godot_import_seconds": 1200.0,
+          "godot_job_minutes": 360.0,
+          "godot_metadata_seconds": 900.0,
+          "godot_setup_seconds": 4200.0,
+          "graphical_case_seconds": 1200.0,
+          "hosted_job_minutes": 180.0,
+          "main_ack_seconds": 600.0,
+          "native_case_seconds": 3600.0,
+          "native_compile_seconds": 3600.0,
+          "native_suite_seconds": 7200.0,
+          "operation_seconds": 300.0,
+          "ordinary_case_seconds": 1200.0,
+          "terminate_grace_seconds": 10.0
+        }
+      },
+      "last_heartbeat": null,
+      "last_progress": null,
+      "launch_error": null,
+      "log": "sand-contact-fences.log",
+      "log_sha256": "75258fcc3883fb9219c2f25402ffad078a1d9e94101f1f3c89eb8b4ccdb1f3c0",
+      "name": "sand-contact-fences",
+      "natural_completion": true,
+      "pid": 2607,
+      "readback": {
+        "checks": 135,
+        "failures": [],
+        "platform": "Linux",
+        "readback_failure_cases": [
+          "velocity_x_nan",
+          "velocity_y_inf",
+          "velocity_negative_inf",
+          "omega_nan",
+          "omega_inf",
+          "omega_negative_inf",
+          "energy_nan",
+          "energy_inf",
+          "energy_negative_inf",
+          "momentum_nan",
+          "angular_momentum_inf",
+          "finite_energy_increase"
+        ],
+        "readback_failure_scope": "copied readback injection after finite real Rapier impulses; actual session fail-stop, not backend fault generation",
+        "schema": "cybersand.sol281.contact-fences.v1"
+      },
+      "requires_display": false,
+      "resources": {
+        "available": true,
+        "cpu_seconds": 0.98,
+        "peak_rss_bytes": 202940416,
+        "scope": "direct_process_only"
+      },
+      "result": null,
+      "returncode": 0,
+      "role": "qualification",
+      "seconds": 1.106,
+      "skip_messages": [],
+      "status": "passed",
+      "timeout_diagnostic_error": null,
+      "timeout_diagnostics": null,
+      "timeout_kind": null,
+      "timeout_seconds": 1200.0
+    }
+  ],
+  "runtime": {
+    "filename": "libcybersand_native.linux.x86_64.so",
+    "sha256": "5877f1ac8b3e1bc3548d415bbd3890f2b804df4d03f4eef4c961170780b47b3a",
+    "size": 4343064
+  },
+  "schema": "cybersand.sol281.qualification.v1",
+  "scope": "actual source-matched headless native/Rapier; GPU frame pacing and milestone completion not established",
+  "source": {
+    "sha": "749fb8b597ad866f7535f26442e904207c4f7611",
+    "tree": "77a7bc2ed4d1f7ab339dd4a16fd082fccf56f0ce"
+  },
+  "source_unchanged": true,
+  "status": "passed"
+}

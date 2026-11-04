@@ -1,0 +1,53 @@
+{
+  "schema": "cybersand.sol281.publisher-review.v1",
+  "commit": "2bfeb60b60cfd07b7fa7d53447d9265af6b31e85",
+  "tree": "bd0803f50ec471e0b1e8dac7c3b77b56080dd4bc",
+  "files": [
+    {
+      "path": "fix-review.json",
+      "size": 3718,
+      "sha256": "d6c2fb48edf0359cbf5af2e892c8239266e20bafd038037fcccce075182ddd84"
+    },
+    {
+      "path": "independent-review.json",
+      "size": 2530,
+      "sha256": "1987a6a965b2fa025a7043c1e93f9db45f3df6104d0d481fed9f2304dad46b15"
+    },
+    {
+      "path": "publisher-fix.patch",
+      "size": 9214,
+      "sha256": "f0dee5ba787f8add168b224820ee15a8e89e1c5fbd90684db9a01b83e6a9df05"
+    },
+    {
+      "path": "publisher-tests-after-fix.json",
+      "size": 742,
+      "sha256": "7fecd7fe51911d75d4768bb8e0c747aab9693ce3b76855884726e7f20f95fcfa"
+    },
+    {
+      "path": "publisher-tests-after-fix.log",
+      "size": 112,
+      "sha256": "7bb01be3583d41768411f752f2edec9c7986d42c9d4829e56745ee0207e0e918"
+    },
+    {
+      "path": "publisher-tests-fixture-attributes-failure.json",
+      "size": 968,
+      "sha256": "263d8235f6d84d4e630cfa1571e4b6d86d211437aa7b056d7b2ae03a0599e618"
+    },
+    {
+      "path": "publisher-tests-fixture-attributes-failure.log",
+      "size": 2087,
+      "sha256": "e7a2100965bb0a68ef6c0dfc0cae6a69ca04c410cc689e827632940a121363fa"
+    },
+    {
+      "path": "unchanged-runtime-before-fix.json",
+      "size": 621,
+      "sha256": "da8c8910bc0409e0c3f8de4c8b00e2b3a1564152bfcf12d05f1e1b6cef83d5d1"
+    },
+    {
+      "path": "unchanged-runtime-before-fix.log",
+      "size": 2417,
+      "sha256": "cc59a769026f4db646961dcb894ddc43dbb82e8b3b54daa53bc3b29f6ddf1cfc"
+    }
+  ],
+  "scope": "Focused local regression and independent review for publication no-op artifacts; not successor hosted physics/platform qualification."
+}

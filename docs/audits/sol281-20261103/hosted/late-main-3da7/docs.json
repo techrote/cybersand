@@ -1,0 +1,17 @@
+{
+  "status": "passed",
+  "documents": 119,
+  "navigation_link_documents": 8,
+  "canonical_claims": 235,
+  "local_links": 3600,
+  "heading_anchors": 684,
+  "questions": 32,
+  "errors": [],
+  "warnings": [],
+  "limitations": [
+    "Does not verify source semantics or runtime claims",
+    "Does not fetch external URLs",
+    "Does not rewrite or reattest historical audits",
+    "Retrieval quality requires the separate lexical evaluation and expected-fact review"
+  ]
+}

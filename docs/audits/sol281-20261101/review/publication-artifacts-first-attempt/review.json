@@ -1,0 +1,84 @@
+{
+  "schema": "sol281-original-artifact-compatibility-review-v1",
+  "scope": "Read-only verification of original first-attempt artifacts against publisher data readers; not publication or acceptance of the new source/run",
+  "reader_source": "8e86ffd4eb2eb769178808a1012701076e3a4d19",
+  "reviewed_run": "41329746261",
+  "reviewed_attempt": "1",
+  "builds": {
+    "linux": {
+      "status": "passed",
+      "file_count": 17,
+      "runtime": {
+        "artifact": "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+        "sha256": "d556a9d615840761f5c0a4a6a14c39fa62e154c95a11ae16014cdca09bfb7a63",
+        "size": 4302552
+      },
+      "build_manifest_sha256": "ce7aec71e72674a63e8cbe14965bdcbf735e5d7c648e36630a9f05956cd21687"
+    },
+    "windows": {
+      "status": "passed",
+      "file_count": 15,
+      "runtime": {
+        "artifact": "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+        "sha256": "c2757063468ea9ad2ec7b64932ffb009f7598fce4c797664d602ab9279d36d7b",
+        "size": 4892672
+      },
+      "build_manifest_sha256": "ff64086dd00c137e86a1e7ec97419044776c321c492c811f0fc02d03b6647d04"
+    }
+  },
+  "hosts": {
+    "linux/contact-w1": {
+      "status": "passed",
+      "file_count": 30,
+      "case_count": 9,
+      "report_sha256": "3a1d62f9b8666593de3fc8c22d0554e8a188df3304e5ee710c5e367e4498dcb8",
+      "original_zip_sha256": "d294e53453d1d7c230334f19e250f0ccea8cebb9c691e807744b904ed3f70ac3",
+      "total_durable_bytes": 685831
+    },
+    "linux/contact-w4": {
+      "status": "passed",
+      "file_count": 30,
+      "case_count": 9,
+      "report_sha256": "71cc71f5915764a1a41f0b6fb55fa84b5c2a3b9f202d5bd8bb25fc48a841ca72",
+      "original_zip_sha256": "18d05985fee817ec1a43a079e1b239a92e346c6e00afe3618d35264d07bd016e",
+      "total_durable_bytes": 685866
+    },
+    "linux/core": {
+      "status": "passed",
+      "file_count": 26,
+      "case_count": 11,
+      "report_sha256": "f82f460c412ccb0d4f6659b74820383e8495726133988cc283331e067ef0779b",
+      "original_zip_sha256": "f4e90787c899a99e73ac0e49224f8676a1fbb03c63d56539a839bee03d1840fa",
+      "total_durable_bytes": 629225
+    },
+    "windows/contact-w1": {
+      "original_status": "failed",
+      "errors": [
+        "RuntimeError: Checkout .gitattributes differs from Git"
+      ],
+      "scope": "Original pre-engine refusal retained; no success inference"
+    },
+    "windows/contact-w4": {
+      "original_status": "failed",
+      "errors": [
+        "RuntimeError: Checkout .gitattributes differs from Git"
+      ],
+      "scope": "Original pre-engine refusal retained; no success inference"
+    },
+    "windows/core": {
+      "original_status": "failed",
+      "errors": [
+        "RuntimeError: Checkout .gitattributes differs from Git"
+      ],
+      "scope": "Original pre-engine refusal retained; no success inference"
+    }
+  },
+  "errors": [],
+  "source": {
+    "sha": "c8c81a8b81677abd173de199a9d436f46de2268b",
+    "tree": "214f927af0e9feeb65c664e981b32b7fbc15e39b"
+  },
+  "canonical_input_count": 1064,
+  "canonical_inputs_match_original_git": true,
+  "status": "passed-available-original-records"
+}

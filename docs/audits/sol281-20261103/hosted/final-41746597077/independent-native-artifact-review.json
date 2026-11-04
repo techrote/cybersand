@@ -1,0 +1,118 @@
+{
+  "audit_helper_sha256": "6a2bf6606c24bb3775310107e9cf88cc228ee6a9aa6eb584545e034a8b31c4eb",
+  "broad_inputs_authenticated": 1089,
+  "complete": true,
+  "limits": "No new native executable or compiler invocation. MSVC executable identities are recorded but binary files are absent from that artifact. Actual Windows native suites and Linux-built LLVM-MinGW Windows GDExtension are distinct.",
+  "linux": {
+    "checks": {
+      "conservative_displacement": {
+        "checks_per_execution": 281,
+        "executions": 2,
+        "groups_per_execution": [
+          6,
+          6
+        ]
+      },
+      "solid_contact_geometry": {
+        "checks_per_execution": 6817,
+        "executions": 2,
+        "groups_per_execution": [
+          6,
+          6
+        ]
+      },
+      "solid_detachment": {
+        "checks_per_execution": 19338,
+        "executions": 2,
+        "groups_per_execution": [
+          9,
+          9
+        ]
+      }
+    },
+    "original_native_command_sha256": "57b01164b7019c69390a80e9b802de685ac640dda4be4e53b78d2085f7eb09a7",
+    "original_native_performance_sha256": "ccb0d932ce58e855776b3487f4aa17a93fa13a478f6febcec031a4bc1b30c7ab",
+    "original_native_receipt_sha256": "298b2695fbef29e74e03509dea6a4dfd0796e83ce771f7a93bff98fc77d4d468",
+    "receipt_natural_pass": true,
+    "scope": "Source-pinned ownership, conservative displacement and geometry driver executed normal and ASan/UBSan modes; this review only rereads the original command evidence."
+  },
+  "msvc": {
+    "actual_platform": "Windows",
+    "after_manifest_sha256": "3110024bd9796204d4c31f9fde29cc49a1ccc4393d09fac8ac28e7152d58acda",
+    "artifact_id": 13283974301,
+    "before_manifest_sha256": "dc455f3524c9a6efdad6d224634a0893bda1d5219cb7289cae5ece6c4a5927a4",
+    "checks": {
+      "conservative_displacement": {
+        "checks": 281,
+        "compile_log_sha256": "966283fcc9da128326ba647c7ed0b7e6b72ce928a1572fc5dc487c7673482c0d",
+        "groups": 6,
+        "original_log_sha256": "ddce6479d8b7b74e644b25d6c27228274dd13e504dd54aadcee55f9c19648e6b"
+      },
+      "solid_contact_geometry": {
+        "checks": 6817,
+        "compile_log_sha256": "fa0439efa425ba950f2160a4a0232e2d2671eee21cb9cfe5457d4d8bff75a2f7",
+        "groups": 6,
+        "original_log_sha256": "459f51c9128d03da1bf61b8bdc6db3626faece86b6682af438de6af941c99b86"
+      },
+      "solid_detachment": {
+        "checks": 19338,
+        "compile_log_sha256": "68c90f633796120e903da48390549364ca0557cb2c04bea42c2e11d71cab5c82",
+        "groups": 9,
+        "original_log_sha256": "d9148d6b0607fb45082ee0a85b0c663a01b6879f69090402e20866e04ae1e306"
+      }
+    },
+    "command_and_stderr_hashes_verified": true,
+    "compiler_produced_executable_identity_record": {
+      "conservative_displacement": {
+        "path": "build/sol281/msvc-bin/test_conservative_displacement.exe",
+        "sha256": "25A0804B40D125709786D478A627AD66DA14F73CD684AA640721C1870F8ABE4D",
+        "size": 2863104
+      },
+      "solid_contact_geometry": {
+        "path": "build/sol281/msvc-bin/test_solid_contact_geometry.exe",
+        "sha256": "841D36EF8E6D53B63365FEEA30E42A6CDE86585E988E208334E6B6DF650A3686",
+        "size": 1431040
+      },
+      "solid_detachment": {
+        "path": "build/sol281/msvc-bin/test_solid_detachment.exe",
+        "sha256": "940B30CB919ED8A3CA86FFC06324DA80DDB726A2E2FE087D0B520FA14980CCFF",
+        "size": 2883072
+      }
+    },
+    "elapsed_seconds": 50.535517,
+    "executable_bytes_in_artifact": false,
+    "github_digest_matched": true,
+    "github_run_and_head_matched": true,
+    "name": "sol281-msvc-41746597077-1",
+    "original_archive": "sol281-msvc-41746597077-1.zip",
+    "original_archive_sha256": "f6741f935ca499dfe3ece94246bdc693645271ec315833ee42885d868ae3955b",
+    "original_archive_size": 213196,
+    "original_member_count": 14,
+    "original_member_sha256": {
+      "after.json": "3110024bd9796204d4c31f9fde29cc49a1ccc4393d09fac8ac28e7152d58acda",
+      "before.json": "dc455f3524c9a6efdad6d224634a0893bda1d5219cb7289cae5ece6c4a5927a4",
+      "binary-identities.json": "f988cc3cf24cd3b6ac75509cd69adef0d22506f736ef4be146fbc2134fab7f1f",
+      "command.log": "1e28e6d725963ac13c6bf0a0930bb1c11779a1f677fca47071768f26e21494e1",
+      "command.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compile-conservative_displacement.log": "966283fcc9da128326ba647c7ed0b7e6b72ce928a1572fc5dc487c7673482c0d",
+      "compile-solid_contact_geometry.log": "fa0439efa425ba950f2160a4a0232e2d2671eee21cb9cfe5457d4d8bff75a2f7",
+      "compile-solid_detachment.log": "68c90f633796120e903da48390549364ca0557cb2c04bea42c2e11d71cab5c82",
+      "compiler-locations.txt": "ffe24ae01684abcfcb0816bd4ff464f54d7f6065395ca7248a11e465816ec1ff",
+      "receipt.json": "f79114a2455fe6bd4c268e157c0dd21fddbc72e508fe1ee657c73384faa78f5e",
+      "run-conservative_displacement.log": "ddce6479d8b7b74e644b25d6c27228274dd13e504dd54aadcee55f9c19648e6b",
+      "run-solid_contact_geometry.log": "459f51c9128d03da1bf61b8bdc6db3626faece86b6682af438de6af941c99b86",
+      "run-solid_detachment.log": "d9148d6b0607fb45082ee0a85b0c663a01b6879f69090402e20866e04ae1e306",
+      "vs-environment.log": "d6bfbc767c2943f689888809d689d9e86e531471386d4b13a628d192b3c8343d"
+    },
+    "receipt_natural_pass": true,
+    "receipt_sha256": "f79114a2455fe6bd4c268e157c0dd21fddbc72e508fe1ee657c73384faa78f5e",
+    "source_and_raw_before_after_inputs_verified": true
+  },
+  "run_attempt": "1",
+  "run_id": "41746597077",
+  "schema": "cybersand.sol281.independent-native-artifact-review.v1",
+  "source": {
+    "sha": "749fb8b597ad866f7535f26442e904207c4f7611",
+    "tree": "77a7bc2ed4d1f7ab339dd4a16fd082fccf56f0ce"
+  }
+}

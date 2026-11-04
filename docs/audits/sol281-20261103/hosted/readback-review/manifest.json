@@ -1,0 +1,87 @@
+{
+  "byte_custody": "Original available logs copied byte-for-byte; tool-history excerpts explicitly labelled transcripts in their names and receipts. No tests were rerun to recreate historical output.",
+  "manifest_self_hash_excluded": true,
+  "payload_files": [
+    {
+      "bytes": 110,
+      "path": "logs/qualification-reader.tool-output-transcript.txt",
+      "sha256": "5b030cf3a32a5e801f60824581f96b3123aad12005f8afacd9cae3246ccdd02a"
+    },
+    {
+      "bytes": 721,
+      "path": "logs/sol281-readback-fences.log",
+      "sha256": "75258fcc3883fb9219c2f25402ffad078a1d9e94101f1f3c89eb8b4ccdb1f3c0"
+    },
+    {
+      "bytes": 34786,
+      "path": "logs/sol281-readback-import.log",
+      "sha256": "82a265e8d8395148566f66f51856a85eb323fdeb587fc7caaf930f1ff347f1dc"
+    },
+    {
+      "bytes": 5464,
+      "path": "logs/sol281-readback-mechanism.log",
+      "sha256": "7efeb47dd55d06c276300898e78dc82270c1daab1a6973d403992e2c870ecb51"
+    },
+    {
+      "bytes": 221,
+      "path": "logs/sol281-readback-recovery-parse.log",
+      "sha256": "b6354f16b8459dc19d5193c3f40a595a1e52931f8a415b10b2ef42cc1ba6c3a8"
+    },
+    {
+      "bytes": 2507,
+      "path": "native-review/README.md",
+      "sha256": "b46b7f03df3a4b43905a14ecba87e096db18b93f4161d09bfc993b1a1df09f26"
+    },
+    {
+      "bytes": 721,
+      "path": "native-review/inspected-evidence/sol281-readback-fences.log",
+      "sha256": "75258fcc3883fb9219c2f25402ffad078a1d9e94101f1f3c89eb8b4ccdb1f3c0"
+    },
+    {
+      "bytes": 1644,
+      "path": "native-review/manifest.json",
+      "sha256": "b4c99064d8bd66cb58283a8475a6380b6417f35df8a6e1fed4031497a883296a"
+    },
+    {
+      "bytes": 5886,
+      "path": "native-review/native-review.json",
+      "sha256": "bebac5165037ab5e9986f9a4b7f817e313a2361a491252c3aa916f5059413eda"
+    },
+    {
+      "bytes": 5955,
+      "path": "native-review/readback-guard-review.json",
+      "sha256": "5c5098b2b4bc7ec852a95ac973e495a6129e2a7348ca702bc318841025bd7494"
+    },
+    {
+      "bytes": 617,
+      "path": "native-review/transcripts/native-geometry-asan-ubsan-no-lsan.tool-output.txt",
+      "sha256": "3d7bc67d793b0df0f731788dba04df92610b921149d0efbff0d1509ef44c6444"
+    },
+    {
+      "bytes": 725,
+      "path": "native-review/transcripts/native-geometry-normal.tool-output.txt",
+      "sha256": "70e7f00b452ab4807402bd2630a4c963265a7a1c281585ae6f49344e38069b92"
+    },
+    {
+      "bytes": 972,
+      "path": "native-review/transcripts/native-geometry-sanitizer-original.tool-output.txt",
+      "sha256": "ce41c9af47baeb81aba137b4c1809cdc71745ca75b7ba3289b9881f6933d3fc7"
+    },
+    {
+      "bytes": 600,
+      "path": "native-review/transcripts/qualification-reader-11.tool-output.txt",
+      "sha256": "26ca6d02a804a4dab5de0caef0dcdd31e914259e560914c58ba762f7580267e2"
+    },
+    {
+      "bytes": 14775,
+      "path": "review-and-local-validation.json",
+      "sha256": "9a01c4408c6d92251a0db2489e433b5f143ccfc3984d6c2bff9d96fb1ee9245a"
+    },
+    {
+      "bytes": 4820,
+      "path": "review-and-local-validation.md",
+      "sha256": "237ebcd42655ef4391a55e741b10c57462f4a236dafa29fdfa7984dfd363b4ef"
+    }
+  ],
+  "schema": "cybersand.sol281.review-packet-manifest.v1"
+}

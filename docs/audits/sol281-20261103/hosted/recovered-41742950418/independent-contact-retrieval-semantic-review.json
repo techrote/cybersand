@@ -1,0 +1,288 @@
+{
+  "schema": "cybersand.sol281.contact-retrieval-semantic-review.v1",
+  "reviewed_at_utc": "2026-11-03T23:54:31Z",
+  "reviewer_role": "independent read-only recovery evidence reviewer",
+  "local_source_commit": "8e5c9ddb7958401e96ad9a10b13949daf3aac2a6",
+  "local_source_tree": "42b4926b3e15dcbf34b436eff41de50fad54c50a",
+  "published_commit_binding": "The publishing owner will record any tree-equivalent durable commit mapping. This review makes no claim that the local commit ID is currently a GitHub commit.",
+  "question_set": {
+    "path": "docs/reference/retrieval-questions-sol281-contact.json",
+    "sha256": "fb4019fc6b9a5b53ddd9973872a01e0164bf2ef31a2742c2d6db849e89513aa0",
+    "question_count": 6,
+    "fact_count": 18,
+    "unchanged_from_executed_5944c130": true
+  },
+  "method": "Manual comparison of each expected fact with the canonical answer content and its designated implementation sources; this is semantic source review, independent of lexical retrieval ranking.",
+  "reviews": [
+    {
+      "id": "SOL281-CONTACT-001",
+      "canonical_routes": [
+        "docs/systems/solid-detachment.md",
+        "docs/architecture/rigid-body-and-cellular-coupling.md"
+      ],
+      "implementation_sources": [
+        "native/include/cybersand/solid_contact_geometry.hpp",
+        "godot/native_extension/solid_contact_adapter.inc"
+      ],
+      "facts": [
+        {
+          "expected_fact": "SAT and polygon clipping intersect full native unit squares with one coherent rotated rectangle union; AABBs only bound traversal.",
+          "result": "supported",
+          "source_assessment": "Native SAT/clipping and adapter traversal use whole unit squares against coherent rotated proxy rectangles; AABBs only enumerate possible cells. Canonical documentation discloses the small-area and short-segment numerical filters."
+        },
+        {
+          "expected_fact": "Six proxies and two holes remain; exact exterior source-grid runs remove partial sibling seams.",
+          "result": "supported",
+          "source_assessment": "Exact source-grid exterior runs subtract partial sibling coverage before rotation. Canonical fixture retains its six disjoint proxy rectangles and two holes."
+        },
+        {
+          "expected_fact": "All nonempty material contributes geometry but only supported ambient Sand supplies the new response.",
+          "result": "supported",
+          "source_assessment": "The adapter accumulates nonempty-material overlap before restricting response segments to ambient Sand with resident native support; Water/hot/unsupported material supplies no new response."
+        }
+      ],
+      "result": "supported"
+    },
+    {
+      "id": "SOL281-CONTACT-002",
+      "canonical_routes": [
+        "docs/systems/solid-detachment.md",
+        "docs/architecture/rigid-body-and-cellular-coupling.md"
+      ],
+      "implementation_sources": [
+        "godot/scripts/solid_contact_response.gd",
+        "godot/tests/test_solid_contact_response.gd"
+      ],
+      "facts": [
+        {
+          "expected_fact": "The pure planner uses current contact-point velocity, mass and inertia for a zero-restitution unilateral normal impulse.",
+          "result": "supported",
+          "source_assessment": "The pure planner uses v plus omega cross r, inverse effective mass 1/M plus (r cross n)^2/I, and a unilateral zero-restitution normal impulse."
+        },
+        {
+          "expected_fact": "Only currently approaching parallel segments enter the length-weighted resultant, recomputed on each of four fixed sweeps.",
+          "result": "supported",
+          "source_assessment": "On each of four fixed sweeps, only then-approaching members contribute to each parallel group resultant, weighted by exterior-segment length."
+        },
+        {
+          "expected_fact": "Each planned impulse must satisfy the registered energy bound; actual Rapier energy is checked separately, with no full multi-contact convergence claim.",
+          "result": "supported",
+          "source_assessment": "The planner checks per-impulse energy nonincrease within its 1e-8 bound. The bridge independently validates actual finite readback and the 1e-4 bound. Residual approach remains reported; no convergence claim follows."
+        }
+      ],
+      "result": "supported"
+    },
+    {
+      "id": "SOL281-CONTACT-003",
+      "canonical_routes": [
+        "docs/systems/solid-detachment.md",
+        "docs/architecture/rigid-body-and-cellular-coupling.md"
+      ],
+      "implementation_sources": [
+        "godot/scripts/solid_detachment_worker.gd",
+        "godot/scripts/rapier_physics_bridge.gd",
+        "godot/tests/test_solid_contact_fences.gd"
+      ],
+      "facts": [
+        {
+          "expected_fact": "The worker freezes copied observations before publication; main never queries live native cells.",
+          "result": "supported",
+          "source_assessment": "The specialized worker copies and recursively freezes observations into its immutable snapshot; the main contact-response path consumes the snapshot rather than querying native cells."
+        },
+        {
+          "expected_fact": "Snapshot, tick, exact revision, epoch, token, generation and forward sample order are checked before candidate RID mutation.",
+          "result": "supported",
+          "source_assessment": "The bridge checks exact publication/session identities and modular forward sample order before any candidate RID mutation, then consumes the replay lease before applying impulses."
+        },
+        {
+          "expected_fact": "Sample age over one, corner drift over 0.25 cells, malformed or incomplete geometry and duplicate observations refuse.",
+          "result": "supported",
+          "source_assessment": "Age above one, excessive corner drift, malformed/incomplete geometry and duplicate or old publications are preflight refusals. The newly repaired post-impulse readback failure is separately terminal, retains the consumed lease and is not represented as a harmless refusal."
+        }
+      ],
+      "result": "supported"
+    },
+    {
+      "id": "SOL281-CONTACT-004",
+      "canonical_routes": [
+        "docs/systems/solid-detachment.md"
+      ],
+      "implementation_sources": [
+        "godot/scripts/solid_detachment_lab.gd",
+        "godot/scripts/solid_detachment_session.gd"
+      ],
+      "facts": [
+        {
+          "expected_fact": "V resets and toggles the candidate; --sand-resistance enables it at launch. Without the flag the prior response remains selected.",
+          "result": "supported",
+          "source_assessment": "Lab KEY_V toggles the candidate and resets the session; the command-line flag enables it, while omission leaves the prior response selected."
+        },
+        {
+          "expected_fact": "The lab observes both arms, while session resistance defaults to false.",
+          "result": "supported",
+          "source_assessment": "The lab passes measure_contacts=true for both arms; the session sand_resistance parameter and stored state default to false."
+        },
+        {
+          "expected_fact": "The 11/9 interface, conservative material transactions, Water, chemistry, hard-contact and ordinary GCR defaults remain; Y1 #343 is not promoted.",
+          "result": "supported",
+          "source_assessment": "The contact channel is separate from the unchanged packed 11/9 ABI and existing conservative transfers. Native material/Water/hard-contact policies and ordinary GCR defaults are untouched; canonical policy leaves Y1 #343 unpromoted."
+        }
+      ],
+      "result": "supported"
+    },
+    {
+      "id": "SOL281-CONTACT-005",
+      "canonical_routes": [
+        "docs/systems/solid-detachment.md"
+      ],
+      "implementation_sources": [
+        "godot/scripts/solid_detachment_worker.gd",
+        "godot/scripts/solid_detachment_session.gd",
+        "tools/sol281/analyze_contact_recovery.py"
+      ],
+      "facts": [
+        {
+          "expected_fact": "Area-samples and overlap-cell-samples count complete consumed native observations, not native simulation ticks.",
+          "result": "supported",
+          "source_assessment": "Session totals accumulate overlap only for complete consumed observations. The analyzer divides geometric totals by that observation count and labels asynchronous samples distinctly from native ticks."
+        },
+        {
+          "expected_fact": "Total owner observation/freeze and main response CPU includes refused attempts and unconsumed publications; the proposed mean divides by complete consumed geometry observations.",
+          "result": "supported",
+          "source_assessment": "Worker cumulative timing covers observation/freeze attempts including unconsumed publications; main timing is charged before response disposition. The analyzer divides their sum by complete consumed observations, with separate denominators for worker, Rapier, synchronization and latency."
+        },
+        {
+          "expected_fact": "Repeated live trajectories have ranges but are not matched causal comparisons; headless CPU measurements do not establish GPU or human acceptance.",
+          "result": "supported",
+          "source_assessment": "Canonical documentation and analyzer interpretation explicitly limit independent live repeats to descriptive ranges, and distinguish headless CPU evidence from GPU/human gameplay acceptance."
+        }
+      ],
+      "result": "supported"
+    },
+    {
+      "id": "SOL281-CONTACT-006",
+      "canonical_routes": [
+        "docs/systems/solid-detachment.md"
+      ],
+      "implementation_sources": [
+        "godot/native_extension/solid_contact_adapter.inc",
+        "godot/scripts/solid_detachment_session.gd"
+      ],
+      "facts": [
+        {
+          "expected_fact": "Deeply embedded cells without an exterior face crossing can retain overlap without a response segment.",
+          "result": "supported",
+          "source_assessment": "The adapter can count positive whole-cell overlap without a crossing exterior support segment when deeply embedded; the canonical contract states this limitation."
+        },
+        {
+          "expected_fact": "The candidate adds no position correction, cell mutation or automatic restoration; sleeping remains aggregate ownership.",
+          "result": "supported",
+          "source_assessment": "The candidate adds impulses only: it introduces no position correction, material-cell mutation or restoration transition. Existing lifecycle documentation retains aggregate ownership while sleeping."
+        },
+        {
+          "expected_fact": "Dense-contact, lifecycle, source-qualified platform and human gameplay gates remain separate; #347 stays draft and #281/#12 remain open.",
+          "result": "supported",
+          "source_assessment": "Canonical qualification keeps dense-contact, lifecycle, source-qualified platform and human acceptance separate. Independent GitHub reads on 2026-11-03T23:54:31Z confirmed #347 open draft/unmerged and #281/#12 open."
+        }
+      ],
+      "result": "supported"
+    }
+  ],
+  "source_files": [
+    {
+      "path": "docs/architecture/rigid-body-and-cellular-coupling.md",
+      "sha256": "924e1cb33287721409dfb02c147b8625111e9709c62ddf2c573446e0fcd5fede",
+      "git_blob": "93dfd44cb13ee44dc6ec62ad1e5c0b9ceb162ac0"
+    },
+    {
+      "path": "docs/audits/2026-11-03-sol281-dense-contact.md",
+      "sha256": "1e511dede4a5b410fbe5a4ca21c167356d878d6db7d61462707afae1dc0be4a5",
+      "git_blob": "42b18e3fab4bb40b62a0e126b1f76d0ce9109de6"
+    },
+    {
+      "path": "docs/audits/2026-11-03-sol281-takeover.md",
+      "sha256": "28641508fd8c8d862e3d22db6c8f96f319bb1099a96240425f9f096093e695a3",
+      "git_blob": "ddb5e2765e007c95d544647366bda4b905eaddf5"
+    },
+    {
+      "path": "docs/reference/retrieval-questions-sol281-contact.json",
+      "sha256": "fb4019fc6b9a5b53ddd9973872a01e0164bf2ef31a2742c2d6db849e89513aa0",
+      "git_blob": "295208c331e9d8d5ca7531c577d7f1740b55ed7c"
+    },
+    {
+      "path": "docs/systems/solid-detachment.md",
+      "sha256": "4c8a6486eba8998dce3fdddc367c1e1cb1d8cd4950c4f4060a6ed7d6dbf92c75",
+      "git_blob": "c8f77c5a523c40956643e04ad2be5bda396be049"
+    },
+    {
+      "path": "godot/native_extension/solid_contact_adapter.inc",
+      "sha256": "fbdfa5c16ff66445161de708079e4f624b4180613a498c16ff92712936a54c2d",
+      "git_blob": "9d85d3283dd10f563b597d87512563e4f5c4161e"
+    },
+    {
+      "path": "godot/scripts/rapier_physics_bridge.gd",
+      "sha256": "9ea0736c16db5089b817728388c88be2ef8e5fc6db8545992608473cf526851d",
+      "git_blob": "f060dc60031a49efe5bdd564d3ebac4f91dc1c68"
+    },
+    {
+      "path": "godot/scripts/solid_contact_response.gd",
+      "sha256": "d5bebb75d81cf5bc0dce756f7a844f19ad9f145fbd9ca96775ad8f999a061d6d",
+      "git_blob": "16ab748330a81934557430269e87ee7c89d1037f"
+    },
+    {
+      "path": "godot/scripts/solid_detachment_lab.gd",
+      "sha256": "b89b1afcf7b24072dd51db207fcca87770048e128c12c359f0d12e539be9fad0",
+      "git_blob": "3ca1605fc3bab19086c226ea968426cece66514b"
+    },
+    {
+      "path": "godot/scripts/solid_detachment_session.gd",
+      "sha256": "9edd54f21013a2bcd30d1e332496248dc9da38d319ad96342bafecefd6f91310",
+      "git_blob": "77236d2818bc8346612710e3779d155662e41572"
+    },
+    {
+      "path": "godot/scripts/solid_detachment_worker.gd",
+      "sha256": "f607fad0d6b6c89af3b8738489f956c73e8f64148e17d34c1fd3ede0718cba51",
+      "git_blob": "7db22543512c25800579213a149d0d712a558aca"
+    },
+    {
+      "path": "godot/tests/test_solid_contact_fences.gd",
+      "sha256": "fce75140e61fb7826d18e2596a39a4ac6486a48a02c75ec4434f24f675eb54cb",
+      "git_blob": "0397b897d525e1e5770789db83c313ffd7810251"
+    },
+    {
+      "path": "godot/tests/test_solid_contact_response.gd",
+      "sha256": "dbba6c297336eafeea4ef4b7d2e425d4ccba33485a5f244e6bc0b7d473f0abea",
+      "git_blob": "e8d33b985fb3e801d882c661842fd8ff2bdaeaeb"
+    },
+    {
+      "path": "native/include/cybersand/solid_contact_geometry.hpp",
+      "sha256": "53f8852cfe658fa37bb419ef4380e2c2bb4ebdf66af02e77e952813664a44c54",
+      "git_blob": "84c67f31ddaa86cad2a176992337ba64826ee78d"
+    },
+    {
+      "path": "tools/sol281/analyze_contact_recovery.py",
+      "sha256": "0c6b6a223ba7b17c610d8659dec811f4d904c6c65d7291ee9290cad0814f9b54",
+      "git_blob": "052defb7c5525a2626ec47abf6b4bf68024711c2"
+    }
+  ],
+  "remote_state_reads": [
+    {
+      "url": "https://api.github.com/repos/techrote/cybersand/pulls/347",
+      "state": "open",
+      "draft": true,
+      "merged_at": null,
+      "head_at_read": "3ac7701f013452c94a8c08b0746e1b13523e7234"
+    },
+    {
+      "url": "https://api.github.com/repos/techrote/cybersand/issues/281",
+      "state": "open"
+    },
+    {
+      "url": "https://api.github.com/repos/techrote/cybersand/issues/12",
+      "state": "open"
+    }
+  ],
+  "result": "all_18_frozen_expected_facts_supported",
+  "qualification_scope": "No new runtime, physical, target-platform, GPU, lifecycle or human acceptance is established by this semantic review. The successor hosted matrix must qualify its exact executed source independently.",
+  "ledger_review": "The current takeover and dense-contact ledgers distinguish original qualified source from pending repaired-source qualification, retain unresolved physical/lifecycle limits, and now state the contact numerator and denominator correctly. No further concrete factual gap found."
+}

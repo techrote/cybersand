@@ -1,0 +1,110 @@
+{
+  "schema": "cybersand.sol281.independent-readback-guard-review.v1",
+  "reviewer": {
+    "identity": "/root/implementation_review/native_review",
+    "kind": "independent AI subagent",
+    "source_edits": false,
+    "remote_mutations": false,
+    "human_gameplay_acceptance": false
+  },
+  "source": {
+    "repository": "techrote/cybersand",
+    "base_commit": "3ac7701f013452c94a8c08b0746e1b13523e7234",
+    "binding": "Reviewed stable seven-file working-tree delta; exact SHA-256 inventory is authoritative. No fictitious implementation commit assigned.",
+    "worktree": "/workspace/scratch/fc488e61157a/cybersand-readback-review",
+    "branch": "fix/sol281-nonfinite-readback",
+    "files": [
+      {
+        "path": "godot/scripts/rapier_physics_bridge.gd",
+        "sha256": "9ea0736c16db5089b817728388c88be2ef8e5fc6db8545992608473cf526851d"
+      },
+      {
+        "path": "godot/scripts/solid_detachment_session.gd",
+        "sha256": "9edd54f21013a2bcd30d1e332496248dc9da38d319ad96342bafecefd6f91310"
+      },
+      {
+        "path": "godot/tests/test_solid_contact_fences.gd",
+        "sha256": "fce75140e61fb7826d18e2596a39a4ac6486a48a02c75ec4434f24f675eb54cb"
+      },
+      {
+        "path": "godot/tests/test_solid_detachment_contact_recovery.gd",
+        "sha256": "e5967594fa5a4315f265e5a69762a107b839f32bd9ac062304d8f35c11fdfc99"
+      },
+      {
+        "path": "tools/sol281/run_qualification.py",
+        "sha256": "bebc2a959504dc565735d04e340f9d7252aae1efd9afe5c9cea0d7361f4828a1"
+      },
+      {
+        "path": "tools/sol281/test_qualification.py",
+        "sha256": "5d3d3c98b6fb92298edb2ae2aedf597e750fb4d19e582f5a06026f89b78d5fdd"
+      },
+      {
+        "path": "docs/systems/solid-detachment.md",
+        "sha256": "f9b4685409849e6a9badc8161dd6dbf8c483a9d7b254f52e6bb3cb1cd0d09fc7"
+      }
+    ]
+  },
+  "disposition": "No remaining implementation blocker found after the two test corrections. Suitable for source freeze and fresh exact-source qualification; not merge or physical/gameplay acceptance.",
+  "findings": [
+    {
+      "id": "REVIEW-READBACK-INDENTATION",
+      "original_issue": "Recovery-fixture readback check was over-indented, and failed_responses initialization/loop was nested in refusal accounting before use outside that scope.",
+      "correction": "Dedent the check and place failed_responses initialization/loop in function scope.",
+      "status": "corrected and reread in hash-bound source"
+    },
+    {
+      "id": "REVIEW-READBACK-RETRY-PROOF",
+      "original_issue": "accepted=false plus unchanged state could falsely pass a retry control: the first impulse arrests velocity, so erroneous replay could emit no impulse and fail again at the injected readback.",
+      "correction": "Retry requires exact DuplicateOrOldContact outcome, failed=false, unchanged actual RID state and unchanged readback-seam call count.",
+      "status": "corrected and reread in hash-bound source"
+    }
+  ],
+  "verified": [
+    "Finite checks cover both velocity/momentum vectors and angular velocity, energy and angular-momentum scalars; scalar bool/nonnumeric and NaN/infinity fail.",
+    "Original readback energy bound remains actual_energy_after <= energy_before +1e-4*max(1,energy_before).",
+    "The sample lease is set before impulse application and remains consumed after failed readback; no retryable-refusal relabeling.",
+    "Failed result retains impulse count and possible-mutation semantics and distinguishes nonfinite from nondissipative readback.",
+    "Session handles failed before acceptance/refusal, records separate failures, and calls _fail -> set_paused(true).",
+    "physics_step rechecks physics_paused immediately after response consumption, before bridge.step or another compound publication; unpause retains _failed.",
+    "All-attempt timing is recorded before disposition; failed work is not removed from cost numerator.",
+    "Qualification reader requires all12 named fault cases in order and135 assertions; live recovery rejects any response failure.",
+    "No native or native-extension source changes; geometry, transfer, ordinary defaults and registered physical thresholds remain unchanged."
+  ],
+  "validation": [
+    {
+      "kind": "independent_execution",
+      "command": "python3 tools/sol281/test_qualification.py",
+      "result": "11 tests passed after corrected test source",
+      "evidence": "transcripts/qualification-reader-11.tool-output.txt"
+    },
+    {
+      "kind": "independent_readonly_check",
+      "command": "git diff --check",
+      "result": "passed; no output"
+    },
+    {
+      "kind": "independent_readonly_check",
+      "command": "git diff --name-only -- native godot/native_extension",
+      "result": "no changed paths"
+    },
+    {
+      "kind": "inspection_only",
+      "result": "Pinned Linux Godot4.7.stable.official.5b4e0cb0f /Rapier2Dv0.35.2:135checks,zero failures,all12 copied-readback faults",
+      "execution_owner": "implementing agent /root/implementation_review",
+      "log": {
+        "path": "inspected-evidence/sol281-readback-fences.log",
+        "source_path": "/tmp/sol281-readback-fences.log",
+        "preservation": "original available local log bytes copied without modification",
+        "execution_owner": "implementing agent /root/implementation_review",
+        "reviewer_action": "inspected existing log; did not execute this Godot run",
+        "sha256": "75258fcc3883fb9219c2f25402ffad078a1d9e94101f1f3c89eb8b4ccdb1f3c0",
+        "bytes": 721
+      }
+    }
+  ],
+  "qualification_boundary": [
+    "Tests inject copied readback values after real finite Rapier impulses; they do not claim to make the backend itself generate nonfinite state.",
+    "Fresh source-qualified Linux/Windows evidence is still required for changed host paths.",
+    "Historical reviews/executions keep their original binding; root later reported integration as4b9dbf8, but this receipt binds the source bytes actually reviewed."
+  ]
+}

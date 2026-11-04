@@ -1,0 +1,63 @@
+{
+  "version": 2,
+  "frozen_date": "2026-11-04",
+  "purpose": "Supplementary SOL364 implementation and evidence questions. Version 2 preserves the original four questions verbatim and adds the discovered MAT-AUTH integration boundary; version 1 remains at executed source 9edc4f8f. Historical contact and frozen32 sets remain unchanged. Retrieval success does not imply physical acceptance.",
+  "questions": [
+    {
+      "id": "SOL364-WITNESS-001",
+      "query": "Why can the old contact midpoint leave a Sand cell while a valid exterior witness remains, and what does SOL364 repair?",
+      "canonical": ["systems/solid-detachment.md"],
+      "facts": [
+        "The planner transports and reclips only the original authenticated exterior segment at the present pose.",
+        "Current clipped midpoint and length determine force weighting and torque; the repair never extends to unobserved face area or fills a hole.",
+        "All original records and duplicates are validated before cleared segments are filtered; source/current pose and identity fences remain."
+      ],
+      "sources": ["../godot/scripts/solid_contact_response.gd", "../godot/tests/test_solid_contact_response.gd"]
+    },
+    {
+      "id": "SOL364-BURIAL-001",
+      "query": "Does accepting a fresh stationary Sand contact or repairing its witness guarantee sustained clearance of a buried aggregate?",
+      "canonical": ["systems/solid-detachment.md"],
+      "facts": [
+        "Interior overlap can exist without an exterior-face witness.",
+        "An accepted stationary contact can produce no impulse because the dissipative velocity constraint supplies no positional recovery work.",
+        "Sustained clearance remains a separate failed or unpassed gate; draft PR347 and blocked restoration365 are not promoted by execution success."
+      ],
+      "sources": ["../godot/native_extension/solid_contact_adapter.inc", "../godot/scripts/solid_contact_response.gd", "../godot/tests/test_solid_contact_synchronized.gd"]
+    },
+    {
+      "id": "SOL364-SYNCHRONIZED-001",
+      "query": "When can detached-body overlap be reported as cell-ticks, and how do synchronized contact controls differ from asynchronous sessions?",
+      "canonical": ["systems/solid-detachment.md"],
+      "facts": [
+        "Only a complete every-declared-step exact-geometry trace supports cell-ticks; deliberately missed response delivery does not omit geometry measurement.",
+        "The synchronized fixture freezes the native field, disables body sleeping in all arms and compares the retained planner with the repair on identical frozen observations.",
+        "Ordinary asynchronous native and conservative-displacement trials retain cell-sample/area-sample metrics and are not matched causal trajectories."
+      ],
+      "sources": ["../godot/tests/test_solid_contact_synchronized.gd", "../godot/tests/support/solid_contact_synchronized_fixture.gd", "../godot/tests/test_solid_detachment_contact_recovery.gd"]
+    },
+    {
+      "id": "SOL364-COST-001",
+      "query": "How does native contact freezing reduce work without hiding refused or overwritten attempts or changing the original full-matrix cost gate?",
+      "canonical": ["systems/solid-detachment.md"],
+      "facts": [
+        "Native scalar contact/proxy records are sealed at construction; the worker seals metadata and preserves a recursive fallback for markerless runtimes.",
+        "All owner and main response attempt work remains in the numerator and complete consumed observations remain the denominator.",
+        "All 24 original baseline/candidate host groups retain the 2 ms limit; incomplete cohorts and candidate-only success cannot establish the complete gate."
+      ],
+      "sources": ["../godot/native_extension/solid_contact_adapter.inc", "../godot/scripts/solid_detachment_worker.gd", "../tools/sol281/analyze_contact_recovery.py"]
+    },
+    {
+      "id": "SOL364-INTEGRATION-001",
+      "query": "Why does SOL364 remain blocked for integration after merging MAT-AUTH main and passing the new hosted contact-cost matrix?",
+      "canonical": ["systems/solid-detachment.md"],
+      "facts": [
+        "All 24 new hosted cost groups pass, while sustained clearance still fails and PR347 remains draft and unmerged.",
+        "The preserved MAT-AUTH source guard rejects historical SOL changes in world.cpp and world_pressure.inc; the other 25 protected consumers match.",
+        "The frozen baseline and catalogue remain unchanged. A source-pinned compatibility-checkpoint decision is required for those two existing consumer deltas, rather than a silent hash refresh.",
+        "Runtime and evidence publication succeeded, but the subsequent documentation dispatch failed HTTP 500; execution, publication, workflow completion and physical acceptance have separate outcomes."
+      ],
+      "sources": ["../tools/material_catalogue/compatibility.py", "../native/src/world.cpp", "../native/src/world_pressure.inc", "../.github/workflows/sol281-current-main.yml"]
+    }
+  ]
+}

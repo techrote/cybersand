@@ -1,0 +1,5 @@
+Initialize godot-rust (API v4.7.stable.official, runtime v4.7.stable.official, safeguards balanced)
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[92mPHYSICS ENGINE 2D: Rapier2D v0.35.2[39m[0m
+SOL281_RENDER_ACK_UNIT {"checks":17,"consumer":{"bytes":6291468,"channels":2,"consumed":4,"enabled":true,"generation":2,"last_error":"","last_serial":8,"rectangles":5,"refused":5},"failures":[],"platform":"Windows"}

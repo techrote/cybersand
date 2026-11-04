@@ -1,0 +1,16 @@
+{
+  "scope": "Focused publication verifier tests, including real Git index staging and unchanged source-checkout refusal; synthetic metadata, no physics qualification.",
+  "command": [
+    "python3",
+    "tools/sol281/test_publish_runtime.py"
+  ],
+  "cwd": "/workspace/scratch/fc488e61157a/cybersand-publisher-review",
+  "returncode": 0,
+  "elapsed_seconds": 0.7547966950005502,
+  "log": "publisher-tests-after-fix.log",
+  "log_sha256": "7bb01be3583d41768411f752f2edec9c7986d42c9d4829e56745ee0207e0e918",
+  "files": {
+    "tools/sol281/publish_runtime.py": "87752af50352843da6f83fc6c51cb0f77c2371f04cf7f8d18d026611418c5198",
+    "tools/sol281/test_publish_runtime.py": "d225644cbc902bba4bc59f563fb43433c073b0c12653056541846351f75a078e"
+  }
+}

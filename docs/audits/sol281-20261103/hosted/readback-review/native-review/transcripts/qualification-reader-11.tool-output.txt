@@ -1,0 +1,17 @@
+Tool-output transcript reconstructed from this reviewer's tool history.
+This is not an original byte-for-byte process log. The output below is a
+faithfully transcribed process-output excerpt, without tool-envelope metadata.
+No command was rerun to manufacture this transcript.
+
+Command(s):
+python3 tools/sol281/test_qualification.py
+
+Observed output:
+...........
+----------------------------------------------------------------------
+Ran 11 tests in 0.293s
+
+OK
+
+Disposition:
+Independent final reader execution passed after the test corrections. This is Python reader validation, not Godot execution.

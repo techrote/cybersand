@@ -1,0 +1,14 @@
+{
+  "schema": "cybersand.sol281.late-documentation-main-plan.v1",
+  "date_utc": "2026-11-04",
+  "status": "prospective_before_merge",
+  "active_pr347_head": "9195577dc8b689ca907ccfa03554e38ac6953226",
+  "previous_accepted_main": "0fd4af5987e77db4da3e37c757cf2c0917ae9e15",
+  "newly_observed_accepted_main": "3da7e7be4a6af4c85e03a7d8a0ed57229e5db33d",
+  "incoming_scope": "Merged #357 adopts Planned material-authoring architecture. Nine documentation paths only; no native, Godot, tools, third-party, build, instruction, attribute or CI files differ from previous main.",
+  "strategy": "Ordinary merge of accepted main into existing draft #347 after this plan commit. Preserve both SOL281 and MAT-AUTH topics in additive documentation conflicts and retain exact incoming bytes for all other paths. No rebase, force push, default change or implementation promotion.",
+  "execution_identity": "749fb8b597ad866f7535f26442e904207c4f7611",
+  "runtime_publication": "89d2eb6d280183e495a94b559776dfd8f1cdc196",
+  "validation_plan": "Independently verify all incoming paths and unchanged 1089 broad / 88 native execution inputs relative to the runtime publication. Run documentation, repository/provenance, historical M11 and default/SOL281/new-MAT-AUTH retrieval checks on the merged documentation. Record final metadata-head CI. Do not rerun hosted physics solely for documentation or relabel executed-source receipts.",
+  "retained_disposition": "Full-matrix CPU criterion remains failed at 23/24 groups (all12 candidate groups pass); broad physical/lifecycle and merge gates remain unpassed. #347 stays draft, #281/#12 open, #283 frozen, #282/#343 separate."
+}

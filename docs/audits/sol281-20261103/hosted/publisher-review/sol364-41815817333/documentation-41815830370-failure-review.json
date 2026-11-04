@@ -1,0 +1,130 @@
+{
+  "schema": "cybersand.sol364.documentation-failure-review.v1",
+  "source_commit": "9edc4f8f7d8cd8fc65119d176c9e1981ab6ea77d",
+  "source_tree": "b5baf8b23ff947c2d7b70e69745c10f18fbe9ebe",
+  "run_id": 41815830370,
+  "run_attempt": 1,
+  "job_id": 126526204779,
+  "step": "Check material catalogue shadow compatibility",
+  "status": "failure",
+  "exit_code": 1,
+  "original_log_excerpt": {
+    "file": "documentation-41815830370-material-guard-excerpt.log",
+    "sha256": "0bbba763e77b62fc4bfb9a332c3ac6b1c6c26aad2e4758c36c0040145079d86d",
+    "first_line": 673,
+    "last_line": 683,
+    "total_lines": 720
+  },
+  "jobs": [
+    {
+      "id": 126526204779,
+      "name": "consistency",
+      "conclusion": "failure",
+      "steps": [
+        {
+          "name": "Set up job",
+          "conclusion": "success"
+        },
+        {
+          "name": "Check out pinned companion workspace documentation",
+          "conclusion": "success"
+        },
+        {
+          "name": "Check out current source and complete audited history",
+          "conclusion": "success"
+        },
+        {
+          "name": "Validate active CI provider policy",
+          "conclusion": "success"
+        },
+        {
+          "name": "Test CI provider policy checker",
+          "conclusion": "success"
+        },
+        {
+          "name": "Validate Actions syntax with pinned actionlint",
+          "conclusion": "success"
+        },
+        {
+          "name": "Audit workflow inventory and scheduling policies",
+          "conclusion": "success"
+        },
+        {
+          "name": "Retain machine-readable workflow inventory",
+          "conclusion": "success"
+        },
+        {
+          "name": "Check LCB capability matrix is source-derived",
+          "conclusion": "success"
+        },
+        {
+          "name": "Check LCB policy wire/hash contract vectors",
+          "conclusion": "success"
+        },
+        {
+          "name": "Check native LCB setup and run receipt canonical vectors",
+          "conclusion": "success"
+        },
+        {
+          "name": "Check material catalogue shadow compatibility",
+          "conclusion": "failure"
+        },
+        {
+          "name": "Check LCB scenario definitions and registry are source-derived",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "Validate current documentation",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "Validate dependency pins and published runtime provenance",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "Verify retained M11 records against their audited Git revision",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "Test validation failure contracts",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "Test soliding evidence integrity contracts",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "Evaluate current retrieval routes",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "Validate Git LFS objects and whitespace",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "Retain retrieval evidence",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "Retain material catalogue parity evidence",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Check out current source and complete audited history",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Check out pinned companion workspace documentation",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "conclusion": "success"
+        }
+      ]
+    }
+  ],
+  "material_step_execution": "compatibility.py --check executed and failed; subsequent compiler/unit-test/parity commands printed as script text but did not execute under bash -e",
+  "downstream_doc_provenance_retrieval_lfs": "skipped, not passing",
+  "guard_mutated": false
+}

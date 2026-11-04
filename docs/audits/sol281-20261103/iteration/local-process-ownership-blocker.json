@@ -1,0 +1,69 @@
+{
+  "command": [
+    "make",
+    "-j2",
+    "CXX=/usr/bin/g++-13",
+    "solid-detachment-test",
+    "conservative-displacement-test",
+    "solid-contact-geometry-test"
+  ],
+  "complete": true,
+  "elapsed_seconds": 0.00022935400011192542,
+  "error": "RuntimeError: Cannot establish process ownership: /proc PID namespace mismatch",
+  "execution_policy": {
+    "advisories": {
+      "drift_ratio": 1.2,
+      "drift_window": 5,
+      "minimum_baseline_samples": 3,
+      "prominent_ratio": 2.0,
+      "rolling_window": 10,
+      "warning_ratio": 1.5
+    },
+    "path": "godot/tests/support/ci_execution_policy.json",
+    "policy_id": "github-hosted-complete-execution-v1",
+    "scale": 1.0,
+    "schema_version": 1,
+    "sha256": "9eaec2e6318073bff7cfbac209d2d959a751b85ffd63cb94c147e9be237516dc",
+    "watchdogs": {
+      "aggregate_headroom_seconds": 600.0,
+      "complex_fixture_seconds": 3600.0,
+      "dependency_prepare_seconds": 1200.0,
+      "diagnostic_capture_seconds": 30.0,
+      "godot_import_seconds": 1200.0,
+      "godot_job_minutes": 360.0,
+      "godot_metadata_seconds": 900.0,
+      "godot_setup_seconds": 4200.0,
+      "graphical_case_seconds": 1200.0,
+      "hosted_job_minutes": 180.0,
+      "main_ack_seconds": 600.0,
+      "native_case_seconds": 3600.0,
+      "native_compile_seconds": 3600.0,
+      "native_suite_seconds": 7200.0,
+      "operation_seconds": 300.0,
+      "ordinary_case_seconds": 1200.0,
+      "terminate_grace_seconds": 10.0
+    }
+  },
+  "label": "native-sol281-current",
+  "log": "command.log",
+  "natural_completion": false,
+  "resources": {
+    "available": false,
+    "scope": "direct_process_only"
+  },
+  "returncode": null,
+  "schema": "execution-command-v1",
+  "source": {
+    "commit": "2321cf24d65024a609140b949efc3f5d909f6afa",
+    "job": null,
+    "run_attempt": null,
+    "run_id": null,
+    "runner_name_sha256": null,
+    "tracked_delta_sha256": "ae005bff0f3298eac288b8be14383453ea20439bd6cac0ee7896ec8610c9fd6e",
+    "tree": "4c7d29809b527e5303f3f50fb941523a251d6a2e"
+  },
+  "started_utc": "2026-11-03T19:38:54.265299+00:00",
+  "status": "launch_error",
+  "timed_out": false,
+  "timeout_seconds": 7200.0
+}

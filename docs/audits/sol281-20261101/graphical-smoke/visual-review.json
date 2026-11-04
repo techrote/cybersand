@@ -1,0 +1,66 @@
+{
+  "status": "passed",
+  "scope": "human-style visual inspection via view_image of actual scene PNGs; no GPU frame-pacing or dense-resistance acceptance",
+  "source": {
+    "sha": "dd18bca6ff9d89018ffb5878a8746d1167341ed6",
+    "tree": "1af695b691ba83479dcdeb433376daa7abaa4867"
+  },
+  "runtime_sha256": "7cd91126f1c59f8b43e7e93f56f916f5dc4ec009f9f92e6bac298b1555d5426e",
+  "inspected": [
+    "empty-anchored.png",
+    "empty-tick060.png",
+    "empty-tick120.png",
+    "empty-tick240.png",
+    "mixed-anchored.png",
+    "mixed-tick060.png",
+    "mixed-tick120.png",
+    "mixed-tick240.png"
+  ],
+  "png_dimensions": {
+    "empty-anchored.png": [
+      1200,
+      675
+    ],
+    "empty-tick060.png": [
+      1200,
+      675
+    ],
+    "empty-tick120.png": [
+      1200,
+      675
+    ],
+    "empty-tick240.png": [
+      1200,
+      675
+    ],
+    "mixed-anchored.png": [
+      1200,
+      675
+    ],
+    "mixed-tick060.png": [
+      1200,
+      675
+    ],
+    "mixed-tick120.png": [
+      1200,
+      675
+    ],
+    "mixed-tick240.png": [
+      1200,
+      675
+    ]
+  },
+  "findings": [
+    "Both scenes render the native anchored tree, ground, stump, and unrelated structure.",
+    "Captured states show actual aggregate toppling/rotation with the pinhole and open region below the crown retained.",
+    "Sand and Water images update between captured mixed-scene states, and the body remains visibly distinct.",
+    "Title, scenario, worker count, contact counters, and keyboard controls are visible; no missing texture or shader-error presentation was observed.",
+    "The mixed aggregate penetrates the populated material substantially; this remains a physical-quality limitation."
+  ],
+  "renderer": "Mesa 25.2.8 llvmpipe (LLVM 20.1.2, 256 bits), software, Accelerated:no",
+  "limitations": [
+    "Xvfb local virtual display, forced software OpenGL.",
+    "Driver cannot change V-Sync mode; warning retained in original logs.",
+    "Displayed frame-ms samples are observations and not interactive GPU FPS acceptance."
+  ]
+}

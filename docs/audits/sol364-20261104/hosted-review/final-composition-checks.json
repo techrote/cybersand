@@ -1,0 +1,60 @@
+{
+  "schema": "cybersand.sol364.local-composition-checks.v1",
+  "publication_commit": "5f6360a9713ff791f09bc8b05e265b3e626c2ae1",
+  "executed_source": "9edc4f8f7d8cd8fc65119d176c9e1981ab6ea77d",
+  "scope": "Local materialized publication composition plus uncommitted documentation/evidence; this does not override the unchanged MAT-AUTH source guard or add physics execution.",
+  "commands": [
+    {
+      "name": "material_guard",
+      "command": [
+        "python3",
+        "tools/material_catalogue/compatibility.py",
+        "--check"
+      ],
+      "returncode": 1,
+      "expected_returncode_for_current_disposition": 1,
+      "elapsed_seconds": 0.213766996996128,
+      "stdout": "",
+      "stderr": "compatibility: native/src/world.cpp: LF source-byte drift (legacy movement, chemistry, thermal and scheduling authority); expected b7a129f44eccc7c33dbd2f0d84802ab096140dcaa9b5b3a83d45dd3bf85fbad1, got 91cecf308d01ef214f491f3dc1f353f10c9db17a55162b983fc4ecf80e6363e6. #353-A preserves this consumer; cutover/identity transition needs separate review\n"
+    },
+    {
+      "name": "lfs",
+      "command": [
+        "git",
+        "lfs",
+        "fsck"
+      ],
+      "returncode": 0,
+      "expected_returncode_for_current_disposition": 0,
+      "elapsed_seconds": 0.5152752760041039,
+      "stdout": "Git LFS fsck OK\n",
+      "stderr": ""
+    },
+    {
+      "name": "provider_policy",
+      "command": [
+        "python3",
+        "tools/ci/check_ci_provider_policy.py"
+      ],
+      "returncode": 0,
+      "expected_returncode_for_current_disposition": 0,
+      "elapsed_seconds": 0.07078771200031042,
+      "stdout": "{\n  \"status\": \"passed\",\n  \"scope\": \"active CI provider and runner routing\",\n  \"errors\": [],\n  \"policy\": {\n    \"routine_provider\": \"GitHub-hosted Actions\",\n    \"external_provider_config\": \"forbidden unless policy is explicitly changed\",\n    \"runner_indirection\": \"forbidden\"\n  }\n}\n",
+      "stderr": ""
+    },
+    {
+      "name": "staged_whitespace",
+      "command": [
+        "git",
+        "diff",
+        "--cached",
+        "--check"
+      ],
+      "returncode": 0,
+      "expected_returncode_for_current_disposition": 0,
+      "elapsed_seconds": 0.03136498299863888,
+      "stdout": "",
+      "stderr": ""
+    }
+  ]
+}

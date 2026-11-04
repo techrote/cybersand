@@ -1,0 +1,24 @@
+{
+  "schema": "sol364.observer-equivalence.v1",
+  "passed": true,
+  "failures": [],
+  "exact_observations": 40,
+  "original_checks_per_runtime": 129,
+  "ignored_native_fields": [
+    "observation_ms",
+    "native_geometry_ms",
+    "native_payload_freeze_ms",
+    "payload_immutability"
+  ],
+  "inputs": {
+    "baseline": {
+      "path": "docs/audits/sol364-20261104/observer-equivalence-baseline.json",
+      "sha256": "765aa32e3f07f23785c566547d3dff79ded21445fe16b0046bad2b32d0da4f17"
+    },
+    "candidate": {
+      "path": "docs/audits/sol364-20261104/observer-equivalence-candidate.json",
+      "sha256": "765aa32e3f07f23785c566547d3dff79ded21445fe16b0046bad2b32d0da4f17"
+    }
+  },
+  "scope": "Exact frozen native contact, geometry, ownership, probe and refusal values; not live CPU or physical acceptance."
+}

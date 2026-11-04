@@ -1,0 +1,16 @@
+Initialize godot-rust (API v4.7.stable.official, runtime v4.7.stable.official, safeguards balanced)
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[92mPHYSICS ENGINE 2D: Rapier2D v0.35.2[39m[0m
+FAIL SOL281 DISPLACEMENT boundary_sand_one_hop: successful result has the admitted outcome
+FAIL SOL281 DISPLACEMENT boundary_sand_one_hop: declared multi-parcel chain really moves
+FAIL SOL281 DISPLACEMENT boundary_sand_one_hop: committed path describes every parcel move
+FAIL SOL281 DISPLACEMENT boundary_sand_one_hop: unique conservative path matches the independent fixture
+FAIL SOL281 DISPLACEMENT boundary_sand_one_hop: native full-square geometry admitted every destination
+FAIL SOL281 DISPLACEMENT boundary_sand_three_parcels: successful result has the admitted outcome
+FAIL SOL281 DISPLACEMENT boundary_sand_three_parcels: declared multi-parcel chain really moves
+FAIL SOL281 DISPLACEMENT boundary_sand_three_parcels: committed path describes every parcel move
+FAIL SOL281 DISPLACEMENT boundary_sand_three_parcels: unique conservative path matches the independent fixture
+FAIL SOL281 DISPLACEMENT boundary_sand_three_parcels: native full-square geometry admitted every destination
+terminate called after throwing an instance of 'std::invalid_argument'
+  what():  experimental Water state out of domain

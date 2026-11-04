@@ -1,0 +1,142 @@
+{
+  "disposition": "No remaining implementation blocker found for freezing and exact-source qualification of the opt-in experimental candidate. This review is not runtime qualification, human gameplay acceptance, default promotion, or merge authorization.",
+  "findings": [
+    {
+      "correction": "The worker publishes immutable cumulative attempts, elapsed time and probes across successful, refused and overwritten observations. The session times every bridge response call before its outcome branch. Analysis uses total worker work plus all response-attempt work divided conservatively by complete consumed observations.",
+      "id": "REV-COST-001",
+      "origin": "this independent review",
+      "original_issue": "Combined CPU-cost accounting omitted refused geometry and response attempts, and omitted overwritten worker publications. Frequent refusal could produce an artificially cheap provisional feasibility result.",
+      "status": "corrected_in_reviewed_source; exact-source runtime validation pending",
+      "verification": "Re-read worker, session, failure-snapshot clearing, recovery assertions and analysis formula. The registered <=2 ms threshold is unchanged; accepted-only descriptive timing remains separate."
+    },
+    {
+      "correction": "Trace separately records source and current poses, revision, physics epoch, token, body generation, publication and observation timestamps, and six per-proxy geometry metrics.",
+      "id": "REV-TRACE-002",
+      "origin": "this independent review",
+      "original_issue": "Live overlap was measured at the copied native pose while trace x/y/angle represented a later main-thread pose. Native revision and ownership identity were absent.",
+      "status": "corrected_in_reviewed_source; exact-source runtime validation pending",
+      "verification": "Re-read the recovery trace construction and interpretation contract; native publication samples remain explicitly distinct from simulation ticks."
+    },
+    {
+      "correction": "Bridge compares revision text exactly with str(snapshot.simulation_world_revision), rejects negative expected revisions, and receives that revision from the session. A mismatched-revision negative fixture is retained.",
+      "id": "REV-REVISION-003",
+      "origin": "prior independent review; correction rechecked here",
+      "original_issue": "Bridge admission checked observation revision only for String type, without binding it to the enclosing native snapshot revision.",
+      "status": "corrected_in_reviewed_source; exact-source runtime validation pending",
+      "verification": "Confirmed native get_revision() returns revision_ and the observer uses the same value. Re-read the bridge check, session call and negative fixture."
+    },
+    {
+      "correction": "Every candidate recovery case requires accepted response count > 0 and positive impulse magnitude sum; baseline cases require zero candidate response acceptance.",
+      "id": "REV-COVERAGE-004",
+      "origin": "prior independent review; correction rechecked here",
+      "original_issue": "A live candidate case could pass while all new response attempts were refused or produced no resistance.",
+      "status": "corrected_in_reviewed_source; exact-source runtime validation pending",
+      "verification": "Re-read the explicit arm-coverage assertion in the repeated actual-session fixture."
+    },
+    {
+      "correction": "The approaching segment subset is recomputed from current point velocities on every one of the four fixed solver sweeps; pure-spin and falling-plus-spin regressions are present.",
+      "id": "REV-SPIN-005",
+      "origin": "prior independent review; repaired planner rechecked here",
+      "original_issue": "A fixed parallel-normal resultant could cancel opposite lever arms at the group COM and hide an approaching rotating edge.",
+      "status": "corrected_in_reviewed_source; exact-source runtime validation pending",
+      "verification": "Re-read planner grouping, point velocities, per-impulse energy bound and residual approach reporting. Executed regression receipts belong to the implementing/testing agent and are not claimed as executions by this reviewer."
+    }
+  ],
+  "ownership_assessment": [
+    "Native observation is read-only and introduces no material transfer or competing material owner.",
+    "Exterior edges are derived from the exact integer rectangle partition before rotation; sibling seams are subtracted and holes remain represented by the rectangle union.",
+    "One reconstructed rigid transform avoids float32 proxy rounding creating overlapping or shifted seams.",
+    "Finite boundary checks precede integer conversion. Probe, contact and edge capacities have explicit refusal outcomes.",
+    "Supported Sand admission checks residency and excludes aggregate transient occupancy from the support predicate.",
+    "Worker contact dictionaries and arrays are recursively frozen before publication; failure snapshots clear both new side channels.",
+    "Identity, revision, sample age and ordering are checked before planning. A complete pure plan precedes the main-thread RID impulse loop.",
+    "New response remains opt-in. Ordinary coupling, conservative material transactions, Water policy and Y1 selection are unchanged."
+  ],
+  "residual_limits": [
+    "Exact-source Linux and Windows qualification, including applicable native and host tests, remains required.",
+    "Persistent embedding, delayed/refused contacts, bounded four-sweep rotational behavior and interactive gameplay feel remain unaccepted.",
+    "Stationary supported Sand supplies a dissipative reaction approximation; this is not calibrated bidirectional granular momentum conservation.",
+    "Passing isolated normal-response controls does not establish whole-session dense-material quality or completion of #281.",
+    "Live trajectories are asynchronous and unmatched; overlap metrics describe consumed publication samples, not cell-ticks or causal paired comparisons.",
+    "The provisional cost numerator includes worker attempts that were refused or overwritten, while the denominator is complete consumed observations; do not relabel it as ordinary per-tick or GPU cost.",
+    "No restoration or other lifecycle acceptance follows from this review.",
+    "No human gameplay acceptance, default promotion, issue closure or merge authorization is given.",
+    "Any later change to the reviewed files needs a targeted source-sensitive recheck."
+  ],
+  "reviewed_at_utc": "2026-11-03 20:03:43 UTC",
+  "reviewer": {
+    "human_gameplay_acceptance": false,
+    "identity": "/root/source_review",
+    "kind": "independent AI subagent",
+    "receipt_creation_authorized_by_parent": true,
+    "source_edits": false
+  },
+  "schema": "cybersand.sol281.independent-review.v1",
+  "source": {
+    "base_commit": "2321cf24d65024a609140b949efc3f5d909f6afa",
+    "binding": "The reviewed files are bound by the SHA-256 inventory below, not by a fictitious exact implementation commit.",
+    "exact_implementation_commit": null,
+    "files": [
+      {
+        "path": "godot/native_extension/solid_contact_adapter.inc",
+        "sha256": "fbdfa5c16ff66445161de708079e4f624b4180613a498c16ff92712936a54c2d"
+      },
+      {
+        "path": "native/include/cybersand/solid_contact_geometry.hpp",
+        "sha256": "53f8852cfe658fa37bb419ef4380e2c2bb4ebdf66af02e77e952813664a44c54"
+      },
+      {
+        "path": "native/include/cybersand/world.hpp",
+        "sha256": "a9aa6e51cd8c432526376b49ae15e02e4a7838aa296287bf3db6f1b10de99d31"
+      },
+      {
+        "path": "native/src/world.cpp",
+        "sha256": "91cecf308d01ef214f491f3dc1f353f10c9db17a55162b983fc4ecf80e6363e6"
+      },
+      {
+        "path": "godot/scripts/solid_contact_response.gd",
+        "sha256": "d5bebb75d81cf5bc0dce756f7a844f19ad9f145fbd9ca96775ad8f999a061d6d"
+      },
+      {
+        "path": "godot/scripts/solid_detachment_worker.gd",
+        "sha256": "f607fad0d6b6c89af3b8738489f956c73e8f64148e17d34c1fd3ede0718cba51"
+      },
+      {
+        "path": "godot/scripts/rapier_physics_bridge.gd",
+        "sha256": "996d912f7cfe6f8bd4c276bb8ee966da1bf6affbb1579413a69f9ef4b9a401e7"
+      },
+      {
+        "path": "godot/scripts/solid_detachment_session.gd",
+        "sha256": "7bfc35d89e6942022a9d80453b587bfbfedfdc6072bd8d2e65f9dadbf290845b"
+      },
+      {
+        "path": "godot/scripts/simulation_snapshot.gd",
+        "sha256": "d7cc8f2cdafc421e48dfa9ceea69aca2a6534248d55b3bdeeb2fe3f83a46a210"
+      },
+      {
+        "path": "godot/scripts/simulation_worker.gd",
+        "sha256": "92d8966df1c4638157323a078713b0dc25504b3c1d2b87af5118c34649eca2d2"
+      },
+      {
+        "path": "godot/tests/test_solid_contact_fences.gd",
+        "sha256": "211551bc38bb3b0db21938a630f0f0926829ffa75687408306c8f4410aa1afaf"
+      },
+      {
+        "path": "godot/tests/test_solid_detachment_contact_recovery.gd",
+        "sha256": "9a7fa0c7ce6ca2dd75c7c4ff60d3722ad671a441427829965f20506babb76656"
+      },
+      {
+        "path": "tools/sol281/analyze_contact_recovery.py",
+        "sha256": "0c6b6a223ba7b17c610d8659dec811f4d904c6c65d7291ee9290cad0814f9b54"
+      }
+    ],
+    "repository": "techrote/cybersand",
+    "reviewed_state": "base commit plus uncommitted working-tree source delta"
+  },
+  "validation_performed_by_this_reviewer": [
+    "Read-only source review against repository AGENTS.md and structural-detachment contract.",
+    "Targeted reread of corrected findings.",
+    "git diff --check passed.",
+    "Current reviewed file SHA-256 inventory captured."
+  ]
+}

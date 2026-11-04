@@ -1,0 +1,104 @@
+{
+  "schema": "cybersand.sol281.independent-native-review.v1",
+  "reviewer": {
+    "identity": "/root/implementation_review/native_review",
+    "kind": "independent AI subagent",
+    "source_edits": false,
+    "remote_mutations": false,
+    "human_gameplay_acceptance": false
+  },
+  "source": {
+    "repository": "techrote/cybersand",
+    "reviewed_commit": "3ac7701f013452c94a8c08b0746e1b13523e7234",
+    "reviewed_tree": "b97c59f4418ac5fc7768f56fb15ebeeedb1dc502",
+    "executed_source_predecessor": "5944c13079356fedf96da78c78e83b3898379fee",
+    "source_identity_check": "git diff --exit-code 5944c130 HEAD -- six reviewed paths passed",
+    "files": [
+      {
+        "path": "native/include/cybersand/solid_contact_geometry.hpp",
+        "sha256": "53f8852cfe658fa37bb419ef4380e2c2bb4ebdf66af02e77e952813664a44c54"
+      },
+      {
+        "path": "godot/native_extension/solid_contact_adapter.inc",
+        "sha256": "fbdfa5c16ff66445161de708079e4f624b4180613a498c16ff92712936a54c2d"
+      },
+      {
+        "path": "native/src/world.cpp",
+        "sha256": "91cecf308d01ef214f491f3dc1f353f10c9db17a55162b983fc4ecf80e6363e6"
+      },
+      {
+        "path": "native/include/cybersand/world.hpp",
+        "sha256": "a9aa6e51cd8c432526376b49ae15e02e4a7838aa296287bf3db6f1b10de99d31"
+      },
+      {
+        "path": "native/tests/test_solid_contact_geometry.cpp",
+        "sha256": "0b03d02a96f2483f6aa89b06ef400b33e4804cd486e9e10784b175db74b31591"
+      },
+      {
+        "path": "godot/tests/test_solid_contact_observation.gd",
+        "sha256": "fb1cc0027859697acab0a2c002221c3f7bd04890308dd0bc34571983f63a5fc9"
+      }
+    ]
+  },
+  "disposition": "No concrete native correctness, ownership or capacity blocker found in the bounded opt-in experimental observer/geometry scope. Not physical/gameplay acceptance or merge authorization.",
+  "verified": [
+    "Four-axis SAT and clipped polygons measure whole unit-square/oriented-rectangle intersection; containment depth uses minimum separation translation.",
+    "Fixed eight-vertex polygon capacity, finite arithmetic checks and explicit invalid refusal; no geometry-kernel heap allocation.",
+    "One reconstructed aggregate transform prevents separately rounded proxy centers from introducing shifted or overlapping seams.",
+    "Source-grid exterior edge subtraction splits partial sibling coverage before rotation; exact rectangle union preserves holes.",
+    "Finite/world bounds precede integer conversion; geometry probes are capped at8192 and contacts at256 with complete-observation refusal.",
+    "Observation reads native authority only; no material mutation, new owner, restoration or RID operations.",
+    "Support preflight covers the actual3x3 footprint and calls granular_support_at with transient obstacles excluded.",
+    "Occupied cell insertions are bounded by geometry probes, and IDs are deduplicated before compound overlap-cell reporting."
+  ],
+  "validation": [
+    {
+      "kind": "independent_execution",
+      "command": "g++ -std=c++20 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -O2 -Werror -Inative/include native/tests/test_solid_contact_geometry.cpp -o /tmp/sol281-independent-native-geometry\n/tmp/sol281-independent-native-geometry",
+      "result": "6 groups /6817 checks passed",
+      "evidence": "transcripts/native-geometry-normal.tool-output.txt"
+    },
+    {
+      "kind": "independent_execution",
+      "command": "g++ -std=c++20 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined -Inative/include native/tests/test_solid_contact_geometry.cpp -o /tmp/sol281-independent-native-geometry-sanitized\n/tmp/sol281-independent-native-geometry-sanitized",
+      "exit_code": 1,
+      "result": "LeakSanitizer environment failure: /proc/2/task unreadable; ptrace unsupported",
+      "evidence": "transcripts/native-geometry-sanitizer-original.tool-output.txt"
+    },
+    {
+      "kind": "independent_execution",
+      "command": "ASAN_OPTIONS=detect_leaks=0 /tmp/sol281-independent-native-geometry-sanitized",
+      "exit_code": 0,
+      "result": "6 groups /6817 checks passed with ASan/UBSan active; leak detection disabled",
+      "same_binary_as_failed_lsan_run": true,
+      "leak_sanitizer_pass": false,
+      "evidence": "transcripts/native-geometry-asan-ubsan-no-lsan.tool-output.txt"
+    },
+    {
+      "kind": "inspection_only",
+      "path": "docs/audits/sol281-20261103/hosted/5944c13079356fedf96da78c78e83b3898379fee/cohorts/linux/contact-w1/host/contact-observation-w1.json",
+      "result": "129 checks, no failures; prior source-qualified adapter evidence, not new independent Godot execution"
+    }
+  ],
+  "toolchain": {
+    "compiler": "g++ (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0",
+    "host_uname": "Linux 6.18.57 x86_64"
+  },
+  "diagnostic_binaries_not_committed": [
+    {
+      "path": "/tmp/sol281-independent-native-geometry",
+      "sha256": "cf36ee89aa3a29476030901958e75bfb91a34a0777ce2be1b55549ef2d4aaeac"
+    },
+    {
+      "path": "/tmp/sol281-independent-native-geometry-sanitized",
+      "sha256": "f827926badc0cc099ac4b5fb0bdbbbaba458c88b2df3c271ccb3b357452edc3d"
+    }
+  ],
+  "limits": [
+    "Deeply buried cells can overlap without crossing an exterior face and supply no new response segment.",
+    "Observer omits overlap area<=1e-9 and support segment length<=1e-7; do not claim every positive infinitesimal overlap is recorded.",
+    "Hot/unsupported material is geometrically measured but contributes no new resistance segment; it does not necessarily refuse the whole observation.",
+    "Current129-check adapter fixture does not directly inject every observer refusal category, including ContactCapacity and UnknownSupport.",
+    "Main-thread planner/bridge, final source qualification, sustained embedding, human gameplay and merge readiness are outside this native-only disposition."
+  ]
+}

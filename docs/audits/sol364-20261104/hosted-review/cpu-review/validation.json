@@ -1,0 +1,29 @@
+{
+  "both_earlier_failure_receipts_preserved": true,
+  "case_annex_sha256": "102a2ce18fe4341038ece4b5e8feefd01ad4b74dce759584dafc7e741862b935",
+  "compared_cases": 72,
+  "exactly_equal_case_costs_denominators_owner_and_response_attempts": true,
+  "historical_gate_reproduced": {
+    "groups": 24,
+    "passed": 23
+  },
+  "independent_report_sha256": "42e058df5ce6b502d38334e4127dd9aa061c484cc537b9702d373605b7eeecbe",
+  "independent_script_sha256": "b4a32be7f67e5692967dbeda8351e6572e268678c866ed852f9a8b397fbb6209",
+  "new_trace_validation": "All 22,850 unique complete trace receipts equal consumed denominators; all 10,900 evaluated response receipts and refusal reasons equal counters; four explicit response-stage sums and accepted application/latency totals agree with trace.",
+  "registered_group_gate_agreement": {
+    "groups": 24,
+    "limit_ms": 2.0,
+    "passed": 24
+  },
+  "repository_analysis_sha256": "e44b1a0a58a11833fb659ed5fd53b27ff0b2dc6f6a63fddf57700a90411b9669",
+  "run_id": 41815817333,
+  "schema": "cybersand.sol364.independent-cost-validation.v1",
+  "source": {
+    "sha": "9edc4f8f7d8cd8fc65119d176c9e1981ab6ea77d",
+    "tree": "b5baf8b23ff947c2d7b70e69745c10f18fbe9ebe"
+  },
+  "source_matched_crosscheck_code": {
+    "tools/sol281/analyze_contact_recovery.py": "766287ab1763057f8045ae4fcbb4db596cb3f4dca2d429bf5e0356c4fcec5176",
+    "tools/sol281/run_qualification.py": "07a841b4bf0c67572776eb468a2e289eb6a518a1175fa4e826ac46d17a4b36ec"
+  }
+}

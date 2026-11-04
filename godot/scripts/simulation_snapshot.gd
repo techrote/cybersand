@@ -92,6 +92,9 @@ var native_worker_participation: Dictionary = {}
 var backend_name: String = "unknown"
 var sparse_flight_moves_last_tick: int = 0
 var rigid_body_results: PackedFloat32Array = PackedFloat32Array()
+# Optional dedicated-owner value side channel; empty in ordinary gameplay.
+var solid_contact_observation: Dictionary = {}
+var solid_contact_work: Dictionary = {}
 var rigid_body_contacts_last_tick: int = 0
 var rigid_body_displaced_last_tick: int = 0
 var rigid_body_unresolved_last_tick: int = 0

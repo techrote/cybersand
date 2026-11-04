@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "status": "failed exploratory prequalification; invalid analytical Water coherence input",
+  "invalid_fixture_sha256": "8c86e3d13d667b6b3f91dedd36e734bec00c4278c49c78e1f3c8d257456e64ca",
+  "preserved_invalid_path": "/workspace/scratch/59ce0c87fdea/evidence/replay-inputs/conservative_contacts.pre-water-state-fix.json",
+  "fixes": [
+    {
+      "case": "boundary_partial_water_three_parcels",
+      "index": 35,
+      "old_state_b": 13,
+      "new_state_b": 0
+    }
+  ],
+  "corrected_fixture_sha256": "0ed32d72c2bd3681bb003d7fe0c5d3f0f870598d487614dd36a4a816778604ce",
+  "historical_cases_untouched": true,
+  "limitation": "This receipt identifies inspected pre-fix fixture bytes; caller log/source hashes establish actual run identity separately."
+}

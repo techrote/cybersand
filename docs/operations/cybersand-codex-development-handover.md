@@ -10,15 +10,90 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## SOL364 synchronized repair continuation — 2026-11-04
+
+Continue from the [SOL364 source and evidence ledger](../audits/2026-11-04-sol364-recovery.md),
+which ordinarily merges accepted MAT-AUTH main `7ef4856e` into existing draft
+#347. It retains exterior witness spans at the current pose, freezes scalar
+native contact payloads once and accounts every owner/response attempt. The
+synchronized fixture preserves 520 members, six shapes and both geometric voids,
+with independently measured every-step geometry and explicit delivery schedules.
+First sleep-confounded traces and the new local 2.012693 ms cost failure remain
+failed evidence. Stationary burial needs separate bounded recovery work; neither
+process success nor a candidate-only cost result accepts sustained clearance.
+Executed source `9edc4f8f` completes 74 actual-host test processes and 38,296
+structured checks; published runtime/evidence child is `5f6360a9`. All 24 original
+hosted cost groups pass, worst 1.644949833 ms, while 84/84 synchronized clearance
+cases fail. The old Windows 2.145915 ms failure remains retained. The unchanged
+MAT-AUTH guard rejects two historical SOL consumer deltas, and the qualification
+workflow ends failed on an HTTP 500 documentation dispatch after its successful
+publication push. Use the ledger's exact source/runtime/platform receipts and
+these distinct gate results. Next is bounded existing-penetration recovery plus
+the separate two-consumer integration decision. #347 stays draft, #365 blocked
+and #283 frozen.
+
+## SOL281 completed recovery and remaining gates — 2026-11-04
+
+The [recovery handover](../audits/2026-11-03-sol281-takeover.md) preserves the
+original `5944c130` qualification, ordinarily reconciles accepted main `0fd4af59`
+through published merge `e518b0b6`, and qualifies the post-impulse readback guard
+and unchanged-output publisher repair. Final executed source is `749fb8b5`;
+run 41746597077 passes both builds, eight actual Linux/Windows cohorts, reduction
+and runtime publication `89d2eb6d`. The materialized documentation/provenance
+dispatch 41748585125 also passes. Old failed publication receipts remain failed.
+
+**At the preceding `749fb8b5` checkpoint, the full-matrix 2 ms mean CPU criterion is NOT MET:** 23/24 groups pass,
+with Windows four-worker embedded baseline r0 at 2.145915178571 ms per complete
+observation. All 12 candidate groups pass, worst 1.782429487179 ms. Candidate
+packed/embedded penetration reaches 4.046731639982 / 2.642792455422 cells, with
+positive sampled spans near six seconds. These descriptive asynchronous trials
+do not establish sustained clearance or gameplay acceptance.
+
+Existing #364 owns synchronized reproduction, diagnosis of the retained CPU
+failure and one bounded contact repair under prospectively registered limits.
+#365 restoration remains conditional and blocked. Exact ownership, energy and
+readback-failure contracts remain; defaults and Y1 are unchanged. #347 stays
+draft/unmerged, #281/#12 stay open and #283 stays frozen. Actual graphical/GPU,
+human acceptance and applicable ready-PR CI remain separate gates.
+
+## SOL281 dense-contact continuation — 2026-11-03
+
+At this checkpoint, draft #347 reconciles accepted main `89020b9e` through
+published merge `c1c71623` (the same tree as retained local `2321cf24`), preserving
+its existing source/evidence ancestry and the merged PLAY
+recovery. The [dense-contact checkpoint](../audits/2026-11-03-sol281-dense-contact.md)
+records the opt-in supported-Sand response, exact rotated overlap observer,
+proposed physical gates, independent review corrections and new source-bound
+qualification. Follow that ledger for this checkpoint's original results; the earlier host matrix
+below qualifies only its original executable. Persistent embedding, restoration,
+human gameplay and merge acceptance remain open. #283 stays frozen; #343 Y1
+and all ordinary Water/material/contact defaults remain separate and unchanged.
+
+## SOL281 current-main branch — 2026-11-01
+
+The owner authorized implementation and a draft PR from current main for
+[structural detachment](../systems/solid-detachment.md), preserving archive #283
+at `254235ec` and leaving merge approval to the owner. Draft
+[PR #347](https://github.com/techrote/cybersand/pull/347) starts from accepted
+main `a8f08a67` with production R and PLAY #331 intact. Source `8e86ffd4`
+passed the scoped Linux/Windows host matrix; `bdd751dc` publishes its qualified
+development runtimes and original evidence.
+Its [qualification ledger](../audits/2026-11-01-sol281-current-main.md) records
+selective provenance, negative results, source/runtime gates and unresolved
+physics. Do not promote local conservative chains as a packed-bed solution or
+copy GCR/PLAY implementations into this branch. The 11/9 coupling ABI remains.
+Dense resistance/penetration and representative GPU pacing remain unpassed;
+active restoration, fracture and normal gameplay remain deferred.
+
 ## MAT-AUTH adopted-main reconciliation — 2026-11-04
 
 Documentation [#357 is merged](https://github.com/techrote/cybersand/pull/357#issuecomment-6619591556)
 as accepted main `3da7e7be4a6af4c85e03a7d8a0ed57229e5db33d`; the corrected
 architecture remains an owner-adopted Planned baseline. The separate
 [#353-A shadow compiler](material-catalogue-shadow.md) is implemented in
-[#371](https://github.com/techrote/cybersand/pull/371) at original head
-`6d3737594beb39e83e555f66f2e81184a4bdbf77` and is being reconciled and qualified
-for the owner's guarded A-only integration. Preserve that implementation and
+[#371](https://github.com/techrote/cybersand/pull/371), originally at head
+`6d3737594beb39e83e555f66f2e81184a4bdbf77`, and merged as accepted main
+`7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1`. Preserve that implementation and
 its evidence in ancestry; do not create another compiler or rewrite its branch.
 
 Use the [current architecture boundary](../architecture/material-authoring-catalogue-plan.md#13-bounded-compatibility-tooling-and-adopted-main-reconciliation--2026-11-04)
@@ -26,7 +101,11 @@ and tool guide. The frozen legacy baseline stays `0fd4af59`; merging adopted
 documentation does not refresh its source lock. Run the resulting-head compiler,
 source/identity, adversarial, native-query, documentation/provenance and applicable
 ready-state CI checks, with independent review. The #371 ledger owns their actual
-results and any merge/post-merge identity; predecessor greens are historical.
+results and merge/post-merge identity; predecessor greens are historical.
+The current SOL composition preserves the checker and catalogue but fails its
+frozen guard on two historical consumers. The [SOL364 ledger](../audits/2026-11-04-sol364-recovery.md#protected-source-compatibility-blocker)
+owns that separate integration blocker; #371's accepted-main result does not
+approve a source-lock refresh for this branch.
 
 Production native/GDScript consumers and material physics remain unchanged.
 Keep #352/#353 open, #353-B migration and #354–#356 separately unadmitted, and

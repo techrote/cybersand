@@ -1,0 +1,69 @@
+{
+  "command": [
+    "bash",
+    "-euc",
+    "\n  git lfs install --local\n  git lfs pull --include=\"godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so\" --exclude=\"\"\n"
+  ],
+  "complete": true,
+  "elapsed_seconds": 7.688887837999999,
+  "execution_policy": {
+    "advisories": {
+      "drift_ratio": 1.2,
+      "drift_window": 5,
+      "minimum_baseline_samples": 3,
+      "prominent_ratio": 2.0,
+      "rolling_window": 10,
+      "warning_ratio": 1.5
+    },
+    "path": "godot/tests/support/ci_execution_policy.json",
+    "policy_id": "github-hosted-complete-execution-v1",
+    "scale": 1.0,
+    "schema_version": 1,
+    "sha256": "9eaec2e6318073bff7cfbac209d2d959a751b85ffd63cb94c147e9be237516dc",
+    "watchdogs": {
+      "aggregate_headroom_seconds": 600.0,
+      "complex_fixture_seconds": 3600.0,
+      "dependency_prepare_seconds": 1200.0,
+      "diagnostic_capture_seconds": 30.0,
+      "godot_import_seconds": 1200.0,
+      "godot_job_minutes": 360.0,
+      "godot_metadata_seconds": 900.0,
+      "godot_setup_seconds": 4200.0,
+      "graphical_case_seconds": 1200.0,
+      "hosted_job_minutes": 180.0,
+      "main_ack_seconds": 600.0,
+      "native_case_seconds": 3600.0,
+      "native_compile_seconds": 3600.0,
+      "native_suite_seconds": 7200.0,
+      "operation_seconds": 300.0,
+      "ordinary_case_seconds": 1200.0,
+      "terminate_grace_seconds": 10.0
+    }
+  },
+  "label": "rapier-runtime",
+  "log": "command.log",
+  "log_sha256": "4fea4bc2b3b77e0192bd58ef65c3a0c982ecc7409dbffab6873bb6e04be6a875",
+  "natural_completion": true,
+  "pid": 2181,
+  "resources": {
+    "available": true,
+    "cpu_seconds": 0.0,
+    "peak_rss_bytes": 3862528,
+    "scope": "direct_process_only"
+  },
+  "returncode": 0,
+  "schema": "execution-command-v1",
+  "source": {
+    "commit": "8e86ffd4eb2eb769178808a1012701076e3a4d19",
+    "job": "linux-host",
+    "run_attempt": "1",
+    "run_id": "41331369142",
+    "runner_name_sha256": "82e8569c89e6f78b0fe070f30aa4cba01a1cb3bc668cac7bc343a807c0d8bc23",
+    "tracked_delta_sha256": null,
+    "tree": "b1f965508b24f9b10658907fff26cf1165e2d520"
+  },
+  "started_utc": "2026-11-01T17:33:42.757920+00:00",
+  "status": "passed",
+  "timed_out": false,
+  "timeout_seconds": 1200.0
+}

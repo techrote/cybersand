@@ -1,0 +1,52 @@
+{
+  "version": 1,
+  "frozen_date": "2026-11-01",
+  "purpose": "Structural detachment increment, separate from frozen historical retrieval sets.",
+  "questions": [
+    {
+      "id": "SOL281-001",
+      "query": "Can a real native cellular tree lose support and move as a Rapier aggregate, and what remains incomplete?",
+      "canonical": [
+        "systems/solid-detachment.md"
+      ],
+      "facts": [
+        "Real native RedBrick cells transfer exact payload after support cut.",
+        "One aggregate and exact compound holes; normal gameplay, fracture, active restoration remain deferred."
+      ],
+      "sources": [
+        "../native/src/world_solid_detachment.inc",
+        "../godot/scripts/solid_detachment_session.gd"
+      ]
+    },
+    {
+      "id": "SOL281-002",
+      "query": "Does conservative chain displacement solve packed granular penetration or alter ordinary GCR forces?",
+      "canonical": [
+        "systems/solid-detachment.md",
+        "architecture/rigid-body-and-cellular-coupling.md"
+      ],
+      "facts": [
+        "Only opt-in detachment changes displacement, with at most four adjacent parcel moves and full-square clearance.",
+        "Ordinary11/9 ABI and GCR force/torque ownership remain. Dense-bed resistance is not solved."
+      ],
+      "sources": [
+        "../godot/native_extension/conservative_displacement_adapter.inc",
+        "../native/src/world_conservative_displacement.inc"
+      ]
+    },
+    {
+      "id": "SOL281-003",
+      "query": "How can I cut a native tree and inspect packed Sand and mixed Water contacts in the detachment lab?",
+      "canonical": [
+        "systems/solid-detachment.md"
+      ],
+      "facts": [
+        "Run source-matched solid_detachment_lab.tscn.",
+        "Space cuts;1-4 environments;W workers;X excavation;I inspection."
+      ],
+      "sources": [
+        "../godot/scripts/solid_detachment_lab.gd"
+      ]
+    }
+  ]
+}

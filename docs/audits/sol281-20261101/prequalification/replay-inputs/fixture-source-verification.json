@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "source_archive": "61f0398e5a6d63432be681dc4a4d32da769f2b20",
+  "source_path": "docs/audits/physical-detachment-a2-2026-10-31/population.json",
+  "source_population_sha256": "d3c8bfeb19355e7bf20518bb7d6afd4b03e1f3790644a09414c4d8ea0955d33c",
+  "fixture_sha256": "0ed32d72c2bd3681bb003d7fe0c5d3f0f870598d487614dd36a4a816778604ce",
+  "fixture_cases": 17,
+  "historical_exact_matches": [
+    {
+      "case": "jammed_no_void",
+      "topology_hash": "008a704c3b333d393e6065745a3cb068c90e325d58b2a4acd8191583667722b6",
+      "event_ordinal": 1100,
+      "exact_complete_capsule": true
+    },
+    {
+      "case": "outer_ring_only",
+      "topology_hash": "0034dd0e0359cfe316c431ff8fddb1d95662561083e7b88e0659e7d0c7d5150a",
+      "event_ordinal": 719,
+      "exact_complete_capsule": true
+    },
+    {
+      "case": "permissive_cost1",
+      "topology_hash": "0ec1de94bc2400a73e69875142e4f4a94f29197612d2d65f93ab8cd0d4311587",
+      "event_ordinal": 1230,
+      "exact_complete_capsule": true
+    },
+    {
+      "case": "permissive_cost2",
+      "topology_hash": "0feffe0604ca13e9a5dd58b2decdb53f80ecba21542f6154f5d3ec064a6788c0",
+      "event_ordinal": 1058,
+      "exact_complete_capsule": true
+    },
+    {
+      "case": "direct_production_success",
+      "topology_hash": "068126791bb44af317397d7bf8d15860abede27117f348407268dd2de91af9cc",
+      "event_ordinal": 1243,
+      "exact_complete_capsule": true
+    },
+    {
+      "case": "strict_empty_rear",
+      "topology_hash": "4eb78ef449aa619f797fedb9a66530579f2b295093ec254751df8e3000c7a030",
+      "event_ordinal": 1263,
+      "exact_complete_capsule": true
+    },
+    {
+      "case": "center_only_false_clearance_tick106",
+      "topology_hash": "a43bf19ed0973baa75490eeb157b568f2a897f5c86fb937f5e21f5b36ad565a7",
+      "event_ordinal": 1217,
+      "exact_complete_capsule": true
+    },
+    {
+      "case": "center_only_false_clearance_tick103",
+      "topology_hash": "d8ab64ca0acae6ffae2398a664eea097b542e8c273eb4109dda1470443cab516",
+      "event_ordinal": 1154,
+      "exact_complete_capsule": true
+    }
+  ],
+  "analytical_cases": 9,
+  "all_water_semantic_tuples_in_current_domain": true,
+  "runtime_execution": false
+}

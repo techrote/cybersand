@@ -1,0 +1,28 @@
+{
+  "schema": "cybersand.sol281.msvc-command.v1",
+  "status": "passed",
+  "source": {
+    "sha": "9edc4f8f7d8cd8fc65119d176c9e1981ab6ea77d",
+    "tree": "b5baf8b23ff947c2d7b70e69745c10f18fbe9ebe"
+  },
+  "platform": "Windows",
+  "cohort": "mechanism",
+  "run_id": "41815817333",
+  "run_attempt": "1",
+  "command": [
+    "C:\\Windows\\system32\\cmd.exe",
+    "/d",
+    "/c",
+    "tools\\sol281\\run_msvc_contact.cmd"
+  ],
+  "timeout_seconds": 7200.0,
+  "cleanup_seconds": 10.0,
+  "timed_out": false,
+  "natural_completion": true,
+  "returncode": 0,
+  "started_utc": "2026-11-04T10:57:30.2473486Z",
+  "pid": 1752,
+  "elapsed_seconds": 48.6831949,
+  "log_sha256": "1E28E6D725963AC13C6BF0A0930BB1C11779A1F677FCA47071768F26E21494E1",
+  "stderr_sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+}

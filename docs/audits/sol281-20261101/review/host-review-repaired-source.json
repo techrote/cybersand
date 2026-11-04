@@ -1,0 +1,26 @@
+{
+  "schema": "sol281-host-review-source-v1",
+  "observed_utc": "2026-11-01T16:45:48.597577+00:00",
+  "head": "a8f08a67fea3c58f6df7473cbae1831334fcc04e",
+  "working_delta": true,
+  "kind": "final_repaired_source_review_not_host_execution_receipt",
+  "files": {
+    "godot/scripts/solid_detachment_session.gd": "94f3f29d793f5219b2d20169a41752b888f1672a2b24950528cbd841e6e50762",
+    "godot/scripts/solid_detachment_worker.gd": "a1d6809e8138f1087402c5e68355bfcc187cd4fd3fdf9cc0ceb4a3f3ae6d4691",
+    "godot/scripts/simulation_worker.gd": "cb57ce0d5f21c3e26afc7cbb424c822810da5cbf32c780df0d6254765055a3dd",
+    "godot/scripts/solid_detachment_render_consumer.gd": "3a51e48d05c462c4dfbe2d95800f94836ebdb7eec2f71456edd7facc08ba4407",
+    "godot/scripts/solid_detachment_lab.gd": "52e5c8e31dad27098c878b92d1cc7eeb38cbe0a5f01356bd8bc6fe01b4b79ee4",
+    "godot/scripts/rapier_physics_bridge.gd": "d632171d2eb5144b4b3a0c22bf700cd082e2d913cecb585fa36bcc7978d9a2c8",
+    "godot/native_extension/solid_detachment_adapter.inc": "0f1cb226cf5ad624b6d77a7068ea8a9cb1c7d287e37cb0b48b707a0a499541b0",
+    "godot/native_extension/conservative_displacement_adapter.inc": "91b06a2c4e273aad56af883525dc2466e4caac64a1b0660aeb1201d625b85b30",
+    "godot/native_extension/cyber_native_cell_world.cpp": "0b6c13315ab94bec0980c1d806ecc715fbae377149a377db63b8c8e05da74020",
+    "native/src/world_solid_detachment.inc": "68499bf17ebb836c87fe45fa81262eef6bffa4cf3f3da33bf5fa774d93fc7c17",
+    "godot/tests/test_solid_detachment_lifecycle.gd": "ef51fedcec5cc9348fadf91dff10eb801b38de02ac143d6af771a1568fbd5c7b",
+    "godot/tests/test_solid_detachment_failures.gd": "26335fc0920724dd054c86a06c43b4f1b9edb5f5d00dd3bb8bc6bfc5e82084bd",
+    "godot/tests/test_solid_detachment_compound_response.gd": "42b1441a03153d6af07ab0494b05565b342dcfa75aa9be0520d18f7b7634145d",
+    "godot/tests/test_solid_detachment_render_ack.gd": "da1f653c45551bebfb3bd52ec471230a4b2f97802e69a1392a2c5efa699cc208",
+    "godot/tests/test_solid_detachment_populated.gd": "a46486108b16e1e2da6eddcf12d2b738add54030244f2a64c832a35617ce9996",
+    "godot/tests/test_solid_detachment_terrain_refresh.gd": "bf0ca385cd137efbcaa17dee50291e50c72e10a7df5f91dbd66b90979da7c597",
+    "godot/tests/support/ci_execution_policy.gd": "b4a72d161ed40b87732bb1adb2e9cb865617728938238326a7b439b352ce94f7"
+  }
+}

@@ -1,0 +1,78 @@
+{
+  "schema": "cybersand.sol364.handover-input-review.v1",
+  "reviewed_utc": "2026-11-04T11:24:46.977759+00:00",
+  "status": "passed-staged-handover-verification",
+  "worktree_branch": "sol364-handover-41815817333",
+  "qualified_source": {
+    "sha": "9edc4f8f7d8cd8fc65119d176c9e1981ab6ea77d",
+    "tree": "b5baf8b23ff947c2d7b70e69745c10f18fbe9ebe"
+  },
+  "publication_base": {
+    "sha": "5f6360a9713ff791f09bc8b05e265b3e626c2ae1",
+    "tree": "04befb089a75bfffcf1aa5a4bb6100c3ef0715ba",
+    "sole_parent": "9edc4f8f7d8cd8fc65119d176c9e1981ab6ea77d"
+  },
+  "staged_snapshot": {
+    "changed_path_count": 76,
+    "all_changed_paths_under_docs": true,
+    "raw_diff_sha256": "8f0a646de46ce2cee4c2b1130d88bde743f5e35e0ab1e5110d7fdb494dcc9ec6",
+    "later_receipts_note": "Parent will add local-validation and this independent review receipt afterward; those later documentation-only additions are outside this snapshot path count.",
+    "changed_path_list_sha256": "7d9ab98abaa3a3c0c6d9531e1fb601c1b417fa6a633ad16b479bcaa4393f9d13"
+  },
+  "checked_input_count": 1107,
+  "checked_input_map_sha256": "75cbc499278ed56b34b31891a0757f61b364ec4981b34b73681ac45f26530597",
+  "checked_input_hash_definition": "SHA256 of canonical JSON sorted by path with separators comma and colon, no final newline",
+  "staged_and_working_tree_inputs_equal_publication": true,
+  "qualified_source_to_publication": {
+    "unchanged_checked_inputs": 1105,
+    "updated_provenance_inputs": [
+      "godot/addons/cybersand_native/runtime-provenance.json",
+      "godot/addons/cybersand_native/runtime-provenance.linux.json"
+    ],
+    "executable_source_unchanged": true
+  },
+  "native_input_count": 88,
+  "native_input_map_sha256": "44e17d0cc69e64a2fa81c3ceebb850aec9beaea2b1e839fc52c20768120a1e89",
+  "native_inputs_equal_executed_source": true,
+  "runtimes": [
+    {
+      "manifest": "godot/addons/cybersand_native/runtime-provenance.json",
+      "manifest_sha256": "392bf970215062f3986e57928e95a9a12e1ad40eb67d330ffddf3bc424cdcb08",
+      "runtime": "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+      "runtime_sha256": "a5e616c0e72eee56c84f66151499d401dd3f4fb7faab347adbc6335493fefd61",
+      "runtime_size": 4925952,
+      "staged_lfs_pointer_unchanged": true,
+      "materialized_runtime_authenticated": true
+    },
+    {
+      "manifest": "godot/addons/cybersand_native/runtime-provenance.linux.json",
+      "manifest_sha256": "dfa22f5c22426687b3c960f848c9c6185661cb75797237f027e9e1ca79b507aa",
+      "runtime": "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+      "runtime_sha256": "de38c0de458b2a30d43cb36c633cb7ee3b469f8d84f7a3e512fafc9838bb82a5",
+      "runtime_size": 4343256,
+      "staged_lfs_pointer_unchanged": true,
+      "materialized_runtime_authenticated": true
+    }
+  ],
+  "selection_manifest_sha256": "0344906112534e52a12c6a77e0fd2a423365020f1ec4454c60f81875724272db",
+  "original_selected_files": 47,
+  "selection_manifest_additional": 1,
+  "staged_evidence_blob_bytes_equal_originals": true,
+  "evidence_modes": "100644 stage0",
+  "qualification_wording_review": {
+    "status": "passed",
+    "resolved_precision": "Audit now distinguishes1105 unchanged entries plus2 provenance updates at9ed\u21925f from all1107 preserved at the docs-only handover.",
+    "retained_boundaries": [
+      "Scoped builds/native/actual-host/reducer execution passed",
+      "Physical sustained clearance and depth gates failed",
+      "Original and local historical CPU failures remain preserved despite24/24 new hosted groups passing",
+      "MAT-AUTH two-consumer guard failed; downstream documentation steps skipped",
+      "Publication push succeeded; overall workflow failed at subsequent HTTP500 documentation dispatch",
+      "General draft-suppressed workflows not called passing; no human/GPU acceptance claim"
+    ]
+  },
+  "mutations_performed": "No source, index, branch or remote mutation; this receipt written outside the source worktree.",
+  "verified_evidence_list_sha256": "1177a866470da3230522db24dd980818011cbd6c2396dc4e3e59dd53ace7ed5e",
+  "verified_evidence_bytes": 1083491,
+  "list_hash_definition": "SHA256 of canonical JSON with sorted object keys, separators comma and colon, and no final newline; evidence list is manifest first then its47 paths sorted."
+}

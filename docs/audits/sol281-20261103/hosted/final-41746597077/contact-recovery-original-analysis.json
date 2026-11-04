@@ -1,0 +1,3320 @@
+{
+  "cohorts": [
+    {
+      "groups": [
+        {
+          "candidate": false,
+          "energy_readback_gate_passed": true,
+          "metrics": {
+            "combined_contact_ms_per_observation": {
+              "max": 1.4008693693693695,
+              "median": 0.4336935933147632,
+              "min": 0.38382336182336185
+            },
+            "geometry_ms_max": {
+              "max": 1.568593,
+              "median": 1.157134,
+              "min": 1.023993
+            },
+            "geometry_ms_per_observation": {
+              "max": 0.6994631441441442,
+              "median": 0.3532045403899722,
+              "min": 0.2944354245014245
+            },
+            "geometry_probes_per_observation": {
+              "max": 1759.837837837838,
+              "median": 1587.3370473537605,
+              "min": 1538.7948717948718
+            },
+            "impulse_magnitude_sum": {
+              "max": 0.0,
+              "median": 0.0,
+              "min": 0.0
+            },
+            "longest_positive_observation_span_seconds": {
+              "max": 5.967366,
+              "median": 5.950941,
+              "min": 5.950571
+            },
+            "max_angular_velocity_rad_s": {
+              "max": 1.4558482170105,
+              "median": 0.704577267169952,
+              "min": 0.280611604452133
+            },
+            "max_rotation_rad": {
+              "max": 1.02370142936707,
+              "median": 0.879515528678894,
+              "min": 0.449990630149841
+            },
+            "max_sand_penetration_cells": {
+              "max": 4.20631575941234,
+              "median": 4.20519056245455,
+              "min": 4.15252859888559
+            },
+            "max_translation_cells": {
+              "max": 44.8484115600586,
+              "median": 35.0538215637207,
+              "min": 33.1650085449219
+            },
+            "mean_overlap_area_per_observation": {
+              "max": 296.159257538718,
+              "median": 112.30767298686825,
+              "min": 79.74484297830712
+            },
+            "mean_overlap_cells_per_observation": {
+              "max": 354.6216216216216,
+              "median": 149.90529247910862,
+              "min": 114.38746438746439
+            },
+            "mean_sand_overlap_area_per_observation": {
+              "max": 296.14986870985496,
+              "median": 112.30177917545822,
+              "min": 79.73886389034246
+            },
+            "observations": {
+              "max": 359,
+              "median": 351,
+              "min": 222
+            },
+            "positive_sand_overlap_observations": {
+              "max": 359,
+              "median": 351,
+              "min": 222
+            },
+            "publication_latency_ms_per_accept": {
+              "max": 0.0,
+              "median": 0.0,
+              "min": 0.0
+            },
+            "refused_observations": {
+              "max": 0,
+              "median": 0,
+              "min": 0
+            },
+            "response_accepts": {
+              "max": 0,
+              "median": 0,
+              "min": 0
+            },
+            "response_attempts": {
+              "max": 0,
+              "median": 0,
+              "min": 0
+            },
+            "response_energy_change_sum": {
+              "max": 0.0,
+              "median": 0.0,
+              "min": 0.0
+            },
+            "response_ms_per_accept": {
+              "max": 0.0,
+              "median": 0.0,
+              "min": 0.0
+            },
+            "response_ms_per_attempt": {
+              "max": 0.0,
+              "median": 0.0,
+              "min": 0.0
+            },
+            "torque_impulse_sum": {
+              "max": 0.0,
+              "median": 0.0,
+              "min": 0.0
+            },
+            "worker_ms_per_attempt": {
+              "max": 0.8450896739130435,
+              "median": 0.4230869565217391,
+              "min": 0.36609239130434784
+            },
+            "worker_observation_attempts": {
+              "max": 368,
+              "median": 368,
+              "min": 368
+            }
+          },
+          "proposed_contact_cost_gate_passed": true,
+          "repetitions": 3,
+          "response_refusals": {},
+          "surroundings": "embedded_sand"
+        },
+        {
+          "candidate": true,
+          "energy_readback_gate_passed": true,
+          "metrics": {
+            "combined_contact_ms_per_observation": {
+              "max": 0.7239826589595375,
+              "median": 0.6769701492537314,
+              "min": 0.6185742296918768
+            },
+            "geometry_ms_max": {
+              "max": 0.267774,
+              "median": 0.261554,
+              "min": 0.257288
+            },
+            "geometry_ms_per_observation": {
+              "max": 0.12833073699421965,
+              "median": 0.1208492492997199,
+              "min": 0.11165795223880597
+            },
+            "geometry_probes_per_observation": {
+              "max": 1120.9161849710983,
+              "median": 970.7058823529412,
+              "min": 936.1731343283582
+            },
+            "impulse_magnitude_sum": {
+              "max": 175720.488942555,
+              "median": 147019.392421661,
+              "min": 123219.205260389
+            },
+            "longest_positive_observation_span_seconds": {
+              "max": 5.966917,
+              "median": 5.950141,
+              "min": 5.948269
+            },
+            "max_angular_velocity_rad_s": {
+              "max": 0.208691880106926,
+              "median": 0.183128416538239,
+              "min": 0.164128303527832
+            },
+            "max_rotation_rad": {
+              "max": 0.255304992198944,
+              "median": 0.246965691447258,
+              "min": 0.2144855260849
+            },
+            "max_sand_penetration_cells": {
+              "max": 2.60322714153618,
+              "median": 2.59723777122875,
+              "min": 2.59061829764611
+            },
+            "max_translation_cells": {
+              "max": 6.99412822723389,
+              "median": 6.94936609268188,
+              "min": 6.49344348907471
+            },
+            "mean_overlap_area_per_observation": {
+              "max": 21.20019627499419,
+              "median": 17.40500029698308,
+              "min": 16.79716263168615
+            },
+            "mean_overlap_cells_per_observation": {
+              "max": 41.39306358381503,
+              "median": 36.095238095238095,
+              "min": 34.69253731343284
+            },
+            "mean_sand_overlap_area_per_observation": {
+              "max": 21.200196224514855,
+              "median": 17.405000287040167,
+              "min": 16.79716263168615
+            },
+            "observations": {
+              "max": 357,
+              "median": 346,
+              "min": 335
+            },
+            "positive_sand_overlap_observations": {
+              "max": 357,
+              "median": 345,
+              "min": 334
+            },
+            "publication_latency_ms_per_accept": {
+              "max": 12.41988961038961,
+              "median": 11.130689024390243,
+              "min": 6.208432515337424
+            },
+            "refused_observations": {
+              "max": 0,
+              "median": 0,
+              "min": 0
+            },
+            "response_accepts": {
+              "max": 328,
+              "median": 326,
+              "min": 308
+            },
+            "response_attempts": {
+              "max": 335,
+              "median": 335,
+              "min": 330
+            },
+            "response_energy_change_sum": {
+              "max": -46016.7430744758,
+              "median": -58347.4083143716,
+              "min": -69469.3042379935
+            },
+            "response_ms_per_accept": {
+              "max": 0.5573536585365854,
+              "median": 0.4993558282208589,
+              "min": 0.4970876623376624
+            },
+            "response_ms_per_attempt": {
+              "max": 0.5776388059701492,
+              "median": 0.5191432835820896,
+              "min": 0.5041151515151515
+            },
+            "torque_impulse_sum": {
+              "max": 151169.420299083,
+              "median": 140810.005298525,
+              "min": 131231.479887754
+            },
+            "worker_ms_per_attempt": {
+              "max": 0.15486141304347825,
+              "median": 0.14802445652173912,
+              "min": 0.14367391304347826
+            },
+            "worker_observation_attempts": {
+              "max": 368,
+              "median": 368,
+              "min": 368
+            }
+          },
+          "proposed_contact_cost_gate_passed": true,
+          "repetitions": 3,
+          "response_refusals": {
+            "ClearedContact": 13,
+            "NonDissipativeResponse": 25
+          },
+          "surroundings": "embedded_sand"
+        },
+        {
+          "candidate": false,
+          "energy_readback_gate_passed": true,
+          "metrics": {
+            "combined_contact_ms_per_observation": {
+              "max": 0.522875,
+              "median": 0.33290333333333333,
+              "min": 0.2029605633802817
+            },
+            "geometry_ms_max": {
+              "max": 0.429467,
+              "median": 0.37115,
+              "min": 0.308655
+            },
+            "geometry_ms_per_observation": {
+              "max": 0.2747062112068966,
+              "median": 0.21569447333333333,
+              "min": 0.16707559154929577
+            },
+            "geometry_probes_per_observation": {
+              "max": 1818.3146551724137,
+              "median": 1709.3323943661971,
+              "min": 1691.55
+            },
+            "impulse_magnitude_sum": {
+              "max": 0.0,
+              "median": 0.0,
+              "min": 0.0
+            },
+            "longest_positive_observation_span_seconds": {
+              "max": 5.966692,
+              "median": 5.966453,
+              "min": 5.950117
+            },
+            "max_angular_velocity_rad_s": {
+              "max": 1.36780607700348,
+              "median": 0.846749603748322,
+              "min": 0.836201012134552
+            },
+            "max_rotation_rad": {
+              "max": 1.13446617126465,
+              "median": 1.00246405601501,
+              "min": 0.937309682369232
+            },
+            "max_sand_penetration_cells": {
+              "max": 2.70566638622448,
+              "median": 2.70376628498188,
+              "min": 2.70299471310956
+            },
+            "max_translation_cells": {
+              "max": 48.4551582336426,
+              "median": 35.8214073181152,
+              "min": 33.6396408081055
+            },
+            "mean_overlap_area_per_observation": {
+              "max": 179.7673360738802,
+              "median": 132.86592969188968,
+              "min": 65.71159896363633
+            },
+            "mean_overlap_cells_per_observation": {
+              "max": 222.40086206896552,
+              "median": 165.36333333333334,
+              "min": 86.92112676056338
+            },
+            "mean_sand_overlap_area_per_observation": {
+              "max": 52.052905050356465,
+              "median": 39.55764706997067,
+              "min": 24.944276975099157
+            },
+            "observations": {
+              "max": 355,
+              "median": 300,
+              "min": 232
+            },
+            "positive_sand_overlap_observations": {
+              "max": 355,
+              "median": 299,
+              "min": 232
+            },
+            "publication_latency_ms_per_accept": {
+              "max": 0.0,
+              "median": 0.0,
+              "min": 0.0
+            },
+            "refused_observations": {
+              "max": 0,
+              "median": 0,
+              "min": 0
+            },
+            "response_accepts": {
+              "max": 0,
+              "median": 0,
+              "min": 0
+            },
+            "response_attempts": {
+              "max": 0,
+              "median": 0,
+              "min": 0
+            },
+            "response_energy_change_sum": {
+              "max": 0.0,
+              "median": 0.0,
+              "min": 0.0
+            },
+            "response_ms_per_accept": {
+              "max": 0.0,
+              "median": 0.0,
+              "min": 0.0
+            },
+            "response_ms_per_attempt": {
+              "max": 0.0,
+              "median": 0.0,
+              "min": 0.0
+            },
+            "torque_impulse_sum": {
+              "max": 0.0,
+              "median": 0.0,
+              "min": 0.0
+            },
+            "worker_ms_per_attempt": {
+              "max": 0.32963858695652176,
+              "median": 0.2706531165311653,
+              "min": 0.19579076086956523
+            },
+            "worker_observation_attempts": {
+              "max": 369,
+              "median": 368,
+              "min": 368
+            }
+          },
+          "proposed_contact_cost_gate_passed": true,
+          "repetitions": 3,
+          "response_refusals": {},
+          "surroundings": "mixed"
+        },
+        {
+          "candidate": true,
+          "energy_readback_gate_passed": true,
+          "metrics": {
+            "combined_contact_ms_per_observation": {
+              "max": 0.5436657381615598,
+              "median": 0.5266016713091921,
+              "min": 0.5176462395543175
+            },
+            "geometry_ms_max": {
+              "max": 0.418881,
+              "median": 0.273562,
+              "min": 0.17906
+            },
+            "geometry_ms_per_observation": {
+              "max": 0.11082778272980501,
+              "median": 0.10749655988857938,
+              "min": 0.10741562116991643
+            },
+            "geometry_probes_per_observation": {
+              "max": 1392.9721448467967,
+              "median": 1390.9777158774373,
+              "min": 1390.9777158774373
+            },
+            "impulse_magnitude_sum": {
+              "max": 126452.850077655,
+              "median": 126452.850077655,
+              "min": 121899.631193187
+            },
+            "longest_positive_observation_span_seconds": {
+              "max": 5.966536,
+              "median": 5.966515,
+              "min": 5.966435
+            },
+            "max_angular_velocity_rad_s": {
+              "max": 0.390175402164459,
+              "median": 0.390175402164459,
+              "min": 0.390175402164459
+            },
+            "max_rotation_rad": {
+              "max": 0.700346052646637,
+              "median": 0.693939685821533,
+              "min": 0.693939685821533
+            },
+            "max_sand_penetration_cells": {
+              "max": 2.70381503752725,
+              "median": 2.70381503752725,
+              "min": 2.69790198568176
+            },
+            "max_translation_cells": {
+              "max": 18.5045757293701,
+              "median": 18.0810470581055,
+              "min": 18.0810470581055
+            },
+            "mean_overlap_area_per_observation": {
+              "max": 8.008409778894206,
+              "median": 7.4637232209896105,
+              "min": 7.4637232209896105
+            },
+            "mean_overlap_cells_per_observation": {
+              "max": 18.398328690807798,
+              "median": 17.6991643454039,
+              "min": 17.6991643454039
+            },
+            "mean_sand_overlap_area_per_observation": {
+              "max": 7.935909149564541,
+              "median": 7.435323622038941,
+              "min": 7.435323622038941
+            },
+            "observations": {
+              "max": 359,
+              "median": 359,
+              "min": 359
+            },
+            "positive_sand_overlap_observations": {
+              "max": 359,
+              "median": 359,
+              "min": 359
+            },
+            "publication_latency_ms_per_accept": {
+              "max": 11.831770440251573,
+              "median": 9.582116766467067,
+              "min": 6.88559880239521
+            },
+            "refused_observations": {
+              "max": 0,
+              "median": 0,
+              "min": 0
+            },
+            "response_accepts": {
+              "max": 334,
+              "median": 334,
+              "min": 318
+            },
+            "response_attempts": {
+              "max": 359,
+              "median": 359,
+              "min": 342
+            },
+            "response_energy_change_sum": {
+              "max": -67039.1962145729,
+              "median": -68010.7474321091,
+              "min": -68010.7474321091
+            },
+            "response_ms_per_accept": {
+              "max": 0.3988364779874214,
+              "median": 0.392185628742515,
+              "min": 0.3726736526946108
+            },
+            "response_ms_per_attempt": {
+              "max": 0.4134035087719298,
+              "median": 0.40767409470752086,
+              "min": 0.386025069637883
+            },
+            "torque_impulse_sum": {
+              "max": 81998.8535923958,
+              "median": 80905.8448414803,
+              "min": 80905.8448414803
+            },
+            "worker_ms_per_attempt": {
+              "max": 0.13266576086956522,
+              "median": 0.12952717391304347,
+              "min": 0.12840217391304348
+            },
+            "worker_observation_attempts": {
+              "max": 368,
+              "median": 368,
+              "min": 368
+            }
+          },
+          "proposed_contact_cost_gate_passed": true,
+          "repetitions": 3,
+          "response_refusals": {
+            "ClearedContact": 20,
+            "NonDissipativeResponse": 54
+          },
+          "surroundings": "mixed"
+        },
+        {
+          "candidate": false,
+          "energy_readback_gate_passed": true,
+          "metrics": {
+            "combined_contact_ms_per_observation": {
+              "max": 0.23465273311897109,
+              "median": 0.21056267409470752,
+              "min": 0.1956123595505618
+            },
+            "geometry_ms_max": {
+              "max": 0.438992,
+              "median": 0.312131,
+              "min": 0.248995
+            },
+            "geometry_ms_per_observation": {
+              "max": 0.17199818941504177,
+              "median": 0.1697427877813505,
+              "min": 0.1588214915730337
+            },
+            "geometry_probes_per_observation": {
+              "max": 1817.6012861736335,
+              "median": 1747.75,
+              "min": 1738.4874651810585
+            },
+            "impulse_magnitude_sum": {
+              "max": 0.0,
+              "median": 0.0,
+              "min": 0.0
+            },
+            "longest_positive_observation_span_seconds": {
+              "max": 5.966905,
+              "median": 5.966841,
+              "min": 5.933094
+            },
+            "max_angular_velocity_rad_s": {
+              "max": 0.561476588249207,
+              "median": 0.345680117607117,
+              "min": 0.345600932836533
+            },
+            "max_rotation_rad": {
+              "max": 1.05784487724304,
+              "median": 0.667681813240051,
+              "min": 0.667546629905701
+            },
+            "max_sand_penetration_cells": {
+              "max": 4.16047478221448,
+              "median": 2.7013463165556,
+              "min": 2.69939128098808
+            },
+            "max_translation_cells": {
+              "max": 45.3581657409668,
+              "median": 40.1030731201172,
+              "min": 40.0932159423828
+            },
+            "mean_overlap_area_per_observation": {
+              "max": 29.62150320713595,
+              "median": 29.399499757693036,
+              "min": 24.108048472059068
+            },
+            "mean_overlap_cells_per_observation": {
+              "max": 43.61797752808989,
+              "median": 43.33983286908078,
+              "min": 37.639871382636656
+            },
+            "mean_sand_overlap_area_per_observation": {
+              "max": 29.617380538832585,
+              "median": 29.39365879603092,
+              "min": 24.102930771269776
+            },
+            "observations": {
+              "max": 359,
+              "median": 356,
+              "min": 311
+            },
+            "positive_sand_overlap_observations": {
+              "max": 359,
+              "median": 355,
+              "min": 311
+            },
+            "publication_latency_ms_per_accept": {
+              "max": 0.0,
+              "median": 0.0,
+              "min": 0.0
+            },
+            "refused_observations": {
+              "max": 0,
+              "median": 0,
+              "min": 0
+            },
+            "response_accepts": {
+              "max": 0,
+              "median": 0,
+              "min": 0
+            },
+            "response_attempts": {
+              "max": 0,
+              "median": 0,
+              "min": 0
+            },
+            "response_energy_change_sum": {
+              "max": 0.0,
+              "median": 0.0,
+              "min": 0.0
+            },
+            "response_ms_per_accept": {
+              "max": 0.0,
+              "median": 0.0,
+              "min": 0.0
+            },
+            "response_ms_per_attempt": {
+              "max": 0.0,
+              "median": 0.0,
+              "min": 0.0
+            },
+            "torque_impulse_sum": {
+              "max": 0.0,
+              "median": 0.0,
+              "min": 0.0
+            },
+            "worker_ms_per_attempt": {
+              "max": 0.20541304347826086,
+              "median": 0.19776964769647698,
+              "min": 0.18923369565217393
+            },
+            "worker_observation_attempts": {
+              "max": 369,
+              "median": 368,
+              "min": 368
+            }
+          },
+          "proposed_contact_cost_gate_passed": true,
+          "repetitions": 3,
+          "response_refusals": {},
+          "surroundings": "packed_sand"
+        },
+        {
+          "candidate": true,
+          "energy_readback_gate_passed": true,
+          "metrics": {
+            "combined_contact_ms_per_observation": {
+              "max": 0.8301152263374486,
+              "median": 0.5426518105849583,
+              "min": 0.45746239554317547
+            },
+            "geometry_ms_max": {
+              "max": 0.27844,
+              "median": 0.190347,
+              "min": 0.157708
+            },
+            "geometry_ms_per_observation": {
+              "max": 0.15411177366255144,
+              "median": 0.110977286908078,
+              "min": 0.1013615069637883
+            },
+            "geometry_probes_per_observation": {
+              "max": 1847.567901234568,
+              "median": 1391.7186629526461,
+              "min": 1391.7186629526461
+            },
+            "impulse_magnitude_sum": {
+              "max": 202154.317474025,
+              "median": 120971.391945099,
+              "min": 120971.391945099
+            },
+            "longest_positive_observation_span_seconds": {
+              "max": 5.967056,
+              "median": 5.96677,
+              "min": 5.966699
+            },
+            "max_angular_velocity_rad_s": {
+              "max": 0.477091282606125,
+              "median": 0.390175402164459,
+              "min": 0.390175402164459
+            },
+            "max_rotation_rad": {
+              "max": 0.796832978725433,
+              "median": 0.679018437862396,
+              "min": 0.679018437862396
+            },
+            "max_sand_penetration_cells": {
+              "max": 3.06668324835034,
+              "median": 2.70249082922704,
+              "min": 2.70249082922704
+            },
+            "max_translation_cells": {
+              "max": 20.7955513000488,
+              "median": 17.7317962646484,
+              "min": 17.7317962646484
+            },
+            "mean_overlap_area_per_observation": {
+              "max": 16.160111186528354,
+              "median": 7.401615367503789,
+              "min": 7.401615367503789
+            },
+            "mean_overlap_cells_per_observation": {
+              "max": 30.48148148148148,
+              "median": 17.568245125348188,
+              "min": 17.568245125348188
+            },
+            "mean_sand_overlap_area_per_observation": {
+              "max": 16.160111186528354,
+              "median": 7.401615367503789,
+              "min": 7.401615367503789
+            },
+            "observations": {
+              "max": 359,
+              "median": 359,
+              "min": 243
+            },
+            "positive_sand_overlap_observations": {
+              "max": 359,
+              "median": 359,
+              "min": 243
+            },
+            "publication_latency_ms_per_accept": {
+              "max": 10.74063829787234,
+              "median": 8.897765957446808,
+              "min": 3.450064676616915
+            },
+            "refused_observations": {
+              "max": 0,
+              "median": 0,
+              "min": 0
+            },
+            "response_accepts": {
+              "max": 329,
+              "median": 329,
+              "min": 201
+            },
+            "response_attempts": {
+              "max": 359,
+              "median": 359,
+              "min": 242
+            },
+            "response_energy_change_sum": {
+              "max": -65664.0745329222,
+              "median": -65664.0745329222,
+              "min": -172964.987705851
+            },
+            "response_ms_per_accept": {
+              "max": 0.5728457711442786,
+              "median": 0.39196352583586624,
+              "min": 0.3281428571428571
+            },
+            "response_ms_per_attempt": {
+              "max": 0.5601652892561984,
+              "median": 0.40617548746518106,
+              "min": 0.3333676880222841
+            },
+            "torque_impulse_sum": {
+              "max": 78154.6514076516,
+              "median": 78154.6514076516,
+              "min": 50991.0913069379
+            },
+            "worker_ms_per_attempt": {
+              "max": 0.1797771739130435,
+              "median": 0.13313858695652173,
+              "min": 0.12105978260869564
+            },
+            "worker_observation_attempts": {
+              "max": 368,
+              "median": 368,
+              "min": 368
+            }
+          },
+          "proposed_contact_cost_gate_passed": true,
+          "repetitions": 3,
+          "response_refusals": {
+            "ClearedContact": 53,
+            "NonDissipativeResponse": 47,
+            "PoseDrift": 1
+          },
+          "surroundings": "packed_sand"
+        }
+      ],
+      "original": "docs/audits/sol281-20261103/hosted/749fb8b597ad866f7535f26442e904207c4f7611/cohorts/linux/contact-w1/host/contact-recovery-w1.json",
+      "platform": "Linux",
+      "sha256": "92e66193e7ed20885776bf50b997fe227e9c7cbc72d1b8715d139e4ed222be43",
+      "workers": 1
+    },
+    {
+      "groups": [
+        {
+          "candidate": false,
+          "energy_readback_gate_passed": true,
+          "metrics": {
+            "combined_contact_ms_per_observation": {
+              "max": 1.5546425855513308,
+              "median": 0.5495314285714286,
+              "min": 0.5348942857142857
+            },
+            "geometry_ms_max": {
+              "max": 2.191363,
+              "median": 0.727396,
+              "min": 0.6764
+            },
+            "geometry_ms_per_observation": {
+              "max": 0.8994877984790874,
+              "median": 0.42049301142857143,
+              "min": 0.4079091771428572
+            },
+            "geometry_probes_per_observation": {
+              "max": 1798.3422053231939,
+              "median": 1540.0142857142857,
+              "min": 1539.6742857142858
+            },
+            "impulse_magnitude_sum": {
+              "max": 0.0,
+              "median": 0.0,
+              "min": 0.0
+            },
+            "longest_positive_observation_span_seconds": {
+              "max": 5.984763,
+              "median": 5.967372,
+              "min": 5.967324
+            },
+            "max_angular_velocity_rad_s": {
+              "max": 1.481081366539,
+              "median": 0.280535310506821,
+              "min": 0.280535310506821
+            },
+            "max_rotation_rad": {
+              "max": 1.00065457820892,
+              "median": 0.445206016302109,
+              "min": 0.445176690816879
+            },
+            "max_sand_penetration_cells": {
+              "max": 4.20595741453441,
+              "median": 4.16445059626463,
+              "min": 4.16317337571945
+            },
+            "max_translation_cells": {
+              "max": 36.8475532531738,
+              "median": 32.3590393066406,
+              "min": 32.3482627868652
+            },
+            "mean_overlap_area_per_observation": {
+              "max": 286.33815394190077,
+              "median": 99.46491507076514,
+              "min": 99.26946174359456
+            },
+            "mean_overlap_cells_per_observation": {
+              "max": 344.29277566539923,
+              "median": 137.31142857142856,
+              "min": 137.07714285714286
+            },
+            "mean_sand_overlap_area_per_observation": {
+              "max": 286.3299152042285,
+              "median": 99.45886970420457,
+              "min": 99.26341637703372
+            },
+            "observations": {
+              "max": 350,
+              "median": 350,
+              "min": 263
+            },
+            "positive_sand_overlap_observations": {
+              "max": 350,
+              "median": 350,
+              "min": 263
+            },
+            "publication_latency_ms_per_accept": {
+              "max": 0.0,
+              "median": 0.0,
+              "min": 0.0
+            },
+            "refused_observations": {
+              "max": 0,
+              "median": 0,
+              "min": 0
+            },
+            "response_accepts": {
+              "max": 0,
+              "median": 0,
+              "min": 0
+            },
+            "response_attempts": {
+              "max": 0,
+              "median": 0,
+              "min": 0
+            },
+            "response_energy_change_sum": {
+              "max": 0.0,
+              "median": 0.0,
+              "min": 0.0
+            },
+            "response_ms_per_accept": {
+              "max": 0.0,
+              "median": 0.0,
+              "min": 0.0
+            },
+            "response_ms_per_attempt": {
+              "max": 0.0,
+              "median": 0.0,
+              "min": 0.0
+            },
+            "torque_impulse_sum": {
+              "max": 0.0,
+              "median": 0.0,
+              "min": 0.0
+            },
+            "worker_ms_per_attempt": {
+              "max": 1.108051490514905,
+              "median": 0.5226521739130435,
+              "min": 0.5087309782608695
+            },
+            "worker_observation_attempts": {
+              "max": 369,
+              "median": 368,
+              "min": 368
+            }
+          },
+          "proposed_contact_cost_gate_passed": true,
+          "repetitions": 3,
+          "response_refusals": {},
+          "surroundings": "embedded_sand"
+        },
+        {
+          "candidate": true,
+          "energy_readback_gate_passed": true,
+          "metrics": {
+            "combined_contact_ms_per_observation": {
+              "max": 1.2021120689655171,
+              "median": 1.1969691629955947,
+              "min": 0.7770752089136491
+            },
+            "geometry_ms_max": {
+              "max": 0.356047,
+              "median": 0.330629,
+              "min": 0.254123
+            },
+            "geometry_ms_per_observation": {
+              "max": 0.19627033920704848,
+              "median": 0.19412209913793105,
+              "min": 0.14924399721448467
+            },
+            "geometry_probes_per_observation": {
+              "max": 1249.2466960352424,
+              "median": 1204.0344827586207,
+              "min": 970.8551532033426
+            },
+            "impulse_magnitude_sum": {
+              "max": 231184.738708084,
+              "median": 188109.229057521,
+              "min": 132666.353281574
+            },
+            "longest_positive_observation_span_seconds": {
+              "max": 5.967238,
+              "median": 5.967153,
+              "min": 5.966661
+            },
+            "max_angular_velocity_rad_s": {
+              "max": 0.255082786083221,
+              "median": 0.224831327795982,
+              "min": 0.0760019794106483
+            },
+            "max_rotation_rad": {
+              "max": 0.369896084070206,
+              "median": 0.339152455329895,
+              "min": 0.206099763512611
+            },
+            "max_sand_penetration_cells": {
+              "max": 2.64279245542222,
+              "median": 2.62900985393335,
+              "min": 2.58602450746804
+            },
+            "max_translation_cells": {
+              "max": 9.05113124847412,
+              "median": 8.97373008728027,
+              "min": 6.21789598464966
+            },
+            "mean_overlap_area_per_observation": {
+              "max": 27.797142660162283,
+              "median": 25.59997875352978,
+              "min": 17.727416337903176
+            },
+            "mean_overlap_cells_per_observation": {
+              "max": 51.099137931034484,
+              "median": 50.26431718061674,
+              "min": 36.19777158774373
+            },
+            "mean_sand_overlap_area_per_observation": {
+              "max": 27.79714265269198,
+              "median": 25.599978745622114,
+              "min": 17.727416337903176
+            },
+            "observations": {
+              "max": 359,
+              "median": 232,
+              "min": 227
+            },
+            "positive_sand_overlap_observations": {
+              "max": 359,
+              "median": 231,
+              "min": 227
+            },
+            "publication_latency_ms_per_accept": {
+              "max": 9.385027108433736,
+              "median": 5.276835897435897,
+              "min": 4.298856481481481
+            },
+            "refused_observations": {
+              "max": 0,
+              "median": 0,
+              "min": 0
+            },
+            "response_accepts": {
+              "max": 332,
+              "median": 216,
+              "min": 195
+            },
+            "response_attempts": {
+              "max": 352,
+              "median": 230,
+              "min": 217
+            },
+            "response_energy_change_sum": {
+              "max": -44142.4081281995,
+              "median": -101822.775487234,
+              "min": -124819.707220645
+            },
+            "response_ms_per_accept": {
+              "max": 0.8452871794871795,
+              "median": 0.8190787037037036,
+              "min": 0.593027108433735
+            },
+            "response_ms_per_attempt": {
+              "max": 0.8228571428571428,
+              "median": 0.8213434782608695,
+              "min": 0.598221590909091
+            },
+            "torque_impulse_sum": {
+              "max": 155106.298182994,
+              "median": 71625.6921249926,
+              "min": 7228.18177369237
+            },
+            "worker_ms_per_attempt": {
+              "max": 0.2531304347826087,
+              "median": 0.24385094850948508,
+              "min": 0.18585869565217392
+            },
+            "worker_observation_attempts": {
+              "max": 369,
+              "median": 368,
+              "min": 368
+            }
+          },
+          "proposed_contact_cost_gate_passed": true,
+          "repetitions": 3,
+          "response_refusals": {
+            "ClearedContact": 24,
+            "NonDissipativeResponse": 32
+          },
+          "surroundings": "embedded_sand"
+        },
+        {
+          "candidate": false,
+          "energy_readback_gate_passed": true,
+          "metrics": {
+            "combined_contact_ms_per_observation": {
+              "max": 0.6587347826086956,
+              "median": 0.6449655172413794,
+              "min": 0.2501309192200557
+            },
+            "geometry_ms_max": {
+              "max": 0.765965,
+              "median": 0.718072,
+              "min": 0.348756
+            },
+            "geometry_ms_per_observation": {
+              "max": 0.3501657011494253,
+              "median": 0.3268966130434783,
+              "min": 0.20364430640668524
+            },
+            "geometry_probes_per_observation": {
+              "max": 1786.2217391304348,
+              "median": 1749.3869731800767,
+              "min": 1736.732590529248
+            },
+            "impulse_magnitude_sum": {
+              "max": 0.0,
+              "median": 0.0,
+              "min": 0.0
+            },
+            "longest_positive_observation_span_seconds": {
+              "max": 5.967011,
+              "median": 5.966836,
+              "min": 5.966594
+            },
+            "max_angular_velocity_rad_s": {
+              "max": 1.55084252357483,
+              "median": 1.42382657527924,
+              "min": 0.345680117607117
+            },
+            "max_rotation_rad": {
+              "max": 1.03389811515808,
+              "median": 1.0101318359375,
+              "min": 0.667081952095032
+            },
+            "max_sand_penetration_cells": {
+              "max": 2.70653202962314,
+              "median": 2.70269852393604,
+              "min": 2.69887842257722
+            },
+            "max_translation_cells": {
+              "max": 40.3973350524902,
+              "median": 34.5316314697266,
+              "min": 33.0406074523926
+            },
+            "mean_overlap_area_per_observation": {
+              "max": 160.6282394425848,
+              "median": 157.76881753028965,
+              "min": 30.708861235662116
+            },
+            "mean_overlap_cells_per_observation": {
+              "max": 199.01739130434783,
+              "median": 195.84291187739464,
+              "min": 45.49860724233983
+            },
+            "mean_sand_overlap_area_per_observation": {
+              "max": 54.40051473071417,
+              "median": 46.75876032466218,
+              "min": 25.146455594414483
+            },
+            "observations": {
+              "max": 359,
+              "median": 261,
+              "min": 230
+            },
+            "positive_sand_overlap_observations": {
+              "max": 359,
+              "median": 261,
+              "min": 229
+            },
+            "publication_latency_ms_per_accept": {
+              "max": 0.0,
+              "median": 0.0,
+              "min": 0.0
+            },
+            "refused_observations": {
+              "max": 0,
+              "median": 0,
+              "min": 0
+            },
+            "response_accepts": {
+              "max": 0,
+              "median": 0,
+              "min": 0
+            },
+            "response_attempts": {
+              "max": 0,
+              "median": 0,
+              "min": 0
+            },
+            "response_energy_change_sum": {
+              "max": 0.0,
+              "median": 0.0,
+              "min": 0.0
+            },
+            "response_ms_per_accept": {
+              "max": 0.0,
+              "median": 0.0,
+              "min": 0.0
+            },
+            "response_ms_per_attempt": {
+              "max": 0.0,
+              "median": 0.0,
+              "min": 0.0
+            },
+            "torque_impulse_sum": {
+              "max": 0.0,
+              "median": 0.0,
+              "min": 0.0
+            },
+            "worker_ms_per_attempt": {
+              "max": 0.4574347826086957,
+              "median": 0.4105934959349593,
+              "min": 0.24401358695652173
+            },
+            "worker_observation_attempts": {
+              "max": 369,
+              "median": 368,
+              "min": 368
+            }
+          },
+          "proposed_contact_cost_gate_passed": true,
+          "repetitions": 3,
+          "response_refusals": {},
+          "surroundings": "mixed"
+        },
+        {
+          "candidate": true,
+          "energy_readback_gate_passed": true,
+          "metrics": {
+            "combined_contact_ms_per_observation": {
+              "max": 0.673485549132948,
+              "median": 0.6206928838951311,
+              "min": 0.5143211920529804
+            },
+            "geometry_ms_max": {
+              "max": 0.303348,
+              "median": 0.26562,
+              "min": 0.230878
+            },
+            "geometry_ms_per_observation": {
+              "max": 0.1638193033707865,
+              "median": 0.15618336092715232,
+              "min": 0.1507975289017341
+            },
+            "geometry_probes_per_observation": {
+              "max": 1548.387417218543,
+              "median": 1545.6516853932585,
+              "min": 1460.1098265895953
+            },
+            "impulse_magnitude_sum": {
+              "max": 206291.443971741,
+              "median": 140547.55508507,
+              "min": 125506.219797198
+            },
+            "longest_positive_observation_span_seconds": {
+              "max": 5.966829,
+              "median": 5.966325,
+              "min": 5.950167
+            },
+            "max_angular_velocity_rad_s": {
+              "max": 0.752724468708038,
+              "median": 0.446902424097061,
+              "min": 0.367051959037781
+            },
+            "max_rotation_rad": {
+              "max": 1.13414132595062,
+              "median": 1.05629467964172,
+              "min": 0.692208588123322
+            },
+            "max_sand_penetration_cells": {
+              "max": 2.69961320687508,
+              "median": 2.68120211686804,
+              "min": 2.28965644713957
+            },
+            "max_translation_cells": {
+              "max": 25.6721229553223,
+              "median": 24.4267749786377,
+              "min": 18.326587677002
+            },
+            "mean_overlap_area_per_observation": {
+              "max": 39.30737696435917,
+              "median": 25.988800799886523,
+              "min": 8.813220256891011
+            },
+            "mean_overlap_cells_per_observation": {
+              "max": 55.41573033707865,
+              "median": 39.99337748344371,
+              "min": 19.673410404624278
+            },
+            "mean_sand_overlap_area_per_observation": {
+              "max": 8.765939412277428,
+              "median": 6.667800143269602,
+              "min": 6.187796292096442
+            },
+            "observations": {
+              "max": 346,
+              "median": 302,
+              "min": 267
+            },
+            "positive_sand_overlap_observations": {
+              "max": 346,
+              "median": 301,
+              "min": 267
+            },
+            "publication_latency_ms_per_accept": {
+              "max": 10.649756218905473,
+              "median": 7.999675977653632,
+              "min": 4.30252923076923
+            },
+            "refused_observations": {
+              "max": 0,
+              "median": 0,
+              "min": 0
+            },
+            "response_accepts": {
+              "max": 325,
+              "median": 201,
+              "min": 179
+            },
+            "response_attempts": {
+              "max": 346,
+              "median": 226,
+              "min": 222
+            },
+            "response_energy_change_sum": {
+              "max": -66513.8532272808,
+              "median": -106782.058274898,
+              "min": -207618.046170108
+            },
+            "response_ms_per_accept": {
+              "max": 0.47331384615384614,
+              "median": 0.4283966480446928,
+              "min": 0.3812786069651741
+            },
+            "response_ms_per_attempt": {
+              "max": 0.4818670520231214,
+              "median": 0.41608558558558556,
+              "min": 0.38365929203539867
+            },
+            "torque_impulse_sum": {
+              "max": 83519.833246693,
+              "median": 80962.8665464928,
+              "min": 73476.008883059
+            },
+            "worker_ms_per_attempt": {
+              "max": 0.19933152173913044,
+              "median": 0.1864619565217391,
+              "min": 0.18016304347826087
+            },
+            "worker_observation_attempts": {
+              "max": 368,
+              "median": 368,
+              "min": 368
+            }
+          },
+          "proposed_contact_cost_gate_passed": true,
+          "repetitions": 3,
+          "response_refusals": {
+            "ClearedContact": 36,
+            "NonDissipativeResponse": 45,
+            "PoseDrift": 8
+          },
+          "surroundings": "mixed"
+        },
+        {
+          "candidate": false,
+          "energy_readback_gate_passed": true,
+          "metrics": {
+            "combined_contact_ms_per_observation": {
+              "max": 0.2739017341040462,
+              "median": 0.2717548746518106,
+              "min": 0.2488385269121813
+            },
+            "geometry_ms_max": {
+              "max": 0.354745,
+              "median": 0.317208,
+              "min": 0.273833
+            },
+            "geometry_ms_per_observation": {
+              "max": 0.21656434818941503,
+              "median": 0.21627481502890172,
+              "min": 0.20053999150141644
+            },
+            "geometry_probes_per_observation": {
+              "max": 1775.4884393063585,
+              "median": 1770.3654390934844,
+              "min": 1738.4874651810585
+            },
+            "impulse_magnitude_sum": {
+              "max": 0.0,
+              "median": 0.0,
+              "min": 0.0
+            },
+            "longest_positive_observation_span_seconds": {
+              "max": 5.966855,
+              "median": 5.950329,
+              "min": 5.950169
+            },
+            "max_angular_velocity_rad_s": {
+              "max": 0.590565323829651,
+              "median": 0.345680117607117,
+              "min": 0.345544099807739
+            },
+            "max_rotation_rad": {
+              "max": 1.09574675559998,
+              "median": 0.667681813240051,
+              "min": 0.667433142662048
+            },
+            "max_sand_penetration_cells": {
+              "max": 4.04842580416129,
+              "median": 2.7013463165556,
+              "min": 2.70125896811775
+            },
+            "max_translation_cells": {
+              "max": 45.1251831054688,
+              "median": 40.1030731201172,
+              "min": 40.0865707397461
+            },
+            "mean_overlap_area_per_observation": {
+              "max": 30.323096398948266,
+              "median": 29.399499757693036,
+              "min": 20.797492491733543
+            },
+            "mean_overlap_cells_per_observation": {
+              "max": 44.433526011560694,
+              "median": 43.33983286908078,
+              "min": 32.37960339943343
+            },
+            "mean_sand_overlap_area_per_observation": {
+              "max": 30.320362505465894,
+              "median": 29.39365879603092,
+              "min": 20.793507525156798
+            },
+            "observations": {
+              "max": 359,
+              "median": 353,
+              "min": 346
+            },
+            "positive_sand_overlap_observations": {
+              "max": 359,
+              "median": 352,
+              "min": 346
+            },
+            "publication_latency_ms_per_accept": {
+              "max": 0.0,
+              "median": 0.0,
+              "min": 0.0
+            },
+            "refused_observations": {
+              "max": 0,
+              "median": 0,
+              "min": 0
+            },
+            "response_accepts": {
+              "max": 0,
+              "median": 0,
+              "min": 0
+            },
+            "response_attempts": {
+              "max": 0,
+              "median": 0,
+              "min": 0
+            },
+            "response_energy_change_sum": {
+              "max": 0.0,
+              "median": 0.0,
+              "min": 0.0
+            },
+            "response_ms_per_accept": {
+              "max": 0.0,
+              "median": 0.0,
+              "min": 0.0
+            },
+            "response_ms_per_attempt": {
+              "max": 0.0,
+              "median": 0.0,
+              "min": 0.0
+            },
+            "torque_impulse_sum": {
+              "max": 0.0,
+              "median": 0.0,
+              "min": 0.0
+            },
+            "worker_ms_per_attempt": {
+              "max": 0.26510869565217393,
+              "median": 0.2575271739130435,
+              "min": 0.23869565217391306
+            },
+            "worker_observation_attempts": {
+              "max": 368,
+              "median": 368,
+              "min": 368
+            }
+          },
+          "proposed_contact_cost_gate_passed": true,
+          "repetitions": 3,
+          "response_refusals": {},
+          "surroundings": "packed_sand"
+        },
+        {
+          "candidate": true,
+          "energy_readback_gate_passed": true,
+          "metrics": {
+            "combined_contact_ms_per_observation": {
+              "max": 1.0380807174887894,
+              "median": 0.6128077994428969,
+              "min": 0.6084373259052924
+            },
+            "geometry_ms_max": {
+              "max": 0.386983,
+              "median": 0.228414,
+              "min": 0.213692
+            },
+            "geometry_ms_per_observation": {
+              "max": 0.20117243946188343,
+              "median": 0.13919009192200557,
+              "min": 0.13719131197771586
+            },
+            "geometry_probes_per_observation": {
+              "max": 1788.42600896861,
+              "median": 1391.7186629526461,
+              "min": 1391.7186629526461
+            },
+            "impulse_magnitude_sum": {
+              "max": 264806.2414511,
+              "median": 120971.391945099,
+              "min": 120971.391945099
+            },
+            "longest_positive_observation_span_seconds": {
+              "max": 5.966783,
+              "median": 5.964154,
+              "min": 5.933745
+            },
+            "max_angular_velocity_rad_s": {
+              "max": 0.603278875350952,
+              "median": 0.390175402164459,
+              "min": 0.390175402164459
+            },
+            "max_rotation_rad": {
+              "max": 0.859097421169281,
+              "median": 0.679018437862396,
+              "min": 0.679018437862396
+            },
+            "max_sand_penetration_cells": {
+              "max": 4.04673163998175,
+              "median": 2.70249082922704,
+              "min": 2.70249082922704
+            },
+            "max_translation_cells": {
+              "max": 21.2363185882568,
+              "median": 17.7317962646484,
+              "min": 17.7317962646484
+            },
+            "mean_overlap_area_per_observation": {
+              "max": 16.497111670238475,
+              "median": 7.401615367503789,
+              "min": 7.401615367503789
+            },
+            "mean_overlap_cells_per_observation": {
+              "max": 31.82511210762332,
+              "median": 17.568245125348188,
+              "min": 17.568245125348188
+            },
+            "mean_sand_overlap_area_per_observation": {
+              "max": 16.497111670238475,
+              "median": 7.401615367503789,
+              "min": 7.401615367503789
+            },
+            "observations": {
+              "max": 359,
+              "median": 359,
+              "min": 223
+            },
+            "positive_sand_overlap_observations": {
+              "max": 359,
+              "median": 359,
+              "min": 222
+            },
+            "publication_latency_ms_per_accept": {
+              "max": 7.742550151975684,
+              "median": 5.308337386018237,
+              "min": 4.836642458100559
+            },
+            "refused_observations": {
+              "max": 0,
+              "median": 0,
+              "min": 0
+            },
+            "response_accepts": {
+              "max": 329,
+              "median": 329,
+              "min": 179
+            },
+            "response_attempts": {
+              "max": 359,
+              "median": 359,
+              "min": 210
+            },
+            "response_energy_change_sum": {
+              "max": -65664.0745329222,
+              "median": -65664.0745329222,
+              "min": -257592.109847188
+            },
+            "response_ms_per_accept": {
+              "max": 0.7015307262569832,
+              "median": 0.4344285714285714,
+              "min": 0.4280273556231003
+            },
+            "response_ms_per_attempt": {
+              "max": 0.6605000000000001,
+              "median": 0.44252646239554316,
+              "min": 0.43630640668523674
+            },
+            "torque_impulse_sum": {
+              "max": 78154.6514076516,
+              "median": 78154.6514076516,
+              "min": 57579.2114100903
+            },
+            "worker_ms_per_attempt": {
+              "max": 0.25213858695652175,
+              "median": 0.16792119565217392,
+              "min": 0.16611684782608696
+            },
+            "worker_observation_attempts": {
+              "max": 368,
+              "median": 368,
+              "min": 368
+            }
+          },
+          "proposed_contact_cost_gate_passed": true,
+          "repetitions": 3,
+          "response_refusals": {
+            "ClearedContact": 43,
+            "NonDissipativeResponse": 40,
+            "PoseDrift": 8
+          },
+          "surroundings": "packed_sand"
+        }
+      ],
+      "original": "docs/audits/sol281-20261103/hosted/749fb8b597ad866f7535f26442e904207c4f7611/cohorts/linux/contact-w4/host/contact-recovery-w4.json",
+      "platform": "Linux",
+      "sha256": "a8e757e2d8e21dcab2565d954dbdf161a1bbc5eee1340b4ec19848ad65fbc59f",
+      "workers": 4
+    },
+    {
+      "groups": [
+        {
+          "candidate": false,
+          "energy_readback_gate_passed": true,
+          "metrics": {
+            "combined_contact_ms_per_observation": {
+              "max": 1.7352391304347825,
+              "median": 1.3408778877887788,
+              "min": 0.8556803519061583
+            },
+            "geometry_ms_max": {
+              "max": 3.0635,
+              "median": 1.4811,
+              "min": 1.0721
+            },
+            "geometry_ms_per_observation": {
+              "max": 0.8886094202898551,
+              "median": 0.723796699669967,
+              "min": 0.5404607038123167
+            },
+            "geometry_probes_per_observation": {
+              "max": 1773.4492753623188,
+              "median": 1708.3234323432343,
+              "min": 1655.2463343108504
+            },
+            "impulse_magnitude_sum": {
+              "max": 0.0,
+              "median": 0.0,
+              "min": 0.0
+            },
+            "longest_positive_observation_span_seconds": {
+              "max": 5.984104,
+              "median": 5.983061,
+              "min": 5.966837
+            },
+            "max_angular_velocity_rad_s": {
+              "max": 1.29269564151764,
+              "median": 0.858694612979889,
+              "min": 0.683427393436432
+            },
+            "max_rotation_rad": {
+              "max": 1.080482006073,
+              "median": 1.02242314815521,
+              "min": 1.00960409641266
+            },
+            "max_sand_penetration_cells": {
+              "max": 4.20679179882795,
+              "median": 4.20380752187335,
+              "min": 4.20159910105125
+            },
+            "max_translation_cells": {
+              "max": 44.9607887268066,
+              "median": 36.9534530639648,
+              "min": 36.3547439575195
+            },
+            "mean_overlap_area_per_observation": {
+              "max": 285.60241047557173,
+              "median": 252.87455923433598,
+              "min": 158.91087409271526
+            },
+            "mean_overlap_cells_per_observation": {
+              "max": 342.9673913043478,
+              "median": 305.72607260726073,
+              "min": 202.48093841642228
+            },
+            "mean_sand_overlap_area_per_observation": {
+              "max": 285.59475198721015,
+              "median": 252.86761967481155,
+              "min": 158.90462324511378
+            },
+            "observations": {
+              "max": 341,
+              "median": 303,
+              "min": 276
+            },
+            "positive_sand_overlap_observations": {
+              "max": 341,
+              "median": 302,
+              "min": 275
+            },
+            "publication_latency_ms_per_accept": {
+              "max": 0.0,
+              "median": 0.0,
+              "min": 0.0
+            },
+            "refused_observations": {
+              "max": 0,
+              "median": 0,
+              "min": 0
+            },
+            "response_accepts": {
+              "max": 0,
+              "median": 0,
+              "min": 0
+            },
+            "response_attempts": {
+              "max": 0,
+              "median": 0,
+              "min": 0
+            },
+            "response_energy_change_sum": {
+              "max": 0.0,
+              "median": 0.0,
+              "min": 0.0
+            },
+            "response_ms_per_accept": {
+              "max": 0.0,
+              "median": 0.0,
+              "min": 0.0
+            },
+            "response_ms_per_attempt": {
+              "max": 0.0,
+              "median": 0.0,
+              "min": 0.0
+            },
+            "torque_impulse_sum": {
+              "max": 0.0,
+              "median": 0.0,
+              "min": 0.0
+            },
+            "worker_ms_per_attempt": {
+              "max": 1.2909056603773585,
+              "median": 1.0980702702702703,
+              "min": 0.7886135135135135
+            },
+            "worker_observation_attempts": {
+              "max": 371,
+              "median": 370,
+              "min": 370
+            }
+          },
+          "proposed_contact_cost_gate_passed": true,
+          "repetitions": 3,
+          "response_refusals": {},
+          "surroundings": "embedded_sand"
+        },
+        {
+          "candidate": true,
+          "energy_readback_gate_passed": true,
+          "metrics": {
+            "combined_contact_ms_per_observation": {
+              "max": 1.376126050420168,
+              "median": 1.3702598870056497,
+              "min": 1.191497175141243
+            },
+            "geometry_ms_max": {
+              "max": 0.4905,
+              "median": 0.4325,
+              "min": 0.3214
+            },
+            "geometry_ms_per_observation": {
+              "max": 0.18070141242937854,
+              "median": 0.14840364145658264,
+              "min": 0.14764830508474575
+            },
+            "geometry_probes_per_observation": {
+              "max": 1088.1129943502824,
+              "median": 1020.0875706214689,
+              "min": 994.1736694677871
+            },
+            "impulse_magnitude_sum": {
+              "max": 150383.248667416,
+              "median": 149828.850551479,
+              "min": 135310.256501994
+            },
+            "longest_positive_observation_span_seconds": {
+              "max": 5.983326,
+              "median": 5.982884,
+              "min": 5.967041
+            },
+            "max_angular_velocity_rad_s": {
+              "max": 0.124671094119549,
+              "median": 0.118044763803482,
+              "min": 0.068409837782383
+            },
+            "max_rotation_rad": {
+              "max": 0.331677615642548,
+              "median": 0.215021625161171,
+              "min": 0.207691296935081
+            },
+            "max_sand_penetration_cells": {
+              "max": 2.62550846131473,
+              "median": 2.58840028424119,
+              "min": 2.58644369522469
+            },
+            "max_translation_cells": {
+              "max": 8.81338691711426,
+              "median": 6.36838150024414,
+              "min": 6.27123975753784
+            },
+            "mean_overlap_area_per_observation": {
+              "max": 23.787667613389523,
+              "median": 19.38738745211997,
+              "min": 19.130320725460784
+            },
+            "mean_overlap_cells_per_observation": {
+              "max": 44.610169491525426,
+              "median": 38.22598870056497,
+              "min": 37.59103641456583
+            },
+            "mean_sand_overlap_area_per_observation": {
+              "max": 23.78766760955774,
+              "median": 19.38738745211997,
+              "min": 19.130320725460784
+            },
+            "observations": {
+              "max": 357,
+              "median": 354,
+              "min": 354
+            },
+            "positive_sand_overlap_observations": {
+              "max": 357,
+              "median": 354,
+              "min": 353
+            },
+            "publication_latency_ms_per_accept": {
+              "max": 13.661746781115879,
+              "median": 6.3907223796034,
+              "min": 6.061181034482759
+            },
+            "refused_observations": {
+              "max": 0,
+              "median": 0,
+              "min": 0
+            },
+            "response_accepts": {
+              "max": 353,
+              "median": 348,
+              "min": 233
+            },
+            "response_attempts": {
+              "max": 356,
+              "median": 353,
+              "min": 258
+            },
+            "response_energy_change_sum": {
+              "max": -46041.7270844474,
+              "median": -51411.0610742561,
+              "min": -71875.1646542881
+            },
+            "response_ms_per_accept": {
+              "max": 1.233334763948498,
+              "median": 1.1155574712643679,
+              "min": 1.11328328611898
+            },
+            "response_ms_per_attempt": {
+              "max": 1.2089108527131782,
+              "median": 1.1380421348314607,
+              "min": 1.1355070821529745
+            },
+            "torque_impulse_sum": {
+              "max": 153352.361280056,
+              "median": 150737.515996688,
+              "min": 67167.3510956243
+            },
+            "worker_ms_per_attempt": {
+              "max": 0.29780758807588076,
+              "median": 0.23342547425474255,
+              "min": 0.22767027027027026
+            },
+            "worker_observation_attempts": {
+              "max": 370,
+              "median": 369,
+              "min": 369
+            }
+          },
+          "proposed_contact_cost_gate_passed": true,
+          "repetitions": 3,
+          "response_refusals": {
+            "ClearedContact": 25,
+            "NonDissipativeResponse": 8
+          },
+          "surroundings": "embedded_sand"
+        },
+        {
+          "candidate": false,
+          "energy_readback_gate_passed": true,
+          "metrics": {
+            "combined_contact_ms_per_observation": {
+              "max": 0.9251623931623931,
+              "median": 0.33105307262569833,
+              "min": 0.2978854748603352
+            },
+            "geometry_ms_max": {
+              "max": 0.7708,
+              "median": 0.4114,
+              "min": 0.3667
+            },
+            "geometry_ms_per_observation": {
+              "max": 0.39849444444444443,
+              "median": 0.2235477653631285,
+              "min": 0.19695921787709494
+            },
+            "geometry_probes_per_observation": {
+              "max": 1794.2136752136753,
+              "median": 1742.3128491620112,
+              "min": 1713.108938547486
+            },
+            "impulse_magnitude_sum": {
+              "max": 0.0,
+              "median": 0.0,
+              "min": 0.0
+            },
+            "longest_positive_observation_span_seconds": {
+              "max": 5.983904,
+              "median": 5.967405,
+              "min": 5.963864
+            },
+            "max_angular_velocity_rad_s": {
+              "max": 1.47069215774536,
+              "median": 0.846100986003876,
+              "min": 0.345823049545288
+            },
+            "max_rotation_rad": {
+              "max": 1.09779274463654,
+              "median": 1.02303636074066,
+              "min": 0.671740174293518
+            },
+            "max_sand_penetration_cells": {
+              "max": 2.70397444400458,
+              "median": 2.70358900490293,
+              "min": 2.70004554765411
+            },
+            "max_translation_cells": {
+              "max": 48.3628578186035,
+              "median": 40.3516082763672,
+              "min": 32.8962936401367
+            },
+            "mean_overlap_area_per_observation": {
+              "max": 174.246493729753,
+              "median": 67.68585497154722,
+              "min": 30.35613883357458
+            },
+            "mean_overlap_cells_per_observation": {
+              "max": 214.88888888888889,
+              "median": 89.13966480446928,
+              "min": 45.013966480446925
+            },
+            "mean_sand_overlap_area_per_observation": {
+              "max": 57.87074416383248,
+              "median": 25.37258816336483,
+              "min": 24.92742011561064
+            },
+            "observations": {
+              "max": 358,
+              "median": 358,
+              "min": 234
+            },
+            "positive_sand_overlap_observations": {
+              "max": 358,
+              "median": 357,
+              "min": 234
+            },
+            "publication_latency_ms_per_accept": {
+              "max": 0.0,
+              "median": 0.0,
+              "min": 0.0
+            },
+            "refused_observations": {
+              "max": 0,
+              "median": 0,
+              "min": 0
+            },
+            "response_accepts": {
+              "max": 0,
+              "median": 0,
+              "min": 0
+            },
+            "response_attempts": {
+              "max": 0,
+              "median": 0,
+              "min": 0
+            },
+            "response_energy_change_sum": {
+              "max": 0.0,
+              "median": 0.0,
+              "min": 0.0
+            },
+            "response_ms_per_accept": {
+              "max": 0.0,
+              "median": 0.0,
+              "min": 0.0
+            },
+            "response_ms_per_attempt": {
+              "max": 0.0,
+              "median": 0.0,
+              "min": 0.0
+            },
+            "torque_impulse_sum": {
+              "max": 0.0,
+              "median": 0.0,
+              "min": 0.0
+            },
+            "worker_ms_per_attempt": {
+              "max": 0.5866883468834688,
+              "median": 0.3203162162162162,
+              "min": 0.28900542005420055
+            },
+            "worker_observation_attempts": {
+              "max": 370,
+              "median": 369,
+              "min": 369
+            }
+          },
+          "proposed_contact_cost_gate_passed": true,
+          "repetitions": 3,
+          "response_refusals": {},
+          "surroundings": "mixed"
+        },
+        {
+          "candidate": true,
+          "energy_readback_gate_passed": true,
+          "metrics": {
+            "combined_contact_ms_per_observation": {
+              "max": 1.035649025069638,
+              "median": 1.022303370786517,
+              "min": 0.9578235294117646
+            },
+            "geometry_ms_max": {
+              "max": 0.4621,
+              "median": 0.3196,
+              "min": 0.2922
+            },
+            "geometry_ms_per_observation": {
+              "max": 0.13802100840336134,
+              "median": 0.12678483146067415,
+              "min": 0.12527437325905294
+            },
+            "geometry_probes_per_observation": {
+              "max": 1403.0728291316527,
+              "median": 1393.1448467966575,
+              "min": 1382.9101123595506
+            },
+            "impulse_magnitude_sum": {
+              "max": 122631.048244806,
+              "median": 110529.511821818,
+              "min": 92117.9513175637
+            },
+            "longest_positive_observation_span_seconds": {
+              "max": 5.966918,
+              "median": 5.96424,
+              "min": 5.963343
+            },
+            "max_angular_velocity_rad_s": {
+              "max": 0.401849031448364,
+              "median": 0.377340346574783,
+              "min": 0.368613988161087
+            },
+            "max_rotation_rad": {
+              "max": 0.768658101558685,
+              "median": 0.685734689235687,
+              "min": 0.669266223907471
+            },
+            "max_sand_penetration_cells": {
+              "max": 2.70125624442356,
+              "median": 2.70048697629055,
+              "min": 2.70004128558292
+            },
+            "max_translation_cells": {
+              "max": 19.8868999481201,
+              "median": 17.921558380127,
+              "min": 17.4962329864502
+            },
+            "mean_overlap_area_per_observation": {
+              "max": 9.102105520070644,
+              "median": 7.51783681958507,
+              "min": 7.296830023216067
+            },
+            "mean_overlap_cells_per_observation": {
+              "max": 19.38095238095238,
+              "median": 17.584958217270195,
+              "min": 17.115168539325843
+            },
+            "mean_sand_overlap_area_per_observation": {
+              "max": 8.723184275246947,
+              "median": 7.505594214049583,
+              "min": 7.296421231214129
+            },
+            "observations": {
+              "max": 359,
+              "median": 357,
+              "min": 356
+            },
+            "positive_sand_overlap_observations": {
+              "max": 358,
+              "median": 357,
+              "min": 355
+            },
+            "publication_latency_ms_per_accept": {
+              "max": 12.480109154929577,
+              "median": 9.17194318181818,
+              "min": 8.983281609195402
+            },
+            "refused_observations": {
+              "max": 0,
+              "median": 0,
+              "min": 0
+            },
+            "response_accepts": {
+              "max": 352,
+              "median": 348,
+              "min": 284
+            },
+            "response_attempts": {
+              "max": 359,
+              "median": 355,
+              "min": 303
+            },
+            "response_energy_change_sum": {
+              "max": -56789.9178712243,
+              "median": -62292.6477386926,
+              "min": -67282.3447972833
+            },
+            "response_ms_per_accept": {
+              "max": 0.8583838028169014,
+              "median": 0.8176221590909091,
+              "min": 0.8030689655172414
+            },
+            "response_ms_per_attempt": {
+              "max": 0.874049504950495,
+              "median": 0.8417270194986073,
+              "min": 0.8256676056338029
+            },
+            "torque_impulse_sum": {
+              "max": 84054.9056081772,
+              "median": 83373.6279963925,
+              "min": 72337.0330667496
+            },
+            "worker_ms_per_attempt": {
+              "max": 0.2089593495934959,
+              "median": 0.1919457994579946,
+              "min": 0.18866666666666665
+            },
+            "worker_observation_attempts": {
+              "max": 369,
+              "median": 369,
+              "min": 369
+            }
+          },
+          "proposed_contact_cost_gate_passed": true,
+          "repetitions": 3,
+          "response_refusals": {
+            "ClearedContact": 20,
+            "NonDissipativeResponse": 13
+          },
+          "surroundings": "mixed"
+        },
+        {
+          "candidate": false,
+          "energy_readback_gate_passed": true,
+          "metrics": {
+            "combined_contact_ms_per_observation": {
+              "max": 0.6332948717948718,
+              "median": 0.5289587020648968,
+              "min": 0.3242633053221288
+            },
+            "geometry_ms_max": {
+              "max": 1.1107,
+              "median": 1.0457,
+              "min": 0.3702
+            },
+            "geometry_ms_per_observation": {
+              "max": 0.35676410256410257,
+              "median": 0.3370480825958702,
+              "min": 0.19815994397759104
+            },
+            "geometry_probes_per_observation": {
+              "max": 1763.802359882006,
+              "median": 1745.3641456582634,
+              "min": 1256.4775641025642
+            },
+            "impulse_magnitude_sum": {
+              "max": 0.0,
+              "median": 0.0,
+              "min": 0.0
+            },
+            "longest_positive_observation_span_seconds": {
+              "max": 5.967621,
+              "median": 5.966803,
+              "min": 5.950456
+            },
+            "max_angular_velocity_rad_s": {
+              "max": 1.21765398979187,
+              "median": 0.81886750459671,
+              "min": 0.345791220664978
+            },
+            "max_rotation_rad": {
+              "max": 1.64715015888214,
+              "median": 1.14918839931488,
+              "min": 0.66839599609375
+            },
+            "max_sand_penetration_cells": {
+              "max": 4.20145824190464,
+              "median": 4.20068856600614,
+              "min": 2.70010501812258
+            },
+            "max_translation_cells": {
+              "max": 47.852352142334,
+              "median": 46.8324928283691,
+              "min": 40.0998840332031
+            },
+            "mean_overlap_area_per_observation": {
+              "max": 105.17515749408206,
+              "median": 51.42432292958849,
+              "min": 29.5382994266014
+            },
+            "mean_overlap_cells_per_observation": {
+              "max": 124.61858974358974,
+              "median": 70.4306784660767,
+              "min": 43.4733893557423
+            },
+            "mean_sand_overlap_area_per_observation": {
+              "max": 105.1707354041686,
+              "median": 51.42016735831829,
+              "min": 29.532442928047338
+            },
+            "observations": {
+              "max": 357,
+              "median": 339,
+              "min": 312
+            },
+            "positive_sand_overlap_observations": {
+              "max": 357,
+              "median": 339,
+              "min": 311
+            },
+            "publication_latency_ms_per_accept": {
+              "max": 0.0,
+              "median": 0.0,
+              "min": 0.0
+            },
+            "refused_observations": {
+              "max": 0,
+              "median": 0,
+              "min": 0
+            },
+            "response_accepts": {
+              "max": 0,
+              "median": 0,
+              "min": 0
+            },
+            "response_attempts": {
+              "max": 0,
+              "median": 0,
+              "min": 0
+            },
+            "response_energy_change_sum": {
+              "max": 0.0,
+              "median": 0.0,
+              "min": 0.0
+            },
+            "response_ms_per_accept": {
+              "max": 0.0,
+              "median": 0.0,
+              "min": 0.0
+            },
+            "response_ms_per_attempt": {
+              "max": 0.0,
+              "median": 0.0,
+              "min": 0.0
+            },
+            "torque_impulse_sum": {
+              "max": 0.0,
+              "median": 0.0,
+              "min": 0.0
+            },
+            "worker_ms_per_attempt": {
+              "max": 0.5340216216216216,
+              "median": 0.4886021798365123,
+              "min": 0.3137181571815718
+            },
+            "worker_observation_attempts": {
+              "max": 370,
+              "median": 369,
+              "min": 367
+            }
+          },
+          "proposed_contact_cost_gate_passed": true,
+          "repetitions": 3,
+          "response_refusals": {},
+          "surroundings": "packed_sand"
+        },
+        {
+          "candidate": true,
+          "energy_readback_gate_passed": true,
+          "metrics": {
+            "combined_contact_ms_per_observation": {
+              "max": 1.2273064066852368,
+              "median": 1.0666787709497205,
+              "min": 1.0512691218130312
+            },
+            "geometry_ms_max": {
+              "max": 1.1683,
+              "median": 0.4485,
+              "min": 0.3516
+            },
+            "geometry_ms_per_observation": {
+              "max": 0.16685710306406684,
+              "median": 0.1553512747875354,
+              "min": 0.14697737430167598
+            },
+            "geometry_probes_per_observation": {
+              "max": 1400.4787535410765,
+              "median": 1399.3743016759777,
+              "min": 1388.4846796657382
+            },
+            "impulse_magnitude_sum": {
+              "max": 107161.232104361,
+              "median": 106887.246387689,
+              "min": 106058.928853578
+            },
+            "longest_positive_observation_span_seconds": {
+              "max": 5.96776,
+              "median": 5.964395,
+              "min": 5.950304
+            },
+            "max_angular_velocity_rad_s": {
+              "max": 0.39795333147049,
+              "median": 0.385875046253204,
+              "min": 0.381619930267334
+            },
+            "max_rotation_rad": {
+              "max": 0.705990672111511,
+              "median": 0.6758131980896,
+              "min": 0.669267177581787
+            },
+            "max_sand_penetration_cells": {
+              "max": 2.70072657780411,
+              "median": 2.69924082487088,
+              "min": 2.69562682067251
+            },
+            "max_translation_cells": {
+              "max": 18.8189582824707,
+              "median": 18.3534069061279,
+              "min": 18.0231494903564
+            },
+            "mean_overlap_area_per_observation": {
+              "max": 9.495131545850567,
+              "median": 9.313765476469609,
+              "min": 8.841039164306602
+            },
+            "mean_overlap_cells_per_observation": {
+              "max": 20.237960339943342,
+              "median": 19.821229050279328,
+              "min": 19.133704735376046
+            },
+            "mean_sand_overlap_area_per_observation": {
+              "max": 9.495131545850567,
+              "median": 9.313765476469609,
+              "min": 8.841039164306602
+            },
+            "observations": {
+              "max": 359,
+              "median": 358,
+              "min": 353
+            },
+            "positive_sand_overlap_observations": {
+              "max": 358,
+              "median": 358,
+              "min": 352
+            },
+            "publication_latency_ms_per_accept": {
+              "max": 12.732265734265734,
+              "median": 12.540076335877863,
+              "min": 12.109047781569966
+            },
+            "refused_observations": {
+              "max": 0,
+              "median": 0,
+              "min": 0
+            },
+            "response_accepts": {
+              "max": 293,
+              "median": 286,
+              "min": 262
+            },
+            "response_attempts": {
+              "max": 318,
+              "median": 310,
+              "min": 287
+            },
+            "response_energy_change_sum": {
+              "max": -59530.0450606399,
+              "median": -60174.140300377,
+              "min": -67375.4733188729
+            },
+            "response_ms_per_accept": {
+              "max": 1.0826450511945391,
+              "median": 0.9554809160305344,
+              "min": 0.9509860139860141
+            },
+            "response_ms_per_attempt": {
+              "max": 1.0890220125786165,
+              "median": 0.9802090592334495,
+              "min": 0.9646
+            },
+            "torque_impulse_sum": {
+              "max": 84823.7605703473,
+              "median": 75200.6251106262,
+              "min": 75019.4197227955
+            },
+            "worker_ms_per_attempt": {
+              "max": 0.25484864864864865,
+              "median": 0.24330081300813008,
+              "min": 0.2239054054054054
+            },
+            "worker_observation_attempts": {
+              "max": 370,
+              "median": 370,
+              "min": 369
+            }
+          },
+          "proposed_contact_cost_gate_passed": true,
+          "repetitions": 3,
+          "response_refusals": {
+            "ClearedContact": 53,
+            "InvalidGeometryWitness": 1,
+            "NonDissipativeResponse": 20
+          },
+          "surroundings": "packed_sand"
+        }
+      ],
+      "original": "docs/audits/sol281-20261103/hosted/749fb8b597ad866f7535f26442e904207c4f7611/cohorts/windows/contact-w1/contact-recovery-w1.json",
+      "platform": "Windows",
+      "sha256": "892c6551f01f6c67eca04a2c0de47da6a82f3c59f0255b1b7e8104ebcef979b2",
+      "workers": 1
+    },
+    {
+      "groups": [
+        {
+          "candidate": false,
+          "energy_readback_gate_passed": true,
+          "metrics": {
+            "combined_contact_ms_per_observation": {
+              "max": 2.1459151785714288,
+              "median": 0.7915457227138644,
+              "min": 0.6727067039106146
+            },
+            "geometry_ms_max": {
+              "max": 1.8863,
+              "median": 0.8595,
+              "min": 0.7651
+            },
+            "geometry_ms_per_observation": {
+              "max": 0.934396875,
+              "median": 0.49438466076696164,
+              "min": 0.42979078212290506
+            },
+            "geometry_probes_per_observation": {
+              "max": 1798.549107142857,
+              "median": 1560.3067846607669,
+              "min": 1548.2932960893854
+            },
+            "impulse_magnitude_sum": {
+              "max": 0.0,
+              "median": 0.0,
+              "min": 0.0
+            },
+            "longest_positive_observation_span_seconds": {
+              "max": 5.98404,
+              "median": 5.983395,
+              "min": 5.968339
+            },
+            "max_angular_velocity_rad_s": {
+              "max": 1.50422143936157,
+              "median": 0.280811697244644,
+              "min": 0.280569672584534
+            },
+            "max_rotation_rad": {
+              "max": 1.00341987609863,
+              "median": 0.450217872858047,
+              "min": 0.445143580436707
+            },
+            "max_sand_penetration_cells": {
+              "max": 4.20016444601673,
+              "median": 4.16313539209572,
+              "min": 3.57628084121061
+            },
+            "max_translation_cells": {
+              "max": 35.6309928894043,
+              "median": 32.3787231445313,
+              "min": 31.8973178863525
+            },
+            "mean_overlap_area_per_observation": {
+              "max": 305.7084999435915,
+              "median": 101.25947061693746,
+              "min": 79.85495388797486
+            },
+            "mean_overlap_cells_per_observation": {
+              "max": 365.54910714285717,
+              "median": 139.56342182890856,
+              "min": 114.64525139664805
+            },
+            "mean_sand_overlap_area_per_observation": {
+              "max": 305.7036589738201,
+              "median": 101.25433392498171,
+              "min": 79.84903651395865
+            },
+            "observations": {
+              "max": 358,
+              "median": 339,
+              "min": 224
+            },
+            "positive_sand_overlap_observations": {
+              "max": 358,
+              "median": 339,
+              "min": 224
+            },
+            "publication_latency_ms_per_accept": {
+              "max": 0.0,
+              "median": 0.0,
+              "min": 0.0
+            },
+            "refused_observations": {
+              "max": 0,
+              "median": 0,
+              "min": 0
+            },
+            "response_accepts": {
+              "max": 0,
+              "median": 0,
+              "min": 0
+            },
+            "response_attempts": {
+              "max": 0,
+              "median": 0,
+              "min": 0
+            },
+            "response_energy_change_sum": {
+              "max": 0.0,
+              "median": 0.0,
+              "min": 0.0
+            },
+            "response_ms_per_accept": {
+              "max": 0.0,
+              "median": 0.0,
+              "min": 0.0
+            },
+            "response_ms_per_attempt": {
+              "max": 0.0,
+              "median": 0.0,
+              "min": 0.0
+            },
+            "torque_impulse_sum": {
+              "max": 0.0,
+              "median": 0.0,
+              "min": 0.0
+            },
+            "worker_ms_per_attempt": {
+              "max": 1.302669376693767,
+              "median": 0.725227027027027,
+              "min": 0.6526531165311653
+            },
+            "worker_observation_attempts": {
+              "max": 370,
+              "median": 369,
+              "min": 369
+            }
+          },
+          "proposed_contact_cost_gate_passed": false,
+          "repetitions": 3,
+          "response_refusals": {},
+          "surroundings": "embedded_sand"
+        },
+        {
+          "candidate": true,
+          "energy_readback_gate_passed": true,
+          "metrics": {
+            "combined_contact_ms_per_observation": {
+              "max": 1.782429487179487,
+              "median": 1.4556890756302523,
+              "min": 1.286757225433526
+            },
+            "geometry_ms_max": {
+              "max": 0.6628,
+              "median": 0.3898,
+              "min": 0.3677
+            },
+            "geometry_ms_per_observation": {
+              "max": 0.21750924855491302,
+              "median": 0.20951442307692306,
+              "min": 0.1748935574229692
+            },
+            "geometry_probes_per_observation": {
+              "max": 1134.5608974358975,
+              "median": 1108.592485549133,
+              "min": 990.5098039215686
+            },
+            "impulse_magnitude_sum": {
+              "max": 174626.48564173,
+              "median": 170168.87861485,
+              "min": 131698.164278957
+            },
+            "longest_positive_observation_span_seconds": {
+              "max": 5.983964,
+              "median": 5.981306,
+              "min": 5.966707
+            },
+            "max_angular_velocity_rad_s": {
+              "max": 0.171252354979515,
+              "median": 0.107561215758324,
+              "min": 0.068409837782383
+            },
+            "max_rotation_rad": {
+              "max": 0.332714051008224,
+              "median": 0.259011954069138,
+              "min": 0.207109376788139
+            },
+            "max_sand_penetration_cells": {
+              "max": 2.62828369485848,
+              "median": 2.60733474251398,
+              "min": 2.58756466301322
+            },
+            "max_translation_cells": {
+              "max": 8.75927734375,
+              "median": 7.35526752471924,
+              "min": 6.25243616104126
+            },
+            "mean_overlap_area_per_observation": {
+              "max": 24.35374537477513,
+              "median": 23.626219713762282,
+              "min": 18.795125734795043
+            },
+            "mean_overlap_cells_per_observation": {
+              "max": 45.283236994219656,
+              "median": 44.93910256410256,
+              "min": 37.34733893557423
+            },
+            "mean_sand_overlap_area_per_observation": {
+              "max": 24.35374537477513,
+              "median": 23.626219709747804,
+              "min": 18.795125734784452
+            },
+            "observations": {
+              "max": 357,
+              "median": 346,
+              "min": 312
+            },
+            "positive_sand_overlap_observations": {
+              "max": 357,
+              "median": 346,
+              "min": 312
+            },
+            "publication_latency_ms_per_accept": {
+              "max": 13.927460093896714,
+              "median": 9.04260398860399,
+              "min": 5.044748366013072
+            },
+            "refused_observations": {
+              "max": 0,
+              "median": 0,
+              "min": 0
+            },
+            "response_accepts": {
+              "max": 351,
+              "median": 306,
+              "min": 213
+            },
+            "response_attempts": {
+              "max": 355,
+              "median": 311,
+              "min": 241
+            },
+            "response_energy_change_sum": {
+              "max": -45026.8949683774,
+              "median": -65968.0078744348,
+              "min": -78276.135005812
+            },
+            "response_ms_per_accept": {
+              "max": 1.4046244131455399,
+              "median": 1.3923169934640522,
+              "min": 1.1468860398860399
+            },
+            "response_ms_per_attempt": {
+              "max": 1.4162990353697749,
+              "median": 1.334838174273859,
+              "min": 1.1805943661971832
+            },
+            "torque_impulse_sum": {
+              "max": 166025.489432674,
+              "median": 153300.517196208,
+              "min": 59857.0263854563
+            },
+            "worker_ms_per_attempt": {
+              "max": 0.3356576086956522,
+              "median": 0.31256486486486484,
+              "min": 0.2725474254742547
+            },
+            "worker_observation_attempts": {
+              "max": 370,
+              "median": 369,
+              "min": 368
+            }
+          },
+          "proposed_contact_cost_gate_passed": true,
+          "repetitions": 3,
+          "response_refusals": {
+            "ClearedContact": 13,
+            "NonDissipativeResponse": 24
+          },
+          "surroundings": "embedded_sand"
+        },
+        {
+          "candidate": false,
+          "energy_readback_gate_passed": true,
+          "metrics": {
+            "combined_contact_ms_per_observation": {
+              "max": 0.992589519650655,
+              "median": 0.34714245810055866,
+              "min": 0.3264858757062147
+            },
+            "geometry_ms_max": {
+              "max": 1.3655,
+              "median": 0.4193,
+              "min": 0.3969
+            },
+            "geometry_ms_per_observation": {
+              "max": 0.41239825327510915,
+              "median": 0.23377039106145253,
+              "min": 0.2175954802259887
+            },
+            "geometry_probes_per_observation": {
+              "max": 1753.0131004366813,
+              "median": 1748.2033898305085,
+              "min": 1743.0111731843576
+            },
+            "impulse_magnitude_sum": {
+              "max": 0.0,
+              "median": 0.0,
+              "min": 0.0
+            },
+            "longest_positive_observation_span_seconds": {
+              "max": 5.984856,
+              "median": 5.980572,
+              "min": 5.950643
+            },
+            "max_angular_velocity_rad_s": {
+              "max": 0.88523405790329,
+              "median": 0.345782041549683,
+              "min": 0.345724284648895
+            },
+            "max_rotation_rad": {
+              "max": 0.93093204498291,
+              "median": 0.671413362026215,
+              "min": 0.669879913330078
+            },
+            "max_sand_penetration_cells": {
+              "max": 2.70131057369671,
+              "median": 2.70073373974123,
+              "min": 2.69938415824183
+            },
+            "max_translation_cells": {
+              "max": 40.4828224182129,
+              "median": 40.3804206848145,
+              "min": 32.4804916381836
+            },
+            "mean_overlap_area_per_observation": {
+              "max": 169.31715704725852,
+              "median": 30.893534047061863,
+              "min": 30.38309543175223
+            },
+            "mean_overlap_cells_per_observation": {
+              "max": 208.65065502183407,
+              "median": 45.73728813559322,
+              "min": 45.06703910614525
+            },
+            "mean_sand_overlap_area_per_observation": {
+              "max": 55.898677088610484,
+              "median": 25.31367896053819,
+              "min": 24.938691560706285
+            },
+            "observations": {
+              "max": 358,
+              "median": 354,
+              "min": 229
+            },
+            "positive_sand_overlap_observations": {
+              "max": 357,
+              "median": 354,
+              "min": 229
+            },
+            "publication_latency_ms_per_accept": {
+              "max": 0.0,
+              "median": 0.0,
+              "min": 0.0
+            },
+            "refused_observations": {
+              "max": 0,
+              "median": 0,
+              "min": 0
+            },
+            "response_accepts": {
+              "max": 0,
+              "median": 0,
+              "min": 0
+            },
+            "response_attempts": {
+              "max": 0,
+              "median": 0,
+              "min": 0
+            },
+            "response_energy_change_sum": {
+              "max": 0.0,
+              "median": 0.0,
+              "min": 0.0
+            },
+            "response_ms_per_accept": {
+              "max": 0.0,
+              "median": 0.0,
+              "min": 0.0
+            },
+            "response_ms_per_attempt": {
+              "max": 0.0,
+              "median": 0.0,
+              "min": 0.0
+            },
+            "torque_impulse_sum": {
+              "max": 0.0,
+              "median": 0.0,
+              "min": 0.0
+            },
+            "worker_ms_per_attempt": {
+              "max": 0.6159972899728997,
+              "median": 0.33679403794037943,
+              "min": 0.3132140921409214
+            },
+            "worker_observation_attempts": {
+              "max": 369,
+              "median": 369,
+              "min": 369
+            }
+          },
+          "proposed_contact_cost_gate_passed": true,
+          "repetitions": 3,
+          "response_refusals": {},
+          "surroundings": "mixed"
+        },
+        {
+          "candidate": true,
+          "energy_readback_gate_passed": true,
+          "metrics": {
+            "combined_contact_ms_per_observation": {
+              "max": 1.287422619047619,
+              "median": 1.1869634831460676,
+              "min": 1.1631067415730336
+            },
+            "geometry_ms_max": {
+              "max": 0.3345,
+              "median": 0.3282,
+              "min": 0.3049
+            },
+            "geometry_ms_per_observation": {
+              "max": 0.19474523809523808,
+              "median": 0.17827359550561797,
+              "min": 0.1575067415730337
+            },
+            "geometry_probes_per_observation": {
+              "max": 1575.9404761904761,
+              "median": 1368.2837078651685,
+              "min": 1352.185393258427
+            },
+            "impulse_magnitude_sum": {
+              "max": 108916.375364557,
+              "median": 101449.849435814,
+              "min": 101117.098702892
+            },
+            "longest_positive_observation_span_seconds": {
+              "max": 5.984297,
+              "median": 5.983892,
+              "min": 5.983788
+            },
+            "max_angular_velocity_rad_s": {
+              "max": 0.369971722364426,
+              "median": 0.368718922138214,
+              "min": 0.179158076643944
+            },
+            "max_rotation_rad": {
+              "max": 0.658435940742493,
+              "median": 0.646798312664032,
+              "min": 0.638063609600067
+            },
+            "max_sand_penetration_cells": {
+              "max": 2.69989763928227,
+              "median": 2.6979277207575,
+              "min": 2.69704343633603
+            },
+            "max_translation_cells": {
+              "max": 17.2825450897217,
+              "median": 17.1700687408447,
+              "min": 17.0948829650879
+            },
+            "mean_overlap_area_per_observation": {
+              "max": 9.145949204913332,
+              "median": 7.881808567810225,
+              "min": 7.4963171726100555
+            },
+            "mean_overlap_cells_per_observation": {
+              "max": 20.214285714285715,
+              "median": 17.558988764044944,
+              "min": 17.132022471910112
+            },
+            "mean_sand_overlap_area_per_observation": {
+              "max": 9.145735110340565,
+              "median": 7.881808562188905,
+              "min": 7.496317172555646
+            },
+            "observations": {
+              "max": 356,
+              "median": 356,
+              "min": 336
+            },
+            "positive_sand_overlap_observations": {
+              "max": 356,
+              "median": 356,
+              "min": 336
+            },
+            "publication_latency_ms_per_accept": {
+              "max": 8.357026315789474,
+              "median": 6.447497076023391,
+              "min": 5.057507936507936
+            },
+            "refused_observations": {
+              "max": 0,
+              "median": 0,
+              "min": 0
+            },
+            "response_accepts": {
+              "max": 342,
+              "median": 342,
+              "min": 315
+            },
+            "response_attempts": {
+              "max": 355,
+              "median": 354,
+              "min": 334
+            },
+            "response_energy_change_sum": {
+              "max": -38698.6584870627,
+              "median": -56123.1015062797,
+              "min": -57334.907248
+            },
+            "response_ms_per_accept": {
+              "max": 0.974920634920635,
+              "median": 0.8943216374269006,
+              "min": 0.892985380116959
+            },
+            "response_ms_per_attempt": {
+              "max": 0.9945059880239522,
+              "median": 0.9243690140845071,
+              "min": 0.9207146892655367
+            },
+            "torque_impulse_sum": {
+              "max": 76925.3262958527,
+              "median": 76437.0476977527,
+              "min": 37401.7363071442
+            },
+            "worker_ms_per_attempt": {
+              "max": 0.27137567567567566,
+              "median": 0.25515675675675675,
+              "min": 0.23819729729729727
+            },
+            "worker_observation_attempts": {
+              "max": 370,
+              "median": 370,
+              "min": 370
+            }
+          },
+          "proposed_contact_cost_gate_passed": true,
+          "repetitions": 3,
+          "response_refusals": {
+            "ClearedContact": 23,
+            "InvalidGeometryWitness": 1,
+            "NonDissipativeResponse": 20
+          },
+          "surroundings": "mixed"
+        },
+        {
+          "candidate": false,
+          "energy_readback_gate_passed": true,
+          "metrics": {
+            "combined_contact_ms_per_observation": {
+              "max": 0.44766295264623956,
+              "median": 0.3992434782608696,
+              "min": 0.3922813370473538
+            },
+            "geometry_ms_max": {
+              "max": 0.8082,
+              "median": 0.6472,
+              "min": 0.6013
+            },
+            "geometry_ms_per_observation": {
+              "max": 0.2885013927576602,
+              "median": 0.2575610027855153,
+              "min": 0.25485855072463764
+            },
+            "geometry_probes_per_observation": {
+              "max": 1780.2347826086957,
+              "median": 1739.6267409470752,
+              "min": 1734.7019498607242
+            },
+            "impulse_magnitude_sum": {
+              "max": 0.0,
+              "median": 0.0,
+              "min": 0.0
+            },
+            "longest_positive_observation_span_seconds": {
+              "max": 5.967893,
+              "median": 5.94768,
+              "min": 5.947632
+            },
+            "max_angular_velocity_rad_s": {
+              "max": 0.739486873149872,
+              "median": 0.345843315124512,
+              "min": 0.345736742019653
+            },
+            "max_rotation_rad": {
+              "max": 1.06802821159363,
+              "median": 0.668453931808472,
+              "min": 0.668442487716675
+            },
+            "max_sand_penetration_cells": {
+              "max": 4.19959396759463,
+              "median": 2.7016972117618,
+              "min": 2.70032182323612
+            },
+            "max_translation_cells": {
+              "max": 46.4846153259277,
+              "median": 40.1073265075684,
+              "min": 39.9760284423828
+            },
+            "mean_overlap_area_per_observation": {
+              "max": 42.78082863673064,
+              "median": 29.866217485136815,
+              "min": 29.374812783442337
+            },
+            "mean_overlap_cells_per_observation": {
+              "max": 60.06685236768802,
+              "median": 43.84057971014493,
+              "min": 43.26462395543175
+            },
+            "mean_sand_overlap_area_per_observation": {
+              "max": 42.77503101658608,
+              "median": 29.861642520751015,
+              "min": 29.369017953156824
+            },
+            "observations": {
+              "max": 359,
+              "median": 359,
+              "min": 345
+            },
+            "positive_sand_overlap_observations": {
+              "max": 359,
+              "median": 358,
+              "min": 345
+            },
+            "publication_latency_ms_per_accept": {
+              "max": 0.0,
+              "median": 0.0,
+              "min": 0.0
+            },
+            "refused_observations": {
+              "max": 0,
+              "median": 0,
+              "min": 0
+            },
+            "response_accepts": {
+              "max": 0,
+              "median": 0,
+              "min": 0
+            },
+            "response_attempts": {
+              "max": 0,
+              "median": 0,
+              "min": 0
+            },
+            "response_energy_change_sum": {
+              "max": 0.0,
+              "median": 0.0,
+              "min": 0.0
+            },
+            "response_ms_per_accept": {
+              "max": 0.0,
+              "median": 0.0,
+              "min": 0.0
+            },
+            "response_ms_per_attempt": {
+              "max": 0.0,
+              "median": 0.0,
+              "min": 0.0
+            },
+            "torque_impulse_sum": {
+              "max": 0.0,
+              "median": 0.0,
+              "min": 0.0
+            },
+            "worker_ms_per_attempt": {
+              "max": 0.4343540540540541,
+              "median": 0.3806189189189189,
+              "min": 0.37429076086956525
+            },
+            "worker_observation_attempts": {
+              "max": 370,
+              "median": 370,
+              "min": 368
+            }
+          },
+          "proposed_contact_cost_gate_passed": true,
+          "repetitions": 3,
+          "response_refusals": {},
+          "surroundings": "packed_sand"
+        },
+        {
+          "candidate": true,
+          "energy_readback_gate_passed": true,
+          "metrics": {
+            "combined_contact_ms_per_observation": {
+              "max": 1.1410507042253522,
+              "median": 1.1258230337078652,
+              "min": 0.9432471910112359
+            },
+            "geometry_ms_max": {
+              "max": 0.3556,
+              "median": 0.3309,
+              "min": 0.2808
+            },
+            "geometry_ms_per_observation": {
+              "max": 0.16185492957746478,
+              "median": 0.14524241573033708,
+              "min": 0.13730533707865167
+            },
+            "geometry_probes_per_observation": {
+              "max": 1622.441011235955,
+              "median": 1595.63661971831,
+              "min": 1353.573033707865
+            },
+            "impulse_magnitude_sum": {
+              "max": 116033.179524809,
+              "median": 98752.6970658489,
+              "min": 97683.6651147939
+            },
+            "longest_positive_observation_span_seconds": {
+              "max": 5.983031,
+              "median": 5.981371,
+              "min": 5.967473
+            },
+            "max_angular_velocity_rad_s": {
+              "max": 0.371741235256195,
+              "median": 0.180535972118378,
+              "min": 0.177404209971428
+            },
+            "max_rotation_rad": {
+              "max": 0.672391414642334,
+              "median": 0.655573546886444,
+              "min": 0.642527759075165
+            },
+            "max_sand_penetration_cells": {
+              "max": 2.70042335225876,
+              "median": 2.6979079793334,
+              "min": 2.21392521863127
+            },
+            "max_translation_cells": {
+              "max": 17.243522644043,
+              "median": 17.1082248687744,
+              "min": 16.8384571075439
+            },
+            "mean_overlap_area_per_observation": {
+              "max": 7.646310681953146,
+              "median": 7.590749183046817,
+              "min": 6.002358399433876
+            },
+            "mean_overlap_cells_per_observation": {
+              "max": 17.690140845070424,
+              "median": 17.331460674157302,
+              "min": 15.106741573033707
+            },
+            "mean_sand_overlap_area_per_observation": {
+              "max": 7.646310676649044,
+              "median": 7.590749183046817,
+              "min": 6.002358399433876
+            },
+            "observations": {
+              "max": 356,
+              "median": 356,
+              "min": 355
+            },
+            "positive_sand_overlap_observations": {
+              "max": 356,
+              "median": 356,
+              "min": 355
+            },
+            "publication_latency_ms_per_accept": {
+              "max": 10.82646290801187,
+              "median": 7.554189873417721,
+              "min": 5.748686781609195
+            },
+            "refused_observations": {
+              "max": 0,
+              "median": 0,
+              "min": 0
+            },
+            "response_accepts": {
+              "max": 348,
+              "median": 337,
+              "min": 316
+            },
+            "response_attempts": {
+              "max": 355,
+              "median": 355,
+              "min": 354
+            },
+            "response_energy_change_sum": {
+              "max": -36723.5889416575,
+              "median": -39440.8544618937,
+              "min": -56619.6456577154
+            },
+            "response_ms_per_accept": {
+              "max": 0.8819554896142433,
+              "median": 0.8551120689655173,
+              "min": 0.6958575949367088
+            },
+            "response_ms_per_attempt": {
+              "max": 0.9140676056338028,
+              "median": 0.887132768361582,
+              "min": 0.7218253521126761
+            },
+            "torque_impulse_sum": {
+              "max": 77326.2769856453,
+              "median": 36660.2394442558,
+              "min": 35490.3227537274
+            },
+            "worker_ms_per_attempt": {
+              "max": 0.24668834688346886,
+              "median": 0.21557723577235774,
+              "min": 0.20677235772357724
+            },
+            "worker_observation_attempts": {
+              "max": 369,
+              "median": 369,
+              "min": 369
+            }
+          },
+          "proposed_contact_cost_gate_passed": true,
+          "repetitions": 3,
+          "response_refusals": {
+            "ClearedContact": 58,
+            "InvalidGeometryWitness": 1,
+            "NonDissipativeResponse": 4
+          },
+          "surroundings": "packed_sand"
+        }
+      ],
+      "original": "docs/audits/sol281-20261103/hosted/749fb8b597ad866f7535f26442e904207c4f7611/cohorts/windows/contact-w4/contact-recovery-w4.json",
+      "platform": "Windows",
+      "sha256": "4d764661d951ef217f19f9a21bd662c4553d8ce3b3db7995c9c22cc3d07f22f7",
+      "workers": 4
+    }
+  ],
+  "interpretation": "Descriptive ranges/medians over independent asynchronous runs, not causal paired comparisons. Exact geometry is at copied native publication poses. Counts are observation samples, not cell-ticks. Positive-overlap span is the time between consecutive positive sampled publications, not proof of unobserved continuity. Response energy excludes separate gravity, ordinary coupling, damping and hard contacts. Cost gate includes all worker attempts (including overwritten publications and refusals) and every main response attempt, divided conservatively by complete consumed observations. CPU cost is provisional; no GPU or human gameplay acceptance.",
+  "schema": "cybersand.sol281.contact-recovery-analysis.v1"
+}

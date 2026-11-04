@@ -1,0 +1,63 @@
+{
+  "files": [
+    {
+      "path": "before-after-groups.json",
+      "sha256": "f6711f2198638a5a2464325b003a4e89336b226e56a06e5ba1817cd47fdb87d4",
+      "size": 50570
+    },
+    {
+      "path": "case-accounting-annex.json",
+      "sha256": "102a2ce18fe4341038ece4b5e8feefd01ad4b74dce759584dafc7e741862b935",
+      "size": 213338
+    },
+    {
+      "path": "cost-review.json",
+      "sha256": "42e058df5ce6b502d38334e4127dd9aa061c484cc537b9702d373605b7eeecbe",
+      "size": 50578
+    },
+    {
+      "path": "cost-review.md",
+      "sha256": "aebe901fe0adb6b0311ce01f7cfc5d4979185391b665778b10771be4c490e6ff",
+      "size": 7684
+    },
+    {
+      "path": "findings.md",
+      "sha256": "bd3fa8f3b123179e28902c69708c3381e3f0133ddb79e9ece21b9d89f89f66e6",
+      "size": 9026
+    },
+    {
+      "path": "github-contact-artifacts.json",
+      "sha256": "63fb3f512f6c2491f223d6ba5339b4457802f245b9c861387fba118d57bcd4ec",
+      "size": 5187
+    },
+    {
+      "path": "preserved-cost-failures.json",
+      "sha256": "2c0d83f725d476d5ac9ce526198bff4271f0fac768793ed239af649666989ba6",
+      "size": 27390
+    },
+    {
+      "path": "repository-analyzer-crosscheck.json",
+      "sha256": "e44b1a0a58a11833fb659ed5fd53b27ff0b2dc6f6a63fddf57700a90411b9669",
+      "size": 505839
+    },
+    {
+      "path": "review_cost.py",
+      "sha256": "b4a32be7f67e5692967dbeda8351e6572e268678c866ed852f9a8b397fbb6209",
+      "size": 32877
+    },
+    {
+      "path": "validation.json",
+      "sha256": "565a9e1154bdf6d7943f6af089ce91d8ebbc361bf55962cc9ba2e90869a9ed89",
+      "size": 1469
+    }
+  ],
+  "repository_destination": "docs/audits/sol364-20261104/hosted-review/",
+  "repository_raw_source": "docs/audits/sol281-20261103/hosted/9edc4f8f7d8cd8fc65119d176c9e1981ab6ea77d",
+  "run_id": 41815817333,
+  "schema": "cybersand.sol364.independent-hosted-review-manifest.v1",
+  "scope": "Independent read-only cost arithmetic and artifact/runtime custody; no source or GitHub mutation by reviewer. Both earlier failed cost receipts retained.",
+  "source": {
+    "sha": "9edc4f8f7d8cd8fc65119d176c9e1981ab6ea77d",
+    "tree": "b5baf8b23ff947c2d7b70e69745c10f18fbe9ebe"
+  }
+}

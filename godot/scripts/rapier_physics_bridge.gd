@@ -15,6 +15,7 @@ const MAX_POSITIONAL_CORRECTION_AGE_TICKS: int = 1
 const HARD_SURFACE_FRICTION: float = 0.78
 const HARD_SURFACE_BOUNCE: float = 0.0
 const HARD_SURFACE_CHUNK_SIZE: int = 64
+const SolidContactResponse = preload("res://scripts/solid_contact_response.gd")
 
 var _space: RID
 var _bodies: Array[RigidBody2D] = []
@@ -27,6 +28,7 @@ var _angular_velocities: PackedFloat32Array = PackedFloat32Array()
 var _sleeping: Array[bool] = []
 var _body_index_by_rid: Dictionary = {}
 var _applied_sample_serials: PackedInt32Array = PackedInt32Array()
+var _solid_contact_applied: Dictionary = {}
 var _hard_surface_body: RID
 var _hard_surface_shape_rids: Array[RID] = []
 var _hard_surface_chunk_bodies: Array[RID] = []
@@ -211,32 +213,7 @@ func apply_cellular_results(
 		if sample_age > MAX_POSITIONAL_CORRECTION_AGE_TICKS:
 			correction = Vector2.ZERO
 
-		if correction.length_squared() > MOTION_EPSILON_SQUARED:
-			var transform: Transform2D = PhysicsServer2D.body_get_state(
-				body_rid,
-				PhysicsServer2D.BODY_STATE_TRANSFORM
-			)
-			transform.origin += correction
-			PhysicsServer2D.body_set_state(
-				body_rid,
-				PhysicsServer2D.BODY_STATE_TRANSFORM,
-				transform
-			)
-			_transforms[body_index] = transform
-
-			var corrected_velocity: Vector2 = PhysicsServer2D.body_get_state(
-				body_rid,
-				PhysicsServer2D.BODY_STATE_LINEAR_VELOCITY
-			)
-			if correction.x != 0.0 and corrected_velocity.x * correction.x < 0.0:
-				corrected_velocity.x = 0.0
-			if correction.y != 0.0 and corrected_velocity.y * correction.y < 0.0:
-				corrected_velocity.y = 0.0
-			PhysicsServer2D.body_set_state(
-				body_rid,
-				PhysicsServer2D.BODY_STATE_LINEAR_VELOCITY,
-				corrected_velocity
-			)
+		_apply_cellular_correction(body_index, correction)
 
 		# A bounded age falloff preserves two-way fluid/particle coupling without
 		# injecting a full-strength impulse computed from a several-frame-old pose.
@@ -246,7 +223,7 @@ func apply_cellular_results(
 			if not diagnostic_applications.is_empty():
 				diagnostic_applications[body_index * 6 + 1] = impulse.x
 				diagnostic_applications[body_index * 6 + 2] = impulse.y
-			PhysicsServer2D.body_apply_central_impulse(body_rid, impulse)
+			_apply_cellular_impulse(body_index, impulse)
 		if (
 			correction.length_squared() > MOTION_EPSILON_SQUARED
 			or impulse.length_squared() > MOTION_EPSILON_SQUARED
@@ -259,6 +236,291 @@ func apply_cellular_results(
 			_last_results_applied += 1
 
 	return _last_results_applied
+
+
+# Current-main correction and impulse primitives are shared by ordinary bodies
+# and one-body compound consumers. They do not calculate a second force law.
+func _apply_cellular_correction(body_index: int, correction: Vector2) -> bool:
+	if not correction.length_squared() > MOTION_EPSILON_SQUARED:
+		return false
+	var body_rid: RID = _body_rids[body_index]
+	var transform: Transform2D = PhysicsServer2D.body_get_state(
+		body_rid, PhysicsServer2D.BODY_STATE_TRANSFORM)
+	transform.origin += correction
+	PhysicsServer2D.body_set_state(body_rid, PhysicsServer2D.BODY_STATE_TRANSFORM, transform)
+	_transforms[body_index] = transform
+	var corrected_velocity: Vector2 = PhysicsServer2D.body_get_state(
+		body_rid, PhysicsServer2D.BODY_STATE_LINEAR_VELOCITY)
+	if correction.x != 0.0 and corrected_velocity.x * correction.x < 0.0:
+		corrected_velocity.x = 0.0
+	if correction.y != 0.0 and corrected_velocity.y * correction.y < 0.0:
+		corrected_velocity.y = 0.0
+	PhysicsServer2D.body_set_state(body_rid, PhysicsServer2D.BODY_STATE_LINEAR_VELOCITY,
+		corrected_velocity)
+	return true
+
+
+func _apply_cellular_impulse(body_index: int, impulse: Vector2,
+		world_offset: Vector2 = Vector2.ZERO) -> bool:
+	if not impulse.length_squared() > MOTION_EPSILON_SQUARED:
+		return false
+	if world_offset == Vector2.ZERO:
+		PhysicsServer2D.body_apply_central_impulse(_body_rids[body_index], impulse)
+	else:
+		PhysicsServer2D.body_apply_impulse(_body_rids[body_index], impulse, world_offset)
+	return true
+
+
+func retire_held_cellular_sample(body_index: int, sample_serial: int) -> void:
+	# The explicit lab can run native material ticks while Rapier is held. That
+	# copied result is retired without applying it when the hold ends.
+	if _initialized and body_index >= 0 and body_index < _body_rids.size() \
+		and sample_serial >= 0 and sample_serial < SAMPLE_SERIAL_LIMIT:
+		_applied_sample_serials[body_index] = sample_serial
+
+
+func apply_compound_cellular_results(snapshot_serial: int, results: PackedFloat32Array,
+		body_index: int, current_sample_serial: int, local_centers: PackedVector2Array,
+		proxy_masses: PackedFloat32Array, impulse_cap: float, correction_cap: float) -> Dictionary:
+	var refused := {"accepted":false, "outcome":"Invalid", "stale_records":0}
+	if not _initialized or body_index < 0 or body_index >= _body_rids.size():
+		return refused
+	var count: int = local_centers.size()
+	if count < 1 or count > CyberRigidBodyCoupling.MAX_BODIES or proxy_masses.size() != count \
+		or results.size() != count * CyberRigidBodyCoupling.RESULT_STRIDE \
+		or current_sample_serial < 0 or current_sample_serial >= SAMPLE_SERIAL_LIMIT \
+		or not is_finite(impulse_cap) or impulse_cap < 0.0 \
+		or not is_finite(correction_cap) or correction_cap < 0.0:
+		return refused
+	if snapshot_serial <= _last_result_snapshot_serial:
+		refused.outcome = "DuplicateOrOldSnapshot"
+		return refused
+	var total_mass: float = 0.0
+	for proxy: int in range(count):
+		if not local_centers[proxy].is_finite() or not is_finite(proxy_masses[proxy]) \
+			or proxy_masses[proxy] <= 0.0:
+			return refused
+		total_mass += proxy_masses[proxy]
+	if not is_finite(total_mass) or total_mass <= 0.0:
+		return refused
+	var impulses := PackedVector2Array()
+	impulses.resize(count)
+	var seen := PackedByteArray()
+	seen.resize(count)
+	var correction := Vector2.ZERO
+	var accepted_sample: int = -1
+	var contacts: int = 0
+	var displaced: int = 0
+	var unresolved: int = 0
+	# Validate the complete immutable record set before touching any Rapier state.
+	# A duplicate/missing proxy or mixed sample cannot amplify force or torque.
+	for record: int in range(count):
+		var offset: int = record * CyberRigidBodyCoupling.RESULT_STRIDE
+		for field: int in range(CyberRigidBodyCoupling.RESULT_STRIDE):
+			if not is_finite(results[offset + field]):
+				return refused
+		var id_value: float = results[offset + CyberRigidBodyCoupling.RESULT_BODY_ID]
+		var sample_value: float = results[offset + CyberRigidBodyCoupling.RESULT_SAMPLE_SERIAL]
+		if floorf(id_value) != id_value or id_value < 1.0 or id_value > float(count) \
+			or floorf(sample_value) != sample_value or sample_value < 0.0 \
+			or sample_value >= float(SAMPLE_SERIAL_LIMIT):
+			return refused
+		var proxy: int = int(id_value) - 1
+		var sample: int = int(sample_value)
+		if seen[proxy] != 0 or (accepted_sample >= 0 and sample != accepted_sample):
+			refused.outcome = "DuplicateProxyOrMixedSample"
+			return refused
+		seen[proxy] = 1
+		accepted_sample = sample
+		for field: int in [CyberRigidBodyCoupling.RESULT_CONTACT_COUNT,
+			CyberRigidBodyCoupling.RESULT_DISPLACED_COUNT, CyberRigidBodyCoupling.RESULT_UNRESOLVED_COUNT]:
+			var value: float = results[offset + field]
+			if value < 0.0 or value != floorf(value):
+				return refused
+		impulses[proxy] = Vector2(results[offset + CyberRigidBodyCoupling.RESULT_IMPULSE_X],
+			results[offset + CyberRigidBodyCoupling.RESULT_IMPULSE_Y])
+		correction += Vector2(results[offset + CyberRigidBodyCoupling.RESULT_CORRECTION_X],
+			results[offset + CyberRigidBodyCoupling.RESULT_CORRECTION_Y]) * (proxy_masses[proxy] / total_mass)
+		contacts += int(results[offset + CyberRigidBodyCoupling.RESULT_CONTACT_COUNT])
+		displaced += int(results[offset + CyberRigidBodyCoupling.RESULT_DISPLACED_COUNT])
+		unresolved += int(results[offset + CyberRigidBodyCoupling.RESULT_UNRESOLVED_COUNT])
+	var last_sample: int = _applied_sample_serials[body_index]
+	if last_sample >= 0:
+		var delta: int = (accepted_sample - last_sample + SAMPLE_SERIAL_LIMIT) % SAMPLE_SERIAL_LIMIT
+		if delta == 0 or delta > SAMPLE_SERIAL_LIMIT / 2:
+			refused.outcome = "DuplicateOrOldSample"
+			return refused
+	var age: int = (current_sample_serial - accepted_sample + SAMPLE_SERIAL_LIMIT) % SAMPLE_SERIAL_LIMIT
+	if age > MAX_CELLULAR_RESULT_AGE_TICKS:
+		refused.outcome = "StaleSample"
+		refused.stale_records = count
+		return refused
+	if not correction.is_finite():
+		return refused
+	correction = correction.limit_length(correction_cap) \
+		if age <= MAX_POSITIONAL_CORRECTION_AGE_TICKS else Vector2.ZERO
+	if not correction.is_finite():
+		return refused
+	var impulse_scale: float = 1.0 / (1.0 + float(age) * 0.25)
+	var budget: float = 0.0
+	for impulse: Vector2 in impulses:
+		budget += impulse.length() * impulse_scale
+	if not is_finite(budget):
+		return refused
+	if budget > impulse_cap:
+		impulse_scale *= impulse_cap / budget
+	var transform: Transform2D = PhysicsServer2D.body_get_state(
+		_body_rids[body_index], PhysicsServer2D.BODY_STATE_TRANSFORM)
+	if not transform.is_finite() or not (transform.origin + correction).is_finite():
+		return refused
+	for center: Vector2 in local_centers:
+		if not (transform * center - transform.origin).is_finite():
+			return refused
+	_last_result_snapshot_serial = snapshot_serial
+	_applied_sample_serials[body_index] = accepted_sample
+	var correction_applied: bool = _apply_cellular_correction(body_index, correction)
+	transform.origin += correction if correction_applied else Vector2.ZERO
+	var total_impulse := Vector2.ZERO
+	var applications: int = 0
+	for proxy: int in range(count):
+		var impulse: Vector2 = impulses[proxy] * impulse_scale
+		total_impulse += impulse
+		# Offset is the rectangle's actual rotated centre, relative to the one
+		# body's COM. Rapier derives off-centre torque; no scripted angular motion.
+		var offset: Vector2 = transform * local_centers[proxy] - transform.origin
+		if _apply_cellular_impulse(body_index, impulse, offset):
+			applications += 1
+	if correction_applied or applications > 0:
+		PhysicsServer2D.body_set_state(_body_rids[body_index], PhysicsServer2D.BODY_STATE_SLEEPING, false)
+		refresh_all_states()
+	return {"accepted":true, "outcome":"Accepted", "sample_serial":accepted_sample,
+		"records":count, "contacts":contacts, "displaced":displaced, "unresolved":unresolved,
+		"impulse_applications":applications, "correction_applications":int(correction_applied),
+		"impulse":total_impulse, "correction":correction, "stale_records":0}
+
+
+func apply_solid_sand_contact(observation: Dictionary, body_index: int,
+		expected_snapshot: int, expected_tick: int, expected_revision: int, expected_epoch: int,
+		expected_token: String, expected_generation: int, accepted_sample: int,
+		current_sample: int, local_centers: PackedVector2Array,
+		sizes: PackedVector2Array) -> Dictionary:
+	# Separate opt-in value channel. Ordinary 11/9 response/defaults are intact.
+	# A complete identity and pure physical preflight precede EVERY RID write.
+	var refused := {"accepted":false, "outcome":"IdentityRefused"}
+	if not _initialized or body_index < 0 or body_index >= _body_rids.size() \
+		or not observation.get("ok", false) or not observation.get("complete", false):
+		return refused
+	for key: String in ["snapshot_serial", "tick", "physics_epoch", "sample_serial", "published_usec"]:
+		if not observation.get(key) is int:
+			return refused
+	if observation.snapshot_serial != expected_snapshot or observation.tick != expected_tick \
+		or expected_snapshot < 0 or expected_tick < 0 \
+		or observation.physics_epoch != expected_epoch or expected_epoch <= 0 \
+		or observation.get("token") != expected_token or expected_token.is_empty() \
+		or observation.get("body_generation") != str(expected_generation) \
+		or observation.sample_serial != accepted_sample or accepted_sample < 0 \
+		or accepted_sample >= SAMPLE_SERIAL_LIMIT or current_sample < 0 \
+		or current_sample >= SAMPLE_SERIAL_LIMIT or expected_revision < 0 \
+		or not observation.get("revision") is String or observation.revision != str(expected_revision) \
+		or int(observation.published_usec) < 0 or int(observation.published_usec) > Time.get_ticks_usec():
+		return refused
+	var age: int = (current_sample - accepted_sample + SAMPLE_SERIAL_LIMIT) % SAMPLE_SERIAL_LIMIT
+	if age > MAX_POSITIONAL_CORRECTION_AGE_TICKS:
+		refused.outcome = "StaleContactSample"
+		return refused
+	var last: Dictionary = _solid_contact_applied.get(body_index, {})
+	if not last.is_empty():
+		var delta: int = (accepted_sample - int(last.sample) + SAMPLE_SERIAL_LIMIT) % SAMPLE_SERIAL_LIMIT
+		if expected_snapshot <= int(last.snapshot) or expected_tick < int(last.tick) \
+			or delta == 0 or delta > SAMPLE_SERIAL_LIMIT / 2:
+			refused.outcome = "DuplicateOrOldContact"
+			return refused
+	var state_started: int = Time.get_ticks_usec()
+	var body_rid: RID = _body_rids[body_index]
+	var transform: Transform2D = PhysicsServer2D.body_get_state(body_rid, PhysicsServer2D.BODY_STATE_TRANSFORM)
+	var velocity: Vector2 = PhysicsServer2D.body_get_state(body_rid, PhysicsServer2D.BODY_STATE_LINEAR_VELOCITY)
+	var omega: float = PhysicsServer2D.body_get_state(body_rid, PhysicsServer2D.BODY_STATE_ANGULAR_VELOCITY)
+	var mass: float = PhysicsServer2D.body_get_param(body_rid, PhysicsServer2D.BODY_PARAM_MASS)
+	var inertia: float = PhysicsServer2D.body_get_param(body_rid, PhysicsServer2D.BODY_PARAM_INERTIA)
+	var started: int = Time.get_ticks_usec()
+	var plan: Dictionary = _plan_solid_contact(observation, transform, velocity,
+		omega, mass, inertia, local_centers, sizes)
+	var planned: int = Time.get_ticks_usec()
+	# Disjoint stage intervals are diagnostics inside the existing inclusive
+	# response attempt. Refused plans retain their evaluation work too; early
+	# identity refusals remain in the caller's inclusive/residual work.
+	plan["rid_state_ms"] = float(started - state_started) / 1000.0
+	plan["planner_ms"] = float(planned - started) / 1000.0
+	plan["impulse_apply_ms"] = 0.0
+	plan["readback_ms"] = 0.0
+	if not plan.get("accepted", false):
+		return plan
+	var apply_started: int = Time.get_ticks_usec()
+	_solid_contact_applied[body_index] = {"snapshot":expected_snapshot, "tick":expected_tick,
+		"sample":accepted_sample}
+	for action: Dictionary in plan.impulses:
+		PhysicsServer2D.body_apply_impulse(body_rid, action.impulse, action.offset)
+	if not plan.impulses.is_empty():
+		PhysicsServer2D.body_set_state(body_rid, PhysicsServer2D.BODY_STATE_SLEEPING, false)
+		refresh_all_states()
+	var readback_started: int = Time.get_ticks_usec()
+	plan["impulse_apply_ms"] = float(readback_started - apply_started) / 1000.0
+	var readback: Dictionary = _read_solid_contact_result(body_rid, velocity, omega, mass, inertia)
+	plan.merge(readback, true)
+	plan["sample_age"] = age
+	plan["publication_latency_ms"] = float(Time.get_ticks_usec() - int(observation.published_usec)) / 1000.0
+	plan["application_ms"] = float(Time.get_ticks_usec() - started) / 1000.0
+	plan["impulse_applications"] = plan.impulses.size()
+	plan["mutation_may_have_occurred"] = not plan.impulses.is_empty()
+	# The impulses may already have changed Rapier. A failed readback is a
+	# terminal application failure, never a mutation-free refusal or a retry.
+	# Keep the consumed sample lease even when the backend values are invalid.
+	var failure: String = ""
+	if not _solid_contact_readback_is_finite(readback):
+		failure = "NonFiniteContactReadback"
+	elif float(readback.actual_energy_after) > float(plan.energy_before) \
+			+ 1e-4 * maxf(1.0, float(plan.energy_before)):
+		failure = "NonDissipativeContactReadback"
+	plan["readback_valid"] = failure.is_empty()
+	if not failure.is_empty():
+		plan["accepted"] = false
+		plan["failed"] = true
+		plan["outcome"] = failure
+	plan["readback_ms"] = float(Time.get_ticks_usec() - readback_started) / 1000.0
+	return plan
+
+
+func _plan_solid_contact(observation: Dictionary, transform: Transform2D,
+		velocity: Vector2, omega: float, mass: float, inertia: float,
+		local_centers: PackedVector2Array, sizes: PackedVector2Array) -> Dictionary:
+	# Pure value seam for the source-pinned comparison fixture. Both control and
+	# candidate still pass through this bridge's complete identity, replay and
+	# terminal post-application readback guards; production has one planner.
+	return SolidContactResponse.plan(observation, transform, velocity, omega,
+		mass, inertia, local_centers, sizes)
+
+
+func _read_solid_contact_result(body_rid: RID, velocity: Vector2, omega: float,
+		mass: float, inertia: float) -> Dictionary:
+	# Value-only readback seam. Adverse tests replace the copied values after
+	# genuine finite Rapier impulses; production reads the actual backend here.
+	var after_v: Vector2 = PhysicsServer2D.body_get_state(body_rid, PhysicsServer2D.BODY_STATE_LINEAR_VELOCITY)
+	var after_w: float = PhysicsServer2D.body_get_state(body_rid, PhysicsServer2D.BODY_STATE_ANGULAR_VELOCITY)
+	return {"actual_velocity_after":after_v, "actual_omega_after":after_w,
+		"actual_energy_after":0.5 * mass * after_v.length_squared() + 0.5 * inertia * after_w * after_w,
+		"actual_momentum_change":(after_v - velocity) * mass,
+		"actual_angular_momentum_change":(after_w - omega) * inertia}
+
+
+static func _solid_contact_readback_is_finite(readback: Dictionary) -> bool:
+	for key: String in ["actual_velocity_after", "actual_momentum_change"]:
+		if not readback.get(key) is Vector2 or not (readback[key] as Vector2).is_finite():
+			return false
+	for key: String in ["actual_omega_after", "actual_energy_after", "actual_angular_momentum_change"]:
+		var value: Variant = readback.get(key)
+		if (typeof(value) != TYPE_FLOAT and typeof(value) != TYPE_INT) or not is_finite(float(value)):
+			return false
+	return true
 
 
 func _sample_age(sample_serial: int) -> int:
@@ -909,6 +1171,7 @@ func refresh_dynamic_states() -> void:
 
 
 func clear_state() -> void:
+	_solid_contact_applied.clear()
 	_initialized = false
 	_space = RID()
 	_bodies.clear()

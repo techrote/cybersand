@@ -1,0 +1,81 @@
+{
+  "id": 13315846464,
+  "name": "sol281-msvc-41815817333-1",
+  "size_in_bytes": 216861,
+  "digest": "sha256:0240e3d5aa9712ad22652641d69619b7605176de86826478f2571fefaa808136",
+  "extracted_to": "/workspace/scratch/b45094545f38/sol364-hosted-review-41815817333/msvc",
+  "file_count": 14,
+  "files": [
+    {
+      "path": "after.json",
+      "size": 264828,
+      "sha256": "b2687e9918f1b46d4981cd90783fd952c7fb694f10b5a504ced87d56d863ebff"
+    },
+    {
+      "path": "before.json",
+      "size": 264731,
+      "sha256": "51e8d73b52047206f29d5536a2ce2940c7cb742f64a855ac71277354ed3048c3"
+    },
+    {
+      "path": "binary-identities.json",
+      "size": 632,
+      "sha256": "d4cf106008311e3b8f76ed553638db752eba36b68dc407251c1b72842b6c82bc"
+    },
+    {
+      "path": "command.log",
+      "size": 63,
+      "sha256": "1e28e6d725963ac13c6bf0a0930bb1c11779a1f677fca47071768f26e21494e1"
+    },
+    {
+      "path": "command.stderr.log",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "compile-conservative_displacement.log",
+      "size": 6572,
+      "sha256": "966283fcc9da128326ba647c7ed0b7e6b72ce928a1572fc5dc487c7673482c0d"
+    },
+    {
+      "path": "compile-solid_contact_geometry.log",
+      "size": 1532,
+      "sha256": "fa0439efa425ba950f2160a4a0232e2d2671eee21cb9cfe5457d4d8bff75a2f7"
+    },
+    {
+      "path": "compile-solid_detachment.log",
+      "size": 6545,
+      "sha256": "68c90f633796120e903da48390549364ca0557cb2c04bea42c2e11d71cab5c82"
+    },
+    {
+      "path": "compiler-locations.txt",
+      "size": 107,
+      "sha256": "ffe24ae01684abcfcb0816bd4ff464f54d7f6065395ca7248a11e465816ec1ff"
+    },
+    {
+      "path": "receipt.json",
+      "size": 844,
+      "sha256": "91ebda0eeaa539754ca637aece7e017cca2acf7faecca57e3edb2de81550ea1a"
+    },
+    {
+      "path": "run-conservative_displacement.log",
+      "size": 529,
+      "sha256": "ddce6479d8b7b74e644b25d6c27228274dd13e504dd54aadcee55f9c19648e6b"
+    },
+    {
+      "path": "run-solid_contact_geometry.log",
+      "size": 55,
+      "sha256": "459f51c9128d03da1bf61b8bdc6db3626faece86b6682af438de6af941c99b86"
+    },
+    {
+      "path": "run-solid_detachment.log",
+      "size": 652,
+      "sha256": "d9148d6b0607fb45082ee0a85b0c663a01b6879f69090402e20866e04ae1e306"
+    },
+    {
+      "path": "vs-environment.log",
+      "size": 247,
+      "sha256": "fe47117de7a4a795156321c3f757fbaf24b630905a44279014aa5c9d56c2dfbb"
+    }
+  ],
+  "archive_authentication": "Exact GitHub Actions artifact digest and byte size verified before extraction"
+}

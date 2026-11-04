@@ -1,0 +1,38 @@
+{
+  "schema": "cybersand.sol281.final-integration-boundaries.v1",
+  "verified_date_utc": "2026-11-04",
+  "accepted_main": "0fd4af5987e77db4da3e37c757cf2c0917ae9e15",
+  "publication_parent": "89d2eb6d280183e495a94b559776dfd8f1cdc196",
+  "prs": [
+    {
+      "number": 282,
+      "head": "c087ca8569f1df394d67cdc4dbe1c6b46c2bcfb2",
+      "state": "open",
+      "draft": true,
+      "merged": false
+    },
+    {
+      "number": 283,
+      "head": "254235ec4c3d58782bba44b478caca86bf57c856",
+      "state": "open",
+      "draft": true,
+      "merged": false
+    },
+    {
+      "number": 343,
+      "head": "2aff460c60f36c0f209b67fe682d0f8b9e5e0f83",
+      "state": "open",
+      "draft": true,
+      "merged": false
+    },
+    {
+      "number": 347,
+      "head": "89d2eb6d280183e495a94b559776dfd8f1cdc196",
+      "state": "open",
+      "draft": true,
+      "merged": false
+    }
+  ],
+  "parent_issue12_state": "open",
+  "scope": "Read-only live verification before documentation-only completion. No promotion, merge, issue closure, archive change or default policy change."
+}

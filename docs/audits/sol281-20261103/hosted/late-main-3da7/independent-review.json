@@ -1,0 +1,186 @@
+{
+  "schema": "cybersand.sol281.late-main-independent-review.v1",
+  "reviewer": "/root/implementation_review",
+  "date": "2026-11-04",
+  "status": "passed_docs_only_reconciliation_review",
+  "scope": "Read-only Git object, exact-input-inventory and documentation-admission review. No repository edits, builds, execution tests or remote mutations. This is not new physics qualification or merge-to-main authorization.",
+  "previous_accepted_main": "0fd4af5987e77db4da3e37c757cf2c0917ae9e15",
+  "incoming_accepted_main": "3da7e7be4a6af4c85e03a7d8a0ed57229e5db33d",
+  "incoming_parents": [
+    "0fd4af5987e77db4da3e37c757cf2c0917ae9e15",
+    "ad20ca47f11eb8f634b334c87521951400cc1cca"
+  ],
+  "prospective_plan_local": "eb83b008982a2aaeca99d88816cee0b4cfac0fae",
+  "prospective_plan_parent": "9195577dc8b689ca907ccfa03554e38ac6953226",
+  "reviewed_local_merge": "cd376452ef2a6c2f1dc4f2fc097692b3e4245252",
+  "reviewed_merge_tree": "9aaa6b2efc578dcf5ca0f2bbb6d535cbca79cad9",
+  "reviewed_merge_parents": [
+    "eb83b008982a2aaeca99d88816cee0b4cfac0fae",
+    "3da7e7be4a6af4c85e03a7d8a0ed57229e5db33d"
+  ],
+  "published_mapping_supplied_by_root": {
+    "plan": "1a01b3edf5b8b73c3a3f90430633f78eb3650718",
+    "merge": "04274706616a8d61b628272a6320ecc28d25362c",
+    "merge_tree": "9aaa6b2efc578dcf5ca0f2bbb6d535cbca79cad9",
+    "scope": "Published object mapping recorded by root; this review independently verifies the exact corresponding local merge/tree. Root owns final branch update and mapping receipt."
+  },
+  "incoming_files": [
+    {
+      "path": "docs/README.md",
+      "incoming_status": "M",
+      "incoming_sha256": "fbfccde97ed794b4c57bc03740a5a9e2b16ae5811c520b6d4b6d0d15d977341d",
+      "merged_sha256": "6bd27fc6bb31c42591ab8e232488984e35ca8dfd6a7416ad31b4be2b537fbf6d",
+      "byte_identical_to_incoming": false,
+      "all_incoming_added_blocks_retained_verbatim": true,
+      "incoming_added_block_count": 2,
+      "conflict_resolution": "additive topic blocks",
+      "entire_premerge_document_line_sequence_preserved": true,
+      "entire_incoming_document_line_sequence_preserved": true
+    },
+    {
+      "path": "docs/architecture/material-authoring-catalogue-plan.md",
+      "incoming_status": "A",
+      "incoming_sha256": "853b787065381d3fbbd52060f18b33c4f64c9b8da3242934adf8afaa2352833a",
+      "merged_sha256": "853b787065381d3fbbd52060f18b33c4f64c9b8da3242934adf8afaa2352833a",
+      "byte_identical_to_incoming": true,
+      "all_incoming_added_blocks_retained_verbatim": true,
+      "incoming_added_block_count": 1
+    },
+    {
+      "path": "docs/audits/2026-11-03-mat-auth-000-architecture-review.md",
+      "incoming_status": "A",
+      "incoming_sha256": "c2d7b1fcbf3b79bfb021e742863b59d0880c0db47094bdefd7fccdf728f5a9ad",
+      "merged_sha256": "c2d7b1fcbf3b79bfb021e742863b59d0880c0db47094bdefd7fccdf728f5a9ad",
+      "byte_identical_to_incoming": true,
+      "all_incoming_added_blocks_retained_verbatim": true,
+      "incoming_added_block_count": 1
+    },
+    {
+      "path": "docs/operations/cybersand-codex-development-handover.md",
+      "incoming_status": "M",
+      "incoming_sha256": "24e346eeec48a5525dad611bce46bd3b2d9d170e15b2357c1426188b488818ee",
+      "merged_sha256": "74b9ff2806d41e3df95483b3eaedbb29192efd5ee5768f25ded1804a110884d0",
+      "byte_identical_to_incoming": false,
+      "all_incoming_added_blocks_retained_verbatim": true,
+      "incoming_added_block_count": 2,
+      "conflict_resolution": "additive topic blocks",
+      "entire_premerge_document_line_sequence_preserved": true,
+      "entire_incoming_document_line_sequence_preserved": true
+    },
+    {
+      "path": "docs/reference/retrieval-corpus.json",
+      "incoming_status": "M",
+      "incoming_sha256": "36f46460609d359d0be36d3cdbbf6ec63617d630acbfff2243ab4524c294e3a7",
+      "merged_sha256": "717892bf2b8511f45558b556ed2ac56c15d59ce38e5496269ec8f6b0eb4f7f7d",
+      "byte_identical_to_incoming": false,
+      "all_incoming_added_blocks_retained_verbatim": true,
+      "incoming_added_block_count": 1
+    },
+    {
+      "path": "docs/reference/retrieval-index.md",
+      "incoming_status": "M",
+      "incoming_sha256": "a9c0725aefe330188a3582f3846b7f0f355c0434a5b91987243e35e849675790",
+      "merged_sha256": "263f9576e6671147498facdd47f31ab1be5f5d0a8c2b2b0b5aff342bad0c6362",
+      "byte_identical_to_incoming": false,
+      "all_incoming_added_blocks_retained_verbatim": true,
+      "incoming_added_block_count": 2,
+      "conflict_resolution": "additive topic blocks",
+      "entire_premerge_document_line_sequence_preserved": true,
+      "entire_incoming_document_line_sequence_preserved": true
+    },
+    {
+      "path": "docs/reference/retrieval-questions-mat-auth.json",
+      "incoming_status": "A",
+      "incoming_sha256": "1bd5f538d3d20a840d4f33485825cb825fdc252e0ed4435b10b490efec428379",
+      "merged_sha256": "1bd5f538d3d20a840d4f33485825cb825fdc252e0ed4435b10b490efec428379",
+      "byte_identical_to_incoming": true,
+      "all_incoming_added_blocks_retained_verbatim": true,
+      "incoming_added_block_count": 1
+    },
+    {
+      "path": "docs/reference/status-and-roadmap.md",
+      "incoming_status": "M",
+      "incoming_sha256": "193b3a247be81062407023cb461965be924c2a2a2b08d696cdd69d3c8cea57bb",
+      "merged_sha256": "5984f4f8ca28000372d31e5f88be5ccb33fbfeb22d828e42262f883c5b9c8561",
+      "byte_identical_to_incoming": false,
+      "all_incoming_added_blocks_retained_verbatim": true,
+      "incoming_added_block_count": 2,
+      "conflict_resolution": "additive topic blocks",
+      "entire_premerge_document_line_sequence_preserved": true,
+      "entire_incoming_document_line_sequence_preserved": true
+    },
+    {
+      "path": "docs/reference/validation-evidence.md",
+      "incoming_status": "M",
+      "incoming_sha256": "43c827f8c58c0f2bcfd848004e4ff4c3b1ddbb3456ad81967a13b2b80ccf9a22",
+      "merged_sha256": "43c827f8c58c0f2bcfd848004e4ff4c3b1ddbb3456ad81967a13b2b80ccf9a22",
+      "byte_identical_to_incoming": true,
+      "all_incoming_added_blocks_retained_verbatim": true,
+      "incoming_added_block_count": 2
+    }
+  ],
+  "incoming_document_count": 9,
+  "all_incoming_paths_under_docs": true,
+  "corpus_union": {
+    "field": "documents",
+    "premerge_entries": 118,
+    "incoming_entries": 118,
+    "merged_entries": 119,
+    "exact_union": true,
+    "no_duplicates": true,
+    "other_corpus_fields_preserved": true
+  },
+  "execution_input_continuity": {
+    "reference_publication": "89d2eb6d280183e495a94b559776dfd8f1cdc196",
+    "scope_definition_unchanged": true,
+    "broad_inputs": 1089,
+    "same_broad_path_inventory_as_original_qualified_build": true,
+    "broad_git_entries_identical_to_publication": true,
+    "native_inputs": 88,
+    "native_git_entries_identical_to_publication": true,
+    "all_tracked_non_document_git_entries_identical_to_publication": true,
+    "changed_incoming_execution_paths": [],
+    "method": "Enumerate canonical Git entries under the unchanged literal SCOPES with the same exclusion rules; compare mode/type/object IDs to89d2. No runtime execution or working-tree hash normalization."
+  },
+  "material_admission": {
+    "status_planned": true,
+    "implementation_unstarted_explicit": true,
+    "scope": "Adopts a Planned authoring design and navigation/retrieval material. No native/Godot/tools/runtime/default or active material-policy bytes change; #353-A remains separately unassigned/unstarted."
+  },
+  "current_addenda": [
+    {
+      "path": "docs/audits/2026-11-03-sol281-takeover.md",
+      "bytes": 18553,
+      "sha256": "aa24251cf0d6c007dbb3cfd727b0440a0d075fdcd4818735dbd5317ddd3d6629",
+      "base_blob_sha256": "3632ef8ca6849c2db1822a150bb88cb9a30fb1395fb6c3c001520c1fddf04345",
+      "pre_addendum_content_preserved": true,
+      "retains_executed_source_749": true,
+      "retains_runtime_publication_89d2": true,
+      "names_new_main": true,
+      "names_published_merge": true
+    },
+    {
+      "path": "docs/systems/solid-detachment.md",
+      "bytes": 28008,
+      "sha256": "ef8e051715791541269edbeb4e6c510305b503b8f9da505221697c225091ba66",
+      "base_blob_sha256": "e5437bec94c614f45dbd029d248baa51251a6de493926e901c0091e506e71ba0",
+      "pre_addendum_content_preserved": true,
+      "retains_executed_source_749": true,
+      "retains_runtime_publication_89d2": true,
+      "names_new_main": true,
+      "names_published_merge": true
+    }
+  ],
+  "working_delta_at_review": [
+    "docs/audits/2026-11-03-sol281-takeover.md",
+    "docs/systems/solid-detachment.md"
+  ],
+  "conclusions": [
+    "All nine incoming paths are retained. Four conflict resolutions preserve both complete parent topic sequences and every incoming added block. Four other files match accepted main exactly; the corpus is the exact duplicate-free union.",
+    "All1089declared broad inputs and88native inputs retain their publication Git entries, and every tracked non-document entry is identical to89d2. No execution/runtime/default-policy change is imported.",
+    "The two current addenda retain prior content and explicitly bind physics execution to749fb8b5 and runtime publication to89d2 while identifying the later docs-only merge.",
+    "Full-matrix CPU acceptance remains failed at23/24 groups; all12candidate groups passing does not override it. Broad physical/lifecycle, #365 and merge gates remain unpassed.",
+    "New document/retrieval checks must keep their own metadata-delta identity. Root owns those checks and final published-object/branch mapping; no old physics or documentation result is relabelled."
+  ],
+  "findings": []
+}

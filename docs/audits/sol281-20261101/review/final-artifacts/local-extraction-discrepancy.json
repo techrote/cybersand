@@ -1,0 +1,23 @@
+{
+  "origin": "unknown; not attributed to parent, hosted runner, or publication",
+  "entries": [
+    {
+      "path": "/workspace/scratch/59ce0c87fdea/hosted-qualification/final-builds/sol281-build-linux-41331369142-1/.source.tar.gz.7G7lfd",
+      "is_symlink": false,
+      "size": 45088768,
+      "mode": "0o100600",
+      "mtime_utc": "2026-11-01T17:35:01.512025+00:00",
+      "ctime_utc": "2026-11-01T17:35:02.725321+00:00",
+      "sha256": "9fc1e6085a455814d946c5d5d22e30b96abf71a1e908f616c9131378be2c7613"
+    },
+    {
+      "path": "/workspace/scratch/59ce0c87fdea/hosted-qualification/final-builds/sol281-build-linux-41331369142-1/source.tar.gz",
+      "is_symlink": false,
+      "size": 77402877,
+      "mode": "0o100644",
+      "mtime_utc": "2026-11-01T17:34:57.397175+00:00",
+      "ctime_utc": "2026-11-01T17:34:57.397175+00:00",
+      "sha256": "6cbb94ce88be049c51696c383772d0ef61a01272822b0e8af4c5cf5072da2977"
+    }
+  ]
+}

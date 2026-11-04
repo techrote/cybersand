@@ -1,0 +1,8 @@
+Preserved development failure (transcribed from tool output; not a runtime raw-log file)
+
+Command: make -j2 build/test_conservative_displacement && ./build/test_conservative_displacement
+Tool command session: 25732
+Exit code: 1
+Observed final line: FAIL after 0 groups: bookkeeping survives complete-state serialization validation
+
+Cause: new test compared the complete live physical-state hash, which includes body masks, immediately after CYPS restore. The established CYPS contract intentionally does not serialize host-owned transient masks. Test was corrected to recreate the same source mask on the restored World before comparing complete state. No production implementation change or weakened conservation assertion was used to fix this fixture error.

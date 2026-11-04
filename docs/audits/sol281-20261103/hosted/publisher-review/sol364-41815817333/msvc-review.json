@@ -1,0 +1,111 @@
+{
+  "schema": "cybersand.sol364.independent-msvc-review.v1",
+  "source": {
+    "sha": "9edc4f8f7d8cd8fc65119d176c9e1981ab6ea77d",
+    "tree": "b5baf8b23ff947c2d7b70e69745c10f18fbe9ebe"
+  },
+  "run_id": "41815817333",
+  "run_attempt": "1",
+  "status": "passed-execution-verification",
+  "compiler": "MSVC19.44.35229 x64; linker14.44.35229.0; hosted Visual Studio2022",
+  "processes": 3,
+  "checks": 26436,
+  "source_and_raw_checkout_unchanged": true,
+  "canonical_execution_inputs": 1107,
+  "msvc_receipt_sha256": "91ebda0eeaa539754ca637aece7e017cca2acf7faecca57e3edb2de81550ea1a",
+  "artifact_zip_sha256": "0240e3d5aa9712ad22652641d69619b7605176de86826478f2571fefaa808136",
+  "files": {
+    "after.json": {
+      "sha256": "b2687e9918f1b46d4981cd90783fd952c7fb694f10b5a504ced87d56d863ebff",
+      "size": 264828
+    },
+    "before.json": {
+      "sha256": "51e8d73b52047206f29d5536a2ce2940c7cb742f64a855ac71277354ed3048c3",
+      "size": 264731
+    },
+    "binary-identities.json": {
+      "sha256": "d4cf106008311e3b8f76ed553638db752eba36b68dc407251c1b72842b6c82bc",
+      "size": 632
+    },
+    "command.log": {
+      "sha256": "1e28e6d725963ac13c6bf0a0930bb1c11779a1f677fca47071768f26e21494e1",
+      "size": 63
+    },
+    "command.stderr.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "compile-conservative_displacement.log": {
+      "sha256": "966283fcc9da128326ba647c7ed0b7e6b72ce928a1572fc5dc487c7673482c0d",
+      "size": 6572
+    },
+    "compile-solid_contact_geometry.log": {
+      "sha256": "fa0439efa425ba950f2160a4a0232e2d2671eee21cb9cfe5457d4d8bff75a2f7",
+      "size": 1532
+    },
+    "compile-solid_detachment.log": {
+      "sha256": "68c90f633796120e903da48390549364ca0557cb2c04bea42c2e11d71cab5c82",
+      "size": 6545
+    },
+    "compiler-locations.txt": {
+      "sha256": "ffe24ae01684abcfcb0816bd4ff464f54d7f6065395ca7248a11e465816ec1ff",
+      "size": 107
+    },
+    "receipt.json": {
+      "sha256": "91ebda0eeaa539754ca637aece7e017cca2acf7faecca57e3edb2de81550ea1a",
+      "size": 844
+    },
+    "run-conservative_displacement.log": {
+      "sha256": "ddce6479d8b7b74e644b25d6c27228274dd13e504dd54aadcee55f9c19648e6b",
+      "size": 529
+    },
+    "run-solid_contact_geometry.log": {
+      "sha256": "459f51c9128d03da1bf61b8bdc6db3626faece86b6682af438de6af941c99b86",
+      "size": 55
+    },
+    "run-solid_detachment.log": {
+      "sha256": "d9148d6b0607fb45082ee0a85b0c663a01b6879f69090402e20866e04ae1e306",
+      "size": 652
+    },
+    "vs-environment.log": {
+      "sha256": "fe47117de7a4a795156321c3f757fbaf24b630905a44279014aa5c9d56c2dfbb",
+      "size": 247
+    }
+  },
+  "records": [
+    {
+      "name": "solid_detachment",
+      "checks": 19338,
+      "executed_binary_receipt": {
+        "size": 2883072,
+        "path": "build/sol281/msvc-bin/test_solid_detachment.exe",
+        "sha256": "1559B2FE186C5F784B5AADA1A549C3603F0BB47C3165F3610F8BE2F6CE5F8EB0"
+      },
+      "run_log_sha256": "d9148d6b0607fb45082ee0a85b0c663a01b6879f69090402e20866e04ae1e306",
+      "compile_log_sha256": "68c90f633796120e903da48390549364ca0557cb2c04bea42c2e11d71cab5c82"
+    },
+    {
+      "name": "conservative_displacement",
+      "checks": 281,
+      "executed_binary_receipt": {
+        "size": 2863104,
+        "path": "build/sol281/msvc-bin/test_conservative_displacement.exe",
+        "sha256": "6EC5FAF6B56623C2521983B718B9B49A110EF194CA39215109F76D33292882A1"
+      },
+      "run_log_sha256": "ddce6479d8b7b74e644b25d6c27228274dd13e504dd54aadcee55f9c19648e6b",
+      "compile_log_sha256": "966283fcc9da128326ba647c7ed0b7e6b72ce928a1572fc5dc487c7673482c0d"
+    },
+    {
+      "name": "solid_contact_geometry",
+      "checks": 6817,
+      "executed_binary_receipt": {
+        "size": 1431040,
+        "path": "build/sol281/msvc-bin/test_solid_contact_geometry.exe",
+        "sha256": "ED9B620A2F4F352645762E13F0FBADED8A13E37CB43A896D93E02E5E3F79FE01"
+      },
+      "run_log_sha256": "459f51c9128d03da1bf61b8bdc6db3626faece86b6682af438de6af941c99b86",
+      "compile_log_sha256": "fa0439efa425ba950f2160a4a0232e2d2671eee21cb9cfe5457d4d8bff75a2f7"
+    }
+  ],
+  "limitation": "Original compiled executable hashes/sizes were recorded on the Windows host; executable bytes are not included in this artifact. The separately built native Godot DLL is LLVM-MinGW, not MSVC."
+}

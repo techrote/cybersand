@@ -1,0 +1,7 @@
+{
+  "scope": "Tree equality maps the local executed freeze to the remote implementation commit; it does not relabel the original execution SHA.",
+  "local_executed_commit": "dd18bca6ff9d89018ffb5878a8746d1167341ed6",
+  "remote_implementation_commit": "83a12466f624780a2455e8adafa70e26719ccf59",
+  "identical_tree": "1af695b691ba83479dcdeb433376daa7abaa4867",
+  "later_source_qualification": "separately executed and recorded by hosted workflow"
+}

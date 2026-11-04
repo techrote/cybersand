@@ -1,0 +1,68 @@
+{
+  "schema": "cybersand.sol364.development-apparatus-failure.v1",
+  "status": "failed_support_eligibility_control",
+  "reason": "Post-initialization Sand carries current native update epoch; the0contacts observation did not independently isolate exterior geometry from granular-support eligibility. Additional boundary-pose assertion catches this. Final control authors settled Sand before initial tick.",
+  "source_scope": "exact checked uncommitted fixture bytes retained; not exact-head qualification",
+  "runtime_native_sha256": "a013aa7148be8716badf41fb2bb1f3ae28e19862b970b390e2f8930493a92a0f",
+  "failures": [
+    "the same frozen Sand supplies supported exterior contacts when exposed by an independent source pose"
+  ],
+  "files": [
+    {
+      "path": "scripts__rapier_physics_bridge.gd",
+      "original_path": "godot/scripts/rapier_physics_bridge.gd",
+      "sha256": "1988bbfe56a91c35a27a91726345358e26ee39839c747a131151e9a53f6b28a6",
+      "bytes": 44555,
+      "origin": "4e17403c897e293dd18eb7780e47e4f3154aa8da"
+    },
+    {
+      "path": "scripts__solid_contact_response.gd",
+      "original_path": "godot/scripts/solid_contact_response.gd",
+      "sha256": "4fa2e74e5cef1f5b211e1a71287acc358d2984e6fb8bdb03cd977adbed473be1",
+      "bytes": 20154,
+      "origin": "execution file retained by hash"
+    },
+    {
+      "path": "tests__fixtures__sol364__synchronized_contacts.json",
+      "original_path": "godot/tests/fixtures/sol364/synchronized_contacts.json",
+      "sha256": "efad94e65cc4d0ea47405011636093f68657ff4ac8da16603b2df1d98668d32d",
+      "bytes": 2654,
+      "origin": "execution file retained by hash"
+    },
+    {
+      "path": "tests__support__solid_contact_response_749fb8b.gd",
+      "original_path": "godot/tests/support/solid_contact_response_749fb8b.gd",
+      "sha256": "d5bebb75d81cf5bc0dce756f7a844f19ad9f145fbd9ca96775ad8f999a061d6d",
+      "bytes": 18934,
+      "origin": "execution file retained by hash"
+    },
+    {
+      "path": "tests__support__solid_contact_synchronized_fixture.gd",
+      "original_path": "godot/tests/support/solid_contact_synchronized_fixture.gd",
+      "sha256": "c47cc7de36ee90a81bfea973c6d27a9fc8cfe619c255a2a1b6ee38d9da0a8090",
+      "bytes": 9317,
+      "origin": "execution file retained by hash"
+    },
+    {
+      "path": "tests__test_solid_contact_synchronized.gd",
+      "original_path": "godot/tests/test_solid_contact_synchronized.gd",
+      "sha256": "90611a4d341cc84d5de36a7cc5d8511cb82c40d1cf4b57f8ac9ac35312474e98",
+      "bytes": 35134,
+      "origin": "execution file retained by hash"
+    },
+    {
+      "path": "sol364-sync-w1-support-failure.json.gz",
+      "sha256": "96e7ff4ec0bcf4d1d8c84a326a0716be6b5fae85788a87590390f86975583742",
+      "bytes": 2914327,
+      "uncompressed_sha256": "fae5e4c90d2823f50c440f9fa6a6267d2ac7e11879f201e2b4214cac23d1544c",
+      "uncompressed_bytes": 21815544
+    }
+  ],
+  "omitted_console_log_hashes": [
+    {
+      "path": "sol364-sync-w1-final.log",
+      "sha256": "ff3b4a59b11f77f2a5c60f8bf050bd7941d8f43eb002d0c399d290f69dbe37d0",
+      "reason": "redundant console footer; full failed report retained losslessly"
+    }
+  ]
+}

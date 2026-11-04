@@ -1,0 +1,114 @@
+{
+  "schema": "cybersand.sol281.final-prose-review.v1",
+  "reviewer": "/root/implementation_review",
+  "date": "2026-11-04",
+  "disposition": "No remaining blocking factual, source-identity or gate-status issue found in the reviewed final prose. Ready for the root-owned documentation/evidence publication; no merge or broad physical acceptance approval.",
+  "scope": "Read-only final prose and evidence-conclusion review. No code changes, tests, runtime execution or remote mutations performed by this reviewer.",
+  "executed_source": "749fb8b597ad866f7535f26442e904207c4f7611",
+  "executed_tree": "77a7bc2ed4d1f7ab339dd4a16fd082fccf56f0ce",
+  "execution_run": "41746597077",
+  "publication_parent": "89d2eb6d280183e495a94b559776dfd8f1cdc196",
+  "publication_tree": "2c52766489573a7db8dcba162d17daac4dbe6acc",
+  "reviewed_canonical_files": [
+    {
+      "path": "docs/README.md",
+      "bytes": 52053,
+      "sha256": "1cc9d66f17a15cb8dd1792c574fd7ee6c841d5696247cd20898e95e23cdd8ca5",
+      "matches_final_validation_receipt": true
+    },
+    {
+      "path": "docs/audits/2026-11-03-sol281-dense-contact.md",
+      "bytes": 22620,
+      "sha256": "73e860e783225202384f7f3ef4ee7c38f021329b1c9f489ec8e9303a5d39eef9",
+      "matches_final_validation_receipt": true
+    },
+    {
+      "path": "docs/audits/2026-11-03-sol281-takeover.md",
+      "bytes": 15940,
+      "sha256": "3632ef8ca6849c2db1822a150bb88cb9a30fb1395fb6c3c001520c1fddf04345",
+      "matches_final_validation_receipt": true
+    },
+    {
+      "path": "docs/operations/cybersand-codex-development-handover.md",
+      "bytes": 111446,
+      "sha256": "3f809d8241510f170dac4833770989bdc9d8397d37284b442b97e6de728a6edc",
+      "matches_final_validation_receipt": true
+    },
+    {
+      "path": "docs/reference/retrieval-index.md",
+      "bytes": 56719,
+      "sha256": "858d639831bdc9106b7f66be09c4d2f0c49763bc72da1100984ee1ab87c53ee3",
+      "matches_final_validation_receipt": true
+    },
+    {
+      "path": "docs/reference/status-and-roadmap.md",
+      "bytes": 132022,
+      "sha256": "9bb264bcf40d469c9b7f08822427d16f3e1cc1074f97ca9f047a746a3cf425a3",
+      "matches_final_validation_receipt": true
+    },
+    {
+      "path": "docs/systems/solid-detachment.md",
+      "bytes": 27353,
+      "sha256": "e5437bec94c614f45dbd029d248baa51251a6de493926e901c0091e506e71ba0",
+      "matches_final_validation_receipt": true
+    }
+  ],
+  "reviewed_issue_and_pr_drafts": [
+    {
+      "path": "pr-347-body-final.md",
+      "bytes": 8946,
+      "sha256": "a41be323ce5b1fd2f00d083ffbb57416c7b85d85cd1518d71d57eb04860c47e2",
+      "placeholders": [
+        "{{SUCCESSOR_DOCS_BASE_URL}}"
+      ]
+    },
+    {
+      "path": "issue-281-update-final.md",
+      "bytes": 3126,
+      "sha256": "fc4897b6435e56350177d69f8c0376eac7adcbf1dcf2202dd25332e61efacd6e",
+      "placeholders": [
+        "{{SUCCESSOR_DOCS_BASE_URL}}"
+      ]
+    },
+    {
+      "path": "issue-364-update.md",
+      "bytes": 2569,
+      "sha256": "7a2f5dbb64901e74cf909ec044c1c687e70365a750ef5042d9a6c42f4f66a369",
+      "placeholders": []
+    },
+    {
+      "path": "issue-365-update.md",
+      "bytes": 1646,
+      "sha256": "66c166bcf106701946a001b6176ec646296d53227a736a13d4efa4d9b533c5de",
+      "placeholders": []
+    }
+  ],
+  "confirmed_conclusions": [
+    "The 12-job scoped execution/reduction/publication pass is distinct from the failed full-matrix CPU gate:23/24 groups, one Windows four-worker embedded-baseline failure at2.1459151785714288ms. All12candidate groups pass, worst1.782429487179487ms; this does not override the full-matrix failure.",
+    "The failing original report was compared byte for byte with its exact89d2 publication Git blob; recomputation confirms480.685ms/224complete observations,369owner attempts and zero main response time.",
+    "The72-case totals, response outcomes and candidate packed/embedded depth maxima agree with retained evidence. Asynchronous sampled spans are not continuous-clearance or causal-improvement claims.",
+    "Prior2457matrixPASS/publicationFAIL and5944/3acqualification remain source-scoped. No runtime-publication child is invented for2457.",
+    "Publication documentation/provenance run41748585125 passes at89d2 only. Later documentation descendants are not relabelled as executed physics sources. Earlier749draft skips and89d2action_required PR events are not passing implementation gates.",
+    "The local metadata-validation receipt status is passed and its seven recorded Markdown hashes match current files. Its18unmaterialized local LFS pointers are explicitly distinguished from materialized publication CI.",
+    "CPU wording and current-gate retrieval routing are corrected; original c1/local2321 tree mapping and historical-result labels are explicit. The independent remaining_gates CPU omission is resolved.",
+    "#364 retains bounded contact/cost diagnosis with unchanged thresholds and ownership/readback fences. #365 stays blocked; #347 stays draft/unmerged, #281/#12 open, B=289NO-GO and#283frozen."
+  ],
+  "supporting_receipts": {
+    "independent-final-review.json": {
+      "bytes": 44768,
+      "sha256": "204a12fcf48156e5969b1012b7a12afeb00ad34e12a0be6601c31e9890c16597"
+    },
+    "final-documentation-validation.json": {
+      "bytes": 5057,
+      "sha256": "7263d5ed42db4183977956c50f25515f0faac3d671b05b01b71397da3ffae804"
+    },
+    "final-evidence-conclusion-review.json": {
+      "bytes": 8722,
+      "sha256": "ae679f2323404b3a4eb17df60d70ea8787a55635c4603b0932fdff013c89beff"
+    }
+  },
+  "metadata_validation_status": "passed",
+  "packet_manifest_status_at_review": "complete",
+  "pending_link_base_outside_scope": "The sole remaining placeholder in PR347/#281 drafts is {{SUCCESSOR_DOCS_BASE_URL}}. Root fills it with the final API-published documentation commit permalink after publication. Its eventual SHA/link bytes are outside this prepublication review; no new runtime identity or validation pass is implied.",
+  "post_review_boundary": "Adding this evidence-only receipt and completing the packet manifest does not alter the seven reviewed Markdown files or executed-source identity. Final metadata-head CI retains its own source and result. Root owns publication, latest remote-state checks and link-base substitution."
+}

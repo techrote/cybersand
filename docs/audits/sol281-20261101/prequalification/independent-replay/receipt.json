@@ -1,0 +1,230 @@
+{
+  "native_runtime_sha256": "0b5b21be466441e613d314da62905ef565e9e57d5aab6cb296aa31184e864d27",
+  "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+  "git_head": "809fd30dfac0c5e127302997075be9c4b279e5aa",
+  "source_files": {
+    "godot/native_extension/conservative_displacement_adapter.inc": "91b06a2c4e273aad56af883525dc2466e4caac64a1b0660aeb1201d625b85b30",
+    "native/src/world_conservative_displacement.inc": "c9dd8dc0da262dc0a20f2c193c4714fa3de4e3ab0ebe66731550dac8563bf6d9",
+    "native/include/cybersand/conservative_displacement.hpp": "79b94c394ed3ed7fb7f114a1808bb35182f77d8320dd16470a0de19dbf7ba0b3",
+    "godot/tests/test_solid_detachment_displacement.gd": "2c9b864ded955b3b607c58a8a1e5dff1c7e32f3ecf4c8f6cd9707dcc8470cdc0",
+    "godot/tests/fixtures/sol281/conservative_contacts.json": "0ed32d72c2bd3681bb003d7fe0c5d3f0f870598d487614dd36a4a816778604ce"
+  },
+  "runs": [
+    {
+      "workers": 1,
+      "exit_code": 0,
+      "elapsed_seconds": 0.665627095997479,
+      "command": [
+        "/tmp/cybersand-r-engine/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/workspace/scratch/59ce0c87fdea/cybersand/godot",
+        "--script",
+        "res://tests/test_solid_detachment_displacement.gd",
+        "--",
+        "--workers=1",
+        "--report=/workspace/scratch/59ce0c87fdea/evidence/independent-replay/workers-1.json"
+      ],
+      "log_sha256": "81d5ceaa79a0e29bf0a7622dbdf8274b7b57516aa9b27a01e2a04310e830cdcc",
+      "checks": 292,
+      "failures": [],
+      "report_sha256": "e29b3e02d698cb4e3033b2dd35f76718a04d09b92fb2caf6592b18b94edfcbab",
+      "outcomes": [
+        {
+          "case": "jammed_no_void",
+          "outcome": "GeometryBlocked",
+          "moved_cells": 0
+        },
+        {
+          "case": "outer_ring_only",
+          "outcome": "ForeignOccupancy",
+          "moved_cells": 0
+        },
+        {
+          "case": "permissive_cost1",
+          "outcome": "GeometryBlocked",
+          "moved_cells": 0
+        },
+        {
+          "case": "permissive_cost2",
+          "outcome": "ForeignOccupancy",
+          "moved_cells": 0
+        },
+        {
+          "case": "direct_production_success",
+          "outcome": "ForeignOccupancy",
+          "moved_cells": 0
+        },
+        {
+          "case": "strict_empty_rear",
+          "outcome": "GeometryBlocked",
+          "moved_cells": 0
+        },
+        {
+          "case": "center_only_false_clearance_tick106",
+          "outcome": "GeometryBlocked",
+          "moved_cells": 0
+        },
+        {
+          "case": "center_only_false_clearance_tick103",
+          "outcome": "GeometryBlocked",
+          "moved_cells": 0
+        },
+        {
+          "case": "boundary_sand_one_hop",
+          "outcome": "Applied",
+          "moved_cells": 1
+        },
+        {
+          "case": "boundary_sand_three_parcels",
+          "outcome": "Applied",
+          "moved_cells": 3
+        },
+        {
+          "case": "boundary_partial_water_three_parcels",
+          "outcome": "Applied",
+          "moved_cells": 3
+        },
+        {
+          "case": "boundary_mixed_sand_water",
+          "outcome": "Applied",
+          "moved_cells": 3
+        },
+        {
+          "case": "same_path_foreign_mask",
+          "outcome": "ForeignOccupancy",
+          "moved_cells": 0
+        },
+        {
+          "case": "same_path_hot_parcel",
+          "outcome": "ForeignOccupancy",
+          "moved_cells": 0
+        },
+        {
+          "case": "same_path_second_proxy_square_overlap",
+          "outcome": "GeometryBlocked",
+          "moved_cells": 0
+        },
+        {
+          "case": "same_path_exact_touch",
+          "outcome": "GeometryBlocked",
+          "moved_cells": 0
+        },
+        {
+          "case": "source_square_foreign_body_despite_first_writer_mask",
+          "outcome": "SourceOwnership",
+          "moved_cells": 0
+        }
+      ]
+    },
+    {
+      "workers": 4,
+      "exit_code": 0,
+      "elapsed_seconds": 0.6659180009992269,
+      "command": [
+        "/tmp/cybersand-r-engine/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/workspace/scratch/59ce0c87fdea/cybersand/godot",
+        "--script",
+        "res://tests/test_solid_detachment_displacement.gd",
+        "--",
+        "--workers=4",
+        "--report=/workspace/scratch/59ce0c87fdea/evidence/independent-replay/workers-4.json"
+      ],
+      "log_sha256": "4431a88b4a9d15e849a50ca544a22fdac762f4820509024d073a6d93d0f213fd",
+      "checks": 292,
+      "failures": [],
+      "report_sha256": "e7bb4d4a6638e4a6468dbab6a5557033d6324b524453ed1e42beab03e141dd1a",
+      "outcomes": [
+        {
+          "case": "jammed_no_void",
+          "outcome": "GeometryBlocked",
+          "moved_cells": 0
+        },
+        {
+          "case": "outer_ring_only",
+          "outcome": "ForeignOccupancy",
+          "moved_cells": 0
+        },
+        {
+          "case": "permissive_cost1",
+          "outcome": "GeometryBlocked",
+          "moved_cells": 0
+        },
+        {
+          "case": "permissive_cost2",
+          "outcome": "ForeignOccupancy",
+          "moved_cells": 0
+        },
+        {
+          "case": "direct_production_success",
+          "outcome": "ForeignOccupancy",
+          "moved_cells": 0
+        },
+        {
+          "case": "strict_empty_rear",
+          "outcome": "GeometryBlocked",
+          "moved_cells": 0
+        },
+        {
+          "case": "center_only_false_clearance_tick106",
+          "outcome": "GeometryBlocked",
+          "moved_cells": 0
+        },
+        {
+          "case": "center_only_false_clearance_tick103",
+          "outcome": "GeometryBlocked",
+          "moved_cells": 0
+        },
+        {
+          "case": "boundary_sand_one_hop",
+          "outcome": "Applied",
+          "moved_cells": 1
+        },
+        {
+          "case": "boundary_sand_three_parcels",
+          "outcome": "Applied",
+          "moved_cells": 3
+        },
+        {
+          "case": "boundary_partial_water_three_parcels",
+          "outcome": "Applied",
+          "moved_cells": 3
+        },
+        {
+          "case": "boundary_mixed_sand_water",
+          "outcome": "Applied",
+          "moved_cells": 3
+        },
+        {
+          "case": "same_path_foreign_mask",
+          "outcome": "ForeignOccupancy",
+          "moved_cells": 0
+        },
+        {
+          "case": "same_path_hot_parcel",
+          "outcome": "ForeignOccupancy",
+          "moved_cells": 0
+        },
+        {
+          "case": "same_path_second_proxy_square_overlap",
+          "outcome": "GeometryBlocked",
+          "moved_cells": 0
+        },
+        {
+          "case": "same_path_exact_touch",
+          "outcome": "GeometryBlocked",
+          "moved_cells": 0
+        },
+        {
+          "case": "source_square_foreign_body_despite_first_writer_mask",
+          "outcome": "SourceOwnership",
+          "moved_cells": 0
+        }
+      ]
+    }
+  ],
+  "scope": "independent frozen-contact native transaction execution; local source delta; no final commit, actual Rapier trajectory or graphical pacing claim",
+  "retained_failed_prequalification": "failed-numeric-comparison/: first runs failed only because nested INT/FLOAT Variant arrays compare unequal despite identical numeric coordinates. Corrected exact numeric point/path comparison; native bytes and input fixture unchanged."
+}

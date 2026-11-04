@@ -1,0 +1,80 @@
+{
+  "audit_helper_sha256": "11c17be210581b9fc2feeb012e11b885ae9a33c0007a69f393f6ba9f6bf08035",
+  "broad_execution_inputs": 1089,
+  "native_build_inputs": 88,
+  "native_inputs_unchanged_from_5944c130": true,
+  "run_id": "41742950418",
+  "schema": "cybersand.sol281.independent-successor-build-review.v1",
+  "scope": "Read-only original artifact verification; no new compiler, native, Godot or optional unit-test execution.",
+  "source": {
+    "sha": "2457f5ecb945c60cd5118526f48734e82576ba49",
+    "tree": "42b4926b3e15dcbf34b436eff41de50fad54c50a"
+  },
+  "targets": [
+    {
+      "artifact_id": 13282099934,
+      "build_manifest_sha256": "fb300f771cb8a70d53cdc60da069e9d00c381642a8d1fa67c4769e93b10aa76f",
+      "build_runtime": {
+        "filename": "libcybersand_native.linux.x86_64.so",
+        "sha256": "5877f1ac8b3e1bc3548d415bbd3890f2b804df4d03f4eef4c961170780b47b3a",
+        "size": 4343064
+      },
+      "compiler": "g++-13 (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.",
+      "extracted_bytes_match_original_archive": true,
+      "github_digest_matched": true,
+      "original_archive": "sol281-build-linux-41742950418-1.zip",
+      "original_archive_sha256": "545047c582b277a4f94c2b834850c19a8d1895236f66a7b6410b79386a33670c",
+      "original_files_verified": 17,
+      "platform": "linux",
+      "runtime_identity": {
+        "artifact": "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+        "sha256": "5877f1ac8b3e1bc3548d415bbd3890f2b804df4d03f4eef4c961170780b47b3a",
+        "size": 4343064
+      },
+      "source_archive": {
+        "all_tracked_contents_match_executed_tree_under_committed_eol_rules": true,
+        "byte_identical_git_blobs": 2485,
+        "committed_eol_conversions": [
+          {
+            "authorization": "eol=crlf in executed-source committed .gitattributes",
+            "canonical_git_blob": "916a43c2b0619e74b4076d60ca327c6bf9eef9e2",
+            "path": "build_windows_msvc.bat",
+            "raw_archive_sha256": "b7d8456f986c9ce6a8f844cf0bac426caa977324f3f9374653988d7f14e7b664"
+          },
+          {
+            "authorization": "eol=crlf in executed-source committed .gitattributes",
+            "canonical_git_blob": "64f22deedefe1bf648cc2832990efe04ff3cfe2c",
+            "path": "tools/launch_desktop.ps1",
+            "raw_archive_sha256": "396f63f54b23e38b6b2b87d0dfb5fb887e96adca0950b11ad946c1b73357b570"
+          }
+        ],
+        "files_verified": 2487,
+        "pax_git_commit": "2457f5ecb945c60cd5118526f48734e82576ba49",
+        "sha256": "1aa5c672d80a1d3429b5e7667d249a9e8f78d9c4cde6660d5d2a92719467c871"
+      },
+      "source_before_after_and_command_receipts_verified": true
+    },
+    {
+      "artifact_id": 13281773553,
+      "build_manifest_sha256": "da2b384ff5073cb07481dd7f43ec9db9382d392ca9a0616f92ba28709c2837b7",
+      "build_runtime": {
+        "filename": "cybersand_native.windows.x86_64.dll",
+        "sha256": "aaebd3b3eb2f903eea2622c0b0faa56574b5af2a5297a4535b4b0fd2440c86f5",
+        "size": 4924416
+      },
+      "compiler": "clang version 23.1.0 (https://github.com/llvm/llvm-project.git ea7d852a70e8bdfaf601d6626a760f9771b2c4b4)\nTarget: x86_64-w64-windows-gnu\nThread model: posix\nInstalledDir: /home/runner/work/_temp/llvm-mingw/bin\nConfiguration file: /home/runner/work/_temp/llvm-mingw/bin/x86_64-w64-windows-gnu.cfg",
+      "extracted_bytes_match_original_archive": true,
+      "github_digest_matched": true,
+      "original_archive": "sol281-build-windows-41742950418-1.zip",
+      "original_archive_sha256": "76468c992a0479588b4582413c1b7d8cbeee12104afb3cbe2ed76f404ef9ab24",
+      "original_files_verified": 15,
+      "platform": "windows",
+      "runtime_identity": {
+        "artifact": "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+        "sha256": "aaebd3b3eb2f903eea2622c0b0faa56574b5af2a5297a4535b4b0fd2440c86f5",
+        "size": 4924416
+      },
+      "source_before_after_and_command_receipts_verified": true
+    }
+  ]
+}

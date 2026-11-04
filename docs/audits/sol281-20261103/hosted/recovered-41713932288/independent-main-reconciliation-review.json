@@ -1,0 +1,311 @@
+{
+  "combined_documentation_files": [
+    "docs/README.md",
+    "docs/operations/cybersand-codex-development-handover.md",
+    "docs/reference/retrieval-corpus.json",
+    "docs/reference/retrieval-index.md",
+    "docs/reference/status-and-roadmap.md"
+  ],
+  "common_ancestor": "89020b9eb6d540383a5bb64b58dcd29a87592c32",
+  "conflict_checks": [
+    {
+      "all_incoming_main_lines_retained": true,
+      "branch_lines_replaced_only_for_updated_main_status": [
+        "Stopped PLAY recovery: [canonical ownership and controls](systems/player-control-playground.md#stopped-composed-session-recovery), [preserved failure and current-main reconciliation](audits/2026-10-31-play-stopped-session-recovery.md), and [PR #332 qualification ledger](https://github.com/techrote/cybersand/pull/332). PACE004 #334 remains separate.",
+        "CI scheduling and capacity: [canonical execution contract](operations/ci-execution-and-performance.md), [qualification evidence](audits/2026-11-01-ci-scheduling-qualification.md), and [all-workflow audit](audits/2026-11-01-ci-workflow-audit.md)."
+      ],
+      "path": "docs/README.md"
+    },
+    {
+      "all_incoming_main_lines_retained": true,
+      "branch_lines_replaced_only_for_updated_main_status": [],
+      "path": "docs/operations/cybersand-codex-development-handover.md"
+    },
+    {
+      "all_incoming_main_lines_retained": true,
+      "branch_lines_replaced_only_for_updated_main_status": [],
+      "path": "docs/reference/retrieval-index.md"
+    },
+    {
+      "all_incoming_main_lines_retained": true,
+      "branch_lines_replaced_only_for_updated_main_status": [
+        "PACE004 #334 and the physical/device/display/human acceptance areas remain separate."
+      ],
+      "path": "docs/reference/status-and-roadmap.md"
+    }
+  ],
+  "corpus_checks": {
+    "actual_list_keys_and_counts": {
+      "documents": {
+        "all_entries_preserved": true,
+        "branch": 118,
+        "main": 117,
+        "merge": 118,
+        "no_duplicate_entries": true
+      },
+      "excluded": {
+        "all_entries_preserved": true,
+        "branch": 101,
+        "main": 99,
+        "merge": 102,
+        "no_duplicate_entries": true
+      },
+      "navigation": {
+        "all_entries_preserved": true,
+        "branch": 8,
+        "main": 8,
+        "merge": 8,
+        "no_duplicate_entries": true
+      }
+    },
+    "branch_and_main_canonical_navigation_exclusion_entries_retained": true,
+    "integration_note_matches_newer_main": true
+  },
+  "file_checks": [
+    {
+      "incoming_sha256": "2f243f2452fe6d3fc1f5e9fec7fd6acc71086ba71723e541d9ebf58786157869",
+      "path": ".github/workflows/play-pace004.yml",
+      "resolution": "identical_to_accepted_main",
+      "result_sha256": "2f243f2452fe6d3fc1f5e9fec7fd6acc71086ba71723e541d9ebf58786157869"
+    },
+    {
+      "incoming_sha256": "2e80c281c528c0c31e4b928685517489beb5009062d3b1d731f665f0fab2700b",
+      "path": "docs/README.md",
+      "resolution": "combined_additive_documentation",
+      "result_sha256": "59f7119900e065c6a84086c85f1eaa36fda2181476d88fea967800f4504b76f1"
+    },
+    {
+      "incoming_sha256": "bc403bddd45e3abb14baf91b98cc3a03e007dce712314270d47d6e9e2bbd6082",
+      "path": "docs/architecture/inertial-cellular-v1.md",
+      "resolution": "identical_to_accepted_main",
+      "result_sha256": "bc403bddd45e3abb14baf91b98cc3a03e007dce712314270d47d6e9e2bbd6082"
+    },
+    {
+      "incoming_sha256": "2f47a361564cf4a9f9ab4acd59f7968776a7c5b3ba3c3bea6b53bbf86bd24f6b",
+      "path": "docs/architecture/liquid-solver-family-policy.md",
+      "resolution": "identical_to_accepted_main",
+      "result_sha256": "2f47a361564cf4a9f9ab4acd59f7968776a7c5b3ba3c3bea6b53bbf86bd24f6b"
+    },
+    {
+      "incoming_sha256": "98cb68fb1f7d808cd0b00b1f70c81021d1b608a0432c16d0a3d2aa32d8f9ffcd",
+      "path": "docs/architecture/pressure-flow-v1.md",
+      "resolution": "identical_to_accepted_main",
+      "result_sha256": "98cb68fb1f7d808cd0b00b1f70c81021d1b608a0432c16d0a3d2aa32d8f9ffcd"
+    },
+    {
+      "incoming_sha256": "41d571eb23b50322c8964be66e7af7226d0796f982500dbf66e4677bdeefb6ca",
+      "path": "docs/architecture/simulation-tick-and-threading.md",
+      "resolution": "identical_to_accepted_main",
+      "result_sha256": "41d571eb23b50322c8964be66e7af7226d0796f982500dbf66e4677bdeefb6ca"
+    },
+    {
+      "incoming_sha256": "dc330e78c3c34a7210a4bfbb74ff80d18ff79a97c94fea8b0b0438dc9cdf53ce",
+      "path": "docs/audits/2026-10-31-play-pace004-policy-successor.md",
+      "resolution": "identical_to_accepted_main",
+      "result_sha256": "dc330e78c3c34a7210a4bfbb74ff80d18ff79a97c94fea8b0b0438dc9cdf53ce"
+    },
+    {
+      "incoming_sha256": "ac3cb629341c722dd62c3b37dab939249017b59b010b550290da84da7c426053",
+      "path": "docs/audits/2026-11-03-lcb-reassessment.md",
+      "resolution": "identical_to_accepted_main",
+      "result_sha256": "ac3cb629341c722dd62c3b37dab939249017b59b010b550290da84da7c426053"
+    },
+    {
+      "incoming_sha256": "65110ee1274e5ec342451ca7555afe34e50561766c661a74da4a8ab74c36545a",
+      "path": "docs/audits/2026-11-03-linux-display-mesa-utils-removal.md",
+      "resolution": "identical_to_accepted_main",
+      "result_sha256": "65110ee1274e5ec342451ca7555afe34e50561766c661a74da4a8ab74c36545a"
+    },
+    {
+      "incoming_sha256": "d58e0122eaf9cdd912557250a88a66aaac228536c64da9f7eaf7bcc063111f0f",
+      "path": "docs/audits/play-pace004-2026-10-31/local-d08e6101-six-graphical.json",
+      "resolution": "identical_to_accepted_main",
+      "result_sha256": "d58e0122eaf9cdd912557250a88a66aaac228536c64da9f7eaf7bcc063111f0f"
+    },
+    {
+      "incoming_sha256": "67402f42648e34c95c98afa59dc03de57a7dd56d087e9e8d680540c73e4051d1",
+      "path": "docs/operations/ci-execution-and-performance.md",
+      "resolution": "identical_to_accepted_main",
+      "result_sha256": "67402f42648e34c95c98afa59dc03de57a7dd56d087e9e8d680540c73e4051d1"
+    },
+    {
+      "incoming_sha256": "baaf3e6111a75dffdbd9504e6811f3741c306082a16d349ddf6d6d56c2a4b56e",
+      "path": "docs/operations/cybersand-codex-development-handover.md",
+      "resolution": "combined_additive_documentation",
+      "result_sha256": "86bc66e40e4b84ef5edbfeefd2983af9c2396c86070c26d2f58aa7788d2d9802"
+    },
+    {
+      "incoming_sha256": "e8e92b94b6484a504ccb885bf5952a06bff56e6c437d5081a52881d57dc0b9d4",
+      "path": "docs/operations/lcb-manual-comparison-ux.md",
+      "resolution": "identical_to_accepted_main",
+      "result_sha256": "e8e92b94b6484a504ccb885bf5952a06bff56e6c437d5081a52881d57dc0b9d4"
+    },
+    {
+      "incoming_sha256": "aebe1afadaea2858edfbd9d88391eec77f4f992b83bc484170bab9820378ecbc",
+      "path": "docs/operations/lcb-scenario-catalogue.md",
+      "resolution": "identical_to_accepted_main",
+      "result_sha256": "aebe1afadaea2858edfbd9d88391eec77f4f992b83bc484170bab9820378ecbc"
+    },
+    {
+      "incoming_sha256": "ee643e74310222a27c585ca35bda232a2aab43a8cac8295c7fd7642c40a4a9fe",
+      "path": "docs/reference/retrieval-corpus.json",
+      "resolution": "combined_additive_documentation",
+      "result_sha256": "90e7a14bff09b22374912b0b3d7bf42c99abd4268af15235d72bf242c06237fd"
+    },
+    {
+      "incoming_sha256": "53d720a8e12d2a82598ce0b64b9b7c0ee05f74739f145ed0d821cdaa9a9feb75",
+      "path": "docs/reference/retrieval-index.md",
+      "resolution": "combined_additive_documentation",
+      "result_sha256": "6216f8069fb38a186196899d603ea732602f63f6710efe7993fa77dcc46afd5b"
+    },
+    {
+      "incoming_sha256": "e61044a0053940fc6a44bcfb5ae42b3c583b8f1a748926ff90407ed4cf8442a9",
+      "path": "docs/reference/retrieval-questions-lcb-reassess.json",
+      "resolution": "identical_to_accepted_main",
+      "result_sha256": "e61044a0053940fc6a44bcfb5ae42b3c583b8f1a748926ff90407ed4cf8442a9"
+    },
+    {
+      "incoming_sha256": "df41da22b0a7da1a07cdfa349d7df7deda66d16af330978e7a85fae01332d478",
+      "path": "docs/reference/status-and-roadmap.md",
+      "resolution": "combined_additive_documentation",
+      "result_sha256": "dcc07a7743ad2df96bb8be5baa533426befe205089a046ea23f5285a323bdc85"
+    },
+    {
+      "incoming_sha256": "4bd4e084c2f93265bac06cfd2c78e736f01308a313182a160366a721cd41c13d",
+      "path": "docs/reference/validation-evidence.md",
+      "resolution": "identical_to_accepted_main",
+      "result_sha256": "4bd4e084c2f93265bac06cfd2c78e736f01308a313182a160366a721cd41c13d"
+    },
+    {
+      "incoming_sha256": "6c4b199c95f75f16e1e968ac8b8f4a51c5a32808b2be0084952bfaa23b515324",
+      "path": "godot/tests/play_pace004_brush_load.gd",
+      "resolution": "identical_to_accepted_main",
+      "result_sha256": "6c4b199c95f75f16e1e968ac8b8f4a51c5a32808b2be0084952bfaa23b515324"
+    },
+    {
+      "incoming_sha256": "91296cefa2397710500caaaf571879adbcd2d5c11d124f4108adc6700d4cb007",
+      "path": "godot/tests/play_pace004_capture_buffer.gd",
+      "resolution": "identical_to_accepted_main",
+      "result_sha256": "91296cefa2397710500caaaf571879adbcd2d5c11d124f4108adc6700d4cb007"
+    },
+    {
+      "incoming_sha256": "09dcc948050df5a66b4c597ff2aa44fe43cfa89cd8b6d7bee137edf91f6532fe",
+      "path": "godot/tests/play_pace004_input_tape.gd",
+      "resolution": "identical_to_accepted_main",
+      "result_sha256": "09dcc948050df5a66b4c597ff2aa44fe43cfa89cd8b6d7bee137edf91f6532fe"
+    },
+    {
+      "incoming_sha256": "22cc96963b961877841627d11c0292894bafe94363a4bd5ec94e08376f092ffb",
+      "path": "godot/tests/play_pace004_worker_probe.gd",
+      "resolution": "identical_to_accepted_main",
+      "result_sha256": "22cc96963b961877841627d11c0292894bafe94363a4bd5ec94e08376f092ffb"
+    },
+    {
+      "incoming_sha256": "c1ba1a1ec7adc1e53cf55eec32443efef4279a03169d513d91760d5f2816ffa8",
+      "path": "godot/tests/test_play_pace004_capture_buffer.gd",
+      "resolution": "identical_to_accepted_main",
+      "result_sha256": "c1ba1a1ec7adc1e53cf55eec32443efef4279a03169d513d91760d5f2816ffa8"
+    },
+    {
+      "incoming_sha256": "6bf6f0cce5fbe04fa9bc9deb4e2c580d0a529b4cc014ee1bdd446deb7bbf188d",
+      "path": "tools/ci/prepare_linux_display.sh",
+      "resolution": "identical_to_accepted_main",
+      "result_sha256": "6bf6f0cce5fbe04fa9bc9deb4e2c580d0a529b4cc014ee1bdd446deb7bbf188d"
+    },
+    {
+      "incoming_sha256": "e0239bd8c0537667aae52be8f5967a2ab9abaef231550ec51e32a8b92fda56b9",
+      "path": "tools/ci/test_prepare_linux_display.py",
+      "resolution": "identical_to_accepted_main",
+      "result_sha256": "e0239bd8c0537667aae52be8f5967a2ab9abaef231550ec51e32a8b92fda56b9"
+    },
+    {
+      "incoming_sha256": "be9328b9052c8c7d4be5701a728b4be73b23ceca031c4e8657a678e5f1dbfa9b",
+      "path": "tools/play/pace004_contract.py",
+      "resolution": "identical_to_accepted_main",
+      "result_sha256": "be9328b9052c8c7d4be5701a728b4be73b23ceca031c4e8657a678e5f1dbfa9b"
+    },
+    {
+      "incoming_sha256": "3aa1b95ece328dba3dbe076618b11656463974f163345abb3f86e46bb50f8f44",
+      "path": "tools/play/pace004_execution.py",
+      "resolution": "identical_to_accepted_main",
+      "result_sha256": "3aa1b95ece328dba3dbe076618b11656463974f163345abb3f86e46bb50f8f44"
+    },
+    {
+      "incoming_sha256": "ef57dc2f85413f10b565f41468aa9112e30ddb6aebba5817158c5bc266d17cdd",
+      "path": "tools/play/pace004_load_contract.py",
+      "resolution": "identical_to_accepted_main",
+      "result_sha256": "ef57dc2f85413f10b565f41468aa9112e30ddb6aebba5817158c5bc266d17cdd"
+    },
+    {
+      "incoming_sha256": "2ea9ac86964d98759c9852a6419bc2aea9ce1d160ca426dc760eb36847f861e8",
+      "path": "tools/play/run_pace004_campaign.py",
+      "resolution": "identical_to_accepted_main",
+      "result_sha256": "2ea9ac86964d98759c9852a6419bc2aea9ce1d160ca426dc760eb36847f861e8"
+    },
+    {
+      "incoming_sha256": "0b5e4d4ccb3be75af8c259f02658bf8bdf7797adcec9b24579a2c2cd46ae76cf",
+      "path": "tools/play/test_pace004_contract.py",
+      "resolution": "identical_to_accepted_main",
+      "result_sha256": "0b5e4d4ccb3be75af8c259f02658bf8bdf7797adcec9b24579a2c2cd46ae76cf"
+    },
+    {
+      "incoming_sha256": "2fbfba67ad4a9af4d0b4721cc19e67a0e7c517b8f7c34accf711250176b330a0",
+      "path": "tools/play/test_pace004_execution.py",
+      "resolution": "identical_to_accepted_main",
+      "result_sha256": "2fbfba67ad4a9af4d0b4721cc19e67a0e7c517b8f7c34accf711250176b330a0"
+    },
+    {
+      "incoming_sha256": "3d8869e92d511df01e800b309937de8c2b2437996db02be52c75ac5e80a3bce0",
+      "path": "tools/play/test_pace004_load_contract.py",
+      "resolution": "identical_to_accepted_main",
+      "result_sha256": "3d8869e92d511df01e800b309937de8c2b2437996db02be52c75ac5e80a3bce0"
+    }
+  ],
+  "incoming_audit_changes_all_additions": true,
+  "incoming_changed_files": 33,
+  "incoming_preserved_byte_for_byte": 28,
+  "limitations": [
+    "No fresh Godot/native runtime execution in this review.",
+    "No gameplay/default/merge approval.",
+    "Later source edits require a source-sensitive follow-up."
+  ],
+  "merge": "d96e3e9594a296438c9d68ef8df910104d18c063",
+  "pace004_status": "Preserves accepted-main apparatus-only #334 merge at070c7a22; exact-head hosted campaign remains Planned/separate, with no campaign pass inferred.",
+  "parents": [
+    "669d74a50126e7996e4d2918a370ce608e0a0430",
+    "0fd4af5987e77db4da3e37c757cf2c0917ae9e15"
+  ],
+  "protected_source_runtime_existing_audit_changes": [],
+  "qualification_disposition": "PASS for non-destructive ordinary reconciliation. Existing5944c130 runtime qualification is historical for its exact source;1089-input merged source still needs its own source-matched validation.",
+  "reviewer": "/root/evidence_audit",
+  "schema": "cybersand.sol281.independent-main-reconciliation-review.v1",
+  "source_edits": false,
+  "source_input_comparison": {
+    "added": [
+      "godot/tests/play_pace004_brush_load.gd",
+      "godot/tests/play_pace004_capture_buffer.gd",
+      "godot/tests/play_pace004_input_tape.gd",
+      "godot/tests/play_pace004_worker_probe.gd",
+      "godot/tests/test_play_pace004_capture_buffer.gd",
+      "tools/play/pace004_contract.py",
+      "tools/play/pace004_execution.py",
+      "tools/play/pace004_load_contract.py",
+      "tools/play/run_pace004_campaign.py",
+      "tools/play/test_pace004_contract.py",
+      "tools/play/test_pace004_execution.py",
+      "tools/play/test_pace004_load_contract.py"
+    ],
+    "changed": [
+      "godot/addons/cybersand_native/runtime-provenance.json",
+      "godot/addons/cybersand_native/runtime-provenance.linux.json",
+      "tools/ci/prepare_linux_display.sh",
+      "tools/ci/test_prepare_linux_display.py"
+    ],
+    "new_inputs": 1089,
+    "old_inputs": 1077,
+    "prior_qualified_source": "5944c13079356fedf96da78c78e83b3898379fee",
+    "removed": [],
+    "root_report_reproduced": true
+  },
+  "tree": "c3d00faec069ae0bedc9972b8fc031f4ae2f3cd8"
+}

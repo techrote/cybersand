@@ -1,0 +1,70 @@
+{
+  "schema": "cybersand.sol364.independent-build-review.v1",
+  "source": {
+    "sha": "9edc4f8f7d8cd8fc65119d176c9e1981ab6ea77d",
+    "tree": "b5baf8b23ff947c2d7b70e69745c10f18fbe9ebe"
+  },
+  "run_id": "41815817333",
+  "run_attempt": "1",
+  "target": "linux",
+  "status": "passed-build-verification",
+  "scope": "Linux pinned extension build and native ownership/contact regression command; actual Godot host execution separately reviewed.",
+  "artifact": {
+    "id": 13314873550,
+    "sha256": "a73fdcf2a680dfea8d1ae5cd89e6e6041858edeb1547a3e104e85d35022d1885",
+    "bytes": 123060063
+  },
+  "runtime": {
+    "filename": "libcybersand_native.linux.x86_64.so",
+    "sha256": "de38c0de458b2a30d43cb36c633cb7ee3b469f8d84f7a3e512fafc9838bb82a5",
+    "size": 4343256
+  },
+  "compiler": "g++-13 (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.",
+  "bindings": {
+    "filename": "libgodot-cpp.linux.template_debug.x86_64.a",
+    "revision": "101ae38034304346a46ea9ea84ae156d3e860496",
+    "sha256": "bc5f860471475c745ebad2b45988607a15c9a35c6996b0f08fea37570e6ef666"
+  },
+  "canonical_execution_inputs": 1107,
+  "canonical_native_inputs": 88,
+  "source_inventory_recomputed_from_exact_git_objects": "Identical to independently verified Windows build input map from exact9ed Git blobs",
+  "raw_checkout_unchanged": true,
+  "commands": {
+    "prepare": {
+      "status": "passed",
+      "returncode": 0,
+      "complete": true,
+      "natural_completion": true,
+      "timed_out": false,
+      "elapsed_seconds": 5.829855750000007,
+      "log_sha256": "f3230cde244f404da345bc58ba3d0861c34f8eed329634e0a2562f5c9abbd20c"
+    },
+    "bindings": {
+      "status": "passed",
+      "returncode": 0,
+      "complete": true,
+      "natural_completion": true,
+      "timed_out": false,
+      "elapsed_seconds": 453.999442657,
+      "log_sha256": "b390b1739333378b0488627a3e096a53767329beaf34a44bddfacde640ab0c2f"
+    },
+    "extension": {
+      "status": "passed",
+      "returncode": 0,
+      "complete": true,
+      "natural_completion": true,
+      "timed_out": false,
+      "elapsed_seconds": 90.31280147200005,
+      "log_sha256": "a57f45feee3b525adea0546711739f732ccd94d3ea11e3b592a18359a0e474d5"
+    },
+    "native-regressions": {
+      "status": "passed",
+      "returncode": 0,
+      "complete": true,
+      "natural_completion": true,
+      "timed_out": false,
+      "elapsed_seconds": 235.32425956600002,
+      "log_sha256": "57b01164b7019c69390a80e9b802de685ac640dda4be4e53b78d2085f7eb09a7"
+    }
+  }
+}

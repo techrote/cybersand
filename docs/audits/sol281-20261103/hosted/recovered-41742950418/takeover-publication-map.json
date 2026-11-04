@@ -1,0 +1,63 @@
+{
+  "schema": "cybersand.sol281.takeover-publication-map.v1",
+  "reason": "Shell HTTPS push has no credential helper; authenticated GitHub git-data publication creates new commit metadata while every tree is byte-identical to its reviewed local counterpart.",
+  "remote_parent_preserved": "3ac7701f013452c94a8c08b0746e1b13523e7234",
+  "accepted_main_parent": "0fd4af5987e77db4da3e37c757cf2c0917ae9e15",
+  "publication": [
+    {
+      "local_sha": "669d74a50126e7996e4d2918a370ce608e0a0430",
+      "published_sha": "3a4ed96b8e40a6568c44b97d99e24629c5349a16",
+      "tree": "947202c8837c37c47147ba51ffde495d4267b22e",
+      "parents": [
+        "3ac7701f013452c94a8c08b0746e1b13523e7234"
+      ],
+      "message": "docs(sol281): record recovery authority and current-main reconciliation plan"
+    },
+    {
+      "local_sha": "d96e3e9594a296438c9d68ef8df910104d18c063",
+      "published_sha": "e518b0b6492b6500966171912cc406b55b6bbbcd",
+      "tree": "c3d00faec069ae0bedc9972b8fc031f4ae2f3cd8",
+      "parents": [
+        "3a4ed96b8e40a6568c44b97d99e24629c5349a16",
+        "0fd4af5987e77db4da3e37c757cf2c0917ae9e15"
+      ],
+      "message": "Merge accepted main through PACE004 and LCB reassessment into SOL281"
+    },
+    {
+      "local_sha": "4b9dbf80826f24c7bea7381c18c06046ef9656d5",
+      "published_sha": "06ff45d0777747878e143993ac7ce676452238cf",
+      "tree": "73f8e4ab79d421cc26f88c4a9a52d76fcee17ed5",
+      "parents": [
+        "e518b0b6492b6500966171912cc406b55b6bbbcd"
+      ],
+      "message": "fix(sol281): fail-stop invalid post-impulse readback"
+    },
+    {
+      "local_sha": "32b490a0367eaf69bdeeb7f5abdce1203198ca09",
+      "published_sha": "8b950833222bbe00edb04e81dd75dc0cdcadf222",
+      "tree": "1039d8b70bf4475e41d0c33395ee00592696008a",
+      "parents": [
+        "06ff45d0777747878e143993ac7ce676452238cf"
+      ],
+      "message": "docs(sol281): recover final evidence and bind current qualification route"
+    },
+    {
+      "local_sha": "0d394189dc70c4236800d4d9432d6292ff72bd2f",
+      "published_sha": "1e5c22c7e3992b883ed0c07fbe6b132eb89aa36c",
+      "tree": "e030cc5ea9e161bc3996fc4cdbb0315e7b0b50f3",
+      "parents": [
+        "8b950833222bbe00edb04e81dd75dc0cdcadf222"
+      ],
+      "message": "docs(sol281): preserve independent readback review and local evidence"
+    },
+    {
+      "local_sha": "8e5c9ddb7958401e96ad9a10b13949daf3aac2a6",
+      "published_sha": "2457f5ecb945c60cd5118526f48734e82576ba49",
+      "tree": "42b4926b3e15dcbf34b436eff41de50fad54c50a",
+      "parents": [
+        "1e5c22c7e3992b883ed0c07fbe6b132eb89aa36c"
+      ],
+      "message": "docs(sol281): retain original review logs and clarify cost numerator"
+    }
+  ]
+}

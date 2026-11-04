@@ -1,0 +1,93 @@
+{
+	"aggregate_owned": 520,
+	"checks": 22,
+	"engine": "4.7-stable (official)",
+	"failures": [],
+	"history": [
+		{
+			"omega": 0.312282979488373,
+			"rotation": 0.162324845790863,
+			"tick": 60,
+			"x": 61.7144584655762,
+			"y": 40.7485427856445
+		},
+		{
+			"omega": 1.27385640144348,
+			"rotation": 0.782649457454681,
+			"tick": 120,
+			"x": 77.4225082397461,
+			"y": 51.5965385437012
+		},
+		{
+			"omega": 0.0000971398912952282,
+			"rotation": 0.934583365917206,
+			"tick": 180,
+			"x": 80.9125747680664,
+			"y": 58.1341590881348
+		},
+		{
+			"omega": 0.0,
+			"rotation": 0.934676051139832,
+			"tick": 240,
+			"x": 80.9137573242188,
+			"y": 58.1339149475098
+		},
+		{
+			"omega": 0.0,
+			"rotation": 0.934676051139832,
+			"tick": 300,
+			"x": 80.9137573242188,
+			"y": 58.1339149475098
+		},
+		{
+			"omega": 0.0,
+			"rotation": 0.934676051139832,
+			"tick": 360,
+			"x": 80.9137573242188,
+			"y": 58.1339149475098
+		},
+		{
+			"omega": 0.0,
+			"rotation": 0.934676051139832,
+			"tick": 420,
+			"x": 80.9137573242188,
+			"y": 58.1339149475098
+		},
+		{
+			"omega": 0.0,
+			"rotation": 0.934676051139832,
+			"tick": 480,
+			"x": 80.9137573242188,
+			"y": 58.1339149475098
+		},
+		{
+			"omega": 0.0,
+			"rotation": 0.934676051139832,
+			"tick": 540,
+			"x": 80.9137573242188,
+			"y": 58.1339149475098
+		},
+		{
+			"omega": 0.0,
+			"rotation": 0.934676051139832,
+			"tick": 600,
+			"x": 80.9137573242188,
+			"y": 58.1339149475098
+		}
+	],
+	"inertia": 70453.6493589743,
+	"mass": 520.0,
+	"max_angular_velocity": 1.27385640144348,
+	"max_down": 20.259220123291,
+	"max_horizontal": 25.6351585388184,
+	"max_rotation": 1.07524764537811,
+	"members": 520,
+	"native_ticks": 600,
+	"platform": "Linux",
+	"rapier_ticks": 600,
+	"schema": "cybersand.sol281.actual-async-rapier.v1",
+	"scope": "dry homogeneous inert native tree; compound native proxies; no reactive Wood, general desoliding or full application acceptance",
+	"shapes": 6,
+	"source_native_members": 520,
+	"workers": 4
+}

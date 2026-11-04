@@ -1,0 +1,31 @@
+{
+  "source": {
+    "sha": "d96e3e9594a296438c9d68ef8df910104d18c063",
+    "tree": "c3d00faec069ae0bedc9972b8fc031f4ae2f3cd8"
+  },
+  "qualified_source": "5944c13079356fedf96da78c78e83b3898379fee",
+  "old_inputs": 1077,
+  "current_inputs": 1089,
+  "added": [
+    "godot/tests/play_pace004_brush_load.gd",
+    "godot/tests/play_pace004_capture_buffer.gd",
+    "godot/tests/play_pace004_input_tape.gd",
+    "godot/tests/play_pace004_worker_probe.gd",
+    "godot/tests/test_play_pace004_capture_buffer.gd",
+    "tools/play/pace004_contract.py",
+    "tools/play/pace004_execution.py",
+    "tools/play/pace004_load_contract.py",
+    "tools/play/run_pace004_campaign.py",
+    "tools/play/test_pace004_contract.py",
+    "tools/play/test_pace004_execution.py",
+    "tools/play/test_pace004_load_contract.py"
+  ],
+  "removed": [],
+  "changed": [
+    "godot/addons/cybersand_native/runtime-provenance.json",
+    "godot/addons/cybersand_native/runtime-provenance.linux.json",
+    "tools/ci/prepare_linux_display.sh",
+    "tools/ci/test_prepare_linux_display.py"
+  ],
+  "native_inputs_unchanged": true
+}

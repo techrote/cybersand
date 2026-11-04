@@ -1,0 +1,38 @@
+{
+	"cases": [
+		{
+			"area": 12.0,
+			"contacts": 29,
+			"id": "partial_shared_edge",
+			"partial_contacts": 1,
+			"perimeter": 16.0
+		},
+		{
+			"admitted": true,
+			"exact_contacts": true,
+			"id": "float32_seam"
+		},
+		{
+			"attempts": 3,
+			"complete_attempts": 2,
+			"id": "immutable_publication",
+			"refused_attempts": 1,
+			"stages_accounted": true
+		},
+		{
+			"foreign": "ForeignBody",
+			"id": "refusals",
+			"large_negative": "UnknownBoundary",
+			"large_positive": "UnknownBoundary",
+			"missing": "IncompleteOrIncoherentCompound",
+			"mixed": "IncompleteOrIncoherentCompound",
+			"nonfinite": "IncompleteOrIncoherentCompound"
+		}
+	],
+	"checks": 142,
+	"failures": [],
+	"platform": "Linux",
+	"schema": "cybersand.sol281.contact-observation-test.v1",
+	"scope": "native immutable geometry/ownership side channel; no live Rapier acceptance",
+	"workers": 1
+}

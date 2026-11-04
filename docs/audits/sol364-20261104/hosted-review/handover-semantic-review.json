@@ -1,0 +1,333 @@
+{
+  "asynchronous_independent_recomputation": {
+    "all_group_min_max_mean_and_sample_variance_recomputed": true,
+    "current_candidate_final_positive_samples": 36,
+    "current_candidate_trials": 36,
+    "current_complete_observations": 22850,
+    "current_immediate_response_energy_readbacks": 10571,
+    "groups_per_source": 24,
+    "historical_complete_observations": 23606,
+    "interpretation": "Asynchronous source/current and arm histories are unmatched; counts remain cell-samples/area-samples; first-to-last positive spans are not continuous duration or time-to-clearance; historical missing kinetic/per-response records remain unavailable.",
+    "repeats_per_group": 3,
+    "single_final_clear_exception": {
+      "arm": "baseline",
+      "complete_observations": 275,
+      "fixture": "mixed",
+      "platform": "Linux",
+      "positive_observations": 120,
+      "positive_source_span_seconds": 3.04982,
+      "repeat": 2,
+      "workers": 1
+    },
+    "trial_denominators_cell_and_area_sums_positive_spans_recomputed": true,
+    "trials": 144
+  },
+  "corrected_findings": [
+    {
+      "finding": "Apparatus-author hosted physical analysis was incorrectly labelled independent.",
+      "id": "REVIEW-ATTRIBUTION",
+      "resolution": "Ledger now identifies the apparatus author and keeps separate independent qualification, geometry and denominator/statistics review.",
+      "status": "resolved"
+    },
+    {
+      "finding": "Three current routing paragraphs still described #371 as awaiting adopted-main integration.",
+      "id": "MERGED-MAT-ROUTES",
+      "resolution": "README, handover and roadmap now name merged accepted main7ef and distinguish this branch's two-consumer guard failure.",
+      "status": "resolved"
+    },
+    {
+      "finding": "Older bold NOT MET statements could be read as current whole-matrix disposition.",
+      "id": "HISTORICAL-CPU-SCOPE",
+      "resolution": "Statements explicitly identify the preceding749fb8b5 checkpoint; original failed numbers remain unchanged.",
+      "status": "resolved"
+    },
+    {
+      "finding": "Opening wording suggested payload freezing itself was removed.",
+      "id": "FREEZE-SEMANTICS",
+      "resolution": "Opening now says recursive worker traversal of native-frozen payload is removed. Fresh payloads still freeze.",
+      "status": "resolved"
+    },
+    {
+      "finding": "Frozen-field replay description omitted the explicit zero gravity/damping settings and prescribed velocities.",
+      "id": "ZERO-GRAVITY-CONTROL",
+      "resolution": "Audit and system canonical now state these causal-control settings and distinguish gravitational settling and ordinary live sessions.",
+      "status": "resolved"
+    },
+    {
+      "finding": "Mixed baseline final clear sample was called a deliberate exception although it was observed.",
+      "id": "OBSERVED-EXCEPTION",
+      "resolution": "Wording now says observed exception, with120/275 samples and3.04982-second span.",
+      "status": "resolved"
+    }
+  ],
+  "cpu_check": {
+    "all_attempt_inclusive_numerator_and_complete_consumed_denominator_unchanged": true,
+    "bookkeeping_after_ready_and_shared_publication_exclusions_explicit": true,
+    "both_earlier_failures_remain_failed": true,
+    "cases": 72,
+    "groups": 24,
+    "historical_windows_failure_ms": 2.1459151785714288,
+    "latency_not_called_mutex_or_thread_cpu": true,
+    "local_linux_failure_ms": 2.012693486590038,
+    "maximum_ms_per_complete_observation": 1.6449498327759198,
+    "nested_native_geometry_and_freezing_not_added_twice": true,
+    "passed_groups": 24
+  },
+  "disposition": "CPU gate passes for the recorded exact source; physical clearance and protected-source integration remain blocked. PR347 stays draft/unmerged,281/364/12 open,365 blocked.",
+  "environment_note": "The last Git metadata probe failed because its common Git directory in the earlier scratch location was missing. Parent confirmed the earlier scratch directory had disappeared; cause unestablished. Reviewed handover file trees remain intact and this receipt binds their bytes. Parent is recovering an isolated checkout from verified published5f and will separately recheck source preservation. Reviewer changed no Git metadata. No new physics execution is claimed.",
+  "evidence_hashes": [
+    {
+      "path": "docs/audits/sol364-20261104/hosted-review/cpu-review/cost-review.json",
+      "sha256": "42e058df5ce6b502d38334e4127dd9aa061c484cc537b9702d373605b7eeecbe"
+    },
+    {
+      "path": "docs/audits/sol364-20261104/hosted-review/cpu-review/case-accounting-annex.json",
+      "sha256": "102a2ce18fe4341038ece4b5e8feefd01ad4b74dce759584dafc7e741862b935"
+    },
+    {
+      "path": "docs/audits/sol364-20261104/hosted-review/physical-review.json",
+      "sha256": "25a93709355e9d301c39bd743a04b7f4e47ce2961099b1cfa906bdcb4e65e14e"
+    },
+    {
+      "path": "docs/audits/sol364-20261104/hosted-review/asynchronous-physical-review.json",
+      "sha256": "70cb244fd8cec8d091ea874688bb2300f29618b14d433af271444cd5230e9dcf"
+    },
+    {
+      "path": "docs/audits/sol364-20261104/hosted-review/asynchronous-physical-review.py",
+      "sha256": "b82a8f76fa919954329721d106591ae481da67b31bc87d1d2014629054c9a80b"
+    },
+    {
+      "path": "docs/audits/sol364-20261104/hosted-review/final-docs-check.json",
+      "sha256": "13f2a907682ce02ec14467c00c6f012f9023389e622e279f13ba5607f1ab1d38"
+    },
+    {
+      "path": "docs/audits/sol364-20261104/hosted-review/final-m11-check.json",
+      "sha256": "8a902e9528f585b5d77d40881ac2df4076bff609ad23191bf56b26a0b8d79f3d"
+    },
+    {
+      "path": "docs/audits/sol364-20261104/hosted-review/final-repository-check.json",
+      "sha256": "c784699b83e86b9f0ab30af1a8a069986ecbf7c1cd31c80a6f4ba657f800c9bc"
+    },
+    {
+      "path": "docs/audits/sol364-20261104/hosted-review/final-composition-checks.json",
+      "sha256": "f6aabeff21c8a981e76eeb31abead8bcbddd029f66c5fe563c6ca43245b097f5"
+    },
+    {
+      "path": "docs/audits/sol364-20261104/hosted-review/handover-input-review.json",
+      "sha256": "0f71bd4dcceeaaba8b6da9df4636297d7583d3e47f46e93057889a58d8933470"
+    },
+    {
+      "path": "docs/audits/sol281-20261103/hosted/publisher-review/sol364-41815817333/hosted-qualification-review.json",
+      "sha256": "479eee6f560f86bae3f7c8113d5351930e105f7add2c7bbbbb959c87e40d2233"
+    },
+    {
+      "path": "docs/audits/sol281-20261103/hosted/publisher-review/sol364-41815817333/publication-review.json",
+      "sha256": "da311177a448474e7a5c1c2d7f4ae4d5b8ead13f5849c85d6b4be45966c024e5"
+    },
+    {
+      "path": "docs/audits/sol281-20261103/hosted/publisher-review/sol364-41815817333/workflow-disposition-review.json",
+      "sha256": "486b419c84c5f9f53b6eeef84cfc4b3459fa8bf819f144c494806c483c98771a"
+    }
+  ],
+  "links": {
+    "missing_targets": [],
+    "relative_local_file_targets_checked": 1196,
+    "scope": "Changed canonical Markdown file targets; full heading/anchor checks separately reported by docs checker."
+  },
+  "local_validation_review": "Read the final local docs/repository/M11/composition/input receipts and their explicit scopes; material guard remains nonzero. These checks do not convert skipped hosted steps into passing tests.",
+  "mutations": "No source, documentation, index, branch or GitHub mutation. Only this receipt is written outside source.",
+  "publication": {
+    "sha": "5f6360a9713ff791f09bc8b05e265b3e626c2ae1",
+    "tree": "04befb089a75bfffcf1aa5a4bb6100c3ef0715ba"
+  },
+  "retrieval": {
+    "limits": "Canonical@1 remains19/32 frozen,6/6 original contact,3/5 SOL364; all sets hit canonical by5. Witness canonical ranks2, new integration canonical4. No query/destination tuning observed; lexical hits do not establish semantic, physical or merge acceptance.",
+    "new_question_count": 5,
+    "original_four_sol364_questions_preserved_verbatim": true,
+    "results": [
+      {
+        "canonical_ranks": {
+          "Q01": 1,
+          "Q02": 2,
+          "Q03": 3,
+          "Q04": 2,
+          "Q05": 1,
+          "Q06": 1,
+          "Q07": 1,
+          "Q08": 2,
+          "Q09": 1,
+          "Q10": 2,
+          "Q11": 1,
+          "Q12": 1,
+          "Q13": 1,
+          "Q14": 1,
+          "Q15": 4,
+          "Q16": 1,
+          "Q17": 3,
+          "Q18": 1,
+          "Q19": 5,
+          "Q20": 1,
+          "Q21": 3,
+          "Q22": 1,
+          "Q23": 1,
+          "Q24": 3,
+          "Q25": 1,
+          "Q26": 2,
+          "Q27": 1,
+          "Q28": 1,
+          "Q29": 3,
+          "Q30": 1,
+          "Q31": 1,
+          "Q32": 2
+        },
+        "corpus_root": "/workspace/scratch/b45094545f38/cybersand-sol364-handover",
+        "fixture_sha256": "f2727cbe26633359798736537e06c7754db8c5588af90627f79c6bd798bbb6ec",
+        "name": "frozen32",
+        "sha256": "1c5e4aca7c6da477a75cb4399beed12fec6bc01eff5e6c137fc5665e0de9b9a2",
+        "summary": {
+          "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness.",
+          "canonical_hit_at_1": 19,
+          "canonical_hit_at_k": 32,
+          "mrr_at_k": 0.7536,
+          "questions": 32
+        }
+      },
+      {
+        "canonical_ranks": {
+          "SOL281-CONTACT-001": 1,
+          "SOL281-CONTACT-002": 1,
+          "SOL281-CONTACT-003": 1,
+          "SOL281-CONTACT-004": 1,
+          "SOL281-CONTACT-005": 1,
+          "SOL281-CONTACT-006": 1
+        },
+        "corpus_root": "/workspace/scratch/b45094545f38/cybersand-sol364-handover",
+        "fixture_sha256": "fb4019fc6b9a5b53ddd9973872a01e0164bf2ef31a2742c2d6db849e89513aa0",
+        "name": "contact6",
+        "sha256": "c33a43177a0342ca716e76b24ee937d7836b906827079fd6003bc51caf4f57c8",
+        "summary": {
+          "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness.",
+          "canonical_hit_at_1": 6,
+          "canonical_hit_at_k": 6,
+          "mrr_at_k": 1.0,
+          "questions": 6
+        }
+      },
+      {
+        "canonical_ranks": {
+          "SOL364-BURIAL-001": 1,
+          "SOL364-COST-001": 1,
+          "SOL364-INTEGRATION-001": 4,
+          "SOL364-SYNCHRONIZED-001": 1,
+          "SOL364-WITNESS-001": 2
+        },
+        "corpus_root": "/workspace/scratch/b45094545f38/cybersand-sol364-handover",
+        "fixture_sha256": "8e3cadece764c35cd8700aa4fcb739333528d7ae996431d350f4caf6666dea07",
+        "name": "sol364",
+        "sha256": "43f0c018486b42d871e64ce2c100e49b93dd610a14e0f0c1ca99d8e081f4f0f1",
+        "summary": {
+          "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness.",
+          "canonical_hit_at_1": 3,
+          "canonical_hit_at_k": 5,
+          "mrr_at_k": 0.75,
+          "questions": 5
+        }
+      }
+    ]
+  },
+  "reviewed_documents": [
+    {
+      "bytes": 54097,
+      "path": "docs/README.md",
+      "sha256": "d970bb527b30caf031060b2d412ffe020b7bf64f0fff0bb329915f09dc7c1705"
+    },
+    {
+      "bytes": 17593,
+      "path": "docs/architecture/rigid-body-and-cellular-coupling.md",
+      "sha256": "8854eeece4340b529c181d52f1e0605d78e9a395657694e4479a15acebdf4ce9"
+    },
+    {
+      "bytes": 23288,
+      "path": "docs/audits/2026-11-03-sol281-dense-contact.md",
+      "sha256": "1409c3ae96947a7f303a008c0284d2d17ad4782a70b1f8717d374926061d6eab"
+    },
+    {
+      "bytes": 19194,
+      "path": "docs/audits/2026-11-03-sol281-takeover.md",
+      "sha256": "346752c02cabc8907ad586eb336c576c826006e9932abb66835bfca9d335d19a"
+    },
+    {
+      "bytes": 38933,
+      "path": "docs/audits/2026-11-04-sol364-recovery.md",
+      "sha256": "60459de11b98414a291fd189c3c91a953def5039f7c78e842fabf8dcf6aa98a9"
+    },
+    {
+      "bytes": 117487,
+      "path": "docs/operations/cybersand-codex-development-handover.md",
+      "sha256": "91dcb8e392a91953e4700d1deeb4a521a67ca2ddfe81e672cb72bd36d5205da1"
+    },
+    {
+      "bytes": 11959,
+      "path": "docs/operations/soliding-programme.md",
+      "sha256": "fdd2f4b2c74555ef4dcdfc66a4094e86bfc3ab00f4d4b24f80e92b02e73e7200"
+    },
+    {
+      "bytes": 60231,
+      "path": "docs/reference/retrieval-index.md",
+      "sha256": "0ea2cc7f91406ee6f7034fb8b71d3fe2254cbad0e5bcd58cb7454c6860ebdfbd"
+    },
+    {
+      "bytes": 5027,
+      "path": "docs/reference/retrieval-questions-sol364.json",
+      "sha256": "8e3cadece764c35cd8700aa4fcb739333528d7ae996431d350f4caf6666dea07"
+    },
+    {
+      "bytes": 137301,
+      "path": "docs/reference/status-and-roadmap.md",
+      "sha256": "14cc96e7f1a8438add190ab701f1f99d3021872f9d176b90afec92587a1cc06b"
+    },
+    {
+      "bytes": 33718,
+      "path": "docs/systems/solid-detachment.md",
+      "sha256": "bce448c2e644757d7c0066ffb9f3b507882771164bea9e8734630955242047ee"
+    }
+  ],
+  "reviewed_utc": "2026-11-04T11:28:49.006727+00:00",
+  "reviewer_role": "Separate reviewer of handover documents and synchronized/asynchronous physical summaries; did not author those documents or apparatus. Previously authored native CPU optimization and the independent hosted CPU packet, with native implementation separately reviewed by qualification reviewer.",
+  "run_id": 41815817333,
+  "schema": "cybersand.sol364.handover-semantic-review.v1",
+  "source": {
+    "sha": "9edc4f8f7d8cd8fc65119d176c9e1981ab6ea77d",
+    "tree": "b5baf8b23ff947c2d7b70e69745c10f18fbe9ebe"
+  },
+  "source_and_workflow_check": {
+    "eleven_jobs_passed_twelfth_dispatch_failed": true,
+    "executed_source_is9ed_not_publication5f": true,
+    "material_guard": "failed; two protected consumer mismatches retained",
+    "overall_workflow": "failure",
+    "post_push_dispatch": "HTTP500",
+    "publication_push_succeeded": true,
+    "qualified_current_raw_report_and_build_manifest_paths_match_cpu_packet_hashes": true,
+    "skipped_downstream_hosted_documentation_steps_not_claimed_executed": true
+  },
+  "status": "reviewed-no-unresolved-actionable-wording-count-or-link-defect",
+  "synchronized_raw_report_recomputation": {
+    "assertions": 33352,
+    "cases": 84,
+    "complete_geometry_observations": 15204,
+    "failed_depth_gates": 64,
+    "failed_sustained_clearance_gates": 84,
+    "float32_rid_state_trajectories_equal_across_os": 17,
+    "initial_observations": 84,
+    "nonfinite_states": 0,
+    "post_step_observations": 15120,
+    "rapier_step_energy_violations": 0,
+    "raw_decimal_state_trajectories_equal_across_os": 8,
+    "reports": 4,
+    "response_energy_violations": 0,
+    "scope": "Frozen authored native field, exact retained payload/geometry, prescribed fixture velocities, zero gravity/damping and disabled sleep; not a reconstruction of unrecorded historical native fields or gravitational settling.",
+    "sleep_steps": 0,
+    "total_trajectories": 21
+  },
+  "unresolved_findings": []
+}

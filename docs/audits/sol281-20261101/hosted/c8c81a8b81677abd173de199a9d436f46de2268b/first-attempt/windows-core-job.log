@@ -1,0 +1,296 @@
+﻿2026-11-01T17:16:48.0858319Z Current runner version: '2.338.2'
+2026-11-01T17:16:48.0873654Z ##[group]Runner Image Provisioner
+2026-11-01T17:16:48.0874114Z Hosted Compute Agent
+2026-11-01T17:16:48.0874433Z Version: 20261021.618
+2026-11-01T17:16:48.0874754Z Commit: 21505ad2541d5be6135ed84fc33697146cf75b8e
+2026-11-01T17:16:48.0875172Z Build Date: 2026-10-21T00:45:21Z
+2026-11-01T17:16:48.0875527Z Worker ID: {0660a381-f954-472b-a97e-a536e7debefa}
+2026-11-01T17:16:48.0875914Z Region: centralus
+2026-11-01T17:16:48.0876192Z Cloud: Azure
+2026-11-01T17:16:48.0876484Z ##[endgroup]
+2026-11-01T17:16:48.0877244Z ##[group]Operating System
+2026-11-01T17:16:48.0877582Z Microsoft Windows Server 2022
+2026-11-01T17:16:48.0877891Z 10.0.20348
+2026-11-01T17:16:48.0878150Z Datacenter
+2026-11-01T17:16:48.0878447Z ##[endgroup]
+2026-11-01T17:16:48.0878740Z ##[group]Runner Image
+2026-11-01T17:16:48.0879102Z Image: windows-2022
+2026-11-01T17:16:48.0879391Z Version: 20261025.346.1
+2026-11-01T17:16:48.0880204Z Included Software: https://github.com/actions/runner-images/blob/win22/20261025.346/images/windows/Windows2022-Readme.md
+2026-11-01T17:16:48.0880964Z Image Release: https://github.com/actions/runner-images/releases/tag/win22%2F20261025.346
+2026-11-01T17:16:48.0881481Z ##[endgroup]
+2026-11-01T17:16:48.0882105Z ##[group]GITHUB_TOKEN Permissions
+2026-11-01T17:16:48.0883174Z Actions: read
+2026-11-01T17:16:48.0883464Z Contents: read
+2026-11-01T17:16:48.0883758Z Metadata: read
+2026-11-01T17:16:48.0884061Z ##[endgroup]
+2026-11-01T17:16:48.0885237Z Secret source: Actions
+2026-11-01T17:16:48.0885724Z Cache mode: write
+2026-11-01T17:16:48.0886082Z Prepare workflow directory
+2026-11-01T17:16:48.1136900Z Prepare all required actions
+2026-11-01T17:16:48.1166927Z Getting action download info
+2026-11-01T17:16:48.3361771Z Download action repository 'actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683' (SHA:11bd71901bbe5b1630ceea73d27597364c9af683)
+2026-11-01T17:16:48.4123953Z Download action repository 'actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093' (SHA:d3f86a106a0bac45b974a628896c90dbdf5c8093)
+2026-11-01T17:16:48.8362227Z Download action repository 'actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+2026-11-01T17:16:49.0392052Z Complete job name: actual Windows host (core)
+2026-11-01T17:16:49.1547055Z ##[group]Run git config --global core.autocrlf false
+2026-11-01T17:16:49.1547535Z [36;1mgit config --global core.autocrlf false[0m
+2026-11-01T17:16:49.1647995Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+2026-11-01T17:16:49.1648471Z env:
+2026-11-01T17:16:49.1648685Z   CYBERSAND_CI_WATCHDOG_SCALE: 1
+2026-11-01T17:16:49.1648947Z   GODOT_SILENCE_ROOT_WARNING: 1
+2026-11-01T17:16:49.1649196Z   PYTHONUTF8: 1
+2026-11-01T17:16:49.1649469Z   GODOT_CPP_COMMIT: 101ae38034304346a46ea9ea84ae156d3e860496
+2026-11-01T17:16:49.1650087Z   LLVM_MINGW_URL: https://github.com/mstorsjo/llvm-mingw/releases/download/20260826/llvm-mingw-20260826-ucrt-ubuntu-22.04-x86_64.tar.xz
+2026-11-01T17:16:49.1650794Z   LLVM_MINGW_SHA256: cee8d2ce3da5145ce4dc882e70d0b0719a783d53a99752c60948fc0659975a65
+2026-11-01T17:16:49.1651197Z ##[endgroup]
+2026-11-01T17:16:49.7687814Z ##[group]Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+2026-11-01T17:16:49.7688291Z with:
+2026-11-01T17:16:49.7688505Z   lfs: false
+2026-11-01T17:16:49.7688736Z   repository: techrote/cybersand
+2026-11-01T17:16:49.7690845Z   token: ***
+2026-11-01T17:16:49.7691063Z   ssh-strict: true
+2026-11-01T17:16:49.7691288Z   ssh-user: git
+2026-11-01T17:16:49.7691517Z   persist-credentials: true
+2026-11-01T17:16:49.7691770Z   clean: true
+2026-11-01T17:16:49.7692003Z   sparse-checkout-cone-mode: true
+2026-11-01T17:16:49.7692278Z   fetch-depth: 1
+2026-11-01T17:16:49.7692498Z   fetch-tags: false
+2026-11-01T17:16:49.7692732Z   show-progress: true
+2026-11-01T17:16:49.7692966Z   submodules: false
+2026-11-01T17:16:49.7693205Z   set-safe-directory: true
+2026-11-01T17:16:49.7693465Z env:
+2026-11-01T17:16:49.7694654Z   CYBERSAND_CI_WATCHDOG_SCALE: 1
+2026-11-01T17:16:49.7694929Z   GODOT_SILENCE_ROOT_WARNING: 1
+2026-11-01T17:16:49.7695189Z   PYTHONUTF8: 1
+2026-11-01T17:16:49.7695501Z   GODOT_CPP_COMMIT: 101ae38034304346a46ea9ea84ae156d3e860496
+2026-11-01T17:16:49.7696173Z   LLVM_MINGW_URL: https://github.com/mstorsjo/llvm-mingw/releases/download/20260826/llvm-mingw-20260826-ucrt-ubuntu-22.04-x86_64.tar.xz
+2026-11-01T17:16:49.7696917Z   LLVM_MINGW_SHA256: cee8d2ce3da5145ce4dc882e70d0b0719a783d53a99752c60948fc0659975a65
+2026-11-01T17:16:49.7697353Z ##[endgroup]
+2026-11-01T17:16:49.8629600Z Syncing repository: techrote/cybersand
+2026-11-01T17:16:49.8630633Z ##[group]Getting Git version info
+2026-11-01T17:16:49.8631049Z Working directory is 'D:\a\cybersand\cybersand'
+2026-11-01T17:16:49.9123667Z [command]"C:\Program Files\Git\bin\git.exe" version
+2026-11-01T17:16:49.9312769Z git version 2.56.0.windows.3
+2026-11-01T17:16:49.9337113Z ##[endgroup]
+2026-11-01T17:16:49.9345774Z Copying 'C:\Users\runneradmin\.gitconfig' to 'D:\a\_temp\600d5f5a-72d1-4b84-b849-905249650a55\.gitconfig'
+2026-11-01T17:16:49.9358833Z Temporarily overriding HOME='D:\a\_temp\600d5f5a-72d1-4b84-b849-905249650a55' before making global git config changes
+2026-11-01T17:16:49.9359574Z Adding repository directory to the temporary git global config as a safe directory
+2026-11-01T17:16:49.9365030Z [command]"C:\Program Files\Git\bin\git.exe" config --global --add safe.directory D:\a\cybersand\cybersand
+2026-11-01T17:16:49.9556363Z Deleting the contents of 'D:\a\cybersand\cybersand'
+2026-11-01T17:16:49.9559967Z ##[group]Initializing the repository
+2026-11-01T17:16:49.9565814Z [command]"C:\Program Files\Git\bin\git.exe" init D:\a\cybersand\cybersand
+2026-11-01T17:16:50.0897237Z Initialized empty Git repository in D:/a/cybersand/cybersand/.git/
+2026-11-01T17:16:50.0922431Z [command]"C:\Program Files\Git\bin\git.exe" remote add origin https://github.com/techrote/cybersand
+2026-11-01T17:16:50.1451422Z ##[endgroup]
+2026-11-01T17:16:50.1452174Z ##[group]Disabling automatic garbage collection
+2026-11-01T17:16:50.1509267Z [command]"C:\Program Files\Git\bin\git.exe" config --local gc.auto 0
+2026-11-01T17:16:50.1646655Z ##[endgroup]
+2026-11-01T17:16:50.1647285Z ##[group]Setting up auth
+2026-11-01T17:16:50.1654551Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp core\.sshCommand
+2026-11-01T17:16:50.1841328Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+2026-11-01T17:16:51.3525197Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-01T17:16:51.3716137Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\""
+2026-11-01T17:16:51.7281605Z [command]"C:\Program Files\Git\bin\git.exe" config --local http.https://github.com/.extraheader "AUTHORIZATION: basic ***"
+2026-11-01T17:16:51.7489592Z ##[endgroup]
+2026-11-01T17:16:51.7490101Z ##[group]Fetching the repository
+2026-11-01T17:16:51.7498517Z [command]"C:\Program Files\Git\bin\git.exe" -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +c8c81a8b81677abd173de199a9d436f46de2268b:refs/remotes/origin/sol-detach-001-current-main
+2026-11-01T17:16:54.3133559Z From https://github.com/techrote/cybersand
+2026-11-01T17:16:54.3134023Z  * [new ref]         c8c81a8b81677abd173de199a9d436f46de2268b -> origin/sol-detach-001-current-main
+2026-11-01T17:16:54.3153319Z ##[endgroup]
+2026-11-01T17:16:54.3153571Z ##[group]Determining the checkout info
+2026-11-01T17:16:54.3154807Z ##[endgroup]
+2026-11-01T17:16:54.3166601Z [command]"C:\Program Files\Git\bin\git.exe" sparse-checkout disable
+2026-11-01T17:16:54.3454421Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset-all extensions.worktreeConfig
+2026-11-01T17:16:54.3643061Z ##[group]Checking out the ref
+2026-11-01T17:16:54.3643563Z [command]"C:\Program Files\Git\bin\git.exe" checkout --progress --force -B sol-detach-001-current-main refs/remotes/origin/sol-detach-001-current-main
+2026-11-01T17:16:56.0933870Z Updating files:  45% (894/1978)
+2026-11-01T17:16:56.0965645Z Updating files:  46% (910/1978)
+2026-11-01T17:16:56.0979360Z Updating files:  47% (930/1978)
+2026-11-01T17:16:56.0995357Z Updating files:  48% (950/1978)
+2026-11-01T17:16:56.1010399Z Updating files:  49% (970/1978)
+2026-11-01T17:16:56.1028779Z Updating files:  50% (989/1978)
+2026-11-01T17:16:56.1052642Z Updating files:  51% (1009/1978)
+2026-11-01T17:16:56.1074455Z Updating files:  52% (1029/1978)
+2026-11-01T17:16:56.1098951Z Updating files:  53% (1049/1978)
+2026-11-01T17:16:56.1123265Z Updating files:  54% (1069/1978)
+2026-11-01T17:16:56.1147932Z Updating files:  55% (1088/1978)
+2026-11-01T17:16:56.1172230Z Updating files:  56% (1108/1978)
+2026-11-01T17:16:56.1194119Z Updating files:  57% (1128/1978)
+2026-11-01T17:16:56.1216325Z Updating files:  58% (1148/1978)
+2026-11-01T17:16:56.1240504Z Updating files:  59% (1168/1978)
+2026-11-01T17:16:56.1257747Z Updating files:  60% (1187/1978)
+2026-11-01T17:16:56.1280047Z Updating files:  61% (1207/1978)
+2026-11-01T17:16:56.1307992Z Updating files:  62% (1227/1978)
+2026-11-01T17:16:56.1325560Z Updating files:  63% (1247/1978)
+2026-11-01T17:16:56.1349625Z Updating files:  64% (1266/1978)
+2026-11-01T17:16:56.1367794Z Updating files:  65% (1286/1978)
+2026-11-01T17:16:56.1386673Z Updating files:  66% (1306/1978)
+2026-11-01T17:16:56.1408326Z Updating files:  67% (1326/1978)
+2026-11-01T17:16:56.1429701Z Updating files:  68% (1346/1978)
+2026-11-01T17:16:56.1449758Z Updating files:  69% (1365/1978)
+2026-11-01T17:16:56.1469902Z Updating files:  70% (1385/1978)
+2026-11-01T17:16:56.1494361Z Updating files:  71% (1405/1978)
+2026-11-01T17:16:56.1513755Z Updating files:  72% (1425/1978)
+2026-11-01T17:16:56.1532547Z Updating files:  73% (1444/1978)
+2026-11-01T17:16:56.1558898Z Updating files:  74% (1464/1978)
+2026-11-01T17:16:56.1577274Z Updating files:  75% (1484/1978)
+2026-11-01T17:16:56.1589288Z Updating files:  76% (1504/1978)
+2026-11-01T17:16:56.1602505Z Updating files:  77% (1524/1978)
+2026-11-01T17:16:56.1617144Z Updating files:  78% (1543/1978)
+2026-11-01T17:16:56.1632747Z Updating files:  79% (1563/1978)
+2026-11-01T17:16:56.1652875Z Updating files:  80% (1583/1978)
+2026-11-01T17:16:56.1669843Z Updating files:  81% (1603/1978)
+2026-11-01T17:16:56.1688208Z Updating files:  82% (1622/1978)
+2026-11-01T17:16:56.1709200Z Updating files:  83% (1642/1978)
+2026-11-01T17:16:56.1730014Z Updating files:  84% (1662/1978)
+2026-11-01T17:16:56.1755067Z Updating files:  85% (1682/1978)
+2026-11-01T17:16:56.1781672Z Updating files:  86% (1702/1978)
+2026-11-01T17:16:56.1817762Z Updating files:  87% (1721/1978)
+2026-11-01T17:16:56.1848430Z Updating files:  88% (1741/1978)
+2026-11-01T17:16:56.1882430Z Updating files:  89% (1761/1978)
+2026-11-01T17:16:56.1902080Z Updating files:  90% (1781/1978)
+2026-11-01T17:16:56.1923781Z Updating files:  91% (1800/1978)
+2026-11-01T17:16:56.1943029Z Updating files:  92% (1820/1978)
+2026-11-01T17:16:56.1965495Z Updating files:  93% (1840/1978)
+2026-11-01T17:16:56.1988658Z Updating files:  94% (1860/1978)
+2026-11-01T17:16:56.2013062Z Updating files:  95% (1880/1978)
+2026-11-01T17:16:56.2038686Z Updating files:  96% (1899/1978)
+2026-11-01T17:16:56.2056805Z Updating files:  97% (1919/1978)
+2026-11-01T17:16:56.2084647Z Updating files:  98% (1939/1978)
+2026-11-01T17:16:56.2105938Z Updating files:  99% (1959/1978)
+2026-11-01T17:16:56.2108417Z Updating files: 100% (1978/1978)
+2026-11-01T17:16:56.2108736Z Updating files: 100% (1978/1978), done.
+2026-11-01T17:16:56.2189582Z Switched to a new branch 'sol-detach-001-current-main'
+2026-11-01T17:16:56.2242367Z branch 'sol-detach-001-current-main' set up to track 'origin/sol-detach-001-current-main'.
+2026-11-01T17:16:56.4086931Z ##[endgroup]
+2026-11-01T17:16:56.4415748Z [command]"C:\Program Files\Git\bin\git.exe" log -1 --format=%H
+2026-11-01T17:16:56.4590622Z c8c81a8b81677abd173de199a9d436f46de2268b
+2026-11-01T17:16:56.4827063Z ##[group]Run actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+2026-11-01T17:16:56.4827307Z with:
+2026-11-01T17:16:56.4827437Z   name: sol281-build-windows-41329746261-1
+2026-11-01T17:16:56.4827587Z   path: build/sol281/runtime
+2026-11-01T17:16:56.4827711Z   merge-multiple: false
+2026-11-01T17:16:56.4827831Z   repository: techrote/cybersand
+2026-11-01T17:16:56.4827957Z   run-id: 41329746261
+2026-11-01T17:16:56.4828057Z env:
+2026-11-01T17:16:56.4828158Z   CYBERSAND_CI_WATCHDOG_SCALE: 1
+2026-11-01T17:16:56.4828286Z   GODOT_SILENCE_ROOT_WARNING: 1
+2026-11-01T17:16:56.4828406Z   PYTHONUTF8: 1
+2026-11-01T17:16:56.4828542Z   GODOT_CPP_COMMIT: 101ae38034304346a46ea9ea84ae156d3e860496
+2026-11-01T17:16:56.4828941Z   LLVM_MINGW_URL: https://github.com/mstorsjo/llvm-mingw/releases/download/20260826/llvm-mingw-20260826-ucrt-ubuntu-22.04-x86_64.tar.xz
+2026-11-01T17:16:56.4829361Z   LLVM_MINGW_SHA256: cee8d2ce3da5145ce4dc882e70d0b0719a783d53a99752c60948fc0659975a65
+2026-11-01T17:16:56.4829580Z ##[endgroup]
+2026-11-01T17:16:56.5845903Z Downloading single artifact
+2026-11-01T17:16:56.5977809Z (node:4216) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-11-01T17:16:56.5978336Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-11-01T17:16:56.7322331Z Preparing to download the following artifacts:
+2026-11-01T17:16:56.7322781Z - sol281-build-windows-41329746261-1 (ID: 13092044926, Size: 2022711, Expected Digest: sha256:da6c4110184e9a9d4a710686cc50221e73e0635009af5defb75b754e6cf8373f)
+2026-11-01T17:16:56.8852020Z Redirecting to blob download url: https://productionresultssa31.blob.core.windows.net/actions-results/2bef79a3-a9ba-886c-823f-b40cd03c52b0/workflow-job-run-92c8bfd1-ba28-5ee9-a347-df7a2347d365/artifacts/ae5c218907e17129a2aa5e4679e424f2371d2728aa1002fe1ace09601fbda403.zip
+2026-11-01T17:16:56.8852730Z Starting download of artifact to: D:\a\cybersand\cybersand\build\sol281\runtime
+2026-11-01T17:16:57.0412360Z (node:4216) [DEP0005] DeprecationWarning: Buffer() is deprecated due to security and usability issues. Please use the Buffer.alloc(), Buffer.allocUnsafe(), or Buffer.from() methods instead.
+2026-11-01T17:16:57.2144895Z SHA256 digest of downloaded artifact is da6c4110184e9a9d4a710686cc50221e73e0635009af5defb75b754e6cf8373f
+2026-11-01T17:16:57.2145208Z Artifact download completed successfully.
+2026-11-01T17:16:57.2145361Z Total of 1 artifact(s) downloaded
+2026-11-01T17:16:57.2149840Z Download artifact has finished successfully
+2026-11-01T17:16:57.2338485Z ##[group]Run git lfs install --local
+2026-11-01T17:16:57.2338699Z [36;1mgit lfs install --local[0m
+2026-11-01T17:16:57.2338875Z [36;1mif ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }[0m
+2026-11-01T17:16:57.2339235Z [36;1mgit lfs pull --include="godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll" --exclude=""[0m
+2026-11-01T17:16:57.2339563Z [36;1mif ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }[0m
+2026-11-01T17:16:57.2361083Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+2026-11-01T17:16:57.2361261Z env:
+2026-11-01T17:16:57.2361370Z   CYBERSAND_CI_WATCHDOG_SCALE: 1
+2026-11-01T17:16:57.2361499Z   GODOT_SILENCE_ROOT_WARNING: 1
+2026-11-01T17:16:57.2361623Z   PYTHONUTF8: 1
+2026-11-01T17:16:57.2361763Z   GODOT_CPP_COMMIT: 101ae38034304346a46ea9ea84ae156d3e860496
+2026-11-01T17:16:57.2362134Z   LLVM_MINGW_URL: https://github.com/mstorsjo/llvm-mingw/releases/download/20260826/llvm-mingw-20260826-ucrt-ubuntu-22.04-x86_64.tar.xz
+2026-11-01T17:16:57.2362515Z   LLVM_MINGW_SHA256: cee8d2ce3da5145ce4dc882e70d0b0719a783d53a99752c60948fc0659975a65
+2026-11-01T17:16:57.2362734Z ##[endgroup]
+2026-11-01T17:16:57.5729768Z Updated Git hooks.
+2026-11-01T17:16:57.5729966Z Git LFS initialized.
+2026-11-01T17:16:59.0939196Z ##[group]Run New-Item -ItemType Directory -Force "$env:RUNNER_TEMP/godot" | Out-Null
+2026-11-01T17:16:59.0939568Z [36;1mNew-Item -ItemType Directory -Force "$env:RUNNER_TEMP/godot" | Out-Null[0m
+2026-11-01T17:16:59.0940066Z [36;1mInvoke-WebRequest -Uri "https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip" -OutFile "$env:RUNNER_TEMP/godot/godot.zip" -TimeoutSec 1200[0m
+2026-11-01T17:16:59.0940559Z [36;1mpython -m zipfile -e "$env:RUNNER_TEMP/godot/godot.zip" "$env:RUNNER_TEMP/godot"[0m
+2026-11-01T17:16:59.0940807Z [36;1mif ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }[0m
+2026-11-01T17:16:59.0961834Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+2026-11-01T17:16:59.0962013Z env:
+2026-11-01T17:16:59.0962125Z   CYBERSAND_CI_WATCHDOG_SCALE: 1
+2026-11-01T17:16:59.0962257Z   GODOT_SILENCE_ROOT_WARNING: 1
+2026-11-01T17:16:59.0962404Z   PYTHONUTF8: 1
+2026-11-01T17:16:59.0962566Z   GODOT_CPP_COMMIT: 101ae38034304346a46ea9ea84ae156d3e860496
+2026-11-01T17:16:59.0962902Z   LLVM_MINGW_URL: https://github.com/mstorsjo/llvm-mingw/releases/download/20260826/llvm-mingw-20260826-ucrt-ubuntu-22.04-x86_64.tar.xz
+2026-11-01T17:16:59.0963282Z   LLVM_MINGW_SHA256: cee8d2ce3da5145ce4dc882e70d0b0719a783d53a99752c60948fc0659975a65
+2026-11-01T17:16:59.0963507Z ##[endgroup]
+2026-11-01T17:17:01.5621516Z ##[group]Run python tools/sol281/run_qualification.py run --platform windows --cohort "core" --manifest build/sol281/runtime/build.json --runtime build/sol281/runtime/cybersand_native.windows.x86_64.dll --godot "$env:RUNNER_TEMP/godot/Godot_v4.7-stable_win64_console.exe" --godot-archive "$env:RUNNER_TEMP/godot/godot.zip" --output build/sol281/host
+2026-11-01T17:17:01.5622739Z [36;1mpython tools/sol281/run_qualification.py run --platform windows --cohort "core" --manifest build/sol281/runtime/build.json --runtime build/sol281/runtime/cybersand_native.windows.x86_64.dll --godot "$env:RUNNER_TEMP/godot/Godot_v4.7-stable_win64_console.exe" --godot-archive "$env:RUNNER_TEMP/godot/godot.zip" --output build/sol281/host[0m
+2026-11-01T17:17:01.5623398Z [36;1mexit $LASTEXITCODE[0m
+2026-11-01T17:17:01.5645065Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+2026-11-01T17:17:01.5645242Z env:
+2026-11-01T17:17:01.5645346Z   CYBERSAND_CI_WATCHDOG_SCALE: 1
+2026-11-01T17:17:01.5645498Z   GODOT_SILENCE_ROOT_WARNING: 1
+2026-11-01T17:17:01.5645619Z   PYTHONUTF8: 1
+2026-11-01T17:17:01.5645756Z   GODOT_CPP_COMMIT: 101ae38034304346a46ea9ea84ae156d3e860496
+2026-11-01T17:17:01.5646111Z   LLVM_MINGW_URL: https://github.com/mstorsjo/llvm-mingw/releases/download/20260826/llvm-mingw-20260826-ucrt-ubuntu-22.04-x86_64.tar.xz
+2026-11-01T17:17:01.5646495Z   LLVM_MINGW_SHA256: cee8d2ce3da5145ce4dc882e70d0b0719a783d53a99752c60948fc0659975a65
+2026-11-01T17:17:01.5646711Z ##[endgroup]
+2026-11-01T17:17:02.5920016Z {
+2026-11-01T17:17:02.5920190Z   "status": "failed",
+2026-11-01T17:17:02.5920371Z   "source": {
+2026-11-01T17:17:02.5920516Z     "sha": "c8c81a8b81677abd173de199a9d436f46de2268b",
+2026-11-01T17:17:02.5920706Z     "tree": "214f927af0e9feeb65c664e981b32b7fbc15e39b"
+2026-11-01T17:17:02.5920853Z   },
+2026-11-01T17:17:02.5920957Z   "platform": "Windows",
+2026-11-01T17:17:02.5921072Z   "cohort": "core",
+2026-11-01T17:17:02.5921169Z   "errors": [
+2026-11-01T17:17:02.5939197Z     "RuntimeError: Checkout .gitattributes differs from Git"
+2026-11-01T17:17:02.5939503Z   ]
+2026-11-01T17:17:02.5939634Z }
+2026-11-01T17:17:02.6301576Z ##[error]Process completed with exit code 1.
+2026-11-01T17:17:02.6405179Z ##[group]Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+2026-11-01T17:17:02.6405419Z with:
+2026-11-01T17:17:02.6405549Z   name: sol281-host-windows-core-41329746261-1
+2026-11-01T17:17:02.6405707Z   path: build/sol281/host
+2026-11-01T17:17:02.6405832Z   if-no-files-found: warn
+2026-11-01T17:17:02.6405943Z   retention-days: 90
+2026-11-01T17:17:02.6406542Z   compression-level: 6
+2026-11-01T17:17:02.6406648Z   overwrite: false
+2026-11-01T17:17:02.6406758Z   include-hidden-files: false
+2026-11-01T17:17:02.6406877Z env:
+2026-11-01T17:17:02.6406977Z   CYBERSAND_CI_WATCHDOG_SCALE: 1
+2026-11-01T17:17:02.6407106Z   GODOT_SILENCE_ROOT_WARNING: 1
+2026-11-01T17:17:02.6407229Z   PYTHONUTF8: 1
+2026-11-01T17:17:02.6407366Z   GODOT_CPP_COMMIT: 101ae38034304346a46ea9ea84ae156d3e860496
+2026-11-01T17:17:02.6407718Z   LLVM_MINGW_URL: https://github.com/mstorsjo/llvm-mingw/releases/download/20260826/llvm-mingw-20260826-ucrt-ubuntu-22.04-x86_64.tar.xz
+2026-11-01T17:17:02.6408123Z   LLVM_MINGW_SHA256: cee8d2ce3da5145ce4dc882e70d0b0719a783d53a99752c60948fc0659975a65
+2026-11-01T17:17:02.6408339Z ##[endgroup]
+2026-11-01T17:17:02.7490458Z (node:2924) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-11-01T17:17:02.7490897Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-11-01T17:17:02.7526727Z With the provided path, there will be 1 file uploaded
+2026-11-01T17:17:02.7529645Z Artifact name is valid!
+2026-11-01T17:17:02.7531019Z Root directory input is valid!
+2026-11-01T17:17:03.0256073Z Beginning upload of artifact content to blob storage
+2026-11-01T17:17:03.0363394Z (node:2924) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+2026-11-01T17:17:03.1722937Z Uploaded bytes 883
+2026-11-01T17:17:03.2106317Z Finished uploading artifact content to blob storage!
+2026-11-01T17:17:03.2107136Z SHA256 digest of uploaded artifact zip is 5fe511e12ed52662ad9afc680c574c28195f18c8ed8e182ca16ab74b299f49f7
+2026-11-01T17:17:03.2108544Z Finalizing artifact upload
+2026-11-01T17:17:03.6511537Z Artifact sol281-host-windows-core-41329746261-1.zip successfully finalized. Artifact ID 13093400917
+2026-11-01T17:17:03.6512286Z Artifact sol281-host-windows-core-41329746261-1 has been successfully uploaded! Final size is 883 bytes. Artifact ID is 13093400917
+2026-11-01T17:17:03.6519721Z Artifact download URL: https://github.com/techrote/cybersand/actions/runs/41329746261/artifacts/13093400917
+2026-11-01T17:17:03.6732011Z Post job cleanup.
+2026-11-01T17:17:03.7691682Z [command]"C:\Program Files\Git\bin\git.exe" version
+2026-11-01T17:17:03.7878758Z git version 2.56.0.windows.3
+2026-11-01T17:17:03.7910135Z Copying 'C:\Users\runneradmin\.gitconfig' to 'D:\a\_temp\6bb82a50-775c-47bf-acea-37bc68c02479\.gitconfig'
+2026-11-01T17:17:03.7922910Z Temporarily overriding HOME='D:\a\_temp\6bb82a50-775c-47bf-acea-37bc68c02479' before making global git config changes
+2026-11-01T17:17:03.7923399Z Adding repository directory to the temporary git global config as a safe directory
+2026-11-01T17:17:03.7930052Z [command]"C:\Program Files\Git\bin\git.exe" config --global --add safe.directory D:\a\cybersand\cybersand
+2026-11-01T17:17:03.8125421Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp core\.sshCommand
+2026-11-01T17:17:03.8366246Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+2026-11-01T17:17:04.2007864Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-01T17:17:04.2179497Z http.https://github.com/.extraheader
+2026-11-01T17:17:04.2201128Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset-all http.https://github.com/.extraheader
+2026-11-01T17:17:04.2390453Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\""
+2026-11-01T17:17:04.5887916Z Cleaning up orphan processes
+2026-11-01T17:17:04.6083755Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683, actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093, actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/

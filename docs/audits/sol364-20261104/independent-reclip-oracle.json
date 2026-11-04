@@ -1,0 +1,894 @@
+{
+  "schema": "sol364.independent-reclip-oracle.v1",
+  "cases": 144,
+  "outcomes": {
+    "Accepted": 144
+  },
+  "source_segments": 7074,
+  "retained_current_segments": 6835,
+  "valid_segments_with_lost_old_midpoint": 235,
+  "cases_with_lost_old_midpoint": 75,
+  "maximum_first_impulse_lever_error_cells": 4.984000939394577e-06,
+  "audit_lever_tolerance_cells": 5e-05,
+  "geometry_match": true,
+  "failures": [],
+  "exact_520_cell_six_shape_partition": true,
+  "empty_witness_cells": [
+    [
+      60,
+      32
+    ],
+    [
+      68,
+      50
+    ]
+  ],
+  "input_sha256": "0dad94ea28408b5c6f921198529377e89e0468d5d19ed434d01ce3d4b81de565",
+  "scope": "Independent rational current segment intersection, torque lever and dissipative value-plan review; frozen native inputs, not live Rapier/physical clearance acceptance.",
+  "case_checks": [
+    {
+      "index": 0,
+      "source_segments": 36,
+      "current_segments": 34,
+      "valid_segments_with_lost_old_midpoint": 1
+    },
+    {
+      "index": 1,
+      "source_segments": 36,
+      "current_segments": 35,
+      "valid_segments_with_lost_old_midpoint": 2
+    },
+    {
+      "index": 2,
+      "source_segments": 36,
+      "current_segments": 34,
+      "valid_segments_with_lost_old_midpoint": 0
+    },
+    {
+      "index": 3,
+      "source_segments": 36,
+      "current_segments": 34,
+      "valid_segments_with_lost_old_midpoint": 0
+    },
+    {
+      "index": 4,
+      "source_segments": 36,
+      "current_segments": 36,
+      "valid_segments_with_lost_old_midpoint": 0
+    },
+    {
+      "index": 5,
+      "source_segments": 36,
+      "current_segments": 35,
+      "valid_segments_with_lost_old_midpoint": 0
+    },
+    {
+      "index": 6,
+      "source_segments": 36,
+      "current_segments": 34,
+      "valid_segments_with_lost_old_midpoint": 0
+    },
+    {
+      "index": 7,
+      "source_segments": 36,
+      "current_segments": 36,
+      "valid_segments_with_lost_old_midpoint": 2
+    },
+    {
+      "index": 8,
+      "source_segments": 36,
+      "current_segments": 34,
+      "valid_segments_with_lost_old_midpoint": 0
+    },
+    {
+      "index": 9,
+      "source_segments": 49,
+      "current_segments": 46,
+      "valid_segments_with_lost_old_midpoint": 2
+    },
+    {
+      "index": 10,
+      "source_segments": 49,
+      "current_segments": 47,
+      "valid_segments_with_lost_old_midpoint": 2
+    },
+    {
+      "index": 11,
+      "source_segments": 49,
+      "current_segments": 44,
+      "valid_segments_with_lost_old_midpoint": 4
+    },
+    {
+      "index": 12,
+      "source_segments": 49,
+      "current_segments": 47,
+      "valid_segments_with_lost_old_midpoint": 4
+    },
+    {
+      "index": 13,
+      "source_segments": 49,
+      "current_segments": 49,
+      "valid_segments_with_lost_old_midpoint": 0
+    },
+    {
+      "index": 14,
+      "source_segments": 49,
+      "current_segments": 45,
+      "valid_segments_with_lost_old_midpoint": 4
+    },
+    {
+      "index": 15,
+      "source_segments": 49,
+      "current_segments": 46,
+      "valid_segments_with_lost_old_midpoint": 5
+    },
+    {
+      "index": 16,
+      "source_segments": 49,
+      "current_segments": 49,
+      "valid_segments_with_lost_old_midpoint": 1
+    },
+    {
+      "index": 17,
+      "source_segments": 49,
+      "current_segments": 45,
+      "valid_segments_with_lost_old_midpoint": 1
+    },
+    {
+      "index": 18,
+      "source_segments": 38,
+      "current_segments": 38,
+      "valid_segments_with_lost_old_midpoint": 2
+    },
+    {
+      "index": 19,
+      "source_segments": 38,
+      "current_segments": 38,
+      "valid_segments_with_lost_old_midpoint": 1
+    },
+    {
+      "index": 20,
+      "source_segments": 38,
+      "current_segments": 36,
+      "valid_segments_with_lost_old_midpoint": 0
+    },
+    {
+      "index": 21,
+      "source_segments": 38,
+      "current_segments": 37,
+      "valid_segments_with_lost_old_midpoint": 0
+    },
+    {
+      "index": 22,
+      "source_segments": 38,
+      "current_segments": 38,
+      "valid_segments_with_lost_old_midpoint": 0
+    },
+    {
+      "index": 23,
+      "source_segments": 38,
+      "current_segments": 37,
+      "valid_segments_with_lost_old_midpoint": 2
+    },
+    {
+      "index": 24,
+      "source_segments": 38,
+      "current_segments": 37,
+      "valid_segments_with_lost_old_midpoint": 1
+    },
+    {
+      "index": 25,
+      "source_segments": 38,
+      "current_segments": 38,
+      "valid_segments_with_lost_old_midpoint": 1
+    },
+    {
+      "index": 26,
+      "source_segments": 38,
+      "current_segments": 37,
+      "valid_segments_with_lost_old_midpoint": 1
+    },
+    {
+      "index": 27,
+      "source_segments": 50,
+      "current_segments": 44,
+      "valid_segments_with_lost_old_midpoint": 1
+    },
+    {
+      "index": 28,
+      "source_segments": 50,
+      "current_segments": 47,
+      "valid_segments_with_lost_old_midpoint": 4
+    },
+    {
+      "index": 29,
+      "source_segments": 50,
+      "current_segments": 48,
+      "valid_segments_with_lost_old_midpoint": 4
+    },
+    {
+      "index": 30,
+      "source_segments": 50,
+      "current_segments": 45,
+      "valid_segments_with_lost_old_midpoint": 4
+    },
+    {
+      "index": 31,
+      "source_segments": 50,
+      "current_segments": 50,
+      "valid_segments_with_lost_old_midpoint": 0
+    },
+    {
+      "index": 32,
+      "source_segments": 50,
+      "current_segments": 48,
+      "valid_segments_with_lost_old_midpoint": 5
+    },
+    {
+      "index": 33,
+      "source_segments": 50,
+      "current_segments": 45,
+      "valid_segments_with_lost_old_midpoint": 3
+    },
+    {
+      "index": 34,
+      "source_segments": 50,
+      "current_segments": 47,
+      "valid_segments_with_lost_old_midpoint": 0
+    },
+    {
+      "index": 35,
+      "source_segments": 50,
+      "current_segments": 47,
+      "valid_segments_with_lost_old_midpoint": 2
+    },
+    {
+      "index": 36,
+      "source_segments": 42,
+      "current_segments": 41,
+      "valid_segments_with_lost_old_midpoint": 2
+    },
+    {
+      "index": 37,
+      "source_segments": 42,
+      "current_segments": 40,
+      "valid_segments_with_lost_old_midpoint": 0
+    },
+    {
+      "index": 38,
+      "source_segments": 42,
+      "current_segments": 39,
+      "valid_segments_with_lost_old_midpoint": 1
+    },
+    {
+      "index": 39,
+      "source_segments": 42,
+      "current_segments": 40,
+      "valid_segments_with_lost_old_midpoint": 0
+    },
+    {
+      "index": 40,
+      "source_segments": 42,
+      "current_segments": 42,
+      "valid_segments_with_lost_old_midpoint": 0
+    },
+    {
+      "index": 41,
+      "source_segments": 42,
+      "current_segments": 39,
+      "valid_segments_with_lost_old_midpoint": 0
+    },
+    {
+      "index": 42,
+      "source_segments": 42,
+      "current_segments": 40,
+      "valid_segments_with_lost_old_midpoint": 1
+    },
+    {
+      "index": 43,
+      "source_segments": 42,
+      "current_segments": 40,
+      "valid_segments_with_lost_old_midpoint": 1
+    },
+    {
+      "index": 44,
+      "source_segments": 42,
+      "current_segments": 40,
+      "valid_segments_with_lost_old_midpoint": 2
+    },
+    {
+      "index": 45,
+      "source_segments": 53,
+      "current_segments": 50,
+      "valid_segments_with_lost_old_midpoint": 3
+    },
+    {
+      "index": 46,
+      "source_segments": 53,
+      "current_segments": 50,
+      "valid_segments_with_lost_old_midpoint": 0
+    },
+    {
+      "index": 47,
+      "source_segments": 53,
+      "current_segments": 46,
+      "valid_segments_with_lost_old_midpoint": 3
+    },
+    {
+      "index": 48,
+      "source_segments": 53,
+      "current_segments": 49,
+      "valid_segments_with_lost_old_midpoint": 3
+    },
+    {
+      "index": 49,
+      "source_segments": 53,
+      "current_segments": 53,
+      "valid_segments_with_lost_old_midpoint": 0
+    },
+    {
+      "index": 50,
+      "source_segments": 53,
+      "current_segments": 48,
+      "valid_segments_with_lost_old_midpoint": 2
+    },
+    {
+      "index": 51,
+      "source_segments": 53,
+      "current_segments": 48,
+      "valid_segments_with_lost_old_midpoint": 2
+    },
+    {
+      "index": 52,
+      "source_segments": 53,
+      "current_segments": 51,
+      "valid_segments_with_lost_old_midpoint": 1
+    },
+    {
+      "index": 53,
+      "source_segments": 53,
+      "current_segments": 50,
+      "valid_segments_with_lost_old_midpoint": 2
+    },
+    {
+      "index": 54,
+      "source_segments": 44,
+      "current_segments": 42,
+      "valid_segments_with_lost_old_midpoint": 1
+    },
+    {
+      "index": 55,
+      "source_segments": 44,
+      "current_segments": 44,
+      "valid_segments_with_lost_old_midpoint": 0
+    },
+    {
+      "index": 56,
+      "source_segments": 44,
+      "current_segments": 41,
+      "valid_segments_with_lost_old_midpoint": 2
+    },
+    {
+      "index": 57,
+      "source_segments": 44,
+      "current_segments": 41,
+      "valid_segments_with_lost_old_midpoint": 1
+    },
+    {
+      "index": 58,
+      "source_segments": 44,
+      "current_segments": 44,
+      "valid_segments_with_lost_old_midpoint": 0
+    },
+    {
+      "index": 59,
+      "source_segments": 44,
+      "current_segments": 41,
+      "valid_segments_with_lost_old_midpoint": 0
+    },
+    {
+      "index": 60,
+      "source_segments": 44,
+      "current_segments": 40,
+      "valid_segments_with_lost_old_midpoint": 1
+    },
+    {
+      "index": 61,
+      "source_segments": 44,
+      "current_segments": 42,
+      "valid_segments_with_lost_old_midpoint": 2
+    },
+    {
+      "index": 62,
+      "source_segments": 44,
+      "current_segments": 40,
+      "valid_segments_with_lost_old_midpoint": 0
+    },
+    {
+      "index": 63,
+      "source_segments": 56,
+      "current_segments": 52,
+      "valid_segments_with_lost_old_midpoint": 2
+    },
+    {
+      "index": 64,
+      "source_segments": 56,
+      "current_segments": 54,
+      "valid_segments_with_lost_old_midpoint": 0
+    },
+    {
+      "index": 65,
+      "source_segments": 56,
+      "current_segments": 54,
+      "valid_segments_with_lost_old_midpoint": 4
+    },
+    {
+      "index": 66,
+      "source_segments": 56,
+      "current_segments": 53,
+      "valid_segments_with_lost_old_midpoint": 4
+    },
+    {
+      "index": 67,
+      "source_segments": 56,
+      "current_segments": 56,
+      "valid_segments_with_lost_old_midpoint": 0
+    },
+    {
+      "index": 68,
+      "source_segments": 56,
+      "current_segments": 53,
+      "valid_segments_with_lost_old_midpoint": 2
+    },
+    {
+      "index": 69,
+      "source_segments": 56,
+      "current_segments": 52,
+      "valid_segments_with_lost_old_midpoint": 3
+    },
+    {
+      "index": 70,
+      "source_segments": 56,
+      "current_segments": 55,
+      "valid_segments_with_lost_old_midpoint": 1
+    },
+    {
+      "index": 71,
+      "source_segments": 56,
+      "current_segments": 54,
+      "valid_segments_with_lost_old_midpoint": 7
+    },
+    {
+      "index": 72,
+      "source_segments": 45,
+      "current_segments": 45,
+      "valid_segments_with_lost_old_midpoint": 0
+    },
+    {
+      "index": 73,
+      "source_segments": 45,
+      "current_segments": 45,
+      "valid_segments_with_lost_old_midpoint": 0
+    },
+    {
+      "index": 74,
+      "source_segments": 45,
+      "current_segments": 45,
+      "valid_segments_with_lost_old_midpoint": 0
+    },
+    {
+      "index": 75,
+      "source_segments": 45,
+      "current_segments": 45,
+      "valid_segments_with_lost_old_midpoint": 0
+    },
+    {
+      "index": 76,
+      "source_segments": 45,
+      "current_segments": 45,
+      "valid_segments_with_lost_old_midpoint": 0
+    },
+    {
+      "index": 77,
+      "source_segments": 45,
+      "current_segments": 45,
+      "valid_segments_with_lost_old_midpoint": 0
+    },
+    {
+      "index": 78,
+      "source_segments": 45,
+      "current_segments": 45,
+      "valid_segments_with_lost_old_midpoint": 0
+    },
+    {
+      "index": 79,
+      "source_segments": 45,
+      "current_segments": 45,
+      "valid_segments_with_lost_old_midpoint": 0
+    },
+    {
+      "index": 80,
+      "source_segments": 45,
+      "current_segments": 45,
+      "valid_segments_with_lost_old_midpoint": 1
+    },
+    {
+      "index": 81,
+      "source_segments": 60,
+      "current_segments": 59,
+      "valid_segments_with_lost_old_midpoint": 2
+    },
+    {
+      "index": 82,
+      "source_segments": 60,
+      "current_segments": 60,
+      "valid_segments_with_lost_old_midpoint": 0
+    },
+    {
+      "index": 83,
+      "source_segments": 60,
+      "current_segments": 57,
+      "valid_segments_with_lost_old_midpoint": 2
+    },
+    {
+      "index": 84,
+      "source_segments": 60,
+      "current_segments": 57,
+      "valid_segments_with_lost_old_midpoint": 6
+    },
+    {
+      "index": 85,
+      "source_segments": 60,
+      "current_segments": 60,
+      "valid_segments_with_lost_old_midpoint": 0
+    },
+    {
+      "index": 86,
+      "source_segments": 60,
+      "current_segments": 56,
+      "valid_segments_with_lost_old_midpoint": 6
+    },
+    {
+      "index": 87,
+      "source_segments": 60,
+      "current_segments": 45,
+      "valid_segments_with_lost_old_midpoint": 1
+    },
+    {
+      "index": 88,
+      "source_segments": 60,
+      "current_segments": 60,
+      "valid_segments_with_lost_old_midpoint": 0
+    },
+    {
+      "index": 89,
+      "source_segments": 60,
+      "current_segments": 52,
+      "valid_segments_with_lost_old_midpoint": 2
+    },
+    {
+      "index": 90,
+      "source_segments": 47,
+      "current_segments": 47,
+      "valid_segments_with_lost_old_midpoint": 0
+    },
+    {
+      "index": 91,
+      "source_segments": 47,
+      "current_segments": 47,
+      "valid_segments_with_lost_old_midpoint": 0
+    },
+    {
+      "index": 92,
+      "source_segments": 47,
+      "current_segments": 46,
+      "valid_segments_with_lost_old_midpoint": 6
+    },
+    {
+      "index": 93,
+      "source_segments": 47,
+      "current_segments": 47,
+      "valid_segments_with_lost_old_midpoint": 4
+    },
+    {
+      "index": 94,
+      "source_segments": 47,
+      "current_segments": 47,
+      "valid_segments_with_lost_old_midpoint": 0
+    },
+    {
+      "index": 95,
+      "source_segments": 47,
+      "current_segments": 46,
+      "valid_segments_with_lost_old_midpoint": 0
+    },
+    {
+      "index": 96,
+      "source_segments": 47,
+      "current_segments": 43,
+      "valid_segments_with_lost_old_midpoint": 0
+    },
+    {
+      "index": 97,
+      "source_segments": 47,
+      "current_segments": 46,
+      "valid_segments_with_lost_old_midpoint": 0
+    },
+    {
+      "index": 98,
+      "source_segments": 47,
+      "current_segments": 46,
+      "valid_segments_with_lost_old_midpoint": 0
+    },
+    {
+      "index": 99,
+      "source_segments": 61,
+      "current_segments": 61,
+      "valid_segments_with_lost_old_midpoint": 0
+    },
+    {
+      "index": 100,
+      "source_segments": 61,
+      "current_segments": 61,
+      "valid_segments_with_lost_old_midpoint": 0
+    },
+    {
+      "index": 101,
+      "source_segments": 61,
+      "current_segments": 58,
+      "valid_segments_with_lost_old_midpoint": 8
+    },
+    {
+      "index": 102,
+      "source_segments": 61,
+      "current_segments": 61,
+      "valid_segments_with_lost_old_midpoint": 0
+    },
+    {
+      "index": 103,
+      "source_segments": 61,
+      "current_segments": 61,
+      "valid_segments_with_lost_old_midpoint": 0
+    },
+    {
+      "index": 104,
+      "source_segments": 61,
+      "current_segments": 57,
+      "valid_segments_with_lost_old_midpoint": 6
+    },
+    {
+      "index": 105,
+      "source_segments": 61,
+      "current_segments": 61,
+      "valid_segments_with_lost_old_midpoint": 0
+    },
+    {
+      "index": 106,
+      "source_segments": 61,
+      "current_segments": 61,
+      "valid_segments_with_lost_old_midpoint": 0
+    },
+    {
+      "index": 107,
+      "source_segments": 61,
+      "current_segments": 55,
+      "valid_segments_with_lost_old_midpoint": 2
+    },
+    {
+      "index": 108,
+      "source_segments": 42,
+      "current_segments": 42,
+      "valid_segments_with_lost_old_midpoint": 12
+    },
+    {
+      "index": 109,
+      "source_segments": 42,
+      "current_segments": 42,
+      "valid_segments_with_lost_old_midpoint": 0
+    },
+    {
+      "index": 110,
+      "source_segments": 42,
+      "current_segments": 41,
+      "valid_segments_with_lost_old_midpoint": 0
+    },
+    {
+      "index": 111,
+      "source_segments": 42,
+      "current_segments": 42,
+      "valid_segments_with_lost_old_midpoint": 7
+    },
+    {
+      "index": 112,
+      "source_segments": 42,
+      "current_segments": 42,
+      "valid_segments_with_lost_old_midpoint": 0
+    },
+    {
+      "index": 113,
+      "source_segments": 42,
+      "current_segments": 41,
+      "valid_segments_with_lost_old_midpoint": 0
+    },
+    {
+      "index": 114,
+      "source_segments": 42,
+      "current_segments": 40,
+      "valid_segments_with_lost_old_midpoint": 3
+    },
+    {
+      "index": 115,
+      "source_segments": 42,
+      "current_segments": 42,
+      "valid_segments_with_lost_old_midpoint": 0
+    },
+    {
+      "index": 116,
+      "source_segments": 42,
+      "current_segments": 41,
+      "valid_segments_with_lost_old_midpoint": 0
+    },
+    {
+      "index": 117,
+      "source_segments": 57,
+      "current_segments": 57,
+      "valid_segments_with_lost_old_midpoint": 6
+    },
+    {
+      "index": 118,
+      "source_segments": 57,
+      "current_segments": 57,
+      "valid_segments_with_lost_old_midpoint": 0
+    },
+    {
+      "index": 119,
+      "source_segments": 57,
+      "current_segments": 57,
+      "valid_segments_with_lost_old_midpoint": 0
+    },
+    {
+      "index": 120,
+      "source_segments": 57,
+      "current_segments": 57,
+      "valid_segments_with_lost_old_midpoint": 0
+    },
+    {
+      "index": 121,
+      "source_segments": 57,
+      "current_segments": 57,
+      "valid_segments_with_lost_old_midpoint": 0
+    },
+    {
+      "index": 122,
+      "source_segments": 57,
+      "current_segments": 57,
+      "valid_segments_with_lost_old_midpoint": 0
+    },
+    {
+      "index": 123,
+      "source_segments": 57,
+      "current_segments": 57,
+      "valid_segments_with_lost_old_midpoint": 1
+    },
+    {
+      "index": 124,
+      "source_segments": 57,
+      "current_segments": 57,
+      "valid_segments_with_lost_old_midpoint": 0
+    },
+    {
+      "index": 125,
+      "source_segments": 57,
+      "current_segments": 57,
+      "valid_segments_with_lost_old_midpoint": 0
+    },
+    {
+      "index": 126,
+      "source_segments": 47,
+      "current_segments": 44,
+      "valid_segments_with_lost_old_midpoint": 5
+    },
+    {
+      "index": 127,
+      "source_segments": 47,
+      "current_segments": 46,
+      "valid_segments_with_lost_old_midpoint": 0
+    },
+    {
+      "index": 128,
+      "source_segments": 47,
+      "current_segments": 46,
+      "valid_segments_with_lost_old_midpoint": 0
+    },
+    {
+      "index": 129,
+      "source_segments": 47,
+      "current_segments": 42,
+      "valid_segments_with_lost_old_midpoint": 8
+    },
+    {
+      "index": 130,
+      "source_segments": 47,
+      "current_segments": 47,
+      "valid_segments_with_lost_old_midpoint": 0
+    },
+    {
+      "index": 131,
+      "source_segments": 47,
+      "current_segments": 47,
+      "valid_segments_with_lost_old_midpoint": 0
+    },
+    {
+      "index": 132,
+      "source_segments": 47,
+      "current_segments": 42,
+      "valid_segments_with_lost_old_midpoint": 8
+    },
+    {
+      "index": 133,
+      "source_segments": 47,
+      "current_segments": 47,
+      "valid_segments_with_lost_old_midpoint": 1
+    },
+    {
+      "index": 134,
+      "source_segments": 47,
+      "current_segments": 47,
+      "valid_segments_with_lost_old_midpoint": 0
+    },
+    {
+      "index": 135,
+      "source_segments": 59,
+      "current_segments": 57,
+      "valid_segments_with_lost_old_midpoint": 14
+    },
+    {
+      "index": 136,
+      "source_segments": 59,
+      "current_segments": 59,
+      "valid_segments_with_lost_old_midpoint": 3
+    },
+    {
+      "index": 137,
+      "source_segments": 59,
+      "current_segments": 59,
+      "valid_segments_with_lost_old_midpoint": 0
+    },
+    {
+      "index": 138,
+      "source_segments": 59,
+      "current_segments": 58,
+      "valid_segments_with_lost_old_midpoint": 3
+    },
+    {
+      "index": 139,
+      "source_segments": 59,
+      "current_segments": 59,
+      "valid_segments_with_lost_old_midpoint": 0
+    },
+    {
+      "index": 140,
+      "source_segments": 59,
+      "current_segments": 59,
+      "valid_segments_with_lost_old_midpoint": 1
+    },
+    {
+      "index": 141,
+      "source_segments": 59,
+      "current_segments": 59,
+      "valid_segments_with_lost_old_midpoint": 3
+    },
+    {
+      "index": 142,
+      "source_segments": 59,
+      "current_segments": 59,
+      "valid_segments_with_lost_old_midpoint": 0
+    },
+    {
+      "index": 143,
+      "source_segments": 59,
+      "current_segments": 59,
+      "valid_segments_with_lost_old_midpoint": 2
+    }
+  ]
+}

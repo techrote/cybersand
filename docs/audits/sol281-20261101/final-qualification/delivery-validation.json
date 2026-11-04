@@ -1,0 +1,46 @@
+{
+  "accepted_main": "a8f08a67fea3c58f6df7473cbae1831334fcc04e",
+  "authorized_metadata_changes": [
+    "godot/addons/cybersand_native/runtime-provenance.json",
+    "godot/addons/cybersand_native/runtime-provenance.linux.json"
+  ],
+  "canonical_qualified_inputs": 1064,
+  "checks": {
+    "historical_m11": {
+      "path": "historical_m11-check.json",
+      "sha256": "274b184f184ff34fd1c79d50d72bd84ef0e2cceb4937cac8f8643b62b7f9884b"
+    },
+    "repository": {
+      "path": "repository-check.json",
+      "sha256": "43e3dfc2ca4dc40e7019f31df49ce8b20a9ea7484ec5d247d40b90bd2f201e82"
+    }
+  },
+  "declared_crlf_local_checkout": [
+    "tools/launch_desktop.ps1"
+  ],
+  "execution_source": {
+    "sha": "8e86ffd4eb2eb769178808a1012701076e3a4d19",
+    "tree": "b1f965508b24f9b10658907fff26cf1165e2d520"
+  },
+  "full_publication_documentation_result": "success",
+  "full_publication_documentation_run": "https://github.com/techrote/cybersand/actions/runs/41332307467",
+  "independent_final_review_sha256": "f43e2eed8cbce2ecab1a2a5d7ca7767c2d1ed2a274c735ee74bd416887309d30",
+  "qualification_run": "https://github.com/techrote/cybersand/actions/runs/41331369142",
+  "remaining": [
+    "dense physical resistance and acceptable penetration unpassed",
+    "live penetration depth/overlap area not measured",
+    "representative GPU frame pacing not tested",
+    "unexpected native commit exception not directly fault-injected",
+    "accepted GCR integration not tested",
+    "active restoration/fracture/persistence/gameplay deferred",
+    "full ready-for-review CI and owner merge approval deferred"
+  ],
+  "runtime_publication": {
+    "sha": "bdd751dcbac6c6226a81b2b4e49ac5c3854c631b",
+    "sole_parent": "8e86ffd4eb2eb769178808a1012701076e3a4d19",
+    "tree": "ab50e88b62a88274f4f3348026625f8a699b5465"
+  },
+  "schema": "cybersand.sol281.delivery-validation.v1",
+  "scope": "Documentation/evidence checkpoint on top of truthful runtime publication. No native, Godot, fixture, build or qualification execution input is changed. Its containing Git commit is not relabelled as physics execution source.",
+  "unchanged_execution_inputs": 1062
+}
