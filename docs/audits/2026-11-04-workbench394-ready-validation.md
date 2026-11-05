@@ -10,6 +10,8 @@ related-documents: [2026-11-04-workbench394-cleanup.md, 2026-11-04-workbench394-
 
 # Workbench 394 final validation
 
+Current preflight disposition: owner acceptance, accepted-main reconciliation, ABI repair, source admission and rebuilt-runtime checks are complete. The exact resulting-head hosted status is owned by the PR ledger; merge remains held. Earlier stages below retain their original failures and qualification limits.
+
 ## Owner authority and exact intake
 
 The owner tested Windows package source `a393a797ad7c535fdf177143e660838726ad9ba2`, confirmed flyer switching/tuning, and then said: "Yeah it's brilliant go ahead." The [cleanup acceptance record](2026-11-04-workbench394-cleanup.md#owner-acceptance-and-final-validation-intake) retains the scope. This authorizes proceeding to Ready and final qualification of the desktop workbench. **Leave PR #394 unmerged.** The per-flyer controls/options suggestion remains a separate follow-up; current controller, Q/E mapping, authored flyer values and sleep boundaries are retained.
@@ -75,3 +77,21 @@ Affected-document map: the threading guide owns worker/owner failure lifetime, t
 Retained repaired native source is `acce570e667c7e2cc3ef83ab451e7dff262006a9`, with 84 actual production inputs. The new pressure admission step is `native/src/world_pressure.inc`, from LF SHA-256 `9977b8c49bfb523acf2f0abcedfc6cc99e2348c60e2bbbfeb29d1fc53738c1a8` to LF SHA-256 `7b28bf216bf70af7059267cae31117f1f01e88d0e5f276f61d67280ab5c6d2e5`, source commit `acce570e667c7e2cc3ef83ab451e7dff262006a9`, issue 391 / PR 394. The adopted P1 step and all prior retained active steps are preserved; the table now has five transitions over three paths. Before adding this step the guard correctly refused the repaired pressure bytes; the refusal is retained in `build/ready394-abi-admission/pre-entry-refusal.log`. Checker rules, frozen lock and identity inputs remain unchanged.
 
 Independent source/focused-native review gave GO for the bounded relay: all 78 recorded compilation/test inputs authenticate, all final commands exit 0, and the compiled World object has no exception_ptr/current_exception/rethrow_exception references. This remains separate from full SDK ABI-floor and Ready acceptance. The exact new entry and rebuilt SDKs require their own checks below.
+
+## Rebuilt ABI-compatible SDK preflight
+
+Both final development runtimes are built from retained source `acce570e667c7e2cc3ef83ab451e7dff262006a9`; all **84** production input hashes match before/after. Windows DLL SHA-256 `cb675a4cde4317608bb892437af9b9f2b7cddf6a7289a6a028500efab19aae9d`, 4,920,832 bytes; Linux SO `a09a4a60cb54c8f1ca5c339d5ef8c3e230b53fc931b845690211ca33b5dac588`, 4,333,984 bytes. Pinned dependency/toolchain inputs are unchanged. The unmodified Linux floor gate passes before publication and again on the installed libraries: bundle GLIBC 2.34 (CyberSand 2.32), GLIBCXX 3.4.30, CXXABI 1.3.9. The old CXXABI failure remains retained; no compatibility threshold was raised.
+
+Each actual desktop OS passed import, fleet80, pilot179 and pressure-optimization4152 (all six completion sections), with eight clean processes and no script/error/leak diagnostics. Native/code/library bytes remained fixed; only post-validation provenance acceptance/receipt metadata changed, explicitly recorded by the builder. Summary `build/ready394-runtimes-abi/summary.json` raw SHA-256 `854814f7ecd0182f6729ed77527af40f8ba3a37886be731cad02e9df15d323e9`. These local results supplement full Ready validation rather than replace it.
+
+The repaired-source inactive probe against accepted main `ee92dc45` again matched all 192 observations and all 25,478,922 CYPS bytes (SHA-256 `902dc1c553e6f49d6694c55c875143fd07c164e0d8452e5158beda3e9b7fa519`) plus work and legacy contact outputs. Receipt is `build/ready394-abi-differential/receipt.json`.
+
+Independent review authenticated all five source entries and the entire adopted pressure chain. Fresh Linux-clone execution at `fda6d77d` passed all 118 catalogue tests, compatibility/compiler and compiled native metadata query parity; no World execution is claimed by that query. Receipt `build/ready394-mat/fda6d77d/execution-receipt.json` SHA-256 `41f703a93cf0b68302e229389548e288fdc9e01c8e3f480d4b8c459de7c356b6`. Entry review SHA-256 `73fb58d76e745644e6d003e3574222316c494a224a596aeeb2c5d451c9bb5242`. Scoped MAT/repair GO is recorded; complete hosted Native/sanitizer/desktop/Water/Palette acceptance remains separate.
+
+The [compact preflight manifest](workbench-391/ready-preflight-summary.json) maps retained sources, runtime/ABI checks and bounded comparison results.
+
+## Final hosted ledger boundary
+
+After the final source/runtime/evidence commit, move #394 to Ready and execute the existing full gates. To keep the qualified source immutable, the [PR #394 ledger](https://github.com/techrote/cybersand/pull/394) records final head, actual executed SHA/tree, run/attempt IDs, coverage, failures and outcome after those runs complete. The preflight results in this file do not assert that pending hosted runs have passed. No source edit, acceptance-threshold relaxation, default selection, issue closure or merge is implied by a green advisory or a skipped job.
+
+A repository check before committing the new SDK pointers correctly refused the two old committed LFS identities while the new files were still working-tree changes. Source/provenance checks otherwise matched; the committed-artifact check is repeated after publication. This intermediate result is retained in `build/ready394-final-preflight/repository.log`.
