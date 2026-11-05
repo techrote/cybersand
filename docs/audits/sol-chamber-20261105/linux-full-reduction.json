@@ -1,0 +1,43 @@
+{
+  "source": "aa1176e146a458c20b763eb844348777c3b2f3ee",
+  "result": {
+    "name": "full-reduction",
+    "command": [
+      "wsl.exe",
+      "-d",
+      "Ubuntu-24.04",
+      "--",
+      "timeout",
+      "--signal=TERM",
+      "--kill-after=5s",
+      "900s",
+      "python3",
+      "/mnt/c/Users/_/.codex/worktrees/sol-chamber-20261105/khybersand/tools/experiments/sol_chamber_review_packet.py",
+      "/mnt/c/Users/_/.codex/worktrees/sol-chamber-20261105/khybersand",
+      "--output",
+      "/mnt/c/Users/_/.codex/worktrees/sol-chamber-20261105/khybersand/build/sol-chamber-review-linux-reduction"
+    ],
+    "requested_command": [
+      "wsl.exe",
+      "-d",
+      "Ubuntu-24.04",
+      "--",
+      "python3",
+      "/mnt/c/Users/_/.codex/worktrees/sol-chamber-20261105/khybersand/tools/experiments/sol_chamber_review_packet.py",
+      "/mnt/c/Users/_/.codex/worktrees/sol-chamber-20261105/khybersand",
+      "--output",
+      "/mnt/c/Users/_/.codex/worktrees/sol-chamber-20261105/khybersand/build/sol-chamber-review-linux-reduction"
+    ],
+    "exit": 0,
+    "clean": true,
+    "timeout_seconds": 900,
+    "seconds": 306.09217550000176,
+    "log": "build\\sol-chamber-sealing\\linux-full-b574\\full-reduction.log",
+    "log_sha256": "618ad23740b515707eb1b5c65e3b309e1e293f970ff8d33034494ed340cb3ff2",
+    "markers": []
+  },
+  "episode_summaries_equal": true,
+  "episodes": 192,
+  "full_matrix_coverage": true,
+  "scope": "Owning investigation platform reproduction, independent external review pending"
+}

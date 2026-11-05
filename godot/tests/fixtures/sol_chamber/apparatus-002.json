@@ -1,0 +1,13 @@
+{
+  "id": "SOL-CHAMBER-001-APPARATUS-002",
+  "registered_date": "2026-11-05",
+  "extends_scientific_design": "SOL-CHAMBER-001",
+  "failed_source": "86cb97ad938c653fdcb6cb585c7b92afa125278c",
+  "failed_attempt": "build/sol-chamber/registered-matrix",
+  "coverage": {"sealed_episodes":28,"failed_driven_episodes":12,"completed_unforced_episodes":16,"interrupted_episode":1,"remaining_original_matrix":"NOT RUN"},
+  "observed_fault": "Force is visible in actual RID velocity before response application. The original observer predicted impulse readback and candidate-only work from pre-force state, producing residual1.0 on120 driven steps and mixing externally driven kinetic change with candidate work.",
+  "correction": "Record before_external_drive, after_external_drive and live_before_application; reconstruct applied response and candidate kinetic change from live_before_application. Keep force/API observed kinetic delta separate from endpoint work estimate and Rapier/internal work.",
+  "source_scope": "Test instrumentation/admission only, no response algorithm, force, cadence, budget, geometry, map, worker, publication or threshold change.",
+  "retention": "Do not relabel original failed processes. Retain interrupted log and all completed outputs in cost/attempt inventory. Fresh corrected source/run required for the complete192episode matrix.",
+  "reducer_admission": "Require exact matrix coordinates and host identity, prepared/ticked healthy response with exactly one native body row, accepted application, bound owner/sample/body identities, complete phase clocks, exact initial six-shape/pose/mass/mask, distinct count and tuple-multiset conservation. Missing/interrupted work remains explicit."
+}

@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "frozen_date": "2026-11-05",
+  "purpose": "Additive post-result unchanged-header mechanism question; no replacement of earlier frozen evaluation sets.",
+  "questions": [
+    {
+      "id": "SOL-PASSIVE-RESIDUAL-001",
+      "query": "Why can the bounded passive granular contact solver retain incoming velocity with ample capacity when support or separating contacts consume sample weight?",
+      "canonical": ["architecture/rigid-body-and-cellular-coupling.md"],
+      "facts": ["Four weighted batches retain (1-a)^4 incoming velocity in the registered zero-lever analytic control.", "All admitted samples determine node weight; unused cap capacity does not guarantee arrest.", "The unchanged-header diagnostic qualifies synthetic values, not original SOL authority, clearance or engine performance."],
+      "sources": ["../native/include/cybersand/granular_contact_response.hpp", "../native/tests/fixtures/sol_passive_values_001.json", "../tools/experiments/sol_passive_values.py"]
+    }
+  ]
+}

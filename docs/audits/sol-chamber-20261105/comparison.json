@@ -1,0 +1,307 @@
+{
+  "executed_source": "15705bf209a5d5be1a37084093594e45ced8b01b",
+  "complete_matrix": true,
+  "episodes": 192,
+  "steps": 34560,
+  "phase_observations": 172800,
+  "full_geometry_coverage_episodes": 192,
+  "initial_cyps_hashes": {
+    "closed-unforced": [
+      "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc"
+    ],
+    "open-unforced": [
+      "c089775165772dd844b9a1912d43d672826a9063953bed57307f035455c3e7f7"
+    ],
+    "closed-driven": [
+      "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc"
+    ],
+    "open-driven": [
+      "c089775165772dd844b9a1912d43d672826a9063953bed57307f035455c3e7f7"
+    ]
+  },
+  "groups": [
+    {
+      "case": "closed-unforced",
+      "mode": "LA-SELECTIVE",
+      "executions": 12,
+      "sand_area_max": 0,
+      "depth_max": 0,
+      "hard_step_records": 0,
+      "final_area_range": [
+        0,
+        0
+      ],
+      "counts_preserved": true,
+      "tuples_preserved": true
+    },
+    {
+      "case": "closed-unforced",
+      "mode": "LA",
+      "executions": 12,
+      "sand_area_max": 1.1062766644544177,
+      "depth_max": 0.038632430240625126,
+      "hard_step_records": 0,
+      "final_area_range": [
+        1.1062766644544177,
+        1.1062766644544177
+      ],
+      "counts_preserved": true,
+      "tuples_preserved": true
+    },
+    {
+      "case": "closed-unforced",
+      "mode": "LA-EVENT-OFF",
+      "executions": 12,
+      "sand_area_max": 0,
+      "depth_max": 0,
+      "hard_step_records": 0,
+      "final_area_range": [
+        0,
+        0
+      ],
+      "counts_preserved": true,
+      "tuples_preserved": true
+    },
+    {
+      "case": "closed-unforced",
+      "mode": "RFT",
+      "executions": 12,
+      "sand_area_max": 0.22032501472956895,
+      "depth_max": 0.007428005885103062,
+      "hard_step_records": 0,
+      "final_area_range": [
+        0.22032501472956895,
+        0.22032501472956895
+      ],
+      "counts_preserved": true,
+      "tuples_preserved": true
+    },
+    {
+      "case": "open-unforced",
+      "mode": "LA-SELECTIVE",
+      "executions": 12,
+      "sand_area_max": 4.9446368132752e-06,
+      "depth_max": 2.187089975791423e-07,
+      "hard_step_records": 0,
+      "final_area_range": [
+        4.9446368132752e-06,
+        4.9446368132752e-06
+      ],
+      "counts_preserved": true,
+      "tuples_preserved": true
+    },
+    {
+      "case": "open-unforced",
+      "mode": "LA",
+      "executions": 12,
+      "sand_area_max": 0.4939389705900225,
+      "depth_max": 0.022892083220298787,
+      "hard_step_records": 0,
+      "final_area_range": [
+        0.4939389705900225,
+        0.4939389705900225
+      ],
+      "counts_preserved": true,
+      "tuples_preserved": true
+    },
+    {
+      "case": "open-unforced",
+      "mode": "LA-EVENT-OFF",
+      "executions": 12,
+      "sand_area_max": 0,
+      "depth_max": 0,
+      "hard_step_records": 0,
+      "final_area_range": [
+        0,
+        0
+      ],
+      "counts_preserved": true,
+      "tuples_preserved": true
+    },
+    {
+      "case": "open-unforced",
+      "mode": "RFT",
+      "executions": 12,
+      "sand_area_max": 0.03591864574516911,
+      "depth_max": 0.0015887175824715882,
+      "hard_step_records": 0,
+      "final_area_range": [
+        0.03591864574516911,
+        0.03591864574516911
+      ],
+      "counts_preserved": true,
+      "tuples_preserved": true
+    },
+    {
+      "case": "closed-driven",
+      "mode": "LA-SELECTIVE",
+      "executions": 12,
+      "sand_area_max": 38.76508869923395,
+      "depth_max": 1.3963688876541198,
+      "hard_step_records": 0,
+      "final_area_range": [
+        38.76508869923395,
+        38.76508869923395
+      ],
+      "counts_preserved": true,
+      "tuples_preserved": true
+    },
+    {
+      "case": "closed-driven",
+      "mode": "LA",
+      "executions": 12,
+      "sand_area_max": 38.48220398867819,
+      "depth_max": 1.3799066155626178,
+      "hard_step_records": 0,
+      "final_area_range": [
+        38.44691380502428,
+        38.44691380502428
+      ],
+      "counts_preserved": true,
+      "tuples_preserved": true
+    },
+    {
+      "case": "closed-driven",
+      "mode": "LA-EVENT-OFF",
+      "executions": 12,
+      "sand_area_max": 38.765267146558585,
+      "depth_max": 1.3964078749711177,
+      "hard_step_records": 0,
+      "final_area_range": [
+        38.765267146558585,
+        38.765267146558585
+      ],
+      "counts_preserved": true,
+      "tuples_preserved": true
+    },
+    {
+      "case": "closed-driven",
+      "mode": "RFT",
+      "executions": 12,
+      "sand_area_max": 354.6955031987425,
+      "depth_max": 4.003021673782584,
+      "hard_step_records": 348,
+      "final_area_range": [
+        339.2002711450921,
+        339.2002711450921
+      ],
+      "counts_preserved": true,
+      "tuples_preserved": true
+    },
+    {
+      "case": "open-driven",
+      "mode": "LA-SELECTIVE",
+      "executions": 12,
+      "sand_area_max": 38.06640106963836,
+      "depth_max": 2.1857986617141734,
+      "hard_step_records": 216,
+      "final_area_range": [
+        38.05074973513243,
+        38.05074973513243
+      ],
+      "counts_preserved": true,
+      "tuples_preserved": true
+    },
+    {
+      "case": "open-driven",
+      "mode": "LA",
+      "executions": 12,
+      "sand_area_max": 39.013434767873754,
+      "depth_max": 2.183141733604856,
+      "hard_step_records": 144,
+      "final_area_range": [
+        38.96692267005002,
+        38.96692267005002
+      ],
+      "counts_preserved": true,
+      "tuples_preserved": true
+    },
+    {
+      "case": "open-driven",
+      "mode": "LA-EVENT-OFF",
+      "executions": 12,
+      "sand_area_max": 39.080335712337295,
+      "depth_max": 2.1977182429705096,
+      "hard_step_records": 132,
+      "final_area_range": [
+        39.07328391748429,
+        39.07328391748429
+      ],
+      "counts_preserved": true,
+      "tuples_preserved": true
+    },
+    {
+      "case": "open-driven",
+      "mode": "RFT",
+      "executions": 12,
+      "sand_area_max": 64.76007342491422,
+      "depth_max": 2.5051601542176627,
+      "hard_step_records": 132,
+      "final_area_range": [
+        46.26729658378912,
+        46.26729658378912
+      ],
+      "counts_preserved": true,
+      "tuples_preserved": true
+    }
+  ],
+  "performance": [
+    {
+      "platform": "windows",
+      "requested_workers": 1,
+      "episodes": 48,
+      "kernel_episode_mean_ms_range": [
+        0.3851833333333333,
+        0.8062944444444444
+      ],
+      "measured_step_episode_mean_ms_range": [
+        13.198255555555555,
+        13.895033333333332
+      ],
+      "actual_participants_max": 1
+    },
+    {
+      "platform": "windows",
+      "requested_workers": 4,
+      "episodes": 48,
+      "kernel_episode_mean_ms_range": [
+        0.3844611111111111,
+        0.8385166666666667
+      ],
+      "measured_step_episode_mean_ms_range": [
+        13.096822222222222,
+        14.590933333333332
+      ],
+      "actual_participants_max": 1
+    },
+    {
+      "platform": "linux",
+      "requested_workers": 1,
+      "episodes": 48,
+      "kernel_episode_mean_ms_range": [
+        0.6317444444444444,
+        1.492722222222222
+      ],
+      "measured_step_episode_mean_ms_range": [
+        14.847122222222222,
+        15.849122222222222
+      ],
+      "actual_participants_max": 1
+    },
+    {
+      "platform": "linux",
+      "requested_workers": 4,
+      "episodes": 48,
+      "kernel_episode_mean_ms_range": [
+        0.6158611111111111,
+        2.048305555555556
+      ],
+      "measured_step_episode_mean_ms_range": [
+        14.83975,
+        19.072694444444444
+      ],
+      "actual_participants_max": 1
+    }
+  ],
+  "cost_qualifier": "Elapsed stage measurements; all child-process startup/final dump/teardown retained in execution.json. Controller checksum/setup/copy and interrupted totals not fully measured. Not original SOL CPU or universal60Hz qualification."
+}

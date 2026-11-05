@@ -800,6 +800,16 @@ The [owner-accepted final-validation record](../audits/2026-11-04-workbench394-r
 
 ### Valid entrapment and experimental physical response
 
+**Current dependent chamber experiment:** [SOL-CHAMBER-001](../audits/2026-11-05-sol-chamber-yielding.md)
+uses the authenticated 520-member/six-proxy shape with initially clear Sand
+occupancy, one actual Rapier body and four matched response modes. Static
+closed/unforced selective runs remain clear and motionless; the fixed driven
+closed case conserves counts/tuples while developing substantial full-square
+overlap. Centre-mask agreement, dissipation and displacement totals are not
+clearance proofs. The full matrix, exact source/platform qualifiers and failed
+apparatus attempts belong to its dated ledger. This supplies no original SOL
+live aggregate authority, Active recovery hold or restoration admission.
+
 **Approved physical objective, 2026-11-05:** a supported or constrained rigid body should remain trapped until actual force and available material displacement permit motion. Valid static equilibrium can pass without escape. Invalid material inside rigid-owned geometry is a separate geometry/ownership problem. The original six-proxy burial surrogates begin with substantial overlap: their stationary outcome demonstrates response generation, neither valid entrapment nor a clearance failure. Preserve their historical measurements and original SOL failures.
 
 **Current source reconciliation:** #400 ordinarily merges #394 at `77c60b8e` through `8f6412da`, retaining all five admitted protected-source transitions and the new 84-input runtime inventory. #394 subsequently merged externally to main `ba9cbc89`; its tree equals `77c60b8e`. That upstream acceptance does not promote #400's experiments. The [new physical qualification dossier](../audits/2026-11-05-la-physical-qualification.md) separates real authored barrel/Needle/Kestrel/compound Scooper contact, genuine Sand/Dust arrivals, external work, invalid overlap, native quarantine and actual worker participation.

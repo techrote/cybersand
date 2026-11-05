@@ -1,0 +1,24 @@
+{
+  "commit": "172c66f5a88bf1164c2b8cf2d775ed889edefd75",
+  "source": "Pinned addon primary source; inspection only, no production port",
+  "files": [
+    {
+      "url": "https://raw.githubusercontent.com/appsinacup/godot-rapier-physics/172c66f5a88bf1164c2b8cf2d775ed889edefd75/src/bodies/rapier_body.rs",
+      "path": "src/bodies/rapier_body.rs",
+      "sha256": "87fc1d1a8dda56f22460ff9ded9081018ed2a73c40c8de3d94b96a290fdbaf38",
+      "bytes": 96174
+    },
+    {
+      "url": "https://raw.githubusercontent.com/appsinacup/godot-rapier-physics/172c66f5a88bf1164c2b8cf2d775ed889edefd75/src/rapier_wrapper/body.rs",
+      "path": "src/rapier_wrapper/body.rs",
+      "sha256": "3153a3e7a8d3af2804db05a1c232a44dafb6191f52a2ed9cfbddddae21e2abf9",
+      "bytes": 27208
+    },
+    {
+      "url": "https://raw.githubusercontent.com/appsinacup/godot-rapier-physics/172c66f5a88bf1164c2b8cf2d775ed889edefd75/src/spaces/rapier_space.rs",
+      "path": "src/spaces/rapier_space.rs",
+      "sha256": "67861cfb32924ff153f93fa783ce36325809e9d3ad510e6911388bbf5d7534b8",
+      "bytes": 30893
+    }
+  ]
+}

@@ -10,6 +10,28 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## Exact SOL geometry chamber lane — 2026-11-05
+
+Root alone owns `codex/sol-chamber-yielding-20261105`, based on unchanged #400
+`a38098b1`. Its [registered chamber dossier](../audits/2026-11-05-sol-chamber-yielding.md)
+separates valid static entrapment, driven geometric overlap, corrected force
+accounting and engine/census costs. The complete192episode source is `15705bf2`;
+native84 and source-equivalent runtimes are inherited and authenticated, not
+rebuilt. Existing #400/394/347/393/386 branches stay unchanged.
+The separate [Draft numerical repair #407](https://github.com/techrote/cybersand/pull/407)
+targets #393 and changes only scalar planner energy. Neither lane composes native
+SOL into workbench authority or admits restoration. Keep publication Draft and
+seek independent adversarial review before any owner integration decision.
+
+The chamber lane is published as [Draft #411](https://github.com/techrote/cybersand/pull/411)
+against #400. Its separately registered unchanged-header diagnostic executes at
+`786576f6` on GCC optimized/strict sanitizers and actual Windows MSVC:25cases,
+three workspace replays, including two expected refusals per binary. It confirms
+finite-pass denominator dilution, with no production solver change. Full192case
+raw reduction also reproduces on Linux; external independent acceptance remains
+pending. Source archive exceeds the unchanged cap, including an inherited parent
+failure. Keep the local raw packet and per-file custody receipts.
+
 ## MAT-AUTH-002 Phase A integration gate — 2026-11-04
 
 The owner now authorizes current-main reconciliation, focused preflight, a

@@ -1,0 +1,10 @@
+{
+  "source": "86cb97ad938c653fdcb6cb585c7b92afa125278c",
+  "sealed_processes": 29,
+  "sealed_episodes": 28,
+  "failed_sealed": 12,
+  "unsealed_attempts": [
+    "open-driven-LA-SELECTIVE-w4-r0"
+  ],
+  "reason": "Stopped known invalid pre-force readback/accounting premise; remaining matrix NOT RUN"
+}

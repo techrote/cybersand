@@ -1,0 +1,223 @@
+{
+  "source": "82e6f4c4ffca0023f46b2499d44b50430bd3b3c3",
+  "tree": "385e0a7b989e1e95039af5d348fc63ac012f7942",
+  "local_delta": "",
+  "results": {
+    "m11": {
+      "name": "m11",
+      "command": [
+        "python",
+        "tools/ci/check_m11_consistency.py"
+      ],
+      "requested_command": [
+        "python",
+        "tools/ci/check_m11_consistency.py"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 120,
+      "seconds": 1.2178519000299275,
+      "log": "build\\sol-chamber-validation\\m11.log",
+      "log_sha256": "e5d2a8eecef5876957dc4ecff01b99af696053871616d2dea563371d44b2427b",
+      "markers": []
+    },
+    "docs": {
+      "name": "docs",
+      "command": [
+        "python",
+        "tools/ci/check_docs.py"
+      ],
+      "requested_command": [
+        "python",
+        "tools/ci/check_docs.py"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 120,
+      "seconds": 2.8799190999707207,
+      "log": "build\\sol-chamber-validation\\docs.log",
+      "log_sha256": "ee07d47ca1b4544ed00c22f10fa7f25a58069fe13ad1abd154e0e5ba79b0a27d",
+      "markers": []
+    },
+    "material-guard": {
+      "name": "material-guard",
+      "command": [
+        "python",
+        "tools/material_catalogue/compatibility.py",
+        "--check"
+      ],
+      "requested_command": [
+        "python",
+        "tools/material_catalogue/compatibility.py",
+        "--check"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 120,
+      "seconds": 2.3514655000180937,
+      "log": "build\\sol-chamber-validation\\material-guard.log",
+      "log_sha256": "50174e75669bf15c0d521884f313715b5769054ca583572e3e734d0d06c14ae7",
+      "markers": []
+    },
+    "policy-oracle": {
+      "name": "policy-oracle",
+      "command": [
+        "python",
+        "tools/lcb/test_policy_contract.py"
+      ],
+      "requested_command": [
+        "python",
+        "tools/lcb/test_policy_contract.py"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 120,
+      "seconds": 0.23340640001697466,
+      "log": "build\\sol-chamber-validation\\policy-oracle.log",
+      "log_sha256": "da721420fde60d724cc285ca487f3159cbf20692443294a16e7ce59ce0375cd9",
+      "markers": []
+    },
+    "repository": {
+      "name": "repository",
+      "command": [
+        "python",
+        "tools/ci/check_repository.py"
+      ],
+      "requested_command": [
+        "python",
+        "tools/ci/check_repository.py"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 120,
+      "seconds": 3.8407391000073403,
+      "log": "build\\sol-chamber-validation\\repository.log",
+      "log_sha256": "84331b5358db24b08ae62e813b841f5eb29e7e6da0d796bb780a5cd361da45d2",
+      "markers": []
+    },
+    "geometry-adverse": {
+      "name": "geometry-adverse",
+      "command": [
+        "python",
+        "tools/experiments/test_sol_chamber_reduce.py"
+      ],
+      "requested_command": [
+        "python",
+        "tools/experiments/test_sol_chamber_reduce.py"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 120,
+      "seconds": 0.18221130000893027,
+      "log": "build\\sol-chamber-validation\\geometry-adverse.log",
+      "log_sha256": "689312b8fc34eb63c0bdd343069c57816ee2fde5d3a3a2e719ea8e2b73103e1e",
+      "markers": []
+    },
+    "retrieval": {
+      "name": "retrieval",
+      "command": [
+        "python",
+        "tools/docs/retrieval_eval.py",
+        "--output",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-chamber-20261105\\khybersand\\build\\sol-chamber-validation\\retrieval.json"
+      ],
+      "requested_command": [
+        "python",
+        "tools/docs/retrieval_eval.py",
+        "--output",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-chamber-20261105\\khybersand\\build\\sol-chamber-validation\\retrieval.json"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 120,
+      "seconds": 0.5647911000414751,
+      "log": "build\\sol-chamber-validation\\retrieval.log",
+      "log_sha256": "e3961ccc6666f376ec6c359c4001ead0c5e768d17444c2632f78e84d6d30ec49",
+      "markers": []
+    },
+    "retrieval-chamber": {
+      "name": "retrieval-chamber",
+      "command": [
+        "python",
+        "tools/docs/retrieval_eval.py",
+        "--queries",
+        "docs/reference/retrieval-questions-sol-chamber.json",
+        "--output",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-chamber-20261105\\khybersand\\build\\sol-chamber-validation\\retrieval-chamber.json"
+      ],
+      "requested_command": [
+        "python",
+        "tools/docs/retrieval_eval.py",
+        "--queries",
+        "docs/reference/retrieval-questions-sol-chamber.json",
+        "--output",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-chamber-20261105\\khybersand\\build\\sol-chamber-validation\\retrieval-chamber.json"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 120,
+      "seconds": 0.4106564000248909,
+      "log": "build\\sol-chamber-validation\\retrieval-chamber.log",
+      "log_sha256": "7db002ad70d916cafb38c892b459b4ae7e2af4af74c92d396d01e60cf7058773",
+      "markers": []
+    },
+    "whitespace": {
+      "name": "whitespace",
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "requested_command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 120,
+      "seconds": 0.03447399998549372,
+      "log": "build\\sol-chamber-validation\\whitespace.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "markers": []
+    },
+    "portable-reference": {
+      "name": "portable-reference",
+      "command": [
+        "python",
+        "tools/experiments/sol_chamber_review_reference.py",
+        "docs/audits/sol-chamber-20261105"
+      ],
+      "requested_command": [
+        "python",
+        "tools/experiments/sol_chamber_review_reference.py",
+        "docs/audits/sol-chamber-20261105"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 120,
+      "seconds": 1.1866786999744363,
+      "log": "build\\sol-chamber-validation\\portable-reference.log",
+      "log_sha256": "c4fc8c01d1909681d0be39e9a0c8f1d3fb7a138cab45d60365e442f7ffebfc84",
+      "markers": []
+    },
+    "guard-adverse": {
+      "name": "guard-adverse",
+      "command": [
+        "python",
+        "tools/material_catalogue/test_compatibility.py"
+      ],
+      "requested_command": [
+        "python",
+        "tools/material_catalogue/test_compatibility.py"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 120,
+      "seconds": 89.05960729997605,
+      "log": "build\\sol-chamber-validation\\guard-adverse.log",
+      "log_sha256": "2b5fab1f76c226cc04a496922ec204e78f2f2be5328dfd5476f6ecff4a526554",
+      "markers": []
+    }
+  }
+}
