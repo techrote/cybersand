@@ -1,8 +1,9 @@
 ---
 title: REC-001 offline observed-event bookmark experiment (non-runtime)
-document-kind: audit
-status: Experimental
+document-kind: evidence
+status: Current
 scope: Bounded offline REC-001 v2 material/actor event indexing with synthetic negative controls
+canonical-for: []
 last-reviewed: 2026-11-05
 related-documents: [../operations/gameplay-recording.md]
 ---
