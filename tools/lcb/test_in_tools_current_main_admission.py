@@ -23,7 +23,7 @@ class AdmissionTests(unittest.TestCase):
         result = subject.check()
         self.assertEqual(result["status"], "admitted")
         self.assertEqual(result["adopted_main"], "ba9cbc89029be88b812af59b19e5c59829bbcd90")
-        self.assertEqual(result["authority_count"], 11)
+        self.assertEqual(result["authority_count"], 13)
         self.assertEqual(result["planned_count"], 6)
         self.assertEqual(result["planned_execution"], "NOT_RUN")
         self.assertFalse(result["gameplay_qualified"])
