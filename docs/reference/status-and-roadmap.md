@@ -1893,3 +1893,15 @@ The [physical actor programme](../operations/physical-actor-programme.md) retain
 ## Strata Theatre integration — 2026-10-18
 
 The opt-in [depth prototype](../systems/depth-layers-and-parallax.md) supplies four native material worlds and five compositor modes. It remains a synchronous comparison host, separate from ordinary asynchronous gameplay; production layering, immutable native-event forwarding, persistence and browser qualification remain Planned.
+
+## WORKBENCH-001 / #391 integration candidate
+
+The [desktop development workbench](../systems/player-control-playground.md#development-workbench-on-desktop) is being qualified on a separate Draft branch from main 751edc0b. The required baseline includes the eight-flyer fleet, five-piece Scooper and actual multi-body granular response. The preserved #392 attempt covers an earlier assignment. Review the [dated evidence and source compatibility disposition](../audits/2026-11-04-workbench-consolidation.md) before making a platform, physics or promotion claim.
+
+[Owner-feedback follow-up](../audits/2026-11-04-workbench-live-editing.md) records immediate pilot switching, acknowledged reset during play, recovery of the authored start and explicit workbench-only liquid conversions on PR #394.
+
+The [edge-conversion and desktop pacing follow-up](../audits/2026-11-04-workbench-boundary-and-pacing.md) covers live solver changes after material leaves the canvas, render-independent body stepping, and parity and throughput of workbench pressure-column dispatch.
+
+The [PR #394 cleanup](../audits/2026-11-04-workbench394-cleanup.md) retains tuning across missing-model pilot replacement and repairs the fleet registry shutdown lifetime. Its [three-consumer MAT source transition](../audits/2026-11-04-workbench394-material-source-transition.md) reuses the approved #396 mechanism and preserves the frozen lock. Technical admission, owner adoption and merge are separately recorded; #394 remains Draft and unmerged.
+
+The owner accepted the playable workbench and authorized [current-main reconciliation and Ready qualification](../audits/2026-11-04-workbench394-ready-validation.md). Accepted main now includes #396 and #382 at `ee92dc45`; the combined native source requires rebuilt desktop runtimes and its own complete gates. The earlier Draft checkpoints remain historical; merge remains held.

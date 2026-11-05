@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "id": "surveyor",
+  "name": "Surveyor",
+  "description": "Scientific sampler. A broad, unhurried instrument carrier.",
+  "color": "a4dd8b",
+  "control_mode": "body_thrust",
+  "markings": "science",
+  "capabilities": {
+    "side_thrusters": true,
+    "reverse_thrust": true,
+    "dispenser_q": 0,
+    "dispenser_e": 0,
+    "dispenser_s": 0
+  },
+  "physics": {
+    "mass": 0.18,
+    "friction": 0.8,
+    "bounce": 0.04,
+    "gravity": 38,
+    "angular_drag": 0.18
+  },
+  "flight": {
+    "acceleration": 110,
+    "speed": 90,
+    "turn_speed": 2.5,
+    "turn_acceleration": 9,
+    "throttle_slew": 2.5,
+    "linear_drag": 0.38,
+    "force_limit": 26,
+    "torque_limit": 48,
+    "attitude_gain": 10,
+    "attitude_damping": 4,
+    "trim_angle": 0.4
+  },
+  "hull": {
+    "kind": "rectangle",
+    "size": [
+      16,
+      9
+    ]
+  }
+}

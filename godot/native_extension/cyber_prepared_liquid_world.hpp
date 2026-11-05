@@ -1,6 +1,7 @@
 #pragma once
 
 #include "cyber_prepared_level_payload.hpp"
+#include "workbench_retained_setup.hpp"
 #include "cybersand/default_demo_recipe.hpp"
 
 // Implementation of the adapter-owned preparation slot. No native World
@@ -91,10 +92,34 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
         if (!default_demo && (policy.size() != 4 || policy[0] != 1 || policy[1] < 3 || policy[1] > 8 ||
             policy[2] < 0 || policy[2] > 12 || policy[3] != 0))
             throw std::invalid_argument("Invalid Water experiment policy");
+        Vector2i extent{cybersand::demo::kWidth, cybersand::demo::kHeight};
+        const bool workbench = options.has("workbench_response");
+        String response;
+        if (workbench) {
+            if (level_payload || default_demo || options["workbench_response"].get_type() != Variant::STRING ||
+                options.get("workbench_extent", Variant()).get_type() != Variant::VECTOR2I)
+                throw std::invalid_argument("Workbench preparation requires an authored extent and response");
+            response = options["workbench_response"];
+            if (response != "RFT" && response != "LA" && response != "LA-SELECTIVE" && response != "LA-EVENT-OFF")
+                throw std::invalid_argument("Unknown workbench response");
+            extent = options["workbench_extent"];
+            if (extent.x < 256 || extent.y < 256 || extent.x > 2048 || extent.y > 2048 || extent.x % 64 || extent.y % 64)
+                throw std::invalid_argument("Workbench extent must be a multiple of 64 in 256..2048");
+        } else if (options.has("workbench_extent") || options.has("workbench_sample") || options.has("workbench_retain_cells") ||
+                   options.has("workbench_convert_liquid_inventory")) {
+            throw std::invalid_argument("Incomplete workbench configuration");
+        }
+        if (options.has("workbench_convert_liquid_inventory") &&
+            options["workbench_convert_liquid_inventory"].get_type() != Variant::BOOL)
+            throw std::invalid_argument("Workbench inventory conversion intent must be boolean");
+        const bool convert = options.get("workbench_convert_liquid_inventory",false);
+        const bool retain = options.get("workbench_retain_cells",false);
+        if (retain && (!adapter->workbench_ || adapter->extent_ != extent))
+            throw std::invalid_argument("Live content requires the retained workbench extent");
         const PackedInt32Array region = options.get("region", PackedInt32Array());
         if (region.size() != 4 || region[0] < 0 || region[1] < 0 || region[2] < 1 || region[3] < 1 ||
-            region[2] > cybersand::demo::kWidth || region[3] > cybersand::demo::kHeight ||
-            region[0] > cybersand::demo::kWidth - region[2] || region[1] > cybersand::demo::kHeight - region[3])
+            region[2] > extent.x || region[3] > extent.y ||
+            region[0] > extent.x - region[2] || region[1] > extent.y - region[3])
             throw std::invalid_argument("Controlled preparation requires a finite final simulation region");
         const String intent = options.get("intent", String("controlled"));
         const String pacing = options.get("pacing", String("fixed_steps"));
@@ -103,8 +128,14 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
             throw std::invalid_argument("Unknown prepared host intent or pacing");
         const bool window = options.get("simulation_window_enabled", true);
         if (!window && (region[0] != 0 || region[1] != 0 ||
-            region[2] != cybersand::demo::kWidth || region[3] != cybersand::demo::kHeight))
+            region[2] != extent.x || region[3] != extent.y))
             throw std::invalid_argument("Disabled simulation window requires the full finite World region");
+        const bool changed_policy = retain &&
+            adapter->world_->liquid_solver_policy().policy_hash() != decoded.policy->policy_hash();
+        if (changed_policy && !convert)
+            throw std::invalid_argument("Changing a retained workbench liquid policy requires explicit inventory conversion");
+        if (convert && (!changed_policy || intent != "exploratory"))
+            throw std::invalid_argument("Explicit inventory conversion requires a retained workbench and changed liquid policy");
         const String rule = options.get("normalization", String());
         if (!rule.is_empty() && rule != "water-normalize-v1")
             throw std::invalid_argument("Unknown normalization rule");
@@ -112,13 +143,25 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
         if (seed < 0) throw std::invalid_argument("Negative setup seed");
         const String definition_hash = options.get("definition_hash", String());
         const auto definition_bytes = definition_hash.hex_decode();
-        if (level_payload == nullptr && !default_demo && (definition_hash.length() != 64 || definition_bytes.size() != 32))
+        if (level_payload == nullptr && !default_demo && !retain && (definition_hash.length() != 64 || definition_bytes.size() != 32))
             throw std::invalid_argument("Controlled preparation requires a definition SHA256 claim");
         if ((level_payload != nullptr || default_demo) && options.has("definition_hash"))
             throw std::invalid_argument("Native prepared input does not accept a caller definition hash claim");
         if (default_demo && seed != 0)
             throw std::invalid_argument("The native default demo recipe has fixed seed zero");
         auto config = std::make_unique<cybersand::WorldConfig>(adapter->world_->config());
+        config->workbench_parallel_pressure_heads = workbench;
+        // Bound the finite reservation, halo, eligible chunks and active task list.
+        // Ordinary controlled/demo replacements keep their established limits.
+        if (workbench) {
+            const auto halo_columns = (extent.x + config->chunk_size - 1) / config->chunk_size + 2;
+            const auto halo_rows = (extent.y + config->chunk_size - 1) / config->chunk_size + 2;
+            config->maximum_chunk_count = std::max<std::size_t>(128, halo_columns * halo_rows);
+            config->active_chunk_capacity = config->maximum_chunk_count;
+        } else if (adapter->workbench_) {
+            config->maximum_chunk_count = 128;
+            config->active_chunk_capacity = 128;
+        }
         if (!default_demo) {
             config->transport_policy = cybersand::TransportPolicy::unpack(
                 {profile.ptr(), static_cast<std::size_t>(profile.size())});
@@ -169,20 +212,28 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
             input = prepared_liquid_detail::level_setup(
                 {level_payload->ptr(), static_cast<std::size_t>(level_payload->size())}, *config,
                 static_cast<std::uint64_t>(seed));
+        } else if (retain) {
+            // A live edit reconstructs the actual paused cells. It does not
+            // compile a dense starting recipe only to discard its contents.
+            input.mass_bits=config->water_experiment_policy.mass_bits();
+            input.ambient_temperature=config->ambient_temperature;
+            input.setup.domain={0,0,static_cast<std::uint32_t>(extent.x),static_cast<std::uint32_t>(extent.y)};
+            input.setup.seed=static_cast<std::uint64_t>(seed);
+            prepared_liquid_detail::workbench_copy_retained_cells(*adapter->world_,input);
         } else {
             // Resolve rectangle and nonzero-fill overwrite order once, before the
             // native normalization law sees any tuple. The dense four-lane staging
             // map exists only during construction, never in tick execution.
             struct Tuple { cybersand::Material material = cybersand::Material::Empty;
                 std::uint16_t a = 0; std::uint8_t b = 0; };
-            std::vector<Tuple> map(std::size_t{cybersand::demo::kWidth} * cybersand::demo::kHeight);
-            if (rectangles.is_empty() || rectangles.size() % 5 ||
+            std::vector<Tuple> map(static_cast<std::size_t>(extent.x) * extent.y);
+            if ((!workbench && rectangles.is_empty()) || rectangles.size() % 5 ||
                 rectangles.size() / 5 > static_cast<std::int64_t>(cybersand::demo::kMaximumRectangles))
                 throw std::invalid_argument("Invalid demo rectangle count");
             std::uint64_t area = 0;
             const auto check_rect = [&](std::int32_t x, std::int32_t y, std::int32_t w, std::int32_t h) {
-                if (x < 0 || y < 0 || w < 1 || h < 1 || w > cybersand::demo::kWidth || h > cybersand::demo::kHeight ||
-                    x > cybersand::demo::kWidth - w || y > cybersand::demo::kHeight - h)
+                if (x < 0 || y < 0 || w < 1 || h < 1 || w > extent.x || h > extent.y ||
+                    x > extent.x - w || y > extent.y - h)
                     throw std::invalid_argument("Invalid construction rectangle");
             };
             for (std::int64_t i = 0; i < rectangles.size(); i += 5) {
@@ -190,13 +241,13 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
                 check_rect(x, y, w, h);
                 if (!cybersand::demo::valid_material(id)) throw std::invalid_argument("Invalid material ID");
                 area += static_cast<std::uint64_t>(w) * h;
-                if (area > 8ULL * cybersand::demo::kWidth * cybersand::demo::kHeight)
+                if (area > 8ULL * extent.x * extent.y)
                     throw std::invalid_argument("Demo construction budget exceeded");
                 const auto material = static_cast<cybersand::Material>(id);
                 const auto& initial = cybersand::MaterialRules::descriptor(material);
                 const auto a = material == cybersand::Material::Water ? config->water_experiment_policy.maximum() : initial.initial_state_a;
                 for (auto dy = y; dy < y+h; ++dy) for (auto dx = x; dx < x+w; ++dx)
-                    map[static_cast<std::size_t>(dy) * cybersand::demo::kWidth + dx] = {material, a, initial.initial_state_b};
+                    map[static_cast<std::size_t>(dy) * extent.x + dx] = {material, a, initial.initial_state_b};
             }
             if (water_fills.size() % 6 || water_fills.size() / 6 > static_cast<std::int64_t>(cybersand::demo::kMaximumRectangles))
                 throw std::invalid_argument("Invalid Water fill count");
@@ -207,13 +258,13 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
                 if (water_fills[i+4] < 0 || water_fills[i+4] > 255 || water_fills[i+5] < 0 || water_fills[i+5] > 12)
                     throw std::invalid_argument("Invalid Water fill value");
                 area += static_cast<std::uint64_t>(w) * h;
-                if (area > static_cast<std::uint64_t>(cybersand::demo::kWidth) * cybersand::demo::kHeight)
+                if (area > static_cast<std::uint64_t>(extent.x) * extent.y)
                     throw std::invalid_argument("Water fill budget exceeded");
                 const auto mass = static_cast<std::uint16_t>((2U * water_fills[i+4] * config->water_experiment_policy.maximum() + 255U) / 510U);
                 const auto coherence = static_cast<std::uint8_t>((2U * water_fills[i+5] * config->water_experiment_policy.coherence_ticks() + 12U) / 24U);
                 if (mass == 0) continue; // Registered zero source is a no-op.
                 for (auto dy = y; dy < y+h; ++dy) for (auto dx = x; dx < x+w; ++dx)
-                    map[static_cast<std::size_t>(dy) * cybersand::demo::kWidth + dx] = {cybersand::Material::Water, mass, coherence};
+                    map[static_cast<std::size_t>(dy) * extent.x + dx] = {cybersand::Material::Water, mass, coherence};
             }
             input.mass_bits = config->water_experiment_policy.mass_bits();
             input.ambient_temperature = config->ambient_temperature;
@@ -222,19 +273,29 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
             input.setup.definition_digest.emplace();
             std::copy(definition_bytes.ptr(), definition_bytes.ptr()+32, input.setup.definition_digest->begin());
             input.setup.seed = static_cast<std::uint64_t>(seed);
-            input.setup.domain = {0, 0, cybersand::demo::kWidth, cybersand::demo::kHeight};
+            input.setup.domain = {0, 0, static_cast<std::uint32_t>(extent.x), static_cast<std::uint32_t>(extent.y)};
             // Binding a host digest does not establish a native definition compiler.
             input.setup.coverage = cybersand::setup::SetupCoverage::RegisteredDefinitionAndPayload;
             input.setup.gaps = cybersand::setup::kKnownSetupGaps;
-            for (std::int32_t y = 0; y < cybersand::demo::kHeight; ++y) for (std::int32_t x = 0; x < cybersand::demo::kWidth; ++x) {
-                const auto& cell = map[static_cast<std::size_t>(y) * cybersand::demo::kWidth+x];
+            for (std::int32_t y = 0; y < extent.y; ++y) for (std::int32_t x = 0; x < extent.x; ++x) {
+                const auto& cell = map[static_cast<std::size_t>(y) * extent.x+x];
                 if (cell.material != cybersand::Material::Empty)
                     input.cells.push_back({x, y, cell.material, cell.a, cell.b, config->ambient_temperature});
             }
         }
+        cybersand::normalization::PreparationLimits limits;
+        if (workbench) {
+            limits.maximum_side = static_cast<std::uint32_t>(std::max(extent.x,extent.y));
+            limits.maximum_cells = static_cast<std::size_t>(extent.x) * extent.y;
+        }
+        const auto water_assignment = config->liquid_solver_policy.assignment(static_cast<std::uint16_t>(cybersand::Material::Water));
+        const bool whole_water = water_assignment &&
+            (water_assignment->family == cybersand::LiquidSolverFamily::CellularYieldV1 ||
+             water_assignment->family == cybersand::LiquidSolverFamily::InertialCellularV1);
+        const bool normalize_water = !rule.is_empty() || (convert && whole_water);
         auto result = std::make_unique<cybersand::PreparedWorldBuilder::Result>(cybersand::PreparedWorldBuilder::prepare(
-            *config, input, rule.is_empty() ? cybersand::normalization::NormalizationOptIn::None :
-                cybersand::normalization::NormalizationOptIn::WaterNormalizeV1));
+            *config, input, normalize_water ? cybersand::normalization::NormalizationOptIn::WaterNormalizeV1 :
+                cybersand::normalization::NormalizationOptIn::None, limits));
         if (const auto* refused = std::get_if<cybersand::ConstructionRefusal>(result.get())) {
             record_refusal(*refused);
             return 0;
@@ -245,7 +306,53 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
         auto pending = std::make_unique<CyberNativeCellWorld::PendingLiquidWorld>();
         pending->world = prepared.take_world();
         pending->reset_demo_coupling = default_demo;
-        pending->world->configure_transient_obstacles({0, 0, cybersand::demo::kWidth, cybersand::demo::kHeight});
+        pending->extent = extent;
+        pending->world->configure_transient_obstacles({0, 0, extent.x, extent.y}, workbench);
+        if (workbench) {
+            if (options.get("workbench_sample",Variant()).get_type() != Variant::DICTIONARY)
+                throw std::invalid_argument("Missing workbench initial body sample");
+            const Dictionary packet = options["workbench_sample"];
+            if (packet.get("states",Variant()).get_type()!=Variant::PACKED_FLOAT64_ARRAY ||
+                packet.get("geometry",Variant()).get_type()!=Variant::PACKED_FLOAT64_ARRAY ||
+                packet.get("bodies",Variant()).get_type()!=Variant::ARRAY ||
+                packet.get("session",Variant()).get_type()!=Variant::INT ||
+                packet.get("epoch",Variant()).get_type()!=Variant::INT)
+                throw std::invalid_argument("Workbench sample requires complete typed values");
+            pending->workbench = std::make_unique<CyberNativeCellWorld::Workbench>();
+            pending->workbench->response = response;
+            CyberNativeCellWorld::WorkbenchSample initial;
+            if (!CyberNativeCellWorld::parse_workbench_sample(initial, *pending->workbench,
+                    packet.get("states",PackedFloat64Array()), packet.get("geometry",PackedFloat64Array()),
+                    packet.get("bodies",Array()), packet.get("session",0), packet.get("epoch",0)))
+                throw std::invalid_argument("Invalid workbench initial body sample or capacity");
+            // Bind the actual tick-zero geometry, per-body context and routing,
+            // independently of the legacy 11-field physical pose receipt.
+            cybersand::setup::encoding::Writer identity;
+            identity.text("cybersand-workbench-physical-input-v1");
+            identity.integer(initial.session); identity.integer(initial.epoch);
+            const PackedFloat64Array wire = packet["states"], geometry = packet["geometry"];
+            for (const auto& array : {wire,geometry}) {
+                identity.integer(static_cast<std::uint32_t>(array.size()));
+                for (std::int64_t i=0; i<array.size(); ++i)
+                    identity.integer(std::bit_cast<std::uint64_t>(array[i]));
+            }
+            for (std::size_t slot=1; slot<initial.owners.size(); ++slot) {
+                const auto& owner=initial.owners[slot];
+                if (!owner.instance) continue;
+                identity.integer(static_cast<std::uint16_t>(slot));
+                identity.integer(owner.instance); identity.integer(owner.generation);
+                identity.integer(owner.first); identity.integer(owner.count);
+                identity.integer(std::bit_cast<std::uint64_t>(owner.budget));
+                identity.integer(std::bit_cast<std::uint64_t>(owner.gravity));
+                identity.integer(static_cast<std::uint8_t>(owner.external_drive));
+            }
+            pending->workbench_initial_digest=prepared_liquid_detail::digest(cybersand::Sha256::of(identity.bytes));
+            pending->workbench->sample = initial;
+            pending->world->enable_transient_granular_wrenches(true);
+            pending->world->enable_granular_arrival_witness(response == "LA-SELECTIVE");
+            // Unique endpoint/sweep cells are bounded by the finite canvas.
+            adapter->raster_indices_.reserve(static_cast<std::size_t>(extent.x)*extent.y);
+        }
         if (options.has("initial_bodies") && options["initial_bodies"].get_type() != Variant::PACKED_FLOAT32_ARRAY)
             throw std::invalid_argument("Initial body input must be a PackedFloat32Array");
         pending->initial_body_input = options.get("initial_bodies", PackedFloat32Array());
@@ -256,21 +363,96 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
         for (std::int64_t index = 0; index < pending->initial_body_input.size(); ++index)
             body_identity.integer(std::bit_cast<std::uint32_t>(pending->initial_body_input[index]));
         pending->initial_body_digest = prepared_liquid_detail::digest(cybersand::Sha256::of(body_identity.bytes));
-        for (const auto& body : pending->initial_bodies) if (body.valid)
-            CyberNativeCellWorld::rasterize_transform_in(*pending->world, nullptr,
+        if (workbench) {
+            const auto& sample=pending->workbench->sample;
+            for (std::size_t slot=1; slot<pending->initial_bodies.size(); ++slot) {
+                const auto& physical=pending->initial_bodies[slot];
+                const bool present=slot<sample.owners.size() && sample.owners[slot].instance!=0;
+                if (physical.valid!=present)
+                    throw std::invalid_argument("Workbench physical input and hull roster differ");
+                if (!present) continue;
+                const auto& b=sample.proxies[sample.owners[slot].first];
+                // The legacy physical bridge samples float32. Its centre is the
+                // actual rigid origin, also COM for all admitted workbench rigs.
+                const auto near=[](double left,double right) {
+                    const auto scale=std::max({1.,std::abs(left),std::abs(right)});
+                    return std::abs(left-right)<=4.*std::numeric_limits<float>::epsilon()*scale;
+                };
+                if (!near(physical.center.x,b.com.x) || !near(physical.center.y,b.com.y) ||
+                    !near(physical.rotation,b.rotation) || !near(physical.mass,b.mass) ||
+                    !near(physical.angular_velocity,b.angular_velocity) ||
+                    !near(physical.velocity.x,b.velocity.x) || !near(physical.velocity.y,b.velocity.y))
+                    throw std::invalid_argument("Workbench physical pose and hull sample disagree");
+            }
+        }
+        const auto& initial_proxies = workbench ? pending->workbench->sample.proxies : pending->initial_bodies;
+        for (const auto& body : initial_proxies) if (body.valid)
+            CyberNativeCellWorld::rasterize_transform_in(*pending->world, extent, nullptr,
                 body.id, body.center, body.rotation, body.half_size);
 
-        // The authored default contains many isolated Water-adjacent voids.
-        // Admit its actual initial topology after body masks, before any token,
-        // applied receipt or authority replacement can escape preparation.
-        if (default_demo) {
+        Dictionary conversion_receipt;
+        if (retain) {
+            const auto transfer = pending->world->inherit_workbench_liquid_state(*adapter->world_,
+                {0,0,extent.x,extent.y},convert,normalize_water);
+            const auto before = adapter->world_->quantity_ledger();
+            const auto after = pending->world->quantity_ledger();
+            const auto& norm = prepared.setup().normalization_receipt();
+            const auto produced = (norm ? norm->totals().positive_delta : 0U) + transfer.halo_normalization_produced;
+            const auto consumed = (norm ? norm->totals().negative_delta : 0U) + transfer.halo_normalization_consumed;
+            const auto water_before = before.water_visible + before.water_overfill;
+            const auto water_after = after.water_visible + after.water_overfill;
+            if (water_before + produced != water_after + consumed + transfer.discarded_overfill + transfer.clipped_visible_water)
+                throw std::logic_error("Workbench conversion Water balance did not close");
+            conversion_receipt["requested"] = convert;
+            conversion_receipt["source_policy_sha256"] = prepared_liquid_detail::digest(adapter->world_->liquid_solver_policy().policy_hash());
+            conversion_receipt["target_policy_sha256"] = prepared_liquid_detail::digest(pending->world->liquid_solver_policy().policy_hash());
+            conversion_receipt["discarded_water_overfill"] = transfer.discarded_overfill;
+            conversion_receipt["discarded_gas_amount"] = transfer.discarded_gas;
+            conversion_receipt["preserved_water_overfill"] = transfer.preserved_overfill;
+            conversion_receipt["preserved_gas_amount"] = transfer.preserved_gas;
+            conversion_receipt["preserved_inertial_cells"] = transfer.preserved_inertial_cells;
+            conversion_receipt["discarded_inertial_cells"] = transfer.discarded_inertial_cells;
+            conversion_receipt["discarded_pressure_flow_cells"] = transfer.discarded_pressure_flow_cells;
+            Dictionary kept_materials, clipped_materials;
+            std::int64_t kept_cells=0,clipped_cells=0;
+            for (std::size_t i=0;i<transfer.clipped_materials.size();++i) {
+                if (transfer.preserved_halo_materials[i]) {
+                    kept_materials[static_cast<std::int64_t>(i)]=transfer.preserved_halo_materials[i];
+                    kept_cells+=static_cast<std::int64_t>(transfer.preserved_halo_materials[i]);
+                }
+                if (transfer.clipped_materials[i]) {
+                    clipped_materials[static_cast<std::int64_t>(i)]=transfer.clipped_materials[i];
+                    clipped_cells+=static_cast<std::int64_t>(transfer.clipped_materials[i]);
+                }
+            }
+            conversion_receipt["preserved_halo_materials"]=kept_materials;
+            conversion_receipt["clipped_materials"]=clipped_materials;
+            conversion_receipt["preserved_halo_cells"]=kept_cells;
+            conversion_receipt["clipped_material_cells"]=clipped_cells;
+            conversion_receipt["preserved_halo_visible_water"]=transfer.preserved_halo_visible_water;
+            conversion_receipt["clipped_visible_water"]=transfer.clipped_visible_water;
+            conversion_receipt["clipped_water_overfill"]=transfer.clipped_water_overfill;
+            conversion_receipt["clipped_gas_amount"]=transfer.clipped_gas_amount;
+            conversion_receipt["clipped_gas_labels"]=transfer.clipped_gas_labels;
+            conversion_receipt["clipped_thermal_cells"]=transfer.clipped_thermal_cells;
+            conversion_receipt["clipped_pressure_flow_cells"]=transfer.clipped_pressure_flow_cells;
+            conversion_receipt["clipped_inertial_cells"]=transfer.clipped_inertial_cells;
+            conversion_receipt["halo_normalization_produced"]=transfer.halo_normalization_produced;
+            conversion_receipt["halo_normalization_consumed"]=transfer.halo_normalization_consumed;
+            conversion_receipt["water_before"] = water_before;
+            conversion_receipt["water_after"] = water_after;
+            conversion_receipt["normalization_produced"] = produced;
+            conversion_receipt["normalization_consumed"] = consumed;
+        }
+        // Census the actual staged topology, including inherited halo cells
+        // and gas labels, before any token or authority replacement escapes.
+        if (default_demo || workbench) {
             if (const auto refused = cybersand::PreparedWorldBuilder::validate_initial_pressure_capacity(
-                    *pending->world, prepared.setup().domain())) {
+                    *pending->world, prepared.setup().domain(), limits.maximum_side, retain)) {
                 record_refusal(*refused);
                 return 0;
             }
         }
-
         pending->origin = Vector2i(region[0], region[1]); pending->size = Vector2i(region[2], region[3]);
         pending->window = window;
         pending->cadence = options.get("cadence_lod_enabled", false);
@@ -278,7 +460,7 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
         pending->world->set_simulation_region(cybersand::RectI64{region[0], region[1], region[2], region[3]});
         pending->world->set_liquid_surface_adhesion_enabled(pending->adhesion);
         pending->exchange = std::make_unique<cybersand::RenderSnapshotExchange>(3, 64,
-            std::size_t{cybersand::demo::kWidth} * cybersand::demo::kHeight * 2);
+            static_cast<std::size_t>(extent.x) * extent.y * 2);
         pending->setup = prepared.setup().setup_descriptor();
         const auto facts = std::make_unique<cybersand::receipt::NativeFacts>(
             cybersand::receipt::capture_native_facts(*pending->world, pending->setup));
@@ -291,6 +473,12 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
             adapter->liquid_policy_session_generation_+1, prepared.setup().normalization_receipt());
         pending->receipt = prepared_liquid_detail::encoding(receipt, "applied_run");
         pending->receipt["session_generation"] = static_cast<std::int64_t>(adapter->liquid_policy_session_generation_+1);
+        if (workbench) {
+            pending->receipt["workbench_response"] = response;
+            if (retain) pending->receipt["workbench_conversion"] = conversion_receipt;
+            pending->receipt["workbench_extent"] = extent;
+            pending->receipt["workbench_initial_sample_sha256"] = pending->workbench_initial_digest;
+        }
         pending->receipt["prepared_setup_hash"] = prepared_liquid_detail::digest(prepared.setup().setup_hash());
         pending->receipt["prepared_payload_hash"] = prepared_liquid_detail::digest(prepared.setup().native_payload_hash());
         if (level_payload != nullptr) {
@@ -377,6 +565,8 @@ inline bool CyberDemoBridge::commit_liquid_world(const Ref<CyberNativeCellWorld>
     // No allocations, capture, configuration changes or host callbacks after
     // this fence. All final native facts and copied receipts were prepared.
     adapter->world_.swap(pending->world);
+    adapter->workbench_.swap(pending->workbench);
+    adapter->extent_ = pending->extent;
     adapter->default_demo_recipe_active_ = pending->reset_demo_coupling;
     if (pending->reset_demo_coupling) adapter->reset_demo_coupling_parameters();
     adapter->render_exchange_.swap(pending->exchange);
@@ -389,7 +579,8 @@ inline bool CyberDemoBridge::commit_liquid_world(const Ref<CyberNativeCellWorld>
     adapter->last_horizontal_buffer_ = adapter->last_vertical_buffer_ = 0;
     adapter->cadence_lod_enabled_ = pending->cadence;
     adapter->liquid_surface_adhesion_enabled_ = pending->adhesion;
-    adapter->current_bodies_ = pending->initial_bodies; adapter->previous_bodies_ = pending->initial_bodies; adapter->clear_observations();
+    adapter->current_bodies_ = adapter->workbench_ ? adapter->workbench_->sample.proxies : pending->initial_bodies;
+    adapter->previous_bodies_ = adapter->current_bodies_; adapter->clear_observations();
     adapter->raster_indices_.clear(); adapter->last_stats_ = {};
     adapter->simulation_time_ms_ = 0; adapter->tick_failure_count_ = 0; adapter->last_tick_error_ = String();
     adapter->render_cells_revision_ = adapter->hard_surface_rectangles_revision_ = adapter->hard_surface_chunk_rectangles_revision_ = UINT64_MAX;

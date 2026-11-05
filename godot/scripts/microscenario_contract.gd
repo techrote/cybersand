@@ -5,6 +5,8 @@ extends RefCounted
 # replacement. No callbacks, scripts, live nodes or arbitrary per-tick writes.
 const VERSION: int = 2
 const SIDE: int = 1024
+const WORKBENCH_ID := "workbench/blank"
+const WORKBENCH_MAX_SIDE := 2048
 const MATERIAL_COUNT: int = 132
 const MAX_RECORDS: int = 4096
 const MAX_EVENTS: int = 24
@@ -44,8 +46,17 @@ static func validate(value: Variant) -> Dictionary:
 	if not value is Dictionary or not _integer(value.get("schema_version"), 1, VERSION):
 		return _error("Unsupported scenario schema")
 	var version: int = int(value.schema_version)
+	var extent := Vector2i(SIDE,SIDE)
+	var workbench: bool = str(value.get("id","")) == WORKBENCH_ID
 	var keys: Array = ROOT_KEYS.duplicate()
 	if version == 2: keys.append("presentation")
+	if workbench:
+		keys.append("extent")
+		if version != 2 or not _integers(value.get("extent"),2,256,WORKBENCH_MAX_SIDE):
+			return _error("Invalid finite workbench extent")
+		extent = Vector2i(int(value.extent[0]),int(value.extent[1]))
+		if extent.x % 64 or extent.y % 64:
+			return _error("Workbench extent must be aligned to 64 cells")
 	if not _keys(value, keys):
 		return _error("Missing or unknown scenario field")
 	var presentation: Variant = _presentation(value.presentation) if version == 2 else {}
@@ -64,7 +75,7 @@ static func validate(value: Variant) -> Dictionary:
 	for key: String in ["player_enabled", "body_enabled"]:
 		if not value[key] is bool: return _error("Expected boolean: " + key)
 	for key: String in ["player_start", "camera_origin"]:
-		if not _integers(value[key], 2, 0, SIDE - 1):
+		if not _integers(value[key], 2, 0, maxi(extent.x,extent.y)-1) or int(value[key][0]) >= extent.x or int(value[key][1]) >= extent.y:
 			return _error("Invalid position: " + key)
 	if not value.tools is Array or value.tools.size() > 3:
 		return _error("Invalid tool list")
@@ -75,7 +86,7 @@ static func validate(value: Variant) -> Dictionary:
 		tools.append(tool)
 	if not value.interest is Dictionary or not _keys(value.interest, ["policy", "region"]):
 		return _error("Invalid interest contract")
-	if not value.interest.policy in ["owner", "fixed"] or not _region(value.interest.region):
+	if not value.interest.policy in ["owner", "fixed"] or not _region(value.interest.region,extent):
 		return _error("Invalid interest region")
 	if (not value.execution is Dictionary or not _keys(value.execution,
 		["policy", "cadence_lod_enabled", "liquid_surface_adhesion_enabled"])):
@@ -94,8 +105,8 @@ static func validate(value: Variant) -> Dictionary:
 	var transport: Dictionary = CyberTransportProfiles.resolve(value.transport_profile)
 	if not transport.get("ok", false): return _error("Transport profile rejected")
 
-	var rectangles: Variant = _records(value.rectangles, 5, 8 * SIDE * SIDE)
-	var fills: Variant = _records(value.partial_water_fills, 6, SIDE * SIDE)
+	var rectangles: Variant = _records(value.rectangles, 5, 8 * extent.x * extent.y,extent)
+	var fills: Variant = _records(value.partial_water_fills, 6, extent.x * extent.y,extent)
 	if rectangles == null or fills == null:
 		return _error("Invalid setup rectangle/fill or setup capacity exceeded")
 	if not value.events is Array or value.events.size() > MAX_EVENTS:
@@ -180,6 +191,7 @@ static func validate(value: Variant) -> Dictionary:
 
 	var definition: Dictionary = base(str(value.id), int(value.recipe_version), int(value.seed))
 	definition.schema_version = version
+	if workbench: definition["extent"] = [extent.x,extent.y]
 	if version == 2: definition["presentation"] = presentation
 	for key: String in ["maturity", "player_enabled", "body_enabled", "source_recipe", "source_recipe_hash"]:
 		definition[key] = value[key]
@@ -220,13 +232,13 @@ static func _presentation(value: Variant) -> Variant:
 		"duration_ticks":int(value.duration_ticks), "baseline":str(value.baseline),
 		"profile":str(value.profile), "regions":regions}
 
-static func _records(value: Variant, stride: int, area_limit: int) -> Variant:
+static func _records(value: Variant, stride: int, area_limit: int, extent: Vector2i) -> Variant:
 	if not value is Array or value.size() % stride != 0 or value.size() / stride > MAX_RECORDS:
 		return null
 	var result: Array[int] = []
 	var area: int = 0
 	for offset: int in range(0, value.size(), stride):
-		if not _region(value.slice(offset, offset + 4)): return null
+		if not _region(value.slice(offset, offset + 4),extent): return null
 		area += int(value[offset + 2]) * int(value[offset + 3])
 		if area > area_limit: return null
 		if not _integer(value[offset + 4], 0, MATERIAL_COUNT - 1 if stride == 5 else 255): return null
@@ -235,9 +247,9 @@ static func _records(value: Variant, stride: int, area_limit: int) -> Variant:
 		for index: int in range(stride): result.append(int(value[offset + index]))
 	return result
 
-static func _region(value: Variant) -> bool:
-	return (_integers(value, 4, 0, SIDE) and int(value[2]) > 0 and int(value[3]) > 0
-		and int(value[0]) + int(value[2]) <= SIDE and int(value[1]) + int(value[3]) <= SIDE)
+static func _region(value: Variant, extent: Vector2i = Vector2i(SIDE,SIDE)) -> bool:
+	return (_integers(value, 4, 0, maxi(extent.x,extent.y)) and int(value[2]) > 0 and int(value[3]) > 0
+		and int(value[0]) + int(value[2]) <= extent.x and int(value[1]) + int(value[3]) <= extent.y)
 
 static func _integers(value: Variant, count: int, minimum: int, maximum: int) -> bool:
 	if not value is Array or value.size() != count: return false

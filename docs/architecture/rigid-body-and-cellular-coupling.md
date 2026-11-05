@@ -213,3 +213,17 @@ and bounded enclosure recovery. REM-002 reuses the same support predicate for a
 separate bounded body-coupling observation against stored material; it does not
 make the sampled character a Rapier collider and does not add a second material
 owner.
+
+## Development workbench physical ownership
+
+The Draft #391 host stages one bounded multi-body roster at a time. Each
+instance has one session/epoch, generation, actual mass/inertia/centre of mass,
+gravity, drive sample and response budget. Collision rectangles contribute to
+the same body's wrench. The worker owns the cellular state, checks the copied
+geometry and samples in the native adapter, and publishes value-only rows.
+The main-thread bridge rejects retired or duplicated results and checks sample
+age and corner travel before applying the wrench to that instance's Rapier RID.
+The finite canvas owns interest independently of presentation. The
+[workbench guide](../systems/player-control-playground.md#development-workbench-on-desktop)
+and [qualification record](../audits/2026-11-04-workbench-consolidation.md)
+distinguish authoring controls, observed behavior and unresolved review gates.

@@ -35,7 +35,9 @@ var receipt_label: Label
 var status: Label
 var requested_policy := PackedInt32Array()
 var _choices: Array = []
+var _preset_policies: Array[PackedInt32Array] = []
 var _validation: Dictionary = {}
+var _normalize_on_next_apply_only := false
 var _dirty: bool = false
 var _applied_generation: int = -1
 var _waiting_serial: int = 0
@@ -143,6 +145,7 @@ func setup(controller: Control, selection_only: bool = false) -> void:
 		material_picker.add_item(str(assignment.name).capitalize(), int(assignment.material))
 	for index: int in PRESETS.size():
 		var result: Dictionary = _preset(index)
+		_preset_policies.append(result.get("request",PackedInt32Array()))
 		preset_picker.add_item(str(PRESETS[index].label))
 		preset_picker.set_item_disabled(index, not result.ok)
 		preset_picker.set_item_tooltip(index, str(result.get("error", "Pending policy; applies only on rebuild")))
@@ -176,6 +179,11 @@ func select_preset(index: int) -> void:
 
 func _refresh_choices() -> void:
 	if bridge == null or not bridge.has_method(&"liquid_policy_assignment_choices") or requested_policy.is_empty(): return
+	# The same editor survives New/Load and owner reconstruction. Reflect
+	# the actual staged envelope even when the old preset label survived.
+	var preset: int = _preset_policies.find(requested_policy)
+	preset_picker.select(preset)
+	if preset < 0: preset_picker.text = "Custom policy"
 	_validation = bridge.validate_liquid_policy(requested_policy)
 	_choices = bridge.liquid_policy_assignment_choices(requested_policy, material_picker.get_selected_id())
 	family_picker.clear()
@@ -299,6 +307,13 @@ func load_selected() -> bool:
 func load_current_control() -> bool:
 	return _request(_selected_definition(), true)
 
+func use_one_shot_normalization() -> void:
+	_normalize_on_next_apply_only = true
+	normalize_water.set_pressed_no_signal(false)
+	normalize_water.text = "Round Water on this Apply only"
+	normalize_water.tooltip_text = "Round visible Water to whole cells for this liquid change. Applied quantities are reported. Clears after successful installation."
+
+
 func _sync_applied(context: Dictionary) -> void:
 	var applied: Dictionary = context.get("liquid_solver_policy",{})
 	if applied.is_empty() or not applied.has("envelope"): return
@@ -307,7 +322,7 @@ func _sync_applied(context: Dictionary) -> void:
 		requested_policy = applied.envelope.duplicate()
 		geometry_picker.select(1 if int(applied.get("maximum_rule_radius",2)) == 3 else 0)
 		session_picker.select(1 if host.microscenario_liquid_setup.get("intent", "controlled") == "exploratory" else 0)
-		normalize_water.set_pressed_no_signal(not host.microscenario_liquid_setup.is_empty() \
+		normalize_water.set_pressed_no_signal(not _normalize_on_next_apply_only and not host.microscenario_liquid_setup.is_empty() \
 			and host.microscenario_liquid_setup.get("normalization","") == "water-normalize-v1")
 		_refresh_choices()
 

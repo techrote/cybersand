@@ -6,6 +6,9 @@ func _ready() -> void:
 	# Keep existing direct-launch arguments compatible with the desktop wrapper.
 	var first_launch: bool = not get_tree().has_meta("cybersand_launch_args_consumed")
 	get_tree().set_meta("cybersand_launch_args_consumed", true)
+	if first_launch and "--workbench" in OS.get_cmdline_user_args():
+		launch.call_deferred("shared_workbench")
+		return
 	if first_launch and "--semantic-depth" in OS.get_cmdline_user_args():
 		get_tree().change_scene_to_file.call_deferred("res://semantic_depth.tscn")
 		return
@@ -42,6 +45,7 @@ func _ready() -> void:
 	scroll.add_child(column)
 	_label(column, "CYBERSAND / PLAY & EXPERIMENT", 30)
 	_label(column, "Choose a feature. F2 returns here; returning closes the current session. Showcase maps start paused. F5 selects 46 articulated Rapier actors or sampled references in the sandbox and showcase maps.", 18)
+	_button(column, "Development workbench — blank canvas, flyer fleet, materials and solver controls", "shared_workbench")
 	_button(column, "Play session — shared desktop course, five mechanical players and solver choices", "play_session")
 	_button(column, "Player playground — stunt buggy, trials bike, acrobat, spacecraft, material swarms and jet barrel", "player_playground")
 	_button(column, "Deepworks — 1024 × 1024 multilayer material exhibition", "deepworks")

@@ -60,9 +60,10 @@ struct Writer {
     }
 };
 } // namespace encoding
+inline constexpr std::uint32_t kMaximumFiniteSetupSide = 2048;
 inline void validate_setup_descriptor(const SetupDescriptor& value) {
     const auto& d = value.domain;
-    if (d.width == 0 || d.width > 1024 || d.height == 0 || d.height > 1024 ||
+    if (d.width == 0 || d.width > kMaximumFiniteSetupSide || d.height == 0 || d.height > kMaximumFiniteSetupSide ||
         d.x > std::numeric_limits<std::int64_t>::max() - (d.width - 1U) ||
         d.y > std::numeric_limits<std::int64_t>::max() - (d.height - 1U))
         throw std::invalid_argument("invalid finite setup domain");

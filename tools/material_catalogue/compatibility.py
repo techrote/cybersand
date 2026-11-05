@@ -93,15 +93,41 @@ GIT_LOCATION_VARIABLES = frozenset(("GIT_DIR", "GIT_WORK_TREE", "GIT_INDEX_FILE"
 # the commit. Working bytes must equal the final target after LF normalization; a
 # further edit needs its own reviewed step. The table starts empty; each reviewed
 # PR adds its own entry together with its source change.
-REVIEWED_TRANSITIONS: tuple[dict, ...] = (
-    # #201 P1 wake summaries: only prepare_pressure_tick/compute_pressure_heads change.
-    {"path": "native/src/world_pressure.inc",
-     "from_lf_sha256": "c8cb11512e935d05e099d8f155c1659473a7f61aa301e2e4900e55bdcfe4024b",
-     "to_lf_sha256": "d766e808e88287f3f9ef1b833d790106e56eb512654a350716c8573beb30a874",
-     "source_commit": "e5416b81bebf7ce79ac9894f7f9edf88f63b58da",
-     "record": "docs/audits/2026-11-04-lcb201-world-pressure-transition.md",
-     "issue": 201, "pr": 382},
-)
+REVIEWED_TRANSITIONS: tuple[dict, ...] = ({'path': 'native/src/world_pressure.inc',
+  'from_lf_sha256': 'c8cb11512e935d05e099d8f155c1659473a7f61aa301e2e4900e55bdcfe4024b',
+  'to_lf_sha256': 'd766e808e88287f3f9ef1b833d790106e56eb512654a350716c8573beb30a874',
+  'source_commit': 'e5416b81bebf7ce79ac9894f7f9edf88f63b58da',
+  'record': 'docs/audits/2026-11-04-lcb201-world-pressure-transition.md',
+  'issue': 201,
+  'pr': 382},
+ {'path': 'native/src/world.cpp',
+  'from_lf_sha256': 'b7a129f44eccc7c33dbd2f0d84802ab096140dcaa9b5b3a83d45dd3bf85fbad1',
+  'to_lf_sha256': 'a47955f79ed5fbc8bc0ca8e2892ed4eb0ddbd728b841bc08ccee14a4c239e4a7',
+  'source_commit': '1ca90de5181953f9ebd95ef19c920d8dee7e17e2',
+  'record': 'docs/audits/2026-11-04-workbench394-material-source-transition.md',
+  'issue': 391,
+  'pr': 394},
+ {'path': 'native/src/world_inertial.inc',
+  'from_lf_sha256': 'f9e891dafa9c61e76460b5b3a720e3e522e7b63c381e81539e5e508b2719a0dd',
+  'to_lf_sha256': '8a5d3680e96ca47a3f496be5a8b953084d2c6d2e0bd723c3214b87bdbc3580b5',
+  'source_commit': '1ca90de5181953f9ebd95ef19c920d8dee7e17e2',
+  'record': 'docs/audits/2026-11-04-workbench394-material-source-transition.md',
+  'issue': 391,
+  'pr': 394},
+ {'path': 'native/src/world_pressure.inc',
+  'from_lf_sha256': 'd766e808e88287f3f9ef1b833d790106e56eb512654a350716c8573beb30a874',
+  'to_lf_sha256': '9977b8c49bfb523acf2f0abcedfc6cc99e2348c60e2bbbfeb29d1fc53738c1a8',
+  'source_commit': 'd04fe009c2d5ab45f49a1d02cd36bb377f5d9873',
+  'record': 'docs/audits/2026-11-04-workbench394-ready-validation.md',
+  'issue': 391,
+  'pr': 394},
+ {'path': 'native/src/world_pressure.inc',
+  'from_lf_sha256': '9977b8c49bfb523acf2f0abcedfc6cc99e2348c60e2bbbfeb29d1fc53738c1a8',
+  'to_lf_sha256': '7b28bf216bf70af7059267cae31117f1f01e88d0e5f276f61d67280ab5c6d2e5',
+  'source_commit': 'acce570e667c7e2cc3ef83ab451e7dff262006a9',
+  'record': 'docs/audits/2026-11-04-workbench394-ready-validation.md',
+  'issue': 391,
+  'pr': 394})
 
 
 class CompatibilityError(ValueError):
