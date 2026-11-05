@@ -81,6 +81,8 @@ def main():
                 maximum_terminal120_speed=[max(math.hypot(*s["after_step"][i]["velocity"]) for s in steps[-120:]) for i in range(len(d["authored"]))],
                 arrival_count=sum(a["arrival_count"] for a in atoms),arrival_missing=sum(a["arrival_missing"] for a in atoms),arrival_misaligned=sum(a["arrival_misaligned"] for a in atoms),
                 event_norm_sum=sum(math.hypot(*a["event_accepted"]) for a in atoms),event_torque_sum=sum(a["event_torque"] for a in atoms),
+                derived_legacy_norm_sum=sum(math.hypot(*[a["impulse"][i]-a["event_accepted"][i]-a["passive_impulse"][i] for i in [0,1]]) for a in atoms),
+                derived_legacy_torque_sum=sum(a["torque"]-a["event_torque"]-a["passive_torque"] for a in atoms),
                 displaced=sum(a["displaced"] for a in atoms),unresolved=sum(a["unresolved"] for a in atoms),
                 passivity_rejected=sum(bool(a["passivity_rejected"]) for a in atoms),application_refusals=dict(counts),
                 scaled_actions=sum(a.get("passive_scale",1)<1 for a in applied),
@@ -104,7 +106,9 @@ def main():
             if d["case"]["kind"]=="causal":
                 selected={0,1,2,3,len(steps)-1}
                 causal.append(dict(run=run,id=r["id"],source=r["source"],platform=platform,authored=d["authored"],initial_sample=d["initial_sample"],
-                    observations=[s for s in steps if s["step"] in selected],complete_window_steps=len(steps),raw_report_sha256=r["report_sha256"]))
+                    observations=[s for s in steps if s["step"] in selected],
+                    derived_legacy=[dict(step=s["step"],bodies=[dict(impulse=[a["impulse"][i]-a["event_accepted"][i]-a["passive_impulse"][i] for i in [0,1]],torque=a["torque"]-a["event_torque"]-a["passive_torque"]) for a in s["native_response"]["rows"]]) for s in steps if s["step"] in selected],
+                    complete_window_steps=len(steps),raw_report_sha256=r["report_sha256"]))
             if d["case"]["id"] in ["barrel-rest","needle-rest","scooper-rest","actual-step-delayed-support"] and platform=="windows" and d["requested_workers"]==1 and d["arm"].startswith("LA-SELECTIVE"):
                 supports.append(dict(run=run,id=r["id"],source=r["source"],authored=d["authored"],
                     observations=[dict(step=s["step"],live=s["live_before_application"],actions=s["application"]["bodies"],after=s["after_step"],
@@ -127,6 +131,8 @@ def main():
             terminal60_means_us=[r["timings"]["terminal60_mean_us"] for r in rows],
             actual_participants=sorted({w for r in rows for w in r["actual_workers"]})))
     summary=dict(source=subprocess.check_output(["git","rev-parse","HEAD"],text=True).strip(),
+        publisher_sha256=digest(Path(__file__).read_bytes().replace(b"\r\n",b"\n")),
+        publisher_local_delta=subprocess.check_output(["git","status","--short"],text=True),
         scope="Source-qualified episode summaries, not originalSOL or universal gameplay acceptance",cohorts=cohorts,
         total_episodes=len(episodes),total_observed_steps=sum(r["steps"] for r in episodes),
         attempted_failed_episodes=sum(bool(r["failures"]) for r in episodes),
