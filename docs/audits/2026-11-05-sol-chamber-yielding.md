@@ -317,3 +317,22 @@ updated together. Production ownership/lifetime, API, configuration/capacity,
 ADRs, material/liquid policy and user controls are unchanged: this branch adds
 test apparatus and evidence only. Original source/guard/compiler/policy/query
 and persistence oracles are not weakened; historical evidence remains immutable.
+
+## Validation checkpoint
+
+At `82e6f4c4`, clean source passes documentation, historical M11, repository/
+runtime provenance, original material guard, 41 guard-adversary tests, fifteen
+policy-oracle tests, six geometry/filter adversaries, portable raw-reference
+audit and whitespace. Native production and Godot gameplay/controller paths
+are byte-unchanged from #400; all84 compiled native inputs remain exact.
+Frozen retrieval remains19/32rank1 and32/32rank5. The additive post-result
+chamber supplement is2/3rank1 and3/3rank5; it is not rewritten to inflate that
+score. Manual expected-fact review preserves source/ownership and cost limits.
+The pinned companion files are separately materialized from `a15e06ca`; no
+historical fixture, hash or companion branch is changed.
+
+These are scoped validation results. Fresh native optimized/sanitized/MSVC,
+other materials, full authored gameplay/painting/save-load, asynchronous stale
+publication, capacity stress and actual four-participant work are not newly
+qualified by this profile. Their prior #400 evidence stays source-qualified and
+separate. No required missing observation is converted into a pass.

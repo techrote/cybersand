@@ -177,6 +177,14 @@
       "previous_formatted_bytes": 14279717,
       "previous_formatted_sha256": "66939597ed86d926acba3bcb536a5fef8864894f429abbbafb73cbf7154d59bd",
       "representation": "Minified JSON derivative; parsed-value equality verified; previous formatted bytes retained at fb927761"
+    },
+    {
+      "path": "validation.json",
+      "bytes": 6830,
+      "sha256": "a0e52569e31f83097aede0fa4451d36933cf9c17cea617d4fa3647a46f84ee18",
+      "original_local_sha256": "a9d819d22a969c07294de204148aa34f76a7fa2090614603e9cd6c7d4d54e42f",
+      "original_local_bytes": 7053,
+      "original_local_path": "build/sol-chamber-validation/receipt.json"
     }
   ],
   "local_raw_files": [
