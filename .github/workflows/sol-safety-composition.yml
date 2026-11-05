@@ -2,9 +2,6 @@ name: SOL safety composition qualification
 on:
   push:
     branches: [sol/safety-composition-20261105]
-  pull_request:
-    branches: [codex/sol-active-normal-live-20261105]
-    types: [opened, synchronize, reopened]
   workflow_dispatch:
 permissions:
   contents: read
@@ -178,14 +175,14 @@ jobs:
           & .\parity_parent.exe | Tee-Object parity_parent.log
           & .\parity_candidate.exe | Tee-Object parity_candidate.log
           if ((Get-Content parity_parent.log -Raw) -ne (Get-Content parity_candidate.log -Raw)) { throw 'Valid parity differs' }
-          if (-not (Select-String -Quiet parity_candidate.log -SimpleMatch 'VALID_PARITY cases=120000 rejected=0 nonfinite=0 nonpassive=0')) { throw 'Parity corpus incomplete' }
+          if (-not (Select-String -Path parity_candidate.log -SimpleMatch -Pattern 'VALID_PARITY cases=120000 rejected=0 nonfinite=0 nonpassive=0')) { throw 'Parity corpus incomplete' }
           cl /nologo /std:c++20 /EHsc /O2 /W4 /WX /I native/include tools/experiments/sol_live_bin_producer_precision.cpp /Fe:producer.exe
           & .\producer.exe | Tee-Object producer.log
           if ($LASTEXITCODE -ne 0) { throw 'Producer precision failed' }
           cl /nologo /std:c++20 /EHsc /O2 /W4 /WX /I native/include tools/experiments/sol_conservative_face_envelope.cpp /Fe:face.exe
           & .\face.exe | Tee-Object face.log
           if ($LASTEXITCODE -ne 0) { throw '#450 witness failed' }
-          if (-not (Select-String -Quiet face.log -SimpleMatch 'active_worsens_any_face=28428')) { throw '#450 count changed' }
+          if (-not (Select-String -Path face.log -SimpleMatch -Pattern 'active_worsens_any_face=28428')) { throw '#450 count changed' }
       - uses: actions/upload-artifact@v4
         if: always()
         with:

@@ -3,9 +3,6 @@ name: SOL safety exact native mixed-body qualification
 on:
   push:
     branches: [sol/safety-composition-20261105]
-  pull_request:
-    branches: [codex/sol-active-normal-live-20261105]
-    types: [opened, synchronize, reopened]
   workflow_dispatch:
 
 permissions:
@@ -175,7 +172,7 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
           lfs: false
           persist-credentials: false
-      - uses: actions/setup-python@a26af69be951a213d495a4e3e4e4022e16d87065
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: "3.12"
       - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093

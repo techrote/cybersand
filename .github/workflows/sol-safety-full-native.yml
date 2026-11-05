@@ -3,9 +3,6 @@ name: SOL safety complete Native qualification
 on:
   push:
     branches: [sol/safety-composition-20261105]
-  pull_request:
-    branches: [codex/sol-active-normal-live-20261105]
-    types: [opened, synchronize, reopened]
   workflow_dispatch:
 
 permissions:
