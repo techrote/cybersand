@@ -75,7 +75,7 @@ void run(std::uint32_t workers) {
         const std::int64_t x = coord.x * kSide;
         // Interest rectangle is a scheduling filter, not a native residency
         // manager; requests are supplied by this external synthetic driver.
-        world.set_simulation_region({x, 0, kSide, kSide});
+        world.set_simulation_region(cybersand::RectI64{x, 0, kSide, kSide});
         auto proposal = generator->generate(coord);
         maximum_live_proposals = std::max(maximum_live_proposals, std::size_t{1});
         charged_operations += proposal.operations;
@@ -139,6 +139,8 @@ void run(std::uint32_t workers) {
               "independent reference installation refused");
     }
     control.set(-9 * kSide, 64, Material::Glass);
+    // Match requested interest before comparing future-affecting physical state.
+    control.set_simulation_region(cybersand::RectI64{10 * kSide, 0, kSide, kSide});
     check(world.physical_state_hash() == control.physical_state_hash() &&
           world.quantity_ledger() == control.quantity_ledger(),
           "capacity refusals changed native physical authority before ticks");
