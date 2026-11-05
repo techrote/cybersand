@@ -1,0 +1,62 @@
+# EMBERGLASS FUMAROLES — World-feature collection 005
+
+**Status:** DRAFT creative design / authoring-resource proposal, not an accepted importer, validated GEN recipe, CYSD1 save or gameplay map. Pinned current `main` [`ba9cbc89029be88b812af59b19e5c59829bbcd90`](https://github.com/techrote/cybersand/commit/ba9cbc89029be88b812af59b19e5c59829bbcd90), tree `3af18f50e6094776263119623b64a1b2f4ca0ab2`, source read 2026-11-05.
+
+![Full 1056×238 dry section and eight original design modules](preview.svg)
+
+## Deliverables
+
+Eight intentionally coordinated volcanic modules, **161 ordered native-cell rectangles**, **16 literal material-swap variants**, and one combined **1056×238** modular scene with all eight modules in fixed dry variants. The iconography is cooled lava terraces, sulfur petal structures, impossible volcanic hollows, streaked vitrification, steam plumes, and sparse geometric witness markers. This is substantially different from the prior survey ruin (#408), fossil coastline (#410), glacial instrument cave (#412) and biological sanctuary (#414).
+
+| Exact ID | Module | Cells | Native t=0 state | Combined scene choice |
+|---|---|---:|---|---|
+| `fracture-terrace` | Fracture stair / black-red strata | 116×86 | inert-static | `cold-strata` |
+| `sulfur-rosette` | Sulfur blossom / stepped mineral fan | 104×78 | inert-static | `ochre-rosette` |
+| `caldera-iris` | Hollow caldera iris | 112×84 | inert-static | `dark-iris` |
+| `glassfall-cascade` | Vitreous fall / glass thread cascade | 120×90 | active-dynamic | `quenched-glass` |
+| `fumarole-throat` | Tall fumarole throat / steam crown | 108×112 | active-dynamic | `ghost-fumarole` |
+| `lava-eye` | Lava-eye reliquary / shallow caldera pool | 128×82 | active-dynamic | `cold-lens` |
+| `ash-skerry` | Cooled black skerry / accreted glass shelves | 98×90 | inert-static | `sulfur-skerry` |
+| `heatward-stela` | Heatward stela / amber witness marker | 80×96 | inert-static | `unlit-marker` |
+
+## Design language and placement grammar
+
+Use **BasaltColumns `100`** as the large structural black rock, **Obsidian `101`** for deep fractures, **Firebrick `104`**, **TerracottaTile `48`** and **RedBrick `43`** for cooled earth-red rims. **SulfurBlock `126`** and **QuicklimeBlock `108`** are rare yellow/white rosette petals, not emitters. **GlassBlock `120`** and **QuartzCrystal `122`** articulate cooling flows. **NeonAmber `79`** provides thin static amber keylines; it is *not* a simulation light or thermal energy source. Use **HeatShieldTile `131`** only as an optional future palette colour, not proof of insulation.
+
+Ground anchors sit on a common horizontal seam at native y=211 in the combined section. Positive y runs down; all modules have authored orientation 0° and scale 1×. Leave 7+ cells between adjacent bounding boxes, leave at least 8–18 cells of negative space above tall modules, and reserve the open upper void to keep silhouettes legible. Alternate one tall chimney/marker with low rocks; a single yellow rosette should dominate each continuous gallery. Do not repeat every vivid module at the same cadence in a generated world. No flipped, rotated, tiled, rescaled or multi-layer version is authored.
+
+Geometry uses the construction shape `[x,y,width,height,native_material_id]` from `godot/scripts/demo_worlds.gd::_rect`. **This does not mean the JSON is natively loadable**. Rectangles are applied in order; later writes win; absent cells **do not** clear host materials. The caldera iris opening specifically needs a bounded host erase before placement. Destination owner, terrain priority, exact material buffer, actor contact and collision policies must be admitted separately. Fixed world cells are not Rapier bodies; glass and inset effects are physically solid.
+
+## Native materials / physics boundary
+
+Source authority: `native/include/cybersand/material.hpp` (blob `dcf05895da3015a2e999e3d1cbbae0fdc7fe32b3`); `materials/catalogue/catalogue.json` (shadow blob `d7a47d60721598a16589daf177a6ff4401b84b43`); `native/include/cybersand/interaction_rules.hpp` (blob `b70fc9dc2599f648e5374f06e4cc0ae9cb868d79`). All 20 palette entries were checked for **ID, enum name, exact RGBA, state, mobility, kernel and lateral flow** against these source reads.
+
+**Safe t=0 inert candidates (static world material, not validated playability):** `fracture-terrace`, `sulfur-rosette`, `caldera-iris`, `ash-skerry`, `heatward-stela`. They use kernel-None, immovable materials only. They remain **unqualified for shader rendering, contact/clearance, terrain overlap or gameplay stability**.
+
+**Time-evolving original variants requiring simulation:**
+- `glassfall-cascade`: **MoltenGlass `36`** is a yielding mobile liquid, has native cooling/evolving Glass conversion and a Water/MoltenGlass reaction yielding Steam+Glass. Its narrow columns and collector basin can slump or overflow; `quenched-glass` substitutes GlassBlock `120` for a static gallery.
+- `fumarole-throat`: **Steam `22`** is a rising Gas, and the initial plume does **not** regenerate after placement. It may disperse. `ghost-fumarole` substitutes fixed QuartzCrystal `122` and is collision-solid, despite visually resembling vapour.
+- `lava-eye`: **Lava `8`** is a moving CellularYield liquid; initial pool and thermal contacts can change. Native registry includes Lava/Water quench and sampled Lava/Obsidian transformation. Main geometry avoids intentional direct live Lava/Obsidian contact. `cold-lens` replaces Lava with inert Obsidian `101` in the gallery.
+
+**Interaction risks:** The pinned interaction registry has thermal/chemical pair rules; do not introduce Water, Ice, combustible material, generic Glass or mixed live sources nearby without a dedicated native fixture. Building-material names like Firebrick and HeatShieldTile are not a general guarantee of thermal insulation. SulfurBlock is presently fixed inert mineral decor. Active cells and narrow thermal contact boundaries require measurement of native ticks, visual accumulation, quantity, emissions, active chunk count and render/collision load.
+
+## Preview, reproducibility and validation
+
+`preview.svg` is generated from `pack.json` with raw native material catalogue RGBA and geometry. Combined view uses inert substitutions only. Individual tiles show **original t=0 arrangements**, including active materials (these are not stable-state illustrations). No parallax layers or real shading were simulated.
+
+From an appropriately source-pinned repo checkout, run:
+
+```sh
+node docs/world-design/emberglass-fumaroles/validate_pack.mjs --source-check --self-test
+node docs/world-design/emberglass-fumaroles/render_pack.mjs --check
+```
+
+Tool-side performed now: all source palette entries and enum IDs matched; structural validation **PASS**; **13/13** intentionally corrupted clones rejected; deterministic SVG creation **PASS** (34273 characters). These checks were executed in the authoring tool with live connected GitHub reads, **not** by executing checked-in Node scripts on a checkout. **NOT RUN:** native or Godot simulation, thermal pair characterization, renderer screenshots, hosted CI, gameplay interactions, actor/Rapier clearance, actual ENVO generation, time evolution and performance measurements.
+
+## Later integration steps (not authorized here)
+
+Approve format, clearing and host-ownership contract; use a bounded placement fixture with exact hash inputs; review original and inert variants separately; run native t=0 and 60/600 tick captures on Steam/Lava/MoltenGlass with conservation and temperature-ownership evidence; then measure shader silhouettes, actor clearance, responsive physics, chunk counts and repeatability. Preserve current production physics/PLAY/SOL/MAT-AUTH/IN-TOOLS independently; keep this PR **Draft / DO NOT MERGE**.
+
+## Distinct future collections
+
+**Silt Clockworks** — terraced abandoned tide regulators; **Signal Orchard** — engineered luminous forest; **Dust Meridian** — asymmetric desert navigation debris.
