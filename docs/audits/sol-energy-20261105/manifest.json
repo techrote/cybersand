@@ -8,47 +8,65 @@
     {
       "path": "precision-first/linux/results.json",
       "bytes": 1196141,
-      "sha256": "978a73fcaa7d153048d8e7d2e2ce807a49173839cf46268bd8f2fa82f5c761d4"
+      "sha256": "978a73fcaa7d153048d8e7d2e2ce807a49173839cf46268bd8f2fa82f5c761d4",
+      "original_local_bytes": 1196141,
+      "original_local_sha256": "978a73fcaa7d153048d8e7d2e2ce807a49173839cf46268bd8f2fa82f5c761d4"
     },
     {
       "path": "precision-first/receipt.json",
-      "bytes": 7757,
-      "sha256": "c5ac145757bde411bfeb7d5dae4b2054f92d428b75a6e1f9432b33f2c3c3cfd0"
+      "bytes": 7550,
+      "sha256": "d1961dfb74030c3d40d34fb23c41e4deac11ab979c6bffc207238daff01f7d2d",
+      "original_local_bytes": 7757,
+      "original_local_sha256": "c5ac145757bde411bfeb7d5dae4b2054f92d428b75a6e1f9432b33f2c3c3cfd0"
     },
     {
       "path": "precision-first/reduced.json",
-      "bytes": 17432,
-      "sha256": "f9b8161571da49eb2888afcbc5ee2428706fa47fa06161fe7c188579d93719fd"
+      "bytes": 16920,
+      "sha256": "700ec97c33c974273ab5f25ea8340bd59476fc607236690beaa58d9badcce82a",
+      "original_local_bytes": 17432,
+      "original_local_sha256": "f9b8161571da49eb2888afcbc5ee2428706fa47fa06161fe7c188579d93719fd"
     },
     {
       "path": "precision-first/windows/results.json",
       "bytes": 1196141,
-      "sha256": "3e6277f91fcd7570d743eec479dfadc73761ab9bccec909cae6596d842da0010"
+      "sha256": "3e6277f91fcd7570d743eec479dfadc73761ab9bccec909cae6596d842da0010",
+      "original_local_bytes": 1196141,
+      "original_local_sha256": "3e6277f91fcd7570d743eec479dfadc73761ab9bccec909cae6596d842da0010"
     },
     {
       "path": "rapier-authored-inputs/receipt.json",
-      "bytes": 65946,
-      "sha256": "d51402608ca8ec74b5ff10dd56bacd5f337ecb94b9d0e2b38606e2a856cae5ba"
+      "bytes": 64385,
+      "sha256": "bf56e7cf1c0418c9e177b83267ea9400365e42d163ceffc07750459046a00ce3",
+      "original_local_bytes": 65946,
+      "original_local_sha256": "d51402608ca8ec74b5ff10dd56bacd5f337ecb94b9d0e2b38606e2a856cae5ba"
     },
     {
       "path": "rapier-authored-inputs/windows-runtime-only.json",
-      "bytes": 62148,
-      "sha256": "55f4eedb6eac31e765447869ef51bce8f8282ba991d0d95d30713434307000df"
+      "bytes": 60710,
+      "sha256": "8bc03b3724449c10ced24aa0ad2103a3eaea74f484dbf2ebe1177dbe942ecd87",
+      "original_local_bytes": 62148,
+      "original_local_sha256": "55f4eedb6eac31e765447869ef51bce8f8282ba991d0d95d30713434307000df"
     },
     {
       "path": "rapier-first/receipt.json",
-      "bytes": 46983,
-      "sha256": "6246362469729ab1eb78de125e79b2d4c417a72b6d9a640cabb1dc8469fb2e94"
+      "bytes": 45905,
+      "sha256": "9add6873bf960f48cd07280e588c1e4dc4256958e4f09c894080ff25aeb2722c",
+      "original_local_bytes": 46983,
+      "original_local_sha256": "6246362469729ab1eb78de125e79b2d4c417a72b6d9a640cabb1dc8469fb2e94"
     },
     {
       "path": "rapier-qualified/inputs.json",
-      "bytes": 41543,
-      "sha256": "464c1345a05fd481d24a7b7cd3fdadd9e3788ea57513b2e4b9b28c3f4af26f87"
+      "bytes": 40619,
+      "sha256": "e9e14c20a0865c32e47482d79e2c2843dab21a3040801b56fd625b7f875a58c9",
+      "original_local_bytes": 41543,
+      "original_local_sha256": "464c1345a05fd481d24a7b7cd3fdadd9e3788ea57513b2e4b9b28c3f4af26f87"
     },
     {
       "path": "rapier-qualified/receipt.json",
-      "bytes": 86286,
-      "sha256": "52bc9a1e5d00f01298614cd05749be91d396b16b452d7dc599c45b6adaa95f70"
+      "bytes": 84213,
+      "sha256": "78ab1fd66bc7547bb657194282f6e22d4d5b87f954c72448a7daf740e67c09a4",
+      "original_local_bytes": 86286,
+      "original_local_sha256": "52bc9a1e5d00f01298614cd05749be91d396b16b452d7dc599c45b6adaa95f70"
     }
   ],
   "local_raw_logs": [
@@ -224,5 +242,6 @@
     "runner_exit": 1,
     "engine_exit": null,
     "reason": "post-import authored-input assertion before receipt seal"
-  }
+  },
+  "text_custody": "Retained text copies use Git LF normalization; original local byte counts/hashes remain separate. Godot raw result bytes are unchanged."
 }
