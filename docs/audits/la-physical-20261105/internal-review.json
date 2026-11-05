@@ -1,0 +1,31 @@
+{
+  "scope":"Independent read-only agent technical checks; not the separately requested owner/adversarial admission review",
+  "reviewed_publication_checkpoint":"2c8191da1f5764d3c6695b81b9ddcdf75392b4a0",
+  "checkpoint_qualification":"Full checkpoint identity is taken from closure-validation.json; short2c8191da identifies this review. Runtime sources remain98443ca2,1cde808e,fd263092 and3e615326, not relabelled as publication HEAD.",
+  "reviews":[
+    {
+      "reviewer":"authored_campaign",
+      "mode":"read-only, no new workloads",
+      "decision":"No remaining material misstatement; suitable for Draft publication with promotion/integration blockers",
+      "findings":[
+        "1048attempted =1020complete+28failed,221540observedsteps,1020available finalsourceledgers and876closedtuplemultisets reconcile",
+        "12/28static screens and active-bed residual oscillation remain conditional, not sustainedsettled equilibrium",
+        "DynamicDust and force-response limits remain; no constitutiveyield or totalenergy claim",
+        "009timings are shared-host, not exclusive scaling; observed22.409ms step and stressquarantine prevent universal60Hz",
+        "Missing human/device, sustainedrest, parcelenergy, idle-host, asyncguard, originalSOL and cross-sourceadmission blockpromotion/integration"
+      ]
+    },
+    {
+      "reviewer":"response_hypothesis",
+      "mode":"read-only, no new workloads",
+      "decision":"No blocking mechanism or custody misstatement for Draft publication; continued opt-in investigation only",
+      "findings":[
+        "Strict samplednegative/livepositive gate has identical clipping/nonpassive/COM/age framing and finite/atomic guards",
+        "008real angular and sixarrival cases activate once per v3episode; event/legacy preservation residuals2.95e-15linear/8.10e-12torque",
+        "008worker1/4native rows, actual applied/poststep states and geometry match exactly within eachOS; actual4participants observed",
+        "Combinedpassive removal can remove usefulsupport; roundoff delayed-support gates are not substantive repairs",
+        "Rawcapture recoverability and source-qualified publication children remain explicit; originalSOL/MATbarriers unchanged"
+      ]
+    }
+  ]
+}

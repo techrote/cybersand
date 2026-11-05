@@ -1,0 +1,603 @@
+{
+  "source": "2c8191da1f5764d3c6695b81b9ddcdf75392b4a0",
+  "tree": "7fbe396d3f8f2f29c85b85b1c5b94996ca18330f",
+  "local_delta": "?? docs/audits/la-physical-20261105/reducer-adversary.json\n",
+  "results": [
+    {
+      "name": "docs",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/ci/check_docs.py"
+      ],
+      "requested_command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/ci/check_docs.py"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 180,
+      "seconds": 2.7479687000159174,
+      "log": "build\\la-physical\\closure-qualified\\docs.log",
+      "log_sha256": "62bc97eb40f4671be1cba2af55b8b6b0e3b20f23ed270b62fdec00fa5591b130",
+      "markers": []
+    },
+    {
+      "name": "repository-materialized",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/ci/check_repository.py",
+        "--require-materialized"
+      ],
+      "requested_command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/ci/check_repository.py",
+        "--require-materialized"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 180,
+      "seconds": 4.022794599994086,
+      "log": "build\\la-physical\\closure-qualified\\repository-materialized.log",
+      "log_sha256": "949f606a6d5c839debe75e6890c2ee90d765e1b243a1bb2425018aa4f543998f",
+      "markers": []
+    },
+    {
+      "name": "historical-M11",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/ci/check_m11_consistency.py"
+      ],
+      "requested_command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/ci/check_m11_consistency.py"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 180,
+      "seconds": 1.5720440999721177,
+      "log": "build\\la-physical\\closure-qualified\\historical-M11.log",
+      "log_sha256": "e5d2a8eecef5876957dc4ecff01b99af696053871616d2dea563371d44b2427b",
+      "markers": []
+    },
+    {
+      "name": "MAT-guard",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/material_catalogue/compatibility.py",
+        "--check"
+      ],
+      "requested_command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/material_catalogue/compatibility.py",
+        "--check"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 180,
+      "seconds": 2.7529221999575384,
+      "log": "build\\la-physical\\closure-qualified\\MAT-guard.log",
+      "log_sha256": "50174e75669bf15c0d521884f313715b5769054ca583572e3e734d0d06c14ae7",
+      "markers": []
+    },
+    {
+      "name": "MAT-compiler",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/material_catalogue/compiler.py",
+        "--check"
+      ],
+      "requested_command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/material_catalogue/compiler.py",
+        "--check"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 180,
+      "seconds": 0.18964900000719354,
+      "log": "build\\la-physical\\closure-qualified\\MAT-compiler.log",
+      "log_sha256": "d645a144c75f3517397c704fe81a8efb86fd092f64d93147bcfa35a1afc8bd3b",
+      "markers": []
+    },
+    {
+      "name": "retrieval-frozen",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/docs/retrieval_eval.py",
+        "--output",
+        "C:\\Users\\_\\.codex\\worktrees\\la-selective-sol\\khybersand\\build\\la-physical\\closure-qualified\\retrieval-frozen.json"
+      ],
+      "requested_command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/docs/retrieval_eval.py",
+        "--output",
+        "C:\\Users\\_\\.codex\\worktrees\\la-selective-sol\\khybersand\\build\\la-physical\\closure-qualified\\retrieval-frozen.json"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 180,
+      "seconds": 0.8062372999847867,
+      "log": "build\\la-physical\\closure-qualified\\retrieval-frozen.log",
+      "log_sha256": "447778a9108bc61925edad559bf6e5e42a09534c834cbe98679b7d9fceca69e0",
+      "markers": []
+    },
+    {
+      "name": "retrieval-PLAY",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/docs/retrieval_eval.py",
+        "--queries",
+        "docs/reference/retrieval-questions-play.json",
+        "--output",
+        "C:\\Users\\_\\.codex\\worktrees\\la-selective-sol\\khybersand\\build\\la-physical\\closure-qualified\\retrieval-PLAY.json"
+      ],
+      "requested_command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/docs/retrieval_eval.py",
+        "--queries",
+        "docs/reference/retrieval-questions-play.json",
+        "--output",
+        "C:\\Users\\_\\.codex\\worktrees\\la-selective-sol\\khybersand\\build\\la-physical\\closure-qualified\\retrieval-PLAY.json"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 180,
+      "seconds": 0.7966173999593593,
+      "log": "build\\la-physical\\closure-qualified\\retrieval-PLAY.log",
+      "log_sha256": "b2e94b657085b4c9a06a43c8303df989725c74d37d6e643815427aeb8f04a577",
+      "markers": []
+    },
+    {
+      "name": "retrieval-challenges",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/docs/retrieval_eval.py",
+        "--queries",
+        "docs/reference/retrieval-challenges.json",
+        "--output",
+        "C:\\Users\\_\\.codex\\worktrees\\la-selective-sol\\khybersand\\build\\la-physical\\closure-qualified\\retrieval-challenges.json"
+      ],
+      "requested_command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/docs/retrieval_eval.py",
+        "--queries",
+        "docs/reference/retrieval-challenges.json",
+        "--output",
+        "C:\\Users\\_\\.codex\\worktrees\\la-selective-sol\\khybersand\\build\\la-physical\\closure-qualified\\retrieval-challenges.json"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 180,
+      "seconds": 1.8646962000057101,
+      "log": "build\\la-physical\\closure-qualified\\retrieval-challenges.log",
+      "log_sha256": "d02678eb16b1e3dd5ab22ad096ee8c0e2d637e7f37919c377a889af1e5546b79",
+      "markers": []
+    },
+    {
+      "name": "syntax",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-m",
+        "py_compile",
+        "tools/experiments/la_physical_campaign.py",
+        "tools/experiments/la_physical_reduce.py",
+        "tools/experiments/la_physical_summarize.py",
+        "tools/experiments/la_physical_plot.py"
+      ],
+      "requested_command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-m",
+        "py_compile",
+        "tools/experiments/la_physical_campaign.py",
+        "tools/experiments/la_physical_reduce.py",
+        "tools/experiments/la_physical_summarize.py",
+        "tools/experiments/la_physical_plot.py"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 180,
+      "seconds": 0.14837889996124431,
+      "log": "build\\la-physical\\closure-qualified\\syntax.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "markers": []
+    },
+    {
+      "name": "whitespace",
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "requested_command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 180,
+      "seconds": 0.055476600013207644,
+      "log": "build\\la-physical\\closure-qualified\\whitespace.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "markers": []
+    },
+    {
+      "name": "Linux-ABI",
+      "command": [
+        "wsl",
+        "-d",
+        "Ubuntu-24.04",
+        "--cd",
+        "/mnt/c/Users/_/.codex/worktrees/la-selective-sol/khybersand",
+        "--",
+        "timeout",
+        "--signal=TERM",
+        "--kill-after=5s",
+        "180s",
+        "bash",
+        "tools/check_linux_runtime_floor.sh"
+      ],
+      "requested_command": [
+        "wsl",
+        "-d",
+        "Ubuntu-24.04",
+        "--cd",
+        "/mnt/c/Users/_/.codex/worktrees/la-selective-sol/khybersand",
+        "--",
+        "bash",
+        "tools/check_linux_runtime_floor.sh"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 180,
+      "seconds": 0.23847240000031888,
+      "log": "build\\la-physical\\closure-qualified\\Linux-ABI.log",
+      "log_sha256": "03231ceef99b45c3afc35b2ac492d3f8259714ad53433ca4be7a8d09fe59145c",
+      "markers": []
+    },
+    {
+      "name": "Makefile-targets",
+      "command": [
+        "C:/Users/_/lcb-local-toolchain/llvm-mingw-20260826/bin/mingw32-make.exe",
+        "-n",
+        "la-arrival-direction-test",
+        "la-arrival-direction-sanitize"
+      ],
+      "requested_command": [
+        "C:/Users/_/lcb-local-toolchain/llvm-mingw-20260826/bin/mingw32-make.exe",
+        "-n",
+        "la-arrival-direction-test",
+        "la-arrival-direction-sanitize"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 180,
+      "seconds": 0.19543240003986284,
+      "log": "build\\la-physical\\closure-qualified\\Makefile-targets.log",
+      "log_sha256": "6bc5b523f6337e7927e50756a9c311bda04ca5e0f746a602bc514a7bb400147d",
+      "markers": []
+    }
+  ],
+  "prior_missing_make_attempt": {
+    "source": "2c8191da1f5764d3c6695b81b9ddcdf75392b4a0",
+    "tree": "7fbe396d3f8f2f29c85b85b1c5b94996ca18330f",
+    "local_delta": "",
+    "results": [
+      {
+        "name": "docs",
+        "command": [
+          "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "tools/ci/check_docs.py"
+        ],
+        "requested_command": [
+          "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "tools/ci/check_docs.py"
+        ],
+        "exit": 0,
+        "clean": true,
+        "timeout_seconds": 180,
+        "seconds": 4.847908900002949,
+        "log": "build\\la-physical\\closure-checkpoint\\docs.log",
+        "log_sha256": "62bc97eb40f4671be1cba2af55b8b6b0e3b20f23ed270b62fdec00fa5591b130",
+        "markers": []
+      },
+      {
+        "name": "repository-materialized",
+        "command": [
+          "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "tools/ci/check_repository.py",
+          "--require-materialized"
+        ],
+        "requested_command": [
+          "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "tools/ci/check_repository.py",
+          "--require-materialized"
+        ],
+        "exit": 0,
+        "clean": true,
+        "timeout_seconds": 180,
+        "seconds": 6.010624899994582,
+        "log": "build\\la-physical\\closure-checkpoint\\repository-materialized.log",
+        "log_sha256": "949f606a6d5c839debe75e6890c2ee90d765e1b243a1bb2425018aa4f543998f",
+        "markers": []
+      },
+      {
+        "name": "historical-M11",
+        "command": [
+          "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "tools/ci/check_m11_consistency.py"
+        ],
+        "requested_command": [
+          "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "tools/ci/check_m11_consistency.py"
+        ],
+        "exit": 0,
+        "clean": true,
+        "timeout_seconds": 180,
+        "seconds": 2.304895499954,
+        "log": "build\\la-physical\\closure-checkpoint\\historical-M11.log",
+        "log_sha256": "e5d2a8eecef5876957dc4ecff01b99af696053871616d2dea563371d44b2427b",
+        "markers": []
+      },
+      {
+        "name": "MAT-guard",
+        "command": [
+          "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "tools/material_catalogue/compatibility.py",
+          "--check"
+        ],
+        "requested_command": [
+          "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "tools/material_catalogue/compatibility.py",
+          "--check"
+        ],
+        "exit": 0,
+        "clean": true,
+        "timeout_seconds": 180,
+        "seconds": 4.136003200022969,
+        "log": "build\\la-physical\\closure-checkpoint\\MAT-guard.log",
+        "log_sha256": "50174e75669bf15c0d521884f313715b5769054ca583572e3e734d0d06c14ae7",
+        "markers": []
+      },
+      {
+        "name": "MAT-compiler",
+        "command": [
+          "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "tools/material_catalogue/compiler.py",
+          "--check"
+        ],
+        "requested_command": [
+          "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "tools/material_catalogue/compiler.py",
+          "--check"
+        ],
+        "exit": 0,
+        "clean": true,
+        "timeout_seconds": 180,
+        "seconds": 0.2939753999817185,
+        "log": "build\\la-physical\\closure-checkpoint\\MAT-compiler.log",
+        "log_sha256": "d645a144c75f3517397c704fe81a8efb86fd092f64d93147bcfa35a1afc8bd3b",
+        "markers": []
+      },
+      {
+        "name": "retrieval-frozen",
+        "command": [
+          "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "tools/docs/retrieval_eval.py",
+          "--output",
+          "C:\\Users\\_\\.codex\\worktrees\\la-selective-sol\\khybersand\\build\\la-physical\\closure-checkpoint\\retrieval-frozen.json"
+        ],
+        "requested_command": [
+          "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "tools/docs/retrieval_eval.py",
+          "--output",
+          "C:\\Users\\_\\.codex\\worktrees\\la-selective-sol\\khybersand\\build\\la-physical\\closure-checkpoint\\retrieval-frozen.json"
+        ],
+        "exit": 0,
+        "clean": true,
+        "timeout_seconds": 180,
+        "seconds": 0.899060899973847,
+        "log": "build\\la-physical\\closure-checkpoint\\retrieval-frozen.log",
+        "log_sha256": "447778a9108bc61925edad559bf6e5e42a09534c834cbe98679b7d9fceca69e0",
+        "markers": []
+      },
+      {
+        "name": "retrieval-PLAY",
+        "command": [
+          "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "tools/docs/retrieval_eval.py",
+          "--queries",
+          "docs/reference/retrieval-questions-play.json",
+          "--output",
+          "C:\\Users\\_\\.codex\\worktrees\\la-selective-sol\\khybersand\\build\\la-physical\\closure-checkpoint\\retrieval-PLAY.json"
+        ],
+        "requested_command": [
+          "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "tools/docs/retrieval_eval.py",
+          "--queries",
+          "docs/reference/retrieval-questions-play.json",
+          "--output",
+          "C:\\Users\\_\\.codex\\worktrees\\la-selective-sol\\khybersand\\build\\la-physical\\closure-checkpoint\\retrieval-PLAY.json"
+        ],
+        "exit": 0,
+        "clean": true,
+        "timeout_seconds": 180,
+        "seconds": 0.8438828000216745,
+        "log": "build\\la-physical\\closure-checkpoint\\retrieval-PLAY.log",
+        "log_sha256": "b2e94b657085b4c9a06a43c8303df989725c74d37d6e643815427aeb8f04a577",
+        "markers": []
+      },
+      {
+        "name": "retrieval-challenges",
+        "command": [
+          "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "tools/docs/retrieval_eval.py",
+          "--queries",
+          "docs/reference/retrieval-challenges.json",
+          "--output",
+          "C:\\Users\\_\\.codex\\worktrees\\la-selective-sol\\khybersand\\build\\la-physical\\closure-checkpoint\\retrieval-challenges.json"
+        ],
+        "requested_command": [
+          "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "tools/docs/retrieval_eval.py",
+          "--queries",
+          "docs/reference/retrieval-challenges.json",
+          "--output",
+          "C:\\Users\\_\\.codex\\worktrees\\la-selective-sol\\khybersand\\build\\la-physical\\closure-checkpoint\\retrieval-challenges.json"
+        ],
+        "exit": 0,
+        "clean": true,
+        "timeout_seconds": 180,
+        "seconds": 2.1973119000322185,
+        "log": "build\\la-physical\\closure-checkpoint\\retrieval-challenges.log",
+        "log_sha256": "d02678eb16b1e3dd5ab22ad096ee8c0e2d637e7f37919c377a889af1e5546b79",
+        "markers": []
+      },
+      {
+        "name": "syntax",
+        "command": [
+          "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "-m",
+          "py_compile",
+          "tools/experiments/la_physical_campaign.py",
+          "tools/experiments/la_physical_reduce.py",
+          "tools/experiments/la_physical_summarize.py",
+          "tools/experiments/la_physical_plot.py"
+        ],
+        "requested_command": [
+          "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "-m",
+          "py_compile",
+          "tools/experiments/la_physical_campaign.py",
+          "tools/experiments/la_physical_reduce.py",
+          "tools/experiments/la_physical_summarize.py",
+          "tools/experiments/la_physical_plot.py"
+        ],
+        "exit": 0,
+        "clean": true,
+        "timeout_seconds": 180,
+        "seconds": 0.16968179994728416,
+        "log": "build\\la-physical\\closure-checkpoint\\syntax.log",
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "markers": []
+      },
+      {
+        "name": "whitespace",
+        "command": [
+          "git",
+          "diff",
+          "--check"
+        ],
+        "requested_command": [
+          "git",
+          "diff",
+          "--check"
+        ],
+        "exit": 0,
+        "clean": true,
+        "timeout_seconds": 180,
+        "seconds": 0.06170770002063364,
+        "log": "build\\la-physical\\closure-checkpoint\\whitespace.log",
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "markers": []
+      },
+      {
+        "name": "Linux-ABI",
+        "command": [
+          "wsl",
+          "-d",
+          "Ubuntu-24.04",
+          "--cd",
+          "/mnt/c/Users/_/.codex/worktrees/la-selective-sol/khybersand",
+          "--",
+          "timeout",
+          "--signal=TERM",
+          "--kill-after=5s",
+          "180s",
+          "bash",
+          "tools/check_linux_runtime_floor.sh"
+        ],
+        "requested_command": [
+          "wsl",
+          "-d",
+          "Ubuntu-24.04",
+          "--cd",
+          "/mnt/c/Users/_/.codex/worktrees/la-selective-sol/khybersand",
+          "--",
+          "bash",
+          "tools/check_linux_runtime_floor.sh"
+        ],
+        "exit": 0,
+        "clean": true,
+        "timeout_seconds": 180,
+        "seconds": 0.24062529997900128,
+        "log": "build\\la-physical\\closure-checkpoint\\Linux-ABI.log",
+        "log_sha256": "03231ceef99b45c3afc35b2ac492d3f8259714ad53433ca4be7a8d09fe59145c",
+        "markers": []
+      },
+      {
+        "name": "Makefile-targets",
+        "command": [
+          "wsl",
+          "-d",
+          "Ubuntu-24.04",
+          "--cd",
+          "/mnt/c/Users/_/.codex/worktrees/la-selective-sol/khybersand",
+          "--",
+          "timeout",
+          "--signal=TERM",
+          "--kill-after=5s",
+          "180s",
+          "make",
+          "-n",
+          "la-arrival-direction-test",
+          "la-arrival-direction-sanitize"
+        ],
+        "requested_command": [
+          "wsl",
+          "-d",
+          "Ubuntu-24.04",
+          "--cd",
+          "/mnt/c/Users/_/.codex/worktrees/la-selective-sol/khybersand",
+          "--",
+          "make",
+          "-n",
+          "la-arrival-direction-test",
+          "la-arrival-direction-sanitize"
+        ],
+        "exit": 127,
+        "clean": false,
+        "timeout_seconds": 180,
+        "seconds": 0.20264750003116205,
+        "log": "build\\la-physical\\closure-checkpoint\\Makefile-targets.log",
+        "log_sha256": "10646732d6f58be07b197c6f15cabde8f475eacd76187ded5b27a853fa7b26f8",
+        "markers": []
+      }
+    ]
+  },
+  "retrieval_summaries": {
+    "frozen": {
+      "questions": 32,
+      "canonical_hit_at_1": 19,
+      "canonical_hit_at_k": 32,
+      "mrr_at_k": 0.7536,
+      "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+    },
+    "PLAY": {
+      "questions": 14,
+      "canonical_hit_at_1": 14,
+      "canonical_hit_at_k": 14,
+      "mrr_at_k": 1.0,
+      "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+    },
+    "challenges": {
+      "questions": 157,
+      "canonical_hit_at_1": 124,
+      "canonical_hit_at_k": 156,
+      "mrr_at_k": 0.873,
+      "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+    }
+  },
+  "semantic_review": "PLAY-LA-EQUILIBRIUM-02 ranks first at canonical owner, distinguishes valid entrapment/invalid overlap, rejected support filters/narrow opt-in guard, and no production promotion; frozen and oldPLAYobjects preserved",
+  "publication_scope": "Checks at recorded checkpoint plus localdelta; subsequent evidence-only children rechecked locally, no runtime source relabel"
+}
