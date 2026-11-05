@@ -92,7 +92,7 @@ def main():
         try:
             commands=[c for c in receipt['hosts'][host]['commands'] if c['name']==tag];assert len(commands)==1
             command=commands[0];assert command['clean'] and command['report_audit']=='PASS' and len(command['reports'])==1
-            item=command['reports'][0];path=ROOT/item['path'];assert sha(path)==item['sha256'];data=read(path)
+            item=command['reports'][0];path=ROOT/item['path'].replace('\\','/');assert sha(path)==item['sha256'];data=read(path)
             assert data['source']==receipt['identity']['source'] and data['registration']=='SOL-NODE-TRACE-001-AUTHORED'
             assert data['requested_workers']==coordinate['workers'] and not data['failures']
             assert data['case']['id']=='shared-granular-bodies' and data['repeat']==0 and data['arm']==data['native_mode']=='LA-SELECTIVE'
@@ -148,7 +148,7 @@ def main():
         entry=dict(host=host,workers=worker,normal_policy=policy,status='UNAVAILABLE',retained_source=retained['execution_source'],
             retained_path=item['summary']['raw_path'],retained_sha256=item['summary']['raw_sha256']);retained_pairs.append(entry)
         try:
-            path=ROOT/entry['retained_path'];assert sha(path)==entry['retained_sha256']
+            path=ROOT/entry['retained_path'].replace('\\','/');assert sha(path)==entry['retained_sha256']
             entry.update(parity(read(path),data_index[(host,worker,policy,'off')]))
         except Exception as error:entry.update(status='FAIL',error=type(error).__name__+': '+str(error))
     write(output/'trace-accounting.json',trace_rows);write(output/'first-differences.json',divergences)
