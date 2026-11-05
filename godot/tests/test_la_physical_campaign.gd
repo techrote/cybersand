@@ -5,7 +5,7 @@ extends SceneTree
 const Session = preload("res://scripts/physical_actor_session.gd")
 const Fleet = preload("res://scripts/gcr_review_fleet.gd")
 const Contract = preload("res://scripts/microscenario_contract.gd")
-const REGISTRATION = "res://tests/fixtures/la_physical/registration-v4.json"
+const REGISTRATION = "res://tests/fixtures/la_physical/registration-v5.json"
 const DAM = "res://tests/fixtures/lcb/lcb.dam.water.freemass.reference.v1.json"
 var failures: Array[String] = []
 var checks: int = 0
@@ -140,6 +140,8 @@ func episode(spec: Dictionary, arm: String, workers: int, repeat: int, output: S
 		check(body_state(bodies[index]).omega==0 and body_state(bodies[index]).pose==neutral_poses[index],"neutral pose and angular motion unchanged")
 		if spec.has("initial_vy"):
 			PhysicsServer2D.body_set_state(bodies[index].get_rid(),PhysicsServer2D.BODY_STATE_LINEAR_VELOCITY,Vector2(0,spec.initial_vy))
+		if spec.has("initial_omega"):
+			PhysicsServer2D.body_set_state(bodies[index].get_rid(),PhysicsServer2D.BODY_STATE_ANGULAR_VELOCITY,float(spec.initial_omega))
 		authored.append({"definition":definitions[index],"state":body_state(bodies[index]),"geometry":geometries[index],
 			"layer":bodies[index].collision_layer,"mask":bodies[index].collision_mask,
 			"authoring":session.workbench_actor_state(index+1)})
@@ -168,6 +170,7 @@ func episode(spec: Dictionary, arm: String, workers: int, repeat: int, output: S
 		if layout=="arrival": rectangles.append_array(PackedInt32Array([x-3,92,6,2,material]))
 		if layout=="invalid-sand": rectangles.append_array(PackedInt32Array([x-2,118,4,4,2]))
 		if layout=="invalid-wall": rectangles.append_array(PackedInt32Array([x-2,118,4,4,1]))
+		if spec.get("near_arrival",false): rectangles.append_array(PackedInt32Array([x-3,112,6,1,2]))
 	var sources: Array = []
 	if spec.has("distributed"):
 		for y: int in int(spec.get("grid",8)):
@@ -256,6 +259,13 @@ func episode(spec: Dictionary, arm: String, workers: int, repeat: int, output: S
 				var reverse: Vector2 = -2.0*current.mass*current.velocity
 				PhysicsServer2D.body_apply_central_impulse(bodies[index].get_rid(),reverse)
 				external[index].reversal_impulse=reverse
+				external[index].reversal_work=body_state(bodies[index]).kinetic-current.kinetic
+		if step==int(spec.get("torque_reverse_step",-1)):
+			for index: int in bodies.size():
+				var current: Dictionary = body_state(bodies[index])
+				var reverse: float = -2.0*current.inertia*current.omega
+				PhysicsServer2D.body_apply_torque_impulse(bodies[index].get_rid(),reverse)
+				external[index].reversal_torque_impulse=reverse
 				external[index].reversal_work=body_state(bodies[index]).kinetic-current.kinetic
 		if int(spec.get("publication_age",0))==1: session.bridge.pack_sample(drives)
 		var preapplication_step_us: int = 0

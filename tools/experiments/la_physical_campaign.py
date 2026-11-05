@@ -89,7 +89,7 @@ def main():
     args=parser.parse_args()
     assert Path(args.run).name==args.run and args.run not in [".",".."]
     info=identity();output=ROOT/"build/la-physical"/args.run
-    registration=load_registration(ROOT/"godot/tests/fixtures/la_physical/registration-v4.json")
+    registration=load_registration(ROOT/"godot/tests/fixtures/la_physical/registration-v5.json")
     cases=[c for c in registration["cases"] if not args.cases or c["id"] in args.cases.split(",")]
     if args.tests_only:cases=[]
     if args.cases:assert {c["id"] for c in cases}==set(args.cases.split(","))

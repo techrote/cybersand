@@ -1,0 +1,13 @@
+{
+  "id":"LA-PHYSICAL-008-ANGULAR-AND-NEAR-ARRIVAL",
+  "registered_date":"2026-11-05",
+  "extends":"res://tests/fixtures/la_physical/registration-v4.json",
+  "prior_registration":"docs/audits/2026-11-05-la-physical-qualification.md prospective008follow-up at663a2571, before implementation/outcomes",
+  "extra_cases":[
+    {"id":"angular-Scooper-reversal","kind":"causal","models":["scooper"],"layout":"bed","initial_omega":0.3,"torque_reverse_step":0},
+    {"id":"near-Sand-reversal","kind":"causal","models":["reference_barrel"],"layout":"bed","initial_vy":3,"reverse_step":1,"near_arrival":true}
+  ],
+  "invariants":"Same sevenarms, gains, budget20, seed0, cadence1/60,180steps, worker1/4, actualWindows/Linux and freshowners. New initialomega/neargrain inputs only in newcase identities; no rewrite of oldcohorts.",
+  "causal_accounting":"After native response, externally measuredtorqueimpulse -2*I*liveomega atstep0; nearSand initialsixcells125..130atY112andlinearreversalstep1. Log all actuatorwork. No retiming if event/gate absent; record such a case as uninformative for simultaneouseventpreservation.",
+  "rollback":"Reject claimedbenefit without actualcausalactivation or with response/material/readback/ownership regression. No globalpassivity or originalSOLclaim."
+}
