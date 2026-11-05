@@ -53,6 +53,12 @@ def arithmetic_bits(capture):
     # all actual weights, updates and kinematic states agree.
     return b''.join(raw[i*64:i*64+48] for i in range(8)).hex()+capture['steps_f64le']
 
+def effect_bits(capture):
+    raw=bytes.fromhex(capture['batches_f64le']);steps=bytes.fromhex(capture['steps_f64le'])
+    assert len(raw)==512 and len(steps)%88==0
+    return b''.join(raw[i*64:i*64+48] for i in range(8)).hex()+b''.join(
+        steps[i:i+8] for start in range(0,len(steps),88) for i in [start+8*k for k in [2,3,8,9]]).hex()
+
 def parity(off,on):
     assert pristine(off)==pristine(on),'Mismatched initial authoritative inputs'
     assert off['final_payload']['sha256']==on['final_payload']['sha256'],'Final CYPS mismatch'
@@ -76,8 +82,11 @@ def first_differences(original,active):
                 if kind not in found and any(ca[k]!=cb[k] for k in keys):
                     found[kind]=dict(step=first['step'],different_fields=[k for k in keys if ca[k]!=cb[k]],
                         exact_body_equal=ca['body_f64le']==cb['body_f64le'],exact_nodes_equal=ca['nodes_f64le']==cb['nodes_f64le'],original=ca,active=cb)
-            if 'batch_arithmetic' not in found and arithmetic_bits(ca)!=arithmetic_bits(cb):
-                found['batch_arithmetic']=dict(step=first['step'],different_fields=['batch kinematics and/or node update values; policy-only weight/count/mask metadata excluded'],
+            if 'batch_operands' not in found and arithmetic_bits(ca)!=arithmetic_bits(cb):
+                found['batch_operands']=dict(step=first['step'],different_fields=['batch kinematics and/or node arithmetic operands; policy-only count/mask metadata excluded'],
+                    exact_body_equal=ca['body_f64le']==cb['body_f64le'],exact_nodes_equal=ca['nodes_f64le']==cb['nodes_f64le'],original=ca,active=cb)
+            if 'batch_effect' not in found and effect_bits(ca)!=effect_bits(cb):
+                found['batch_effect']=dict(step=first['step'],different_fields=['batch kinematic state and/or jn_after,jt_after,next,delta; different weights with zero requests do not count as an effect'],
                     exact_body_equal=ca['body_f64le']==cb['body_f64le'],exact_nodes_equal=ca['nodes_f64le']==cb['nodes_f64le'],original=ca,active=cb)
             ra=struct.unpack('<19d',bytes.fromhex(ca['result_f64le']));rb=struct.unpack('<19d',bytes.fromhex(cb['result_f64le']))
             if 'wrench' not in found and any(ra[k]!=rb[k] for k in [0,1,6,7,8,9]):

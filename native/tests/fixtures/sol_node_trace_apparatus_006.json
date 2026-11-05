@@ -1,0 +1,10 @@
+{
+  "registration": "SOL-NODE-TRACE-006-OPERAND-EFFECT-CLARIFICATION",
+  "parent": "SOL-NODE-TRACE-001",
+  "date": "2026-11-05",
+  "retained_analysis": "build/sol-node-trace/analysis-003",
+  "source": "fef3f3bb",
+  "finding": "After separating policy metadata, actual weight_used operands still differ atstep0: Original uses0.25 while inactive Active uses0, with requested impulse zero and every actual update/kinematic state equal. Calling this the first effective response difference would be incorrect.",
+  "correction": "Retain all outputs. Report metadata, arithmetic operands, actual batch effects, result/wrench and later node-input differences separately. Batch effect compares six batch kinematic values plus jn_after,jt_after,next,delta. Two explicit zero-request-weight/delta classification tests supplement the existing15tests.",
+  "limits": "Interpretation correction only; no physical rerun, threshold/tolerance, source/runtime guard, capacity, force or default change. Full closure/parity results remain valid."
+}

@@ -12,6 +12,16 @@ def report():
     return dict(initial_payload={'sha256':'initial'},final_payload={'sha256':'final'},initial_geometry=[],initial_sample={},authored=[],case={},steps=steps)
 
 class ParityAudit(unittest.TestCase):
+    def test_weight_operand_can_differ_without_effect(self):
+        a={'batches_f64le':struct.pack('<64d',*([0.]*64)).hex(),'steps_f64le':struct.pack('<11d',*([0.]*11)).hex()};b=copy.deepcopy(a)
+        values=[0.]*11;values[6]=.25;b['steps_f64le']=struct.pack('<11d',*values).hex()
+        self.assertNotEqual(r.arithmetic_bits(a),r.arithmetic_bits(b));self.assertEqual(r.effect_bits(a),r.effect_bits(b))
+
+    def test_delta_change_is_effect(self):
+        a={'batches_f64le':struct.pack('<64d',*([0.]*64)).hex(),'steps_f64le':struct.pack('<11d',*([0.]*11)).hex()};b=copy.deepcopy(a)
+        values=[0.]*11;values[9]=.25;b['steps_f64le']=struct.pack('<11d',*values).hex()
+        self.assertNotEqual(r.effect_bits(a),r.effect_bits(b))
+
     def test_policy_metadata_is_not_arithmetic_divergence(self):
         a={'batches_f64le':struct.pack('<64d',*([0.]*64)).hex(),'steps_f64le':''};b=copy.deepcopy(a)
         values=[0.]*64;values[7]=1.;b['batches_f64le']=struct.pack('<64d',*values).hex()
