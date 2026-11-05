@@ -69,8 +69,9 @@ WorldConfig config_for(std::uint32_t workers) {
     config.sleep_after_quiet_ticks = 3;
     config.initial_chunk_reserve = 4;
     config.maximum_chunk_count = 16;
-    config.active_chunk_capacity = 32;
-    config.active_core_capacity = 64;
+    config.active_chunk_capacity = 64;
+    // Scheduler capacity counts expanded candidates before deduplication.
+    config.active_core_capacity = 512;
     config.deferred_event_capacity = 64;
     return config;
 }
