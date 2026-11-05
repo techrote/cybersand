@@ -170,6 +170,16 @@ inline Result solve_compound(const Body& b, std::span<const Bin* const> bins,
     out.raw_impulse=out.impulse; out.raw_torque=out.torque;
     out.energy_before=kinetic(b,b.velocity,b.omega);
     out.energy_after=kinetic(b,b.velocity+out.impulse*(1./b.mass),b.omega+out.torque/b.inertia);
+    // The diagnostic active-normal proposal is optional. If it fails the
+    // finite passivity guard, retry the unchanged original policy rather than
+    // silently suppressing a safe response. Both passes enforce the same
+    // final energy limit; nonfinite proposals retain the original refusal.
+    if(normal_policy==NormalPolicy::ActiveNormal001 &&
+       std::isfinite(out.energy_before) && std::isfinite(out.energy_after) &&
+       out.energy_after>out.energy_before+1e-6*std::max(1.,out.energy_before)) {
+        return solve_compound(b,bins,workspace,available,capacity_scale,base_budget,
+                              NormalPolicy::Original);
+    }
     if(!std::isfinite(out.energy_after) || out.energy_after>out.energy_before+1e-6*std::max(1.,out.energy_before)) {
         out.passive_rejected=true; out.scale=0;
         out.impulse={}; out.normal_impulse={}; out.tangent_impulse={};
