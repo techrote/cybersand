@@ -18,7 +18,7 @@ int main() {
  auto U=[&](double l,double h){return std::uniform_real_distribution<double>(l,h)(rng);};
  auto I=[&](int l,int h){return std::uniform_int_distribution<int>(l,h)(rng);};
  constexpr Vec normals[]={{1,0},{-1,0},{0,1},{0,-1}};
- uint64_t n=0,fail=0,ref0=0,ref1=0,candidate_only=0,baseline_only=0, changed=0, same=0, energy_fail=0, nonfinite=0;
+ uint64_t n=0,fail=0,ref0=0,ref1=0,candidate_only=0,baseline_only=0, changed=0, same=0, energy_fail=0, nonfinite=0, fallback_count=0, fallback_mismatch=0, unexpected_default_flag=0;
  double worst_positive_energy=0,worst_diff=0,max_rel_impulse=0;
  for(int scenario=0;scenario<4;++scenario) for(int k=0;k<SOL_PROPERTY_CASES/4;++k) {
   Body b{}; b.com={U(-4,4),U(-4,4)};
@@ -38,6 +38,13 @@ int main() {
   CompoundWorkspace x{},y{};
   const Result a=solve_compound(b,s,x,20,1,20,false),t=solve_compound(b,s,y,20,1,20,true);
   ++n;ref0+=a.passive_rejected;ref1+=t.passive_rejected;
+  if(a.historical_fallback_used) ++unexpected_default_flag;
+  if(t.historical_fallback_used){
+   ++fallback_count;
+   if(a.passive_rejected!=t.passive_rejected || a.impulse.x!=t.impulse.x ||
+      a.impulse.y!=t.impulse.y || a.torque!=t.torque ||
+      a.energy_after!=t.energy_after) ++fallback_mismatch;
+  }
   if(t.passive_rejected && !a.passive_rejected) ++candidate_only;
   if(a.passive_rejected && !t.passive_rejected) ++baseline_only;
   const double lim=t.energy_before+1e-6*std::max(1.,t.energy_before);
@@ -49,6 +56,6 @@ int main() {
   max_rel_impulse=std::max(max_rel_impulse,std::hypot(t.impulse.x,t.impulse.y));
   worst_positive_energy=std::max(worst_positive_energy,t.energy_after-t.energy_before);
  }
- std::cout<<std::setprecision(17)<<"SOL418_PROPERTIES cases="<<n<<" baseline_rejected="<<ref0<<" candidate_rejected="<<ref1<<" candidate_only="<<candidate_only<<" baseline_only="<<baseline_only<<" changed="<<changed<<" same="<<same<<" energy_fail="<<energy_fail<<" nonfinite="<<nonfinite<<" worst_positive_energy="<<worst_positive_energy<<" worst_diff="<<worst_diff<<" max_rel_impulse="<<max_rel_impulse<<"\n";
- return fail||candidate_only?1:0;
+ std::cout<<std::setprecision(17)<<"SOL418_PROPERTIES cases="<<n<<" baseline_rejected="<<ref0<<" candidate_rejected="<<ref1<<" candidate_only="<<candidate_only<<" baseline_only="<<baseline_only<<" changed="<<changed<<" same="<<same<<" energy_fail="<<energy_fail<<" nonfinite="<<nonfinite<<" worst_positive_energy="<<worst_positive_energy<<" worst_diff="<<worst_diff<<" max_rel_impulse="<<max_rel_impulse<<" fallback_count="<<fallback_count<<" fallback_mismatch="<<fallback_mismatch<<" unexpected_default_flag="<<unexpected_default_flag<<"\n";
+ return fail||candidate_only||fallback_mismatch||unexpected_default_flag?1:0;
 }
