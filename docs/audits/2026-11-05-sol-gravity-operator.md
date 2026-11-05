@@ -81,7 +81,8 @@ and combine/replace damping differences without adding a new tolerance gate.
 Effective gravity is not yet authenticated against a native owner's sampled
 nominal gravity; that binding is **UNAVAILABLE** because this oracle has no native
 owner. A future predictor must establish direction, scale and actual coefficient
-provenance instead of substituting the barrel's nominal38 from a flyer.
+provenance instead of substituting a flyer's nominal38 for the barrel's measured
+gravity.
 
 ## Evidence, failures and limits
 

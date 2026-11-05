@@ -20,7 +20,7 @@ The first intervention removes only opposing-component linear velocity clipping.
 It retains positional correction, COM torque transport, native wrench, gains,
 caps, four passes, gravity and every authority fence. Two normal policies crossed
 with baseline/retain-linear application isolate the application interaction.
-The first native-policy differences already precede correction; clipping is not
+The first native-policy differences already precede unequal correction; clipping is not
 assumed to cause them. Removing correction itself would confound this experiment.
 
 StageA runs48fresh360step episodes on actual Windows/Linux, requested workers1/4:
@@ -78,6 +78,8 @@ The [execution receipt](sol-contact-application-20261105/execution.json),
 [step witnesses](sol-contact-application-20261105/application-witnesses.json)
 preserve command/exit/timeouts, source/runtime/input/log hashes and failures.
 Full per-step observations remain under `build/sol-contact-application`.
+The12public witnesses omit per-row solver-trace payloads; complete raw captures
+remain bound by custody and are not replaced by those projections.
 
 These Windows/worker1 values repeat across all four host/worker groups. Speed
 is cells/s, span/depth cells and intersection area cell²; tail meanssteps240–359.
@@ -162,3 +164,23 @@ changed. **Request independent adversarial review before an owner decision.**
 General desktop promotion still needs a resolved mixed-body regression, broader
 source-matched material/gameplay/performance qualification and a separate owner
 decision preserving LA/LA-EVENT-OFF/RFT and existing liquid/material policy.
+
+## Checkpoint checks and review
+
+At1987d4be, docs/M11/material compatibility pass and all20retrieval fixtures
+have complete canonical top5 route coverage. The new three questions rank1;
+older rank1 coverage varies, and route hits are not answer acceptance. Actual
+Windows/Linux each pass74focused tests:13contact,16operator,17trace,6replay,
+22offline-authority. An earlier authority discovery glob matched0tests and
+exited5 on each host; the corrected model glob passes22without source changes.
+Those failed commands remain in the [checkpoint receipt](sol-contact-application-20261105/checkpoint-checks.json).
+
+Canonical repository provenance remains **NO-GO with8experimental-native versus
+accepted-manifest mismatches**. Strict materialization additionally reports
+14non-desktop LFS pointers (22errors total); four desktop runtime artifacts
+are materialized/executed. Accepted manifests/material guards are not refreshed.
+Earlier ZIP-cap and original SOL CPU/physical failures remain unresolved.
+Read-only packet/source reviews find no publication blocker after clarifying
+unequal correction, witness projection, nominal gravity and attempted-run wording.
+These reviews do not replace separate independent owner acceptance or admit a
+new support response, Ready transition, integration or default promotion.

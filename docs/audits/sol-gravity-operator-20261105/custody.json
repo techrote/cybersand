@@ -70,5 +70,5 @@
     }
   ],
   "artifact_bytes": 866004806,
-  "scope": "All attempts retained. Public JSON line endings normalized to LF; build raw receipts retain original byte hashes. No binary/cache/log committed. Three physical runs have separate denominators; only operator003 final property qualification."
+  "scope": "All attempts retained. Public JSON line endings normalized to LF; build raw receipts retain original byte hashes. No binary/cache/log committed. Three attempted operator runs; operator002 produced no physical oracle observations. Only operator003 is final property qualification."
 }
