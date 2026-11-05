@@ -91,7 +91,8 @@ struct CompoundWorkspace {
 // Same R2 arithmetic, with per-rectangle bins retained and one physical state,
 // normalized source distribution, budget, provisional velocity and energy test.
 inline Result solve_compound(const Body& b, std::span<const Bin* const> bins,
-                             CompoundWorkspace& workspace, double available=20, double capacity_scale=1, double base_budget=20) {
+                             CompoundWorkspace& workspace, double available=20, double capacity_scale=1, double base_budget=20,
+                             bool normalize_active_normal=false) {
     Result out;
     if(bins.size()>kCompoundBins) { out.passive_rejected=true; out.scale=0; return out; }
     auto& contacts=workspace.contacts;
@@ -114,6 +115,18 @@ inline Result solve_compound(const Body& b, std::span<const Bin* const> bins,
     }
     Vec v=b.velocity; double w=b.omega;
     for(unsigned pass=0;pass<4;++pass) for(unsigned axis=0;axis<2;++axis) {
+        // Experimental and opt-in only. A perpendicular or separating contact
+        // need not dilute a different contact's capacity to arrest approach.
+        // Normalize the proposal among *eligible opposing* normal samples.
+        // Capacity, energy guard, number of passes and default mode are intact.
+        double opposing_weight=0.;
+        if(!axis && normalize_active_normal) for(std::size_t i=0;i<out.nodes;++i) {
+            const auto& contact=contacts[i];
+            const Vec r=contact.position-b.com;
+            const double speed=dot(v+Vec{-w*r.y,w*r.x},contact.normal);
+            if(speed<0 && contact.jn<contact.capacity)
+                opposing_weight+=contact.weight;
+        }
         auto& delta=workspace.delta;
         for(std::size_t i=0;i<out.nodes;++i) {
             auto& contact=contacts[i];
@@ -128,7 +141,10 @@ inline Result solve_compound(const Body& b, std::span<const Bin* const> bins,
                 delta[i]=next-contact.jt; contact.jt=next;
             } else {
                 out.raw_normal+=std::max(0.,requested);
-                const double target=contact.jn+requested*contact.weight;
+                const double factor=normalize_active_normal && requested>0 &&
+                    contact.jn<contact.capacity && opposing_weight>0
+                    ? contact.weight/opposing_weight : contact.weight;
+                const double target=contact.jn+requested*factor;
                 if(target>contact.capacity) ++out.normal_cap_hits;
                 const double next=std::clamp(target,0.,contact.capacity);
                 delta[i]=next-contact.jn; contact.jn=next;
