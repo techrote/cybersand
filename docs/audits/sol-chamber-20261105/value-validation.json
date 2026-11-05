@@ -1,0 +1,220 @@
+{
+  "source": "365722fca233d704a6f604440decb2de6a7d0c8c",
+  "results": [
+    {
+      "name": "docs",
+      "command": [
+        "python",
+        "tools/ci/check_docs.py"
+      ],
+      "requested_command": [
+        "python",
+        "tools/ci/check_docs.py"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 120,
+      "seconds": 1.7646057000383735,
+      "log": "build\\sol-chamber-sealing\\values-365722fc\\docs.log",
+      "log_sha256": "dcfb246f71c02304d702a764b454d90a635ac60b8179f6aa5a32f22a74c30010",
+      "markers": []
+    },
+    {
+      "name": "m11",
+      "command": [
+        "python",
+        "tools/ci/check_m11_consistency.py"
+      ],
+      "requested_command": [
+        "python",
+        "tools/ci/check_m11_consistency.py"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 120,
+      "seconds": 1.0582654000027105,
+      "log": "build\\sol-chamber-sealing\\values-365722fc\\m11.log",
+      "log_sha256": "e5d2a8eecef5876957dc4ecff01b99af696053871616d2dea563371d44b2427b",
+      "markers": []
+    },
+    {
+      "name": "repository",
+      "command": [
+        "python",
+        "tools/ci/check_repository.py"
+      ],
+      "requested_command": [
+        "python",
+        "tools/ci/check_repository.py"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 120,
+      "seconds": 2.6451112999930046,
+      "log": "build\\sol-chamber-sealing\\values-365722fc\\repository.log",
+      "log_sha256": "4aa877bd79860c007b2214f72d8d5d23ad5132d86a6cb6c8dbfabce0670b51c7",
+      "markers": []
+    },
+    {
+      "name": "material",
+      "command": [
+        "python",
+        "tools/material_catalogue/compatibility.py",
+        "--check"
+      ],
+      "requested_command": [
+        "python",
+        "tools/material_catalogue/compatibility.py",
+        "--check"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 120,
+      "seconds": 1.7574569999706,
+      "log": "build\\sol-chamber-sealing\\values-365722fc\\material.log",
+      "log_sha256": "50174e75669bf15c0d521884f313715b5769054ca583572e3e734d0d06c14ae7",
+      "markers": []
+    },
+    {
+      "name": "value-audit",
+      "command": [
+        "python",
+        "tools/experiments/test_sol_passive_values.py"
+      ],
+      "requested_command": [
+        "python",
+        "tools/experiments/test_sol_passive_values.py"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 120,
+      "seconds": 0.36038189998362213,
+      "log": "build\\sol-chamber-sealing\\values-365722fc\\value-audit.log",
+      "log_sha256": "72a11179e863dc1ab2db16805538acfb052b2c7812d7403bf2bb0adc6ed6ea07",
+      "markers": []
+    },
+    {
+      "name": "geometry",
+      "command": [
+        "python",
+        "tools/experiments/test_sol_chamber_reduce.py"
+      ],
+      "requested_command": [
+        "python",
+        "tools/experiments/test_sol_chamber_reduce.py"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 120,
+      "seconds": 0.15493909997167066,
+      "log": "build\\sol-chamber-sealing\\values-365722fc\\geometry.log",
+      "log_sha256": "689312b8fc34eb63c0bdd343069c57816ee2fde5d3a3a2e719ea8e2b73103e1e",
+      "markers": []
+    },
+    {
+      "name": "whitespace",
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "requested_command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 120,
+      "seconds": 0.0394230000092648,
+      "log": "build\\sol-chamber-sealing\\values-365722fc\\whitespace.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "markers": []
+    }
+  ],
+  "retrieval": {
+    "source": "365722fca233d704a6f604440decb2de6a7d0c8c",
+    "results": [
+      {
+        "name": "frozen",
+        "command": [
+          "python",
+          "tools/docs/retrieval_eval.py",
+          "--output",
+          "C:\\Users\\_\\.codex\\worktrees\\sol-chamber-20261105\\khybersand\\build\\sol-chamber-sealing\\values-retrieval-365722fc\\frozen.json"
+        ],
+        "requested_command": [
+          "python",
+          "tools/docs/retrieval_eval.py",
+          "--output",
+          "C:\\Users\\_\\.codex\\worktrees\\sol-chamber-20261105\\khybersand\\build\\sol-chamber-sealing\\values-retrieval-365722fc\\frozen.json"
+        ],
+        "exit": 0,
+        "clean": true,
+        "timeout_seconds": 120,
+        "seconds": 0.49063890002435073,
+        "log": "build\\sol-chamber-sealing\\values-retrieval-365722fc\\frozen.log",
+        "log_sha256": "7ae0581eb519a571cf1ea9df174a4cff397e25d57f00f48eedd20ef89b776028",
+        "markers": []
+      },
+      {
+        "name": "chamber",
+        "command": [
+          "python",
+          "tools/docs/retrieval_eval.py",
+          "--queries",
+          "docs/reference/retrieval-questions-sol-chamber.json",
+          "--output",
+          "C:\\Users\\_\\.codex\\worktrees\\sol-chamber-20261105\\khybersand\\build\\sol-chamber-sealing\\values-retrieval-365722fc\\chamber.json"
+        ],
+        "requested_command": [
+          "python",
+          "tools/docs/retrieval_eval.py",
+          "--queries",
+          "docs/reference/retrieval-questions-sol-chamber.json",
+          "--output",
+          "C:\\Users\\_\\.codex\\worktrees\\sol-chamber-20261105\\khybersand\\build\\sol-chamber-sealing\\values-retrieval-365722fc\\chamber.json"
+        ],
+        "exit": 0,
+        "clean": true,
+        "timeout_seconds": 120,
+        "seconds": 0.39194030000362545,
+        "log": "build\\sol-chamber-sealing\\values-retrieval-365722fc\\chamber.log",
+        "log_sha256": "a844e93253a099d47a646e46d33b8187af8105c23b77870a886926a518e9b0b4",
+        "markers": []
+      },
+      {
+        "name": "passive",
+        "command": [
+          "python",
+          "tools/docs/retrieval_eval.py",
+          "--queries",
+          "docs/reference/retrieval-questions-sol-passive.json",
+          "--output",
+          "C:\\Users\\_\\.codex\\worktrees\\sol-chamber-20261105\\khybersand\\build\\sol-chamber-sealing\\values-retrieval-365722fc\\passive.json"
+        ],
+        "requested_command": [
+          "python",
+          "tools/docs/retrieval_eval.py",
+          "--queries",
+          "docs/reference/retrieval-questions-sol-passive.json",
+          "--output",
+          "C:\\Users\\_\\.codex\\worktrees\\sol-chamber-20261105\\khybersand\\build\\sol-chamber-sealing\\values-retrieval-365722fc\\passive.json"
+        ],
+        "exit": 0,
+        "clean": true,
+        "timeout_seconds": 120,
+        "seconds": 0.3759474999969825,
+        "log": "build\\sol-chamber-sealing\\values-retrieval-365722fc\\passive.log",
+        "log_sha256": "4c5dace244c2cd2c0e6cd233f966897678a3848d1dc3efb2d2785a971b0a0696",
+        "markers": []
+      }
+    ]
+  },
+  "native_identity": {
+    "source": "365722fca233d704a6f604440decb2de6a7d0c8c",
+    "path": "build\\sol-chamber-sealing\\identity-365722fc.json",
+    "sha256": "5f17648609a1dbaec572af8da148b0be681993c7827d210a300f324dfaf58b94",
+    "native_inputs": 84
+  }
+}

@@ -210,6 +210,11 @@
       "path": "linux-full-reduction.json",
       "bytes": 1512,
       "sha256": "257791d74b44e164ac645d4c9c907f58a3d61d43effb187ab37e4402c5220eb1"
+    },
+    {
+      "path": "value-validation.json",
+      "bytes": 7105,
+      "sha256": "e4b30a1a8b6809a30647bf5937c47f33a94ad933e80a4bf7d1eafb115da3b02b"
     }
   ],
   "local_raw_files": [

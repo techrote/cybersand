@@ -339,7 +339,7 @@ score. Manual expected-fact review preserves source/ownership and cost limits.
 The pinned companion files are separately materialized from `a15e06ca`; no
 historical fixture, hash or companion branch is changed.
 
-These are scoped validation results. Fresh native optimized/sanitized/MSVC,
+These are scoped validation results. A fresh complete native/runtime matrix,
 other materials, full authored gameplay/painting/save-load, asynchronous stale
 publication, capacity stress and actual four-participant work are not newly
 qualified by this profile. Their prior #400 evidence stays source-qualified and
@@ -405,8 +405,23 @@ files are separately indexed in `passive-values.json`; complete structured
 observations are committed once, with equality and distinct raw-byte hashes for
 all three variants. The earlier packet's source or custody is not relabelled.
 
-The [complete192episode reduction](sol-chamber-20261105/linux-full-reduction.json) additionally executes on Linux at
-`b5744ae7`: all192initial/complete/conservation checks pass, full matrix coverage
+The [complete192episode reduction](sol-chamber-20261105/linux-full-reduction.json) has a Linux offline receipt sealed at
+`aa1176e1`: all192initial/complete/conservation checks pass, full matrix coverage
 holds, and every episode summary is exactly equal to the prior reduction.
 This is a platform reproduction by the owning investigation, not the separate
 independent adversarial acceptance review still required for an owner decision.
+
+The offline batch started with HEAD `b5744ae7`; its wrapper recorded HEAD only
+after completion, by then `aa1176e1`. The checkout advanced through prospective
+registration during that batch, while reducer bytes remained unchanged and
+bound by its recorded SHA. This is not an unchanged-HEAD runtime claim or a new
+physics execution. The original receipt remains intact.
+
+The [value follow-up validation](sol-chamber-20261105/value-validation.json)
+at `365722fc` passes docs, historical M11, repository/provenance, original
+material guard, portable25case/ten-corruption audit, six geometry adversaries
+and whitespace. Native84 identity is reauthenticated at that head. Frozen
+retrieval remains19/32rank1 and32/32rank5; chamber supplement2/3rank1 and3/3rank5;
+the separate post-result mechanism question is1/1rank1. Manual fact review
+retains synthetic/live-authority and cost qualifiers. The new three compiled
+diagnostics do not requalify complete World/GDExtension or broader gameplay.
