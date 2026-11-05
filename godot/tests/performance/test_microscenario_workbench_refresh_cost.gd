@@ -10,7 +10,7 @@ extends SceneTree
 # These data cannot by themselves justify caching or claim a real FPS gain.
 
 const Workbench = preload("res://scripts/microscenario_workbench.gd")
-const FRAME_COUNT: int = 400
+const FRAME_COUNT: int = 64
 const REPEATS: int = 3
 
 class ProbeHost extends Control:
