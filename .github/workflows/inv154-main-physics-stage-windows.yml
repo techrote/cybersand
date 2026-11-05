@@ -1,0 +1,389 @@
+name: INV154 Windows graphical physics stage attribution
+
+on:
+  push:
+    branches: [perf/inv154-physics-stage-abba-20261105]
+    paths:
+      - godot/tests/performance/test_main_physics_stage_windows.gd
+      - .github/workflows/inv154-main-physics-stage-windows.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: inv154-physics-stage-${{ github.sha }}
+  cancel-in-progress: false
+
+jobs:
+  windows-graphical-main:
+    runs-on: windows-2022
+    timeout-minutes: 30
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Preserve byte-exact checkout for native pins
+        run: |
+          git config --global core.autocrlf false
+          git config --global core.eol lf
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          lfs: false
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Materialize exact Windows native and Rapier runtime pins
+        timeout-minutes: 12
+        shell: bash
+        run: |
+          set -euo pipefail
+          git lfs install --local
+          git lfs pull --include="godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll,godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll" --exclude=""
+      - name: Actual Windows graphical Main same-cap ABBA observation
+        timeout-minutes: 22
+        env:
+          EXPECTED_HEAD: ${{ github.sha }}
+          GODOT_SILENCE_ROOT_WARNING: '1'
+          PYTHONUTF8: '1'
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/inv154-physics-stage
+          python tools/ci/check_ci_provider_policy.py > build/inv154-physics-stage/provider-policy.log 2>&1
+          git diff --check
+          python - <<'PY'
+          import ast, hashlib, json, os, subprocess, sys, urllib.request, zipfile
+          from pathlib import Path
+          out=Path('build/inv154-physics-stage').resolve()
+          def write(name, payload):
+              (out/name).write_text(payload,encoding='utf-8')
+          def sh(*args):
+              return subprocess.check_output(args, text=True,timeout=45).strip()
+          sha=sh('git','rev-parse','HEAD')
+          tree=sh('git','rev-parse','HEAD^{tree}')
+          if sha!=os.environ['EXPECTED_HEAD']:
+              raise RuntimeError('source head does not equal workflow triggering SHA')
+          main_blob=sh('git','hash-object','godot/scripts/main.gd')
+          if main_blob!='791ef440efd6edb206c6f1be33989cb62e9213b2':
+              raise RuntimeError('current-main Main source changed; reauthorize measurement')
+          probe=Path('godot/tests/performance/test_main_physics_stage_windows.gd')
+          sample=probe.read_text(encoding='utf-8')
+          import re
+          source=Path('godot/scripts/main.gd').read_text(encoding='utf-8')
+          origparts=source.split('func _physics_process(_delta: float) -> void:\n',1)
+          if len(origparts)!=2: raise RuntimeError('Main physical dispatcher missing')
+          expected=origparts[1].split('\nfunc workbench_source(',1)[0].rstrip()
+          fragments=sample.split('\tfunc _instrumented_dispatch(_delta: float) -> void:\n',1)
+          if len(fragments)!=2: raise RuntimeError('instrumented dispatcher missing')
+          copied=fragments[1].split('\nfunc retain_physics(',1)[0]
+          lines=[line[1:] for line in copied.splitlines() if line.startswith('\t')][1:]
+          clocks=re.compile(r'^\s*(?:stage_started_usec = Time\.get_ticks_usec\(\)|observe_wrapper\("(?:session_suspend|take_snapshot|session_advance|rapier_step|session_complete)", stage_started_usec\))
+          for hook in ('func observe_wrapper(bucket: String, begin_usec: int)', 'func _physics_process(delta: float)',
+                       '"baseline_a"', '"timed_a"', '"timed_b"', '"baseline_b"'):
+              if hook not in sample: raise RuntimeError('required diagnostic hook missing: '+hook)
+          sys.path.insert(0,'tools/ci')
+          import run_windows_godot_regressions as runtime
+          with runtime.metadata_budget():
+              runtime_identity=runtime.verify_retained_runtime(Path.cwd())
+          write('source-and-runtime.json',json.dumps({'head':sha,'tree':tree,
+              'main_blob':main_blob,'probe_sha256':hashlib.sha256(probe.read_bytes()).hexdigest(),
+              'runtime':runtime_identity},indent=2)+'\n')
+          url='https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip'
+          archive=out/'official-godot.zip'
+          urllib.request.urlretrieve(url,archive)
+          digest=hashlib.sha512(archive.read_bytes()).hexdigest()
+          if digest != runtime.GODOT_SHA512: raise RuntimeError('Godot official SHA512 pin changed')
+          with zipfile.ZipFile(archive) as z:
+              if z.testzip() is not None: raise RuntimeError('Godot archive CRC failure')
+              for member in ('Godot_v4.7-stable_win64.exe',
+                             'Godot_v4.7-stable_win64_console.exe'):
+                  if z.namelist().count(member)!=1: raise RuntimeError('Godot executable missing: '+member)
+                  z.extract(member,out/'engine')
+          archive.unlink()
+          write('engine-identity.json',json.dumps({'version':'4.7-stable',
+              'url':url,'archive_sha512':digest},indent=2)+'\n')
+          for name,command in (
+              ('video-controllers.json','Get-CimInstance Win32_VideoController | Select-Object Name,DriverVersion,VideoProcessor,PNPDeviceID | ConvertTo-Json -Depth 5'),
+              ('processor.json','Get-CimInstance Win32_Processor | Select-Object Name,NumberOfCores,NumberOfLogicalProcessors | ConvertTo-Json -Depth 4'),
+              ('os.json','Get-CimInstance Win32_OperatingSystem | Select-Object Caption,Version,BuildNumber | ConvertTo-Json -Depth 4')):
+              ps=subprocess.run(['powershell','-NoProfile','-NonInteractive','-Command',command],
+                  capture_output=True,text=True,timeout=40)
+              write(name,ps.stdout+'\n'+ps.stderr)
+              if ps.returncode: raise RuntimeError('Host identity read failed: '+name)
+          engine=out/'engine/Godot_v4.7-stable_win64_console.exe'
+          env={**os.environ,'GODOT_SILENCE_ROOT_WARNING':'1',
+               'CYBERSAND_PHASE_OUTPUT':str(out),
+               'CYBERSAND_SOURCE_REVISION':sha}
+          imp=subprocess.run([str(engine),'--headless','--editor','--path','godot','--import'],
+              stdout=subprocess.PIPE,stderr=subprocess.PIPE,
+              text=True,timeout=130,env=env)
+          write('import.log',imp.stdout+'\n'+imp.stderr)
+          if imp.returncode: raise RuntimeError('Project import failed: '+str(imp.returncode))
+          argv=[str(engine),'--rendering-driver','opengl3_angle','--path','godot',
+                '--script','res://tests/performance/test_main_physics_stage_windows.gd']
+          write('command.json',json.dumps(argv,indent=2)+'\n')
+          try:
+              run=subprocess.run(argv,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,
+                  text=True,timeout=745,env=env)
+          except subprocess.TimeoutExpired as exc:
+              write('timeout.log',str(exc))
+              raise
+          write('godot.log',run.stdout)
+          matches=[line.split('INV154_PHYSICS_STAGE ',1)[1] for line in run.stdout.splitlines()
+                   if line.startswith('INV154_PHYSICS_STAGE ')]
+          if run.returncode or len(matches)!=1:
+              print(run.stdout[-10000:])
+              raise RuntimeError('no successful actual Windows Main result: exit '+str(run.returncode))
+          record=json.loads(matches[0])
+          if (record.get('schema')!='inv154-physics-stage-v1'
+              or record.get('platform')!='Windows'
+              or record.get('display_server')=='headless'
+              or record.get('failures')!=0
+              or not record.get('joined_worker')
+              or record.get('overflow')
+              or record.get('accepted_brush_commands',-1)!=0
+              or record.get('pre_draw_rows',0)<80
+              or record.get('physics_rows',0)<400
+              or record.get('requested_fps_readbacks')!={'baseline_a':60,'timed_a':60,'timed_b':60,'baseline_b':60}
+              or record.get('fps_setting_original')!=record.get('fps_setting_restored')):
+              raise RuntimeError('native lifecycle or bounded ABBA capture incomplete')
+          for phase in ('baseline_a','timed_a','timed_b','baseline_b'):
+              arm=record[phase]
+              if arm['process'].get('n',0)<20 or arm['render_interval_ms'].get('n',0)<20:
+                  raise RuntimeError('Missing real graphical process/frame samples in '+phase)
+              if arm.get('native_ticks_per_second',0)<=0 or arm.get('rapier_steps_per_second',0)<=0:
+                  raise RuntimeError('Native or Rapier did not advance during '+phase)
+              for metric in ('process','render_interval_ms','worker_publication_age_ms'):
+                  if arm[metric].get('n',0)<20:
+                      raise RuntimeError('Incomplete timing data '+phase+'/'+metric)
+          write('summary.json',json.dumps(record,indent=2)+'\n')
+          from statistics import median
+          raw=json.loads((out/'physics-stage.json').read_text(encoding='utf-8'))
+          if raw.get('result',{}).get('schema')!='inv154-physics-stage-v1':
+              raise RuntimeError('full trace does not match expected schema')
+          traces={}
+          for label in ('baseline_a','timed_a','timed_b','baseline_b'):
+              proc=sorted((r for r in raw['process_rows'] if r['phase']==label),key=lambda r:r['start_usec'])
+              pre=sorted((r['usec'] for r in raw['pre_draw_rows'] if r['phase']==label))
+              post=sorted((r['draw_usec'] for r in raw['draw_rows'] if r['phase']==label))
+              phy=[r['duration_usec']/1000 for r in raw['physics_rows'] if r['phase']==label]
+              pieces=[]
+              for a,b in zip(proc,proc[1:]):
+                  ed=int(a['end_usec']); nxt=int(b['start_usec'])
+                  posts=[t for t in post if ed<=t<nxt]
+                  if len(posts)!=1: continue
+                  pres=[t for t in pre if ed<=t<=posts[0]]
+                  if len(pres)!=1: continue
+                  pres=pres[0]; pos=posts[0]
+                  pieces.append({'main_ms':(ed-int(a['start_usec']))/1000,
+                      'main_to_predraw_ms':(pres-ed)/1000,
+                      'predraw_to_postdraw_ms':(pos-pres)/1000,
+                      'postdraw_to_next_main_ms':(nxt-pos)/1000,
+                      'cycle_ms':(nxt-int(a['start_usec']))/1000})
+              if len(pieces)<10 or len(phy)<20:
+                  raise RuntimeError('insufficient matched pre/post/physics clocks in '+label)
+              traces[label]={'paired_cycles':len(pieces),'physics_callbacks':len(phy),
+                  'physics_callback_p50_ms':median(phy),
+                  **{key+'_p50':median(p[key] for p in pieces) for key in pieces[0]},
+                  'frame_cycle_p95_ms':sorted(p['cycle_ms'] for p in pieces)[int(round((len(pieces)-1)*.95))]}
+
+          wrapper_rows={}
+          for label in ('baseline_a','timed_a','timed_b','baseline_b'):
+              rows=[r for r in raw['physics_rows'] if r['phase']==label]
+              if len(rows)<150: raise RuntimeError('insufficient physics callback rows '+label)
+              all_keys=set()
+              large=0
+              for row in rows:
+                  costs=row.get('wrapper_usec')
+                  if not isinstance(costs,dict): raise RuntimeError('missing wrapper readback '+label)
+                  all_keys.update(costs)
+                  total=int(row['duration_usec'])
+                  attributed=sum(int(v) for v in costs.values())
+                  if total<=0 or attributed<0 or attributed>total:
+                      raise RuntimeError('invalid duration accounting '+label)
+                  if int(row['residual_usec'])!=total-attributed:
+                      raise RuntimeError('invalid callback residual '+label)
+                  if total>40000: large+=1
+              required={'keyboard','usable','apply_results','body_publication'}
+              if label.startswith('timed_'): required.update({'session_suspend','session_advance','rapier_step','session_complete'})
+              if not required.issubset(all_keys):
+                  raise RuntimeError('required wrapper sample absent '+label+': '+str(all_keys))
+              observed=sum(1 for r in rows if {'session_advance','rapier_step','session_complete'}.issubset(r['wrapper_usec']))
+              if label.startswith('timed_') and observed<100: raise RuntimeError('Missing timed stage samples in '+label)
+              if label.startswith('baseline_') and observed!=0: raise RuntimeError('Unexpected timed clocks in original baseline '+label)
+              for r in rows:
+                  expected_mode='copied_timed' if label.startswith('timed_') else 'original_super'
+                  if r.get('dispatch_mode')!=expected_mode: raise RuntimeError('Wrong dispatcher mode '+label)
+              wrapper_rows[label]={'captured':len(rows),'over_40ms':large,'operation_samples':observed,'keys':sorted(all_keys)}
+          write('stage-readback.json',json.dumps(wrapper_rows,indent=2)+'\n')
+
+          write('phase-pair-analysis.json',json.dumps(traces,indent=2)+'\n')
+          print('PASS: actual Windows Main/World/Rapier, 60/60/60/60 ABBA process caps and pre/post draw / physics clocks')
+          print(json.dumps(traces,indent=2))
+          PY
+      - name: Preserve raw samples, runtime/source and original failures
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: inv154-windows-scheduler-abba-${{ github.run_id }}
+          path: |
+            build/inv154-physics-stage/*.json
+            build/inv154-physics-stage/*.log
+          if-no-files-found: warn
+          retention-days: 30
+)
+          restored='\n'.join(line for line in lines if not clocks.fullmatch(line)).rstrip()
+          if restored!=expected: raise RuntimeError('test-only instrumented dispatcher differs from Main beyond clocks')
+          write('dispatch-source-identity.json',json.dumps({'main_blob':main_blob,
+              'restored_source_sha256':hashlib.sha256(restored.encode()).hexdigest(),
+              'stage_names':['session_suspend','take_snapshot','session_advance','rapier_step','session_complete'],
+              'source_equivalent_after_stripping_clocks':True},indent=2)+'\n')
+          for hook in ('func observe_wrapper(bucket: String, begin_usec: int)', 'func _physics_process(delta: float)',
+                       '"baseline_a"', '"timed_a"', '"timed_b"', '"baseline_b"'):
+              if hook not in sample: raise RuntimeError('required diagnostic hook missing: '+hook)
+          sys.path.insert(0,'tools/ci')
+          import run_windows_godot_regressions as runtime
+          with runtime.metadata_budget():
+              runtime_identity=runtime.verify_retained_runtime(Path.cwd())
+          write('source-and-runtime.json',json.dumps({'head':sha,'tree':tree,
+              'main_blob':main_blob,'probe_sha256':hashlib.sha256(probe.read_bytes()).hexdigest(),
+              'runtime':runtime_identity},indent=2)+'\n')
+          url='https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip'
+          archive=out/'official-godot.zip'
+          urllib.request.urlretrieve(url,archive)
+          digest=hashlib.sha512(archive.read_bytes()).hexdigest()
+          if digest != runtime.GODOT_SHA512: raise RuntimeError('Godot official SHA512 pin changed')
+          with zipfile.ZipFile(archive) as z:
+              if z.testzip() is not None: raise RuntimeError('Godot archive CRC failure')
+              for member in ('Godot_v4.7-stable_win64.exe',
+                             'Godot_v4.7-stable_win64_console.exe'):
+                  if z.namelist().count(member)!=1: raise RuntimeError('Godot executable missing: '+member)
+                  z.extract(member,out/'engine')
+          archive.unlink()
+          write('engine-identity.json',json.dumps({'version':'4.7-stable',
+              'url':url,'archive_sha512':digest},indent=2)+'\n')
+          for name,command in (
+              ('video-controllers.json','Get-CimInstance Win32_VideoController | Select-Object Name,DriverVersion,VideoProcessor,PNPDeviceID | ConvertTo-Json -Depth 5'),
+              ('processor.json','Get-CimInstance Win32_Processor | Select-Object Name,NumberOfCores,NumberOfLogicalProcessors | ConvertTo-Json -Depth 4'),
+              ('os.json','Get-CimInstance Win32_OperatingSystem | Select-Object Caption,Version,BuildNumber | ConvertTo-Json -Depth 4')):
+              ps=subprocess.run(['powershell','-NoProfile','-NonInteractive','-Command',command],
+                  capture_output=True,text=True,timeout=40)
+              write(name,ps.stdout+'\n'+ps.stderr)
+              if ps.returncode: raise RuntimeError('Host identity read failed: '+name)
+          engine=out/'engine/Godot_v4.7-stable_win64_console.exe'
+          env={**os.environ,'GODOT_SILENCE_ROOT_WARNING':'1',
+               'CYBERSAND_PHASE_OUTPUT':str(out),
+               'CYBERSAND_SOURCE_REVISION':sha}
+          imp=subprocess.run([str(engine),'--headless','--editor','--path','godot','--import'],
+              stdout=subprocess.PIPE,stderr=subprocess.PIPE,
+              text=True,timeout=130,env=env)
+          write('import.log',imp.stdout+'\n'+imp.stderr)
+          if imp.returncode: raise RuntimeError('Project import failed: '+str(imp.returncode))
+          argv=[str(engine),'--rendering-driver','opengl3_angle','--path','godot',
+                '--script','res://tests/performance/test_main_physics_stage_windows.gd']
+          write('command.json',json.dumps(argv,indent=2)+'\n')
+          try:
+              run=subprocess.run(argv,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,
+                  text=True,timeout=745,env=env)
+          except subprocess.TimeoutExpired as exc:
+              write('timeout.log',str(exc))
+              raise
+          write('godot.log',run.stdout)
+          matches=[line.split('INV154_PHYSICS_STAGE ',1)[1] for line in run.stdout.splitlines()
+                   if line.startswith('INV154_PHYSICS_STAGE ')]
+          if run.returncode or len(matches)!=1:
+              print(run.stdout[-10000:])
+              raise RuntimeError('no successful actual Windows Main result: exit '+str(run.returncode))
+          record=json.loads(matches[0])
+          if (record.get('schema')!='inv154-physics-stage-v1'
+              or record.get('platform')!='Windows'
+              or record.get('display_server')=='headless'
+              or record.get('failures')!=0
+              or not record.get('joined_worker')
+              or record.get('overflow')
+              or record.get('accepted_brush_commands',-1)!=0
+              or record.get('pre_draw_rows',0)<80
+              or record.get('physics_rows',0)<400
+              or record.get('requested_fps_readbacks')!={'baseline_a':60,'timed_a':60,'timed_b':60,'baseline_b':60}
+              or record.get('fps_setting_original')!=record.get('fps_setting_restored')):
+              raise RuntimeError('native lifecycle or bounded ABBA capture incomplete')
+          for phase in ('baseline_a','timed_a','timed_b','baseline_b'):
+              arm=record[phase]
+              if arm['process'].get('n',0)<20 or arm['render_interval_ms'].get('n',0)<20:
+                  raise RuntimeError('Missing real graphical process/frame samples in '+phase)
+              if arm.get('native_ticks_per_second',0)<=0 or arm.get('rapier_steps_per_second',0)<=0:
+                  raise RuntimeError('Native or Rapier did not advance during '+phase)
+              for metric in ('process','render_interval_ms','worker_publication_age_ms'):
+                  if arm[metric].get('n',0)<20:
+                      raise RuntimeError('Incomplete timing data '+phase+'/'+metric)
+          write('summary.json',json.dumps(record,indent=2)+'\n')
+          from statistics import median
+          raw=json.loads((out/'physics-stage.json').read_text(encoding='utf-8'))
+          if raw.get('result',{}).get('schema')!='inv154-physics-stage-v1':
+              raise RuntimeError('full trace does not match expected schema')
+          traces={}
+          for label in ('baseline_a','timed_a','timed_b','baseline_b'):
+              proc=sorted((r for r in raw['process_rows'] if r['phase']==label),key=lambda r:r['start_usec'])
+              pre=sorted((r['usec'] for r in raw['pre_draw_rows'] if r['phase']==label))
+              post=sorted((r['draw_usec'] for r in raw['draw_rows'] if r['phase']==label))
+              phy=[r['duration_usec']/1000 for r in raw['physics_rows'] if r['phase']==label]
+              pieces=[]
+              for a,b in zip(proc,proc[1:]):
+                  ed=int(a['end_usec']); nxt=int(b['start_usec'])
+                  posts=[t for t in post if ed<=t<nxt]
+                  if len(posts)!=1: continue
+                  pres=[t for t in pre if ed<=t<=posts[0]]
+                  if len(pres)!=1: continue
+                  pres=pres[0]; pos=posts[0]
+                  pieces.append({'main_ms':(ed-int(a['start_usec']))/1000,
+                      'main_to_predraw_ms':(pres-ed)/1000,
+                      'predraw_to_postdraw_ms':(pos-pres)/1000,
+                      'postdraw_to_next_main_ms':(nxt-pos)/1000,
+                      'cycle_ms':(nxt-int(a['start_usec']))/1000})
+              if len(pieces)<10 or len(phy)<20:
+                  raise RuntimeError('insufficient matched pre/post/physics clocks in '+label)
+              traces[label]={'paired_cycles':len(pieces),'physics_callbacks':len(phy),
+                  'physics_callback_p50_ms':median(phy),
+                  **{key+'_p50':median(p[key] for p in pieces) for key in pieces[0]},
+                  'frame_cycle_p95_ms':sorted(p['cycle_ms'] for p in pieces)[int(round((len(pieces)-1)*.95))]}
+
+          wrapper_rows={}
+          for label in ('baseline_a','timed_a','timed_b','baseline_b'):
+              rows=[r for r in raw['physics_rows'] if r['phase']==label]
+              if len(rows)<150: raise RuntimeError('insufficient physics callback rows '+label)
+              all_keys=set()
+              large=0
+              for row in rows:
+                  costs=row.get('wrapper_usec')
+                  if not isinstance(costs,dict): raise RuntimeError('missing wrapper readback '+label)
+                  all_keys.update(costs)
+                  total=int(row['duration_usec'])
+                  attributed=sum(int(v) for v in costs.values())
+                  if total<=0 or attributed<0 or attributed>total:
+                      raise RuntimeError('invalid duration accounting '+label)
+                  if int(row['residual_usec'])!=total-attributed:
+                      raise RuntimeError('invalid callback residual '+label)
+                  if total>40000: large+=1
+              if not {'keyboard','usable','apply_results','body_publication'}.issubset(all_keys):
+                  raise RuntimeError('required wrapper sample absent '+label+': '+str(all_keys))
+              wrapper_rows[label]={'captured':len(rows),'over_40ms':large,'keys':sorted(all_keys)}
+          write('stage-readback.json',json.dumps(wrapper_rows,indent=2)+'\n')
+
+          write('phase-pair-analysis.json',json.dumps(traces,indent=2)+'\n')
+          print('PASS: actual Windows Main/World/Rapier, 60/60/60/60 ABBA process caps and pre/post draw / physics clocks')
+          print(json.dumps(traces,indent=2))
+          PY
+      - name: Preserve raw samples, runtime/source and original failures
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: inv154-windows-scheduler-abba-${{ github.run_id }}
+          path: |
+            build/inv154-physics-stage/*.json
+            build/inv154-physics-stage/*.log
+          if-no-files-found: warn
+          retention-days: 30
