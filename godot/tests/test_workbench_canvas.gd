@@ -100,6 +100,32 @@ func author() -> void:
 	check(panel.save_setup(),"atomic named save")
 	await inspect()
 
+# The built-in "my-canvas" water evaluation start, while no user file of that
+# name exists; a saved file always wins (never removed by this regression).
+func builtin_water() -> bool:
+	var recipe: Dictionary = Setup.water_evaluation(panel._liquids.bridge.default_liquid_policy())
+	check(Setup.validate(recipe).is_empty() and not Setup.rectangles(recipe).has("error"),"built-in water start admits")
+	check(recipe.edits.size() <= Setup.MAX_STAMPS/2,"built-in water start leaves paint capacity (%d stamps)" % recipe.edits.size())
+	if FileAccess.file_exists(Setup._path(Setup.DEFAULT_LABEL)):
+		print("WORKBENCH_CANVAS: user my-canvas exists; built-in load skipped")
+		return true
+	var test_name: String = panel._name.text
+	panel._name.text = Setup.DEFAULT_LABEL
+	var loaded: bool = check(panel.load_setup(),"built-in my-canvas load / "+panel.message)
+	panel._name.text = test_name
+	if not loaded or not await until(installed,"built-in my-canvas installed"): return false
+	check(main.tower_context.workbench_gcr.extent == Vector2i(512,512) and panel.applied.actors.size() == 2,"built-in extent and barrels")
+	check(main.physical_actor_session.bodies().size() == 2,"two physical barrels")
+	var water := 0
+	for y: int in range(100,262,2):
+		for x: int in range(0,480,2):
+			if main.image.get_pixel(x,y).r8 == Setup.WATER: water += 1
+	check(water > 4000,"built-in Water painted (%d sampled cells)" % water)
+	check(main.image.get_pixel(146,230).r8 == Setup.WALL and main.image.get_pixel(115,254).r8 == Setup.SAND,"weir and sand bank")
+	for axis: int in 2: panel._extent[axis].value = 2048
+	if not check(panel.new_canvas(),"blank canvas after built-in start"): return false
+	return await until(func(): return installed() and panel.applied.actors.is_empty() and main.image.get_width() == 2048,"blank 2048 canvas")
+
 func inspect() -> void:
 	var gcr: Dictionary = main.tower_context.workbench_gcr
 	check(gcr.extent == Vector2i(2048,2048) and gcr.response == "LA-SELECTIVE","actual extent and selected response")
@@ -153,7 +179,8 @@ func run() -> void:
 		if OS.get_environment("CYBERSAND_WORKBENCH_REOPEN") == "1":
 			if check(panel.load_setup(),"load from separate process / "+panel.message+" / "+main.microscenario_error) and await until(installed,"reload acknowledged"):
 				await inspect()
-		else: await author()
+		else:
+			if await builtin_water(): await author()
 	else: check(false,"workbench launch")
 	main.queue_free()
 	await process_frame

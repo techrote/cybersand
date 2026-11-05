@@ -21,6 +21,50 @@ static func fresh(policy: PackedInt32Array, extent := Vector2i(2048,2048)) -> Di
 		"response":"LA-SELECTIVE","liquid_policy":Array(policy),"normalize":false,"rule_radius":2,
 		"source":[],"material":2,"brush":8,"fire":false}
 
+const DEFAULT_LABEL := "my-canvas"
+const WATER := 3
+const SAND := 2
+const WALL := 58
+
+static func _fill(edits: Array, from: Vector2i, to: Vector2i, radius: int, material: int) -> void:
+	# Disc centres stay inset by the radius, so a fill never paints outside its box.
+	for x: int in range(from.x+radius,to.x-radius+1,radius):
+		for y: int in range(from.y+radius,to.y-radius+1,radius):
+			edits.append([x,y,radius,material])
+
+static func _wall(edits: Array, from: Vector2i, to: Vector2i, radius: int = 4) -> void:
+	var length := maxi(absi(to.x-from.x),absi(to.y-from.y))
+	for step: int in range(0,length+1,radius):
+		var at := Vector2(from).lerp(Vector2(to),float(step)/float(maxi(length,1)))
+		edits.append([int(at.x),int(at.y),radius,WALL])
+
+# Built-in "my-canvas" water evaluation start (used only while no user file of
+# that name exists). One 480 × 270 view at the default camera holds, left to
+# right: a free-standing dam-break column (wall of water / face release), a sand
+# bank in its path (LA-Selective × Water), a pool under two staggered barrels
+# (Rapier impact splash) and an unequal U-tube (pressure equalization; equal
+# final levels are the vented/shared-pressure control). The Water family and
+# the experimental spray controls stay whatever the panels select.
+static func water_evaluation(policy: PackedInt32Array) -> Dictionary:
+	var data := fresh(policy,Vector2i(512,512))
+	var edits: Array = data.edits
+	_fill(edits,Vector2i(8,112),Vector2i(84,258),8,WATER)        # dam-break column
+	_fill(edits,Vector2i(150,214),Vector2i(328,258),8,WATER)     # barrel pool
+	_fill(edits,Vector2i(338,120),Vector2i(398,258),6,WATER)     # U-tube high limb
+	_fill(edits,Vector2i(398,228),Vector2i(472,258),6,WATER)     # U-tube low limb and bend
+	for x: int in range(92,140,4):                               # sand ramp rising to the weir
+		_fill(edits,Vector2i(x,258-(x-86)*3/5),Vector2i(x+6,258),3,SAND)
+	_wall(edits,Vector2i(0,264),Vector2i(511,264))               # floor
+	_wall(edits,Vector2i(3,24),Vector2i(3,264))                  # left boundary
+	_wall(edits,Vector2i(477,24),Vector2i(477,264))              # right boundary
+	_wall(edits,Vector2i(146,200),Vector2i(146,264),3)           # pool weir (dam surge spills over)
+	_wall(edits,Vector2i(333,108),Vector2i(333,264))             # pool / U-tube wall
+	_wall(edits,Vector2i(404,112),Vector2i(404,240),3)           # U-tube divider, open below
+	data.actors = [instance(BARREL,1,Vector2(206,36)),instance(BARREL,2,Vector2(270,124))]
+	data.next_id = 3
+	data.material = WATER
+	return data
+
 static func instance(model: String, id: int, pos: Vector2) -> Dictionary:
 	var index := Fleet.index_for_id(model)
 	return {"id":id,"model":model,"hash":Fleet.definition_hash(index) if index >= 0 else "reference-barrel-v1",
