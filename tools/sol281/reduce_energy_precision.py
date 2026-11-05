@@ -73,8 +73,9 @@ def trace_coverage(record,arm):
             assert same(event["after_v"],v) and same(event["after_w"],w)
             assert same(event["before"],first["energy"]);final=event
         else:
-            order=(event["sweep"],event["group"])
-            assert 0<=order[0]<4 and order>previous;previous=order
+            sweep=event["sweep"];group=event["group"]
+            order=(sweep,group if sweep%2==0 else -group)
+            assert 0<=sweep<4 and group>=0 and order>previous;previous=order
             assert same(event["before_v"],v) and same(event["before_w"],w),"Broken state chain"
             v=event["after_v"];w=event["after_w"];steps.append(event)
         passed=math.isfinite(scalar(event["after"])) and scalar(event["after"])<=scalar(event["before"])+scalar(event["tolerance"])

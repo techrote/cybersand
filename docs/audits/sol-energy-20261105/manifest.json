@@ -1,0 +1,228 @@
+{
+  "schema": "cybersand.sol-energy-evidence.v1",
+  "registered": "2498af41",
+  "execution_source": "861440e9004bb3dc7ddd6e6c2c88547ce91067e6",
+  "rapier_execution_source": "35887456",
+  "scope": "Numerical planner and unchanged small Rapier regressions; no live SOL admission or clearance",
+  "files": [
+    {
+      "path": "precision-first/linux/results.json",
+      "bytes": 1196141,
+      "sha256": "978a73fcaa7d153048d8e7d2e2ce807a49173839cf46268bd8f2fa82f5c761d4"
+    },
+    {
+      "path": "precision-first/receipt.json",
+      "bytes": 7757,
+      "sha256": "c5ac145757bde411bfeb7d5dae4b2054f92d428b75a6e1f9432b33f2c3c3cfd0"
+    },
+    {
+      "path": "precision-first/reduced.json",
+      "bytes": 17432,
+      "sha256": "f9b8161571da49eb2888afcbc5ee2428706fa47fa06161fe7c188579d93719fd"
+    },
+    {
+      "path": "precision-first/windows/results.json",
+      "bytes": 1196141,
+      "sha256": "3e6277f91fcd7570d743eec479dfadc73761ab9bccec909cae6596d842da0010"
+    },
+    {
+      "path": "rapier-authored-inputs/receipt.json",
+      "bytes": 65946,
+      "sha256": "d51402608ca8ec74b5ff10dd56bacd5f337ecb94b9d0e2b38606e2a856cae5ba"
+    },
+    {
+      "path": "rapier-authored-inputs/windows-runtime-only.json",
+      "bytes": 62148,
+      "sha256": "55f4eedb6eac31e765447869ef51bce8f8282ba991d0d95d30713434307000df"
+    },
+    {
+      "path": "rapier-first/receipt.json",
+      "bytes": 46983,
+      "sha256": "6246362469729ab1eb78de125e79b2d4c417a72b6d9a640cabb1dc8469fb2e94"
+    },
+    {
+      "path": "rapier-qualified/inputs.json",
+      "bytes": 41543,
+      "sha256": "464c1345a05fd481d24a7b7cd3fdadd9e3788ea57513b2e4b9b28c3f4af26f87"
+    },
+    {
+      "path": "rapier-qualified/receipt.json",
+      "bytes": 86286,
+      "sha256": "52bc9a1e5d00f01298614cd05749be91d396b16b452d7dc599c45b6adaa95f70"
+    }
+  ],
+  "local_raw_logs": [
+    {
+      "path": "build\\sol-energy\\precision-first\\linux.log",
+      "bytes": 115,
+      "sha256": "171c4d2ac1a8316d3bc1eb17eadd727a5459b68e2961f54152abdbaac997d586"
+    },
+    {
+      "path": "build\\sol-energy\\precision-first\\windows.log",
+      "bytes": 118,
+      "sha256": "4622cc5f16865cd95360fc9275727f90a560d3d1d1e4ed23d4bef544576acc2c"
+    },
+    {
+      "path": "build\\sol-energy\\rapier-authored-inputs\\linux-baseline-import.log",
+      "bytes": 4432,
+      "sha256": "aa54bdb9cd43b268508c8f93ee2e7454990b334c07561f7a041b53cdec2f11ae"
+    },
+    {
+      "path": "build\\sol-energy\\rapier-authored-inputs\\linux-baseline-test_solid_contact_response.log",
+      "bytes": 5692,
+      "sha256": "dc749ddfbb4b9dbae8d5c47353beefaea5539f2422ac887837a26428ed081c62"
+    },
+    {
+      "path": "build\\sol-energy\\rapier-authored-inputs\\linux-baseline-test_solid_detachment_compound_response.log",
+      "bytes": 293,
+      "sha256": "c7a610a6f67e6301f2fbe9aa7827bbe22c57525b088573cc511706e0dd6af537"
+    },
+    {
+      "path": "build\\sol-energy\\rapier-authored-inputs\\linux-scalar64-import.log",
+      "bytes": 4432,
+      "sha256": "aa54bdb9cd43b268508c8f93ee2e7454990b334c07561f7a041b53cdec2f11ae"
+    },
+    {
+      "path": "build\\sol-energy\\rapier-authored-inputs\\linux-scalar64-test_solid_contact_response.log",
+      "bytes": 5694,
+      "sha256": "6f5c24a96fcf4276c87545cd2a9bbda77ac54bcb941001a186532f975a72443a"
+    },
+    {
+      "path": "build\\sol-energy\\rapier-authored-inputs\\linux-scalar64-test_solid_detachment_compound_response.log",
+      "bytes": 293,
+      "sha256": "c7a610a6f67e6301f2fbe9aa7827bbe22c57525b088573cc511706e0dd6af537"
+    },
+    {
+      "path": "build\\sol-energy\\rapier-authored-inputs\\windows-baseline-import.log",
+      "bytes": 4499,
+      "sha256": "09eb212807e3ff13ff641e54a67fdf6c4fb25f5c1a472ac37377495ab87b346b"
+    },
+    {
+      "path": "build\\sol-energy\\rapier-authored-inputs\\windows-baseline-runtime-only-test_solid_contact_response.log",
+      "bytes": 5698,
+      "sha256": "4af16b6cb4c2fb7e4a484064eebfcfdac1978dbaaa31311d1373446052068080"
+    },
+    {
+      "path": "build\\sol-energy\\rapier-authored-inputs\\windows-baseline-runtime-only-test_solid_detachment_compound_response.log",
+      "bytes": 299,
+      "sha256": "04629217945cada8d57bcf8352c42d670b35b7a79725f8ae9bd71967f0e9f6cd"
+    },
+    {
+      "path": "build\\sol-energy\\rapier-authored-inputs\\windows-scalar64-import.log",
+      "bytes": 4499,
+      "sha256": "09eb212807e3ff13ff641e54a67fdf6c4fb25f5c1a472ac37377495ab87b346b"
+    },
+    {
+      "path": "build\\sol-energy\\rapier-authored-inputs\\windows-scalar64-runtime-only-test_solid_contact_response.log",
+      "bytes": 5700,
+      "sha256": "983ad42a0d2630eced9bb3884a492ad72fb90c7ffcae6bc23474ea845584455c"
+    },
+    {
+      "path": "build\\sol-energy\\rapier-authored-inputs\\windows-scalar64-runtime-only-test_solid_detachment_compound_response.log",
+      "bytes": 299,
+      "sha256": "04629217945cada8d57bcf8352c42d670b35b7a79725f8ae9bd71967f0e9f6cd"
+    },
+    {
+      "path": "build\\sol-energy\\rapier-dependencies\\windows-baseline-import.log",
+      "bytes": 4499,
+      "sha256": "09eb212807e3ff13ff641e54a67fdf6c4fb25f5c1a472ac37377495ab87b346b"
+    },
+    {
+      "path": "build\\sol-energy\\rapier-first\\linux-baseline-import.log",
+      "bytes": 4280,
+      "sha256": "21d86d4e9d012c2d6d707bfda1a341f8b37c46bf9339a0439793f53f8d65c606"
+    },
+    {
+      "path": "build\\sol-energy\\rapier-first\\linux-baseline-test_solid_contact_response.log",
+      "bytes": 3768,
+      "sha256": "5c76814970a7a83168ea0ad9ea26b505145644c66a3b0b2e6c4154edea3a9199"
+    },
+    {
+      "path": "build\\sol-energy\\rapier-first\\linux-scalar64-import.log",
+      "bytes": 4280,
+      "sha256": "21d86d4e9d012c2d6d707bfda1a341f8b37c46bf9339a0439793f53f8d65c606"
+    },
+    {
+      "path": "build\\sol-energy\\rapier-first\\linux-scalar64-test_solid_contact_response.log",
+      "bytes": 3770,
+      "sha256": "a4a6186d767440cf5091f745bfc750d96d39017f0f6a89df5240c864f6808ddd"
+    },
+    {
+      "path": "build\\sol-energy\\rapier-first\\windows-baseline-import.log",
+      "bytes": 4345,
+      "sha256": "f98517ff275624f1f4671c8a511ae4c9be99bb989b11167a17d848879949d92a"
+    },
+    {
+      "path": "build\\sol-energy\\rapier-first\\windows-scalar64-import.log",
+      "bytes": 4345,
+      "sha256": "f98517ff275624f1f4671c8a511ae4c9be99bb989b11167a17d848879949d92a"
+    },
+    {
+      "path": "build\\sol-energy\\rapier-qualified\\linux-baseline-import.log",
+      "bytes": 4432,
+      "sha256": "aa54bdb9cd43b268508c8f93ee2e7454990b334c07561f7a041b53cdec2f11ae"
+    },
+    {
+      "path": "build\\sol-energy\\rapier-qualified\\linux-baseline-test_solid_contact_response.log",
+      "bytes": 5692,
+      "sha256": "dc749ddfbb4b9dbae8d5c47353beefaea5539f2422ac887837a26428ed081c62"
+    },
+    {
+      "path": "build\\sol-energy\\rapier-qualified\\linux-baseline-test_solid_detachment_compound_response.log",
+      "bytes": 293,
+      "sha256": "c7a610a6f67e6301f2fbe9aa7827bbe22c57525b088573cc511706e0dd6af537"
+    },
+    {
+      "path": "build\\sol-energy\\rapier-qualified\\linux-scalar64-import.log",
+      "bytes": 4432,
+      "sha256": "aa54bdb9cd43b268508c8f93ee2e7454990b334c07561f7a041b53cdec2f11ae"
+    },
+    {
+      "path": "build\\sol-energy\\rapier-qualified\\linux-scalar64-test_solid_contact_response.log",
+      "bytes": 5694,
+      "sha256": "6f5c24a96fcf4276c87545cd2a9bbda77ac54bcb941001a186532f975a72443a"
+    },
+    {
+      "path": "build\\sol-energy\\rapier-qualified\\linux-scalar64-test_solid_detachment_compound_response.log",
+      "bytes": 293,
+      "sha256": "c7a610a6f67e6301f2fbe9aa7827bbe22c57525b088573cc511706e0dd6af537"
+    },
+    {
+      "path": "build\\sol-energy\\rapier-qualified\\windows-baseline-import.log",
+      "bytes": 4499,
+      "sha256": "09eb212807e3ff13ff641e54a67fdf6c4fb25f5c1a472ac37377495ab87b346b"
+    },
+    {
+      "path": "build\\sol-energy\\rapier-qualified\\windows-baseline-test_solid_contact_response.log",
+      "bytes": 5698,
+      "sha256": "4af16b6cb4c2fb7e4a484064eebfcfdac1978dbaaa31311d1373446052068080"
+    },
+    {
+      "path": "build\\sol-energy\\rapier-qualified\\windows-baseline-test_solid_detachment_compound_response.log",
+      "bytes": 299,
+      "sha256": "04629217945cada8d57bcf8352c42d670b35b7a79725f8ae9bd71967f0e9f6cd"
+    },
+    {
+      "path": "build\\sol-energy\\rapier-qualified\\windows-scalar64-import.log",
+      "bytes": 4499,
+      "sha256": "09eb212807e3ff13ff641e54a67fdf6c4fb25f5c1a472ac37377495ab87b346b"
+    },
+    {
+      "path": "build\\sol-energy\\rapier-qualified\\windows-scalar64-test_solid_contact_response.log",
+      "bytes": 5700,
+      "sha256": "983ad42a0d2630eced9bb3884a492ad72fb90c7ffcae6bc23474ea845584455c"
+    },
+    {
+      "path": "build\\sol-energy\\rapier-qualified\\windows-scalar64-test_solid_detachment_compound_response.log",
+      "bytes": 299,
+      "sha256": "04629217945cada8d57bcf8352c42d670b35b7a79725f8ae9bd71967f0e9f6cd"
+    }
+  ],
+  "raw_log_policy": "Retained locally under ignored build/sol-energy, not committed. Raw structured results committed unchanged.",
+  "unsealed_attempt": {
+    "path": "build/sol-energy/rapier-dependencies/windows-baseline-import.log",
+    "runner_exit": 1,
+    "engine_exit": null,
+    "reason": "post-import authored-input assertion before receipt seal"
+  }
+}

@@ -4,7 +4,7 @@ status: Current
 document-kind: contract
 scope: Opt-in single native aggregate, conservative Sand/Water displacement, exact contact observations and separately enabled supported-Sand resistance; draft implementation, not full issue acceptance
 canonical-for: [native-structural-detachment-runtime, conservative-detachment-displacement, detachment-sand-contact-experiment]
-last-reviewed: 2026-11-04
+last-reviewed: 2026-11-05
 related-documents: [../operations/soliding-programme.md, ../architecture/soliding-lifecycle.md, ../architecture/rigid-body-and-cellular-coupling.md, ../audits/2026-11-01-sol281-current-main.md, ../audits/2026-11-03-sol281-dense-contact-registration.md, ../audits/2026-11-03-sol281-dense-contact.md]
 ---
 
@@ -434,6 +434,24 @@ The candidate adds no positional
 correction, friction gain, restitution, ejection search or Sand mutation.
 Supported Sand acts as a dissipative contact reservoir here; exact two-way
 granular momentum or calibrated mechanical-energy conservation is not claimed.
+
+### Planner energy precision — dependent candidate, 2026-11-05
+
+**Current on the isolated dependent candidate:** `_energy` evaluates the existing
+rounded `Vector2` components with scalar float64 products. The previous
+`Vector2.length_squared()` rounds the linear norm at binary32 before the energy
+calculation. Against the registered 84-input grid, both actual Godot hosts
+reproduce eight erroneous refusals and two erroneous acceptances in the old
+calculation; scalar64 corrects both classes while retaining the two registered
+genuine rounded-state refusal controls. Four sweeps, impulses, contact geometry
+and `1e-8` limits are unchanged. The bridge's separate `1e-4` readback calculation
+and policy are unchanged.
+
+The [source and result ledger](../audits/2026-11-05-sol-energy-precision.md)
+separates pure planner timing, unchanged actual Rapier regressions and editor
+import failures. This numerical repair supplies no native eligibility capture,
+Active recovery hold, Sand yielding operation or positional clearance. It does
+not admit SOL's protected material consumers, restoration or integration.
 
 ### Physical measurements and their denominators
 

@@ -4,11 +4,27 @@ status: Current
 document-kind: guide
 scope: Pinned source build entry points, Windows workspace wrappers, platform boundaries and freshness limits
 canonical-for: [build-entry-points, dependency-pins, build-freshness]
-last-reviewed: 2026-10-31
+last-reviewed: 2026-11-05
 related-documents: [source-checkpoint-and-recovery.md, testing-validation-and-replay.md, web-threading.md, deepworks-exhibition.md, ../systems/depth-layers-and-parallax.md]
 ---
 
 # Local build and validation
+
+## Isolated SOL planner precision — 2026-11-05
+
+On the dependent candidate, run `python tools/sol281/energy_precision.py --run <new-name>`,
+then `python tools/sol281/reduce_energy_precision.py build/sol-energy/<new-name>`.
+`python tools/sol281/test_energy_reducer.py <raw-results.json>` checks adversarial
+report admission. The pure project loads neither native World nor Rapier.
+`python tools/sol281/energy_rapier_regressions.py --run <new-name>` separately
+authenticates Rapier and unchanged response fixtures. The explicit
+`--runtime-after-import-failure` option attempts runtime tests while retaining
+every failed import and a failing overall exit. Existing run directories refuse
+overwrite. Host paths are declared in the runner; actual executable hashes and
+version must match the retained pins. These are scoped script/runtime checks,
+separate from native optimized/sanitized and original full SOL CPU gates.
+Read the [dated qualification](../audits/2026-11-05-sol-energy-precision.md)
+for the Windows import failure and source/admission limitations.
 
 ## Structural detachment qualification — 2026-11-01
 
