@@ -1,5 +1,6 @@
 import copy
 import unittest
+import struct
 import sol_node_trace_reduce as r
 
 def report():
@@ -11,6 +12,16 @@ def report():
     return dict(initial_payload={'sha256':'initial'},final_payload={'sha256':'final'},initial_geometry=[],initial_sample={},authored=[],case={},steps=steps)
 
 class ParityAudit(unittest.TestCase):
+    def test_policy_metadata_is_not_arithmetic_divergence(self):
+        a={'batches_f64le':struct.pack('<64d',*([0.]*64)).hex(),'steps_f64le':''};b=copy.deepcopy(a)
+        values=[0.]*64;values[7]=1.;b['batches_f64le']=struct.pack('<64d',*values).hex()
+        self.assertEqual(r.arithmetic_bits(a),r.arithmetic_bits(b))
+
+    def test_kinematic_difference_is_arithmetic_divergence(self):
+        a={'batches_f64le':struct.pack('<64d',*([0.]*64)).hex(),'steps_f64le':''};b=copy.deepcopy(a)
+        values=[0.]*64;values[3]=1.;b['batches_f64le']=struct.pack('<64d',*values).hex()
+        self.assertNotEqual(r.arithmetic_bits(a),r.arithmetic_bits(b))
+
     def test_only_trace_and_timing_omitted(self):
         first=report();second=copy.deepcopy(first)
         for step in second['steps']:

@@ -47,6 +47,12 @@ def physical_packet(value):
 def pristine(data):
     return dict(payload=data['initial_payload']['sha256'],geometry=data['initial_geometry'],sample=data['initial_sample'],authored=data['authored'],case=data['case'])
 
+def arithmetic_bits(capture):
+    raw=bytes.fromhex(capture['batches_f64le']);assert len(raw)==8*8*8
+    # Last two columns describe activity/policy weights. They can differ while
+    # all actual weights, updates and kinematic states agree.
+    return b''.join(raw[i*64:i*64+48] for i in range(8)).hex()+capture['steps_f64le']
+
 def parity(off,on):
     assert pristine(off)==pristine(on),'Mismatched initial authoritative inputs'
     assert off['final_payload']['sha256']==on['final_payload']['sha256'],'Final CYPS mismatch'
@@ -66,10 +72,13 @@ def first_differences(original,active):
         for first,second in zip(original['steps'],active['steps']):
             ca=next(r['solver_trace'] for r in first['native_response']['rows'] if r['id']==owner)
             cb=next(r['solver_trace'] for r in second['native_response']['rows'] if r['id']==owner)
-            for kind,keys in [('node_input',['body_f64le','solve_f64le','nodes_f64le','node_meta_f64']),('batch_arithmetic',['batches_f64le','steps_f64le']),('result',['result_f64le'])]:
+            for kind,keys in [('node_input',['body_f64le','solve_f64le','nodes_f64le','node_meta_f64']),('policy_metadata',['batch_meta_f64','flags_f64']),('result',['result_f64le'])]:
                 if kind not in found and any(ca[k]!=cb[k] for k in keys):
                     found[kind]=dict(step=first['step'],different_fields=[k for k in keys if ca[k]!=cb[k]],
                         exact_body_equal=ca['body_f64le']==cb['body_f64le'],exact_nodes_equal=ca['nodes_f64le']==cb['nodes_f64le'],original=ca,active=cb)
+            if 'batch_arithmetic' not in found and arithmetic_bits(ca)!=arithmetic_bits(cb):
+                found['batch_arithmetic']=dict(step=first['step'],different_fields=['batch kinematics and/or node update values; policy-only weight/count/mask metadata excluded'],
+                    exact_body_equal=ca['body_f64le']==cb['body_f64le'],exact_nodes_equal=ca['nodes_f64le']==cb['nodes_f64le'],original=ca,active=cb)
             ra=struct.unpack('<19d',bytes.fromhex(ca['result_f64le']));rb=struct.unpack('<19d',bytes.fromhex(cb['result_f64le']))
             if 'wrench' not in found and any(ra[k]!=rb[k] for k in [0,1,6,7,8,9]):
                 found['wrench']=dict(step=first['step'],exact_body_equal=ca['body_f64le']==cb['body_f64le'],exact_nodes_equal=ca['nodes_f64le']==cb['nodes_f64le'],
