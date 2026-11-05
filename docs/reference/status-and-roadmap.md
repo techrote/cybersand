@@ -16,8 +16,10 @@ The [active-normal value refinement](../audits/2026-11-05-sol-active-normal.md)
 passes its38case registration on three compiled variants, improving nine COM
 arrest targets without changing capacity shares. The [dependent live policy](../audits/2026-11-05-sol-active-normal-live.md) now
 ports that arithmetic behind a fresh diagnostic opt-in while retaining Original
-as default. Fresh native runtimes and both-host lifecycle tests pass; smoke
-episodes complete, with independent physics reduction/full matrix pending. Original SOL ownership/material admission stays separate.
+as default. Fresh runtimes, native optimized/strict sanitizers and both-host
+workbench regressions pass. Independent smoke reduction shows smaller driven
+overlap (area38.7651→14.2322cell²), with strict clearance still failing.
+The full worker/repeat/authored/workload matrix remains pending. Original SOL ownership/material admission stays separate.
 
 The [separate response-cost lane](../audits/2026-11-05-sol-response-cost.md)
 qualifies48single-body sessions and24observer pairs:13–22µs response generation

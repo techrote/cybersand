@@ -104,16 +104,81 @@ The first chamber smoke completes8 fresh episodes,1440 steps and7200 required
 five-boundary observations: closed-unforced/closed-driven, Original/candidate,
 one worker, one repeat, both hosts. All572 fixture checks per episode pass;
 each host also passes98 lifecycle checks. Native policy readback and actual
-Rapier application are present. Independent full-square geometry, tuple,
-energy and scalar64 reduction is pending at this checkpoint; completion alone
-does not establish physical improvement or clearance.
+Rapier application are present. Independent full-square geometry, tuple, energy and scalar64 reduction
+completes at `4315759b256c338ba0f03a44c53a2a3af680d380`. The
+[smoke summary](sol-active-normal-live-20261105/smoke-summary.json) and
+[complete compact step/boundary ledger](sol-active-normal-live-20261105/smoke-steps.json)
+retain all1440steps/7200boundaries, pose/velocity bit strings, exact recorded
+proxy geometry, owner/session/sample identities and scalar64 work accounting.
+The full per-cell raw census remains local except the separately exported
+Windows candidate reference. All8 exact native tuple multisets conserve.
+
+| Closed driven maximum, both hosts | Original | Candidate |
+| --- | ---: | ---: |
+| Sand intersection area, cell² |38.76508869923395 |14.232169091378106 |
+| Depth, cells |1.3963688876541198 |0.5442310813339191 |
+| Selected arrivals |74 |3 |
+| Missing arrival refusals |27545 |28980 |
+
+Area falls63.29% and depth61.03% in this smoke condition. Both fail strict
+clearance. Candidate area peaks at step179 and grows after drive ends; no
+recurrence-free success follows. Candidate final body KE is also higher
+(Windows0.0759788830990712 versus0.0426197735323925), so the benefit is metric
+specific. Cross-host maxima match; individual trajectories are not bitwise equal.
+
+At first drive step30, both receive the same observed260units of external API
+work and velocity `(1,0)`, with zero selected event wrench. Original/candidate
+passive X impulses are−352.530526089021/−457.734960916978. Applied X velocities
+are0.322056710720062/0.119740486145020. Geometric overlap first appears after
+Rapier integration, at area0.1961690076412879/0.0781714867851523. Both have zero
+legacy wrench, zero correction, zero normal-cap hits and zero passive energy
+rejections throughout. Source parity and value traces support the active-weight
+mechanism; live per-batch active masks are not exported.
+
+First selected arrivals occur at77/145. Their74/3 totals follow the different
+trajectories; they are not different prescribed inputs or the cause of the first
+improvement. Missing counts retain repeated blocked attempts lacking valid
+previous transport. Unforced runs have28980missing refusals, zero selected
+arrivals, zero applied wrench and zero motion. This is an executed static valid
+chamber, not an initially embedded original-SOL recovery target.
+
+Windows actual external API work sums are+63127.639621809205/+41446.11148329867;
+actual response KE changes−63127.59700203567/−41446.03550441557. Passive scalar64
+KE changes−63129.88559270282/−41446.064702156946 use their post-event state and
+differ from rounded applied totals. Every actual response KE change is
+nonpositive; Rapier-step/preapplication KE changes are zero. Identical fixed
+impulses do different cumulative work at different velocities. Full grain/body
+energy conservation is unavailable. Legacy scalar64 sums are exactly zero;
+small inherited vector-subtraction residuals are rounding, separately labelled.
+
+The Windows Original physical trajectory reproduces the retained411 reference
+exactly after excluding observer time and local RID/World IDs, including every
+historical response/application field and initial/final payload hashes. Both
+hosts match their old per-host summary fields. This explicitly selected Original
+arm is separate from the native default/explicit-original value parity gate.
 
 The registered full chamber matrix remains240 episodes; authored8-case and
 bounded16-patch workloads add192 and72 episodes. Requested1/4 workers must be
 distinguished from actual participation. Full observer and getter/export cost
-remain separate. Native core/focused optimized and strict sanitizer regressions,
-the affected12 workbench fixtures, public evidence reduction and final
-documentation/repository checks remain required. No new CPU pass is claimed.
+remain separate. Native core/focused optimized and strict sanitizer qualification passes all28
+commands; core runs each report166tests passed. All12 affected workbench
+fixtures, lifecycle/passive/force-accounting and generic apparatus smoke pass
+on both actual hosts (38host commands total). [Native receipts](sol-active-normal-live-20261105/native.json),
+[scoped host receipts](sol-active-normal-live-20261105/scoped.json),
+[build/dependency receipts](sol-active-normal-live-20261105/build.json) and
+[custody manifest](sol-active-normal-live-20261105/manifest.json) preserve hashes.
+Recorded smoke getter means are25.1–31.394444444444446µs, including diagnostic
+packet construction; these are not an isolated solver-cost or engine-speedup
+claim. Full worker4, repeat, authored/material and workload evaluation remains
+pending. No original SOL CPU pass is claimed.
+
+Documentation, historical M11 and the additive retrieval route pass at637eea42.
+The default repository checker exits1 with exactly8canonical native-source
+mismatches (four per platform). Its materialization mode also reports binaries
+for untested platforms unavailable. The historical421 generator correctly
+refuses the edited header. [Validation receipts](sol-active-normal-live-20261105/validation.json)
+retain these failures and qualifiers; new experimental runtime closure does
+not silently make the canonical repository gate green.
 
 ## Refusals and custody qualifications
 
@@ -147,7 +212,7 @@ source-archive cap failures are not cured by this experiment.
 | Decision | Current status |
 | --- | --- |
 | Intended primary LA-SELECTIVE granular gameplay response | CONDITIONAL; owner direction retained, no general-default promotion |
-| Active-normal live benefit to SOL-like collisions | UNAVAILABLE pending independent reduction/full registered matrix |
+| Active-normal live benefit to SOL-like collisions | CONDITIONAL; measured closed-driven smoke benefit on both hosts, worker1/repeat1; full matrix pending |
 | Original SOL physical clearance | NO-GO; authority/eligibility unavailable, historical failures unchanged |
 | Cross-source ownership/MAT-AUTH integration | NO-GO; no admitted SOL composition and canonical runtime drift remains |
 

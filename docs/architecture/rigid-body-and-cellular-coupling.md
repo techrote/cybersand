@@ -58,8 +58,12 @@ only for diagnostic Worlds. Passive energy starts after the accepted event
 wrench and excludes the separately added legacy contribution.
 
 Fresh DLL/SO builds,38-case exact value parity and98 lifecycle assertions on
-each actual host pass. Eight smoke episodes complete with full observation;
-independent physics reduction and the full matrix remain pending. Original SOL
+each actual host pass. Eight independently reduced smoke episodes conserve
+tuples. In closed driven contact, area falls38.7651→14.2322cell² and depth
+1.39637→0.544231cells on both hosts, while strict clearance still fails.
+The change acts before the first selected arrival; legacy/correction stay zero.
+Native strict/optimized and both-host workbench regressions pass. The full
+worker/repeat/authored/workload matrix remains pending. Original SOL
 eligibility, composition, physical clearance and general default promotion do
 not follow. No capacity/pass/gain changes or penetration correction are added.
 

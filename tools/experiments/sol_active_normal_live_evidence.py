@@ -12,9 +12,25 @@ RUN=ROOT/'build/sol-active-normal-live'
 
 def read(path):return json.loads(path.read_text(encoding='utf-8'))
 
+def reference(output):
+    assert not p.git('status','--porcelain'),'Commit curator before exporting reference'
+    source=RUN/'chamber-smoke-001/windows/closed-driven-selective-active-w1-r0/closed-driven-LA-SELECTIVE-w1-r0.json'
+    data=read(source);assert data['normal_policy']=='active-normal-001' and data['live_registration']=='SOL-ACTIVE-NORMAL-LIVE-001'
+    target=output/'raw-reference-closed-driven-active.json';manifest=output/'raw-reference-custody.json'
+    assert output.is_dir() and not target.exists() and not manifest.exists()
+    target.write_bytes(source.read_bytes());assert runtime.sha(target)==runtime.sha(source)
+    p.write(manifest,dict(curation_source=p.git('rev-parse','HEAD').decode().strip(),curator_sha256=runtime.lfsha(Path(__file__)),
+        source_path=str(source.relative_to(ROOT)),public_file=target.name,sha256=runtime.sha(target),bytes=target.stat().st_size,
+        execution_source=data['source'],scope='Exact raw structured Windows candidate report; all five material/mask censuses per step, no original SOL authority',
+        matched_original_reference='docs/audits/sol-chamber-20261105/raw-reference-closed-driven-selective.json',
+        matched_original_sha256='a7dd38910f39f672e48e1057edaedb0ed30a90cd53ba3f3d66950558d688ee33'))
+    print('Exported exact structured candidate reference',target.stat().st_size,runtime.sha(target))
+
 def main():
-    parser=argparse.ArgumentParser(__doc__);parser.add_argument('output',type=Path);args=parser.parse_args()
-    output=args.output.resolve();assert output.is_relative_to(ROOT/'docs/audits') and not output.exists()
+    parser=argparse.ArgumentParser(__doc__);parser.add_argument('output',type=Path);parser.add_argument('--reference-only',action='store_true');args=parser.parse_args()
+    output=args.output.resolve();assert output.is_relative_to(ROOT/'docs/audits')
+    if args.reference_only:return reference(output)
+    assert not output.exists()
     assert not p.git('status','--porcelain'),'Commit curator before generating review evidence'
     identity=runtime.identity();output.mkdir(parents=True)
     inputs={};files={}
