@@ -15,9 +15,8 @@ concurrency:
 
 env:
   APP_SHA: e7e404b696fb9fc48cdadc95a69baf3a6f5fc6d1
-  EVIDENCE_DIR: ${{ github.workspace }}/evidence-pr379-godot117991-ab
-  PROJECT_TEMPLATE: ${{ github.workspace }}/frozen-project-template
-  AB_WORK: ${{ runner.temp }}/pr379-godot117991-ab-work
+  EVIDENCE_DIR: evidence-pr379-godot117991-ab
+  PROJECT_TEMPLATE: frozen-project-template
   PYTHONUTF8: '1'
 
 jobs:
@@ -145,7 +144,7 @@ jobs:
             --broker "%EVIDENCE_DIR%\official-o\tools\windows_crash_debugger.exe" ^
             --reference "%EVIDENCE_DIR%\official-o" ^
             --evidence "%EVIDENCE_DIR%\ab" ^
-            --work "%AB_WORK%"
+            --work "%RUNNER_TEMP%\pr379-godot117991-ab-work"
           exit /b %ERRORLEVEL%
 
       - name: Preserve source-bound experiment evidence
