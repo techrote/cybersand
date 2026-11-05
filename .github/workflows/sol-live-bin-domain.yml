@@ -7,6 +7,7 @@ on:
       - '.github/workflows/sol-live-bin-domain.yml'
       - 'native/include/cybersand/granular_contact_response.hpp'
       - 'tools/experiments/sol_live_bin_domain_regression.cpp'
+      - 'tools/experiments/sol_live_derived_geometry_regression.cpp'
 
 permissions:
   contents: read
@@ -24,7 +25,7 @@ jobs:
       - name: Verify exact blobs
         shell: bash
         run: |
-          test "$(git hash-object native/include/cybersand/granular_contact_response.hpp)" = a25710443f16e96a0ff02d8a4c0e7f734ca466f2
+          test "$(git hash-object native/include/cybersand/granular_contact_response.hpp)" = 0ed9e410a332baa56c5549ab6af7025fc24bcb83
           test "$(git hash-object tools/experiments/sol_live_bin_domain_regression.cpp)" = bfae617a46b9a0e69d6999fdcf40da0fc8e2f815
       - name: Parent RED and guarded GREEN
         shell: bash
@@ -47,6 +48,98 @@ jobs:
         run: |
           g++ -std=c++20 -O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined -Wall -Wextra -Werror -I native/include tools/experiments/sol_live_bin_domain_regression.cpp -o guarded_san
           ASAN_OPTIONS=detect_leaks=0 ./guarded_san | tee sanitized.log
+      - name: Derived geometry RED vs #441 and GREEN at candidate head
+        shell: bash
+        run: |
+          test "$(git hash-object tools/experiments/sol_live_derived_geometry_regression.cpp)" = 8ab53237a048ccc63f253df109ed4110301ff5ef
+          mkdir -p derived_parent/cybersand
+          git show 3eb07e6616798dda49083858e5549aec4c8d0cd7:native/include/cybersand/granular_contact_response.hpp > derived_parent/cybersand/granular_contact_response.hpp
+          test "$(git hash-object derived_parent/cybersand/granular_contact_response.hpp)" = a25710443f16e96a0ff02d8a4c0e7f734ca466f2
+          g++ -std=c++20 -O2 -Wall -Wextra -Werror -I derived_parent tools/experiments/sol_live_derived_geometry_regression.cpp -o derived_red
+          set +e
+          ./derived_red > derived_parent.log 2>&1
+          red_exit=$?
+          set -e
+          cat derived_parent.log
+          test "$red_exit" -eq 1
+          grep -Eq '^SOL_DERIVED_GEOMETRY invalid_checks=10 valid_controls=4 failures=[1-9][0-9]*
+          path: |
+            parent.log
+            guarded.log
+            sanitized.log
+            derived_parent.log
+            derived_gpp.log
+            derived_clangpp.log
+            derived_san.log
+          if-no-files-found: ignore
+  windows:
+    name: Actual Windows MSVC red-green
+    runs-on: windows-2022
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - uses: ilammy/msvc-dev-cmd@v1
+      - name: Verify exact blobs
+        shell: pwsh
+        run: |
+          if ((git hash-object native/include/cybersand/granular_contact_response.hpp).Trim() -ne "0ed9e410a332baa56c5549ab6af7025fc24bcb83") { throw "Header blob changed" }
+          if ((git hash-object tools/experiments/sol_live_bin_domain_regression.cpp).Trim() -ne "bfae617a46b9a0e69d6999fdcf40da0fc8e2f815") { throw "Test blob changed" }
+      - name: Parent RED and guarded GREEN
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force parent/cybersand | Out-Null
+          git show bbbc423344ca1d72764557ddacba690b75ea04d7:native/include/cybersand/granular_contact_response.hpp | Out-File -FilePath parent/cybersand/granular_contact_response.hpp -Encoding utf8
+          cl /nologo /std:c++20 /EHsc /O2 /I parent tools/experiments/sol_live_bin_domain_regression.cpp /Fe:parent_red.exe
+          if ($LASTEXITCODE -ne 0) { throw "Parent compilation failed" }
+          & .\parent_red.exe | Tee-Object -FilePath parent.log
+          if ($LASTEXITCODE -ne 1) { throw "Parent did not fail as expected" }
+          if (-not (Select-String -Path parent.log -SimpleMatch "SOL_LIVE_BIN_DOMAIN invalid_checks=32 valid_controls=6 failures=32")) { throw "Unexpected parent RED count" }
+          cl /nologo /std:c++20 /EHsc /O2 /I native/include tools/experiments/sol_live_bin_domain_regression.cpp /Fe:guarded.exe
+          if ($LASTEXITCODE -ne 0) { throw "Candidate compilation failed" }
+          & .\guarded.exe | Tee-Object -FilePath guarded.log
+          if ($LASTEXITCODE -ne 0) { throw "Candidate regression failed" }
+          if (-not (Select-String -Path guarded.log -SimpleMatch "SOL_LIVE_BIN_DOMAIN invalid_checks=32 valid_controls=6 failures=0")) { throw "Unexpected candidate GREEN count" }
+      - name: Derived geometry RED vs #441 and GREEN at candidate head
+        shell: pwsh
+        run: |
+          if ((git hash-object tools/experiments/sol_live_derived_geometry_regression.cpp).Trim() -ne "8ab53237a048ccc63f253df109ed4110301ff5ef") { throw "Derived regression blob mismatch" }
+          New-Item -ItemType Directory -Force derived_parent/cybersand | Out-Null
+          git show 3eb07e6616798dda49083858e5549aec4c8d0cd7:native/include/cybersand/granular_contact_response.hpp | Out-File -FilePath derived_parent/cybersand/granular_contact_response.hpp -Encoding utf8
+          cl /nologo /std:c++20 /EHsc /O2 /I derived_parent tools/experiments/sol_live_derived_geometry_regression.cpp /Fe:derived_red.exe
+          if ($LASTEXITCODE -ne 0) { throw "Parent compile failed" }
+          & .\derived_red.exe | Tee-Object -FilePath derived_parent.log
+          if ($LASTEXITCODE -ne 1) { throw "Parent not RED" }
+          if (-not (Select-String -Path derived_parent.log -Pattern "SOL_DERIVED_GEOMETRY invalid_checks=10 valid_controls=4 failures=[1-9][0-9]*")) { throw "Unexpected RED summary" }
+          cl /nologo /std:c++20 /EHsc /O2 /I native/include tools/experiments/sol_live_derived_geometry_regression.cpp /Fe:derived_guard.exe
+          if ($LASTEXITCODE -ne 0) { throw "Candidate compile failed" }
+          & .\derived_guard.exe | Tee-Object -FilePath derived_guard.log
+          if ($LASTEXITCODE -ne 0) { throw "Candidate not GREEN" }
+          if (-not (Select-String -Path derived_guard.log -SimpleMatch "SOL_DERIVED_GEOMETRY invalid_checks=10 valid_controls=4 failures=0")) { throw "Unexpected GREEN summary" }
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: sol-bin-domain-msvc
+          path: |
+            parent.log
+            guarded.log
+            derived_parent.log
+            derived_guard.log
+          if-no-files-found: ignore
+ derived_parent.log
+          g++ -std=c++20 -O2 -Wall -Wextra -Werror -I native/include tools/experiments/sol_live_derived_geometry_regression.cpp -o derived_gpp
+          ./derived_gpp | tee derived_gpp.log
+          grep -q 'SOL_DERIVED_GEOMETRY invalid_checks=10 valid_controls=4 failures=0' derived_gpp.log
+          clang++ -std=c++20 -O2 -Wall -Wextra -Werror -I native/include tools/experiments/sol_live_derived_geometry_regression.cpp -o derived_clangpp
+          ./derived_clangpp | tee derived_clangpp.log
+          grep -q 'SOL_DERIVED_GEOMETRY invalid_checks=10 valid_controls=4 failures=0' derived_clangpp.log
+      - name: Derived geometry sanitizer
+        shell: bash
+        run: |
+          g++ -std=c++20 -O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined -Wall -Wextra -Werror -I native/include tools/experiments/sol_live_derived_geometry_regression.cpp -o derived_san
+          ASAN_OPTIONS=detect_leaks=0 ./derived_san | tee derived_san.log
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -69,7 +162,7 @@ jobs:
       - name: Verify exact blobs
         shell: pwsh
         run: |
-          if ((git hash-object native/include/cybersand/granular_contact_response.hpp).Trim() -ne "a25710443f16e96a0ff02d8a4c0e7f734ca466f2") { throw "Header blob changed" }
+          if ((git hash-object native/include/cybersand/granular_contact_response.hpp).Trim() -ne "0ed9e410a332baa56c5549ab6af7025fc24bcb83") { throw "Header blob changed" }
           if ((git hash-object tools/experiments/sol_live_bin_domain_regression.cpp).Trim() -ne "bfae617a46b9a0e69d6999fdcf40da0fc8e2f815") { throw "Test blob changed" }
       - name: Parent RED and guarded GREEN
         shell: pwsh
