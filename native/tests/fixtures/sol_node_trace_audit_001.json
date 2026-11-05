@@ -1,0 +1,20 @@
+{
+  "registration": "SOL-NODE-TRACE-001-AUDIT",
+  "date": "2026-11-05",
+  "parent": "SOL-NODE-TRACE-001",
+  "timing": "Declared before any registered physical campaign episode",
+  "evaluator": "Independent Python lossless node/batch reconstruction; no live actuation",
+  "tolerances": {
+    "scalar_absolute": 1e-12,
+    "capacity_energy_request_sum_absolute": 1e-10,
+    "decimal_display_relative": 1e-12,
+    "decimal_display_absolute": 1e-9,
+    "origin": "Existing sol_active_normal_audit.py and sol_active_normal_live_reduce.py; reused without inspecting new campaign outcomes"
+  },
+  "complete_capture": "Check all node source weights/capacity shares, batch order/frozen velocity, activity vs policy masks, requests, weights, targets, clamps, counters, unwind flags, sequential velocity updates, final wrench and energy rejection. Original diagnostic activity does not select weights. Source-bin moments are not exported; node trace is not an independent reconstruction of original source points.",
+  "incomplete_capture": "Check available prefix using exported full batch state/totals, but refuse independent closure of full active totals, batch velocity delta, final wrench and raw request sums. No missing nodes invented.",
+  "matching": "Eight traceoff/on pairs across two policies, two hosts, requested workers1/4; exact initial/final CYPS identity and all180steps of physical body/native/application/geometry observations. Timing and trace diagnostic metadata are explicitly excluded; source and raw file hashes retained.",
+  "causal_limits": "Report first lossless input, arithmetic and wrench differences separately. Complete arithmetic reconstruction proves recorded operations, not unique downstream cause or original SOL clearance.",
+  "negative_controls": "Deliberately corrupted weights, masks, deltas, batch order, capacity, lengths, overflow completeness and lossless-bit envelope must refuse. Raw SHA binding detects any retained artifact bit change.",
+  "performance": "Report full getter/observation/simulation distributions and trace payload/storage bytes, all episodes/owners retained. One-repeat sequential observer comparison is not a clean timing experiment, original SOL24group gate, universal60Hz or total memory proof."
+}

@@ -78,8 +78,9 @@ func run() -> void:
 		replace(world,mode);trace_refused(world,"batch64-001","separate response "+mode)
 	check(world.diagnostic_reset({"workers":4,"telemetry":false}),"reset retires trace")
 	trace_refused(world,"batch64-001","no workbench after reset")
-	world=null;native_preparer=null;session.close();viewport.free()
+	world=null;native_preparer=null;session.close()
 	check(not session.active() and session.bodies().is_empty(),"teardown")
+	viewport.free()
 	for index: int in frozen_packets.size():check(JSON.stringify(plain(observations[index]))==frozen_packets[index],"held captures after teardown")
 	var output: String = OS.get_environment("SOL_TRACE_POLICY_OUTPUT")
 	if not output.is_empty():

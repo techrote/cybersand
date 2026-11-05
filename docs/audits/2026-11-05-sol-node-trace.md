@@ -89,3 +89,14 @@ buffer size and observer cost must be measured; copied diagnostic payload cost
 is not ordinary gameplay or original SOL CPU performance. Original SOL material/
 ownership admission, physical clearance and default promotion remain unproved.
 Keep Draft and seek separate independent adversarial review before an owner decision.
+
+Atb9053353, all28native qualification commands pass, including166core tests
+per optimized/strictASan+UBSan variant. The corrected API attempt reaches its
+final teardown assertion, then faults by querying a child after its viewport
+was freed. Windows times out124; Linux aborts6. Both failed copied projects,
+logs and source/project post-checks remain intact. [Apparatus003](../../native/tests/fixtures/sol_node_trace_apparatus_003.json)
+moves only that assertion before freeing its parent. No registered physical
+episode has run. The new independent [audit registration](../../native/tests/fixtures/sol_node_trace_audit_001.json)
+reuses existing numeric audit tolerances and explicitly refuses full closure
+for overflow prefixes. A combined qualification runner reuses one private
+project per host for lifecycle, affected suites and the registered campaign.

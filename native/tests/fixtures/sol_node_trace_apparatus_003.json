@@ -1,0 +1,16 @@
+{
+  "registration": "SOL-NODE-TRACE-003-APPARATUS",
+  "date": "2026-11-05",
+  "parent": "SOL-NODE-TRACE-001",
+  "failed_source": "b9053353148716b335a5375c952883ffc699b98c",
+  "failed_run": "build/sol-node-trace/host-002",
+  "cause": "The corrected API fixture reached its final teardown assertion, then queried session.active() after viewport.free() had already freed that child. Windows faulted and reached command timeout exit124; Linux faulted and aborted exit6. No evidence file or lifecycle PASS was produced.",
+  "raw_trace_log_sha256": {
+    "windows": "6cef08b4ff2e4cde01ffe32b4ec021a301cfb585f20409a3e26cef4e7cf39f4e",
+    "linux": "d04a0b01c712fc9f6625c9ed299beb77608321ad2d383a1d7897d93f4a0af6bf"
+  },
+  "retained": "Both failed copies, commands, raw logs and source/project post-inventories; existing98normal-policy checks pass per host. Native optimized/strict qualification at the same source separately passes28commands and166core tests per variant.",
+  "correction": "Check closed session before freeing the viewport. No native arithmetic, compiled runtime, policy, material or registered physical inputs change.",
+  "execution": "New qualification suite runs lifecycle, existing scoped tests and registered16episodes using one new isolated imported project per host. Prior failed projects/logs are preserved.",
+  "qualification": "Retained apparatus failure, not physical recovery or a passed trace lifecycle. Registered before the corrected rerun."
+}

@@ -15,7 +15,7 @@ PROFILE=runtime.PROFILE
 def main():
     parser=argparse.ArgumentParser(__doc__)
     parser.add_argument('--run',required=True)
-    parser.add_argument('--suite',choices=['policy','campaign','scoped'],required=True)
+    parser.add_argument('--suite',choices=['policy','campaign','scoped','qualification'],required=True)
     parser.add_argument('--platforms',default='windows,linux');parser.add_argument('--workers',default='1,4')
     parser.add_argument('--repeats',type=int,default=1);parser.add_argument('--cases',default='');parser.add_argument('--arms',default='')
     args=parser.parse_args();assert Path(args.run).name==args.run and args.run not in ['.','..']
@@ -27,7 +27,7 @@ def main():
     arms=[dict(id=policy+'-'+trace,mode='LA-SELECTIVE',normal_policy='original' if policy=='selective-original' else 'active-normal-001',trace_mode=trace) for policy in ['selective-original','selective-active'] for trace in ['off','batch64-001']]
     if args.arms:arms=[a for a in arms if a['id'] in args.arms.split(',')];assert {a['id'] for a in arms}==set(args.arms.split(','))
     available=authored.load_registration(ROOT/'godot/tests/fixtures/la_physical/registration-v5.json')['cases']
-    cases=[c for c in available if c['id']=='shared-granular-bodies'] if args.suite=='campaign' else []
+    cases=[c for c in available if c['id']=='shared-granular-bodies'] if args.suite in ['campaign','qualification'] else []
     if args.cases:cases=[c for c in cases if c['id'] in args.cases.split(',')];assert {c['id'] for c in cases}==set(args.cases.split(','))
     folder=ROOT/'build/sol-node-trace'/args.run;assert not folder.exists();folder.mkdir(parents=True)
     copied={n:runtime.sha(ROOT/n) for n in p.git('ls-files','godot').decode().splitlines() if (ROOT/n).is_file()}
@@ -90,7 +90,7 @@ def main():
         if not policy['clean']:verify_project();continue
         trace_policy=run('trace-policy-lifecycle','test_sol_node_trace_policy',{'SOL_TRACE_POLICY_OUTPUT':str(host/'trace-policy.json') if platform=='windows' else p.wsl_path(host/'trace-policy.json')})
         if not trace_policy['clean']:verify_project();continue
-        if args.suite=='scoped':
+        if args.suite in ['scoped','qualification']:
             run('passive-safety','test_la_passive_response')
             run('force-accounting','test_la_force_accounting',{'LA_FORCE_OUTPUT':str(host/'force.json') if platform=='windows' else p.wsl_path(host/'force.json')})
             smoke=host/'smoke';smoke.mkdir()
