@@ -44,11 +44,30 @@ godot --headless --path godot --script res://tests/performance/test_microscenari
 
 It prints `INV154_MICROSCENARIO_COPY_PROBE` JSON with engine version, OS, observation count, publication stride, arm, elapsed microseconds, copy counts, digest, repetition and failure count. No game or native runtime is accessed. Its intentional expected copy counts are 800/current arm and 800/stride/counterfactual arm; these are **fixture invariants, not measured performance wins**.
 
-The branch was authored without an accessible Godot binary or Windows graphical host; therefore **no native/Godot execution or timing values are claimed at this checkpoint**. An ordinary source-read audit cannot qualify a GDScript binary nor assert measured Windows benefit.
+### Actual Windows-hosted synthetic experiment (2026-11-05)
+
+The standalone experiment **executed successfully** in [GitHub-hosted Windows Actions run 41994416705](https://github.com/techrote/cybersand/actions/runs/41994416705) against exact **executed source commit** `94a5b713377b812c21a14c05751c8460f245231b`. It used Windows Server 2022 hosted runner, official **Godot 4.7 stable** (`5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88`) from the official verified SHA-512-pinned Windows ZIP, and a separate minimal synthetic Godot project. The experimental script blob was `a2a1d571305c38dff2b32f4c75f634b15e792b9e`. The raw engine stdout and structured 36 rows plus engine/source identities are retained as [artifact 13399063622](https://github.com/techrote/cybersand/actions/runs/41994416705/artifacts/13399063622), scheduled to expire after 30 days. **36 rows / 0 parity failures**; clone counts and independent-readback checks passed. The host GPU/driver were irrelevant to this headless synthetic CPU measurement and no actual framebuffer was rendered.
+
+Median total elapsed time for **800 synthetic update iterations**, from 3 independently executed repetitions (units are **microseconds**, not a measured real-game frame time):
+
+| Nested observations | Publication stride | Every-frame clone | Once-per-publication clone |
+| ---: | ---: | ---: | ---: |
+| 0 | 1 | 1,973 | 2,215 |
+| 0 | 4 | 1,773 | 730 |
+| 64 | 1 | 66,225 | 65,754 |
+| 64 | 4 | 64,596 | 16,456 |
+| 256 | 1 | 261,259 | 266,937 |
+| 256 | 4 | 277,191 | 70,165 |
+
+At 256 synthetic observations with publication once per four render-frame iterations, the raw every-frame times were `[299117,277191,275897]` µs and the hypothetical publication-only times were `[77367,66202,70165]` µs, a roughly 3.95x **isolated copy-loop time ratio**. At stride one, both arms copy the same amount and no advantage was observed. This strong stride dependence is expected from the *synthetic* contract: **800 versus 200 deep-copy operations**. It does **not** demonstrate a 4x faster CyberSand, production memory reduction, improved FPS, or safe real gameplay cache.
+
+The original first Windows [run 41994278217](https://github.com/techrote/cybersand/actions/runs/41994278217) **failed** after successful download/verification because the harness extracted only the Godot console executable, which requires its GUI companion beside it. The unaltered original failure log and [artifact 13398744342](https://github.com/techrote/cybersand/actions/runs/41994278217/artifacts/13398744342) are retained. The correction extracted both validated members; no production source, benchmark assertions or test input was weakened.
+
+**Limitations:** no real `Main` graphical or input/render profiling, no native World/GDExtension or Rapier runtime in this standalone test, no Windows end-user GPU cohort, no Linux comparison, no claim of cold ANGLE startup or exit-crash repair. Any later documentation-only head differs from the **executed** source SHA above while preserving the tested synthetic script; exact-head qualified gameplay claims would require fresh dedicated execution.
 
 ## Admission / next discrimination
 
-1. Run the probe on real Godot 4.7 Windows (and Linux as a separate cohort), retain raw unrounded results and source/engine/hardware identities. Evaluate paired median and variability for the large/paused/active scenario cases; include a zero-observation control. Reject the hypothesis if copy cost is negligible relative to actual frame time.
+1. The Windows Godot 4.7 synthetic probe has now run and its positive/negative source-bound results are retained above. A Linux synthetic cohort is still absent. Determine whether the copied real scenario payload and publication cadence actually produce meaningful Main CPU cost on a real graphical host before changing any production source.
 2. If material, use an **isolated temporary host instrument** or source-qualified benchmark branch to time the real `workbench.refresh` subphases in both a running and paused MicroScenario, with unchanged actual content, snapshot publication rate, camera and UI. Do not infer end-to-end fps from the synthetic fixture.
 3. Only then propose a guarded optimization. Any cache must preserve desktop and Web refresh, same-definition reset, captured observations, modal/hide state and the bounded-run step acknowledgment. The current `godot/tests/test_microscenario_workbench.gd` and `test_microscenario_workbench_lifecycle.gd` cover important behavior and must pass unchanged, alongside real-host tests.
 4. Do not modify `main.gd`, `physical_actor_overlay.gd`, shader or native worker while #409/#402/#403/other owners hold adjacent active work. No production speedup, fix, merge or owner disposition is claimed here.
