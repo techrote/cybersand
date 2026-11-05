@@ -233,6 +233,20 @@ jobs:
               json.dumps(custody, indent=2) + '\n', encoding='utf-8')
 
           godot = evidence / 'engine' / 'Godot_v4.7-stable_win64_console.exe'
+          # Standalone --script does not build the editor's global class-name
+          # registry. Import the minimal scratch project first, without native
+          # project resources, to register the contract/identity stubs and the
+          # byte-identical Workbench and Comparison production source.
+          imported = subprocess.run(
+              [str(godot), '--headless', '--editor', '--path', str(scratch),
+               '--import'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+              text=True, timeout=90,
+              env={**os.environ, 'GODOT_SILENCE_ROOT_WARNING': '1'})
+          (evidence / 'workbench-import-stdout.txt').write_text(
+              imported.stdout, encoding='utf-8')
+          if imported.returncode != 0:
+              print(imported.stdout)
+              raise RuntimeError(f'Isolated workbench source import failed: {imported.returncode}')
           proc = subprocess.run(
               [str(godot), '--headless', '--path', str(scratch),
                '--script', 'res://workbench_probe.gd'],
@@ -273,6 +287,7 @@ jobs:
             build/inv154-probe/godot-envelope-stdout.txt
             build/inv154-probe/envelope-result.json
             build/inv154-probe/workbench-source-custody.json
+            build/inv154-probe/workbench-import-stdout.txt
             build/inv154-probe/workbench-stdout.txt
             build/inv154-probe/workbench-result.json
           if-no-files-found: warn
