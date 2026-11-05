@@ -1,0 +1,1769 @@
+{
+  "schema_id": "cybersand.world-feature-pack.proposal",
+  "schema_version": 1,
+  "title": "CHALKBONE COAST — fossils, salt, stranded timber and brine",
+  "created_utc": "2026-11-05",
+  "status": "draft design resource only; not GEN recipe, native snapshot, Godot map or accepted importer",
+  "source": {
+    "main_commit": "ba9cbc89029be88b812af59b19e5c59829bbcd90",
+    "main_tree": "3af18f50e6094776263119623b64a1b2f4ca0ab2",
+    "native_material_enum": "native/include/cybersand/material.hpp",
+    "native_enum_blob_sha": "dcf05895da3015a2e999e3d1cbbae0fdc7fe32b3",
+    "shadow_catalogue": "materials/catalogue/catalogue.json",
+    "shadow_catalogue_blob_sha": "d7a47d60721598a16589daf177a6ff4401b84b43",
+    "rectangle_convention": "godot/scripts/demo_worlds.gd::_rect",
+    "prior_design": "docs/world-design/lumen-fault (open draft PR #408)"
+  },
+  "coordinate_contract": {
+    "units": "native cells",
+    "origin": "top-left",
+    "axes": "+x right,+y down",
+    "rectangle": "[x,y,width,height,native material ID]",
+    "bounds": "half-open",
+    "write_priority": "ordered last-write-wins, scene terrain then translated modules",
+    "holes": "unwritten cells do not clear existing terrain; explicit Empty 0 pass or clear region before paint",
+    "variants": "literal material-ID substitution only; a dry-pan replacement 24 -> 0 is an explicit Empty write",
+    "rotation": "not asserted; modules authored in one orientation; no automatic transform or mirror without rechecking joints"
+  },
+  "palette": [
+    {
+      "id": 0,
+      "name": "empty",
+      "state": 0,
+      "movable": false,
+      "kernel": 0,
+      "rgba": [
+        8,
+        11,
+        18,
+        255
+      ]
+    },
+    {
+      "id": 23,
+      "name": "salt",
+      "state": 2,
+      "movable": true,
+      "kernel": 1,
+      "rgba": [
+        236,
+        232,
+        218,
+        255
+      ]
+    },
+    {
+      "id": 24,
+      "name": "brine",
+      "state": 3,
+      "movable": true,
+      "kernel": 18,
+      "rgba": [
+        92,
+        166,
+        194,
+        255
+      ]
+    },
+    {
+      "id": 38,
+      "name": "limestone-block",
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "rgba": [
+        197,
+        191,
+        175,
+        255
+      ]
+    },
+    {
+      "id": 39,
+      "name": "sandstone-block",
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "rgba": [
+        199,
+        156,
+        98,
+        255
+      ]
+    },
+    {
+      "id": 42,
+      "name": "mossy-cobblestone",
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "rgba": [
+        101,
+        112,
+        90,
+        255
+      ]
+    },
+    {
+      "id": 44,
+      "name": "lime-plaster",
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "rgba": [
+        210,
+        205,
+        185,
+        255
+      ]
+    },
+    {
+      "id": 49,
+      "name": "slate",
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "rgba": [
+        70,
+        83,
+        99,
+        255
+      ]
+    },
+    {
+      "id": 54,
+      "name": "verdigris-copper",
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "rgba": [
+        79,
+        140,
+        121,
+        255
+      ]
+    },
+    {
+      "id": 56,
+      "name": "packed-earth",
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "rgba": [
+        124,
+        91,
+        59,
+        255
+      ]
+    },
+    {
+      "id": 88,
+      "name": "driftwood",
+      "state": 1,
+      "movable": false,
+      "kernel": 6,
+      "rgba": [
+        150,
+        143,
+        131,
+        255
+      ]
+    },
+    {
+      "id": 97,
+      "name": "moss-wall",
+      "state": 1,
+      "movable": false,
+      "kernel": 6,
+      "rgba": [
+        70,
+        104,
+        52,
+        255
+      ]
+    },
+    {
+      "id": 98,
+      "name": "marble",
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "rgba": [
+        226,
+        223,
+        216,
+        255
+      ]
+    },
+    {
+      "id": 99,
+      "name": "chalk-block",
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "rgba": [
+        234,
+        231,
+        220,
+        255
+      ]
+    },
+    {
+      "id": 100,
+      "name": "basalt-columns",
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "rgba": [
+        54,
+        56,
+        61,
+        255
+      ]
+    },
+    {
+      "id": 101,
+      "name": "obsidian",
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "rgba": [
+        24,
+        19,
+        32,
+        255
+      ]
+    },
+    {
+      "id": 106,
+      "name": "rock-salt-block",
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "rgba": [
+        222,
+        196,
+        190,
+        255
+      ]
+    },
+    {
+      "id": 120,
+      "name": "glass-block",
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "rgba": [
+        156,
+        210,
+        220,
+        204
+      ]
+    },
+    {
+      "id": 121,
+      "name": "frosted-glass",
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "rgba": [
+        206,
+        226,
+        232,
+        214
+      ]
+    }
+  ],
+  "style_guide": {
+    "theme": "An eroded fossil coast after salt-winds, without industrial or neon instruments",
+    "primary": "ChalkBlock 99 / LimestoneBlock 38 / SandstoneBlock 39",
+    "secondary": "RockSaltBlock 106, Slate 49 and BasaltColumns 100 for age and shadow",
+    "accents": "Brine 24 turquoise, Driftwood 88 grey, VerdigrisCopper 54 as very rare old marker; no glow",
+    "composition": "2–3 low pale shelves per high silhouette; occasional spiral fossil and a single arch. One brine pan per ~400 cells maximum until cost measured",
+    "ratio": "roughly 70% pale dry cliff, 20% dark cavity/strata, <=10% live material in mixed areas",
+    "geometry": "tile-like orthogonal splines approximated with rectangles; no true sloped normals, physics surfaces remain cell-defined",
+    "placement": "ground contact; no unsupported full-body physics claims; keep entrances empty and avoid crushing player clearance"
+  },
+  "features": [
+    {
+      "id": "wavecut-terrace",
+      "title": "Wave-cut chalk shelf",
+      "size": [
+        96,
+        72
+      ],
+      "status": "static",
+      "role": "Layered coast terrace, undercut and tide-bored notches",
+      "anchor": {
+        "type": "ground-contact",
+        "point": [
+          48,
+          72
+        ]
+      },
+      "requires_clearance": true,
+      "rectangles": [
+        [
+          0,
+          64,
+          96,
+          8,
+          39
+        ],
+        [
+          0,
+          58,
+          86,
+          6,
+          38
+        ],
+        [
+          4,
+          52,
+          75,
+          6,
+          99
+        ],
+        [
+          12,
+          46,
+          55,
+          6,
+          39
+        ],
+        [
+          22,
+          40,
+          34,
+          6,
+          99
+        ],
+        [
+          31,
+          34,
+          17,
+          6,
+          38
+        ],
+        [
+          0,
+          64,
+          96,
+          2,
+          49
+        ],
+        [
+          6,
+          58,
+          20,
+          2,
+          106
+        ],
+        [
+          48,
+          58,
+          25,
+          2,
+          106
+        ],
+        [
+          16,
+          52,
+          20,
+          3,
+          106
+        ],
+        [
+          41,
+          46,
+          14,
+          3,
+          106
+        ],
+        [
+          71,
+          60,
+          10,
+          4,
+          101
+        ],
+        [
+          5,
+          62,
+          7,
+          2,
+          101
+        ],
+        [
+          66,
+          63,
+          16,
+          1,
+          98
+        ],
+        [
+          18,
+          44,
+          12,
+          2,
+          44
+        ],
+        [
+          31,
+          36,
+          16,
+          2,
+          98
+        ]
+      ],
+      "variants": [
+        {
+          "id": "dark-gale",
+          "swap": {
+            "99": 38,
+            "98": 49
+          },
+          "note": "Storm-dark compact sediment instead of bright chalk"
+        },
+        {
+          "id": "pink-salt",
+          "swap": {
+            "98": 106
+          },
+          "note": "Warm salt lenses"
+        }
+      ],
+      "placement_rules": [
+        "Align the 96-cell floor line to the ground edge; do not infer eroding motion from a static shelf.",
+        "Keep the overhang clear of active liquid and player collision until tested."
+      ]
+    },
+    {
+      "id": "ammonite-relief",
+      "title": "Buried ammonite relief",
+      "size": [
+        64,
+        64
+      ],
+      "status": "static",
+      "role": "Ancient spiral fossil embedded in pale chalk cut-bank",
+      "anchor": {
+        "type": "ground-contact",
+        "point": [
+          32,
+          64
+        ]
+      },
+      "requires_clearance": true,
+      "rectangles": [
+        [
+          0,
+          56,
+          64,
+          8,
+          38
+        ],
+        [
+          7,
+          20,
+          50,
+          36,
+          99
+        ],
+        [
+          13,
+          14,
+          38,
+          8,
+          99
+        ],
+        [
+          21,
+          10,
+          22,
+          4,
+          99
+        ],
+        [
+          11,
+          28,
+          42,
+          24,
+          98
+        ],
+        [
+          14,
+          26,
+          31,
+          5,
+          106
+        ],
+        [
+          14,
+          31,
+          5,
+          18,
+          106
+        ],
+        [
+          19,
+          44,
+          30,
+          5,
+          106
+        ],
+        [
+          44,
+          33,
+          5,
+          14,
+          106
+        ],
+        [
+          25,
+          32,
+          21,
+          5,
+          106
+        ],
+        [
+          25,
+          37,
+          5,
+          8,
+          106
+        ],
+        [
+          30,
+          41,
+          14,
+          4,
+          106
+        ],
+        [
+          39,
+          37,
+          5,
+          6,
+          106
+        ],
+        [
+          30,
+          37,
+          9,
+          4,
+          49
+        ],
+        [
+          18,
+          22,
+          28,
+          2,
+          39
+        ],
+        [
+          8,
+          52,
+          49,
+          4,
+          39
+        ],
+        [
+          4,
+          58,
+          56,
+          2,
+          49
+        ],
+        [
+          8,
+          29,
+          3,
+          19,
+          38
+        ],
+        [
+          55,
+          25,
+          3,
+          27,
+          38
+        ]
+      ],
+      "variants": [
+        {
+          "id": "eroded",
+          "swap": {
+            "106": 39
+          },
+          "note": "Muted sandy fossil imprint"
+        },
+        {
+          "id": "white-shell",
+          "swap": {
+            "106": 98
+          },
+          "note": "High-contrast marble fossil ribs"
+        }
+      ],
+      "placement_rules": [
+        "Relief reads from 1–3× cell scale; avoid other strong spirals within 180 cells.",
+        "This is fixed geometry, not a creature, pressure shell or dynamic object."
+      ]
+    },
+    {
+      "id": "saltcomb-ridge",
+      "title": "Saltcomb windward ridge",
+      "size": [
+        64,
+        56
+      ],
+      "status": "static",
+      "role": "Saw-toothed crystal-white saltland contour with pink crust",
+      "anchor": {
+        "type": "ground-contact",
+        "point": [
+          32,
+          56
+        ]
+      },
+      "requires_clearance": true,
+      "rectangles": [
+        [
+          0,
+          50,
+          64,
+          6,
+          39
+        ],
+        [
+          3,
+          46,
+          59,
+          4,
+          106
+        ],
+        [
+          8,
+          38,
+          11,
+          8,
+          99
+        ],
+        [
+          17,
+          28,
+          9,
+          18,
+          106
+        ],
+        [
+          24,
+          19,
+          7,
+          27,
+          99
+        ],
+        [
+          31,
+          31,
+          8,
+          15,
+          106
+        ],
+        [
+          39,
+          23,
+          6,
+          23,
+          99
+        ],
+        [
+          45,
+          37,
+          10,
+          9,
+          106
+        ],
+        [
+          52,
+          43,
+          9,
+          3,
+          99
+        ],
+        [
+          15,
+          46,
+          8,
+          2,
+          98
+        ],
+        [
+          27,
+          46,
+          16,
+          3,
+          98
+        ],
+        [
+          32,
+          28,
+          6,
+          3,
+          120
+        ],
+        [
+          40,
+          21,
+          4,
+          3,
+          98
+        ],
+        [
+          23,
+          18,
+          8,
+          2,
+          106
+        ],
+        [
+          7,
+          48,
+          50,
+          2,
+          38
+        ]
+      ],
+      "variants": [
+        {
+          "id": "chalk-only",
+          "swap": {
+            "106": 99,
+            "120": 98
+          },
+          "note": "Uniform matte carbonate"
+        },
+        {
+          "id": "rose-evaporite",
+          "swap": {
+            "99": 106
+          },
+          "note": "Rose-pink evaporite crest"
+        }
+      ],
+      "placement_rules": [
+        "Place between low shoreline shelves; preserve at least 16 open cells above tall crest.",
+        "All crystal shapes are fixed RockSaltBlock/ChalkBlock; not falling Salt powder."
+      ]
+    },
+    {
+      "id": "tide-stelae",
+      "title": "Triple tide stelae",
+      "size": [
+        56,
+        72
+      ],
+      "status": "static",
+      "role": "Three unequal standing markers with notched high-water lines",
+      "anchor": {
+        "type": "ground-contact",
+        "point": [
+          28,
+          72
+        ]
+      },
+      "requires_clearance": true,
+      "rectangles": [
+        [
+          0,
+          64,
+          56,
+          8,
+          39
+        ],
+        [
+          6,
+          59,
+          46,
+          5,
+          38
+        ],
+        [
+          9,
+          25,
+          9,
+          34,
+          49
+        ],
+        [
+          12,
+          19,
+          5,
+          6,
+          99
+        ],
+        [
+          24,
+          12,
+          10,
+          47,
+          99
+        ],
+        [
+          27,
+          7,
+          4,
+          5,
+          98
+        ],
+        [
+          41,
+          32,
+          8,
+          27,
+          49
+        ],
+        [
+          43,
+          27,
+          5,
+          5,
+          99
+        ],
+        [
+          9,
+          43,
+          9,
+          3,
+          106
+        ],
+        [
+          9,
+          51,
+          9,
+          2,
+          44
+        ],
+        [
+          24,
+          34,
+          10,
+          3,
+          106
+        ],
+        [
+          24,
+          44,
+          10,
+          2,
+          54
+        ],
+        [
+          24,
+          51,
+          10,
+          2,
+          106
+        ],
+        [
+          41,
+          47,
+          8,
+          3,
+          106
+        ],
+        [
+          5,
+          61,
+          48,
+          2,
+          101
+        ],
+        [
+          26,
+          17,
+          6,
+          3,
+          49
+        ]
+      ],
+      "variants": [
+        {
+          "id": "lichen",
+          "swap": {
+            "54": 42
+          },
+          "note": "Dull ancient mossy scar"
+        },
+        {
+          "id": "white-witness",
+          "swap": {
+            "49": 38
+          },
+          "note": "Pale but lower-contrast standing markers"
+        }
+      ],
+      "placement_rules": [
+        "Leave 8 cells clear above central stele; no horizontal reflection or mirror assumption.",
+        "Brass/signal lighting is deliberately absent: these are old natural tide marks."
+      ]
+    },
+    {
+      "id": "nacre-arch",
+      "title": "Nacre arch cave",
+      "size": [
+        96,
+        72
+      ],
+      "status": "static",
+      "role": "Pale layered hollow arch framing a genuine dark empty entrance",
+      "anchor": {
+        "type": "ground-contact",
+        "point": [
+          48,
+          72
+        ]
+      },
+      "requires_clearance": true,
+      "rectangles": [
+        [
+          0,
+          64,
+          96,
+          8,
+          38
+        ],
+        [
+          0,
+          39,
+          17,
+          25,
+          99
+        ],
+        [
+          79,
+          36,
+          17,
+          28,
+          99
+        ],
+        [
+          8,
+          24,
+          19,
+          15,
+          38
+        ],
+        [
+          69,
+          22,
+          19,
+          18,
+          38
+        ],
+        [
+          18,
+          16,
+          62,
+          12,
+          99
+        ],
+        [
+          29,
+          10,
+          39,
+          6,
+          98
+        ],
+        [
+          43,
+          6,
+          16,
+          4,
+          106
+        ],
+        [
+          0,
+          61,
+          28,
+          3,
+          49
+        ],
+        [
+          70,
+          61,
+          26,
+          3,
+          49
+        ],
+        [
+          11,
+          33,
+          7,
+          27,
+          106
+        ],
+        [
+          78,
+          30,
+          8,
+          31,
+          106
+        ],
+        [
+          20,
+          23,
+          51,
+          3,
+          106
+        ],
+        [
+          24,
+          26,
+          44,
+          2,
+          98
+        ],
+        [
+          20,
+          54,
+          8,
+          5,
+          101
+        ],
+        [
+          68,
+          53,
+          7,
+          6,
+          101
+        ],
+        [
+          17,
+          59,
+          62,
+          3,
+          49
+        ],
+        [
+          30,
+          13,
+          37,
+          2,
+          106
+        ],
+        [
+          40,
+          27,
+          19,
+          2,
+          121
+        ]
+      ],
+      "variants": [
+        {
+          "id": "limestone",
+          "swap": {
+            "99": 38,
+            "98": 44
+          },
+          "note": "Lower brightness, weathered cave"
+        },
+        {
+          "id": "bleached",
+          "swap": {
+            "38": 99,
+            "106": 98
+          },
+          "note": "Pale calcite arch"
+        }
+      ],
+      "placement_rules": [
+        "The open space x28..67,y29..53 requires explicit host clearing, not implied erasure.",
+        "Arch pixels are fixed solids; passage collision geometry must be checked against player size."
+      ]
+    },
+    {
+      "id": "driftwood-arbour",
+      "title": "Stormwood arbour",
+      "size": [
+        80,
+        72
+      ],
+      "status": "reactive-static",
+      "role": "Weathered fallen timber bowed over bleached stone; combustible fixed silhouette",
+      "anchor": {
+        "type": "ground-contact",
+        "point": [
+          40,
+          72
+        ]
+      },
+      "requires_clearance": true,
+      "rectangles": [
+        [
+          0,
+          64,
+          80,
+          8,
+          39
+        ],
+        [
+          6,
+          59,
+          68,
+          5,
+          42
+        ],
+        [
+          13,
+          42,
+          10,
+          17,
+          88
+        ],
+        [
+          19,
+          35,
+          11,
+          12,
+          88
+        ],
+        [
+          28,
+          30,
+          13,
+          9,
+          88
+        ],
+        [
+          40,
+          26,
+          18,
+          7,
+          88
+        ],
+        [
+          54,
+          20,
+          11,
+          9,
+          88
+        ],
+        [
+          61,
+          14,
+          7,
+          9,
+          88
+        ],
+        [
+          47,
+          31,
+          7,
+          23,
+          88
+        ],
+        [
+          57,
+          34,
+          5,
+          21,
+          88
+        ],
+        [
+          64,
+          44,
+          7,
+          17,
+          88
+        ],
+        [
+          4,
+          52,
+          12,
+          9,
+          56
+        ],
+        [
+          10,
+          49,
+          14,
+          3,
+          97
+        ],
+        [
+          66,
+          55,
+          10,
+          7,
+          38
+        ],
+        [
+          15,
+          40,
+          12,
+          3,
+          49
+        ],
+        [
+          25,
+          31,
+          10,
+          2,
+          106
+        ],
+        [
+          51,
+          24,
+          15,
+          2,
+          106
+        ],
+        [
+          45,
+          51,
+          19,
+          3,
+          42
+        ],
+        [
+          5,
+          62,
+          70,
+          2,
+          49
+        ]
+      ],
+      "variants": [
+        {
+          "id": "fossilised",
+          "swap": {
+            "88": 38,
+            "97": 42
+          },
+          "note": "All timber becomes inert stone, safer for simulation"
+        },
+        {
+          "id": "pale-drift",
+          "swap": {
+            "88": 99,
+            "97": 42
+          },
+          "note": "Chalk cast of a lost tree; inert"
+        }
+      ],
+      "placement_rules": [
+        "Default includes Driftwood 88 and MossWall 97, both Combustible kernel, so do NOT label inert safe static.",
+        "Do not position adjacent to Fire, Lava or hot fixtures without source-locked burn tests."
+      ]
+    },
+    {
+      "id": "brine-pan",
+      "title": "Open cyan brine pan",
+      "size": [
+        112,
+        64
+      ],
+      "status": "open-dynamic",
+      "role": "Shallow brine lens held by stone sill, with shore crust and tide markers",
+      "anchor": {
+        "type": "ground-contact",
+        "point": [
+          56,
+          64
+        ]
+      },
+      "requires_clearance": true,
+      "rectangles": [
+        [
+          0,
+          56,
+          112,
+          8,
+          38
+        ],
+        [
+          0,
+          27,
+          9,
+          29,
+          39
+        ],
+        [
+          103,
+          27,
+          9,
+          29,
+          39
+        ],
+        [
+          4,
+          52,
+          104,
+          4,
+          99
+        ],
+        [
+          9,
+          43,
+          94,
+          9,
+          24
+        ],
+        [
+          9,
+          39,
+          94,
+          4,
+          24
+        ],
+        [
+          2,
+          25,
+          8,
+          3,
+          106
+        ],
+        [
+          102,
+          25,
+          8,
+          3,
+          106
+        ],
+        [
+          0,
+          56,
+          112,
+          2,
+          49
+        ],
+        [
+          11,
+          57,
+          90,
+          2,
+          106
+        ],
+        [
+          15,
+          33,
+          21,
+          3,
+          120
+        ],
+        [
+          75,
+          33,
+          24,
+          3,
+          121
+        ],
+        [
+          0,
+          29,
+          5,
+          19,
+          38
+        ],
+        [
+          107,
+          29,
+          5,
+          19,
+          38
+        ],
+        [
+          5,
+          48,
+          4,
+          8,
+          106
+        ],
+        [
+          103,
+          48,
+          4,
+          8,
+          106
+        ]
+      ],
+      "variants": [
+        {
+          "id": "dry-pan",
+          "swap": {
+            "24": 0
+          },
+          "note": "Empty basin with static perimeter; explicit Empty writes"
+        },
+        {
+          "id": "stone-pan",
+          "swap": {
+            "24": 99
+          },
+          "note": "Inert chalk-fill graphic; no brine transport"
+        }
+      ],
+      "placement_rules": [
+        "Default Brine 24 is a movable CellularYield liquid, not Water FreeMass; open surface can slosh/evaporate or react under current rules.",
+        "This module has no true sky/pressure containment; test leakage, contact products, finite material and tick-cost before use."
+      ]
+    },
+    {
+      "id": "evaporite-fall",
+      "title": "Evaporite spill fan",
+      "size": [
+        72,
+        64
+      ],
+      "status": "time-evolving",
+      "role": "Salt powder cascade spilling from rock tooth into lower catch shelf",
+      "anchor": {
+        "type": "ground-contact",
+        "point": [
+          36,
+          64
+        ]
+      },
+      "requires_clearance": true,
+      "rectangles": [
+        [
+          0,
+          56,
+          72,
+          8,
+          39
+        ],
+        [
+          0,
+          49,
+          18,
+          7,
+          38
+        ],
+        [
+          48,
+          48,
+          24,
+          8,
+          38
+        ],
+        [
+          12,
+          27,
+          13,
+          22,
+          100
+        ],
+        [
+          18,
+          22,
+          10,
+          7,
+          99
+        ],
+        [
+          24,
+          21,
+          6,
+          5,
+          106
+        ],
+        [
+          25,
+          14,
+          10,
+          8,
+          23
+        ],
+        [
+          35,
+          19,
+          8,
+          10,
+          23
+        ],
+        [
+          30,
+          31,
+          11,
+          8,
+          23
+        ],
+        [
+          38,
+          43,
+          13,
+          7,
+          23
+        ],
+        [
+          5,
+          52,
+          60,
+          4,
+          99
+        ],
+        [
+          7,
+          49,
+          12,
+          4,
+          106
+        ],
+        [
+          49,
+          46,
+          10,
+          6,
+          106
+        ],
+        [
+          8,
+          58,
+          55,
+          2,
+          49
+        ],
+        [
+          31,
+          52,
+          19,
+          2,
+          98
+        ]
+      ],
+      "variants": [
+        {
+          "id": "petrified",
+          "swap": {
+            "23": 106
+          },
+          "note": "All cascade cells fixed rock salt; inert static-scenery alternative"
+        },
+        {
+          "id": "bleached-fan",
+          "swap": {
+            "23": 99
+          },
+          "note": "Fixed chalk fan, no movable salt"
+        }
+      ],
+      "placement_rules": [
+        "Default Salt 23 is a movable powder; perched deposits will fall and may spread beyond decorative footprint.",
+        "Allow a clear lower catch path; validate powder mass and settlement before a gameplay scene."
+      ]
+    }
+  ],
+  "scene": {
+    "id": "chalkbone-littoral-section-01",
+    "size": [
+      768,
+      256
+    ],
+    "title": "Chalkbone Coast / high relic shelf to lower salt flat",
+    "classification": "mixed: five static motifs, one reactive-static fixed timber motif and two active-material features",
+    "rectangles": [
+      [
+        0,
+        232,
+        768,
+        24,
+        38
+      ],
+      [
+        0,
+        245,
+        768,
+        11,
+        39
+      ],
+      [
+        0,
+        232,
+        768,
+        3,
+        49
+      ],
+      [
+        0,
+        156,
+        394,
+        76,
+        38
+      ],
+      [
+        0,
+        153,
+        425,
+        5,
+        39
+      ],
+      [
+        0,
+        148,
+        475,
+        8,
+        99
+      ],
+      [
+        0,
+        148,
+        475,
+        2,
+        106
+      ],
+      [
+        386,
+        156,
+        9,
+        76,
+        49
+      ],
+      [
+        396,
+        204,
+        25,
+        28,
+        39
+      ],
+      [
+        420,
+        217,
+        35,
+        15,
+        39
+      ],
+      [
+        452,
+        224,
+        26,
+        8,
+        106
+      ],
+      [
+        480,
+        228,
+        28,
+        4,
+        39
+      ],
+      [
+        530,
+        229,
+        105,
+        3,
+        99
+      ],
+      [
+        660,
+        229,
+        105,
+        3,
+        99
+      ],
+      [
+        22,
+        160,
+        30,
+        4,
+        106
+      ],
+      [
+        170,
+        171,
+        17,
+        4,
+        99
+      ],
+      [
+        260,
+        189,
+        27,
+        4,
+        56
+      ],
+      [
+        350,
+        201,
+        20,
+        4,
+        49
+      ],
+      [
+        723,
+        237,
+        22,
+        4,
+        106
+      ]
+    ],
+    "placements": [
+      {
+        "feature": "wavecut-terrace",
+        "x": 18,
+        "y": 76,
+        "variant": "base"
+      },
+      {
+        "feature": "ammonite-relief",
+        "x": 130,
+        "y": 84,
+        "variant": "base"
+      },
+      {
+        "feature": "saltcomb-ridge",
+        "x": 210,
+        "y": 92,
+        "variant": "base"
+      },
+      {
+        "feature": "tide-stelae",
+        "x": 290,
+        "y": 76,
+        "variant": "base"
+      },
+      {
+        "feature": "nacre-arch",
+        "x": 362,
+        "y": 76,
+        "variant": "base"
+      },
+      {
+        "feature": "driftwood-arbour",
+        "x": 438,
+        "y": 160,
+        "variant": "base"
+      },
+      {
+        "feature": "brine-pan",
+        "x": 534,
+        "y": 168,
+        "variant": "base"
+      },
+      {
+        "feature": "evaporite-fall",
+        "x": 665,
+        "y": 168,
+        "variant": "base"
+      }
+    ],
+    "composition_rules": [
+      "High chalk cliff ends in staggered descent around x390–510; eight pieces create two visual elevation bands.",
+      "Top shelf at y148 supports five modules with their bottoms at y148; lower tidal plain at y232 supports three modules.",
+      "The driftwood and salt cascade are not physically moving rigid props; driftwood is combustible fixed cells, Salt is movable powder.",
+      "Use the dry-pan + petrified-fall + fossilised-arbour variants for an inert static presentation.",
+      "Never overlay the scene onto an occupied world without an explicit region-clear/ownership transaction."
+    ]
+  },
+  "limits": [
+    "No native/Godot runtime simulation, Rapier collision, or shader capture was executed in design authoring.",
+    "Shadow flat RGBA preview is not native simulation or production shader output.",
+    "Brine is CellularYield, not FreeMass Water; Salt is a moving powder.",
+    "Wood and MossWall may combust or change at adjacent fire/heat contacts.",
+    "Open cave is just omitted cells in proposed rectangles; existing destination terrain must be cleared before deployment.",
+    "Static marks do not supply structural breakage/ejection, real buoyancy, heat, or rope mechanics."
+  ]
+}
