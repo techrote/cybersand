@@ -14,6 +14,7 @@ const PreparedTrialBody = preload("res://scripts/prepared_trial_body_session.gd"
 const LiquidHostEvidence = preload("res://scripts/liquid_host_evidence.gd")
 const PhysicalEffects = preload("res://scripts/physical_actor_effects.gd")
 const PhysicalUsables = preload("res://scripts/physical_usable_runtime.gd")
+const WorkbenchMaterialPlayers = preload("res://scripts/workbench_material_players.gd")
 const SIMULATION_HZ: float = 60.0
 const FIXED_TIMESTEP: float = 1.0 / SIMULATION_HZ
 const TICK_INTERVAL_USEC: int = 16667
@@ -140,6 +141,9 @@ var _workbench_consumed_sample: Dictionary = {}
 var _workbench_display: Dictionary = {}
 var _workbench_refusal: String = ""
 var _workbench_prepared_sample: int = -1
+var _workbench_material_players: RefCounted
+var _workbench_material_seed: Dictionary = {}
+var _workbench_material_seed_pending: bool = false
 var _scenario_request_serial: int = 0
 var _scenario_request_applied: bool = false
 var _water_exit_request_serial: int = 0
@@ -172,6 +176,7 @@ func queue_lab(command: Dictionary) -> void:
 	_lab_request["_owner_request_revision"] = _lab_request_revision
 	_pending_physical_effects.clear()
 	_cancel_physical_usables_locked()
+	if _workbench_material_players != null: _workbench_material_players.cancel()
 	if command.has("step") or command.has("reset") or command.has("water_reset") or command.has("scenario_reset") or command.has("default_liquid_reset") or command.has("floor"): _paused = true
 	_mutex.unlock()
 
@@ -287,6 +292,34 @@ func _commit_controlled_liquid_candidate(bridge: Variant, token: int, request_re
 	if not staged.get("ok",false):
 		_prepared_liquid_owner_error = str(staged.get("error","Prepared owner was retired"))
 		return false
+	var bench_settings: Dictionary = command.get("controlled_liquid_setup",{})
+	var staged_equipment: RefCounted = _pending_physical_liquid.get("equipment") if completing else null
+	var staged_material: RefCounted = _pending_physical_liquid.get("material_players") if completing else null
+	if not completing and definition.has("extent"):
+		var roster_error: String = workbench_roster_error(bench_settings)
+		if not roster_error.is_empty():
+			_prepared_liquid_owner_error = roster_error
+			return false
+		var equipment_frame: Dictionary = bench_settings.get("workbench_equipment_frame",{})
+		if not equipment_frame.is_empty():
+			var prepared_equipment: Dictionary = _physical_usables.prepare_workbench_transfer(equipment_frame,bool(bench_settings.get("workbench_retain_cells",false)))
+			if not prepared_equipment.ok:
+				_prepared_liquid_owner_error = str(prepared_equipment.error)
+				return false
+			staged_equipment = prepared_equipment.runtime
+		elif bool(bench_settings.get("workbench_retain_cells",false)) and (not _physical_usables.snapshot().get("projectiles",[]).is_empty() or not _physical_usables.snapshot().get("objects",[]).is_empty()):
+			_prepared_liquid_owner_error = "Prepared replacement omitted live equipment custody."
+			return false
+		staged_material = WorkbenchMaterialPlayers.new()
+		_mutex.lock()
+		var previous_material: Dictionary = _workbench_material_players.export_state() if _workbench_material_players != null and bool(bench_settings.get("workbench_retain_cells",false)) else {}
+		_mutex.unlock()
+		var material_error: String = staged_material.configure(bench_settings.get("workbench_material_players",[]),
+			Vector2i(definition.extent[0],definition.extent[1]),str(bench_settings.get("workbench_material_run_id","workbench-%d" % token)),
+			int(bench_settings.get("workbench_sample",{}).get("epoch",1)),previous_material)
+		if not material_error.is_empty():
+			_prepared_liquid_owner_error = material_error
+			return false
 	if not physical.is_empty() and not completing:
 		var values: Dictionary = bridge.prepared_liquid_world_values(_world,token)
 		if values.is_empty():
@@ -300,7 +333,8 @@ func _commit_controlled_liquid_candidate(bridge: Variant, token: int, request_re
 			and settings_revision == _construction_settings_revision
 		if current:
 			_pending_physical_liquid = {"bridge":bridge,"token":token,"command":command.duplicate(true),
-				"request_revision":request_revision,"settings_revision":settings_revision,"staged":staged}
+				"request_revision":request_revision,"settings_revision":settings_revision,"staged":staged,
+				"equipment":staged_equipment,"material_players":staged_material}
 			_prepared_physical_publication = values
 			_prepared_physical_ready = {}
 		_mutex.unlock()
@@ -334,6 +368,7 @@ func _commit_controlled_liquid_candidate(bridge: Variant, token: int, request_re
 		_workbench_sample = command.get("controlled_liquid_setup",{}).get("workbench_sample",{}).duplicate(true)
 		_workbench_extent = Vector2i(definition.extent[0],definition.extent[1]) if definition.has("extent") else Vector2i.ZERO
 		if not _workbench_sample.is_empty(): _rigid_body_epoch = _workbench_sample.epoch
+		if not completing and _workbench_extent != Vector2i.ZERO: _set_physical_actor_epoch_locked(int(_workbench_sample.epoch))
 		_actor_session = staged.actors
 		_usable_session = staged.usables
 		_character = staged.character
@@ -345,6 +380,15 @@ func _commit_controlled_liquid_candidate(bridge: Variant, token: int, request_re
 				"epoch":int(physical.epoch)}
 			_player_environment_profile = profile.duplicate(true)
 			_set_physical_actor_epoch_locked(int(physical.epoch))
+		if staged_equipment != null:
+			_physical_usables = staged_equipment
+			_physical_usable_frame = bench_settings.get("workbench_equipment_frame",{}).duplicate(true)
+		elif _workbench_extent != Vector2i.ZERO:
+			_physical_usables = PhysicalUsables.new()
+			_physical_usable_frame.clear()
+		_workbench_material_players = staged_material
+		_workbench_material_seed = {}
+		_workbench_material_seed_pending = staged_material != null
 		if definition.interest.policy == "owner" or definition.execution.policy == "owner":
 			_prepared_frame_hold = owner_execution
 			_prepared_frame_serial = int(command.get("scenario_request_serial",0))
@@ -360,6 +404,24 @@ func _commit_controlled_liquid_candidate(bridge: Variant, token: int, request_re
 	retained_actors = null
 	retained_usables = null
 	return committed
+
+
+static func workbench_roster_error(settings: Dictionary) -> String:
+	var sample: Variant = settings.get("workbench_sample",{})
+	if not sample is Dictionary: return "workbench_actor_sample"
+	var members: Variant = sample.get("bodies",[])
+	var fields: Variant = settings.get("workbench_material_players",[])
+	if not members is Array or members.size() > 64 or not fields is Array or fields.size() > 8: return "workbench_actor_capacity"
+	var physical: Dictionary = {}
+	for member: Variant in members:
+		if not member is Dictionary or not member.get("instance_id") is int or member.instance_id < 1 or member.instance_id > 2147483646: return "workbench_actor_identity"
+		physical[int(member.instance_id)] = true
+	var all: Dictionary = physical.duplicate()
+	for field: Variant in fields:
+		if not field is Dictionary or not field.get("instance_id") is int or field.instance_id < 1 or field.instance_id > 2147483646: return "workbench_actor_identity"
+		if all.has(int(field.instance_id)): return "workbench_actor_identity_collision"
+		all[int(field.instance_id)] = true
+	return "workbench_actor_capacity" if all.size() > 8 else ""
 
 func _lab_release(index: int) -> void:
 	if _water_lab_active or _micro_active: return
@@ -1038,6 +1100,7 @@ func stop_worker() -> void:
 		return
 	_mutex.lock()
 	_running = false
+	if _workbench_material_players != null: _workbench_material_players.cancel()
 	_lab_request_revision += 1
 	_mutex.unlock()
 	_thread.wait_to_finish()
@@ -1166,6 +1229,7 @@ func set_frame_state(
 		_cancel_workbench_emission_locked()
 		_pending_physical_effects.clear()
 		_cancel_physical_usables_locked()
+		if _workbench_material_players != null: _workbench_material_players.cancel()
 		for actor: int in range(PhysicalEffects.MAX_ACTORS):
 			_physical_effect_generations[actor] += 1
 	_paused = paused
@@ -1185,11 +1249,60 @@ func set_frame_state(
 	_mutex.unlock()
 
 
-func set_workbench_sample(value: Dictionary) -> void:
+func set_workbench_sample(value: Dictionary) -> Dictionary:
 	_mutex.lock()
+	var result: Dictionary = {"status":"refused","reason":"workbench_owner","sample_accepted":false,"requested":0,"queued":0}
+	if not value.has_all(["session","epoch","states","geometry","bodies"]) \
+		or not value.session is int or not value.epoch is int or not value.states is PackedFloat64Array \
+		or value.states.size() > 64*CyberRigidBodyCoupling.GCR_INPUT_STRIDE or not value.geometry is PackedFloat64Array \
+		or value.geometry.size() > 64*4 or not value.bodies is Array or value.bodies.size() > 64 \
+		or not value.get("effects",[]) is Array or not value.get("equipment_requests",[]) is Array \
+		or not value.get("emitters",[]) is Array or value.get("emitters",[]).size() > 24:
+		result.reason = "sample_layout"
+		_mutex.unlock()
+		return result
+	for member: Variant in value.bodies:
+		if not member is Dictionary or not member.get("id") is int or not member.get("first_proxy") is int:
+			result.reason = "sample_members"
+			_mutex.unlock()
+			return result
 	if not value.is_empty() and not _workbench_sample.is_empty() and _prepared_physical_frame_hold.is_empty() \
 		and _workbench_sample.session == value.session and _workbench_sample.epoch == value.epoch:
+		if value.get("effects",[]) is Array and value.get("effects",[]).size() > PhysicalEffects.MAX_REQUESTS:
+			result.reason = "effects_capacity"
+			_mutex.unlock()
+			return result
+		if value.has("equipment_frame"):
+			if not value.equipment_frame is Dictionary or not value.get("equipment_requests",[]) is Array or not value.get("effects",[]) is Array:
+				result.reason = "equipment_fields"
+				_mutex.unlock()
+				return result
+			result = _set_physical_usable_state_locked(value.equipment_frame,value.get("equipment_requests",[]))
+			# Invalid geometry/identity must not replace the coupling sample. A
+			# paused/capacity request refusal may still publish its valid frame.
+			if result.reason not in ["","paused","reset_pending","lab_pending","simulation_failed","batch_capacity","actor_inflight"]:
+				result["sample_accepted"] = false
+				_mutex.unlock()
+				return result
+		elif not _physical_usable_frame.is_empty():
+			result.reason = "equipment_frame_required"
+			_mutex.unlock()
+			return result
+		else:
+			result = {"status":"no_requests","reason":"","requested":0,"queued":0}
 		_workbench_sample = value.duplicate(true)
+		result["sample_accepted"] = true
+		if value.has("effects") and not value.effects.is_empty():
+			var effects: Array = value.effects.duplicate(true)
+			# Existing physical effects address main-thread part IDs. Native
+			# occupancy addresses proxies; map only this matched owner sample.
+			for effect: Variant in effects:
+				if not effect is Dictionary: continue
+				for member: Dictionary in value.bodies:
+					if int(member.id) == int(effect.get("source_body_id",-1)):
+						effect.source_body_id = int(member.first_proxy)
+						break
+			result["effects"] = _queue_physical_effects_locked(int(value.epoch),effects)
 		if not _paused and not _reset_requested and _lab_request.is_empty() and _prepared_physical_publication.is_empty():
 			var emitters: Array = _workbench_sample.get("emitters",[])
 			if not emitters.is_empty() and not value.states.is_empty():
@@ -1204,6 +1317,33 @@ func set_workbench_sample(value: Dictionary) -> void:
 						intent["sample"] = serial
 						_workbench_emitters.append(intent)
 	_mutex.unlock()
+	return result
+
+
+func queue_workbench_material_command(command: Dictionary) -> Dictionary:
+	_mutex.lock()
+	var allowed: bool = _running and _workbench_material_players != null and _workbench_extent != Vector2i.ZERO \
+		and not _paused and not _reset_requested and _lab_request.is_empty() and _prepared_physical_publication.is_empty() \
+		and _prepared_physical_frame_hold.is_empty() and not (_published_snapshot != null and _published_snapshot.simulation_failed)
+	var tick: int = _published_snapshot.tick_index if _published_snapshot != null else 0
+	var result: Dictionary = _workbench_material_players.submit(command,tick,allowed) if _workbench_material_players != null else {"accepted":false,"reason":"material_owner"}
+	_mutex.unlock()
+	return result
+
+
+func cancel_workbench_material_input(instance_id: int = -1) -> void:
+	_mutex.lock()
+	if _workbench_material_players != null: _workbench_material_players.cancel(instance_id)
+	_mutex.unlock()
+
+
+func reset_workbench_material_player(instance_id: int, position: Vector2) -> bool:
+	_mutex.lock()
+	var allowed: bool = _running and _workbench_material_players != null and _lab_request.is_empty() and _prepared_physical_publication.is_empty() and _prepared_physical_frame_hold.is_empty()
+	var result: bool = allowed and _workbench_material_players.reset_player(instance_id,position)
+	if result: _construction_settings_revision += 1 # Retire a candidate if reset raced its copied-centre capture.
+	_mutex.unlock()
+	return result
 
 func cancel_workbench_emission() -> void:
 	_mutex.lock()
@@ -1249,13 +1389,17 @@ func _capture_workbench_result() -> void:
 	if not packet.get("valid",false) or packet.get("session") != sample.get("session") or packet.get("epoch") != sample.get("epoch"): return
 	var states: PackedFloat64Array = sample.states
 	var poses := {}
+	var bodies := {}
 	for row: Dictionary in packet.rows:
 		var member: Dictionary = sample.bodies[int(row.id)-1]
 		var offset: int = (int(member.first_proxy)-1)*CyberRigidBodyCoupling.GCR_INPUT_STRIDE
 		if row.instance_id != member.instance_id or row.generation != member.generation or int(states[offset+10]) != row.sample: return
-		poses[int(row.instance_id)] = {"pose":Transform2D(states[offset+3],row.com),"sample":int(row.sample),"generation":int(row.generation)}
+		var view: Dictionary = {"pose":Transform2D(states[offset+3],member.get("display_origin",row.com)),"sample":int(row.sample),"generation":int(row.generation),
+			"instance_id":int(row.instance_id),"part_index":int(row.get("part_index",0))}
+		bodies[int(row.id)] = view
+		if not poses.has(int(row.instance_id)) or int(row.get("part_index",0)) == 0: poses[int(row.instance_id)] = view
 	_workbench_display = {"session":int(packet.session),"epoch":int(packet.epoch),"sample_tick":int(packet.sample_tick),
-		"tick":int(_world.tick_index),"revision":int(_world.revision),"world_generation":_world_generation,"instances":poses}
+		"tick":int(_world.tick_index),"revision":int(_world.revision),"world_generation":_world_generation,"instances":poses,"bodies":bodies}
 
 
 func _consume_workbench_emissions(paused: bool, sample: Dictionary) -> void:
@@ -1298,12 +1442,17 @@ func set_rigid_body_states(states: PackedFloat32Array, body_epoch: int = 0, effe
 		return held
 	_rigid_body_states = states.duplicate()
 	_rigid_body_epoch = body_epoch
+	var result: Dictionary = _queue_physical_effects_locked(body_epoch,effects)
+	_mutex.unlock()
+	return result
+
+
+func _queue_physical_effects_locked(body_epoch: int,effects: Array) -> Dictionary:
 	var requested: int = effects.size()
 	var result: Dictionary = {"epoch": body_epoch, "status": "no_effects", "reason": "",
 		"requested": requested, "queued": 0, "refused": 0}
 	if requested == 0:
 		# Routine body-only frames must not erase the latest admission outcome.
-		_mutex.unlock()
 		return result
 	var reason: String = ""
 	if body_epoch <= 0 or body_epoch != _physical_effect_epoch:
@@ -1346,7 +1495,6 @@ func set_rigid_body_states(states: PackedFloat32Array, body_epoch: int = 0, effe
 			_physical_effect_overflow_batches += 1
 	_physical_effect_last_admission = result
 	var copied_result: Dictionary = result.duplicate(true)
-	_mutex.unlock()
 	return copied_result
 
 
@@ -1367,10 +1515,18 @@ func physical_actor_effect_admission() -> Dictionary:
 
 
 func set_physical_usable_state(frame: Dictionary, requests: Array = [], states: PackedFloat32Array = PackedFloat32Array()) -> Dictionary:
+	_mutex.lock()
+	var result: Dictionary = _set_physical_usable_state_locked(frame,requests,states)
+	_mutex.unlock()
+	return result
+
+
+func _set_physical_usable_state_locked(frame: Dictionary, requests: Array = [], states: PackedFloat32Array = PackedFloat32Array()) -> Dictionary:
 	# This publication and its batch have one admission point. Identity changes
 	# retire older queued work; capacity never replaces another actor's request.
-	_mutex.lock()
 	var reason: String = PhysicalUsables.frame_error(frame)
+	if reason.is_empty() and frame.has("canvas_extent") and Vector2i(frame.canvas_extent) != (_workbench_extent if _workbench_extent != Vector2i.ZERO else Vector2i(1024,1024)):
+		reason = "canvas_extent"
 	if reason.is_empty() and (states.size() > CyberRigidBodyCoupling.MAX_BODIES * CyberRigidBodyCoupling.INPUT_STRIDE \
 		or states.size() % CyberRigidBodyCoupling.INPUT_STRIDE != 0):
 		reason = "body_state_capacity"
@@ -1441,7 +1597,6 @@ func set_physical_usable_state(frame: Dictionary, requests: Array = [], states: 
 	result["pending"] = _physical_usable_inflight.size()
 	if not requests.is_empty() or not reason.is_empty():
 		_physical_usable_admission = result.duplicate(true)
-	_mutex.unlock()
 	return result
 
 
@@ -1511,6 +1666,12 @@ func set_physical_actor_epoch(epoch: int) -> void:
 	# Switching owners retires pending effects; no node/RID enters this boundary.
 	_mutex.lock()
 	if not _prepared_physical_frame_hold.is_empty() and epoch != int(_prepared_physical_frame_hold.epoch):
+		_mutex.unlock()
+		return
+	if not _prepared_physical_frame_hold.is_empty() and epoch == _physical_effect_epoch:
+		# Native commit already installed this epoch and its staged inventory.
+		# Main acknowledging the same owner must not clear its frame, otherwise
+		# the next consume would reset preserved charge/entities to a fresh run.
 		_mutex.unlock()
 		return
 	_set_physical_actor_epoch_locked(epoch)
@@ -1766,6 +1927,7 @@ func _worker_loop() -> void:
 		var local_physical_effects: Array = []
 		var local_physical_usables: Array = []
 		var local_physical_usable_frame: Dictionary = {}
+		var local_workbench_sample: Dictionary = {}
 		var local_emissions: Array[Vector4i] = []
 		var local_cell_emissions: Array[Dictionary] = []
 		var local_reset_requested: bool = false
@@ -1801,6 +1963,7 @@ func _worker_loop() -> void:
 			local_physical_effects = _pending_physical_effects
 			_pending_physical_effects = []
 		local_physical_usable_frame = _physical_usable_frame.duplicate(true)
+		local_workbench_sample = _workbench_sample.duplicate(true)
 		if not physical_wait:
 			local_physical_usables = _pending_physical_usables
 			_pending_physical_usables = []
@@ -1874,9 +2037,11 @@ func _worker_loop() -> void:
 			local_physical_effects.clear()
 			_physical_effect_receipts.clear()
 			local_physical_usables.clear()
-			_physical_usables.reset()
+			if _workbench_extent == Vector2i.ZERO: _physical_usables.reset()
 			_mutex.lock()
-			_physical_usable_frame.clear()
+			if _workbench_extent == Vector2i.ZERO: _physical_usable_frame.clear()
+			local_physical_usable_frame = _physical_usable_frame.duplicate(true)
+			local_workbench_sample = _workbench_sample.duplicate(true)
 			_mutex.unlock()
 			if local_actor_prototype_request:
 				_actor_prototype_result_serial = local_actor_prototype_serial
@@ -1996,9 +2161,9 @@ func _worker_loop() -> void:
 			if _workbench_extent != Vector2i.ZERO:
 				# This worker is the only writer to native World. Serial and body
 				# identity are checked again by the native adapter and Rapier bridge.
-				_mutex.lock()
-				var sample: Dictionary = _workbench_sample
-				_mutex.unlock()
+				# Coupling, equipment geometry and requests are one copied capture.
+				# Never reread a newer mask sample after extracting an older frame.
+				var sample: Dictionary = local_workbench_sample
 				workbench_serial = int(sample.states[10]) if not sample.states.is_empty() else -1
 				if workbench_serial >= 0 and workbench_serial == _workbench_prepared_sample:
 					local_paused = true
@@ -2012,6 +2177,13 @@ func _worker_loop() -> void:
 						_workbench_prepared_sample = workbench_serial
 						_workbench_consumed_sample = sample
 						if _workbench_result.is_empty(): _capture_workbench_result()
+				if _workbench_refusal.is_empty() and _workbench_material_seed_pending:
+					_mutex.lock()
+					# Seed only the successfully installed World with its real masks
+					# already prepared, before the first ordinary material tick.
+					_workbench_material_seed = _workbench_material_players.seed_pending(_world)
+					_workbench_material_seed_pending = false
+					_mutex.unlock()
 				if not _workbench_refusal.is_empty():
 					local_paused = true
 					_lab_status = _workbench_refusal
@@ -2033,6 +2205,10 @@ func _worker_loop() -> void:
 					_world, local_physical_effects, local_rigid_body_epoch)
 			_consume_physical_usables(local_physical_usables, local_rigid_body_epoch, physical_effects_allowed, local_physical_usable_frame)
 			_apply_emissions(local_emissions,local_cell_emissions)
+			_mutex.lock()
+			if _workbench_material_players != null:
+				_workbench_material_players.advance(_world,int(_world.tick_index),local_paused or _paused or _reset_requested or not _lab_request.is_empty())
+			_mutex.unlock()
 
 			if not local_paused:
 				if (
@@ -2348,6 +2524,10 @@ func _publish_snapshot(
 	if _workbench_extent != Vector2i.ZERO:
 		snapshot.lab_context["workbench_gcr"] = _workbench_result
 		snapshot.lab_context["workbench_display"] = _workbench_display
+		_mutex.lock()
+		snapshot.lab_context["workbench_material_players"] = _workbench_material_players.publish(int(_world.tick_index),paused,_simulation_failed) if _workbench_material_players != null else {}
+		snapshot.lab_context["workbench_material_seed"] = _workbench_material_seed.duplicate(true)
+		_mutex.unlock()
 		# The immutable geometry packet is throttled; this revision identifies
 		# edits already present at the same completion as the body response.
 		snapshot.lab_context["workbench_hard_surface_revision"] = current_hard_surface_revision

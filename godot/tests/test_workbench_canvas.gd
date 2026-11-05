@@ -50,6 +50,7 @@ func author() -> void:
 	if not await until(installed,"settings installed"): return
 	panel._material.select(1)
 	panel.applied.material = 14
+	panel._source_material.select(1)
 	check(panel.place_source(DISTANT+Vector2i(25,-30)),"distant Dust source")
 	var original: Dictionary = panel.applied.duplicate(true)
 	var invalid := original.duplicate(true)

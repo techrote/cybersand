@@ -513,3 +513,57 @@ func device_frame() -> Dictionary:
 	return {"instance_id": instance_id, "actor_id": actor_id, "equipment_epoch": equipment_epoch,
 		"usable_index": usable_index, "body_id": body_id, "position": pose.position,
 		"rotation": pose.rotation, "half_extents": pose.half_extents, "state": state}
+
+
+func custody_state() -> Dictionary:
+	# Main-thread values only. Pending effects must first be cancelled/settled;
+	# an acknowledgement in flight cannot be exported as a second authority.
+	if not _pending.is_empty() or not _requests.is_empty():
+		return {"ok":false,"error":"Wait for the pending equipment receipt before rebuilding."}
+	return {"ok":true,"value":{"instance_id":instance_id,"equipment_epoch":equipment_epoch,
+		"usable_index":usable_index,"state":state,"charge":charge,"cooldown":cooldown,
+		"accepted_uses":accepted_uses,"refused_uses":refused_uses,"request_sequence":_request_sequence,
+		"requested_aim":_requested_aim,"deploy_intent":_deploy_intent,"settle_ticks":_settle_ticks,
+		"deploy_ticks":_deploy_ticks,"deploy_power":_deploy_power,"last_result":last_result}}
+
+
+func restore_custody(value: Dictionary) -> String:
+	var fields: Array[String] = ["instance_id","equipment_epoch","usable_index","state","charge","cooldown",
+		"accepted_uses","refused_uses","request_sequence","requested_aim","deploy_intent","settle_ticks",
+		"deploy_ticks","deploy_power","last_result"]
+	if value.size() != fields.size() or not value.has_all(fields) or not _pending.is_empty(): return "equipment_custody_fields"
+	if not value.instance_id is String or value.instance_id.is_empty() or value.instance_id.length() > 128 \
+		or not _integer(value.equipment_epoch,1,9007199254740990) or not _integer(value.usable_index,-1,31) \
+		or value.state not in ["none","held","released","fixed","deployed"]: return "equipment_custody_identity"
+	for key: String in ["charge","cooldown","deploy_power"]:
+		if not (value[key] is int or value[key] is float) or not is_finite(float(value[key])): return "equipment_custody_number"
+	if value.charge < 0 or value.charge > 100 or value.cooldown < 0 or value.cooldown > 60 \
+		or value.deploy_power < 0 or value.deploy_power > 1: return "equipment_custody_number"
+	for key: String in ["accepted_uses","refused_uses","request_sequence"]:
+		if not _integer(value[key],0,9007199254740990): return "equipment_custody_sequence"
+	if not _integer(value.settle_ticks,0,SETTLE_TICKS) or not _integer(value.deploy_ticks,0,MAX_SETTLE_TICKS) \
+		or not value.deploy_intent is bool or not value.requested_aim is Vector2 or not value.requested_aim.is_finite() \
+		or not value.last_result is String or value.last_result.length() > 256: return "equipment_custody_state"
+	if _absent: return "" if value.usable_index == -1 and value.state == "none" else "equipment_custody_topology"
+	var retooled: bool = usable_index != int(value.usable_index)
+	if retooled and value.state not in ["held","none"]: return "Return dropped equipment before selecting another usable."
+	if value.state in ["released","fixed","deployed"]:
+		if not _rig.release_usable(): return "equipment_custody_release"
+		if value.state in ["fixed","deployed"] and not _rig.fix_usable(): return "equipment_custody_fix"
+	instance_id = value.instance_id
+	equipment_epoch = int(value.equipment_epoch) + (1 if retooled else 0)
+	state = ("held" if usable_index >= 0 else "none") if retooled else str(value.state)
+	charge = float(value.charge)
+	cooldown = float(value.cooldown)
+	accepted_uses = int(value.accepted_uses)
+	refused_uses = int(value.refused_uses)
+	_request_sequence = int(value.request_sequence)
+	_requested_aim = Vector2(value.requested_aim).limit_length(1.0)
+	_deploy_intent = bool(value.deploy_intent) and not retooled
+	_settle_ticks = int(value.settle_ticks)
+	_deploy_ticks = int(value.deploy_ticks)
+	_deploy_power = float(value.deploy_power)
+	last_result = "restored_release_to_arm"
+	_rearm = true
+	_last_readback_tick = -1
+	return ""

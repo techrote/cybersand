@@ -5,6 +5,7 @@ extends Control
 # authoritative physics transform. This node owns no gameplay or collision.
 var outlines: bool = true
 var _parts: Array = []
+var _material_fields: Array = []
 var source_origin: Vector2 = Vector2.INF
 var _origin: Vector2 = Vector2.ZERO
 var _view_size: Vector2 = Vector2.ONE
@@ -16,13 +17,14 @@ func _ready() -> void:
 	clip_contents = true
 
 
-func present(parts: Array, origin: Vector2, view_size: Vector2i, content: Rect2) -> void:
+func present(parts: Array, origin: Vector2, view_size: Vector2i, content: Rect2, material_fields: Array = []) -> void:
 	_parts = parts.duplicate(true)
+	_material_fields = material_fields.slice(0,8).duplicate(true)
 	_origin = origin.floor()
 	_view_size = Vector2(view_size)
 	position = content.position
 	size = content.size
-	visible = not _parts.is_empty() or source_origin.is_finite()
+	visible = not _parts.is_empty() or not _material_fields.is_empty() or source_origin.is_finite()
 	queue_redraw()
 
 
@@ -46,7 +48,7 @@ func show_workbench_source(receipt: Dictionary) -> void:
 	var origin: Vector2 = Vector2(receipt.origin) if receipt.get("armed",false) else Vector2.INF
 	if origin != source_origin:
 		source_origin = origin
-		visible = not _parts.is_empty() or source_origin.is_finite()
+		visible = not _parts.is_empty() or not _material_fields.is_empty() or source_origin.is_finite()
 		queue_redraw()
 
 
@@ -138,6 +140,14 @@ func _draw_markings(part: Dictionary) -> void:
 func _draw() -> void:
 	if _view_size.x <= 0.0 or _view_size.y <= 0.0:
 		return
+	# Native cells are the representation. The small marker locates the copied
+	# field centre; it has no collision footprint, pose integration or authority.
+	for field: Dictionary in _material_fields:
+		var centre: Variant = field.get("position")
+		if not centre is Vector2 or not centre.is_finite(): continue
+		var color := Color("ffce79") if int(field.get("material",0)) == 2 else Color("78d9ff")
+		for direction: Vector2 in [Vector2.LEFT,Vector2.UP,Vector2.RIGHT,Vector2.DOWN]:
+			draw_line(_point(centre+direction*3),_point(centre+direction*5),color,1.0,false)
 	if source_origin.is_finite():
 		var outline := PackedVector2Array()
 		for delta: Vector2 in [Vector2.ZERO,Vector2(4,0),Vector2(4,24),Vector2(0,24),Vector2.ZERO]:

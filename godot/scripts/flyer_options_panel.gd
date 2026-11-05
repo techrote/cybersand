@@ -31,7 +31,7 @@ func _ready() -> void:
 	exclusive = true
 	min_size = Vector2i(760,540)
 	add_theme_font_size_override("font_size",13)
-	get_ok_button().text = "Save flyer profile & apply"
+	get_ok_button().text = "Save actor profile & apply"
 	get_cancel_button().text = "Cancel"
 	confirmed.connect(_submit)
 	canceled.connect(cancel_capture)
@@ -85,7 +85,7 @@ func open_profile(model_name: String, profile: Dictionary, capabilities: Diction
 	content.name = "ProfileContent"
 	content.add_theme_constant_override("separation",6)
 	add_child(content)
-	var intro := _label(content,"Saved for this flyer model; applied to the selected instance. Other placed bodies keep their settings.")
+	var intro := _label(content,"Saved for this actor model; applied to the selected instance. Other placed actors keep their settings.")
 	intro.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_tabs = TabContainer.new()
 	_tabs.custom_minimum_size = Vector2(730,420)
@@ -100,7 +100,15 @@ func open_profile(model_name: String, profile: Dictionary, capabilities: Diction
 	keys.add_child(grid)
 	_label(grid,"Action"); _label(grid,"Primary"); _label(grid,"Alternate")
 	for action: String in ACTION_NAMES:
-		_label(grid,ACTION_NAMES[action])
+		if capabilities.get("legacy_secondary",false) and action in ["dispenser_s","brake"]: continue
+		if capabilities.get("kind","") == "material" and action in ["utility_left","utility_right"]: continue
+		var caption: String = ACTION_NAMES[action]
+		if capabilities.get("legacy_secondary",false):
+			if action == "boost": caption = "Secondary / Shift action"
+			elif action == "assist": caption = "Auxiliary / C action"
+			elif action == "primary": caption = "Primary / jump / surge"
+			elif action in ["utility_left","utility_right"]: caption = "Lean / trim "+("left" if action == "utility_left" else "right")
+		_label(grid,caption)
 		var buttons: Array = []
 		for slot: int in 2:
 			var button := Button.new()
@@ -112,29 +120,40 @@ func open_profile(model_name: String, profile: Dictionary, capabilities: Diction
 		_key_rows[action] = buttons
 	_refresh_bindings()
 	var handling := _page("Handling")
-	_label(handling,"Multipliers are relative to the flyer's authored values. Existing actuator and physics safety limits still apply.")
+	var actor_kind: String = str(capabilities.get("kind","flyer"))
+	_label(handling,"Native material fields retain their authored response. Only keyboard bindings are configurable here." if actor_kind == "material" else "Multipliers are relative to the actor's authored values. Existing actuator and physics safety limits still apply.")
 	var values := GridContainer.new()
 	values.columns = 4
 	values.add_theme_constant_override("h_separation",12)
 	handling.add_child(values)
 	for key: String in HANDLING_NAMES:
+		if actor_kind == "material" or (actor_kind == "mechanical" and key == "boost_multiplier"): continue
 		var low := 5.0 if key == "budget" else (1.0 if key == "boost_multiplier" else (0.01 if key in ["mass_multiplier","inertia_multiplier"] else 0.0))
 		var high := 80.0 if key == "budget" else (8.0 if key == "boost_multiplier" else 64.0)
-		_spin(values,HANDLING_NAMES[key],"options/"+key,float(_draft.options[key]),low,high,1.0 if key == "budget" else 0.01)
+		var label: String = HANDLING_NAMES[key]
+		if actor_kind == "mechanical" and key == "thrust_multiplier": label = "Movement impulse ×"
+		if actor_kind == "mechanical" and key == "torque_multiplier": label = "Body torque ×"
+		_spin(values,label,"options/"+key,float(_draft.options[key]),low,high,1.0 if key == "budget" else 0.01)
 	for key: String in MOVEMENT_NAMES:
+		if actor_kind == "material" or (actor_kind == "mechanical" and key == "throttle_response"): continue
 		_spin(values,MOVEMENT_NAMES[key],"tuning/"+key,float(_draft.tuning[key]),0.0,64.0,0.05)
 	var note := _label(handling,"Speed target adds overspeed damping rather than a hard speed clamp. Gravity, friction and angular drag retain their existing physical limits.")
+	if actor_kind == "mechanical": note.text = "Speed is the authored controller's target. Movement/body-torque multipliers retain physical safety limits and do not retune wheel or joint motors."
+	note.visible = actor_kind != "material"
 	note.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	var effects := _page("Thrusters & sources")
-	_flag(effects,"Show pixel thruster exhaust","tuning/thruster_visuals",_draft.tuning.thruster_visuals)
-	_flag(effects,"Emit real Fire from thrusters","fire_enabled",_draft.fire_enabled)
+	if actor_kind != "flyer":
+		_label(effects,"This actor has no authored flyer dispensers. Mechanical actors use the workbench's separate physical usable selector.")
+	else:
+		_flag(effects,"Show pixel thruster exhaust","tuning/thruster_visuals",_draft.tuning.thruster_visuals)
+		_flag(effects,"Emit real Fire from thrusters","fire_enabled",_draft.fire_enabled)
 	if bool(capabilities.get("side_thrusters",false)):
 		_flag(effects,"Invert side-thruster directions","tuning/swap_side_thrusters",_draft.tuning.swap_side_thrusters)
 	var sources := GridContainer.new()
 	sources.columns = 2
 	sources.add_theme_constant_override("h_separation",12)
 	effects.add_child(sources)
-	_spin(sources,"Thruster Fire amount ×","tuning/fire_amount",_draft.tuning.fire_amount,0,8,0.25)
+	if actor_kind == "flyer": _spin(sources,"Thruster Fire amount ×","tuning/fire_amount",_draft.tuning.fire_amount,0,8,0.25)
 	for port: String in ["q","e","s"]:
 		if int(capabilities.get("dispenser_"+port,0)) == 0: continue
 		_label(sources,port.to_upper()+" dispenser material")
@@ -149,6 +168,7 @@ func open_profile(model_name: String, profile: Dictionary, capabilities: Diction
 		_materials[port+"_material"] = picker
 		_spin(sources,port.to_upper()+" dispenser amount ×","tuning/"+port+"_amount",_draft.tuning[port+"_amount"],0,8,0.25)
 	var source_note := _label(effects,"The exhaust graphic creates no material. Real sources add cells only into clear space; blocked outlets can emit less. 1× is one cell per nozzle every six physics ticks; fractions reduce the rate, up to 8×.")
+	source_note.visible = actor_kind == "flyer"
 	source_note.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	var defaults := Button.new()
 	defaults.text = "Restore authored defaults in this editor"
@@ -173,7 +193,7 @@ func capture_key(code: int) -> bool:
 	if _capture_action.is_empty(): return false
 	if code == KEY_ESCAPE:
 		cancel_capture(); _error.text = "Capture cancelled."; return true
-	if code not in [KEY_DELETE,KEY_BACKSPACE] and Preferences.reserved_key(code):
+	if code not in [KEY_DELETE,KEY_BACKSPACE] and Preferences.reserved_key(code,_capabilities):
 		_error.text = "That key is reserved for workbench navigation or material/usables selection."
 		return true
 	var keys: Array = _draft.bindings[_capture_action].duplicate()
@@ -183,7 +203,7 @@ func capture_key(code: int) -> bool:
 	if keys.size() == 2 and keys[0] == keys[1]: keys.pop_back()
 	var candidate: Dictionary = _draft.bindings.duplicate(true)
 	candidate[_capture_action] = keys
-	var error: String = Preferences.validate_bindings(candidate)
+	var error: String = Preferences.validate_bindings(candidate,_capabilities)
 	if not error.is_empty(): _error.text = error; return true
 	_draft.bindings = candidate
 	cancel_capture()

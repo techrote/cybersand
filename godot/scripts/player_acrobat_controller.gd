@@ -15,6 +15,7 @@ const ROLL_COOLDOWN_SECONDS: float = 0.32
 const TAP_SECONDS: float = 0.15
 const GLIDE_SECONDS: float = 1.6
 const MAX_DELTA_SPEED: float = 96.0
+const WorkbenchPreferences = preload("res://scripts/flyer_preferences.gd")
 
 var _previous_buttons := Vector3i.ZERO
 var _facing: float = 1.0
@@ -47,7 +48,8 @@ func advance(rig, action: Dictionary, dt: float, effort: float) -> void:
 	var view: Dictionary = {"velocity": rig._velocities[0],
 		"rotation": rig._transforms[0].get_rotation(), "gravity": rig._gravity,
 		"grounded": not rig._support.is_empty(),
-		"contact_normal": rig._support.get("normal", Vector2.ZERO)}
+		"contact_normal": rig._support.get("normal", Vector2.ZERO),
+		"customization":rig._profile.get("workbench_customization",{}).duplicate(true)}
 	var plan: Dictionary = calculate(view, action, dt, effort)
 	var impulse: Vector2 = Vector2(plan.delta_velocity) * rig._total_mass
 	rig._apply_rig_impulse(impulse)
@@ -63,6 +65,10 @@ func advance(rig, action: Dictionary, dt: float, effort: float) -> void:
 
 
 func calculate(view: Dictionary, action: Dictionary, delta: float, effort: float = 1.0) -> Dictionary:
+	var customization: Variant = view.get("customization",{})
+	if not customization is Dictionary or (not customization.is_empty() and not WorkbenchPreferences.validate_tuning(customization).is_empty()):
+		cancel()
+		return _neutral_plan()
 	var velocity: Variant = view.get("velocity", Vector2.ZERO)
 	var movement: Variant = action.get("move", Vector2.ZERO)
 	var aim: Variant = action.get("aim", Vector2.ZERO)
@@ -176,10 +182,13 @@ func calculate(view: Dictionary, action: Dictionary, delta: float, effort: float
 	var braking: bool = _grounded and buttons.z != 0
 	var max_speed: float = 108.0 * power
 	var acceleration: float = (520.0 if _grounded else 215.0) * power
+	var tuning: Dictionary = customization
+	max_speed *= float(tuning.get("speed",1.0))
 	if _sliding:
 		acceleration = 140.0 * power
 	elif _roll_left > 0.0:
 		acceleration = 95.0 * power
+	acceleration *= float(tuning.get("acceleration",1.0))
 	if braking:
 		dv.x += clampf(-speed.x, -760.0 * dt, 760.0 * dt)
 	elif absf(move.x) > 0.06:
@@ -190,6 +199,7 @@ func calculate(view: Dictionary, action: Dictionary, delta: float, effort: float
 			dv.x += clampf(target_speed - speed.x, -acceleration * dt, acceleration * dt)
 	elif _grounded and _roll_left <= 0.0:
 		var drag: float = 19.0 if _sliding else 210.0
+		drag *= float(tuning.get("drag",1.0))
 		dv.x += clampf(-speed.x, -drag * dt, drag * dt)
 	if released.x != 0 and _jump_cut_armed:
 		_jump_cut_active = true
@@ -304,3 +314,33 @@ func observation() -> Dictionary:
 		"air_roll_available": _air_roll_available, "glide_remaining": maxf(0.0, GLIDE_SECONDS - _glide_used),
 		"roll_remaining": _roll_left, "last_move": _last_move, "last_move_age": _last_move_age,
 		"delta_velocity": _last_delta_velocity}
+
+
+static func valid_workbench_state(value: Variant) -> bool:
+	if not value is Dictionary or value.size() != 8 or not value.has_all(["ground_jump","air_jump","bullet","air_roll","glide_used","roll_cooldown","support_lock","facing"]): return false
+	for key: String in ["ground_jump","air_jump","bullet","air_roll"]:
+		if not value[key] is bool: return false
+	for key: String in ["glide_used","roll_cooldown","support_lock","facing"]:
+		if not (value[key] is float or value[key] is int) or not is_finite(float(value[key])): return false
+	return value.glide_used >= 0.0 and value.glide_used <= GLIDE_SECONDS and value.roll_cooldown >= 0.0 and value.roll_cooldown <= ROLL_COOLDOWN_SECONDS \
+		and value.support_lock >= 0.0 and value.support_lock <= LAUNCH_LOCK_SECONDS and absf(value.facing) == 1.0
+
+
+func export_workbench_state() -> Dictionary:
+	return {"ground_jump":_ground_jump_available,"air_jump":_air_jump_available,"bullet":_bullet_available,
+		"air_roll":_air_roll_available,"glide_used":_glide_used,"roll_cooldown":_roll_cooldown,
+		"support_lock":_support_lock,"facing":_facing}
+
+
+func restore_workbench_state(value: Dictionary) -> bool:
+	if not valid_workbench_state(value): return false
+	cancel()
+	_ground_jump_available = value.ground_jump
+	_air_jump_available = value.air_jump
+	_bullet_available = value.bullet
+	_air_roll_available = value.air_roll
+	_glide_used = value.glide_used
+	_roll_cooldown = value.roll_cooldown
+	_support_lock = value.support_lock
+	_facing = value.facing
+	return true

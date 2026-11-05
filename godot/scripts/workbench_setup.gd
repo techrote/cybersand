@@ -2,6 +2,7 @@ extends RefCounted
 
 # A starting construction recipe. Native runtime state and command leases are never serialized.
 const Fleet = preload("res://scripts/gcr_review_fleet.gd")
+const Actors = preload("res://scripts/workbench_actor_catalog.gd")
 const Preferences = preload("res://scripts/flyer_preferences.gd")
 const BARREL := "reference_barrel"
 const RESPONSES := ["LA-SELECTIVE", "LA", "LA-EVENT-OFF", "RFT"]
@@ -12,7 +13,7 @@ const MAX_RUNS := 4096
 const MAX_STAMPS := 2048
 const DIRECTORY := "user://workbench"
 const BYTE_LIMIT := 1024 * 1024
-const VERSION: int = 3
+const VERSION: int = 4
 const DEFAULT_OPTIONS := {"budget":20.0,"mass_multiplier":1.0,"inertia_multiplier":1.0,
 	"thrust_multiplier":1.0,"torque_multiplier":1.0,"boost_multiplier":2.0}
 const ROOT_KEYS := ["version","extent","actors","next_id","selected","edits","response","liquid_policy",
@@ -24,11 +25,10 @@ static func fresh(policy: PackedInt32Array, extent := Vector2i(2048,2048)) -> Di
 		"source":[],"material":2,"brush":8,"fire":false}
 
 static func instance(model: String, id: int, pos: Vector2) -> Dictionary:
-	var index := Fleet.index_for_id(model)
-	var value := {"id":id,"model":model,"hash":Fleet.definition_hash(index) if index >= 0 else "reference-barrel-v1",
-		"spawn":[pos.x,pos.y],"options":DEFAULT_OPTIONS.duplicate()}
-	if index >= 0:
-		value["customization"] = Preferences.tuning_defaults(Fleet.authoring_record(index).capabilities)
+	var value := {"id":id,"model":model,"hash":Actors.definition_hash(model),
+		"spawn":[pos.x,pos.y],"options":DEFAULT_OPTIONS.duplicate(),"usable_index":-1,"usable_power":1.0}
+	if model != BARREL:
+		value["customization"] = Preferences.tuning_defaults(Actors.capabilities(model))
 	return value
 
 static func normalized(setup: Dictionary) -> Dictionary:
@@ -38,7 +38,9 @@ static func normalized(setup: Dictionary) -> Dictionary:
 	result.version = VERSION
 	for value: Dictionary in result.actors:
 		if value.model != BARREL and not value.has("customization"):
-			value["customization"] = Preferences.tuning_defaults(Fleet.authoring_record(Fleet.index_for_id(value.model)).capabilities)
+			value["customization"] = Preferences.tuning_defaults(Actors.capabilities(value.model))
+		if not value.has("usable_index"): value["usable_index"] = -1
+		if not value.has("usable_power"): value["usable_power"] = 1.0
 	return result
 
 static func extent_of(setup: Dictionary) -> Vector2i:
@@ -48,7 +50,7 @@ static func point(pair: Array) -> Vector2:
 	return Vector2(float(pair[0]),float(pair[1]))
 
 static func bounds(model: String) -> Rect2:
-	return Rect2(-4,-7,8,14) if model == BARREL else Fleet.bounds(Fleet.index_for_id(model))
+	return Actors.bounds(model)
 
 static func _keys(obj: Variant, fields: Array) -> bool:
 	return obj is Dictionary and obj.size() == fields.size() and obj.has_all(fields)
@@ -59,16 +61,25 @@ static func _number(value: Variant, low: float, high: float) -> bool:
 static func _integer(value: Variant, low: int, high: int) -> bool:
 	return _number(value,low,high) and floor(value) == value
 
-static func _actor_error(a: Variant, size: Vector2i, response: String) -> String:
-	if not (_keys(a,["id","model","hash","spawn","options"]) or _keys(a,["id","model","hash","spawn","options","customization"])) \
-		or not _integer(a.id,1,2147483646) or not a.model is String:
+static func _actor_error(a: Variant, size: Vector2i, response: String, version: int = VERSION) -> String:
+	if not a is Dictionary: return "Invalid actor fields."
+	var fields := ["id","model","hash","spawn","options"]
+	if a.has("customization"): fields.append("customization")
+	if a.has("usable_index") or a.has("usable_power"): fields.append_array(["usable_index","usable_power"])
+	if not _keys(a,fields) or not _integer(a.id,1,2147483646) or not a.model is String:
 		return "Invalid actor fields or instance ID."
+	if (version < 4 and a.has("usable_index")) or (version >= 4 and not a.has("usable_index")):
+		return "Usable fields do not match the starting setup version."
 	var model := str(a.model)
-	var index := Fleet.index_for_id(model)
-	if model != BARREL and index < 0:
+	if version >= 4 and model != BARREL and not a.has("customization"): return "Missing actor control settings."
+	if not Actors.has(model):
 		return "Unavailable actor definition: " + model
-	if a.hash != (Fleet.definition_hash(index) if index >= 0 else "reference-barrel-v1"):
+	if version < 4 and Actors.kind(model) not in ["flyer","passive"]: return "Player actors require starting setup version 4."
+	if a.hash != Actors.definition_hash(model):
 		return "Definition changed for " + model + ". Reload definitions or use its original authoring records."
+	if a.has("usable_index"):
+		if not _integer(a.usable_index,-1,31) or not _number(a.usable_power,0.0,1.0): return "Invalid usable selection or power."
+		if Actors.kind(model) != "mechanical" and int(a.usable_index) != -1: return "This actor has no physical equipment mount."
 	if not a.spawn is Array or a.spawn.size() != 2 or not _number(a.spawn[0],0,size.x) or not _number(a.spawn[1],0,size.y):
 		return "Invalid saved spawn."
 	var body_bounds := bounds(model)
@@ -88,14 +99,22 @@ static func _actor_error(a: Variant, size: Vector2i, response: String) -> String
 		if model == BARREL: return "A passive barrel has no flyer controls or emitters."
 		var tuning_error: String = Preferences.validate_tuning(a.customization)
 		if not tuning_error.is_empty(): return tuning_error
-		var capabilities: Dictionary = Fleet.authoring_record(index).capabilities
+		var capabilities: Dictionary = Actors.capabilities(model)
 		for port: String in ["q","e","s"]:
 			if int(capabilities.get("dispenser_"+port,0)) == 0 and int(a.customization[port+"_material"]) != 0:
-				return "This flyer has no " + port.to_upper() + " dispenser."
+				return "This actor has no " + port.to_upper() + " dispenser."
+		if Actors.kind(model) == "material" and not Preferences.neutral_options_and_tuning(a.options,a.customization,capabilities):
+			return "Material players use their native field controls; rigid-body multipliers do not apply."
 	return ""
 
 static func _material(value: Variant, powders_only := false) -> bool:
-	return _integer(value,0,255) and int(value) in (MATERIALS.slice(0,9) if powders_only else MATERIALS)
+	return _integer(value,0,CyberCellWorld.LAST_MATERIAL) and int(value) in (MATERIALS.slice(0,9) if powders_only else paint_materials())
+
+static func paint_materials() -> Array:
+	var result := MATERIALS.duplicate()
+	for id: int in range(1,CyberCellWorld.LAST_MATERIAL+1):
+		if id != 10 and id not in result: result.append(id)
+	return result
 
 static func validate(value: Variant, check_starting_paint: bool = true) -> String:
 	if not _keys(value,ROOT_KEYS) or not _integer(value.version,2,VERSION):
@@ -113,11 +132,14 @@ static func validate(value: Variant, check_starting_paint: bool = true) -> Strin
 	if not value.actors is Array or value.actors.size() > MAX_BODIES or not _integer(value.next_id,1,2147483647):
 		return "Up to eight independent bodies fit in the physical session."
 	var ids := {}
+	var proxies := 0
 	for a: Variant in value.actors:
-		var error := _actor_error(a,size,str(value.response))
+		var error := _actor_error(a,size,str(value.response),int(value.version))
 		if not error.is_empty(): return error
 		if ids.has(int(a.id)) or a.id >= value.next_id: return "Duplicate or retired instance ID."
 		ids[int(a.id)] = true
+		proxies += Actors.proxy_count(str(a.model))
+	if proxies > 64: return "The combined assemblies exceed 64 physical proxy slots."
 	if not _integer(value.selected,0,2147483646) or (value.selected != 0 and not ids.has(int(value.selected))):
 		return "Selected instance does not exist."
 	if not value.edits is Array: return "Invalid starting paint history."
@@ -137,11 +159,22 @@ static func validate(value: Variant, check_starting_paint: bool = true) -> Strin
 static func physical_definitions(setup: Dictionary) -> Array:
 	var result := []
 	for actor: Dictionary in setup.actors:
+		if Actors.kind(str(actor.model)) == "material": continue
 		var options: Dictionary = actor.options.duplicate()
 		options.response = setup.response
 		if actor.has("customization"): options["customization"] = actor.customization.duplicate(true)
 		result.append({"model":actor.model,"instance_id":int(actor.id),"producer":"passive" if actor.model == BARREL else "human",
-			"position":point(actor.spawn),"workbench_options":options,"canvas_extent":extent_of(setup)})
+			"position":point(actor.spawn),"workbench_options":options,"canvas_extent":extent_of(setup),
+			"usable_index":int(actor.get("usable_index",-1)),"usable_power":float(actor.get("usable_power",1.0))})
+	return result
+
+static func material_definitions(setup: Dictionary) -> Array:
+	var result := []
+	for actor: Dictionary in setup.actors:
+		if Actors.kind(str(actor.model)) != "material": continue
+		result.append({"instance_id":int(actor.id),"model":str(actor.model),
+			"material_id":2 if actor.model == "dryswarm" else 3,
+			"position":point(actor.spawn),"canvas_extent":extent_of(setup)})
 	return result
 
 # Discs use the same integer circle and clipped extent as native paint_disc.
