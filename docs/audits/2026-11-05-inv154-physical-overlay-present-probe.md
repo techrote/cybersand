@@ -46,3 +46,25 @@ Success is exactly one `INV154_PHYSICAL_OVERLAY_PROBE` JSON readback, 36 rows, 2
 ## Current qualification boundary
 
 This branch and the focused Windows runner are **experimental**, not a merge candidate. No production source, GLSL shader, native World, Rapier, worker, material, default or ABI changed. The next gate, if the measured per-frame cost warrants investigation, is a real Windows Main per-phase trace with source-matched Rapier part counts and a serial counterbalanced workload; the synthetic copy number must not be extrapolated into a frame-rate improvement.
+
+
+## Executed Windows headless Godot evidence — first complete cohort
+
+The preregistered diagnostic completed **PASS** at executed source commit `8feccfbbf9e635298b86c70dd2a05c053835bf22`, tree `2b12db4839d5161dfae6b871186238836ef3a204`, in [GitHub-hosted Windows run 42014112905](https://github.com/techrote/cybersand/actions/runs/42014112905), job `windows-actual-overlay-method`. [Raw result, logs and source/engine identity artifact 13407813412](https://github.com/techrote/cybersand/actions/runs/42014112905/artifacts/13407813412) is retained by Actions with its configured 30-day retention. Runner: **Windows Server 2022**, reported AMD EPYC 9V45 CPU; runtime: **Godot 4.7-stable official** (`5b4e0cb0f`), verified repository SHA-512 archive pin; actual `DisplayServer=headless`. Only `physical_actor_overlay.gd` was executed from copied production source; no Rapier or native World binary was loaded. Test exit was 0, failures 0, isolation/readback true.
+
+There were **36 arm/repeat combinations**, **864 raw measured batches**, **20 method calls per batch** and three rotated-order repetitions. The following times are **median and p95 of *20-call batch-average* durations**, *not p95 individual rendered frames*. Units are **ms per method call**, measured using monotonic Godot `Time.get_ticks_usec()` elapsed wall time:
+
+| Synthetic part dictionaries | Actual `present()` median | `present()` p95 batch-average | Clone-only median | Clone-only p95 batch-average |
+| ---: | ---: | ---: | ---: | ---: |
+| 0 | 0.00110 | 0.00115 | 0.00030 | 0.00045 |
+| 8 | 0.01105 | 0.01260 | 0.01020 | 0.01105 |
+| 64 | 0.079625 | 0.08190 | 0.07845 | 0.08385 |
+| 512 (combined synthetic extreme) | 0.64450 | 0.66940 | 0.63105 | 0.64980 |
+
+**Interpretation:** most of the isolated `present()` elapsed time for populated synthetic payloads is explained by the existing required deep copy, not by additional Control-property assignment or redraw-queuing overhead. At 8 parts, the entire path is approximately 0.011 ms/operation on this *hosted headless CPU*; at 64 parts approximately 0.080 ms; only the deliberately extreme 512-part synthetic workload approaches 0.65 ms. Neither the input population nor workload cadence is known to be typical of actual Main gameplay. No desktop frame-time, GPU, 60 Hz pacing, actor preparation cost, actual redraw/render cost or throughput improvement was measured.
+
+**Correctness negative control:** after one real `present()`, mutating the caller's part dictionary did **not** change the overlay's held copy; a second `present()` did expose the new ID. Both required controls passed. This argues **against** casually removing `duplicate(true)` merely to reduce the isolated copy cost. The test's count-only arm provides a measurement-floor control, not a semantics-preserving production replacement.
+
+All sample arrays and aggregate reduction are preserved unchanged with the source-qualified Windows job. The Windows runner cannot establish end-user GPU performance; no physical device, human-feel or gameplay acceptance is inferred. The experimental PR must remain Draft. Its later documentation-only revision does not imply a new Windows test of a changed fixture.
+
+**Decision:** The measured small-population cost does **not** motivate an immediate production cache or unsafe copy removal. The one useful next gate is a real Windows graphical Main trace showing actual `render_parts()` cardinality, `render_parts()` CPU time, `present()` CPU time, and p50/p95/p99 Main frame durations in a matched actor-heavy and control scene. If that trace does not establish material impact, close this hypothesis without changing production.
