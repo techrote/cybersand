@@ -69,6 +69,7 @@ class Owner:
             "material_identity": "legacy-132-slots", "solver_identity": "native-control",
         })
         self.dirty = True
+        self.resident = True
         self.leases = 0
         self.pins = set()
         self.failed = False
@@ -76,12 +77,14 @@ class Owner:
         self.pending_boundary = False
 
     def mutate(self, key, value):
+        require(self.resident, "NOT_RESIDENT")
         require(not (self.failed or self.in_tick), "UNSAFE_MUTATION")
         self.data[key] = copy.deepcopy(value)
         self.generation += 1
         self.dirty = True
 
     def snapshot(self) -> Snapshot:
+        require(self.resident, "NOT_RESIDENT")
         require(not (self.failed or self.in_tick), "UNSAFE_SNAPSHOT")
         require(self.leases < 2, "SNAPSHOT_BACKPRESSURE")
         require(all(type(n) is int and INT64_MIN <= n <= INT64_MAX for n in self.coord),
@@ -110,9 +113,12 @@ class Owner:
         self.dirty = False
 
     def evict(self) -> None:
+        require(self.resident, "NOT_RESIDENT")
         require(not (self.failed or self.in_tick), "UNSAFE_EVICTION")
         require(not self.dirty and self.leases == 0, "NOT_DURABLY_CLEAN")
         require(not self.pins and not self.pending_boundary, "PINNED_AUTHORITY")
+        self.data = None  # model loss of the only live synthetic cell payload
+        self.resident = False
 
 
 class Disk:
@@ -244,6 +250,10 @@ class SaveAckFaultTests(unittest.TestCase):
     def test_signed_chunk_and_exact_semantic_payload_survive_restart(self):
         self.assertEqual(self.save(), "DURABLE")
         self.owner.evict()
+        self.assertIsNone(self.owner.data)
+        self.assertFalse(self.owner.resident)
+        with self.assertRaisesRegex(Refused, "NOT_RESIDENT"):
+            self.owner.snapshot()
         new = self.disk.restore(session="session-2", incarnation=2)
         self.assertEqual(new.coord, (-1, 0))
         self.assertEqual(new.data, Owner().data)
@@ -344,6 +354,7 @@ class SaveAckFaultTests(unittest.TestCase):
             self.owner.evict()
         self.owner.release(s)
         self.owner.evict()
+        self.assertFalse(self.owner.resident)
 
     def test_corrupted_blob_fails_closed(self):
         self.save()
