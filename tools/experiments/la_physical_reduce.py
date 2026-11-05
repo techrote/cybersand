@@ -17,6 +17,10 @@ ROOT=Path(__file__).resolve().parents[2]
 
 def sha(data): return hashlib.sha256(data).hexdigest()
 
+def local_path(value):
+    if value.startswith("/mnt/c/") and __import__("os").name=="nt": return Path("C:/"+value[7:])
+    return Path(value)
+
 
 def tuples(path):
     raw=path.read_bytes()
@@ -116,8 +120,8 @@ def geometry(observation,rectangles):
 def report(path):
     d=json.loads(path.read_text(encoding="utf-8"));steps=d["steps"]
     if d["failures"]:raise ValueError("Fixture failed: "+str(d["failures"]))
-    initial=tuples(Path(d["initial_payload"]["path"]))
-    final=tuples(Path(d["final_payload"]["path"]))
+    initial=tuples(local_path(d["initial_payload"]["path"]))
+    final=tuples(local_path(d["final_payload"]["path"]))
     shape=[a["geometry"] for a in d["authored"]]
     first_geometry=[geometry(g,r) for g,r in zip(d["initial_geometry"],shape)]
     snapshots=[];energy=[];workers=[];times=[];readback=0;passive_positive=0;scales=[]
@@ -156,9 +160,19 @@ def report(path):
         stability.append(dict(span_x=max(p[0] for p in positions)-min(p[0] for p in positions),
                               span_y=max(p[1] for p in positions)-min(p[1] for p in positions),
                               rotation_span=max(angles)-min(angles),terminal_speed=math.hypot(*states[-1]["velocity"])))
+    inserted=Counter()
+    for step in steps:inserted.update({int(k):v for k,v in step.get("inserted_materials",{}).items()})
+    removed=Counter()
+    if "removal_before" in d:
+        a=tuples(local_path(d["removal_before"]["path"]));b=tuples(local_path(d["removal_after"]["path"]))
+        removed=Counter({int(k):v for k,v in a["material_counts"].items()})
+        removed.subtract({int(k):v for k,v in b["material_counts"].items()})
+    counts=Counter({int(k):v for k,v in initial["material_counts"].items()});counts.update(inserted);counts.subtract(removed)
+    assert +counts==Counter({int(k):v for k,v in final["material_counts"].items()}),"material source/removal ledger does not close"
     return dict(id=d["id"],source=d["source"],arm=d["arm"],case=d["case"],steps=len(steps),
                 requested_workers=d["requested_workers"],actual_workers=sorted(set(workers)),
                 initial=initial,final=final,closed_tuple_multiset_equal=inventory_equal if no_external_cells else None,
+                material_source_ledger_closes=True,inserted_materials=dict(inserted),removed_materials=dict(removed),
                 initial_geometry=first_geometry,geometry_observations=snapshots,stability=stability,
                 max_RID_readback_error=readback,max_analytic_passive_energy=passive_positive,
                 minimum_passive_scale=min(scales,default=1),timings=dict(mean_simulation_us=sum(times)/len(times),
@@ -171,8 +185,8 @@ def main():
     parser=argparse.ArgumentParser(__doc__);parser.add_argument("paths",nargs="+",type=Path);parser.add_argument("--output",type=Path,required=True)
     args=parser.parse_args();results=[]
     for path in args.paths:
-        for file in sorted(path.glob("*.json")) if path.is_dir() else [path]:
-            if "steps" not in json.loads(file.read_text(encoding="utf-8")):continue
+        for file in sorted(path.rglob("*.json")) if path.is_dir() else [path]:
+            if "initial_payload" not in json.loads(file.read_text(encoding="utf-8")):continue
             results.append(report(file));print("reduced",file.name,flush=True)
     args.output.parent.mkdir(parents=True,exist_ok=True);args.output.write_text(json.dumps(dict(results=results),separators=(",",":"))+"\n",encoding="utf-8")
 
