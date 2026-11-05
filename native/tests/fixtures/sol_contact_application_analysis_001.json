@@ -1,0 +1,13 @@
+{
+  "registration":"SOL-CONTACT-APPLICATION-001-REDUCTION",
+  "date":"2026-11-05",
+  "physical_registration":"22153077",
+  "execution_source":"8e4d7731",
+  "timing":"Freeze full-window arithmetic before complete reduction. Preliminary Windows endpoints were inspected and disclosed; no physical inputs, gates, margins or windows change.",
+  "aggregation":"Decode recorded IEEE754body velocity/omega and pose bits. math.fsum for means and right-endpoint integrals sum(value)/60. Windows inclusive0..119,120..239,240..359,0..179,0..359; overlapping windows are not extra observations.",
+  "strict_improvement":"At least one mixed owner per host/worker improves full-window mean KE beyond1e-9 against Active-baseline; raw no-worsening against both baselines remains mandatory. Energy epsilon is not a motion or geometry margin.",
+  "representation":"Unchanged1e-5velocity/omega RID reconstruction. Source torque uses float32cross and effective-correction1e-6squared-length semantics. Rapier float32transform normalization allows fourfloat32ULPs for position and fourULPs at1for basis; report residuals. This is an API representation check, not a geometric/behavioral tolerance. Independent geometry uses actual observed transforms and unchanged hard filter.",
+  "frame":"Core observations require agezero and exact sampled/live pose,velocity,omega and localCOM equality; worldCOM therefore cancels in existing transport before the correction shift. This does not qualify delayed application.",
+  "hard_geometry":"Apply original1e-9filter to each cell/proxy intersection, never rounded aggregate material area. Preserve hard/foreign witnesses separately from valid equilibrium.",
+  "custody":"Pure frozen tuple/geometry/native/trace helpers reused; old analyzers that hardcode clipping are unchanged. Native84/material32/compiled bytes remain identical. Failed/unknown accounting blocks behavioral decisions and StageB."
+}
