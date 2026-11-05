@@ -40,7 +40,7 @@ func _parts(count: int) -> Array:
         })
     return parts
 
-func _call(arm: String, overlay: Control, parts: Array) -> int:
+func _call(arm: String, overlay, parts: Array) -> int:
     if arm == "actual_present":
         overlay.present(parts, Vector2.ZERO, VIEW, CONTENT)
         return overlay._parts.size()
