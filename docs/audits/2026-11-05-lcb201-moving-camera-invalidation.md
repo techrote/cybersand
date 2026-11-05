@@ -120,6 +120,44 @@ The full native suite (`tests`, WSL g++ 13.3.0, `-O1 -g`, run from the repositor
 root, 2 min 20 s) passed **167/167** on the branch, including the new regression.
 No Windows MSVC/LLVM, Godot or in-app host run has been made for this branch yet.
 
+## Second step: pair-chemistry lookup cost (gas-free cached_dormant profile)
+
+The owner asked for gas-free `cached_dormant` PressureFlow optimisation. A `perf`
+profile (`-e cpu-clock`, `native/bench/wcx_surge_assessment.cpp`, one worker,
+dam break) of that arm attributed **≈36 % of the tick** to
+`InteractionRules::may_pair` and `MaterialRules::pair_reaction`, and ≈15 % to
+chunk hash-table lookups. Preparation (heads only, 214 of 1,024 columns per tick)
+was ≈0.63 ms; the rest was ≈11k Water kernel calls per tick.
+
+`may_pair` and `has_pair_rule` (in `interaction_rules.hpp`, a protected identity
+input that is not edited) declare their 256-entry constexpr tables as non-static
+locals, which this GCC build materializes on every call. `world.cpp` now tabulates
+both functions' exact results once per process (`pair_tables()`), skips
+`pair_reaction` only where `may_pair` is false (where it returns no reaction
+anyway), and uses the cached participation flag. Reactions, probability rolls,
+neighbour order and all state are unchanged.
+
+Same dam break (1024×192, 4 workers, 300 ticks, `-O2`); surface-motion metrics are
+identical before and after in every arm:
+
+| Arm | p50 before | p50 after | p95 before | p95 after |
+|---|---:|---:|---:|---:|
+| PressureFlow cached_dormant, gas off | 8.07 ms | 3.83 ms | 9.41 | 4.35 |
+| FreeMass | 7.97 ms | 2.58 ms | 8.98 | 3.01 |
+| PressureFlow reference, gas on | 11.79 ms | 7.17 ms | 13.66 | 7.95 |
+
+The full native suite passed 167/167 on two consecutive runs with this step. One
+earlier full run reported the "worker activity publication" fixture's final
+premise (at least two actual pool participants) as missed; every per-tick
+1-worker/4-worker/serial-reference equality inside it had passed, and the fixture
+then passed 20/20 isolated repeats on both the base and patched builds. It is
+recorded as an intermittent participation premise, not a behavioural difference;
+the fixture's failure message now prints which premise failed.
+
+The gain is engine-wide (any material with pair chemistry probes neighbours this
+way), not specific to PressureFlow. The next candidate is the per-sample chunk
+hash lookup in the PressureFlow kernel and wake scan.
+
 ## Gaps and next steps
 
 1. Desktop in-app before/after with the worker's camera window (the #370 host

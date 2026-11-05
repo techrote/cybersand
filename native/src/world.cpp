@@ -27,6 +27,37 @@
 namespace cybersand {
 namespace {
 
+// #201: InteractionRules::may_pair/has_pair_rule build their constexpr partner
+// tables as non-static locals, which this toolchain materializes on every call
+// (the dominant cost of an active PressureFlow tick). Their exact results are
+// tabulated once here; MaterialRules::pair_reaction is still consulted for every
+// pair this table admits, so no reaction, probability or ordering changes.
+struct PairTables {
+    std::array<std::array<std::uint64_t, 4>, 256> partners{};
+    std::array<bool, 256> participants{};
+};
+const PairTables& pair_tables() noexcept {
+    static const PairTables tables = [] {
+        PairTables t;
+        for (unsigned a = 0; a < 256U; ++a) {
+            const auto source = static_cast<Material>(a);
+            t.participants[a] = InteractionRules::has_pair_rule(source);
+            for (unsigned b = 0; b < 256U; ++b)
+                if (InteractionRules::may_pair(source, static_cast<Material>(b)))
+                    t.partners[a][b >> 6U] |= std::uint64_t{1} << (b & 63U);
+        }
+        return t;
+    }();
+    return tables;
+}
+[[nodiscard]] bool pair_possible(Material source, Material target) noexcept {
+    const auto a = static_cast<std::uint8_t>(source), b = static_cast<std::uint8_t>(target);
+    return ((pair_tables().partners[a][b >> 6U] >> (b & 63U)) & 1U) != 0U;
+}
+[[nodiscard]] bool has_pair_participation(Material material) noexcept {
+    return pair_tables().participants[static_cast<std::uint8_t>(material)];
+}
+
 std::uint16_t quantity_kernel_rule(RuleKernel kernel) noexcept;
 
 std::atomic<std::uint64_t> next_discovery_incarnation{1};
@@ -3464,12 +3495,13 @@ bool World::update_rule_kernel(RuleKernel kernel, Material source_material,
             return try_lateral(material,x,y,-direction,false,effects);
         };
 
-    if (contact_chemistry_due && MaterialRules::has_pair_reactions(material)) {
+    if (contact_chemistry_due && has_pair_participation(material)) {
         const auto start = deterministic_random(x, y, 200U);
         const auto probability_roll = deterministic_random(x, y, 201U);
         for (std::size_t step = 0; step < kMooreNeighbours.size(); ++step) {
             const auto [target_x, target_y] = neighbour(start + step);
             const auto target = get(target_x, target_y);
+            if (!pair_possible(material, target)) continue;
             const auto reaction =
                 MaterialRules::pair_reaction(material, target, probability_roll);
             if (!reaction.has_value()) continue;
@@ -4144,7 +4176,7 @@ bool World::update_rule_kernel(RuleKernel kernel, Material source_material,
 
 void World::schedule_pending_reaction_wake(Material material, std::int64_t x,
                                            std::int64_t y, JobEffects* effects) noexcept {
-    const bool has_pair_reactions = MaterialRules::has_pair_reactions(material);
+    const bool has_pair_reactions = has_pair_participation(material);
     const bool is_ice = material == Material::Ice;
     if (!has_pair_reactions && !is_ice) return;
 
@@ -4156,7 +4188,8 @@ void World::schedule_pending_reaction_wake(Material material, std::int64_t x,
         const auto target = get(x + offset.x, y + offset.y);
         if (has_pair_reactions && !pair_pending) {
             // A failed probability roll must retain its next opportunity too.
-            pair_pending = MaterialRules::pair_reaction(material, target, 0U).has_value();
+            pair_pending = pair_possible(material, target) &&
+                           MaterialRules::pair_reaction(material, target, 0U).has_value();
         }
         if (is_ice) {
             melt_pending = melt_pending || is_hot(target);

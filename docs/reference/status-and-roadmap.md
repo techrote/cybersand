@@ -29,8 +29,11 @@ structure reads the region; reference/cached/cached_dormant stay bit-identical
 at 1 and 4 workers, and pure camera motion no longer rebuilds the index, gas or
 heads. Natively, cached p99 at 1–4 cells/tick falls from ≈32–37 ms to ≈11–14 ms
 and p50 at 16 cells/tick from ≈26 ms to ≈11 ms. The unchanged tick-entry
-inclusion wake is now the dominant moving-camera cost. In-app, platform and
-independent-review gates remain open.
+inclusion wake is now the dominant moving-camera cost. The same draft also
+caches the exact `may_pair`/`has_pair_rule` results that were rebuilt on every
+neighbour probe: an active dam break's tick falls by ≈39–68 % (gas-free
+cached_dormant PressureFlow 8.1 → 3.8 ms, FreeMass 8.0 → 2.6 ms, 4 workers) with
+identical results. In-app, platform and independent-review gates remain open.
 
 ## PressureFlow desktop region flip (#201) — 2026-11-04
 

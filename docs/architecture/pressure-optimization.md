@@ -282,6 +282,8 @@ since no cache structure reads the region; it is exact against reference at
 1/4 workers and keeps the cache warm under camera motion
 ([moving-camera record](../audits/2026-11-05-lcb201-moving-camera-invalidation.md)).
 The tick-entry inclusion wake, unchanged, then dominates moving-camera cost.
+The same branch tabulates the exact pair-chemistry predicates once per process,
+which removes ≈36 % of an active gas-free cached_dormant tick (see the record).
 
 ## Acceptance and remaining application work
 
