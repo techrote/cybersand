@@ -1,0 +1,14 @@
+{
+  "version":1,
+  "frozen_date":"2026-11-05",
+  "purpose":"Additive post-result normal-relaxation question; no frozen set is replaced",
+  "questions":[
+    {
+      "id":"SOL-ACTIVE-NORMAL-001",
+      "query":"What does the active-normal copied-value candidate change, and do stopped COM targets prove live Sand clearance or allow unused support capacity to be borrowed?",
+      "canonical":["architecture/rigid-body-and-cellular-coupling.md"],
+      "facts":["Only normal relaxation over approaching/loaded contacts changes; original capacity shares, four passes and tangent/energy rules stay fixed.","Nine synthetic COM targets stop, but a capped front keeps its original capacity and residual speed.","Value results do not qualify live World/Rapier, original SOL authority or default promotion; tangent computational energy can increase."],
+      "sources":["../native/tests/fixtures/sol_active_normal_001.json","../tools/experiments/sol_active_normal_source.py","../tools/experiments/sol_active_normal_compare.py"]
+    }
+  ]
+}

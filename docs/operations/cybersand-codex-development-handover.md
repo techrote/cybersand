@@ -12,6 +12,14 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 ## Exact SOL geometry chamber lane — 2026-11-05
 
+Root alone owns `codex/sol-normal-active-20261105`, based on fixed Draft416
+`3e0bf637`. The [registered38case comparison](../audits/2026-11-05-sol-active-normal.md)
+executes at `5bca6159`: unchanged-header and trace controls plus active-normal
+values pass across GCC optimized/strict sanitizers and actual Windows MSVC.
+Nine COM targets stop without cap redistribution; live physical benefit remains
+unavailable. Production native84/defaults/other branches stay unchanged. Keep
+publication Draft; the next live policy needs new registration/fresh binaries.
+
 Root separately owns `codex/sol-response-cost-20261105`, dependent on411's fixed
 `b424032b`. Its [cost dossier](../audits/2026-11-05-sol-response-cost.md) records
 48matched sessions at `a47be4e2`,24equivalent observer pairs, actual getter cost

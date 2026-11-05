@@ -22,6 +22,8 @@ def record(case,rec,arm):
     early=case['null_bin'] or len(case['bins'])>512
     if early:
         assert result['passive_rejected'] and result['scale']==0 and not nodes and not rec['trace']
+        assert result['nodes']==0 and result['impulse']==result['raw_impulse']==result['normal_impulse']==result['tangent_impulse']==[0,0]
+        assert result['torque']==result['raw_torque']==result['normal']==result['tangent']==0
         return dict(id=case['id'],refused=True,early_refusal=True)
     assert result['nodes']==len(nodes) and result['updates']==8*len(nodes)
     total_samples=sum(len(x['points']) for x in case['bins']);s=case['solve']

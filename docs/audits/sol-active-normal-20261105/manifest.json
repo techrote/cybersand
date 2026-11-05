@@ -1,0 +1,352 @@
+{
+  "schema": "cybersand.sol-active-normal.evidence.v1",
+  "execution_source": "5bca61599758be25eb847bce092a36bd72ef9b14",
+  "files": [
+    {
+      "path": "arm-0.json",
+      "bytes": 486281,
+      "sha256": "fa669acdecbe0ee792c07290d0156f69ff073747f300cc10193a3cdf5f1d6c16",
+      "parsed_values_equal_across_three_compilers": true
+    },
+    {
+      "path": "arm-1.json",
+      "bytes": 630047,
+      "sha256": "4734d3846f2f64023d0e8ed46a8746b606d5e2225f20be86a7710fa5b0743742",
+      "parsed_values_equal_across_three_compilers": true
+    },
+    {
+      "path": "arm-2.json",
+      "bytes": 624438,
+      "sha256": "d6d6de6ff0714cbe3a1ae113e7318ac0211920576c3e4613495f306d786a48c0",
+      "parsed_values_equal_across_three_compilers": true
+    },
+    {
+      "path": "execution.json",
+      "bytes": 256614,
+      "sha256": "f71aebe9d2433859c0b0e481a411da56e937988a5f60d53931a0d567668a11b0"
+    },
+    {
+      "path": "comparison.json",
+      "bytes": 154651,
+      "sha256": "d391166805f7cd6b491e2e5e3a474d39282e0ca11f31de4a089d491827804b06"
+    },
+    {
+      "path": "source-adapter.json",
+      "bytes": 2420,
+      "sha256": "acf5b457de60dc4abd5cf09f049f592237c669c6918fbe73a1d2a70b5ca0ed66"
+    }
+  ],
+  "local_raw_files": [
+    {
+      "path": "build/sol-active-normal/registered-values/comparison.json",
+      "bytes": 154651,
+      "sha256": "d391166805f7cd6b491e2e5e3a474d39282e0ca11f31de4a089d491827804b06"
+    },
+    {
+      "path": "build/sol-active-normal/registered-values/compile-linux-opt-0.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/sol-active-normal/registered-values/compile-linux-opt-0.receipt.json",
+      "bytes": 2018,
+      "sha256": "280487f154f8643b5a5b4db11cac7185c7768dc42bfbc3fc4dfbf714ffb1e256"
+    },
+    {
+      "path": "build/sol-active-normal/registered-values/compile-linux-opt-1.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/sol-active-normal/registered-values/compile-linux-opt-1.receipt.json",
+      "bytes": 2018,
+      "sha256": "63ea3ced04762646fc89a60a5dae8d88652b595c2639a20b41b5d735ba4cae22"
+    },
+    {
+      "path": "build/sol-active-normal/registered-values/compile-linux-opt-2.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/sol-active-normal/registered-values/compile-linux-opt-2.receipt.json",
+      "bytes": 2018,
+      "sha256": "bff518b6e252684b82531ce12658aacf39f48cb002a6e0dbf3216a3435b8dec6"
+    },
+    {
+      "path": "build/sol-active-normal/registered-values/compile-linux-san-0.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/sol-active-normal/registered-values/compile-linux-san-0.receipt.json",
+      "bytes": 2214,
+      "sha256": "d1b0065be7b26128ce492a6592b32071e7bf003a702429f949c431293902538f"
+    },
+    {
+      "path": "build/sol-active-normal/registered-values/compile-linux-san-1.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/sol-active-normal/registered-values/compile-linux-san-1.receipt.json",
+      "bytes": 2214,
+      "sha256": "aa26e7882c1450e459c50d0a4bec3cca00dc7404f4bb6cbeff3aa493c6306f14"
+    },
+    {
+      "path": "build/sol-active-normal/registered-values/compile-linux-san-2.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/sol-active-normal/registered-values/compile-linux-san-2.receipt.json",
+      "bytes": 2214,
+      "sha256": "db4c04477378881ba0870c6b16874dad69fb7473f8dee1845ece7a8b52e5fde7"
+    },
+    {
+      "path": "build/sol-active-normal/registered-values/compile-windows-msvc-0.log",
+      "bytes": 1184,
+      "sha256": "506a94760e6091ebe3293a52aeeb6430f90391c31f6633c8075ac0684ec9ce28"
+    },
+    {
+      "path": "build/sol-active-normal/registered-values/compile-windows-msvc-0.receipt.json",
+      "bytes": 2099,
+      "sha256": "2dc50fc70254191ad67b7a9ebe051b5be1c2bda916a44ed613c33b86a09394b4"
+    },
+    {
+      "path": "build/sol-active-normal/registered-values/compile-windows-msvc-1.log",
+      "bytes": 1184,
+      "sha256": "506a94760e6091ebe3293a52aeeb6430f90391c31f6633c8075ac0684ec9ce28"
+    },
+    {
+      "path": "build/sol-active-normal/registered-values/compile-windows-msvc-1.receipt.json",
+      "bytes": 2099,
+      "sha256": "6ea35064748089e03e609da7dfa66ef960a2d8ca41657ae59db6567db07bf8e7"
+    },
+    {
+      "path": "build/sol-active-normal/registered-values/compile-windows-msvc-2.log",
+      "bytes": 1184,
+      "sha256": "506a94760e6091ebe3293a52aeeb6430f90391c31f6633c8075ac0684ec9ce28"
+    },
+    {
+      "path": "build/sol-active-normal/registered-values/compile-windows-msvc-2.receipt.json",
+      "bytes": 2099,
+      "sha256": "7b516548f27d8e120f2706db078f3a51e10e2d51d43b64787029bafad1337169"
+    },
+    {
+      "path": "build/sol-active-normal/registered-values/driver.cpp",
+      "bytes": 7634,
+      "sha256": "2cb44f344b3ce6dd49de2b14dd52545d5ad254c0b1da55b7e70d8b91f5b0e895"
+    },
+    {
+      "path": "build/sol-active-normal/registered-values/gcc-identity.log",
+      "bytes": 283,
+      "sha256": "8f5303a6d4e29181207a06fc32e0e7dc9f935f90b2db8f88fc6bf1229d478d34"
+    },
+    {
+      "path": "build/sol-active-normal/registered-values/gcc-identity.receipt.json",
+      "bytes": 1473,
+      "sha256": "363bfe04a4d2a17884fcfaf0a32eaf11e15febe04e759b6862083679162eda23"
+    },
+    {
+      "path": "build/sol-active-normal/registered-values/gcc-version.log",
+      "bytes": 246,
+      "sha256": "59d1cbef41d4ae78d5063d525b7aa13d18dc0493ea00537efc19b2ee398cb5a8"
+    },
+    {
+      "path": "build/sol-active-normal/registered-values/gcc-version.receipt.json",
+      "bytes": 788,
+      "sha256": "4ace02899ab46aefc1b1ea305b5d59380b34dfd4a0542dbdf85704c6db225224"
+    },
+    {
+      "path": "build/sol-active-normal/registered-values/gcr_active_normal.hpp",
+      "bytes": 12048,
+      "sha256": "cbdbe887fef87e77b95761884644b4d2f0aad851f1a12b7be3e6069a5ff6b194"
+    },
+    {
+      "path": "build/sol-active-normal/registered-values/gcr_trace.hpp",
+      "bytes": 11704,
+      "sha256": "b1646fd4eb1d4d474852f3bc138bc774b18c20f42c7bfe330e02ce41079ee3b3"
+    },
+    {
+      "path": "build/sol-active-normal/registered-values/inputs.txt",
+      "bytes": 172388,
+      "sha256": "635e3decf291bdd664c599ae24fcf64bb79e89ad59148a521beb379412e4a7c1"
+    },
+    {
+      "path": "build/sol-active-normal/registered-values/linux-opt-0",
+      "bytes": 45112,
+      "sha256": "528687000be9e6958ecc12967e933daa24768715db4f8e9b380d1b45774b10e2"
+    },
+    {
+      "path": "build/sol-active-normal/registered-values/linux-opt-1",
+      "bytes": 53416,
+      "sha256": "b8babafccd60501cb82e2527a67d6f8ae6455e5ba8bf76a35740c59af62a21cf"
+    },
+    {
+      "path": "build/sol-active-normal/registered-values/linux-opt-2",
+      "bytes": 49400,
+      "sha256": "d44a6ffa110491cf46d7b4a14e1689582be9aa6cec9b7af893929cdabab56b66"
+    },
+    {
+      "path": "build/sol-active-normal/registered-values/linux-san-0",
+      "bytes": 515688,
+      "sha256": "a3c861739a03f29c7956c4c410f46c0be2893f854dcb9ad336c6d9cb603f9bf0"
+    },
+    {
+      "path": "build/sol-active-normal/registered-values/linux-san-1",
+      "bytes": 581888,
+      "sha256": "093ae808220b9c384f41f63911efa24d13a802ee2ef6e8a84bfae2a66733bcf0"
+    },
+    {
+      "path": "build/sol-active-normal/registered-values/linux-san-2",
+      "bytes": 587224,
+      "sha256": "584414b6c523de23d91d70db333db0db1ac357e0db211bdab1147108ab4ee9cc"
+    },
+    {
+      "path": "build/sol-active-normal/registered-values/msvc-env.cmd",
+      "bytes": 354,
+      "sha256": "0b88afe3f598e43f6a0b39b4ceebe00809c3a82fbf3fd9bd27bb4452be9a3a23"
+    },
+    {
+      "path": "build/sol-active-normal/registered-values/msvc-env.log",
+      "bytes": 4889,
+      "sha256": "573d021483af9fbf55fd0e82aad09900db970b91b296d50a0889b738f0758ee6"
+    },
+    {
+      "path": "build/sol-active-normal/registered-values/msvc-env.receipt.json",
+      "bytes": 701,
+      "sha256": "40967d1faa36601c2e4351b175cc5028f39fa8a629f76ee4b15380dd3bd2e5e8"
+    },
+    {
+      "path": "build/sol-active-normal/registered-values/msvc-setup.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/sol-active-normal/registered-values/receipt.json",
+      "bytes": 264899,
+      "sha256": "9c64aaa4e107c3a64495fa86c8915c264ca9090059035a861aabbaa836f4ca8d"
+    },
+    {
+      "path": "build/sol-active-normal/registered-values/run-linux-opt-0.log",
+      "bytes": 489384,
+      "sha256": "bf118cb68908fd48e7de7a90a8a9f1529a5c51b230f518389a05e72f2d61a7c1"
+    },
+    {
+      "path": "build/sol-active-normal/registered-values/run-linux-opt-0.receipt.json",
+      "bytes": 1261,
+      "sha256": "8bdfdeacf38105e84ca178f3e8c93b6efc8f96ce225ff6cdc27271ced53fb0c3"
+    },
+    {
+      "path": "build/sol-active-normal/registered-values/run-linux-opt-1.log",
+      "bytes": 635079,
+      "sha256": "ebbc3d9265ddb095c850ba1573741b3d533959233520408a244a9ac23547b001"
+    },
+    {
+      "path": "build/sol-active-normal/registered-values/run-linux-opt-1.receipt.json",
+      "bytes": 1263,
+      "sha256": "04418f616ca6570248d66fa53cab1306d6ea8c523a427efd2b72b5985c9743d4"
+    },
+    {
+      "path": "build/sol-active-normal/registered-values/run-linux-opt-2.log",
+      "bytes": 629312,
+      "sha256": "76ae09f379809428dae6c4d04abd3a20017c8fd0dfcaa321be858d79d2347e6d"
+    },
+    {
+      "path": "build/sol-active-normal/registered-values/run-linux-opt-2.receipt.json",
+      "bytes": 1263,
+      "sha256": "415889897837d2d4405f33c3d8d1bcc05663d78241c0817f3264c90ce9ea36e2"
+    },
+    {
+      "path": "build/sol-active-normal/registered-values/run-linux-san-0.log",
+      "bytes": 489384,
+      "sha256": "bf118cb68908fd48e7de7a90a8a9f1529a5c51b230f518389a05e72f2d61a7c1"
+    },
+    {
+      "path": "build/sol-active-normal/registered-values/run-linux-san-0.receipt.json",
+      "bytes": 1550,
+      "sha256": "83a8d18f81ccaa685f08a92011f4531db5d359e367e476f71fb59431d601de17"
+    },
+    {
+      "path": "build/sol-active-normal/registered-values/run-linux-san-1.log",
+      "bytes": 635079,
+      "sha256": "ebbc3d9265ddb095c850ba1573741b3d533959233520408a244a9ac23547b001"
+    },
+    {
+      "path": "build/sol-active-normal/registered-values/run-linux-san-1.receipt.json",
+      "bytes": 1550,
+      "sha256": "adfa8ba438fc65536fb5b146465dc16b942f8bb1c7a46bd91a3a54f627c18505"
+    },
+    {
+      "path": "build/sol-active-normal/registered-values/run-linux-san-2.log",
+      "bytes": 629312,
+      "sha256": "76ae09f379809428dae6c4d04abd3a20017c8fd0dfcaa321be858d79d2347e6d"
+    },
+    {
+      "path": "build/sol-active-normal/registered-values/run-linux-san-2.receipt.json",
+      "bytes": 1551,
+      "sha256": "ccc72569892615b6718c2bd33ee853a73ee700380727b91d77620cce6db00deb"
+    },
+    {
+      "path": "build/sol-active-normal/registered-values/run-windows-msvc-0.log",
+      "bytes": 489385,
+      "sha256": "aa455b761dda5932dba19a83096eb5c4f7e5bfba6024da67741d7e0326471d47"
+    },
+    {
+      "path": "build/sol-active-normal/registered-values/run-windows-msvc-0.receipt.json",
+      "bytes": 932,
+      "sha256": "bec666848864caecd4459dc3cc941c66fa99a78ebbda2866c774f397958bdfd4"
+    },
+    {
+      "path": "build/sol-active-normal/registered-values/run-windows-msvc-1.log",
+      "bytes": 635080,
+      "sha256": "36dc5458af7a6976c9636f28c9389614218169e31b8afa9dd262dbcb2e9fc4e7"
+    },
+    {
+      "path": "build/sol-active-normal/registered-values/run-windows-msvc-1.receipt.json",
+      "bytes": 932,
+      "sha256": "8183c1a1ad71244ce37b98ccf8070066825c3b15adb896f551c7c8faf5e41e4a"
+    },
+    {
+      "path": "build/sol-active-normal/registered-values/run-windows-msvc-2.log",
+      "bytes": 629313,
+      "sha256": "876cde52b7cca11f01465c02d9e261019a2c5ea975ec173b24c7d3009279076a"
+    },
+    {
+      "path": "build/sol-active-normal/registered-values/run-windows-msvc-2.receipt.json",
+      "bytes": 932,
+      "sha256": "202a60df0a536ce38bd8c015b0cda91b830b3405b666142d2d59a4fb5db2deb5"
+    },
+    {
+      "path": "build/sol-active-normal/registered-values/windows-msvc-0.exe",
+      "bytes": 329728,
+      "sha256": "d84e5593f7ff2cbf4bc166f33d5764670b8491aeb0d688e92dbc8811602811f7"
+    },
+    {
+      "path": "build/sol-active-normal/registered-values/windows-msvc-0.obj",
+      "bytes": 669479,
+      "sha256": "d46c4204266ced162d38717ba8f591c50eb02328519531b182bce5333fac15f4"
+    },
+    {
+      "path": "build/sol-active-normal/registered-values/windows-msvc-1.exe",
+      "bytes": 335872,
+      "sha256": "760eddf23d05340b153c7630ddaf0b6757abab419eaa68bd80a19bc8c7cc3b8f"
+    },
+    {
+      "path": "build/sol-active-normal/registered-values/windows-msvc-1.obj",
+      "bytes": 690817,
+      "sha256": "0673b38cbd686307227d73baf0fa72e3a690e44b14b56d9faff4f6390249dc27"
+    },
+    {
+      "path": "build/sol-active-normal/registered-values/windows-msvc-2.exe",
+      "bytes": 335872,
+      "sha256": "95ad1c935bf5894ccdb18040f4700b8106d7e66ce8e0045d26977047a2344726"
+    },
+    {
+      "path": "build/sol-active-normal/registered-values/windows-msvc-2.obj",
+      "bytes": 697208,
+      "sha256": "7547fef68b2c2f92bf219c2f326b326cf87354768d6a5d6c1f09e0664adb192e"
+    }
+  ],
+  "scope": "Copied values only; no live World or original SOL authority"
+}
