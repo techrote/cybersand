@@ -1,0 +1,327 @@
+{
+  "source": "0e3c296018ff34c2f77abf7646ea313251d4c777",
+  "commands": [
+    {
+      "name": "docs",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/ci/check_docs.py"
+      ],
+      "requested_command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/ci/check_docs.py"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 300,
+      "seconds": 1.9626530999667011,
+      "log": "build\\sol-active-normal-live\\checkpoint-005\\docs.log",
+      "log_sha256": "54b8ef15b2d00aeb7078ef63dc6694a02e2220b5142f5b2bb4d6b85fb37beb6b",
+      "markers": []
+    },
+    {
+      "name": "m11",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/ci/check_m11_consistency.py"
+      ],
+      "requested_command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/ci/check_m11_consistency.py"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 300,
+      "seconds": 1.200892399996519,
+      "log": "build\\sol-active-normal-live\\checkpoint-005\\m11.log",
+      "log_sha256": "e5d2a8eecef5876957dc4ecff01b99af696053871616d2dea563371d44b2427b",
+      "markers": []
+    },
+    {
+      "name": "material",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/material_catalogue/compatibility.py",
+        "--check"
+      ],
+      "requested_command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/material_catalogue/compatibility.py",
+        "--check"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 300,
+      "seconds": 1.9746223000111058,
+      "log": "build\\sol-active-normal-live\\checkpoint-005\\material.log",
+      "log_sha256": "50174e75669bf15c0d521884f313715b5769054ca583572e3e734d0d06c14ae7",
+      "markers": []
+    },
+    {
+      "name": "repository",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/ci/check_repository.py"
+      ],
+      "requested_command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/ci/check_repository.py"
+      ],
+      "exit": 1,
+      "clean": false,
+      "timeout_seconds": 300,
+      "seconds": 2.9330073000164703,
+      "log": "build\\sol-active-normal-live\\checkpoint-005\\repository.log",
+      "log_sha256": "14cd088191edb5ac813c22d514ba7cff8228b35781d61b3345a42cd8defb8e35",
+      "markers": []
+    },
+    {
+      "name": "live-portable",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/experiments/test_sol_active_normal_live.py"
+      ],
+      "requested_command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/experiments/test_sol_active_normal_live.py"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 300,
+      "seconds": 6.873964800033718,
+      "log": "build\\sol-active-normal-live\\checkpoint-005\\live-portable.log",
+      "log_sha256": "691478623e33690ed7d07d1da3e3c303ad770bab03d868d0db76ca8864c5c0e2",
+      "markers": []
+    },
+    {
+      "name": "authority-windows",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/experiments/test_sol_authority_model.py"
+      ],
+      "requested_command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/experiments/test_sol_authority_model.py"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 300,
+      "seconds": 0.9530450000311248,
+      "log": "build\\sol-active-normal-live\\checkpoint-005\\authority-windows.log",
+      "log_sha256": "d7d3d52ddf670751aef95cd08d9256fd994c8ddbbdf2f4219d1c3ea48d75434c",
+      "markers": []
+    },
+    {
+      "name": "authority-linux",
+      "command": [
+        "wsl.exe",
+        "-d",
+        "Ubuntu-24.04",
+        "--cd",
+        "/mnt/c/Users/_/.codex/worktrees/sol-active-normal-live-20261105/khybersand",
+        "--",
+        "timeout",
+        "--signal=TERM",
+        "--kill-after=5s",
+        "300s",
+        "python3",
+        "tools/experiments/test_sol_authority_model.py"
+      ],
+      "requested_command": [
+        "wsl.exe",
+        "-d",
+        "Ubuntu-24.04",
+        "--cd",
+        "/mnt/c/Users/_/.codex/worktrees/sol-active-normal-live-20261105/khybersand",
+        "--",
+        "python3",
+        "tools/experiments/test_sol_authority_model.py"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 300,
+      "seconds": 5.289973000006285,
+      "log": "build\\sol-active-normal-live\\checkpoint-005\\authority-linux.log",
+      "log_sha256": "770d965452fa51a6a63d148529f26063ca0d9e15639c532e3356569703e03c05",
+      "markers": []
+    },
+    {
+      "name": "native-equivalence",
+      "command": [
+        "git",
+        "diff",
+        "--exit-code",
+        "ff0d7cf5cc94c42a5e409eb5535681fe314ae3dd",
+        "HEAD",
+        "--",
+        "native/include",
+        "native/src",
+        "godot/native_extension"
+      ],
+      "requested_command": [
+        "git",
+        "diff",
+        "--exit-code",
+        "ff0d7cf5cc94c42a5e409eb5535681fe314ae3dd",
+        "HEAD",
+        "--",
+        "native/include",
+        "native/src",
+        "godot/native_extension"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 300,
+      "seconds": 0.03767540003173053,
+      "log": "build\\sol-active-normal-live\\checkpoint-005\\native-equivalence.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "markers": []
+    },
+    {
+      "name": "retrieval-main",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/docs/retrieval_eval.py",
+        "--output",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\build\\sol-active-normal-live\\checkpoint-005\\retrieval-main.json"
+      ],
+      "requested_command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/docs/retrieval_eval.py",
+        "--output",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\build\\sol-active-normal-live\\checkpoint-005\\retrieval-main.json"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 300,
+      "seconds": 0.6003778000012971,
+      "log": "build\\sol-active-normal-live\\checkpoint-005\\retrieval-main.log",
+      "log_sha256": "21414b51913a2cd576dfa4ee7feffcbe5319cf415c7e12c28eebe4a6fe578204",
+      "markers": []
+    },
+    {
+      "name": "retrieval-live",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/docs/retrieval_eval.py",
+        "--output",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\build\\sol-active-normal-live\\checkpoint-005\\retrieval-live.json",
+        "--queries",
+        "docs/reference/retrieval-questions-sol-active-normal-live.json"
+      ],
+      "requested_command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/docs/retrieval_eval.py",
+        "--output",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\build\\sol-active-normal-live\\checkpoint-005\\retrieval-live.json",
+        "--queries",
+        "docs/reference/retrieval-questions-sol-active-normal-live.json"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 300,
+      "seconds": 0.5922958999872208,
+      "log": "build\\sol-active-normal-live\\checkpoint-005\\retrieval-live.log",
+      "log_sha256": "4b9e856c603a65d4e290a309dcf595069c0fc8cf18434153f1ed0eaf91835044",
+      "markers": []
+    },
+    {
+      "name": "retrieval-full",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/docs/retrieval_eval.py",
+        "--output",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\build\\sol-active-normal-live\\checkpoint-005\\retrieval-full.json",
+        "--queries",
+        "docs/reference/retrieval-questions-sol-active-normal-full.json"
+      ],
+      "requested_command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/docs/retrieval_eval.py",
+        "--output",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\build\\sol-active-normal-live\\checkpoint-005\\retrieval-full.json",
+        "--queries",
+        "docs/reference/retrieval-questions-sol-active-normal-full.json"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 300,
+      "seconds": 0.4073054000036791,
+      "log": "build\\sol-active-normal-live\\checkpoint-005\\retrieval-full.log",
+      "log_sha256": "3e8a282de3b2d3a57e2c13f784398572b95d1b1bbac613743bf4855071ec01d1",
+      "markers": []
+    },
+    {
+      "name": "retrieval-gameplay",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/docs/retrieval_eval.py",
+        "--output",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\build\\sol-active-normal-live\\checkpoint-005\\retrieval-gameplay.json",
+        "--queries",
+        "docs/reference/retrieval-questions-sol-active-normal-gameplay.json"
+      ],
+      "requested_command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/docs/retrieval_eval.py",
+        "--output",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\build\\sol-active-normal-live\\checkpoint-005\\retrieval-gameplay.json",
+        "--queries",
+        "docs/reference/retrieval-questions-sol-active-normal-gameplay.json"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 300,
+      "seconds": 0.4344251999864355,
+      "log": "build\\sol-active-normal-live\\checkpoint-005\\retrieval-gameplay.log",
+      "log_sha256": "3c2f90aa018c7c57e358896c2044198d401affdcd691dea128af9f6886daf885",
+      "markers": []
+    },
+    {
+      "name": "retrieval-authority",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/docs/retrieval_eval.py",
+        "--output",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\build\\sol-active-normal-live\\checkpoint-005\\retrieval-authority.json",
+        "--queries",
+        "docs/reference/retrieval-questions-sol-authority-offline.json"
+      ],
+      "requested_command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/docs/retrieval_eval.py",
+        "--output",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\build\\sol-active-normal-live\\checkpoint-005\\retrieval-authority.json",
+        "--queries",
+        "docs/reference/retrieval-questions-sol-authority-offline.json"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 300,
+      "seconds": 0.46376700000837445,
+      "log": "build\\sol-active-normal-live\\checkpoint-005\\retrieval-authority.log",
+      "log_sha256": "83b9ff18f657b067b3bbf7b7f87b4de63cf36ef14f3399017fb682f62a16b720",
+      "markers": []
+    }
+  ],
+  "qualification": "Canonical repository gate remainsNO-GO; native experimental source unchanged; no live authority admission",
+  "raw_receipt_sha256": "28b7b004cac93ab625840c6a4901925d16125ce162f00c2a272a26df9d77fa18",
+  "domain": "Offline Python and documentation qualification; no new engine execution",
+  "live_authority": false,
+  "actuation_permitted": false,
+  "test_counts": {
+    "authority-windows": 22,
+    "authority-linux": 22,
+    "live-portable": 12
+  },
+  "canonical_repository_errors": [
+    "Windows x86_64 Godot desktop requires rebuild for source input: godot/native_extension/cyber_native_cell_world.cpp",
+    "Windows x86_64 Godot desktop requires rebuild for source input: godot/native_extension/cyber_native_cell_world.hpp",
+    "Windows x86_64 Godot desktop requires rebuild for source input: godot/native_extension/workbench_granular_coupling.inc",
+    "Windows x86_64 Godot desktop requires rebuild for source input: native/include/cybersand/granular_contact_response.hpp",
+    "Linux x86_64 Godot desktop requires rebuild for source input: godot/native_extension/cyber_native_cell_world.cpp",
+    "Linux x86_64 Godot desktop requires rebuild for source input: godot/native_extension/cyber_native_cell_world.hpp",
+    "Linux x86_64 Godot desktop requires rebuild for source input: godot/native_extension/workbench_granular_coupling.inc",
+    "Linux x86_64 Godot desktop requires rebuild for source input: native/include/cybersand/granular_contact_response.hpp"
+  ]
+}

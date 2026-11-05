@@ -129,12 +129,21 @@ custody verification. The prior20test artifact is retained unchanged; the new
 22test run is separate. No compiled native input differs from buildff0d7cf5.
 External independent acceptance and a separate owner decision remain pending.
 
+At0e3c2960, the [final state/custody checkpoint](sol-authority-20261105/validation-005.json)
+passes22offline tests on each actual Python host and12live-evidence portable
+tests. Documentation, historical M11, unchanged material guard and all five
+retrieval sets pass. Git comparison proves the native84 compiled source remains
+identical toff0d7cf5. The canonical repository checker still exits1 with exactly
+eight frozen-manifest source mismatches; experimental runtime qualification is
+not accepted provenance. No original-SOL, native engine or physics result is
+inferred from the offline Python checks.
+
 ## Source-bound decisions
 
 | Decision | Status |
 | --- | --- |
 | Current source-conflict inventory | PASS for declared1355path scope; material/runtime admission remains separate |
-| Offline envelope/lease apparatus | CONDITIONAL;20tests pass per host, internal review repairs recorded, final state/custody22test checkpoint and external acceptance separate |
+| Offline envelope/lease apparatus | CONDITIONAL;22tests pass per host, internal review repairs/clarification recorded, external acceptance pending; model scope only |
 | Real owner E1 capture / E2 Active hold | UNAVAILABLE; copied-value rules do not implement either |
 | Original SOL physical clearance | NO-GO; historical failures unchanged |
 | Cross-source/MAT-AUTH integration | NO-GO; no composed tree or owner admission |
