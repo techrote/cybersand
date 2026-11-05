@@ -1,0 +1,1922 @@
+{
+  "schema_id": "cybersand.world-feature-pack.proposal",
+  "schema_version": 1,
+  "title": "CARVED ICE CHOIR — crystalline glacial cavern decorations",
+  "created_utc": "2026-11-05",
+  "status": "design-only; import not admitted",
+  "source": {
+    "main_commit": "ba9cbc89029be88b812af59b19e5c59829bbcd90",
+    "main_tree": "3af18f50e6094776263119623b64a1b2f4ca0ab2",
+    "native_material_enum": "native/include/cybersand/material.hpp",
+    "native_enum_blob_sha": "dcf05895da3015a2e999e3d1cbbae0fdc7fe32b3",
+    "shadow_catalogue": "materials/catalogue/catalogue.json",
+    "shadow_catalogue_blob_sha": "d7a47d60721598a16589daf177a6ff4401b84b43",
+    "interaction_rules": "native/include/cybersand/interaction_rules.hpp",
+    "interaction_rules_blob_sha": "b70fc9dc2599f648e5374f06e4cc0ae9cb868d79",
+    "rectangle_convention": "godot/scripts/demo_worlds.gd::_rect",
+    "prior_designs": [
+      "docs/world-design/lumen-fault (draft PR #408)",
+      "docs/world-design/chalkbone-coast (draft PR #410)"
+    ]
+  },
+  "coordinate_contract": {
+    "origin": "top-left",
+    "axes": "+x right, +y down",
+    "bounds": "half-open [x,y,width,height,native_material_id]",
+    "ordering": "terrain rectangles, then ordered features; last write wins",
+    "empty": "unwritten cells are not erase commands",
+    "orientation": "as authored only; no proven rotation/mirroring",
+    "anchor": "ground at local bottom y=height; ceiling at y=0; not proof of structural support"
+  },
+  "palette": [
+    {
+      "id": 0,
+      "name": "empty",
+      "rgba": [
+        8,
+        11,
+        18,
+        255
+      ],
+      "movable": false,
+      "kernel": 0,
+      "state": 0,
+      "lateral_flow": 0
+    },
+    {
+      "id": 2,
+      "name": "sand",
+      "rgba": [
+        222,
+        174,
+        76,
+        255
+      ],
+      "movable": true,
+      "kernel": 1,
+      "state": 2,
+      "lateral_flow": 0
+    },
+    {
+      "id": 3,
+      "name": "water",
+      "rgba": [
+        47,
+        127,
+        210,
+        255
+      ],
+      "movable": true,
+      "kernel": 2,
+      "state": 3,
+      "lateral_flow": 1
+    },
+    {
+      "id": 9,
+      "name": "ice",
+      "rgba": [
+        150,
+        218,
+        239,
+        255
+      ],
+      "movable": false,
+      "kernel": 8,
+      "state": 1,
+      "lateral_flow": 0
+    },
+    {
+      "id": 13,
+      "name": "stone",
+      "rgba": [
+        126,
+        126,
+        132,
+        255
+      ],
+      "movable": true,
+      "kernel": 11,
+      "state": 2,
+      "lateral_flow": 0
+    },
+    {
+      "id": 14,
+      "name": "dust",
+      "rgba": [
+        218,
+        198,
+        238,
+        255
+      ],
+      "movable": true,
+      "kernel": 12,
+      "state": 2,
+      "lateral_flow": 0
+    },
+    {
+      "id": 21,
+      "name": "slush",
+      "rgba": [
+        115,
+        186,
+        207,
+        255
+      ],
+      "movable": true,
+      "kernel": 18,
+      "state": 3,
+      "lateral_flow": 2
+    },
+    {
+      "id": 23,
+      "name": "salt",
+      "rgba": [
+        236,
+        232,
+        218,
+        255
+      ],
+      "movable": true,
+      "kernel": 1,
+      "state": 2,
+      "lateral_flow": 0
+    },
+    {
+      "id": 38,
+      "name": "limestone-block",
+      "rgba": [
+        197,
+        191,
+        175,
+        255
+      ],
+      "movable": false,
+      "kernel": 0,
+      "state": 1,
+      "lateral_flow": 0
+    },
+    {
+      "id": 40,
+      "name": "granite-block",
+      "rgba": [
+        119,
+        119,
+        130,
+        255
+      ],
+      "movable": false,
+      "kernel": 0,
+      "state": 1,
+      "lateral_flow": 0
+    },
+    {
+      "id": 49,
+      "name": "slate",
+      "rgba": [
+        70,
+        83,
+        99,
+        255
+      ],
+      "movable": false,
+      "kernel": 0,
+      "state": 1,
+      "lateral_flow": 0
+    },
+    {
+      "id": 55,
+      "name": "stained-glass",
+      "rgba": [
+        71,
+        127,
+        168,
+        216
+      ],
+      "movable": false,
+      "kernel": 0,
+      "state": 1,
+      "lateral_flow": 0
+    },
+    {
+      "id": 79,
+      "name": "neon-amber",
+      "rgba": [
+        255,
+        181,
+        46,
+        255
+      ],
+      "movable": false,
+      "kernel": 0,
+      "state": 1,
+      "lateral_flow": 0
+    },
+    {
+      "id": 98,
+      "name": "marble",
+      "rgba": [
+        226,
+        223,
+        216,
+        255
+      ],
+      "movable": false,
+      "kernel": 0,
+      "state": 1,
+      "lateral_flow": 0
+    },
+    {
+      "id": 99,
+      "name": "chalk-block",
+      "rgba": [
+        234,
+        231,
+        220,
+        255
+      ],
+      "movable": false,
+      "kernel": 0,
+      "state": 1,
+      "lateral_flow": 0
+    },
+    {
+      "id": 100,
+      "name": "basalt-columns",
+      "rgba": [
+        54,
+        56,
+        61,
+        255
+      ],
+      "movable": false,
+      "kernel": 0,
+      "state": 1,
+      "lateral_flow": 0
+    },
+    {
+      "id": 101,
+      "name": "obsidian",
+      "rgba": [
+        24,
+        19,
+        32,
+        255
+      ],
+      "movable": false,
+      "kernel": 0,
+      "state": 1,
+      "lateral_flow": 0
+    },
+    {
+      "id": 105,
+      "name": "packed-snow",
+      "rgba": [
+        232,
+        240,
+        248,
+        255
+      ],
+      "movable": false,
+      "kernel": 0,
+      "state": 1,
+      "lateral_flow": 0
+    },
+    {
+      "id": 120,
+      "name": "glass-block",
+      "rgba": [
+        156,
+        210,
+        220,
+        204
+      ],
+      "movable": false,
+      "kernel": 0,
+      "state": 1,
+      "lateral_flow": 0
+    },
+    {
+      "id": 121,
+      "name": "frosted-glass",
+      "rgba": [
+        206,
+        226,
+        232,
+        214
+      ],
+      "movable": false,
+      "kernel": 0,
+      "state": 1,
+      "lateral_flow": 0
+    },
+    {
+      "id": 122,
+      "name": "quartz-crystal",
+      "rgba": [
+        226,
+        236,
+        244,
+        224
+      ],
+      "movable": false,
+      "kernel": 0,
+      "state": 1,
+      "lateral_flow": 0
+    }
+  ],
+  "style_guide": {
+    "theme": "A blue-black naturally carved glacial cave shaped like an immense silent instrument",
+    "primary": "BasaltColumns 100 / Slate 49 frame FrostedGlass 121 and QuartzCrystal 122",
+    "secondary": "PackedSnow 105, thermally reactive Ice 9, GlassBlock 120",
+    "accent": "optional Water 3 / Slush 21 reservoir and Dust 14 / Stone 13 falling notes",
+    "rhythm": "one ceiling note for every two floor silhouettes, >=24 cells of negative space between long motifs",
+    "ratio": "visual target 55% open cave air, 25% dark stone, 15% crystalline ice, <=5% mobile fill",
+    "negative_space": "preserve empty cave void; never paint an Obsidian background behind playable space",
+    "orientation": "no flips without rewriting anchor/collision rules"
+  },
+  "features": [
+    {
+      "id": "ribbed-vault",
+      "title": "Ribbed choir vault",
+      "size": [
+        128,
+        100
+      ],
+      "status": "reactive-fixed",
+      "anchor": {
+        "type": "ceiling",
+        "point": [
+          64,
+          0
+        ]
+      },
+      "requires_clearance": false,
+      "rectangles": [
+        [
+          0,
+          0,
+          128,
+          12,
+          100
+        ],
+        [
+          6,
+          12,
+          116,
+          8,
+          49
+        ],
+        [
+          12,
+          20,
+          104,
+          5,
+          121
+        ],
+        [
+          20,
+          25,
+          88,
+          4,
+          122
+        ],
+        [
+          6,
+          20,
+          18,
+          18,
+          100
+        ],
+        [
+          104,
+          20,
+          18,
+          18,
+          100
+        ],
+        [
+          13,
+          24,
+          8,
+          48,
+          121
+        ],
+        [
+          15,
+          26,
+          4,
+          35,
+          122
+        ],
+        [
+          15,
+          72,
+          4,
+          6,
+          105
+        ],
+        [
+          36,
+          24,
+          8,
+          66,
+          121
+        ],
+        [
+          38,
+          26,
+          4,
+          53,
+          122
+        ],
+        [
+          38,
+          90,
+          4,
+          6,
+          105
+        ],
+        [
+          60,
+          24,
+          8,
+          43,
+          121
+        ],
+        [
+          62,
+          26,
+          4,
+          30,
+          122
+        ],
+        [
+          62,
+          67,
+          4,
+          6,
+          105
+        ],
+        [
+          84,
+          24,
+          8,
+          70,
+          121
+        ],
+        [
+          86,
+          26,
+          4,
+          57,
+          122
+        ],
+        [
+          86,
+          94,
+          4,
+          6,
+          105
+        ],
+        [
+          107,
+          24,
+          8,
+          42,
+          121
+        ],
+        [
+          109,
+          26,
+          4,
+          29,
+          122
+        ],
+        [
+          109,
+          66,
+          4,
+          6,
+          105
+        ],
+        [
+          27,
+          42,
+          8,
+          4,
+          121
+        ],
+        [
+          48,
+          64,
+          8,
+          4,
+          121
+        ],
+        [
+          73,
+          45,
+          8,
+          4,
+          121
+        ],
+        [
+          96,
+          68,
+          8,
+          4,
+          121
+        ]
+      ],
+      "variants": [
+        {
+          "id": "wind-polished",
+          "swap": {
+            "105": 121
+          },
+          "note": "Replace snow teeth with stable glass"
+        },
+        {
+          "id": "dark-veins",
+          "swap": {
+            "100": 49,
+            "121": 120
+          },
+          "note": "Slate caps and translucent veining"
+        }
+      ],
+      "visual_effect": "Five uneven hanging quartz notes framing a cavity",
+      "placement_rules": [
+        "Anchor cap against a continuous real ceiling",
+        "Keep >=24 empty cells below longest rib",
+        "No hot fluid or salt contact without tests"
+      ],
+      "simulation_notes": "PackedSnow 105 is fixed but reacts to Fire, Lava and Salt."
+    },
+    {
+      "id": "pendant-organ",
+      "title": "Seven-note ice organ",
+      "size": [
+        88,
+        112
+      ],
+      "status": "reactive-fixed",
+      "anchor": {
+        "type": "ceiling",
+        "point": [
+          44,
+          0
+        ]
+      },
+      "requires_clearance": false,
+      "rectangles": [
+        [
+          0,
+          0,
+          88,
+          12,
+          49
+        ],
+        [
+          3,
+          12,
+          82,
+          7,
+          100
+        ],
+        [
+          6,
+          19,
+          76,
+          4,
+          121
+        ],
+        [
+          10,
+          16,
+          68,
+          3,
+          122
+        ],
+        [
+          7,
+          23,
+          6,
+          35,
+          9
+        ],
+        [
+          8,
+          23,
+          2,
+          28,
+          121
+        ],
+        [
+          9,
+          58,
+          2,
+          4,
+          122
+        ],
+        [
+          18,
+          23,
+          6,
+          57,
+          9
+        ],
+        [
+          19,
+          23,
+          2,
+          50,
+          121
+        ],
+        [
+          20,
+          80,
+          2,
+          4,
+          122
+        ],
+        [
+          29,
+          23,
+          6,
+          75,
+          9
+        ],
+        [
+          30,
+          23,
+          2,
+          68,
+          121
+        ],
+        [
+          31,
+          98,
+          2,
+          4,
+          122
+        ],
+        [
+          40,
+          23,
+          6,
+          51,
+          9
+        ],
+        [
+          41,
+          23,
+          2,
+          44,
+          121
+        ],
+        [
+          42,
+          74,
+          2,
+          4,
+          122
+        ],
+        [
+          51,
+          23,
+          6,
+          80,
+          9
+        ],
+        [
+          52,
+          23,
+          2,
+          73,
+          121
+        ],
+        [
+          53,
+          103,
+          2,
+          4,
+          122
+        ],
+        [
+          62,
+          23,
+          6,
+          61,
+          9
+        ],
+        [
+          63,
+          23,
+          2,
+          54,
+          121
+        ],
+        [
+          64,
+          84,
+          2,
+          4,
+          122
+        ],
+        [
+          73,
+          23,
+          6,
+          39,
+          9
+        ],
+        [
+          74,
+          23,
+          2,
+          32,
+          121
+        ],
+        [
+          75,
+          62,
+          2,
+          4,
+          122
+        ]
+      ],
+      "variants": [
+        {
+          "id": "inert-glass",
+          "swap": {
+            "9": 121
+          },
+          "note": "Replace active Ice with fixed frosted glass"
+        },
+        {
+          "id": "thicker-rime",
+          "swap": {
+            "121": 105
+          },
+          "note": "PackedSnow fins; remain reactive"
+        }
+      ],
+      "visual_effect": "Seven alternating ice columns in a descending rhythmic cascade",
+      "placement_rules": [
+        "Grounded overhead cap required; leave 18-cell clearance below tips",
+        "Groups spaced >=130 cells; no hot neighbours"
+      ],
+      "simulation_notes": "Ice 9 has an active thermal kernel and may melt or freeze adjacent sampled Water."
+    },
+    {
+      "id": "bellstone-triad",
+      "title": "Bellstone triad",
+      "size": [
+        100,
+        84
+      ],
+      "status": "inert-static",
+      "anchor": {
+        "type": "ground",
+        "point": [
+          50,
+          84
+        ]
+      },
+      "requires_clearance": false,
+      "rectangles": [
+        [
+          0,
+          76,
+          100,
+          8,
+          100
+        ],
+        [
+          5,
+          72,
+          90,
+          4,
+          49
+        ],
+        [
+          14,
+          37,
+          17,
+          39,
+          121
+        ],
+        [
+          17,
+          28,
+          11,
+          9,
+          122
+        ],
+        [
+          19,
+          46,
+          7,
+          16,
+          120
+        ],
+        [
+          20,
+          64,
+          5,
+          4,
+          49
+        ],
+        [
+          41,
+          21,
+          17,
+          55,
+          121
+        ],
+        [
+          44,
+          12,
+          11,
+          9,
+          122
+        ],
+        [
+          46,
+          30,
+          7,
+          16,
+          120
+        ],
+        [
+          47,
+          48,
+          5,
+          4,
+          49
+        ],
+        [
+          70,
+          33,
+          17,
+          43,
+          121
+        ],
+        [
+          73,
+          24,
+          11,
+          9,
+          122
+        ],
+        [
+          75,
+          42,
+          7,
+          16,
+          120
+        ],
+        [
+          76,
+          60,
+          5,
+          4,
+          49
+        ],
+        [
+          36,
+          72,
+          29,
+          4,
+          122
+        ],
+        [
+          0,
+          76,
+          8,
+          8,
+          49
+        ],
+        [
+          92,
+          76,
+          8,
+          8,
+          49
+        ]
+      ],
+      "variants": [
+        {
+          "id": "night-blue",
+          "swap": {
+            "120": 55,
+            "121": 120
+          },
+          "note": "Deep-blue coloured panes"
+        },
+        {
+          "id": "clear-chimes",
+          "swap": {
+            "49": 100,
+            "121": 122
+          },
+          "note": "Bright quartz profile"
+        }
+      ],
+      "visual_effect": "Central glass bell flanked by two unequal harmonic sentinels",
+      "placement_rules": [
+        "Leave >=12 cell lateral air margin",
+        "No sound or collision trigger implied"
+      ],
+      "simulation_notes": "Fixed kernel-none material cells only."
+    },
+    {
+      "id": "fan-of-rime",
+      "title": "Rime fan moraine",
+      "size": [
+        80,
+        84
+      ],
+      "status": "reactive-fixed",
+      "anchor": {
+        "type": "ground",
+        "point": [
+          40,
+          84
+        ]
+      },
+      "requires_clearance": false,
+      "rectangles": [
+        [
+          0,
+          76,
+          80,
+          8,
+          100
+        ],
+        [
+          7,
+          70,
+          66,
+          6,
+          49
+        ],
+        [
+          11,
+          63,
+          58,
+          7,
+          105
+        ],
+        [
+          17,
+          55,
+          46,
+          8,
+          105
+        ],
+        [
+          24,
+          48,
+          32,
+          7,
+          105
+        ],
+        [
+          31,
+          39,
+          18,
+          9,
+          105
+        ],
+        [
+          11,
+          49,
+          5,
+          21,
+          121
+        ],
+        [
+          12,
+          45,
+          3,
+          6,
+          122
+        ],
+        [
+          24,
+          39,
+          5,
+          31,
+          121
+        ],
+        [
+          25,
+          35,
+          3,
+          6,
+          122
+        ],
+        [
+          40,
+          22,
+          5,
+          48,
+          121
+        ],
+        [
+          41,
+          18,
+          3,
+          6,
+          122
+        ],
+        [
+          55,
+          42,
+          5,
+          28,
+          121
+        ],
+        [
+          56,
+          38,
+          3,
+          6,
+          122
+        ],
+        [
+          65,
+          55,
+          5,
+          15,
+          121
+        ],
+        [
+          66,
+          51,
+          3,
+          6,
+          122
+        ],
+        [
+          17,
+          68,
+          48,
+          2,
+          122
+        ],
+        [
+          37,
+          30,
+          6,
+          8,
+          121
+        ]
+      ],
+      "variants": [
+        {
+          "id": "glacial-marble",
+          "swap": {
+            "105": 98
+          },
+          "note": "Marble frozen fans"
+        },
+        {
+          "id": "blue-feathers",
+          "swap": {
+            "105": 121
+          },
+          "note": "Frosted glass fan"
+        }
+      ],
+      "visual_effect": "Five light feathers fan outward from a stepped snowbank",
+      "placement_rules": [
+        "Floor anchor uninterrupted",
+        "No active Salt on PackedSnow without reaction trial"
+      ],
+      "simulation_notes": "PackedSnow 105 immobile but converts on Fire/Lava or Salt pair contacts."
+    },
+    {
+      "id": "counterpoint-span",
+      "title": "Counterpoint crystal span",
+      "size": [
+        128,
+        84
+      ],
+      "status": "inert-static",
+      "anchor": {
+        "type": "dual-ground",
+        "point": [
+          64,
+          84
+        ]
+      },
+      "requires_clearance": true,
+      "rectangles": [
+        [
+          0,
+          72,
+          25,
+          12,
+          100
+        ],
+        [
+          103,
+          72,
+          25,
+          12,
+          100
+        ],
+        [
+          8,
+          40,
+          12,
+          33,
+          121
+        ],
+        [
+          108,
+          40,
+          12,
+          33,
+          121
+        ],
+        [
+          16,
+          28,
+          96,
+          13,
+          121
+        ],
+        [
+          22,
+          22,
+          84,
+          7,
+          122
+        ],
+        [
+          28,
+          16,
+          72,
+          6,
+          120
+        ],
+        [
+          36,
+          10,
+          56,
+          6,
+          121
+        ],
+        [
+          42,
+          6,
+          44,
+          4,
+          122
+        ],
+        [
+          0,
+          67,
+          18,
+          5,
+          49
+        ],
+        [
+          110,
+          67,
+          18,
+          5,
+          49
+        ],
+        [
+          18,
+          40,
+          11,
+          5,
+          122
+        ],
+        [
+          99,
+          40,
+          11,
+          5,
+          122
+        ],
+        [
+          31,
+          29,
+          6,
+          7,
+          122
+        ],
+        [
+          45,
+          29,
+          6,
+          7,
+          122
+        ],
+        [
+          59,
+          29,
+          6,
+          7,
+          122
+        ],
+        [
+          73,
+          29,
+          6,
+          7,
+          122
+        ],
+        [
+          87,
+          29,
+          6,
+          7,
+          122
+        ]
+      ],
+      "variants": [
+        {
+          "id": "basalt-trim",
+          "swap": {
+            "120": 49,
+            "121": 100
+          },
+          "note": "Dark upper courses"
+        },
+        {
+          "id": "chalk-light",
+          "swap": {
+            "49": 38,
+            "100": 99
+          },
+          "note": "Pale surrounding banks"
+        }
+      ],
+      "visual_effect": "Tall mineral bridge creates a true empty arch",
+      "placement_rules": [
+        "Anchor both separated feet to proper floor",
+        "Clear host before painting; centre void is not an erase",
+        "Actor and Rapier clearance unproven"
+      ],
+      "simulation_notes": "Inert cells are not automatically a structurally load-bearing physical bridge."
+    },
+    {
+      "id": "sleet-reservoir",
+      "title": "Sleet reservoir",
+      "size": [
+        112,
+        84
+      ],
+      "status": "active-dynamic",
+      "anchor": {
+        "type": "ground",
+        "point": [
+          56,
+          84
+        ]
+      },
+      "requires_clearance": false,
+      "rectangles": [
+        [
+          0,
+          76,
+          112,
+          8,
+          100
+        ],
+        [
+          0,
+          37,
+          10,
+          39,
+          49
+        ],
+        [
+          102,
+          37,
+          10,
+          39,
+          49
+        ],
+        [
+          10,
+          73,
+          92,
+          3,
+          121
+        ],
+        [
+          10,
+          60,
+          92,
+          13,
+          3
+        ],
+        [
+          16,
+          53,
+          80,
+          7,
+          21
+        ],
+        [
+          10,
+          48,
+          12,
+          5,
+          9
+        ],
+        [
+          90,
+          48,
+          12,
+          5,
+          9
+        ],
+        [
+          2,
+          35,
+          14,
+          4,
+          122
+        ],
+        [
+          96,
+          35,
+          14,
+          4,
+          122
+        ],
+        [
+          30,
+          44,
+          12,
+          3,
+          121
+        ],
+        [
+          54,
+          41,
+          8,
+          3,
+          122
+        ],
+        [
+          73,
+          46,
+          15,
+          3,
+          121
+        ],
+        [
+          0,
+          76,
+          112,
+          3,
+          49
+        ]
+      ],
+      "variants": [
+        {
+          "id": "mineral-dry",
+          "swap": {
+            "3": 121,
+            "9": 121,
+            "21": 105
+          },
+          "note": "Dry showpiece; PackedSnow still reactive"
+        },
+        {
+          "id": "slush-dominant",
+          "swap": {
+            "3": 21
+          },
+          "note": "All liquid CellularYield slush"
+        }
+      ],
+      "visual_effect": "A turquoise liquid plane bracketed by black stone and a fractured ice lip",
+      "placement_rules": [
+        "Only in explicitly cleared host space",
+        "Dry variant for gallery contexts",
+        "Measure Water mass, Slush movement, leakage and phase conversion"
+      ],
+      "simulation_notes": "Water 3 is FreeMass; Slush 21 is CellularYield; Ice 9 phase changes. Native containment untested."
+    },
+    {
+      "id": "falling-notes",
+      "title": "Falling dust notes",
+      "size": [
+        80,
+        68
+      ],
+      "status": "active-dynamic",
+      "anchor": {
+        "type": "ground",
+        "point": [
+          40,
+          68
+        ]
+      },
+      "requires_clearance": false,
+      "rectangles": [
+        [
+          0,
+          60,
+          80,
+          8,
+          100
+        ],
+        [
+          0,
+          34,
+          8,
+          26,
+          49
+        ],
+        [
+          72,
+          34,
+          8,
+          26,
+          49
+        ],
+        [
+          8,
+          57,
+          64,
+          3,
+          121
+        ],
+        [
+          9,
+          29,
+          18,
+          5,
+          121
+        ],
+        [
+          53,
+          29,
+          18,
+          5,
+          121
+        ],
+        [
+          12,
+          26,
+          10,
+          3,
+          122
+        ],
+        [
+          58,
+          26,
+          10,
+          3,
+          122
+        ],
+        [
+          24,
+          10,
+          15,
+          9,
+          14
+        ],
+        [
+          43,
+          8,
+          14,
+          10,
+          13
+        ],
+        [
+          33,
+          20,
+          10,
+          9,
+          14
+        ],
+        [
+          45,
+          24,
+          7,
+          9,
+          13
+        ],
+        [
+          32,
+          38,
+          10,
+          6,
+          14
+        ],
+        [
+          46,
+          41,
+          7,
+          5,
+          13
+        ],
+        [
+          22,
+          53,
+          36,
+          4,
+          121
+        ]
+      ],
+      "variants": [
+        {
+          "id": "fossilized-notes",
+          "swap": {
+            "13": 122,
+            "14": 121
+          },
+          "note": "Powders become inert mineral symbols"
+        },
+        {
+          "id": "ochre-chords",
+          "swap": {
+            "13": 23,
+            "14": 2
+          },
+          "note": "Sand/Salt dynamic alternative; thermal tests needed"
+        }
+      ],
+      "visual_effect": "Two vertical strokes of falling coarse and fine material hitting a resonator dish",
+      "placement_rules": [
+        "Initial powder locations do not survive active ticks",
+        "Test settled geometry and revalidation",
+        "No Salt next to PackedSnow without paired-interaction checks"
+      ],
+      "simulation_notes": "Dust 14 and Stone 13 are moving powders and will resettle."
+    },
+    {
+      "id": "echo-stelae",
+      "title": "Echo stelae",
+      "size": [
+        96,
+        84
+      ],
+      "status": "inert-static",
+      "anchor": {
+        "type": "ground",
+        "point": [
+          48,
+          84
+        ]
+      },
+      "requires_clearance": false,
+      "rectangles": [
+        [
+          0,
+          76,
+          96,
+          8,
+          100
+        ],
+        [
+          5,
+          72,
+          86,
+          4,
+          49
+        ],
+        [
+          9,
+          33,
+          12,
+          43,
+          121
+        ],
+        [
+          11,
+          26,
+          8,
+          7,
+          122
+        ],
+        [
+          12,
+          43,
+          6,
+          3,
+          120
+        ],
+        [
+          33,
+          12,
+          15,
+          64,
+          121
+        ],
+        [
+          35,
+          5,
+          11,
+          7,
+          122
+        ],
+        [
+          36,
+          22,
+          9,
+          3,
+          120
+        ],
+        [
+          62,
+          23,
+          14,
+          53,
+          121
+        ],
+        [
+          64,
+          16,
+          10,
+          7,
+          122
+        ],
+        [
+          65,
+          33,
+          8,
+          3,
+          120
+        ],
+        [
+          82,
+          41,
+          8,
+          35,
+          121
+        ],
+        [
+          84,
+          34,
+          4,
+          7,
+          122
+        ],
+        [
+          85,
+          51,
+          2,
+          3,
+          120
+        ],
+        [
+          12,
+          62,
+          72,
+          3,
+          49
+        ],
+        [
+          20,
+          58,
+          16,
+          4,
+          122
+        ],
+        [
+          56,
+          57,
+          16,
+          4,
+          122
+        ],
+        [
+          40,
+          9,
+          4,
+          6,
+          120
+        ],
+        [
+          2,
+          71,
+          92,
+          2,
+          122
+        ]
+      ],
+      "variants": [
+        {
+          "id": "amber-remnant",
+          "swap": {
+            "120": 79
+          },
+          "note": "Amber coloured solid, not a real light"
+        },
+        {
+          "id": "fossil-white",
+          "swap": {
+            "121": 98,
+            "122": 99
+          },
+          "note": "Opaque pale monument"
+        }
+      ],
+      "visual_effect": "Four uneven columns, repeating the roof organ at ground level",
+      "placement_rules": [
+        "Space after large empty interval",
+        "No acoustic behaviour or authored emissions"
+      ],
+      "simulation_notes": "Default fixed kernel-none cells; no fluid or smoke."
+    }
+  ],
+  "scene": {
+    "id": "ice-choir-cavern-01",
+    "title": "Eight-part cold cavern procession",
+    "size": [
+      800,
+      320
+    ],
+    "terrain_rectangles": [
+      [
+        0,
+        0,
+        800,
+        12,
+        101
+      ],
+      [
+        12,
+        12,
+        776,
+        16,
+        100
+      ],
+      [
+        12,
+        28,
+        776,
+        8,
+        49
+      ],
+      [
+        0,
+        0,
+        12,
+        320,
+        49
+      ],
+      [
+        788,
+        0,
+        12,
+        320,
+        49
+      ],
+      [
+        0,
+        260,
+        800,
+        60,
+        100
+      ],
+      [
+        12,
+        260,
+        776,
+        8,
+        49
+      ],
+      [
+        12,
+        268,
+        776,
+        7,
+        40
+      ],
+      [
+        32,
+        36,
+        56,
+        4,
+        121
+      ],
+      [
+        252,
+        36,
+        80,
+        3,
+        121
+      ],
+      [
+        520,
+        36,
+        60,
+        4,
+        121
+      ],
+      [
+        644,
+        36,
+        96,
+        3,
+        121
+      ],
+      [
+        46,
+        252,
+        72,
+        8,
+        105
+      ],
+      [
+        292,
+        252,
+        61,
+        8,
+        49
+      ],
+      [
+        595,
+        255,
+        45,
+        5,
+        49
+      ]
+    ],
+    "placements": [
+      {
+        "feature": "ribbed-vault",
+        "x": 92,
+        "y": 36,
+        "variant": null
+      },
+      {
+        "feature": "pendant-organ",
+        "x": 430,
+        "y": 36,
+        "variant": null
+      },
+      {
+        "feature": "bellstone-triad",
+        "x": 14,
+        "y": 176,
+        "variant": null
+      },
+      {
+        "feature": "fan-of-rime",
+        "x": 131,
+        "y": 176,
+        "variant": null
+      },
+      {
+        "feature": "counterpoint-span",
+        "x": 235,
+        "y": 176,
+        "variant": null
+      },
+      {
+        "feature": "sleet-reservoir",
+        "x": 389,
+        "y": 176,
+        "variant": "mineral-dry"
+      },
+      {
+        "feature": "falling-notes",
+        "x": 535,
+        "y": 192,
+        "variant": "fossilized-notes"
+      },
+      {
+        "feature": "echo-stelae",
+        "x": 674,
+        "y": 176,
+        "variant": null
+      }
+    ],
+    "assembly_notes": [
+      "Continuous ceiling / floor anchors at y=36 and y=260",
+      "Dry reservoir and fossilized fall shown in combined preview",
+      "Preview sky is unwritten EMPTY; no automatic host clearing",
+      "No tested player or Rapier passages"
+    ]
+  },
+  "limits": {
+    "proposal_schema": "not an importer, GEN resource, CYSD1 save or production demo",
+    "simulation": "no native ticks, Godot or Rapier executed",
+    "stability": "inert-static = immovable kernel-none cells only; no support or actor clearance guarantee",
+    "source": "current native material.hpp authoritative; shadow catalogue source-derived",
+    "interactions": [
+      "Ice 9 thermal hot-neighbour melt / sampled Water freezing",
+      "PackedSnow 105 reacts to Fire, Lava, Salt; Steam contact may condense",
+      "Water 3 FreeMass vs Slush 21 CellularYield are distinct",
+      "Dust 14 and Stone 13 are moving powders",
+      "A real host must implement bounded clear + apply and source checks"
+    ]
+  }
+}
