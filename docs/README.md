@@ -10,6 +10,11 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+The [active-normal copied-value candidate](audits/2026-11-05-sol-active-normal.md)
+tests bounded normal relaxation with unchanged capacity/friction controls.
+[Its canonical boundary](architecture/rigid-body-and-cellular-coupling.md#active-normal-copied-value-candidate)
+keeps value-level improvement separate from live World/Rapier or SOL admission.
+
 [Granular response cost and observation](architecture/rigid-body-and-cellular-coupling.md#granular-response-cost-and-observation)
 separates native response generation from test census/export overhead. The
 [dated48session comparison](audits/2026-11-05-sol-response-cost.md) preserves

@@ -12,6 +12,16 @@ related-documents: [source-checkpoint-and-recovery.md, testing-validation-and-re
 
 ## Exact compound chamber experiment — 2026-11-05
 
+For the [copied-value active-normal candidate](../audits/2026-11-05-sol-active-normal.md),
+use `python tools/experiments/sol_active_normal.py build/<fresh-name>` then
+`python tools/experiments/sol_active_normal_compare.py build/<fresh-name>` from
+its exact execution source. It builds original/traced/candidate arms on GCC
+optimized/strict ASan+UBSan and actual Windows MSVC. The original header and
+prospective inputs are authenticated; source drift/output reuse are refused.
+`python tools/experiments/test_sol_active_normal.py` performs the portable
+committed-value/merit audit without native or Godot execution. This does not
+qualify a live response or a CPU gate.
+
 The separate [response-cost registration and evidence](../audits/2026-11-05-sol-response-cost.md)
 on `codex/sol-response-cost-20261105` uses
 `python tools/experiments/sol_chamber_cost.py --run <fresh-name>`, followed by

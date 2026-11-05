@@ -1,0 +1,27 @@
+{
+  "header_sha256": "32877bbd6fc7eb85feabab5452250f4a318388cd7b5e7a64b93576123c7caedb",
+  "generated": {
+    "gcr_trace.hpp": "b1646fd4eb1d4d474852f3bc138bc774b18c20f42c7bfe330e02ce41079ee3b3",
+    "gcr_active_normal.hpp": "cbdbe887fef87e77b95761884644b4d2f0aad851f1a12b7be3e6069a5ff6b194",
+    "driver.cpp": "2cb44f344b3ce6dd49de2b14dd52545d5ad254c0b1da55b7e70d8b91f5b0e895",
+    "inputs.txt": "635e3decf291bdd664c599ae24fcf64bb79e89ad59148a521beb379412e4a7c1"
+  },
+  "input_sha256": {
+    "native/tests/fixtures/sol_active_normal_001.json": "5acbb86fc100b20c64b80182b7654f6eaf4cee0f71bda9bceca92f52d5a3104e",
+    "native/tests/fixtures/sol_passive_values_001.json": "4724cf54fb0793e9868816b0521f7f405ed6c1755a0eb7b4c8733bd96455ae43",
+    "native/tests/fixtures/sol_active_normal_cases_001.json": "77e581540af75128eeebb63b1954ce0794647eb7153eeef27cf7e45fd2627f1b",
+    "native/include/cybersand/granular_contact_response.hpp": "32877bbd6fc7eb85feabab5452250f4a318388cd7b5e7a64b93576123c7caedb",
+    "native/tests/sol_active_normal_driver.inc": "f0f0f069c3883e4c10a0af3697a126a30623f0a130c4d5a0a3456d45bae2fc9e",
+    "tools/experiments/sol_active_normal_source.py": "2fc62e6b1a78cc9a34d44f8ba727bce35a41d90d77f01fbda3209228e6ad55b8",
+    "tools/experiments/sol_active_normal_inputs.py": "5697e05d799ad2c612813260c747bf48408d8ad075881a3d8387c3121c0962a8",
+    "tools/experiments/sol_active_normal_audit.py": "5e297417309e45c570e8297aede01e264a0d058b742fd9bc2f394462c95c5195",
+    "tools/experiments/sol_active_normal.py": "90efdd186fff13019cda0139caf12c976d8a78f38ce913c9261a5d6d7c927f92",
+    "tools/experiments/sol_active_normal_compare.py": "b66236bbfa07630361220211dfc54a5e7bb8be501070ba693c314e520226d345",
+    "tools/experiments/sol_passive_values.py": "9a302421b297ebe4f6a856b65c04e28faa8b042ba779c8641dd06f5af53bdb89",
+    "tools/experiments/la_selective_experiment.py": "4e67f5d6c3e527d3bbd535308247999dd5d9a029e425ffbe75a2a2a6eb377b43",
+    "native/tests/sol_passive_values.cpp": "8b42243b688c41e7ec428a948e356d019dc6a91da545126102c69b623d907537",
+    "docs/audits/sol-chamber-20261105/passive-values.json": "d15e83e230300f0e1f60dafbbd779e01d789ceba1fbf2666635d534e74e9aba6",
+    "docs/audits/sol-chamber-20261105/passive-observations.json": "16e8c4c40fe6de5aeead27666221196e0156e1ff7873de998b90b6e90ddfa242"
+  },
+  "scope": "Ignored generated headers/binaries are not committed; generator is source-pinned"
+}

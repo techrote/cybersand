@@ -1,0 +1,5228 @@
+{
+  "execution_source": "5bca61599758be25eb847bce092a36bd72ef9b14",
+  "complete_execution_matrix": true,
+  "platforms": [
+    {
+      "platform": "linux-opt",
+      "decision": "PASS",
+      "failures": [],
+      "benefits": [
+        {
+          "case": "support-64",
+          "pass_": true,
+          "baseline_velocity": [
+            0.0625,
+            0.0
+          ],
+          "candidate_velocity": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "case": "support-192",
+          "pass_": true,
+          "baseline_velocity": [
+            0.31640625,
+            0.0
+          ],
+          "candidate_velocity": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "case": "support-448",
+          "pass_": true,
+          "baseline_velocity": [
+            0.586181640625,
+            0.0
+          ],
+          "candidate_velocity": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "case": "separating-64",
+          "pass_": true,
+          "baseline_velocity": [
+            0.0625,
+            0.0
+          ],
+          "candidate_velocity": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "case": "separating-192",
+          "pass_": true,
+          "baseline_velocity": [
+            0.31640625,
+            0.0
+          ],
+          "candidate_velocity": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "case": "separating-448",
+          "pass_": true,
+          "baseline_velocity": [
+            0.586181640625,
+            0.0
+          ],
+          "candidate_velocity": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "case": "mass-520",
+          "pass_": true,
+          "baseline_velocity": [
+            0.31640625,
+            0.0
+          ],
+          "candidate_velocity": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "case": "unequal-counts",
+          "pass_": true,
+          "baseline_velocity": [
+            0.5397750937109538,
+            0.0
+          ],
+          "candidate_velocity": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "case": "rotated-normal",
+          "pass_": true,
+          "baseline_velocity": [
+            0.18984375000000003,
+            0.25312500000000004
+          ],
+          "candidate_velocity": [
+            0.0,
+            0.0
+          ]
+        }
+      ],
+      "worse_residual_cases": [],
+      "new_rejections": [],
+      "strict_energy_increases": [],
+      "cases": [
+        {
+          "case": "front",
+          "baseline": {
+            "id": "front",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.0,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 0.5,
+            "energy_after": 0.0,
+            "energy_delta": -0.5,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 1,
+            "capacity": 20
+          },
+          "candidate": {
+            "id": "front",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.0,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 0.5,
+            "energy_after": 0.0,
+            "energy_delta": -0.5,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 1,
+            "capacity": 20
+          }
+        },
+        {
+          "case": "support-64",
+          "baseline": {
+            "id": "support-64",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.0625,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 0.5,
+            "energy_after": 0.001953125,
+            "energy_delta": -0.498046875,
+            "maximum_approach_speed": 0.0625,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 20
+          },
+          "candidate": {
+            "id": "support-64",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.0,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 0.5,
+            "energy_after": 0.0,
+            "energy_delta": -0.5,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 20
+          }
+        },
+        {
+          "case": "support-192",
+          "baseline": {
+            "id": "support-192",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.31640625,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 0.5,
+            "energy_after": 0.05005645751953125,
+            "energy_delta": -0.44994354248046875,
+            "maximum_approach_speed": 0.31640625,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 20
+          },
+          "candidate": {
+            "id": "support-192",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.0,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 0.5,
+            "energy_after": 0.0,
+            "energy_delta": -0.5,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 20
+          }
+        },
+        {
+          "case": "support-448",
+          "baseline": {
+            "id": "support-448",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.586181640625,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 0.5,
+            "energy_after": 0.17180445790290833,
+            "energy_delta": -0.3281955420970917,
+            "maximum_approach_speed": 0.586181640625,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 20
+          },
+          "candidate": {
+            "id": "support-448",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.0,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 0.5,
+            "energy_after": 0.0,
+            "energy_delta": -0.5,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 20
+          }
+        },
+        {
+          "case": "separating-64",
+          "baseline": {
+            "id": "separating-64",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.0625,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 0.5,
+            "energy_after": 0.001953125,
+            "energy_delta": -0.498046875,
+            "maximum_approach_speed": 0.0625,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 20
+          },
+          "candidate": {
+            "id": "separating-64",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.0,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 0.5,
+            "energy_after": 0.0,
+            "energy_delta": -0.5,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 20
+          }
+        },
+        {
+          "case": "separating-192",
+          "baseline": {
+            "id": "separating-192",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.31640625,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 0.5,
+            "energy_after": 0.05005645751953125,
+            "energy_delta": -0.44994354248046875,
+            "maximum_approach_speed": 0.31640625,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 20
+          },
+          "candidate": {
+            "id": "separating-192",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.0,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 0.5,
+            "energy_after": 0.0,
+            "energy_delta": -0.5,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 20
+          }
+        },
+        {
+          "case": "separating-448",
+          "baseline": {
+            "id": "separating-448",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.586181640625,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 0.5,
+            "energy_after": 0.17180445790290833,
+            "energy_delta": -0.3281955420970917,
+            "maximum_approach_speed": 0.586181640625,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 20
+          },
+          "candidate": {
+            "id": "separating-448",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.0,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 0.5,
+            "energy_after": 0.0,
+            "energy_delta": -0.5,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 20
+          }
+        },
+        {
+          "case": "rest",
+          "baseline": {
+            "id": "rest",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.0,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 0.0,
+            "energy_after": 0.0,
+            "energy_delta": 0.0,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 20
+          },
+          "candidate": {
+            "id": "rest",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.0,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 0.0,
+            "energy_after": 0.0,
+            "energy_delta": 0.0,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 20
+          }
+        },
+        {
+          "case": "separating-only",
+          "baseline": {
+            "id": "separating-only",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              1.0,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 0.5,
+            "energy_after": 0.5,
+            "energy_delta": 0.0,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 1,
+            "capacity": 20
+          },
+          "candidate": {
+            "id": "separating-only",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              1.0,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 0.5,
+            "energy_after": 0.5,
+            "energy_delta": 0.0,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0.0,
+            "tangent_energy_increase_max": 0.0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 1,
+            "capacity": 20
+          }
+        },
+        {
+          "case": "tangent-only",
+          "baseline": {
+            "id": "tangent-only",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.0,
+              1.0
+            ],
+            "omega": 0.0,
+            "energy_before": 0.5,
+            "energy_after": 0.5,
+            "energy_delta": 0.0,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 1,
+            "capacity": 20
+          },
+          "candidate": {
+            "id": "tangent-only",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.0,
+              1.0
+            ],
+            "omega": 0.0,
+            "energy_before": 0.5,
+            "energy_after": 0.5,
+            "energy_delta": 0.0,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0.0,
+            "tangent_energy_increase_max": 0.0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 1,
+            "capacity": 20
+          }
+        },
+        {
+          "case": "rotation-low",
+          "baseline": {
+            "id": "rotation-low",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              -0.5,
+              0.0
+            ],
+            "omega": 0.5,
+            "energy_before": 0.5,
+            "energy_after": 0.25,
+            "energy_delta": -0.25,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 1,
+            "capacity": 20
+          },
+          "candidate": {
+            "id": "rotation-low",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              -0.5,
+              0.0
+            ],
+            "omega": 0.5,
+            "energy_before": 0.5,
+            "energy_after": 0.25,
+            "energy_delta": -0.25,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0.0,
+            "tangent_energy_increase_max": 0.0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 1,
+            "capacity": 20
+          }
+        },
+        {
+          "case": "rotation-high",
+          "baseline": {
+            "id": "rotation-high",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              -0.5,
+              0.0
+            ],
+            "omega": -0.5,
+            "energy_before": 0.5,
+            "energy_after": 0.25,
+            "energy_delta": -0.25,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 1,
+            "capacity": 20
+          },
+          "candidate": {
+            "id": "rotation-high",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              -0.5,
+              0.0
+            ],
+            "omega": -0.5,
+            "energy_before": 0.5,
+            "energy_after": 0.25,
+            "energy_delta": -0.25,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0.0,
+            "tangent_energy_increase_max": 0.0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 1,
+            "capacity": 20
+          }
+        },
+        {
+          "case": "rotation-separating",
+          "baseline": {
+            "id": "rotation-separating",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.0,
+              0.0
+            ],
+            "omega": 1.0,
+            "energy_before": 0.5,
+            "energy_after": 0.5,
+            "energy_delta": 0.0,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 1,
+            "capacity": 20
+          },
+          "candidate": {
+            "id": "rotation-separating",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.0,
+              0.0
+            ],
+            "omega": 1.0,
+            "energy_before": 0.5,
+            "energy_after": 0.5,
+            "energy_delta": 0.0,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0.0,
+            "tangent_energy_increase_max": 0.0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 1,
+            "capacity": 20
+          }
+        },
+        {
+          "case": "low-cap",
+          "baseline": {
+            "id": "low-cap",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.75,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 0.5,
+            "energy_after": 0.28125,
+            "energy_delta": -0.21875,
+            "maximum_approach_speed": 0.75,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 4,
+            "nodes": 1,
+            "capacity": 0.25
+          },
+          "candidate": {
+            "id": "low-cap",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.75,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 0.5,
+            "energy_after": 0.28125,
+            "energy_delta": -0.21875,
+            "maximum_approach_speed": 0.75,
+            "normal_energy_increase_max": 0.0,
+            "tangent_energy_increase_max": 0.0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 4,
+            "nodes": 1,
+            "capacity": 0.25
+          }
+        },
+        {
+          "case": "zero-cap",
+          "baseline": {
+            "id": "zero-cap",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              1.0,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 0.5,
+            "energy_after": 0.5,
+            "energy_delta": 0.0,
+            "maximum_approach_speed": 1.0,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 4,
+            "nodes": 1,
+            "capacity": 0
+          },
+          "candidate": {
+            "id": "zero-cap",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              1.0,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 0.5,
+            "energy_after": 0.5,
+            "energy_delta": 0.0,
+            "maximum_approach_speed": 1.0,
+            "normal_energy_increase_max": 0.0,
+            "tangent_energy_increase_max": 0.0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 4,
+            "nodes": 1,
+            "capacity": 0
+          }
+        },
+        {
+          "case": "friction-one",
+          "baseline": {
+            "id": "friction-one",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.0,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 1.0,
+            "energy_after": 0.0,
+            "energy_delta": -1.0,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 1,
+            "capacity": 20
+          },
+          "candidate": {
+            "id": "friction-one",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.0,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 1.0,
+            "energy_after": 0.0,
+            "energy_delta": -1.0,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 1,
+            "capacity": 20
+          }
+        },
+        {
+          "case": "friction-quarter",
+          "baseline": {
+            "id": "friction-quarter",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.0,
+              0.75
+            ],
+            "omega": 0.0,
+            "energy_before": 1.0,
+            "energy_after": 0.28125,
+            "energy_delta": -0.71875,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 1,
+            "capacity": 20
+          },
+          "candidate": {
+            "id": "friction-quarter",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.0,
+              0.75
+            ],
+            "omega": 0.0,
+            "energy_before": 1.0,
+            "energy_after": 0.28125,
+            "energy_delta": -0.71875,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0.0,
+            "tangent_energy_increase_max": 0.0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 1,
+            "capacity": 20
+          }
+        },
+        {
+          "case": "friction-zero",
+          "baseline": {
+            "id": "friction-zero",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.0,
+              1.0
+            ],
+            "omega": 0.0,
+            "energy_before": 1.0,
+            "energy_after": 0.5,
+            "energy_delta": -0.5,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 1,
+            "capacity": 20
+          },
+          "candidate": {
+            "id": "friction-zero",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.0,
+              1.0
+            ],
+            "omega": 0.0,
+            "energy_before": 1.0,
+            "energy_after": 0.5,
+            "energy_delta": -0.5,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0.0,
+            "tangent_energy_increase_max": 0.0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 1,
+            "capacity": 20
+          }
+        },
+        {
+          "case": "empty",
+          "baseline": {
+            "id": "empty",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              1.0,
+              1.0
+            ],
+            "omega": 1.0,
+            "energy_before": 1.5,
+            "energy_after": 1.5,
+            "energy_delta": 0.0,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 0,
+            "capacity": 0
+          },
+          "candidate": {
+            "id": "empty",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              1.0,
+              1.0
+            ],
+            "omega": 1.0,
+            "energy_before": 1.5,
+            "energy_after": 1.5,
+            "energy_delta": 0.0,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0.0,
+            "tangent_energy_increase_max": 0.0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 0,
+            "capacity": 0
+          }
+        },
+        {
+          "case": "zero-count",
+          "baseline": {
+            "id": "zero-count",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              1.0,
+              1.0
+            ],
+            "omega": 1.0,
+            "energy_before": 1.5,
+            "energy_after": 1.5,
+            "energy_delta": 0.0,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 0,
+            "capacity": 0
+          },
+          "candidate": {
+            "id": "zero-count",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              1.0,
+              1.0
+            ],
+            "omega": 1.0,
+            "energy_before": 1.5,
+            "energy_after": 1.5,
+            "energy_delta": 0.0,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0.0,
+            "tangent_energy_increase_max": 0.0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 0,
+            "capacity": 0
+          }
+        },
+        {
+          "case": "max-one-node",
+          "baseline": {
+            "id": "max-one-node",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.0,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 0.5,
+            "energy_after": 0.0,
+            "energy_delta": -0.5,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 512,
+            "capacity": 20
+          },
+          "candidate": {
+            "id": "max-one-node",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.0,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 0.5,
+            "energy_after": 0.0,
+            "energy_delta": -0.5,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 512,
+            "capacity": 20
+          }
+        },
+        {
+          "case": "max-two-nodes",
+          "baseline": {
+            "id": "max-two-nodes",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.0625,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 0.5,
+            "energy_after": 0.001953125,
+            "energy_delta": -0.498046875,
+            "maximum_approach_speed": 0.0625,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 1024,
+            "capacity": 20
+          },
+          "candidate": {
+            "id": "max-two-nodes",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.0625,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 0.5,
+            "energy_after": 0.001953125,
+            "energy_delta": -0.498046875,
+            "maximum_approach_speed": 0.0625,
+            "normal_energy_increase_max": -0.005859375,
+            "tangent_energy_increase_max": 0.0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 1024,
+            "capacity": 20
+          }
+        },
+        {
+          "case": "mass-520",
+          "baseline": {
+            "id": "mass-520",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.31640625,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 260.0,
+            "energy_after": 26.02935791015625,
+            "energy_delta": -233.97064208984375,
+            "maximum_approach_speed": 0.31640625,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 10400
+          },
+          "candidate": {
+            "id": "mass-520",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.0,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 260.0,
+            "energy_after": 0.0,
+            "energy_delta": -260.0,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 10400
+          }
+        },
+        {
+          "case": "loaded-unwind",
+          "baseline": {
+            "id": "loaded-unwind",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              -0.8125,
+              0.0
+            ],
+            "omega": -1.1875,
+            "energy_before": 5.0,
+            "energy_after": 1.03515625,
+            "energy_delta": -3.96484375,
+            "maximum_approach_speed": 0.375,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 20
+          },
+          "candidate": {
+            "id": "loaded-unwind",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              -1.0,
+              0.0
+            ],
+            "omega": -1.0,
+            "energy_before": 5.0,
+            "energy_after": 1.0,
+            "energy_delta": -4.0,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": -0.140625,
+            "tangent_energy_increase_max": 0.0,
+            "normal_unwinds": 2,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 20
+          }
+        },
+        {
+          "case": "loaded-unwind-friction",
+          "baseline": {
+            "id": "loaded-unwind-friction",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              -0.8125,
+              0.1875
+            ],
+            "omega": -1.1875,
+            "energy_before": 5.5,
+            "energy_after": 1.052734375,
+            "energy_delta": -4.447265625,
+            "maximum_approach_speed": 0.375,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 20
+          },
+          "candidate": {
+            "id": "loaded-unwind-friction",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              -1.0,
+              0.1875
+            ],
+            "omega": -1.0,
+            "energy_before": 5.5,
+            "energy_after": 1.017578125,
+            "energy_delta": -4.482421875,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": -0.140625,
+            "tangent_energy_increase_max": 0.0390625,
+            "normal_unwinds": 2,
+            "tangent_unwinds": 2,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 20
+          }
+        },
+        {
+          "case": "shrinking-friction-cone",
+          "baseline": {
+            "id": "shrinking-friction-cone",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              -0.26187499999999986,
+              2.738125
+            ],
+            "omega": -0.1887500000000002,
+            "energy_before": 10.5,
+            "energy_after": 3.8007667968750005,
+            "energy_delta": -6.699233203124999,
+            "maximum_approach_speed": 0.11562500000000053,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 20
+          },
+          "candidate": {
+            "id": "shrinking-friction-cone",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              -0.26187499999999986,
+              2.738125
+            ],
+            "omega": -0.1887500000000002,
+            "energy_before": 10.5,
+            "energy_after": 3.8007667968750005,
+            "energy_delta": -6.699233203124999,
+            "maximum_approach_speed": 0.11562500000000053,
+            "normal_energy_increase_max": -0.0027802734374997584,
+            "tangent_energy_increase_max": 0.018800976562499905,
+            "normal_unwinds": 2,
+            "tangent_unwinds": 2,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 20
+          }
+        },
+        {
+          "case": "opposing-offcentre",
+          "baseline": {
+            "id": "opposing-offcentre",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.45520000000000005,
+              0.0
+            ],
+            "omega": 0.1791999999999998,
+            "energy_before": 1.0,
+            "energy_after": 0.10761760000000001,
+            "energy_delta": -0.8923824,
+            "maximum_approach_speed": 0.27600000000000025,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 20
+          },
+          "candidate": {
+            "id": "opposing-offcentre",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.45520000000000005,
+              0.0
+            ],
+            "omega": 0.1791999999999998,
+            "energy_before": 1.0,
+            "energy_after": 0.10761760000000001,
+            "energy_delta": -0.8923824,
+            "maximum_approach_speed": 0.27600000000000025,
+            "normal_energy_increase_max": -0.023486399999999977,
+            "tangent_energy_increase_max": 0.0,
+            "normal_unwinds": 3,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 20
+          }
+        },
+        {
+          "case": "corner-friction",
+          "baseline": {
+            "id": "corner-friction",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.019775390625,
+              0.019775390625
+            ],
+            "omega": 0.0,
+            "energy_before": 1.0,
+            "energy_after": 0.0003910660743713379,
+            "energy_delta": -0.9996089339256287,
+            "maximum_approach_speed": 0.019775390625,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 20
+          },
+          "candidate": {
+            "id": "corner-friction",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.019775390625,
+              0.019775390625
+            ],
+            "omega": 0.0,
+            "energy_before": 1.0,
+            "energy_after": 0.0003910660743713379,
+            "energy_delta": -0.9996089339256287,
+            "maximum_approach_speed": 0.019775390625,
+            "normal_energy_increase_max": -0.0020856857299804688,
+            "tangent_energy_increase_max": -0.00030416250228881836,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 20
+          }
+        },
+        {
+          "case": "offset-com",
+          "baseline": {
+            "id": "offset-com",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              -0.8125,
+              0.0
+            ],
+            "omega": -1.1875,
+            "energy_before": 5.0,
+            "energy_after": 1.03515625,
+            "energy_delta": -3.96484375,
+            "maximum_approach_speed": 0.375,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 20
+          },
+          "candidate": {
+            "id": "offset-com",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              -1.0,
+              0.0
+            ],
+            "omega": -1.0,
+            "energy_before": 5.0,
+            "energy_after": 1.0,
+            "energy_delta": -4.0,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": -0.140625,
+            "tangent_energy_increase_max": 0.0,
+            "normal_unwinds": 2,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 20
+          }
+        },
+        {
+          "case": "unequal-counts",
+          "baseline": {
+            "id": "unequal-counts",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.5397750937109538,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 0.5,
+            "energy_after": 0.14567857589533448,
+            "energy_delta": -0.3543214241046655,
+            "maximum_approach_speed": 0.5397750937109538,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 3,
+            "capacity": 14
+          },
+          "candidate": {
+            "id": "unequal-counts",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.0,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 0.5,
+            "energy_after": 0.0,
+            "energy_delta": -0.5,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 3,
+            "capacity": 14
+          }
+        },
+        {
+          "case": "clamped-quadrature",
+          "baseline": {
+            "id": "clamped-quadrature",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              -0.08000000000000007,
+              0.0
+            ],
+            "omega": -0.16479999999999995,
+            "energy_before": 1.0,
+            "energy_after": 0.016779519999999996,
+            "energy_delta": -0.98322048,
+            "maximum_approach_speed": 0.13973333333333318,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 6
+          },
+          "candidate": {
+            "id": "clamped-quadrature",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              -0.08000000000000007,
+              0.0
+            ],
+            "omega": -0.16479999999999995,
+            "energy_before": 1.0,
+            "energy_after": 0.016779519999999996,
+            "energy_delta": -0.98322048,
+            "maximum_approach_speed": 0.13973333333333318,
+            "normal_energy_increase_max": -0.009492480000000011,
+            "tangent_energy_increase_max": 0.0,
+            "normal_unwinds": 2,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 6
+          }
+        },
+        {
+          "case": "rotated-normal",
+          "baseline": {
+            "id": "rotated-normal",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.18984375000000003,
+              0.25312500000000004
+            ],
+            "omega": 0.0,
+            "energy_before": 0.5,
+            "energy_after": 0.05005645751953127,
+            "energy_delta": -0.44994354248046875,
+            "maximum_approach_speed": 0.31640625000000006,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 20
+          },
+          "candidate": {
+            "id": "rotated-normal",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.0,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 0.5,
+            "energy_after": 0.0,
+            "energy_delta": -0.5,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 20
+          }
+        },
+        {
+          "case": "unwind-reversed-order",
+          "baseline": {
+            "id": "unwind-reversed-order",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              -0.8125,
+              0.0
+            ],
+            "omega": -1.1875,
+            "energy_before": 5.0,
+            "energy_after": 1.03515625,
+            "energy_delta": -3.96484375,
+            "maximum_approach_speed": 0.375,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 20
+          },
+          "candidate": {
+            "id": "unwind-reversed-order",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              -1.0,
+              0.0
+            ],
+            "omega": -1.0,
+            "energy_before": 5.0,
+            "energy_after": 1.0,
+            "energy_delta": -4.0,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": -0.140625,
+            "tangent_energy_increase_max": 0.0,
+            "normal_unwinds": 2,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 20
+          }
+        },
+        {
+          "case": "unwind-reflected",
+          "baseline": {
+            "id": "unwind-reflected",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.8125,
+              0.0
+            ],
+            "omega": 1.1875,
+            "energy_before": 5.0,
+            "energy_after": 1.03515625,
+            "energy_delta": -3.96484375,
+            "maximum_approach_speed": 0.375,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 20
+          },
+          "candidate": {
+            "id": "unwind-reflected",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              1.0,
+              0.0
+            ],
+            "omega": 1.0,
+            "energy_before": 5.0,
+            "energy_after": 1.0,
+            "energy_delta": -4.0,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": -0.140625,
+            "tangent_energy_increase_max": 0.0,
+            "normal_unwinds": 2,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 20
+          }
+        },
+        {
+          "case": "separating-contact-activates",
+          "baseline": {
+            "id": "separating-contact-activates",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.82325,
+              0.0
+            ],
+            "omega": 0.34099999999999997,
+            "energy_before": 0.5,
+            "energy_after": 0.39701078125,
+            "energy_delta": -0.10298921875,
+            "maximum_approach_speed": 0.19974999999999987,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 20
+          },
+          "candidate": {
+            "id": "separating-contact-activates",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.8119,
+              0.0
+            ],
+            "omega": 0.33630000000000004,
+            "energy_before": 0.5,
+            "energy_after": 0.38613965,
+            "energy_delta": -0.11386035,
+            "maximum_approach_speed": 0.19700000000000017,
+            "normal_energy_increase_max": -0.003910350000000007,
+            "tangent_energy_increase_max": 0.0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 20
+          }
+        },
+        {
+          "case": "capacity-not-redistributed",
+          "baseline": {
+            "id": "capacity-not-redistributed",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.9375,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 0.5,
+            "energy_after": 0.439453125,
+            "energy_delta": -0.060546875,
+            "maximum_approach_speed": 0.9375,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 4,
+            "nodes": 2,
+            "capacity": 0.5
+          },
+          "candidate": {
+            "id": "capacity-not-redistributed",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.9375,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 0.5,
+            "energy_after": 0.439453125,
+            "energy_delta": -0.060546875,
+            "maximum_approach_speed": 0.9375,
+            "normal_energy_increase_max": 0.0,
+            "tangent_energy_increase_max": 0.0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 4,
+            "nodes": 2,
+            "capacity": 0.5
+          }
+        }
+      ]
+    },
+    {
+      "platform": "linux-san",
+      "decision": "PASS",
+      "failures": [],
+      "benefits": [
+        {
+          "case": "support-64",
+          "pass_": true,
+          "baseline_velocity": [
+            0.0625,
+            0.0
+          ],
+          "candidate_velocity": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "case": "support-192",
+          "pass_": true,
+          "baseline_velocity": [
+            0.31640625,
+            0.0
+          ],
+          "candidate_velocity": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "case": "support-448",
+          "pass_": true,
+          "baseline_velocity": [
+            0.586181640625,
+            0.0
+          ],
+          "candidate_velocity": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "case": "separating-64",
+          "pass_": true,
+          "baseline_velocity": [
+            0.0625,
+            0.0
+          ],
+          "candidate_velocity": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "case": "separating-192",
+          "pass_": true,
+          "baseline_velocity": [
+            0.31640625,
+            0.0
+          ],
+          "candidate_velocity": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "case": "separating-448",
+          "pass_": true,
+          "baseline_velocity": [
+            0.586181640625,
+            0.0
+          ],
+          "candidate_velocity": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "case": "mass-520",
+          "pass_": true,
+          "baseline_velocity": [
+            0.31640625,
+            0.0
+          ],
+          "candidate_velocity": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "case": "unequal-counts",
+          "pass_": true,
+          "baseline_velocity": [
+            0.5397750937109538,
+            0.0
+          ],
+          "candidate_velocity": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "case": "rotated-normal",
+          "pass_": true,
+          "baseline_velocity": [
+            0.18984375000000003,
+            0.25312500000000004
+          ],
+          "candidate_velocity": [
+            0.0,
+            0.0
+          ]
+        }
+      ],
+      "worse_residual_cases": [],
+      "new_rejections": [],
+      "strict_energy_increases": [],
+      "cases": [
+        {
+          "case": "front",
+          "baseline": {
+            "id": "front",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.0,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 0.5,
+            "energy_after": 0.0,
+            "energy_delta": -0.5,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 1,
+            "capacity": 20
+          },
+          "candidate": {
+            "id": "front",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.0,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 0.5,
+            "energy_after": 0.0,
+            "energy_delta": -0.5,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 1,
+            "capacity": 20
+          }
+        },
+        {
+          "case": "support-64",
+          "baseline": {
+            "id": "support-64",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.0625,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 0.5,
+            "energy_after": 0.001953125,
+            "energy_delta": -0.498046875,
+            "maximum_approach_speed": 0.0625,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 20
+          },
+          "candidate": {
+            "id": "support-64",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.0,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 0.5,
+            "energy_after": 0.0,
+            "energy_delta": -0.5,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 20
+          }
+        },
+        {
+          "case": "support-192",
+          "baseline": {
+            "id": "support-192",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.31640625,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 0.5,
+            "energy_after": 0.05005645751953125,
+            "energy_delta": -0.44994354248046875,
+            "maximum_approach_speed": 0.31640625,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 20
+          },
+          "candidate": {
+            "id": "support-192",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.0,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 0.5,
+            "energy_after": 0.0,
+            "energy_delta": -0.5,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 20
+          }
+        },
+        {
+          "case": "support-448",
+          "baseline": {
+            "id": "support-448",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.586181640625,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 0.5,
+            "energy_after": 0.17180445790290833,
+            "energy_delta": -0.3281955420970917,
+            "maximum_approach_speed": 0.586181640625,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 20
+          },
+          "candidate": {
+            "id": "support-448",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.0,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 0.5,
+            "energy_after": 0.0,
+            "energy_delta": -0.5,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 20
+          }
+        },
+        {
+          "case": "separating-64",
+          "baseline": {
+            "id": "separating-64",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.0625,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 0.5,
+            "energy_after": 0.001953125,
+            "energy_delta": -0.498046875,
+            "maximum_approach_speed": 0.0625,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 20
+          },
+          "candidate": {
+            "id": "separating-64",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.0,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 0.5,
+            "energy_after": 0.0,
+            "energy_delta": -0.5,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 20
+          }
+        },
+        {
+          "case": "separating-192",
+          "baseline": {
+            "id": "separating-192",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.31640625,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 0.5,
+            "energy_after": 0.05005645751953125,
+            "energy_delta": -0.44994354248046875,
+            "maximum_approach_speed": 0.31640625,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 20
+          },
+          "candidate": {
+            "id": "separating-192",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.0,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 0.5,
+            "energy_after": 0.0,
+            "energy_delta": -0.5,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 20
+          }
+        },
+        {
+          "case": "separating-448",
+          "baseline": {
+            "id": "separating-448",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.586181640625,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 0.5,
+            "energy_after": 0.17180445790290833,
+            "energy_delta": -0.3281955420970917,
+            "maximum_approach_speed": 0.586181640625,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 20
+          },
+          "candidate": {
+            "id": "separating-448",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.0,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 0.5,
+            "energy_after": 0.0,
+            "energy_delta": -0.5,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 20
+          }
+        },
+        {
+          "case": "rest",
+          "baseline": {
+            "id": "rest",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.0,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 0.0,
+            "energy_after": 0.0,
+            "energy_delta": 0.0,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 20
+          },
+          "candidate": {
+            "id": "rest",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.0,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 0.0,
+            "energy_after": 0.0,
+            "energy_delta": 0.0,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 20
+          }
+        },
+        {
+          "case": "separating-only",
+          "baseline": {
+            "id": "separating-only",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              1.0,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 0.5,
+            "energy_after": 0.5,
+            "energy_delta": 0.0,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 1,
+            "capacity": 20
+          },
+          "candidate": {
+            "id": "separating-only",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              1.0,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 0.5,
+            "energy_after": 0.5,
+            "energy_delta": 0.0,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0.0,
+            "tangent_energy_increase_max": 0.0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 1,
+            "capacity": 20
+          }
+        },
+        {
+          "case": "tangent-only",
+          "baseline": {
+            "id": "tangent-only",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.0,
+              1.0
+            ],
+            "omega": 0.0,
+            "energy_before": 0.5,
+            "energy_after": 0.5,
+            "energy_delta": 0.0,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 1,
+            "capacity": 20
+          },
+          "candidate": {
+            "id": "tangent-only",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.0,
+              1.0
+            ],
+            "omega": 0.0,
+            "energy_before": 0.5,
+            "energy_after": 0.5,
+            "energy_delta": 0.0,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0.0,
+            "tangent_energy_increase_max": 0.0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 1,
+            "capacity": 20
+          }
+        },
+        {
+          "case": "rotation-low",
+          "baseline": {
+            "id": "rotation-low",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              -0.5,
+              0.0
+            ],
+            "omega": 0.5,
+            "energy_before": 0.5,
+            "energy_after": 0.25,
+            "energy_delta": -0.25,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 1,
+            "capacity": 20
+          },
+          "candidate": {
+            "id": "rotation-low",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              -0.5,
+              0.0
+            ],
+            "omega": 0.5,
+            "energy_before": 0.5,
+            "energy_after": 0.25,
+            "energy_delta": -0.25,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0.0,
+            "tangent_energy_increase_max": 0.0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 1,
+            "capacity": 20
+          }
+        },
+        {
+          "case": "rotation-high",
+          "baseline": {
+            "id": "rotation-high",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              -0.5,
+              0.0
+            ],
+            "omega": -0.5,
+            "energy_before": 0.5,
+            "energy_after": 0.25,
+            "energy_delta": -0.25,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 1,
+            "capacity": 20
+          },
+          "candidate": {
+            "id": "rotation-high",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              -0.5,
+              0.0
+            ],
+            "omega": -0.5,
+            "energy_before": 0.5,
+            "energy_after": 0.25,
+            "energy_delta": -0.25,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0.0,
+            "tangent_energy_increase_max": 0.0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 1,
+            "capacity": 20
+          }
+        },
+        {
+          "case": "rotation-separating",
+          "baseline": {
+            "id": "rotation-separating",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.0,
+              0.0
+            ],
+            "omega": 1.0,
+            "energy_before": 0.5,
+            "energy_after": 0.5,
+            "energy_delta": 0.0,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 1,
+            "capacity": 20
+          },
+          "candidate": {
+            "id": "rotation-separating",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.0,
+              0.0
+            ],
+            "omega": 1.0,
+            "energy_before": 0.5,
+            "energy_after": 0.5,
+            "energy_delta": 0.0,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0.0,
+            "tangent_energy_increase_max": 0.0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 1,
+            "capacity": 20
+          }
+        },
+        {
+          "case": "low-cap",
+          "baseline": {
+            "id": "low-cap",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.75,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 0.5,
+            "energy_after": 0.28125,
+            "energy_delta": -0.21875,
+            "maximum_approach_speed": 0.75,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 4,
+            "nodes": 1,
+            "capacity": 0.25
+          },
+          "candidate": {
+            "id": "low-cap",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.75,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 0.5,
+            "energy_after": 0.28125,
+            "energy_delta": -0.21875,
+            "maximum_approach_speed": 0.75,
+            "normal_energy_increase_max": 0.0,
+            "tangent_energy_increase_max": 0.0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 4,
+            "nodes": 1,
+            "capacity": 0.25
+          }
+        },
+        {
+          "case": "zero-cap",
+          "baseline": {
+            "id": "zero-cap",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              1.0,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 0.5,
+            "energy_after": 0.5,
+            "energy_delta": 0.0,
+            "maximum_approach_speed": 1.0,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 4,
+            "nodes": 1,
+            "capacity": 0
+          },
+          "candidate": {
+            "id": "zero-cap",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              1.0,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 0.5,
+            "energy_after": 0.5,
+            "energy_delta": 0.0,
+            "maximum_approach_speed": 1.0,
+            "normal_energy_increase_max": 0.0,
+            "tangent_energy_increase_max": 0.0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 4,
+            "nodes": 1,
+            "capacity": 0
+          }
+        },
+        {
+          "case": "friction-one",
+          "baseline": {
+            "id": "friction-one",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.0,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 1.0,
+            "energy_after": 0.0,
+            "energy_delta": -1.0,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 1,
+            "capacity": 20
+          },
+          "candidate": {
+            "id": "friction-one",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.0,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 1.0,
+            "energy_after": 0.0,
+            "energy_delta": -1.0,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 1,
+            "capacity": 20
+          }
+        },
+        {
+          "case": "friction-quarter",
+          "baseline": {
+            "id": "friction-quarter",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.0,
+              0.75
+            ],
+            "omega": 0.0,
+            "energy_before": 1.0,
+            "energy_after": 0.28125,
+            "energy_delta": -0.71875,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 1,
+            "capacity": 20
+          },
+          "candidate": {
+            "id": "friction-quarter",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.0,
+              0.75
+            ],
+            "omega": 0.0,
+            "energy_before": 1.0,
+            "energy_after": 0.28125,
+            "energy_delta": -0.71875,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0.0,
+            "tangent_energy_increase_max": 0.0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 1,
+            "capacity": 20
+          }
+        },
+        {
+          "case": "friction-zero",
+          "baseline": {
+            "id": "friction-zero",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.0,
+              1.0
+            ],
+            "omega": 0.0,
+            "energy_before": 1.0,
+            "energy_after": 0.5,
+            "energy_delta": -0.5,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 1,
+            "capacity": 20
+          },
+          "candidate": {
+            "id": "friction-zero",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.0,
+              1.0
+            ],
+            "omega": 0.0,
+            "energy_before": 1.0,
+            "energy_after": 0.5,
+            "energy_delta": -0.5,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0.0,
+            "tangent_energy_increase_max": 0.0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 1,
+            "capacity": 20
+          }
+        },
+        {
+          "case": "empty",
+          "baseline": {
+            "id": "empty",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              1.0,
+              1.0
+            ],
+            "omega": 1.0,
+            "energy_before": 1.5,
+            "energy_after": 1.5,
+            "energy_delta": 0.0,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 0,
+            "capacity": 0
+          },
+          "candidate": {
+            "id": "empty",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              1.0,
+              1.0
+            ],
+            "omega": 1.0,
+            "energy_before": 1.5,
+            "energy_after": 1.5,
+            "energy_delta": 0.0,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0.0,
+            "tangent_energy_increase_max": 0.0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 0,
+            "capacity": 0
+          }
+        },
+        {
+          "case": "zero-count",
+          "baseline": {
+            "id": "zero-count",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              1.0,
+              1.0
+            ],
+            "omega": 1.0,
+            "energy_before": 1.5,
+            "energy_after": 1.5,
+            "energy_delta": 0.0,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 0,
+            "capacity": 0
+          },
+          "candidate": {
+            "id": "zero-count",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              1.0,
+              1.0
+            ],
+            "omega": 1.0,
+            "energy_before": 1.5,
+            "energy_after": 1.5,
+            "energy_delta": 0.0,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0.0,
+            "tangent_energy_increase_max": 0.0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 0,
+            "capacity": 0
+          }
+        },
+        {
+          "case": "max-one-node",
+          "baseline": {
+            "id": "max-one-node",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.0,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 0.5,
+            "energy_after": 0.0,
+            "energy_delta": -0.5,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 512,
+            "capacity": 20
+          },
+          "candidate": {
+            "id": "max-one-node",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.0,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 0.5,
+            "energy_after": 0.0,
+            "energy_delta": -0.5,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 512,
+            "capacity": 20
+          }
+        },
+        {
+          "case": "max-two-nodes",
+          "baseline": {
+            "id": "max-two-nodes",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.0625,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 0.5,
+            "energy_after": 0.001953125,
+            "energy_delta": -0.498046875,
+            "maximum_approach_speed": 0.0625,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 1024,
+            "capacity": 20
+          },
+          "candidate": {
+            "id": "max-two-nodes",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.0625,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 0.5,
+            "energy_after": 0.001953125,
+            "energy_delta": -0.498046875,
+            "maximum_approach_speed": 0.0625,
+            "normal_energy_increase_max": -0.005859375,
+            "tangent_energy_increase_max": 0.0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 1024,
+            "capacity": 20
+          }
+        },
+        {
+          "case": "mass-520",
+          "baseline": {
+            "id": "mass-520",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.31640625,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 260.0,
+            "energy_after": 26.02935791015625,
+            "energy_delta": -233.97064208984375,
+            "maximum_approach_speed": 0.31640625,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 10400
+          },
+          "candidate": {
+            "id": "mass-520",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.0,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 260.0,
+            "energy_after": 0.0,
+            "energy_delta": -260.0,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 10400
+          }
+        },
+        {
+          "case": "loaded-unwind",
+          "baseline": {
+            "id": "loaded-unwind",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              -0.8125,
+              0.0
+            ],
+            "omega": -1.1875,
+            "energy_before": 5.0,
+            "energy_after": 1.03515625,
+            "energy_delta": -3.96484375,
+            "maximum_approach_speed": 0.375,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 20
+          },
+          "candidate": {
+            "id": "loaded-unwind",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              -1.0,
+              0.0
+            ],
+            "omega": -1.0,
+            "energy_before": 5.0,
+            "energy_after": 1.0,
+            "energy_delta": -4.0,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": -0.140625,
+            "tangent_energy_increase_max": 0.0,
+            "normal_unwinds": 2,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 20
+          }
+        },
+        {
+          "case": "loaded-unwind-friction",
+          "baseline": {
+            "id": "loaded-unwind-friction",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              -0.8125,
+              0.1875
+            ],
+            "omega": -1.1875,
+            "energy_before": 5.5,
+            "energy_after": 1.052734375,
+            "energy_delta": -4.447265625,
+            "maximum_approach_speed": 0.375,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 20
+          },
+          "candidate": {
+            "id": "loaded-unwind-friction",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              -1.0,
+              0.1875
+            ],
+            "omega": -1.0,
+            "energy_before": 5.5,
+            "energy_after": 1.017578125,
+            "energy_delta": -4.482421875,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": -0.140625,
+            "tangent_energy_increase_max": 0.0390625,
+            "normal_unwinds": 2,
+            "tangent_unwinds": 2,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 20
+          }
+        },
+        {
+          "case": "shrinking-friction-cone",
+          "baseline": {
+            "id": "shrinking-friction-cone",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              -0.26187499999999986,
+              2.738125
+            ],
+            "omega": -0.1887500000000002,
+            "energy_before": 10.5,
+            "energy_after": 3.8007667968750005,
+            "energy_delta": -6.699233203124999,
+            "maximum_approach_speed": 0.11562500000000053,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 20
+          },
+          "candidate": {
+            "id": "shrinking-friction-cone",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              -0.26187499999999986,
+              2.738125
+            ],
+            "omega": -0.1887500000000002,
+            "energy_before": 10.5,
+            "energy_after": 3.8007667968750005,
+            "energy_delta": -6.699233203124999,
+            "maximum_approach_speed": 0.11562500000000053,
+            "normal_energy_increase_max": -0.0027802734374997584,
+            "tangent_energy_increase_max": 0.018800976562499905,
+            "normal_unwinds": 2,
+            "tangent_unwinds": 2,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 20
+          }
+        },
+        {
+          "case": "opposing-offcentre",
+          "baseline": {
+            "id": "opposing-offcentre",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.45520000000000005,
+              0.0
+            ],
+            "omega": 0.1791999999999998,
+            "energy_before": 1.0,
+            "energy_after": 0.10761760000000001,
+            "energy_delta": -0.8923824,
+            "maximum_approach_speed": 0.27600000000000025,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 20
+          },
+          "candidate": {
+            "id": "opposing-offcentre",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.45520000000000005,
+              0.0
+            ],
+            "omega": 0.1791999999999998,
+            "energy_before": 1.0,
+            "energy_after": 0.10761760000000001,
+            "energy_delta": -0.8923824,
+            "maximum_approach_speed": 0.27600000000000025,
+            "normal_energy_increase_max": -0.023486399999999977,
+            "tangent_energy_increase_max": 0.0,
+            "normal_unwinds": 3,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 20
+          }
+        },
+        {
+          "case": "corner-friction",
+          "baseline": {
+            "id": "corner-friction",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.019775390625,
+              0.019775390625
+            ],
+            "omega": 0.0,
+            "energy_before": 1.0,
+            "energy_after": 0.0003910660743713379,
+            "energy_delta": -0.9996089339256287,
+            "maximum_approach_speed": 0.019775390625,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 20
+          },
+          "candidate": {
+            "id": "corner-friction",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.019775390625,
+              0.019775390625
+            ],
+            "omega": 0.0,
+            "energy_before": 1.0,
+            "energy_after": 0.0003910660743713379,
+            "energy_delta": -0.9996089339256287,
+            "maximum_approach_speed": 0.019775390625,
+            "normal_energy_increase_max": -0.0020856857299804688,
+            "tangent_energy_increase_max": -0.00030416250228881836,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 20
+          }
+        },
+        {
+          "case": "offset-com",
+          "baseline": {
+            "id": "offset-com",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              -0.8125,
+              0.0
+            ],
+            "omega": -1.1875,
+            "energy_before": 5.0,
+            "energy_after": 1.03515625,
+            "energy_delta": -3.96484375,
+            "maximum_approach_speed": 0.375,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 20
+          },
+          "candidate": {
+            "id": "offset-com",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              -1.0,
+              0.0
+            ],
+            "omega": -1.0,
+            "energy_before": 5.0,
+            "energy_after": 1.0,
+            "energy_delta": -4.0,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": -0.140625,
+            "tangent_energy_increase_max": 0.0,
+            "normal_unwinds": 2,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 20
+          }
+        },
+        {
+          "case": "unequal-counts",
+          "baseline": {
+            "id": "unequal-counts",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.5397750937109538,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 0.5,
+            "energy_after": 0.14567857589533448,
+            "energy_delta": -0.3543214241046655,
+            "maximum_approach_speed": 0.5397750937109538,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 3,
+            "capacity": 14
+          },
+          "candidate": {
+            "id": "unequal-counts",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.0,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 0.5,
+            "energy_after": 0.0,
+            "energy_delta": -0.5,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 3,
+            "capacity": 14
+          }
+        },
+        {
+          "case": "clamped-quadrature",
+          "baseline": {
+            "id": "clamped-quadrature",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              -0.08000000000000007,
+              0.0
+            ],
+            "omega": -0.16479999999999995,
+            "energy_before": 1.0,
+            "energy_after": 0.016779519999999996,
+            "energy_delta": -0.98322048,
+            "maximum_approach_speed": 0.13973333333333318,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 6
+          },
+          "candidate": {
+            "id": "clamped-quadrature",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              -0.08000000000000007,
+              0.0
+            ],
+            "omega": -0.16479999999999995,
+            "energy_before": 1.0,
+            "energy_after": 0.016779519999999996,
+            "energy_delta": -0.98322048,
+            "maximum_approach_speed": 0.13973333333333318,
+            "normal_energy_increase_max": -0.009492480000000011,
+            "tangent_energy_increase_max": 0.0,
+            "normal_unwinds": 2,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 6
+          }
+        },
+        {
+          "case": "rotated-normal",
+          "baseline": {
+            "id": "rotated-normal",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.18984375000000003,
+              0.25312500000000004
+            ],
+            "omega": 0.0,
+            "energy_before": 0.5,
+            "energy_after": 0.05005645751953127,
+            "energy_delta": -0.44994354248046875,
+            "maximum_approach_speed": 0.31640625000000006,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 20
+          },
+          "candidate": {
+            "id": "rotated-normal",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.0,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 0.5,
+            "energy_after": 0.0,
+            "energy_delta": -0.5,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 20
+          }
+        },
+        {
+          "case": "unwind-reversed-order",
+          "baseline": {
+            "id": "unwind-reversed-order",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              -0.8125,
+              0.0
+            ],
+            "omega": -1.1875,
+            "energy_before": 5.0,
+            "energy_after": 1.03515625,
+            "energy_delta": -3.96484375,
+            "maximum_approach_speed": 0.375,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 20
+          },
+          "candidate": {
+            "id": "unwind-reversed-order",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              -1.0,
+              0.0
+            ],
+            "omega": -1.0,
+            "energy_before": 5.0,
+            "energy_after": 1.0,
+            "energy_delta": -4.0,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": -0.140625,
+            "tangent_energy_increase_max": 0.0,
+            "normal_unwinds": 2,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 20
+          }
+        },
+        {
+          "case": "unwind-reflected",
+          "baseline": {
+            "id": "unwind-reflected",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.8125,
+              0.0
+            ],
+            "omega": 1.1875,
+            "energy_before": 5.0,
+            "energy_after": 1.03515625,
+            "energy_delta": -3.96484375,
+            "maximum_approach_speed": 0.375,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 20
+          },
+          "candidate": {
+            "id": "unwind-reflected",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              1.0,
+              0.0
+            ],
+            "omega": 1.0,
+            "energy_before": 5.0,
+            "energy_after": 1.0,
+            "energy_delta": -4.0,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": -0.140625,
+            "tangent_energy_increase_max": 0.0,
+            "normal_unwinds": 2,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 20
+          }
+        },
+        {
+          "case": "separating-contact-activates",
+          "baseline": {
+            "id": "separating-contact-activates",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.82325,
+              0.0
+            ],
+            "omega": 0.34099999999999997,
+            "energy_before": 0.5,
+            "energy_after": 0.39701078125,
+            "energy_delta": -0.10298921875,
+            "maximum_approach_speed": 0.19974999999999987,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 20
+          },
+          "candidate": {
+            "id": "separating-contact-activates",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.8119,
+              0.0
+            ],
+            "omega": 0.33630000000000004,
+            "energy_before": 0.5,
+            "energy_after": 0.38613965,
+            "energy_delta": -0.11386035,
+            "maximum_approach_speed": 0.19700000000000017,
+            "normal_energy_increase_max": -0.003910350000000007,
+            "tangent_energy_increase_max": 0.0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 20
+          }
+        },
+        {
+          "case": "capacity-not-redistributed",
+          "baseline": {
+            "id": "capacity-not-redistributed",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.9375,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 0.5,
+            "energy_after": 0.439453125,
+            "energy_delta": -0.060546875,
+            "maximum_approach_speed": 0.9375,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 4,
+            "nodes": 2,
+            "capacity": 0.5
+          },
+          "candidate": {
+            "id": "capacity-not-redistributed",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.9375,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 0.5,
+            "energy_after": 0.439453125,
+            "energy_delta": -0.060546875,
+            "maximum_approach_speed": 0.9375,
+            "normal_energy_increase_max": 0.0,
+            "tangent_energy_increase_max": 0.0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 4,
+            "nodes": 2,
+            "capacity": 0.5
+          }
+        }
+      ]
+    },
+    {
+      "platform": "windows-msvc",
+      "decision": "PASS",
+      "failures": [],
+      "benefits": [
+        {
+          "case": "support-64",
+          "pass_": true,
+          "baseline_velocity": [
+            0.0625,
+            0.0
+          ],
+          "candidate_velocity": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "case": "support-192",
+          "pass_": true,
+          "baseline_velocity": [
+            0.31640625,
+            0.0
+          ],
+          "candidate_velocity": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "case": "support-448",
+          "pass_": true,
+          "baseline_velocity": [
+            0.586181640625,
+            0.0
+          ],
+          "candidate_velocity": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "case": "separating-64",
+          "pass_": true,
+          "baseline_velocity": [
+            0.0625,
+            0.0
+          ],
+          "candidate_velocity": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "case": "separating-192",
+          "pass_": true,
+          "baseline_velocity": [
+            0.31640625,
+            0.0
+          ],
+          "candidate_velocity": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "case": "separating-448",
+          "pass_": true,
+          "baseline_velocity": [
+            0.586181640625,
+            0.0
+          ],
+          "candidate_velocity": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "case": "mass-520",
+          "pass_": true,
+          "baseline_velocity": [
+            0.31640625,
+            0.0
+          ],
+          "candidate_velocity": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "case": "unequal-counts",
+          "pass_": true,
+          "baseline_velocity": [
+            0.5397750937109538,
+            0.0
+          ],
+          "candidate_velocity": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "case": "rotated-normal",
+          "pass_": true,
+          "baseline_velocity": [
+            0.18984375000000003,
+            0.25312500000000004
+          ],
+          "candidate_velocity": [
+            0.0,
+            0.0
+          ]
+        }
+      ],
+      "worse_residual_cases": [],
+      "new_rejections": [],
+      "strict_energy_increases": [],
+      "cases": [
+        {
+          "case": "front",
+          "baseline": {
+            "id": "front",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.0,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 0.5,
+            "energy_after": 0.0,
+            "energy_delta": -0.5,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 1,
+            "capacity": 20
+          },
+          "candidate": {
+            "id": "front",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.0,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 0.5,
+            "energy_after": 0.0,
+            "energy_delta": -0.5,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 1,
+            "capacity": 20
+          }
+        },
+        {
+          "case": "support-64",
+          "baseline": {
+            "id": "support-64",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.0625,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 0.5,
+            "energy_after": 0.001953125,
+            "energy_delta": -0.498046875,
+            "maximum_approach_speed": 0.0625,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 20
+          },
+          "candidate": {
+            "id": "support-64",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.0,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 0.5,
+            "energy_after": 0.0,
+            "energy_delta": -0.5,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 20
+          }
+        },
+        {
+          "case": "support-192",
+          "baseline": {
+            "id": "support-192",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.31640625,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 0.5,
+            "energy_after": 0.05005645751953125,
+            "energy_delta": -0.44994354248046875,
+            "maximum_approach_speed": 0.31640625,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 20
+          },
+          "candidate": {
+            "id": "support-192",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.0,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 0.5,
+            "energy_after": 0.0,
+            "energy_delta": -0.5,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 20
+          }
+        },
+        {
+          "case": "support-448",
+          "baseline": {
+            "id": "support-448",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.586181640625,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 0.5,
+            "energy_after": 0.17180445790290833,
+            "energy_delta": -0.3281955420970917,
+            "maximum_approach_speed": 0.586181640625,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 20
+          },
+          "candidate": {
+            "id": "support-448",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.0,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 0.5,
+            "energy_after": 0.0,
+            "energy_delta": -0.5,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 20
+          }
+        },
+        {
+          "case": "separating-64",
+          "baseline": {
+            "id": "separating-64",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.0625,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 0.5,
+            "energy_after": 0.001953125,
+            "energy_delta": -0.498046875,
+            "maximum_approach_speed": 0.0625,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 20
+          },
+          "candidate": {
+            "id": "separating-64",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.0,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 0.5,
+            "energy_after": 0.0,
+            "energy_delta": -0.5,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 20
+          }
+        },
+        {
+          "case": "separating-192",
+          "baseline": {
+            "id": "separating-192",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.31640625,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 0.5,
+            "energy_after": 0.05005645751953125,
+            "energy_delta": -0.44994354248046875,
+            "maximum_approach_speed": 0.31640625,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 20
+          },
+          "candidate": {
+            "id": "separating-192",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.0,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 0.5,
+            "energy_after": 0.0,
+            "energy_delta": -0.5,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 20
+          }
+        },
+        {
+          "case": "separating-448",
+          "baseline": {
+            "id": "separating-448",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.586181640625,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 0.5,
+            "energy_after": 0.17180445790290833,
+            "energy_delta": -0.3281955420970917,
+            "maximum_approach_speed": 0.586181640625,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 20
+          },
+          "candidate": {
+            "id": "separating-448",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.0,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 0.5,
+            "energy_after": 0.0,
+            "energy_delta": -0.5,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 20
+          }
+        },
+        {
+          "case": "rest",
+          "baseline": {
+            "id": "rest",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.0,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 0.0,
+            "energy_after": 0.0,
+            "energy_delta": 0.0,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 20
+          },
+          "candidate": {
+            "id": "rest",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.0,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 0.0,
+            "energy_after": 0.0,
+            "energy_delta": 0.0,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 20
+          }
+        },
+        {
+          "case": "separating-only",
+          "baseline": {
+            "id": "separating-only",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              1.0,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 0.5,
+            "energy_after": 0.5,
+            "energy_delta": 0.0,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 1,
+            "capacity": 20
+          },
+          "candidate": {
+            "id": "separating-only",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              1.0,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 0.5,
+            "energy_after": 0.5,
+            "energy_delta": 0.0,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0.0,
+            "tangent_energy_increase_max": 0.0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 1,
+            "capacity": 20
+          }
+        },
+        {
+          "case": "tangent-only",
+          "baseline": {
+            "id": "tangent-only",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.0,
+              1.0
+            ],
+            "omega": 0.0,
+            "energy_before": 0.5,
+            "energy_after": 0.5,
+            "energy_delta": 0.0,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 1,
+            "capacity": 20
+          },
+          "candidate": {
+            "id": "tangent-only",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.0,
+              1.0
+            ],
+            "omega": 0.0,
+            "energy_before": 0.5,
+            "energy_after": 0.5,
+            "energy_delta": 0.0,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0.0,
+            "tangent_energy_increase_max": 0.0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 1,
+            "capacity": 20
+          }
+        },
+        {
+          "case": "rotation-low",
+          "baseline": {
+            "id": "rotation-low",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              -0.5,
+              0.0
+            ],
+            "omega": 0.5,
+            "energy_before": 0.5,
+            "energy_after": 0.25,
+            "energy_delta": -0.25,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 1,
+            "capacity": 20
+          },
+          "candidate": {
+            "id": "rotation-low",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              -0.5,
+              0.0
+            ],
+            "omega": 0.5,
+            "energy_before": 0.5,
+            "energy_after": 0.25,
+            "energy_delta": -0.25,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0.0,
+            "tangent_energy_increase_max": 0.0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 1,
+            "capacity": 20
+          }
+        },
+        {
+          "case": "rotation-high",
+          "baseline": {
+            "id": "rotation-high",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              -0.5,
+              0.0
+            ],
+            "omega": -0.5,
+            "energy_before": 0.5,
+            "energy_after": 0.25,
+            "energy_delta": -0.25,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 1,
+            "capacity": 20
+          },
+          "candidate": {
+            "id": "rotation-high",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              -0.5,
+              0.0
+            ],
+            "omega": -0.5,
+            "energy_before": 0.5,
+            "energy_after": 0.25,
+            "energy_delta": -0.25,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0.0,
+            "tangent_energy_increase_max": 0.0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 1,
+            "capacity": 20
+          }
+        },
+        {
+          "case": "rotation-separating",
+          "baseline": {
+            "id": "rotation-separating",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.0,
+              0.0
+            ],
+            "omega": 1.0,
+            "energy_before": 0.5,
+            "energy_after": 0.5,
+            "energy_delta": 0.0,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 1,
+            "capacity": 20
+          },
+          "candidate": {
+            "id": "rotation-separating",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.0,
+              0.0
+            ],
+            "omega": 1.0,
+            "energy_before": 0.5,
+            "energy_after": 0.5,
+            "energy_delta": 0.0,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0.0,
+            "tangent_energy_increase_max": 0.0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 1,
+            "capacity": 20
+          }
+        },
+        {
+          "case": "low-cap",
+          "baseline": {
+            "id": "low-cap",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.75,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 0.5,
+            "energy_after": 0.28125,
+            "energy_delta": -0.21875,
+            "maximum_approach_speed": 0.75,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 4,
+            "nodes": 1,
+            "capacity": 0.25
+          },
+          "candidate": {
+            "id": "low-cap",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.75,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 0.5,
+            "energy_after": 0.28125,
+            "energy_delta": -0.21875,
+            "maximum_approach_speed": 0.75,
+            "normal_energy_increase_max": 0.0,
+            "tangent_energy_increase_max": 0.0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 4,
+            "nodes": 1,
+            "capacity": 0.25
+          }
+        },
+        {
+          "case": "zero-cap",
+          "baseline": {
+            "id": "zero-cap",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              1.0,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 0.5,
+            "energy_after": 0.5,
+            "energy_delta": 0.0,
+            "maximum_approach_speed": 1.0,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 4,
+            "nodes": 1,
+            "capacity": 0
+          },
+          "candidate": {
+            "id": "zero-cap",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              1.0,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 0.5,
+            "energy_after": 0.5,
+            "energy_delta": 0.0,
+            "maximum_approach_speed": 1.0,
+            "normal_energy_increase_max": 0.0,
+            "tangent_energy_increase_max": 0.0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 4,
+            "nodes": 1,
+            "capacity": 0
+          }
+        },
+        {
+          "case": "friction-one",
+          "baseline": {
+            "id": "friction-one",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.0,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 1.0,
+            "energy_after": 0.0,
+            "energy_delta": -1.0,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 1,
+            "capacity": 20
+          },
+          "candidate": {
+            "id": "friction-one",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.0,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 1.0,
+            "energy_after": 0.0,
+            "energy_delta": -1.0,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 1,
+            "capacity": 20
+          }
+        },
+        {
+          "case": "friction-quarter",
+          "baseline": {
+            "id": "friction-quarter",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.0,
+              0.75
+            ],
+            "omega": 0.0,
+            "energy_before": 1.0,
+            "energy_after": 0.28125,
+            "energy_delta": -0.71875,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 1,
+            "capacity": 20
+          },
+          "candidate": {
+            "id": "friction-quarter",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.0,
+              0.75
+            ],
+            "omega": 0.0,
+            "energy_before": 1.0,
+            "energy_after": 0.28125,
+            "energy_delta": -0.71875,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0.0,
+            "tangent_energy_increase_max": 0.0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 1,
+            "capacity": 20
+          }
+        },
+        {
+          "case": "friction-zero",
+          "baseline": {
+            "id": "friction-zero",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.0,
+              1.0
+            ],
+            "omega": 0.0,
+            "energy_before": 1.0,
+            "energy_after": 0.5,
+            "energy_delta": -0.5,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 1,
+            "capacity": 20
+          },
+          "candidate": {
+            "id": "friction-zero",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.0,
+              1.0
+            ],
+            "omega": 0.0,
+            "energy_before": 1.0,
+            "energy_after": 0.5,
+            "energy_delta": -0.5,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0.0,
+            "tangent_energy_increase_max": 0.0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 1,
+            "capacity": 20
+          }
+        },
+        {
+          "case": "empty",
+          "baseline": {
+            "id": "empty",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              1.0,
+              1.0
+            ],
+            "omega": 1.0,
+            "energy_before": 1.5,
+            "energy_after": 1.5,
+            "energy_delta": 0.0,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 0,
+            "capacity": 0
+          },
+          "candidate": {
+            "id": "empty",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              1.0,
+              1.0
+            ],
+            "omega": 1.0,
+            "energy_before": 1.5,
+            "energy_after": 1.5,
+            "energy_delta": 0.0,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0.0,
+            "tangent_energy_increase_max": 0.0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 0,
+            "capacity": 0
+          }
+        },
+        {
+          "case": "zero-count",
+          "baseline": {
+            "id": "zero-count",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              1.0,
+              1.0
+            ],
+            "omega": 1.0,
+            "energy_before": 1.5,
+            "energy_after": 1.5,
+            "energy_delta": 0.0,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 0,
+            "capacity": 0
+          },
+          "candidate": {
+            "id": "zero-count",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              1.0,
+              1.0
+            ],
+            "omega": 1.0,
+            "energy_before": 1.5,
+            "energy_after": 1.5,
+            "energy_delta": 0.0,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0.0,
+            "tangent_energy_increase_max": 0.0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 0,
+            "capacity": 0
+          }
+        },
+        {
+          "case": "max-one-node",
+          "baseline": {
+            "id": "max-one-node",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.0,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 0.5,
+            "energy_after": 0.0,
+            "energy_delta": -0.5,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 512,
+            "capacity": 20
+          },
+          "candidate": {
+            "id": "max-one-node",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.0,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 0.5,
+            "energy_after": 0.0,
+            "energy_delta": -0.5,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 512,
+            "capacity": 20
+          }
+        },
+        {
+          "case": "max-two-nodes",
+          "baseline": {
+            "id": "max-two-nodes",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.0625,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 0.5,
+            "energy_after": 0.001953125,
+            "energy_delta": -0.498046875,
+            "maximum_approach_speed": 0.0625,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 1024,
+            "capacity": 20
+          },
+          "candidate": {
+            "id": "max-two-nodes",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.0625,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 0.5,
+            "energy_after": 0.001953125,
+            "energy_delta": -0.498046875,
+            "maximum_approach_speed": 0.0625,
+            "normal_energy_increase_max": -0.005859375,
+            "tangent_energy_increase_max": 0.0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 1024,
+            "capacity": 20
+          }
+        },
+        {
+          "case": "mass-520",
+          "baseline": {
+            "id": "mass-520",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.31640625,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 260.0,
+            "energy_after": 26.02935791015625,
+            "energy_delta": -233.97064208984375,
+            "maximum_approach_speed": 0.31640625,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 10400
+          },
+          "candidate": {
+            "id": "mass-520",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.0,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 260.0,
+            "energy_after": 0.0,
+            "energy_delta": -260.0,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 10400
+          }
+        },
+        {
+          "case": "loaded-unwind",
+          "baseline": {
+            "id": "loaded-unwind",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              -0.8125,
+              0.0
+            ],
+            "omega": -1.1875,
+            "energy_before": 5.0,
+            "energy_after": 1.03515625,
+            "energy_delta": -3.96484375,
+            "maximum_approach_speed": 0.375,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 20
+          },
+          "candidate": {
+            "id": "loaded-unwind",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              -1.0,
+              0.0
+            ],
+            "omega": -1.0,
+            "energy_before": 5.0,
+            "energy_after": 1.0,
+            "energy_delta": -4.0,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": -0.140625,
+            "tangent_energy_increase_max": 0.0,
+            "normal_unwinds": 2,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 20
+          }
+        },
+        {
+          "case": "loaded-unwind-friction",
+          "baseline": {
+            "id": "loaded-unwind-friction",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              -0.8125,
+              0.1875
+            ],
+            "omega": -1.1875,
+            "energy_before": 5.5,
+            "energy_after": 1.052734375,
+            "energy_delta": -4.447265625,
+            "maximum_approach_speed": 0.375,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 20
+          },
+          "candidate": {
+            "id": "loaded-unwind-friction",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              -1.0,
+              0.1875
+            ],
+            "omega": -1.0,
+            "energy_before": 5.5,
+            "energy_after": 1.017578125,
+            "energy_delta": -4.482421875,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": -0.140625,
+            "tangent_energy_increase_max": 0.0390625,
+            "normal_unwinds": 2,
+            "tangent_unwinds": 2,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 20
+          }
+        },
+        {
+          "case": "shrinking-friction-cone",
+          "baseline": {
+            "id": "shrinking-friction-cone",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              -0.26187499999999986,
+              2.738125
+            ],
+            "omega": -0.1887500000000002,
+            "energy_before": 10.5,
+            "energy_after": 3.8007667968750005,
+            "energy_delta": -6.699233203124999,
+            "maximum_approach_speed": 0.11562500000000053,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 20
+          },
+          "candidate": {
+            "id": "shrinking-friction-cone",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              -0.26187499999999986,
+              2.738125
+            ],
+            "omega": -0.1887500000000002,
+            "energy_before": 10.5,
+            "energy_after": 3.8007667968750005,
+            "energy_delta": -6.699233203124999,
+            "maximum_approach_speed": 0.11562500000000053,
+            "normal_energy_increase_max": -0.0027802734374997584,
+            "tangent_energy_increase_max": 0.018800976562499905,
+            "normal_unwinds": 2,
+            "tangent_unwinds": 2,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 20
+          }
+        },
+        {
+          "case": "opposing-offcentre",
+          "baseline": {
+            "id": "opposing-offcentre",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.45520000000000005,
+              0.0
+            ],
+            "omega": 0.1791999999999998,
+            "energy_before": 1.0,
+            "energy_after": 0.10761760000000001,
+            "energy_delta": -0.8923824,
+            "maximum_approach_speed": 0.27600000000000025,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 20
+          },
+          "candidate": {
+            "id": "opposing-offcentre",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.45520000000000005,
+              0.0
+            ],
+            "omega": 0.1791999999999998,
+            "energy_before": 1.0,
+            "energy_after": 0.10761760000000001,
+            "energy_delta": -0.8923824,
+            "maximum_approach_speed": 0.27600000000000025,
+            "normal_energy_increase_max": -0.023486399999999977,
+            "tangent_energy_increase_max": 0.0,
+            "normal_unwinds": 3,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 20
+          }
+        },
+        {
+          "case": "corner-friction",
+          "baseline": {
+            "id": "corner-friction",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.019775390625,
+              0.019775390625
+            ],
+            "omega": 0.0,
+            "energy_before": 1.0,
+            "energy_after": 0.0003910660743713379,
+            "energy_delta": -0.9996089339256287,
+            "maximum_approach_speed": 0.019775390625,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 20
+          },
+          "candidate": {
+            "id": "corner-friction",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.019775390625,
+              0.019775390625
+            ],
+            "omega": 0.0,
+            "energy_before": 1.0,
+            "energy_after": 0.0003910660743713379,
+            "energy_delta": -0.9996089339256287,
+            "maximum_approach_speed": 0.019775390625,
+            "normal_energy_increase_max": -0.0020856857299804688,
+            "tangent_energy_increase_max": -0.00030416250228881836,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 20
+          }
+        },
+        {
+          "case": "offset-com",
+          "baseline": {
+            "id": "offset-com",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              -0.8125,
+              0.0
+            ],
+            "omega": -1.1875,
+            "energy_before": 5.0,
+            "energy_after": 1.03515625,
+            "energy_delta": -3.96484375,
+            "maximum_approach_speed": 0.375,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 20
+          },
+          "candidate": {
+            "id": "offset-com",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              -1.0,
+              0.0
+            ],
+            "omega": -1.0,
+            "energy_before": 5.0,
+            "energy_after": 1.0,
+            "energy_delta": -4.0,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": -0.140625,
+            "tangent_energy_increase_max": 0.0,
+            "normal_unwinds": 2,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 20
+          }
+        },
+        {
+          "case": "unequal-counts",
+          "baseline": {
+            "id": "unequal-counts",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.5397750937109538,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 0.5,
+            "energy_after": 0.14567857589533448,
+            "energy_delta": -0.3543214241046655,
+            "maximum_approach_speed": 0.5397750937109538,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 3,
+            "capacity": 14
+          },
+          "candidate": {
+            "id": "unequal-counts",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.0,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 0.5,
+            "energy_after": 0.0,
+            "energy_delta": -0.5,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 3,
+            "capacity": 14
+          }
+        },
+        {
+          "case": "clamped-quadrature",
+          "baseline": {
+            "id": "clamped-quadrature",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              -0.08000000000000007,
+              0.0
+            ],
+            "omega": -0.16479999999999995,
+            "energy_before": 1.0,
+            "energy_after": 0.016779519999999996,
+            "energy_delta": -0.98322048,
+            "maximum_approach_speed": 0.13973333333333318,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 6
+          },
+          "candidate": {
+            "id": "clamped-quadrature",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              -0.08000000000000007,
+              0.0
+            ],
+            "omega": -0.16479999999999995,
+            "energy_before": 1.0,
+            "energy_after": 0.016779519999999996,
+            "energy_delta": -0.98322048,
+            "maximum_approach_speed": 0.13973333333333318,
+            "normal_energy_increase_max": -0.009492480000000011,
+            "tangent_energy_increase_max": 0.0,
+            "normal_unwinds": 2,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 6
+          }
+        },
+        {
+          "case": "rotated-normal",
+          "baseline": {
+            "id": "rotated-normal",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.18984375000000003,
+              0.25312500000000004
+            ],
+            "omega": 0.0,
+            "energy_before": 0.5,
+            "energy_after": 0.05005645751953127,
+            "energy_delta": -0.44994354248046875,
+            "maximum_approach_speed": 0.31640625000000006,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 20
+          },
+          "candidate": {
+            "id": "rotated-normal",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.0,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 0.5,
+            "energy_after": 0.0,
+            "energy_delta": -0.5,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 20
+          }
+        },
+        {
+          "case": "unwind-reversed-order",
+          "baseline": {
+            "id": "unwind-reversed-order",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              -0.8125,
+              0.0
+            ],
+            "omega": -1.1875,
+            "energy_before": 5.0,
+            "energy_after": 1.03515625,
+            "energy_delta": -3.96484375,
+            "maximum_approach_speed": 0.375,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 20
+          },
+          "candidate": {
+            "id": "unwind-reversed-order",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              -1.0,
+              0.0
+            ],
+            "omega": -1.0,
+            "energy_before": 5.0,
+            "energy_after": 1.0,
+            "energy_delta": -4.0,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": -0.140625,
+            "tangent_energy_increase_max": 0.0,
+            "normal_unwinds": 2,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 20
+          }
+        },
+        {
+          "case": "unwind-reflected",
+          "baseline": {
+            "id": "unwind-reflected",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.8125,
+              0.0
+            ],
+            "omega": 1.1875,
+            "energy_before": 5.0,
+            "energy_after": 1.03515625,
+            "energy_delta": -3.96484375,
+            "maximum_approach_speed": 0.375,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 20
+          },
+          "candidate": {
+            "id": "unwind-reflected",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              1.0,
+              0.0
+            ],
+            "omega": 1.0,
+            "energy_before": 5.0,
+            "energy_after": 1.0,
+            "energy_delta": -4.0,
+            "maximum_approach_speed": 0,
+            "normal_energy_increase_max": -0.140625,
+            "tangent_energy_increase_max": 0.0,
+            "normal_unwinds": 2,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 20
+          }
+        },
+        {
+          "case": "separating-contact-activates",
+          "baseline": {
+            "id": "separating-contact-activates",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.82325,
+              0.0
+            ],
+            "omega": 0.34099999999999997,
+            "energy_before": 0.5,
+            "energy_after": 0.39701078125,
+            "energy_delta": -0.10298921875,
+            "maximum_approach_speed": 0.19974999999999987,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 20
+          },
+          "candidate": {
+            "id": "separating-contact-activates",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.8119,
+              0.0
+            ],
+            "omega": 0.33630000000000004,
+            "energy_before": 0.5,
+            "energy_after": 0.38613965,
+            "energy_delta": -0.11386035,
+            "maximum_approach_speed": 0.19700000000000017,
+            "normal_energy_increase_max": -0.003910350000000007,
+            "tangent_energy_increase_max": 0.0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 0,
+            "nodes": 2,
+            "capacity": 20
+          }
+        },
+        {
+          "case": "capacity-not-redistributed",
+          "baseline": {
+            "id": "capacity-not-redistributed",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.9375,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 0.5,
+            "energy_after": 0.439453125,
+            "energy_delta": -0.060546875,
+            "maximum_approach_speed": 0.9375,
+            "normal_energy_increase_max": 0,
+            "tangent_energy_increase_max": 0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 4,
+            "nodes": 2,
+            "capacity": 0.5
+          },
+          "candidate": {
+            "id": "capacity-not-redistributed",
+            "refused": false,
+            "early_refusal": false,
+            "velocity": [
+              0.9375,
+              0.0
+            ],
+            "omega": 0.0,
+            "energy_before": 0.5,
+            "energy_after": 0.439453125,
+            "energy_delta": -0.060546875,
+            "maximum_approach_speed": 0.9375,
+            "normal_energy_increase_max": 0.0,
+            "tangent_energy_increase_max": 0.0,
+            "normal_unwinds": 0,
+            "tangent_unwinds": 0,
+            "normal_cap_hits": 4,
+            "nodes": 2,
+            "capacity": 0.5
+          }
+        }
+      ]
+    }
+  ],
+  "scope": "Copied values only; live World/Rapier and original SOL clearance unavailable",
+  "candidate_decision": "PASS"
+}

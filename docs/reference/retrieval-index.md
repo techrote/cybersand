@@ -10,6 +10,11 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 
 # Retrieval question index
 
+For the opt-in copied-value normal-relaxation candidate, retrieve
+[the coupling boundary](../architecture/rigid-body-and-cellular-coupling.md#active-normal-copied-value-candidate).
+`retrieval-questions-sol-active-normal.json` is a separate post-result supplement;
+the unchanged production response and live/original SOL gates remain explicit.
+
 For response-generation cost versus observation/export overhead, retrieve
 [the coupling cost boundary](../architecture/rigid-body-and-cellular-coupling.md#granular-response-cost-and-observation).
 `retrieval-questions-sol-cost.json` adds post-result cost/participation questions;

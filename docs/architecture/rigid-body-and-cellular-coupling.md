@@ -28,6 +28,23 @@ Windows MSVC using the unchanged header. It also checks friction, rotation,
 capacity, refusal and workspace reuse. These synthetic bins carry no material
 eligibility, live World/Rapier authority or original SOL clearance claim.
 
+### Active-normal copied-value candidate
+
+**Current experimental values, not live physics:** the separately registered
+[active-normal comparison](../audits/2026-11-05-sol-active-normal.md) normalizes
+normal relaxation over approaching or already-loaded contacts. It preserves
+original capacity shares, four passes, tangent rules and final rejection.
+All-active batches reuse original weights exactly. Nine uncapped COM targets
+stop across Linux optimized/strict sanitizers and actual Windows MSVC; a capped
+front still retains15/16speed, so unused support capacity is not borrowed.
+Loaded impulses unwind and a changing active set is recomputed per batch.
+
+The production header remains unchanged in this value phase. Normal-batch
+passivity does not extend to every computational tangent batch; shrinking cones
+can unwind friction and raise intermediate energy. No live material, World,
+Rapier, original SOL or default admission follows. Live comparison needs its
+own registration and fresh native runtime qualification.
+
 ## Granular response cost and observation
 
 **Current experimental evidence:** [SOL-CHAMBER-COST-001](../audits/2026-11-05-sol-response-cost.md)

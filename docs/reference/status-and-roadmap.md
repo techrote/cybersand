@@ -12,6 +12,12 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 ## Compound granular behaviour and SOL boundary — 2026-11-05
 
+The [active-normal value refinement](../audits/2026-11-05-sol-active-normal.md)
+passes its38case registration on three compiled variants, improving nine COM
+arrest targets without changing capacity shares. It is not in production/live
+coupling. Next qualify an opt-in real-World response at fresh source and retain
+the original policy. Original SOL ownership/material admission stays separate.
+
 The [separate response-cost lane](../audits/2026-11-05-sol-response-cost.md)
 qualifies48single-body sessions and24observer pairs:13–22µs response generation
 in this small workload, with roughly12–13ms full-census overhead. This isolates
