@@ -229,6 +229,7 @@ def import_project(engine: Path, source_revision: str) -> None:
 
 if os.name == "nt":
     kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
+    TH32CS_SNAPPROCESS = 0x00000002
     TH32CS_SNAPTHREAD = 0x00000004
     THREAD_QUERY_LIMITED_INFORMATION = 0x0800
     INVALID_HANDLE_VALUE = ctypes.c_void_p(-1).value
@@ -244,12 +245,30 @@ if os.name == "nt":
             ("dwFlags", wintypes.DWORD),
         ]
 
+    class PROCESSENTRY32W(ctypes.Structure):
+        _fields_ = [
+            ("dwSize", wintypes.DWORD),
+            ("cntUsage", wintypes.DWORD),
+            ("th32ProcessID", wintypes.DWORD),
+            ("th32DefaultHeapID", ctypes.c_size_t),
+            ("th32ModuleID", wintypes.DWORD),
+            ("cntThreads", wintypes.DWORD),
+            ("th32ParentProcessID", wintypes.DWORD),
+            ("pcPriClassBase", wintypes.LONG),
+            ("dwFlags", wintypes.DWORD),
+            ("szExeFile", wintypes.WCHAR * 260),
+        ]
+
     kernel32.CreateToolhelp32Snapshot.argtypes = [wintypes.DWORD, wintypes.DWORD]
     kernel32.CreateToolhelp32Snapshot.restype = wintypes.HANDLE
     kernel32.Thread32First.argtypes = [wintypes.HANDLE, ctypes.POINTER(THREADENTRY32)]
     kernel32.Thread32First.restype = wintypes.BOOL
     kernel32.Thread32Next.argtypes = [wintypes.HANDLE, ctypes.POINTER(THREADENTRY32)]
     kernel32.Thread32Next.restype = wintypes.BOOL
+    kernel32.Process32FirstW.argtypes = [wintypes.HANDLE, ctypes.POINTER(PROCESSENTRY32W)]
+    kernel32.Process32FirstW.restype = wintypes.BOOL
+    kernel32.Process32NextW.argtypes = [wintypes.HANDLE, ctypes.POINTER(PROCESSENTRY32W)]
+    kernel32.Process32NextW.restype = wintypes.BOOL
     kernel32.OpenThread.argtypes = [wintypes.DWORD, wintypes.BOOL, wintypes.DWORD]
     kernel32.OpenThread.restype = wintypes.HANDLE
     kernel32.GetThreadTimes.argtypes = [
@@ -272,6 +291,92 @@ if os.name == "nt":
 
 def ft_to_int(ft: wintypes.FILETIME) -> int:
     return (int(ft.dwHighDateTime) << 32) | int(ft.dwLowDateTime)
+
+def process_snapshot() -> dict[int, dict]:
+    if os.name != "nt":
+        return {}
+    snap = kernel32.CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0)
+    if snap == INVALID_HANDLE_VALUE:
+        return {}
+    entry = PROCESSENTRY32W()
+    entry.dwSize = ctypes.sizeof(PROCESSENTRY32W)
+    rows = {}
+    try:
+        ok = kernel32.Process32FirstW(snap, ctypes.byref(entry))
+        while ok:
+            pid = int(entry.th32ProcessID)
+            rows[pid] = {
+                "pid": pid,
+                "parent_pid": int(entry.th32ParentProcessID),
+                "threads": int(entry.cntThreads),
+                "exe": str(entry.szExeFile),
+            }
+            ok = kernel32.Process32NextW(snap, ctypes.byref(entry))
+    finally:
+        kernel32.CloseHandle(snap)
+    return rows
+
+
+def descendant_processes(root_pid: int) -> list[dict]:
+    snapshot = process_snapshot()
+    children = {}
+    for row in snapshot.values():
+        children.setdefault(row["parent_pid"], []).append(row)
+    found = []
+    queue = [root_pid]
+    seen = {root_pid}
+    while queue:
+        parent = queue.pop(0)
+        for row in children.get(parent, []):
+            pid = row["pid"]
+            if pid in seen:
+                continue
+            seen.add(pid)
+            found.append(row)
+            queue.append(pid)
+    return found
+
+
+def resolve_godot_process(launcher_pid: int, timeout_seconds: float = 12.0) -> dict:
+    deadline = time.monotonic() + timeout_seconds
+    last_descendants = []
+    while time.monotonic() < deadline:
+        descendants = descendant_processes(launcher_pid)
+        if descendants:
+            last_descendants = descendants
+        godot_children = [
+            row for row in descendants
+            if "godot" in row["exe"].lower() and "console" not in row["exe"].lower()
+        ]
+        if godot_children:
+            godot_children.sort(key=lambda row: (row["threads"], row["pid"]), reverse=True)
+            return {
+                "launcher_pid": launcher_pid,
+                "target_pid": godot_children[0]["pid"],
+                "target_exe": godot_children[0]["exe"],
+                "selection": "non-console Godot descendant",
+                "descendants": descendants,
+            }
+        time.sleep(0.005)
+
+    launcher_threads = thread_snapshot(launcher_pid)
+    if launcher_threads:
+        cpu_before = sum(row["cpu_100ns"] for row in launcher_threads.values())
+        time.sleep(0.050)
+        cpu_after = sum(row["cpu_100ns"] for row in thread_snapshot(launcher_pid).values())
+        if cpu_after > cpu_before:
+            return {
+                "launcher_pid": launcher_pid,
+                "target_pid": launcher_pid,
+                "target_exe": "launcher",
+                "selection": "launcher has advancing CPU time",
+                "descendants": last_descendants,
+            }
+    raise RuntimeError(
+        "no non-console Godot descendant became queryable; descendants="
+        + repr(last_descendants)
+    )
+
 
 def enumerate_thread_ids(pid: int) -> list[int]:
     if os.name != "nt":
@@ -351,8 +456,10 @@ def thread_snapshot(pid: int) -> dict[int, dict]:
     return data
 
 class MainThreadSampler:
-    def __init__(self, pid: int, output_dir: Path):
-        self.pid = pid
+    def __init__(self, launcher_pid: int, output_dir: Path):
+        self.launcher_pid = launcher_pid
+        self.pid = None
+        self.process_resolution = None
         self.output_dir = output_dir
         self.stop_event = threading.Event()
         self.thread = None
@@ -384,6 +491,8 @@ class MainThreadSampler:
 
     def _run(self):
         try:
+            self.process_resolution = resolve_godot_process(self.launcher_pid)
+            self.pid = int(self.process_resolution["target_pid"])
             deadline = time.monotonic() + 10.0
             snap = {}
             while time.monotonic() < deadline and not snap and not self.stop_event.is_set():
@@ -391,7 +500,7 @@ class MainThreadSampler:
                 if not snap:
                     time.sleep(0.005)
             if not snap:
-                self.errors.append("no process threads became queryable")
+                self.errors.append("no target Godot threads became queryable")
                 return
             self.main_tid = min(snap, key=lambda tid: snap[tid]["creation_100ns"])
             self._merge_participation(snap, time.time_ns())
@@ -448,7 +557,9 @@ class MainThreadSampler:
             participation.append(item)
         participation.sort(key=lambda x: x["observed_cpu_usec"], reverse=True)
         meta = {
+            "launcher_pid": self.launcher_pid,
             "pid": self.pid,
+            "process_resolution": self.process_resolution,
             "main_tid": self.main_tid,
             "sample_count": len(self.samples),
             "errors": self.errors,
@@ -661,9 +772,11 @@ def align_trial(trial: dict) -> dict:
     offset_usec = int(round(statistics.median(offsets)))
     offset_spread_usec = max(offsets) - min(offsets)
 
-    if int(result.get("process_pid", -1)) != int(trial["process_pid"]):
+    sampled_pid = int(trial["sampler_meta"].get("pid", -1))
+    if int(result.get("process_pid", -1)) != sampled_pid:
         raise RuntimeError(
-            trial["label"] + " Godot reported PID does not match sampled process"
+            trial["label"] + " Godot reported PID does not match sampled target process: "
+            + str(result.get("process_pid")) + " != " + str(sampled_pid)
         )
 
     events = []
