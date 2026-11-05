@@ -27,6 +27,8 @@ var accepted_brush_commands: int = 0
 var attempted_brush_commands: int = 0
 var main_started_usec: int = 0
 var main_ack_usec: int = 0
+var worker_participation_evidence: Dictionary = {}
+var measurement_clock_sync: Dictionary = {}
 
 
 class ObservedMain:
@@ -39,6 +41,7 @@ class ObservedMain:
 	var bridge_thread_cpu_before_100ns: int = -1
 	var bridge_thread_cpu_after_100ns: int = -1
 	var bridge_thread_cpu_100ns: int = -1
+	var bridge_wall_started_usec: int = -1
 
 	func actor_keyboard_allowed() -> bool:
 		# Same harness focus policy as existing PLAY-LIFE and PLAY-PACE probes.
@@ -154,6 +157,7 @@ class ObservedMain:
 		bridge_thread_cpu_before_100ns = -1
 		bridge_thread_cpu_after_100ns = -1
 		bridge_thread_cpu_100ns = -1
+		bridge_wall_started_usec = -1
 		if measurement_phase == "timed_a" or measurement_phase == "timed_b":
 			_instrumented_dispatch(delta)
 		else:
@@ -190,6 +194,7 @@ class ObservedMain:
 				"bridge_thread_cpu_before_100ns":bridge_thread_cpu_before_100ns,
 				"bridge_thread_cpu_after_100ns":bridge_thread_cpu_after_100ns,
 				"bridge_thread_cpu_100ns":bridge_thread_cpu_100ns,
+				"bridge_wall_started_usec":bridge_wall_started_usec,
 				"bridge_step_usec":bridge_step_usec,
 				"bridge_flush_usec":bridge_flush_usec,
 				"bridge_active_bodies":bridge_active_bodies,
@@ -248,6 +253,7 @@ class ObservedMain:
 			else:
 				apply_barrel_player_control(_delta)
 			stage_started_usec = Time.get_ticks_usec()
+			bridge_wall_started_usec = stage_started_usec
 			bridge_thread_cpu_before_100ns = thread_cpu_clock.thread_cpu_time_100ns()
 			rapier_bridge.step()
 			bridge_thread_cpu_after_100ns = thread_cpu_clock.thread_cpu_time_100ns()
@@ -519,11 +525,27 @@ func run() -> void:
 	main_ack_usec = Time.get_ticks_usec()
 	if ready:
 		desktop.playable_session_panel.resume_play()
-		# No brush/paint commands. The only runtime contrast is process cap.
+		# Sample actual native pool participation only during warmup, then disable
+		# it before measured arms so the #449 workload remains unchanged.
+		worker.set_worker_participation_sampling(true)
+		# No brush/paint commands. The only measured contrast is the test-only CPU clock.
 		Engine.max_fps = 60
 		phase = "warmup"
 		for _i: int in range(60):
 			await process_frame
+		var warm_snapshot: CyberSimulationSnapshot = desktop.latest_snapshot
+		if warm_snapshot != null and not warm_snapshot.native_worker_participation.is_empty():
+			worker_participation_evidence = {
+				"native_worker_request": int(warm_snapshot.native_worker_request),
+				"sample": warm_snapshot.native_worker_participation.duplicate(true)
+			}
+		worker.set_worker_participation_sampling(false)
+		expect(not worker_participation_evidence.is_empty(), "native worker participation sampled during warmup")
+		measurement_clock_sync = {
+			"ticks_usec": Time.get_ticks_usec(),
+			"unix_usec": roundi(Time.get_unix_time_from_system() * 1000000.0),
+			"pid": OS.get_process_id()
+		}
 		for cfg: Dictionary in [
 			{"label": "baseline_a", "fps": 60},
 			{"label": "timed_a", "fps": 60},
@@ -544,6 +566,8 @@ func run() -> void:
 	var result: Dictionary = {
 		"schema": "inv154-thread-cpu-v1",
 		"thread_cpu_clock_controls": cpu_clock_controls,
+		"measurement_clock_sync": measurement_clock_sync,
+		"native_worker_participation": worker_participation_evidence,
 		"platform": OS.get_name(), "display_server": DisplayServer.get_name(),
 		"godot": Engine.get_version_info().get("string", "unknown"),
 		"driver": RenderingServer.get_rendering_device().get_device_name()
