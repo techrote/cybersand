@@ -45,13 +45,17 @@ Authenticate supplied payload/shape/source/runtime digests as copied values;
 their consistency is not proof of native capture.
 
 Declare current-pose/no-op scope and a bounded complete native census including
-occupied interiors and a support halo. Every coordinate appears once with full
+occupied interiors and a one-cell no-op halo. Every coordinate appears once with full
 material/state/temperature tuple, residency, source owner and mask owner. Empty
 is distinct from unresident/absent. Missing evidence, unknown source, unsupported
 material, hot/foreign/masked cells and hard intersections refuse. Caller-supplied
 `eligible` or `complete` flags supply no evidence. Independently clipped hard
 overlap above the original1e-9filter remains binding. No swept-motion permission
 follows. Historical material-ID-only RLE cannot satisfy this envelope.
+The original support predicate reads a broader3×3stencil extending two cells
+downward; its complete eligibility is UNAVAILABLE here. The model refuses stored
+native material under its synthetic body mask. That is a scope restriction,
+not a proof of duplicate ownership of original RedBrick member identities.
 
 The initial model is bounded at16384census cells,256events and8consumed leases.
 It covers ambient200 tuple temperature, granular2Sand/14Dust and hard1Wall/43
@@ -88,6 +92,14 @@ retires an incarnation, never resets its ledger under the same identity. Refuse
 capacity before eviction; retain overwritten/refused attempts in the denominator.
 Copied envelopes remain immutable. ACK authenticates the modeled no-op only,
 not real corrected occupancy.
+The one aggregate's run/body/generation/payload/shape/source/runtime/material
+binding is pinned per World. Caller aliases cannot renew an actual-step budget
+or bypass terminal state. Mutation/body/mask/actual-step serials cannot rewind;
+typed identity checks reject bool/int aliases on every identity-bearing event.
+Known partial-fault reports latch terminal even after ordinary expiry. Trace
+overflow clears active into a terminal capacity/expired outcome, retaining all
+consumption and attempt counts. Deadline arithmetic is bounded and inclusive
+atgrant+32. Copied failed/unknown health refuses; this does not query a real World.
 
 ## Qualification and later admission
 

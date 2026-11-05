@@ -86,7 +86,7 @@ These are genuine geometry negatives/unknown authority, not live recovery target
 ## Offline apparatus and retained failures
 
 The model freezes exact geometry/tuples, a complete current-pose synthetic
-cell-centre mask/census with halo, supplied experimental runtime/input digests,
+cell-centre mask/census with a one-cell no-op halo, supplied experimental runtime/input digests,
 ambient200 and supported2Sand/14Dust plus hard1Wall/43RedBrick. Unsupported or
 unknown evidence refuses. Bounds precede serialization:16384census cells,
 256events,8consumed leases and a fixed32event deadline. That event clock is not
@@ -103,7 +103,16 @@ test incorrectly expects16Wall in the entire frozen field instead of528. The
 [003correction ledger](../../native/tests/fixtures/sol_authority_apparatus_003.json)
 retains log/exit/hash and corrects only that expectation, keeping the separate
 16hard-intersection assertion and original1e-9filter. Corrected exact-source
-test results and independent review follow in the next checkpoint.
+tests at12e651d6 pass14on actual Windows Python and14on WSL Linux Python.
+Those passes remain INCOMPLETE protocol qualification: independent review finds
+body-alias reuse, stale full-trace HELD, deadline overflow, late partial-failure,
+serial-rewind, bool/int alias and pre-encoding bound defects. Exact pinned-code
+reproducers confirm them. The
+[004repair registration](../../native/tests/fixtures/sol_authority_apparatus_004.json)
+retains raw script/log hashes and specifies corrections before a20test campaign.
+No native code or physical threshold changes. Original support eligibility and
+member-identity ownership remain UNAVAILABLE; the one-cell synthetic halo and
+empty-only synthetic mask do not prove either. Final tests/review follow separately.
 
 ## Source-bound decisions
 

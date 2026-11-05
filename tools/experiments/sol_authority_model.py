@@ -23,6 +23,8 @@ RUNTIMES={'bbfa83cb45a23423fe3c3ead5f487adaba7ba22d727d721aeae6f2836e493922','7e
 DIGEST_KEYS={'native_source_sha256','native_runtime_sha256','material_lock_sha256','payload_sha256','shape_sha256','body_state_sha256'}
 SERIAL_KEYS={'generation','epoch','tick','sample','mutation_serial','body_serial','mask_serial','actual_step'}
 IDENTITY_KEYS=DIGEST_KEYS|SERIAL_KEYS|{'run','world','body'}
+PROGRESS_KEYS=['mutation_serial','body_serial','mask_serial','actual_step']
+def binding(stamp):return tuple(stamp[k] for k in ['run','body','generation','payload_sha256','shape_sha256','native_source_sha256','native_runtime_sha256','material_lock_sha256'])
 
 def encoded(value):return json.dumps(value,sort_keys=True,separators=(',',':'),allow_nan=False).encode('utf-8')
 def digest(value):return hashlib.sha256(encoded(value)).hexdigest()
@@ -59,7 +61,8 @@ def validate_capture(packet):
     result=scope();reasons=[]
     try:
         # Bound every copied collection and primitive before serialization.
-        assert isinstance(packet,dict) and set(packet)=={'schema','origin','capture_scope','mask_policy','identity','members','rectangles','stored_com','mass','geometric_inertia','body_inertia','pose','velocity','omega','footprint','census'},'capture schema'
+        assert isinstance(packet,dict) and set(packet)=={'schema','origin','capture_scope','mask_policy','world_health','identity','members','rectangles','stored_com','mass','geometric_inertia','body_inertia','pose','velocity','omega','footprint','census'},'capture schema'
+        assert packet['schema']=='SOL-OFFLINE-CAPTURE-001' and packet['origin']=='synthetic-copied-values' and packet['capture_scope']=='current-pose-noop' and packet['mask_policy']=='synthetic-cell-centre-001' and packet['world_health']=='HEALTHY','scope/health/origin unavailable'
         assert identity_valid(packet['identity']),'incomplete identity'
         for key,count,width in [('members',520,6),('rectangles',6,4)]:
             assert isinstance(packet[key],list) and len(packet[key])==count and all(isinstance(row,list) and len(row)==width and all(type(v) is int and abs(v)<2**31 for v in row) for row in packet[key]),'bounded source tuples/partition'
@@ -107,14 +110,16 @@ def validate_capture(packet):
             assert row['mask_owner'] in [None,stamp['body']],'foreign/masked ownership'
             inside=any(all((b[0]-a[0])*(y+.5-a[1])-(b[1]-a[1])*(x+.5-a[0])>=0 for a,b in zip(poly,poly[1:]+poly[:1])) for poly in polys)
             assert row['mask_owner']==(stamp['body'] if inside else None),'current-pose synthetic mask differs'
-            # Empty native cells under this body's mask avoid duplicate authority.
-            if row['mask_owner']==stamp['body']:assert material==0,'native-plus-body duplicate authority'
+            # This model excludes stored native material under its synthetic mask.
+            # That is not a general proof of original-member identity ownership.
+            if row['mask_owner']==stamp['body']:assert material==0,'unsupported masked native material'
             for proxy,poly in enumerate(polys):
                 area=geometry.overlap(poly,x,y)
                 if area>AREA_FILTER and material in [1,43]:hard.append(dict(cell=[x,y],material=material,proxy=proxy+1,area=area))
                 if area>0 and material in [2,14]:granular.append(dict(cell=[x,y],material=material,proxy=proxy+1,area=area))
         assert seen==expected,'incomplete census'
-        result.update(hard_intersections=hard,granular_intersections=granular,census_cells=len(census),captured_digest=hashlib.sha256(frozen).hexdigest())
+        result.update(hard_intersections=hard,granular_intersections=granular,census_cells=len(census),captured_digest=hashlib.sha256(frozen).hexdigest(),
+            support_eligibility='UNAVAILABLE: one-cell no-op halo does not cover original support predicate',member_identity_ownership='UNAVAILABLE: supplied tuple consistency is not owner-captured member identity')
         assert not hard,'hard exclusion above1e-9'
         result['status']='COMPLETE_FOR_NOOP_MODEL'
     except (AssertionError,KeyError,TypeError,ValueError,OverflowError) as error:
@@ -126,22 +131,51 @@ class LeaseModel:
     """Bounded deterministic model; its opaque bytes cannot be live lease tokens."""
     def __init__(self):
         self.state='IDLE';self.world=None;self.retired=set();self.consumed=set();self.terminal=set();self.active=None
-        self.generations={};self.actual_steps={}
+        self.generations={};self.actual_steps={};self.aggregate_bindings={};self.progress={};self.last_lease=None
         self.clock=-1;self.attempts=0;self.trace=[];self.trace_overflow=0
     def event(self,kind,now,stamp=None,packet=None,capture_digest=None):
         self.attempts+=1
         if len(self.trace)>=MAX_EVENTS:
-            self.trace_overflow+=1;return dict(**scope(),accepted=False,reason='trace capacity',state=self.state)
+            self.trace_overflow+=1
+            known=self.active or self.last_lease
+            if known is not None and known['stamp']['world']==self.world:
+                stamp_held=known['stamp'];self.terminal.add((stamp_held['world'],stamp_held['body']))
+            expired=known is not None and integer(now) and now>=self.clock and now>known['deadline']
+            if integer(now) and now>=self.clock:self.clock=now
+            self.active=None;self.state='EXPIRED' if expired else 'MODEL_CAPACITY_FAILURE'
+            return dict(**scope(),accepted=False,reason='trace capacity; lease terminal, consumption retained',state=self.state)
         accepted=False;reason=''
         try:
             assert isinstance(kind,str) and 0<len(kind)<=32,'bounded event name'
             assert integer(now) and now>=self.clock,'model clock reversal';self.clock=now
+            if kind=='simulate_partial_fault':
+                known=self.active or self.last_lease
+                fault=stamp if stamp is not None else (known['stamp'] if known else None)
+                assert identity_valid(fault) and fault['world']==self.world,'known fault identity unavailable'
+                assert self.aggregate_bindings.get(fault['world'])==binding(fault),'fault binding changed'
+                assert (fault['world'],fault['body'],fault['generation'],fault['actual_step']) in self.consumed,'fault lease unknown'
+                self.terminal.add((fault['world'],fault['body']));self.active=None;self.state='MODEL_TERMINAL_FAILURE'
+                self.trace.append(dict(event=kind,now=now,accepted=True,reason='',state=self.state))
+                return dict(**scope(),accepted=True,reason='',state=self.state)
             if self.active and now>self.active['deadline']:
                 self.state='EXPIRED';self.active=None;raise AssertionError('fixed deadline expired; step remains consumed')
+            if kind in ['grant','capture','main_validate','noop_ack','release']:
+                assert identity_valid(stamp),'typed identity required on every identity-bearing event'
+                if stamp['world'] in self.aggregate_bindings:
+                    if self.aggregate_bindings[stamp['world']]!=binding(stamp):
+                        if kind!='grant' and self.active:self.active=None;self.state='INVALIDATED'
+                        raise AssertionError('one-aggregate World binding changed; aliases cannot renew')
+                    current=tuple(stamp[k] for k in PROGRESS_KEYS);prior=self.progress[stamp['world']]
+                    if not all(a>=b for a,b in zip(current,prior)):
+                        if kind!='grant' and self.active:self.active=None;self.state='INVALIDATED'
+                        raise AssertionError('progress serial clock reversal')
+                    self.progress[stamp['world']]=current
             if kind=='grant':
                 assert identity_valid(stamp),'request identity'
                 body=(stamp['world'],stamp['body'],stamp['generation']);key=body+(stamp['actual_step'],)
                 stable=body[:2]
+                resource_binding=binding(stamp)
+                assert self.aggregate_bindings.get(stamp['world'],resource_binding)==resource_binding,'one-aggregate World binding changed; aliases cannot renew'
                 assert stamp['world'] not in self.retired and stable not in self.terminal,'retired/terminal incarnation'
                 assert self.world in [None,stamp['world']],'old World not retired'
                 assert self.active is None,'exclusive lease busy'
@@ -149,8 +183,11 @@ class LeaseModel:
                 assert stamp['actual_step']>=self.actual_steps.get(stable,0),'actual step clock reversal'
                 assert key not in self.consumed,'actual step already consumed'
                 assert len(self.consumed)<MAX_LEASES,'consumption capacity; no eviction'
+                assert now<=2**63-1-LEASE_EVENTS,'deadline clock capacity'
+                self.aggregate_bindings[stamp['world']]=resource_binding;self.progress[stamp['world']]=tuple(stamp[k] for k in PROGRESS_KEYS)
                 self.generations[stable]=stamp['generation'];self.actual_steps[stable]=stamp['actual_step']
                 self.consumed.add(key);self.world=stamp['world'];self.active=dict(stamp=copy.deepcopy(stamp),deadline=now+LEASE_EVENTS,digest=None)
+                self.last_lease=copy.deepcopy(self.active)
                 self.state='HELD';accepted=True
             elif kind=='retire':
                 assert self.active is None and self.world is not None,'held World cannot retire'
@@ -161,8 +198,6 @@ class LeaseModel:
                 if kind in ['tick','prepare','emission','paint','relocate','reset','replacement','teardown']:
                     raise AssertionError('modeled mutation refused during hold')
                 if kind=='cancel':self.active=None;self.state='CANCELLED';accepted=True
-                elif kind=='simulate_partial_fault':
-                    s=self.active['stamp'];self.terminal.add((s['world'],s['body']));self.active=None;self.state='MODEL_TERMINAL_FAILURE';accepted=True
                 else:
                     if stamp!=self.active['stamp']:
                         self.active=None;self.state='INVALIDATED';raise AssertionError('identity/history changed, including ABA')

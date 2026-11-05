@@ -1,0 +1,30 @@
+{
+  "registration": "SOL-AUTHORITY-OFFLINE-004-PROTOCOL-REPAIR",
+  "date": "2026-11-05",
+  "parent": "SOL-AUTHORITY-OFFLINE-003-APPARATUS",
+  "retained_runs": ["authority-model-002", "authority-model-linux-002"],
+  "retained_source": "12e651d6",
+  "qualification": "14tests pass per host but independent review invalidates offline protocol qualification; retained as INCOMPLETE",
+  "reproduction": {
+    "receipt": "build/sol-active-normal-live/authority-review-repro-002/receipt.json",
+    "script_sha256": "f744780a1e4570c3f0ec607d3104fd4c3d79945128cdf630fbdf5a704f1a82cf",
+    "log_sha256": "6268ab061b7ae85081ca50d393d8d0d48aa924e682f42286964dd393f21f6540",
+    "method": "Execute exact Git model/fixture bytes at12e651d6 in isolated Python modules; original repro001 also retained",
+    "exit": 0,
+    "reproduced": ["body alias after cancel", "body alias after partial failure", "full trace leaves expired HELD", "deadline outside accepted clock range", "late partial failure loses terminal latch", "progress serial rewind", "bool/int identity aliases", "scope collection encoded before bounds"]
+  },
+  "repairs": [
+    "Pin one aggregate run/body/generation/payload/shape/source/runtime/material binding per World until explicit retirement",
+    "Trace overflow terminally clears active, preserving incarnation, consumption and attempt/overflow counts",
+    "Known consumed-lease partial-fault reports latch terminal even after expiry; actual counters zero",
+    "Validate deadline arithmetic; inclusive atnow==grant+32, expire strictly afterward",
+    "Mutation/body/mask/actual-step serials cannot decrease across observed identity events and grants",
+    "Typed identity validation on capture/main/ACK/release as well as grant",
+    "Fixed scope constants and all primitives bounded before encoding; unknown/failed copied World health refuses"
+  ],
+  "scope_clarifications": ["One-cell no-op halo is not original support-predicate completeness; support eligibility unavailable", "Empty-only synthetic mask restriction is not original-member duplicate-ownership proof"],
+  "thresholds": "Original geometry,1e-9filter, native arithmetic/gains/caps and production source unchanged",
+  "live_authority": false,
+  "actuation_permitted": false,
+  "timing": "Registered before corrected20test cross-host rerun; all earlier passes/failures/reproducers retained"
+}

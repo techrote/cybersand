@@ -22,7 +22,7 @@ def synthetic_capture():
         payload_sha256=m.digest(members),shape_sha256=m.digest(rects),body_state_sha256=m.digest([pose,[0,0],0,mass,inertia]))
     positions={(r[0],r[1]) for r in members}
     census=[dict(cell=[x,y],tuple=[0,0,0,200],resident=True,hot=False,source_owner=stamp['world'],mask_owner=stamp['body'] if (x,y) in positions else None) for y in range(26,66) for x in range(43,74)]
-    return dict(schema='SOL-OFFLINE-CAPTURE-001',origin='synthetic-copied-values',capture_scope='current-pose-noop',mask_policy='synthetic-cell-centre-001',identity=stamp,members=members,rectangles=rects,
+    return dict(schema='SOL-OFFLINE-CAPTURE-001',origin='synthetic-copied-values',capture_scope='current-pose-noop',mask_policy='synthetic-cell-centre-001',world_health='HEALTHY',identity=stamp,members=members,rectangles=rects,
         stored_com=source['center'],mass=mass,geometric_inertia=source['inertia'],body_inertia=inertia,pose=pose,velocity=[0,0],omega=0,footprint=[43,26,31,40],census=census)
 
 class CaptureTests(unittest.TestCase):
@@ -46,7 +46,7 @@ class CaptureTests(unittest.TestCase):
             packet=copy.deepcopy(source);change(packet)
             with self.subTest(corruption=index):self.assertEqual(m.validate_capture(packet)['status'],'REFUSED_OR_UNKNOWN')
 
-    def test_mask_and_duplicate_native_authority_refuse(self):
+    def test_unsupported_masked_native_material_refuses(self):
         packet=synthetic_capture();cell=next(v for v in packet['census'] if v['mask_owner'])
         cell['tuple'][0]=43;self.assertEqual(m.validate_capture(packet)['status'],'REFUSED_OR_UNKNOWN')
         cell['tuple'][0]=0;cell['mask_owner']=None;self.assertEqual(m.validate_capture(packet)['status'],'REFUSED_OR_UNKNOWN')
@@ -92,6 +92,51 @@ class CaptureTests(unittest.TestCase):
 class LeaseTests(unittest.TestCase):
     def setUp(self):self.packet=synthetic_capture();self.stamp=self.packet['identity'];self.model=m.LeaseModel()
     def grant(self,now=0):self.assertTrue(self.model.event('grant',now,stamp=self.stamp)['accepted'])
+    def test_body_aliases_source_rebinding_and_generation_cannot_renew(self):
+        for terminal in [False,True]:
+            self.model=m.LeaseModel();self.grant();self.model.event('simulate_partial_fault' if terminal else 'cancel',1)
+            for field in ['run','body','generation','payload_sha256','shape_sha256','native_source_sha256','native_runtime_sha256']:
+                changed=copy.deepcopy(self.stamp);changed['actual_step']=1
+                changed[field]=changed[field]+1 if type(changed[field]) is int else ('aggregate-2' if field=='body' else '0'*64)
+                self.assertFalse(self.model.event('grant',2,stamp=changed)['accepted'])
+            self.assertEqual(self.model.snapshot()['consumed_leases'],1)
+
+    def test_trace_capacity_retires_even_an_expired_active_lease(self):
+        for now,expected in [(0,'MODEL_CAPACITY_FAILURE'),(100,'EXPIRED')]:
+            self.model=m.LeaseModel();self.grant()
+            for _ in range(m.MAX_EVENTS-1):self.model.event('tick',0)
+            self.assertFalse(self.model.event('release',now,stamp=self.stamp)['accepted'])
+            self.assertEqual(self.model.state,expected);self.assertIsNone(self.model.active)
+            self.assertEqual(self.model.snapshot()['consumed_leases'],1)
+
+    def test_failed_world_capture_and_deadline_integer_capacity_refuse(self):
+        packet=copy.deepcopy(self.packet);packet['world_health']='FAILED'
+        self.assertEqual(m.validate_capture(packet)['status'],'REFUSED_OR_UNKNOWN')
+        self.assertFalse(self.model.event('grant',2**63-1,stamp=self.stamp)['accepted'])
+        self.assertEqual(self.model.snapshot()['consumed_leases'],0)
+
+    def test_late_partial_failure_is_terminal_after_expiry(self):
+        for explicit_expiry in [False,True]:
+            self.model=m.LeaseModel();self.grant()
+            if explicit_expiry:self.model.event('capture',33,stamp=self.stamp,packet=self.packet)
+            self.assertTrue(self.model.event('simulate_partial_fault',34,stamp=self.stamp)['accepted'])
+            changed=copy.deepcopy(self.stamp);changed['actual_step']=1
+            self.assertFalse(self.model.event('grant',35,stamp=changed)['accepted']);self.assertEqual(self.model.state,'MODEL_TERMINAL_FAILURE')
+
+    def test_progress_never_rewinds_and_boolean_identity_aliases_refuse(self):
+        for field in ['mutation_serial','body_serial','mask_serial']:
+            self.model=m.LeaseModel();first=copy.deepcopy(self.stamp);first[field]=10
+            self.assertTrue(self.model.event('grant',0,stamp=first)['accepted']);self.model.event('cancel',1)
+            changed=copy.deepcopy(first);changed['actual_step']=1;changed[field]=9
+            self.assertFalse(self.model.event('grant',2,stamp=changed)['accepted'])
+        self.model=m.LeaseModel();self.grant();changed=copy.deepcopy(self.stamp);changed['generation']=True;changed['actual_step']=False
+        self.assertFalse(self.model.event('capture',1,stamp=changed,packet=self.packet)['accepted'])
+
+    def test_deadline_is_inclusive_and_scope_is_bounded_before_encoding(self):
+        self.grant();self.assertTrue(self.model.event('capture',m.LEASE_EVENTS,stamp=self.stamp,packet=self.packet)['accepted'])
+        self.model=m.LeaseModel();self.grant();self.assertFalse(self.model.event('capture',m.LEASE_EVENTS+1,stamp=self.stamp,packet=self.packet)['accepted'])
+        packet=copy.deepcopy(self.packet);packet['schema']=['X']*10000
+        self.assertEqual(m.validate_capture(packet)['status'],'REFUSED_OR_UNKNOWN')
     def test_full_noop_lifecycle_and_duplicate_replay(self):
         self.grant();digest=hashlib.sha256(m.encoded(self.packet)).hexdigest()
         for kind,now in [('capture',1),('main_validate',2),('noop_ack',3),('release',4)]:
