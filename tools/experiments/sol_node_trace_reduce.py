@@ -8,6 +8,8 @@ import json
 import os
 from pathlib import Path
 import struct
+import subprocess
+import sys
 import la_physical_reduce as physical
 import sol_active_normal_live_authored_reduce as application
 import sol_active_normal_live_reduce as scalar
@@ -19,6 +21,12 @@ def read(path):return json.loads(path.read_text(encoding='utf-8'))
 def sha(path):return hashlib.sha256(path.read_bytes()).hexdigest()
 def digest(value):return hashlib.sha256(json.dumps(value,sort_keys=True,separators=(',',':'),allow_nan=False).encode()).hexdigest()
 def write(path,value):path.write_bytes((json.dumps(value,indent=2)+'\n').encode('utf-8'))
+def source_head():
+    if os.name=='nt':return p.git('rev-parse','HEAD').decode().strip()
+    root=ROOT.as_posix();assert root.startswith('/mnt/c/')
+    # This checkout has a Windows absolute gitdir pointer. Windows Git owns
+    # that identity lookup; all numerical/file analysis remains Linux Python.
+    return subprocess.check_output(['/mnt/c/Program Files/Git/cmd/git.exe','-C','C:/'+root[7:],'rev-parse','HEAD'],text=True).strip()
 def payload_path(value):
     # Filesystem-only adapter for the retained tuple decoder. Raw records,
     # payload bytes/hashes and frozen decoder source are never rewritten.
@@ -72,7 +80,7 @@ def first_differences(original,active):
 def main():
     parser=argparse.ArgumentParser(__doc__);parser.add_argument('directory',type=Path);parser.add_argument('--output',required=True,type=Path);args=parser.parse_args()
     folder=args.directory.resolve();output=args.output.resolve();assert not output.exists();output.mkdir(parents=True)
-    head=p.git('rev-parse','HEAD').decode().strip();receipt_path=folder/'receipt.json';receipt=read(receipt_path)
+    head=source_head();receipt_path=folder/'receipt.json';receipt=read(receipt_path)
     physical.local_path=payload_path
     assert receipt['post_source_equality'] and receipt['matrix']['suite']=='qualification'
     registration=receipt['registration']['live_campaign']
@@ -93,6 +101,9 @@ def main():
     manifest=dict(evaluator='SOL-NODE-TRACE-001-INDEPENDENT',status='IN_PROGRESS',analysis_source=head,execution_source=receipt['identity']['source'],
         runtime_build_source=receipt['identity']['runtime_build_source'],input_receipt_sha256=sha(receipt_path),results=entries,
         qualification='Arithmetic/observation parity only; no original SOL authority, clearance, full conservation or clean causal timing claim')
+    manifest['analysis_python']=dict(version=sys.version,executable=sys.executable,sha256=sha(Path(sys.executable)))
+    manifest['filesystem_adapter']='C:/ and /mnt/c paths map only at payload lookup; raw records, decoder source and payload hashes remain unchanged'
+    manifest['git_identity_backend']='Windows Git owns Windows-worktree metadata; numerical/file analysis runs in the actual recorded Python host'
     manifest['failed_commands']=[dict(host=h,name=c['name'],exit=c['exit']) for h,s in receipt['hosts'].items() for c in s['commands'] if not c['clean']]
     manifest['post_projects']=all(s['post_inventory']['unexpected_changes']==[] for s in receipt['hosts'].values())
     write(output/'manifest.json',manifest)
@@ -165,7 +176,7 @@ def main():
         episodes=len(entries),steps=sum(180 for e in entries if e['status']=='PASS'),body_applications=sum(540 for e in entries if e['status']=='PASS'),complete_captures=len(trace_rows))
     complete=not manifest['failed_commands'] and manifest['post_projects'] and all(e['status']=='PASS' for e in entries) and all(e['status']=='PASS' for e in pairs) and len(divergences)==4
     manifest['status']='COMPLETE' if complete else 'INCOMPLETE_OR_FAILED'
-    assert head==p.git('rev-parse','HEAD').decode().strip();write(output/'manifest.json',manifest)
+    assert head==source_head();write(output/'manifest.json',manifest)
     return int(not complete)
 
 if __name__=='__main__':raise SystemExit(main())
