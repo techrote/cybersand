@@ -11,7 +11,7 @@ import la_selective_experiment as p
 ROOT=Path(__file__).resolve().parents[2]
 BASE='4cd9ca193176e315f8e81316e2221b275cdccbde'
 PROFILE='native/tests/fixtures/sol_active_normal_live_001.json'
-OUTPUT=ROOT/'build/sol-active-normal-live/runtimes-001'
+OUTPUT=ROOT/'build/sol-active-normal-live/runtimes-002'
 BINARIES={'windows':'cybersand_native.windows.x86_64.dll','linux':'libcybersand_native.linux.x86_64.so'}
 
 def sha(path):return p.sha(path.read_bytes())
@@ -53,18 +53,21 @@ def build():
                 sdk_ledger_sha256=sha(sdk/'.cybersand-source-files.sha256'))
             run('compiler-version',[str(compiler),'--version'])
             env=dict(os.environ,CYBERSAND_ALLOW_TOOLCHAIN_DRIFT='0',CYBERSAND_VERIFY_M11_OUTPUT='0',
-                GODOT_CPP_ROOT=str(sdk),WINDOWS_CXX=str(compiler),CYBERSAND_NATIVE_OUTPUT=str(OUTPUT/BINARIES[platform]),
+                GODOT_CPP_ROOT=sdk.as_posix(),WINDOWS_CXX=compiler.as_posix(),CYBERSAND_NATIVE_OUTPUT=(OUTPUT/BINARIES[platform]).as_posix(),
                 PATH='C:/Users/_/lcb-local-toolchain/shims;'+os.environ['PATH'])
             built=run('build',['C:/Program Files/Git/bin/bash.exe','tools/build_native_extension_windows.sh'],env,900)
         else:
             linux=['wsl.exe','-d','Ubuntu-24.04','--cd',p.wsl_path(ROOT),'--']
             sdk='/home/i/render-publication-abc-tools/godot-cpp-101ae38034304346a46ea9ea84ae156d3e860496'
-            code="import hashlib,json,pathlib,subprocess,shutil;paths={'wrapper':pathlib.Path('tools/toolchains/g++'),'driver':pathlib.Path(shutil.which('g++')).resolve(),'frontend':pathlib.Path(subprocess.check_output(['g++','-print-prog-name=cc1plus'],text=True).strip()).resolve(),'linker':pathlib.Path(shutil.which('ld')).resolve(),'library':pathlib.Path("+repr(sdk+ '/bin/libgodot-cpp.linux.template_debug.x86_64.a')+"),'sdk_ledger':pathlib.Path("+repr(sdk+'/.cybersand-source-files.sha256')+")};print(json.dumps({k:dict(path=str(v),sha256=hashlib.sha256(v.read_bytes()).hexdigest()) for k,v in paths.items()}))"
+            wrapper=folder/'g++';wrapper.write_bytes((ROOT/'tools/toolchains/g++').read_bytes().replace(b'\r\n',b'\n'))
+            assert sha(wrapper)==lfsha(ROOT/'tools/toolchains/g++')
+            run('wrapper-executable',linux+['chmod','+x',p.wsl_path(wrapper)])
+            code="import hashlib,json,pathlib,subprocess,shutil;paths={'wrapper':pathlib.Path("+repr(p.wsl_path(wrapper))+"),'driver':pathlib.Path(shutil.which('g++')).resolve(),'frontend':pathlib.Path(subprocess.check_output(['g++','-print-prog-name=cc1plus'],text=True).strip()).resolve(),'linker':pathlib.Path(shutil.which('ld')).resolve(),'library':pathlib.Path("+repr(sdk+ '/bin/libgodot-cpp.linux.template_debug.x86_64.a')+"),'sdk_ledger':pathlib.Path("+repr(sdk+'/.cybersand-source-files.sha256')+")};print(json.dumps({k:dict(path=str(v),sha256=hashlib.sha256(v.read_bytes()).hexdigest()) for k,v in paths.items()}))"
             row=run('toolchain-identity',linux+['python3','-c',code]);assert row['clean']
             tool=json.loads((ROOT/row['log']).read_text())
             run('compiler-version',linux+['g++','--version']);run('linker-version',linux+['ld','--version'])
             built=run('build',linux+['env','CYBERSAND_ALLOW_TOOLCHAIN_DRIFT=0','CYBERSAND_VERIFY_M11_OUTPUT=0',
-                'GODOT_CPP_ROOT='+sdk,'LINUX_CXX='+p.wsl_path(ROOT/'tools/toolchains/g++'),
+                'GODOT_CPP_ROOT='+sdk,'LINUX_CXX='+p.wsl_path(wrapper),
                 'CYBERSAND_NATIVE_OUTPUT='+p.wsl_path(OUTPUT/BINARIES[platform]),'bash','tools/build_native_extension.sh'],timeout=900)
         binary=OUTPUT/BINARIES[platform]
         return dict(toolchain=tool,commands=rows,clean=built['clean'],output=str(binary.relative_to(ROOT)),

@@ -1,0 +1,22 @@
+{
+  "id": "SOL-ACTIVE-NORMAL-LIVE-001-BUILD-AMENDMENT-002",
+  "status": "Before second build attempt; no physics run or tuning",
+  "source": "75dee301",
+  "failed_attempt_receipt_sha256": "3a38322d892080eda5cfa7498e0974126f163dfd27c0ab4c2e02ad5aeb399938",
+  "failures": {
+    "windows": {
+      "exit": 3,
+      "log_sha256": "cdf8e2536a324f637b8db2ab4ecedd5efd76d79551997775ddced491afbfa7bd"
+    },
+    "linux": {
+      "exit": 127,
+      "log_sha256": "262d3996fff9ecc75526bfdda7d442b69c7b51f4dc2e6486e0982139e6d77f5a"
+    }
+  },
+  "cause": {
+    "windows": "Path.as_posix required for MSYS SDK/hash paths; correct ledger itself matches pinned hash",
+    "linux": "Checked-out compiler wrapper CRLF shebang; normalize same Git content into ignored owned executable"
+  },
+  "fix": "Keep all checks. Forward-slash Windows env paths, use LF-normalized exact canonical wrapper bytes in ignored build folder, log chmod and wrapper hash. Retain failed001, use002.",
+  "physics_change": false
+}
