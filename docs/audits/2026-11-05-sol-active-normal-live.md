@@ -17,6 +17,25 @@ was committed at `02dd6957` before production edits. No owning branch, accepted
 default, protected World/pressure implementation, MAT guard or dependency
 manifest is changed. Publication must stay Draft and dependent on421.
 
+The [live upstream/source custody](sol-active-normal-live-20261105/upstream-sources.json)
+records unchanged421/416/411/400, current main and externally merged394, plus
+393/386. The347 connector cannot return its large PR snapshot; direct Git
+independently verifies its1598115c head/tree. No original-SOL PR-state claim is
+inferred from that transport failure.
+
+[Recoverable source/patch artifacts](sol-active-normal-live-20261105/source-artifacts.json)
+retain checkpoint556bb8cd and the raw dependent patch. Its ZIP is179906661bytes,
+SHA`3dc4af0caa5375ff6c7a41ed1ba4f8428c559fad8f3c7b25c42d6ab65331015c`:
+**NO-GO** against the unchanged134217728byte ZIP cap. The519526400byte expanded
+TAR is an additional artifact, not the original ZIP gate. The14743247byte
+patch has SHA`30055732049987dc9c9887f238133690a3ef9e176bbc0e14b1b78ff443a2ec6f`.
+Logs/binaries/archives remain ignored. Six portable evidence tests pass,
+including independent public raw geometry/recorded-trajectory checks, per-host
+Original summary parity and seven deliberately corrupted scalar/policy records.
+Source/runtime provenance drift and the archive failure remain integration
+blockers. Separate independent adversarial review is requested before an owner
+decision; the in-chat read-only reviews do not supply that external acceptance.
+
 ## Mechanism and lifetime
 
 The header now offers an explicit final `NormalPolicy` argument. Omitted and
