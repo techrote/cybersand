@@ -1,0 +1,133 @@
+name: CyberSand material tile render capture
+
+on:
+  push:
+    branches:
+      - artifacts/material-tiles-20261105
+    paths:
+      - .github/workflows/material-tiles.yml
+      - godot/tools/capture_material_tiles.gd
+
+permissions:
+  contents: read
+
+concurrency:
+  group: material-tiles-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  render:
+    name: Render every material via pinned Godot and CyberSand shader
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    env:
+      GODOT_URL: https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7
+      GODOT_SHA256: 0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c
+      GODOT_SILENCE_ROOT_WARNING: '1'
+      LIBGL_ALWAYS_SOFTWARE: '1'
+      PYTHONUTF8: '1'
+    steps:
+      - name: Check out exact branch source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          lfs: false
+          persist-credentials: false
+
+      - name: Fetch and verify pinned Godot 4.7 editor
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -fL --retry 3 --retry-delay 5 "$GODOT_URL" -o "$RUNNER_TEMP/godot.zip"
+          echo "$GODOT_SHA256  $RUNNER_TEMP/godot.zip" | sha256sum --check --strict
+          mkdir -p "$RUNNER_TEMP/godot"
+          unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/godot"
+          find "$RUNNER_TEMP/godot" -maxdepth 2 -type f -name 'Godot*linux.x86_64' -exec chmod +x {} +
+          find "$RUNNER_TEMP/godot" -maxdepth 2 -type f -name 'Godot*linux.x86_64' -print
+          test "$(find "$RUNNER_TEMP/godot" -maxdepth 2 -type f -name 'Godot*linux.x86_64' | wc -l)" -eq 1
+
+      - name: Prepare isolated project with exact CyberSand production shaders and LUT
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/material-project"
+          cp godot/shaders/material_palette.gdshader "$RUNNER_TEMP/material-project/material_palette.gdshader"
+          cp godot/scripts/material_appearance_lut.gd "$RUNNER_TEMP/material-project/material_appearance_lut.gd"
+          cp godot/tools/capture_material_tiles.gd "$RUNNER_TEMP/material-project/capture_material_tiles.gd"
+          printf '%s\n' 'config_version=5' '' '[application]' 'config/name="CyberSand isolated material tile capture"' '' '[rendering]' 'renderer/rendering_method="gl_compatibility"' 'renderer/rendering_method.mobile="gl_compatibility"' > "$RUNNER_TEMP/material-project/project.godot"
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          root=Path.cwd()
+          catalogue=json.loads((root/'materials/catalogue/catalogue.json').read_text())
+          inspection=json.loads((root/'materials/catalogue/generated/inspection.json').read_text())
+          sources={row['id']: row['visual_state_source'] for row in inspection['native']['appearance']}
+          rows=[]
+          for row in catalogue['native']['materials']:
+              mid=int(row['id'])
+              if not row['valid'] or mid==10:
+                  continue
+              source=sources[mid]
+              condition= int(row['initial_state_a'] if source==1 else row['initial_state_b'] if source==2 else 0)
+              if mid==36:
+                  condition=200  # fixed hot molten-glass fixture, matching CyberSand's capture_material_review.gd
+              assert 0 <= condition <= 255
+              rows.append({'id':mid, 'name':row['name'], 'condition':condition})
+          assert len(rows)==131 and [v['id'] for v in rows]==[v for v in range(132) if v!=10]
+          import os
+          (Path(os.environ['RUNNER_TEMP'])/'material-project/material_index.json').write_text(json.dumps(rows,indent=2)+'\n')
+          print('Material rows:',len(rows),'source:',os.environ['GITHUB_SHA'])
+          PY
+
+      - name: Render both pixel tile variants with real OpenGL framebuffer
+        shell: bash
+        env:
+          CYBERSAND_TILE_OUTPUT: ${{ github.workspace }}/build/material_tiles
+          CYBERSAND_SOURCE_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          GODOT="$(find "$RUNNER_TEMP/godot" -maxdepth 2 -type f -name 'Godot*linux.x86_64' -print -quit)"
+          "$GODOT" --version
+          mkdir -p build/material_tiles
+          xvfb-run --auto-servernum --server-args='-screen 0 1600x1200x24 -nolisten tcp' \
+            "$GODOT" --path "$RUNNER_TEMP/material-project" --rendering-method gl_compatibility \
+            --script res://capture_material_tiles.gd 2>&1 | tee build/material_tiles/engine.log
+
+      - name: Validate material count, 64x64 dimensions, hashes and results
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import hashlib,json,struct
+          from pathlib import Path
+          out=Path('build/material_tiles')
+          m=json.loads((out/'manifest.json').read_text())
+          assert m['source_sha']==__import__('os').environ['GITHUB_SHA']
+          assert m['material_count']==131 and len(m['files'])==262
+          for variant in ('full','random_block'):
+              assert len(list((out/variant).glob('*.png')))==131
+          for f in m['files']:
+              p=out/f['path']
+              data=p.read_bytes()
+              assert data[:8]==b'\x89PNG\r\n\x1a\n' and struct.unpack('>II',data[16:24])==(64,64),p
+              assert hashlib.sha256(data).hexdigest()==f['sha256'],p
+          (out/'README.txt').write_text(
+              'CyberSand 64x64 material tiles\n\n'
+              'full/: one completely filled 64x64 tile per valid material ID.\n'
+              'random_block/: one deterministically varied irregular material block on a solid black 64x64 canvas.\n'
+              '130 paintable materials plus the Empty (ID 0) control; reserved ID 10 excluded.\n'
+              'Actual Godot 4.7 OpenGL rendering with CyberSand production palette shader and LUT.\n'
+              'Static synthetic RG8 identity/condition input, fixed 1.37 s; no native World simulation.\n'
+              'Emission/glow postprocessing is not included. See manifest.json for exact source, runtime, pixel hashes and initial state.\n',
+              encoding='utf-8')
+          print('VERIFIED 262 PNGs, 64x64; actual Godot:',m['godot'],'video:',m['video_adapter'])
+          PY
+
+      - name: Preserve material render sample ZIP, including error logs
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: cybersand-material-tiles-64px-${{ github.run_id }}
+          path: build/material_tiles/
+          if-no-files-found: warn
+          retention-days: 90
