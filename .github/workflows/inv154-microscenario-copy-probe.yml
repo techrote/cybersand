@@ -7,6 +7,7 @@ on:
     paths:
       - godot/tests/performance/test_microscenario_refresh_copy_cost.gd
       - godot/tests/performance/test_microscenario_copy_envelope.gd
+      - godot/tests/performance/test_microscenario_workbench_refresh_cost.gd
       - .github/workflows/inv154-microscenario-copy-probe.yml
   workflow_dispatch:
 
@@ -180,6 +181,83 @@ jobs:
           print('INV154 Windows source-bound envelope: 39 pairs, 78 rows, 0 unexpected parity failures; negative-control divergences required')
           PY
 
+      - name: Run actual unmodified MicroScenario workbench Control refresh discriminator
+        timeout-minutes: 8
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import hashlib
+          import json
+          import os
+          import shutil
+          import subprocess
+          from pathlib import Path
+
+          evidence = Path('build/inv154-probe').resolve()
+          scratch = evidence / 'standalone'
+          scripts = scratch / 'scripts'
+          scripts.mkdir(parents=True, exist_ok=True)
+          # Copy the ACTUAL production presentation logic byte-for-byte. The
+          # synthetic authority/identity stubs live only in this scratch dir.
+          sources = [
+              'godot/scripts/microscenario_workbench.gd',
+              'godot/scripts/microscenario_comparison.gd',
+          ]
+          custody = {}
+          for src in sources:
+              data = Path(src).read_bytes()
+              target = scripts / Path(src).name
+              target.write_bytes(data)
+              assert target.read_bytes() == data
+              custody[src] = hashlib.sha256(data).hexdigest()
+
+          (scripts / 'microscenario_contract.gd').write_text(
+              'class_name CyberMicroScenarioContract\n'
+              'extends RefCounted\n'
+              'const MATERIAL_COUNT: int = 132\n'
+              'const MAX_TICK: int = 3600\n'
+              'static func validate(_value: Variant) -> Dictionary:\n'
+              '    return {"ok": false, "error": "not a real owner"}\n',
+              encoding='utf-8')
+          (scripts / 'microscenario_identity.gd').write_text(
+              'class_name CyberMicroScenarioIdentity\n'
+              'extends RefCounted\n'
+              'static func current(_revision: String = "unavailable") -> Dictionary:\n'
+              '    return {"source_scope": "standalone diagnostic only"}\n',
+              encoding='utf-8')
+
+          fixture = Path('godot/tests/performance/test_microscenario_workbench_refresh_cost.gd')
+          shutil.copyfile(fixture, scratch / 'workbench_probe.gd')
+          custody[str(fixture)] = hashlib.sha256(fixture.read_bytes()).hexdigest()
+          (evidence / 'workbench-source-custody.json').write_text(
+              json.dumps(custody, indent=2) + '\n', encoding='utf-8')
+
+          godot = evidence / 'engine' / 'Godot_v4.7-stable_win64_console.exe'
+          proc = subprocess.run(
+              [str(godot), '--headless', '--path', str(scratch),
+               '--script', 'res://workbench_probe.gd'],
+              stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True,
+              timeout=420, env={**os.environ, 'GODOT_SILENCE_ROOT_WARNING': '1'})
+          (evidence / 'workbench-stdout.txt').write_text(proc.stdout, encoding='utf-8')
+          print(proc.stdout)
+          marker = 'INV154_REAL_WORKBENCH_REFRESH '
+          records = [line[len(marker):] for line in proc.stdout.splitlines()
+                     if line.startswith(marker)]
+          if proc.returncode != 0 or len(records) != 1:
+              raise RuntimeError(
+                  f'Unmodified workbench source execution failed; exit={proc.returncode} records={len(records)}')
+          result = json.loads(records[0])
+          if (result['os_name'] != 'Windows' or result['failures'] != 0
+                  or result['case_count'] != 6 or result['repetitions'] != 3
+                  or len(result['records']) != 36
+                  or any(x['observations'] > 24 or x['inspection_pairs'] > 300
+                         or x['elapsed_usec'] < 0 for x in result['records'])):
+              raise RuntimeError('Actual workbench refresh readback invalid')
+          (evidence / 'workbench-result.json').write_text(
+              json.dumps(result, indent=2) + '\n', encoding='utf-8')
+          print('INV154 source-identical Workbench.refresh control-tree probe passed; NOT Main/GPU')
+          PY
+
       - name: Retain source, engine, raw positive and negative outcomes
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
@@ -194,5 +272,8 @@ jobs:
             build/inv154-probe/result.json
             build/inv154-probe/godot-envelope-stdout.txt
             build/inv154-probe/envelope-result.json
+            build/inv154-probe/workbench-source-custody.json
+            build/inv154-probe/workbench-stdout.txt
+            build/inv154-probe/workbench-result.json
           if-no-files-found: warn
           retention-days: 30
