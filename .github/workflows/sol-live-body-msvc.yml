@@ -1,0 +1,95 @@
+name: SOL live Body-domain MSVC red-green (experimental)
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - '.github/workflows/sol-live-body-msvc.yml'
+      - 'tools/experiments/sol_live_valid_parity_probe.cpp'
+      - 'tools/experiments/sol_active_normal_live_body_domain_regression.cpp'
+      - 'native/include/cybersand/granular_contact_response.hpp'
+
+permissions:
+  contents: read
+
+jobs:
+  source-locked-msvc:
+    name: Actual Windows/MSVC Body guard and valid-path parity
+    runs-on: windows-2022
+    timeout-minutes: 15
+    steps:
+      - name: Checkout the exact PR head, not the synthetic PR merge
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 25
+          persist-credentials: false
+      - name: Verify immutable source and regression blobs
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $actual = (git rev-parse HEAD).Trim()
+          $expected = '${{ github.event.pull_request.head.sha }}'
+          if ($actual -ne $expected) { throw "Head mismatch: $actual != $expected" }
+          $paths = @{
+            'HEAD:native/include/cybersand/granular_contact_response.hpp' = '847c948c8f408e177077ff36f7c7ba8594750446'
+            'HEAD:tools/experiments/sol_active_normal_live_body_domain_regression.cpp' = '5562fd40d981b01c8b5718f162e0a1a61fbc8548'
+            'dfc2833eab5b8e3f81e2f2798b0066562ed41e0b:native/include/cybersand/granular_contact_response.hpp' = 'c9af2c0aac1efb1ac271897d2c29120c8c81566c'
+          }
+          foreach ($entry in $paths.GetEnumerator()) {
+            $observed = (git rev-parse $entry.Key).Trim()
+            if ($observed -ne $entry.Value) { throw "Blob mismatch for $($entry.Key): $observed != $($entry.Value)" }
+            Write-Host "$($entry.Key) $observed"
+          }
+          New-Item -Force -ItemType Directory logs | Out-Null
+          "head=$actual" | Set-Content logs/source-identity.txt
+          foreach ($entry in $paths.GetEnumerator()) { "$($entry.Key)=$($entry.Value)" | Add-Content logs/source-identity.txt }
+      - name: Compile and execute original RED versus guarded GREEN on actual MSVC
+        shell: cmd
+        run: |
+          @echo off
+          setlocal EnableExtensions
+          mkdir sol-proof-parent\cybersand
+          git show dfc2833eab5b8e3f81e2f2798b0066562ed41e0b:native/include/cybersand/granular_contact_response.hpp > sol-proof-parent\cybersand\granular_contact_response.hpp
+          if errorlevel 1 exit /b 1
+          call "%ProgramFiles%\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
+          if errorlevel 1 exit /b 1
+          cl /nologo /std:c++20 /EHsc /W4 /O2 /I sol-proof-parent tools\experiments\sol_active_normal_live_body_domain_regression.cpp /Fe:parent_domain.exe > logs\parent-build.log 2>&1
+          if errorlevel 1 (type logs\parent-build.log & exit /b 1)
+          parent_domain.exe > logs\parent-domain.log 2>&1
+          set parent_rc=%ERRORLEVEL%
+          type logs\parent-domain.log
+          if not "%parent_rc%"=="1" (echo Expected baseline RED exit 1, got %parent_rc% & exit /b 1)
+          findstr /C:"invalid_checks=30 valid_checks=4 failures=30" logs\parent-domain.log
+          if errorlevel 1 exit /b 1
+          cl /nologo /std:c++20 /EHsc /W4 /O2 /I native\include tools\experiments\sol_active_normal_live_body_domain_regression.cpp /Fe:candidate_domain.exe > logs\candidate-build.log 2>&1
+          if errorlevel 1 (type logs\candidate-build.log & exit /b 1)
+          candidate_domain.exe > logs\candidate-domain.log 2>&1
+          if errorlevel 1 (type logs\candidate-domain.log & exit /b 1)
+          type logs\candidate-domain.log
+          findstr /C:"invalid_checks=30 valid_checks=4 failures=0" logs\candidate-domain.log
+          if errorlevel 1 exit /b 1
+          cl /nologo /std:c++20 /EHsc /W4 /O2 /I sol-proof-parent tools\experiments\sol_live_valid_parity_probe.cpp /Fe:parent_parity.exe > logs\parent-parity-build.log 2>&1
+          if errorlevel 1 (type logs\parent-parity-build.log & exit /b 1)
+          parent_parity.exe > logs\parent-parity.log 2>&1
+          if errorlevel 1 (type logs\parent-parity.log & exit /b 1)
+          cl /nologo /std:c++20 /EHsc /W4 /O2 /I native\include tools\experiments\sol_live_valid_parity_probe.cpp /Fe:candidate_parity.exe > logs\candidate-parity-build.log 2>&1
+          if errorlevel 1 (type logs\candidate-parity-build.log & exit /b 1)
+          candidate_parity.exe > logs\candidate-parity.log 2>&1
+          if errorlevel 1 (type logs\candidate-parity.log & exit /b 1)
+          type logs\parent-parity.log
+          type logs\candidate-parity.log
+          findstr /C:"cases=120000" logs\candidate-parity.log
+          if errorlevel 1 exit /b 1
+          findstr /C:"nonfinite=0 nonpassive=0" logs\candidate-parity.log
+          if errorlevel 1 exit /b 1
+          fc /b logs\parent-parity.log logs\candidate-parity.log > logs\parity-comparison.log
+          if errorlevel 1 (type logs\parity-comparison.log & exit /b 1)
+      - name: Retain exact-host diagnostics even if validation fails
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: sol-live-body-msvc-source-red-green
+          path: logs/
+          if-no-files-found: warn
+          retention-days: 14
