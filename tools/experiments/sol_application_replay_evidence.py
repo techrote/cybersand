@@ -3,6 +3,7 @@
 import hashlib
 import json
 from pathlib import Path
+import struct
 import la_selective_experiment as p
 
 ROOT=Path(__file__).resolve().parents[2]
@@ -18,7 +19,17 @@ def main():
     assert not OUT.exists();OUT.mkdir(parents=True)
     receipt=read(FOLDER/'receipt.json');assert all(c['clean'] and c['exit']==0 for c in receipt['commands'])
     summary=read(FOLDER/'windows/summary.json');assert summary['observations']==1080
-    comparison=read(FOLDER/'cross-analysis-comparison.json');assert comparison['summary_bytes_equal']
+    comparison=read(FOLDER/'cross-analysis-comparison.json')
+    assert comparison['summary_bytes_equal'] and (FOLDER/'windows/summary.json').read_bytes()==(FOLDER/'linux/summary.json').read_bytes()
+    assert comparison['record_hashes']=={h:sha(FOLDER/h/'records.json') for h in ['windows','linux']}
+    reconstructed=read(FOLDER/'windows/records.json')
+    assert len(comparison['differences'])==comparison['difference_count']
+    for delta in comparison['differences']:
+        parts=delta['path'].strip('/').split('/');target=reconstructed
+        for part in parts[:-1]:target=target[int(part)] if isinstance(target,list) else target[part]
+        key=int(parts[-1]) if isinstance(target,list) else parts[-1]
+        assert struct.pack('<d',target[key])==struct.pack('<d',delta['windows']);target[key]=delta['linux']
+    assert (json.dumps(reconstructed,indent=2)+'\n').encode('utf-8')==(FOLDER/'linux/records.json').read_bytes(),'Incomplete cross-analysis differences'
     head=p.git('rev-parse','HEAD').decode().strip();artifacts=[]
     for name,source in [('execution.json','receipt.json'),('summary.json','windows/summary.json'),('records.json','windows/records.json'),('cross-analysis.json','cross-analysis-comparison.json')]:
         path=FOLDER/source;public=OUT/name;write(public,read(path))

@@ -39,9 +39,10 @@ recorded reference frames for diagnosis. Original gains, caps, cadence, material
 map, input schedule and application policy remain fixed.
 
 The apparatus and three focused stage-reconstruction tests are implemented;
-exact-source execution/results follow separately. Prior passive application
-Recorded relative paths are normalized for Windows/Linux analysis; analyzing
+exact-source execution/results follow separately. Recorded relative paths are
+normalized for Windows/Linux analysis; analyzing
 Windows physical recordings on Linux does not create a new Linux physical trial.
-variants and all physical/SOL failures remain historical controls. A later live
+Prior passive application variants and all physical/SOL failures remain
+historical controls. A later live
 node/batch trace or physics candidate needs its own registration, fresh affected
 runtime qualification and review. Keep Draft and stop before integration.
