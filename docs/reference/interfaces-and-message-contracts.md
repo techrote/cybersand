@@ -6,7 +6,7 @@ status: Current
 scope: Current C ABI, procedural-generation C++/Godot surfaces and private packed layouts; proposed gameplay/reconfiguration contracts remain distinct
 keywords: [C API v2, material_info_v3, material_info_v4, body packet, INPUT_STRIDE, RG8, gameplay command]
 related-documents: [../architecture/data-ownership-and-lifetimes.md, ../architecture/simulation-tick-and-threading.md, ../architecture/rendering-and-gameplay-bridges.md, level-saves-and-replay.md, ../architecture/pressure-optimization.md]
-last-reviewed: 2026-10-25
+last-reviewed: 2026-11-05
 ---
 
 # Interfaces and message contracts
@@ -415,16 +415,47 @@ for the gameplay semantics and owner-acceptance boundary.
 `packed = (material_id & 255) | (emission_flags << 8)`. `queue_paint` forwards to
 `queue_emit_disc`; consecutive identical pending emissions are coalesced.
 The only defined option is coherent-liquid emission. UI slots never cross this
-boundary. The dynamic queue has no production capacity, target-tick ID or
-target-tick acceptance acknowledgement. `queue_emit_disc` now returns false
-when the published owner is failed (true only admits/coalesces a pending command,
-not a promise of application). Failure/reset clears pending emissions without
-replay. Reset/frame inputs are separate latched fields.
+boundary. The current desktop owner admits at most eight pending disc commands
+and eight pending explicit-footprint commands; a full queue refuses admission.
+There is no generalized target-tick ID or target-tick acceptance acknowledgement.
+`queue_emit_disc` returns false when the published owner is failed or admission
+is full (true only admits/coalesces a pending command, not a promise of
+application). Failure/reset clears pending emissions without replay. Reset/frame
+inputs are separate latched fields.
 
 **Approved:** future commands need bounded immutable value data, deterministic
 accepted ordering and explicit failure. **Planned:** the generalized schema,
 queue/backpressure policy and exact target-tick semantics. Do not infer them
 from this prototype encoding.
+
+### Private workbench nozzle and preference values
+
+The workbench's leased physical producer emits copied nozzle intents inside its
+immutable body sample. Session/epoch, actor generation/sequence, instance and
+proxy-range identity remain checked before owner-side insertion. Existing source
+and target positions/material/nozzle fields now permit an optional integer
+`amount` from 0 to 8; omission retains the one-cell endpoint. Fractional user
+multipliers are converted on the producer to deterministic six-tick pulse amounts,
+not sent as fractional cell quantities. At most three intents per body/eight
+bodies share the existing 24-intent bound. Every finite fan endpoint receives
+fresh path/occupancy checks; no impulse, pose change or material overwrite is
+encoded by this source command.
+
+The returned per-nozzle receipt retains `changed_cells` and `reason` and adds
+`requested_cells`, `attempted_cells`, `refused_cells`, `endpoint_reasons` and
+`occupancy_reads`. These are source-insertion observations, not an inventory/fuel
+transfer claim. Exact caps belong to
+[configuration](configuration-reference.md#saved-flyer-options-and-bindings);
+source is [workbench_emitter.gd](../../godot/scripts/workbench_emitter.gd).
+
+Per-flyer preferences are private version-1 user values: `options`, `tuning`,
+`bindings` and `fire_enabled` under each model entry. They do not add fields to
+the session action/port dictionaries or the native packed coupling/C ABI. Named
+starting setups upgrade to version 3 with explicit actor `customization`; valid
+version 2 receives neutral customization and retains its comparison options.
+Keyboard bindings remain outside map content. The
+[control guide](../systems/player-control-playground.md#saved-flyer-controls-and-options--5-november-2026)
+owns precedence, acknowledgement and editing behavior.
 
 <a id="rigid-body-coupling-contract"></a>
 

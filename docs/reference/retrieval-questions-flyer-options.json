@@ -1,0 +1,59 @@
+{
+  "version": 1,
+  "reviewed": "2026-11-05",
+  "purpose": "Additive source-backed development questions for saved per-flyer controls/options; separate from frozen retrieval and runtime/human acceptance.",
+  "questions": [
+    {
+      "id": "FLYER-PROFILES-01",
+      "query": "Where does the workbench save per-flyer controls and tuning, and which values win when switching models or loading a named starting setup?",
+      "canonical": ["systems/player-control-playground.md"],
+      "facts": [
+        "Private version-1 model profiles use user://workbench/flyer-profiles.json, separately from named starting setups, with a 256 KiB and 16-model bound.",
+        "Existing instances and named starts retain their explicit physical settings; saved target-model preferences supply replacements and new placements.",
+        "The first switch to an unsaved model retains the old six comparison values, while independent placement uses model defaults; keyboard bindings remain private and are not map content.",
+        "Preferences are saved after matching owner acknowledgement; disk failure is visible while the successful physical graph remains applied for the session."
+      ],
+      "sources": ["../godot/scripts/flyer_preferences.gd", "../godot/scripts/shared_workbench.gd", "../godot/scripts/workbench_setup.gd"],
+      "revision_sensitive": true
+    },
+    {
+      "id": "FLYER-BINDINGS-01",
+      "query": "How can I rebind a flyer's controls or invert Kestrel side thrusters without using number keys or accidentally firing while editing?",
+      "canonical": ["systems/player-control-playground.md"],
+      "facts": [
+        "Flyer options has primary/alternate bindings per keyboard action; Escape cancels capture and Delete clears a binding.",
+        "Number-row/keypad keys remain reserved, brackets cycle flyer models and Tab cycles placed instances; standard gamepad mapping is preserved.",
+        "The side-thruster inversion option reverses the existing side jets without changing A/D rotation or the rear dispenser.",
+        "The editor pauses healthy play, cancels active leases and requires neutral release before rearming; closing or accepted application restores the preceding play state when safe."
+      ],
+      "sources": ["../godot/scripts/flyer_options_panel.gd", "../godot/scripts/flyer_preferences.gd", "../godot/scripts/shared_workbench.gd", "../godot/scripts/gcr_review_fleet_controller.gd"],
+      "revision_sensitive": true
+    },
+    {
+      "id": "FLYER-HANDLING-01",
+      "query": "Do the per-flyer speed, gravity, friction and movement multipliers replace the existing rigid-body actuator safety limits?",
+      "canonical": ["reference/configuration-reference.md", "systems/player-control-playground.md"],
+      "facts": [
+        "Movement/body customization multiplies the copied authored profile with neutral default 1 and a 0–64 admission range.",
+        "Speed is a soft overspeed-damping target rather than a hard velocity clamp; gravity, friction and angular drag retain resolved bounds 500, 1 and 8.",
+        "Linear and angular impulse fences remain mass times 100 and inertia times 4, with existing high-speed safety braking.",
+        "Preferences do not alter native material/contact laws or the source authored flyer definitions."
+      ],
+      "sources": ["../godot/scripts/flyer_preferences.gd", "../godot/scripts/physical_actor_rig.gd", "../godot/scripts/gcr_review_fleet_controller.gd"],
+      "revision_sensitive": true
+    },
+    {
+      "id": "FLYER-EXHAUST-01",
+      "query": "Is the new pixel thruster exhaust real Fire, and how are per-flyer dispenser materials and fractional spawn amounts bounded?",
+      "canonical": ["systems/player-control-playground.md", "reference/configuration-reference.md"],
+      "facts": [
+        "Cosmetic exhaust derives from live actuator telemetry and creates no material; the real Fire toggle separately inserts native Fire ID 6.",
+        "Existing authored dispenser ports can select registered materials 1–131 except 10, or 0 to disable; preferences cannot add a missing port.",
+        "One-times requests one cell per nozzle every six ticks; 0–8 amounts use a deterministic fractional pulse schedule with at most three nozzles per body and 24 queued intents.",
+        "Every destination/path is checked under the 64-iteration trace and 1024-read/body bounds; hard terrain, foreign masks and occupied endpoints can reduce output without overwriting material."
+      ],
+      "sources": ["../godot/scripts/physical_actor_overlay.gd", "../godot/scripts/physical_actor_session.gd", "../godot/scripts/workbench_emitter.gd"],
+      "revision_sensitive": true
+    }
+  ]
+}

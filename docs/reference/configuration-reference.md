@@ -1251,3 +1251,27 @@ these declared logical charges.
 `CyberSimulationWorker.MAX_PENDING_BRUSH_COMMANDS` admits eight pending disc commands and eight pending explicit-footprint commands, each footprint containing at most 4,096 cells. A full queue refuses admission; bulk apparatus must wait for acknowledged publication before sending another batch. This bound also applies to retained desktop scene tools. The Blacksite integration test submits its seam and nine room probes in two acknowledged batches.
 
 The main loop owns the workbench's monotonically increasing session identity, from 1 through 9,007,199,254,740,991. Closing/reconstructing a bridge does not recycle its ID; exhaustion refuses configuration. Only the main thread allocates IDs, and the metadata stores one integer rather than a script/resource reference. Response history retains two samples, permitting age at most one and corner travel at most 0.5 cells. Rendering retains its independently copied publication pose; test census copies do not extend response admission. See the [resulting-source qualification](../audits/2026-11-04-workbench394-ready-validation.md).
+
+## Saved flyer options and bindings
+
+The [flyer preference value schema](../../godot/scripts/flyer_preferences.gd), [setup schema](../../godot/scripts/workbench_setup.gd) and [physical owner](../../godot/scripts/physical_actor_rig.gd) own these current development-branch bounds. The [workbench guide](../systems/player-control-playground.md#saved-flyer-controls-and-options--5-november-2026) owns user controls and preference precedence. Defaults retain neutral multipliers and the authored flyer values; no native material/contact law is changed by a preference.
+
+| Resource or control | Bound and meaning |
+|---|---|
+| Private preference file | `user://workbench/flyer-profiles.json`; version 1; 256 KiB UTF-8; at most 16 model records |
+| Profile value | Six comparison options, bounded customization, keyboard bindings and real-Fire enable flag; copied values only |
+| Keyboard actions | 11 actions; zero, one or two keycodes per action; shared keys across actions allowed; duplicate alternatives within one action refused |
+| Reserved input | Number-row and keypad digits, P/R/B/F/Tab/period/Escape/F2 and brackets; `[ ]` cycle models, Tab/Shift+Tab cycle placed instances |
+| Comparison settings | Budget 5–80 (RFT requires 20), mass/inertia ×0.01–64, thrust/torque ceiling ×0–64, boost ×1–8 |
+| Movement/body customization | Acceleration, speed target, turn speed/acceleration, throttle response, coast drag, stabilization gain/damping, gravity, friction and angular drag ×0–64; neutral default 1 |
+| Resolved physical properties | Gravity remains 0–500, surface friction 0–1 and angular drag 0–8 after existing physical clamps |
+| Existing impulse fences | Each linear rig impulse is limited to total mass ×100; each angular impulse to part inertia ×4; safety braking above 300 cells/s or 24 rad/s remains |
+| Speed setting | Soft overspeed-damping target, not a hard maximum speed; larger multipliers do not remove the other safety fences |
+| Real-source amount | ×0–8, default 1; deterministic fractional pulse schedule at the existing six-physics-tick cadence; no accumulated credit while released/paused |
+| Emitted material | Existing registered IDs 1–131 except reserved 10; 0 disables an authored dispenser; chemical thruster Fire stays ID 6 |
+| Source budget | At most three nozzle intents per body, eight bodies and 24 queued intents; at most eight requested cells per nozzle/cadence |
+| Source occupancy work | At most 64 trace iterations per path and 1,024 occupancy reads per body; each endpoint must be empty and each path must preserve hard/foreign-mask refusal |
+| Source fan | At most eight distinct deterministic endpoints; the first is the retained one-cell endpoint; additional endpoints receive fresh path checks, not a free-volume search |
+| Starting setup | Version 3 stores explicit instance customization; valid version 2 upgrades with neutral customization and preserved comparison options; private keyboard bindings are not serialized in maps |
+
+Changes requiring a physical replacement are persisted atomically after matching owner acknowledgement. Validation or storage refusal does not corrupt the previous saved file. A successful physical replacement followed by disk failure remains applied for that session and reports the persistence failure; it does not pretend the accepted World/graph rolled back. The options dialog cancels leases and requires release-to-rearm. Cosmetic pixel exhaust is independent of native Fire insertion and owns no gameplay state. Runtime/platform acceptance remains separate from these source/configuration declarations.

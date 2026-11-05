@@ -4,11 +4,46 @@ status: Current
 document-kind: guide
 scope: Pinned source build entry points, Windows workspace wrappers, platform boundaries and freshness limits
 canonical-for: [build-entry-points, dependency-pins, build-freshness]
-last-reviewed: 2026-10-31
+last-reviewed: 2026-11-05
 related-documents: [source-checkpoint-and-recovery.md, testing-validation-and-replay.md, web-threading.md, deepworks-exhibition.md, ../systems/depth-layers-and-parallax.md]
 ---
 
 # Local build and validation
+
+## Desktop workbench flyer options — 2026-11-05
+
+Use the pinned Godot runtime and source-matched native libraries required below.
+The [shared workbench guide](../systems/player-control-playground.md#development-workbench-on-desktop)
+owns launch and hands-on controls; [saved flyer profiles](../systems/player-control-playground.md#saved-flyer-controls-and-options--5-november-2026)
+and [message bounds](../reference/configuration-reference.md#desktop-workbench-message-bounds)
+own the current options and private persistence contract. Run focused changes
+through the leaf, physical mapping, emission, presentation and actual options UI
+tests, while retaining the existing multi-flyer and Pilot controls:
+
+```sh
+godot --headless --path godot --script res://tests/test_flyer_preferences.gd
+godot --headless --path godot --script res://tests/test_flyer_tuning.gd
+godot --headless --path godot --script res://tests/test_flyer_emission.gd
+godot --audio-driver Dummy --path godot --script res://tests/test_flyer_exhaust_render.gd
+godot --headless --path godot --script res://tests/test_flyer_options_ui.gd
+godot --headless --path godot --script res://tests/test_workbench_fleet_session.gd
+godot --headless --path godot --script res://tests/test_workbench_pilot_ui.gd
+python tools/docs/retrieval_eval.py --queries docs/reference/retrieval-questions-flyer-options.json --output build/retrieval-flyer-options.json
+```
+
+The preferences test launches fresh engine processes to check actual disk
+round trips. Its test-only files are separate from the owner's private
+`user://workbench/flyer-profiles.json`; preserve that file when preparing a
+playable build. Exhaust rendering requires an actual graphical backend; on a
+headless Linux host use Xvfb, rather than Godot's `--headless` mode. The UI test
+also needs a second fresh process to check reopening: set
+`CYBERSAND_FLYER_UI_PROFILE` to the same initially absent test-only file for both
+runs, then set `CYBERSAND_FLYER_UI_REOPEN=1` for the second run. Use
+`CYBERSAND_TEST_ARTIFACT_DIR` for UI captures and
+`CYBERSAND_FLYER_RENDER_EVIDENCE` for exhaust captures.
+Source-sensitive host results, rendered inspection and owner
+gameplay acceptance remain distinct gates. The [dated options record](../audits/2026-11-05-workbench-flyer-options.md)
+records their actual status; these commands alone attest no platform or feel pass.
 
 ## PLAY LIFE010 raw-evidence gate — 2026-10-31
 
