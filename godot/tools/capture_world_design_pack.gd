@@ -134,7 +134,7 @@ func _save_input(input: Dictionary, relative: String) -> bool:
 	if write_error != OK or FileAccess.get_sha256(absolute) != input.rg8_sha256:
 		return false
 	manifest.inputs.append({"file": relative, "format": "Image.FORMAT_RG8",
-		"size": [input.size.x, input.size.y], "bytes": input.rg8_bytes,
+		"size": [input["size"].x, input["size"].y], "bytes": input.rg8_bytes,
 		"sha256": input.rg8_sha256, "condition_policy": "synthetic_native_initial",
 		"geometry": input.geometry})
 	return true
@@ -265,7 +265,7 @@ func _readback(input: Image, camera: Vector2i, view: Vector2i) -> Dictionary:
 
 
 func _render_rg8(input: Dictionary) -> Dictionary:
-	var size: Vector2i = input.size
+	var size: Vector2i = input["size"]
 	if size.x * scale > 32768 or size.y * scale > 32768:
 		return {"ok": false, "error": "output exceeds bounded Image extent"}
 	var img: Image = Image.create_from_data(size.x, size.y, false,
@@ -304,12 +304,12 @@ func _details(combined: Image, info: Dictionary) -> bool:
 	for i: int in [0, placements.size() - 1]:
 		var p: Dictionary = placements[i]
 		var f: Dictionary = info.features[p.feature]
-		var f_size: Vector2i = Vector2i(f.size[0], f.size[1])
+		var f_size: Vector2i = Vector2i(f["size"][0], f["size"][1])
 		var origin: Vector2i = Vector2i(p.origin[0], p.origin[1])
 		var min_point: Vector2i = Vector2i(maxi(0, origin.x - 16),
 			maxi(0, origin.y - 16))
-		var end: Vector2i = Vector2i(mini(info.size.x, origin.x + f_size.x + 16),
-			mini(info.size.y, origin.y + f_size.y + 16))
+		var end: Vector2i = Vector2i(mini(info["size"].x, origin.x + f_size.x + 16),
+			mini(info["size"].y, origin.y + f_size.y + 16))
 		var rect: Rect2i = Rect2i(min_point * scale, (end - min_point) * scale)
 		var crop: Image = combined.get_region(rect)
 		var filename: String = "details/%s-%s.png" % [
@@ -353,7 +353,7 @@ func _run() -> void:
 		"source_revision": OS.get_environment("CYBERSAND_SOURCE_REVISION"),
 		"design_pack_revision": design_revision, "pack_path": pack_path,
 		"pack_sha256": loaded.sha256, "family": info.family,
-		"scene_dimensions_cells": [info.size.x, info.size.y],
+		"scene_dimensions_cells": [info["size"].x, info["size"].y],
 		"features_declared": info.features.size(),
 		"godot_version": Engine.get_version_info().string,
 		"os": OS.get_name(), "display": DisplayServer.get_name(),
