@@ -6,7 +6,7 @@
 
 ## Deliverables
 
-Eight intentionally coordinated volcanic modules, **161 ordered native-cell rectangles**, **16 literal material-swap variants**, and one combined **1056×238** modular scene with all eight modules in fixed dry variants. The iconography is cooled lava terraces, sulfur petal structures, impossible volcanic hollows, streaked vitrification, steam plumes, and sparse geometric witness markers. This is substantially different from the prior survey ruin (#408), fossil coastline (#410), glacial instrument cave (#412) and biological sanctuary (#414).
+Eight intentionally coordinated volcanic modules, **182 ordered native-cell rectangles**, **16 literal material-swap variants**, and one combined **1056×238** modular scene with all eight modules in fixed dry variants. The iconography is cooled lava terraces, sulfur petal structures, impossible volcanic hollows, streaked vitrification, steam plumes, and sparse geometric witness markers. This is substantially different from the prior survey ruin (#408), fossil coastline (#410), glacial instrument cave (#412) and biological sanctuary (#414).
 
 | Exact ID | Module | Cells | Native t=0 state | Combined scene choice |
 |---|---|---:|---|---|
@@ -60,3 +60,15 @@ Approve format, clearing and host-ownership contract; use a bounded placement fi
 ## Distinct future collections
 
 **Silt Clockworks** — terraced abandoned tide regulators; **Signal Orchard** — engineered luminous forest; **Dust Meridian** — asymmetric desert navigation debris.
+
+## A1 terrain-art pass — the broken caldera crown (2026-11-05)
+
+This first flagship pass reshapes the original isolated eight-motif strip into **one broken-ceiling caldera panorama**. The western hanging mantle, collapsed central canopy and sheared eastern cliff frame the original fumarole over a large negative-space aperture. Intermediary scree steps relate the discrete monuments without moving their original source-local anchors. Deliberately sparse terracotta/firebrick contact bands and cross-cutting obsidian seams convey erosion, cooled flows and successive ash events. The central fumarole gains worn wall edges, mineral inlays, dark fracture cuts and fixed glass/quartz traces; none represents real emission or thermal insulation.
+
+**Geometry:** 124 new inert scene-terrain rectangles; 21 new inert detail rectangles in `fumarole-throat`; 138 scene rectangles and 182 module rectangles after the pass. Eight modules, 16 original literal material-swap variants, feature bounds/anchors, 1056×238 scene and original eight placements at the y=211 seam remain intact. All IDs are original source-pinned native materials and the ordered overwrite rule is preserved. No dynamic material was added.
+
+**Visual delta at exact scene-cell scale:** Comparing the original #454 consolidation preview geometry with this revised deterministic `preview.svg` records 29,697 visibly changed cells, including 24,031 above y=100 and 7,997 in the x=322–650, y=0–99 signature canopy region. 60.2% of scene cells remain unwritten air. The before SVG is still accessible from the parent #454 commit; the after SVG is regenerated from the pack using this directory's original renderer. These are quantified *geometry* differences; no independent artistic score or simulated visual outcome is claimed.
+
+**Qualification method:** The checked-in JavaScript validator `validatePack`, its `selfTest` (13/13 deliberately corrupt clones refused), and the checked-in deterministic SVG renderer `svgForPack` were actually executed against connected GitHub exact-head text in an isolated V8 JavaScript executor. The baseline preview first reproduced byte-for-byte; source enum, shadow catalogue and interaction registry blob SHAs matched the pinned references, and palette IDs/fields were compared to the native header and catalogue. The executor was **not** a Node CLI checkout; therefore no shell exit codes or Node process execution are claimed. Native/Godot pixels, Steam/Lava/MoltenGlass evolution, host clear/overwrite, actor/Rapier clearance, thermal performance, comparisons to the five gallery references and independent human acceptance **remain untested**.
+
+**Next art target:** a second substantially different authored lower-vault panorama using the same eight reusable modules, with genuinely different negative space and erosion story, followed by close-crop evidence and an independent seven-axis visual review.
