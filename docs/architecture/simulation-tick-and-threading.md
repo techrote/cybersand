@@ -6,7 +6,7 @@ status: Current
 scope: Desktop, Web and native stage ordering, fixed quanta, failure behavior and permitted thread access
 keywords: [fixed tick, desktop worker, Web synchronous, Rapier order, character order, tick failure, backlog]
 related-documents: [data-ownership-and-lifetimes.md, determinism-and-boundary-transfers.md, rigid-body-and-cellular-coupling.md, ../operations/web-threading.md]
-last-reviewed: 2026-11-03
+last-reviewed: 2026-11-05
 ---
 
 # Simulation tick and threading
@@ -303,8 +303,10 @@ Actual platform execution evidence is in the
 [validation ledger](../reference/validation-evidence.md).
 
 
-## Desktop development workbench on Draft #394
+## Desktop development workbench on #394
 
 The main-thread Rapier owner takes its completion acknowledgement and body wrench from the same immutable worker publication in the physics callback. Render can retain its previous publication independently. Owner epoch, sample and result serial checks still guard delivery. The physics callback confirms the current native hard-surface revision and drains the bounded Rapier collider queue before stepping against edited terrain. This check advances even while the renderer holds a frame. The desktop simulation owner drives the native World, whose persistent pool handles eligible phased material jobs. The workbench also dispatches independent chunk columns for vertical head preparation in reference PressureFlow when the pool has enough work. Columns have disjoint output storage and task-local counters. The owner joins them before row interpolation and wake decisions. Gas topology and the row pass remain serial. The default outside the workbench retains its existing execution policy.
 
 The [dated workbench measurements](../audits/2026-11-04-workbench-boundary-and-pacing.md) separate render cadence, completed physics ticks, fixed-work native throughput and process CPU usage.
+
+The workbench reference pressure-column callback captures failures into a fixed value rather than retaining `std::exception_ptr`. It records a standard exception category and at most a [192-byte diagnostic](../reference/configuration-reference.md#workbench-pressure-column-scratch), with explicit truncation. After the unchanged dispatch barrier drains, the owner reconstructs the standard exception; `World::tick()` then applies the existing failed-world quarantine. Unknown/custom exception types normalize as described in the [ABI repair and qualification](../audits/2026-11-04-workbench394-ready-validation.md). No worker calls Godot, and the successful pressure algorithm/counters and material ownership remain unchanged.

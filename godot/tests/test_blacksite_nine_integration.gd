@@ -248,6 +248,13 @@ func _exercise(controller: Control, p, web: bool, original_minimum: Vector2) -> 
 		owner + " refused the seam-straddling paint control")
 	var probes_admitted: bool = true
 	for index: int in range(9):
+		# The desktop command owner admits eight pending brush commands.
+		# Publish the seam and first seven probes before submitting the rest;
+		# this keeps all nine rooms covered without exceeding that bound.
+		if index == 7:
+			expect(await wait_for(func() -> bool:
+				return _material(controller, web, _probe_point(6)) == 2),
+				owner + " did not publish the first bounded brush batch")
 		var point: Vector2i = _probe_point(index)
 		probes_admitted = (_material(controller, web, point) == 0
 			and controller.queue_brush_mutation(point.x, point.y, 0, 2)) and probes_admitted

@@ -5,7 +5,11 @@ extends "res://scripts/rapier_physics_bridge.gd"
 const MAX_AGE: int = 1
 const MAX_CORNER_TRAVEL: float = 0.5
 const MAX_SESSION: int = 9007199254740991
-static var _next_session: int = 0
+# Godot 4.7's static-variable script lifetime can retain unrelated preloaded
+# scripts or fault while retiring a stepped Rapier session. The main loop owns
+# this scalar counter instead. It survives bridge/scene replacement without
+# retaining any script, callable, node, resource or physics owner.
+const SESSION_META: StringName = &"_cybersand_workbench_session_serial_v1"
 var _session: int = 0
 var _epoch: int = 0
 var _response: String = ""
@@ -20,7 +24,11 @@ var last_application: Dictionary = {}
 
 
 func configure_instances(definitions: Array, rigs: Array, epoch: int) -> Error:
-	if not _initialized or rigs.size() != _body_rids.size() or _session != 0 or _next_session >= MAX_SESSION: return ERR_INVALID_DATA
+	if OS.get_thread_caller_id() != OS.get_main_thread_id(): return ERR_INVALID_DATA
+	var owner: MainLoop = Engine.get_main_loop()
+	if owner == null: return ERR_INVALID_DATA
+	var previous_session: int = int(owner.get_meta(SESSION_META,0))
+	if not _initialized or rigs.size() != _body_rids.size() or _session != 0 or previous_session < 0 or previous_session >= MAX_SESSION: return ERR_INVALID_DATA
 	var first: int = 1
 	for slot: int in range(rigs.size()):
 		var rectangles: Array = rigs[slot].collision_rects()
@@ -34,8 +42,8 @@ func configure_instances(definitions: Array, rigs: Array, epoch: int) -> Error:
 		first += rectangles.size()
 	_response = definitions[0].workbench_options.response
 	_epoch = epoch
-	_next_session += 1
-	_session = _next_session
+	_session = previous_session + 1
+	owner.set_meta(SESSION_META,_session)
 	_history.resize(MAX_AGE + 1)
 	_accepted_samples.resize(_members.size())
 	_accepted_samples.fill(-1)
