@@ -1,0 +1,178 @@
+name: INV154 physical actor overlay presentation cost (diagnostic)
+
+on:
+  push:
+    branches: [perf/inv154-physical-overlay-clone-probe-20261105]
+    paths:
+      - godot/tests/performance/test_physical_overlay_present_probe.gd
+      - .github/workflows/inv154-physical-overlay-probe.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  windows-actual-overlay-method:
+    runs-on: windows-2022
+    timeout-minutes: 25
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Ensure unmodified checkout bytes
+        run: |
+          git config --global core.autocrlf false
+          git config --global core.eol lf
+
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          lfs: false
+          persist-credentials: false
+
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+
+      - name: Run guarded official Windows Godot experiment
+        timeout-minutes: 19
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/inv154-overlay
+          python tools/ci/check_ci_provider_policy.py > build/inv154-overlay/provider-policy.log 2>&1
+          git diff --check
+          python - <<'PY'
+          import ast
+          import hashlib
+          import json
+          import os
+          import shutil
+          import statistics
+          import subprocess
+          import urllib.request
+          import zipfile
+          from pathlib import Path
+
+          out = Path('build/inv154-overlay').resolve()
+          head = subprocess.check_output(['git','rev-parse','HEAD'], text=True).strip()
+          tree = subprocess.check_output(['git','rev-parse','HEAD^{tree}'], text=True).strip()
+          (out/'source-sha.txt').write_text(head+'\n')
+          (out/'source-tree.txt').write_text(tree+'\n')
+          if head != '${{ github.sha }}':
+              raise RuntimeError('wrong checked-out head')
+          expected = {
+              'godot/scripts/main.gd': '791ef440efd6edb206c6f1be33989cb62e9213b2',
+              'godot/scripts/physical_actor_overlay.gd': '349bbe886f6f7f0502b8d78ae70b97a7430f1806',
+              'godot/scripts/physical_actor_session.gd': 'bde4503df99d7e317cfb0987004d525f72177316',
+              'godot/scripts/physical_actor_rig.gd': '86e77f2f9e177263a9f402571bd82856920fdbe0',
+          }
+          for path, sha in expected.items():
+              actual = subprocess.check_output(['git','hash-object',path], text=True).strip()
+              if actual != sha:
+                  raise RuntimeError(f'{path} changed: expected {sha}, actual {actual}')
+          main = Path('godot/scripts/main.gd').read_text(encoding='utf-8')
+          session = Path('godot/scripts/physical_actor_session.gd').read_text(encoding='utf-8')
+          overlay_src = Path('godot/scripts/physical_actor_overlay.gd')
+          if not ('physical_actor_overlay.present(' in main
+                  and 'physical_actor_session.render_parts(' in main
+                  and 'func render_parts(' in session
+                  and '_parts = parts.duplicate(true)' in overlay_src.read_text(encoding='utf-8')):
+              raise RuntimeError('source path changed')
+          (out/'source-guards.json').write_text(json.dumps(expected,indent=2)+'\n')
+
+          source = ast.parse(Path('tools/ci/run_windows_godot_regressions.py').read_text(encoding='utf-8'))
+          pin = next(ast.literal_eval(node.value) for node in source.body
+              if isinstance(node,ast.Assign) and any(
+                  isinstance(t,ast.Name) and t.id == 'GODOT_SHA512' for t in node.targets))
+          url = 'https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip'
+          archive = out/'Godot_v4.7-stable_win64.exe.zip'
+          urllib.request.urlretrieve(url, archive)
+          digest = hashlib.sha512(archive.read_bytes()).hexdigest()
+          if digest != pin:
+              raise RuntimeError('Godot official archive failed SHA512 pin')
+          members = ['Godot_v4.7-stable_win64.exe','Godot_v4.7-stable_win64_console.exe']
+          with zipfile.ZipFile(archive) as z:
+              if z.testzip() is not None:
+                  raise RuntimeError('Godot archive CRC failure')
+              for member in members:
+                  if z.namelist().count(member) != 1:
+                      raise RuntimeError('Missing official engine member '+member)
+                  z.extract(member,out/'engine')
+          (out/'engine-identity.json').write_text(
+              json.dumps({'sha512':digest,'members':members},indent=2)+'\n')
+
+          scratch = out/'standalone'
+          (scratch/'scripts').mkdir(parents=True)
+          (scratch/'project.godot').write_text(
+              'config_version=5\n\n[application]\nconfig/name="INV154 Overlay Probe"\n', encoding='utf-8')
+          copied = scratch/'scripts/physical_actor_overlay.gd'
+          copied.write_bytes(overlay_src.read_bytes())
+          assert copied.read_bytes() == overlay_src.read_bytes()
+          test = Path('godot/tests/performance/test_physical_overlay_present_probe.gd')
+          shutil.copyfile(test,scratch/'probe.gd')
+          (out/'source-copy-sha256.json').write_text(json.dumps({
+              'overlay_sha256':hashlib.sha256(copied.read_bytes()).hexdigest(),
+              'test_sha256':hashlib.sha256(test.read_bytes()).hexdigest()},indent=2)+'\n')
+          engine = out/'engine/Godot_v4.7-stable_win64_console.exe'
+          env = {**os.environ,'GODOT_SILENCE_ROOT_WARNING':'1'}
+          imp = subprocess.run([str(engine),'--headless','--editor','--path',str(scratch),'--import'],
+              stdout=subprocess.PIPE,stderr=subprocess.STDOUT,text=True,timeout=90,env=env)
+          (out/'import.log').write_text(imp.stdout,encoding='utf-8')
+          if imp.returncode:
+              print(imp.stdout)
+              raise RuntimeError(f'actual engine import failed: {imp.returncode}')
+          proc = subprocess.run([str(engine),'--headless','--path',str(scratch),'--script','res://probe.gd'],
+              stdout=subprocess.PIPE,stderr=subprocess.STDOUT,text=True,timeout=340,env=env)
+          (out/'godot.log').write_text(proc.stdout,encoding='utf-8')
+          print(proc.stdout)
+          pre = 'INV154_PHYSICAL_OVERLAY_PROBE '
+          raw = [line[len(pre):] for line in proc.stdout.splitlines() if line.startswith(pre)]
+          if proc.returncode != 0 or len(raw) != 1:
+              raise RuntimeError(f'experiment not qualified, exit={proc.returncode}, readbacks={len(raw)}')
+          result = json.loads(raw[0])
+          expected_rows = {(n,r,a) for n in [0,8,64,512] for r in range(3)
+                           for a in ['actual_present','deep_copy_only','enumerate_only']}
+          rows = result['rows']
+          if (result['os_name']!='Windows' or not result['engine'].startswith('4.7')
+                  or result['failures'] != 0 or len(rows) != 36
+                  or {(r['count'],r['repeat'],r['arm']) for r in rows} != expected_rows
+                  or not result['copy_isolation'] or not result['next_publication_visible']):
+              raise RuntimeError('exact actual Godot source/output readback failed')
+          for row in rows:
+              if (len(row['batches_usec']) != 24
+                      or any(type(v) is not int or v < 0 for v in row['batches_usec'])
+                      or row['calls_per_batch'] != 20 or row['checksum'] != row['count']*480):
+                  raise RuntimeError('incomplete raw batch or checksum')
+          (out/'result.json').write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8')
+          summary = []
+          for count in [0,8,64,512]:
+              for arm in result['arms']:
+                  vals = sorted(v/20000.0 for r in rows if r['count']==count and r['arm']==arm
+                                for v in r['batches_usec'])
+                  summary.append({'part_count':count,'arm':arm,'sampled_batches':len(vals),
+                                  'p50_ms_per_call':statistics.median(vals),
+                                  'p95_ms_per_call':vals[int(len(vals)*0.95)]})
+          (out/'summary.json').write_text(json.dumps(summary,indent=2)+'\n',encoding='utf-8')
+          print('PASS source-identical Windows Godot headless overlay method: 36 arm/repeat rows, 864 raw batches; no graphical Main/GPU/physics claim')
+          print(json.dumps(summary,indent=2))
+          PY
+
+      - name: Preserve stdout, raw timings and failure evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: inv154-overlay-windows
+          path: |
+            build/inv154-overlay/source-sha.txt
+            build/inv154-overlay/source-tree.txt
+            build/inv154-overlay/source-guards.json
+            build/inv154-overlay/provider-policy.log
+            build/inv154-overlay/engine-identity.json
+            build/inv154-overlay/source-copy-sha256.json
+            build/inv154-overlay/import.log
+            build/inv154-overlay/godot.log
+            build/inv154-overlay/result.json
+            build/inv154-overlay/summary.json
+          if-no-files-found: warn
+          retention-days: 30
