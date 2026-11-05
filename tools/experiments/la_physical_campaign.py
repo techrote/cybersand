@@ -30,12 +30,49 @@ def identity():
         assert process.sha((ROOT/name).read_bytes().replace(b"\r\n",b"\n"))==digest,name
         assert git("show",source+":"+name)==git("show",BASE+":"+name),name
     assert len(inventory)==84
+    suffixes={".c",".cc",".cpp",".cxx",".h",".hh",".hpp",".hxx",".inc",".inl",".tpp"}
+    actual={p.relative_to(ROOT).as_posix() for folder in ["native/include","native/src","godot/native_extension"]
+            for p in (ROOT/folder).rglob("*") if p.is_file() and p.suffix in suffixes}
+    assert actual==set(inventory),"incomplete native inventory"
+    runtimes={}
+    for platform,filename in [("windows","runtime-provenance.json"),("linux","runtime-provenance.linux.json")]:
+        path="godot/addons/cybersand_native/"+filename
+        raw=(ROOT/path).read_bytes().replace(b"\r\n",b"\n")
+        assert raw==git("show",source+":"+path),"mutable provenance"
+        native=json.loads(raw);assert native["source_inputs"]==inventory
+        assert process.sha((ROOT/native["artifact"]).read_bytes())==native["sha256"]
+        path="godot/addons/godot-rapier2d/runtime-provenance."+platform+".json"
+        raw=(ROOT/path).read_bytes().replace(b"\r\n",b"\n")
+        assert raw==git("show",source+":"+path)
+        rapier=json.loads(raw)
+        assert process.sha((ROOT/rapier["artifact"]).read_bytes())==rapier["sha256"]
+        for name,digest in rapier["source_inputs"].items():
+            assert process.sha((ROOT/name).read_bytes().replace(b"\r\n",b"\n"))==digest,name
+        if platform=="windows":
+            launcher=process.sha(Path(process.ENGINES[platform]).read_bytes())
+            engine=process.sha(Path(process.ENGINES[platform].replace("_console.exe",".exe")).read_bytes())
+            version=subprocess.check_output([process.ENGINES[platform],"--version"]).decode().strip()
+        else:
+            engine=subprocess.check_output(["wsl","-d","Ubuntu-24.04","--","sha256sum",process.ENGINES[platform]]).decode().split()[0]
+            launcher=engine
+            version=subprocess.check_output(["wsl","-d","Ubuntu-24.04","--",process.ENGINES[platform],"--version"]).decode().strip()
+        assert engine==native["godot_executable_sha256"] and version==native["godot_version"]
+        runtimes[platform]=dict(retained_native=native,rapier=rapier,engine=dict(path=process.ENGINES[platform],sha256=engine,launcher_sha256=launcher,version=version))
     rebuild=json.loads((ROOT/"build/la-physical/runtimes/receipt.json").read_text(encoding="utf-8"))
     assert rebuild["source"]==BASE and all(row["clean"] for row in rebuild["results"])
     for name,digest in rebuild["outputs"].items():assert process.sha((ROOT/"build/la-physical/runtimes"/name).read_bytes())==digest
     inputs={p:process.sha((ROOT/p).read_bytes()) for p in git("ls-files","godot").decode().splitlines() if (ROOT/p).is_file()}
     return dict(source=source,tree=git("rev-parse","HEAD^{tree}").decode().strip(),native_base=BASE,
-                native_inputs=inventory,rebuild=rebuild,copied_inputs=inputs,local_delta=git("status","--short").decode())
+                native_inputs=inventory,rebuild=rebuild,runtimes=runtimes,copied_inputs=inputs,local_delta=git("status","--short").decode())
+
+
+def load_registration(path):
+    current=json.loads(path.read_text(encoding="utf-8"))
+    if "extends" in current:
+        inherited=load_registration(ROOT/"godot"/current["extends"].removeprefix("res://"))
+        inherited.update(current);current=inherited
+    current["cases"]+=current.pop("extra_cases",[])
+    return current
 
 
 def main():
@@ -49,9 +86,7 @@ def main():
     args=parser.parse_args()
     assert Path(args.run).name==args.run and args.run not in [".",".."]
     info=identity();output=ROOT/"build/la-physical"/args.run
-    registration=json.loads((ROOT/"godot/tests/fixtures/la_physical/registration-v1.json").read_text(encoding="utf-8"))
-    second=json.loads((ROOT/"godot/tests/fixtures/la_physical/registration-v2.json").read_text(encoding="utf-8"))
-    registration.update(second);registration["cases"]+=second["extra_cases"]
+    registration=load_registration(ROOT/"godot/tests/fixtures/la_physical/registration-v3.json")
     cases=[c for c in registration["cases"] if not args.cases or c["id"] in args.cases.split(",")]
     if args.cases:assert {c["id"] for c in cases}==set(args.cases.split(","))
 
@@ -63,6 +98,9 @@ def main():
             target.parent.mkdir(parents=True,exist_ok=True);shutil.copy2(src,target)
         binary="cybersand_native.windows.x86_64.dll" if platform=="windows" else "libcybersand_native.linux.x86_64.so"
         shutil.copy2(ROOT/"build/la-physical/runtimes"/binary,project/"addons/cybersand_native/bin"/binary)
+        effective={p.relative_to(project).as_posix():process.sha(p.read_bytes()) for p in project.rglob("*") if p.is_file()}
+        process.write(folder/"effective-project.json",dict(source=info["source"],files=effective,
+            native_override=dict(path="addons/cybersand_native/bin/"+binary,retained=info["runtimes"][platform]["retained_native"]["sha256"],executed=process.sha((project/"addons/cybersand_native/bin"/binary).read_bytes()))))
         rows=[]
         def run(name,script=None,env=None):
             engine=process.ENGINES[platform];path=str(project) if platform=="windows" else process.wsl_path(project)
@@ -98,7 +136,8 @@ def main():
     platforms=args.platforms.split(",")
     with concurrent.futures.ThreadPoolExecutor(max_workers=len(platforms)) as pool:results=dict(zip(platforms,pool.map(host,platforms)))
     assert info["copied_inputs"]==identity()["copied_inputs"],"source changed during campaign"
-    process.write(output/"result.json",dict(identity=info,results=results))
+    process.write(output/"result.json",dict(identity=info,results=results,registration=registration,
+        matrix=dict(cases=[c["id"] for c in cases],workers=list(map(int,args.workers.split(","))),platforms=platforms,repeats=args.repeats)))
     return int(not all(row["clean"] for rows in results.values() for row in rows))
 
 

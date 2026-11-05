@@ -65,7 +65,7 @@ def tuples(path):
             if material==3:water+=a
     if offset>len(raw)-32: raise ValueError("Truncated CYPS payload")
     canonical=[[list(k),v] for k,v in sorted(hist.items())]
-    return dict(sha256=sha(raw),version=version,tick=tick,completed_tick=completed,chunks=chunks,
+    return dict(sha256=sha(raw),bytes=len(raw),version=version,tick=tick,completed_tick=completed,chunks=chunks,
                 material_counts=dict(sorted(counts.items())),tuple_multiset=canonical,
                 tuple_multiset_sha256=sha(json.dumps(canonical,separators=(",",":")).encode()),
                 water_quantity=water,sum_y=dict(sorted(sum_y.items())),
@@ -117,11 +117,17 @@ def geometry(observation,rectangles):
     return dict(area_by_material=dict(areas),cell_centres_inside=dict(centres),outside=False)
 
 
+def payload(metadata):
+    result=tuples(local_path(metadata["path"]))
+    assert result["sha256"]==metadata["sha256"] and result["bytes"]==metadata["bytes"],"payload differs from capture receipt"
+    return result
+
+
 def report(path):
     d=json.loads(path.read_text(encoding="utf-8"));steps=d["steps"]
     if d["failures"]:raise ValueError("Fixture failed: "+str(d["failures"]))
-    initial=tuples(local_path(d["initial_payload"]["path"]))
-    final=tuples(local_path(d["final_payload"]["path"]))
+    initial=payload(d["initial_payload"])
+    final=payload(d["final_payload"])
     shape=[a["geometry"] for a in d["authored"]]
     first_geometry=[geometry(g,r) for g,r in zip(d["initial_geometry"],shape)]
     snapshots=[];energy=[];workers=[];times=[];readback=0;passive_positive=0;scales=[]
@@ -164,7 +170,7 @@ def report(path):
     for step in steps:inserted.update({int(k):v for k,v in step.get("inserted_materials",{}).items()})
     removed=Counter()
     if "removal_before" in d:
-        a=tuples(local_path(d["removal_before"]["path"]));b=tuples(local_path(d["removal_after"]["path"]))
+        a=payload(d["removal_before"]);b=payload(d["removal_after"])
         removed=Counter({int(k):v for k,v in a["material_counts"].items()})
         removed.subtract({int(k):v for k,v in b["material_counts"].items()})
     counts=Counter({int(k):v for k,v in initial["material_counts"].items()});counts.update(inserted);counts.subtract(removed)
@@ -183,12 +189,30 @@ def report(path):
 
 def main():
     parser=argparse.ArgumentParser(__doc__);parser.add_argument("paths",nargs="+",type=Path);parser.add_argument("--output",type=Path,required=True)
+    parser.add_argument("--matrix",type=Path,help="Runner result.json for complete prospective matrix validation")
     args=parser.parse_args();results=[]
     for path in args.paths:
         for file in sorted(path.rglob("*.json")) if path.is_dir() else [path]:
             if "initial_payload" not in json.loads(file.read_text(encoding="utf-8")):continue
             results.append(report(file));print("reduced",file.name,flush=True)
-    args.output.parent.mkdir(parents=True,exist_ok=True);args.output.write_text(json.dumps(dict(results=results),separators=(",",":"))+"\n",encoding="utf-8")
+    assert results,"No physical observations supplied"
+    coverage="partial-explicitly-unqualified"
+    if args.matrix:
+        run=json.loads(args.matrix.read_text(encoding="utf-8"));matrix=run["matrix"];registration=run["registration"]
+        expected={(p,c,a,w,r) for p in matrix["platforms"] for c in matrix["cases"] for a in registration["arms"] for w in matrix["workers"] for r in range(matrix["repeats"])}
+        observed=set()
+        for result in results:
+            platform=next(p for p in matrix["platforms"] if p in Path(result["report_path"]).parts)
+            raw=json.loads(Path(result["report_path"]).read_text(encoding="utf-8"))
+            key=(platform,result["case"]["id"],result["arm"],result["requested_workers"],raw["repeat"])
+            assert key not in observed,"Duplicate episode"
+            observed.add(key)
+            assert result["source"]==run["identity"]["source"]
+            assert result["steps"]==registration["static_steps" if result["case"]["kind"]=="static" else "ordinary_steps"]
+        assert observed==expected,"Incomplete/extra prospective matrix"
+        assert all(r["clean"] for rows in run["results"].values() for r in rows),"Run includes failed process"
+        coverage="complete-registered-matrix"
+    args.output.parent.mkdir(parents=True,exist_ok=True);args.output.write_text(json.dumps(dict(coverage=coverage,results=results),separators=(",",":"))+"\n",encoding="utf-8")
 
 
 if __name__=="__main__":main()

@@ -31,7 +31,7 @@ var last_application: Dictionary = {}
 # separately in the actual application ledger.
 func configure_application_variant(value: String) -> bool:
 	if OS.get_thread_caller_id()!=OS.get_main_thread_id() or not _initialized or _application_policy_locked or _last_snapshot>=0: return false
-	if value not in ["baseline","passive-live-v1","passive-live-on-change-v2"] or (value!="baseline" and _response!="LA-SELECTIVE"): return false
+	if value not in ["baseline","passive-live-v1","passive-live-on-change-v2","passive-separating-v3"] or (value!="baseline" and _response!="LA-SELECTIVE"): return false
 	_application_variant=value
 	return true
 
@@ -197,6 +197,19 @@ func apply_packet(snapshot_serial: int, packet: Dictionary) -> int:
 			var active_policy: bool = _application_variant=="passive-live-v1" or (_application_variant=="passive-live-on-change-v2" and state_changed)
 			var audit: Dictionary = ExperimentalPassive.revalidate(live_velocity,direct.angular_velocity,
 				live_mass,live_inertia,action.impulse,action.torque,passive,passive_torque,active_policy)
+			if audit.valid and _application_variant=="passive-separating-v3":
+				var sampled_velocity: Vector2 = sample.velocity
+				if sampled_velocity.x*correction.x<0: sampled_velocity.x=0
+				if sampled_velocity.y*correction.y<0: sampled_velocity.y=0
+				var sampled_audit: Dictionary = ExperimentalPassive.revalidate(sampled_velocity,sample.omega,
+					live_mass,live_inertia,action.impulse,action.torque,passive,passive_torque,false)
+				if not sampled_audit.valid: return _refuse("passive_nonfinite")
+				var sampled_linear: float = sampled_audit.passive_energy_linear
+				active_policy=state_changed and sampled_linear<0 and float(audit.passive_energy_linear)>0
+				if active_policy:
+					audit=ExperimentalPassive.revalidate(live_velocity,direct.angular_velocity,
+						live_mass,live_inertia,action.impulse,action.torque,passive,passive_torque,true)
+				audit["passive_sampled_linear"]=sampled_linear
 			if not audit.valid and _application_variant!="baseline": return _refuse("passive_nonfinite")
 			if audit.valid and _application_variant!="baseline":
 				action.impulse=audit.impulse

@@ -5,7 +5,7 @@ extends SceneTree
 const Session = preload("res://scripts/physical_actor_session.gd")
 const Fleet = preload("res://scripts/gcr_review_fleet.gd")
 const Contract = preload("res://scripts/microscenario_contract.gd")
-const REGISTRATION = "res://tests/fixtures/la_physical/registration-v2.json"
+const REGISTRATION = "res://tests/fixtures/la_physical/registration-v3.json"
 const DAM = "res://tests/fixtures/lcb/lcb.dam.water.freemass.reference.v1.json"
 var failures: Array[String] = []
 var checks: int = 0
@@ -57,6 +57,7 @@ func actor(model: String, index: int, mode: String, extent: int) -> Dictionary:
 			"thrust_multiplier":1.0,"torque_multiplier":1.0,"boost_multiplier":2.0}}
 
 func save_payload(preparer: Variant, world: Variant, path: String) -> Dictionary:
+	assert(not FileAccess.file_exists(path),"Refuse overwriting retained physical evidence")
 	var bytes: PackedByteArray = preparer.export_physical_state(world)
 	check(not bytes.is_empty(),"authoritative CYPS capture: "+str(preparer.get_last_error()))
 	var file := FileAccess.open(path,FileAccess.WRITE)
@@ -94,7 +95,7 @@ func observation(world: Variant, body: RigidBody2D, rects: Array, extent: int) -
 	return {"origin":plain(origin),"size":plain(size),"material_runs":runs,"native_hash":snap.hash,"pose":plain(pose)}
 
 func episode(spec: Dictionary, arm: String, workers: int, repeat: int, output: String) -> void:
-	var baseline: String = "LA-SELECTIVE" if arm.begins_with("LA-SELECTIVE-LIVE-PASSIVE") else arm
+	var baseline: String = "LA-SELECTIVE" if arm.begins_with("LA-SELECTIVE-") else arm
 	var initial_failures: int = failures.size()
 	var extent: int = int(spec.get("extent",512))
 	var viewport := SubViewport.new()
@@ -107,7 +108,10 @@ func episode(spec: Dictionary, arm: String, workers: int, repeat: int, output: S
 	for index: int in spec.models.size(): definitions.append(actor(spec.models[index],index,baseline,extent))
 	check(session.configure(definitions,viewport.world_2d.space,1),"actual authored session: "+str(session.last_error))
 	if not session.active(): viewport.free(); return
-	var application_variant: String = "passive-live-on-change-v2" if arm=="LA-SELECTIVE-LIVE-PASSIVE-GATED" else ("passive-live-v1" if arm=="LA-SELECTIVE-LIVE-PASSIVE" else "baseline")
+	var application_variant: String = "baseline"
+	if arm=="LA-SELECTIVE-LIVE-PASSIVE-GATED": application_variant="passive-live-on-change-v2"
+	if arm=="LA-SELECTIVE-LIVE-PASSIVE": application_variant="passive-live-v1"
+	if arm=="LA-SELECTIVE-SEPARATING-GUARD": application_variant="passive-separating-v3"
 	check(session.bridge.configure_application_variant(application_variant),"trajectory application variant")
 	var bodies: Array[RigidBody2D] = session.bodies()
 	var geometries: Array = []
@@ -125,10 +129,13 @@ func episode(spec: Dictionary, arm: String, workers: int, repeat: int, output: S
 		gravity_scales.append(body.gravity_scale); body.gravity_scale=0
 		if spec.get("isolation",false): body.collision_layer=0; body.collision_mask=0
 	# Prime the real bodies before native construction, with no force or gravity.
+	var neutral_poses: Array = []
+	for body: RigidBody2D in bodies: neutral_poses.append(body_state(body).pose)
 	session.bridge.step()
 	for index: int in bodies.size():
 		bodies[index].gravity_scale=gravity_scales[index]
 		check(body_state(bodies[index]).velocity==Vector2.ZERO,"neutral dynamic initialization")
+		check(body_state(bodies[index]).omega==0 and body_state(bodies[index]).pose==neutral_poses[index],"neutral pose and angular motion unchanged")
 		if spec.has("initial_vy"):
 			PhysicsServer2D.body_set_state(bodies[index].get_rid(),PhysicsServer2D.BODY_STATE_LINEAR_VELOCITY,Vector2(0,spec.initial_vy))
 		authored.append({"definition":definitions[index],"state":body_state(bodies[index]),"geometry":geometries[index],
@@ -244,7 +251,11 @@ func episode(spec: Dictionary, arm: String, workers: int, repeat: int, output: S
 				external[index].reversal_impulse=reverse
 				external[index].reversal_work=body_state(bodies[index]).kinetic-current.kinetic
 		if int(spec.get("publication_age",0))==1: session.bridge.pack_sample(drives)
-		if spec.get("physical_step_before_application",false): session.bridge.step()
+		var preapplication_step_us: int = 0
+		if spec.get("physical_step_before_application",false):
+			var pre_start: int = Time.get_ticks_usec()
+			session.bridge.step()
+			preapplication_step_us=Time.get_ticks_usec()-pre_start
 		var live: Array = []
 		for body: RigidBody2D in bodies: live.append(body_state(body))
 		if step==0:
@@ -275,7 +286,7 @@ func episode(spec: Dictionary, arm: String, workers: int, repeat: int, output: S
 		var rapier_start: int = Time.get_ticks_usec()
 		if not spec.get("physical_step_before_application",false): session.bridge.step()
 		session.complete_step()
-		var rapier_us: int = Time.get_ticks_usec()-rapier_start
+		var rapier_us: int = Time.get_ticks_usec()-rapier_start+preapplication_step_us
 		var after_step: Array = []
 		var controllers: Array = []
 		for index: int in bodies.size():
@@ -290,7 +301,7 @@ func episode(spec: Dictionary, arm: String, workers: int, repeat: int, output: S
 			"after_application":after_apply,"after_step":after_step,"external":external,"controllers":controllers,
 			"native_response":response,"application":application,"geometry":geometry,"statistics":statistics,
 			"emission_requests":emissions,"inserted_materials":inserted_materials,"preparation_us":preparation_us,"native_tick_us":tick_us,
-			"application_us":application_us,"rapier_us":rapier_us,"simulation_us":simulation_us,
+			"application_us":application_us,"rapier_us":rapier_us,"preapplication_step_us":preapplication_step_us,"simulation_us":simulation_us,
 			"observation_us":Time.get_ticks_usec()-observer_start}))
 		var c0: int = Time.get_ticks_usec()
 		check(session.apply_workbench_results(step+1,response)==0 and session.bridge.last_application.refusal=="duplicate_snapshot","duplicate consumption refusal")
@@ -316,23 +327,36 @@ func episode(spec: Dictionary, arm: String, workers: int, repeat: int, output: S
 	check(session.apply_workbench_results(999999,held)==0,"retired owner cannot apply")
 	report.lifecycle.append({"retired_session":old_session,"accepted":false})
 	report.failures=failures.slice(initial_failures)
+	assert(not FileAccess.file_exists(output+"/"+name+".json"),"Refuse overwriting retained report")
 	var file := FileAccess.open(output+"/"+name+".json",FileAccess.WRITE)
 	check(file!=null,"scientific report writable")
 	if file!=null: file.store_string(JSON.stringify(plain(report)))
 	viewport.free()
 	print("LA_PHYSICAL_EPISODE ",name," steps=",report.steps.size()," failures=",report.failures.size())
 
+func load_registration(path: String) -> Dictionary:
+	var current: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(path))
+	if current.has("extends"):
+		var inherited: Dictionary = load_registration(current.extends)
+		inherited.merge(current,true); current=inherited
+	if current.has("extra_cases"):
+		current.cases.append_array(current.extra_cases)
+		current.erase("extra_cases")
+	return current
+
 func run() -> void:
-	registration=JSON.parse_string(FileAccess.get_file_as_string(REGISTRATION))
-	if registration.has("extends"):
-		var inherited: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(registration.extends))
-		inherited.merge(registration,true); registration=inherited
-		registration.cases.append_array(registration.get("extra_cases",[]))
+	registration=load_registration(REGISTRATION)
 	checked=Contract.validate(Contract.parse(FileAccess.get_file_as_string(DAM)).definition)
 	var output: String = OS.get_environment("LA_PHYSICAL_OUTPUT")
-	if output.is_empty(): output="user://la-physical"
+	if output.is_empty(): output="user://la-physical-smoke-"+str(Time.get_ticks_usec())
 	DirAccess.make_dir_recursive_absolute(output)
 	var selection: PackedStringArray = OS.get_environment("LA_PHYSICAL_CASES").split(",",false)
+	if selection.is_empty():
+		selection=PackedStringArray(registration.smoke.cases)
+		registration.id=registration.smoke.id
+		registration.arms=registration.smoke.arms
+		registration.static_steps=registration.smoke.steps
+		registration.ordinary_steps=registration.smoke.steps
 	var workers: int = int(OS.get_environment("LA_PHYSICAL_WORKERS"))
 	if workers==0: workers=1
 	var repeat: int = int(OS.get_environment("LA_PHYSICAL_REPEAT"))
