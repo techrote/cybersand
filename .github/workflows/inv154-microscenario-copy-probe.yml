@@ -16,7 +16,7 @@ permissions:
 
 concurrency:
   group: inv154-copy-probe-${{ github.ref }}
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   windows-synthetic-probe:
