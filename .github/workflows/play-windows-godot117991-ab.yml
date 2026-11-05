@@ -76,22 +76,23 @@ jobs:
 
       - name: Validate diagnostic source and portable controls
         run: |
-          New-Item -ItemType Directory -Path $env:EVIDENCE_DIR | Out-Null
+          $evidence = Join-Path $env:GITHUB_WORKSPACE $env:EVIDENCE_DIR
+          New-Item -ItemType Directory -Path $evidence | Out-Null
           if ((git -C app rev-parse HEAD) -ne $env:APP_SHA) { throw 'Frozen CyberSand checkout moved' }
           if ((git -C app rev-parse 'HEAD^{tree}') -ne '3b5acd41fd7fb49ac8b06c94719fa1a700d8fd57') { throw 'Frozen CyberSand tree differs' }
           if ((git -C engine-a rev-parse HEAD) -ne '5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88') { throw 'Godot A checkout moved' }
           if ((git -C engine-b rev-parse HEAD) -ne '5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88') { throw 'Godot B checkout moved' }
           Push-Location harness
-          python tools/ci/check_ci_provider_policy.py 2>&1 | Tee-Object "$env:EVIDENCE_DIR/provider-policy.log"
+          python tools/ci/check_ci_provider_policy.py 2>&1 | Tee-Object "$evidence/provider-policy.log"
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           python -m py_compile tools/play/run_godot117991_ab.py
           git diff --check
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           Pop-Location
           Push-Location app
-          python tools/play/test_windows_crash_contract.py 2>&1 | Tee-Object "$env:EVIDENCE_DIR/crash-contracts.log"
+          python tools/play/test_windows_crash_contract.py 2>&1 | Tee-Object "$evidence/crash-contracts.log"
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-          python tools/play/test_windows_build_process.py 2>&1 | Tee-Object "$env:EVIDENCE_DIR/build-contracts.log"
+          python tools/play/test_windows_build_process.py 2>&1 | Tee-Object "$evidence/build-contracts.log"
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           Pop-Location
 
