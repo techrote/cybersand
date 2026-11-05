@@ -201,6 +201,28 @@ refuses the edited header. [Validation receipts](sol-active-normal-live-20261105
 retain these failures and qualifiers; new experimental runtime closure does
 not silently make the canonical repository gate green.
 
+## Full chamber execution checkpoint
+
+At source `dfc2833eab5b8e3f81e2f2798b0066562ed41e0b`, all240 registered
+chamber episodes complete on both hosts, with no failed commands or report
+audits and post-source/project equality. This is43200steps and216000 required
+observation boundaries. Independent full reduction is still pending at this
+checkpoint; execution completion does not establish clearance or acceptance.
+
+The independent reducer now checks all Cartesian coordinates, missing/duplicate
+attempts, complete180-step windows, source/report hashes, and matched initial
+serialized payload, material/mask map, body/geometry, cadence and force inputs
+within each five-arm group. Disabled arrival channels in LA/LA-EVENT-OFF/RFT
+are reported UNAVAILABLE, with raw zero counters retained separately. A completed
+reduction means coverage/reconstruction only; its strict-clearance outcomes and
+original-SOL scope are separate. These analysis checks change no physics input,
+gain, cap, pass count, threshold, runtime or original evaluator clock.
+
+Measured retained payload sizes support continuing the remaining registered
+captures within current disk space. Monitor before each suite and retain a5GiB
+operational reserve; these planning bounds are not simulation gates. No evidence
+is deleted or deduplicated at this checkpoint.
+
 ## Refusals and custody qualifications
 
 All failed attempts remain retained. Build001 refuses before compilation:

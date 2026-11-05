@@ -7,6 +7,7 @@ from pathlib import Path
 import struct
 import unittest
 import sol_active_normal_live_reduce as r
+import sol_active_normal_live_matrix as matrix
 
 ROOT=Path(__file__).resolve().parents[2]
 DATA=ROOT/'docs/audits/sol-active-normal-live-20261105'
@@ -51,6 +52,27 @@ class LiveEvidence(unittest.TestCase):
         self.assertEqual(sum(row['arrival_count'] for row in rows),3)
         self.assertEqual(sum(row['arrival_missing'] for row in rows),28980)
         self.assertTrue(all(row['legacy_wrench_f64']==[0,0,0] for row in rows))
+
+    def test_smoke_coordinate_coverage_is_not_full_matrix(self):
+        receipt=read(DATA/'smoke-execution.json');coverage=matrix.coverage(receipt)
+        self.assertEqual(coverage['expected_coordinates'],8)
+        self.assertEqual(coverage['attempted_episodes'],8)
+        self.assertTrue(coverage['complete_requested_execution'])
+        self.assertFalse(coverage['requested_equals_full_registration'])
+        self.assertFalse(coverage['complete_registered_execution'])
+        self.assertEqual(len(matrix.coordinates(receipt,True)),240)
+
+    def test_missing_duplicate_and_unknown_coordinates_refused(self):
+        source=read(DATA/'smoke-execution.json')
+        host=source['hosts']['windows']
+        episode=next(c for c in host['commands'] if c.get('reports'))
+        missing=copy.deepcopy(source);missing['hosts']['windows']['commands'].remove(episode)
+        result=matrix.coverage(missing);self.assertEqual(len(result['missing']),1);self.assertFalse(result['complete_requested_execution'])
+        duplicate=copy.deepcopy(source);duplicate['hosts']['windows']['commands'].append(copy.deepcopy(episode))
+        result=matrix.coverage(duplicate);self.assertEqual(len(result['duplicates']),1);self.assertFalse(result['complete_requested_execution'])
+        unknown=copy.deepcopy(source);bad=copy.deepcopy(episode);bad['name']='unregistered-coordinate'
+        unknown['hosts']['windows']['commands'].append(bad)
+        result=matrix.coverage(unknown);self.assertEqual(len(result['unexpected']),1);self.assertFalse(result['complete_requested_execution'])
 
     def test_original_per_host_summary_parity(self):
         previous=read(ROOT/'docs/audits/sol-chamber-20261105/episodes.json')['episodes']
