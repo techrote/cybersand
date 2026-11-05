@@ -1152,14 +1152,13 @@ void World::compute_pressure_heads() {
             parallel_->pool->dispatch(batch.tasks.size(),&batch,[](void* ptr, std::size_t i) noexcept {
                 auto& run = *static_cast<Batch*>(ptr);
                 auto& task = run.tasks[i];
-                try { run.prepare(task,0); }
-                catch (...) { task.error = std::current_exception(); }
+                task.error.capture([&] { run.prepare(task,0); });
             });
         } else {
             for (auto& task : batch.tasks) prepare_columns(task,0);
         }
         for (const auto& task : batch.tasks) {
-            if (task.error) std::rethrow_exception(task.error);
+            task.error.raise_if_present();
             merge_counts(task);
         }
     }

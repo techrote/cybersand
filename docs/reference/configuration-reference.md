@@ -1241,3 +1241,7 @@ memory/work limits. A conservative maximum local candidate charge bounds each
 raster sample. Real geometry/mask checks and canonical ordering still select
 materials. Measured index checks and local chunk durations are distinct from
 these declared logical charges.
+
+## Workbench pressure-column scratch
+
+`WorldConfig::workbench_parallel_pressure_heads` defaults to false. The opt-in workbench reference PressureFlow route reserves at most `maximum_chunk_count` head-column tasks when a native pool is available. Each task includes a private failure category/flag and a fixed **192-byte** diagnostic buffer; overlong failure text ends with an explicit truncation marker. This adds bounded preallocated task storage, not a new per-cell object, runtime tuning control or healthy tick allocation. Capture performs at most the fixed-buffer scan; exception reconstruction happens on the serialized owner after workers join. The private `native/src/world_pressure_column_failure.inc` value and `World::PressureState::HeadColumnTask` own these limits. Cached P1 wake summaries retain serial preparation. See [threading ownership](../architecture/simulation-tick-and-threading.md#desktop-development-workbench-on-394) and the [resulting-source ABI qualification](../audits/2026-11-04-workbench394-ready-validation.md).

@@ -9,17 +9,25 @@
 
 #include <algorithm>
 #include <array>
+#include <atomic>
 #include <cstdint>
 #include <functional>
 #include <iostream>
 #include <limits>
 #include <memory>
+#include <new>
 #include <optional>
 #include <span>
 #include <stdexcept>
 #include <string>
+#include <thread>
 #include <tuple>
+#include <type_traits>
 #include <vector>
+
+namespace cybersand {
+#include "../src/world_pressure_column_failure.inc"
+}
 
 namespace {
 
@@ -1106,6 +1114,7 @@ void test_physical_hash_and_persistence() {
 #include "test_pressure_gas_cache.inc"
 #include "test_pressure_variants_acceptance.inc"
 #include "test_pressure_wake_summaries.inc"
+#include "test_pressure_column_failure.inc"
 
 void test_default_policy_untouched() {
     // A default World never allocates or runs pressure state, and its historic
@@ -1137,7 +1146,11 @@ void test_lcb_pressure_quantity_parity() { test_quantity_parity_and_motion(); }
 void test_lcb_pressure_two_limb() { test_vented_two_limb_levels(); }
 void test_lcb_pressure_barriers() { test_barriers_block_head(); }
 void test_lcb_pressure_static_rest() { test_static_rest_and_sleep(); }
-void test_lcb_pressure_lifecycle() { test_lifecycle_ledgers(); test_pressure_material_hooks(); }
+void test_lcb_pressure_lifecycle() {
+    test_lifecycle_ledgers();
+    test_pressure_material_hooks();
+    test_pressure_column_failure_relay();
+}
 void test_lcb_pressure_persistence() { test_physical_hash_and_persistence(); }
 void test_lcb_pressure_default_untouched() { test_default_policy_untouched(); }
 void test_lcb_pressure_comparison_rest() { test_comparison_projection_rest_and_authority(); }
