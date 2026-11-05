@@ -1,0 +1,42 @@
+{
+  "schema": "cybersand.sol-active-normal-live.full-chamber-custody.v1",
+  "execution_source": "dfc2833eab5b8e3f81e2f2798b0066562ed41e0b",
+  "geometry_analysis_source": "57cfc151",
+  "synthesis_source": "ab3b6a40",
+  "episodes": 240,
+  "steps": 43200,
+  "boundaries": 216000,
+  "matched_initial_groups": 48,
+  "artifacts": [
+    {
+      "source_path": "build\\sol-active-normal-live\\chamber-full-001\\receipt.json",
+      "raw_sha256": "15a6ddc37ae8ca9aa429d9d8b9f4c15786313859c20779280084195965561df5",
+      "public_file": "chamber-full-execution.json",
+      "public_lf_sha256": "700b0559d6e5c63668e2ee80cf44bad218f848315aab5e8e7f1592becfb2c130",
+      "bytes": 1006283
+    },
+    {
+      "source_path": "build\\sol-active-normal-live\\chamber-full-001\\independent-reduction\\manifest.json",
+      "raw_sha256": "7cad625ba57f281b891adff42d4bd82b91b0bf9eb4046fbfda05aedeb35622fa",
+      "public_file": "chamber-full-reduction.json",
+      "public_lf_sha256": "82a3768c5cf524a62ded8eb5124de1ba9483a8e6061618ec22c20ddea2be0450",
+      "bytes": 2407955
+    },
+    {
+      "source_path": "build\\sol-active-normal-live\\chamber-full-001\\synthesis-001\\summary.json",
+      "raw_sha256": "ccc85a330f4732c8ae296899c7b5dbc93f014cb36b6ca832066bccf0373403d8",
+      "public_file": "chamber-full-summary.json",
+      "public_lf_sha256": "ccc85a330f4732c8ae296899c7b5dbc93f014cb36b6ca832066bccf0373403d8",
+      "bytes": 62092
+    },
+    {
+      "source_path": "build\\sol-active-normal-live\\chamber-full-001\\synthesis-001\\episodes.json",
+      "raw_sha256": "5657c171304e17275efa1a037ae12b1eb16951836767d1c7e36f9f0588a0dfc0",
+      "public_file": "chamber-full-episodes.json",
+      "public_lf_sha256": "5657c171304e17275efa1a037ae12b1eb16951836767d1c7e36f9f0588a0dfc0",
+      "bytes": 2119479
+    }
+  ],
+  "scope": "Full registered chamber evidence complete; all120drivenepisodes fail strict reference, no originalSOL authority/acceptance. Raw reports/payloads/logs retained locally. Shared-host full-observer timings only.",
+  "transport": "Public JSON is byte-normalized to LF; original input hashes preserved separately."
+}

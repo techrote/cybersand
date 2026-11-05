@@ -1,0 +1,120 @@
+{
+  "source": "12e651d6",
+  "model_sha256": "807fd89b2a2c70bcdba5dd7c0b20b829aa1677f586e3bf05ededd3faa149d18a",
+  "raw_log_sha256": "6268ab061b7ae85081ca50d393d8d0d48aa924e682f42286964dd393f21f6540",
+  "results": {
+    "cancel_alias": {
+      "execution_domain": "offline-copied-data-model",
+      "live_authority": false,
+      "actuation_permitted": false,
+      "native_mutations": 0,
+      "rid_calls": 0,
+      "applied_impulse": [
+        0,
+        0
+      ],
+      "applied_torque": 0,
+      "applied_correction": [
+        0,
+        0
+      ],
+      "generated_work": 0,
+      "accepted": true,
+      "reason": "",
+      "state": "HELD"
+    },
+    "terminal_alias": {
+      "execution_domain": "offline-copied-data-model",
+      "live_authority": false,
+      "actuation_permitted": false,
+      "native_mutations": 0,
+      "rid_calls": 0,
+      "applied_impulse": [
+        0,
+        0
+      ],
+      "applied_torque": 0,
+      "applied_correction": [
+        0,
+        0
+      ],
+      "generated_work": 0,
+      "accepted": true,
+      "reason": "",
+      "state": "HELD"
+    },
+    "deadline_overflow": {
+      "accepted": true,
+      "deadline": 9223372036854775839
+    },
+    "late_partial_renewal": {
+      "execution_domain": "offline-copied-data-model",
+      "live_authority": false,
+      "actuation_permitted": false,
+      "native_mutations": 0,
+      "rid_calls": 0,
+      "applied_impulse": [
+        0,
+        0
+      ],
+      "applied_torque": 0,
+      "applied_correction": [
+        0,
+        0
+      ],
+      "generated_work": 0,
+      "accepted": true,
+      "reason": "",
+      "state": "HELD"
+    },
+    "serial_rewind": {
+      "execution_domain": "offline-copied-data-model",
+      "live_authority": false,
+      "actuation_permitted": false,
+      "native_mutations": 0,
+      "rid_calls": 0,
+      "applied_impulse": [
+        0,
+        0
+      ],
+      "applied_torque": 0,
+      "applied_correction": [
+        0,
+        0
+      ],
+      "generated_work": 0,
+      "accepted": true,
+      "reason": "",
+      "state": "HELD"
+    },
+    "boolean_alias": {
+      "execution_domain": "offline-copied-data-model",
+      "live_authority": false,
+      "actuation_permitted": false,
+      "native_mutations": 0,
+      "rid_calls": 0,
+      "applied_impulse": [
+        0,
+        0
+      ],
+      "applied_torque": 0,
+      "applied_correction": [
+        0,
+        0
+      ],
+      "generated_work": 0,
+      "accepted": true,
+      "reason": "",
+      "state": "CAPTURED"
+    },
+    "oversized_scope_serialized_before_refusal": true,
+    "expired_full_trace": {
+      "state": "HELD",
+      "active": true,
+      "attempts": 257,
+      "consumed_leases": 1,
+      "trace_overflow": 1
+    }
+  },
+  "qualification": "REPRODUCED_PROTOCOL_DEFECTS; no live action"
+}

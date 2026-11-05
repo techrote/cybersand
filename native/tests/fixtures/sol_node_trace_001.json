@@ -1,0 +1,37 @@
+{
+  "registration": "SOL-NODE-TRACE-001",
+  "date": "2026-11-05",
+  "baseline_source": "275ce1ee692739b35f400adcf9532f7e89284cfb",
+  "baseline_runtime_build_source": "ff0d7cf5cc94c42a5e409eb5535681fe314ae3dd",
+  "purpose": "Locate first node-input or batch-arithmetic divergence in recorded mixed-body regression; diagnostic observation only",
+  "hypothesis_origin": "Post-result application replay found native-wrench differences atScooper2/barrel30/Kestrel32 with equal exported body states and no correction/event/legacy divergence. Per-node input equality remains unknown.",
+  "mechanism": {
+    "observer_node_cap": 64,
+    "batches": 8,
+    "ownership": "Optional caller-owned fixed buffer, absent from CompoundWorkspace and Result. Diagnostic Workbench may allocate once before ticks; copied row captures before next owner reuses scratch. No Godot API in value solver or native pool.",
+    "overflow": "Capture consistent first64node prefix, mark INCOMPLETE_NODE_CAP and report total/captured/dropped counts. Physics executes all nodes with unchanged counters/budgets/caps/passivity gate. Empty/refused input and observer overflow remain distinct.",
+    "fields": "Body/budget/policy/input-bin/samples envelope; node source-bin/count/quadrature/position/normal/originalweight/capacity; eight batch before/after velocities/omega, diagnostic and policy active metadata, cap-counter increments; node jn/jt before/after,speed,request,usedweight,target,next,delta,limit; raw final energy and raw/accepted Result",
+    "original_policy": "Do not read stale workspace.active. Diagnostic normal activity derives from existing speed and prior jn; Original still uses original weight. Tangent mask inapplicable.",
+    "off_path": "One solve-boundary dispatch; compile-time disabled observation path, no trace buffer allocation or per-node observation checks in ordinary solve",
+    "lifetime": "Independent fresh-diagnostic one-use trace latch, off or batch64-001. Normal/trace selectors may be configured in either order before getter. Prepare/tick/result attempts lock both before refusal. Reset/replacement destroys storage; allocation failure/unknown request atomic."
+  },
+  "physical_invariants": "All arithmetic expressions/order, original capacity shares, four passes, tangent law, final gate, gains, mode defaults, material policy and application/correction remain unchanged. No protected World/pressure port or original SOL actuation.",
+  "value_qualification": "Frozen38case observations and final contacts match with default/explicitOriginal/Active, trace absent/present/reused/overflowing; optimized/strictASanUBSanLinux and actualWindowsMSVC. Add0/1/64/65/1024node and refused-input stale-sink controls; independent trace audit and deliberate corruption refusals.",
+  "live_campaign": {
+    "case": "shared-granular-bodies",
+    "arms": ["selective-original/off", "selective-original/batch64-001", "selective-active/off", "selective-active/batch64-001"],
+    "platforms": ["windows", "linux"],
+    "workers": [1,4],
+    "repeats": 1,
+    "episodes": 16,
+    "steps_per_episode": 180,
+    "owners_per_episode": 3,
+    "matched": "Fresh authoritative session per arm; same registered material map,seed0,poses,shapes,gravity,drive,cadence,publication and complete window. Traceoff/on physical packet/application/pose/payload parity perpolicy/host/worker. Retain all attempts and incomplete captures.",
+    "qualification": "One-repeat diagnostic campaign, not a new original SOL evaluator,CPU gate,full prior matrix or universal scaling/60Hz acceptance"
+  },
+  "runtime": "Separate fresh build/runner/custody below build/sol-node-trace; preserve oldff0d7cf5runner guard and runtimes-003. Native84 and only four existing production paths may differ. Frozen material/dependency/manifests untouched; complete SDK/compiler pre/post inventories and actual output/engine/Rapier hashes.",
+  "gates": "New trace/value parity; relevant native optimized/strict fixtures+core; freshselector/ownership/held-packet/reset tests;12scoped workbench/passive/force checks; actualWindows/Linux Godot;docs/M11/material/repository/retrieval/diff checks",
+  "resource_plan": "Preserve5GiBfree reserve, atmost2GiBnew artifacts; one isolated imported project per host, no full oldmatrix reruns or evidence deletion. Planning bounds are not physics gates; measure actualsizeofbuffer/getter/observer cost.",
+  "decisions": "Trace completeness/parity and causal diagnosis only. Incomplete or mismatched evidence refuses conclusions. No live correction change or promotion without separately registered follow-up/review.",
+  "keep_draft": true
+}

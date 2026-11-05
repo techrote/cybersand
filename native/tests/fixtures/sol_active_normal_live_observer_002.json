@@ -1,0 +1,27 @@
+{
+  "id": "SOL-ACTIVE-NORMAL-LIVE-001-AUTHORED-OBSERVER-002",
+  "status": "PROSPECTIVE; before authored/workload candidate executions",
+  "date": "2026-11-05",
+  "source": "57cfc151",
+  "original_registration": "native/tests/fixtures/sol_active_normal_live_001.json",
+  "changed_script": "godot/tests/support/sol_active_normal_authored.gd",
+  "scope": "Observer only, same code bothpolicies/hosts. Original parent fixture and historical observations unchanged. No native/runtime/physics/input/threshold change.",
+  "reason": "Parent reports translational KE through Vector2.length_squared, which rounds through real_t/F32. Use scalar64 energy of the same sampled quantized state.",
+  "implementation": [
+    "Call super.body_state exactly once",
+    "Preserve pose, velocity, omega, mass, inertia, potential and all input-driving values",
+    "Retain kinetic_legacy_f32_length_squared",
+    "Set kinetic=.5*mass*(float(vx)^2+float(vy)^2)+.5*inertia*float(omega)^2",
+    "Append exact pose f64LE bits xx,xy,yx,yy,tx,ty and velocity/omega vx,vy,w from returned values, no second PhysicsServer read"
+  ],
+  "comparison": "Actual state precision is unchanged; report legacy/scalar differences. Initial input, cadence, gravity, force, policy, caps and measurements windows remain registered.",
+  "admission": "New Godot copied-input inventory required; native84 remains equal to runtime buildff0d7cf5. No claim of M11/current canonical runtime admission.",
+  "audit": [
+    "Native policy/mode/session/epoch/sample and full owner cardinality",
+    "All actual applications accepted without per-body refusal, including zero-wrench owners",
+    "Actual-action RID reconstruction under original1e-5 tolerance",
+    "Scalar64 kinetic recomputation, explicit actuator vsresponse work",
+    "Actual arrivals, material source/removal ledger, observed workers and separate cell/history memory",
+    "Authored geometry remains sampled ROI/convex-proxy depth, not chamber five-boundary certification"
+  ]
+}

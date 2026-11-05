@@ -1,0 +1,893 @@
+[
+  {
+    "run": "operator-001",
+    "note": "Complete first measurements,894checks/host. Authored can_sleep temporarily disabled to keepawake; later probe preserves property and explicitly wakes. No final qualification substituted.",
+    "receipt": {
+      "path": "build/sol-gravity-operator/operator-001/receipt.json",
+      "sha256": "242a72ffdf2df63583a871f6f2667e1713a304ee1fcdff95d67e863f912fdca2",
+      "bytes": 400785
+    },
+    "source": "a38860a942cda4e30e327f2bc08dfb768ead28a8",
+    "post_source_equality": true,
+    "hosts": {
+      "windows": {
+        "commands": [
+          {
+            "name": "engine-version",
+            "command": [
+              "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+              "--version"
+            ],
+            "requested_command": [
+              "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+              "--version"
+            ],
+            "exit": 0,
+            "clean": true,
+            "timeout_seconds": 300,
+            "seconds": 0.07322280004154891,
+            "log": "build\\sol-gravity-operator\\operator-001\\windows\\engine-version.log",
+            "log_sha256": "5a4c39354856b07de09b419a9327a4e8edec0ac610ec5fb8a3ebcd7017e7d035",
+            "markers": []
+          },
+          {
+            "name": "import",
+            "command": [
+              "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+              "--headless",
+              "--audio-driver",
+              "Dummy",
+              "--path",
+              "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\build\\sol-gravity-operator\\operator-001\\windows\\godot",
+              "--editor",
+              "--import",
+              "--quit"
+            ],
+            "requested_command": [
+              "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+              "--headless",
+              "--audio-driver",
+              "Dummy",
+              "--path",
+              "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\build\\sol-gravity-operator\\operator-001\\windows\\godot",
+              "--editor",
+              "--import",
+              "--quit"
+            ],
+            "exit": 0,
+            "clean": true,
+            "timeout_seconds": 300,
+            "seconds": 9.833212400029879,
+            "log": "build\\sol-gravity-operator\\operator-001\\windows\\import.log",
+            "log_sha256": "323f64aa0616d1a050e28fc20d367743fb38c5b310cb99d25ae6b2a6b44dbb98",
+            "markers": []
+          },
+          {
+            "name": "gravity-operator",
+            "command": [
+              "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+              "--headless",
+              "--audio-driver",
+              "Dummy",
+              "--path",
+              "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\build\\sol-gravity-operator\\operator-001\\windows\\godot",
+              "--max-fps",
+              "120",
+              "--script",
+              "res://tests/test_sol_gravity_operator.gd"
+            ],
+            "requested_command": [
+              "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+              "--headless",
+              "--audio-driver",
+              "Dummy",
+              "--path",
+              "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\build\\sol-gravity-operator\\operator-001\\windows\\godot",
+              "--max-fps",
+              "120",
+              "--script",
+              "res://tests/test_sol_gravity_operator.gd"
+            ],
+            "exit": 0,
+            "clean": true,
+            "timeout_seconds": 300,
+            "seconds": 0.8778983000083826,
+            "log": "build\\sol-gravity-operator\\operator-001\\windows\\gravity-operator.log",
+            "log_sha256": "10e7490be7c606ac6e8f2d16145754844c3b53b90073425d9f193c0fefc9157e",
+            "markers": [
+              "SOL_GRAVITY_OPERATOR checks=894 failures=0"
+            ]
+          }
+        ],
+        "observations": {
+          "path": "build\\sol-gravity-operator\\operator-001\\windows\\observations.json",
+          "sha256": "f62ff2d37dda6d26dd5d16fea483ebf332b1d6c2e00d33224182fde6960b89c2",
+          "bytes": 457817
+        },
+        "post_inventory": {
+          "unexpected_changes": [],
+          "import_LF_normalization_only": [
+            "addons/godot-rapier2d/logo_square_2d.png.import",
+            "addons/godot-rapier2d/Radial2D.svg.import",
+            "addons/godot-rapier2d/icons/Fluid2D.svg.import",
+            "addons/godot-rapier2d/icons/StateManager2D.svg.import"
+          ]
+        }
+      },
+      "linux": {
+        "commands": [
+          {
+            "name": "engine-version",
+            "command": [
+              "wsl.exe",
+              "-d",
+              "Ubuntu-24.04",
+              "--",
+              "timeout",
+              "--signal=TERM",
+              "--kill-after=5s",
+              "300s",
+              "env",
+              "CYBERSAND_SOURCE_REVISION=a38860a942cda4e30e327f2bc08dfb768ead28a8",
+              "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+              "--version"
+            ],
+            "requested_command": [
+              "wsl.exe",
+              "-d",
+              "Ubuntu-24.04",
+              "--",
+              "env",
+              "CYBERSAND_SOURCE_REVISION=a38860a942cda4e30e327f2bc08dfb768ead28a8",
+              "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+              "--version"
+            ],
+            "exit": 0,
+            "clean": true,
+            "timeout_seconds": 300,
+            "seconds": 4.618067100003827,
+            "log": "build\\sol-gravity-operator\\operator-001\\linux\\engine-version.log",
+            "log_sha256": "87fac5ffedc06e67db8ac5810bbedd8e412d166bcd89b314f3c5a4fa05a78a2d",
+            "markers": []
+          },
+          {
+            "name": "engine-hash",
+            "command": [
+              "wsl.exe",
+              "-d",
+              "Ubuntu-24.04",
+              "--",
+              "timeout",
+              "--signal=TERM",
+              "--kill-after=5s",
+              "180s",
+              "sha256sum",
+              "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64"
+            ],
+            "requested_command": [
+              "wsl.exe",
+              "-d",
+              "Ubuntu-24.04",
+              "--",
+              "sha256sum",
+              "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64"
+            ],
+            "exit": 0,
+            "clean": true,
+            "timeout_seconds": 180,
+            "seconds": 0.18119659996591508,
+            "log": "build\\sol-gravity-operator\\operator-001\\linux\\engine-hash.log",
+            "log_sha256": "510afe66a44e7343093617c0349b8a524d5039cdcf48a0630a98e6acf3483710",
+            "markers": []
+          },
+          {
+            "name": "import",
+            "command": [
+              "wsl.exe",
+              "-d",
+              "Ubuntu-24.04",
+              "--",
+              "timeout",
+              "--signal=TERM",
+              "--kill-after=5s",
+              "300s",
+              "env",
+              "CYBERSAND_SOURCE_REVISION=a38860a942cda4e30e327f2bc08dfb768ead28a8",
+              "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+              "--headless",
+              "--audio-driver",
+              "Dummy",
+              "--path",
+              "/mnt/c/Users/_/.codex/worktrees/sol-active-normal-live-20261105/khybersand/build/sol-gravity-operator/operator-001/linux/godot",
+              "--editor",
+              "--import",
+              "--quit"
+            ],
+            "requested_command": [
+              "wsl.exe",
+              "-d",
+              "Ubuntu-24.04",
+              "--",
+              "env",
+              "CYBERSAND_SOURCE_REVISION=a38860a942cda4e30e327f2bc08dfb768ead28a8",
+              "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+              "--headless",
+              "--audio-driver",
+              "Dummy",
+              "--path",
+              "/mnt/c/Users/_/.codex/worktrees/sol-active-normal-live-20261105/khybersand/build/sol-gravity-operator/operator-001/linux/godot",
+              "--editor",
+              "--import",
+              "--quit"
+            ],
+            "exit": 0,
+            "clean": true,
+            "timeout_seconds": 300,
+            "seconds": 47.96054170001298,
+            "log": "build\\sol-gravity-operator\\operator-001\\linux\\import.log",
+            "log_sha256": "5eb2f7562ebc49b0734277933d0aca74af702d152148aab9ed5ead6af2199aaa",
+            "markers": []
+          },
+          {
+            "name": "gravity-operator",
+            "command": [
+              "wsl.exe",
+              "-d",
+              "Ubuntu-24.04",
+              "--",
+              "timeout",
+              "--signal=TERM",
+              "--kill-after=5s",
+              "300s",
+              "env",
+              "CYBERSAND_SOURCE_REVISION=a38860a942cda4e30e327f2bc08dfb768ead28a8",
+              "SOL_GRAVITY_OUTPUT=/mnt/c/Users/_/.codex/worktrees/sol-active-normal-live-20261105/khybersand/build/sol-gravity-operator/operator-001/linux/observations.json",
+              "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+              "--headless",
+              "--audio-driver",
+              "Dummy",
+              "--path",
+              "/mnt/c/Users/_/.codex/worktrees/sol-active-normal-live-20261105/khybersand/build/sol-gravity-operator/operator-001/linux/godot",
+              "--max-fps",
+              "120",
+              "--script",
+              "res://tests/test_sol_gravity_operator.gd"
+            ],
+            "requested_command": [
+              "wsl.exe",
+              "-d",
+              "Ubuntu-24.04",
+              "--",
+              "env",
+              "CYBERSAND_SOURCE_REVISION=a38860a942cda4e30e327f2bc08dfb768ead28a8",
+              "SOL_GRAVITY_OUTPUT=/mnt/c/Users/_/.codex/worktrees/sol-active-normal-live-20261105/khybersand/build/sol-gravity-operator/operator-001/linux/observations.json",
+              "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+              "--headless",
+              "--audio-driver",
+              "Dummy",
+              "--path",
+              "/mnt/c/Users/_/.codex/worktrees/sol-active-normal-live-20261105/khybersand/build/sol-gravity-operator/operator-001/linux/godot",
+              "--max-fps",
+              "120",
+              "--script",
+              "res://tests/test_sol_gravity_operator.gd"
+            ],
+            "exit": 0,
+            "clean": true,
+            "timeout_seconds": 300,
+            "seconds": 1.9981564999907278,
+            "log": "build\\sol-gravity-operator\\operator-001\\linux\\gravity-operator.log",
+            "log_sha256": "fa64813953314da55fc30b402b40bf4a46215cc9950831e86bdb3bc7c7e1779b",
+            "markers": [
+              "SOL_GRAVITY_OPERATOR checks=894 failures=0"
+            ]
+          }
+        ],
+        "observations": {
+          "path": "build\\sol-gravity-operator\\operator-001\\linux\\observations.json",
+          "sha256": "44a77d49fc4e73abd00e59d661be1a99dacee4d9fd4599128f448ac4a09ea87a",
+          "bytes": 457865
+        },
+        "post_inventory": {
+          "unexpected_changes": [],
+          "import_LF_normalization_only": [
+            "addons/godot-rapier2d/logo_square_2d.png.import",
+            "addons/godot-rapier2d/Radial2D.svg.import",
+            "addons/godot-rapier2d/icons/Fluid2D.svg.import",
+            "addons/godot-rapier2d/icons/StateManager2D.svg.import"
+          ]
+        }
+      }
+    }
+  },
+  {
+    "run": "operator-002",
+    "note": "Bothhosts exit1parseerror unsupported PhysicsServer body_is_shape_disabled. Imports0; no oracle observations. Sourcepost equality retained.",
+    "receipt": {
+      "path": "build/sol-gravity-operator/operator-002/receipt.json",
+      "sha256": "c81e8cabe5148442ece6b2e1443dca569764ab624b4055834f06c998aeb370bc",
+      "bytes": 400175
+    },
+    "source": "e36142813d1a1c26c32af4a5822fd152a88aaf37",
+    "post_source_equality": true,
+    "hosts": {
+      "windows": {
+        "commands": [
+          {
+            "name": "engine-version",
+            "command": [
+              "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+              "--version"
+            ],
+            "requested_command": [
+              "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+              "--version"
+            ],
+            "exit": 0,
+            "clean": true,
+            "timeout_seconds": 300,
+            "seconds": 0.08198499999707565,
+            "log": "build\\sol-gravity-operator\\operator-002\\windows\\engine-version.log",
+            "log_sha256": "5a4c39354856b07de09b419a9327a4e8edec0ac610ec5fb8a3ebcd7017e7d035",
+            "markers": []
+          },
+          {
+            "name": "import",
+            "command": [
+              "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+              "--headless",
+              "--audio-driver",
+              "Dummy",
+              "--path",
+              "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\build\\sol-gravity-operator\\operator-002\\windows\\godot",
+              "--editor",
+              "--import",
+              "--quit"
+            ],
+            "requested_command": [
+              "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+              "--headless",
+              "--audio-driver",
+              "Dummy",
+              "--path",
+              "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\build\\sol-gravity-operator\\operator-002\\windows\\godot",
+              "--editor",
+              "--import",
+              "--quit"
+            ],
+            "exit": 0,
+            "clean": true,
+            "timeout_seconds": 300,
+            "seconds": 9.329640200012363,
+            "log": "build\\sol-gravity-operator\\operator-002\\windows\\import.log",
+            "log_sha256": "323f64aa0616d1a050e28fc20d367743fb38c5b310cb99d25ae6b2a6b44dbb98",
+            "markers": []
+          },
+          {
+            "name": "gravity-operator",
+            "command": [
+              "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+              "--headless",
+              "--audio-driver",
+              "Dummy",
+              "--path",
+              "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\build\\sol-gravity-operator\\operator-002\\windows\\godot",
+              "--max-fps",
+              "120",
+              "--script",
+              "res://tests/test_sol_gravity_operator.gd"
+            ],
+            "requested_command": [
+              "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+              "--headless",
+              "--audio-driver",
+              "Dummy",
+              "--path",
+              "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\build\\sol-gravity-operator\\operator-002\\windows\\godot",
+              "--max-fps",
+              "120",
+              "--script",
+              "res://tests/test_sol_gravity_operator.gd"
+            ],
+            "exit": 1,
+            "clean": false,
+            "timeout_seconds": 300,
+            "seconds": 0.3643935999716632,
+            "log": "build\\sol-gravity-operator\\operator-002\\windows\\gravity-operator.log",
+            "log_sha256": "ecc868ec1c57766555996813facfd7c342cef0458dde62113310230c75acd45b",
+            "markers": []
+          }
+        ],
+        "observations": null,
+        "post_inventory": {
+          "unexpected_changes": [],
+          "import_LF_normalization_only": [
+            "addons/godot-rapier2d/logo_square_2d.png.import",
+            "addons/godot-rapier2d/Radial2D.svg.import",
+            "addons/godot-rapier2d/icons/Fluid2D.svg.import",
+            "addons/godot-rapier2d/icons/StateManager2D.svg.import"
+          ]
+        }
+      },
+      "linux": {
+        "commands": [
+          {
+            "name": "engine-version",
+            "command": [
+              "wsl.exe",
+              "-d",
+              "Ubuntu-24.04",
+              "--",
+              "timeout",
+              "--signal=TERM",
+              "--kill-after=5s",
+              "300s",
+              "env",
+              "CYBERSAND_SOURCE_REVISION=e36142813d1a1c26c32af4a5822fd152a88aaf37",
+              "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+              "--version"
+            ],
+            "requested_command": [
+              "wsl.exe",
+              "-d",
+              "Ubuntu-24.04",
+              "--",
+              "env",
+              "CYBERSAND_SOURCE_REVISION=e36142813d1a1c26c32af4a5822fd152a88aaf37",
+              "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+              "--version"
+            ],
+            "exit": 0,
+            "clean": true,
+            "timeout_seconds": 300,
+            "seconds": 4.389330800040625,
+            "log": "build\\sol-gravity-operator\\operator-002\\linux\\engine-version.log",
+            "log_sha256": "87fac5ffedc06e67db8ac5810bbedd8e412d166bcd89b314f3c5a4fa05a78a2d",
+            "markers": []
+          },
+          {
+            "name": "engine-hash",
+            "command": [
+              "wsl.exe",
+              "-d",
+              "Ubuntu-24.04",
+              "--",
+              "timeout",
+              "--signal=TERM",
+              "--kill-after=5s",
+              "180s",
+              "sha256sum",
+              "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64"
+            ],
+            "requested_command": [
+              "wsl.exe",
+              "-d",
+              "Ubuntu-24.04",
+              "--",
+              "sha256sum",
+              "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64"
+            ],
+            "exit": 0,
+            "clean": true,
+            "timeout_seconds": 180,
+            "seconds": 0.17769520002184436,
+            "log": "build\\sol-gravity-operator\\operator-002\\linux\\engine-hash.log",
+            "log_sha256": "510afe66a44e7343093617c0349b8a524d5039cdcf48a0630a98e6acf3483710",
+            "markers": []
+          },
+          {
+            "name": "import",
+            "command": [
+              "wsl.exe",
+              "-d",
+              "Ubuntu-24.04",
+              "--",
+              "timeout",
+              "--signal=TERM",
+              "--kill-after=5s",
+              "300s",
+              "env",
+              "CYBERSAND_SOURCE_REVISION=e36142813d1a1c26c32af4a5822fd152a88aaf37",
+              "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+              "--headless",
+              "--audio-driver",
+              "Dummy",
+              "--path",
+              "/mnt/c/Users/_/.codex/worktrees/sol-active-normal-live-20261105/khybersand/build/sol-gravity-operator/operator-002/linux/godot",
+              "--editor",
+              "--import",
+              "--quit"
+            ],
+            "requested_command": [
+              "wsl.exe",
+              "-d",
+              "Ubuntu-24.04",
+              "--",
+              "env",
+              "CYBERSAND_SOURCE_REVISION=e36142813d1a1c26c32af4a5822fd152a88aaf37",
+              "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+              "--headless",
+              "--audio-driver",
+              "Dummy",
+              "--path",
+              "/mnt/c/Users/_/.codex/worktrees/sol-active-normal-live-20261105/khybersand/build/sol-gravity-operator/operator-002/linux/godot",
+              "--editor",
+              "--import",
+              "--quit"
+            ],
+            "exit": 0,
+            "clean": true,
+            "timeout_seconds": 300,
+            "seconds": 48.11307289998513,
+            "log": "build\\sol-gravity-operator\\operator-002\\linux\\import.log",
+            "log_sha256": "5eb2f7562ebc49b0734277933d0aca74af702d152148aab9ed5ead6af2199aaa",
+            "markers": []
+          },
+          {
+            "name": "gravity-operator",
+            "command": [
+              "wsl.exe",
+              "-d",
+              "Ubuntu-24.04",
+              "--",
+              "timeout",
+              "--signal=TERM",
+              "--kill-after=5s",
+              "300s",
+              "env",
+              "CYBERSAND_SOURCE_REVISION=e36142813d1a1c26c32af4a5822fd152a88aaf37",
+              "SOL_GRAVITY_OUTPUT=/mnt/c/Users/_/.codex/worktrees/sol-active-normal-live-20261105/khybersand/build/sol-gravity-operator/operator-002/linux/observations.json",
+              "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+              "--headless",
+              "--audio-driver",
+              "Dummy",
+              "--path",
+              "/mnt/c/Users/_/.codex/worktrees/sol-active-normal-live-20261105/khybersand/build/sol-gravity-operator/operator-002/linux/godot",
+              "--max-fps",
+              "120",
+              "--script",
+              "res://tests/test_sol_gravity_operator.gd"
+            ],
+            "requested_command": [
+              "wsl.exe",
+              "-d",
+              "Ubuntu-24.04",
+              "--",
+              "env",
+              "CYBERSAND_SOURCE_REVISION=e36142813d1a1c26c32af4a5822fd152a88aaf37",
+              "SOL_GRAVITY_OUTPUT=/mnt/c/Users/_/.codex/worktrees/sol-active-normal-live-20261105/khybersand/build/sol-gravity-operator/operator-002/linux/observations.json",
+              "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+              "--headless",
+              "--audio-driver",
+              "Dummy",
+              "--path",
+              "/mnt/c/Users/_/.codex/worktrees/sol-active-normal-live-20261105/khybersand/build/sol-gravity-operator/operator-002/linux/godot",
+              "--max-fps",
+              "120",
+              "--script",
+              "res://tests/test_sol_gravity_operator.gd"
+            ],
+            "exit": 1,
+            "clean": false,
+            "timeout_seconds": 300,
+            "seconds": 0.6604827000410296,
+            "log": "build\\sol-gravity-operator\\operator-002\\linux\\gravity-operator.log",
+            "log_sha256": "f9bf43841aecc74dd1d5788c46fb8061814aa354e1c111c97c83210e662f1215",
+            "markers": []
+          }
+        ],
+        "observations": null,
+        "post_inventory": {
+          "unexpected_changes": [],
+          "import_LF_normalization_only": [
+            "addons/godot-rapier2d/logo_square_2d.png.import",
+            "addons/godot-rapier2d/Radial2D.svg.import",
+            "addons/godot-rapier2d/icons/Fluid2D.svg.import",
+            "addons/godot-rapier2d/icons/StateManager2D.svg.import"
+          ]
+        }
+      }
+    }
+  },
+  {
+    "run": "operator-003",
+    "note": "Qualified corrected probe,1182checks peractualhost. Authoredcan_sleep retained; oneexplicitawake state before each step, pinned shapeowner API.",
+    "receipt": {
+      "path": "build/sol-gravity-operator/operator-003/receipt.json",
+      "sha256": "f37f01d29b0818939bc09ab0b11ae62108dafd72a6a15636aefafecb484a80a2",
+      "bytes": 400787
+    },
+    "source": "ef106ff7ab04b190d3b481784ecf4e8aaf8a1bb1",
+    "post_source_equality": true,
+    "hosts": {
+      "windows": {
+        "commands": [
+          {
+            "name": "engine-version",
+            "command": [
+              "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+              "--version"
+            ],
+            "requested_command": [
+              "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+              "--version"
+            ],
+            "exit": 0,
+            "clean": true,
+            "timeout_seconds": 300,
+            "seconds": 0.07099199999356642,
+            "log": "build\\sol-gravity-operator\\operator-003\\windows\\engine-version.log",
+            "log_sha256": "5a4c39354856b07de09b419a9327a4e8edec0ac610ec5fb8a3ebcd7017e7d035",
+            "markers": []
+          },
+          {
+            "name": "import",
+            "command": [
+              "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+              "--headless",
+              "--audio-driver",
+              "Dummy",
+              "--path",
+              "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\build\\sol-gravity-operator\\operator-003\\windows\\godot",
+              "--editor",
+              "--import",
+              "--quit"
+            ],
+            "requested_command": [
+              "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+              "--headless",
+              "--audio-driver",
+              "Dummy",
+              "--path",
+              "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\build\\sol-gravity-operator\\operator-003\\windows\\godot",
+              "--editor",
+              "--import",
+              "--quit"
+            ],
+            "exit": 0,
+            "clean": true,
+            "timeout_seconds": 300,
+            "seconds": 8.954046799975913,
+            "log": "build\\sol-gravity-operator\\operator-003\\windows\\import.log",
+            "log_sha256": "323f64aa0616d1a050e28fc20d367743fb38c5b310cb99d25ae6b2a6b44dbb98",
+            "markers": []
+          },
+          {
+            "name": "gravity-operator",
+            "command": [
+              "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+              "--headless",
+              "--audio-driver",
+              "Dummy",
+              "--path",
+              "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\build\\sol-gravity-operator\\operator-003\\windows\\godot",
+              "--max-fps",
+              "120",
+              "--script",
+              "res://tests/test_sol_gravity_operator.gd"
+            ],
+            "requested_command": [
+              "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+              "--headless",
+              "--audio-driver",
+              "Dummy",
+              "--path",
+              "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\build\\sol-gravity-operator\\operator-003\\windows\\godot",
+              "--max-fps",
+              "120",
+              "--script",
+              "res://tests/test_sol_gravity_operator.gd"
+            ],
+            "exit": 0,
+            "clean": true,
+            "timeout_seconds": 300,
+            "seconds": 0.8856065000290982,
+            "log": "build\\sol-gravity-operator\\operator-003\\windows\\gravity-operator.log",
+            "log_sha256": "bc819d6933ab8a27d98e3bea2fec5123e3706528f28302cdd30dd955956b6658",
+            "markers": [
+              "SOL_GRAVITY_OPERATOR checks=1182 failures=0"
+            ]
+          }
+        ],
+        "observations": {
+          "path": "build\\sol-gravity-operator\\operator-003\\windows\\observations.json",
+          "sha256": "6abf4f6f59c2a70d3dc8ceb2bc4fc3c7e361e50c11b58d7fdcdc8b28a524c468",
+          "bytes": 491130
+        },
+        "post_inventory": {
+          "unexpected_changes": [],
+          "import_LF_normalization_only": [
+            "addons/godot-rapier2d/logo_square_2d.png.import",
+            "addons/godot-rapier2d/Radial2D.svg.import",
+            "addons/godot-rapier2d/icons/Fluid2D.svg.import",
+            "addons/godot-rapier2d/icons/StateManager2D.svg.import"
+          ]
+        }
+      },
+      "linux": {
+        "commands": [
+          {
+            "name": "engine-version",
+            "command": [
+              "wsl.exe",
+              "-d",
+              "Ubuntu-24.04",
+              "--",
+              "timeout",
+              "--signal=TERM",
+              "--kill-after=5s",
+              "300s",
+              "env",
+              "CYBERSAND_SOURCE_REVISION=ef106ff7ab04b190d3b481784ecf4e8aaf8a1bb1",
+              "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+              "--version"
+            ],
+            "requested_command": [
+              "wsl.exe",
+              "-d",
+              "Ubuntu-24.04",
+              "--",
+              "env",
+              "CYBERSAND_SOURCE_REVISION=ef106ff7ab04b190d3b481784ecf4e8aaf8a1bb1",
+              "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+              "--version"
+            ],
+            "exit": 0,
+            "clean": true,
+            "timeout_seconds": 300,
+            "seconds": 2.874361400026828,
+            "log": "build\\sol-gravity-operator\\operator-003\\linux\\engine-version.log",
+            "log_sha256": "87fac5ffedc06e67db8ac5810bbedd8e412d166bcd89b314f3c5a4fa05a78a2d",
+            "markers": []
+          },
+          {
+            "name": "engine-hash",
+            "command": [
+              "wsl.exe",
+              "-d",
+              "Ubuntu-24.04",
+              "--",
+              "timeout",
+              "--signal=TERM",
+              "--kill-after=5s",
+              "180s",
+              "sha256sum",
+              "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64"
+            ],
+            "requested_command": [
+              "wsl.exe",
+              "-d",
+              "Ubuntu-24.04",
+              "--",
+              "sha256sum",
+              "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64"
+            ],
+            "exit": 0,
+            "clean": true,
+            "timeout_seconds": 180,
+            "seconds": 0.17357919999631122,
+            "log": "build\\sol-gravity-operator\\operator-003\\linux\\engine-hash.log",
+            "log_sha256": "510afe66a44e7343093617c0349b8a524d5039cdcf48a0630a98e6acf3483710",
+            "markers": []
+          },
+          {
+            "name": "import",
+            "command": [
+              "wsl.exe",
+              "-d",
+              "Ubuntu-24.04",
+              "--",
+              "timeout",
+              "--signal=TERM",
+              "--kill-after=5s",
+              "300s",
+              "env",
+              "CYBERSAND_SOURCE_REVISION=ef106ff7ab04b190d3b481784ecf4e8aaf8a1bb1",
+              "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+              "--headless",
+              "--audio-driver",
+              "Dummy",
+              "--path",
+              "/mnt/c/Users/_/.codex/worktrees/sol-active-normal-live-20261105/khybersand/build/sol-gravity-operator/operator-003/linux/godot",
+              "--editor",
+              "--import",
+              "--quit"
+            ],
+            "requested_command": [
+              "wsl.exe",
+              "-d",
+              "Ubuntu-24.04",
+              "--",
+              "env",
+              "CYBERSAND_SOURCE_REVISION=ef106ff7ab04b190d3b481784ecf4e8aaf8a1bb1",
+              "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+              "--headless",
+              "--audio-driver",
+              "Dummy",
+              "--path",
+              "/mnt/c/Users/_/.codex/worktrees/sol-active-normal-live-20261105/khybersand/build/sol-gravity-operator/operator-003/linux/godot",
+              "--editor",
+              "--import",
+              "--quit"
+            ],
+            "exit": 0,
+            "clean": true,
+            "timeout_seconds": 300,
+            "seconds": 47.75879649998387,
+            "log": "build\\sol-gravity-operator\\operator-003\\linux\\import.log",
+            "log_sha256": "5eb2f7562ebc49b0734277933d0aca74af702d152148aab9ed5ead6af2199aaa",
+            "markers": []
+          },
+          {
+            "name": "gravity-operator",
+            "command": [
+              "wsl.exe",
+              "-d",
+              "Ubuntu-24.04",
+              "--",
+              "timeout",
+              "--signal=TERM",
+              "--kill-after=5s",
+              "300s",
+              "env",
+              "CYBERSAND_SOURCE_REVISION=ef106ff7ab04b190d3b481784ecf4e8aaf8a1bb1",
+              "SOL_GRAVITY_OUTPUT=/mnt/c/Users/_/.codex/worktrees/sol-active-normal-live-20261105/khybersand/build/sol-gravity-operator/operator-003/linux/observations.json",
+              "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+              "--headless",
+              "--audio-driver",
+              "Dummy",
+              "--path",
+              "/mnt/c/Users/_/.codex/worktrees/sol-active-normal-live-20261105/khybersand/build/sol-gravity-operator/operator-003/linux/godot",
+              "--max-fps",
+              "120",
+              "--script",
+              "res://tests/test_sol_gravity_operator.gd"
+            ],
+            "requested_command": [
+              "wsl.exe",
+              "-d",
+              "Ubuntu-24.04",
+              "--",
+              "env",
+              "CYBERSAND_SOURCE_REVISION=ef106ff7ab04b190d3b481784ecf4e8aaf8a1bb1",
+              "SOL_GRAVITY_OUTPUT=/mnt/c/Users/_/.codex/worktrees/sol-active-normal-live-20261105/khybersand/build/sol-gravity-operator/operator-003/linux/observations.json",
+              "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+              "--headless",
+              "--audio-driver",
+              "Dummy",
+              "--path",
+              "/mnt/c/Users/_/.codex/worktrees/sol-active-normal-live-20261105/khybersand/build/sol-gravity-operator/operator-003/linux/godot",
+              "--max-fps",
+              "120",
+              "--script",
+              "res://tests/test_sol_gravity_operator.gd"
+            ],
+            "exit": 0,
+            "clean": true,
+            "timeout_seconds": 300,
+            "seconds": 2.1502906000241637,
+            "log": "build\\sol-gravity-operator\\operator-003\\linux\\gravity-operator.log",
+            "log_sha256": "45fd0e9d8e700bfc1db3a04297811366fb4724cd67ed45eb59a8d5a902a13ff7",
+            "markers": [
+              "SOL_GRAVITY_OPERATOR checks=1182 failures=0"
+            ]
+          }
+        ],
+        "observations": {
+          "path": "build\\sol-gravity-operator\\operator-003\\linux\\observations.json",
+          "sha256": "711eeaf58f47395d215c4d2689d3451bc68cfdf0a05e37d238edc1f06b39891c",
+          "bytes": 491220
+        },
+        "post_inventory": {
+          "unexpected_changes": [],
+          "import_LF_normalization_only": [
+            "addons/godot-rapier2d/logo_square_2d.png.import",
+            "addons/godot-rapier2d/Radial2D.svg.import",
+            "addons/godot-rapier2d/icons/Fluid2D.svg.import",
+            "addons/godot-rapier2d/icons/StateManager2D.svg.import"
+          ]
+        }
+      }
+    }
+  }
+]

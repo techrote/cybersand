@@ -1,7 +1,7 @@
 ---
 title: Rigid-body and cellular coupling
 document-kind: contract
-canonical-for: [rigid-body-cellular-coupling, rapier-force-impulse-sequencing]
+canonical-for: [rigid-body-cellular-coupling, rapier-force-impulse-sequencing, bounded-granular-node-trace]
 status: Current
 scope: Rectangle occupancy, bounded displacement/impulses and Rapier hard contact; generalized physics and exact replay remain absent
 keywords: [Rapier2D, occupancy mask, sweep, CCD, terrain budget, impulse, unresolved overlap]
@@ -45,7 +45,151 @@ can unwind friction and raise intermediate energy. No live material, World,
 Rapier, original SOL or default admission follows. Live comparison needs its
 own registration and fresh native runtime qualification.
 
+### Opt-in live normal policy
+
+**Current dependent experimental source:** the
+[live policy qualification](../audits/2026-11-05-sol-active-normal-live.md)
+adds an explicit native normal-policy argument with Original as the unchanged
+default. ActiveNormal001 is restricted to a fresh diagnostic LA-SELECTIVE
+Workbench and locked against mid-trajectory selection. Reset/replacement retire
+that state; native top-level and row readback precede test application.
+Detailed scalar64 passive/legacy/total-wrench and energy diagnostics are copied
+only for diagnostic Worlds. Passive energy starts after the accepted event
+wrench and excludes the separately added legacy contribution.
+
+Fresh DLL/SO builds,38-case exact value parity and98 lifecycle assertions on
+each actual host pass. Eight independently reduced smoke episodes conserve
+tuples. In closed driven contact, area falls38.7651→14.2322cell² and depth
+1.39637→0.544231cells on both hosts, while strict clearance still fails.
+The change acts before the first selected arrival; legacy/correction stay zero.
+Native strict/optimized and both-host workbench regressions pass. The full240chamber matrix now verifies all48matched initial groups and
+conserves tuples, but all120driven episodes still fail strict clearance.
+Open driven overlap improves less (38.0664→29.3796cell²); tiny open unforced
+overlap persists. Requested4workers still have one actual participant per
+dispatch here. The192authored/72distributed episodes now pass independent
+application/material accounting. Active-normal improves the constrained-barrel
+terminal screen but increases mixed-body endpoint motion; general promotion is
+unsupported. Sand/Dust arrival controls remain intact. Distributed requested-four
+runs record four participants each tick;2048² resident cells and arrival history
+are separate53167104/42467328byte components, not total memory. Instrumented
+shared-host means do not qualify the original SOL CPU gate or universal60Hz. Original SOL
+eligibility, composition, physical clearance and general default promotion do
+not follow. No capacity/pass/gain changes or penetration correction are added.
+
+### Chamber workers and material memory
+
+**Current source-bound observations:** requested native worker counts of one or
+four match construction/configuration readback. The small240episode chamber
+matrix has one job and one observed participant per dispatch, including its
+requested four-worker runs. Those chamber runs do not establish actual four-way
+native participation. The separately qualified72episode distributed workload
+records four actual participants for its requested-four runs. The later shared-body
+node-trace workload observes two to four; these are different fixtures, not a
+universal scaling result or simultaneous utilization measurement.
+
+For the2048² distributed profile, the resident-cell estimate is53,167,104bytes
+and arrival-history storage is42,467,328bytes. Their95,634,432byte sum covers only
+those known components; it is not total material heap or process memory. Capacity,
+retained/refused work, observation cost and native pool participation stay explicit
+in the [full live evidence](../audits/2026-11-05-sol-active-normal-live.md).
+
+### Bounded node and batch trace
+
+**Current dependent diagnostic source:** `solve_compound` accepts optional
+caller-owned fixed trace storage; a fresh diagnostic LA-SELECTIVE Workbench may
+select `off` or `batch64-001` before prepare/tick/getter attempts lock it. The
+normal-policy and trace latches are independent. Reset/replacement retire storage;
+copied row captures survive scratch reuse. No Godot API enters the value solver
+or native pool. Traceoff allocates no buffer and uses the compile-time disabled
+node observer. `CompoundWorkspace` stays74,752bytes; optional scratch is55,872bytes.
+
+The64node/eight-batch observation limit does not truncate the1024node physical
+solve. Overflow publishes an explicit incomplete prefix, total/dropped counts
+and unchanged physical updates. Missing nodes cannot close full node accounting.
+Lossless little-endian bit companions preserve doubles independently of Godot
+JSON decimal display. Original descriptive activity remains distinct from its
+inapplicable policy mask. No force, budget, pass, correction or default changes.
+
+The [source-bound qualification](../audits/2026-11-05-sol-node-trace.md) passes
+43value cases on optimized/strict-sanitizer Linux and actual Windows MSVC,
+28native commands and actual Windows/Linux Godot lifecycle/scoped suites.
+Sixteen fresh episodes produce4,320complete captures and8,640actual applications.
+All8traceoff/on pairs preserve recorded physics and CYPS bytes; all8retained
+trajectory comparisons match. Actual requested-four participation ranges2–4.
+This fleet workload reaches four nodes; synthetic64/65/1024controls qualify overflow.
+
+Policy metadata and zero-request weight operands differ atstep0 without different
+updates. First actual batch effects and wrenches occur atScooper2/barrel30/Kestrel32
+with bit-identical body/budget/node inputs; later inputs differ at3/31/33.
+The normal-policy arithmetic explains these immediate responses. It does not
+uniquely explain later mixed-body regression, supply global energy conservation,
+prove original SOL recovery or admit default promotion. Original normal policy
+remains default. Final analysis passes17tests on each Python host and retains
+failed fixture/Git/analysis-classification attempts separately.
+
+Measured three-owner getter means are53.806–99.883µs off and189.778–280.978µs on
+across the registered sequential one-repeat runs. They include copied capture
+generation; cumulative payload size is not peak heap. Full unrounded cost and
+worker distributions are in the dossier. These observations do not qualify the
+original24group/3repeat≤2ms gate or universal60Hz. Original SOL authority/MAT
+composition and the retained physical failures remain separate blockers.
+
+## Contact application experiment and gravity operator
+
+**Current dependent experimental source:** `WorkbenchPhysicsBridge` accepts
+fresh LA-SELECTIVE application variant `retain-linear-001`, skipping only
+opposing-component velocity clipping while preserving positional correction,
+native wrench, age handling and COM torque transport. Baseline remains default;
+the mode locks before sampling and retains atomic identity/lifetime refusals.
+The [registered contact/application experiment](../audits/2026-11-05-sol-contact-application.md)
+rejects this variant:48fresh360step episodes,17,280steps/28,800actual body
+applications pass accounting on Windows/Linux and requested workers1/4, but
+the full motion/support/geometry gate fails956comparisons. StageB is not admitted.
+All16retain-static episodes fail; all8Active-baseline static episodes pass.
+Removing clipping alone is not an accepted mixed-body repair or SOL recovery.
+
+The extended mixed-body record confirms sustained Kestrel regression: Original
+versus Active baseline tail mean speed0.773503369→1.647818528cells/s and mean
+KE0.0468263713→0.1875337263 oversteps240–359. Some other metrics improve.
+Quiet endpoint speed can conceal earlier motion; report fixed-window means,
+maxima and penetration alongside endpoints. Candidate KE reductions coexist
+with much greater sinking. Native tuple conservation and sampled hard-witness
+absence do not prove full mechanical conservation or swept clearance.
+
+**Current no-contact operator evidence:** the
+[separate registered oracle](../audits/2026-11-05-sol-gravity-operator.md) measures
+18fresh authored empty-space episodes/576steps on actual Windows/Linux, without
+native World or controller actuation. Of four frozen models, gravity followed
+by rational damping is compatible within1e-5 one-step error (maximum5.192e-6
+float64/7.629e-6 explicitfloat32). Its accumulated32step errors exceed1e-5;
+this is not exact engine reproduction. Barrel effective gravity92.119995 and
+combined damping differ from flyer gravity38 and replace damping. No predicted
+contact load is implemented. A future predictor needs new registration, native
+owner gravity binding, synchronous application/step lifetime, operator-consistent
+impulse transport, explicit work accounting and fresh affected binaries. It does
+not inherit the failed contact experiment's StageB admission or original SOL
+source/member/support/MAT authority. Original defaults and controls stay intact.
+
 ## Granular response cost and observation
+
+**Current recorded diagnostic:** the [complete application replay](../audits/2026-11-05-sol-application-replay.md)
+separates correction velocity clipping, recorded wrench work and observed
+Rapier-step changes for1080body applications in two retained shared-body runs.
+The wrench can add KE after clipping while combined application KE remains
+non-increasing. Native passive prediction uses the earlier sampled velocity;
+its lower predicted final KE is not the actual post-clipping application state.
+Correction potential work is separate; no global mechanical-energy conservation
+or promotion follows. First native-wrench differences precede unequal correction,
+and later endpoint motion samples different contact phases. Those retained replay
+artifacts contain no node trace; the separately qualified follow-up above locates
+first response effects in fresh matched trajectories. Unique later causation and
+a safe live correction change remain unproved.
+
+The [Planned SOL offline authority contract](../operations/sol-authority-offline-contract.md)
+specifies complete copied eligibility evidence and a one-use no-op lease model.
+It provides no live capture/Active hold, native/RID actuation or source-composition
+admission. Ordinary pause and prepared-owner adoption are insufficient for that
+separate cross-owner recovery lifecycle.
 
 **Current experimental evidence:** [SOL-CHAMBER-COST-001](../audits/2026-11-05-sol-response-cost.md)
 isolates `workbench_coupling_results()` from the native tick. The getter includes

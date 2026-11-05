@@ -110,10 +110,7 @@ func episode(spec: Dictionary, arm: String, workers: int, repeat: int, output: S
 	for index: int in spec.models.size(): definitions.append(actor(spec.models[index],index,baseline,extent))
 	check(session.configure(definitions,viewport.world_2d.space,1),"actual authored session: "+str(session.last_error))
 	if not session.active(): viewport.free(); return
-	var application_variant: String = "baseline"
-	if arm=="LA-SELECTIVE-LIVE-PASSIVE-GATED": application_variant="passive-live-on-change-v2"
-	if arm=="LA-SELECTIVE-LIVE-PASSIVE": application_variant="passive-live-v1"
-	if arm=="LA-SELECTIVE-SEPARATING-GUARD": application_variant="passive-separating-v3"
+	var application_variant: String = application_variant_for_arm(arm)
 	check(session.bridge.configure_application_variant(application_variant),"trajectory application variant")
 	var bodies: Array[RigidBody2D] = session.bodies()
 	var geometries: Array = []
@@ -187,6 +184,8 @@ func episode(spec: Dictionary, arm: String, workers: int, repeat: int, output: S
 		"intent":"exploratory","definition_hash":checked.hash,"initial_bodies":initial_bodies,"simulation_window_enabled":false})
 	check(token>0 and preparer.commit_liquid_world(world,token),"native construction: "+str(preparer.get_last_error()))
 	if token<=0: session.close(); viewport.free(); return
+	if not configure_fresh_world(world,baseline,{}):
+		check(false,"fresh World experiment configuration");session.close();viewport.free();return
 	check(session.bridge.rebuild_hard_surface_colliders_from_rectangles(world.get_hard_surface_rectangles())>0,"real hard terrain")
 	var name: String = spec.id+"-"+arm+"-w"+str(workers)+"-r"+str(repeat)
 	var report: Dictionary = {"id":name,"registration":registration.id,"source":OS.get_environment("CYBERSAND_SOURCE_REVISION"),
@@ -243,7 +242,7 @@ func episode(spec: Dictionary, arm: String, workers: int, repeat: int, output: S
 		native_start=Time.get_ticks_usec()
 		var ticked: bool = world.simulation_tick() if prepared else false
 		var tick_us: int = Time.get_ticks_usec()-native_start
-		var response: Dictionary = world.workbench_coupling_results()
+		var response: Dictionary = coupling_result(world)
 		check(prepared and ticked and response.get("valid",false) and response.get("response")==baseline,"native source/mode/healthy tick")
 		if not response.get("valid",false):
 			report.failure_attempt={"step":step,"elapsed_us":Time.get_ticks_usec()-start,"preparation_us":preparation_us,
@@ -291,10 +290,7 @@ func episode(spec: Dictionary, arm: String, workers: int, repeat: int, output: S
 		for index: int in bodies.size():
 			var action: Dictionary = application.bodies[index]
 			if action.has("refusal"): continue
-			var predicted: Vector2 = live[index].velocity
-			if predicted.x*action.correction.x<0: predicted.x=0
-			if predicted.y*action.correction.y<0: predicted.y=0
-			predicted+=Vector2(action.impulse)/live[index].mass
+			var predicted: Vector2 = expected_application_velocity(live[index],action)
 			var residual: float = predicted.distance_to(after_apply[index].velocity)
 			var omega_residual: float = absf(live[index].omega+action.torque/live[index].inertia-after_apply[index].omega)
 			action.velocity_residual=residual; action.omega_residual=omega_residual
@@ -320,6 +316,7 @@ func episode(spec: Dictionary, arm: String, workers: int, repeat: int, output: S
 			"emission_requests":emissions,"inserted_materials":inserted_materials,"preparation_us":preparation_us,"native_tick_us":tick_us,
 			"application_us":application_us,"rapier_us":rapier_us,"preapplication_step_us":preapplication_step_us,"simulation_us":simulation_us,
 			"observation_us":Time.get_ticks_usec()-observer_start}))
+		record_step_checkpoint(world,preparer,report,step,output,name)
 		var c0: int = Time.get_ticks_usec()
 		check(session.apply_workbench_results(step+1,response)==0 and session.bridge.last_application.refusal=="duplicate_snapshot","duplicate consumption refusal")
 		total_control_us+=Time.get_ticks_usec()-c0; total_controls+=1
@@ -350,6 +347,27 @@ func episode(spec: Dictionary, arm: String, workers: int, repeat: int, output: S
 	if file!=null: file.store_string(JSON.stringify(plain(report)))
 	viewport.free()
 	print("LA_PHYSICAL_EPISODE ",name," steps=",report.steps.size()," failures=",report.failures.size())
+
+func configure_fresh_world(_world: Variant, _mode: String, _report: Dictionary) -> bool:
+	return true
+
+func coupling_result(world: Variant) -> Dictionary:
+	return world.workbench_coupling_results()
+
+func application_variant_for_arm(arm: String) -> String:
+	if arm=="LA-SELECTIVE-LIVE-PASSIVE-GATED": return "passive-live-on-change-v2"
+	if arm=="LA-SELECTIVE-LIVE-PASSIVE": return "passive-live-v1"
+	if arm=="LA-SELECTIVE-SEPARATING-GUARD": return "passive-separating-v3"
+	return "baseline"
+
+func expected_application_velocity(live: Dictionary, action: Dictionary) -> Vector2:
+	var predicted: Vector2 = live.velocity
+	if predicted.x*action.correction.x<0: predicted.x=0
+	if predicted.y*action.correction.y<0: predicted.y=0
+	return predicted+Vector2(action.impulse)/live.mass
+
+func record_step_checkpoint(_world: Variant, _preparer: Variant, _report: Dictionary, _step: int, _output: String, _name: String) -> void:
+	pass
 
 func load_registration(path: String) -> Dictionary:
 	var current: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(path))

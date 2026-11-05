@@ -10,6 +10,41 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 
 # Retrieval question index
 
+For the rejected velocity-clipping intervention, sustained mixed-body motion,
+quiet endpoints versus complete windows and actual gravity/damping compatibility,
+retrieve [the contact/operator boundary](../architecture/rigid-body-and-cellular-coupling.md#contact-application-experiment-and-gravity-operator).
+`retrieval-questions-sol-contact-application.json` adds scoped questions; no
+empty-space operator result implements or admits a support predictor or SOL.
+
+For bounded contact-node tracing, lossless capture, overflow versus physical
+capacity, traceoff/on parity and first actual response effects, retrieve the
+[canonical trace boundary](../architecture/rigid-body-and-cellular-coupling.md#bounded-node-and-batch-trace).
+Its new evidence preserves prior SOL failures and selects no correction/default.
+
+For native passive prediction versus correction-clipped actual application,
+retrieve [the recorded application-stage boundary](../architecture/rigid-body-and-cellular-coupling.md#granular-response-cost-and-observation).
+`retrieval-questions-sol-application-replay.json` adds complete-window KE/cause
+questions without admitting a new live correction policy.
+
+For offline SOL copied-data completeness versus live capture, Active-hold,
+support and member-identity authority, retrieve the
+[offline contract](../operations/sol-authority-offline-contract.md).
+`retrieval-questions-sol-authority-offline.json` adds scoped protocol questions;
+no model success grants recovery or source-composition permission.
+
+For completed192authored/72workload accounting, mixed-body regression, actual
+workers and material-memory/cost scope, retrieve
+[the live policy boundary](../architecture/rigid-body-and-cellular-coupling.md#opt-in-live-normal-policy).
+`retrieval-questions-sol-active-normal-gameplay.json` is additive.
+
+For full240chamber coverage versus clearance and actual worker participation,
+retrieve [the live policy boundary](../architecture/rigid-body-and-cellular-coupling.md#opt-in-live-normal-policy).
+`retrieval-questions-sol-active-normal-full.json` adds post-result scope questions.
+
+For the fresh diagnostic normal policy, lifetime locks and experimental
+runtime identity, retrieve [the live policy boundary](../architecture/rigid-body-and-cellular-coupling.md#opt-in-live-normal-policy).
+`retrieval-questions-sol-active-normal-live.json` is an additive supplement.
+
 For the opt-in copied-value normal-relaxation candidate, retrieve
 [the coupling boundary](../architecture/rigid-body-and-cellular-coupling.md#active-normal-copied-value-candidate).
 `retrieval-questions-sol-active-normal.json` is a separate post-result supplement;

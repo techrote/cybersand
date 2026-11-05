@@ -1,0 +1,1863 @@
+{
+  "evaluator": "SOL-NODE-TRACE-001-INDEPENDENT",
+  "status": "COMPLETE",
+  "analysis_source": "b3c6c82f1a54e09a008ef4cd15c697015d075e38",
+  "execution_source": "1488fe130f176f85dff2ab1b586e9232523b13bf",
+  "runtime_build_source": "0b76d261d8398fbe81b4ce9f012516df0effc1db",
+  "input_receipt_sha256": "ca61d5d6f95575a8f8f1258b94b44484eadf0be8c195fb8d52c1506965596963",
+  "results": [
+    {
+      "coordinate": {
+        "host": "windows",
+        "workers": 1,
+        "normal_policy": "original",
+        "trace_mode": "off",
+        "tag": "shared-granular-bodies-selective-original-off-w1-r0"
+      },
+      "status": "PASS",
+      "summary": {
+        "status": "PASS",
+        "raw_path": "build\\sol-node-trace\\qualification-001\\windows\\shared-granular-bodies-selective-original-off-w1-r0\\shared-granular-bodies-LA-SELECTIVE-w1-r0.json",
+        "raw_sha256": "473f4fb6bc58a3b02afb6ade17584c3f575eb4154dbaaaec1cc4ef37ac4563a2",
+        "raw_bytes": 3111763,
+        "process_seconds": 4.807536300038919,
+        "complete_captures": 0,
+        "maximum_nodes": 0,
+        "trace_payload_json_bytes": 0,
+        "actual_worker_tick_distribution": {
+          "1": 180
+        },
+        "tuple_multiset_conserved": true,
+        "initial_payload_sha256": "bafc82a9b23c68a02db484d49c385be96fc78b5d14d3d8fcc1dc3b69bab293f5",
+        "final_payload_sha256": "cac46b92d5279a59ddd3bc27b9aca5cae2a197decfced7809d7f3b26552a26cb",
+        "maximum_RID_error": 8.631481078800451e-07,
+        "selected_arrivals": 0,
+        "arrival_missing": 0,
+        "arrival_misaligned": 0,
+        "passive_rejections": 0,
+        "actual_response_work": -91.50502728790791,
+        "rapier_step_work": 59.53543559962727,
+        "explicit_api_work": 33.1207183183941,
+        "correction_potential_change": 137.4994467117341,
+        "getter_us": {
+          "count": 180,
+          "mean": 99.88333333333334,
+          "maximum": 967,
+          "p50": 77,
+          "p95": 227
+        },
+        "simulation_us": {
+          "count": 180,
+          "mean": 3649.5222222222224,
+          "maximum": 22767,
+          "p50": 2689,
+          "p95": 7540
+        },
+        "observation_us": {
+          "count": 180,
+          "mean": 12988.511111111111,
+          "maximum": 35096,
+          "p50": 12232,
+          "p95": 17843
+        },
+        "terminal_stability": [
+          {
+            "observed_terminal_steps": 120,
+            "span_x": 0.2797851562500142,
+            "span_y": 0.35865783691400566,
+            "rotation_span": 0.03951863240125555,
+            "terminal_speed": 1.4947451613257399
+          },
+          {
+            "observed_terminal_steps": 120,
+            "span_x": 13.722595214842983,
+            "span_y": 6.532173156737983,
+            "rotation_span": 0.5075551068065022,
+            "terminal_speed": 0.45204859208508347
+          },
+          {
+            "observed_terminal_steps": 120,
+            "span_x": 0.5088500976559942,
+            "span_y": 0.064643859864006,
+            "rotation_span": 0.060846592545833654,
+            "terminal_speed": 0.04750308648333631
+          }
+        ],
+        "initial_geometry": [
+          {
+            "area_by_material": {},
+            "maximum_convex_proxy_depth": {},
+            "cell_centres_inside": {},
+            "outside": false
+          },
+          {
+            "area_by_material": {},
+            "maximum_convex_proxy_depth": {},
+            "cell_centres_inside": {},
+            "outside": false
+          },
+          {
+            "area_by_material": {},
+            "maximum_convex_proxy_depth": {},
+            "cell_centres_inside": {},
+            "outside": false
+          }
+        ],
+        "maximum_sand_area": 0.3965550184891957,
+        "maximum_sand_proxy_depth": 0.2457764803770175
+      }
+    },
+    {
+      "coordinate": {
+        "host": "windows",
+        "workers": 1,
+        "normal_policy": "original",
+        "trace_mode": "batch64-001",
+        "tag": "shared-granular-bodies-selective-original-batch64-001-w1-r0"
+      },
+      "status": "PASS",
+      "summary": {
+        "status": "PASS",
+        "raw_path": "build\\sol-node-trace\\qualification-001\\windows\\shared-granular-bodies-selective-original-batch64-001-w1-r0\\shared-granular-bodies-LA-SELECTIVE-w1-r0.json",
+        "raw_sha256": "2752ec593bab10e1f6529255c49946bb9a88d27c8d57f25c1e33b515164d1927",
+        "raw_bytes": 10478038,
+        "process_seconds": 4.94914979999885,
+        "complete_captures": 540,
+        "maximum_nodes": 4,
+        "trace_payload_json_bytes": 7203326,
+        "actual_worker_tick_distribution": {
+          "1": 180
+        },
+        "tuple_multiset_conserved": true,
+        "initial_payload_sha256": "bafc82a9b23c68a02db484d49c385be96fc78b5d14d3d8fcc1dc3b69bab293f5",
+        "final_payload_sha256": "cac46b92d5279a59ddd3bc27b9aca5cae2a197decfced7809d7f3b26552a26cb",
+        "maximum_RID_error": 8.631481078800451e-07,
+        "selected_arrivals": 0,
+        "arrival_missing": 0,
+        "arrival_misaligned": 0,
+        "passive_rejections": 0,
+        "actual_response_work": -91.50502728790791,
+        "rapier_step_work": 59.53543559962727,
+        "explicit_api_work": 33.1207183183941,
+        "correction_potential_change": 137.4994467117341,
+        "getter_us": {
+          "count": 180,
+          "mean": 280.97777777777776,
+          "maximum": 590,
+          "p50": 271,
+          "p95": 421
+        },
+        "simulation_us": {
+          "count": 180,
+          "mean": 2770.222222222222,
+          "maximum": 4175,
+          "p50": 2777,
+          "p95": 3660
+        },
+        "observation_us": {
+          "count": 180,
+          "mean": 11922.477777777778,
+          "maximum": 15252,
+          "p50": 11766,
+          "p95": 12997
+        },
+        "terminal_stability": [
+          {
+            "observed_terminal_steps": 120,
+            "span_x": 0.2797851562500142,
+            "span_y": 0.35865783691400566,
+            "rotation_span": 0.03951863240125555,
+            "terminal_speed": 1.4947451613257399
+          },
+          {
+            "observed_terminal_steps": 120,
+            "span_x": 13.722595214842983,
+            "span_y": 6.532173156737983,
+            "rotation_span": 0.5075551068065022,
+            "terminal_speed": 0.45204859208508347
+          },
+          {
+            "observed_terminal_steps": 120,
+            "span_x": 0.5088500976559942,
+            "span_y": 0.064643859864006,
+            "rotation_span": 0.060846592545833654,
+            "terminal_speed": 0.04750308648333631
+          }
+        ],
+        "initial_geometry": [
+          {
+            "area_by_material": {},
+            "maximum_convex_proxy_depth": {},
+            "cell_centres_inside": {},
+            "outside": false
+          },
+          {
+            "area_by_material": {},
+            "maximum_convex_proxy_depth": {},
+            "cell_centres_inside": {},
+            "outside": false
+          },
+          {
+            "area_by_material": {},
+            "maximum_convex_proxy_depth": {},
+            "cell_centres_inside": {},
+            "outside": false
+          }
+        ],
+        "maximum_sand_area": 0.3965550184891957,
+        "maximum_sand_proxy_depth": 0.2457764803770175
+      }
+    },
+    {
+      "coordinate": {
+        "host": "windows",
+        "workers": 1,
+        "normal_policy": "active-normal-001",
+        "trace_mode": "off",
+        "tag": "shared-granular-bodies-selective-active-off-w1-r0"
+      },
+      "status": "PASS",
+      "summary": {
+        "status": "PASS",
+        "raw_path": "build\\sol-node-trace\\qualification-001\\windows\\shared-granular-bodies-selective-active-off-w1-r0\\shared-granular-bodies-LA-SELECTIVE-w1-r0.json",
+        "raw_sha256": "4203ef5607ef7fa73ae90e0bbc68978c9ff947874dcd86e556adbc08d54fbbeb",
+        "raw_bytes": 3128703,
+        "process_seconds": 4.0237158999661915,
+        "complete_captures": 0,
+        "maximum_nodes": 0,
+        "trace_payload_json_bytes": 0,
+        "actual_worker_tick_distribution": {
+          "1": 180
+        },
+        "tuple_multiset_conserved": true,
+        "initial_payload_sha256": "bafc82a9b23c68a02db484d49c385be96fc78b5d14d3d8fcc1dc3b69bab293f5",
+        "final_payload_sha256": "f048b8e66262f0634df2bd8721e5874e8b0398067aba5a11c28fb8f34056981b",
+        "maximum_RID_error": 9.254113865181974e-07,
+        "selected_arrivals": 0,
+        "arrival_missing": 0,
+        "arrival_misaligned": 0,
+        "passive_rejections": 0,
+        "actual_response_work": -79.25338533984454,
+        "rapier_step_work": 52.16088529070991,
+        "explicit_api_work": 33.1202472032821,
+        "correction_potential_change": 132.59576122524135,
+        "getter_us": {
+          "count": 180,
+          "mean": 74.31111111111112,
+          "maximum": 1551,
+          "p50": 52,
+          "p95": 125
+        },
+        "simulation_us": {
+          "count": 180,
+          "mean": 2060.822222222222,
+          "maximum": 6571,
+          "p50": 1828,
+          "p95": 3142
+        },
+        "observation_us": {
+          "count": 180,
+          "mean": 11573.95,
+          "maximum": 25214,
+          "p50": 11350,
+          "p95": 12814
+        },
+        "terminal_stability": [
+          {
+            "observed_terminal_steps": 120,
+            "span_x": 0.28263092040999993,
+            "span_y": 0.36854553222599407,
+            "rotation_span": 0.039740785769942395,
+            "terminal_speed": 3.423880216762785
+          },
+          {
+            "observed_terminal_steps": 120,
+            "span_x": 13.966369628905994,
+            "span_y": 5.823593139648992,
+            "rotation_span": 1.1705335307568552,
+            "terminal_speed": 0.6782736373919867
+          },
+          {
+            "observed_terminal_steps": 120,
+            "span_x": 0.3519287109369884,
+            "span_y": 0.039306640625,
+            "rotation_span": 0.04332231785478421,
+            "terminal_speed": 0.08194144531990613
+          }
+        ],
+        "initial_geometry": [
+          {
+            "area_by_material": {},
+            "maximum_convex_proxy_depth": {},
+            "cell_centres_inside": {},
+            "outside": false
+          },
+          {
+            "area_by_material": {},
+            "maximum_convex_proxy_depth": {},
+            "cell_centres_inside": {},
+            "outside": false
+          },
+          {
+            "area_by_material": {},
+            "maximum_convex_proxy_depth": {},
+            "cell_centres_inside": {},
+            "outside": false
+          }
+        ],
+        "maximum_sand_area": 0.3140628850956495,
+        "maximum_sand_proxy_depth": 0.19214474937177783
+      }
+    },
+    {
+      "coordinate": {
+        "host": "windows",
+        "workers": 1,
+        "normal_policy": "active-normal-001",
+        "trace_mode": "batch64-001",
+        "tag": "shared-granular-bodies-selective-active-batch64-001-w1-r0"
+      },
+      "status": "PASS",
+      "summary": {
+        "status": "PASS",
+        "raw_path": "build\\sol-node-trace\\qualification-001\\windows\\shared-granular-bodies-selective-active-batch64-001-w1-r0\\shared-granular-bodies-LA-SELECTIVE-w1-r0.json",
+        "raw_sha256": "0339c8033ce675f672191f6f3faaf570173d6c0ad7d32e06952b834f9f0fe925",
+        "raw_bytes": 10610218,
+        "process_seconds": 4.58439539995743,
+        "complete_captures": 540,
+        "maximum_nodes": 4,
+        "trace_payload_json_bytes": 7318903,
+        "actual_worker_tick_distribution": {
+          "1": 180
+        },
+        "tuple_multiset_conserved": true,
+        "initial_payload_sha256": "bafc82a9b23c68a02db484d49c385be96fc78b5d14d3d8fcc1dc3b69bab293f5",
+        "final_payload_sha256": "f048b8e66262f0634df2bd8721e5874e8b0398067aba5a11c28fb8f34056981b",
+        "maximum_RID_error": 9.254113865181974e-07,
+        "selected_arrivals": 0,
+        "arrival_missing": 0,
+        "arrival_misaligned": 0,
+        "passive_rejections": 0,
+        "actual_response_work": -79.25338533984454,
+        "rapier_step_work": 52.16088529070991,
+        "explicit_api_work": 33.1202472032821,
+        "correction_potential_change": 132.59576122524135,
+        "getter_us": {
+          "count": 180,
+          "mean": 265.2388888888889,
+          "maximum": 650,
+          "p50": 241,
+          "p95": 419
+        },
+        "simulation_us": {
+          "count": 180,
+          "mean": 2323.1444444444446,
+          "maximum": 4623,
+          "p50": 2161,
+          "p95": 3203
+        },
+        "observation_us": {
+          "count": 180,
+          "mean": 11504.016666666666,
+          "maximum": 13242,
+          "p50": 11401,
+          "p95": 12191
+        },
+        "terminal_stability": [
+          {
+            "observed_terminal_steps": 120,
+            "span_x": 0.28263092040999993,
+            "span_y": 0.36854553222599407,
+            "rotation_span": 0.039740785769942395,
+            "terminal_speed": 3.423880216762785
+          },
+          {
+            "observed_terminal_steps": 120,
+            "span_x": 13.966369628905994,
+            "span_y": 5.823593139648992,
+            "rotation_span": 1.1705335307568552,
+            "terminal_speed": 0.6782736373919867
+          },
+          {
+            "observed_terminal_steps": 120,
+            "span_x": 0.3519287109369884,
+            "span_y": 0.039306640625,
+            "rotation_span": 0.04332231785478421,
+            "terminal_speed": 0.08194144531990613
+          }
+        ],
+        "initial_geometry": [
+          {
+            "area_by_material": {},
+            "maximum_convex_proxy_depth": {},
+            "cell_centres_inside": {},
+            "outside": false
+          },
+          {
+            "area_by_material": {},
+            "maximum_convex_proxy_depth": {},
+            "cell_centres_inside": {},
+            "outside": false
+          },
+          {
+            "area_by_material": {},
+            "maximum_convex_proxy_depth": {},
+            "cell_centres_inside": {},
+            "outside": false
+          }
+        ],
+        "maximum_sand_area": 0.3140628850956495,
+        "maximum_sand_proxy_depth": 0.19214474937177783
+      }
+    },
+    {
+      "coordinate": {
+        "host": "windows",
+        "workers": 4,
+        "normal_policy": "original",
+        "trace_mode": "off",
+        "tag": "shared-granular-bodies-selective-original-off-w4-r0"
+      },
+      "status": "PASS",
+      "summary": {
+        "status": "PASS",
+        "raw_path": "build\\sol-node-trace\\qualification-001\\windows\\shared-granular-bodies-selective-original-off-w4-r0\\shared-granular-bodies-LA-SELECTIVE-w4-r0.json",
+        "raw_sha256": "907dc140c8d0e8f093624471cb3219f2a72b6b70beb9069635afe55024932770",
+        "raw_bytes": 3111645,
+        "process_seconds": 4.042658300022595,
+        "complete_captures": 0,
+        "maximum_nodes": 0,
+        "trace_payload_json_bytes": 0,
+        "actual_worker_tick_distribution": {
+          "2": 9,
+          "3": 9,
+          "4": 162
+        },
+        "tuple_multiset_conserved": true,
+        "initial_payload_sha256": "bafc82a9b23c68a02db484d49c385be96fc78b5d14d3d8fcc1dc3b69bab293f5",
+        "final_payload_sha256": "cac46b92d5279a59ddd3bc27b9aca5cae2a197decfced7809d7f3b26552a26cb",
+        "maximum_RID_error": 8.631481078800451e-07,
+        "selected_arrivals": 0,
+        "arrival_missing": 0,
+        "arrival_misaligned": 0,
+        "passive_rejections": 0,
+        "actual_response_work": -91.50502728790791,
+        "rapier_step_work": 59.53543559962727,
+        "explicit_api_work": 33.1207183183941,
+        "correction_potential_change": 137.4994467117341,
+        "getter_us": {
+          "count": 180,
+          "mean": 67.9888888888889,
+          "maximum": 210,
+          "p50": 56,
+          "p95": 132
+        },
+        "simulation_us": {
+          "count": 180,
+          "mean": 1831.6333333333334,
+          "maximum": 3046,
+          "p50": 1744,
+          "p95": 2572
+        },
+        "observation_us": {
+          "count": 180,
+          "mean": 11411.205555555556,
+          "maximum": 13074,
+          "p50": 11341,
+          "p95": 11933
+        },
+        "terminal_stability": [
+          {
+            "observed_terminal_steps": 120,
+            "span_x": 0.2797851562500142,
+            "span_y": 0.35865783691400566,
+            "rotation_span": 0.03951863240125555,
+            "terminal_speed": 1.4947451613257399
+          },
+          {
+            "observed_terminal_steps": 120,
+            "span_x": 13.722595214842983,
+            "span_y": 6.532173156737983,
+            "rotation_span": 0.5075551068065022,
+            "terminal_speed": 0.45204859208508347
+          },
+          {
+            "observed_terminal_steps": 120,
+            "span_x": 0.5088500976559942,
+            "span_y": 0.064643859864006,
+            "rotation_span": 0.060846592545833654,
+            "terminal_speed": 0.04750308648333631
+          }
+        ],
+        "initial_geometry": [
+          {
+            "area_by_material": {},
+            "maximum_convex_proxy_depth": {},
+            "cell_centres_inside": {},
+            "outside": false
+          },
+          {
+            "area_by_material": {},
+            "maximum_convex_proxy_depth": {},
+            "cell_centres_inside": {},
+            "outside": false
+          },
+          {
+            "area_by_material": {},
+            "maximum_convex_proxy_depth": {},
+            "cell_centres_inside": {},
+            "outside": false
+          }
+        ],
+        "maximum_sand_area": 0.3965550184891957,
+        "maximum_sand_proxy_depth": 0.2457764803770175
+      }
+    },
+    {
+      "coordinate": {
+        "host": "windows",
+        "workers": 4,
+        "normal_policy": "original",
+        "trace_mode": "batch64-001",
+        "tag": "shared-granular-bodies-selective-original-batch64-001-w4-r0"
+      },
+      "status": "PASS",
+      "summary": {
+        "status": "PASS",
+        "raw_path": "build\\sol-node-trace\\qualification-001\\windows\\shared-granular-bodies-selective-original-batch64-001-w4-r0\\shared-granular-bodies-LA-SELECTIVE-w4-r0.json",
+        "raw_sha256": "fa7f9c57678b93d9f2449bd889c062b7fe44a9e6a428049532f1f8b8303100f5",
+        "raw_bytes": 10477975,
+        "process_seconds": 4.518496900040191,
+        "complete_captures": 540,
+        "maximum_nodes": 4,
+        "trace_payload_json_bytes": 7203326,
+        "actual_worker_tick_distribution": {
+          "2": 9,
+          "3": 9,
+          "4": 162
+        },
+        "tuple_multiset_conserved": true,
+        "initial_payload_sha256": "bafc82a9b23c68a02db484d49c385be96fc78b5d14d3d8fcc1dc3b69bab293f5",
+        "final_payload_sha256": "cac46b92d5279a59ddd3bc27b9aca5cae2a197decfced7809d7f3b26552a26cb",
+        "maximum_RID_error": 8.631481078800451e-07,
+        "selected_arrivals": 0,
+        "arrival_missing": 0,
+        "arrival_misaligned": 0,
+        "passive_rejections": 0,
+        "actual_response_work": -91.50502728790791,
+        "rapier_step_work": 59.53543559962727,
+        "explicit_api_work": 33.1207183183941,
+        "correction_potential_change": 137.4994467117341,
+        "getter_us": {
+          "count": 180,
+          "mean": 220.86666666666667,
+          "maximum": 448,
+          "p50": 208,
+          "p95": 330
+        },
+        "simulation_us": {
+          "count": 180,
+          "mean": 1900.0555555555557,
+          "maximum": 2867,
+          "p50": 1804,
+          "p95": 2460
+        },
+        "observation_us": {
+          "count": 180,
+          "mean": 11363.711111111112,
+          "maximum": 13205,
+          "p50": 11305,
+          "p95": 11754
+        },
+        "terminal_stability": [
+          {
+            "observed_terminal_steps": 120,
+            "span_x": 0.2797851562500142,
+            "span_y": 0.35865783691400566,
+            "rotation_span": 0.03951863240125555,
+            "terminal_speed": 1.4947451613257399
+          },
+          {
+            "observed_terminal_steps": 120,
+            "span_x": 13.722595214842983,
+            "span_y": 6.532173156737983,
+            "rotation_span": 0.5075551068065022,
+            "terminal_speed": 0.45204859208508347
+          },
+          {
+            "observed_terminal_steps": 120,
+            "span_x": 0.5088500976559942,
+            "span_y": 0.064643859864006,
+            "rotation_span": 0.060846592545833654,
+            "terminal_speed": 0.04750308648333631
+          }
+        ],
+        "initial_geometry": [
+          {
+            "area_by_material": {},
+            "maximum_convex_proxy_depth": {},
+            "cell_centres_inside": {},
+            "outside": false
+          },
+          {
+            "area_by_material": {},
+            "maximum_convex_proxy_depth": {},
+            "cell_centres_inside": {},
+            "outside": false
+          },
+          {
+            "area_by_material": {},
+            "maximum_convex_proxy_depth": {},
+            "cell_centres_inside": {},
+            "outside": false
+          }
+        ],
+        "maximum_sand_area": 0.3965550184891957,
+        "maximum_sand_proxy_depth": 0.2457764803770175
+      }
+    },
+    {
+      "coordinate": {
+        "host": "windows",
+        "workers": 4,
+        "normal_policy": "active-normal-001",
+        "trace_mode": "off",
+        "tag": "shared-granular-bodies-selective-active-off-w4-r0"
+      },
+      "status": "PASS",
+      "summary": {
+        "status": "PASS",
+        "raw_path": "build\\sol-node-trace\\qualification-001\\windows\\shared-granular-bodies-selective-active-off-w4-r0\\shared-granular-bodies-LA-SELECTIVE-w4-r0.json",
+        "raw_sha256": "7f65f25e9475693b1dd341bc5baaf2097e686a225b25332f874a9a763f87874a",
+        "raw_bytes": 3128710,
+        "process_seconds": 4.0040844999603,
+        "complete_captures": 0,
+        "maximum_nodes": 0,
+        "trace_payload_json_bytes": 0,
+        "actual_worker_tick_distribution": {
+          "2": 9,
+          "3": 10,
+          "4": 161
+        },
+        "tuple_multiset_conserved": true,
+        "initial_payload_sha256": "bafc82a9b23c68a02db484d49c385be96fc78b5d14d3d8fcc1dc3b69bab293f5",
+        "final_payload_sha256": "f048b8e66262f0634df2bd8721e5874e8b0398067aba5a11c28fb8f34056981b",
+        "maximum_RID_error": 9.254113865181974e-07,
+        "selected_arrivals": 0,
+        "arrival_missing": 0,
+        "arrival_misaligned": 0,
+        "passive_rejections": 0,
+        "actual_response_work": -79.25338533984454,
+        "rapier_step_work": 52.16088529070991,
+        "explicit_api_work": 33.1202472032821,
+        "correction_potential_change": 132.59576122524135,
+        "getter_us": {
+          "count": 180,
+          "mean": 67.28333333333333,
+          "maximum": 224,
+          "p50": 54,
+          "p95": 134
+        },
+        "simulation_us": {
+          "count": 180,
+          "mean": 1853.4666666666667,
+          "maximum": 3772,
+          "p50": 1729,
+          "p95": 2587
+        },
+        "observation_us": {
+          "count": 180,
+          "mean": 11547.733333333334,
+          "maximum": 12999,
+          "p50": 11408,
+          "p95": 12569
+        },
+        "terminal_stability": [
+          {
+            "observed_terminal_steps": 120,
+            "span_x": 0.28263092040999993,
+            "span_y": 0.36854553222599407,
+            "rotation_span": 0.039740785769942395,
+            "terminal_speed": 3.423880216762785
+          },
+          {
+            "observed_terminal_steps": 120,
+            "span_x": 13.966369628905994,
+            "span_y": 5.823593139648992,
+            "rotation_span": 1.1705335307568552,
+            "terminal_speed": 0.6782736373919867
+          },
+          {
+            "observed_terminal_steps": 120,
+            "span_x": 0.3519287109369884,
+            "span_y": 0.039306640625,
+            "rotation_span": 0.04332231785478421,
+            "terminal_speed": 0.08194144531990613
+          }
+        ],
+        "initial_geometry": [
+          {
+            "area_by_material": {},
+            "maximum_convex_proxy_depth": {},
+            "cell_centres_inside": {},
+            "outside": false
+          },
+          {
+            "area_by_material": {},
+            "maximum_convex_proxy_depth": {},
+            "cell_centres_inside": {},
+            "outside": false
+          },
+          {
+            "area_by_material": {},
+            "maximum_convex_proxy_depth": {},
+            "cell_centres_inside": {},
+            "outside": false
+          }
+        ],
+        "maximum_sand_area": 0.3140628850956495,
+        "maximum_sand_proxy_depth": 0.19214474937177783
+      }
+    },
+    {
+      "coordinate": {
+        "host": "windows",
+        "workers": 4,
+        "normal_policy": "active-normal-001",
+        "trace_mode": "batch64-001",
+        "tag": "shared-granular-bodies-selective-active-batch64-001-w4-r0"
+      },
+      "status": "PASS",
+      "summary": {
+        "status": "PASS",
+        "raw_path": "build\\sol-node-trace\\qualification-001\\windows\\shared-granular-bodies-selective-active-batch64-001-w4-r0\\shared-granular-bodies-LA-SELECTIVE-w4-r0.json",
+        "raw_sha256": "d730f0fe6c1f367aff16409b62d98d6b0d1c887a3294ff46cf837441fc24c24c",
+        "raw_bytes": 10610193,
+        "process_seconds": 4.977906699990854,
+        "complete_captures": 540,
+        "maximum_nodes": 4,
+        "trace_payload_json_bytes": 7318903,
+        "actual_worker_tick_distribution": {
+          "2": 9,
+          "3": 11,
+          "4": 160
+        },
+        "tuple_multiset_conserved": true,
+        "initial_payload_sha256": "bafc82a9b23c68a02db484d49c385be96fc78b5d14d3d8fcc1dc3b69bab293f5",
+        "final_payload_sha256": "f048b8e66262f0634df2bd8721e5874e8b0398067aba5a11c28fb8f34056981b",
+        "maximum_RID_error": 9.254113865181974e-07,
+        "selected_arrivals": 0,
+        "arrival_missing": 0,
+        "arrival_misaligned": 0,
+        "passive_rejections": 0,
+        "actual_response_work": -79.25338533984454,
+        "rapier_step_work": 52.16088529070991,
+        "explicit_api_work": 33.1202472032821,
+        "correction_potential_change": 132.59576122524135,
+        "getter_us": {
+          "count": 180,
+          "mean": 234.88888888888889,
+          "maximum": 520,
+          "p50": 223,
+          "p95": 340
+        },
+        "simulation_us": {
+          "count": 180,
+          "mean": 2062.6833333333334,
+          "maximum": 3781,
+          "p50": 2011,
+          "p95": 2790
+        },
+        "observation_us": {
+          "count": 180,
+          "mean": 11571.127777777778,
+          "maximum": 12771,
+          "p50": 11462,
+          "p95": 12532
+        },
+        "terminal_stability": [
+          {
+            "observed_terminal_steps": 120,
+            "span_x": 0.28263092040999993,
+            "span_y": 0.36854553222599407,
+            "rotation_span": 0.039740785769942395,
+            "terminal_speed": 3.423880216762785
+          },
+          {
+            "observed_terminal_steps": 120,
+            "span_x": 13.966369628905994,
+            "span_y": 5.823593139648992,
+            "rotation_span": 1.1705335307568552,
+            "terminal_speed": 0.6782736373919867
+          },
+          {
+            "observed_terminal_steps": 120,
+            "span_x": 0.3519287109369884,
+            "span_y": 0.039306640625,
+            "rotation_span": 0.04332231785478421,
+            "terminal_speed": 0.08194144531990613
+          }
+        ],
+        "initial_geometry": [
+          {
+            "area_by_material": {},
+            "maximum_convex_proxy_depth": {},
+            "cell_centres_inside": {},
+            "outside": false
+          },
+          {
+            "area_by_material": {},
+            "maximum_convex_proxy_depth": {},
+            "cell_centres_inside": {},
+            "outside": false
+          },
+          {
+            "area_by_material": {},
+            "maximum_convex_proxy_depth": {},
+            "cell_centres_inside": {},
+            "outside": false
+          }
+        ],
+        "maximum_sand_area": 0.3140628850956495,
+        "maximum_sand_proxy_depth": 0.19214474937177783
+      }
+    },
+    {
+      "coordinate": {
+        "host": "linux",
+        "workers": 1,
+        "normal_policy": "original",
+        "trace_mode": "off",
+        "tag": "shared-granular-bodies-selective-original-off-w1-r0"
+      },
+      "status": "PASS",
+      "summary": {
+        "status": "PASS",
+        "raw_path": "build\\sol-node-trace\\qualification-001\\linux\\shared-granular-bodies-selective-original-off-w1-r0\\shared-granular-bodies-LA-SELECTIVE-w1-r0.json",
+        "raw_sha256": "e9a1d57e8bfe735eb26fb558c8f50a60c181f4d6e09f4d2a78687f3b72005867",
+        "raw_bytes": 3111579,
+        "process_seconds": 5.776918300020043,
+        "complete_captures": 0,
+        "maximum_nodes": 0,
+        "trace_payload_json_bytes": 0,
+        "actual_worker_tick_distribution": {
+          "1": 180
+        },
+        "tuple_multiset_conserved": true,
+        "initial_payload_sha256": "bafc82a9b23c68a02db484d49c385be96fc78b5d14d3d8fcc1dc3b69bab293f5",
+        "final_payload_sha256": "cac46b92d5279a59ddd3bc27b9aca5cae2a197decfced7809d7f3b26552a26cb",
+        "maximum_RID_error": 8.631481078800451e-07,
+        "selected_arrivals": 0,
+        "arrival_missing": 0,
+        "arrival_misaligned": 0,
+        "passive_rejections": 0,
+        "actual_response_work": -91.50502772718608,
+        "rapier_step_work": 59.53543603890544,
+        "explicit_api_work": 33.1207183183941,
+        "correction_potential_change": 137.4994467117341,
+        "getter_us": {
+          "count": 180,
+          "mean": 55.016666666666666,
+          "maximum": 124,
+          "p50": 51,
+          "p95": 86
+        },
+        "simulation_us": {
+          "count": 180,
+          "mean": 2256.988888888889,
+          "maximum": 4672,
+          "p50": 2171,
+          "p95": 3237
+        },
+        "observation_us": {
+          "count": 180,
+          "mean": 11662.433333333332,
+          "maximum": 13135,
+          "p50": 11605,
+          "p95": 12233
+        },
+        "terminal_stability": [
+          {
+            "observed_terminal_steps": 120,
+            "span_x": 0.2797851562499858,
+            "span_y": 0.35865783691400566,
+            "rotation_span": 0.03951863240125555,
+            "terminal_speed": 1.4947451613257399
+          },
+          {
+            "observed_terminal_steps": 120,
+            "span_x": 13.722595214842983,
+            "span_y": 6.532173156737983,
+            "rotation_span": 0.507555009595301,
+            "terminal_speed": 0.45204859208508347
+          },
+          {
+            "observed_terminal_steps": 120,
+            "span_x": 0.5088500976559942,
+            "span_y": 0.064643859864006,
+            "rotation_span": 0.060846592545833654,
+            "terminal_speed": 0.04750308648333631
+          }
+        ],
+        "initial_geometry": [
+          {
+            "area_by_material": {},
+            "maximum_convex_proxy_depth": {},
+            "cell_centres_inside": {},
+            "outside": false
+          },
+          {
+            "area_by_material": {},
+            "maximum_convex_proxy_depth": {},
+            "cell_centres_inside": {},
+            "outside": false
+          },
+          {
+            "area_by_material": {},
+            "maximum_convex_proxy_depth": {},
+            "cell_centres_inside": {},
+            "outside": false
+          }
+        ],
+        "maximum_sand_area": 0.3965550184891957,
+        "maximum_sand_proxy_depth": 0.24577648037710276
+      }
+    },
+    {
+      "coordinate": {
+        "host": "linux",
+        "workers": 1,
+        "normal_policy": "original",
+        "trace_mode": "batch64-001",
+        "tag": "shared-granular-bodies-selective-original-batch64-001-w1-r0"
+      },
+      "status": "PASS",
+      "summary": {
+        "status": "PASS",
+        "raw_path": "build\\sol-node-trace\\qualification-001\\linux\\shared-granular-bodies-selective-original-batch64-001-w1-r0\\shared-granular-bodies-LA-SELECTIVE-w1-r0.json",
+        "raw_sha256": "f4e13dfda5f81e77d71470b5399153e8f18ffc058f1707016f1cbdd1e97ab9fb",
+        "raw_bytes": 10478005,
+        "process_seconds": 5.710593700001482,
+        "complete_captures": 540,
+        "maximum_nodes": 4,
+        "trace_payload_json_bytes": 7203382,
+        "actual_worker_tick_distribution": {
+          "1": 180
+        },
+        "tuple_multiset_conserved": true,
+        "initial_payload_sha256": "bafc82a9b23c68a02db484d49c385be96fc78b5d14d3d8fcc1dc3b69bab293f5",
+        "final_payload_sha256": "cac46b92d5279a59ddd3bc27b9aca5cae2a197decfced7809d7f3b26552a26cb",
+        "maximum_RID_error": 8.631481078800451e-07,
+        "selected_arrivals": 0,
+        "arrival_missing": 0,
+        "arrival_misaligned": 0,
+        "passive_rejections": 0,
+        "actual_response_work": -91.50502772718608,
+        "rapier_step_work": 59.53543603890544,
+        "explicit_api_work": 33.1207183183941,
+        "correction_potential_change": 137.4994467117341,
+        "getter_us": {
+          "count": 180,
+          "mean": 194.11111111111111,
+          "maximum": 684,
+          "p50": 184,
+          "p95": 299
+        },
+        "simulation_us": {
+          "count": 180,
+          "mean": 2475.161111111111,
+          "maximum": 4273,
+          "p50": 2389,
+          "p95": 3334
+        },
+        "observation_us": {
+          "count": 180,
+          "mean": 11713.038888888888,
+          "maximum": 13188,
+          "p50": 11624,
+          "p95": 12467
+        },
+        "terminal_stability": [
+          {
+            "observed_terminal_steps": 120,
+            "span_x": 0.2797851562499858,
+            "span_y": 0.35865783691400566,
+            "rotation_span": 0.03951863240125555,
+            "terminal_speed": 1.4947451613257399
+          },
+          {
+            "observed_terminal_steps": 120,
+            "span_x": 13.722595214842983,
+            "span_y": 6.532173156737983,
+            "rotation_span": 0.507555009595301,
+            "terminal_speed": 0.45204859208508347
+          },
+          {
+            "observed_terminal_steps": 120,
+            "span_x": 0.5088500976559942,
+            "span_y": 0.064643859864006,
+            "rotation_span": 0.060846592545833654,
+            "terminal_speed": 0.04750308648333631
+          }
+        ],
+        "initial_geometry": [
+          {
+            "area_by_material": {},
+            "maximum_convex_proxy_depth": {},
+            "cell_centres_inside": {},
+            "outside": false
+          },
+          {
+            "area_by_material": {},
+            "maximum_convex_proxy_depth": {},
+            "cell_centres_inside": {},
+            "outside": false
+          },
+          {
+            "area_by_material": {},
+            "maximum_convex_proxy_depth": {},
+            "cell_centres_inside": {},
+            "outside": false
+          }
+        ],
+        "maximum_sand_area": 0.3965550184891957,
+        "maximum_sand_proxy_depth": 0.24577648037710276
+      }
+    },
+    {
+      "coordinate": {
+        "host": "linux",
+        "workers": 1,
+        "normal_policy": "active-normal-001",
+        "trace_mode": "off",
+        "tag": "shared-granular-bodies-selective-active-off-w1-r0"
+      },
+      "status": "PASS",
+      "summary": {
+        "status": "PASS",
+        "raw_path": "build\\sol-node-trace\\qualification-001\\linux\\shared-granular-bodies-selective-active-off-w1-r0\\shared-granular-bodies-LA-SELECTIVE-w1-r0.json",
+        "raw_sha256": "dd2cf480a270ff0253949509d5201777ed062baf967ee3de216a70070a56d5e2",
+        "raw_bytes": 3128766,
+        "process_seconds": 5.0193565000081435,
+        "complete_captures": 0,
+        "maximum_nodes": 0,
+        "trace_payload_json_bytes": 0,
+        "actual_worker_tick_distribution": {
+          "1": 180
+        },
+        "tuple_multiset_conserved": true,
+        "initial_payload_sha256": "bafc82a9b23c68a02db484d49c385be96fc78b5d14d3d8fcc1dc3b69bab293f5",
+        "final_payload_sha256": "f048b8e66262f0634df2bd8721e5874e8b0398067aba5a11c28fb8f34056981b",
+        "maximum_RID_error": 9.254113865181974e-07,
+        "selected_arrivals": 0,
+        "arrival_missing": 0,
+        "arrival_misaligned": 0,
+        "passive_rejections": 0,
+        "actual_response_work": -79.25338550078926,
+        "rapier_step_work": 52.16088545119446,
+        "explicit_api_work": 33.1202472032821,
+        "correction_potential_change": 132.59576122524135,
+        "getter_us": {
+          "count": 180,
+          "mean": 53.855555555555554,
+          "maximum": 151,
+          "p50": 49,
+          "p95": 81
+        },
+        "simulation_us": {
+          "count": 180,
+          "mean": 2272.5833333333335,
+          "maximum": 4129,
+          "p50": 2136,
+          "p95": 3215
+        },
+        "observation_us": {
+          "count": 180,
+          "mean": 11653.022222222222,
+          "maximum": 16523,
+          "p50": 11589,
+          "p95": 12101
+        },
+        "terminal_stability": [
+          {
+            "observed_terminal_steps": 120,
+            "span_x": 0.28263092040999993,
+            "span_y": 0.36854553222599407,
+            "rotation_span": 0.039740785769942395,
+            "terminal_speed": 3.423880216762785
+          },
+          {
+            "observed_terminal_steps": 120,
+            "span_x": 13.966369628905994,
+            "span_y": 5.823593139648992,
+            "rotation_span": 1.1705335233121719,
+            "terminal_speed": 0.6782736323422219
+          },
+          {
+            "observed_terminal_steps": 120,
+            "span_x": 0.3519287109369884,
+            "span_y": 0.039306640625,
+            "rotation_span": 0.04332231785478411,
+            "terminal_speed": 0.08194144531990613
+          }
+        ],
+        "initial_geometry": [
+          {
+            "area_by_material": {},
+            "maximum_convex_proxy_depth": {},
+            "cell_centres_inside": {},
+            "outside": false
+          },
+          {
+            "area_by_material": {},
+            "maximum_convex_proxy_depth": {},
+            "cell_centres_inside": {},
+            "outside": false
+          },
+          {
+            "area_by_material": {},
+            "maximum_convex_proxy_depth": {},
+            "cell_centres_inside": {},
+            "outside": false
+          }
+        ],
+        "maximum_sand_area": 0.3140628850956495,
+        "maximum_sand_proxy_depth": 0.19214474937177783
+      }
+    },
+    {
+      "coordinate": {
+        "host": "linux",
+        "workers": 1,
+        "normal_policy": "active-normal-001",
+        "trace_mode": "batch64-001",
+        "tag": "shared-granular-bodies-selective-active-batch64-001-w1-r0"
+      },
+      "status": "PASS",
+      "summary": {
+        "status": "PASS",
+        "raw_path": "build\\sol-node-trace\\qualification-001\\linux\\shared-granular-bodies-selective-active-batch64-001-w1-r0\\shared-granular-bodies-LA-SELECTIVE-w1-r0.json",
+        "raw_sha256": "d7c17cbabc49ef01f27d77f35f8c34e356cacffcd8123e0d203ef0337bde1638",
+        "raw_bytes": 10610711,
+        "process_seconds": 5.606814600003418,
+        "complete_captures": 540,
+        "maximum_nodes": 4,
+        "trace_payload_json_bytes": 7319333,
+        "actual_worker_tick_distribution": {
+          "1": 180
+        },
+        "tuple_multiset_conserved": true,
+        "initial_payload_sha256": "bafc82a9b23c68a02db484d49c385be96fc78b5d14d3d8fcc1dc3b69bab293f5",
+        "final_payload_sha256": "f048b8e66262f0634df2bd8721e5874e8b0398067aba5a11c28fb8f34056981b",
+        "maximum_RID_error": 9.254113865181974e-07,
+        "selected_arrivals": 0,
+        "arrival_missing": 0,
+        "arrival_misaligned": 0,
+        "passive_rejections": 0,
+        "actual_response_work": -79.25338550078926,
+        "rapier_step_work": 52.16088545119446,
+        "explicit_api_work": 33.1202472032821,
+        "correction_potential_change": 132.59576122524135,
+        "getter_us": {
+          "count": 180,
+          "mean": 205.4,
+          "maximum": 1579,
+          "p50": 182,
+          "p95": 322
+        },
+        "simulation_us": {
+          "count": 180,
+          "mean": 2589.3944444444446,
+          "maximum": 5110,
+          "p50": 2404,
+          "p95": 3666
+        },
+        "observation_us": {
+          "count": 180,
+          "mean": 11829.972222222223,
+          "maximum": 13379,
+          "p50": 11708,
+          "p95": 12917
+        },
+        "terminal_stability": [
+          {
+            "observed_terminal_steps": 120,
+            "span_x": 0.28263092040999993,
+            "span_y": 0.36854553222599407,
+            "rotation_span": 0.039740785769942395,
+            "terminal_speed": 3.423880216762785
+          },
+          {
+            "observed_terminal_steps": 120,
+            "span_x": 13.966369628905994,
+            "span_y": 5.823593139648992,
+            "rotation_span": 1.1705335233121719,
+            "terminal_speed": 0.6782736323422219
+          },
+          {
+            "observed_terminal_steps": 120,
+            "span_x": 0.3519287109369884,
+            "span_y": 0.039306640625,
+            "rotation_span": 0.04332231785478411,
+            "terminal_speed": 0.08194144531990613
+          }
+        ],
+        "initial_geometry": [
+          {
+            "area_by_material": {},
+            "maximum_convex_proxy_depth": {},
+            "cell_centres_inside": {},
+            "outside": false
+          },
+          {
+            "area_by_material": {},
+            "maximum_convex_proxy_depth": {},
+            "cell_centres_inside": {},
+            "outside": false
+          },
+          {
+            "area_by_material": {},
+            "maximum_convex_proxy_depth": {},
+            "cell_centres_inside": {},
+            "outside": false
+          }
+        ],
+        "maximum_sand_area": 0.3140628850956495,
+        "maximum_sand_proxy_depth": 0.19214474937177783
+      }
+    },
+    {
+      "coordinate": {
+        "host": "linux",
+        "workers": 4,
+        "normal_policy": "original",
+        "trace_mode": "off",
+        "tag": "shared-granular-bodies-selective-original-off-w4-r0"
+      },
+      "status": "PASS",
+      "summary": {
+        "status": "PASS",
+        "raw_path": "build\\sol-node-trace\\qualification-001\\linux\\shared-granular-bodies-selective-original-off-w4-r0\\shared-granular-bodies-LA-SELECTIVE-w4-r0.json",
+        "raw_sha256": "4c9f13ae29a429eb1f1d0aa363edbc43cd6e17a952696721251c529abadda6a9",
+        "raw_bytes": 3111605,
+        "process_seconds": 5.400659799983259,
+        "complete_captures": 0,
+        "maximum_nodes": 0,
+        "trace_payload_json_bytes": 0,
+        "actual_worker_tick_distribution": {
+          "2": 12,
+          "3": 33,
+          "4": 135
+        },
+        "tuple_multiset_conserved": true,
+        "initial_payload_sha256": "bafc82a9b23c68a02db484d49c385be96fc78b5d14d3d8fcc1dc3b69bab293f5",
+        "final_payload_sha256": "cac46b92d5279a59ddd3bc27b9aca5cae2a197decfced7809d7f3b26552a26cb",
+        "maximum_RID_error": 8.631481078800451e-07,
+        "selected_arrivals": 0,
+        "arrival_missing": 0,
+        "arrival_misaligned": 0,
+        "passive_rejections": 0,
+        "actual_response_work": -91.50502772718608,
+        "rapier_step_work": 59.53543603890544,
+        "explicit_api_work": 33.1207183183941,
+        "correction_potential_change": 137.4994467117341,
+        "getter_us": {
+          "count": 180,
+          "mean": 67.33888888888889,
+          "maximum": 194,
+          "p50": 62,
+          "p95": 108
+        },
+        "simulation_us": {
+          "count": 180,
+          "mean": 2479.427777777778,
+          "maximum": 3853,
+          "p50": 2439,
+          "p95": 3353
+        },
+        "observation_us": {
+          "count": 180,
+          "mean": 11978.722222222223,
+          "maximum": 16894,
+          "p50": 11792,
+          "p95": 13228
+        },
+        "terminal_stability": [
+          {
+            "observed_terminal_steps": 120,
+            "span_x": 0.2797851562499858,
+            "span_y": 0.35865783691400566,
+            "rotation_span": 0.03951863240125555,
+            "terminal_speed": 1.4947451613257399
+          },
+          {
+            "observed_terminal_steps": 120,
+            "span_x": 13.722595214842983,
+            "span_y": 6.532173156737983,
+            "rotation_span": 0.507555009595301,
+            "terminal_speed": 0.45204859208508347
+          },
+          {
+            "observed_terminal_steps": 120,
+            "span_x": 0.5088500976559942,
+            "span_y": 0.064643859864006,
+            "rotation_span": 0.060846592545833654,
+            "terminal_speed": 0.04750308648333631
+          }
+        ],
+        "initial_geometry": [
+          {
+            "area_by_material": {},
+            "maximum_convex_proxy_depth": {},
+            "cell_centres_inside": {},
+            "outside": false
+          },
+          {
+            "area_by_material": {},
+            "maximum_convex_proxy_depth": {},
+            "cell_centres_inside": {},
+            "outside": false
+          },
+          {
+            "area_by_material": {},
+            "maximum_convex_proxy_depth": {},
+            "cell_centres_inside": {},
+            "outside": false
+          }
+        ],
+        "maximum_sand_area": 0.3965550184891957,
+        "maximum_sand_proxy_depth": 0.24577648037710276
+      }
+    },
+    {
+      "coordinate": {
+        "host": "linux",
+        "workers": 4,
+        "normal_policy": "original",
+        "trace_mode": "batch64-001",
+        "tag": "shared-granular-bodies-selective-original-batch64-001-w4-r0"
+      },
+      "status": "PASS",
+      "summary": {
+        "status": "PASS",
+        "raw_path": "build\\sol-node-trace\\qualification-001\\linux\\shared-granular-bodies-selective-original-batch64-001-w4-r0\\shared-granular-bodies-LA-SELECTIVE-w4-r0.json",
+        "raw_sha256": "37a31432ef82c41dfd797b62c64bc4dbd5a32d2f1cdb4efb8b0b413e84732cda",
+        "raw_bytes": 10478031,
+        "process_seconds": 5.6076553000020795,
+        "complete_captures": 540,
+        "maximum_nodes": 4,
+        "trace_payload_json_bytes": 7203382,
+        "actual_worker_tick_distribution": {
+          "2": 9,
+          "3": 34,
+          "4": 137
+        },
+        "tuple_multiset_conserved": true,
+        "initial_payload_sha256": "bafc82a9b23c68a02db484d49c385be96fc78b5d14d3d8fcc1dc3b69bab293f5",
+        "final_payload_sha256": "cac46b92d5279a59ddd3bc27b9aca5cae2a197decfced7809d7f3b26552a26cb",
+        "maximum_RID_error": 8.631481078800451e-07,
+        "selected_arrivals": 0,
+        "arrival_missing": 0,
+        "arrival_misaligned": 0,
+        "passive_rejections": 0,
+        "actual_response_work": -91.50502772718608,
+        "rapier_step_work": 59.53543603890544,
+        "explicit_api_work": 33.1207183183941,
+        "correction_potential_change": 137.4994467117341,
+        "getter_us": {
+          "count": 180,
+          "mean": 208.26111111111112,
+          "maximum": 644,
+          "p50": 192,
+          "p95": 316
+        },
+        "simulation_us": {
+          "count": 180,
+          "mean": 2700.527777777778,
+          "maximum": 5739,
+          "p50": 2558,
+          "p95": 3691
+        },
+        "observation_us": {
+          "count": 180,
+          "mean": 11945.011111111111,
+          "maximum": 19619,
+          "p50": 11665,
+          "p95": 13380
+        },
+        "terminal_stability": [
+          {
+            "observed_terminal_steps": 120,
+            "span_x": 0.2797851562499858,
+            "span_y": 0.35865783691400566,
+            "rotation_span": 0.03951863240125555,
+            "terminal_speed": 1.4947451613257399
+          },
+          {
+            "observed_terminal_steps": 120,
+            "span_x": 13.722595214842983,
+            "span_y": 6.532173156737983,
+            "rotation_span": 0.507555009595301,
+            "terminal_speed": 0.45204859208508347
+          },
+          {
+            "observed_terminal_steps": 120,
+            "span_x": 0.5088500976559942,
+            "span_y": 0.064643859864006,
+            "rotation_span": 0.060846592545833654,
+            "terminal_speed": 0.04750308648333631
+          }
+        ],
+        "initial_geometry": [
+          {
+            "area_by_material": {},
+            "maximum_convex_proxy_depth": {},
+            "cell_centres_inside": {},
+            "outside": false
+          },
+          {
+            "area_by_material": {},
+            "maximum_convex_proxy_depth": {},
+            "cell_centres_inside": {},
+            "outside": false
+          },
+          {
+            "area_by_material": {},
+            "maximum_convex_proxy_depth": {},
+            "cell_centres_inside": {},
+            "outside": false
+          }
+        ],
+        "maximum_sand_area": 0.3965550184891957,
+        "maximum_sand_proxy_depth": 0.24577648037710276
+      }
+    },
+    {
+      "coordinate": {
+        "host": "linux",
+        "workers": 4,
+        "normal_policy": "active-normal-001",
+        "trace_mode": "off",
+        "tag": "shared-granular-bodies-selective-active-off-w4-r0"
+      },
+      "status": "PASS",
+      "summary": {
+        "status": "PASS",
+        "raw_path": "build\\sol-node-trace\\qualification-001\\linux\\shared-granular-bodies-selective-active-off-w4-r0\\shared-granular-bodies-LA-SELECTIVE-w4-r0.json",
+        "raw_sha256": "3637451bcce2c88be6d587b32eec78415898f64f031ad1d74db5c3e3c1744dd4",
+        "raw_bytes": 3128751,
+        "process_seconds": 5.077529400005005,
+        "complete_captures": 0,
+        "maximum_nodes": 0,
+        "trace_payload_json_bytes": 0,
+        "actual_worker_tick_distribution": {
+          "2": 12,
+          "3": 37,
+          "4": 131
+        },
+        "tuple_multiset_conserved": true,
+        "initial_payload_sha256": "bafc82a9b23c68a02db484d49c385be96fc78b5d14d3d8fcc1dc3b69bab293f5",
+        "final_payload_sha256": "f048b8e66262f0634df2bd8721e5874e8b0398067aba5a11c28fb8f34056981b",
+        "maximum_RID_error": 9.254113865181974e-07,
+        "selected_arrivals": 0,
+        "arrival_missing": 0,
+        "arrival_misaligned": 0,
+        "passive_rejections": 0,
+        "actual_response_work": -79.25338550078926,
+        "rapier_step_work": 52.16088545119446,
+        "explicit_api_work": 33.1202472032821,
+        "correction_potential_change": 132.59576122524135,
+        "getter_us": {
+          "count": 180,
+          "mean": 53.80555555555556,
+          "maximum": 123,
+          "p50": 52,
+          "p95": 74
+        },
+        "simulation_us": {
+          "count": 180,
+          "mean": 2183.711111111111,
+          "maximum": 3367,
+          "p50": 2101,
+          "p95": 2804
+        },
+        "observation_us": {
+          "count": 180,
+          "mean": 11540.372222222222,
+          "maximum": 12450,
+          "p50": 11512,
+          "p95": 11902
+        },
+        "terminal_stability": [
+          {
+            "observed_terminal_steps": 120,
+            "span_x": 0.28263092040999993,
+            "span_y": 0.36854553222599407,
+            "rotation_span": 0.039740785769942395,
+            "terminal_speed": 3.423880216762785
+          },
+          {
+            "observed_terminal_steps": 120,
+            "span_x": 13.966369628905994,
+            "span_y": 5.823593139648992,
+            "rotation_span": 1.1705335233121719,
+            "terminal_speed": 0.6782736323422219
+          },
+          {
+            "observed_terminal_steps": 120,
+            "span_x": 0.3519287109369884,
+            "span_y": 0.039306640625,
+            "rotation_span": 0.04332231785478411,
+            "terminal_speed": 0.08194144531990613
+          }
+        ],
+        "initial_geometry": [
+          {
+            "area_by_material": {},
+            "maximum_convex_proxy_depth": {},
+            "cell_centres_inside": {},
+            "outside": false
+          },
+          {
+            "area_by_material": {},
+            "maximum_convex_proxy_depth": {},
+            "cell_centres_inside": {},
+            "outside": false
+          },
+          {
+            "area_by_material": {},
+            "maximum_convex_proxy_depth": {},
+            "cell_centres_inside": {},
+            "outside": false
+          }
+        ],
+        "maximum_sand_area": 0.3140628850956495,
+        "maximum_sand_proxy_depth": 0.19214474937177783
+      }
+    },
+    {
+      "coordinate": {
+        "host": "linux",
+        "workers": 4,
+        "normal_policy": "active-normal-001",
+        "trace_mode": "batch64-001",
+        "tag": "shared-granular-bodies-selective-active-batch64-001-w4-r0"
+      },
+      "status": "PASS",
+      "summary": {
+        "status": "PASS",
+        "raw_path": "build\\sol-node-trace\\qualification-001\\linux\\shared-granular-bodies-selective-active-batch64-001-w4-r0\\shared-granular-bodies-LA-SELECTIVE-w4-r0.json",
+        "raw_sha256": "1563a44a8a9f80fc9750ad49fe540075625d77ea37b7e63d229d2fc3acd47070",
+        "raw_bytes": 10610696,
+        "process_seconds": 5.515709200000856,
+        "complete_captures": 540,
+        "maximum_nodes": 4,
+        "trace_payload_json_bytes": 7319333,
+        "actual_worker_tick_distribution": {
+          "2": 11,
+          "3": 39,
+          "4": 130
+        },
+        "tuple_multiset_conserved": true,
+        "initial_payload_sha256": "bafc82a9b23c68a02db484d49c385be96fc78b5d14d3d8fcc1dc3b69bab293f5",
+        "final_payload_sha256": "f048b8e66262f0634df2bd8721e5874e8b0398067aba5a11c28fb8f34056981b",
+        "maximum_RID_error": 9.254113865181974e-07,
+        "selected_arrivals": 0,
+        "arrival_missing": 0,
+        "arrival_misaligned": 0,
+        "passive_rejections": 0,
+        "actual_response_work": -79.25338550078926,
+        "rapier_step_work": 52.16088545119446,
+        "explicit_api_work": 33.1202472032821,
+        "correction_potential_change": 132.59576122524135,
+        "getter_us": {
+          "count": 180,
+          "mean": 189.77777777777777,
+          "maximum": 670,
+          "p50": 184,
+          "p95": 276
+        },
+        "simulation_us": {
+          "count": 180,
+          "mean": 2450.7555555555555,
+          "maximum": 4814,
+          "p50": 2358,
+          "p95": 3298
+        },
+        "observation_us": {
+          "count": 180,
+          "mean": 11707.966666666667,
+          "maximum": 13682,
+          "p50": 11574,
+          "p95": 12596
+        },
+        "terminal_stability": [
+          {
+            "observed_terminal_steps": 120,
+            "span_x": 0.28263092040999993,
+            "span_y": 0.36854553222599407,
+            "rotation_span": 0.039740785769942395,
+            "terminal_speed": 3.423880216762785
+          },
+          {
+            "observed_terminal_steps": 120,
+            "span_x": 13.966369628905994,
+            "span_y": 5.823593139648992,
+            "rotation_span": 1.1705335233121719,
+            "terminal_speed": 0.6782736323422219
+          },
+          {
+            "observed_terminal_steps": 120,
+            "span_x": 0.3519287109369884,
+            "span_y": 0.039306640625,
+            "rotation_span": 0.04332231785478411,
+            "terminal_speed": 0.08194144531990613
+          }
+        ],
+        "initial_geometry": [
+          {
+            "area_by_material": {},
+            "maximum_convex_proxy_depth": {},
+            "cell_centres_inside": {},
+            "outside": false
+          },
+          {
+            "area_by_material": {},
+            "maximum_convex_proxy_depth": {},
+            "cell_centres_inside": {},
+            "outside": false
+          },
+          {
+            "area_by_material": {},
+            "maximum_convex_proxy_depth": {},
+            "cell_centres_inside": {},
+            "outside": false
+          }
+        ],
+        "maximum_sand_area": 0.3140628850956495,
+        "maximum_sand_proxy_depth": 0.19214474937177783
+      }
+    }
+  ],
+  "qualification": "Arithmetic/observation parity only; no original SOL authority, clearance, full conservation or clean causal timing claim",
+  "analysis_python": {
+    "version": "3.13.16 (tags/v3.13.16:cbc944f, Sep 30 2026, 19:17:50) [MSC v.1944 64 bit (AMD64)]",
+    "executable": "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "sha256": "31fe10b4ed82a2f960af0ef9931f46a4b84ff286f8b6ffd9dee098cf4f10f17f"
+  },
+  "filesystem_adapter": "C:/ and /mnt/c paths map only at payload lookup; raw records, decoder source and payload hashes remain unchanged",
+  "git_identity_backend": "Windows Git owns Windows-worktree metadata; numerical/file analysis runs in the actual recorded Python host",
+  "failed_commands": [],
+  "post_projects": true,
+  "traceoff_on_pairs": [
+    {
+      "host": "windows",
+      "workers": 1,
+      "normal_policy": "original",
+      "status": "PASS",
+      "steps": 180,
+      "owners": 3,
+      "initial_sha256": "bafc82a9b23c68a02db484d49c385be96fc78b5d14d3d8fcc1dc3b69bab293f5",
+      "final_sha256": "cac46b92d5279a59ddd3bc27b9aca5cae2a197decfced7809d7f3b26552a26cb",
+      "excluded": "Getter timing and four explicit trace diagnostic keys only; stage timing/statistics are separately reported, not compared as deterministic physical state"
+    },
+    {
+      "host": "windows",
+      "workers": 1,
+      "normal_policy": "active-normal-001",
+      "status": "PASS",
+      "steps": 180,
+      "owners": 3,
+      "initial_sha256": "bafc82a9b23c68a02db484d49c385be96fc78b5d14d3d8fcc1dc3b69bab293f5",
+      "final_sha256": "f048b8e66262f0634df2bd8721e5874e8b0398067aba5a11c28fb8f34056981b",
+      "excluded": "Getter timing and four explicit trace diagnostic keys only; stage timing/statistics are separately reported, not compared as deterministic physical state"
+    },
+    {
+      "host": "windows",
+      "workers": 4,
+      "normal_policy": "original",
+      "status": "PASS",
+      "steps": 180,
+      "owners": 3,
+      "initial_sha256": "bafc82a9b23c68a02db484d49c385be96fc78b5d14d3d8fcc1dc3b69bab293f5",
+      "final_sha256": "cac46b92d5279a59ddd3bc27b9aca5cae2a197decfced7809d7f3b26552a26cb",
+      "excluded": "Getter timing and four explicit trace diagnostic keys only; stage timing/statistics are separately reported, not compared as deterministic physical state"
+    },
+    {
+      "host": "windows",
+      "workers": 4,
+      "normal_policy": "active-normal-001",
+      "status": "PASS",
+      "steps": 180,
+      "owners": 3,
+      "initial_sha256": "bafc82a9b23c68a02db484d49c385be96fc78b5d14d3d8fcc1dc3b69bab293f5",
+      "final_sha256": "f048b8e66262f0634df2bd8721e5874e8b0398067aba5a11c28fb8f34056981b",
+      "excluded": "Getter timing and four explicit trace diagnostic keys only; stage timing/statistics are separately reported, not compared as deterministic physical state"
+    },
+    {
+      "host": "linux",
+      "workers": 1,
+      "normal_policy": "original",
+      "status": "PASS",
+      "steps": 180,
+      "owners": 3,
+      "initial_sha256": "bafc82a9b23c68a02db484d49c385be96fc78b5d14d3d8fcc1dc3b69bab293f5",
+      "final_sha256": "cac46b92d5279a59ddd3bc27b9aca5cae2a197decfced7809d7f3b26552a26cb",
+      "excluded": "Getter timing and four explicit trace diagnostic keys only; stage timing/statistics are separately reported, not compared as deterministic physical state"
+    },
+    {
+      "host": "linux",
+      "workers": 1,
+      "normal_policy": "active-normal-001",
+      "status": "PASS",
+      "steps": 180,
+      "owners": 3,
+      "initial_sha256": "bafc82a9b23c68a02db484d49c385be96fc78b5d14d3d8fcc1dc3b69bab293f5",
+      "final_sha256": "f048b8e66262f0634df2bd8721e5874e8b0398067aba5a11c28fb8f34056981b",
+      "excluded": "Getter timing and four explicit trace diagnostic keys only; stage timing/statistics are separately reported, not compared as deterministic physical state"
+    },
+    {
+      "host": "linux",
+      "workers": 4,
+      "normal_policy": "original",
+      "status": "PASS",
+      "steps": 180,
+      "owners": 3,
+      "initial_sha256": "bafc82a9b23c68a02db484d49c385be96fc78b5d14d3d8fcc1dc3b69bab293f5",
+      "final_sha256": "cac46b92d5279a59ddd3bc27b9aca5cae2a197decfced7809d7f3b26552a26cb",
+      "excluded": "Getter timing and four explicit trace diagnostic keys only; stage timing/statistics are separately reported, not compared as deterministic physical state"
+    },
+    {
+      "host": "linux",
+      "workers": 4,
+      "normal_policy": "active-normal-001",
+      "status": "PASS",
+      "steps": 180,
+      "owners": 3,
+      "initial_sha256": "bafc82a9b23c68a02db484d49c385be96fc78b5d14d3d8fcc1dc3b69bab293f5",
+      "final_sha256": "f048b8e66262f0634df2bd8721e5874e8b0398067aba5a11c28fb8f34056981b",
+      "excluded": "Getter timing and four explicit trace diagnostic keys only; stage timing/statistics are separately reported, not compared as deterministic physical state"
+    }
+  ],
+  "retained_trajectory_comparisons": [
+    {
+      "host": "windows",
+      "workers": 1,
+      "normal_policy": "original",
+      "status": "PASS",
+      "retained_source": "119ac3a58453b1f5cc016dbcdb5cba5133540fda",
+      "retained_path": "build\\sol-active-normal-live\\authored-full-001\\windows\\shared-granular-bodies-selective-original-w1-r0\\shared-granular-bodies-LA-SELECTIVE-w1-r0.json",
+      "retained_sha256": "af498bfdd5053ad23fbaf7f0cb8949db88b64664022c8d8b1c32e72fefae75d1",
+      "steps": 180,
+      "owners": 3,
+      "initial_sha256": "bafc82a9b23c68a02db484d49c385be96fc78b5d14d3d8fcc1dc3b69bab293f5",
+      "final_sha256": "cac46b92d5279a59ddd3bc27b9aca5cae2a197decfced7809d7f3b26552a26cb",
+      "excluded": "Getter timing and four explicit trace diagnostic keys only; stage timing/statistics are separately reported, not compared as deterministic physical state"
+    },
+    {
+      "host": "windows",
+      "workers": 1,
+      "normal_policy": "active-normal-001",
+      "status": "PASS",
+      "retained_source": "119ac3a58453b1f5cc016dbcdb5cba5133540fda",
+      "retained_path": "build\\sol-active-normal-live\\authored-full-001\\windows\\shared-granular-bodies-selective-active-w1-r0\\shared-granular-bodies-LA-SELECTIVE-w1-r0.json",
+      "retained_sha256": "ce640d7bb67f7b15cb7c1fe18f9fd1a79a52c65e2b090e4bf5db3e910d8891cb",
+      "steps": 180,
+      "owners": 3,
+      "initial_sha256": "bafc82a9b23c68a02db484d49c385be96fc78b5d14d3d8fcc1dc3b69bab293f5",
+      "final_sha256": "f048b8e66262f0634df2bd8721e5874e8b0398067aba5a11c28fb8f34056981b",
+      "excluded": "Getter timing and four explicit trace diagnostic keys only; stage timing/statistics are separately reported, not compared as deterministic physical state"
+    },
+    {
+      "host": "windows",
+      "workers": 4,
+      "normal_policy": "original",
+      "status": "PASS",
+      "retained_source": "119ac3a58453b1f5cc016dbcdb5cba5133540fda",
+      "retained_path": "build\\sol-active-normal-live\\authored-full-001\\windows\\shared-granular-bodies-selective-original-w4-r0\\shared-granular-bodies-LA-SELECTIVE-w4-r0.json",
+      "retained_sha256": "f6aa79b49a3719d5896b5275a57f8417b0535b598a05c6d6e48a8fc8bbf80f88",
+      "steps": 180,
+      "owners": 3,
+      "initial_sha256": "bafc82a9b23c68a02db484d49c385be96fc78b5d14d3d8fcc1dc3b69bab293f5",
+      "final_sha256": "cac46b92d5279a59ddd3bc27b9aca5cae2a197decfced7809d7f3b26552a26cb",
+      "excluded": "Getter timing and four explicit trace diagnostic keys only; stage timing/statistics are separately reported, not compared as deterministic physical state"
+    },
+    {
+      "host": "windows",
+      "workers": 4,
+      "normal_policy": "active-normal-001",
+      "status": "PASS",
+      "retained_source": "119ac3a58453b1f5cc016dbcdb5cba5133540fda",
+      "retained_path": "build\\sol-active-normal-live\\authored-full-001\\windows\\shared-granular-bodies-selective-active-w4-r0\\shared-granular-bodies-LA-SELECTIVE-w4-r0.json",
+      "retained_sha256": "1885f7fc0a26c54bec1340718a1e2c63f13bdf2163c6dec014c9b39fd1b5e03d",
+      "steps": 180,
+      "owners": 3,
+      "initial_sha256": "bafc82a9b23c68a02db484d49c385be96fc78b5d14d3d8fcc1dc3b69bab293f5",
+      "final_sha256": "f048b8e66262f0634df2bd8721e5874e8b0398067aba5a11c28fb8f34056981b",
+      "excluded": "Getter timing and four explicit trace diagnostic keys only; stage timing/statistics are separately reported, not compared as deterministic physical state"
+    },
+    {
+      "host": "linux",
+      "workers": 1,
+      "normal_policy": "original",
+      "status": "PASS",
+      "retained_source": "119ac3a58453b1f5cc016dbcdb5cba5133540fda",
+      "retained_path": "build\\sol-active-normal-live\\authored-full-001\\linux\\shared-granular-bodies-selective-original-w1-r0\\shared-granular-bodies-LA-SELECTIVE-w1-r0.json",
+      "retained_sha256": "06596e13c6f1845b5ab08a535d0d428306bb4c2d9fd6b28cd4d1e1a3f7b10011",
+      "steps": 180,
+      "owners": 3,
+      "initial_sha256": "bafc82a9b23c68a02db484d49c385be96fc78b5d14d3d8fcc1dc3b69bab293f5",
+      "final_sha256": "cac46b92d5279a59ddd3bc27b9aca5cae2a197decfced7809d7f3b26552a26cb",
+      "excluded": "Getter timing and four explicit trace diagnostic keys only; stage timing/statistics are separately reported, not compared as deterministic physical state"
+    },
+    {
+      "host": "linux",
+      "workers": 1,
+      "normal_policy": "active-normal-001",
+      "status": "PASS",
+      "retained_source": "119ac3a58453b1f5cc016dbcdb5cba5133540fda",
+      "retained_path": "build\\sol-active-normal-live\\authored-full-001\\linux\\shared-granular-bodies-selective-active-w1-r0\\shared-granular-bodies-LA-SELECTIVE-w1-r0.json",
+      "retained_sha256": "4613fbcbebc80a7a10cdd3a02b64d9af2bfcc682a04cf02054067e1360e70576",
+      "steps": 180,
+      "owners": 3,
+      "initial_sha256": "bafc82a9b23c68a02db484d49c385be96fc78b5d14d3d8fcc1dc3b69bab293f5",
+      "final_sha256": "f048b8e66262f0634df2bd8721e5874e8b0398067aba5a11c28fb8f34056981b",
+      "excluded": "Getter timing and four explicit trace diagnostic keys only; stage timing/statistics are separately reported, not compared as deterministic physical state"
+    },
+    {
+      "host": "linux",
+      "workers": 4,
+      "normal_policy": "original",
+      "status": "PASS",
+      "retained_source": "119ac3a58453b1f5cc016dbcdb5cba5133540fda",
+      "retained_path": "build\\sol-active-normal-live\\authored-full-001\\linux\\shared-granular-bodies-selective-original-w4-r0\\shared-granular-bodies-LA-SELECTIVE-w4-r0.json",
+      "retained_sha256": "f90e3ed2238ca8006063b7fa61e530f5f2de4a9688ebfe51a8c9f317bfe291e6",
+      "steps": 180,
+      "owners": 3,
+      "initial_sha256": "bafc82a9b23c68a02db484d49c385be96fc78b5d14d3d8fcc1dc3b69bab293f5",
+      "final_sha256": "cac46b92d5279a59ddd3bc27b9aca5cae2a197decfced7809d7f3b26552a26cb",
+      "excluded": "Getter timing and four explicit trace diagnostic keys only; stage timing/statistics are separately reported, not compared as deterministic physical state"
+    },
+    {
+      "host": "linux",
+      "workers": 4,
+      "normal_policy": "active-normal-001",
+      "status": "PASS",
+      "retained_source": "119ac3a58453b1f5cc016dbcdb5cba5133540fda",
+      "retained_path": "build\\sol-active-normal-live\\authored-full-001\\linux\\shared-granular-bodies-selective-active-w4-r0\\shared-granular-bodies-LA-SELECTIVE-w4-r0.json",
+      "retained_sha256": "994f71eb7f799c721eed29470cb1b9398164128e314cb30358fe3811b3c37f7b",
+      "steps": 180,
+      "owners": 3,
+      "initial_sha256": "bafc82a9b23c68a02db484d49c385be96fc78b5d14d3d8fcc1dc3b69bab293f5",
+      "final_sha256": "f048b8e66262f0634df2bd8721e5874e8b0398067aba5a11c28fb8f34056981b",
+      "excluded": "Getter timing and four explicit trace diagnostic keys only; stage timing/statistics are separately reported, not compared as deterministic physical state"
+    }
+  ],
+  "retained_manifest_sha256": "398ad935cc2d4528e86e1b23e5f23044e7816735a3b7cdcf9b55cff5e488b4d3",
+  "trace_accounting_sha256": "32f5427b703990acd747f40a2fdaa591959eb935e2b1209f5bd5beff51b58e50",
+  "first_differences_sha256": "a5a26b8d2e7ca560f186feb78bedfd77477e3559fd6b3b97ae66002072a7ab54",
+  "episodes": 16,
+  "steps": 2880,
+  "body_applications": 8640,
+  "complete_captures": 4320
+}

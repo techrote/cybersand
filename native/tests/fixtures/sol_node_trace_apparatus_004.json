@@ -1,0 +1,11 @@
+{
+  "registration": "SOL-NODE-TRACE-004-APPARATUS",
+  "parent": "SOL-NODE-TRACE-001",
+  "date": "2026-11-05",
+  "failed_analysis_source": "d3c38cad",
+  "retained_run": "build/sol-node-trace/analysis-001",
+  "result": "Windows full reduction passes16episodes/4320captures/eight trace pairs/eight retained trajectory comparisons. Both Python hosts pass13audit tests. Linux full reduction exits1 before manifest/analysis because native Linux Git interprets the Windows absolute gitdir worktree pointer as a relative path.",
+  "failed_log_sha256": "ef26ed60a592313eec913558f493af337a298ecf2a95d1e5707d77a38d2b0e0f",
+  "correction": "Use Windows Git only to read this Windows worktree's HEAD before/after Linux analysis. Numerical, geometry, tuple and lossless trace operations remain actual Linux Python. Map Windows/WSL payload filesystem paths at lookup without rewriting raw reports, decoder source or bytes/hash guards.",
+  "limits": "No physical rerun, physics parameter, numeric audit tolerance, material/runtime guard or acceptance threshold changes. Retain failed Linux attempt and original successful Windows analysis."
+}

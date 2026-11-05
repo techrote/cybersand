@@ -1,0 +1,20 @@
+{
+  "registration": "SOL-AUTHORITY-OFFLINE-003-APPARATUS",
+  "date": "2026-11-05",
+  "parent": "SOL-AUTHORITY-OFFLINE-002-APPARATUS",
+  "failed_attempt": {
+    "source": "87170bbc",
+    "receipt": "build/sol-active-normal-live/authority-model-001/receipt.json",
+    "log": "build/sol-active-normal-live/authority-model-001/adversarial.log",
+    "log_sha256": "6502590a6010db1abe0e12aa91fd4c2747db016c1a8aa44834874324dba816ee",
+    "exit": 1,
+    "tests": 13,
+    "passed": 12,
+    "failed": 1,
+    "cause": "Test conflated full frozen native-field Wall count with16local intersecting enclosure Wall cells. Full field has528Wall (including512perimeter),9Sand and101RedBrick. Geometry probe independently finds exactly16intersecting hard Wall cells."
+  },
+  "correction": "Require fullfield528Wall and separately retain exactly16hard-intersection coordinates; no historical input, geometry, material policy, area filter, lease rule or physics parameter changes. Add full source-map/custody/transition-record coverage test.",
+  "live_authority": false,
+  "actuation_permitted": false,
+  "timing": "Recorded before corrected offline rerun; first failed run and all raw inputs remain unchanged"
+}

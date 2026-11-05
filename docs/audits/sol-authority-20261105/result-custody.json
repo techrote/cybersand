@@ -1,0 +1,20 @@
+{
+  "analysis_source": "0a771370519d76f2d48a1602c3ff8412ff29c136",
+  "files": {
+    "synthetic-capture.json": "91a016cf92d3c518b9cb330172ad9ad054bd6f5fd7105df18603eb5049a84551",
+    "offline-results.json": "85dbd52ff1f807f81e453e6f1d48cb8f8f8a71c1d774f6e10e95140f962cb375",
+    "review-reproduction.json": "2d50ad603e7c40634a16f2e35fb33e9d45841d790e15bbda119a726fb2f4c733"
+  },
+  "inputs": {
+    "input-custody.json": "8c581e97266019c6f9fe0dea1f7f2928fdeca02eb7a489cdfdcb681675a96913",
+    "historical-excerpts.json": "f0edd35b386da188943b5837533a8b0be18feb339e681cd4a5422d520c4a86a6",
+    "source-map.json": "f8190e17958d0b07bd3d37d010173511cbcb42dce39df74f633a3f99713430a6"
+  },
+  "scripts": {
+    "sol_authority_model.py": "72ea2e61531e8d49cabddecde932ebcaf2d61c2b87170a4ae39da74473eed4ca",
+    "test_sol_authority_model.py": "6a445aa47f102c0b0ce1803e6146bd7d389c551870f4c278c9b72c2d0b0370aa",
+    "sol_authority_evidence.py": "1f70e36c14346f163f5d1e4452901b6188dcea522805d52c35f8f4fee229b297"
+  },
+  "live_authority": false,
+  "actuation_permitted": false
+}

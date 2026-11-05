@@ -1,0 +1,74 @@
+{
+  "publication_preparation_source": "b3c6c82f1a54e09a008ef4cd15c697015d075e38",
+  "branch": "codex/sol-active-normal-live-20261105",
+  "fixed_base": "4cd9ca193176e315f8e81316e2221b275cdccbde",
+  "physical_execution_source": "1488fe130f176f85dff2ab1b586e9232523b13bf",
+  "analysis_source": "b3c6c82f1a54e09a008ef4cd15c697015d075e38",
+  "resource": {
+    "retained_new_artifacts_bytes": 1790999466,
+    "free_bytes": 32398565376,
+    "cap_bytes": 2147483648,
+    "reserve_bytes": 5368709120,
+    "scope": "Measured trace output tree including failed attempts, binaries, logs, projects, analyses; no evidence deletion"
+  },
+  "files": {
+    "analysis-crosscheck.json": {
+      "bytes": 1155,
+      "sha256": "1db589886c5523d17013b1f502599d20837febbb8d4266df2645869cacf6e2d8"
+    },
+    "analysis-custody.json": {
+      "bytes": 61017,
+      "sha256": "3c4ada682e9fc828252bdebac651bd9c98abfe4af0d496d696d5ed542bf39545"
+    },
+    "comparison.json": {
+      "bytes": 67949,
+      "sha256": "2cc4dc5cc45dab2f4a84b0e1121b61f6715bec4cbcc16d684f62aeeb80477360"
+    },
+    "first-differences.json": {
+      "bytes": 3601149,
+      "sha256": "a5a26b8d2e7ca560f186feb78bedfd77477e3559fd6b3b97ae66002072a7ab54"
+    },
+    "host-qualification.json": {
+      "bytes": 512632,
+      "sha256": "a5cbc79919241a7e337d8f44c80fcb29ba576fe7116114c7ce7d99929bea9e4b"
+    },
+    "main-movement.json": {
+      "bytes": 6407,
+      "sha256": "71fac7859ed0ebe888b4ffb303cae95e1a399ee3b22209646e31def17e652c46"
+    },
+    "native-qualification.json": {
+      "bytes": 109455,
+      "sha256": "f7f937dda8c20de79b06adee3fcad3e986fe4504dee38553db45fbc8b9d0b265"
+    },
+    "raw-custody.json": {
+      "bytes": 92036,
+      "sha256": "fc13045523f1e91079782bacc9418ad6a11bea883a463dd005344508662e3e9b"
+    },
+    "retained-attempts.json": {
+      "bytes": 49712,
+      "sha256": "d4aa8855f91603eaf27607800da573de211d0c7c5bfde1193b837af02906a01f"
+    },
+    "runtime-custody.json": {
+      "bytes": 36548,
+      "sha256": "b346613f33c9a003b2e126b3e74d3b394be61aeb45ca0ccef360b8dccc6a0f3d"
+    },
+    "trace-accounting.json": {
+      "bytes": 2385451,
+      "sha256": "32f5427b703990acd747f40a2fdaa591959eb935e2b1209f5bd5beff51b58e50"
+    },
+    "value-qualification.json": {
+      "bytes": 14884,
+      "sha256": "98fbdc104d9ce1867617ddc24343da283f4640195295e95422a43aa57e4efadd"
+    }
+  },
+  "source_sha256": {
+    "tools/experiments/sol_node_trace.py": "a4ae11bd7c1d1e7ef20182b451ccf54f591dc7e48cd953d12ec74dcc7d416076",
+    "tools/experiments/sol_node_trace_runtime.py": "7a159cf0fd50e10c42d0c7d34e6f85e8beb214801ad1a707ce212cb8abf28206",
+    "tools/experiments/sol_node_trace_audit.py": "fe2593c8722770b5ff43a40e1900dbc3437206bcd767285be59f25dbf48fc808",
+    "tools/experiments/sol_node_trace_reduce.py": "f1305b405956c2588b9f797f7f0adf684ccb6a8e2f1f47e492e67b4a8642180b",
+    "tools/experiments/la_physical_reduce.py": "36a87559b6efd6b599a14d6622f07a9b3824c6e58f81dd4aafe692c90e0501e8",
+    "tools/experiments/sol_active_normal_live_authored_reduce.py": "23419890950fb7d0588322b5ea2a0fe2b857c15f5bd3e313ea266ca45244aba6",
+    "tools/experiments/sol_active_normal_live_reduce.py": "08be9c521bfb54fd18ed60d662a617be7680bac205b660be44c6a6562869cbfb"
+  },
+  "limitations": "Structured evidence only; ignored raw logs/binaries/payloads remain local and SHA-bound. No original SOL live authority, full grain/body conservation, clean overhead experiment or accepted runtime publication."
+}

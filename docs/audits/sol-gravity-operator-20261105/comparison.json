@@ -1,0 +1,2441 @@
+{
+  "registration": "SOL-GRAVITY-OPERATOR-001",
+  "analysis_source": "5198ba5fd1a38e2a987330adca0bb73edf627c23",
+  "execution_source": "ef106ff7ab04b190d3b481784ecf4e8aaf8a1bb1",
+  "input_receipt_sha256": "f37f01d29b0818939bc09ab0b11ae62108dafd72a6a15636aefafecb484a80a2",
+  "hosts": {
+    "windows": {
+      "status": "COMPLETE",
+      "episodes": 9,
+      "body_steps": 288,
+      "results": [
+        {
+          "model": "reference_barrel",
+          "initial": "rest",
+          "properties": {
+            "angular_damp": 0.349999994039536,
+            "angular_damp_mode": 0,
+            "can_sleep": true,
+            "collision_layer": 1,
+            "collision_mask": 1,
+            "custom_integrator": false,
+            "freeze": false,
+            "gravity_scale": 0.0939999967813492,
+            "linear_damp": 0.150000005960464,
+            "linear_damp_mode": 0,
+            "omit_force_integration": false,
+            "physics_ticks_per_second": 60,
+            "project_angular_damp": 1.0,
+            "project_gravity": 980.0,
+            "project_gravity_vector": [
+              0.0,
+              1.0
+            ],
+            "project_linear_damp": 0.1,
+            "server_params": {
+              "2": 1.0,
+              "3": 21.6666660308838,
+              "5": 0.0939999967813492,
+              "6": 0,
+              "7": 0,
+              "8": 0.150000005960464,
+              "9": 0.349999994039536
+            }
+          },
+          "provenance_diagnostic": {
+            "project_times_body_nominal_gravity": [
+              0.0,
+              92.11999684572221
+            ],
+            "measured_minus_nominal_gravity": [
+              0.0,
+              -1.7285347126971828e-06
+            ],
+            "nominal_combined_damping": [
+              0.250000005960464,
+              1.349999994039536
+            ],
+            "measured_minus_nominal_damping": [
+              -5.960464011245392e-09,
+              2.980232394200755e-08
+            ],
+            "native_owner_gravity_binding": "UNAVAILABLE: no native World/owner sample in this oracle; values are diagnostics, not a new compatibility tolerance"
+          },
+          "effective_gravity": [
+            0.0,
+            92.1199951171875
+          ],
+          "effective_linear_damp": 0.25,
+          "effective_angular_damp": 1.35000002384186,
+          "reported_step": 0.0166666675359011,
+          "steps": 32,
+          "models": [
+            {
+              "model": "gravity-only",
+              "precision": "float64",
+              "maximum_one_step_error": 0.1912742614746108,
+              "maximum_full_trajectory_error": 3.223876190185571,
+              "final_full_trajectory_error": 3.223876190185571,
+              "one_step_compatible": false
+            },
+            {
+              "model": "gravity-only",
+              "precision": "float32",
+              "maximum_one_step_error": 0.19127273559570312,
+              "maximum_full_trajectory_error": 3.223865509033203,
+              "final_full_trajectory_error": 3.223865509033203,
+              "one_step_compatible": false
+            },
+            {
+              "model": "gravity-then-rational-damping",
+              "precision": "float64",
+              "maximum_one_step_error": 5.191787145975013e-06,
+              "maximum_full_trajectory_error": 4.068395688960891e-05,
+              "final_full_trajectory_error": 1.92346718108638e-06,
+              "one_step_compatible": true
+            },
+            {
+              "model": "gravity-then-rational-damping",
+              "precision": "float32",
+              "maximum_one_step_error": 7.62939453125e-06,
+              "maximum_full_trajectory_error": 4.9591064453125e-05,
+              "final_full_trajectory_error": 4.9591064453125e-05,
+              "one_step_compatible": true
+            },
+            {
+              "model": "rational-damping-then-gravity",
+              "precision": "float64",
+              "maximum_one_step_error": 0.006374444605405927,
+              "maximum_full_trajectory_error": 0.19128021428294062,
+              "final_full_trajectory_error": 0.19128021428294062,
+              "one_step_compatible": false
+            },
+            {
+              "model": "rational-damping-then-gravity",
+              "precision": "float32",
+              "maximum_one_step_error": 0.006374359130859375,
+              "maximum_full_trajectory_error": 0.19123077392578125,
+              "final_full_trajectory_error": 0.19123077392578125,
+              "one_step_compatible": false
+            },
+            {
+              "model": "gravity-then-linear-damping",
+              "precision": "float64",
+              "maximum_one_step_error": 0.0008009974161780065,
+              "maximum_full_trajectory_error": 0.012863751321290806,
+              "final_full_trajectory_error": 0.012863751321290806,
+              "one_step_compatible": false
+            },
+            {
+              "model": "gravity-then-linear-damping",
+              "precision": "float32",
+              "maximum_one_step_error": 0.00080108642578125,
+              "maximum_full_trajectory_error": 0.012866973876953125,
+              "final_full_trajectory_error": 0.012866973876953125,
+              "one_step_compatible": false
+            }
+          ]
+        },
+        {
+          "model": "reference_barrel",
+          "initial": "drift",
+          "properties": {
+            "angular_damp": 0.349999994039536,
+            "angular_damp_mode": 0,
+            "can_sleep": true,
+            "collision_layer": 1,
+            "collision_mask": 1,
+            "custom_integrator": false,
+            "freeze": false,
+            "gravity_scale": 0.0939999967813492,
+            "linear_damp": 0.150000005960464,
+            "linear_damp_mode": 0,
+            "omit_force_integration": false,
+            "physics_ticks_per_second": 60,
+            "project_angular_damp": 1.0,
+            "project_gravity": 980.0,
+            "project_gravity_vector": [
+              0.0,
+              1.0
+            ],
+            "project_linear_damp": 0.1,
+            "server_params": {
+              "2": 1.0,
+              "3": 21.6666660308838,
+              "5": 0.0939999967813492,
+              "6": 0,
+              "7": 0,
+              "8": 0.150000005960464,
+              "9": 0.349999994039536
+            }
+          },
+          "provenance_diagnostic": {
+            "project_times_body_nominal_gravity": [
+              0.0,
+              92.11999684572221
+            ],
+            "measured_minus_nominal_gravity": [
+              0.0,
+              -1.7285347126971828e-06
+            ],
+            "nominal_combined_damping": [
+              0.250000005960464,
+              1.349999994039536
+            ],
+            "measured_minus_nominal_damping": [
+              -5.960464011245392e-09,
+              2.980232394200755e-08
+            ],
+            "native_owner_gravity_binding": "UNAVAILABLE: no native World/owner sample in this oracle; values are diagnostics, not a new compatibility tolerance"
+          },
+          "effective_gravity": [
+            0.0,
+            92.1199951171875
+          ],
+          "effective_linear_damp": 0.25,
+          "effective_angular_damp": 1.35000002384186,
+          "reported_step": 0.0166666675359011,
+          "steps": 32,
+          "models": [
+            {
+              "model": "gravity-only",
+              "precision": "float64",
+              "maximum_one_step_error": 0.1949211120605483,
+              "maximum_full_trajectory_error": 3.348460388183625,
+              "final_full_trajectory_error": 3.348460388183625,
+              "one_step_compatible": false
+            },
+            {
+              "model": "gravity-only",
+              "precision": "float32",
+              "maximum_one_step_error": 0.19491958618164062,
+              "maximum_full_trajectory_error": 3.34844970703125,
+              "final_full_trajectory_error": 3.34844970703125,
+              "one_step_compatible": false
+            },
+            {
+              "model": "gravity-then-rational-damping",
+              "precision": "float64",
+              "maximum_one_step_error": 4.986015099461838e-06,
+              "maximum_full_trajectory_error": 4.066209218578365e-05,
+              "final_full_trajectory_error": 3.657761387554359e-06,
+              "one_step_compatible": true
+            },
+            {
+              "model": "gravity-then-rational-damping",
+              "precision": "float32",
+              "maximum_one_step_error": 7.62939453125e-06,
+              "maximum_full_trajectory_error": 5.340576171875e-05,
+              "final_full_trajectory_error": 5.340576171875e-05,
+              "one_step_compatible": true
+            },
+            {
+              "model": "rational-damping-then-gravity",
+              "precision": "float64",
+              "maximum_one_step_error": 0.006374674120387169,
+              "maximum_full_trajectory_error": 0.19128019541965813,
+              "final_full_trajectory_error": 0.19128019541965813,
+              "one_step_compatible": false
+            },
+            {
+              "model": "rational-damping-then-gravity",
+              "precision": "float32",
+              "maximum_one_step_error": 0.0063724517822265625,
+              "maximum_full_trajectory_error": 0.19121932983398438,
+              "final_full_trajectory_error": 0.19121932983398438,
+              "one_step_compatible": false
+            },
+            {
+              "model": "gravity-then-linear-damping",
+              "precision": "float64",
+              "maximum_one_step_error": 0.0008169078826867349,
+              "maximum_full_trajectory_error": 0.013349981435737845,
+              "final_full_trajectory_error": 0.013349981435737845,
+              "one_step_compatible": false
+            },
+            {
+              "model": "gravity-then-linear-damping",
+              "precision": "float32",
+              "maximum_one_step_error": 0.00081634521484375,
+              "maximum_full_trajectory_error": 0.01335906982421875,
+              "final_full_trajectory_error": 0.01335906982421875,
+              "one_step_compatible": false
+            }
+          ]
+        },
+        {
+          "model": "reference_barrel",
+          "initial": "separating",
+          "properties": {
+            "angular_damp": 0.349999994039536,
+            "angular_damp_mode": 0,
+            "can_sleep": true,
+            "collision_layer": 1,
+            "collision_mask": 1,
+            "custom_integrator": false,
+            "freeze": false,
+            "gravity_scale": 0.0939999967813492,
+            "linear_damp": 0.150000005960464,
+            "linear_damp_mode": 0,
+            "omit_force_integration": false,
+            "physics_ticks_per_second": 60,
+            "project_angular_damp": 1.0,
+            "project_gravity": 980.0,
+            "project_gravity_vector": [
+              0.0,
+              1.0
+            ],
+            "project_linear_damp": 0.1,
+            "server_params": {
+              "2": 1.0,
+              "3": 21.6666660308838,
+              "5": 0.0939999967813492,
+              "6": 0,
+              "7": 0,
+              "8": 0.150000005960464,
+              "9": 0.349999994039536
+            }
+          },
+          "provenance_diagnostic": {
+            "project_times_body_nominal_gravity": [
+              0.0,
+              92.11999684572221
+            ],
+            "measured_minus_nominal_gravity": [
+              0.0,
+              -1.7285347126971828e-06
+            ],
+            "nominal_combined_damping": [
+              0.250000005960464,
+              1.349999994039536
+            ],
+            "measured_minus_nominal_damping": [
+              -5.960464011245392e-09,
+              2.980232394200755e-08
+            ],
+            "native_owner_gravity_binding": "UNAVAILABLE: no native World/owner sample in this oracle; values are diagnostics, not a new compatibility tolerance"
+          },
+          "effective_gravity": [
+            0.0,
+            92.1199951171875
+          ],
+          "effective_linear_damp": 0.25,
+          "effective_angular_damp": 1.35000002384186,
+          "reported_step": 0.0166666675359011,
+          "steps": 32,
+          "models": [
+            {
+              "model": "gravity-only",
+              "precision": "float64",
+              "maximum_one_step_error": 0.17668304443359517,
+              "maximum_full_trajectory_error": 2.725547027587915,
+              "final_full_trajectory_error": 2.725547027587915,
+              "one_step_compatible": false
+            },
+            {
+              "model": "gravity-only",
+              "precision": "float32",
+              "maximum_one_step_error": 0.1766815185546875,
+              "maximum_full_trajectory_error": 2.7255401611328125,
+              "final_full_trajectory_error": 2.7255401611328125,
+              "one_step_compatible": false
+            },
+            {
+              "model": "gravity-then-rational-damping",
+              "precision": "float64",
+              "maximum_one_step_error": 4.922700618692488e-06,
+              "maximum_full_trajectory_error": 4.3171075450487706e-05,
+              "final_full_trajectory_error": 9.628314884935207e-06,
+              "one_step_compatible": true
+            },
+            {
+              "model": "gravity-then-rational-damping",
+              "precision": "float32",
+              "maximum_one_step_error": 7.62939453125e-06,
+              "maximum_full_trajectory_error": 3.0517578125e-05,
+              "final_full_trajectory_error": 3.0517578125e-05,
+              "one_step_compatible": true
+            },
+            {
+              "model": "rational-damping-then-gravity",
+              "precision": "float64",
+              "maximum_one_step_error": 0.006374634548837577,
+              "maximum_full_trajectory_error": 0.19128791913064447,
+              "final_full_trajectory_error": 0.19128791913064447,
+              "one_step_compatible": false
+            },
+            {
+              "model": "rational-damping-then-gravity",
+              "precision": "float32",
+              "maximum_one_step_error": 0.006374359130859375,
+              "maximum_full_trajectory_error": 0.19124603271484375,
+              "final_full_trajectory_error": 0.19124603271484375,
+              "one_step_compatible": false
+            },
+            {
+              "model": "gravity-then-linear-damping",
+              "precision": "float64",
+              "maximum_one_step_error": 0.0007411225636744234,
+              "maximum_full_trajectory_error": 0.010911201468971399,
+              "final_full_trajectory_error": 0.010911201468971399,
+              "one_step_compatible": false
+            },
+            {
+              "model": "gravity-then-linear-damping",
+              "precision": "float32",
+              "maximum_one_step_error": 0.000743865966796875,
+              "maximum_full_trajectory_error": 0.01091766357421875,
+              "final_full_trajectory_error": 0.01091766357421875,
+              "one_step_compatible": false
+            }
+          ]
+        },
+        {
+          "model": "kestrel",
+          "initial": "rest",
+          "properties": {
+            "angular_damp": 0.180000007152557,
+            "angular_damp_mode": 1,
+            "can_sleep": true,
+            "collision_layer": 1,
+            "collision_mask": 1,
+            "custom_integrator": false,
+            "freeze": false,
+            "gravity_scale": 0.0387755110859871,
+            "linear_damp": 0.0,
+            "linear_damp_mode": 1,
+            "omit_force_integration": false,
+            "physics_ticks_per_second": 60,
+            "project_angular_damp": 1.0,
+            "project_gravity": 980.0,
+            "project_gravity_vector": [
+              0.0,
+              1.0
+            ],
+            "project_linear_damp": 0.1,
+            "server_params": {
+              "2": 0.100000001490116,
+              "3": 0.975000023841858,
+              "5": 0.0387755110859871,
+              "6": 1,
+              "7": 1,
+              "8": 0.0,
+              "9": 0.180000007152557
+            }
+          },
+          "provenance_diagnostic": {
+            "project_times_body_nominal_gravity": [
+              0.0,
+              38.000000864267356
+            ],
+            "measured_minus_nominal_gravity": [
+              0.0,
+              -8.642673563485914e-07
+            ],
+            "nominal_combined_damping": [
+              0.0,
+              0.180000007152557
+            ],
+            "measured_minus_nominal_damping": [
+              0.0,
+              0.0
+            ],
+            "native_owner_gravity_binding": "UNAVAILABLE: no native World/owner sample in this oracle; values are diagnostics, not a new compatibility tolerance"
+          },
+          "effective_gravity": [
+            0.0,
+            38.0
+          ],
+          "effective_linear_damp": 0.0,
+          "effective_angular_damp": 0.180000007152557,
+          "reported_step": 0.0166666675359011,
+          "steps": 32,
+          "models": [
+            {
+              "model": "gravity-only",
+              "precision": "float64",
+              "maximum_one_step_error": 2.034505207859638e-06,
+              "maximum_full_trajectory_error": 2.0662943530425082e-05,
+              "final_full_trajectory_error": 7.375081391813865e-06,
+              "one_step_compatible": true
+            },
+            {
+              "model": "gravity-only",
+              "precision": "float32",
+              "maximum_one_step_error": 1.9073486328125e-06,
+              "maximum_full_trajectory_error": 2.193450927734375e-05,
+              "final_full_trajectory_error": 9.5367431640625e-06,
+              "one_step_compatible": true
+            },
+            {
+              "model": "gravity-then-rational-damping",
+              "precision": "float64",
+              "maximum_one_step_error": 2.034505207859638e-06,
+              "maximum_full_trajectory_error": 2.0662943530425082e-05,
+              "final_full_trajectory_error": 7.375081391813865e-06,
+              "one_step_compatible": true
+            },
+            {
+              "model": "gravity-then-rational-damping",
+              "precision": "float32",
+              "maximum_one_step_error": 1.9073486328125e-06,
+              "maximum_full_trajectory_error": 2.193450927734375e-05,
+              "final_full_trajectory_error": 9.5367431640625e-06,
+              "one_step_compatible": true
+            },
+            {
+              "model": "rational-damping-then-gravity",
+              "precision": "float64",
+              "maximum_one_step_error": 2.034505207859638e-06,
+              "maximum_full_trajectory_error": 2.0662943530425082e-05,
+              "final_full_trajectory_error": 7.375081391813865e-06,
+              "one_step_compatible": true
+            },
+            {
+              "model": "rational-damping-then-gravity",
+              "precision": "float32",
+              "maximum_one_step_error": 1.9073486328125e-06,
+              "maximum_full_trajectory_error": 2.193450927734375e-05,
+              "final_full_trajectory_error": 9.5367431640625e-06,
+              "one_step_compatible": true
+            },
+            {
+              "model": "gravity-then-linear-damping",
+              "precision": "float64",
+              "maximum_one_step_error": 2.034505207859638e-06,
+              "maximum_full_trajectory_error": 2.0662943530425082e-05,
+              "final_full_trajectory_error": 7.375081391813865e-06,
+              "one_step_compatible": true
+            },
+            {
+              "model": "gravity-then-linear-damping",
+              "precision": "float32",
+              "maximum_one_step_error": 1.9073486328125e-06,
+              "maximum_full_trajectory_error": 2.193450927734375e-05,
+              "final_full_trajectory_error": 9.5367431640625e-06,
+              "one_step_compatible": true
+            }
+          ]
+        },
+        {
+          "model": "kestrel",
+          "initial": "drift",
+          "properties": {
+            "angular_damp": 0.180000007152557,
+            "angular_damp_mode": 1,
+            "can_sleep": true,
+            "collision_layer": 1,
+            "collision_mask": 1,
+            "custom_integrator": false,
+            "freeze": false,
+            "gravity_scale": 0.0387755110859871,
+            "linear_damp": 0.0,
+            "linear_damp_mode": 1,
+            "omit_force_integration": false,
+            "physics_ticks_per_second": 60,
+            "project_angular_damp": 1.0,
+            "project_gravity": 980.0,
+            "project_gravity_vector": [
+              0.0,
+              1.0
+            ],
+            "project_linear_damp": 0.1,
+            "server_params": {
+              "2": 0.100000001490116,
+              "3": 0.975000023841858,
+              "5": 0.0387755110859871,
+              "6": 1,
+              "7": 1,
+              "8": 0.0,
+              "9": 0.180000007152557
+            }
+          },
+          "provenance_diagnostic": {
+            "project_times_body_nominal_gravity": [
+              0.0,
+              38.000000864267356
+            ],
+            "measured_minus_nominal_gravity": [
+              0.0,
+              -8.642673563485914e-07
+            ],
+            "nominal_combined_damping": [
+              0.0,
+              0.180000007152557
+            ],
+            "measured_minus_nominal_damping": [
+              0.0,
+              0.0
+            ],
+            "native_owner_gravity_binding": "UNAVAILABLE: no native World/owner sample in this oracle; values are diagnostics, not a new compatibility tolerance"
+          },
+          "effective_gravity": [
+            0.0,
+            38.0
+          ],
+          "effective_linear_damp": 0.0,
+          "effective_angular_damp": 0.180000007152557,
+          "reported_step": 0.0166666675359011,
+          "steps": 32,
+          "models": [
+            {
+              "model": "gravity-only",
+              "precision": "float64",
+              "maximum_one_step_error": 0.0008973181247711182,
+              "maximum_full_trajectory_error": 0.027421653270721436,
+              "final_full_trajectory_error": 0.027421653270721436,
+              "one_step_compatible": false
+            },
+            {
+              "model": "gravity-only",
+              "precision": "float32",
+              "maximum_one_step_error": 0.0008973181247711182,
+              "maximum_full_trajectory_error": 0.027421653270721436,
+              "final_full_trajectory_error": 0.027421653270721436,
+              "one_step_compatible": false
+            },
+            {
+              "model": "gravity-then-rational-damping",
+              "precision": "float64",
+              "maximum_one_step_error": 2.034505207859638e-06,
+              "maximum_full_trajectory_error": 1.9963582365889465e-05,
+              "final_full_trajectory_error": 3.5603841261888647e-06,
+              "one_step_compatible": true
+            },
+            {
+              "model": "gravity-then-rational-damping",
+              "precision": "float32",
+              "maximum_one_step_error": 1.9073486328125e-06,
+              "maximum_full_trajectory_error": 2.193450927734375e-05,
+              "final_full_trajectory_error": 5.7220458984375e-06,
+              "one_step_compatible": true
+            },
+            {
+              "model": "rational-damping-then-gravity",
+              "precision": "float64",
+              "maximum_one_step_error": 2.034505207859638e-06,
+              "maximum_full_trajectory_error": 1.9963582365889465e-05,
+              "final_full_trajectory_error": 3.5603841261888647e-06,
+              "one_step_compatible": true
+            },
+            {
+              "model": "rational-damping-then-gravity",
+              "precision": "float32",
+              "maximum_one_step_error": 1.9073486328125e-06,
+              "maximum_full_trajectory_error": 2.193450927734375e-05,
+              "final_full_trajectory_error": 5.7220458984375e-06,
+              "one_step_compatible": true
+            },
+            {
+              "model": "gravity-then-linear-damping",
+              "precision": "float64",
+              "maximum_one_step_error": 2.6819467544569875e-06,
+              "maximum_full_trajectory_error": 7.846552098172976e-05,
+              "final_full_trajectory_error": 7.846552098172976e-05,
+              "one_step_compatible": true
+            },
+            {
+              "model": "gravity-then-linear-damping",
+              "precision": "float32",
+              "maximum_one_step_error": 2.682209014892578e-06,
+              "maximum_full_trajectory_error": 7.861852645874023e-05,
+              "final_full_trajectory_error": 7.861852645874023e-05,
+              "one_step_compatible": true
+            }
+          ]
+        },
+        {
+          "model": "kestrel",
+          "initial": "separating",
+          "properties": {
+            "angular_damp": 0.180000007152557,
+            "angular_damp_mode": 1,
+            "can_sleep": true,
+            "collision_layer": 1,
+            "collision_mask": 1,
+            "custom_integrator": false,
+            "freeze": false,
+            "gravity_scale": 0.0387755110859871,
+            "linear_damp": 0.0,
+            "linear_damp_mode": 1,
+            "omit_force_integration": false,
+            "physics_ticks_per_second": 60,
+            "project_angular_damp": 1.0,
+            "project_gravity": 980.0,
+            "project_gravity_vector": [
+              0.0,
+              1.0
+            ],
+            "project_linear_damp": 0.1,
+            "server_params": {
+              "2": 0.100000001490116,
+              "3": 0.975000023841858,
+              "5": 0.0387755110859871,
+              "6": 1,
+              "7": 1,
+              "8": 0.0,
+              "9": 0.180000007152557
+            }
+          },
+          "provenance_diagnostic": {
+            "project_times_body_nominal_gravity": [
+              0.0,
+              38.000000864267356
+            ],
+            "measured_minus_nominal_gravity": [
+              0.0,
+              -8.642673563485914e-07
+            ],
+            "nominal_combined_damping": [
+              0.0,
+              0.180000007152557
+            ],
+            "measured_minus_nominal_damping": [
+              0.0,
+              0.0
+            ],
+            "native_owner_gravity_binding": "UNAVAILABLE: no native World/owner sample in this oracle; values are diagnostics, not a new compatibility tolerance"
+          },
+          "effective_gravity": [
+            0.0,
+            38.0
+          ],
+          "effective_linear_damp": 0.0,
+          "effective_angular_damp": 0.180000007152557,
+          "reported_step": 0.0166666675359011,
+          "steps": 32,
+          "models": [
+            {
+              "model": "gravity-only",
+              "precision": "float64",
+              "maximum_one_step_error": 0.0008973181247711182,
+              "maximum_full_trajectory_error": 0.027421653270721436,
+              "final_full_trajectory_error": 0.027421653270721436,
+              "one_step_compatible": false
+            },
+            {
+              "model": "gravity-only",
+              "precision": "float32",
+              "maximum_one_step_error": 0.0008973181247711182,
+              "maximum_full_trajectory_error": 0.027421653270721436,
+              "final_full_trajectory_error": 0.027421653270721436,
+              "one_step_compatible": false
+            },
+            {
+              "model": "gravity-then-rational-damping",
+              "precision": "float64",
+              "maximum_one_step_error": 1.7801920577653618e-06,
+              "maximum_full_trajectory_error": 2.072652181794865e-05,
+              "final_full_trajectory_error": 2.072652181794865e-05,
+              "one_step_compatible": true
+            },
+            {
+              "model": "gravity-then-rational-damping",
+              "precision": "float32",
+              "maximum_one_step_error": 1.9073486328125e-06,
+              "maximum_full_trajectory_error": 2.09808349609375e-05,
+              "final_full_trajectory_error": 2.09808349609375e-05,
+              "one_step_compatible": true
+            },
+            {
+              "model": "rational-damping-then-gravity",
+              "precision": "float64",
+              "maximum_one_step_error": 1.7801920577653618e-06,
+              "maximum_full_trajectory_error": 2.072652181794865e-05,
+              "final_full_trajectory_error": 2.072652181794865e-05,
+              "one_step_compatible": true
+            },
+            {
+              "model": "rational-damping-then-gravity",
+              "precision": "float32",
+              "maximum_one_step_error": 1.9073486328125e-06,
+              "maximum_full_trajectory_error": 2.09808349609375e-05,
+              "final_full_trajectory_error": 2.09808349609375e-05,
+              "one_step_compatible": true
+            },
+            {
+              "model": "gravity-then-linear-damping",
+              "precision": "float64",
+              "maximum_one_step_error": 2.6819467544569875e-06,
+              "maximum_full_trajectory_error": 7.846552098172976e-05,
+              "final_full_trajectory_error": 7.846552098172976e-05,
+              "one_step_compatible": true
+            },
+            {
+              "model": "gravity-then-linear-damping",
+              "precision": "float32",
+              "maximum_one_step_error": 2.682209014892578e-06,
+              "maximum_full_trajectory_error": 7.861852645874023e-05,
+              "final_full_trajectory_error": 7.861852645874023e-05,
+              "one_step_compatible": true
+            }
+          ]
+        },
+        {
+          "model": "scooper",
+          "initial": "rest",
+          "properties": {
+            "angular_damp": 0.180000007152557,
+            "angular_damp_mode": 1,
+            "can_sleep": true,
+            "collision_layer": 1,
+            "collision_mask": 1,
+            "custom_integrator": false,
+            "freeze": false,
+            "gravity_scale": 0.0387755110859871,
+            "linear_damp": 0.0,
+            "linear_damp_mode": 1,
+            "omit_force_integration": false,
+            "physics_ticks_per_second": 60,
+            "project_angular_damp": 1.0,
+            "project_gravity": 980.0,
+            "project_gravity_vector": [
+              0.0,
+              1.0
+            ],
+            "project_linear_damp": 0.1,
+            "server_params": {
+              "2": 0.180000007152557,
+              "3": 24.7901363372803,
+              "5": 0.0387755110859871,
+              "6": 1,
+              "7": 1,
+              "8": 0.0,
+              "9": 0.180000007152557
+            }
+          },
+          "provenance_diagnostic": {
+            "project_times_body_nominal_gravity": [
+              0.0,
+              38.000000864267356
+            ],
+            "measured_minus_nominal_gravity": [
+              0.0,
+              -8.642673563485914e-07
+            ],
+            "nominal_combined_damping": [
+              0.0,
+              0.180000007152557
+            ],
+            "measured_minus_nominal_damping": [
+              0.0,
+              0.0
+            ],
+            "native_owner_gravity_binding": "UNAVAILABLE: no native World/owner sample in this oracle; values are diagnostics, not a new compatibility tolerance"
+          },
+          "effective_gravity": [
+            0.0,
+            38.0
+          ],
+          "effective_linear_damp": 0.0,
+          "effective_angular_damp": 0.180000007152557,
+          "reported_step": 0.0166666675359011,
+          "steps": 32,
+          "models": [
+            {
+              "model": "gravity-only",
+              "precision": "float64",
+              "maximum_one_step_error": 2.034505207859638e-06,
+              "maximum_full_trajectory_error": 2.0662943530425082e-05,
+              "final_full_trajectory_error": 7.375081391813865e-06,
+              "one_step_compatible": true
+            },
+            {
+              "model": "gravity-only",
+              "precision": "float32",
+              "maximum_one_step_error": 1.9073486328125e-06,
+              "maximum_full_trajectory_error": 2.193450927734375e-05,
+              "final_full_trajectory_error": 9.5367431640625e-06,
+              "one_step_compatible": true
+            },
+            {
+              "model": "gravity-then-rational-damping",
+              "precision": "float64",
+              "maximum_one_step_error": 2.034505207859638e-06,
+              "maximum_full_trajectory_error": 2.0662943530425082e-05,
+              "final_full_trajectory_error": 7.375081391813865e-06,
+              "one_step_compatible": true
+            },
+            {
+              "model": "gravity-then-rational-damping",
+              "precision": "float32",
+              "maximum_one_step_error": 1.9073486328125e-06,
+              "maximum_full_trajectory_error": 2.193450927734375e-05,
+              "final_full_trajectory_error": 9.5367431640625e-06,
+              "one_step_compatible": true
+            },
+            {
+              "model": "rational-damping-then-gravity",
+              "precision": "float64",
+              "maximum_one_step_error": 2.034505207859638e-06,
+              "maximum_full_trajectory_error": 2.0662943530425082e-05,
+              "final_full_trajectory_error": 7.375081391813865e-06,
+              "one_step_compatible": true
+            },
+            {
+              "model": "rational-damping-then-gravity",
+              "precision": "float32",
+              "maximum_one_step_error": 1.9073486328125e-06,
+              "maximum_full_trajectory_error": 2.193450927734375e-05,
+              "final_full_trajectory_error": 9.5367431640625e-06,
+              "one_step_compatible": true
+            },
+            {
+              "model": "gravity-then-linear-damping",
+              "precision": "float64",
+              "maximum_one_step_error": 2.034505207859638e-06,
+              "maximum_full_trajectory_error": 2.0662943530425082e-05,
+              "final_full_trajectory_error": 7.375081391813865e-06,
+              "one_step_compatible": true
+            },
+            {
+              "model": "gravity-then-linear-damping",
+              "precision": "float32",
+              "maximum_one_step_error": 1.9073486328125e-06,
+              "maximum_full_trajectory_error": 2.193450927734375e-05,
+              "final_full_trajectory_error": 9.5367431640625e-06,
+              "one_step_compatible": true
+            }
+          ]
+        },
+        {
+          "model": "scooper",
+          "initial": "drift",
+          "properties": {
+            "angular_damp": 0.180000007152557,
+            "angular_damp_mode": 1,
+            "can_sleep": true,
+            "collision_layer": 1,
+            "collision_mask": 1,
+            "custom_integrator": false,
+            "freeze": false,
+            "gravity_scale": 0.0387755110859871,
+            "linear_damp": 0.0,
+            "linear_damp_mode": 1,
+            "omit_force_integration": false,
+            "physics_ticks_per_second": 60,
+            "project_angular_damp": 1.0,
+            "project_gravity": 980.0,
+            "project_gravity_vector": [
+              0.0,
+              1.0
+            ],
+            "project_linear_damp": 0.1,
+            "server_params": {
+              "2": 0.180000007152557,
+              "3": 24.7901363372803,
+              "5": 0.0387755110859871,
+              "6": 1,
+              "7": 1,
+              "8": 0.0,
+              "9": 0.180000007152557
+            }
+          },
+          "provenance_diagnostic": {
+            "project_times_body_nominal_gravity": [
+              0.0,
+              38.000000864267356
+            ],
+            "measured_minus_nominal_gravity": [
+              0.0,
+              -8.642673563485914e-07
+            ],
+            "nominal_combined_damping": [
+              0.0,
+              0.180000007152557
+            ],
+            "measured_minus_nominal_damping": [
+              0.0,
+              0.0
+            ],
+            "native_owner_gravity_binding": "UNAVAILABLE: no native World/owner sample in this oracle; values are diagnostics, not a new compatibility tolerance"
+          },
+          "effective_gravity": [
+            0.0,
+            38.0
+          ],
+          "effective_linear_damp": 0.0,
+          "effective_angular_damp": 0.180000007152557,
+          "reported_step": 0.0166666675359011,
+          "steps": 32,
+          "models": [
+            {
+              "model": "gravity-only",
+              "precision": "float64",
+              "maximum_one_step_error": 0.0008973181247711182,
+              "maximum_full_trajectory_error": 0.027421653270721436,
+              "final_full_trajectory_error": 0.027421653270721436,
+              "one_step_compatible": false
+            },
+            {
+              "model": "gravity-only",
+              "precision": "float32",
+              "maximum_one_step_error": 0.0008973181247711182,
+              "maximum_full_trajectory_error": 0.027421653270721436,
+              "final_full_trajectory_error": 0.027421653270721436,
+              "one_step_compatible": false
+            },
+            {
+              "model": "gravity-then-rational-damping",
+              "precision": "float64",
+              "maximum_one_step_error": 2.034505207859638e-06,
+              "maximum_full_trajectory_error": 1.9963582365889465e-05,
+              "final_full_trajectory_error": 3.5603841261888647e-06,
+              "one_step_compatible": true
+            },
+            {
+              "model": "gravity-then-rational-damping",
+              "precision": "float32",
+              "maximum_one_step_error": 1.9073486328125e-06,
+              "maximum_full_trajectory_error": 2.193450927734375e-05,
+              "final_full_trajectory_error": 5.7220458984375e-06,
+              "one_step_compatible": true
+            },
+            {
+              "model": "rational-damping-then-gravity",
+              "precision": "float64",
+              "maximum_one_step_error": 2.034505207859638e-06,
+              "maximum_full_trajectory_error": 1.9963582365889465e-05,
+              "final_full_trajectory_error": 3.5603841261888647e-06,
+              "one_step_compatible": true
+            },
+            {
+              "model": "rational-damping-then-gravity",
+              "precision": "float32",
+              "maximum_one_step_error": 1.9073486328125e-06,
+              "maximum_full_trajectory_error": 2.193450927734375e-05,
+              "final_full_trajectory_error": 5.7220458984375e-06,
+              "one_step_compatible": true
+            },
+            {
+              "model": "gravity-then-linear-damping",
+              "precision": "float64",
+              "maximum_one_step_error": 2.6819467544569875e-06,
+              "maximum_full_trajectory_error": 7.846552098172976e-05,
+              "final_full_trajectory_error": 7.846552098172976e-05,
+              "one_step_compatible": true
+            },
+            {
+              "model": "gravity-then-linear-damping",
+              "precision": "float32",
+              "maximum_one_step_error": 2.682209014892578e-06,
+              "maximum_full_trajectory_error": 7.861852645874023e-05,
+              "final_full_trajectory_error": 7.861852645874023e-05,
+              "one_step_compatible": true
+            }
+          ]
+        },
+        {
+          "model": "scooper",
+          "initial": "separating",
+          "properties": {
+            "angular_damp": 0.180000007152557,
+            "angular_damp_mode": 1,
+            "can_sleep": true,
+            "collision_layer": 1,
+            "collision_mask": 1,
+            "custom_integrator": false,
+            "freeze": false,
+            "gravity_scale": 0.0387755110859871,
+            "linear_damp": 0.0,
+            "linear_damp_mode": 1,
+            "omit_force_integration": false,
+            "physics_ticks_per_second": 60,
+            "project_angular_damp": 1.0,
+            "project_gravity": 980.0,
+            "project_gravity_vector": [
+              0.0,
+              1.0
+            ],
+            "project_linear_damp": 0.1,
+            "server_params": {
+              "2": 0.180000007152557,
+              "3": 24.7901363372803,
+              "5": 0.0387755110859871,
+              "6": 1,
+              "7": 1,
+              "8": 0.0,
+              "9": 0.180000007152557
+            }
+          },
+          "provenance_diagnostic": {
+            "project_times_body_nominal_gravity": [
+              0.0,
+              38.000000864267356
+            ],
+            "measured_minus_nominal_gravity": [
+              0.0,
+              -8.642673563485914e-07
+            ],
+            "nominal_combined_damping": [
+              0.0,
+              0.180000007152557
+            ],
+            "measured_minus_nominal_damping": [
+              0.0,
+              0.0
+            ],
+            "native_owner_gravity_binding": "UNAVAILABLE: no native World/owner sample in this oracle; values are diagnostics, not a new compatibility tolerance"
+          },
+          "effective_gravity": [
+            0.0,
+            38.0
+          ],
+          "effective_linear_damp": 0.0,
+          "effective_angular_damp": 0.180000007152557,
+          "reported_step": 0.0166666675359011,
+          "steps": 32,
+          "models": [
+            {
+              "model": "gravity-only",
+              "precision": "float64",
+              "maximum_one_step_error": 0.0008973181247711182,
+              "maximum_full_trajectory_error": 0.027421653270721436,
+              "final_full_trajectory_error": 0.027421653270721436,
+              "one_step_compatible": false
+            },
+            {
+              "model": "gravity-only",
+              "precision": "float32",
+              "maximum_one_step_error": 0.0008973181247711182,
+              "maximum_full_trajectory_error": 0.027421653270721436,
+              "final_full_trajectory_error": 0.027421653270721436,
+              "one_step_compatible": false
+            },
+            {
+              "model": "gravity-then-rational-damping",
+              "precision": "float64",
+              "maximum_one_step_error": 1.7801920577653618e-06,
+              "maximum_full_trajectory_error": 2.072652181794865e-05,
+              "final_full_trajectory_error": 2.072652181794865e-05,
+              "one_step_compatible": true
+            },
+            {
+              "model": "gravity-then-rational-damping",
+              "precision": "float32",
+              "maximum_one_step_error": 1.9073486328125e-06,
+              "maximum_full_trajectory_error": 2.09808349609375e-05,
+              "final_full_trajectory_error": 2.09808349609375e-05,
+              "one_step_compatible": true
+            },
+            {
+              "model": "rational-damping-then-gravity",
+              "precision": "float64",
+              "maximum_one_step_error": 1.7801920577653618e-06,
+              "maximum_full_trajectory_error": 2.072652181794865e-05,
+              "final_full_trajectory_error": 2.072652181794865e-05,
+              "one_step_compatible": true
+            },
+            {
+              "model": "rational-damping-then-gravity",
+              "precision": "float32",
+              "maximum_one_step_error": 1.9073486328125e-06,
+              "maximum_full_trajectory_error": 2.09808349609375e-05,
+              "final_full_trajectory_error": 2.09808349609375e-05,
+              "one_step_compatible": true
+            },
+            {
+              "model": "gravity-then-linear-damping",
+              "precision": "float64",
+              "maximum_one_step_error": 2.6819467544569875e-06,
+              "maximum_full_trajectory_error": 7.846552098172976e-05,
+              "final_full_trajectory_error": 7.846552098172976e-05,
+              "one_step_compatible": true
+            },
+            {
+              "model": "gravity-then-linear-damping",
+              "precision": "float32",
+              "maximum_one_step_error": 2.682209014892578e-06,
+              "maximum_full_trajectory_error": 7.861852645874023e-05,
+              "final_full_trajectory_error": 7.861852645874023e-05,
+              "one_step_compatible": true
+            }
+          ]
+        }
+      ],
+      "aggregate": [
+        {
+          "model": "gravity-only",
+          "precision": "float64",
+          "maximum_one_step_error": 0.1949211120605483,
+          "maximum_full_trajectory_error": 3.348460388183625,
+          "compatible": false
+        },
+        {
+          "model": "gravity-only",
+          "precision": "float32",
+          "maximum_one_step_error": 0.19491958618164062,
+          "maximum_full_trajectory_error": 3.34844970703125,
+          "compatible": false
+        },
+        {
+          "model": "gravity-then-rational-damping",
+          "precision": "float64",
+          "maximum_one_step_error": 5.191787145975013e-06,
+          "maximum_full_trajectory_error": 4.3171075450487706e-05,
+          "compatible": true
+        },
+        {
+          "model": "gravity-then-rational-damping",
+          "precision": "float32",
+          "maximum_one_step_error": 7.62939453125e-06,
+          "maximum_full_trajectory_error": 5.340576171875e-05,
+          "compatible": true
+        },
+        {
+          "model": "rational-damping-then-gravity",
+          "precision": "float64",
+          "maximum_one_step_error": 0.006374674120387169,
+          "maximum_full_trajectory_error": 0.19128791913064447,
+          "compatible": false
+        },
+        {
+          "model": "rational-damping-then-gravity",
+          "precision": "float32",
+          "maximum_one_step_error": 0.006374359130859375,
+          "maximum_full_trajectory_error": 0.19124603271484375,
+          "compatible": false
+        },
+        {
+          "model": "gravity-then-linear-damping",
+          "precision": "float64",
+          "maximum_one_step_error": 0.0008169078826867349,
+          "maximum_full_trajectory_error": 0.013349981435737845,
+          "compatible": false
+        },
+        {
+          "model": "gravity-then-linear-damping",
+          "precision": "float32",
+          "maximum_one_step_error": 0.00081634521484375,
+          "maximum_full_trajectory_error": 0.01335906982421875,
+          "compatible": false
+        }
+      ],
+      "raw": {
+        "path": "build\\sol-gravity-operator\\operator-003\\windows\\observations.json",
+        "sha256": "6abf4f6f59c2a70d3dc8ceb2bc4fc3c7e361e50c11b58d7fdcdc8b28a524c468",
+        "bytes": 491130
+      },
+      "checks": 1182
+    },
+    "linux": {
+      "status": "COMPLETE",
+      "episodes": 9,
+      "body_steps": 288,
+      "results": [
+        {
+          "model": "reference_barrel",
+          "initial": "rest",
+          "properties": {
+            "angular_damp": 0.349999994039536,
+            "angular_damp_mode": 0,
+            "can_sleep": true,
+            "collision_layer": 1,
+            "collision_mask": 1,
+            "custom_integrator": false,
+            "freeze": false,
+            "gravity_scale": 0.0939999967813492,
+            "linear_damp": 0.150000005960464,
+            "linear_damp_mode": 0,
+            "omit_force_integration": false,
+            "physics_ticks_per_second": 60,
+            "project_angular_damp": 1.0,
+            "project_gravity": 980.0,
+            "project_gravity_vector": [
+              0.0,
+              1.0
+            ],
+            "project_linear_damp": 0.1,
+            "server_params": {
+              "2": 1.0,
+              "3": 21.6666660308838,
+              "5": 0.0939999967813492,
+              "6": 0,
+              "7": 0,
+              "8": 0.150000005960464,
+              "9": 0.349999994039536
+            }
+          },
+          "provenance_diagnostic": {
+            "project_times_body_nominal_gravity": [
+              0.0,
+              92.11999684572221
+            ],
+            "measured_minus_nominal_gravity": [
+              0.0,
+              -1.7285347126971828e-06
+            ],
+            "nominal_combined_damping": [
+              0.250000005960464,
+              1.349999994039536
+            ],
+            "measured_minus_nominal_damping": [
+              -5.960464011245392e-09,
+              2.980232394200755e-08
+            ],
+            "native_owner_gravity_binding": "UNAVAILABLE: no native World/owner sample in this oracle; values are diagnostics, not a new compatibility tolerance"
+          },
+          "effective_gravity": [
+            0.0,
+            92.1199951171875
+          ],
+          "effective_linear_damp": 0.25,
+          "effective_angular_damp": 1.35000002384186,
+          "reported_step": 0.0166666675359011,
+          "steps": 32,
+          "models": [
+            {
+              "model": "gravity-only",
+              "precision": "float64",
+              "maximum_one_step_error": 0.1912742614746108,
+              "maximum_full_trajectory_error": 3.223876190185571,
+              "final_full_trajectory_error": 3.223876190185571,
+              "one_step_compatible": false
+            },
+            {
+              "model": "gravity-only",
+              "precision": "float32",
+              "maximum_one_step_error": 0.19127273559570312,
+              "maximum_full_trajectory_error": 3.223865509033203,
+              "final_full_trajectory_error": 3.223865509033203,
+              "one_step_compatible": false
+            },
+            {
+              "model": "gravity-then-rational-damping",
+              "precision": "float64",
+              "maximum_one_step_error": 5.191787145975013e-06,
+              "maximum_full_trajectory_error": 4.068395688960891e-05,
+              "final_full_trajectory_error": 1.92346718108638e-06,
+              "one_step_compatible": true
+            },
+            {
+              "model": "gravity-then-rational-damping",
+              "precision": "float32",
+              "maximum_one_step_error": 7.62939453125e-06,
+              "maximum_full_trajectory_error": 4.9591064453125e-05,
+              "final_full_trajectory_error": 4.9591064453125e-05,
+              "one_step_compatible": true
+            },
+            {
+              "model": "rational-damping-then-gravity",
+              "precision": "float64",
+              "maximum_one_step_error": 0.006374444605405927,
+              "maximum_full_trajectory_error": 0.19128021428294062,
+              "final_full_trajectory_error": 0.19128021428294062,
+              "one_step_compatible": false
+            },
+            {
+              "model": "rational-damping-then-gravity",
+              "precision": "float32",
+              "maximum_one_step_error": 0.006374359130859375,
+              "maximum_full_trajectory_error": 0.19123077392578125,
+              "final_full_trajectory_error": 0.19123077392578125,
+              "one_step_compatible": false
+            },
+            {
+              "model": "gravity-then-linear-damping",
+              "precision": "float64",
+              "maximum_one_step_error": 0.0008009974161780065,
+              "maximum_full_trajectory_error": 0.012863751321290806,
+              "final_full_trajectory_error": 0.012863751321290806,
+              "one_step_compatible": false
+            },
+            {
+              "model": "gravity-then-linear-damping",
+              "precision": "float32",
+              "maximum_one_step_error": 0.00080108642578125,
+              "maximum_full_trajectory_error": 0.012866973876953125,
+              "final_full_trajectory_error": 0.012866973876953125,
+              "one_step_compatible": false
+            }
+          ]
+        },
+        {
+          "model": "reference_barrel",
+          "initial": "drift",
+          "properties": {
+            "angular_damp": 0.349999994039536,
+            "angular_damp_mode": 0,
+            "can_sleep": true,
+            "collision_layer": 1,
+            "collision_mask": 1,
+            "custom_integrator": false,
+            "freeze": false,
+            "gravity_scale": 0.0939999967813492,
+            "linear_damp": 0.150000005960464,
+            "linear_damp_mode": 0,
+            "omit_force_integration": false,
+            "physics_ticks_per_second": 60,
+            "project_angular_damp": 1.0,
+            "project_gravity": 980.0,
+            "project_gravity_vector": [
+              0.0,
+              1.0
+            ],
+            "project_linear_damp": 0.1,
+            "server_params": {
+              "2": 1.0,
+              "3": 21.6666660308838,
+              "5": 0.0939999967813492,
+              "6": 0,
+              "7": 0,
+              "8": 0.150000005960464,
+              "9": 0.349999994039536
+            }
+          },
+          "provenance_diagnostic": {
+            "project_times_body_nominal_gravity": [
+              0.0,
+              92.11999684572221
+            ],
+            "measured_minus_nominal_gravity": [
+              0.0,
+              -1.7285347126971828e-06
+            ],
+            "nominal_combined_damping": [
+              0.250000005960464,
+              1.349999994039536
+            ],
+            "measured_minus_nominal_damping": [
+              -5.960464011245392e-09,
+              2.980232394200755e-08
+            ],
+            "native_owner_gravity_binding": "UNAVAILABLE: no native World/owner sample in this oracle; values are diagnostics, not a new compatibility tolerance"
+          },
+          "effective_gravity": [
+            0.0,
+            92.1199951171875
+          ],
+          "effective_linear_damp": 0.25,
+          "effective_angular_damp": 1.35000002384186,
+          "reported_step": 0.0166666675359011,
+          "steps": 32,
+          "models": [
+            {
+              "model": "gravity-only",
+              "precision": "float64",
+              "maximum_one_step_error": 0.1949211120605483,
+              "maximum_full_trajectory_error": 3.348460388183625,
+              "final_full_trajectory_error": 3.348460388183625,
+              "one_step_compatible": false
+            },
+            {
+              "model": "gravity-only",
+              "precision": "float32",
+              "maximum_one_step_error": 0.19491958618164062,
+              "maximum_full_trajectory_error": 3.34844970703125,
+              "final_full_trajectory_error": 3.34844970703125,
+              "one_step_compatible": false
+            },
+            {
+              "model": "gravity-then-rational-damping",
+              "precision": "float64",
+              "maximum_one_step_error": 4.986015099461838e-06,
+              "maximum_full_trajectory_error": 4.066209218578365e-05,
+              "final_full_trajectory_error": 3.657761387554359e-06,
+              "one_step_compatible": true
+            },
+            {
+              "model": "gravity-then-rational-damping",
+              "precision": "float32",
+              "maximum_one_step_error": 7.62939453125e-06,
+              "maximum_full_trajectory_error": 5.340576171875e-05,
+              "final_full_trajectory_error": 5.340576171875e-05,
+              "one_step_compatible": true
+            },
+            {
+              "model": "rational-damping-then-gravity",
+              "precision": "float64",
+              "maximum_one_step_error": 0.006374674120387169,
+              "maximum_full_trajectory_error": 0.19128019541965813,
+              "final_full_trajectory_error": 0.19128019541965813,
+              "one_step_compatible": false
+            },
+            {
+              "model": "rational-damping-then-gravity",
+              "precision": "float32",
+              "maximum_one_step_error": 0.0063724517822265625,
+              "maximum_full_trajectory_error": 0.19121932983398438,
+              "final_full_trajectory_error": 0.19121932983398438,
+              "one_step_compatible": false
+            },
+            {
+              "model": "gravity-then-linear-damping",
+              "precision": "float64",
+              "maximum_one_step_error": 0.0008169078826867349,
+              "maximum_full_trajectory_error": 0.013349981435737845,
+              "final_full_trajectory_error": 0.013349981435737845,
+              "one_step_compatible": false
+            },
+            {
+              "model": "gravity-then-linear-damping",
+              "precision": "float32",
+              "maximum_one_step_error": 0.00081634521484375,
+              "maximum_full_trajectory_error": 0.01335906982421875,
+              "final_full_trajectory_error": 0.01335906982421875,
+              "one_step_compatible": false
+            }
+          ]
+        },
+        {
+          "model": "reference_barrel",
+          "initial": "separating",
+          "properties": {
+            "angular_damp": 0.349999994039536,
+            "angular_damp_mode": 0,
+            "can_sleep": true,
+            "collision_layer": 1,
+            "collision_mask": 1,
+            "custom_integrator": false,
+            "freeze": false,
+            "gravity_scale": 0.0939999967813492,
+            "linear_damp": 0.150000005960464,
+            "linear_damp_mode": 0,
+            "omit_force_integration": false,
+            "physics_ticks_per_second": 60,
+            "project_angular_damp": 1.0,
+            "project_gravity": 980.0,
+            "project_gravity_vector": [
+              0.0,
+              1.0
+            ],
+            "project_linear_damp": 0.1,
+            "server_params": {
+              "2": 1.0,
+              "3": 21.6666660308838,
+              "5": 0.0939999967813492,
+              "6": 0,
+              "7": 0,
+              "8": 0.150000005960464,
+              "9": 0.349999994039536
+            }
+          },
+          "provenance_diagnostic": {
+            "project_times_body_nominal_gravity": [
+              0.0,
+              92.11999684572221
+            ],
+            "measured_minus_nominal_gravity": [
+              0.0,
+              -1.7285347126971828e-06
+            ],
+            "nominal_combined_damping": [
+              0.250000005960464,
+              1.349999994039536
+            ],
+            "measured_minus_nominal_damping": [
+              -5.960464011245392e-09,
+              2.980232394200755e-08
+            ],
+            "native_owner_gravity_binding": "UNAVAILABLE: no native World/owner sample in this oracle; values are diagnostics, not a new compatibility tolerance"
+          },
+          "effective_gravity": [
+            0.0,
+            92.1199951171875
+          ],
+          "effective_linear_damp": 0.25,
+          "effective_angular_damp": 1.35000002384186,
+          "reported_step": 0.0166666675359011,
+          "steps": 32,
+          "models": [
+            {
+              "model": "gravity-only",
+              "precision": "float64",
+              "maximum_one_step_error": 0.17668304443359517,
+              "maximum_full_trajectory_error": 2.725547027587915,
+              "final_full_trajectory_error": 2.725547027587915,
+              "one_step_compatible": false
+            },
+            {
+              "model": "gravity-only",
+              "precision": "float32",
+              "maximum_one_step_error": 0.1766815185546875,
+              "maximum_full_trajectory_error": 2.7255401611328125,
+              "final_full_trajectory_error": 2.7255401611328125,
+              "one_step_compatible": false
+            },
+            {
+              "model": "gravity-then-rational-damping",
+              "precision": "float64",
+              "maximum_one_step_error": 4.922700618692488e-06,
+              "maximum_full_trajectory_error": 4.3171075450487706e-05,
+              "final_full_trajectory_error": 9.628314884935207e-06,
+              "one_step_compatible": true
+            },
+            {
+              "model": "gravity-then-rational-damping",
+              "precision": "float32",
+              "maximum_one_step_error": 7.62939453125e-06,
+              "maximum_full_trajectory_error": 3.0517578125e-05,
+              "final_full_trajectory_error": 3.0517578125e-05,
+              "one_step_compatible": true
+            },
+            {
+              "model": "rational-damping-then-gravity",
+              "precision": "float64",
+              "maximum_one_step_error": 0.006374634548837577,
+              "maximum_full_trajectory_error": 0.19128791913064447,
+              "final_full_trajectory_error": 0.19128791913064447,
+              "one_step_compatible": false
+            },
+            {
+              "model": "rational-damping-then-gravity",
+              "precision": "float32",
+              "maximum_one_step_error": 0.006374359130859375,
+              "maximum_full_trajectory_error": 0.19124603271484375,
+              "final_full_trajectory_error": 0.19124603271484375,
+              "one_step_compatible": false
+            },
+            {
+              "model": "gravity-then-linear-damping",
+              "precision": "float64",
+              "maximum_one_step_error": 0.0007411225636744234,
+              "maximum_full_trajectory_error": 0.010911201468971399,
+              "final_full_trajectory_error": 0.010911201468971399,
+              "one_step_compatible": false
+            },
+            {
+              "model": "gravity-then-linear-damping",
+              "precision": "float32",
+              "maximum_one_step_error": 0.000743865966796875,
+              "maximum_full_trajectory_error": 0.01091766357421875,
+              "final_full_trajectory_error": 0.01091766357421875,
+              "one_step_compatible": false
+            }
+          ]
+        },
+        {
+          "model": "kestrel",
+          "initial": "rest",
+          "properties": {
+            "angular_damp": 0.180000007152557,
+            "angular_damp_mode": 1,
+            "can_sleep": true,
+            "collision_layer": 1,
+            "collision_mask": 1,
+            "custom_integrator": false,
+            "freeze": false,
+            "gravity_scale": 0.0387755110859871,
+            "linear_damp": 0.0,
+            "linear_damp_mode": 1,
+            "omit_force_integration": false,
+            "physics_ticks_per_second": 60,
+            "project_angular_damp": 1.0,
+            "project_gravity": 980.0,
+            "project_gravity_vector": [
+              0.0,
+              1.0
+            ],
+            "project_linear_damp": 0.1,
+            "server_params": {
+              "2": 0.100000001490116,
+              "3": 0.975000023841858,
+              "5": 0.0387755110859871,
+              "6": 1,
+              "7": 1,
+              "8": 0.0,
+              "9": 0.180000007152557
+            }
+          },
+          "provenance_diagnostic": {
+            "project_times_body_nominal_gravity": [
+              0.0,
+              38.000000864267356
+            ],
+            "measured_minus_nominal_gravity": [
+              0.0,
+              -8.642673563485914e-07
+            ],
+            "nominal_combined_damping": [
+              0.0,
+              0.180000007152557
+            ],
+            "measured_minus_nominal_damping": [
+              0.0,
+              0.0
+            ],
+            "native_owner_gravity_binding": "UNAVAILABLE: no native World/owner sample in this oracle; values are diagnostics, not a new compatibility tolerance"
+          },
+          "effective_gravity": [
+            0.0,
+            38.0
+          ],
+          "effective_linear_damp": 0.0,
+          "effective_angular_damp": 0.180000007152557,
+          "reported_step": 0.0166666675359011,
+          "steps": 32,
+          "models": [
+            {
+              "model": "gravity-only",
+              "precision": "float64",
+              "maximum_one_step_error": 2.034505207859638e-06,
+              "maximum_full_trajectory_error": 2.0662943530425082e-05,
+              "final_full_trajectory_error": 7.375081391813865e-06,
+              "one_step_compatible": true
+            },
+            {
+              "model": "gravity-only",
+              "precision": "float32",
+              "maximum_one_step_error": 1.9073486328125e-06,
+              "maximum_full_trajectory_error": 2.193450927734375e-05,
+              "final_full_trajectory_error": 9.5367431640625e-06,
+              "one_step_compatible": true
+            },
+            {
+              "model": "gravity-then-rational-damping",
+              "precision": "float64",
+              "maximum_one_step_error": 2.034505207859638e-06,
+              "maximum_full_trajectory_error": 2.0662943530425082e-05,
+              "final_full_trajectory_error": 7.375081391813865e-06,
+              "one_step_compatible": true
+            },
+            {
+              "model": "gravity-then-rational-damping",
+              "precision": "float32",
+              "maximum_one_step_error": 1.9073486328125e-06,
+              "maximum_full_trajectory_error": 2.193450927734375e-05,
+              "final_full_trajectory_error": 9.5367431640625e-06,
+              "one_step_compatible": true
+            },
+            {
+              "model": "rational-damping-then-gravity",
+              "precision": "float64",
+              "maximum_one_step_error": 2.034505207859638e-06,
+              "maximum_full_trajectory_error": 2.0662943530425082e-05,
+              "final_full_trajectory_error": 7.375081391813865e-06,
+              "one_step_compatible": true
+            },
+            {
+              "model": "rational-damping-then-gravity",
+              "precision": "float32",
+              "maximum_one_step_error": 1.9073486328125e-06,
+              "maximum_full_trajectory_error": 2.193450927734375e-05,
+              "final_full_trajectory_error": 9.5367431640625e-06,
+              "one_step_compatible": true
+            },
+            {
+              "model": "gravity-then-linear-damping",
+              "precision": "float64",
+              "maximum_one_step_error": 2.034505207859638e-06,
+              "maximum_full_trajectory_error": 2.0662943530425082e-05,
+              "final_full_trajectory_error": 7.375081391813865e-06,
+              "one_step_compatible": true
+            },
+            {
+              "model": "gravity-then-linear-damping",
+              "precision": "float32",
+              "maximum_one_step_error": 1.9073486328125e-06,
+              "maximum_full_trajectory_error": 2.193450927734375e-05,
+              "final_full_trajectory_error": 9.5367431640625e-06,
+              "one_step_compatible": true
+            }
+          ]
+        },
+        {
+          "model": "kestrel",
+          "initial": "drift",
+          "properties": {
+            "angular_damp": 0.180000007152557,
+            "angular_damp_mode": 1,
+            "can_sleep": true,
+            "collision_layer": 1,
+            "collision_mask": 1,
+            "custom_integrator": false,
+            "freeze": false,
+            "gravity_scale": 0.0387755110859871,
+            "linear_damp": 0.0,
+            "linear_damp_mode": 1,
+            "omit_force_integration": false,
+            "physics_ticks_per_second": 60,
+            "project_angular_damp": 1.0,
+            "project_gravity": 980.0,
+            "project_gravity_vector": [
+              0.0,
+              1.0
+            ],
+            "project_linear_damp": 0.1,
+            "server_params": {
+              "2": 0.100000001490116,
+              "3": 0.975000023841858,
+              "5": 0.0387755110859871,
+              "6": 1,
+              "7": 1,
+              "8": 0.0,
+              "9": 0.180000007152557
+            }
+          },
+          "provenance_diagnostic": {
+            "project_times_body_nominal_gravity": [
+              0.0,
+              38.000000864267356
+            ],
+            "measured_minus_nominal_gravity": [
+              0.0,
+              -8.642673563485914e-07
+            ],
+            "nominal_combined_damping": [
+              0.0,
+              0.180000007152557
+            ],
+            "measured_minus_nominal_damping": [
+              0.0,
+              0.0
+            ],
+            "native_owner_gravity_binding": "UNAVAILABLE: no native World/owner sample in this oracle; values are diagnostics, not a new compatibility tolerance"
+          },
+          "effective_gravity": [
+            0.0,
+            38.0
+          ],
+          "effective_linear_damp": 0.0,
+          "effective_angular_damp": 0.180000007152557,
+          "reported_step": 0.0166666675359011,
+          "steps": 32,
+          "models": [
+            {
+              "model": "gravity-only",
+              "precision": "float64",
+              "maximum_one_step_error": 0.0008973181247711182,
+              "maximum_full_trajectory_error": 0.027421653270721436,
+              "final_full_trajectory_error": 0.027421653270721436,
+              "one_step_compatible": false
+            },
+            {
+              "model": "gravity-only",
+              "precision": "float32",
+              "maximum_one_step_error": 0.0008973181247711182,
+              "maximum_full_trajectory_error": 0.027421653270721436,
+              "final_full_trajectory_error": 0.027421653270721436,
+              "one_step_compatible": false
+            },
+            {
+              "model": "gravity-then-rational-damping",
+              "precision": "float64",
+              "maximum_one_step_error": 2.034505207859638e-06,
+              "maximum_full_trajectory_error": 1.9963582365889465e-05,
+              "final_full_trajectory_error": 3.5603841261888647e-06,
+              "one_step_compatible": true
+            },
+            {
+              "model": "gravity-then-rational-damping",
+              "precision": "float32",
+              "maximum_one_step_error": 1.9073486328125e-06,
+              "maximum_full_trajectory_error": 2.193450927734375e-05,
+              "final_full_trajectory_error": 5.7220458984375e-06,
+              "one_step_compatible": true
+            },
+            {
+              "model": "rational-damping-then-gravity",
+              "precision": "float64",
+              "maximum_one_step_error": 2.034505207859638e-06,
+              "maximum_full_trajectory_error": 1.9963582365889465e-05,
+              "final_full_trajectory_error": 3.5603841261888647e-06,
+              "one_step_compatible": true
+            },
+            {
+              "model": "rational-damping-then-gravity",
+              "precision": "float32",
+              "maximum_one_step_error": 1.9073486328125e-06,
+              "maximum_full_trajectory_error": 2.193450927734375e-05,
+              "final_full_trajectory_error": 5.7220458984375e-06,
+              "one_step_compatible": true
+            },
+            {
+              "model": "gravity-then-linear-damping",
+              "precision": "float64",
+              "maximum_one_step_error": 2.6819467544569875e-06,
+              "maximum_full_trajectory_error": 7.846552098172976e-05,
+              "final_full_trajectory_error": 7.846552098172976e-05,
+              "one_step_compatible": true
+            },
+            {
+              "model": "gravity-then-linear-damping",
+              "precision": "float32",
+              "maximum_one_step_error": 2.682209014892578e-06,
+              "maximum_full_trajectory_error": 7.861852645874023e-05,
+              "final_full_trajectory_error": 7.861852645874023e-05,
+              "one_step_compatible": true
+            }
+          ]
+        },
+        {
+          "model": "kestrel",
+          "initial": "separating",
+          "properties": {
+            "angular_damp": 0.180000007152557,
+            "angular_damp_mode": 1,
+            "can_sleep": true,
+            "collision_layer": 1,
+            "collision_mask": 1,
+            "custom_integrator": false,
+            "freeze": false,
+            "gravity_scale": 0.0387755110859871,
+            "linear_damp": 0.0,
+            "linear_damp_mode": 1,
+            "omit_force_integration": false,
+            "physics_ticks_per_second": 60,
+            "project_angular_damp": 1.0,
+            "project_gravity": 980.0,
+            "project_gravity_vector": [
+              0.0,
+              1.0
+            ],
+            "project_linear_damp": 0.1,
+            "server_params": {
+              "2": 0.100000001490116,
+              "3": 0.975000023841858,
+              "5": 0.0387755110859871,
+              "6": 1,
+              "7": 1,
+              "8": 0.0,
+              "9": 0.180000007152557
+            }
+          },
+          "provenance_diagnostic": {
+            "project_times_body_nominal_gravity": [
+              0.0,
+              38.000000864267356
+            ],
+            "measured_minus_nominal_gravity": [
+              0.0,
+              -8.642673563485914e-07
+            ],
+            "nominal_combined_damping": [
+              0.0,
+              0.180000007152557
+            ],
+            "measured_minus_nominal_damping": [
+              0.0,
+              0.0
+            ],
+            "native_owner_gravity_binding": "UNAVAILABLE: no native World/owner sample in this oracle; values are diagnostics, not a new compatibility tolerance"
+          },
+          "effective_gravity": [
+            0.0,
+            38.0
+          ],
+          "effective_linear_damp": 0.0,
+          "effective_angular_damp": 0.180000007152557,
+          "reported_step": 0.0166666675359011,
+          "steps": 32,
+          "models": [
+            {
+              "model": "gravity-only",
+              "precision": "float64",
+              "maximum_one_step_error": 0.0008973181247711182,
+              "maximum_full_trajectory_error": 0.027421653270721436,
+              "final_full_trajectory_error": 0.027421653270721436,
+              "one_step_compatible": false
+            },
+            {
+              "model": "gravity-only",
+              "precision": "float32",
+              "maximum_one_step_error": 0.0008973181247711182,
+              "maximum_full_trajectory_error": 0.027421653270721436,
+              "final_full_trajectory_error": 0.027421653270721436,
+              "one_step_compatible": false
+            },
+            {
+              "model": "gravity-then-rational-damping",
+              "precision": "float64",
+              "maximum_one_step_error": 1.7801920577653618e-06,
+              "maximum_full_trajectory_error": 2.072652181794865e-05,
+              "final_full_trajectory_error": 2.072652181794865e-05,
+              "one_step_compatible": true
+            },
+            {
+              "model": "gravity-then-rational-damping",
+              "precision": "float32",
+              "maximum_one_step_error": 1.9073486328125e-06,
+              "maximum_full_trajectory_error": 2.09808349609375e-05,
+              "final_full_trajectory_error": 2.09808349609375e-05,
+              "one_step_compatible": true
+            },
+            {
+              "model": "rational-damping-then-gravity",
+              "precision": "float64",
+              "maximum_one_step_error": 1.7801920577653618e-06,
+              "maximum_full_trajectory_error": 2.072652181794865e-05,
+              "final_full_trajectory_error": 2.072652181794865e-05,
+              "one_step_compatible": true
+            },
+            {
+              "model": "rational-damping-then-gravity",
+              "precision": "float32",
+              "maximum_one_step_error": 1.9073486328125e-06,
+              "maximum_full_trajectory_error": 2.09808349609375e-05,
+              "final_full_trajectory_error": 2.09808349609375e-05,
+              "one_step_compatible": true
+            },
+            {
+              "model": "gravity-then-linear-damping",
+              "precision": "float64",
+              "maximum_one_step_error": 2.6819467544569875e-06,
+              "maximum_full_trajectory_error": 7.846552098172976e-05,
+              "final_full_trajectory_error": 7.846552098172976e-05,
+              "one_step_compatible": true
+            },
+            {
+              "model": "gravity-then-linear-damping",
+              "precision": "float32",
+              "maximum_one_step_error": 2.682209014892578e-06,
+              "maximum_full_trajectory_error": 7.861852645874023e-05,
+              "final_full_trajectory_error": 7.861852645874023e-05,
+              "one_step_compatible": true
+            }
+          ]
+        },
+        {
+          "model": "scooper",
+          "initial": "rest",
+          "properties": {
+            "angular_damp": 0.180000007152557,
+            "angular_damp_mode": 1,
+            "can_sleep": true,
+            "collision_layer": 1,
+            "collision_mask": 1,
+            "custom_integrator": false,
+            "freeze": false,
+            "gravity_scale": 0.0387755110859871,
+            "linear_damp": 0.0,
+            "linear_damp_mode": 1,
+            "omit_force_integration": false,
+            "physics_ticks_per_second": 60,
+            "project_angular_damp": 1.0,
+            "project_gravity": 980.0,
+            "project_gravity_vector": [
+              0.0,
+              1.0
+            ],
+            "project_linear_damp": 0.1,
+            "server_params": {
+              "2": 0.180000007152557,
+              "3": 24.7901363372803,
+              "5": 0.0387755110859871,
+              "6": 1,
+              "7": 1,
+              "8": 0.0,
+              "9": 0.180000007152557
+            }
+          },
+          "provenance_diagnostic": {
+            "project_times_body_nominal_gravity": [
+              0.0,
+              38.000000864267356
+            ],
+            "measured_minus_nominal_gravity": [
+              0.0,
+              -8.642673563485914e-07
+            ],
+            "nominal_combined_damping": [
+              0.0,
+              0.180000007152557
+            ],
+            "measured_minus_nominal_damping": [
+              0.0,
+              0.0
+            ],
+            "native_owner_gravity_binding": "UNAVAILABLE: no native World/owner sample in this oracle; values are diagnostics, not a new compatibility tolerance"
+          },
+          "effective_gravity": [
+            0.0,
+            38.0
+          ],
+          "effective_linear_damp": 0.0,
+          "effective_angular_damp": 0.180000007152557,
+          "reported_step": 0.0166666675359011,
+          "steps": 32,
+          "models": [
+            {
+              "model": "gravity-only",
+              "precision": "float64",
+              "maximum_one_step_error": 2.034505207859638e-06,
+              "maximum_full_trajectory_error": 2.0662943530425082e-05,
+              "final_full_trajectory_error": 7.375081391813865e-06,
+              "one_step_compatible": true
+            },
+            {
+              "model": "gravity-only",
+              "precision": "float32",
+              "maximum_one_step_error": 1.9073486328125e-06,
+              "maximum_full_trajectory_error": 2.193450927734375e-05,
+              "final_full_trajectory_error": 9.5367431640625e-06,
+              "one_step_compatible": true
+            },
+            {
+              "model": "gravity-then-rational-damping",
+              "precision": "float64",
+              "maximum_one_step_error": 2.034505207859638e-06,
+              "maximum_full_trajectory_error": 2.0662943530425082e-05,
+              "final_full_trajectory_error": 7.375081391813865e-06,
+              "one_step_compatible": true
+            },
+            {
+              "model": "gravity-then-rational-damping",
+              "precision": "float32",
+              "maximum_one_step_error": 1.9073486328125e-06,
+              "maximum_full_trajectory_error": 2.193450927734375e-05,
+              "final_full_trajectory_error": 9.5367431640625e-06,
+              "one_step_compatible": true
+            },
+            {
+              "model": "rational-damping-then-gravity",
+              "precision": "float64",
+              "maximum_one_step_error": 2.034505207859638e-06,
+              "maximum_full_trajectory_error": 2.0662943530425082e-05,
+              "final_full_trajectory_error": 7.375081391813865e-06,
+              "one_step_compatible": true
+            },
+            {
+              "model": "rational-damping-then-gravity",
+              "precision": "float32",
+              "maximum_one_step_error": 1.9073486328125e-06,
+              "maximum_full_trajectory_error": 2.193450927734375e-05,
+              "final_full_trajectory_error": 9.5367431640625e-06,
+              "one_step_compatible": true
+            },
+            {
+              "model": "gravity-then-linear-damping",
+              "precision": "float64",
+              "maximum_one_step_error": 2.034505207859638e-06,
+              "maximum_full_trajectory_error": 2.0662943530425082e-05,
+              "final_full_trajectory_error": 7.375081391813865e-06,
+              "one_step_compatible": true
+            },
+            {
+              "model": "gravity-then-linear-damping",
+              "precision": "float32",
+              "maximum_one_step_error": 1.9073486328125e-06,
+              "maximum_full_trajectory_error": 2.193450927734375e-05,
+              "final_full_trajectory_error": 9.5367431640625e-06,
+              "one_step_compatible": true
+            }
+          ]
+        },
+        {
+          "model": "scooper",
+          "initial": "drift",
+          "properties": {
+            "angular_damp": 0.180000007152557,
+            "angular_damp_mode": 1,
+            "can_sleep": true,
+            "collision_layer": 1,
+            "collision_mask": 1,
+            "custom_integrator": false,
+            "freeze": false,
+            "gravity_scale": 0.0387755110859871,
+            "linear_damp": 0.0,
+            "linear_damp_mode": 1,
+            "omit_force_integration": false,
+            "physics_ticks_per_second": 60,
+            "project_angular_damp": 1.0,
+            "project_gravity": 980.0,
+            "project_gravity_vector": [
+              0.0,
+              1.0
+            ],
+            "project_linear_damp": 0.1,
+            "server_params": {
+              "2": 0.180000007152557,
+              "3": 24.7901363372803,
+              "5": 0.0387755110859871,
+              "6": 1,
+              "7": 1,
+              "8": 0.0,
+              "9": 0.180000007152557
+            }
+          },
+          "provenance_diagnostic": {
+            "project_times_body_nominal_gravity": [
+              0.0,
+              38.000000864267356
+            ],
+            "measured_minus_nominal_gravity": [
+              0.0,
+              -8.642673563485914e-07
+            ],
+            "nominal_combined_damping": [
+              0.0,
+              0.180000007152557
+            ],
+            "measured_minus_nominal_damping": [
+              0.0,
+              0.0
+            ],
+            "native_owner_gravity_binding": "UNAVAILABLE: no native World/owner sample in this oracle; values are diagnostics, not a new compatibility tolerance"
+          },
+          "effective_gravity": [
+            0.0,
+            38.0
+          ],
+          "effective_linear_damp": 0.0,
+          "effective_angular_damp": 0.180000007152557,
+          "reported_step": 0.0166666675359011,
+          "steps": 32,
+          "models": [
+            {
+              "model": "gravity-only",
+              "precision": "float64",
+              "maximum_one_step_error": 0.0008973181247711182,
+              "maximum_full_trajectory_error": 0.027421653270721436,
+              "final_full_trajectory_error": 0.027421653270721436,
+              "one_step_compatible": false
+            },
+            {
+              "model": "gravity-only",
+              "precision": "float32",
+              "maximum_one_step_error": 0.0008973181247711182,
+              "maximum_full_trajectory_error": 0.027421653270721436,
+              "final_full_trajectory_error": 0.027421653270721436,
+              "one_step_compatible": false
+            },
+            {
+              "model": "gravity-then-rational-damping",
+              "precision": "float64",
+              "maximum_one_step_error": 2.034505207859638e-06,
+              "maximum_full_trajectory_error": 1.9963582365889465e-05,
+              "final_full_trajectory_error": 3.5603841261888647e-06,
+              "one_step_compatible": true
+            },
+            {
+              "model": "gravity-then-rational-damping",
+              "precision": "float32",
+              "maximum_one_step_error": 1.9073486328125e-06,
+              "maximum_full_trajectory_error": 2.193450927734375e-05,
+              "final_full_trajectory_error": 5.7220458984375e-06,
+              "one_step_compatible": true
+            },
+            {
+              "model": "rational-damping-then-gravity",
+              "precision": "float64",
+              "maximum_one_step_error": 2.034505207859638e-06,
+              "maximum_full_trajectory_error": 1.9963582365889465e-05,
+              "final_full_trajectory_error": 3.5603841261888647e-06,
+              "one_step_compatible": true
+            },
+            {
+              "model": "rational-damping-then-gravity",
+              "precision": "float32",
+              "maximum_one_step_error": 1.9073486328125e-06,
+              "maximum_full_trajectory_error": 2.193450927734375e-05,
+              "final_full_trajectory_error": 5.7220458984375e-06,
+              "one_step_compatible": true
+            },
+            {
+              "model": "gravity-then-linear-damping",
+              "precision": "float64",
+              "maximum_one_step_error": 2.6819467544569875e-06,
+              "maximum_full_trajectory_error": 7.846552098172976e-05,
+              "final_full_trajectory_error": 7.846552098172976e-05,
+              "one_step_compatible": true
+            },
+            {
+              "model": "gravity-then-linear-damping",
+              "precision": "float32",
+              "maximum_one_step_error": 2.682209014892578e-06,
+              "maximum_full_trajectory_error": 7.861852645874023e-05,
+              "final_full_trajectory_error": 7.861852645874023e-05,
+              "one_step_compatible": true
+            }
+          ]
+        },
+        {
+          "model": "scooper",
+          "initial": "separating",
+          "properties": {
+            "angular_damp": 0.180000007152557,
+            "angular_damp_mode": 1,
+            "can_sleep": true,
+            "collision_layer": 1,
+            "collision_mask": 1,
+            "custom_integrator": false,
+            "freeze": false,
+            "gravity_scale": 0.0387755110859871,
+            "linear_damp": 0.0,
+            "linear_damp_mode": 1,
+            "omit_force_integration": false,
+            "physics_ticks_per_second": 60,
+            "project_angular_damp": 1.0,
+            "project_gravity": 980.0,
+            "project_gravity_vector": [
+              0.0,
+              1.0
+            ],
+            "project_linear_damp": 0.1,
+            "server_params": {
+              "2": 0.180000007152557,
+              "3": 24.7901363372803,
+              "5": 0.0387755110859871,
+              "6": 1,
+              "7": 1,
+              "8": 0.0,
+              "9": 0.180000007152557
+            }
+          },
+          "provenance_diagnostic": {
+            "project_times_body_nominal_gravity": [
+              0.0,
+              38.000000864267356
+            ],
+            "measured_minus_nominal_gravity": [
+              0.0,
+              -8.642673563485914e-07
+            ],
+            "nominal_combined_damping": [
+              0.0,
+              0.180000007152557
+            ],
+            "measured_minus_nominal_damping": [
+              0.0,
+              0.0
+            ],
+            "native_owner_gravity_binding": "UNAVAILABLE: no native World/owner sample in this oracle; values are diagnostics, not a new compatibility tolerance"
+          },
+          "effective_gravity": [
+            0.0,
+            38.0
+          ],
+          "effective_linear_damp": 0.0,
+          "effective_angular_damp": 0.180000007152557,
+          "reported_step": 0.0166666675359011,
+          "steps": 32,
+          "models": [
+            {
+              "model": "gravity-only",
+              "precision": "float64",
+              "maximum_one_step_error": 0.0008973181247711182,
+              "maximum_full_trajectory_error": 0.027421653270721436,
+              "final_full_trajectory_error": 0.027421653270721436,
+              "one_step_compatible": false
+            },
+            {
+              "model": "gravity-only",
+              "precision": "float32",
+              "maximum_one_step_error": 0.0008973181247711182,
+              "maximum_full_trajectory_error": 0.027421653270721436,
+              "final_full_trajectory_error": 0.027421653270721436,
+              "one_step_compatible": false
+            },
+            {
+              "model": "gravity-then-rational-damping",
+              "precision": "float64",
+              "maximum_one_step_error": 1.7801920577653618e-06,
+              "maximum_full_trajectory_error": 2.072652181794865e-05,
+              "final_full_trajectory_error": 2.072652181794865e-05,
+              "one_step_compatible": true
+            },
+            {
+              "model": "gravity-then-rational-damping",
+              "precision": "float32",
+              "maximum_one_step_error": 1.9073486328125e-06,
+              "maximum_full_trajectory_error": 2.09808349609375e-05,
+              "final_full_trajectory_error": 2.09808349609375e-05,
+              "one_step_compatible": true
+            },
+            {
+              "model": "rational-damping-then-gravity",
+              "precision": "float64",
+              "maximum_one_step_error": 1.7801920577653618e-06,
+              "maximum_full_trajectory_error": 2.072652181794865e-05,
+              "final_full_trajectory_error": 2.072652181794865e-05,
+              "one_step_compatible": true
+            },
+            {
+              "model": "rational-damping-then-gravity",
+              "precision": "float32",
+              "maximum_one_step_error": 1.9073486328125e-06,
+              "maximum_full_trajectory_error": 2.09808349609375e-05,
+              "final_full_trajectory_error": 2.09808349609375e-05,
+              "one_step_compatible": true
+            },
+            {
+              "model": "gravity-then-linear-damping",
+              "precision": "float64",
+              "maximum_one_step_error": 2.6819467544569875e-06,
+              "maximum_full_trajectory_error": 7.846552098172976e-05,
+              "final_full_trajectory_error": 7.846552098172976e-05,
+              "one_step_compatible": true
+            },
+            {
+              "model": "gravity-then-linear-damping",
+              "precision": "float32",
+              "maximum_one_step_error": 2.682209014892578e-06,
+              "maximum_full_trajectory_error": 7.861852645874023e-05,
+              "final_full_trajectory_error": 7.861852645874023e-05,
+              "one_step_compatible": true
+            }
+          ]
+        }
+      ],
+      "aggregate": [
+        {
+          "model": "gravity-only",
+          "precision": "float64",
+          "maximum_one_step_error": 0.1949211120605483,
+          "maximum_full_trajectory_error": 3.348460388183625,
+          "compatible": false
+        },
+        {
+          "model": "gravity-only",
+          "precision": "float32",
+          "maximum_one_step_error": 0.19491958618164062,
+          "maximum_full_trajectory_error": 3.34844970703125,
+          "compatible": false
+        },
+        {
+          "model": "gravity-then-rational-damping",
+          "precision": "float64",
+          "maximum_one_step_error": 5.191787145975013e-06,
+          "maximum_full_trajectory_error": 4.3171075450487706e-05,
+          "compatible": true
+        },
+        {
+          "model": "gravity-then-rational-damping",
+          "precision": "float32",
+          "maximum_one_step_error": 7.62939453125e-06,
+          "maximum_full_trajectory_error": 5.340576171875e-05,
+          "compatible": true
+        },
+        {
+          "model": "rational-damping-then-gravity",
+          "precision": "float64",
+          "maximum_one_step_error": 0.006374674120387169,
+          "maximum_full_trajectory_error": 0.19128791913064447,
+          "compatible": false
+        },
+        {
+          "model": "rational-damping-then-gravity",
+          "precision": "float32",
+          "maximum_one_step_error": 0.006374359130859375,
+          "maximum_full_trajectory_error": 0.19124603271484375,
+          "compatible": false
+        },
+        {
+          "model": "gravity-then-linear-damping",
+          "precision": "float64",
+          "maximum_one_step_error": 0.0008169078826867349,
+          "maximum_full_trajectory_error": 0.013349981435737845,
+          "compatible": false
+        },
+        {
+          "model": "gravity-then-linear-damping",
+          "precision": "float32",
+          "maximum_one_step_error": 0.00081634521484375,
+          "maximum_full_trajectory_error": 0.01335906982421875,
+          "compatible": false
+        }
+      ],
+      "raw": {
+        "path": "build\\sol-gravity-operator\\operator-003\\linux\\observations.json",
+        "sha256": "711eeaf58f47395d215c4d2689d3451bc68cfdf0a05e37d238edc1f06b39891c",
+        "bytes": 491220
+      },
+      "checks": 1182
+    }
+  },
+  "status": "COMPLETE",
+  "episodes": 18,
+  "body_steps": 576,
+  "physics_promotion": "NOT_ADMITTED",
+  "qualification": "No-contact operator only; actual host equations, no predicted contact or original SOL recovery."
+}

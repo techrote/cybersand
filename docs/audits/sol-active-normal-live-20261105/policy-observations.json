@@ -1,0 +1,302 @@
+{
+  "windows": {
+    "checks": 98,
+    "failures": [],
+    "observations": [
+      {
+        "arrival_storage_bytes": 2097152,
+        "body_limit": 8,
+        "epoch": 1,
+        "extent": [
+          256,
+          256
+        ],
+        "native_mask_reserved": 65536,
+        "normal_policy": "active-normal-001",
+        "normal_policy_locked": true,
+        "proxy_limit": 64,
+        "raster_indices_reserved": 65536,
+        "response": "LA-SELECTIVE",
+        "rows": [],
+        "sample_tick": 0,
+        "session": 1,
+        "valid": false,
+        "world_mask_cell_limit": 65536
+      },
+      {
+        "arrival_storage_bytes": 2097152,
+        "body_limit": 8,
+        "epoch": 1,
+        "extent": [
+          256,
+          256
+        ],
+        "native_mask_reserved": 65536,
+        "normal_policy": "active-normal-001",
+        "normal_policy_locked": true,
+        "proxy_limit": 64,
+        "raster_indices_reserved": 65536,
+        "response": "LA-SELECTIVE",
+        "rows": [
+          {
+            "arrival_count": 0,
+            "arrival_misaligned": 0,
+            "arrival_missing": 0,
+            "bins": 0,
+            "body_capacity": 20.0,
+            "budget": 20.0,
+            "com": [
+              128.0,
+              100.0
+            ],
+            "contacts": 0,
+            "correction": [
+              0.0,
+              0.0
+            ],
+            "displaced": 0,
+            "event_accepted": [
+              0.0,
+              0.0
+            ],
+            "event_cost": 0.0,
+            "event_torque": 0.0,
+            "external_drive": false,
+            "generation": 1,
+            "gravity": 0.0,
+            "id": 1,
+            "impulse": [
+              0.0,
+              0.0
+            ],
+            "inertia": 21.6666660308838,
+            "instance_id": 1,
+            "legacy_wrench_f64": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "mass": 1.0,
+            "nodes": 0,
+            "normal_accepted": 0.0,
+            "normal_cap_hits": 0,
+            "normal_capacity": 0.0,
+            "normal_policy": "active-normal-001",
+            "normal_raw": 0.0,
+            "passive_accepted_wrench_f64": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "passive_energy_after": 0.0,
+            "passive_energy_before": 0.0,
+            "passive_impulse": [
+              0.0,
+              0.0
+            ],
+            "passive_raw_wrench_f64": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "passive_scale": 1.0,
+            "passive_state_f64": [
+              0.0,
+              0.0,
+              128.0,
+              100.0,
+              0.0,
+              1.0,
+              21.6666660308838,
+              0.779999971389771
+            ],
+            "passive_torque": 0.0,
+            "passivity_rejected": false,
+            "proxy_count": 1,
+            "quadrature_clamps": 0,
+            "sample": 1,
+            "tangent_accepted": 0.0,
+            "tangent_cap_hits": 0,
+            "tangent_raw": 0.0,
+            "torque": 0.0,
+            "total_wrench_f64": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "unresolved": 0,
+            "updates": 0
+          }
+        ],
+        "sample_tick": 0,
+        "session": 1,
+        "valid": true,
+        "world_mask_cell_limit": 65536
+      },
+      {
+        "diagnostic_guard_also_false": true,
+        "failed_world": true,
+        "failure_count": 1,
+        "reason": "active scheduling-core capacity exhausted"
+      },
+      {
+        "accepted": false,
+        "application_variant": "baseline",
+        "bodies": [],
+        "refusal": "retired",
+        "snapshot": 999
+      }
+    ],
+    "source": "41e676e5ac453d8c7e8760f6ba211d97c6034312"
+  },
+  "linux": {
+    "checks": 98,
+    "failures": [],
+    "observations": [
+      {
+        "arrival_storage_bytes": 2097152,
+        "body_limit": 8,
+        "epoch": 1,
+        "extent": [
+          256,
+          256
+        ],
+        "native_mask_reserved": 65536,
+        "normal_policy": "active-normal-001",
+        "normal_policy_locked": true,
+        "proxy_limit": 64,
+        "raster_indices_reserved": 65536,
+        "response": "LA-SELECTIVE",
+        "rows": [],
+        "sample_tick": 0,
+        "session": 1,
+        "valid": false,
+        "world_mask_cell_limit": 65536
+      },
+      {
+        "arrival_storage_bytes": 2097152,
+        "body_limit": 8,
+        "epoch": 1,
+        "extent": [
+          256,
+          256
+        ],
+        "native_mask_reserved": 65536,
+        "normal_policy": "active-normal-001",
+        "normal_policy_locked": true,
+        "proxy_limit": 64,
+        "raster_indices_reserved": 65536,
+        "response": "LA-SELECTIVE",
+        "rows": [
+          {
+            "arrival_count": 0,
+            "arrival_misaligned": 0,
+            "arrival_missing": 0,
+            "bins": 0,
+            "body_capacity": 20.0,
+            "budget": 20.0,
+            "com": [
+              128.0,
+              100.0
+            ],
+            "contacts": 0,
+            "correction": [
+              0.0,
+              0.0
+            ],
+            "displaced": 0,
+            "event_accepted": [
+              0.0,
+              0.0
+            ],
+            "event_cost": 0.0,
+            "event_torque": 0.0,
+            "external_drive": false,
+            "generation": 1,
+            "gravity": 0.0,
+            "id": 1,
+            "impulse": [
+              0.0,
+              0.0
+            ],
+            "inertia": 21.6666660308838,
+            "instance_id": 1,
+            "legacy_wrench_f64": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "mass": 1.0,
+            "nodes": 0,
+            "normal_accepted": 0.0,
+            "normal_cap_hits": 0,
+            "normal_capacity": 0.0,
+            "normal_policy": "active-normal-001",
+            "normal_raw": 0.0,
+            "passive_accepted_wrench_f64": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "passive_energy_after": 0.0,
+            "passive_energy_before": 0.0,
+            "passive_impulse": [
+              0.0,
+              0.0
+            ],
+            "passive_raw_wrench_f64": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "passive_scale": 1.0,
+            "passive_state_f64": [
+              0.0,
+              0.0,
+              128.0,
+              100.0,
+              0.0,
+              1.0,
+              21.6666660308838,
+              0.779999971389771
+            ],
+            "passive_torque": 0.0,
+            "passivity_rejected": false,
+            "proxy_count": 1,
+            "quadrature_clamps": 0,
+            "sample": 1,
+            "tangent_accepted": 0.0,
+            "tangent_cap_hits": 0,
+            "tangent_raw": 0.0,
+            "torque": 0.0,
+            "total_wrench_f64": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "unresolved": 0,
+            "updates": 0
+          }
+        ],
+        "sample_tick": 0,
+        "session": 1,
+        "valid": true,
+        "world_mask_cell_limit": 65536
+      },
+      {
+        "diagnostic_guard_also_false": true,
+        "failed_world": true,
+        "failure_count": 1,
+        "reason": "active scheduling-core capacity exhausted"
+      },
+      {
+        "accepted": false,
+        "application_variant": "baseline",
+        "bodies": [],
+        "refusal": "retired",
+        "snapshot": 999
+      }
+    ],
+    "source": "41e676e5ac453d8c7e8760f6ba211d97c6034312"
+  }
+}

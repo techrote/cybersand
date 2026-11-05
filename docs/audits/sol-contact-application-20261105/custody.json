@@ -1,0 +1,1300 @@
+{
+  "execution_source": "8e4d7731b63648da8f258f62a8b02f9b678290c0",
+  "analysis_source": "13d20dd63f5448f1e4ef30a5b71ff6d6d51397fc",
+  "raw_inputs_and_derivatives": [
+    {
+      "path": "build/sol-contact-application/core-001/windows/shared-granular-bodies-extended360-original-baseline-w1-r0/shared-granular-bodies-extended360-LA-SELECTIVE-w1-r0.json",
+      "sha256": "5d1c16e61eafd5feb6e0ee3d877364f98a91e82f865bd242030bdf2583cdb0b7",
+      "bytes": 19715467
+    },
+    {
+      "path": "build/sol-contact-application/core-001/windows/shared-granular-bodies-extended360-original-baseline-w1-r0/shared-granular-bodies-extended360-LA-SELECTIVE-w1-r0-initial.cyps",
+      "sha256": "bafc82a9b23c68a02db484d49c385be96fc78b5d14d3d8fcc1dc3b69bab293f5",
+      "bytes": 4891358
+    },
+    {
+      "path": "build/sol-contact-application/core-001/windows/shared-granular-bodies-extended360-original-baseline-w1-r0/shared-granular-bodies-extended360-LA-SELECTIVE-w1-r0-prefix180.cyps",
+      "sha256": "cac46b92d5279a59ddd3bc27b9aca5cae2a197decfced7809d7f3b26552a26cb",
+      "bytes": 4891390
+    },
+    {
+      "path": "build/sol-contact-application/core-001/windows/shared-granular-bodies-extended360-original-baseline-w1-r0/shared-granular-bodies-extended360-LA-SELECTIVE-w1-r0-final.cyps",
+      "sha256": "f652f8531e8c2d063616e1c111986a883145d46c4272f4f0064326a09babd29a",
+      "bytes": 4891390
+    },
+    {
+      "path": "build/sol-contact-application/analysis-001/windows-reduction/windows-shared-granular-bodies-extended360-original-baseline-w1-r0.json",
+      "sha256": "811f1789762a6b63b2c1151fd91c90d2b1c589a766c8f5e9186b02904c345d5c",
+      "bytes": 1388237
+    },
+    {
+      "path": "build/sol-contact-application/analysis-001/linux-reduction/windows-shared-granular-bodies-extended360-original-baseline-w1-r0.json",
+      "sha256": "811f1789762a6b63b2c1151fd91c90d2b1c589a766c8f5e9186b02904c345d5c",
+      "bytes": 1388237
+    },
+    {
+      "path": "build/sol-contact-application/core-001/windows/shared-granular-bodies-extended360-active-baseline-w1-r0/shared-granular-bodies-extended360-LA-SELECTIVE-w1-r0.json",
+      "sha256": "be8c4c672dfbfa0a78ab1fe446552b93d6bd524bcf9100832706d0c22eef15f8",
+      "bytes": 19561686
+    },
+    {
+      "path": "build/sol-contact-application/core-001/windows/shared-granular-bodies-extended360-active-baseline-w1-r0/shared-granular-bodies-extended360-LA-SELECTIVE-w1-r0-initial.cyps",
+      "sha256": "bafc82a9b23c68a02db484d49c385be96fc78b5d14d3d8fcc1dc3b69bab293f5",
+      "bytes": 4891358
+    },
+    {
+      "path": "build/sol-contact-application/core-001/windows/shared-granular-bodies-extended360-active-baseline-w1-r0/shared-granular-bodies-extended360-LA-SELECTIVE-w1-r0-prefix180.cyps",
+      "sha256": "f048b8e66262f0634df2bd8721e5874e8b0398067aba5a11c28fb8f34056981b",
+      "bytes": 4891390
+    },
+    {
+      "path": "build/sol-contact-application/core-001/windows/shared-granular-bodies-extended360-active-baseline-w1-r0/shared-granular-bodies-extended360-LA-SELECTIVE-w1-r0-final.cyps",
+      "sha256": "9adb8b947518f24e62e731dfd9cba78b4fb68c80c2947716c091400237c8dcca",
+      "bytes": 4891390
+    },
+    {
+      "path": "build/sol-contact-application/analysis-001/windows-reduction/windows-shared-granular-bodies-extended360-active-baseline-w1-r0.json",
+      "sha256": "38f14a117588cb65dc45129ec08d0d3a00b3b4f9f1773986e6492a3a1200f431",
+      "bytes": 1383566
+    },
+    {
+      "path": "build/sol-contact-application/analysis-001/linux-reduction/windows-shared-granular-bodies-extended360-active-baseline-w1-r0.json",
+      "sha256": "38f14a117588cb65dc45129ec08d0d3a00b3b4f9f1773986e6492a3a1200f431",
+      "bytes": 1383566
+    },
+    {
+      "path": "build/sol-contact-application/core-001/windows/shared-granular-bodies-extended360-original-retain-w1-r0/shared-granular-bodies-extended360-LA-SELECTIVE-w1-r0.json",
+      "sha256": "85a2dde9826320e0db58d40797992bc34f8df46e6766deef2c6c9489258d0cda",
+      "bytes": 26094601
+    },
+    {
+      "path": "build/sol-contact-application/core-001/windows/shared-granular-bodies-extended360-original-retain-w1-r0/shared-granular-bodies-extended360-LA-SELECTIVE-w1-r0-initial.cyps",
+      "sha256": "bafc82a9b23c68a02db484d49c385be96fc78b5d14d3d8fcc1dc3b69bab293f5",
+      "bytes": 4891358
+    },
+    {
+      "path": "build/sol-contact-application/core-001/windows/shared-granular-bodies-extended360-original-retain-w1-r0/shared-granular-bodies-extended360-LA-SELECTIVE-w1-r0-prefix180.cyps",
+      "sha256": "31adcd6f51df46a5ea2848d85f880126a357e00c7d16c0bb2b19fd379f801836",
+      "bytes": 4891390
+    },
+    {
+      "path": "build/sol-contact-application/core-001/windows/shared-granular-bodies-extended360-original-retain-w1-r0/shared-granular-bodies-extended360-LA-SELECTIVE-w1-r0-final.cyps",
+      "sha256": "62b533c3b84d142826576c6e0f2bad5e00955ee86e0043f8c8af2c09afee1347",
+      "bytes": 4891390
+    },
+    {
+      "path": "build/sol-contact-application/analysis-001/windows-reduction/windows-shared-granular-bodies-extended360-original-retain-w1-r0.json",
+      "sha256": "1d3d3a73e29c0f0945460508cfa8438012eda277eccf3a0b688575656d16eaee",
+      "bytes": 1436608
+    },
+    {
+      "path": "build/sol-contact-application/analysis-001/linux-reduction/windows-shared-granular-bodies-extended360-original-retain-w1-r0.json",
+      "sha256": "1d3d3a73e29c0f0945460508cfa8438012eda277eccf3a0b688575656d16eaee",
+      "bytes": 1436608
+    },
+    {
+      "path": "build/sol-contact-application/core-001/windows/shared-granular-bodies-extended360-active-retain-w1-r0/shared-granular-bodies-extended360-LA-SELECTIVE-w1-r0.json",
+      "sha256": "0392d78de13d6c9360cb6a1f4967d605e6fbf963436f8bb5f0760ed7d608c5e8",
+      "bytes": 26133624
+    },
+    {
+      "path": "build/sol-contact-application/core-001/windows/shared-granular-bodies-extended360-active-retain-w1-r0/shared-granular-bodies-extended360-LA-SELECTIVE-w1-r0-initial.cyps",
+      "sha256": "bafc82a9b23c68a02db484d49c385be96fc78b5d14d3d8fcc1dc3b69bab293f5",
+      "bytes": 4891358
+    },
+    {
+      "path": "build/sol-contact-application/core-001/windows/shared-granular-bodies-extended360-active-retain-w1-r0/shared-granular-bodies-extended360-LA-SELECTIVE-w1-r0-prefix180.cyps",
+      "sha256": "db3bf48489c254787bb4a186bd48cbdce8167f07698460147ef6d8e7679f5cb8",
+      "bytes": 4891390
+    },
+    {
+      "path": "build/sol-contact-application/core-001/windows/shared-granular-bodies-extended360-active-retain-w1-r0/shared-granular-bodies-extended360-LA-SELECTIVE-w1-r0-final.cyps",
+      "sha256": "4c31ef1f02543861f82f70b579e4a7460c79ddadd28eacd7454c94e40c1b2615",
+      "bytes": 4891390
+    },
+    {
+      "path": "build/sol-contact-application/analysis-001/windows-reduction/windows-shared-granular-bodies-extended360-active-retain-w1-r0.json",
+      "sha256": "7cc8218bfd0b95576c0feb38b0fd45a80b74ae384c7e11d39f35c2c344f5306d",
+      "bytes": 1437123
+    },
+    {
+      "path": "build/sol-contact-application/analysis-001/linux-reduction/windows-shared-granular-bodies-extended360-active-retain-w1-r0.json",
+      "sha256": "7cc8218bfd0b95576c0feb38b0fd45a80b74ae384c7e11d39f35c2c344f5306d",
+      "bytes": 1437123
+    },
+    {
+      "path": "build/sol-contact-application/core-001/windows/barrel-constrained-valid-original-baseline-w1-r0/barrel-constrained-valid-LA-SELECTIVE-w1-r0.json",
+      "sha256": "bd89b29c00c4e173f7e15a6c07267443ed290c37551efec0df74080d67732d98",
+      "bytes": 2634212
+    },
+    {
+      "path": "build/sol-contact-application/core-001/windows/barrel-constrained-valid-original-baseline-w1-r0/barrel-constrained-valid-LA-SELECTIVE-w1-r0-initial.cyps",
+      "sha256": "2abf06a9c0534106fd3164cbdc2ba91742a91b8f202ec421aeafc05e8bb92b20",
+      "bytes": 4891358
+    },
+    {
+      "path": "build/sol-contact-application/core-001/windows/barrel-constrained-valid-original-baseline-w1-r0/barrel-constrained-valid-LA-SELECTIVE-w1-r0-final.cyps",
+      "sha256": "78d3414eef05d6edc8db565547e9c6785503135db7a9b01928c1706ad7da2075",
+      "bytes": 4891390
+    },
+    {
+      "path": "build/sol-contact-application/analysis-001/windows-reduction/windows-barrel-constrained-valid-original-baseline-w1-r0.json",
+      "sha256": "d64497e45399007ab427044691df5b90fb3518e33beb1466166f52d37a6b31f8",
+      "bytes": 467781
+    },
+    {
+      "path": "build/sol-contact-application/analysis-001/linux-reduction/windows-barrel-constrained-valid-original-baseline-w1-r0.json",
+      "sha256": "d64497e45399007ab427044691df5b90fb3518e33beb1466166f52d37a6b31f8",
+      "bytes": 467781
+    },
+    {
+      "path": "build/sol-contact-application/core-001/windows/barrel-constrained-valid-active-baseline-w1-r0/barrel-constrained-valid-LA-SELECTIVE-w1-r0.json",
+      "sha256": "78e794fa58b86818a8c1b586d2fd3192299f78e7c1d6ed51c47b81d209b57f4d",
+      "bytes": 2631761
+    },
+    {
+      "path": "build/sol-contact-application/core-001/windows/barrel-constrained-valid-active-baseline-w1-r0/barrel-constrained-valid-LA-SELECTIVE-w1-r0-initial.cyps",
+      "sha256": "2abf06a9c0534106fd3164cbdc2ba91742a91b8f202ec421aeafc05e8bb92b20",
+      "bytes": 4891358
+    },
+    {
+      "path": "build/sol-contact-application/core-001/windows/barrel-constrained-valid-active-baseline-w1-r0/barrel-constrained-valid-LA-SELECTIVE-w1-r0-final.cyps",
+      "sha256": "80096ec1852634b6a9fcb3b22c4a3009be9567f0a51b0c3de619b4a623a6b491",
+      "bytes": 4891390
+    },
+    {
+      "path": "build/sol-contact-application/analysis-001/windows-reduction/windows-barrel-constrained-valid-active-baseline-w1-r0.json",
+      "sha256": "bc79b3250c938245ec5136486d9fa3188f25947f83d950196094807b452c15b5",
+      "bytes": 463552
+    },
+    {
+      "path": "build/sol-contact-application/analysis-001/linux-reduction/windows-barrel-constrained-valid-active-baseline-w1-r0.json",
+      "sha256": "bc79b3250c938245ec5136486d9fa3188f25947f83d950196094807b452c15b5",
+      "bytes": 463552
+    },
+    {
+      "path": "build/sol-contact-application/core-001/windows/barrel-constrained-valid-original-retain-w1-r0/barrel-constrained-valid-LA-SELECTIVE-w1-r0.json",
+      "sha256": "3ae085faa07bbc5fda22b49050e4ddf953ea03465e88ba6980f4f306449d77ac",
+      "bytes": 2706048
+    },
+    {
+      "path": "build/sol-contact-application/core-001/windows/barrel-constrained-valid-original-retain-w1-r0/barrel-constrained-valid-LA-SELECTIVE-w1-r0-initial.cyps",
+      "sha256": "2abf06a9c0534106fd3164cbdc2ba91742a91b8f202ec421aeafc05e8bb92b20",
+      "bytes": 4891358
+    },
+    {
+      "path": "build/sol-contact-application/core-001/windows/barrel-constrained-valid-original-retain-w1-r0/barrel-constrained-valid-LA-SELECTIVE-w1-r0-final.cyps",
+      "sha256": "bbede8ca017bd806e17bad08c2bd0b0cf267932ab7743e2009aaac1624aa7d5b",
+      "bytes": 4891390
+    },
+    {
+      "path": "build/sol-contact-application/analysis-001/windows-reduction/windows-barrel-constrained-valid-original-retain-w1-r0.json",
+      "sha256": "5f1a13081625514b784379e8be866c8a5ce92392d6589d0ad7e3e115d4f1c1e1",
+      "bytes": 478944
+    },
+    {
+      "path": "build/sol-contact-application/analysis-001/linux-reduction/windows-barrel-constrained-valid-original-retain-w1-r0.json",
+      "sha256": "5f1a13081625514b784379e8be866c8a5ce92392d6589d0ad7e3e115d4f1c1e1",
+      "bytes": 478944
+    },
+    {
+      "path": "build/sol-contact-application/core-001/windows/barrel-constrained-valid-active-retain-w1-r0/barrel-constrained-valid-LA-SELECTIVE-w1-r0.json",
+      "sha256": "f74633e878bb7a07dc8945bee63d2b271b4cf57387238cb152df8d70ad0d75d3",
+      "bytes": 2711700
+    },
+    {
+      "path": "build/sol-contact-application/core-001/windows/barrel-constrained-valid-active-retain-w1-r0/barrel-constrained-valid-LA-SELECTIVE-w1-r0-initial.cyps",
+      "sha256": "2abf06a9c0534106fd3164cbdc2ba91742a91b8f202ec421aeafc05e8bb92b20",
+      "bytes": 4891358
+    },
+    {
+      "path": "build/sol-contact-application/core-001/windows/barrel-constrained-valid-active-retain-w1-r0/barrel-constrained-valid-LA-SELECTIVE-w1-r0-final.cyps",
+      "sha256": "8dfab7052aee2113e923443c16fa185df0de25d9dd85d2c508ffce6ef7fb2c74",
+      "bytes": 4891390
+    },
+    {
+      "path": "build/sol-contact-application/analysis-001/windows-reduction/windows-barrel-constrained-valid-active-retain-w1-r0.json",
+      "sha256": "fc1555d9542906db11e4c2b29b6e10772697d981b0a11ebd0ca09d27945cc5dc",
+      "bytes": 468401
+    },
+    {
+      "path": "build/sol-contact-application/analysis-001/linux-reduction/windows-barrel-constrained-valid-active-retain-w1-r0.json",
+      "sha256": "fc1555d9542906db11e4c2b29b6e10772697d981b0a11ebd0ca09d27945cc5dc",
+      "bytes": 468401
+    },
+    {
+      "path": "build/sol-contact-application/core-001/windows/barrel-rest-original-baseline-w1-r0/barrel-rest-LA-SELECTIVE-w1-r0.json",
+      "sha256": "f73075d69358cf0e4efa7fcb07edfd9d36d397b5984a9ba7ae318c6275482323",
+      "bytes": 2540208
+    },
+    {
+      "path": "build/sol-contact-application/core-001/windows/barrel-rest-original-baseline-w1-r0/barrel-rest-LA-SELECTIVE-w1-r0-initial.cyps",
+      "sha256": "0fc2aafef2c76f240a2277998deeeeca1882e1716bf9eae57b28532396eed1a3",
+      "bytes": 4891358
+    },
+    {
+      "path": "build/sol-contact-application/core-001/windows/barrel-rest-original-baseline-w1-r0/barrel-rest-LA-SELECTIVE-w1-r0-final.cyps",
+      "sha256": "69757224854adaad2b2902b1a0b75db2e5c19fc1635df2c3fba6a280ba3f2770",
+      "bytes": 4891390
+    },
+    {
+      "path": "build/sol-contact-application/analysis-001/windows-reduction/windows-barrel-rest-original-baseline-w1-r0.json",
+      "sha256": "97600dd677d4d8b11ab7ed27d86174ddb83b6d7949719cc35cc07470b70b43c1",
+      "bytes": 452827
+    },
+    {
+      "path": "build/sol-contact-application/analysis-001/linux-reduction/windows-barrel-rest-original-baseline-w1-r0.json",
+      "sha256": "97600dd677d4d8b11ab7ed27d86174ddb83b6d7949719cc35cc07470b70b43c1",
+      "bytes": 452827
+    },
+    {
+      "path": "build/sol-contact-application/core-001/windows/barrel-rest-active-baseline-w1-r0/barrel-rest-LA-SELECTIVE-w1-r0.json",
+      "sha256": "873179a32736e25117ef4d85e9a63a37f1c3a53d6586ce8a6b65a09be6db7b8a",
+      "bytes": 2546644
+    },
+    {
+      "path": "build/sol-contact-application/core-001/windows/barrel-rest-active-baseline-w1-r0/barrel-rest-LA-SELECTIVE-w1-r0-initial.cyps",
+      "sha256": "0fc2aafef2c76f240a2277998deeeeca1882e1716bf9eae57b28532396eed1a3",
+      "bytes": 4891358
+    },
+    {
+      "path": "build/sol-contact-application/core-001/windows/barrel-rest-active-baseline-w1-r0/barrel-rest-LA-SELECTIVE-w1-r0-final.cyps",
+      "sha256": "69757224854adaad2b2902b1a0b75db2e5c19fc1635df2c3fba6a280ba3f2770",
+      "bytes": 4891390
+    },
+    {
+      "path": "build/sol-contact-application/analysis-001/windows-reduction/windows-barrel-rest-active-baseline-w1-r0.json",
+      "sha256": "a2a4343e4b20923f2084d9cbc194f9cfe74df079fd14d7ebc88d853bb8c127c2",
+      "bytes": 452830
+    },
+    {
+      "path": "build/sol-contact-application/analysis-001/linux-reduction/windows-barrel-rest-active-baseline-w1-r0.json",
+      "sha256": "a2a4343e4b20923f2084d9cbc194f9cfe74df079fd14d7ebc88d853bb8c127c2",
+      "bytes": 452830
+    },
+    {
+      "path": "build/sol-contact-application/core-001/windows/barrel-rest-original-retain-w1-r0/barrel-rest-LA-SELECTIVE-w1-r0.json",
+      "sha256": "a73b5c90fe59b37e7fe1e2107c56de45d7d1110d7fcbac7f3f0e35185b7f31cf",
+      "bytes": 2633597
+    },
+    {
+      "path": "build/sol-contact-application/core-001/windows/barrel-rest-original-retain-w1-r0/barrel-rest-LA-SELECTIVE-w1-r0-initial.cyps",
+      "sha256": "0fc2aafef2c76f240a2277998deeeeca1882e1716bf9eae57b28532396eed1a3",
+      "bytes": 4891358
+    },
+    {
+      "path": "build/sol-contact-application/core-001/windows/barrel-rest-original-retain-w1-r0/barrel-rest-LA-SELECTIVE-w1-r0-final.cyps",
+      "sha256": "7314e5e870d483cda8ae565c59caa7ea58f89e092470a449c7fe7a633607864c",
+      "bytes": 4891390
+    },
+    {
+      "path": "build/sol-contact-application/analysis-001/windows-reduction/windows-barrel-rest-original-retain-w1-r0.json",
+      "sha256": "fa70adf74ae19b1c67fe53b90415f120acee4d55cc4bc7faa86d6b87be3563e6",
+      "bytes": 470673
+    },
+    {
+      "path": "build/sol-contact-application/analysis-001/linux-reduction/windows-barrel-rest-original-retain-w1-r0.json",
+      "sha256": "fa70adf74ae19b1c67fe53b90415f120acee4d55cc4bc7faa86d6b87be3563e6",
+      "bytes": 470673
+    },
+    {
+      "path": "build/sol-contact-application/core-001/windows/barrel-rest-active-retain-w1-r0/barrel-rest-LA-SELECTIVE-w1-r0.json",
+      "sha256": "6790fa1c671356e4c326292ceb65a4ddd7ce05bf476de74746b390d85bb2aa25",
+      "bytes": 2641712
+    },
+    {
+      "path": "build/sol-contact-application/core-001/windows/barrel-rest-active-retain-w1-r0/barrel-rest-LA-SELECTIVE-w1-r0-initial.cyps",
+      "sha256": "0fc2aafef2c76f240a2277998deeeeca1882e1716bf9eae57b28532396eed1a3",
+      "bytes": 4891358
+    },
+    {
+      "path": "build/sol-contact-application/core-001/windows/barrel-rest-active-retain-w1-r0/barrel-rest-LA-SELECTIVE-w1-r0-final.cyps",
+      "sha256": "7314e5e870d483cda8ae565c59caa7ea58f89e092470a449c7fe7a633607864c",
+      "bytes": 4891390
+    },
+    {
+      "path": "build/sol-contact-application/analysis-001/windows-reduction/windows-barrel-rest-active-retain-w1-r0.json",
+      "sha256": "d992ce28484df774f5addf7fed726f27ae44a93dafb0bfe192e0bc2ddcf9d14d",
+      "bytes": 470776
+    },
+    {
+      "path": "build/sol-contact-application/analysis-001/linux-reduction/windows-barrel-rest-active-retain-w1-r0.json",
+      "sha256": "d992ce28484df774f5addf7fed726f27ae44a93dafb0bfe192e0bc2ddcf9d14d",
+      "bytes": 470776
+    },
+    {
+      "path": "build/sol-contact-application/core-001/windows/shared-granular-bodies-extended360-original-baseline-w4-r0/shared-granular-bodies-extended360-LA-SELECTIVE-w4-r0.json",
+      "sha256": "ed9680d46c2a77e1488ab9413311a7ad09d807e15ef3b9a2c499e26574582880",
+      "bytes": 6375817
+    },
+    {
+      "path": "build/sol-contact-application/core-001/windows/shared-granular-bodies-extended360-original-baseline-w4-r0/shared-granular-bodies-extended360-LA-SELECTIVE-w4-r0-initial.cyps",
+      "sha256": "bafc82a9b23c68a02db484d49c385be96fc78b5d14d3d8fcc1dc3b69bab293f5",
+      "bytes": 4891358
+    },
+    {
+      "path": "build/sol-contact-application/core-001/windows/shared-granular-bodies-extended360-original-baseline-w4-r0/shared-granular-bodies-extended360-LA-SELECTIVE-w4-r0-prefix180.cyps",
+      "sha256": "cac46b92d5279a59ddd3bc27b9aca5cae2a197decfced7809d7f3b26552a26cb",
+      "bytes": 4891390
+    },
+    {
+      "path": "build/sol-contact-application/core-001/windows/shared-granular-bodies-extended360-original-baseline-w4-r0/shared-granular-bodies-extended360-LA-SELECTIVE-w4-r0-final.cyps",
+      "sha256": "f652f8531e8c2d063616e1c111986a883145d46c4272f4f0064326a09babd29a",
+      "bytes": 4891390
+    },
+    {
+      "path": "build/sol-contact-application/analysis-001/windows-reduction/windows-shared-granular-bodies-extended360-original-baseline-w4-r0.json",
+      "sha256": "5c158b3f556091bce9496c86fb96cc3e491c40358d453b588f707169092c71d8",
+      "bytes": 1388261
+    },
+    {
+      "path": "build/sol-contact-application/analysis-001/linux-reduction/windows-shared-granular-bodies-extended360-original-baseline-w4-r0.json",
+      "sha256": "5c158b3f556091bce9496c86fb96cc3e491c40358d453b588f707169092c71d8",
+      "bytes": 1388261
+    },
+    {
+      "path": "build/sol-contact-application/core-001/windows/shared-granular-bodies-extended360-active-baseline-w4-r0/shared-granular-bodies-extended360-LA-SELECTIVE-w4-r0.json",
+      "sha256": "e1084b6194fde2770a8894c65d51d7a5cac347a834f0fd9a4f3ddd50ee483c18",
+      "bytes": 6379579
+    },
+    {
+      "path": "build/sol-contact-application/core-001/windows/shared-granular-bodies-extended360-active-baseline-w4-r0/shared-granular-bodies-extended360-LA-SELECTIVE-w4-r0-initial.cyps",
+      "sha256": "bafc82a9b23c68a02db484d49c385be96fc78b5d14d3d8fcc1dc3b69bab293f5",
+      "bytes": 4891358
+    },
+    {
+      "path": "build/sol-contact-application/core-001/windows/shared-granular-bodies-extended360-active-baseline-w4-r0/shared-granular-bodies-extended360-LA-SELECTIVE-w4-r0-prefix180.cyps",
+      "sha256": "f048b8e66262f0634df2bd8721e5874e8b0398067aba5a11c28fb8f34056981b",
+      "bytes": 4891390
+    },
+    {
+      "path": "build/sol-contact-application/core-001/windows/shared-granular-bodies-extended360-active-baseline-w4-r0/shared-granular-bodies-extended360-LA-SELECTIVE-w4-r0-final.cyps",
+      "sha256": "9adb8b947518f24e62e731dfd9cba78b4fb68c80c2947716c091400237c8dcca",
+      "bytes": 4891390
+    },
+    {
+      "path": "build/sol-contact-application/analysis-001/windows-reduction/windows-shared-granular-bodies-extended360-active-baseline-w4-r0.json",
+      "sha256": "2af33af8f25411ce888a74eb0c6874e9f412cf443797cba9d16d15350dacc323",
+      "bytes": 1383590
+    },
+    {
+      "path": "build/sol-contact-application/analysis-001/linux-reduction/windows-shared-granular-bodies-extended360-active-baseline-w4-r0.json",
+      "sha256": "2af33af8f25411ce888a74eb0c6874e9f412cf443797cba9d16d15350dacc323",
+      "bytes": 1383590
+    },
+    {
+      "path": "build/sol-contact-application/core-001/windows/shared-granular-bodies-extended360-original-retain-w4-r0/shared-granular-bodies-extended360-LA-SELECTIVE-w4-r0.json",
+      "sha256": "be6348645fc1269cb17f475eaef13ecad1dc718fa6aaf6652fa5ff4c6cc1fbbf",
+      "bytes": 6587616
+    },
+    {
+      "path": "build/sol-contact-application/core-001/windows/shared-granular-bodies-extended360-original-retain-w4-r0/shared-granular-bodies-extended360-LA-SELECTIVE-w4-r0-initial.cyps",
+      "sha256": "bafc82a9b23c68a02db484d49c385be96fc78b5d14d3d8fcc1dc3b69bab293f5",
+      "bytes": 4891358
+    },
+    {
+      "path": "build/sol-contact-application/core-001/windows/shared-granular-bodies-extended360-original-retain-w4-r0/shared-granular-bodies-extended360-LA-SELECTIVE-w4-r0-prefix180.cyps",
+      "sha256": "31adcd6f51df46a5ea2848d85f880126a357e00c7d16c0bb2b19fd379f801836",
+      "bytes": 4891390
+    },
+    {
+      "path": "build/sol-contact-application/core-001/windows/shared-granular-bodies-extended360-original-retain-w4-r0/shared-granular-bodies-extended360-LA-SELECTIVE-w4-r0-final.cyps",
+      "sha256": "62b533c3b84d142826576c6e0f2bad5e00955ee86e0043f8c8af2c09afee1347",
+      "bytes": 4891390
+    },
+    {
+      "path": "build/sol-contact-application/analysis-001/windows-reduction/windows-shared-granular-bodies-extended360-original-retain-w4-r0.json",
+      "sha256": "dd9305162c39b97afd2661e356a2e60b1929d90ef008f162057882d2a0a8302b",
+      "bytes": 1436634
+    },
+    {
+      "path": "build/sol-contact-application/analysis-001/linux-reduction/windows-shared-granular-bodies-extended360-original-retain-w4-r0.json",
+      "sha256": "dd9305162c39b97afd2661e356a2e60b1929d90ef008f162057882d2a0a8302b",
+      "bytes": 1436634
+    },
+    {
+      "path": "build/sol-contact-application/core-001/windows/shared-granular-bodies-extended360-active-retain-w4-r0/shared-granular-bodies-extended360-LA-SELECTIVE-w4-r0.json",
+      "sha256": "58f8e6834cc87ea868881cbfe44dae21383d201059523da00c8efaa166114974",
+      "bytes": 6599559
+    },
+    {
+      "path": "build/sol-contact-application/core-001/windows/shared-granular-bodies-extended360-active-retain-w4-r0/shared-granular-bodies-extended360-LA-SELECTIVE-w4-r0-initial.cyps",
+      "sha256": "bafc82a9b23c68a02db484d49c385be96fc78b5d14d3d8fcc1dc3b69bab293f5",
+      "bytes": 4891358
+    },
+    {
+      "path": "build/sol-contact-application/core-001/windows/shared-granular-bodies-extended360-active-retain-w4-r0/shared-granular-bodies-extended360-LA-SELECTIVE-w4-r0-prefix180.cyps",
+      "sha256": "db3bf48489c254787bb4a186bd48cbdce8167f07698460147ef6d8e7679f5cb8",
+      "bytes": 4891390
+    },
+    {
+      "path": "build/sol-contact-application/core-001/windows/shared-granular-bodies-extended360-active-retain-w4-r0/shared-granular-bodies-extended360-LA-SELECTIVE-w4-r0-final.cyps",
+      "sha256": "4c31ef1f02543861f82f70b579e4a7460c79ddadd28eacd7454c94e40c1b2615",
+      "bytes": 4891390
+    },
+    {
+      "path": "build/sol-contact-application/analysis-001/windows-reduction/windows-shared-granular-bodies-extended360-active-retain-w4-r0.json",
+      "sha256": "9d9b4753135eae4a27c88f37c7e7da8561c9a07f4960cc8ccd09990fff8fad3a",
+      "bytes": 1437146
+    },
+    {
+      "path": "build/sol-contact-application/analysis-001/linux-reduction/windows-shared-granular-bodies-extended360-active-retain-w4-r0.json",
+      "sha256": "9d9b4753135eae4a27c88f37c7e7da8561c9a07f4960cc8ccd09990fff8fad3a",
+      "bytes": 1437146
+    },
+    {
+      "path": "build/sol-contact-application/core-001/windows/barrel-constrained-valid-original-baseline-w4-r0/barrel-constrained-valid-LA-SELECTIVE-w4-r0.json",
+      "sha256": "7fc3d20435457f151b3a3b2e8db9e4041a223805c40fe3290ef6e1783c0962bc",
+      "bytes": 2634232
+    },
+    {
+      "path": "build/sol-contact-application/core-001/windows/barrel-constrained-valid-original-baseline-w4-r0/barrel-constrained-valid-LA-SELECTIVE-w4-r0-initial.cyps",
+      "sha256": "2abf06a9c0534106fd3164cbdc2ba91742a91b8f202ec421aeafc05e8bb92b20",
+      "bytes": 4891358
+    },
+    {
+      "path": "build/sol-contact-application/core-001/windows/barrel-constrained-valid-original-baseline-w4-r0/barrel-constrained-valid-LA-SELECTIVE-w4-r0-final.cyps",
+      "sha256": "78d3414eef05d6edc8db565547e9c6785503135db7a9b01928c1706ad7da2075",
+      "bytes": 4891390
+    },
+    {
+      "path": "build/sol-contact-application/analysis-001/windows-reduction/windows-barrel-constrained-valid-original-baseline-w4-r0.json",
+      "sha256": "e70ddcaf1400843da932d78e64fa367625bef24284d8d910382e5249098e5013",
+      "bytes": 467825
+    },
+    {
+      "path": "build/sol-contact-application/analysis-001/linux-reduction/windows-barrel-constrained-valid-original-baseline-w4-r0.json",
+      "sha256": "e70ddcaf1400843da932d78e64fa367625bef24284d8d910382e5249098e5013",
+      "bytes": 467825
+    },
+    {
+      "path": "build/sol-contact-application/core-001/windows/barrel-constrained-valid-active-baseline-w4-r0/barrel-constrained-valid-LA-SELECTIVE-w4-r0.json",
+      "sha256": "f759173faa60f8d18552dcb685d50169c103909d97646d7505bb7443f3419766",
+      "bytes": 2631775
+    },
+    {
+      "path": "build/sol-contact-application/core-001/windows/barrel-constrained-valid-active-baseline-w4-r0/barrel-constrained-valid-LA-SELECTIVE-w4-r0-initial.cyps",
+      "sha256": "2abf06a9c0534106fd3164cbdc2ba91742a91b8f202ec421aeafc05e8bb92b20",
+      "bytes": 4891358
+    },
+    {
+      "path": "build/sol-contact-application/core-001/windows/barrel-constrained-valid-active-baseline-w4-r0/barrel-constrained-valid-LA-SELECTIVE-w4-r0-final.cyps",
+      "sha256": "80096ec1852634b6a9fcb3b22c4a3009be9567f0a51b0c3de619b4a623a6b491",
+      "bytes": 4891390
+    },
+    {
+      "path": "build/sol-contact-application/analysis-001/windows-reduction/windows-barrel-constrained-valid-active-baseline-w4-r0.json",
+      "sha256": "956050c5e9f21ed7674d8064a5cdc0cfc465aba9706c0a2eabcd7108ed9cd58a",
+      "bytes": 463596
+    },
+    {
+      "path": "build/sol-contact-application/analysis-001/linux-reduction/windows-barrel-constrained-valid-active-baseline-w4-r0.json",
+      "sha256": "956050c5e9f21ed7674d8064a5cdc0cfc465aba9706c0a2eabcd7108ed9cd58a",
+      "bytes": 463596
+    },
+    {
+      "path": "build/sol-contact-application/core-001/windows/barrel-constrained-valid-original-retain-w4-r0/barrel-constrained-valid-LA-SELECTIVE-w4-r0.json",
+      "sha256": "ef707458ec05183e247a99a922bf66cc0e79318a9432aaa95970a4c9a09c0056",
+      "bytes": 2706046
+    },
+    {
+      "path": "build/sol-contact-application/core-001/windows/barrel-constrained-valid-original-retain-w4-r0/barrel-constrained-valid-LA-SELECTIVE-w4-r0-initial.cyps",
+      "sha256": "2abf06a9c0534106fd3164cbdc2ba91742a91b8f202ec421aeafc05e8bb92b20",
+      "bytes": 4891358
+    },
+    {
+      "path": "build/sol-contact-application/core-001/windows/barrel-constrained-valid-original-retain-w4-r0/barrel-constrained-valid-LA-SELECTIVE-w4-r0-final.cyps",
+      "sha256": "bbede8ca017bd806e17bad08c2bd0b0cf267932ab7743e2009aaac1624aa7d5b",
+      "bytes": 4891390
+    },
+    {
+      "path": "build/sol-contact-application/analysis-001/windows-reduction/windows-barrel-constrained-valid-original-retain-w4-r0.json",
+      "sha256": "15f53bcd1b5a2da166dc300760b1d67211ec8b1358b4181f7be9691748b64d5f",
+      "bytes": 478977
+    },
+    {
+      "path": "build/sol-contact-application/analysis-001/linux-reduction/windows-barrel-constrained-valid-original-retain-w4-r0.json",
+      "sha256": "15f53bcd1b5a2da166dc300760b1d67211ec8b1358b4181f7be9691748b64d5f",
+      "bytes": 478977
+    },
+    {
+      "path": "build/sol-contact-application/core-001/windows/barrel-constrained-valid-active-retain-w4-r0/barrel-constrained-valid-LA-SELECTIVE-w4-r0.json",
+      "sha256": "ce70bf3321c1afb61ff0c452e1a1cb95fec8bf09371919600105648304ef7ce2",
+      "bytes": 2711660
+    },
+    {
+      "path": "build/sol-contact-application/core-001/windows/barrel-constrained-valid-active-retain-w4-r0/barrel-constrained-valid-LA-SELECTIVE-w4-r0-initial.cyps",
+      "sha256": "2abf06a9c0534106fd3164cbdc2ba91742a91b8f202ec421aeafc05e8bb92b20",
+      "bytes": 4891358
+    },
+    {
+      "path": "build/sol-contact-application/core-001/windows/barrel-constrained-valid-active-retain-w4-r0/barrel-constrained-valid-LA-SELECTIVE-w4-r0-final.cyps",
+      "sha256": "8dfab7052aee2113e923443c16fa185df0de25d9dd85d2c508ffce6ef7fb2c74",
+      "bytes": 4891390
+    },
+    {
+      "path": "build/sol-contact-application/analysis-001/windows-reduction/windows-barrel-constrained-valid-active-retain-w4-r0.json",
+      "sha256": "6f0e5000e6a2af5f2aabf3f15da312e7f995db2f9e78b0e6c0b45a49df3d578d",
+      "bytes": 468431
+    },
+    {
+      "path": "build/sol-contact-application/analysis-001/linux-reduction/windows-barrel-constrained-valid-active-retain-w4-r0.json",
+      "sha256": "6f0e5000e6a2af5f2aabf3f15da312e7f995db2f9e78b0e6c0b45a49df3d578d",
+      "bytes": 468431
+    },
+    {
+      "path": "build/sol-contact-application/core-001/windows/barrel-rest-original-baseline-w4-r0/barrel-rest-LA-SELECTIVE-w4-r0.json",
+      "sha256": "79e6820b37f7a1992232cd8efe47ed71b37763c130315fdc84aadb7a6bf5c41c",
+      "bytes": 2540235
+    },
+    {
+      "path": "build/sol-contact-application/core-001/windows/barrel-rest-original-baseline-w4-r0/barrel-rest-LA-SELECTIVE-w4-r0-initial.cyps",
+      "sha256": "0fc2aafef2c76f240a2277998deeeeca1882e1716bf9eae57b28532396eed1a3",
+      "bytes": 4891358
+    },
+    {
+      "path": "build/sol-contact-application/core-001/windows/barrel-rest-original-baseline-w4-r0/barrel-rest-LA-SELECTIVE-w4-r0-final.cyps",
+      "sha256": "69757224854adaad2b2902b1a0b75db2e5c19fc1635df2c3fba6a280ba3f2770",
+      "bytes": 4891390
+    },
+    {
+      "path": "build/sol-contact-application/analysis-001/windows-reduction/windows-barrel-rest-original-baseline-w4-r0.json",
+      "sha256": "f34c1a06bdf0d129efa2074b30115c0152070cf882ccf2ced9c8a6bd43466797",
+      "bytes": 452871
+    },
+    {
+      "path": "build/sol-contact-application/analysis-001/linux-reduction/windows-barrel-rest-original-baseline-w4-r0.json",
+      "sha256": "f34c1a06bdf0d129efa2074b30115c0152070cf882ccf2ced9c8a6bd43466797",
+      "bytes": 452871
+    },
+    {
+      "path": "build/sol-contact-application/core-001/windows/barrel-rest-active-baseline-w4-r0/barrel-rest-LA-SELECTIVE-w4-r0.json",
+      "sha256": "6838e2bbd78ef5aa11a377c3731861e8875246508eeae0baa371abfec22018e4",
+      "bytes": 2546642
+    },
+    {
+      "path": "build/sol-contact-application/core-001/windows/barrel-rest-active-baseline-w4-r0/barrel-rest-LA-SELECTIVE-w4-r0-initial.cyps",
+      "sha256": "0fc2aafef2c76f240a2277998deeeeca1882e1716bf9eae57b28532396eed1a3",
+      "bytes": 4891358
+    },
+    {
+      "path": "build/sol-contact-application/core-001/windows/barrel-rest-active-baseline-w4-r0/barrel-rest-LA-SELECTIVE-w4-r0-final.cyps",
+      "sha256": "69757224854adaad2b2902b1a0b75db2e5c19fc1635df2c3fba6a280ba3f2770",
+      "bytes": 4891390
+    },
+    {
+      "path": "build/sol-contact-application/analysis-001/windows-reduction/windows-barrel-rest-active-baseline-w4-r0.json",
+      "sha256": "fef792d9c33eb80016367c205dab368bfa8f5cede417b319d891c31fdab8e6eb",
+      "bytes": 452874
+    },
+    {
+      "path": "build/sol-contact-application/analysis-001/linux-reduction/windows-barrel-rest-active-baseline-w4-r0.json",
+      "sha256": "fef792d9c33eb80016367c205dab368bfa8f5cede417b319d891c31fdab8e6eb",
+      "bytes": 452874
+    },
+    {
+      "path": "build/sol-contact-application/core-001/windows/barrel-rest-original-retain-w4-r0/barrel-rest-LA-SELECTIVE-w4-r0.json",
+      "sha256": "3291b266f738d9228ee092887b54a32291f4dc3f818575710e5adb285168f875",
+      "bytes": 2633598
+    },
+    {
+      "path": "build/sol-contact-application/core-001/windows/barrel-rest-original-retain-w4-r0/barrel-rest-LA-SELECTIVE-w4-r0-initial.cyps",
+      "sha256": "0fc2aafef2c76f240a2277998deeeeca1882e1716bf9eae57b28532396eed1a3",
+      "bytes": 4891358
+    },
+    {
+      "path": "build/sol-contact-application/core-001/windows/barrel-rest-original-retain-w4-r0/barrel-rest-LA-SELECTIVE-w4-r0-final.cyps",
+      "sha256": "7314e5e870d483cda8ae565c59caa7ea58f89e092470a449c7fe7a633607864c",
+      "bytes": 4891390
+    },
+    {
+      "path": "build/sol-contact-application/analysis-001/windows-reduction/windows-barrel-rest-original-retain-w4-r0.json",
+      "sha256": "40fac2c3ddd2a91dc2b3441655c310ce8e26721118dec8b64d5c493b3f0146b5",
+      "bytes": 470715
+    },
+    {
+      "path": "build/sol-contact-application/analysis-001/linux-reduction/windows-barrel-rest-original-retain-w4-r0.json",
+      "sha256": "40fac2c3ddd2a91dc2b3441655c310ce8e26721118dec8b64d5c493b3f0146b5",
+      "bytes": 470715
+    },
+    {
+      "path": "build/sol-contact-application/core-001/windows/barrel-rest-active-retain-w4-r0/barrel-rest-LA-SELECTIVE-w4-r0.json",
+      "sha256": "94b78fe2edabc5613371e6befd8a427e5ec1ad350ba426fb41bb2966180e629f",
+      "bytes": 2641697
+    },
+    {
+      "path": "build/sol-contact-application/core-001/windows/barrel-rest-active-retain-w4-r0/barrel-rest-LA-SELECTIVE-w4-r0-initial.cyps",
+      "sha256": "0fc2aafef2c76f240a2277998deeeeca1882e1716bf9eae57b28532396eed1a3",
+      "bytes": 4891358
+    },
+    {
+      "path": "build/sol-contact-application/core-001/windows/barrel-rest-active-retain-w4-r0/barrel-rest-LA-SELECTIVE-w4-r0-final.cyps",
+      "sha256": "7314e5e870d483cda8ae565c59caa7ea58f89e092470a449c7fe7a633607864c",
+      "bytes": 4891390
+    },
+    {
+      "path": "build/sol-contact-application/analysis-001/windows-reduction/windows-barrel-rest-active-retain-w4-r0.json",
+      "sha256": "2343f36e9744cb31cc17ef8fb92d3648f0ed987440145d291b1571d756150648",
+      "bytes": 470821
+    },
+    {
+      "path": "build/sol-contact-application/analysis-001/linux-reduction/windows-barrel-rest-active-retain-w4-r0.json",
+      "sha256": "2343f36e9744cb31cc17ef8fb92d3648f0ed987440145d291b1571d756150648",
+      "bytes": 470821
+    },
+    {
+      "path": "build/sol-contact-application/core-001/linux/shared-granular-bodies-extended360-original-baseline-w1-r0/shared-granular-bodies-extended360-LA-SELECTIVE-w1-r0.json",
+      "sha256": "26df5e5a18d18c70c65dca4b897120ce917fe3c707110fdf740b8d1d7f0c8d36",
+      "bytes": 6376031
+    },
+    {
+      "path": "build/sol-contact-application/core-001/linux/shared-granular-bodies-extended360-original-baseline-w1-r0/shared-granular-bodies-extended360-LA-SELECTIVE-w1-r0-initial.cyps",
+      "sha256": "bafc82a9b23c68a02db484d49c385be96fc78b5d14d3d8fcc1dc3b69bab293f5",
+      "bytes": 4891358
+    },
+    {
+      "path": "build/sol-contact-application/core-001/linux/shared-granular-bodies-extended360-original-baseline-w1-r0/shared-granular-bodies-extended360-LA-SELECTIVE-w1-r0-prefix180.cyps",
+      "sha256": "cac46b92d5279a59ddd3bc27b9aca5cae2a197decfced7809d7f3b26552a26cb",
+      "bytes": 4891390
+    },
+    {
+      "path": "build/sol-contact-application/core-001/linux/shared-granular-bodies-extended360-original-baseline-w1-r0/shared-granular-bodies-extended360-LA-SELECTIVE-w1-r0-final.cyps",
+      "sha256": "f652f8531e8c2d063616e1c111986a883145d46c4272f4f0064326a09babd29a",
+      "bytes": 4891390
+    },
+    {
+      "path": "build/sol-contact-application/analysis-001/windows-reduction/linux-shared-granular-bodies-extended360-original-baseline-w1-r0.json",
+      "sha256": "0d942b68ab167dd224af0475f6ba270b218a7c5d32474f2681db331fc8549130",
+      "bytes": 1388205
+    },
+    {
+      "path": "build/sol-contact-application/analysis-001/linux-reduction/linux-shared-granular-bodies-extended360-original-baseline-w1-r0.json",
+      "sha256": "0d942b68ab167dd224af0475f6ba270b218a7c5d32474f2681db331fc8549130",
+      "bytes": 1388205
+    },
+    {
+      "path": "build/sol-contact-application/core-001/linux/shared-granular-bodies-extended360-active-baseline-w1-r0/shared-granular-bodies-extended360-LA-SELECTIVE-w1-r0.json",
+      "sha256": "0629ed7882102e19d47bbd7df54c79167b2fdf0754aecef30c3e546a8be28e69",
+      "bytes": 6379779
+    },
+    {
+      "path": "build/sol-contact-application/core-001/linux/shared-granular-bodies-extended360-active-baseline-w1-r0/shared-granular-bodies-extended360-LA-SELECTIVE-w1-r0-initial.cyps",
+      "sha256": "bafc82a9b23c68a02db484d49c385be96fc78b5d14d3d8fcc1dc3b69bab293f5",
+      "bytes": 4891358
+    },
+    {
+      "path": "build/sol-contact-application/core-001/linux/shared-granular-bodies-extended360-active-baseline-w1-r0/shared-granular-bodies-extended360-LA-SELECTIVE-w1-r0-prefix180.cyps",
+      "sha256": "f048b8e66262f0634df2bd8721e5874e8b0398067aba5a11c28fb8f34056981b",
+      "bytes": 4891390
+    },
+    {
+      "path": "build/sol-contact-application/core-001/linux/shared-granular-bodies-extended360-active-baseline-w1-r0/shared-granular-bodies-extended360-LA-SELECTIVE-w1-r0-final.cyps",
+      "sha256": "9adb8b947518f24e62e731dfd9cba78b4fb68c80c2947716c091400237c8dcca",
+      "bytes": 4891390
+    },
+    {
+      "path": "build/sol-contact-application/analysis-001/windows-reduction/linux-shared-granular-bodies-extended360-active-baseline-w1-r0.json",
+      "sha256": "840af5d43c2405410ffa02cf8552de940600ade949bc3fe988d25d36f07dd27f",
+      "bytes": 1383536
+    },
+    {
+      "path": "build/sol-contact-application/analysis-001/linux-reduction/linux-shared-granular-bodies-extended360-active-baseline-w1-r0.json",
+      "sha256": "840af5d43c2405410ffa02cf8552de940600ade949bc3fe988d25d36f07dd27f",
+      "bytes": 1383536
+    },
+    {
+      "path": "build/sol-contact-application/core-001/linux/shared-granular-bodies-extended360-original-retain-w1-r0/shared-granular-bodies-extended360-LA-SELECTIVE-w1-r0.json",
+      "sha256": "ffbb381ad2522172fcdff77bd3b05ef58a5eef7677d9f75d93fe1e5c218be96e",
+      "bytes": 6587828
+    },
+    {
+      "path": "build/sol-contact-application/core-001/linux/shared-granular-bodies-extended360-original-retain-w1-r0/shared-granular-bodies-extended360-LA-SELECTIVE-w1-r0-initial.cyps",
+      "sha256": "bafc82a9b23c68a02db484d49c385be96fc78b5d14d3d8fcc1dc3b69bab293f5",
+      "bytes": 4891358
+    },
+    {
+      "path": "build/sol-contact-application/core-001/linux/shared-granular-bodies-extended360-original-retain-w1-r0/shared-granular-bodies-extended360-LA-SELECTIVE-w1-r0-prefix180.cyps",
+      "sha256": "31adcd6f51df46a5ea2848d85f880126a357e00c7d16c0bb2b19fd379f801836",
+      "bytes": 4891390
+    },
+    {
+      "path": "build/sol-contact-application/core-001/linux/shared-granular-bodies-extended360-original-retain-w1-r0/shared-granular-bodies-extended360-LA-SELECTIVE-w1-r0-final.cyps",
+      "sha256": "62b533c3b84d142826576c6e0f2bad5e00955ee86e0043f8c8af2c09afee1347",
+      "bytes": 4891390
+    },
+    {
+      "path": "build/sol-contact-application/analysis-001/windows-reduction/linux-shared-granular-bodies-extended360-original-retain-w1-r0.json",
+      "sha256": "123750893e6d9703a54697c3988d2909ec4e6f48f5e4a822316a01f2a83fac83",
+      "bytes": 1436644
+    },
+    {
+      "path": "build/sol-contact-application/analysis-001/linux-reduction/linux-shared-granular-bodies-extended360-original-retain-w1-r0.json",
+      "sha256": "123750893e6d9703a54697c3988d2909ec4e6f48f5e4a822316a01f2a83fac83",
+      "bytes": 1436644
+    },
+    {
+      "path": "build/sol-contact-application/core-001/linux/shared-granular-bodies-extended360-active-retain-w1-r0/shared-granular-bodies-extended360-LA-SELECTIVE-w1-r0.json",
+      "sha256": "3e3005e66fe9aef670cee134a88548c83ec6bfc7e86f23252efa0f8bca469ae3",
+      "bytes": 6599462
+    },
+    {
+      "path": "build/sol-contact-application/core-001/linux/shared-granular-bodies-extended360-active-retain-w1-r0/shared-granular-bodies-extended360-LA-SELECTIVE-w1-r0-initial.cyps",
+      "sha256": "bafc82a9b23c68a02db484d49c385be96fc78b5d14d3d8fcc1dc3b69bab293f5",
+      "bytes": 4891358
+    },
+    {
+      "path": "build/sol-contact-application/core-001/linux/shared-granular-bodies-extended360-active-retain-w1-r0/shared-granular-bodies-extended360-LA-SELECTIVE-w1-r0-prefix180.cyps",
+      "sha256": "db3bf48489c254787bb4a186bd48cbdce8167f07698460147ef6d8e7679f5cb8",
+      "bytes": 4891390
+    },
+    {
+      "path": "build/sol-contact-application/core-001/linux/shared-granular-bodies-extended360-active-retain-w1-r0/shared-granular-bodies-extended360-LA-SELECTIVE-w1-r0-final.cyps",
+      "sha256": "4c31ef1f02543861f82f70b579e4a7460c79ddadd28eacd7454c94e40c1b2615",
+      "bytes": 4891390
+    },
+    {
+      "path": "build/sol-contact-application/analysis-001/windows-reduction/linux-shared-granular-bodies-extended360-active-retain-w1-r0.json",
+      "sha256": "62a0c381c483db929da4be70581abded77137d85e7c0ac61b1ef130c59a2eb87",
+      "bytes": 1437055
+    },
+    {
+      "path": "build/sol-contact-application/analysis-001/linux-reduction/linux-shared-granular-bodies-extended360-active-retain-w1-r0.json",
+      "sha256": "62a0c381c483db929da4be70581abded77137d85e7c0ac61b1ef130c59a2eb87",
+      "bytes": 1437055
+    },
+    {
+      "path": "build/sol-contact-application/core-001/linux/barrel-constrained-valid-original-baseline-w1-r0/barrel-constrained-valid-LA-SELECTIVE-w1-r0.json",
+      "sha256": "2116d92e95d42bef652d6e8d96b7554ec1f5b4c3dcfc0bdbbd54ec89c8c6e5e2",
+      "bytes": 2634555
+    },
+    {
+      "path": "build/sol-contact-application/core-001/linux/barrel-constrained-valid-original-baseline-w1-r0/barrel-constrained-valid-LA-SELECTIVE-w1-r0-initial.cyps",
+      "sha256": "2abf06a9c0534106fd3164cbdc2ba91742a91b8f202ec421aeafc05e8bb92b20",
+      "bytes": 4891358
+    },
+    {
+      "path": "build/sol-contact-application/core-001/linux/barrel-constrained-valid-original-baseline-w1-r0/barrel-constrained-valid-LA-SELECTIVE-w1-r0-final.cyps",
+      "sha256": "78d3414eef05d6edc8db565547e9c6785503135db7a9b01928c1706ad7da2075",
+      "bytes": 4891390
+    },
+    {
+      "path": "build/sol-contact-application/analysis-001/windows-reduction/linux-barrel-constrained-valid-original-baseline-w1-r0.json",
+      "sha256": "11b1327bb969678a3301feda05668f2f4220a9b9994e8acf836ca72ea098bc34",
+      "bytes": 467771
+    },
+    {
+      "path": "build/sol-contact-application/analysis-001/linux-reduction/linux-barrel-constrained-valid-original-baseline-w1-r0.json",
+      "sha256": "11b1327bb969678a3301feda05668f2f4220a9b9994e8acf836ca72ea098bc34",
+      "bytes": 467771
+    },
+    {
+      "path": "build/sol-contact-application/core-001/linux/barrel-constrained-valid-active-baseline-w1-r0/barrel-constrained-valid-LA-SELECTIVE-w1-r0.json",
+      "sha256": "6815bded6d86162f61406f123a290d4148138f48c8636336948dc904cafd1366",
+      "bytes": 2632022
+    },
+    {
+      "path": "build/sol-contact-application/core-001/linux/barrel-constrained-valid-active-baseline-w1-r0/barrel-constrained-valid-LA-SELECTIVE-w1-r0-initial.cyps",
+      "sha256": "2abf06a9c0534106fd3164cbdc2ba91742a91b8f202ec421aeafc05e8bb92b20",
+      "bytes": 4891358
+    },
+    {
+      "path": "build/sol-contact-application/core-001/linux/barrel-constrained-valid-active-baseline-w1-r0/barrel-constrained-valid-LA-SELECTIVE-w1-r0-final.cyps",
+      "sha256": "80096ec1852634b6a9fcb3b22c4a3009be9567f0a51b0c3de619b4a623a6b491",
+      "bytes": 4891390
+    },
+    {
+      "path": "build/sol-contact-application/analysis-001/windows-reduction/linux-barrel-constrained-valid-active-baseline-w1-r0.json",
+      "sha256": "14f4f25310abcaf157b5d60c2c693517d0d9203d56bfb5f1ded2af5252da8f77",
+      "bytes": 463545
+    },
+    {
+      "path": "build/sol-contact-application/analysis-001/linux-reduction/linux-barrel-constrained-valid-active-baseline-w1-r0.json",
+      "sha256": "14f4f25310abcaf157b5d60c2c693517d0d9203d56bfb5f1ded2af5252da8f77",
+      "bytes": 463545
+    },
+    {
+      "path": "build/sol-contact-application/core-001/linux/barrel-constrained-valid-original-retain-w1-r0/barrel-constrained-valid-LA-SELECTIVE-w1-r0.json",
+      "sha256": "83cddaea705706ae323f66ec83c531ab2d1a6bf3bc2968fbcb07b8f582ad3dc5",
+      "bytes": 2706511
+    },
+    {
+      "path": "build/sol-contact-application/core-001/linux/barrel-constrained-valid-original-retain-w1-r0/barrel-constrained-valid-LA-SELECTIVE-w1-r0-initial.cyps",
+      "sha256": "2abf06a9c0534106fd3164cbdc2ba91742a91b8f202ec421aeafc05e8bb92b20",
+      "bytes": 4891358
+    },
+    {
+      "path": "build/sol-contact-application/core-001/linux/barrel-constrained-valid-original-retain-w1-r0/barrel-constrained-valid-LA-SELECTIVE-w1-r0-final.cyps",
+      "sha256": "bbede8ca017bd806e17bad08c2bd0b0cf267932ab7743e2009aaac1624aa7d5b",
+      "bytes": 4891390
+    },
+    {
+      "path": "build/sol-contact-application/analysis-001/windows-reduction/linux-barrel-constrained-valid-original-retain-w1-r0.json",
+      "sha256": "59304a8a85f71d34e21a9e9a48a0be11bf80ccbdffc68cfd1cb12958b9eb05b5",
+      "bytes": 478945
+    },
+    {
+      "path": "build/sol-contact-application/analysis-001/linux-reduction/linux-barrel-constrained-valid-original-retain-w1-r0.json",
+      "sha256": "59304a8a85f71d34e21a9e9a48a0be11bf80ccbdffc68cfd1cb12958b9eb05b5",
+      "bytes": 478945
+    },
+    {
+      "path": "build/sol-contact-application/core-001/linux/barrel-constrained-valid-active-retain-w1-r0/barrel-constrained-valid-LA-SELECTIVE-w1-r0.json",
+      "sha256": "995938152858465fa83197fd4c22b893e3b4975d24e64df3a08a515b34b7433f",
+      "bytes": 2712069
+    },
+    {
+      "path": "build/sol-contact-application/core-001/linux/barrel-constrained-valid-active-retain-w1-r0/barrel-constrained-valid-LA-SELECTIVE-w1-r0-initial.cyps",
+      "sha256": "2abf06a9c0534106fd3164cbdc2ba91742a91b8f202ec421aeafc05e8bb92b20",
+      "bytes": 4891358
+    },
+    {
+      "path": "build/sol-contact-application/core-001/linux/barrel-constrained-valid-active-retain-w1-r0/barrel-constrained-valid-LA-SELECTIVE-w1-r0-final.cyps",
+      "sha256": "8dfab7052aee2113e923443c16fa185df0de25d9dd85d2c508ffce6ef7fb2c74",
+      "bytes": 4891390
+    },
+    {
+      "path": "build/sol-contact-application/analysis-001/windows-reduction/linux-barrel-constrained-valid-active-retain-w1-r0.json",
+      "sha256": "72db492ce4887698f2a09e5620fda57302ac3b95980286f88d46a2061237b23a",
+      "bytes": 468396
+    },
+    {
+      "path": "build/sol-contact-application/analysis-001/linux-reduction/linux-barrel-constrained-valid-active-retain-w1-r0.json",
+      "sha256": "72db492ce4887698f2a09e5620fda57302ac3b95980286f88d46a2061237b23a",
+      "bytes": 468396
+    },
+    {
+      "path": "build/sol-contact-application/core-001/linux/barrel-rest-original-baseline-w1-r0/barrel-rest-LA-SELECTIVE-w1-r0.json",
+      "sha256": "f270cb0c560ab7b89c96496a851908f8509ae2d4d30982cbe8dec55fe61add4a",
+      "bytes": 2540349
+    },
+    {
+      "path": "build/sol-contact-application/core-001/linux/barrel-rest-original-baseline-w1-r0/barrel-rest-LA-SELECTIVE-w1-r0-initial.cyps",
+      "sha256": "0fc2aafef2c76f240a2277998deeeeca1882e1716bf9eae57b28532396eed1a3",
+      "bytes": 4891358
+    },
+    {
+      "path": "build/sol-contact-application/core-001/linux/barrel-rest-original-baseline-w1-r0/barrel-rest-LA-SELECTIVE-w1-r0-final.cyps",
+      "sha256": "69757224854adaad2b2902b1a0b75db2e5c19fc1635df2c3fba6a280ba3f2770",
+      "bytes": 4891390
+    },
+    {
+      "path": "build/sol-contact-application/analysis-001/windows-reduction/linux-barrel-rest-original-baseline-w1-r0.json",
+      "sha256": "33936c17e83be60dbada0a5153052a5a46aa31ec0b6a87956eef3665ab241032",
+      "bytes": 452823
+    },
+    {
+      "path": "build/sol-contact-application/analysis-001/linux-reduction/linux-barrel-rest-original-baseline-w1-r0.json",
+      "sha256": "33936c17e83be60dbada0a5153052a5a46aa31ec0b6a87956eef3665ab241032",
+      "bytes": 452823
+    },
+    {
+      "path": "build/sol-contact-application/core-001/linux/barrel-rest-active-baseline-w1-r0/barrel-rest-LA-SELECTIVE-w1-r0.json",
+      "sha256": "04fb5263fe704a4253ec9e31f6c083dff124f0283f31a95e750e14d47a2649c2",
+      "bytes": 2546848
+    },
+    {
+      "path": "build/sol-contact-application/core-001/linux/barrel-rest-active-baseline-w1-r0/barrel-rest-LA-SELECTIVE-w1-r0-initial.cyps",
+      "sha256": "0fc2aafef2c76f240a2277998deeeeca1882e1716bf9eae57b28532396eed1a3",
+      "bytes": 4891358
+    },
+    {
+      "path": "build/sol-contact-application/core-001/linux/barrel-rest-active-baseline-w1-r0/barrel-rest-LA-SELECTIVE-w1-r0-final.cyps",
+      "sha256": "69757224854adaad2b2902b1a0b75db2e5c19fc1635df2c3fba6a280ba3f2770",
+      "bytes": 4891390
+    },
+    {
+      "path": "build/sol-contact-application/analysis-001/windows-reduction/linux-barrel-rest-active-baseline-w1-r0.json",
+      "sha256": "172bfacaf90e2b04315afd6c772b4585ebe1c4f9fa3ef26a2eda2852ada36ef4",
+      "bytes": 452815
+    },
+    {
+      "path": "build/sol-contact-application/analysis-001/linux-reduction/linux-barrel-rest-active-baseline-w1-r0.json",
+      "sha256": "172bfacaf90e2b04315afd6c772b4585ebe1c4f9fa3ef26a2eda2852ada36ef4",
+      "bytes": 452815
+    },
+    {
+      "path": "build/sol-contact-application/core-001/linux/barrel-rest-original-retain-w1-r0/barrel-rest-LA-SELECTIVE-w1-r0.json",
+      "sha256": "b015d9bab7435add0babf9ab35ea5bf36e50e81aefea2a6245e02824a0a5b687",
+      "bytes": 2633765
+    },
+    {
+      "path": "build/sol-contact-application/core-001/linux/barrel-rest-original-retain-w1-r0/barrel-rest-LA-SELECTIVE-w1-r0-initial.cyps",
+      "sha256": "0fc2aafef2c76f240a2277998deeeeca1882e1716bf9eae57b28532396eed1a3",
+      "bytes": 4891358
+    },
+    {
+      "path": "build/sol-contact-application/core-001/linux/barrel-rest-original-retain-w1-r0/barrel-rest-LA-SELECTIVE-w1-r0-final.cyps",
+      "sha256": "7314e5e870d483cda8ae565c59caa7ea58f89e092470a449c7fe7a633607864c",
+      "bytes": 4891390
+    },
+    {
+      "path": "build/sol-contact-application/analysis-001/windows-reduction/linux-barrel-rest-original-retain-w1-r0.json",
+      "sha256": "4debedcf92c0ef96c2f3ee4d3c6879d00b5f51d826298d71e079f6a29a874c84",
+      "bytes": 470666
+    },
+    {
+      "path": "build/sol-contact-application/analysis-001/linux-reduction/linux-barrel-rest-original-retain-w1-r0.json",
+      "sha256": "4debedcf92c0ef96c2f3ee4d3c6879d00b5f51d826298d71e079f6a29a874c84",
+      "bytes": 470666
+    },
+    {
+      "path": "build/sol-contact-application/core-001/linux/barrel-rest-active-retain-w1-r0/barrel-rest-LA-SELECTIVE-w1-r0.json",
+      "sha256": "a2cc01fc436dd3a5665c2f7df1b0ce474391ddfa86a9d19142f4b0918ff21274",
+      "bytes": 2642154
+    },
+    {
+      "path": "build/sol-contact-application/core-001/linux/barrel-rest-active-retain-w1-r0/barrel-rest-LA-SELECTIVE-w1-r0-initial.cyps",
+      "sha256": "0fc2aafef2c76f240a2277998deeeeca1882e1716bf9eae57b28532396eed1a3",
+      "bytes": 4891358
+    },
+    {
+      "path": "build/sol-contact-application/core-001/linux/barrel-rest-active-retain-w1-r0/barrel-rest-LA-SELECTIVE-w1-r0-final.cyps",
+      "sha256": "7314e5e870d483cda8ae565c59caa7ea58f89e092470a449c7fe7a633607864c",
+      "bytes": 4891390
+    },
+    {
+      "path": "build/sol-contact-application/analysis-001/windows-reduction/linux-barrel-rest-active-retain-w1-r0.json",
+      "sha256": "1e8020f36637faa40f629a679149df2b2871bdb0420397438dfbefe925ceec78",
+      "bytes": 470770
+    },
+    {
+      "path": "build/sol-contact-application/analysis-001/linux-reduction/linux-barrel-rest-active-retain-w1-r0.json",
+      "sha256": "1e8020f36637faa40f629a679149df2b2871bdb0420397438dfbefe925ceec78",
+      "bytes": 470770
+    },
+    {
+      "path": "build/sol-contact-application/core-001/linux/shared-granular-bodies-extended360-original-baseline-w4-r0/shared-granular-bodies-extended360-LA-SELECTIVE-w4-r0.json",
+      "sha256": "343780ab9bb44e1085ae08d4ad02497bb947291df9ecbf6279e70dec73245513",
+      "bytes": 6376116
+    },
+    {
+      "path": "build/sol-contact-application/core-001/linux/shared-granular-bodies-extended360-original-baseline-w4-r0/shared-granular-bodies-extended360-LA-SELECTIVE-w4-r0-initial.cyps",
+      "sha256": "bafc82a9b23c68a02db484d49c385be96fc78b5d14d3d8fcc1dc3b69bab293f5",
+      "bytes": 4891358
+    },
+    {
+      "path": "build/sol-contact-application/core-001/linux/shared-granular-bodies-extended360-original-baseline-w4-r0/shared-granular-bodies-extended360-LA-SELECTIVE-w4-r0-prefix180.cyps",
+      "sha256": "cac46b92d5279a59ddd3bc27b9aca5cae2a197decfced7809d7f3b26552a26cb",
+      "bytes": 4891390
+    },
+    {
+      "path": "build/sol-contact-application/core-001/linux/shared-granular-bodies-extended360-original-baseline-w4-r0/shared-granular-bodies-extended360-LA-SELECTIVE-w4-r0-final.cyps",
+      "sha256": "f652f8531e8c2d063616e1c111986a883145d46c4272f4f0064326a09babd29a",
+      "bytes": 4891390
+    },
+    {
+      "path": "build/sol-contact-application/analysis-001/windows-reduction/linux-shared-granular-bodies-extended360-original-baseline-w4-r0.json",
+      "sha256": "d1472f2134d20a54348b1c1037e8a9129c80574c593a01a66578a4f97d7e1166",
+      "bytes": 1388238
+    },
+    {
+      "path": "build/sol-contact-application/analysis-001/linux-reduction/linux-shared-granular-bodies-extended360-original-baseline-w4-r0.json",
+      "sha256": "d1472f2134d20a54348b1c1037e8a9129c80574c593a01a66578a4f97d7e1166",
+      "bytes": 1388238
+    },
+    {
+      "path": "build/sol-contact-application/core-001/linux/shared-granular-bodies-extended360-active-baseline-w4-r0/shared-granular-bodies-extended360-LA-SELECTIVE-w4-r0.json",
+      "sha256": "3d3f32cb922d6f05b765866a80e3c82b511deb1504102485403816c71b6e81f7",
+      "bytes": 6379718
+    },
+    {
+      "path": "build/sol-contact-application/core-001/linux/shared-granular-bodies-extended360-active-baseline-w4-r0/shared-granular-bodies-extended360-LA-SELECTIVE-w4-r0-initial.cyps",
+      "sha256": "bafc82a9b23c68a02db484d49c385be96fc78b5d14d3d8fcc1dc3b69bab293f5",
+      "bytes": 4891358
+    },
+    {
+      "path": "build/sol-contact-application/core-001/linux/shared-granular-bodies-extended360-active-baseline-w4-r0/shared-granular-bodies-extended360-LA-SELECTIVE-w4-r0-prefix180.cyps",
+      "sha256": "f048b8e66262f0634df2bd8721e5874e8b0398067aba5a11c28fb8f34056981b",
+      "bytes": 4891390
+    },
+    {
+      "path": "build/sol-contact-application/core-001/linux/shared-granular-bodies-extended360-active-baseline-w4-r0/shared-granular-bodies-extended360-LA-SELECTIVE-w4-r0-final.cyps",
+      "sha256": "9adb8b947518f24e62e731dfd9cba78b4fb68c80c2947716c091400237c8dcca",
+      "bytes": 4891390
+    },
+    {
+      "path": "build/sol-contact-application/analysis-001/windows-reduction/linux-shared-granular-bodies-extended360-active-baseline-w4-r0.json",
+      "sha256": "f8d570ba99fec94cc495a0329be1e2c4e4c5ea8127e7dedd3453a810898b4dec",
+      "bytes": 1383569
+    },
+    {
+      "path": "build/sol-contact-application/analysis-001/linux-reduction/linux-shared-granular-bodies-extended360-active-baseline-w4-r0.json",
+      "sha256": "f8d570ba99fec94cc495a0329be1e2c4e4c5ea8127e7dedd3453a810898b4dec",
+      "bytes": 1383569
+    },
+    {
+      "path": "build/sol-contact-application/core-001/linux/shared-granular-bodies-extended360-original-retain-w4-r0/shared-granular-bodies-extended360-LA-SELECTIVE-w4-r0.json",
+      "sha256": "c81e909b06d1a37b16fb6b8eb17d4558ce6449ff59df47edf262b236ed6c895d",
+      "bytes": 6587860
+    },
+    {
+      "path": "build/sol-contact-application/core-001/linux/shared-granular-bodies-extended360-original-retain-w4-r0/shared-granular-bodies-extended360-LA-SELECTIVE-w4-r0-initial.cyps",
+      "sha256": "bafc82a9b23c68a02db484d49c385be96fc78b5d14d3d8fcc1dc3b69bab293f5",
+      "bytes": 4891358
+    },
+    {
+      "path": "build/sol-contact-application/core-001/linux/shared-granular-bodies-extended360-original-retain-w4-r0/shared-granular-bodies-extended360-LA-SELECTIVE-w4-r0-prefix180.cyps",
+      "sha256": "31adcd6f51df46a5ea2848d85f880126a357e00c7d16c0bb2b19fd379f801836",
+      "bytes": 4891390
+    },
+    {
+      "path": "build/sol-contact-application/core-001/linux/shared-granular-bodies-extended360-original-retain-w4-r0/shared-granular-bodies-extended360-LA-SELECTIVE-w4-r0-final.cyps",
+      "sha256": "62b533c3b84d142826576c6e0f2bad5e00955ee86e0043f8c8af2c09afee1347",
+      "bytes": 4891390
+    },
+    {
+      "path": "build/sol-contact-application/analysis-001/windows-reduction/linux-shared-granular-bodies-extended360-original-retain-w4-r0.json",
+      "sha256": "e06cfcddeb18ae1a5cc1af5f6f407affee7af5ba038fc8f2209817c4a6984891",
+      "bytes": 1436675
+    },
+    {
+      "path": "build/sol-contact-application/analysis-001/linux-reduction/linux-shared-granular-bodies-extended360-original-retain-w4-r0.json",
+      "sha256": "e06cfcddeb18ae1a5cc1af5f6f407affee7af5ba038fc8f2209817c4a6984891",
+      "bytes": 1436675
+    },
+    {
+      "path": "build/sol-contact-application/core-001/linux/shared-granular-bodies-extended360-active-retain-w4-r0/shared-granular-bodies-extended360-LA-SELECTIVE-w4-r0.json",
+      "sha256": "651cdcd6e27f32270858a37b97176ac96cf6c08b671c11079068153fd44ec4e2",
+      "bytes": 6599378
+    },
+    {
+      "path": "build/sol-contact-application/core-001/linux/shared-granular-bodies-extended360-active-retain-w4-r0/shared-granular-bodies-extended360-LA-SELECTIVE-w4-r0-initial.cyps",
+      "sha256": "bafc82a9b23c68a02db484d49c385be96fc78b5d14d3d8fcc1dc3b69bab293f5",
+      "bytes": 4891358
+    },
+    {
+      "path": "build/sol-contact-application/core-001/linux/shared-granular-bodies-extended360-active-retain-w4-r0/shared-granular-bodies-extended360-LA-SELECTIVE-w4-r0-prefix180.cyps",
+      "sha256": "db3bf48489c254787bb4a186bd48cbdce8167f07698460147ef6d8e7679f5cb8",
+      "bytes": 4891390
+    },
+    {
+      "path": "build/sol-contact-application/core-001/linux/shared-granular-bodies-extended360-active-retain-w4-r0/shared-granular-bodies-extended360-LA-SELECTIVE-w4-r0-final.cyps",
+      "sha256": "4c31ef1f02543861f82f70b579e4a7460c79ddadd28eacd7454c94e40c1b2615",
+      "bytes": 4891390
+    },
+    {
+      "path": "build/sol-contact-application/analysis-001/windows-reduction/linux-shared-granular-bodies-extended360-active-retain-w4-r0.json",
+      "sha256": "cd47b3c2a3f30e1a8a14f1e8e72d7eda06711da6844cf822a22a91645b90d616",
+      "bytes": 1437083
+    },
+    {
+      "path": "build/sol-contact-application/analysis-001/linux-reduction/linux-shared-granular-bodies-extended360-active-retain-w4-r0.json",
+      "sha256": "cd47b3c2a3f30e1a8a14f1e8e72d7eda06711da6844cf822a22a91645b90d616",
+      "bytes": 1437083
+    },
+    {
+      "path": "build/sol-contact-application/core-001/linux/barrel-constrained-valid-original-baseline-w4-r0/barrel-constrained-valid-LA-SELECTIVE-w4-r0.json",
+      "sha256": "06fb709339a61ae5bbfc9843d03bc07d29311bc43672fca55634b827f19ddaf6",
+      "bytes": 2634604
+    },
+    {
+      "path": "build/sol-contact-application/core-001/linux/barrel-constrained-valid-original-baseline-w4-r0/barrel-constrained-valid-LA-SELECTIVE-w4-r0-initial.cyps",
+      "sha256": "2abf06a9c0534106fd3164cbdc2ba91742a91b8f202ec421aeafc05e8bb92b20",
+      "bytes": 4891358
+    },
+    {
+      "path": "build/sol-contact-application/core-001/linux/barrel-constrained-valid-original-baseline-w4-r0/barrel-constrained-valid-LA-SELECTIVE-w4-r0-final.cyps",
+      "sha256": "78d3414eef05d6edc8db565547e9c6785503135db7a9b01928c1706ad7da2075",
+      "bytes": 4891390
+    },
+    {
+      "path": "build/sol-contact-application/analysis-001/windows-reduction/linux-barrel-constrained-valid-original-baseline-w4-r0.json",
+      "sha256": "324c7057ca742ec38af430ffd22cc3df2f72a3399f62efacbcdf03de0b4cfa2a",
+      "bytes": 467824
+    },
+    {
+      "path": "build/sol-contact-application/analysis-001/linux-reduction/linux-barrel-constrained-valid-original-baseline-w4-r0.json",
+      "sha256": "324c7057ca742ec38af430ffd22cc3df2f72a3399f62efacbcdf03de0b4cfa2a",
+      "bytes": 467824
+    },
+    {
+      "path": "build/sol-contact-application/core-001/linux/barrel-constrained-valid-active-baseline-w4-r0/barrel-constrained-valid-LA-SELECTIVE-w4-r0.json",
+      "sha256": "513e91a9890e2ccf6378a3a24c80665b56274eeb400431f8e269640ab7b45add",
+      "bytes": 2632158
+    },
+    {
+      "path": "build/sol-contact-application/core-001/linux/barrel-constrained-valid-active-baseline-w4-r0/barrel-constrained-valid-LA-SELECTIVE-w4-r0-initial.cyps",
+      "sha256": "2abf06a9c0534106fd3164cbdc2ba91742a91b8f202ec421aeafc05e8bb92b20",
+      "bytes": 4891358
+    },
+    {
+      "path": "build/sol-contact-application/core-001/linux/barrel-constrained-valid-active-baseline-w4-r0/barrel-constrained-valid-LA-SELECTIVE-w4-r0-final.cyps",
+      "sha256": "80096ec1852634b6a9fcb3b22c4a3009be9567f0a51b0c3de619b4a623a6b491",
+      "bytes": 4891390
+    },
+    {
+      "path": "build/sol-contact-application/analysis-001/windows-reduction/linux-barrel-constrained-valid-active-baseline-w4-r0.json",
+      "sha256": "edb5f36b51f2ad578608fe145f50a1ff1a468ea7ae5de88f97055a85bfb6f39b",
+      "bytes": 463590
+    },
+    {
+      "path": "build/sol-contact-application/analysis-001/linux-reduction/linux-barrel-constrained-valid-active-baseline-w4-r0.json",
+      "sha256": "edb5f36b51f2ad578608fe145f50a1ff1a468ea7ae5de88f97055a85bfb6f39b",
+      "bytes": 463590
+    },
+    {
+      "path": "build/sol-contact-application/core-001/linux/barrel-constrained-valid-original-retain-w4-r0/barrel-constrained-valid-LA-SELECTIVE-w4-r0.json",
+      "sha256": "5b3eca8ded088a6f66646a4976b0f8ef53e5d9690629de9b1e72273b7fdb5d04",
+      "bytes": 2706647
+    },
+    {
+      "path": "build/sol-contact-application/core-001/linux/barrel-constrained-valid-original-retain-w4-r0/barrel-constrained-valid-LA-SELECTIVE-w4-r0-initial.cyps",
+      "sha256": "2abf06a9c0534106fd3164cbdc2ba91742a91b8f202ec421aeafc05e8bb92b20",
+      "bytes": 4891358
+    },
+    {
+      "path": "build/sol-contact-application/core-001/linux/barrel-constrained-valid-original-retain-w4-r0/barrel-constrained-valid-LA-SELECTIVE-w4-r0-final.cyps",
+      "sha256": "bbede8ca017bd806e17bad08c2bd0b0cf267932ab7743e2009aaac1624aa7d5b",
+      "bytes": 4891390
+    },
+    {
+      "path": "build/sol-contact-application/analysis-001/windows-reduction/linux-barrel-constrained-valid-original-retain-w4-r0.json",
+      "sha256": "f781ed5d20507769b856c31835e325596a4fd529157386a577c11c883b8fac41",
+      "bytes": 478987
+    },
+    {
+      "path": "build/sol-contact-application/analysis-001/linux-reduction/linux-barrel-constrained-valid-original-retain-w4-r0.json",
+      "sha256": "f781ed5d20507769b856c31835e325596a4fd529157386a577c11c883b8fac41",
+      "bytes": 478987
+    },
+    {
+      "path": "build/sol-contact-application/core-001/linux/barrel-constrained-valid-active-retain-w4-r0/barrel-constrained-valid-LA-SELECTIVE-w4-r0.json",
+      "sha256": "1c55f771257275995dc3f379983f326dc60a865eecd2a2792eb5d47d0021dfbf",
+      "bytes": 2712199
+    },
+    {
+      "path": "build/sol-contact-application/core-001/linux/barrel-constrained-valid-active-retain-w4-r0/barrel-constrained-valid-LA-SELECTIVE-w4-r0-initial.cyps",
+      "sha256": "2abf06a9c0534106fd3164cbdc2ba91742a91b8f202ec421aeafc05e8bb92b20",
+      "bytes": 4891358
+    },
+    {
+      "path": "build/sol-contact-application/core-001/linux/barrel-constrained-valid-active-retain-w4-r0/barrel-constrained-valid-LA-SELECTIVE-w4-r0-final.cyps",
+      "sha256": "8dfab7052aee2113e923443c16fa185df0de25d9dd85d2c508ffce6ef7fb2c74",
+      "bytes": 4891390
+    },
+    {
+      "path": "build/sol-contact-application/analysis-001/windows-reduction/linux-barrel-constrained-valid-active-retain-w4-r0.json",
+      "sha256": "d69b613464b29b502e45452a9f96ed2ccb660235b9bed7e9a49ec70c9e4cc7f6",
+      "bytes": 468439
+    },
+    {
+      "path": "build/sol-contact-application/analysis-001/linux-reduction/linux-barrel-constrained-valid-active-retain-w4-r0.json",
+      "sha256": "d69b613464b29b502e45452a9f96ed2ccb660235b9bed7e9a49ec70c9e4cc7f6",
+      "bytes": 468439
+    },
+    {
+      "path": "build/sol-contact-application/core-001/linux/barrel-rest-original-baseline-w4-r0/barrel-rest-LA-SELECTIVE-w4-r0.json",
+      "sha256": "444588c28ea8987a28c9cc8d5bac58503468a9ff9305895317c56ae645e4f9a6",
+      "bytes": 2540475
+    },
+    {
+      "path": "build/sol-contact-application/core-001/linux/barrel-rest-original-baseline-w4-r0/barrel-rest-LA-SELECTIVE-w4-r0-initial.cyps",
+      "sha256": "0fc2aafef2c76f240a2277998deeeeca1882e1716bf9eae57b28532396eed1a3",
+      "bytes": 4891358
+    },
+    {
+      "path": "build/sol-contact-application/core-001/linux/barrel-rest-original-baseline-w4-r0/barrel-rest-LA-SELECTIVE-w4-r0-final.cyps",
+      "sha256": "69757224854adaad2b2902b1a0b75db2e5c19fc1635df2c3fba6a280ba3f2770",
+      "bytes": 4891390
+    },
+    {
+      "path": "build/sol-contact-application/analysis-001/windows-reduction/linux-barrel-rest-original-baseline-w4-r0.json",
+      "sha256": "ff00e703ee950576c7cbe5d6cb17e28fdddf8a68ed1f497db25909bce3378d15",
+      "bytes": 452868
+    },
+    {
+      "path": "build/sol-contact-application/analysis-001/linux-reduction/linux-barrel-rest-original-baseline-w4-r0.json",
+      "sha256": "ff00e703ee950576c7cbe5d6cb17e28fdddf8a68ed1f497db25909bce3378d15",
+      "bytes": 452868
+    },
+    {
+      "path": "build/sol-contact-application/core-001/linux/barrel-rest-active-baseline-w4-r0/barrel-rest-LA-SELECTIVE-w4-r0.json",
+      "sha256": "4ec2235630d29c434769f650c56ddf9f70be69a7c547c0652d7f1e018e539795",
+      "bytes": 2546975
+    },
+    {
+      "path": "build/sol-contact-application/core-001/linux/barrel-rest-active-baseline-w4-r0/barrel-rest-LA-SELECTIVE-w4-r0-initial.cyps",
+      "sha256": "0fc2aafef2c76f240a2277998deeeeca1882e1716bf9eae57b28532396eed1a3",
+      "bytes": 4891358
+    },
+    {
+      "path": "build/sol-contact-application/core-001/linux/barrel-rest-active-baseline-w4-r0/barrel-rest-LA-SELECTIVE-w4-r0-final.cyps",
+      "sha256": "69757224854adaad2b2902b1a0b75db2e5c19fc1635df2c3fba6a280ba3f2770",
+      "bytes": 4891390
+    },
+    {
+      "path": "build/sol-contact-application/analysis-001/windows-reduction/linux-barrel-rest-active-baseline-w4-r0.json",
+      "sha256": "b8cfb44c5bca037ffcc09f2607b66f6ed74bc1dc53d536c488217234033a5be0",
+      "bytes": 452871
+    },
+    {
+      "path": "build/sol-contact-application/analysis-001/linux-reduction/linux-barrel-rest-active-baseline-w4-r0.json",
+      "sha256": "b8cfb44c5bca037ffcc09f2607b66f6ed74bc1dc53d536c488217234033a5be0",
+      "bytes": 452871
+    },
+    {
+      "path": "build/sol-contact-application/core-001/linux/barrel-rest-original-retain-w4-r0/barrel-rest-LA-SELECTIVE-w4-r0.json",
+      "sha256": "298aaf92895b4b04725ce4e8f64c94797ef40f1d08edd36d7145744895682aac",
+      "bytes": 2634004
+    },
+    {
+      "path": "build/sol-contact-application/core-001/linux/barrel-rest-original-retain-w4-r0/barrel-rest-LA-SELECTIVE-w4-r0-initial.cyps",
+      "sha256": "0fc2aafef2c76f240a2277998deeeeca1882e1716bf9eae57b28532396eed1a3",
+      "bytes": 4891358
+    },
+    {
+      "path": "build/sol-contact-application/core-001/linux/barrel-rest-original-retain-w4-r0/barrel-rest-LA-SELECTIVE-w4-r0-final.cyps",
+      "sha256": "7314e5e870d483cda8ae565c59caa7ea58f89e092470a449c7fe7a633607864c",
+      "bytes": 4891390
+    },
+    {
+      "path": "build/sol-contact-application/analysis-001/windows-reduction/linux-barrel-rest-original-retain-w4-r0.json",
+      "sha256": "ac672c824b9574d23a02cd7c815e7d6e4eba74ad8aa2ed715f1ee030e679cbaf",
+      "bytes": 470711
+    },
+    {
+      "path": "build/sol-contact-application/analysis-001/linux-reduction/linux-barrel-rest-original-retain-w4-r0.json",
+      "sha256": "ac672c824b9574d23a02cd7c815e7d6e4eba74ad8aa2ed715f1ee030e679cbaf",
+      "bytes": 470711
+    },
+    {
+      "path": "build/sol-contact-application/core-001/linux/barrel-rest-active-retain-w4-r0/barrel-rest-LA-SELECTIVE-w4-r0.json",
+      "sha256": "cec55f9f777df6bca377546e5b6b3fbe24bc29312ec8af963d683b4abcb9cbc3",
+      "bytes": 2642158
+    },
+    {
+      "path": "build/sol-contact-application/core-001/linux/barrel-rest-active-retain-w4-r0/barrel-rest-LA-SELECTIVE-w4-r0-initial.cyps",
+      "sha256": "0fc2aafef2c76f240a2277998deeeeca1882e1716bf9eae57b28532396eed1a3",
+      "bytes": 4891358
+    },
+    {
+      "path": "build/sol-contact-application/core-001/linux/barrel-rest-active-retain-w4-r0/barrel-rest-LA-SELECTIVE-w4-r0-final.cyps",
+      "sha256": "7314e5e870d483cda8ae565c59caa7ea58f89e092470a449c7fe7a633607864c",
+      "bytes": 4891390
+    },
+    {
+      "path": "build/sol-contact-application/analysis-001/windows-reduction/linux-barrel-rest-active-retain-w4-r0.json",
+      "sha256": "53ffddbf7f8c73627a5f8499f83424e62206587021cba5407922c2ce383c8a58",
+      "bytes": 470815
+    },
+    {
+      "path": "build/sol-contact-application/analysis-001/linux-reduction/linux-barrel-rest-active-retain-w4-r0.json",
+      "sha256": "53ffddbf7f8c73627a5f8499f83424e62206587021cba5407922c2ce383c8a58",
+      "bytes": 470815
+    }
+  ],
+  "cross_host_analysis": {
+    "equal": true,
+    "windows": {
+      "path": "build/sol-contact-application/analysis-001/windows-reduction/manifest.json",
+      "sha256": "c970368e3a225a825fcf10381651b61d92a001d7b91d29e29bc93b3001da0b94",
+      "bytes": 1134259
+    },
+    "linux": {
+      "path": "build/sol-contact-application/analysis-001/linux-reduction/manifest.json",
+      "sha256": "c970368e3a225a825fcf10381651b61d92a001d7b91d29e29bc93b3001da0b94",
+      "bytes": 1134259
+    }
+  },
+  "scope": "Ignored full observations/derivatives retained locally. Public summaries do not replace raw traces. No binary/log/cache committed; no historical result rewritten."
+}

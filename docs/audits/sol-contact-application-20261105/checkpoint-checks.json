@@ -1,0 +1,1365 @@
+{
+  "source": "1987d4beb547265e8839258f81bb2bc6f45b389f",
+  "post_source_equality": true,
+  "commands": [
+    {
+      "name": "docs",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/ci/check_docs.py"
+      ],
+      "requested_command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/ci/check_docs.py"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 180,
+      "seconds": 3.155204899958335,
+      "log": "build\\sol-contact-application\\validation-001\\docs.log",
+      "log_sha256": "68b710a3268f413734c632f4aafe0c4993b1fbed0dc168c2d3d6817e3607fcde",
+      "markers": []
+    },
+    {
+      "name": "m11",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/ci/check_m11_consistency.py"
+      ],
+      "requested_command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/ci/check_m11_consistency.py"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 180,
+      "seconds": 2.0145329000079073,
+      "log": "build\\sol-contact-application\\validation-001\\m11.log",
+      "log_sha256": "e5d2a8eecef5876957dc4ecff01b99af696053871616d2dea563371d44b2427b",
+      "markers": []
+    },
+    {
+      "name": "repository",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/ci/check_repository.py",
+        "--json",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\build\\sol-contact-application\\validation-001\\repository.json"
+      ],
+      "requested_command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/ci/check_repository.py",
+        "--json",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\build\\sol-contact-application\\validation-001\\repository.json"
+      ],
+      "exit": 1,
+      "clean": false,
+      "timeout_seconds": 180,
+      "seconds": 4.406728300033137,
+      "log": "build\\sol-contact-application\\validation-001\\repository.log",
+      "log_sha256": "5452930e3991106d061d217b9a69e8d640347f2c00b962399632519b3200a473",
+      "markers": []
+    },
+    {
+      "name": "repository-materialized",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/ci/check_repository.py",
+        "--require-materialized",
+        "--json",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\build\\sol-contact-application\\validation-001\\repository-materialized.json"
+      ],
+      "requested_command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/ci/check_repository.py",
+        "--require-materialized",
+        "--json",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\build\\sol-contact-application\\validation-001\\repository-materialized.json"
+      ],
+      "exit": 1,
+      "clean": false,
+      "timeout_seconds": 180,
+      "seconds": 4.417996299976949,
+      "log": "build\\sol-contact-application\\validation-001\\repository-materialized.log",
+      "log_sha256": "3140c3d78c30ff37cd330fd8750f856b0d7b96ec305cca3ad928e11b97650496",
+      "markers": []
+    },
+    {
+      "name": "material",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/material_catalogue/compatibility.py",
+        "--check"
+      ],
+      "requested_command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/material_catalogue/compatibility.py",
+        "--check"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 180,
+      "seconds": 2.854673699999694,
+      "log": "build\\sol-contact-application\\validation-001\\material.log",
+      "log_sha256": "50174e75669bf15c0d521884f313715b5769054ca583572e3e734d0d06c14ae7",
+      "markers": []
+    },
+    {
+      "name": "diff",
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "requested_command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 180,
+      "seconds": 0.060556699987500906,
+      "log": "build\\sol-contact-application\\validation-001\\diff.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "markers": []
+    },
+    {
+      "name": "retrieval-retrieval-questions-ci",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/docs/retrieval_eval.py",
+        "--queries",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\docs\\reference\\retrieval-questions-ci.json",
+        "--output",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\build\\sol-contact-application\\validation-001\\retrieval-questions-ci.json"
+      ],
+      "requested_command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/docs/retrieval_eval.py",
+        "--queries",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\docs\\reference\\retrieval-questions-ci.json",
+        "--output",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\build\\sol-contact-application\\validation-001\\retrieval-questions-ci.json"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 180,
+      "seconds": 0.5984293000074103,
+      "log": "build\\sol-contact-application\\validation-001\\retrieval-retrieval-questions-ci.log",
+      "log_sha256": "241dc78ccef87430ccdd626f699ebf4bb5874b6aafb2abb8b2e7cd395c6eb7cf",
+      "markers": []
+    },
+    {
+      "name": "retrieval-retrieval-questions-lcb-reassess",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/docs/retrieval_eval.py",
+        "--queries",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\docs\\reference\\retrieval-questions-lcb-reassess.json",
+        "--output",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\build\\sol-contact-application\\validation-001\\retrieval-questions-lcb-reassess.json"
+      ],
+      "requested_command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/docs/retrieval_eval.py",
+        "--queries",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\docs\\reference\\retrieval-questions-lcb-reassess.json",
+        "--output",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\build\\sol-contact-application\\validation-001\\retrieval-questions-lcb-reassess.json"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 180,
+      "seconds": 0.6081062000012025,
+      "log": "build\\sol-contact-application\\validation-001\\retrieval-retrieval-questions-lcb-reassess.log",
+      "log_sha256": "4b603ff9ae4d52fee7fcce2fc99d58e9f7640ab5d0b5d3285cc925b1427b30b1",
+      "markers": []
+    },
+    {
+      "name": "retrieval-retrieval-questions-lcb005",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/docs/retrieval_eval.py",
+        "--queries",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\docs\\reference\\retrieval-questions-lcb005.json",
+        "--output",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\build\\sol-contact-application\\validation-001\\retrieval-questions-lcb005.json"
+      ],
+      "requested_command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/docs/retrieval_eval.py",
+        "--queries",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\docs\\reference\\retrieval-questions-lcb005.json",
+        "--output",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\build\\sol-contact-application\\validation-001\\retrieval-questions-lcb005.json"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 180,
+      "seconds": 0.5498738999594934,
+      "log": "build\\sol-contact-application\\validation-001\\retrieval-retrieval-questions-lcb005.log",
+      "log_sha256": "d7a5e5196a9b48a43b30ef6cbeb3dddf6693ec203f9a79cd32fdc68a16732146",
+      "markers": []
+    },
+    {
+      "name": "retrieval-retrieval-questions-mat-auth-353a",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/docs/retrieval_eval.py",
+        "--queries",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\docs\\reference\\retrieval-questions-mat-auth-353a.json",
+        "--output",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\build\\sol-contact-application\\validation-001\\retrieval-questions-mat-auth-353a.json"
+      ],
+      "requested_command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/docs/retrieval_eval.py",
+        "--queries",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\docs\\reference\\retrieval-questions-mat-auth-353a.json",
+        "--output",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\build\\sol-contact-application\\validation-001\\retrieval-questions-mat-auth-353a.json"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 180,
+      "seconds": 0.5864166000392288,
+      "log": "build\\sol-contact-application\\validation-001\\retrieval-retrieval-questions-mat-auth-353a.log",
+      "log_sha256": "8f73b6874f194bce5d7a62e0c3b4239c61bcfb145606d4d71eba3060b2b161d8",
+      "markers": []
+    },
+    {
+      "name": "retrieval-retrieval-questions-mat-auth",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/docs/retrieval_eval.py",
+        "--queries",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\docs\\reference\\retrieval-questions-mat-auth.json",
+        "--output",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\build\\sol-contact-application\\validation-001\\retrieval-questions-mat-auth.json"
+      ],
+      "requested_command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/docs/retrieval_eval.py",
+        "--queries",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\docs\\reference\\retrieval-questions-mat-auth.json",
+        "--output",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\build\\sol-contact-application\\validation-001\\retrieval-questions-mat-auth.json"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 180,
+      "seconds": 0.5978961000218987,
+      "log": "build\\sol-contact-application\\validation-001\\retrieval-retrieval-questions-mat-auth.log",
+      "log_sha256": "d726eda800e8007193bf2bba0b82e5f148886da325b1dcff28fa4b1789babb27",
+      "markers": []
+    },
+    {
+      "name": "retrieval-retrieval-questions-mat354-recovery",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/docs/retrieval_eval.py",
+        "--queries",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\docs\\reference\\retrieval-questions-mat354-recovery.json",
+        "--output",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\build\\sol-contact-application\\validation-001\\retrieval-questions-mat354-recovery.json"
+      ],
+      "requested_command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/docs/retrieval_eval.py",
+        "--queries",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\docs\\reference\\retrieval-questions-mat354-recovery.json",
+        "--output",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\build\\sol-contact-application\\validation-001\\retrieval-questions-mat354-recovery.json"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 180,
+      "seconds": 0.47877760004485026,
+      "log": "build\\sol-contact-application\\validation-001\\retrieval-retrieval-questions-mat354-recovery.log",
+      "log_sha256": "71d068fbefdd2befe9b81e713000f49e59efbb5d48c8dee6f230cecb867c0503",
+      "markers": []
+    },
+    {
+      "name": "retrieval-retrieval-questions-mat354",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/docs/retrieval_eval.py",
+        "--queries",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\docs\\reference\\retrieval-questions-mat354.json",
+        "--output",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\build\\sol-contact-application\\validation-001\\retrieval-questions-mat354.json"
+      ],
+      "requested_command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/docs/retrieval_eval.py",
+        "--queries",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\docs\\reference\\retrieval-questions-mat354.json",
+        "--output",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\build\\sol-contact-application\\validation-001\\retrieval-questions-mat354.json"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 180,
+      "seconds": 0.509772899968084,
+      "log": "build\\sol-contact-application\\validation-001\\retrieval-retrieval-questions-mat354.log",
+      "log_sha256": "88e18dbc51de5d9f6d2b9292248091989557848d13442051c4ca510b03039eaf",
+      "markers": []
+    },
+    {
+      "name": "retrieval-retrieval-questions-play",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/docs/retrieval_eval.py",
+        "--queries",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\docs\\reference\\retrieval-questions-play.json",
+        "--output",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\build\\sol-contact-application\\validation-001\\retrieval-questions-play.json"
+      ],
+      "requested_command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/docs/retrieval_eval.py",
+        "--queries",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\docs\\reference\\retrieval-questions-play.json",
+        "--output",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\build\\sol-contact-application\\validation-001\\retrieval-questions-play.json"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 180,
+      "seconds": 0.5562402000068687,
+      "log": "build\\sol-contact-application\\validation-001\\retrieval-retrieval-questions-play.log",
+      "log_sha256": "cd1b341c06a2c31da10ea388dfe5aa4cdae41b0b9c0f6d7bd729f66fe79681f2",
+      "markers": []
+    },
+    {
+      "name": "retrieval-retrieval-questions-sol-active-normal-full",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/docs/retrieval_eval.py",
+        "--queries",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\docs\\reference\\retrieval-questions-sol-active-normal-full.json",
+        "--output",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\build\\sol-contact-application\\validation-001\\retrieval-questions-sol-active-normal-full.json"
+      ],
+      "requested_command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/docs/retrieval_eval.py",
+        "--queries",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\docs\\reference\\retrieval-questions-sol-active-normal-full.json",
+        "--output",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\build\\sol-contact-application\\validation-001\\retrieval-questions-sol-active-normal-full.json"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 180,
+      "seconds": 0.4430790999904275,
+      "log": "build\\sol-contact-application\\validation-001\\retrieval-retrieval-questions-sol-active-normal-full.log",
+      "log_sha256": "44b81811972b37e63ce870dc4e1444d4c6e13a4a16ab8c0fe2bb10fb3a997058",
+      "markers": []
+    },
+    {
+      "name": "retrieval-retrieval-questions-sol-active-normal-gameplay",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/docs/retrieval_eval.py",
+        "--queries",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\docs\\reference\\retrieval-questions-sol-active-normal-gameplay.json",
+        "--output",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\build\\sol-contact-application\\validation-001\\retrieval-questions-sol-active-normal-gameplay.json"
+      ],
+      "requested_command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/docs/retrieval_eval.py",
+        "--queries",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\docs\\reference\\retrieval-questions-sol-active-normal-gameplay.json",
+        "--output",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\build\\sol-contact-application\\validation-001\\retrieval-questions-sol-active-normal-gameplay.json"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 180,
+      "seconds": 0.43397539999568835,
+      "log": "build\\sol-contact-application\\validation-001\\retrieval-retrieval-questions-sol-active-normal-gameplay.log",
+      "log_sha256": "35931d169c42c6374bbb0ccb692e9b0ac48d36ea364268c8d0b2dbeb44fb30fc",
+      "markers": []
+    },
+    {
+      "name": "retrieval-retrieval-questions-sol-active-normal-live",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/docs/retrieval_eval.py",
+        "--queries",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\docs\\reference\\retrieval-questions-sol-active-normal-live.json",
+        "--output",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\build\\sol-contact-application\\validation-001\\retrieval-questions-sol-active-normal-live.json"
+      ],
+      "requested_command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/docs/retrieval_eval.py",
+        "--queries",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\docs\\reference\\retrieval-questions-sol-active-normal-live.json",
+        "--output",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\build\\sol-contact-application\\validation-001\\retrieval-questions-sol-active-normal-live.json"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 180,
+      "seconds": 0.4460957000264898,
+      "log": "build\\sol-contact-application\\validation-001\\retrieval-retrieval-questions-sol-active-normal-live.log",
+      "log_sha256": "4089996330856544ad57449d086826b8b8b0a74a35b21064235385384db6aaf4",
+      "markers": []
+    },
+    {
+      "name": "retrieval-retrieval-questions-sol-active-normal",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/docs/retrieval_eval.py",
+        "--queries",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\docs\\reference\\retrieval-questions-sol-active-normal.json",
+        "--output",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\build\\sol-contact-application\\validation-001\\retrieval-questions-sol-active-normal.json"
+      ],
+      "requested_command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/docs/retrieval_eval.py",
+        "--queries",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\docs\\reference\\retrieval-questions-sol-active-normal.json",
+        "--output",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\build\\sol-contact-application\\validation-001\\retrieval-questions-sol-active-normal.json"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 180,
+      "seconds": 0.4407950000022538,
+      "log": "build\\sol-contact-application\\validation-001\\retrieval-retrieval-questions-sol-active-normal.log",
+      "log_sha256": "1f06ece938c214ca3fee0d19c69834879bed31c6a721da23af5fac056ec5b5d1",
+      "markers": []
+    },
+    {
+      "name": "retrieval-retrieval-questions-sol-application-replay",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/docs/retrieval_eval.py",
+        "--queries",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\docs\\reference\\retrieval-questions-sol-application-replay.json",
+        "--output",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\build\\sol-contact-application\\validation-001\\retrieval-questions-sol-application-replay.json"
+      ],
+      "requested_command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/docs/retrieval_eval.py",
+        "--queries",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\docs\\reference\\retrieval-questions-sol-application-replay.json",
+        "--output",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\build\\sol-contact-application\\validation-001\\retrieval-questions-sol-application-replay.json"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 180,
+      "seconds": 0.48793830000795424,
+      "log": "build\\sol-contact-application\\validation-001\\retrieval-retrieval-questions-sol-application-replay.log",
+      "log_sha256": "fc1029c115f8425aa8eb066c4395f8ba25820ec8a49099c34e7fc45f2b96bf71",
+      "markers": []
+    },
+    {
+      "name": "retrieval-retrieval-questions-sol-authority-offline",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/docs/retrieval_eval.py",
+        "--queries",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\docs\\reference\\retrieval-questions-sol-authority-offline.json",
+        "--output",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\build\\sol-contact-application\\validation-001\\retrieval-questions-sol-authority-offline.json"
+      ],
+      "requested_command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/docs/retrieval_eval.py",
+        "--queries",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\docs\\reference\\retrieval-questions-sol-authority-offline.json",
+        "--output",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\build\\sol-contact-application\\validation-001\\retrieval-questions-sol-authority-offline.json"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 180,
+      "seconds": 0.4780934999580495,
+      "log": "build\\sol-contact-application\\validation-001\\retrieval-retrieval-questions-sol-authority-offline.log",
+      "log_sha256": "7d7bc9cc9aa9b3017d0f6d4ad89eb4082ac66e95cb11472865ee77e9b2c1490c",
+      "markers": []
+    },
+    {
+      "name": "retrieval-retrieval-questions-sol-chamber",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/docs/retrieval_eval.py",
+        "--queries",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\docs\\reference\\retrieval-questions-sol-chamber.json",
+        "--output",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\build\\sol-contact-application\\validation-001\\retrieval-questions-sol-chamber.json"
+      ],
+      "requested_command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/docs/retrieval_eval.py",
+        "--queries",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\docs\\reference\\retrieval-questions-sol-chamber.json",
+        "--output",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\build\\sol-contact-application\\validation-001\\retrieval-questions-sol-chamber.json"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 180,
+      "seconds": 0.45791820000158623,
+      "log": "build\\sol-contact-application\\validation-001\\retrieval-retrieval-questions-sol-chamber.log",
+      "log_sha256": "49358e5e34f3d2357fa7fd8b336ec6f9a1462b0b8739235d894b3fdc3c2bd22d",
+      "markers": []
+    },
+    {
+      "name": "retrieval-retrieval-questions-sol-contact-application",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/docs/retrieval_eval.py",
+        "--queries",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\docs\\reference\\retrieval-questions-sol-contact-application.json",
+        "--output",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\build\\sol-contact-application\\validation-001\\retrieval-questions-sol-contact-application.json"
+      ],
+      "requested_command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/docs/retrieval_eval.py",
+        "--queries",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\docs\\reference\\retrieval-questions-sol-contact-application.json",
+        "--output",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\build\\sol-contact-application\\validation-001\\retrieval-questions-sol-contact-application.json"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 180,
+      "seconds": 0.4720050999894738,
+      "log": "build\\sol-contact-application\\validation-001\\retrieval-retrieval-questions-sol-contact-application.log",
+      "log_sha256": "3bf0dbf2158307cddf2ea708480afc50d9d0ff76fad5effb79448862cefa6601",
+      "markers": []
+    },
+    {
+      "name": "retrieval-retrieval-questions-sol-cost",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/docs/retrieval_eval.py",
+        "--queries",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\docs\\reference\\retrieval-questions-sol-cost.json",
+        "--output",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\build\\sol-contact-application\\validation-001\\retrieval-questions-sol-cost.json"
+      ],
+      "requested_command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/docs/retrieval_eval.py",
+        "--queries",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\docs\\reference\\retrieval-questions-sol-cost.json",
+        "--output",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\build\\sol-contact-application\\validation-001\\retrieval-questions-sol-cost.json"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 180,
+      "seconds": 0.46396299998741597,
+      "log": "build\\sol-contact-application\\validation-001\\retrieval-retrieval-questions-sol-cost.log",
+      "log_sha256": "2d2631003f8e90036120a887239a92b766184fccbbca77aebf00036640f99428",
+      "markers": []
+    },
+    {
+      "name": "retrieval-retrieval-questions-sol-node-trace",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/docs/retrieval_eval.py",
+        "--queries",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\docs\\reference\\retrieval-questions-sol-node-trace.json",
+        "--output",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\build\\sol-contact-application\\validation-001\\retrieval-questions-sol-node-trace.json"
+      ],
+      "requested_command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/docs/retrieval_eval.py",
+        "--queries",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\docs\\reference\\retrieval-questions-sol-node-trace.json",
+        "--output",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\build\\sol-contact-application\\validation-001\\retrieval-questions-sol-node-trace.json"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 180,
+      "seconds": 0.523226999968756,
+      "log": "build\\sol-contact-application\\validation-001\\retrieval-retrieval-questions-sol-node-trace.log",
+      "log_sha256": "eb47ba6b743017e8aca6aa2fc10ee8bf24504594616aa7d82d2a126668d0f32d",
+      "markers": []
+    },
+    {
+      "name": "retrieval-retrieval-questions-sol-passive",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/docs/retrieval_eval.py",
+        "--queries",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\docs\\reference\\retrieval-questions-sol-passive.json",
+        "--output",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\build\\sol-contact-application\\validation-001\\retrieval-questions-sol-passive.json"
+      ],
+      "requested_command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/docs/retrieval_eval.py",
+        "--queries",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\docs\\reference\\retrieval-questions-sol-passive.json",
+        "--output",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\build\\sol-contact-application\\validation-001\\retrieval-questions-sol-passive.json"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 180,
+      "seconds": 0.5541469000163488,
+      "log": "build\\sol-contact-application\\validation-001\\retrieval-retrieval-questions-sol-passive.log",
+      "log_sha256": "c2e94502e694e38e71bdb0f95b515bd4e403b58f0542ea3c892784cd8e5c2102",
+      "markers": []
+    },
+    {
+      "name": "retrieval-retrieval-questions",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/docs/retrieval_eval.py",
+        "--queries",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\docs\\reference\\retrieval-questions.json",
+        "--output",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\build\\sol-contact-application\\validation-001\\retrieval-questions.json"
+      ],
+      "requested_command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/docs/retrieval_eval.py",
+        "--queries",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\docs\\reference\\retrieval-questions.json",
+        "--output",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\build\\sol-contact-application\\validation-001\\retrieval-questions.json"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 180,
+      "seconds": 0.6723864999949001,
+      "log": "build\\sol-contact-application\\validation-001\\retrieval-retrieval-questions.log",
+      "log_sha256": "1c237bf2a846716b545697ca50b3b27e3b495f286dcec9eaf107b2665694ec1d",
+      "markers": []
+    },
+    {
+      "name": "windows-test_sol_contact_application.py",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tools/experiments",
+        "-p",
+        "test_sol_contact_application.py",
+        "-v"
+      ],
+      "requested_command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tools/experiments",
+        "-p",
+        "test_sol_contact_application.py",
+        "-v"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 180,
+      "seconds": 0.4276594999828376,
+      "log": "build\\sol-contact-application\\validation-001\\windows-test_sol_contact_application.py.log",
+      "log_sha256": "06f1d94d7fdaf9edfbfba476dc1a6d725857c2f7be381c4892ed5ab12e104ff9",
+      "markers": []
+    },
+    {
+      "name": "windows-test_sol_gravity_operator.py",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tools/experiments",
+        "-p",
+        "test_sol_gravity_operator.py",
+        "-v"
+      ],
+      "requested_command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tools/experiments",
+        "-p",
+        "test_sol_gravity_operator.py",
+        "-v"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 180,
+      "seconds": 0.21247819997370243,
+      "log": "build\\sol-contact-application\\validation-001\\windows-test_sol_gravity_operator.py.log",
+      "log_sha256": "18a17098d8bc25a62e723cda8f99803e93782bf2a46461ae6231fcc89a03ed69",
+      "markers": []
+    },
+    {
+      "name": "windows-test_sol_node_traceall.py",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tools/experiments",
+        "-p",
+        "test_sol_node_trace*.py",
+        "-v"
+      ],
+      "requested_command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tools/experiments",
+        "-p",
+        "test_sol_node_trace*.py",
+        "-v"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 180,
+      "seconds": 0.23221349995583296,
+      "log": "build\\sol-contact-application\\validation-001\\windows-test_sol_node_traceall.py.log",
+      "log_sha256": "91a40706f1e60b9a42fda03e0e414ea798529fc267e193dde4a090aa512465d3",
+      "markers": []
+    },
+    {
+      "name": "windows-test_sol_application_replay.py",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tools/experiments",
+        "-p",
+        "test_sol_application_replay.py",
+        "-v"
+      ],
+      "requested_command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tools/experiments",
+        "-p",
+        "test_sol_application_replay.py",
+        "-v"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 180,
+      "seconds": 0.30488169996533543,
+      "log": "build\\sol-contact-application\\validation-001\\windows-test_sol_application_replay.py.log",
+      "log_sha256": "2069c64763092f2f8f48e461121bbb5f4479689901cd2db4adb614b86e991811",
+      "markers": []
+    },
+    {
+      "name": "windows-test_sol_authority_offlineall.py",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tools/experiments",
+        "-p",
+        "test_sol_authority_offline*.py",
+        "-v"
+      ],
+      "requested_command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tools/experiments",
+        "-p",
+        "test_sol_authority_offline*.py",
+        "-v"
+      ],
+      "exit": 5,
+      "clean": false,
+      "timeout_seconds": 180,
+      "seconds": 0.1555339999613352,
+      "log": "build\\sol-contact-application\\validation-001\\windows-test_sol_authority_offlineall.py.log",
+      "log_sha256": "b0281afc5a8f851fedc2bba09c88d720f4dcc47a2a487e40928c779cb967ff8c",
+      "markers": []
+    },
+    {
+      "name": "linux-test_sol_contact_application.py",
+      "command": [
+        "wsl.exe",
+        "-d",
+        "Ubuntu-24.04",
+        "--cd",
+        "/mnt/c/Users/_/.codex/worktrees/sol-active-normal-live-20261105/khybersand",
+        "--",
+        "timeout",
+        "--signal=TERM",
+        "--kill-after=5s",
+        "180s",
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tools/experiments",
+        "-p",
+        "test_sol_contact_application.py",
+        "-v"
+      ],
+      "requested_command": [
+        "wsl.exe",
+        "-d",
+        "Ubuntu-24.04",
+        "--cd",
+        "/mnt/c/Users/_/.codex/worktrees/sol-active-normal-live-20261105/khybersand",
+        "--",
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tools/experiments",
+        "-p",
+        "test_sol_contact_application.py",
+        "-v"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 180,
+      "seconds": 4.368156999989878,
+      "log": "build\\sol-contact-application\\validation-001\\linux-test_sol_contact_application.py.log",
+      "log_sha256": "0ec0da589ca2e403b3b0467059b797e1ab7aeaef0a26c852f5510adbbce6a353",
+      "markers": []
+    },
+    {
+      "name": "linux-test_sol_gravity_operator.py",
+      "command": [
+        "wsl.exe",
+        "-d",
+        "Ubuntu-24.04",
+        "--cd",
+        "/mnt/c/Users/_/.codex/worktrees/sol-active-normal-live-20261105/khybersand",
+        "--",
+        "timeout",
+        "--signal=TERM",
+        "--kill-after=5s",
+        "180s",
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tools/experiments",
+        "-p",
+        "test_sol_gravity_operator.py",
+        "-v"
+      ],
+      "requested_command": [
+        "wsl.exe",
+        "-d",
+        "Ubuntu-24.04",
+        "--cd",
+        "/mnt/c/Users/_/.codex/worktrees/sol-active-normal-live-20261105/khybersand",
+        "--",
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tools/experiments",
+        "-p",
+        "test_sol_gravity_operator.py",
+        "-v"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 180,
+      "seconds": 4.11289809999289,
+      "log": "build\\sol-contact-application\\validation-001\\linux-test_sol_gravity_operator.py.log",
+      "log_sha256": "ee64177460ecc6a9b7bafcb189c906d0337dc5f5bf4718699325f70c8c7292d8",
+      "markers": []
+    },
+    {
+      "name": "linux-test_sol_node_traceall.py",
+      "command": [
+        "wsl.exe",
+        "-d",
+        "Ubuntu-24.04",
+        "--cd",
+        "/mnt/c/Users/_/.codex/worktrees/sol-active-normal-live-20261105/khybersand",
+        "--",
+        "timeout",
+        "--signal=TERM",
+        "--kill-after=5s",
+        "180s",
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tools/experiments",
+        "-p",
+        "test_sol_node_trace*.py",
+        "-v"
+      ],
+      "requested_command": [
+        "wsl.exe",
+        "-d",
+        "Ubuntu-24.04",
+        "--cd",
+        "/mnt/c/Users/_/.codex/worktrees/sol-active-normal-live-20261105/khybersand",
+        "--",
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tools/experiments",
+        "-p",
+        "test_sol_node_trace*.py",
+        "-v"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 180,
+      "seconds": 4.143138399987947,
+      "log": "build\\sol-contact-application\\validation-001\\linux-test_sol_node_traceall.py.log",
+      "log_sha256": "76065a355d1ffc53c74bf451568d873332eacc79b474e9957ec0c6fa97dc34b2",
+      "markers": []
+    },
+    {
+      "name": "linux-test_sol_application_replay.py",
+      "command": [
+        "wsl.exe",
+        "-d",
+        "Ubuntu-24.04",
+        "--cd",
+        "/mnt/c/Users/_/.codex/worktrees/sol-active-normal-live-20261105/khybersand",
+        "--",
+        "timeout",
+        "--signal=TERM",
+        "--kill-after=5s",
+        "180s",
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tools/experiments",
+        "-p",
+        "test_sol_application_replay.py",
+        "-v"
+      ],
+      "requested_command": [
+        "wsl.exe",
+        "-d",
+        "Ubuntu-24.04",
+        "--cd",
+        "/mnt/c/Users/_/.codex/worktrees/sol-active-normal-live-20261105/khybersand",
+        "--",
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tools/experiments",
+        "-p",
+        "test_sol_application_replay.py",
+        "-v"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 180,
+      "seconds": 4.1992096999892965,
+      "log": "build\\sol-contact-application\\validation-001\\linux-test_sol_application_replay.py.log",
+      "log_sha256": "f720ca22a86d90b46aa2f5bda24e70263234cb03d285fd19121d2701ed523d99",
+      "markers": []
+    },
+    {
+      "name": "linux-test_sol_authority_offlineall.py",
+      "command": [
+        "wsl.exe",
+        "-d",
+        "Ubuntu-24.04",
+        "--cd",
+        "/mnt/c/Users/_/.codex/worktrees/sol-active-normal-live-20261105/khybersand",
+        "--",
+        "timeout",
+        "--signal=TERM",
+        "--kill-after=5s",
+        "180s",
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tools/experiments",
+        "-p",
+        "test_sol_authority_offline*.py",
+        "-v"
+      ],
+      "requested_command": [
+        "wsl.exe",
+        "-d",
+        "Ubuntu-24.04",
+        "--cd",
+        "/mnt/c/Users/_/.codex/worktrees/sol-active-normal-live-20261105/khybersand",
+        "--",
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tools/experiments",
+        "-p",
+        "test_sol_authority_offline*.py",
+        "-v"
+      ],
+      "exit": 5,
+      "clean": false,
+      "timeout_seconds": 180,
+      "seconds": 0.25391400000080466,
+      "log": "build\\sol-contact-application\\validation-001\\linux-test_sol_authority_offlineall.py.log",
+      "log_sha256": "e70fec2825d9bf206d27463a792768195039599cb39bcca66339f47283f84cce",
+      "markers": []
+    },
+    {
+      "name": "windows-test_sol_authority_model",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tools/experiments",
+        "-p",
+        "test_sol_authority_model.py",
+        "-v"
+      ],
+      "requested_command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tools/experiments",
+        "-p",
+        "test_sol_authority_model.py",
+        "-v"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 180,
+      "seconds": 1.1438007000251673,
+      "log": "build\\sol-contact-application\\validation-001\\windows-test_sol_authority_model.log",
+      "log_sha256": "afb0bcf39f1acd490ac6d5a23ad120a4c13c21882dffe2c6a2e40f840c150b88",
+      "markers": []
+    },
+    {
+      "name": "linux-test_sol_authority_model",
+      "command": [
+        "wsl.exe",
+        "-d",
+        "Ubuntu-24.04",
+        "--cd",
+        "/mnt/c/Users/_/.codex/worktrees/sol-active-normal-live-20261105/khybersand",
+        "--",
+        "timeout",
+        "--signal=TERM",
+        "--kill-after=5s",
+        "180s",
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tools/experiments",
+        "-p",
+        "test_sol_authority_model.py",
+        "-v"
+      ],
+      "requested_command": [
+        "wsl.exe",
+        "-d",
+        "Ubuntu-24.04",
+        "--cd",
+        "/mnt/c/Users/_/.codex/worktrees/sol-active-normal-live-20261105/khybersand",
+        "--",
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tools/experiments",
+        "-p",
+        "test_sol_authority_model.py",
+        "-v"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 180,
+      "seconds": 3.7885450000176206,
+      "log": "build\\sol-contact-application\\validation-001\\linux-test_sol_authority_model.log",
+      "log_sha256": "70490c7834f0b5ccd1d87270d9b14432ace94119c5ab8b3a1bb3f2de3633cfdc",
+      "markers": []
+    }
+  ],
+  "corrected_discovery": "First authority_offline glob matched no tests,exit5 perhost; correct model glob runsactual22tests perhost. No source change.",
+  "focused_tests_per_host": 74,
+  "repository": {
+    "errors": 8,
+    "materialized_desktop_files": 4,
+    "non_desktop_LFS_pointers": 14
+  },
+  "strict_repository": {
+    "errors": 22
+  },
+  "retrieval": [
+    {
+      "fixture": "retrieval-questions-ci.json",
+      "sha256": "37b952d24fcfd4bb95fa772909f88935b980550f0afdad5bdda8b4eaf12089cf",
+      "summary": {
+        "questions": 3,
+        "canonical_hit_at_1": 3,
+        "canonical_hit_at_k": 3,
+        "mrr_at_k": 1.0,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      }
+    },
+    {
+      "fixture": "retrieval-questions-lcb-reassess.json",
+      "sha256": "db3dad09224a10c62fd4597174429d5f566a505b345698e0a9d642e8af1ef441",
+      "summary": {
+        "questions": 8,
+        "canonical_hit_at_1": 8,
+        "canonical_hit_at_k": 8,
+        "mrr_at_k": 1.0,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      }
+    },
+    {
+      "fixture": "retrieval-questions-lcb005.json",
+      "sha256": "140ec26adbd5e17e65e5e353bc6a4cb4ed4d0a46c0cc9924c3527d8e6237fb0c",
+      "summary": {
+        "questions": 2,
+        "canonical_hit_at_1": 1,
+        "canonical_hit_at_k": 2,
+        "mrr_at_k": 0.75,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      }
+    },
+    {
+      "fixture": "retrieval-questions-mat-auth-353a.json",
+      "sha256": "33cd49809c793b4ca6d96a0283d21abaa6c620b756b3f80e8224fc2ac52ca60c",
+      "summary": {
+        "questions": 8,
+        "canonical_hit_at_1": 7,
+        "canonical_hit_at_k": 8,
+        "mrr_at_k": 0.9375,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      }
+    },
+    {
+      "fixture": "retrieval-questions-mat-auth.json",
+      "sha256": "a29a793f6d3051e74befcb3cb9ecba65187187f56df524b8dca77949b35aa884",
+      "summary": {
+        "questions": 10,
+        "canonical_hit_at_1": 6,
+        "canonical_hit_at_k": 10,
+        "mrr_at_k": 0.7833,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      }
+    },
+    {
+      "fixture": "retrieval-questions-mat354-recovery.json",
+      "sha256": "4f67d37cc2b29a7a74688ba1c93cb8fa2a9d257ca3c5550a043f3bec71474a68",
+      "summary": {
+        "questions": 2,
+        "canonical_hit_at_1": 2,
+        "canonical_hit_at_k": 2,
+        "mrr_at_k": 1.0,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      }
+    },
+    {
+      "fixture": "retrieval-questions-mat354.json",
+      "sha256": "db7f72790a885bb4b07fbddc92a3beb107b6146cd78ce6d345c4e2f38c75a9b6",
+      "summary": {
+        "questions": 8,
+        "canonical_hit_at_1": 7,
+        "canonical_hit_at_k": 8,
+        "mrr_at_k": 0.9375,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      }
+    },
+    {
+      "fixture": "retrieval-questions-play.json",
+      "sha256": "5d51960dd0660746a19eb0cd450756e56a5bbc04f3dbab65035afe7db09915f8",
+      "summary": {
+        "questions": 14,
+        "canonical_hit_at_1": 14,
+        "canonical_hit_at_k": 14,
+        "mrr_at_k": 1.0,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      }
+    },
+    {
+      "fixture": "retrieval-questions-sol-active-normal-full.json",
+      "sha256": "04bf6a189676962cb2104315c544c5ec3bc6f5d22888367a924d0470040f122d",
+      "summary": {
+        "questions": 2,
+        "canonical_hit_at_1": 1,
+        "canonical_hit_at_k": 2,
+        "mrr_at_k": 0.625,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      }
+    },
+    {
+      "fixture": "retrieval-questions-sol-active-normal-gameplay.json",
+      "sha256": "83faed15a0be6d9a46788bd0ba4b894215eb4f082e368feb983630b286eccb25",
+      "summary": {
+        "questions": 2,
+        "canonical_hit_at_1": 2,
+        "canonical_hit_at_k": 2,
+        "mrr_at_k": 1.0,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      }
+    },
+    {
+      "fixture": "retrieval-questions-sol-active-normal-live.json",
+      "sha256": "669dbb98bea3bfd4b68df5e13633b3430a7548590589e2c6b34148ed7676ec83",
+      "summary": {
+        "questions": 1,
+        "canonical_hit_at_1": 1,
+        "canonical_hit_at_k": 1,
+        "mrr_at_k": 1.0,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      }
+    },
+    {
+      "fixture": "retrieval-questions-sol-active-normal.json",
+      "sha256": "3805ccb409d647f0593a9a65d41a86e7bc7c3db9acb40e277ffccb13d727d636",
+      "summary": {
+        "questions": 1,
+        "canonical_hit_at_1": 1,
+        "canonical_hit_at_k": 1,
+        "mrr_at_k": 1.0,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      }
+    },
+    {
+      "fixture": "retrieval-questions-sol-application-replay.json",
+      "sha256": "89aa6e2335037cfdd3a3a6cb79cb40ddc78669952e5f98a2534ad450421ecc1d",
+      "summary": {
+        "questions": 2,
+        "canonical_hit_at_1": 1,
+        "canonical_hit_at_k": 2,
+        "mrr_at_k": 0.75,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      }
+    },
+    {
+      "fixture": "retrieval-questions-sol-authority-offline.json",
+      "sha256": "f38b103001277214dcbac849b4979d3479afdea98aae9551c0de9b0dfb61977e",
+      "summary": {
+        "questions": 3,
+        "canonical_hit_at_1": 3,
+        "canonical_hit_at_k": 3,
+        "mrr_at_k": 1.0,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      }
+    },
+    {
+      "fixture": "retrieval-questions-sol-chamber.json",
+      "sha256": "937f21331675518201fdc00239fce8bb4dba34589c06cb905d3e3c1cfd2add54",
+      "summary": {
+        "questions": 3,
+        "canonical_hit_at_1": 3,
+        "canonical_hit_at_k": 3,
+        "mrr_at_k": 1.0,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      }
+    },
+    {
+      "fixture": "retrieval-questions-sol-contact-application.json",
+      "sha256": "fdc25d6c7fe69dc18ed2cf9d65da1a4d8c20f85cfad1a815fb3bddd19d9c5f81",
+      "summary": {
+        "questions": 3,
+        "canonical_hit_at_1": 3,
+        "canonical_hit_at_k": 3,
+        "mrr_at_k": 1.0,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      }
+    },
+    {
+      "fixture": "retrieval-questions-sol-cost.json",
+      "sha256": "d577ed917c14a7247b69df8949559bb8466f6198884cd252636734bc98ac33f7",
+      "summary": {
+        "questions": 2,
+        "canonical_hit_at_1": 2,
+        "canonical_hit_at_k": 2,
+        "mrr_at_k": 1.0,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      }
+    },
+    {
+      "fixture": "retrieval-questions-sol-node-trace.json",
+      "sha256": "ecb767c822dabf872d7c1dc97e047b392673a33e539950f4a8098baf7e186d75",
+      "summary": {
+        "questions": 3,
+        "canonical_hit_at_1": 2,
+        "canonical_hit_at_k": 3,
+        "mrr_at_k": 0.8333,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      }
+    },
+    {
+      "fixture": "retrieval-questions-sol-passive.json",
+      "sha256": "49979c8145586ae3dade2181d2716edbe3763aeb336afa02c48c662922d63824",
+      "summary": {
+        "questions": 1,
+        "canonical_hit_at_1": 1,
+        "canonical_hit_at_k": 1,
+        "mrr_at_k": 1.0,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      }
+    },
+    {
+      "fixture": "retrieval-questions.json",
+      "sha256": "9a7759f21717dca393e3772bf076bb3881f73cbe8f29f601cd4a128474895009",
+      "summary": {
+        "questions": 32,
+        "canonical_hit_at_1": 19,
+        "canonical_hit_at_k": 32,
+        "mrr_at_k": 0.7536,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      }
+    }
+  ],
+  "review": {
+    "contact": "Read-only agent source/packet review GO after unequal-correction wording and trace-projection clarification.",
+    "operator": "Read-only agent source/packet review scoped PASS after nominalgravity and attempted-run wording. Independent owner acceptance remains requested."
+  },
+  "scope": "Repository/strict failures and incorrect no-test discovery remain failures. Corrected22tests perhost passed without source changes. All20retrieval fixtures have full canonical top5 route coverage; new3questions rank1. Routing is not complete answer acceptance."
+}

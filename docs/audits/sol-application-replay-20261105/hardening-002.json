@@ -1,0 +1,142 @@
+{
+  "source": "81fb112af552e6c701e4efb8d59da67b8f072a78",
+  "commands": [
+    {
+      "name": "units-windows",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/experiments/test_sol_application_replay.py"
+      ],
+      "requested_command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/experiments/test_sol_application_replay.py"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 300,
+      "seconds": 0.2503256000345573,
+      "log": "build\\sol-active-normal-live\\application-replay-002\\units-windows.log",
+      "log_sha256": "7beb66911c3b98daf1b4d47da63e9d096fa9536fa8a23246230b3bc96f745ad9",
+      "markers": []
+    },
+    {
+      "name": "replay-windows",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/experiments/sol_application_replay.py",
+        "--output",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\build\\sol-active-normal-live\\application-replay-002\\windows"
+      ],
+      "requested_command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/experiments/sol_application_replay.py",
+        "--output",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\build\\sol-active-normal-live\\application-replay-002\\windows"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 300,
+      "seconds": 0.36118020000867546,
+      "log": "build\\sol-active-normal-live\\application-replay-002\\replay-windows.log",
+      "log_sha256": "48a2ebfaa6b644e719ad31a4d8e3c1158d2e46016f9f43a0b610472b3ecf0ab3",
+      "markers": []
+    },
+    {
+      "name": "units-linux",
+      "command": [
+        "wsl.exe",
+        "-d",
+        "Ubuntu-24.04",
+        "--cd",
+        "/mnt/c/Users/_/.codex/worktrees/sol-active-normal-live-20261105/khybersand",
+        "--",
+        "timeout",
+        "--signal=TERM",
+        "--kill-after=5s",
+        "300s",
+        "python3",
+        "tools/experiments/test_sol_application_replay.py"
+      ],
+      "requested_command": [
+        "wsl.exe",
+        "-d",
+        "Ubuntu-24.04",
+        "--cd",
+        "/mnt/c/Users/_/.codex/worktrees/sol-active-normal-live-20261105/khybersand",
+        "--",
+        "python3",
+        "tools/experiments/test_sol_application_replay.py"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 300,
+      "seconds": 3.972060900006909,
+      "log": "build\\sol-active-normal-live\\application-replay-002\\units-linux.log",
+      "log_sha256": "821683880a7811dba04b82dc1e3a4f21984969e46850ece8632cc660cc1ff567",
+      "markers": []
+    },
+    {
+      "name": "replay-linux",
+      "command": [
+        "wsl.exe",
+        "-d",
+        "Ubuntu-24.04",
+        "--cd",
+        "/mnt/c/Users/_/.codex/worktrees/sol-active-normal-live-20261105/khybersand",
+        "--",
+        "timeout",
+        "--signal=TERM",
+        "--kill-after=5s",
+        "300s",
+        "env",
+        "GIT_DIR=/mnt/c/khybersand/.git/worktrees/khybersand60",
+        "GIT_WORK_TREE=/mnt/c/Users/_/.codex/worktrees/sol-active-normal-live-20261105/khybersand",
+        "python3",
+        "tools/experiments/sol_application_replay.py",
+        "--output",
+        "/mnt/c/Users/_/.codex/worktrees/sol-active-normal-live-20261105/khybersand/build/sol-active-normal-live/application-replay-002/linux"
+      ],
+      "requested_command": [
+        "wsl.exe",
+        "-d",
+        "Ubuntu-24.04",
+        "--cd",
+        "/mnt/c/Users/_/.codex/worktrees/sol-active-normal-live-20261105/khybersand",
+        "--",
+        "env",
+        "GIT_DIR=/mnt/c/khybersand/.git/worktrees/khybersand60",
+        "GIT_WORK_TREE=/mnt/c/Users/_/.codex/worktrees/sol-active-normal-live-20261105/khybersand",
+        "python3",
+        "tools/experiments/sol_application_replay.py",
+        "--output",
+        "/mnt/c/Users/_/.codex/worktrees/sol-active-normal-live-20261105/khybersand/build/sol-active-normal-live/application-replay-002/linux"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 300,
+      "seconds": 4.148773499997333,
+      "log": "build\\sol-active-normal-live\\application-replay-002\\replay-linux.log",
+      "log_sha256": "9894736f5f2c417c1951e3919a8fca3c043269d69726e340a0a04b07f7e93d96",
+      "markers": []
+    }
+  ],
+  "comparison": {
+    "windows": {
+      "records_sha256": "c487a0bd6f8b532d7d341031d743a98176fa358fd612f11d7a47da01263c3373",
+      "retained001_sha256": "c487a0bd6f8b532d7d341031d743a98176fa358fd612f11d7a47da01263c3373",
+      "exact_record_parity": true
+    },
+    "linux": {
+      "records_sha256": "b901a671bcbe23557d4e8cf0c0e2aa75134b1d13778647d2e21e66d40b604054",
+      "retained001_sha256": "b901a671bcbe23557d4e8cf0c0e2aa75134b1d13778647d2e21e66d40b604054",
+      "exact_record_parity": true
+    }
+  },
+  "domain": "Guard-hardening repeat analysis of same Windows physical records; no new trials",
+  "live_actuation": false,
+  "raw_receipt_sha256": "72e2365b6280098842dc8f4d781d5cbcf8ac27157af38025f159163f161d5ed9",
+  "unit_counts": {
+    "units-windows": 6,
+    "units-linux": 6
+  }
+}

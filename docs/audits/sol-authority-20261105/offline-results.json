@@ -1,0 +1,641 @@
+{
+  "execution_domain": "offline-copied-data-model",
+  "live_authority": false,
+  "actuation_permitted": false,
+  "native_mutations": 0,
+  "rid_calls": 0,
+  "applied_impulse": [
+    0,
+    0
+  ],
+  "applied_torque": 0,
+  "applied_correction": [
+    0,
+    0
+  ],
+  "generated_work": 0,
+  "analysis_source": "0a771370519d76f2d48a1602c3ff8412ff29c136",
+  "attempts": [
+    {
+      "run": "authority-model-001",
+      "source": "87170bbcf0b34881a2fc24b2c7ffb94ca896f1d7",
+      "receipt_sha256": "9fd0d9d5b134ba75dda3dcb2bb902c98924db753b5b1c34428a3f251017c5a85",
+      "command": {
+        "name": "adversarial",
+        "command": [
+          "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "-m",
+          "unittest",
+          "discover",
+          "-v",
+          "-s",
+          "tools/experiments",
+          "-p",
+          "test_sol_authority_model.py"
+        ],
+        "requested_command": [
+          "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "-m",
+          "unittest",
+          "discover",
+          "-v",
+          "-s",
+          "tools/experiments",
+          "-p",
+          "test_sol_authority_model.py"
+        ],
+        "exit": 1,
+        "clean": false,
+        "timeout_seconds": 300,
+        "seconds": 1.2384846999775618,
+        "log": "build\\sol-active-normal-live\\authority-model-001\\adversarial.log",
+        "log_sha256": "6502590a6010db1abe0e12aa91fd4c2747db016c1a8aa44834874324dba816ee",
+        "markers": [
+          "FAILED (failures=1)"
+        ]
+      },
+      "test_count": 13,
+      "qualification": "FAILED expectation:12pass/1fail"
+    },
+    {
+      "run": "authority-model-002",
+      "source": "12e651d68f002aeac6b74aa517cd47478bea2ea2",
+      "receipt_sha256": "b4c3700dc42a7d5f7fbfe115bd83987121fc62ecc64b02d62e74b3718d13ea04",
+      "command": {
+        "name": "adversarial",
+        "command": [
+          "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "-m",
+          "unittest",
+          "discover",
+          "-v",
+          "-s",
+          "tools/experiments",
+          "-p",
+          "test_sol_authority_model.py"
+        ],
+        "requested_command": [
+          "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "-m",
+          "unittest",
+          "discover",
+          "-v",
+          "-s",
+          "tools/experiments",
+          "-p",
+          "test_sol_authority_model.py"
+        ],
+        "exit": 0,
+        "clean": true,
+        "timeout_seconds": 300,
+        "seconds": 0.7584465999971144,
+        "log": "build\\sol-active-normal-live\\authority-model-002\\adversarial.log",
+        "log_sha256": "f95573f9b29e594fb1f6bea1d1e547111e14dc6113d0337ac5bfbb84399a1b66",
+        "markers": []
+      },
+      "test_count": 14,
+      "qualification": "INCOMPLETE:14pass but protocol defects found by review"
+    },
+    {
+      "run": "authority-model-linux-002",
+      "source": "12e651d68f002aeac6b74aa517cd47478bea2ea2",
+      "receipt_sha256": "4cfa69a26ff7e16b8a8b6b3efcdac2057140a54acce5bbadbe1c6eeb3f964e6b",
+      "command": {
+        "name": "adversarial-linux",
+        "command": [
+          "wsl.exe",
+          "-d",
+          "Ubuntu-24.04",
+          "--cd",
+          "/mnt/c/Users/_/.codex/worktrees/sol-active-normal-live-20261105/khybersand",
+          "--",
+          "timeout",
+          "--signal=TERM",
+          "--kill-after=5s",
+          "300s",
+          "python3",
+          "-m",
+          "unittest",
+          "discover",
+          "-v",
+          "-s",
+          "tools/experiments",
+          "-p",
+          "test_sol_authority_model.py"
+        ],
+        "requested_command": [
+          "wsl.exe",
+          "-d",
+          "Ubuntu-24.04",
+          "--cd",
+          "/mnt/c/Users/_/.codex/worktrees/sol-active-normal-live-20261105/khybersand",
+          "--",
+          "python3",
+          "-m",
+          "unittest",
+          "discover",
+          "-v",
+          "-s",
+          "tools/experiments",
+          "-p",
+          "test_sol_authority_model.py"
+        ],
+        "exit": 0,
+        "clean": true,
+        "timeout_seconds": 300,
+        "seconds": 4.98185260000173,
+        "log": "build\\sol-active-normal-live\\authority-model-linux-002\\adversarial-linux.log",
+        "log_sha256": "108bf4ed46869a11e669c6d45cee77b07f20583b5af80be1db44903167ba1567",
+        "markers": []
+      },
+      "test_count": 14,
+      "qualification": "INCOMPLETE:14pass but protocol defects found by review"
+    },
+    {
+      "run": "authority-model-004",
+      "source": "5f1c1b815922a06ed9c930d44e4d4e4b551eb4c9",
+      "receipt_sha256": "21cd37c275982053bfcb78ae769d7d54161e8d913eb54a47226b1c92382162e8",
+      "command": {
+        "name": "windows",
+        "command": [
+          "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "-m",
+          "unittest",
+          "discover",
+          "-v",
+          "-s",
+          "tools/experiments",
+          "-p",
+          "test_sol_authority_model.py"
+        ],
+        "requested_command": [
+          "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "-m",
+          "unittest",
+          "discover",
+          "-v",
+          "-s",
+          "tools/experiments",
+          "-p",
+          "test_sol_authority_model.py"
+        ],
+        "exit": 0,
+        "clean": true,
+        "timeout_seconds": 300,
+        "seconds": 0.9612154000205919,
+        "log": "build\\sol-active-normal-live\\authority-model-004\\windows.log",
+        "log_sha256": "2af658d922d4aeddae064fa533495c7ccde97f2d4bbcba0f4666f168be9c241f",
+        "markers": []
+      },
+      "test_count": 20,
+      "qualification": "PASS copied-value tests; external acceptance pending"
+    },
+    {
+      "run": "authority-model-004",
+      "source": "5f1c1b815922a06ed9c930d44e4d4e4b551eb4c9",
+      "receipt_sha256": "21cd37c275982053bfcb78ae769d7d54161e8d913eb54a47226b1c92382162e8",
+      "command": {
+        "name": "linux",
+        "command": [
+          "wsl.exe",
+          "-d",
+          "Ubuntu-24.04",
+          "--cd",
+          "/mnt/c/Users/_/.codex/worktrees/sol-active-normal-live-20261105/khybersand",
+          "--",
+          "timeout",
+          "--signal=TERM",
+          "--kill-after=5s",
+          "300s",
+          "python3",
+          "-m",
+          "unittest",
+          "discover",
+          "-v",
+          "-s",
+          "tools/experiments",
+          "-p",
+          "test_sol_authority_model.py"
+        ],
+        "requested_command": [
+          "wsl.exe",
+          "-d",
+          "Ubuntu-24.04",
+          "--cd",
+          "/mnt/c/Users/_/.codex/worktrees/sol-active-normal-live-20261105/khybersand",
+          "--",
+          "python3",
+          "-m",
+          "unittest",
+          "discover",
+          "-v",
+          "-s",
+          "tools/experiments",
+          "-p",
+          "test_sol_authority_model.py"
+        ],
+        "exit": 0,
+        "clean": true,
+        "timeout_seconds": 300,
+        "seconds": 4.93825820001075,
+        "log": "build\\sol-active-normal-live\\authority-model-004\\linux.log",
+        "log_sha256": "5486ab191ecdab5fd9b1490f15b56ff94e628a1cc4cda51cf1fc961416de8bf3",
+        "markers": []
+      },
+      "test_count": 20,
+      "qualification": "PASS copied-value tests; external acceptance pending"
+    }
+  ],
+  "synthetic_capture": {
+    "execution_domain": "offline-copied-data-model",
+    "live_authority": false,
+    "actuation_permitted": false,
+    "native_mutations": 0,
+    "rid_calls": 0,
+    "applied_impulse": [
+      0,
+      0
+    ],
+    "applied_torque": 0,
+    "applied_correction": [
+      0,
+      0
+    ],
+    "generated_work": 0,
+    "hard_intersections": [],
+    "granular_intersections": [],
+    "census_cells": 1240,
+    "captured_digest": "3bc2d127abe8ebfceff4b01e4a3556676a262082da079dc8a4a0118e99323def",
+    "support_eligibility": "UNAVAILABLE: one-cell no-op halo does not cover original support predicate",
+    "member_identity_ownership": "UNAVAILABLE: supplied tuple consistency is not owner-captured member identity",
+    "status": "COMPLETE_FOR_NOOP_MODEL",
+    "reasons": []
+  },
+  "no_op_lifecycle": {
+    "execution_domain": "offline-copied-data-model",
+    "live_authority": false,
+    "actuation_permitted": false,
+    "native_mutations": 0,
+    "rid_calls": 0,
+    "applied_impulse": [
+      0,
+      0
+    ],
+    "applied_torque": 0,
+    "applied_correction": [
+      0,
+      0
+    ],
+    "generated_work": 0,
+    "state": "RELEASED",
+    "attempts": 6,
+    "trace_overflow": 0,
+    "consumed_leases": 1,
+    "trace": [
+      {
+        "event": "grant",
+        "now": 0,
+        "accepted": true,
+        "reason": "",
+        "state": "HELD"
+      },
+      {
+        "event": "capture",
+        "now": 1,
+        "accepted": true,
+        "reason": "",
+        "state": "CAPTURED"
+      },
+      {
+        "event": "main_validate",
+        "now": 2,
+        "accepted": true,
+        "reason": "",
+        "state": "MAIN_VALIDATED"
+      },
+      {
+        "event": "noop_ack",
+        "now": 3,
+        "accepted": true,
+        "reason": "",
+        "state": "NOOP_ACKNOWLEDGED"
+      },
+      {
+        "event": "release",
+        "now": 4,
+        "accepted": true,
+        "reason": "",
+        "state": "RELEASED"
+      },
+      {
+        "event": "grant",
+        "now": 5,
+        "accepted": false,
+        "reason": "actual step already consumed",
+        "state": "RELEASED"
+      }
+    ]
+  },
+  "historical_geometry": {
+    "nine_Sand_sixteen_Wall": {
+      "execution_domain": "offline-copied-data-model",
+      "live_authority": false,
+      "actuation_permitted": false,
+      "native_mutations": 0,
+      "rid_calls": 0,
+      "applied_impulse": [
+        0,
+        0
+      ],
+      "applied_torque": 0,
+      "applied_correction": [
+        0,
+        0
+      ],
+      "generated_work": 0,
+      "status": "REFUSED_HARD_GEOMETRY",
+      "material_counts": {
+        "0": 15746,
+        "1": 528,
+        "2": 9,
+        "43": 101
+      },
+      "hard_intersections": [
+        {
+          "cell": [
+            89,
+            27
+          ],
+          "material": 1,
+          "proxy": 1,
+          "area": 1.0
+        },
+        {
+          "cell": [
+            90,
+            27
+          ],
+          "material": 1,
+          "proxy": 1,
+          "area": 1.0
+        },
+        {
+          "cell": [
+            91,
+            27
+          ],
+          "material": 1,
+          "proxy": 1,
+          "area": 1.0
+        },
+        {
+          "cell": [
+            92,
+            27
+          ],
+          "material": 1,
+          "proxy": 1,
+          "area": 1.0
+        },
+        {
+          "cell": [
+            93,
+            27
+          ],
+          "material": 1,
+          "proxy": 1,
+          "area": 1.0
+        },
+        {
+          "cell": [
+            89,
+            28
+          ],
+          "material": 1,
+          "proxy": 1,
+          "area": 1.0
+        },
+        {
+          "cell": [
+            93,
+            28
+          ],
+          "material": 1,
+          "proxy": 1,
+          "area": 1.0
+        },
+        {
+          "cell": [
+            89,
+            29
+          ],
+          "material": 1,
+          "proxy": 1,
+          "area": 1.0
+        },
+        {
+          "cell": [
+            93,
+            29
+          ],
+          "material": 1,
+          "proxy": 1,
+          "area": 1.0
+        },
+        {
+          "cell": [
+            89,
+            30
+          ],
+          "material": 1,
+          "proxy": 1,
+          "area": 1.0
+        },
+        {
+          "cell": [
+            93,
+            30
+          ],
+          "material": 1,
+          "proxy": 1,
+          "area": 1.0
+        },
+        {
+          "cell": [
+            89,
+            31
+          ],
+          "material": 1,
+          "proxy": 1,
+          "area": 1.0
+        },
+        {
+          "cell": [
+            90,
+            31
+          ],
+          "material": 1,
+          "proxy": 1,
+          "area": 1.0
+        },
+        {
+          "cell": [
+            91,
+            31
+          ],
+          "material": 1,
+          "proxy": 1,
+          "area": 1.0
+        },
+        {
+          "cell": [
+            92,
+            31
+          ],
+          "material": 1,
+          "proxy": 1,
+          "area": 1.0
+        },
+        {
+          "cell": [
+            93,
+            31
+          ],
+          "material": 1,
+          "proxy": 1,
+          "area": 1.0
+        }
+      ],
+      "area_filter": 1e-09,
+      "authority_missing": [
+        "state tuples",
+        "temperature",
+        "residency",
+        "source/mask owner",
+        "mutation/body/mask serials",
+        "exclusive Active hold"
+      ]
+    },
+    "embedded_stationary": {
+      "execution_domain": "offline-copied-data-model",
+      "live_authority": false,
+      "actuation_permitted": false,
+      "native_mutations": 0,
+      "rid_calls": 0,
+      "applied_impulse": [
+        0,
+        0
+      ],
+      "applied_torque": 0,
+      "applied_correction": [
+        0,
+        0
+      ],
+      "generated_work": 0,
+      "status": "REFUSED_HARD_GEOMETRY",
+      "material_counts": {
+        "0": 13679,
+        "1": 588,
+        "43": 101,
+        "2": 2016
+      },
+      "hard_intersections": [
+        {
+          "cell": [
+            53,
+            67
+          ],
+          "material": 43,
+          "proxy": 6,
+          "area": 4.299683854122019e-08
+        }
+      ],
+      "area_filter": 1e-09,
+      "authority_missing": [
+        "state tuples",
+        "temperature",
+        "residency",
+        "source/mask owner",
+        "mutation/body/mask serials",
+        "exclusive Active hold"
+      ],
+      "complete_capture_validation": {
+        "execution_domain": "offline-copied-data-model",
+        "live_authority": false,
+        "actuation_permitted": false,
+        "native_mutations": 0,
+        "rid_calls": 0,
+        "applied_impulse": [
+          0,
+          0
+        ],
+        "applied_torque": 0,
+        "applied_correction": [
+          0,
+          0
+        ],
+        "generated_work": 0,
+        "status": "REFUSED_OR_UNKNOWN",
+        "reasons": [
+          "capture schema"
+        ]
+      }
+    },
+    "rotated_compound": {
+      "execution_domain": "offline-copied-data-model",
+      "live_authority": false,
+      "actuation_permitted": false,
+      "native_mutations": 0,
+      "rid_calls": 0,
+      "applied_impulse": [
+        0,
+        0
+      ],
+      "applied_torque": 0,
+      "applied_correction": [
+        0,
+        0
+      ],
+      "generated_work": 0,
+      "status": "GEOMETRY_ONLY_AUTHORITY_UNKNOWN",
+      "material_counts": {
+        "0": 13679,
+        "1": 588,
+        "43": 101,
+        "2": 2016
+      },
+      "hard_intersections": [],
+      "area_filter": 1e-09,
+      "authority_missing": [
+        "state tuples",
+        "temperature",
+        "residency",
+        "source/mask owner",
+        "mutation/body/mask serials",
+        "exclusive Active hold"
+      ],
+      "complete_capture_validation": {
+        "execution_domain": "offline-copied-data-model",
+        "live_authority": false,
+        "actuation_permitted": false,
+        "native_mutations": 0,
+        "rid_calls": 0,
+        "applied_impulse": [
+          0,
+          0
+        ],
+        "applied_torque": 0,
+        "applied_correction": [
+          0,
+          0
+        ],
+        "generated_work": 0,
+        "status": "REFUSED_OR_UNKNOWN",
+        "reasons": [
+          "capture schema"
+        ]
+      }
+    }
+  },
+  "scope": "Complete synthetic data/model rules only; no actual native/Rapier capture, Active hold, application or physical-clearance admission"
+}

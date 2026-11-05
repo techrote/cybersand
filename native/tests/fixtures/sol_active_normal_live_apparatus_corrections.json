@@ -1,0 +1,53 @@
+{
+  "id": "SOL-ACTIVE-NORMAL-LIVE-001-APPARATUS-CORRECTIONS",
+  "attempts": [
+    {
+      "source": "c4424bdb",
+      "command": [
+        "python",
+        "tools/experiments/sol_active_normal_live_runtime.py",
+        "build"
+      ],
+      "exit": 1,
+      "phase": "source_identity before output directory or compiler launch",
+      "error": "TypeError: unhashable type: dict; source_locks is list of rows",
+      "raw_log": "Tool transcript only; no process helper was reached",
+      "correction": "Enumerate each retained source_locks row.path; no source guard/hash or physics change"
+    },
+    {
+      "source": "ff0d7cf5",
+      "command": "Inline preflight p.command(material-guard, relative output folder)",
+      "exit": 1,
+      "phase": "receipt formatting after child completed",
+      "error": "ValueError: relative log path not under absolute ROOT",
+      "raw_log": "build/sol-active-normal-live/preflight-001/material-guard.log; helper did not persist child exit",
+      "correction": "Use absolute output folder. Independent preflight002 command exits0 with raw log and receipt. Do not infer missing first-child exit from PASS output."
+    },
+    {
+      "source": "8fa757fa32feeb441a9798f3b66e2f2463aeb673",
+      "command": "python tools/experiments/sol_active_normal_live.py --run policy-001 --suite policy --repeats 1",
+      "exit": 1,
+      "phase": "Actual Windows and Linux lifecycle fixture before first API test World",
+      "receipt_sha256": "99ecf16d276ef0fa1b1631a247e3770caa8ad73bf27e4aad2bda7ae233e99dc4",
+      "errors": {
+        "windows": [
+          {
+            "name": "policy-lifecycle",
+            "exit": 1,
+            "log_sha256": "0f7375484ddbb712fb511acb99ec6bd0811a204b9724308c8246a942e2dd08bc"
+          }
+        ],
+        "linux": [
+          {
+            "name": "policy-lifecycle",
+            "exit": 15,
+            "log_sha256": "b84c588369816f1c3d595b4b054940b96193d2451ac1d91ba4f42a31888e6208"
+          }
+        ]
+      },
+      "termination": "Explicit owned-process termination after same typed-array SCRIPT ERROR; Windows taskkill17124/T/F, Linux TERM433; retained process exit1/15",
+      "correction": "Explicit Array[bool] neutral drives. Add registered missing failed-World, explicit-original, teardown checks and malformed readback negatives. No physics or numerical changes.",
+      "post_inventory": "Original runner skipped failed-host post inventory; retained as missing observation, source/native identity remained equal."
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "id":"SOL-CONTACT-APPLICATION-001-AUTHORED",
+  "extends":"res://tests/fixtures/la_physical/registration-v5.json",
+  "arms":["LA-SELECTIVE"],
+  "ordinary_steps":360,
+  "extra_cases":[
+    {"id":"shared-granular-bodies-extended360","kind":"dynamic","models":["reference_barrel","kestrel","scooper"],"layout":"bed","impulse":2,"prefix_case":"shared-granular-bodies"}
+  ],
+  "scope":"Registered extended mixed window and unchanged static controls. App policy/normal policy remain independently named actual readbacks. No original SOL authority."
+}

@@ -10,6 +10,64 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## Live granular policy and SOL progression — 2026-11-05
+
+The [contact/application continuation](../audits/2026-11-05-sol-contact-application.md)
+completes48matched360step episodes at8e4d7731 and dual-host analysis13d20dd6:
+accounting passes, retain-linear fails its full gate and StageB is not admitted.
+All16retain-static episodes fail; late mixed Kestrel motion still regresses.
+Keep this candidate opt-in/rejected, without tuning or default promotion. The
+[separate gravity operator](../audits/2026-11-05-sol-gravity-operator.md) executes
+18fresh no-contact episodes at ef106ff7 and final dual-host analysis5198ba5f.
+Only gravity-then-rational-damping is compatible within the registered one-step
+tolerance; accumulated32step errors stay explicit. No predictor/native World
+actuation is implemented there. Next is independent review and a new registered
+support candidate with operator-consistent impulse transport, native-owner
+gravity binding and synchronous application/step refusal accounting. Original
+SOL physical/member/source authority remains blocked; keep Draft429.
+
+Root alone owns Draft429 `codex/sol-active-normal-live-20261105`, dependent on
+fixed421 `4cd9ca19`. The [live dossier](../audits/2026-11-05-sol-active-normal-live.md)
+records complete240chamber,192authored and72distributed episodes. The latter
+two execute/analyze at119ac3a5 with unchanged source-qualified fresh runtimes;
+synthesis29157359 and curationb94dff80 are separate analysis checkpoints.
+All120driven chamber episodes still fail strict clearance. Constrained-barrel
+terminal stability improves, but mixed-body motion regresses; no promotion is
+admitted. Distributed requested-four runs observe four participants; cell and
+arrival-history memory/cost are separately qualified. Preserve Original normal
+policy default, all source guards, historical capacity/physical failures and
+Draft status. The separate source/ownership map and offline E1/E2 model below
+grant no live capture, hold or actuation.
+
+The [offline authority dossier](../audits/2026-11-05-sol-authority-offline.md)
+now supplies a1355path/92native-input conflict map, exact original geometry/RLE
+negatives and a bounded copied-value lease model. Source map/extraction32902aa6,
+corrected20test-per-host source5f1c1b81 and curation0a771370 are distinct. Earlier
+failed expectations and review-invalidated14test passes are retained. The005
+busy-request state clarification and public custody test add a separate22test
+checkpoint. Every model result has false live authority/actuation; original
+support/member ownership remain unavailable. Native84 and DLL/SO source are
+unchanged. Keep all PRs Draft and upstream intact.
+
+The [complete recorded application replay](../audits/2026-11-05-sol-application-replay.md)
+now analyzes1080body applications from the two retained Windows shared-body
+runs, atbd5d6617 on both Python hosts. Guard-hardening source81fb112a passes six
+tests per host and exactly reproduces each retained record hash. Positive wrench
+work after clipping coexists with nonpositive combined application KE here;
+correction potential and full energy conservation stay separate. First native
+wrench differences2/30/32 precede unequal correction; endpoint contact phase is
+different. No unique later trajectory cause is proved. The [bounded node trace](../audits/2026-11-05-sol-node-trace.md)
+now executes at1488fe13 with fresh source-qualified runtimes and final analysis
+b3c6c82f. All16episodes,4,320captures and8,640applications pass accounting;
+8traceoff/on and8retained trajectory comparisons match. Both actual hosts pass
+98policy/107trace lifecycle assertions, affected suites and17final Python audit
+tests. Metadata/zero-request operands differ at0; first actual effects are
+Scooper2/barrel30/Kestrel32 with equal input bits. Failed apparatus and analysis
+labels remain retained. The separately registered contact/application follow-up
+above rejects removal of velocity clipping; no default promotion or originalSOL
+admission follows. External main06522e3 adds
+onlyREADME content overba9cbc89; the owned fixed421 ancestry is unchanged.
+
 ## Exact SOL geometry chamber lane — 2026-11-05
 
 Root alone owns `codex/sol-normal-active-20261105`, based on fixed Draft416

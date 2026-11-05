@@ -1,0 +1,29 @@
+{
+  "comparison_source": "bd5d6617a7907ecd438b06e271b1ecdaed3fb18f",
+  "record_hashes": {
+    "windows": "c487a0bd6f8b532d7d341031d743a98176fa358fd612f11d7a47da01263c3373",
+    "linux": "b901a671bcbe23557d4e8cf0c0e2aa75134b1d13778647d2e21e66d40b604054"
+  },
+  "summary_bytes_equal": true,
+  "difference_count": 2,
+  "fields": {
+    "energy_after": 1,
+    "raw_energy_after": 1
+  },
+  "maximum_absolute_difference": 3.3881317890172014e-21,
+  "differences": [
+    {
+      "path": "/41/native_scalar/energy_after",
+      "windows": 1.8281549696291747e-05,
+      "linux": 1.8281549696291744e-05,
+      "absolute_difference": 3.3881317890172014e-21
+    },
+    {
+      "path": "/41/native_scalar/raw_energy_after",
+      "windows": 1.8281549696291747e-05,
+      "linux": 1.8281549696291744e-05,
+      "absolute_difference": 3.3881317890172014e-21
+    }
+  ],
+  "scope": "Actual Windows/Linux Python replay of identical Windows physical records; analysis differences are not new physical trajectories"
+}

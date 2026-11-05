@@ -1,0 +1,103 @@
+{
+  "observed_utc": "2026-11-05 10:50:22 UTC",
+  "owner_branch": "codex/sol-active-normal-live-20261105",
+  "parent_required_head": "4cd9ca193176e315f8e81316e2221b275cdccbde",
+  "current_main": {
+    "head": "ba9cbc89029be88b812af59b19e5c59829bbcd90",
+    "tree": "3af18f50e6094776263119623b64a1b2f4ca0ab2",
+    "method": "git ls-remote; not an integration authorization"
+  },
+  "prs": [
+    {
+      "number": 393,
+      "url": "https://github.com/techrote/cybersand/pull/393",
+      "state": "open",
+      "merged": false,
+      "draft": true,
+      "head": "fix/sol347-facade-refusal-20261104-095628",
+      "head_sha": "e4c2649e82d943554f4dc6a0634336770cda08f6",
+      "base": "sol-detach-001-current-main",
+      "base_sha": "1598115c9065239cc1eaec11e99077274b457be1"
+    },
+    {
+      "number": 386,
+      "url": "https://github.com/techrote/cybersand/pull/386",
+      "state": "open",
+      "merged": false,
+      "draft": true,
+      "head": "audit/mat-sol-protected-consumer-20261104",
+      "head_sha": "b661a6f354f8c51e79759d22ad4573a875964b43",
+      "base": "main",
+      "base_sha": "7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1"
+    },
+    {
+      "number": 394,
+      "url": "https://github.com/techrote/cybersand/pull/394",
+      "state": "closed",
+      "merged": true,
+      "draft": false,
+      "head": "codex/workbench-consolidation-retry-20261104",
+      "head_sha": "77c60b8e0f9b17192a4e04b20cd37ec55096c2c3",
+      "base": "main",
+      "base_sha": "ee92dc45b12455f01218394fd773da516caf356e"
+    },
+    {
+      "number": 400,
+      "url": "https://github.com/techrote/cybersand/pull/400",
+      "state": "open",
+      "merged": false,
+      "draft": true,
+      "head": "codex/experiment-la-selective-sol-feasibility-20261105",
+      "head_sha": "a38098b1a807fc3ac7b60166e75b217dd7bc629e",
+      "base": "codex/workbench-consolidation-retry-20261104",
+      "base_sha": "77c60b8e0f9b17192a4e04b20cd37ec55096c2c3"
+    },
+    {
+      "number": 411,
+      "url": "https://github.com/techrote/cybersand/pull/411",
+      "state": "open",
+      "merged": false,
+      "draft": true,
+      "head": "codex/sol-chamber-yielding-20261105",
+      "head_sha": "b424032b925fd890421d3e94ed0524988445b5fb",
+      "base": "codex/experiment-la-selective-sol-feasibility-20261105",
+      "base_sha": "a38098b1a807fc3ac7b60166e75b217dd7bc629e"
+    },
+    {
+      "number": 416,
+      "url": "https://github.com/techrote/cybersand/pull/416",
+      "state": "open",
+      "merged": false,
+      "draft": true,
+      "head": "codex/sol-response-cost-20261105",
+      "head_sha": "3e0bf637c9f2cdb660bd55cf8bc33d2da779e4f9",
+      "base": "codex/sol-chamber-yielding-20261105",
+      "base_sha": "b424032b925fd890421d3e94ed0524988445b5fb"
+    },
+    {
+      "number": 421,
+      "url": "https://github.com/techrote/cybersand/pull/421",
+      "state": "open",
+      "merged": false,
+      "draft": true,
+      "head": "codex/sol-normal-active-20261105",
+      "head_sha": "4cd9ca193176e315f8e81316e2221b275cdccbde",
+      "base": "codex/sol-response-cost-20261105",
+      "base_sha": "3e0bf637c9f2cdb660bd55cf8bc33d2da779e4f9"
+    }
+  ],
+  "sol347": {
+    "number": 347,
+    "head": "sol-detach-001-current-main",
+    "head_sha": "1598115c9065239cc1eaec11e99077274b457be1",
+    "tree": "eff31c3597347f06a4b23193cd64b58350386c29",
+    "method": "Fresh git ls-remote and quoted git rev-parse at2026-11-05~10:52UTC",
+    "pr_metadata": "UNAVAILABLE: GitHub connector fetch repeated Transport closed; head independently verified, no PR-state inference"
+  },
+  "writer": {
+    "remote_experiment_branch": "absent at guard",
+    "local_writer": "root only",
+    "other_sources": "read-only; owning branches not updated"
+  },
+  "qualifier": "Reported PR base_sha is snapshot metadata; current Git refs are checked separately. No source equivalence or integration permission follows."
+}

@@ -12,11 +12,48 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 ## Compound granular behaviour and SOL boundary — 2026-11-05
 
+**Current follow-up:** the [contact/application experiment](../audits/2026-11-05-sol-contact-application.md)
+passes48episode/28,800application accounting but rejects retain-linear for
+support/penetration/motion failures. Late-window mixed Kestrel motion still
+regresses; quieter endpoints do not establish repair. Conditional StageB is
+not admitted. The [actual gravity/damping oracle](../audits/2026-11-05-sol-gravity-operator.md)
+qualifies one-step compatibility across18fresh empty-space episodes without
+applying predicted contact loads. Next: independently review this evidence,
+then register operator-consistent synchronous support/refusal accounting before
+any native predictor. No original SOL, default or source-composition admission.
+
 The [active-normal value refinement](../audits/2026-11-05-sol-active-normal.md)
 passes its38case registration on three compiled variants, improving nine COM
-arrest targets without changing capacity shares. It is not in production/live
-coupling. Next qualify an opt-in real-World response at fresh source and retain
-the original policy. Original SOL ownership/material admission stays separate.
+arrest targets without changing capacity shares. The [dependent live policy](../audits/2026-11-05-sol-active-normal-live.md) now
+ports that arithmetic behind a fresh diagnostic opt-in while retaining Original
+as default. Fresh runtimes, native optimized/strict sanitizers and both-host
+workbench regressions pass. Independent smoke reduction shows smaller driven
+overlap (area38.7651→14.2322cell²), with strict clearance still failing.
+Full240chamber evidence now covers bothhosts/workers1/4/three repeats, with
+all120driven episodes still failing strict clearance; actual participation in
+this small chamber remains one. All192authored and72distributed episodes now
+pass accounting, with a constrained-barrel terminal-screen benefit but a
+mixed-body motion regression blocking promotion. Distributed requested-four
+episodes have four actual participants; arrival-history memory and shared-host
+cost remain explicit. Original SOL ownership/material admission stays separate.
+
+The [recorded application replay](../audits/2026-11-05-sol-application-replay.md)
+checks1080mixed-body applications. Clipping/wrench stage work explains why
+native predicted KE differs from actual post-application KE without proving
+combined KE creation. Unique later trajectory cause and a safe correction change remain open.
+The [qualified bounded node trace](../audits/2026-11-05-sol-node-trace.md) now
+checks16episodes/4,320captures/8,640applications on actual Windows/Linux.
+Eight traceoff/on and eight retained trajectory comparisons match. Immediate
+response effects atScooper2/barrel30/Kestrel32 have identical input bits;
+policy metadata/zero-request operands differ earlier without different updates.
+Native/scoped/API and17Python-audit tests per host pass. Mixed-body regression,
+original SOL authority/clearance and general promotion remain blocked. The
+separate contact/application follow-up above preserves this trace evidence.
+
+The [offline SOL authority contract](../operations/sol-authority-offline-contract.md)
+adds a1355path source map and adversarial copied-value lease model, with retained
+failed/review-invalidated attempts. It supplies no native capture/Active hold,
+RID work, support/member-identity proof or original SOL recovery admission.
 
 The [separate response-cost lane](../audits/2026-11-05-sol-response-cost.md)
 qualifies48single-body sessions and24observer pairs:13–22µs response generation

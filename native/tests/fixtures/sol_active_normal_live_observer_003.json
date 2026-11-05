@@ -1,0 +1,16 @@
+{
+  "id": "SOL-ACTIVE-NORMAL-LIVE-001-AUTHORED-OBSERVER-003",
+  "status": "PROSPECTIVE; before full authored/workload execution",
+  "date": "2026-11-05",
+  "source": "9ac0bc67",
+  "previous": "native/tests/fixtures/sol_active_normal_live_observer_002.json",
+  "scope": "Append configured native-worker readback to derived test packets; no simulation/physics/input/runtime change",
+  "reason": "Authored report lacks constructor receipt; observed participant counts alone cannot prove requested native pool configuration",
+  "fields": [
+    "native_workers_configured from existing get_worker_threads each packet",
+    "native_workers_constructed cached from existing applied construction receipt on fresh commit",
+    "both values must equal requested1or4 before independent qualification"
+  ],
+  "cost": "Additional observation calls remain in inclusive simulation/process cost; getter_us retains narrow native getter interval",
+  "historical": "Pilot001 and prior raw receipts unchanged; source identifiers and missing configured-worker observation remain explicit"
+}

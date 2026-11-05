@@ -10,6 +10,34 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+The [contact/application experiment](audits/2026-11-05-sol-contact-application.md)
+rejects removing velocity clipping after48matched episodes; mixed-body sustained
+motion and granular sinking remain unresolved. The
+[actual gravity/damping oracle](audits/2026-11-05-sol-gravity-operator.md)
+qualifies empty-space one-step compatibility without implementing a support
+predictor. Use the [canonical boundary](architecture/rigid-body-and-cellular-coupling.md#contact-application-experiment-and-gravity-operator)
+for source, controls, rejected candidate and next admission requirements.
+
+The [bounded node/batch trace](audits/2026-11-05-sol-node-trace.md) qualifies
+observation without changing recorded physics and distinguishes policy operands
+from first actual response effects. Original SOL and promotion remain blocked;
+use the [canonical trace boundary](architecture/rigid-body-and-cellular-coupling.md#bounded-node-and-batch-trace)
+for current source, capacity, ownership and performance limits.
+
+The [recorded application replay](audits/2026-11-05-sol-application-replay.md)
+separates clipping, wrench, observed KE and contact phase across the complete
+mixed-body window. It selects no live correction policy or SOL recovery action.
+
+The [offline SOL capture/lease contract](operations/sol-authority-offline-contract.md)
+models refusals and one-use accounting with no native/RID calls. Its
+[source/evidence dossier](audits/2026-11-05-sol-authority-offline.md) preserves
+unadmitted composition, historical geometry negatives and retained failed reviews.
+
+The [live normal-policy follow-up](audits/2026-11-05-sol-active-normal-live.md)
+qualifies an opt-in native policy with fresh runtimes and both-host lifecycle
+checks and complete240chamber/192authored/72workload matrices. Mixed-body motion
+regression, residual penetration and source admission still block promotion.
+
 The [active-normal copied-value candidate](audits/2026-11-05-sol-active-normal.md)
 tests bounded normal relaxation with unchanged capacity/friction controls.
 [Its canonical boundary](architecture/rigid-body-and-cellular-coupling.md#active-normal-copied-value-candidate)

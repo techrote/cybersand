@@ -1,0 +1,127 @@
+{
+  "source": "637eea42156dfccc516395f12addca15138df646",
+  "commands": [
+    {
+      "name": "docs",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/ci/check_docs.py"
+      ],
+      "requested_command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/ci/check_docs.py"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 300,
+      "seconds": 2.8338717999868095,
+      "log": "build\\sol-active-normal-live\\checkpoint-001\\docs.log",
+      "log_sha256": "6fdb30a8d4c3cb2878674e48951ff6d006f29d14d9046455c63172a581f02fb2",
+      "markers": []
+    },
+    {
+      "name": "m11",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/ci/check_m11_consistency.py"
+      ],
+      "requested_command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/ci/check_m11_consistency.py"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 300,
+      "seconds": 1.2942454000003636,
+      "log": "build\\sol-active-normal-live\\checkpoint-001\\m11.log",
+      "log_sha256": "e5d2a8eecef5876957dc4ecff01b99af696053871616d2dea563371d44b2427b",
+      "markers": []
+    },
+    {
+      "name": "repository",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/ci/check_repository.py",
+        "--require-materialized"
+      ],
+      "requested_command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/ci/check_repository.py",
+        "--require-materialized"
+      ],
+      "exit": 1,
+      "clean": false,
+      "timeout_seconds": 300,
+      "seconds": 2.763073500012979,
+      "log": "build\\sol-active-normal-live\\checkpoint-001\\repository.log",
+      "log_sha256": "405e1e098c0b48033998dc664d95fad314607e87871363a506f398661ec4aeca",
+      "markers": []
+    },
+    {
+      "name": "retrieval-live",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/docs/retrieval_eval.py",
+        "--queries",
+        "docs/reference/retrieval-questions-sol-active-normal-live.json",
+        "--output",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\build\\sol-active-normal-live\\checkpoint-001\\retrieval-live.json"
+      ],
+      "requested_command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/docs/retrieval_eval.py",
+        "--queries",
+        "docs/reference/retrieval-questions-sol-active-normal-live.json",
+        "--output",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\build\\sol-active-normal-live\\checkpoint-001\\retrieval-live.json"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 300,
+      "seconds": 0.3968771999934688,
+      "log": "build\\sol-active-normal-live\\checkpoint-001\\retrieval-live.log",
+      "log_sha256": "745e5706de7b8bbca67a4d1e4c7733d26aaeaeb4dd33edf83ecedf42e68897a6",
+      "markers": []
+    }
+  ],
+  "additional_commands": [
+    {
+      "name": "repository-default",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/ci/check_repository.py"
+      ],
+      "requested_command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/ci/check_repository.py"
+      ],
+      "exit": 1,
+      "clean": false,
+      "timeout_seconds": 300,
+      "seconds": 2.724628900003154,
+      "log": "build\\sol-active-normal-live\\checkpoint-001\\repository-default.log",
+      "log_sha256": "98e884cfdeb812180e09165fb3438d8f8cb07a60687dd5e5e80b6f93a5bc1bca",
+      "markers": []
+    },
+    {
+      "name": "historical-source-refusal",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-c",
+        "import sys;sys.path.insert(0,'tools/experiments');import sol_active_normal_source as s;failed=False\ntry:s.generate(False)\nexcept AssertionError:failed=True\nassert failed,'Historical adapter accepted changed header';print('EXPECTED_SOURCE_REFUSAL: original header PIN unchanged')"
+      ],
+      "requested_command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-c",
+        "import sys;sys.path.insert(0,'tools/experiments');import sol_active_normal_source as s;failed=False\ntry:s.generate(False)\nexcept AssertionError:failed=True\nassert failed,'Historical adapter accepted changed header';print('EXPECTED_SOURCE_REFUSAL: original header PIN unchanged')"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 180,
+      "seconds": 0.08971420000307262,
+      "log": "build\\sol-active-normal-live\\checkpoint-001\\historical-source-refusal.log",
+      "log_sha256": "c29903c9ed6cda971ec9a72cc1c5eb9a66555a7f7543fef6ee12e00c8baeddc9",
+      "markers": []
+    }
+  ]
+}

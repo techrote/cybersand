@@ -6,10 +6,30 @@ status: Current
 scope: Current C ABI, procedural-generation C++/Godot surfaces and private packed layouts; proposed gameplay/reconfiguration contracts remain distinct
 keywords: [C API v2, material_info_v3, material_info_v4, body packet, INPUT_STRIDE, RG8, gameplay command]
 related-documents: [../architecture/data-ownership-and-lifetimes.md, ../architecture/simulation-tick-and-threading.md, ../architecture/rendering-and-gameplay-bridges.md, level-saves-and-replay.md, ../architecture/pressure-optimization.md]
-last-reviewed: 2026-10-25
+last-reviewed: 2026-11-05
 ---
 
 # Interfaces and message contracts
+
+**Current dependent experimental adapter:** fresh LA-SELECTIVE
+`WorkbenchPhysicsBridge.configure_application_variant("retain-linear-001")`
+skips only opposing linear clipping. The actual application ledger reports this
+variant and per-action `linear_clip_policy`. Unknown/nonselective, late selection
+and stale/foreign/duplicate/retired batches retain refusal contracts. Baseline
+stays unchanged/default. The [matched experiment](../audits/2026-11-05-sol-contact-application.md)
+rejects promotion; it adds no C ABI, required ordinary packet field or user
+control. The independent actual-RID oracle selects expected behavior from the
+configured arm, not the action tag.
+
+**Current dependent experimental diagnostic:**
+`diagnostic_set_workbench_solver_trace("off" | "batch64-001")` is fresh-diagnostic
+LA-SELECTIVE only and one-use before prepare/tick/getter attempts. It has an
+independent latch from normal policy. Copied `solver_trace` rows use the bounded
+[experimental wire schema](../../native/tests/fixtures/sol_node_trace_wire_001.json),
+with lossless double-bit companions, explicit overflow/export outcomes and no
+stable C ABI promise. See the [canonical ownership/capacity boundary](../architecture/rigid-body-and-cellular-coupling.md#bounded-node-and-batch-trace)
+and [source/runtime evidence](../audits/2026-11-05-sol-node-trace.md). This adds no
+ordinary control or original SOL capture/application authority.
 
 The new bounded desktop [trial-body continuation](../architecture/liquid-prepared-setup-and-receipts.md#desktop-single-trial-body-preparation)
 keeps the eleven-float body ABI unchanged. Main sends only copied values:

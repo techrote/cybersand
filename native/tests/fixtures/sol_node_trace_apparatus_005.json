@@ -1,0 +1,10 @@
+{
+  "registration": "SOL-NODE-TRACE-005-ANALYSIS-CLARIFICATION",
+  "parent": "SOL-NODE-TRACE-001",
+  "date": "2026-11-05",
+  "retained_analysis": "build/sol-node-trace/analysis-002",
+  "source": "57b9ab23",
+  "review_finding": "Both full reductions pass all arithmetic, physics, tuple and trajectory checks. Their first-differences batch_arithmetic category compared all eight batch columns, including policy_active_weight, which necessarily differs atstep0 even when every used weight, delta and kinematic state agrees. That category label is not valid evidence of first effective arithmetic divergence.",
+  "correction": "Retain original outputs. Report policy-only count/mask metadata separately; first effective arithmetic compares six batch kinematic columns and all eleven per-node update columns using lossless bits. Add two deliberate policy-only/kinematic classification tests.",
+  "preserved": "First lossless wrench differences remain30/32/2 with exact body/node/budget equality. No physical data, parameter, source/runtime guard, numeric audit tolerance or threshold changes; reanalyze retained16episodes on both Python hosts."
+}

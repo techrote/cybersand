@@ -1,0 +1,28 @@
+{
+  "version": 1,
+  "frozen_date": "2026-11-05",
+  "purpose": "Additive offline SOL authority/model scope; existing frozen questions unchanged",
+  "questions": [
+    {
+      "id": "SOL-OFFLINE-AUTHORITY-001",
+      "query": "Does complete copied520member data and a passing offline no-op lease model admit original SOL capture,Active hold or recovery?",
+      "canonical": ["operations/sol-authority-offline-contract.md"],
+      "facts": ["All results retain false live authority, false actuation permission and zero engine mutations/work.", "Offline completeness and protocol rules do not supply native owner capture or a live Active hold.", "Protected-source transitions and a separate source-scoped owner decision remain required."],
+      "sources": ["../tools/experiments/sol_authority_model.py", "../native/tests/fixtures/sol_authority_contract_001.json"]
+    },
+    {
+      "id": "SOL-OFFLINE-AUTHORITY-002",
+      "query": "Can a new sample,body alias,expiry,late partial failure or trace overflow renew the modeled SOL actual-step budget?",
+      "canonical": ["operations/sol-authority-offline-contract.md"],
+      "facts": ["Grant consumes the step and pins the one-aggregate identity per World; cancellation/expiry do not refund it.", "Late known partial failures and trace overflow have terminal model outcomes with retained consumption.", "Busy grant requests are transactional refusals; observed actual-step advances invalidate held leases."],
+      "sources": ["../tools/experiments/sol_authority_model.py", "../native/tests/fixtures/sol_authority_apparatus_004.json", "../native/tests/fixtures/sol_authority_apparatus_005.json"]
+    },
+    {
+      "id": "SOL-OFFLINE-AUTHORITY-003",
+      "query": "Does the synthetic one-cell halo and empty-only body mask prove original SOL support eligibility or member ownership?",
+      "canonical": ["operations/sol-authority-offline-contract.md"],
+      "facts": ["Original support-predicate completeness is unavailable; its broader stencil exceeds the one-cell no-op halo.", "Tuple/mask consistency is not proof of original-member identity ownership.", "Historical RLE and genuine hard-overlap witnesses remain refused or unknown authority, never recovery successes."],
+      "sources": ["../tools/experiments/sol_authority_historical.py", "../tools/experiments/sol_authority_model.py"]
+    }
+  ]
+}

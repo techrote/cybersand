@@ -1,0 +1,24 @@
+{
+  "schema": "cybersand.sol-authority.offline-input-custody.v1",
+  "analysis_source": "32902aa69db3c18d561c5355006d29cbf00c4e7d",
+  "input_receipt_sha256": "9703628f094aa2db2403a50897ab0ab4f917b7438140ac1f549838d4914e1856",
+  "artifacts": [
+    {
+      "source_path": "build\\sol-active-normal-live\\authority-inputs-002\\inventory\\source-map.json",
+      "raw_sha256": "f8190e17958d0b07bd3d37d010173511cbcb42dce39df74f633a3f99713430a6",
+      "public_file": "source-map.json",
+      "public_lf_sha256": "f8190e17958d0b07bd3d37d010173511cbcb42dce39df74f633a3f99713430a6",
+      "bytes": 6151314
+    },
+    {
+      "source_path": "build\\sol-active-normal-live\\authority-inputs-002\\historical-excerpts.json",
+      "raw_sha256": "f0edd35b386da188943b5837533a8b0be18feb339e681cd4a5422d520c4a86a6",
+      "public_file": "historical-excerpts.json",
+      "public_lf_sha256": "f0edd35b386da188943b5837533a8b0be18feb339e681cd4a5422d520c4a86a6",
+      "bytes": 100118
+    }
+  ],
+  "live_authority": false,
+  "actuation_permitted": false,
+  "scope": "Additive corrected source inventory and exact historical geometry/RLE extracts; no composition or live capture"
+}

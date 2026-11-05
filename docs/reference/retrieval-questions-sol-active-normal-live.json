@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "frozen_date": "2026-11-05",
+  "purpose": "Additive live policy/lifetime/runtime scope question; no frozen set replaced",
+  "questions": [
+    {
+      "id": "SOL-ACTIVE-NORMAL-LIVE-001",
+      "query": "Does the live diagnostic ActiveNormal001 policy replace the Original normal solver default, and do its fresh runtime and lifetime checks prove original SOL clearance?",
+      "canonical": [
+        "architecture/rigid-body-and-cellular-coupling.md"
+      ],
+      "facts": [
+        "Original remains default; candidate is a one-use fresh diagnostic LA-SELECTIVE opt-in.",
+        "Native policy readback and source-qualified experimental runtimes are distinct from accepted canonical runtime/default admission.",
+        "Lifecycle and completed smoke episodes do not establish original SOL authority or physical clearance; independent physical and performance gates remain."
+      ],
+      "sources": [
+        "../native/tests/fixtures/sol_active_normal_live_001.json",
+        "../godot/native_extension/workbench_granular_coupling.inc",
+        "../tools/experiments/sol_active_normal_live_runtime.py"
+      ]
+    }
+  ]
+}

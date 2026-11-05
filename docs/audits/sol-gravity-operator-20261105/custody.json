@@ -1,0 +1,74 @@
+{
+  "analysis_equal": true,
+  "files": [
+    {
+      "path": "build/sol-gravity-operator/analysis-004/linux-reduce.receipt.json",
+      "sha256": "67924a9d82f7f867016e7c6ad628ec503331c759e197ffe94f4d75f63192ec9a",
+      "bytes": 1291
+    },
+    {
+      "path": "build/sol-gravity-operator/analysis-004/linux-tests.receipt.json",
+      "sha256": "b057b9c9665490a23f2a79356297aa494e80fb247654d2a6b0722f6540a44ba3",
+      "bytes": 1047
+    },
+    {
+      "path": "build/sol-gravity-operator/analysis-004/windows-reduce.receipt.json",
+      "sha256": "4fb7449cad2d6a428ab065cd4f3b52708406670b3a267e66fbf438cf9d424233",
+      "bytes": 1051
+    },
+    {
+      "path": "build/sol-gravity-operator/analysis-004/windows-tests.receipt.json",
+      "sha256": "7175154045ba5883b2b5dcb0db37b3a34381f7540e3d8eb85729e17eee1982cb",
+      "bytes": 793
+    },
+    {
+      "path": "build/sol-gravity-operator/operator-003/linux/engine-hash.receipt.json",
+      "sha256": "743cffc1f517be96342409279c150274fdfe971b9393c4c6677c7738c2f89e2a",
+      "bytes": 740
+    },
+    {
+      "path": "build/sol-gravity-operator/operator-003/linux/engine-version.receipt.json",
+      "sha256": "5a29725544fd4dbdc315fa447e78ad69530ee7c0b5458b52d804c4348213167c",
+      "bytes": 918
+    },
+    {
+      "path": "build/sol-gravity-operator/operator-003/linux/gravity-operator.receipt.json",
+      "sha256": "bf2c7d0e844d3c81b333c2bc6d7da2d8c927658a28175e84d32f629e1e52ff4e",
+      "bytes": 1878
+    },
+    {
+      "path": "build/sol-gravity-operator/operator-003/linux/import.receipt.json",
+      "sha256": "09838e8e890b8ca99f472864789bf4c8d9322ffb84a0b7ef5e390daed6e4ecac",
+      "bytes": 1376
+    },
+    {
+      "path": "build/sol-gravity-operator/operator-003/windows/engine-version.receipt.json",
+      "sha256": "ce9a88045cbc3f0de886047ab273315a8ef2b9fb7a00e2e878895859c9fa8dd7",
+      "bytes": 513
+    },
+    {
+      "path": "build/sol-gravity-operator/operator-003/windows/gravity-operator.receipt.json",
+      "sha256": "a7485c5ce210c1c924da3973d7ee5c2d8df98eeffcbf32a47a2759900643b69f",
+      "bytes": 1157
+    },
+    {
+      "path": "build/sol-gravity-operator/operator-003/windows/import.receipt.json",
+      "sha256": "53f7c174634bef62d14af252dc5f581509c8c0a51d0254aff131244e47b667d6",
+      "bytes": 987
+    }
+  ],
+  "qualified_raw": [
+    {
+      "path": "build/sol-gravity-operator/operator-003/windows/observations.json",
+      "sha256": "6abf4f6f59c2a70d3dc8ceb2bc4fc3c7e361e50c11b58d7fdcdc8b28a524c468",
+      "bytes": 491130
+    },
+    {
+      "path": "build/sol-gravity-operator/operator-003/linux/observations.json",
+      "sha256": "711eeaf58f47395d215c4d2689d3451bc68cfdf0a05e37d238edc1f06b39891c",
+      "bytes": 491220
+    }
+  ],
+  "artifact_bytes": 866004806,
+  "scope": "All attempts retained. Public JSON line endings normalized to LF; build raw receipts retain original byte hashes. No binary/cache/log committed. Three attempted operator runs; operator002 produced no physical oracle observations. Only operator003 is final property qualification."
+}

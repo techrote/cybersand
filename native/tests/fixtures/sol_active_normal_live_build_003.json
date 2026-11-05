@@ -1,0 +1,9 @@
+{
+  "id": "SOL-ACTIVE-NORMAL-LIVE-001-BUILD-AMENDMENT-003",
+  "status": "Before third build, before live physics run; source semantics unchanged",
+  "source": "08be9401",
+  "build002_receipt_sha256": "c64beea3de7811ddf57e4001677d411f41979cc1e34c3f6979926f7de98868d5",
+  "build002": "Both builds exit0. Missing pre-build generated SDK-header inventory; dependency custody incomplete, retain qualifier.",
+  "correction": "Pre/post complete SDK include/gen/include/gdextension/bin snapshots. Windows full toolchain snapshot including linker/config/DLL/target libraries. Explicit exact SDK static library, real Linux compiler, dry-run0. Preserve separate build source vs later test HEAD and full logs/platform/source-equivalence authentication.",
+  "physics_change": false
+}

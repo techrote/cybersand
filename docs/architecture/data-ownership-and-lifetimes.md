@@ -6,10 +6,16 @@ status: Current
 scope: Current resource owners, mutation windows, publication retirement and allocation limits; proposed resources are explicitly separated
 keywords: [ownership, lifetime, chunks, immutable lease, render handoff, body mask, queue]
 related-documents: [simulation-tick-and-threading.md, rendering-and-gameplay-bridges.md, ../reference/interfaces-and-message-contracts.md, ../reference/invariants.md]
-last-reviewed: 2026-10-25
+last-reviewed: 2026-11-05
 ---
 
 # Data ownership and lifetimes
+
+The dependent [bounded granular trace](rigid-body-and-cellular-coupling.md#bounded-node-and-batch-trace)
+keeps optional scratch private to one diagnostic Workbench. Each response row
+owns copied values before another body reuses the scratch; reset/replacement
+retires it. Native pool workers gain no Godot/RID access. This observation
+lifetime grants no original SOL lease, cross-owner hold or actuation authority.
 
 The bounded [desktop single-trial-body owner](liquid-prepared-setup-and-receipts.md#desktop-single-trial-body-preparation)
 retains one dynamic barrel/Ripper in an automatically inactive permanent private

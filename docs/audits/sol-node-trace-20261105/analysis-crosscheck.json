@@ -1,0 +1,22 @@
+{
+  "windows": {
+    "manifest_sha256": "2cc4dc5cc45dab2f4a84b0e1121b61f6715bec4cbcc16d684f62aeeb80477360",
+    "analysis_python": {
+      "version": "3.13.16 (tags/v3.13.16:cbc944f, Sep 30 2026, 19:17:50) [MSC v.1944 64 bit (AMD64)]",
+      "executable": "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+      "sha256": "31fe10b4ed82a2f960af0ef9931f46a4b84ff286f8b6ffd9dee098cf4f10f17f"
+    },
+    "trace_accounting_sha256": "32f5427b703990acd747f40a2fdaa591959eb935e2b1209f5bd5beff51b58e50",
+    "first_differences_sha256": "a5a26b8d2e7ca560f186feb78bedfd77477e3559fd6b3b97ae66002072a7ab54"
+  },
+  "linux": {
+    "manifest_sha256": "c704ce11a1d758b1a69907df63c025c4fbbcbe5d66d5e6811135816de845763c",
+    "analysis_python": {
+      "version": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+      "executable": "/usr/bin/python3",
+      "sha256": "e50d468e8b0adfb05733f5b87b3cff34829c4a8c1aea50c865aa8bdfe4bb150f"
+    },
+    "trace_accounting_sha256": "32f5427b703990acd747f40a2fdaa591959eb935e2b1209f5bd5beff51b58e50",
+    "first_differences_sha256": "a5a26b8d2e7ca560f186feb78bedfd77477e3559fd6b3b97ae66002072a7ab54"
+  }
+}

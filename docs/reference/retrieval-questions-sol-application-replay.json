@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "frozen_date": "2026-11-05",
+  "purpose": "Additive recorded application-stage questions; no frozen set replaced",
+  "questions": [
+    {
+      "id": "SOL-APPLICATION-REPLAY-001",
+      "query": "Does positive wrench work after correction clipping prove that the active-normal mixed-body application generated kinetic energy?",
+      "canonical": ["architecture/rigid-body-and-cellular-coupling.md"],
+      "facts": ["The complete1080body-application replay separates clip work, wrench work after clipping and observed rounding residual.", "Positive work after clipping can coexist with non-increasing combined application KE; native passive prediction uses earlier sampled velocity.", "Correction potential is separate and no global mechanical-energy conservation or promotion follows."],
+      "sources": ["../tools/experiments/sol_application_replay.py", "../native/tests/fixtures/sol_application_replay_001.json"]
+    },
+    {
+      "id": "SOL-APPLICATION-REPLAY-002",
+      "query": "Do the equal-state first response differences and final mixed-body energy uniquely identify clipping or contact-node loss as the cause of regression?",
+      "canonical": ["architecture/rigid-body-and-cellular-coupling.md"],
+      "facts": ["First native-wrench differences precede unequal correction, while later endpoints sample different contact phases.", "Per-node positions, weights and active masks are unavailable; unique trajectory causation remains unproved.", "The replay does not select a live correction policy or establish original SOL admission."],
+      "sources": ["../tools/experiments/sol_application_replay.py", "../native/tests/fixtures/sol_application_replay_apparatus_002.json"]
+    }
+  ]
+}

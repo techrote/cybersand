@@ -1,0 +1,91 @@
+{
+  "source": "556bb8cdf2006f55f983ee87e76cb4b80004b4cb",
+  "tree": "db6c22bd817a6458f83ea46b8abe8031eb3c0ade",
+  "base": "4cd9ca193176e315f8e81316e2221b275cdccbde",
+  "owner_branch": "codex/sol-active-normal-live-20261105",
+  "archive_command": {
+    "name": "source-archive",
+    "command": [
+      "git",
+      "archive",
+      "--format=tar",
+      "--output",
+      "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\build\\sol-active-normal-live\\source-packet-001\\source.tar",
+      "556bb8cdf2006f55f983ee87e76cb4b80004b4cb"
+    ],
+    "requested_command": [
+      "git",
+      "archive",
+      "--format=tar",
+      "--output",
+      "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\build\\sol-active-normal-live\\source-packet-001\\source.tar",
+      "556bb8cdf2006f55f983ee87e76cb4b80004b4cb"
+    ],
+    "exit": 0,
+    "clean": true,
+    "timeout_seconds": 180,
+    "seconds": 2.42947589996038,
+    "log": "build\\sol-active-normal-live\\source-packet-001\\source-archive.log",
+    "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "markers": []
+  },
+  "patch_command": [
+    "git",
+    "diff",
+    "--binary",
+    "4cd9ca193176e315f8e81316e2221b275cdccbde",
+    "556bb8cdf2006f55f983ee87e76cb4b80004b4cb"
+  ],
+  "patch_exit": 0,
+  "patch_seconds": 0.21509339998010546,
+  "artifacts": {
+    "source_archive": {
+      "path": "build\\sol-active-normal-live\\source-packet-001\\source.tar",
+      "bytes": 519526400,
+      "sha256": "973b0435bebb027f53277fecf49f8b58ee701f599184dbeb1770279e18e79556"
+    },
+    "raw_dependent_patch": {
+      "path": "build\\sol-active-normal-live\\source-packet-001\\dependent.patch",
+      "bytes": 14743247,
+      "sha256": "30055732049987dc9c9887f238133690a3ef9e176bbc0e14b1b78ff443a2ec6f"
+    },
+    "source_zip": {
+      "path": "build\\sol-active-normal-live\\source-packet-001\\source.zip",
+      "bytes": 179906661,
+      "sha256": "3dc4af0caa5375ff6c7a41ed1ba4f8428c559fad8f3c7b25c42d6ab65331015c"
+    }
+  },
+  "source_archive_cap_bytes": 134217728,
+  "source_archive_cap_status": "NO-GO",
+  "archive_zip_command": {
+    "name": "source-zip",
+    "command": [
+      "git",
+      "archive",
+      "--format=zip",
+      "-o",
+      "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\build\\sol-active-normal-live\\source-packet-001\\source.zip",
+      "556bb8cdf2006f55f983ee87e76cb4b80004b4cb"
+    ],
+    "requested_command": [
+      "git",
+      "archive",
+      "--format=zip",
+      "-o",
+      "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\build\\sol-active-normal-live\\source-packet-001\\source.zip",
+      "556bb8cdf2006f55f983ee87e76cb4b80004b4cb"
+    ],
+    "exit": 0,
+    "clean": true,
+    "timeout_seconds": 180,
+    "seconds": 11.804354499967303,
+    "log": "build\\sol-active-normal-live\\source-packet-001\\source-zip.log",
+    "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "markers": []
+  },
+  "initial_tar_size_screen": {
+    "status": "NO-GO",
+    "qualification": "Additional expanded TAR size, not the retained ZIP gate format"
+  },
+  "source_archive_cap_format": "git archive --format=zip, matching retained421/416 format; TAR retained separately"
+}

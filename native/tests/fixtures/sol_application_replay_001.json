@@ -1,0 +1,30 @@
+{
+  "registration": "SOL-APPLICATION-REPLAY-001",
+  "date": "2026-11-05",
+  "kind": "Registered full-window analysis of retained physical executions; no new physical trials",
+  "exploratory_context": "Read-only investigation of mixed-body regression found first passive-wrench differences atsteps2/30/32 and later correction/clipping/native-KE mismatch. These hypotheses and witness choices are post-result, not concealed prospective physical evidence.",
+  "physical_execution_source": "119ac3a58453b1f5cc016dbcdb5cba5133540fda",
+  "runtime_build_source": "ff0d7cf5cc94c42a5e409eb5535681fe314ae3dd",
+  "case": "shared-granular-bodies",
+  "platform": "actual Windows physical recording; Python analysis separately qualified",
+  "workers": 1,
+  "repeat": 0,
+  "arms": [
+    {"id": "selective-original", "normal_policy": "original", "raw_sha256": "af498bfdd5053ad23fbaf7f0cb8949db88b64664022c8d8b1c32e72fefae75d1"},
+    {"id": "selective-active", "normal_policy": "active-normal-001", "raw_sha256": "ce640d7bb67f7b15cb7c1fe18f9fd1a79a52c65e2b090e4bf5db3e910d8891cb"}
+  ],
+  "common_initial_payload": "bafc82a9b23c68a02db484d49c385be96fc78b5d14d3d8fcc1dc3b69bab293f5",
+  "coverage": "All180steps and all3owners in each arm:1080body applications; no dropped inactive/refused/overwritten work or endpoint-only acceptance",
+  "analysis": [
+    "Authenticate original raw hashes and actual all-owner application/energy/native scalar audits",
+    "Reconstruct liveKE, clip-onlyKE, recorded-wrench-after-clipKE, observed after-applicationKE and Rapier-stepKE separately",
+    "Retain actual correction-potential, explicit/controller/preapplication work and floating readback residuals",
+    "Value-only alternatives: retain pre-clip velocity with recorded action; separately substitute recorded native torque for transported action torque. These are algebraic diagnostics, not applied trajectories or valid recovery predictions",
+    "Report per-owner full-window sums, first wrench/state divergence, every positive/negative work step, nodes/caps/events and endpoint contact phase",
+    "Preserve existing1e-5velocity/omega reconstruction tolerance; no new physical success threshold or evaluator clock"
+  ],
+  "missing": "Per-node positions/weights/capacities and batch active masks unavailable; do not infer exact node-input equality or unique causal attribution",
+  "forbidden": ["new impulses/corrections", "changing native arithmetic/application policy", "live World/RID replay", "threshold or gain tuning", "originalSOL clearance/composition admission", "Ready/merge/default promotion"],
+  "live_actuation": false,
+  "decision_scope": "Diagnose the recorded mixed-body regression before a separately registered trace-only live experiment or a new candidate"
+}

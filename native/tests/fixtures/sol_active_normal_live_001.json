@@ -1,0 +1,210 @@
+{
+  "id": "SOL-ACTIVE-NORMAL-LIVE-001",
+  "status": "PROSPECTIVE; registered before production edit or live execution",
+  "source": "4cd9ca193176e315f8e81316e2221b275cdccbde",
+  "scope": "Source-local diagnostic candidate on #421 ancestry; exact520 chamber surrogate and authored fleet. No original SOL implementation, eligibility, restoration or authority admission.",
+  "root_sole_writer": true,
+  "production_files": [
+    "native/include/cybersand/granular_contact_response.hpp",
+    "godot/native_extension/cyber_native_cell_world.hpp",
+    "godot/native_extension/cyber_native_cell_world.cpp",
+    "godot/native_extension/workbench_granular_coupling.inc"
+  ],
+  "candidate": "Port #421 active-normal-001 exact arithmetic into optional final enum argument to solve_compound. Default original. Before each normal batch freeze active=speed<0 OR jn>0, sum original active weights S, use original weights when all current nodes active, otherwise active weight/S or zero. S=0 gives zero. Do not redistribute capacity. Scan current nodes only.",
+  "unchanged": [
+    "four normal/tangent passes",
+    "quadrature and source weights",
+    "all capacity shares, gains, caps and budget20",
+    "tangent and final energy rejection",
+    "arrival provenance/material policy",
+    "World/pressure/MAT-AUTH implementation",
+    "physics defaults",
+    "one actual Rapier aggregate per body"
+  ],
+  "policy_lifetime": {
+    "api": "exclusive-owner diagnostic_set_workbench_normal_policy(original|active-normal-001)",
+    "requires": [
+      "diagnostic World",
+      "healthy World and Workbench",
+      "no pending World replacement",
+      "completed_tick=0",
+      "not sampled",
+      "not policy locked",
+      "response LA-SELECTIVE"
+    ],
+    "locks": [
+      "successful selection consumes latch",
+      "every coupling prepare attempt before early refusal",
+      "every simulation tick attempt before early refusal",
+      "every result getter attempt before early refusal"
+    ],
+    "invalid_selection": "returns false without policy or latch mutation; policy unchanged",
+    "lifetime": "policy and latch inside Workbench; reset/replacement/teardown retire them; prepared initial session may be nonzero",
+    "controls": "LA/LA-EVENT-OFF/RFT remain original and reject candidate configuration"
+  },
+  "observation": [
+    "native top-level and each row actual normal policy",
+    "post-event provisional passive Body as scalar64",
+    "raw/accepted passive wrench scalar64",
+    "passive KE before/after and rejection/scale",
+    "raw/accepted normal/tangent, cap hits, bins/nodes/updates/quadrature clamps",
+    "existing selected event, arrival/missing/misaligned, legacy/total/correction and actual Rapier application",
+    "independent full five-boundary tuple/mask/geometry census and exact union",
+    "actual workers/jobs, arrival history/resident estimates, per-step/export/getter timings"
+  ],
+  "parity": {
+    "cases": 38,
+    "baseline": "#421 arm0 for default and explicit original; #421 arm2 for candidate",
+    "replays": [
+      "fresh",
+      "second fresh",
+      "maximum-node primed"
+    ],
+    "platforms": [
+      "Linux GCC optimized",
+      "Linux strict ASan/UBSan",
+      "actual Windows MSVC optimized"
+    ],
+    "historical_guard": "Keep sol_active_normal_source.generate original source pin; new adapter required"
+  },
+  "api_refusals": [
+    "unknown",
+    "duplicate selection",
+    "ordinary non-diagnostic World",
+    "wrong response",
+    "failed World",
+    "pending replacement",
+    "successful and invalid coupling prepare",
+    "tick attempt",
+    "invalid/empty result getter",
+    "reset/replacement/teardown"
+  ],
+  "chamber": {
+    "arms": [
+      {
+        "id": "selective-original",
+        "mode": "LA-SELECTIVE",
+        "normal_policy": "original"
+      },
+      {
+        "id": "selective-active",
+        "mode": "LA-SELECTIVE",
+        "normal_policy": "active-normal-001"
+      },
+      {
+        "id": "LA",
+        "mode": "LA",
+        "normal_policy": "original"
+      },
+      {
+        "id": "LA-EVENT-OFF",
+        "mode": "LA-EVENT-OFF",
+        "normal_policy": "original"
+      },
+      {
+        "id": "RFT",
+        "mode": "RFT",
+        "normal_policy": "original"
+      }
+    ],
+    "cases": [
+      "closed-unforced",
+      "open-unforced",
+      "closed-driven",
+      "open-driven"
+    ],
+    "platforms": [
+      "windows",
+      "linux"
+    ],
+    "workers": [
+      1,
+      4
+    ],
+    "repeats": 3,
+    "steps": 180,
+    "episodes": 240,
+    "common": "Frozen original chamber seed0, six source rectangles/520 members, common rigid transform, COM/inertia, full initial tuple map, material counts, budget20, gravity/damping0, force window30..149, 60Hz, five full census boundaries. Fresh authoritative World/session per arm. Do not switch mode mid-trajectory."
+  },
+  "authored": {
+    "arms": [
+      "selective-original",
+      "selective-active"
+    ],
+    "profile": "registration-v5.json inheritance through v4",
+    "cases": [
+      "barrel-rest",
+      "barrel-constrained-valid",
+      "scooper-rest",
+      "supported-Sand-impact",
+      "supported-Dust-impact",
+      "shared-granular-bodies",
+      "powered-needle",
+      "support-removal"
+    ],
+    "platforms": [
+      "windows",
+      "linux"
+    ],
+    "workers": [
+      1,
+      4
+    ],
+    "repeats": 3,
+    "episodes": 192,
+    "steps": "360 static,180 ordinary; original case definitions unchanged",
+    "qualification": "actual arrival counts; powered case separate; Water excluded"
+  },
+  "workload": {
+    "arms": [
+      "selective-original",
+      "selective-active"
+    ],
+    "cases": [
+      "bounded-quiet-contact",
+      "bounded-Sand-Dust-stream",
+      "bounded-dense-collision"
+    ],
+    "platforms": [
+      "windows",
+      "linux"
+    ],
+    "workers": [
+      1,
+      4
+    ],
+    "repeats": 3,
+    "episodes": 72,
+    "common": "Original16patch v4 workload definitions; preserve64patch historical quarantine, no admitted recovery from it"
+  },
+  "performance": "Separate full observer cost from getter cost, all attempts/refusals/overwrites in denominator. Actual participation distinct from requested workers. No universal60Hz or original SOL24group CPU claim.",
+  "validation": [
+    "new native parity and API lifetime tests before full campaign",
+    "fresh native extension Windows and Linux builds with pinned SDK/toolchains, source84 inventory and actual runtime hashes",
+    "optimized/strict ASan UBSan native affected fixtures and core",
+    "actual Godot Rapier both hosts affected12workbench fixtures/passive/force accounting",
+    "material catalogue source guard and oracles",
+    "docs/M11/repository/retrieval/diff checks"
+  ],
+  "provenance": "Freeze canonical runtime manifests and material guards. Old identity runner must reject new source. New experimental receipts bind clean source/tree,input84 hashes,build SDK/compiler/library/output hashes,commands/logs,Godot+launcher/Rapier,copied projects and before/after inventories. Canonical repository source/runtime drift is an explicit blocker until separately admitted.",
+  "physics_claims": "Full observer required for live geometry. Descriptive chamber thresholds area<=1e-6 cell2 depth<=2e-5cell and original depth screens retained, no adoption of unadmitted SOL364-D clock. Original historic84/84,64/84,36/36,1452/1452 failures untouched. No original SOL success claim.",
+  "failure": "No outcome-driven retuning. Any parser/configuration/build/guard/process refusal remains in attempts. Fix apparatus only via separately dated amendment before rerun; retain failed raw evidence. Live negative benefit is valid.",
+  "prohibited": [
+    "main/default promotion",
+    "merge/Ready/force push",
+    "protected World/pressure port",
+    "new depenetration correction",
+    "capacity/pass/gain tuning",
+    "refresh original frozen guards",
+    "original SOL recovery claim"
+  ],
+  "input_sha256": {
+    "native/include/cybersand/granular_contact_response.hpp": "32877bbd6fc7eb85feabab5452250f4a318388cd7b5e7a64b93576123c7caedb",
+    "godot/tests/fixtures/sol_chamber/registration.json": "6311bba3ac0456c100e1c0f714e3fa6f8a89610d2063edb007993c7b7c098ff4",
+    "godot/tests/fixtures/sol_chamber/source.json": "5be5494e1ca530587d65ca8fdb39214b80e84da7f7105a0becf7867d6c8cac10",
+    "godot/tests/fixtures/la_physical/registration-v5.json": "8e80e88f99eb76dbba94538c39bdaeb5ae5bca932445f073a71b9620bbd5ee28",
+    "godot/tests/fixtures/la_physical/registration-v4.json": "b0f42bcbb18611d49ac78cf89e86c0cf171971dcad090a2305ef0202c682c94b",
+    "native/tests/fixtures/sol_active_normal_001.json": "5acbb86fc100b20c64b80182b7654f6eaf4cee0f71bda9bceca92f52d5a3104e",
+    "native/tests/fixtures/sol_active_normal_cases_001.json": "77e581540af75128eeebb63b1954ce0794647eb7153eeef27cf7e45fd2627f1b"
+  }
+}

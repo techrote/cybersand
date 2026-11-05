@@ -1,0 +1,44 @@
+{
+  "schema": "cybersand.sol-active-normal-live.authored-workload-custody.v1",
+  "suite": "workload",
+  "curation_source": "b94dff80402799a5a46710a3f819433127d95a48",
+  "execution_source": "119ac3a58453b1f5cc016dbcdb5cba5133540fda",
+  "independent_analysis_source": "119ac3a58453b1f5cc016dbcdb5cba5133540fda",
+  "synthesis_source": "2915735954c734c07092ae4964b0103363e15218",
+  "runtime_build_source": "ff0d7cf5cc94c42a5e409eb5535681fe314ae3dd",
+  "episodes": 72,
+  "steps": 12960,
+  "matched_initial_groups": 36,
+  "artifacts": [
+    {
+      "source_path": "build\\sol-active-normal-live\\workload-full-001\\receipt.json",
+      "raw_sha256": "16e134e6718419d7541c867955b33b9f23b3b0e9b76361d5286080e2b44b62f9",
+      "public_file": "workload-full-execution.json",
+      "public_lf_sha256": "8e207c37e6dbaa4803bdb3a12aff9d90d7c0f556edc3f5252c97482b3f1fa92d",
+      "bytes": 594168
+    },
+    {
+      "source_path": "build\\sol-active-normal-live\\workload-full-001\\independent-001\\manifest.json",
+      "raw_sha256": "f6e6874eab641825e7cc43bb66520180f06643326c9f4a8b361da9e572accacd",
+      "public_file": "workload-full-reduction.json",
+      "public_lf_sha256": "f6e6874eab641825e7cc43bb66520180f06643326c9f4a8b361da9e572accacd",
+      "bytes": 569828
+    },
+    {
+      "source_path": "build\\sol-active-normal-live\\workload-full-001\\synthesis-001\\summary.json",
+      "raw_sha256": "d15babae195d287cb7118fac761390ec870e1adce9a8af91a759c6c1bfdf9c33",
+      "public_file": "workload-full-summary.json",
+      "public_lf_sha256": "d15babae195d287cb7118fac761390ec870e1adce9a8af91a759c6c1bfdf9c33",
+      "bytes": 118413
+    },
+    {
+      "source_path": "build\\sol-active-normal-live\\workload-full-001\\synthesis-001\\episodes.json",
+      "raw_sha256": "a4ec36e2916d96872106b0c58e7fa2d66a4ac4b59a488237fc7acc9fd51c9fed",
+      "public_file": "workload-full-episodes.json",
+      "public_lf_sha256": "a4ec36e2916d96872106b0c58e7fa2d66a4ac4b59a488237fc7acc9fd51c9fed",
+      "bytes": 487464
+    }
+  ],
+  "scope": "Registered authored/workload observations; no original SOL authority or physical-clearance acceptance.",
+  "transport": "Public JSON normalized LF; raw input hashes unchanged. Full raw reports/payloads/logs retained locally."
+}

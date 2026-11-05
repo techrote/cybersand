@@ -1,0 +1,163 @@
+{
+  "source": "930ceec7",
+  "command": [
+    "python",
+    "tools/ci/check_repository.py",
+    "--require-materialized",
+    "--json",
+    "build\\sol-node-trace\\validation-001\\repository.json"
+  ],
+  "observed_exit": 1,
+  "repository": {
+    "status": "failed",
+    "scope": "current source/documentation and artifact identity",
+    "documentation": {
+      "status": "passed",
+      "documents": 121,
+      "navigation_link_documents": 8,
+      "canonical_claims": 241,
+      "local_links": 3755,
+      "heading_anchors": 739,
+      "questions": 32,
+      "errors": [],
+      "warnings": [],
+      "limitations": [
+        "Does not verify source semantics or runtime claims",
+        "Does not fetch external URLs",
+        "Does not rewrite or reattest historical audits",
+        "Retrieval quality requires the separate lexical evaluation and expected-fact review"
+      ]
+    },
+    "materialized_runtime_files": [
+      "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+      "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll"
+    ],
+    "unmaterialized_runtime_files": [
+      "godot/addons/godot-rapier2d/bin/godot_rapier.wasm",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.aarch64-linux-android.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.armv7-linux-androideabi.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.i686-linux-android.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.x86_64-linux-android.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.arm64.framework/libgodot_rapier.ios.arm64",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.x86_64.framework/libgodot_rapier.ios.x86_64",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.aarch64-unknown-linux-gnu.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.armv7-unknown-linux-gnueabihf.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.i686-unknown-linux-gnu.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.macos.framework/libgodot_rapier.macos.dylib",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.aarch64-pc-windows-msvc.dll",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.i686-pc-windows-msvc.dll",
+      "godot/addons/godot-rapier2d/bin/wasm-nothreads/godot_rapier.wasm"
+    ],
+    "errors": [
+      "Windows x86_64 Godot desktop requires rebuild for source input: godot/native_extension/cyber_native_cell_world.cpp",
+      "Windows x86_64 Godot desktop requires rebuild for source input: godot/native_extension/cyber_native_cell_world.hpp",
+      "Windows x86_64 Godot desktop requires rebuild for source input: godot/native_extension/workbench_granular_coupling.inc",
+      "Windows x86_64 Godot desktop requires rebuild for source input: native/include/cybersand/granular_contact_response.hpp",
+      "Linux x86_64 Godot desktop requires rebuild for source input: godot/native_extension/cyber_native_cell_world.cpp",
+      "Linux x86_64 Godot desktop requires rebuild for source input: godot/native_extension/cyber_native_cell_world.hpp",
+      "Linux x86_64 Godot desktop requires rebuild for source input: godot/native_extension/workbench_granular_coupling.inc",
+      "Linux x86_64 Godot desktop requires rebuild for source input: native/include/cybersand/granular_contact_response.hpp",
+      "runtime object is not materialized: godot/addons/godot-rapier2d/bin/godot_rapier.wasm",
+      "runtime object is not materialized: godot/addons/godot-rapier2d/bin/libgodot_rapier.android.aarch64-linux-android.so",
+      "runtime object is not materialized: godot/addons/godot-rapier2d/bin/libgodot_rapier.android.armv7-linux-androideabi.so",
+      "runtime object is not materialized: godot/addons/godot-rapier2d/bin/libgodot_rapier.android.i686-linux-android.so",
+      "runtime object is not materialized: godot/addons/godot-rapier2d/bin/libgodot_rapier.android.x86_64-linux-android.so",
+      "runtime object is not materialized: godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.arm64.framework/libgodot_rapier.ios.arm64",
+      "runtime object is not materialized: godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.x86_64.framework/libgodot_rapier.ios.x86_64",
+      "runtime object is not materialized: godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.aarch64-unknown-linux-gnu.so",
+      "runtime object is not materialized: godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.armv7-unknown-linux-gnueabihf.so",
+      "runtime object is not materialized: godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.i686-unknown-linux-gnu.so",
+      "runtime object is not materialized: godot/addons/godot-rapier2d/bin/libgodot_rapier.macos.framework/libgodot_rapier.macos.dylib",
+      "runtime object is not materialized: godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.aarch64-pc-windows-msvc.dll",
+      "runtime object is not materialized: godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.i686-pc-windows-msvc.dll",
+      "runtime object is not materialized: godot/addons/godot-rapier2d/bin/wasm-nothreads/godot_rapier.wasm"
+    ],
+    "limitations": [
+      "Identity is not execution evidence; read the dated runtime acceptance report",
+      "Retained vendor binaries and platform execution have separate dated provenance",
+      "Historical M11 integrity is checked separately by check_m11_consistency.py"
+    ]
+  },
+  "helper_failure": "Validation wrapper expected8errors after requesting all-platform materialization. Actual22errors comprise8native source/accepted-manifest mismatches and14unmaterialized non-desktop artifacts; assertion failed before receipt creation. No check result is relabelled passed.",
+  "logs": [
+    {
+      "path": "build\\sol-node-trace\\validation-001\\docs.log",
+      "sha256": "e19a07f561ce7e3422e205aca8c5e7930cb4bd5cb286d109a56b1ff03d998efa"
+    },
+    {
+      "path": "build\\sol-node-trace\\validation-001\\m11.log",
+      "sha256": "e5d2a8eecef5876957dc4ecff01b99af696053871616d2dea563371d44b2427b"
+    },
+    {
+      "path": "build\\sol-node-trace\\validation-001\\material.log",
+      "sha256": "50174e75669bf15c0d521884f313715b5769054ca583572e3e734d0d06c14ae7"
+    },
+    {
+      "path": "build\\sol-node-trace\\validation-001\\repository.log",
+      "sha256": "ca35166b1435aff3ee887f256d201ae26cbbebaae1be65bdc6b8f47779f09fc2"
+    },
+    {
+      "path": "build\\sol-node-trace\\validation-001\\retrieval-sol-active-normal-full.log",
+      "sha256": "23553048516b892e6ccbf290cff6d2334d97006564055e2c70647337a3608052"
+    },
+    {
+      "path": "build\\sol-node-trace\\validation-001\\retrieval-sol-active-normal-gameplay.log",
+      "sha256": "a24f396f51173dc15681fa5d9038aa24431c2badf55031f0a1af5722afc9fe30"
+    },
+    {
+      "path": "build\\sol-node-trace\\validation-001\\retrieval-sol-active-normal-live.log",
+      "sha256": "c6d26ffce397eea5dacc5fa10c97f50a26c6b153681b7c426e4918104f4379ad"
+    },
+    {
+      "path": "build\\sol-node-trace\\validation-001\\retrieval-sol-active-normal.log",
+      "sha256": "29875d5eb618a1c74b28fbafb083020ba00330331bb6a9e2bde35134edaf74a7"
+    },
+    {
+      "path": "build\\sol-node-trace\\validation-001\\retrieval-sol-application-replay.log",
+      "sha256": "cff86a7e540b404f8340daa9b464122acdc0c547692c36bdc333753445dc43d4"
+    },
+    {
+      "path": "build\\sol-node-trace\\validation-001\\retrieval-sol-authority-offline.log",
+      "sha256": "bf8332588b60ffba569f537d9ac09c4d77ff45a4395d87e7dec9d160c2fef2ea"
+    },
+    {
+      "path": "build\\sol-node-trace\\validation-001\\retrieval-sol-chamber.log",
+      "sha256": "81f52b53b635f5d12a967dd0f8b70be5ca4c9b2876184ef012a83e0b17a5a43e"
+    },
+    {
+      "path": "build\\sol-node-trace\\validation-001\\retrieval-sol-cost.log",
+      "sha256": "cfdd79e73c998234afa8222500ed68ed2ea65fc6d2584ca37f1e5645f073649d"
+    },
+    {
+      "path": "build\\sol-node-trace\\validation-001\\retrieval-sol-node-trace.log",
+      "sha256": "19598b99c3ac21be21dbc7fb4ed8e9c0613d0d392035fc5b0b9058473840a0bd"
+    },
+    {
+      "path": "build\\sol-node-trace\\validation-001\\retrieval-sol-passive.log",
+      "sha256": "17b228efa11456a3bc9a3d8bf400d560e1d8a0683501e840a2a015130f29b4ec"
+    },
+    {
+      "path": "build\\sol-node-trace\\validation-001\\retrieval.log",
+      "sha256": "7ad7d3feafad460b9802d8f70f9ed51f37409c5a979bd6a629447300e650033e"
+    },
+    {
+      "path": "build\\sol-node-trace\\validation-001\\tests-sol_active_normal_live.log",
+      "sha256": "4eb239fe6ebc5607f01a315ce7a1311e019d1d0fafe5e88676b322dd485bbc5d"
+    },
+    {
+      "path": "build\\sol-node-trace\\validation-001\\tests-sol_application_replay.log",
+      "sha256": "dd6e83acc7307e08289cf279c82a5d5cc4f0f71df168baf358634e3f1e1587d4"
+    },
+    {
+      "path": "build\\sol-node-trace\\validation-001\\tests-sol_authority_model.log",
+      "sha256": "92f836eb38eacf841ee8b25652178029370454ace3be1d8a2a1d4382ebe2c674"
+    },
+    {
+      "path": "build\\sol-node-trace\\validation-001\\tests-sol_node_traceall.log",
+      "sha256": "a126d3119d54ef4adf8838a554aa128aca325a081b7f153972d6e3d37ba6ed1a"
+    }
+  ],
+  "other_observed_commands": "All18other commands exit0 in tool output: docs/M11/material,12live+22offline+6replay+17trace tests, default plus10SOL retrieval sets. Exact process durations unavailable because helper failed before receipt creation; repeat final validation records them."
+}

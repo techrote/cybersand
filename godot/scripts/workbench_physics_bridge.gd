@@ -32,7 +32,7 @@ var last_application: Dictionary = {}
 # separately in the actual application ledger.
 func configure_application_variant(value: String) -> bool:
 	if OS.get_thread_caller_id()!=OS.get_main_thread_id() or not _initialized or _application_policy_locked or _last_snapshot>=0: return false
-	if value not in ["baseline","passive-live-v1","passive-live-on-change-v2","passive-separating-v3"] or (value!="baseline" and _response!="LA-SELECTIVE"): return false
+	if value not in ["baseline","passive-live-v1","passive-live-on-change-v2","passive-separating-v3","retain-linear-001"] or (value!="baseline" and _response!="LA-SELECTIVE"): return false
 	_application_variant=value
 	_application_diagnostics=true
 	return true
@@ -190,8 +190,9 @@ func apply_packet(snapshot_serial: int, packet: Dictionary) -> int:
 			var live_mass: float = PhysicsServer2D.body_get_param(_body_rids[slot],PhysicsServer2D.BODY_PARAM_MASS)
 			var live_inertia: float = PhysicsServer2D.body_get_param(_body_rids[slot],PhysicsServer2D.BODY_PARAM_INERTIA)
 			var live_velocity: Vector2 = direct.linear_velocity
-			if live_velocity.x*correction.x<0: live_velocity.x=0
-			if live_velocity.y*correction.y<0: live_velocity.y=0
+			if _application_variant!="retain-linear-001":
+				if live_velocity.x*correction.x<0: live_velocity.x=0
+				if live_velocity.y*correction.y<0: live_velocity.y=0
 			var passive: Vector2 = Vector2(row.passive_impulse)*scale
 			var shift: Vector2 = row.com-pose*direct.center_of_mass_local-correction
 			var passive_torque: float = (float(row.passive_torque)+shift.cross(row.passive_impulse))*scale
@@ -213,7 +214,7 @@ func apply_packet(snapshot_serial: int, packet: Dictionary) -> int:
 						live_mass,live_inertia,action.impulse,action.torque,passive,passive_torque,true)
 				audit["passive_sampled_linear"]=sampled_linear
 			if not audit.valid and _application_variant!="baseline": return _refuse("passive_nonfinite")
-			if audit.valid and _application_variant!="baseline":
+			if audit.valid and _application_variant not in ["baseline","retain-linear-001"]:
 				action.impulse=audit.impulse
 				action.torque=audit.torque
 			audit.erase("impulse")
@@ -222,6 +223,8 @@ func apply_packet(snapshot_serial: int, packet: Dictionary) -> int:
 			audit["passive_revalidation_active"]=active_policy
 			audit["live_velocity_changed"]=state_changed
 			action.merge(audit)
+		if _application_variant=="retain-linear-001":
+			action["linear_clip_policy"]="retain-linear-001"
 		actions.append(action)
 	# Validate the complete batch before mutating any RID. A stale peer does
 	# not spend another body's independently retained sample authority.
@@ -255,8 +258,9 @@ func _apply(slot: int, action: Dictionary) -> void:
 		PhysicsServer2D.body_set_state(rid, PhysicsServer2D.BODY_STATE_TRANSFORM, pose)
 		_transforms[slot] = pose
 		var velocity: Vector2 = PhysicsServer2D.body_get_state(rid, PhysicsServer2D.BODY_STATE_LINEAR_VELOCITY)
-		if velocity.x * correction.x < 0: velocity.x = 0
-		if velocity.y * correction.y < 0: velocity.y = 0
+		if _application_variant!="retain-linear-001":
+			if velocity.x * correction.x < 0: velocity.x = 0
+			if velocity.y * correction.y < 0: velocity.y = 0
 		PhysicsServer2D.body_set_state(rid, PhysicsServer2D.BODY_STATE_LINEAR_VELOCITY, velocity)
 	if action.impulse != Vector2.ZERO: PhysicsServer2D.body_apply_central_impulse(rid, action.impulse)
 	if action.torque != 0.0: PhysicsServer2D.body_apply_torque_impulse(rid, action.torque)

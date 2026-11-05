@@ -1,0 +1,55 @@
+{
+  "version": 1,
+  "frozen_date": "2026-11-05",
+  "purpose": "Additive post-result contact/operator scope questions; all earlier frozen fixtures retained unchanged",
+  "questions": [
+    {
+      "id": "SOL-CONTACT-APPLICATION-001",
+      "query": "Does removing opposing velocity clipping fix the mixed-body regression and improve granular support?",
+      "canonical": [
+        "architecture/rigid-body-and-cellular-coupling.md"
+      ],
+      "facts": [
+        "Retain-linear changes only clipping and retains native wrench, correction and COM torque transport.",
+        "All48episodes/28800applications pass accounting, but the complete physical gate fails956comparisons, all16retain-static episodes fail and StageB is not admitted.",
+        "Baseline stays default; no originalSOL clearance or promotion is proved."
+      ],
+      "sources": [
+        "../godot/scripts/workbench_physics_bridge.gd",
+        "../tools/experiments/sol_contact_application_reduce.py"
+      ]
+    },
+    {
+      "id": "SOL-CONTACT-APPLICATION-002",
+      "query": "Can a quiet final speed hide sustained Kestrel mixed-body motion and sinking?",
+      "canonical": [
+        "architecture/rigid-body-and-cellular-coupling.md"
+      ],
+      "facts": [
+        "Fixed late windows and penetration accompany endpoints.",
+        "Original-to-Active baseline Kestrel tail mean speed rises0.773503369to1.647818528, while some other metrics improve.",
+        "Reduced candidate KE can coexist with greater Sand intersection; endpoint stability is insufficient."
+      ],
+      "sources": [
+        "../native/tests/fixtures/sol_contact_application_001.json",
+        "../tools/experiments/sol_contact_application_reduce.py"
+      ]
+    },
+    {
+      "id": "SOL-GRAVITY-OPERATOR-001",
+      "query": "Does the actual Rapier gravity damping oracle prove an exact integration model or admit a predicted contact support force?",
+      "canonical": [
+        "architecture/rigid-body-and-cellular-coupling.md"
+      ],
+      "facts": [
+        "Gravity-then-rational damping alone is compatible within1e-5 one-step error across18fresh576step actual-host no-contact episodes.",
+        "Accumulated32step errors exceed1e-5; barrel gravity and combine damping differ from flyers.",
+        "No nativeWorld or predictedcontactload is applied; new registration, nativeowner gravity binding, synchronous lifetime and impulse/work accounting are still required."
+      ],
+      "sources": [
+        "../godot/tests/test_sol_gravity_operator.gd",
+        "../tools/experiments/sol_gravity_operator_reduce.py"
+      ]
+    }
+  ]
+}

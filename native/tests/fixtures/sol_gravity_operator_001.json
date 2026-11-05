@@ -1,0 +1,103 @@
+{
+  "registration": "SOL-GRAVITY-OPERATOR-001",
+  "date": "2026-11-05",
+  "baseline_source": "13d20dd63f5448f1e4ef30a5b71ff6d6d51397fc",
+  "purpose": "Qualify actual authored-body gravity/damping operator before any separately registered predictive contact response. StageA retained-linear fails its physical gate; it is not repaired by this oracle.",
+  "context": "Preliminary and complete StageA show retained-linear support speeds near the per-step gravity increment, increased sinking, and baseline contact-phase oscillation. No-contact operator isolates engine integration without native coupling or controller work.",
+  "models": [
+    "reference_barrel",
+    "kestrel",
+    "scooper"
+  ],
+  "initial_states": [
+    {
+      "id": "rest",
+      "velocity": [
+        0,
+        0
+      ],
+      "omega": 0
+    },
+    {
+      "id": "drift",
+      "velocity": [
+        2,
+        1
+      ],
+      "omega": 0.3
+    },
+    {
+      "id": "separating",
+      "velocity": [
+        -2,
+        -4
+      ],
+      "omega": -0.3
+    }
+  ],
+  "steps": 32,
+  "cadence": 60,
+  "platforms": [
+    "windows",
+    "linux"
+  ],
+  "episodes": 18,
+  "body_steps": 576,
+  "native_World": "ABSENT",
+  "native_workers": "NOT_APPLICABLE",
+  "inputs": "Fresh private actual Rapier session for every case. Preserve authored shape/mass/inertia/gravity_scale/damping coefficients and combine/replace modes. One zero-gravity/zero-motion prime, then restore original gravity and set the declared initial motion. No controller advance, coupling, forces, impulses, other bodies, hard terrain or Area overrides. Keep awake. No outcome fitting.",
+  "observe": "Every before/after lossless pose/velocity/omega/COM state; direct total gravity/linear damping/angular damping/step/contact count; source project/body properties; nominal sampled gravity; manual step index exactly+1; actual KE and position. Extra copies/timings/source/runtime/host identities and teardown retained.",
+  "models_declared": [
+    {
+      "id": "gravity-only",
+      "linear": "v+g*dt",
+      "angular": "omega"
+    },
+    {
+      "id": "gravity-then-rational-damping",
+      "linear": "(v+g*dt)/(1+d_linear*dt)",
+      "angular": "omega/(1+d_angular*dt)"
+    },
+    {
+      "id": "rational-damping-then-gravity",
+      "linear": "v/(1+d_linear*dt)+g*dt",
+      "angular": "omega/(1+d_angular*dt)"
+    },
+    {
+      "id": "gravity-then-linear-damping",
+      "linear": "(v+g*dt)*max(0,1-d_linear*dt)",
+      "angular": "omega*max(0,1-d_angular*dt)"
+    }
+  ],
+  "interpretation": "Compute all models in float64 and separately explicit float32 arithmetic, using measured before-step total gravity/damping and declared1/60dt; record actual reported step separately. Freeze equations before new outcomes. No fitted multiplier, model substitution, retiming or damping change.",
+  "gate": {
+    "absolute_velocity_omega_error": 0.00001,
+    "scope": "Report one-step and full32step errors for every model/case/host. Compatibility is max one-step velocity/omega error<=1e-5 over all declared observations, with valid finite properties, zero contacts and complete coverage. This is not contact acceptance, native passivity or original SOL clearance. Models can all fail; missing properties are UNAVAILABLE, never zero-filled."
+  },
+  "primary_sources": [
+    {
+      "url": "https://docs.godotengine.org/en/stable/classes/class_physicsdirectbodystate2d.html",
+      "scope": "Direct total gravity/damping/step API surface; actual runtime behavior still requires measurements"
+    },
+    {
+      "url": "https://github.com/appsinacup/godot-rapier-physics/blob/172c66f5a88bf1164c2b8cf2d775ed889edefd75/src/bodies/rapier_body.rs",
+      "git_blob": "379758b5aed667990c6248af92cb0b81bcf57310",
+      "scope": "Pinned addon damping/force forwarding"
+    },
+    {
+      "url": "https://github.com/appsinacup/godot-rapier-physics/blob/172c66f5a88bf1164c2b8cf2d775ed889edefd75/src/bodies/rapier_direct_body_state_impl.rs",
+      "git_blob": "c7932212ef9f11d9aa49d7f0b692f2901fa49b29",
+      "scope": "Pinned direct-state helper linear law; helper is not assumed to be actual automatic integration"
+    },
+    {
+      "url": "https://github.com/dimforge/rapier/blob/v0.35.1/src/dynamics/rigid_body_components.rs",
+      "git_blob": "e23842521d24b25167009497ce51e68182980000",
+      "scope": "Crate-version tag damping source; inspected reference, not automatic compiled-source identity proof"
+    }
+  ],
+  "resource": {
+    "new_artifact_cap_bytes": 1073741824,
+    "minimum_free_bytes": 5368709120
+  },
+  "authority": "Observation only, one actual Rapier body per authored aggregate. No native World/cells, predicted load or new response is applied. No protected edits/defaults/Ready/merge/original SOL authority. Keep Draft429; a predictive contact candidate requires new registration and fresh affected binaries."
+}
