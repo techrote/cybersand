@@ -1,0 +1,101 @@
+name: INV154 offline Windows stage attribution
+
+on:
+  push:
+    branches: [perf/inv154-physics-stage-abba-20261105]
+    paths: [.github/workflows/inv154-stage-offline.yml]
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  analyze:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          repository: techrote/cybersand
+          run-id: 42074106635
+          name: inv154-windows-scheduler-abba-42074106635
+          github-token: ${{ github.token }}
+          path: build/inv154-original
+      - name: Verify frozen Windows trace and attribute physics callback tails
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p build/inv154-offline
+          python3 - <<'PY'
+          import json,os,urllib.request
+          from pathlib import Path
+          root=Path('build/inv154-original')
+          def read(name):
+              ps=list(root.rglob(name))
+              if len(ps)!=1: raise RuntimeError('missing/duplicate '+name)
+              return json.loads(ps[0].read_text())
+          sha='b76ed9c8f18f9a687c13ef9300c3f2f90ff33cc8'
+          tree='0fd58dfa80488939373efe25a20ff5d1c93b03e1'
+          main='791ef440efd6edb206c6f1be33989cb62e9213b2'
+          digest='sha256:95861c73146e6f95a0e508a5e4127decde7edc61cf8b771c8f26a38a5d5f171a'
+          req=urllib.request.Request('https://api.github.com/repos/techrote/cybersand/actions/artifacts/13437851373',
+                  headers={'Authorization':'Bearer '+os.environ['GH_TOKEN'],'Accept':'application/vnd.github+json','User-Agent':'cybersand-inv154'})
+          with urllib.request.urlopen(req,timeout=30) as resp:meta=json.load(resp)
+          if meta.get('digest')!=digest or meta.get('expired') or meta.get('workflow_run',{}).get('head_sha')!=sha:
+              raise RuntimeError('Windows artifact not authentic/current')
+          source=read('source-and-runtime.json')
+          dispatch=read('dispatch-source-identity.json')
+          raw=read('physics-stage.json')
+          summary=read('summary.json')
+          if (source.get('head'),source.get('tree'),source.get('main_blob'))!=(sha,tree,main):
+              raise RuntimeError('Windows source identity mismatch')
+          if not dispatch.get('source_equivalent_after_stripping_clocks') or dispatch.get('main_blob')!=main:
+              raise RuntimeError('Timed Main differs from source beyond instrumentation')
+          if summary.get('platform')!='Windows' or summary.get('display_server')=='headless' or summary.get('failures') or summary.get('overflow') or not summary.get('joined_worker'):
+              raise RuntimeError('Actual Windows process/worker gate failed')
+          phases=['baseline_a','timed_a','timed_b','baseline_b']
+          if summary.get('requested_fps_readbacks')!={x:60 for x in phases}:
+              raise RuntimeError('Constant 60-fps control violated')
+          rows=raw['physics_rows']
+          if len(rows)<800 or len(rows)!=summary['physics_rows']:
+              raise RuntimeError('Physics trace incomplete')
+          result={}
+          for p in phases:
+              xs=[x for x in rows if x.get('phase')==p]
+              expected='copied_timed' if p.startswith('timed') else 'original_super'
+              if len(xs)<150:raise RuntimeError('Insufficient samples '+p)
+              long=[]
+              for r in xs:
+                  d=int(r['duration_usec'])
+                  if r.get('dispatch_mode')!=expected or d!=int(r['end_usec'])-int(r['start_usec']):
+                      raise RuntimeError('Dispatcher mode/timestamp inconsistent')
+                  if sum(r['wrapper_usec'].values())+r['residual_usec']!=d or d<=0 or r['residual_usec']<0:
+                      raise RuntimeError('Wall clock accounting inconsistent')
+                  if d>40000:long.append(r)
+              if expected=='copied_timed' and sum('rapier_step' in r['wrapper_usec'] for r in xs)<100:
+                  raise RuntimeError('Rapier stage missing')
+              result[p]={'callbacks':len(xs),'callbacks_over_40ms':len(long),
+                   'callback_p50_ms':sorted(x['duration_usec'] for x in xs)[round((len(xs)-1)*.5)]/1000,
+                   'long_callback_total_ms':round(sum(x['duration_usec'] for x in long)/1000,3),
+                   'stage_long_ms':{k:round(sum(x['wrapper_usec'].get(k,0) for x in long)/1000,3)
+                       for k in ['session_suspend','take_snapshot','keyboard','usable','apply_results','session_advance','rapier_step','session_complete','course_observation','body_publication']},
+                   'unattributed_long_ms':round(sum(x['residual_usec'] for x in long)/1000,3)}
+          o={'original_run':42074106635,'original_windows_head':sha,'original_tree':tree,
+             'artifact_id':13437851373,'artifact_sha256':digest,
+             'scope':'offline Linux evaluation of existing real Windows ANGLE result; durations are wall time, not CPU',
+             'arms':result}
+          Path('build/inv154-offline/attribution.json').write_text(json.dumps(o,indent=2)+'\n')
+          print('PASS authentic Windows source and original physics callbacks')
+          print('STAGE ATTRIBUTION',json.dumps(o,indent=2))
+          PY
+      - name: Preserve attributed original evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: inv154-stage-offline-${{ github.run_id }}
+          path: build/inv154-offline/attribution.json
+          if-no-files-found: warn
+          retention-days: 30
