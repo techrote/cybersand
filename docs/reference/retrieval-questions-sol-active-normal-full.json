@@ -1,0 +1,40 @@
+{
+  "version": 1,
+  "frozen_date": "2026-11-05",
+  "purpose": "Additive full-chamber post-result questions; no existing frozen set replaced",
+  "questions": [
+    {
+      "id": "SOL-ACTIVE-NORMAL-LIVE-FULL-001",
+      "query": "Does completion of the full240 chamber matrix with matched inputs and conserved tuples prove original SOL physical clearance?",
+      "canonical": [
+        "architecture/rigid-body-and-cellular-coupling.md"
+      ],
+      "facts": [
+        "All240 coordinates and48matched initial groups are independently checked.",
+        "All120driven episodes still fail strict clearance, and tiny open-unforced overlap persists.",
+        "This is a chamber surrogate; original SOL ownership/eligibility and120+60 acceptance remain unadmitted."
+      ],
+      "sources": [
+        "../tools/experiments/sol_active_normal_live_matrix.py",
+        "../tools/experiments/sol_active_normal_live_reduce.py",
+        "../native/tests/fixtures/sol_active_normal_live_001.json"
+      ]
+    },
+    {
+      "id": "SOL-ACTIVE-NORMAL-LIVE-FULL-002",
+      "query": "Do requested four-worker chamber runs establish actual four-way native participation or total material memory?",
+      "canonical": [
+        "architecture/rigid-body-and-cellular-coupling.md"
+      ],
+      "facts": [
+        "Native configuration readback1/4matches requests, but each chamber dispatch has one job and one observed participant.",
+        "Distributed workloads must qualify actual multiple participants separately.",
+        "Resident-cell estimate and arrival-history storage are separate known components; their sum is not total heap/process memory."
+      ],
+      "sources": [
+        "../tools/experiments/sol_active_normal_live_chamber_summary.py",
+        "../godot/tests/support/sol_chamber_experiment.gd"
+      ]
+    }
+  ]
+}

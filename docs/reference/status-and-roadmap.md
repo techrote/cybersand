@@ -19,7 +19,10 @@ ports that arithmetic behind a fresh diagnostic opt-in while retaining Original
 as default. Fresh runtimes, native optimized/strict sanitizers and both-host
 workbench regressions pass. Independent smoke reduction shows smaller driven
 overlap (area38.7651→14.2322cell²), with strict clearance still failing.
-The full worker/repeat/authored/workload matrix remains pending. Original SOL ownership/material admission stays separate.
+Full240chamber evidence now covers bothhosts/workers1/4/three repeats, with
+all120driven episodes still failing strict clearance; actual participation in
+this small chamber remains one. Authored and distributed workload gates remain
+pending. Original SOL ownership/material admission stays separate.
 
 The [separate response-cost lane](../audits/2026-11-05-sol-response-cost.md)
 qualifies48single-body sessions and24observer pairs:13–22µs response generation

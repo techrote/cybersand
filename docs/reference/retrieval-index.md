@@ -10,6 +10,10 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 
 # Retrieval question index
 
+For full240chamber coverage versus clearance and actual worker participation,
+retrieve [the live policy boundary](../architecture/rigid-body-and-cellular-coupling.md#opt-in-live-normal-policy).
+`retrieval-questions-sol-active-normal-full.json` adds post-result scope questions.
+
 For the fresh diagnostic normal policy, lifetime locks and experimental
 runtime identity, retrieve [the live policy boundary](../architecture/rigid-body-and-cellular-coupling.md#opt-in-live-normal-policy).
 `retrieval-questions-sol-active-normal-live.json` is an additive supplement.

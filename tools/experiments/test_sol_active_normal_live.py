@@ -74,6 +74,23 @@ class LiveEvidence(unittest.TestCase):
         unknown['hosts']['windows']['commands'].append(bad)
         result=matrix.coverage(unknown);self.assertEqual(len(result['unexpected']),1);self.assertFalse(result['complete_requested_execution'])
 
+    def test_full_chamber_evidence_scope_and_custody(self):
+        custody=read(DATA/'chamber-full-custody.json')
+        for artifact in custody['artifacts']:
+            self.assertEqual(sha(DATA/artifact['public_file']),artifact['public_lf_sha256'])
+        summary=read(DATA/'chamber-full-summary.json')
+        self.assertEqual((summary['episodes'],summary['steps'],summary['observation_boundaries']),(240,43200,216000))
+        self.assertEqual((summary['forced_strict_clearance_failures'],summary['forced_episodes']),(120,120))
+        self.assertTrue(summary['all_exact_tuple_multisets_conserved'])
+        self.assertEqual(len(summary['common_initial_inputs']),48)
+        self.assertTrue(all(g['matched'] and len(g['initial_payload_sha256'])==1 for g in summary['common_initial_inputs']))
+        self.assertTrue(matrix.coverage(read(DATA/'chamber-full-execution.json'))['complete_registered_execution'])
+        episodes=read(DATA/'chamber-full-episodes.json');self.assertEqual(len(episodes),240)
+        for row in episodes:
+            if row['mode']!='LA-SELECTIVE':self.assertIsNone(row['selected_arrivals'])
+        self.assertEqual(sum(sum(v['participant_tick_distribution'].values()) for v in summary['worker_participation']),43200)
+        self.assertTrue(all(set(v['participant_tick_distribution'])=={'1'} for v in summary['worker_participation']))
+
     def test_original_per_host_summary_parity(self):
         previous=read(ROOT/'docs/audits/sol-chamber-20261105/episodes.json')['episodes']
         current=read(DATA/'smoke-summary.json')['results']

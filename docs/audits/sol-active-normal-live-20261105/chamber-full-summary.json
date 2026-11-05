@@ -1,0 +1,2750 @@
+{
+  "evaluator": "SOL-ACTIVE-NORMAL-LIVE-001-FULL-CHAMBER-SYNTHESIS",
+  "analysis_source": "ab3b6a402b255d0b51f0cdbd1090d32a495df4ee",
+  "execution_source": "dfc2833eab5b8e3f81e2f2798b0066562ed41e0b",
+  "geometry_analysis_source": "57cfc1518c993da7298562283ddb226d0ad14a5e",
+  "input_receipt_sha256": "15a6ddc37ae8ca9aa429d9d8b9f4c15786313859c20779280084195965561df5",
+  "input_reduction_sha256": "7cad625ba57f281b891adff42d4bd82b91b0bf9eb4046fbfda05aedeb35622fa",
+  "execution_coverage": {
+    "expected_coordinates": 240,
+    "attempted_episodes": 240,
+    "unique_coordinates": 240,
+    "total_process_commands": 248,
+    "missing": [],
+    "duplicates": [],
+    "unexpected": [],
+    "failed_commands": [],
+    "missing_or_failed_report_audits": [],
+    "post_identity_and_inventory": true,
+    "complete_requested_execution": true,
+    "requested_equals_full_registration": true,
+    "complete_registered_execution": true
+  },
+  "common_initial_inputs": [
+    {
+      "group": [
+        "windows",
+        "closed-unforced",
+        1,
+        0
+      ],
+      "expected_arms": 5,
+      "observed_arms": 5,
+      "distinct_signatures": 1,
+      "matched": true,
+      "arms": [
+        "selective-original",
+        "selective-active",
+        "LA",
+        "LA-EVENT-OFF",
+        "RFT"
+      ],
+      "initial_payload_sha256": [
+        "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc"
+      ]
+    },
+    {
+      "group": [
+        "windows",
+        "closed-unforced",
+        1,
+        1
+      ],
+      "expected_arms": 5,
+      "observed_arms": 5,
+      "distinct_signatures": 1,
+      "matched": true,
+      "arms": [
+        "selective-original",
+        "selective-active",
+        "LA",
+        "LA-EVENT-OFF",
+        "RFT"
+      ],
+      "initial_payload_sha256": [
+        "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc"
+      ]
+    },
+    {
+      "group": [
+        "windows",
+        "closed-unforced",
+        1,
+        2
+      ],
+      "expected_arms": 5,
+      "observed_arms": 5,
+      "distinct_signatures": 1,
+      "matched": true,
+      "arms": [
+        "selective-original",
+        "selective-active",
+        "LA",
+        "LA-EVENT-OFF",
+        "RFT"
+      ],
+      "initial_payload_sha256": [
+        "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc"
+      ]
+    },
+    {
+      "group": [
+        "windows",
+        "closed-unforced",
+        4,
+        0
+      ],
+      "expected_arms": 5,
+      "observed_arms": 5,
+      "distinct_signatures": 1,
+      "matched": true,
+      "arms": [
+        "selective-original",
+        "selective-active",
+        "LA",
+        "LA-EVENT-OFF",
+        "RFT"
+      ],
+      "initial_payload_sha256": [
+        "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc"
+      ]
+    },
+    {
+      "group": [
+        "windows",
+        "closed-unforced",
+        4,
+        1
+      ],
+      "expected_arms": 5,
+      "observed_arms": 5,
+      "distinct_signatures": 1,
+      "matched": true,
+      "arms": [
+        "selective-original",
+        "selective-active",
+        "LA",
+        "LA-EVENT-OFF",
+        "RFT"
+      ],
+      "initial_payload_sha256": [
+        "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc"
+      ]
+    },
+    {
+      "group": [
+        "windows",
+        "closed-unforced",
+        4,
+        2
+      ],
+      "expected_arms": 5,
+      "observed_arms": 5,
+      "distinct_signatures": 1,
+      "matched": true,
+      "arms": [
+        "selective-original",
+        "selective-active",
+        "LA",
+        "LA-EVENT-OFF",
+        "RFT"
+      ],
+      "initial_payload_sha256": [
+        "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc"
+      ]
+    },
+    {
+      "group": [
+        "windows",
+        "open-unforced",
+        1,
+        0
+      ],
+      "expected_arms": 5,
+      "observed_arms": 5,
+      "distinct_signatures": 1,
+      "matched": true,
+      "arms": [
+        "selective-original",
+        "selective-active",
+        "LA",
+        "LA-EVENT-OFF",
+        "RFT"
+      ],
+      "initial_payload_sha256": [
+        "c089775165772dd844b9a1912d43d672826a9063953bed57307f035455c3e7f7"
+      ]
+    },
+    {
+      "group": [
+        "windows",
+        "open-unforced",
+        1,
+        1
+      ],
+      "expected_arms": 5,
+      "observed_arms": 5,
+      "distinct_signatures": 1,
+      "matched": true,
+      "arms": [
+        "selective-original",
+        "selective-active",
+        "LA",
+        "LA-EVENT-OFF",
+        "RFT"
+      ],
+      "initial_payload_sha256": [
+        "c089775165772dd844b9a1912d43d672826a9063953bed57307f035455c3e7f7"
+      ]
+    },
+    {
+      "group": [
+        "windows",
+        "open-unforced",
+        1,
+        2
+      ],
+      "expected_arms": 5,
+      "observed_arms": 5,
+      "distinct_signatures": 1,
+      "matched": true,
+      "arms": [
+        "selective-original",
+        "selective-active",
+        "LA",
+        "LA-EVENT-OFF",
+        "RFT"
+      ],
+      "initial_payload_sha256": [
+        "c089775165772dd844b9a1912d43d672826a9063953bed57307f035455c3e7f7"
+      ]
+    },
+    {
+      "group": [
+        "windows",
+        "open-unforced",
+        4,
+        0
+      ],
+      "expected_arms": 5,
+      "observed_arms": 5,
+      "distinct_signatures": 1,
+      "matched": true,
+      "arms": [
+        "selective-original",
+        "selective-active",
+        "LA",
+        "LA-EVENT-OFF",
+        "RFT"
+      ],
+      "initial_payload_sha256": [
+        "c089775165772dd844b9a1912d43d672826a9063953bed57307f035455c3e7f7"
+      ]
+    },
+    {
+      "group": [
+        "windows",
+        "open-unforced",
+        4,
+        1
+      ],
+      "expected_arms": 5,
+      "observed_arms": 5,
+      "distinct_signatures": 1,
+      "matched": true,
+      "arms": [
+        "selective-original",
+        "selective-active",
+        "LA",
+        "LA-EVENT-OFF",
+        "RFT"
+      ],
+      "initial_payload_sha256": [
+        "c089775165772dd844b9a1912d43d672826a9063953bed57307f035455c3e7f7"
+      ]
+    },
+    {
+      "group": [
+        "windows",
+        "open-unforced",
+        4,
+        2
+      ],
+      "expected_arms": 5,
+      "observed_arms": 5,
+      "distinct_signatures": 1,
+      "matched": true,
+      "arms": [
+        "selective-original",
+        "selective-active",
+        "LA",
+        "LA-EVENT-OFF",
+        "RFT"
+      ],
+      "initial_payload_sha256": [
+        "c089775165772dd844b9a1912d43d672826a9063953bed57307f035455c3e7f7"
+      ]
+    },
+    {
+      "group": [
+        "windows",
+        "closed-driven",
+        1,
+        0
+      ],
+      "expected_arms": 5,
+      "observed_arms": 5,
+      "distinct_signatures": 1,
+      "matched": true,
+      "arms": [
+        "selective-original",
+        "selective-active",
+        "LA",
+        "LA-EVENT-OFF",
+        "RFT"
+      ],
+      "initial_payload_sha256": [
+        "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc"
+      ]
+    },
+    {
+      "group": [
+        "windows",
+        "closed-driven",
+        1,
+        1
+      ],
+      "expected_arms": 5,
+      "observed_arms": 5,
+      "distinct_signatures": 1,
+      "matched": true,
+      "arms": [
+        "selective-original",
+        "selective-active",
+        "LA",
+        "LA-EVENT-OFF",
+        "RFT"
+      ],
+      "initial_payload_sha256": [
+        "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc"
+      ]
+    },
+    {
+      "group": [
+        "windows",
+        "closed-driven",
+        1,
+        2
+      ],
+      "expected_arms": 5,
+      "observed_arms": 5,
+      "distinct_signatures": 1,
+      "matched": true,
+      "arms": [
+        "selective-original",
+        "selective-active",
+        "LA",
+        "LA-EVENT-OFF",
+        "RFT"
+      ],
+      "initial_payload_sha256": [
+        "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc"
+      ]
+    },
+    {
+      "group": [
+        "windows",
+        "closed-driven",
+        4,
+        0
+      ],
+      "expected_arms": 5,
+      "observed_arms": 5,
+      "distinct_signatures": 1,
+      "matched": true,
+      "arms": [
+        "selective-original",
+        "selective-active",
+        "LA",
+        "LA-EVENT-OFF",
+        "RFT"
+      ],
+      "initial_payload_sha256": [
+        "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc"
+      ]
+    },
+    {
+      "group": [
+        "windows",
+        "closed-driven",
+        4,
+        1
+      ],
+      "expected_arms": 5,
+      "observed_arms": 5,
+      "distinct_signatures": 1,
+      "matched": true,
+      "arms": [
+        "selective-original",
+        "selective-active",
+        "LA",
+        "LA-EVENT-OFF",
+        "RFT"
+      ],
+      "initial_payload_sha256": [
+        "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc"
+      ]
+    },
+    {
+      "group": [
+        "windows",
+        "closed-driven",
+        4,
+        2
+      ],
+      "expected_arms": 5,
+      "observed_arms": 5,
+      "distinct_signatures": 1,
+      "matched": true,
+      "arms": [
+        "selective-original",
+        "selective-active",
+        "LA",
+        "LA-EVENT-OFF",
+        "RFT"
+      ],
+      "initial_payload_sha256": [
+        "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc"
+      ]
+    },
+    {
+      "group": [
+        "windows",
+        "open-driven",
+        1,
+        0
+      ],
+      "expected_arms": 5,
+      "observed_arms": 5,
+      "distinct_signatures": 1,
+      "matched": true,
+      "arms": [
+        "selective-original",
+        "selective-active",
+        "LA",
+        "LA-EVENT-OFF",
+        "RFT"
+      ],
+      "initial_payload_sha256": [
+        "c089775165772dd844b9a1912d43d672826a9063953bed57307f035455c3e7f7"
+      ]
+    },
+    {
+      "group": [
+        "windows",
+        "open-driven",
+        1,
+        1
+      ],
+      "expected_arms": 5,
+      "observed_arms": 5,
+      "distinct_signatures": 1,
+      "matched": true,
+      "arms": [
+        "selective-original",
+        "selective-active",
+        "LA",
+        "LA-EVENT-OFF",
+        "RFT"
+      ],
+      "initial_payload_sha256": [
+        "c089775165772dd844b9a1912d43d672826a9063953bed57307f035455c3e7f7"
+      ]
+    },
+    {
+      "group": [
+        "windows",
+        "open-driven",
+        1,
+        2
+      ],
+      "expected_arms": 5,
+      "observed_arms": 5,
+      "distinct_signatures": 1,
+      "matched": true,
+      "arms": [
+        "selective-original",
+        "selective-active",
+        "LA",
+        "LA-EVENT-OFF",
+        "RFT"
+      ],
+      "initial_payload_sha256": [
+        "c089775165772dd844b9a1912d43d672826a9063953bed57307f035455c3e7f7"
+      ]
+    },
+    {
+      "group": [
+        "windows",
+        "open-driven",
+        4,
+        0
+      ],
+      "expected_arms": 5,
+      "observed_arms": 5,
+      "distinct_signatures": 1,
+      "matched": true,
+      "arms": [
+        "selective-original",
+        "selective-active",
+        "LA",
+        "LA-EVENT-OFF",
+        "RFT"
+      ],
+      "initial_payload_sha256": [
+        "c089775165772dd844b9a1912d43d672826a9063953bed57307f035455c3e7f7"
+      ]
+    },
+    {
+      "group": [
+        "windows",
+        "open-driven",
+        4,
+        1
+      ],
+      "expected_arms": 5,
+      "observed_arms": 5,
+      "distinct_signatures": 1,
+      "matched": true,
+      "arms": [
+        "selective-original",
+        "selective-active",
+        "LA",
+        "LA-EVENT-OFF",
+        "RFT"
+      ],
+      "initial_payload_sha256": [
+        "c089775165772dd844b9a1912d43d672826a9063953bed57307f035455c3e7f7"
+      ]
+    },
+    {
+      "group": [
+        "windows",
+        "open-driven",
+        4,
+        2
+      ],
+      "expected_arms": 5,
+      "observed_arms": 5,
+      "distinct_signatures": 1,
+      "matched": true,
+      "arms": [
+        "selective-original",
+        "selective-active",
+        "LA",
+        "LA-EVENT-OFF",
+        "RFT"
+      ],
+      "initial_payload_sha256": [
+        "c089775165772dd844b9a1912d43d672826a9063953bed57307f035455c3e7f7"
+      ]
+    },
+    {
+      "group": [
+        "linux",
+        "closed-unforced",
+        1,
+        0
+      ],
+      "expected_arms": 5,
+      "observed_arms": 5,
+      "distinct_signatures": 1,
+      "matched": true,
+      "arms": [
+        "selective-original",
+        "selective-active",
+        "LA",
+        "LA-EVENT-OFF",
+        "RFT"
+      ],
+      "initial_payload_sha256": [
+        "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc"
+      ]
+    },
+    {
+      "group": [
+        "linux",
+        "closed-unforced",
+        1,
+        1
+      ],
+      "expected_arms": 5,
+      "observed_arms": 5,
+      "distinct_signatures": 1,
+      "matched": true,
+      "arms": [
+        "selective-original",
+        "selective-active",
+        "LA",
+        "LA-EVENT-OFF",
+        "RFT"
+      ],
+      "initial_payload_sha256": [
+        "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc"
+      ]
+    },
+    {
+      "group": [
+        "linux",
+        "closed-unforced",
+        1,
+        2
+      ],
+      "expected_arms": 5,
+      "observed_arms": 5,
+      "distinct_signatures": 1,
+      "matched": true,
+      "arms": [
+        "selective-original",
+        "selective-active",
+        "LA",
+        "LA-EVENT-OFF",
+        "RFT"
+      ],
+      "initial_payload_sha256": [
+        "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc"
+      ]
+    },
+    {
+      "group": [
+        "linux",
+        "closed-unforced",
+        4,
+        0
+      ],
+      "expected_arms": 5,
+      "observed_arms": 5,
+      "distinct_signatures": 1,
+      "matched": true,
+      "arms": [
+        "selective-original",
+        "selective-active",
+        "LA",
+        "LA-EVENT-OFF",
+        "RFT"
+      ],
+      "initial_payload_sha256": [
+        "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc"
+      ]
+    },
+    {
+      "group": [
+        "linux",
+        "closed-unforced",
+        4,
+        1
+      ],
+      "expected_arms": 5,
+      "observed_arms": 5,
+      "distinct_signatures": 1,
+      "matched": true,
+      "arms": [
+        "selective-original",
+        "selective-active",
+        "LA",
+        "LA-EVENT-OFF",
+        "RFT"
+      ],
+      "initial_payload_sha256": [
+        "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc"
+      ]
+    },
+    {
+      "group": [
+        "linux",
+        "closed-unforced",
+        4,
+        2
+      ],
+      "expected_arms": 5,
+      "observed_arms": 5,
+      "distinct_signatures": 1,
+      "matched": true,
+      "arms": [
+        "selective-original",
+        "selective-active",
+        "LA",
+        "LA-EVENT-OFF",
+        "RFT"
+      ],
+      "initial_payload_sha256": [
+        "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc"
+      ]
+    },
+    {
+      "group": [
+        "linux",
+        "open-unforced",
+        1,
+        0
+      ],
+      "expected_arms": 5,
+      "observed_arms": 5,
+      "distinct_signatures": 1,
+      "matched": true,
+      "arms": [
+        "selective-original",
+        "selective-active",
+        "LA",
+        "LA-EVENT-OFF",
+        "RFT"
+      ],
+      "initial_payload_sha256": [
+        "c089775165772dd844b9a1912d43d672826a9063953bed57307f035455c3e7f7"
+      ]
+    },
+    {
+      "group": [
+        "linux",
+        "open-unforced",
+        1,
+        1
+      ],
+      "expected_arms": 5,
+      "observed_arms": 5,
+      "distinct_signatures": 1,
+      "matched": true,
+      "arms": [
+        "selective-original",
+        "selective-active",
+        "LA",
+        "LA-EVENT-OFF",
+        "RFT"
+      ],
+      "initial_payload_sha256": [
+        "c089775165772dd844b9a1912d43d672826a9063953bed57307f035455c3e7f7"
+      ]
+    },
+    {
+      "group": [
+        "linux",
+        "open-unforced",
+        1,
+        2
+      ],
+      "expected_arms": 5,
+      "observed_arms": 5,
+      "distinct_signatures": 1,
+      "matched": true,
+      "arms": [
+        "selective-original",
+        "selective-active",
+        "LA",
+        "LA-EVENT-OFF",
+        "RFT"
+      ],
+      "initial_payload_sha256": [
+        "c089775165772dd844b9a1912d43d672826a9063953bed57307f035455c3e7f7"
+      ]
+    },
+    {
+      "group": [
+        "linux",
+        "open-unforced",
+        4,
+        0
+      ],
+      "expected_arms": 5,
+      "observed_arms": 5,
+      "distinct_signatures": 1,
+      "matched": true,
+      "arms": [
+        "selective-original",
+        "selective-active",
+        "LA",
+        "LA-EVENT-OFF",
+        "RFT"
+      ],
+      "initial_payload_sha256": [
+        "c089775165772dd844b9a1912d43d672826a9063953bed57307f035455c3e7f7"
+      ]
+    },
+    {
+      "group": [
+        "linux",
+        "open-unforced",
+        4,
+        1
+      ],
+      "expected_arms": 5,
+      "observed_arms": 5,
+      "distinct_signatures": 1,
+      "matched": true,
+      "arms": [
+        "selective-original",
+        "selective-active",
+        "LA",
+        "LA-EVENT-OFF",
+        "RFT"
+      ],
+      "initial_payload_sha256": [
+        "c089775165772dd844b9a1912d43d672826a9063953bed57307f035455c3e7f7"
+      ]
+    },
+    {
+      "group": [
+        "linux",
+        "open-unforced",
+        4,
+        2
+      ],
+      "expected_arms": 5,
+      "observed_arms": 5,
+      "distinct_signatures": 1,
+      "matched": true,
+      "arms": [
+        "selective-original",
+        "selective-active",
+        "LA",
+        "LA-EVENT-OFF",
+        "RFT"
+      ],
+      "initial_payload_sha256": [
+        "c089775165772dd844b9a1912d43d672826a9063953bed57307f035455c3e7f7"
+      ]
+    },
+    {
+      "group": [
+        "linux",
+        "closed-driven",
+        1,
+        0
+      ],
+      "expected_arms": 5,
+      "observed_arms": 5,
+      "distinct_signatures": 1,
+      "matched": true,
+      "arms": [
+        "selective-original",
+        "selective-active",
+        "LA",
+        "LA-EVENT-OFF",
+        "RFT"
+      ],
+      "initial_payload_sha256": [
+        "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc"
+      ]
+    },
+    {
+      "group": [
+        "linux",
+        "closed-driven",
+        1,
+        1
+      ],
+      "expected_arms": 5,
+      "observed_arms": 5,
+      "distinct_signatures": 1,
+      "matched": true,
+      "arms": [
+        "selective-original",
+        "selective-active",
+        "LA",
+        "LA-EVENT-OFF",
+        "RFT"
+      ],
+      "initial_payload_sha256": [
+        "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc"
+      ]
+    },
+    {
+      "group": [
+        "linux",
+        "closed-driven",
+        1,
+        2
+      ],
+      "expected_arms": 5,
+      "observed_arms": 5,
+      "distinct_signatures": 1,
+      "matched": true,
+      "arms": [
+        "selective-original",
+        "selective-active",
+        "LA",
+        "LA-EVENT-OFF",
+        "RFT"
+      ],
+      "initial_payload_sha256": [
+        "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc"
+      ]
+    },
+    {
+      "group": [
+        "linux",
+        "closed-driven",
+        4,
+        0
+      ],
+      "expected_arms": 5,
+      "observed_arms": 5,
+      "distinct_signatures": 1,
+      "matched": true,
+      "arms": [
+        "selective-original",
+        "selective-active",
+        "LA",
+        "LA-EVENT-OFF",
+        "RFT"
+      ],
+      "initial_payload_sha256": [
+        "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc"
+      ]
+    },
+    {
+      "group": [
+        "linux",
+        "closed-driven",
+        4,
+        1
+      ],
+      "expected_arms": 5,
+      "observed_arms": 5,
+      "distinct_signatures": 1,
+      "matched": true,
+      "arms": [
+        "selective-original",
+        "selective-active",
+        "LA",
+        "LA-EVENT-OFF",
+        "RFT"
+      ],
+      "initial_payload_sha256": [
+        "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc"
+      ]
+    },
+    {
+      "group": [
+        "linux",
+        "closed-driven",
+        4,
+        2
+      ],
+      "expected_arms": 5,
+      "observed_arms": 5,
+      "distinct_signatures": 1,
+      "matched": true,
+      "arms": [
+        "selective-original",
+        "selective-active",
+        "LA",
+        "LA-EVENT-OFF",
+        "RFT"
+      ],
+      "initial_payload_sha256": [
+        "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc"
+      ]
+    },
+    {
+      "group": [
+        "linux",
+        "open-driven",
+        1,
+        0
+      ],
+      "expected_arms": 5,
+      "observed_arms": 5,
+      "distinct_signatures": 1,
+      "matched": true,
+      "arms": [
+        "selective-original",
+        "selective-active",
+        "LA",
+        "LA-EVENT-OFF",
+        "RFT"
+      ],
+      "initial_payload_sha256": [
+        "c089775165772dd844b9a1912d43d672826a9063953bed57307f035455c3e7f7"
+      ]
+    },
+    {
+      "group": [
+        "linux",
+        "open-driven",
+        1,
+        1
+      ],
+      "expected_arms": 5,
+      "observed_arms": 5,
+      "distinct_signatures": 1,
+      "matched": true,
+      "arms": [
+        "selective-original",
+        "selective-active",
+        "LA",
+        "LA-EVENT-OFF",
+        "RFT"
+      ],
+      "initial_payload_sha256": [
+        "c089775165772dd844b9a1912d43d672826a9063953bed57307f035455c3e7f7"
+      ]
+    },
+    {
+      "group": [
+        "linux",
+        "open-driven",
+        1,
+        2
+      ],
+      "expected_arms": 5,
+      "observed_arms": 5,
+      "distinct_signatures": 1,
+      "matched": true,
+      "arms": [
+        "selective-original",
+        "selective-active",
+        "LA",
+        "LA-EVENT-OFF",
+        "RFT"
+      ],
+      "initial_payload_sha256": [
+        "c089775165772dd844b9a1912d43d672826a9063953bed57307f035455c3e7f7"
+      ]
+    },
+    {
+      "group": [
+        "linux",
+        "open-driven",
+        4,
+        0
+      ],
+      "expected_arms": 5,
+      "observed_arms": 5,
+      "distinct_signatures": 1,
+      "matched": true,
+      "arms": [
+        "selective-original",
+        "selective-active",
+        "LA",
+        "LA-EVENT-OFF",
+        "RFT"
+      ],
+      "initial_payload_sha256": [
+        "c089775165772dd844b9a1912d43d672826a9063953bed57307f035455c3e7f7"
+      ]
+    },
+    {
+      "group": [
+        "linux",
+        "open-driven",
+        4,
+        1
+      ],
+      "expected_arms": 5,
+      "observed_arms": 5,
+      "distinct_signatures": 1,
+      "matched": true,
+      "arms": [
+        "selective-original",
+        "selective-active",
+        "LA",
+        "LA-EVENT-OFF",
+        "RFT"
+      ],
+      "initial_payload_sha256": [
+        "c089775165772dd844b9a1912d43d672826a9063953bed57307f035455c3e7f7"
+      ]
+    },
+    {
+      "group": [
+        "linux",
+        "open-driven",
+        4,
+        2
+      ],
+      "expected_arms": 5,
+      "observed_arms": 5,
+      "distinct_signatures": 1,
+      "matched": true,
+      "arms": [
+        "selective-original",
+        "selective-active",
+        "LA",
+        "LA-EVENT-OFF",
+        "RFT"
+      ],
+      "initial_payload_sha256": [
+        "c089775165772dd844b9a1912d43d672826a9063953bed57307f035455c3e7f7"
+      ]
+    }
+  ],
+  "episodes": 240,
+  "steps": 43200,
+  "observation_boundaries": 216000,
+  "all_exact_tuple_multisets_conserved": true,
+  "table": [
+    {
+      "platform": "linux",
+      "case": "closed-driven",
+      "arm": "LA",
+      "episodes": 6,
+      "workers": [
+        1,
+        4
+      ],
+      "repeats": [
+        0,
+        1,
+        2
+      ],
+      "maximum_area": {
+        "minimum": 38.48220398867819,
+        "maximum": 38.48220398867819
+      },
+      "maximum_depth": {
+        "minimum": 1.3799066155626178,
+        "maximum": 1.3799066155626178
+      },
+      "strict_all_observations_clear": 0,
+      "nonembedded_depth_screen": 0,
+      "arrival_counts": null,
+      "missing_arrival_counts": null,
+      "passive_rejections": 0,
+      "normal_cap_hits": 0,
+      "getter_mean_us": {
+        "minimum": 25.405555555555555,
+        "maximum": 30.305555555555557
+      },
+      "getter_max_us": 80,
+      "known_cell_plus_arrival_bytes": {
+        "minimum": 2625536,
+        "maximum": 2625536
+      }
+    },
+    {
+      "platform": "linux",
+      "case": "closed-driven",
+      "arm": "LA-EVENT-OFF",
+      "episodes": 6,
+      "workers": [
+        1,
+        4
+      ],
+      "repeats": [
+        0,
+        1,
+        2
+      ],
+      "maximum_area": {
+        "minimum": 38.765267146558585,
+        "maximum": 38.765267146558585
+      },
+      "maximum_depth": {
+        "minimum": 1.3964078749711177,
+        "maximum": 1.3964078749711177
+      },
+      "strict_all_observations_clear": 0,
+      "nonembedded_depth_screen": 0,
+      "arrival_counts": null,
+      "missing_arrival_counts": null,
+      "passive_rejections": 0,
+      "normal_cap_hits": 0,
+      "getter_mean_us": {
+        "minimum": 24.233333333333334,
+        "maximum": 26.122222222222224
+      },
+      "getter_max_us": 87,
+      "known_cell_plus_arrival_bytes": {
+        "minimum": 2625536,
+        "maximum": 2625536
+      }
+    },
+    {
+      "platform": "linux",
+      "case": "closed-driven",
+      "arm": "RFT",
+      "episodes": 6,
+      "workers": [
+        1,
+        4
+      ],
+      "repeats": [
+        0,
+        1,
+        2
+      ],
+      "maximum_area": {
+        "minimum": 354.6955031987425,
+        "maximum": 354.6955031987425
+      },
+      "maximum_depth": {
+        "minimum": 4.003021673782584,
+        "maximum": 4.003021673782584
+      },
+      "strict_all_observations_clear": 0,
+      "nonembedded_depth_screen": 0,
+      "arrival_counts": null,
+      "missing_arrival_counts": null,
+      "passive_rejections": 0,
+      "normal_cap_hits": 37680,
+      "getter_mean_us": {
+        "minimum": 23.666666666666668,
+        "maximum": 26.11111111111111
+      },
+      "getter_max_us": 73,
+      "known_cell_plus_arrival_bytes": {
+        "minimum": 2625536,
+        "maximum": 2625536
+      }
+    },
+    {
+      "platform": "linux",
+      "case": "closed-driven",
+      "arm": "selective-active",
+      "episodes": 6,
+      "workers": [
+        1,
+        4
+      ],
+      "repeats": [
+        0,
+        1,
+        2
+      ],
+      "maximum_area": {
+        "minimum": 14.232169091378106,
+        "maximum": 14.232169091378106
+      },
+      "maximum_depth": {
+        "minimum": 0.5442310813339191,
+        "maximum": 0.5442310813339191
+      },
+      "strict_all_observations_clear": 0,
+      "nonembedded_depth_screen": 6,
+      "arrival_counts": {
+        "minimum": 3,
+        "maximum": 3
+      },
+      "missing_arrival_counts": {
+        "minimum": 28980,
+        "maximum": 28980
+      },
+      "passive_rejections": 0,
+      "normal_cap_hits": 0,
+      "getter_mean_us": {
+        "minimum": 24.82777777777778,
+        "maximum": 31.17222222222222
+      },
+      "getter_max_us": 96,
+      "known_cell_plus_arrival_bytes": {
+        "minimum": 4722688,
+        "maximum": 4722688
+      }
+    },
+    {
+      "platform": "linux",
+      "case": "closed-driven",
+      "arm": "selective-original",
+      "episodes": 6,
+      "workers": [
+        1,
+        4
+      ],
+      "repeats": [
+        0,
+        1,
+        2
+      ],
+      "maximum_area": {
+        "minimum": 38.76508869923395,
+        "maximum": 38.76508869923395
+      },
+      "maximum_depth": {
+        "minimum": 1.3963688876541198,
+        "maximum": 1.3963688876541198
+      },
+      "strict_all_observations_clear": 0,
+      "nonembedded_depth_screen": 0,
+      "arrival_counts": {
+        "minimum": 74,
+        "maximum": 74
+      },
+      "missing_arrival_counts": {
+        "minimum": 27545,
+        "maximum": 27545
+      },
+      "passive_rejections": 0,
+      "normal_cap_hits": 0,
+      "getter_mean_us": {
+        "minimum": 24.355555555555554,
+        "maximum": 27.58888888888889
+      },
+      "getter_max_us": 131,
+      "known_cell_plus_arrival_bytes": {
+        "minimum": 4722688,
+        "maximum": 4722688
+      }
+    },
+    {
+      "platform": "linux",
+      "case": "closed-unforced",
+      "arm": "LA",
+      "episodes": 6,
+      "workers": [
+        1,
+        4
+      ],
+      "repeats": [
+        0,
+        1,
+        2
+      ],
+      "maximum_area": {
+        "minimum": 1.1062766644544177,
+        "maximum": 1.1062766644544177
+      },
+      "maximum_depth": {
+        "minimum": 0.038632430240625126,
+        "maximum": 0.038632430240625126
+      },
+      "strict_all_observations_clear": 0,
+      "nonembedded_depth_screen": 6,
+      "arrival_counts": null,
+      "missing_arrival_counts": null,
+      "passive_rejections": 0,
+      "normal_cap_hits": 0,
+      "getter_mean_us": {
+        "minimum": 24.455555555555556,
+        "maximum": 27.4
+      },
+      "getter_max_us": 98,
+      "known_cell_plus_arrival_bytes": {
+        "minimum": 2625536,
+        "maximum": 2625536
+      }
+    },
+    {
+      "platform": "linux",
+      "case": "closed-unforced",
+      "arm": "LA-EVENT-OFF",
+      "episodes": 6,
+      "workers": [
+        1,
+        4
+      ],
+      "repeats": [
+        0,
+        1,
+        2
+      ],
+      "maximum_area": {
+        "minimum": 0,
+        "maximum": 0
+      },
+      "maximum_depth": {
+        "minimum": 0,
+        "maximum": 0
+      },
+      "strict_all_observations_clear": 6,
+      "nonembedded_depth_screen": 6,
+      "arrival_counts": null,
+      "missing_arrival_counts": null,
+      "passive_rejections": 0,
+      "normal_cap_hits": 0,
+      "getter_mean_us": {
+        "minimum": 23.52777777777778,
+        "maximum": 24.88888888888889
+      },
+      "getter_max_us": 82,
+      "known_cell_plus_arrival_bytes": {
+        "minimum": 2625536,
+        "maximum": 2625536
+      }
+    },
+    {
+      "platform": "linux",
+      "case": "closed-unforced",
+      "arm": "RFT",
+      "episodes": 6,
+      "workers": [
+        1,
+        4
+      ],
+      "repeats": [
+        0,
+        1,
+        2
+      ],
+      "maximum_area": {
+        "minimum": 0.22032501472956895,
+        "maximum": 0.22032501472956895
+      },
+      "maximum_depth": {
+        "minimum": 0.007428005885103062,
+        "maximum": 0.007428005885103062
+      },
+      "strict_all_observations_clear": 0,
+      "nonembedded_depth_screen": 6,
+      "arrival_counts": null,
+      "missing_arrival_counts": null,
+      "passive_rejections": 0,
+      "normal_cap_hits": 0,
+      "getter_mean_us": {
+        "minimum": 22.35,
+        "maximum": 24.566666666666666
+      },
+      "getter_max_us": 104,
+      "known_cell_plus_arrival_bytes": {
+        "minimum": 2625536,
+        "maximum": 2625536
+      }
+    },
+    {
+      "platform": "linux",
+      "case": "closed-unforced",
+      "arm": "selective-active",
+      "episodes": 6,
+      "workers": [
+        1,
+        4
+      ],
+      "repeats": [
+        0,
+        1,
+        2
+      ],
+      "maximum_area": {
+        "minimum": 0,
+        "maximum": 0
+      },
+      "maximum_depth": {
+        "minimum": 0,
+        "maximum": 0
+      },
+      "strict_all_observations_clear": 6,
+      "nonembedded_depth_screen": 6,
+      "arrival_counts": {
+        "minimum": 0,
+        "maximum": 0
+      },
+      "missing_arrival_counts": {
+        "minimum": 28980,
+        "maximum": 28980
+      },
+      "passive_rejections": 0,
+      "normal_cap_hits": 0,
+      "getter_mean_us": {
+        "minimum": 23.93888888888889,
+        "maximum": 25.677777777777777
+      },
+      "getter_max_us": 87,
+      "known_cell_plus_arrival_bytes": {
+        "minimum": 4722688,
+        "maximum": 4722688
+      }
+    },
+    {
+      "platform": "linux",
+      "case": "closed-unforced",
+      "arm": "selective-original",
+      "episodes": 6,
+      "workers": [
+        1,
+        4
+      ],
+      "repeats": [
+        0,
+        1,
+        2
+      ],
+      "maximum_area": {
+        "minimum": 0,
+        "maximum": 0
+      },
+      "maximum_depth": {
+        "minimum": 0,
+        "maximum": 0
+      },
+      "strict_all_observations_clear": 6,
+      "nonembedded_depth_screen": 6,
+      "arrival_counts": {
+        "minimum": 0,
+        "maximum": 0
+      },
+      "missing_arrival_counts": {
+        "minimum": 28980,
+        "maximum": 28980
+      },
+      "passive_rejections": 0,
+      "normal_cap_hits": 0,
+      "getter_mean_us": {
+        "minimum": 24.033333333333335,
+        "maximum": 25.755555555555556
+      },
+      "getter_max_us": 90,
+      "known_cell_plus_arrival_bytes": {
+        "minimum": 4722688,
+        "maximum": 4722688
+      }
+    },
+    {
+      "platform": "linux",
+      "case": "open-driven",
+      "arm": "LA",
+      "episodes": 6,
+      "workers": [
+        1,
+        4
+      ],
+      "repeats": [
+        0,
+        1,
+        2
+      ],
+      "maximum_area": {
+        "minimum": 39.013434767873754,
+        "maximum": 39.013434767873754
+      },
+      "maximum_depth": {
+        "minimum": 2.183141733604856,
+        "maximum": 2.183141733604856
+      },
+      "strict_all_observations_clear": 0,
+      "nonembedded_depth_screen": 0,
+      "arrival_counts": null,
+      "missing_arrival_counts": null,
+      "passive_rejections": 0,
+      "normal_cap_hits": 0,
+      "getter_mean_us": {
+        "minimum": 23.572222222222223,
+        "maximum": 25.716666666666665
+      },
+      "getter_max_us": 80,
+      "known_cell_plus_arrival_bytes": {
+        "minimum": 2625536,
+        "maximum": 2625536
+      }
+    },
+    {
+      "platform": "linux",
+      "case": "open-driven",
+      "arm": "LA-EVENT-OFF",
+      "episodes": 6,
+      "workers": [
+        1,
+        4
+      ],
+      "repeats": [
+        0,
+        1,
+        2
+      ],
+      "maximum_area": {
+        "minimum": 39.080335712337295,
+        "maximum": 39.080335712337295
+      },
+      "maximum_depth": {
+        "minimum": 2.1977182429705096,
+        "maximum": 2.1977182429705096
+      },
+      "strict_all_observations_clear": 0,
+      "nonembedded_depth_screen": 0,
+      "arrival_counts": null,
+      "missing_arrival_counts": null,
+      "passive_rejections": 0,
+      "normal_cap_hits": 0,
+      "getter_mean_us": {
+        "minimum": 22.416666666666668,
+        "maximum": 25.916666666666668
+      },
+      "getter_max_us": 62,
+      "known_cell_plus_arrival_bytes": {
+        "minimum": 2625536,
+        "maximum": 2625536
+      }
+    },
+    {
+      "platform": "linux",
+      "case": "open-driven",
+      "arm": "RFT",
+      "episodes": 6,
+      "workers": [
+        1,
+        4
+      ],
+      "repeats": [
+        0,
+        1,
+        2
+      ],
+      "maximum_area": {
+        "minimum": 64.76007342491422,
+        "maximum": 64.76007342491422
+      },
+      "maximum_depth": {
+        "minimum": 2.5051601542176627,
+        "maximum": 2.5051601542176627
+      },
+      "strict_all_observations_clear": 0,
+      "nonembedded_depth_screen": 0,
+      "arrival_counts": null,
+      "missing_arrival_counts": null,
+      "passive_rejections": 0,
+      "normal_cap_hits": 9600,
+      "getter_mean_us": {
+        "minimum": 21.68888888888889,
+        "maximum": 24.627777777777776
+      },
+      "getter_max_us": 62,
+      "known_cell_plus_arrival_bytes": {
+        "minimum": 2625536,
+        "maximum": 2625536
+      }
+    },
+    {
+      "platform": "linux",
+      "case": "open-driven",
+      "arm": "selective-active",
+      "episodes": 6,
+      "workers": [
+        1,
+        4
+      ],
+      "repeats": [
+        0,
+        1,
+        2
+      ],
+      "maximum_area": {
+        "minimum": 29.37957564696889,
+        "maximum": 29.37957564696889
+      },
+      "maximum_depth": {
+        "minimum": 1.6387262529057693,
+        "maximum": 1.6387262529057693
+      },
+      "strict_all_observations_clear": 0,
+      "nonembedded_depth_screen": 0,
+      "arrival_counts": {
+        "minimum": 147,
+        "maximum": 147
+      },
+      "missing_arrival_counts": {
+        "minimum": 20151,
+        "maximum": 20151
+      },
+      "passive_rejections": 0,
+      "normal_cap_hits": 0,
+      "getter_mean_us": {
+        "minimum": 24.233333333333334,
+        "maximum": 31.85
+      },
+      "getter_max_us": 1083,
+      "known_cell_plus_arrival_bytes": {
+        "minimum": 4722688,
+        "maximum": 4722688
+      }
+    },
+    {
+      "platform": "linux",
+      "case": "open-driven",
+      "arm": "selective-original",
+      "episodes": 6,
+      "workers": [
+        1,
+        4
+      ],
+      "repeats": [
+        0,
+        1,
+        2
+      ],
+      "maximum_area": {
+        "minimum": 38.06640106963836,
+        "maximum": 38.06640106963836
+      },
+      "maximum_depth": {
+        "minimum": 2.1857986617141734,
+        "maximum": 2.1857986617141734
+      },
+      "strict_all_observations_clear": 0,
+      "nonembedded_depth_screen": 0,
+      "arrival_counts": {
+        "minimum": 182,
+        "maximum": 182
+      },
+      "missing_arrival_counts": {
+        "minimum": 19712,
+        "maximum": 19712
+      },
+      "passive_rejections": 0,
+      "normal_cap_hits": 0,
+      "getter_mean_us": {
+        "minimum": 21.955555555555556,
+        "maximum": 25.02777777777778
+      },
+      "getter_max_us": 68,
+      "known_cell_plus_arrival_bytes": {
+        "minimum": 4722688,
+        "maximum": 4722688
+      }
+    },
+    {
+      "platform": "linux",
+      "case": "open-unforced",
+      "arm": "LA",
+      "episodes": 6,
+      "workers": [
+        1,
+        4
+      ],
+      "repeats": [
+        0,
+        1,
+        2
+      ],
+      "maximum_area": {
+        "minimum": 0.4939389705900225,
+        "maximum": 0.4939389705900225
+      },
+      "maximum_depth": {
+        "minimum": 0.022892083220298787,
+        "maximum": 0.022892083220298787
+      },
+      "strict_all_observations_clear": 0,
+      "nonembedded_depth_screen": 6,
+      "arrival_counts": null,
+      "missing_arrival_counts": null,
+      "passive_rejections": 0,
+      "normal_cap_hits": 0,
+      "getter_mean_us": {
+        "minimum": 23.266666666666666,
+        "maximum": 25.13888888888889
+      },
+      "getter_max_us": 68,
+      "known_cell_plus_arrival_bytes": {
+        "minimum": 2625536,
+        "maximum": 2625536
+      }
+    },
+    {
+      "platform": "linux",
+      "case": "open-unforced",
+      "arm": "LA-EVENT-OFF",
+      "episodes": 6,
+      "workers": [
+        1,
+        4
+      ],
+      "repeats": [
+        0,
+        1,
+        2
+      ],
+      "maximum_area": {
+        "minimum": 0,
+        "maximum": 0
+      },
+      "maximum_depth": {
+        "minimum": 0,
+        "maximum": 0
+      },
+      "strict_all_observations_clear": 6,
+      "nonembedded_depth_screen": 6,
+      "arrival_counts": null,
+      "missing_arrival_counts": null,
+      "passive_rejections": 0,
+      "normal_cap_hits": 0,
+      "getter_mean_us": {
+        "minimum": 23.272222222222222,
+        "maximum": 26.066666666666666
+      },
+      "getter_max_us": 89,
+      "known_cell_plus_arrival_bytes": {
+        "minimum": 2625536,
+        "maximum": 2625536
+      }
+    },
+    {
+      "platform": "linux",
+      "case": "open-unforced",
+      "arm": "RFT",
+      "episodes": 6,
+      "workers": [
+        1,
+        4
+      ],
+      "repeats": [
+        0,
+        1,
+        2
+      ],
+      "maximum_area": {
+        "minimum": 0.03591864574516911,
+        "maximum": 0.03591864574516911
+      },
+      "maximum_depth": {
+        "minimum": 0.0015887175824715882,
+        "maximum": 0.0015887175824715882
+      },
+      "strict_all_observations_clear": 0,
+      "nonembedded_depth_screen": 6,
+      "arrival_counts": null,
+      "missing_arrival_counts": null,
+      "passive_rejections": 0,
+      "normal_cap_hits": 0,
+      "getter_mean_us": {
+        "minimum": 21.91111111111111,
+        "maximum": 25.966666666666665
+      },
+      "getter_max_us": 82,
+      "known_cell_plus_arrival_bytes": {
+        "minimum": 2625536,
+        "maximum": 2625536
+      }
+    },
+    {
+      "platform": "linux",
+      "case": "open-unforced",
+      "arm": "selective-active",
+      "episodes": 6,
+      "workers": [
+        1,
+        4
+      ],
+      "repeats": [
+        0,
+        1,
+        2
+      ],
+      "maximum_area": {
+        "minimum": 1.2020054419846229e-05,
+        "maximum": 1.2020054419846229e-05
+      },
+      "maximum_depth": {
+        "minimum": 5.31665747871557e-07,
+        "maximum": 5.31665747871557e-07
+      },
+      "strict_all_observations_clear": 0,
+      "nonembedded_depth_screen": 6,
+      "arrival_counts": {
+        "minimum": 1,
+        "maximum": 1
+      },
+      "missing_arrival_counts": {
+        "minimum": 25748,
+        "maximum": 25748
+      },
+      "passive_rejections": 0,
+      "normal_cap_hits": 0,
+      "getter_mean_us": {
+        "minimum": 22.82777777777778,
+        "maximum": 25.83888888888889
+      },
+      "getter_max_us": 97,
+      "known_cell_plus_arrival_bytes": {
+        "minimum": 4722688,
+        "maximum": 4722688
+      }
+    },
+    {
+      "platform": "linux",
+      "case": "open-unforced",
+      "arm": "selective-original",
+      "episodes": 6,
+      "workers": [
+        1,
+        4
+      ],
+      "repeats": [
+        0,
+        1,
+        2
+      ],
+      "maximum_area": {
+        "minimum": 4.9446368132752e-06,
+        "maximum": 4.9446368132752e-06
+      },
+      "maximum_depth": {
+        "minimum": 2.187089975791423e-07,
+        "maximum": 2.187089975791423e-07
+      },
+      "strict_all_observations_clear": 0,
+      "nonembedded_depth_screen": 6,
+      "arrival_counts": {
+        "minimum": 1,
+        "maximum": 1
+      },
+      "missing_arrival_counts": {
+        "minimum": 25748,
+        "maximum": 25748
+      },
+      "passive_rejections": 0,
+      "normal_cap_hits": 0,
+      "getter_mean_us": {
+        "minimum": 23.394444444444446,
+        "maximum": 24.516666666666666
+      },
+      "getter_max_us": 92,
+      "known_cell_plus_arrival_bytes": {
+        "minimum": 4722688,
+        "maximum": 4722688
+      }
+    },
+    {
+      "platform": "windows",
+      "case": "closed-driven",
+      "arm": "LA",
+      "episodes": 6,
+      "workers": [
+        1,
+        4
+      ],
+      "repeats": [
+        0,
+        1,
+        2
+      ],
+      "maximum_area": {
+        "minimum": 38.48220398867819,
+        "maximum": 38.48220398867819
+      },
+      "maximum_depth": {
+        "minimum": 1.3799066155626178,
+        "maximum": 1.3799066155626178
+      },
+      "strict_all_observations_clear": 0,
+      "nonembedded_depth_screen": 0,
+      "arrival_counts": null,
+      "missing_arrival_counts": null,
+      "passive_rejections": 0,
+      "normal_cap_hits": 0,
+      "getter_mean_us": {
+        "minimum": 27.644444444444446,
+        "maximum": 29.805555555555557
+      },
+      "getter_max_us": 150,
+      "known_cell_plus_arrival_bytes": {
+        "minimum": 2625536,
+        "maximum": 2625536
+      }
+    },
+    {
+      "platform": "windows",
+      "case": "closed-driven",
+      "arm": "LA-EVENT-OFF",
+      "episodes": 6,
+      "workers": [
+        1,
+        4
+      ],
+      "repeats": [
+        0,
+        1,
+        2
+      ],
+      "maximum_area": {
+        "minimum": 38.765267146558585,
+        "maximum": 38.765267146558585
+      },
+      "maximum_depth": {
+        "minimum": 1.3964078749711177,
+        "maximum": 1.3964078749711177
+      },
+      "strict_all_observations_clear": 0,
+      "nonembedded_depth_screen": 0,
+      "arrival_counts": null,
+      "missing_arrival_counts": null,
+      "passive_rejections": 0,
+      "normal_cap_hits": 0,
+      "getter_mean_us": {
+        "minimum": 27.45,
+        "maximum": 29.905555555555555
+      },
+      "getter_max_us": 132,
+      "known_cell_plus_arrival_bytes": {
+        "minimum": 2625536,
+        "maximum": 2625536
+      }
+    },
+    {
+      "platform": "windows",
+      "case": "closed-driven",
+      "arm": "RFT",
+      "episodes": 6,
+      "workers": [
+        1,
+        4
+      ],
+      "repeats": [
+        0,
+        1,
+        2
+      ],
+      "maximum_area": {
+        "minimum": 354.6955031987425,
+        "maximum": 354.6955031987425
+      },
+      "maximum_depth": {
+        "minimum": 4.003021673782584,
+        "maximum": 4.003021673782584
+      },
+      "strict_all_observations_clear": 0,
+      "nonembedded_depth_screen": 0,
+      "arrival_counts": null,
+      "missing_arrival_counts": null,
+      "passive_rejections": 0,
+      "normal_cap_hits": 37680,
+      "getter_mean_us": {
+        "minimum": 25.933333333333334,
+        "maximum": 28.977777777777778
+      },
+      "getter_max_us": 163,
+      "known_cell_plus_arrival_bytes": {
+        "minimum": 2625536,
+        "maximum": 2625536
+      }
+    },
+    {
+      "platform": "windows",
+      "case": "closed-driven",
+      "arm": "selective-active",
+      "episodes": 6,
+      "workers": [
+        1,
+        4
+      ],
+      "repeats": [
+        0,
+        1,
+        2
+      ],
+      "maximum_area": {
+        "minimum": 14.232169091378106,
+        "maximum": 14.232169091378106
+      },
+      "maximum_depth": {
+        "minimum": 0.5442310813339191,
+        "maximum": 0.5442310813339191
+      },
+      "strict_all_observations_clear": 0,
+      "nonembedded_depth_screen": 6,
+      "arrival_counts": {
+        "minimum": 3,
+        "maximum": 3
+      },
+      "missing_arrival_counts": {
+        "minimum": 28980,
+        "maximum": 28980
+      },
+      "passive_rejections": 0,
+      "normal_cap_hits": 0,
+      "getter_mean_us": {
+        "minimum": 26.261111111111113,
+        "maximum": 29.93888888888889
+      },
+      "getter_max_us": 129,
+      "known_cell_plus_arrival_bytes": {
+        "minimum": 4722688,
+        "maximum": 4722688
+      }
+    },
+    {
+      "platform": "windows",
+      "case": "closed-driven",
+      "arm": "selective-original",
+      "episodes": 6,
+      "workers": [
+        1,
+        4
+      ],
+      "repeats": [
+        0,
+        1,
+        2
+      ],
+      "maximum_area": {
+        "minimum": 38.76508869923395,
+        "maximum": 38.76508869923395
+      },
+      "maximum_depth": {
+        "minimum": 1.3963688876541198,
+        "maximum": 1.3963688876541198
+      },
+      "strict_all_observations_clear": 0,
+      "nonembedded_depth_screen": 0,
+      "arrival_counts": {
+        "minimum": 74,
+        "maximum": 74
+      },
+      "missing_arrival_counts": {
+        "minimum": 27545,
+        "maximum": 27545
+      },
+      "passive_rejections": 0,
+      "normal_cap_hits": 0,
+      "getter_mean_us": {
+        "minimum": 25.616666666666667,
+        "maximum": 30.455555555555556
+      },
+      "getter_max_us": 122,
+      "known_cell_plus_arrival_bytes": {
+        "minimum": 4722688,
+        "maximum": 4722688
+      }
+    },
+    {
+      "platform": "windows",
+      "case": "closed-unforced",
+      "arm": "LA",
+      "episodes": 6,
+      "workers": [
+        1,
+        4
+      ],
+      "repeats": [
+        0,
+        1,
+        2
+      ],
+      "maximum_area": {
+        "minimum": 1.1062766644544177,
+        "maximum": 1.1062766644544177
+      },
+      "maximum_depth": {
+        "minimum": 0.038632430240625126,
+        "maximum": 0.038632430240625126
+      },
+      "strict_all_observations_clear": 0,
+      "nonembedded_depth_screen": 6,
+      "arrival_counts": null,
+      "missing_arrival_counts": null,
+      "passive_rejections": 0,
+      "normal_cap_hits": 0,
+      "getter_mean_us": {
+        "minimum": 27.83888888888889,
+        "maximum": 30.86111111111111
+      },
+      "getter_max_us": 152,
+      "known_cell_plus_arrival_bytes": {
+        "minimum": 2625536,
+        "maximum": 2625536
+      }
+    },
+    {
+      "platform": "windows",
+      "case": "closed-unforced",
+      "arm": "LA-EVENT-OFF",
+      "episodes": 6,
+      "workers": [
+        1,
+        4
+      ],
+      "repeats": [
+        0,
+        1,
+        2
+      ],
+      "maximum_area": {
+        "minimum": 0,
+        "maximum": 0
+      },
+      "maximum_depth": {
+        "minimum": 0,
+        "maximum": 0
+      },
+      "strict_all_observations_clear": 6,
+      "nonembedded_depth_screen": 6,
+      "arrival_counts": null,
+      "missing_arrival_counts": null,
+      "passive_rejections": 0,
+      "normal_cap_hits": 0,
+      "getter_mean_us": {
+        "minimum": 28.022222222222222,
+        "maximum": 29.06111111111111
+      },
+      "getter_max_us": 170,
+      "known_cell_plus_arrival_bytes": {
+        "minimum": 2625536,
+        "maximum": 2625536
+      }
+    },
+    {
+      "platform": "windows",
+      "case": "closed-unforced",
+      "arm": "RFT",
+      "episodes": 6,
+      "workers": [
+        1,
+        4
+      ],
+      "repeats": [
+        0,
+        1,
+        2
+      ],
+      "maximum_area": {
+        "minimum": 0.22032501472956895,
+        "maximum": 0.22032501472956895
+      },
+      "maximum_depth": {
+        "minimum": 0.007428005885103062,
+        "maximum": 0.007428005885103062
+      },
+      "strict_all_observations_clear": 0,
+      "nonembedded_depth_screen": 6,
+      "arrival_counts": null,
+      "missing_arrival_counts": null,
+      "passive_rejections": 0,
+      "normal_cap_hits": 0,
+      "getter_mean_us": {
+        "minimum": 25.522222222222222,
+        "maximum": 28.85
+      },
+      "getter_max_us": 135,
+      "known_cell_plus_arrival_bytes": {
+        "minimum": 2625536,
+        "maximum": 2625536
+      }
+    },
+    {
+      "platform": "windows",
+      "case": "closed-unforced",
+      "arm": "selective-active",
+      "episodes": 6,
+      "workers": [
+        1,
+        4
+      ],
+      "repeats": [
+        0,
+        1,
+        2
+      ],
+      "maximum_area": {
+        "minimum": 0,
+        "maximum": 0
+      },
+      "maximum_depth": {
+        "minimum": 0,
+        "maximum": 0
+      },
+      "strict_all_observations_clear": 6,
+      "nonembedded_depth_screen": 6,
+      "arrival_counts": {
+        "minimum": 0,
+        "maximum": 0
+      },
+      "missing_arrival_counts": {
+        "minimum": 28980,
+        "maximum": 28980
+      },
+      "passive_rejections": 0,
+      "normal_cap_hits": 0,
+      "getter_mean_us": {
+        "minimum": 27.4,
+        "maximum": 29.822222222222223
+      },
+      "getter_max_us": 134,
+      "known_cell_plus_arrival_bytes": {
+        "minimum": 4722688,
+        "maximum": 4722688
+      }
+    },
+    {
+      "platform": "windows",
+      "case": "closed-unforced",
+      "arm": "selective-original",
+      "episodes": 6,
+      "workers": [
+        1,
+        4
+      ],
+      "repeats": [
+        0,
+        1,
+        2
+      ],
+      "maximum_area": {
+        "minimum": 0,
+        "maximum": 0
+      },
+      "maximum_depth": {
+        "minimum": 0,
+        "maximum": 0
+      },
+      "strict_all_observations_clear": 6,
+      "nonembedded_depth_screen": 6,
+      "arrival_counts": {
+        "minimum": 0,
+        "maximum": 0
+      },
+      "missing_arrival_counts": {
+        "minimum": 28980,
+        "maximum": 28980
+      },
+      "passive_rejections": 0,
+      "normal_cap_hits": 0,
+      "getter_mean_us": {
+        "minimum": 27.377777777777776,
+        "maximum": 28.616666666666667
+      },
+      "getter_max_us": 155,
+      "known_cell_plus_arrival_bytes": {
+        "minimum": 4722688,
+        "maximum": 4722688
+      }
+    },
+    {
+      "platform": "windows",
+      "case": "open-driven",
+      "arm": "LA",
+      "episodes": 6,
+      "workers": [
+        1,
+        4
+      ],
+      "repeats": [
+        0,
+        1,
+        2
+      ],
+      "maximum_area": {
+        "minimum": 39.013434767873754,
+        "maximum": 39.013434767873754
+      },
+      "maximum_depth": {
+        "minimum": 2.183141733604856,
+        "maximum": 2.183141733604856
+      },
+      "strict_all_observations_clear": 0,
+      "nonembedded_depth_screen": 0,
+      "arrival_counts": null,
+      "missing_arrival_counts": null,
+      "passive_rejections": 0,
+      "normal_cap_hits": 0,
+      "getter_mean_us": {
+        "minimum": 26.538888888888888,
+        "maximum": 30.594444444444445
+      },
+      "getter_max_us": 175,
+      "known_cell_plus_arrival_bytes": {
+        "minimum": 2625536,
+        "maximum": 2625536
+      }
+    },
+    {
+      "platform": "windows",
+      "case": "open-driven",
+      "arm": "LA-EVENT-OFF",
+      "episodes": 6,
+      "workers": [
+        1,
+        4
+      ],
+      "repeats": [
+        0,
+        1,
+        2
+      ],
+      "maximum_area": {
+        "minimum": 39.080335712337295,
+        "maximum": 39.080335712337295
+      },
+      "maximum_depth": {
+        "minimum": 2.1977182429705096,
+        "maximum": 2.1977182429705096
+      },
+      "strict_all_observations_clear": 0,
+      "nonembedded_depth_screen": 0,
+      "arrival_counts": null,
+      "missing_arrival_counts": null,
+      "passive_rejections": 0,
+      "normal_cap_hits": 0,
+      "getter_mean_us": {
+        "minimum": 25.22222222222222,
+        "maximum": 27.622222222222224
+      },
+      "getter_max_us": 153,
+      "known_cell_plus_arrival_bytes": {
+        "minimum": 2625536,
+        "maximum": 2625536
+      }
+    },
+    {
+      "platform": "windows",
+      "case": "open-driven",
+      "arm": "RFT",
+      "episodes": 6,
+      "workers": [
+        1,
+        4
+      ],
+      "repeats": [
+        0,
+        1,
+        2
+      ],
+      "maximum_area": {
+        "minimum": 64.76007342491422,
+        "maximum": 64.76007342491422
+      },
+      "maximum_depth": {
+        "minimum": 2.5051601542176627,
+        "maximum": 2.5051601542176627
+      },
+      "strict_all_observations_clear": 0,
+      "nonembedded_depth_screen": 0,
+      "arrival_counts": null,
+      "missing_arrival_counts": null,
+      "passive_rejections": 0,
+      "normal_cap_hits": 9600,
+      "getter_mean_us": {
+        "minimum": 24.211111111111112,
+        "maximum": 26.455555555555556
+      },
+      "getter_max_us": 125,
+      "known_cell_plus_arrival_bytes": {
+        "minimum": 2625536,
+        "maximum": 2625536
+      }
+    },
+    {
+      "platform": "windows",
+      "case": "open-driven",
+      "arm": "selective-active",
+      "episodes": 6,
+      "workers": [
+        1,
+        4
+      ],
+      "repeats": [
+        0,
+        1,
+        2
+      ],
+      "maximum_area": {
+        "minimum": 29.37957564696889,
+        "maximum": 29.37957564696889
+      },
+      "maximum_depth": {
+        "minimum": 1.6387262529057693,
+        "maximum": 1.6387262529057693
+      },
+      "strict_all_observations_clear": 0,
+      "nonembedded_depth_screen": 0,
+      "arrival_counts": {
+        "minimum": 147,
+        "maximum": 147
+      },
+      "missing_arrival_counts": {
+        "minimum": 20151,
+        "maximum": 20151
+      },
+      "passive_rejections": 0,
+      "normal_cap_hits": 0,
+      "getter_mean_us": {
+        "minimum": 26.866666666666667,
+        "maximum": 28.366666666666667
+      },
+      "getter_max_us": 121,
+      "known_cell_plus_arrival_bytes": {
+        "minimum": 4722688,
+        "maximum": 4722688
+      }
+    },
+    {
+      "platform": "windows",
+      "case": "open-driven",
+      "arm": "selective-original",
+      "episodes": 6,
+      "workers": [
+        1,
+        4
+      ],
+      "repeats": [
+        0,
+        1,
+        2
+      ],
+      "maximum_area": {
+        "minimum": 38.06640106963836,
+        "maximum": 38.06640106963836
+      },
+      "maximum_depth": {
+        "minimum": 2.1857986617141734,
+        "maximum": 2.1857986617141734
+      },
+      "strict_all_observations_clear": 0,
+      "nonembedded_depth_screen": 0,
+      "arrival_counts": {
+        "minimum": 182,
+        "maximum": 182
+      },
+      "missing_arrival_counts": {
+        "minimum": 19712,
+        "maximum": 19712
+      },
+      "passive_rejections": 0,
+      "normal_cap_hits": 0,
+      "getter_mean_us": {
+        "minimum": 24.988888888888887,
+        "maximum": 29.18888888888889
+      },
+      "getter_max_us": 148,
+      "known_cell_plus_arrival_bytes": {
+        "minimum": 4722688,
+        "maximum": 4722688
+      }
+    },
+    {
+      "platform": "windows",
+      "case": "open-unforced",
+      "arm": "LA",
+      "episodes": 6,
+      "workers": [
+        1,
+        4
+      ],
+      "repeats": [
+        0,
+        1,
+        2
+      ],
+      "maximum_area": {
+        "minimum": 0.4939389705900225,
+        "maximum": 0.4939389705900225
+      },
+      "maximum_depth": {
+        "minimum": 0.022892083220298787,
+        "maximum": 0.022892083220298787
+      },
+      "strict_all_observations_clear": 0,
+      "nonembedded_depth_screen": 6,
+      "arrival_counts": null,
+      "missing_arrival_counts": null,
+      "passive_rejections": 0,
+      "normal_cap_hits": 0,
+      "getter_mean_us": {
+        "minimum": 26.63888888888889,
+        "maximum": 28.655555555555555
+      },
+      "getter_max_us": 184,
+      "known_cell_plus_arrival_bytes": {
+        "minimum": 2625536,
+        "maximum": 2625536
+      }
+    },
+    {
+      "platform": "windows",
+      "case": "open-unforced",
+      "arm": "LA-EVENT-OFF",
+      "episodes": 6,
+      "workers": [
+        1,
+        4
+      ],
+      "repeats": [
+        0,
+        1,
+        2
+      ],
+      "maximum_area": {
+        "minimum": 0,
+        "maximum": 0
+      },
+      "maximum_depth": {
+        "minimum": 0,
+        "maximum": 0
+      },
+      "strict_all_observations_clear": 6,
+      "nonembedded_depth_screen": 6,
+      "arrival_counts": null,
+      "missing_arrival_counts": null,
+      "passive_rejections": 0,
+      "normal_cap_hits": 0,
+      "getter_mean_us": {
+        "minimum": 24.288888888888888,
+        "maximum": 28.761111111111113
+      },
+      "getter_max_us": 110,
+      "known_cell_plus_arrival_bytes": {
+        "minimum": 2625536,
+        "maximum": 2625536
+      }
+    },
+    {
+      "platform": "windows",
+      "case": "open-unforced",
+      "arm": "RFT",
+      "episodes": 6,
+      "workers": [
+        1,
+        4
+      ],
+      "repeats": [
+        0,
+        1,
+        2
+      ],
+      "maximum_area": {
+        "minimum": 0.03591864574516911,
+        "maximum": 0.03591864574516911
+      },
+      "maximum_depth": {
+        "minimum": 0.0015887175824715882,
+        "maximum": 0.0015887175824715882
+      },
+      "strict_all_observations_clear": 0,
+      "nonembedded_depth_screen": 6,
+      "arrival_counts": null,
+      "missing_arrival_counts": null,
+      "passive_rejections": 0,
+      "normal_cap_hits": 0,
+      "getter_mean_us": {
+        "minimum": 24.466666666666665,
+        "maximum": 28.9
+      },
+      "getter_max_us": 190,
+      "known_cell_plus_arrival_bytes": {
+        "minimum": 2625536,
+        "maximum": 2625536
+      }
+    },
+    {
+      "platform": "windows",
+      "case": "open-unforced",
+      "arm": "selective-active",
+      "episodes": 6,
+      "workers": [
+        1,
+        4
+      ],
+      "repeats": [
+        0,
+        1,
+        2
+      ],
+      "maximum_area": {
+        "minimum": 1.2020054419846229e-05,
+        "maximum": 1.2020054419846229e-05
+      },
+      "maximum_depth": {
+        "minimum": 5.31665747871557e-07,
+        "maximum": 5.31665747871557e-07
+      },
+      "strict_all_observations_clear": 0,
+      "nonembedded_depth_screen": 6,
+      "arrival_counts": {
+        "minimum": 1,
+        "maximum": 1
+      },
+      "missing_arrival_counts": {
+        "minimum": 25748,
+        "maximum": 25748
+      },
+      "passive_rejections": 0,
+      "normal_cap_hits": 0,
+      "getter_mean_us": {
+        "minimum": 26.2,
+        "maximum": 29.22222222222222
+      },
+      "getter_max_us": 221,
+      "known_cell_plus_arrival_bytes": {
+        "minimum": 4722688,
+        "maximum": 4722688
+      }
+    },
+    {
+      "platform": "windows",
+      "case": "open-unforced",
+      "arm": "selective-original",
+      "episodes": 6,
+      "workers": [
+        1,
+        4
+      ],
+      "repeats": [
+        0,
+        1,
+        2
+      ],
+      "maximum_area": {
+        "minimum": 4.9446368132752e-06,
+        "maximum": 4.9446368132752e-06
+      },
+      "maximum_depth": {
+        "minimum": 2.187089975791423e-07,
+        "maximum": 2.187089975791423e-07
+      },
+      "strict_all_observations_clear": 0,
+      "nonembedded_depth_screen": 6,
+      "arrival_counts": {
+        "minimum": 1,
+        "maximum": 1
+      },
+      "missing_arrival_counts": {
+        "minimum": 25748,
+        "maximum": 25748
+      },
+      "passive_rejections": 0,
+      "normal_cap_hits": 0,
+      "getter_mean_us": {
+        "minimum": 25.97222222222222,
+        "maximum": 31.444444444444443
+      },
+      "getter_max_us": 147,
+      "known_cell_plus_arrival_bytes": {
+        "minimum": 4722688,
+        "maximum": 4722688
+      }
+    }
+  ],
+  "worker_participation": [
+    {
+      "platform": "windows",
+      "requested_workers": 1,
+      "participant_tick_distribution": {
+        "1": 10800
+      },
+      "maximum_phase_jobs": 1,
+      "scheduled_cores_peak": 4,
+      "qualifier": "Maximum distinct task-claiming participants per dispatch; not utilization"
+    },
+    {
+      "platform": "windows",
+      "requested_workers": 4,
+      "participant_tick_distribution": {
+        "1": 10800
+      },
+      "maximum_phase_jobs": 1,
+      "scheduled_cores_peak": 4,
+      "qualifier": "Maximum distinct task-claiming participants per dispatch; not utilization"
+    },
+    {
+      "platform": "linux",
+      "requested_workers": 1,
+      "participant_tick_distribution": {
+        "1": 10800
+      },
+      "maximum_phase_jobs": 1,
+      "scheduled_cores_peak": 4,
+      "qualifier": "Maximum distinct task-claiming participants per dispatch; not utilization"
+    },
+    {
+      "platform": "linux",
+      "requested_workers": 4,
+      "participant_tick_distribution": {
+        "1": 10800
+      },
+      "maximum_phase_jobs": 1,
+      "scheduled_cores_peak": 4,
+      "qualifier": "Maximum distinct task-claiming participants per dispatch; not utilization"
+    }
+  ],
+  "forced_strict_clearance_failures": 120,
+  "forced_episodes": 120,
+  "scope": "Registered chamber surrogate only. Strict descriptive full-window checks are not original SOL120+60 acceptance; original authority/composition unavailable.",
+  "timing_scope": "Recorded full-observer shared-host timings; getter includes solve and diagnostic packet. No original SOL CPU gate or universal60Hz claim.",
+  "memory_scope": "Known resident_cell_bytes plus separately reported arrival history; not total heap/process memory"
+}

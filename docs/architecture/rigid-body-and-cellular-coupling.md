@@ -62,8 +62,11 @@ each actual host pass. Eight independently reduced smoke episodes conserve
 tuples. In closed driven contact, area falls38.7651→14.2322cell² and depth
 1.39637→0.544231cells on both hosts, while strict clearance still fails.
 The change acts before the first selected arrival; legacy/correction stay zero.
-Native strict/optimized and both-host workbench regressions pass. The full
-worker/repeat/authored/workload matrix remains pending. Original SOL
+Native strict/optimized and both-host workbench regressions pass. The full240chamber matrix now verifies all48matched initial groups and
+conserves tuples, but all120driven episodes still fail strict clearance.
+Open driven overlap improves less (38.0664→29.3796cell²); tiny open unforced
+overlap persists. Requested4workers still have one actual participant per
+dispatch here. Authored/material and distributed workload gates remain pending. Original SOL
 eligibility, composition, physical clearance and general default promotion do
 not follow. No capacity/pass/gain changes or penetration correction are added.
 

@@ -178,7 +178,7 @@ historical response/application field and initial/final payload hashes. Both
 hosts match their old per-host summary fields. This explicitly selected Original
 arm is separate from the native default/explicit-original value parity gate.
 
-The registered full chamber matrix remains240 episodes; authored8-case and
+The registered full chamber matrix contains240 episodes; authored8-case and
 bounded16-patch workloads add192 and72 episodes. Requested1/4 workers must be
 distinguished from actual participation. Full observer and getter/export cost
 remain separate. Native core/focused optimized and strict sanitizer qualification passes all28
@@ -190,8 +190,9 @@ on both actual hosts (38host commands total). [Native receipts](sol-active-norma
 [custody manifest](sol-active-normal-live-20261105/manifest.json) preserve hashes.
 Recorded smoke getter means are25.1–31.394444444444446µs, including diagnostic
 packet construction; these are not an isolated solver-cost or engine-speedup
-claim. Full worker4, repeat, authored/material and workload evaluation remains
-pending. No original SOL CPU pass is claimed.
+claim. Full chamber worker/repeat evidence follows below. Authored/material
+and distributed workload evaluation remains pending. No original SOL CPU pass
+is claimed.
 
 Documentation, historical M11 and the additive retrieval route pass at637eea42.
 The default repository checker exits1 with exactly8canonical native-source
@@ -206,8 +207,43 @@ not silently make the canonical repository gate green.
 At source `dfc2833eab5b8e3f81e2f2798b0066562ed41e0b`, all240 registered
 chamber episodes complete on both hosts, with no failed commands or report
 audits and post-source/project equality. This is43200steps and216000 required
-observation boundaries. Independent full reduction is still pending at this
-checkpoint; execution completion does not establish clearance or acceptance.
+observation boundaries. Independent full reduction at57cfc151 and synthesis atab3b6a40 now verify
+all240unique registered coordinates,43200steps,216000boundaries and48matched
+five-arm pristine-input groups. Initial serialized payload, full observed
+material/mask map, tuple state, body/geometry, cadence and prescribed force
+inputs match within every group. All exact tuple multisets conserve.
+
+[Full synthesis](sol-active-normal-live-20261105/chamber-full-summary.json),
+[per-episode results](sol-active-normal-live-20261105/chamber-full-episodes.json),
+[execution](sol-active-normal-live-20261105/chamber-full-execution.json),
+[independent reduction](sol-active-normal-live-20261105/chamber-full-reduction.json)
+and [custody](sol-active-normal-live-20261105/chamber-full-custody.json)
+retain the complete coordinate inventory and raw hashes. Completion is evidence
+coverage, not physical acceptance. All120driven episodes fail strict clearance.
+
+| Condition, all hosts/workers/repeats | Original selective area/depth | Active-normal selective area/depth |
+| --- | --- | --- |
+| Closed unforced |0 /0 |0 /0 |
+| Open unforced |0.0000049446368132752 /0.0000002187089975791423 |0.000012020054419846229 /0.000000531665747871557 |
+| Closed driven |38.76508869923395 /1.3963688876541198 |14.232169091378106 /0.5442310813339191 |
+| Open driven |38.06640106963836 /2.1857986617141734 |29.37957564696889 /1.6387262529057693 |
+
+Area units arecell², depth unitscells. These maxima reproduce across requested
+workers1/4 and three repeats on each host; individual cross-host trajectories
+are not asserted bitwise identical. The open driven improvement is smaller
+than closed, and still fails the one-cell nonembedded depth screen. Tiny open
+unforced selective overlaps also remain above the area reference; they are not
+rounded into clearance. Event-off remains geometrically clear in the unforced
+cases; all-event LA/RFT controls generate larger unforced overlap.
+
+Actual configuration readback is1/4 as requested. Every dispatch in this small
+chamber has at most one job and one observed participant, across all43200ticks.
+This is not evidence of four-way scaling. Resident-cell estimate is2625536bytes;
+selective arrival history adds2097152bytes, reported separately. Their sum is
+only two known components, not total process/native memory. Getter costs include
+passive solve and diagnostic packet construction, with full observation and
+shared-host qualifiers. The later16-patch workload must qualify actual multiple
+participants and2048² material memory/capacity separately.
 
 The independent reducer now checks all Cartesian coordinates, missing/duplicate
 attempts, complete180-step windows, source/report hashes, and matched initial
@@ -269,7 +305,7 @@ source-archive cap failures are not cured by this experiment.
 | Decision | Current status |
 | --- | --- |
 | Intended primary LA-SELECTIVE granular gameplay response | CONDITIONAL; owner direction retained, no general-default promotion |
-| Active-normal live benefit to SOL-like collisions | CONDITIONAL; measured closed-driven smoke benefit on both hosts, worker1/repeat1; full matrix pending |
+| Active-normal live benefit to SOL-like collisions | CONDITIONAL; full240chamber evidence shows smaller driven overlap, residual clearance failure and tiny open-unforced overlap; authored/workload gates pending |
 | Original SOL physical clearance | NO-GO; authority/eligibility unavailable, historical failures unchanged |
 | Cross-source ownership/MAT-AUTH integration | NO-GO; no admitted SOL composition and canonical runtime drift remains |
 
