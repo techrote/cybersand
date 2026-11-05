@@ -1,0 +1,6 @@
+{
+  "id":"SOL-ACTIVE-NORMAL-LIVE-001-AUTHORED",
+  "extends":"res://tests/fixtures/la_physical/registration-v5.json",
+  "arms":["LA-SELECTIVE"],
+  "scope":"Original authored inputs; separate fresh session for original and diagnostic active-normal-001 policy. No original SOL authority."
+}
