@@ -1,0 +1,4915 @@
+{
+  "schema_id": "cybersand.world-feature-pack.proposal",
+  "schema_version": 1,
+  "title": "Drowned Observatory — Night of the Submerged Equator",
+  "created_utc": "2026-11-05",
+  "status": "DRAFT design-only authoring resource; no native tick validation",
+  "source": {
+    "main_commit": "ba9cbc89029be88b812af59b19e5c59829bbcd90",
+    "main_tree": "3af18f50e6094776263119623b64a1b2f4ca0ab2",
+    "native_material_enum": "native/include/cybersand/material.hpp",
+    "native_enum_blob_sha": "dcf05895da3015a2e999e3d1cbbae0fdc7fe32b3",
+    "shadow_catalogue": "materials/catalogue/catalogue.json",
+    "shadow_catalogue_blob_sha": "d7a47d60721598a16589daf177a6ff4401b84b43",
+    "rectangle_convention": "godot/scripts/demo_worlds.gd::_rect",
+    "prior_designs": [
+      "#408",
+      "#410",
+      "#412",
+      "#414",
+      "#420",
+      "#425",
+      "#430",
+      "#434",
+      "#437",
+      "#439"
+    ]
+  },
+  "coordinate_contract": {
+    "units": "integer native cells",
+    "origin": "upper left",
+    "axes": "+x right; +y down",
+    "rectangles": "[x,y,width,height,material_id] half-open",
+    "order": "later rectangles overwrite earlier stamps",
+    "layers": "none",
+    "anchor": "bottom centre at baseline_y",
+    "orientation": "0 degrees / 1x only",
+    "host_clearing": "none, negative space assumes a cleared host"
+  },
+  "palette": [
+    {
+      "id": 3,
+      "name": "water",
+      "enum_name": "Water",
+      "rgba": [
+        47,
+        127,
+        210,
+        255
+      ],
+      "state": 3,
+      "movable": true,
+      "kernel": 2,
+      "lateral_flow": 1,
+      "viscosity_index": 0,
+      "initial_state_a": 255,
+      "initial_state_b": 0
+    },
+    {
+      "id": 14,
+      "name": "dust",
+      "enum_name": "Dust",
+      "rgba": [
+        218,
+        198,
+        238,
+        255
+      ],
+      "state": 2,
+      "movable": true,
+      "kernel": 12,
+      "lateral_flow": 0,
+      "viscosity_index": 0,
+      "initial_state_a": 0,
+      "initial_state_b": 0
+    },
+    {
+      "id": 23,
+      "name": "salt",
+      "enum_name": "Salt",
+      "rgba": [
+        236,
+        232,
+        218,
+        255
+      ],
+      "state": 2,
+      "movable": true,
+      "kernel": 1,
+      "lateral_flow": 0,
+      "viscosity_index": 0,
+      "initial_state_a": 0,
+      "initial_state_b": 0
+    },
+    {
+      "id": 24,
+      "name": "brine",
+      "enum_name": "Brine",
+      "rgba": [
+        92,
+        166,
+        194,
+        255
+      ],
+      "state": 3,
+      "movable": true,
+      "kernel": 18,
+      "lateral_flow": 2,
+      "viscosity_index": 32,
+      "initial_state_a": 0,
+      "initial_state_b": 0
+    },
+    {
+      "id": 38,
+      "name": "limestone-block",
+      "enum_name": "LimestoneBlock",
+      "rgba": [
+        197,
+        191,
+        175,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0,
+      "initial_state_a": 0,
+      "initial_state_b": 0
+    },
+    {
+      "id": 40,
+      "name": "granite-block",
+      "enum_name": "GraniteBlock",
+      "rgba": [
+        119,
+        119,
+        130,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0,
+      "initial_state_a": 0,
+      "initial_state_b": 0
+    },
+    {
+      "id": 49,
+      "name": "slate",
+      "enum_name": "Slate",
+      "rgba": [
+        70,
+        83,
+        99,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0,
+      "initial_state_a": 0,
+      "initial_state_b": 0
+    },
+    {
+      "id": 52,
+      "name": "bronze",
+      "enum_name": "Bronze",
+      "rgba": [
+        162,
+        113,
+        56,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0,
+      "initial_state_a": 0,
+      "initial_state_b": 0
+    },
+    {
+      "id": 54,
+      "name": "verdigris-copper",
+      "enum_name": "VerdigrisCopper",
+      "rgba": [
+        79,
+        140,
+        121,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0,
+      "initial_state_a": 0,
+      "initial_state_b": 0
+    },
+    {
+      "id": 55,
+      "name": "stained-glass",
+      "enum_name": "StainedGlass",
+      "rgba": [
+        71,
+        127,
+        168,
+        216
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0,
+      "initial_state_a": 0,
+      "initial_state_b": 0
+    },
+    {
+      "id": 58,
+      "name": "reinforced-concrete",
+      "enum_name": "ReinforcedConcrete",
+      "rgba": [
+        119,
+        123,
+        128,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0,
+      "initial_state_a": 0,
+      "initial_state_b": 0
+    },
+    {
+      "id": 61,
+      "name": "wet-cobblestone",
+      "enum_name": "WetCobblestone",
+      "rgba": [
+        65,
+        74,
+        78,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0,
+      "initial_state_a": 0,
+      "initial_state_b": 0
+    },
+    {
+      "id": 69,
+      "name": "copper-pipe",
+      "enum_name": "CopperPipe",
+      "rgba": [
+        165,
+        92,
+        54,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0,
+      "initial_state_a": 0,
+      "initial_state_b": 0
+    },
+    {
+      "id": 72,
+      "name": "dark-glass",
+      "enum_name": "DarkGlass",
+      "rgba": [
+        37,
+        60,
+        76,
+        192
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0,
+      "initial_state_a": 0,
+      "initial_state_b": 0
+    },
+    {
+      "id": 98,
+      "name": "marble",
+      "enum_name": "Marble",
+      "rgba": [
+        226,
+        223,
+        216,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0,
+      "initial_state_a": 0,
+      "initial_state_b": 0
+    },
+    {
+      "id": 99,
+      "name": "chalk-block",
+      "enum_name": "ChalkBlock",
+      "rgba": [
+        234,
+        231,
+        220,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0,
+      "initial_state_a": 0,
+      "initial_state_b": 0
+    },
+    {
+      "id": 100,
+      "name": "basalt-columns",
+      "enum_name": "BasaltColumns",
+      "rgba": [
+        54,
+        56,
+        61,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0,
+      "initial_state_a": 0,
+      "initial_state_b": 0
+    },
+    {
+      "id": 101,
+      "name": "obsidian",
+      "enum_name": "Obsidian",
+      "rgba": [
+        24,
+        19,
+        32,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0,
+      "initial_state_a": 0,
+      "initial_state_b": 0
+    },
+    {
+      "id": 106,
+      "name": "rock-salt-block",
+      "enum_name": "RockSaltBlock",
+      "rgba": [
+        222,
+        196,
+        190,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0,
+      "initial_state_a": 0,
+      "initial_state_b": 0
+    },
+    {
+      "id": 118,
+      "name": "gold-leaf",
+      "enum_name": "GoldLeaf",
+      "rgba": [
+        222,
+        178,
+        62,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0,
+      "initial_state_a": 0,
+      "initial_state_b": 0
+    },
+    {
+      "id": 119,
+      "name": "brass-panel",
+      "enum_name": "BrassPanel",
+      "rgba": [
+        196,
+        160,
+        72,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0,
+      "initial_state_a": 0,
+      "initial_state_b": 0
+    },
+    {
+      "id": 120,
+      "name": "glass-block",
+      "enum_name": "GlassBlock",
+      "rgba": [
+        156,
+        210,
+        220,
+        204
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0,
+      "initial_state_a": 0,
+      "initial_state_b": 0
+    },
+    {
+      "id": 121,
+      "name": "frosted-glass",
+      "enum_name": "FrostedGlass",
+      "rgba": [
+        206,
+        226,
+        232,
+        214
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0,
+      "initial_state_a": 0,
+      "initial_state_b": 0
+    },
+    {
+      "id": 122,
+      "name": "quartz-crystal",
+      "enum_name": "QuartzCrystal",
+      "rgba": [
+        226,
+        236,
+        244,
+        224
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0,
+      "initial_state_a": 0,
+      "initial_state_b": 0
+    },
+    {
+      "id": 123,
+      "name": "uranium-glass",
+      "enum_name": "UraniumGlass",
+      "rgba": [
+        152,
+        232,
+        94,
+        210
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0,
+      "initial_state_a": 0,
+      "initial_state_b": 0
+    },
+    {
+      "id": 127,
+      "name": "phosphor-panel",
+      "enum_name": "PhosphorPanel",
+      "rgba": [
+        176,
+        220,
+        172,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0,
+      "initial_state_a": 0,
+      "initial_state_b": 0
+    }
+  ],
+  "style_guide": {
+    "geometry": "Interlocked ring silhouettes, interrupted vaults and narrow linear measuring instruments",
+    "rhythm": "One high spike, one round focal point, one low archive per district, with clear 16–30 cell gaps",
+    "color": "55% dark slate/basalt/obsidian; 20% pale masonry; 15% brass/copper/gold; 10% cold optical accents",
+    "optics": "No verified native refraction, reflection or glow",
+    "avoid": "No implied tide, pressure bell, settlement, stable suspended powders or player clearance"
+  },
+  "features": [
+    {
+      "id": "broken-star-dome",
+      "title": "Broken Star Dome / eclipsed vault",
+      "size": [
+        148,
+        126
+      ],
+      "role": "High-contrast ruined observatory dome with inner negative-space opening",
+      "kind": "inert-static",
+      "anchor": {
+        "type": "ground",
+        "point": [
+          74,
+          126
+        ]
+      },
+      "orientation": "0 degrees, 1x only",
+      "clearance": {
+        "top": 14,
+        "side": 16,
+        "actor_approved": false
+      },
+      "neighbour_rules": [
+        "Leave at least 16 cells of negative space at each outer edge",
+        "Requires cleared host surface; preview voids do not excavate native cells",
+        "Never infer actor clearance or structure support"
+      ],
+      "simulation_notes": "All original materials are nonmoving, kernel-zero at the pinned source; not an executable physics or actor-clearance guarantee.",
+      "variants": [
+        {
+          "id": "moon-glaze",
+          "swap": {
+            "122": 121
+          },
+          "note": "Fogged crown"
+        },
+        {
+          "id": "oxidised-keystone",
+          "swap": {
+            "52": 54
+          },
+          "note": "Patinated inner fitting"
+        }
+      ],
+      "rectangles": [
+        [
+          0,
+          116,
+          148,
+          10,
+          100
+        ],
+        [
+          4,
+          111,
+          140,
+          5,
+          61
+        ],
+        [
+          16,
+          54,
+          17,
+          57,
+          38
+        ],
+        [
+          115,
+          54,
+          17,
+          57,
+          38
+        ],
+        [
+          20,
+          53,
+          8,
+          52,
+          98
+        ],
+        [
+          120,
+          53,
+          8,
+          52,
+          98
+        ],
+        [
+          19,
+          60,
+          5,
+          4,
+          38
+        ],
+        [
+          23,
+          48,
+          5,
+          4,
+          38
+        ],
+        [
+          27,
+          41,
+          5,
+          4,
+          38
+        ],
+        [
+          31,
+          35,
+          5,
+          4,
+          38
+        ],
+        [
+          35,
+          31,
+          5,
+          4,
+          38
+        ],
+        [
+          39,
+          27,
+          5,
+          4,
+          38
+        ],
+        [
+          43,
+          24,
+          5,
+          4,
+          38
+        ],
+        [
+          47,
+          21,
+          5,
+          4,
+          38
+        ],
+        [
+          51,
+          19,
+          5,
+          4,
+          38
+        ],
+        [
+          55,
+          18,
+          5,
+          4,
+          38
+        ],
+        [
+          59,
+          16,
+          5,
+          4,
+          38
+        ],
+        [
+          63,
+          15,
+          5,
+          4,
+          38
+        ],
+        [
+          67,
+          14,
+          5,
+          4,
+          38
+        ],
+        [
+          71,
+          14,
+          5,
+          4,
+          38
+        ],
+        [
+          75,
+          14,
+          5,
+          4,
+          38
+        ],
+        [
+          79,
+          14,
+          5,
+          4,
+          38
+        ],
+        [
+          83,
+          15,
+          5,
+          4,
+          38
+        ],
+        [
+          87,
+          16,
+          5,
+          4,
+          38
+        ],
+        [
+          91,
+          17,
+          5,
+          4,
+          38
+        ],
+        [
+          95,
+          18,
+          5,
+          4,
+          38
+        ],
+        [
+          99,
+          20,
+          5,
+          4,
+          38
+        ],
+        [
+          103,
+          23,
+          5,
+          4,
+          38
+        ],
+        [
+          107,
+          25,
+          5,
+          4,
+          38
+        ],
+        [
+          111,
+          29,
+          5,
+          4,
+          38
+        ],
+        [
+          115,
+          33,
+          5,
+          4,
+          38
+        ],
+        [
+          119,
+          38,
+          5,
+          4,
+          38
+        ],
+        [
+          123,
+          44,
+          5,
+          4,
+          38
+        ],
+        [
+          127,
+          53,
+          5,
+          4,
+          38
+        ],
+        [
+          27,
+          61,
+          5,
+          4,
+          98
+        ],
+        [
+          31,
+          50,
+          5,
+          4,
+          98
+        ],
+        [
+          35,
+          43,
+          5,
+          4,
+          98
+        ],
+        [
+          39,
+          38,
+          5,
+          4,
+          98
+        ],
+        [
+          43,
+          34,
+          5,
+          4,
+          98
+        ],
+        [
+          47,
+          31,
+          5,
+          4,
+          98
+        ],
+        [
+          51,
+          28,
+          5,
+          4,
+          98
+        ],
+        [
+          55,
+          26,
+          5,
+          4,
+          98
+        ],
+        [
+          59,
+          25,
+          5,
+          4,
+          98
+        ],
+        [
+          63,
+          23,
+          5,
+          4,
+          98
+        ],
+        [
+          67,
+          23,
+          5,
+          4,
+          98
+        ],
+        [
+          71,
+          22,
+          5,
+          4,
+          98
+        ],
+        [
+          75,
+          22,
+          5,
+          4,
+          98
+        ],
+        [
+          79,
+          22,
+          5,
+          4,
+          98
+        ],
+        [
+          83,
+          23,
+          5,
+          4,
+          98
+        ],
+        [
+          87,
+          24,
+          5,
+          4,
+          98
+        ],
+        [
+          91,
+          25,
+          5,
+          4,
+          98
+        ],
+        [
+          95,
+          27,
+          5,
+          4,
+          98
+        ],
+        [
+          99,
+          30,
+          5,
+          4,
+          98
+        ],
+        [
+          103,
+          32,
+          5,
+          4,
+          98
+        ],
+        [
+          107,
+          36,
+          5,
+          4,
+          98
+        ],
+        [
+          111,
+          41,
+          5,
+          4,
+          98
+        ],
+        [
+          115,
+          46,
+          5,
+          4,
+          98
+        ],
+        [
+          119,
+          55,
+          5,
+          4,
+          98
+        ],
+        [
+          48,
+          17,
+          52,
+          6,
+          38
+        ],
+        [
+          59,
+          9,
+          30,
+          8,
+          122
+        ],
+        [
+          68,
+          1,
+          12,
+          9,
+          122
+        ],
+        [
+          42,
+          80,
+          3,
+          3,
+          119
+        ],
+        [
+          45,
+          78,
+          3,
+          3,
+          119
+        ],
+        [
+          47,
+          76,
+          3,
+          3,
+          119
+        ],
+        [
+          50,
+          74,
+          3,
+          3,
+          119
+        ],
+        [
+          53,
+          71,
+          3,
+          3,
+          119
+        ],
+        [
+          56,
+          69,
+          3,
+          3,
+          119
+        ],
+        [
+          58,
+          67,
+          3,
+          3,
+          119
+        ],
+        [
+          61,
+          65,
+          3,
+          3,
+          119
+        ],
+        [
+          87,
+          65,
+          3,
+          3,
+          119
+        ],
+        [
+          90,
+          67,
+          3,
+          3,
+          119
+        ],
+        [
+          92,
+          69,
+          3,
+          3,
+          119
+        ],
+        [
+          95,
+          71,
+          3,
+          3,
+          119
+        ],
+        [
+          98,
+          74,
+          3,
+          3,
+          119
+        ],
+        [
+          101,
+          76,
+          3,
+          3,
+          119
+        ],
+        [
+          103,
+          78,
+          3,
+          3,
+          119
+        ],
+        [
+          106,
+          80,
+          3,
+          3,
+          119
+        ],
+        [
+          70,
+          46,
+          11,
+          3,
+          118
+        ],
+        [
+          74,
+          42,
+          3,
+          11,
+          118
+        ],
+        [
+          69,
+          61,
+          10,
+          5,
+          55
+        ],
+        [
+          30,
+          52,
+          10,
+          6,
+          52
+        ],
+        [
+          40,
+          112,
+          4,
+          3,
+          52
+        ],
+        [
+          51,
+          112,
+          4,
+          3,
+          52
+        ],
+        [
+          62,
+          112,
+          4,
+          3,
+          52
+        ],
+        [
+          73,
+          112,
+          4,
+          3,
+          52
+        ],
+        [
+          84,
+          112,
+          4,
+          3,
+          52
+        ],
+        [
+          95,
+          112,
+          4,
+          3,
+          52
+        ],
+        [
+          106,
+          112,
+          4,
+          3,
+          52
+        ]
+      ]
+    },
+    {
+      "id": "meridian-needle",
+      "title": "Meridian Needle / tide survey spire",
+      "size": [
+        108,
+        142
+      ],
+      "role": "Vertical alignment reference and pale pinnacle",
+      "kind": "inert-static",
+      "anchor": {
+        "type": "ground",
+        "point": [
+          54,
+          142
+        ]
+      },
+      "orientation": "0 degrees, 1x only",
+      "clearance": {
+        "top": 14,
+        "side": 16,
+        "actor_approved": false
+      },
+      "neighbour_rules": [
+        "Leave at least 16 cells of negative space at each outer edge",
+        "Requires cleared host surface; preview voids do not excavate native cells",
+        "Never infer actor clearance or structure support"
+      ],
+      "simulation_notes": "All original materials are nonmoving, kernel-zero at the pinned source; not an executable physics or actor-clearance guarantee.",
+      "variants": [
+        {
+          "id": "green-glyph",
+          "swap": {
+            "118": 123
+          },
+          "note": "Green inlay"
+        },
+        {
+          "id": "worn-marker",
+          "swap": {
+            "119": 54
+          },
+          "note": "Aged graduation marks"
+        }
+      ],
+      "rectangles": [
+        [
+          0,
+          133,
+          108,
+          9,
+          100
+        ],
+        [
+          8,
+          127,
+          92,
+          6,
+          49
+        ],
+        [
+          32,
+          120,
+          44,
+          8,
+          40
+        ],
+        [
+          38,
+          27,
+          32,
+          94,
+          49
+        ],
+        [
+          44,
+          19,
+          20,
+          100,
+          98
+        ],
+        [
+          49,
+          10,
+          10,
+          105,
+          100
+        ],
+        [
+          50,
+          2,
+          8,
+          10,
+          122
+        ],
+        [
+          47,
+          0,
+          14,
+          3,
+          118
+        ],
+        [
+          52,
+          23,
+          4,
+          91,
+          69
+        ],
+        [
+          46,
+          41,
+          16,
+          5,
+          119
+        ],
+        [
+          46,
+          73,
+          16,
+          5,
+          119
+        ],
+        [
+          46,
+          105,
+          16,
+          5,
+          119
+        ],
+        [
+          21,
+          120,
+          3,
+          3,
+          38
+        ],
+        [
+          24,
+          118,
+          3,
+          3,
+          38
+        ],
+        [
+          27,
+          115,
+          3,
+          3,
+          38
+        ],
+        [
+          30,
+          113,
+          3,
+          3,
+          38
+        ],
+        [
+          33,
+          111,
+          3,
+          3,
+          38
+        ],
+        [
+          36,
+          108,
+          3,
+          3,
+          38
+        ],
+        [
+          39,
+          106,
+          3,
+          3,
+          38
+        ],
+        [
+          42,
+          103,
+          3,
+          3,
+          38
+        ],
+        [
+          45,
+          101,
+          3,
+          3,
+          38
+        ],
+        [
+          63,
+          101,
+          3,
+          3,
+          38
+        ],
+        [
+          66,
+          103,
+          3,
+          3,
+          38
+        ],
+        [
+          69,
+          106,
+          3,
+          3,
+          38
+        ],
+        [
+          72,
+          108,
+          3,
+          3,
+          38
+        ],
+        [
+          75,
+          111,
+          3,
+          3,
+          38
+        ],
+        [
+          78,
+          113,
+          3,
+          3,
+          38
+        ],
+        [
+          81,
+          115,
+          3,
+          3,
+          38
+        ],
+        [
+          84,
+          118,
+          3,
+          3,
+          38
+        ],
+        [
+          87,
+          120,
+          3,
+          3,
+          38
+        ],
+        [
+          50,
+          68,
+          11,
+          3,
+          118
+        ],
+        [
+          54,
+          64,
+          3,
+          11,
+          118
+        ]
+      ]
+    },
+    {
+      "id": "siltbound-orrery",
+      "title": "Siltbound Orrery / arrested planets",
+      "size": [
+        150,
+        124
+      ],
+      "role": "Concentric orbiting instruments and detached celestial nodes",
+      "kind": "inert-static",
+      "anchor": {
+        "type": "ground",
+        "point": [
+          75,
+          124
+        ]
+      },
+      "orientation": "0 degrees, 1x only",
+      "clearance": {
+        "top": 14,
+        "side": 16,
+        "actor_approved": false
+      },
+      "neighbour_rules": [
+        "Leave at least 16 cells of negative space at each outer edge",
+        "Requires cleared host surface; preview voids do not excavate native cells",
+        "Never infer actor clearance or structure support"
+      ],
+      "simulation_notes": "All original materials are nonmoving, kernel-zero at the pinned source; not an executable physics or actor-clearance guarantee.",
+      "variants": [
+        {
+          "id": "brass-ring",
+          "swap": {
+            "52": 119
+          },
+          "note": "Restored orbital arcs"
+        },
+        {
+          "id": "blue-planets",
+          "swap": {
+            "122": 55
+          },
+          "note": "Opaque optical stars"
+        }
+      ],
+      "rectangles": [
+        [
+          0,
+          114,
+          150,
+          10,
+          100
+        ],
+        [
+          8,
+          107,
+          134,
+          7,
+          40
+        ],
+        [
+          64,
+          85,
+          22,
+          25,
+          49
+        ],
+        [
+          16,
+          47,
+          5,
+          4,
+          52
+        ],
+        [
+          20,
+          39,
+          5,
+          4,
+          52
+        ],
+        [
+          24,
+          34,
+          5,
+          4,
+          52
+        ],
+        [
+          28,
+          30,
+          5,
+          4,
+          52
+        ],
+        [
+          32,
+          27,
+          5,
+          4,
+          52
+        ],
+        [
+          36,
+          24,
+          5,
+          4,
+          52
+        ],
+        [
+          40,
+          22,
+          5,
+          4,
+          52
+        ],
+        [
+          44,
+          20,
+          5,
+          4,
+          52
+        ],
+        [
+          48,
+          19,
+          5,
+          4,
+          52
+        ],
+        [
+          52,
+          17,
+          5,
+          4,
+          52
+        ],
+        [
+          56,
+          16,
+          5,
+          4,
+          52
+        ],
+        [
+          60,
+          15,
+          5,
+          4,
+          52
+        ],
+        [
+          64,
+          15,
+          5,
+          4,
+          52
+        ],
+        [
+          68,
+          14,
+          5,
+          4,
+          52
+        ],
+        [
+          72,
+          14,
+          5,
+          4,
+          52
+        ],
+        [
+          76,
+          14,
+          5,
+          4,
+          52
+        ],
+        [
+          80,
+          14,
+          5,
+          4,
+          52
+        ],
+        [
+          84,
+          14,
+          5,
+          4,
+          52
+        ],
+        [
+          88,
+          15,
+          5,
+          4,
+          52
+        ],
+        [
+          92,
+          16,
+          5,
+          4,
+          52
+        ],
+        [
+          96,
+          17,
+          5,
+          4,
+          52
+        ],
+        [
+          100,
+          18,
+          5,
+          4,
+          52
+        ],
+        [
+          104,
+          19,
+          5,
+          4,
+          52
+        ],
+        [
+          108,
+          21,
+          5,
+          4,
+          52
+        ],
+        [
+          112,
+          23,
+          5,
+          4,
+          52
+        ],
+        [
+          116,
+          25,
+          5,
+          4,
+          52
+        ],
+        [
+          120,
+          28,
+          5,
+          4,
+          52
+        ],
+        [
+          124,
+          32,
+          5,
+          4,
+          52
+        ],
+        [
+          128,
+          36,
+          5,
+          4,
+          52
+        ],
+        [
+          132,
+          42,
+          5,
+          4,
+          52
+        ],
+        [
+          16,
+          69,
+          5,
+          4,
+          52
+        ],
+        [
+          20,
+          77,
+          5,
+          4,
+          52
+        ],
+        [
+          24,
+          82,
+          5,
+          4,
+          52
+        ],
+        [
+          28,
+          86,
+          5,
+          4,
+          52
+        ],
+        [
+          32,
+          89,
+          5,
+          4,
+          52
+        ],
+        [
+          36,
+          92,
+          5,
+          4,
+          52
+        ],
+        [
+          40,
+          94,
+          5,
+          4,
+          52
+        ],
+        [
+          44,
+          96,
+          5,
+          4,
+          52
+        ],
+        [
+          48,
+          97,
+          5,
+          4,
+          52
+        ],
+        [
+          52,
+          99,
+          5,
+          4,
+          52
+        ],
+        [
+          56,
+          100,
+          5,
+          4,
+          52
+        ],
+        [
+          60,
+          101,
+          5,
+          4,
+          52
+        ],
+        [
+          64,
+          101,
+          5,
+          4,
+          52
+        ],
+        [
+          68,
+          102,
+          5,
+          4,
+          52
+        ],
+        [
+          72,
+          102,
+          5,
+          4,
+          52
+        ],
+        [
+          76,
+          102,
+          5,
+          4,
+          52
+        ],
+        [
+          80,
+          102,
+          5,
+          4,
+          52
+        ],
+        [
+          84,
+          102,
+          5,
+          4,
+          52
+        ],
+        [
+          88,
+          101,
+          5,
+          4,
+          52
+        ],
+        [
+          92,
+          100,
+          5,
+          4,
+          52
+        ],
+        [
+          96,
+          99,
+          5,
+          4,
+          52
+        ],
+        [
+          100,
+          98,
+          5,
+          4,
+          52
+        ],
+        [
+          104,
+          97,
+          5,
+          4,
+          52
+        ],
+        [
+          108,
+          95,
+          5,
+          4,
+          52
+        ],
+        [
+          112,
+          93,
+          5,
+          4,
+          52
+        ],
+        [
+          116,
+          91,
+          5,
+          4,
+          52
+        ],
+        [
+          120,
+          88,
+          5,
+          4,
+          52
+        ],
+        [
+          124,
+          84,
+          5,
+          4,
+          52
+        ],
+        [
+          128,
+          80,
+          5,
+          4,
+          52
+        ],
+        [
+          132,
+          74,
+          5,
+          4,
+          52
+        ],
+        [
+          34,
+          49,
+          5,
+          4,
+          119
+        ],
+        [
+          38,
+          43,
+          5,
+          4,
+          119
+        ],
+        [
+          42,
+          39,
+          5,
+          4,
+          119
+        ],
+        [
+          46,
+          36,
+          5,
+          4,
+          119
+        ],
+        [
+          50,
+          34,
+          5,
+          4,
+          119
+        ],
+        [
+          54,
+          32,
+          5,
+          4,
+          119
+        ],
+        [
+          58,
+          30,
+          5,
+          4,
+          119
+        ],
+        [
+          62,
+          29,
+          5,
+          4,
+          119
+        ],
+        [
+          66,
+          29,
+          5,
+          4,
+          119
+        ],
+        [
+          70,
+          28,
+          5,
+          4,
+          119
+        ],
+        [
+          74,
+          28,
+          5,
+          4,
+          119
+        ],
+        [
+          78,
+          28,
+          5,
+          4,
+          119
+        ],
+        [
+          82,
+          28,
+          5,
+          4,
+          119
+        ],
+        [
+          86,
+          29,
+          5,
+          4,
+          119
+        ],
+        [
+          90,
+          30,
+          5,
+          4,
+          119
+        ],
+        [
+          94,
+          31,
+          5,
+          4,
+          119
+        ],
+        [
+          98,
+          33,
+          5,
+          4,
+          119
+        ],
+        [
+          102,
+          35,
+          5,
+          4,
+          119
+        ],
+        [
+          106,
+          37,
+          5,
+          4,
+          119
+        ],
+        [
+          110,
+          41,
+          5,
+          4,
+          119
+        ],
+        [
+          114,
+          45,
+          5,
+          4,
+          119
+        ],
+        [
+          34,
+          67,
+          5,
+          4,
+          119
+        ],
+        [
+          38,
+          73,
+          5,
+          4,
+          119
+        ],
+        [
+          42,
+          77,
+          5,
+          4,
+          119
+        ],
+        [
+          46,
+          80,
+          5,
+          4,
+          119
+        ],
+        [
+          50,
+          82,
+          5,
+          4,
+          119
+        ],
+        [
+          54,
+          84,
+          5,
+          4,
+          119
+        ],
+        [
+          58,
+          86,
+          5,
+          4,
+          119
+        ],
+        [
+          62,
+          87,
+          5,
+          4,
+          119
+        ],
+        [
+          66,
+          87,
+          5,
+          4,
+          119
+        ],
+        [
+          70,
+          88,
+          5,
+          4,
+          119
+        ],
+        [
+          74,
+          88,
+          5,
+          4,
+          119
+        ],
+        [
+          78,
+          88,
+          5,
+          4,
+          119
+        ],
+        [
+          82,
+          88,
+          5,
+          4,
+          119
+        ],
+        [
+          86,
+          87,
+          5,
+          4,
+          119
+        ],
+        [
+          90,
+          86,
+          5,
+          4,
+          119
+        ],
+        [
+          94,
+          85,
+          5,
+          4,
+          119
+        ],
+        [
+          98,
+          83,
+          5,
+          4,
+          119
+        ],
+        [
+          102,
+          81,
+          5,
+          4,
+          119
+        ],
+        [
+          106,
+          79,
+          5,
+          4,
+          119
+        ],
+        [
+          110,
+          75,
+          5,
+          4,
+          119
+        ],
+        [
+          114,
+          71,
+          5,
+          4,
+          119
+        ],
+        [
+          50,
+          51,
+          5,
+          4,
+          54
+        ],
+        [
+          54,
+          47,
+          5,
+          4,
+          54
+        ],
+        [
+          58,
+          44,
+          5,
+          4,
+          54
+        ],
+        [
+          62,
+          42,
+          5,
+          4,
+          54
+        ],
+        [
+          66,
+          41,
+          5,
+          4,
+          54
+        ],
+        [
+          70,
+          40,
+          5,
+          4,
+          54
+        ],
+        [
+          74,
+          40,
+          5,
+          4,
+          54
+        ],
+        [
+          78,
+          40,
+          5,
+          4,
+          54
+        ],
+        [
+          82,
+          41,
+          5,
+          4,
+          54
+        ],
+        [
+          86,
+          42,
+          5,
+          4,
+          54
+        ],
+        [
+          90,
+          43,
+          5,
+          4,
+          54
+        ],
+        [
+          94,
+          45,
+          5,
+          4,
+          54
+        ],
+        [
+          98,
+          49,
+          5,
+          4,
+          54
+        ],
+        [
+          50,
+          65,
+          5,
+          4,
+          54
+        ],
+        [
+          54,
+          69,
+          5,
+          4,
+          54
+        ],
+        [
+          58,
+          72,
+          5,
+          4,
+          54
+        ],
+        [
+          62,
+          74,
+          5,
+          4,
+          54
+        ],
+        [
+          66,
+          75,
+          5,
+          4,
+          54
+        ],
+        [
+          70,
+          76,
+          5,
+          4,
+          54
+        ],
+        [
+          74,
+          76,
+          5,
+          4,
+          54
+        ],
+        [
+          78,
+          76,
+          5,
+          4,
+          54
+        ],
+        [
+          82,
+          75,
+          5,
+          4,
+          54
+        ],
+        [
+          86,
+          74,
+          5,
+          4,
+          54
+        ],
+        [
+          90,
+          73,
+          5,
+          4,
+          54
+        ],
+        [
+          94,
+          71,
+          5,
+          4,
+          54
+        ],
+        [
+          98,
+          67,
+          5,
+          4,
+          54
+        ],
+        [
+          66,
+          49,
+          18,
+          18,
+          101
+        ],
+        [
+          69,
+          52,
+          12,
+          12,
+          122
+        ],
+        [
+          15,
+          58,
+          3,
+          3,
+          52
+        ],
+        [
+          18,
+          58,
+          3,
+          3,
+          52
+        ],
+        [
+          21,
+          58,
+          3,
+          3,
+          52
+        ],
+        [
+          24,
+          58,
+          3,
+          3,
+          52
+        ],
+        [
+          27,
+          58,
+          3,
+          3,
+          52
+        ],
+        [
+          30,
+          58,
+          3,
+          3,
+          52
+        ],
+        [
+          33,
+          58,
+          3,
+          3,
+          52
+        ],
+        [
+          36,
+          58,
+          3,
+          3,
+          52
+        ],
+        [
+          39,
+          58,
+          3,
+          3,
+          52
+        ],
+        [
+          42,
+          58,
+          3,
+          3,
+          52
+        ],
+        [
+          45,
+          58,
+          3,
+          3,
+          52
+        ],
+        [
+          48,
+          58,
+          3,
+          3,
+          52
+        ],
+        [
+          51,
+          58,
+          3,
+          3,
+          52
+        ],
+        [
+          54,
+          58,
+          3,
+          3,
+          52
+        ],
+        [
+          57,
+          58,
+          3,
+          3,
+          52
+        ],
+        [
+          60,
+          58,
+          3,
+          3,
+          52
+        ],
+        [
+          63,
+          58,
+          3,
+          3,
+          52
+        ],
+        [
+          66,
+          58,
+          3,
+          3,
+          52
+        ],
+        [
+          69,
+          58,
+          3,
+          3,
+          52
+        ],
+        [
+          72,
+          58,
+          3,
+          3,
+          52
+        ],
+        [
+          75,
+          58,
+          3,
+          3,
+          52
+        ],
+        [
+          77,
+          58,
+          3,
+          3,
+          52
+        ],
+        [
+          80,
+          58,
+          3,
+          3,
+          52
+        ],
+        [
+          83,
+          58,
+          3,
+          3,
+          52
+        ],
+        [
+          86,
+          58,
+          3,
+          3,
+          52
+        ],
+        [
+          89,
+          58,
+          3,
+          3,
+          52
+        ],
+        [
+          92,
+          58,
+          3,
+          3,
+          52
+        ],
+        [
+          95,
+          58,
+          3,
+          3,
+          52
+        ],
+        [
+          98,
+          58,
+          3,
+          3,
+          52
+        ],
+        [
+          101,
+          58,
+          3,
+          3,
+          52
+        ],
+        [
+          104,
+          58,
+          3,
+          3,
+          52
+        ],
+        [
+          107,
+          58,
+          3,
+          3,
+          52
+        ],
+        [
+          110,
+          58,
+          3,
+          3,
+          52
+        ],
+        [
+          113,
+          58,
+          3,
+          3,
+          52
+        ],
+        [
+          116,
+          58,
+          3,
+          3,
+          52
+        ],
+        [
+          119,
+          58,
+          3,
+          3,
+          52
+        ],
+        [
+          122,
+          58,
+          3,
+          3,
+          52
+        ],
+        [
+          125,
+          58,
+          3,
+          3,
+          52
+        ],
+        [
+          128,
+          58,
+          3,
+          3,
+          52
+        ],
+        [
+          131,
+          58,
+          3,
+          3,
+          52
+        ],
+        [
+          134,
+          58,
+          3,
+          3,
+          52
+        ],
+        [
+          75,
+          12,
+          3,
+          3,
+          119
+        ],
+        [
+          75,
+          15,
+          3,
+          3,
+          119
+        ],
+        [
+          75,
+          18,
+          3,
+          3,
+          119
+        ],
+        [
+          75,
+          21,
+          3,
+          3,
+          119
+        ],
+        [
+          75,
+          24,
+          3,
+          3,
+          119
+        ],
+        [
+          75,
+          27,
+          3,
+          3,
+          119
+        ],
+        [
+          75,
+          30,
+          3,
+          3,
+          119
+        ],
+        [
+          75,
+          33,
+          3,
+          3,
+          119
+        ],
+        [
+          75,
+          36,
+          3,
+          3,
+          119
+        ],
+        [
+          75,
+          39,
+          3,
+          3,
+          119
+        ],
+        [
+          75,
+          42,
+          3,
+          3,
+          119
+        ],
+        [
+          75,
+          45,
+          3,
+          3,
+          119
+        ],
+        [
+          75,
+          48,
+          3,
+          3,
+          119
+        ],
+        [
+          75,
+          51,
+          3,
+          3,
+          119
+        ],
+        [
+          75,
+          54,
+          3,
+          3,
+          119
+        ],
+        [
+          75,
+          57,
+          3,
+          3,
+          119
+        ],
+        [
+          75,
+          59,
+          3,
+          3,
+          119
+        ],
+        [
+          75,
+          62,
+          3,
+          3,
+          119
+        ],
+        [
+          75,
+          65,
+          3,
+          3,
+          119
+        ],
+        [
+          75,
+          68,
+          3,
+          3,
+          119
+        ],
+        [
+          75,
+          71,
+          3,
+          3,
+          119
+        ],
+        [
+          75,
+          74,
+          3,
+          3,
+          119
+        ],
+        [
+          75,
+          77,
+          3,
+          3,
+          119
+        ],
+        [
+          75,
+          80,
+          3,
+          3,
+          119
+        ],
+        [
+          75,
+          83,
+          3,
+          3,
+          119
+        ],
+        [
+          75,
+          86,
+          3,
+          3,
+          119
+        ],
+        [
+          75,
+          89,
+          3,
+          3,
+          119
+        ],
+        [
+          75,
+          92,
+          3,
+          3,
+          119
+        ],
+        [
+          75,
+          95,
+          3,
+          3,
+          119
+        ],
+        [
+          75,
+          98,
+          3,
+          3,
+          119
+        ],
+        [
+          75,
+          101,
+          3,
+          3,
+          119
+        ],
+        [
+          18,
+          28,
+          11,
+          3,
+          118
+        ],
+        [
+          22,
+          24,
+          3,
+          11,
+          118
+        ],
+        [
+          114,
+          29,
+          11,
+          3,
+          118
+        ],
+        [
+          118,
+          25,
+          3,
+          11,
+          118
+        ],
+        [
+          37,
+          89,
+          11,
+          3,
+          118
+        ],
+        [
+          41,
+          85,
+          3,
+          11,
+          118
+        ],
+        [
+          104,
+          90,
+          11,
+          3,
+          118
+        ],
+        [
+          108,
+          86,
+          3,
+          11,
+          118
+        ]
+      ]
+    },
+    {
+      "id": "refraction-scriptorium",
+      "title": "Refraction Scriptorium / lost star charts",
+      "size": [
+        138,
+        108
+      ],
+      "role": "Low nave of segmented chart windows and optical ledger shelves",
+      "kind": "inert-static",
+      "anchor": {
+        "type": "ground",
+        "point": [
+          69,
+          108
+        ]
+      },
+      "orientation": "0 degrees, 1x only",
+      "clearance": {
+        "top": 14,
+        "side": 16,
+        "actor_approved": false
+      },
+      "neighbour_rules": [
+        "Leave at least 16 cells of negative space at each outer edge",
+        "Requires cleared host surface; preview voids do not excavate native cells",
+        "Never infer actor clearance or structure support"
+      ],
+      "simulation_notes": "All original materials are nonmoving, kernel-zero at the pinned source; not an executable physics or actor-clearance guarantee.",
+      "variants": [
+        {
+          "id": "black-charts",
+          "swap": {
+            "55": 72
+          },
+          "note": "Darkened chart windows"
+        },
+        {
+          "id": "white-charts",
+          "swap": {
+            "118": 121
+          },
+          "note": "Faded ink"
+        }
+      ],
+      "rectangles": [
+        [
+          0,
+          98,
+          138,
+          10,
+          100
+        ],
+        [
+          4,
+          93,
+          130,
+          5,
+          61
+        ],
+        [
+          6,
+          32,
+          126,
+          10,
+          38
+        ],
+        [
+          8,
+          35,
+          11,
+          60,
+          49
+        ],
+        [
+          119,
+          35,
+          11,
+          60,
+          49
+        ],
+        [
+          15,
+          44,
+          108,
+          44,
+          101
+        ],
+        [
+          22,
+          42,
+          28,
+          36,
+          55
+        ],
+        [
+          55,
+          42,
+          28,
+          36,
+          72
+        ],
+        [
+          88,
+          42,
+          28,
+          36,
+          55
+        ],
+        [
+          20,
+          82,
+          100,
+          7,
+          119
+        ],
+        [
+          18,
+          90,
+          104,
+          5,
+          40
+        ],
+        [
+          17,
+          15,
+          104,
+          9,
+          38
+        ],
+        [
+          27,
+          6,
+          84,
+          9,
+          98
+        ],
+        [
+          24,
+          84,
+          7,
+          3,
+          118
+        ],
+        [
+          38,
+          84,
+          7,
+          3,
+          118
+        ],
+        [
+          52,
+          84,
+          7,
+          3,
+          118
+        ],
+        [
+          66,
+          84,
+          7,
+          3,
+          118
+        ],
+        [
+          80,
+          84,
+          7,
+          3,
+          118
+        ],
+        [
+          94,
+          84,
+          7,
+          3,
+          118
+        ],
+        [
+          108,
+          84,
+          7,
+          3,
+          118
+        ],
+        [
+          28,
+          49,
+          15,
+          2,
+          118
+        ],
+        [
+          94,
+          50,
+          15,
+          2,
+          118
+        ],
+        [
+          28,
+          56,
+          15,
+          2,
+          118
+        ],
+        [
+          94,
+          57,
+          15,
+          2,
+          118
+        ],
+        [
+          28,
+          63,
+          15,
+          2,
+          118
+        ],
+        [
+          94,
+          64,
+          15,
+          2,
+          118
+        ],
+        [
+          28,
+          70,
+          15,
+          2,
+          118
+        ],
+        [
+          94,
+          71,
+          15,
+          2,
+          118
+        ],
+        [
+          61,
+          58,
+          3,
+          3,
+          121
+        ],
+        [
+          64,
+          58,
+          3,
+          3,
+          121
+        ],
+        [
+          67,
+          58,
+          3,
+          3,
+          121
+        ],
+        [
+          70,
+          58,
+          3,
+          3,
+          121
+        ],
+        [
+          73,
+          58,
+          3,
+          3,
+          121
+        ],
+        [
+          76,
+          58,
+          3,
+          3,
+          121
+        ],
+        [
+          79,
+          58,
+          3,
+          3,
+          121
+        ],
+        [
+          66,
+          58,
+          11,
+          3,
+          122
+        ],
+        [
+          70,
+          54,
+          3,
+          11,
+          122
+        ]
+      ]
+    },
+    {
+      "id": "abyssal-star-tablet",
+      "title": "Abyssal Star Tablet / encoded constellations",
+      "size": [
+        122,
+        104
+      ],
+      "role": "Low dark register connecting seven gilded star glyphs",
+      "kind": "inert-static",
+      "anchor": {
+        "type": "ground",
+        "point": [
+          61,
+          104
+        ]
+      },
+      "orientation": "0 degrees, 1x only",
+      "clearance": {
+        "top": 14,
+        "side": 16,
+        "actor_approved": false
+      },
+      "neighbour_rules": [
+        "Leave at least 16 cells of negative space at each outer edge",
+        "Requires cleared host surface; preview voids do not excavate native cells",
+        "Never infer actor clearance or structure support"
+      ],
+      "simulation_notes": "All original materials are nonmoving, kernel-zero at the pinned source; not an executable physics or actor-clearance guarantee.",
+      "variants": [
+        {
+          "id": "green-map",
+          "swap": {
+            "118": 123
+          },
+          "note": "Green stellar inscriptions"
+        },
+        {
+          "id": "frosted-map",
+          "swap": {
+            "122": 121
+          },
+          "note": "Desaturated major star"
+        }
+      ],
+      "rectangles": [
+        [
+          0,
+          95,
+          122,
+          9,
+          100
+        ],
+        [
+          9,
+          88,
+          104,
+          7,
+          40
+        ],
+        [
+          17,
+          17,
+          88,
+          71,
+          49
+        ],
+        [
+          23,
+          20,
+          76,
+          64,
+          101
+        ],
+        [
+          20,
+          14,
+          82,
+          6,
+          119
+        ],
+        [
+          16,
+          12,
+          6,
+          76,
+          98
+        ],
+        [
+          100,
+          12,
+          6,
+          76,
+          98
+        ],
+        [
+          33,
+          44,
+          3,
+          3,
+          54
+        ],
+        [
+          36,
+          42,
+          3,
+          3,
+          54
+        ],
+        [
+          39,
+          39,
+          3,
+          3,
+          54
+        ],
+        [
+          42,
+          37,
+          3,
+          3,
+          54
+        ],
+        [
+          45,
+          34,
+          3,
+          3,
+          54
+        ],
+        [
+          48,
+          32,
+          3,
+          3,
+          54
+        ],
+        [
+          48,
+          32,
+          3,
+          3,
+          54
+        ],
+        [
+          49,
+          35,
+          3,
+          3,
+          54
+        ],
+        [
+          51,
+          37,
+          3,
+          3,
+          54
+        ],
+        [
+          52,
+          40,
+          3,
+          3,
+          54
+        ],
+        [
+          54,
+          43,
+          3,
+          3,
+          54
+        ],
+        [
+          55,
+          46,
+          3,
+          3,
+          54
+        ],
+        [
+          57,
+          48,
+          3,
+          3,
+          54
+        ],
+        [
+          58,
+          51,
+          3,
+          3,
+          54
+        ],
+        [
+          58,
+          51,
+          3,
+          3,
+          54
+        ],
+        [
+          61,
+          49,
+          3,
+          3,
+          54
+        ],
+        [
+          63,
+          46,
+          3,
+          3,
+          54
+        ],
+        [
+          66,
+          44,
+          3,
+          3,
+          54
+        ],
+        [
+          69,
+          41,
+          3,
+          3,
+          54
+        ],
+        [
+          71,
+          39,
+          3,
+          3,
+          54
+        ],
+        [
+          74,
+          36,
+          3,
+          3,
+          54
+        ],
+        [
+          74,
+          36,
+          3,
+          3,
+          54
+        ],
+        [
+          76,
+          39,
+          3,
+          3,
+          54
+        ],
+        [
+          79,
+          42,
+          3,
+          3,
+          54
+        ],
+        [
+          81,
+          45,
+          3,
+          3,
+          54
+        ],
+        [
+          83,
+          47,
+          3,
+          3,
+          54
+        ],
+        [
+          86,
+          50,
+          3,
+          3,
+          54
+        ],
+        [
+          88,
+          53,
+          3,
+          3,
+          54
+        ],
+        [
+          88,
+          53,
+          3,
+          3,
+          54
+        ],
+        [
+          87,
+          56,
+          3,
+          3,
+          54
+        ],
+        [
+          85,
+          58,
+          3,
+          3,
+          54
+        ],
+        [
+          84,
+          61,
+          3,
+          3,
+          54
+        ],
+        [
+          83,
+          64,
+          3,
+          3,
+          54
+        ],
+        [
+          82,
+          67,
+          3,
+          3,
+          54
+        ],
+        [
+          80,
+          69,
+          3,
+          3,
+          54
+        ],
+        [
+          79,
+          72,
+          3,
+          3,
+          54
+        ],
+        [
+          79,
+          72,
+          3,
+          3,
+          54
+        ],
+        [
+          76,
+          72,
+          3,
+          3,
+          54
+        ],
+        [
+          73,
+          72,
+          3,
+          3,
+          54
+        ],
+        [
+          70,
+          71,
+          3,
+          3,
+          54
+        ],
+        [
+          68,
+          71,
+          3,
+          3,
+          54
+        ],
+        [
+          65,
+          71,
+          3,
+          3,
+          54
+        ],
+        [
+          62,
+          71,
+          3,
+          3,
+          54
+        ],
+        [
+          59,
+          70,
+          3,
+          3,
+          54
+        ],
+        [
+          56,
+          70,
+          3,
+          3,
+          54
+        ],
+        [
+          53,
+          70,
+          3,
+          3,
+          54
+        ],
+        [
+          51,
+          70,
+          3,
+          3,
+          54
+        ],
+        [
+          48,
+          69,
+          3,
+          3,
+          54
+        ],
+        [
+          45,
+          69,
+          3,
+          3,
+          54
+        ],
+        [
+          42,
+          69,
+          3,
+          3,
+          54
+        ],
+        [
+          29,
+          44,
+          11,
+          3,
+          118
+        ],
+        [
+          33,
+          40,
+          3,
+          11,
+          118
+        ],
+        [
+          44,
+          32,
+          11,
+          3,
+          118
+        ],
+        [
+          48,
+          28,
+          3,
+          11,
+          118
+        ],
+        [
+          54,
+          51,
+          11,
+          3,
+          118
+        ],
+        [
+          58,
+          47,
+          3,
+          11,
+          118
+        ],
+        [
+          70,
+          36,
+          11,
+          3,
+          122
+        ],
+        [
+          74,
+          32,
+          3,
+          11,
+          122
+        ],
+        [
+          84,
+          53,
+          11,
+          3,
+          118
+        ],
+        [
+          88,
+          49,
+          3,
+          11,
+          118
+        ],
+        [
+          75,
+          72,
+          11,
+          3,
+          118
+        ],
+        [
+          79,
+          68,
+          3,
+          11,
+          118
+        ],
+        [
+          38,
+          69,
+          11,
+          3,
+          118
+        ],
+        [
+          42,
+          65,
+          3,
+          11,
+          118
+        ],
+        [
+          30,
+          78,
+          5,
+          3,
+          127
+        ],
+        [
+          42,
+          78,
+          5,
+          3,
+          127
+        ],
+        [
+          54,
+          78,
+          5,
+          3,
+          127
+        ],
+        [
+          66,
+          78,
+          5,
+          3,
+          127
+        ],
+        [
+          78,
+          78,
+          5,
+          3,
+          127
+        ],
+        [
+          90,
+          78,
+          5,
+          3,
+          127
+        ]
+      ]
+    },
+    {
+      "id": "eclipse-transit-bridge",
+      "title": "Eclipse Transit Bridge / broken lens crossing",
+      "size": [
+        154,
+        118
+      ],
+      "role": "Long, low celestial viaduct above an uncut apparent aperture",
+      "kind": "inert-static",
+      "anchor": {
+        "type": "ground",
+        "point": [
+          77,
+          118
+        ]
+      },
+      "orientation": "0 degrees, 1x only",
+      "clearance": {
+        "top": 14,
+        "side": 16,
+        "actor_approved": false
+      },
+      "neighbour_rules": [
+        "Leave at least 16 cells of negative space at each outer edge",
+        "Requires cleared host surface; preview voids do not excavate native cells",
+        "Never infer actor clearance or structure support"
+      ],
+      "simulation_notes": "All original materials are nonmoving, kernel-zero at the pinned source; not an executable physics or actor-clearance guarantee. Apparent passage below bridge not collision-qualified.",
+      "variants": [
+        {
+          "id": "copper-oxidation",
+          "swap": {
+            "52": 54
+          },
+          "note": "Green rail"
+        },
+        {
+          "id": "fogged-panels",
+          "swap": {
+            "120": 121
+          },
+          "note": "White transit lenses"
+        }
+      ],
+      "rectangles": [
+        [
+          0,
+          109,
+          36,
+          9,
+          100
+        ],
+        [
+          118,
+          109,
+          36,
+          9,
+          100
+        ],
+        [
+          12,
+          91,
+          22,
+          19,
+          38
+        ],
+        [
+          120,
+          91,
+          22,
+          19,
+          38
+        ],
+        [
+          20,
+          79,
+          20,
+          15,
+          49
+        ],
+        [
+          114,
+          79,
+          20,
+          15,
+          49
+        ],
+        [
+          4,
+          56,
+          146,
+          10,
+          40
+        ],
+        [
+          8,
+          47,
+          138,
+          9,
+          98
+        ],
+        [
+          12,
+          39,
+          130,
+          7,
+          52
+        ],
+        [
+          18,
+          32,
+          118,
+          6,
+          49
+        ],
+        [
+          20,
+          27,
+          14,
+          7,
+          122
+        ],
+        [
+          120,
+          27,
+          14,
+          7,
+          122
+        ],
+        [
+          32,
+          19,
+          4,
+          13,
+          119
+        ],
+        [
+          30,
+          15,
+          8,
+          4,
+          120
+        ],
+        [
+          48,
+          19,
+          4,
+          13,
+          119
+        ],
+        [
+          46,
+          15,
+          8,
+          4,
+          120
+        ],
+        [
+          64,
+          19,
+          4,
+          13,
+          119
+        ],
+        [
+          62,
+          15,
+          8,
+          4,
+          120
+        ],
+        [
+          80,
+          19,
+          4,
+          13,
+          119
+        ],
+        [
+          78,
+          15,
+          8,
+          4,
+          120
+        ],
+        [
+          96,
+          19,
+          4,
+          13,
+          119
+        ],
+        [
+          94,
+          15,
+          8,
+          4,
+          120
+        ],
+        [
+          112,
+          19,
+          4,
+          13,
+          119
+        ],
+        [
+          110,
+          15,
+          8,
+          4,
+          120
+        ],
+        [
+          36,
+          76,
+          5,
+          4,
+          38
+        ],
+        [
+          40,
+          70,
+          5,
+          4,
+          38
+        ],
+        [
+          44,
+          66,
+          5,
+          4,
+          38
+        ],
+        [
+          48,
+          63,
+          5,
+          4,
+          38
+        ],
+        [
+          52,
+          61,
+          5,
+          4,
+          38
+        ],
+        [
+          56,
+          59,
+          5,
+          4,
+          38
+        ],
+        [
+          60,
+          57,
+          5,
+          4,
+          38
+        ],
+        [
+          64,
+          56,
+          5,
+          4,
+          38
+        ],
+        [
+          68,
+          56,
+          5,
+          4,
+          38
+        ],
+        [
+          72,
+          55,
+          5,
+          4,
+          38
+        ],
+        [
+          76,
+          55,
+          5,
+          4,
+          38
+        ],
+        [
+          80,
+          55,
+          5,
+          4,
+          38
+        ],
+        [
+          84,
+          55,
+          5,
+          4,
+          38
+        ],
+        [
+          88,
+          56,
+          5,
+          4,
+          38
+        ],
+        [
+          92,
+          57,
+          5,
+          4,
+          38
+        ],
+        [
+          96,
+          58,
+          5,
+          4,
+          38
+        ],
+        [
+          100,
+          60,
+          5,
+          4,
+          38
+        ],
+        [
+          104,
+          62,
+          5,
+          4,
+          38
+        ],
+        [
+          108,
+          64,
+          5,
+          4,
+          38
+        ],
+        [
+          112,
+          68,
+          5,
+          4,
+          38
+        ],
+        [
+          116,
+          72,
+          5,
+          4,
+          38
+        ]
+      ]
+    },
+    {
+      "id": "pressure-bell-pool",
+      "title": "Pressure Bell Pool / deepwater instrument",
+      "size": [
+        136,
+        104
+      ],
+      "role": "Optional experimental liquid basin beneath a false bell dome",
+      "kind": "dynamic-liquid",
+      "anchor": {
+        "type": "ground",
+        "point": [
+          68,
+          104
+        ]
+      },
+      "orientation": "0 degrees, 1x only",
+      "clearance": {
+        "top": 14,
+        "side": 16,
+        "actor_approved": false
+      },
+      "neighbour_rules": [
+        "Leave at least 16 cells of negative space at each outer edge",
+        "Requires cleared host surface; preview voids do not excavate native cells",
+        "Never infer actor clearance or structure support"
+      ],
+      "simulation_notes": "Water 3 is FreeMass and Brine 24 is CellularYield. No pressure, sealing, buoyancy, leak, or volume-accumulation verification.",
+      "variants": [
+        {
+          "id": "dry-lens",
+          "swap": {
+            "3": 72,
+            "24": 55
+          },
+          "note": "Both liquids replaced by fixed glazing"
+        },
+        {
+          "id": "brine-dominant",
+          "swap": {
+            "3": 24
+          },
+          "note": "Water replaced by Brine, still active"
+        }
+      ],
+      "rectangles": [
+        [
+          0,
+          95,
+          136,
+          9,
+          100
+        ],
+        [
+          7,
+          89,
+          122,
+          6,
+          58
+        ],
+        [
+          15,
+          44,
+          12,
+          46,
+          38
+        ],
+        [
+          109,
+          44,
+          12,
+          46,
+          38
+        ],
+        [
+          27,
+          78,
+          82,
+          12,
+          72
+        ],
+        [
+          27,
+          74,
+          82,
+          5,
+          120
+        ],
+        [
+          30,
+          60,
+          76,
+          14,
+          3
+        ],
+        [
+          30,
+          53,
+          76,
+          7,
+          24
+        ],
+        [
+          27,
+          47,
+          82,
+          6,
+          119
+        ],
+        [
+          29,
+          40,
+          5,
+          4,
+          98
+        ],
+        [
+          33,
+          31,
+          5,
+          4,
+          98
+        ],
+        [
+          37,
+          26,
+          5,
+          4,
+          98
+        ],
+        [
+          41,
+          21,
+          5,
+          4,
+          98
+        ],
+        [
+          45,
+          18,
+          5,
+          4,
+          98
+        ],
+        [
+          49,
+          16,
+          5,
+          4,
+          98
+        ],
+        [
+          53,
+          14,
+          5,
+          4,
+          98
+        ],
+        [
+          57,
+          13,
+          5,
+          4,
+          98
+        ],
+        [
+          61,
+          12,
+          5,
+          4,
+          98
+        ],
+        [
+          65,
+          11,
+          5,
+          4,
+          98
+        ],
+        [
+          69,
+          11,
+          5,
+          4,
+          98
+        ],
+        [
+          73,
+          11,
+          5,
+          4,
+          98
+        ],
+        [
+          77,
+          12,
+          5,
+          4,
+          98
+        ],
+        [
+          81,
+          13,
+          5,
+          4,
+          98
+        ],
+        [
+          85,
+          15,
+          5,
+          4,
+          98
+        ],
+        [
+          89,
+          17,
+          5,
+          4,
+          98
+        ],
+        [
+          93,
+          20,
+          5,
+          4,
+          98
+        ],
+        [
+          97,
+          23,
+          5,
+          4,
+          98
+        ],
+        [
+          101,
+          28,
+          5,
+          4,
+          98
+        ],
+        [
+          105,
+          35,
+          5,
+          4,
+          98
+        ],
+        [
+          52,
+          12,
+          32,
+          7,
+          121
+        ],
+        [
+          58,
+          4,
+          20,
+          8,
+          122
+        ],
+        [
+          65,
+          24,
+          6,
+          35,
+          69
+        ],
+        [
+          60,
+          31,
+          17,
+          5,
+          52
+        ],
+        [
+          64,
+          39,
+          11,
+          3,
+          118
+        ],
+        [
+          68,
+          35,
+          3,
+          11,
+          118
+        ]
+      ]
+    },
+    {
+      "id": "sediment-almanac",
+      "title": "Sediment Almanac / fallen sky hourglass",
+      "size": [
+        130,
+        114
+      ],
+      "role": "Experimental suspended Salt and Dust above mineral sorting trays",
+      "kind": "dynamic-powder",
+      "anchor": {
+        "type": "ground",
+        "point": [
+          65,
+          114
+        ]
+      },
+      "orientation": "0 degrees, 1x only",
+      "clearance": {
+        "top": 14,
+        "side": 16,
+        "actor_approved": false
+      },
+      "neighbour_rules": [
+        "Leave at least 16 cells of negative space at each outer edge",
+        "Requires cleared host surface; preview voids do not excavate native cells",
+        "Never infer actor clearance or structure support"
+      ],
+      "simulation_notes": "Salt 23 and Dust 14 fall/redistribute; no steady or suspended silhouette is simulation qualified.",
+      "variants": [
+        {
+          "id": "fossilised-record",
+          "swap": {
+            "14": 99,
+            "23": 106
+          },
+          "note": "Fully fixed mineral inlays"
+        },
+        {
+          "id": "dust-clock",
+          "swap": {
+            "23": 14
+          },
+          "note": "Dust replaces Salt, still active"
+        }
+      ],
+      "rectangles": [
+        [
+          0,
+          105,
+          130,
+          9,
+          100
+        ],
+        [
+          9,
+          99,
+          112,
+          6,
+          40
+        ],
+        [
+          12,
+          39,
+          13,
+          60,
+          49
+        ],
+        [
+          105,
+          39,
+          13,
+          60,
+          49
+        ],
+        [
+          26,
+          36,
+          78,
+          8,
+          119
+        ],
+        [
+          35,
+          28,
+          60,
+          8,
+          38
+        ],
+        [
+          34,
+          43,
+          8,
+          40,
+          52
+        ],
+        [
+          88,
+          43,
+          8,
+          40,
+          52
+        ],
+        [
+          42,
+          72,
+          46,
+          9,
+          72
+        ],
+        [
+          37,
+          84,
+          56,
+          10,
+          106
+        ],
+        [
+          34,
+          94,
+          62,
+          5,
+          61
+        ],
+        [
+          52,
+          43,
+          26,
+          7,
+          23
+        ],
+        [
+          59,
+          50,
+          14,
+          6,
+          23
+        ],
+        [
+          63,
+          56,
+          6,
+          9,
+          23
+        ],
+        [
+          58,
+          65,
+          3,
+          3,
+          14
+        ],
+        [
+          69,
+          68,
+          3,
+          3,
+          14
+        ],
+        [
+          63,
+          73,
+          3,
+          3,
+          14
+        ],
+        [
+          73,
+          75,
+          3,
+          3,
+          14
+        ],
+        [
+          52,
+          76,
+          3,
+          3,
+          14
+        ],
+        [
+          78,
+          79,
+          3,
+          3,
+          14
+        ],
+        [
+          27,
+          7,
+          76,
+          8,
+          49
+        ],
+        [
+          37,
+          15,
+          56,
+          11,
+          55
+        ],
+        [
+          43,
+          16,
+          6,
+          10,
+          118
+        ],
+        [
+          82,
+          16,
+          6,
+          10,
+          118
+        ],
+        [
+          61,
+          11,
+          11,
+          3,
+          122
+        ],
+        [
+          65,
+          7,
+          3,
+          11,
+          122
+        ]
+      ]
+    }
+  ],
+  "combined_scene": {
+    "id": "night-of-submerged-equator",
+    "title": "Night of the Submerged Equator — dry staged scene",
+    "size": [
+      1320,
+      280
+    ],
+    "baseline_y": 244,
+    "placements": [
+      {
+        "feature_id": "broken-star-dome",
+        "origin": [
+          18,
+          118
+        ],
+        "variant": null,
+        "anchor_world": [
+          92,
+          244
+        ]
+      },
+      {
+        "feature_id": "meridian-needle",
+        "origin": [
+          185,
+          102
+        ],
+        "variant": null,
+        "anchor_world": [
+          239,
+          244
+        ]
+      },
+      {
+        "feature_id": "siltbound-orrery",
+        "origin": [
+          312,
+          120
+        ],
+        "variant": null,
+        "anchor_world": [
+          387,
+          244
+        ]
+      },
+      {
+        "feature_id": "refraction-scriptorium",
+        "origin": [
+          481,
+          136
+        ],
+        "variant": null,
+        "anchor_world": [
+          550,
+          244
+        ]
+      },
+      {
+        "feature_id": "abyssal-star-tablet",
+        "origin": [
+          638,
+          140
+        ],
+        "variant": null,
+        "anchor_world": [
+          699,
+          244
+        ]
+      },
+      {
+        "feature_id": "eclipse-transit-bridge",
+        "origin": [
+          779,
+          126
+        ],
+        "variant": null,
+        "anchor_world": [
+          856,
+          244
+        ]
+      },
+      {
+        "feature_id": "pressure-bell-pool",
+        "origin": [
+          952,
+          140
+        ],
+        "variant": "dry-lens",
+        "anchor_world": [
+          1020,
+          244
+        ]
+      },
+      {
+        "feature_id": "sediment-almanac",
+        "origin": [
+          1107,
+          130
+        ],
+        "variant": "fossilised-record",
+        "anchor_world": [
+          1172,
+          244
+        ]
+      }
+    ],
+    "patterns": [
+      {
+        "id": "broken-planetarium",
+        "sequence": [
+          "broken-star-dome",
+          "siltbound-orrery",
+          "abyssal-star-tablet"
+        ],
+        "spacing": [
+          24,
+          20
+        ],
+        "rule": "grand dome to mechanical rings to engraved small endpoint"
+      },
+      {
+        "id": "meridian-corridor",
+        "sequence": [
+          "meridian-needle",
+          "refraction-scriptorium",
+          "meridian-needle"
+        ],
+        "spacing": [
+          22,
+          30
+        ],
+        "rule": "needle tips bookend low, dense chart shelving"
+      },
+      {
+        "id": "underwater-records",
+        "sequence": [
+          "eclipse-transit-bridge",
+          "pressure-bell-pool",
+          "sediment-almanac"
+        ],
+        "spacing": [
+          18,
+          26
+        ],
+        "rule": "use dry-lens and fossilised-record substitutions until active variants have native tick evidence"
+      }
+    ]
+  }
+}

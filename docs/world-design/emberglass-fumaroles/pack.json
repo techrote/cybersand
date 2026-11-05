@@ -1,0 +1,2052 @@
+{
+  "schema_id": "cybersand.world-feature-pack.proposal",
+  "schema_version": 1,
+  "title": "EMBERGLASS FUMAROLES",
+  "created_utc": "2026-11-05",
+  "status": "DRAFT design resource; NOT a runtime importer, GEN schema, CYSD1 save, native fixture or gameplay map",
+  "source": {
+    "main_commit": "ba9cbc89029be88b812af59b19e5c59829bbcd90",
+    "main_tree": "3af18f50e6094776263119623b64a1b2f4ca0ab2",
+    "native_material_enum": "native/include/cybersand/material.hpp",
+    "native_enum_blob_sha": "dcf05895da3015a2e999e3d1cbbae0fdc7fe32b3",
+    "shadow_catalogue": "materials/catalogue/catalogue.json",
+    "shadow_catalogue_blob_sha": "d7a47d60721598a16589daf177a6ff4401b84b43",
+    "interaction_rules": "native/include/cybersand/interaction_rules.hpp",
+    "interaction_rules_blob_sha": "b70fc9dc2599f648e5374f06e4cc0ae9cb868d79",
+    "rectangle_convention": "godot/scripts/demo_worlds.gd::_rect",
+    "prior_designs": [
+      "Lumen Fault #408",
+      "Chalkbone Coast #410",
+      "Carved Ice Choir #412",
+      "Ashroot Nursery #414"
+    ]
+  },
+  "coordinate_contract": {
+    "units": "native cells; integer dimensions",
+    "origin": "top left",
+    "axes": "+x right, +y down",
+    "rectangle": "[x,y,width,height,native_material_id]",
+    "bounds": "half-open",
+    "ordering": "ordered painting; later rectangles win at every overlapping cell",
+    "missing_cell": "no write; never implies host clearing",
+    "clearing": "host author must explicitly clear desired local rectangle before placement; verify ownership",
+    "variants": "literal ID substitutions applied per feature before ordered painting",
+    "layers": "none in this proposal; no parallax, physics or background layer",
+    "transforms": "only authored 1x orientation, no rotation/reflection or arbitrary scale tested",
+    "anchor": "ground point at local y=feature height; placement y=scene floor 211-height"
+  },
+  "palette": [
+    {
+      "id": 0,
+      "name": "empty",
+      "rgba": [
+        8,
+        11,
+        18,
+        255
+      ],
+      "state": 0,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0
+    },
+    {
+      "id": 8,
+      "name": "lava",
+      "rgba": [
+        241,
+        78,
+        31,
+        255
+      ],
+      "state": 3,
+      "movable": true,
+      "kernel": 7,
+      "lateral_flow": 2,
+      "viscosity_index": 224
+    },
+    {
+      "id": 22,
+      "name": "steam",
+      "rgba": [
+        230,
+        238,
+        242,
+        216
+      ],
+      "state": 4,
+      "movable": true,
+      "kernel": 19,
+      "lateral_flow": 0,
+      "viscosity_index": 0
+    },
+    {
+      "id": 36,
+      "name": "molten-glass",
+      "rgba": [
+        255,
+        146,
+        64,
+        255
+      ],
+      "state": 3,
+      "movable": true,
+      "kernel": 25,
+      "lateral_flow": 2,
+      "viscosity_index": 224
+    },
+    {
+      "id": 39,
+      "name": "sandstone-block",
+      "rgba": [
+        199,
+        156,
+        98,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0
+    },
+    {
+      "id": 40,
+      "name": "granite-block",
+      "rgba": [
+        119,
+        119,
+        130,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0
+    },
+    {
+      "id": 43,
+      "name": "red-brick",
+      "rgba": [
+        163,
+        80,
+        59,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0
+    },
+    {
+      "id": 48,
+      "name": "terracotta-tile",
+      "rgba": [
+        185,
+        91,
+        60,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0
+    },
+    {
+      "id": 79,
+      "name": "neon-amber",
+      "rgba": [
+        255,
+        181,
+        46,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0
+    },
+    {
+      "id": 99,
+      "name": "chalk-block",
+      "rgba": [
+        234,
+        231,
+        220,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0
+    },
+    {
+      "id": 100,
+      "name": "basalt-columns",
+      "rgba": [
+        54,
+        56,
+        61,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0
+    },
+    {
+      "id": 101,
+      "name": "obsidian",
+      "rgba": [
+        24,
+        19,
+        32,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0
+    },
+    {
+      "id": 104,
+      "name": "firebrick",
+      "rgba": [
+        200,
+        152,
+        98,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0
+    },
+    {
+      "id": 108,
+      "name": "quicklime-block",
+      "rgba": [
+        236,
+        234,
+        222,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0
+    },
+    {
+      "id": 119,
+      "name": "brass-panel",
+      "rgba": [
+        196,
+        160,
+        72,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0
+    },
+    {
+      "id": 120,
+      "name": "glass-block",
+      "rgba": [
+        156,
+        210,
+        220,
+        204
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0
+    },
+    {
+      "id": 122,
+      "name": "quartz-crystal",
+      "rgba": [
+        226,
+        236,
+        244,
+        224
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0
+    },
+    {
+      "id": 126,
+      "name": "sulfur-block",
+      "rgba": [
+        226,
+        206,
+        58,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0
+    },
+    {
+      "id": 127,
+      "name": "phosphor-panel",
+      "rgba": [
+        176,
+        220,
+        172,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0
+    },
+    {
+      "id": 131,
+      "name": "heat-shield-tile",
+      "rgba": [
+        26,
+        26,
+        29,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0
+    }
+  ],
+  "style_guide": {
+    "aesthetic": "Volcanic geology rendered as a damaged geological observatory; not a metal factory or crystalline ice cathedral",
+    "dominant": "BasaltColumns 100, Obsidian 101; large black solids with clear isolated holes",
+    "heat_colours": "Firebrick 104, RedBrick 43, TerracottaTile 48, SulfurBlock 126; yellow used for fan-shaped deposits",
+    "highlights": "NeonAmber 79 as inert optical illusion; QuartzCrystal 122/GlassBlock 120 as translucent edges",
+    "dynamic_accent": "optional Lava 8, MoltenGlass 36 and Steam 22 are physically active; scene uses inert swaps",
+    "composition": "one large chimney among two low strata, one rosette per section, amber markers sparsely",
+    "negative_space": "preserve at least 40% legible void; no painted background layer behind passage gaps",
+    "seams": "repeating low terraces align at common ground; never mirror or rotate unvalidated paths",
+    "palette_rule": "limit bright yellow/amber to thin readable seams, not whole-field fills",
+    "scale": "authored at 1 native cell per coordinate; large-scene offsets integer only"
+  },
+  "features": [
+    {
+      "id": "fracture-terrace",
+      "title": "Fracture stair / black-red strata",
+      "size": [
+        116,
+        86
+      ],
+      "kind": "inert-static",
+      "role": "Low fractured terrace with warm terracotta seams cut through black volcanic rock",
+      "anchor": {
+        "type": "ground",
+        "point": [
+          58,
+          86
+        ]
+      },
+      "orientation": "authored 0 degrees; no inferred rotation or mirroring",
+      "clearance": {
+        "top": 10,
+        "side": 8,
+        "passage": null
+      },
+      "neighbour_rules": [
+        "Join only with another dry ground piece at a matching low shelf",
+        "Keep 10 empty cells above the highest spur",
+        "Do not bury ochre fracture edges under a neighboring foundation"
+      ],
+      "simulation_notes": "All solids are fixed kernel-None materials. Visual stratification is not a stress fracture or thermal process.",
+      "variants": [
+        {
+          "id": "cold-strata",
+          "swap": {
+            "79": 43,
+            "126": 104
+          },
+          "note": "Muted nonluminous ochre"
+        },
+        {
+          "id": "black-core",
+          "swap": {
+            "40": 101,
+            "43": 101,
+            "48": 104
+          },
+          "note": "Dominant basalt/obsidian colour mass"
+        }
+      ],
+      "rectangles": [
+        [
+          0,
+          74,
+          116,
+          12,
+          100
+        ],
+        [
+          0,
+          60,
+          25,
+          14,
+          100
+        ],
+        [
+          18,
+          64,
+          17,
+          10,
+          101
+        ],
+        [
+          38,
+          55,
+          20,
+          19,
+          100
+        ],
+        [
+          55,
+          62,
+          13,
+          12,
+          101
+        ],
+        [
+          70,
+          49,
+          18,
+          25,
+          100
+        ],
+        [
+          87,
+          60,
+          12,
+          14,
+          100
+        ],
+        [
+          101,
+          54,
+          15,
+          20,
+          101
+        ],
+        [
+          0,
+          55,
+          20,
+          5,
+          40
+        ],
+        [
+          11,
+          51,
+          10,
+          4,
+          104
+        ],
+        [
+          39,
+          50,
+          17,
+          5,
+          48
+        ],
+        [
+          72,
+          45,
+          14,
+          4,
+          104
+        ],
+        [
+          103,
+          50,
+          12,
+          4,
+          48
+        ],
+        [
+          25,
+          69,
+          20,
+          3,
+          43
+        ],
+        [
+          45,
+          67,
+          13,
+          2,
+          126
+        ],
+        [
+          59,
+          72,
+          10,
+          2,
+          79
+        ],
+        [
+          79,
+          70,
+          23,
+          2,
+          43
+        ],
+        [
+          6,
+          78,
+          103,
+          2,
+          101
+        ],
+        [
+          76,
+          49,
+          3,
+          8,
+          126
+        ],
+        [
+          78,
+          56,
+          6,
+          2,
+          126
+        ]
+      ]
+    },
+    {
+      "id": "sulfur-rosette",
+      "title": "Sulfur blossom / stepped mineral fan",
+      "size": [
+        104,
+        78
+      ],
+      "kind": "inert-static",
+      "role": "Asymmetric yellow petals emerging from a black mineral mound with pale lime tips",
+      "anchor": {
+        "type": "ground",
+        "point": [
+          52,
+          78
+        ]
+      },
+      "orientation": "authored 0 degrees; no inferred rotation or mirroring",
+      "clearance": {
+        "top": 12,
+        "side": 10,
+        "passage": null
+      },
+      "neighbour_rules": [
+        "Avoid placing beside a second rosette within 100 cells to keep focal uniqueness",
+        "May butt against the fracture terrace when its base is at the same y",
+        "No hot material must be assumed to originate from mineral colour"
+      ],
+      "simulation_notes": "SulfurBlock is a fixed inert building material on pinned main, not a sulfur gas emitter.",
+      "variants": [
+        {
+          "id": "ivory-rosette",
+          "swap": {
+            "119": 104,
+            "126": 108
+          },
+          "note": "Near-white vent deposits"
+        },
+        {
+          "id": "ochre-rosette",
+          "swap": {
+            "108": 99,
+            "126": 104
+          },
+          "note": "Desaturated ochre petals"
+        }
+      ],
+      "rectangles": [
+        [
+          0,
+          67,
+          104,
+          11,
+          100
+        ],
+        [
+          12,
+          60,
+          80,
+          7,
+          101
+        ],
+        [
+          22,
+          52,
+          59,
+          8,
+          100
+        ],
+        [
+          42,
+          38,
+          19,
+          14,
+          101
+        ],
+        [
+          9,
+          54,
+          15,
+          6,
+          126
+        ],
+        [
+          16,
+          46,
+          12,
+          8,
+          126
+        ],
+        [
+          24,
+          40,
+          13,
+          11,
+          126
+        ],
+        [
+          34,
+          33,
+          8,
+          19,
+          126
+        ],
+        [
+          42,
+          26,
+          6,
+          14,
+          108
+        ],
+        [
+          47,
+          31,
+          14,
+          13,
+          126
+        ],
+        [
+          53,
+          20,
+          9,
+          19,
+          126
+        ],
+        [
+          57,
+          17,
+          5,
+          6,
+          108
+        ],
+        [
+          63,
+          33,
+          9,
+          17,
+          126
+        ],
+        [
+          73,
+          41,
+          11,
+          14,
+          126
+        ],
+        [
+          84,
+          48,
+          8,
+          8,
+          126
+        ],
+        [
+          27,
+          44,
+          5,
+          7,
+          104
+        ],
+        [
+          52,
+          42,
+          10,
+          4,
+          104
+        ],
+        [
+          66,
+          48,
+          5,
+          4,
+          104
+        ],
+        [
+          17,
+          65,
+          70,
+          2,
+          39
+        ],
+        [
+          49,
+          33,
+          3,
+          7,
+          119
+        ]
+      ]
+    },
+    {
+      "id": "caldera-iris",
+      "title": "Hollow caldera iris",
+      "size": [
+        112,
+        84
+      ],
+      "kind": "inert-static",
+      "role": "A keyed lava-like halo around an actual void with amber insets, never an active lava source",
+      "anchor": {
+        "type": "ground",
+        "point": [
+          56,
+          84
+        ]
+      },
+      "orientation": "authored 0 degrees; no inferred rotation or mirroring",
+      "clearance": {
+        "top": 8,
+        "side": 6,
+        "passage": {
+          "rect": [
+            38,
+            31,
+            36,
+            32
+          ],
+          "requires_host_erase": true
+        }
+      },
+      "neighbour_rules": [
+        "Leave opening x38..73,y31..63 unpainted and explicitly clear host material before staging",
+        "Do not put a person or Rapier body in the opening until clearance and contact are checked",
+        "Preserve 8 cells around its upper crown"
+      ],
+      "simulation_notes": "Gap is visual empty space in a drawing and will not carve existing terrain; opening is not known to be traversable. Fixed material ring is not a rigid body.",
+      "variants": [
+        {
+          "id": "dark-iris",
+          "swap": {
+            "79": 101,
+            "126": 104
+          },
+          "note": "Inactive shadow ring"
+        },
+        {
+          "id": "sulfur-iris",
+          "swap": {
+            "43": 126,
+            "48": 104
+          },
+          "note": "Ochre vent mineralization"
+        }
+      ],
+      "rectangles": [
+        [
+          0,
+          73,
+          112,
+          11,
+          100
+        ],
+        [
+          8,
+          54,
+          18,
+          19,
+          100
+        ],
+        [
+          86,
+          54,
+          18,
+          19,
+          100
+        ],
+        [
+          16,
+          39,
+          13,
+          15,
+          101
+        ],
+        [
+          83,
+          39,
+          13,
+          15,
+          101
+        ],
+        [
+          24,
+          27,
+          14,
+          12,
+          100
+        ],
+        [
+          74,
+          27,
+          14,
+          12,
+          100
+        ],
+        [
+          34,
+          19,
+          44,
+          10,
+          100
+        ],
+        [
+          36,
+          23,
+          40,
+          4,
+          104
+        ],
+        [
+          30,
+          31,
+          6,
+          10,
+          104
+        ],
+        [
+          76,
+          31,
+          6,
+          10,
+          104
+        ],
+        [
+          24,
+          42,
+          5,
+          15,
+          43
+        ],
+        [
+          83,
+          42,
+          5,
+          15,
+          43
+        ],
+        [
+          14,
+          64,
+          13,
+          4,
+          48
+        ],
+        [
+          85,
+          64,
+          13,
+          4,
+          48
+        ],
+        [
+          41,
+          19,
+          8,
+          3,
+          126
+        ],
+        [
+          65,
+          19,
+          7,
+          3,
+          126
+        ],
+        [
+          49,
+          19,
+          16,
+          2,
+          79
+        ],
+        [
+          14,
+          74,
+          84,
+          3,
+          101
+        ],
+        [
+          38,
+          69,
+          36,
+          4,
+          104
+        ],
+        [
+          43,
+          65,
+          26,
+          4,
+          101
+        ]
+      ]
+    },
+    {
+      "id": "glassfall-cascade",
+      "title": "Vitreous fall / glass thread cascade",
+      "size": [
+        120,
+        90
+      ],
+      "kind": "active-dynamic",
+      "role": "High stepped glass hood and narrow molten-glass streaks feeding an obsidian basin",
+      "anchor": {
+        "type": "ground",
+        "point": [
+          60,
+          90
+        ]
+      },
+      "orientation": "authored 0 degrees; no inferred rotation or mirroring",
+      "clearance": {
+        "top": 12,
+        "side": 12,
+        "passage": null
+      },
+      "neighbour_rules": [
+        "Native liquid may move and cool; isolate from Water and Lava until interaction fixtures exist",
+        "Leave open downstream capture zone unless containment has been tested",
+        "Gallery must use quenched-glass or glass-archive"
+      ],
+      "simulation_notes": "MoltenGlass 36 is a moving CellularYield liquid with a cooling kernel and eventual conversion to Glass. The drawn shape is t=0 only. Water contact emits Steam and Glass under pair rules.",
+      "variants": [
+        {
+          "id": "quenched-glass",
+          "swap": {
+            "36": 120
+          },
+          "note": "Static chilled glass columns; gallery default"
+        },
+        {
+          "id": "glass-archive",
+          "swap": {
+            "36": 122,
+            "79": 119
+          },
+          "note": "Fully inert quartz storage impression"
+        }
+      ],
+      "rectangles": [
+        [
+          0,
+          78,
+          120,
+          12,
+          100
+        ],
+        [
+          9,
+          54,
+          15,
+          24,
+          100
+        ],
+        [
+          99,
+          55,
+          14,
+          23,
+          100
+        ],
+        [
+          16,
+          50,
+          84,
+          6,
+          101
+        ],
+        [
+          20,
+          19,
+          12,
+          31,
+          100
+        ],
+        [
+          87,
+          19,
+          13,
+          31,
+          100
+        ],
+        [
+          24,
+          17,
+          72,
+          6,
+          104
+        ],
+        [
+          29,
+          23,
+          6,
+          28,
+          120
+        ],
+        [
+          85,
+          23,
+          6,
+          28,
+          120
+        ],
+        [
+          38,
+          24,
+          9,
+          48,
+          36
+        ],
+        [
+          54,
+          20,
+          12,
+          53,
+          36
+        ],
+        [
+          74,
+          28,
+          7,
+          42,
+          36
+        ],
+        [
+          37,
+          16,
+          45,
+          4,
+          101
+        ],
+        [
+          38,
+          19,
+          44,
+          3,
+          79
+        ],
+        [
+          33,
+          67,
+          53,
+          5,
+          101
+        ],
+        [
+          38,
+          74,
+          46,
+          4,
+          120
+        ],
+        [
+          24,
+          80,
+          77,
+          3,
+          104
+        ],
+        [
+          8,
+          75,
+          13,
+          3,
+          126
+        ],
+        [
+          101,
+          75,
+          12,
+          3,
+          126
+        ],
+        [
+          43,
+          29,
+          3,
+          7,
+          122
+        ],
+        [
+          57,
+          27,
+          4,
+          5,
+          122
+        ],
+        [
+          75,
+          38,
+          2,
+          8,
+          122
+        ]
+      ]
+    },
+    {
+      "id": "fumarole-throat",
+      "title": "Tall fumarole throat / steam crown",
+      "size": [
+        108,
+        112
+      ],
+      "kind": "active-dynamic",
+      "role": "Slit-sided stone chimney and a pale rising plume; crystalline ghost variant for dry galleries",
+      "anchor": {
+        "type": "ground",
+        "point": [
+          54,
+          112
+        ]
+      },
+      "orientation": "authored 0 degrees; no inferred rotation or mirroring",
+      "clearance": {
+        "top": 18,
+        "side": 12,
+        "passage": null
+      },
+      "neighbour_rules": [
+        "Only stage dynamic version with an open upward gas escape corridor",
+        "Never enclose the steam behind an authoring fill without a gas test",
+        "Its ghost variant is not traversable white mist; quartz cells are solid"
+      ],
+      "simulation_notes": "Steam 22 is a rising movable gas with native kernel. Emission or ongoing generation is NOT provided by this pack; isolated t=0 plume dissipates/moves.",
+      "variants": [
+        {
+          "id": "ghost-fumarole",
+          "swap": {
+            "22": 122
+          },
+          "note": "Fixed quartz breath silhouette; gallery default"
+        },
+        {
+          "id": "silent-chimney",
+          "swap": {
+            "22": 0
+          },
+          "note": "Completely empty chimney; stage ID 0 erasure only on approved clear pass"
+        }
+      ],
+      "rectangles": [
+        [
+          0,
+          101,
+          108,
+          11,
+          100
+        ],
+        [
+          14,
+          75,
+          18,
+          26,
+          100
+        ],
+        [
+          78,
+          75,
+          16,
+          26,
+          100
+        ],
+        [
+          24,
+          43,
+          17,
+          35,
+          101
+        ],
+        [
+          68,
+          43,
+          18,
+          35,
+          101
+        ],
+        [
+          31,
+          22,
+          13,
+          24,
+          100
+        ],
+        [
+          65,
+          22,
+          13,
+          24,
+          100
+        ],
+        [
+          31,
+          20,
+          47,
+          7,
+          104
+        ],
+        [
+          29,
+          16,
+          51,
+          4,
+          101
+        ],
+        [
+          46,
+          55,
+          17,
+          40,
+          22
+        ],
+        [
+          48,
+          29,
+          13,
+          26,
+          22
+        ],
+        [
+          51,
+          11,
+          9,
+          17,
+          22
+        ],
+        [
+          43,
+          5,
+          7,
+          16,
+          22
+        ],
+        [
+          62,
+          1,
+          8,
+          13,
+          22
+        ],
+        [
+          36,
+          39,
+          8,
+          4,
+          126
+        ],
+        [
+          64,
+          39,
+          8,
+          4,
+          126
+        ],
+        [
+          31,
+          72,
+          12,
+          3,
+          48
+        ],
+        [
+          66,
+          72,
+          13,
+          3,
+          48
+        ],
+        [
+          15,
+          104,
+          79,
+          3,
+          101
+        ],
+        [
+          29,
+          11,
+          4,
+          7,
+          122
+        ],
+        [
+          77,
+          14,
+          4,
+          8,
+          122
+        ]
+      ]
+    },
+    {
+      "id": "lava-eye",
+      "title": "Lava-eye reliquary / shallow caldera pool",
+      "size": [
+        128,
+        82
+      ],
+      "kind": "active-dynamic",
+      "role": "Asymmetric volcanic sump with an inner lava lens; dry variant preserves heat contrast without liquid",
+      "anchor": {
+        "type": "ground",
+        "point": [
+          64,
+          82
+        ]
+      },
+      "orientation": "authored 0 degrees; no inferred rotation or mirroring",
+      "clearance": {
+        "top": 10,
+        "side": 12,
+        "passage": null
+      },
+      "neighbour_rules": [
+        "Do not place Water or GlassBlock at the live pool; source pairs cause quenching/melting",
+        "Do not assume basin leak-free, heat-safe or pressure-safe until native ticks run",
+        "Live variant is not suitable for playable paths or unbounded generation"
+      ],
+      "simulation_notes": "Lava 8 uses the moving Lava kernel and CellularYield; native rules include Lava/Water quench and probabilistic Lava/Obsidian conversion. Basin walls use BasaltColumns 100/Firebrick 104; apparent containment is unqualified.",
+      "variants": [
+        {
+          "id": "cold-lens",
+          "swap": {
+            "8": 101
+          },
+          "note": "Fixed obsidian pool; gallery default"
+        },
+        {
+          "id": "ceramic-lens",
+          "swap": {
+            "8": 48,
+            "79": 104
+          },
+          "note": "Static terracotta enamel with no active Lava"
+        }
+      ],
+      "rectangles": [
+        [
+          0,
+          71,
+          128,
+          11,
+          100
+        ],
+        [
+          8,
+          46,
+          16,
+          25,
+          100
+        ],
+        [
+          104,
+          46,
+          16,
+          25,
+          100
+        ],
+        [
+          18,
+          42,
+          15,
+          10,
+          104
+        ],
+        [
+          97,
+          42,
+          17,
+          10,
+          104
+        ],
+        [
+          29,
+          57,
+          71,
+          14,
+          8
+        ],
+        [
+          31,
+          53,
+          67,
+          5,
+          8
+        ],
+        [
+          28,
+          50,
+          71,
+          3,
+          104
+        ],
+        [
+          14,
+          65,
+          101,
+          6,
+          104
+        ],
+        [
+          23,
+          72,
+          82,
+          4,
+          101
+        ],
+        [
+          6,
+          60,
+          10,
+          7,
+          40
+        ],
+        [
+          112,
+          60,
+          10,
+          7,
+          40
+        ],
+        [
+          21,
+          43,
+          7,
+          7,
+          126
+        ],
+        [
+          100,
+          43,
+          7,
+          7,
+          126
+        ],
+        [
+          39,
+          46,
+          9,
+          3,
+          79
+        ],
+        [
+          76,
+          46,
+          11,
+          3,
+          79
+        ],
+        [
+          52,
+          44,
+          17,
+          3,
+          48
+        ],
+        [
+          29,
+          65,
+          67,
+          3,
+          43
+        ],
+        [
+          0,
+          75,
+          128,
+          2,
+          101
+        ]
+      ]
+    },
+    {
+      "id": "ash-skerry",
+      "title": "Cooled black skerry / accreted glass shelves",
+      "size": [
+        98,
+        90
+      ],
+      "kind": "inert-static",
+      "role": "Layered volcanic island fragment with hard glass shards and light ochre contour",
+      "anchor": {
+        "type": "ground",
+        "point": [
+          49,
+          90
+        ]
+      },
+      "orientation": "authored 0 degrees; no inferred rotation or mirroring",
+      "clearance": {
+        "top": 10,
+        "side": 9,
+        "passage": null
+      },
+      "neighbour_rules": [
+        "Place between at least two taller features for a low-rest measure",
+        "GlassBlock 120 is a hard fixed wall even when translucent",
+        "Allow 10+ empty cells above its jagged crest"
+      ],
+      "simulation_notes": "GlassBlock is solid kernel None. A visually delicate shard does not have fracture, optics or joint simulation.",
+      "variants": [
+        {
+          "id": "slate-skerry",
+          "swap": {
+            "120": 40,
+            "122": 99
+          },
+          "note": "Low-contrast ancient cooled rock"
+        },
+        {
+          "id": "sulfur-skerry",
+          "swap": {
+            "39": 126,
+            "43": 126
+          },
+          "note": "New yellow weathering"
+        }
+      ],
+      "rectangles": [
+        [
+          0,
+          78,
+          98,
+          12,
+          100
+        ],
+        [
+          5,
+          67,
+          27,
+          11,
+          100
+        ],
+        [
+          21,
+          60,
+          17,
+          7,
+          101
+        ],
+        [
+          32,
+          46,
+          19,
+          32,
+          100
+        ],
+        [
+          49,
+          64,
+          13,
+          14,
+          101
+        ],
+        [
+          60,
+          55,
+          20,
+          23,
+          100
+        ],
+        [
+          79,
+          68,
+          15,
+          10,
+          101
+        ],
+        [
+          34,
+          30,
+          8,
+          16,
+          120
+        ],
+        [
+          41,
+          19,
+          6,
+          27,
+          120
+        ],
+        [
+          52,
+          35,
+          7,
+          23,
+          120
+        ],
+        [
+          67,
+          45,
+          8,
+          10,
+          120
+        ],
+        [
+          29,
+          45,
+          21,
+          3,
+          104
+        ],
+        [
+          60,
+          52,
+          19,
+          3,
+          48
+        ],
+        [
+          8,
+          66,
+          13,
+          4,
+          126
+        ],
+        [
+          17,
+          71,
+          12,
+          3,
+          39
+        ],
+        [
+          47,
+          76,
+          13,
+          3,
+          43
+        ],
+        [
+          0,
+          82,
+          98,
+          2,
+          101
+        ],
+        [
+          42,
+          25,
+          2,
+          7,
+          122
+        ],
+        [
+          53,
+          31,
+          2,
+          8,
+          122
+        ],
+        [
+          65,
+          44,
+          2,
+          7,
+          122
+        ]
+      ]
+    },
+    {
+      "id": "heatward-stela",
+      "title": "Heatward stela / amber witness marker",
+      "size": [
+        80,
+        96
+      ],
+      "kind": "inert-static",
+      "role": "Three-knuckle basalt marker with brass and amber inset glyphs; reads as a geothermal boundary marker",
+      "anchor": {
+        "type": "ground",
+        "point": [
+          40,
+          96
+        ]
+      },
+      "orientation": "authored 0 degrees; no inferred rotation or mirroring",
+      "clearance": {
+        "top": 8,
+        "side": 10,
+        "passage": null
+      },
+      "neighbour_rules": [
+        "At most one stela per 220 horizontal cells in a showcase",
+        "Require a grounded foot at least 80 cells wide",
+        "Amber is fixed NeonAmber material, not an actual light/temperature sensor"
+      ],
+      "simulation_notes": "All fixed kernel-None solids. No light emission, signal electronics, thermal shielding or marker gameplay is promised.",
+      "variants": [
+        {
+          "id": "unlit-marker",
+          "swap": {
+            "79": 101,
+            "119": 104
+          },
+          "note": "Distant ruined marker"
+        },
+        {
+          "id": "sulfur-marker",
+          "swap": {
+            "48": 104,
+            "119": 126
+          },
+          "note": "Yellow deposit motif"
+        }
+      ],
+      "rectangles": [
+        [
+          0,
+          86,
+          80,
+          10,
+          100
+        ],
+        [
+          19,
+          79,
+          42,
+          7,
+          101
+        ],
+        [
+          25,
+          29,
+          30,
+          50,
+          100
+        ],
+        [
+          21,
+          25,
+          38,
+          7,
+          104
+        ],
+        [
+          30,
+          14,
+          20,
+          13,
+          101
+        ],
+        [
+          33,
+          7,
+          14,
+          8,
+          104
+        ],
+        [
+          28,
+          39,
+          24,
+          26,
+          119
+        ],
+        [
+          33,
+          43,
+          14,
+          20,
+          101
+        ],
+        [
+          37,
+          36,
+          6,
+          6,
+          79
+        ],
+        [
+          36,
+          48,
+          8,
+          4,
+          79
+        ],
+        [
+          34,
+          58,
+          12,
+          3,
+          79
+        ],
+        [
+          23,
+          65,
+          34,
+          4,
+          126
+        ],
+        [
+          16,
+          80,
+          48,
+          3,
+          43
+        ],
+        [
+          10,
+          87,
+          60,
+          3,
+          101
+        ],
+        [
+          23,
+          33,
+          5,
+          31,
+          48
+        ],
+        [
+          52,
+          33,
+          5,
+          31,
+          48
+        ],
+        [
+          37,
+          2,
+          6,
+          5,
+          122
+        ],
+        [
+          22,
+          30,
+          36,
+          3,
+          101
+        ]
+      ]
+    }
+  ],
+  "scene": {
+    "id": "emberglass-scar-terrace",
+    "title": "THE EMBERGLASS SCAR — ASHEN FUMAROLE SURVEY",
+    "size": [
+      1056,
+      238
+    ],
+    "status": "inert source-colour gallery; no gameplay or thermal acceptance",
+    "terrain_rectangles": [
+      [
+        0,
+        211,
+        1056,
+        27,
+        100
+      ],
+      [
+        0,
+        206,
+        1056,
+        5,
+        101
+      ],
+      [
+        0,
+        0,
+        1056,
+        10,
+        100
+      ],
+      [
+        25,
+        10,
+        65,
+        8,
+        101
+      ],
+      [
+        172,
+        10,
+        101,
+        7,
+        101
+      ],
+      [
+        370,
+        10,
+        152,
+        9,
+        100
+      ],
+      [
+        710,
+        10,
+        90,
+        8,
+        101
+      ],
+      [
+        935,
+        10,
+        75,
+        6,
+        101
+      ],
+      [
+        220,
+        17,
+        5,
+        17,
+        101
+      ],
+      [
+        506,
+        19,
+        7,
+        17,
+        101
+      ],
+      [
+        761,
+        18,
+        5,
+        13,
+        101
+      ],
+      [
+        18,
+        203,
+        78,
+        3,
+        43
+      ],
+      [
+        490,
+        202,
+        43,
+        4,
+        104
+      ],
+      [
+        915,
+        202,
+        68,
+        4,
+        48
+      ]
+    ],
+    "placements": [
+      {
+        "feature": "fracture-terrace",
+        "variant": "cold-strata",
+        "x": 18,
+        "y": 125
+      },
+      {
+        "feature": "sulfur-rosette",
+        "variant": "ochre-rosette",
+        "x": 147,
+        "y": 133
+      },
+      {
+        "feature": "caldera-iris",
+        "variant": "dark-iris",
+        "x": 266,
+        "y": 127
+      },
+      {
+        "feature": "glassfall-cascade",
+        "variant": "quenched-glass",
+        "x": 390,
+        "y": 121
+      },
+      {
+        "feature": "fumarole-throat",
+        "variant": "ghost-fumarole",
+        "x": 524,
+        "y": 99
+      },
+      {
+        "feature": "lava-eye",
+        "variant": "cold-lens",
+        "x": 647,
+        "y": 129
+      },
+      {
+        "feature": "ash-skerry",
+        "variant": "sulfur-skerry",
+        "x": 791,
+        "y": 121
+      },
+      {
+        "feature": "heatward-stela",
+        "variant": "unlit-marker",
+        "x": 911,
+        "y": 115
+      }
+    ],
+    "placement_order": "terrain first, then listed feature rectangles; last write wins; no parallel layers"
+  },
+  "limits": {
+    "module_count": 8,
+    "variant_count": 16,
+    "allow_automatic_import": false,
+    "allowed_rotation_degrees": [
+      0
+    ],
+    "host_clearance_mandatory": true,
+    "active_modules_for_testing_only": [
+      "glassfall-cascade",
+      "fumarole-throat",
+      "lava-eye"
+    ]
+  }
+}

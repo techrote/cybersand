@@ -1,0 +1,2271 @@
+{
+  "schema_id": "cybersand.world-feature-pack.proposal",
+  "schema_version": 1,
+  "title": "Dust Meridian — aeolian survey relics",
+  "created_utc": "2026-11-05",
+  "status": "draft design only",
+  "source": {
+    "main_commit": "ba9cbc89029be88b812af59b19e5c59829bbcd90",
+    "main_tree": "3af18f50e6094776263119623b64a1b2f4ca0ab2",
+    "native_material_enum": "native/include/cybersand/material.hpp",
+    "native_enum_blob_sha": "dcf05895da3015a2e999e3d1cbbae0fdc7fe32b3",
+    "shadow_catalogue": "materials/catalogue/catalogue.json",
+    "shadow_catalogue_blob_sha": "d7a47d60721598a16589daf177a6ff4401b84b43",
+    "interaction_rules": "native/include/cybersand/interaction_rules.hpp",
+    "interaction_rules_blob_sha": "b70fc9dc2599f648e5374f06e4cc0ae9cb868d79",
+    "rectangle_convention": "godot/scripts/demo_worlds.gd::_rect",
+    "prior_designs": [
+      "#408",
+      "#410",
+      "#412",
+      "#414",
+      "#420",
+      "#425",
+      "#430"
+    ]
+  },
+  "coordinate_contract": {
+    "units": "integer native cells",
+    "origin": "top left",
+    "axes": "+x right / +y down",
+    "rectangles": "[x,y,width,height,material_id] half-open",
+    "order": "later rectangles overpaint earlier; terrain first",
+    "layers": "none",
+    "anchor": "bottom centre at world y=244",
+    "orientation": "0 degrees / 1x only",
+    "host_clearing": "not granted: blank/portal area does not erase host cells"
+  },
+  "palette": [
+    {
+      "id": 2,
+      "name": "sand",
+      "rgba": [
+        222,
+        174,
+        76,
+        255
+      ],
+      "state": 2,
+      "movable": true,
+      "kernel": 1,
+      "lateral_flow": 0,
+      "viscosity_index": 0,
+      "initial_state_a": 0,
+      "initial_state_b": 0
+    },
+    {
+      "id": 14,
+      "name": "dust",
+      "rgba": [
+        218,
+        198,
+        238,
+        255
+      ],
+      "state": 2,
+      "movable": true,
+      "kernel": 12,
+      "lateral_flow": 0,
+      "viscosity_index": 0,
+      "initial_state_a": 0,
+      "initial_state_b": 0
+    },
+    {
+      "id": 23,
+      "name": "salt",
+      "rgba": [
+        236,
+        232,
+        218,
+        255
+      ],
+      "state": 2,
+      "movable": true,
+      "kernel": 1,
+      "lateral_flow": 0,
+      "viscosity_index": 0,
+      "initial_state_a": 0,
+      "initial_state_b": 0
+    },
+    {
+      "id": 39,
+      "name": "sandstone-block",
+      "rgba": [
+        199,
+        156,
+        98,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0,
+      "initial_state_a": 0,
+      "initial_state_b": 0
+    },
+    {
+      "id": 40,
+      "name": "granite-block",
+      "rgba": [
+        119,
+        119,
+        130,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0,
+      "initial_state_a": 0,
+      "initial_state_b": 0
+    },
+    {
+      "id": 48,
+      "name": "terracotta-tile",
+      "rgba": [
+        185,
+        91,
+        60,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0,
+      "initial_state_a": 0,
+      "initial_state_b": 0
+    },
+    {
+      "id": 49,
+      "name": "slate",
+      "rgba": [
+        70,
+        83,
+        99,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0,
+      "initial_state_a": 0,
+      "initial_state_b": 0
+    },
+    {
+      "id": 52,
+      "name": "bronze",
+      "rgba": [
+        162,
+        113,
+        56,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0,
+      "initial_state_a": 0,
+      "initial_state_b": 0
+    },
+    {
+      "id": 56,
+      "name": "packed-earth",
+      "rgba": [
+        124,
+        91,
+        59,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0,
+      "initial_state_a": 0,
+      "initial_state_b": 0
+    },
+    {
+      "id": 98,
+      "name": "marble",
+      "rgba": [
+        226,
+        223,
+        216,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0,
+      "initial_state_a": 0,
+      "initial_state_b": 0
+    },
+    {
+      "id": 99,
+      "name": "chalk-block",
+      "rgba": [
+        234,
+        231,
+        220,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0,
+      "initial_state_a": 0,
+      "initial_state_b": 0
+    },
+    {
+      "id": 101,
+      "name": "obsidian",
+      "rgba": [
+        24,
+        19,
+        32,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0,
+      "initial_state_a": 0,
+      "initial_state_b": 0
+    },
+    {
+      "id": 102,
+      "name": "adobe-brick",
+      "rgba": [
+        178,
+        124,
+        84,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0,
+      "initial_state_a": 0,
+      "initial_state_b": 0
+    },
+    {
+      "id": 106,
+      "name": "rock-salt-block",
+      "rgba": [
+        222,
+        196,
+        190,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0,
+      "initial_state_a": 0,
+      "initial_state_b": 0
+    },
+    {
+      "id": 109,
+      "name": "rammed-earth",
+      "rgba": [
+        172,
+        114,
+        74,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0,
+      "initial_state_a": 0,
+      "initial_state_b": 0
+    },
+    {
+      "id": 118,
+      "name": "gold-leaf",
+      "rgba": [
+        222,
+        178,
+        62,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0,
+      "initial_state_a": 0,
+      "initial_state_b": 0
+    },
+    {
+      "id": 119,
+      "name": "brass-panel",
+      "rgba": [
+        196,
+        160,
+        72,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0,
+      "initial_state_a": 0,
+      "initial_state_b": 0
+    },
+    {
+      "id": 122,
+      "name": "quartz-crystal",
+      "rgba": [
+        226,
+        236,
+        244,
+        224
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0,
+      "initial_state_a": 0,
+      "initial_state_b": 0
+    }
+  ],
+  "style_guide": {
+    "shape": "high cardinal zero > portal > five-string harp > low cairn > round register > low windbreak > hour vessel > lost archive",
+    "rhythm": "alternate large monument with low marker; preserve portal and separated harp strings",
+    "ratio": "70% ochre stone and earth; 20% dark/sienna structure; 10% white quartz and gilt direction marks",
+    "light": "static source colours only; no rendered lighting claim"
+  },
+  "features": [
+    {
+      "id": "meridian-needle",
+      "title": "Meridian Needle / cardinal zero",
+      "size": [
+        116,
+        120
+      ],
+      "role": "tall isolated survey monument",
+      "kind": "inert-static",
+      "anchor": {
+        "type": "ground",
+        "point": [
+          58,
+          120
+        ]
+      },
+      "orientation": "0 degrees / 1x only",
+      "clearance": {
+        "top": 12,
+        "side": 20,
+        "actor_approved": false
+      },
+      "neighbour_rules": [
+        "24+ cell gap from another high landmark",
+        "Align left marker to neighboring calendar"
+      ],
+      "simulation_notes": "No solar alignment or time-of-day effects; all fixed-kernel materials.",
+      "variants": [
+        {
+          "id": "gilded-zero",
+          "swap": {
+            "119": 118
+          },
+          "note": "pristine gilt datum"
+        },
+        {
+          "id": "faded-zero",
+          "swap": {
+            "118": 52
+          },
+          "note": "lost gilt notches"
+        }
+      ],
+      "rectangles": [
+        [
+          0,
+          110,
+          116,
+          10,
+          56
+        ],
+        [
+          0,
+          107,
+          116,
+          3,
+          39
+        ],
+        [
+          36,
+          99,
+          44,
+          8,
+          40
+        ],
+        [
+          43,
+          84,
+          30,
+          15,
+          39
+        ],
+        [
+          49,
+          36,
+          18,
+          48,
+          39
+        ],
+        [
+          51,
+          30,
+          14,
+          4,
+          39
+        ],
+        [
+          51,
+          26,
+          14,
+          4,
+          39
+        ],
+        [
+          51,
+          22,
+          14,
+          4,
+          39
+        ],
+        [
+          51,
+          18,
+          14,
+          4,
+          39
+        ],
+        [
+          51,
+          14,
+          14,
+          4,
+          39
+        ],
+        [
+          51,
+          10,
+          14,
+          4,
+          39
+        ],
+        [
+          52,
+          12,
+          12,
+          8,
+          109
+        ],
+        [
+          55,
+          4,
+          6,
+          8,
+          118
+        ],
+        [
+          54,
+          42,
+          8,
+          12,
+          101
+        ],
+        [
+          56,
+          58,
+          4,
+          20,
+          119
+        ],
+        [
+          52,
+          87,
+          12,
+          5,
+          118
+        ],
+        [
+          10,
+          94,
+          11,
+          5,
+          109
+        ],
+        [
+          95,
+          94,
+          11,
+          5,
+          109
+        ],
+        [
+          19,
+          90,
+          11,
+          5,
+          109
+        ],
+        [
+          86,
+          90,
+          11,
+          5,
+          109
+        ],
+        [
+          28,
+          86,
+          11,
+          5,
+          109
+        ],
+        [
+          77,
+          86,
+          11,
+          5,
+          109
+        ],
+        [
+          13,
+          89,
+          6,
+          6,
+          118
+        ],
+        [
+          97,
+          89,
+          6,
+          6,
+          118
+        ]
+      ]
+    },
+    {
+      "id": "half-buried-waygate",
+      "title": "Half-Buried Waygate / pilgrim arch",
+      "size": [
+        136,
+        108
+      ],
+      "role": "massive fractured gateway / preserved visual portal",
+      "kind": "inert-static",
+      "anchor": {
+        "type": "ground",
+        "point": [
+          68,
+          108
+        ]
+      },
+      "orientation": "0 degrees / 1x only",
+      "clearance": {
+        "top": 12,
+        "side": 20,
+        "actor_approved": false
+      },
+      "neighbour_rules": [
+        "50-cell conceptual central opening",
+        "Opening requires actual collision and host-clearing checks"
+      ],
+      "simulation_notes": "Fixed source rectangles; aperture is visual, not collision-qualified.",
+      "variants": [
+        {
+          "id": "golden-threshold",
+          "swap": {
+            "52": 118
+          },
+          "note": "intact bearing brackets"
+        },
+        {
+          "id": "lost-threshold",
+          "swap": {
+            "118": 101
+          },
+          "note": "defaced arch crest"
+        }
+      ],
+      "rectangles": [
+        [
+          0,
+          98,
+          136,
+          10,
+          56
+        ],
+        [
+          0,
+          95,
+          136,
+          3,
+          39
+        ],
+        [
+          16,
+          53,
+          17,
+          43,
+          109
+        ],
+        [
+          17,
+          26,
+          15,
+          27,
+          39
+        ],
+        [
+          19,
+          17,
+          12,
+          9,
+          48
+        ],
+        [
+          14,
+          92,
+          22,
+          6,
+          40
+        ],
+        [
+          104,
+          53,
+          17,
+          43,
+          109
+        ],
+        [
+          105,
+          26,
+          15,
+          27,
+          39
+        ],
+        [
+          107,
+          17,
+          12,
+          9,
+          48
+        ],
+        [
+          102,
+          92,
+          22,
+          6,
+          40
+        ],
+        [
+          29,
+          19,
+          77,
+          12,
+          39
+        ],
+        [
+          38,
+          11,
+          59,
+          9,
+          109
+        ],
+        [
+          55,
+          6,
+          26,
+          6,
+          39
+        ],
+        [
+          32,
+          31,
+          10,
+          8,
+          52
+        ],
+        [
+          94,
+          31,
+          10,
+          8,
+          52
+        ],
+        [
+          61,
+          18,
+          14,
+          6,
+          118
+        ],
+        [
+          63,
+          24,
+          10,
+          4,
+          101
+        ],
+        [
+          5,
+          95,
+          28,
+          6,
+          39
+        ],
+        [
+          103,
+          95,
+          29,
+          6,
+          39
+        ]
+      ]
+    },
+    {
+      "id": "wind-harp-pylons",
+      "title": "Wind Harp / five silent strings",
+      "size": [
+        122,
+        122
+      ],
+      "role": "five sequential pylon strings",
+      "kind": "inert-static",
+      "anchor": {
+        "type": "ground",
+        "point": [
+          61,
+          122
+        ]
+      },
+      "orientation": "0 degrees / 1x only",
+      "clearance": {
+        "top": 12,
+        "side": 20,
+        "actor_approved": false
+      },
+      "neighbour_rules": [
+        "Keep 18-cell void beside crown tips",
+        "Repeat only after low wall/cairn"
+      ],
+      "simulation_notes": "No wind-force, audio or moving-string physics.",
+      "variants": [
+        {
+          "id": "bright-strings",
+          "swap": {
+            "52": 119
+          },
+          "note": "brass uprights"
+        },
+        {
+          "id": "quiet-strings",
+          "swap": {
+            "118": 101
+          },
+          "note": "darkened tips"
+        }
+      ],
+      "rectangles": [
+        [
+          0,
+          112,
+          122,
+          10,
+          56
+        ],
+        [
+          0,
+          109,
+          122,
+          3,
+          39
+        ],
+        [
+          13,
+          91,
+          96,
+          11,
+          39
+        ],
+        [
+          10,
+          78,
+          102,
+          7,
+          40
+        ],
+        [
+          17,
+          103,
+          88,
+          6,
+          109
+        ],
+        [
+          21,
+          36,
+          7,
+          42,
+          52
+        ],
+        [
+          23,
+          41,
+          3,
+          32,
+          119
+        ],
+        [
+          17,
+          31,
+          15,
+          5,
+          39
+        ],
+        [
+          22,
+          26,
+          5,
+          5,
+          118
+        ],
+        [
+          40,
+          25,
+          7,
+          53,
+          52
+        ],
+        [
+          42,
+          30,
+          3,
+          43,
+          119
+        ],
+        [
+          36,
+          20,
+          15,
+          5,
+          39
+        ],
+        [
+          41,
+          15,
+          5,
+          5,
+          118
+        ],
+        [
+          59,
+          16,
+          7,
+          62,
+          52
+        ],
+        [
+          61,
+          21,
+          3,
+          52,
+          119
+        ],
+        [
+          55,
+          11,
+          15,
+          5,
+          39
+        ],
+        [
+          60,
+          6,
+          5,
+          5,
+          118
+        ],
+        [
+          78,
+          26,
+          7,
+          52,
+          52
+        ],
+        [
+          80,
+          31,
+          3,
+          42,
+          119
+        ],
+        [
+          74,
+          21,
+          15,
+          5,
+          39
+        ],
+        [
+          79,
+          16,
+          5,
+          5,
+          118
+        ],
+        [
+          97,
+          38,
+          7,
+          40,
+          52
+        ],
+        [
+          99,
+          43,
+          3,
+          30,
+          119
+        ],
+        [
+          93,
+          33,
+          15,
+          5,
+          39
+        ],
+        [
+          98,
+          28,
+          5,
+          5,
+          118
+        ],
+        [
+          13,
+          66,
+          96,
+          3,
+          101
+        ],
+        [
+          18,
+          87,
+          86,
+          4,
+          48
+        ]
+      ]
+    },
+    {
+      "id": "starfall-cairn",
+      "title": "Starfall Cairn / astronomy relic",
+      "size": [
+        108,
+        86
+      ],
+      "role": "low stacked landmark",
+      "kind": "inert-static",
+      "anchor": {
+        "type": "ground",
+        "point": [
+          54,
+          86
+        ]
+      },
+      "orientation": "0 degrees / 1x only",
+      "clearance": {
+        "top": 12,
+        "side": 20,
+        "actor_approved": false
+      },
+      "neighbour_rules": [
+        "One cairn between two vertical structures",
+        "Keep quartz points exposed"
+      ],
+      "simulation_notes": "Fixed materials; star fragments never fall without authored changes.",
+      "variants": [
+        {
+          "id": "white-impact",
+          "swap": {
+            "118": 98
+          },
+          "note": "white mark"
+        },
+        {
+          "id": "night-impact",
+          "swap": {
+            "122": 101
+          },
+          "note": "obsidian inclusions"
+        }
+      ],
+      "rectangles": [
+        [
+          0,
+          76,
+          108,
+          10,
+          56
+        ],
+        [
+          0,
+          73,
+          108,
+          3,
+          39
+        ],
+        [
+          8,
+          66,
+          92,
+          7,
+          40
+        ],
+        [
+          18,
+          57,
+          70,
+          9,
+          39
+        ],
+        [
+          29,
+          48,
+          46,
+          9,
+          109
+        ],
+        [
+          35,
+          35,
+          35,
+          13,
+          39
+        ],
+        [
+          41,
+          26,
+          23,
+          9,
+          101
+        ],
+        [
+          48,
+          17,
+          10,
+          9,
+          122
+        ],
+        [
+          20,
+          71,
+          18,
+          4,
+          48
+        ],
+        [
+          65,
+          71,
+          20,
+          4,
+          48
+        ],
+        [
+          43,
+          39,
+          14,
+          4,
+          118
+        ],
+        [
+          44,
+          52,
+          15,
+          4,
+          52
+        ],
+        [
+          12,
+          52,
+          11,
+          9,
+          40
+        ],
+        [
+          83,
+          54,
+          11,
+          9,
+          40
+        ],
+        [
+          40,
+          10,
+          5,
+          5,
+          122
+        ],
+        [
+          49,
+          10,
+          5,
+          5,
+          122
+        ],
+        [
+          58,
+          10,
+          5,
+          5,
+          122
+        ]
+      ]
+    },
+    {
+      "id": "salt-compass-register",
+      "title": "Salt Compass / rose of vanished sea",
+      "size": [
+        126,
+        96
+      ],
+      "role": "wide geometric register",
+      "kind": "inert-static",
+      "anchor": {
+        "type": "ground",
+        "point": [
+          63,
+          96
+        ]
+      },
+      "orientation": "0 degrees / 1x only",
+      "clearance": {
+        "top": 12,
+        "side": 20,
+        "actor_approved": false
+      },
+      "neighbour_rules": [
+        "16+ cell gap for full compass shape",
+        "Use RockSaltBlock 106 rather than granular Salt"
+      ],
+      "simulation_notes": "Water interactions require native qualification; RockSaltBlock is fixed in source.",
+      "variants": [
+        {
+          "id": "white-register",
+          "swap": {
+            "118": 98
+          },
+          "note": "ivory direction points"
+        },
+        {
+          "id": "night-register",
+          "swap": {
+            "106": 101
+          },
+          "note": "black salt circle"
+        }
+      ],
+      "rectangles": [
+        [
+          0,
+          86,
+          126,
+          10,
+          56
+        ],
+        [
+          0,
+          83,
+          126,
+          3,
+          39
+        ],
+        [
+          14,
+          77,
+          98,
+          6,
+          39
+        ],
+        [
+          23,
+          66,
+          80,
+          11,
+          109
+        ],
+        [
+          31,
+          26,
+          64,
+          40,
+          39
+        ],
+        [
+          37,
+          19,
+          52,
+          54,
+          106
+        ],
+        [
+          44,
+          13,
+          38,
+          66,
+          39
+        ],
+        [
+          35,
+          32,
+          57,
+          23,
+          106
+        ],
+        [
+          58,
+          6,
+          10,
+          79,
+          98
+        ],
+        [
+          29,
+          44,
+          68,
+          8,
+          98
+        ],
+        [
+          49,
+          35,
+          28,
+          24,
+          101
+        ],
+        [
+          56,
+          27,
+          14,
+          40,
+          122
+        ],
+        [
+          48,
+          42,
+          30,
+          9,
+          122
+        ],
+        [
+          59,
+          43,
+          8,
+          7,
+          118
+        ],
+        [
+          23,
+          42,
+          9,
+          9,
+          118
+        ],
+        [
+          94,
+          42,
+          9,
+          9,
+          118
+        ],
+        [
+          57,
+          0,
+          12,
+          7,
+          106
+        ]
+      ]
+    },
+    {
+      "id": "dune-weir",
+      "title": "Dune Weir / serrated earthen breakwater",
+      "size": [
+        142,
+        84
+      ],
+      "role": "wide low eroded horizon",
+      "kind": "inert-static",
+      "anchor": {
+        "type": "ground",
+        "point": [
+          71,
+          84
+        ]
+      },
+      "orientation": "0 degrees / 1x only",
+      "clearance": {
+        "top": 12,
+        "side": 20,
+        "actor_approved": false
+      },
+      "neighbour_rules": [
+        "Only adjoin short modules",
+        "Does not simulate aerodynamic shelter"
+      ],
+      "simulation_notes": "All original earth/sandstone are fixed; alternative AdobeBrick 102 is Water-reactive.",
+      "variants": [
+        {
+          "id": "adobe-rampart",
+          "swap": {
+            "109": 102
+          },
+          "note": "reactive Adobe, DRY environments only"
+        },
+        {
+          "id": "slate-markers",
+          "swap": {
+            "52": 49
+          },
+          "note": "quiet cool marker teeth"
+        }
+      ],
+      "rectangles": [
+        [
+          0,
+          74,
+          142,
+          10,
+          56
+        ],
+        [
+          0,
+          71,
+          142,
+          3,
+          39
+        ],
+        [
+          0,
+          48,
+          19,
+          26,
+          109
+        ],
+        [
+          0,
+          48,
+          19,
+          5,
+          39
+        ],
+        [
+          6,
+          55,
+          6,
+          6,
+          48
+        ],
+        [
+          11,
+          61,
+          5,
+          5,
+          52
+        ],
+        [
+          20,
+          42,
+          19,
+          32,
+          109
+        ],
+        [
+          20,
+          42,
+          19,
+          5,
+          39
+        ],
+        [
+          26,
+          49,
+          6,
+          6,
+          48
+        ],
+        [
+          31,
+          61,
+          5,
+          5,
+          52
+        ],
+        [
+          40,
+          36,
+          19,
+          38,
+          109
+        ],
+        [
+          40,
+          36,
+          19,
+          5,
+          39
+        ],
+        [
+          46,
+          43,
+          6,
+          6,
+          48
+        ],
+        [
+          51,
+          61,
+          5,
+          5,
+          52
+        ],
+        [
+          60,
+          30,
+          19,
+          44,
+          109
+        ],
+        [
+          60,
+          30,
+          19,
+          5,
+          39
+        ],
+        [
+          66,
+          37,
+          6,
+          6,
+          48
+        ],
+        [
+          71,
+          61,
+          5,
+          5,
+          52
+        ],
+        [
+          80,
+          36,
+          19,
+          38,
+          109
+        ],
+        [
+          80,
+          36,
+          19,
+          5,
+          39
+        ],
+        [
+          86,
+          43,
+          6,
+          6,
+          48
+        ],
+        [
+          91,
+          61,
+          5,
+          5,
+          52
+        ],
+        [
+          100,
+          42,
+          19,
+          32,
+          109
+        ],
+        [
+          100,
+          42,
+          19,
+          5,
+          39
+        ],
+        [
+          106,
+          49,
+          6,
+          6,
+          48
+        ],
+        [
+          111,
+          61,
+          5,
+          5,
+          52
+        ],
+        [
+          120,
+          48,
+          19,
+          26,
+          109
+        ],
+        [
+          120,
+          48,
+          19,
+          5,
+          39
+        ],
+        [
+          126,
+          55,
+          6,
+          6,
+          48
+        ],
+        [
+          131,
+          61,
+          5,
+          5,
+          52
+        ],
+        [
+          0,
+          71,
+          142,
+          4,
+          39
+        ],
+        [
+          50,
+          24,
+          42,
+          5,
+          39
+        ],
+        [
+          63,
+          18,
+          15,
+          6,
+          118
+        ]
+      ]
+    },
+    {
+      "id": "sand-clock",
+      "title": "Sand Clock / fallen hour vessel",
+      "size": [
+        116,
+        120
+      ],
+      "role": "active granular hourglass study",
+      "kind": "dynamic-test-only",
+      "anchor": {
+        "type": "ground",
+        "point": [
+          58,
+          120
+        ]
+      },
+      "orientation": "0 degrees / 1x only",
+      "clearance": {
+        "top": 12,
+        "side": 20,
+        "actor_approved": false
+      },
+      "neighbour_rules": [
+        "Use petrified-hour in fixed scenes",
+        "24+ cells from any other active powder"
+      ],
+      "simulation_notes": "Sand 2: mobile granular kernel 1; geometry does not establish containment or particle lifetime.",
+      "variants": [
+        {
+          "id": "petrified-hour",
+          "swap": {
+            "2": 39
+          },
+          "note": "fixed SandstoneBlock not granular Sand"
+        },
+        {
+          "id": "dust-hour",
+          "swap": {
+            "2": 14
+          },
+          "note": "mobile Dust experiment"
+        }
+      ],
+      "rectangles": [
+        [
+          0,
+          110,
+          116,
+          10,
+          56
+        ],
+        [
+          0,
+          107,
+          116,
+          3,
+          39
+        ],
+        [
+          22,
+          96,
+          72,
+          10,
+          39
+        ],
+        [
+          26,
+          21,
+          64,
+          8,
+          101
+        ],
+        [
+          26,
+          87,
+          64,
+          8,
+          101
+        ],
+        [
+          23,
+          28,
+          8,
+          59,
+          52
+        ],
+        [
+          85,
+          28,
+          8,
+          59,
+          52
+        ],
+        [
+          43,
+          32,
+          30,
+          6,
+          2
+        ],
+        [
+          47,
+          39,
+          22,
+          7,
+          2
+        ],
+        [
+          51,
+          47,
+          14,
+          8,
+          2
+        ],
+        [
+          56,
+          57,
+          4,
+          15,
+          2
+        ],
+        [
+          46,
+          77,
+          24,
+          6,
+          2
+        ],
+        [
+          41,
+          83,
+          34,
+          4,
+          2
+        ],
+        [
+          50,
+          16,
+          16,
+          5,
+          118
+        ],
+        [
+          52,
+          100,
+          12,
+          4,
+          118
+        ],
+        [
+          32,
+          30,
+          7,
+          6,
+          39
+        ],
+        [
+          77,
+          30,
+          7,
+          6,
+          39
+        ],
+        [
+          32,
+          78,
+          7,
+          6,
+          39
+        ],
+        [
+          77,
+          78,
+          7,
+          6,
+          39
+        ],
+        [
+          38,
+          37,
+          7,
+          6,
+          39
+        ],
+        [
+          71,
+          37,
+          7,
+          6,
+          39
+        ],
+        [
+          38,
+          71,
+          7,
+          6,
+          39
+        ],
+        [
+          71,
+          71,
+          7,
+          6,
+          39
+        ],
+        [
+          44,
+          44,
+          7,
+          6,
+          39
+        ],
+        [
+          65,
+          44,
+          7,
+          6,
+          39
+        ],
+        [
+          44,
+          64,
+          7,
+          6,
+          39
+        ],
+        [
+          65,
+          64,
+          7,
+          6,
+          39
+        ],
+        [
+          50,
+          51,
+          7,
+          6,
+          39
+        ],
+        [
+          59,
+          51,
+          7,
+          6,
+          39
+        ],
+        [
+          50,
+          57,
+          7,
+          6,
+          39
+        ],
+        [
+          59,
+          57,
+          7,
+          6,
+          39
+        ],
+        [
+          56,
+          58,
+          7,
+          6,
+          39
+        ],
+        [
+          53,
+          58,
+          7,
+          6,
+          39
+        ],
+        [
+          56,
+          50,
+          7,
+          6,
+          39
+        ],
+        [
+          53,
+          50,
+          7,
+          6,
+          39
+        ]
+      ]
+    },
+    {
+      "id": "dust-scriptorium",
+      "title": "Dust Scriptorium / vanished latitude archive",
+      "size": [
+        126,
+        98
+      ],
+      "role": "dissolving archive glyphs",
+      "kind": "dynamic-test-only",
+      "anchor": {
+        "type": "ground",
+        "point": [
+          63,
+          98
+        ]
+      },
+      "orientation": "0 degrees / 1x only",
+      "clearance": {
+        "top": 12,
+        "side": 20,
+        "actor_approved": false
+      },
+      "neighbour_rules": [
+        "Dry inscription variant in combined scene",
+        "20+ cell gap for mobile-particle tests"
+      ],
+      "simulation_notes": "Dust 14 kernel 12 movable; airborne shape and persistence not simulated.",
+      "variants": [
+        {
+          "id": "chalk-inscription",
+          "swap": {
+            "14": 99
+          },
+          "note": "fixed ChalkBlock; water-contact caveat"
+        },
+        {
+          "id": "salt-inscription",
+          "swap": {
+            "14": 23
+          },
+          "note": "moving Salt powder experiment"
+        }
+      ],
+      "rectangles": [
+        [
+          0,
+          88,
+          126,
+          10,
+          56
+        ],
+        [
+          0,
+          85,
+          126,
+          3,
+          39
+        ],
+        [
+          13,
+          71,
+          99,
+          6,
+          39
+        ],
+        [
+          20,
+          42,
+          12,
+          32,
+          40
+        ],
+        [
+          94,
+          42,
+          12,
+          32,
+          40
+        ],
+        [
+          15,
+          36,
+          97,
+          8,
+          39
+        ],
+        [
+          27,
+          24,
+          18,
+          12,
+          109
+        ],
+        [
+          77,
+          24,
+          21,
+          12,
+          109
+        ],
+        [
+          45,
+          45,
+          35,
+          26,
+          101
+        ],
+        [
+          50,
+          50,
+          25,
+          16,
+          118
+        ],
+        [
+          8,
+          80,
+          46,
+          5,
+          102
+        ],
+        [
+          65,
+          80,
+          47,
+          5,
+          102
+        ],
+        [
+          40,
+          12,
+          7,
+          7,
+          14
+        ],
+        [
+          51,
+          8,
+          9,
+          6,
+          14
+        ],
+        [
+          63,
+          16,
+          6,
+          9,
+          14
+        ],
+        [
+          76,
+          10,
+          9,
+          7,
+          14
+        ],
+        [
+          84,
+          21,
+          5,
+          6,
+          14
+        ],
+        [
+          33,
+          22,
+          5,
+          8,
+          14
+        ],
+        [
+          51,
+          29,
+          24,
+          4,
+          106
+        ],
+        [
+          47,
+          32,
+          34,
+          4,
+          106
+        ],
+        [
+          11,
+          61,
+          12,
+          7,
+          52
+        ],
+        [
+          103,
+          60,
+          10,
+          9,
+          52
+        ]
+      ]
+    }
+  ],
+  "scene": {
+    "id": "latitude-of-broken-north",
+    "title": "Latitude of Broken North",
+    "size": [
+      1320,
+      280
+    ],
+    "status": "dry static design preview, not executable sim",
+    "terrain_rectangles": [
+      [
+        0,
+        244,
+        1320,
+        36,
+        56
+      ],
+      [
+        0,
+        241,
+        1320,
+        3,
+        39
+      ],
+      [
+        0,
+        234,
+        132,
+        7,
+        109
+      ],
+      [
+        226,
+        237,
+        108,
+        4,
+        109
+      ],
+      [
+        497,
+        234,
+        99,
+        7,
+        109
+      ],
+      [
+        740,
+        233,
+        115,
+        8,
+        109
+      ],
+      [
+        1020,
+        236,
+        102,
+        5,
+        109
+      ],
+      [
+        1205,
+        236,
+        98,
+        5,
+        109
+      ],
+      [
+        8,
+        228,
+        80,
+        6,
+        39
+      ],
+      [
+        441,
+        227,
+        65,
+        7,
+        39
+      ],
+      [
+        873,
+        226,
+        76,
+        7,
+        39
+      ],
+      [
+        1143,
+        229,
+        57,
+        6,
+        39
+      ]
+    ],
+    "placements": [
+      {
+        "feature": "meridian-needle",
+        "variant": "gilded-zero",
+        "x": 20,
+        "y": 124
+      },
+      {
+        "feature": "half-buried-waygate",
+        "variant": "golden-threshold",
+        "x": 176,
+        "y": 136
+      },
+      {
+        "feature": "wind-harp-pylons",
+        "variant": "bright-strings",
+        "x": 348,
+        "y": 122
+      },
+      {
+        "feature": "starfall-cairn",
+        "variant": "white-impact",
+        "x": 506,
+        "y": 158
+      },
+      {
+        "feature": "salt-compass-register",
+        "variant": "white-register",
+        "x": 634,
+        "y": 148
+      },
+      {
+        "feature": "dune-weir",
+        "variant": "adobe-rampart",
+        "x": 788,
+        "y": 160
+      },
+      {
+        "feature": "sand-clock",
+        "variant": "petrified-hour",
+        "x": 968,
+        "y": 124
+      },
+      {
+        "feature": "dust-scriptorium",
+        "variant": "chalk-inscription",
+        "x": 1135,
+        "y": 146
+      }
+    ],
+    "placement_order": "terrain then modules"
+  },
+  "repeatable_patterns": [
+    {
+      "id": "broken-survey-line",
+      "modules": [
+        "meridian-needle",
+        "starfall-cairn",
+        "salt-compass-register"
+      ],
+      "min_gap": 20,
+      "rule": "align gilded datum through low register"
+    },
+    {
+      "id": "pilgrim-threshold",
+      "modules": [
+        "half-buried-waygate",
+        "wind-harp-pylons",
+        "dune-weir"
+      ],
+      "min_gap": 22,
+      "rule": "preserve visual opening and all string gaps"
+    },
+    {
+      "id": "sediment-archive",
+      "modules": [
+        "dune-weir",
+        "sand-clock",
+        "dust-scriptorium"
+      ],
+      "min_gap": 24,
+      "rule": "require petrified-hour and chalk-inscription in dry scenes"
+    }
+  ],
+  "limits": {
+    "module_count": 8,
+    "variant_count": 16,
+    "allowed_rotation_degrees": [
+      0
+    ],
+    "allow_automatic_import": false,
+    "host_clearance_mandatory": true,
+    "active_modules_for_testing_only": [
+      "sand-clock",
+      "dust-scriptorium"
+    ]
+  }
+}
