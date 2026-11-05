@@ -87,10 +87,12 @@ func chamber_episode(spec: Dictionary, mode: String, workers: int, repeat: int, 
 			report.actual_shapes.append({"transform":PhysicsServer2D.body_get_shape_transform(body.get_rid(),index),"data":PhysicsServer2D.shape_get_data(shape_rid)})
 		check(report.actual_shapes.size()==6,"six actual shapes on one Rapier body")
 		run_chamber_steps(spec,mode,body,bridge,world,preparer,report,output,name)
+		check(report.steps.size()==int(registration.steps),"outer episode complete despite script interruption")
 		report.final=census(world,body,"final")
 		report.final_payload=null if world.has_failed() else save_payload(preparer,world,output+"/"+name+"-final.cyps")
 	report.failures=failures.slice(failure_start);report.episode_us=Time.get_ticks_usec()-episode_start
 	var path: String = output+"/"+name+".json";check(not FileAccess.file_exists(path),"preserve prior episode")
+	if FileAccess.file_exists(path):bridge.shutdown();viewport.free();return
 	var file := FileAccess.open(path,FileAccess.WRITE);file.store_string(JSON.stringify(plain(report)));file.close()
 	bridge.shutdown();viewport.free()
 	print("SOL_CHAMBER_EPISODE ",name," steps=",report.steps.size()," failures=",report.failures.size())
@@ -103,7 +105,8 @@ func run_chamber_steps(spec: Dictionary, mode: String, body: RigidBody2D, bridge
 		var before: Dictionary = body_state(body)
 		var force := Vector2(60.0*float(registration.mass),0) if spec.driven and step>=30 and step<150 else Vector2.ZERO
 		if force!=Vector2.ZERO:PhysicsServer2D.body_apply_central_force(body.get_rid(),force)
-		var sample: Dictionary = bridge.pack_sample([force!=Vector2.ZERO])
+		var drives: Array[bool] = [force!=Vector2.ZERO]
+		var sample: Dictionary = bridge.pack_sample(drives)
 		boundaries.append(census(world,body,"before_preparation"))
 		var timer: int = Time.get_ticks_usec()
 		var prepared: bool = world.prepare_workbench_coupling(sample.states,sample.geometry,sample.bodies,sample.session,sample.epoch,true)
@@ -116,6 +119,7 @@ func run_chamber_steps(spec: Dictionary, mode: String, body: RigidBody2D, bridge
 		var record: Dictionary = {"step":step,"sample":sample,"boundaries":boundaries,"prepared":prepared,"ticked":ticked,
 			"response":response,"force":force,"before":before,"preparation_us":preparation_us,"native_tick_us":native_us}
 		if not prepared or not ticked or not response.get("valid",false):
+			check(false,"native failed/refused; no physical clearance claim")
 			record.terminal="native_failed_or_refused";report.steps.append(record);break
 		check(response.get("response")==mode,"applied native response selector")
 		timer=Time.get_ticks_usec();bridge.apply_packet(step+1,response)
@@ -124,6 +128,7 @@ func run_chamber_steps(spec: Dictionary, mode: String, body: RigidBody2D, bridge
 		record.after_application=body_state(body)
 		boundaries.append(census(world,body,"after_application"))
 		if not record.application.get("accepted",false):
+			check(false,"application refused; no physical clearance claim")
 			record.terminal="application_refused";report.steps.append(record);break
 		var action: Dictionary = record.application.bodies[0]
 		var predicted: Vector2 = before.velocity
