@@ -1,7 +1,7 @@
 {
-  "acceptance": "Articulated workbench adapter capacity and support observation build, no response-law change. Pinned source/tools and Linux runtime floor verified. Target OS qualification pending; keep Draft and unmerged.",
+  "acceptance": "Articulated workbench capacity and rotated support observation build. Native wrench laws unchanged; pinned source/tools and Linux runtime floor verified. Scoped target OS qualification pending; keep Draft and unmerged.",
   "artifact": "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
-  "build_commit": "e5620497d8c85e6798f85b0cfe60bebc33f8ed8d",
+  "build_commit": "4ac84de57f10e8fc54b5216bdaf65643fe295154",
   "build_input_scope": "Native build scripts and dependency pins only; resource/host source and execution are qualified in separate scoped receipts.",
   "build_inputs": {
     "third_party/godot-runtime.lock.json": "38addc53f9c4e64afc024a7ce5dc1bef9c6238148ce6e66dcc63e9ec70d106fe",
@@ -16,9 +16,9 @@
   "godot_version": "4.7.stable.official.5b4e0cb0f",
   "platform": "Windows x86_64",
   "schema_version": 1,
-  "sha256": "5372bfb401f3b59a4cc02180957ee957e490880426c9c6d7f097dbd443c759da",
+  "sha256": "edbcf08f33fa1c08459890b39de98f05b1044e61cdc2aa59de5511421f01f82f",
   "size": 4927488,
-  "source_commit": "e5620497d8c85e6798f85b0cfe60bebc33f8ed8d",
+  "source_commit": "4ac84de57f10e8fc54b5216bdaf65643fe295154",
   "source_input_hash_kind": "SHA-256 of canonical LF production native source and headers",
   "source_inputs": {
     "godot/native_extension/cyber_demo_bridge.hpp": "2d9b3a1ff120d469717d2e36248087104c00990e9b91d2629d22ea27676e243a",
@@ -38,7 +38,7 @@
     "godot/native_extension/generation_workbench_methods.inc": "a7b74a41d6282777bd77220e6480258720dfde698938d3bef75d68a2841ae0d8",
     "godot/native_extension/pressure_optimization_inspection.inc": "e31280bec687c478d37b6dd169d46593adb4397c6584c9c597c98d6cb2d9420e",
     "godot/native_extension/register_types.cpp": "2a225e31225918746121285f79f5dc91b3808ac3ec0a980d4eac62467e81c5c1",
-    "godot/native_extension/workbench_granular_coupling.inc": "33cef5f594d4037e1693a852bf317e92902fae14dafd2012c411276b9d034e28",
+    "godot/native_extension/workbench_granular_coupling.inc": "b42718caaeeb8fb545769ac99eb623303dc120fde126c9e114d90f7575ea1fde",
     "godot/native_extension/workbench_retained_setup.hpp": "ecb5a3e615ab7642b554c07a250d384579297b57644551a3fe1d876d0219f54a",
     "native/include/cybersand/bounded_ordered_index.hpp": "79105fd5fe6f3a7f1bda463984aec01b2d067400957c60f88e38db86cc180147",
     "native/include/cybersand/c_api.h": "7d62023cc3dc611fadc92a56cf26f050965b5c5b32ab8e1fd001b0c3469934b1",
@@ -106,7 +106,7 @@
     "native/src/world_pressure_state.inc": "4662e9dd157af0bbf1e9cd262985f56c042eb7ca4e09d4edee97f82e2ce24696",
     "native/src/world_quantity.inc": "627936a33c9ed58b6841f04466bf83aefe83b451ceb0da22baa19269ed5ef074"
   },
-  "source_tree": "16d9bb268ce7754f95fefc33356ba9708ff6a853",
+  "source_tree": "9b773aea6fac85c7acb41efd206024032f57ad3b",
   "status": "built-not-executed",
   "toolchain": "Windows-hosted LLVM-MinGW 20260826 UCRT, clang/LLD 23.1.0; godot-cpp 101ae38034304346a46ea9ea84ae156d3e860496; SCons 4.10.1"
 }
