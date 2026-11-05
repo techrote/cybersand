@@ -1,5 +1,7 @@
 {
-  "source": "31731a75d26f50f8c4aeeeb19e83575089e79769",
+  "source": "3e6153269954b2282e0c5fc5e96b10c6d807207e",
+  "publisher_sha256": "12db89af7139a41b5a105de3ac8157c6d8d939469a96cfd0f730a1f1ff3cddcd",
+  "publisher_local_delta": " M docs/audits/la-physical-20261105/response-comparison.inputs.json\n M docs/audits/la-physical-20261105/response-comparison.png\n?? docs/audits/la-physical-20261105/qualification-receipts.json\n?? docs/audits/la-physical-20261105/retained-attempts.json\n?? docs/audits/la-physical-20261105/source-and-patch.json\n",
   "scope": "Source-qualified episode summaries, not originalSOL or universal gameplay acceptance",
   "cohorts": [
     {
@@ -116,10 +118,41 @@
       "missing_final_capture": 0,
       "max_RID_readback_error": 1.1920928955078125e-07,
       "reduction_sha256": "c8c8beda2145935bf913ae622a200d81e3e79ab8a38ab4660eefa6dee4edb804"
+    },
+    {
+      "run": "shared-host-performance",
+      "source": "fd26309284bad1e37190e91d05715655204cc0a8",
+      "tree": "a4982f3971ae4f7708ccca8a04f9651132b33f13",
+      "registration": "LA-PHYSICAL-009-SHARED-HOST-TIMINGS",
+      "matrix": {
+        "cases": [
+          "bounded-quiet-contact",
+          "bounded-Sand-Dust-stream",
+          "bounded-dense-collision"
+        ],
+        "workers": [
+          1,
+          4
+        ],
+        "platforms": [
+          "windows",
+          "linux"
+        ],
+        "repeats": 3
+      },
+      "coverage": "complete-registered-matrix",
+      "episodes": 180,
+      "observed_steps": 32400,
+      "failed_episodes": 0,
+      "closed_tuple_passes": 120,
+      "source_ledger_passes": 180,
+      "missing_final_capture": 0,
+      "max_RID_readback_error": 6.536743769445089e-07,
+      "reduction_sha256": "c54d721462178fa931c69ae28b9b59432f0d541e68727b92c1edf21ccd9f1f12"
     }
   ],
-  "total_episodes": 868,
-  "total_observed_steps": 189140,
+  "total_episodes": 1048,
+  "total_observed_steps": 221540,
   "attempted_failed_episodes": 28,
   "max_RID_readback_error": 1.946299364988421e-06,
   "limitations": [

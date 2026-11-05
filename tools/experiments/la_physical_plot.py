@@ -12,11 +12,11 @@ def main():
     parser=argparse.ArgumentParser(__doc__)
     parser.add_argument("input",type=Path,help="One actual-host folder")
     parser.add_argument("output",type=Path)
-    args=parser.parse_args();inputs={}
+    args=parser.parse_args();inputs={};sources=set()
     def read(case,arm):
         path=args.input/(case+"-w1-r0")/(case+"-"+arm+"-w1-r0.json")
         raw=path.read_bytes();inputs[str(path)]=hashlib.sha256(raw).hexdigest()
-        d=json.loads(raw);assert not d["failures"];return d
+        d=json.loads(raw);assert not d["failures"];sources.add(d["source"]);return d
     arms=[("LA-SELECTIVE","Baseline","#245a81","-"),
           ("LA-SELECTIVE-LIVE-PASSIVE","Strict v1","#c76b18","-"),
           ("LA-SELECTIVE-LIVE-PASSIVE-GATED","Changed-state v2","#458454","--"),
@@ -46,9 +46,11 @@ def main():
     axes[3].grid(alpha=.18);axes[3].legend(fontsize=8)
     axes[0].legend(fontsize=9,loc="upper left");axes[2].legend(fontsize=8,loc="lower right")
     fig.suptitle("Measured support, residual motion, and the stale-response guard",fontsize=14)
-    fig.text(.5,.015,"Actual Windows / worker 1 / source 98443ca2 / native budget 20. v1/v2 rejected for support; v3 remains opt-in.\nShading: terminal 120 steps. Bounded pose and final speed do not prove sustained equilibrium.\nThese plots do not establish original SOL clearance or universal passivity.",ha="center",fontsize=9)
+    assert len(sources)==1,"Mixed source figure"
+    source=next(iter(sources))
+    fig.text(.5,.015,f"Actual Windows / worker 1 / source {source[:8]} / native budget 20. v1/v2 rejected for support; v3 remains opt-in.\nShading: terminal 120 steps. Bounded pose and final speed do not prove sustained equilibrium.\nThese plots do not establish original SOL clearance or universal passivity.",ha="center",fontsize=9)
     fig.tight_layout(rect=(0,.1,1,.95));args.output.parent.mkdir(parents=True,exist_ok=True)
     fig.savefig(args.output,dpi=160)
-    args.output.with_suffix(".inputs.json").write_text(json.dumps(dict(matplotlib=matplotlib.__version__,inputs=inputs,output_sha256=hashlib.sha256(args.output.read_bytes()).hexdigest()),indent=2)+"\n",encoding="utf-8")
+    args.output.with_suffix(".inputs.json").write_text(json.dumps(dict(source=source,matplotlib=matplotlib.__version__,inputs=inputs,output_sha256=hashlib.sha256(args.output.read_bytes()).hexdigest()),indent=2)+"\n",encoding="utf-8")
 
 if __name__=="__main__":main()
