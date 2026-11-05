@@ -1,0 +1,271 @@
+{
+  "source": "50beefd9b95652d036ea1fad70d13e8f31a15d48",
+  "tree": "98a58fb9536de7e82e278eedb76e453fed9939b7",
+  "local_delta": "",
+  "results": [
+    {
+      "name": "docs",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/ci/check_docs.py"
+      ],
+      "requested_command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/ci/check_docs.py"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 180,
+      "seconds": 3.689009800029453,
+      "log": "build\\la-selective\\final-validation-50beefd9\\docs.log",
+      "log_sha256": "676d4a683792ec5717ead9eb18d3675396cef046c51da6fe0230b8942cbce387",
+      "markers": []
+    },
+    {
+      "name": "repository-materialized",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/ci/check_repository.py",
+        "--require-materialized"
+      ],
+      "requested_command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/ci/check_repository.py",
+        "--require-materialized"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 180,
+      "seconds": 6.2683912999928,
+      "log": "build\\la-selective\\final-validation-50beefd9\\repository-materialized.log",
+      "log_sha256": "ad39a273e7edf822d09cfa618c82310a185b7fe490bc4e79b67b2d5487030cdf",
+      "markers": []
+    },
+    {
+      "name": "historical-M11",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/ci/check_m11_consistency.py"
+      ],
+      "requested_command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/ci/check_m11_consistency.py"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 180,
+      "seconds": 1.9513971999986097,
+      "log": "build\\la-selective\\final-validation-50beefd9\\historical-M11.log",
+      "log_sha256": "e5d2a8eecef5876957dc4ecff01b99af696053871616d2dea563371d44b2427b",
+      "markers": []
+    },
+    {
+      "name": "retrieval-frozen",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/docs/retrieval_eval.py",
+        "--output",
+        "C:\\Users\\_\\.codex\\worktrees\\la-selective-sol\\khybersand\\build\\la-selective\\final-validation-50beefd9\\retrieval-frozen.json"
+      ],
+      "requested_command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/docs/retrieval_eval.py",
+        "--output",
+        "C:\\Users\\_\\.codex\\worktrees\\la-selective-sol\\khybersand\\build\\la-selective\\final-validation-50beefd9\\retrieval-frozen.json"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 180,
+      "seconds": 1.3824152000015602,
+      "log": "build\\la-selective\\final-validation-50beefd9\\retrieval-frozen.log",
+      "log_sha256": "89d2ab2987285be7a3688d32fb2ead4b2f67bf48e1d78fbf9d44da50427983fe",
+      "markers": []
+    },
+    {
+      "name": "retrieval-play",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/docs/retrieval_eval.py",
+        "--queries",
+        "docs/reference/retrieval-questions-play.json",
+        "--output",
+        "C:\\Users\\_\\.codex\\worktrees\\la-selective-sol\\khybersand\\build\\la-selective\\final-validation-50beefd9\\retrieval-play.json"
+      ],
+      "requested_command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/docs/retrieval_eval.py",
+        "--queries",
+        "docs/reference/retrieval-questions-play.json",
+        "--output",
+        "C:\\Users\\_\\.codex\\worktrees\\la-selective-sol\\khybersand\\build\\la-selective\\final-validation-50beefd9\\retrieval-play.json"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 180,
+      "seconds": 0.9986034000176005,
+      "log": "build\\la-selective\\final-validation-50beefd9\\retrieval-play.log",
+      "log_sha256": "04c1a937876461c22dd46f3c7676d777a4ea9e8441555b55a0322156a69061c7",
+      "markers": []
+    },
+    {
+      "name": "retrieval-challenges",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/docs/retrieval_eval.py",
+        "--queries",
+        "docs/reference/retrieval-challenges.json",
+        "--output",
+        "C:\\Users\\_\\.codex\\worktrees\\la-selective-sol\\khybersand\\build\\la-selective\\final-validation-50beefd9\\retrieval-challenges.json"
+      ],
+      "requested_command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/docs/retrieval_eval.py",
+        "--queries",
+        "docs/reference/retrieval-challenges.json",
+        "--output",
+        "C:\\Users\\_\\.codex\\worktrees\\la-selective-sol\\khybersand\\build\\la-selective\\final-validation-50beefd9\\retrieval-challenges.json"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 180,
+      "seconds": 2.1375690000131726,
+      "log": "build\\la-selective\\final-validation-50beefd9\\retrieval-challenges.log",
+      "log_sha256": "2df6ab53ca9cc1a032584bade5a58eddfaeafe6b994bc77581bf43657e73e985",
+      "markers": []
+    },
+    {
+      "name": "MAT-guard",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/material_catalogue/compatibility.py",
+        "--check"
+      ],
+      "requested_command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/material_catalogue/compatibility.py",
+        "--check"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 180,
+      "seconds": 7.175025100004859,
+      "log": "build\\la-selective\\final-validation-50beefd9\\MAT-guard.log",
+      "log_sha256": "a9ff16a5b850fbbf3c6ea77e13b58d30782fb58ef3d653bf6252a5eb40f91412",
+      "markers": []
+    },
+    {
+      "name": "MAT-compiler",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/material_catalogue/compiler.py",
+        "--check"
+      ],
+      "requested_command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/material_catalogue/compiler.py",
+        "--check"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 180,
+      "seconds": 0.26175760000478476,
+      "log": "build\\la-selective\\final-validation-50beefd9\\MAT-compiler.log",
+      "log_sha256": "d645a144c75f3517397c704fe81a8efb86fd092f64d93147bcfa35a1afc8bd3b",
+      "markers": []
+    },
+    {
+      "name": "python-syntax",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-m",
+        "py_compile",
+        "tools/experiments/la_selective_experiment.py",
+        "tools/experiments/la_selective_geometry.py",
+        "tools/experiments/la_selective_reduce.py"
+      ],
+      "requested_command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-m",
+        "py_compile",
+        "tools/experiments/la_selective_experiment.py",
+        "tools/experiments/la_selective_geometry.py",
+        "tools/experiments/la_selective_reduce.py"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 180,
+      "seconds": 0.1656467000138946,
+      "log": "build\\la-selective\\final-validation-50beefd9\\python-syntax.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "markers": []
+    },
+    {
+      "name": "whitespace",
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "requested_command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 180,
+      "seconds": 0.0530937000294216,
+      "log": "build\\la-selective\\final-validation-50beefd9\\whitespace.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "markers": []
+    },
+    {
+      "name": "final-runtime-identity",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/experiments/la_selective_experiment.py",
+        "identity",
+        "--run",
+        "la-selective-final-identity"
+      ],
+      "requested_command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/experiments/la_selective_experiment.py",
+        "identity",
+        "--run",
+        "la-selective-final-identity"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 180,
+      "seconds": 17.125188299978618,
+      "log": "build\\la-selective\\final-validation-50beefd9\\final-runtime-identity.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "markers": []
+    }
+  ],
+  "retrieval_summaries": {
+    "frozen": {
+      "questions": 32,
+      "canonical_hit_at_1": 19,
+      "canonical_hit_at_k": 32,
+      "mrr_at_k": 0.7536,
+      "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+    },
+    "play": {
+      "questions": 13,
+      "canonical_hit_at_1": 13,
+      "canonical_hit_at_k": 13,
+      "mrr_at_k": 1.0,
+      "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+    },
+    "challenges": {
+      "questions": 157,
+      "canonical_hit_at_1": 124,
+      "canonical_hit_at_k": 156,
+      "mrr_at_k": 0.873,
+      "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+    }
+  },
+  "scope": "Exact 50beefd9 source checkpoint. Later evidence-only child adds these receipts without changing runtime or fixture inputs. Local final-head repeats are retained separately."
+}
