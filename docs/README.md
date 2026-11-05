@@ -12,6 +12,8 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 The [LA-SELECTIVE mechanism and promotion boundary](systems/player-control-playground.md#la-selective-mechanism-and-experimental-admission) routes the 2026-11-05 owner direction and [dependent LA/SOL experiment](audits/2026-11-05-la-selective-sol-experiment.md). Experimental surrogate evidence does not admit original SOL recovery or combined material authority.
 
+The [real-body physical qualification](audits/2026-11-05-la-physical-qualification.md) continues #400 against reconciled84-input source. [Valid entrapment](systems/player-control-playground.md#valid-entrapment-and-experimental-physical-response) is a possible equilibrium success; invalid overlap and original SOL authority remain separate.
+
 Material authoring: [#357 is merged as an owner-adopted Planned baseline](architecture/material-authoring-catalogue-plan.md#12-owner-adoption-and-shadow-compiler-handover--2026-11-04).
 The [#353-A shadow compiler](operations/material-catalogue-shadow.md) merged in
 [#371](https://github.com/techrote/cybersand/pull/371), accepted main `7ef4856e`;

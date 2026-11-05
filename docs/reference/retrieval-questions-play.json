@@ -208,6 +208,22 @@
         "../godot/scripts/workbench_setup.gd",
         "../godot/tests/fixtures/la_selective/registration-primed.json"
       ]
+    },
+    {
+      "id": "PLAY-LA-EQUILIBRIUM-02",
+      "query": "Should a barrel genuinely trapped in Sand escape, and do passive energy filters automatically improve static granular support?",
+      "canonical": [
+        "systems/player-control-playground.md"
+      ],
+      "facts": [
+        "Valid static entrapment is desirable until actual force and available material displacement permit motion.",
+        "Invalid material/body overlap is separate; old overlapping SOL surrogates prove neither valid entrapment nor a clearance failure.",
+        "Strict and changed-state passive work filters are rejected for support regressions; the opt-in strict sign-reversal guard targets stale separating work only, not universal passivity or production promotion."
+      ],
+      "sources": [
+        "../godot/scripts/workbench_physics_bridge.gd",
+        "../godot/tests/fixtures/la_physical/registration-v3.json"
+      ]
     }
   ]
 }

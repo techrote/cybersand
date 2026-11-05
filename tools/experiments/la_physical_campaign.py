@@ -63,7 +63,8 @@ def identity():
     for name,digest in rebuild["outputs"].items():assert process.sha((ROOT/"build/la-physical/runtimes"/name).read_bytes())==digest
     inputs={p:process.sha((ROOT/p).read_bytes()) for p in git("ls-files","godot").decode().splitlines() if (ROOT/p).is_file()}
     return dict(source=source,tree=git("rev-parse","HEAD^{tree}").decode().strip(),native_base=BASE,
-                native_inputs=inventory,rebuild=rebuild,runtimes=runtimes,copied_inputs=inputs,local_delta=git("status","--short").decode())
+                native_inputs=inventory,rebuild=rebuild,runtimes=runtimes,copied_inputs=inputs,
+                runner_sha256=process.sha(Path(__file__).read_bytes().replace(b"\r\n",b"\n")),local_delta=git("status","--short").decode())
 
 
 def load_registration(path):
@@ -84,11 +85,13 @@ def main():
     parser.add_argument("--repeats",type=int,default=1)
     parser.add_argument("--existing-tests",action="store_true")
     parser.add_argument("--sequential-platforms",action="store_true")
+    parser.add_argument("--tests-only",action="store_true",help="Run import/safety/scoped fixtures without physical episodes")
     args=parser.parse_args()
     assert Path(args.run).name==args.run and args.run not in [".",".."]
     info=identity();output=ROOT/"build/la-physical"/args.run
     registration=load_registration(ROOT/"godot/tests/fixtures/la_physical/registration-v4.json")
     cases=[c for c in registration["cases"] if not args.cases or c["id"] in args.cases.split(",")]
+    if args.tests_only:cases=[]
     if args.cases:assert {c["id"] for c in cases}==set(args.cases.split(","))
 
     def host(platform):
@@ -133,6 +136,11 @@ def main():
                             d=json.loads(report.read_text(encoding="utf-8"))
                             assert d["source"]==info["source"] and not d["failures"] and d["requested_workers"]==worker
                     # A failure remains retained; independent cases continue.
+        changed=[name for name,digest in effective.items() if not name.startswith(".godot/") and
+                 (not (project/name).is_file() or process.sha((project/name).read_bytes())!=digest)]
+        process.write(folder/"effective-project-after.json",dict(source=info["source"],unexpected_changes=changed,
+            verified_files=sum(not n.startswith(".godot/") for n in effective)))
+        assert not changed,"copied authored project or loaded runtime changed during execution"
         return rows
     platforms=args.platforms.split(",")
     if args.sequential_platforms:results={platform:host(platform) for platform in platforms}
