@@ -58,6 +58,22 @@ condition-variable notification followed by mutex reacquisition for one job.
 Keep raw scheduling, interrupt, lifetime and unknown-coverage limits separate
 from CPU computation or exact job-entry claims. No production setting is changed.
 
+## TITAN RTX hardware repetition
+
+The [2026-11-05 local repetition](../audits/2026-11-05-inv154-titan-rtx.md)
+runs three profiling-disabled/enabled pairs of the same acrobat ABBA workload
+on a verified NVIDIA TITAN RTX ANGLE/D3D11 device. No `space_step()` exceeds
+40 ms in 5,761 callbacks; the maximum is 3.105 ms. This is non-reproduction of
+the registered long tail in that local cohort. With zero long events, the
+CPU-versus-off-CPU classifier remains inconclusive under its minimum-20 rule.
+
+Local WPR access fails; enabled trials use the existing per-thread counter
+fallback, so they do not establish worker scheduler states. CPU, OS and automatic
+pool capacities also differ from the hosted software-renderer machine. The
+comparison corroborates a cohort difference, not a GPU-only causal experiment
+or a universal guarantee about GPU hosts. Physics settings and production inputs
+remain unchanged; full distributions, startup-device proof and failures are retained.
+
 ## Persistent hosted execution history
 
 The [CI execution and performance contract](ci-execution-and-performance.md)

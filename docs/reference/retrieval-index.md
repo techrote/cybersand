@@ -10,6 +10,10 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 
 # Retrieval question index
 
+## TITAN RTX repetition — 2026-11-05
+
+Did the long Rayon tail recur on the local GPU, and does that isolate GPU causation? Use the [qualified profiling contract](../operations/profiling-observability-and-performance.md#titan-rtx-hardware-repetition) and linked [local audit](../audits/2026-11-05-inv154-titan-rtx.md). The [one-question fixture](retrieval-questions-inv154-titan.json) is evaluated separately from all prior frozen sets.
+
 ## Rayon worker delay — 2026-11-05
 
 Why does the pool complete late, does `in_worker_cold` mean startup, and can two wakes be one job? Use the [profiling contract](../operations/profiling-observability-and-performance.md#windows-rayon-worker-completion) and linked [worker evidence](../audits/2026-11-05-inv154-rayon-workers.md). The [two-question worker fixture](retrieval-questions-inv154-workers.json) is independent of all previous frozen, challenge and caller fixtures.

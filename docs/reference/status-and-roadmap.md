@@ -10,6 +10,8 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+The [local TITAN RTX control](../audits/2026-11-05-inv154-titan-rtx.md) does not reproduce the registered >40 ms tail across three off/on pairs. This is a separate Windows hardware-renderer cohort with counter profiling and explicit WPR limits; no physics, priority, renderer-policy or production optimization is selected.
+
 The [worker-side INV-004 diagnosis](../audits/2026-11-05-inv154-rayon-workers.md) identifies ready-but-unscheduled completion workers under WARP-associated CPU contention in the retained Windows software-renderer cohort. This is diagnostic evidence only; production priority, renderer, worker and physics settings remain unchanged.
 
 INV-004 / #154 remains a diagnostic investigation. The [2026-11-05 Windows experiment](../audits/2026-11-05-inv154-windows-thread-time.md) preserves #436 → #440 → #446 → #449 tests on one current-main-based diagnostic branch. Thread execution evidence must precede any separately authorized optimization; no production physics/rendering/gameplay change is part of this checkpoint.

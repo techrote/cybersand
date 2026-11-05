@@ -10,6 +10,8 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+The [TITAN RTX repetition](audits/2026-11-05-inv154-titan-rtx.md) completes three local profiling-off/on pairs with zero >40 ms steps in 5,761 callbacks. Device banners verify NVIDIA hardware ANGLE/D3D11; WPR access and cross-host attribution limits remain explicit.
+
 The [Rayon worker follow-up](audits/2026-11-05-inv154-rayon-workers.md) attributes the retained Windows delays to runnable completion workers competing with higher-priority WARP-associated threads; production branches and physics settings remain unchanged.
 
 The [INV-004 Windows calling-thread experiment](audits/2026-11-05-inv154-windows-thread-time.md) preserves #449's original reproduction, source-equivalent diagnostic chain and qualified CPU-versus-wall measurements. The [profiling guide](operations/profiling-observability-and-performance.md) owns interpretation.

@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "frozen_date": "2026-11-05",
+  "purpose": "Independent hardware repetition question; earlier frozen, caller and worker fixtures remain unchanged.",
+  "questions": [
+    {
+      "id": "INV154-TITAN-01",
+      "query": "Did the long Rapier Rayon stalls reproduce on TITAN RTX hardware rendering, and does that isolate GPU causation?",
+      "canonical": ["operations/profiling-observability-and-performance.md"],
+      "facts": [
+        "Three profiling-off/on pairs on verified TITAN RTX hardware ANGLE/D3D11 have zero >40 ms steps in 5761 callbacks, maximum 3.105 ms: non-reproduction in that cohort.",
+        "With zero long events, CPU-versus-off-CPU classification remains inconclusive; unavailable WPR means no local ETW worker-state conclusion.",
+        "CPU, OS and automatic pool sizes differ from the hosted software-renderer cohort, so this is not GPU-only causal proof or a universal hardware-GPU guarantee."
+      ],
+      "sources": ["operations/profiling-observability-and-performance.md", "audits/2026-11-05-inv154-titan-rtx.md"]
+    }
+  ]
+}

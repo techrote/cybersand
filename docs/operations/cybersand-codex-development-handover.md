@@ -4,11 +4,20 @@ status: Current
 document-kind: guide
 scope: Short onboarding sequence and checkpoint protocol; product intent, source identity and contracts have canonical homes
 canonical-for: [development-onboarding]
-last-reviewed: 2026-11-04
+last-reviewed: 2026-11-05
 related-documents: [source-checkpoint-and-recovery.md, ../reference/product-intent-and-priorities.md, ../reference/status-and-roadmap.md, microscenarios-programme.md, development-claims-remediation-programme.md, water-hybrid-pressure-extension-programme.md, github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
 # Development handover
+
+## Local TITAN RTX repetition — 2026-11-05
+
+The [six-process hardware control](../audits/2026-11-05-inv154-titan-rtx.md)
+records zero >40 ms steps in 5,761 callbacks under unchanged #449 workload and
+physics settings. All six banners confirm NVIDIA hardware ANGLE/D3D11. Local
+WPR is denied; enabled trials use the original thread-counter fallback. Preserve
+the setup failure and distinguish non-reproduction from CPU-occupancy or GPU-only
+causal claims. No production branch, runtime or policy was changed.
 
 ## INV-004 worker-side Windows evidence — 2026-11-05
 
