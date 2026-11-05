@@ -99,9 +99,16 @@ void probe(std::uint32_t workers) {
     const auto old_baseline = baseline();
     auto uninterrupted = std::make_unique<World>(cfg);
 
-    require(uninterrupted->install_generated_chunk({-1, 0}, old_baseline) ==
-                ChunkInstallOutcome::Installed,
-            "actual native absent-chunk admission rejected");
+    // Keep identical bounded 1/4-worker workloads: eight separated, real
+    // generated native chunks across both sides of the signed origin. They
+    // cannot coalesce into a single scheduling core or share rule halos.
+    for (const int chunk_x : {-1, 1, 3, 5, 7, 9, 11, 13}) {
+        require(uninterrupted->install_generated_chunk({chunk_x, 0}, old_baseline) ==
+                    ChunkInstallOutcome::Installed,
+                "actual native absent-chunk admission rejected");
+    }
+    require(uninterrupted->chunk_count() == 8,
+            "multichunk workload was not actually resident");
     require(uninterrupted->install_generated_chunk({-1, 0}, old_baseline) ==
                 ChunkInstallOutcome::AlreadyResident,
             "strict installer did not refuse occupied resident");
