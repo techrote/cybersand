@@ -10,6 +10,10 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 
 # Retrieval question index
 
+For the fresh diagnostic normal policy, lifetime locks and experimental
+runtime identity, retrieve [the live policy boundary](../architecture/rigid-body-and-cellular-coupling.md#opt-in-live-normal-policy).
+`retrieval-questions-sol-active-normal-live.json` is an additive supplement.
+
 For the opt-in copied-value normal-relaxation candidate, retrieve
 [the coupling boundary](../architecture/rigid-body-and-cellular-coupling.md#active-normal-copied-value-candidate).
 `retrieval-questions-sol-active-normal.json` is a separate post-result supplement;
@@ -31,7 +35,7 @@ failed attempts, exact geometry/source and comparative performance qualifiers.
 `retrieval-questions-sol-chamber.json` is an additive post-result development
 supplement; existing frozen questions remain unchanged.
 
-## Material liveness Phase A and implementation admission — 2026-11-04
+## Material liveness Phase A and implementation admission â€” 2026-11-04
 
 | Question | Canonical route |
 |---|---|
@@ -46,7 +50,7 @@ and challenge157 remain unchanged. The dated registration, findings and correcti
 memo are excluded from default retrieval and reached through these current
 contracts. Their original failed or incomplete attempts remain evidence.
 
-## Material catalogue compiler and compatibility guards — 2026-11-04
+## Material catalogue compiler and compatibility guards â€” 2026-11-04
 
 Use the [shadow compiler guide](../operations/material-catalogue-shadow.md)
 for implemented #353-A scope, commands, deterministic validation, frozen native
@@ -58,7 +62,7 @@ revision-sensitive #357 adoption/merge fact; query wording and canonical routes
 stay fixed. Original version1 and its evidence remain at implementation head
 `6d3737594beb39e83e555f66f2e81184a4bdbf77`.
 
-## Material-authoring adoption and implementation boundary — 2026-11-04
+## Material-authoring adoption and implementation boundary â€” 2026-11-04
 
 The [adopted Planned architecture](../architecture/material-authoring-catalogue-plan.md#12-owner-adoption-and-shadow-compiler-handover--2026-11-04)
 and [current A-only integration boundary](../architecture/material-authoring-catalogue-plan.md#13-bounded-compatibility-tooling-and-adopted-main-reconciliation--2026-11-04)
@@ -80,7 +84,7 @@ facts and fixture metadata; query wording and canonical routes stay fixed.
 Version1 remains at reviewed head `9b776d109e7843fb9b2d25239f9d088181309aa1`,
 and adoption-only version2 at main `3da7e7be4a6af4c85e03a7d8a0ed57229e5db33d`.
 
-## LCB current-main reassessment routes — 2026-11-03
+## LCB current-main reassessment routes â€” 2026-11-03
 
 | Question | Canonical route |
 |---|---|
@@ -91,7 +95,7 @@ and adoption-only version2 at main `3da7e7be4a6af4c85e03a7d8a0ed57229e5db33d`.
 | Which evidence, parked PRs and ownership boundaries should successors preserve? | [Development handover](../operations/cybersand-codex-development-handover.md#lcb-reassessment-and-bounded-successors--2026-11-03), [validation ledger](validation-evidence.md#lcb-reassessment-evidence-boundary--2026-11-03) |
 
 The dated [#359 report](../audits/2026-11-03-lcb-reassessment.md) supplies the
-complete inventory and executable #360–#363 handovers. It is explicitly excluded
+complete inventory and executable #360â€“#363 handovers. It is explicitly excluded
 from the default current-answer corpus; the focused contracts above own answers.
 [Eight supplementary questions](retrieval-questions-lcb-reassess.json) exercise
 these distinctions without modifying the frozen32 or existing157 challenges.
@@ -158,7 +162,7 @@ metadata and [frozen questions](retrieval-questions.json) define the evaluation 
 | How can two desired-velocity outputs control a real flying chassis without hidden goal navigation, unlimited hover or velocity clipping? | [4LY control and goal blindness](../systems/physical-free-flight.md), [strict action interface](interfaces-and-message-contracts.md#physical-free-flight-actions) |
 | Does releasing a drone's velocity request mean hover, and what happens on cancellation, lease expiry, power-off or replacement? | [4LY neutral and lifecycle modes](../systems/physical-free-flight.md#how-do-neutral-cancellation-power-off-and-suspension-differ), [copied publications](interfaces-and-message-contracts.md#physical-free-flight-actions) |
 | Which profile/controller hashes, applied assistance and actual motion belong in 4LY flight evidence, and what gates Trainer learning? | [4LY identity and programme](../systems/physical-free-flight.md), [focused conformance tests](../operations/local-build-and-validation.md#physical-free-flight-checks) |
-| Can IDs 81â€“131 survive CYSD1 saves and construction, diagnostic histograms and sampled-rig digging occlusion? | [Building integration](../systems/building-material-catalogue.md#which-integration-boundaries-use-the-expanded-catalogue), [save format](level-saves-and-replay.md), and [review evidence](../audits/2026-10-19-mat002-review-and-validation.md) |
+| Can IDs 81Ã¢â‚¬â€œ131 survive CYSD1 saves and construction, diagnostic histograms and sampled-rig digging occlusion? | [Building integration](../systems/building-material-catalogue.md#which-integration-boundaries-use-the-expanded-catalogue), [save format](level-saves-and-replay.md), and [review evidence](../audits/2026-10-19-mat002-review-and-validation.md) |
 | Did graphical tests actually render, and can a headless skip or exit-zero script error pass CI? | [Required rendered-test execution](../operations/testing-validation-and-replay.md#ci-execution-sharding), [Linux invocation](../operations/local-build-and-validation.md#linux-gdextension-ci-sharding), and [review evidence](../audits/2026-10-19-mat002-review-and-validation.md) |
 | Can the standalone physics CLI safely count building materials, and which executable regression checks its JSON output? | [CLI admission and sample accounting](../operations/physics-characterisation.md#which-checks-guard-the-measurement-path), [build commands](../operations/local-build-and-validation.md#how-is-the-physics-baseline-rebuilt) |
 | Does current CI actually execute the retained Windows DLL, and what source and test coverage does that prove? | [Windows execution gate](../operations/local-build-and-validation.md#windows-retained-runtime-execution), [test acceptance](../operations/testing-validation-and-replay.md#ci-execution-sharding), and [dated runtime evidence](../audits/2026-10-19-mat002-review-and-validation.md) |
@@ -168,7 +172,7 @@ metadata and [frozen questions](retrieval-questions.json) define the evaluation 
 | How do all 32 usables share real physical mounts, independent aim/power, accepted recoil and the same human/demo/policy command path? | [Physical equipment](../systems/actor-usables.md), [equipment actions and results](interfaces-and-message-contracts.md#physical-equipment-actions-and-results) |
 | Can a stale receipt fire a dropped tool, can pickup refill a processor, and who owns a deployed device's native ports? | [Physical equipment lifecycle](../systems/actor-usables.md), [physical ownership](../architecture/data-ownership-and-lifetimes.md), [equipment interface](interfaces-and-message-contracts.md#physical-equipment-actions-and-results) |
 | How do I run the physical usable course, test a processor jam and inspect useful default loadouts for all 46 actors? | [Physical usable course](../systems/thunderbowl-control-reference.md#physical-usable-course), [scripted loadouts](../systems/physical-actor-rigs.md#how-do-the-scripted-actors-use-their-loadouts), [focused validation](../operations/local-build-and-validation.md#physical-usable-validation) |
-| How do I enter Blacksite Nine, follow the route through its connected 3Ã—3 districts, use the camera map, and preserve or reset edits across shared boundaries? | [Blacksite Nine connected-complex guide](../operations/blacksite-nine-demo.md) |
+| How do I enter Blacksite Nine, follow the route through its connected 3Ãƒâ€”3 districts, use the camera map, and preserve or reset edits across shared boundaries? | [Blacksite Nine connected-complex guide](../operations/blacksite-nine-demo.md) |
 | How do I open Neon Reliquary, descend through Middle Cyberberbia, Sewertech Alley and Industrial Underswamp, inspect viewpoints, or capture all four tiles? | [Neon Reliquary scene guide](../operations/neon-reliquary-demo.md) |
 
 | How do Strata, Flow Network and District Grammar generate interconnected chunks on demand? | [Procedural generation](../systems/procedural-world-generation.md); source/runtime scope belongs to [GEN-001 evidence](../audits/2026-10-18-gen001-procedural-generation.md) |
@@ -217,7 +221,7 @@ metadata and [frozen questions](retrieval-questions.json) define the evaluation 
 | Why can deep connected Water keep unequal levels, what did #26 reject, and what comes next? | [Water design](../systems/water-design.md), [architecture programme](../operations/architecture-programme.md), [#26 evidence](../audits/2026-09-19-issue-26-water-leveling.md) |
 | Why test hybrid Water sheets before adding another pressure solver, and why is WEX-002 currently blocked? | [Water hybrid/pressure extension](../operations/water-hybrid-pressure-extension-programme.md), [WEX-002 blocked disposition](../audits/2026-09-24-wex002-water-sheet-blocked-disposition.md), [Water design](../systems/water-design.md), [soliding programme](../operations/soliding-programme.md) |
 | Is the barrel a special physics object, and was its historical support result owner-accepted? | [Product intent](product-intent-and-priorities.md), [Water hybrid/pressure extension](../operations/water-hybrid-pressure-extension-programme.md), [remediation programme](../operations/development-claims-remediation-programme.md) |
-| Which liquid solver families exist, which materialÃ—family combinations are allowed, and how is a family selected? | [Solver-family policy](../architecture/liquid-solver-family-policy.md), [capability matrix](liquid-solver-capability-matrix.json), [materials and rule kernels](../systems/materials-and-rule-kernels.md) |
+| Which liquid solver families exist, which materialÃƒâ€”family combinations are allowed, and how is a family selected? | [Solver-family policy](../architecture/liquid-solver-family-policy.md), [capability matrix](liquid-solver-capability-matrix.json), [materials and rule kernels](../systems/materials-and-rule-kernels.md) |
 | Is the native liquid policy API implemented, what does this build accept or refuse, and what does readback report? | [Native policy foundation](../architecture/liquid-solver-family-policy.md#native-policy-foundation-current-2026-10-24), [roadmap](status-and-roadmap.md#lcb-001-policy-foundation--2026-10-24), [dated evidence](../audits/2026-10-24-issue-200-policy-foundation.md) |
 | Is the pressure_flow_v1 Water family implemented, how do its gas compartments, heads and kernel work, and what did it measure? | [`pressure_flow_v1` reference](../architecture/pressure-flow-v1.md), [roadmap](status-and-roadmap.md#lcb-001-pressure-reference--2026-10-24), [dated evidence](../audits/2026-10-24-lcb001-pressure-reference-publication.md), [handoff requirements](../architecture/lcb-pressure-inertial-handoff.md#pressure-pressure_flow_v1-water-only-200) |
 | Why does a quiet PressureFlow pool cost tens of milliseconds per tick when FreeMass sleeps, and do cached/dormant variants fix it? | [#201 idle-cost diagnosis, measurements and Planned P1/P2](../audits/2026-11-04-lcb201-pressure-idle-cost.md), [current-main cost at host scale](../architecture/pressure-optimization.md#current-main-cost-at-host-scale), [desktop region-flip fix and in-app before/after](../audits/2026-11-04-lcb201-region-flip.md), [experimental unaccepted P1 draft evidence](../audits/2026-11-04-lcb201-p1-wake-summaries.md). Native only; no full-host or default claim. |
@@ -271,7 +275,7 @@ metadata and [frozen questions](retrieval-questions.json) define the evaluation 
 | Can a stale Water snapshot end a blind session or acknowledge a newer Tower reset? | [Tower exit ownership](../operations/experiment-tower.md#how-is-a-desktop-water-exit-acknowledged), [receipt fields](interfaces-and-message-contracts.md#desktop-water-exit-receipts), then [dated correction](../audits/2026-10-22-water-exit-acknowledgement.md) |
 | Why #18 remains held after G-P | [Water-feel programme addendum](../operations/architecture-programme-water-feel-addendum.md), [compact-motion prompt](../operations/architecture-programme-prompts/compact-motion.md) |
 | What is the actual #24/#27-#30 development order, and may MicroScenarios run before G-final? | [Canonical MicroScenarios/interactions programme](../operations/microscenarios-programme.md), [roadmap](status-and-roadmap.md) |
-| What interaction schema/rule/provenance is authoritative now, and how do we avoid a destructive NÂ² matrix? | [Current interaction substrate](../systems/intermaterial-interactions.md), [canonical programme](../operations/microscenarios-programme.md) |
+| What interaction schema/rule/provenance is authoritative now, and how do we avoid a destructive NÃ‚Â² matrix? | [Current interaction substrate](../systems/intermaterial-interactions.md), [canonical programme](../operations/microscenarios-programme.md) |
 
 ## Retrieve historical results explicitly
 
@@ -403,11 +407,11 @@ Layered material worlds, Strata Theatre, quantized relief and explicit interlaye
 ## Deepworks exhibition and full-size depth worlds
 
 The [Deepworks guide](../operations/deepworks-exhibition.md) owns `--deepworks`
-entry, the total 1024 Ã— 1024 map, sixteen districts, 32 paired native exhibits,
+entry, the total 1024 Ãƒâ€” 1024 map, sixteen districts, 32 paired native exhibits,
 foreground/rear source schedules, finite-feed replay, guided-tour timing and
 camera/painting controls. The live rear `scripted` plane and frozen true
-`background` are distinguished there. For 640 Ã— 360 compatibility, non-square
-dimensions, the 8â€“1024 per-axis range, full-size material surfaces, view clamping
+`background` are distinguished there. For 640 Ãƒâ€” 360 compatibility, non-square
+dimensions, the 8Ã¢â‚¬â€œ1024 per-axis range, full-size material surfaces, view clamping
 and stale-packet rejection, use the
 [depth contract](../systems/depth-layers-and-parallax.md). Exact budgets belong
 to [configuration](configuration-reference.md#depth-host-and-deepworks-configuration);
