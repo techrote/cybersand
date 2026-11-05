@@ -47,6 +47,20 @@ policies, stale primed workspace/sink, body aliasing and nonfinite refused input
 Actual compiler sizes, physical parity and runtime/API qualification are still
 unavailable at this checkpoint; no old runtime receipt qualifies this new source.
 
+At a4232ccd, all nine retained-oracle binaries preserve the38frozen physical
+observations. Three additional trace binaries pass43cases under both policies,
+64,902checks each: Linux optimized/strict ASan+UBSan and actual Windows MSVC.
+Observed workspace size is74,752bytes and optional trace size55,872bytes on all
+three compilers. Traceoff/on physical results/final contacts, reused sink and
+body-alias cases match. Raw commands/logs/binaries remain under the new
+`build/sol-node-trace/values-001` directory; these are copied-value tests, not
+new live physical episodes or runtime admission.
+
+A separate trace runtime adapter preserves the original runtime runner and its
+ff0d7cf5receipt. It pins the new registration/wire and writes fresh outputs below
+`build/sol-node-trace/runtimes-001`, retaining native84, frozen manifests and32
+material-custody files. Actual extension builds and Godot execution remain pending.
+
 The initial resource plan retains5GiBfree and atmost2GiBnew artifacts. Actual
 buffer size and observer cost must be measured; copied diagnostic payload cost
 is not ordinary gameplay or original SOL CPU performance. Original SOL material/
