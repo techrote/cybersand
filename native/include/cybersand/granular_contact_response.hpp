@@ -146,6 +146,26 @@ inline Result solve_compound(const Body& b, std::span<const Bin* const> bins,
             contacts[out.nodes++]={points.high,bin.normal,weight*.5,out.capacity*weight*.5};
         }
     }
+    // A copied Body and Bin can each be finite while subtracting their
+    // positions overflows, or the angular contact velocity is unrepresentable.
+    // Reject the whole batch before updating any contact response. This also
+    // prevents NaN raw diagnostics surviving the later energy-passivity guard.
+    for(std::size_t i=0;i<out.nodes;++i) {
+        const auto& contact=contacts[i];
+        const Vec r=contact.position-b.com;
+        const Vec angular{-b.omega*r.y,b.omega*r.x};
+        const Vec local=b.velocity+angular;
+        const Vec tangent{-contact.normal.y,contact.normal.x};
+        if(!std::isfinite(contact.position.x) || !std::isfinite(contact.position.y) ||
+           !std::isfinite(r.x) || !std::isfinite(r.y) ||
+           !std::isfinite(angular.x) || !std::isfinite(angular.y) ||
+           !std::isfinite(local.x) || !std::isfinite(local.y) ||
+           !std::isfinite(dot(local,contact.normal)) ||
+           !std::isfinite(dot(local,tangent))) {
+            Result refused;
+            refused.passive_rejected=true; refused.scale=0; return refused;
+        }
+    }
     Vec v=b.velocity; double w=b.omega;
     for(unsigned pass=0;pass<4;++pass) for(unsigned axis=0;axis<2;++axis) {
         auto& delta=workspace.delta;
@@ -204,6 +224,20 @@ inline Result solve_compound(const Body& b, std::span<const Bin* const> bins,
         out.passive_rejected=true; out.scale=0;
         out.impulse={}; out.normal_impulse={}; out.tangent_impulse={};
         out.torque=0; out.normal=0; out.tangent=0; out.energy_after=out.energy_before;
+    }
+    // A finite initial geometry is not sufficient to guarantee finite derived
+    // impulses after the bounded iterations. Never export partial nonfinite
+    // diagnostics (including a raw impulse suppressed by the passivity guard).
+    if(!std::isfinite(out.impulse.x) || !std::isfinite(out.impulse.y) ||
+       !std::isfinite(out.normal_impulse.x) || !std::isfinite(out.normal_impulse.y) ||
+       !std::isfinite(out.tangent_impulse.x) || !std::isfinite(out.tangent_impulse.y) ||
+       !std::isfinite(out.raw_impulse.x) || !std::isfinite(out.raw_impulse.y) ||
+       !std::isfinite(out.torque) || !std::isfinite(out.raw_torque) ||
+       !std::isfinite(out.normal) || !std::isfinite(out.tangent) ||
+       !std::isfinite(out.raw_normal) || !std::isfinite(out.raw_tangent) ||
+       !std::isfinite(out.energy_before) || !std::isfinite(out.energy_after)) {
+        Result refused;
+        refused.passive_rejected=true; refused.scale=0; return refused;
     }
     return out;
 }
