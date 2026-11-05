@@ -188,9 +188,13 @@
     },
     {
       "path": "full-packet.json",
-      "bytes": 996,
-      "sha256": "2d3a64a4758811271107c0c875688cc97cab28e7627429544788f692a9e2d3c2",
-      "scope": "Full raw local packet available; separate independent audit still pending"
+      "bytes": 1865,
+      "sha256": "7188da7ffb033dfe9a5ec3b0ed5ca87b7e21403957414b77d8721981c89daf72"
+    },
+    {
+      "path": "publication-checks.json",
+      "bytes": 5038,
+      "sha256": "2c8eca2c673435aa85b942a23367f5548336043924eb5ea1459d3b5f2db3b76a"
     }
   ],
   "local_raw_files": [

@@ -1,0 +1,174 @@
+{
+  "source": "b5744ae73c07936ff35e65de40f5d76ea7f5be9b",
+  "results": [
+    {
+      "name": "docs",
+      "command": [
+        "python",
+        "tools/ci/check_docs.py"
+      ],
+      "requested_command": [
+        "python",
+        "tools/ci/check_docs.py"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 120,
+      "seconds": 1.7033940000110306,
+      "log": "build\\sol-chamber-sealing\\final-b574-002\\docs.log",
+      "log_sha256": "ee07d47ca1b4544ed00c22f10fa7f25a58069fe13ad1abd154e0e5ba79b0a27d",
+      "markers": []
+    },
+    {
+      "name": "m11",
+      "command": [
+        "python",
+        "tools/ci/check_m11_consistency.py"
+      ],
+      "requested_command": [
+        "python",
+        "tools/ci/check_m11_consistency.py"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 120,
+      "seconds": 1.0816126000136137,
+      "log": "build\\sol-chamber-sealing\\final-b574-002\\m11.log",
+      "log_sha256": "e5d2a8eecef5876957dc4ecff01b99af696053871616d2dea563371d44b2427b",
+      "markers": []
+    },
+    {
+      "name": "repository",
+      "command": [
+        "python",
+        "tools/ci/check_repository.py"
+      ],
+      "requested_command": [
+        "python",
+        "tools/ci/check_repository.py"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 120,
+      "seconds": 2.6317038999986835,
+      "log": "build\\sol-chamber-sealing\\final-b574-002\\repository.log",
+      "log_sha256": "84331b5358db24b08ae62e813b841f5eb29e7e6da0d796bb780a5cd361da45d2",
+      "markers": []
+    },
+    {
+      "name": "material",
+      "command": [
+        "python",
+        "tools/material_catalogue/compatibility.py",
+        "--check"
+      ],
+      "requested_command": [
+        "python",
+        "tools/material_catalogue/compatibility.py",
+        "--check"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 120,
+      "seconds": 1.8477665000245906,
+      "log": "build\\sol-chamber-sealing\\final-b574-002\\material.log",
+      "log_sha256": "50174e75669bf15c0d521884f313715b5769054ca583572e3e734d0d06c14ae7",
+      "markers": []
+    },
+    {
+      "name": "geometry",
+      "command": [
+        "python",
+        "tools/experiments/test_sol_chamber_reduce.py"
+      ],
+      "requested_command": [
+        "python",
+        "tools/experiments/test_sol_chamber_reduce.py"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 120,
+      "seconds": 0.157211699988693,
+      "log": "build\\sol-chamber-sealing\\final-b574-002\\geometry.log",
+      "log_sha256": "ba9882e9ac323861c4e47fd88f712e12a56b4bd76a6d541faec02026dfe5f209",
+      "markers": []
+    },
+    {
+      "name": "reference",
+      "command": [
+        "python",
+        "tools/experiments/sol_chamber_review_reference.py",
+        "docs/audits/sol-chamber-20261105"
+      ],
+      "requested_command": [
+        "python",
+        "tools/experiments/sol_chamber_review_reference.py",
+        "docs/audits/sol-chamber-20261105"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 120,
+      "seconds": 1.0523914999794215,
+      "log": "build\\sol-chamber-sealing\\final-b574-002\\reference.log",
+      "log_sha256": "c4fc8c01d1909681d0be39e9a0c8f1d3fb7a138cab45d60365e442f7ffebfc84",
+      "markers": []
+    },
+    {
+      "name": "whitespace",
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "requested_command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 120,
+      "seconds": 0.03577580000273883,
+      "log": "build\\sol-chamber-sealing\\final-b574-002\\whitespace.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "markers": []
+    }
+  ],
+  "linux_raw_verification": {
+    "source": "b5744ae73c07936ff35e65de40f5d76ea7f5be9b",
+    "result": {
+      "name": "raw-verification",
+      "command": [
+        "wsl.exe",
+        "-d",
+        "Ubuntu-24.04",
+        "--",
+        "timeout",
+        "--signal=TERM",
+        "--kill-after=5s",
+        "240s",
+        "python3",
+        "/mnt/c/Users/_/.codex/worktrees/sol-chamber-20261105/khybersand/tools/experiments/sol_chamber_review_packet.py",
+        "/mnt/c/Users/_/.codex/worktrees/sol-chamber-20261105/khybersand",
+        "--verify-only"
+      ],
+      "requested_command": [
+        "wsl.exe",
+        "-d",
+        "Ubuntu-24.04",
+        "--",
+        "python3",
+        "/mnt/c/Users/_/.codex/worktrees/sol-chamber-20261105/khybersand/tools/experiments/sol_chamber_review_packet.py",
+        "/mnt/c/Users/_/.codex/worktrees/sol-chamber-20261105/khybersand",
+        "--verify-only"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 240,
+      "seconds": 54.53951109998161,
+      "log": "build\\sol-chamber-sealing\\linux-portability-b574\\raw-verification.log",
+      "log_sha256": "fd9e705e23265d979c4b5802af62154c6b5f13644b44776fe1308606762b2f26",
+      "markers": []
+    }
+  }
+}
