@@ -1,0 +1,15 @@
+{
+  "id":"LA-PHYSICAL-007-BOUNDED-WORKLOAD",
+  "registered_date":"2026-11-05",
+  "extends":"res://tests/fixtures/la_physical/registration-v3.json",
+  "objective":"Keep006mechanism/gains unchanged. Retain original64patchstream failure after95completedticks as stress NO-GO. Add a separately identified16patch bounded active workload on the same2048canvas; it is not a repaired64patchresult or a relaxedcapacitygate. Add hard-supported stationary arrival controls, because original unsupported impact bodies fall before contact.",
+  "extra_cases":[
+    {"id":"supported-Sand-impact","kind":"dynamic","models":["reference_barrel"],"layout":"arrival","material":2,"hard_supported":true},
+    {"id":"supported-Dust-impact","kind":"dynamic","models":["kestrel"],"layout":"arrival","material":14,"hard_supported":true},
+    {"id":"bounded-quiet-contact","kind":"performance","models":["reference_barrel"],"layout":"bed","extent":2048,"distributed":"quiet","grid":4},
+    {"id":"bounded-Sand-Dust-stream","kind":"performance","models":["reference_barrel","needle","scooper"],"layout":"bed","extent":2048,"distributed":"stream","grid":4},
+    {"id":"bounded-dense-collision","kind":"performance","models":["kestrel","scooper","reference_barrel"],"layout":"banks","extent":2048,"distributed":"dense","grid":4,"impulse":2}
+  ],
+  "performance_interpretation":"All180steps include settling. Report terminal60stepcost separately without asserting the background is fullyquiet unless activity counters show it. Three repeats perOS/worker; platforms sequential with no simultaneous scientificbuild/test workload for dedicatedtimings. Instrumentation/controlattemptcost separate and inclusive; retain originalstressfailurecost. Not the originalSOL2msCPUgate.",
+  "failed_world":"Capture attemptedstep/elapsedcost/nativefailuretext and nullfinalpayload. Failed-world snapshots are unavailable, never invented or excluded from attempteddenominators."
+}
