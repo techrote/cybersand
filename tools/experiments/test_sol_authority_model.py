@@ -63,7 +63,8 @@ class CaptureTests(unittest.TestCase):
         data=json.loads(HISTORICAL.read_text(encoding='utf-8'));control=data['interior_control']
         r=m.hard_probe(control['geometry']['proxies'],data['native_fields'][control['native_field']])
         self.assertEqual(r['status'],'REFUSED_HARD_GEOMETRY')
-        self.assertEqual((r['material_counts']['2'],r['material_counts']['1']),(9,16))
+        # Full frozen field also contains512perimeter Wall cells outside this body.
+        self.assertEqual((r['material_counts']['2'],r['material_counts']['1']),(9,528))
         self.assertEqual(len({tuple(v['cell']) for v in r['hard_intersections']}),16)
         stationary=data['negative_cases']['embedded_stationary'];g=data['geometries'][str(stationary['initial']['measurement']['geometry_id'])]
         r=m.hard_probe(g['proxies'],data['native_fields'][stationary['native_field']])
@@ -73,6 +74,20 @@ class CaptureTests(unittest.TestCase):
         self.assertNotEqual(rotated['initial']['state']['pose'],g['pose'])
         self.assertEqual(m.validate_capture(rotated)['status'],'REFUSED_OR_UNKNOWN')
         self.assertFalse(r['live_authority']);self.assertFalse(r['actuation_permitted'])
+
+    def test_source_map_and_input_custody(self):
+        folder=HISTORICAL.parent;custody=json.loads((folder/'input-custody.json').read_text(encoding='utf-8'))
+        for item in custody['artifacts']:
+            self.assertEqual(hashlib.sha256((folder/item['public_file']).read_bytes()).hexdigest(),item['public_lf_sha256'])
+        data=json.loads((folder/'source-map.json').read_text(encoding='utf-8'));rows={r['path']:r for r in data['files']}
+        self.assertEqual((data['file_count'],data['native_input_union_count']),(1355,92))
+        self.assertEqual({r['path'] for r in data['files'] if r['classification']=='protected-conflict'}, {'native/src/world.cpp','native/src/world_inertial.inc','native/src/world_pressure.inc'})
+        for label,source in data['sources'].items():
+            for transition in source['material']['reviewed_transitions']:
+                self.assertIsNotNone(rows[transition['record']]['sources'][label])
+            for platform,inventory in data['runtime_inventories'][label].items():
+                self.assertTrue(set(inventory['native_inputs'])<=set(rows));self.assertTrue(set(inventory['build_inputs'])<=set(rows))
+        self.assertIsNone(data['composed_tree']);self.assertFalse(data['admitted']);self.assertFalse(data['live_authority']);self.assertFalse(data['actuation_permitted'])
 
 class LeaseTests(unittest.TestCase):
     def setUp(self):self.packet=synthetic_capture();self.stamp=self.packet['identity'];self.model=m.LeaseModel()
