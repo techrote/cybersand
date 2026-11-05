@@ -141,7 +141,7 @@ static func inspect(pack: Variant) -> Dictionary:
 		if typeof(feature) != TYPE_DICTIONARY:
 			return _failure("feature must be an object")
 		var feature_id: Variant = feature.get("id")
-		if typeof(feature_id) != TYPE_STRING or not String(feature_id).is_valid_filename() or String(feature_id).is_empty():
+		if typeof(feature_id) != TYPE_STRING or not String(feature_id).is_valid_filename() or String(feature_id).is_empty() or String(feature_id) in [".", ".."] or "/" in String(feature_id) or "\\" in String(feature_id):
 			return _failure("feature ID must be a safe nonempty filename")
 		if features.has(feature_id):
 			return _failure("duplicate feature ID: " + feature_id)
