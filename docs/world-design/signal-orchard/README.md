@@ -44,3 +44,14 @@ Admit schema and host clearing/ordering ownership; map local 1× rectangles into
 ## Verification record
 
 Connector-read pinned main; 26 source material definitions matched, 366 rectangles in bounds, 16 variants structurally checked, eight gallery placements found fully fixed, and 10/10 negative mutations rejected by the authoring-side validator. Source-colour SVG generated. Checked-in validator, native simulation, Godot screenshot, CI and performance **not run**.
+
+## Local reproduction commands (not executed in this authoring session)
+
+```sh
+python3 docs/world-design/signal-orchard/validate_pack.py --source-check
+python3 docs/world-design/signal-orchard/render_pack.py --check
+# To regenerate preview explicitly in a scratch checkout:
+python3 docs/world-design/signal-orchard/render_pack.py
+```
+
+The renderer and validator intentionally require no engine installation. Passing them cannot substitute for native simulation, Godot/actor-clearance evidence, material mutation ownership or production admission.
