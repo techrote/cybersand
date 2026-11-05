@@ -30,6 +30,7 @@ func run_chamber_steps(spec: Dictionary, mode: String, body: RigidBody2D, bridge
 		world: Variant, preparer: Variant, report: Dictionary, output: String, name: String) -> void:
 	super.run_chamber_steps(spec,mode,body,bridge,world,preparer,report,output,name)
 	report.observer=observer
+	report.cost_apparatus="SOL-CHAMBER-COST-001-APPARATUS-002"
 	report.godot_process_id=OS.get_process_id()
 	report.cost_profile_sha256=FileAccess.get_sha256(COST_PROFILE)
 	report.base_profile_sha256=FileAccess.get_sha256(CHAMBER_PROFILE)
@@ -51,7 +52,7 @@ func run() -> void:
 	var workers: int = int(OS.get_environment("SOL_CHAMBER_WORKERS"))
 	var repeat: int = int(OS.get_environment("SOL_CHAMBER_REPEAT"))
 	observer=OS.get_environment("SOL_CHAMBER_OBSERVER")
-	check(not output.is_empty() and selection in cost.cases and arm in cost.arms and workers in cost.workers
+	check(not output.is_empty() and selection in cost.cases and arm in cost.arms and float(workers) in cost.workers
 		and repeat>=0 and repeat<int(cost.repeats) and observer in cost.observers,"registered cost coordinates")
 	if not failures.is_empty():quit(1);return
 	DirAccess.make_dir_recursive_absolute(output)
