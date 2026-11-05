@@ -1,0 +1,143 @@
+{
+  "registration": "SOL-CONTACT-APPLICATION-001",
+  "date": "2026-11-05",
+  "baseline_source": "1dfb3e92f07b130fba46241e7ac0cefd059f9e87",
+  "native_runtime_build_source": "0b76d261d8398fbe81b4ce9f012516df0effc1db",
+  "owning_branch": "codex/sol-active-normal-live-20261105",
+  "draft_pr": 429,
+  "hypothesis": "Removing only the application velocity clip may reduce later mixed-body rebound while preserving positional correction, COM transport and native wrench. This does not attribute the first normal-policy difference to clipping. Discrete gravity support may regress.",
+  "candidate": {
+    "id": "retain-linear-001",
+    "operation": "Retain linear velocity instead of zeroing components opposing correction before applying the existing transported/age-scaled native wrench. Keep the positional translation, its epsilon and torque transport exactly.",
+    "unchanged": "Native84/material32/compiled bytes, solver arithmetic, source weights/caps/four passes, selected event/legacy/passive wrench, gravity, correction, authored shapes/mass/inertia, cadence/input and all owner/age/duplicate/refusal fences.",
+    "admission": "Existing fresh main-thread LA-SELECTIVE bridge selection before first sample; no UI/default change. Candidate-only ledger tag and accurate unclipped diagnostic frame.",
+    "rollback": "Reject promotion on any gate failure. Retain negative outcomes without retuning. Correction-off, deferred clipping, post-clip re-solving and gravity prediction are different experiments."
+  },
+  "arms": [
+    {
+      "id": "original-baseline",
+      "normal_policy": "original",
+      "application": "baseline"
+    },
+    {
+      "id": "active-baseline",
+      "normal_policy": "active-normal-001",
+      "application": "baseline"
+    },
+    {
+      "id": "original-retain",
+      "normal_policy": "original",
+      "application": "retain-linear-001"
+    },
+    {
+      "id": "active-retain",
+      "normal_policy": "active-normal-001",
+      "application": "retain-linear-001"
+    }
+  ],
+  "stage_a": {
+    "cases": [
+      "shared-granular-bodies-extended360",
+      "barrel-constrained-valid",
+      "barrel-rest"
+    ],
+    "platforms": [
+      "windows",
+      "linux"
+    ],
+    "workers": [
+      1,
+      4
+    ],
+    "repeats": 1,
+    "episodes": 48,
+    "steps_per_episode": 360,
+    "steps_total": 17280,
+    "mixed_extended": "Separately named360step case, unchanged original input and(2,0)impulse to every owner atstep30 only. Preserve complete180step prefix; no powered controls or retiming.",
+    "trace": "batch64-001 for all four mixed-case arms on Windows/requested1; off elsewhere. Schedule identical within each matched group.",
+    "complete_execution": "Run all48coordinates despite negative physical outcomes. Failed World/refusal may stop one episode; preserve all attempts/work. Fresh World/session per arm; no switching."
+  },
+  "stage_b_conditional": {
+    "condition": "Only after all StageA gates pass; otherwise NOT_ADMITTED_BY_REGISTERED_GATE, never a pass.",
+    "authored_cases": [
+      "actual-step-delayed-support",
+      "supported-Sand-impact",
+      "supported-Dust-impact"
+    ],
+    "chamber_cases": [
+      "closed-unforced",
+      "open-driven"
+    ],
+    "matrix": "Same four arms/both hosts/workers1,4/one repeat; unchanged original case-specific windows. Additional reversal/angular/nonpassive controls required before promotion.",
+    "scope": "Exact520/six-proxy chamber remains surrogate; no original SOL capture/hold/application authority."
+  },
+  "common_inputs": {
+    "registration_v1_lfsha256": "5bcf2c24f9e43a4a779ef02e738486e9dea5c667ae6db773b83b7b4e33a7e707",
+    "registration_v5_lfsha256": "8e80e88f99eb76dbba94538c39bdaeb5ae5bca932445f073a71b9620bbd5ee28",
+    "seed": 0,
+    "cadence": 60,
+    "budget": 20,
+    "initial_payloads": {
+      "shared-granular-bodies-extended360": "bafc82a9b23c68a02db484d49c385be96fc78b5d14d3d8fcc1dc3b69bab293f5",
+      "barrel-constrained-valid": "2abf06a9c0534106fd3164cbdc2ba91742a91b8f202ec421aeafc05e8bb92b20",
+      "barrel-rest": "0fc2aafef2c76f240a2277998deeeeca1882e1716bf9eae57b28532396eed1a3"
+    },
+    "identity": "Original512canvas map/tuples, body geometry/poses, neutral prime, gravity, active policy, cadence, publication and fresh owners. Require matched initial signatures, actual mode/session/epoch/sample and runtime/copied-source identities."
+  },
+  "observations": {
+    "windows": [
+      [
+        0,
+        119
+      ],
+      [
+        120,
+        239
+      ],
+      [
+        240,
+        359
+      ],
+      [
+        0,
+        179
+      ],
+      [
+        0,
+        359
+      ]
+    ],
+    "motion": "Every owner: scalar64 mean/max/integral KE,speed,absolute omega; displacement/wrapped-angle spans and endpoints separately.",
+    "geometry": "Every post-step material ROI; independent double clipping/SAT depth, peak/final/integrated Sand area/depth and hard/foreign overlaps. Retain original1e-9hard classification; no original clearance or swept-path certification.",
+    "work": "Native events/legacy/passive/total, original/applied correction, clip-equivalent impulse and KE, correction potential, actual transported-wrench work, explicit/controller/preapplication/Rapier work. Full grain/body conservation unavailable.",
+    "accounting": "Exact closed tuple multiset/quantities, sidecar/mask/capacity, missing/misaligned arrivals, all owner/application and reset/replay/teardown/refusal controls. Retain failed/overwritten/refused work.",
+    "cost": "All preparation/native/getter/application/Rapier/observer/export/process costs, configured/actual workers, trace storage/export. Sequential one-repeat profile, not original SOL CPU gate/universal60Hz."
+  },
+  "prospective_gate": {
+    "readback_absolute_tolerance": 0.00001,
+    "motion_noninferiority_margin": 0,
+    "geometry_noninferiority_margin": 0,
+    "energy_arithmetic_epsilon": 1e-9,
+    "justification": "Behavioral/geometry comparisons use raw unrounded no-worsening, not the RID readback tolerance as a behavior margin. Energy epsilon is existing scalar arithmetic accounting tolerance, not a clearance threshold.",
+    "static_screen": {
+      "settling_steps": 240,
+      "terminal_window": 120,
+      "span_cells": 0.5,
+      "wrapped_rotation_span_radians": 0.05,
+      "terminal_speed": 0.5
+    },
+    "safety": "All required identity/mode/native/tuple/RID/refusal/coverage gates pass. Event/legacy/wrench and torque transport unchanged for the same input; native final passive gate unchanged. Independently account actual response, correction and gravity work.",
+    "support": "Active-retain constrained/rest both pass frozen static screen and do not worsen peak/final/integrated Sand geometry or introduce hard/foreign violations relative to Active-baseline.",
+    "mixed_fix": "Every mixed owner/host/worker/fixed window: Active-retain mean/max speed,absolute omega and KE no worse than both Original-baseline and Active-baseline; at least one strictly lower full-window mean KE beyond arithmetic epsilon. Peak/final/integrated Sand geometry no worse. Report all within-policy contrasts and endpoints without endpoint-only acceptance.",
+    "zero_intervention": "Baseline arms reproduce retained mixed180step body-bit/native/initial-prefix payload observations. Matched arms agree before first effective clip intervention; zero-correction/non-opposing arithmetic agrees.",
+    "decision": "Any failed/unknown gate rejects a regression-fix claim and blocks StageB. Report metric-specific benefits separately. No tuning gains/caps/map/shape/clock/windows/thresholds after outcomes."
+  },
+  "resource": {
+    "new_artifact_cap_bytes": 4294967296,
+    "minimum_free_bytes": 5368709120,
+    "plan": "One private imported project per host reused within run; no prior evidence deletion or old full-matrix rerun."
+  },
+  "qualification": "Actual Windows/Linux new real-RID analytic/lifetime tests,98policy/107trace and12affected workbench suites. Reuse unchanged native84 binaries and prior optimized/strict sanitizer proof, not a fresh build claim. New variant-aware fixture/oracle and independent reduction/corruption tests; docs/M11/material/repository/retrieval/diff checks.",
+  "review": "Read-only independent adversarial source review gives CONDITIONAL GO for the isolated diagnostic. Support loss, COM transport, native-vs-actual passivity and endpoint phase are explicit risks. Not independent acceptance/promotion.",
+  "authority": "No protected World/pressure edits, SOL port, E1/E2actuation, restoration365, default/Ready/merge or historical guard/evidence change. Keep Draft429."
+}
