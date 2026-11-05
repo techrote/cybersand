@@ -53,7 +53,7 @@ class ObservedBridge:
 		var cpu_after: PackedInt64Array = ClassDB.class_call_static(&"CyberRapierThreadProbe", &"sample") # CPU_PROBE
 		probe_record = {"cpu_before":cpu_before,"cpu_after":cpu_after,"wall_before_usec":wall_before,"wall_after_usec":wall_after} # CPU_PROBE
 		_manual_step_count += 1
-	
+
 		# Rapier exposes an active-body batch path, avoiding stale scene-node caches
 		# and preparing the bridge for a larger dynamic-body count.
 		var active_body_rids: Array = ClassDB.class_call_static(EXPECTED_SERVER_CLASS, &"space_get_active_bodies", _space)
@@ -70,7 +70,7 @@ class ObservedBridge:
 				continue
 			var body_index: int = int(_body_index_by_rid[body_rid])
 			_transforms[body_index] = active_transforms[active_index]
-	
+
 		var flush_start_usec: int = Time.get_ticks_usec()
 		ClassDB.class_call_static(EXPECTED_SERVER_CLASS, &"space_flush_queries", _space)
 		_last_flush_time_ms = float(Time.get_ticks_usec() - flush_start_usec) / 1000.0
