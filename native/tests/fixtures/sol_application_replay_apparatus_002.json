@@ -1,0 +1,11 @@
+{
+  "registration": "SOL-APPLICATION-REPLAY-002-APPARATUS-GUARDS",
+  "date": "2026-11-05",
+  "parent": "SOL-APPLICATION-REPLAY-001",
+  "retained_analysis_source": "bd5d6617a7907ecd438b06e271b1ecdaed3fb18f",
+  "internal_review": "1080records and all kinetic-stage balances correct. All360input action packets ordered1,2,3, so enumeration-slot assumption does not affect original results. No evidence discrepancy.",
+  "hardening": "Index state arrays explicitly bybodyID-1; assert registered zero event/legacy scope before interpreting native-passive prediction versus total observed application KE. Preserve all original results unchanged.",
+  "validation": "Three analytic stage tests plus three public custody/coverage/scope tests. Rerun same retained-data analysis on both Python hosts; compare record hashes to retained001. Not additional physical trials.",
+  "unchanged": "Input raw hashes,1080record window, geometry/native source/runtime,1e-5readback tolerance, gains/caps/application policy and all physical outcomes",
+  "live_actuation": false
+}

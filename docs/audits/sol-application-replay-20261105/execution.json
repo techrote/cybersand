@@ -1,0 +1,125 @@
+{
+  "source": "bd5d6617a7907ecd438b06e271b1ecdaed3fb18f",
+  "commands": [
+    {
+      "name": "units-windows",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/experiments/test_sol_application_replay.py"
+      ],
+      "requested_command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/experiments/test_sol_application_replay.py"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 300,
+      "seconds": 0.16971729998476803,
+      "log": "build\\sol-active-normal-live\\application-replay-001\\units-windows.log",
+      "log_sha256": "8ee4669655aaed29bbc70e28a8ef25f73d1ebe2b002448e637699b5a2cbcaa41",
+      "markers": []
+    },
+    {
+      "name": "replay-windows",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/experiments/sol_application_replay.py",
+        "--output",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\build\\sol-active-normal-live\\application-replay-001\\windows"
+      ],
+      "requested_command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/experiments/sol_application_replay.py",
+        "--output",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\build\\sol-active-normal-live\\application-replay-001\\windows"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 300,
+      "seconds": 0.35241719998884946,
+      "log": "build\\sol-active-normal-live\\application-replay-001\\replay-windows.log",
+      "log_sha256": "48a2ebfaa6b644e719ad31a4d8e3c1158d2e46016f9f43a0b610472b3ecf0ab3",
+      "markers": []
+    },
+    {
+      "name": "units-linux",
+      "command": [
+        "wsl.exe",
+        "-d",
+        "Ubuntu-24.04",
+        "--cd",
+        "/mnt/c/Users/_/.codex/worktrees/sol-active-normal-live-20261105/khybersand",
+        "--",
+        "timeout",
+        "--signal=TERM",
+        "--kill-after=5s",
+        "300s",
+        "python3",
+        "tools/experiments/test_sol_application_replay.py"
+      ],
+      "requested_command": [
+        "wsl.exe",
+        "-d",
+        "Ubuntu-24.04",
+        "--cd",
+        "/mnt/c/Users/_/.codex/worktrees/sol-active-normal-live-20261105/khybersand",
+        "--",
+        "python3",
+        "tools/experiments/test_sol_application_replay.py"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 300,
+      "seconds": 3.520985900016967,
+      "log": "build\\sol-active-normal-live\\application-replay-001\\units-linux.log",
+      "log_sha256": "33060fd73862c5e1af97335504d5b45211fce6d229657f556d8deceeadc52ce4",
+      "markers": []
+    },
+    {
+      "name": "replay-linux",
+      "command": [
+        "wsl.exe",
+        "-d",
+        "Ubuntu-24.04",
+        "--cd",
+        "/mnt/c/Users/_/.codex/worktrees/sol-active-normal-live-20261105/khybersand",
+        "--",
+        "timeout",
+        "--signal=TERM",
+        "--kill-after=5s",
+        "300s",
+        "env",
+        "GIT_DIR=/mnt/c/khybersand/.git/worktrees/khybersand60",
+        "GIT_WORK_TREE=/mnt/c/Users/_/.codex/worktrees/sol-active-normal-live-20261105/khybersand",
+        "python3",
+        "tools/experiments/sol_application_replay.py",
+        "--output",
+        "/mnt/c/Users/_/.codex/worktrees/sol-active-normal-live-20261105/khybersand/build/sol-active-normal-live/application-replay-001/linux"
+      ],
+      "requested_command": [
+        "wsl.exe",
+        "-d",
+        "Ubuntu-24.04",
+        "--cd",
+        "/mnt/c/Users/_/.codex/worktrees/sol-active-normal-live-20261105/khybersand",
+        "--",
+        "env",
+        "GIT_DIR=/mnt/c/khybersand/.git/worktrees/khybersand60",
+        "GIT_WORK_TREE=/mnt/c/Users/_/.codex/worktrees/sol-active-normal-live-20261105/khybersand",
+        "python3",
+        "tools/experiments/sol_application_replay.py",
+        "--output",
+        "/mnt/c/Users/_/.codex/worktrees/sol-active-normal-live-20261105/khybersand/build/sol-active-normal-live/application-replay-001/linux"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 300,
+      "seconds": 3.783133800025098,
+      "log": "build\\sol-active-normal-live\\application-replay-001\\replay-linux.log",
+      "log_sha256": "9894736f5f2c417c1951e3919a8fca3c043269d69726e340a0a04b07f7e93d96",
+      "markers": []
+    }
+  ],
+  "domain": "Recorded Windows physical data; actual Windows/Linux Python analysis, no new physics trial",
+  "live_actuation": false
+}

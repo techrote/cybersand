@@ -50,8 +50,9 @@ def main():
         scalar_index={(s['step'],s['body']):s for s in scalar};work={(s['step'],s['body']):s for s in application['records']}
         rows=[];owners=defaultdict(list);previous={}
         for step in data['steps']:
-            for slot,action in enumerate(step['application']['bodies']):
-                body=action['id'];index=step['step'];native=next(r for r in step['native_response']['rows'] if r['id']==body)
+            for action in step['application']['bodies']:
+                body=action['id'];slot=body-1;index=step['step'];native=next(r for r in step['native_response']['rows'] if r['id']==body)
+                assert native['event_accepted']==[0,0] and native['event_torque']==0 and native['legacy_wrench_f64']==[0,0,0], 'Passive-prediction comparison requires the registered zero-event/legacy scope'
                 live=step['live_before_application'][slot];after=step['after_application'][slot]
                 vx,vy,omega=struct.unpack('<3d',bytes.fromhex(live['velocity_omega_f64le']))
                 avx,avy,aw=struct.unpack('<3d',bytes.fromhex(after['velocity_omega_f64le']))

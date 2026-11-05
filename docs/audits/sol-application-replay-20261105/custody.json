@@ -1,0 +1,42 @@
+{
+  "curation_source": "0daaeff407c7dd42b6e8c346a5822e2619c8a10f",
+  "analysis_source": "bd5d6617a7907ecd438b06e271b1ecdaed3fb18f",
+  "physical_execution_source": "119ac3a58453b1f5cc016dbcdb5cba5133540fda",
+  "runtime_build_source": "ff0d7cf5cc94c42a5e409eb5535681fe314ae3dd",
+  "artifacts": [
+    {
+      "source_path": "build\\sol-active-normal-live\\application-replay-001\\receipt.json",
+      "raw_sha256": "b99df301ee91d9852c7232a91a53ae2b2525cf4e832e9f82399e02e448f971fb",
+      "public_file": "execution.json",
+      "public_lf_sha256": "2b0dec521847e12e5ff49454e25db3a2252a14fe60269236cfc75bed59e3b01d",
+      "bytes": 4606
+    },
+    {
+      "source_path": "build\\sol-active-normal-live\\application-replay-001\\windows\\summary.json",
+      "raw_sha256": "1637dd8be55973ddf4877fb9e4728df30711560ba2552e6a6f1c005f2ce70c77",
+      "public_file": "summary.json",
+      "public_lf_sha256": "1637dd8be55973ddf4877fb9e4728df30711560ba2552e6a6f1c005f2ce70c77",
+      "bytes": 44830
+    },
+    {
+      "source_path": "build\\sol-active-normal-live\\application-replay-001\\windows\\records.json",
+      "raw_sha256": "c487a0bd6f8b532d7d341031d743a98176fa358fd612f11d7a47da01263c3373",
+      "public_file": "records.json",
+      "public_lf_sha256": "c487a0bd6f8b532d7d341031d743a98176fa358fd612f11d7a47da01263c3373",
+      "bytes": 4006683
+    },
+    {
+      "source_path": "build\\sol-active-normal-live\\application-replay-001\\cross-analysis-comparison.json",
+      "raw_sha256": "46f05bd917d8a4a95041f71f4807ba237d821a91db9e313d2d9aca02620d4312",
+      "public_file": "cross-analysis.json",
+      "public_lf_sha256": "46f05bd917d8a4a95041f71f4807ba237d821a91db9e313d2d9aca02620d4312",
+      "bytes": 996
+    }
+  ],
+  "linux_retained_records": {
+    "path": "build\\sol-active-normal-live\\application-replay-001\\linux\\records.json",
+    "sha256": "b901a671bcbe23557d4e8cf0c0e2aa75134b1d13778647d2e21e66d40b604054"
+  },
+  "scope": "Same Windows physical recordings analyzed on actual Windows/Linux Python; not two new physical runs. Public Windows derivative plus complete cross-analysis differences; Linux raw derivative retained locally.",
+  "live_actuation": false
+}
