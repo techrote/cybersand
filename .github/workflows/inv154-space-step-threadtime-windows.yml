@@ -1,0 +1,647 @@
+name: INV154 Windows Rapier calling-thread CPU time
+
+on:
+  push:
+    branches: [perf/inv154-space-step-threadtime-20261105]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: inv154-thread-cpu-${{ github.sha }}
+  cancel-in-progress: false
+
+env:
+  GODOT_CPP_COMMIT: 101ae38034304346a46ea9ea84ae156d3e860496
+  LLVM_MINGW_URL: https://github.com/mstorsjo/llvm-mingw/releases/download/20260826/llvm-mingw-20260826-ucrt-ubuntu-22.04-x86_64.tar.xz
+  LLVM_MINGW_SHA256: cee8d2ce3da5145ce4dc882e70d0b0719a783d53a99752c60948fc0659975a65
+  GODOT_WINDOWS_URL: https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip
+  GODOT_WINDOWS_SHA512: 41645a908eb3181d6f2d1201ed7b6d6f095f6a23aaed8903d5d255277cc8d142814f3e6817f865b3cac142c39b8aff99280091d3bbdaa301517730b3ba0522b9
+  GODOT_VERSION: 4.7.stable.official.5b4e0cb0f
+
+jobs:
+  windows-test-runtime:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 75
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          lfs: false
+          persist-credentials: false
+
+      - name: Verify exact scoped source
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          git merge-base --is-ancestor 2e937ee37532b06d46fa49205ff2e51c1a9baa2e HEAD
+          python3 tools/ci/check_ci_provider_policy.py
+          mkdir -p build/inv154-thread-cpu/runtime
+          git rev-parse HEAD > build/inv154-thread-cpu/runtime/source-sha.txt
+          git hash-object godot/scripts/main.gd | grep -qx 791ef440efd6edb206c6f1be33989cb62e9213b2
+          git hash-object godot/tests/performance/test_main_rapier_bridge_split_windows.gd | grep -qx 692472a85cf39ab6f646086859b69783d1c987bb
+          git hash-object godot/scripts/rapier_physics_bridge.gd | grep -qx 87eea1f36b11375eb40be6a833433871000fbb2e
+          git hash-object godot/native_extension/register_types.cpp | grep -qx "$(git rev-parse 2e937ee37532b06d46fa49205ff2e51c1a9baa2e:godot/native_extension/register_types.cpp)"
+          printf '%s\n'             .github/workflows/inv154-space-step-threadtime-windows.yml             godot/tests/performance/inv154_main_rapier_thread_cpu_windows.gd             native/tests/support/cyber_thread_cpu_clock.hpp             tools/ci/inv154_thread_cpu_clock_instrumentation.patch             | sort > build/inv154-thread-cpu/runtime/allowed.txt
+          git diff --name-only 2e937ee37532b06d46fa49205ff2e51c1a9baa2e...HEAD | sort > build/inv154-thread-cpu/runtime/changed.txt
+          diff -u build/inv154-thread-cpu/runtime/allowed.txt build/inv154-thread-cpu/runtime/changed.txt
+          sha256sum             godot/tests/performance/inv154_main_rapier_thread_cpu_windows.gd             native/tests/support/cyber_thread_cpu_clock.hpp             tools/ci/inv154_thread_cpu_clock_instrumentation.patch             godot/native_extension/register_types.cpp             > build/inv154-thread-cpu/runtime/source-inputs.sha256
+
+      - name: Install pinned SCons
+        run: |
+          python3 -m venv "$RUNNER_TEMP/scons"
+          "$RUNNER_TEMP/scons/bin/python" -m pip install --require-hashes -r tools/requirements-build.txt
+
+      - name: Check out exact godot-cpp
+        run: |
+          set -euo pipefail
+          mkdir "$RUNNER_TEMP/godot-cpp"
+          git -C "$RUNNER_TEMP/godot-cpp" init
+          git -C "$RUNNER_TEMP/godot-cpp" remote add origin https://github.com/godotengine/godot-cpp.git
+          timeout 10m git -C "$RUNNER_TEMP/godot-cpp" fetch --depth=1 origin "$GODOT_CPP_COMMIT"
+          git -C "$RUNNER_TEMP/godot-cpp" checkout --detach FETCH_HEAD
+          test "$(git -C "$RUNNER_TEMP/godot-cpp" rev-parse HEAD)" = "$GODOT_CPP_COMMIT"
+
+      - name: Prepare exact LLVM-MinGW
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 3 --output "$RUNNER_TEMP/llvm-mingw.tar.xz" "$LLVM_MINGW_URL"
+          echo "$LLVM_MINGW_SHA256  $RUNNER_TEMP/llvm-mingw.tar.xz" | sha256sum --check --strict
+          mkdir "$RUNNER_TEMP/llvm-mingw"
+          tar -xJf "$RUNNER_TEMP/llvm-mingw.tar.xz" -C "$RUNNER_TEMP/llvm-mingw" --strip-components=1
+          if test ! -e "$RUNNER_TEMP/llvm-mingw/bin/x86_64-w64-mingw32-gcc-ar"; then
+            ln -s llvm-ar "$RUNNER_TEMP/llvm-mingw/bin/x86_64-w64-mingw32-gcc-ar"
+          fi
+
+      - name: Build test-only Windows timing runtime
+        env:
+          GODOT_CPP_ROOT: ${{ runner.temp }}/godot-cpp
+          SCONS_PYTHON: ${{ runner.temp }}/scons/bin/python
+          SCONS_JOBS: "2"
+          LLVM_MINGW_ROOT: ${{ runner.temp }}/llvm-mingw
+          WINDOWS_CXX: ${{ runner.temp }}/llvm-mingw/bin/x86_64-w64-mingw32-g++
+        run: |
+          set -euo pipefail
+          timeout 35m tools/build_pinned_godot_cpp.sh windows
+          REAL_CXX="$RUNNER_TEMP/llvm-mingw/bin/x86_64-w64-mingw32-g++"
+          printf '#!/usr/bin/env bash\nexec "%s" -DCYBERSAND_THREAD_CPU_CLOCK_TEST_HOOK=1 "$@"\n' "$REAL_CXX" > "$RUNNER_TEMP/thread-cpu-cxx"
+          chmod +x "$RUNNER_TEMP/thread-cpu-cxx"
+          "$RUNNER_TEMP/thread-cpu-cxx" --version > build/inv154-thread-cpu/runtime/compiler.txt
+          git apply --check tools/ci/inv154_thread_cpu_clock_instrumentation.patch
+          git apply tools/ci/inv154_thread_cpu_clock_instrumentation.patch
+          sha256sum godot/native_extension/register_types.cpp > build/inv154-thread-cpu/runtime/instrumented-register-types.sha256
+          WINDOWS_CXX="$RUNNER_TEMP/thread-cpu-cxx"             CYBERSAND_NATIVE_OUTPUT="$PWD/build/inv154-thread-cpu/runtime/cybersand_native.windows.x86_64.dll"             timeout 20m tools/build_native_extension_windows.sh
+          git checkout -- godot/native_extension/register_types.cpp
+          git diff --exit-code -- godot/native_extension/register_types.cpp
+          file build/inv154-thread-cpu/runtime/cybersand_native.windows.x86_64.dll | tee build/inv154-thread-cpu/runtime/runtime-file.txt
+          grep -q 'PE32+ executable (DLL).*x86-64' build/inv154-thread-cpu/runtime/runtime-file.txt
+          (cd build/inv154-thread-cpu/runtime && sha256sum cybersand_native.windows.x86_64.dll > runtime.sha256)
+
+      - name: Publish test-only runtime
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: inv154-thread-cpu-runtime-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/inv154-thread-cpu/runtime/
+          if-no-files-found: error
+          retention-days: 1
+
+  windows-graphical-main:
+    needs: windows-test-runtime
+    runs-on: windows-2022
+    timeout-minutes: 50
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Preserve byte-exact checkout
+        run: |
+          git config --global core.autocrlf false
+          git config --global core.eol lf
+
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          lfs: false
+          persist-credentials: false
+
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+
+      - name: Restore exact test runtime
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: inv154-thread-cpu-runtime-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/inv154-thread-cpu/runtime
+
+      - name: Materialize exact original and instrumented runtimes
+        timeout-minutes: 12
+        run: |
+          set -euo pipefail
+          test "$(cat build/inv154-thread-cpu/runtime/source-sha.txt)" = "$GITHUB_SHA"
+          (cd build/inv154-thread-cpu/runtime && sha256sum --check --strict runtime.sha256)
+          git lfs install --local
+          git lfs pull --include="godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll,godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll" --exclude=""
+          echo "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7  godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll" | sha256sum --check --strict
+          mkdir -p build/inv154-thread-cpu/windows/runtimes
+          cp godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll build/inv154-thread-cpu/windows/runtimes/original-cybersand-native.dll
+          cp build/inv154-thread-cpu/runtime/cybersand_native.windows.x86_64.dll build/inv154-thread-cpu/windows/runtimes/instrumented-cybersand-native.dll
+          sha256sum build/inv154-thread-cpu/windows/runtimes/*.dll godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll > build/inv154-thread-cpu/windows/runtimes/runtime-sha256.txt
+
+      - name: Execute three paired controls plus ETW trial
+        env:
+          EXPECTED_HEAD: ${{ github.sha }}
+          GODOT_SILENCE_ROOT_WARNING: '1'
+          PYTHONUTF8: '1'
+        run: |
+          set -euo pipefail
+          python tools/ci/check_ci_provider_policy.py > build/inv154-thread-cpu/windows/provider-policy.log 2>&1
+          git diff --check
+          python - <<'PY'
+          import csv
+          import hashlib
+          import json
+          import os
+          import shutil
+          import statistics
+          import subprocess
+          import time
+          import urllib.request
+          import zipfile
+          from pathlib import Path
+
+          root = Path.cwd()
+          out = (root / "build/inv154-thread-cpu/windows").resolve()
+          parent = "2e937ee37532b06d46fa49205ff2e51c1a9baa2e"
+          parent_fixture = "godot/tests/performance/test_main_rapier_bridge_split_windows.gd"
+          profile_fixture = "godot/tests/performance/inv154_main_rapier_thread_cpu_windows.gd"
+          active_native = root / "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll"
+          original_native = out / "runtimes/original-cybersand-native.dll"
+          instrumented_native = out / "runtimes/instrumented-cybersand-native.dll"
+          rapier_runtime = root / "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll"
+
+          def sh(*args):
+              return subprocess.check_output(args, text=True, timeout=60).strip()
+
+          def write(path, payload):
+              path = Path(path)
+              path.parent.mkdir(parents=True, exist_ok=True)
+              path.write_text(payload, encoding="utf-8")
+
+          head = sh("git", "rev-parse", "HEAD")
+          if head != os.environ["EXPECTED_HEAD"]:
+              raise RuntimeError("checkout does not equal triggering SHA")
+          if subprocess.run(["git", "merge-base", "--is-ancestor", parent, head]).returncode:
+              raise RuntimeError("diagnostic branch is not descended from exact #449 head")
+          changed = sh("git", "diff", "--name-only", parent + "...HEAD").splitlines()
+          allowed = sorted([
+              ".github/workflows/inv154-space-step-threadtime-windows.yml",
+              profile_fixture,
+              "native/tests/support/cyber_thread_cpu_clock.hpp",
+              "tools/ci/inv154_thread_cpu_clock_instrumentation.patch",
+          ])
+          if sorted(changed) != allowed:
+              raise RuntimeError("diagnostic branch scope changed: " + repr(changed))
+          source = {
+              "head": head,
+              "tree": sh("git", "rev-parse", "HEAD^{tree}"),
+              "parent_449": parent,
+              "main_blob": sh("git", "hash-object", "godot/scripts/main.gd"),
+              "parent_fixture_blob": sh("git", "hash-object", parent_fixture),
+              "rapier_bridge_blob": sh("git", "hash-object", "godot/scripts/rapier_physics_bridge.gd"),
+              "profile_fixture_sha256": hashlib.sha256((root / profile_fixture).read_bytes()).hexdigest(),
+              "original_native_sha256": hashlib.sha256(original_native.read_bytes()).hexdigest(),
+              "instrumented_native_sha256": hashlib.sha256(instrumented_native.read_bytes()).hexdigest(),
+              "rapier_runtime_sha256": hashlib.sha256(rapier_runtime.read_bytes()).hexdigest(),
+              "changed_files_from_449": changed,
+              "production_files_modified": False,
+              "instrumented_runtime_is_test_only": True,
+          }
+          if source["main_blob"] != "791ef440efd6edb206c6f1be33989cb62e9213b2":
+              raise RuntimeError("Main differs from #449")
+          if source["parent_fixture_blob"] != "692472a85cf39ab6f646086859b69783d1c987bb":
+              raise RuntimeError("original #449 fixture differs")
+          if source["rapier_bridge_blob"] != "87eea1f36b11375eb40be6a833433871000fbb2e":
+              raise RuntimeError("Rapier bridge differs from #449")
+          write(out / "source-and-runtime.json", json.dumps(source, indent=2) + "\n")
+
+          for name, cmd in {
+              "video-controllers.json": "Get-CimInstance Win32_VideoController | Select-Object Name,DriverVersion,VideoProcessor,PNPDeviceID | ConvertTo-Json -Depth 5",
+              "processor.json": "Get-CimInstance Win32_Processor | Select-Object Name,NumberOfCores,NumberOfLogicalProcessors | ConvertTo-Json -Depth 4",
+              "os.json": "Get-CimInstance Win32_OperatingSystem | Select-Object Caption,Version,BuildNumber | ConvertTo-Json -Depth 4",
+          }.items():
+              p = subprocess.run(["powershell", "-NoProfile", "-NonInteractive", "-Command", cmd],
+                                 capture_output=True, text=True, timeout=45)
+              write(out / name, p.stdout + "\n" + p.stderr)
+              if p.returncode:
+                  raise RuntimeError("host identity read failed: " + name)
+
+          archive = out / "official-godot.zip"
+          urllib.request.urlretrieve(os.environ["GODOT_WINDOWS_URL"], archive)
+          digest = hashlib.sha512(archive.read_bytes()).hexdigest()
+          if digest != os.environ["GODOT_WINDOWS_SHA512"]:
+              raise RuntimeError("Godot archive SHA512 mismatch")
+          engine_dir = out / "engine"
+          engine_dir.mkdir(exist_ok=True)
+          with zipfile.ZipFile(archive) as z:
+              if z.testzip() is not None:
+                  raise RuntimeError("Godot archive CRC failure")
+              for member in ("Godot_v4.7-stable_win64.exe", "Godot_v4.7-stable_win64_console.exe"):
+                  z.extract(member, engine_dir)
+          archive.unlink()
+          engine = engine_dir / "Godot_v4.7-stable_win64_console.exe"
+          version = subprocess.check_output([str(engine), "--version"], text=True, timeout=30).strip()
+          if version != os.environ["GODOT_VERSION"]:
+              raise RuntimeError("Godot version mismatch: " + version)
+          write(out / "engine-identity.json", json.dumps({"version": version, "archive_sha512": digest}, indent=2) + "\n")
+
+          # Import with the test-only clock class registered; measured disabled
+          # trials subsequently swap back to the byte-exact original runtime.
+          shutil.copy2(instrumented_native, active_native)
+          import_env = {**os.environ, "GODOT_SILENCE_ROOT_WARNING": "1", "PYTHONUTF8": "1"}
+          imp = subprocess.run([str(engine), "--headless", "--editor", "--path", "godot", "--import"],
+                               stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+                               text=True, timeout=180, env=import_env)
+          write(out / "import.log", imp.stdout)
+          if imp.returncode:
+              raise RuntimeError("project import failed")
+
+          wpr = shutil.which("wpr.exe")
+          xperf = shutil.which("xperf.exe")
+          wpaexporter = shutil.which("wpaexporter.exe")
+          etw = {
+              "wpr": wpr, "xperf": xperf, "wpaexporter": wpaexporter,
+              "attempted": False, "started": False, "stopped": False,
+              "start_attempts": [], "reports": {}
+          }
+
+          def start_etw(td):
+              if not wpr:
+                  etw["attempted"] = True
+                  etw["failure"] = "wpr.exe unavailable"
+                  return False
+              etw["attempted"] = True
+              subprocess.run([wpr, "-cancel"], capture_output=True, text=True, timeout=30)
+              for profile in ("CPU", "GeneralProfile"):
+                  started_ns = time.time_ns()
+                  p = subprocess.run([wpr, "-start", profile, "-filemode"],
+                                     capture_output=True, text=True, timeout=60)
+                  etw["start_attempts"].append({
+                      "profile": profile, "returncode": p.returncode,
+                      "stdout": p.stdout, "stderr": p.stderr,
+                      "attempt_unix_ns": started_ns,
+                  })
+                  if p.returncode == 0:
+                      etw["started"] = True
+                      etw["profile"] = profile
+                      etw["start_unix_ns"] = time.time_ns()
+                      write(td / "wpr-start.txt", p.stdout + "\n" + p.stderr)
+                      return True
+              etw["failure"] = "all WPR start profiles failed"
+              return False
+
+          def stop_and_process_etw(td):
+              if not (wpr and etw.get("started")):
+                  return
+              etl = td / "thread-state.etl"
+              stop_begin_ns = time.time_ns()
+              p = subprocess.run([wpr, "-stop", str(etl)],
+                                 capture_output=True, text=True, timeout=180)
+              etw["stop_unix_ns"] = time.time_ns()
+              etw["stop_begin_unix_ns"] = stop_begin_ns
+              etw["stopped"] = p.returncode == 0 and etl.exists()
+              etw["etl_bytes"] = etl.stat().st_size if etl.exists() else 0
+              write(td / "wpr-stop.txt", p.stdout + "\n" + p.stderr)
+              if p.returncode:
+                  subprocess.run([wpr, "-cancel"], capture_output=True, text=True, timeout=30)
+                  return
+              if not xperf:
+                  etw["report_failure"] = "xperf.exe unavailable"
+                  return
+              reports = {
+                  "trace-stats.txt": [xperf, "-i", str(etl), "-o", str(td / "trace-stats.txt"),
+                                      "-a", "tracestats", "-timespan", "actual", "-timezone", "utc"],
+                  "profile-detail.txt": [xperf, "-i", str(etl), "-o", str(td / "profile-detail.txt"),
+                                         "-a", "profile", "-detail"],
+                  "cswitch-thread.txt": [xperf, "-i", str(etl), "-o", str(td / "cswitch-thread.txt"),
+                                         "-a", "cswitch", "-thread"],
+                  "cswitch-process.txt": [xperf, "-i", str(etl), "-o", str(td / "cswitch-process.txt"),
+                                          "-a", "cswitch", "-process"],
+              }
+              for name, cmd in reports.items():
+                  try:
+                      q = subprocess.run(cmd, capture_output=True, text=True, timeout=180)
+                      etw["reports"][name] = {"returncode": q.returncode, "stdout": q.stdout, "stderr": q.stderr}
+                  except Exception as exc:
+                      etw["reports"][name] = {"exception": repr(exc)}
+              report_text = ""
+              for name in ("profile-detail.txt", "cswitch-thread.txt", "cswitch-process.txt"):
+                  pth = td / name
+                  if pth.exists():
+                      report_text += pth.read_text(encoding="utf-8", errors="replace")
+              lower = report_text.lower()
+              etw["godot_attribution_present"] = "godot" in lower
+              etw["rapier_module_attribution_present"] = "godot_rapier" in lower or "rapier" in lower
+              etw["space_step_symbol_resolved"] = "space_step" in lower
+              # The xperf aggregate reports do not provide a per-event decomposition
+              # of blocked versus ready-but-descheduled time. Preserve raw ETL for WPA.
+              etw["blocked_vs_descheduled_resolved"] = False
+
+          def validate_record(record, profile):
+              expected = "inv154-thread-cpu-v1" if profile else "inv154-bridge-split-v1"
+              if (record.get("schema") != expected or record.get("platform") != "Windows"
+                  or record.get("display_server") == "headless" or record.get("failures") != 0
+                  or not record.get("joined_worker") or record.get("overflow")
+                  or record.get("accepted_brush_commands", -1) != 0
+                  or record.get("requested_fps_readbacks") != {
+                      "baseline_a": 60, "timed_a": 60, "timed_b": 60, "baseline_b": 60
+                  }):
+                  raise RuntimeError("invalid #449 lifecycle in " + expected)
+
+          def run_trial(name, profile=False, etw_enabled=False):
+              td = out / name
+              td.mkdir(parents=True, exist_ok=True)
+              runtime = instrumented_native if profile else original_native
+              shutil.copy2(runtime, active_native)
+              fixture = profile_fixture if profile else parent_fixture
+              marker = "INV154_THREAD_CPU " if profile else "INV154_BRIDGE_SPLIT "
+              raw_name = "physics-thread-cpu.json" if profile else "physics-bridge-split.json"
+              env = {
+                  **os.environ,
+                  "GODOT_SILENCE_ROOT_WARNING": "1",
+                  "PYTHONUTF8": "1",
+                  "CYBERSAND_PHASE_OUTPUT": str(td),
+                  "CYBERSAND_SOURCE_REVISION": head,
+              }
+              argv = [str(engine), "--rendering-driver", "opengl3_angle", "--path", "godot",
+                      "--script", "res://" + fixture.split("godot/", 1)[1]]
+              write(td / "command.json", json.dumps(argv, indent=2) + "\n")
+              etw_started = start_etw(td) if etw_enabled else False
+              began_ns = time.time_ns()
+              try:
+                  p = subprocess.run(argv, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+                                     text=True, timeout=780, env=env)
+              finally:
+                  if etw_started:
+                      stop_and_process_etw(td)
+              ended_ns = time.time_ns()
+              write(td / "godot.log", p.stdout)
+              write(td / "process-exit.json", json.dumps({
+                  "returncode": p.returncode,
+                  "started_unix_ns": began_ns,
+                  "ended_unix_ns": ended_ns,
+                  "profiled": profile,
+                  "etw_requested": etw_enabled,
+                  "runtime_sha256": hashlib.sha256(runtime.read_bytes()).hexdigest(),
+              }, indent=2) + "\n")
+              matches = [line.split(marker, 1)[1] for line in p.stdout.splitlines() if line.startswith(marker)]
+              if p.returncode or len(matches) != 1:
+                  raise RuntimeError("Godot trial failed/incomplete: " + name)
+              record = json.loads(matches[0])
+              validate_record(record, profile)
+              raw_path = td / raw_name
+              if not raw_path.exists():
+                  raise RuntimeError("raw callback rows missing: " + name)
+              raw = json.loads(raw_path.read_text(encoding="utf-8"))
+              return record, raw
+
+          records = {}
+          raws = {}
+          for i in range(1, 4):
+              for profile in (False, True):
+                  name = ("profiled-" if profile else "unprofiled-") + str(i)
+                  rec, raw = run_trial(name, profile=profile, etw_enabled=False)
+                  records[name] = rec
+                  raws[name] = raw
+
+          # A separate ETW trial avoids mixing WPR perturbation into the three
+          # paired profiler-on/off trials used for the classification gate.
+          etw_record, etw_raw = run_trial("profiled-etw", profile=True, etw_enabled=True)
+          records["profiled-etw"] = etw_record
+          raws["profiled-etw"] = etw_raw
+          write(out / "etw-capability.json", json.dumps(etw, indent=2) + "\n")
+
+          def quantile(values, q):
+              vals = sorted(values)
+              if not vals:
+                  return None
+              return vals[int(round((len(vals) - 1) * q))]
+
+          def reproduction(raw):
+              rows = raw["physics_rows"]
+              long_all = [r for r in rows if int(r["duration_usec"]) > 40000]
+              timed = [r for r in long_all if r["phase"] in ("timed_a", "timed_b")]
+              return {
+                  "long_callbacks_all_arms": len(long_all),
+                  "long_callbacks_timed_arms": len(timed),
+                  "reproduced": len(long_all) > 0 and len(timed) > 0,
+                  "timed_space_step_usec": sum(max(0, int(r.get("bridge_step_usec", -1))) for r in timed),
+                  "timed_callback_usec": sum(int(r["duration_usec"]) for r in timed),
+              }
+
+          reproductions = {f"unprofiled-{i}": reproduction(raws[f"unprofiled-{i}"]) for i in range(1, 4)}
+          write(out / "reproduction.json", json.dumps(reproductions, indent=2) + "\n")
+
+          def arm_metric(record, phase, family, field):
+              return float(record[family][phase][field]) if family in record and phase in record[family] else None
+
+          # Both fixtures retain wrapper_observations and render distributions.
+          phases = ("baseline_a", "timed_a", "timed_b", "baseline_b")
+          un_phys = []
+          pr_phys = []
+          un_render = []
+          pr_render = []
+          un_counts = []
+          pr_counts = []
+          for i in range(1, 4):
+              u = records[f"unprofiled-{i}"]
+              p = records[f"profiled-{i}"]
+              for phase in phases:
+                  un_phys.append(float(u["wrapper_observations"][phase]["all_ms"]["p50"]))
+                  pr_phys.append(float(p["wrapper_observations"][phase]["all_ms"]["p50"]))
+                  un_counts.append(int(u["wrapper_observations"][phase]["all_ms"]["n"]))
+                  pr_counts.append(int(p["wrapper_observations"][phase]["all_ms"]["n"]))
+                  un_render.append(float(u[phase]["render_interval_ms"]["p50"]))
+                  pr_render.append(float(p[phase]["render_interval_ms"]["p50"]))
+          perturb = {
+              "unprofiled_physics_p50_median_ms": statistics.median(un_phys),
+              "profiled_physics_p50_median_ms": statistics.median(pr_phys),
+              "physics_p50_ratio": statistics.median(pr_phys) / statistics.median(un_phys),
+              "unprofiled_render_p50_median_ms": statistics.median(un_render),
+              "profiled_render_p50_median_ms": statistics.median(pr_render),
+              "render_p50_ratio": statistics.median(pr_render) / statistics.median(un_render),
+              "unprofiled_callback_count": sum(un_counts),
+              "profiled_callback_count": sum(pr_counts),
+              "callback_count_ratio": sum(pr_counts) / sum(un_counts),
+          }
+          perturb["excessive"] = (
+              perturb["physics_p50_ratio"] > 1.25
+              or perturb["render_p50_ratio"] > 1.25
+              or perturb["render_p50_ratio"] < 0.80
+              or perturb["callback_count_ratio"] > 1.10
+              or perturb["callback_count_ratio"] < 0.90
+          )
+          write(out / "profiler-perturbation.json", json.dumps(perturb, indent=2) + "\n")
+
+          events = []
+          rejected_attribution = 0
+          for i in range(1, 4):
+              name = f"profiled-{i}"
+              for row in raws[name]["physics_rows"]:
+                  if row.get("phase") not in ("timed_a", "timed_b"):
+                      continue
+                  if int(row.get("bridge_step_delta", 0)) != 1:
+                      continue
+                  step_usec = int(row.get("bridge_step_usec", -1))
+                  bridge_usec = int(row.get("wrapper_usec", {}).get("rapier_step", -1))
+                  cpu_100ns = int(row.get("bridge_thread_cpu_100ns", -1))
+                  if step_usec <= 40000:
+                      continue
+                  if bridge_usec <= 0 or cpu_100ns < 0:
+                      continue
+                  step_fraction = step_usec / bridge_usec
+                  if step_fraction < 0.95:
+                      rejected_attribution += 1
+                      continue
+                  cpu_usec = cpu_100ns / 10.0
+                  occupancy = cpu_usec / bridge_usec
+                  controls = records[name]["thread_cpu_clock_controls"]
+                  resolution_usec = int(controls.get("observed_resolution_100ns", 0)) / 10.0
+                  events.append({
+                      "trial": name,
+                      "phase": row["phase"],
+                      "physics_frame": int(row["physics_frames"]),
+                      "callback_wall_usec": int(row["duration_usec"]),
+                      "bridge_wall_usec": bridge_usec,
+                      "space_step_wall_usec": step_usec,
+                      "space_step_fraction_of_bridge": step_fraction,
+                      "calling_thread_cpu_usec": cpu_usec,
+                      "calling_thread_cpu_occupancy": occupancy,
+                      "observed_cpu_counter_resolution_usec": resolution_usec,
+                      "actor_tick": int(row["actor_tick"]),
+                      "native_tick": int(row["native_tick"]),
+                  })
+
+          n = len(events)
+          cpu_hits = sum(e["calling_thread_cpu_occupancy"] >= 0.80 for e in events)
+          off_hits = sum(e["calling_thread_cpu_occupancy"] <= 0.40 for e in events)
+          cpu_fraction = cpu_hits / n if n else 0.0
+          off_fraction = off_hits / n if n else 0.0
+          classification = "INCONCLUSIVE"
+          rationale = []
+          if n < 20:
+              rationale.append("fewer than 20 aligned >40ms space_step events")
+          elif rejected_attribution:
+              rationale.append("one or more long events failed the >=95% space_step/bridge attribution guard")
+          elif perturb["excessive"]:
+              rationale.append("profiling perturbation exceeded paired p50/callback-count bounds")
+          elif cpu_fraction >= 0.80:
+              classification = "CPU DOMINATED"
+              rationale.append("at least 80% of long events had at least 80% calling-thread CPU occupancy")
+          elif off_fraction >= 0.80:
+              classification = "OFF-CPU DOMINATED"
+              rationale.append("at least 80% of long events had at least 60% calling-thread non-running time")
+              rationale.append("GetThreadTimes does not distinguish blocking from scheduler descheduling")
+          else:
+              rationale.append("eventwise occupancy did not meet either preregistered dominance threshold")
+
+          # Preserve the complete original frame-time summaries for each paired run.
+          distributions = {}
+          for name, record in records.items():
+              distributions[name] = {
+                  phase: {
+                      "physics": record["wrapper_observations"][phase]["all_ms"],
+                      "render_interval": record[phase]["render_interval_ms"],
+                      "native_ticks_per_second": record[phase]["native_ticks_per_second"],
+                      "rapier_steps_per_second": record[phase]["rapier_steps_per_second"],
+                  } for phase in phases
+              }
+          write(out / "frame-time-distributions.json", json.dumps(distributions, indent=2) + "\n")
+          write(out / "long-event-thread-cpu.json", json.dumps(events, indent=2) + "\n")
+
+          sync = etw_record.get("measurement_clock_sync", {})
+          aligned = []
+          if sync:
+              for row in etw_raw["physics_rows"]:
+                  if row.get("phase") not in ("timed_a", "timed_b"):
+                      continue
+                  start_ticks = int(row.get("bridge_wall_started_usec", -1))
+                  step_usec = int(row.get("bridge_step_usec", -1))
+                  if start_ticks < 0 or step_usec <= 40000:
+                      continue
+                  start_unix = int(sync["unix_usec"]) + (start_ticks - int(sync["ticks_usec"]))
+                  aligned.append({
+                      "phase": row["phase"],
+                      "physics_frame": int(row["physics_frames"]),
+                      "bridge_start_unix_usec": start_unix,
+                      "space_step_end_unix_usec": start_unix + step_usec,
+                      "space_step_wall_usec": step_usec,
+                  })
+          write(out / "etw-alignment.json", json.dumps({
+              "measurement_clock_sync": sync,
+              "long_step_wall_intervals_utc": aligned,
+              "etw_start_unix_ns": etw.get("start_unix_ns"),
+              "etw_stop_unix_ns": etw.get("stop_unix_ns"),
+              "note": "bridge start is immediately before GetThreadTimes and synchronous rapier_bridge.step; production bridge space_step is its first substantive operation"
+          }, indent=2) + "\n")
+
+          worker_samples = {
+              f"profiled-{i}": records[f"profiled-{i}"].get("native_worker_participation", {})
+              for i in range(1, 4)
+          }
+          write(out / "worker-participation.json", json.dumps(worker_samples, indent=2) + "\n")
+
+          result = {
+              "schema": "inv154-space-step-threadtime-v2",
+              "source": source,
+              "classification": classification,
+              "aligned_long_space_step_events": n,
+              "rejected_attribution_events": rejected_attribution,
+              "cpu_dominated_event_count": cpu_hits,
+              "cpu_dominated_event_fraction": cpu_fraction,
+              "off_cpu_dominated_event_count": off_hits,
+              "off_cpu_dominated_event_fraction": off_fraction,
+              "calling_thread_cpu_occupancy_p50": quantile([e["calling_thread_cpu_occupancy"] for e in events], 0.50),
+              "calling_thread_cpu_occupancy_p95": quantile([e["calling_thread_cpu_occupancy"] for e in events], 0.95),
+              "space_step_fraction_of_bridge_p50": quantile([e["space_step_fraction_of_bridge"] for e in events], 0.50),
+              "reproduction": reproductions,
+              "profile_perturbation": perturb,
+              "etw": etw,
+              "worker_participation": worker_samples,
+              "rationale": rationale,
+              "limits": [
+                  "Calling-thread CPU time is measured with GetThreadTimes around the synchronous Rapier bridge call; it does not directly measure Rapier worker-thread CPU.",
+                  "If classified off-CPU, blocked versus ready-but-descheduled remains unresolved unless the retained ETW is later decoded to per-event thread state.",
+                  "The hosted graphical cohort uses Microsoft Basic Render Driver and is not a discrete-GPU performance qualification."
+              ],
+          }
+          write(out / "classification.json", json.dumps(result, indent=2) + "\n")
+          with (out / "long-events.csv").open("w", newline="", encoding="utf-8") as f:
+              fields = list(events[0].keys()) if events else ["trial"]
+              w = csv.DictWriter(f, fieldnames=fields)
+              w.writeheader()
+              w.writerows(events)
+          print("INV154_THREADTIME_RESULT " + json.dumps({
+              "classification": classification,
+              "events": n,
+              "cpu_fraction": cpu_fraction,
+              "off_cpu_fraction": off_fraction,
+              "occupancy_p50": result["calling_thread_cpu_occupancy_p50"],
+              "perturbation_excessive": perturb["excessive"],
+              "etw_started": etw.get("started"),
+              "etw_stopped": etw.get("stopped"),
+              "etw_bytes": etw.get("etl_bytes", 0),
+          }, sort_keys=True))
+          PY
+
+      - name: Retain raw trials, ETW and exact identities
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: inv154-space-step-threadtime-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/inv154-thread-cpu/windows/
+          if-no-files-found: warn
+          retention-days: 30
