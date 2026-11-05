@@ -162,6 +162,13 @@ REVIEWED_TRANSITIONS: tuple[dict, ...] = ({'path': 'native/src/world_pressure.in
   'source_commit': '30419bdac24902b47bab3756d3116008bec8f0ca',
   'record': 'docs/audits/2026-11-05-wcx-ballistic-water.md',
   'issue': 362,
+  'pr': 406},
+ {'path': 'native/src/world_pressure.inc',
+  'from_lf_sha256': '21fade10be70387a41438586a3ca88c022af078e5ea11bc016ee20e7a9792573',
+  'to_lf_sha256': '8f7649cda6561eb6d44ebca5b11cfeec41210105bf7e0d20435ede4b03077012',
+  'source_commit': 'f666a6c6e4a4e5fd4091129df463b59ef79acebd',
+  'record': 'docs/audits/2026-11-05-wcx-ballistic-water.md',
+  'issue': 362,
   'pr': 406})
 
 

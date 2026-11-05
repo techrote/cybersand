@@ -246,6 +246,9 @@ Worlds that enable the experiment. Source commit for every target:
 | `native/src/world_pressure.inc` | `7b28bf216bf70af7059267cae31117f1f01e88d0e5f276f61d67280ab5c6d2e5` | `21fade10be70387a41438586a3ca88c022af078e5ea11bc016ee20e7a9792573` |
 | `native/src/world_inertial.inc` | `8a5d3680e96ca47a3f496be5a8b953084d2c6d2e0bd723c3214b87bdbc3580b5` | `51fa78b33df7ea5e7e468c670b348ae24a19fd41905e2e78d9e841fa99af1491` |
 
+A second step for `native/src/world_pressure.inc` persists the film-skim flag:
+`21fade10be70387a41438586a3ca88c022af078e5ea11bc016ee20e7a9792573` → `8f7649cda6561eb6d44ebca5b11cfeec41210105bf7e0d20435ede4b03077012` at source commit `f666a6c6e4a4e5fd4091129df463b59ef79acebd` (same issue/PR and status as above).
+
 ## Gaps
 
 - No human gameplay acceptance; frame captures are automated.
