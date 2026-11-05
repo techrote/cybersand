@@ -78,6 +78,9 @@ struct Result {
     double capacity=0, energy_before=0, energy_after=0, scale=1, max_radius=0;
     std::uint32_t bins=0, nodes=0, quadrature_clamps=0, updates=0, normal_cap_hits=0, tangent_cap_hits=0;
     bool passive_rejected=false;
+    // True only if the opt-in normal attempt was passivity-rejected and
+    // retried with independently guarded historical contact weighting.
+    bool historical_fallback_used=false;
 };
 inline double kinetic(const Body& b, Vec v, double w) {
     return .5*b.mass*dot(v,v)+.5*b.inertia*w*w;
@@ -176,8 +179,11 @@ inline Result solve_compound(const Body& b, std::span<const Bin* const> bins,
         // response. This path is opt-in only and cannot bypass the original
         // energy refusal (the historical solve checks it independently).
         if(normalize_active_normal && std::isfinite(out.energy_after) &&
-           std::isfinite(out.energy_before))
-            return solve_compound(b,bins,workspace,available,capacity_scale,base_budget,false);
+           std::isfinite(out.energy_before)) {
+            auto baseline=solve_compound(b,bins,workspace,available,capacity_scale,base_budget,false);
+            baseline.historical_fallback_used=true;
+            return baseline;
+        }
         out.passive_rejected=true; out.scale=0;
         out.impulse={}; out.normal_impulse={}; out.tangent_impulse={};
         out.torque=0; out.normal=0; out.tangent=0; out.energy_after=out.energy_before;
