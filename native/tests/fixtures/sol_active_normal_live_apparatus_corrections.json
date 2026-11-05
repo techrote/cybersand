@@ -13,6 +13,15 @@
       "error": "TypeError: unhashable type: dict; source_locks is list of rows",
       "raw_log": "Tool transcript only; no process helper was reached",
       "correction": "Enumerate each retained source_locks row.path; no source guard/hash or physics change"
+    },
+    {
+      "source": "ff0d7cf5",
+      "command": "Inline preflight p.command(material-guard, relative output folder)",
+      "exit": 1,
+      "phase": "receipt formatting after child completed",
+      "error": "ValueError: relative log path not under absolute ROOT",
+      "raw_log": "build/sol-active-normal-live/preflight-001/material-guard.log; helper did not persist child exit",
+      "correction": "Use absolute output folder. Independent preflight002 command exits0 with raw log and receipt. Do not infer missing first-child exit from PASS output."
     }
   ]
 }
