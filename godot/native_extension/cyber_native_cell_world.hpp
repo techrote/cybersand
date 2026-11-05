@@ -225,10 +225,12 @@ private:
     std::uint64_t tick_failure_count_ = 0;
     std::uint64_t liquid_policy_session_generation_ = 0;
     Vector2i extent_{kWorldWidth, kWorldHeight};
-    static constexpr std::size_t kWorkbenchBodies = 8;
+    // Actor and physical-body capacities are separate for articulation.
+    static constexpr std::size_t kWorkbenchActors = 8;
+    static constexpr std::size_t kWorkbenchBodies = cybersand::World::kMaximumTransientBodies;
     struct WorkbenchBody {
         std::int64_t instance = 0, generation = 0;
-        std::int32_t first = 0, count = 0;
+        std::int32_t first = 0, count = 0, part_index = 0;
         double budget = 20, gravity = 0;
         bool external_drive = false;
     };
