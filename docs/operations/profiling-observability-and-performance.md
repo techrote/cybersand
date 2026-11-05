@@ -4,7 +4,7 @@ document-kind: runbook
 canonical-for: [performance-measurement, metric-interpretation]
 status: Current
 scope: Current native/Godot observations, benchmark procedure, metric boundaries, and unimplemented production telemetry
-last-reviewed: 2026-10-31
+last-reviewed: 2026-11-05
 related-documents: [configuration-and-capacity-budgets.md, web-threading.md, testing-validation-and-replay.md, ../reference/validation-evidence.md, ../audits/2026-09-08-performance-history.md]
 ---
 
@@ -28,6 +28,18 @@ the [validation ledger](../reference/validation-evidence.md). Original hosted
 2026-08-27/28 and local 2026-09-08 timing tables are preserved verbatim in the
 [historical performance archive](../audits/2026-09-08-performance-history.md),
 excluded from ordinary Current-behavior retrieval.
+
+## Windows Rapier calling-thread interpretation
+
+For the bounded INV-004 Windows diagnostic, require three profiling-enabled and
+three disabled repeats with retained frame/callback/step distributions and at
+least 20 aligned steps over 40 ms. Its registered classification requires at
+least 80% of long events to have at least 80% calling-thread CPU occupancy, or
+at least 80% to have at least 60% off-CPU time. Counter accounting uncertainty,
+missing timing alignment or excessive profiler perturbation requires an
+inconclusive result. A different host with no long events is also inconclusive;
+it does not identify a GPU effect. These are scoped diagnostic thresholds, not
+general production performance targets.
 
 ## Persistent hosted execution history
 

@@ -1,0 +1,78 @@
+name: INV154 retained ETW state and stack analysis
+on:
+  workflow_dispatch:
+  push:
+    branches: [codex/inv154-windows-thread-time-20261105]
+    paths:
+      - .github/workflows/inv154-rapier-thread-state-offline.yml
+      - tools/performance/analyze_rapier_thread_states.py
+      - tools/performance/rapier_thread_state/**
+permissions:
+  contents: read
+  actions: read
+jobs:
+  retained-etw-analysis:
+    runs-on: windows-2022
+    timeout-minutes: 20
+    env:
+      PYTHONUTF8: '1'
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          lfs: false
+          persist-credentials: false
+      - name: Authenticate retained trace and matching symbol archives
+        shell: python
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          import hashlib, json, subprocess, zipfile
+          from pathlib import Path, PurePosixPath
+          out = Path('build/inv154-etw-analysis')
+          out.mkdir(parents=True, exist_ok=True)
+          receipts = []
+          for artifact, expected, name in (
+              (13456368435, 'c119387c749ca2fd4304f49fbcd127d9a03c8067cc72e30f10220d44469166d7', 'raw'),
+              (12545054196, '138f058fbf8696aaf0bb2492a83b6ae4f7b9e595b55a947a427ece9883991960', 'symbols')):
+              archive = out / (name + '.zip')
+              with archive.open('wb') as stream:
+                  subprocess.run(['gh', 'api', f'repos/techrote/cybersand/actions/artifacts/{artifact}/zip'], stdout=stream, check=True, timeout=180)
+              digest = hashlib.sha256(archive.read_bytes()).hexdigest()
+              if digest != expected:
+                  raise RuntimeError('Retained archive hash mismatch: ' + name)
+              receipts.append({'artifact': artifact, 'sha256': digest, 'size': archive.stat().st_size})
+              with zipfile.ZipFile(archive) as bundle:
+                  if bundle.testzip() is not None:
+                      raise RuntimeError('Archive CRC failure')
+                  for member in bundle.infolist():
+                      parts = PurePosixPath(member.filename)
+                      if parts.is_absolute() or '..' in parts.parts:
+                          raise RuntimeError('Unsafe archive path')
+                      if name == 'raw' and (member.filename.endswith('/trace.etl') or member.filename.endswith('/physics-thread-cpu.json')):
+                          bundle.extract(member, out / 'raw')
+                      if name == 'symbols' and parts.name == 'godot_rapier.pdb':
+                          target = out / 'symbols/godot_rapier.pdb'
+                          target.parent.mkdir(parents=True, exist_ok=True)
+                          target.write_bytes(bundle.read(member))
+          (out / 'archive-identities.json').write_text(json.dumps(receipts, indent=2), encoding='utf-8')
+      - name: Replay QPC thread states and resolve matching Rapier stacks
+        shell: python
+        run: |
+          import subprocess
+          from pathlib import Path
+          out = Path('build/inv154-etw-analysis').resolve()
+          enabled = list((out / 'raw').rglob('trial-02-enabled'))
+          if len(enabled) != 1:
+              raise RuntimeError('Missing unique retained trial set')
+          subprocess.run(['python', 'tools/performance/analyze_rapier_thread_states.py', '--traces', str(enabled[0].parent), '--symbols', str(out / 'symbols'), '--output', str(out / 'analysis')], check=True, timeout=750)
+      - name: Preserve derived state, stack and capability results
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: inv154-etw-analysis-${{ github.run_id }}
+          path: |
+            build/inv154-etw-analysis/*.json
+            build/inv154-etw-analysis/analysis/**/*.json
+            build/inv154-etw-analysis/analysis/**/*.log
+          if-no-files-found: warn
+          retention-days: 90

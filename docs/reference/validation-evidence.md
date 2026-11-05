@@ -4,11 +4,13 @@ status: Current
 document-kind: reference
 scope: Dated source and runtime evidence with platform, artifact identity, coverage and missing gates
 canonical-for: [validation-results, platform-evidence, historical-evidence-boundaries]
-last-reviewed: 2026-11-04
+last-reviewed: 2026-11-05
 related-documents: [../operations/testing-validation-and-replay.md, level-saves-and-replay.md, ../audits/m11/README.md, ../operations/development-claims-remediation-programme.md, ../audits/2026-10-25-lcb002-pressure-variants.md]
 ---
 
 # Validation evidence ledger
+
+The [2026-11-05 INV-004 Windows experiment](../audits/2026-11-05-inv154-windows-thread-time.md) preserves the exact #449 reproduction (run 42115748865) and successor calling-thread measurement. Original software-ANGLE and local TITAN RTX cohorts remain separate; no GPU causation or production optimization is established.
 
 ## MAT-AUTH-002 Phase A evidence boundary — 2026-11-04
 

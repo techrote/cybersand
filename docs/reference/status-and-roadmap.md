@@ -4,11 +4,13 @@ status: Current
 document-kind: reference
 scope: Current implementation map, unresolved correctness and policy decisions, and bounded next checkpoints
 canonical-for: [implementation-status, foundational-priorities, open-decisions]
-last-reviewed: 2026-11-04
+last-reviewed: 2026-11-05
 related-documents: [validation-evidence.md, invariants.md, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/development-claims-remediation-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../operations/github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
 # Status and foundational roadmap
+
+INV-004 / #154 remains a diagnostic investigation. The [2026-11-05 Windows experiment](../audits/2026-11-05-inv154-windows-thread-time.md) preserves #436 → #440 → #446 → #449 tests on one current-main-based diagnostic branch. Thread execution evidence must precede any separately authorized optimization; no production physics/rendering/gameplay change is part of this checkpoint.
 
 ## MAT-AUTH reviewed per-file transitions — 2026-11-04
 

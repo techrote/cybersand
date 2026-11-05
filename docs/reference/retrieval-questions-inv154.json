@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "frozen_date": "2026-11-05",
+  "purpose": "Independent INV154 calling-thread interpretation question; separate from existing frozen and challenge sets.",
+  "questions": [
+    {
+      "id": "INV154-CPU-01",
+      "query": "Does a long Windows Rapier space_step prove CPU computation, and can per-thread CPU time distinguish waiting from descheduling?",
+      "canonical": [
+        "operations/profiling-observability-and-performance.md"
+      ],
+      "facts": [
+        "Wall time alone does not prove CPU computation; aligned calling-thread execution counters can separate caller execution from off-CPU time with explicit accounting uncertainty.",
+        "Calling-thread off-CPU time does not distinguish blocked from ready-but-descheduled time or exclude computation on internal Rapier workers.",
+        "Classification requires repeated profiling comparisons, sufficient long events, timing alignment and bounded perturbation; a different GPU host with no events is inconclusive."
+      ],
+      "sources": [
+        "operations/profiling-observability-and-performance.md",
+        "audits/2026-11-05-inv154-windows-thread-time.md"
+      ]
+    }
+  ]
+}
