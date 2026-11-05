@@ -1,0 +1,10 @@
+{
+  "id": "SOL-CHAMBER-COST-001-APPARATUS-002",
+  "status": "Registered after zero-step input refusal, before correction/fresh execution",
+  "prior_source": "b21d7727",
+  "retained_attempt": "build/sol-response-cost/initial",
+  "observation": "Actual Windows Godot4.7 JSON numbers parse as floats; Array.has(1) is false for parsed [1,4], while Array.has(1.0) is true. Independent no-World type probe exits0",
+  "correction": "Convert the integer requested worker value to float for membership in the frozen JSON workers array; preserve integer value passed to Native",
+  "unchanged": ["registration and matrix", "workers1/4", "native source/runtime", "body/geometry/material map", "gain/cap/force/cadence", "response/application", "observers and exports", "metrics and matching oracle"],
+  "scope": "Input-type adapter correction only; failed initial episodes executed zero physics steps and are not passes"
+}

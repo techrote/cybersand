@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "frozen_date": "2026-11-05",
+  "purpose": "Additive post-result cost questions; no replacement of earlier frozen evaluation sets.",
+  "questions": [
+    {
+      "id": "SOL-COST-GETTER-001",
+      "query": "Does the old native tick subtotal include passive granular response generation, and why can a small response getter cost coexist with long recorded chamber steps?",
+      "canonical": ["architecture/rigid-body-and-cellular-coupling.md"],
+      "facts": ["The getter includes passive solve and packet construction after native-tick timing stops.", "Full census and scheduled exports dominate this test apparatus, not necessarily production gameplay.", "Paired observer equivalence precedes latency interpretation; driven overlap remains."],
+      "sources": ["../godot/tests/support/sol_chamber_cost.gd", "../tools/experiments/sol_chamber_cost_reduce.py"]
+    },
+    {
+      "id": "SOL-COST-WORKERS-001",
+      "query": "Does configured four-worker execution of the 256-square chamber establish actual four-participant scaling or the original SOL CPU gate?",
+      "canonical": ["architecture/rigid-body-and-cellular-coupling.md", "reference/status-and-roadmap.md"],
+      "facts": ["Native configuration1/4 is read back, but each phase has at most one job and one actual participant.", "Shared-host API timing and component memory are not total heap, general scaling or original24group SOL CPU qualification."],
+      "sources": ["../tools/experiments/sol_chamber_cost_reduce.py", "../godot/tests/fixtures/sol_chamber/cost-001.json"]
+    }
+  ]
+}

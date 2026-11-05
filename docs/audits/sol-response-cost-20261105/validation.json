@@ -1,0 +1,258 @@
+{
+  "source": "b040d7a48c00a7aed2aa8ac32693d909f1712613",
+  "results": [
+    {
+      "name": "docs",
+      "command": [
+        "python",
+        "tools/ci/check_docs.py"
+      ],
+      "requested_command": [
+        "python",
+        "tools/ci/check_docs.py"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 180,
+      "seconds": 2.825973399973009,
+      "log": "build\\sol-response-cost\\validation-b040\\docs.log",
+      "log_sha256": "9b6594257cef18d7058696f8fd814d79abf846c47deb94b70763a05db5780560",
+      "markers": []
+    },
+    {
+      "name": "m11",
+      "command": [
+        "python",
+        "tools/ci/check_m11_consistency.py"
+      ],
+      "requested_command": [
+        "python",
+        "tools/ci/check_m11_consistency.py"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 180,
+      "seconds": 1.2965356999775395,
+      "log": "build\\sol-response-cost\\validation-b040\\m11.log",
+      "log_sha256": "e5d2a8eecef5876957dc4ecff01b99af696053871616d2dea563371d44b2427b",
+      "markers": []
+    },
+    {
+      "name": "repository",
+      "command": [
+        "python",
+        "tools/ci/check_repository.py"
+      ],
+      "requested_command": [
+        "python",
+        "tools/ci/check_repository.py"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 180,
+      "seconds": 2.851070599979721,
+      "log": "build\\sol-response-cost\\validation-b040\\repository.log",
+      "log_sha256": "618f1c18854b582b7ed3c398fae3483a9648564a3e61b9fc7fcde11bdf6d4a1a",
+      "markers": []
+    },
+    {
+      "name": "material",
+      "command": [
+        "python",
+        "tools/material_catalogue/compatibility.py",
+        "--check"
+      ],
+      "requested_command": [
+        "python",
+        "tools/material_catalogue/compatibility.py",
+        "--check"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 180,
+      "seconds": 2.3585375999682583,
+      "log": "build\\sol-response-cost\\validation-b040\\material.log",
+      "log_sha256": "50174e75669bf15c0d521884f313715b5769054ca583572e3e734d0d06c14ae7",
+      "markers": []
+    },
+    {
+      "name": "portable-cost",
+      "command": [
+        "python",
+        "tools/experiments/test_sol_chamber_cost.py"
+      ],
+      "requested_command": [
+        "python",
+        "tools/experiments/test_sol_chamber_cost.py"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 180,
+      "seconds": 23.47165010002209,
+      "log": "build\\sol-response-cost\\validation-b040\\portable-cost.log",
+      "log_sha256": "f9f862e7178ab1223bbe731ee7b287efe3bbed8c9a141b588b046c8f303c9c72",
+      "markers": []
+    },
+    {
+      "name": "portable-values",
+      "command": [
+        "python",
+        "tools/experiments/test_sol_passive_values.py"
+      ],
+      "requested_command": [
+        "python",
+        "tools/experiments/test_sol_passive_values.py"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 180,
+      "seconds": 0.4224213000270538,
+      "log": "build\\sol-response-cost\\validation-b040\\portable-values.log",
+      "log_sha256": "72a11179e863dc1ab2db16805538acfb052b2c7812d7403bf2bb0adc6ed6ea07",
+      "markers": []
+    },
+    {
+      "name": "geometry",
+      "command": [
+        "python",
+        "tools/experiments/test_sol_chamber_reduce.py"
+      ],
+      "requested_command": [
+        "python",
+        "tools/experiments/test_sol_chamber_reduce.py"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 180,
+      "seconds": 0.18378299998585135,
+      "log": "build\\sol-response-cost\\validation-b040\\geometry.log",
+      "log_sha256": "ba9882e9ac323861c4e47fd88f712e12a56b4bd76a6d541faec02026dfe5f209",
+      "markers": []
+    },
+    {
+      "name": "whitespace",
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "requested_command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 180,
+      "seconds": 0.03926979994866997,
+      "log": "build\\sol-response-cost\\validation-b040\\whitespace.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "markers": []
+    }
+  ],
+  "retrieval": {
+    "source": "b040d7a48c00a7aed2aa8ac32693d909f1712613",
+    "results": [
+      {
+        "name": "frozen",
+        "command": [
+          "python",
+          "tools/docs/retrieval_eval.py",
+          "--output",
+          "C:\\Users\\_\\.codex\\worktrees\\sol-response-cost-20261105\\khybersand\\build\\sol-response-cost\\retrieval-b040\\frozen.json"
+        ],
+        "requested_command": [
+          "python",
+          "tools/docs/retrieval_eval.py",
+          "--output",
+          "C:\\Users\\_\\.codex\\worktrees\\sol-response-cost-20261105\\khybersand\\build\\sol-response-cost\\retrieval-b040\\frozen.json"
+        ],
+        "exit": 0,
+        "clean": true,
+        "timeout_seconds": 120,
+        "seconds": 0.536832100013271,
+        "log": "build\\sol-response-cost\\retrieval-b040\\frozen.log",
+        "log_sha256": "96219aa9a773a89b5cd1e4caa7b1ac11406c1a78f17487040dd9122f892cdf7e",
+        "markers": []
+      },
+      {
+        "name": "chamber",
+        "command": [
+          "python",
+          "tools/docs/retrieval_eval.py",
+          "--queries",
+          "docs/reference/retrieval-questions-sol-chamber.json",
+          "--output",
+          "C:\\Users\\_\\.codex\\worktrees\\sol-response-cost-20261105\\khybersand\\build\\sol-response-cost\\retrieval-b040\\chamber.json"
+        ],
+        "requested_command": [
+          "python",
+          "tools/docs/retrieval_eval.py",
+          "--queries",
+          "docs/reference/retrieval-questions-sol-chamber.json",
+          "--output",
+          "C:\\Users\\_\\.codex\\worktrees\\sol-response-cost-20261105\\khybersand\\build\\sol-response-cost\\retrieval-b040\\chamber.json"
+        ],
+        "exit": 0,
+        "clean": true,
+        "timeout_seconds": 120,
+        "seconds": 0.43342100002337247,
+        "log": "build\\sol-response-cost\\retrieval-b040\\chamber.log",
+        "log_sha256": "c1ce21d91f0d1e23406d83b60b11b91868fcacc81110895ac3c04b2da51776ae",
+        "markers": []
+      },
+      {
+        "name": "passive",
+        "command": [
+          "python",
+          "tools/docs/retrieval_eval.py",
+          "--queries",
+          "docs/reference/retrieval-questions-sol-passive.json",
+          "--output",
+          "C:\\Users\\_\\.codex\\worktrees\\sol-response-cost-20261105\\khybersand\\build\\sol-response-cost\\retrieval-b040\\passive.json"
+        ],
+        "requested_command": [
+          "python",
+          "tools/docs/retrieval_eval.py",
+          "--queries",
+          "docs/reference/retrieval-questions-sol-passive.json",
+          "--output",
+          "C:\\Users\\_\\.codex\\worktrees\\sol-response-cost-20261105\\khybersand\\build\\sol-response-cost\\retrieval-b040\\passive.json"
+        ],
+        "exit": 0,
+        "clean": true,
+        "timeout_seconds": 120,
+        "seconds": 0.4283756000222638,
+        "log": "build\\sol-response-cost\\retrieval-b040\\passive.log",
+        "log_sha256": "afb5ef20403f9d282563ab48653692e7c6baf4c2b9328961c11e4f3e5a5446fe",
+        "markers": []
+      },
+      {
+        "name": "cost",
+        "command": [
+          "python",
+          "tools/docs/retrieval_eval.py",
+          "--queries",
+          "docs/reference/retrieval-questions-sol-cost.json",
+          "--output",
+          "C:\\Users\\_\\.codex\\worktrees\\sol-response-cost-20261105\\khybersand\\build\\sol-response-cost\\retrieval-b040\\cost.json"
+        ],
+        "requested_command": [
+          "python",
+          "tools/docs/retrieval_eval.py",
+          "--queries",
+          "docs/reference/retrieval-questions-sol-cost.json",
+          "--output",
+          "C:\\Users\\_\\.codex\\worktrees\\sol-response-cost-20261105\\khybersand\\build\\sol-response-cost\\retrieval-b040\\cost.json"
+        ],
+        "exit": 0,
+        "clean": true,
+        "timeout_seconds": 120,
+        "seconds": 0.40813450003042817,
+        "log": "build\\sol-response-cost\\retrieval-b040\\cost.log",
+        "log_sha256": "a252c0c01ccb84965d4bc54ba4dd08365977d6a170cc815a95e47b3eebde0e3e",
+        "markers": []
+      }
+    ]
+  }
+}

@@ -12,6 +12,13 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 ## Compound granular behaviour and SOL boundary — 2026-11-05
 
+The [separate response-cost lane](../audits/2026-11-05-sol-response-cost.md)
+qualifies48single-body sessions and24observer pairs:13–22µs response generation
+in this small workload, with roughly12–13ms full-census overhead. This isolates
+measurement cost without changing the solver or proving general engine scaling.
+Driven overlap persists. Prioritize separately registered physical refinement
+and original SOL capture/Active-hold admission; neither follows from low API cost.
+
 **Current dependent experiment:** the exact520/six-proxy
 [chamber profile](../audits/2026-11-05-sol-chamber-yielding.md) starts with valid
 Sand/rigid occupancy and compares closed/open vacancy under fixed drive and

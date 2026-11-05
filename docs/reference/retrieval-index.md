@@ -10,6 +10,11 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 
 # Retrieval question index
 
+For response-generation cost versus observation/export overhead, retrieve
+[the coupling cost boundary](../architecture/rigid-body-and-cellular-coupling.md#granular-response-cost-and-observation).
+`retrieval-questions-sol-cost.json` adds post-result cost/participation questions;
+the dated ledger remains evidence and does not replace canonical ownership rules.
+
 ## Exact compound chamber and force accounting
 
 For valid entrapment versus driven full-square overlap, retrieve the

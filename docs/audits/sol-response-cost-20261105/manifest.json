@@ -1,0 +1,3001 @@
+{
+  "schema": "cybersand.sol-response-cost.evidence.v1",
+  "execution_source": "a47be4e2d2a3208650cc4665fc83ca3c5acedaa5",
+  "scope": "single-body surrogate; no original SOL admission",
+  "files": [
+    {
+      "path": "execution.json",
+      "bytes": 591727,
+      "sha256": "b97a4d8433dd89c20f2f3db712c27b5d0d49c36be7de14447fc2f87971d86906",
+      "original_path": "build/sol-response-cost/registered-matrix/receipt.json",
+      "original_bytes": 598917,
+      "original_sha256": "6721e5b16de5434f2852401958c3a754a46f29f12e1165c67d1b3d3c3b47b60e"
+    },
+    {
+      "path": "comparison.json",
+      "bytes": 119023,
+      "sha256": "e2b9ba12f4ddff6af58329e134c57292a4716b3d41c1e3c3dc66551363bb1c04",
+      "original_path": "build/sol-response-cost/registered-matrix/reduction-002/summary.json",
+      "original_bytes": 119023,
+      "original_sha256": "e2b9ba12f4ddff6af58329e134c57292a4716b3d41c1e3c3dc66551363bb1c04"
+    },
+    {
+      "path": "failed-initial.json",
+      "bytes": 386274,
+      "sha256": "005c2d915ef4882c2b95889760ea2ce13a52b89f8ffa8b791bffca566c6b953c",
+      "original_path": "build/sol-response-cost/initial/receipt.json",
+      "original_bytes": 389794,
+      "original_sha256": "e989fb39ce711f521b84853574a12e75b209fa5343426109b438b179a979b9a8"
+    },
+    {
+      "path": "corrected-smoke.json",
+      "bytes": 387354,
+      "sha256": "692c679af0327a4a75b5221593f3027c00e8dd2cceb2e3aed3333b07a6e87aaf",
+      "original_path": "build/sol-response-cost/corrected-smoke/receipt.json",
+      "original_bytes": 390892,
+      "original_sha256": "590584c59f25bf3d6ff43db3333835344155fcfdcc5470ba45e9bcd5f73bbafc"
+    },
+    {
+      "path": "type-probe.json",
+      "bytes": 1325,
+      "sha256": "5d5b0ab01c4886cf5f8eb87981526411d80135ef5383e0bc4022fa03b13ff47b",
+      "original_path": "build/sol-response-cost/type-probe/receipt.json",
+      "original_bytes": 1359,
+      "original_sha256": "6ede100d0aaa4b5346e0d13e766fb29194ecef974fc98a66ed81062f51f73da3"
+    },
+    {
+      "path": "reduction-command.json",
+      "bytes": 853,
+      "sha256": "7784c5b71874d69e7e2597f3f4314cd02e06d33546b88c787b739fde024a48f0",
+      "original_path": "build/sol-response-cost/sealing-3a29/receipt.json",
+      "original_bytes": 880,
+      "original_sha256": "fe71bf9f2c6fc21bd91e98e6b0a51f296d0f330bdb2ae5a864c5b43e5878419b"
+    },
+    {
+      "path": "companion.json",
+      "bytes": 1066,
+      "sha256": "6750d3d8a7f2df77b4be0bf7fe7deee04a60da63be578fb8b0926946bafa327a",
+      "original_path": "build/sol-response-cost/companion.json",
+      "original_bytes": 1066,
+      "original_sha256": "6750d3d8a7f2df77b4be0bf7fe7deee04a60da63be578fb8b0926946bafa327a"
+    },
+    {
+      "path": "raw-full.json",
+      "bytes": 4625511,
+      "sha256": "7129e71a6b8ce37e5f7277dcf4209034da671830d1e0d4ceaba555e58c32d3df",
+      "original_path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-full-w1-r0/closed-driven-LA-SELECTIVE-w1-r0.json",
+      "original_bytes": 4625511,
+      "original_sha256": "7129e71a6b8ce37e5f7277dcf4209034da671830d1e0d4ceaba555e58c32d3df"
+    },
+    {
+      "path": "raw-minimal.json",
+      "bytes": 2177058,
+      "sha256": "aa0a3d86ecefd7420fa13a3b9f61bdf5bc6878a8704b149857086b3cf7d44db1",
+      "original_path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-minimal-w1-r0/closed-driven-LA-SELECTIVE-w1-r0.json",
+      "original_bytes": 2177058,
+      "original_sha256": "aa0a3d86ecefd7420fa13a3b9f61bdf5bc6878a8704b149857086b3cf7d44db1"
+    },
+    {
+      "path": "reference-payload-index.json",
+      "bytes": 5451,
+      "sha256": "b64985c13378daa8074315602ef3aee45d44083b7fe2f8a64152496ccff5220d"
+    },
+    {
+      "path": "jobs.json",
+      "bytes": 17489,
+      "sha256": "96093988f2e6193094505f955e51124998d1ae2c896bad8e4a04e5ada21aed10"
+    },
+    {
+      "path": "host.json",
+      "bytes": 1906,
+      "sha256": "a846f9821e8ffc0a61b9d36cf2389d277a7b3c14e35233d9f85299c0900761b4"
+    },
+    {
+      "path": "cost-breakdown.png",
+      "bytes": 91740,
+      "sha256": "25dc456a1bdab9fadda48763e6655c34960abda1a91ef10203ca4c013407c8b9"
+    },
+    {
+      "path": "figure.json",
+      "bytes": 760,
+      "sha256": "1d3e29cda2f3aa759bfa99cfb0e2909fda0e03d9df654b2dd855370fa8e63eed"
+    },
+    {
+      "path": "validation.json",
+      "bytes": 8322,
+      "sha256": "f272bc68a59da6928c57e6f56d8ef65f9d47d1cf493eb479a0b241e20361c8a2"
+    },
+    {
+      "path": "source-artifacts.json",
+      "bytes": 934,
+      "sha256": "1df5bbda5c41742ea5df401c0ae88c7469a036e41b82d24035424a3b98cd070c"
+    }
+  ],
+  "local_raw_files": [
+    {
+      "path": "build/sol-response-cost/initial/receipt.json",
+      "bytes": 389794,
+      "sha256": "e989fb39ce711f521b84853574a12e75b209fa5343426109b438b179a979b9a8"
+    },
+    {
+      "path": "build/sol-response-cost/initial/reduction/summary.json",
+      "bytes": 1094,
+      "sha256": "335566935ae225f50b49384730d6105f1d20c35f0c73e3925951ae7adf6b19a6"
+    },
+    {
+      "path": "build/sol-response-cost/initial/windows/closed-unforced-full-w1-r0.log",
+      "bytes": 506,
+      "sha256": "40ca78909b1a5a13806a4dce1ab121e1dc7804c17da8221d42d0cdc3737952c1"
+    },
+    {
+      "path": "build/sol-response-cost/initial/windows/closed-unforced-full-w1-r0.receipt.json",
+      "bytes": 1087,
+      "sha256": "6722e23b158f67055351d091ddbc1430ae4db3c2bf7d8ed5f0e2207ce4d23739"
+    },
+    {
+      "path": "build/sol-response-cost/initial/windows/closed-unforced-minimal-w1-r0.log",
+      "bytes": 506,
+      "sha256": "40ca78909b1a5a13806a4dce1ab121e1dc7804c17da8221d42d0cdc3737952c1"
+    },
+    {
+      "path": "build/sol-response-cost/initial/windows/closed-unforced-minimal-w1-r0.receipt.json",
+      "bytes": 1093,
+      "sha256": "83a3968a4a5cccefd82f7bdd4ca3cb5ee279a3baf2f6edf0e81c8e326b21756f"
+    },
+    {
+      "path": "build/sol-response-cost/initial/windows/import.log",
+      "bytes": 36279,
+      "sha256": "7510f8be4a718f3550f9f003be7d990105ba742964440d77b8e1fff2effcc5eb"
+    },
+    {
+      "path": "build/sol-response-cost/initial/windows/import.receipt.json",
+      "bytes": 953,
+      "sha256": "7ebcc6e8949f8770a19eec6d27c8188c4ab2b5ea4e664bfe0523e316359652b5"
+    },
+    {
+      "path": "build/sol-response-cost/corrected-smoke/receipt.json",
+      "bytes": 390892,
+      "sha256": "590584c59f25bf3d6ff43db3333835344155fcfdcc5470ba45e9bcd5f73bbafc"
+    },
+    {
+      "path": "build/sol-response-cost/corrected-smoke/reduction/summary.json",
+      "bytes": 5659,
+      "sha256": "911c9b99e282abb88d5179f3ee6782723e3d6db4517d00ce837d3b5337d2bf9e"
+    },
+    {
+      "path": "build/sol-response-cost/corrected-smoke/reduction-002/summary.json",
+      "bytes": 5811,
+      "sha256": "18a8d53da6d41dfb4a1401bbd3c18588073ec8b1bf289c323b0cdd443d053de4"
+    },
+    {
+      "path": "build/sol-response-cost/corrected-smoke/windows/closed-unforced-full-w1-r0.log",
+      "bytes": 341,
+      "sha256": "50e90dbaba6cee6520cc266f48e0aaefe79fbfca7229e2a6150a9e00a826bf50"
+    },
+    {
+      "path": "build/sol-response-cost/corrected-smoke/windows/closed-unforced-full-w1-r0.receipt.json",
+      "bytes": 1244,
+      "sha256": "e2393f5cfc642af001702348d7c6fc7a3efedec8e47c337ae6cbacbf14b460d2"
+    },
+    {
+      "path": "build/sol-response-cost/corrected-smoke/windows/closed-unforced-minimal-w1-r0.log",
+      "bytes": 341,
+      "sha256": "50e90dbaba6cee6520cc266f48e0aaefe79fbfca7229e2a6150a9e00a826bf50"
+    },
+    {
+      "path": "build/sol-response-cost/corrected-smoke/windows/closed-unforced-minimal-w1-r0.receipt.json",
+      "bytes": 1250,
+      "sha256": "c8fbcedd60a4146b938eee60879b6b3fc39f1979a52604752e04ea9c05dddee8"
+    },
+    {
+      "path": "build/sol-response-cost/corrected-smoke/windows/import.log",
+      "bytes": 36279,
+      "sha256": "7510f8be4a718f3550f9f003be7d990105ba742964440d77b8e1fff2effcc5eb"
+    },
+    {
+      "path": "build/sol-response-cost/corrected-smoke/windows/import.receipt.json",
+      "bytes": 977,
+      "sha256": "7ddaf75770f4d289b18a441ed2c4d7b9e1da66593b4a10ff1863d0e9e3a3667d"
+    },
+    {
+      "path": "build/sol-response-cost/corrected-smoke/windows/observations/closed-unforced-full-w1-r0/closed-unforced-LA-SELECTIVE-w1-r0-final.cyps",
+      "bytes": 2265370,
+      "sha256": "0e9c1680db4ff46830b1f23574577e22e97f9f65a8a9c6d6b494e1acf882b540"
+    },
+    {
+      "path": "build/sol-response-cost/corrected-smoke/windows/observations/closed-unforced-full-w1-r0/closed-unforced-LA-SELECTIVE-w1-r0-initial.cyps",
+      "bytes": 2265338,
+      "sha256": "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc"
+    },
+    {
+      "path": "build/sol-response-cost/corrected-smoke/windows/observations/closed-unforced-full-w1-r0/closed-unforced-LA-SELECTIVE-w1-r0-s0.cyps",
+      "bytes": 2265370,
+      "sha256": "c446bc83965d744f1a41b38df0961bc7cb27243f3b6f793d8b391b1ef9c9a84d"
+    },
+    {
+      "path": "build/sol-response-cost/corrected-smoke/windows/observations/closed-unforced-full-w1-r0/closed-unforced-LA-SELECTIVE-w1-r0-s149.cyps",
+      "bytes": 2265370,
+      "sha256": "b9da42f5b1c796b59c358927458c51de40ea6d4ee52806fc1b6236adebbfc4fb"
+    },
+    {
+      "path": "build/sol-response-cost/corrected-smoke/windows/observations/closed-unforced-full-w1-r0/closed-unforced-LA-SELECTIVE-w1-r0-s150.cyps",
+      "bytes": 2265370,
+      "sha256": "5cf3da7f32b96feb259674aecb1a37d8ab559dc01dd61f1532231201b6ad1cff"
+    },
+    {
+      "path": "build/sol-response-cost/corrected-smoke/windows/observations/closed-unforced-full-w1-r0/closed-unforced-LA-SELECTIVE-w1-r0-s179.cyps",
+      "bytes": 2265370,
+      "sha256": "0e9c1680db4ff46830b1f23574577e22e97f9f65a8a9c6d6b494e1acf882b540"
+    },
+    {
+      "path": "build/sol-response-cost/corrected-smoke/windows/observations/closed-unforced-full-w1-r0/closed-unforced-LA-SELECTIVE-w1-r0-s29.cyps",
+      "bytes": 2265370,
+      "sha256": "bb60a9e7425d5c15653ef7001e607a9bb326c3fc8aaecb1c99102b5239619854"
+    },
+    {
+      "path": "build/sol-response-cost/corrected-smoke/windows/observations/closed-unforced-full-w1-r0/closed-unforced-LA-SELECTIVE-w1-r0-s30.cyps",
+      "bytes": 2265370,
+      "sha256": "665e396e0f22b9701c0a1c1b4d83d5a5c082cc70428b761736e169371d953426"
+    },
+    {
+      "path": "build/sol-response-cost/corrected-smoke/windows/observations/closed-unforced-full-w1-r0/closed-unforced-LA-SELECTIVE-w1-r0.json",
+      "bytes": 4306339,
+      "sha256": "8e2c300baf6fd1e8be40ee8e92f8772c605bd6409665be93fee0df9e58d8659b"
+    },
+    {
+      "path": "build/sol-response-cost/corrected-smoke/windows/observations/closed-unforced-minimal-w1-r0/closed-unforced-LA-SELECTIVE-w1-r0-final.cyps",
+      "bytes": 2265370,
+      "sha256": "0e9c1680db4ff46830b1f23574577e22e97f9f65a8a9c6d6b494e1acf882b540"
+    },
+    {
+      "path": "build/sol-response-cost/corrected-smoke/windows/observations/closed-unforced-minimal-w1-r0/closed-unforced-LA-SELECTIVE-w1-r0-initial.cyps",
+      "bytes": 2265338,
+      "sha256": "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc"
+    },
+    {
+      "path": "build/sol-response-cost/corrected-smoke/windows/observations/closed-unforced-minimal-w1-r0/closed-unforced-LA-SELECTIVE-w1-r0-s0.cyps",
+      "bytes": 2265370,
+      "sha256": "c446bc83965d744f1a41b38df0961bc7cb27243f3b6f793d8b391b1ef9c9a84d"
+    },
+    {
+      "path": "build/sol-response-cost/corrected-smoke/windows/observations/closed-unforced-minimal-w1-r0/closed-unforced-LA-SELECTIVE-w1-r0-s149.cyps",
+      "bytes": 2265370,
+      "sha256": "b9da42f5b1c796b59c358927458c51de40ea6d4ee52806fc1b6236adebbfc4fb"
+    },
+    {
+      "path": "build/sol-response-cost/corrected-smoke/windows/observations/closed-unforced-minimal-w1-r0/closed-unforced-LA-SELECTIVE-w1-r0-s150.cyps",
+      "bytes": 2265370,
+      "sha256": "5cf3da7f32b96feb259674aecb1a37d8ab559dc01dd61f1532231201b6ad1cff"
+    },
+    {
+      "path": "build/sol-response-cost/corrected-smoke/windows/observations/closed-unforced-minimal-w1-r0/closed-unforced-LA-SELECTIVE-w1-r0-s179.cyps",
+      "bytes": 2265370,
+      "sha256": "0e9c1680db4ff46830b1f23574577e22e97f9f65a8a9c6d6b494e1acf882b540"
+    },
+    {
+      "path": "build/sol-response-cost/corrected-smoke/windows/observations/closed-unforced-minimal-w1-r0/closed-unforced-LA-SELECTIVE-w1-r0-s29.cyps",
+      "bytes": 2265370,
+      "sha256": "bb60a9e7425d5c15653ef7001e607a9bb326c3fc8aaecb1c99102b5239619854"
+    },
+    {
+      "path": "build/sol-response-cost/corrected-smoke/windows/observations/closed-unforced-minimal-w1-r0/closed-unforced-LA-SELECTIVE-w1-r0-s30.cyps",
+      "bytes": 2265370,
+      "sha256": "665e396e0f22b9701c0a1c1b4d83d5a5c082cc70428b761736e169371d953426"
+    },
+    {
+      "path": "build/sol-response-cost/corrected-smoke/windows/observations/closed-unforced-minimal-w1-r0/closed-unforced-LA-SELECTIVE-w1-r0.json",
+      "bytes": 1851296,
+      "sha256": "ab45328c9857b05742320fc141fe150f8aa53fcf89f128e94c9fa658cc6d29a9"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/closed-driven-full-w1-r0.log",
+      "bytes": 334,
+      "sha256": "c6ea3475961353a0853b12c0deadccbc961325be519e8f1edcba801e6ebe19d0"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/closed-driven-full-w1-r0.receipt.json",
+      "bytes": 2336,
+      "sha256": "5570454c7898a6dc4cce382eff578fcf296d3a1cff7177f7826cf425cdf75966"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/closed-driven-full-w1-r1.log",
+      "bytes": 334,
+      "sha256": "123d282a47f9bef68fbedccee4ad13ec9b86afd27f43fc55dc6dde5fca7b9b84"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/closed-driven-full-w1-r1.receipt.json",
+      "bytes": 2336,
+      "sha256": "7ba035c592826aebac0f395dc970757c09e5d838258ba8f0da675e8c705e7aeb"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/closed-driven-full-w1-r2.log",
+      "bytes": 334,
+      "sha256": "0502ff4806111463f3552b628dd376a8ba15cf87646ec51bc6a04b88bad93e5b"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/closed-driven-full-w1-r2.receipt.json",
+      "bytes": 2336,
+      "sha256": "6d39bd89b08b00bfaed877128cf481fc9a758138e0112f2ba404cf83d1fa3de0"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/closed-driven-full-w4-r0.log",
+      "bytes": 334,
+      "sha256": "9ca1f0911e3aa12a0d3444e9824b7cd24d91a72e957968b1e75a5acd21a4b660"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/closed-driven-full-w4-r0.receipt.json",
+      "bytes": 2336,
+      "sha256": "e0053b2e4ffe1045592d9eeba01950fd55b090c1ccf1865f17e3d7a1773252c1"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/closed-driven-full-w4-r1.log",
+      "bytes": 334,
+      "sha256": "ed0a2e4b1db3f7c493f477b05fc1daa4cccbcc58d871bfa3595c93a671d507c4"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/closed-driven-full-w4-r1.receipt.json",
+      "bytes": 2336,
+      "sha256": "85780964471ba323acd89995c09651b6f85ff74f8886393d62519b2ce07163d1"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/closed-driven-full-w4-r2.log",
+      "bytes": 334,
+      "sha256": "5100a04cd3f763ab93b79fb01c9f9f0daeea675a66d3118dc55f6f4cf5139e9a"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/closed-driven-full-w4-r2.receipt.json",
+      "bytes": 2336,
+      "sha256": "01898082432381bd1a0a6075057314df5dbc83f6949405b5569bb604f6a90110"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/closed-driven-minimal-w1-r0.log",
+      "bytes": 334,
+      "sha256": "c6ea3475961353a0853b12c0deadccbc961325be519e8f1edcba801e6ebe19d0"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/closed-driven-minimal-w1-r0.receipt.json",
+      "bytes": 2354,
+      "sha256": "0dc5be29430df5f2e582d1a9015e273efab3899b1971b394b057c8a782daabfb"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/closed-driven-minimal-w1-r1.log",
+      "bytes": 334,
+      "sha256": "123d282a47f9bef68fbedccee4ad13ec9b86afd27f43fc55dc6dde5fca7b9b84"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/closed-driven-minimal-w1-r1.receipt.json",
+      "bytes": 2354,
+      "sha256": "8fd8ee9f80ce662a1b379a4afe8e477e23fbe6e9961e36a9061a3bd881228e19"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/closed-driven-minimal-w1-r2.log",
+      "bytes": 334,
+      "sha256": "0502ff4806111463f3552b628dd376a8ba15cf87646ec51bc6a04b88bad93e5b"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/closed-driven-minimal-w1-r2.receipt.json",
+      "bytes": 2355,
+      "sha256": "572d6352fe24f83955116b84c2627fd0468cce6c52ecee4606c46ba04ce3e470"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/closed-driven-minimal-w4-r0.log",
+      "bytes": 334,
+      "sha256": "9ca1f0911e3aa12a0d3444e9824b7cd24d91a72e957968b1e75a5acd21a4b660"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/closed-driven-minimal-w4-r0.receipt.json",
+      "bytes": 2355,
+      "sha256": "e1bda0a7af7a082471cbe5c49dc78c2f3761ce6421e9b115196f153f810110bf"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/closed-driven-minimal-w4-r1.log",
+      "bytes": 334,
+      "sha256": "ed0a2e4b1db3f7c493f477b05fc1daa4cccbcc58d871bfa3595c93a671d507c4"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/closed-driven-minimal-w4-r1.receipt.json",
+      "bytes": 2355,
+      "sha256": "d32c261b7a7529b4b8a7ac947d97c268bc86b8051afa99ac4eb669824698d9da"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/closed-driven-minimal-w4-r2.log",
+      "bytes": 334,
+      "sha256": "5100a04cd3f763ab93b79fb01c9f9f0daeea675a66d3118dc55f6f4cf5139e9a"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/closed-driven-minimal-w4-r2.receipt.json",
+      "bytes": 2354,
+      "sha256": "77128e95d01fc53bf4c3966ad2770218668b3fdec18b178a40084fdd5ad8a115"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/closed-unforced-full-w1-r0.log",
+      "bytes": 336,
+      "sha256": "9e25c5dbab3a9b2869ac25db86c695e910cb674e5aa3e3ad31c1486cb5dd84c1"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/closed-unforced-full-w1-r0.receipt.json",
+      "bytes": 2350,
+      "sha256": "cddddc3f4d4e9cd8ad5f6c2ce1a6305fe7a2d67467bb5a62c1835fc6f0486fa3"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/closed-unforced-full-w1-r1.log",
+      "bytes": 336,
+      "sha256": "fba09cc0315695a08c67d79a6ab79eddf1a796fc02bea2500f10bdc37e3c7b06"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/closed-unforced-full-w1-r1.receipt.json",
+      "bytes": 2350,
+      "sha256": "52e771234a3e43b834945224e2b0abd06dede5217183028095b6917a31c8e4d0"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/closed-unforced-full-w1-r2.log",
+      "bytes": 336,
+      "sha256": "f6b9f8f828ec0e930a9d32fcf40287d27553b3a0c7c9827e98e9d8fb2d380ee1"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/closed-unforced-full-w1-r2.receipt.json",
+      "bytes": 2350,
+      "sha256": "e08e06f2216f712825f3c5d4f0ef098a3790bbe0fb2ba1c28df189644520cc86"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/closed-unforced-full-w4-r0.log",
+      "bytes": 336,
+      "sha256": "2f84db5c983a891937e9017807a15e16db2b94766ce43799555c98f6b89b22eb"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/closed-unforced-full-w4-r0.receipt.json",
+      "bytes": 2350,
+      "sha256": "1d8179d95fcc4c2ec799c59c93a13b990ebe699eed9770b6ad78c62c5e3db544"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/closed-unforced-full-w4-r1.log",
+      "bytes": 336,
+      "sha256": "566d6d5971f4027a9f47bc5ffb889f0cc6f62fb236aa9ba2dc65261d133d2f74"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/closed-unforced-full-w4-r1.receipt.json",
+      "bytes": 2350,
+      "sha256": "749a90493d3b7aac2553872ed8b6e157824740720dd56f1d4b8d3f245c7ea865"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/closed-unforced-full-w4-r2.log",
+      "bytes": 336,
+      "sha256": "d411032e4a8e3cc73afcaad380fe79a1ff69034692c6d8e5c4226efdfb426572"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/closed-unforced-full-w4-r2.receipt.json",
+      "bytes": 2350,
+      "sha256": "b2ba174fcccd00164a42826259c7ed538969ac6ead1023819060c673f8597315"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/closed-unforced-minimal-w1-r0.log",
+      "bytes": 336,
+      "sha256": "9e25c5dbab3a9b2869ac25db86c695e910cb674e5aa3e3ad31c1486cb5dd84c1"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/closed-unforced-minimal-w1-r0.receipt.json",
+      "bytes": 2368,
+      "sha256": "ea24b8e2f5841a6ab6598f1429233169e15e467624ad6642ccface33fdcbf3dd"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/closed-unforced-minimal-w1-r1.log",
+      "bytes": 336,
+      "sha256": "fba09cc0315695a08c67d79a6ab79eddf1a796fc02bea2500f10bdc37e3c7b06"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/closed-unforced-minimal-w1-r1.receipt.json",
+      "bytes": 2367,
+      "sha256": "2f5064c6188d4db9556a72bbd2b067e3dffaa3bb9e6e6203c69cc91d3ab64132"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/closed-unforced-minimal-w1-r2.log",
+      "bytes": 336,
+      "sha256": "f6b9f8f828ec0e930a9d32fcf40287d27553b3a0c7c9827e98e9d8fb2d380ee1"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/closed-unforced-minimal-w1-r2.receipt.json",
+      "bytes": 2368,
+      "sha256": "9224912a72da1cbe9e08d4cb141efc35b28c22e2f00b919314dd1955a0e116cc"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/closed-unforced-minimal-w4-r0.log",
+      "bytes": 336,
+      "sha256": "2f84db5c983a891937e9017807a15e16db2b94766ce43799555c98f6b89b22eb"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/closed-unforced-minimal-w4-r0.receipt.json",
+      "bytes": 2369,
+      "sha256": "5fa0e9cb532014e948b693fe9f836be792a891a58d2accccb646724d50211feb"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/closed-unforced-minimal-w4-r1.log",
+      "bytes": 336,
+      "sha256": "566d6d5971f4027a9f47bc5ffb889f0cc6f62fb236aa9ba2dc65261d133d2f74"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/closed-unforced-minimal-w4-r1.receipt.json",
+      "bytes": 2368,
+      "sha256": "b7512e97972dbd322a7c838b1e2449236655150b2beac5a890d8df5760ca5014"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/closed-unforced-minimal-w4-r2.log",
+      "bytes": 336,
+      "sha256": "d411032e4a8e3cc73afcaad380fe79a1ff69034692c6d8e5c4226efdfb426572"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/closed-unforced-minimal-w4-r2.receipt.json",
+      "bytes": 2369,
+      "sha256": "134a39ab5dd26a3787b67f5a0107e56f1968add2bc52041f3cdeb01d2662b1e4"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/import.log",
+      "bytes": 35714,
+      "sha256": "e12620f1d642f1afaedb41c95b6848bb0d6312bbe52d2b26b58d14f85023a81d"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/import.receipt.json",
+      "bytes": 1372,
+      "sha256": "e07bed899ffe1381aee628f39be8ef59e0bfd2dae1973051ecb585c5a889f13a"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-full-w1-r0/closed-driven-LA-SELECTIVE-w1-r0-final.cyps",
+      "bytes": 2265370,
+      "sha256": "678726600b1e7f78555d2a9c991e70450a54870761e9c33597a1b14f7cece331"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-full-w1-r0/closed-driven-LA-SELECTIVE-w1-r0-initial.cyps",
+      "bytes": 2265338,
+      "sha256": "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-full-w1-r0/closed-driven-LA-SELECTIVE-w1-r0-s0.cyps",
+      "bytes": 2265370,
+      "sha256": "c446bc83965d744f1a41b38df0961bc7cb27243f3b6f793d8b391b1ef9c9a84d"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-full-w1-r0/closed-driven-LA-SELECTIVE-w1-r0-s149.cyps",
+      "bytes": 2265370,
+      "sha256": "422f79b9e243f9f084a899fa4cd4a01ad4526b84138a03715e18481b1ae5e739"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-full-w1-r0/closed-driven-LA-SELECTIVE-w1-r0-s150.cyps",
+      "bytes": 2265370,
+      "sha256": "aed8e9b9751098080e015324599839c12a8a197144966c82c715d83cbfd00d79"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-full-w1-r0/closed-driven-LA-SELECTIVE-w1-r0-s179.cyps",
+      "bytes": 2265370,
+      "sha256": "678726600b1e7f78555d2a9c991e70450a54870761e9c33597a1b14f7cece331"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-full-w1-r0/closed-driven-LA-SELECTIVE-w1-r0-s29.cyps",
+      "bytes": 2265370,
+      "sha256": "bb60a9e7425d5c15653ef7001e607a9bb326c3fc8aaecb1c99102b5239619854"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-full-w1-r0/closed-driven-LA-SELECTIVE-w1-r0-s30.cyps",
+      "bytes": 2265370,
+      "sha256": "665e396e0f22b9701c0a1c1b4d83d5a5c082cc70428b761736e169371d953426"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-full-w1-r0/closed-driven-LA-SELECTIVE-w1-r0.json",
+      "bytes": 4625387,
+      "sha256": "965ae9ad4e28e06297ea3e19bd4d093699ccf80043e8d562b89797c87eff7a72"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-full-w1-r1/closed-driven-LA-SELECTIVE-w1-r1-final.cyps",
+      "bytes": 2265370,
+      "sha256": "678726600b1e7f78555d2a9c991e70450a54870761e9c33597a1b14f7cece331"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-full-w1-r1/closed-driven-LA-SELECTIVE-w1-r1-initial.cyps",
+      "bytes": 2265338,
+      "sha256": "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-full-w1-r1/closed-driven-LA-SELECTIVE-w1-r1-s0.cyps",
+      "bytes": 2265370,
+      "sha256": "c446bc83965d744f1a41b38df0961bc7cb27243f3b6f793d8b391b1ef9c9a84d"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-full-w1-r1/closed-driven-LA-SELECTIVE-w1-r1-s149.cyps",
+      "bytes": 2265370,
+      "sha256": "422f79b9e243f9f084a899fa4cd4a01ad4526b84138a03715e18481b1ae5e739"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-full-w1-r1/closed-driven-LA-SELECTIVE-w1-r1-s150.cyps",
+      "bytes": 2265370,
+      "sha256": "aed8e9b9751098080e015324599839c12a8a197144966c82c715d83cbfd00d79"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-full-w1-r1/closed-driven-LA-SELECTIVE-w1-r1-s179.cyps",
+      "bytes": 2265370,
+      "sha256": "678726600b1e7f78555d2a9c991e70450a54870761e9c33597a1b14f7cece331"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-full-w1-r1/closed-driven-LA-SELECTIVE-w1-r1-s29.cyps",
+      "bytes": 2265370,
+      "sha256": "bb60a9e7425d5c15653ef7001e607a9bb326c3fc8aaecb1c99102b5239619854"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-full-w1-r1/closed-driven-LA-SELECTIVE-w1-r1-s30.cyps",
+      "bytes": 2265370,
+      "sha256": "665e396e0f22b9701c0a1c1b4d83d5a5c082cc70428b761736e169371d953426"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-full-w1-r1/closed-driven-LA-SELECTIVE-w1-r1.json",
+      "bytes": 4625422,
+      "sha256": "98619f7ee641dc2861fb912884a2e7b8450e5b3b17e0874df8c020c3c89ae660"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-full-w1-r2/closed-driven-LA-SELECTIVE-w1-r2-final.cyps",
+      "bytes": 2265370,
+      "sha256": "678726600b1e7f78555d2a9c991e70450a54870761e9c33597a1b14f7cece331"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-full-w1-r2/closed-driven-LA-SELECTIVE-w1-r2-initial.cyps",
+      "bytes": 2265338,
+      "sha256": "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-full-w1-r2/closed-driven-LA-SELECTIVE-w1-r2-s0.cyps",
+      "bytes": 2265370,
+      "sha256": "c446bc83965d744f1a41b38df0961bc7cb27243f3b6f793d8b391b1ef9c9a84d"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-full-w1-r2/closed-driven-LA-SELECTIVE-w1-r2-s149.cyps",
+      "bytes": 2265370,
+      "sha256": "422f79b9e243f9f084a899fa4cd4a01ad4526b84138a03715e18481b1ae5e739"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-full-w1-r2/closed-driven-LA-SELECTIVE-w1-r2-s150.cyps",
+      "bytes": 2265370,
+      "sha256": "aed8e9b9751098080e015324599839c12a8a197144966c82c715d83cbfd00d79"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-full-w1-r2/closed-driven-LA-SELECTIVE-w1-r2-s179.cyps",
+      "bytes": 2265370,
+      "sha256": "678726600b1e7f78555d2a9c991e70450a54870761e9c33597a1b14f7cece331"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-full-w1-r2/closed-driven-LA-SELECTIVE-w1-r2-s29.cyps",
+      "bytes": 2265370,
+      "sha256": "bb60a9e7425d5c15653ef7001e607a9bb326c3fc8aaecb1c99102b5239619854"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-full-w1-r2/closed-driven-LA-SELECTIVE-w1-r2-s30.cyps",
+      "bytes": 2265370,
+      "sha256": "665e396e0f22b9701c0a1c1b4d83d5a5c082cc70428b761736e169371d953426"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-full-w1-r2/closed-driven-LA-SELECTIVE-w1-r2.json",
+      "bytes": 4625398,
+      "sha256": "4309e029ba2d0ab742e2db9644ecb44a2520fd2a0d2b2ac6c826c0edc68278a7"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-full-w4-r0/closed-driven-LA-SELECTIVE-w4-r0-final.cyps",
+      "bytes": 2265370,
+      "sha256": "678726600b1e7f78555d2a9c991e70450a54870761e9c33597a1b14f7cece331"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-full-w4-r0/closed-driven-LA-SELECTIVE-w4-r0-initial.cyps",
+      "bytes": 2265338,
+      "sha256": "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-full-w4-r0/closed-driven-LA-SELECTIVE-w4-r0-s0.cyps",
+      "bytes": 2265370,
+      "sha256": "c446bc83965d744f1a41b38df0961bc7cb27243f3b6f793d8b391b1ef9c9a84d"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-full-w4-r0/closed-driven-LA-SELECTIVE-w4-r0-s149.cyps",
+      "bytes": 2265370,
+      "sha256": "422f79b9e243f9f084a899fa4cd4a01ad4526b84138a03715e18481b1ae5e739"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-full-w4-r0/closed-driven-LA-SELECTIVE-w4-r0-s150.cyps",
+      "bytes": 2265370,
+      "sha256": "aed8e9b9751098080e015324599839c12a8a197144966c82c715d83cbfd00d79"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-full-w4-r0/closed-driven-LA-SELECTIVE-w4-r0-s179.cyps",
+      "bytes": 2265370,
+      "sha256": "678726600b1e7f78555d2a9c991e70450a54870761e9c33597a1b14f7cece331"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-full-w4-r0/closed-driven-LA-SELECTIVE-w4-r0-s29.cyps",
+      "bytes": 2265370,
+      "sha256": "bb60a9e7425d5c15653ef7001e607a9bb326c3fc8aaecb1c99102b5239619854"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-full-w4-r0/closed-driven-LA-SELECTIVE-w4-r0-s30.cyps",
+      "bytes": 2265370,
+      "sha256": "665e396e0f22b9701c0a1c1b4d83d5a5c082cc70428b761736e169371d953426"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-full-w4-r0/closed-driven-LA-SELECTIVE-w4-r0.json",
+      "bytes": 4625374,
+      "sha256": "429b64f07f3784c1425b924c1c4396f66a2911f5c7a64abea06f212b5f1ec67e"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-full-w4-r1/closed-driven-LA-SELECTIVE-w4-r1-final.cyps",
+      "bytes": 2265370,
+      "sha256": "678726600b1e7f78555d2a9c991e70450a54870761e9c33597a1b14f7cece331"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-full-w4-r1/closed-driven-LA-SELECTIVE-w4-r1-initial.cyps",
+      "bytes": 2265338,
+      "sha256": "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-full-w4-r1/closed-driven-LA-SELECTIVE-w4-r1-s0.cyps",
+      "bytes": 2265370,
+      "sha256": "c446bc83965d744f1a41b38df0961bc7cb27243f3b6f793d8b391b1ef9c9a84d"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-full-w4-r1/closed-driven-LA-SELECTIVE-w4-r1-s149.cyps",
+      "bytes": 2265370,
+      "sha256": "422f79b9e243f9f084a899fa4cd4a01ad4526b84138a03715e18481b1ae5e739"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-full-w4-r1/closed-driven-LA-SELECTIVE-w4-r1-s150.cyps",
+      "bytes": 2265370,
+      "sha256": "aed8e9b9751098080e015324599839c12a8a197144966c82c715d83cbfd00d79"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-full-w4-r1/closed-driven-LA-SELECTIVE-w4-r1-s179.cyps",
+      "bytes": 2265370,
+      "sha256": "678726600b1e7f78555d2a9c991e70450a54870761e9c33597a1b14f7cece331"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-full-w4-r1/closed-driven-LA-SELECTIVE-w4-r1-s29.cyps",
+      "bytes": 2265370,
+      "sha256": "bb60a9e7425d5c15653ef7001e607a9bb326c3fc8aaecb1c99102b5239619854"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-full-w4-r1/closed-driven-LA-SELECTIVE-w4-r1-s30.cyps",
+      "bytes": 2265370,
+      "sha256": "665e396e0f22b9701c0a1c1b4d83d5a5c082cc70428b761736e169371d953426"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-full-w4-r1/closed-driven-LA-SELECTIVE-w4-r1.json",
+      "bytes": 4625421,
+      "sha256": "05284e26161f8eca8e2200fa9cdd986fe06dd6376875b92d04211176e0bc7a18"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-full-w4-r2/closed-driven-LA-SELECTIVE-w4-r2-final.cyps",
+      "bytes": 2265370,
+      "sha256": "678726600b1e7f78555d2a9c991e70450a54870761e9c33597a1b14f7cece331"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-full-w4-r2/closed-driven-LA-SELECTIVE-w4-r2-initial.cyps",
+      "bytes": 2265338,
+      "sha256": "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-full-w4-r2/closed-driven-LA-SELECTIVE-w4-r2-s0.cyps",
+      "bytes": 2265370,
+      "sha256": "c446bc83965d744f1a41b38df0961bc7cb27243f3b6f793d8b391b1ef9c9a84d"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-full-w4-r2/closed-driven-LA-SELECTIVE-w4-r2-s149.cyps",
+      "bytes": 2265370,
+      "sha256": "422f79b9e243f9f084a899fa4cd4a01ad4526b84138a03715e18481b1ae5e739"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-full-w4-r2/closed-driven-LA-SELECTIVE-w4-r2-s150.cyps",
+      "bytes": 2265370,
+      "sha256": "aed8e9b9751098080e015324599839c12a8a197144966c82c715d83cbfd00d79"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-full-w4-r2/closed-driven-LA-SELECTIVE-w4-r2-s179.cyps",
+      "bytes": 2265370,
+      "sha256": "678726600b1e7f78555d2a9c991e70450a54870761e9c33597a1b14f7cece331"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-full-w4-r2/closed-driven-LA-SELECTIVE-w4-r2-s29.cyps",
+      "bytes": 2265370,
+      "sha256": "bb60a9e7425d5c15653ef7001e607a9bb326c3fc8aaecb1c99102b5239619854"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-full-w4-r2/closed-driven-LA-SELECTIVE-w4-r2-s30.cyps",
+      "bytes": 2265370,
+      "sha256": "665e396e0f22b9701c0a1c1b4d83d5a5c082cc70428b761736e169371d953426"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-full-w4-r2/closed-driven-LA-SELECTIVE-w4-r2.json",
+      "bytes": 4625431,
+      "sha256": "ba38003bc6f5e1d679b40c340d9127ca56d33dce5e26fe76f8d393ac962b5a32"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-minimal-w1-r0/closed-driven-LA-SELECTIVE-w1-r0-final.cyps",
+      "bytes": 2265370,
+      "sha256": "678726600b1e7f78555d2a9c991e70450a54870761e9c33597a1b14f7cece331"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-minimal-w1-r0/closed-driven-LA-SELECTIVE-w1-r0-initial.cyps",
+      "bytes": 2265338,
+      "sha256": "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-minimal-w1-r0/closed-driven-LA-SELECTIVE-w1-r0-s0.cyps",
+      "bytes": 2265370,
+      "sha256": "c446bc83965d744f1a41b38df0961bc7cb27243f3b6f793d8b391b1ef9c9a84d"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-minimal-w1-r0/closed-driven-LA-SELECTIVE-w1-r0-s149.cyps",
+      "bytes": 2265370,
+      "sha256": "422f79b9e243f9f084a899fa4cd4a01ad4526b84138a03715e18481b1ae5e739"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-minimal-w1-r0/closed-driven-LA-SELECTIVE-w1-r0-s150.cyps",
+      "bytes": 2265370,
+      "sha256": "aed8e9b9751098080e015324599839c12a8a197144966c82c715d83cbfd00d79"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-minimal-w1-r0/closed-driven-LA-SELECTIVE-w1-r0-s179.cyps",
+      "bytes": 2265370,
+      "sha256": "678726600b1e7f78555d2a9c991e70450a54870761e9c33597a1b14f7cece331"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-minimal-w1-r0/closed-driven-LA-SELECTIVE-w1-r0-s29.cyps",
+      "bytes": 2265370,
+      "sha256": "bb60a9e7425d5c15653ef7001e607a9bb326c3fc8aaecb1c99102b5239619854"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-minimal-w1-r0/closed-driven-LA-SELECTIVE-w1-r0-s30.cyps",
+      "bytes": 2265370,
+      "sha256": "665e396e0f22b9701c0a1c1b4d83d5a5c082cc70428b761736e169371d953426"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-minimal-w1-r0/closed-driven-LA-SELECTIVE-w1-r0.json",
+      "bytes": 2176845,
+      "sha256": "88c444b11691e114f2dfb19d65b6af192316bfa596b879ef9147395cf52e1924"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-minimal-w1-r1/closed-driven-LA-SELECTIVE-w1-r1-final.cyps",
+      "bytes": 2265370,
+      "sha256": "678726600b1e7f78555d2a9c991e70450a54870761e9c33597a1b14f7cece331"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-minimal-w1-r1/closed-driven-LA-SELECTIVE-w1-r1-initial.cyps",
+      "bytes": 2265338,
+      "sha256": "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-minimal-w1-r1/closed-driven-LA-SELECTIVE-w1-r1-s0.cyps",
+      "bytes": 2265370,
+      "sha256": "c446bc83965d744f1a41b38df0961bc7cb27243f3b6f793d8b391b1ef9c9a84d"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-minimal-w1-r1/closed-driven-LA-SELECTIVE-w1-r1-s149.cyps",
+      "bytes": 2265370,
+      "sha256": "422f79b9e243f9f084a899fa4cd4a01ad4526b84138a03715e18481b1ae5e739"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-minimal-w1-r1/closed-driven-LA-SELECTIVE-w1-r1-s150.cyps",
+      "bytes": 2265370,
+      "sha256": "aed8e9b9751098080e015324599839c12a8a197144966c82c715d83cbfd00d79"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-minimal-w1-r1/closed-driven-LA-SELECTIVE-w1-r1-s179.cyps",
+      "bytes": 2265370,
+      "sha256": "678726600b1e7f78555d2a9c991e70450a54870761e9c33597a1b14f7cece331"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-minimal-w1-r1/closed-driven-LA-SELECTIVE-w1-r1-s29.cyps",
+      "bytes": 2265370,
+      "sha256": "bb60a9e7425d5c15653ef7001e607a9bb326c3fc8aaecb1c99102b5239619854"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-minimal-w1-r1/closed-driven-LA-SELECTIVE-w1-r1-s30.cyps",
+      "bytes": 2265370,
+      "sha256": "665e396e0f22b9701c0a1c1b4d83d5a5c082cc70428b761736e169371d953426"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-minimal-w1-r1/closed-driven-LA-SELECTIVE-w1-r1.json",
+      "bytes": 2176926,
+      "sha256": "2b3b057dc12121f001eaa09bc857d9ab4623fccfc00abaafb6e15cc37a192fc0"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-minimal-w1-r2/closed-driven-LA-SELECTIVE-w1-r2-final.cyps",
+      "bytes": 2265370,
+      "sha256": "678726600b1e7f78555d2a9c991e70450a54870761e9c33597a1b14f7cece331"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-minimal-w1-r2/closed-driven-LA-SELECTIVE-w1-r2-initial.cyps",
+      "bytes": 2265338,
+      "sha256": "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-minimal-w1-r2/closed-driven-LA-SELECTIVE-w1-r2-s0.cyps",
+      "bytes": 2265370,
+      "sha256": "c446bc83965d744f1a41b38df0961bc7cb27243f3b6f793d8b391b1ef9c9a84d"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-minimal-w1-r2/closed-driven-LA-SELECTIVE-w1-r2-s149.cyps",
+      "bytes": 2265370,
+      "sha256": "422f79b9e243f9f084a899fa4cd4a01ad4526b84138a03715e18481b1ae5e739"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-minimal-w1-r2/closed-driven-LA-SELECTIVE-w1-r2-s150.cyps",
+      "bytes": 2265370,
+      "sha256": "aed8e9b9751098080e015324599839c12a8a197144966c82c715d83cbfd00d79"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-minimal-w1-r2/closed-driven-LA-SELECTIVE-w1-r2-s179.cyps",
+      "bytes": 2265370,
+      "sha256": "678726600b1e7f78555d2a9c991e70450a54870761e9c33597a1b14f7cece331"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-minimal-w1-r2/closed-driven-LA-SELECTIVE-w1-r2-s29.cyps",
+      "bytes": 2265370,
+      "sha256": "bb60a9e7425d5c15653ef7001e607a9bb326c3fc8aaecb1c99102b5239619854"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-minimal-w1-r2/closed-driven-LA-SELECTIVE-w1-r2-s30.cyps",
+      "bytes": 2265370,
+      "sha256": "665e396e0f22b9701c0a1c1b4d83d5a5c082cc70428b761736e169371d953426"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-minimal-w1-r2/closed-driven-LA-SELECTIVE-w1-r2.json",
+      "bytes": 2176895,
+      "sha256": "93b3ad8b29784b3626ec78dab30f7bc7b156fd2cba2f10c7fc4e80f68aa80e3e"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-minimal-w4-r0/closed-driven-LA-SELECTIVE-w4-r0-final.cyps",
+      "bytes": 2265370,
+      "sha256": "678726600b1e7f78555d2a9c991e70450a54870761e9c33597a1b14f7cece331"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-minimal-w4-r0/closed-driven-LA-SELECTIVE-w4-r0-initial.cyps",
+      "bytes": 2265338,
+      "sha256": "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-minimal-w4-r0/closed-driven-LA-SELECTIVE-w4-r0-s0.cyps",
+      "bytes": 2265370,
+      "sha256": "c446bc83965d744f1a41b38df0961bc7cb27243f3b6f793d8b391b1ef9c9a84d"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-minimal-w4-r0/closed-driven-LA-SELECTIVE-w4-r0-s149.cyps",
+      "bytes": 2265370,
+      "sha256": "422f79b9e243f9f084a899fa4cd4a01ad4526b84138a03715e18481b1ae5e739"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-minimal-w4-r0/closed-driven-LA-SELECTIVE-w4-r0-s150.cyps",
+      "bytes": 2265370,
+      "sha256": "aed8e9b9751098080e015324599839c12a8a197144966c82c715d83cbfd00d79"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-minimal-w4-r0/closed-driven-LA-SELECTIVE-w4-r0-s179.cyps",
+      "bytes": 2265370,
+      "sha256": "678726600b1e7f78555d2a9c991e70450a54870761e9c33597a1b14f7cece331"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-minimal-w4-r0/closed-driven-LA-SELECTIVE-w4-r0-s29.cyps",
+      "bytes": 2265370,
+      "sha256": "bb60a9e7425d5c15653ef7001e607a9bb326c3fc8aaecb1c99102b5239619854"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-minimal-w4-r0/closed-driven-LA-SELECTIVE-w4-r0-s30.cyps",
+      "bytes": 2265370,
+      "sha256": "665e396e0f22b9701c0a1c1b4d83d5a5c082cc70428b761736e169371d953426"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-minimal-w4-r0/closed-driven-LA-SELECTIVE-w4-r0.json",
+      "bytes": 2176817,
+      "sha256": "cbc6068420a9355e2daebd02588663dcef973978b1332c92c89b147482412cf6"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-minimal-w4-r1/closed-driven-LA-SELECTIVE-w4-r1-final.cyps",
+      "bytes": 2265370,
+      "sha256": "678726600b1e7f78555d2a9c991e70450a54870761e9c33597a1b14f7cece331"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-minimal-w4-r1/closed-driven-LA-SELECTIVE-w4-r1-initial.cyps",
+      "bytes": 2265338,
+      "sha256": "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-minimal-w4-r1/closed-driven-LA-SELECTIVE-w4-r1-s0.cyps",
+      "bytes": 2265370,
+      "sha256": "c446bc83965d744f1a41b38df0961bc7cb27243f3b6f793d8b391b1ef9c9a84d"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-minimal-w4-r1/closed-driven-LA-SELECTIVE-w4-r1-s149.cyps",
+      "bytes": 2265370,
+      "sha256": "422f79b9e243f9f084a899fa4cd4a01ad4526b84138a03715e18481b1ae5e739"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-minimal-w4-r1/closed-driven-LA-SELECTIVE-w4-r1-s150.cyps",
+      "bytes": 2265370,
+      "sha256": "aed8e9b9751098080e015324599839c12a8a197144966c82c715d83cbfd00d79"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-minimal-w4-r1/closed-driven-LA-SELECTIVE-w4-r1-s179.cyps",
+      "bytes": 2265370,
+      "sha256": "678726600b1e7f78555d2a9c991e70450a54870761e9c33597a1b14f7cece331"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-minimal-w4-r1/closed-driven-LA-SELECTIVE-w4-r1-s29.cyps",
+      "bytes": 2265370,
+      "sha256": "bb60a9e7425d5c15653ef7001e607a9bb326c3fc8aaecb1c99102b5239619854"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-minimal-w4-r1/closed-driven-LA-SELECTIVE-w4-r1-s30.cyps",
+      "bytes": 2265370,
+      "sha256": "665e396e0f22b9701c0a1c1b4d83d5a5c082cc70428b761736e169371d953426"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-minimal-w4-r1/closed-driven-LA-SELECTIVE-w4-r1.json",
+      "bytes": 2176870,
+      "sha256": "28d1f8010c805811b4db11c6e301246bf1e8ce644b94ec2963204e0284a70080"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-minimal-w4-r2/closed-driven-LA-SELECTIVE-w4-r2-final.cyps",
+      "bytes": 2265370,
+      "sha256": "678726600b1e7f78555d2a9c991e70450a54870761e9c33597a1b14f7cece331"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-minimal-w4-r2/closed-driven-LA-SELECTIVE-w4-r2-initial.cyps",
+      "bytes": 2265338,
+      "sha256": "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-minimal-w4-r2/closed-driven-LA-SELECTIVE-w4-r2-s0.cyps",
+      "bytes": 2265370,
+      "sha256": "c446bc83965d744f1a41b38df0961bc7cb27243f3b6f793d8b391b1ef9c9a84d"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-minimal-w4-r2/closed-driven-LA-SELECTIVE-w4-r2-s149.cyps",
+      "bytes": 2265370,
+      "sha256": "422f79b9e243f9f084a899fa4cd4a01ad4526b84138a03715e18481b1ae5e739"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-minimal-w4-r2/closed-driven-LA-SELECTIVE-w4-r2-s150.cyps",
+      "bytes": 2265370,
+      "sha256": "aed8e9b9751098080e015324599839c12a8a197144966c82c715d83cbfd00d79"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-minimal-w4-r2/closed-driven-LA-SELECTIVE-w4-r2-s179.cyps",
+      "bytes": 2265370,
+      "sha256": "678726600b1e7f78555d2a9c991e70450a54870761e9c33597a1b14f7cece331"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-minimal-w4-r2/closed-driven-LA-SELECTIVE-w4-r2-s29.cyps",
+      "bytes": 2265370,
+      "sha256": "bb60a9e7425d5c15653ef7001e607a9bb326c3fc8aaecb1c99102b5239619854"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-minimal-w4-r2/closed-driven-LA-SELECTIVE-w4-r2-s30.cyps",
+      "bytes": 2265370,
+      "sha256": "665e396e0f22b9701c0a1c1b4d83d5a5c082cc70428b761736e169371d953426"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-minimal-w4-r2/closed-driven-LA-SELECTIVE-w4-r2.json",
+      "bytes": 2176987,
+      "sha256": "b87582e9b127579c82457aad19f84c19d0bd54b5890ae9eed135164f5e1aa6fd"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-full-w1-r0/closed-unforced-LA-SELECTIVE-w1-r0-final.cyps",
+      "bytes": 2265370,
+      "sha256": "0e9c1680db4ff46830b1f23574577e22e97f9f65a8a9c6d6b494e1acf882b540"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-full-w1-r0/closed-unforced-LA-SELECTIVE-w1-r0-initial.cyps",
+      "bytes": 2265338,
+      "sha256": "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-full-w1-r0/closed-unforced-LA-SELECTIVE-w1-r0-s0.cyps",
+      "bytes": 2265370,
+      "sha256": "c446bc83965d744f1a41b38df0961bc7cb27243f3b6f793d8b391b1ef9c9a84d"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-full-w1-r0/closed-unforced-LA-SELECTIVE-w1-r0-s149.cyps",
+      "bytes": 2265370,
+      "sha256": "b9da42f5b1c796b59c358927458c51de40ea6d4ee52806fc1b6236adebbfc4fb"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-full-w1-r0/closed-unforced-LA-SELECTIVE-w1-r0-s150.cyps",
+      "bytes": 2265370,
+      "sha256": "5cf3da7f32b96feb259674aecb1a37d8ab559dc01dd61f1532231201b6ad1cff"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-full-w1-r0/closed-unforced-LA-SELECTIVE-w1-r0-s179.cyps",
+      "bytes": 2265370,
+      "sha256": "0e9c1680db4ff46830b1f23574577e22e97f9f65a8a9c6d6b494e1acf882b540"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-full-w1-r0/closed-unforced-LA-SELECTIVE-w1-r0-s29.cyps",
+      "bytes": 2265370,
+      "sha256": "bb60a9e7425d5c15653ef7001e607a9bb326c3fc8aaecb1c99102b5239619854"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-full-w1-r0/closed-unforced-LA-SELECTIVE-w1-r0-s30.cyps",
+      "bytes": 2265370,
+      "sha256": "665e396e0f22b9701c0a1c1b4d83d5a5c082cc70428b761736e169371d953426"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-full-w1-r0/closed-unforced-LA-SELECTIVE-w1-r0.json",
+      "bytes": 4306355,
+      "sha256": "72210eddf8bdb8434e58baee6af067258e57b033b0f32c5358471295cdcfa246"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-full-w1-r1/closed-unforced-LA-SELECTIVE-w1-r1-final.cyps",
+      "bytes": 2265370,
+      "sha256": "0e9c1680db4ff46830b1f23574577e22e97f9f65a8a9c6d6b494e1acf882b540"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-full-w1-r1/closed-unforced-LA-SELECTIVE-w1-r1-initial.cyps",
+      "bytes": 2265338,
+      "sha256": "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-full-w1-r1/closed-unforced-LA-SELECTIVE-w1-r1-s0.cyps",
+      "bytes": 2265370,
+      "sha256": "c446bc83965d744f1a41b38df0961bc7cb27243f3b6f793d8b391b1ef9c9a84d"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-full-w1-r1/closed-unforced-LA-SELECTIVE-w1-r1-s149.cyps",
+      "bytes": 2265370,
+      "sha256": "b9da42f5b1c796b59c358927458c51de40ea6d4ee52806fc1b6236adebbfc4fb"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-full-w1-r1/closed-unforced-LA-SELECTIVE-w1-r1-s150.cyps",
+      "bytes": 2265370,
+      "sha256": "5cf3da7f32b96feb259674aecb1a37d8ab559dc01dd61f1532231201b6ad1cff"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-full-w1-r1/closed-unforced-LA-SELECTIVE-w1-r1-s179.cyps",
+      "bytes": 2265370,
+      "sha256": "0e9c1680db4ff46830b1f23574577e22e97f9f65a8a9c6d6b494e1acf882b540"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-full-w1-r1/closed-unforced-LA-SELECTIVE-w1-r1-s29.cyps",
+      "bytes": 2265370,
+      "sha256": "bb60a9e7425d5c15653ef7001e607a9bb326c3fc8aaecb1c99102b5239619854"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-full-w1-r1/closed-unforced-LA-SELECTIVE-w1-r1-s30.cyps",
+      "bytes": 2265370,
+      "sha256": "665e396e0f22b9701c0a1c1b4d83d5a5c082cc70428b761736e169371d953426"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-full-w1-r1/closed-unforced-LA-SELECTIVE-w1-r1.json",
+      "bytes": 4306358,
+      "sha256": "70ae523c85350cc1000f223d5c04fe28c01030fcf8eec2f93ae54142ea8dd6d0"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-full-w1-r2/closed-unforced-LA-SELECTIVE-w1-r2-final.cyps",
+      "bytes": 2265370,
+      "sha256": "0e9c1680db4ff46830b1f23574577e22e97f9f65a8a9c6d6b494e1acf882b540"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-full-w1-r2/closed-unforced-LA-SELECTIVE-w1-r2-initial.cyps",
+      "bytes": 2265338,
+      "sha256": "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-full-w1-r2/closed-unforced-LA-SELECTIVE-w1-r2-s0.cyps",
+      "bytes": 2265370,
+      "sha256": "c446bc83965d744f1a41b38df0961bc7cb27243f3b6f793d8b391b1ef9c9a84d"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-full-w1-r2/closed-unforced-LA-SELECTIVE-w1-r2-s149.cyps",
+      "bytes": 2265370,
+      "sha256": "b9da42f5b1c796b59c358927458c51de40ea6d4ee52806fc1b6236adebbfc4fb"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-full-w1-r2/closed-unforced-LA-SELECTIVE-w1-r2-s150.cyps",
+      "bytes": 2265370,
+      "sha256": "5cf3da7f32b96feb259674aecb1a37d8ab559dc01dd61f1532231201b6ad1cff"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-full-w1-r2/closed-unforced-LA-SELECTIVE-w1-r2-s179.cyps",
+      "bytes": 2265370,
+      "sha256": "0e9c1680db4ff46830b1f23574577e22e97f9f65a8a9c6d6b494e1acf882b540"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-full-w1-r2/closed-unforced-LA-SELECTIVE-w1-r2-s29.cyps",
+      "bytes": 2265370,
+      "sha256": "bb60a9e7425d5c15653ef7001e607a9bb326c3fc8aaecb1c99102b5239619854"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-full-w1-r2/closed-unforced-LA-SELECTIVE-w1-r2-s30.cyps",
+      "bytes": 2265370,
+      "sha256": "665e396e0f22b9701c0a1c1b4d83d5a5c082cc70428b761736e169371d953426"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-full-w1-r2/closed-unforced-LA-SELECTIVE-w1-r2.json",
+      "bytes": 4306351,
+      "sha256": "b9cc0db6f9dd2953c4903dc2bf6127c0c2ad911ce2f6ebcaef19d2eec612d363"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-full-w4-r0/closed-unforced-LA-SELECTIVE-w4-r0-final.cyps",
+      "bytes": 2265370,
+      "sha256": "0e9c1680db4ff46830b1f23574577e22e97f9f65a8a9c6d6b494e1acf882b540"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-full-w4-r0/closed-unforced-LA-SELECTIVE-w4-r0-initial.cyps",
+      "bytes": 2265338,
+      "sha256": "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-full-w4-r0/closed-unforced-LA-SELECTIVE-w4-r0-s0.cyps",
+      "bytes": 2265370,
+      "sha256": "c446bc83965d744f1a41b38df0961bc7cb27243f3b6f793d8b391b1ef9c9a84d"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-full-w4-r0/closed-unforced-LA-SELECTIVE-w4-r0-s149.cyps",
+      "bytes": 2265370,
+      "sha256": "b9da42f5b1c796b59c358927458c51de40ea6d4ee52806fc1b6236adebbfc4fb"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-full-w4-r0/closed-unforced-LA-SELECTIVE-w4-r0-s150.cyps",
+      "bytes": 2265370,
+      "sha256": "5cf3da7f32b96feb259674aecb1a37d8ab559dc01dd61f1532231201b6ad1cff"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-full-w4-r0/closed-unforced-LA-SELECTIVE-w4-r0-s179.cyps",
+      "bytes": 2265370,
+      "sha256": "0e9c1680db4ff46830b1f23574577e22e97f9f65a8a9c6d6b494e1acf882b540"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-full-w4-r0/closed-unforced-LA-SELECTIVE-w4-r0-s29.cyps",
+      "bytes": 2265370,
+      "sha256": "bb60a9e7425d5c15653ef7001e607a9bb326c3fc8aaecb1c99102b5239619854"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-full-w4-r0/closed-unforced-LA-SELECTIVE-w4-r0-s30.cyps",
+      "bytes": 2265370,
+      "sha256": "665e396e0f22b9701c0a1c1b4d83d5a5c082cc70428b761736e169371d953426"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-full-w4-r0/closed-unforced-LA-SELECTIVE-w4-r0.json",
+      "bytes": 4306351,
+      "sha256": "d936c7a9de6d05039ff02d4c0a725c3869cdc514e2965e25487caa6dcf72b24e"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-full-w4-r1/closed-unforced-LA-SELECTIVE-w4-r1-final.cyps",
+      "bytes": 2265370,
+      "sha256": "0e9c1680db4ff46830b1f23574577e22e97f9f65a8a9c6d6b494e1acf882b540"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-full-w4-r1/closed-unforced-LA-SELECTIVE-w4-r1-initial.cyps",
+      "bytes": 2265338,
+      "sha256": "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-full-w4-r1/closed-unforced-LA-SELECTIVE-w4-r1-s0.cyps",
+      "bytes": 2265370,
+      "sha256": "c446bc83965d744f1a41b38df0961bc7cb27243f3b6f793d8b391b1ef9c9a84d"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-full-w4-r1/closed-unforced-LA-SELECTIVE-w4-r1-s149.cyps",
+      "bytes": 2265370,
+      "sha256": "b9da42f5b1c796b59c358927458c51de40ea6d4ee52806fc1b6236adebbfc4fb"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-full-w4-r1/closed-unforced-LA-SELECTIVE-w4-r1-s150.cyps",
+      "bytes": 2265370,
+      "sha256": "5cf3da7f32b96feb259674aecb1a37d8ab559dc01dd61f1532231201b6ad1cff"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-full-w4-r1/closed-unforced-LA-SELECTIVE-w4-r1-s179.cyps",
+      "bytes": 2265370,
+      "sha256": "0e9c1680db4ff46830b1f23574577e22e97f9f65a8a9c6d6b494e1acf882b540"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-full-w4-r1/closed-unforced-LA-SELECTIVE-w4-r1-s29.cyps",
+      "bytes": 2265370,
+      "sha256": "bb60a9e7425d5c15653ef7001e607a9bb326c3fc8aaecb1c99102b5239619854"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-full-w4-r1/closed-unforced-LA-SELECTIVE-w4-r1-s30.cyps",
+      "bytes": 2265370,
+      "sha256": "665e396e0f22b9701c0a1c1b4d83d5a5c082cc70428b761736e169371d953426"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-full-w4-r1/closed-unforced-LA-SELECTIVE-w4-r1.json",
+      "bytes": 4306331,
+      "sha256": "7ab8dd72692a44916977c6114796d6639883d6d78d952a8e58f72913908dfaeb"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-full-w4-r2/closed-unforced-LA-SELECTIVE-w4-r2-final.cyps",
+      "bytes": 2265370,
+      "sha256": "0e9c1680db4ff46830b1f23574577e22e97f9f65a8a9c6d6b494e1acf882b540"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-full-w4-r2/closed-unforced-LA-SELECTIVE-w4-r2-initial.cyps",
+      "bytes": 2265338,
+      "sha256": "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-full-w4-r2/closed-unforced-LA-SELECTIVE-w4-r2-s0.cyps",
+      "bytes": 2265370,
+      "sha256": "c446bc83965d744f1a41b38df0961bc7cb27243f3b6f793d8b391b1ef9c9a84d"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-full-w4-r2/closed-unforced-LA-SELECTIVE-w4-r2-s149.cyps",
+      "bytes": 2265370,
+      "sha256": "b9da42f5b1c796b59c358927458c51de40ea6d4ee52806fc1b6236adebbfc4fb"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-full-w4-r2/closed-unforced-LA-SELECTIVE-w4-r2-s150.cyps",
+      "bytes": 2265370,
+      "sha256": "5cf3da7f32b96feb259674aecb1a37d8ab559dc01dd61f1532231201b6ad1cff"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-full-w4-r2/closed-unforced-LA-SELECTIVE-w4-r2-s179.cyps",
+      "bytes": 2265370,
+      "sha256": "0e9c1680db4ff46830b1f23574577e22e97f9f65a8a9c6d6b494e1acf882b540"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-full-w4-r2/closed-unforced-LA-SELECTIVE-w4-r2-s29.cyps",
+      "bytes": 2265370,
+      "sha256": "bb60a9e7425d5c15653ef7001e607a9bb326c3fc8aaecb1c99102b5239619854"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-full-w4-r2/closed-unforced-LA-SELECTIVE-w4-r2-s30.cyps",
+      "bytes": 2265370,
+      "sha256": "665e396e0f22b9701c0a1c1b4d83d5a5c082cc70428b761736e169371d953426"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-full-w4-r2/closed-unforced-LA-SELECTIVE-w4-r2.json",
+      "bytes": 4306365,
+      "sha256": "dc738507859d5f3b0ca8603c981bb8d12a48235efeec1124acad595e6c49cf20"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-minimal-w1-r0/closed-unforced-LA-SELECTIVE-w1-r0-final.cyps",
+      "bytes": 2265370,
+      "sha256": "0e9c1680db4ff46830b1f23574577e22e97f9f65a8a9c6d6b494e1acf882b540"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-minimal-w1-r0/closed-unforced-LA-SELECTIVE-w1-r0-initial.cyps",
+      "bytes": 2265338,
+      "sha256": "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-minimal-w1-r0/closed-unforced-LA-SELECTIVE-w1-r0-s0.cyps",
+      "bytes": 2265370,
+      "sha256": "c446bc83965d744f1a41b38df0961bc7cb27243f3b6f793d8b391b1ef9c9a84d"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-minimal-w1-r0/closed-unforced-LA-SELECTIVE-w1-r0-s149.cyps",
+      "bytes": 2265370,
+      "sha256": "b9da42f5b1c796b59c358927458c51de40ea6d4ee52806fc1b6236adebbfc4fb"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-minimal-w1-r0/closed-unforced-LA-SELECTIVE-w1-r0-s150.cyps",
+      "bytes": 2265370,
+      "sha256": "5cf3da7f32b96feb259674aecb1a37d8ab559dc01dd61f1532231201b6ad1cff"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-minimal-w1-r0/closed-unforced-LA-SELECTIVE-w1-r0-s179.cyps",
+      "bytes": 2265370,
+      "sha256": "0e9c1680db4ff46830b1f23574577e22e97f9f65a8a9c6d6b494e1acf882b540"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-minimal-w1-r0/closed-unforced-LA-SELECTIVE-w1-r0-s29.cyps",
+      "bytes": 2265370,
+      "sha256": "bb60a9e7425d5c15653ef7001e607a9bb326c3fc8aaecb1c99102b5239619854"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-minimal-w1-r0/closed-unforced-LA-SELECTIVE-w1-r0-s30.cyps",
+      "bytes": 2265370,
+      "sha256": "665e396e0f22b9701c0a1c1b4d83d5a5c082cc70428b761736e169371d953426"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-minimal-w1-r0/closed-unforced-LA-SELECTIVE-w1-r0.json",
+      "bytes": 1851294,
+      "sha256": "fc80d387db70a191bd56a3d8b0ef51523c3801561a56c98f7556dddbe8fc2d4b"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-minimal-w1-r1/closed-unforced-LA-SELECTIVE-w1-r1-final.cyps",
+      "bytes": 2265370,
+      "sha256": "0e9c1680db4ff46830b1f23574577e22e97f9f65a8a9c6d6b494e1acf882b540"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-minimal-w1-r1/closed-unforced-LA-SELECTIVE-w1-r1-initial.cyps",
+      "bytes": 2265338,
+      "sha256": "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-minimal-w1-r1/closed-unforced-LA-SELECTIVE-w1-r1-s0.cyps",
+      "bytes": 2265370,
+      "sha256": "c446bc83965d744f1a41b38df0961bc7cb27243f3b6f793d8b391b1ef9c9a84d"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-minimal-w1-r1/closed-unforced-LA-SELECTIVE-w1-r1-s149.cyps",
+      "bytes": 2265370,
+      "sha256": "b9da42f5b1c796b59c358927458c51de40ea6d4ee52806fc1b6236adebbfc4fb"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-minimal-w1-r1/closed-unforced-LA-SELECTIVE-w1-r1-s150.cyps",
+      "bytes": 2265370,
+      "sha256": "5cf3da7f32b96feb259674aecb1a37d8ab559dc01dd61f1532231201b6ad1cff"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-minimal-w1-r1/closed-unforced-LA-SELECTIVE-w1-r1-s179.cyps",
+      "bytes": 2265370,
+      "sha256": "0e9c1680db4ff46830b1f23574577e22e97f9f65a8a9c6d6b494e1acf882b540"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-minimal-w1-r1/closed-unforced-LA-SELECTIVE-w1-r1-s29.cyps",
+      "bytes": 2265370,
+      "sha256": "bb60a9e7425d5c15653ef7001e607a9bb326c3fc8aaecb1c99102b5239619854"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-minimal-w1-r1/closed-unforced-LA-SELECTIVE-w1-r1-s30.cyps",
+      "bytes": 2265370,
+      "sha256": "665e396e0f22b9701c0a1c1b4d83d5a5c082cc70428b761736e169371d953426"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-minimal-w1-r1/closed-unforced-LA-SELECTIVE-w1-r1.json",
+      "bytes": 1851257,
+      "sha256": "ca450eb8048378275b425b24e5096052fbf5c227dfbe0e3996178084a238830a"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-minimal-w1-r2/closed-unforced-LA-SELECTIVE-w1-r2-final.cyps",
+      "bytes": 2265370,
+      "sha256": "0e9c1680db4ff46830b1f23574577e22e97f9f65a8a9c6d6b494e1acf882b540"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-minimal-w1-r2/closed-unforced-LA-SELECTIVE-w1-r2-initial.cyps",
+      "bytes": 2265338,
+      "sha256": "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-minimal-w1-r2/closed-unforced-LA-SELECTIVE-w1-r2-s0.cyps",
+      "bytes": 2265370,
+      "sha256": "c446bc83965d744f1a41b38df0961bc7cb27243f3b6f793d8b391b1ef9c9a84d"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-minimal-w1-r2/closed-unforced-LA-SELECTIVE-w1-r2-s149.cyps",
+      "bytes": 2265370,
+      "sha256": "b9da42f5b1c796b59c358927458c51de40ea6d4ee52806fc1b6236adebbfc4fb"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-minimal-w1-r2/closed-unforced-LA-SELECTIVE-w1-r2-s150.cyps",
+      "bytes": 2265370,
+      "sha256": "5cf3da7f32b96feb259674aecb1a37d8ab559dc01dd61f1532231201b6ad1cff"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-minimal-w1-r2/closed-unforced-LA-SELECTIVE-w1-r2-s179.cyps",
+      "bytes": 2265370,
+      "sha256": "0e9c1680db4ff46830b1f23574577e22e97f9f65a8a9c6d6b494e1acf882b540"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-minimal-w1-r2/closed-unforced-LA-SELECTIVE-w1-r2-s29.cyps",
+      "bytes": 2265370,
+      "sha256": "bb60a9e7425d5c15653ef7001e607a9bb326c3fc8aaecb1c99102b5239619854"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-minimal-w1-r2/closed-unforced-LA-SELECTIVE-w1-r2-s30.cyps",
+      "bytes": 2265370,
+      "sha256": "665e396e0f22b9701c0a1c1b4d83d5a5c082cc70428b761736e169371d953426"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-minimal-w1-r2/closed-unforced-LA-SELECTIVE-w1-r2.json",
+      "bytes": 1851234,
+      "sha256": "efbe389ffb5e684148fd58a88f4dbbb54f4e2d89b8a2cda34dfdaa081c80e4c8"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-minimal-w4-r0/closed-unforced-LA-SELECTIVE-w4-r0-final.cyps",
+      "bytes": 2265370,
+      "sha256": "0e9c1680db4ff46830b1f23574577e22e97f9f65a8a9c6d6b494e1acf882b540"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-minimal-w4-r0/closed-unforced-LA-SELECTIVE-w4-r0-initial.cyps",
+      "bytes": 2265338,
+      "sha256": "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-minimal-w4-r0/closed-unforced-LA-SELECTIVE-w4-r0-s0.cyps",
+      "bytes": 2265370,
+      "sha256": "c446bc83965d744f1a41b38df0961bc7cb27243f3b6f793d8b391b1ef9c9a84d"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-minimal-w4-r0/closed-unforced-LA-SELECTIVE-w4-r0-s149.cyps",
+      "bytes": 2265370,
+      "sha256": "b9da42f5b1c796b59c358927458c51de40ea6d4ee52806fc1b6236adebbfc4fb"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-minimal-w4-r0/closed-unforced-LA-SELECTIVE-w4-r0-s150.cyps",
+      "bytes": 2265370,
+      "sha256": "5cf3da7f32b96feb259674aecb1a37d8ab559dc01dd61f1532231201b6ad1cff"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-minimal-w4-r0/closed-unforced-LA-SELECTIVE-w4-r0-s179.cyps",
+      "bytes": 2265370,
+      "sha256": "0e9c1680db4ff46830b1f23574577e22e97f9f65a8a9c6d6b494e1acf882b540"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-minimal-w4-r0/closed-unforced-LA-SELECTIVE-w4-r0-s29.cyps",
+      "bytes": 2265370,
+      "sha256": "bb60a9e7425d5c15653ef7001e607a9bb326c3fc8aaecb1c99102b5239619854"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-minimal-w4-r0/closed-unforced-LA-SELECTIVE-w4-r0-s30.cyps",
+      "bytes": 2265370,
+      "sha256": "665e396e0f22b9701c0a1c1b4d83d5a5c082cc70428b761736e169371d953426"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-minimal-w4-r0/closed-unforced-LA-SELECTIVE-w4-r0.json",
+      "bytes": 1851274,
+      "sha256": "85f050afbdefc60d80ddf96fa6f3fa9f400b2bc3503140b1d9a0acd4e194bb7d"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-minimal-w4-r1/closed-unforced-LA-SELECTIVE-w4-r1-final.cyps",
+      "bytes": 2265370,
+      "sha256": "0e9c1680db4ff46830b1f23574577e22e97f9f65a8a9c6d6b494e1acf882b540"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-minimal-w4-r1/closed-unforced-LA-SELECTIVE-w4-r1-initial.cyps",
+      "bytes": 2265338,
+      "sha256": "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-minimal-w4-r1/closed-unforced-LA-SELECTIVE-w4-r1-s0.cyps",
+      "bytes": 2265370,
+      "sha256": "c446bc83965d744f1a41b38df0961bc7cb27243f3b6f793d8b391b1ef9c9a84d"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-minimal-w4-r1/closed-unforced-LA-SELECTIVE-w4-r1-s149.cyps",
+      "bytes": 2265370,
+      "sha256": "b9da42f5b1c796b59c358927458c51de40ea6d4ee52806fc1b6236adebbfc4fb"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-minimal-w4-r1/closed-unforced-LA-SELECTIVE-w4-r1-s150.cyps",
+      "bytes": 2265370,
+      "sha256": "5cf3da7f32b96feb259674aecb1a37d8ab559dc01dd61f1532231201b6ad1cff"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-minimal-w4-r1/closed-unforced-LA-SELECTIVE-w4-r1-s179.cyps",
+      "bytes": 2265370,
+      "sha256": "0e9c1680db4ff46830b1f23574577e22e97f9f65a8a9c6d6b494e1acf882b540"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-minimal-w4-r1/closed-unforced-LA-SELECTIVE-w4-r1-s29.cyps",
+      "bytes": 2265370,
+      "sha256": "bb60a9e7425d5c15653ef7001e607a9bb326c3fc8aaecb1c99102b5239619854"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-minimal-w4-r1/closed-unforced-LA-SELECTIVE-w4-r1-s30.cyps",
+      "bytes": 2265370,
+      "sha256": "665e396e0f22b9701c0a1c1b4d83d5a5c082cc70428b761736e169371d953426"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-minimal-w4-r1/closed-unforced-LA-SELECTIVE-w4-r1.json",
+      "bytes": 1851341,
+      "sha256": "b23e413d3e36884bff045386e6a73e582914f27c307018e0ece5b76e7f94a3a3"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-minimal-w4-r2/closed-unforced-LA-SELECTIVE-w4-r2-final.cyps",
+      "bytes": 2265370,
+      "sha256": "0e9c1680db4ff46830b1f23574577e22e97f9f65a8a9c6d6b494e1acf882b540"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-minimal-w4-r2/closed-unforced-LA-SELECTIVE-w4-r2-initial.cyps",
+      "bytes": 2265338,
+      "sha256": "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-minimal-w4-r2/closed-unforced-LA-SELECTIVE-w4-r2-s0.cyps",
+      "bytes": 2265370,
+      "sha256": "c446bc83965d744f1a41b38df0961bc7cb27243f3b6f793d8b391b1ef9c9a84d"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-minimal-w4-r2/closed-unforced-LA-SELECTIVE-w4-r2-s149.cyps",
+      "bytes": 2265370,
+      "sha256": "b9da42f5b1c796b59c358927458c51de40ea6d4ee52806fc1b6236adebbfc4fb"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-minimal-w4-r2/closed-unforced-LA-SELECTIVE-w4-r2-s150.cyps",
+      "bytes": 2265370,
+      "sha256": "5cf3da7f32b96feb259674aecb1a37d8ab559dc01dd61f1532231201b6ad1cff"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-minimal-w4-r2/closed-unforced-LA-SELECTIVE-w4-r2-s179.cyps",
+      "bytes": 2265370,
+      "sha256": "0e9c1680db4ff46830b1f23574577e22e97f9f65a8a9c6d6b494e1acf882b540"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-minimal-w4-r2/closed-unforced-LA-SELECTIVE-w4-r2-s29.cyps",
+      "bytes": 2265370,
+      "sha256": "bb60a9e7425d5c15653ef7001e607a9bb326c3fc8aaecb1c99102b5239619854"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-minimal-w4-r2/closed-unforced-LA-SELECTIVE-w4-r2-s30.cyps",
+      "bytes": 2265370,
+      "sha256": "665e396e0f22b9701c0a1c1b4d83d5a5c082cc70428b761736e169371d953426"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-minimal-w4-r2/closed-unforced-LA-SELECTIVE-w4-r2.json",
+      "bytes": 1851338,
+      "sha256": "fc6e9d474964c6dcfb15fde9159c1f0ce70984693215ae47fd1028b1b89d2a3c"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/receipt.json",
+      "bytes": 598917,
+      "sha256": "6721e5b16de5434f2852401958c3a754a46f29f12e1165c67d1b3d3c3b47b60e"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/reduction/summary.json",
+      "bytes": 119023,
+      "sha256": "12bf1a064ee6c3cb0dd811d74da00b125a35eda786e1d1babebe7b95a508c56d"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/reduction-002/summary.json",
+      "bytes": 119023,
+      "sha256": "e2b9ba12f4ddff6af58329e134c57292a4716b3d41c1e3c3dc66551363bb1c04"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/closed-driven-full-w1-r0.log",
+      "bytes": 339,
+      "sha256": "5988a0bcd243edcc31f431c990f24193ae6a2dbe2bde3a901152d05f9d423b18"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/closed-driven-full-w1-r0.receipt.json",
+      "bytes": 1243,
+      "sha256": "ed9daff240c3e3e4c5d4b22afa71161dc4b1aec9ea533999cc6564c522f79407"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/closed-driven-full-w1-r1.log",
+      "bytes": 339,
+      "sha256": "befc9467593d152690845a39980304627ce4e710dd35e98275ba4cd1ef140964"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/closed-driven-full-w1-r1.receipt.json",
+      "bytes": 1243,
+      "sha256": "de6a03c3b0e3caffdf52f0ea2656c84267d726990b9b1faceb9acf88d80ce96a"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/closed-driven-full-w1-r2.log",
+      "bytes": 339,
+      "sha256": "5cd6c857b50ffb83dcc523cb5f186a29f8144c3ecd1152f90cca8da8333e954f"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/closed-driven-full-w1-r2.receipt.json",
+      "bytes": 1243,
+      "sha256": "ce38c5f716ff4f8de0848e406b003f5a3707e02189870b857a2de5e2bcdf8751"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/closed-driven-full-w4-r0.log",
+      "bytes": 339,
+      "sha256": "ecaf28cfca04984fdf3cd27541ad8179ac0edf014d30980169f6e514f8d23374"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/closed-driven-full-w4-r0.receipt.json",
+      "bytes": 1243,
+      "sha256": "3e0b0e92b0d273d3ee26d54e86bb8a5527f72b2e8f0e1ab34d164d9a67a0dc7d"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/closed-driven-full-w4-r1.log",
+      "bytes": 339,
+      "sha256": "930289ada3300b9a7edbab5846047783845f3c907ae53ba09948fe7ce3ff5014"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/closed-driven-full-w4-r1.receipt.json",
+      "bytes": 1243,
+      "sha256": "61c60ec9f930e7455e86aa63d0dad31e5aca23000c82f2729056ac2aa82a9331"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/closed-driven-full-w4-r2.log",
+      "bytes": 339,
+      "sha256": "d7a827fb7143e2217b7a6870649290ef92ada1be47e4253bd3c337c9de89a18b"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/closed-driven-full-w4-r2.receipt.json",
+      "bytes": 1242,
+      "sha256": "29a0806defcfc88cef8be337728b859b5aea87a5ea7213d26f1b02176f1e47ba"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/closed-driven-minimal-w1-r0.log",
+      "bytes": 339,
+      "sha256": "5988a0bcd243edcc31f431c990f24193ae6a2dbe2bde3a901152d05f9d423b18"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/closed-driven-minimal-w1-r0.receipt.json",
+      "bytes": 1250,
+      "sha256": "4b0a803cf174e11a92dd51861c67e35924c8c566824fb2cfc52f574a98568640"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/closed-driven-minimal-w1-r1.log",
+      "bytes": 339,
+      "sha256": "befc9467593d152690845a39980304627ce4e710dd35e98275ba4cd1ef140964"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/closed-driven-minimal-w1-r1.receipt.json",
+      "bytes": 1250,
+      "sha256": "3ca65ddd4b0985472c1e25d46a253dcd3bfeee32dc964c340e2505d48b1d59b3"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/closed-driven-minimal-w1-r2.log",
+      "bytes": 339,
+      "sha256": "5cd6c857b50ffb83dcc523cb5f186a29f8144c3ecd1152f90cca8da8333e954f"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/closed-driven-minimal-w1-r2.receipt.json",
+      "bytes": 1250,
+      "sha256": "c5d47ef3f4b81dfa5d3b7d9f0568820c739d715b65c60de972d13c3f8d0924f9"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/closed-driven-minimal-w4-r0.log",
+      "bytes": 339,
+      "sha256": "ecaf28cfca04984fdf3cd27541ad8179ac0edf014d30980169f6e514f8d23374"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/closed-driven-minimal-w4-r0.receipt.json",
+      "bytes": 1250,
+      "sha256": "0599ea8317bf40720232492073f0ae93e6e4cba797259dd66638e7278108523c"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/closed-driven-minimal-w4-r1.log",
+      "bytes": 339,
+      "sha256": "930289ada3300b9a7edbab5846047783845f3c907ae53ba09948fe7ce3ff5014"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/closed-driven-minimal-w4-r1.receipt.json",
+      "bytes": 1249,
+      "sha256": "2c5dd2bb25cac1c08adb83ee18dcac2d3dd633ec5ef9b126315565cf3ff73384"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/closed-driven-minimal-w4-r2.log",
+      "bytes": 339,
+      "sha256": "d7a827fb7143e2217b7a6870649290ef92ada1be47e4253bd3c337c9de89a18b"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/closed-driven-minimal-w4-r2.receipt.json",
+      "bytes": 1250,
+      "sha256": "e1537c396465c41a33aa2b8138ec5e2b98b7e20007a8e7f9ab31daaae6f0318f"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/closed-unforced-full-w1-r0.log",
+      "bytes": 341,
+      "sha256": "50e90dbaba6cee6520cc266f48e0aaefe79fbfca7229e2a6150a9e00a826bf50"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/closed-unforced-full-w1-r0.receipt.json",
+      "bytes": 1249,
+      "sha256": "bb035466a1f10cf9ecc9cb4e2583263ed010bb99b46bc11f83c9c33685a501c6"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/closed-unforced-full-w1-r1.log",
+      "bytes": 341,
+      "sha256": "57382f6dc670e4d3cc310dbecb939da0e7b833778b8516c4b103612e8717f245"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/closed-unforced-full-w1-r1.receipt.json",
+      "bytes": 1249,
+      "sha256": "722715821ca8f1a0f2a650b8c020c4155b1b0a702751a490aa94f880d977a1c8"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/closed-unforced-full-w1-r2.log",
+      "bytes": 341,
+      "sha256": "2f6479db387c086b611dc0698a0840f51aa7375df26ed931c5a291398485f827"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/closed-unforced-full-w1-r2.receipt.json",
+      "bytes": 1249,
+      "sha256": "07f4a01ff26fd648b20b7479d7f1a47d6906eddd72f040474b78d3e04e3c4e0b"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/closed-unforced-full-w4-r0.log",
+      "bytes": 341,
+      "sha256": "ee3cb16ba73856aa48e5170c852780b64ce4fc9abdfccf6c25932bd121801d5a"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/closed-unforced-full-w4-r0.receipt.json",
+      "bytes": 1249,
+      "sha256": "1165103683c7be00456239bb866534f633942fb811973d5731502e813ffc8d03"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/closed-unforced-full-w4-r1.log",
+      "bytes": 341,
+      "sha256": "66f34646c9166f19326105eb3e756ea2277ba036fafa99d048a481c7f016edb2"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/closed-unforced-full-w4-r1.receipt.json",
+      "bytes": 1249,
+      "sha256": "8af71aca358c8a0a1afbfdf99ff469fde5014345ecf4c132b3e7eb595bfa8068"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/closed-unforced-full-w4-r2.log",
+      "bytes": 341,
+      "sha256": "66be6aab7a765d212480caa8018075f56b2502de01114d3bb615ab3f14c5a4c1"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/closed-unforced-full-w4-r2.receipt.json",
+      "bytes": 1249,
+      "sha256": "1d1bdf95ab2d0810ea479e633cc670664700665172d74799a68192c7cb1f8526"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/closed-unforced-minimal-w1-r0.log",
+      "bytes": 341,
+      "sha256": "50e90dbaba6cee6520cc266f48e0aaefe79fbfca7229e2a6150a9e00a826bf50"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/closed-unforced-minimal-w1-r0.receipt.json",
+      "bytes": 1256,
+      "sha256": "a5fd439b230ed5424e3f5970987db42be2b3233a52905fe05ac1d1e086246c3e"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/closed-unforced-minimal-w1-r1.log",
+      "bytes": 341,
+      "sha256": "57382f6dc670e4d3cc310dbecb939da0e7b833778b8516c4b103612e8717f245"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/closed-unforced-minimal-w1-r1.receipt.json",
+      "bytes": 1256,
+      "sha256": "74e938ae4a25074703c3b30cb6dbaa2cd5c0c4299bab0dfa4b933d0f11ed5e55"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/closed-unforced-minimal-w1-r2.log",
+      "bytes": 341,
+      "sha256": "2f6479db387c086b611dc0698a0840f51aa7375df26ed931c5a291398485f827"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/closed-unforced-minimal-w1-r2.receipt.json",
+      "bytes": 1255,
+      "sha256": "ffcf3615c8e82766353f7854a42f277d2253b5292e71aa48e5a3081091cb4abc"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/closed-unforced-minimal-w4-r0.log",
+      "bytes": 341,
+      "sha256": "ee3cb16ba73856aa48e5170c852780b64ce4fc9abdfccf6c25932bd121801d5a"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/closed-unforced-minimal-w4-r0.receipt.json",
+      "bytes": 1256,
+      "sha256": "f989152234648535bc0ab5ce34e4945473670a6988ac52ef42e3df19da5ed63f"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/closed-unforced-minimal-w4-r1.log",
+      "bytes": 341,
+      "sha256": "66f34646c9166f19326105eb3e756ea2277ba036fafa99d048a481c7f016edb2"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/closed-unforced-minimal-w4-r1.receipt.json",
+      "bytes": 1256,
+      "sha256": "c1b359aaad4c5b9efac9984488f7a41086bbd3b3c5beb464fdb66a6d658ccc83"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/closed-unforced-minimal-w4-r2.log",
+      "bytes": 341,
+      "sha256": "66be6aab7a765d212480caa8018075f56b2502de01114d3bb615ab3f14c5a4c1"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/closed-unforced-minimal-w4-r2.receipt.json",
+      "bytes": 1256,
+      "sha256": "ca2884b7b55ad30ded3ca7ed81e6317d730cf27c86e6ba5d8816cabe62a9ed9b"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/import.log",
+      "bytes": 36279,
+      "sha256": "7510f8be4a718f3550f9f003be7d990105ba742964440d77b8e1fff2effcc5eb"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/import.receipt.json",
+      "bytes": 983,
+      "sha256": "d2a273bd69a84bd1878b1670e1da3cbe170bc1039bf42aecff0fcb77e45cdb9d"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-full-w1-r0/closed-driven-LA-SELECTIVE-w1-r0-final.cyps",
+      "bytes": 2265370,
+      "sha256": "678726600b1e7f78555d2a9c991e70450a54870761e9c33597a1b14f7cece331"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-full-w1-r0/closed-driven-LA-SELECTIVE-w1-r0-initial.cyps",
+      "bytes": 2265338,
+      "sha256": "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-full-w1-r0/closed-driven-LA-SELECTIVE-w1-r0-s0.cyps",
+      "bytes": 2265370,
+      "sha256": "c446bc83965d744f1a41b38df0961bc7cb27243f3b6f793d8b391b1ef9c9a84d"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-full-w1-r0/closed-driven-LA-SELECTIVE-w1-r0-s149.cyps",
+      "bytes": 2265370,
+      "sha256": "422f79b9e243f9f084a899fa4cd4a01ad4526b84138a03715e18481b1ae5e739"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-full-w1-r0/closed-driven-LA-SELECTIVE-w1-r0-s150.cyps",
+      "bytes": 2265370,
+      "sha256": "aed8e9b9751098080e015324599839c12a8a197144966c82c715d83cbfd00d79"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-full-w1-r0/closed-driven-LA-SELECTIVE-w1-r0-s179.cyps",
+      "bytes": 2265370,
+      "sha256": "678726600b1e7f78555d2a9c991e70450a54870761e9c33597a1b14f7cece331"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-full-w1-r0/closed-driven-LA-SELECTIVE-w1-r0-s29.cyps",
+      "bytes": 2265370,
+      "sha256": "bb60a9e7425d5c15653ef7001e607a9bb326c3fc8aaecb1c99102b5239619854"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-full-w1-r0/closed-driven-LA-SELECTIVE-w1-r0-s30.cyps",
+      "bytes": 2265370,
+      "sha256": "665e396e0f22b9701c0a1c1b4d83d5a5c082cc70428b761736e169371d953426"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-full-w1-r0/closed-driven-LA-SELECTIVE-w1-r0.json",
+      "bytes": 4625511,
+      "sha256": "7129e71a6b8ce37e5f7277dcf4209034da671830d1e0d4ceaba555e58c32d3df"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-full-w1-r1/closed-driven-LA-SELECTIVE-w1-r1-final.cyps",
+      "bytes": 2265370,
+      "sha256": "678726600b1e7f78555d2a9c991e70450a54870761e9c33597a1b14f7cece331"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-full-w1-r1/closed-driven-LA-SELECTIVE-w1-r1-initial.cyps",
+      "bytes": 2265338,
+      "sha256": "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-full-w1-r1/closed-driven-LA-SELECTIVE-w1-r1-s0.cyps",
+      "bytes": 2265370,
+      "sha256": "c446bc83965d744f1a41b38df0961bc7cb27243f3b6f793d8b391b1ef9c9a84d"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-full-w1-r1/closed-driven-LA-SELECTIVE-w1-r1-s149.cyps",
+      "bytes": 2265370,
+      "sha256": "422f79b9e243f9f084a899fa4cd4a01ad4526b84138a03715e18481b1ae5e739"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-full-w1-r1/closed-driven-LA-SELECTIVE-w1-r1-s150.cyps",
+      "bytes": 2265370,
+      "sha256": "aed8e9b9751098080e015324599839c12a8a197144966c82c715d83cbfd00d79"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-full-w1-r1/closed-driven-LA-SELECTIVE-w1-r1-s179.cyps",
+      "bytes": 2265370,
+      "sha256": "678726600b1e7f78555d2a9c991e70450a54870761e9c33597a1b14f7cece331"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-full-w1-r1/closed-driven-LA-SELECTIVE-w1-r1-s29.cyps",
+      "bytes": 2265370,
+      "sha256": "bb60a9e7425d5c15653ef7001e607a9bb326c3fc8aaecb1c99102b5239619854"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-full-w1-r1/closed-driven-LA-SELECTIVE-w1-r1-s30.cyps",
+      "bytes": 2265370,
+      "sha256": "665e396e0f22b9701c0a1c1b4d83d5a5c082cc70428b761736e169371d953426"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-full-w1-r1/closed-driven-LA-SELECTIVE-w1-r1.json",
+      "bytes": 4625512,
+      "sha256": "6adb3af38943ef0bbcfadb620d51aa0059ea90450495f7a403d0f270bedf1510"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-full-w1-r2/closed-driven-LA-SELECTIVE-w1-r2-final.cyps",
+      "bytes": 2265370,
+      "sha256": "678726600b1e7f78555d2a9c991e70450a54870761e9c33597a1b14f7cece331"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-full-w1-r2/closed-driven-LA-SELECTIVE-w1-r2-initial.cyps",
+      "bytes": 2265338,
+      "sha256": "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-full-w1-r2/closed-driven-LA-SELECTIVE-w1-r2-s0.cyps",
+      "bytes": 2265370,
+      "sha256": "c446bc83965d744f1a41b38df0961bc7cb27243f3b6f793d8b391b1ef9c9a84d"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-full-w1-r2/closed-driven-LA-SELECTIVE-w1-r2-s149.cyps",
+      "bytes": 2265370,
+      "sha256": "422f79b9e243f9f084a899fa4cd4a01ad4526b84138a03715e18481b1ae5e739"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-full-w1-r2/closed-driven-LA-SELECTIVE-w1-r2-s150.cyps",
+      "bytes": 2265370,
+      "sha256": "aed8e9b9751098080e015324599839c12a8a197144966c82c715d83cbfd00d79"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-full-w1-r2/closed-driven-LA-SELECTIVE-w1-r2-s179.cyps",
+      "bytes": 2265370,
+      "sha256": "678726600b1e7f78555d2a9c991e70450a54870761e9c33597a1b14f7cece331"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-full-w1-r2/closed-driven-LA-SELECTIVE-w1-r2-s29.cyps",
+      "bytes": 2265370,
+      "sha256": "bb60a9e7425d5c15653ef7001e607a9bb326c3fc8aaecb1c99102b5239619854"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-full-w1-r2/closed-driven-LA-SELECTIVE-w1-r2-s30.cyps",
+      "bytes": 2265370,
+      "sha256": "665e396e0f22b9701c0a1c1b4d83d5a5c082cc70428b761736e169371d953426"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-full-w1-r2/closed-driven-LA-SELECTIVE-w1-r2.json",
+      "bytes": 4625596,
+      "sha256": "b1fbba8dcc081194341677544fc34cb0473cb3d49f6f2a4bfc7e8711f0a5fc79"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-full-w4-r0/closed-driven-LA-SELECTIVE-w4-r0-final.cyps",
+      "bytes": 2265370,
+      "sha256": "678726600b1e7f78555d2a9c991e70450a54870761e9c33597a1b14f7cece331"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-full-w4-r0/closed-driven-LA-SELECTIVE-w4-r0-initial.cyps",
+      "bytes": 2265338,
+      "sha256": "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-full-w4-r0/closed-driven-LA-SELECTIVE-w4-r0-s0.cyps",
+      "bytes": 2265370,
+      "sha256": "c446bc83965d744f1a41b38df0961bc7cb27243f3b6f793d8b391b1ef9c9a84d"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-full-w4-r0/closed-driven-LA-SELECTIVE-w4-r0-s149.cyps",
+      "bytes": 2265370,
+      "sha256": "422f79b9e243f9f084a899fa4cd4a01ad4526b84138a03715e18481b1ae5e739"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-full-w4-r0/closed-driven-LA-SELECTIVE-w4-r0-s150.cyps",
+      "bytes": 2265370,
+      "sha256": "aed8e9b9751098080e015324599839c12a8a197144966c82c715d83cbfd00d79"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-full-w4-r0/closed-driven-LA-SELECTIVE-w4-r0-s179.cyps",
+      "bytes": 2265370,
+      "sha256": "678726600b1e7f78555d2a9c991e70450a54870761e9c33597a1b14f7cece331"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-full-w4-r0/closed-driven-LA-SELECTIVE-w4-r0-s29.cyps",
+      "bytes": 2265370,
+      "sha256": "bb60a9e7425d5c15653ef7001e607a9bb326c3fc8aaecb1c99102b5239619854"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-full-w4-r0/closed-driven-LA-SELECTIVE-w4-r0-s30.cyps",
+      "bytes": 2265370,
+      "sha256": "665e396e0f22b9701c0a1c1b4d83d5a5c082cc70428b761736e169371d953426"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-full-w4-r0/closed-driven-LA-SELECTIVE-w4-r0.json",
+      "bytes": 4625522,
+      "sha256": "635aab6b77ed53a711e541d8de529ef7d64890085cebd7d3dcd0868100ef254b"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-full-w4-r1/closed-driven-LA-SELECTIVE-w4-r1-final.cyps",
+      "bytes": 2265370,
+      "sha256": "678726600b1e7f78555d2a9c991e70450a54870761e9c33597a1b14f7cece331"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-full-w4-r1/closed-driven-LA-SELECTIVE-w4-r1-initial.cyps",
+      "bytes": 2265338,
+      "sha256": "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-full-w4-r1/closed-driven-LA-SELECTIVE-w4-r1-s0.cyps",
+      "bytes": 2265370,
+      "sha256": "c446bc83965d744f1a41b38df0961bc7cb27243f3b6f793d8b391b1ef9c9a84d"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-full-w4-r1/closed-driven-LA-SELECTIVE-w4-r1-s149.cyps",
+      "bytes": 2265370,
+      "sha256": "422f79b9e243f9f084a899fa4cd4a01ad4526b84138a03715e18481b1ae5e739"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-full-w4-r1/closed-driven-LA-SELECTIVE-w4-r1-s150.cyps",
+      "bytes": 2265370,
+      "sha256": "aed8e9b9751098080e015324599839c12a8a197144966c82c715d83cbfd00d79"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-full-w4-r1/closed-driven-LA-SELECTIVE-w4-r1-s179.cyps",
+      "bytes": 2265370,
+      "sha256": "678726600b1e7f78555d2a9c991e70450a54870761e9c33597a1b14f7cece331"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-full-w4-r1/closed-driven-LA-SELECTIVE-w4-r1-s29.cyps",
+      "bytes": 2265370,
+      "sha256": "bb60a9e7425d5c15653ef7001e607a9bb326c3fc8aaecb1c99102b5239619854"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-full-w4-r1/closed-driven-LA-SELECTIVE-w4-r1-s30.cyps",
+      "bytes": 2265370,
+      "sha256": "665e396e0f22b9701c0a1c1b4d83d5a5c082cc70428b761736e169371d953426"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-full-w4-r1/closed-driven-LA-SELECTIVE-w4-r1.json",
+      "bytes": 4625572,
+      "sha256": "5b24f5ed45947e7d0aefb2dedec032ffa4640cd852a2a0a1512ebf78f00bfc24"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-full-w4-r2/closed-driven-LA-SELECTIVE-w4-r2-final.cyps",
+      "bytes": 2265370,
+      "sha256": "678726600b1e7f78555d2a9c991e70450a54870761e9c33597a1b14f7cece331"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-full-w4-r2/closed-driven-LA-SELECTIVE-w4-r2-initial.cyps",
+      "bytes": 2265338,
+      "sha256": "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-full-w4-r2/closed-driven-LA-SELECTIVE-w4-r2-s0.cyps",
+      "bytes": 2265370,
+      "sha256": "c446bc83965d744f1a41b38df0961bc7cb27243f3b6f793d8b391b1ef9c9a84d"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-full-w4-r2/closed-driven-LA-SELECTIVE-w4-r2-s149.cyps",
+      "bytes": 2265370,
+      "sha256": "422f79b9e243f9f084a899fa4cd4a01ad4526b84138a03715e18481b1ae5e739"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-full-w4-r2/closed-driven-LA-SELECTIVE-w4-r2-s150.cyps",
+      "bytes": 2265370,
+      "sha256": "aed8e9b9751098080e015324599839c12a8a197144966c82c715d83cbfd00d79"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-full-w4-r2/closed-driven-LA-SELECTIVE-w4-r2-s179.cyps",
+      "bytes": 2265370,
+      "sha256": "678726600b1e7f78555d2a9c991e70450a54870761e9c33597a1b14f7cece331"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-full-w4-r2/closed-driven-LA-SELECTIVE-w4-r2-s29.cyps",
+      "bytes": 2265370,
+      "sha256": "bb60a9e7425d5c15653ef7001e607a9bb326c3fc8aaecb1c99102b5239619854"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-full-w4-r2/closed-driven-LA-SELECTIVE-w4-r2-s30.cyps",
+      "bytes": 2265370,
+      "sha256": "665e396e0f22b9701c0a1c1b4d83d5a5c082cc70428b761736e169371d953426"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-full-w4-r2/closed-driven-LA-SELECTIVE-w4-r2.json",
+      "bytes": 4625504,
+      "sha256": "c48442144d327d9ff9627f609f2c9470928778d55f85e576386662bde6a99882"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-minimal-w1-r0/closed-driven-LA-SELECTIVE-w1-r0-final.cyps",
+      "bytes": 2265370,
+      "sha256": "678726600b1e7f78555d2a9c991e70450a54870761e9c33597a1b14f7cece331"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-minimal-w1-r0/closed-driven-LA-SELECTIVE-w1-r0-initial.cyps",
+      "bytes": 2265338,
+      "sha256": "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-minimal-w1-r0/closed-driven-LA-SELECTIVE-w1-r0-s0.cyps",
+      "bytes": 2265370,
+      "sha256": "c446bc83965d744f1a41b38df0961bc7cb27243f3b6f793d8b391b1ef9c9a84d"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-minimal-w1-r0/closed-driven-LA-SELECTIVE-w1-r0-s149.cyps",
+      "bytes": 2265370,
+      "sha256": "422f79b9e243f9f084a899fa4cd4a01ad4526b84138a03715e18481b1ae5e739"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-minimal-w1-r0/closed-driven-LA-SELECTIVE-w1-r0-s150.cyps",
+      "bytes": 2265370,
+      "sha256": "aed8e9b9751098080e015324599839c12a8a197144966c82c715d83cbfd00d79"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-minimal-w1-r0/closed-driven-LA-SELECTIVE-w1-r0-s179.cyps",
+      "bytes": 2265370,
+      "sha256": "678726600b1e7f78555d2a9c991e70450a54870761e9c33597a1b14f7cece331"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-minimal-w1-r0/closed-driven-LA-SELECTIVE-w1-r0-s29.cyps",
+      "bytes": 2265370,
+      "sha256": "bb60a9e7425d5c15653ef7001e607a9bb326c3fc8aaecb1c99102b5239619854"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-minimal-w1-r0/closed-driven-LA-SELECTIVE-w1-r0-s30.cyps",
+      "bytes": 2265370,
+      "sha256": "665e396e0f22b9701c0a1c1b4d83d5a5c082cc70428b761736e169371d953426"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-minimal-w1-r0/closed-driven-LA-SELECTIVE-w1-r0.json",
+      "bytes": 2177058,
+      "sha256": "aa0a3d86ecefd7420fa13a3b9f61bdf5bc6878a8704b149857086b3cf7d44db1"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-minimal-w1-r1/closed-driven-LA-SELECTIVE-w1-r1-final.cyps",
+      "bytes": 2265370,
+      "sha256": "678726600b1e7f78555d2a9c991e70450a54870761e9c33597a1b14f7cece331"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-minimal-w1-r1/closed-driven-LA-SELECTIVE-w1-r1-initial.cyps",
+      "bytes": 2265338,
+      "sha256": "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-minimal-w1-r1/closed-driven-LA-SELECTIVE-w1-r1-s0.cyps",
+      "bytes": 2265370,
+      "sha256": "c446bc83965d744f1a41b38df0961bc7cb27243f3b6f793d8b391b1ef9c9a84d"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-minimal-w1-r1/closed-driven-LA-SELECTIVE-w1-r1-s149.cyps",
+      "bytes": 2265370,
+      "sha256": "422f79b9e243f9f084a899fa4cd4a01ad4526b84138a03715e18481b1ae5e739"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-minimal-w1-r1/closed-driven-LA-SELECTIVE-w1-r1-s150.cyps",
+      "bytes": 2265370,
+      "sha256": "aed8e9b9751098080e015324599839c12a8a197144966c82c715d83cbfd00d79"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-minimal-w1-r1/closed-driven-LA-SELECTIVE-w1-r1-s179.cyps",
+      "bytes": 2265370,
+      "sha256": "678726600b1e7f78555d2a9c991e70450a54870761e9c33597a1b14f7cece331"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-minimal-w1-r1/closed-driven-LA-SELECTIVE-w1-r1-s29.cyps",
+      "bytes": 2265370,
+      "sha256": "bb60a9e7425d5c15653ef7001e607a9bb326c3fc8aaecb1c99102b5239619854"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-minimal-w1-r1/closed-driven-LA-SELECTIVE-w1-r1-s30.cyps",
+      "bytes": 2265370,
+      "sha256": "665e396e0f22b9701c0a1c1b4d83d5a5c082cc70428b761736e169371d953426"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-minimal-w1-r1/closed-driven-LA-SELECTIVE-w1-r1.json",
+      "bytes": 2177138,
+      "sha256": "91fdca9095fcc79b47618230a9f2ffcbd136ddf13adc9fd48649f6e3423275d4"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-minimal-w1-r2/closed-driven-LA-SELECTIVE-w1-r2-final.cyps",
+      "bytes": 2265370,
+      "sha256": "678726600b1e7f78555d2a9c991e70450a54870761e9c33597a1b14f7cece331"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-minimal-w1-r2/closed-driven-LA-SELECTIVE-w1-r2-initial.cyps",
+      "bytes": 2265338,
+      "sha256": "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-minimal-w1-r2/closed-driven-LA-SELECTIVE-w1-r2-s0.cyps",
+      "bytes": 2265370,
+      "sha256": "c446bc83965d744f1a41b38df0961bc7cb27243f3b6f793d8b391b1ef9c9a84d"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-minimal-w1-r2/closed-driven-LA-SELECTIVE-w1-r2-s149.cyps",
+      "bytes": 2265370,
+      "sha256": "422f79b9e243f9f084a899fa4cd4a01ad4526b84138a03715e18481b1ae5e739"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-minimal-w1-r2/closed-driven-LA-SELECTIVE-w1-r2-s150.cyps",
+      "bytes": 2265370,
+      "sha256": "aed8e9b9751098080e015324599839c12a8a197144966c82c715d83cbfd00d79"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-minimal-w1-r2/closed-driven-LA-SELECTIVE-w1-r2-s179.cyps",
+      "bytes": 2265370,
+      "sha256": "678726600b1e7f78555d2a9c991e70450a54870761e9c33597a1b14f7cece331"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-minimal-w1-r2/closed-driven-LA-SELECTIVE-w1-r2-s29.cyps",
+      "bytes": 2265370,
+      "sha256": "bb60a9e7425d5c15653ef7001e607a9bb326c3fc8aaecb1c99102b5239619854"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-minimal-w1-r2/closed-driven-LA-SELECTIVE-w1-r2-s30.cyps",
+      "bytes": 2265370,
+      "sha256": "665e396e0f22b9701c0a1c1b4d83d5a5c082cc70428b761736e169371d953426"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-minimal-w1-r2/closed-driven-LA-SELECTIVE-w1-r2.json",
+      "bytes": 2177124,
+      "sha256": "c473c96e3fbd05fae57a7f427244a7ba83518ae087670983fe4ef64a1bc2257b"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-minimal-w4-r0/closed-driven-LA-SELECTIVE-w4-r0-final.cyps",
+      "bytes": 2265370,
+      "sha256": "678726600b1e7f78555d2a9c991e70450a54870761e9c33597a1b14f7cece331"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-minimal-w4-r0/closed-driven-LA-SELECTIVE-w4-r0-initial.cyps",
+      "bytes": 2265338,
+      "sha256": "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-minimal-w4-r0/closed-driven-LA-SELECTIVE-w4-r0-s0.cyps",
+      "bytes": 2265370,
+      "sha256": "c446bc83965d744f1a41b38df0961bc7cb27243f3b6f793d8b391b1ef9c9a84d"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-minimal-w4-r0/closed-driven-LA-SELECTIVE-w4-r0-s149.cyps",
+      "bytes": 2265370,
+      "sha256": "422f79b9e243f9f084a899fa4cd4a01ad4526b84138a03715e18481b1ae5e739"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-minimal-w4-r0/closed-driven-LA-SELECTIVE-w4-r0-s150.cyps",
+      "bytes": 2265370,
+      "sha256": "aed8e9b9751098080e015324599839c12a8a197144966c82c715d83cbfd00d79"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-minimal-w4-r0/closed-driven-LA-SELECTIVE-w4-r0-s179.cyps",
+      "bytes": 2265370,
+      "sha256": "678726600b1e7f78555d2a9c991e70450a54870761e9c33597a1b14f7cece331"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-minimal-w4-r0/closed-driven-LA-SELECTIVE-w4-r0-s29.cyps",
+      "bytes": 2265370,
+      "sha256": "bb60a9e7425d5c15653ef7001e607a9bb326c3fc8aaecb1c99102b5239619854"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-minimal-w4-r0/closed-driven-LA-SELECTIVE-w4-r0-s30.cyps",
+      "bytes": 2265370,
+      "sha256": "665e396e0f22b9701c0a1c1b4d83d5a5c082cc70428b761736e169371d953426"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-minimal-w4-r0/closed-driven-LA-SELECTIVE-w4-r0.json",
+      "bytes": 2177064,
+      "sha256": "a873e6677b051953a9ca993fd3b2a0754f8415c7ddceeaf9ab7d0cbc2caad423"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-minimal-w4-r1/closed-driven-LA-SELECTIVE-w4-r1-final.cyps",
+      "bytes": 2265370,
+      "sha256": "678726600b1e7f78555d2a9c991e70450a54870761e9c33597a1b14f7cece331"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-minimal-w4-r1/closed-driven-LA-SELECTIVE-w4-r1-initial.cyps",
+      "bytes": 2265338,
+      "sha256": "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-minimal-w4-r1/closed-driven-LA-SELECTIVE-w4-r1-s0.cyps",
+      "bytes": 2265370,
+      "sha256": "c446bc83965d744f1a41b38df0961bc7cb27243f3b6f793d8b391b1ef9c9a84d"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-minimal-w4-r1/closed-driven-LA-SELECTIVE-w4-r1-s149.cyps",
+      "bytes": 2265370,
+      "sha256": "422f79b9e243f9f084a899fa4cd4a01ad4526b84138a03715e18481b1ae5e739"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-minimal-w4-r1/closed-driven-LA-SELECTIVE-w4-r1-s150.cyps",
+      "bytes": 2265370,
+      "sha256": "aed8e9b9751098080e015324599839c12a8a197144966c82c715d83cbfd00d79"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-minimal-w4-r1/closed-driven-LA-SELECTIVE-w4-r1-s179.cyps",
+      "bytes": 2265370,
+      "sha256": "678726600b1e7f78555d2a9c991e70450a54870761e9c33597a1b14f7cece331"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-minimal-w4-r1/closed-driven-LA-SELECTIVE-w4-r1-s29.cyps",
+      "bytes": 2265370,
+      "sha256": "bb60a9e7425d5c15653ef7001e607a9bb326c3fc8aaecb1c99102b5239619854"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-minimal-w4-r1/closed-driven-LA-SELECTIVE-w4-r1-s30.cyps",
+      "bytes": 2265370,
+      "sha256": "665e396e0f22b9701c0a1c1b4d83d5a5c082cc70428b761736e169371d953426"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-minimal-w4-r1/closed-driven-LA-SELECTIVE-w4-r1.json",
+      "bytes": 2177072,
+      "sha256": "ba1dbec116cc66c82c8d3670047cf290f18aba4938cd46ff9ad96b7af6001c6d"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-minimal-w4-r2/closed-driven-LA-SELECTIVE-w4-r2-final.cyps",
+      "bytes": 2265370,
+      "sha256": "678726600b1e7f78555d2a9c991e70450a54870761e9c33597a1b14f7cece331"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-minimal-w4-r2/closed-driven-LA-SELECTIVE-w4-r2-initial.cyps",
+      "bytes": 2265338,
+      "sha256": "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-minimal-w4-r2/closed-driven-LA-SELECTIVE-w4-r2-s0.cyps",
+      "bytes": 2265370,
+      "sha256": "c446bc83965d744f1a41b38df0961bc7cb27243f3b6f793d8b391b1ef9c9a84d"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-minimal-w4-r2/closed-driven-LA-SELECTIVE-w4-r2-s149.cyps",
+      "bytes": 2265370,
+      "sha256": "422f79b9e243f9f084a899fa4cd4a01ad4526b84138a03715e18481b1ae5e739"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-minimal-w4-r2/closed-driven-LA-SELECTIVE-w4-r2-s150.cyps",
+      "bytes": 2265370,
+      "sha256": "aed8e9b9751098080e015324599839c12a8a197144966c82c715d83cbfd00d79"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-minimal-w4-r2/closed-driven-LA-SELECTIVE-w4-r2-s179.cyps",
+      "bytes": 2265370,
+      "sha256": "678726600b1e7f78555d2a9c991e70450a54870761e9c33597a1b14f7cece331"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-minimal-w4-r2/closed-driven-LA-SELECTIVE-w4-r2-s29.cyps",
+      "bytes": 2265370,
+      "sha256": "bb60a9e7425d5c15653ef7001e607a9bb326c3fc8aaecb1c99102b5239619854"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-minimal-w4-r2/closed-driven-LA-SELECTIVE-w4-r2-s30.cyps",
+      "bytes": 2265370,
+      "sha256": "665e396e0f22b9701c0a1c1b4d83d5a5c082cc70428b761736e169371d953426"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-minimal-w4-r2/closed-driven-LA-SELECTIVE-w4-r2.json",
+      "bytes": 2177192,
+      "sha256": "108ee68bc9398e0460adfcc0e53cecbe15578a155908c8eaab54624224eff5cf"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-full-w1-r0/closed-unforced-LA-SELECTIVE-w1-r0-final.cyps",
+      "bytes": 2265370,
+      "sha256": "0e9c1680db4ff46830b1f23574577e22e97f9f65a8a9c6d6b494e1acf882b540"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-full-w1-r0/closed-unforced-LA-SELECTIVE-w1-r0-initial.cyps",
+      "bytes": 2265338,
+      "sha256": "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-full-w1-r0/closed-unforced-LA-SELECTIVE-w1-r0-s0.cyps",
+      "bytes": 2265370,
+      "sha256": "c446bc83965d744f1a41b38df0961bc7cb27243f3b6f793d8b391b1ef9c9a84d"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-full-w1-r0/closed-unforced-LA-SELECTIVE-w1-r0-s149.cyps",
+      "bytes": 2265370,
+      "sha256": "b9da42f5b1c796b59c358927458c51de40ea6d4ee52806fc1b6236adebbfc4fb"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-full-w1-r0/closed-unforced-LA-SELECTIVE-w1-r0-s150.cyps",
+      "bytes": 2265370,
+      "sha256": "5cf3da7f32b96feb259674aecb1a37d8ab559dc01dd61f1532231201b6ad1cff"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-full-w1-r0/closed-unforced-LA-SELECTIVE-w1-r0-s179.cyps",
+      "bytes": 2265370,
+      "sha256": "0e9c1680db4ff46830b1f23574577e22e97f9f65a8a9c6d6b494e1acf882b540"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-full-w1-r0/closed-unforced-LA-SELECTIVE-w1-r0-s29.cyps",
+      "bytes": 2265370,
+      "sha256": "bb60a9e7425d5c15653ef7001e607a9bb326c3fc8aaecb1c99102b5239619854"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-full-w1-r0/closed-unforced-LA-SELECTIVE-w1-r0-s30.cyps",
+      "bytes": 2265370,
+      "sha256": "665e396e0f22b9701c0a1c1b4d83d5a5c082cc70428b761736e169371d953426"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-full-w1-r0/closed-unforced-LA-SELECTIVE-w1-r0.json",
+      "bytes": 4306274,
+      "sha256": "48a8a6c79c0404968e599b6e52dc58722ee7183375037eb8b1c3f4b2920d6b75"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-full-w1-r1/closed-unforced-LA-SELECTIVE-w1-r1-final.cyps",
+      "bytes": 2265370,
+      "sha256": "0e9c1680db4ff46830b1f23574577e22e97f9f65a8a9c6d6b494e1acf882b540"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-full-w1-r1/closed-unforced-LA-SELECTIVE-w1-r1-initial.cyps",
+      "bytes": 2265338,
+      "sha256": "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-full-w1-r1/closed-unforced-LA-SELECTIVE-w1-r1-s0.cyps",
+      "bytes": 2265370,
+      "sha256": "c446bc83965d744f1a41b38df0961bc7cb27243f3b6f793d8b391b1ef9c9a84d"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-full-w1-r1/closed-unforced-LA-SELECTIVE-w1-r1-s149.cyps",
+      "bytes": 2265370,
+      "sha256": "b9da42f5b1c796b59c358927458c51de40ea6d4ee52806fc1b6236adebbfc4fb"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-full-w1-r1/closed-unforced-LA-SELECTIVE-w1-r1-s150.cyps",
+      "bytes": 2265370,
+      "sha256": "5cf3da7f32b96feb259674aecb1a37d8ab559dc01dd61f1532231201b6ad1cff"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-full-w1-r1/closed-unforced-LA-SELECTIVE-w1-r1-s179.cyps",
+      "bytes": 2265370,
+      "sha256": "0e9c1680db4ff46830b1f23574577e22e97f9f65a8a9c6d6b494e1acf882b540"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-full-w1-r1/closed-unforced-LA-SELECTIVE-w1-r1-s29.cyps",
+      "bytes": 2265370,
+      "sha256": "bb60a9e7425d5c15653ef7001e607a9bb326c3fc8aaecb1c99102b5239619854"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-full-w1-r1/closed-unforced-LA-SELECTIVE-w1-r1-s30.cyps",
+      "bytes": 2265370,
+      "sha256": "665e396e0f22b9701c0a1c1b4d83d5a5c082cc70428b761736e169371d953426"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-full-w1-r1/closed-unforced-LA-SELECTIVE-w1-r1.json",
+      "bytes": 4306289,
+      "sha256": "2e22ec1652de4542ce0e3f4d50432b7bf3679dc514acb4f481bc90eb4949cde3"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-full-w1-r2/closed-unforced-LA-SELECTIVE-w1-r2-final.cyps",
+      "bytes": 2265370,
+      "sha256": "0e9c1680db4ff46830b1f23574577e22e97f9f65a8a9c6d6b494e1acf882b540"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-full-w1-r2/closed-unforced-LA-SELECTIVE-w1-r2-initial.cyps",
+      "bytes": 2265338,
+      "sha256": "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-full-w1-r2/closed-unforced-LA-SELECTIVE-w1-r2-s0.cyps",
+      "bytes": 2265370,
+      "sha256": "c446bc83965d744f1a41b38df0961bc7cb27243f3b6f793d8b391b1ef9c9a84d"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-full-w1-r2/closed-unforced-LA-SELECTIVE-w1-r2-s149.cyps",
+      "bytes": 2265370,
+      "sha256": "b9da42f5b1c796b59c358927458c51de40ea6d4ee52806fc1b6236adebbfc4fb"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-full-w1-r2/closed-unforced-LA-SELECTIVE-w1-r2-s150.cyps",
+      "bytes": 2265370,
+      "sha256": "5cf3da7f32b96feb259674aecb1a37d8ab559dc01dd61f1532231201b6ad1cff"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-full-w1-r2/closed-unforced-LA-SELECTIVE-w1-r2-s179.cyps",
+      "bytes": 2265370,
+      "sha256": "0e9c1680db4ff46830b1f23574577e22e97f9f65a8a9c6d6b494e1acf882b540"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-full-w1-r2/closed-unforced-LA-SELECTIVE-w1-r2-s29.cyps",
+      "bytes": 2265370,
+      "sha256": "bb60a9e7425d5c15653ef7001e607a9bb326c3fc8aaecb1c99102b5239619854"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-full-w1-r2/closed-unforced-LA-SELECTIVE-w1-r2-s30.cyps",
+      "bytes": 2265370,
+      "sha256": "665e396e0f22b9701c0a1c1b4d83d5a5c082cc70428b761736e169371d953426"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-full-w1-r2/closed-unforced-LA-SELECTIVE-w1-r2.json",
+      "bytes": 4306311,
+      "sha256": "622a6a2be34f3d481f2486ff8de51fc452fff56fb1028f70dc2c21238c86266e"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-full-w4-r0/closed-unforced-LA-SELECTIVE-w4-r0-final.cyps",
+      "bytes": 2265370,
+      "sha256": "0e9c1680db4ff46830b1f23574577e22e97f9f65a8a9c6d6b494e1acf882b540"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-full-w4-r0/closed-unforced-LA-SELECTIVE-w4-r0-initial.cyps",
+      "bytes": 2265338,
+      "sha256": "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-full-w4-r0/closed-unforced-LA-SELECTIVE-w4-r0-s0.cyps",
+      "bytes": 2265370,
+      "sha256": "c446bc83965d744f1a41b38df0961bc7cb27243f3b6f793d8b391b1ef9c9a84d"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-full-w4-r0/closed-unforced-LA-SELECTIVE-w4-r0-s149.cyps",
+      "bytes": 2265370,
+      "sha256": "b9da42f5b1c796b59c358927458c51de40ea6d4ee52806fc1b6236adebbfc4fb"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-full-w4-r0/closed-unforced-LA-SELECTIVE-w4-r0-s150.cyps",
+      "bytes": 2265370,
+      "sha256": "5cf3da7f32b96feb259674aecb1a37d8ab559dc01dd61f1532231201b6ad1cff"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-full-w4-r0/closed-unforced-LA-SELECTIVE-w4-r0-s179.cyps",
+      "bytes": 2265370,
+      "sha256": "0e9c1680db4ff46830b1f23574577e22e97f9f65a8a9c6d6b494e1acf882b540"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-full-w4-r0/closed-unforced-LA-SELECTIVE-w4-r0-s29.cyps",
+      "bytes": 2265370,
+      "sha256": "bb60a9e7425d5c15653ef7001e607a9bb326c3fc8aaecb1c99102b5239619854"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-full-w4-r0/closed-unforced-LA-SELECTIVE-w4-r0-s30.cyps",
+      "bytes": 2265370,
+      "sha256": "665e396e0f22b9701c0a1c1b4d83d5a5c082cc70428b761736e169371d953426"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-full-w4-r0/closed-unforced-LA-SELECTIVE-w4-r0.json",
+      "bytes": 4306305,
+      "sha256": "d58168700e2dc38e1ebf65a78ce38c37934533ddd2368184c5a3649a3d3a93a6"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-full-w4-r1/closed-unforced-LA-SELECTIVE-w4-r1-final.cyps",
+      "bytes": 2265370,
+      "sha256": "0e9c1680db4ff46830b1f23574577e22e97f9f65a8a9c6d6b494e1acf882b540"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-full-w4-r1/closed-unforced-LA-SELECTIVE-w4-r1-initial.cyps",
+      "bytes": 2265338,
+      "sha256": "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-full-w4-r1/closed-unforced-LA-SELECTIVE-w4-r1-s0.cyps",
+      "bytes": 2265370,
+      "sha256": "c446bc83965d744f1a41b38df0961bc7cb27243f3b6f793d8b391b1ef9c9a84d"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-full-w4-r1/closed-unforced-LA-SELECTIVE-w4-r1-s149.cyps",
+      "bytes": 2265370,
+      "sha256": "b9da42f5b1c796b59c358927458c51de40ea6d4ee52806fc1b6236adebbfc4fb"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-full-w4-r1/closed-unforced-LA-SELECTIVE-w4-r1-s150.cyps",
+      "bytes": 2265370,
+      "sha256": "5cf3da7f32b96feb259674aecb1a37d8ab559dc01dd61f1532231201b6ad1cff"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-full-w4-r1/closed-unforced-LA-SELECTIVE-w4-r1-s179.cyps",
+      "bytes": 2265370,
+      "sha256": "0e9c1680db4ff46830b1f23574577e22e97f9f65a8a9c6d6b494e1acf882b540"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-full-w4-r1/closed-unforced-LA-SELECTIVE-w4-r1-s29.cyps",
+      "bytes": 2265370,
+      "sha256": "bb60a9e7425d5c15653ef7001e607a9bb326c3fc8aaecb1c99102b5239619854"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-full-w4-r1/closed-unforced-LA-SELECTIVE-w4-r1-s30.cyps",
+      "bytes": 2265370,
+      "sha256": "665e396e0f22b9701c0a1c1b4d83d5a5c082cc70428b761736e169371d953426"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-full-w4-r1/closed-unforced-LA-SELECTIVE-w4-r1.json",
+      "bytes": 4306335,
+      "sha256": "bfd53838b2a8342ec402a1144d55b7b39f9bf80288fdcc4a82994d90400e14d7"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-full-w4-r2/closed-unforced-LA-SELECTIVE-w4-r2-final.cyps",
+      "bytes": 2265370,
+      "sha256": "0e9c1680db4ff46830b1f23574577e22e97f9f65a8a9c6d6b494e1acf882b540"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-full-w4-r2/closed-unforced-LA-SELECTIVE-w4-r2-initial.cyps",
+      "bytes": 2265338,
+      "sha256": "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-full-w4-r2/closed-unforced-LA-SELECTIVE-w4-r2-s0.cyps",
+      "bytes": 2265370,
+      "sha256": "c446bc83965d744f1a41b38df0961bc7cb27243f3b6f793d8b391b1ef9c9a84d"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-full-w4-r2/closed-unforced-LA-SELECTIVE-w4-r2-s149.cyps",
+      "bytes": 2265370,
+      "sha256": "b9da42f5b1c796b59c358927458c51de40ea6d4ee52806fc1b6236adebbfc4fb"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-full-w4-r2/closed-unforced-LA-SELECTIVE-w4-r2-s150.cyps",
+      "bytes": 2265370,
+      "sha256": "5cf3da7f32b96feb259674aecb1a37d8ab559dc01dd61f1532231201b6ad1cff"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-full-w4-r2/closed-unforced-LA-SELECTIVE-w4-r2-s179.cyps",
+      "bytes": 2265370,
+      "sha256": "0e9c1680db4ff46830b1f23574577e22e97f9f65a8a9c6d6b494e1acf882b540"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-full-w4-r2/closed-unforced-LA-SELECTIVE-w4-r2-s29.cyps",
+      "bytes": 2265370,
+      "sha256": "bb60a9e7425d5c15653ef7001e607a9bb326c3fc8aaecb1c99102b5239619854"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-full-w4-r2/closed-unforced-LA-SELECTIVE-w4-r2-s30.cyps",
+      "bytes": 2265370,
+      "sha256": "665e396e0f22b9701c0a1c1b4d83d5a5c082cc70428b761736e169371d953426"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-full-w4-r2/closed-unforced-LA-SELECTIVE-w4-r2.json",
+      "bytes": 4306304,
+      "sha256": "de079781e416ddab0bd3457bdcd66dd246c79264d45b09a5ba8fc3c63043ac13"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-minimal-w1-r0/closed-unforced-LA-SELECTIVE-w1-r0-final.cyps",
+      "bytes": 2265370,
+      "sha256": "0e9c1680db4ff46830b1f23574577e22e97f9f65a8a9c6d6b494e1acf882b540"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-minimal-w1-r0/closed-unforced-LA-SELECTIVE-w1-r0-initial.cyps",
+      "bytes": 2265338,
+      "sha256": "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-minimal-w1-r0/closed-unforced-LA-SELECTIVE-w1-r0-s0.cyps",
+      "bytes": 2265370,
+      "sha256": "c446bc83965d744f1a41b38df0961bc7cb27243f3b6f793d8b391b1ef9c9a84d"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-minimal-w1-r0/closed-unforced-LA-SELECTIVE-w1-r0-s149.cyps",
+      "bytes": 2265370,
+      "sha256": "b9da42f5b1c796b59c358927458c51de40ea6d4ee52806fc1b6236adebbfc4fb"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-minimal-w1-r0/closed-unforced-LA-SELECTIVE-w1-r0-s150.cyps",
+      "bytes": 2265370,
+      "sha256": "5cf3da7f32b96feb259674aecb1a37d8ab559dc01dd61f1532231201b6ad1cff"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-minimal-w1-r0/closed-unforced-LA-SELECTIVE-w1-r0-s179.cyps",
+      "bytes": 2265370,
+      "sha256": "0e9c1680db4ff46830b1f23574577e22e97f9f65a8a9c6d6b494e1acf882b540"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-minimal-w1-r0/closed-unforced-LA-SELECTIVE-w1-r0-s29.cyps",
+      "bytes": 2265370,
+      "sha256": "bb60a9e7425d5c15653ef7001e607a9bb326c3fc8aaecb1c99102b5239619854"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-minimal-w1-r0/closed-unforced-LA-SELECTIVE-w1-r0-s30.cyps",
+      "bytes": 2265370,
+      "sha256": "665e396e0f22b9701c0a1c1b4d83d5a5c082cc70428b761736e169371d953426"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-minimal-w1-r0/closed-unforced-LA-SELECTIVE-w1-r0.json",
+      "bytes": 1851297,
+      "sha256": "59ec24bf8437960e359e4f966c8be8da0a039bee89092e577815db1347410ba3"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-minimal-w1-r1/closed-unforced-LA-SELECTIVE-w1-r1-final.cyps",
+      "bytes": 2265370,
+      "sha256": "0e9c1680db4ff46830b1f23574577e22e97f9f65a8a9c6d6b494e1acf882b540"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-minimal-w1-r1/closed-unforced-LA-SELECTIVE-w1-r1-initial.cyps",
+      "bytes": 2265338,
+      "sha256": "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-minimal-w1-r1/closed-unforced-LA-SELECTIVE-w1-r1-s0.cyps",
+      "bytes": 2265370,
+      "sha256": "c446bc83965d744f1a41b38df0961bc7cb27243f3b6f793d8b391b1ef9c9a84d"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-minimal-w1-r1/closed-unforced-LA-SELECTIVE-w1-r1-s149.cyps",
+      "bytes": 2265370,
+      "sha256": "b9da42f5b1c796b59c358927458c51de40ea6d4ee52806fc1b6236adebbfc4fb"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-minimal-w1-r1/closed-unforced-LA-SELECTIVE-w1-r1-s150.cyps",
+      "bytes": 2265370,
+      "sha256": "5cf3da7f32b96feb259674aecb1a37d8ab559dc01dd61f1532231201b6ad1cff"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-minimal-w1-r1/closed-unforced-LA-SELECTIVE-w1-r1-s179.cyps",
+      "bytes": 2265370,
+      "sha256": "0e9c1680db4ff46830b1f23574577e22e97f9f65a8a9c6d6b494e1acf882b540"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-minimal-w1-r1/closed-unforced-LA-SELECTIVE-w1-r1-s29.cyps",
+      "bytes": 2265370,
+      "sha256": "bb60a9e7425d5c15653ef7001e607a9bb326c3fc8aaecb1c99102b5239619854"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-minimal-w1-r1/closed-unforced-LA-SELECTIVE-w1-r1-s30.cyps",
+      "bytes": 2265370,
+      "sha256": "665e396e0f22b9701c0a1c1b4d83d5a5c082cc70428b761736e169371d953426"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-minimal-w1-r1/closed-unforced-LA-SELECTIVE-w1-r1.json",
+      "bytes": 1851293,
+      "sha256": "7a888e39137cb36e4999707cc11bc9b69a2f15044430dfadf96dbb4fc2105d08"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-minimal-w1-r2/closed-unforced-LA-SELECTIVE-w1-r2-final.cyps",
+      "bytes": 2265370,
+      "sha256": "0e9c1680db4ff46830b1f23574577e22e97f9f65a8a9c6d6b494e1acf882b540"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-minimal-w1-r2/closed-unforced-LA-SELECTIVE-w1-r2-initial.cyps",
+      "bytes": 2265338,
+      "sha256": "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-minimal-w1-r2/closed-unforced-LA-SELECTIVE-w1-r2-s0.cyps",
+      "bytes": 2265370,
+      "sha256": "c446bc83965d744f1a41b38df0961bc7cb27243f3b6f793d8b391b1ef9c9a84d"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-minimal-w1-r2/closed-unforced-LA-SELECTIVE-w1-r2-s149.cyps",
+      "bytes": 2265370,
+      "sha256": "b9da42f5b1c796b59c358927458c51de40ea6d4ee52806fc1b6236adebbfc4fb"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-minimal-w1-r2/closed-unforced-LA-SELECTIVE-w1-r2-s150.cyps",
+      "bytes": 2265370,
+      "sha256": "5cf3da7f32b96feb259674aecb1a37d8ab559dc01dd61f1532231201b6ad1cff"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-minimal-w1-r2/closed-unforced-LA-SELECTIVE-w1-r2-s179.cyps",
+      "bytes": 2265370,
+      "sha256": "0e9c1680db4ff46830b1f23574577e22e97f9f65a8a9c6d6b494e1acf882b540"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-minimal-w1-r2/closed-unforced-LA-SELECTIVE-w1-r2-s29.cyps",
+      "bytes": 2265370,
+      "sha256": "bb60a9e7425d5c15653ef7001e607a9bb326c3fc8aaecb1c99102b5239619854"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-minimal-w1-r2/closed-unforced-LA-SELECTIVE-w1-r2-s30.cyps",
+      "bytes": 2265370,
+      "sha256": "665e396e0f22b9701c0a1c1b4d83d5a5c082cc70428b761736e169371d953426"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-minimal-w1-r2/closed-unforced-LA-SELECTIVE-w1-r2.json",
+      "bytes": 1851410,
+      "sha256": "b97b2173ddffd1baa26c6906716020c520cfdcb96d458c903081b7f8d07464e7"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-minimal-w4-r0/closed-unforced-LA-SELECTIVE-w4-r0-final.cyps",
+      "bytes": 2265370,
+      "sha256": "0e9c1680db4ff46830b1f23574577e22e97f9f65a8a9c6d6b494e1acf882b540"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-minimal-w4-r0/closed-unforced-LA-SELECTIVE-w4-r0-initial.cyps",
+      "bytes": 2265338,
+      "sha256": "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-minimal-w4-r0/closed-unforced-LA-SELECTIVE-w4-r0-s0.cyps",
+      "bytes": 2265370,
+      "sha256": "c446bc83965d744f1a41b38df0961bc7cb27243f3b6f793d8b391b1ef9c9a84d"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-minimal-w4-r0/closed-unforced-LA-SELECTIVE-w4-r0-s149.cyps",
+      "bytes": 2265370,
+      "sha256": "b9da42f5b1c796b59c358927458c51de40ea6d4ee52806fc1b6236adebbfc4fb"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-minimal-w4-r0/closed-unforced-LA-SELECTIVE-w4-r0-s150.cyps",
+      "bytes": 2265370,
+      "sha256": "5cf3da7f32b96feb259674aecb1a37d8ab559dc01dd61f1532231201b6ad1cff"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-minimal-w4-r0/closed-unforced-LA-SELECTIVE-w4-r0-s179.cyps",
+      "bytes": 2265370,
+      "sha256": "0e9c1680db4ff46830b1f23574577e22e97f9f65a8a9c6d6b494e1acf882b540"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-minimal-w4-r0/closed-unforced-LA-SELECTIVE-w4-r0-s29.cyps",
+      "bytes": 2265370,
+      "sha256": "bb60a9e7425d5c15653ef7001e607a9bb326c3fc8aaecb1c99102b5239619854"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-minimal-w4-r0/closed-unforced-LA-SELECTIVE-w4-r0-s30.cyps",
+      "bytes": 2265370,
+      "sha256": "665e396e0f22b9701c0a1c1b4d83d5a5c082cc70428b761736e169371d953426"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-minimal-w4-r0/closed-unforced-LA-SELECTIVE-w4-r0.json",
+      "bytes": 1851315,
+      "sha256": "53d16407f3a7983b35554208ee3335c7378777f36b499cf53073c1691137c925"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-minimal-w4-r1/closed-unforced-LA-SELECTIVE-w4-r1-final.cyps",
+      "bytes": 2265370,
+      "sha256": "0e9c1680db4ff46830b1f23574577e22e97f9f65a8a9c6d6b494e1acf882b540"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-minimal-w4-r1/closed-unforced-LA-SELECTIVE-w4-r1-initial.cyps",
+      "bytes": 2265338,
+      "sha256": "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-minimal-w4-r1/closed-unforced-LA-SELECTIVE-w4-r1-s0.cyps",
+      "bytes": 2265370,
+      "sha256": "c446bc83965d744f1a41b38df0961bc7cb27243f3b6f793d8b391b1ef9c9a84d"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-minimal-w4-r1/closed-unforced-LA-SELECTIVE-w4-r1-s149.cyps",
+      "bytes": 2265370,
+      "sha256": "b9da42f5b1c796b59c358927458c51de40ea6d4ee52806fc1b6236adebbfc4fb"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-minimal-w4-r1/closed-unforced-LA-SELECTIVE-w4-r1-s150.cyps",
+      "bytes": 2265370,
+      "sha256": "5cf3da7f32b96feb259674aecb1a37d8ab559dc01dd61f1532231201b6ad1cff"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-minimal-w4-r1/closed-unforced-LA-SELECTIVE-w4-r1-s179.cyps",
+      "bytes": 2265370,
+      "sha256": "0e9c1680db4ff46830b1f23574577e22e97f9f65a8a9c6d6b494e1acf882b540"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-minimal-w4-r1/closed-unforced-LA-SELECTIVE-w4-r1-s29.cyps",
+      "bytes": 2265370,
+      "sha256": "bb60a9e7425d5c15653ef7001e607a9bb326c3fc8aaecb1c99102b5239619854"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-minimal-w4-r1/closed-unforced-LA-SELECTIVE-w4-r1-s30.cyps",
+      "bytes": 2265370,
+      "sha256": "665e396e0f22b9701c0a1c1b4d83d5a5c082cc70428b761736e169371d953426"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-minimal-w4-r1/closed-unforced-LA-SELECTIVE-w4-r1.json",
+      "bytes": 1851327,
+      "sha256": "f6a6edda87962af7403803d64a05b517e2d95df3efce3afcb83c76ec39a71b36"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-minimal-w4-r2/closed-unforced-LA-SELECTIVE-w4-r2-final.cyps",
+      "bytes": 2265370,
+      "sha256": "0e9c1680db4ff46830b1f23574577e22e97f9f65a8a9c6d6b494e1acf882b540"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-minimal-w4-r2/closed-unforced-LA-SELECTIVE-w4-r2-initial.cyps",
+      "bytes": 2265338,
+      "sha256": "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-minimal-w4-r2/closed-unforced-LA-SELECTIVE-w4-r2-s0.cyps",
+      "bytes": 2265370,
+      "sha256": "c446bc83965d744f1a41b38df0961bc7cb27243f3b6f793d8b391b1ef9c9a84d"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-minimal-w4-r2/closed-unforced-LA-SELECTIVE-w4-r2-s149.cyps",
+      "bytes": 2265370,
+      "sha256": "b9da42f5b1c796b59c358927458c51de40ea6d4ee52806fc1b6236adebbfc4fb"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-minimal-w4-r2/closed-unforced-LA-SELECTIVE-w4-r2-s150.cyps",
+      "bytes": 2265370,
+      "sha256": "5cf3da7f32b96feb259674aecb1a37d8ab559dc01dd61f1532231201b6ad1cff"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-minimal-w4-r2/closed-unforced-LA-SELECTIVE-w4-r2-s179.cyps",
+      "bytes": 2265370,
+      "sha256": "0e9c1680db4ff46830b1f23574577e22e97f9f65a8a9c6d6b494e1acf882b540"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-minimal-w4-r2/closed-unforced-LA-SELECTIVE-w4-r2-s29.cyps",
+      "bytes": 2265370,
+      "sha256": "bb60a9e7425d5c15653ef7001e607a9bb326c3fc8aaecb1c99102b5239619854"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-minimal-w4-r2/closed-unforced-LA-SELECTIVE-w4-r2-s30.cyps",
+      "bytes": 2265370,
+      "sha256": "665e396e0f22b9701c0a1c1b4d83d5a5c082cc70428b761736e169371d953426"
+    },
+    {
+      "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-minimal-w4-r2/closed-unforced-LA-SELECTIVE-w4-r2.json",
+      "bytes": 1851329,
+      "sha256": "867085e15b77d6d2e1f284445b5a3e5695fbfd930f41d746cbef0def5e492f63"
+    },
+    {
+      "path": "build/sol-response-cost/type-probe/probe.gd",
+      "bytes": 229,
+      "sha256": "db6752ee0b4f61e0bf83af29dd0d87c107ecce5cdaa322016710f4202568f7ba"
+    },
+    {
+      "path": "build/sol-response-cost/type-probe/probe.log",
+      "bytes": 276,
+      "sha256": "735da588e641c66e6c1aaac763e67a016bda54a20ef22e852420bc288a9b9846"
+    },
+    {
+      "path": "build/sol-response-cost/type-probe/probe.receipt.json",
+      "bytes": 1138,
+      "sha256": "4bbacedc3a879d8f2db1b8ed189cd22dcf946c22fa7c0aa9e3d8702d5573c9be"
+    },
+    {
+      "path": "build/sol-response-cost/type-probe/receipt.json",
+      "bytes": 1359,
+      "sha256": "6ede100d0aaa4b5346e0d13e766fb29194ecef974fc98a66ed81062f51f73da3"
+    },
+    {
+      "path": "build/sol-response-cost/sealing-3a29/complete-reduction.log",
+      "bytes": 108,
+      "sha256": "d96e8ccb8e1ec4935a426a52d3c2f927b1da49791e81915e90e4b115aab1d4bb"
+    },
+    {
+      "path": "build/sol-response-cost/sealing-3a29/complete-reduction.receipt.json",
+      "bytes": 759,
+      "sha256": "2cd52d3b8ce9f1922e167c724cf08ce259bac31953745573b30601cec4e64c9d"
+    },
+    {
+      "path": "build/sol-response-cost/sealing-3a29/receipt.json",
+      "bytes": 880,
+      "sha256": "fe71bf9f2c6fc21bd91e98e6b0a51f296d0f330bdb2ae5a864c5b43e5878419b"
+    }
+  ]
+}
