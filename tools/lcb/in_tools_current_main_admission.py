@@ -14,7 +14,7 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[2]
 RECORD = ROOT / "godot/tests/fixtures/lcb/in_tools/in-tools-current-main-admission.2026-11-05.json"
 SCHEMA = "in-tools-current-main-admission-v1"
-EXPECTED_AUTHORITY_COUNT = 11
+EXPECTED_AUTHORITY_COUNT = 13
 EXPECTED_PLANS = {
     "in-tools.valve-side.v2",
     "in-tools.valve-bottom.v2",
