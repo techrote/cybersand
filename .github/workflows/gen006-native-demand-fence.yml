@@ -6,6 +6,7 @@ on:
       - experiment/gen006-native-demand-fence-20261105
     paths:
       - native/tests/test_gen006_demand_fence.cpp
+      - native/tests/test_gen006_async_owner_race.cpp
       - .github/workflows/gen006-native-demand-fence.yml
       - docs/audits/2026-11-05-gen006-native-demand-fence.md
   workflow_dispatch:
@@ -43,23 +44,39 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          timeout 1150s g++-13 -std=c++20 -O0 -g1 -pthread \
-            -Wall -Wextra -Wpedantic -I native/include \
-            native/src/world.cpp native/src/material_rules.cpp \
-            native/src/scheduler_geometry.cpp native/src/settled_world_discovery.cpp \
-            native/src/world_generation.cpp native/src/generation_fields.cpp \
-            native/src/generation_typed_fields.cpp native/src/generation_spatial.cpp \
-            native/src/generation_grammar.cpp native/src/generation_planes.cpp \
-            native/tests/test_gen006_demand_fence.cpp \
-            -o build/gen006-demand-fence/probe 2>&1 | tee build/gen006-demand-fence/compile.log
+          # Compile shared native implementation once, then link two isolated
+          # executable fixtures; no test-only source enters production libraries.
+          native_sources=(
+            native/src/world.cpp native/src/material_rules.cpp
+            native/src/scheduler_geometry.cpp native/src/settled_world_discovery.cpp
+            native/src/world_generation.cpp native/src/generation_fields.cpp
+            native/src/generation_typed_fields.cpp native/src/generation_spatial.cpp
+            native/src/generation_grammar.cpp native/src/generation_planes.cpp
+          )
+          common_objects=()
+          for src in "${native_sources[@]}"; do
+            obj="build/gen006-demand-fence/$(basename "${src%.cpp}").o"
+            timeout 900s g++-13 -std=c++20 -O0 -g1 -pthread -Wall -Wextra -Wpedantic \
+              -I native/include -c "$src" -o "$obj" 2>&1 | tee -a build/gen006-demand-fence/compile.log
+            common_objects+=("$obj")
+          done
+          for test in demand_fence async_owner_race; do
+            timeout 250s g++-13 -std=c++20 -O0 -g1 -pthread -Wall -Wextra -Wpedantic \
+              -I native/include "native/tests/test_gen006_${test}.cpp" \
+              "${common_objects[@]}" -o "build/gen006-demand-fence/${test}" \
+              2>&1 | tee -a build/gen006-demand-fence/compile.log
+          done
       - name: Exercise bare-native negative and guarded 1/4-worker configs
         timeout-minutes: 5
         shell: bash
         run: |
           set -euo pipefail
-          timeout 240s build/gen006-demand-fence/probe 2>&1 | tee build/gen006-demand-fence/observations.txt
+          timeout 120s build/gen006-demand-fence/demand_fence 2>&1 | tee build/gen006-demand-fence/observations.txt
+          timeout 120s build/gen006-demand-fence/async_owner_race 2>&1 | tee build/gen006-demand-fence/async-observations.txt
           grep -q 'GEN006_DEMAND_FENCE_PASS' build/gen006-demand-fence/observations.txt
+          grep -q 'GEN006_ASYNC_OWNER_PASS' build/gen006-demand-fence/async-observations.txt
           test "$(grep -c 'result=PASS' build/gen006-demand-fence/observations.txt)" = 2
+          test "$(grep -c 'result=PASS' build/gen006-demand-fence/async-observations.txt)" = 2
       - name: Preserve source-pinned original evidence and any failures
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
@@ -72,5 +89,6 @@ jobs:
             build/gen006-demand-fence/provider-policy.log
             build/gen006-demand-fence/compile.log
             build/gen006-demand-fence/observations.txt
+            build/gen006-demand-fence/async-observations.txt
           if-no-files-found: warn
           retention-days: 45
