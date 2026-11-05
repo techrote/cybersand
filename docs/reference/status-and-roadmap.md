@@ -10,6 +10,8 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+The [worker-side INV-004 diagnosis](../audits/2026-11-05-inv154-rayon-workers.md) identifies ready-but-unscheduled completion workers under WARP-associated CPU contention in the retained Windows software-renderer cohort. This is diagnostic evidence only; production priority, renderer, worker and physics settings remain unchanged.
+
 INV-004 / #154 remains a diagnostic investigation. The [2026-11-05 Windows experiment](../audits/2026-11-05-inv154-windows-thread-time.md) preserves #436 → #440 → #446 → #449 tests on one current-main-based diagnostic branch. Thread execution evidence must precede any separately authorized optimization; no production physics/rendering/gameplay change is part of this checkpoint.
 
 ## MAT-AUTH reviewed per-file transitions — 2026-11-04

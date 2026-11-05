@@ -10,6 +10,8 @@ related-documents: [../operations/testing-validation-and-replay.md, level-saves-
 
 # Validation evidence ledger
 
+The [INV-004 worker-side follow-up](../audits/2026-11-05-inv154-rayon-workers.md) reuses the three original ETLs from run 42117551171. It adds no gameplay trial: all 169 critical-worker waits are matched to completion stacks, scheduler states and same-process WARP-associated CPU occupancy. Preserve the original profiler and cohort qualifications.
+
 The [2026-11-05 INV-004 Windows experiment](../audits/2026-11-05-inv154-windows-thread-time.md) preserves the exact #449 reproduction (run 42115748865) and successor calling-thread measurement. Original software-ANGLE and local TITAN RTX cohorts remain separate; no GPU causation or production optimization is established.
 
 ## MAT-AUTH-002 Phase A evidence boundary — 2026-11-04

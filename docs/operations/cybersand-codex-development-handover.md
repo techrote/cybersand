@@ -10,6 +10,10 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## INV-004 worker-side Windows evidence — 2026-11-05
+
+The [worker follow-up](../audits/2026-11-05-inv154-rayon-workers.md) uses the existing three ETLs and unchanged #449 workload. Critical Rayon workers are ready but unscheduled while higher-priority WARP-associated threads occupy the guest CPUs. Reproduce with the scoped ETW tools; no new production optimization or settings change is admitted. Preserve the caller investigation, exact source/runtime chain, historical branches and all raw artifacts.
+
 ## MAT-AUTH-002 Phase A integration gate — 2026-11-04
 
 The owner now authorizes current-main reconciliation, focused preflight, a

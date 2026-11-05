@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "frozen_date": "2026-11-05",
+  "purpose": "Independent worker-side questions; previous frozen and INV154 caller questions remain unchanged.",
+  "questions": [
+    {
+      "id": "INV154-WORKER-01",
+      "query": "Why do the Rayon workers finish late during the long Windows Rapier space_step intervals?",
+      "canonical": ["operations/profiling-observability-and-performance.md"],
+      "facts": [
+        "The actual job-completing worker is ready but largely unscheduled while same-process WARP-associated rendering threads occupy most logical CPU residency at mostly higher observed priorities.",
+        "The result is specific to the retained Windows software-ANGLE cohort and does not establish a universal hardware-GPU result or a specific shader cost."
+      ],
+      "sources": ["operations/profiling-observability-and-performance.md", "audits/2026-11-05-inv154-rayon-workers.md"]
+    },
+    {
+      "id": "INV154-WORKER-02",
+      "query": "Does Rayon in_worker_cold mean Rapier starts threads every step, and do two caller wakes mean two physics jobs?",
+      "canonical": ["operations/profiling-observability-and-performance.md"],
+      "facts": [
+        "The pool is persistent; in_worker_cold injects work from an external caller and is not evidence of per-step startup.",
+        "Two wakes may be condition-variable notification and mutex reacquisition in one completion latch; completion attribution needs exact job and wake stacks, not idle-helper averages."
+      ],
+      "sources": ["operations/profiling-observability-and-performance.md", "audits/2026-11-05-inv154-rayon-workers.md"]
+    }
+  ]
+}

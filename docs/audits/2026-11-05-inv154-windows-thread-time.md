@@ -336,3 +336,12 @@ offline workflow authenticates the immutable raw and PDB archives before replay;
 it executes no game or new benchmark. The source-equivalent branch and retained
 raw artifacts form the recoverable checkpoint. Historical branches, failures,
 unique tests and artifacts are retained. Record the final hosted receipts below.
+
+## Subsequent worker-side investigation — 2026-11-05
+
+The owner subsequently authorized [worker-side attribution](2026-11-05-inv154-rayon-workers.md).
+It reuses these exact ETLs and source/runtime identities; it is not an additional
+Windows trial or an optimization. The original caller conclusions above retain
+their tested scope. Completed Task-2 publication receipts are hosted offline run
+42120443245 / artifact 13458316243 and exact-f6d53a42 Documentation/provenance
+42120442453; the #449 result comment is 6671070825.

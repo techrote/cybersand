@@ -41,6 +41,23 @@ inconclusive result. A different host with no long events is also inconclusive;
 it does not identify a GPU effect. These are scoped diagnostic thresholds, not
 general production performance targets.
 
+## Windows Rayon worker completion
+
+The [2026-11-05 worker investigation](../audits/2026-11-05-inv154-rayon-workers.md)
+traces the same retained Windows software-ANGLE workload. For all 169 long
+events, the worker releasing the caller's dominant wait is ready but unscheduled
+for at least 99.6025% of that wait. WARP-associated threads in the same Godot
+process occupy 95.6785% of logical-CPU scheduler residency during those windows,
+mostly at higher observed dynamic priorities. This is cohort-specific software
+rendering contention, not a general claim about hardware GPUs or shader cost.
+
+The pool is persistent; `in_worker_cold` means external-caller injection, not
+per-step thread startup. Identify the actual completion worker with resolved
+job/wake stacks rather than averaging idle helpers. Multiple wakes can represent
+condition-variable notification followed by mutex reacquisition for one job.
+Keep raw scheduling, interrupt, lifetime and unknown-coverage limits separate
+from CPU computation or exact job-entry claims. No production setting is changed.
+
 ## Persistent hosted execution history
 
 The [CI execution and performance contract](ci-execution-and-performance.md)
