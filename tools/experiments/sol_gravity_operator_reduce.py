@@ -20,8 +20,10 @@ def motion(state):
     assert all(math.isfinite(v) for v in values)
     energy=.5*state['mass']*math.fsum(v*v for v in values[:2])+.5*state['inertia']*values[2]**2
     assert math.isclose(energy,state['kinetic'],rel_tol=1e-12,abs_tol=1e-9)
-    assert len(bytes.fromhex(state['pose_f64le']))==48 and state['contacts']==0
-    assert not state['sleeping'] and state['mass']>0 and state['inertia']>0
+    pose=struct.unpack('<6d',bytes.fromhex(state['pose_f64le']))
+    assert all(math.isfinite(x) for x in pose+tuple(state['center_of_mass_local']))
+    assert state['contacts']==0 and not state['sleeping']
+    assert all(math.isfinite(state[k]) and state[k]>0 for k in ['mass','inertia'])
     return list(values)
 def predict(v,g,dl,da,model,precision):
     cast=f32 if precision=='float32' else float;dt=cast(1/60)
@@ -45,6 +47,10 @@ def audit(data,profile):
         assert not properties['freeze'] and not properties['custom_integrator'] and not properties['omit_force_integration']
         assert properties['physics_ticks_per_second']==profile['cadence'] and properties['server_params']
         assert episode['actual_shapes'] and all(not s['disabled'] for s in episode['actual_shapes'])
+        assert len(episode['geometry'])==len(episode['actual_shapes'])
+        for rect,shape in zip(episode['geometry'],episode['actual_shapes']):
+            assert shape['type']==4 and shape['data']==[x/2 for x in rect['size']]
+            assert shape['transform']==[1,0,0,1,*rect['center']]
         assert episode['initial_motion']==next(s for s in profile['initial_states'] if s['id']==episode['initial_motion']['id'])
         steps=episode['steps'];assert len(steps)==profile['steps']==32
         first=motion(steps[0]['before']);assert first[:2]==episode['initial_motion']['velocity']
@@ -72,7 +78,12 @@ def audit(data,profile):
                     one.append(max(abs(x-y) for x,y in zip(prediction,actual)));trajectory.append(max(abs(x-y) for x,y in zip(current,actual)))
                 models.append(dict(model=name,precision=precision,maximum_one_step_error=max(one),maximum_full_trajectory_error=max(trajectory),
                     final_full_trajectory_error=trajectory[-1],one_step_compatible=max(one)<=profile['gate']['absolute_velocity_omega_error']))
+        nominal_g=[properties['project_gravity']*properties['gravity_scale']*x for x in properties['project_gravity_vector']]
+        nominal_damp=[properties[k]+(properties['project_'+k] if properties[k+'_mode']==0 else 0) for k in ['linear_damp','angular_damp']]
         results.append(dict(model=episode['model'],initial=episode['initial_motion']['id'],properties=episode['properties'],
+            provenance_diagnostic=dict(project_times_body_nominal_gravity=nominal_g,measured_minus_nominal_gravity=[a-b for a,b in zip(steps[0]['before']['gravity'],nominal_g)],
+                nominal_combined_damping=nominal_damp,measured_minus_nominal_damping=[steps[0]['before'][k]-n for k,n in zip(['linear_damp','angular_damp'],nominal_damp)],
+                native_owner_gravity_binding='UNAVAILABLE: no native World/owner sample in this oracle; values are diagnostics, not a new compatibility tolerance'),
             effective_gravity=steps[0]['before']['gravity'],effective_linear_damp=steps[0]['before']['linear_damp'],effective_angular_damp=steps[0]['before']['angular_damp'],
             reported_step=steps[0]['before']['reported_step'],steps=32,models=models))
     aggregate=[]

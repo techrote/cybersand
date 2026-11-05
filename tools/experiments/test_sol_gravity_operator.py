@@ -12,8 +12,12 @@ class OperatorTests(unittest.TestCase):
                 mass=1,inertia=1,kinetic=.5*sum(x*x for x in v),contacts=0,sleeping=False,gravity=[0,60],gravity_f64le=struct.pack('<2d',0,60).hex(),
                 linear_damp=0,angular_damp=0,reported_step=1/60,manual_step=step,constant_force=[0,0],constant_torque=0)
         episode=dict(model='reference_barrel',initial_motion=profile['initial_states'][0],native_World='ABSENT',native_workers='NOT_APPLICABLE',teardown=True,
-            properties=dict(freeze=False,custom_integrator=False,omit_force_integration=False,physics_ticks_per_second=60,server_params={'mass':1}),
-            actual_shapes=[dict(disabled=False)],steps=[dict(step=i,before=state([0,i,0],i+1),after=state([0,i+1,0],i+2)) for i in range(32)])
+            properties=dict(freeze=False,custom_integrator=False,omit_force_integration=False,physics_ticks_per_second=60,server_params={'mass':1},
+                project_gravity=60,gravity_scale=1,project_gravity_vector=[0,1],linear_damp=0,angular_damp=0,project_linear_damp=0,project_angular_damp=0,linear_damp_mode=1,angular_damp_mode=1),
+            geometry=[dict(center=[0,0],size=[2,2])],actual_shapes=[dict(disabled=False,type=4,data=[1,1],transform=[1,0,0,1,0,0])],
+            steps=[dict(step=i,before=state([0,i,0],i+1),after=state([0,i+1,0],i+2)) for i in range(32)])
+        for s in episode['steps']:
+            for boundary in ['before','after']:s[boundary]['center_of_mass_local']=[0,0]
         return dict(registration='test',failures=[],episodes=[episode]),profile
     def test_complete_fixed_operator(self):
         data,profile=self.sample();result=r.audit(data,profile)
@@ -36,6 +40,21 @@ class OperatorTests(unittest.TestCase):
         with self.assertRaises(AssertionError):r.audit(data,profile)
     def test_body_contact_refuses(self):
         data,profile=self.sample();data['episodes'][0]['steps'][0]['before']['contacts']=1
+        with self.assertRaises(AssertionError):r.audit(data,profile)
+    def test_nonfinite_pose_and_mass_refuse(self):
+        for kind in ['pose','mass']:
+            data,profile=self.sample();state=data['episodes'][0]['steps'][0]['before']
+            if kind=='pose':state['pose_f64le']=struct.pack('<6d',1,0,0,1,math.nan,100).hex()
+            else:state['mass']=math.inf
+            with self.assertRaises(AssertionError):r.audit(data,profile)
+    def test_wrong_shape_refuses(self):
+        data,profile=self.sample();data['episodes'][0]['actual_shapes'][0]['data']=[2,1]
+        with self.assertRaises(AssertionError):r.audit(data,profile)
+    def test_gravity_bits_refuse(self):
+        data,profile=self.sample();data['episodes'][0]['steps'][0]['before']['gravity_f64le']=struct.pack('<2d',0,59).hex()
+        with self.assertRaises(AssertionError):r.audit(data,profile)
+    def test_changed_damping_refuses(self):
+        data,profile=self.sample();data['episodes'][0]['steps'][0]['after']['angular_damp']=1
         with self.assertRaises(AssertionError):r.audit(data,profile)
     def test_gravity_and_each_equation(self):
         self.assertEqual(r.predict([2,1,.3],[0,60],0,0,'gravity-only','float64'),[2,2,.3])
