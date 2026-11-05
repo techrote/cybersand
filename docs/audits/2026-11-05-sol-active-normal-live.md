@@ -111,7 +111,9 @@ completes at `4315759b256c338ba0f03a44c53a2a3af680d380`. The
 retain all1440steps/7200boundaries, pose/velocity bit strings, exact recorded
 proxy geometry, owner/session/sample identities and scalar64 work accounting.
 The full per-cell raw census remains local except the separately exported
-Windows candidate reference. All8 exact native tuple multisets conserve.
+[Windows candidate reference](sol-active-normal-live-20261105/raw-reference-closed-driven-active.json),
+with [exact custody](sol-active-normal-live-20261105/raw-reference-custody.json).
+All8 exact native tuple multisets conserve.
 
 | Closed driven maximum, both hosts | Original | Candidate |
 | --- | ---: | ---: |
@@ -198,7 +200,9 @@ and [apparatus correction ledger](../../native/tests/fixtures/sol_active_normal_
 retain causes, exits, command/log hashes and missing observations. Failed-host
 post-project inventories are unavailable for the first lifecycle attempt;
 the corrected runner always captures them. Ignored raw logs, dependencies,
-binaries and reports stay local. No failed denominator is silently repaired.
+binaries and reports stay local. No failed denominator is silently repaired. Curated JSON is normalized to LF
+for Git transport; the manifest preserves its first CRLF curation hashes and
+new LF hashes separately, without changing original raw input hashes.
 
 Original SOL84/84 sustained-clearance failures,64/84 depth failures,36/36
 overlapping async final samples,1452/1452 refusal, old CPU failures, material

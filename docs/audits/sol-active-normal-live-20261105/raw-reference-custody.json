@@ -1,0 +1,12 @@
+{
+  "curation_source": "18c70d5c6c3ecb9e58911ec6ba806dc86e3820b1",
+  "curator_sha256": "52bc154043edf87ad4c1c89753a97c402e81776a807f5f707328c38533c2f4ee",
+  "source_path": "build\\sol-active-normal-live\\chamber-smoke-001\\windows\\closed-driven-selective-active-w1-r0\\closed-driven-LA-SELECTIVE-w1-r0.json",
+  "public_file": "raw-reference-closed-driven-active.json",
+  "sha256": "dc160e0f57641de239bc74c1e5a5ebcaa37a2af19666f53b7950c26048e48fc5",
+  "bytes": 4766983,
+  "execution_source": "41e676e5ac453d8c7e8760f6ba211d97c6034312",
+  "scope": "Exact raw structured Windows candidate report; all five material/mask censuses per step, no original SOL authority",
+  "matched_original_reference": "docs/audits/sol-chamber-20261105/raw-reference-closed-driven-selective.json",
+  "matched_original_sha256": "a7dd38910f39f672e48e1057edaedb0ed30a90cd53ba3f3d66950558d688ee33"
+}

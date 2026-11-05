@@ -12,6 +12,8 @@ RUN=ROOT/'build/sol-active-normal-live'
 
 def read(path):return json.loads(path.read_text(encoding='utf-8'))
 
+def write_lf(path,data):path.write_bytes((json.dumps(data,indent=2)+'\n').encode('utf-8'))
+
 def reference(output):
     assert not p.git('status','--porcelain'),'Commit curator before exporting reference'
     source=RUN/'chamber-smoke-001/windows/closed-driven-selective-active-w1-r0/closed-driven-LA-SELECTIVE-w1-r0.json'
@@ -19,7 +21,7 @@ def reference(output):
     target=output/'raw-reference-closed-driven-active.json';manifest=output/'raw-reference-custody.json'
     assert output.is_dir() and not target.exists() and not manifest.exists()
     target.write_bytes(source.read_bytes());assert runtime.sha(target)==runtime.sha(source)
-    p.write(manifest,dict(curation_source=p.git('rev-parse','HEAD').decode().strip(),curator_sha256=runtime.lfsha(Path(__file__)),
+    write_lf(manifest,dict(curation_source=p.git('rev-parse','HEAD').decode().strip(),curator_sha256=runtime.lfsha(Path(__file__)),
         source_path=str(source.relative_to(ROOT)),public_file=target.name,sha256=runtime.sha(target),bytes=target.stat().st_size,
         execution_source=data['source'],scope='Exact raw structured Windows candidate report; all five material/mask censuses per step, no original SOL authority',
         matched_original_reference='docs/audits/sol-chamber-20261105/raw-reference-closed-driven-selective.json',
@@ -35,7 +37,7 @@ def main():
     identity=runtime.identity();output.mkdir(parents=True)
     inputs={};files={}
     def load(path):inputs[str(path.relative_to(ROOT))]=runtime.sha(path);return read(path)
-    def save(name,data):p.write(output/name,data);files[name]=runtime.sha(output/name)
+    def save(name,data):write_lf(output/name,data);files[name]=runtime.sha(output/name)
     build=load(runtime.OUTPUT/'receipt.json');save('build.json',build)
     for platform,host in build['platforms'].items():
         before=next(c for c in host['commands'] if c['name']=='dependencies-before')

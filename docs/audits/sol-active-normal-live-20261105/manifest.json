@@ -38,6 +38,22 @@
     "build\\sol-active-normal-live\\checkpoint-001\\historical-source-refusal.receipt.json": "ecd3f4bf8342ca175992a5f5baca8a41b5cc5ef4ba246674f977877ce02b96e5"
   },
   "files": {
+    "build.json": "20bc427f349132fad4d49e5037d784068d26f702b6321b7e140a4ef25aa9e8d1",
+    "dependencies-windows.json": "12332eb36c3dc505890feb1afc66998ebd019353712d16c17ad182275e284733",
+    "dependencies-linux.json": "0c1d85a05bcc1d9eb118e0f71f92b9b32227784806c380dbf287944ae9254de9",
+    "values.json": "f5ec3fa0367176e7305807d03afc9852bad884008c978e421af84960a5738145",
+    "native.json": "ac010e60f655d46c058eeb903ee811f4b8aac239d2a3f28944badf14577382e3",
+    "policy.json": "4278dc2f19a75829dbcecd7f45f26e1d2d950a5f20a0884829c88baa0e9e44b3",
+    "policy-observations.json": "bb0505d73c7502ff59fc8d99d877bad54d2627c4d9e20ca466b4aa5c915566ad",
+    "scoped.json": "14bc74671c0972cfb3369bece2be6240dff1c3defd8542d160b8dd6ccd49681c",
+    "smoke-execution.json": "7dce213971cc699977efb82595fac3d2234c0db28bd59826ad560e2ddd14789f",
+    "smoke-summary.json": "71beca819f02cd6ef02a9a06d458e809a2ac608ab5dc0d19d3d1c4c80aeb0fb1",
+    "smoke-steps.json": "528872c796b104602033075a430da3fe5fa58e1ced09030ad6dd9a994510e494",
+    "validation.json": "1b0b9667bd7cbf3aa18c72f1b02e4b5b25d4a5df5f3122cc5d28011c459917b7"
+  },
+  "raw_custody": "Ignored raw receipts/logs/reports/dependency inventories/binaries retained locally; raw reports not substituted by compact views",
+  "original_SOL": "NO-GO; no original SOL authority/composition or recurrence-clock admission",
+  "pre_git_transport_curated_sha256": {
     "build.json": "0a69e6d19fd44a149c1b4b60fd4b7ec4a39e785421dbe732016a9b795eaf39cd",
     "dependencies-windows.json": "9f4fefe25221a86ee6f3eeadcd5bfe69f7dffb9b24ad565b6ef71be4d330cd5a",
     "dependencies-linux.json": "3b398881d0038a96c1010e57a378b182f500302a2ac604fe211584a2653a6a19",
@@ -51,6 +67,5 @@
     "smoke-steps.json": "c2f8f5f412c7210558975b7f76fbbda3f881f7b15542fe4898fffa577cd0af3f",
     "validation.json": "d7dbfc0efa6979bfc5b40371662f3ecf73c3a47676ad97abd788620774773b37"
   },
-  "raw_custody": "Ignored raw receipts/logs/reports/dependency inventories/binaries retained locally; raw reports not substituted by compact views",
-  "original_SOL": "NO-GO; no original SOL authority/composition or recurrence-clock admission"
+  "transport": "Curated JSON normalized CRLF to LF for Git. Original input receipt/log/raw hashes remain unchanged. pre_git_transport_curated_sha256 retains the first curation hashes."
 }
