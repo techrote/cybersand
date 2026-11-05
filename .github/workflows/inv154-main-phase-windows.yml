@@ -90,9 +90,10 @@ jobs:
           if digest != runtime.GODOT_SHA512: raise RuntimeError('Godot official SHA512 pin changed')
           with zipfile.ZipFile(archive) as z:
               if z.testzip() is not None: raise RuntimeError('Godot archive CRC failure')
-              member='Godot_v4.7-stable_win64_console.exe'
-              if z.namelist().count(member)!=1: raise RuntimeError('Godot console executable missing')
-              z.extract(member,out/'engine')
+              for member in ('Godot_v4.7-stable_win64.exe',
+                             'Godot_v4.7-stable_win64_console.exe'):
+                  if z.namelist().count(member)!=1: raise RuntimeError('Godot executable missing: '+member)
+                  z.extract(member,out/'engine')
           archive.unlink()
           write('engine-identity.json',json.dumps({'version':'4.7-stable',
               'url':url,'archive_sha512':digest},indent=2)+'\n')
