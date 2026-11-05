@@ -257,6 +257,23 @@ remains a separate gate. Local guards: 23/23 profile tests, the P1 and shared
 engine suites unchanged and passing, CI-provider policy passed, scheduling
 inventory 30 workflows passed.
 
+**Actual publication (2026-11-05).** Run 42112193297, attempt 1, on built
+source `2713f1b7f1da4fb4a5a041b6d7ea24f43f8efd2f`: all seven jobs passed (guards,
+admission, native LCB-002/LCB-001 pressure groups, Linux build+execution,
+Windows cross-build, Windows execution, publish). The bot commit
+`9241dfd6c5ead98db3eb0fb2bc519c75c054a37b` has `2713f1b7` as its sole parent and
+changes exactly the four runtime/manifest paths:
+
+| Runtime | SHA-256 | Toolchain |
+|---|---|---|
+| `libcybersand_native.linux.x86_64.so` | `a575b744f26bca272839e0ac654f9fb3f84a384abee1a21a669508f2eaeca8dc` | g++-13 13.3.0, GNU ld 2.42, godot-cpp `101ae380`, SCons 4.10.1 |
+| `cybersand_native.windows.x86_64.dll` | `16d94f4ff051484542bef7560db52a02ed63e4f49da6c92a7df35175c590cc2f` | LLVM-MinGW 20260826 / Clang 23.1.0, LLD 23.1.0, godot-cpp `101ae380` |
+
+After pulling those LFS objects, `python tools/ci/check_repository.py` passes
+locally on `9241dfd6`. A GITHUB_TOKEN push starts no follow-up workflows, so the
+full ready-head CI was started by the next pushed commit, which records this
+paragraph.
+
 ## Gaps and next steps
 
 1. Desktop in-app before/after with the worker's camera window (the #370 host
@@ -265,6 +282,5 @@ inventory 30 workflows passed.
 2. The inclusion wake is now the dominant moving-camera cost. Measuring how much
    of it is necessary (blocks that were asleep and untouched while excluded) is
    the next experiment; changing it is out of scope without an owner decision.
-3. Source-matched Windows/Linux runtime publication (the stale-runtime gate),
-   a green rerun on that head, independent review and the owner's integration
-   decision remain required.
+3. A green full ready-head CI on the post-publication head, independent review
+   and the owner's integration decision remain required.
