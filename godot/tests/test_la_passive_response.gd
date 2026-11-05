@@ -25,7 +25,8 @@ func run() -> void:
 	check(session.bridge.configure_application_variant("passive-live-v1"),"opt in before sampling")
 	for body: RigidBody2D in session.bodies(): body.gravity_scale=0
 	session.bridge.step()
-	var sample: Dictionary = session.bridge.pack_sample([false,false])
+	var drives: Array[bool] = [false,false]
+	var sample: Dictionary = session.bridge.pack_sample(drives)
 	session.bridge._serial=0 # Simulates counter wrap without a million physical samples.
 	check(not session.bridge.configure_application_variant("baseline"),"nonwrapping policy lifetime fence")
 	session.bridge._serial=int(sample.states[10])
