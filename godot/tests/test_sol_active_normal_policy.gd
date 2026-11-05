@@ -1,5 +1,7 @@
 extends "res://tests/test_la_physical_campaign.gd"
 
+const PolicyProbe = preload("res://tests/support/sol_active_normal_policy.gd")
+
 var native_preparer: Variant
 var native_sample: Dictionary
 var initial: PackedFloat32Array
@@ -32,7 +34,8 @@ func run() -> void:
 	var session := Session.new();viewport.add_child(session)
 	check(session.configure([actor("reference_barrel",0,"LA-SELECTIVE",256)],viewport.world_2d.space,1),"actual authored owner")
 	for body: RigidBody2D in session.bodies(): body.gravity_scale=0
-	session.bridge.step();native_sample=session.bridge.pack_sample([false]);initial=session.bridge.pack_body_states()
+	var neutral_drives: Array[bool] = [false]
+	session.bridge.step();native_sample=session.bridge.pack_sample(neutral_drives);initial=session.bridge.pack_body_states()
 	native_preparer=ClassDB.instantiate(&"CyberDemoBridge")
 	var world: Variant = ClassDB.instantiate(&"CyberNativeCellWorld")
 	refused(world,"active-normal-001","ordinary missing workbench refuses")
@@ -52,6 +55,9 @@ func run() -> void:
 	replace(world);packet=world.workbench_coupling_results()
 	check(packet.normal_policy=="original","replacement retires candidate")
 	refused(world,"active-normal-001","empty getter consumes latch")
+	replace(world);check(world.diagnostic_set_workbench_normal_policy("original"),"explicit original accepted")
+	packet=world.workbench_coupling_results();check(packet.normal_policy=="original","explicit original readback")
+	refused(world,"active-normal-001","explicit original consumes latch")
 	replace(world);check(prepare_sample(world),"successful coupling preparation")
 	refused(world,"active-normal-001","prepare locks before tick")
 	var duplicate: Array = native_sample.bodies.duplicate(true);duplicate.append(duplicate[0].duplicate(true))
@@ -76,6 +82,7 @@ func run() -> void:
 	check(packet.valid and packet.normal_policy=="active-normal-001" and packet.rows.size()==1,"native candidate packet")
 	for row: Dictionary in packet.rows:
 		check(row.normal_policy==packet.normal_policy and row.passive_state_f64.size()==8 and row.passive_raw_wrench_f64.size()==3,"scalar64 diagnostics")
+	var held: Dictionary = packet.duplicate(true)
 	observations.append(packet);refused(world,"original","live candidate cannot switch")
 	for mode: String in ["LA","LA-EVENT-OFF","RFT"]:
 		replace(world,mode);refused(world,"active-normal-001","incompatible mode "+mode)
@@ -83,10 +90,41 @@ func run() -> void:
 	check(world.diagnostic_reset({"workers":4,"telemetry":false}),"reset retires selected state")
 	refused(world,"active-normal-001","reset has no workbench")
 	replace(world);check(world.diagnostic_set_workbench_normal_policy("active-normal-001"),"fresh reset replay")
-	world=null;native_preparer=null;session.close();viewport.free()
+	# Existing capacity setting supplies a real failed owner without adding fault APIs.
+	# This owner is non-diagnostic; failed-world and diagnostic guards overlap here.
+	var previous_capacity: Variant = ProjectSettings.get_setting("cybersand/native_active_core_capacity",null)
+	ProjectSettings.set_setting("cybersand/native_active_core_capacity",1)
+	var failed_world: Variant = ClassDB.instantiate(&"CyberNativeCellWorld")
+	ProjectSettings.set_setting("cybersand/native_active_core_capacity",previous_capacity)
+	replace(failed_world)
+	failed_world.emit_disc(40,40,4,2,0);failed_world.emit_disc(220,40,4,14,0)
+	check(not failed_world.simulation_tick() and failed_world.has_failed(),"real native capacity quarantine")
+	check(failed_world.get_last_tick_error().contains("active scheduling-core capacity exhausted"),"actual failure reason")
+	var failure_count: int = failed_world.get_tick_failure_count()
+	refused(failed_world,"active-normal-001","failed owner refuses")
+	check(failed_world.workbench_coupling_results().is_empty() and failed_world.get_tick_failure_count()==failure_count,"failed response unavailable, failure count unchanged")
+	observations.append({"failed_world":true,"reason":failed_world.get_last_tick_error(),"failure_count":failure_count,"diagnostic_guard_also_false":true})
+	var good: Dictionary = {"response":"LA-SELECTIVE","normal_policy":"original","normal_policy_locked":true,"rows":[]}
+	check(PolicyProbe.matches(good,"LA-SELECTIVE","original"),"empty original identity helper")
+	for bad: Dictionary in [{},{"response":"LA-SELECTIVE","normal_policy":"original","normal_policy_locked":false,"rows":[]},
+		{"response":"LA-SELECTIVE","normal_policy":"active-normal-001","normal_policy_locked":true,"rows":[]},
+		{"response":"LA-SELECTIVE","normal_policy":"original","normal_policy_locked":true,"rows":[{"normal_policy":"active-normal-001"}]},
+		{"response":"LA-SELECTIVE","normal_policy":"original","normal_policy_locked":true,"rows":[1]},
+		{"response":"LA-SELECTIVE","normal_policy":"original","normal_policy_locked":true,"rows":1}]:
+		check(not PolicyProbe.matches(bad,"LA-SELECTIVE","original"),"malformed/misaligned native policy refused")
+	var body_ids: Array[int] = []
+	for body: RigidBody2D in session.bodies(): body_ids.append(body.get_instance_id())
+	var retired_bridge: Variant = session.bridge
+	world=null;failed_world=null;native_preparer=null;session.close()
+	check(not session.active() and session.bodies().is_empty(),"teardown retires body roster")
+	for identity: int in body_ids: check(not is_instance_id_valid(identity),"physical owner destroyed")
+	check(retired_bridge.apply_packet(999,held)==0 and retired_bridge.last_application.refusal=="retired","held valid candidate packet cannot reach retired RIDs")
+	observations.append(retired_bridge.last_application.duplicate(true));viewport.free()
 	var output: String = OS.get_environment("SOL_POLICY_OUTPUT")
 	if not output.is_empty():
 		var file := FileAccess.open(output,FileAccess.WRITE)
-		file.store_string(JSON.stringify(plain({"source":OS.get_environment("CYBERSAND_SOURCE_REVISION"),"checks":checks,"failures":failures,"observations":observations})));file.close()
+		check(file!=null,"retained evidence path opened")
+		if file!=null:
+			file.store_string(JSON.stringify(plain({"source":OS.get_environment("CYBERSAND_SOURCE_REVISION"),"checks":checks,"failures":failures,"observations":observations})));file.close()
 	print("SOL_ACTIVE_NORMAL_POLICY checks=",checks," failures=",failures.size())
 	quit(int(not failures.is_empty()))

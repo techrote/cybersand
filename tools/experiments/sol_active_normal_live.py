@@ -62,6 +62,15 @@ def main():
                 argv+=['--editor','--import','--quit'] if script is None else ['--max-fps','120','--script','res://tests/'+script+'.gd']
             if platform=='linux':argv=['wsl.exe','-d','Ubuntu-24.04','--','env',*[k+'='+v for k,v in forwarded.items()],*argv]
             row=p.command(name,argv,host,dict(os.environ,**forwarded),timeout=300);rows.append(row);save();return row
+        def verify_project():
+            changes=[];normalized=[]
+            for name,digest in inventory.items():
+                target=project/name
+                if target.is_file() and runtime.sha(target)==digest:continue
+                original=ROOT/'godot'/name
+                if name.endswith('.import') and target.is_file() and target.read_bytes().replace(b'\r\n',b'\n')==original.read_bytes().replace(b'\r\n',b'\n'):normalized.append(name)
+                else:changes.append(name)
+            state['post_inventory']=dict(unexpected_changes=changes,import_LF_normalization_only=normalized);save();assert not changes
         version=run('engine-version',version=True);assert version['clean']
         assert (ROOT/version['log']).read_text().strip()==native['godot_version']
         if platform=='windows':
@@ -71,10 +80,19 @@ def main():
             row=p.command('engine-hash',['wsl.exe','-d','Ubuntu-24.04','--','sha256sum',p.ENGINES[platform]],host);rows.append(row)
             assert row['clean'];engine=(ROOT/row['log']).read_text().split()[0];launcher=engine
         assert engine==native['godot_executable_sha256'];state['engine']=dict(sha256=engine,launcher_sha256=launcher,version=native['godot_version']);save()
+        if platform=='linux':
+            floor=host/'floor';checker=floor/'tools/check_linux_runtime_floor.sh';checker.parent.mkdir(parents=True)
+            shutil.copyfile(ROOT/'tools/check_linux_runtime_floor.sh',checker)
+            assert runtime.sha(checker)==runtime.sha(ROOT/'tools/check_linux_runtime_floor.sh')
+            for src,destination in [(ROOT/override['output'],floor/'godot/addons/cybersand_native/bin'/binary),
+                    (ROOT/rapier['artifact'],floor/'godot/addons/godot-rapier2d/bin'/Path(rapier['artifact']).name)]:
+                destination.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(src,destination);assert runtime.sha(src)==runtime.sha(destination)
+            row=p.command('experimental-runtime-floor',['wsl.exe','-d','Ubuntu-24.04','--','bash',p.wsl_path(checker)],host)
+            rows.append(row);state['floor_checker_sha256']=runtime.sha(checker);save();assert row['clean']
         imported=run('import')
-        if not imported['clean']:continue
+        if not imported['clean']:verify_project();continue
         policy=run('policy-lifecycle','test_sol_active_normal_policy',{'SOL_POLICY_OUTPUT':str(host/'policy.json') if platform=='windows' else p.wsl_path(host/'policy.json')})
-        if not policy['clean']:continue
+        if not policy['clean']:verify_project();continue
         if args.suite=='scoped':
             run('passive-safety','test_la_passive_response')
             run('force-accounting','test_la_force_accounting',{'LA_FORCE_OUTPUT':str(host/'force.json') if platform=='windows' else p.wsl_path(host/'force.json')})
@@ -107,14 +125,7 @@ def main():
                                 row['report_audit']='PASS'
                             except Exception as error:row['report_audit']='FAIL';row['report_error']=type(error).__name__+': '+str(error)
                         save()
-        changes=[];normalized=[]
-        for name,digest in inventory.items():
-            target=project/name
-            if target.is_file() and runtime.sha(target)==digest:continue
-            original=ROOT/'godot'/name
-            if name.endswith('.import') and target.is_file() and target.read_bytes().replace(b'\r\n',b'\n')==original.read_bytes().replace(b'\r\n',b'\n'):normalized.append(name)
-            else:changes.append(name)
-        state['post_inventory']=dict(unexpected_changes=changes,import_LF_normalization_only=normalized);save();assert not changes
+        verify_project()
     assert copied=={n:runtime.sha(ROOT/n) for n in copied},'Godot source changed during execution'
     assert info==runtime.identity(),'Experimental source/runtime identity changed during execution'
     receipt['post_source_equality']=True;save()

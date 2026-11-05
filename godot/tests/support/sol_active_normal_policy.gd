@@ -7,8 +7,10 @@ static func desired() -> String:
 static func matches(packet: Dictionary, mode: String, policy: String) -> bool:
 	if packet.get("response")!=mode or packet.get("normal_policy")!=policy: return false
 	if not packet.get("normal_policy_locked",false): return false
-	for row: Dictionary in packet.get("rows",[]):
-		if row.get("normal_policy")!=policy: return false
+	var rows: Variant = packet.get("rows",null)
+	if not rows is Array: return false
+	for row: Variant in rows:
+		if not row is Dictionary or row.get("normal_policy")!=policy: return false
 	return true
 
 static func configure(world: Variant, mode: String) -> bool:
