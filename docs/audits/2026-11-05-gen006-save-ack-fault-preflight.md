@@ -24,12 +24,12 @@ Run from repository root:
 
 This **independent, synthetic Python harness** uses a temporary Linux/POSIX directory and real write, flush, fsync, os.replace and directory fsync calls. It separates an immutable single-chunk snapshot from a durable manifest pointer and an owner-side acknowledgment. Snapshot payloads are explicitly small (8 KiB); modeled owner leases are limited to two. It tests:
 
-- Actual save→ACK→eviction→new-incarnation reload of an opaque record containing signed chunk (-1,0), Water amount/coherence, a thermal sample, due-tick sample, same-value edit and explicit Empty intent. The bytes roundtrip, but there is **no native physical continuation claim**.
+- Modeled save→ACK→eviction with deliberate destruction of the only live synthetic payload→new-incarnation reload of an opaque record containing signed chunk (-1,0), Water amount/coherence, a thermal sample, due-tick sample, same-value edit and explicit Empty intent. The bytes roundtrip, but there is **no native physical continuation claim**.
 - New edit after capture, edit interleaved at the pre-publication owner barrier, late old result after newer durable generation, generation-collision and retired session/incarnation: stale results cannot publish or mark live state clean.
 - Injected failure after blob temp-file sync, after blob publication and after manifest temp-file sync: the earlier committed manifest remains the recovery root, dirty owner cannot evict. Failure **after** the manifest replacement models a lost ACK: on-disk checkpoint can reload, but the live owner refuses eviction without acknowledgment.
 - Corrupt blob, incompatible recipe, failed-tick owner, non-drained snapshot lease, pending boundary and actor pin, over-capacity snapshot, invalid signed coordinate: explicit refusal.
 
-**Exact executed code**: repository test file blob 7e48611f46c20ff936c785851769db279c9c9839 (verified against the locally executed file's Git blob hash); local SHA-256 c9d7f43796fdf35b7a6e7446f946765d6b70b39f81fcbcfb6dd1a9fd9ce89d67. Execution: Python 3.13.5, Linux x86_64 6.18.57, 5 November 2026: **14/14 unittest cases PASS**, approximately 0.06 s, including real temporary-file publication and injected exceptions. Python bytecode compilation also passed. These are local fixture checks only; hosted CI and actual native/Godot/Windows execution **not run**.
+**Exact executed code**: repository test file blob 2f1d7a3f3e653ccd12b275e2101d4be4db157ae2 (verified against the locally executed file's Git blob hash); local SHA-256 5bd6cd1ccf797d4a19203fa103fa2d7341d4666a53c2d928d1401283db209db3. Execution: Python 3.13.5, Linux x86_64 6.18.57, 5 November 2026: **14/14 unittest cases PASS**, approximately 0.06 s, including real temporary-file publication and injected exceptions. Python bytecode compilation also passed. These are local fixture checks only; hosted CI and actual native/Godot/Windows execution **not run**.
 
 ## Precise disposition and blocking interfaces
 
