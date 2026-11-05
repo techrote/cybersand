@@ -316,6 +316,7 @@ func episode(spec: Dictionary, arm: String, workers: int, repeat: int, output: S
 			"emission_requests":emissions,"inserted_materials":inserted_materials,"preparation_us":preparation_us,"native_tick_us":tick_us,
 			"application_us":application_us,"rapier_us":rapier_us,"preapplication_step_us":preapplication_step_us,"simulation_us":simulation_us,
 			"observation_us":Time.get_ticks_usec()-observer_start}))
+		record_step_checkpoint(world,preparer,report,step,output,name)
 		var c0: int = Time.get_ticks_usec()
 		check(session.apply_workbench_results(step+1,response)==0 and session.bridge.last_application.refusal=="duplicate_snapshot","duplicate consumption refusal")
 		total_control_us+=Time.get_ticks_usec()-c0; total_controls+=1
@@ -364,6 +365,9 @@ func expected_application_velocity(live: Dictionary, action: Dictionary) -> Vect
 	if predicted.x*action.correction.x<0: predicted.x=0
 	if predicted.y*action.correction.y<0: predicted.y=0
 	return predicted+Vector2(action.impulse)/live.mass
+
+func record_step_checkpoint(_world: Variant, _preparer: Variant, _report: Dictionary, _step: int, _output: String, _name: String) -> void:
+	pass
 
 func load_registration(path: String) -> Dictionary:
 	var current: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(path))

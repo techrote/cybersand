@@ -41,3 +41,11 @@ Native84/material32 and compiled trace runtimes remain unchanged. Fresh copied
 Godot qualification, analytic actual-RID controls, complete StageA execution and
 variant-aware independent accounting are required. Keep Draft; no original SOL
 authority, default promotion, accepted runtime publication or integration follows.
+
+At2ae1c212 the fresh actual-host API qualification passes312analytic application
+checks per host, plus98policy/107trace lifecycle assertions and the Linux runtime
+floor. Native84/compiled bytes and source/project post-inventories agree. This
+qualifies bridge mechanics and fences, not physical improvement. Before StageA,
+the derived apparatus adds a nonmutating full CYPS export atstep179 with separate
+cost, and live local-COM readback for independent torque-frame reconstruction.
+All matched mixed arms use the same added observation schedule.
