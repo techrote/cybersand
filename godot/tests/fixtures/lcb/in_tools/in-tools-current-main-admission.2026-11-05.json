@@ -32,6 +32,16 @@
       "role": "physical actor/session generation and owner lifetime"
     },
     {
+      "path": "godot/scripts/physical_usable_equipment.gd",
+      "git_blob": "1c33a1b0cad5499161a997e13dfcf7df9a4f5616",
+      "role": "physical equipment request identity, button lifetime and receipt acceptance"
+    },
+    {
+      "path": "godot/scripts/physical_usable_runtime.gd",
+      "git_blob": "207a53c7f57ba955cbfadbf5fae1a0af698548c2",
+      "role": "exclusive physical usable cellular-effect owner, admission and readback"
+    },
+    {
       "path": "godot/scripts/simulation_worker.gd",
       "git_blob": "67d9e0de91fe719e2be8f6eb3b6ae08d4c9cb61d",
       "role": "exclusive World worker ownership and execution settings"
@@ -122,5 +132,5 @@
   "gameplay_qualified": false,
   "runtime_qualified": false,
   "windows_gate": "NOT_RUN",
-  "authority_count": 11
+  "authority_count": 13
 }
