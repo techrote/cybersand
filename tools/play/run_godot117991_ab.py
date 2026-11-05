@@ -32,7 +32,7 @@ BUILT_ENGINE = "godot.windows.editor.x86_64.llvm.exe"
 BUILD_ARGS = [
     "platform=windows", "target=editor", "arch=x86_64", "use_llvm=yes",
     "windows_subsystem=console", "production=yes", "debug_symbols=yes",
-    "lto=none", "-j2",
+    "lto=none", "accesskit=no", "d3d12=no", "-j2",
 ]
 PILOT = ["A", "B", "B", "A", "A", "B"]
 EXPANSION = ["B", "A", "A", "B", "B", "A", "A", "B", "B", "A", "A", "B", "B", "A"]
