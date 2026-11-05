@@ -5,6 +5,7 @@ from collections import Counter
 import hashlib
 from itertools import product
 import json
+import os
 from pathlib import Path
 import struct
 import la_physical_reduce as physical
@@ -18,6 +19,13 @@ def read(path):return json.loads(path.read_text(encoding='utf-8'))
 def sha(path):return hashlib.sha256(path.read_bytes()).hexdigest()
 def digest(value):return hashlib.sha256(json.dumps(value,sort_keys=True,separators=(',',':'),allow_nan=False).encode()).hexdigest()
 def write(path,value):path.write_bytes((json.dumps(value,indent=2)+'\n').encode('utf-8'))
+def payload_path(value):
+    # Filesystem-only adapter for the retained tuple decoder. Raw records,
+    # payload bytes/hashes and frozen decoder source are never rewritten.
+    value=value.replace('\\','/')
+    if os.name=='nt' and value.startswith('/mnt/c/'):value='C:/'+value[7:]
+    elif os.name!='nt' and value.lower().startswith('c:/'):value='/mnt/c/'+value[3:]
+    return Path(value)
 def stats(values):
     ordered=sorted(values)
     return dict(count=len(values),mean=sum(values)/len(values),maximum=max(values),p50=ordered[(len(values)-1)//2],p95=ordered[int((len(values)-1)*.95)])
@@ -65,6 +73,7 @@ def main():
     parser=argparse.ArgumentParser(__doc__);parser.add_argument('directory',type=Path);parser.add_argument('--output',required=True,type=Path);args=parser.parse_args()
     folder=args.directory.resolve();output=args.output.resolve();assert not output.exists();output.mkdir(parents=True)
     head=p.git('rev-parse','HEAD').decode().strip();receipt_path=folder/'receipt.json';receipt=read(receipt_path)
+    physical.local_path=payload_path
     assert receipt['post_source_equality'] and receipt['matrix']['suite']=='qualification'
     registration=receipt['registration']['live_campaign']
     assert registration['episodes']==16 and registration['repeats']==1
