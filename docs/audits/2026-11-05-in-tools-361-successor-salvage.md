@@ -70,6 +70,6 @@ Classification meanings: **A** carry forward; **B** rewrite against current main
 
 ## Result
 
-The successor does **not** inherit #379's 25-lock map. The minimal current production authority required to describe the first #361 slice is the U10 catalogue/runtime/physical-usable path, physical-session and simulation-worker owners, native adapter, World quantity/edit authority, Water normalization, and IN implementation. Eleven exact production inputs are therefore registered by the successor record.
+The successor does **not** inherit #379's 25-lock map. The minimal current production authority required to describe the first #361 slice is the U10 catalogue/runtime/physical-usable path, the physical equipment request and exclusive physical-usable execution owners, physical-session and simulation-worker owners, native adapter, World quantity/edit authority, Water normalization, and IN implementation. Thirteen exact production inputs are therefore registered by the successor record.
 
 The six historical fixture ideas remain design inputs only. Until a successor host command is actually implemented and executed they remain **Planned / NOT_RUN**. Current U10 behavior is Current only because it exists on the adopted main, not because #379 said so.
