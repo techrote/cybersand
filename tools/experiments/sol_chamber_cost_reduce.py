@@ -39,6 +39,7 @@ def main():
             data=json.loads(raw);observer=data['observer'];case=data['case']['id'];platform=process['platform']
             key=(platform,case,data['requested_workers'],data['repeat'],observer);coverage[key]+=1
             assert data['source']==receipt['identity']['source'] and data['mode']=='LA-SELECTIVE' and data['registration']==profile['id']
+            assert data['construction_receipt']['worker_threads']==data['requested_workers'] and data['construction_receipt']['workbench_response']=='LA-SELECTIVE'
             assert data['base_profile_sha256']==profile['base_profile_sha256'] and data['cost_profile_sha256']==g.r.sha((ROOT/'godot/tests/fixtures/sol_chamber/cost-001.json').read_bytes())
             complete=process['clean'] and not data['failures'] and len(data['steps'])==180 and [s['step'] for s in data['steps']]==list(range(180))
             assert data['case']==next(s for s in base['cases'] if s['id']==case)
@@ -52,6 +53,7 @@ def main():
                 assert step['response']['session']==step['sample']['session'] and step['response']['epoch']==step['sample']['epoch']
                 assert step['sample']['session']==data['initial_sample']['session'] and step['sample']['epoch']==data['initial_sample']['epoch']
                 owner=step['sample']['bodies'][0];initial_owner=data['initial_sample']['bodies'][0]
+                assert owner['external_drive']==(step['force']!=[0,0]) and step['response']['rows'][0]['external_drive']==owner['external_drive']
                 assert len(step['sample']['bodies'])==1 and {k:v for k,v in owner.items() if k!='external_drive'}=={k:v for k,v in initial_owner.items() if k!='external_drive'}
                 assert len(step['sample']['states'])==6*17 and step['sample']['geometry']==data['initial_sample']['geometry']
                 for proxy in range(6):
