@@ -37,7 +37,16 @@ class ProbeHost extends Control:
 
 
 func _init() -> void:
+    call_deferred("_arm_watchdog")
     call_deferred("_run")
+
+
+func _arm_watchdog() -> void:
+    # Runtime GDScript errors can abort _run without calling SceneTree.quit;
+    # never leave an actual-host runner hung after a diagnostic fixture error.
+    create_timer(35.0).timeout.connect(func() -> void:
+        push_error("INV154 workbench driver watchdog: _run did not reach quit()")
+        quit(3))
 
 
 func _context(observations_count: int, material_count: int, active: bool) -> Dictionary:
