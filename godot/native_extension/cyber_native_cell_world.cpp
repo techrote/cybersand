@@ -74,6 +74,12 @@ void CyberNativeCellWorld::_bind_methods() {
                          &CyberNativeCellWorld::diagnostic_relocate_cell);
     ClassDB::bind_method(D_METHOD("diagnostic_snapshot", "origin", "size", "include_histogram"), &CyberNativeCellWorld::diagnostic_snapshot, DEFVAL(false));
     ClassDB::bind_method(D_METHOD("diagnostic_body_metrics"), &CyberNativeCellWorld::diagnostic_body_metrics);
+    ClassDB::bind_method(D_METHOD("set_water_spray", "settings"), &CyberNativeCellWorld::set_water_spray);
+    ClassDB::bind_method(D_METHOD("get_water_spray"), &CyberNativeCellWorld::get_water_spray);
+    ClassDB::bind_method(D_METHOD("water_spray_before_tick"), &CyberNativeCellWorld::water_spray_before_tick);
+    ClassDB::bind_method(D_METHOD("inject_water_parcel", "position", "velocity_cells_per_tick", "quantity"),
+                         &CyberNativeCellWorld::inject_water_parcel);
+    ClassDB::bind_method(D_METHOD("inspect_ballistic_parcels", "maximum"), &CyberNativeCellWorld::inspect_ballistic_parcels);
     ClassDB::bind_method(D_METHOD("get_water_experiment_policy"),
                          &CyberNativeCellWorld::get_water_experiment_policy);
     ClassDB::bind_method(D_METHOD("get_liquid_solver_policy"),
@@ -426,6 +432,8 @@ void CyberNativeCellWorld::prepare_rigid_body_coupling(const PackedFloat32Array&
 void CyberNativeCellWorld::prepare_body_coupling(bool resolve_overlaps) {
     world_->clear_transient_obstacles();
     clear_observations();
+    spray_tick_ = {};
+    spray_budget_used_.fill(0);
     raster_indices_.clear();
     for (std::size_t body_id = 1; body_id < current_bodies_.size(); ++body_id) {
         const auto& body = current_bodies_[body_id];
@@ -626,6 +634,16 @@ void CyberNativeCellWorld::reconcile_overlap(std::int32_t cell_index,
 
     if (workbench_) authored_entry_normal(body_id, x, y, outward, penetration);
     const auto target = find_ejection_target(x, y, body_id, outward, penetration);
+    if (material == cybersand::Material::Water && try_water_spray(body, body_id, x, y, outward, target)) {
+        // WCX/BW-001: the displaced Water left as a parcel. The body receives the
+        // same displacement reaction as an ordinary relocation.
+        ++observation.displaced;
+        const auto impulse = -outward * displacement_gain_ * density_scale(material);
+        if (body_diagnostics_) (*body_diagnostics_)[body_id].displacement += impulse;
+        record_impulse(body_id, impulse);
+        ++revision_;
+        return;
+    }
     if (target.x < 0 || !world_->relocate_stored_cell(x, y, target.x, target.y)) {
         ++observation.unresolved;
         const auto impulse = -outward * displacement_gain_;
@@ -850,6 +868,7 @@ PackedFloat32Array CyberNativeCellWorld::rigid_body_results() const {
             static_cast<double>(contact_x) / 1000.0 * contact_gain_,
             static_cast<double>(contact_y) / 1000.0 * contact_gain_,
         };
+        observation.impulse += spray_droplet_impulse(static_cast<std::uint16_t>(body_id));
         if (observation.impulse.length() > impulse_cap_) {
             observation.impulse = observation.impulse.normalized() *
                                   impulse_cap_;
@@ -2133,5 +2152,6 @@ std::int64_t CyberNativeCellWorld::get_tick_failure_count() const {
 #include "pressure_optimization_inspection.inc"
 
 #include "workbench_granular_coupling.inc"
+#include "water_spray_coupling.inc"
 
 }  // namespace godot

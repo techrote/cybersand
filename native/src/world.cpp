@@ -1505,6 +1505,9 @@ RenderPublishResult RenderSnapshotExchange::publish(World& world) {
                                          world.config_.water_experiment_policy);
             }
         }
+        // BW-001: in-flight parcels are presentation-only overlays of owned state.
+        world.overlay_ballistic_render(slot.patches[patch_index].world_rect,
+            std::span<std::uint8_t>(slot.cells.data() + byte_offset, height * stride), stride, 2U);
         byte_offset += height * stride;
     }
 

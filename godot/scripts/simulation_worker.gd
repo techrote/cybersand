@@ -133,6 +133,10 @@ var _workbench_last_emitter_sample := -1
 var _workbench_emitter_receipts: Array = []
 var _workbench_source_commands: Array = []
 var _workbench_source := preload("res://scripts/workbench_powder_source.gd").new()
+# WCX/BW-001 experimental Water spray: requested settings are applied by the
+# exclusive owner at the next tick boundary; the native receipt is published.
+var _water_spray_requests: Array = []
+var _water_spray_receipt: Dictionary = {}
 var _workbench_step_serial: int = 0
 var _workbench_completed_sample: int = -1
 var _workbench_result: Dictionary = {}
@@ -1215,6 +1219,13 @@ func _cancel_workbench_emission_locked() -> void:
 	if _workbench_extent != Vector2i.ZERO:
 		_workbench_source_commands.append({"command":"stop","origin":Vector2i.ZERO,"material":0})
 
+func queue_water_spray(settings: Dictionary) -> bool:
+	_mutex.lock()
+	var ok := _water_spray_requests.size() < 8
+	if ok: _water_spray_requests.append(settings.duplicate(true))
+	_mutex.unlock()
+	return ok
+
 func queue_workbench_source(origin: Vector2i, material: int, command: String) -> bool:
 	_mutex.lock()
 	var ok := _workbench_extent != Vector2i.ZERO and _prepared_physical_publication.is_empty() and _lab_request.is_empty() and _workbench_source_commands.size() < 8
@@ -1265,8 +1276,13 @@ func _consume_workbench_emissions(paused: bool, sample: Dictionary) -> void:
 	for request: Dictionary in _workbench_source_commands:
 		_workbench_source.command(request)
 	_workbench_source_commands.clear()
+	if _world.has_method(&"set_water_spray"):
+		for request: Dictionary in _water_spray_requests:
+			_water_spray_receipt = _world.set_water_spray(request)
+		_water_spray_requests.clear()
 	if not paused:
 		_workbench_source.before_tick(_world,sample)
+		if _world.has_method(&"water_spray_before_tick"): _world.water_spray_before_tick()
 		if not _paused and not _workbench_emitters.is_empty():
 			var serial := int(sample.states[10]) if not sample.states.is_empty() else -1
 			var matched: Array = []
@@ -2357,6 +2373,10 @@ func _publish_snapshot(
 		snapshot.lab_context["workbench_emitters"] = _workbench_emitter_receipts.duplicate(true)
 		_mutex.unlock()
 		snapshot.lab_context["workbench_step_serial"] = _workbench_step_serial
+		if _world.has_method(&"get_water_spray"):
+			var spray: Dictionary = _world.get_water_spray()
+			spray["receipt"] = _water_spray_receipt.duplicate(true)
+			snapshot.lab_context["water_spray"] = spray
 	if render_generation_advanced:
 		var render_micro: Dictionary = snapshot.lab_context.get("microscenario", {})
 		var render_presentation: Dictionary = render_micro.get("presentation", {})

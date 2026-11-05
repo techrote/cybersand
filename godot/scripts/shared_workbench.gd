@@ -45,6 +45,8 @@ var _zoom := 1
 var _last_status_ms := -1000
 var _runtime_label := ""
 var _processor_label := ""
+# WCX/BW-001 experimental Water spray controls (separate owner script).
+var water_spray := preload("res://scripts/workbench_water_spray_panel.gd").new()
 
 func _row(parent: Control) -> HFlowContainer:
 	var row := HFlowContainer.new()
@@ -154,6 +156,7 @@ func setup(controller: Control, recovery: Dictionary = {}) -> void:
 		fire_enabled = enabled
 		if not applied.is_empty(): applied.fire = enabled)
 	row.add_child(_fire)
+	water_spray.build(host,self,_row,entered_position)
 	add_child(_details)
 	_details.visibility_changed.connect(_details_visibility_changed)
 	_details.hide()
@@ -817,6 +820,7 @@ func _process(_delta: float) -> void:
 	_status.text = "%s · cell %s · %s · %s   |   source %d inserted / %d blocked" % [
 		state,cursor,str(applied.get("extent","")),reason,int(source.get("inserted",0)),int(source.get("blocked",0))]
 	_status.text += " · granular %s · active Water %s" % [gcr.get("response","pending"),_water_identity(context)]
+	water_spray.refresh(context)
 	if _details.visible:
 		var selected := body_state(selected_id())
 		var policy: Dictionary = context.get("liquid_solver_policy",{})

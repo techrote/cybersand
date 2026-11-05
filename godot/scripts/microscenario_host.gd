@@ -118,6 +118,8 @@ func install(world: Variant, value: Variant, mode: String = "Inspect", instrumen
 			options.workbench_retain_cells = controlled_setup.get("workbench_retain_cells",false)
 			if controlled_setup.get("workbench_convert_liquid_inventory",false):
 				options.workbench_convert_liquid_inventory = true
+			for key: String in ["workbench_ballistic","workbench_inertial_signed"]:
+				if controlled_setup.get(key,false): options[key] = true
 		# Only the exclusive owner retains this opaque token between its two
 		# preparation turns. Revalidation above still precedes final commit.
 		var token: int = prepared_token

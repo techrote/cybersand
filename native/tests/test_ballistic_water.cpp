@@ -1,6 +1,8 @@
 // BW-001 ballistic_water_v1: exact bulk -> parcel -> bulk Water ownership,
 // signed ballistic flight, swept contacts, persistence and worker parity.
 #include "cybersand/world.hpp"
+#include "cybersand/prepared_world.hpp"
+#include "cybersand/render_snapshot.hpp"
 
 #include <algorithm>
 #include <array>
@@ -396,6 +398,20 @@ void test_ballistic_water_render_overlay_and_forced_age() {
     world.copy_material_cells({0, 0, 20, 40}, bytes, 20);
     require(bytes[30 * 20 + 10] == static_cast<std::uint8_t>(Material::Water), "in-flight parcel is not drawn");
     require(world.stored_material(10, 30) == Material::Empty, "presentation wrote authority");
+    // The published render snapshot (the workbench presentation path) draws it too.
+    RenderSnapshotExchange exchange(3, 64, 64U * 64U * 2U * 16U);
+    require(exchange.publish(world).status == RenderPublishStatus::Published, "snapshot publish");
+    auto lease = exchange.acquire_latest(0);
+    bool drawn = false;
+    for (const auto& patch : lease->patches()) {
+        const auto& r = patch.world_rect;
+        if (10 < r.x || 10 >= r.x + r.width || 30 < r.y || 30 >= r.y + r.height) continue;
+        const auto offset = patch.data_offset + static_cast<std::size_t>(30 - r.y) * patch.stride_bytes +
+                            static_cast<std::size_t>(10 - r.x) * 2U;
+        drawn = lease->cells()[offset] == static_cast<std::uint8_t>(Material::Water);
+    }
+    require(drawn, "in-flight parcel missing from the published render snapshot");
+    lease.reset();
     for (int t = 0; t < 3; ++t) (void)world.tick();
     const auto s = world.ballistic_water_snapshot();
     require(s.live == 0U && s.ledger.forced_deposits == 1U, "aged parcel was not forced to deposit");
@@ -519,4 +535,61 @@ void test_inertial_signed_vertical_support_and_hybrid() {
     require(hybrid.ballistic_parcel_count() == 0U && total_water(hybrid) == total &&
             hybrid.water_quantity({1, 1, 28, 38}) == total, "hybrid IN-B1 round trip lost Water");
     closes(hybrid, "hybrid IN-B1");
+}
+
+void test_ballistic_water_run_receipt_identity() {
+    // A ballistic/IN-B1 World issues a receipt with its own explicit sections;
+    // the Current receipt encoder and its retained vectors are untouched.
+    using namespace cybersand::receipt;
+    setup::SetupDescriptor d;
+    d.seed = 7;
+    d.domain = {0, 0, 8, 8};
+    const auto request = LiquidSolverPolicy::default_request();
+    auto plain = std::make_unique<World>();
+    auto ballistic_config = std::make_unique<WorldConfig>();
+    ballistic_config->ballistic_water.enabled = true;
+    auto ballistic = std::make_unique<World>(*ballistic_config);
+    const auto receipt = [&](const World& w) {
+        const auto facts = std::make_unique<NativeFacts>(capture_native_facts(w, d));
+        return build_applied_run_receipt(*facts, d, request, RunIntent::Controlled, PlaneActivity::Active, {}, {}, 1)
+            .receipt_hash();
+    };
+    require(receipt(*plain) != receipt(*ballistic), "ballistic World shares the Current run receipt");
+    ballistic->set(3, 3, Material::Water);
+    const auto grounded = receipt(*ballistic);
+    require(ballistic->launch_ballistic_water(3, 3, centre(3), centre(2), 0, -256).outcome ==
+                BallisticLaunchOutcome::Launched, "receipt launch");
+    require(receipt(*ballistic) != grounded, "receipt omits the in-flight quantity and parcel state");
+}
+
+void test_ballistic_water_engulfed_parcel_column() {
+    // Bulk Water may flow into a parcel's cell. The parcel must then displace
+    // upward through its own Water column instead of staying in flight forever.
+    for (const int family : {1, 2}) {
+        auto cfg = config(family);
+        World world(cfg);
+        box(world, 20, 40);
+        rect(world, 1, 20, 18, 19, Material::Water);   // deep pool, surface row 20
+        world.set(10, 15, Material::Water);
+        require(world.launch_ballistic_water(10, 15, centre(10), centre(25), 0, 0).outcome ==
+                    BallisticLaunchOutcome::Launched || world.stored_material(10, 25) == Material::Water,
+                "spawn inside Water must be refused");
+        // Spawn into an air pocket inside the pool, then let the pocket close.
+        world.set(10, 30, Material::Empty);
+        require(world.launch_ballistic_water(10, 15, centre(10), centre(30), 0, 0).outcome ==
+                    BallisticLaunchOutcome::Launched, "air-pocket launch refused");
+        world.set(10, 30, Material::Water);            // engulf the parcel's cell
+        for (std::int64_t y = 28; y <= 32; ++y)
+            for (std::int64_t x = 8; x <= 12; ++x) world.set(x, y, Material::Water);
+        const auto total = total_water(world);
+        for (int t = 0; t < 30 && world.ballistic_parcel_count() != 0U; ++t) {
+            (void)world.tick();
+            require(total_water(world) == total, "engulfed parcel changed Water");
+        }
+        const auto s = world.ballistic_water_snapshot();
+        require(world.ballistic_parcel_count() == 0U && s.ledger.column_deposits > 0U,
+                "engulfed parcel stayed in flight (family " + std::to_string(family) + ")");
+        require(world.water_quantity({1, 1, 18, 38}) == total, "column deposit lost Water");
+        closes(world, "engulfed column");
+    }
 }

@@ -8,6 +8,7 @@
 namespace {
 
 constexpr std::int64_t kBallisticQ = BallisticWaterConfig::kQ;
+constexpr std::int64_t kBallisticColumnReach = 64;
 
 [[nodiscard]] std::int64_t ballistic_cell(std::int64_t q) noexcept {
     return q >= 0 ? q / kBallisticQ : -((-q + kBallisticQ - 1) / kBallisticQ);
@@ -204,6 +205,7 @@ BallisticLaunchResult World::launch_ballistic_water(std::int64_t source_x, std::
     parcel.quantity = quantity;
     parcel.source_body = source_body;
     ballistic_parcels_.push_back(parcel);
+    mark_ballistic_render_dirty(ballistic_cell(spawn_x), ballistic_cell(spawn_y));
     quantity_.water_ballistic += quantity;
     auto& l = ballistic_ledger_;
     ++l.launched_parcels;
@@ -237,6 +239,7 @@ BallisticLaunchResult World::inject_ballistic_water(std::int64_t spawn_x, std::i
     parcel.vy = vy;
     parcel.quantity = quantity;
     ballistic_parcels_.push_back(parcel);
+    mark_ballistic_render_dirty(ballistic_cell(spawn_x), ballistic_cell(spawn_y));
     auto& l = ballistic_ledger_;
     ++l.injected_parcels;
     l.injected_quantity += quantity;
@@ -307,6 +310,25 @@ bool World::deposit_ballistic_parcel(BallisticParcel& parcel, std::int64_t cx, s
         if (std::abs(offset[0]) > radius || std::abs(offset[1]) > radius) continue;
         try_cell(cx + offset[0], cy + offset[1]);
     }
+    if (remaining != 0U) {
+        // Bulk Water can flow into a parcel's cell (parcels never occupy cells).
+        // An engulfed parcel displaces upward through its own unmasked Water
+        // column to the first free cell: the surface rises by exactly its volume.
+        // Solids, bodies and non-resident chunks stop the bounded search.
+        for (std::int64_t rise = 1; rise <= kBallisticColumnReach && remaining != 0U; ++rise) {
+            const auto ty = cy - rise;
+            if (transient_obstacle_at(cx, ty) != 0U) break;
+            const auto target = address(cx, ty);
+            const auto* chunk = find_chunk(target.chunk);
+            if (chunk == nullptr) break;
+            const auto material = chunk->cells[target.index].material_value();
+            if (material != Material::Water && material != Material::Empty) break;
+            const auto before = remaining;
+            try_cell(cx, ty);
+            if (remaining != before) ++l.column_deposits;
+            if (material == Material::Empty) break;
+        }
+    }
     parcel.quantity = remaining;
     if (remaining == 0U) {
         ++l.deposited_parcels;
@@ -317,14 +339,34 @@ bool World::deposit_ballistic_parcel(BallisticParcel& parcel, std::int64_t cx, s
     return false;
 }
 
+void World::mark_ballistic_render_dirty(std::int64_t x, std::int64_t y) noexcept {
+    const auto target = address(x, y);
+    auto* chunk = find_chunk(target.chunk);
+    if (chunk == nullptr) return;
+    if (!chunk->dirty) {
+        chunk->dirty = true;
+        chunk->dirty_min_x = chunk->dirty_max_x = target.local_x;
+        chunk->dirty_min_y = chunk->dirty_max_y = target.local_y;
+        return;
+    }
+    chunk->dirty_min_x = std::min(chunk->dirty_min_x, target.local_x);
+    chunk->dirty_max_x = std::max(chunk->dirty_max_x, target.local_x);
+    chunk->dirty_min_y = std::min(chunk->dirty_min_y, target.local_y);
+    chunk->dirty_max_y = std::max(chunk->dirty_max_y, target.local_y);
+}
+
 void World::advance_ballistic_water() {
     if (!config_.ballistic_water.enabled || ballistic_parcels_.empty()) return;
     std::size_t index = 0;
     while (index < ballistic_parcels_.size()) {
-        if (step_ballistic_parcel(ballistic_parcels_[index])) {
+        auto& parcel = ballistic_parcels_[index];
+        // Presentation: redraw the cell the parcel leaves and the one it reaches.
+        mark_ballistic_render_dirty(ballistic_cell(parcel.x), ballistic_cell(parcel.y));
+        if (step_ballistic_parcel(parcel)) {
             ballistic_parcels_[index] = ballistic_parcels_.back();
             ballistic_parcels_.pop_back();
         } else {
+            mark_ballistic_render_dirty(ballistic_cell(parcel.x), ballistic_cell(parcel.y));
             ++index;
         }
     }
@@ -477,6 +519,10 @@ void World::overlay_ballistic_render(RectI64 region, std::span<std::uint8_t> des
         if (offset + bytes_per_cell > destination.size()) continue;
         if (destination[offset] != static_cast<std::uint8_t>(Material::Empty)) continue;
         destination[offset] = static_cast<std::uint8_t>(Material::Water);
-        if (bytes_per_cell > 1U) destination[offset + 1U] = 255U;
+        if (bytes_per_cell > 1U) {
+            const auto mass = static_cast<std::uint16_t>(
+                std::min<std::uint32_t>(p.quantity, config_.water_experiment_policy.maximum()));
+            destination[offset + 1U] = project_visual_state(Material::Water, mass, 0, config_.water_experiment_policy);
+        }
     }
 }

@@ -1858,7 +1858,7 @@ std::uint64_t World::physical_state_hash_impl(std::optional<LiquidStateProjectio
                                  l.deposited_parcels, l.deposited_quantity, l.deposit_writes, l.deferred_deposits,
                                  l.refused_launches, l.forced_deposits, l.terrain_contacts, l.body_contacts,
                                  l.surface_entries, l.ceiling_contacts, l.boundary_contacts, l.parcel_ticks,
-                                 l.cell_steps, l.maximum_live}) hash_integer(hash, v);
+                                 l.cell_steps, l.maximum_live, l.column_deposits}) hash_integer(hash, v);
             for (const auto v : {l.launch_px, l.launch_py, l.gravity_py, l.drag_px, l.drag_py, l.contact_px,
                                  l.contact_py, l.body_px, l.body_py, l.clamp_px, l.clamp_py, l.deposit_px,
                                  l.deposit_py}) hash_integer(hash, v);
@@ -2192,7 +2192,7 @@ std::vector<std::uint8_t> World::save_physical_state() const {
                                  l.deposited_parcels, l.deposited_quantity, l.deposit_writes, l.deferred_deposits,
                                  l.refused_launches, l.forced_deposits, l.terrain_contacts, l.body_contacts,
                                  l.surface_entries, l.ceiling_contacts, l.boundary_contacts, l.parcel_ticks,
-                                 l.cell_steps, l.maximum_live}) out.put(v);
+                                 l.cell_steps, l.maximum_live, l.column_deposits}) out.put(v);
         for (const auto v : {l.launch_px, l.launch_py, l.gravity_py, l.drag_px, l.drag_py, l.contact_px,
                                  l.contact_py, l.body_px, l.body_py, l.clamp_px, l.clamp_py, l.deposit_px,
                                  l.deposit_py}) out.put(v);
@@ -2550,7 +2550,7 @@ std::unique_ptr<World> World::restore_physical_state(const WorldConfig& executio
                                  &l.deposited_parcels, &l.deposited_quantity, &l.deposit_writes, &l.deferred_deposits,
                                  &l.refused_launches, &l.forced_deposits, &l.terrain_contacts, &l.body_contacts,
                                  &l.surface_entries, &l.ceiling_contacts, &l.boundary_contacts, &l.parcel_ticks,
-                                 &l.cell_steps, &l.maximum_live}) *v = in.get<std::uint64_t>();
+                                 &l.cell_steps, &l.maximum_live, &l.column_deposits}) *v = in.get<std::uint64_t>();
         for (auto* v : {&l.launch_px, &l.launch_py, &l.gravity_py, &l.drag_px, &l.drag_py, &l.contact_px,
                                  &l.contact_py, &l.body_px, &l.body_py, &l.clamp_px, &l.clamp_py, &l.deposit_px,
                                  &l.deposit_py}) *v = in.get<std::int64_t>();

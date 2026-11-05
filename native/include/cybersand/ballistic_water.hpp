@@ -82,6 +82,7 @@ struct BallisticLedger {
     std::uint64_t injected_parcels = 0, injected_quantity = 0;
     std::uint64_t deposited_parcels = 0, deposited_quantity = 0, deposit_writes = 0;
     std::uint64_t deferred_deposits = 0, refused_launches = 0, forced_deposits = 0;
+    std::uint64_t column_deposits = 0; // writes reached through an engulfing Water column
     std::uint64_t terrain_contacts = 0, body_contacts = 0, surface_entries = 0;
     std::uint64_t ceiling_contacts = 0, boundary_contacts = 0;
     std::uint64_t parcel_ticks = 0, cell_steps = 0, maximum_live = 0;

@@ -38,6 +38,9 @@ var physical_actor_overlay: CyberPhysicalActorOverlay
 var _workbench_wait_sample: int = -1
 var _workbench_collider_frame: int = -1
 var shared_workbench: Control
+# WCX/BW-001 experimental construction options for the next workbench build
+# (ballistic Water parcels, IN-B1 signed law). Empty keeps every default.
+var workbench_water_options: Dictionary = {}
 var world_extent := Vector2i(CyberCellWorld.WORLD_WIDTH,CyberCellWorld.WORLD_HEIGHT)
 var playable_course_overlay: Control
 var _physical_epoch: int = 0
@@ -775,6 +778,9 @@ func workbench_apply(candidate: Dictionary, actors: Array, rectangles: Array, ex
 		"maximum_rule_radius":radius,"workbench_response":response,"workbench_retain_cells":preserve_cells,
 		"workbench_sample":{"session":_microscenario_request_serial+1,"epoch":_physical_epoch+1,
 			"states":PackedFloat64Array(),"geometry":PackedFloat64Array(),"bodies":[],"emitters":[]}}
+	for key: String in ["workbench_ballistic","workbench_inertial_signed"]:
+		if workbench_water_options.get(key,false) is bool and workbench_water_options.get(key,false):
+			settings[key] = true
 	# Lossy conversion belongs only to an explicit developer policy switch.
 	# Ordinary replacements (including Apply of an unchanged policy) keep
 	# all compatible native inventory and use the normal refusal contract.

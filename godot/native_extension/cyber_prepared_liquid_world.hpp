@@ -177,6 +177,17 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
         config->interaction_policy = {};
         config->physics_diagnostics = {};
         config->physics_diagnostics.enabled = true;
+        // WCX/BW-001 experimental construction options: workbench only, explicit,
+        // never inherited from the replaced World. Absent keeps every default.
+        config->ballistic_water = {};
+        config->inertial_signed_vertical = false;
+        for (const char* key : {"workbench_ballistic", "workbench_inertial_signed"}) {
+            if (!options.has(key)) continue;
+            if (!workbench || options[key].get_type() != Variant::BOOL)
+                throw std::invalid_argument("Experimental Water options require the workbench and a boolean value");
+        }
+        config->ballistic_water.enabled = options.get("workbench_ballistic", false);
+        config->inertial_signed_vertical = options.get("workbench_inertial_signed", false);
 
         cybersand::normalization::FinalSetupInput input;
         if (default_demo) {
@@ -407,6 +418,9 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
             conversion_receipt["source_policy_sha256"] = prepared_liquid_detail::digest(adapter->world_->liquid_solver_policy().policy_hash());
             conversion_receipt["target_policy_sha256"] = prepared_liquid_detail::digest(pending->world->liquid_solver_policy().policy_hash());
             conversion_receipt["discarded_water_overfill"] = transfer.discarded_overfill;
+            // BW-001: parcels in flight are not retained cells; a rebuild drops
+            // them explicitly (they never entered either visible+overfill total).
+            conversion_receipt["discarded_in_flight_water"] = static_cast<std::int64_t>(before.water_ballistic);
             conversion_receipt["discarded_gas_amount"] = transfer.discarded_gas;
             conversion_receipt["preserved_water_overfill"] = transfer.preserved_overfill;
             conversion_receipt["preserved_gas_amount"] = transfer.preserved_gas;
@@ -574,6 +588,12 @@ inline bool CyberDemoBridge::commit_liquid_world(const Ref<CyberNativeCellWorld>
     std::swap(adapter->applied_liquid_construction_receipt_, pending->receipt);
     adapter->liquid_construction_attempt_.clear();
     ++adapter->liquid_policy_session_generation_;
+    // WCX/BW-001: counters describe one World; requested settings persist and are
+    // ignored by a World without ballistic Water.
+    adapter->spray_tick_ = {};
+    adapter->spray_total_ = {};
+    adapter->spray_budget_used_.fill(0);
+    adapter->spray_jet_phase_ = 0;
     adapter->simulation_window_enabled_ = pending->window;
     adapter->last_view_origin_ = pending->origin; adapter->last_view_size_ = pending->size;
     adapter->last_horizontal_buffer_ = adapter->last_vertical_buffer_ = 0;

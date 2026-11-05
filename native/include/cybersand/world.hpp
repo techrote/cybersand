@@ -537,6 +537,8 @@ private:
         std::int32_t vx, std::int32_t vy) const noexcept;
     void overlay_ballistic_render(RectI64 region, std::span<std::uint8_t> destination,
                                   std::size_t stride_bytes, std::size_t bytes_per_cell) const noexcept;
+    // Extends only the render dirty rectangle (no activity, wake or pressure input).
+    void mark_ballistic_render_dirty(std::int64_t x, std::int64_t y) noexcept;
     void record_physics(PhysicsEvent kind, Material source, Material target,
                         std::int64_t dx, std::int64_t dy, JobEffects* effects,
                         std::uint64_t count = 1) noexcept;
