@@ -134,6 +134,7 @@ class LeaseModel:
             self.trace_overflow+=1;return dict(**scope(),accepted=False,reason='trace capacity',state=self.state)
         accepted=False;reason=''
         try:
+            assert isinstance(kind,str) and 0<len(kind)<=32,'bounded event name'
             assert integer(now) and now>=self.clock,'model clock reversal';self.clock=now
             if self.active and now>self.active['deadline']:
                 self.state='EXPIRED';self.active=None;raise AssertionError('fixed deadline expired; step remains consumed')
@@ -181,7 +182,7 @@ class LeaseModel:
                         self.active=None;self.state='RELEASED';accepted=True
                     else:raise AssertionError('unknown/reordered model event')
         except (AssertionError,TypeError) as error:reason=str(error)
-        self.trace.append(dict(event=kind,now=now,accepted=accepted,reason=reason,state=self.state))
+        self.trace.append(dict(event=kind if isinstance(kind,str) and len(kind)<=32 else 'invalid-event',now=now if integer(now) else None,accepted=accepted,reason=reason,state=self.state))
         return dict(**scope(),accepted=accepted,reason=reason,state=self.state)
     def snapshot(self):
         return dict(**scope(),state=self.state,attempts=self.attempts,trace_overflow=self.trace_overflow,consumed_leases=len(self.consumed),trace=copy.deepcopy(self.trace))
