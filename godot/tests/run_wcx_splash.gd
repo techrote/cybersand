@@ -59,6 +59,11 @@ func parse_args() -> void:
 		i += 2
 
 func water_policy(bridge: Variant, family: String) -> PackedInt32Array:
+	if family == "pressure_flow_v1_nogas":
+		# WCX-SURGE: gas-free PressureFlow (identical physics in vented scenes).
+		var base := water_policy(bridge, "pressure_flow_v1")
+		var edited: Dictionary = bridge.liquid_policy_with_pressure_gas(base, false)
+		return edited.request if edited.get("accepted", false) else PackedInt32Array()
 	var request: PackedInt32Array = bridge.default_liquid_policy()
 	for choice: Dictionary in bridge.liquid_policy_assignment_choices(request, WATER):
 		if str(choice.get("family", "")) == family and str(choice.get("variant", "")) == "reference" and choice.get("accepted", false):

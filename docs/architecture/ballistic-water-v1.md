@@ -109,10 +109,29 @@ moving away from the face at `face_speed`/256 × √(2gh), bounded by `face_budg
 per tick and `face_period` per column. It runs serially at tick entry over sorted
 active chunks and blocks, so results are worker-count independent, and every
 release is an exact launch transfer (`face_releases` counter). Measured on a
-48-row dam break after 36 ticks, the front moves FreeMass 38 → 42 and
-CellularYield 42 → 44 cells, but IN 50 → 42 (IN already carries momentum).
-Released parcels mostly land on the spreading film and merge, losing momentum.
-It is therefore an experimental option, not a recommended default.
+48-row dam break after 36 ticks, the front moves FreeMass 38 → 42,
+CellularYield 42 → 44 and PressureFlow 35 → 41 cells, but IN 50 → 42 (IN already
+carries momentum). Released parcels mostly land on the spreading film and merge,
+losing momentum. It is an experimental option ("Face release" construction
+toggle), not a recommended default.
+
+`film_skim` (on): a fast parcel descending at a grazing angle onto a one-cell Water
+film slides over it with Coulomb friction (counted as `film_skims`) and merges once
+slow; horizontal entry into Water still merges at once.
+
+## Solver combinations: gas-free PressureFlow surface
+
+A native dam-break assessment (`native/bench/wcx_surge_assessment.cpp`, 1024×192,
+4 workers) shows that in open or vented scenes PressureFlow's gas topology costs
+≈22–33 % of the tick and changes nothing: gas on and off give identical surface
+motion. Gas-free `cached_dormant` PressureFlow costs about the same as FreeMass
+(8.1 vs 8.0 ms p50) while moving the surface ≈2× as much and keeping its surge
+(late motion 91 vs 34 rows per tick). The admitted `pressure_flow_v1` block
+(`gas_enabled = 0`) already provides it; the bridge helper
+`liquid_policy_with_pressure_gas` and the workbench "PF gas" toggle stage it.
+Sealed rooms still need gas. A true per-region "top layer" hybrid (PressureFlow
+only near the free surface, FreeMass below) was not implemented: dormant
+certificates already skip resting deep cells, so its expected saving is small.
 
 ## IN-B1: signed-vertical inertial law
 

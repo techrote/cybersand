@@ -163,12 +163,33 @@ hashes) with exact totals every tick. Front (furthest Water cell or parcel):
 |---|---:|---:|---:|
 | FreeMass | 38 | 42 | 149 |
 | CellularYield | 42 | 44 | 159 |
+| PressureFlow | 35 | 41 | — |
 | IN | 50 | 42 | 324 |
 
 FreeMass first slumps diagonally, so few tall open faces remain; released parcels
 land on the spreading film and merge without momentum. For IN the fixed-speed
 launches interrupt momentum the bulk already carries. The option stays off by
 default; letting fast grazing parcels skim over a thin film is the next variant to test.
+
+## WCX-SURGE: gas-free PressureFlow assessment
+
+`native/bench/wcx_surge_assessment.cpp` (`-O2`, 4 workers, 400 ticks): a 1024×192
+basin, 40-row reservoir over the left third released into a 12-row pool. "Surface
+motion" is the mean absolute change of the surface-height profile per tick.
+
+| Arm | Tick p50 / p95 ms | Surface motion per tick (second half) |
+|---|---|---|
+| FreeMass | 8.03 / 9.70 | 33.0 (33.9) |
+| CellularYield | 8.22 / 11.22 | 130.5 (165.9), mostly whole-cell flicker |
+| IN | 3.06 / 6.30 | 43.8 (7.5) |
+| PressureFlow reference, gas on | 12.69 / 15.95 | 70.2 (91.0) |
+| PressureFlow reference, gas off | 9.86 / 11.77 | 70.2 (91.0) |
+| PressureFlow cached_dormant, gas on | 12.04 / 15.41 | 70.2 (91.0) |
+| PressureFlow cached_dormant, gas off | 8.09 / 10.13 | 70.2 (91.0) |
+
+Gas on and off are physically identical here (vented basin). No arm's front reached
+the far wall within 400 ticks. Visual comparison in the workbench and a sealed-room
+control are still to be run.
 
 ## Defects found and corrected during the run
 

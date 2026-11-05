@@ -1883,7 +1883,7 @@ std::uint64_t World::physical_state_hash_impl(std::optional<LiquidStateProjectio
                                  l.deposited_parcels, l.deposited_quantity, l.deposit_writes, l.deferred_deposits,
                                  l.refused_launches, l.forced_deposits, l.terrain_contacts, l.body_contacts,
                                  l.surface_entries, l.ceiling_contacts, l.boundary_contacts, l.parcel_ticks,
-                                 l.cell_steps, l.maximum_live, l.column_deposits, l.face_releases}) hash_integer(hash, v);
+                                 l.cell_steps, l.maximum_live, l.column_deposits, l.face_releases, l.film_skims}) hash_integer(hash, v);
             for (const auto v : {l.launch_px, l.launch_py, l.gravity_py, l.drag_px, l.drag_py, l.contact_px,
                                  l.contact_py, l.body_px, l.body_py, l.clamp_px, l.clamp_py, l.deposit_px,
                                  l.deposit_py}) hash_integer(hash, v);
@@ -2084,7 +2084,7 @@ std::vector<std::uint8_t> World::save_physical_state() const {
         out.put(c.restitution); out.put(c.friction); out.put(c.settle_speed_q); out.put(c.maximum_age_ticks);
         out.put(c.deposit_radius); out.put(c.maximum_contacts);
         out.put(static_cast<std::uint8_t>(c.face_release)); out.put(c.face_min_height); out.put(c.face_budget);
-        out.put(c.face_speed); out.put(c.face_period);
+        out.put(c.face_speed); out.put(c.face_period); out.put(static_cast<std::uint8_t>(c.film_skim));
         for (const auto byte : ballistic_water_identity(c)) out.put(byte);
     }
     if (inertial_enabled_) {
@@ -2219,7 +2219,7 @@ std::vector<std::uint8_t> World::save_physical_state() const {
                                  l.deposited_parcels, l.deposited_quantity, l.deposit_writes, l.deferred_deposits,
                                  l.refused_launches, l.forced_deposits, l.terrain_contacts, l.body_contacts,
                                  l.surface_entries, l.ceiling_contacts, l.boundary_contacts, l.parcel_ticks,
-                                 l.cell_steps, l.maximum_live, l.column_deposits, l.face_releases}) out.put(v);
+                                 l.cell_steps, l.maximum_live, l.column_deposits, l.face_releases, l.film_skims}) out.put(v);
         for (const auto v : {l.launch_px, l.launch_py, l.gravity_py, l.drag_px, l.drag_py, l.contact_px,
                                  l.contact_py, l.body_px, l.body_py, l.clamp_px, l.clamp_py, l.deposit_px,
                                  l.deposit_py}) out.put(v);
@@ -2305,6 +2305,9 @@ std::unique_ptr<World> World::restore_physical_state(const WorldConfig& executio
         if (face > 1U) refuse_state("invalid ballistic face-release flag");
         c.face_release = face != 0U; c.face_min_height = in.get<std::int32_t>(); c.face_budget = in.get<std::uint32_t>();
         c.face_speed = in.get<std::int32_t>(); c.face_period = in.get<std::uint32_t>();
+        const auto skim = in.get<std::uint8_t>();
+        if (skim > 1U) refuse_state("invalid ballistic film-skim flag");
+        c.film_skim = skim != 0U;
         for (const auto expected : ballistic_water_identity(c))
             if (in.get<std::uint8_t>() != expected) refuse_state("unknown ballistic Water identity");
     }
@@ -2581,7 +2584,7 @@ std::unique_ptr<World> World::restore_physical_state(const WorldConfig& executio
                                  &l.deposited_parcels, &l.deposited_quantity, &l.deposit_writes, &l.deferred_deposits,
                                  &l.refused_launches, &l.forced_deposits, &l.terrain_contacts, &l.body_contacts,
                                  &l.surface_entries, &l.ceiling_contacts, &l.boundary_contacts, &l.parcel_ticks,
-                                 &l.cell_steps, &l.maximum_live, &l.column_deposits, &l.face_releases}) *v = in.get<std::uint64_t>();
+                                 &l.cell_steps, &l.maximum_live, &l.column_deposits, &l.face_releases, &l.film_skims}) *v = in.get<std::uint64_t>();
         for (auto* v : {&l.launch_px, &l.launch_py, &l.gravity_py, &l.drag_px, &l.drag_py, &l.contact_px,
                                  &l.contact_py, &l.body_px, &l.body_py, &l.clamp_px, &l.clamp_py, &l.deposit_px,
                                  &l.deposit_py}) *v = in.get<std::int64_t>();

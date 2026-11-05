@@ -631,7 +631,7 @@ void test_ballistic_water_retained_rebuild_inheritance() {
 void test_ballistic_water_face_release_dam_break() {
     // WCX-FR: face release sheds a dam-break wall with exact Water accounting and
     // worker-count-independent results; the front distance is reported only.
-    for (const int family : {1, 2, 4}) {
+    for (const int family : {1, 2, 3, 4}) {
         std::array<std::int64_t, 2> fronts{};
         std::array<std::uint64_t, 2> hashes{};
         for (std::size_t arm = 0; arm < 2; ++arm) {

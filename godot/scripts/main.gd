@@ -778,7 +778,7 @@ func workbench_apply(candidate: Dictionary, actors: Array, rectangles: Array, ex
 		"maximum_rule_radius":radius,"workbench_response":response,"workbench_retain_cells":preserve_cells,
 		"workbench_sample":{"session":_microscenario_request_serial+1,"epoch":_physical_epoch+1,
 			"states":PackedFloat64Array(),"geometry":PackedFloat64Array(),"bodies":[],"emitters":[]}}
-	for key: String in ["workbench_ballistic","workbench_inertial_signed"]:
+	for key: String in ["workbench_ballistic","workbench_inertial_signed","workbench_face_release"]:
 		if workbench_water_options.get(key,false) is bool and workbench_water_options.get(key,false):
 			settings[key] = true
 	# Lossy conversion belongs only to an explicit developer policy switch.

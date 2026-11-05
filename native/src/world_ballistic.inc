@@ -509,7 +509,12 @@ bool World::step_ballistic_parcel(BallisticParcel& p) {
             ++l.cell_steps;
             continue;
         }
-        if (kind == BallisticCell::Water) {
+        // Hydroplaning: a fast, grazing parcel over a one-cell film treats the
+        // film as a floor (Coulomb slide) and merges only once it has slowed.
+        const bool skim = kind == BallisticCell::Water && c.film_skim && ncy > cy && ncx == cx &&
+            std::abs(p.vy) * 2 < std::abs(p.vx) && std::abs(p.vx) > 2 * c.settle_speed_q &&
+            stored_material(ncx, ncy + 1) != Material::Water;
+        if (kind == BallisticCell::Water && !skim) {
             surface = true;
             surface_cell = {ncx, ncy};
             ++l.surface_entries;
@@ -557,6 +562,8 @@ bool World::step_ballistic_parcel(BallisticParcel& p) {
             ballistic_body_py_[body] -= dpy;
         } else if (kind == BallisticCell::Outside) {
             ++l.boundary_contacts;
+        } else if (kind == BallisticCell::Water) {
+            ++l.film_skims;
         } else {
             ++l.terrain_contacts;
         }

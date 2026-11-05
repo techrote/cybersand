@@ -45,6 +45,9 @@ struct BallisticWaterConfig {
     std::uint32_t face_budget = 48;          // releases per tick
     std::int32_t face_speed = 192;           // / 256 of sqrt(2 g h)
     std::uint32_t face_period = 3;           // a column sheds at most once per period ticks
+    // A fast grazing parcel meeting a one-cell Water film slides over it
+    // (Coulomb contact) instead of merging at once; it merges once slow.
+    bool film_skim = true;
 
     [[nodiscard]] friend bool operator==(const BallisticWaterConfig&, const BallisticWaterConfig&) = default;
 };
@@ -93,6 +96,7 @@ struct BallisticLedger {
     std::uint64_t deferred_deposits = 0, refused_launches = 0, forced_deposits = 0;
     std::uint64_t column_deposits = 0; // writes reached through an engulfing Water column
     std::uint64_t face_releases = 0;   // WCX-FR face cells released (a subset of launched)
+    std::uint64_t film_skims = 0;      // grazing contacts that slid over a one-cell Water film
     std::uint64_t terrain_contacts = 0, body_contacts = 0, surface_entries = 0;
     std::uint64_t ceiling_contacts = 0, boundary_contacts = 0;
     std::uint64_t parcel_ticks = 0, cell_steps = 0, maximum_live = 0;
@@ -130,7 +134,7 @@ struct BallisticWaterSnapshot {
           std::int64_t{c.restitution}, std::int64_t{c.friction}, std::int64_t{c.settle_speed_q},
           std::int64_t{c.maximum_age_ticks}, std::int64_t{c.deposit_radius}, std::int64_t{c.maximum_contacts},
           std::int64_t{c.face_release}, std::int64_t{c.face_min_height}, std::int64_t{c.face_budget},
-          std::int64_t{c.face_speed}, std::int64_t{c.face_period}}) {
+          std::int64_t{c.face_speed}, std::int64_t{c.face_period}, std::int64_t{c.film_skim}}) {
         std::array<std::uint8_t, 8> bytes{};
         for (unsigned i = 0; i < 8; ++i)
             bytes[i] = static_cast<std::uint8_t>(static_cast<std::uint64_t>(value) >> (8U * i));

@@ -11,6 +11,8 @@ var _ballistic := CheckButton.new()
 var _signed := CheckButton.new()
 var _spray := CheckButton.new()
 var _jet := CheckButton.new()
+var _pf_gas := CheckButton.new()
+var _face := CheckButton.new()
 var _status := Label.new()
 var _fields: Dictionary = {}
 var _jet_point: Callable
@@ -45,7 +47,14 @@ func build(owner: Control, parent: Control, row_factory: Callable, jet_point: Ca
 	_jet.toggled.connect(func(on: bool) -> void:
 		var point: Vector2 = _jet_point.call()
 		request({"jet_enabled": on, "jet_origin": Vector2i(point)}))
-	for toggle: CheckButton in [_ballistic, _signed, _spray, _jet]:
+	_face.text = "Face release"
+	_face.tooltip_text = "Construction option (requires Ballistic Water): tall vertical Water faces shed cells as parcels at dam-break speed. Applies on rebuild."
+	_face.toggled.connect(func(on: bool) -> void: _construction("workbench_face_release", on))
+	_pf_gas.text = "PF gas"
+	_pf_gas.button_pressed = true
+	_pf_gas.tooltip_text = "PressureFlow gas topology. Off = gas-free PressureFlow: same surging in open/vented scenes at lower cost. Staged in the liquid selection; applies on Apply liquid selection."
+	_pf_gas.toggled.connect(_set_pressure_gas)
+	for toggle: CheckButton in [_ballistic, _signed, _face, _spray, _jet, _pf_gas]:
 		toggle.focus_mode = Control.FOCUS_NONE
 		row.add_child(toggle)
 	for spec: Array in SPINS:
@@ -69,6 +78,22 @@ func build(owner: Control, parent: Control, row_factory: Callable, jet_point: Ca
 
 func _construction(key: String, on: bool) -> void:
 	host.workbench_water_options[key] = on
+
+func _set_pressure_gas(on: bool) -> void:
+	# Rewrites only the staged starting setup's policy envelope through the
+	# native validator; the running World changes on the next Apply.
+	var ui: Control = host.shared_workbench
+	if ui == null or ui.applied.is_empty() or ui._liquids == null: return
+	var bridge: Variant = ui._liquids.bridge
+	if bridge == null or not bridge.has_method(&"liquid_policy_with_pressure_gas"): return
+	var staged: PackedInt32Array = ui._liquids.requested_policy
+	if staged.is_empty(): staged = PackedInt32Array(ui.applied.liquid_policy)
+	var result: Dictionary = bridge.liquid_policy_with_pressure_gas(staged, on)
+	if result.get("accepted", false):
+		ui._liquids.requested_policy = PackedInt32Array(result.request)
+		_status.text = "PressureFlow gas %s staged; press Apply liquid selection to rebuild." % ("on" if on else "off")
+	else:
+		_status.text = "PressureFlow gas refused: %s" % str(result.get("refusal", {}).get("detail", "no active PressureFlow"))
 
 func request(settings: Dictionary) -> bool:
 	if host == null or host.simulation_worker == null or not host.simulation_worker.has_method(&"queue_water_spray"):

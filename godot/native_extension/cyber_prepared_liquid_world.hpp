@@ -181,13 +181,15 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
         // never inherited from the replaced World. Absent keeps every default.
         config->ballistic_water = {};
         config->inertial_signed_vertical = false;
-        for (const char* key : {"workbench_ballistic", "workbench_inertial_signed"}) {
+        for (const char* key : {"workbench_ballistic", "workbench_inertial_signed", "workbench_face_release"}) {
             if (!options.has(key)) continue;
             if (!workbench || options[key].get_type() != Variant::BOOL)
                 throw std::invalid_argument("Experimental Water options require the workbench and a boolean value");
         }
         config->ballistic_water.enabled = options.get("workbench_ballistic", false);
         config->inertial_signed_vertical = options.get("workbench_inertial_signed", false);
+        config->ballistic_water.face_release = config->ballistic_water.enabled &&
+            static_cast<bool>(options.get("workbench_face_release", false));
 
         cybersand::normalization::FinalSetupInput input;
         if (default_demo) {
