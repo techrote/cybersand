@@ -62,7 +62,9 @@ func save_payload(preparer: Variant, world: Variant, path: String) -> Dictionary
 	check(not bytes.is_empty(),"authoritative CYPS capture: "+str(preparer.get_last_error()))
 	var file := FileAccess.open(path,FileAccess.WRITE)
 	check(file!=null,"CYPS evidence writable")
-	if file!=null: file.store_buffer(bytes)
+	if file!=null:
+		file.store_buffer(bytes)
+		file.close()
 	return {"path":path,"bytes":bytes.size(),"sha256":FileAccess.get_sha256(path)}
 
 func emit_count(world: Variant, x: int, y: int, radius: int, material: int) -> int:

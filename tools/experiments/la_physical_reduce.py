@@ -47,9 +47,11 @@ def tuples(path):
     events=take("I");offset+=events*21
     chunks=take("I")
     if chunks>100000: raise ValueError("Unbounded chunk inventory")
-    counts=Counter();hist=Counter();water=0;sum_y=Counter()
+    counts=Counter();hist=Counter();water=0;sum_y=Counter();seen_chunks=set()
     for _ in range(chunks):
         cx,cy=take("qq");flags=take("B")
+        assert (cx,cy) not in seen_chunks,"Duplicate authoritative chunk"
+        seen_chunks.add((cx,cy))
         if flags & ~3: raise ValueError("Unexpected CYPS2 sidecar")
         blocks=take("I");offset+=blocks*13
         cells=memoryview(raw)[offset:offset+side*side*6];offset+=side*side*6
@@ -91,6 +93,21 @@ def overlap(poly,x,y):
     return abs(sum(a[0]*b[1]-a[1]*b[0] for a,b in zip(relative,relative[1:]+relative[:1])))*0.5
 
 
+def proxy_depth(poly,x,y):
+    # Independent separating-axis translation for a cell and one convex proxy.
+    axes=[(1,0),(0,1)]
+    for a,b in zip(poly,poly[1:]+poly[:1]):
+        dx,dy=b[0]-a[0],b[1]-a[1];length=math.hypot(dx,dy)
+        axes.append((-dy/length,dx/length))
+    cell=[(x,y),(x+1,y),(x+1,y+1),(x,y+1)];depth=math.inf
+    for ax,ay in axes:
+        p=[ax*px+ay*py for px,py in poly];c=[ax*px+ay*py for px,py in cell]
+        distance=min(max(p)-min(c),max(c)-min(p))
+        if distance<=0:return 0.0
+        depth=min(depth,distance)
+    return depth
+
+
 def geometry(observation,rectangles):
     if observation.get("outside"):return dict(outside=True)
     ox,oy=observation["origin"];width,height=observation["size"]
@@ -98,7 +115,7 @@ def geometry(observation,rectangles):
     for material,count in observation["material_runs"]:cells.extend([material]*count)
     if len(cells)!=width*height:raise ValueError("Incomplete material ROI")
     xx,xy,yx,yy,tx,ty=observation["pose"]
-    areas=Counter();centres=Counter()
+    areas=Counter();centres=Counter();depths=Counter()
     for rect in rectangles:
         cx,cy=rect["center"];w,h=rect["size"]
         corners=[(cx-w/2,cy-h/2),(cx+w/2,cy-h/2),(cx+w/2,cy+h/2),(cx-w/2,cy+h/2)]
@@ -108,13 +125,15 @@ def geometry(observation,rectangles):
                 material=cells[(y-oy)*width+x-ox]
                 if not material:continue
                 a=overlap(poly,x,y)
-                if a>0:areas[material]+=a
+                if a>0:
+                    areas[material]+=a
+                    depths[material]=max(depths[material],proxy_depth(poly,x,y))
                 dx=x+.5-tx;dy=y+.5-ty
                 # Actual float basis need not be exactly orthonormal; invert it.
                 determinant=xx*yy-xy*yx
                 lx=(yy*dx-yx*dy)/determinant;ly=(-xy*dx+xx*dy)/determinant
                 if abs(lx-cx)<w/2 and abs(ly-cy)<h/2:centres[material]+=1
-    return dict(area_by_material=dict(areas),cell_centres_inside=dict(centres),outside=False)
+    return dict(area_by_material=dict(areas),maximum_convex_proxy_depth=dict(depths),cell_centres_inside=dict(centres),outside=False)
 
 
 def payload(metadata):
@@ -125,9 +144,9 @@ def payload(metadata):
 
 def report(path):
     d=json.loads(path.read_text(encoding="utf-8"));steps=d["steps"]
-    if d["failures"]:raise ValueError("Fixture failed: "+str(d["failures"]))
+    assert [s["step"] for s in steps]==list(range(len(steps))),"Missing/reordered observations"
     initial=payload(d["initial_payload"])
-    final=payload(d["final_payload"])
+    final=payload(d["final_payload"]) if d.get("final_payload") and d["final_payload"]["bytes"] else None
     shape=[a["geometry"] for a in d["authored"]]
     first_geometry=[geometry(g,r) for g,r in zip(d["initial_geometry"],shape)]
     snapshots=[];energy=[];workers=[];times=[];readback=0;passive_positive=0;scales=[]
@@ -156,14 +175,14 @@ def report(path):
         energy.append(dict(step=s["step"],bodies=row))
     if readback>1e-5:raise ValueError("Independent actual RID reconstruction failed")
     no_external_cells=not d["case"].get("stream") and d["case"].get("distributed")!="stream" and "remove_support_step" not in d["case"]
-    inventory_equal=initial["tuple_multiset"]==final["tuple_multiset"]
-    if no_external_cells and not inventory_equal:raise ValueError("Material tuple multiset changed in closed fixture")
+    inventory_equal=initial["tuple_multiset"]==final["tuple_multiset"] if final else None
+    if no_external_cells and final and not inventory_equal:raise ValueError("Material tuple multiset changed in closed fixture")
     tail=steps[-120:];stability=[]
     for index in range(len(shape)):
         states=[s["after_step"][index] for s in tail]
         positions=[s["pose"][4:] for s in states]
         angles=[math.atan2(s["pose"][1],s["pose"][0]) for s in states]
-        stability.append(dict(span_x=max(p[0] for p in positions)-min(p[0] for p in positions),
+        stability.append(dict(observed_terminal_steps=len(states),span_x=max(p[0] for p in positions)-min(p[0] for p in positions),
                               span_y=max(p[1] for p in positions)-min(p[1] for p in positions),
                               rotation_span=max(angles)-min(angles),terminal_speed=math.hypot(*states[-1]["velocity"])))
     inserted=Counter()
@@ -174,14 +193,16 @@ def report(path):
         removed=Counter({int(k):v for k,v in a["material_counts"].items()})
         removed.subtract({int(k):v for k,v in b["material_counts"].items()})
     counts=Counter({int(k):v for k,v in initial["material_counts"].items()});counts.update(inserted);counts.subtract(removed)
-    assert +counts==Counter({int(k):v for k,v in final["material_counts"].items()}),"material source/removal ledger does not close"
+    if final:assert +counts==Counter({int(k):v for k,v in final["material_counts"].items()}),"material source/removal ledger does not close"
     return dict(id=d["id"],source=d["source"],arm=d["arm"],case=d["case"],steps=len(steps),
                 requested_workers=d["requested_workers"],actual_workers=sorted(set(workers)),
                 initial=initial,final=final,closed_tuple_multiset_equal=inventory_equal if no_external_cells else None,
-                material_source_ledger_closes=True,inserted_materials=dict(inserted),removed_materials=dict(removed),
+                failures=d["failures"],failure_attempt=d.get("failure_attempt"),
+                material_source_ledger_closes=True if final else None,inserted_materials=dict(inserted),removed_materials=dict(removed),
                 initial_geometry=first_geometry,geometry_observations=snapshots,stability=stability,
                 max_RID_readback_error=readback,max_analytic_passive_energy=passive_positive,
                 minimum_passive_scale=min(scales,default=1),timings=dict(mean_simulation_us=sum(times)/len(times),
+                terminal60_mean_us=sum(times[-60:])/len(times[-60:]),
                 max_simulation_us=max(times),total_control_us=d["control_application_us"],
                 total_control_attempts=d["control_application_attempts"]),energy=energy,
                 report_path=str(path),report_sha256=sha(path.read_bytes()))
@@ -200,7 +221,7 @@ def main():
     if args.matrix:
         run=json.loads(args.matrix.read_text(encoding="utf-8"));matrix=run["matrix"];registration=run["registration"]
         expected={(p,c,a,w,r) for p in matrix["platforms"] for c in matrix["cases"] for a in registration["arms"] for w in matrix["workers"] for r in range(matrix["repeats"])}
-        observed=set()
+        observed=set();matched={};complete_windows=True
         for result in results:
             platform=next(p for p in matrix["platforms"] if p in Path(result["report_path"]).parts)
             raw=json.loads(Path(result["report_path"]).read_text(encoding="utf-8"))
@@ -208,10 +229,15 @@ def main():
             assert key not in observed,"Duplicate episode"
             observed.add(key)
             assert result["source"]==run["identity"]["source"]
-            assert result["steps"]==registration["static_steps" if result["case"]["kind"]=="static" else "ordinary_steps"]
+            expected_steps=registration["static_steps" if result["case"]["kind"]=="static" else "ordinary_steps"]
+            if result["steps"]!=expected_steps or result["failures"]:complete_windows=False
+            pristine=dict(payload=result["initial"]["sha256"],geometry=raw["initial_geometry"],
+                actors=[dict(state=a["state"],geometry=a["geometry"],layer=a["layer"],mask=a["mask"]) for a in raw["authored"]])
+            match_key=(platform,result["case"]["id"],result["requested_workers"],raw["repeat"])
+            if match_key in matched:assert matched[match_key]==pristine,"Unmatched initial authoritative inputs"
+            matched[match_key]=pristine
         assert observed==expected,"Incomplete/extra prospective matrix"
-        assert all(r["clean"] for rows in run["results"].values() for r in rows),"Run includes failed process"
-        coverage="complete-registered-matrix"
+        coverage="complete-registered-matrix" if complete_windows and all(r["clean"] for rows in run["results"].values() for r in rows) else "complete-attempted-matrix-with-failures"
     args.output.parent.mkdir(parents=True,exist_ok=True);args.output.write_text(json.dumps(dict(coverage=coverage,results=results),separators=(",",":"))+"\n",encoding="utf-8")
 
 
