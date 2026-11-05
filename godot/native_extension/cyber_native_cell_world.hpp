@@ -139,6 +139,8 @@ public:
     [[nodiscard]] Dictionary get_liquid_construction_attempt() const;
     // Isolated fresh-world experiment API. Called only by the exclusive owner.
     bool diagnostic_reset(const Dictionary& options);
+    // One-use, fresh diagnostic Workbench only; exclusive tick-boundary owner.
+    bool diagnostic_set_workbench_normal_policy(const String& policy);
     bool diagnostic_fill_rect(Vector2i origin, Vector2i size, std::int64_t material,
                               std::int64_t state_b = 0);
     // Serialized diagnostic-only relocation through World::relocate_stored_cell.
@@ -242,7 +244,8 @@ private:
     struct Workbench {
         String response;
         WorkbenchSample sample;
-        bool valid = false, sampled = false;
+        bool valid = false, sampled = false, normal_policy_locked = false;
+        cybersand::gcr::NormalPolicy normal_policy = cybersand::gcr::NormalPolicy::Original;
         std::uint64_t prepared_tick = 0;
         std::array<std::array<cybersand::gcr::Bin,8>,cybersand::World::kMaximumTransientBodies + 1> bins{};
         cybersand::gcr::CompoundWorkspace workspace{};

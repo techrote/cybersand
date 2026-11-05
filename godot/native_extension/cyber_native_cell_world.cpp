@@ -69,6 +69,8 @@ CyberNativeCellWorld::~CyberNativeCellWorld() = default;
 
 void CyberNativeCellWorld::_bind_methods() {
     ClassDB::bind_method(D_METHOD("diagnostic_reset", "options"), &CyberNativeCellWorld::diagnostic_reset);
+    ClassDB::bind_method(D_METHOD("diagnostic_set_workbench_normal_policy", "policy"),
+                         &CyberNativeCellWorld::diagnostic_set_workbench_normal_policy);
     ClassDB::bind_method(D_METHOD("diagnostic_fill_rect", "origin", "size", "material", "state_b"), &CyberNativeCellWorld::diagnostic_fill_rect, DEFVAL(0));
     ClassDB::bind_method(D_METHOD("diagnostic_relocate_cell", "from", "to"),
                          &CyberNativeCellWorld::diagnostic_relocate_cell);
@@ -351,6 +353,7 @@ void CyberNativeCellWorld::reset_demo_coupling_parameters() noexcept {
 }
 
 bool CyberNativeCellWorld::simulation_tick() {
+    if (workbench_) workbench_->normal_policy_locked = true;
     if (world_ == nullptr || world_->has_failed()) return false;
     const auto start = std::chrono::steady_clock::now();
     bool succeeded = false;

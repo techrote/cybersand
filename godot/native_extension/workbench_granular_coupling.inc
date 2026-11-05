@@ -115,9 +115,23 @@ bool CyberNativeCellWorld::parse_workbench_sample(WorkbenchSample& next, const W
     return true;
 }
 
+bool CyberNativeCellWorld::diagnostic_set_workbench_normal_policy(const String& policy) {
+    if (!diagnostic_fixture_ || !world_ || world_->has_failed() || !workbench_ || pending_liquid_world_ ||
+        world_->completed_tick_index()!=0 || workbench_->sampled || workbench_->normal_policy_locked ||
+        workbench_->response!="LA-SELECTIVE") return false;
+    cybersand::gcr::NormalPolicy selected;
+    if (policy=="original") selected=cybersand::gcr::NormalPolicy::Original;
+    else if (policy=="active-normal-001") selected=cybersand::gcr::NormalPolicy::ActiveNormal001;
+    else return false;
+    workbench_->normal_policy=selected;
+    workbench_->normal_policy_locked=true;
+    return true;
+}
+
 bool CyberNativeCellWorld::prepare_workbench_coupling(const PackedFloat64Array& states,
         const PackedFloat64Array& geometry, const Array& owners, std::int64_t session,
         std::int64_t epoch, bool resolve_overlaps) {
+    if (workbench_) workbench_->normal_policy_locked = true;
     if (!world_ || world_->has_failed() || !workbench_) return false;
     workbench_->valid = false;
     WorkbenchSample next;
@@ -329,14 +343,16 @@ Dictionary CyberNativeCellWorld::workbench_body_result(std::size_t id) const {
     state.omega=body.angular_velocity+event_torque/body.inertia;
     state.com={body.com.x,body.com.y}; state.mass=body.mass; state.inertia=body.inertia; state.mu=body.friction;
     const auto passive=cybersand::gcr::solve_compound(state,{bins.data(),bin_count},workbench_->workspace,
-        cap-cost*event_scale,mass_scale,owner.budget);
-    Vec impulse=legacy*legacy_scale+event+passive.impulse;
+        cap-cost*event_scale,mass_scale,owner.budget,workbench_->normal_policy);
+    Vec applied_legacy=legacy*legacy_scale;
+    Vec impulse=applied_legacy+event+passive.impulse;
     if (single) {
         const auto proxy=static_cast<std::uint16_t>(owner.first);
         Vector2 legacy32=observations_[proxy].impulse+sampled_vec(
             (static_cast<double>(world_->transient_contact_impulse_x(proxy))-gx_sum)*gain,
             (static_cast<double>(world_->transient_contact_impulse_y(proxy))-gy_sum)*gain);
         if (legacy32.length()>impulse_cap_) legacy32=legacy32.normalized()*impulse_cap_;
+        applied_legacy={legacy32.x,legacy32.y};
         const auto combined=legacy32+sampled_vec(event.x,event.y)+sampled_vec(passive.impulse.x,passive.impulse.y);
         impulse={combined.x,combined.y};
     }
@@ -356,14 +372,30 @@ Dictionary CyberNativeCellWorld::workbench_body_result(std::size_t id) const {
     row["normal_capacity"]=passive.capacity; row["body_capacity"]=cap; row["event_cost"]=cost*event_scale;
     row["passive_impulse"]=sampled_vec(passive.impulse.x,passive.impulse.y); row["passive_torque"]=passive.torque;
     row["passivity_rejected"]=passive.passive_rejected; row["nodes"]=passive.nodes;
+    row["normal_policy"]=workbench_->normal_policy==cybersand::gcr::NormalPolicy::Original ? "original":"active-normal-001";
+    // Scalar64 copied diagnostics avoid Vector2 real_t truncation. Passive energy
+    // is relative to the post-event state, before the separate legacy term.
+    row["passive_state_f64"]=PackedFloat64Array{state.velocity.x,state.velocity.y,state.com.x,state.com.y,
+        state.omega,state.mass,state.inertia,state.mu};
+    row["passive_raw_wrench_f64"]=PackedFloat64Array{passive.raw_impulse.x,passive.raw_impulse.y,passive.raw_torque};
+    row["passive_accepted_wrench_f64"]=PackedFloat64Array{passive.impulse.x,passive.impulse.y,passive.torque};
+    row["legacy_wrench_f64"]=PackedFloat64Array{applied_legacy.x,applied_legacy.y,legacy_moment*legacy_scale};
+    row["total_wrench_f64"]=PackedFloat64Array{impulse.x,impulse.y,torque};
+    row["passive_energy_before"]=passive.energy_before; row["passive_energy_after"]=passive.energy_after;
+    row["passive_scale"]=passive.scale; row["normal_raw"]=passive.raw_normal; row["tangent_raw"]=passive.raw_tangent;
+    row["normal_cap_hits"]=passive.normal_cap_hits; row["tangent_cap_hits"]=passive.tangent_cap_hits;
+    row["bins"]=passive.bins; row["updates"]=passive.updates; row["quadrature_clamps"]=passive.quadrature_clamps;
     return row;
 }
 
 Dictionary CyberNativeCellWorld::workbench_coupling_results() const {
+    if (workbench_) workbench_->normal_policy_locked = true;
     if (!workbench_ || !world_ || world_->has_failed()) return {};
     Dictionary result; Array rows;
     result["session"]=workbench_->sample.session; result["epoch"]=workbench_->sample.epoch;
     result["response"]=workbench_->response; result["extent"]=extent_;
+    result["normal_policy"]=workbench_->normal_policy==cybersand::gcr::NormalPolicy::Original ? "original":"active-normal-001";
+    result["normal_policy_locked"]=workbench_->normal_policy_locked;
     result["proxy_limit"]=cybersand::World::kMaximumTransientBodies;
     result["body_limit"]=static_cast<std::int64_t>(kWorkbenchBodies);
     result["world_mask_cell_limit"]=static_cast<std::int64_t>(extent_.x)*extent_.y;
