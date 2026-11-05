@@ -233,6 +233,30 @@ Godot 4.7-stable headless: `test_simulation_worker_interest_ownership.gd` 57/0
 (`{"owned_16_ticks":0,"previous_ordering_16_ticks":0}`),
 `test_lcb_pressure_optimization.gd` 4152/0.
 
+## Scoped runtime publication
+
+Owner-approved on 2026-11-05. A branch-scoped publisher clones the
+[#201 P1 profile](2026-11-04-lcb201-p1-wake-summaries.md) without changing it or the
+shared four-path engine:
+[`lcb201-mc-runtime-publication.yml`](../../.github/workflows/lcb201-mc-runtime-publication.yml),
+[`lcb201_mc_runtime_publication.py`](../../tools/ci/lcb201_mc_runtime_publication.py),
+its adversarial guards
+[`test_lcb201_mc_runtime_publication.py`](../../tools/ci/test_lcb201_mc_runtime_publication.py)
+and request
+[`lcb201_mc_publish_request.json`](../../tools/ci/lcb201_mc_publish_request.json)
+(sequence 1). Only a push to `claude/pf201-moving-camera` that carries the
+request arms it. The native `LCB-002` group, which must include both the P1 and
+the moving-region controls, and the `LCB-001 pressure` group run first. Then
+both runtimes are built from the exact source and each runs import plus
+`test_lcb_pressure_optimization`, `test_lcb_pressure_reference`,
+`test_liquid_pressure_rapier` and the updated
+`test_simulation_worker_interest_ownership` on its actual target OS. The
+publish job appends exactly one bot commit with the four runtime/manifest
+paths, guarded by a force-with-lease on the built SHA. Full ready-head CI
+remains a separate gate. Local guards: 23/23 profile tests, the P1 and shared
+engine suites unchanged and passing, CI-provider policy passed, scheduling
+inventory 30 workflows passed.
+
 ## Gaps and next steps
 
 1. Desktop in-app before/after with the worker's camera window (the #370 host
