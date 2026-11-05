@@ -7,6 +7,7 @@ const MAX_CORNER_TRAVEL: float = 0.5
 const MAX_SESSION: int = 9007199254740991
 const ExperimentalPassive = preload("res://scripts/experimental_passive_response.gd")
 var _application_variant: String = "baseline"
+var _application_policy_locked: bool = false
 # Godot 4.7's static-variable script lifetime can retain unrelated preloaded
 # scripts or fault while retiring a stepped Rapier session. The main loop owns
 # this scalar counter instead. It survives bridge/scene replacement without
@@ -29,8 +30,8 @@ var last_application: Dictionary = {}
 # native mode/readback remains LA-SELECTIVE and the experimental policy is named
 # separately in the actual application ledger.
 func configure_application_variant(value: String) -> bool:
-	if OS.get_thread_caller_id()!=OS.get_main_thread_id() or not _initialized or _serial!=0 or _last_snapshot>=0: return false
-	if value not in ["baseline","passive-live-v1"] or (value!="baseline" and _response!="LA-SELECTIVE"): return false
+	if OS.get_thread_caller_id()!=OS.get_main_thread_id() or not _initialized or _application_policy_locked or _last_snapshot>=0: return false
+	if value not in ["baseline","passive-live-v1","passive-live-on-change-v2"] or (value!="baseline" and _response!="LA-SELECTIVE"): return false
 	_application_variant=value
 	return true
 
@@ -85,7 +86,8 @@ func pack_sample(drives: Array[bool]) -> Dictionary:
 		var member: Dictionary = _members[slot].duplicate()
 		member.merge({"gravity":gravity, "external_drive":drives[slot]})
 		bodies.append(member)
-		history.append({"pose":pose, "com":com, "mass":mass, "inertia":inertia, "gravity":gravity, "external_drive":drives[slot]})
+		history.append({"pose":pose, "com":com, "mass":mass, "inertia":inertia, "gravity":gravity, "external_drive":drives[slot],
+			"velocity":direct.linear_velocity,"omega":direct.angular_velocity})
 		var proxy_id: int = member.first_proxy
 		for rectangle: Dictionary in _rects[slot]:
 			var center: Vector2 = pose * Vector2(rectangle.center)
@@ -94,6 +96,7 @@ func pack_sample(drives: Array[bool]) -> Dictionary:
 				direct.angular_velocity, mass, serial, inertia, com.x, com.y, friction, fixed_delta(), _session]))
 			proxy_id += 1
 	_serial = serial
+	_application_policy_locked = true
 	_history[serial % _history.size()] = {"serial":serial, "bodies":history, "step":manual_step_count()}
 	return {"session":_session, "epoch":_epoch, "states":states, "geometry":_geometry.duplicate(), "bodies":bodies}
 
@@ -184,20 +187,25 @@ func apply_packet(snapshot_serial: int, packet: Dictionary) -> int:
 		if has_passive:
 			var live_mass: float = PhysicsServer2D.body_get_param(_body_rids[slot],PhysicsServer2D.BODY_PARAM_MASS)
 			var live_inertia: float = PhysicsServer2D.body_get_param(_body_rids[slot],PhysicsServer2D.BODY_PARAM_INERTIA)
-			if not is_finite(live_mass) or not is_finite(live_inertia) or live_mass<=0 or live_inertia<=0: return _refuse("live_inertia")
 			var live_velocity: Vector2 = direct.linear_velocity
 			if live_velocity.x*correction.x<0: live_velocity.x=0
 			if live_velocity.y*correction.y<0: live_velocity.y=0
 			var passive: Vector2 = Vector2(row.passive_impulse)*scale
 			var shift: Vector2 = row.com-pose*direct.center_of_mass_local-correction
 			var passive_torque: float = (float(row.passive_torque)+shift.cross(row.passive_impulse))*scale
+			var state_changed: bool = direct.linear_velocity!=sample.velocity or direct.angular_velocity!=sample.omega
+			var active_policy: bool = _application_variant=="passive-live-v1" or (_application_variant=="passive-live-on-change-v2" and state_changed)
 			var audit: Dictionary = ExperimentalPassive.revalidate(live_velocity,direct.angular_velocity,
-				live_mass,live_inertia,action.impulse,action.torque,passive,passive_torque,_application_variant!="baseline")
-			if _application_variant!="baseline":
+				live_mass,live_inertia,action.impulse,action.torque,passive,passive_torque,active_policy)
+			if not audit.valid and _application_variant!="baseline": return _refuse("passive_nonfinite")
+			if audit.valid and _application_variant!="baseline":
 				action.impulse=audit.impulse
 				action.torque=audit.torque
 			audit.erase("impulse")
 			audit.erase("torque")
+			audit.erase("valid")
+			audit["passive_revalidation_active"]=active_policy
+			audit["live_velocity_changed"]=state_changed
 			action.merge(audit)
 		actions.append(action)
 	# Validate the complete batch before mutating any RID. A stale peer does

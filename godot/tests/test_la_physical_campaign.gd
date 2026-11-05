@@ -5,7 +5,7 @@ extends SceneTree
 const Session = preload("res://scripts/physical_actor_session.gd")
 const Fleet = preload("res://scripts/gcr_review_fleet.gd")
 const Contract = preload("res://scripts/microscenario_contract.gd")
-const REGISTRATION = "res://tests/fixtures/la_physical/registration-v1.json"
+const REGISTRATION = "res://tests/fixtures/la_physical/registration-v2.json"
 const DAM = "res://tests/fixtures/lcb/lcb.dam.water.freemass.reference.v1.json"
 var failures: Array[String] = []
 var checks: int = 0
@@ -64,6 +64,17 @@ func save_payload(preparer: Variant, world: Variant, path: String) -> Dictionary
 	if file!=null: file.store_buffer(bytes)
 	return {"path":path,"bytes":bytes.size(),"sha256":FileAccess.get_sha256(path)}
 
+func emit_count(world: Variant, x: int, y: int, radius: int, material: int) -> int:
+	var empty: Array[Vector2i] = []
+	for dy: int in range(-radius,radius+1):
+		for dx: int in range(-radius,radius+1):
+			if dx*dx+dy*dy<=radius*radius and world.material_at(x+dx,y+dy)==0: empty.append(Vector2i(x+dx,y+dy))
+	world.emit_disc(x,y,radius,material)
+	var inserted: int = 0
+	for point: Vector2i in empty:
+		if world.material_at(point.x,point.y)==material: inserted+=1
+	return inserted
+
 func observation(world: Variant, body: RigidBody2D, rects: Array, extent: int) -> Dictionary:
 	var pose: Transform2D = PhysicsServer2D.body_get_state(body.get_rid(),PhysicsServer2D.BODY_STATE_TRANSFORM)
 	var bounds: Rect2 = rectangle_bounds(rects,pose.get_rotation())
@@ -83,7 +94,7 @@ func observation(world: Variant, body: RigidBody2D, rects: Array, extent: int) -
 	return {"origin":plain(origin),"size":plain(size),"material_runs":runs,"native_hash":snap.hash,"pose":plain(pose)}
 
 func episode(spec: Dictionary, arm: String, workers: int, repeat: int, output: String) -> void:
-	var baseline: String = "LA-SELECTIVE" if arm=="LA-SELECTIVE-LIVE-PASSIVE" else arm
+	var baseline: String = "LA-SELECTIVE" if arm.begins_with("LA-SELECTIVE-LIVE-PASSIVE") else arm
 	var initial_failures: int = failures.size()
 	var extent: int = int(spec.get("extent",512))
 	var viewport := SubViewport.new()
@@ -96,7 +107,8 @@ func episode(spec: Dictionary, arm: String, workers: int, repeat: int, output: S
 	for index: int in spec.models.size(): definitions.append(actor(spec.models[index],index,baseline,extent))
 	check(session.configure(definitions,viewport.world_2d.space,1),"actual authored session: "+str(session.last_error))
 	if not session.active(): viewport.free(); return
-	check(session.bridge.configure_application_variant("passive-live-v1" if arm=="LA-SELECTIVE-LIVE-PASSIVE" else "baseline"),"trajectory application variant")
+	var application_variant: String = "passive-live-on-change-v2" if arm=="LA-SELECTIVE-LIVE-PASSIVE-GATED" else ("passive-live-v1" if arm=="LA-SELECTIVE-LIVE-PASSIVE" else "baseline")
+	check(session.bridge.configure_application_variant(application_variant),"trajectory application variant")
 	var bodies: Array[RigidBody2D] = session.bodies()
 	var geometries: Array = []
 	var authored: Array = []
@@ -138,7 +150,10 @@ func episode(spec: Dictionary, arm: String, workers: int, repeat: int, output: S
 		if layout!="arrival": rectangles.append_array(PackedInt32Array([x-24,128,48,24,2]))
 		rectangles.append_array(PackedInt32Array([x-32,152,64,2,1]))
 		if layout in ["banks","cage"]:
-			rectangles.append_array(PackedInt32Array([x-16,114,12,14,2,x+4,114,12,14,2]))
+			var hull_bounds: Rect2 = rectangle_bounds(geometries[index],float(spec.get("angle",0.0)))
+			var left: int = floori(x+hull_bounds.position.x)
+			var right: int = ceili(x+hull_bounds.end.x)
+			rectangles.append_array(PackedInt32Array([left-12,114,12,14,2,right,114,12,14,2]))
 		if layout=="cage": rectangles.append_array(PackedInt32Array([x-8,104,16,3,2,x-12,108,8,20,1,x+4,108,8,20,1]))
 		if layout=="wall-bed": rectangles.append_array(PackedInt32Array([x-8,110,4,18,1]))
 		if layout=="arrival": rectangles.append_array(PackedInt32Array([x-3,92,6,2,material]))
@@ -198,12 +213,17 @@ func episode(spec: Dictionary, arm: String, workers: int, repeat: int, output: S
 		var sampled: Array = []
 		for body: RigidBody2D in bodies: sampled.append(body_state(body))
 		var emissions: int = 0
+		var inserted_materials: Dictionary = {}
 		if spec.get("stream",false) and step%4==0:
-			world.emit_disc(128,92,1,material); emissions+=1
+			inserted_materials[str(material)]=emit_count(world,128,92,1,material); emissions+=1
 		if spec.get("distributed","")=="stream" and step%4==0:
-			for source: Array in sources: world.emit_disc(source[0],source[1],0,source[2]); emissions+=1
+			for source: Array in sources:
+				var key: String = str(source[2])
+				inserted_materials[key]=int(inserted_materials.get(key,0))+emit_count(world,source[0],source[1],0,source[2]); emissions+=1
 		if step==int(spec.get("remove_support_step",-1)):
+			report.removal_before=save_payload(preparer,world,output+"/"+name+"-removal-before.cyps")
 			world.water_experiment_erase_rect(Vector2i(96,128),Vector2i(64,26))
+			report.removal_after=save_payload(preparer,world,output+"/"+name+"-removal-after.cyps")
 			session.bridge.rebuild_hard_surface_colliders_from_rectangles(world.get_hard_surface_rectangles())
 		var native_start: int = Time.get_ticks_usec()
 		var prepared: bool = world.prepare_workbench_coupling(sample.states,sample.geometry,sample.bodies,sample.session,sample.epoch,true)
@@ -224,6 +244,7 @@ func episode(spec: Dictionary, arm: String, workers: int, repeat: int, output: S
 				external[index].reversal_impulse=reverse
 				external[index].reversal_work=body_state(bodies[index]).kinetic-current.kinetic
 		if int(spec.get("publication_age",0))==1: session.bridge.pack_sample(drives)
+		if spec.get("physical_step_before_application",false): session.bridge.step()
 		var live: Array = []
 		for body: RigidBody2D in bodies: live.append(body_state(body))
 		if step==0:
@@ -250,9 +271,10 @@ func episode(spec: Dictionary, arm: String, workers: int, repeat: int, output: S
 			var omega_residual: float = absf(live[index].omega+action.torque/live[index].inertia-after_apply[index].omega)
 			action.velocity_residual=residual; action.omega_residual=omega_residual
 			check(residual<=registration.readback_absolute_tolerance and omega_residual<=registration.readback_absolute_tolerance,"real RID applied impulse reconstruction")
-			if arm=="LA-SELECTIVE-LIVE-PASSIVE": check(float(action.get("passive_energy_accepted",0))<=1e-10,"no positive analytic passive work")
+			if action.get("passive_revalidation_active",false): check(float(action.get("passive_energy_accepted",0))<=1e-10,"no positive analytic passive work")
 		var rapier_start: int = Time.get_ticks_usec()
-		session.bridge.step(); session.complete_step()
+		if not spec.get("physical_step_before_application",false): session.bridge.step()
+		session.complete_step()
 		var rapier_us: int = Time.get_ticks_usec()-rapier_start
 		var after_step: Array = []
 		var controllers: Array = []
@@ -267,7 +289,7 @@ func episode(spec: Dictionary, arm: String, workers: int, repeat: int, output: S
 		report.steps.append(plain({"step":step,"sampled":sampled,"live_before_application":live,"before":before,
 			"after_application":after_apply,"after_step":after_step,"external":external,"controllers":controllers,
 			"native_response":response,"application":application,"geometry":geometry,"statistics":statistics,
-			"emission_requests":emissions,"preparation_us":preparation_us,"native_tick_us":tick_us,
+			"emission_requests":emissions,"inserted_materials":inserted_materials,"preparation_us":preparation_us,"native_tick_us":tick_us,
 			"application_us":application_us,"rapier_us":rapier_us,"simulation_us":simulation_us,
 			"observation_us":Time.get_ticks_usec()-observer_start}))
 		var c0: int = Time.get_ticks_usec()
@@ -281,6 +303,14 @@ func episode(spec: Dictionary, arm: String, workers: int, repeat: int, output: S
 	session.apply_workbench_results(999998,held)
 	report.lifecycle.append(plain(session.bridge.last_application))
 	check(not session.bridge.last_application.accepted,"stale observation cannot apply")
+	var invalid_roster: Array = sample.bodies.duplicate(true)
+	invalid_roster.append(sample.bodies[0])
+	var before_refusal: String = world.get_physical_state_hash()
+	check(not world.prepare_workbench_coupling(sample.states,sample.geometry,invalid_roster,sample.session,sample.epoch,true),"duplicate owner roster refusal")
+	check(world.get_physical_state_hash()==before_refusal,"refused roster preserves native authority")
+	check(not session.bridge.configure_application_variant("baseline"),"first-sample policy selection remains locked")
+	check(world.diagnostic_reset({"workers":workers,"telemetry":false}) and world.workbench_coupling_results().is_empty(),"World reset retires coupling and arrival history")
+	report.lifecycle.append({"duplicate_owner_refused":true,"native_unchanged":true,"reset_coupling_retired":true})
 	var old_session: int = int(sample.session)
 	session.close()
 	check(session.apply_workbench_results(999999,held)==0,"retired owner cannot apply")
@@ -294,6 +324,10 @@ func episode(spec: Dictionary, arm: String, workers: int, repeat: int, output: S
 
 func run() -> void:
 	registration=JSON.parse_string(FileAccess.get_file_as_string(REGISTRATION))
+	if registration.has("extends"):
+		var inherited: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(registration.extends))
+		inherited.merge(registration,true); registration=inherited
+		registration.cases.append_array(registration.get("extra_cases",[]))
 	checked=Contract.validate(Contract.parse(FileAccess.get_file_as_string(DAM)).definition)
 	var output: String = OS.get_environment("LA_PHYSICAL_OUTPUT")
 	if output.is_empty(): output="user://la-physical"

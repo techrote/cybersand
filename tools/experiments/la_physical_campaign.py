@@ -1,0 +1,105 @@
+#!/usr/bin/env python3
+"""Run the reconciled, real-authored LA campaign with fresh rebuilt runtimes.
+
+Historical 001--003 runner/registrations remain unchanged. This runner verifies
+the exact 84-input source, copied Godot inputs, runtime bytes and each process.
+"""
+import argparse
+import concurrent.futures
+import importlib.util
+import json
+import os
+from pathlib import Path
+import shutil
+import subprocess
+
+ROOT=Path(__file__).resolve().parents[2]
+BASE="8f6412da2004a5bfd4b68f40c854b564696637f7"
+spec=importlib.util.spec_from_file_location("la_process",ROOT/"tools/experiments/la_selective_experiment.py")
+process=importlib.util.module_from_spec(spec);spec.loader.exec_module(process)
+
+
+def git(*args):return subprocess.check_output(["git","-C",str(ROOT),*args])
+
+
+def identity():
+    subprocess.run(["git","-C",str(ROOT),"merge-base","--is-ancestor",BASE,"HEAD"],check=True)
+    source=git("rev-parse","HEAD").decode().strip()
+    inventory=json.loads((ROOT/"godot/addons/cybersand_native/runtime-provenance.json").read_text(encoding="utf-8"))["source_inputs"]
+    for name,digest in inventory.items():
+        assert process.sha((ROOT/name).read_bytes().replace(b"\r\n",b"\n"))==digest,name
+        assert git("show",source+":"+name)==git("show",BASE+":"+name),name
+    assert len(inventory)==84
+    rebuild=json.loads((ROOT/"build/la-physical/runtimes/receipt.json").read_text(encoding="utf-8"))
+    assert rebuild["source"]==BASE and all(row["clean"] for row in rebuild["results"])
+    for name,digest in rebuild["outputs"].items():assert process.sha((ROOT/"build/la-physical/runtimes"/name).read_bytes())==digest
+    inputs={p:process.sha((ROOT/p).read_bytes()) for p in git("ls-files","godot").decode().splitlines() if (ROOT/p).is_file()}
+    return dict(source=source,tree=git("rev-parse","HEAD^{tree}").decode().strip(),native_base=BASE,
+                native_inputs=inventory,rebuild=rebuild,copied_inputs=inputs,local_delta=git("status","--short").decode())
+
+
+def main():
+    parser=argparse.ArgumentParser(__doc__)
+    parser.add_argument("--run",required=True)
+    parser.add_argument("--cases",default="")
+    parser.add_argument("--platforms",default="windows,linux")
+    parser.add_argument("--workers",default="1,4")
+    parser.add_argument("--repeats",type=int,default=1)
+    parser.add_argument("--existing-tests",action="store_true")
+    args=parser.parse_args()
+    assert Path(args.run).name==args.run and args.run not in [".",".."]
+    info=identity();output=ROOT/"build/la-physical"/args.run
+    registration=json.loads((ROOT/"godot/tests/fixtures/la_physical/registration-v1.json").read_text(encoding="utf-8"))
+    second=json.loads((ROOT/"godot/tests/fixtures/la_physical/registration-v2.json").read_text(encoding="utf-8"))
+    registration.update(second);registration["cases"]+=second["extra_cases"]
+    cases=[c for c in registration["cases"] if not args.cases or c["id"] in args.cases.split(",")]
+    if args.cases:assert {c["id"] for c in cases}==set(args.cases.split(","))
+
+    def host(platform):
+        folder=output/platform;project=folder/"godot"
+        if project.exists():raise RuntimeError("Preserve previous run; select a new --run name")
+        for name in info["copied_inputs"]:
+            src=ROOT/name;target=project/Path(name).relative_to("godot")
+            target.parent.mkdir(parents=True,exist_ok=True);shutil.copy2(src,target)
+        binary="cybersand_native.windows.x86_64.dll" if platform=="windows" else "libcybersand_native.linux.x86_64.so"
+        shutil.copy2(ROOT/"build/la-physical/runtimes"/binary,project/"addons/cybersand_native/bin"/binary)
+        rows=[]
+        def run(name,script=None,env=None):
+            engine=process.ENGINES[platform];path=str(project) if platform=="windows" else process.wsl_path(project)
+            argv=[engine,"--headless","--audio-driver","Dummy","--path",path]
+            argv+= ["--editor","--quit"] if script is None else ["--max-fps","120","--script","res://tests/"+script+".gd"]
+            environment=dict(os.environ,CYBERSAND_SOURCE_REVISION=info["source"])
+            environment.update(env or {})
+            if platform=="linux":
+                forwarded=["CYBERSAND_SOURCE_REVISION="+info["source"],*[k+"="+v for k,v in (env or {}).items()]]
+                argv=["wsl","-d","Ubuntu-24.04","--","env",*forwarded,*argv]
+            row=process.command(name,argv,folder,environment,timeout=300)
+            rows.append(row);process.write(folder/"receipt.json",dict(identity=info,platform=platform,results=rows))
+            return row["clean"]
+        if not run("import"):return rows
+        if not run("passive-safety","test_la_passive_response"):return rows
+        if args.existing_tests:
+            for name in process.SCOPED:run("workbench-"+name,"test_workbench_"+name)
+        for repeat in range(args.repeats):
+            for worker in map(int,args.workers.split(",")):
+                for case in cases:
+                    data=folder/(case["id"]+"-w"+str(worker)+"-r"+str(repeat));data.mkdir()
+                    env={"LA_PHYSICAL_OUTPUT":str(data) if platform=="windows" else process.wsl_path(data),
+                         "LA_PHYSICAL_CASES":case["id"],"LA_PHYSICAL_WORKERS":str(worker),"LA_PHYSICAL_REPEAT":str(repeat)}
+                    clean=run(case["id"]+"-w"+str(worker)+"-r"+str(repeat),"test_la_physical_campaign",env)
+                    reports=list(data.glob("*.json"))
+                    if clean:
+                        assert len(reports)==len(registration["arms"]),"incomplete arm inventory"
+                        for report in reports:
+                            d=json.loads(report.read_text(encoding="utf-8"))
+                            assert d["source"]==info["source"] and not d["failures"] and d["requested_workers"]==worker
+                    # A failure remains retained; independent cases continue.
+        return rows
+    platforms=args.platforms.split(",")
+    with concurrent.futures.ThreadPoolExecutor(max_workers=len(platforms)) as pool:results=dict(zip(platforms,pool.map(host,platforms)))
+    assert info["copied_inputs"]==identity()["copied_inputs"],"source changed during campaign"
+    process.write(output/"result.json",dict(identity=info,results=results))
+    return int(not all(row["clean"] for rows in results.values() for row in rows))
+
+
+if __name__=="__main__":raise SystemExit(main())
