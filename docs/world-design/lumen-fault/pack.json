@@ -1,0 +1,1633 @@
+{
+  "schema_id": "cybersand.world-feature-pack.proposal",
+  "schema_version": 1,
+  "title": "THE LUMEN FAULT",
+  "created_utc": "2026-11-05",
+  "status": "draft only; not a runtime importer, CYSD1 level or accepted native generator recipe",
+  "source": {
+    "main_commit": "ba9cbc89029be88b812af59b19e5c59829bbcd90",
+    "native_material_enum": "native/include/cybersand/material.hpp",
+    "shadow_metadata": "materials/catalogue/catalogue.json",
+    "rectangle_convention": "godot/scripts/demo_worlds.gd::_rect"
+  },
+  "coordinate_contract": {
+    "unit": "native cell",
+    "origin": "top left",
+    "axes": "+x right; +y down",
+    "rectangle": "[x, y, width, height, native material ID]",
+    "bounds": "half-open",
+    "order": "last write wins; composite foundation followed by translated features",
+    "missing_cell": "no write, not an overlay",
+    "clearing": "explicit Empty 0 authoring pass required for occupied destination regions",
+    "variant": "literal per-material ID substitutions"
+  },
+  "palette": [
+    {
+      "id": 0,
+      "name": "empty",
+      "rgba": [
+        8,
+        11,
+        18,
+        255
+      ],
+      "state": 0,
+      "movable": false,
+      "kernel": 0
+    },
+    {
+      "id": 3,
+      "name": "water",
+      "rgba": [
+        47,
+        127,
+        210,
+        255
+      ],
+      "state": 3,
+      "movable": true,
+      "kernel": 2
+    },
+    {
+      "id": 40,
+      "name": "granite-block",
+      "rgba": [
+        119,
+        119,
+        130,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0
+    },
+    {
+      "id": 54,
+      "name": "verdigris-copper",
+      "rgba": [
+        79,
+        140,
+        121,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0
+    },
+    {
+      "id": 58,
+      "name": "reinforced-concrete",
+      "rgba": [
+        119,
+        123,
+        128,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0
+    },
+    {
+      "id": 62,
+      "name": "steel-plate",
+      "rgba": [
+        126,
+        141,
+        153,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0
+    },
+    {
+      "id": 65,
+      "name": "rusted-steel",
+      "rgba": [
+        124,
+        63,
+        43,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0
+    },
+    {
+      "id": 66,
+      "name": "steel-grating",
+      "rgba": [
+        74,
+        85,
+        93,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0
+    },
+    {
+      "id": 68,
+      "name": "steel-pipe",
+      "rgba": [
+        102,
+        119,
+        129,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0
+    },
+    {
+      "id": 69,
+      "name": "copper-pipe",
+      "rgba": [
+        165,
+        92,
+        54,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0
+    },
+    {
+      "id": 71,
+      "name": "chemical-glass",
+      "rgba": [
+        107,
+        196,
+        181,
+        184
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0
+    },
+    {
+      "id": 72,
+      "name": "dark-glass",
+      "rgba": [
+        37,
+        60,
+        76,
+        192
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0
+    },
+    {
+      "id": 74,
+      "name": "cable-bundle",
+      "rgba": [
+        60,
+        53,
+        68,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0
+    },
+    {
+      "id": 77,
+      "name": "neon-cyan",
+      "rgba": [
+        55,
+        243,
+        228,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0
+    },
+    {
+      "id": 79,
+      "name": "neon-amber",
+      "rgba": [
+        255,
+        181,
+        46,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0
+    },
+    {
+      "id": 80,
+      "name": "led-white",
+      "rgba": [
+        236,
+        248,
+        255,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0
+    },
+    {
+      "id": 100,
+      "name": "basalt-columns",
+      "rgba": [
+        54,
+        56,
+        61,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0
+    },
+    {
+      "id": 101,
+      "name": "obsidian",
+      "rgba": [
+        24,
+        19,
+        32,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0
+    },
+    {
+      "id": 120,
+      "name": "glass-block",
+      "rgba": [
+        156,
+        210,
+        220,
+        204
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0
+    },
+    {
+      "id": 121,
+      "name": "frosted-glass",
+      "rgba": [
+        206,
+        226,
+        232,
+        214
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0
+    },
+    {
+      "id": 122,
+      "name": "quartz-crystal",
+      "rgba": [
+        226,
+        236,
+        244,
+        224
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0
+    },
+    {
+      "id": 127,
+      "name": "phosphor-panel",
+      "rgba": [
+        176,
+        220,
+        172,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0
+    }
+  ],
+  "style_guide": {
+    "theme": "Abandoned underground survey station: basalt ruptures, glass-quartz instruments and decayed engineer signalling",
+    "primary": "Basalt 100 / Obsidian 101; quartz 122 is the focal accent",
+    "secondary": "Oxidised VerdigrisCopper 54, RustedSteel 65, neutral ReinforcedConcrete 58",
+    "signalling": "Cyan 77 for regular readback, Amber 79 for rare caution; static shader effects only",
+    "rhythm": "dark mass dominates bright accents; alternate 1 high shard or antenna among two low rock/industrial features",
+    "modules": "48–88 cells width; preserve empty skyline and a real carved passage if requested",
+    "no_overlay": true
+  },
+  "features": [
+    {
+      "id": "fault-strata",
+      "title": "Shattered basalt rib",
+      "size": [
+        72,
+        56
+      ],
+      "status": "static",
+      "role": "Jagged mineral flank and seam grammar",
+      "anchor": {
+        "type": "ground-contact",
+        "point": [
+          36,
+          56
+        ]
+      },
+      "requires_clearance": true,
+      "rectangles": [
+        [
+          0,
+          45,
+          72,
+          11,
+          100
+        ],
+        [
+          0,
+          31,
+          12,
+          14,
+          100
+        ],
+        [
+          12,
+          37,
+          8,
+          8,
+          100
+        ],
+        [
+          23,
+          40,
+          8,
+          5,
+          100
+        ],
+        [
+          39,
+          32,
+          10,
+          13,
+          100
+        ],
+        [
+          49,
+          39,
+          10,
+          6,
+          100
+        ],
+        [
+          61,
+          35,
+          11,
+          10,
+          100
+        ],
+        [
+          2,
+          28,
+          8,
+          3,
+          40
+        ],
+        [
+          41,
+          29,
+          7,
+          3,
+          101
+        ],
+        [
+          16,
+          43,
+          7,
+          3,
+          101
+        ],
+        [
+          20,
+          41,
+          2,
+          2,
+          122
+        ],
+        [
+          22,
+          39,
+          2,
+          2,
+          122
+        ],
+        [
+          29,
+          43,
+          2,
+          3,
+          122
+        ],
+        [
+          34,
+          39,
+          2,
+          6,
+          122
+        ],
+        [
+          53,
+          43,
+          2,
+          4,
+          122
+        ],
+        [
+          65,
+          39,
+          3,
+          3,
+          101
+        ],
+        [
+          3,
+          52,
+          66,
+          1,
+          101
+        ]
+      ],
+      "variants": [
+        {
+          "id": "pale-fault",
+          "swap": {
+            "122": 120
+          },
+          "note": "Glassier seam"
+        },
+        {
+          "id": "obsidian-bank",
+          "swap": {
+            "100": 101
+          },
+          "note": "Darker base"
+        }
+      ],
+      "placement_rules": [
+        "Anchor to host rock; the fractured surface must remain legible.",
+        "Join matching low rock edges only; do not bury the quartz vein."
+      ]
+    },
+    {
+      "id": "quartz-fan",
+      "title": "Split quartz fan",
+      "size": [
+        56,
+        56
+      ],
+      "status": "static",
+      "role": "Asymmetric shard bloom and high-contrast focal landmark",
+      "anchor": {
+        "type": "ground-contact",
+        "point": [
+          28,
+          56
+        ]
+      },
+      "requires_clearance": true,
+      "rectangles": [
+        [
+          0,
+          47,
+          56,
+          9,
+          100
+        ],
+        [
+          3,
+          39,
+          9,
+          8,
+          101
+        ],
+        [
+          44,
+          38,
+          8,
+          9,
+          101
+        ],
+        [
+          17,
+          21,
+          7,
+          26,
+          122
+        ],
+        [
+          24,
+          14,
+          6,
+          33,
+          122
+        ],
+        [
+          30,
+          24,
+          6,
+          23,
+          122
+        ],
+        [
+          11,
+          30,
+          6,
+          17,
+          121
+        ],
+        [
+          37,
+          32,
+          5,
+          15,
+          121
+        ],
+        [
+          24,
+          7,
+          3,
+          7,
+          120
+        ],
+        [
+          25,
+          2,
+          2,
+          5,
+          120
+        ],
+        [
+          18,
+          18,
+          4,
+          3,
+          120
+        ],
+        [
+          31,
+          21,
+          3,
+          3,
+          120
+        ],
+        [
+          24,
+          43,
+          6,
+          3,
+          77
+        ],
+        [
+          6,
+          49,
+          44,
+          2,
+          101
+        ]
+      ],
+      "variants": [
+        {
+          "id": "frosted",
+          "swap": {
+            "122": 121
+          },
+          "note": "Muted crystals"
+        },
+        {
+          "id": "pale",
+          "swap": {
+            "122": 120
+          },
+          "note": "Less crystalline look"
+        }
+      ],
+      "placement_rules": [
+        "Keep 8 empty cells above the tallest spire.",
+        "No active liquid should flow across the feature without native testing."
+      ]
+    },
+    {
+      "id": "survey-tripod",
+      "title": "Vermilion survey antenna",
+      "size": [
+        64,
+        64
+      ],
+      "status": "static",
+      "role": "Oxidised measurement rig with optical hood",
+      "anchor": {
+        "type": "ground-contact",
+        "point": [
+          32,
+          64
+        ]
+      },
+      "requires_clearance": true,
+      "rectangles": [
+        [
+          7,
+          56,
+          51,
+          8,
+          58
+        ],
+        [
+          13,
+          50,
+          5,
+          6,
+          62
+        ],
+        [
+          46,
+          50,
+          5,
+          6,
+          62
+        ],
+        [
+          16,
+          36,
+          6,
+          14,
+          54
+        ],
+        [
+          42,
+          36,
+          6,
+          14,
+          54
+        ],
+        [
+          20,
+          22,
+          6,
+          14,
+          54
+        ],
+        [
+          38,
+          22,
+          6,
+          14,
+          54
+        ],
+        [
+          24,
+          16,
+          16,
+          10,
+          62
+        ],
+        [
+          26,
+          12,
+          12,
+          4,
+          121
+        ],
+        [
+          28,
+          9,
+          8,
+          3,
+          72
+        ],
+        [
+          27,
+          20,
+          10,
+          3,
+          77
+        ],
+        [
+          30,
+          24,
+          4,
+          8,
+          69
+        ],
+        [
+          22,
+          42,
+          20,
+          4,
+          74
+        ],
+        [
+          17,
+          48,
+          30,
+          3,
+          62
+        ],
+        [
+          10,
+          58,
+          44,
+          2,
+          65
+        ],
+        [
+          25,
+          34,
+          14,
+          2,
+          66
+        ]
+      ],
+      "variants": [
+        {
+          "id": "dead-sensor",
+          "swap": {
+            "77": 72
+          },
+          "note": "No cyan slit"
+        },
+        {
+          "id": "amber-alarm",
+          "swap": {
+            "77": 79
+          },
+          "note": "Warm signal"
+        }
+      ],
+      "placement_rules": [
+        "Requires at least 51 continuous ground cells.",
+        "The glass hood is not a scanning device; static art only."
+      ]
+    },
+    {
+      "id": "seal-gate",
+      "title": "Geometric survey seal",
+      "size": [
+        80,
+        64
+      ],
+      "status": "static",
+      "role": "Basalt architectural portal with actual void opening",
+      "anchor": {
+        "type": "ground-contact",
+        "point": [
+          40,
+          64
+        ]
+      },
+      "requires_clearance": true,
+      "rectangles": [
+        [
+          0,
+          56,
+          80,
+          8,
+          100
+        ],
+        [
+          5,
+          16,
+          12,
+          40,
+          100
+        ],
+        [
+          63,
+          16,
+          12,
+          40,
+          100
+        ],
+        [
+          8,
+          8,
+          64,
+          9,
+          100
+        ],
+        [
+          17,
+          17,
+          46,
+          5,
+          101
+        ],
+        [
+          18,
+          22,
+          4,
+          34,
+          58
+        ],
+        [
+          58,
+          22,
+          4,
+          34,
+          58
+        ],
+        [
+          22,
+          21,
+          36,
+          3,
+          62
+        ],
+        [
+          24,
+          24,
+          32,
+          2,
+          69
+        ],
+        [
+          8,
+          10,
+          58,
+          2,
+          54
+        ],
+        [
+          5,
+          38,
+          3,
+          10,
+          77
+        ],
+        [
+          72,
+          38,
+          3,
+          10,
+          79
+        ],
+        [
+          25,
+          53,
+          30,
+          3,
+          66
+        ],
+        [
+          10,
+          56,
+          60,
+          2,
+          101
+        ]
+      ],
+      "variants": [
+        {
+          "id": "ruined",
+          "swap": {
+            "54": 65
+          },
+          "note": "Oxidised"
+        },
+        {
+          "id": "cold-gate",
+          "swap": {
+            "79": 77
+          },
+          "note": "Dual cyan"
+        }
+      ],
+      "placement_rules": [
+        "Carve host terrain in centre x22..57,y26..52 before applying; missing cells are NOT auto-cleared.",
+        "Steel-grating sill is opaque to physics despite its patterned rendering."
+      ]
+    },
+    {
+      "id": "sealed-cistern",
+      "title": "Sealed witness cistern",
+      "size": [
+        88,
+        64
+      ],
+      "status": "contained-dynamic",
+      "role": "Enclosed Water specimen, inspector windows, corrosion",
+      "anchor": {
+        "type": "ground-contact",
+        "point": [
+          44,
+          64
+        ]
+      },
+      "requires_clearance": true,
+      "rectangles": [
+        [
+          0,
+          9,
+          8,
+          55,
+          58
+        ],
+        [
+          80,
+          9,
+          8,
+          55,
+          58
+        ],
+        [
+          0,
+          56,
+          88,
+          8,
+          58
+        ],
+        [
+          0,
+          5,
+          88,
+          4,
+          62
+        ],
+        [
+          8,
+          35,
+          72,
+          21,
+          3
+        ],
+        [
+          3,
+          22,
+          5,
+          6,
+          71
+        ],
+        [
+          80,
+          23,
+          5,
+          8,
+          71
+        ],
+        [
+          8,
+          5,
+          28,
+          4,
+          65
+        ],
+        [
+          34,
+          3,
+          20,
+          2,
+          77
+        ],
+        [
+          42,
+          9,
+          4,
+          12,
+          68
+        ],
+        [
+          0,
+          56,
+          88,
+          3,
+          101
+        ],
+        [
+          6,
+          59,
+          76,
+          2,
+          54
+        ]
+      ],
+      "variants": [
+        {
+          "id": "dry",
+          "swap": {
+            "3": 0
+          },
+          "note": "No liquid"
+        },
+        {
+          "id": "white-beacon",
+          "swap": {
+            "77": 80
+          },
+          "note": "Neutral instrument"
+        }
+      ],
+      "placement_rules": [
+        "Only insert into previously empty cavity; don't intersect seals.",
+        "Water ID 3 is mobile native FreeMass: containment/pressure/leakage unqualified until a real native run.",
+        "Do not connect this basin to a hydrology system without a new test."
+      ]
+    },
+    {
+      "id": "signal-totem",
+      "title": "Phosphor signal reliquary",
+      "size": [
+        48,
+        64
+      ],
+      "status": "static",
+      "role": "Vertical monument with opposed optical bands",
+      "anchor": {
+        "type": "ground-contact",
+        "point": [
+          24,
+          64
+        ]
+      },
+      "requires_clearance": true,
+      "rectangles": [
+        [
+          12,
+          56,
+          24,
+          8,
+          100
+        ],
+        [
+          17,
+          16,
+          14,
+          40,
+          101
+        ],
+        [
+          15,
+          14,
+          18,
+          4,
+          62
+        ],
+        [
+          18,
+          20,
+          12,
+          28,
+          121
+        ],
+        [
+          20,
+          22,
+          8,
+          24,
+          127
+        ],
+        [
+          19,
+          23,
+          2,
+          20,
+          77
+        ],
+        [
+          28,
+          23,
+          2,
+          20,
+          79
+        ],
+        [
+          10,
+          47,
+          28,
+          4,
+          54
+        ],
+        [
+          12,
+          52,
+          24,
+          4,
+          58
+        ],
+        [
+          15,
+          9,
+          18,
+          5,
+          120
+        ],
+        [
+          22,
+          3,
+          4,
+          6,
+          122
+        ],
+        [
+          11,
+          56,
+          26,
+          2,
+          101
+        ]
+      ],
+      "variants": [
+        {
+          "id": "amber",
+          "swap": {
+            "77": 79
+          },
+          "note": "Warm light"
+        },
+        {
+          "id": "unpowered",
+          "swap": {
+            "77": 72,
+            "79": 72,
+            "127": 72
+          },
+          "note": "All dark"
+        }
+      ],
+      "placement_rules": [
+        "One major totem per 240 horizontal cells.",
+        "8 empty cells above spire; emission is purely render-side."
+      ]
+    },
+    {
+      "id": "collapsed-gantry",
+      "title": "Fallen inspection truss",
+      "size": [
+        88,
+        56
+      ],
+      "status": "static",
+      "role": "Frozen diagonal crash silhouette and loose cable motifs",
+      "anchor": {
+        "type": "ground-contact",
+        "point": [
+          44,
+          56
+        ]
+      },
+      "requires_clearance": true,
+      "rectangles": [
+        [
+          0,
+          49,
+          88,
+          7,
+          100
+        ],
+        [
+          8,
+          42,
+          22,
+          7,
+          65
+        ],
+        [
+          40,
+          43,
+          24,
+          6,
+          62
+        ],
+        [
+          62,
+          38,
+          10,
+          11,
+          100
+        ],
+        [
+          14,
+          32,
+          6,
+          10,
+          65
+        ],
+        [
+          20,
+          29,
+          8,
+          5,
+          65
+        ],
+        [
+          28,
+          25,
+          8,
+          5,
+          65
+        ],
+        [
+          36,
+          20,
+          8,
+          6,
+          65
+        ],
+        [
+          44,
+          16,
+          9,
+          7,
+          62
+        ],
+        [
+          53,
+          20,
+          6,
+          6,
+          62
+        ],
+        [
+          56,
+          27,
+          5,
+          12,
+          62
+        ],
+        [
+          26,
+          31,
+          22,
+          3,
+          74
+        ],
+        [
+          47,
+          24,
+          10,
+          2,
+          74
+        ],
+        [
+          51,
+          16,
+          4,
+          4,
+          79
+        ],
+        [
+          10,
+          46,
+          50,
+          3,
+          101
+        ],
+        [
+          35,
+          40,
+          8,
+          4,
+          66
+        ]
+      ],
+      "variants": [
+        {
+          "id": "repaired",
+          "swap": {
+            "65": 62
+          },
+          "note": "Earlier assembly"
+        },
+        {
+          "id": "silent",
+          "swap": {
+            "79": 101
+          },
+          "note": "Dead indicator"
+        }
+      ],
+      "placement_rules": [
+        "All fragments are immovable authored solids, NOT native rigid debris.",
+        "Do not stamp over walkways without collision checks."
+      ]
+    },
+    {
+      "id": "archive-console",
+      "title": "Sublevel survey archive",
+      "size": [
+        72,
+        56
+      ],
+      "status": "static",
+      "role": "Unreadable but tactile instrument wall in glass and steel",
+      "anchor": {
+        "type": "ground-contact",
+        "point": [
+          36,
+          56
+        ]
+      },
+      "requires_clearance": true,
+      "rectangles": [
+        [
+          0,
+          48,
+          72,
+          8,
+          58
+        ],
+        [
+          4,
+          43,
+          64,
+          5,
+          62
+        ],
+        [
+          8,
+          18,
+          56,
+          25,
+          65
+        ],
+        [
+          12,
+          21,
+          48,
+          19,
+          72
+        ],
+        [
+          15,
+          23,
+          42,
+          4,
+          127
+        ],
+        [
+          16,
+          30,
+          10,
+          2,
+          80
+        ],
+        [
+          31,
+          30,
+          10,
+          2,
+          80
+        ],
+        [
+          46,
+          30,
+          8,
+          2,
+          79
+        ],
+        [
+          14,
+          35,
+          40,
+          2,
+          77
+        ],
+        [
+          5,
+          9,
+          62,
+          7,
+          62
+        ],
+        [
+          8,
+          5,
+          56,
+          4,
+          100
+        ],
+        [
+          16,
+          8,
+          40,
+          2,
+          54
+        ],
+        [
+          6,
+          48,
+          8,
+          5,
+          68
+        ],
+        [
+          58,
+          48,
+          8,
+          5,
+          69
+        ]
+      ],
+      "variants": [
+        {
+          "id": "blackout",
+          "swap": {
+            "77": 72,
+            "79": 72,
+            "80": 72
+          },
+          "note": "No display"
+        },
+        {
+          "id": "alarm",
+          "swap": {
+            "77": 79,
+            "127": 80
+          },
+          "note": "Emergency palette"
+        }
+      ],
+      "placement_rules": [
+        "Needs a floor or wall shelf; opaque DarkGlass occupies solid cells.",
+        "No actual UI or machine control interface is implied."
+      ]
+    }
+  ],
+  "scene": {
+    "id": "lumen-fault-section-a",
+    "size": [
+      640,
+      256
+    ],
+    "title": "Lumen Fault / two-level calibration hall",
+    "classification": "mixed",
+    "rectangles": [
+      [
+        0,
+        128,
+        640,
+        10,
+        100
+      ],
+      [
+        0,
+        235,
+        640,
+        21,
+        100
+      ],
+      [
+        0,
+        246,
+        640,
+        10,
+        101
+      ],
+      [
+        0,
+        235,
+        640,
+        3,
+        58
+      ],
+      [
+        16,
+        138,
+        10,
+        97,
+        58
+      ],
+      [
+        291,
+        138,
+        10,
+        97,
+        58
+      ],
+      [
+        604,
+        138,
+        10,
+        97,
+        58
+      ],
+      [
+        150,
+        202,
+        98,
+        3,
+        69
+      ],
+      [
+        342,
+        202,
+        134,
+        3,
+        69
+      ],
+      [
+        475,
+        196,
+        4,
+        9,
+        69
+      ],
+      [
+        566,
+        182,
+        38,
+        3,
+        68
+      ],
+      [
+        16,
+        220,
+        42,
+        3,
+        66
+      ],
+      [
+        555,
+        218,
+        33,
+        3,
+        66
+      ],
+      [
+        510,
+        139,
+        3,
+        32,
+        74
+      ],
+      [
+        510,
+        148,
+        3,
+        6,
+        79
+      ]
+    ],
+    "placements": [
+      {
+        "feature": "fault-strata",
+        "x": 18,
+        "y": 72,
+        "variant": "base"
+      },
+      {
+        "feature": "quartz-fan",
+        "x": 107,
+        "y": 72,
+        "variant": "base"
+      },
+      {
+        "feature": "survey-tripod",
+        "x": 183,
+        "y": 64,
+        "variant": "base"
+      },
+      {
+        "feature": "seal-gate",
+        "x": 281,
+        "y": 64,
+        "variant": "base"
+      },
+      {
+        "feature": "collapsed-gantry",
+        "x": 398,
+        "y": 72,
+        "variant": "base"
+      },
+      {
+        "feature": "archive-console",
+        "x": 82,
+        "y": 179,
+        "variant": "base"
+      },
+      {
+        "feature": "sealed-cistern",
+        "x": 252,
+        "y": 171,
+        "variant": "base"
+      },
+      {
+        "feature": "signal-totem",
+        "x": 488,
+        "y": 171,
+        "variant": "base"
+      }
+    ],
+    "composition_rules": [
+      "Two tectonic tiers (upper y128, lower y235), with 5 high-deck and 3 low-deck pieces.",
+      "Every feature bottom is coincident with the support deck upper boundary.",
+      "Cistern Water is the only active, mobile material in the base version.",
+      "No demonstrated traversable path, body motion or future event progression."
+    ]
+  },
+  "limits": [
+    "No Godot rendering or native simulation was executed.",
+    "The shadow catalogue supplies flat display RGBA but not production authority.",
+    "All static parts use immovable catalogue materials. Steel grating and glass are solid hard surfaces, not pass-through.",
+    "The cistern's water is dynamic FreeMass. Intended enclosure is not empirical proof of leak freedom or conservation.",
+    "All pieces are single-plane local rectangle sets; mapping into semantic planes, priority, terrain carving and snapshots is future integration."
+  ]
+}
