@@ -50,7 +50,7 @@ Liquid reassessment #359: [current-main implementation and evidence audit](audit
 [canonical family/material policy](architecture/liquid-solver-family-policy.md),
 [ordinary application comparison paths](operations/lcb-manual-comparison-ux.md)
 and [bounded scenario reuse](operations/lcb-scenario-catalogue.md#current-main-reuse-and-fair-comparison--2026-11-03).
-All four families are landed; #360â€“#363 own the remaining comparison/tools/contact
+All four families are landed; #360–#363 own the remaining comparison/tools/contact
 and decision work. Historical pre-merge records below retain their dated scope.
 
 Stopped PLAY recovery: [canonical ownership and controls](systems/player-control-playground.md#stopped-composed-session-recovery), [preserved failure and current-main reconciliation](audits/2026-10-31-play-stopped-session-recovery.md), and [PR #332 qualification ledger](https://github.com/techrote/cybersand/pull/332). PACE004 #334 is merged (main `070c7a22`, apparatus only) but its exact-head hosted campaign remains a separate PLAY lane.
@@ -59,7 +59,7 @@ Native render copy: [canonical bridge contract](architecture/rendering-and-gamep
 
 CI scheduling and capacity: [canonical execution contract](operations/ci-execution-and-performance.md), [qualification evidence](audits/2026-11-01-ci-scheduling-qualification.md), [all-workflow audit](audits/2026-11-01-ci-workflow-audit.md), and [Linux display setup qualification](audits/2026-11-03-linux-display-mesa-utils-removal.md).
 
-## Current owner policy and accepted baseline â€” 2026-10-31
+## Current owner policy and accepted baseline — 2026-10-31
 
 The owner supersedes the earlier shader deferral and short immutable deadline
 restrictions below. Integrate and qualify #326 on accepted main `adaaa37`; use the
@@ -78,7 +78,7 @@ Earlier dated checkpoints below describe their original restrictions and source,
 not today's superseding owner decision.
 
 
-## CI parallel production integration â€” 2026-10-31
+## CI parallel production integration — 2026-10-31
 
 The [production CI record](audits/2026-10-31-ci-parallel-production-integration.md)
 reconciles the six-family Native, four-way Windows and report-only scope trials.
@@ -87,7 +87,7 @@ preserves scientific fixtures and complete
 Windows/Linux gate. Predecessor trial timing is distinct from resulting-head
 qualification and does not remove the separate PLAY graphical hold.
 
-## PLAY current route â€” 2026-10-30
+## PLAY current route — 2026-10-30
 
 The [player contract](systems/player-control-playground.md#current-play-acceptance-boundary--2026-10-30)
 records the owner's accepted #302 native-busy boundary and optional, non-blocking
@@ -99,7 +99,7 @@ automated execution from pending exact-head hosted and physical/human gates.
 Use the [owner walkthrough](operations/local-build-and-validation.md#shared-play-session-and-owner-qualification)
 for the shortest reproducible route into #270. PLAY is not release-qualified.
 
-## Trial successor correction after accepted App â€” 2026-10-25
+## Trial successor correction after accepted App — 2026-10-25
 
 App #256 is merged as main56422c05 after all four exact-dc2 required gates.
 The [Trial correction record](audits/2026-10-25-lcb003-trial-body-constructors.md#failed-full-matrix-and-unsupported-rig-correction--2026-10-25)
@@ -112,7 +112,7 @@ local proof does not close other constructors, full-host/scientific or #203
 qualification. Older preparation/pending-App sections retain their source
 snapshots. Further Web testing is owner-deferred until after the epic.
 
-## Current Trial consumption of corrected App â€” preparation only
+## Current Trial consumption of corrected App — preparation only
 
 This Trial branch consumes exact Appdc2eee94 (sourcefix152a5074), retaining all
 ten f65f3de9 Trial files and the two incoming identity-test hashes. Native80 and
@@ -138,7 +138,7 @@ entries, with no added paths or runtime/manifest rewrite. Older source5f02/a704
 publication facts below remain source-bound. #256 is draft pending new exact-head
 gates/review; old ea96 Docs/#49 greens do not cover the successor. Web is deferred.
 
-## Consumed App publication â€” source5f02 and checkpoint ea96 â€” 2026-10-25
+## Consumed App publication — source5f02 and checkpoint ea96 — 2026-10-25
 
 The [actual003 publication](audits/2026-10-25-lcb003-runtime-publication.md#actual-sequence1-windowslinux-publication--2026-10-25) now binds source
 `5f02d089ee4cff8b34421cc4ca58bb4ef50dd92c`, run40226343524 and four-path bot
@@ -337,7 +337,7 @@ constructor/refusal checks; remaining routes and full qualification stay open.
 
 For intermittent physical actor Godot timeouts, start with the [#234 qualified repair and acceptance ledger](audits/2026-10-24-issue-234-physical-hang-repair.md) and [live diagnostics/stress guide](operations/local-build-and-validation.md#physical-actor-timeout-investigation). The [admitted #233 baseline](audits/2026-10-24-issue-233-physical-regression-timeouts.md) retains its 600-attempt failures and causal limits. Separate [native-stack / paired evidence](audits/2026-10-24-physical-actor-bvh-validation.md) supports the selected desktop BVH backport. PR #236's integrated head passed ordinary admission and merged as `13b8e631f3e8fbaa2176ed41afc02c434b11e558`; fresh standard qualification run `40129364630` completed 600/600 physical passes, 0/600 timeouts, zero other failures and 20/20 import passes at that immutable source. This qualifies the registered Windows/Linux x86_64 workload and exact artifacts; native-worker count was not varied and the precise scheduler trigger remains unproven.
 
-For **Generation Workbench 2**, use the [inspection and authoring contract](systems/generation-workbench-2.md): truthful native replay, actual intermediate stages, graph/hierarchy tools, transactional undo/redo and bounded seed/recipe comparisons. The [procedural qualification guide](operations/procedural-qualification.md) routes the 1024 Ãƒâ€” 1024 scene, final-raster paths, native exhibits and visual evidence.
+For **Generation Workbench 2**, use the [inspection and authoring contract](systems/generation-workbench-2.md): truthful native replay, actual intermediate stages, graph/hierarchy tools, transactional undo/redo and bounded seed/recipe comparisons. The [procedural qualification guide](operations/procedural-qualification.md) routes the 1024 Ã— 1024 scene, final-raster paths, native exhibits and visual evidence.
 
 Choose all 46 [articulated Rapier actors](systems/physical-actor-rigs.md) with F5 in the sandbox and exploratory maps, using keyboard, local scripted or external-policy control. Sampled references and the initial hull arms remain available; [the physical actor programme](operations/physical-actor-programme.md) preserves owner intent and integration scope.
 
@@ -385,7 +385,7 @@ The [PLAY-WAIT-001 snapshot handoff probe](audits/2026-10-29-play-wait001-main-s
 Layering, quantized relief and Strata Theatre: [depth prototype contract](systems/depth-layers-and-parallax.md).
 
 For **Deepworks**, start with the [exhibition guide](operations/deepworks-exhibition.md):
-one 1024 Ãƒâ€” 1024 map, sixteen themed districts, 32 foreground/rear native exhibits,
+one 1024 Ã— 1024 map, sixteen themed districts, 32 foreground/rear native exhibits,
 four full-size material planes, source schedules, free-camera painting and
 whole-map replay. `--deepworks` opens its separate scene from the desktop launcher.
 The [PR #185 completion record](audits/2026-10-20-deepworks-pr185-completion.md)
@@ -393,7 +393,7 @@ owns the reaction-evidence correction and final hosted acceptance.
 
 For **Blacksite Nine**, start with the
 [connected-complex guide](operations/blacksite-nine-demo.md): Shift+F11 entry,
-the 3Ãƒâ€”3 camera map, twelve shared passages, player-follow exploration and the
+the 3Ã—3 camera map, twelve shared passages, player-follow exploration and the
 whole-complex reset. All nine districts occupy one continuous native world.
 
 For Neon Reliquary and the three district tiles below it, start with the
@@ -592,7 +592,7 @@ stays read-only with respect to material authority.
 
 ## LCB-000 final admission status
 
-For final Gate AÃ¢â‚¬â€œE PASS, the landed stack, the bounded #200 policy foundation and the
+For final Gate Aâ€“E PASS, the landed stack, the bounded #200 policy foundation and the
 2026-10-24 owner decision that lifted the holds on the #200 pressure reference and #212, read
 the [current roadmap checkpoint](reference/status-and-roadmap.md#liquid-comparison-build-design-checkpoint--2026-10-23),
 the [pressure reference entry](reference/status-and-roadmap.md#lcb-001-pressure-reference--2026-10-24)

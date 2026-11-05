@@ -70,8 +70,8 @@ isolates `workbench_coupling_results()` from the native tick. The getter include
 the passive solve and serial response construction; the older four-stage
 subtotal omitted it. In48fresh single-body sessions at `a47be4e2`,24full/minimal
 observer pairs match body states, response/application and all scheduled exports.
-Recorded response-generation means are12.739â€“22.25Âµs for this256Â² workload.
-Full per-cell/mask observation adds roughly11.8â€“13.1ms per recorded step compared
+Recorded response-generation means are12.739–22.25µs for this256² workload.
+Full per-cell/mask observation adds roughly11.8–13.1ms per recorded step compared
 with minimal observation. This is test-apparatus overhead, not a shipped speedup.
 
 Minimal observation still records body states, statistics and exports; export
@@ -104,7 +104,7 @@ one-use application and default response contracts remain unchanged.
 rigid bodies. Bodies are never erased from/restored into the material array.
 `CyberNativeCellWorld` projects copied rectangles into a separate transient
 body-ID field. Sand, liquids, Smoke, painting and the sampled character read
-that endpoint field as occupied. The retained three 8Ã—14 reference bodies are drawn through
+that endpoint field as occupied. The retained three 8×14 reference bodies are drawn through
 shader transforms. ACT-004 instead draws each articulated part from its actual
 collider and copied Rapier transform; body colour is not stored in the cell texture. Moved-body
 overlap is resolved by bounded material ejection; if no destination fits, the
@@ -124,7 +124,7 @@ Source: [native `prepare_rigid_body_coupling`, `parse_body_states`, `rasterize_b
 1. Clear/wake the previous obstacle field and clear observations. Mask changes
    wake their own resident activity block and boundary neighbors without a cell
    or render write, including masks wholly inside a sleeping block. Parse at most
-   64 complete records with body IDs 1â€“64; retain the first duplicate ID.
+   64 complete records with body IDs 1–64; retain the first duplicate ID.
    ACT-004 rejects nonfinite records, fractional IDs/serials and nonpositive
    sizes/mass. The physical session checks its complete assembly budget before
    installation; the low-level bounded parser does not admit excess records.
@@ -193,7 +193,7 @@ have cast-shape CCD enabled and zero restitution; see
 [body configuration](../../godot/main.tscn). A future adaptive CCD/substep
 controller is a separate **Planned** feature.
 
-Hard-terrain extraction creates 64Ã—64 packets: 256 units for the 1024Â² demo.
+Hard-terrain extraction creates 64×64 packets: 256 units for the 1024² demo.
 The consumer checks a 32-chunk/750-microsecond soft rebuild budget between units.
 The preceding native `get_hard_surface_chunk_rectangles` extraction is outside
 that budget, and one indivisible changed chunk may exceed it. This is bounded
@@ -232,7 +232,7 @@ sampled character or a barrel-style player through a fresh-reset-only boundary.
 The barrel player is the existing body-0 rectangle and uses the same
 `CyberRapierPhysicsBridge` sampling, transient body mask, native cellular
 reaction results, static hard-terrain colliders and Rapier ownership as the red
-reference barrel. There is no in-place sampledâ†”body ownership conversion.
+reference barrel. There is no in-place sampled↔body ownership conversion.
 
 Barrel locomotion adds only a bounded main-thread horizontal central impulse.
 The controller reads live Rapier velocity **after** cellular results are applied,
@@ -242,7 +242,7 @@ or changes the vertical component. Existing cellular displacement/contact/bearin
 results therefore remain observable rather than being overwritten by a character
 velocity controller.
 
-PCHAR-001 does not change generic bodyâ†”cellular semantics, result ABI, bearing,
+PCHAR-001 does not change generic body↔cellular semantics, result ABI, bearing,
 ejection, sample-age policy, Water behavior or hard-terrain ownership. Any such
 change still belongs to #83 / REM-004. The switch is an evidence-generating
 player-representation experiment under parent #132, not a declaration that the
@@ -289,7 +289,7 @@ in the dated REM-002 audit.
 
 This is still a bounded ordinary rectangle/load baseline. General shapes, high
 energy/thin beds, crowding, sustained publication delay, calibrated force/torque,
-fracture and broad bodyâ†”granular gameplay acceptance remain outside this contract
+fracture and broad body↔granular gameplay acceptance remain outside this contract
 and are owned by REM-004 / #83 where applicable.
 
 ## Sampled player support is a separate owner

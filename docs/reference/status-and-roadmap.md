@@ -10,7 +10,7 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
-## Compound granular behaviour and SOL boundary â€” 2026-11-05
+## Compound granular behaviour and SOL boundary — 2026-11-05
 
 The [active-normal value refinement](../audits/2026-11-05-sol-active-normal.md)
 passes its38case registration on three compiled variants, improving nine COM
@@ -20,8 +20,8 @@ as default. Fresh native runtimes and both-host lifecycle tests pass; smoke
 episodes complete, with independent physics reduction/full matrix pending. Original SOL ownership/material admission stays separate.
 
 The [separate response-cost lane](../audits/2026-11-05-sol-response-cost.md)
-qualifies48single-body sessions and24observer pairs:13â€“22Âµs response generation
-in this small workload, with roughly12â€“13ms full-census overhead. This isolates
+qualifies48single-body sessions and24observer pairs:13–22µs response generation
+in this small workload, with roughly12–13ms full-census overhead. This isolates
 measurement cost without changing the solver or proving general engine scaling.
 Driven overlap persists. Prioritize separately registered physical refinement
 and original SOL capture/Active-hold admission; neither follows from low API cost.
@@ -45,7 +45,7 @@ solver or general nonpenetration guarantee is implemented. Prioritize an
 independently reviewed residual/contact policy and separately isolated response-
 generation cost before any live refinement or default promotion.
 
-## MAT-AUTH reviewed per-file transitions â€” 2026-11-04
+## MAT-AUTH reviewed per-file transitions — 2026-11-04
 
 The owner approved a narrow way to admit a reviewed, behaviour-preserving edit
 to one protected legacy consumer without refreshing the compatibility lock
@@ -56,23 +56,23 @@ committed record, and refused for identity inputs. The table starts empty;
 the lock, baseline and digests are unchanged. #382 (#201 P1) is the first PR
 to add an entry, together with its source change.
 
-## PressureFlow desktop region flip (#201) â€” 2026-11-04
+## PressureFlow desktop region flip (#201) — 2026-11-04
 
 The [region-flip record](../audits/2026-11-04-lcb201-region-flip.md) fixes a
 desktop worker ordering that discarded the PressureFlow cache twice per step in
 fixed-interest scenarios. In the real host on main's runtime, the cached quiet
-pool improves from â‰ˆ36 ms to â‰ˆ10 ms per worker step and reaches the 60 Hz cap;
+pool improves from ≈36 ms to ≈10 ms per worker step and reaches the 60 Hz cap;
 reference and FreeMass are unchanged. Camera-motion invalidation remains a
 separate follow-up.
 
-## PressureFlow idle cost (#201) â€” 2026-11-04
+## PressureFlow idle cost (#201) — 2026-11-04
 
 The [#201 idle-cost record](../audits/2026-11-04-lcb201-pressure-idle-cost.md)
 measures accepted main `3da7e7be` natively, and is consistent with draft #370's
-â‰ˆ30 ms quiet-pool PressureFlow tick.
+≈30 ms quiet-pool PressureFlow tick.
 The pool's Water sleeps; the cost is serial reference preparation over the 1.64M
-cells that the prepared 1024Â² route makes resident. Same-law cached and
-cached_dormant variants cut quiet cost from â‰ˆ31â€“41 ms to â‰ˆ9â€“12 ms per native tick (FreeMass â‰ˆ0.02 ms). They are not
+cells that the prepared 1024² route makes resident. Same-law cached and
+cached_dormant variants cut quiet cost from ≈31–41 ms to ≈9–12 ms per native tick (FreeMass ≈0.02 ms). They are not
 idle-free: a per-tick wake scan remains, and gas-input edits or moving body
 masks restore roughly reference cost.
 **Task outcome B** (not #26's): residual cost is excessive at this scale. Two bounded
@@ -80,12 +80,12 @@ cached-only proposals (P1 wake-summary elision, P2 narrowed gas revocation) are
 **Planned, not implemented**. No production code, default or host changed; #201
 stays open, and a full-host cohort remains the next practical-cost experiment.
 An [experimental P1 draft](../audits/2026-11-04-lcb201-p1-wake-summaries.md),
-not accepted and not on main, cuts the quiet cached tick to â‰ˆ0.32 ms with exact
+not accepted and not on main, cuts the quiet cached tick to ≈0.32 ms with exact
 parity. It shows a small cost under continuous index churn. In the real desktop
-host, a per-step simulation-region flip erased the gain (cached â‰ˆ34 ms); with
-the flip fixed on main (above), the committed in-app cached step is â‰ˆ0.9 ms at 60 Hz.
+host, a per-step simulation-region flip erased the gain (cached ≈34 ms); with
+the flip fixed on main (above), the committed in-app cached step is ≈0.9 ms at 60 Hz.
 
-## Material shadow foundation and integration â€” 2026-11-04
+## Material shadow foundation and integration — 2026-11-04
 
 [#357 is merged](https://github.com/techrote/cybersand/pull/357#issuecomment-6619591556)
 and the [corrected architecture is owner-adopted as Planned](../architecture/material-authoring-catalogue-plan.md#12-owner-adoption-and-shadow-compiler-handover--2026-11-04).
@@ -105,7 +105,7 @@ resulting-head acceptance and actual merge status.
 | #354 / #377 | Phase A evidence-only current-main reconciliation and guarded integration authorized, subject to [fresh final-candidate gates](../operations/material-liveness-investigation.md#which-gates-control-phase-a-integration); H1 remains unrepaired, H2/H3 preserved, production admission pending and issue open |
 | #355 | Separate endpoint-effects implementation programme; serialize any overlapping World/quantity writes |
 | #356 | Separate inspector/editing work; effective controls need actual native consumers and applied readback |
-| #358 | Independent experimental material work;132â€“137 not integrated here |
+| #358 | Independent experimental material work;132–137 not integrated here |
 
 Broad #353 and parent #352 remain open. The original implementation receipts
 retain their tested source; no metadata or source-byte comparison by itself
@@ -117,7 +117,7 @@ No scheduler or physical-law patch is part of Phase A. Source-qualified executio
 retained failures, actual worker participation and unexecuted platform gates remain
 in the [findings](../audits/2026-11-04-mat354-findings.md) and live PR ledger.
 
-## Material authoring Planned adoption â€” 2026-11-04
+## Material authoring Planned adoption — 2026-11-04
 
 **Historical documentation-adoption scope.** The assignment statements below
 precede reconciliation of the separately implemented #371 candidate. The
@@ -131,10 +131,10 @@ review below. Runtime material behavior and backend/source-byte identities remai
 unchanged, and #353-A implementation is still a separate, unstarted assignment.
 
 Use the [bounded shadow-compiler handover](https://github.com/techrote/cybersand/issues/353#issuecomment-6619162661)
-before that assignment. Keep the #353 â†’ (#354/#355) â†’ #356 chain and all separate
+before that assignment. Keep the #353 → (#354/#355) → #356 chain and all separate
 consumer-cutover, semantics and runtime-editing decisions; parent #352 stays open.
 
-## Material authoring review â€” 2026-11-03
+## Material authoring review — 2026-11-03
 
 **Historical checkpoint:** the [4 November adoption](../architecture/material-authoring-catalogue-plan.md#12-owner-adoption-and-shadow-compiler-handover--2026-11-04)
 supersedes the adoption hold below; the later [A-only integration boundary](../architecture/material-authoring-catalogue-plan.md#13-bounded-compatibility-tooling-and-adopted-main-reconciliation--2026-11-04) supersedes its unstarted-assignment status. The retained review describes its original date.
@@ -148,7 +148,7 @@ semantics remain separately gated. #354/#355 serialize shared kernel writes;
 #356 exposes only real consumers. The [review](../audits/2026-11-03-mat-auth-000-architecture-review.md)
 preserves #162/#358/#347/#370 and GCR ownership and the original intake.
 
-## LCB current-main reassessment â€” 2026-11-03
+## LCB current-main reassessment — 2026-11-03
 
 The [#359 source-qualified audit](../audits/2026-11-03-lcb-reassessment.md)
 verifies main `89020b9eb6d540383a5bb64b58dcd29a87592c32`, including merged #332.
@@ -175,7 +175,7 @@ gameplay tools; #362 investigates impacts/upward spray after baseline reuse;
 implementation merge is part of #359. Original LCB issues stay open. Coordinate
 shared host changes with PLAY and native contact changes with #347.
 
-## Stopped PLAY recovery â€” 2026-11-02
+## Stopped PLAY recovery — 2026-11-02
 
 [PR #332](https://github.com/techrote/cybersand/pull/332) preserves the reviewed
 fresh-owner Restart implementation on accepted shader/render-copy main
@@ -190,7 +190,7 @@ PACE004 (#334 merged as apparatus-only main `070c7a22`; its exact-head hosted ca
 
 The 2026-11-01 [CI scheduling qualification](../audits/2026-11-01-ci-scheduling-qualification.md) and [repository-wide workflow audit](../audits/2026-11-01-ci-workflow-audit.md) separate expected shard cost, generous individual watchdogs and aggregate hosted safety. Eight jobs per platform bound GDExtension fan-out; superseded PR checks cancel while explicit qualification keeps distinct run groups. The owner authorized final review and conditional integration; [PR #340](https://github.com/techrote/cybersand/pull/340) records exact-head and post-merge gates. Historical draft qualification remains distinct from final integration acceptance.
 
-## Current owner policy and accepted baseline â€” 2026-10-31
+## Current owner policy and accepted baseline — 2026-10-31
 
 The owner supersedes the earlier shader deferral and short immutable deadline
 restrictions below. Integrate and qualify #326 on accepted main `adaaa37`; use the
@@ -209,7 +209,7 @@ Earlier dated checkpoints below describe their original restrictions and source,
 not today's superseding owner decision.
 
 
-## PLAY desktop continuation â€” 2026-10-31
+## PLAY desktop continuation — 2026-10-31
 
 The [INPUT010 correction](../audits/2026-10-31-play-input010-pause-transitions.md)
 revokes queued input immediately at pause transitions and supplies shared
@@ -243,7 +243,7 @@ Owner holds remain: no shader compilation/cache/decomposition work; #308/#310
 held, #312/#316 frozen and unmerged; Scheduswarm paused. Follow the current
 #305 manual ownership ledger before assigning successor source owners.
 
-## Production CI parallelism â€” 2026-10-31
+## Production CI parallelism — 2026-10-31
 
 **Implemented in this integration source; resulting-head qualification remains
 separate:** six independent Native families with original command limits and a
@@ -255,14 +255,14 @@ the actual predecessor timing, five rejected deadline expansions, adverse tests
 and exact [qualification/integration ledger](https://github.com/techrote/cybersand/issues/305#issuecomment-6537154140).
 Faster CI cannot satisfy the separately red #309/#308 graphical contract.
 
-## PLAY composable desktop checkpoint â€” 2026-10-30
+## PLAY composable desktop checkpoint — 2026-10-30
 
 **Current owner boundary:** [decision 6522029843](https://github.com/techrote/cybersand/issues/263#issuecomment-6522029843)
 accepts merged #302 (`8d2dd843`) for the mandatory native-busy responsiveness,
 outstanding-job shutdown and resource-ordering gate. Optional #304 remains
 non-blocking and its failed run41046902349 remains failed. The critical path is
-#268 integrated product â†’ #269 remaining meaningful stress/measurement â†’ #270
-physical-device/human-feel/promotion â†’ #263. #266, #267 and #273 were reverified
+#268 integrated product → #269 remaining meaningful stress/measurement → #270
+physical-device/human-feel/promotion → #263. #266, #267 and #273 were reverified
 closed; #265 remains Not Planned, #271 deferred and #272 conditional fallback.
 
 **Current implementation candidate:** [PLAY-UI-005](../systems/player-control-playground.md#integrated-playable-session-selection-and-device-rearm)
@@ -319,7 +319,7 @@ ordinary reset boundary; it does not qualify SetP course recovery, prepared
 liquid recovery or native-busy shutdown. #270 also retains representative
 gameplay/frame/snapshot timing, device/focus and human-feel gates.
 
-## Trial successor correction after accepted App â€” 2026-10-25
+## Trial successor correction after accepted App — 2026-10-25
 
 App #256 is merged as main56422c05 after all four exact-dc2 required gates.
 The [Trial correction record](../audits/2026-10-25-lcb003-trial-body-constructors.md#failed-full-matrix-and-unsupported-rig-correction--2026-10-25)
@@ -332,7 +332,7 @@ local proof does not close other constructors, full-host/scientific or #203
 qualification. Older preparation/pending-App sections retain their source
 snapshots. Further Web testing is owner-deferred until after the epic.
 
-## Current Trial consumption of corrected App â€” preparation only
+## Current Trial consumption of corrected App — preparation only
 
 This Trial branch consumes exact Appdc2eee94 (sourcefix152a5074), retaining all
 ten f65f3de9 Trial files and the two incoming identity-test hashes. Native80 and
@@ -362,7 +362,7 @@ is required. Older72-process/source5f02/a704 evidence stays scoped; #256 remains
 draft for fresh final-head CI/review and #257 is downstream. Old ea96 Docs/#49
 greens are not successor greens. Additional Web work remains owner-deferred.
 
-## Consumed App publication â€” source5f02 and checkpoint ea96 â€” 2026-10-25
+## Consumed App publication — source5f02 and checkpoint ea96 — 2026-10-25
 
 The [actual003 publication](../audits/2026-10-25-lcb003-runtime-publication.md#actual-sequence1-windowslinux-publication--2026-10-25) now binds source
 `5f02d089ee4cff8b34421cc4ca58bb4ef50dd92c`, run40226343524 and four-path bot
@@ -389,7 +389,7 @@ unchanged bot0c9 tree; all615 publication inputs and139 compiled inputs remain
 exact. This does not substitute Water's gates for the application's final
 exact-head CI or close #202/#203.
 
-## Integrated desktop Trial successor â€” 2026-10-25
+## Integrated desktop Trial successor — 2026-10-25
 
 This unmerged Trial successor now consumes App checkpoint
 `ea96d4851621c4bed37d5e6997a0320215450f79`, including the actual source5f02/
@@ -405,7 +405,7 @@ owns the exact drift and remaining fresh acceptance. No new engine test, request
 profile, runtime publication or Web work occurs in this merge.
 
 The original separate `codex/lcb003-trial-body` worktree started from5f02d089 and added
-bounded desktop barrel8Ã—14/Ripper18Ã—8 preparation. Its ten-file overlay leaves
+bounded desktop barrel8×14/Ripper18×8 preparation. Its ten-file overlay leaves
 native139 and the publishing final-integration branch untouched. Apply retains
 exact actual server motion; Restart/F5 stage authored fresh state. One-body
 epoch/mask/readiness guards and candidate-only F5 preferences preserve the old
@@ -448,7 +448,7 @@ constructors and scientific/feel acceptance remain required. The consumed
 [Web evidence](../audits/2026-10-25-lcb003-web-common-water.md) retains77/76 functional success and the rendering failure;
 minimal-palette diagnostics do not qualify full appearance or manual play.
 
-## Qualified Water sequence2 publication â€” 2026-10-25
+## Qualified Water sequence2 publication — 2026-10-25
 
 PR #254's [actual sequence2 publication](../audits/2026-10-25-water-inertial-publication.md#actual-sequence2-windowslinux-publication--2026-10-25) qualifies source
 `aa8af2473a59ab92cc81dfff1dda17be0f41a46d`, run40220697738 and four-path bot
@@ -552,7 +552,7 @@ rule permits the retained libraries; full fresh exact-head gates remain required
 and that GDScript-only change did not itself require a new publication. Later
 native repairs receive sequence2 above, without final #212/#203 acceptance.
 
-## Accepted parent and qualified Water publication â€” 2026-10-25
+## Accepted parent and qualified Water publication — 2026-10-25
 
 **Historical sequence1 checkpoint:** the following records the accepted parent
 and first Water publication, before the native repairs and sequence2 above.
@@ -600,7 +600,7 @@ gates/integrated review and common-Water scientific/host/Web qualification remai
 pending. This does not close #212/#203.
 
 
-## Desktop native-default owner checkpoint â€” 2026-10-25
+## Desktop native-default owner checkpoint — 2026-10-25
 
 Unmerged native705a2e2d and owner66bf30f8 now stage the authoritative default
 recipe through exclusive worker, private sampled player and original permanent
@@ -616,7 +616,7 @@ context; definitive upstream cause, integrated native union, final Linux/Web,
 full host identity and matching runtime publication remain open.
 
 
-## Native default-demo constructor â€” 2026-10-25
+## Native default-demo constructor — 2026-10-25
 
 Unmerged source `afe19c2d` shares the original native ordered demo recipe with
 explicit prepared compilation, retains Water/transport and restores production
@@ -660,7 +660,7 @@ gates, actual compat/threaded browsers and ordinary visual walkthrough remain
 open. Water IN remains unsupported; Brine IN does not meet the fourth Water
 model requirement.
 
-## Corrected Brine IN runtime publication â€” 2026-10-25
+## Corrected Brine IN runtime publication — 2026-10-25
 
 Sequence3 [actual Windows/Linux publication](../audits/2026-10-25-lcb005-pressure-union-integration.md#actual-sequence3-publication-of-the-contact-repair)
 passes all six jobs in run `40160900817` at exact source `c11983c2`, followed
@@ -673,7 +673,7 @@ passes all exact-head gates and merges as main dc915f2b. Prior omitted-contact a
 retain their exact source scope. Water-IN, complete host/Web and #203 remain
 separate.
 
-## Brine IN body-contact blocker â€” 2026-10-25
+## Brine IN body-contact blocker — 2026-10-25
 
 Fresh independent review of `98595ac8` finds that resting Brine IN omits
 body-mask contact feedback even when its material update executes. The narrow
@@ -685,7 +685,7 @@ sequence2 runtime proof remains historical to the omitting source. Later correct
 sequence3 publication/full gates pass and #250 merges as above.
 Water IN, full application/Web and owner-feel qualification remain separate.
 
-## LCB-003 thermal level preparation â€” 2026-10-25
+## LCB-003 thermal level preparation — 2026-10-25
 
 The unmerged [native CYSD preparation slice](../architecture/liquid-prepared-setup-and-receipts.md#imported-cysd-payload-preparation)
 adds copied thermal tuples, actual payload identity, explicit normalization and
@@ -695,7 +695,7 @@ physics law, dependency, Current default or legacy importer changes. The later
 bounded ordinary route above follows separately; physical importer/complete
 host adoption and final platform qualification remain #202 ownership.
 
-## LCB-005 native Brine checkpoint â€” 2026-10-24
+## LCB-005 native Brine checkpoint — 2026-10-24
 **Current on the isolated LCB-005 branch only:** [Brine IN reference](../architecture/inertial-cellular-v1.md) selectively ports the genuine fixed-point law onto the shared quantity/prepared-state foundation, including an optional versioned native damping numerator0..16 over16(default1). [Native evidence](../audits/2026-10-24-lcb005-native-brine-checkpoint.md) qualifies its stated source/platform scope. Default behavior remains retained. The later [standalone Godot adapter](../architecture/inertial-cellular-v1.md#standalone-godot-readback-and-explicit-geometry) adds actual instance readback and explicit radius3 with [local Windows proof](../audits/2026-10-25-lcb005-standalone-adapter.md). Water IN, full application integration, source-matched runtime publication, owner feel and full #212 completion remain unqualified here. No Cell-carrier migration or generic Rapier force follows.
 
 Later normal merge `4a594db5` integrates the reviewed moving-mask pressure
@@ -721,9 +721,9 @@ host/Web/owner acceptance remain pending.
 
 **Current on main through accepted PR #250:** [Brine IN reference](../architecture/inertial-cellular-v1.md) selectively ports the genuine fixed-point law onto the shared quantity/prepared-state foundation, including optional native damping numerator0..16 over16(default1). [Native evidence](../audits/2026-10-24-lcb005-native-brine-checkpoint.md) keeps its stated scope; the [standalone adapter](../architecture/inertial-cellular-v1.md#standalone-godot-readback-and-explicit-geometry) and [combined publication](../audits/2026-10-25-lcb005-pressure-union-integration.md#actual-windowslinux-union-publication--2026-10-25) record later actual instance/radius/platform proof. Defaults remain unchanged. The isolated Water successor has qualified native and source-matched runtime proof; its final ready-PR, scientific/full-application, owner-feel and full #212 completion remain unqualified. No Cell-carrier migration or generic Rapier force follows.
 
-## Moving-body pressure gas blocker â€” 2026-10-25
+## Moving-body pressure gas blocker — 2026-10-25
 Ordinary Main/worker reference-body Water play exposed a native retired gas
-label beneath a moving body mask around completed tick45â€“47. The World
+label beneath a moving body mask around completed tick45–47. The World
 quarantines even though Water quantity and the gas ledger remain exact.
 A compact native control reproduces the failure in all three pressure
 variants with configured1/4 workers. The repair is under qualification;
@@ -745,7 +745,7 @@ anddc915f2b respectively. Earlier
 greens retain their original scope. See the
 [dated failure and repair record](../audits/2026-10-25-pressure-moving-mask-gas-retirement.md).
 
-## Physical actor regression hangs â€” 2026-10-23
+## Physical actor regression hangs — 2026-10-23
 
 **Current qualified desktop repair, 2026-10-24:** #234 adopts
 [PR #236](https://github.com/techrote/cybersand/pull/236)'s cooperative deferred-BVH
@@ -771,7 +771,7 @@ owns the independent 30s capture / 45s idle failure guard, fixture-only 120s
 observer and unchanged 180s outer limit. No retries, skips, physics/worker-count
 changes or broad scheduler-fix claim follow from the selected backport.
 
-## 4LY shared physical free-flight â€” 2026-10-22
+## 4LY shared physical free-flight — 2026-10-22
 
 **Current experimental source, 4LY-001 / #205:** the
 [free-flight contract](../systems/physical-free-flight.md) adds a shared single
@@ -813,11 +813,11 @@ claiming fully independent qualification; its tested host and frozen
 with a passing Trainer result required before family learning. Parent #132 and
 generic physical/Jolt/morphology gates remain separate.
 
-## GEN-007 authoring and qualification â€” 2026-10-21
+## GEN-007 authoring and qualification — 2026-10-21
 
-**Current implementation with scoped qualification:** [Generation Workbench 2](../systems/generation-workbench-2.md) adds native provenance replay and true stages, transactional visual authoring, graph/hierarchy/plane diagnostics, undo/redo and bounded seed/recipe comparison. The [procedural qualification scene](../operations/procedural-qualification.md) supplies one compact 1024 Ã— 1024 four-plane map: four declared seeds pass final-raster structural and equivalence checks, eight paired-plane native exhibits pass mechanism controls, and retained display captures receive a qualified visual pass for approaching Deepworks. Broad negative spaces, repeated service cabinets and less varied fine machinery remain explicit. Source-matched Linux and Windows publication passed; the [dated ledger](../audits/2026-10-21-gen007-workbench-qualification.md) retains source/runtime identities, the revised 4 GiB graphical envelope and observed authoring hitches. [PR #198](https://github.com/techrote/cybersand/pull/198) records final exact-head repository acceptance and merge verification. GEN-006 remains the subsequent streaming/persistence owner.
+**Current implementation with scoped qualification:** [Generation Workbench 2](../systems/generation-workbench-2.md) adds native provenance replay and true stages, transactional visual authoring, graph/hierarchy/plane diagnostics, undo/redo and bounded seed/recipe comparison. The [procedural qualification scene](../operations/procedural-qualification.md) supplies one compact 1024 × 1024 four-plane map: four declared seeds pass final-raster structural and equivalence checks, eight paired-plane native exhibits pass mechanism controls, and retained display captures receive a qualified visual pass for approaching Deepworks. Broad negative spaces, repeated service cabinets and less varied fine machinery remain explicit. Source-matched Linux and Windows publication passed; the [dated ledger](../audits/2026-10-21-gen007-workbench-qualification.md) retains source/runtime identities, the revised 4 GiB graphical envelope and observed authoring hitches. [PR #198](https://github.com/techrote/cybersand/pull/198) records final exact-head repository acceptance and merge verification. GEN-006 remains the subsequent streaming/persistence owner.
 
-## Player control playground â€” 2026-10-20
+## Player control playground — 2026-10-20
 
 **Current experimental source:** the [player playground](../systems/player-control-playground.md)
 adds seven human movement presets and a dedicated course. Five mechanical
@@ -840,7 +840,7 @@ interaction, target-PC human feel, complete timed routes and new browser
 execution remain separate qualifications. Generic granular, soliding and Water
 successor work retains its own gates.
 
-## Exploratory actor integration and physical migration â€” 2026-10-18
+## Exploratory actor integration and physical migration — 2026-10-18
 
 **Current experimental desktop source, ACT-004:** F5 selects all 29 existing
 actor identities as articulated Rapier rigs, plus twelve SetX mechanisms, with
@@ -866,7 +866,7 @@ new physics on assumptions that the current implementation does not guarantee.
 The [validation ledger](validation-evidence.md) separates dated runtime results
 from inspected code. No documentation status is a blanket platform acceptance.
 
-## Recovery / current CI checkpoint â€” 2026-09-24
+## Recovery / current CI checkpoint — 2026-09-24
 
 The [final recovery audit](../audits/2026-09-24-cybersand-recovery-audit.md)
 closes the 2026-09-20 through 2026-09-22 CI / Stage-3B recovery programme.
@@ -883,7 +883,7 @@ disposition.
 Remote `main` remains unprotected with no repository ruleset. The owner-side
 minimal protection action is explicitly documented; do not report it as installed.
 
-## Development-claims remediation checkpoint â€” 2026-09-20
+## Development-claims remediation checkpoint — 2026-09-20
 
 The [canonical remediation programme](../operations/development-claims-remediation-programme.md)
 governs F01-F19 and issues #79-#87. It separates Implemented, Integrated, Verified,
@@ -902,7 +902,7 @@ Historical completion records remain immutable.
 ## Current implementation map
 
 **Layered exhibition source, 2026-10-20:**
-[Deepworks](../operations/deepworks-exhibition.md) adds one 1024 Ã— 1024
+[Deepworks](../operations/deepworks-exhibition.md) adds one 1024 × 1024
 composition with sixteen districts, 32 foreground/rear native exhibits and all
 51 MAT-002 building materials. Four independent full-size worlds run at
 30/20/15/0 Hz; the true distant background is frozen. Finite reaction sources
@@ -910,16 +910,16 @@ preserve products, while the camera/painting viewer supports whole-map reset,
 apparatus focus and a guided tour. It does not install an ordinary actor session.
 The shared [depth APIs](../systems/depth-layers-and-parallax.md) now admit each
 axis from 8 through 1024, including non-square worlds, while preserving Strata
-Theatre's 640 Ã— 360 default. Native ABI and material rules are unchanged.
+Theatre's 640 × 360 default. Native ABI and material rules are unchanged.
 Runtime and actual rendered acceptance remain separately scoped by the
 [dated exhibition audit](../audits/2026-10-20-deepworks-exhibition.md).
 
 **Connected scene content, 2026-10-18:**
-[Blacksite Nine](../operations/blacksite-nine-demo.md) composes nine 320 Ã— 320
-districts into one 960 Ã— 960 native region: a surface laboratory between two
+[Blacksite Nine](../operations/blacksite-nine-demo.md) composes nine 320 × 320
+districts into one 960 × 960 native region: a surface laboratory between two
 wastelands, above six dense underground industrial districts. Twelve reciprocal
 ports and a common final passage carve connect the whole map. Shift+F11 and the
-Web demo menu install the complex; the 3Ã—3 map, atlas and following views change
+Web demo menu install the complex; the 3×3 map, atlas and following views change
 only the camera, while R resets all nine districts together. Its fixed interest
 region and world-coordinate presentation preserve continuity without introducing
 a streaming subsystem. The [dated scene audit](../audits/2026-10-18-blacksite-nine.md)
@@ -937,7 +937,7 @@ It is an aesthetic showcase; existing physics programmes retain their own gates.
 | Cellular authority and platform owners | Native World; asynchronous desktop GDScript owner, synchronous Web callbacks with optional internal pool; [threading](../architecture/simulation-tick-and-threading.md) |
 | Scheduler and storage | Sparse chunks, phased in-place jobs, explicit capacities and activity sleep; [chunk/tile model](../architecture/chunk-tile-and-buffer-model.md), [storage](../systems/world-storage-and-interest-region.md) |
 | Procedural generation candidates | Opt-in Strata, Flow Network and District Grammar; theme/brush/override/module recipes plus bounded scalar fields, masked context guidance and aggregate materials; copied chunk proposals and explicit fresh-chunk admission; [generation contract](../systems/procedural-world-generation.md), [field/modifier contract](../systems/procedural-generation-fields-and-modifiers.md) |
-| Materials | Bounded adapted kernels, mass-conserving native Water, discrete fallback, secondary interaction lanes; 51 MAT-002 building materials (IDs 81â€“131) with combustion and 42 versioned pair reactions; [materials](../systems/materials-and-rule-kernels.md), [building catalogue](../systems/building-material-catalogue.md), [Water](../systems/water-design.md). Source/runtime publication and completed-test scope are recorded in the [MAT-002 review](../audits/2026-10-19-mat002-review-and-validation.md). |
+| Materials | Bounded adapted kernels, mass-conserving native Water, discrete fallback, secondary interaction lanes; 51 MAT-002 building materials (IDs 81–131) with combustion and 42 versioned pair reactions; [materials](../systems/materials-and-rule-kernels.md), [building catalogue](../systems/building-material-catalogue.md), [Water](../systems/water-design.md). Source/runtime publication and completed-test scope are recorded in the [MAT-002 review](../audits/2026-10-19-mat002-review-and-validation.md). |
 | Field storage and events | Optional temperature storage and bounded explosions; no general heat/pressure/wind solver; [field roadmap](../systems/smoke-heat-pressure-roadmap.md) |
 | Bodies and character | Main-thread Rapier, 64-ID rectangular native coupling, static terrain packets, 46 articulated [physical actors](../systems/physical-actor-rigs.md), shared keyboard/demo/policy control and usables; SetP circles retain conservative square native masks; sampled and single-hull references remain available |
 | Human movement playground | Seven [player presets](../systems/player-control-playground.md), keyboard/gamepad sampler, acrobat chains and separate leased native Sand/Water fields; course checkpoints and focused tests are not human feel or route-completion acceptance |
@@ -947,7 +947,7 @@ It is an aesthetic showcase; existing physics programmes retain their own gates.
 | Persistence | Fixed CYSD1 demo levels; complete resumed replay absent; [save contract](level-saves-and-replay.md) |
 | Runtime availability | All 18 required LFS payloads materialized; current execution scope is platform-specific; [build](../operations/local-build-and-validation.md) and [evidence](validation-evidence.md) |
 
-## Procedural generation candidate checkpoint â€” 2026-10-18
+## Procedural generation candidate checkpoint — 2026-10-18
 
 **Current source, GEN-001 / [#163](https://github.com/techrote/cybersand/issues/163):**
 three deterministic native candidates share hierarchical theme selections,
@@ -967,7 +967,7 @@ loading, resident-chunk eviction and modified-world persistence remain
 claim a merged release or platform acceptance; use the
 [dated GEN-001 evidence](../audits/2026-10-18-gen001-procedural-generation.md).
 
-## Procedural fields and aggregate checkpoint â€” 2026-10-18
+## Procedural fields and aggregate checkpoint — 2026-10-18
 
 **Current source, GEN-002 / [#171](https://github.com/techrote/cybersand/issues/171):**
 named fields add finite Hilbert/Morton ranks, structured noise, analytic masks,
@@ -986,7 +986,7 @@ source/runtime results and remaining publication/platform gates belong to the
 [GEN-002 evidence](../audits/2026-10-18-gen002-fields-and-aggregates.md), independently
 of the older GEN-001 checkpoint.
 
-## Typed spatial generation checkpoint â€” 2026-10-20
+## Typed spatial generation checkpoint — 2026-10-20
 
 **Current source implementation, GEN-003 / [#190](https://github.com/techrote/cybersand/issues/190):**
 explicit schema 2 adds signed scalar/distance, vector, exact category and boolean
@@ -1009,7 +1009,7 @@ continues with [GEN-004 #191](https://github.com/techrote/cybersand/issues/191),
 [GEN-006 #194](https://github.com/techrote/cybersand/issues/194). GEN-004 reuses
 the immutable geometry/assignment interfaces and the existing bounded solver.
 
-## Hierarchical places checkpoint â€” 2026-10-21
+## Hierarchical places checkpoint — 2026-10-21
 
 **Current source implementation, GEN-004 / [#191](https://github.com/techrote/cybersand/issues/191):**
 schema 3 adds a finite canonical regional hierarchy with stable rule/slot IDs,
@@ -1031,9 +1031,9 @@ recorded in the [GEN-004 audit](../audits/2026-10-21-gen004-hierarchical-generat
 
 This stage adds no persistent resident-world streaming, automatic player-edit
 reconciliation or semantic depth projection. The next programme stages remain
-GEN-005 â†’ GEN-007 â†’ GEN-006, subject to this issue's explicit acceptance gates.
+GEN-005 → GEN-007 → GEN-006, subject to this issue's explicit acceptance gates.
 
-## Semantic depth checkpoint â€” 2026-10-21
+## Semantic depth checkpoint — 2026-10-21
 
 **Current source implementation, GEN-005 / [#192](https://github.com/techrote/cybersand/issues/192):**
 [one semantic hierarchy projects into four planes](../systems/procedural-semantic-planes.md)
@@ -1080,14 +1080,14 @@ evidence defines each fix's platform acceptance.
 
 | ID | Precise uncertainty or contradiction | Next bounded check/decision |
 |---|---|---|
-| F01 â€” failed ticks | Current fix: latch failed World, distinguish attempted/completed ticks, suppress partial publication, stop desktop/Web owners; explicit reset/validated replacement, no replay/rollback | Windows/native acceptance and browser limits: [issue #1 evidence](../audits/2026-09-08-issue-1-failed-ticks.md); [tick contract](../architecture/simulation-tick-and-threading.md) |
-| F02 â€” region re-entry | Current fix: phased exclusion retains activity/quiet state; new core coverage wakes resident blocks once without catch-up. Serial still ignores the region | Separate and combined acceptance: [issue #2 evidence](../audits/2026-09-08-issue-2-interest-regions.md); [storage](../systems/world-storage-and-interest-region.md). Future field/streaming semantics remain open |
-| F03 â€” tick ownership | Desktop moves character before cells with async Rapier samples; Web moves character after cells and gates on terrain backlog | Decide which ordering differences are acceptable before a common physics/replay contract; [threading](../architecture/simulation-tick-and-threading.md) |
-| F04 â€” delayed rules and sleep | Current MAT-001 fix retains future compact-pair and Ice reaction opportunities across sleep and wakes the center block on body-mask changes; other specialized waiting paths remain material-specific | [Scoped #158 evidence](../audits/2026-10-18-mat001-material-reaction-progress.md), [materials](../systems/materials-and-rule-kernels.md); characterize further lifecycle/feel changes separately rather than claiming every material is accepted |
-| F05 â€” replay and fidelity | Current hashes omit some future-affecting state; CYSD1 omits more; no selectable strict runtime policy | Specify complete input/configuration identity, fidelity policy and replay schema before promising continuation; [determinism](../architecture/determinism-and-boundary-transfers.md) |
-| F06 â€” bounded operations | Native lazy allocation and partial failure coexist with Approved prepared/no-allocation goals; desktop input Array is unbounded | Define command backpressure, setup/reconfiguration and allocation accounting; [capacity](../operations/configuration-and-capacity-budgets.md) |
-| F07 â€” body physics scope | Rectangle proof does not settle general shapes, sweep/CCD, force/torque units, sample-age policy or particle overflow | Name units and fixture tolerances, extend one bounded coupling case at a time; [coupling](../architecture/rigid-body-and-cellular-coupling.md) |
-| F08 â€” build/release identity | CI 4.0.11 versus builder 4.0.20; missing native binding argument; compile-only skips runtime; historical template lock and base-only export identity | Current/M11 gate separation is implemented; remaining Web work stays in issue #3. [CI contradictions](../operations/github-development-and-release.md#unresolved-ci-contradictions) |
+| F01 — failed ticks | Current fix: latch failed World, distinguish attempted/completed ticks, suppress partial publication, stop desktop/Web owners; explicit reset/validated replacement, no replay/rollback | Windows/native acceptance and browser limits: [issue #1 evidence](../audits/2026-09-08-issue-1-failed-ticks.md); [tick contract](../architecture/simulation-tick-and-threading.md) |
+| F02 — region re-entry | Current fix: phased exclusion retains activity/quiet state; new core coverage wakes resident blocks once without catch-up. Serial still ignores the region | Separate and combined acceptance: [issue #2 evidence](../audits/2026-09-08-issue-2-interest-regions.md); [storage](../systems/world-storage-and-interest-region.md). Future field/streaming semantics remain open |
+| F03 — tick ownership | Desktop moves character before cells with async Rapier samples; Web moves character after cells and gates on terrain backlog | Decide which ordering differences are acceptable before a common physics/replay contract; [threading](../architecture/simulation-tick-and-threading.md) |
+| F04 — delayed rules and sleep | Current MAT-001 fix retains future compact-pair and Ice reaction opportunities across sleep and wakes the center block on body-mask changes; other specialized waiting paths remain material-specific | [Scoped #158 evidence](../audits/2026-10-18-mat001-material-reaction-progress.md), [materials](../systems/materials-and-rule-kernels.md); characterize further lifecycle/feel changes separately rather than claiming every material is accepted |
+| F05 — replay and fidelity | Current hashes omit some future-affecting state; CYSD1 omits more; no selectable strict runtime policy | Specify complete input/configuration identity, fidelity policy and replay schema before promising continuation; [determinism](../architecture/determinism-and-boundary-transfers.md) |
+| F06 — bounded operations | Native lazy allocation and partial failure coexist with Approved prepared/no-allocation goals; desktop input Array is unbounded | Define command backpressure, setup/reconfiguration and allocation accounting; [capacity](../operations/configuration-and-capacity-budgets.md) |
+| F07 — body physics scope | Rectangle proof does not settle general shapes, sweep/CCD, force/torque units, sample-age policy or particle overflow | Name units and fixture tolerances, extend one bounded coupling case at a time; [coupling](../architecture/rigid-body-and-cellular-coupling.md) |
+| F08 — build/release identity | CI 4.0.11 versus builder 4.0.20; missing native binding argument; compile-only skips runtime; historical template lock and base-only export identity | Current/M11 gate separation is implemented; remaining Web work stays in issue #3. [CI contradictions](../operations/github-development-and-release.md#unresolved-ci-contradictions) |
 
 ## Approved, Planned, Deferred and Rejected work
 
@@ -1137,7 +1137,7 @@ runtimes and a focused recurrence regression. See the
 This does not convert the historical result into broad acceptance. The owner
 clarification still treats the barrel as a generic Rapier reference body and does
 not accept the historical ordinary envelope as finished body physics. **#83 /
-REM-004 is now the bodyâ†”granular acceptance owner after REM-002**. Raising impulse
+REM-004 is now the body↔granular acceptance owner after REM-002**. Raising impulse
 caps alone remains an invalid substitute. The
 [remediation programme](../operations/development-claims-remediation-programme.md)
 owns these claim-state distinctions; #12 remains independently active.
@@ -1176,7 +1176,7 @@ retains explicit invalid-spawn repair while refusing runtime actor reordering.
 The barrel candidate keeps native cells as material authority and main-thread
 Rapier as body authority. Horizontal movement is a bounded additive impulse after
 cellular reaction, with no vertical velocity assignment and no generic
-bodyâ†”granular semantic change. #83 remains the production body-envelope owner and
+body↔granular semantic change. #83 remains the production body-envelope owner and
 #132 remains open for later representation experiments and selection.
 
 ## PENV-001 player/environment tuning checkpoint
@@ -1201,7 +1201,7 @@ sensitivity multipliers. Liquid sensitivity is inspectable/captured only; Water
 and generic-body semantics are unchanged. Parent #133 remains the long-lived
 programme for later environment/player tuning after finite child #138.
 
-## Provisional actor control checkpoint â€” 2026-10-18
+## Provisional actor control checkpoint — 2026-10-18
 
 **Current sampled reference implementation, experimental:** ACT-002 / #168 expands the original
 ACT-001 trio into 29 [actor rigs](../systems/actor-rigs.md) across SetA/B/F/Y/U/V.
@@ -1230,7 +1230,7 @@ Registered scientific/control fixtures retain their existing actor identities.
 Use the [validation ledger](validation-evidence.md) for scoped execution evidence;
 the preserved ACT-001 audit does not automatically validate the additional rigs.
 
-## Physical actor usable checkpoint â€” 2026-10-19
+## Physical actor usable checkpoint — 2026-10-19
 
 **Current experimental source, USABLE-002 / ACT-005 / #182:** the
 [32-entry equipment catalogue](../systems/actor-usables.md) is reconciled with
@@ -1331,16 +1331,16 @@ thresholds by tick 4800; this is a corrected Current-Water observation, not a ne
 solver selection. Production Water is unchanged. #95 must synthesize this control
 with WEX evidence before #45 may proceed, narrow, recharter, defer or no-go.
 
-## Water hybrid / pressure extension checkpoint â€” 2026-09-20
+## Water hybrid / pressure extension checkpoint — 2026-09-20
 
 The [WEX programme](../operations/water-hybrid-pressure-extension-programme.md)
 and tracker [#90](https://github.com/techrote/cybersand/issues/90) add a parallel
 investigation before any new #45 pressure/head mechanism is treated as inevitable.
 
 - [#91](https://github.com/techrote/cybersand/issues/91) freezes current generic
-  Rapierâ†”Water splash/displacement and hard-boundary failure evidence.
+  Rapier↔Water splash/displacement and hard-boundary failure evidence.
 - [#92](https://github.com/techrote/cybersand/issues/92) is dispositioned
-  **BLOCKED** on current main: the required generic dynamic cellâ†”Rapier singular-owner
+  **BLOCKED** on current main: the required generic dynamic cell↔Rapier singular-owner
   handoff remains Planned/model-only under #12. No sheet arm ran and the hypothesis
   is untested, not rejected. See the
   [blocked disposition](../audits/2026-09-24-wex002-water-sheet-blocked-disposition.md).
@@ -1354,7 +1354,7 @@ investigation before any new #45 pressure/head mechanism is treated as inevitabl
 - [#95](https://github.com/techrote/cybersand/issues/95) synthesis is recorded in
   the [2026-10-23 WEX-005 record](../audits/2026-10-23-wex005-water-evidence-synthesis.md):
   the deep-release deficit is unresolved (on current `main` deep and medium outlets
-  deliver identical discharge; sheets untested), and **#45 is NARROW** â€”
+  deliver identical discharge; sheets untested), and **#45 is NARROW** —
   admission/design only, under shared/vented-atmosphere assumptions, with a
   separately registered surge fixture. No production mechanism is selected.
 - The opt-in Liquid Comparison Build pressure lane
@@ -1362,7 +1362,7 @@ investigation before any new #45 pressure/head mechanism is treated as inevitabl
   separately by the
   [LCB-000 Gate A record](../audits/2026-10-23-lcb000-gate-a-water-pressure-admission.md).
   [#213](https://github.com/techrote/cybersand/issues/213) is **closed completed;
-  Gates Aâ€“E PASS**. The [final checkpoint](#liquid-comparison-build-design-checkpoint--2026-10-23)
+  Gates A–E PASS**. The [final checkpoint](#liquid-comparison-build-design-checkpoint--2026-10-23)
   records bounded admission. The owner lifted the hold for the
   [#200 policy foundation](#lcb-001-policy-foundation--2026-10-24) and then for the
   bounded LCB implementation, including the
@@ -1374,23 +1374,23 @@ production solver change is selected. Equal-level communicating-head fixtures ar
 vented/shared-pressure controls, not universal sealed-room targets. #18 remains
 held pending the resulting evidence rather than by issue-number sequence alone.
 
-## Liquid Comparison Build design checkpoint â€” 2026-10-23
+## Liquid Comparison Build design checkpoint — 2026-10-23
 
-**Current admission status â€” 2026-10-24:** LCB-000 [#213](https://github.com/techrote/cybersand/issues/213)
-is **closed completed; Gates Aâ€“E and integrated LCB-000 PASS**, with no RECHARTER.
+**Current admission status — 2026-10-24:** LCB-000 [#213](https://github.com/techrote/cybersand/issues/213)
+is **closed completed; Gates A–E and integrated LCB-000 PASS**, with no RECHARTER.
 The [final landed-stack evidence](https://github.com/techrote/cybersand/issues/213#issuecomment-6377498947)
 and subsequent [closure](https://github.com/techrote/cybersand/issues/213#issuecomment-6377517354)
 supersede the earlier pending-admission status without rewriting those dated records.
 
 | Gate | Accepted scope |
 |---|---|
-| A â€” PASS | Separate experimental Water lane; production Water/WEX limits retained. |
-| B â€” PASS | Bounded reversible storage design; no representation winner or schema/ABI freeze; #204 is not complete. |
-| C â€” PASS | [Solver-family policy design](../architecture/liquid-solver-family-policy.md) and source-derived capability matrix. |
-| D â€” PASS | [Bounded Water comparison contract and protected fixtures](../operations/lcb-water-comparison-and-fixtures.md). |
-| E â€” PASS | Independently closed I1/P2 and listed P3; reviewed integrated apparatus landed with passing post-merge CI. |
+| A — PASS | Separate experimental Water lane; production Water/WEX limits retained. |
+| B — PASS | Bounded reversible storage design; no representation winner or schema/ABI freeze; #204 is not complete. |
+| C — PASS | [Solver-family policy design](../architecture/liquid-solver-family-policy.md) and source-derived capability matrix. |
+| D — PASS | [Bounded Water comparison contract and protected fixtures](../operations/lcb-water-comparison-and-fixtures.md). |
+| E — PASS | Independently closed I1/P2 and listed P3; reviewed integrated apparatus landed with passing post-merge CI. |
 
-**Current landed checkpoint:** #215 â†’ #217 â†’ #226 merged to main
+**Current landed checkpoint:** #215 → #217 → #226 merged to main
 `e95fe85d82e108a682a2ae0212d85569f1c03cd8`, whose tree
 `fece020ef7fc83faf5cfe3081b018f2647f7e4fe` equals the reviewed #226 head.
 Documentation/provenance, Native and GDExtension/Godot post-merge CI passed.
@@ -1404,7 +1404,7 @@ The owner first lifted the hold for the bounded
 bounded LCB implementation, including the previously held #200 pressure reference and
 [#212](https://github.com/techrote/cybersand/issues/212) inertial work
 ([owner decision](#lcb-001-pressure-reference--2026-10-24)). Neither decision admits
-production default changes, generic #12 Stage-4 cellâ†”Rapier ownership, a production
+production default changes, generic #12 Stage-4 cell↔Rapier ownership, a production
 Cell-carrier migration, full GEN-006 streaming, new pressure-to-Rapier forces or a
 schema/ABI freeze. The policy foundation is Current on main; `pressure_flow_v1/reference`
 is Current in source; the other candidate kernels remain **Planned**.
@@ -1416,12 +1416,12 @@ contains 25 scenarios plus the protected Dam Break and mixed fixtures, with
 Current-default controls. Water is the only `freemass_v1` liquid; ten liquids
 use `cellular_yield_v1`. The mixed control runs two families; three-family World
 execution remains blocked. All **90 candidate arms remain blocked**.
-Controls and v2â€“v6 records are preserved byte-for-byte; v7 retains
+Controls and v2–v6 records are preserved byte-for-byte; v7 retains
 **20 closed / 4 unverified source-sink timing / 3 unverified reaction amount**,
 with `changed_from_v6=[]`. Characterization and contract-model evidence do not
 establish candidate runtime acceptance or change defaults.
 
-## LCB-001 policy foundation â€” 2026-10-24
+## LCB-001 policy foundation — 2026-10-24
 
 **Current on main.** [PR #239](https://github.com/techrote/cybersand/pull/239) merged on
 2026-10-24 at 07:01:19Z as
@@ -1452,7 +1452,7 @@ closing keyword. The issue was reopened on 2026-10-24 with an explanatory commen
 That transition supplies no completion evidence; #200 remains open for the scope
 listed below.
 
-## LCB-001 pressure reference â€” 2026-10-24
+## LCB-001 pressure reference — 2026-10-24
 **Current on main from merged PR #245 (`03785c3`).** The opt-in
 Water family [`pressure_flow_v1/reference`](../architecture/pressure-flow-v1.md)
 runs only in a World whose applied policy assigns it; production defaults, every
@@ -1463,7 +1463,7 @@ in the [dated evidence record](../audits/2026-10-24-lcb001-pressure-reference-pu
 **Owner decision (2026-10-24).** The owner explicitly authorized the bounded LCB
 implementation, including the previously held pressure reference (#200) and the
 inertial family ([#212](https://github.com/techrote/cybersand/issues/212)),
-without changing production defaults, without generic #12 Stage-4 cellâ†”Rapier
+without changing production defaults, without generic #12 Stage-4 cell↔Rapier
 ownership, without a production Cell-carrier migration and without full GEN-006
 streaming. This lifts the execution holds recorded in the
 [LCB-000 checkpoint](#liquid-comparison-build-design-checkpoint--2026-10-23). It
@@ -1476,7 +1476,7 @@ does not freeze #45 thresholds.
 | At the accepted #246 checkpoint, Water admitted `pressure_flow_v1/reference`, optional family block `{gas_enabled 0..1, atmospheric_head_rows 16..4096}` (defaults 1, 32); then-unmerged #201 separately added `cached`/`cached_dormant` | Historical checkpoint; #201 is now accepted on main through #253 as recorded below |
 | Solver-owned per-chunk sidecars, World gas table with label-overlap identity and exact ledgers, immutable head snapshot, phased kernel | Current ([design](../architecture/pressure-flow-v1.md)) |
 | Physical-state hash v1 and CYPS1 at the historical #245 checkpoint; retained inspection/ledger APIs | Historical codec; accepted main now uses v2 [below](#lcb-001-shared-contract-accepted--2026-10-25). Original APIs ([interfaces](interfaces-and-message-contracts.md#lcb-001-pressure-reference-inspection-and-persistence-experimental)) |
-| Capability matrix Water Ã— pressure `executable_today: true`, `executable_variants: ["reference"]`; regenerated digest and vector identity words, with no acceptance/refusal change in the 47 cases | Current |
+| Capability matrix Water × pressure `executable_today: true`, `executable_variants: ["reference"]`; regenerated digest and vector identity words, with no acceptance/refusal change in the 47 cases | Current |
 | Native `test_lcb_pressure.cpp` (13 cases), Godot `test_lcb_pressure_reference.gd` (12 sections), native characterization harness | Current; results in the evidence record |
 | Linux/Windows Godot, sanitizer/TSan and apparatus execution | Exact-head required matrix passed for #245; Web not built or run ([acceptance](../audits/2026-10-24-lcb001-pressure-reference-publication.md#exact-head-acceptance-and-merge)) |
 
@@ -1522,7 +1522,7 @@ Local application164/SAN39/35-host preparation is source-bound evidence and
 does not replace those gates. The inherited duplicate Current table has been
 removed; dated branch evidence remains retained below.
 
-## LCB-001 shared contract accepted â€” 2026-10-25
+## LCB-001 shared contract accepted — 2026-10-25
 
 **Current on main through [PR #246](https://github.com/techrote/cybersand/pull/246),
 merged as `ec58d919b3d904fbd338eaccc25de35782c41a24`.** Final tested head
@@ -1563,7 +1563,7 @@ Zero rounded flow is not rest; a complete tick-inclusive hash cannot be a
 cross-tick static-rest predicate. Every successor native change needs fresh
 source-matched runtimes and its applicable exact-head gates.
 
-## LCB-002 pressure variants branch â€” 2026-10-25
+## LCB-002 pressure variants branch — 2026-10-25
 
 **Dated branch evidence; #201 is now accepted on main through #253:** Water
 admits `pressure_flow_v1/reference`, `cached` and `cached_dormant` as implementations of
@@ -1587,7 +1587,7 @@ activity repair still requires its own source-matched publication and gates.
 Actual Rapier rotation/displacement, full host constructors and
 Web/integrated packaging retain #202/#203 ownership.
 
-## LCB-003 controlled application-host slice â€” 2026-10-24
+## LCB-003 controlled application-host slice — 2026-10-24
 **Subsequent Water Feel constructor:** explicit unblinded body-free sampled
 Exploratory rebuilds retain original Water policy/recipe/player/actions and
 ordinary controls/ledger. Reset/semantic changes retain accepted family choice;
@@ -1921,11 +1921,11 @@ the 8-byte superset carrier after #19 integration;
 the [storage contract](../architecture/chunk-tile-and-buffer-model.md) supersedes
 earlier four-byte physical-size statements for this source without selecting G-final.
 
-## Combined desktop features and physical actor trial â€” 2026-10-18
+## Combined desktop features and physical actor trial — 2026-10-18
 
 The [physical actor programme](../operations/physical-actor-programme.md) retains the initial barrel/Ripper comparison and owner notes. The [ACT-004 contract](../systems/physical-actor-rigs.md) now owns articulation, shared physical control and usable attachments. Broad granular acceptance remains separate; owner observations and scripted fixture results are distinct forms of evidence.
 
-## Strata Theatre integration â€” 2026-10-18
+## Strata Theatre integration — 2026-10-18
 
 The opt-in [depth prototype](../systems/depth-layers-and-parallax.md) supplies four native material worlds and five compositor modes. It remains a synchronous comparison host, separate from ordinary asynchronous gameplay; production layering, immutable native-event forwarding, persistence and browser qualification remain Planned.
 
@@ -1941,8 +1941,8 @@ The [PR #394 cleanup](../audits/2026-11-04-workbench394-cleanup.md) retains tuni
 
 The owner accepted the playable workbench and authorized [current-main reconciliation and Ready qualification](../audits/2026-11-04-workbench394-ready-validation.md). Accepted main now includes #396 and #382 at `ee92dc45`; the combined native source requires rebuilt desktop runtimes and its own complete gates. The earlier Draft checkpoints remain historical; merge remains held.
 
-## LA-SELECTIVE primary-response experiment â€” 2026-11-05
+## LA-SELECTIVE primary-response experiment — 2026-11-05
 
 **Approved direction:** LA-SELECTIVE is the intended primary granular gameplay response candidate. **Current experimental implementation:** a separate #394-dependent branch adds opt-in matched fixtures and evidence tooling, preserving production native sources, gains, budgets, catalogue identities and all four selectable workbench controls. The [mechanism and admission scope](../systems/player-control-playground.md#la-selective-mechanism-and-experimental-admission) and [dated comparison](../audits/2026-11-05-la-selective-sol-experiment.md) distinguish real arrivals, stationary burial and native material relocation. General desktop default promotion remains **Planned**. Original SOL physical clearance and combined #394/#347/#393 MAT/ownership integration remain unproved; no restoration, merge, ready transition or production default change is admitted.
 
-**Current continuation:** #400 retains its ancestry and ordinarily reconciles #394 `77c60b8e`/84 native inputs. #394 merged externally to main `ba9cbc89` with the same tree. Real-body profiles004â€“007 add valid static contact, moving and supported arrivals, force/control cases, conservative tuple capture, actual four-worker stress and separately bounded workloads. The [physical-response qualification](../audits/2026-11-05-la-physical-qualification.md) retains two rejected support filters and a narrower opt-in stale-separation hypothesis. Stable legitimate entrapment can pass; initially invalid overlap and original SOL authority remain separate. Experimental variants stay disabled by default, and broad promotion remains unqualified.
+**Current continuation:** #400 retains its ancestry and ordinarily reconciles #394 `77c60b8e`/84 native inputs. #394 merged externally to main `ba9cbc89` with the same tree. Real-body profiles004–007 add valid static contact, moving and supported arrivals, force/control cases, conservative tuple capture, actual four-worker stress and separately bounded workloads. The [physical-response qualification](../audits/2026-11-05-la-physical-qualification.md) retains two rejected support filters and a narrower opt-in stale-separation hypothesis. Stable legitimate entrapment can pass; initially invalid overlap and original SOL authority remain separate. Experimental variants stay disabled by default, and broad promotion remains unqualified.
