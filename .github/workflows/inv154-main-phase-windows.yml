@@ -109,7 +109,7 @@ jobs:
                'CYBERSAND_PHASE_OUTPUT':str(out),
                'CYBERSAND_SOURCE_REVISION':sha}
           imp=subprocess.run([str(engine),'--headless','--editor','--path','godot','--import'],
-              capture_output=True,stderr=subprocess.STDOUT if False else subprocess.PIPE,
+              stdout=subprocess.PIPE,stderr=subprocess.PIPE,
               text=True,timeout=130,env=env)
           write('import.log',imp.stdout+'\n'+imp.stderr)
           if imp.returncode: raise RuntimeError('Project import failed: '+str(imp.returncode))
