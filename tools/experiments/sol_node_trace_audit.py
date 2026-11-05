@@ -142,6 +142,9 @@ def audit(capture,row=None):
             vector(computed_v,batch[3:5]);close(computed_w,batch[5])
         else:
             assert active_count<=diagnostic_count and nh<=normal_delta and th<=tangent_delta
+            assert diagnostic_count<=active_count+dropped
+            assert active_weight<=batch[6]+SCALAR_TOL
+            if policy_mask:assert active_count<=policy_count<=active_count+dropped and active_weight<=batch[7]+SCALAR_TOL
         normal_hits+=normal_delta;tangent_hits+=tangent_delta
         maximum_batch_energy_increase=max(maximum_batch_energy_increase,energy(body,batch[3:5],batch[5])-energy(body,batch[:2],batch[2]))
         previous_v=batch[3:5];previous_w=batch[5]
@@ -155,7 +158,11 @@ def audit(capture,row=None):
             torque+=(node[0]-body[2])*jy-(node[1]-body[3])*jx;normal+=jn[index];tangent+=abs(jt[index])
         vector(result[6:8],impulse);close(result[9],torque);close(result[12],raw_normal,QUANTITY_TOL);close(result[13],raw_tangent,QUANTITY_TOL)
         raw_energy=energy(body,[body[0]+impulse[0]*(1./body[5]),body[1]+impulse[1]*(1./body[5])],body[4]+torque/body[6])
-    else:raw_energy=struct.unpack('<d',bytes.fromhex(capture['raw_energy_f64le']))[0]
+    else:raw_energy=energy(body,[body[0]+result[6]*(1./body[5]),body[1]+result[7]*(1./body[5])],body[4]+result[9]/body[6])
+    # Aggregate state/wrench identity is observable even for a prefix capture;
+    # it does not close the omitted node contributions.
+    vector(previous_v,[body[0]+result[6]/body[5],body[1]+result[7]/body[5]])
+    close(previous_w,body[4]+result[9]/body[6])
     encoded_energy=capture['raw_energy_f64le'];assert len(encoded_energy)==16
     close(raw_energy,struct.unpack('<d',bytes.fromhex(encoded_energy))[0],QUANTITY_TOL)
     close(capture['raw_energy_after'],raw_energy,QUANTITY_TOL)
@@ -170,6 +177,10 @@ def audit(capture,row=None):
     if row is not None:
         assert (capture['owner_id'],capture['instance_id'],capture['generation'],capture['sample'])==(row['id'],row['instance_id'],row['generation'],row['sample'])
         assert row['normal_policy']==capture['normal_policy'] and row['nodes']==total
+        assert [row[k] for k in ['bins','nodes','quadrature_clamps','updates','normal_cap_hits','tangent_cap_hits']]==counts[:6]
+        assert bool(row['passivity_rejected'])==bool(counts[6])
+        for key,index in [('normal_capacity',14),('normal_raw',12),('normal_accepted',10),('tangent_raw',13),('tangent_accepted',11),('passive_energy_before',15),('passive_energy_after',16),('passive_scale',17)]:
+            assert math.isclose(row[key],result[index],rel_tol=1e-12,abs_tol=1e-9),(key,row[key],result[index])
         for actual,expected in zip(row['passive_state_f64'],body):assert math.isclose(actual,expected,rel_tol=1e-12,abs_tol=1e-9)
         for key,values in [('passive_raw_wrench_f64',result[6:8]+[result[9]]),('passive_accepted_wrench_f64',result[:2]+[result[8]])]:
             assert len(row[key])==3

@@ -74,4 +74,22 @@ class TraceAudit(unittest.TestCase):
         c=fixture();c['steps_f64'][5]+=1e-15
         self.assertTrue(a.audit(c)['full_closure'])
 
+    def test_impossible_prefix_active_count(self):
+        c=fixture(overflow=True);c['batch_meta_f64'][2]=2
+        with self.assertRaises(AssertionError):a.audit(c)
+
+    def test_incomplete_aggregate_energy_still_checked(self):
+        c=fixture(overflow=True);c['raw_energy_after']=1.;c['raw_energy_f64le']=struct.pack('<d',1.).hex()
+        with self.assertRaises(AssertionError):a.audit(c)
+
+    def test_binding_checks_all_result_counters(self):
+        c=fixture();row=dict(id=1,instance_id=2,generation=1,sample=4,normal_policy='original',bins=1,nodes=1,
+            quadrature_clamps=0,updates=8,normal_cap_hits=0,tangent_cap_hits=0,passivity_rejected=False,
+            normal_capacity=2.,normal_raw=1.,normal_accepted=1.,tangent_raw=0.,tangent_accepted=0.,
+            passive_energy_before=.5,passive_energy_after=0.,passive_scale=1.,passive_state_f64=c['body_f64'],
+            passive_raw_wrench_f64=[1.,0.,0.],passive_accepted_wrench_f64=[1.,0.,0.])
+        self.assertTrue(a.audit(c,row)['full_closure'])
+        row['bins']=2
+        with self.assertRaises(AssertionError):a.audit(c,row)
+
 if __name__=='__main__':unittest.main()
