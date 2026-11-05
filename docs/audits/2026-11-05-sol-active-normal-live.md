@@ -223,6 +223,18 @@ captures within current disk space. Monitor before each suite and retain a5GiB
 operational reserve; these planning bounds are not simulation gates. No evidence
 is deleted or deduplicated at this checkpoint.
 
+## Authored observer registration
+
+Before any candidate authored/workload execution, observer amendment
+`c7793125` registers scalar64 KE of the existing quantized body readback in the
+new derived authored fixture. The original parent uses `Vector2.length_squared`
+for its displayed energy; that rounds through real_t. The derived observer calls
+its parent once, preserves every physical/input-driving value and potential,
+retains the legacy reported KE, and adds scalar64 energy and exact pose/velocity
+bit strings. All policies/hosts use the same observer. No force, body state,
+response arithmetic, native source or runtime is changed. Copied Godot source
+is separately authenticated. Historical reports remain unchanged.
+
 ## Refusals and custody qualifications
 
 All failed attempts remain retained. Build001 refuses before compilation:
