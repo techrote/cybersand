@@ -78,6 +78,17 @@ not follow. No capacity/pass/gain changes or penetration correction are added.
 
 ## Granular response cost and observation
 
+**Current recorded diagnostic:** the [complete application replay](../audits/2026-11-05-sol-application-replay.md)
+separates correction velocity clipping, recorded wrench work and observed
+Rapier-step changes for1080body applications in two retained shared-body runs.
+The wrench can add KE after clipping while combined application KE remains
+non-increasing. Native passive prediction uses the earlier sampled velocity;
+its lower predicted final KE is not the actual post-clipping application state.
+Correction potential work is separate; no global mechanical-energy conservation
+or promotion follows. First native-wrench differences precede unequal correction,
+and later endpoint motion samples different contact phases. Per-node causation
+and a safe live correction change remain unproved.
+
 The [Planned SOL offline authority contract](../operations/sol-authority-offline-contract.md)
 specifies complete copied eligibility evidence and a one-use no-op lease model.
 It provides no live capture/Active hold, native/RID actuation or source-composition

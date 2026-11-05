@@ -10,6 +10,11 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 
 # Retrieval question index
 
+For native passive prediction versus correction-clipped actual application,
+retrieve [the recorded application-stage boundary](../architecture/rigid-body-and-cellular-coupling.md#granular-response-cost-and-observation).
+`retrieval-questions-sol-application-replay.json` adds complete-window KE/cause
+questions without admitting a new live correction policy.
+
 For offline SOL copied-data completeness versus live capture, Active-hold,
 support and member-identity authority, retrieve the
 [offline contract](../operations/sol-authority-offline-contract.md).

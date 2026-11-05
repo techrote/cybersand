@@ -10,6 +10,10 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+The [recorded application replay](audits/2026-11-05-sol-application-replay.md)
+separates clipping, wrench, observed KE and contact phase across the complete
+mixed-body window. It selects no live correction policy or SOL recovery action.
+
 The [offline SOL capture/lease contract](operations/sol-authority-offline-contract.md)
 models refusals and one-use accounting with no native/RID calls. Its
 [source/evidence dossier](audits/2026-11-05-sol-authority-offline.md) preserves

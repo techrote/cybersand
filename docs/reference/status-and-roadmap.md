@@ -27,6 +27,12 @@ mixed-body motion regression blocking promotion. Distributed requested-four
 episodes have four actual participants; arrival-history memory and shared-host
 cost remain explicit. Original SOL ownership/material admission stays separate.
 
+The [recorded application replay](../audits/2026-11-05-sol-application-replay.md)
+checks1080mixed-body applications. Clipping/wrench stage work explains why
+native predicted KE differs from actual post-application KE without proving
+combined KE creation. Per-node cause and a safe correction change remain open;
+the next bounded trace requires a new registration and fresh runtime evidence.
+
 The [offline SOL authority contract](../operations/sol-authority-offline-contract.md)
 adds a1355path source map and adversarial copied-value lease model, with retained
 failed/review-invalidated attempts. It supplies no native capture/Active hold,
