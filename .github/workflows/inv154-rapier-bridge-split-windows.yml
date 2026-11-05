@@ -130,7 +130,7 @@ jobs:
           write('import.log',imp.stdout+'\n'+imp.stderr)
           if imp.returncode: raise RuntimeError('Project import failed: '+str(imp.returncode))
           argv=[str(engine),'--rendering-driver','opengl3_angle','--path','godot',
-                '--script','res://tests/performance/test_main_physics_stage_windows.gd']
+                '--script','res://tests/performance/test_main_rapier_bridge_split_windows.gd']
           write('command.json',json.dumps(argv,indent=2)+'\n')
           try:
               run=subprocess.run(argv,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,
