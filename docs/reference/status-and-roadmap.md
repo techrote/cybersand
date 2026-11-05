@@ -12,6 +12,16 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 ## Compound granular behaviour and SOL boundary — 2026-11-05
 
+**Current follow-up:** the [contact/application experiment](../audits/2026-11-05-sol-contact-application.md)
+passes48episode/28,800application accounting but rejects retain-linear for
+support/penetration/motion failures. Late-window mixed Kestrel motion still
+regresses; quieter endpoints do not establish repair. Conditional StageB is
+not admitted. The [actual gravity/damping oracle](../audits/2026-11-05-sol-gravity-operator.md)
+qualifies one-step compatibility across18fresh empty-space episodes without
+applying predicted contact loads. Next: independently review this evidence,
+then register operator-consistent synchronous support/refusal accounting before
+any native predictor. No original SOL, default or source-composition admission.
+
 The [active-normal value refinement](../audits/2026-11-05-sol-active-normal.md)
 passes its38case registration on three compiled variants, improving nine COM
 arrest targets without changing capacity shares. The [dependent live policy](../audits/2026-11-05-sol-active-normal-live.md) now
@@ -37,8 +47,8 @@ Eight traceoff/on and eight retained trajectory comparisons match. Immediate
 response effects atScooper2/barrel30/Kestrel32 have identical input bits;
 policy metadata/zero-request operands differ earlier without different updates.
 Native/scoped/API and17Python-audit tests per host pass. Mixed-body regression,
-original SOL authority/clearance and general promotion remain blocked; seek
-independent review before a separately registered physical-policy experiment.
+original SOL authority/clearance and general promotion remain blocked. The
+separate contact/application follow-up above preserves this trace evidence.
 
 The [offline SOL authority contract](../operations/sol-authority-offline-contract.md)
 adds a1355path source map and adversarial copied-value lease model, with retained

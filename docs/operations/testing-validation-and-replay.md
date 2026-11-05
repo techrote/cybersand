@@ -4,11 +4,31 @@ status: Current
 document-kind: guide
 scope: Executable test selection and future gates; dated results and save format live in separate references
 canonical-for: [test-inventory, test-selection, future-validation-gates]
-last-reviewed: 2026-10-31
+last-reviewed: 2026-11-05
 related-documents: [local-build-and-validation.md, ../reference/validation-evidence.md, ../reference/level-saves-and-replay.md]
 ---
 
 # Testing, validation, and replay
+
+For the dependent contact/application experiment, run
+`python tools/experiments/sol_contact_application.py --run <new-name> --suite core`
+on Windows with the source-qualified Windows/WSL runtimes materialized. It runs
+the actual-RID policy/refusal suites and48fresh matched episodes. Never overwrite
+a retained run. The [dated negative result](../audits/2026-11-05-sol-contact-application.md)
+separates accounting from the failed physical gate and unadmitted StageB.
+`sol_contact_application_reduce.py` performs variant-aware independent geometry,
+work, exact-prefix and whole-window comparisons; its13corruption/arithmetic tests
+run with unittest discovery under `tools/experiments`.
+
+The [gravity/damping oracle](../audits/2026-11-05-sol-gravity-operator.md) uses
+`python tools/experiments/sol_gravity_operator.py --run <new-name>` and
+`sol_gravity_operator_reduce.py`. It instantiates no native World, so native
+worker participation is not applicable. Sixteen reducer tests exercise declared
+equations, missing/stale/actuated/nonfinite/shape/provenance corruptions. Actual
+Windows/Linux execution and copied source/runtime identity remain required;
+cross-building a DLL is not Windows-hosted qualification. These new Godot/test
+changes reuse unchanged native84 binaries and earlier optimized/strict proof;
+any future native predictor needs fresh affected builds and qualification.
 
 The [completed local35-case plus import run](../audits/2026-10-25-lcb003-final-integration.md#complete-local-host-matrix-and-actual-web-result)
 passes every actual process and the strict current003 result verifier on

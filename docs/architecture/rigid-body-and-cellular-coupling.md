@@ -134,6 +134,42 @@ worker distributions are in the dossier. These observations do not qualify the
 original24group/3repeat≤2ms gate or universal60Hz. Original SOL authority/MAT
 composition and the retained physical failures remain separate blockers.
 
+## Contact application experiment and gravity operator
+
+**Current dependent experimental source:** `WorkbenchPhysicsBridge` accepts
+fresh LA-SELECTIVE application variant `retain-linear-001`, skipping only
+opposing-component velocity clipping while preserving positional correction,
+native wrench, age handling and COM torque transport. Baseline remains default;
+the mode locks before sampling and retains atomic identity/lifetime refusals.
+The [registered contact/application experiment](../audits/2026-11-05-sol-contact-application.md)
+rejects this variant:48fresh360step episodes,17,280steps/28,800actual body
+applications pass accounting on Windows/Linux and requested workers1/4, but
+the full motion/support/geometry gate fails956comparisons. StageB is not admitted.
+All16retain-static episodes fail; all8Active-baseline static episodes pass.
+Removing clipping alone is not an accepted mixed-body repair or SOL recovery.
+
+The extended mixed-body record confirms sustained Kestrel regression: Original
+versus Active baseline tail mean speed0.773503369→1.647818528cells/s and mean
+KE0.0468263713→0.1875337263 oversteps240–359. Some other metrics improve.
+Quiet endpoint speed can conceal earlier motion; report fixed-window means,
+maxima and penetration alongside endpoints. Candidate KE reductions coexist
+with much greater sinking. Native tuple conservation and sampled hard-witness
+absence do not prove full mechanical conservation or swept clearance.
+
+**Current no-contact operator evidence:** the
+[separate registered oracle](../audits/2026-11-05-sol-gravity-operator.md) measures
+18fresh authored empty-space episodes/576steps on actual Windows/Linux, without
+native World or controller actuation. Of four frozen models, gravity followed
+by rational damping is compatible within1e-5 one-step error (maximum5.192e-6
+float64/7.629e-6 explicitfloat32). Its accumulated32step errors exceed1e-5;
+this is not exact engine reproduction. Barrel effective gravity92.119995 and
+combined damping differ from flyer gravity38 and replace damping. No predicted
+contact load is implemented. A future predictor needs new registration, native
+owner gravity binding, synchronous application/step lifetime, operator-consistent
+impulse transport, explicit work accounting and fresh affected binaries. It does
+not inherit the failed contact experiment's StageB admission or original SOL
+source/member/support/MAT authority. Original defaults and controls stay intact.
+
 ## Granular response cost and observation
 
 **Current recorded diagnostic:** the [complete application replay](../audits/2026-11-05-sol-application-replay.md)

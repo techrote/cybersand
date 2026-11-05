@@ -800,6 +800,15 @@ The [owner-accepted final-validation record](../audits/2026-11-04-workbench394-r
 
 ### Valid entrapment and experimental physical response
 
+The separate [contact/application control](../audits/2026-11-05-sol-contact-application.md)
+`retain-linear-001` removes opposing velocity clipping while retaining native
+wrench and existing correction. It is **Rejected for promotion** after48matched
+episodes show greater sinking/support failure. The extended mixed-body window
+still shows sustained Kestrel motion regression. No UI, powered escape claim or
+accepted default changes. The subsequent
+[empty-space gravity oracle](../audits/2026-11-05-sol-gravity-operator.md)
+qualifies integration arithmetic without applying a new contact response.
+
 **Current dependent chamber experiment:** [SOL-CHAMBER-001](../audits/2026-11-05-sol-chamber-yielding.md)
 uses the authenticated 520-member/six-proxy shape with initially clear Sand
 occupancy, one actual Rapier body and four matched response modes. Static

@@ -12,6 +12,20 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 ## Live granular policy and SOL progression — 2026-11-05
 
+The [contact/application continuation](../audits/2026-11-05-sol-contact-application.md)
+completes48matched360step episodes at8e4d7731 and dual-host analysis13d20dd6:
+accounting passes, retain-linear fails its full gate and StageB is not admitted.
+All16retain-static episodes fail; late mixed Kestrel motion still regresses.
+Keep this candidate opt-in/rejected, without tuning or default promotion. The
+[separate gravity operator](../audits/2026-11-05-sol-gravity-operator.md) executes
+18fresh no-contact episodes at ef106ff7 and final dual-host analysis5198ba5f.
+Only gravity-then-rational-damping is compatible within the registered one-step
+tolerance; accumulated32step errors stay explicit. No predictor/native World
+actuation is implemented there. Next is independent review and a new registered
+support candidate with operator-consistent impulse transport, native-owner
+gravity binding and synchronous application/step refusal accounting. Original
+SOL physical/member/source authority remains blocked; keep Draft429.
+
 Root alone owns Draft429 `codex/sol-active-normal-live-20261105`, dependent on
 fixed421 `4cd9ca19`. The [live dossier](../audits/2026-11-05-sol-active-normal-live.md)
 records complete240chamber,192authored and72distributed episodes. The latter
@@ -49,9 +63,9 @@ b3c6c82f. All16episodes,4,320captures and8,640applications pass accounting;
 98policy/107trace lifecycle assertions, affected suites and17final Python audit
 tests. Metadata/zero-request operands differ at0; first actual effects are
 Scooper2/barrel30/Kestrel32 with equal input bits. Failed apparatus and analysis
-labels remain retained. Next is independent adversarial review and a separately
-registered contact/application hypothesis; no live correction change, tuning,
-default promotion or originalSOL admission follows. External main06522e3 adds
+labels remain retained. The separately registered contact/application follow-up
+above rejects removal of velocity clipping; no default promotion or originalSOL
+admission follows. External main06522e3 adds
 onlyREADME content overba9cbc89; the owned fixed421 ancestry is unchanged.
 
 ## Exact SOL geometry chamber lane — 2026-11-05

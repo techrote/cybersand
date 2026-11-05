@@ -11,6 +11,16 @@ last-reviewed: 2026-11-05
 
 # Interfaces and message contracts
 
+**Current dependent experimental adapter:** fresh LA-SELECTIVE
+`WorkbenchPhysicsBridge.configure_application_variant("retain-linear-001")`
+skips only opposing linear clipping. The actual application ledger reports this
+variant and per-action `linear_clip_policy`. Unknown/nonselective, late selection
+and stale/foreign/duplicate/retired batches retain refusal contracts. Baseline
+stays unchanged/default. The [matched experiment](../audits/2026-11-05-sol-contact-application.md)
+rejects promotion; it adds no C ABI, required ordinary packet field or user
+control. The independent actual-RID oracle selects expected behavior from the
+configured arm, not the action tag.
+
 **Current dependent experimental diagnostic:**
 `diagnostic_set_workbench_solver_trace("off" | "batch64-001")` is fresh-diagnostic
 LA-SELECTIVE only and one-use before prepare/tick/getter attempts. It has an

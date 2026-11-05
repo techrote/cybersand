@@ -10,6 +10,12 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 
 # Retrieval question index
 
+For the rejected velocity-clipping intervention, sustained mixed-body motion,
+quiet endpoints versus complete windows and actual gravity/damping compatibility,
+retrieve [the contact/operator boundary](../architecture/rigid-body-and-cellular-coupling.md#contact-application-experiment-and-gravity-operator).
+`retrieval-questions-sol-contact-application.json` adds scoped questions; no
+empty-space operator result implements or admits a support predictor or SOL.
+
 For bounded contact-node tracing, lossless capture, overflow versus physical
 capacity, traceoff/on parity and first actual response effects, retrieve the
 [canonical trace boundary](../architecture/rigid-body-and-cellular-coupling.md#bounded-node-and-batch-trace).

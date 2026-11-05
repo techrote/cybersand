@@ -10,6 +10,14 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+The [contact/application experiment](audits/2026-11-05-sol-contact-application.md)
+rejects removing velocity clipping after48matched episodes; mixed-body sustained
+motion and granular sinking remain unresolved. The
+[actual gravity/damping oracle](audits/2026-11-05-sol-gravity-operator.md)
+qualifies empty-space one-step compatibility without implementing a support
+predictor. Use the [canonical boundary](architecture/rigid-body-and-cellular-coupling.md#contact-application-experiment-and-gravity-operator)
+for source, controls, rejected candidate and next admission requirements.
+
 The [bounded node/batch trace](audits/2026-11-05-sol-node-trace.md) qualifies
 observation without changing recorded physics and distinguishes policy operands
 from first actual response effects. Original SOL and promotion remain blocked;

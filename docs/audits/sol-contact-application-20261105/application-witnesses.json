@@ -1,0 +1,5716 @@
+[
+  {
+    "coordinate": {
+      "host": "windows",
+      "workers": 1,
+      "case": "shared-granular-bodies-extended360",
+      "id": "active-baseline",
+      "normal_policy": "active-normal-001",
+      "application": "baseline",
+      "tag": "shared-granular-bodies-extended360-active-baseline-w1-r0"
+    },
+    "step": 1,
+    "raw": {
+      "path": "build/sol-contact-application/core-001/windows/shared-granular-bodies-extended360-active-baseline-w1-r0/shared-granular-bodies-extended360-LA-SELECTIVE-w1-r0.json",
+      "sha256": "be8c4c672dfbfa0a78ab1fe446552b93d6bd524bcf9100832706d0c22eef15f8",
+      "bytes": 19561686
+    },
+    "sampled": [
+      {
+        "center_of_mass_local": [
+          0.0,
+          0.0
+        ],
+        "inertia": 21.6666660308838,
+        "kinetic": 1.16886315241295,
+        "kinetic_legacy_f32_length_squared": 1.1688631772995,
+        "mass": 1.0,
+        "omega": 0.0,
+        "pose": [
+          1.0,
+          0.0,
+          0.0,
+          1.0,
+          128.0,
+          121.015991210938
+        ],
+        "pose_f64le": "000000000000f03f00000000000000000000000000000080000000000000f03f00000000000060400000000006415e40",
+        "potential": -11147.9927286335,
+        "velocity": [
+          0.0,
+          1.52896249294281
+        ],
+        "velocity_omega_f64le": "000000000000000000000060a176f83f0000000000000000"
+      },
+      {
+        "center_of_mass_local": [
+          0.0,
+          0.0
+        ],
+        "inertia": 0.975000023841858,
+        "kinetic": 0.0200555591260395,
+        "kinetic_legacy_f32_length_squared": 0.0200555595763856,
+        "mass": 0.100000001490116,
+        "omega": 0.0,
+        "pose": [
+          1.0,
+          0.0,
+          0.0,
+          1.0,
+          184.0,
+          125.006591796875
+        ],
+        "pose_f64le": "000000000000f03f00000000000000000000000000000080000000000000f03f0000000000006740000000006c405f40",
+        "potential": -475.025066710462,
+        "velocity": [
+          0.0,
+          0.633333384990692
+        ],
+        "velocity_omega_f64le": "0000000000000000000000604444e43f0000000000000000"
+      },
+      {
+        "center_of_mass_local": [
+          0.0,
+          0.0
+        ],
+        "inertia": 24.7901363372803,
+        "kinetic": 0.0361000141183551,
+        "kinetic_legacy_f32_length_squared": 0.0361000134984657,
+        "mass": 0.180000007152557,
+        "omega": 0.0,
+        "pose": [
+          1.0,
+          0.0,
+          0.0,
+          1.0,
+          240.0,
+          124.287841796875
+        ],
+        "pose_f64le": "000000000000f03f00000000000000000000000000000080000000000000f03f0000000000006e40000000006c125f40",
+        "potential": -850.128891006937,
+        "velocity": [
+          0.0,
+          0.633333444595337
+        ],
+        "velocity_omega_f64le": "0000000000000000000000804444e43f0000000000000000"
+      }
+    ],
+    "before": [
+      {
+        "center_of_mass_local": [
+          0.0,
+          0.0
+        ],
+        "inertia": 21.6666660308838,
+        "kinetic": 1.16886315241295,
+        "kinetic_legacy_f32_length_squared": 1.1688631772995,
+        "mass": 1.0,
+        "omega": 0.0,
+        "pose": [
+          1.0,
+          0.0,
+          0.0,
+          1.0,
+          128.0,
+          121.015991210938
+        ],
+        "pose_f64le": "000000000000f03f00000000000000000000000000000080000000000000f03f00000000000060400000000006415e40",
+        "potential": -11147.9927286335,
+        "velocity": [
+          0.0,
+          1.52896249294281
+        ],
+        "velocity_omega_f64le": "000000000000000000000060a176f83f0000000000000000"
+      },
+      {
+        "center_of_mass_local": [
+          0.0,
+          0.0
+        ],
+        "inertia": 0.975000023841858,
+        "kinetic": 0.0200555591260395,
+        "kinetic_legacy_f32_length_squared": 0.0200555595763856,
+        "mass": 0.100000001490116,
+        "omega": 0.0,
+        "pose": [
+          1.0,
+          0.0,
+          0.0,
+          1.0,
+          184.0,
+          125.006591796875
+        ],
+        "pose_f64le": "000000000000f03f00000000000000000000000000000080000000000000f03f0000000000006740000000006c405f40",
+        "potential": -475.025066710462,
+        "velocity": [
+          0.0,
+          0.633333384990692
+        ],
+        "velocity_omega_f64le": "0000000000000000000000604444e43f0000000000000000"
+      },
+      {
+        "center_of_mass_local": [
+          0.0,
+          0.0
+        ],
+        "inertia": 24.7901363372803,
+        "kinetic": 0.0361000141183551,
+        "kinetic_legacy_f32_length_squared": 0.0361000134984657,
+        "mass": 0.180000007152557,
+        "omega": 0.0,
+        "pose": [
+          1.0,
+          0.0,
+          0.0,
+          1.0,
+          240.0,
+          124.287841796875
+        ],
+        "pose_f64le": "000000000000f03f00000000000000000000000000000080000000000000f03f0000000000006e40000000006c125f40",
+        "potential": -850.128891006937,
+        "velocity": [
+          0.0,
+          0.633333444595337
+        ],
+        "velocity_omega_f64le": "0000000000000000000000804444e43f0000000000000000"
+      }
+    ],
+    "live_before_application": [
+      {
+        "center_of_mass_local": [
+          0.0,
+          0.0
+        ],
+        "inertia": 21.6666660308838,
+        "kinetic": 1.16886315241295,
+        "kinetic_legacy_f32_length_squared": 1.1688631772995,
+        "mass": 1.0,
+        "omega": 0.0,
+        "pose": [
+          1.0,
+          0.0,
+          0.0,
+          1.0,
+          128.0,
+          121.015991210938
+        ],
+        "pose_f64le": "000000000000f03f00000000000000000000000000000080000000000000f03f00000000000060400000000006415e40",
+        "potential": -11147.9927286335,
+        "velocity": [
+          0.0,
+          1.52896249294281
+        ],
+        "velocity_omega_f64le": "000000000000000000000060a176f83f0000000000000000"
+      },
+      {
+        "center_of_mass_local": [
+          0.0,
+          0.0
+        ],
+        "inertia": 0.975000023841858,
+        "kinetic": 0.0200555591260395,
+        "kinetic_legacy_f32_length_squared": 0.0200555595763856,
+        "mass": 0.100000001490116,
+        "omega": 0.0,
+        "pose": [
+          1.0,
+          0.0,
+          0.0,
+          1.0,
+          184.0,
+          125.006591796875
+        ],
+        "pose_f64le": "000000000000f03f00000000000000000000000000000080000000000000f03f0000000000006740000000006c405f40",
+        "potential": -475.025066710462,
+        "velocity": [
+          0.0,
+          0.633333384990692
+        ],
+        "velocity_omega_f64le": "0000000000000000000000604444e43f0000000000000000"
+      },
+      {
+        "center_of_mass_local": [
+          0.0,
+          0.0
+        ],
+        "inertia": 24.7901363372803,
+        "kinetic": 0.0361000141183551,
+        "kinetic_legacy_f32_length_squared": 0.0361000134984657,
+        "mass": 0.180000007152557,
+        "omega": 0.0,
+        "pose": [
+          1.0,
+          0.0,
+          0.0,
+          1.0,
+          240.0,
+          124.287841796875
+        ],
+        "pose_f64le": "000000000000f03f00000000000000000000000000000080000000000000f03f0000000000006e40000000006c125f40",
+        "potential": -850.128891006937,
+        "velocity": [
+          0.0,
+          0.633333444595337
+        ],
+        "velocity_omega_f64le": "0000000000000000000000804444e43f0000000000000000"
+      }
+    ],
+    "native_response": {
+      "arrival_storage_bytes": 4718592,
+      "body_limit": 8,
+      "epoch": 1,
+      "extent": [
+        512,
+        512
+      ],
+      "getter_us": 195,
+      "native_mask_reserved": 262144,
+      "native_workers_configured": 1,
+      "native_workers_constructed": 1,
+      "normal_policy": "active-normal-001",
+      "normal_policy_locked": true,
+      "proxy_limit": 64,
+      "raster_indices_reserved": 262144,
+      "response": "LA-SELECTIVE",
+      "rows": [
+        {
+          "arrival_count": 0,
+          "arrival_misaligned": 0,
+          "arrival_missing": 0,
+          "bins": 2,
+          "body_capacity": 20.0,
+          "budget": 20.0,
+          "com": [
+            128.0,
+            121.015991210938
+          ],
+          "contacts": 16,
+          "correction": [
+            0.0,
+            -0.0158312991261482
+          ],
+          "displaced": 0,
+          "event_accepted": [
+            0.0,
+            0.0
+          ],
+          "event_cost": 0.0,
+          "event_torque": 0.0,
+          "external_drive": false,
+          "generation": 1,
+          "gravity": 92.1199968457222,
+          "id": 1,
+          "impulse": [
+            -3.36176550625375e-16,
+            -1.52761828899384
+          ],
+          "inertia": 21.6666660308838,
+          "instance_id": 1,
+          "legacy_wrench_f64": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "mass": 1.0,
+          "nodes": 4,
+          "normal_accepted": 1.52761824937875,
+          "normal_cap_hits": 0,
+          "normal_capacity": 16.0,
+          "normal_policy": "active-normal-001",
+          "normal_raw": 6.11047299751502,
+          "passive_accepted_wrench_f64": [
+            -3.36176552207402e-16,
+            -1.52761824937875,
+            -1.22124532708767e-15
+          ],
+          "passive_energy_after": 9.03495379752156e-07,
+          "passive_energy_before": 1.16886315241295,
+          "passive_impulse": [
+            -3.36176550625375e-16,
+            -1.52761828899384
+          ],
+          "passive_raw_wrench_f64": [
+            -3.36176552207402e-16,
+            -1.52761824937875,
+            -1.22124532708767e-15
+          ],
+          "passive_scale": 1.0,
+          "passive_state_f64": [
+            0.0,
+            1.52896249294281,
+            128.0,
+            121.015991210938,
+            0.0,
+            1.0,
+            21.6666660308838,
+            0.779999971389771
+          ],
+          "passive_torque": -1.22124532708767e-15,
+          "passivity_rejected": false,
+          "proxy_count": 1,
+          "quadrature_clamps": 0,
+          "sample": 3,
+          "tangent_accepted": 3.36176552207402e-16,
+          "tangent_cap_hits": 0,
+          "tangent_raw": 1.65738433311555e-15,
+          "torque": -1.22124532708767e-15,
+          "total_wrench_f64": [
+            -3.36176550625375e-16,
+            -1.52761828899384,
+            -1.22124532708767e-15
+          ],
+          "unresolved": 0,
+          "updates": 32
+        },
+        {
+          "arrival_count": 0,
+          "arrival_misaligned": 0,
+          "arrival_missing": 0,
+          "bins": 2,
+          "body_capacity": 20.0,
+          "budget": 20.0,
+          "com": [
+            184.0,
+            125.006591796875
+          ],
+          "contacts": 18,
+          "correction": [
+            0.0,
+            -0.00652587879449129
+          ],
+          "displaced": 0,
+          "event_accepted": [
+            0.0,
+            0.0
+          ],
+          "event_cost": 0.0,
+          "event_torque": 0.0,
+          "external_drive": false,
+          "generation": 1,
+          "gravity": 38.0000008642673,
+          "id": 2,
+          "impulse": [
+            -1.3130330294013e-19,
+            -0.0629061236977577
+          ],
+          "inertia": 0.975000023841858,
+          "instance_id": 2,
+          "legacy_wrench_f64": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "mass": 0.100000001490116,
+          "nodes": 4,
+          "normal_accepted": 0.0629061225485905,
+          "normal_cap_hits": 0,
+          "normal_capacity": 16.0,
+          "normal_policy": "active-normal-001",
+          "normal_raw": 0.251624490194362,
+          "passive_accepted_wrench_f64": [
+            -1.3130330365245e-19,
+            -0.0629061225485905,
+            0.0
+          ],
+          "passive_energy_after": 9.12571359932098e-07,
+          "passive_energy_before": 0.0200555591260395,
+          "passive_impulse": [
+            -1.3130330294013e-19,
+            -0.0629061236977577
+          ],
+          "passive_raw_wrench_f64": [
+            -1.3130330365245e-19,
+            -0.0629061225485905,
+            0.0
+          ],
+          "passive_scale": 1.0,
+          "passive_state_f64": [
+            0.0,
+            0.633333384990692,
+            184.0,
+            125.006591796875,
+            0.0,
+            0.100000001490116,
+            0.975000023841858,
+            0.800000011920929
+          ],
+          "passive_torque": 0.0,
+          "passivity_rejected": false,
+          "proxy_count": 1,
+          "quadrature_clamps": 0,
+          "sample": 3,
+          "tangent_accepted": 1.3130330365245e-19,
+          "tangent_cap_hits": 0,
+          "tangent_raw": 5.5725425549282e-19,
+          "torque": 0.0,
+          "total_wrench_f64": [
+            -1.3130330294013e-19,
+            -0.0629061236977577,
+            0.0
+          ],
+          "unresolved": 0,
+          "updates": 32
+        },
+        {
+          "arrival_count": 0,
+          "arrival_misaligned": 0,
+          "arrival_missing": 0,
+          "bins": 2,
+          "body_capacity": 20.0,
+          "budget": 20.0,
+          "com": [
+            240.0,
+            124.287841796875
+          ],
+          "contacts": 55,
+          "correction": [
+            0.0,
+            -0.00448654172942042
+          ],
+          "displaced": 0,
+          "event_accepted": [
+            0.0,
+            0.0
+          ],
+          "event_cost": 0.0,
+          "event_torque": 0.0,
+          "external_drive": false,
+          "generation": 1,
+          "gravity": 38.0000008642673,
+          "id": 3,
+          "impulse": [
+            -0.00120439438614994,
+            -0.113146208226681
+          ],
+          "inertia": 24.7901363372803,
+          "instance_id": 3,
+          "legacy_wrench_f64": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "mass": 0.180000007152557,
+          "nodes": 4,
+          "normal_accepted": 0.113146205259801,
+          "normal_cap_hits": 0,
+          "normal_capacity": 20.0,
+          "normal_policy": "active-normal-001",
+          "normal_raw": 0.458721931817565,
+          "passive_accepted_wrench_f64": [
+            -0.00120439443857837,
+            -0.113146205259801,
+            -0.044604446162174
+          ],
+          "passive_energy_after": 4.61823588085748e-05,
+          "passive_energy_before": 0.0361000141183551,
+          "passive_impulse": [
+            -0.00120439438614994,
+            -0.113146208226681
+          ],
+          "passive_raw_wrench_f64": [
+            -0.00120439443857837,
+            -0.113146205259801,
+            -0.044604446162174
+          ],
+          "passive_scale": 1.0,
+          "passive_state_f64": [
+            0.0,
+            0.633333444595337,
+            240.0,
+            124.287841796875,
+            0.0,
+            0.180000007152557,
+            24.7901363372803,
+            0.800000011920929
+          ],
+          "passive_torque": -0.044604446162174,
+          "passivity_rejected": false,
+          "proxy_count": 5,
+          "quadrature_clamps": 0,
+          "sample": 3,
+          "tangent_accepted": 0.00120439443857837,
+          "tangent_cap_hits": 0,
+          "tangent_raw": 0.00979307315129199,
+          "torque": -0.044604446162174,
+          "total_wrench_f64": [
+            -0.00120439443857837,
+            -0.113146205259801,
+            -0.044604446162174
+          ],
+          "unresolved": 0,
+          "updates": 32
+        }
+      ],
+      "sample_tick": 1,
+      "session": 1,
+      "solver_trace_locked": true,
+      "solver_trace_mode": "batch64-001",
+      "solver_trace_storage_bytes": 55872,
+      "valid": true,
+      "world_mask_cell_limit": 262144
+    },
+    "application": {
+      "accepted": true,
+      "application_variant": "baseline",
+      "bodies": [
+        {
+          "age": 0,
+          "correction": [
+            0.0,
+            -0.0158312991261482
+          ],
+          "id": 1,
+          "impulse": [
+            -3.36176550625375e-16,
+            -1.52761828899384
+          ],
+          "instance_id": 1,
+          "live_velocity_changed": false,
+          "omega_residual": 2.02853748e-24,
+          "passive_energy_accepted": 1.16680881843423,
+          "passive_energy_linear": 0.0,
+          "passive_energy_quadratic": 1.16680881843423,
+          "passive_energy_unscaled": 1.16680881843423,
+          "passive_impulse_before": [
+            -3.36176550625375e-16,
+            -1.52761828899384
+          ],
+          "passive_revalidation_active": false,
+          "passive_scale": 1.0,
+          "passive_torque_before": -1.21592321559364e-15,
+          "sample": 3,
+          "torque": -1.21592321559364e-15,
+          "velocity_residual": 0.0
+        },
+        {
+          "age": 0,
+          "correction": [
+            0.0,
+            -0.00652587879449129
+          ],
+          "id": 2,
+          "impulse": [
+            -1.3130330294013e-19,
+            -0.0629061236977577
+          ],
+          "instance_id": 2,
+          "live_velocity_changed": false,
+          "omega_residual": 1.476e-29,
+          "passive_energy_accepted": 0.0197859016985551,
+          "passive_energy_linear": 0.0,
+          "passive_energy_quadratic": 0.0197859016985551,
+          "passive_energy_unscaled": 0.0197859016985551,
+          "passive_impulse_before": [
+            -1.3130330294013e-19,
+            -0.0629061236977577
+          ],
+          "passive_revalidation_active": false,
+          "passive_scale": 1.0,
+          "passive_torque_before": 8.5686944952e-22,
+          "sample": 3,
+          "torque": 8.5686944952e-22,
+          "velocity_residual": 0.0
+        },
+        {
+          "age": 0,
+          "correction": [
+            0.0,
+            -0.00448654172942042
+          ],
+          "id": 3,
+          "impulse": [
+            -0.00120439438614994,
+            -0.113146208226681
+          ],
+          "instance_id": 3,
+          "live_velocity_changed": false,
+          "omega_residual": 4.06363239498914e-11,
+          "passive_energy_accepted": 0.0356054363031845,
+          "passive_energy_linear": 0.0,
+          "passive_energy_quadratic": 0.0356054363031845,
+          "passive_energy_unscaled": 0.0356054363031845,
+          "passive_impulse_before": [
+            -0.00120439438614994,
+            -0.113146208226681
+          ],
+          "passive_revalidation_active": false,
+          "passive_scale": 1.0,
+          "passive_torque_before": -0.044599042596309,
+          "sample": 3,
+          "torque": -0.044599042596309,
+          "velocity_residual": 0.0
+        }
+      ],
+      "refusal": "",
+      "snapshot": 2
+    },
+    "after_application": [
+      {
+        "center_of_mass_local": [
+          0.0,
+          0.0
+        ],
+        "inertia": 21.6666660308838,
+        "kinetic": 1.16680881843423,
+        "kinetic_legacy_f32_length_squared": 1.16680884361267,
+        "mass": 1.0,
+        "omega": -5.61195326456232e-17,
+        "pose": [
+          1.0,
+          0.0,
+          0.0,
+          1.0,
+          128.0,
+          121.000160217285
+        ],
+        "pose_f64le": "000000000000f03f00000000000000000000000000000080000000000000f03f0000000000006040000000a002405e40",
+        "potential": -11146.5343775482,
+        "velocity": [
+          -3.36176550625375e-16,
+          -1.52761828899384
+        ],
+        "velocity_omega_f64le": "000000e05c39b8bc000000e01f71f8bf00000000e42c90bc"
+      },
+      {
+        "center_of_mass_local": [
+          0.0,
+          0.0
+        ],
+        "inertia": 0.975000023841858,
+        "kinetic": 0.0197859013508466,
+        "kinetic_legacy_f32_length_squared": 0.0197859007088229,
+        "mass": 0.100000001490116,
+        "omega": 8.788404248e-22,
+        "pose": [
+          1.0,
+          0.0,
+          0.0,
+          1.0,
+          184.0,
+          125.000068664551
+        ],
+        "pose_f64le": "000000000000f03f00000000000000000000000000000080000000000000f03f00000000000067400000002001405f40",
+        "potential": -475.000278806696,
+        "velocity": [
+          -1.31303300355187e-18,
+          -0.629061222076416
+        ],
+        "velocity_omega_f64le": "000000809f3838bc000000004521e4bf000000c0cf99903b"
+      },
+      {
+        "center_of_mass_local": [
+          0.0,
+          0.0
+        ],
+        "inertia": 24.7901363372803,
+        "kinetic": 0.0356054393147791,
+        "kinetic_legacy_f32_length_squared": 0.0356054387393713,
+        "mass": 0.180000007152557,
+        "omega": -0.0017990639898926,
+        "pose": [
+          1.0,
+          0.0,
+          0.0,
+          1.0,
+          240.0,
+          124.283355712891
+        ],
+        "pose_f64le": "000000000000f03f00000000000000000000000000000080000000000000f03f0000000000006e400000008022125f40",
+        "potential": -850.098206190567,
+        "velocity": [
+          -0.00669107958674431,
+          -0.628590047359467
+        ],
+        "velocity_omega_f64le": "000000001b687bbf000000e0681de4bf00000040d2795dbf"
+      }
+    ],
+    "after_step": [
+      {
+        "center_of_mass_local": [
+          0.0,
+          0.0
+        ],
+        "inertia": 21.6666660308838,
+        "kinetic": 2.95135866850835e-05,
+        "kinetic_legacy_f32_length_squared": 2.95135869237129e-05,
+        "mass": 1.0,
+        "omega": -5.48846280916979e-17,
+        "pose": [
+          1.0,
+          -9.3532558545275e-19,
+          9.3532558545275e-19,
+          1.0,
+          128.0,
+          120.990692138672
+        ],
+        "pose_f64le": "000000000000f03f00000040f34031bc00000040f340313c000000000000f03f000000000000604000000080673f5e40",
+        "potential": -11145.6621781762,
+        "velocity": [
+          -3.34781619710145e-16,
+          0.00768291437998414
+        ],
+        "velocity_omega_f64le": "00000080a11fb8bc000000a01e787f3f000000a08aa38fbc"
+      },
+      {
+        "center_of_mass_local": [
+          0.0,
+          0.0
+        ],
+        "inertia": 0.975000023841858,
+        "kinetic": 9.12581543986393e-07,
+        "kinetic_legacy_f32_length_squared": 9.1258154038927e-07,
+        "mass": 0.100000001490116,
+        "omega": 8.7621176356e-22,
+        "pose": [
+          1.0,
+          1.464734052e-23,
+          -1.464734052e-23,
+          1.0,
+          184.0,
+          124.99617767334
+        ],
+        "pose_f64le": "000000000000f03f000000e021b5313b000000e021b531bb000000000000f03f000000000000674000000060c13f5f40",
+        "potential": -474.985493039538,
+        "velocity": [
+          -1.31303300355187e-18,
+          0.00427219271659851
+        ],
+        "velocity_omega_f64le": "000000809f3838bc00000000b87f713f000000a0198d903b"
+      },
+      {
+        "center_of_mass_local": [
+          0.0,
+          0.0
+        ],
+        "inertia": 24.7901363372803,
+        "kinetic": 4.59329663467928e-05,
+        "kinetic_legacy_f32_length_squared": 4.59329661230205e-05,
+        "mass": 0.180000007152557,
+        "omega": -0.0017936829244718,
+        "pose": [
+          1.0,
+          -2.99844014080008e-05,
+          2.99844014080008e-05,
+          1.0,
+          239.999877929688,
+          124.279479980469
+        ],
+        "pose_f64le": "000000000000f03f00000060e070ffbe00000060e070ff3e000000000000f03f00000000ffff6d4000000000e3115f40",
+        "potential": -850.071696179145,
+        "velocity": [
+          -0.00669107958674431,
+          0.00474339723587036
+        ],
+        "velocity_omega_f64le": "000000001b687bbf00000000d06d733f0000006040635dbf"
+      }
+    ]
+  },
+  {
+    "coordinate": {
+      "host": "windows",
+      "workers": 1,
+      "case": "shared-granular-bodies-extended360",
+      "id": "active-baseline",
+      "normal_policy": "active-normal-001",
+      "application": "baseline",
+      "tag": "shared-granular-bodies-extended360-active-baseline-w1-r0"
+    },
+    "step": 359,
+    "raw": {
+      "path": "build/sol-contact-application/core-001/windows/shared-granular-bodies-extended360-active-baseline-w1-r0/shared-granular-bodies-extended360-LA-SELECTIVE-w1-r0.json",
+      "sha256": "be8c4c672dfbfa0a78ab1fe446552b93d6bd524bcf9100832706d0c22eef15f8",
+      "bytes": 19561686
+    },
+    "sampled": [
+      {
+        "center_of_mass_local": [
+          0.0,
+          0.0
+        ],
+        "inertia": 21.6666660308838,
+        "kinetic": 1.16733807831372,
+        "kinetic_legacy_f32_length_squared": 1.16733807967443,
+        "mass": 1.0,
+        "omega": -0.00132087711244822,
+        "pose": [
+          0.99999612569809,
+          -0.00278467638418078,
+          0.00278467638418078,
+          0.99999612569809,
+          128.021148681641,
+          120.52564239502
+        ],
+        "pose_f64le": "000000e0f7ffef3f000000c0e3cf66bf000000c0e3cf663f000000e0f7ffef3f00000040ad00604000000020a4215e40",
+        "potential": -11102.8217972578,
+        "velocity": [
+          -0.00994004495441914,
+          1.52792000770569
+        ],
+        "velocity_omega_f64le": "00000040725b84bf000000405c72f83f0000000029a455bf"
+      },
+      {
+        "center_of_mass_local": [
+          0.0,
+          0.0
+        ],
+        "inertia": 0.975000023841858,
+        "kinetic": 0.0269973845139254,
+        "kinetic_legacy_f32_length_squared": 0.0269973842081014,
+        "mass": 0.100000001490116,
+        "omega": -0.0770847722887993,
+        "pose": [
+          0.397517651319504,
+          0.9175945520401,
+          -0.9175945520401,
+          0.397517651319504,
+          206.231628417969,
+          130.308883666992
+        ],
+        "pose_f64le": "000000e0ed70d93f00000040ef5ced3f00000040ef5cedbf000000e0ed70d93f0000008069c7694000000060e2496040",
+        "potential": -495.173776575406,
+        "velocity": [
+          -0.410721182823181,
+          0.559750556945801
+        ],
+        "velocity_omega_f64le": "000000804149dabf000000007ae9e13f000000e0d3bbb3bf"
+      },
+      {
+        "center_of_mass_local": [
+          0.0,
+          0.0
+        ],
+        "inertia": 24.7901363372803,
+        "kinetic": 0.0360170820756425,
+        "kinetic_legacy_f32_length_squared": 0.0360170835256497,
+        "mass": 0.180000007152557,
+        "omega": -0.000385978608392179,
+        "pose": [
+          0.996657609939575,
+          0.0816934779286385,
+          -0.0816934779286385,
+          0.996657609939575,
+          244.00830078125,
+          124.087814331055
+        ],
+        "pose_f64le": "000000809ee4ef3f00000020dde9b43f00000020dde9b4bf000000809ee4ef3f0000000044806e40000000c09e055f40",
+        "potential": -848.760703055241,
+        "velocity": [
+          -0.00139798584859818,
+          0.632587790489197
+        ],
+        "velocity_omega_f64le": "000000e093e756bf000000c0283ee43f00000080a54b39bf"
+      }
+    ],
+    "before": [
+      {
+        "center_of_mass_local": [
+          0.0,
+          0.0
+        ],
+        "inertia": 21.6666660308838,
+        "kinetic": 1.16733807831372,
+        "kinetic_legacy_f32_length_squared": 1.16733807967443,
+        "mass": 1.0,
+        "omega": -0.00132087711244822,
+        "pose": [
+          0.99999612569809,
+          -0.00278467638418078,
+          0.00278467638418078,
+          0.99999612569809,
+          128.021148681641,
+          120.52564239502
+        ],
+        "pose_f64le": "000000e0f7ffef3f000000c0e3cf66bf000000c0e3cf663f000000e0f7ffef3f00000040ad00604000000020a4215e40",
+        "potential": -11102.8217972578,
+        "velocity": [
+          -0.00994004495441914,
+          1.52792000770569
+        ],
+        "velocity_omega_f64le": "00000040725b84bf000000405c72f83f0000000029a455bf"
+      },
+      {
+        "center_of_mass_local": [
+          0.0,
+          0.0
+        ],
+        "inertia": 0.975000023841858,
+        "kinetic": 0.0269973845139254,
+        "kinetic_legacy_f32_length_squared": 0.0269973842081014,
+        "mass": 0.100000001490116,
+        "omega": -0.0770847722887993,
+        "pose": [
+          0.397517651319504,
+          0.9175945520401,
+          -0.9175945520401,
+          0.397517651319504,
+          206.231628417969,
+          130.308883666992
+        ],
+        "pose_f64le": "000000e0ed70d93f00000040ef5ced3f00000040ef5cedbf000000e0ed70d93f0000008069c7694000000060e2496040",
+        "potential": -495.173776575406,
+        "velocity": [
+          -0.410721182823181,
+          0.559750556945801
+        ],
+        "velocity_omega_f64le": "000000804149dabf000000007ae9e13f000000e0d3bbb3bf"
+      },
+      {
+        "center_of_mass_local": [
+          0.0,
+          0.0
+        ],
+        "inertia": 24.7901363372803,
+        "kinetic": 0.0360170820756425,
+        "kinetic_legacy_f32_length_squared": 0.0360170835256497,
+        "mass": 0.180000007152557,
+        "omega": -0.000385978608392179,
+        "pose": [
+          0.996657609939575,
+          0.0816934779286385,
+          -0.0816934779286385,
+          0.996657609939575,
+          244.00830078125,
+          124.087814331055
+        ],
+        "pose_f64le": "000000809ee4ef3f00000020dde9b43f00000020dde9b4bf000000809ee4ef3f0000000044806e40000000c09e055f40",
+        "potential": -848.760703055241,
+        "velocity": [
+          -0.00139798584859818,
+          0.632587790489197
+        ],
+        "velocity_omega_f64le": "000000e093e756bf000000c0283ee43f00000080a54b39bf"
+      }
+    ],
+    "live_before_application": [
+      {
+        "center_of_mass_local": [
+          0.0,
+          0.0
+        ],
+        "inertia": 21.6666660308838,
+        "kinetic": 1.16733807831372,
+        "kinetic_legacy_f32_length_squared": 1.16733807967443,
+        "mass": 1.0,
+        "omega": -0.00132087711244822,
+        "pose": [
+          0.99999612569809,
+          -0.00278467638418078,
+          0.00278467638418078,
+          0.99999612569809,
+          128.021148681641,
+          120.52564239502
+        ],
+        "pose_f64le": "000000e0f7ffef3f000000c0e3cf66bf000000c0e3cf663f000000e0f7ffef3f00000040ad00604000000020a4215e40",
+        "potential": -11102.8217972578,
+        "velocity": [
+          -0.00994004495441914,
+          1.52792000770569
+        ],
+        "velocity_omega_f64le": "00000040725b84bf000000405c72f83f0000000029a455bf"
+      },
+      {
+        "center_of_mass_local": [
+          0.0,
+          0.0
+        ],
+        "inertia": 0.975000023841858,
+        "kinetic": 0.0269973845139254,
+        "kinetic_legacy_f32_length_squared": 0.0269973842081014,
+        "mass": 0.100000001490116,
+        "omega": -0.0770847722887993,
+        "pose": [
+          0.397517651319504,
+          0.9175945520401,
+          -0.9175945520401,
+          0.397517651319504,
+          206.231628417969,
+          130.308883666992
+        ],
+        "pose_f64le": "000000e0ed70d93f00000040ef5ced3f00000040ef5cedbf000000e0ed70d93f0000008069c7694000000060e2496040",
+        "potential": -495.173776575406,
+        "velocity": [
+          -0.410721182823181,
+          0.559750556945801
+        ],
+        "velocity_omega_f64le": "000000804149dabf000000007ae9e13f000000e0d3bbb3bf"
+      },
+      {
+        "center_of_mass_local": [
+          0.0,
+          0.0
+        ],
+        "inertia": 24.7901363372803,
+        "kinetic": 0.0360170820756425,
+        "kinetic_legacy_f32_length_squared": 0.0360170835256497,
+        "mass": 0.180000007152557,
+        "omega": -0.000385978608392179,
+        "pose": [
+          0.996657609939575,
+          0.0816934779286385,
+          -0.0816934779286385,
+          0.996657609939575,
+          244.00830078125,
+          124.087814331055
+        ],
+        "pose_f64le": "000000809ee4ef3f00000020dde9b43f00000020dde9b4bf000000809ee4ef3f0000000044806e40000000c09e055f40",
+        "potential": -848.760703055241,
+        "velocity": [
+          -0.00139798584859818,
+          0.632587790489197
+        ],
+        "velocity_omega_f64le": "000000e093e756bf000000c0283ee43f00000080a54b39bf"
+      }
+    ],
+    "native_response": {
+      "arrival_storage_bytes": 4718592,
+      "body_limit": 8,
+      "epoch": 1,
+      "extent": [
+        512,
+        512
+      ],
+      "getter_us": 170,
+      "native_mask_reserved": 262144,
+      "native_workers_configured": 1,
+      "native_workers_constructed": 1,
+      "normal_policy": "active-normal-001",
+      "normal_policy_locked": true,
+      "proxy_limit": 64,
+      "raster_indices_reserved": 262144,
+      "response": "LA-SELECTIVE",
+      "rows": [
+        {
+          "arrival_count": 0,
+          "arrival_misaligned": 0,
+          "arrival_missing": 0,
+          "bins": 2,
+          "body_capacity": 20.0,
+          "budget": 20.0,
+          "com": [
+            128.021148681641,
+            120.52564239502
+          ],
+          "contacts": 16,
+          "correction": [
+            0.0,
+            -0.015816193073988
+          ],
+          "displaced": 0,
+          "event_accepted": [
+            0.0,
+            0.0
+          ],
+          "event_cost": 0.0,
+          "event_torque": 0.0,
+          "external_drive": false,
+          "generation": 1,
+          "gravity": 92.1199968457222,
+          "id": 1,
+          "impulse": [
+            0.00353719224222004,
+            -1.52658796310425
+          ],
+          "inertia": 21.6666660308838,
+          "instance_id": 1,
+          "legacy_wrench_f64": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "mass": 1.0,
+          "nodes": 4,
+          "normal_accepted": 1.52657216911875,
+          "normal_cap_hits": 0,
+          "normal_capacity": 16.0,
+          "normal_policy": "active-normal-001",
+          "normal_raw": 6.106288676475,
+          "passive_accepted_wrench_f64": [
+            0.00353719231226721,
+            -1.52658793796927,
+            0.0087892458454798
+          ],
+          "passive_energy_after": 3.04597571957359e-05,
+          "passive_energy_before": 1.16733807831372,
+          "passive_impulse": [
+            0.00353719224222004,
+            -1.52658796310425
+          ],
+          "passive_raw_wrench_f64": [
+            0.00353719231226721,
+            -1.52658793796927,
+            0.0087892458454798
+          ],
+          "passive_scale": 1.0,
+          "passive_state_f64": [
+            -0.00994004495441914,
+            1.52792000770569,
+            128.021148681641,
+            120.52564239502,
+            -0.00132087711244822,
+            1.0,
+            21.6666660308838,
+            0.779999971389771
+          ],
+          "passive_torque": 0.0087892458454798,
+          "passivity_rejected": false,
+          "proxy_count": 1,
+          "quadrature_clamps": 0,
+          "sample": 361,
+          "tangent_accepted": 0.00778823181448887,
+          "tangent_cap_hits": 0,
+          "tangent_raw": 0.0311529272579555,
+          "torque": 0.0087892458454798,
+          "total_wrench_f64": [
+            0.00353719224222004,
+            -1.52658796310425,
+            0.0087892458454798
+          ],
+          "unresolved": 0,
+          "updates": 32
+        },
+        {
+          "arrival_count": 0,
+          "arrival_misaligned": 0,
+          "arrival_missing": 0,
+          "bins": 1,
+          "body_capacity": 20.0,
+          "budget": 20.0,
+          "com": [
+            206.231628417969,
+            130.308883666992
+          ],
+          "contacts": 2,
+          "correction": [
+            0.0,
+            -0.00531738298013806
+          ],
+          "displaced": 0,
+          "event_accepted": [
+            0.0,
+            0.0
+          ],
+          "event_cost": 0.0,
+          "event_torque": 0.0,
+          "external_drive": false,
+          "generation": 1,
+          "gravity": 38.0000008642673,
+          "id": 2,
+          "impulse": [
+            0.00834156386554241,
+            -0.0610349625349045
+          ],
+          "inertia": 0.975000023841858,
+          "instance_id": 2,
+          "legacy_wrench_f64": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "mass": 0.100000001490116,
+          "nodes": 1,
+          "normal_accepted": 0.0526894287346933,
+          "normal_cap_hits": 0,
+          "normal_capacity": 2.0,
+          "normal_policy": "active-normal-001",
+          "normal_raw": 0.0526894287346933,
+          "passive_accepted_wrench_f64": [
+            0.00834156344057383,
+            -0.0610349623041791,
+            0.0144433713206375
+          ],
+          "passive_energy_after": 0.00737483080116215,
+          "passive_energy_before": 0.0269973845139254,
+          "passive_impulse": [
+            0.00834156386554241,
+            -0.0610349625349045
+          ],
+          "passive_raw_wrench_f64": [
+            0.00834156344057383,
+            -0.0610349623041791,
+            0.0144433713206375
+          ],
+          "passive_scale": 1.0,
+          "passive_state_f64": [
+            -0.410721182823181,
+            0.559750556945801,
+            206.231628417969,
+            130.308883666992,
+            -0.0770847722887993,
+            0.100000001490116,
+            0.975000023841858,
+            0.800000011920929
+          ],
+          "passive_torque": 0.0144433713206375,
+          "passivity_rejected": false,
+          "proxy_count": 1,
+          "quadrature_clamps": 0,
+          "sample": 361,
+          "tangent_accepted": 0.0319166477518762,
+          "tangent_cap_hits": 0,
+          "tangent_raw": 0.0319166477518762,
+          "torque": 0.0144433713206375,
+          "total_wrench_f64": [
+            0.00834156386554241,
+            -0.0610349625349045,
+            0.0144433713206375
+          ],
+          "unresolved": 0,
+          "updates": 8
+        },
+        {
+          "arrival_count": 0,
+          "arrival_misaligned": 0,
+          "arrival_missing": 0,
+          "bins": 2,
+          "body_capacity": 20.0,
+          "budget": 20.0,
+          "com": [
+            244.00830078125,
+            124.087814331055
+          ],
+          "contacts": 16,
+          "correction": [
+            0.0,
+            -0.00448134914040565
+          ],
+          "displaced": 0,
+          "event_accepted": [
+            0.0,
+            0.0
+          ],
+          "event_cost": 0.0,
+          "event_torque": 0.0,
+          "external_drive": false,
+          "generation": 1,
+          "gravity": 38.0000008642673,
+          "id": 3,
+          "impulse": [
+            -3.45193257089704e-05,
+            -0.113862998783588
+          ],
+          "inertia": 24.7901363372803,
+          "instance_id": 3,
+          "legacy_wrench_f64": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "mass": 0.180000007152557,
+          "nodes": 4,
+          "normal_accepted": 0.113479592490726,
+          "normal_cap_hits": 0,
+          "normal_capacity": 16.0,
+          "normal_policy": "active-normal-001",
+          "normal_raw": 0.454304954558022,
+          "passive_accepted_wrench_f64": [
+            -3.45193273245019e-05,
+            -0.113862999317639,
+            -0.000985365542374869
+          ],
+          "passive_energy_after": 2.47400639202384e-06,
+          "passive_energy_before": 0.0360170820756425,
+          "passive_impulse": [
+            -3.45193257089704e-05,
+            -0.113862998783588
+          ],
+          "passive_raw_wrench_f64": [
+            -3.45193273245019e-05,
+            -0.113862999317639,
+            -0.000985365542374869
+          ],
+          "passive_scale": 1.0,
+          "passive_state_f64": [
+            -0.00139798584859818,
+            0.632587790489197,
+            244.00830078125,
+            124.087814331055,
+            -0.000385978608392179,
+            0.180000007152557,
+            24.7901363372803,
+            0.800000011920929
+          ],
+          "passive_torque": -0.000985365542374869,
+          "passivity_rejected": false,
+          "proxy_count": 5,
+          "quadrature_clamps": 0,
+          "sample": 361,
+          "tangent_accepted": 0.00933626763388688,
+          "tangent_cap_hits": 0,
+          "tangent_raw": 0.0374898766608185,
+          "torque": -0.000985365542374869,
+          "total_wrench_f64": [
+            -3.45193273245019e-05,
+            -0.113862999317639,
+            -0.000985365542374869
+          ],
+          "unresolved": 0,
+          "updates": 32
+        }
+      ],
+      "sample_tick": 359,
+      "session": 1,
+      "solver_trace_locked": true,
+      "solver_trace_mode": "batch64-001",
+      "solver_trace_storage_bytes": 55872,
+      "valid": true,
+      "world_mask_cell_limit": 262144
+    },
+    "application": {
+      "accepted": true,
+      "application_variant": "baseline",
+      "bodies": [
+        {
+          "age": 0,
+          "correction": [
+            0.0,
+            -0.015816193073988
+          ],
+          "id": 1,
+          "impulse": [
+            0.00353719224222004,
+            -1.52658796310425
+          ],
+          "instance_id": 1,
+          "live_velocity_changed": false,
+          "omega_residual": 1.86484371781509e-11,
+          "passive_energy_accepted": 1.16519672503421,
+          "passive_energy_linear": -4.6695467215953e-05,
+          "passive_energy_quadratic": 1.16524342050142,
+          "passive_energy_unscaled": 1.16519672503421,
+          "passive_impulse_before": [
+            0.00353719224222004,
+            -1.52658796310425
+          ],
+          "passive_revalidation_active": false,
+          "passive_scale": 1.0,
+          "passive_torque_before": 0.00873330093098679,
+          "sample": 361,
+          "torque": 0.00873330093098679,
+          "velocity_residual": 0.0
+        },
+        {
+          "age": 0,
+          "correction": [
+            0.0,
+            -0.00531738298013806
+          ],
+          "id": 2,
+          "impulse": [
+            0.00834156386554241,
+            -0.0610349625349045
+          ],
+          "instance_id": 2,
+          "live_velocity_changed": false,
+          "omega_residual": 7.25531731915474e-10,
+          "passive_energy_accepted": 0.0145445634916088,
+          "passive_energy_linear": -0.00453600184943286,
+          "passive_energy_quadratic": 0.0190805653410417,
+          "passive_energy_unscaled": 0.0145445634916088,
+          "passive_impulse_before": [
+            0.00834156386554241,
+            -0.0610349625349045
+          ],
+          "passive_revalidation_active": false,
+          "passive_scale": 1.0,
+          "passive_torque_before": 0.0143990160316456,
+          "sample": 361,
+          "torque": 0.0143990160316456,
+          "velocity_residual": 5.96046447753906e-08
+        },
+        {
+          "age": 0,
+          "correction": [
+            0.0,
+            -0.00448134914040565
+          ],
+          "id": 3,
+          "impulse": [
+            -3.45193257089704e-05,
+            -0.113862998783588
+          ],
+          "instance_id": 3,
+          "live_velocity_changed": false,
+          "omega_residual": 1.32715007061281e-11,
+          "passive_energy_accepted": 0.036013734683883,
+          "passive_energy_linear": 4.2852784139933e-07,
+          "passive_energy_quadratic": 0.0360133061560416,
+          "passive_energy_unscaled": 0.036013734683883,
+          "passive_impulse_before": [
+            -3.45193257089704e-05,
+            -0.113862998783588
+          ],
+          "passive_revalidation_active": false,
+          "passive_scale": 1.0,
+          "passive_torque_before": -0.000985210849220583,
+          "sample": 361,
+          "torque": -0.000985210849220583,
+          "velocity_residual": 0.0
+        }
+      ],
+      "refusal": "",
+      "snapshot": 360
+    },
+    "after_application": [
+      {
+        "center_of_mass_local": [
+          0.0,
+          0.0
+        ],
+        "inertia": 21.6666660308838,
+        "kinetic": 1.16526502837611,
+        "kinetic_legacy_f32_length_squared": 1.1652650297635,
+        "mass": 1.0,
+        "omega": -0.000917801691684872,
+        "pose": [
+          0.99999612569809,
+          -0.00278467638418078,
+          0.00278467638418078,
+          0.99999612569809,
+          128.021148681641,
+          120.509826660156
+        ],
+        "pose_f64le": "000000e0f7ffef3f000000c0e3cf66bf000000c0e3cf663f000000e0f7ffef3f00000040ad00604000000000a1205e40",
+        "potential": -11101.3648518121,
+        "velocity": [
+          -0.00640285294502974,
+          -1.52658796310425
+        ],
+        "velocity_omega_f64le": "000000c0e0397abf00000080e76cf8bf0000002014134ebf"
+      },
+      {
+        "center_of_mass_local": [
+          0.0,
+          0.0
+        ],
+        "inertia": 0.975000023841858,
+        "kinetic": 0.0258759162153182,
+        "kinetic_legacy_f32_length_squared": 0.0258759159820072,
+        "mass": 0.100000001490116,
+        "omega": -0.0623165518045425,
+        "pose": [
+          0.397517651319504,
+          0.9175945520401,
+          -0.9175945520401,
+          0.397517651319504,
+          206.231628417969,
+          130.303573608398
+        ],
+        "pose_f64le": "000000e0ed70d93f00000040ef5ced3f00000040ef5cedbf000000e0ed70d93f0000008069c76940000000e0b6496040",
+        "potential": -495.15359835199,
+        "velocity": [
+          -0.327305555343628,
+          -0.610349655151367
+        ],
+        "velocity_omega_f64le": "0000000093f2d4bf00000000fc87e3bf00000080f4e7afbf"
+      },
+      {
+        "center_of_mass_local": [
+          0.0,
+          0.0
+        ],
+        "inertia": 24.7901363372803,
+        "kinetic": 0.0360157553364729,
+        "kinetic_legacy_f32_length_squared": 0.0360157560302976,
+        "mass": 0.180000007152557,
+        "omega": -0.000425720645580441,
+        "pose": [
+          0.996657490730286,
+          0.0816934704780579,
+          -0.0816934779286385,
+          0.996657490730286,
+          244.00830078125,
+          124.083335876465
+        ],
+        "pose_f64le": "000000409ee4ef3f00000000dde9b43f00000020dde9b4bf000000409ee4ef3f0000000044806e400000006055055f40",
+        "potential": -848.730070423933,
+        "velocity": [
+          -0.00158975983504206,
+          -0.632572174072266
+        ],
+        "velocity_omega_f64le": "000000a0ef0b5abf00000000083ee4bf0000004068e63bbf"
+      }
+    ],
+    "after_step": [
+      {
+        "center_of_mass_local": [
+          0.0,
+          0.0
+        ],
+        "inertia": 21.6666660308838,
+        "kinetic": 6.69799090448145e-05,
+        "kinetic_legacy_f32_length_squared": 6.69799123761444e-05,
+        "mass": 1.0,
+        "omega": -0.000897605554200709,
+        "pose": [
+          0.999996066093445,
+          -0.0027999731246382,
+          0.0027999731246382,
+          0.999996066093445,
+          128.021026611328,
+          120.500381469727
+        ],
+        "pose_f64le": "000000c0f7ffef3f00000020f8ef66bf00000020f8ef663f000000c0f7ffef3f00000040ac0060400000004006205e40",
+        "potential": -11100.4947608995,
+        "velocity": [
+          -0.00637628464028239,
+          0.00870896503329277
+        ],
+        "velocity_omega_f64le": "000000e0041e7abf0000008001d6813f00000040a9694dbf"
+      },
+      {
+        "center_of_mass_local": [
+          0.0,
+          0.0
+        ],
+        "inertia": 0.975000023841858,
+        "kinetic": 0.00726468558372153,
+        "kinetic_legacy_f32_length_squared": 0.00726468555723885,
+        "mass": 0.100000001490116,
+        "omega": -0.0621301606297493,
+        "pose": [
+          0.398470491170883,
+          0.917181134223938,
+          -0.917181134223938,
+          0.398470491170883,
+          206.226196289063,
+          130.300003051758
+        ],
+        "pose_f64le": "000000608a80d93f000000408c59ed3f000000408c59edbf000000608a80d93f000000003dc76940000000a099496040",
+        "potential": -495.140030236245,
+        "velocity": [
+          -0.327305555343628,
+          0.0229837596416473
+        ],
+        "velocity_omega_f64le": "0000000093f2d4bf000000000e89973f0000004086cfafbf"
+      },
+      {
+        "center_of_mass_local": [
+          0.0,
+          0.0
+        ],
+        "inertia": 24.7901363372803,
+        "kinetic": 2.51265801243308e-06,
+        "kinetic_legacy_f32_length_squared": 2.512658012592e-06,
+        "mass": 0.180000007152557,
+        "omega": -0.000424447294790298,
+        "pose": [
+          0.996658027172089,
+          0.081686407327652,
+          -0.0816864147782326,
+          0.996658027172089,
+          244.00830078125,
+          124.079383850098
+        ],
+        "pose_f64le": "000000609fe4ef3f0000008066e9b43f000000a066e9b4bf000000609fe4ef3f0000000044806e40000000a014055f40",
+        "potential": -848.703038561892,
+        "velocity": [
+          -0.00158975983504206,
+          0.000761270523071289
+        ],
+        "velocity_omega_f64le": "000000a0ef0b5abf0000000000f2483f000000400bd13bbf"
+      }
+    ]
+  },
+  {
+    "coordinate": {
+      "host": "windows",
+      "workers": 1,
+      "case": "shared-granular-bodies-extended360",
+      "id": "active-retain",
+      "normal_policy": "active-normal-001",
+      "application": "retain-linear-001",
+      "tag": "shared-granular-bodies-extended360-active-retain-w1-r0"
+    },
+    "step": 1,
+    "raw": {
+      "path": "build/sol-contact-application/core-001/windows/shared-granular-bodies-extended360-active-retain-w1-r0/shared-granular-bodies-extended360-LA-SELECTIVE-w1-r0.json",
+      "sha256": "0392d78de13d6c9360cb6a1f4967d605e6fbf963436f8bb5f0760ed7d608c5e8",
+      "bytes": 26133624
+    },
+    "sampled": [
+      {
+        "center_of_mass_local": [
+          0.0,
+          0.0
+        ],
+        "inertia": 21.6666660308838,
+        "kinetic": 1.16886315241295,
+        "kinetic_legacy_f32_length_squared": 1.1688631772995,
+        "mass": 1.0,
+        "omega": 0.0,
+        "pose": [
+          1.0,
+          0.0,
+          0.0,
+          1.0,
+          128.0,
+          121.015991210938
+        ],
+        "pose_f64le": "000000000000f03f00000000000000000000000000000080000000000000f03f00000000000060400000000006415e40",
+        "potential": -11147.9927286335,
+        "velocity": [
+          0.0,
+          1.52896249294281
+        ],
+        "velocity_omega_f64le": "000000000000000000000060a176f83f0000000000000000"
+      },
+      {
+        "center_of_mass_local": [
+          0.0,
+          0.0
+        ],
+        "inertia": 0.975000023841858,
+        "kinetic": 0.0200555591260395,
+        "kinetic_legacy_f32_length_squared": 0.0200555595763856,
+        "mass": 0.100000001490116,
+        "omega": 0.0,
+        "pose": [
+          1.0,
+          0.0,
+          0.0,
+          1.0,
+          184.0,
+          125.006591796875
+        ],
+        "pose_f64le": "000000000000f03f00000000000000000000000000000080000000000000f03f0000000000006740000000006c405f40",
+        "potential": -475.025066710462,
+        "velocity": [
+          0.0,
+          0.633333384990692
+        ],
+        "velocity_omega_f64le": "0000000000000000000000604444e43f0000000000000000"
+      },
+      {
+        "center_of_mass_local": [
+          0.0,
+          0.0
+        ],
+        "inertia": 24.7901363372803,
+        "kinetic": 0.0361000141183551,
+        "kinetic_legacy_f32_length_squared": 0.0361000134984657,
+        "mass": 0.180000007152557,
+        "omega": 0.0,
+        "pose": [
+          1.0,
+          0.0,
+          0.0,
+          1.0,
+          240.0,
+          124.287841796875
+        ],
+        "pose_f64le": "000000000000f03f00000000000000000000000000000080000000000000f03f0000000000006e40000000006c125f40",
+        "potential": -850.128891006937,
+        "velocity": [
+          0.0,
+          0.633333444595337
+        ],
+        "velocity_omega_f64le": "0000000000000000000000804444e43f0000000000000000"
+      }
+    ],
+    "before": [
+      {
+        "center_of_mass_local": [
+          0.0,
+          0.0
+        ],
+        "inertia": 21.6666660308838,
+        "kinetic": 1.16886315241295,
+        "kinetic_legacy_f32_length_squared": 1.1688631772995,
+        "mass": 1.0,
+        "omega": 0.0,
+        "pose": [
+          1.0,
+          0.0,
+          0.0,
+          1.0,
+          128.0,
+          121.015991210938
+        ],
+        "pose_f64le": "000000000000f03f00000000000000000000000000000080000000000000f03f00000000000060400000000006415e40",
+        "potential": -11147.9927286335,
+        "velocity": [
+          0.0,
+          1.52896249294281
+        ],
+        "velocity_omega_f64le": "000000000000000000000060a176f83f0000000000000000"
+      },
+      {
+        "center_of_mass_local": [
+          0.0,
+          0.0
+        ],
+        "inertia": 0.975000023841858,
+        "kinetic": 0.0200555591260395,
+        "kinetic_legacy_f32_length_squared": 0.0200555595763856,
+        "mass": 0.100000001490116,
+        "omega": 0.0,
+        "pose": [
+          1.0,
+          0.0,
+          0.0,
+          1.0,
+          184.0,
+          125.006591796875
+        ],
+        "pose_f64le": "000000000000f03f00000000000000000000000000000080000000000000f03f0000000000006740000000006c405f40",
+        "potential": -475.025066710462,
+        "velocity": [
+          0.0,
+          0.633333384990692
+        ],
+        "velocity_omega_f64le": "0000000000000000000000604444e43f0000000000000000"
+      },
+      {
+        "center_of_mass_local": [
+          0.0,
+          0.0
+        ],
+        "inertia": 24.7901363372803,
+        "kinetic": 0.0361000141183551,
+        "kinetic_legacy_f32_length_squared": 0.0361000134984657,
+        "mass": 0.180000007152557,
+        "omega": 0.0,
+        "pose": [
+          1.0,
+          0.0,
+          0.0,
+          1.0,
+          240.0,
+          124.287841796875
+        ],
+        "pose_f64le": "000000000000f03f00000000000000000000000000000080000000000000f03f0000000000006e40000000006c125f40",
+        "potential": -850.128891006937,
+        "velocity": [
+          0.0,
+          0.633333444595337
+        ],
+        "velocity_omega_f64le": "0000000000000000000000804444e43f0000000000000000"
+      }
+    ],
+    "live_before_application": [
+      {
+        "center_of_mass_local": [
+          0.0,
+          0.0
+        ],
+        "inertia": 21.6666660308838,
+        "kinetic": 1.16886315241295,
+        "kinetic_legacy_f32_length_squared": 1.1688631772995,
+        "mass": 1.0,
+        "omega": 0.0,
+        "pose": [
+          1.0,
+          0.0,
+          0.0,
+          1.0,
+          128.0,
+          121.015991210938
+        ],
+        "pose_f64le": "000000000000f03f00000000000000000000000000000080000000000000f03f00000000000060400000000006415e40",
+        "potential": -11147.9927286335,
+        "velocity": [
+          0.0,
+          1.52896249294281
+        ],
+        "velocity_omega_f64le": "000000000000000000000060a176f83f0000000000000000"
+      },
+      {
+        "center_of_mass_local": [
+          0.0,
+          0.0
+        ],
+        "inertia": 0.975000023841858,
+        "kinetic": 0.0200555591260395,
+        "kinetic_legacy_f32_length_squared": 0.0200555595763856,
+        "mass": 0.100000001490116,
+        "omega": 0.0,
+        "pose": [
+          1.0,
+          0.0,
+          0.0,
+          1.0,
+          184.0,
+          125.006591796875
+        ],
+        "pose_f64le": "000000000000f03f00000000000000000000000000000080000000000000f03f0000000000006740000000006c405f40",
+        "potential": -475.025066710462,
+        "velocity": [
+          0.0,
+          0.633333384990692
+        ],
+        "velocity_omega_f64le": "0000000000000000000000604444e43f0000000000000000"
+      },
+      {
+        "center_of_mass_local": [
+          0.0,
+          0.0
+        ],
+        "inertia": 24.7901363372803,
+        "kinetic": 0.0361000141183551,
+        "kinetic_legacy_f32_length_squared": 0.0361000134984657,
+        "mass": 0.180000007152557,
+        "omega": 0.0,
+        "pose": [
+          1.0,
+          0.0,
+          0.0,
+          1.0,
+          240.0,
+          124.287841796875
+        ],
+        "pose_f64le": "000000000000f03f00000000000000000000000000000080000000000000f03f0000000000006e40000000006c125f40",
+        "potential": -850.128891006937,
+        "velocity": [
+          0.0,
+          0.633333444595337
+        ],
+        "velocity_omega_f64le": "0000000000000000000000804444e43f0000000000000000"
+      }
+    ],
+    "native_response": {
+      "arrival_storage_bytes": 4718592,
+      "body_limit": 8,
+      "epoch": 1,
+      "extent": [
+        512,
+        512
+      ],
+      "getter_us": 195,
+      "native_mask_reserved": 262144,
+      "native_workers_configured": 1,
+      "native_workers_constructed": 1,
+      "normal_policy": "active-normal-001",
+      "normal_policy_locked": true,
+      "proxy_limit": 64,
+      "raster_indices_reserved": 262144,
+      "response": "LA-SELECTIVE",
+      "rows": [
+        {
+          "arrival_count": 0,
+          "arrival_misaligned": 0,
+          "arrival_missing": 0,
+          "bins": 2,
+          "body_capacity": 20.0,
+          "budget": 20.0,
+          "com": [
+            128.0,
+            121.015991210938
+          ],
+          "contacts": 16,
+          "correction": [
+            0.0,
+            -0.0158312991261482
+          ],
+          "displaced": 0,
+          "event_accepted": [
+            0.0,
+            0.0
+          ],
+          "event_cost": 0.0,
+          "event_torque": 0.0,
+          "external_drive": false,
+          "generation": 1,
+          "gravity": 92.1199968457222,
+          "id": 1,
+          "impulse": [
+            -3.36176550625375e-16,
+            -1.52761828899384
+          ],
+          "inertia": 21.6666660308838,
+          "instance_id": 1,
+          "legacy_wrench_f64": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "mass": 1.0,
+          "nodes": 4,
+          "normal_accepted": 1.52761824937875,
+          "normal_cap_hits": 0,
+          "normal_capacity": 16.0,
+          "normal_policy": "active-normal-001",
+          "normal_raw": 6.11047299751502,
+          "passive_accepted_wrench_f64": [
+            -3.36176552207402e-16,
+            -1.52761824937875,
+            -1.22124532708767e-15
+          ],
+          "passive_energy_after": 9.03495379752156e-07,
+          "passive_energy_before": 1.16886315241295,
+          "passive_impulse": [
+            -3.36176550625375e-16,
+            -1.52761828899384
+          ],
+          "passive_raw_wrench_f64": [
+            -3.36176552207402e-16,
+            -1.52761824937875,
+            -1.22124532708767e-15
+          ],
+          "passive_scale": 1.0,
+          "passive_state_f64": [
+            0.0,
+            1.52896249294281,
+            128.0,
+            121.015991210938,
+            0.0,
+            1.0,
+            21.6666660308838,
+            0.779999971389771
+          ],
+          "passive_torque": -1.22124532708767e-15,
+          "passivity_rejected": false,
+          "proxy_count": 1,
+          "quadrature_clamps": 0,
+          "sample": 3,
+          "tangent_accepted": 3.36176552207402e-16,
+          "tangent_cap_hits": 0,
+          "tangent_raw": 1.65738433311555e-15,
+          "torque": -1.22124532708767e-15,
+          "total_wrench_f64": [
+            -3.36176550625375e-16,
+            -1.52761828899384,
+            -1.22124532708767e-15
+          ],
+          "unresolved": 0,
+          "updates": 32
+        },
+        {
+          "arrival_count": 0,
+          "arrival_misaligned": 0,
+          "arrival_missing": 0,
+          "bins": 2,
+          "body_capacity": 20.0,
+          "budget": 20.0,
+          "com": [
+            184.0,
+            125.006591796875
+          ],
+          "contacts": 18,
+          "correction": [
+            0.0,
+            -0.00652587879449129
+          ],
+          "displaced": 0,
+          "event_accepted": [
+            0.0,
+            0.0
+          ],
+          "event_cost": 0.0,
+          "event_torque": 0.0,
+          "external_drive": false,
+          "generation": 1,
+          "gravity": 38.0000008642673,
+          "id": 2,
+          "impulse": [
+            -1.3130330294013e-19,
+            -0.0629061236977577
+          ],
+          "inertia": 0.975000023841858,
+          "instance_id": 2,
+          "legacy_wrench_f64": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "mass": 0.100000001490116,
+          "nodes": 4,
+          "normal_accepted": 0.0629061225485905,
+          "normal_cap_hits": 0,
+          "normal_capacity": 16.0,
+          "normal_policy": "active-normal-001",
+          "normal_raw": 0.251624490194362,
+          "passive_accepted_wrench_f64": [
+            -1.3130330365245e-19,
+            -0.0629061225485905,
+            0.0
+          ],
+          "passive_energy_after": 9.12571359932098e-07,
+          "passive_energy_before": 0.0200555591260395,
+          "passive_impulse": [
+            -1.3130330294013e-19,
+            -0.0629061236977577
+          ],
+          "passive_raw_wrench_f64": [
+            -1.3130330365245e-19,
+            -0.0629061225485905,
+            0.0
+          ],
+          "passive_scale": 1.0,
+          "passive_state_f64": [
+            0.0,
+            0.633333384990692,
+            184.0,
+            125.006591796875,
+            0.0,
+            0.100000001490116,
+            0.975000023841858,
+            0.800000011920929
+          ],
+          "passive_torque": 0.0,
+          "passivity_rejected": false,
+          "proxy_count": 1,
+          "quadrature_clamps": 0,
+          "sample": 3,
+          "tangent_accepted": 1.3130330365245e-19,
+          "tangent_cap_hits": 0,
+          "tangent_raw": 5.5725425549282e-19,
+          "torque": 0.0,
+          "total_wrench_f64": [
+            -1.3130330294013e-19,
+            -0.0629061236977577,
+            0.0
+          ],
+          "unresolved": 0,
+          "updates": 32
+        },
+        {
+          "arrival_count": 0,
+          "arrival_misaligned": 0,
+          "arrival_missing": 0,
+          "bins": 2,
+          "body_capacity": 20.0,
+          "budget": 20.0,
+          "com": [
+            240.0,
+            124.287841796875
+          ],
+          "contacts": 55,
+          "correction": [
+            0.0,
+            -0.00448654172942042
+          ],
+          "displaced": 0,
+          "event_accepted": [
+            0.0,
+            0.0
+          ],
+          "event_cost": 0.0,
+          "event_torque": 0.0,
+          "external_drive": false,
+          "generation": 1,
+          "gravity": 38.0000008642673,
+          "id": 3,
+          "impulse": [
+            -0.00120439438614994,
+            -0.113146208226681
+          ],
+          "inertia": 24.7901363372803,
+          "instance_id": 3,
+          "legacy_wrench_f64": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "mass": 0.180000007152557,
+          "nodes": 4,
+          "normal_accepted": 0.113146205259801,
+          "normal_cap_hits": 0,
+          "normal_capacity": 20.0,
+          "normal_policy": "active-normal-001",
+          "normal_raw": 0.458721931817565,
+          "passive_accepted_wrench_f64": [
+            -0.00120439443857837,
+            -0.113146205259801,
+            -0.044604446162174
+          ],
+          "passive_energy_after": 4.61823588085748e-05,
+          "passive_energy_before": 0.0361000141183551,
+          "passive_impulse": [
+            -0.00120439438614994,
+            -0.113146208226681
+          ],
+          "passive_raw_wrench_f64": [
+            -0.00120439443857837,
+            -0.113146205259801,
+            -0.044604446162174
+          ],
+          "passive_scale": 1.0,
+          "passive_state_f64": [
+            0.0,
+            0.633333444595337,
+            240.0,
+            124.287841796875,
+            0.0,
+            0.180000007152557,
+            24.7901363372803,
+            0.800000011920929
+          ],
+          "passive_torque": -0.044604446162174,
+          "passivity_rejected": false,
+          "proxy_count": 5,
+          "quadrature_clamps": 0,
+          "sample": 3,
+          "tangent_accepted": 0.00120439443857837,
+          "tangent_cap_hits": 0,
+          "tangent_raw": 0.00979307315129199,
+          "torque": -0.044604446162174,
+          "total_wrench_f64": [
+            -0.00120439443857837,
+            -0.113146205259801,
+            -0.044604446162174
+          ],
+          "unresolved": 0,
+          "updates": 32
+        }
+      ],
+      "sample_tick": 1,
+      "session": 1,
+      "solver_trace_locked": true,
+      "solver_trace_mode": "batch64-001",
+      "solver_trace_storage_bytes": 55872,
+      "valid": true,
+      "world_mask_cell_limit": 262144
+    },
+    "application": {
+      "accepted": true,
+      "application_variant": "retain-linear-001",
+      "bodies": [
+        {
+          "age": 0,
+          "correction": [
+            0.0,
+            -0.0158312991261482
+          ],
+          "id": 1,
+          "impulse": [
+            -3.36176550625375e-16,
+            -1.52761828899384
+          ],
+          "instance_id": 1,
+          "linear_clip_policy": "retain-linear-001",
+          "live_velocity_changed": false,
+          "omega_residual": 2.02853748e-24,
+          "passive_energy_accepted": -1.16886224897082,
+          "passive_energy_linear": -2.33567106740504,
+          "passive_energy_quadratic": 1.16680881843423,
+          "passive_energy_unscaled": -1.16886224897082,
+          "passive_impulse_before": [
+            -3.36176550625375e-16,
+            -1.52761828899384
+          ],
+          "passive_revalidation_active": false,
+          "passive_scale": 1.0,
+          "passive_torque_before": -1.21592321559364e-15,
+          "sample": 3,
+          "torque": -1.21592321559364e-15,
+          "velocity_residual": 0.0
+        },
+        {
+          "age": 0,
+          "correction": [
+            0.0,
+            -0.00652587879449129
+          ],
+          "id": 2,
+          "impulse": [
+            -1.3130330294013e-19,
+            -0.0629061236977577
+          ],
+          "instance_id": 2,
+          "linear_clip_policy": "retain-linear-001",
+          "live_velocity_changed": false,
+          "omega_residual": 1.476e-29,
+          "passive_energy_accepted": -0.020054646559589,
+          "passive_energy_linear": -0.0398405482581441,
+          "passive_energy_quadratic": 0.0197859016985551,
+          "passive_energy_unscaled": -0.020054646559589,
+          "passive_impulse_before": [
+            -1.3130330294013e-19,
+            -0.0629061236977577
+          ],
+          "passive_revalidation_active": false,
+          "passive_scale": 1.0,
+          "passive_torque_before": 8.5686944952e-22,
+          "sample": 3,
+          "torque": 8.5686944952e-22,
+          "velocity_residual": 0.0
+        },
+        {
+          "age": 0,
+          "correction": [
+            0.0,
+            -0.00448654172942042
+          ],
+          "id": 3,
+          "impulse": [
+            -0.00120439438614994,
+            -0.113146208226681
+          ],
+          "instance_id": 3,
+          "linear_clip_policy": "retain-linear-001",
+          "live_velocity_changed": false,
+          "omega_residual": 4.06363239498914e-11,
+          "passive_energy_accepted": -0.0360538414959205,
+          "passive_energy_linear": -0.071659277799105,
+          "passive_energy_quadratic": 0.0356054363031845,
+          "passive_energy_unscaled": -0.0360538414959205,
+          "passive_impulse_before": [
+            -0.00120439438614994,
+            -0.113146208226681
+          ],
+          "passive_revalidation_active": false,
+          "passive_scale": 1.0,
+          "passive_torque_before": -0.044599042596309,
+          "sample": 3,
+          "torque": -0.044599042596309,
+          "velocity_residual": 0.0
+        }
+      ],
+      "refusal": "",
+      "snapshot": 2
+    },
+    "after_application": [
+      {
+        "center_of_mass_local": [
+          0.0,
+          0.0
+        ],
+        "inertia": 21.6666660308838,
+        "kinetic": 9.03442128219467e-07,
+        "kinetic_legacy_f32_length_squared": 9.03442128219467e-07,
+        "mass": 1.0,
+        "omega": -5.61195326456232e-17,
+        "pose": [
+          1.0,
+          0.0,
+          0.0,
+          1.0,
+          128.0,
+          121.000160217285
+        ],
+        "pose_f64le": "000000000000f03f00000000000000000000000000000080000000000000f03f0000000000006040000000a002405e40",
+        "potential": -11146.5343775482,
+        "velocity": [
+          -3.36176550625375e-16,
+          0.00134420394897461
+        ],
+        "velocity_omega_f64le": "000000e05c39b8bc000000000006563f00000000e42c90bc"
+      },
+      {
+        "center_of_mass_local": [
+          0.0,
+          0.0
+        ],
+        "inertia": 0.975000023841858,
+        "kinetic": 9.12568811904148e-07,
+        "kinetic_legacy_f32_length_squared": 9.12568807463255e-07,
+        "mass": 0.100000001490116,
+        "omega": 8.788404248e-22,
+        "pose": [
+          1.0,
+          0.0,
+          0.0,
+          1.0,
+          184.0,
+          125.000068664551
+        ],
+        "pose_f64le": "000000000000f03f00000000000000000000000000000080000000000000f03f00000000000067400000002001405f40",
+        "potential": -475.000278806696,
+        "velocity": [
+          -1.31303300355187e-18,
+          0.00427216291427612
+        ],
+        "velocity_omega_f64le": "000000809f3838bc00000000b07f713f000000c0cf99903b"
+      },
+      {
+        "center_of_mass_local": [
+          0.0,
+          0.0
+        ],
+        "inertia": 24.7901363372803,
+        "kinetic": 4.61725977973667e-05,
+        "kinetic_legacy_f32_length_squared": 4.61725975735945e-05,
+        "mass": 0.180000007152557,
+        "omega": -0.0017990639898926,
+        "pose": [
+          1.0,
+          0.0,
+          0.0,
+          1.0,
+          240.0,
+          124.283355712891
+        ],
+        "pose_f64le": "000000000000f03f00000000000000000000000000000080000000000000f03f0000000000006e400000008022125f40",
+        "potential": -850.098206190567,
+        "velocity": [
+          -0.00669107958674431,
+          0.00474339723587036
+        ],
+        "velocity_omega_f64le": "000000001b687bbf00000000d06d733f00000040d2795dbf"
+      }
+    ],
+    "after_step": [
+      {
+        "center_of_mass_local": [
+          0.0,
+          0.0
+        ],
+        "inertia": 21.6666660308838,
+        "kinetic": 1.17091071923323,
+        "kinetic_legacy_f32_length_squared": 1.17091071605682,
+        "mass": 1.0,
+        "omega": -5.48846280916979e-17,
+        "pose": [
+          1.0,
+          -9.3532558545275e-19,
+          9.3532558545275e-19,
+          1.0,
+          128.0,
+          121.016174316406
+        ],
+        "pose_f64le": "000000000000f03f00000040f34031bc00000040f340313c000000000000f03f00000000000060400000000009415e40",
+        "potential": -11148.0095963087,
+        "velocity": [
+          -3.34781619710145e-16,
+          1.53030109405518
+        ],
+        "velocity_omega_f64le": "00000080a11fb8bc000000001d7cf83f000000a08aa38fbc"
+      },
+      {
+        "center_of_mass_local": [
+          0.0,
+          0.0
+        ],
+        "inertia": 0.975000023841858,
+        "kinetic": 0.0203270420388563,
+        "kinetic_legacy_f32_length_squared": 0.0203270423461056,
+        "mass": 0.100000001490116,
+        "omega": 8.7621176356e-22,
+        "pose": [
+          1.0,
+          1.464734052e-23,
+          -1.464734052e-23,
+          1.0,
+          184.0,
+          125.006736755371
+        ],
+        "pose_f64le": "000000000000f03f000000e021b5313b000000e021b531bb000000000000f03f0000000000006740000000606e405f40",
+        "potential": -475.025617552767,
+        "velocity": [
+          -1.31303300355187e-18,
+          0.637605547904968
+        ],
+        "velocity_omega_f64le": "000000809f3838bc000000c04367e43f000000a0198d903b"
+      },
+      {
+        "center_of_mass_local": [
+          0.0,
+          0.0
+        ],
+        "inertia": 24.7901363372803,
+        "kinetic": 0.0366866944860753,
+        "kinetic_legacy_f32_length_squared": 0.0366866926477902,
+        "mass": 0.180000007152557,
+        "omega": -0.0017936829244718,
+        "pose": [
+          1.0,
+          -2.99844014080008e-05,
+          2.99844014080008e-05,
+          1.0,
+          239.999877929688,
+          124.290031433105
+        ],
+        "pose_f64le": "000000000000f03f00000060e070ffbe00000060e070ff3e000000000000f03f00000000ffff6d40000000e08f125f40",
+        "potential": -850.143868119689,
+        "velocity": [
+          -0.00669107958674431,
+          0.638076841831207
+        ],
+        "velocity_omega_f64le": "000000001b687bbf00000020206be43f0000006040635dbf"
+      }
+    ]
+  },
+  {
+    "coordinate": {
+      "host": "windows",
+      "workers": 1,
+      "case": "shared-granular-bodies-extended360",
+      "id": "active-retain",
+      "normal_policy": "active-normal-001",
+      "application": "retain-linear-001",
+      "tag": "shared-granular-bodies-extended360-active-retain-w1-r0"
+    },
+    "step": 359,
+    "raw": {
+      "path": "build/sol-contact-application/core-001/windows/shared-granular-bodies-extended360-active-retain-w1-r0/shared-granular-bodies-extended360-LA-SELECTIVE-w1-r0.json",
+      "sha256": "0392d78de13d6c9360cb6a1f4967d605e6fbf963436f8bb5f0760ed7d608c5e8",
+      "bytes": 26133624
+    },
+    "sampled": [
+      {
+        "center_of_mass_local": [
+          0.0,
+          0.0
+        ],
+        "inertia": 21.6666660308838,
+        "kinetic": 1.78928976358888,
+        "kinetic_legacy_f32_length_squared": 1.78928978498016,
+        "mass": 1.0,
+        "omega": 0.0915815085172653,
+        "pose": [
+          0.961747348308563,
+          0.273937970399857,
+          -0.273937970399857,
+          0.961747348308563,
+          130.03955078125,
+          124.055145263672
+        ],
+        "pose_f64le": "00000060a2c6ee3f000000203388d13f000000203388d1bf00000060a2c6ee3f00000000444160400000008087035f40",
+        "potential": -11427.9595903851,
+        "velocity": [
+          0.70380961894989,
+          1.70338177680969
+        ],
+        "velocity_omega_f64le": "000000c09b85e63f000000400d41fb3f000000c0e271b73f"
+      },
+      {
+        "center_of_mass_local": [
+          0.0,
+          0.0
+        ],
+        "inertia": 0.975000023841858,
+        "kinetic": 0.0212760318926243,
+        "kinetic_legacy_f32_length_squared": 0.0212760327982393,
+        "mass": 0.100000001490116,
+        "omega": 0.0167724378407002,
+        "pose": [
+          0.988320767879486,
+          0.152387782931328,
+          -0.152387782931328,
+          0.988320767879486,
+          191.054260253906,
+          126.276565551758
+        ],
+        "pose_f64le": "000000e052a0ef3f000000607181c33f000000607181c3bf000000e052a0ef3f00000080bce1674000000040b3915f40",
+        "potential": -479.850967160687,
+        "velocity": [
+          0.0487461686134338,
+          0.648383855819702
+        ],
+        "velocity_omega_f64le": "0000000042f5a83f000000808fbfe43f00000040cb2c913f"
+      },
+      {
+        "center_of_mass_local": [
+          0.0,
+          0.0
+        ],
+        "inertia": 24.7901363372803,
+        "kinetic": 0.0406214535888999,
+        "kinetic_legacy_f32_length_squared": 0.0406214538432105,
+        "mass": 0.180000007152557,
+        "omega": 0.00993113871663809,
+        "pose": [
+          0.997358918190002,
+          0.0726311728358269,
+          -0.0726311728358269,
+          0.997358918190002,
+          242.17431640625,
+          125.784515380859
+        ],
+        "pose_f64le": "000000405deaef3f000000e0f497b23f000000e0f497b2bf000000405deaef3f0000000094456e400000008035725f40",
+        "potential": -860.366138961016,
+        "velocity": [
+          0.0351511910557747,
+          0.660704612731934
+        ],
+        "velocity_omega_f64le": "0000004056ffa13f000000007e24e53f000000e0c656843f"
+      }
+    ],
+    "before": [
+      {
+        "center_of_mass_local": [
+          0.0,
+          0.0
+        ],
+        "inertia": 21.6666660308838,
+        "kinetic": 1.78928976358888,
+        "kinetic_legacy_f32_length_squared": 1.78928978498016,
+        "mass": 1.0,
+        "omega": 0.0915815085172653,
+        "pose": [
+          0.961747348308563,
+          0.273937970399857,
+          -0.273937970399857,
+          0.961747348308563,
+          130.03955078125,
+          124.055145263672
+        ],
+        "pose_f64le": "00000060a2c6ee3f000000203388d13f000000203388d1bf00000060a2c6ee3f00000000444160400000008087035f40",
+        "potential": -11427.9595903851,
+        "velocity": [
+          0.70380961894989,
+          1.70338177680969
+        ],
+        "velocity_omega_f64le": "000000c09b85e63f000000400d41fb3f000000c0e271b73f"
+      },
+      {
+        "center_of_mass_local": [
+          0.0,
+          0.0
+        ],
+        "inertia": 0.975000023841858,
+        "kinetic": 0.0212760318926243,
+        "kinetic_legacy_f32_length_squared": 0.0212760327982393,
+        "mass": 0.100000001490116,
+        "omega": 0.0167724378407002,
+        "pose": [
+          0.988320767879486,
+          0.152387782931328,
+          -0.152387782931328,
+          0.988320767879486,
+          191.054260253906,
+          126.276565551758
+        ],
+        "pose_f64le": "000000e052a0ef3f000000607181c33f000000607181c3bf000000e052a0ef3f00000080bce1674000000040b3915f40",
+        "potential": -479.850967160687,
+        "velocity": [
+          0.0487461686134338,
+          0.648383855819702
+        ],
+        "velocity_omega_f64le": "0000000042f5a83f000000808fbfe43f00000040cb2c913f"
+      },
+      {
+        "center_of_mass_local": [
+          0.0,
+          0.0
+        ],
+        "inertia": 24.7901363372803,
+        "kinetic": 0.0406214535888999,
+        "kinetic_legacy_f32_length_squared": 0.0406214538432105,
+        "mass": 0.180000007152557,
+        "omega": 0.00993113871663809,
+        "pose": [
+          0.997358918190002,
+          0.0726311728358269,
+          -0.0726311728358269,
+          0.997358918190002,
+          242.17431640625,
+          125.784515380859
+        ],
+        "pose_f64le": "000000405deaef3f000000e0f497b23f000000e0f497b2bf000000405deaef3f0000000094456e400000008035725f40",
+        "potential": -860.366138961016,
+        "velocity": [
+          0.0351511910557747,
+          0.660704612731934
+        ],
+        "velocity_omega_f64le": "0000004056ffa13f000000007e24e53f000000e0c656843f"
+      }
+    ],
+    "live_before_application": [
+      {
+        "center_of_mass_local": [
+          0.0,
+          0.0
+        ],
+        "inertia": 21.6666660308838,
+        "kinetic": 1.78928976358888,
+        "kinetic_legacy_f32_length_squared": 1.78928978498016,
+        "mass": 1.0,
+        "omega": 0.0915815085172653,
+        "pose": [
+          0.961747348308563,
+          0.273937970399857,
+          -0.273937970399857,
+          0.961747348308563,
+          130.03955078125,
+          124.055145263672
+        ],
+        "pose_f64le": "00000060a2c6ee3f000000203388d13f000000203388d1bf00000060a2c6ee3f00000000444160400000008087035f40",
+        "potential": -11427.9595903851,
+        "velocity": [
+          0.70380961894989,
+          1.70338177680969
+        ],
+        "velocity_omega_f64le": "000000c09b85e63f000000400d41fb3f000000c0e271b73f"
+      },
+      {
+        "center_of_mass_local": [
+          0.0,
+          0.0
+        ],
+        "inertia": 0.975000023841858,
+        "kinetic": 0.0212760318926243,
+        "kinetic_legacy_f32_length_squared": 0.0212760327982393,
+        "mass": 0.100000001490116,
+        "omega": 0.0167724378407002,
+        "pose": [
+          0.988320767879486,
+          0.152387782931328,
+          -0.152387782931328,
+          0.988320767879486,
+          191.054260253906,
+          126.276565551758
+        ],
+        "pose_f64le": "000000e052a0ef3f000000607181c33f000000607181c3bf000000e052a0ef3f00000080bce1674000000040b3915f40",
+        "potential": -479.850967160687,
+        "velocity": [
+          0.0487461686134338,
+          0.648383855819702
+        ],
+        "velocity_omega_f64le": "0000000042f5a83f000000808fbfe43f00000040cb2c913f"
+      },
+      {
+        "center_of_mass_local": [
+          0.0,
+          0.0
+        ],
+        "inertia": 24.7901363372803,
+        "kinetic": 0.0406214535888999,
+        "kinetic_legacy_f32_length_squared": 0.0406214538432105,
+        "mass": 0.180000007152557,
+        "omega": 0.00993113871663809,
+        "pose": [
+          0.997358918190002,
+          0.0726311728358269,
+          -0.0726311728358269,
+          0.997358918190002,
+          242.17431640625,
+          125.784515380859
+        ],
+        "pose_f64le": "000000405deaef3f000000e0f497b23f000000e0f497b2bf000000405deaef3f0000000094456e400000008035725f40",
+        "potential": -860.366138961016,
+        "velocity": [
+          0.0351511910557747,
+          0.660704612731934
+        ],
+        "velocity_omega_f64le": "0000004056ffa13f000000007e24e53f000000e0c656843f"
+      }
+    ],
+    "native_response": {
+      "arrival_storage_bytes": 4718592,
+      "body_limit": 8,
+      "epoch": 1,
+      "extent": [
+        512,
+        512
+      ],
+      "getter_us": 404,
+      "native_mask_reserved": 262144,
+      "native_workers_configured": 1,
+      "native_workers_constructed": 1,
+      "normal_policy": "active-normal-001",
+      "normal_policy_locked": true,
+      "proxy_limit": 64,
+      "raster_indices_reserved": 262144,
+      "response": "LA-SELECTIVE",
+      "rows": [
+        {
+          "arrival_count": 0,
+          "arrival_misaligned": 0,
+          "arrival_missing": 7,
+          "bins": 4,
+          "body_capacity": 20.0,
+          "budget": 20.0,
+          "com": [
+            130.03955078125,
+            124.055145263672
+          ],
+          "contacts": 59,
+          "correction": [
+            0.0,
+            -0.0187241360545158
+          ],
+          "displaced": 1,
+          "event_accepted": [
+            0.0,
+            0.0
+          ],
+          "event_cost": 0.0,
+          "event_torque": 0.0,
+          "external_drive": false,
+          "generation": 1,
+          "gravity": 92.1199968457222,
+          "id": 1,
+          "impulse": [
+            -0.0841803401708603,
+            -1.56251859664917
+          ],
+          "inertia": 21.6666660308838,
+          "instance_id": 1,
+          "legacy_wrench_f64": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "mass": 1.0,
+          "nodes": 7,
+          "normal_accepted": 1.59665347498038,
+          "normal_cap_hits": 0,
+          "normal_capacity": 20.0,
+          "normal_policy": "active-normal-001",
+          "normal_raw": 10.0716194020266,
+          "passive_accepted_wrench_f64": [
+            -0.0841803394452696,
+            -1.56251862102376,
+            -0.221341759625464
+          ],
+          "passive_energy_after": 0.273612247713077,
+          "passive_energy_before": 1.78928976358888,
+          "passive_impulse": [
+            -0.0841803401708603,
+            -1.56251859664917
+          ],
+          "passive_raw_wrench_f64": [
+            -0.0841803394452696,
+            -1.56251862102376,
+            -0.221341759625464
+          ],
+          "passive_scale": 1.0,
+          "passive_state_f64": [
+            0.70380961894989,
+            1.70338177680969,
+            130.03955078125,
+            124.055145263672,
+            0.0915815085172653,
+            1.0,
+            21.6666660308838,
+            0.779999971389771
+          ],
+          "passive_torque": -0.221341759625464,
+          "passivity_rejected": false,
+          "proxy_count": 1,
+          "quadrature_clamps": 0,
+          "sample": 361,
+          "tangent_accepted": 0.392027888763174,
+          "tangent_cap_hits": 10,
+          "tangent_raw": 4.14732735391115,
+          "torque": -0.221341759625464,
+          "total_wrench_f64": [
+            -0.0841803401708603,
+            -1.56251859664917,
+            -0.221341759625464
+          ],
+          "unresolved": 15,
+          "updates": 56
+        },
+        {
+          "arrival_count": 0,
+          "arrival_misaligned": 0,
+          "arrival_missing": 0,
+          "bins": 2,
+          "body_capacity": 20.0,
+          "budget": 20.0,
+          "com": [
+            191.054260253906,
+            126.276565551758
+          ],
+          "contacts": 31,
+          "correction": [
+            0.0,
+            -0.00678268447518349
+          ],
+          "displaced": 0,
+          "event_accepted": [
+            0.0,
+            0.0
+          ],
+          "event_cost": 0.0,
+          "event_torque": 0.0,
+          "external_drive": false,
+          "generation": 1,
+          "gravity": 38.0000008642673,
+          "id": 2,
+          "impulse": [
+            1.15112225103076e-05,
+            -0.0633291527628899
+          ],
+          "inertia": 0.975000023841858,
+          "instance_id": 2,
+          "legacy_wrench_f64": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "mass": 0.100000001490116,
+          "nodes": 4,
+          "normal_accepted": 0.0625912709116492,
+          "normal_cap_hits": 0,
+          "normal_capacity": 18.0,
+          "normal_policy": "active-normal-001",
+          "normal_raw": 0.256499686825022,
+          "passive_accepted_wrench_f64": [
+            1.15112223977927e-05,
+            -0.0633291518976988,
+            8.87883352770971e-05
+          ],
+          "passive_energy_after": 0.000269394331116713,
+          "passive_energy_before": 0.0212760318926243,
+          "passive_impulse": [
+            1.15112225103076e-05,
+            -0.0633291527628899
+          ],
+          "passive_raw_wrench_f64": [
+            1.15112223977927e-05,
+            -0.0633291518976988,
+            8.87883352770971e-05
+          ],
+          "passive_scale": 1.0,
+          "passive_state_f64": [
+            0.0487461686134338,
+            0.648383855819702,
+            191.054260253906,
+            126.276565551758,
+            0.0167724378407002,
+            0.100000001490116,
+            0.975000023841858,
+            0.800000011920929
+          ],
+          "passive_torque": 8.87883352770971e-05,
+          "passivity_rejected": false,
+          "proxy_count": 1,
+          "quadrature_clamps": 0,
+          "sample": 361,
+          "tangent_accepted": 0.00963921253290883,
+          "tangent_cap_hits": 0,
+          "tangent_raw": 0.0385568501316353,
+          "torque": 8.87883352770971e-05,
+          "total_wrench_f64": [
+            1.15112225103076e-05,
+            -0.0633291527628899,
+            8.87883352770971e-05
+          ],
+          "unresolved": 10,
+          "updates": 32
+        },
+        {
+          "arrival_count": 0,
+          "arrival_misaligned": 0,
+          "arrival_missing": 0,
+          "bins": 2,
+          "body_capacity": 20.0,
+          "budget": 20.0,
+          "com": [
+            242.17431640625,
+            125.784515380859
+          ],
+          "contacts": 62,
+          "correction": [
+            0.0,
+            -0.00284043792635202
+          ],
+          "displaced": 0,
+          "event_accepted": [
+            0.0,
+            0.0
+          ],
+          "event_cost": 0.0,
+          "event_torque": 0.0,
+          "external_drive": false,
+          "generation": 1,
+          "gravity": 38.0000008642673,
+          "id": 3,
+          "impulse": [
+            1.94255312635505e-06,
+            -0.113996542990208
+          ],
+          "inertia": 24.7901363372803,
+          "instance_id": 3,
+          "legacy_wrench_f64": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "mass": 0.180000007152557,
+          "nodes": 4,
+          "normal_accepted": 0.113695607635335,
+          "normal_cap_hits": 0,
+          "normal_capacity": 20.0,
+          "normal_policy": "active-normal-001",
+          "normal_raw": 0.525899144260177,
+          "passive_accepted_wrench_f64": [
+            1.94255323122733e-06,
+            -0.113996546385176,
+            0.000847276549382603
+          ],
+          "passive_energy_after": 0.00140971805963091,
+          "passive_energy_before": 0.0406214535888999,
+          "passive_impulse": [
+            1.94255312635505e-06,
+            -0.113996542990208
+          ],
+          "passive_raw_wrench_f64": [
+            1.94255323122733e-06,
+            -0.113996546385176,
+            0.000847276549382603
+          ],
+          "passive_scale": 1.0,
+          "passive_state_f64": [
+            0.0351511910557747,
+            0.660704612731934,
+            242.17431640625,
+            125.784515380859,
+            0.00993113871663809,
+            0.180000007152557,
+            24.7901363372803,
+            0.800000011920929
+          ],
+          "passive_torque": 0.000847276549382603,
+          "passivity_rejected": false,
+          "proxy_count": 5,
+          "quadrature_clamps": 0,
+          "sample": 361,
+          "tangent_accepted": 0.00827776515450008,
+          "tangent_cap_hits": 0,
+          "tangent_raw": 0.0331110606180004,
+          "torque": 0.000847276549382603,
+          "total_wrench_f64": [
+            1.94255323122733e-06,
+            -0.113996546385176,
+            0.000847276549382603
+          ],
+          "unresolved": 17,
+          "updates": 32
+        }
+      ],
+      "sample_tick": 359,
+      "session": 1,
+      "solver_trace_locked": true,
+      "solver_trace_mode": "batch64-001",
+      "solver_trace_storage_bytes": 55872,
+      "valid": true,
+      "world_mask_cell_limit": 262144
+    },
+    "application": {
+      "accepted": true,
+      "application_variant": "retain-linear-001",
+      "bodies": [
+        {
+          "age": 0,
+          "correction": [
+            0.0,
+            -0.0187241360545158
+          ],
+          "id": 1,
+          "impulse": [
+            -0.0841803401708603,
+            -1.56251859664917
+          ],
+          "instance_id": 1,
+          "linear_clip_policy": "retain-linear-001",
+          "live_velocity_changed": false,
+          "omega_residual": 7.71625624507166e-10,
+          "passive_energy_accepted": -1.5155492065557,
+          "passive_energy_linear": -2.74093909769364,
+          "passive_energy_quadratic": 1.22538989113794,
+          "passive_energy_unscaled": -1.5155492065557,
+          "passive_impulse_before": [
+            -0.0841803401708603,
+            -1.56251859664917
+          ],
+          "passive_revalidation_active": false,
+          "passive_scale": 1.0,
+          "passive_torque_before": -0.219765555539742,
+          "sample": 361,
+          "torque": -0.219765555539742,
+          "velocity_residual": 0.0
+        },
+        {
+          "age": 0,
+          "correction": [
+            0.0,
+            -0.00678268447518349
+          ],
+          "id": 2,
+          "impulse": [
+            1.15112225103076e-05,
+            -0.0633291527628899
+          ],
+          "instance_id": 2,
+          "linear_clip_policy": "retain-linear-001",
+          "live_velocity_changed": false,
+          "omega_residual": 2.50461248962885e-10,
+          "passive_energy_accepted": -0.0210066388912083,
+          "passive_energy_linear": -0.0410595512389112,
+          "passive_energy_quadratic": 0.0200529123477028,
+          "passive_energy_unscaled": -0.0210066388912083,
+          "passive_impulse_before": [
+            1.15112225103076e-05,
+            -0.0633291527628899
+          ],
+          "passive_revalidation_active": false,
+          "passive_scale": 1.0,
+          "passive_torque_before": 8.8710258283338e-05,
+          "sample": 361,
+          "torque": 8.8710258283338e-05,
+          "velocity_residual": 0.0
+        },
+        {
+          "age": 0,
+          "correction": [
+            0.0,
+            -0.00284043792635202
+          ],
+          "id": 3,
+          "impulse": [
+            1.94255312635505e-06,
+            -0.113996542990208
+          ],
+          "instance_id": 3,
+          "linear_clip_policy": "retain-linear-001",
+          "live_velocity_changed": false,
+          "omega_residual": 7.21188421481944e-11,
+          "passive_energy_accepted": -0.0392117354912684,
+          "passive_energy_linear": -0.0753095591399221,
+          "passive_energy_quadratic": 0.0360978236486537,
+          "passive_energy_unscaled": -0.0392117354912684,
+          "passive_impulse_before": [
+            1.94255312635505e-06,
+            -0.113996542990208
+          ],
+          "passive_revalidation_active": false,
+          "passive_scale": 1.0,
+          "passive_torque_before": 0.000847271031681196,
+          "sample": 361,
+          "torque": 0.000847271031681196,
+          "velocity_residual": 5.96046447753906e-08
+        }
+      ],
+      "refusal": "",
+      "snapshot": 360
+    },
+    "after_application": [
+      {
+        "center_of_mass_local": [
+          0.0,
+          0.0
+        ],
+        "inertia": 21.6666660308838,
+        "kinetic": 0.273740546438453,
+        "kinetic_legacy_f32_length_squared": 0.273740553521961,
+        "mass": 1.0,
+        "omega": 0.0814384818077087,
+        "pose": [
+          0.961747348308563,
+          0.273937970399857,
+          -0.273937970399857,
+          0.961747348308563,
+          130.03955078125,
+          124.036422729492
+        ],
+        "pose_f64le": "00000060a2c6ee3f000000203388d13f000000203388d1bf00000060a2c6ee3f0000000044416040000000c054025f40",
+        "potential": -11426.2348705955,
+        "velocity": [
+          0.619629263877869,
+          0.140863180160522
+        ],
+        "velocity_omega_f64le": "000000c000d4e33f00000000ce07c23f0000000027d9b43f"
+      },
+      {
+        "center_of_mass_local": [
+          0.0,
+          0.0
+        ],
+        "inertia": 0.975000023841858,
+        "kinetic": 0.000269392956886258,
+        "kinetic_legacy_f32_length_squared": 0.000269392960491718,
+        "mass": 0.100000001490116,
+        "omega": 0.0168634224683046,
+        "pose": [
+          0.988320827484131,
+          0.152387797832489,
+          -0.152387797832489,
+          0.988320827484131,
+          191.054260253906,
+          126.26978302002
+        ],
+        "pose_f64le": "0000000053a0ef3f000000807181c33f000000807181c3bf0000000053a0ef3f00000080bce167400000002044915f40",
+        "potential": -479.825193539112,
+        "velocity": [
+          0.0488612800836563,
+          0.0150923132896423
+        ],
+        "velocity_omega_f64le": "000000805804a93f00000000b8e88e3f00000020a544913f"
+      },
+      {
+        "center_of_mass_local": [
+          0.0,
+          0.0
+        ],
+        "inertia": 24.7901363372803,
+        "kinetic": 0.00140971793254724,
+        "kinetic_legacy_f32_length_squared": 0.00140971793474579,
+        "mass": 0.180000007152557,
+        "omega": 0.00996531639248133,
+        "pose": [
+          0.997358918190002,
+          0.0726311728358269,
+          -0.0726311728358269,
+          0.997358918190002,
+          242.17431640625,
+          125.781677246094
+        ],
+        "pose_f64le": "000000405deaef3f000000e0f497b23f000000e0f497b2bf000000405deaef3f0000000094456e400000000007725f40",
+        "potential": -860.346726118007,
+        "velocity": [
+          0.0351619832217693,
+          0.0273904800415039
+        ],
+        "velocity_omega_f64le": "00000060c000a23f00000000400c9c3f00000020b268843f"
+      }
+    ],
+    "after_step": [
+      {
+        "center_of_mass_local": [
+          0.0,
+          0.0
+        ],
+        "inertia": 21.6666660308838,
+        "kinetic": 1.65228510663425,
+        "kinetic_legacy_f32_length_squared": 1.65228505395102,
+        "mass": 1.0,
+        "omega": 0.0796464383602142,
+        "pose": [
+          0.961374759674072,
+          0.275243103504181,
+          -0.275243103504181,
+          0.961374759674072,
+          130.049865722656,
+          124.054763793945
+        ],
+        "pose_f64le": "0000000095c3ee3f00000040959dd13f00000040959dd1bf0000000095c3ee3f00000080984160400000004081035f40",
+        "potential": -11427.9244493951,
+        "velocity": [
+          0.617058157920837,
+          1.66924107074738
+        ],
+        "velocity_omega_f64le": "000000c0f0bee33f0000002036b5fa3f00000080b563b43f"
+      },
+      {
+        "center_of_mass_local": [
+          0.0,
+          0.0
+        ],
+        "inertia": 0.975000023841858,
+        "kinetic": 0.0212799706209708,
+        "kinetic_legacy_f32_length_squared": 0.0212799704397181,
+        "mass": 0.100000001490116,
+        "omega": 0.0168129839003086,
+        "pose": [
+          0.988277971744537,
+          0.152665570378304,
+          -0.152665570378304,
+          0.988277971744537,
+          191.055053710938,
+          126.276634216309
+        ],
+        "pose_f64le": "00000020f99fef3f000000a08b8ac33f000000a08b8ac3bf00000020f99fef3f00000000c3e1674000000060b4915f40",
+        "potential": -479.85122808599,
+        "velocity": [
+          0.0488612800836563,
+          0.648425698280334
+        ],
+        "velocity_omega_f64le": "000000805804a93f00000040e7bfe43f000000406c37913f"
+      },
+      {
+        "center_of_mass_local": [
+          0.0,
+          0.0
+        ],
+        "inertia": 24.7901363372803,
+        "kinetic": 0.0406248951277717,
+        "kinetic_legacy_f32_length_squared": 0.0406248960584001,
+        "mass": 0.180000007152557,
+        "omega": 0.00993551034480333,
+        "pose": [
+          0.997346878051758,
+          0.0727968215942383,
+          -0.0727968215942383,
+          0.997346878051758,
+          242.174926757813,
+          125.788726806641
+        ],
+        "pose_f64le": "0000000044eaef3f00000000d0a2b23f00000000d0a2b2bf0000000044eaef3f0000000099456e40000000807a725f40",
+        "potential": -860.39494511516,
+        "velocity": [
+          0.0351619832217693,
+          0.660723924636841
+        ],
+        "velocity_omega_f64le": "00000060c000a23f00000080a624e53f000000a01159843f"
+      }
+    ]
+  },
+  {
+    "coordinate": {
+      "host": "windows",
+      "workers": 1,
+      "case": "barrel-constrained-valid",
+      "id": "active-baseline",
+      "normal_policy": "active-normal-001",
+      "application": "baseline",
+      "tag": "barrel-constrained-valid-active-baseline-w1-r0"
+    },
+    "step": 1,
+    "raw": {
+      "path": "build/sol-contact-application/core-001/windows/barrel-constrained-valid-active-baseline-w1-r0/barrel-constrained-valid-LA-SELECTIVE-w1-r0.json",
+      "sha256": "78e794fa58b86818a8c1b586d2fd3192299f78e7c1d6ed51c47b81d209b57f4d",
+      "bytes": 2631761
+    },
+    "sampled": [
+      {
+        "center_of_mass_local": [
+          0.0,
+          0.0
+        ],
+        "inertia": 21.6666660308838,
+        "kinetic": 1.16886315241295,
+        "kinetic_legacy_f32_length_squared": 1.1688631772995,
+        "mass": 1.0,
+        "omega": 0.0,
+        "pose": [
+          1.0,
+          0.0,
+          0.0,
+          1.0,
+          128.0,
+          121.015991210938
+        ],
+        "pose_f64le": "000000000000f03f00000000000000000000000000000080000000000000f03f00000000000060400000000006415e40",
+        "potential": -11147.9927286335,
+        "velocity": [
+          0.0,
+          1.52896249294281
+        ],
+        "velocity_omega_f64le": "000000000000000000000060a176f83f0000000000000000"
+      }
+    ],
+    "before": [
+      {
+        "center_of_mass_local": [
+          0.0,
+          0.0
+        ],
+        "inertia": 21.6666660308838,
+        "kinetic": 1.16886315241295,
+        "kinetic_legacy_f32_length_squared": 1.1688631772995,
+        "mass": 1.0,
+        "omega": 0.0,
+        "pose": [
+          1.0,
+          0.0,
+          0.0,
+          1.0,
+          128.0,
+          121.015991210938
+        ],
+        "pose_f64le": "000000000000f03f00000000000000000000000000000080000000000000f03f00000000000060400000000006415e40",
+        "potential": -11147.9927286335,
+        "velocity": [
+          0.0,
+          1.52896249294281
+        ],
+        "velocity_omega_f64le": "000000000000000000000060a176f83f0000000000000000"
+      }
+    ],
+    "live_before_application": [
+      {
+        "center_of_mass_local": [
+          0.0,
+          0.0
+        ],
+        "inertia": 21.6666660308838,
+        "kinetic": 1.16886315241295,
+        "kinetic_legacy_f32_length_squared": 1.1688631772995,
+        "mass": 1.0,
+        "omega": 0.0,
+        "pose": [
+          1.0,
+          0.0,
+          0.0,
+          1.0,
+          128.0,
+          121.015991210938
+        ],
+        "pose_f64le": "000000000000f03f00000000000000000000000000000080000000000000f03f00000000000060400000000006415e40",
+        "potential": -11147.9927286335,
+        "velocity": [
+          0.0,
+          1.52896249294281
+        ],
+        "velocity_omega_f64le": "000000000000000000000060a176f83f0000000000000000"
+      }
+    ],
+    "native_response": {
+      "arrival_storage_bytes": 4718592,
+      "body_limit": 8,
+      "epoch": 1,
+      "extent": [
+        512,
+        512
+      ],
+      "getter_us": 23,
+      "native_mask_reserved": 262144,
+      "native_workers_configured": 1,
+      "native_workers_constructed": 1,
+      "normal_policy": "active-normal-001",
+      "normal_policy_locked": true,
+      "proxy_limit": 64,
+      "raster_indices_reserved": 262144,
+      "response": "LA-SELECTIVE",
+      "rows": [
+        {
+          "arrival_count": 0,
+          "arrival_misaligned": 0,
+          "arrival_missing": 0,
+          "bins": 2,
+          "body_capacity": 20.0,
+          "budget": 20.0,
+          "com": [
+            128.0,
+            121.015991210938
+          ],
+          "contacts": 16,
+          "correction": [
+            0.0,
+            -0.0158312991261482
+          ],
+          "displaced": 0,
+          "event_accepted": [
+            0.0,
+            0.0
+          ],
+          "event_cost": 0.0,
+          "event_torque": 0.0,
+          "external_drive": false,
+          "generation": 1,
+          "gravity": 92.1199968457222,
+          "id": 1,
+          "impulse": [
+            -3.36176550625375e-16,
+            -1.52761828899384
+          ],
+          "inertia": 21.6666660308838,
+          "instance_id": 1,
+          "legacy_wrench_f64": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "mass": 1.0,
+          "nodes": 4,
+          "normal_accepted": 1.52761824937875,
+          "normal_cap_hits": 0,
+          "normal_capacity": 16.0,
+          "normal_policy": "active-normal-001",
+          "normal_raw": 6.11047299751502,
+          "passive_accepted_wrench_f64": [
+            -3.36176552207402e-16,
+            -1.52761824937875,
+            -1.22124532708767e-15
+          ],
+          "passive_energy_after": 9.03495379752156e-07,
+          "passive_energy_before": 1.16886315241295,
+          "passive_impulse": [
+            -3.36176550625375e-16,
+            -1.52761828899384
+          ],
+          "passive_raw_wrench_f64": [
+            -3.36176552207402e-16,
+            -1.52761824937875,
+            -1.22124532708767e-15
+          ],
+          "passive_scale": 1.0,
+          "passive_state_f64": [
+            0.0,
+            1.52896249294281,
+            128.0,
+            121.015991210938,
+            0.0,
+            1.0,
+            21.6666660308838,
+            0.779999971389771
+          ],
+          "passive_torque": -1.22124532708767e-15,
+          "passivity_rejected": false,
+          "proxy_count": 1,
+          "quadrature_clamps": 0,
+          "sample": 3,
+          "tangent_accepted": 3.36176552207402e-16,
+          "tangent_cap_hits": 0,
+          "tangent_raw": 1.65738433311555e-15,
+          "torque": -1.22124532708767e-15,
+          "total_wrench_f64": [
+            -3.36176550625375e-16,
+            -1.52761828899384,
+            -1.22124532708767e-15
+          ],
+          "unresolved": 0,
+          "updates": 32
+        }
+      ],
+      "sample_tick": 1,
+      "session": 1,
+      "solver_trace_locked": true,
+      "solver_trace_mode": "off",
+      "solver_trace_storage_bytes": 0,
+      "valid": true,
+      "world_mask_cell_limit": 262144
+    },
+    "application": {
+      "accepted": true,
+      "application_variant": "baseline",
+      "bodies": [
+        {
+          "age": 0,
+          "correction": [
+            0.0,
+            -0.0158312991261482
+          ],
+          "id": 1,
+          "impulse": [
+            -3.36176550625375e-16,
+            -1.52761828899384
+          ],
+          "instance_id": 1,
+          "live_velocity_changed": false,
+          "omega_residual": 2.02853748e-24,
+          "passive_energy_accepted": 1.16680881843423,
+          "passive_energy_linear": 0.0,
+          "passive_energy_quadratic": 1.16680881843423,
+          "passive_energy_unscaled": 1.16680881843423,
+          "passive_impulse_before": [
+            -3.36176550625375e-16,
+            -1.52761828899384
+          ],
+          "passive_revalidation_active": false,
+          "passive_scale": 1.0,
+          "passive_torque_before": -1.21592321559364e-15,
+          "sample": 3,
+          "torque": -1.21592321559364e-15,
+          "velocity_residual": 0.0
+        }
+      ],
+      "refusal": "",
+      "snapshot": 2
+    },
+    "after_application": [
+      {
+        "center_of_mass_local": [
+          0.0,
+          0.0
+        ],
+        "inertia": 21.6666660308838,
+        "kinetic": 1.16680881843423,
+        "kinetic_legacy_f32_length_squared": 1.16680884361267,
+        "mass": 1.0,
+        "omega": -5.61195326456232e-17,
+        "pose": [
+          1.0,
+          0.0,
+          0.0,
+          1.0,
+          128.0,
+          121.000160217285
+        ],
+        "pose_f64le": "000000000000f03f00000000000000000000000000000080000000000000f03f0000000000006040000000a002405e40",
+        "potential": -11146.5343775482,
+        "velocity": [
+          -3.36176550625375e-16,
+          -1.52761828899384
+        ],
+        "velocity_omega_f64le": "000000e05c39b8bc000000e01f71f8bf00000000e42c90bc"
+      }
+    ],
+    "after_step": [
+      {
+        "center_of_mass_local": [
+          0.0,
+          0.0
+        ],
+        "inertia": 21.6666660308838,
+        "kinetic": 2.95135866850835e-05,
+        "kinetic_legacy_f32_length_squared": 2.95135869237129e-05,
+        "mass": 1.0,
+        "omega": -2.4020524277707e-17,
+        "pose": [
+          1.0,
+          -1.343687211991e-20,
+          1.343687211991e-20,
+          1.0,
+          128.0,
+          120.990692138672
+        ],
+        "pose_f64le": "000000000000f03f0000004017bacfbb0000004017bacf3b000000000000f03f000000000000604000000080673f5e40",
+        "potential": -11145.6621781762,
+        "velocity": [
+          -4.63530094988484e-18,
+          0.00768291437998414
+        ],
+        "velocity_omega_f64le": "000000c0656055bc000000a01e787f3f000000809bb17bbc"
+      }
+    ]
+  },
+  {
+    "coordinate": {
+      "host": "windows",
+      "workers": 1,
+      "case": "barrel-constrained-valid",
+      "id": "active-baseline",
+      "normal_policy": "active-normal-001",
+      "application": "baseline",
+      "tag": "barrel-constrained-valid-active-baseline-w1-r0"
+    },
+    "step": 359,
+    "raw": {
+      "path": "build/sol-contact-application/core-001/windows/barrel-constrained-valid-active-baseline-w1-r0/barrel-constrained-valid-LA-SELECTIVE-w1-r0.json",
+      "sha256": "78e794fa58b86818a8c1b586d2fd3192299f78e7c1d6ed51c47b81d209b57f4d",
+      "bytes": 2631761
+    },
+    "sampled": [
+      {
+        "center_of_mass_local": [
+          0.0,
+          0.0
+        ],
+        "inertia": 21.6666660308838,
+        "kinetic": 1.17500775627537,
+        "kinetic_legacy_f32_length_squared": 1.17500770092011,
+        "mass": 1.0,
+        "omega": 3.87381460799047e-18,
+        "pose": [
+          1.0,
+          7.4374564420058e-19,
+          -7.4374564420058e-19,
+          1.0,
+          128.0,
+          120.558662414551
+        ],
+        "pose_f64le": "000000000000f03f000000a07a702b3c000000a07a702bbc000000000000f03f000000000000604000000020c1235e40",
+        "potential": -11105.8636013529,
+        "velocity": [
+          1.317997246e-23,
+          1.53297603130341
+        ],
+        "velocity_omega_f64le": "0000000002de2f3b000000e01187f83f000000a064dd513c"
+      }
+    ],
+    "before": [
+      {
+        "center_of_mass_local": [
+          0.0,
+          0.0
+        ],
+        "inertia": 21.6666660308838,
+        "kinetic": 1.17500775627537,
+        "kinetic_legacy_f32_length_squared": 1.17500770092011,
+        "mass": 1.0,
+        "omega": 3.87381460799047e-18,
+        "pose": [
+          1.0,
+          7.4374564420058e-19,
+          -7.4374564420058e-19,
+          1.0,
+          128.0,
+          120.558662414551
+        ],
+        "pose_f64le": "000000000000f03f000000a07a702b3c000000a07a702bbc000000000000f03f000000000000604000000020c1235e40",
+        "potential": -11105.8636013529,
+        "velocity": [
+          1.317997246e-23,
+          1.53297603130341
+        ],
+        "velocity_omega_f64le": "0000000002de2f3b000000e01187f83f000000a064dd513c"
+      }
+    ],
+    "live_before_application": [
+      {
+        "center_of_mass_local": [
+          0.0,
+          0.0
+        ],
+        "inertia": 21.6666660308838,
+        "kinetic": 1.17500775627537,
+        "kinetic_legacy_f32_length_squared": 1.17500770092011,
+        "mass": 1.0,
+        "omega": 3.87381460799047e-18,
+        "pose": [
+          1.0,
+          7.4374564420058e-19,
+          -7.4374564420058e-19,
+          1.0,
+          128.0,
+          120.558662414551
+        ],
+        "pose_f64le": "000000000000f03f000000a07a702b3c000000a07a702bbc000000000000f03f000000000000604000000020c1235e40",
+        "potential": -11105.8636013529,
+        "velocity": [
+          1.317997246e-23,
+          1.53297603130341
+        ],
+        "velocity_omega_f64le": "0000000002de2f3b000000e01187f83f000000a064dd513c"
+      }
+    ],
+    "native_response": {
+      "arrival_storage_bytes": 4718592,
+      "body_limit": 8,
+      "epoch": 1,
+      "extent": [
+        512,
+        512
+      ],
+      "getter_us": 82,
+      "native_mask_reserved": 262144,
+      "native_workers_configured": 1,
+      "native_workers_constructed": 1,
+      "normal_policy": "active-normal-001",
+      "normal_policy_locked": true,
+      "proxy_limit": 64,
+      "raster_indices_reserved": 262144,
+      "response": "LA-SELECTIVE",
+      "rows": [
+        {
+          "arrival_count": 8,
+          "arrival_misaligned": 0,
+          "arrival_missing": 14,
+          "bins": 2,
+          "body_capacity": 20.0,
+          "budget": 20.0,
+          "com": [
+            128.0,
+            120.558662414551
+          ],
+          "contacts": 46,
+          "correction": [
+            0.0,
+            -0.0158992763608694
+          ],
+          "displaced": 0,
+          "event_accepted": [
+            0.0,
+            0.319999992847443
+          ],
+          "event_cost": 0.319999992847443,
+          "event_torque": 0.0,
+          "external_drive": false,
+          "generation": 1,
+          "gravity": 92.1199968457222,
+          "id": 1,
+          "impulse": [
+            -4.47636001498012e-16,
+            -1.53134703636169
+          ],
+          "inertia": 21.6666660308838,
+          "instance_id": 1,
+          "legacy_wrench_f64": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "mass": 1.0,
+          "nodes": 4,
+          "normal_accepted": 1.85134691218354,
+          "normal_cap_hits": 0,
+          "normal_capacity": 16.0,
+          "normal_policy": "active-normal-001",
+          "normal_raw": 7.40538764873417,
+          "passive_accepted_wrench_f64": [
+            -4.47636026003735e-16,
+            -1.85134691218354,
+            -1.33226762955019e-15
+          ],
+          "passive_energy_after": 1.3270029010076e-06,
+          "passive_energy_before": 1.71676007303894,
+          "passive_impulse": [
+            -4.47636001498012e-16,
+            -1.85134696960449
+          ],
+          "passive_raw_wrench_f64": [
+            -4.47636026003735e-16,
+            -1.85134691218354,
+            -1.33226762955019e-15
+          ],
+          "passive_scale": 1.0,
+          "passive_state_f64": [
+            1.317997246e-23,
+            1.85297602415085,
+            128.0,
+            120.558662414551,
+            3.87381460799047e-18,
+            1.0,
+            21.6666660308838,
+            0.779999971389771
+          ],
+          "passive_torque": -1.33226762955019e-15,
+          "passivity_rejected": false,
+          "proxy_count": 1,
+          "quadrature_clamps": 0,
+          "sample": 361,
+          "tangent_accepted": 4.49012957205576e-16,
+          "tangent_cap_hits": 0,
+          "tangent_raw": 2.15420142185198e-15,
+          "torque": -1.33226762955019e-15,
+          "total_wrench_f64": [
+            -4.47636001498012e-16,
+            -1.53134703636169,
+            -1.33226762955019e-15
+          ],
+          "unresolved": 0,
+          "updates": 32
+        }
+      ],
+      "sample_tick": 359,
+      "session": 1,
+      "solver_trace_locked": true,
+      "solver_trace_mode": "off",
+      "solver_trace_storage_bytes": 0,
+      "valid": true,
+      "world_mask_cell_limit": 262144
+    },
+    "application": {
+      "accepted": true,
+      "application_variant": "baseline",
+      "bodies": [
+        {
+          "age": 0,
+          "correction": [
+            0.0,
+            -0.0158992763608694
+          ],
+          "id": 1,
+          "impulse": [
+            -4.47636001498012e-16,
+            -1.53134703636169
+          ],
+          "instance_id": 1,
+          "live_velocity_changed": false,
+          "omega_residual": 8.841009e-25,
+          "passive_energy_accepted": 1.12131189424917,
+          "passive_energy_linear": -0.592430906682694,
+          "passive_energy_quadratic": 1.71374280093187,
+          "passive_energy_unscaled": 1.12131189424917,
+          "passive_impulse_before": [
+            -4.47636001498012e-16,
+            -1.85134696960449
+          ],
+          "passive_revalidation_active": false,
+          "passive_scale": 1.0,
+          "passive_torque_before": -1.32515054109e-15,
+          "sample": 361,
+          "torque": -1.32515054109e-15,
+          "velocity_residual": 0.0
+        }
+      ],
+      "refusal": "",
+      "snapshot": 360
+    },
+    "after_application": [
+      {
+        "center_of_mass_local": [
+          0.0,
+          0.0
+        ],
+        "inertia": 21.6666660308838,
+        "kinetic": 1.17251187288687,
+        "kinetic_legacy_f32_length_squared": 1.17251181602478,
+        "mass": 1.0,
+        "omega": -5.72869822749561e-17,
+        "pose": [
+          1.0,
+          7.4374564420058e-19,
+          -7.4374564420058e-19,
+          1.0,
+          128.0,
+          120.542762756348
+        ],
+        "pose_f64le": "000000000000f03f000000a07a702b3c000000a07a702bbc000000000000f03f0000000000006040000000a0bc225e40",
+        "potential": -11104.3989248894,
+        "velocity": [
+          -4.47636001498012e-16,
+          -1.53134703636169
+        ],
+        "velocity_omega_f64le": "000000a0b620c0bc000000c06580f8bf00000080088390bc"
+      }
+    ],
+    "after_step": [
+      {
+        "center_of_mass_local": [
+          0.0,
+          0.0
+        ],
+        "inertia": 21.6666660308838,
+        "kinetic": 7.87901903764876e-06,
+        "kinetic_legacy_f32_length_squared": 7.87901899457211e-06,
+        "mass": 1.0,
+        "omega": -9.17337211271999e-17,
+        "pose": [
+          1.0,
+          7.066963796607e-19,
+          -7.066963796607e-19,
+          1.0,
+          128.0,
+          120.533233642578
+        ],
+        "pose_f64le": "000000000000f03f000000008f122a3c000000008f122abc000000000000f03f00000000000060400000008020225e40",
+        "potential": -11103.521102959,
+        "velocity": [
+          5.271988984e-23,
+          0.00396963953971863
+        ],
+        "velocity_omega_f64le": "0000000002de4f3b000000007842703f00000000c1709abc"
+      }
+    ]
+  },
+  {
+    "coordinate": {
+      "host": "windows",
+      "workers": 1,
+      "case": "barrel-constrained-valid",
+      "id": "active-retain",
+      "normal_policy": "active-normal-001",
+      "application": "retain-linear-001",
+      "tag": "barrel-constrained-valid-active-retain-w1-r0"
+    },
+    "step": 1,
+    "raw": {
+      "path": "build/sol-contact-application/core-001/windows/barrel-constrained-valid-active-retain-w1-r0/barrel-constrained-valid-LA-SELECTIVE-w1-r0.json",
+      "sha256": "f74633e878bb7a07dc8945bee63d2b271b4cf57387238cb152df8d70ad0d75d3",
+      "bytes": 2711700
+    },
+    "sampled": [
+      {
+        "center_of_mass_local": [
+          0.0,
+          0.0
+        ],
+        "inertia": 21.6666660308838,
+        "kinetic": 1.16886315241295,
+        "kinetic_legacy_f32_length_squared": 1.1688631772995,
+        "mass": 1.0,
+        "omega": 0.0,
+        "pose": [
+          1.0,
+          0.0,
+          0.0,
+          1.0,
+          128.0,
+          121.015991210938
+        ],
+        "pose_f64le": "000000000000f03f00000000000000000000000000000080000000000000f03f00000000000060400000000006415e40",
+        "potential": -11147.9927286335,
+        "velocity": [
+          0.0,
+          1.52896249294281
+        ],
+        "velocity_omega_f64le": "000000000000000000000060a176f83f0000000000000000"
+      }
+    ],
+    "before": [
+      {
+        "center_of_mass_local": [
+          0.0,
+          0.0
+        ],
+        "inertia": 21.6666660308838,
+        "kinetic": 1.16886315241295,
+        "kinetic_legacy_f32_length_squared": 1.1688631772995,
+        "mass": 1.0,
+        "omega": 0.0,
+        "pose": [
+          1.0,
+          0.0,
+          0.0,
+          1.0,
+          128.0,
+          121.015991210938
+        ],
+        "pose_f64le": "000000000000f03f00000000000000000000000000000080000000000000f03f00000000000060400000000006415e40",
+        "potential": -11147.9927286335,
+        "velocity": [
+          0.0,
+          1.52896249294281
+        ],
+        "velocity_omega_f64le": "000000000000000000000060a176f83f0000000000000000"
+      }
+    ],
+    "live_before_application": [
+      {
+        "center_of_mass_local": [
+          0.0,
+          0.0
+        ],
+        "inertia": 21.6666660308838,
+        "kinetic": 1.16886315241295,
+        "kinetic_legacy_f32_length_squared": 1.1688631772995,
+        "mass": 1.0,
+        "omega": 0.0,
+        "pose": [
+          1.0,
+          0.0,
+          0.0,
+          1.0,
+          128.0,
+          121.015991210938
+        ],
+        "pose_f64le": "000000000000f03f00000000000000000000000000000080000000000000f03f00000000000060400000000006415e40",
+        "potential": -11147.9927286335,
+        "velocity": [
+          0.0,
+          1.52896249294281
+        ],
+        "velocity_omega_f64le": "000000000000000000000060a176f83f0000000000000000"
+      }
+    ],
+    "native_response": {
+      "arrival_storage_bytes": 4718592,
+      "body_limit": 8,
+      "epoch": 1,
+      "extent": [
+        512,
+        512
+      ],
+      "getter_us": 25,
+      "native_mask_reserved": 262144,
+      "native_workers_configured": 1,
+      "native_workers_constructed": 1,
+      "normal_policy": "active-normal-001",
+      "normal_policy_locked": true,
+      "proxy_limit": 64,
+      "raster_indices_reserved": 262144,
+      "response": "LA-SELECTIVE",
+      "rows": [
+        {
+          "arrival_count": 0,
+          "arrival_misaligned": 0,
+          "arrival_missing": 0,
+          "bins": 2,
+          "body_capacity": 20.0,
+          "budget": 20.0,
+          "com": [
+            128.0,
+            121.015991210938
+          ],
+          "contacts": 16,
+          "correction": [
+            0.0,
+            -0.0158312991261482
+          ],
+          "displaced": 0,
+          "event_accepted": [
+            0.0,
+            0.0
+          ],
+          "event_cost": 0.0,
+          "event_torque": 0.0,
+          "external_drive": false,
+          "generation": 1,
+          "gravity": 92.1199968457222,
+          "id": 1,
+          "impulse": [
+            -3.36176550625375e-16,
+            -1.52761828899384
+          ],
+          "inertia": 21.6666660308838,
+          "instance_id": 1,
+          "legacy_wrench_f64": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "mass": 1.0,
+          "nodes": 4,
+          "normal_accepted": 1.52761824937875,
+          "normal_cap_hits": 0,
+          "normal_capacity": 16.0,
+          "normal_policy": "active-normal-001",
+          "normal_raw": 6.11047299751502,
+          "passive_accepted_wrench_f64": [
+            -3.36176552207402e-16,
+            -1.52761824937875,
+            -1.22124532708767e-15
+          ],
+          "passive_energy_after": 9.03495379752156e-07,
+          "passive_energy_before": 1.16886315241295,
+          "passive_impulse": [
+            -3.36176550625375e-16,
+            -1.52761828899384
+          ],
+          "passive_raw_wrench_f64": [
+            -3.36176552207402e-16,
+            -1.52761824937875,
+            -1.22124532708767e-15
+          ],
+          "passive_scale": 1.0,
+          "passive_state_f64": [
+            0.0,
+            1.52896249294281,
+            128.0,
+            121.015991210938,
+            0.0,
+            1.0,
+            21.6666660308838,
+            0.779999971389771
+          ],
+          "passive_torque": -1.22124532708767e-15,
+          "passivity_rejected": false,
+          "proxy_count": 1,
+          "quadrature_clamps": 0,
+          "sample": 3,
+          "tangent_accepted": 3.36176552207402e-16,
+          "tangent_cap_hits": 0,
+          "tangent_raw": 1.65738433311555e-15,
+          "torque": -1.22124532708767e-15,
+          "total_wrench_f64": [
+            -3.36176550625375e-16,
+            -1.52761828899384,
+            -1.22124532708767e-15
+          ],
+          "unresolved": 0,
+          "updates": 32
+        }
+      ],
+      "sample_tick": 1,
+      "session": 1,
+      "solver_trace_locked": true,
+      "solver_trace_mode": "off",
+      "solver_trace_storage_bytes": 0,
+      "valid": true,
+      "world_mask_cell_limit": 262144
+    },
+    "application": {
+      "accepted": true,
+      "application_variant": "retain-linear-001",
+      "bodies": [
+        {
+          "age": 0,
+          "correction": [
+            0.0,
+            -0.0158312991261482
+          ],
+          "id": 1,
+          "impulse": [
+            -3.36176550625375e-16,
+            -1.52761828899384
+          ],
+          "instance_id": 1,
+          "linear_clip_policy": "retain-linear-001",
+          "live_velocity_changed": false,
+          "omega_residual": 2.02853748e-24,
+          "passive_energy_accepted": -1.16886224897082,
+          "passive_energy_linear": -2.33567106740504,
+          "passive_energy_quadratic": 1.16680881843423,
+          "passive_energy_unscaled": -1.16886224897082,
+          "passive_impulse_before": [
+            -3.36176550625375e-16,
+            -1.52761828899384
+          ],
+          "passive_revalidation_active": false,
+          "passive_scale": 1.0,
+          "passive_torque_before": -1.21592321559364e-15,
+          "sample": 3,
+          "torque": -1.21592321559364e-15,
+          "velocity_residual": 0.0
+        }
+      ],
+      "refusal": "",
+      "snapshot": 2
+    },
+    "after_application": [
+      {
+        "center_of_mass_local": [
+          0.0,
+          0.0
+        ],
+        "inertia": 21.6666660308838,
+        "kinetic": 9.03442128219467e-07,
+        "kinetic_legacy_f32_length_squared": 9.03442128219467e-07,
+        "mass": 1.0,
+        "omega": -5.61195326456232e-17,
+        "pose": [
+          1.0,
+          0.0,
+          0.0,
+          1.0,
+          128.0,
+          121.000160217285
+        ],
+        "pose_f64le": "000000000000f03f00000000000000000000000000000080000000000000f03f0000000000006040000000a002405e40",
+        "potential": -11146.5343775482,
+        "velocity": [
+          -3.36176550625375e-16,
+          0.00134420394897461
+        ],
+        "velocity_omega_f64le": "000000e05c39b8bc000000000006563f00000000e42c90bc"
+      }
+    ],
+    "after_step": [
+      {
+        "center_of_mass_local": [
+          0.0,
+          0.0
+        ],
+        "inertia": 21.6666660308838,
+        "kinetic": 1.17091071923323,
+        "kinetic_legacy_f32_length_squared": 1.17091071605682,
+        "mass": 1.0,
+        "omega": 1.12804936239572e-18,
+        "pose": [
+          1.0,
+          3.69178098694e-21,
+          -3.69178098694e-21,
+          1.0,
+          128.0,
+          121.016174316406
+        ],
+        "pose_f64le": "000000000000f03f000000e0166fb13b000000e0166fb1bb000000000000f03f00000000000060400000000009415e40",
+        "potential": -11148.0095963087,
+        "velocity": [
+          -3.29499312e-24,
+          1.53030109405518
+        ],
+        "velocity_omega_f64le": "0000000002de0fbb000000001d7cf83f0000000010cf343c"
+      }
+    ]
+  },
+  {
+    "coordinate": {
+      "host": "windows",
+      "workers": 1,
+      "case": "barrel-constrained-valid",
+      "id": "active-retain",
+      "normal_policy": "active-normal-001",
+      "application": "retain-linear-001",
+      "tag": "barrel-constrained-valid-active-retain-w1-r0"
+    },
+    "step": 359,
+    "raw": {
+      "path": "build/sol-contact-application/core-001/windows/barrel-constrained-valid-active-retain-w1-r0/barrel-constrained-valid-LA-SELECTIVE-w1-r0.json",
+      "sha256": "f74633e878bb7a07dc8945bee63d2b271b4cf57387238cb152df8d70ad0d75d3",
+      "bytes": 2711700
+    },
+    "sampled": [
+      {
+        "center_of_mass_local": [
+          0.0,
+          0.0
+        ],
+        "inertia": 21.6666660308838,
+        "kinetic": 1.25019530989405,
+        "kinetic_legacy_f32_length_squared": 1.25019526481628,
+        "mass": 1.0,
+        "omega": 5.0620909907862e-19,
+        "pose": [
+          1.0,
+          -2.96129459882096e-18,
+          2.96129459882096e-18,
+          1.0,
+          128.0,
+          123.969932556152
+        ],
+        "pose_f64le": "000000000000f03f000000c028504bbc000000c028504b3c000000000000f03f00000000000060400000006013fe5e40",
+        "potential": -11420.1097960371,
+        "velocity": [
+          4.4276471e-24,
+          1.5812623500824
+        ],
+        "velocity_omega_f64le": "000000602969153b000000c0d94cf93f0000008002ad223c"
+      }
+    ],
+    "before": [
+      {
+        "center_of_mass_local": [
+          0.0,
+          0.0
+        ],
+        "inertia": 21.6666660308838,
+        "kinetic": 1.25019530989405,
+        "kinetic_legacy_f32_length_squared": 1.25019526481628,
+        "mass": 1.0,
+        "omega": 5.0620909907862e-19,
+        "pose": [
+          1.0,
+          -2.96129459882096e-18,
+          2.96129459882096e-18,
+          1.0,
+          128.0,
+          123.969932556152
+        ],
+        "pose_f64le": "000000000000f03f000000c028504bbc000000c028504b3c000000000000f03f00000000000060400000006013fe5e40",
+        "potential": -11420.1097960371,
+        "velocity": [
+          4.4276471e-24,
+          1.5812623500824
+        ],
+        "velocity_omega_f64le": "000000602969153b000000c0d94cf93f0000008002ad223c"
+      }
+    ],
+    "live_before_application": [
+      {
+        "center_of_mass_local": [
+          0.0,
+          0.0
+        ],
+        "inertia": 21.6666660308838,
+        "kinetic": 1.25019530989405,
+        "kinetic_legacy_f32_length_squared": 1.25019526481628,
+        "mass": 1.0,
+        "omega": 5.0620909907862e-19,
+        "pose": [
+          1.0,
+          -2.96129459882096e-18,
+          2.96129459882096e-18,
+          1.0,
+          128.0,
+          123.969932556152
+        ],
+        "pose_f64le": "000000000000f03f000000c028504bbc000000c028504b3c000000000000f03f00000000000060400000006013fe5e40",
+        "potential": -11420.1097960371,
+        "velocity": [
+          4.4276471e-24,
+          1.5812623500824
+        ],
+        "velocity_omega_f64le": "000000602969153b000000c0d94cf93f0000008002ad223c"
+      }
+    ],
+    "native_response": {
+      "arrival_storage_bytes": 4718592,
+      "body_limit": 8,
+      "epoch": 1,
+      "extent": [
+        512,
+        512
+      ],
+      "getter_us": 22,
+      "native_mask_reserved": 262144,
+      "native_workers_configured": 1,
+      "native_workers_constructed": 1,
+      "normal_policy": "active-normal-001",
+      "normal_policy_locked": true,
+      "proxy_limit": 64,
+      "raster_indices_reserved": 262144,
+      "response": "LA-SELECTIVE",
+      "rows": [
+        {
+          "arrival_count": 0,
+          "arrival_misaligned": 0,
+          "arrival_missing": 26,
+          "bins": 6,
+          "body_capacity": 20.0,
+          "budget": 20.0,
+          "com": [
+            128.0,
+            123.969932556152
+          ],
+          "contacts": 88,
+          "correction": [
+            0.0,
+            -0.0166999045759439
+          ],
+          "displaced": 0,
+          "event_accepted": [
+            0.0,
+            0.0
+          ],
+          "event_cost": 0.0,
+          "event_torque": 0.0,
+          "external_drive": false,
+          "generation": 1,
+          "gravity": 92.1199968457222,
+          "id": 1,
+          "impulse": [
+            -3.55409148376833e-16,
+            -1.52874457836151
+          ],
+          "inertia": 21.6666660308838,
+          "instance_id": 1,
+          "legacy_wrench_f64": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "mass": 1.0,
+          "nodes": 12,
+          "normal_accepted": 1.52874453795866,
+          "normal_cap_hits": 0,
+          "normal_capacity": 20.0,
+          "normal_policy": "active-normal-001",
+          "normal_raw": 8.85459816446844,
+          "passive_accepted_wrench_f64": [
+            -3.55409145720355e-16,
+            -1.52874453795866,
+            -1.88737914186277e-15
+          ],
+          "passive_energy_after": 0.00137906029513219,
+          "passive_energy_before": 1.25019530989405,
+          "passive_impulse": [
+            -3.55409148376833e-16,
+            -1.52874457836151
+          ],
+          "passive_raw_wrench_f64": [
+            -3.55409145720355e-16,
+            -1.52874453795866,
+            -1.88737914186277e-15
+          ],
+          "passive_scale": 1.0,
+          "passive_state_f64": [
+            4.4276471e-24,
+            1.5812623500824,
+            128.0,
+            123.969932556152,
+            5.0620909907862e-19,
+            1.0,
+            21.6666660308838,
+            0.779999971389771
+          ],
+          "passive_torque": -1.88737914186277e-15,
+          "passivity_rejected": false,
+          "proxy_count": 1,
+          "quadrature_clamps": 0,
+          "sample": 361,
+          "tangent_accepted": 3.30272046864796e-16,
+          "tangent_cap_hits": 32,
+          "tangent_raw": 2.63537537423524,
+          "torque": -1.88737914186277e-15,
+          "total_wrench_f64": [
+            -3.55409148376833e-16,
+            -1.52874457836151,
+            -1.88737914186277e-15
+          ],
+          "unresolved": 18,
+          "updates": 96
+        }
+      ],
+      "sample_tick": 359,
+      "session": 1,
+      "solver_trace_locked": true,
+      "solver_trace_mode": "off",
+      "solver_trace_storage_bytes": 0,
+      "valid": true,
+      "world_mask_cell_limit": 262144
+    },
+    "application": {
+      "accepted": true,
+      "application_variant": "retain-linear-001",
+      "bodies": [
+        {
+          "age": 0,
+          "correction": [
+            0.0,
+            -0.0166999045759439
+          ],
+          "id": 1,
+          "impulse": [
+            -3.55409148376833e-16,
+            -1.52874457836151
+          ],
+          "instance_id": 1,
+          "linear_clip_policy": "retain-linear-001",
+          "live_velocity_changed": false,
+          "omega_residual": 5.58639466e-24,
+          "passive_energy_accepted": -1.24881625172079,
+          "passive_energy_linear": -2.41734624465565,
+          "passive_energy_quadratic": 1.16852999293486,
+          "passive_energy_unscaled": -1.24881625172079,
+          "passive_impulse_before": [
+            -3.55409148376833e-16,
+            -1.52874457836151
+          ],
+          "passive_revalidation_active": false,
+          "passive_scale": 1.0,
+          "passive_torque_before": -1.88144384303501e-15,
+          "sample": 361,
+          "torque": -1.88144384303501e-15,
+          "velocity_residual": 0.0
+        }
+      ],
+      "refusal": "",
+      "snapshot": 360
+    },
+    "after_application": [
+      {
+        "center_of_mass_local": [
+          0.0,
+          0.0
+        ],
+        "inertia": 21.6666660308838,
+        "kinetic": 0.00137905817326356,
+        "kinetic_legacy_f32_length_squared": 0.00137905823066831,
+        "mass": 1.0,
+        "omega": -8.63296575411624e-17,
+        "pose": [
+          1.0,
+          -2.96129459882096e-18,
+          2.96129459882096e-18,
+          1.0,
+          128.0,
+          123.953231811523
+        ],
+        "pose_f64le": "000000000000f03f000000c028504bbc000000c028504b3c000000000000f03f0000000000006040000000c001fd5e40",
+        "potential": -11418.5713234946,
+        "velocity": [
+          -3.55409148376833e-16,
+          0.0525177717208862
+        ],
+        "velocity_omega_f64le": "00000040249cb9bc000000009ce3aa3f0000002001e298bc"
+      }
+    ],
+    "after_step": [
+      {
+        "center_of_mass_local": [
+          0.0,
+          0.0
+        ],
+        "inertia": 21.6666660308838,
+        "kinetic": 1.25019530989405,
+        "kinetic_legacy_f32_length_squared": 1.25019526481628,
+        "mass": 1.0,
+        "omega": 5.0405020937864e-19,
+        "pose": [
+          1.0,
+          -2.97078504878393e-18,
+          2.97078504878393e-18,
+          1.0,
+          128.0,
+          123.970100402832
+        ],
+        "pose_f64le": "000000000000f03f0000006091664bbc0000006091664b3c000000000000f03f00000000000060400000002016fe5e40",
+        "potential": -11420.1252580728,
+        "velocity": [
+          2.0593707e-25,
+          1.5812623500824
+        ],
+        "velocity_omega_f64le": "0000000002decf3a000000c0d94cf93f000000a09e98223c"
+      }
+    ]
+  },
+  {
+    "coordinate": {
+      "host": "windows",
+      "workers": 1,
+      "case": "barrel-rest",
+      "id": "active-baseline",
+      "normal_policy": "active-normal-001",
+      "application": "baseline",
+      "tag": "barrel-rest-active-baseline-w1-r0"
+    },
+    "step": 1,
+    "raw": {
+      "path": "build/sol-contact-application/core-001/windows/barrel-rest-active-baseline-w1-r0/barrel-rest-LA-SELECTIVE-w1-r0.json",
+      "sha256": "873179a32736e25117ef4d85e9a63a37f1c3a53d6586ce8a6b65a09be6db7b8a",
+      "bytes": 2546644
+    },
+    "sampled": [
+      {
+        "center_of_mass_local": [
+          0.0,
+          0.0
+        ],
+        "inertia": 21.6666660308838,
+        "kinetic": 1.16886315241295,
+        "kinetic_legacy_f32_length_squared": 1.1688631772995,
+        "mass": 1.0,
+        "omega": 0.0,
+        "pose": [
+          1.0,
+          0.0,
+          0.0,
+          1.0,
+          128.0,
+          121.015991210938
+        ],
+        "pose_f64le": "000000000000f03f00000000000000000000000000000080000000000000f03f00000000000060400000000006415e40",
+        "potential": -11147.9927286335,
+        "velocity": [
+          0.0,
+          1.52896249294281
+        ],
+        "velocity_omega_f64le": "000000000000000000000060a176f83f0000000000000000"
+      }
+    ],
+    "before": [
+      {
+        "center_of_mass_local": [
+          0.0,
+          0.0
+        ],
+        "inertia": 21.6666660308838,
+        "kinetic": 1.16886315241295,
+        "kinetic_legacy_f32_length_squared": 1.1688631772995,
+        "mass": 1.0,
+        "omega": 0.0,
+        "pose": [
+          1.0,
+          0.0,
+          0.0,
+          1.0,
+          128.0,
+          121.015991210938
+        ],
+        "pose_f64le": "000000000000f03f00000000000000000000000000000080000000000000f03f00000000000060400000000006415e40",
+        "potential": -11147.9927286335,
+        "velocity": [
+          0.0,
+          1.52896249294281
+        ],
+        "velocity_omega_f64le": "000000000000000000000060a176f83f0000000000000000"
+      }
+    ],
+    "live_before_application": [
+      {
+        "center_of_mass_local": [
+          0.0,
+          0.0
+        ],
+        "inertia": 21.6666660308838,
+        "kinetic": 1.16886315241295,
+        "kinetic_legacy_f32_length_squared": 1.1688631772995,
+        "mass": 1.0,
+        "omega": 0.0,
+        "pose": [
+          1.0,
+          0.0,
+          0.0,
+          1.0,
+          128.0,
+          121.015991210938
+        ],
+        "pose_f64le": "000000000000f03f00000000000000000000000000000080000000000000f03f00000000000060400000000006415e40",
+        "potential": -11147.9927286335,
+        "velocity": [
+          0.0,
+          1.52896249294281
+        ],
+        "velocity_omega_f64le": "000000000000000000000060a176f83f0000000000000000"
+      }
+    ],
+    "native_response": {
+      "arrival_storage_bytes": 4718592,
+      "body_limit": 8,
+      "epoch": 1,
+      "extent": [
+        512,
+        512
+      ],
+      "getter_us": 25,
+      "native_mask_reserved": 262144,
+      "native_workers_configured": 1,
+      "native_workers_constructed": 1,
+      "normal_policy": "active-normal-001",
+      "normal_policy_locked": true,
+      "proxy_limit": 64,
+      "raster_indices_reserved": 262144,
+      "response": "LA-SELECTIVE",
+      "rows": [
+        {
+          "arrival_count": 0,
+          "arrival_misaligned": 0,
+          "arrival_missing": 0,
+          "bins": 2,
+          "body_capacity": 20.0,
+          "budget": 20.0,
+          "com": [
+            128.0,
+            121.015991210938
+          ],
+          "contacts": 16,
+          "correction": [
+            0.0,
+            -0.0158312991261482
+          ],
+          "displaced": 0,
+          "event_accepted": [
+            0.0,
+            0.0
+          ],
+          "event_cost": 0.0,
+          "event_torque": 0.0,
+          "external_drive": false,
+          "generation": 1,
+          "gravity": 92.1199968457222,
+          "id": 1,
+          "impulse": [
+            -3.36176550625375e-16,
+            -1.52761828899384
+          ],
+          "inertia": 21.6666660308838,
+          "instance_id": 1,
+          "legacy_wrench_f64": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "mass": 1.0,
+          "nodes": 4,
+          "normal_accepted": 1.52761824937875,
+          "normal_cap_hits": 0,
+          "normal_capacity": 16.0,
+          "normal_policy": "active-normal-001",
+          "normal_raw": 6.11047299751502,
+          "passive_accepted_wrench_f64": [
+            -3.36176552207402e-16,
+            -1.52761824937875,
+            -1.22124532708767e-15
+          ],
+          "passive_energy_after": 9.03495379752156e-07,
+          "passive_energy_before": 1.16886315241295,
+          "passive_impulse": [
+            -3.36176550625375e-16,
+            -1.52761828899384
+          ],
+          "passive_raw_wrench_f64": [
+            -3.36176552207402e-16,
+            -1.52761824937875,
+            -1.22124532708767e-15
+          ],
+          "passive_scale": 1.0,
+          "passive_state_f64": [
+            0.0,
+            1.52896249294281,
+            128.0,
+            121.015991210938,
+            0.0,
+            1.0,
+            21.6666660308838,
+            0.779999971389771
+          ],
+          "passive_torque": -1.22124532708767e-15,
+          "passivity_rejected": false,
+          "proxy_count": 1,
+          "quadrature_clamps": 0,
+          "sample": 3,
+          "tangent_accepted": 3.36176552207402e-16,
+          "tangent_cap_hits": 0,
+          "tangent_raw": 1.65738433311555e-15,
+          "torque": -1.22124532708767e-15,
+          "total_wrench_f64": [
+            -3.36176550625375e-16,
+            -1.52761828899384,
+            -1.22124532708767e-15
+          ],
+          "unresolved": 0,
+          "updates": 32
+        }
+      ],
+      "sample_tick": 1,
+      "session": 1,
+      "solver_trace_locked": true,
+      "solver_trace_mode": "off",
+      "solver_trace_storage_bytes": 0,
+      "valid": true,
+      "world_mask_cell_limit": 262144
+    },
+    "application": {
+      "accepted": true,
+      "application_variant": "baseline",
+      "bodies": [
+        {
+          "age": 0,
+          "correction": [
+            0.0,
+            -0.0158312991261482
+          ],
+          "id": 1,
+          "impulse": [
+            -3.36176550625375e-16,
+            -1.52761828899384
+          ],
+          "instance_id": 1,
+          "live_velocity_changed": false,
+          "omega_residual": 2.02853748e-24,
+          "passive_energy_accepted": 1.16680881843423,
+          "passive_energy_linear": 0.0,
+          "passive_energy_quadratic": 1.16680881843423,
+          "passive_energy_unscaled": 1.16680881843423,
+          "passive_impulse_before": [
+            -3.36176550625375e-16,
+            -1.52761828899384
+          ],
+          "passive_revalidation_active": false,
+          "passive_scale": 1.0,
+          "passive_torque_before": -1.21592321559364e-15,
+          "sample": 3,
+          "torque": -1.21592321559364e-15,
+          "velocity_residual": 0.0
+        }
+      ],
+      "refusal": "",
+      "snapshot": 2
+    },
+    "after_application": [
+      {
+        "center_of_mass_local": [
+          0.0,
+          0.0
+        ],
+        "inertia": 21.6666660308838,
+        "kinetic": 1.16680881843423,
+        "kinetic_legacy_f32_length_squared": 1.16680884361267,
+        "mass": 1.0,
+        "omega": -5.61195326456232e-17,
+        "pose": [
+          1.0,
+          0.0,
+          0.0,
+          1.0,
+          128.0,
+          121.000160217285
+        ],
+        "pose_f64le": "000000000000f03f00000000000000000000000000000080000000000000f03f0000000000006040000000a002405e40",
+        "potential": -11146.5343775482,
+        "velocity": [
+          -3.36176550625375e-16,
+          -1.52761828899384
+        ],
+        "velocity_omega_f64le": "000000e05c39b8bc000000e01f71f8bf00000000e42c90bc"
+      }
+    ],
+    "after_step": [
+      {
+        "center_of_mass_local": [
+          0.0,
+          0.0
+        ],
+        "inertia": 21.6666660308838,
+        "kinetic": 2.95135866850835e-05,
+        "kinetic_legacy_f32_length_squared": 2.95135869237129e-05,
+        "mass": 1.0,
+        "omega": -5.48846280916979e-17,
+        "pose": [
+          1.0,
+          -9.3532558545275e-19,
+          9.3532558545275e-19,
+          1.0,
+          128.0,
+          120.990692138672
+        ],
+        "pose_f64le": "000000000000f03f00000040f34031bc00000040f340313c000000000000f03f000000000000604000000080673f5e40",
+        "potential": -11145.6621781762,
+        "velocity": [
+          -3.34781619710145e-16,
+          0.00768291437998414
+        ],
+        "velocity_omega_f64le": "00000080a11fb8bc000000a01e787f3f000000a08aa38fbc"
+      }
+    ]
+  },
+  {
+    "coordinate": {
+      "host": "windows",
+      "workers": 1,
+      "case": "barrel-rest",
+      "id": "active-baseline",
+      "normal_policy": "active-normal-001",
+      "application": "baseline",
+      "tag": "barrel-rest-active-baseline-w1-r0"
+    },
+    "step": 359,
+    "raw": {
+      "path": "build/sol-contact-application/core-001/windows/barrel-rest-active-baseline-w1-r0/barrel-rest-LA-SELECTIVE-w1-r0.json",
+      "sha256": "873179a32736e25117ef4d85e9a63a37f1c3a53d6586ce8a6b65a09be6db7b8a",
+      "bytes": 2546644
+    },
+    "sampled": [
+      {
+        "center_of_mass_local": [
+          0.0,
+          0.0
+        ],
+        "inertia": 21.6666660308838,
+        "kinetic": 1.1688680736145,
+        "kinetic_legacy_f32_length_squared": 1.16886806488037,
+        "mass": 1.0,
+        "omega": -6.29545750162412e-16,
+        "pose": [
+          1.0,
+          -1.82728003667271e-15,
+          1.82728003667271e-15,
+          1.0,
+          128.0,
+          120.550842285156
+        ],
+        "pose_f64le": "000000000000f03f000000c06b75e0bc000000c06b75e03c000000000000f03f00000000000060400000000041235e40",
+        "potential": -11105.1432110577,
+        "velocity": [
+          -4.48704819434593e-15,
+          1.52896571159363
+        ],
+        "velocity_omega_f64le": "000000e03635f4bc000000c0a476f83f000000e088aec6bc"
+      }
+    ],
+    "before": [
+      {
+        "center_of_mass_local": [
+          0.0,
+          0.0
+        ],
+        "inertia": 21.6666660308838,
+        "kinetic": 1.1688680736145,
+        "kinetic_legacy_f32_length_squared": 1.16886806488037,
+        "mass": 1.0,
+        "omega": -6.29545750162412e-16,
+        "pose": [
+          1.0,
+          -1.82728003667271e-15,
+          1.82728003667271e-15,
+          1.0,
+          128.0,
+          120.550842285156
+        ],
+        "pose_f64le": "000000000000f03f000000c06b75e0bc000000c06b75e03c000000000000f03f00000000000060400000000041235e40",
+        "potential": -11105.1432110577,
+        "velocity": [
+          -4.48704819434593e-15,
+          1.52896571159363
+        ],
+        "velocity_omega_f64le": "000000e03635f4bc000000c0a476f83f000000e088aec6bc"
+      }
+    ],
+    "live_before_application": [
+      {
+        "center_of_mass_local": [
+          0.0,
+          0.0
+        ],
+        "inertia": 21.6666660308838,
+        "kinetic": 1.1688680736145,
+        "kinetic_legacy_f32_length_squared": 1.16886806488037,
+        "mass": 1.0,
+        "omega": -6.29545750162412e-16,
+        "pose": [
+          1.0,
+          -1.82728003667271e-15,
+          1.82728003667271e-15,
+          1.0,
+          128.0,
+          120.550842285156
+        ],
+        "pose_f64le": "000000000000f03f000000c06b75e0bc000000c06b75e03c000000000000f03f00000000000060400000000041235e40",
+        "potential": -11105.1432110577,
+        "velocity": [
+          -4.48704819434593e-15,
+          1.52896571159363
+        ],
+        "velocity_omega_f64le": "000000e03635f4bc000000c0a476f83f000000e088aec6bc"
+      }
+    ],
+    "native_response": {
+      "arrival_storage_bytes": 4718592,
+      "body_limit": 8,
+      "epoch": 1,
+      "extent": [
+        512,
+        512
+      ],
+      "getter_us": 72,
+      "native_mask_reserved": 262144,
+      "native_workers_configured": 1,
+      "native_workers_constructed": 1,
+      "normal_policy": "active-normal-001",
+      "normal_policy_locked": true,
+      "proxy_limit": 64,
+      "raster_indices_reserved": 262144,
+      "response": "LA-SELECTIVE",
+      "rows": [
+        {
+          "arrival_count": 0,
+          "arrival_misaligned": 0,
+          "arrival_missing": 0,
+          "bins": 2,
+          "body_capacity": 20.0,
+          "budget": 20.0,
+          "com": [
+            128.0,
+            120.550842285156
+          ],
+          "contacts": 16,
+          "correction": [
+            0.0,
+            -0.0158312991261482
+          ],
+          "displaced": 0,
+          "event_accepted": [
+            0.0,
+            0.0
+          ],
+          "event_cost": 0.0,
+          "event_torque": 0.0,
+          "external_drive": false,
+          "generation": 1,
+          "gravity": 92.1199968457222,
+          "id": 1,
+          "impulse": [
+            4.66965591139376e-17,
+            -1.52762150764465
+          ],
+          "inertia": 21.6666660308838,
+          "instance_id": 1,
+          "legacy_wrench_f64": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "mass": 1.0,
+          "nodes": 4,
+          "normal_accepted": 1.52762146519978,
+          "normal_cap_hits": 0,
+          "normal_capacity": 16.0,
+          "normal_policy": "active-normal-001",
+          "normal_raw": 6.11048586079911,
+          "passive_accepted_wrench_f64": [
+            4.66965602315379e-17,
+            -1.52762146519978,
+            1.11022302462516e-16
+          ],
+          "passive_energy_after": 9.03499183689964e-07,
+          "passive_energy_before": 1.1688680736145,
+          "passive_impulse": [
+            4.66965591139376e-17,
+            -1.52762150764465
+          ],
+          "passive_raw_wrench_f64": [
+            4.66965602315379e-17,
+            -1.52762146519978,
+            1.11022302462516e-16
+          ],
+          "passive_scale": 1.0,
+          "passive_state_f64": [
+            -4.48704819434593e-15,
+            1.52896571159363,
+            128.0,
+            120.550842285156,
+            -6.29545750162412e-16,
+            1.0,
+            21.6666660308838,
+            0.779999971389771
+          ],
+          "passive_torque": 1.11022302462516e-16,
+          "passivity_rejected": false,
+          "proxy_count": 1,
+          "quadrature_clamps": 0,
+          "sample": 361,
+          "tangent_accepted": 2.8380887671838e-15,
+          "tangent_cap_hits": 0,
+          "tangent_raw": 1.13523550687352e-14,
+          "torque": 1.11022302462516e-16,
+          "total_wrench_f64": [
+            4.66965591139376e-17,
+            -1.52762150764465,
+            1.11022302462516e-16
+          ],
+          "unresolved": 0,
+          "updates": 32
+        }
+      ],
+      "sample_tick": 359,
+      "session": 1,
+      "solver_trace_locked": true,
+      "solver_trace_mode": "off",
+      "solver_trace_storage_bytes": 0,
+      "valid": true,
+      "world_mask_cell_limit": 262144
+    },
+    "application": {
+      "accepted": true,
+      "application_variant": "baseline",
+      "bodies": [
+        {
+          "age": 0,
+          "correction": [
+            0.0,
+            -0.0158312991261482
+          ],
+          "id": 1,
+          "impulse": [
+            4.66965591139376e-17,
+            -1.52762150764465
+          ],
+          "instance_id": 1,
+          "live_velocity_changed": false,
+          "omega_residual": 6.59421019e-24,
+          "passive_energy_accepted": 1.16681373530926,
+          "passive_energy_linear": -2.8e-31,
+          "passive_energy_quadratic": 1.16681373530926,
+          "passive_energy_unscaled": 1.16681373530926,
+          "passive_impulse_before": [
+            4.66965591139376e-17,
+            -1.52762150764465
+          ],
+          "passive_revalidation_active": false,
+          "passive_scale": 1.0,
+          "passive_torque_before": 1.10283035277549e-16,
+          "sample": 361,
+          "torque": 1.10283035277549e-16,
+          "velocity_residual": 0.0
+        }
+      ],
+      "refusal": "",
+      "snapshot": 360
+    },
+    "after_application": [
+      {
+        "center_of_mass_local": [
+          0.0,
+          0.0
+        ],
+        "inertia": 21.6666660308838,
+        "kinetic": 1.16681373530926,
+        "kinetic_legacy_f32_length_squared": 1.16681373119354,
+        "mass": 1.0,
+        "omega": -6.24455770363683e-16,
+        "pose": [
+          1.0,
+          -1.82728003667271e-15,
+          1.82728003667271e-15,
+          1.0,
+          128.0,
+          120.535011291504
+        ],
+        "pose_f64le": "000000000000f03f000000c06b75e0bc000000c06b75e03c000000000000f03f0000000000006040000000a03d225e40",
+        "potential": -11103.6848599724,
+        "velocity": [
+          -4.44035169148028e-15,
+          -1.52762150764465
+        ],
+        "velocity_omega_f64le": "0000008060fff3bc000000402371f8bf00000080967fc6bc"
+      }
+    ],
+    "after_step": [
+      {
+        "center_of_mass_local": [
+          0.0,
+          0.0
+        ],
+        "inertia": 21.6666660308838,
+        "kinetic": 2.94889669543515e-05,
+        "kinetic_legacy_f32_length_squared": 2.94889669021359e-05,
+        "mass": 1.0,
+        "omega": -6.10714672497732e-16,
+        "pose": [
+          1.0,
+          -1.83768753049562e-15,
+          1.83768753049562e-15,
+          1.0,
+          128.0,
+          120.525543212891
+        ],
+        "pose_f64le": "000000000000f03f000000406b8de0bc000000406b8de03c000000000000f03f000000000000604000000080a2215e40",
+        "potential": -11102.8126606004,
+        "velocity": [
+          -4.42192660729513e-15,
+          0.0076797092333436
+        ],
+        "velocity_omega_f64le": "0000006022eaf3bc00000040c2747f3f00000040d900c6bc"
+      }
+    ]
+  },
+  {
+    "coordinate": {
+      "host": "windows",
+      "workers": 1,
+      "case": "barrel-rest",
+      "id": "active-retain",
+      "normal_policy": "active-normal-001",
+      "application": "retain-linear-001",
+      "tag": "barrel-rest-active-retain-w1-r0"
+    },
+    "step": 1,
+    "raw": {
+      "path": "build/sol-contact-application/core-001/windows/barrel-rest-active-retain-w1-r0/barrel-rest-LA-SELECTIVE-w1-r0.json",
+      "sha256": "6790fa1c671356e4c326292ceb65a4ddd7ce05bf476de74746b390d85bb2aa25",
+      "bytes": 2641712
+    },
+    "sampled": [
+      {
+        "center_of_mass_local": [
+          0.0,
+          0.0
+        ],
+        "inertia": 21.6666660308838,
+        "kinetic": 1.16886315241295,
+        "kinetic_legacy_f32_length_squared": 1.1688631772995,
+        "mass": 1.0,
+        "omega": 0.0,
+        "pose": [
+          1.0,
+          0.0,
+          0.0,
+          1.0,
+          128.0,
+          121.015991210938
+        ],
+        "pose_f64le": "000000000000f03f00000000000000000000000000000080000000000000f03f00000000000060400000000006415e40",
+        "potential": -11147.9927286335,
+        "velocity": [
+          0.0,
+          1.52896249294281
+        ],
+        "velocity_omega_f64le": "000000000000000000000060a176f83f0000000000000000"
+      }
+    ],
+    "before": [
+      {
+        "center_of_mass_local": [
+          0.0,
+          0.0
+        ],
+        "inertia": 21.6666660308838,
+        "kinetic": 1.16886315241295,
+        "kinetic_legacy_f32_length_squared": 1.1688631772995,
+        "mass": 1.0,
+        "omega": 0.0,
+        "pose": [
+          1.0,
+          0.0,
+          0.0,
+          1.0,
+          128.0,
+          121.015991210938
+        ],
+        "pose_f64le": "000000000000f03f00000000000000000000000000000080000000000000f03f00000000000060400000000006415e40",
+        "potential": -11147.9927286335,
+        "velocity": [
+          0.0,
+          1.52896249294281
+        ],
+        "velocity_omega_f64le": "000000000000000000000060a176f83f0000000000000000"
+      }
+    ],
+    "live_before_application": [
+      {
+        "center_of_mass_local": [
+          0.0,
+          0.0
+        ],
+        "inertia": 21.6666660308838,
+        "kinetic": 1.16886315241295,
+        "kinetic_legacy_f32_length_squared": 1.1688631772995,
+        "mass": 1.0,
+        "omega": 0.0,
+        "pose": [
+          1.0,
+          0.0,
+          0.0,
+          1.0,
+          128.0,
+          121.015991210938
+        ],
+        "pose_f64le": "000000000000f03f00000000000000000000000000000080000000000000f03f00000000000060400000000006415e40",
+        "potential": -11147.9927286335,
+        "velocity": [
+          0.0,
+          1.52896249294281
+        ],
+        "velocity_omega_f64le": "000000000000000000000060a176f83f0000000000000000"
+      }
+    ],
+    "native_response": {
+      "arrival_storage_bytes": 4718592,
+      "body_limit": 8,
+      "epoch": 1,
+      "extent": [
+        512,
+        512
+      ],
+      "getter_us": 19,
+      "native_mask_reserved": 262144,
+      "native_workers_configured": 1,
+      "native_workers_constructed": 1,
+      "normal_policy": "active-normal-001",
+      "normal_policy_locked": true,
+      "proxy_limit": 64,
+      "raster_indices_reserved": 262144,
+      "response": "LA-SELECTIVE",
+      "rows": [
+        {
+          "arrival_count": 0,
+          "arrival_misaligned": 0,
+          "arrival_missing": 0,
+          "bins": 2,
+          "body_capacity": 20.0,
+          "budget": 20.0,
+          "com": [
+            128.0,
+            121.015991210938
+          ],
+          "contacts": 16,
+          "correction": [
+            0.0,
+            -0.0158312991261482
+          ],
+          "displaced": 0,
+          "event_accepted": [
+            0.0,
+            0.0
+          ],
+          "event_cost": 0.0,
+          "event_torque": 0.0,
+          "external_drive": false,
+          "generation": 1,
+          "gravity": 92.1199968457222,
+          "id": 1,
+          "impulse": [
+            -3.36176550625375e-16,
+            -1.52761828899384
+          ],
+          "inertia": 21.6666660308838,
+          "instance_id": 1,
+          "legacy_wrench_f64": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "mass": 1.0,
+          "nodes": 4,
+          "normal_accepted": 1.52761824937875,
+          "normal_cap_hits": 0,
+          "normal_capacity": 16.0,
+          "normal_policy": "active-normal-001",
+          "normal_raw": 6.11047299751502,
+          "passive_accepted_wrench_f64": [
+            -3.36176552207402e-16,
+            -1.52761824937875,
+            -1.22124532708767e-15
+          ],
+          "passive_energy_after": 9.03495379752156e-07,
+          "passive_energy_before": 1.16886315241295,
+          "passive_impulse": [
+            -3.36176550625375e-16,
+            -1.52761828899384
+          ],
+          "passive_raw_wrench_f64": [
+            -3.36176552207402e-16,
+            -1.52761824937875,
+            -1.22124532708767e-15
+          ],
+          "passive_scale": 1.0,
+          "passive_state_f64": [
+            0.0,
+            1.52896249294281,
+            128.0,
+            121.015991210938,
+            0.0,
+            1.0,
+            21.6666660308838,
+            0.779999971389771
+          ],
+          "passive_torque": -1.22124532708767e-15,
+          "passivity_rejected": false,
+          "proxy_count": 1,
+          "quadrature_clamps": 0,
+          "sample": 3,
+          "tangent_accepted": 3.36176552207402e-16,
+          "tangent_cap_hits": 0,
+          "tangent_raw": 1.65738433311555e-15,
+          "torque": -1.22124532708767e-15,
+          "total_wrench_f64": [
+            -3.36176550625375e-16,
+            -1.52761828899384,
+            -1.22124532708767e-15
+          ],
+          "unresolved": 0,
+          "updates": 32
+        }
+      ],
+      "sample_tick": 1,
+      "session": 1,
+      "solver_trace_locked": true,
+      "solver_trace_mode": "off",
+      "solver_trace_storage_bytes": 0,
+      "valid": true,
+      "world_mask_cell_limit": 262144
+    },
+    "application": {
+      "accepted": true,
+      "application_variant": "retain-linear-001",
+      "bodies": [
+        {
+          "age": 0,
+          "correction": [
+            0.0,
+            -0.0158312991261482
+          ],
+          "id": 1,
+          "impulse": [
+            -3.36176550625375e-16,
+            -1.52761828899384
+          ],
+          "instance_id": 1,
+          "linear_clip_policy": "retain-linear-001",
+          "live_velocity_changed": false,
+          "omega_residual": 2.02853748e-24,
+          "passive_energy_accepted": -1.16886224897082,
+          "passive_energy_linear": -2.33567106740504,
+          "passive_energy_quadratic": 1.16680881843423,
+          "passive_energy_unscaled": -1.16886224897082,
+          "passive_impulse_before": [
+            -3.36176550625375e-16,
+            -1.52761828899384
+          ],
+          "passive_revalidation_active": false,
+          "passive_scale": 1.0,
+          "passive_torque_before": -1.21592321559364e-15,
+          "sample": 3,
+          "torque": -1.21592321559364e-15,
+          "velocity_residual": 0.0
+        }
+      ],
+      "refusal": "",
+      "snapshot": 2
+    },
+    "after_application": [
+      {
+        "center_of_mass_local": [
+          0.0,
+          0.0
+        ],
+        "inertia": 21.6666660308838,
+        "kinetic": 9.03442128219467e-07,
+        "kinetic_legacy_f32_length_squared": 9.03442128219467e-07,
+        "mass": 1.0,
+        "omega": -5.61195326456232e-17,
+        "pose": [
+          1.0,
+          0.0,
+          0.0,
+          1.0,
+          128.0,
+          121.000160217285
+        ],
+        "pose_f64le": "000000000000f03f00000000000000000000000000000080000000000000f03f0000000000006040000000a002405e40",
+        "potential": -11146.5343775482,
+        "velocity": [
+          -3.36176550625375e-16,
+          0.00134420394897461
+        ],
+        "velocity_omega_f64le": "000000e05c39b8bc000000000006563f00000000e42c90bc"
+      }
+    ],
+    "after_step": [
+      {
+        "center_of_mass_local": [
+          0.0,
+          0.0
+        ],
+        "inertia": 21.6666660308838,
+        "kinetic": 1.17091071923323,
+        "kinetic_legacy_f32_length_squared": 1.17091071605682,
+        "mass": 1.0,
+        "omega": -5.48846280916979e-17,
+        "pose": [
+          1.0,
+          -9.3532558545275e-19,
+          9.3532558545275e-19,
+          1.0,
+          128.0,
+          121.016174316406
+        ],
+        "pose_f64le": "000000000000f03f00000040f34031bc00000040f340313c000000000000f03f00000000000060400000000009415e40",
+        "potential": -11148.0095963087,
+        "velocity": [
+          -3.34781619710145e-16,
+          1.53030109405518
+        ],
+        "velocity_omega_f64le": "00000080a11fb8bc000000001d7cf83f000000a08aa38fbc"
+      }
+    ]
+  },
+  {
+    "coordinate": {
+      "host": "windows",
+      "workers": 1,
+      "case": "barrel-rest",
+      "id": "active-retain",
+      "normal_policy": "active-normal-001",
+      "application": "retain-linear-001",
+      "tag": "barrel-rest-active-retain-w1-r0"
+    },
+    "step": 359,
+    "raw": {
+      "path": "build/sol-contact-application/core-001/windows/barrel-rest-active-retain-w1-r0/barrel-rest-LA-SELECTIVE-w1-r0.json",
+      "sha256": "6790fa1c671356e4c326292ceb65a4ddd7ce05bf476de74746b390d85bb2aa25",
+      "bytes": 2641712
+    },
+    "sampled": [
+      {
+        "center_of_mass_local": [
+          0.0,
+          0.0
+        ],
+        "inertia": 21.6666660308838,
+        "kinetic": 1.19975944413773,
+        "kinetic_legacy_f32_length_squared": 1.1997594833374,
+        "mass": 1.0,
+        "omega": -6.81514556668693e-16,
+        "pose": [
+          1.0,
+          -2.70580799824653e-15,
+          2.70580799824653e-15,
+          1.0,
+          128.0,
+          123.926162719727
+        ],
+        "pose_f64le": "000000000000f03f000000202b5fe8bc000000202b5fe83c000000000000f03f00000000000060400000004046fb5e40",
+        "potential": -11416.0777188437,
+        "velocity": [
+          -5.3857556570969e-15,
+          1.5490380525589
+        ],
+        "velocity_omega_f64le": "000000805a41f8bc00000020dcc8f83f000000c0dc8dc8bc"
+      }
+    ],
+    "before": [
+      {
+        "center_of_mass_local": [
+          0.0,
+          0.0
+        ],
+        "inertia": 21.6666660308838,
+        "kinetic": 1.19975944413773,
+        "kinetic_legacy_f32_length_squared": 1.1997594833374,
+        "mass": 1.0,
+        "omega": -6.81514556668693e-16,
+        "pose": [
+          1.0,
+          -2.70580799824653e-15,
+          2.70580799824653e-15,
+          1.0,
+          128.0,
+          123.926162719727
+        ],
+        "pose_f64le": "000000000000f03f000000202b5fe8bc000000202b5fe83c000000000000f03f00000000000060400000004046fb5e40",
+        "potential": -11416.0777188437,
+        "velocity": [
+          -5.3857556570969e-15,
+          1.5490380525589
+        ],
+        "velocity_omega_f64le": "000000805a41f8bc00000020dcc8f83f000000c0dc8dc8bc"
+      }
+    ],
+    "live_before_application": [
+      {
+        "center_of_mass_local": [
+          0.0,
+          0.0
+        ],
+        "inertia": 21.6666660308838,
+        "kinetic": 1.19975944413773,
+        "kinetic_legacy_f32_length_squared": 1.1997594833374,
+        "mass": 1.0,
+        "omega": -6.81514556668693e-16,
+        "pose": [
+          1.0,
+          -2.70580799824653e-15,
+          2.70580799824653e-15,
+          1.0,
+          128.0,
+          123.926162719727
+        ],
+        "pose_f64le": "000000000000f03f000000202b5fe8bc000000202b5fe83c000000000000f03f00000000000060400000004046fb5e40",
+        "potential": -11416.0777188437,
+        "velocity": [
+          -5.3857556570969e-15,
+          1.5490380525589
+        ],
+        "velocity_omega_f64le": "000000805a41f8bc00000020dcc8f83f000000c0dc8dc8bc"
+      }
+    ],
+    "native_response": {
+      "arrival_storage_bytes": 4718592,
+      "body_limit": 8,
+      "epoch": 1,
+      "extent": [
+        512,
+        512
+      ],
+      "getter_us": 19,
+      "native_mask_reserved": 262144,
+      "native_workers_configured": 1,
+      "native_workers_constructed": 1,
+      "normal_policy": "active-normal-001",
+      "normal_policy_locked": true,
+      "proxy_limit": 64,
+      "raster_indices_reserved": 262144,
+      "response": "LA-SELECTIVE",
+      "rows": [
+        {
+          "arrival_count": 0,
+          "arrival_misaligned": 0,
+          "arrival_missing": 8,
+          "bins": 4,
+          "body_capacity": 20.0,
+          "budget": 20.0,
+          "com": [
+            128.0,
+            123.926162719727
+          ],
+          "contacts": 56,
+          "correction": [
+            0.0,
+            -0.0161711890250444
+          ],
+          "displaced": 0,
+          "event_accepted": [
+            0.0,
+            0.0
+          ],
+          "event_cost": 0.0,
+          "event_torque": 0.0,
+          "external_drive": false,
+          "generation": 1,
+          "gravity": 92.1199968457222,
+          "id": 1,
+          "impulse": [
+            -1.14038245989276e-17,
+            -1.52887880802155
+          ],
+          "inertia": 21.6666660308838,
+          "instance_id": 1,
+          "legacy_wrench_f64": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "mass": 1.0,
+          "nodes": 8,
+          "normal_accepted": 1.52887882143219,
+          "normal_cap_hits": 0,
+          "normal_capacity": 20.0,
+          "normal_policy": "active-normal-001",
+          "normal_raw": 7.64439410716094,
+          "passive_accepted_wrench_f64": [
+            -1.14038245105148e-17,
+            -1.52887882143219,
+            -3.22952665892876e-16
+          ],
+          "passive_energy_after": 0.000203197299810098,
+          "passive_energy_before": 1.19975944413773,
+          "passive_impulse": [
+            -1.14038245989276e-17,
+            -1.52887880802155
+          ],
+          "passive_raw_wrench_f64": [
+            -1.14038245105148e-17,
+            -1.52887882143219,
+            -3.22952665892876e-16
+          ],
+          "passive_scale": 1.0,
+          "passive_state_f64": [
+            -5.3857556570969e-15,
+            1.5490380525589,
+            128.0,
+            123.926162719727,
+            -6.81514556668693e-16,
+            1.0,
+            21.6666660308838,
+            0.779999971389771
+          ],
+          "passive_torque": -3.22952665892876e-16,
+          "passivity_rejected": false,
+          "proxy_count": 1,
+          "quadrature_clamps": 0,
+          "sample": 361,
+          "tangent_accepted": 3.91200342027855e-15,
+          "tangent_cap_hits": 16,
+          "tangent_raw": 1.79412562135603,
+          "torque": -3.22952665892876e-16,
+          "total_wrench_f64": [
+            -1.14038245989276e-17,
+            -1.52887880802155,
+            -3.22952665892876e-16
+          ],
+          "unresolved": 18,
+          "updates": 64
+        }
+      ],
+      "sample_tick": 359,
+      "session": 1,
+      "solver_trace_locked": true,
+      "solver_trace_mode": "off",
+      "solver_trace_storage_bytes": 0,
+      "valid": true,
+      "world_mask_cell_limit": 262144
+    },
+    "application": {
+      "accepted": true,
+      "application_variant": "retain-linear-001",
+      "bodies": [
+        {
+          "age": 0,
+          "correction": [
+            0.0,
+            -0.0161711890250444
+          ],
+          "id": 1,
+          "impulse": [
+            -1.14038245989276e-17,
+            -1.52887880802155
+          ],
+          "instance_id": 1,
+          "linear_clip_policy": "retain-linear-001",
+          "live_velocity_changed": false,
+          "omega_residual": 1.65042761e-23,
+          "passive_energy_accepted": -1.19955624656757,
+          "passive_energy_linear": -2.36829145137627,
+          "passive_energy_quadratic": 1.16873520480869,
+          "passive_energy_unscaled": -1.19955624656757,
+          "passive_impulse_before": [
+            -1.14038245989276e-17,
+            -1.52887880802155
+          ],
+          "passive_revalidation_active": false,
+          "passive_scale": 1.0,
+          "passive_torque_before": -3.22768252489354e-16,
+          "sample": 361,
+          "torque": -3.22768252489354e-16,
+          "velocity_residual": 0.0
+        }
+      ],
+      "refusal": "",
+      "snapshot": 360
+    },
+    "after_application": [
+      {
+        "center_of_mass_local": [
+          0.0,
+          0.0
+        ],
+        "inertia": 21.6666660308838,
+        "kinetic": 0.000203197570158409,
+        "kinetic_legacy_f32_length_squared": 0.000203197574592195,
+        "mass": 1.0,
+        "omega": -6.96411536870291e-16,
+        "pose": [
+          1.0,
+          -2.70580799824653e-15,
+          2.70580799824653e-15,
+          1.0,
+          128.0,
+          123.90998840332
+        ],
+        "pose_f64le": "000000000000f03f000000202b5fe8bc000000202b5fe83c000000000000f03f0000000000006040000000403dfa5e40",
+        "potential": -11414.5877408673,
+        "velocity": [
+          -5.39715968518226e-15,
+          0.0201592445373535
+        ],
+        "velocity_omega_f64le": "00000060804ef8bc00000000a0a4943f000000404317c9bc"
+      }
+    ],
+    "after_step": [
+      {
+        "center_of_mass_local": [
+          0.0,
+          0.0
+        ],
+        "inertia": 21.6666660308838,
+        "kinetic": 1.19975944413773,
+        "kinetic_legacy_f32_length_squared": 1.1997594833374,
+        "mass": 1.0,
+        "omega": -6.81087069728125e-16,
+        "pose": [
+          1.0,
+          -2.71741489072275e-15,
+          2.71741489072275e-15,
+          1.0,
+          128.0,
+          123.926322937012
+        ],
+        "pose_f64le": "000000000000f03f000000a0ee79e8bc000000a0ee79e83c000000000000f03f0000000000006040000000e048fb5e40",
+        "potential": -11416.0924780595,
+        "velocity": [
+          -5.37476455757333e-15,
+          1.5490380525589
+        ],
+        "velocity_omega_f64le": "00000080ae34f8bc00000020dcc8f83f00000060eb89c8bc"
+      }
+    ]
+  }
+]
