@@ -15,8 +15,10 @@ permissions:
   contents: read
 
 concurrency:
-  group: inv154-copy-probe-${{ github.ref }}
-  cancel-in-progress: true
+  # Supersede only automatic branch pushes. Every explicit manual request gets
+  # its own group so no later source push can discard a requested campaign.
+  group: inv154-copy-probe-${{ github.event_name }}-${{ github.event_name == 'workflow_dispatch' && github.run_id || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'push' }}
 
 jobs:
   windows-synthetic-probe:
