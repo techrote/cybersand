@@ -120,6 +120,13 @@ REVIEWED_TRANSITIONS: tuple[dict, ...] = ({'path': 'native/src/world_pressure.in
   'source_commit': 'd04fe009c2d5ab45f49a1d02cd36bb377f5d9873',
   'record': 'docs/audits/2026-11-04-workbench394-ready-validation.md',
   'issue': 391,
+  'pr': 394},
+ {'path': 'native/src/world_pressure.inc',
+  'from_lf_sha256': '9977b8c49bfb523acf2f0abcedfc6cc99e2348c60e2bbbfeb29d1fc53738c1a8',
+  'to_lf_sha256': '7b28bf216bf70af7059267cae31117f1f01e88d0e5f276f61d67280ab5c6d2e5',
+  'source_commit': 'acce570e667c7e2cc3ef83ab451e7dff262006a9',
+  'record': 'docs/audits/2026-11-04-workbench394-ready-validation.md',
+  'issue': 391,
   'pr': 394})
 
 
