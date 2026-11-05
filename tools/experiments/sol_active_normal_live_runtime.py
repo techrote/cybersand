@@ -40,7 +40,7 @@ def source_identity():
         and isinstance(n.target,ast.Name) and n.target.id=='REVIEWED_TRANSITIONS'}
     lock='materials/catalogue/compatibility-lock.json'
     locked=json.loads((ROOT/lock).read_text())['source_locks']
-    material_paths={guard,lock,*locked,*(v['record'] for v in definitions['REVIEWED_TRANSITIONS'])}
+    material_paths={guard,lock,*(v['path'] for v in locked),*(v['record'] for v in definitions['REVIEWED_TRANSITIONS'])}
     material_custody={n:lfsha(ROOT/n) for n in sorted(material_paths)}
     for n in material_custody:assert (ROOT/n).read_bytes().replace(b'\r\n',b'\n')==p.git('show',BASE+':'+n),n
 

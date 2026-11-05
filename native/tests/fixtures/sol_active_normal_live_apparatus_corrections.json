@@ -1,0 +1,18 @@
+{
+  "id": "SOL-ACTIVE-NORMAL-LIVE-001-APPARATUS-CORRECTIONS",
+  "attempts": [
+    {
+      "source": "c4424bdb",
+      "command": [
+        "python",
+        "tools/experiments/sol_active_normal_live_runtime.py",
+        "build"
+      ],
+      "exit": 1,
+      "phase": "source_identity before output directory or compiler launch",
+      "error": "TypeError: unhashable type: dict; source_locks is list of rows",
+      "raw_log": "Tool transcript only; no process helper was reached",
+      "correction": "Enumerate each retained source_locks row.path; no source guard/hash or physics change"
+    }
+  ]
+}
