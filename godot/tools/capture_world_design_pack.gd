@@ -79,6 +79,10 @@ func _parse_arguments() -> String:
 		return "--tile-cells must be even (64..2048), with padded view <=8192 pixels"
 	if not output_path.is_absolute_path():
 		return "--output must be an absolute directory"
+	var source_dir: String = pack_path.get_base_dir().simplify_path()
+	var destination: String = output_path.simplify_path()
+	if destination == source_dir or destination.begins_with(source_dir + "/"):
+		return "--output must not be inside the input pack's source directory"
 	return ""
 
 
@@ -332,6 +336,10 @@ func _run() -> void:
 	# Delete a previous successful manifest before any new work, to prevent a
 	# failed attempt leaving misleading earlier success in this output folder.
 	var complete_path: String = output_path.path_join("capture-manifest.json")
+	var status_path: String = output_path.path_join("capture-status.json")
+	if FileAccess.file_exists(status_path) and DirAccess.remove_absolute(status_path) != OK:
+		_status(5, "cannot invalidate existing capture status")
+		return
 	if FileAccess.file_exists(complete_path):
 		if DirAccess.remove_absolute(complete_path) != OK:
 			_status(5, "cannot invalidate existing complete manifest")
