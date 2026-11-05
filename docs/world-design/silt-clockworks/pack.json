@@ -1,0 +1,2553 @@
+{
+  "schema_id": "cybersand.world-feature-pack.proposal",
+  "schema_version": 1,
+  "title": "SILT CLOCKWORKS — stranded tidal regulator",
+  "created_utc": "2026-11-05",
+  "status": "draft nonproduction resource proposal",
+  "source": {
+    "main_commit": "ba9cbc89029be88b812af59b19e5c59829bbcd90",
+    "main_tree": "3af18f50e6094776263119623b64a1b2f4ca0ab2",
+    "native_material_enum": "native/include/cybersand/material.hpp",
+    "native_enum_blob_sha": "dcf05895da3015a2e999e3d1cbbae0fdc7fe32b3",
+    "shadow_catalogue": "materials/catalogue/catalogue.json",
+    "shadow_catalogue_blob_sha": "d7a47d60721598a16589daf177a6ff4401b84b43",
+    "interaction_rules": "native/include/cybersand/interaction_rules.hpp",
+    "interaction_rules_blob_sha": "b70fc9dc2599f648e5374f06e4cc0ae9cb868d79",
+    "rectangle_convention": "godot/scripts/demo_worlds.gd::_rect",
+    "prior_designs": [
+      "#408 Lumen Fault",
+      "#410 Chalkbone Coast",
+      "#412 Carved Ice Choir",
+      "#414 Ashroot Nursery",
+      "#420 Emberglass Fumaroles"
+    ]
+  },
+  "coordinate_contract": {
+    "units": "integer native cells",
+    "origin": "top left",
+    "axes": "+x right, +y down",
+    "rectangle": "[x,y,width,height,native_material_id]",
+    "bounds": "half-open",
+    "ordering": "later rectangles overpaint earlier ones",
+    "missing_cell": "no automatic host erasure",
+    "clearing": "requires separately admitted importer clearing authority",
+    "variants": "literal native material substitutions",
+    "layers": "none",
+    "transforms": "authored 0° 1x only",
+    "anchor": "bottom centre grounded at y=226"
+  },
+  "palette": [
+    {
+      "id": 2,
+      "name": "sand",
+      "rgba": [
+        222,
+        174,
+        76,
+        255
+      ],
+      "state": 2,
+      "movable": true,
+      "kernel": 1,
+      "lateral_flow": 0,
+      "viscosity_index": 0
+    },
+    {
+      "id": 3,
+      "name": "water",
+      "rgba": [
+        47,
+        127,
+        210,
+        255
+      ],
+      "state": 3,
+      "movable": true,
+      "kernel": 2,
+      "lateral_flow": 1,
+      "viscosity_index": 0
+    },
+    {
+      "id": 23,
+      "name": "salt",
+      "rgba": [
+        236,
+        232,
+        218,
+        255
+      ],
+      "state": 2,
+      "movable": true,
+      "kernel": 1,
+      "lateral_flow": 0,
+      "viscosity_index": 0
+    },
+    {
+      "id": 24,
+      "name": "brine",
+      "rgba": [
+        92,
+        166,
+        194,
+        255
+      ],
+      "state": 3,
+      "movable": true,
+      "kernel": 18,
+      "lateral_flow": 2,
+      "viscosity_index": 32
+    },
+    {
+      "id": 29,
+      "name": "rust",
+      "rgba": [
+        166,
+        74,
+        42,
+        255
+      ],
+      "state": 2,
+      "movable": true,
+      "kernel": 1,
+      "lateral_flow": 0,
+      "viscosity_index": 0
+    },
+    {
+      "id": 39,
+      "name": "sandstone-block",
+      "rgba": [
+        199,
+        156,
+        98,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0
+    },
+    {
+      "id": 40,
+      "name": "granite-block",
+      "rgba": [
+        119,
+        119,
+        130,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0
+    },
+    {
+      "id": 41,
+      "name": "cobblestone",
+      "rgba": [
+        119,
+        116,
+        108,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0
+    },
+    {
+      "id": 49,
+      "name": "slate",
+      "rgba": [
+        70,
+        83,
+        99,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0
+    },
+    {
+      "id": 50,
+      "name": "wrought-iron",
+      "rgba": [
+        50,
+        58,
+        64,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0
+    },
+    {
+      "id": 54,
+      "name": "verdigris-copper",
+      "rgba": [
+        79,
+        140,
+        121,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0
+    },
+    {
+      "id": 56,
+      "name": "packed-earth",
+      "rgba": [
+        124,
+        91,
+        59,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0
+    },
+    {
+      "id": 58,
+      "name": "reinforced-concrete",
+      "rgba": [
+        119,
+        123,
+        128,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0
+    },
+    {
+      "id": 61,
+      "name": "wet-cobblestone",
+      "rgba": [
+        65,
+        74,
+        78,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0
+    },
+    {
+      "id": 62,
+      "name": "steel-plate",
+      "rgba": [
+        126,
+        141,
+        153,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0
+    },
+    {
+      "id": 63,
+      "name": "painted-steel",
+      "rgba": [
+        49,
+        100,
+        119,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0
+    },
+    {
+      "id": 65,
+      "name": "rusted-steel",
+      "rgba": [
+        124,
+        63,
+        43,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0
+    },
+    {
+      "id": 66,
+      "name": "steel-grating",
+      "rgba": [
+        74,
+        85,
+        93,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0
+    },
+    {
+      "id": 68,
+      "name": "steel-pipe",
+      "rgba": [
+        102,
+        119,
+        129,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0
+    },
+    {
+      "id": 69,
+      "name": "copper-pipe",
+      "rgba": [
+        165,
+        92,
+        54,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0
+    },
+    {
+      "id": 72,
+      "name": "dark-glass",
+      "rgba": [
+        37,
+        60,
+        76,
+        192
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0
+    },
+    {
+      "id": 76,
+      "name": "hazard-stripe",
+      "rgba": [
+        227,
+        182,
+        47,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0
+    },
+    {
+      "id": 79,
+      "name": "neon-amber",
+      "rgba": [
+        255,
+        181,
+        46,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0
+    },
+    {
+      "id": 80,
+      "name": "led-white",
+      "rgba": [
+        236,
+        248,
+        255,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0
+    },
+    {
+      "id": 99,
+      "name": "chalk-block",
+      "rgba": [
+        234,
+        231,
+        220,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0
+    },
+    {
+      "id": 106,
+      "name": "rock-salt-block",
+      "rgba": [
+        222,
+        196,
+        190,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0
+    },
+    {
+      "id": 110,
+      "name": "sandbag",
+      "rgba": [
+        170,
+        146,
+        100,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0
+    },
+    {
+      "id": 112,
+      "name": "gabion",
+      "rgba": [
+        122,
+        120,
+        112,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0
+    },
+    {
+      "id": 119,
+      "name": "brass-panel",
+      "rgba": [
+        196,
+        160,
+        72,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0
+    },
+    {
+      "id": 120,
+      "name": "glass-block",
+      "rgba": [
+        156,
+        210,
+        220,
+        204
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0
+    }
+  ],
+  "style_guide": {
+    "aesthetic": "ruined tidal-calculation station of static monumental machinery; not a functional engine",
+    "dominant": "ReinforcedConcrete 58, Slate 49, SteelPlate 62, RustedSteel 65",
+    "accents": "VerdigrisCopper 54, BrassPanel 119, NeonAmber 79 used purely as colour",
+    "dry_gallery": "Water 3, Brine 24, Sand 2, Salt 23, Rust 29 all replaced with fixed material IDs",
+    "composition": "spire→gate→ring→arch→fan→mirrored pools→hanging weight→beacon",
+    "negative_space": "do not fill gate slots, wheel hole or arch during installation",
+    "scale": "1x integer cell only",
+    "orientation": "all modules bottom-centre anchored; avoid consecutive tall towers"
+  },
+  "features": [
+    {
+      "id": "tide-gauge",
+      "title": "Tide gauge / drowned datum",
+      "size": [
+        108,
+        102
+      ],
+      "kind": "inert-static",
+      "role": "Tide gauge / drowned datum",
+      "anchor": {
+        "type": "ground",
+        "point": [
+          54,
+          102
+        ]
+      },
+      "orientation": "0°, 1x native cells; no flips or scale admitted",
+      "clearance": {
+        "top": 12,
+        "side": 18,
+        "passage": null
+      },
+      "neighbour_rules": [
+        "One at start of basin",
+        "retain high crown void",
+        "keep separate from second gauge."
+      ],
+      "simulation_notes": "Fixed datum facade, no active clock, light or tide sensor.",
+      "variants": [
+        {
+          "id": "low-tide",
+          "swap": {
+            "63": 65,
+            "79": 119
+          },
+          "note": "low tide"
+        },
+        {
+          "id": "signal-on",
+          "swap": {
+            "61": 41,
+            "119": 79
+          },
+          "note": "signal on"
+        }
+      ],
+      "rectangles": [
+        [
+          0,
+          90,
+          108,
+          12,
+          58
+        ],
+        [
+          11,
+          85,
+          85,
+          5,
+          61
+        ],
+        [
+          32,
+          29,
+          44,
+          56,
+          49
+        ],
+        [
+          40,
+          10,
+          28,
+          23,
+          50
+        ],
+        [
+          44,
+          4,
+          20,
+          7,
+          119
+        ],
+        [
+          37,
+          30,
+          34,
+          6,
+          62
+        ],
+        [
+          30,
+          35,
+          8,
+          46,
+          65
+        ],
+        [
+          70,
+          35,
+          8,
+          46,
+          65
+        ],
+        [
+          37,
+          74,
+          34,
+          8,
+          58
+        ],
+        [
+          24,
+          80,
+          60,
+          4,
+          62
+        ],
+        [
+          45,
+          15,
+          18,
+          54,
+          63
+        ],
+        [
+          49,
+          20,
+          10,
+          44,
+          72
+        ],
+        [
+          40,
+          39,
+          8,
+          3,
+          119
+        ],
+        [
+          60,
+          39,
+          8,
+          3,
+          119
+        ],
+        [
+          49,
+          24,
+          4,
+          2,
+          119
+        ],
+        [
+          57,
+          24,
+          5,
+          2,
+          79
+        ],
+        [
+          49,
+          32,
+          4,
+          2,
+          119
+        ],
+        [
+          57,
+          32,
+          5,
+          2,
+          79
+        ],
+        [
+          49,
+          40,
+          4,
+          2,
+          119
+        ],
+        [
+          57,
+          40,
+          5,
+          2,
+          79
+        ],
+        [
+          49,
+          48,
+          4,
+          2,
+          119
+        ],
+        [
+          57,
+          48,
+          5,
+          2,
+          79
+        ],
+        [
+          49,
+          56,
+          4,
+          2,
+          119
+        ],
+        [
+          57,
+          56,
+          5,
+          2,
+          79
+        ],
+        [
+          46,
+          66,
+          16,
+          5,
+          119
+        ],
+        [
+          8,
+          83,
+          11,
+          7,
+          41
+        ],
+        [
+          88,
+          82,
+          12,
+          8,
+          41
+        ],
+        [
+          15,
+          89,
+          78,
+          2,
+          110
+        ]
+      ]
+    },
+    {
+      "id": "triple-sluice",
+      "title": "Triple sluice / locked sluice teeth",
+      "size": [
+        132,
+        108
+      ],
+      "kind": "inert-static",
+      "role": "Triple sluice / locked sluice teeth",
+      "anchor": {
+        "type": "ground",
+        "point": [
+          66,
+          108
+        ]
+      },
+      "orientation": "0°, 1x native cells; no flips or scale admitted",
+      "clearance": {
+        "top": 12,
+        "side": 18,
+        "passage": null
+      },
+      "neighbour_rules": [
+        "Keep all three negative slots open",
+        "align dry channel edge",
+        "requires host clearing."
+      ],
+      "simulation_notes": "Painted fixed sluice architecture is not an operational gate, pump or pressure boundary.",
+      "variants": [
+        {
+          "id": "quiet-lock",
+          "swap": {
+            "63": 65,
+            "76": 119
+          },
+          "note": "quiet lock"
+        },
+        {
+          "id": "blue-enamel",
+          "swap": {
+            "65": 63,
+            "119": 80
+          },
+          "note": "blue enamel"
+        }
+      ],
+      "rectangles": [
+        [
+          0,
+          97,
+          132,
+          11,
+          58
+        ],
+        [
+          2,
+          90,
+          128,
+          7,
+          62
+        ],
+        [
+          5,
+          26,
+          16,
+          64,
+          58
+        ],
+        [
+          41,
+          26,
+          13,
+          64,
+          58
+        ],
+        [
+          78,
+          26,
+          13,
+          64,
+          58
+        ],
+        [
+          114,
+          26,
+          13,
+          64,
+          58
+        ],
+        [
+          4,
+          21,
+          122,
+          8,
+          62
+        ],
+        [
+          11,
+          14,
+          107,
+          7,
+          65
+        ],
+        [
+          22,
+          9,
+          88,
+          5,
+          119
+        ],
+        [
+          9,
+          17,
+          12,
+          4,
+          50
+        ],
+        [
+          115,
+          17,
+          9,
+          4,
+          50
+        ],
+        [
+          25,
+          29,
+          4,
+          53,
+          66
+        ],
+        [
+          43,
+          29,
+          4,
+          53,
+          66
+        ],
+        [
+          26,
+          43,
+          20,
+          4,
+          63
+        ],
+        [
+          26,
+          64,
+          20,
+          4,
+          63
+        ],
+        [
+          27,
+          31,
+          18,
+          2,
+          76
+        ],
+        [
+          30,
+          85,
+          13,
+          3,
+          119
+        ],
+        [
+          58,
+          29,
+          4,
+          53,
+          66
+        ],
+        [
+          76,
+          29,
+          4,
+          53,
+          66
+        ],
+        [
+          59,
+          43,
+          20,
+          4,
+          63
+        ],
+        [
+          59,
+          64,
+          20,
+          4,
+          63
+        ],
+        [
+          60,
+          31,
+          18,
+          2,
+          76
+        ],
+        [
+          63,
+          85,
+          13,
+          3,
+          119
+        ],
+        [
+          94,
+          29,
+          4,
+          53,
+          66
+        ],
+        [
+          112,
+          29,
+          4,
+          53,
+          66
+        ],
+        [
+          95,
+          43,
+          20,
+          4,
+          63
+        ],
+        [
+          95,
+          64,
+          20,
+          4,
+          63
+        ],
+        [
+          96,
+          31,
+          18,
+          2,
+          76
+        ],
+        [
+          99,
+          85,
+          13,
+          3,
+          119
+        ],
+        [
+          24,
+          89,
+          82,
+          5,
+          65
+        ],
+        [
+          13,
+          91,
+          18,
+          3,
+          61
+        ],
+        [
+          103,
+          91,
+          17,
+          3,
+          61
+        ],
+        [
+          4,
+          96,
+          122,
+          2,
+          49
+        ]
+      ]
+    },
+    {
+      "id": "ratchet-wheel",
+      "title": "Broken ratchet / wheel ruin",
+      "size": [
+        120,
+        100
+      ],
+      "kind": "inert-static",
+      "role": "Broken ratchet / wheel ruin",
+      "anchor": {
+        "type": "ground",
+        "point": [
+          60,
+          100
+        ]
+      },
+      "orientation": "0°, 1x native cells; no flips or scale admitted",
+      "clearance": {
+        "top": 12,
+        "side": 18,
+        "passage": null
+      },
+      "neighbour_rules": [
+        "One ring per 400+ cells",
+        "preserve central hole",
+        "do not make rotating body."
+      ],
+      "simulation_notes": "Stepwise ring silhouette uses fixed material cells only. No actual gearing or rotation.",
+      "variants": [
+        {
+          "id": "patina-teeth",
+          "swap": {
+            "62": 65,
+            "119": 54
+          },
+          "note": "patina teeth"
+        },
+        {
+          "id": "bright-teeth",
+          "swap": {
+            "54": 119,
+            "65": 62
+          },
+          "note": "bright teeth"
+        }
+      ],
+      "rectangles": [
+        [
+          0,
+          90,
+          120,
+          10,
+          58
+        ],
+        [
+          5,
+          84,
+          110,
+          6,
+          61
+        ],
+        [
+          15,
+          77,
+          17,
+          7,
+          65
+        ],
+        [
+          89,
+          77,
+          17,
+          7,
+          65
+        ],
+        [
+          34,
+          19,
+          52,
+          9,
+          65
+        ],
+        [
+          29,
+          25,
+          12,
+          17,
+          62
+        ],
+        [
+          79,
+          25,
+          12,
+          17,
+          62
+        ],
+        [
+          22,
+          38,
+          12,
+          30,
+          65
+        ],
+        [
+          86,
+          38,
+          12,
+          30,
+          65
+        ],
+        [
+          31,
+          64,
+          14,
+          13,
+          62
+        ],
+        [
+          75,
+          64,
+          14,
+          13,
+          62
+        ],
+        [
+          42,
+          70,
+          36,
+          8,
+          65
+        ],
+        [
+          48,
+          12,
+          23,
+          8,
+          119
+        ],
+        [
+          56,
+          4,
+          8,
+          8,
+          65
+        ],
+        [
+          16,
+          47,
+          7,
+          12,
+          119
+        ],
+        [
+          98,
+          47,
+          8,
+          12,
+          119
+        ],
+        [
+          46,
+          76,
+          9,
+          9,
+          119
+        ],
+        [
+          65,
+          76,
+          9,
+          9,
+          119
+        ],
+        [
+          48,
+          40,
+          24,
+          20,
+          50
+        ],
+        [
+          54,
+          45,
+          12,
+          10,
+          54
+        ],
+        [
+          26,
+          34,
+          12,
+          4,
+          54
+        ],
+        [
+          82,
+          34,
+          12,
+          4,
+          54
+        ],
+        [
+          38,
+          29,
+          7,
+          4,
+          119
+        ],
+        [
+          73,
+          29,
+          9,
+          4,
+          119
+        ],
+        [
+          27,
+          69,
+          12,
+          4,
+          119
+        ],
+        [
+          81,
+          69,
+          11,
+          4,
+          119
+        ]
+      ]
+    },
+    {
+      "id": "siphon-crown",
+      "title": "Siphon crown / dry aqueduct arches",
+      "size": [
+        124,
+        110
+      ],
+      "kind": "inert-static",
+      "role": "Siphon crown / dry aqueduct arches",
+      "anchor": {
+        "type": "ground",
+        "point": [
+          62,
+          110
+        ]
+      },
+      "orientation": "0°, 1x native cells; no flips or scale admitted",
+      "clearance": {
+        "top": 12,
+        "side": 18,
+        "passage": null
+      },
+      "neighbour_rules": [
+        "Keep dry arch span unobstructed",
+        "alternate with shallow foreground",
+        "no live water guarantee."
+      ],
+      "simulation_notes": "Illustrated pipe and viaduct shapes are fixed material, not operative siphon.",
+      "variants": [
+        {
+          "id": "green-crown",
+          "swap": {
+            "69": 54,
+            "119": 50
+          },
+          "note": "green crown"
+        },
+        {
+          "id": "sealed-crown",
+          "swap": {
+            "54": 62,
+            "76": 119
+          },
+          "note": "sealed crown"
+        }
+      ],
+      "rectangles": [
+        [
+          0,
+          99,
+          124,
+          11,
+          58
+        ],
+        [
+          2,
+          91,
+          23,
+          8,
+          41
+        ],
+        [
+          100,
+          91,
+          22,
+          8,
+          41
+        ],
+        [
+          6,
+          47,
+          18,
+          44,
+          58
+        ],
+        [
+          100,
+          45,
+          18,
+          46,
+          58
+        ],
+        [
+          12,
+          35,
+          18,
+          18,
+          41
+        ],
+        [
+          94,
+          33,
+          18,
+          18,
+          41
+        ],
+        [
+          20,
+          23,
+          86,
+          13,
+          62
+        ],
+        [
+          28,
+          20,
+          68,
+          5,
+          69
+        ],
+        [
+          27,
+          14,
+          12,
+          7,
+          69
+        ],
+        [
+          84,
+          14,
+          12,
+          7,
+          69
+        ],
+        [
+          38,
+          10,
+          48,
+          5,
+          54
+        ],
+        [
+          17,
+          34,
+          90,
+          5,
+          50
+        ],
+        [
+          29,
+          42,
+          11,
+          12,
+          62
+        ],
+        [
+          83,
+          42,
+          11,
+          12,
+          62
+        ],
+        [
+          16,
+          62,
+          10,
+          11,
+          65
+        ],
+        [
+          99,
+          62,
+          10,
+          11,
+          65
+        ],
+        [
+          32,
+          43,
+          8,
+          8,
+          119
+        ],
+        [
+          84,
+          43,
+          8,
+          8,
+          119
+        ],
+        [
+          43,
+          40,
+          38,
+          6,
+          66
+        ],
+        [
+          51,
+          46,
+          20,
+          6,
+          62
+        ],
+        [
+          14,
+          83,
+          14,
+          4,
+          61
+        ],
+        [
+          96,
+          83,
+          14,
+          4,
+          61
+        ],
+        [
+          53,
+          28,
+          18,
+          3,
+          76
+        ],
+        [
+          59,
+          4,
+          6,
+          8,
+          119
+        ]
+      ]
+    },
+    {
+      "id": "silt-fan",
+      "title": "Silt fan / salt-streak depositional apron",
+      "size": [
+        116,
+        82
+      ],
+      "kind": "active-dynamic",
+      "role": "Silt fan / salt-streak depositional apron",
+      "anchor": {
+        "type": "ground",
+        "point": [
+          58,
+          82
+        ]
+      },
+      "orientation": "0°, 1x native cells; no flips or scale admitted",
+      "clearance": {
+        "top": 12,
+        "side": 18,
+        "passage": null
+      },
+      "neighbour_rules": [
+        "Runout area needed",
+        "not above player route",
+        "dynamic t=0 composition only."
+      ],
+      "simulation_notes": "Mobile Sand 2, Salt 23 and Rust 29 may fall and redistribute; static swaps fully remove moving IDs.",
+      "variants": [
+        {
+          "id": "dried-fan",
+          "swap": {
+            "2": 56,
+            "23": 106,
+            "29": 65
+          },
+          "note": "dried fan"
+        },
+        {
+          "id": "stone-bound",
+          "swap": {
+            "2": 39,
+            "23": 99,
+            "29": 65
+          },
+          "note": "stone bound"
+        }
+      ],
+      "rectangles": [
+        [
+          0,
+          69,
+          116,
+          13,
+          56
+        ],
+        [
+          0,
+          64,
+          36,
+          5,
+          112
+        ],
+        [
+          2,
+          57,
+          25,
+          7,
+          110
+        ],
+        [
+          22,
+          56,
+          17,
+          8,
+          58
+        ],
+        [
+          35,
+          62,
+          32,
+          7,
+          41
+        ],
+        [
+          68,
+          65,
+          47,
+          4,
+          110
+        ],
+        [
+          14,
+          43,
+          15,
+          14,
+          112
+        ],
+        [
+          29,
+          49,
+          13,
+          7,
+          58
+        ],
+        [
+          24,
+          58,
+          20,
+          4,
+          65
+        ],
+        [
+          40,
+          36,
+          28,
+          7,
+          2
+        ],
+        [
+          33,
+          43,
+          43,
+          6,
+          2
+        ],
+        [
+          28,
+          49,
+          61,
+          6,
+          2
+        ],
+        [
+          23,
+          55,
+          73,
+          7,
+          2
+        ],
+        [
+          50,
+          42,
+          11,
+          2,
+          23
+        ],
+        [
+          47,
+          48,
+          15,
+          2,
+          23
+        ],
+        [
+          38,
+          54,
+          24,
+          2,
+          23
+        ],
+        [
+          65,
+          60,
+          25,
+          2,
+          23
+        ],
+        [
+          74,
+          46,
+          8,
+          3,
+          29
+        ],
+        [
+          84,
+          54,
+          11,
+          4,
+          29
+        ],
+        [
+          94,
+          60,
+          18,
+          4,
+          29
+        ],
+        [
+          7,
+          51,
+          8,
+          5,
+          62
+        ],
+        [
+          48,
+          67,
+          18,
+          3,
+          61
+        ],
+        [
+          91,
+          68,
+          19,
+          2,
+          106
+        ]
+      ]
+    },
+    {
+      "id": "twin-cistern",
+      "title": "Twin cistern / two silent tidal mirrors",
+      "size": [
+        128,
+        92
+      ],
+      "kind": "active-dynamic",
+      "role": "Twin cistern / two silent tidal mirrors",
+      "anchor": {
+        "type": "ground",
+        "point": [
+          64,
+          92
+        ]
+      },
+      "orientation": "0°, 1x native cells; no flips or scale admitted",
+      "clearance": {
+        "top": 12,
+        "side": 18,
+        "passage": null
+      },
+      "neighbour_rules": [
+        "Source liquids separated",
+        "bridge not demonstrated watertight",
+        "test native flow before use."
+      ],
+      "simulation_notes": "Water 3 and Brine 24 are moving liquids with different kernels; dry variants substitute fixed glass material.",
+      "variants": [
+        {
+          "id": "glass-mirrors",
+          "swap": {
+            "3": 120,
+            "24": 72
+          },
+          "note": "glass mirrors"
+        },
+        {
+          "id": "sealed-archive",
+          "swap": {
+            "3": 72,
+            "24": 120,
+            "76": 119
+          },
+          "note": "sealed archive"
+        }
+      ],
+      "rectangles": [
+        [
+          0,
+          83,
+          128,
+          9,
+          58
+        ],
+        [
+          2,
+          40,
+          9,
+          43,
+          58
+        ],
+        [
+          117,
+          40,
+          9,
+          43,
+          58
+        ],
+        [
+          58,
+          40,
+          12,
+          43,
+          58
+        ],
+        [
+          2,
+          37,
+          122,
+          6,
+          62
+        ],
+        [
+          13,
+          52,
+          42,
+          27,
+          3
+        ],
+        [
+          73,
+          54,
+          42,
+          25,
+          24
+        ],
+        [
+          12,
+          80,
+          104,
+          3,
+          65
+        ],
+        [
+          17,
+          46,
+          32,
+          4,
+          72
+        ],
+        [
+          78,
+          48,
+          30,
+          4,
+          72
+        ],
+        [
+          59,
+          25,
+          10,
+          13,
+          50
+        ],
+        [
+          53,
+          19,
+          22,
+          7,
+          119
+        ],
+        [
+          61,
+          9,
+          6,
+          10,
+          69
+        ],
+        [
+          23,
+          30,
+          17,
+          5,
+          66
+        ],
+        [
+          87,
+          30,
+          17,
+          5,
+          66
+        ],
+        [
+          8,
+          42,
+          8,
+          6,
+          76
+        ],
+        [
+          110,
+          42,
+          8,
+          6,
+          76
+        ],
+        [
+          5,
+          84,
+          117,
+          3,
+          61
+        ],
+        [
+          46,
+          84,
+          34,
+          3,
+          49
+        ],
+        [
+          4,
+          33,
+          14,
+          5,
+          65
+        ],
+        [
+          109,
+          33,
+          14,
+          5,
+          65
+        ]
+      ]
+    },
+    {
+      "id": "counterweight",
+      "title": "Counterweight rack / stranded lift",
+      "size": [
+        110,
+        106
+      ],
+      "kind": "inert-static",
+      "role": "Counterweight rack / stranded lift",
+      "anchor": {
+        "type": "ground",
+        "point": [
+          55,
+          106
+        ]
+      },
+      "orientation": "0°, 1x native cells; no flips or scale admitted",
+      "clearance": {
+        "top": 12,
+        "side": 18,
+        "passage": null
+      },
+      "neighbour_rules": [
+        "Position after a low fan",
+        "leave top 14 cells open",
+        "no moving mass."
+      ],
+      "simulation_notes": "All cells fixed and inert; counterweight silhouette has no rigging, winch or suspension mechanics.",
+      "variants": [
+        {
+          "id": "patinated-load",
+          "swap": {
+            "65": 50,
+            "119": 54
+          },
+          "note": "patinated load"
+        },
+        {
+          "id": "warning-rack",
+          "swap": {
+            "54": 119,
+            "63": 76
+          },
+          "note": "warning rack"
+        }
+      ],
+      "rectangles": [
+        [
+          0,
+          96,
+          110,
+          10,
+          58
+        ],
+        [
+          7,
+          92,
+          95,
+          4,
+          61
+        ],
+        [
+          16,
+          13,
+          12,
+          79,
+          65
+        ],
+        [
+          82,
+          13,
+          12,
+          79,
+          65
+        ],
+        [
+          20,
+          9,
+          71,
+          6,
+          62
+        ],
+        [
+          28,
+          4,
+          54,
+          5,
+          50
+        ],
+        [
+          31,
+          18,
+          15,
+          10,
+          119
+        ],
+        [
+          64,
+          18,
+          15,
+          10,
+          119
+        ],
+        [
+          37,
+          29,
+          6,
+          39,
+          69
+        ],
+        [
+          71,
+          29,
+          6,
+          43,
+          69
+        ],
+        [
+          27,
+          31,
+          11,
+          3,
+          54
+        ],
+        [
+          77,
+          31,
+          12,
+          3,
+          54
+        ],
+        [
+          40,
+          54,
+          35,
+          7,
+          62
+        ],
+        [
+          43,
+          61,
+          28,
+          19,
+          65
+        ],
+        [
+          46,
+          64,
+          22,
+          12,
+          119
+        ],
+        [
+          43,
+          80,
+          28,
+          6,
+          58
+        ],
+        [
+          21,
+          30,
+          7,
+          4,
+          119
+        ],
+        [
+          83,
+          30,
+          7,
+          4,
+          119
+        ],
+        [
+          21,
+          40,
+          7,
+          4,
+          119
+        ],
+        [
+          83,
+          40,
+          7,
+          4,
+          119
+        ],
+        [
+          21,
+          50,
+          7,
+          4,
+          119
+        ],
+        [
+          83,
+          50,
+          7,
+          4,
+          119
+        ],
+        [
+          21,
+          60,
+          7,
+          4,
+          119
+        ],
+        [
+          83,
+          60,
+          7,
+          4,
+          119
+        ],
+        [
+          21,
+          70,
+          7,
+          4,
+          119
+        ],
+        [
+          83,
+          70,
+          7,
+          4,
+          119
+        ],
+        [
+          21,
+          80,
+          7,
+          4,
+          119
+        ],
+        [
+          83,
+          80,
+          7,
+          4,
+          119
+        ],
+        [
+          7,
+          87,
+          22,
+          5,
+          49
+        ],
+        [
+          79,
+          87,
+          21,
+          5,
+          49
+        ],
+        [
+          33,
+          90,
+          43,
+          3,
+          63
+        ]
+      ]
+    },
+    {
+      "id": "flood-beacon",
+      "title": "Flood beacon / threshold chronometer",
+      "size": [
+        90,
+        114
+      ],
+      "kind": "inert-static",
+      "role": "Flood beacon / threshold chronometer",
+      "anchor": {
+        "type": "ground",
+        "point": [
+          45,
+          114
+        ]
+      },
+      "orientation": "0°, 1x native cells; no flips or scale admitted",
+      "clearance": {
+        "top": 12,
+        "side": 18,
+        "passage": null
+      },
+      "neighbour_rules": [
+        "End-cap marker only",
+        "retain 20+ cells upper void",
+        "don't block actor path."
+      ],
+      "simulation_notes": "Illuminated colour suggestion only: no real light, electrical or sensor behavior.",
+      "variants": [
+        {
+          "id": "dark-beacon",
+          "swap": {
+            "79": 119,
+            "80": 72
+          },
+          "note": "dark beacon"
+        },
+        {
+          "id": "cold-beacon",
+          "swap": {
+            "79": 80,
+            "119": 54
+          },
+          "note": "cold beacon"
+        }
+      ],
+      "rectangles": [
+        [
+          0,
+          104,
+          90,
+          10,
+          58
+        ],
+        [
+          7,
+          98,
+          76,
+          6,
+          61
+        ],
+        [
+          18,
+          69,
+          55,
+          29,
+          49
+        ],
+        [
+          25,
+          37,
+          39,
+          32,
+          50
+        ],
+        [
+          30,
+          17,
+          29,
+          20,
+          62
+        ],
+        [
+          36,
+          7,
+          17,
+          10,
+          119
+        ],
+        [
+          39,
+          1,
+          11,
+          6,
+          79
+        ],
+        [
+          26,
+          32,
+          36,
+          5,
+          65
+        ],
+        [
+          32,
+          42,
+          25,
+          17,
+          72
+        ],
+        [
+          38,
+          44,
+          13,
+          13,
+          79
+        ],
+        [
+          22,
+          74,
+          46,
+          5,
+          119
+        ],
+        [
+          24,
+          82,
+          43,
+          6,
+          63
+        ],
+        [
+          27,
+          90,
+          36,
+          5,
+          65
+        ],
+        [
+          11,
+          94,
+          14,
+          4,
+          110
+        ],
+        [
+          68,
+          94,
+          11,
+          4,
+          110
+        ],
+        [
+          19,
+          62,
+          7,
+          7,
+          54
+        ],
+        [
+          64,
+          62,
+          7,
+          7,
+          54
+        ],
+        [
+          40,
+          20,
+          9,
+          4,
+          80
+        ],
+        [
+          43,
+          29,
+          4,
+          6,
+          119
+        ]
+      ]
+    }
+  ],
+  "scene": {
+    "id": "frozen-tide-regulator",
+    "title": "THE FROZEN TIDE REGULATOR",
+    "size": [
+      1184,
+      264
+    ],
+    "status": "dry source-colour t=0 composition, not a playable map",
+    "terrain_rectangles": [
+      [
+        0,
+        226,
+        1184,
+        38,
+        56
+      ],
+      [
+        0,
+        222,
+        1184,
+        4,
+        58
+      ],
+      [
+        0,
+        0,
+        1184,
+        9,
+        49
+      ],
+      [
+        15,
+        9,
+        78,
+        6,
+        41
+      ],
+      [
+        222,
+        9,
+        98,
+        7,
+        49
+      ],
+      [
+        500,
+        9,
+        121,
+        6,
+        41
+      ],
+      [
+        868,
+        9,
+        96,
+        5,
+        49
+      ],
+      [
+        88,
+        15,
+        4,
+        19,
+        65
+      ],
+      [
+        591,
+        15,
+        5,
+        22,
+        50
+      ],
+      [
+        922,
+        14,
+        5,
+        18,
+        65
+      ],
+      [
+        16,
+        216,
+        111,
+        6,
+        61
+      ],
+      [
+        313,
+        217,
+        104,
+        5,
+        61
+      ],
+      [
+        603,
+        215,
+        119,
+        7,
+        41
+      ],
+      [
+        906,
+        216,
+        94,
+        6,
+        65
+      ],
+      [
+        1056,
+        213,
+        68,
+        9,
+        41
+      ]
+    ],
+    "placements": [
+      {
+        "feature": "tide-gauge",
+        "variant": "low-tide",
+        "x": 22,
+        "y": 124
+      },
+      {
+        "feature": "triple-sluice",
+        "variant": "quiet-lock",
+        "x": 155,
+        "y": 118
+      },
+      {
+        "feature": "ratchet-wheel",
+        "variant": "patina-teeth",
+        "x": 307,
+        "y": 126
+      },
+      {
+        "feature": "siphon-crown",
+        "variant": "green-crown",
+        "x": 453,
+        "y": 116
+      },
+      {
+        "feature": "silt-fan",
+        "variant": "dried-fan",
+        "x": 601,
+        "y": 144
+      },
+      {
+        "feature": "twin-cistern",
+        "variant": "glass-mirrors",
+        "x": 739,
+        "y": 134
+      },
+      {
+        "feature": "counterweight",
+        "variant": "patinated-load",
+        "x": 892,
+        "y": 120
+      },
+      {
+        "feature": "flood-beacon",
+        "variant": "dark-beacon",
+        "x": 1034,
+        "y": 112
+      }
+    ],
+    "placement_order": "terrain then listed module rectangles; later writes win"
+  },
+  "repeatable_patterns": [
+    {
+      "id": "survey-channel",
+      "modules": [
+        "tide-gauge",
+        "triple-sluice",
+        "silt-fan"
+      ],
+      "min_gap": 18,
+      "rule": "One gauge per basin; insert neutral terrace before repeating; dry variants only"
+    },
+    {
+      "id": "broken-tide-engine",
+      "modules": [
+        "ratchet-wheel",
+        "siphon-crown",
+        "counterweight",
+        "flood-beacon"
+      ],
+      "min_gap": 18,
+      "rule": "Ring is focal point, arch and counterweight frame it, beacon closes the scene"
+    },
+    {
+      "id": "wet-fixture-only",
+      "modules": [
+        "triple-sluice",
+        "silt-fan",
+        "twin-cistern"
+      ],
+      "min_gap": 20,
+      "rule": "Experimental original moving materials only; require bounded native isolated fixture"
+    }
+  ],
+  "limits": {
+    "module_count": 8,
+    "variant_count": 16,
+    "allow_automatic_import": false,
+    "allowed_rotation_degrees": [
+      0
+    ],
+    "host_clearance_mandatory": true,
+    "active_modules_for_testing_only": [
+      "silt-fan",
+      "twin-cistern"
+    ]
+  }
+}
