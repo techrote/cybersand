@@ -97,6 +97,19 @@ inline Result solve_compound(const Body& b, std::span<const Bin* const> bins,
                              CompoundWorkspace& workspace, double available=20, double capacity_scale=1, double base_budget=20,
                              bool normalize_active_normal=false) {
     Result out;
+    // Refuse invalid copied body state before capacity allocation, impulses or
+    // friction clamping. In particular, negative mu reverses std::clamp bounds,
+    // and zero inertia can leave nonfinite raw diagnostic impulses behind.
+    // A representable inverse and initial energy are needed by this solver.
+    if(!std::isfinite(b.velocity.x) || !std::isfinite(b.velocity.y) ||
+       !std::isfinite(b.com.x) || !std::isfinite(b.com.y) ||
+       !std::isfinite(b.omega) || !std::isfinite(b.mass) || b.mass<=0 ||
+       !std::isfinite(b.inertia) || b.inertia<=0 ||
+       !std::isfinite(b.mu) || b.mu<0 ||
+       !std::isfinite(1./b.mass) || !std::isfinite(1./b.inertia) ||
+       !std::isfinite(kinetic(b,b.velocity,b.omega))) {
+        out.passive_rejected=true; out.scale=0; return out;
+    }
     if(bins.size()>kCompoundBins) { out.passive_rejected=true; out.scale=0; return out; }
     auto& contacts=workspace.contacts;
     std::uint64_t samples=0;
