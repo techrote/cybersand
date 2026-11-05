@@ -1,0 +1,194 @@
+name: SOL safety composition qualification
+on:
+  push:
+    branches: [sol/safety-composition-20261105]
+  pull_request:
+    branches: [codex/sol-active-normal-live-20261105]
+    types: [opened, synchronize, reopened]
+  workflow_dispatch:
+permissions:
+  contents: read
+env:
+  P429: 275ce1ee692739b35f400adcf9532f7e89284cfb
+  P441: 3eb07e6616798dda49083858e5549aec4c8d0cd7
+  P452: 14b0f1d0c9a30d4ccd919b3dad91f46031912e39
+jobs:
+  linux:
+    name: Linux GCC/Clang red-green, parity, sanitizer and cost
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+      - name: Verify exact composed blobs
+        run: |
+          set -eu
+          test "$(git hash-object native/include/cybersand/granular_contact_response.hpp)" = 510da12f18704b373e246034b93f4e93808cf2b2
+          test "$(git hash-object tools/experiments/sol_active_normal_live_body_domain_regression.cpp)" = 5562fd40d981b01c8b5718f162e0a1a61fbc8548
+          test "$(git hash-object tools/experiments/sol_live_bin_domain_regression.cpp)" = 0861e0ab12e2fef50274c731b0c84a78ff0aab9f
+          test "$(git hash-object tools/experiments/sol_live_derived_geometry_regression.cpp)" = 8ab53237a048ccc63f253df109ed4110301ff5ef
+          test "$(git hash-object tools/experiments/sol_live_valid_parity_probe.cpp)" = e53b0af743561b5784a59552b344b8aa68869301
+          test "$(git hash-object tools/experiments/sol_conservative_face_envelope.cpp)" = c1b1f93ec96457afc7dd60ce07d61edc2fc53bb5
+          test "$(git hash-object tools/experiments/sol_live_bin_producer_precision.cpp)" = c76f448f29eff07905193c90db0d6f090e12c40a
+          test "$(git hash-object tools/experiments/sol_safety_cost_probe.cpp)" = f8c2d58f6d0ac23c76513ae4cdda80f6dcb60aea
+      - name: Materialize exact historical headers
+        run: |
+          set -eu
+          for d in p429 p441 p452; do mkdir -p "$d/cybersand"; done
+          git show "$P429:native/include/cybersand/granular_contact_response.hpp" > p429/cybersand/granular_contact_response.hpp
+          git show "$P441:native/include/cybersand/granular_contact_response.hpp" > p441/cybersand/granular_contact_response.hpp
+          git show "$P452:native/include/cybersand/granular_contact_response.hpp" > p452/cybersand/granular_contact_response.hpp
+      - name: Parent RED and candidate GREEN
+        run: |
+          set -eu
+          g++ -std=c++20 -O2 -Wall -Wextra -Werror -I p429 tools/experiments/sol_active_normal_live_body_domain_regression.cpp -o body_parent
+          set +e; ./body_parent > body_parent.log 2>&1; rc=$?; set -e
+          test "$rc" -eq 1
+          grep -q 'SOL_LIVE_BODY_DOMAIN invalid_checks=30 valid_checks=4 failures=30' body_parent.log
+          g++ -std=c++20 -O2 -Wall -Wextra -Werror -I native/include tools/experiments/sol_active_normal_live_body_domain_regression.cpp -o body_candidate
+          ./body_candidate | tee body_candidate.log
+          grep -q 'SOL_LIVE_BODY_DOMAIN invalid_checks=30 valid_checks=4 failures=0' body_candidate.log
+          g++ -std=c++20 -O2 -Wall -Wextra -Werror -I p441 tools/experiments/sol_live_bin_domain_regression.cpp -o mean_parent
+          set +e; ./mean_parent > mean_parent.log 2>&1; rc=$?; set -e
+          test "$rc" -eq 1
+          grep -q 'SOL_LIVE_BIN_DOMAIN invalid_checks=40 valid_controls=12 failures=8' mean_parent.log
+          g++ -std=c++20 -O2 -Wall -Wextra -Werror -I native/include tools/experiments/sol_live_bin_domain_regression.cpp -o mean_candidate
+          ./mean_candidate | tee mean_candidate.log
+          grep -q 'SOL_LIVE_BIN_DOMAIN invalid_checks=40 valid_controls=12 failures=0' mean_candidate.log
+          g++ -std=c++20 -O2 -Wall -Wextra -Werror -I p452 tools/experiments/sol_live_derived_geometry_regression.cpp -o derived_parent
+          set +e; ./derived_parent > derived_parent.log 2>&1; rc=$?; set -e
+          test "$rc" -eq 1
+          grep -q 'SOL_DERIVED_GEOMETRY invalid_checks=10 valid_controls=4 failures=10' derived_parent.log
+          g++ -std=c++20 -O2 -Wall -Wextra -Werror -I native/include tools/experiments/sol_live_derived_geometry_regression.cpp -o derived_candidate
+          ./derived_candidate | tee derived_candidate.log
+          grep -q 'SOL_DERIVED_GEOMETRY invalid_checks=10 valid_controls=4 failures=0' derived_candidate.log
+      - name: Optimized Clang candidate
+        run: |
+          set -eu
+          for test in sol_active_normal_live_body_domain_regression sol_live_bin_domain_regression sol_live_derived_geometry_regression sol_live_bin_producer_precision; do
+            clang++ -std=c++20 -O2 -Wall -Wextra -Werror -I native/include "tools/experiments/$test.cpp" -o "clang-$test"
+            "./clang-$test" | tee "clang-$test.log"
+          done
+      - name: Final #429 versus candidate 120000 valid-input parity
+        run: |
+          set -eu
+          g++ -std=c++20 -O2 -Wall -Wextra -Werror -I p429 tools/experiments/sol_live_valid_parity_probe.cpp -o parity_parent
+          g++ -std=c++20 -O2 -Wall -Wextra -Werror -I native/include tools/experiments/sol_live_valid_parity_probe.cpp -o parity_candidate
+          ./parity_parent | tee parity_parent.log
+          ./parity_candidate | tee parity_candidate.log
+          grep -q 'VALID_PARITY cases=120000 rejected=0 nonfinite=0 nonpassive=0' parity_candidate.log
+          cmp parity_parent.log parity_candidate.log
+      - name: Producer precision and retained #450 witness
+        run: |
+          set -eu
+          for cxx in g++ clang++; do
+            p="producer-${cxx//+/x}"; "$cxx" -std=c++20 -O2 -Wall -Wextra -Werror -I native/include tools/experiments/sol_live_bin_producer_precision.cpp -o "$p"
+            "./$p" | tee "$p.log"; grep -q 'failures=0' "$p.log"
+            f="face-${cxx//+/x}"; "$cxx" -std=c++20 -O2 -Wall -Wextra -Werror -I native/include tools/experiments/sol_conservative_face_envelope.cpp -o "$f"
+            "./$f" | tee "$f.log"; grep -q 'active_worsens_any_face=28428' "$f.log"; grep -q 'PASS signed_source_value_only_envelope' "$f.log"
+          done
+      - name: ASan and UBSan candidate
+        run: |
+          set -eu
+          export ASAN_OPTIONS=detect_leaks=0:halt_on_error=1
+          export UBSAN_OPTIONS=halt_on_error=1:print_stacktrace=1
+          for test in sol_active_normal_live_body_domain_regression sol_live_bin_domain_regression sol_live_derived_geometry_regression sol_live_bin_producer_precision sol_conservative_face_envelope; do
+            g++ -std=c++20 -O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined -Wall -Wextra -Werror -I native/include "tools/experiments/$test.cpp" -o "san-$test"
+            "./san-$test" | tee "san-$test.log"
+          done
+      - name: Final #429 versus candidate response-only CPU cost
+        run: |
+          set -eu
+          g++ -std=c++20 -O3 -DNDEBUG -Wall -Wextra -Werror -I p429 tools/experiments/sol_safety_cost_probe.cpp -o cost_parent
+          g++ -std=c++20 -O3 -DNDEBUG -Wall -Wextra -Werror -I native/include tools/experiments/sol_safety_cost_probe.cpp -o cost_candidate
+          : > cost_parent.log; : > cost_candidate.log
+          for i in 1 2 3; do ./cost_parent | tee -a cost_parent.log; ./cost_candidate | tee -a cost_candidate.log; done
+          python3 - <<'PY'
+          import re,statistics
+          def load(path):
+              rows=[]
+              for line in open(path):
+                  m=re.search(r'checksum=([^ ]+) elapsed_us=(\d+)',line); assert m,line
+                  rows.append((m.group(1),int(m.group(2))))
+              return rows
+          p=load('cost_parent.log');c=load('cost_candidate.log')
+          assert len(p)==len(c)==3 and len({x[0] for x in p+c})==1
+          pm=statistics.median(x[1] for x in p);cm=statistics.median(x[1] for x in c);ratio=cm/pm
+          print(f'SOL_SAFETY_COST_MEDIAN parent_us={pm} candidate_us={cm} ratio={ratio:.6f}')
+          assert ratio<1.50
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: sol-safety-composition-linux
+          path: '*.log'
+          if-no-files-found: error
+  windows:
+    name: Actual Windows MSVC source-locked red-green and parity
+    runs-on: windows-2022
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+      - uses: ilammy/msvc-dev-cmd@v1
+      - name: Verify exact composed blobs
+        shell: pwsh
+        run: |
+          if ((git hash-object native/include/cybersand/granular_contact_response.hpp).Trim() -ne '510da12f18704b373e246034b93f4e93808cf2b2') { throw 'header mismatch' }
+          if ((git hash-object tools/experiments/sol_live_valid_parity_probe.cpp).Trim() -ne 'e53b0af743561b5784a59552b344b8aa68869301') { throw 'parity mismatch' }
+          if ((git hash-object tools/experiments/sol_conservative_face_envelope.cpp).Trim() -ne 'c1b1f93ec96457afc7dd60ce07d61edc2fc53bb5') { throw 'face mismatch' }
+          if ((git hash-object tools/experiments/sol_live_bin_producer_precision.cpp).Trim() -ne 'c76f448f29eff07905193c90db0d6f090e12c40a') { throw 'producer mismatch' }
+      - name: Materialize exact parents
+        shell: pwsh
+        run: |
+          foreach ($d in @('p429','p441','p452')) { New-Item -ItemType Directory -Force "$d/cybersand" | Out-Null }
+          cmd /c "git show %P429%:native/include/cybersand/granular_contact_response.hpp > p429\cybersand\granular_contact_response.hpp"
+          cmd /c "git show %P441%:native/include/cybersand/granular_contact_response.hpp > p441\cybersand\granular_contact_response.hpp"
+          cmd /c "git show %P452%:native/include/cybersand/granular_contact_response.hpp > p452\cybersand\granular_contact_response.hpp"
+      - name: RED GREEN under genuine MSVC
+        shell: pwsh
+        run: |
+          cl /nologo /std:c++20 /EHsc /O2 /W4 /WX /I p429 tools/experiments/sol_active_normal_live_body_domain_regression.cpp /Fe:body_parent.exe
+          & .\body_parent.exe | Tee-Object body_parent.log
+          if ($LASTEXITCODE -ne 1) { throw 'Body parent did not RED' }
+          cl /nologo /std:c++20 /EHsc /O2 /W4 /WX /I native/include tools/experiments/sol_active_normal_live_body_domain_regression.cpp /Fe:body_candidate.exe
+          & .\body_candidate.exe | Tee-Object body_candidate.log
+          if ($LASTEXITCODE -ne 0) { throw 'Body candidate failed' }
+          cl /nologo /std:c++20 /EHsc /O2 /W4 /WX /I p441 tools/experiments/sol_live_bin_domain_regression.cpp /Fe:mean_parent.exe
+          & .\mean_parent.exe | Tee-Object mean_parent.log
+          if ($LASTEXITCODE -ne 1) { throw 'Mean parent did not RED' }
+          cl /nologo /std:c++20 /EHsc /O2 /W4 /WX /I native/include tools/experiments/sol_live_bin_domain_regression.cpp /Fe:mean_candidate.exe
+          & .\mean_candidate.exe | Tee-Object mean_candidate.log
+          if ($LASTEXITCODE -ne 0) { throw 'Mean candidate failed' }
+          cl /nologo /std:c++20 /EHsc /O2 /W4 /WX /I p452 tools/experiments/sol_live_derived_geometry_regression.cpp /Fe:derived_parent.exe
+          & .\derived_parent.exe | Tee-Object derived_parent.log
+          if ($LASTEXITCODE -ne 1) { throw 'Derived parent did not RED' }
+          cl /nologo /std:c++20 /EHsc /O2 /W4 /WX /I native/include tools/experiments/sol_live_derived_geometry_regression.cpp /Fe:derived_candidate.exe
+          & .\derived_candidate.exe | Tee-Object derived_candidate.log
+          if ($LASTEXITCODE -ne 0) { throw 'Derived candidate failed' }
+      - name: Final #429 parity, producer precision and #450 witness
+        shell: pwsh
+        run: |
+          cl /nologo /std:c++20 /EHsc /O2 /W4 /WX /I p429 tools/experiments/sol_live_valid_parity_probe.cpp /Fe:parity_parent.exe
+          cl /nologo /std:c++20 /EHsc /O2 /W4 /WX /I native/include tools/experiments/sol_live_valid_parity_probe.cpp /Fe:parity_candidate.exe
+          & .\parity_parent.exe | Tee-Object parity_parent.log
+          & .\parity_candidate.exe | Tee-Object parity_candidate.log
+          if ((Get-Content parity_parent.log -Raw) -ne (Get-Content parity_candidate.log -Raw)) { throw 'Valid parity differs' }
+          if (-not (Select-String -Quiet parity_candidate.log -SimpleMatch 'VALID_PARITY cases=120000 rejected=0 nonfinite=0 nonpassive=0')) { throw 'Parity corpus incomplete' }
+          cl /nologo /std:c++20 /EHsc /O2 /W4 /WX /I native/include tools/experiments/sol_live_bin_producer_precision.cpp /Fe:producer.exe
+          & .\producer.exe | Tee-Object producer.log
+          if ($LASTEXITCODE -ne 0) { throw 'Producer precision failed' }
+          cl /nologo /std:c++20 /EHsc /O2 /W4 /WX /I native/include tools/experiments/sol_conservative_face_envelope.cpp /Fe:face.exe
+          & .\face.exe | Tee-Object face.log
+          if ($LASTEXITCODE -ne 0) { throw '#450 witness failed' }
+          if (-not (Select-String -Quiet face.log -SimpleMatch 'active_worsens_any_face=28428')) { throw '#450 count changed' }
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: sol-safety-composition-msvc
+          path: '*.log'
+          if-no-files-found: error

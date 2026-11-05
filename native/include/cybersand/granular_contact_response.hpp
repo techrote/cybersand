@@ -97,10 +97,54 @@ inline Result solve_compound(const Body& b, std::span<const Bin* const> bins,
                              CompoundWorkspace& workspace, double available=20, double capacity_scale=1, double base_budget=20,
                              NormalPolicy normal_policy=NormalPolicy::Original) {
     Result out;
+    // Refuse malformed copied rigid-body states before contact allocation,
+    // friction clamping and mass/inertia division. This mirrors the separately
+    // proven #427 input-domain gate; it does not alter valid body responses or
+    // the Original/ActiveNormal001 contact policy.
+    if(!std::isfinite(b.velocity.x) || !std::isfinite(b.velocity.y) ||
+       !std::isfinite(b.com.x) || !std::isfinite(b.com.y) ||
+       !std::isfinite(b.omega) || !std::isfinite(b.mass) || b.mass<=0 ||
+       !std::isfinite(b.inertia) || b.inertia<=0 ||
+       !std::isfinite(b.mu) || b.mu<0 ||
+       !std::isfinite(1./b.mass) || !std::isfinite(1./b.inertia) ||
+       !std::isfinite(kinetic(b,b.velocity,b.omega))) {
+        out.passive_rejected=true; out.scale=0; return out;
+    }
     if(bins.size()>kCompoundBins) { out.passive_rejected=true; out.scale=0; return out; }
     auto& contacts=workspace.contacts;
     std::uint64_t samples=0;
-    for(const auto* bin:bins) { if(!bin) { out.passive_rejected=true; out.scale=0; return out; } samples+=bin->count; }
+    for(const auto* bin:bins) {
+        if(!bin) { out.passive_rejected=true; out.scale=0; return out; }
+        // Only occupied bins contribute contact nodes. A copied bin must not
+        // carry malformed geometry into quadrature, lever arms, or raw impulses:
+        // the late passivity check cannot sanitize raw diagnostic fields.
+        if(bin->count) {
+            const double normal_sq=dot(bin->normal,bin->normal);
+            if(!std::isfinite(bin->position_sum.x) || !std::isfinite(bin->position_sum.y) ||
+               !std::isfinite(normal_sq) || std::abs(normal_sq-1.)>1e-6 ||
+               !std::isfinite(bin->maximum_radius) || bin->maximum_radius<0 ||
+               !std::isfinite(bin->tangent_mean) || !std::isfinite(bin->tangent_m2) || bin->tangent_m2<0 ||
+               !std::isfinite(bin->tangent_min) || !std::isfinite(bin->tangent_max) ||
+               bin->tangent_min>bin->tangent_max) {
+                out.passive_rejected=true; out.scale=0; return out;
+            }
+        }
+        // Bin::add() maintains mean within the observed tangent extrema.
+        // A copied occupied Bin violating that constraint must not silently
+        // collapse two quadrature nodes to one and apply a different impulse.
+        // Permit bounded binary64 accumulation roundoff at large coordinates;
+        // the scale is computed only after the finite-domain checks above.
+        if(bin->count) {
+            const double magnitude=std::max({1.,std::abs(bin->tangent_min),
+                std::abs(bin->tangent_mean),std::abs(bin->tangent_max)});
+            const double tolerance=8.*std::numeric_limits<double>::epsilon()*magnitude;
+            if(bin->tangent_mean<bin->tangent_min-tolerance ||
+               bin->tangent_mean>bin->tangent_max+tolerance) {
+                out.passive_rejected=true; out.scale=0; return out;
+            }
+        }
+        samples+=bin->count;
+    }
     if(!std::isfinite(capacity_scale) || capacity_scale<1 || capacity_scale>4096 || !std::isfinite(available) || !std::isfinite(base_budget) || base_budget<5 || base_budget>80) { out.passive_rejected=true; return out; }
     out.capacity=std::min(std::clamp(available,0.,base_budget*capacity_scale),2.*static_cast<double>(samples)*capacity_scale);
     for(const auto* entry:bins) {
@@ -114,6 +158,26 @@ inline Result solve_compound(const Body& b, std::span<const Bin* const> bins,
         else {
             contacts[out.nodes++]={points.low,bin.normal,weight*.5,out.capacity*weight*.5};
             contacts[out.nodes++]={points.high,bin.normal,weight*.5,out.capacity*weight*.5};
+        }
+    }
+    // A copied Body and Bin can each be finite while subtracting their
+    // positions overflows, or the angular contact velocity is unrepresentable.
+    // Reject the whole batch before updating any contact response. This also
+    // prevents NaN raw diagnostics surviving the later energy-passivity guard.
+    for(std::size_t i=0;i<out.nodes;++i) {
+        const auto& contact=contacts[i];
+        const Vec r=contact.position-b.com;
+        const Vec angular{-b.omega*r.y,b.omega*r.x};
+        const Vec local=b.velocity+angular;
+        const Vec tangent{-contact.normal.y,contact.normal.x};
+        if(!std::isfinite(contact.position.x) || !std::isfinite(contact.position.y) ||
+           !std::isfinite(r.x) || !std::isfinite(r.y) ||
+           !std::isfinite(angular.x) || !std::isfinite(angular.y) ||
+           !std::isfinite(local.x) || !std::isfinite(local.y) ||
+           !std::isfinite(dot(local,contact.normal)) ||
+           !std::isfinite(dot(local,tangent))) {
+            Result refused;
+            refused.passive_rejected=true; refused.scale=0; return refused;
         }
     }
     Vec v=b.velocity; double w=b.omega;
@@ -174,6 +238,20 @@ inline Result solve_compound(const Body& b, std::span<const Bin* const> bins,
         out.passive_rejected=true; out.scale=0;
         out.impulse={}; out.normal_impulse={}; out.tangent_impulse={};
         out.torque=0; out.normal=0; out.tangent=0; out.energy_after=out.energy_before;
+    }
+    // A finite initial geometry is not sufficient to guarantee finite derived
+    // impulses after the bounded iterations. Never export partial nonfinite
+    // diagnostics (including a raw impulse suppressed by the passivity guard).
+    if(!std::isfinite(out.impulse.x) || !std::isfinite(out.impulse.y) ||
+       !std::isfinite(out.normal_impulse.x) || !std::isfinite(out.normal_impulse.y) ||
+       !std::isfinite(out.tangent_impulse.x) || !std::isfinite(out.tangent_impulse.y) ||
+       !std::isfinite(out.raw_impulse.x) || !std::isfinite(out.raw_impulse.y) ||
+       !std::isfinite(out.torque) || !std::isfinite(out.raw_torque) ||
+       !std::isfinite(out.normal) || !std::isfinite(out.tangent) ||
+       !std::isfinite(out.raw_normal) || !std::isfinite(out.raw_tangent) ||
+       !std::isfinite(out.energy_before) || !std::isfinite(out.energy_after)) {
+        Result refused;
+        refused.passive_rejected=true; refused.scale=0; return refused;
     }
     return out;
 }
