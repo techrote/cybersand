@@ -1,0 +1,35 @@
+{
+  "source": "b040d7a48c00a7aed2aa8ac32693d909f1712613",
+  "base": "b424032b925fd890421d3e94ed0524988445b5fb",
+  "commands": [
+    [
+      "git",
+      "archive",
+      "--format=zip",
+      "-o",
+      "build\\sol-response-cost\\source-b040\\source.zip",
+      "b040d7a48c00a7aed2aa8ac32693d909f1712613"
+    ],
+    [
+      "git",
+      "diff",
+      "--binary",
+      "b424032b",
+      "b040d7a48c00a7aed2aa8ac32693d909f1712613"
+    ]
+  ],
+  "artifacts": [
+    {
+      "path": "build\\sol-response-cost\\source-b040\\source.zip",
+      "bytes": 178267400,
+      "sha256": "391b7805ea47e16c7e627f7c691350e4afe6731eb40abf4afd9d9c649015725c"
+    },
+    {
+      "path": "build\\sol-response-cost\\source-b040\\dependent.patch",
+      "bytes": 8665354,
+      "sha256": "6290870e2c463020df5d4690b579be760f057b5bb66b9a182bbf78a58d61afc3"
+    }
+  ],
+  "source_archive_cap_bytes": 134217728,
+  "source_archive_gate": "FAIL; cap unchanged"
+}

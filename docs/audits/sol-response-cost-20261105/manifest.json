@@ -99,6 +99,16 @@
       "path": "figure.json",
       "bytes": 760,
       "sha256": "1d3e29cda2f3aa759bfa99cfb0e2909fda0e03d9df654b2dd855370fa8e63eed"
+    },
+    {
+      "path": "validation.json",
+      "bytes": 8322,
+      "sha256": "f272bc68a59da6928c57e6f56d8ef65f9d47d1cf493eb479a0b241e20361c8a2"
+    },
+    {
+      "path": "source-artifacts.json",
+      "bytes": 934,
+      "sha256": "1df5bbda5c41742ea5df401c0ae88c7469a036e41b82d24035424a3b98cd070c"
     }
   ],
   "local_raw_files": [

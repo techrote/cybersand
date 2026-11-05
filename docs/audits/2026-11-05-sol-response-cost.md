@@ -150,6 +150,7 @@ does not measure frequency, load or isolation throughout the campaign.
 | Separate decision | Source-bound disposition |
 | --- | --- |
 | Registered timing/equivalence apparatus | PASS for this48episode matrix; external independent acceptance pending |
+| LA-SELECTIVE intended primary response | CONDITIONAL, inherited owner direction; no new response-superiority comparison in this cost profile |
 | Response generation bottleneck in this small workload | NO-GO as an explanation of the old13–19ms recorded steps; observation/export dominate |
 | Shipped engine improvement or general scaling | UNAVAILABLE; production unchanged, one actual participant |
 | SOL-like physical improvement | UNAVAILABLE as a new improvement; physics is identical and driven overlap persists |
@@ -184,3 +185,27 @@ identities and same-lifetime bindings must pass before a pair yields a latency
 difference. Output directories refuse reuse. Initial failures, old evaluator
 drafts and earlier reductions remain retained. There is no threshold tuning,
 source/hash refresh, Ready transition, merge or historical-evidence rewrite.
+
+At `b040d7a4`, [validation](sol-response-cost-20261105/validation.json) passes
+documentation, historical M11, repository/runtime provenance, original material
+guard, portable cost/value audits, six geometry adversaries and whitespace.
+Frozen retrieval remains19/32rank1 and32/32rank5; chamber2/3rank1 and3/3rank5;
+passive1/1 and the two new post-result cost questions2/2rank1. These are routing
+checks; manual source-fact review retains live-authority, cost and platform
+qualifiers. Prior native optimized/sanitized/MSVC evidence is not relabelled.
+
+**Source-archive gate: FAIL.** [Exact source artifacts](sol-response-cost-20261105/source-artifacts.json)
+at `b040d7a4` record178,267,400bytes, SHA-256
+`391b7805ea47e16c7e627f7c691350e4afe6731eb40abf4afd9d9c649015725c`,
+above the unchanged134,217,728byte cap. Parent411 at `b424032b` already measured
+177,362,696bytes; this lane increases the measured archive by904,704bytes.
+The raw dependent patch is8,665,354bytes, SHA-256
+`6290870e2c463020df5d4690b579be760f057b5bb66b9a182bbf78a58d61afc3`.
+Both ignored artifacts are local handover files, not a product release.
+Later metadata-only commits remain outside that recorded source snapshot.
+No cap, frozen guard or historical source hash is changed to accommodate them.
+
+Original84/84sustained-clearance failures,64/84depth failures,36/36async overlaps,
+1452/1452fixed-orientation refusals, old CPU/archive failures and the365block
+remain unchanged. Obtain separate independent adversarial review before an
+owner acceptance or integration decision. Keep publication Draft.
