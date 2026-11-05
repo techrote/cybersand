@@ -6,6 +6,11 @@ on:
     paths:
       - godot/tests/performance/test_main_space_step_threadtime_windows.gd
       - .github/workflows/inv154-space-step-threadtime-windows.yml
+  pull_request:
+    branches: [perf/inv154-physics-stage-abba-20261105]
+    paths:
+      - godot/tests/performance/test_main_space_step_threadtime_windows.gd
+      - .github/workflows/inv154-space-step-threadtime-windows.yml
   workflow_dispatch:
 
 permissions:
