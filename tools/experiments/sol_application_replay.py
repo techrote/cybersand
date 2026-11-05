@@ -38,7 +38,7 @@ def main():
     by_arm={};all_rows=[];summaries=[];initials=[]
     for arm in reg['arms']:
         name='windows-shared-granular-bodies-'+arm['id']+'-w1-r0'
-        entry=next(e for e in manifest['results'] if e['name']==name);coordinate=entry['coordinate'];path=ROOT/entry['summary']['raw_path']
+        entry=next(e for e in manifest['results'] if e['name']==name);coordinate=entry['coordinate'];path=ROOT/entry['summary']['raw_path'].replace('\\','/')
         assert sha(path)==arm['raw_sha256']==entry['summary']['raw_sha256'];data=read(path)
         assert data['source']==reg['physical_execution_source'] and data['initial_payload']['sha256']==reg['common_initial_payload']
         assert [s['step'] for s in data['steps']]==list(range(180)) and not data['failures']
