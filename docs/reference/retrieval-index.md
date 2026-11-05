@@ -10,6 +10,11 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 
 # Retrieval question index
 
+For bounded contact-node tracing, lossless capture, overflow versus physical
+capacity, traceoff/on parity and first actual response effects, retrieve the
+[canonical trace boundary](../architecture/rigid-body-and-cellular-coupling.md#bounded-node-and-batch-trace).
+Its new evidence preserves prior SOL failures and selects no correction/default.
+
 For native passive prediction versus correction-clipped actual application,
 retrieve [the recorded application-stage boundary](../architecture/rigid-body-and-cellular-coupling.md#granular-response-cost-and-observation).
 `retrieval-questions-sol-application-replay.json` adds complete-window KE/cause

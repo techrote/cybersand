@@ -1,0 +1,28 @@
+{
+  "version": 1,
+  "frozen_date": "2026-11-05",
+  "purpose": "Additive node-trace qualification questions; retained frozen sets unchanged",
+  "questions": [
+    {
+      "id": "SOL-NODE-TRACE-001",
+      "query": "Does the batch64 granular node trace truncate the physical solver or change the matched Rapier trajectories?",
+      "canonical": ["architecture/rigid-body-and-cellular-coupling.md"],
+      "facts": ["The64node cap limits observation only; overflow is incomplete and all physical nodes execute.", "Optional scratch is55872bytes; traceoff allocates no trace buffer and existing workspace stays74752bytes.", "All eight recorded traceoff/on pairs and eight retained trajectory comparisons match across actual Windows/Linux; no original SOL authority follows."],
+      "sources": ["../native/include/cybersand/granular_contact_response.hpp", "../tools/experiments/sol_node_trace_audit.py", "../tools/experiments/sol_node_trace_reduce.py"]
+    },
+    {
+      "id": "SOL-NODE-TRACE-002",
+      "query": "Do step-zero active-normal trace differences prove a physical response change or solve the mixed-body SOL regression?",
+      "canonical": ["architecture/rigid-body-and-cellular-coupling.md"],
+      "facts": ["Policy metadata and used-weight operands can differ with zero requested impulse and unchanged actual updates.", "First actual effects are Scooper2,barrel30,Kestrel32 with bit-identical body,budget,node inputs.", "Immediate arithmetic is identified, but unique later trajectory causation, original SOL clearance and default promotion remain unproved."],
+      "sources": ["../tools/experiments/sol_node_trace_reduce.py", "../native/tests/fixtures/sol_node_trace_apparatus_006.json"]
+    },
+    {
+      "id": "SOL-NODE-TRACE-003",
+      "query": "Does the node trace getter benchmark prove the original SOL two-millisecond gate or universal engine sixty-hertz performance?",
+      "canonical": ["architecture/rigid-body-and-cellular-coupling.md"],
+      "facts": ["The sequential one-repeat three-owner getter includes solve and copied observation generation.", "Recorded means range53.806–99.883microseconds off and189.778–280.978on; complete unrounded denominators remain in evidence.", "These results are not the original24group3repeat worst-unrounded-mean gate, total memory or universal60Hz proof."],
+      "sources": ["../tools/experiments/sol_node_trace.py", "../native/tests/fixtures/sol_node_trace_audit_001.json"]
+    }
+  ]
+}

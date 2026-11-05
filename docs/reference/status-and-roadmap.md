@@ -30,8 +30,15 @@ cost remain explicit. Original SOL ownership/material admission stays separate.
 The [recorded application replay](../audits/2026-11-05-sol-application-replay.md)
 checks1080mixed-body applications. Clipping/wrench stage work explains why
 native predicted KE differs from actual post-application KE without proving
-combined KE creation. Per-node cause and a safe correction change remain open;
-the next bounded trace requires a new registration and fresh runtime evidence.
+combined KE creation. Unique later trajectory cause and a safe correction change remain open.
+The [qualified bounded node trace](../audits/2026-11-05-sol-node-trace.md) now
+checks16episodes/4,320captures/8,640applications on actual Windows/Linux.
+Eight traceoff/on and eight retained trajectory comparisons match. Immediate
+response effects atScooper2/barrel30/Kestrel32 have identical input bits;
+policy metadata/zero-request operands differ earlier without different updates.
+Native/scoped/API and17Python-audit tests per host pass. Mixed-body regression,
+original SOL authority/clearance and general promotion remain blocked; seek
+independent review before a separately registered physical-policy experiment.
 
 The [offline SOL authority contract](../operations/sol-authority-offline-contract.md)
 adds a1355path source map and adversarial copied-value lease model, with retained

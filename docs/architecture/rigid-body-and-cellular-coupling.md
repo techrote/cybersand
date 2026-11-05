@@ -1,7 +1,7 @@
 ---
 title: Rigid-body and cellular coupling
 document-kind: contract
-canonical-for: [rigid-body-cellular-coupling, rapier-force-impulse-sequencing]
+canonical-for: [rigid-body-cellular-coupling, rapier-force-impulse-sequencing, bounded-granular-node-trace]
 status: Current
 scope: Rectangle occupancy, bounded displacement/impulses and Rapier hard contact; generalized physics and exact replay remain absent
 keywords: [Rapier2D, occupancy mask, sweep, CCD, terrain budget, impulse, unresolved overlap]
@@ -76,6 +76,47 @@ shared-host means do not qualify the original SOL CPU gate or universal60Hz. Ori
 eligibility, composition, physical clearance and general default promotion do
 not follow. No capacity/pass/gain changes or penetration correction are added.
 
+### Bounded node and batch trace
+
+**Current dependent diagnostic source:** `solve_compound` accepts optional
+caller-owned fixed trace storage; a fresh diagnostic LA-SELECTIVE Workbench may
+select `off` or `batch64-001` before prepare/tick/getter attempts lock it. The
+normal-policy and trace latches are independent. Reset/replacement retire storage;
+copied row captures survive scratch reuse. No Godot API enters the value solver
+or native pool. Traceoff allocates no buffer and uses the compile-time disabled
+node observer. `CompoundWorkspace` stays74,752bytes; optional scratch is55,872bytes.
+
+The64node/eight-batch observation limit does not truncate the1024node physical
+solve. Overflow publishes an explicit incomplete prefix, total/dropped counts
+and unchanged physical updates. Missing nodes cannot close full node accounting.
+Lossless little-endian bit companions preserve doubles independently of Godot
+JSON decimal display. Original descriptive activity remains distinct from its
+inapplicable policy mask. No force, budget, pass, correction or default changes.
+
+The [source-bound qualification](../audits/2026-11-05-sol-node-trace.md) passes
+43value cases on optimized/strict-sanitizer Linux and actual Windows MSVC,
+28native commands and actual Windows/Linux Godot lifecycle/scoped suites.
+Sixteen fresh episodes produce4,320complete captures and8,640actual applications.
+All8traceoff/on pairs preserve recorded physics and CYPS bytes; all8retained
+trajectory comparisons match. Actual requested-four participation ranges2–4.
+This fleet workload reaches four nodes; synthetic64/65/1024controls qualify overflow.
+
+Policy metadata and zero-request weight operands differ atstep0 without different
+updates. First actual batch effects and wrenches occur atScooper2/barrel30/Kestrel32
+with bit-identical body/budget/node inputs; later inputs differ at3/31/33.
+The normal-policy arithmetic explains these immediate responses. It does not
+uniquely explain later mixed-body regression, supply global energy conservation,
+prove original SOL recovery or admit default promotion. Original normal policy
+remains default. Final analysis passes17tests on each Python host and retains
+failed fixture/Git/analysis-classification attempts separately.
+
+Measured three-owner getter means are53.806–99.883µs off and189.778–280.978µs on
+across the registered sequential one-repeat runs. They include copied capture
+generation; cumulative payload size is not peak heap. Full unrounded cost and
+worker distributions are in the dossier. These observations do not qualify the
+original24group/3repeat≤2ms gate or universal60Hz. Original SOL authority/MAT
+composition and the retained physical failures remain separate blockers.
+
 ## Granular response cost and observation
 
 **Current recorded diagnostic:** the [complete application replay](../audits/2026-11-05-sol-application-replay.md)
@@ -86,8 +127,10 @@ non-increasing. Native passive prediction uses the earlier sampled velocity;
 its lower predicted final KE is not the actual post-clipping application state.
 Correction potential work is separate; no global mechanical-energy conservation
 or promotion follows. First native-wrench differences precede unequal correction,
-and later endpoint motion samples different contact phases. Per-node causation
-and a safe live correction change remain unproved.
+and later endpoint motion samples different contact phases. Those retained replay
+artifacts contain no node trace; the separately qualified follow-up above locates
+first response effects in fresh matched trajectories. Unique later causation and
+a safe live correction change remain unproved.
 
 The [Planned SOL offline authority contract](../operations/sol-authority-offline-contract.md)
 specifies complete copied eligibility evidence and a one-use no-op lease model.

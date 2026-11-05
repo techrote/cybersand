@@ -42,9 +42,17 @@ tests per host and exactly reproduces each retained record hash. Positive wrench
 work after clipping coexists with nonpositive combined application KE here;
 correction potential and full energy conservation stay separate. First native
 wrench differences2/30/32 precede unequal correction; endpoint contact phase is
-different. No unique per-node cause is proved. Next diagnostic needs separately
-registered bounded node/batch capture and fresh affected runtime qualification;
-no live correction change, tuning or originalSOL admission follows.
+different. No unique later trajectory cause is proved. The [bounded node trace](../audits/2026-11-05-sol-node-trace.md)
+now executes at1488fe13 with fresh source-qualified runtimes and final analysis
+b3c6c82f. All16episodes,4,320captures and8,640applications pass accounting;
+8traceoff/on and8retained trajectory comparisons match. Both actual hosts pass
+98policy/107trace lifecycle assertions, affected suites and17final Python audit
+tests. Metadata/zero-request operands differ at0; first actual effects are
+Scooper2/barrel30/Kestrel32 with equal input bits. Failed apparatus and analysis
+labels remain retained. Next is independent adversarial review and a separately
+registered contact/application hypothesis; no live correction change, tuning,
+default promotion or originalSOL admission follows. External main06522e3 adds
+onlyREADME content overba9cbc89; the owned fixed421 ancestry is unchanged.
 
 ## Exact SOL geometry chamber lane — 2026-11-05
 

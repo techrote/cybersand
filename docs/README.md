@@ -10,6 +10,12 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+The [bounded node/batch trace](audits/2026-11-05-sol-node-trace.md) qualifies
+observation without changing recorded physics and distinguishes policy operands
+from first actual response effects. Original SOL and promotion remain blocked;
+use the [canonical trace boundary](architecture/rigid-body-and-cellular-coupling.md#bounded-node-and-batch-trace)
+for current source, capacity, ownership and performance limits.
+
 The [recorded application replay](audits/2026-11-05-sol-application-replay.md)
 separates clipping, wrench, observed KE and contact phase across the complete
 mixed-body window. It selects no live correction policy or SOL recovery action.

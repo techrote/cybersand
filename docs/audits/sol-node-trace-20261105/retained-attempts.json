@@ -1,0 +1,1364 @@
+[
+  {
+    "run": "host-001",
+    "receipt_sha256": "5b3972346ee07d983b92b6ae3bb9d1a1c7537bd3a5fcfd12673dc9c8c6555be5",
+    "source": "5399a910aae8699a9f3a72977e89fd1e5222d3c5",
+    "post_source_equality": true,
+    "commands": null,
+    "hosts": {
+      "windows": {
+        "commands": [
+          {
+            "name": "engine-version",
+            "command": [
+              "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+              "--version"
+            ],
+            "requested_command": [
+              "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+              "--version"
+            ],
+            "exit": 0,
+            "clean": true,
+            "timeout_seconds": 300,
+            "seconds": 0.06987139995908365,
+            "log": "build\\sol-node-trace\\host-001\\windows\\engine-version.log",
+            "log_sha256": "5a4c39354856b07de09b419a9327a4e8edec0ac610ec5fb8a3ebcd7017e7d035",
+            "markers": []
+          },
+          {
+            "name": "import",
+            "command": [
+              "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+              "--headless",
+              "--audio-driver",
+              "Dummy",
+              "--path",
+              "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\build\\sol-node-trace\\host-001\\windows\\godot",
+              "--editor",
+              "--import",
+              "--quit"
+            ],
+            "requested_command": [
+              "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+              "--headless",
+              "--audio-driver",
+              "Dummy",
+              "--path",
+              "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\build\\sol-node-trace\\host-001\\windows\\godot",
+              "--editor",
+              "--import",
+              "--quit"
+            ],
+            "exit": 0,
+            "clean": true,
+            "timeout_seconds": 300,
+            "seconds": 8.233045100001618,
+            "log": "build\\sol-node-trace\\host-001\\windows\\import.log",
+            "log_sha256": "9d8350517965e2d90a89be06006852fde67dcb5f999fea271f3f74f6ee518d05",
+            "markers": []
+          },
+          {
+            "name": "policy-lifecycle",
+            "command": [
+              "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+              "--headless",
+              "--audio-driver",
+              "Dummy",
+              "--path",
+              "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\build\\sol-node-trace\\host-001\\windows\\godot",
+              "--max-fps",
+              "120",
+              "--script",
+              "res://tests/test_sol_active_normal_policy.gd"
+            ],
+            "requested_command": [
+              "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+              "--headless",
+              "--audio-driver",
+              "Dummy",
+              "--path",
+              "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\build\\sol-node-trace\\host-001\\windows\\godot",
+              "--max-fps",
+              "120",
+              "--script",
+              "res://tests/test_sol_active_normal_policy.gd"
+            ],
+            "exit": 0,
+            "clean": true,
+            "timeout_seconds": 300,
+            "seconds": 1.2484607999795116,
+            "log": "build\\sol-node-trace\\host-001\\windows\\policy-lifecycle.log",
+            "log_sha256": "ee4c053896113814b3d558c00a475f615f883033665573e09c36717b50c07cc0",
+            "markers": [
+              "SOL_ACTIVE_NORMAL_POLICY checks=98 failures=0"
+            ]
+          },
+          {
+            "name": "trace-policy-lifecycle",
+            "command": [
+              "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+              "--headless",
+              "--audio-driver",
+              "Dummy",
+              "--path",
+              "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\build\\sol-node-trace\\host-001\\windows\\godot",
+              "--max-fps",
+              "120",
+              "--script",
+              "res://tests/test_sol_node_trace_policy.gd"
+            ],
+            "requested_command": [
+              "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+              "--headless",
+              "--audio-driver",
+              "Dummy",
+              "--path",
+              "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\build\\sol-node-trace\\host-001\\windows\\godot",
+              "--max-fps",
+              "120",
+              "--script",
+              "res://tests/test_sol_node_trace_policy.gd"
+            ],
+            "exit": 1,
+            "clean": false,
+            "timeout_seconds": 300,
+            "seconds": 268.43385470000794,
+            "log": "build\\sol-node-trace\\host-001\\windows\\trace-policy-lifecycle.log",
+            "log_sha256": "5c8ced13e75831dc9202fd044a2f0c2788f0eb19cf3dfe22da1a1ea40f416753",
+            "markers": []
+          }
+        ],
+        "post_inventory": {
+          "unexpected_changes": [],
+          "import_LF_normalization_only": [
+            "addons/godot-rapier2d/logo_square_2d.png.import",
+            "addons/godot-rapier2d/Radial2D.svg.import",
+            "addons/godot-rapier2d/icons/Fluid2D.svg.import",
+            "addons/godot-rapier2d/icons/StateManager2D.svg.import"
+          ]
+        }
+      },
+      "linux": {
+        "commands": [
+          {
+            "name": "engine-version",
+            "command": [
+              "wsl.exe",
+              "-d",
+              "Ubuntu-24.04",
+              "--",
+              "timeout",
+              "--signal=TERM",
+              "--kill-after=5s",
+              "300s",
+              "env",
+              "CYBERSAND_SOURCE_REVISION=5399a910aae8699a9f3a72977e89fd1e5222d3c5",
+              "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+              "--version"
+            ],
+            "requested_command": [
+              "wsl.exe",
+              "-d",
+              "Ubuntu-24.04",
+              "--",
+              "env",
+              "CYBERSAND_SOURCE_REVISION=5399a910aae8699a9f3a72977e89fd1e5222d3c5",
+              "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+              "--version"
+            ],
+            "exit": 0,
+            "clean": true,
+            "timeout_seconds": 300,
+            "seconds": 4.289446800015867,
+            "log": "build\\sol-node-trace\\host-001\\linux\\engine-version.log",
+            "log_sha256": "87fac5ffedc06e67db8ac5810bbedd8e412d166bcd89b314f3c5a4fa05a78a2d",
+            "markers": []
+          },
+          {
+            "name": "engine-hash",
+            "command": [
+              "wsl.exe",
+              "-d",
+              "Ubuntu-24.04",
+              "--",
+              "timeout",
+              "--signal=TERM",
+              "--kill-after=5s",
+              "180s",
+              "sha256sum",
+              "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64"
+            ],
+            "requested_command": [
+              "wsl.exe",
+              "-d",
+              "Ubuntu-24.04",
+              "--",
+              "sha256sum",
+              "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64"
+            ],
+            "exit": 0,
+            "clean": true,
+            "timeout_seconds": 180,
+            "seconds": 0.17299299995647743,
+            "log": "build\\sol-node-trace\\host-001\\linux\\engine-hash.log",
+            "log_sha256": "510afe66a44e7343093617c0349b8a524d5039cdcf48a0630a98e6acf3483710",
+            "markers": []
+          },
+          {
+            "name": "experimental-runtime-floor",
+            "command": [
+              "wsl.exe",
+              "-d",
+              "Ubuntu-24.04",
+              "--",
+              "timeout",
+              "--signal=TERM",
+              "--kill-after=5s",
+              "180s",
+              "bash",
+              "/mnt/c/Users/_/.codex/worktrees/sol-active-normal-live-20261105/khybersand/build/sol-node-trace/host-001/linux/floor/tools/check_linux_runtime_floor.sh"
+            ],
+            "requested_command": [
+              "wsl.exe",
+              "-d",
+              "Ubuntu-24.04",
+              "--",
+              "bash",
+              "/mnt/c/Users/_/.codex/worktrees/sol-active-normal-live-20261105/khybersand/build/sol-node-trace/host-001/linux/floor/tools/check_linux_runtime_floor.sh"
+            ],
+            "exit": 0,
+            "clean": true,
+            "timeout_seconds": 180,
+            "seconds": 0.15908209996996447,
+            "log": "build\\sol-node-trace\\host-001\\linux\\experimental-runtime-floor.log",
+            "log_sha256": "03231ceef99b45c3afc35b2ac492d3f8259714ad53433ca4be7a8d09fe59145c",
+            "markers": []
+          },
+          {
+            "name": "import",
+            "command": [
+              "wsl.exe",
+              "-d",
+              "Ubuntu-24.04",
+              "--",
+              "timeout",
+              "--signal=TERM",
+              "--kill-after=5s",
+              "300s",
+              "env",
+              "CYBERSAND_SOURCE_REVISION=5399a910aae8699a9f3a72977e89fd1e5222d3c5",
+              "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+              "--headless",
+              "--audio-driver",
+              "Dummy",
+              "--path",
+              "/mnt/c/Users/_/.codex/worktrees/sol-active-normal-live-20261105/khybersand/build/sol-node-trace/host-001/linux/godot",
+              "--editor",
+              "--import",
+              "--quit"
+            ],
+            "requested_command": [
+              "wsl.exe",
+              "-d",
+              "Ubuntu-24.04",
+              "--",
+              "env",
+              "CYBERSAND_SOURCE_REVISION=5399a910aae8699a9f3a72977e89fd1e5222d3c5",
+              "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+              "--headless",
+              "--audio-driver",
+              "Dummy",
+              "--path",
+              "/mnt/c/Users/_/.codex/worktrees/sol-active-normal-live-20261105/khybersand/build/sol-node-trace/host-001/linux/godot",
+              "--editor",
+              "--import",
+              "--quit"
+            ],
+            "exit": 0,
+            "clean": true,
+            "timeout_seconds": 300,
+            "seconds": 43.733307100017555,
+            "log": "build\\sol-node-trace\\host-001\\linux\\import.log",
+            "log_sha256": "746632934d092201886c25cfcc9057b30aad6ed585ff0007443c69b26a5b2eab",
+            "markers": []
+          },
+          {
+            "name": "policy-lifecycle",
+            "command": [
+              "wsl.exe",
+              "-d",
+              "Ubuntu-24.04",
+              "--",
+              "timeout",
+              "--signal=TERM",
+              "--kill-after=5s",
+              "300s",
+              "env",
+              "CYBERSAND_SOURCE_REVISION=5399a910aae8699a9f3a72977e89fd1e5222d3c5",
+              "SOL_POLICY_OUTPUT=/mnt/c/Users/_/.codex/worktrees/sol-active-normal-live-20261105/khybersand/build/sol-node-trace/host-001/linux/policy.json",
+              "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+              "--headless",
+              "--audio-driver",
+              "Dummy",
+              "--path",
+              "/mnt/c/Users/_/.codex/worktrees/sol-active-normal-live-20261105/khybersand/build/sol-node-trace/host-001/linux/godot",
+              "--max-fps",
+              "120",
+              "--script",
+              "res://tests/test_sol_active_normal_policy.gd"
+            ],
+            "requested_command": [
+              "wsl.exe",
+              "-d",
+              "Ubuntu-24.04",
+              "--",
+              "env",
+              "CYBERSAND_SOURCE_REVISION=5399a910aae8699a9f3a72977e89fd1e5222d3c5",
+              "SOL_POLICY_OUTPUT=/mnt/c/Users/_/.codex/worktrees/sol-active-normal-live-20261105/khybersand/build/sol-node-trace/host-001/linux/policy.json",
+              "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+              "--headless",
+              "--audio-driver",
+              "Dummy",
+              "--path",
+              "/mnt/c/Users/_/.codex/worktrees/sol-active-normal-live-20261105/khybersand/build/sol-node-trace/host-001/linux/godot",
+              "--max-fps",
+              "120",
+              "--script",
+              "res://tests/test_sol_active_normal_policy.gd"
+            ],
+            "exit": 0,
+            "clean": true,
+            "timeout_seconds": 300,
+            "seconds": 2.488779200008139,
+            "log": "build\\sol-node-trace\\host-001\\linux\\policy-lifecycle.log",
+            "log_sha256": "0d4e9eda661433be2ee27b20c767245df25415df9701c524cde847de7c4663df",
+            "markers": [
+              "SOL_ACTIVE_NORMAL_POLICY checks=98 failures=0"
+            ]
+          },
+          {
+            "name": "trace-policy-lifecycle",
+            "command": [
+              "wsl.exe",
+              "-d",
+              "Ubuntu-24.04",
+              "--",
+              "timeout",
+              "--signal=TERM",
+              "--kill-after=5s",
+              "300s",
+              "env",
+              "CYBERSAND_SOURCE_REVISION=5399a910aae8699a9f3a72977e89fd1e5222d3c5",
+              "SOL_TRACE_POLICY_OUTPUT=/mnt/c/Users/_/.codex/worktrees/sol-active-normal-live-20261105/khybersand/build/sol-node-trace/host-001/linux/trace-policy.json",
+              "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+              "--headless",
+              "--audio-driver",
+              "Dummy",
+              "--path",
+              "/mnt/c/Users/_/.codex/worktrees/sol-active-normal-live-20261105/khybersand/build/sol-node-trace/host-001/linux/godot",
+              "--max-fps",
+              "120",
+              "--script",
+              "res://tests/test_sol_node_trace_policy.gd"
+            ],
+            "requested_command": [
+              "wsl.exe",
+              "-d",
+              "Ubuntu-24.04",
+              "--",
+              "env",
+              "CYBERSAND_SOURCE_REVISION=5399a910aae8699a9f3a72977e89fd1e5222d3c5",
+              "SOL_TRACE_POLICY_OUTPUT=/mnt/c/Users/_/.codex/worktrees/sol-active-normal-live-20261105/khybersand/build/sol-node-trace/host-001/linux/trace-policy.json",
+              "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+              "--headless",
+              "--audio-driver",
+              "Dummy",
+              "--path",
+              "/mnt/c/Users/_/.codex/worktrees/sol-active-normal-live-20261105/khybersand/build/sol-node-trace/host-001/linux/godot",
+              "--max-fps",
+              "120",
+              "--script",
+              "res://tests/test_sol_node_trace_policy.gd"
+            ],
+            "exit": 15,
+            "clean": false,
+            "timeout_seconds": 300,
+            "seconds": 29.305643400002737,
+            "log": "build\\sol-node-trace\\host-001\\linux\\trace-policy-lifecycle.log",
+            "log_sha256": "cbbffa81abf6372cecc626f6e0f69a9bf7a9a515346c2e5951e82f548edaaf56",
+            "markers": []
+          }
+        ],
+        "post_inventory": {
+          "unexpected_changes": [],
+          "import_LF_normalization_only": [
+            "addons/godot-rapier2d/logo_square_2d.png.import",
+            "addons/godot-rapier2d/Radial2D.svg.import",
+            "addons/godot-rapier2d/icons/Fluid2D.svg.import",
+            "addons/godot-rapier2d/icons/StateManager2D.svg.import"
+          ]
+        }
+      }
+    }
+  },
+  {
+    "run": "host-002",
+    "receipt_sha256": "9987c626192de96bb776c7b7915836683970cac4921749a8e68fcde47e49d220",
+    "source": "b9053353148716b335a5375c952883ffc699b98c",
+    "post_source_equality": true,
+    "commands": null,
+    "hosts": {
+      "windows": {
+        "commands": [
+          {
+            "name": "engine-version",
+            "command": [
+              "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+              "--version"
+            ],
+            "requested_command": [
+              "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+              "--version"
+            ],
+            "exit": 0,
+            "clean": true,
+            "timeout_seconds": 300,
+            "seconds": 0.07362799998372793,
+            "log": "build\\sol-node-trace\\host-002\\windows\\engine-version.log",
+            "log_sha256": "5a4c39354856b07de09b419a9327a4e8edec0ac610ec5fb8a3ebcd7017e7d035",
+            "markers": []
+          },
+          {
+            "name": "import",
+            "command": [
+              "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+              "--headless",
+              "--audio-driver",
+              "Dummy",
+              "--path",
+              "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\build\\sol-node-trace\\host-002\\windows\\godot",
+              "--editor",
+              "--import",
+              "--quit"
+            ],
+            "requested_command": [
+              "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+              "--headless",
+              "--audio-driver",
+              "Dummy",
+              "--path",
+              "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\build\\sol-node-trace\\host-002\\windows\\godot",
+              "--editor",
+              "--import",
+              "--quit"
+            ],
+            "exit": 0,
+            "clean": true,
+            "timeout_seconds": 300,
+            "seconds": 8.500337000004947,
+            "log": "build\\sol-node-trace\\host-002\\windows\\import.log",
+            "log_sha256": "9d8350517965e2d90a89be06006852fde67dcb5f999fea271f3f74f6ee518d05",
+            "markers": []
+          },
+          {
+            "name": "policy-lifecycle",
+            "command": [
+              "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+              "--headless",
+              "--audio-driver",
+              "Dummy",
+              "--path",
+              "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\build\\sol-node-trace\\host-002\\windows\\godot",
+              "--max-fps",
+              "120",
+              "--script",
+              "res://tests/test_sol_active_normal_policy.gd"
+            ],
+            "requested_command": [
+              "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+              "--headless",
+              "--audio-driver",
+              "Dummy",
+              "--path",
+              "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\build\\sol-node-trace\\host-002\\windows\\godot",
+              "--max-fps",
+              "120",
+              "--script",
+              "res://tests/test_sol_active_normal_policy.gd"
+            ],
+            "exit": 0,
+            "clean": true,
+            "timeout_seconds": 300,
+            "seconds": 1.3406819000374526,
+            "log": "build\\sol-node-trace\\host-002\\windows\\policy-lifecycle.log",
+            "log_sha256": "ee4c053896113814b3d558c00a475f615f883033665573e09c36717b50c07cc0",
+            "markers": [
+              "SOL_ACTIVE_NORMAL_POLICY checks=98 failures=0"
+            ]
+          },
+          {
+            "name": "trace-policy-lifecycle",
+            "command": [
+              "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+              "--headless",
+              "--audio-driver",
+              "Dummy",
+              "--path",
+              "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\build\\sol-node-trace\\host-002\\windows\\godot",
+              "--max-fps",
+              "120",
+              "--script",
+              "res://tests/test_sol_node_trace_policy.gd"
+            ],
+            "requested_command": [
+              "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+              "--headless",
+              "--audio-driver",
+              "Dummy",
+              "--path",
+              "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\build\\sol-node-trace\\host-002\\windows\\godot",
+              "--max-fps",
+              "120",
+              "--script",
+              "res://tests/test_sol_node_trace_policy.gd"
+            ],
+            "exit": 124,
+            "clean": false,
+            "timeout_seconds": 300,
+            "seconds": 300.215167599963,
+            "log": "build\\sol-node-trace\\host-002\\windows\\trace-policy-lifecycle.log",
+            "log_sha256": "6cef08b4ff2e4cde01ffe32b4ec021a301cfb585f20409a3e26cef4e7cf39f4e",
+            "markers": []
+          }
+        ],
+        "post_inventory": {
+          "unexpected_changes": [],
+          "import_LF_normalization_only": [
+            "addons/godot-rapier2d/logo_square_2d.png.import",
+            "addons/godot-rapier2d/Radial2D.svg.import",
+            "addons/godot-rapier2d/icons/Fluid2D.svg.import",
+            "addons/godot-rapier2d/icons/StateManager2D.svg.import"
+          ]
+        }
+      },
+      "linux": {
+        "commands": [
+          {
+            "name": "engine-version",
+            "command": [
+              "wsl.exe",
+              "-d",
+              "Ubuntu-24.04",
+              "--",
+              "timeout",
+              "--signal=TERM",
+              "--kill-after=5s",
+              "300s",
+              "env",
+              "CYBERSAND_SOURCE_REVISION=b9053353148716b335a5375c952883ffc699b98c",
+              "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+              "--version"
+            ],
+            "requested_command": [
+              "wsl.exe",
+              "-d",
+              "Ubuntu-24.04",
+              "--",
+              "env",
+              "CYBERSAND_SOURCE_REVISION=b9053353148716b335a5375c952883ffc699b98c",
+              "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+              "--version"
+            ],
+            "exit": 0,
+            "clean": true,
+            "timeout_seconds": 300,
+            "seconds": 0.21754480001982301,
+            "log": "build\\sol-node-trace\\host-002\\linux\\engine-version.log",
+            "log_sha256": "87fac5ffedc06e67db8ac5810bbedd8e412d166bcd89b314f3c5a4fa05a78a2d",
+            "markers": []
+          },
+          {
+            "name": "engine-hash",
+            "command": [
+              "wsl.exe",
+              "-d",
+              "Ubuntu-24.04",
+              "--",
+              "timeout",
+              "--signal=TERM",
+              "--kill-after=5s",
+              "180s",
+              "sha256sum",
+              "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64"
+            ],
+            "requested_command": [
+              "wsl.exe",
+              "-d",
+              "Ubuntu-24.04",
+              "--",
+              "sha256sum",
+              "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64"
+            ],
+            "exit": 0,
+            "clean": true,
+            "timeout_seconds": 180,
+            "seconds": 0.16571919998386875,
+            "log": "build\\sol-node-trace\\host-002\\linux\\engine-hash.log",
+            "log_sha256": "510afe66a44e7343093617c0349b8a524d5039cdcf48a0630a98e6acf3483710",
+            "markers": []
+          },
+          {
+            "name": "experimental-runtime-floor",
+            "command": [
+              "wsl.exe",
+              "-d",
+              "Ubuntu-24.04",
+              "--",
+              "timeout",
+              "--signal=TERM",
+              "--kill-after=5s",
+              "180s",
+              "bash",
+              "/mnt/c/Users/_/.codex/worktrees/sol-active-normal-live-20261105/khybersand/build/sol-node-trace/host-002/linux/floor/tools/check_linux_runtime_floor.sh"
+            ],
+            "requested_command": [
+              "wsl.exe",
+              "-d",
+              "Ubuntu-24.04",
+              "--",
+              "bash",
+              "/mnt/c/Users/_/.codex/worktrees/sol-active-normal-live-20261105/khybersand/build/sol-node-trace/host-002/linux/floor/tools/check_linux_runtime_floor.sh"
+            ],
+            "exit": 0,
+            "clean": true,
+            "timeout_seconds": 180,
+            "seconds": 0.14191179996123537,
+            "log": "build\\sol-node-trace\\host-002\\linux\\experimental-runtime-floor.log",
+            "log_sha256": "03231ceef99b45c3afc35b2ac492d3f8259714ad53433ca4be7a8d09fe59145c",
+            "markers": []
+          },
+          {
+            "name": "import",
+            "command": [
+              "wsl.exe",
+              "-d",
+              "Ubuntu-24.04",
+              "--",
+              "timeout",
+              "--signal=TERM",
+              "--kill-after=5s",
+              "300s",
+              "env",
+              "CYBERSAND_SOURCE_REVISION=b9053353148716b335a5375c952883ffc699b98c",
+              "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+              "--headless",
+              "--audio-driver",
+              "Dummy",
+              "--path",
+              "/mnt/c/Users/_/.codex/worktrees/sol-active-normal-live-20261105/khybersand/build/sol-node-trace/host-002/linux/godot",
+              "--editor",
+              "--import",
+              "--quit"
+            ],
+            "requested_command": [
+              "wsl.exe",
+              "-d",
+              "Ubuntu-24.04",
+              "--",
+              "env",
+              "CYBERSAND_SOURCE_REVISION=b9053353148716b335a5375c952883ffc699b98c",
+              "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+              "--headless",
+              "--audio-driver",
+              "Dummy",
+              "--path",
+              "/mnt/c/Users/_/.codex/worktrees/sol-active-normal-live-20261105/khybersand/build/sol-node-trace/host-002/linux/godot",
+              "--editor",
+              "--import",
+              "--quit"
+            ],
+            "exit": 0,
+            "clean": true,
+            "timeout_seconds": 300,
+            "seconds": 43.131746499973815,
+            "log": "build\\sol-node-trace\\host-002\\linux\\import.log",
+            "log_sha256": "746632934d092201886c25cfcc9057b30aad6ed585ff0007443c69b26a5b2eab",
+            "markers": []
+          },
+          {
+            "name": "policy-lifecycle",
+            "command": [
+              "wsl.exe",
+              "-d",
+              "Ubuntu-24.04",
+              "--",
+              "timeout",
+              "--signal=TERM",
+              "--kill-after=5s",
+              "300s",
+              "env",
+              "CYBERSAND_SOURCE_REVISION=b9053353148716b335a5375c952883ffc699b98c",
+              "SOL_POLICY_OUTPUT=/mnt/c/Users/_/.codex/worktrees/sol-active-normal-live-20261105/khybersand/build/sol-node-trace/host-002/linux/policy.json",
+              "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+              "--headless",
+              "--audio-driver",
+              "Dummy",
+              "--path",
+              "/mnt/c/Users/_/.codex/worktrees/sol-active-normal-live-20261105/khybersand/build/sol-node-trace/host-002/linux/godot",
+              "--max-fps",
+              "120",
+              "--script",
+              "res://tests/test_sol_active_normal_policy.gd"
+            ],
+            "requested_command": [
+              "wsl.exe",
+              "-d",
+              "Ubuntu-24.04",
+              "--",
+              "env",
+              "CYBERSAND_SOURCE_REVISION=b9053353148716b335a5375c952883ffc699b98c",
+              "SOL_POLICY_OUTPUT=/mnt/c/Users/_/.codex/worktrees/sol-active-normal-live-20261105/khybersand/build/sol-node-trace/host-002/linux/policy.json",
+              "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+              "--headless",
+              "--audio-driver",
+              "Dummy",
+              "--path",
+              "/mnt/c/Users/_/.codex/worktrees/sol-active-normal-live-20261105/khybersand/build/sol-node-trace/host-002/linux/godot",
+              "--max-fps",
+              "120",
+              "--script",
+              "res://tests/test_sol_active_normal_policy.gd"
+            ],
+            "exit": 0,
+            "clean": true,
+            "timeout_seconds": 300,
+            "seconds": 2.426059100020211,
+            "log": "build\\sol-node-trace\\host-002\\linux\\policy-lifecycle.log",
+            "log_sha256": "0d4e9eda661433be2ee27b20c767245df25415df9701c524cde847de7c4663df",
+            "markers": [
+              "SOL_ACTIVE_NORMAL_POLICY checks=98 failures=0"
+            ]
+          },
+          {
+            "name": "trace-policy-lifecycle",
+            "command": [
+              "wsl.exe",
+              "-d",
+              "Ubuntu-24.04",
+              "--",
+              "timeout",
+              "--signal=TERM",
+              "--kill-after=5s",
+              "300s",
+              "env",
+              "CYBERSAND_SOURCE_REVISION=b9053353148716b335a5375c952883ffc699b98c",
+              "SOL_TRACE_POLICY_OUTPUT=/mnt/c/Users/_/.codex/worktrees/sol-active-normal-live-20261105/khybersand/build/sol-node-trace/host-002/linux/trace-policy.json",
+              "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+              "--headless",
+              "--audio-driver",
+              "Dummy",
+              "--path",
+              "/mnt/c/Users/_/.codex/worktrees/sol-active-normal-live-20261105/khybersand/build/sol-node-trace/host-002/linux/godot",
+              "--max-fps",
+              "120",
+              "--script",
+              "res://tests/test_sol_node_trace_policy.gd"
+            ],
+            "requested_command": [
+              "wsl.exe",
+              "-d",
+              "Ubuntu-24.04",
+              "--",
+              "env",
+              "CYBERSAND_SOURCE_REVISION=b9053353148716b335a5375c952883ffc699b98c",
+              "SOL_TRACE_POLICY_OUTPUT=/mnt/c/Users/_/.codex/worktrees/sol-active-normal-live-20261105/khybersand/build/sol-node-trace/host-002/linux/trace-policy.json",
+              "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+              "--headless",
+              "--audio-driver",
+              "Dummy",
+              "--path",
+              "/mnt/c/Users/_/.codex/worktrees/sol-active-normal-live-20261105/khybersand/build/sol-node-trace/host-002/linux/godot",
+              "--max-fps",
+              "120",
+              "--script",
+              "res://tests/test_sol_node_trace_policy.gd"
+            ],
+            "exit": 6,
+            "clean": false,
+            "timeout_seconds": 300,
+            "seconds": 2.7868131999857724,
+            "log": "build\\sol-node-trace\\host-002\\linux\\trace-policy-lifecycle.log",
+            "log_sha256": "d04a0b01c712fc9f6625c9ed299beb77608321ad2d383a1d7897d93f4a0af6bf",
+            "markers": []
+          }
+        ],
+        "post_inventory": {
+          "unexpected_changes": [],
+          "import_LF_normalization_only": [
+            "addons/godot-rapier2d/logo_square_2d.png.import",
+            "addons/godot-rapier2d/Radial2D.svg.import",
+            "addons/godot-rapier2d/icons/Fluid2D.svg.import",
+            "addons/godot-rapier2d/icons/StateManager2D.svg.import"
+          ]
+        }
+      }
+    }
+  },
+  {
+    "run": "analysis-001",
+    "receipt_sha256": "23f1d8716ee89ada90bd91b0d224396e3bd62c33d02b9be80705971d121547a8",
+    "source": "d3c38cad97a8e34d28c0af20c50d46fa8d9a3cb8",
+    "post_source_equality": true,
+    "commands": [
+      {
+        "name": "windows-tests",
+        "command": [
+          "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "-m",
+          "unittest",
+          "discover",
+          "-s",
+          "tools/experiments",
+          "-p",
+          "test_sol_node_trace*.py",
+          "-v"
+        ],
+        "requested_command": [
+          "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "-m",
+          "unittest",
+          "discover",
+          "-s",
+          "tools/experiments",
+          "-p",
+          "test_sol_node_trace*.py",
+          "-v"
+        ],
+        "exit": 0,
+        "clean": true,
+        "timeout_seconds": 180,
+        "seconds": 0.22352959995623678,
+        "log": "build\\sol-node-trace\\analysis-001\\windows-tests.log",
+        "log_sha256": "8d9b5f41e69c9f01bda5bbff186e49f0b367fd30600ecfd94a45ac718eb095d3",
+        "markers": []
+      },
+      {
+        "name": "windows-reduce",
+        "command": [
+          "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "tools/experiments/sol_node_trace_reduce.py",
+          "build/sol-node-trace/qualification-001",
+          "--output",
+          "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\build\\sol-node-trace\\analysis-001\\windows-reduction"
+        ],
+        "requested_command": [
+          "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "tools/experiments/sol_node_trace_reduce.py",
+          "build/sol-node-trace/qualification-001",
+          "--output",
+          "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\build\\sol-node-trace\\analysis-001\\windows-reduction"
+        ],
+        "exit": 0,
+        "clean": true,
+        "timeout_seconds": 300,
+        "seconds": 10.29240390000632,
+        "log": "build\\sol-node-trace\\analysis-001\\windows-reduce.log",
+        "log_sha256": "3b81435a8c24b97856920c4a5cdceee71e9675af6bbc78391bb8dcdcbddb9adb",
+        "markers": []
+      },
+      {
+        "name": "linux-tests",
+        "command": [
+          "wsl.exe",
+          "-d",
+          "Ubuntu-24.04",
+          "--cd",
+          "/mnt/c/Users/_/.codex/worktrees/sol-active-normal-live-20261105/khybersand",
+          "--",
+          "timeout",
+          "--signal=TERM",
+          "--kill-after=5s",
+          "180s",
+          "python3",
+          "-m",
+          "unittest",
+          "discover",
+          "-s",
+          "tools/experiments",
+          "-p",
+          "test_sol_node_trace*.py",
+          "-v"
+        ],
+        "requested_command": [
+          "wsl.exe",
+          "-d",
+          "Ubuntu-24.04",
+          "--cd",
+          "/mnt/c/Users/_/.codex/worktrees/sol-active-normal-live-20261105/khybersand",
+          "--",
+          "python3",
+          "-m",
+          "unittest",
+          "discover",
+          "-s",
+          "tools/experiments",
+          "-p",
+          "test_sol_node_trace*.py",
+          "-v"
+        ],
+        "exit": 0,
+        "clean": true,
+        "timeout_seconds": 180,
+        "seconds": 4.3251602000091225,
+        "log": "build\\sol-node-trace\\analysis-001\\linux-tests.log",
+        "log_sha256": "9578ecc35d98b31852f23ec48c66c5d695a69bd228ae0032f107a295f818cdb9",
+        "markers": []
+      },
+      {
+        "name": "linux-reduce",
+        "command": [
+          "wsl.exe",
+          "-d",
+          "Ubuntu-24.04",
+          "--cd",
+          "/mnt/c/Users/_/.codex/worktrees/sol-active-normal-live-20261105/khybersand",
+          "--",
+          "timeout",
+          "--signal=TERM",
+          "--kill-after=5s",
+          "300s",
+          "python3",
+          "tools/experiments/sol_node_trace_reduce.py",
+          "build/sol-node-trace/qualification-001",
+          "--output",
+          "/mnt/c/Users/_/.codex/worktrees/sol-active-normal-live-20261105/khybersand/build/sol-node-trace/analysis-001/linux-reduction"
+        ],
+        "requested_command": [
+          "wsl.exe",
+          "-d",
+          "Ubuntu-24.04",
+          "--cd",
+          "/mnt/c/Users/_/.codex/worktrees/sol-active-normal-live-20261105/khybersand",
+          "--",
+          "python3",
+          "tools/experiments/sol_node_trace_reduce.py",
+          "build/sol-node-trace/qualification-001",
+          "--output",
+          "/mnt/c/Users/_/.codex/worktrees/sol-active-normal-live-20261105/khybersand/build/sol-node-trace/analysis-001/linux-reduction"
+        ],
+        "exit": 1,
+        "clean": false,
+        "timeout_seconds": 300,
+        "seconds": 0.46471159998327494,
+        "log": "build\\sol-node-trace\\analysis-001\\linux-reduce.log",
+        "log_sha256": "ef26ed60a592313eec913558f493af337a298ecf2a95d1e5707d77a38d2b0e0f",
+        "markers": []
+      }
+    ],
+    "hosts": {}
+  },
+  {
+    "run": "analysis-002",
+    "receipt_sha256": "e3b4d15d7b18e2967fe21000cc052e71b3418977ee7bd5513d1654cbf3431e6c",
+    "source": "57b9ab23bf325edbbd192780507796d2217657e2",
+    "post_source_equality": true,
+    "commands": [
+      {
+        "name": "windows-tests",
+        "command": [
+          "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "-m",
+          "unittest",
+          "discover",
+          "-s",
+          "tools/experiments",
+          "-p",
+          "test_sol_node_trace*.py",
+          "-v"
+        ],
+        "requested_command": [
+          "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "-m",
+          "unittest",
+          "discover",
+          "-s",
+          "tools/experiments",
+          "-p",
+          "test_sol_node_trace*.py",
+          "-v"
+        ],
+        "exit": 0,
+        "clean": true,
+        "timeout_seconds": 180,
+        "seconds": 0.23653080000076443,
+        "log": "build\\sol-node-trace\\analysis-002\\windows-tests.log",
+        "log_sha256": "fa0a3d6404715e725c696853f7992ae4c08485effb66c80666c1f17d1081796c",
+        "markers": []
+      },
+      {
+        "name": "windows-reduce",
+        "command": [
+          "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "tools/experiments/sol_node_trace_reduce.py",
+          "build/sol-node-trace/qualification-001",
+          "--output",
+          "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\build\\sol-node-trace\\analysis-002\\windows-reduction"
+        ],
+        "requested_command": [
+          "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "tools/experiments/sol_node_trace_reduce.py",
+          "build/sol-node-trace/qualification-001",
+          "--output",
+          "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\build\\sol-node-trace\\analysis-002\\windows-reduction"
+        ],
+        "exit": 0,
+        "clean": true,
+        "timeout_seconds": 300,
+        "seconds": 10.234905399964191,
+        "log": "build\\sol-node-trace\\analysis-002\\windows-reduce.log",
+        "log_sha256": "3b81435a8c24b97856920c4a5cdceee71e9675af6bbc78391bb8dcdcbddb9adb",
+        "markers": []
+      },
+      {
+        "name": "linux-tests",
+        "command": [
+          "wsl.exe",
+          "-d",
+          "Ubuntu-24.04",
+          "--cd",
+          "/mnt/c/Users/_/.codex/worktrees/sol-active-normal-live-20261105/khybersand",
+          "--",
+          "timeout",
+          "--signal=TERM",
+          "--kill-after=5s",
+          "180s",
+          "python3",
+          "-m",
+          "unittest",
+          "discover",
+          "-s",
+          "tools/experiments",
+          "-p",
+          "test_sol_node_trace*.py",
+          "-v"
+        ],
+        "requested_command": [
+          "wsl.exe",
+          "-d",
+          "Ubuntu-24.04",
+          "--cd",
+          "/mnt/c/Users/_/.codex/worktrees/sol-active-normal-live-20261105/khybersand",
+          "--",
+          "python3",
+          "-m",
+          "unittest",
+          "discover",
+          "-s",
+          "tools/experiments",
+          "-p",
+          "test_sol_node_trace*.py",
+          "-v"
+        ],
+        "exit": 0,
+        "clean": true,
+        "timeout_seconds": 180,
+        "seconds": 3.734649900055956,
+        "log": "build\\sol-node-trace\\analysis-002\\linux-tests.log",
+        "log_sha256": "8010c8843fec49fd6a8f79617570a0828ccf864c0258dcce376489bd23c1c811",
+        "markers": []
+      },
+      {
+        "name": "linux-reduce",
+        "command": [
+          "wsl.exe",
+          "-d",
+          "Ubuntu-24.04",
+          "--cd",
+          "/mnt/c/Users/_/.codex/worktrees/sol-active-normal-live-20261105/khybersand",
+          "--",
+          "timeout",
+          "--signal=TERM",
+          "--kill-after=5s",
+          "300s",
+          "python3",
+          "tools/experiments/sol_node_trace_reduce.py",
+          "build/sol-node-trace/qualification-001",
+          "--output",
+          "/mnt/c/Users/_/.codex/worktrees/sol-active-normal-live-20261105/khybersand/build/sol-node-trace/analysis-002/linux-reduction"
+        ],
+        "requested_command": [
+          "wsl.exe",
+          "-d",
+          "Ubuntu-24.04",
+          "--cd",
+          "/mnt/c/Users/_/.codex/worktrees/sol-active-normal-live-20261105/khybersand",
+          "--",
+          "python3",
+          "tools/experiments/sol_node_trace_reduce.py",
+          "build/sol-node-trace/qualification-001",
+          "--output",
+          "/mnt/c/Users/_/.codex/worktrees/sol-active-normal-live-20261105/khybersand/build/sol-node-trace/analysis-002/linux-reduction"
+        ],
+        "exit": 0,
+        "clean": true,
+        "timeout_seconds": 300,
+        "seconds": 11.700349699996877,
+        "log": "build\\sol-node-trace\\analysis-002\\linux-reduce.log",
+        "log_sha256": "dd5e454885923ee8b50fd6c661698b2a7e418e8803841bb7a7c4b2956224ec9e",
+        "markers": []
+      }
+    ],
+    "hosts": {},
+    "qualification": "Full closure/parity valid; first arithmetic label superseded by metadata/operand/effect distinctions in004"
+  },
+  {
+    "run": "analysis-003",
+    "receipt_sha256": "5789580bd10b11d59ca80e0620b8282bf12f2f1873e1bb0e77133dc89a5ba7a3",
+    "source": "fef3f3bbfb1f744cebd0c302f72e14d805411739",
+    "post_source_equality": true,
+    "commands": [
+      {
+        "name": "windows-tests",
+        "command": [
+          "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "-m",
+          "unittest",
+          "discover",
+          "-s",
+          "tools/experiments",
+          "-p",
+          "test_sol_node_trace*.py",
+          "-v"
+        ],
+        "requested_command": [
+          "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "-m",
+          "unittest",
+          "discover",
+          "-s",
+          "tools/experiments",
+          "-p",
+          "test_sol_node_trace*.py",
+          "-v"
+        ],
+        "exit": 0,
+        "clean": true,
+        "timeout_seconds": 180,
+        "seconds": 0.2214506000163965,
+        "log": "build\\sol-node-trace\\analysis-003\\windows-tests.log",
+        "log_sha256": "31b0bea5b0f4dc94f22230fdab174bfd25e6a5723df663861ce2650f3a3e19cc",
+        "markers": []
+      },
+      {
+        "name": "windows-reduce",
+        "command": [
+          "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "tools/experiments/sol_node_trace_reduce.py",
+          "build/sol-node-trace/qualification-001",
+          "--output",
+          "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\build\\sol-node-trace\\analysis-003\\windows-reduction"
+        ],
+        "requested_command": [
+          "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "tools/experiments/sol_node_trace_reduce.py",
+          "build/sol-node-trace/qualification-001",
+          "--output",
+          "C:\\Users\\_\\.codex\\worktrees\\sol-active-normal-live-20261105\\khybersand\\build\\sol-node-trace\\analysis-003\\windows-reduction"
+        ],
+        "exit": 0,
+        "clean": true,
+        "timeout_seconds": 300,
+        "seconds": 9.945287199981976,
+        "log": "build\\sol-node-trace\\analysis-003\\windows-reduce.log",
+        "log_sha256": "3b81435a8c24b97856920c4a5cdceee71e9675af6bbc78391bb8dcdcbddb9adb",
+        "markers": []
+      },
+      {
+        "name": "linux-tests",
+        "command": [
+          "wsl.exe",
+          "-d",
+          "Ubuntu-24.04",
+          "--cd",
+          "/mnt/c/Users/_/.codex/worktrees/sol-active-normal-live-20261105/khybersand",
+          "--",
+          "timeout",
+          "--signal=TERM",
+          "--kill-after=5s",
+          "180s",
+          "python3",
+          "-m",
+          "unittest",
+          "discover",
+          "-s",
+          "tools/experiments",
+          "-p",
+          "test_sol_node_trace*.py",
+          "-v"
+        ],
+        "requested_command": [
+          "wsl.exe",
+          "-d",
+          "Ubuntu-24.04",
+          "--cd",
+          "/mnt/c/Users/_/.codex/worktrees/sol-active-normal-live-20261105/khybersand",
+          "--",
+          "python3",
+          "-m",
+          "unittest",
+          "discover",
+          "-s",
+          "tools/experiments",
+          "-p",
+          "test_sol_node_trace*.py",
+          "-v"
+        ],
+        "exit": 0,
+        "clean": true,
+        "timeout_seconds": 180,
+        "seconds": 4.396447899984196,
+        "log": "build\\sol-node-trace\\analysis-003\\linux-tests.log",
+        "log_sha256": "197698c3081eb5095b61e76077e06a72f591cb0ca8be162d592ef40589b17852",
+        "markers": []
+      },
+      {
+        "name": "linux-reduce",
+        "command": [
+          "wsl.exe",
+          "-d",
+          "Ubuntu-24.04",
+          "--cd",
+          "/mnt/c/Users/_/.codex/worktrees/sol-active-normal-live-20261105/khybersand",
+          "--",
+          "timeout",
+          "--signal=TERM",
+          "--kill-after=5s",
+          "300s",
+          "python3",
+          "tools/experiments/sol_node_trace_reduce.py",
+          "build/sol-node-trace/qualification-001",
+          "--output",
+          "/mnt/c/Users/_/.codex/worktrees/sol-active-normal-live-20261105/khybersand/build/sol-node-trace/analysis-003/linux-reduction"
+        ],
+        "requested_command": [
+          "wsl.exe",
+          "-d",
+          "Ubuntu-24.04",
+          "--cd",
+          "/mnt/c/Users/_/.codex/worktrees/sol-active-normal-live-20261105/khybersand",
+          "--",
+          "python3",
+          "tools/experiments/sol_node_trace_reduce.py",
+          "build/sol-node-trace/qualification-001",
+          "--output",
+          "/mnt/c/Users/_/.codex/worktrees/sol-active-normal-live-20261105/khybersand/build/sol-node-trace/analysis-003/linux-reduction"
+        ],
+        "exit": 0,
+        "clean": true,
+        "timeout_seconds": 300,
+        "seconds": 11.526857800025027,
+        "log": "build\\sol-node-trace\\analysis-003\\linux-reduce.log",
+        "log_sha256": "dd5e454885923ee8b50fd6c661698b2a7e418e8803841bb7a7c4b2956224ec9e",
+        "markers": []
+      }
+    ],
+    "hosts": {},
+    "qualification": "Full closure/parity valid; weight operand difference at0 is not an actual update effect; see004"
+  },
+  {
+    "run": "audit-tests-002",
+    "receipt_sha256": "c80d60bf6916b38ac27013621e7f07f0903f71d3c3dcfe5853440e753f13fc46",
+    "source": "1488fe130f176f85dff2ab1b586e9232523b13bf",
+    "post_source_equality": true,
+    "commands": [
+      {
+        "name": "windows",
+        "command": [
+          "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "-m",
+          "unittest",
+          "discover",
+          "-s",
+          "tools/experiments",
+          "-p",
+          "test_sol_node_trace_audit.py",
+          "-v"
+        ],
+        "requested_command": [
+          "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "-m",
+          "unittest",
+          "discover",
+          "-s",
+          "tools/experiments",
+          "-p",
+          "test_sol_node_trace_audit.py",
+          "-v"
+        ],
+        "exit": 0,
+        "clean": true,
+        "timeout_seconds": 180,
+        "seconds": 0.15968649997375906,
+        "log": "build\\sol-node-trace\\audit-tests-002\\windows.log",
+        "log_sha256": "ed94714429a167551fa0313ec7161893298f0305f26cb9a7557976181babbf9d",
+        "markers": []
+      },
+      {
+        "name": "linux",
+        "command": [
+          "wsl.exe",
+          "-d",
+          "Ubuntu-24.04",
+          "--cd",
+          "/mnt/c/Users/_/.codex/worktrees/sol-active-normal-live-20261105/khybersand",
+          "--",
+          "timeout",
+          "--signal=TERM",
+          "--kill-after=5s",
+          "180s",
+          "python3",
+          "-m",
+          "unittest",
+          "discover",
+          "-s",
+          "tools/experiments",
+          "-p",
+          "test_sol_node_trace_audit.py",
+          "-v"
+        ],
+        "requested_command": [
+          "wsl.exe",
+          "-d",
+          "Ubuntu-24.04",
+          "--cd",
+          "/mnt/c/Users/_/.codex/worktrees/sol-active-normal-live-20261105/khybersand",
+          "--",
+          "python3",
+          "-m",
+          "unittest",
+          "discover",
+          "-s",
+          "tools/experiments",
+          "-p",
+          "test_sol_node_trace_audit.py",
+          "-v"
+        ],
+        "exit": 0,
+        "clean": true,
+        "timeout_seconds": 180,
+        "seconds": 4.845510200015269,
+        "log": "build\\sol-node-trace\\audit-tests-002\\linux.log",
+        "log_sha256": "ff36e3451c0b1b9e5d84e0d0fbf3b011aa0f8029233aead8907f9f6ed8e26712",
+        "markers": []
+      }
+    ],
+    "hosts": {},
+    "old_guard_refusal": "native_inputs differs from built inputs",
+    "retained_harness_failure": {
+      "path": "build\\sol-node-trace\\audit-tests-001\\windows.log",
+      "sha256": "20ff560182be084b18ff5e043aff46b927e86d4f4634a2ce45d07411ea4f2159",
+      "reason": "First helper used relative output folder; command ran but relative_to(ROOT) receipt creation raised ValueError. Retained; corrected absolute folder in002."
+    }
+  }
+]
