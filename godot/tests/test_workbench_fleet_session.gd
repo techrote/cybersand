@@ -3,6 +3,7 @@ extends SceneTree
 const Session = preload("res://scripts/physical_actor_session.gd")
 const Prepared = preload("res://scripts/prepared_physical_session.gd")
 const Fleet = preload("res://scripts/gcr_review_fleet.gd")
+const WorkbenchBridge = preload("res://scripts/workbench_physics_bridge.gd")
 var failures: int = 0
 var checks: int = 0
 var host: Node2D
@@ -105,6 +106,9 @@ func run() -> void:
 		fleet.append(actor(Fleet.stable_id(index),101+index,Vector2(1100+index*100,1300)))
 	check(fleet.size() == 8 and instantiate(fleet,5), "all eight authored rigs in one actual space")
 	if not session.active(): quit(1); return
+	var first_session: int = session.bridge._session
+	check(first_session > 0 and typeof(get_meta(WorkbenchBridge.SESSION_META)) == TYPE_INT,
+		"main loop owns only the scalar session serial")
 	fleet.append(actor("reference_barrel",300,Vector2(300,200)))
 	check(not Session.valid_definitions(fleet),"ninth actor refuses")
 	fleet.pop_back()
@@ -142,6 +146,8 @@ func run() -> void:
 	var mixed: Array = [two,barrel,one]
 	check(instantiate(mixed,6),"two flyers and actual passive barrel")
 	if not session.active(): quit(1); return
+	check(session.bridge._session > first_session, "replacement after shutdown never reuses a session identity")
+	var mixed_session: int = session.bridge._session
 	check(not session.submit_workbench_action(20,{"move":Vector2.RIGHT},{"q":false,"e":false,"s":false,"boost":false},false),"passive command refused")
 	check(session.submit_workbench_action(30,{"primary":true},{"q":false,"e":false,"s":false,"boost":true},false),"pilot Scooper independent of order")
 	session.advance(1.0/60.0)
@@ -159,7 +165,16 @@ func run() -> void:
 	check(not session._rigs[2].review_boost_held() and session.pack_workbench_sample().emitters.is_empty(),"revoke booster and emission")
 	session.pack_workbench_sample()
 	check(session.apply_workbench_results(4,packet)==0,"delayed sample dropped")
+	# Hold every body/epoch/sample field fixed while replacing the bridge.
+	# Only the main-loop serial distinguishes this retired response owner.
+	check(instantiate(mixed,6), "same-epoch replacement constructs a fresh response owner")
+	sample=session.pack_workbench_sample()
+	check(sample.session > mixed_session and sample.epoch == packet.epoch,
+		"same-epoch replacement still advances the session identity")
+	check(session.apply_workbench_results(1,packet)==0 and session.bridge.last_application.refusal=="owner_or_response",
+		"old response cannot cross same-epoch owner replacement")
 	check(instantiate([barrel,two],7),"replace/reorder after retirement")
+	check(session.bridge._session > mixed_session, "reordered replacement continues monotonic identities")
 	check(session.apply_workbench_results(5,packet)==0 and session.bridge.last_application.refusal=="owner_or_response","retired owner has no authority")
 	mixed[2]["retained_motion"] = {"rotation":0.45,"linear_velocity":Vector2(9,-6),"angular_velocity":-0.25}
 	var provisional := Prepared.new()
@@ -174,6 +189,14 @@ func run() -> void:
 		state = provisional.session.workbench_actor_state(30)
 		check(is_equal_approx(state.rotation,0.45) and state.linear_velocity == Vector2(9,-6) and is_equal_approx(state.angular_velocity,-0.25),"adoption restores retained velocities")
 		provisional.close()
+	# Refusing the exhausted counter issues no identity. Restore the unchanged
+	# prior counter so this isolated refusal cannot contaminate later checks.
+	var retained_serial: int = int(get_meta(WorkbenchBridge.SESSION_META))
+	set_meta(WorkbenchBridge.SESSION_META,WorkbenchBridge.MAX_SESSION)
+	check(not instantiate([barrel],9) and not session.active(), "exhausted session capacity refuses the physical graph")
+	check(int(get_meta(WorkbenchBridge.SESSION_META)) == WorkbenchBridge.MAX_SESSION,
+		"capacity refusal never wraps or advances the serial")
+	set_meta(WorkbenchBridge.SESSION_META,retained_serial)
 	session.free()
 	host.free()
 	await process_frame

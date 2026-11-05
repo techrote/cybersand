@@ -10,6 +10,25 @@ const WATCHDOG_MS := 90000
 class PilotHost extends "res://scripts/main.gd":
 	var pilot_action: Dictionary = {}
 	var pilot_ports := {"q":false,"e":false,"s":false,"boost":false}
+	# Application history intentionally expires quickly. Keep four independent
+	# copied submissions for this census: the two response slots plus the
+	# outstanding/terminal publication at a pause. This grants no wrench authority.
+	const RETAINED_SAMPLES: int = 4
+	var pilot_samples: Array[Dictionary] = []
+	func _publish_physical_body_state() -> void:
+		super._publish_physical_body_state()
+		if shared_workbench == null or physical_actor_session == null: return
+		var bridge = physical_actor_session.bridge
+		var sample: Dictionary = bridge.sampled_pose(1,bridge._serial)
+		if sample.is_empty(): return
+		if not pilot_samples.is_empty() and pilot_samples.back() == sample: return
+		pilot_samples.append(sample.duplicate(true))
+		if pilot_samples.size() > RETAINED_SAMPLES: pilot_samples.pop_front()
+	func pilot_sample(serial: int, session: int, epoch: int) -> Dictionary:
+		for sample: Dictionary in pilot_samples:
+			if sample.sample == serial and sample.session == session and sample.epoch == epoch:
+				return sample.duplicate(true)
+		return {}
 	func _publish_workbench_keyboard() -> void:
 		if pilot_action.is_empty() or paused or shared_workbench == null or physical_actor_session == null: return
 		physical_actor_session.submit_workbench_action(shared_workbench.selected_id(),pilot_action,pilot_ports,false)
@@ -166,7 +185,9 @@ func synchronized_cavity(stats: Dictionary, field: String) -> void:
 		var snap: CyberSimulationSnapshot = host.latest_snapshot
 		var packet: Dictionary = snap.lab_context.get("workbench_gcr",{})
 		var row: Dictionary = packet.get("rows",[{}])[0]
-		var sampled: Dictionary = host.physical_actor_session.bridge.sampled_pose(1,int(row.get("sample",-1)))
+		var serial: int = int(row.get("sample",-1))
+		var sampled: Dictionary = host.pilot_sample(serial,int(packet.get("session",-1)),int(packet.get("epoch",-1)))
+		stats[field+"_application_history_retired"] = host.physical_actor_session.bridge.sampled_pose(1,serial).is_empty()
 		var frame: Dictionary = host.workbench_display_frame()
 		var shown: Dictionary = frame.get("instances",{}).get(1,{})
 		var identity := {"frame_tick":frame.get("tick",-1),"sample_tick":packet.get("sample_tick",-1),"completed_tick":snap.tick_index,
@@ -179,6 +200,7 @@ func synchronized_cavity(stats: Dictionary, field: String) -> void:
 		var bound: bool = packet.get("valid",false) and row.get("instance_id")==1 and row.get("generation")==host._physical_epoch \
 			and row.get("sample")==shown.get("sample",-1) and row.get("generation")==shown.get("generation",-1) \
 			and sampled.get("session")==packet.get("session") and sampled.get("epoch")==packet.get("epoch") \
+			and sampled.get("sample")==row.get("sample") \
 			and frame.get("session")==packet.get("session") and frame.get("epoch")==host._physical_epoch \
 			and frame.get("tick")==snap.tick_index and frame.get("sample_tick")==packet.sample_tick \
 			and snap.tick_index-int(packet.sample_tick) in [0,1] and snap.render_tick_index <= snap.tick_index \

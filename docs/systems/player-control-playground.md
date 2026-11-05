@@ -4,7 +4,7 @@ status: Current
 document-kind: contract
 scope: Experimental movement controls and shared asynchronous desktop composition, input and lap lifetime, lifecycle and bounded native failure validation; isolated Sand and Water player fields
 canonical-for: [player-control-playground, player-movement-presets, player-material-field]
-last-reviewed: 2026-11-02
+last-reviewed: 2026-11-05
 related-documents: [physical-actor-rigs.md, ../architecture/data-ownership-and-lifetimes.md, ../architecture/rigid-body-and-cellular-coupling.md, ../reference/interfaces-and-message-contracts.md, ../reference/configuration-reference.md, ../operations/local-build-and-validation.md, ../audits/2026-10-20-player-control-playground.md]
 ---
 
@@ -787,5 +787,7 @@ Open **Details** during play to see the native pool size, the peak number of wor
 The common desktop application is the destination for future playable capabilities. A new map supplies bounded extent, terrain and authored setup to this runtime. A controlled scientific fixture can still supply separate evidence. The [consolidation audit](../audits/2026-11-04-workbench-consolidation.md) owns tested platform results, failures and compatibility disposition. The [live-editing follow-up](../audits/2026-11-04-workbench-live-editing.md) records the pilot, reset, conversion and recovery tests. The [cleanup qualification](../audits/2026-11-04-workbench394-cleanup.md) records retained tuning, fleet registry lifetime and the corrected core-log citation. The [protected source transition](../audits/2026-11-04-workbench394-material-source-transition.md) separately owns MAT admission.
 
 The flyer authoring registry is a bounded copied-value cache owned by the current main loop. Its stateless façade shares accepted definitions across live workbench sessions and retires them before script shutdown. It owns no scene nodes, scripts, resources, callables, physics bodies or native cells. Reload validation and defensive-copy getters preserve the authored values and existing flight/contact laws.
+
+The workbench bridge likewise obtains its monotonically increasing session ID from main-loop-owned integer metadata. Retiring a scene cannot recycle that ID within the same process. It holds no GDScript static state: complete host qualification exposed static-script lifetime leaks and Windows exit faults beyond the earlier fleet-only controls. The [final-validation record](../audits/2026-11-04-workbench394-ready-validation.md) preserves those failures and the scoped repair; the response history, material laws and authored controls are unchanged.
 
 The [owner-accepted final-validation record](../audits/2026-11-04-workbench394-ready-validation.md) distinguishes the tested package, current-main reconciliation, rebuilt runtime identities and resulting-source hosted gates. Owner acceptance of this desktop workbench does not close the broader PLAY or REM-004 programmes.

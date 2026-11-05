@@ -106,6 +106,8 @@ func _check_owner(fallback: bool) -> void:
 		_expect(rejected != null and not rejected.lab_context.get("scenario_request_applied", true) and
 			rejected.render_world_generation == reset.render_world_generation,
 			"rejected scenario replacement invalidated valid presentation history")
+		_expect(rejected != null and str(rejected.lab_context.get("status", "")).begins_with("MicroScenario rejected; "),
+			"malformed scenario must reach the contract refusal rather than aborting the worker request")
 		var generation: int = reset.render_world_generation
 		var definition: Dictionary = Catalogue.sand_release()
 		for request: int in [2, 3]:

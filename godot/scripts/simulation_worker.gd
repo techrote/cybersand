@@ -781,8 +781,9 @@ func _apply_lab(command: Dictionary) -> bool:
 			controlled_setup = prepared.setup;guard = prepared.guard
 		var retained_host_error: String = _scenario_host.last_error
 		var retained_host_refusal: Dictionary = _scenario_host.last_liquid_policy_refusal
+		# The host validates the raw definition below, including missing identity.
 		if not _scenario_host.install(_world, command.scenario_reset, str(command.get("scenario_mode", "Inspect")),
-			command.scenario_reset.id != CyberMicroScenarioContract.WORKBENCH_ID,
+			command.scenario_reset.get("id", "") != CyberMicroScenarioContract.WORKBENCH_ID,
 			command.get("liquid_policy", null), controlled_setup, guard, continuation_token):
 			if not _pending_physical_liquid.is_empty() and not command.get("_prepared_physical_commit",false):
 				_scenario_host.last_error = retained_host_error
