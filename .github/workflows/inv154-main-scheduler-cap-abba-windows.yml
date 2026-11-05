@@ -114,7 +114,7 @@ jobs:
           write('import.log',imp.stdout+'\n'+imp.stderr)
           if imp.returncode: raise RuntimeError('Project import failed: '+str(imp.returncode))
           argv=[str(engine),'--rendering-driver','opengl3_angle','--path','godot',
-                '--script','res://tests/performance/test_main_callback_windows_probe.gd']
+                '--script','res://tests/performance/test_main_scheduler_cap_abba_windows.gd']
           write('command.json',json.dumps(argv,indent=2)+'\n')
           try:
               run=subprocess.run(argv,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,
@@ -129,7 +129,7 @@ jobs:
               print(run.stdout[-10000:])
               raise RuntimeError('no successful actual Windows Main result: exit '+str(run.returncode))
           record=json.loads(matches[0])
-          if (record.get('schema')!='inv154-scheduler-abba-observer-v1'
+          if (record.get('schema')!='inv154-main-scheduler-abba-v1'
               or record.get('platform')!='Windows'
               or record.get('display_server')=='headless'
               or record.get('failures')!=0
