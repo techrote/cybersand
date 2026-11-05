@@ -74,6 +74,16 @@ the physical response packet. New lifecycle fixtures exercise selector order,
 early locks, three-owner captures, held packet reuse/replacement/reset/teardown
 and explicit off. Existing source-qualified suites and old fixtures are retained.
 
+First actual-host attempts at5399a910 pass98existing normal-policy checks on
+both fresh runtimes and the Linux runtime floor. The new API fixture refuses
+its three-actor configuration because Scooper extends beyond the256cell canvas;
+continuation on the fallback bridge then faults before creating the native test
+World. Owned Windows/Linux processes are explicitly terminated (exits1/15).
+[Apparatus002](../../native/tests/fixtures/sol_node_trace_apparatus_002.json)
+preserves the failed copies/logs and corrects only API positions/early handling.
+The shared-body campaign inputs and compiled native source stay fixed. No
+physical episode or trace-lifetime PASS is inferred from these failed attempts.
+
 The initial resource plan retains5GiBfree and atmost2GiBnew artifacts. Actual
 buffer size and observer cost must be measured; copied diagnostic payload cost
 is not ordinary gameplay or original SOL CPU performance. Original SOL material/

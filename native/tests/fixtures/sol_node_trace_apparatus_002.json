@@ -1,0 +1,12 @@
+{
+  "registration": "SOL-NODE-TRACE-002-APPARATUS",
+  "date": "2026-11-05",
+  "parent": "SOL-NODE-TRACE-001",
+  "failed_source": "5399a910",
+  "failed_run": "build/sol-node-trace/host-001",
+  "cause": "API lifetime fixture used three inherited actor positions in a256cell canvas. Scooper's hull atx240 exceeded the canvas, so configuration refused before the native test World was constructed. Fixture continued and called pack_sample on the generic fallback bridge, then required owned-process termination.",
+  "retained": "ActualWindows tracefixture exit1 andLinux exit15/raw logs/explicit owned-process abort records; existing98normal-policy checks pass on both fresh runtimes; source/project post-inventories retained",
+  "correction": "Shift only the API fixture actors32cells left tofit its declared canvas; check configuration and quit before accessing a refused bridge. The registered shared-body16episode campaign material/poses/geometry and all native code/runtime hashes remain unchanged.",
+  "qualification": "Apparatus failure, not a physics trial or clearance result. A preliminary actor-limit explanation was disproved: configure's third argument is epoch, not capacity.",
+  "timing": "Registered before corrected actual-host rerun; failed project copies and logs preserved"
+}

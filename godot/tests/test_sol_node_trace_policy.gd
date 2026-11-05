@@ -10,7 +10,12 @@ func run() -> void:
 	checked=Contract.validate(Contract.parse(FileAccess.get_file_as_string(DAM)).definition)
 	var viewport := SubViewport.new();viewport.world_2d=World2D.new();root.add_child(viewport)
 	var session := Session.new();viewport.add_child(session)
-	check(session.configure([actor("reference_barrel",0,"LA-SELECTIVE",256),actor("kestrel",1,"LA-SELECTIVE",256),actor("scooper",2,"LA-SELECTIVE",256)],viewport.world_2d.space,1),"three actual authored owners")
+	var definitions: Array = [actor("reference_barrel",0,"LA-SELECTIVE",256),actor("kestrel",1,"LA-SELECTIVE",256),actor("scooper",2,"LA-SELECTIVE",256)]
+	for definition: Dictionary in definitions: definition.position.x-=32
+	var configured: bool = session.configure(definitions,viewport.world_2d.space,1)
+	check(configured,"three actual authored owners: "+str(session.last_error))
+	if not configured:
+		session.close();viewport.free();print("SOL_NODE_TRACE_POLICY checks=",checks," failures=",failures.size());quit(1);return
 	for body: RigidBody2D in session.bodies(): body.gravity_scale=0
 	var drives: Array[bool] = [false,false,false]
 	session.bridge.step();native_sample=session.bridge.pack_sample(drives);initial=session.bridge.pack_body_states()
