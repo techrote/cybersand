@@ -1,0 +1,25 @@
+{
+  "registration": "SOL-AUTHORITY-OFFLINE-001",
+  "date": "2026-11-05",
+  "status": "Planned contract and offline tests only",
+  "live_authority": false,
+  "actuation_permitted": false,
+  "purpose": "Progress the original SOL ownership gap without composing protected sources or performing recovery",
+  "sources": {
+    "LA394_original": "f44488e9b24c61db3924685ef3723296ab768533",
+    "LA394_final": "77c60b8e0f9b17192a4e04b20cd37ec55096c2c3",
+    "SOL347": "1598115c9065239cc1eaec11e99077274b457be1",
+    "facade393": "e4c2649e82d943554f4dc6a0634336770cda08f6",
+    "MAT386": "b661a6f354f8c51e79759d22ad4573a875964b43",
+    "energy407": "bbca191544f6a578ee14323c08d48021904893f7",
+    "value421": "4cd9ca193176e315f8e81316e2221b275cdccbde",
+    "live429": "0d87d4481286ab79a8eb9009bcc5c480de826e76",
+    "main": "ba9cbc89029be88b812af59b19e5c59829bbcd90"
+  },
+  "inventory": "Full union of native/runtime build-input inventories, retained146path map, native/godot/tools/materials/third_party trees, CI/build files, all protected consumers and ordered transition receipts; Git blobs/LF hashes and LFS pointers distinguished from materialized binaries",
+  "offline_capture": "Bounded immutable copied envelope only; exact source/runtime/World/body/epoch/tick/sample/mask/shape/payload/actual-step identities, complete tuple/exclusion inventory and query footprint. Missing or unknown evidence refuses. A complete synthetic envelope never grants live eligibility.",
+  "offline_lease": "No-op finite state model; one incarnation and actual-step budget; no token accepted by a live bridge. Capture through main validation and mask ACK remains one exclusive modeled lease; cancellation, expiry, partial failure and consumption cannot renew it.",
+  "adversarial": ["nine Sand plus16Wall", "tiny RedBrick under unchanged1e-9 exclusion", "historical rotated missing live authority", "hot/foreign/unresident/masked/unsupported/unknown", "ABA/source/identity/revision mismatch", "duplicate/delayed/reordered/overwritten/capacity", "mutation during hold", "reset/teardown/partial failure", "copied-data immutability"],
+  "forbidden": ["native or RID actuation", "live tokens", "protected World/pressure composition", "new force/correction", "original120+60 evaluator admission", "guard refresh", "default/Ready/merge"],
+  "decision": "Offline protocol PASS can only qualify its copied-value rules. E1/E2 live owner/source admission remains a separate blocked contract."
+}
