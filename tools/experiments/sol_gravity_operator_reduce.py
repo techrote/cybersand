@@ -41,6 +41,10 @@ def audit(data,profile):
     results=[]
     for episode in data['episodes']:
         assert episode['native_World']=='ABSENT' and episode['native_workers']=='NOT_APPLICABLE' and episode['teardown']
+        properties=episode['properties']
+        assert not properties['freeze'] and not properties['custom_integrator'] and not properties['omit_force_integration']
+        assert properties['physics_ticks_per_second']==profile['cadence'] and properties['server_params']
+        assert episode['actual_shapes'] and all(not s['disabled'] for s in episode['actual_shapes'])
         assert episode['initial_motion']==next(s for s in profile['initial_states'] if s['id']==episode['initial_motion']['id'])
         steps=episode['steps'];assert len(steps)==profile['steps']==32
         first=motion(steps[0]['before']);assert first[:2]==episode['initial_motion']['velocity']
@@ -49,6 +53,9 @@ def audit(data,profile):
             assert s['step']==i and s['after']['manual_step']==s['before']['manual_step']+1
             assert s['before']['manual_step']==i+1
             motion(s['before']);motion(s['after'])
+            for state in [s['before'],s['after']]:
+                assert state['constant_force']==[0,0] and state['constant_torque']==0
+                assert list(struct.unpack('<2d',bytes.fromhex(state['gravity_f64le'])))==state['gravity']
             if i:assert s['before']==steps[i-1]['after']
             for key in ['gravity','linear_damp','angular_damp','reported_step']:
                 assert s['before'][key]==steps[0]['before'][key] and s['after'][key]==s['before'][key]

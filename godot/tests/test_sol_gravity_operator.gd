@@ -52,7 +52,7 @@ func oracle(model: String, motion: Dictionary) -> Dictionary:
 	for index: int in PhysicsServer2D.body_get_shape_count(body.get_rid()):
 		var shape: RID = PhysicsServer2D.body_get_shape(body.get_rid(),index)
 		actual_shapes.append({"type":PhysicsServer2D.shape_get_type(shape),"data":PhysicsServer2D.shape_get_data(shape),
-			"transform":PhysicsServer2D.body_get_shape_transform(body.get_rid(),index),"disabled":PhysicsServer2D.body_is_shape_disabled(body.get_rid(),index)})
+			"transform":PhysicsServer2D.body_get_shape_transform(body.get_rid(),index),"disabled":body.is_shape_owner_disabled(body.shape_find_owner(index))})
 	var prime_before: Dictionary = measured(body,session.bridge)
 	body.gravity_scale=0
 	session.bridge.step()
