@@ -8,6 +8,77 @@ bool add_checked(std::int64_t& total, std::int64_t value) {
     total += value;
     return true;
 }
+String copied_trace_f64_bits(const PackedFloat64Array& values) {
+    PackedByteArray bytes;bytes.resize(values.size()*8);
+    if(bytes.size()!=values.size()*8) return {};
+    for(std::int64_t i=0;i<values.size();++i) {
+        const auto bits=std::bit_cast<std::uint64_t>(values[i]);
+        for(unsigned j=0;j<8;++j) bytes.set(i*8+j,static_cast<std::uint8_t>(bits>>(8*j)));
+    }
+    return bytes.hex_encode();
+}
+Dictionary copied_solver_trace(const cybersand::gcr::SolveTrace& trace) {
+    using namespace cybersand::gcr;
+    Dictionary value;
+    value["schema"]="gcr-node-trace-001";
+    value["status"]=trace.status==TraceStatus::Complete ? "COMPLETE" :
+        trace.status==TraceStatus::IncompleteNodeCap ? "INCOMPLETE_NODE_CAP" :
+        trace.status==TraceStatus::InputRefused ? "INPUT_REFUSED" : "NOT_EXECUTED";
+    value["complete"]=trace.status==TraceStatus::Complete;
+    value["normal_policy"]=trace.policy==NormalPolicy::Original ? "original":"active-normal-001";
+    value["storage_bytes"]=static_cast<std::int64_t>(sizeof(SolveTrace));
+    value["node_limit"]=static_cast<std::int64_t>(kTraceNodes);
+    value["total_nodes"]=trace.total_nodes;value["captured_nodes"]=trace.captured_nodes;
+    value["dropped_nodes"]=trace.dropped_nodes;value["batch_count"]=trace.batch_count;
+    value["input_bins"]=trace.input_bins;value["samples"]=static_cast<std::int64_t>(trace.samples);
+    const auto& b=trace.body;const auto& r=trace.result;
+    value["body_f64"]=PackedFloat64Array{b.velocity.x,b.velocity.y,b.com.x,b.com.y,b.omega,b.mass,b.inertia,b.mu};
+    value["solve_f64"]=PackedFloat64Array{trace.available,trace.capacity_scale,trace.base_budget};
+    value["raw_energy_after"]=trace.raw_energy_after;
+    value["result_f64"]=PackedFloat64Array{r.impulse.x,r.impulse.y,r.normal_impulse.x,r.normal_impulse.y,
+        r.tangent_impulse.x,r.tangent_impulse.y,r.raw_impulse.x,r.raw_impulse.y,r.torque,r.raw_torque,
+        r.normal,r.tangent,r.raw_normal,r.raw_tangent,r.capacity,r.energy_before,r.energy_after,r.scale,r.max_radius};
+    value["result_counts"]=PackedFloat64Array{double(r.bins),double(r.nodes),double(r.quadrature_clamps),double(r.updates),
+        double(r.normal_cap_hits),double(r.tangent_cap_hits),r.passive_rejected ? 1.:0.};
+    PackedFloat64Array nodes,node_meta,batches,batch_meta,steps,flags;
+    // Integer metadata fits exactly in scalar64 (source count is uint32).
+    for(std::size_t i=0;i<trace.captured_nodes;++i) {
+        const auto& n=trace.nodes[i];const auto& c=n.input;
+        for(double x : {c.position.x,c.position.y,c.normal.x,c.normal.y,c.weight,c.capacity}) nodes.push_back(x);
+        for(double x : {double(n.bin_index),double(n.source_count),double(n.quadrature_index),double(n.quadrature_count),n.quadrature_clamped ? 1.:0.}) node_meta.push_back(x);
+    }
+    for(std::size_t j=0;j<trace.batch_count;++j) {
+        const auto& batch=trace.batches[j];
+        for(double x : {batch.velocity_before.x,batch.velocity_before.y,batch.omega_before,
+            batch.velocity_after.x,batch.velocity_after.y,batch.omega_after,batch.diagnostic_active_weight,batch.policy_active_weight}) batches.push_back(x);
+        for(double x : {double(batch.pass),double(batch.axis),double(batch.diagnostic_active_count),double(batch.policy_active_count),
+            double(batch.normal_cap_hits),double(batch.tangent_cap_hits),batch.policy_mask_valid ? 1.:0.}) batch_meta.push_back(x);
+        for(std::size_t i=0;i<trace.captured_nodes;++i) {
+            const auto& n=batch.nodes[i];
+            for(double x : {n.jn_before,n.jt_before,n.jn_after,n.jt_after,n.speed,n.requested,n.weight_used,n.target,n.next,n.delta,n.limit}) steps.push_back(x);
+            flags.push_back(double(n.flags));
+        }
+    }
+    value["nodes_f64"]=nodes;value["node_meta_f64"]=node_meta;
+    value["batches_f64"]=batches;value["batch_meta_f64"]=batch_meta;
+    value["steps_f64"]=steps;value["flags_f64"]=flags;
+    // JSON's decimal printer is not a lossless double transport. Preserve bits,
+    // including nonfinite rejected values, independently of displayed numbers.
+    bool exported=nodes.size()==6*trace.captured_nodes && node_meta.size()==5*trace.captured_nodes &&
+        batches.size()==8*trace.batch_count && batch_meta.size()==7*trace.batch_count &&
+        steps.size()==11*trace.batch_count*trace.captured_nodes && flags.size()==trace.batch_count*trace.captured_nodes;
+    for(const char* key : {"body_f64","solve_f64","result_f64","nodes_f64","batches_f64","steps_f64"}) {
+        const PackedFloat64Array array=value[key];const auto bits=copied_trace_f64_bits(array);
+        exported=exported && bits.length()==16*array.size();value[String(key)+"le"]=bits;
+    }
+    exported=exported && PackedFloat64Array(value["body_f64"]).size()==8 && PackedFloat64Array(value["solve_f64"]).size()==3 &&
+        PackedFloat64Array(value["result_f64"]).size()==19 && PackedFloat64Array(value["result_counts"]).size()==7;
+    value["raw_energy_f64le"]=copied_trace_f64_bits(PackedFloat64Array{trace.raw_energy_after});
+    exported=exported && String(value["raw_energy_f64le"]).length()==16;
+    value["export_complete"]=exported;value["kernel_status"]=value["status"];
+    if(!exported) {value["status"]="EXPORT_FAILED";value["complete"]=false;}
+    return value;
+}
 }
 // Included in CyberNativeCellWorld's namespace. One immutable physical roster per
 // prepared World. Shape slots only own occupancy and contact bins, never an application.
@@ -128,10 +199,25 @@ bool CyberNativeCellWorld::diagnostic_set_workbench_normal_policy(const String& 
     return true;
 }
 
+bool CyberNativeCellWorld::diagnostic_set_workbench_solver_trace(const String& mode) {
+    if (!diagnostic_fixture_ || !world_ || world_->has_failed() || !workbench_ || pending_liquid_world_ ||
+        world_->completed_tick_index()!=0 || workbench_->sampled || workbench_->trace_locked ||
+        workbench_->response!="LA-SELECTIVE") return false;
+    if (mode!="off" && mode!="batch64-001") return false;
+    std::unique_ptr<cybersand::gcr::SolveTrace> next;
+    if (mode=="batch64-001") {
+        next.reset(new(std::nothrow) cybersand::gcr::SolveTrace);
+        if (!next) return false;
+    }
+    workbench_->trace=std::move(next);
+    workbench_->trace_locked=true;
+    return true;
+}
+
 bool CyberNativeCellWorld::prepare_workbench_coupling(const PackedFloat64Array& states,
         const PackedFloat64Array& geometry, const Array& owners, std::int64_t session,
         std::int64_t epoch, bool resolve_overlaps) {
-    if (workbench_) workbench_->normal_policy_locked = true;
+    if (workbench_) { workbench_->normal_policy_locked = true; workbench_->trace_locked = true; }
     if (!world_ || world_->has_failed() || !workbench_) return false;
     workbench_->valid = false;
     WorkbenchSample next;
@@ -274,6 +360,7 @@ void CyberNativeCellWorld::accumulate_workbench_contacts() {
 }
 
 Dictionary CyberNativeCellWorld::workbench_body_result(std::size_t id) const {
+    if (workbench_->trace) workbench_->trace->reset();
     const auto& owner=workbench_->sample.owners[id];
     const auto& body=current_bodies_[owner.first];
     using cybersand::gcr::Vec;
@@ -343,7 +430,7 @@ Dictionary CyberNativeCellWorld::workbench_body_result(std::size_t id) const {
     state.omega=body.angular_velocity+event_torque/body.inertia;
     state.com={body.com.x,body.com.y}; state.mass=body.mass; state.inertia=body.inertia; state.mu=body.friction;
     const auto passive=cybersand::gcr::solve_compound(state,{bins.data(),bin_count},workbench_->workspace,
-        cap-cost*event_scale,mass_scale,owner.budget,workbench_->normal_policy);
+        cap-cost*event_scale,mass_scale,owner.budget,workbench_->normal_policy,workbench_->trace.get());
     Vec applied_legacy=legacy*legacy_scale;
     Vec impulse=applied_legacy+event+passive.impulse;
     if (single) {
@@ -386,18 +473,29 @@ Dictionary CyberNativeCellWorld::workbench_body_result(std::size_t id) const {
         row["passive_scale"]=passive.scale; row["normal_raw"]=passive.raw_normal; row["tangent_raw"]=passive.raw_tangent;
         row["normal_cap_hits"]=passive.normal_cap_hits; row["tangent_cap_hits"]=passive.tangent_cap_hits;
         row["bins"]=passive.bins; row["updates"]=passive.updates; row["quadrature_clamps"]=passive.quadrature_clamps;
+        if(workbench_->trace) {
+            Dictionary capture=copied_solver_trace(*workbench_->trace);
+            capture["owner_id"]=static_cast<std::int64_t>(id);capture["instance_id"]=owner.instance;
+            capture["generation"]=owner.generation;capture["sample"]=body.sample_serial;
+            row["solver_trace"]=capture;
+        }
     }
     return row;
 }
 
 Dictionary CyberNativeCellWorld::workbench_coupling_results() const {
-    if (workbench_) workbench_->normal_policy_locked = true;
+    if (workbench_) { workbench_->normal_policy_locked = true; workbench_->trace_locked = true; }
     if (!workbench_ || !world_ || world_->has_failed()) return {};
     Dictionary result; Array rows;
     result["session"]=workbench_->sample.session; result["epoch"]=workbench_->sample.epoch;
     result["response"]=workbench_->response; result["extent"]=extent_;
     result["normal_policy"]=workbench_->normal_policy==cybersand::gcr::NormalPolicy::Original ? "original":"active-normal-001";
     result["normal_policy_locked"]=workbench_->normal_policy_locked;
+    if(diagnostic_fixture_) {
+        result["solver_trace_mode"]=workbench_->trace ? "batch64-001":"off";
+        result["solver_trace_locked"]=workbench_->trace_locked;
+        result["solver_trace_storage_bytes"]=workbench_->trace ? static_cast<std::int64_t>(sizeof(cybersand::gcr::SolveTrace)):0;
+    }
     result["proxy_limit"]=cybersand::World::kMaximumTransientBodies;
     result["body_limit"]=static_cast<std::int64_t>(kWorkbenchBodies);
     result["world_mask_cell_limit"]=static_cast<std::int64_t>(extent_.x)*extent_.y;

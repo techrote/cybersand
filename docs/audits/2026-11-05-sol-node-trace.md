@@ -30,6 +30,23 @@ normal policies, workers1/4, one repeat and all180steps/three owners. This is
 not a repeat of the full physical matrix or an original SOL acceptance clock.
 The historical header guard, old runtimes and all evidence remain unchanged.
 
+The first implementation checkpoint adds the optional templated value observer
+and fresh diagnostic adapter in the same four experimental native files. The
+off specialization contains no node-observation checks. A Workbench-owned null
+`unique_ptr` becomes a fixed buffer only after successful fresh admission;
+normal/trace selectors have independent latches. Captures are copied into each
+row before scratch reuse. Failed export lengths mark EXPORT_FAILED without
+changing the physical response. The [wire schema](../../native/tests/fixtures/sol_node_trace_wire_001.json)
+defines every packed column and lossless IEEE754little-endian bit companion.
+Decimal JSON is not the exact arithmetic oracle.
+
+Read-only source reviews found and corrected an enum/warning risk, an aliased
+body/reset hazard and off-path index bookkeeping before compilation. Native
+regressions cover the38frozen cases plus0/1/64/65/1024node boundaries, both
+policies, stale primed workspace/sink, body aliasing and nonfinite refused input.
+Actual compiler sizes, physical parity and runtime/API qualification are still
+unavailable at this checkpoint; no old runtime receipt qualifies this new source.
+
 The initial resource plan retains5GiBfree and atmost2GiBnew artifacts. Actual
 buffer size and observer cost must be measured; copied diagnostic payload cost
 is not ordinary gameplay or original SOL CPU performance. Original SOL material/

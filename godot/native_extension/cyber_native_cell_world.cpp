@@ -9,10 +9,12 @@
 
 #include <algorithm>
 #include <array>
+#include <bit>
 #include <chrono>
 #include <cstdio>
 #include <cmath>
 #include <numbers>
+#include <new>
 #include <span>
 #include <stdexcept>
 #include <string>
@@ -71,6 +73,8 @@ void CyberNativeCellWorld::_bind_methods() {
     ClassDB::bind_method(D_METHOD("diagnostic_reset", "options"), &CyberNativeCellWorld::diagnostic_reset);
     ClassDB::bind_method(D_METHOD("diagnostic_set_workbench_normal_policy", "policy"),
                          &CyberNativeCellWorld::diagnostic_set_workbench_normal_policy);
+    ClassDB::bind_method(D_METHOD("diagnostic_set_workbench_solver_trace", "mode"),
+                         &CyberNativeCellWorld::diagnostic_set_workbench_solver_trace);
     ClassDB::bind_method(D_METHOD("diagnostic_fill_rect", "origin", "size", "material", "state_b"), &CyberNativeCellWorld::diagnostic_fill_rect, DEFVAL(0));
     ClassDB::bind_method(D_METHOD("diagnostic_relocate_cell", "from", "to"),
                          &CyberNativeCellWorld::diagnostic_relocate_cell);
@@ -353,7 +357,7 @@ void CyberNativeCellWorld::reset_demo_coupling_parameters() noexcept {
 }
 
 bool CyberNativeCellWorld::simulation_tick() {
-    if (workbench_) workbench_->normal_policy_locked = true;
+    if (workbench_) { workbench_->normal_policy_locked = true; workbench_->trace_locked = true; }
     if (world_ == nullptr || world_->has_failed()) return false;
     const auto start = std::chrono::steady_clock::now();
     bool succeeded = false;
@@ -421,7 +425,7 @@ void CyberNativeCellWorld::paint_disc(std::int64_t centre_x, std::int64_t centre
 }
 
 void CyberNativeCellWorld::prepare_rigid_body_coupling(const PackedFloat32Array& states, bool resolve_overlaps) {
-    if (workbench_) workbench_->normal_policy_locked = true;
+    if (workbench_) { workbench_->normal_policy_locked = true; workbench_->trace_locked = true; }
     if (workbench_ || world_ == nullptr || world_->has_failed()) return;
     parse_body_states(states);
     prepare_body_coupling(resolve_overlaps);
@@ -837,7 +841,7 @@ void CyberNativeCellWorld::record_impulse(std::uint16_t body_id, Vector2 impulse
 }
 
 PackedFloat32Array CyberNativeCellWorld::rigid_body_results() const {
-    if (workbench_) workbench_->normal_policy_locked = true;
+    if (workbench_) { workbench_->normal_policy_locked = true; workbench_->trace_locked = true; }
     if (workbench_) return {};
     PackedFloat32Array results;
     if (world_ == nullptr || world_->has_failed()) return results;

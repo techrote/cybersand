@@ -1,0 +1,20 @@
+{
+  "schema": "gcr-node-trace-001",
+  "registration": "SOL-NODE-TRACE-001",
+  "node_limit": 64,
+  "batch_order": "pass0normal,tangent,pass1normal,tangent,pass2normal,tangent,pass3normal,tangent",
+  "floating_transport": "Numeric arrays plus mandatory hexadecimal IEEE754little-endian bit siblings (key+le); raw_energy_f64le separately. Decimal display is not the exact oracle. Bits preserve nonfinite rejected values; finite capture required for positive scientific interpretation.",
+  "body_f64": ["vx","vy","com_x","com_y","omega","mass","inertia","mu"],
+  "solve_f64": ["available","capacity_scale","base_budget"],
+  "result_f64": ["impulse_x","impulse_y","normal_impulse_x","normal_impulse_y","tangent_impulse_x","tangent_impulse_y","raw_impulse_x","raw_impulse_y","torque","raw_torque","normal","tangent","raw_normal","raw_tangent","capacity","energy_before","energy_after","scale","max_radius"],
+  "result_counts": ["bins","nodes","quadrature_clamps","updates","normal_cap_hits","tangent_cap_hits","passive_rejected"],
+  "nodes_f64": ["x","y","normal_x","normal_y","original_weight","capacity"],
+  "node_meta_f64": ["input_bin_index","source_count","quadrature_index","quadrature_count","quadrature_clamped"],
+  "batches_f64": ["vx_before","vy_before","omega_before","vx_after","vy_after","omega_after","diagnostic_active_weight","policy_active_weight"],
+  "batch_meta_f64": ["pass","axis","diagnostic_active_count","policy_active_count","normal_cap_hits_delta","tangent_cap_hits_delta","policy_mask_valid"],
+  "steps_f64": ["jn_before","jt_before","jn_after","jt_after","speed","requested","weight_used","target","next","delta","limit"],
+  "flags_f64": {"diagnostic_active_valid":1,"diagnostic_active":2,"policy_mask_valid":4,"policy_active":8,"strict_cap_hit":16,"normal_unwind":32,"tangent_unwind":64},
+  "metadata": "Integers encoded as doubles are exact (uint32maximum); samples is int64. Only captured_nodes and batch_count delimit populated arrays; tails/padding never serialized.",
+  "status": ["NOT_EXECUTED","INPUT_REFUSED","COMPLETE","INCOMPLETE_NODE_CAP","EXPORT_FAILED"],
+  "semantics": "Complete describes observation, not physical acceptance. Energy-rejected solve can have complete capture. Overflow never reduces physical nodes or updates. Original policy mask is inapplicable; descriptive activity remains distinct."
+}

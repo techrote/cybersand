@@ -141,6 +141,7 @@ public:
     bool diagnostic_reset(const Dictionary& options);
     // One-use, fresh diagnostic Workbench only; exclusive tick-boundary owner.
     bool diagnostic_set_workbench_normal_policy(const String& policy);
+    bool diagnostic_set_workbench_solver_trace(const String& mode);
     bool diagnostic_fill_rect(Vector2i origin, Vector2i size, std::int64_t material,
                               std::int64_t state_b = 0);
     // Serialized diagnostic-only relocation through World::relocate_stored_cell.
@@ -244,11 +245,12 @@ private:
     struct Workbench {
         String response;
         WorkbenchSample sample;
-        bool valid = false, sampled = false, normal_policy_locked = false;
+        bool valid = false, sampled = false, normal_policy_locked = false, trace_locked = false;
         cybersand::gcr::NormalPolicy normal_policy = cybersand::gcr::NormalPolicy::Original;
         std::uint64_t prepared_tick = 0;
         std::array<std::array<cybersand::gcr::Bin,8>,cybersand::World::kMaximumTransientBodies + 1> bins{};
         cybersand::gcr::CompoundWorkspace workspace{};
+        std::unique_ptr<cybersand::gcr::SolveTrace> trace;
     };
     std::unique_ptr<Workbench> workbench_;
     static bool parse_workbench_sample(WorkbenchSample& out, const Workbench& retained,
