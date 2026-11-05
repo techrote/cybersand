@@ -27,7 +27,7 @@ The bounded question is whether `Main` spends nontrivial per-render-frame CPU ti
 2. `main.gd:1025–1029`: `_refresh_microscenario_controls()` immediately calls `microscenario_panel.refresh(tower_context)` whenever the panel exists.
 3. `microscenario_panel.gd:116–118`: `refresh` unconditionally calls `workbench.refresh(context)` even if the modal liquid panel is closed.
 4. `microscenario_workbench.gd:181–183`: `refresh` calls `context.get("microscenario", {}).duplicate(true)` before determining whether a schema-2 scenario is enabled or its UI may be shown. Thus the call site is **one deep-copy attempt per applicable rendered frame**; actual copied content varies with the scenario.
-5. `microscenario_workbench.gd:191–205`: when enabled and unguarded, the region overlay also invokes `queue_redraw()` on every refresh, irrespective of a new publication or camera change.
+5. **Correction, verified against the actual source on 2026-11-05:** `microscenario_workbench.gd:191–205` calls `overlay.queue_redraw()` only inside `if hash != _shown_hash` (definition-hash change). The earlier statement that it redraws on *every* refresh was wrong. Region overlay repaint cost is **not** an independently established per-refresh bottleneck. The unconditional workbench `duplicate(true)` at line 182 remains source-verified; neither this correction nor the synthetic copy benchmarks attributes real frame-time delay.
 6. `main.gd:2872` assigns `tower_context = snapshot.lab_context` only upon consumption of a new worker snapshot, but a second distinct synchronous Web controller also uses the MicroScenario panel. A future cache keyed to desktop snapshot identity **cannot** simply be imposed on Web without a separate identity/freshness contract.
 
 This inspection establishes a repeated allocation/copy opportunity, not a proven amount of time, retained allocation, frame-time reduction or semantic safety of caching. In particular, `Main`'s **shared workbench** branch skips `_refresh_microscenario_controls`; observations measured solely there are not evidence for this path.
@@ -156,3 +156,40 @@ No production cache, semantic change, or merge authorization follows.
 4. Do not modify `main.gd`, `physical_actor_overlay.gd`, shader or native worker while #409/#402/#403/other owners hold adjacent active work. No production speedup, fix, merge or owner disposition is claimed here.
 
 **Disposition:** DIAGNOSTIC APPARATUS ONLY. This is a new controlled cost discriminator and precise source-derived hypothesis, not a finished performance optimization. Preserve negative data and stop before production integration.
+
+
+## Third bounded discrimination: real Workbench Control execution (5 November 2026)
+
+The previous Windows results measured **standalone Dictionary.duplicate(true)** only. A new
+isolated apparatus `godot/tests/performance/test_microscenario_workbench_refresh_cost.gd`
+now exercises the **actual source-byte-identical** `CyberMicroScenarioWorkbench.refresh()`
+and compares it to a direct deep-copy control, using a minimal real Godot Control
+tree with six source-bounded synthetic payload/visibility combinations:
+
+- 0 observations / 1 material active; 24 observations / 8 and 24 materials active;
+- 24 observations / 24 materials but inactive, pending-guarded or HUD-hidden.
+- 300 inspection-pair records at the 24-material limit; no native-generated records.
+
+The Windows workflow copies `microscenario_workbench.gd` and
+`microscenario_comparison.gd` byte-for-byte into a scratch project and records
+their SHA-256s. **Only** the separate scratch MicroScenario contract/identity
+objects are synthetic; the runtime and UI `refresh()` method under test are
+unchanged. Its self-checking cases verify guarded visibility, overlay suppression,
+deep-copy non-aliasing, observation/inspection retention and matching readback
+checksums against the direct-copy arm. Each arm has three repetitions of 400
+refreshes, interleaved to reduce monotonic timing bias. The primary readout is
+**elapsed CPU-loop time**, not Main frame time or graphical throughput.
+
+A first Windows hosted experiment was preserved as
+[run 42009471611](https://github.com/techrote/cybersand/actions/runs/42009471611):
+the first two original standalone probes passed, but the new experiment failed
+before execution because the scratch project's unregistered `class_name`
+was used as a type annotation in the *diagnostic driver*. No production script
+or physics input was changed to repair the driver. Subsequent execution remains
+source/head-specific; a successful continuation must not relabel the original failure.
+
+This remains a headless Windows **presentation-control** study, not a fully
+constructed `Main`, not a Windows GPU/ANGLE run, not native/Rapier participation,
+and not a runtime implementation change. Even a large real-Control-vs-copy
+delta only prioritizes later real-Main profiling; it cannot authorize caching
+mutable snapshots or claim an FPS win.
