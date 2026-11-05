@@ -170,6 +170,14 @@ inline Result solve_compound(const Body& b, std::span<const Bin* const> bins,
     out.energy_before=kinetic(b,b.velocity,b.omega);
     out.energy_after=kinetic(b,b.velocity+out.impulse*(1./b.mass),b.omega+out.torque/b.inertia);
     if(!std::isfinite(out.energy_after) || out.energy_after>out.energy_before+1e-6*std::max(1.,out.energy_before)) {
+        // The opt-in active-normal proposal can overshoot after friction/torque
+        // coupling. Where its *finite* proposal violates passivity, retry the
+        // unchanged historical weights rather than discarding a valid contact
+        // response. This path is opt-in only and cannot bypass the original
+        // energy refusal (the historical solve checks it independently).
+        if(normalize_active_normal && std::isfinite(out.energy_after) &&
+           std::isfinite(out.energy_before))
+            return solve_compound(b,bins,workspace,available,capacity_scale,base_budget,false);
         out.passive_rejected=true; out.scale=0;
         out.impulse={}; out.normal_impulse={}; out.tangent_impulse={};
         out.torque=0; out.normal=0; out.tangent=0; out.energy_after=out.energy_before;
