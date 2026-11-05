@@ -50,3 +50,32 @@ void test_pressure_moving_region_exact_and_warm() {
         }
     }
 }
+
+// #201: World::find_chunk's per-thread cache must never return a pointer from
+// replaced map contents (clear, rehash, a destroyed World at the same address,
+// or interleaved lookups in two Worlds on one thread).
+void test_chunk_lookup_cache_invalidation() {
+    World a;
+    World b;
+    a.set(5, 5, Material::Sand);
+    b.set(5, 5, Material::Water);
+    for (int i = 0; i < 4; ++i) {
+        require(a.get(5, 5) == Material::Sand && b.get(5, 5) == Material::Water,
+                "interleaved Worlds share a cached chunk");
+    }
+    a.reserve_region({-512, -512, 2048, 2048});  // forces rehash and many insertions
+    require(a.get(5, 5) == Material::Sand && a.get(-300, -300) == Material::Empty, "rehash invalidated a lookup");
+    a.clear();
+    require(a.get(5, 5) == Material::Empty, "clear() left a cached chunk visible");
+    a.set(5, 5, Material::Stone);
+    require(a.get(5, 5) == Material::Stone, "re-inserted chunk not observed");
+    for (int round = 0; round < 8; ++round) {
+        auto owner = std::make_unique<World>();
+        owner->set(1, 1, round % 2 == 0 ? Material::Sand : Material::Water);
+        require(owner->get(1, 1) == (round % 2 == 0 ? Material::Sand : Material::Water),
+                "a World at a reused address saw a destroyed World's chunk");
+        require(owner->get(400, 400) == Material::Empty, "absent chunk lookup changed");
+    }
+    World moved = std::move(b);
+    require(moved.get(5, 5) == Material::Water, "move lost the chunk map");
+}

@@ -1573,14 +1573,46 @@ World::Address World::address(std::int64_t x, std::int64_t y) const noexcept {
     };
 }
 
+namespace {
+std::atomic<std::uint64_t> next_chunk_lookup_generation{1};
+// One entry per thread (owner and each pool worker): consecutive cell lookups
+// overwhelmingly hit the same chunk. Map mutations happen only on the serialized
+// owner while no worker runs, and each takes a fresh generation.
+struct ChunkLookupCacheEntry {
+    std::uint64_t generation = 0;
+    ChunkCoord coord{};
+    const void* chunk = nullptr;
+};
+thread_local ChunkLookupCacheEntry chunk_lookup_cache;
+} // namespace
+
+World::ChunkLookupGeneration::ChunkLookupGeneration() noexcept
+    : value(next_chunk_lookup_generation.fetch_add(1, std::memory_order_relaxed)) {}
+World::ChunkLookupGeneration::ChunkLookupGeneration(ChunkLookupGeneration&& other) noexcept
+    : value(next_chunk_lookup_generation.fetch_add(1, std::memory_order_relaxed)) {
+    other.advance();
+}
+World::ChunkLookupGeneration& World::ChunkLookupGeneration::operator=(ChunkLookupGeneration&& other) noexcept {
+    advance();
+    other.advance();
+    return *this;
+}
+void World::ChunkLookupGeneration::advance() noexcept {
+    value = next_chunk_lookup_generation.fetch_add(1, std::memory_order_relaxed);
+}
+
 World::Chunk* World::find_chunk(ChunkCoord coord) noexcept {
-    const auto found = chunks_.find(coord);
-    return found == chunks_.end() ? nullptr : found->second.get();
+    return const_cast<Chunk*>(static_cast<const World&>(*this).find_chunk(coord));
 }
 
 const World::Chunk* World::find_chunk(ChunkCoord coord) const noexcept {
+    auto& cache = chunk_lookup_cache;
+    if (cache.generation == chunk_generation_.value && cache.coord == coord)
+        return static_cast<const Chunk*>(cache.chunk);
     const auto found = chunks_.find(coord);
-    return found == chunks_.end() ? nullptr : found->second.get();
+    const Chunk* chunk = found == chunks_.end() ? nullptr : found->second.get();
+    cache = {chunk_generation_.value, coord, chunk};
+    return chunk;
 }
 
 World::Chunk& World::ensure_chunk(ChunkCoord coord) {
@@ -1602,6 +1634,7 @@ World::Chunk& World::ensure_chunk(ChunkCoord coord) {
         chunk->granular_arrivals = std::make_unique<std::vector<std::uint64_t>>(chunk->cells.size(), 0);
     }
     const auto [iterator, inserted] = chunks_.try_emplace(coord, std::move(chunk));
+    if (inserted) chunk_generation_.advance();
     if (inserted && iterator->second->granular_arrivals)
         granular_arrival_storage_bytes_ += iterator->second->granular_arrivals->size()*sizeof(std::uint64_t);
     if (inserted) register_discovery_chunk(coord, *iterator->second);
@@ -2874,6 +2907,7 @@ void World::clear() {
     tick_failed_ = false;
     clear_transient_obstacles();
     chunks_.clear();
+    chunk_generation_.advance();
     granular_arrival_storage_bytes_ = 0;
     reset_quantity_ledger();
     active_chunk_scratch_.clear();

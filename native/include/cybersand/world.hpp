@@ -464,6 +464,17 @@ private:
     bool flow_mixing_enabled_ = false;
     bool flow_carrying_enabled_ = false;
     std::unordered_map<ChunkCoord, std::unique_ptr<Chunk>, ChunkCoordHash> chunks_;
+    // #201: identity of the current chunk-map contents for the per-thread
+    // find_chunk cache. Every insertion, clear and move takes a fresh, never
+    // reused value, so a cached pointer can only match the map that produced it.
+    struct ChunkLookupGeneration {
+        std::uint64_t value;
+        ChunkLookupGeneration() noexcept;
+        ChunkLookupGeneration(ChunkLookupGeneration&& other) noexcept;
+        ChunkLookupGeneration& operator=(ChunkLookupGeneration&& other) noexcept;
+        void advance() noexcept;
+    };
+    ChunkLookupGeneration chunk_generation_{};
     std::vector<ChunkCoord> active_chunk_scratch_;
     std::vector<SchedulingCoreCoord> active_core_scratch_;
     std::vector<ExplosionCommand> pending_explosions_;

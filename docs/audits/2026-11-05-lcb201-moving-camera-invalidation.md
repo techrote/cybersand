@@ -155,8 +155,42 @@ recorded as an intermittent participation premise, not a behavioural difference;
 the fixture's failure message now prints which premise failed.
 
 The gain is engine-wide (any material with pair chemistry probes neighbours this
-way), not specific to PressureFlow. The next candidate is the per-sample chunk
-hash lookup in the PressureFlow kernel and wake scan.
+way), not specific to PressureFlow.
+
+## Third step: per-thread chunk lookup cache
+
+A second profile of the same arm after the pair tables attributed ≈42 % of samples
+to `std::unordered_map` lookups behind `World::find_chunk`. `find_chunk` now keeps
+one `{generation, coordinate, chunk}` entry per thread (owner and each pool worker).
+`ChunkLookupGeneration` takes a fresh, globally unique value on construction,
+every chunk insertion, `clear()` and both sides of a move, so a cached pointer only
+matches the exact map contents that produced it (chunks are never erased
+individually; rehashing keeps `unique_ptr` targets). Map mutation happens only on
+the serialized owner while no worker runs. Lookups return the same pointer as the
+map; no state, ordering or allocation behaviour changes.
+
+Dam break (1024×192, 4 workers, 300 ticks, identical surface metrics in every arm):
+
+| Build | Arm | main | pair tables | + chunk cache |
+|---|---|---:|---:|---:|
+| Linux g++ 13.3.0 `-O2` | PressureFlow cached_dormant, gas off | 8.07 ms | 3.82 ms | 2.93 ms |
+| Linux | FreeMass | 7.97 ms | 2.61 ms | 2.41 ms |
+| Linux | PressureFlow reference, gas on | 11.79 ms | 7.00 ms | 5.65 ms |
+| Windows LLVM-MinGW Clang 23.1.0 `-O2 -static` | PressureFlow cached_dormant, gas off | 3.08 ms | 3.04 ms | 2.04 ms |
+| Windows | FreeMass | 2.25 ms | 2.15 ms | 1.26 ms |
+| Windows | PressureFlow reference, gas on | 6.32 ms | — | 4.48 ms |
+
+The `may_pair` penalty is specific to GCC; Clang already hoists the constexpr table,
+so on Windows the chunk cache is the whole gain. Windows `thread_local` access is
+not a penalty with this toolchain.
+
+Verification: full native suite 167/167 on two consecutive runs; the moving-region
+test now also covers cache invalidation (clear, rehash, a World reallocated at the
+same address, interleaved Worlds on one thread, move). ThreadSanitizer (g++ 13.3.0
+`-fsanitize=thread -O1`, run under `setarch -R` because the WSL2 kernel's mmap
+randomization otherwise aborts TSan at start-up): "LCB-002" 17/17, "worker" 18/18,
+"pressure" 21/21, no reports. The p50 columns are native tick times; Linux ran
+under WSL2 on the same 12-thread host as the Windows run (advisory).
 
 Protected source, second step: `native/src/world.cpp` LF SHA-256
 `b713711374e1ba887bcdd9a49629c11aaf66b55b621b347f1fe0d050d569bc0a` → `184c02da856f37a46bb1923f68f7ddf1dd10256d12b82e6dbe22c2c5163e9d5e` at source commit `4be6590f8dde3c7d67ffe729e7284cc61d0f1d8b` (issue 201, PR 405), proposed as a reviewed

@@ -33,7 +33,10 @@ inclusion wake is now the dominant moving-camera cost. The same draft also
 caches the exact `may_pair`/`has_pair_rule` results that were rebuilt on every
 neighbour probe: an active dam break's tick falls by ≈39–68 % (gas-free
 cached_dormant PressureFlow 8.1 → 3.8 ms, FreeMass 8.0 → 2.6 ms, 4 workers) with
-identical results. In-app, platform and independent-review gates remain open.
+identical results. A per-thread chunk lookup cache then removes most map
+lookups: cumulatively gas-free cached_dormant PressureFlow falls from 8.1 to
+2.9 ms (Linux GCC) and 3.1 to 2.0 ms (Windows Clang), FreeMass from 8.0 to
+2.4 ms and 2.3 to 1.3 ms. In-app, platform and independent-review gates remain open.
 
 ## PressureFlow desktop region flip (#201) — 2026-11-04
 
