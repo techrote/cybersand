@@ -2144,8 +2144,11 @@ void World::set_simulation_region(std::optional<RectI64> region) {
     const auto previous_selected = selected_core_region_;
     simulation_region_ = region;
     selected_core_region_ = selected;
-    if (pressure_ != nullptr && pressure_->cache != nullptr && selected_core_region_ != previous_selected)
-        pressure_->cache->cold();
+    // #201: every pressure-derived structure (column/row index, heads, gas
+    // topology and components, rest certificates and P1 wake summaries) is
+    // computed over all resident chunks and never reads the selected region.
+    // A coverage change alone therefore keeps it valid; newly included blocks
+    // are still woken at tick entry, and every input path still invalidates.
     if (settled_discovery_ != nullptr && selected_core_region_ != previous_selected) {
         const auto outcome = settled_discovery_->begin_inclusion_request();
         if (outcome == soliding::DiscoveryOutcome::Accepted)

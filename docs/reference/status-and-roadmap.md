@@ -21,6 +21,17 @@ committed record, and refused for identity inputs. The table starts empty;
 the lock, baseline and digests are unchanged. #382 (#201 P1) is the first PR
 to add an entry, together with its source change.
 
+## PressureFlow moving-camera invalidation (#201) — 2026-11-05
+
+**Experimental draft, not on main.** The [moving-camera record](../audits/2026-11-05-lcb201-moving-camera-invalidation.md)
+removes the cache `cold()` that every selected-core change triggered. No cache
+structure reads the region; reference/cached/cached_dormant stay bit-identical
+at 1 and 4 workers, and pure camera motion no longer rebuilds the index, gas or
+heads. Natively, cached p99 at 1–4 cells/tick falls from ≈32–37 ms to ≈11–14 ms
+and p50 at 16 cells/tick from ≈26 ms to ≈11 ms. The unchanged tick-entry
+inclusion wake is now the dominant moving-camera cost. In-app, platform and
+independent-review gates remain open.
+
 ## PressureFlow desktop region flip (#201) — 2026-11-04
 
 The [region-flip record](../audits/2026-11-04-lcb201-region-flip.md) fixes a

@@ -276,7 +276,12 @@ in-app cached/dormant cost more than reference. The worker now leaves a
 fixed-interest scenario's region to the scenario
 ([region-flip record](../audits/2026-11-04-lcb201-region-flip.md)). A moving
 camera window still makes the cache cold whenever its selected cores change.
-Narrowing that native invalidation is a separate, unimplemented follow-up.
+Narrowing that native invalidation is a separate follow-up. **Experimental,
+not on main (2026-11-05):** a draft branch removes the selected-core `cold()`,
+since no cache structure reads the region; it is exact against reference at
+1/4 workers and keeps the cache warm under camera motion
+([moving-camera record](../audits/2026-11-05-lcb201-moving-camera-invalidation.md)).
+The tick-entry inclusion wake, unchanged, then dominates moving-camera cost.
 
 ## Acceptance and remaining application work
 
