@@ -1,20 +1,17 @@
 name: PR379 Godot 117991 Windows A/B diagnostic
 
 on:
-  pull_request:
-    types: [opened, synchronize, reopened]
-    paths:
-      - 'tools/play/run_godot117991_ab.py'
-      - 'tools/play/godot117991.patch'
-      - '.github/workflows/play-windows-godot117991-ab.yml'
+  push:
+    branches:
+      - experiment/pr379-godot117991-windows-ab-20261105
   workflow_dispatch:
 
 permissions:
   contents: read
 
 concurrency:
-  group: pr379-godot117991-ab-${{ github.event.pull_request.head.sha || github.sha }}
-  cancel-in-progress: false
+  group: pr379-godot117991-ab
+  cancel-in-progress: true
 
 env:
   APP_SHA: e7e404b696fb9fc48cdadc95a69baf3a6f5fc6d1
@@ -25,10 +22,7 @@ env:
 
 jobs:
   windows-ab:
-    if: >-
-      (github.event_name == 'workflow_dispatch' && github.ref_name == 'experiment/pr379-godot117991-windows-ab-20261105') ||
-      (github.event_name == 'pull_request' &&
-       github.event.pull_request.head.ref == 'experiment/pr379-godot117991-windows-ab-20261105')
+    if: github.ref == 'refs/heads/experiment/pr379-godot117991-windows-ab-20261105'
     runs-on: windows-2022
     timeout-minutes: 360
     defaults:
@@ -43,7 +37,7 @@ jobs:
       - name: Check out diagnostic harness
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
-          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          ref: ${{ github.sha }}
           path: harness
           fetch-depth: 0
           lfs: false
