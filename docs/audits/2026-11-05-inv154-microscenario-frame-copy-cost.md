@@ -176,7 +176,7 @@ their SHA-256s. **Only** the separate scratch MicroScenario contract/identity
 objects are synthetic; the runtime and UI `refresh()` method under test are
 unchanged. Its self-checking cases verify guarded visibility, overlay suppression,
 deep-copy non-aliasing, observation/inspection retention and matching readback
-checksums against the direct-copy arm. Each arm has three repetitions of 400
+checksums against the direct-copy arm. Each arm has three repetitions of 64
 refreshes, interleaved to reduce monotonic timing bias. The primary readout is
 **elapsed CPU-loop time**, not Main frame time or graphical throughput.
 
@@ -193,3 +193,78 @@ constructed `Main`, not a Windows GPU/ANGLE run, not native/Rapier participation
 and not a runtime implementation change. Even a large real-Control-vs-copy
 delta only prioritizes later real-Main profiling; it cannot authorize caching
 mutable snapshots or claim an FPS win.
+
+
+### Windows execution and bounded conclusion (2026-11-05)
+
+The **real workbench refresh apparatus now passed** on GitHub-hosted Windows
+Server 2022 with SHA-512-pinned official Godot 4.7 (headless, standalone
+presentation Control tree). Exactly executed commit
+`e8addd9b68f3d9baa3fab4e70f6e397e85851537`, tree
+`4c461cbfdead8078e2364918034aa4d4ed86a0f0`, test driver blob
+`9cbaf288253b0d2880d3b9c25fe586b1ca52cff5`.
+[Windows workflow run 42011245061](https://github.com/techrote/cybersand/actions/runs/42011245061)
+**SUCCESS**, [raw output and source custody artifact 13407825426](https://github.com/techrote/cybersand/actions/runs/42011245061/artifacts/13407825426).
+The two original copy tests ran unchanged and passed. The new **real Control**
+driver reported 6 cases × 3 repetitions × 2 interleaved arms = **36 rows,
+0 contract/parity failures**, with non-aliasing, visibility and guard controls.
+
+Three-run medians below are elapsed milliseconds for **64** refreshes, not a
+single displayed-frame time. The direct-copy arm is a control, **not** a
+candidate production implementation.
+
+| Synthetic condition | Actual `Workbench.refresh()` | Direct `duplicate(true)` |
+| --- | ---: | ---: |
+| Active; 0 observations, 1 material, 1 pair | 0.850 | 0.430 |
+| Active; 24 observations, 8 materials, 36 pairs | 7.433 | 6.933 |
+| Active; 24 observations, 24 materials, 300 pairs | 36.391 | 36.730 |
+| Inactive but retained 24/24 payload | 36.700 | 37.048 |
+| Guarded but retained 24/24 payload | 34.799 | 35.386 |
+| HUD hidden but retained 24/24 payload | 36.294 | 34.965 |
+
+**Causal discrimination:** At the 24-material synthetic payload the unmodified
+Workbench's total refresh time is essentially indistinguishable from the
+dictionary-copy control at this measurement precision. The actual presentation
+controls do not demonstrate a large *additional* repeated cost. The method
+copies the payload **before** the active/guard/HUD checks, so intentionally
+retaining the same 300-pair payload in disabled/guarded/hidden synthetic cases
+does not remove most copy cost. For the 36-pair synthetic case, median full
+refresh is about 0.116 ms per call; for 300 pairs, about 0.569 ms. These
+values are **runner-specific source-control loop times**, not measured
+`Main._process` time, user FPS or GPU frame latency.
+
+The results strengthen the **hypothesis that payload copying dominates this
+particular standalone UI path**, but cannot establish (1) how many material
+pairs and observations occur in real user sessions, (2) whether inactive real
+owners retain such a payload, (3) actual publication cadence, or (4) the
+effect of altering snapshot ownership. No caching, Main edit or production
+optimization is authorized.
+
+**Negative attempts preserved**:
+[42009471611](https://github.com/techrote/cybersand/actions/runs/42009471611)
+failed due an unregistered standalone driver type;
+[42010784561](https://github.com/techrote/cybersand/actions/runs/42010784561)
+failed because isolated `class_name` registry was not imported. The
+[final passed workflow](https://github.com/techrote/cybersand/actions/runs/42011245061)
+pre-imports only its minimal scratch project, without modifying the copied
+production workbench. Superseded intermediate diagnostic attempts were
+cancelled rather than treated as passing execution.
+
+**Next bounded test:** instrument non-shared-workbench `Main._process`
+on a real Windows graphical host, capture actual owner-derived MicroScenario
+inspection cardinality and snapshot cadence, and timestamp the existing
+`microscenario_panel.refresh` slice in context of Main/native/Rapier.
+Compare ordinary/paused/hidden sessions and control for CPU overhead and
+native snapshot frequency. The native renderer/GPU, Web and shutdown routes
+remain separately owned and unqualified by this report.
+
+### CI scope
+
+The diagnostic Windows execution is source-qualified to the exact SHA above.
+The initial documentation/provenance check for that SHA failed **only on
+workflow scheduling policy**: unconditional `cancel-in-progress: true` could
+discard an explicitly requested manual workflow run. This is a real CI policy
+failure, not a passing check, and must be corrected with dispatch-isolated,
+non-cancelling manual groups and a fresh exact-head provenance run.
+The expensive Native and GDExtension jobs were skipped by Draft policy;
+they are not source-qualified implementation passes.
