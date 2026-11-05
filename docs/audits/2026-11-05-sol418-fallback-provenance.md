@@ -30,7 +30,7 @@ done
 - GCC and Clang full **1,000,000** synthetic properties each PASS: baseline refusals **19**, candidate refusals **8**, candidate-only **0**, baseline-only **11**, fallback flag occurrences **27**, fallback mismatch **0**, default incorrectly flagged **0**, nonfinite responses **0**, energy violations **0**. The random distributions are synthetic and not gameplay occurrence estimates.
 - GCC AddressSanitizer+UBSan: provenance witness PASS. Additional shortened 4,000-case property run PASS (0 violations); does not replace full sanitizer coverage.
 - Extreme-domain 1,000,000-case exploratory local run: zero candidate-only refusals where baseline energy was finite. Not added to the repository because it includes physically unrealistic scale ranges and is not an admission fixture.
-- Source blob identities: header `33a80df91d0205d947e5d80a7c2930801362d6dc`; provenance fixture `920dc9a578d87e3ffb8f90d0c4bf764fd848f684`; property fixture `aa675129a968d923f3c8d462f67652800ab0fec8`.
+- Source blob identities: header `33a80df91d0205d947e5d80a7c2930801362d6dc`; provenance fixture `6bb4c690ce3c4d756a3a38b1048bff14735484c1`; property fixture `aa675129a968d923f3c8d462f67652800ab0fec8`.
 
 ## Admission and limitation
 
