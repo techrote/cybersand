@@ -43,3 +43,12 @@ payloads are materialized. Five companion files retain pinned workspace source
 `a15e06ca6f37750b66b89936424e0d018b203f7b`. Results and exact commands will be
 added only after execution. Keep any publication Draft and dependent on411;
 independent adversarial review must precede owner admission.
+
+The first Windows smoke at `b21d7727` imports cleanly but both full/minimal
+episodes exit1 at coordinate validation, before body construction or any native
+tick. The complete failed receipt/logs remain in `build/sol-response-cost/initial`.
+An actual Godot type probe at the same source exits0 and records parsed numeric
+type3, `Array.has(1)==false`, `Array.has(1.0)==true` for JSON workers `[1,4]`.
+The [separately registered apparatus correction](../../godot/tests/fixtures/sol_chamber/cost-apparatus-002.json)
+changes only membership validation's number type. It does not change requested
+workers, physical inputs, observers, measurement windows or any threshold.
