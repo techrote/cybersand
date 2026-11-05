@@ -82,7 +82,9 @@ def main():
             argv=["wsl","-d","Ubuntu-24.04","--","env","CYBERSAND_SOURCE_REVISION="+info["source"],ENGINES[platform],"--headless","--path",wsl(project),"--script","res://probe.gd"]
         # The Windows binary is pinned by the retained manifest, not guessed from a filename.
         if platform=="windows":
-            expected=json.loads(git("show","ba9cbc89:godot/addons/cybersand_native/runtime-provenance.json"))["godot_executable_sha256"]
+            engine_pin=json.loads(git("show","ba9cbc89:godot/addons/cybersand_native/runtime-provenance.json"))
+            expected=engine_pin["godot_executable_sha256"]
+            assert launcher==engine_pin["godot_validation_executable_sha256"]
         else:expected=ENGINE_SHA[platform]
         assert digest==expected and version=="4.7.stable.official.5b4e0cb0f"
         info["engines"][platform]=dict(path=ENGINES[platform],sha256=digest,launcher_sha256=launcher,version=version)

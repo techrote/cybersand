@@ -7,6 +7,7 @@ import json
 import math
 from pathlib import Path
 import struct
+from itertools import product
 
 def sha(raw):return hashlib.sha256(raw).hexdigest()
 def scalar(value):return struct.unpack("<d",bytes.fromhex(value["f64le"]))[0]
@@ -24,14 +25,81 @@ def bit_record(value):
     if isinstance(value,list):return [bit_record(v) for v in value]
     return value
 
+def same(a,b):return bit_record(a)==bit_record(b)
+def f32(x):return struct.unpack("<f",struct.pack("<f",x))[0]
+
+def coverage(data):
+    expected=set(product([-10,-1,-.1,0,.1,1,10],[1e-6,1e-5,1e-4,1e-3,.01,.1],[0,3]))
+    seen=set();offset=vector(data["shape"]["offset"])
+    for record in data["records"]:
+        if not record["name"].startswith("grid/"):continue
+        _,w,d,x=record["name"].split("/");key=(float(w),float(d),float(x))
+        assert key in expected and key not in seen,"Unregistered/duplicate grid input"
+        seen.add(key);inp=record["input"]
+        assert scalar(inp["omega"])==key[0] and vector(inp["velocity"])==(key[2],f32(-key[0]*offset[0]+key[1])),"Grid input differs from registered tuple"
+        assert scalar(inp["mass"])==520 and scalar(inp["inertia"])==109907693/1560
+    assert seen==expected,"Missing registered grid input"
+    controls={"approaching","separating","stationary","sub-approach","finite-overflow"}
+    controls.update(f"invalid-{field}/{value}" for field in ["mass","inertia"] for value in ["0.0","-1.0","inf","nan"])
+    controls.update("invalid-omega/"+value for value in ["inf","nan"])
+    controls.update("invalid-velocity/"+value for value in ["(inf, 0.0)","(nan, 0.0)"])
+    controls.update("two-normal/"+value for value in ["-1.0","0.0","1.0"])
+    assert {r["name"] for r in data["records"] if not r["name"].startswith("grid/") }==controls,"Missing registered control"
+    assert set(data["ranges"])=={"baseline","scalar64"}
+    for arm,records in data["ranges"].items():
+        assert len(records)==2
+        for record,requested in zip(records,[1e20,1e-30]):
+            v=vector(record["velocity"]);observed=scalar(record["energy"])
+            assert v==(f32(requested),0)
+            if arm=="scalar64":assert observed==energy(v,0,520,109907693/1560) and math.isfinite(observed) and observed>0
+            elif requested==1e20:assert observed==math.inf
+            else:assert observed==0
+
+def trace_coverage(record,arm):
+    result=record["results"][arm];trace=record["traces"][arm+"-trace"];inp=record["input"]
+    if result["outcome"]=="InvalidBody":assert not trace;return
+    assert trace and trace[0]["stage"]=="initial" and sum(e["stage"]=="initial" for e in trace)==1,"Missing initial guard"
+    first=trace[0]
+    assert same(first["v"],inp["velocity"]) and same(first["w"],inp["omega"])
+    if result["outcome"]=="InvalidEnergy":assert len(trace)==1 and not math.isfinite(scalar(first["energy"]));return
+    steps=[];v=first["v"];w=first["w"];final=None;previous=(-1,-1)
+    for index,event in enumerate(trace):
+        assert same(event["m"],inp["mass"]) and same(event["I"],inp["inertia"])
+        if index==0:continue
+        assert event["stage"] in ["step","final"]
+        if event["stage"]=="final":
+            assert index==len(trace)-1 and final is None
+            assert same(event["before_v"],first["v"]) and same(event["before_w"],first["w"])
+            assert same(event["after_v"],v) and same(event["after_w"],w)
+            assert same(event["before"],first["energy"]);final=event
+        else:
+            order=(event["sweep"],event["group"])
+            assert 0<=order[0]<4 and order>previous;previous=order
+            assert same(event["before_v"],v) and same(event["before_w"],w),"Broken state chain"
+            v=event["after_v"];w=event["after_w"];steps.append(event)
+        passed=math.isfinite(scalar(event["after"])) and scalar(event["after"])<=scalar(event["before"])+scalar(event["tolerance"])
+        if not passed:assert not result["accepted"] and index==len(trace)-1,"Missing terminal guard binding"
+    if result["accepted"]:
+        assert final is not None and len(steps)==len(result["impulses"])==result["approaching_count"],"Missing accepted guard/impulse coverage"
+        assert same(result["velocity"],v) and same(result["omega"],w)
+        assert same(result["energy_before"],first["energy"]) and same(result["energy_after"],final["after"]) and same(result["energy_tolerance"],final["tolerance"])
+        for event,impulse in zip(steps,result["impulses"]):
+            assert same(event["impulse"],impulse["impulse"]) and same(event["offset"],impulse["offset"]),"Trace/output impulse mismatch"
+    else:
+        terminal=trace[-1]
+        assert result["outcome"]=="NonDissipativeResponse" and terminal["stage"] in ["step","final"]
+        assert scalar(terminal["after"])>scalar(terminal["before"])+scalar(terminal["tolerance"]),"Missing actual refusal guard"
+
 def audit(path):
     data=json.loads(path.read_text(encoding="utf-8"));assert not data["failures"]
     records=data["records"];assert len(records)==104 and len({r["name"] for r in records})==104
     assert sum(r["name"].startswith("grid/") for r in records)==84
+    coverage(data)
     census={arm:Counter() for arm in ["baseline","scalar64"]};changed=[];false_refusals=[];old_false_accepts=[];genuine=[];guards=Counter();maximum_discrepancy=0
     for record in records:
         inp=record["input"];vector(inp["velocity"])
         for arm in census:
+            trace_coverage(record,arm)
             result=record["results"][arm];assert result==record["results"][arm+"-trace"]
             if record["name"].startswith("grid/"):census[arm][result["outcome"]]+=1
             assert result["accepted"] or not result["impulses"],"Partial refusal"

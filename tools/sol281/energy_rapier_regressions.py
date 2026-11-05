@@ -40,7 +40,9 @@ def verify_report(test,platform,row,material):
     return valid,report
 
 def main():
-    parser=argparse.ArgumentParser(__doc__);parser.add_argument("--run",required=True);args=parser.parse_args()
+    parser=argparse.ArgumentParser(__doc__);parser.add_argument("--run",required=True)
+    parser.add_argument("--runtime-after-import-failure",action="store_true",help="Attempt runtime tests while retaining import failures and a failed overall qualification")
+    args=parser.parse_args()
     assert Path(args.run).name==args.run
     folder=ROOT/"build/sol-energy"/args.run;assert not folder.exists();folder.mkdir(parents=True)
     source=e.git("rev-parse","HEAD").decode().strip();rows=[];inputs={};engines={}
@@ -75,7 +77,7 @@ def main():
                 for path,raw in material.items():assert (project/path).read_bytes()==raw,"copied input changed"
                 e.write(folder/"receipt.json",dict(source=source,tree=e.git("rev-parse","HEAD^{tree}").decode().strip(),local_delta=e.git("status","--short").decode(),runner_sha256=e.sha(Path(__file__).read_bytes().replace(b"\r\n",b"\n")),engines=engines,scope="Unchanged regression fixture and bridge, actual Rapier; fallback class parsed but no World instantiated; no nativeWorld or SOL authority/clearance claim",inputs=inputs,results=rows))
                 print(name,row["exit"],row["clean"],flush=True)
-                if not row["clean"]:break
+                if not row["clean"] and not (test is None and args.runtime_after_import_failure):break
     return int(not all(r["clean"] for r in rows))
 
 if __name__=="__main__":raise SystemExit(main())
