@@ -65,6 +65,89 @@ The original first Windows [run 41994278217](https://github.com/techrote/cybersa
 
 **Limitations:** no real `Main` graphical or input/render profiling, no native World/GDExtension or Rapier runtime in this standalone test, no Windows end-user GPU cohort, no Linux comparison, no claim of cold ANGLE startup or exit-crash repair. Any later documentation-only head differs from the **executed** source SHA above while preserving the tested synthetic script; exact-head qualified gameplay claims would require fresh dedicated execution.
 
+### Follow-up: source-bounded observation/inspection envelope (2026-11-05)
+
+**New source-custody correction to the original interpretation:** Current
+[`microscenario_contract.gd`](../../godot/scripts/microscenario_contract.gd)
+declares `MAX_OBSERVATIONS = 24` (blob `999e127240bf81bd0c2928b0062bf9e8f9e007e1`).
+The original **64/256 synthetic observations** are **outside** a validated
+MicroScenario's observation population. Retain their 36 passing results as a
+stress test of `duplicate(true)` only, **not** as demonstrated representative
+Main-scenario payload sizes. Conversely
+[`microscenario_host.gd`](../../godot/scripts/microscenario_host.gd)
+(blob `93491fd2d2f0e38d98ea6b8722d8cc466cad7417`) generates
+`_interaction_inspection` for unordered pairs of actual material IDs
+(`m(m+1)/2` including identical pairs) and includes it in `summary()` as
+`interaction_inspection.duplicate(true)`. Unlike the observations array,
+this can grow beyond 24 entries; actual cardinality depends on the admitted
+scenario and material composition. Neither population was sampled from real
+running Main in this investigation.
+
+**Second executed test:** A new isolated script
+[`test_microscenario_copy_envelope.gd`](../../godot/tests/performance/test_microscenario_copy_envelope.gd)
+(blob `3c58a4571efc0ca8c2e8c417c16c0c90bd599142`) models
+0/24 synthetic observations and 1/8/24 material identities, yielding
+1/36/300 synthetic pair-inspection entries; all observation populations
+respect the current source maximum. The nested inspection record **shape is
+illustrative** and is not a native adapter serialization. The script runs
+800 iterations per case, 3 repeats, alternating arm order at publication
+strides 1 and 4. It checks every-frame vs once-on-publication readback
+checksums, exact clone counts, and a **deliberate in-place mutation negative
+control**, which must *not* have checksum parity if a future cache assumes
+immutability without a proven owner revision contract.
+
+- Exact **executed** SHA:
+  `fc1968cae96dfdca6b5dd953b7dd0c3461e6cdf7`; pinned accepted base
+  `ba9cbc89029be88b812af59b19e5c59829bbcd90`. The workflow validates
+  the contract limit and inspection-source expression before running.
+- [GitHub-hosted Windows 2022 run 42001073608](https://github.com/techrote/cybersand/actions/runs/42001073608):
+  **SUCCESS**, official SHA-512-verified Godot 4.7 stable (engine hash
+  `5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88`) in a
+  minimal **headless** GDScript project; **39 pairs / 78 raw rows /
+  0 unexpected parity or clone-count failures**. Independent archival:
+  [artifact 13403025613](https://github.com/techrote/cybersand/actions/runs/42001073608/artifacts/13403025613),
+  with source identity, raw stdout, baseline-probe JSON and envelope JSON.
+  Linux/GPU, real Main/Rapier/native execution, loaded worker participation,
+  user-host performance and real publication cadence were **not exercised**.
+
+Median **elapsed time for all 800 artificial iterations** (three repeats;
+units below in milliseconds, **not** measured real-game frame time):
+
+| Observations | Synthetic material IDs | Pair-inspection records | Publication stride | Current every-frame clone | Hypothetical on-publication |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 0 | 1 | 1 | 1 | 3.637 | 3.608 |
+| 24 | 1 | 1 | 4 | 28.964 | 7.917 |
+| 24 | 8 | 36 | 1 | 58.286 | 58.591 |
+| 24 | 8 | 36 | 4 | 58.694 | 14.979 |
+| 24 | 24 | 300 | 1 | 320.337 | 322.229 |
+| 24 | 24 | 300 | 4 | 308.078 | 76.957 |
+
+In the 24-observation/8-material sample, the current every-frame branch
+costs approximately **0.0734 ms per synthetic iteration**; at 24 materials
+and 300 pair inspections it costs **0.385 ms**. These are stand-alone
+dictionary-copy loop averages on the hosted Windows CPU, **not actual
+`Main._process` timings**. With stride 1, no material reduction was
+demonstrated. The stride-4 improvement is almost entirely explained by 800
+vs 200 copies. It does **not** justify a cache or establish a real
+desktop performance fix.
+
+**Important negative control:** with 24 observations, 8 materials and
+one **deliberate in-place nested change** between nominal publications,
+the per-frame arm digest was `685803` versus `684603` for
+once-on-publication (identical across 3 repetitions).
+This is an intentionally constructed aliasing counterexample, **not**
+proof that the current asynchronous desktop owner mutates this field in
+place. It establishes that optimization requires proving every relevant
+desktop/Web ownership and revision path, rather than inferring safety
+from synthetic identical reads.
+
+**Disposition:** New evidence narrows the likely cost domain and corrects
+the earlier 64/256-observation extrapolation. The actionable next
+discriminator remains a **real Main** timestamped phase breakdown and
+source-custodied actual per-scenario snapshot frequency/serialized
+payload sizes, preferably on the target Windows graphical GPU cohort.
+No production cache, semantic change, or merge authorization follows.
+
 ## Admission / next discrimination
 
 1. The Windows Godot 4.7 synthetic probe has now run and its positive/negative source-bound results are retained above. A Linux synthetic cohort is still absent. Determine whether the copied real scenario payload and publication cadence actually produce meaningful Main CPU cost on a real graphical host before changing any production source.
