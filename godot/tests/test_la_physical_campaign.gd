@@ -362,7 +362,8 @@ func load_registration(path: String) -> Dictionary:
 	return current
 
 func run() -> void:
-	registration=load_registration(REGISTRATION)
+	var profile: String = OS.get_environment("LA_PHYSICAL_REGISTRATION")
+	registration=load_registration(REGISTRATION if profile.is_empty() else profile)
 	checked=Contract.validate(Contract.parse(FileAccess.get_file_as_string(DAM)).definition)
 	var output: String = OS.get_environment("LA_PHYSICAL_OUTPUT")
 	if output.is_empty(): output="user://la-physical-smoke-"+str(Time.get_ticks_usec())

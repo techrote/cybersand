@@ -12,6 +12,7 @@ import os
 from pathlib import Path
 import shutil
 import subprocess
+import time
 
 ROOT=Path(__file__).resolve().parents[2]
 BASE="8f6412da2004a5bfd4b68f40c854b564696637f7"
@@ -86,10 +87,12 @@ def main():
     parser.add_argument("--existing-tests",action="store_true")
     parser.add_argument("--sequential-platforms",action="store_true")
     parser.add_argument("--tests-only",action="store_true",help="Run import/safety/scoped fixtures without physical episodes")
+    parser.add_argument("--shared-host-timings",action="store_true",help="Select separately registered009shared-host measurements")
     args=parser.parse_args()
     assert Path(args.run).name==args.run and args.run not in [".",".."]
     info=identity();output=ROOT/"build/la-physical"/args.run
-    registration=load_registration(ROOT/"godot/tests/fixtures/la_physical/registration-v5.json")
+    profile="registration-v6.json" if args.shared_host_timings else "registration-v5.json"
+    registration=load_registration(ROOT/"godot/tests/fixtures/la_physical"/profile)
     cases=[c for c in registration["cases"] if not args.cases or c["id"] in args.cases.split(",")]
     if args.tests_only:cases=[]
     if args.cases:assert {c["id"] for c in cases}==set(args.cases.split(","))
@@ -115,6 +118,11 @@ def main():
             if platform=="linux":
                 forwarded=["CYBERSAND_SOURCE_REVISION="+info["source"],*[k+"="+v for k,v in (env or {}).items()]]
                 argv=["wsl","-d","Ubuntu-24.04","--","env",*forwarded,*argv]
+            if args.shared_host_timings and script=="test_la_physical_campaign":
+                observer=time.monotonic()
+                linux=subprocess.run(["wsl","-d","Ubuntu-24.04","--","pgrep","-af","^/home/i/.*/Godot.*--headless"],capture_output=True,text=True,timeout=10)
+                windows=subprocess.run(["powershell","-NoProfile","-Command","Get-CimInstance Win32_Process | Where-Object {$_.Name -like '*Godot*'} | Select-Object ProcessId,ParentProcessId,CommandLine | ConvertTo-Json -Compress"],capture_output=True,text=True,timeout=10)
+                process.write(folder/(name+".ambient.json"),dict(qualification="shared-host",linux=linux.stdout,linux_exit=linux.returncode,windows=windows.stdout,windows_exit=windows.returncode,observer_seconds=time.monotonic()-observer))
             row=process.command(name,argv,folder,environment,timeout=300)
             rows.append(row);process.write(folder/"receipt.json",dict(identity=info,platform=platform,results=rows))
             return row["clean"]
@@ -127,14 +135,15 @@ def main():
                 for case in cases:
                     data=folder/(case["id"]+"-w"+str(worker)+"-r"+str(repeat));data.mkdir()
                     env={"LA_PHYSICAL_OUTPUT":str(data) if platform=="windows" else process.wsl_path(data),
-                         "LA_PHYSICAL_CASES":case["id"],"LA_PHYSICAL_WORKERS":str(worker),"LA_PHYSICAL_REPEAT":str(repeat)}
+                         "LA_PHYSICAL_CASES":case["id"],"LA_PHYSICAL_WORKERS":str(worker),"LA_PHYSICAL_REPEAT":str(repeat),
+                         "LA_PHYSICAL_REGISTRATION":"res://tests/fixtures/la_physical/"+profile}
                     clean=run(case["id"]+"-w"+str(worker)+"-r"+str(repeat),"test_la_physical_campaign",env)
                     reports=list(data.glob("*.json"))
                     if clean:
                         assert len(reports)==len(registration["arms"]),"incomplete arm inventory"
                         for report in reports:
                             d=json.loads(report.read_text(encoding="utf-8"))
-                            assert d["source"]==info["source"] and not d["failures"] and d["requested_workers"]==worker
+                            assert d["source"]==info["source"] and not d["failures"] and d["requested_workers"]==worker and d["registration"]==registration["id"]
                     # A failure remains retained; independent cases continue.
         changed=[];line_endings=[]
         for name,digest in effective.items():
