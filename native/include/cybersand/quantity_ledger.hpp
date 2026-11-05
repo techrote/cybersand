@@ -11,6 +11,9 @@ namespace cybersand {
 // Native accounting schema. Quantities use the World's Water mass quantum;
 // material populations are separate cell counts, never mass estimates.
 inline constexpr std::uint16_t kQuantityLedgerSchemaVersion = 1;
+// BW-001: only a ballistic_water_v1 World uses schema 2, which adds the exact
+// in-flight parcel quantity. Every other World keeps schema 1 bytes.
+inline constexpr std::uint16_t kQuantityLedgerBallisticSchemaVersion = 2;
 inline constexpr std::size_t kQuantityMaterialSlots = 256;
 inline constexpr std::size_t kQuantityPairRuleSlots = 56;
 inline constexpr std::size_t kQuantityKernelRuleSlots = 19;
@@ -61,6 +64,7 @@ struct QuantityLedgerSnapshot {
     std::uint64_t baseline_water = 0;
     std::uint64_t water_visible = 0;
     std::uint64_t water_overfill = 0;
+    std::uint64_t water_ballistic = 0; // schema 2 only: Water owned by live parcels
     std::array<WaterQuantityFlow, kQuantityKindCount> kinds{};
     std::array<WaterQuantityFlow, kQuantityPairRuleSlots> pair_rules{};
     std::array<std::uint64_t, kQuantityPairRuleSlots> pair_events{};

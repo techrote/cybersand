@@ -3743,6 +3743,18 @@ void test_lcb_inertial_reset_products();
 void test_lcb_inertial_storage_capture();
 void test_lcb_inertial_residual_motion();
 void test_lcb_inertial_admission();
+void test_ballistic_water_defaults_unchanged();
+void test_ballistic_water_upward_arc_and_return();
+void test_ballistic_water_ceiling_wall_no_tunnel();
+void test_ballistic_water_surface_merge_and_injection();
+void test_ballistic_water_families();
+void test_ballistic_water_capacity_mask_deferral();
+void test_ballistic_water_body_contact();
+void test_ballistic_water_persistence_and_parity();
+void test_ballistic_water_render_overlay_and_forced_age();
+void test_inertial_signed_vertical_control_and_identity();
+void test_inertial_signed_vertical_arc_ceiling_parity();
+void test_inertial_signed_vertical_support_and_hybrid();
 void test_water_inertial_admission();
 void test_water_inertial_coherence_contact();
 void test_water_inertial_carrying();
@@ -3982,6 +3994,18 @@ int main(int argc, char** argv) {
         {"LCB-001 native run receipt identity", test_liquid_run_receipt_native_identity},
         {"LCB-001 native-issued construction refusals", test_liquid_construction_refusal_native_issuance},
         {"LCB-001 native quantity ledger", test_quantity_ledger},
+        {"BW-001 ballistic Water defaults unchanged", test_ballistic_water_defaults_unchanged},
+        {"BW-001 ballistic Water upward arc and return", test_ballistic_water_upward_arc_and_return},
+        {"BW-001 ballistic Water ceiling wall no tunnel", test_ballistic_water_ceiling_wall_no_tunnel},
+        {"BW-001 ballistic Water surface merge and injection", test_ballistic_water_surface_merge_and_injection},
+        {"BW-001 ballistic Water families", test_ballistic_water_families},
+        {"BW-001 ballistic Water capacity mask deferral", test_ballistic_water_capacity_mask_deferral},
+        {"BW-001 ballistic Water body contact", test_ballistic_water_body_contact},
+        {"BW-001 ballistic Water persistence and parity", test_ballistic_water_persistence_and_parity},
+        {"BW-001 ballistic Water render overlay and forced age", test_ballistic_water_render_overlay_and_forced_age},
+        {"IN-B1 signed vertical control and identity", test_inertial_signed_vertical_control_and_identity},
+        {"IN-B1 signed vertical arc ceiling parity", test_inertial_signed_vertical_arc_ceiling_parity},
+        {"IN-B1 signed vertical support and hybrid", test_inertial_signed_vertical_support_and_hybrid},
     };
 
     std::size_t passed = 0;

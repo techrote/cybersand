@@ -663,12 +663,15 @@ World::World(WorldConfig config)
     if (auto refusal = config_.liquid_solver_policy.admission_refusal())
         throw LiquidPolicyRefused(std::move(*refusal));
     inertial_parameters_ = inertial_parameters_for_policy(config_.liquid_solver_policy);
+    inertial_parameters_.signed_vertical = config_.inertial_signed_vertical;
     const bool pressure_requested = policy_selects_pressure(config_.liquid_solver_policy);
     for (const auto& item : config_.liquid_solver_policy.assignments()) {
         if (item.family != LiquidSolverFamily::InertialCellularV1) continue;
         inertial_materials_[item.material] = true;
         inertial_enabled_ = true;
     }
+    if (config_.inertial_signed_vertical && !inertial_enabled_)
+        throw std::invalid_argument("IN-B1 signed-vertical law requires an applied inertial assignment");
     if (inertial_enabled_ && config_.maximum_rule_radius < InertialParameters::kExecutionRadius)
         throw std::invalid_argument("inertial_cellular_v1 requires complete execution radius three");
     const auto water_assignment = config_.liquid_solver_policy.assignment(static_cast<std::uint16_t>(Material::Water));
@@ -776,6 +779,8 @@ World::World(WorldConfig config)
         parallel_ = std::make_unique<ParallelState>(config_);
     }
     transient_obstacles_ = std::make_unique<TransientObstacleState>();
+    validate_ballistic_config();
+    if (config_.ballistic_water.enabled) ballistic_parcels_.reserve(config_.ballistic_water.capacity);
     if (pressure_requested) {
         pressure_ = std::make_unique<PressureState>(pressure_parameters_from(config_.liquid_solver_policy));
         pressure_->sorted_coordinates.reserve(config_.maximum_chunk_count);
@@ -2215,6 +2220,7 @@ void World::clear_transient_obstacles() {
     }
     state.occupied_indices.clear();
     state.reset_contacts();
+    reset_ballistic_body_impulses();
 }
 
 std::uint16_t World::transient_obstacle_at(std::int64_t x, std::int64_t y) const noexcept {
@@ -2468,6 +2474,7 @@ std::int64_t World::transient_contact_impulse_y(std::uint16_t body_id) const noe
 void World::clear_transient_contact_observations() noexcept {
     if (has_failed()) return;
     transient_obstacles_->reset_contacts();
+    reset_ballistic_body_impulses();
 }
 void World::enable_transient_granular_wrenches(bool enabled) noexcept {
     if (has_failed()) return;
@@ -2842,6 +2849,7 @@ void World::clear() {
     chunks_.clear();
     granular_arrival_storage_bytes_ = 0;
     reset_quantity_ledger();
+    reset_ballistic_water();
     active_chunk_scratch_.clear();
     active_core_scratch_.clear();
     pending_explosions_.clear();
@@ -4280,6 +4288,9 @@ void World::begin_tick(TickStats& stats) {
     // carry the current epoch and therefore begin material simulation on the
     // following tick instead of receiving an accidental double update.
     apply_pending_explosions(stats);
+    // BW-001 parcels advance serially at the same boundary: deposits are
+    // visible to pressure preparation and simulate from the next tick.
+    advance_ballistic_water();
     // Serial, deterministic gas topology and head preparation. It may wake
     // sleeping blocks, so it precedes the active-chunk list for this tick.
     if (pressure_ != nullptr) prepare_pressure_tick();
@@ -4572,7 +4583,7 @@ void World::merge_job_effects(const JobEffects& effects) {
     if (pressure_ != nullptr) merge_pressure_effects(effects);
     if (inertial_enabled_) {
         auto& a=inertial_ledger_; const auto& b=effects.inertial;
-        a.gravity_y+=b.gravity_y; a.impulse_x+=b.impulse_x; a.impulse_y+=b.impulse_y;
+        a.gravity_y+=b.gravity_y; a.gravity_speed+=b.gravity_speed; a.impulse_x+=b.impulse_x; a.impulse_y+=b.impulse_y;
         a.loss+=b.loss; a.support+=b.support; a.remainder+=b.remainder;
         a.updates+=b.updates; a.unit_moves+=b.unit_moves; a.density_swaps+=b.density_swaps;
         a.contacts+=b.contacts; a.rests+=b.rests; a.velocity_retired+=b.velocity_retired;
@@ -5137,6 +5148,7 @@ void World::copy_render_cells(RectI64 region, std::span<std::uint8_t> destinatio
             processed += run;
         }
     }
+    overlay_ballistic_render(region, destination, stride_bytes, 2U);
 }
 
 void World::copy_material_cells(RectI64 region, std::span<std::uint8_t> destination,
@@ -5177,6 +5189,7 @@ void World::copy_material_cells(RectI64 region, std::span<std::uint8_t> destinat
             world_x += run;
         }
     }
+    overlay_ballistic_render(region, destination, stride_bytes, 1U);
 }
 
 void World::copy_rgba(RectI64 region, std::span<std::uint8_t> destination, std::size_t stride_bytes) const {
@@ -5210,5 +5223,6 @@ void World::copy_rgba(RectI64 region, std::span<std::uint8_t> destination, std::
 #include "world_pressure_gas_cache.inc"
 #include "world_pressure.inc"
 #include "world_inertial.inc"
+#include "world_ballistic.inc"
 
 }  // namespace cybersand

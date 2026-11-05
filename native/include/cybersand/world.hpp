@@ -7,6 +7,7 @@
 #include "cybersand/liquid_comparison.hpp"
 #include "cybersand/pressure_flow.hpp"
 #include "cybersand/inertial_cellular.hpp"
+#include "cybersand/ballistic_water.hpp"
 #include "cybersand/pressure_optimization.hpp"
 #include "cybersand/quantity_ledger.hpp"
 #include "cybersand/transport_policy.hpp"
@@ -68,6 +69,12 @@ struct WorldConfig {
     // Execution-only, opt-in for the finite desktop workbench. Each job owns
     // complete x-columns of the reference head field before row interpolation.
     bool workbench_parallel_pressure_heads = false;
+    // BW-001 ballistic_water_v1: opt-in, bounded parcel owner for Water in
+    // flight. Disabled leaves every Current hash, format and ledger unchanged.
+    BallisticWaterConfig ballistic_water{};
+    // IN-B1 (experimental): signed-vertical inertial law for every IN material.
+    // Requires an applied IN assignment; false keeps inertial_cellular_v1 exact.
+    bool inertial_signed_vertical = false;
 };
 
 struct ChunkCoord {
@@ -273,6 +280,10 @@ public:
     [[nodiscard]] std::uint64_t transient_contact_count(std::uint16_t body_id) const noexcept;
     [[nodiscard]] std::int64_t transient_contact_impulse_x(std::uint16_t body_id) const noexcept;
     [[nodiscard]] std::int64_t transient_contact_impulse_y(std::uint16_t body_id) const noexcept;
+    // BW-001: momentum (quantity * q256 velocity) parcels delivered to a body
+    // since the last contact-observation reset. Serialized owner reads only.
+    [[nodiscard]] std::int64_t transient_ballistic_impulse_x(std::uint16_t body_id) const noexcept;
+    [[nodiscard]] std::int64_t transient_ballistic_impulse_y(std::uint16_t body_id) const noexcept;
     // GCR-001 value-only moving-grain wrench. Moments use doubled world cell
     // centres and integer density weights; the consumer translates to its COM.
     void enable_transient_granular_wrenches(bool enabled) noexcept;
@@ -393,6 +404,26 @@ public:
     [[nodiscard]] InertialLedger inertial_ledger() const noexcept;
     [[nodiscard]] InertialStorageUsage inertial_storage_usage() const noexcept;
     // Serialized diagnostic owner only; true no-op seeds retain all witnesses.
+    // BW-001 ballistic_water_v1. Serialized external owner, between ticks.
+    // launch moves the exact Water quantity of one source cell (at most
+    // maximum_quantity; whole-cell families take the whole cell) into one
+    // parcel spawned at an unmasked Empty/gas cell, in q256 units. A masked
+    // source is admitted (the body overlap is the usual reason to launch).
+    // inject creates a parcel from a booked ExternalEdit source. Refusals are
+    // explicit outcomes and never mutate authority.
+    [[nodiscard]] bool ballistic_water_enabled() const noexcept { return config_.ballistic_water.enabled; }
+    [[nodiscard]] BallisticLaunchResult launch_ballistic_water(std::int64_t source_x, std::int64_t source_y,
+        std::int64_t spawn_x_q, std::int64_t spawn_y_q, std::int32_t vx_q, std::int32_t vy_q,
+        std::uint16_t source_body = 0, std::uint32_t maximum_quantity = 0xFFFF'FFFFU);
+    [[nodiscard]] BallisticLaunchResult inject_ballistic_water(std::int64_t spawn_x_q, std::int64_t spawn_y_q,
+        std::int32_t vx_q, std::int32_t vy_q, std::uint32_t quantity);
+    [[nodiscard]] std::size_t ballistic_parcel_count() const noexcept { return ballistic_parcels_.size(); }
+    // Copies at most output.size() live parcels in slot order; returns the live count.
+    [[nodiscard]] std::size_t copy_ballistic_parcels(std::span<BallisticParcel> output) const noexcept;
+    [[nodiscard]] BallisticWaterSnapshot ballistic_water_snapshot() const noexcept;
+    // IN-B1: add a bounded external velocity impulse to an IN carrier (booked
+    // as external). Upward components require the signed law; refused otherwise.
+    [[nodiscard]] bool impart_inertial_velocity(std::int64_t x, std::int64_t y, std::int32_t dvx, std::int32_t dvy);
     [[nodiscard]] bool diagnostic_set_inertial_cell(std::int64_t x,std::int64_t y,
         std::int16_t vx,std::int16_t vy,std::int8_t ax,std::int8_t ay);
 
@@ -403,7 +434,11 @@ public:
     // state_hash() keep their historical definitions.
     // Legacy non-IN stream. IN instances report and emit version3.
     static constexpr std::uint32_t kPhysicalStateHashVersion = 2;
-    [[nodiscard]] std::uint32_t physical_state_hash_version() const noexcept { return inertial_enabled_ ? 3U : 2U; }
+    // BW-001 ballistic Worlds report and emit version4 (IN or not).
+    [[nodiscard]] std::uint32_t physical_state_hash_version() const noexcept {
+        return config_.ballistic_water.enabled || inertial_parameters_.signed_vertical ? 4U
+             : inertial_enabled_ ? 3U : 2U;
+    }
     [[nodiscard]] std::uint64_t physical_state_hash() const;
 
     // Explicit diagnostic domains. Same-tick equivalence normalizes only the
@@ -422,7 +457,10 @@ public:
     // a new World and throws std::invalid_argument for unknown, corrupt or
     // incompatible payloads; the caller's live World is never touched.
     static constexpr std::uint32_t kPhysicalStateFormatVersion = 2;
-    [[nodiscard]] std::uint32_t physical_state_format_version() const noexcept { return inertial_enabled_ ? 3U : 2U; }
+    [[nodiscard]] std::uint32_t physical_state_format_version() const noexcept {
+        return config_.ballistic_water.enabled || inertial_parameters_.signed_vertical ? 4U
+             : inertial_enabled_ ? 3U : 2U;
+    }
     [[nodiscard]] std::vector<std::uint8_t> save_physical_state() const;
     [[nodiscard]] static std::unique_ptr<World> restore_physical_state(
         const WorldConfig& execution, std::span<const std::uint8_t> bytes);
@@ -480,6 +518,25 @@ private:
     InertialLedger inertial_ledger_{};
     InertialParameters inertial_parameters_{};
     QuantityLedgerSnapshot quantity_{};
+    std::vector<BallisticParcel> ballistic_parcels_;
+    BallisticLedger ballistic_ledger_{};
+    std::array<std::int64_t, kMaximumTransientBodies + 1U> ballistic_body_px_{}, ballistic_body_py_{};
+    enum class BallisticCell : std::uint8_t { Free, Water, Solid, Body, Outside };
+    void validate_ballistic_config() const;
+    void validate_ballistic_ledger() const;
+    void reset_ballistic_water() noexcept;
+    void reset_ballistic_body_impulses() noexcept;
+    void advance_ballistic_water();
+    [[nodiscard]] bool step_ballistic_parcel(BallisticParcel& parcel);
+    [[nodiscard]] bool deposit_ballistic_parcel(BallisticParcel& parcel, std::int64_t cx, std::int64_t cy,
+                                                const std::pair<std::int64_t, std::int64_t>* merge);
+    void ballistic_write_water(std::int64_t x, std::int64_t y, std::uint16_t visible);
+    [[nodiscard]] BallisticCell classify_ballistic_cell(std::int64_t x, std::int64_t y,
+        const BallisticParcel& parcel, std::uint16_t& body) const noexcept;
+    [[nodiscard]] BallisticLaunchResult admit_ballistic_spawn(std::int64_t spawn_x, std::int64_t spawn_y,
+        std::int32_t vx, std::int32_t vy) const noexcept;
+    void overlay_ballistic_render(RectI64 region, std::span<std::uint8_t> destination,
+                                  std::size_t stride_bytes, std::size_t bytes_per_cell) const noexcept;
     void record_physics(PhysicsEvent kind, Material source, Material target,
                         std::int64_t dx, std::int64_t dy, JobEffects* effects,
                         std::uint64_t count = 1) noexcept;

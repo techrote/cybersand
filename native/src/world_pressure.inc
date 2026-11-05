@@ -1843,6 +1843,27 @@ std::uint64_t World::physical_state_hash_impl(std::optional<LiquidStateProjectio
     if (inertial_enabled_) {
         for (const auto byte:inertial_extension_identity(inertial_parameters_)) hash_byte(hash,byte);
     }
+    if (config_.ballistic_water.enabled) {
+        // BW-001: every parcel is physical state; cumulative counters are not quiescent content.
+        for (const auto byte : ballistic_water_identity(config_.ballistic_water)) hash_byte(hash, byte);
+        hash_integer(hash, static_cast<std::uint64_t>(ballistic_parcels_.size()));
+        for (const auto& p : ballistic_parcels_) {
+            hash_integer(hash, p.x); hash_integer(hash, p.y); hash_integer(hash, p.vx); hash_integer(hash, p.vy);
+            hash_integer(hash, p.quantity); hash_integer(hash, p.age); hash_integer(hash, p.source_body);
+            hash_integer(hash, p.contacts); hash_integer(hash, p.deferrals);
+        }
+        if (!quiescent) {
+            const auto& l = ballistic_ledger_;
+            for (const auto v : {l.launched_parcels, l.launched_quantity, l.injected_parcels, l.injected_quantity,
+                                 l.deposited_parcels, l.deposited_quantity, l.deposit_writes, l.deferred_deposits,
+                                 l.refused_launches, l.forced_deposits, l.terrain_contacts, l.body_contacts,
+                                 l.surface_entries, l.ceiling_contacts, l.boundary_contacts, l.parcel_ticks,
+                                 l.cell_steps, l.maximum_live}) hash_integer(hash, v);
+            for (const auto v : {l.launch_px, l.launch_py, l.gravity_py, l.drag_px, l.drag_py, l.contact_px,
+                                 l.contact_py, l.body_px, l.body_py, l.clamp_px, l.clamp_py, l.deposit_px,
+                                 l.deposit_py}) hash_integer(hash, v);
+        }
+    }
     hash_integer(hash, static_cast<std::uint8_t>(pressure_ != nullptr));
     if (pressure_ != nullptr) {
         hash_integer(hash, PressureFlowParameters::kVersion);
@@ -2025,6 +2046,20 @@ std::vector<std::uint8_t> World::save_physical_state() const {
     const auto envelope = config_.liquid_solver_policy.envelope();
     out.put(static_cast<std::uint32_t>(envelope.size()));
     for (const auto word : envelope) out.put(word);
+    if (physical_state_format_version() == 4U) {
+        // CYPS4 extension flags: bit0 IN sidecars, bit1 BW-001 parcels, bit2 IN-B1 signed law.
+        out.put(static_cast<std::uint8_t>((inertial_enabled_ ? 1U : 0U) |
+                                          (config_.ballistic_water.enabled ? 2U : 0U) |
+                                          (inertial_parameters_.signed_vertical ? 4U : 0U)));
+    }
+    if (config_.ballistic_water.enabled) {
+        const auto& c = config_.ballistic_water;
+        out.put(BallisticWaterConfig::kVersion);
+        out.put(c.capacity); out.put(c.gravity_q); out.put(c.max_speed_q); out.put(c.air_drag);
+        out.put(c.restitution); out.put(c.friction); out.put(c.settle_speed_q); out.put(c.maximum_age_ticks);
+        out.put(c.deposit_radius); out.put(c.maximum_contacts);
+        for (const auto byte : ballistic_water_identity(c)) out.put(byte);
+    }
     if (inertial_enabled_) {
         out.put(InertialParameters::kVersion);
         for (const auto byte:inertial_extension_identity(inertial_parameters_)) out.put(byte);
@@ -2143,6 +2178,24 @@ std::vector<std::uint8_t> World::save_physical_state() const {
         for (const auto v:{s.gravity_y,s.impulse_x,s.impulse_y,s.loss,s.support,s.remainder,
                           s.retired_x,s.retired_y,s.external_x,s.external_y,s.external_speed}) out.put(v);
         for (const auto v:{s.updates,s.unit_moves,s.density_swaps,s.contacts,s.rests,s.velocity_retired,s.maximum_read_reach,s.maximum_write_reach}) out.put(v);
+        if (inertial_parameters_.signed_vertical) out.put(s.gravity_speed);
+    }
+    if (config_.ballistic_water.enabled) {
+        validate_ballistic_ledger();
+        out.put(static_cast<std::uint32_t>(ballistic_parcels_.size()));
+        for (const auto& p : ballistic_parcels_) {
+            out.put(p.x); out.put(p.y); out.put(p.vx); out.put(p.vy); out.put(p.quantity); out.put(p.age);
+            out.put(p.source_body); out.put(p.contacts); out.put(p.deferrals);
+        }
+        const auto& l = ballistic_ledger_;
+        for (const auto v : {l.launched_parcels, l.launched_quantity, l.injected_parcels, l.injected_quantity,
+                                 l.deposited_parcels, l.deposited_quantity, l.deposit_writes, l.deferred_deposits,
+                                 l.refused_launches, l.forced_deposits, l.terrain_contacts, l.body_contacts,
+                                 l.surface_entries, l.ceiling_contacts, l.boundary_contacts, l.parcel_ticks,
+                                 l.cell_steps, l.maximum_live}) out.put(v);
+        for (const auto v : {l.launch_px, l.launch_py, l.gravity_py, l.drag_px, l.drag_py, l.contact_px,
+                                 l.contact_py, l.body_px, l.body_py, l.clamp_px, l.clamp_py, l.deposit_px,
+                                 l.deposit_py}) out.put(v);
     }
     const auto digest = Sha256::of(out.bytes);
     out.bytes.insert(out.bytes.end(), digest.begin(), digest.end());
@@ -2157,7 +2210,7 @@ std::unique_ptr<World> World::restore_physical_state(const WorldConfig& executio
     StateReader in(body);
     if (in.get<std::uint32_t>() != kPhysicalStateMagic) refuse_state("bad magic");
     const auto format=in.get<std::uint32_t>();
-    if (format != 2U && format != 3U) refuse_state("unknown format version");
+    if (format != 2U && format != 3U && format != 4U) refuse_state("unknown format version");
     // WorldConfig contains the fixed transport catalogue. Keep preparation's
     // copy off the caller/decoder stack (notably MSVC debug's 1 MiB default).
     auto config_owner = std::make_unique<WorldConfig>(execution);
@@ -2203,10 +2256,32 @@ std::unique_ptr<World> World::restore_physical_state(const WorldConfig& executio
         config.liquid_solver_policy.assignments().end(),[](const auto& a) {
             return a.family==LiquidSolverFamily::InertialCellularV1;
         });
-    if (has_inertial != (format==3U)) refuse_state("IN requires its explicit CYPS3 format");
+    std::uint8_t extensions = format == 3U ? 1U : 0U;
+    if (format == 4U) {
+        extensions = in.get<std::uint8_t>();
+        if ((extensions & ~7U) != 0U || (extensions & 6U) == 0U ||
+            ((extensions & 4U) != 0U && (extensions & 1U) == 0U))
+            refuse_state("unknown CYPS4 extension set");
+    }
+    if (has_inertial != ((extensions & 1U) != 0U)) refuse_state("IN requires its explicit CYPS3/CYPS4 format");
+    config.ballistic_water = {};
+    config.inertial_signed_vertical = (extensions & 4U) != 0U;
+    if ((extensions & 2U) != 0U) {
+        auto& c = config.ballistic_water;
+        if (in.get<std::uint16_t>() != BallisticWaterConfig::kVersion) refuse_state("unknown ballistic Water contract");
+        c.enabled = true;
+        c.capacity = in.get<std::uint32_t>(); c.gravity_q = in.get<std::int32_t>(); c.max_speed_q = in.get<std::int32_t>();
+        c.air_drag = in.get<std::int32_t>(); c.restitution = in.get<std::int32_t>(); c.friction = in.get<std::int32_t>();
+        c.settle_speed_q = in.get<std::int32_t>(); c.maximum_age_ticks = in.get<std::uint32_t>();
+        c.deposit_radius = in.get<std::int32_t>(); c.maximum_contacts = in.get<std::uint32_t>();
+        for (const auto expected : ballistic_water_identity(c))
+            if (in.get<std::uint8_t>() != expected) refuse_state("unknown ballistic Water identity");
+    }
     if (has_inertial) {
         if (in.get<std::uint16_t>() != InertialParameters::kVersion) refuse_state("unknown IN state contract");
-        for (const auto expected:inertial_extension_identity(inertial_parameters_for_policy(config.liquid_solver_policy)))
+        auto restored_parameters = inertial_parameters_for_policy(config.liquid_solver_policy);
+        restored_parameters.signed_vertical = config.inertial_signed_vertical;
+        for (const auto expected:inertial_extension_identity(restored_parameters))
             if (in.get<std::uint8_t>() != expected) refuse_state("unknown IN parameter/state identity");
     }
     config.settled_discovery_enabled = false;
@@ -2266,7 +2341,7 @@ std::unique_ptr<World> World::restore_physical_state(const WorldConfig& executio
             refuse_state("chunk coordinate overflow");
         if (w.find_chunk(coord) != nullptr) refuse_state("duplicate chunk");
         const auto flags = in.get<std::uint8_t>();
-        if ((flags & ~(format==3U ? 7U:3U)) != 0U) refuse_state("unknown chunk flags");
+        if ((flags & ~((extensions & 1U) != 0U ? 7U:3U)) != 0U) refuse_state("unknown chunk flags");
         if (((flags & 4U)!=0U)!=w.inertial_enabled_) refuse_state("IN sidecar presence mismatch");
         if (((flags & 2U) != 0U) != (w.pressure_ != nullptr)) refuse_state("pressure sidecar presence mismatch");
         auto& chunk = w.ensure_chunk(coord);
@@ -2341,7 +2416,8 @@ std::unique_ptr<World> World::restore_physical_state(const WorldConfig& executio
             if ((s.vx || s.vy || s.ax || s.ay) && !w.inertial_family(chunk.cells[i].material_value()))
                 refuse_state("IN motion on another family");
             if (s.vx < -InertialParameters::kVmax || s.vx > InertialParameters::kVmax ||
-                s.vy < 0 || s.vy > InertialParameters::kVmax ||
+                (s.vy < 0 && !w.inertial_parameters_.signed_vertical) || s.vy < -InertialParameters::kVmax ||
+                s.vy > InertialParameters::kVmax ||
                 std::abs(s.ax)>=InertialParameters::kQ || std::abs(s.ay)>=InertialParameters::kQ)
                 refuse_state("IN motion outside its declared domain");
         }
@@ -2445,15 +2521,39 @@ std::unique_ptr<World> World::restore_physical_state(const WorldConfig& executio
     } else if (!labelled.empty()) {
         refuse_state("gas labels without a pressure family");
     }
-    if (format==3U) {
+    if ((extensions & 1U) != 0U) {
         auto& s=w.inertial_ledger_;
         for (auto* v:{&s.gravity_y,&s.impulse_x,&s.impulse_y,&s.loss,&s.support,&s.remainder,
                      &s.retired_x,&s.retired_y,&s.external_x,&s.external_y,&s.external_speed}) *v=in.get<std::int64_t>();
         for (auto* v:{&s.updates,&s.unit_moves,&s.density_swaps,&s.contacts,&s.rests,&s.velocity_retired,&s.maximum_read_reach,&s.maximum_write_reach})
             *v=in.get<std::uint64_t>();
-        if (s.gravity_y<0 || s.loss<0 || s.support<0 || s.support>s.loss ||
+        s.gravity_speed = (extensions & 4U) != 0U ? in.get<std::int64_t>() : s.gravity_y;
+        if (s.gravity_y<0 || (s.loss<0 && (extensions & 4U) == 0U) || s.support<0 ||
+            (s.support>s.loss && (extensions & 4U) == 0U) ||
             s.maximum_read_reach>3U || s.maximum_write_reach>2U)
             refuse_state("IN ledger outside its declared domain");
+    }
+    if ((extensions & 2U) != 0U) {
+        const auto count = in.get<std::uint32_t>();
+        if (count > w.config_.ballistic_water.capacity) refuse_state("ballistic parcel count exceeds capacity");
+        for (std::uint32_t i = 0; i < count; ++i) {
+            BallisticParcel p;
+            p.x = in.get<std::int64_t>(); p.y = in.get<std::int64_t>();
+            p.vx = in.get<std::int32_t>(); p.vy = in.get<std::int32_t>();
+            p.quantity = in.get<std::uint32_t>(); p.age = in.get<std::uint32_t>();
+            p.source_body = in.get<std::uint16_t>(); p.contacts = in.get<std::uint8_t>(); p.deferrals = in.get<std::uint8_t>();
+            if (p.source_body > kMaximumTransientBodies) refuse_state("ballistic parcel body identity out of range");
+            w.ballistic_parcels_.push_back(p);
+        }
+        auto& l = w.ballistic_ledger_;
+        for (auto* v : {&l.launched_parcels, &l.launched_quantity, &l.injected_parcels, &l.injected_quantity,
+                                 &l.deposited_parcels, &l.deposited_quantity, &l.deposit_writes, &l.deferred_deposits,
+                                 &l.refused_launches, &l.forced_deposits, &l.terrain_contacts, &l.body_contacts,
+                                 &l.surface_entries, &l.ceiling_contacts, &l.boundary_contacts, &l.parcel_ticks,
+                                 &l.cell_steps, &l.maximum_live}) *v = in.get<std::uint64_t>();
+        for (auto* v : {&l.launch_px, &l.launch_py, &l.gravity_py, &l.drag_px, &l.drag_py, &l.contact_px,
+                                 &l.contact_py, &l.body_px, &l.body_py, &l.clamp_px, &l.clamp_py, &l.deposit_px,
+                                 &l.deposit_py}) *v = in.get<std::int64_t>();
     }
     if (!in.done()) refuse_state("trailing bytes");
     try { w.validate_inertial_ledger(); }
