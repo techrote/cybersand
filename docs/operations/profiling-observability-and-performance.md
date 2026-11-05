@@ -10,6 +10,13 @@ related-documents: [configuration-and-capacity-budgets.md, web-threading.md, tes
 
 # Profiling, observability, and performance
 
+The [2026-11-05 INV-004 Windows thread experiment](../audits/2026-11-05-inv154-windows-thread-time.md)
+reproduces #449's Rapier wall-time tail and registers bounded calling-thread CPU
+measurement. A long synchronous step does not itself prove CPU computation;
+calling-thread off-CPU time does not distinguish blocked from ready/descheduled
+time or exclude computation on Rapier's internal workers. This diagnostic changes
+no production algorithm or performance default.
+
 **Current:** native/Godot counters and isolated worker benchmarks exist.
 Their numbers must be attributed to the actual fixture, revision/artifact,
 platform, profile, and measurement boundary. No universal 60 FPS, production
