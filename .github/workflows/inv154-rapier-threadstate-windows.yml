@@ -54,7 +54,7 @@ jobs:
           PYTHONUTF8: '1'
         run: |
           set -euo pipefail
-          python tools/performance/run_inv154_windows_threadstate.py 2>&1 | tee build/inv154-threadstate-console.log
+          mkdir -p build build/inv154-threadstate\n          python tools/performance/run_inv154_windows_threadstate.py 2>&1 | tee build/inv154-threadstate-console.log
 
       - name: Preserve raw samples, traces, source/runtime and classification
         if: always()

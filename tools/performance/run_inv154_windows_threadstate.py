@@ -268,7 +268,7 @@ if os.name == "nt":
     _GetThreadDescription = getattr(kernel32, "GetThreadDescription", None)
     if _GetThreadDescription is not None:
         _GetThreadDescription.argtypes = [wintypes.HANDLE, ctypes.POINTER(ctypes.c_wchar_p)]
-        _GetThreadDescription.restype = wintypes.HRESULT
+        _GetThreadDescription.restype = ctypes.c_long
 
 def ft_to_int(ft: wintypes.FILETIME) -> int:
     return (int(ft.dwHighDateTime) << 32) | int(ft.dwLowDateTime)
