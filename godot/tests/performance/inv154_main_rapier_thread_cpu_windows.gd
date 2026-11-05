@@ -1,6 +1,6 @@
 extends "res://tests/play_life001_shared_host_case.gd"
 
-# INV-004 Task 2 profiler-enabled derivative of the exact #449 bridge-split ABBA fixture. This is an actual
+# INV-004 application-owned calling-thread CPU timing around rapier_bridge.step(), retaining the original ABBA controls. This is an actual
 # main.tscn, native CyberSimulationWorker and main-thread Rapier lifetime. It
 # does not alter production physics, presentation, clocks or worker cadence.
 # HOST RESTRICTION: graphical Windows ANGLE, not --headless.
@@ -35,9 +35,10 @@ class ObservedMain:
 	var cost_usec: Dictionary = {}
 	var sink: Callable = Callable()
 	var physics_sink: Callable = Callable()
-	var profile_rapier_step_start_usec: int = -1
-	var profile_rapier_step_end_usec: int = -1
-	var profile_rendezvous_written: bool = false
+	var thread_cpu_clock: CyberThreadCpuClock
+	var bridge_thread_cpu_before_100ns: int = -1
+	var bridge_thread_cpu_after_100ns: int = -1
+	var bridge_thread_cpu_100ns: int = -1
 
 	func actor_keyboard_allowed() -> bool:
 		# Same harness focus policy as existing PLAY-LIFE and PLAY-PACE probes.
@@ -149,9 +150,10 @@ class ObservedMain:
 		# These getters are existing production bridge counters, not new production clocks.
 		# Never pair a stale step/flush readback with a callback that did not step.
 		var bridge_count_before: int = rapier_bridge.manual_step_count()
-		profile_rapier_step_start_usec = -1
-		profile_rapier_step_end_usec = -1
 		wrapper_cost_usec = {}
+		bridge_thread_cpu_before_100ns = -1
+		bridge_thread_cpu_after_100ns = -1
+		bridge_thread_cpu_100ns = -1
 		if measurement_phase == "timed_a" or measurement_phase == "timed_b":
 			_instrumented_dispatch(delta)
 		else:
@@ -170,19 +172,6 @@ class ObservedMain:
 			bridge_flush_usec = roundi(rapier_bridge.last_flush_time_ms() * 1000.0)
 			bridge_active_bodies = rapier_bridge.last_active_body_count()
 		var bridge_readback_usec: int = Time.get_ticks_usec() - readback_start_usec
-		var profile_sync_ticks_usec: int = Time.get_ticks_usec()
-		var profile_sync_unix_usec: int = roundi(Time.get_unix_time_from_system() * 1000000.0)
-		var profile_caller_thread_id: int = int(OS.get_thread_caller_id())
-		var profile_main_thread_id: int = int(OS.get_main_thread_id())
-		if not profile_rendezvous_written:
-			var profile_out: String = OS.get_environment("CYBERSAND_PHASE_OUTPUT")
-			if not profile_out.is_empty():
-				DirAccess.make_dir_recursive_absolute(profile_out)
-				var profile_file: FileAccess = FileAccess.open(profile_out.path_join("thread-rendezvous.json"), FileAccess.WRITE)
-				if profile_file != null:
-					profile_file.store_string(JSON.stringify({"schema":"inv154-thread-rendezvous-v1", "pid":OS.get_process_id(), "caller_thread_id":profile_caller_thread_id, "main_thread_id":profile_main_thread_id, "sync_ticks_usec":profile_sync_ticks_usec, "sync_unix_usec":profile_sync_unix_usec}, "\\t"))
-					profile_file.close()
-					profile_rendezvous_written = true
 		var attributed: int = 0
 		for value in wrapper_cost_usec.values():
 			attributed += int(value)
@@ -196,16 +185,15 @@ class ObservedMain:
 				"actor_tick":int(physical_actor_session.tick) if physical_actor_session!=null else -1,
 				"native_tick":int(latest_snapshot.tick_index) if latest_snapshot!=null else -1,
 				"bridge_step_delta":bridge_step_delta,
+				"bridge_step_count_before":bridge_count_before,
+				"bridge_step_count_after":bridge_count_after,
+				"bridge_thread_cpu_before_100ns":bridge_thread_cpu_before_100ns,
+				"bridge_thread_cpu_after_100ns":bridge_thread_cpu_after_100ns,
+				"bridge_thread_cpu_100ns":bridge_thread_cpu_100ns,
 				"bridge_step_usec":bridge_step_usec,
 				"bridge_flush_usec":bridge_flush_usec,
 				"bridge_active_bodies":bridge_active_bodies,
-				"bridge_readback_usec":bridge_readback_usec,
-				"profile_rapier_step_start_usec":profile_rapier_step_start_usec,
-				"profile_rapier_step_end_usec":profile_rapier_step_end_usec,
-				"profile_sync_ticks_usec":profile_sync_ticks_usec,
-				"profile_sync_unix_usec":profile_sync_unix_usec,
-				"profile_caller_thread_id":profile_caller_thread_id,
-				"profile_main_thread_id":profile_main_thread_id})
+				"bridge_readback_usec":bridge_readback_usec})
 
 	# EXPERIMENTAL copied Main dispatcher; exact-source guard and mechanical clock removal verified in CI.
 	func _instrumented_dispatch(_delta: float) -> void:
@@ -260,9 +248,10 @@ class ObservedMain:
 			else:
 				apply_barrel_player_control(_delta)
 			stage_started_usec = Time.get_ticks_usec()
-			profile_rapier_step_start_usec = Time.get_ticks_usec()
+			bridge_thread_cpu_before_100ns = thread_cpu_clock.thread_cpu_time_100ns()
 			rapier_bridge.step()
-			profile_rapier_step_end_usec = Time.get_ticks_usec()
+			bridge_thread_cpu_after_100ns = thread_cpu_clock.thread_cpu_time_100ns()
+			bridge_thread_cpu_100ns = bridge_thread_cpu_after_100ns - bridge_thread_cpu_before_100ns
 			observe_wrapper("rapier_step", stage_started_usec)
 			if physical_actor_session != null:
 				var before_completed_tick: int = physical_actor_session.tick
@@ -425,12 +414,76 @@ func hold(label: String) -> void:
 	phase = "between"
 
 
+
+func validate_thread_cpu_clock(clock: CyberThreadCpuClock) -> Dictionary:
+	var first: int = clock.thread_cpu_time_100ns()
+	var negative_deltas: int = 0
+	var positive_deltas: Array[int] = []
+	var active_wall_start: int = Time.get_ticks_usec()
+	var active_cpu_start: int = first
+	var last_cpu: int = first
+	var spin: int = 1
+	while Time.get_ticks_usec() - active_wall_start < 150000:
+		for i: int in range(2000):
+			spin = (spin + i + 1) % 1000000007
+		var sample: int = clock.thread_cpu_time_100ns()
+		if sample < last_cpu:
+			negative_deltas += 1
+		elif sample > last_cpu:
+			positive_deltas.append(sample - last_cpu)
+		last_cpu = sample
+	var active_cpu_end: int = clock.thread_cpu_time_100ns()
+	var active_wall_usec: int = Time.get_ticks_usec() - active_wall_start
+	var active_cpu_100ns: int = active_cpu_end - active_cpu_start
+	if active_cpu_end < last_cpu:
+		negative_deltas += 1
+	elif active_cpu_end > last_cpu:
+		positive_deltas.append(active_cpu_end - last_cpu)
+	var wait_wall_start: int = Time.get_ticks_usec()
+	var wait_cpu_start: int = clock.thread_cpu_time_100ns()
+	OS.delay_msec(150)
+	var wait_cpu_end: int = clock.thread_cpu_time_100ns()
+	var wait_wall_usec: int = Time.get_ticks_usec() - wait_wall_start
+	var wait_cpu_100ns: int = wait_cpu_end - wait_cpu_start
+	if wait_cpu_100ns < 0:
+		negative_deltas += 1
+	var observed_resolution_100ns: int = 0
+	for delta: int in positive_deltas:
+		if delta > 0 and (observed_resolution_100ns == 0 or delta < observed_resolution_100ns):
+			observed_resolution_100ns = delta
+	var active_cpu_usec: float = float(active_cpu_100ns) / 10.0
+	var wait_cpu_usec: float = float(wait_cpu_100ns) / 10.0
+	return {
+		"available": first >= 0 and active_cpu_end >= 0 and wait_cpu_start >= 0 and wait_cpu_end >= 0,
+		"first_100ns": first,
+		"last_error_code": clock.last_error_code(),
+		"active_wall_usec": active_wall_usec,
+		"active_cpu_100ns": active_cpu_100ns,
+		"active_cpu_fraction": active_cpu_usec / float(active_wall_usec) if active_wall_usec > 0 else -1.0,
+		"wait_wall_usec": wait_wall_usec,
+		"wait_cpu_100ns": wait_cpu_100ns,
+		"wait_cpu_fraction": wait_cpu_usec / float(wait_wall_usec) if wait_wall_usec > 0 else -1.0,
+		"observed_resolution_100ns": observed_resolution_100ns,
+		"positive_resolution_samples": positive_deltas.size(),
+		"negative_deltas": negative_deltas,
+		"spin_checksum": spin
+	}
+
+
 func run() -> void:
 	main_started_usec = Time.get_ticks_usec()
 	if DisplayServer.get_name() == "headless" or OS.get_name() != "Windows":
 		expect(false, "actual Windows graphical host required")
 		quit(1)
 		return
+	var thread_cpu_clock: CyberThreadCpuClock = CyberThreadCpuClock.new()
+	var cpu_clock_controls: Dictionary = validate_thread_cpu_clock(thread_cpu_clock)
+	expect(bool(cpu_clock_controls.available), "GetThreadTimes calling-thread clock available")
+	expect(int(cpu_clock_controls.negative_deltas) == 0, "thread CPU clock monotonic")
+	expect(int(cpu_clock_controls.observed_resolution_100ns) > 0, "thread CPU clock observed positive resolution")
+	expect(float(cpu_clock_controls.active_cpu_fraction) >= 0.50, "CPU-active control advances calling-thread CPU time")
+	expect(int(cpu_clock_controls.wait_wall_usec) >= 100000 and float(cpu_clock_controls.wait_cpu_fraction) <= 0.25,
+		"ordinary wait advances wall time much more than calling-thread CPU time")
 	original_max_fps = Engine.max_fps
 	original_vsync = int(DisplayServer.window_get_vsync_mode())
 	ProjectSettings.set_setting("cybersand/native_worker_threads", 0)
@@ -443,6 +496,7 @@ func run() -> void:
 	desktop.set_script(ObservedMain)
 	desktop.sink = Callable(self, "retain_process")
 	desktop.physics_sink = Callable(self, "retain_physics")
+	desktop.thread_cpu_clock = thread_cpu_clock
 	root.add_child(desktop)
 	await process_frame
 	var worker: CyberSimulationWorker = desktop.simulation_worker
@@ -488,7 +542,8 @@ func run() -> void:
 	Engine.max_fps = original_max_fps
 	expect(Engine.max_fps == original_max_fps, "initial FPS cap restored before scene exit")
 	var result: Dictionary = {
-		"schema": "inv154-bridge-split-v1",
+		"schema": "inv154-thread-cpu-v1",
+		"thread_cpu_clock_controls": cpu_clock_controls,
 		"platform": OS.get_name(), "display_server": DisplayServer.get_name(),
 		"godot": Engine.get_version_info().get("string", "unknown"),
 		"driver": RenderingServer.get_rendering_device().get_device_name()
@@ -536,11 +591,11 @@ func run() -> void:
 	result.failures = failures
 	result.assertions = assertions
 	result["joined_worker"] = worker != null and not worker._thread.is_started()
-	print("INV154_BRIDGE_SPLIT ", JSON.stringify(result))
+	print("INV154_THREAD_CPU ", JSON.stringify(result))
 	var out: String = OS.get_environment("CYBERSAND_PHASE_OUTPUT")
 	if not out.is_empty():
 		DirAccess.make_dir_recursive_absolute(out)
-		var file: FileAccess = FileAccess.open(out.path_join("physics-bridge-split.json"), FileAccess.WRITE)
+		var file: FileAccess = FileAccess.open(out.path_join("physics-thread-cpu.json"), FileAccess.WRITE)
 		if file != null:
 			file.store_string(JSON.stringify({"result": result, "process_rows": process_rows,
 				"draw_rows": draw_rows, "pre_draw_rows": pre_draw_rows,
