@@ -27,6 +27,7 @@ class ObservedMain:
 	extends "res://scripts/main.gd"
 	var measurement_phase: String = ""
 	var cost_usec: Dictionary = {}
+	var sink: Callable = Callable()
 
 	func actor_keyboard_allowed() -> bool:
 		# Same harness focus policy as existing PLAY-LIFE and PLAY-PACE probes.
@@ -98,7 +99,8 @@ class ObservedMain:
 			"render_patch_bytes": last_render_patch_bytes,
 			"upload_ms_last": upload_time_ms
 		}
-		get_tree().call_group("inv154_main_probe", "retain_process", row)
+		if sink.is_valid():
+			sink.call(row)
 
 
 func retain_process(row: Dictionary) -> void:
@@ -236,10 +238,10 @@ func run() -> void:
 	viewport_rid = root.get_viewport_rid()
 	RenderingServer.viewport_set_measure_render_time(viewport_rid, true)
 	RenderingServer.frame_post_draw.connect(drawn)
-	add_to_group("inv154_main_probe")
 	release_controls()
 	desktop = load("res://main.tscn").instantiate()
 	desktop.set_script(ObservedMain)
+	desktop.sink = Callable(self, "retain_process")
 	root.add_child(desktop)
 	await process_frame
 	var worker: CyberSimulationWorker = desktop.simulation_worker
