@@ -1,0 +1,76 @@
+name: GEN006 native demand/session fence (experimental)
+
+on:
+  push:
+    branches:
+      - experiment/gen006-native-demand-fence-20261105
+    paths:
+      - native/tests/test_gen006_demand_fence.cpp
+      - .github/workflows/gen006-native-demand-fence.yml
+      - docs/audits/2026-11-05-gen006-native-demand-fence.md
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gen006-native-demand-fence-probe
+  cancel-in-progress: false
+
+jobs:
+  linux-real-native:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 28
+    steps:
+      - name: Check out exact source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 1
+          lfs: false
+          persist-credentials: false
+      - name: Identify source compiler and policy
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/gen006-demand-fence
+          git rev-parse HEAD | tee build/gen006-demand-fence/source-sha.txt
+          git rev-parse HEAD^{tree} | tee build/gen006-demand-fence/source-tree.txt
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          g++-13 --version | head -n 1 | tee build/gen006-demand-fence/compiler.txt
+          python3 tools/ci/check_ci_provider_policy.py 2>&1 | tee build/gen006-demand-fence/provider-policy.log
+      - name: Compile native generator and World into the actual fixture
+        timeout-minutes: 20
+        shell: bash
+        run: |
+          set -euo pipefail
+          timeout 1150s g++-13 -std=c++20 -O0 -g1 -pthread \
+            -Wall -Wextra -Wpedantic -I native/include \
+            native/src/world.cpp native/src/material_rules.cpp \
+            native/src/scheduler_geometry.cpp native/src/settled_world_discovery.cpp \
+            native/src/world_generation.cpp native/src/generation_fields.cpp \
+            native/src/generation_typed_fields.cpp native/src/generation_spatial.cpp \
+            native/src/generation_grammar.cpp native/src/generation_planes.cpp \
+            native/tests/test_gen006_demand_fence.cpp \
+            -o build/gen006-demand-fence/probe 2>&1 | tee build/gen006-demand-fence/compile.log
+      - name: Exercise bare-native negative and guarded 1/4-worker configs
+        timeout-minutes: 5
+        shell: bash
+        run: |
+          set -euo pipefail
+          timeout 240s build/gen006-demand-fence/probe 2>&1 | tee build/gen006-demand-fence/observations.txt
+          grep -q 'GEN006_DEMAND_FENCE_PASS' build/gen006-demand-fence/observations.txt
+          test "$(grep -c 'result=PASS' build/gen006-demand-fence/observations.txt)" = 2
+      - name: Preserve source-pinned original evidence and any failures
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gen006-native-demand-fence
+          path: |
+            build/gen006-demand-fence/source-sha.txt
+            build/gen006-demand-fence/source-tree.txt
+            build/gen006-demand-fence/compiler.txt
+            build/gen006-demand-fence/provider-policy.log
+            build/gen006-demand-fence/compile.log
+            build/gen006-demand-fence/observations.txt
+          if-no-files-found: warn
+          retention-days: 45
