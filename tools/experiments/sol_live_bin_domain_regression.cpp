@@ -72,6 +72,18 @@ int main() {
     b=valid;b.tangent_min=nan;check("nan_min",b,true);
     b=valid;b.tangent_max=inf;check("inf_max",b,true);
     b=valid;b.tangent_min=5;b.tangent_max=-5;check("reversed_bounds",b,true);
+    // A copied Welford mean must stay inside its observed extrema. Old
+    // quadrature silently collapsed the impossible two-node bin to one node.
+    b=valid;b.tangent_mean=101.;check("mean_above_max",b,true);
+    b=valid;b.tangent_mean=-100.;check("mean_below_min",b,true);
+    Bin singleton{};singleton.add({1.,1.},{0.,-1.},body.com);
+    b=singleton;b.tangent_mean=2.;check("singleton_mean_above",b,true);
+    b=singleton;b.tangent_mean=-1.;check("singleton_mean_below",b,true);
+    b=singleton;check("single_producer",b,false);
+    b=singleton;b.tangent_mean=std::nextafter(1.,inf);
+    check("roundoff_ulp_above",b,false);
+    b=singleton;b.tangent_mean=std::nextafter(1.,0.);
+    check("roundoff_ulp_below",b,false);
     std::cout<<"SOL_LIVE_BIN_DOMAIN invalid_checks="<<invalid<<" valid_controls="<<controls
              <<" failures="<<failures<<"\n";
     return failures?1:0;

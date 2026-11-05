@@ -1,0 +1,116 @@
+name: SOL copied-bin mean-range dependent qualification
+
+on:
+  push:
+    branches:
+      - sol/bin-mean-range-guard-20261105
+  pull_request:
+    branches:
+      - sol/live-bin-domain-guard-20261105
+    types: [opened, synchronize, reopened]
+    paths:
+      - '.github/workflows/sol-bin-mean-range.yml'
+      - 'native/include/cybersand/granular_contact_response.hpp'
+      - 'tools/experiments/sol_live_bin_domain_regression.cpp'
+
+permissions:
+  contents: read
+
+jobs:
+  linux:
+    name: Linux GCC/Clang red-green and sanitizer
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+      - name: Verify exact blobs
+        shell: bash
+        run: |
+          test "$(git hash-object native/include/cybersand/granular_contact_response.hpp)" = ce97fa104126404eed32b749873e0d4e36a6b56a
+          test "$(git hash-object tools/experiments/sol_live_bin_domain_regression.cpp)" = 0861e0ab12e2fef50274c731b0c84a78ff0aab9f
+      - name: Parent RED and guarded GREEN
+        shell: bash
+        run: |
+          mkdir -p parent/cybersand
+          git show 3eb07e6616798dda49083858e5549aec4c8d0cd7:native/include/cybersand/granular_contact_response.hpp > parent/cybersand/granular_contact_response.hpp
+          g++ -std=c++20 -O2 -Wall -Wextra -Werror -I parent tools/experiments/sol_live_bin_domain_regression.cpp -o parent_red
+          set +e
+          ./parent_red > parent.log 2>&1
+          red_exit=$?
+          set -e
+          cat parent.log
+          test "$red_exit" -eq 1
+          grep -q 'SOL_LIVE_BIN_DOMAIN invalid_checks=40 valid_controls=12 failures=8' parent.log
+          g++ -std=c++20 -O2 -Wall -Wextra -Werror -I native/include tools/experiments/sol_live_bin_domain_regression.cpp -o guarded
+          ./guarded | tee guarded.log
+          grep -q 'SOL_LIVE_BIN_DOMAIN invalid_checks=40 valid_controls=12 failures=0' guarded.log
+      - name: Clang exact-source red-green
+        shell: bash
+        run: |
+          clang++ -std=c++20 -O2 -Wall -Wextra -Werror -I parent tools/experiments/sol_live_bin_domain_regression.cpp -o clang_parent
+          set +e
+          ./clang_parent > clang_parent.log 2>&1
+          red_exit=$?
+          set -e
+          test "$red_exit" -eq 1
+          grep -q 'SOL_LIVE_BIN_DOMAIN invalid_checks=40 valid_controls=12 failures=8' clang_parent.log
+          clang++ -std=c++20 -O2 -Wall -Wextra -Werror -I native/include tools/experiments/sol_live_bin_domain_regression.cpp -o clang_guarded
+          ./clang_guarded | tee clang_guarded.log
+          grep -q 'SOL_LIVE_BIN_DOMAIN invalid_checks=40 valid_controls=12 failures=0' clang_guarded.log
+      - name: Candidate ASan and UBSan
+        shell: bash
+        run: |
+          g++ -std=c++20 -O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined -Wall -Wextra -Werror -I native/include tools/experiments/sol_live_bin_domain_regression.cpp -o guarded_san
+          ASAN_OPTIONS=detect_leaks=0 ./guarded_san | tee sanitized.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: sol-bin-mean-linux
+          path: |
+            parent.log
+            guarded.log
+            sanitized.log
+            clang_parent.log
+            clang_guarded.log
+          if-no-files-found: ignore
+  windows:
+    name: Actual Windows MSVC red-green
+    runs-on: windows-2022
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+      - uses: ilammy/msvc-dev-cmd@v1
+      - name: Verify exact blobs
+        shell: pwsh
+        run: |
+          if ((git hash-object native/include/cybersand/granular_contact_response.hpp).Trim() -ne "ce97fa104126404eed32b749873e0d4e36a6b56a") { throw "Header blob changed" }
+          if ((git hash-object tools/experiments/sol_live_bin_domain_regression.cpp).Trim() -ne "0861e0ab12e2fef50274c731b0c84a78ff0aab9f") { throw "Test blob changed" }
+      - name: Parent RED and guarded GREEN
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force parent/cybersand | Out-Null
+          git show 3eb07e6616798dda49083858e5549aec4c8d0cd7:native/include/cybersand/granular_contact_response.hpp | Out-File -FilePath parent/cybersand/granular_contact_response.hpp -Encoding utf8
+          cl /nologo /std:c++20 /EHsc /O2 /I parent tools/experiments/sol_live_bin_domain_regression.cpp /Fe:parent_red.exe
+          if ($LASTEXITCODE -ne 0) { throw "Parent compilation failed" }
+          & .\parent_red.exe | Tee-Object -FilePath parent.log
+          if ($LASTEXITCODE -ne 1) { throw "Parent did not fail as expected" }
+          if (-not (Select-String -Path parent.log -SimpleMatch "SOL_LIVE_BIN_DOMAIN invalid_checks=40 valid_controls=12 failures=8")) { throw "Unexpected parent RED count" }
+          cl /nologo /std:c++20 /EHsc /O2 /I native/include tools/experiments/sol_live_bin_domain_regression.cpp /Fe:guarded.exe
+          if ($LASTEXITCODE -ne 0) { throw "Candidate compilation failed" }
+          & .\guarded.exe | Tee-Object -FilePath guarded.log
+          if ($LASTEXITCODE -ne 0) { throw "Candidate regression failed" }
+          if (-not (Select-String -Path guarded.log -SimpleMatch "SOL_LIVE_BIN_DOMAIN invalid_checks=40 valid_controls=12 failures=0")) { throw "Unexpected candidate GREEN count" }
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: sol-bin-mean-msvc
+          path: |
+            parent.log
+            guarded.log
+          if-no-files-found: ignore
