@@ -185,6 +185,12 @@
       "original_local_sha256": "a9d819d22a969c07294de204148aa34f76a7fa2090614603e9cd6c7d4d54e42f",
       "original_local_bytes": 7053,
       "original_local_path": "build/sol-chamber-validation/receipt.json"
+    },
+    {
+      "path": "full-packet.json",
+      "bytes": 996,
+      "sha256": "2d3a64a4758811271107c0c875688cc97cab28e7627429544788f692a9e2d3c2",
+      "scope": "Full raw local packet available; separate independent audit still pending"
     }
   ],
   "local_raw_files": [

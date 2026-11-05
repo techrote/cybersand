@@ -12,7 +12,7 @@ def main():
     parser=argparse.ArgumentParser(__doc__);parser.add_argument("raw_root",type=Path);parser.add_argument("--verify-only",action="store_true");parser.add_argument("--output",type=Path);args=parser.parse_args()
     raw_root=args.raw_root.resolve();manifest=json.loads((ROOT/"docs/audits/sol-chamber-20261105/manifest.json").read_text(encoding="utf-8"))
     for item in manifest["local_raw_files"]:
-        path=(raw_root/item["path"]).resolve();assert path.is_relative_to(raw_root)
+        path=(raw_root/item["path"].replace("\\","/")).resolve();assert path.is_relative_to(raw_root)
         assert path.stat().st_size==item["bytes"] and hashlib.sha256(path.read_bytes()).hexdigest()==item["sha256"],item["path"]
     print("verified",len(manifest["local_raw_files"]),"complete local raw identities",flush=True)
     if args.verify_only:return

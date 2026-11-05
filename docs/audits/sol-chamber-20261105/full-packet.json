@@ -1,0 +1,16 @@
+{
+  "source_snapshot": "cde1c6b2c9a2254e5fc3c41545361b1826863407",
+  "physics_source": "15705bf209a5d5be1a37084093594e45ced8b01b",
+  "packet": "C:\\Users\\_\\.codex\\worktrees\\sol-chamber-20261105\\khybersand\\build\\sol-chamber-review\\sol-chamber-001-cde1c6b2-review.zip",
+  "bytes": 235927712,
+  "sha256": "68d6154981e5cc17d24d5c7620b13b5866900a97594b4be75bc031b87c7c98ee",
+  "source_archive_bytes": 177331113,
+  "source_archive_sha256": "aafa156354f08031bc690598684f8479a6f7d87143068d8d72f5b6cc6dd603a3",
+  "dependent_patch_sha256": "029036a5523fcddd47f4304ae3337b69bf28b6c70227240d6ac164158ea97cf9",
+  "raw_files": 2727,
+  "status": "LOCAL_FULL_PACKET; separate independent audit pending; no publication/merge",
+  "parent_source_archive_bytes": 175335782,
+  "parent_source_archive_sha256": "cd07cae6bdde6ac88009722790e226b0e011601397147bf7786cfd82b80a91a9",
+  "source_archive_cap_bytes": 134217728,
+  "source_archive_gate": "FAIL; cap unchanged; review packet is not product publication"
+}

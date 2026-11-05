@@ -156,7 +156,7 @@ def main():
     receipt=json.loads((args.directory/"receipt.json").read_text(encoding="utf-8"));profile=receipt["registration"];rows=[]
     for process in receipt["results"]:
         for item in process.get("reports",[]):
-            path=ROOT/item["path"];assert r.sha(path.read_bytes())==item["sha256"]
+            path=ROOT/item["path"].replace("\\","/");assert r.sha(path.read_bytes())==item["sha256"]
             platform=path.resolve().relative_to(args.directory.resolve()).parts[0]
             result=report(path,profile);result.update(platform=platform,report_path=item["path"])
             target=output/(platform+"-"+result["id"]+".metrics.json")

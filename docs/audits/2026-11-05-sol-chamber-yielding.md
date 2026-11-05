@@ -210,7 +210,7 @@ not a demonstrated contiguous-empty parcel trajectory. `move_cell()` preserves
 tuple/temperature and clears arrival stamps for out-of-tick BodyDisplacement:
 reconciliation is not a new arrival. Public totals do not certify parcel routes.
 
-Static Windows solver stages average about `.471 ms`, Linux `.817 ms`; the
+Static Windows four measured stages average about `.471 ms`, Linux `.817 ms`; the
 five-boundary census averages `11.80/12.76 ms` per step. Including observer and
 export, recorded means are `13.39/15.39 ms`. These instrumented shared-host
 observations are separate from the original inclusive24group/three-repeat/2ms
@@ -344,3 +344,10 @@ other materials, full authored gameplay/painting/save-load, asynchronous stale
 publication, capacity stress and actual four-participant work are not newly
 qualified by this profile. Their prior #400 evidence stays source-qualified and
 separate. No required missing observation is converted into a pass.
+
+
+Full local packet checksum, source snapshot and handover path: [full-packet.json](sol-chamber-20261105/full-packet.json). The first cde1c6b2 packet is retained; subsequent path-resolution fixes support Linux without changing its bytes. The packet itself is ignored and unavailable from the PR. Later metadata-only commits remain outside its source snapshot.
+
+Source-archive gate: **FAIL**. Snapshot cde1c6b2 is 177,331,113 bytes against the unchanged 134,217,728-byte cap. Parent a38098b1 already measures 175,335,782 bytes; the experiment adds 1,995,331 bytes. Both failures remain recorded, separately from historical SOL archive failure. The full packet is a local review handover, not product archive publication.
+
+The four-stage subtotal excludes response generation: workbench_coupling_results invokes the passive solve after native_tick_us stops. That getter and serial response construction are included in whole measured step time and Other measured step work, not separately isolated here. This subtotal cannot qualify solver cost.

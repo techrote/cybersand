@@ -23,7 +23,7 @@ def main():
     with zipfile.ZipFile(packet,"x",compression=zipfile.ZIP_DEFLATED,compresslevel=6,allowZip64=True) as archive:
         archive.write(snapshot,"source-snapshot.zip");archive.write(patch,"dependent.patch")
         for item in manifest["local_raw_files"]:
-            path=(ROOT/item["path"]).resolve();assert path.is_relative_to(ROOT)
+            path=(ROOT/item["path"].replace("\\","/")).resolve();assert path.is_relative_to(ROOT)
             assert path.stat().st_size==item["bytes"] and sha(path)==item["sha256"],item["path"]
             archive.write(path,"raw/"+item["path"].replace("\\","/"))
         for folder in [ROOT/"build/sol-chamber-validation",ROOT/"build/sol-chamber-sealing"]:
