@@ -136,10 +136,17 @@ def main():
                             d=json.loads(report.read_text(encoding="utf-8"))
                             assert d["source"]==info["source"] and not d["failures"] and d["requested_workers"]==worker
                     # A failure remains retained; independent cases continue.
-        changed=[name for name,digest in effective.items() if not name.startswith(".godot/") and
-                 (not (project/name).is_file() or process.sha((project/name).read_bytes())!=digest)]
+        changed=[];line_endings=[]
+        for name,digest in effective.items():
+            if name.startswith(".godot/"):continue
+            current=project/name
+            if current.is_file() and process.sha(current.read_bytes())==digest:continue
+            original=ROOT/"godot"/name
+            if name.endswith(".import") and current.is_file() and original.is_file() and current.read_bytes().replace(b"\r\n",b"\n")==original.read_bytes().replace(b"\r\n",b"\n"):
+                line_endings.append(dict(path=name,before_sha256=digest,after_sha256=process.sha(current.read_bytes())))
+            else:changed.append(name)
         process.write(folder/"effective-project-after.json",dict(source=info["source"],unexpected_changes=changed,
-            verified_files=sum(not n.startswith(".godot/") for n in effective)))
+            import_metadata_LF_normalization_only=line_endings,verified_files=sum(not n.startswith(".godot/") for n in effective)))
         assert not changed,"copied authored project or loaded runtime changed during execution"
         return rows
     platforms=args.platforms.split(",")
