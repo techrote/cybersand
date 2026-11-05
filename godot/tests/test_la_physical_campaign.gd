@@ -110,10 +110,7 @@ func episode(spec: Dictionary, arm: String, workers: int, repeat: int, output: S
 	for index: int in spec.models.size(): definitions.append(actor(spec.models[index],index,baseline,extent))
 	check(session.configure(definitions,viewport.world_2d.space,1),"actual authored session: "+str(session.last_error))
 	if not session.active(): viewport.free(); return
-	var application_variant: String = "baseline"
-	if arm=="LA-SELECTIVE-LIVE-PASSIVE-GATED": application_variant="passive-live-on-change-v2"
-	if arm=="LA-SELECTIVE-LIVE-PASSIVE": application_variant="passive-live-v1"
-	if arm=="LA-SELECTIVE-SEPARATING-GUARD": application_variant="passive-separating-v3"
+	var application_variant: String = application_variant_for_arm(arm)
 	check(session.bridge.configure_application_variant(application_variant),"trajectory application variant")
 	var bodies: Array[RigidBody2D] = session.bodies()
 	var geometries: Array = []
@@ -293,10 +290,7 @@ func episode(spec: Dictionary, arm: String, workers: int, repeat: int, output: S
 		for index: int in bodies.size():
 			var action: Dictionary = application.bodies[index]
 			if action.has("refusal"): continue
-			var predicted: Vector2 = live[index].velocity
-			if predicted.x*action.correction.x<0: predicted.x=0
-			if predicted.y*action.correction.y<0: predicted.y=0
-			predicted+=Vector2(action.impulse)/live[index].mass
+			var predicted: Vector2 = expected_application_velocity(live[index],action)
 			var residual: float = predicted.distance_to(after_apply[index].velocity)
 			var omega_residual: float = absf(live[index].omega+action.torque/live[index].inertia-after_apply[index].omega)
 			action.velocity_residual=residual; action.omega_residual=omega_residual
@@ -358,6 +352,18 @@ func configure_fresh_world(_world: Variant, _mode: String, _report: Dictionary) 
 
 func coupling_result(world: Variant) -> Dictionary:
 	return world.workbench_coupling_results()
+
+func application_variant_for_arm(arm: String) -> String:
+	if arm=="LA-SELECTIVE-LIVE-PASSIVE-GATED": return "passive-live-on-change-v2"
+	if arm=="LA-SELECTIVE-LIVE-PASSIVE": return "passive-live-v1"
+	if arm=="LA-SELECTIVE-SEPARATING-GUARD": return "passive-separating-v3"
+	return "baseline"
+
+func expected_application_velocity(live: Dictionary, action: Dictionary) -> Vector2:
+	var predicted: Vector2 = live.velocity
+	if predicted.x*action.correction.x<0: predicted.x=0
+	if predicted.y*action.correction.y<0: predicted.y=0
+	return predicted+Vector2(action.impulse)/live.mass
 
 func load_registration(path: String) -> Dictionary:
 	var current: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(path))
