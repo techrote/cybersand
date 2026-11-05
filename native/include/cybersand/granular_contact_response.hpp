@@ -113,7 +113,24 @@ inline Result solve_compound(const Body& b, std::span<const Bin* const> bins,
     if(bins.size()>kCompoundBins) { out.passive_rejected=true; out.scale=0; return out; }
     auto& contacts=workspace.contacts;
     std::uint64_t samples=0;
-    for(const auto* bin:bins) { if(!bin) { out.passive_rejected=true; out.scale=0; return out; } samples+=bin->count; }
+    for(const auto* bin:bins) {
+        if(!bin) { out.passive_rejected=true; out.scale=0; return out; }
+        // Only occupied bins contribute contact nodes. A copied bin must not
+        // carry malformed geometry into quadrature, lever arms, or raw impulses:
+        // the late passivity check cannot sanitize raw diagnostic fields.
+        if(bin->count) {
+            const double normal_sq=dot(bin->normal,bin->normal);
+            if(!std::isfinite(bin->position_sum.x) || !std::isfinite(bin->position_sum.y) ||
+               !std::isfinite(normal_sq) || std::abs(normal_sq-1.)>1e-6 ||
+               !std::isfinite(bin->maximum_radius) || bin->maximum_radius<0 ||
+               !std::isfinite(bin->tangent_mean) || !std::isfinite(bin->tangent_m2) || bin->tangent_m2<0 ||
+               !std::isfinite(bin->tangent_min) || !std::isfinite(bin->tangent_max) ||
+               bin->tangent_min>bin->tangent_max) {
+                out.passive_rejected=true; out.scale=0; return out;
+            }
+        }
+        samples+=bin->count;
+    }
     if(!std::isfinite(capacity_scale) || capacity_scale<1 || capacity_scale>4096 || !std::isfinite(available) || !std::isfinite(base_budget) || base_budget<5 || base_budget>80) { out.passive_rejected=true; return out; }
     out.capacity=std::min(std::clamp(available,0.,base_budget*capacity_scale),2.*static_cast<double>(samples)*capacity_scale);
     for(const auto* entry:bins) {
