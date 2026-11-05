@@ -10,6 +10,8 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+Player integration: [shared actors and usables](systems/player-control-playground.md#player-actors-and-usables-in-the-shared-workbench--5-november-2026), [capacity/field bounds](reference/configuration-reference.md#workbench-player-actor-and-material-field-bounds), [six additive questions](reference/retrieval-questions-workbench-players.json), and [dated qualification](audits/2026-11-05-workbench-player-usables.md). The successor consumes unmerged #402 over merged #394; source integration does not imply owner acceptance or merge.
+
 Desktop workbench: [saved per-flyer controls and options](systems/player-control-playground.md#saved-flyer-controls-and-options--5-november-2026), [profile/source/actuator bounds](reference/configuration-reference.md#saved-flyer-options-and-bindings) and [four additive retrieval questions](reference/retrieval-questions-flyer-options.json). The workbench baseline merged in [#394](https://github.com/techrote/cybersand/pull/394); the saved-options successor remains a separate unmerged development change. Its [dated source/runtime record](audits/2026-11-05-workbench-flyer-options.md) owns actual execution and remaining gameplay/platform qualification, without replacing current control or ownership contracts.
 
 Material authoring: [#357 is merged as an owner-adopted Planned baseline](architecture/material-authoring-catalogue-plan.md#12-owner-adoption-and-shadow-compiler-handover--2026-11-04).

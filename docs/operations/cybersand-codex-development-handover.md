@@ -10,6 +10,10 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## Shared player/workbench integration — 5 November 2026
+
+The active unmerged successor consumes draft #402 over accepted #394. Read [shared actors/usables](../systems/player-control-playground.md#player-actors-and-usables-in-the-shared-workbench--5-november-2026), [bounds/options](../reference/configuration-reference.md#workbench-player-actor-and-material-field-bounds) and the [dated audit](../audits/2026-11-05-workbench-player-usables.md). Preserve eight flyers, five articulated players, two native fields and 32 existing usables; flyers/fields have no equipment mount. One mask sample joins parts, equipment and effects. Preserve Shift secondary, no-refill field reset and runtime custody/refusal separately from starting recipes. Native owner edits require both source-matched runtimes; #402's old native identities do not qualify this successor. [Focused checks](local-build-and-validation.md#shared-workbench-player-and-usable-checks) distinguish current source, failures and acceptance. No merge, sleep, material-law change or active SOL/LiquidDrain import is authorized.
+
 ## MAT-AUTH-002 Phase A integration gate — 2026-11-04
 
 The owner now authorizes current-main reconciliation, focused preflight, a

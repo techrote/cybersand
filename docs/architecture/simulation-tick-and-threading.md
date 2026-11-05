@@ -321,8 +321,42 @@ rearm. No native pool worker gains input, file, scene-tree or live Rapier access
 The physical producer converts fractional source rates into bounded integer
 amounts at its existing cadence, then sends immutable nozzle intents with the
 body sample. The exclusive cellular owner retains identity/path/occupancy checks
-before insertion; material laws and the native coupling layout remain unchanged.
+before insertion; these source-rate controls change neither material laws nor
+packed body-state strides.
 Cosmetic exhaust uses the presentation path separately. See
 [private interfaces](../reference/interfaces-and-message-contracts.md#private-workbench-nozzle-and-preference-values),
 [rendering ownership](rendering-and-gameplay-bridges.md#cosmetic-workbench-flyer-exhaust)
 and the [current flyer controls](../systems/player-control-playground.md#saved-flyer-controls-and-options--5-november-2026).
+
+### Shared player and equipment continuation
+
+The workbench player/usables development branch extends this owner, without
+starting the standalone playground World. Main owns articulated rigs, joints,
+equipment connections, input and per-part motion retention. One copied capture
+joins all physical-body/proxy geometry, equipment frames/requests and direct
+effects. The desktop worker extracts that capture once; its native masks and
+usable source geometry therefore refer to the same physical observation.
+Native pool workers continue receiving only native work, with no live Godot or
+Rapier calls. The [private join contract](../reference/interfaces-and-message-contracts.md#workbench-body-equipment-and-material-player-join)
+owns layout and capacity.
+
+World replacement stages a new equipment runtime and value-only material-field
+controller beside the retained owners. Stable actor identities remap committed
+entities, stock and charge. Refusal leaves accepted inventory, native cells and
+the mechanical assembly with the retained owner; requested input cancellation
+still retires control leases. Main restores
+all part transforms before the candidate's first mask sample. The existing
+prepared physical acknowledgement and revision fences admit the no-fail swap.
+The worker then seeds explicit new material players only after actual transient
+masks are installed, before the first ordinary native tick. Partial insertion
+has a receipt; a refused candidate seeds nothing. A post-commit native failure
+retains the failed-world quarantine rather than claiming rollback.
+
+Material commands, reset/cancel, observation publication, controller export and
+the swap share the worker mutex. A reset racing copied-centre preparation changes
+the construction revision, invalidating that candidate. Valid material fields
+run through the existing adapter before ordinary ticking. Pause, stale leases,
+focus cancellation and owner retirement remove control authority without
+erasing parcels, sleeping bodies or deleting committed equipment. The
+[dated integration record](../audits/2026-11-05-workbench-player-usables.md)
+separates executed platforms, failures, subjective review and remaining gates.

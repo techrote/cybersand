@@ -1269,9 +1269,53 @@ The [flyer preference value schema](../../godot/scripts/flyer_preferences.gd), [
 | Speed setting | Soft overspeed-damping target, not a hard maximum speed; larger multipliers do not remove the other safety fences |
 | Real-source amount | ×0–8, default 1; deterministic fractional pulse schedule at the existing six-physics-tick cadence; no accumulated credit while released/paused |
 | Emitted material | Existing registered IDs 1–131 except reserved 10; 0 disables an authored dispenser; chemical thruster Fire stays ID 6 |
-| Source budget | At most three nozzle intents per body, eight bodies and 24 queued intents; at most eight requested cells per nozzle/cadence |
+| Source budget | At most three nozzle intents per enabled flyer, eight logical actors and 24 queued intents; at most eight requested cells per nozzle/cadence; additional articulated parts do not grant emitters |
 | Source occupancy work | At most 64 trace iterations per path and 1,024 occupancy reads per body; each endpoint must be empty and each path must preserve hard/foreign-mask refusal |
 | Source fan | At most eight distinct deterministic endpoints; the first is the retained one-cell endpoint; additional endpoints receive fresh path checks, not a free-volume search |
-| Starting setup | Version 3 stores explicit instance customization; valid version 2 upgrades with neutral customization and preserved comparison options; private keyboard bindings are not serialized in maps |
+| Starting setup | Version 4 stores explicit instance customization plus initial usable index/power; valid versions 2/3 upgrade with preserved options, neutral missing customization and empty equipment; private bindings are not map content |
 
 Changes requiring a physical replacement are persisted atomically after matching owner acknowledgement. Validation or storage refusal does not corrupt the previous saved file. A successful physical replacement followed by disk failure remains applied for that session and reports the persistence failure; it does not pretend the accepted World/graph rolled back. The options dialog cancels leases and requires release-to-rearm. Cosmetic pixel exhaust is independent of native Fire insertion and owns no gameplay state. Runtime/platform acceptance remains separate from these source/configuration declarations.
+
+## Workbench player actor and material field bounds
+
+The [workbench actor registry](../../godot/scripts/workbench_actor_catalog.gd),
+[physical session](../../godot/scripts/physical_actor_session.gd),
+[native owner parser](../../godot/native_extension/workbench_granular_coupling.inc),
+[starting schema](../../godot/scripts/workbench_setup.gd) and
+[field controller](../../godot/scripts/workbench_material_players.gd) own the
+current unmerged integration. The [player guide](../systems/player-control-playground.md#player-actors-and-usables-in-the-shared-workbench--5-november-2026)
+owns controls. Dated platform, failure and owner acceptance are separate.
+
+| Resource | Bound / meaning |
+|---|---|
+| Roster | Eight flyers, five articulated/mechanical players, two native material players and a passive barrel model; choices are not simultaneous capacity |
+| Live logical actors | Eight total, including material fields |
+| Native / Rapier geometry | At most 64 independent physical owners and 64 total rectangle proxies; at most eight physical parts per actor or eight proxies per compound body |
+| Owner identity | Stable `instance_id` plus `part_index` 0–7; legacy omitted part defaults to 0; duplicate tuples refuse; each physical owner has unique `id`, `first_proxy` and `count` |
+| Response | One mass/inertia/budget/application fence per independent body; multiple compound proxies share it; no actor-wide budget is duplicated onto each shape |
+| Copied support | Current admitted upward faces with capacity; same session/epoch, sample age ≤1 and corner travel ≤0.5 cells as the wrench; no synthetic RID or added impulse |
+| Fixed equipment | Occupancy remains; `fixed_body` refuses correction/impulse; a fixed/dynamic ownership transition retires the old sample via `body_mode_changed` |
+| Live graph handoff | Explicit bounded all-part poses/velocities and controller resources; initial recipes do not serialize live execution state |
+| Starting version 4 | Initial `usable_index` −1..31 and `usable_power` 0..1; equipment only for five mechanical player models; versions 2/3 migrate without equipment |
+| Native field seed | One explicit 16×16 attempt, at most 256 inserted cells per newly placed field; occupied or masked locations refuse; no seed on retained reset/peer edits |
+| Native field command | Six-tick observation-relative lease, eight fields maximum within the common actor cap, 32 pending button edges per field; stale/unissued/failed/paused commands refuse |
+| Native field work | Existing radius-32 selection; at most 4,225 candidate positions, 512 captured parcels and four adjacent moves per parcel; centre adjustment ≤4 cells/tick |
+| Native field reset | Move control centre and retire input only; preserve cells/quantity; nearby matching Sand or Water can join because there is no persistent parcel identity |
+
+Mechanical player options preserve neutral source values. Mass/inertia scale each
+real part, retaining disk wheel inertia. **Movement impulse ×** scales commanded
+whole-rig movement, jump, braking and traction assistance plus its matching hard-body
+reaction; it does not retune built-in wheel/joint motors. **Body torque ×** scales
+gyro/turn authority, not joint motors. Acceleration affects vehicle traction or
+flight and Acrobat horizontal control; speed is the vehicle target/overspeed
+response or Acrobat run target. Turn speed scales body angular targets (including
+Acrobat roll); turn acceleration retains a 100 rad/s² cap and angular target a
+24 rad/s bound. Coast drag, stabilization gain/damping, gravity, friction and
+angular drag use their existing physical/controller paths and clamps.
+
+Flyer-only boost, throttle-response, side-jet inversion, cosmetic fleet exhaust
+and material dispensers are not SetP controls. Shift remains player secondary.
+Native field profiles permit keybindings but refuse non-neutral rigid-body tuning;
+their authoring law and seed are not movement-stat multipliers. Existing source
+amount and material controls continue to apply only to actual authored flyer
+ports. No material law, sleep or response coefficient is changed by these options.

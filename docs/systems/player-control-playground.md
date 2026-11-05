@@ -2,7 +2,7 @@
 title: Player control playground
 status: Current
 document-kind: contract
-scope: Experimental movement controls and shared asynchronous desktop composition, input and lap lifetime, lifecycle and bounded native failure validation; isolated Sand and Water player fields
+scope: Seven movement presets in standalone and shared desktop hosts, articulated workbench actors/usables, input and lifecycle contracts, and worker-owned native Sand/Water fields
 canonical-for: [player-control-playground, player-movement-presets, player-material-field]
 last-reviewed: 2026-11-05
 related-documents: [physical-actor-rigs.md, ../architecture/data-ownership-and-lifetimes.md, ../architecture/rigid-body-and-cellular-coupling.md, ../reference/interfaces-and-message-contracts.md, ../reference/configuration-reference.md, ../operations/local-build-and-validation.md, ../audits/2026-10-20-player-control-playground.md]
@@ -356,8 +356,9 @@ scope includes final qualification of the integrated selector/rules described
 above, complete focus and physical-gamepad qualification and real frame-pacing/feel validation.
 The accepted four-checkpoint lap/HUD slice does not close those requirements.
 Native Auto measurement history is retained under closed #266; remaining
-lifecycle/stress and final desktop feel are #269/#270. Material swarms (#271) remain deferred in the standalone
-seven-preset experimental scene. Specialist scientific and NPC-training
+lifecycle/stress and final desktop feel are #269/#270. That accepted course slice
+did not admit material swarms (#271); the newer shared-workbench route below is
+a separate current development integration. Specialist scientific and NPC-training
 fixtures retain independent deterministic admission/execution.
 No second native World owner is introduced; redundant #265 remains closed.
 
@@ -579,8 +580,10 @@ Five mechanical presets also appear in **F5 → Rapier → SetP**, among the
 free-flight family appends a ninth **F5 → set4LY** selection group without
 renumbering SetP or replacing this dedicated player playground. They reuse
 the shared physical session, controls and optional equipment lifecycle in exploratory maps.
-Dust Devil and Undertow are available only in this separate playground; they
-control native material and have no Rapier actor definition.
+Dust Devil and Undertow control native material and have no Rapier actor
+definition. Their historical standalone route is retained; the
+[shared workbench integration](#player-actors-and-usables-in-the-shared-workbench--5-november-2026)
+now admits them through its existing worker-owned World as well.
 
 Sources: [scene owner](../../godot/scripts/player_playground.gd),
 [course and displayed controls](../../godot/scripts/player_playground_course.gd),
@@ -696,7 +699,7 @@ Source: [local sampler](../../godot/scripts/player_playground_input.gd) and
 
 ## Native Sand cloud and Water blob ownership
 
-The [playground runtime](../../godot/scripts/player_playground_runtime.gd)
+In the standalone scene, the [playground runtime](../../godot/scripts/player_playground_runtime.gd)
 exclusively owns one synchronous native World for a material preset. Setup seeds
 256 Sand or Water cells. Each admitted step applies the native field before the
 ordinary material tick; normal kernels still own gravity, Water flow and
@@ -776,19 +779,19 @@ retain their existing programme owners.
 
 Choose **Development workbench** from F2 or launch Godot with `-- --workbench`. The application opens a paused, empty 2048 × 2048 canvas. Details contains the construction size for the next blank canvas. The two sides are independent multiples of 64 between 512 and 2048. The full finite domain owns simulation interest across the session. Camera pan, overview, follow and zoom only change presentation.
 
-1. Choose a craft in **Pilot**, or cycle flyer models with **[** and **]**. Number keys are reserved for later material/usables selection and no longer select flyers. **Tab** and **Shift+Tab** cycle already placed instances. If the requested flyer exists, the workbench selects it and keeps its applied instance settings. Otherwise it replaces the selected flyer at its saved spawn, or places the new flyer at X/Y if no flyer is selected. A saved target-model profile supplies its settings. On the first switch to an unsaved model, the six existing comparison values (budget, mass, inertia, thrust, torque and Shift multiplier) carry over from the replaced flyer; advanced values use the target model's defaults. Independent placement uses the model's saved profile or defaults. **Place model** and **Place at X/Y** add another independent instance, including a duplicate model or passive barrel. Cursor placement uses **Place body**. Select an instance through the list or **Select body**. Up to eight physical bodies fit. Scooper has five rectangle proxies on one Rapier body. Instance IDs survive setup reconstruction.
+1. Choose an actor in **Pilot**, or cycle controllable models with **[** and **]**. Number keys are reserved for later material/usables selection and no longer select flyers. **Tab** and **Shift+Tab** cycle already placed instances. If the requested flyer exists, the workbench selects it and keeps its applied instance settings. Otherwise it replaces the selected flyer at its saved spawn, or places the new flyer at X/Y if no flyer is selected. A saved target-model profile supplies its settings. On the first flyer-to-flyer switch to an unsaved model, the six existing comparison values (budget, mass, inertia, thrust, torque and Shift multiplier) carry over from the replaced flyer; advanced values use the target model's defaults. Independent placement uses the model's saved profile or defaults. **Place model** and **Place at X/Y** add another independent instance, including a duplicate model or passive barrel. Cursor placement uses **Place body**. Select an instance through the list or **Select body**. Up to eight logical actors fit, within 64 independent rigid bodies and 64 native rectangle proxies. Native material players consume an actor slot and no rigid body. Scooper has five rectangle proxies on one Rapier body. Instance IDs survive setup reconstruction.
 2. Paint in the viewport, erase with the right button, pan with the middle button and zoom with the wheel. The powder palette, Water, hard wall and erase use radius 2–24. **Place source** uses the selected powder. **B** queues one 4 × 24 burst. Stream inserts at most four cells per tick for 600 ticks. Read the inserted/blocked counters. The source and actor dispensers add material only at admitted empty locations.
-3. **P** toggles play and **.** advances one acknowledged step while paused. The default cockpit controls retain Shift boost, Ctrl brake and C stabilization. Kestrel S dispenses Gunpowder; Scooper uses W/S for height, A/D for strafe, Space for lift and Q/E for tilt. **Flyer options…** opens the selected model's keyboard bindings, handling multipliers, side-thruster inversion and thruster/source options. In Details, the six comparison fields remain available; **Apply settings** prepares the selected instance's replacement and saves its model preferences after acknowledgement. **Defaults** restores LA-SA and the selected model's default profile. Setting/capturing a reset spawn leaves the live body where it is.
+3. **P** toggles play and **.** advances one acknowledged step while paused. For flyers, default cockpit controls retain Shift boost, Ctrl brake and C stabilization; player presets retain their authored Shift secondary. Kestrel S dispenses Gunpowder; Scooper uses W/S for height, A/D for strafe, Space for lift and Q/E for tilt. **Actor options…** (formerly Flyer options) opens the selected model's keyboard bindings, handling multipliers, side-thruster inversion and thruster/source options. In Details, the six comparison fields remain available; **Apply settings** prepares the selected instance's replacement and saves its model preferences after acknowledgement. **Defaults** restores LA-SA and the selected model's default profile. Setting/capturing a reset spawn leaves the live body where it is.
 4. The World response selector offers selective arrivals (LA-SA), LA, events off and RFT. RFT requires a budget of 20 for each instance. Use Details to select a liquid material, admitted family/variant, IN damping, execution radius and explicit Water normalization. **Apply liquid selection** requests a prepared World and permits conversion of incompatible live solver state. A whole-cell Water target rounds fractional cells using the native normalization rule. A fractional target preserves the visible amounts unless normalization is explicitly selected. The completed conversion reports discarded pressure overfill and trapped gas, plus Water added or removed by normalization. Water and powder that move outside the editable canvas are transferred into the replacement World wherever its reserved chunks can store them. The receipt reports what stayed outside the canvas and what was lost beyond reserved storage. Switching live solvers uses the evolved native cells even when the paint history exceeds the limits for a saved starting setup. The status shows the installed Water family and variant. Historical creep, burial, sealing and late-rebound results are still qualified. A liquid choice supplies its existing cellular behavior.
-5. **R** resets the selected body to its saved spawn with neutral motion, including while flying. **Restore start** reconstructs the whole starting recipe, and **New blank** clears the canvas. If an experiment fails, Reset can retire the failed worker and rebuild the authored start. Actor changes transfer the current cells, compatible pressure inventory and unaffected bodies through the exclusive owner. For contact experiments you can place bodies together, or reset into painted hard terrain. Starting-setup saves retain the authored brush history, actor definitions by stable name and content hash, spawns, explicit instance options/customization, selection, response, policy, source and tool state. They omit evolved cell motion, transient impulses, held commands, stream progress and private keyboard bindings. The named JSON files under `user://workbench` use version 3, a 1 MiB file budget, 2048-stamp and 4096-run reconstruction limits. Valid version-2 starts upgrade with neutral customization while retaining their explicit six comparison values. Load verifies the currently installed authored definitions and the complete candidate before adoption; a model preference does not silently replace a loaded instance's settings.
+5. **R** resets the selected body to its saved spawn with neutral motion, including while flying. **Restore start** reconstructs the whole starting recipe, and **New blank** clears the canvas. If an experiment fails, Reset can retire the failed worker and rebuild the authored start. Actor changes transfer the current cells, compatible pressure inventory and unaffected bodies through the exclusive owner. For contact experiments you can place bodies together, or reset into painted hard terrain. Starting-setup saves retain the authored brush history, actor definitions by stable name and content hash, spawns, explicit instance options/customization, selection, response, policy, source and tool state. They omit evolved cell motion, transient impulses, held commands, stream progress and private keyboard bindings. The named JSON files under `user://workbench` use version 4, a 1 MiB file budget, 2048-stamp and 4096-run reconstruction limits. Valid versions 2/3 upgrade with empty initial equipment and neutral missing customization while retaining their explicit six comparison values. Load verifies the currently installed authored definitions and the complete candidate before adoption; a model preference does not silently replace a loaded instance's settings.
 
 ### Saved flyer controls and options — 5 November 2026
 
-**Flyer options…** has compact **Keys**, **Handling** and **Thrusters & sources** tabs. Each keyboard action can have a primary and alternate key. Click a binding and press its new key; Escape cancels capture and Delete clears that binding. Shared keys are allowed for intentional combinations such as Kestrel's S control. Number-row/keypad digits and the workbench's navigation/editing shortcuts cannot become flight bindings. Existing standard gamepad controls remain available; this editor changes keyboard bindings. Invert side-thruster directions for Kestrel, Needle or Surveyor in **Thrusters & sources** without changing A/D rotation or the rear dispenser.
+**Actor options…** (the former Flyer options) has compact **Keys**, **Handling** and **Thrusters & sources** tabs. Each keyboard action can have a primary and alternate key. Click a binding and press its new key; Escape cancels capture and Delete clears that binding. Shared keys are allowed for intentional combinations such as Kestrel's S control. Number-row/keypad digits and the workbench's navigation/editing shortcuts cannot become flight bindings. Existing standard gamepad controls remain available; this editor changes keyboard bindings. Invert side-thruster directions for Kestrel, Needle or Surveyor in **Thrusters & sources** without changing A/D rotation or the rear dispenser.
 
 The editor pauses healthy play and cancels active control/emission leases. Closing it or completing an accepted application restores the preceding play state, with neutral release required before controls can rearm. A captured or previously held key cannot immediately propel a newly selected/rebuilt flyer. The existing failed-World stop remains authoritative.
 
-**Save flyer profile & apply** prepares the selected instance through the existing owner transaction. Preferences are written only after the matching owner acknowledgement. A refused graph leaves the previous preferences intact. If the graph succeeds but disk storage fails, the accepted options and bindings remain usable for the current session and a visible error reports that they were not saved; no physical rollback is implied.
+The profile **Save & apply** button prepares the selected instance through the existing owner transaction. Preferences are written only after the matching owner acknowledgement. A refused graph leaves the previous preferences intact. If the graph succeeds but disk storage fails, the accepted options and bindings remain usable for the current session and a visible error reports that they were not saved; no physical rollback is implied.
 
 Profiles are private, per-model values in `user://workbench/flyer-profiles.json`, separate from named terrain/starting-setup files. Version 1 admits at most 16 model profiles in 256 KiB. Successful saves survive application launches, map resets and model changes. Other already placed instances keep their own physical settings. Model profiles supply new placements and saved-target replacements; named starts retain their explicit instance settings while keyboard preferences remain private. Missing profiles use defaults. Invalid, oversized, unavailable-model or future-version files are refused visibly without silently rewriting them. These preferences do not edit the authored flyer JSON or material laws.
 
@@ -807,3 +810,88 @@ The flyer authoring registry is a bounded copied-value cache owned by the curren
 The workbench bridge likewise obtains its monotonically increasing session ID from main-loop-owned integer metadata. Retiring a scene cannot recycle that ID within the same process. It holds no GDScript static state: complete host qualification exposed static-script lifetime leaks and Windows exit faults beyond the earlier fleet-only controls. The [final-validation record](../audits/2026-11-04-workbench394-ready-validation.md) preserves those failures and the scoped repair; the response history, material laws and authored controls are unchanged.
 
 The [owner-accepted final-validation record](../audits/2026-11-04-workbench394-ready-validation.md) distinguishes the tested package, current-main reconciliation, rebuilt runtime identities and resulting-source hosted gates. Owner acceptance of this desktop workbench does not close the broader PLAY or REM-004 programmes.
+
+## Player actors and usables in the shared workbench — 5 November 2026
+
+**Current development source, unmerged:** this integration retains the
+saved-options work of [draft #402](https://github.com/techrote/cybersand/pull/402)
+over merged #394. Its [dated qualification](../audits/2026-11-05-workbench-player-usables.md)
+owns tested source/runtime identities, failed attempts and remaining platform or
+owner-review gates. This route does not close PLAY, REM-004, Water or SOL issues.
+
+The blank canvas offers all eight authored flyers and all seven player presets
+in **Pilot** and **Place model**. Mechanical players are Loose Cannon
+(`stuntbuggy`), Trials Rat (`trialsbike`), Afterimage (`acrobat`), Vector Rush
+(`arcadelander`) and Barrel Rocket (`jetbarrel`). Dust Devil (`dryswarm`) and
+Undertow (`liquidswarm`) are native material fields. The passive barrel remains
+a placeable prop. **[ / ]** cycles controllable models and **Tab** cycles placed
+instances; number keys remain reserved. Painting, powder burst/stream, liquid
+selection and the shared camera remain in this host. Saved target-model profiles
+and existing instance settings keep precedence. An unsaved flyer-to-flyer switch
+retains the original six comparison values; crossing actor kinds uses the target
+kind's defaults rather than importing a flyer boost into a field.
+
+Buggy, bike and acrobat keep real articulated parts and joints. Eight logical
+actors may use at most 64 independent rigid bodies and 64 native rectangle
+proxies. Each independent body has one mass, inertia, contact budget and
+application fence; Scooper's five proxies still share one body. Circle wheels
+keep real Rapier collision with the declared conservative square native mask.
+Copied per-part poses match native publication; selection/follow uses the root
+pose. Peer edits and settings transactions retain all part poses/velocities and
+spent Acrobat move inventory or flight mode. Held input is cancelled rather than
+silently recharged. Granular grounding uses a copied, age/geometry-admitted
+upward-contact witness, without a synthetic collider or a second impulse path.
+The provisional main-thread owner flushes pending body transform notifications
+before capturing its frozen packets, then keeps exact pose equality through
+admission. It does not relax the gate for floating-point transform differences.
+
+**Actor options…** saves controls per model in the existing private profile file.
+Flyers retain **Shift boost / Ctrl brake**. Mechanical and material players retain
+their authored **Shift secondary**: vehicle braking, Acrobat slide/roll, or field
+spread/squeeze. The binding is labelled Secondary, not boost. Mouse aim still
+directs Acrobat bullet jumps and physical equipment. Mechanical handling exposes
+mapped movement/physical values; native fields expose bindings only. Unsupported
+flyer throttle response, side-jet swap, boost and dispenser controls are absent
+for these players. See the [configuration mapping](../reference/configuration-reference.md#workbench-player-actor-and-material-field-bounds).
+
+Only the five mechanical players have the existing physical equipment mount.
+Choose one of **32 usables** and its power, then allow a normal play/step
+acknowledgement while the held chassis is available. **Use equipment** routes
+left/right pointer input to trigger/alternate; **Paint** routes it to painting.
+**M** uses equipment, **N** releases its real body and **U** attempts a nearby
+clear-path reattachment. Retooling does not grant remote pickup or new charge.
+Flyers and material fields have no equipment mount. The [usable contract](actor-usables.md)
+owns tools, payloads, processors, recipes and their existing conservation limits.
+Graph/liquid edits use bounded runtime custody or refuse before mutation, rather
+than silently refilling a tool, duplicating a chassis or erasing a committed
+payload. Fixed processors retain occupancy; granular correction cannot translate
+them, and an old fixed/dynamic sample cannot authorize movement after pickup.
+Resetting a mechanical actor returns its controlled assembly to the authored
+spawn while preserving independently released/fixed equipment pose and momentum.
+The released chassis can use its own fresh powder-contact observation to settle
+a processor; that observation does not ground the remote controlled actor.
+Actual custody qualification, including retained failed attempts, stays in the audit.
+
+Native material players reuse `apply_player_material_field` in the workbench's
+exclusive worker-owned World, before its ordinary tick. They construct neither
+the standalone scene's extra World nor a fake Rapier body. A new explicit
+placement attempts a **16 × 16 / 256-cell seed** into empty, unmasked locations,
+reporting inserted/refused cells. A field guides matching local material rather
+than owning parcel identities. Its centroid-follow adjustment is at most four
+cells per native tick; neutral admitted input keeps cohesion active. **R** or
+**Move selected** moves the field centre and cancels its lease without creating,
+teleporting or erasing material. Removing a field leaves its cells behind.
+Restore start/new construction can author a new experiment; ordinary peer edits,
+response changes and resets do not replenish a cloud. Native flow, chemistry,
+Water quantities and hard/foreign-mask refusal remain authoritative.
+
+Starting setup **version 4** records initial usable selection/power alongside
+definitions, spawns and explicit tuning. Valid versions 2/3 migrate with empty
+equipment and neutral missing controls. These are starting recipes, not saves
+of live motion, charge, projectiles or processor stock. Private bindings stay
+out of maps. Sources: [registry](../../godot/scripts/workbench_actor_catalog.gd),
+[setup](../../godot/scripts/workbench_setup.gd),
+[bridge](../../godot/scripts/workbench_physics_bridge.gd) and
+[field controller](../../godot/scripts/workbench_material_players.gd).
+Human gameplay, physical controller hardware and actual Web qualification remain
+separate from source and headless tests.

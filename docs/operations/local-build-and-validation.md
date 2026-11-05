@@ -10,6 +10,42 @@ related-documents: [source-checkpoint-and-recovery.md, testing-validation-and-re
 
 # Local build and validation
 
+## Shared workbench player and usable checks
+
+Read [shared controls](../systems/player-control-playground.md#player-actors-and-usables-in-the-shared-workbench--5-november-2026)
+and the [dated audit](../audits/2026-11-05-workbench-player-usables.md). Use pinned
+Godot with source-matched native runtimes for the new owner parser. Isolate test
+files with `CYBERSAND_TEST_ARTIFACT_DIR`; preserve human preferences.
+
+```sh
+godot --headless --path godot --script res://tests/test_workbench_articulated.gd
+godot --headless --path godot --script res://tests/test_workbench_rotated_support.gd
+godot --headless --path godot --script res://tests/test_workbench_prepared_pose.gd
+godot --headless --path godot --script res://tests/test_workbench_powder_deployment.gd
+godot --headless --path godot --script res://tests/test_workbench_player_roster.gd
+godot --headless --path godot --script res://tests/test_workbench_player_composition.gd
+godot --headless --path godot --script res://tests/test_player_vehicle_controls.gd
+godot --headless --path godot --script res://tests/test_player_acrobat.gd
+godot --headless --path godot --script res://tests/test_player_acrobat_physics.gd
+godot --headless --path godot --script res://tests/test_workbench_fleet_session.gd
+python tools/docs/retrieval_eval.py --queries docs/reference/retrieval-questions-workbench-players.json --output build/retrieval-workbench-players.json
+```
+
+The usable guide owns its lifecycle/runtime/admission fixtures. Retain old flyer,
+worker, liquid, recovery, legacy-setup and teardown controls. Articulation tests
+identify deliberate pose injection/packet perturbation separately from native
+efficacy. Rotation tests use a real native square wheel mask and separate bearing
+from the copied support witness. Set `CYBERSAND_ROTATED_SUPPORT_REFERENCE` to the
+retained v1 same-platform JSON to require exact wrench bytes across the
+observation-only refinement. Host composition requires a matching applied native
+request serial; a completed refusal is not a pass. The prepared-pose regression
+retains exact frozen identities across deferred transform notifications and
+requires a genuine post-capture edit to refuse. Powder deployment uses real
+native material contacts and Rapier motion without hard colliders, then removes
+the supporting material and checks contact retirement. Actual exit/diagnostics, final
+source identity and owner gameplay remain separate. Listing commands is not
+execution evidence.
+
 ## Desktop workbench flyer options — 2026-11-05
 
 Use the pinned Godot runtime and source-matched native libraries required below.

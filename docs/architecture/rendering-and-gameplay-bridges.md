@@ -122,6 +122,26 @@ source path separately. The
 owns controls; private values and receipt fields are in
 [interfaces](../reference/interfaces-and-message-contracts.md#private-workbench-nozzle-and-preference-values).
 
+### Workbench articulated publication
+
+The player/usables development branch publishes a copied `bodies` display map
+keyed by physical owner ID, with stable actor instance and local part identity.
+Its separate `instances` map retains only each actor's root pose. Articulated
+wheels, limbs and held/dropped equipment therefore keep independent presented
+transforms; several part rows do not overwrite one actor-level transform.
+`display_origin` is the body's sampled origin rather than an assumed COM origin.
+Both maps originate from the consumed native-mask sample and matching result.
+They are display values; neither rendering nor a copied packet can move a live
+RID or extend response admission. An earlier material publication may remain
+visible while physics progresses under the existing owner fences.
+
+Usable effects/projectiles/processors use copied worker feedback and the common
+camera. Native material players publish a control centre and native field
+receipt, not a fabricated rigid sprite or hidden material authority. Painting
+and pointer activation have explicit workbench tool modes; input and selection
+stay in Main. See the [join and custody interface](../reference/interfaces-and-message-contracts.md#workbench-body-equipment-and-material-player-join)
+and [dated integration qualification](../audits/2026-11-05-workbench-player-usables.md).
+
 **Planned:** true GPU subregion submission, palette-change records, measured
 compression/coalescing and tuned production snapshot defaults. Lower native
 copy volume does not establish any of those features.

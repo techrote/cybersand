@@ -4,7 +4,7 @@ status: Current
 document-kind: contract
 scope: Articulated desktop roster with ACT-005 physical equipment and SetP human movement presets, authored mechanics, local scripted control and leased input; sampled references and scientific material acceptance remain separate
 canonical-for: [physical-actor-rigs, physical-actor-control-v2, physical-actor-usables]
-last-reviewed: 2026-10-22
+last-reviewed: 2026-11-05
 related-documents: [physical-free-flight.md, actor-usables.md, actor-rigs.md, thunderbowl-control-reference.md, ../operations/physical-actor-programme.md, ../architecture/rigid-body-and-cellular-coupling.md, ../reference/configuration-reference.md, ../reference/interfaces-and-message-contracts.md, ../operations/local-build-and-validation.md, ../audits/2026-10-19-act005-physical-usables.md]
 ---
 
@@ -222,6 +222,26 @@ Late receipts are fenced by run, actor, control generation, equipment epoch and
 request identity. The older ACT-004 direct mount/effect fixtures retain their
 bounded deposit/cut/rocket-charge substrate for regression; it is not a second
 unleased policy API for the full catalogue.
+
+The shared workbench admits the five existing mechanical player definitions
+alongside flyers and native material players on its development branch. The
+buggy, bike and acrobat retain individual Rapier parts/joints; they are not
+flattened into a rigid compound. Up to eight actor identities share at most 64
+physical bodies and 64 native rectangle proxies. Each independently moving
+physical body owns one response application, mass/inertia and sample history;
+compound Scooper proxies continue sharing one physical owner. The bridge maps
+the actor instance and local part to each physical body/proxy explicitly.
+
+Prepared workbench replacements retain every part's transform and linear/angular
+motion, including the equipment chassis. Main-thread frozen processors ignore
+granular correction/impulse delivery while their native masks remain present.
+Processor settling accepts hard terrain or a fresh admitted upward contact on
+the equipment chassis itself; detached chassis support does not ground the actor.
+Copied admitted upward-contact witnesses may inform existing player grounding;
+they introduce no second support impulse or fictitious Rapier support RID.
+Default controller mechanics and conservative square wheel masks remain as
+authored. See the [shared wire contract](../reference/interfaces-and-message-contracts.md#workbench-body-equipment-and-material-player-join)
+and [dated integration qualification](../audits/2026-11-05-workbench-player-usables.md).
 
 ### How do the scripted actors use their loadouts?
 
