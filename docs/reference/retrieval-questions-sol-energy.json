@@ -1,0 +1,28 @@
+{
+  "version": 1,
+  "frozen_date": "2026-11-05",
+  "purpose": "Additive post-result SOL numerical repair development questions; not a blind evaluation or replacement of frozen sets.",
+  "questions": [
+    {
+      "id": "SOL-ENERGY-MECHANISM-001",
+      "query": "Why does the dependent SOL planner evaluate rounded Vector2 components in scalar64 rather than length_squared, and which impulses and limits change?",
+      "canonical": ["systems/solid-detachment.md"],
+      "facts": ["Binary32 norm creates false refusals and false acceptances near the unchanged energy bound.", "Scalar64 component products change only energy evaluation; impulses, geometry, four sweeps and 1e-8 limits remain fixed.", "The separate bridge 1e-4 readback guard remains unchanged."],
+      "sources": ["../godot/scripts/solid_contact_response.gd"]
+    },
+    {
+      "id": "SOL-ENERGY-PERFORMANCE-001",
+      "query": "Do mixed pure planner timings or passing small actual Rapier regressions prove engine performance, granular yielding or original SOL physical clearance?",
+      "canonical": ["systems/solid-detachment.md", "reference/status-and-roadmap.md"],
+      "facts": ["Pure planner timing is mixed and is not an engine-wide speedup or the original SOL CPU gate.", "Small actual Rapier fixtures are separate from original aggregate clearance and live native authority.", "Original physical failures, material admission and Active recovery hold remain blockers."],
+      "sources": ["../tools/sol281/energy_precision.py", "../tools/sol281/energy_rapier_regressions.py"]
+    },
+    {
+      "id": "SOL-ENERGY-EXECUTION-001",
+      "query": "How are isolated SOL energy replay and actual Rapier checks rerun, and can runtime success erase a Windows editor-import failure?",
+      "canonical": ["operations/local-build-and-validation.md", "systems/solid-detachment.md"],
+      "facts": ["New run names refuse overwrite; engines and runtime inputs must match authenticated hashes.", "Pure replay loads no native World or Rapier; a separate runner exercises actual Rapier.", "Explicit runtime-after-import-failure retains the failed import and failing aggregate exit."],
+      "sources": ["../tools/sol281/energy_precision.py", "../tools/sol281/energy_rapier_regressions.py"]
+    }
+  ]
+}

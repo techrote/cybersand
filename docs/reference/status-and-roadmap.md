@@ -4,11 +4,25 @@ status: Current
 document-kind: reference
 scope: Current implementation map, unresolved correctness and policy decisions, and bounded next checkpoints
 canonical-for: [implementation-status, foundational-priorities, open-decisions]
-last-reviewed: 2026-11-04
+last-reviewed: 2026-11-05
 related-documents: [validation-evidence.md, invariants.md, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/development-claims-remediation-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../operations/github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
 # Status and foundational roadmap
+
+## SOL numerical repair and remaining physics — 2026-11-05
+
+**Current dependent candidate:** scalar64 planner energy corrects both false
+refusal and false acceptance caused by the old binary32 vector norm. The
+[registered comparison](../audits/2026-11-05-sol-energy-precision.md) preserves
+impulses, four sweeps, limits and genuine refusals; planner timing is mixed,
+with no engine-wide speedup claim. Source-native MAT admission, complete live
+capture/hold/application and genuine granular yielding remain separate blockers.
+Actual small-fixture Rapier regression success does not prove original SOL
+clearance. Preserve 84/84 clearance failures, 64/84 depth failures, 36/36 async
+final overlaps, 1,452/1,452 corridor refusals, original CPU failures and #365's
+block. Keep this branch and #347/#393/#386 Draft; inspect the exact-source ledger
+before any later composition or promotion decision.
 
 ## SOL facade repair, separate from physical admission — 2026-11-04
 

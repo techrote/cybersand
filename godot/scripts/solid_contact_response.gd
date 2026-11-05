@@ -184,7 +184,11 @@ static func _exterior_segment(a: Vector2, b: Vector2, proxy: int, face: int,
 
 
 static func _energy(velocity: Vector2, omega: float, mass: float, inertia: float) -> float:
-	return 0.5 * mass * velocity.length_squared() + 0.5 * inertia * omega * omega
+	# Vector2.length_squared() rounds its norm at real_t precision. Evaluate the
+	# energy of these already rounded components in scalar float64 instead.
+	var vx: float = velocity.x
+	var vy: float = velocity.y
+	return 0.5 * mass * (vx * vx + vy * vy) + 0.5 * inertia * omega * omega
 
 
 static func plan(observation: Dictionary, transform: Transform2D, velocity: Vector2,
