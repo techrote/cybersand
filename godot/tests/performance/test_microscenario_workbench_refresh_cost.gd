@@ -71,7 +71,7 @@ func _context(observations_count: int, material_count: int, active: bool) -> Dic
     }}
 
 
-func _timed_arm(arm: String, workbench: CyberMicroScenarioWorkbench, context: Dictionary) -> Dictionary:
+func _timed_arm(arm: String, workbench: Control, context: Dictionary) -> Dictionary:
     var sample: Dictionary = {}
     var checksum: int = 0
     var started: int = Time.get_ticks_usec()
