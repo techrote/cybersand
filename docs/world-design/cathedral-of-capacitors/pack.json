@@ -1,0 +1,3028 @@
+{
+  "schema_id": "cybersand.world-feature-pack.proposal",
+  "schema_version": 1,
+  "title": "Cathedral of Capacitors — ceremonial electrical ruins",
+  "created_utc": "2026-11-05",
+  "status": "draft design only / never production-integrated",
+  "source": {
+    "main_commit": "ba9cbc89029be88b812af59b19e5c59829bbcd90",
+    "main_tree": "3af18f50e6094776263119623b64a1b2f4ca0ab2",
+    "native_material_enum": "native/include/cybersand/material.hpp",
+    "native_enum_blob_sha": "dcf05895da3015a2e999e3d1cbbae0fdc7fe32b3",
+    "shadow_catalogue": "materials/catalogue/catalogue.json",
+    "shadow_catalogue_blob_sha": "d7a47d60721598a16589daf177a6ff4401b84b43",
+    "interaction_rules": "native/include/cybersand/interaction_rules.hpp",
+    "interaction_rules_blob_sha": "b70fc9dc2599f648e5374f06e4cc0ae9cb868d79",
+    "rectangle_convention": "godot/scripts/demo_worlds.gd::_rect",
+    "prior_designs": [
+      "#408",
+      "#410",
+      "#412",
+      "#414",
+      "#420",
+      "#425",
+      "#430",
+      "#434"
+    ]
+  },
+  "coordinate_contract": {
+    "units": "integer native cells",
+    "origin": "top left",
+    "axes": "+x right / +y down",
+    "rectangles": "[x,y,width,height,material_id] half-open",
+    "order": "later rectangles overwrite prior cells, with no clearing or implied transparency",
+    "layers": "none",
+    "anchor": "bottom centre at scene.baseline_y",
+    "orientation": "0 degrees / 1x only",
+    "host_clearing": "no authority to erase host terrain; all negative space assumes clean host"
+  },
+  "palette": [
+    {
+      "id": 3,
+      "name": "water",
+      "enum_name": "Water",
+      "rgba": [
+        47,
+        127,
+        210,
+        255
+      ],
+      "state": 3,
+      "movable": true,
+      "kernel": 2,
+      "lateral_flow": 1,
+      "viscosity_index": 0,
+      "initial_state_a": 255,
+      "initial_state_b": 0
+    },
+    {
+      "id": 34,
+      "name": "spark",
+      "enum_name": "Spark",
+      "rgba": [
+        255,
+        232,
+        91,
+        255
+      ],
+      "state": 5,
+      "movable": true,
+      "kernel": 24,
+      "lateral_flow": 0,
+      "viscosity_index": 0,
+      "initial_state_a": 12,
+      "initial_state_b": 0
+    },
+    {
+      "id": 49,
+      "name": "slate",
+      "enum_name": "Slate",
+      "rgba": [
+        70,
+        83,
+        99,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0,
+      "initial_state_a": 0,
+      "initial_state_b": 0
+    },
+    {
+      "id": 50,
+      "name": "wrought-iron",
+      "enum_name": "WroughtIron",
+      "rgba": [
+        50,
+        58,
+        64,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0,
+      "initial_state_a": 0,
+      "initial_state_b": 0
+    },
+    {
+      "id": 54,
+      "name": "verdigris-copper",
+      "enum_name": "VerdigrisCopper",
+      "rgba": [
+        79,
+        140,
+        121,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0,
+      "initial_state_a": 0,
+      "initial_state_b": 0
+    },
+    {
+      "id": 55,
+      "name": "stained-glass",
+      "enum_name": "StainedGlass",
+      "rgba": [
+        71,
+        127,
+        168,
+        216
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0,
+      "initial_state_a": 0,
+      "initial_state_b": 0
+    },
+    {
+      "id": 58,
+      "name": "reinforced-concrete",
+      "enum_name": "ReinforcedConcrete",
+      "rgba": [
+        119,
+        123,
+        128,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0,
+      "initial_state_a": 0,
+      "initial_state_b": 0
+    },
+    {
+      "id": 62,
+      "name": "steel-plate",
+      "enum_name": "SteelPlate",
+      "rgba": [
+        126,
+        141,
+        153,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0,
+      "initial_state_a": 0,
+      "initial_state_b": 0
+    },
+    {
+      "id": 63,
+      "name": "painted-steel",
+      "enum_name": "PaintedSteel",
+      "rgba": [
+        49,
+        100,
+        119,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0,
+      "initial_state_a": 0,
+      "initial_state_b": 0
+    },
+    {
+      "id": 65,
+      "name": "rusted-steel",
+      "enum_name": "RustedSteel",
+      "rgba": [
+        124,
+        63,
+        43,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0,
+      "initial_state_a": 0,
+      "initial_state_b": 0
+    },
+    {
+      "id": 66,
+      "name": "steel-grating",
+      "enum_name": "SteelGrating",
+      "rgba": [
+        74,
+        85,
+        93,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0,
+      "initial_state_a": 0,
+      "initial_state_b": 0
+    },
+    {
+      "id": 69,
+      "name": "copper-pipe",
+      "enum_name": "CopperPipe",
+      "rgba": [
+        165,
+        92,
+        54,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0,
+      "initial_state_a": 0,
+      "initial_state_b": 0
+    },
+    {
+      "id": 70,
+      "name": "ceramic-tile",
+      "enum_name": "CeramicTile",
+      "rgba": [
+        200,
+        210,
+        203,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0,
+      "initial_state_a": 0,
+      "initial_state_b": 0
+    },
+    {
+      "id": 72,
+      "name": "dark-glass",
+      "enum_name": "DarkGlass",
+      "rgba": [
+        37,
+        60,
+        76,
+        192
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0,
+      "initial_state_a": 0,
+      "initial_state_b": 0
+    },
+    {
+      "id": 74,
+      "name": "cable-bundle",
+      "enum_name": "CableBundle",
+      "rgba": [
+        60,
+        53,
+        68,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0,
+      "initial_state_a": 0,
+      "initial_state_b": 0
+    },
+    {
+      "id": 75,
+      "name": "insulation",
+      "enum_name": "Insulation",
+      "rgba": [
+        214,
+        197,
+        92,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0,
+      "initial_state_a": 0,
+      "initial_state_b": 0
+    },
+    {
+      "id": 77,
+      "name": "neon-cyan",
+      "enum_name": "NeonCyan",
+      "rgba": [
+        55,
+        243,
+        228,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0,
+      "initial_state_a": 0,
+      "initial_state_b": 0
+    },
+    {
+      "id": 78,
+      "name": "neon-magenta",
+      "enum_name": "NeonMagenta",
+      "rgba": [
+        255,
+        61,
+        184,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0,
+      "initial_state_a": 0,
+      "initial_state_b": 0
+    },
+    {
+      "id": 79,
+      "name": "neon-amber",
+      "enum_name": "NeonAmber",
+      "rgba": [
+        255,
+        181,
+        46,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0,
+      "initial_state_a": 0,
+      "initial_state_b": 0
+    },
+    {
+      "id": 100,
+      "name": "basalt-columns",
+      "enum_name": "BasaltColumns",
+      "rgba": [
+        54,
+        56,
+        61,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0,
+      "initial_state_a": 0,
+      "initial_state_b": 0
+    },
+    {
+      "id": 101,
+      "name": "obsidian",
+      "enum_name": "Obsidian",
+      "rgba": [
+        24,
+        19,
+        32,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0,
+      "initial_state_a": 0,
+      "initial_state_b": 0
+    },
+    {
+      "id": 114,
+      "name": "aluminium-panel",
+      "enum_name": "AluminiumPanel",
+      "rgba": [
+        184,
+        192,
+        200,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0,
+      "initial_state_a": 0,
+      "initial_state_b": 0
+    },
+    {
+      "id": 119,
+      "name": "brass-panel",
+      "enum_name": "BrassPanel",
+      "rgba": [
+        196,
+        160,
+        72,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0,
+      "initial_state_a": 0,
+      "initial_state_b": 0
+    },
+    {
+      "id": 120,
+      "name": "glass-block",
+      "enum_name": "GlassBlock",
+      "rgba": [
+        156,
+        210,
+        220,
+        204
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0,
+      "initial_state_a": 0,
+      "initial_state_b": 0
+    },
+    {
+      "id": 121,
+      "name": "frosted-glass",
+      "enum_name": "FrostedGlass",
+      "rgba": [
+        206,
+        226,
+        232,
+        214
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0,
+      "initial_state_a": 0,
+      "initial_state_b": 0
+    },
+    {
+      "id": 127,
+      "name": "phosphor-panel",
+      "enum_name": "PhosphorPanel",
+      "rgba": [
+        176,
+        220,
+        172,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0,
+      "initial_state_a": 0,
+      "initial_state_b": 0
+    },
+    {
+      "id": 128,
+      "name": "polymer-panel",
+      "enum_name": "PolymerPanel",
+      "rgba": [
+        62,
+        122,
+        180,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0,
+      "initial_state_a": 0,
+      "initial_state_b": 0
+    },
+    {
+      "id": 129,
+      "name": "solar-panel",
+      "enum_name": "SolarPanel",
+      "rgba": [
+        26,
+        46,
+        94,
+        255
+      ],
+      "state": 1,
+      "movable": false,
+      "kernel": 0,
+      "lateral_flow": 0,
+      "viscosity_index": 0,
+      "initial_state_a": 0,
+      "initial_state_b": 0
+    }
+  ],
+  "style_guide": {
+    "geometry": "cathedral massing from rectangular buses, organ towers, stepped ceramic insulators, a rose circuit, and long horizontal naves",
+    "rhythm": "alternate portals / vertical charge silhouettes / low horizontal banks; maintain visible negative space for human scale",
+    "color": "65% cool graphite and basalt; 20% steel/ceramic; 10% cyan-magenta phosphor; 5% brass oxidised copper",
+    "light": "no claim of actual emission, power or interactivity; RGB metadata preview only",
+    "avoid": "no moving gears, functional circuitry, fluid physics in static scene"
+  },
+  "features": [
+    {
+      "id": "bus-narthex",
+      "title": "Bus Narthex / broken current gateway",
+      "size": [
+        144,
+        112
+      ],
+      "role": "processional entry with a visibly isolated central opening",
+      "kind": "inert-static",
+      "anchor": {
+        "type": "ground",
+        "point": [
+          72,
+          112
+        ]
+      },
+      "orientation": "0° and 1×; non-mirrored",
+      "clearance": {
+        "top": 12,
+        "side": 16,
+        "actor_approved": false
+      },
+      "neighbour_rules": [
+        "Keep 32-cell visible approach gap",
+        "Never tile portals directly back-to-back"
+      ],
+      "simulation_notes": "Fixed kernel-zero materials; opening is visual negative space and does not erase existing terrain.",
+      "variants": [
+        {
+          "id": "restored-bus",
+          "swap": {
+            "65": 62
+          },
+          "note": "unrusted uprights"
+        },
+        {
+          "id": "sealed-sign",
+          "swap": {
+            "79": 101
+          },
+          "note": "extinguished warning glyph"
+        }
+      ],
+      "rectangles": [
+        [
+          0,
+          102,
+          144,
+          10,
+          58
+        ],
+        [
+          0,
+          99,
+          144,
+          3,
+          49
+        ],
+        [
+          11,
+          31,
+          20,
+          68,
+          100
+        ],
+        [
+          113,
+          31,
+          20,
+          68,
+          100
+        ],
+        [
+          15,
+          23,
+          16,
+          12,
+          62
+        ],
+        [
+          113,
+          23,
+          16,
+          12,
+          62
+        ],
+        [
+          19,
+          18,
+          106,
+          9,
+          65
+        ],
+        [
+          25,
+          11,
+          94,
+          7,
+          62
+        ],
+        [
+          34,
+          8,
+          76,
+          4,
+          119
+        ],
+        [
+          29,
+          27,
+          6,
+          58,
+          74
+        ],
+        [
+          109,
+          27,
+          6,
+          58,
+          74
+        ],
+        [
+          31,
+          34,
+          7,
+          57,
+          75
+        ],
+        [
+          106,
+          34,
+          7,
+          57,
+          75
+        ],
+        [
+          36,
+          33,
+          72,
+          8,
+          50
+        ],
+        [
+          47,
+          31,
+          50,
+          3,
+          77
+        ],
+        [
+          52,
+          4,
+          40,
+          6,
+          70
+        ],
+        [
+          58,
+          2,
+          28,
+          4,
+          119
+        ],
+        [
+          67,
+          10,
+          10,
+          13,
+          79
+        ],
+        [
+          65,
+          23,
+          14,
+          4,
+          101
+        ],
+        [
+          10,
+          91,
+          30,
+          8,
+          62
+        ],
+        [
+          104,
+          91,
+          30,
+          8,
+          62
+        ],
+        [
+          7,
+          99,
+          40,
+          5,
+          66
+        ],
+        [
+          97,
+          99,
+          40,
+          5,
+          66
+        ],
+        [
+          21,
+          40,
+          2,
+          45,
+          65
+        ],
+        [
+          109,
+          40,
+          2,
+          45,
+          65
+        ],
+        [
+          24,
+          40,
+          2,
+          45,
+          65
+        ],
+        [
+          112,
+          40,
+          2,
+          45,
+          65
+        ],
+        [
+          27,
+          40,
+          2,
+          45,
+          65
+        ],
+        [
+          115,
+          40,
+          2,
+          45,
+          65
+        ],
+        [
+          30,
+          40,
+          2,
+          45,
+          65
+        ],
+        [
+          118,
+          40,
+          2,
+          45,
+          65
+        ],
+        [
+          33,
+          40,
+          2,
+          45,
+          65
+        ],
+        [
+          121,
+          40,
+          2,
+          45,
+          65
+        ],
+        [
+          42,
+          97,
+          60,
+          3,
+          119
+        ]
+      ]
+    },
+    {
+      "id": "capacitor-organ",
+      "title": "Capacitor Organ / twin dielectric towers",
+      "size": [
+        136,
+        124
+      ],
+      "role": "monumental twin charge vessels framing a delicate central gap",
+      "kind": "inert-static",
+      "anchor": {
+        "type": "ground",
+        "point": [
+          68,
+          124
+        ]
+      },
+      "orientation": "0° and 1×; non-mirrored",
+      "clearance": {
+        "top": 12,
+        "side": 16,
+        "actor_approved": false
+      },
+      "neighbour_rules": [
+        "Use as a major silhouette every 350+ cells",
+        "Separate from water experiment by another dry feature"
+      ],
+      "simulation_notes": "No modelled capacitance, stored electrical energy, or native energisation.",
+      "variants": [
+        {
+          "id": "satin-electrodes",
+          "swap": {
+            "62": 114
+          },
+          "note": "aluminium plate finish"
+        },
+        {
+          "id": "deactivated-organs",
+          "swap": {
+            "77": 72
+          },
+          "note": "dark glass instead of cyan marks"
+        }
+      ],
+      "rectangles": [
+        [
+          0,
+          114,
+          136,
+          10,
+          58
+        ],
+        [
+          0,
+          111,
+          136,
+          3,
+          49
+        ],
+        [
+          8,
+          99,
+          120,
+          9,
+          62
+        ],
+        [
+          14,
+          87,
+          108,
+          8,
+          66
+        ],
+        [
+          19,
+          25,
+          43,
+          62,
+          50
+        ],
+        [
+          24,
+          30,
+          33,
+          52,
+          128
+        ],
+        [
+          28,
+          33,
+          25,
+          46,
+          72
+        ],
+        [
+          23,
+          24,
+          35,
+          6,
+          119
+        ],
+        [
+          23,
+          82,
+          35,
+          5,
+          119
+        ],
+        [
+          20,
+          38,
+          3,
+          41,
+          75
+        ],
+        [
+          58,
+          38,
+          3,
+          41,
+          75
+        ],
+        [
+          31,
+          38,
+          19,
+          2,
+          127
+        ],
+        [
+          31,
+          46,
+          19,
+          2,
+          77
+        ],
+        [
+          31,
+          54,
+          19,
+          2,
+          127
+        ],
+        [
+          31,
+          62,
+          19,
+          2,
+          77
+        ],
+        [
+          31,
+          70,
+          19,
+          2,
+          127
+        ],
+        [
+          31,
+          17,
+          19,
+          7,
+          62
+        ],
+        [
+          36,
+          10,
+          9,
+          7,
+          114
+        ],
+        [
+          36,
+          5,
+          9,
+          5,
+          79
+        ],
+        [
+          75,
+          25,
+          43,
+          62,
+          50
+        ],
+        [
+          80,
+          30,
+          33,
+          52,
+          128
+        ],
+        [
+          84,
+          33,
+          25,
+          46,
+          72
+        ],
+        [
+          79,
+          24,
+          35,
+          6,
+          119
+        ],
+        [
+          79,
+          82,
+          35,
+          5,
+          119
+        ],
+        [
+          76,
+          38,
+          3,
+          41,
+          75
+        ],
+        [
+          114,
+          38,
+          3,
+          41,
+          75
+        ],
+        [
+          87,
+          38,
+          19,
+          2,
+          127
+        ],
+        [
+          87,
+          46,
+          19,
+          2,
+          77
+        ],
+        [
+          87,
+          54,
+          19,
+          2,
+          127
+        ],
+        [
+          87,
+          62,
+          19,
+          2,
+          77
+        ],
+        [
+          87,
+          70,
+          19,
+          2,
+          127
+        ],
+        [
+          87,
+          17,
+          19,
+          7,
+          62
+        ],
+        [
+          92,
+          10,
+          9,
+          7,
+          114
+        ],
+        [
+          92,
+          5,
+          9,
+          5,
+          79
+        ],
+        [
+          62,
+          54,
+          13,
+          8,
+          74
+        ],
+        [
+          65,
+          47,
+          7,
+          7,
+          55
+        ],
+        [
+          65,
+          62,
+          7,
+          20,
+          74
+        ],
+        [
+          61,
+          82,
+          15,
+          5,
+          50
+        ],
+        [
+          15,
+          95,
+          106,
+          4,
+          101
+        ],
+        [
+          40,
+          99,
+          3,
+          8,
+          75
+        ],
+        [
+          52,
+          99,
+          3,
+          8,
+          75
+        ],
+        [
+          64,
+          99,
+          3,
+          8,
+          75
+        ],
+        [
+          76,
+          99,
+          3,
+          8,
+          75
+        ],
+        [
+          88,
+          99,
+          3,
+          8,
+          75
+        ]
+      ]
+    },
+    {
+      "id": "insulator-buttress",
+      "title": "Insulator Buttress / stepped support arch",
+      "size": [
+        132,
+        108
+      ],
+      "role": "asymmetric flying staircase and dielectric studs",
+      "kind": "inert-static",
+      "anchor": {
+        "type": "ground",
+        "point": [
+          66,
+          108
+        ]
+      },
+      "orientation": "0° and 1×; non-mirrored",
+      "clearance": {
+        "top": 12,
+        "side": 16,
+        "actor_approved": false
+      },
+      "neighbour_rules": [
+        "Use one between large vertical monuments",
+        "Keep right-side visual wedge unobstructed"
+      ],
+      "simulation_notes": "No structural simulation; cantilever appearance is untested for actor contact.",
+      "variants": [
+        {
+          "id": "aged-ceramics",
+          "swap": {
+            "70": 121
+          },
+          "note": "frosted enamel ribs"
+        },
+        {
+          "id": "coppered-ridge",
+          "swap": {
+            "114": 54
+          },
+          "note": "oxidised crown"
+        }
+      ],
+      "rectangles": [
+        [
+          0,
+          98,
+          132,
+          10,
+          58
+        ],
+        [
+          0,
+          95,
+          132,
+          3,
+          49
+        ],
+        [
+          10,
+          57,
+          22,
+          41,
+          100
+        ],
+        [
+          16,
+          48,
+          20,
+          10,
+          62
+        ],
+        [
+          20,
+          41,
+          26,
+          8,
+          58
+        ],
+        [
+          32,
+          34,
+          28,
+          8,
+          58
+        ],
+        [
+          47,
+          28,
+          27,
+          7,
+          58
+        ],
+        [
+          64,
+          22,
+          26,
+          7,
+          58
+        ],
+        [
+          78,
+          17,
+          28,
+          6,
+          58
+        ],
+        [
+          99,
+          17,
+          14,
+          79,
+          100
+        ],
+        [
+          95,
+          9,
+          22,
+          8,
+          62
+        ],
+        [
+          100,
+          3,
+          12,
+          6,
+          114
+        ],
+        [
+          109,
+          31,
+          7,
+          55,
+          74
+        ],
+        [
+          117,
+          30,
+          5,
+          58,
+          75
+        ],
+        [
+          27,
+          30,
+          8,
+          5,
+          70
+        ],
+        [
+          29,
+          27,
+          4,
+          3,
+          119
+        ],
+        [
+          40,
+          26,
+          8,
+          5,
+          70
+        ],
+        [
+          42,
+          23,
+          4,
+          3,
+          119
+        ],
+        [
+          53,
+          22,
+          8,
+          5,
+          70
+        ],
+        [
+          55,
+          19,
+          4,
+          3,
+          119
+        ],
+        [
+          66,
+          18,
+          8,
+          5,
+          70
+        ],
+        [
+          68,
+          15,
+          4,
+          3,
+          119
+        ],
+        [
+          79,
+          14,
+          8,
+          5,
+          70
+        ],
+        [
+          81,
+          11,
+          4,
+          3,
+          119
+        ],
+        [
+          92,
+          10,
+          8,
+          5,
+          70
+        ],
+        [
+          94,
+          7,
+          4,
+          3,
+          119
+        ],
+        [
+          33,
+          70,
+          63,
+          7,
+          62
+        ],
+        [
+          35,
+          78,
+          60,
+          3,
+          65
+        ],
+        [
+          51,
+          87,
+          25,
+          9,
+          50
+        ],
+        [
+          12,
+          95,
+          110,
+          3,
+          66
+        ]
+      ]
+    },
+    {
+      "id": "rose-indicator",
+      "title": "Rose Indicator / fractured circuit mandala",
+      "size": [
+        120,
+        122
+      ],
+      "role": "circular-ish segmented electronic stained-glass shrine",
+      "kind": "inert-static",
+      "anchor": {
+        "type": "ground",
+        "point": [
+          60,
+          122
+        ]
+      },
+      "orientation": "0° and 1×; non-mirrored",
+      "clearance": {
+        "top": 12,
+        "side": 16,
+        "actor_approved": false
+      },
+      "neighbour_rules": [
+        "Pair with narrow plinth or bus nave, not adjacent equal circles",
+        "Preserve 12-cell dark fringe around mosaic"
+      ],
+      "simulation_notes": "The rosette is pixel geometry only, with no circuitry, light simulation, or rotation.",
+      "variants": [
+        {
+          "id": "cold-spectrum",
+          "swap": {
+            "78": 77
+          },
+          "note": "cyan rather than magenta radial marks"
+        },
+        {
+          "id": "votive-amber",
+          "swap": {
+            "77": 79
+          },
+          "note": "aged amber diagnostics"
+        }
+      ],
+      "rectangles": [
+        [
+          0,
+          112,
+          120,
+          10,
+          58
+        ],
+        [
+          0,
+          109,
+          120,
+          3,
+          49
+        ],
+        [
+          39,
+          20,
+          42,
+          81,
+          50
+        ],
+        [
+          33,
+          26,
+          54,
+          68,
+          62
+        ],
+        [
+          26,
+          36,
+          68,
+          49,
+          100
+        ],
+        [
+          20,
+          48,
+          80,
+          24,
+          62
+        ],
+        [
+          31,
+          31,
+          58,
+          58,
+          72
+        ],
+        [
+          38,
+          24,
+          44,
+          72,
+          55
+        ],
+        [
+          24,
+          49,
+          72,
+          24,
+          55
+        ],
+        [
+          36,
+          36,
+          48,
+          48,
+          101
+        ],
+        [
+          43,
+          28,
+          34,
+          64,
+          128
+        ],
+        [
+          28,
+          43,
+          64,
+          34,
+          128
+        ],
+        [
+          42,
+          42,
+          36,
+          36,
+          72
+        ],
+        [
+          49,
+          49,
+          22,
+          22,
+          119
+        ],
+        [
+          54,
+          54,
+          12,
+          12,
+          127
+        ],
+        [
+          54,
+          16,
+          12,
+          3,
+          78
+        ],
+        [
+          54,
+          84,
+          12,
+          3,
+          78
+        ],
+        [
+          13,
+          55,
+          4,
+          10,
+          78
+        ],
+        [
+          87,
+          55,
+          4,
+          10,
+          78
+        ],
+        [
+          54,
+          24,
+          12,
+          3,
+          77
+        ],
+        [
+          54,
+          91,
+          12,
+          3,
+          77
+        ],
+        [
+          21,
+          55,
+          4,
+          10,
+          77
+        ],
+        [
+          94,
+          55,
+          4,
+          10,
+          77
+        ],
+        [
+          54,
+          32,
+          12,
+          3,
+          78
+        ],
+        [
+          54,
+          98,
+          12,
+          3,
+          78
+        ],
+        [
+          29,
+          55,
+          4,
+          10,
+          78
+        ],
+        [
+          101,
+          55,
+          4,
+          10,
+          78
+        ],
+        [
+          54,
+          40,
+          12,
+          3,
+          77
+        ],
+        [
+          54,
+          105,
+          12,
+          3,
+          77
+        ],
+        [
+          37,
+          55,
+          4,
+          10,
+          77
+        ],
+        [
+          108,
+          55,
+          4,
+          10,
+          77
+        ],
+        [
+          57,
+          5,
+          6,
+          9,
+          119
+        ],
+        [
+          14,
+          58,
+          6,
+          4,
+          79
+        ],
+        [
+          100,
+          58,
+          6,
+          4,
+          79
+        ],
+        [
+          56,
+          100,
+          8,
+          5,
+          50
+        ]
+      ]
+    },
+    {
+      "id": "conductor-nave",
+      "title": "Conductor Nave / side-chapel cable run",
+      "size": [
+        140,
+        96
+      ],
+      "role": "long restrained horizontal processional cable and insulated arches",
+      "kind": "inert-static",
+      "anchor": {
+        "type": "ground",
+        "point": [
+          70,
+          96
+        ]
+      },
+      "orientation": "0° and 1×; non-mirrored",
+      "clearance": {
+        "top": 12,
+        "side": 16,
+        "actor_approved": false
+      },
+      "neighbour_rules": [
+        "Can tile horizontal repeats with 12-cell seam step",
+        "Keep entry floor uninterrupted"
+      ],
+      "simulation_notes": "No electronic conductivity simulation. Glass and insulation do not imply live circuits.",
+      "variants": [
+        {
+          "id": "corroded-rails",
+          "swap": {
+            "62": 65
+          },
+          "note": "rusted maintenance catwalk"
+        },
+        {
+          "id": "quiet-rail",
+          "swap": {
+            "77": 72
+          },
+          "note": "de-energised linear marks"
+        }
+      ],
+      "rectangles": [
+        [
+          0,
+          86,
+          140,
+          10,
+          58
+        ],
+        [
+          0,
+          83,
+          140,
+          3,
+          49
+        ],
+        [
+          4,
+          72,
+          132,
+          12,
+          50
+        ],
+        [
+          7,
+          84,
+          126,
+          8,
+          62
+        ],
+        [
+          11,
+          22,
+          10,
+          49,
+          100
+        ],
+        [
+          13,
+          10,
+          6,
+          12,
+          62
+        ],
+        [
+          8,
+          18,
+          16,
+          5,
+          114
+        ],
+        [
+          9,
+          67,
+          14,
+          5,
+          66
+        ],
+        [
+          12,
+          28,
+          8,
+          30,
+          74
+        ],
+        [
+          14,
+          30,
+          4,
+          26,
+          75
+        ],
+        [
+          44,
+          22,
+          10,
+          49,
+          100
+        ],
+        [
+          46,
+          10,
+          6,
+          12,
+          62
+        ],
+        [
+          41,
+          18,
+          16,
+          5,
+          114
+        ],
+        [
+          42,
+          67,
+          14,
+          5,
+          66
+        ],
+        [
+          45,
+          28,
+          8,
+          30,
+          74
+        ],
+        [
+          47,
+          30,
+          4,
+          26,
+          75
+        ],
+        [
+          77,
+          22,
+          10,
+          49,
+          100
+        ],
+        [
+          79,
+          10,
+          6,
+          12,
+          62
+        ],
+        [
+          74,
+          18,
+          16,
+          5,
+          114
+        ],
+        [
+          75,
+          67,
+          14,
+          5,
+          66
+        ],
+        [
+          78,
+          28,
+          8,
+          30,
+          74
+        ],
+        [
+          80,
+          30,
+          4,
+          26,
+          75
+        ],
+        [
+          110,
+          22,
+          10,
+          49,
+          100
+        ],
+        [
+          112,
+          10,
+          6,
+          12,
+          62
+        ],
+        [
+          107,
+          18,
+          16,
+          5,
+          114
+        ],
+        [
+          108,
+          67,
+          14,
+          5,
+          66
+        ],
+        [
+          111,
+          28,
+          8,
+          30,
+          74
+        ],
+        [
+          113,
+          30,
+          4,
+          26,
+          75
+        ],
+        [
+          18,
+          30,
+          110,
+          4,
+          69
+        ],
+        [
+          20,
+          31,
+          106,
+          2,
+          77
+        ],
+        [
+          18,
+          42,
+          110,
+          4,
+          69
+        ],
+        [
+          20,
+          43,
+          106,
+          2,
+          77
+        ],
+        [
+          18,
+          54,
+          110,
+          4,
+          69
+        ],
+        [
+          20,
+          55,
+          106,
+          2,
+          77
+        ],
+        [
+          23,
+          12,
+          8,
+          5,
+          119
+        ],
+        [
+          36,
+          12,
+          8,
+          5,
+          119
+        ],
+        [
+          49,
+          12,
+          8,
+          5,
+          119
+        ],
+        [
+          62,
+          12,
+          8,
+          5,
+          119
+        ],
+        [
+          75,
+          12,
+          8,
+          5,
+          119
+        ],
+        [
+          88,
+          12,
+          8,
+          5,
+          119
+        ],
+        [
+          101,
+          12,
+          8,
+          5,
+          119
+        ],
+        [
+          114,
+          12,
+          8,
+          5,
+          119
+        ],
+        [
+          59,
+          63,
+          22,
+          5,
+          55
+        ],
+        [
+          65,
+          58,
+          10,
+          5,
+          127
+        ],
+        [
+          0,
+          91,
+          140,
+          5,
+          101
+        ]
+      ]
+    },
+    {
+      "id": "accumulator-plinth",
+      "title": "Accumulator Plinth / plundered cell bank",
+      "size": [
+        130,
+        102
+      ],
+      "role": "asymmetric stripped storage-battery altar with missing cells",
+      "kind": "inert-static",
+      "anchor": {
+        "type": "ground",
+        "point": [
+          65,
+          102
+        ]
+      },
+      "orientation": "0° and 1×; non-mirrored",
+      "clearance": {
+        "top": 12,
+        "side": 16,
+        "actor_approved": false
+      },
+      "neighbour_rules": [
+        "Insert as low interval between two high structures",
+        "Allow side void; do not fill abandoned cell cutouts"
+      ],
+      "simulation_notes": "Visual battery only; no energy density or electrochemical reaction.",
+      "variants": [
+        {
+          "id": "reconditioned-cells",
+          "swap": {
+            "65": 62
+          },
+          "note": "replaced steel terminal caps"
+        },
+        {
+          "id": "relic-oxidation",
+          "swap": {
+            "119": 54
+          },
+          "note": "patinated contacts"
+        }
+      ],
+      "rectangles": [
+        [
+          0,
+          92,
+          130,
+          10,
+          58
+        ],
+        [
+          0,
+          89,
+          130,
+          3,
+          49
+        ],
+        [
+          8,
+          87,
+          114,
+          9,
+          50
+        ],
+        [
+          14,
+          77,
+          102,
+          10,
+          62
+        ],
+        [
+          22,
+          20,
+          87,
+          58,
+          65
+        ],
+        [
+          24,
+          22,
+          83,
+          53,
+          100
+        ],
+        [
+          28,
+          29,
+          13,
+          39,
+          72
+        ],
+        [
+          30,
+          31,
+          9,
+          35,
+          128
+        ],
+        [
+          32,
+          24,
+          5,
+          5,
+          119
+        ],
+        [
+          32,
+          67,
+          5,
+          7,
+          50
+        ],
+        [
+          32,
+          39,
+          5,
+          14,
+          55
+        ],
+        [
+          33,
+          43,
+          3,
+          6,
+          79
+        ],
+        [
+          45,
+          29,
+          13,
+          39,
+          72
+        ],
+        [
+          47,
+          31,
+          9,
+          35,
+          128
+        ],
+        [
+          49,
+          24,
+          5,
+          5,
+          119
+        ],
+        [
+          49,
+          67,
+          5,
+          7,
+          50
+        ],
+        [
+          49,
+          39,
+          5,
+          14,
+          55
+        ],
+        [
+          50,
+          43,
+          3,
+          6,
+          79
+        ],
+        [
+          62,
+          29,
+          13,
+          39,
+          72
+        ],
+        [
+          64,
+          31,
+          9,
+          35,
+          128
+        ],
+        [
+          66,
+          24,
+          5,
+          5,
+          119
+        ],
+        [
+          66,
+          67,
+          5,
+          7,
+          50
+        ],
+        [
+          79,
+          29,
+          13,
+          39,
+          72
+        ],
+        [
+          81,
+          31,
+          9,
+          35,
+          128
+        ],
+        [
+          83,
+          24,
+          5,
+          5,
+          119
+        ],
+        [
+          83,
+          67,
+          5,
+          7,
+          50
+        ],
+        [
+          83,
+          39,
+          5,
+          14,
+          55
+        ],
+        [
+          84,
+          43,
+          3,
+          6,
+          79
+        ],
+        [
+          96,
+          29,
+          13,
+          39,
+          72
+        ],
+        [
+          98,
+          31,
+          9,
+          35,
+          128
+        ],
+        [
+          100,
+          24,
+          5,
+          5,
+          119
+        ],
+        [
+          100,
+          67,
+          5,
+          7,
+          50
+        ],
+        [
+          100,
+          39,
+          5,
+          14,
+          55
+        ],
+        [
+          101,
+          43,
+          3,
+          6,
+          79
+        ],
+        [
+          44,
+          18,
+          12,
+          7,
+          74
+        ],
+        [
+          70,
+          18,
+          12,
+          7,
+          74
+        ],
+        [
+          8,
+          91,
+          114,
+          5,
+          66
+        ],
+        [
+          12,
+          15,
+          15,
+          8,
+          62
+        ],
+        [
+          101,
+          10,
+          17,
+          10,
+          62
+        ],
+        [
+          108,
+          20,
+          8,
+          31,
+          50
+        ],
+        [
+          6,
+          60,
+          16,
+          11,
+          62
+        ],
+        [
+          113,
+          67,
+          10,
+          8,
+          62
+        ]
+      ]
+    },
+    {
+      "id": "arc-reliquary",
+      "title": "Arc Reliquary / sealed lightning cabinet",
+      "size": [
+        112,
+        118
+      ],
+      "role": "test-only sparkling vessel inside fixed ribs",
+      "kind": "dynamic-ephemeral",
+      "anchor": {
+        "type": "ground",
+        "point": [
+          56,
+          118
+        ]
+      },
+      "orientation": "0° and 1×; non-mirrored",
+      "clearance": {
+        "top": 12,
+        "side": 16,
+        "actor_approved": false
+      },
+      "neighbour_rules": [
+        "Never place live Spark beside combustible or reactive geometry without separate fixture",
+        "Use 'silent-arc' variant for static scene"
+      ],
+      "simulation_notes": "Spark 34 is mobile, kernel 24, initial state A=12. Discharge behavior, lifetime and interaction with metal are UNTESTED; confinement is not verified.",
+      "variants": [
+        {
+          "id": "silent-arc",
+          "swap": {
+            "34": 77
+          },
+          "note": "fixed cyan source-colour stand-in; no motion"
+        },
+        {
+          "id": "amber-arc",
+          "swap": {
+            "34": 79
+          },
+          "note": "fixed amber source-colour stand-in; no motion"
+        }
+      ],
+      "rectangles": [
+        [
+          0,
+          108,
+          112,
+          10,
+          58
+        ],
+        [
+          0,
+          105,
+          112,
+          3,
+          49
+        ],
+        [
+          16,
+          90,
+          80,
+          9,
+          62
+        ],
+        [
+          23,
+          16,
+          66,
+          75,
+          50
+        ],
+        [
+          28,
+          21,
+          56,
+          63,
+          72
+        ],
+        [
+          31,
+          24,
+          50,
+          57,
+          55
+        ],
+        [
+          34,
+          29,
+          44,
+          47,
+          101
+        ],
+        [
+          20,
+          15,
+          72,
+          7,
+          114
+        ],
+        [
+          44,
+          9,
+          24,
+          6,
+          119
+        ],
+        [
+          24,
+          16,
+          5,
+          9,
+          70
+        ],
+        [
+          24,
+          81,
+          5,
+          10,
+          70
+        ],
+        [
+          35,
+          16,
+          5,
+          9,
+          70
+        ],
+        [
+          35,
+          81,
+          5,
+          10,
+          70
+        ],
+        [
+          46,
+          16,
+          5,
+          9,
+          70
+        ],
+        [
+          46,
+          81,
+          5,
+          10,
+          70
+        ],
+        [
+          57,
+          16,
+          5,
+          9,
+          70
+        ],
+        [
+          57,
+          81,
+          5,
+          10,
+          70
+        ],
+        [
+          68,
+          16,
+          5,
+          9,
+          70
+        ],
+        [
+          68,
+          81,
+          5,
+          10,
+          70
+        ],
+        [
+          79,
+          16,
+          5,
+          9,
+          70
+        ],
+        [
+          79,
+          81,
+          5,
+          10,
+          70
+        ],
+        [
+          40,
+          38,
+          5,
+          9,
+          34
+        ],
+        [
+          48,
+          45,
+          6,
+          8,
+          34
+        ],
+        [
+          59,
+          32,
+          5,
+          7,
+          34
+        ],
+        [
+          64,
+          55,
+          8,
+          6,
+          34
+        ],
+        [
+          46,
+          64,
+          7,
+          8,
+          34
+        ],
+        [
+          55,
+          50,
+          5,
+          4,
+          34
+        ],
+        [
+          17,
+          33,
+          6,
+          39,
+          74
+        ],
+        [
+          89,
+          33,
+          6,
+          39,
+          74
+        ],
+        [
+          40,
+          99,
+          32,
+          4,
+          75
+        ]
+      ]
+    },
+    {
+      "id": "coolant-transept",
+      "title": "Coolant Transept / paired baptismal baths",
+      "size": [
+        132,
+        108
+      ],
+      "role": "test-only double coolant basin with stained-glass drip fall",
+      "kind": "dynamic-liquid",
+      "anchor": {
+        "type": "ground",
+        "point": [
+          66,
+          108
+        ]
+      },
+      "orientation": "0° and 1×; non-mirrored",
+      "clearance": {
+        "top": 12,
+        "side": 16,
+        "actor_approved": false
+      },
+      "neighbour_rules": [
+        "Dry-scene substitution required by default",
+        "Separate active pools from Spark cabinet until fixtures prove behavior"
+      ],
+      "simulation_notes": "Water 3 uses mobile kernel 2; t=0 containment, boundary behavior, free-mass coupling and evaporation are UNTESTED. No liquid volume performance claim.",
+      "variants": [
+        {
+          "id": "frozen-mirrors",
+          "swap": {
+            "3": 120
+          },
+          "note": "fixed water-colour glass substitute"
+        },
+        {
+          "id": "drained-dark",
+          "swap": {
+            "3": 72
+          },
+          "note": "opaque dry basin substitute"
+        }
+      ],
+      "rectangles": [
+        [
+          0,
+          98,
+          132,
+          10,
+          58
+        ],
+        [
+          0,
+          95,
+          132,
+          3,
+          49
+        ],
+        [
+          8,
+          39,
+          116,
+          12,
+          58
+        ],
+        [
+          13,
+          44,
+          12,
+          48,
+          62
+        ],
+        [
+          57,
+          44,
+          12,
+          48,
+          62
+        ],
+        [
+          107,
+          44,
+          12,
+          48,
+          62
+        ],
+        [
+          17,
+          81,
+          98,
+          12,
+          50
+        ],
+        [
+          17,
+          52,
+          43,
+          28,
+          72
+        ],
+        [
+          65,
+          52,
+          43,
+          28,
+          72
+        ],
+        [
+          20,
+          55,
+          37,
+          25,
+          3
+        ],
+        [
+          68,
+          55,
+          37,
+          25,
+          3
+        ],
+        [
+          18,
+          49,
+          42,
+          5,
+          70
+        ],
+        [
+          65,
+          49,
+          43,
+          5,
+          70
+        ],
+        [
+          17,
+          76,
+          92,
+          5,
+          55
+        ],
+        [
+          33,
+          14,
+          65,
+          11,
+          62
+        ],
+        [
+          46,
+          6,
+          39,
+          8,
+          119
+        ],
+        [
+          61,
+          25,
+          8,
+          24,
+          69
+        ],
+        [
+          63,
+          29,
+          4,
+          18,
+          77
+        ],
+        [
+          4,
+          92,
+          124,
+          9,
+          66
+        ],
+        [
+          11,
+          98,
+          110,
+          4,
+          101
+        ]
+      ]
+    }
+  ],
+  "combined_scene": {
+    "id": "procession-of-zero-current",
+    "title": "Procession of Zero Current",
+    "size": [
+      1240,
+      278
+    ],
+    "baseline_y": 248,
+    "placements": [
+      {
+        "feature_id": "bus-narthex",
+        "origin": [
+          22,
+          136
+        ],
+        "variant": null,
+        "anchor_world": [
+          94,
+          248
+        ]
+      },
+      {
+        "feature_id": "capacitor-organ",
+        "origin": [
+          178,
+          124
+        ],
+        "variant": null,
+        "anchor_world": [
+          246,
+          248
+        ]
+      },
+      {
+        "feature_id": "insulator-buttress",
+        "origin": [
+          326,
+          140
+        ],
+        "variant": null,
+        "anchor_world": [
+          392,
+          248
+        ]
+      },
+      {
+        "feature_id": "rose-indicator",
+        "origin": [
+          470,
+          126
+        ],
+        "variant": null,
+        "anchor_world": [
+          530,
+          248
+        ]
+      },
+      {
+        "feature_id": "conductor-nave",
+        "origin": [
+          602,
+          152
+        ],
+        "variant": null,
+        "anchor_world": [
+          672,
+          248
+        ]
+      },
+      {
+        "feature_id": "accumulator-plinth",
+        "origin": [
+          754,
+          146
+        ],
+        "variant": null,
+        "anchor_world": [
+          819,
+          248
+        ]
+      },
+      {
+        "feature_id": "arc-reliquary",
+        "origin": [
+          896,
+          130
+        ],
+        "variant": "silent-arc",
+        "anchor_world": [
+          952,
+          248
+        ]
+      },
+      {
+        "feature_id": "coolant-transept",
+        "origin": [
+          1020,
+          140
+        ],
+        "variant": "frozen-mirrors",
+        "anchor_world": [
+          1086,
+          248
+        ]
+      }
+    ],
+    "patterns": [
+      {
+        "id": "nave-spine",
+        "sequence": [
+          "bus-narthex",
+          "conductor-nave",
+          "accumulator-plinth"
+        ],
+        "spacing": [
+          22,
+          24
+        ],
+        "rule": "Portal then insulated horizontal nave then altar; maintain a visible void within portal"
+      },
+      {
+        "id": "signal-choir",
+        "sequence": [
+          "insulator-buttress",
+          "capacitor-organ",
+          "rose-indicator"
+        ],
+        "spacing": [
+          18,
+          25
+        ],
+        "rule": "low buttress prepares eye for twin towers, then radially detailed rose"
+      },
+      {
+        "id": "quiet-test-pavilion",
+        "sequence": [
+          "arc-reliquary",
+          "coolant-transept"
+        ],
+        "spacing": [
+          28
+        ],
+        "rule": "dry substitutions only in published gallery; active forms independently tested"
+      }
+    ]
+  }
+}
