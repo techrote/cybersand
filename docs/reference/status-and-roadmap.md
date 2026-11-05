@@ -4,7 +4,7 @@ status: Current
 document-kind: reference
 scope: Current implementation map, unresolved correctness and policy decisions, and bounded next checkpoints
 canonical-for: [implementation-status, foundational-priorities, open-decisions]
-last-reviewed: 2026-11-04
+last-reviewed: 2026-11-05
 related-documents: [validation-evidence.md, invariants.md, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/development-claims-remediation-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../operations/github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
@@ -1898,3 +1898,7 @@ The [desktop development workbench](../systems/player-control-playground.md#deve
 The [edge-conversion and desktop pacing follow-up](../audits/2026-11-04-workbench-boundary-and-pacing.md) covers live solver changes after material leaves the canvas, render-independent body stepping, and parity and throughput of workbench pressure-column dispatch.
 
 The [PR #394 cleanup](../audits/2026-11-04-workbench394-cleanup.md) retains tuning across missing-model pilot replacement and repairs the fleet registry shutdown lifetime. Its [three-consumer MAT source transition](../audits/2026-11-04-workbench394-material-source-transition.md) reuses the approved #396 mechanism and preserves the frozen lock. Technical admission, owner adoption and merge are separately recorded; #394 remains Draft and unmerged.
+
+## LA-SELECTIVE primary-response experiment — 2026-11-05
+
+**Approved direction:** LA-SELECTIVE is the intended primary granular gameplay response candidate. **Current experimental implementation:** a separate #394-dependent branch adds opt-in matched fixtures and evidence tooling, preserving production native sources, gains, budgets, catalogue identities and all four selectable workbench controls. The [mechanism and admission scope](../systems/player-control-playground.md#la-selective-mechanism-and-experimental-admission) and [dated comparison](../audits/2026-11-05-la-selective-sol-experiment.md) distinguish real arrivals, stationary burial and native material relocation. General desktop default promotion remains **Planned**. Original SOL physical clearance and combined #394/#347/#393 MAT/ownership integration remain unproved; no restoration, merge, ready transition or production default change is admitted.

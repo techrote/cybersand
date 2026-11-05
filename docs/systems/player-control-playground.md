@@ -4,7 +4,7 @@ status: Current
 document-kind: contract
 scope: Experimental movement controls and shared asynchronous desktop composition, input and lap lifetime, lifecycle and bounded native failure validation; isolated Sand and Water player fields
 canonical-for: [player-control-playground, player-movement-presets, player-material-field]
-last-reviewed: 2026-11-02
+last-reviewed: 2026-11-05
 related-documents: [physical-actor-rigs.md, ../architecture/data-ownership-and-lifetimes.md, ../architecture/rigid-body-and-cellular-coupling.md, ../reference/interfaces-and-message-contracts.md, ../reference/configuration-reference.md, ../operations/local-build-and-validation.md, ../audits/2026-10-20-player-control-playground.md]
 ---
 
@@ -787,3 +787,9 @@ Open **Details** during play to see the native pool size, the peak number of wor
 The common desktop application is the destination for future playable capabilities. A new map supplies bounded extent, terrain and authored setup to this runtime. A controlled scientific fixture can still supply separate evidence. The [consolidation audit](../audits/2026-11-04-workbench-consolidation.md) owns tested platform results, failures and compatibility disposition. The [live-editing follow-up](../audits/2026-11-04-workbench-live-editing.md) records the pilot, reset, conversion and recovery tests. The [cleanup qualification](../audits/2026-11-04-workbench394-cleanup.md) records retained tuning, fleet registry lifetime and the corrected core-log citation. The [protected source transition](../audits/2026-11-04-workbench394-material-source-transition.md) separately owns MAT admission.
 
 The flyer authoring registry is a bounded copied-value cache owned by the current main loop. Its stateless façade shares accepted definitions across live workbench sessions and retires them before script shutdown. It owns no scene nodes, scripts, resources, callables, physics bodies or native cells. Reload validation and defensive-copy getters preserve the authored values and existing flight/contact laws.
+
+### LA-SELECTIVE mechanism and experimental admission
+
+**Current on the #394-dependent experimental branch:** `WorkbenchSetup.fresh()` selects `LA-SELECTIVE` (also LA-SA). This is the workbench default. `workbench_granular_coupling.inc::workbench_body_result` selects the arrival-only transient event wrench instead of the all-event wrench used by LA. It retains legacy contact terms, the bounded passive granular contact/bearing solve, and existing correction/application behavior. Events off suppresses the event wrench while retaining the other terms; RFT retains its fixed budget of 20. Arrival history is enabled only for LA-SELECTIVE, so the other modes' zero arrival counters mean instrumentation is disabled. Water remains outside the arrival channel and retains its separate liquid policy.
+
+**Approved owner direction, 2026-11-05:** LA-SELECTIVE is the intended primary granular gameplay response candidate. General supported desktop promotion is **Planned**, subject to independent review, source/material admission and platform gates. This direction does not change accepted main defaults or admit SOL composition. The [source-pinned comparison and limitations](../audits/2026-11-05-la-selective-sol-experiment.md) separates event isolation, full preparation and initialized-backend profiles, actual arrivals from passive burial, and powered escape from physical clearance. Zero-velocity burial can remain stationary with zero arrival and passive impulses. Existing native Sand relocation can reduce intersection without moving the body. The six-proxy test preserves original SOL geometry but has no native SOL authority/handoff; its float32 overlap metric and 24-step window cannot establish original SOL acceptance.

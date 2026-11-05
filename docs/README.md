@@ -4,11 +4,13 @@ status: Current
 document-kind: navigation
 scope: Entry routes and authority rules for the focused documentation hierarchy
 canonical-for: []
-last-reviewed: 2026-11-04
+last-reviewed: 2026-11-05
 related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.md, operations/documentation-maintenance.md, operations/microscenarios-programme.md, operations/development-claims-remediation-programme.md, operations/water-hybrid-pressure-extension-programme.md, architecture/pressure-optimization.md]
 ---
 
 # CyberSand documentation
+
+The [LA-SELECTIVE mechanism and promotion boundary](systems/player-control-playground.md#la-selective-mechanism-and-experimental-admission) routes the 2026-11-05 owner direction and [dependent LA/SOL experiment](audits/2026-11-05-la-selective-sol-experiment.md). Experimental surrogate evidence does not admit original SOL recovery or combined material authority.
 
 Material authoring: [#357 is merged as an owner-adopted Planned baseline](architecture/material-authoring-catalogue-plan.md#12-owner-adoption-and-shadow-compiler-handover--2026-11-04).
 The [#353-A shadow compiler](operations/material-catalogue-shadow.md) merged in

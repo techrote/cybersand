@@ -51,17 +51,32 @@ def command(name, argv, folder, env=None, timeout=180):
     if log.exists():
         raise RuntimeError("Refuse overwriting retained run: " + str(log))
     start = time.monotonic()
+    effective_argv = list(argv)
+    # Bound the real Linux process group inside WSL, as well as its Windows
+    # client. Killing wsl.exe alone does not prove that Linux work has stopped.
+    is_wsl = Path(argv[0]).name.lower() in {"wsl", "wsl.exe"}
+    if is_wsl:
+        delimiter = effective_argv.index("--") + 1
+        effective_argv[delimiter:delimiter] = ["timeout", "--signal=TERM", "--kill-after=5s", str(timeout)+"s"]
     with log.open("wb") as handle:
+        process = subprocess.Popen(effective_argv, cwd=ROOT, env=env, stdout=handle, stderr=subprocess.STDOUT,
+                                   start_new_session=os.name != "nt")
         try:
-            code = subprocess.run(argv, cwd=ROOT, env=env, stdout=handle,
-                                  stderr=subprocess.STDOUT, timeout=timeout).returncode
+            code = process.wait(timeout=timeout+10 if is_wsl else timeout)
         except subprocess.TimeoutExpired:
             code = 124
+            if os.name == "nt":
+                subprocess.run(["taskkill", "/PID", str(process.pid), "/T", "/F"],
+                               stdout=handle, stderr=subprocess.STDOUT, timeout=10)
+            else:
+                import signal
+                os.killpg(process.pid, signal.SIGKILL)
+            process.wait(timeout=10)
     text = log.read_text(encoding="utf-8", errors="replace")
     clean = code == 0 and not any(s in text for s in
         ["SCRIPT ERROR:", "ERROR:", "ObjectDB instances leaked", "resources still in use",
          "runtime error:", "AddressSanitizer:"])
-    result = dict(name=name, command=argv, exit=code, clean=clean, timeout_seconds=timeout,
+    result = dict(name=name, command=effective_argv, requested_command=argv, exit=code, clean=clean, timeout_seconds=timeout,
                   seconds=time.monotonic()-start, log=str(log.relative_to(ROOT)),
                   log_sha256=sha(log.read_bytes()), markers=[line for line in text.splitlines()
                   if "checks=" in line or "failures=" in line or "assertions" in line][-5:])
@@ -182,6 +197,7 @@ def hosts(scope):
 def native():
     identity = authenticate()
     folder = OUT/"native-qualified"
+    write(folder/"identity-at-start.json",identity)
     linux_root = wsl_path(ROOT)
     sources = ["world", "material_rules", "scheduler_geometry", "settled_world_discovery"]
     results = []
@@ -210,6 +226,7 @@ def native():
             if not row["clean"]: return False
     after=authenticate()
     assert after["test_inputs"]==identity["test_inputs"] and after["runtimes"]==identity["runtimes"]
+    write(folder/"identity-at-finish.json",after)
     return True
 
 

@@ -4,7 +4,7 @@ status: Current
 document-kind: navigation
 scope: Question-to-canonical-document routes; detailed answers belong to the linked contracts
 canonical-for: []
-last-reviewed: 2026-11-04
+last-reviewed: 2026-11-05
 related-documents: [../README.md, retrieval-corpus.json, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../architecture/pressure-optimization.md]
 ---
 
@@ -404,3 +404,5 @@ coalesced publication counts, use the [player-control contract](../systems/playe
 ## Development application
 
 How do I place multiple independently configured flyers with a passive barrel, select granular and liquid responses, paint a large canvas and save an authored start? Use the [desktop workbench controls and format](../systems/player-control-playground.md#development-workbench-on-desktop) and its [qualification record](../audits/2026-11-04-workbench-consolidation.md). Tuning retention and lifetime corrections are in the [cleanup evidence](../audits/2026-11-04-workbench394-cleanup.md); MAT source admission is [separate](../audits/2026-11-04-workbench394-material-source-transition.md).
+
+Does LA-SELECTIVE mean arrival-only total physics, automatic burial recovery or a general desktop default? Use the [selective mechanism and admission boundary](../systems/player-control-playground.md#la-selective-mechanism-and-experimental-admission), then the [dated matched comparison](../audits/2026-11-05-la-selective-sol-experiment.md). The six-proxy surrogate, original SOL authority, native relocation, backend initialization and promotion decisions are separate.

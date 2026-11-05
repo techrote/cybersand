@@ -191,6 +191,23 @@
         "../godot/scripts/shared_workbench.gd",
         "../godot/tests/test_workbench_pilot_ui.gd"
       ]
+    },
+    {
+      "id": "PLAY-LA-SELECTIVE-01",
+      "query": "Does LA-SELECTIVE selective arrivals provide arrival-only total physics, automatic passive SOL burial clearance or the supported desktop global default?",
+      "canonical": [
+        "systems/player-control-playground.md"
+      ],
+      "facts": [
+        "LA-SELECTIVE selects the arrival transient event wrench while retaining legacy contact, bounded passive bearing and existing correction/application behavior.",
+        "It is already the #394 workbench default and owner-intended primary gameplay candidate; general desktop promotion is Planned.",
+        "Zero-arrival stationary burial and native material relocation do not prove body clearance; six-proxy surrogate evidence does not admit original SOL ownership or material composition."
+      ],
+      "sources": [
+        "../godot/native_extension/workbench_granular_coupling.inc",
+        "../godot/scripts/workbench_setup.gd",
+        "../godot/tests/fixtures/la_selective/registration-primed.json"
+      ]
     }
   ]
 }

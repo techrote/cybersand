@@ -4,11 +4,15 @@ status: Current
 document-kind: guide
 scope: Pinned source build entry points, Windows workspace wrappers, platform boundaries and freshness limits
 canonical-for: [build-entry-points, dependency-pins, build-freshness]
-last-reviewed: 2026-10-31
+last-reviewed: 2026-11-05
 related-documents: [source-checkpoint-and-recovery.md, testing-validation-and-replay.md, web-threading.md, deepworks-exhibition.md, ../systems/depth-layers-and-parallax.md]
 ---
 
 # Local build and validation
+
+## Opt-in LA-SELECTIVE comparison
+
+The #394-dependent experiment has a native witness, actual Godot/Rapier matched sessions and independent historical geometry checks. From its owned Windows checkout run `python tools/experiments/la_selective_experiment.py identity`, then `native`, `comparison-primed` and `scoped` as separate invocations. Use `--run <new-directory-name>` for a rerun; the runner refuses to overwrite process logs. It authenticates retained native inputs, materialized native/Rapier bytes and actual engine identities, copies the project, and invokes actual Windows and WSL Linux hosts. The registered native build uses GCC optimized and strict ASan/UBSan; actual Windows MSVC is a separate receipt. Comparison processes have 300-second bounds, scoped hosts 180 seconds, and native compiles 900 seconds. `python tools/experiments/la_selective_geometry.py` reads unchanged historical Git records; `python tools/experiments/la_selective_reduce.py` retains complete-window source-bound reductions. See the [dossier](../audits/2026-11-05-la-selective-sol-experiment.md) for exact checkpoints, failed attempts and missing admission gates. These tools add no build-provider or production-default change.
 
 ## PLAY LIFE010 raw-evidence gate — 2026-10-31
 

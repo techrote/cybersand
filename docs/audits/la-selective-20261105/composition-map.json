@@ -1,0 +1,2662 @@
+{
+  "sources": {
+    "LA394": {
+      "commit": "f44488e9b24c61db3924685ef3723296ab768533",
+      "tree": "ef05658fdefae69177495b4b37fb851631118ecd"
+    },
+    "SOL347": {
+      "commit": "1598115c9065239cc1eaec11e99077274b457be1",
+      "tree": "eff31c3597347f06a4b23193cd64b58350386c29"
+    },
+    "facade393": {
+      "commit": "e4c2649e82d943554f4dc6a0634336770cda08f6",
+      "tree": "7235f1eedeff7845dc1728c9177fae2b70c4fe5d"
+    },
+    "main": {
+      "commit": "ee92dc45b12455f01218394fd773da516caf356e",
+      "tree": "dd75bb653dae1d37126e7a1356d83bd502b7221d"
+    }
+  },
+  "common_ancestor": "7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1",
+  "scope": "complete changed source/runtime/material path union plus all frozen protected consumers; blob SHA hashes Git content, LFS blobs are pointers",
+  "files": [
+    {
+      "path": "docs/reference/liquid-policy-wire-vectors.json",
+      "protected": true,
+      "sources": {
+        "LA394": {
+          "blob": "220315235757fefaa6de26d2fc701f6ee875bb69",
+          "lf_sha256": "cac210f88ca96078d9920de80505e9e28c63a630df87fd1d5c16801bde5a8c31"
+        },
+        "SOL347": {
+          "blob": "220315235757fefaa6de26d2fc701f6ee875bb69",
+          "lf_sha256": "cac210f88ca96078d9920de80505e9e28c63a630df87fd1d5c16801bde5a8c31"
+        },
+        "facade393": {
+          "blob": "220315235757fefaa6de26d2fc701f6ee875bb69",
+          "lf_sha256": "cac210f88ca96078d9920de80505e9e28c63a630df87fd1d5c16801bde5a8c31"
+        },
+        "main": {
+          "blob": "220315235757fefaa6de26d2fc701f6ee875bb69",
+          "lf_sha256": "cac210f88ca96078d9920de80505e9e28c63a630df87fd1d5c16801bde5a8c31"
+        }
+      }
+    },
+    {
+      "path": "docs/reference/liquid-run-receipt-vectors.json",
+      "protected": true,
+      "sources": {
+        "LA394": {
+          "blob": "4828694db27503a20ba2872f4d5c3bcb2ea2e334",
+          "lf_sha256": "5c07d0fe8d79bcbfbc76bfc3b7675926ebc3860cb3a062147559e4487cb6c0a8"
+        },
+        "SOL347": {
+          "blob": "4828694db27503a20ba2872f4d5c3bcb2ea2e334",
+          "lf_sha256": "5c07d0fe8d79bcbfbc76bfc3b7675926ebc3860cb3a062147559e4487cb6c0a8"
+        },
+        "facade393": {
+          "blob": "4828694db27503a20ba2872f4d5c3bcb2ea2e334",
+          "lf_sha256": "5c07d0fe8d79bcbfbc76bfc3b7675926ebc3860cb3a062147559e4487cb6c0a8"
+        },
+        "main": {
+          "blob": "4828694db27503a20ba2872f4d5c3bcb2ea2e334",
+          "lf_sha256": "5c07d0fe8d79bcbfbc76bfc3b7675926ebc3860cb3a062147559e4487cb6c0a8"
+        }
+      }
+    },
+    {
+      "path": "docs/reference/liquid-solver-capability-matrix.json",
+      "protected": true,
+      "sources": {
+        "LA394": {
+          "blob": "f1ac46c097a4fec977b9efdf930e6ab2e79e51eb",
+          "lf_sha256": "3d7a471391ffa551d8580fd83625bdf3b40954adfa8f683045dd1e168abdcddb"
+        },
+        "SOL347": {
+          "blob": "f1ac46c097a4fec977b9efdf930e6ab2e79e51eb",
+          "lf_sha256": "3d7a471391ffa551d8580fd83625bdf3b40954adfa8f683045dd1e168abdcddb"
+        },
+        "facade393": {
+          "blob": "f1ac46c097a4fec977b9efdf930e6ab2e79e51eb",
+          "lf_sha256": "3d7a471391ffa551d8580fd83625bdf3b40954adfa8f683045dd1e168abdcddb"
+        },
+        "main": {
+          "blob": "f1ac46c097a4fec977b9efdf930e6ab2e79e51eb",
+          "lf_sha256": "3d7a471391ffa551d8580fd83625bdf3b40954adfa8f683045dd1e168abdcddb"
+        }
+      }
+    },
+    {
+      "path": "docs/reference/water-normalization-vectors.json",
+      "protected": true,
+      "sources": {
+        "LA394": {
+          "blob": "42aba04323395f52d24494223daa8c9be44f150c",
+          "lf_sha256": "ec6541c726b534a016dba5fd9d5eb22bf2a2ff07d9da9ed4ca802fbb9f1d8c17"
+        },
+        "SOL347": {
+          "blob": "42aba04323395f52d24494223daa8c9be44f150c",
+          "lf_sha256": "ec6541c726b534a016dba5fd9d5eb22bf2a2ff07d9da9ed4ca802fbb9f1d8c17"
+        },
+        "facade393": {
+          "blob": "42aba04323395f52d24494223daa8c9be44f150c",
+          "lf_sha256": "ec6541c726b534a016dba5fd9d5eb22bf2a2ff07d9da9ed4ca802fbb9f1d8c17"
+        },
+        "main": {
+          "blob": "42aba04323395f52d24494223daa8c9be44f150c",
+          "lf_sha256": "ec6541c726b534a016dba5fd9d5eb22bf2a2ff07d9da9ed4ca802fbb9f1d8c17"
+        }
+      }
+    },
+    {
+      "path": "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+      "protected": false,
+      "sources": {
+        "LA394": {
+          "blob": "314c8327c84258ed042b4784768e181c6156e4ea",
+          "lf_sha256": "76a320861da36ba1a65d8c103e2d7b4ed3fec3fe3bdf4610f61317e66bcaa8fe"
+        },
+        "SOL347": {
+          "blob": "f3d70f220db890cfa176d5534271c556c5770c5e",
+          "lf_sha256": "412a8a939847f3d2c49c14391c84b22f59a9dc50858b7d5c1ca74785af404aef"
+        },
+        "facade393": {
+          "blob": "f3d70f220db890cfa176d5534271c556c5770c5e",
+          "lf_sha256": "412a8a939847f3d2c49c14391c84b22f59a9dc50858b7d5c1ca74785af404aef"
+        },
+        "main": {
+          "blob": "1e811af3d655fc57b3685bbb493d6bd757686f10",
+          "lf_sha256": "f0e06036bb868998f05668080146eca6c3c0c3c02ed2f1557b6f563348299d79"
+        }
+      }
+    },
+    {
+      "path": "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+      "protected": false,
+      "sources": {
+        "LA394": {
+          "blob": "8ba9f1e08d102a6e103a260687f53143b29c5023",
+          "lf_sha256": "bc2c74d53b0195b09e8d0e9066be153c266cad78a69b1b76ac8b89bfec299d4c"
+        },
+        "SOL347": {
+          "blob": "991273c2de5236a48d30b749fbfa28199346094a",
+          "lf_sha256": "15ea5fe8ca8c485f70103a1ed8b108d7c7ef670b7c70a56884e76f766bdc88df"
+        },
+        "facade393": {
+          "blob": "991273c2de5236a48d30b749fbfa28199346094a",
+          "lf_sha256": "15ea5fe8ca8c485f70103a1ed8b108d7c7ef670b7c70a56884e76f766bdc88df"
+        },
+        "main": {
+          "blob": "9120f23d6762c4511dc13f9417530250b67531e5",
+          "lf_sha256": "75353358dbb81c768425e07441219e4699570191eb9b1a674acc1dbae8bac94c"
+        }
+      }
+    },
+    {
+      "path": "godot/addons/cybersand_native/runtime-provenance.json",
+      "protected": false,
+      "sources": {
+        "LA394": {
+          "blob": "f0d6f3fd60d6f110de9e132003b54174a9ef3e80",
+          "lf_sha256": "1cce9973a921a9d5cefc7c2f772d7f6ccd580c580df67ac03f3a45ed7965e67e"
+        },
+        "SOL347": {
+          "blob": "ae1ef1813302f52bb43f2511fed0a5153dc65fc9",
+          "lf_sha256": "392bf970215062f3986e57928e95a9a12e1ad40eb67d330ffddf3bc424cdcb08"
+        },
+        "facade393": {
+          "blob": "ae1ef1813302f52bb43f2511fed0a5153dc65fc9",
+          "lf_sha256": "392bf970215062f3986e57928e95a9a12e1ad40eb67d330ffddf3bc424cdcb08"
+        },
+        "main": {
+          "blob": "b8527ee8f70843c1bc81847fcc0e237acc9954c8",
+          "lf_sha256": "8cca699b4373133f6bd5b5e83561ef6dfd87c663c5ec1a82367a695ddffc4ba9"
+        }
+      }
+    },
+    {
+      "path": "godot/addons/cybersand_native/runtime-provenance.linux.json",
+      "protected": false,
+      "sources": {
+        "LA394": {
+          "blob": "b01f0323d2e00ca0db322330334f49cec3639ee3",
+          "lf_sha256": "5e02c5c5deeba081c750330598bedec74d46acdf10d7c65ef27e97fea1a71b29"
+        },
+        "SOL347": {
+          "blob": "c7fae5d4ab20110f66948f37d95b9dc6f4b953a7",
+          "lf_sha256": "dfa22f5c22426687b3c960f848c9c6185661cb75797237f027e9e1ca79b507aa"
+        },
+        "facade393": {
+          "blob": "c7fae5d4ab20110f66948f37d95b9dc6f4b953a7",
+          "lf_sha256": "dfa22f5c22426687b3c960f848c9c6185661cb75797237f027e9e1ca79b507aa"
+        },
+        "main": {
+          "blob": "7e23dbd468412f984685d5d3aaebafe1f165baa4",
+          "lf_sha256": "60b158bce03784217adf2feb5c90ffd91727199e67fdf181d2ebebbc457dde17"
+        }
+      }
+    },
+    {
+      "path": "godot/authoring/flyers/afterglow.json",
+      "protected": false,
+      "sources": {
+        "LA394": {
+          "blob": "c75ee0c7e95257e4049a55f2b365e38dd620a525",
+          "lf_sha256": "4257e038083a6690ae8ad569cd030f1431d6b0ac2201fab7bb4cd17e587861e2"
+        },
+        "SOL347": null,
+        "facade393": null,
+        "main": null
+      }
+    },
+    {
+      "path": "godot/authoring/flyers/cartographer.json",
+      "protected": false,
+      "sources": {
+        "LA394": {
+          "blob": "f9074469675b171e2c977ce1c64ca3dd7b7c5ac4",
+          "lf_sha256": "93c31bb8f43db70c70d234090c3e789dc329e567e80caffaa8fbdb753b1e1ba1"
+        },
+        "SOL347": null,
+        "facade393": null,
+        "main": null
+      }
+    },
+    {
+      "path": "godot/authoring/flyers/kestrel.json",
+      "protected": false,
+      "sources": {
+        "LA394": {
+          "blob": "487c44ce4ccaca6d946cbdc63477ab5581cfdd00",
+          "lf_sha256": "1de38ed63663f8d9084609ff01e4ecc2793894b6fb000ffe535204c0820b542a"
+        },
+        "SOL347": null,
+        "facade393": null,
+        "main": null
+      }
+    },
+    {
+      "path": "godot/authoring/flyers/manifest.json",
+      "protected": false,
+      "sources": {
+        "LA394": {
+          "blob": "d3d4524d3d509c4ef06c2bb12ea8e4b58a3c2c4b",
+          "lf_sha256": "2ddb4de6bdd6ba270f070cdef2003812608960ea34e42d7bf62a40375b4827a5"
+        },
+        "SOL347": null,
+        "facade393": null,
+        "main": null
+      }
+    },
+    {
+      "path": "godot/authoring/flyers/midge.json",
+      "protected": false,
+      "sources": {
+        "LA394": {
+          "blob": "228399e38a0e0ab215b9f48698edce67a7a35799",
+          "lf_sha256": "b440c3ecbe6ded37d47f76f7ff728c7f15071ebb0b37e44f2633e4c6867703e6"
+        },
+        "SOL347": null,
+        "facade393": null,
+        "main": null
+      }
+    },
+    {
+      "path": "godot/authoring/flyers/needle.json",
+      "protected": false,
+      "sources": {
+        "LA394": {
+          "blob": "3aa62b8ba8509d2581b8cb7b9ec49636b9b5922e",
+          "lf_sha256": "c475aac7aa553137da533a0dec3e1cbe1ce43eb840d1748a6e212c2c97698243"
+        },
+        "SOL347": null,
+        "facade393": null,
+        "main": null
+      }
+    },
+    {
+      "path": "godot/authoring/flyers/observatory.json",
+      "protected": false,
+      "sources": {
+        "LA394": {
+          "blob": "1ae22746b67f9342bf41ccb41331e4ef7af6299b",
+          "lf_sha256": "037d255f5415faf23014ff62363460b7068f2d0e9b3d082adf3920781eab4090"
+        },
+        "SOL347": null,
+        "facade393": null,
+        "main": null
+      }
+    },
+    {
+      "path": "godot/authoring/flyers/scooper.json",
+      "protected": false,
+      "sources": {
+        "LA394": {
+          "blob": "011617fb0086ce4df30b4eae87fdba69f66ba5ad",
+          "lf_sha256": "ceaee9a1b1a0084b361bada6f3bc9486aff7e06829900de7a50e8ae1f6e212c0"
+        },
+        "SOL347": null,
+        "facade393": null,
+        "main": null
+      }
+    },
+    {
+      "path": "godot/authoring/flyers/surveyor.json",
+      "protected": false,
+      "sources": {
+        "LA394": {
+          "blob": "74e8eccc1d9e85555942eb3f3b068351bab91170",
+          "lf_sha256": "6c991d26a1a06e48eb7509cf9dffde1691cd4c6a553e5575820ec38c108c66e8"
+        },
+        "SOL347": null,
+        "facade393": null,
+        "main": null
+      }
+    },
+    {
+      "path": "godot/native_extension/conservative_displacement_adapter.inc",
+      "protected": false,
+      "sources": {
+        "LA394": null,
+        "SOL347": {
+          "blob": "0a401db7307755ea54e20b0c17932348fe08888a",
+          "lf_sha256": "91b06a2c4e273aad56af883525dc2466e4caac64a1b0660aeb1201d625b85b30"
+        },
+        "facade393": {
+          "blob": "0a401db7307755ea54e20b0c17932348fe08888a",
+          "lf_sha256": "91b06a2c4e273aad56af883525dc2466e4caac64a1b0660aeb1201d625b85b30"
+        },
+        "main": null
+      }
+    },
+    {
+      "path": "godot/native_extension/cyber_demo_bridge.hpp",
+      "protected": false,
+      "sources": {
+        "LA394": {
+          "blob": "dbe645e2cb9ff24aa431ad72964e4c507a21565c",
+          "lf_sha256": "2d9b3a1ff120d469717d2e36248087104c00990e9b91d2629d22ea27676e243a"
+        },
+        "SOL347": {
+          "blob": "0f352a1eb7f9017d1798fb6f6ba1cad84e66f5d2",
+          "lf_sha256": "bbfb59ad74c9156b3b70d5c973159d9d1a5a4f9cf2865620a1ca273036084371"
+        },
+        "facade393": {
+          "blob": "0f352a1eb7f9017d1798fb6f6ba1cad84e66f5d2",
+          "lf_sha256": "bbfb59ad74c9156b3b70d5c973159d9d1a5a4f9cf2865620a1ca273036084371"
+        },
+        "main": {
+          "blob": "0f352a1eb7f9017d1798fb6f6ba1cad84e66f5d2",
+          "lf_sha256": "bbfb59ad74c9156b3b70d5c973159d9d1a5a4f9cf2865620a1ca273036084371"
+        }
+      }
+    },
+    {
+      "path": "godot/native_extension/cyber_native_cell_world.cpp",
+      "protected": false,
+      "sources": {
+        "LA394": {
+          "blob": "c73055cf95a0bc7f216f231115231f9db45af75f",
+          "lf_sha256": "d2774a6cfbd57a4b40663515ffe4a17f71abb8da073dadc3da0eaa3bacbb44c1"
+        },
+        "SOL347": {
+          "blob": "e7f4e7fe5140b6e5a647b5352bcc363f52e5426b",
+          "lf_sha256": "4980c4c937f5d49d321730236201ff6988b8b47687491632c0f24453a0ff9d83"
+        },
+        "facade393": {
+          "blob": "6b134fcb20c4a4f21f7cff09b1db723f05fc3ee6",
+          "lf_sha256": "cae03064bb705f00f83fd80477ea8e8a0f5501590ad103c4d42bc4768b2e57e9"
+        },
+        "main": {
+          "blob": "7bc3f295a88baa2e1d5e2ba2e7b939d97836b2f0",
+          "lf_sha256": "0085475d766b78efc7635ccea4089aeea00b16ba4e7f880046287e55a4f82163"
+        }
+      }
+    },
+    {
+      "path": "godot/native_extension/cyber_native_cell_world.hpp",
+      "protected": false,
+      "sources": {
+        "LA394": {
+          "blob": "1fa7fd1a290297f0e838ee002d90d0642a692ec2",
+          "lf_sha256": "a3347b92505a13466ec41785eb621ad322cb94eed2594c025627d7c237434354"
+        },
+        "SOL347": {
+          "blob": "5643f51e61cda9117e566f958a2a0e7dcde434ae",
+          "lf_sha256": "99c8d46ed03f6310e31b07acfc081890938ed032178a52d0378de41e94431aae"
+        },
+        "facade393": {
+          "blob": "e13f6792984f7558317ba9f11501b1833332bb04",
+          "lf_sha256": "1ed9311d1fe2fdc25d97b42c7de1f7c816dd957051fc446466b2d4a32d08e7b2"
+        },
+        "main": {
+          "blob": "4eaaf0cf6f3e555692eeaaead9c76663762f5e4b",
+          "lf_sha256": "69e0759a58debc6da6df80cd5c354975356f7c39ddc97e3342195b89d0e8442c"
+        }
+      }
+    },
+    {
+      "path": "godot/native_extension/cyber_prepared_liquid_world.hpp",
+      "protected": false,
+      "sources": {
+        "LA394": {
+          "blob": "01f6e729dbea871326e67a5bb0d4d39005a86376",
+          "lf_sha256": "d19d417fb764be86478b247ac3ce6ccb0fa89f7de3385668c73f263f19cf6b06"
+        },
+        "SOL347": {
+          "blob": "57f16cfa5667aa9a0fb9b52fe2003d7a36fe2dea",
+          "lf_sha256": "3ab805a5276fdc4da7785287137b8db2e16ea977893b5472031b4a986ea542c2"
+        },
+        "facade393": {
+          "blob": "cc447896ad5f09da57cd7ab4415af923c8aaf8dd",
+          "lf_sha256": "fb77a957fd644f7c5c299c4d47f647dbe9e985a258153f3559049a9692a5a578"
+        },
+        "main": {
+          "blob": "57f16cfa5667aa9a0fb9b52fe2003d7a36fe2dea",
+          "lf_sha256": "3ab805a5276fdc4da7785287137b8db2e16ea977893b5472031b4a986ea542c2"
+        }
+      }
+    },
+    {
+      "path": "godot/native_extension/pressure_optimization_inspection.inc",
+      "protected": false,
+      "sources": {
+        "LA394": {
+          "blob": "eeb8903fd7f97465ac356e08a105276c4ba9790c",
+          "lf_sha256": "e31280bec687c478d37b6dd169d46593adb4397c6584c9c597c98d6cb2d9420e"
+        },
+        "SOL347": {
+          "blob": "eeb8903fd7f97465ac356e08a105276c4ba9790c",
+          "lf_sha256": "e31280bec687c478d37b6dd169d46593adb4397c6584c9c597c98d6cb2d9420e"
+        },
+        "facade393": {
+          "blob": "fc5e74a58317263a85f995899f1b3e81971d42b6",
+          "lf_sha256": "a87c70fef85dedca81942e6794caa9d9dee052ba4af29b1b23c170c20337e77d"
+        },
+        "main": {
+          "blob": "eeb8903fd7f97465ac356e08a105276c4ba9790c",
+          "lf_sha256": "e31280bec687c478d37b6dd169d46593adb4397c6584c9c597c98d6cb2d9420e"
+        }
+      }
+    },
+    {
+      "path": "godot/native_extension/solid_contact_adapter.inc",
+      "protected": false,
+      "sources": {
+        "LA394": null,
+        "SOL347": {
+          "blob": "46c1ddec3568a16f35c00780859944058f6ba0f5",
+          "lf_sha256": "87c3bafd3701e636851c22f660767ee3d5b34d13a73f5eee94290907114bd355"
+        },
+        "facade393": {
+          "blob": "46c1ddec3568a16f35c00780859944058f6ba0f5",
+          "lf_sha256": "87c3bafd3701e636851c22f660767ee3d5b34d13a73f5eee94290907114bd355"
+        },
+        "main": null
+      }
+    },
+    {
+      "path": "godot/native_extension/solid_detachment_adapter.inc",
+      "protected": false,
+      "sources": {
+        "LA394": null,
+        "SOL347": {
+          "blob": "9a3e54ba37a1c77a41967fe4de75d82310ac7b1e",
+          "lf_sha256": "0f1cb226cf5ad624b6d77a7068ea8a9cb1c7d287e37cb0b48b707a0a499541b0"
+        },
+        "facade393": {
+          "blob": "9a3e54ba37a1c77a41967fe4de75d82310ac7b1e",
+          "lf_sha256": "0f1cb226cf5ad624b6d77a7068ea8a9cb1c7d287e37cb0b48b707a0a499541b0"
+        },
+        "main": null
+      }
+    },
+    {
+      "path": "godot/native_extension/workbench_granular_coupling.inc",
+      "protected": false,
+      "sources": {
+        "LA394": {
+          "blob": "79e50cb1cd2f705b3e2ca29f6a124ddf16fa939e",
+          "lf_sha256": "0ca5883b89aad02a5cf488ccb92d123086eb6567aebb19f820d0d112a1007415"
+        },
+        "SOL347": null,
+        "facade393": null,
+        "main": null
+      }
+    },
+    {
+      "path": "godot/native_extension/workbench_retained_setup.hpp",
+      "protected": false,
+      "sources": {
+        "LA394": {
+          "blob": "ac06cdd260492207fd9b306c51657130c66a469c",
+          "lf_sha256": "ecb5a3e615ab7642b554c07a250d384579297b57644551a3fe1d876d0219f54a"
+        },
+        "SOL347": null,
+        "facade393": null,
+        "main": null
+      }
+    },
+    {
+      "path": "godot/scripts/cell_world.gd",
+      "protected": true,
+      "sources": {
+        "LA394": {
+          "blob": "ea8da8c902f5bb6f68a2c92231b104d9fb26d229",
+          "lf_sha256": "763f5047c2f028ec71109a3f44a420bab75122e3ce15cfbad9b6fb3787bee035"
+        },
+        "SOL347": {
+          "blob": "ea8da8c902f5bb6f68a2c92231b104d9fb26d229",
+          "lf_sha256": "763f5047c2f028ec71109a3f44a420bab75122e3ce15cfbad9b6fb3787bee035"
+        },
+        "facade393": {
+          "blob": "ea8da8c902f5bb6f68a2c92231b104d9fb26d229",
+          "lf_sha256": "763f5047c2f028ec71109a3f44a420bab75122e3ce15cfbad9b6fb3787bee035"
+        },
+        "main": {
+          "blob": "ea8da8c902f5bb6f68a2c92231b104d9fb26d229",
+          "lf_sha256": "763f5047c2f028ec71109a3f44a420bab75122e3ce15cfbad9b6fb3787bee035"
+        }
+      }
+    },
+    {
+      "path": "godot/scripts/feature_launcher.gd",
+      "protected": false,
+      "sources": {
+        "LA394": {
+          "blob": "fdf59c3330e8f690e8ad25409c474dd216e520f1",
+          "lf_sha256": "81aed017b7457d54a8f9c1151ead729eaa31364e7c5cb71348924a64421e5393"
+        },
+        "SOL347": {
+          "blob": "b84697581a65c71fa2048f5c562c0481ff1b4c45",
+          "lf_sha256": "18816e00d0b60adabbdd5e42bcba27f04a76fbdcd70940804216fb83494968d0"
+        },
+        "facade393": {
+          "blob": "b84697581a65c71fa2048f5c562c0481ff1b4c45",
+          "lf_sha256": "18816e00d0b60adabbdd5e42bcba27f04a76fbdcd70940804216fb83494968d0"
+        },
+        "main": {
+          "blob": "b84697581a65c71fa2048f5c562c0481ff1b4c45",
+          "lf_sha256": "18816e00d0b60adabbdd5e42bcba27f04a76fbdcd70940804216fb83494968d0"
+        }
+      }
+    },
+    {
+      "path": "godot/scripts/gcr_flyer_authoring.gd",
+      "protected": false,
+      "sources": {
+        "LA394": {
+          "blob": "3016a503c9076fe96239c0349360970c6491dd83",
+          "lf_sha256": "f9e5795bc8ef2e4e28856b95949150aca03ccf2bc9b075ec66270606a1a642fd"
+        },
+        "SOL347": null,
+        "facade393": null,
+        "main": null
+      }
+    },
+    {
+      "path": "godot/scripts/gcr_review_fleet.gd",
+      "protected": false,
+      "sources": {
+        "LA394": {
+          "blob": "393dcb24f1adf0b58e3b80c946b8607553a1f274",
+          "lf_sha256": "344f6fcbc30967ac7591aff03c00e47d8ed87594b7f4a35a28c48a2381c9467a"
+        },
+        "SOL347": null,
+        "facade393": null,
+        "main": null
+      }
+    },
+    {
+      "path": "godot/scripts/gcr_review_fleet_controller.gd",
+      "protected": false,
+      "sources": {
+        "LA394": {
+          "blob": "1a2df40ad27c5a958b56b89aa638a44767582f85",
+          "lf_sha256": "016400cd42ae2bde57d793c17635f34e3fd8e652d335fc83bcf9168bdf55d505"
+        },
+        "SOL347": null,
+        "facade393": null,
+        "main": null
+      }
+    },
+    {
+      "path": "godot/scripts/interaction_policy.gd",
+      "protected": true,
+      "sources": {
+        "LA394": {
+          "blob": "27c128dfd39695af4da86c64c56962635b76a713",
+          "lf_sha256": "ba4acd7587b044ca412caaa75c740a6487f59ed6cae09c4d9d271a7342d06742"
+        },
+        "SOL347": {
+          "blob": "27c128dfd39695af4da86c64c56962635b76a713",
+          "lf_sha256": "ba4acd7587b044ca412caaa75c740a6487f59ed6cae09c4d9d271a7342d06742"
+        },
+        "facade393": {
+          "blob": "27c128dfd39695af4da86c64c56962635b76a713",
+          "lf_sha256": "ba4acd7587b044ca412caaa75c740a6487f59ed6cae09c4d9d271a7342d06742"
+        },
+        "main": {
+          "blob": "27c128dfd39695af4da86c64c56962635b76a713",
+          "lf_sha256": "ba4acd7587b044ca412caaa75c740a6487f59ed6cae09c4d9d271a7342d06742"
+        }
+      }
+    },
+    {
+      "path": "godot/scripts/liquid_comparison_panel.gd",
+      "protected": false,
+      "sources": {
+        "LA394": {
+          "blob": "e7eef97ca9e306c29e53da6e7a3d83a1e1f1c31e",
+          "lf_sha256": "6b2dfed4c4a8608d086d1c7f7c73af0e3e2fa4ddaa44595287c5b26c63f9f74a"
+        },
+        "SOL347": {
+          "blob": "9182464da9926010664d6d292ffac1b7a125d451",
+          "lf_sha256": "ce4bd0713f5d4d2eca8d194c9449edbaa8c7861f167ccce6a6b5495dc95f442a"
+        },
+        "facade393": {
+          "blob": "9182464da9926010664d6d292ffac1b7a125d451",
+          "lf_sha256": "ce4bd0713f5d4d2eca8d194c9449edbaa8c7861f167ccce6a6b5495dc95f442a"
+        },
+        "main": {
+          "blob": "9182464da9926010664d6d292ffac1b7a125d451",
+          "lf_sha256": "ce4bd0713f5d4d2eca8d194c9449edbaa8c7861f167ccce6a6b5495dc95f442a"
+        }
+      }
+    },
+    {
+      "path": "godot/scripts/main.gd",
+      "protected": false,
+      "sources": {
+        "LA394": {
+          "blob": "791ef440efd6edb206c6f1be33989cb62e9213b2",
+          "lf_sha256": "eff9b87acc42219c392a34b0ea739ea7a97d4de39e7a8cfe3c062061f706646c"
+        },
+        "SOL347": {
+          "blob": "b6b7de4492da269e6ab4130e45b0038295faad83",
+          "lf_sha256": "61e963f381155e0b3e7de88cde7c9d2bb8c5d2adfda0717e22d23fe632f02f7b"
+        },
+        "facade393": {
+          "blob": "b6b7de4492da269e6ab4130e45b0038295faad83",
+          "lf_sha256": "61e963f381155e0b3e7de88cde7c9d2bb8c5d2adfda0717e22d23fe632f02f7b"
+        },
+        "main": {
+          "blob": "b6b7de4492da269e6ab4130e45b0038295faad83",
+          "lf_sha256": "61e963f381155e0b3e7de88cde7c9d2bb8c5d2adfda0717e22d23fe632f02f7b"
+        }
+      }
+    },
+    {
+      "path": "godot/scripts/material_appearance_lut.gd",
+      "protected": true,
+      "sources": {
+        "LA394": {
+          "blob": "689633f9b82c297763b0615b7fa8c0364ed11623",
+          "lf_sha256": "1033dbe5e61e330578aa8a3bb2d3d7c98a8b7b4c42775b91d50b5a87fd443b0a"
+        },
+        "SOL347": {
+          "blob": "689633f9b82c297763b0615b7fa8c0364ed11623",
+          "lf_sha256": "1033dbe5e61e330578aa8a3bb2d3d7c98a8b7b4c42775b91d50b5a87fd443b0a"
+        },
+        "facade393": {
+          "blob": "689633f9b82c297763b0615b7fa8c0364ed11623",
+          "lf_sha256": "1033dbe5e61e330578aa8a3bb2d3d7c98a8b7b4c42775b91d50b5a87fd443b0a"
+        },
+        "main": {
+          "blob": "689633f9b82c297763b0615b7fa8c0364ed11623",
+          "lf_sha256": "1033dbe5e61e330578aa8a3bb2d3d7c98a8b7b4c42775b91d50b5a87fd443b0a"
+        }
+      }
+    },
+    {
+      "path": "godot/scripts/microscenario_catalogue.gd",
+      "protected": false,
+      "sources": {
+        "LA394": {
+          "blob": "014f519565c1c64e561aab3862d77c6cffa2e949",
+          "lf_sha256": "37dfc628f5b23519a906fcb61cd2ba95671d49f9cc17a37704f55a7526182599"
+        },
+        "SOL347": {
+          "blob": "a6841062c2f1a7a34c3301c59d544db748ba6870",
+          "lf_sha256": "22e4e0db5c76035add1b0a11d63bd29e40987d0a15ed2b05e2c4eaee0a2f1b7c"
+        },
+        "facade393": {
+          "blob": "a6841062c2f1a7a34c3301c59d544db748ba6870",
+          "lf_sha256": "22e4e0db5c76035add1b0a11d63bd29e40987d0a15ed2b05e2c4eaee0a2f1b7c"
+        },
+        "main": {
+          "blob": "a6841062c2f1a7a34c3301c59d544db748ba6870",
+          "lf_sha256": "22e4e0db5c76035add1b0a11d63bd29e40987d0a15ed2b05e2c4eaee0a2f1b7c"
+        }
+      }
+    },
+    {
+      "path": "godot/scripts/microscenario_contract.gd",
+      "protected": false,
+      "sources": {
+        "LA394": {
+          "blob": "999e127240bf81bd0c2928b0062bf9e8f9e007e1",
+          "lf_sha256": "0e71637772a56eb1b89950ff44e4f651d55a5f219e4a126f2ff7f451db4c4a48"
+        },
+        "SOL347": {
+          "blob": "bb2c4257ab04ded609e06e663dbe2a1a75fda025",
+          "lf_sha256": "6c15e65b8e7c4f3747d6dcca93d014897ebef6681cbfd1881fb12be32ec14540"
+        },
+        "facade393": {
+          "blob": "bb2c4257ab04ded609e06e663dbe2a1a75fda025",
+          "lf_sha256": "6c15e65b8e7c4f3747d6dcca93d014897ebef6681cbfd1881fb12be32ec14540"
+        },
+        "main": {
+          "blob": "bb2c4257ab04ded609e06e663dbe2a1a75fda025",
+          "lf_sha256": "6c15e65b8e7c4f3747d6dcca93d014897ebef6681cbfd1881fb12be32ec14540"
+        }
+      }
+    },
+    {
+      "path": "godot/scripts/microscenario_host.gd",
+      "protected": false,
+      "sources": {
+        "LA394": {
+          "blob": "93491fd2d2f0e38d98ea6b8722d8cc466cad7417",
+          "lf_sha256": "92635b15232a3d82a17deadaa3429c44b0f587a63f99b2df78ec13e6f7742c2c"
+        },
+        "SOL347": {
+          "blob": "62928444ad92f1edd5531459503360f74bef58ac",
+          "lf_sha256": "a351bf83e55d042dfa17798503ba05b0de4aeb9689622d6dbf8373991d29a3c0"
+        },
+        "facade393": {
+          "blob": "62928444ad92f1edd5531459503360f74bef58ac",
+          "lf_sha256": "a351bf83e55d042dfa17798503ba05b0de4aeb9689622d6dbf8373991d29a3c0"
+        },
+        "main": {
+          "blob": "62928444ad92f1edd5531459503360f74bef58ac",
+          "lf_sha256": "a351bf83e55d042dfa17798503ba05b0de4aeb9689622d6dbf8373991d29a3c0"
+        }
+      }
+    },
+    {
+      "path": "godot/scripts/physical_actor_catalog.gd",
+      "protected": false,
+      "sources": {
+        "LA394": {
+          "blob": "04f503001f1da5343136ba06c2c6e29c0abf6578",
+          "lf_sha256": "a2d9a1d683ed07d344a9205b17c89e9ff0306f2e97723b748a3b2726dc4f02a8"
+        },
+        "SOL347": {
+          "blob": "43fdb37fd357bb165e21df5602f9f0346d2698de",
+          "lf_sha256": "a5f2f800e0e4caa6199a1d4dd2be9d0a1603cfa172947b41fe0f90fe428d9489"
+        },
+        "facade393": {
+          "blob": "43fdb37fd357bb165e21df5602f9f0346d2698de",
+          "lf_sha256": "a5f2f800e0e4caa6199a1d4dd2be9d0a1603cfa172947b41fe0f90fe428d9489"
+        },
+        "main": {
+          "blob": "43fdb37fd357bb165e21df5602f9f0346d2698de",
+          "lf_sha256": "a5f2f800e0e4caa6199a1d4dd2be9d0a1603cfa172947b41fe0f90fe428d9489"
+        }
+      }
+    },
+    {
+      "path": "godot/scripts/physical_actor_overlay.gd",
+      "protected": false,
+      "sources": {
+        "LA394": {
+          "blob": "349bbe886f6f7f0502b8d78ae70b97a7430f1806",
+          "lf_sha256": "8474cc53600e889e0a7064a0e2e1f524bdf66a56993cb24f2326e753a6d24701"
+        },
+        "SOL347": {
+          "blob": "b1be6e64aaa6924a96699756069fa0d8207aeba0",
+          "lf_sha256": "dd39efc1ead8e65751fe18b9a82e834bedd7cf88b95a7eeceee87de6fdba3a9d"
+        },
+        "facade393": {
+          "blob": "b1be6e64aaa6924a96699756069fa0d8207aeba0",
+          "lf_sha256": "dd39efc1ead8e65751fe18b9a82e834bedd7cf88b95a7eeceee87de6fdba3a9d"
+        },
+        "main": {
+          "blob": "b1be6e64aaa6924a96699756069fa0d8207aeba0",
+          "lf_sha256": "dd39efc1ead8e65751fe18b9a82e834bedd7cf88b95a7eeceee87de6fdba3a9d"
+        }
+      }
+    },
+    {
+      "path": "godot/scripts/physical_actor_rig.gd",
+      "protected": false,
+      "sources": {
+        "LA394": {
+          "blob": "86e77f2f9e177263a9f402571bd82856920fdbe0",
+          "lf_sha256": "1751858e4fe1b882435c1bc13c0d160b12257aa5093a03ea337affdc61a998b7"
+        },
+        "SOL347": {
+          "blob": "ca64d447635efc4e45837bc117e8f474be8db644",
+          "lf_sha256": "4e3fe63b46a5db3365d77c9c055a032b704f70ea2265ad0f0013574b785e692e"
+        },
+        "facade393": {
+          "blob": "ca64d447635efc4e45837bc117e8f474be8db644",
+          "lf_sha256": "4e3fe63b46a5db3365d77c9c055a032b704f70ea2265ad0f0013574b785e692e"
+        },
+        "main": {
+          "blob": "ca64d447635efc4e45837bc117e8f474be8db644",
+          "lf_sha256": "4e3fe63b46a5db3365d77c9c055a032b704f70ea2265ad0f0013574b785e692e"
+        }
+      }
+    },
+    {
+      "path": "godot/scripts/physical_actor_session.gd",
+      "protected": false,
+      "sources": {
+        "LA394": {
+          "blob": "bde4503df99d7e317cfb0987004d525f72177316",
+          "lf_sha256": "e2c9f6e5bd92547c0f02cea2c2db22c816c1727013f07cd879d4b60be91d8c47"
+        },
+        "SOL347": {
+          "blob": "a3966dd5ffafe56f01330a00ff3911ec3166677b",
+          "lf_sha256": "993fdca10bc9ad6be42b8ffd7b1f352de9d460b9c2bdafcc6b668e721057bf83"
+        },
+        "facade393": {
+          "blob": "a3966dd5ffafe56f01330a00ff3911ec3166677b",
+          "lf_sha256": "993fdca10bc9ad6be42b8ffd7b1f352de9d460b9c2bdafcc6b668e721057bf83"
+        },
+        "main": {
+          "blob": "a3966dd5ffafe56f01330a00ff3911ec3166677b",
+          "lf_sha256": "993fdca10bc9ad6be42b8ffd7b1f352de9d460b9c2bdafcc6b668e721057bf83"
+        }
+      }
+    },
+    {
+      "path": "godot/scripts/prepared_physical_session.gd",
+      "protected": false,
+      "sources": {
+        "LA394": {
+          "blob": "3c6d3673576a4594d52cbbfc94733ded9733809f",
+          "lf_sha256": "faab78cbbbd3f49110f348cb502d60a9f2dd32a21efaef9bb1734736f97a3562"
+        },
+        "SOL347": {
+          "blob": "35228524837021b11db7c20cea340bebbc3dd8c2",
+          "lf_sha256": "a2b5a050af7b66caca70a9623bdfaad2a86c939d517d15efffebcd2506ea9b99"
+        },
+        "facade393": {
+          "blob": "35228524837021b11db7c20cea340bebbc3dd8c2",
+          "lf_sha256": "a2b5a050af7b66caca70a9623bdfaad2a86c939d517d15efffebcd2506ea9b99"
+        },
+        "main": {
+          "blob": "35228524837021b11db7c20cea340bebbc3dd8c2",
+          "lf_sha256": "a2b5a050af7b66caca70a9623bdfaad2a86c939d517d15efffebcd2506ea9b99"
+        }
+      }
+    },
+    {
+      "path": "godot/scripts/rapier_physics_bridge.gd",
+      "protected": false,
+      "sources": {
+        "LA394": {
+          "blob": "87eea1f36b11375eb40be6a833433871000fbb2e",
+          "lf_sha256": "44585c25307569590937a0d0f51099438fcaacc16b385efca66ff78184909c37"
+        },
+        "SOL347": {
+          "blob": "86bebb05c391facbe60bf12253f168cc08065bd8",
+          "lf_sha256": "2b4186b3e558f96051edded62ea1c4494a6ff018eeee73f3fad715fcdb2f0c5f"
+        },
+        "facade393": {
+          "blob": "86bebb05c391facbe60bf12253f168cc08065bd8",
+          "lf_sha256": "2b4186b3e558f96051edded62ea1c4494a6ff018eeee73f3fad715fcdb2f0c5f"
+        },
+        "main": {
+          "blob": "87eea1f36b11375eb40be6a833433871000fbb2e",
+          "lf_sha256": "44585c25307569590937a0d0f51099438fcaacc16b385efca66ff78184909c37"
+        }
+      }
+    },
+    {
+      "path": "godot/scripts/rigid_body_coupling.gd",
+      "protected": false,
+      "sources": {
+        "LA394": {
+          "blob": "e930cfb982d208e3a5563794923d86226266538c",
+          "lf_sha256": "9882be8764318981aa8a8b4a189379012818984a28cb6a35f3bd5787f85ab724"
+        },
+        "SOL347": {
+          "blob": "bcdce56a0cefbfebd4c7d54cc7f2b50eb543110c",
+          "lf_sha256": "a3f5562be71adcdb209b6c45a7e67374bc05a419816b195c48e65d1e0e66d142"
+        },
+        "facade393": {
+          "blob": "bcdce56a0cefbfebd4c7d54cc7f2b50eb543110c",
+          "lf_sha256": "a3f5562be71adcdb209b6c45a7e67374bc05a419816b195c48e65d1e0e66d142"
+        },
+        "main": {
+          "blob": "bcdce56a0cefbfebd4c7d54cc7f2b50eb543110c",
+          "lf_sha256": "a3f5562be71adcdb209b6c45a7e67374bc05a419816b195c48e65d1e0e66d142"
+        }
+      }
+    },
+    {
+      "path": "godot/scripts/shared_workbench.gd",
+      "protected": false,
+      "sources": {
+        "LA394": {
+          "blob": "974ff1debedc6ddc9e963db5fdd8faa1b0619b5a",
+          "lf_sha256": "1e87e9c07eebc710747bb874aa70cdbab41ad0805e6e613f76dc7d015585b928"
+        },
+        "SOL347": null,
+        "facade393": null,
+        "main": null
+      }
+    },
+    {
+      "path": "godot/scripts/simulation_snapshot.gd",
+      "protected": false,
+      "sources": {
+        "LA394": {
+          "blob": "263c0566881dcc8745721c7af8dc9c6bfc118303",
+          "lf_sha256": "8c7ca1429e8aa0010c0f0aec1ce77d35a7e70ca8fa0d00fa43d2116382c138d0"
+        },
+        "SOL347": {
+          "blob": "9a494282737ec5a37314c600ad0cc3a4bf2feb98",
+          "lf_sha256": "d7cc8f2cdafc421e48dfa9ceea69aca2a6534248d55b3bdeeb2fe3f83a46a210"
+        },
+        "facade393": {
+          "blob": "9a494282737ec5a37314c600ad0cc3a4bf2feb98",
+          "lf_sha256": "d7cc8f2cdafc421e48dfa9ceea69aca2a6534248d55b3bdeeb2fe3f83a46a210"
+        },
+        "main": {
+          "blob": "263c0566881dcc8745721c7af8dc9c6bfc118303",
+          "lf_sha256": "8c7ca1429e8aa0010c0f0aec1ce77d35a7e70ca8fa0d00fa43d2116382c138d0"
+        }
+      }
+    },
+    {
+      "path": "godot/scripts/simulation_worker.gd",
+      "protected": false,
+      "sources": {
+        "LA394": {
+          "blob": "9aa5279e189e6485f5ead84c70f832cce99e8a2b",
+          "lf_sha256": "2cfc920b9781eced42ce63fc4166a34e75a116a93a6f41caa43a8af3347b6b1c"
+        },
+        "SOL347": {
+          "blob": "a6c17c3c1d85cace23f64458a35eeda058094e07",
+          "lf_sha256": "92d8966df1c4638157323a078713b0dc25504b3c1d2b87af5118c34649eca2d2"
+        },
+        "facade393": {
+          "blob": "a6c17c3c1d85cace23f64458a35eeda058094e07",
+          "lf_sha256": "92d8966df1c4638157323a078713b0dc25504b3c1d2b87af5118c34649eca2d2"
+        },
+        "main": {
+          "blob": "ff5ddf9026476c52717650e747f367bb1f6bd5e5",
+          "lf_sha256": "6b1c27ff4e0013db58436079834ceae2c26589a752ee166462437c9aff2dbdbf"
+        }
+      }
+    },
+    {
+      "path": "godot/scripts/solid_contact_response.gd",
+      "protected": false,
+      "sources": {
+        "LA394": null,
+        "SOL347": {
+          "blob": "91419e852adbd4140cca90a737fe11795450483f",
+          "lf_sha256": "4fa2e74e5cef1f5b211e1a71287acc358d2984e6fb8bdb03cd977adbed473be1"
+        },
+        "facade393": {
+          "blob": "91419e852adbd4140cca90a737fe11795450483f",
+          "lf_sha256": "4fa2e74e5cef1f5b211e1a71287acc358d2984e6fb8bdb03cd977adbed473be1"
+        },
+        "main": null
+      }
+    },
+    {
+      "path": "godot/scripts/solid_detachment_lab.gd",
+      "protected": false,
+      "sources": {
+        "LA394": null,
+        "SOL347": {
+          "blob": "3ca1605fc3bab19086c226ea968426cece66514b",
+          "lf_sha256": "b89b1afcf7b24072dd51db207fcca87770048e128c12c359f0d12e539be9fad0"
+        },
+        "facade393": {
+          "blob": "3ca1605fc3bab19086c226ea968426cece66514b",
+          "lf_sha256": "b89b1afcf7b24072dd51db207fcca87770048e128c12c359f0d12e539be9fad0"
+        },
+        "main": null
+      }
+    },
+    {
+      "path": "godot/scripts/solid_detachment_render_consumer.gd",
+      "protected": false,
+      "sources": {
+        "LA394": null,
+        "SOL347": {
+          "blob": "b623897442186688eb6f3e3ad1fe93aa0146dc9b",
+          "lf_sha256": "3a51e48d05c462c4dfbe2d95800f94836ebdb7eec2f71456edd7facc08ba4407"
+        },
+        "facade393": {
+          "blob": "b623897442186688eb6f3e3ad1fe93aa0146dc9b",
+          "lf_sha256": "3a51e48d05c462c4dfbe2d95800f94836ebdb7eec2f71456edd7facc08ba4407"
+        },
+        "main": null
+      }
+    },
+    {
+      "path": "godot/scripts/solid_detachment_session.gd",
+      "protected": false,
+      "sources": {
+        "LA394": null,
+        "SOL347": {
+          "blob": "6a314b3d00518ba6516e9411c70a9c432ce6fee0",
+          "lf_sha256": "12108fa5799b087e6d9be2d00bc8f55e08338969e4e52224ff42e8d80644dbb5"
+        },
+        "facade393": {
+          "blob": "6a314b3d00518ba6516e9411c70a9c432ce6fee0",
+          "lf_sha256": "12108fa5799b087e6d9be2d00bc8f55e08338969e4e52224ff42e8d80644dbb5"
+        },
+        "main": null
+      }
+    },
+    {
+      "path": "godot/scripts/solid_detachment_worker.gd",
+      "protected": false,
+      "sources": {
+        "LA394": null,
+        "SOL347": {
+          "blob": "f1ba0fe7fa9f7b41a09f5aa7736f8012027c4770",
+          "lf_sha256": "ef22cff62370a86537ed77af5306ddedb3f0e3255b53f6053c86432b6ec608ea"
+        },
+        "facade393": {
+          "blob": "f1ba0fe7fa9f7b41a09f5aa7736f8012027c4770",
+          "lf_sha256": "ef22cff62370a86537ed77af5306ddedb3f0e3255b53f6053c86432b6ec608ea"
+        },
+        "main": null
+      }
+    },
+    {
+      "path": "godot/scripts/transport_profiles.gd",
+      "protected": true,
+      "sources": {
+        "LA394": {
+          "blob": "19369f053e956f2f8a69787cda914b7e0d43ff6a",
+          "lf_sha256": "5497757c0950082b57be0f95760680cb05c631422940a1d6efcbff010a42b6a0"
+        },
+        "SOL347": {
+          "blob": "19369f053e956f2f8a69787cda914b7e0d43ff6a",
+          "lf_sha256": "5497757c0950082b57be0f95760680cb05c631422940a1d6efcbff010a42b6a0"
+        },
+        "facade393": {
+          "blob": "19369f053e956f2f8a69787cda914b7e0d43ff6a",
+          "lf_sha256": "5497757c0950082b57be0f95760680cb05c631422940a1d6efcbff010a42b6a0"
+        },
+        "main": {
+          "blob": "19369f053e956f2f8a69787cda914b7e0d43ff6a",
+          "lf_sha256": "5497757c0950082b57be0f95760680cb05c631422940a1d6efcbff010a42b6a0"
+        }
+      }
+    },
+    {
+      "path": "godot/scripts/workbench_emitter.gd",
+      "protected": false,
+      "sources": {
+        "LA394": {
+          "blob": "048097f8d686e400e151103b6b29ef4305813847",
+          "lf_sha256": "36e018da526a09b7f942f77b6be026ea6ac55e50d5d2fc5a241710824601c605"
+        },
+        "SOL347": null,
+        "facade393": null,
+        "main": null
+      }
+    },
+    {
+      "path": "godot/scripts/workbench_physics_bridge.gd",
+      "protected": false,
+      "sources": {
+        "LA394": {
+          "blob": "e0b22fb56b56d1e1653e53ea606c0d8ffa6d0e43",
+          "lf_sha256": "5489c63f253c18c4e4457c3708cf519d8b41d239b38218d2b0d9cf6a9a9f4514"
+        },
+        "SOL347": null,
+        "facade393": null,
+        "main": null
+      }
+    },
+    {
+      "path": "godot/scripts/workbench_powder_source.gd",
+      "protected": false,
+      "sources": {
+        "LA394": {
+          "blob": "a1e90158c37926e486e373ecda6b24f864824298",
+          "lf_sha256": "c724cc84ae5bd8cda3d8a83984b026948f57400bd313272fffc4bee0ae46a58c"
+        },
+        "SOL347": null,
+        "facade393": null,
+        "main": null
+      }
+    },
+    {
+      "path": "godot/scripts/workbench_setup.gd",
+      "protected": false,
+      "sources": {
+        "LA394": {
+          "blob": "4b1f88295264b518bd1eeba5546a1794e3df8bcc",
+          "lf_sha256": "2a37ac05a2e1e170ef6df8cb1789376395eeb606b583a8fa0a5040527f91054e"
+        },
+        "SOL347": null,
+        "facade393": null,
+        "main": null
+      }
+    },
+    {
+      "path": "godot/shaders/material_palette.gdshader",
+      "protected": true,
+      "sources": {
+        "LA394": {
+          "blob": "9f421c9130d2f03936bd07301befa5f426555418",
+          "lf_sha256": "f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1"
+        },
+        "SOL347": {
+          "blob": "9f421c9130d2f03936bd07301befa5f426555418",
+          "lf_sha256": "f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1"
+        },
+        "facade393": {
+          "blob": "9f421c9130d2f03936bd07301befa5f426555418",
+          "lf_sha256": "f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1"
+        },
+        "main": {
+          "blob": "9f421c9130d2f03936bd07301befa5f426555418",
+          "lf_sha256": "f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1"
+        }
+      }
+    },
+    {
+      "path": "godot/solid_detachment_lab.tscn",
+      "protected": false,
+      "sources": {
+        "LA394": null,
+        "SOL347": {
+          "blob": "2a0f1c34f29f511f8dacee01bb7c1c01b188bfff",
+          "lf_sha256": "784ae4ea69942f4fd1eb177a7462846fbc27cca57ea0fd1816f1b46b4342668a"
+        },
+        "facade393": {
+          "blob": "2a0f1c34f29f511f8dacee01bb7c1c01b188bfff",
+          "lf_sha256": "784ae4ea69942f4fd1eb177a7462846fbc27cca57ea0fd1816f1b46b4342668a"
+        },
+        "main": null
+      }
+    },
+    {
+      "path": "godot/tests/fixtures/sol281/conservative_contacts.json",
+      "protected": false,
+      "sources": {
+        "LA394": null,
+        "SOL347": {
+          "blob": "cb30417a66b744b8548d3ba75ecee897764ee947",
+          "lf_sha256": "0ed32d72c2bd3681bb003d7fe0c5d3f0f870598d487614dd36a4a816778604ce"
+        },
+        "facade393": {
+          "blob": "cb30417a66b744b8548d3ba75ecee897764ee947",
+          "lf_sha256": "0ed32d72c2bd3681bb003d7fe0c5d3f0f870598d487614dd36a4a816778604ce"
+        },
+        "main": null
+      }
+    },
+    {
+      "path": "godot/tests/fixtures/sol364/synchronized_contacts.json",
+      "protected": false,
+      "sources": {
+        "LA394": null,
+        "SOL347": {
+          "blob": "b5d5869bf389fd5589790c2669aea341831c2fcb",
+          "lf_sha256": "bb00a8b02f6ec345d798faf0f35ffc241dc8435cfc972096dfab2738099203be"
+        },
+        "facade393": {
+          "blob": "b5d5869bf389fd5589790c2669aea341831c2fcb",
+          "lf_sha256": "bb00a8b02f6ec345d798faf0f35ffc241dc8435cfc972096dfab2738099203be"
+        },
+        "main": null
+      }
+    },
+    {
+      "path": "godot/tests/lcb201_pressure_host_case.gd",
+      "protected": false,
+      "sources": {
+        "LA394": {
+          "blob": "31a213fb6edeff23a403de8309e45262c75768d4",
+          "lf_sha256": "420ffd9afb23f7b7cd0198c4de4671e92c391f3ac170d681bb7ebd3f848f5532"
+        },
+        "SOL347": null,
+        "facade393": null,
+        "main": {
+          "blob": "31a213fb6edeff23a403de8309e45262c75768d4",
+          "lf_sha256": "420ffd9afb23f7b7cd0198c4de4671e92c391f3ac170d681bb7ebd3f848f5532"
+        }
+      }
+    },
+    {
+      "path": "godot/tests/support/sol364_independent_reclip.gd",
+      "protected": false,
+      "sources": {
+        "LA394": null,
+        "SOL347": {
+          "blob": "b002ffd9ab07845ce99d796e454b97a84e186779",
+          "lf_sha256": "7d51fae7edb76e010ed1b40f0ca15991dba0e4efe8217e869b39b4564af80bf0"
+        },
+        "facade393": {
+          "blob": "b002ffd9ab07845ce99d796e454b97a84e186779",
+          "lf_sha256": "7d51fae7edb76e010ed1b40f0ca15991dba0e4efe8217e869b39b4564af80bf0"
+        },
+        "main": null
+      }
+    },
+    {
+      "path": "godot/tests/support/sol364_observer_equivalence.gd",
+      "protected": false,
+      "sources": {
+        "LA394": null,
+        "SOL347": {
+          "blob": "982f27477f936743579a494916f02a07baeefd5b",
+          "lf_sha256": "8ecee06e17e1a32c058b55f366d9239c5ad88e22455f9b01e548722304030a60"
+        },
+        "facade393": {
+          "blob": "982f27477f936743579a494916f02a07baeefd5b",
+          "lf_sha256": "8ecee06e17e1a32c058b55f366d9239c5ad88e22455f9b01e548722304030a60"
+        },
+        "main": null
+      }
+    },
+    {
+      "path": "godot/tests/support/solid_contact_response_749fb8b.gd",
+      "protected": false,
+      "sources": {
+        "LA394": null,
+        "SOL347": {
+          "blob": "16ab748330a81934557430269e87ee7c89d1037f",
+          "lf_sha256": "d5bebb75d81cf5bc0dce756f7a844f19ad9f145fbd9ca96775ad8f999a061d6d"
+        },
+        "facade393": {
+          "blob": "16ab748330a81934557430269e87ee7c89d1037f",
+          "lf_sha256": "d5bebb75d81cf5bc0dce756f7a844f19ad9f145fbd9ca96775ad8f999a061d6d"
+        },
+        "main": null
+      }
+    },
+    {
+      "path": "godot/tests/support/solid_contact_synchronized_fixture.gd",
+      "protected": false,
+      "sources": {
+        "LA394": null,
+        "SOL347": {
+          "blob": "7ff986df8f078ba576bc33dd745e504e3971451c",
+          "lf_sha256": "9ab30d0cd16c3910138c81375b9c8594af855a49764802ff3448dcd8f9ba5436"
+        },
+        "facade393": {
+          "blob": "7ff986df8f078ba576bc33dd745e504e3971451c",
+          "lf_sha256": "9ab30d0cd16c3910138c81375b9c8594af855a49764802ff3448dcd8f9ba5436"
+        },
+        "main": null
+      }
+    },
+    {
+      "path": "godot/tests/test_lcb_pressure_optimization.gd",
+      "protected": false,
+      "sources": {
+        "LA394": {
+          "blob": "6577279e8f4f05164569845664b16a83c9dfa9af",
+          "lf_sha256": "8703ba42436866e5f5fe24f84c929f79373e138ba4e6d6083c742a9a7ad430c3"
+        },
+        "SOL347": {
+          "blob": "6577279e8f4f05164569845664b16a83c9dfa9af",
+          "lf_sha256": "8703ba42436866e5f5fe24f84c929f79373e138ba4e6d6083c742a9a7ad430c3"
+        },
+        "facade393": {
+          "blob": "6577279e8f4f05164569845664b16a83c9dfa9af",
+          "lf_sha256": "8703ba42436866e5f5fe24f84c929f79373e138ba4e6d6083c742a9a7ad430c3"
+        },
+        "main": {
+          "blob": "7a6b4a54094c30f31335629ba6f6f2875d4cc777",
+          "lf_sha256": "1c0751e31c6d500532c29f0c78f93eb3b1a1a1d6a11d53d64fabf1de39803ab5"
+        }
+      }
+    },
+    {
+      "path": "godot/tests/test_simulation_worker_interest_ownership.gd",
+      "protected": false,
+      "sources": {
+        "LA394": {
+          "blob": "b422610c5119fef79ea5309e0bdd4ac00953149e",
+          "lf_sha256": "aaf52310f6d73fd3fb469996eea4938334b0fed96da23a888562e54b24766d2d"
+        },
+        "SOL347": null,
+        "facade393": null,
+        "main": {
+          "blob": "b422610c5119fef79ea5309e0bdd4ac00953149e",
+          "lf_sha256": "aaf52310f6d73fd3fb469996eea4938334b0fed96da23a888562e54b24766d2d"
+        }
+      }
+    },
+    {
+      "path": "godot/tests/test_sol_facade_refusals.gd",
+      "protected": false,
+      "sources": {
+        "LA394": null,
+        "SOL347": null,
+        "facade393": {
+          "blob": "e6b80de4c09fae6492acc780915d33dfcb171841",
+          "lf_sha256": "a05591810c35999611e4f539fb4510ab069197c78dbf660a4bb6be7c79e496f4"
+        },
+        "main": null
+      }
+    },
+    {
+      "path": "godot/tests/test_solid_contact_fences.gd",
+      "protected": false,
+      "sources": {
+        "LA394": null,
+        "SOL347": {
+          "blob": "0397b897d525e1e5770789db83c313ffd7810251",
+          "lf_sha256": "fce75140e61fb7826d18e2596a39a4ac6486a48a02c75ec4434f24f675eb54cb"
+        },
+        "facade393": {
+          "blob": "0397b897d525e1e5770789db83c313ffd7810251",
+          "lf_sha256": "fce75140e61fb7826d18e2596a39a4ac6486a48a02c75ec4434f24f675eb54cb"
+        },
+        "main": null
+      }
+    },
+    {
+      "path": "godot/tests/test_solid_contact_observation.gd",
+      "protected": false,
+      "sources": {
+        "LA394": null,
+        "SOL347": {
+          "blob": "fbfb1a05e7c83a1fedeebc72d1fee52437cd6bae",
+          "lf_sha256": "58ec34f166b7c547afb3ddba53a0c44cfe6a618fe62c586a4264b6f13e473ffa"
+        },
+        "facade393": {
+          "blob": "fbfb1a05e7c83a1fedeebc72d1fee52437cd6bae",
+          "lf_sha256": "58ec34f166b7c547afb3ddba53a0c44cfe6a618fe62c586a4264b6f13e473ffa"
+        },
+        "main": null
+      }
+    },
+    {
+      "path": "godot/tests/test_solid_contact_response.gd",
+      "protected": false,
+      "sources": {
+        "LA394": null,
+        "SOL347": {
+          "blob": "03cf77ffc23c45d22a318d3d35b5a1196041fad4",
+          "lf_sha256": "35f28cc48a04a575ebe878a3eb5bccdfab8cccb0da94123a79f4bcfbd697449e"
+        },
+        "facade393": {
+          "blob": "03cf77ffc23c45d22a318d3d35b5a1196041fad4",
+          "lf_sha256": "35f28cc48a04a575ebe878a3eb5bccdfab8cccb0da94123a79f4bcfbd697449e"
+        },
+        "main": null
+      }
+    },
+    {
+      "path": "godot/tests/test_solid_contact_synchronized.gd",
+      "protected": false,
+      "sources": {
+        "LA394": null,
+        "SOL347": {
+          "blob": "7048b919eb6c77630a4f7221803fe5c25d7aad98",
+          "lf_sha256": "b4649ee235da8cbfc926aba654104ca55260d27efc5d84ba339638e63e005f34"
+        },
+        "facade393": {
+          "blob": "7048b919eb6c77630a4f7221803fe5c25d7aad98",
+          "lf_sha256": "b4649ee235da8cbfc926aba654104ca55260d27efc5d84ba339638e63e005f34"
+        },
+        "main": null
+      }
+    },
+    {
+      "path": "godot/tests/test_solid_detachment.gd",
+      "protected": false,
+      "sources": {
+        "LA394": null,
+        "SOL347": {
+          "blob": "757f13c9cb1eea66f13927a38ca80c05d5c5c00b",
+          "lf_sha256": "e1ee7c9336b009e44510dd719cdb01e4dac89cc61df664d1675cd94dac745349"
+        },
+        "facade393": {
+          "blob": "757f13c9cb1eea66f13927a38ca80c05d5c5c00b",
+          "lf_sha256": "e1ee7c9336b009e44510dd719cdb01e4dac89cc61df664d1675cd94dac745349"
+        },
+        "main": null
+      }
+    },
+    {
+      "path": "godot/tests/test_solid_detachment_compound_response.gd",
+      "protected": false,
+      "sources": {
+        "LA394": null,
+        "SOL347": {
+          "blob": "8aa77c945d90df44939ffd25c1b513547b1fe7f1",
+          "lf_sha256": "42b1441a03153d6af07ab0494b05565b342dcfa75aa9be0520d18f7b7634145d"
+        },
+        "facade393": {
+          "blob": "8aa77c945d90df44939ffd25c1b513547b1fe7f1",
+          "lf_sha256": "42b1441a03153d6af07ab0494b05565b342dcfa75aa9be0520d18f7b7634145d"
+        },
+        "main": null
+      }
+    },
+    {
+      "path": "godot/tests/test_solid_detachment_contact_recovery.gd",
+      "protected": false,
+      "sources": {
+        "LA394": null,
+        "SOL347": {
+          "blob": "bd1e11dd21b566e6a5d61db1643308b6fef74b9b",
+          "lf_sha256": "09681a18e1f4382d98049c3348100abc167f19343e606adc9c4b6e6de061491f"
+        },
+        "facade393": {
+          "blob": "bd1e11dd21b566e6a5d61db1643308b6fef74b9b",
+          "lf_sha256": "09681a18e1f4382d98049c3348100abc167f19343e606adc9c4b6e6de061491f"
+        },
+        "main": null
+      }
+    },
+    {
+      "path": "godot/tests/test_solid_detachment_coupling.gd",
+      "protected": false,
+      "sources": {
+        "LA394": null,
+        "SOL347": {
+          "blob": "e11e2e4eec450866211ced14ab05d1121666c3a7",
+          "lf_sha256": "7b6a287eadc88ea71e65aabaa14e2acd28864a8999f8d3872677c465e5605129"
+        },
+        "facade393": {
+          "blob": "e11e2e4eec450866211ced14ab05d1121666c3a7",
+          "lf_sha256": "7b6a287eadc88ea71e65aabaa14e2acd28864a8999f8d3872677c465e5605129"
+        },
+        "main": null
+      }
+    },
+    {
+      "path": "godot/tests/test_solid_detachment_displacement.gd",
+      "protected": false,
+      "sources": {
+        "LA394": null,
+        "SOL347": {
+          "blob": "0bde2da12178aeaeea46eee65ec13fe873c9180b",
+          "lf_sha256": "2c9b864ded955b3b607c58a8a1e5dff1c7e32f3ecf4c8f6cd9707dcc8470cdc0"
+        },
+        "facade393": {
+          "blob": "0bde2da12178aeaeea46eee65ec13fe873c9180b",
+          "lf_sha256": "2c9b864ded955b3b607c58a8a1e5dff1c7e32f3ecf4c8f6cd9707dcc8470cdc0"
+        },
+        "main": null
+      }
+    },
+    {
+      "path": "godot/tests/test_solid_detachment_failures.gd",
+      "protected": false,
+      "sources": {
+        "LA394": null,
+        "SOL347": {
+          "blob": "8cb3a2641e4516e6509348967948c74523e1770f",
+          "lf_sha256": "f493ac814a2e5c2c158618265a6805c4b57f00074b96d0277f02d57368cb8c3a"
+        },
+        "facade393": {
+          "blob": "8cb3a2641e4516e6509348967948c74523e1770f",
+          "lf_sha256": "f493ac814a2e5c2c158618265a6805c4b57f00074b96d0277f02d57368cb8c3a"
+        },
+        "main": null
+      }
+    },
+    {
+      "path": "godot/tests/test_solid_detachment_lifecycle.gd",
+      "protected": false,
+      "sources": {
+        "LA394": null,
+        "SOL347": {
+          "blob": "52233b050e1fdcc3e6f60c60c407a48b7a9a1cd7",
+          "lf_sha256": "ef51fedcec5cc9348fadf91dff10eb801b38de02ac143d6af771a1568fbd5c7b"
+        },
+        "facade393": {
+          "blob": "52233b050e1fdcc3e6f60c60c407a48b7a9a1cd7",
+          "lf_sha256": "ef51fedcec5cc9348fadf91dff10eb801b38de02ac143d6af771a1568fbd5c7b"
+        },
+        "main": null
+      }
+    },
+    {
+      "path": "godot/tests/test_solid_detachment_populated.gd",
+      "protected": false,
+      "sources": {
+        "LA394": null,
+        "SOL347": {
+          "blob": "7580f21f27117034c034bb79919a8dea72962a25",
+          "lf_sha256": "a46486108b16e1e2da6eddcf12d2b738add54030244f2a64c832a35617ce9996"
+        },
+        "facade393": {
+          "blob": "7580f21f27117034c034bb79919a8dea72962a25",
+          "lf_sha256": "a46486108b16e1e2da6eddcf12d2b738add54030244f2a64c832a35617ce9996"
+        },
+        "main": null
+      }
+    },
+    {
+      "path": "godot/tests/test_solid_detachment_render_ack.gd",
+      "protected": false,
+      "sources": {
+        "LA394": null,
+        "SOL347": {
+          "blob": "19e4ea22aa08109b9d5f17d61c78b1113193a156",
+          "lf_sha256": "da1f653c45551bebfb3bd52ec471230a4b2f97802e69a1392a2c5efa699cc208"
+        },
+        "facade393": {
+          "blob": "19e4ea22aa08109b9d5f17d61c78b1113193a156",
+          "lf_sha256": "da1f653c45551bebfb3bd52ec471230a4b2f97802e69a1392a2c5efa699cc208"
+        },
+        "main": null
+      }
+    },
+    {
+      "path": "godot/tests/test_solid_detachment_terrain_refresh.gd",
+      "protected": false,
+      "sources": {
+        "LA394": null,
+        "SOL347": {
+          "blob": "6728c828a6ab796cd4bdd233f7ae7e463f3dd102",
+          "lf_sha256": "bf0ca385cd137efbcaa17dee50291e50c72e10a7df5f91dbd66b90979da7c597"
+        },
+        "facade393": {
+          "blob": "6728c828a6ab796cd4bdd233f7ae7e463f3dd102",
+          "lf_sha256": "bf0ca385cd137efbcaa17dee50291e50c72e10a7df5f91dbd66b90979da7c597"
+        },
+        "main": null
+      }
+    },
+    {
+      "path": "godot/tests/test_workbench_boundary_retention.gd",
+      "protected": false,
+      "sources": {
+        "LA394": {
+          "blob": "f7857eb9f20961f414788571510545c21df55ccf",
+          "lf_sha256": "f394f5c90ca7f2587ee4d97f7d5b13badd92ecac2c7dd328793cb40308d75072"
+        },
+        "SOL347": null,
+        "facade393": null,
+        "main": null
+      }
+    },
+    {
+      "path": "godot/tests/test_workbench_canvas.gd",
+      "protected": false,
+      "sources": {
+        "LA394": {
+          "blob": "8f8a1c456a82f0727e4e26b84d6dc610f053d0ce",
+          "lf_sha256": "6328a1dc16492a5067e85bd06281ce0e246bfd8f2f452331f6adabd97bc5c839"
+        },
+        "SOL347": null,
+        "facade393": null,
+        "main": null
+      }
+    },
+    {
+      "path": "godot/tests/test_workbench_desktop_interest.gd",
+      "protected": false,
+      "sources": {
+        "LA394": {
+          "blob": "cdae4abefa1e9647fa9a189dca790f20845218cd",
+          "lf_sha256": "4988ce1362c933c02c3df696ae87cc0ff4d3cd5cfe206d9fbdc83417ac4074f0"
+        },
+        "SOL347": null,
+        "facade393": null,
+        "main": null
+      }
+    },
+    {
+      "path": "godot/tests/test_workbench_failure_recovery.gd",
+      "protected": false,
+      "sources": {
+        "LA394": {
+          "blob": "c214ca4b614c698f1a295a6036fc1ec19959dcc7",
+          "lf_sha256": "2b594bb716b2369da0aa9484f6c72e7c513564976697132223add0b7702dc0f3"
+        },
+        "SOL347": null,
+        "facade393": null,
+        "main": null
+      }
+    },
+    {
+      "path": "godot/tests/test_workbench_fleet_session.gd",
+      "protected": false,
+      "sources": {
+        "LA394": {
+          "blob": "00849f547353be817de3d48f8bb7666cabf2701e",
+          "lf_sha256": "9c2ca393573f0ac576c10af0bc69579c074628ec22324f25463e51c1f7f0f100"
+        },
+        "SOL347": null,
+        "facade393": null,
+        "main": null
+      }
+    },
+    {
+      "path": "godot/tests/test_workbench_hard_placement.gd",
+      "protected": false,
+      "sources": {
+        "LA394": {
+          "blob": "1a732455c84b037f6ff76fbaf1a2a7696e2c4b7e",
+          "lf_sha256": "4d129a4e9487537ab97716a464bb3ab599f98374aef609576e58aa28031b2940"
+        },
+        "SOL347": null,
+        "facade393": null,
+        "main": null
+      }
+    },
+    {
+      "path": "godot/tests/test_workbench_input.gd",
+      "protected": false,
+      "sources": {
+        "LA394": {
+          "blob": "5ccd17d9a5a9d82d008cd6a9624de25a7111d074",
+          "lf_sha256": "e90d893f3ceb3932c6db1c24ffd136950c13123e338383ffb790eaed95a2dc99"
+        },
+        "SOL347": null,
+        "facade393": null,
+        "main": null
+      }
+    },
+    {
+      "path": "godot/tests/test_workbench_liquid_edges.gd",
+      "protected": false,
+      "sources": {
+        "LA394": {
+          "blob": "2468cae5f79068350d06a01f854b940f4ddd1767",
+          "lf_sha256": "d8fde865d99ee638b36d5fed03632fbee8bfc6ef94c9247f0535b11c61e53325"
+        },
+        "SOL347": null,
+        "facade393": null,
+        "main": null
+      }
+    },
+    {
+      "path": "godot/tests/test_workbench_live_liquid_edit.gd",
+      "protected": false,
+      "sources": {
+        "LA394": {
+          "blob": "b294c714737a2ac629099757f297338689e61acc",
+          "lf_sha256": "111c0a21c90ade403b0dfae9c1e36b563e779f96d052e85e6d59fe2d100c7b1a"
+        },
+        "SOL347": null,
+        "facade393": null,
+        "main": null
+      }
+    },
+    {
+      "path": "godot/tests/test_workbench_physics_play.gd",
+      "protected": false,
+      "sources": {
+        "LA394": {
+          "blob": "3d609e8c54178d4b4eb346d98f7bed7d61036907",
+          "lf_sha256": "423f6a62e63a80decdfdcfc8e208261c71c7f750324a5329d94471ae755d512e"
+        },
+        "SOL347": null,
+        "facade393": null,
+        "main": null
+      }
+    },
+    {
+      "path": "godot/tests/test_workbench_pilot_ui.gd",
+      "protected": false,
+      "sources": {
+        "LA394": {
+          "blob": "a0f339d09574be643e87496f3ac5c61abf0d65e4",
+          "lf_sha256": "ec35b774e9287c322c4c2ef98710f6e209b58a87c782e9ed7c3ed64bb466d1a5"
+        },
+        "SOL347": null,
+        "facade393": null,
+        "main": null
+      }
+    },
+    {
+      "path": "godot/tests/test_workbench_retained_pressure.gd",
+      "protected": false,
+      "sources": {
+        "LA394": {
+          "blob": "5368b8f663bcb2159621363e51ce13a8a51efd2a",
+          "lf_sha256": "62960d9275516da3da10ef7e2e31d5412495faae2b81f812c8cdf1754625d31c"
+        },
+        "SOL347": null,
+        "facade393": null,
+        "main": null
+      }
+    },
+    {
+      "path": "native/bench/lcb201_pressure_idle_cost.cpp",
+      "protected": false,
+      "sources": {
+        "LA394": {
+          "blob": "d251777990a137d42264275e7eb25a6ab6760af7",
+          "lf_sha256": "872c65fdc684a01ace9b55bfb6e92181070c21b34503f4460e4d8f8cf0297e6d"
+        },
+        "SOL347": null,
+        "facade393": null,
+        "main": {
+          "blob": "d251777990a137d42264275e7eb25a6ab6760af7",
+          "lf_sha256": "872c65fdc684a01ace9b55bfb6e92181070c21b34503f4460e4d8f8cf0297e6d"
+        }
+      }
+    },
+    {
+      "path": "native/include/cybersand/conservative_displacement.hpp",
+      "protected": false,
+      "sources": {
+        "LA394": null,
+        "SOL347": {
+          "blob": "7b7343f3f4f8e278a360db3dafa6ac2532b944c8",
+          "lf_sha256": "79b94c394ed3ed7fb7f114a1808bb35182f77d8320dd16470a0de19dbf7ba0b3"
+        },
+        "facade393": {
+          "blob": "7b7343f3f4f8e278a360db3dafa6ac2532b944c8",
+          "lf_sha256": "79b94c394ed3ed7fb7f114a1808bb35182f77d8320dd16470a0de19dbf7ba0b3"
+        },
+        "main": null
+      }
+    },
+    {
+      "path": "native/include/cybersand/granular_contact_response.hpp",
+      "protected": false,
+      "sources": {
+        "LA394": {
+          "blob": "88e6565a137c84cb7a7a30162f686b74c09f4010",
+          "lf_sha256": "32877bbd6fc7eb85feabab5452250f4a318388cd7b5e7a64b93576123c7caedb"
+        },
+        "SOL347": null,
+        "facade393": null,
+        "main": null
+      }
+    },
+    {
+      "path": "native/include/cybersand/interaction_rules.hpp",
+      "protected": true,
+      "sources": {
+        "LA394": {
+          "blob": "b70fc9dc2599f648e5374f06e4cc0ae9cb868d79",
+          "lf_sha256": "aaffab99ddc7413f82a77de69b9d97aea37bd8cf46211b867ed303a6776448a5"
+        },
+        "SOL347": {
+          "blob": "b70fc9dc2599f648e5374f06e4cc0ae9cb868d79",
+          "lf_sha256": "aaffab99ddc7413f82a77de69b9d97aea37bd8cf46211b867ed303a6776448a5"
+        },
+        "facade393": {
+          "blob": "b70fc9dc2599f648e5374f06e4cc0ae9cb868d79",
+          "lf_sha256": "aaffab99ddc7413f82a77de69b9d97aea37bd8cf46211b867ed303a6776448a5"
+        },
+        "main": {
+          "blob": "b70fc9dc2599f648e5374f06e4cc0ae9cb868d79",
+          "lf_sha256": "aaffab99ddc7413f82a77de69b9d97aea37bd8cf46211b867ed303a6776448a5"
+        }
+      }
+    },
+    {
+      "path": "native/include/cybersand/liquid_policy_catalogue.hpp",
+      "protected": true,
+      "sources": {
+        "LA394": {
+          "blob": "c7b68513b14335bf33ffcbe96ed77118a55529d0",
+          "lf_sha256": "ec9153f5cf921d2834116831908e9feb16148695aa433a21b0e62a0981072303"
+        },
+        "SOL347": {
+          "blob": "c7b68513b14335bf33ffcbe96ed77118a55529d0",
+          "lf_sha256": "ec9153f5cf921d2834116831908e9feb16148695aa433a21b0e62a0981072303"
+        },
+        "facade393": {
+          "blob": "c7b68513b14335bf33ffcbe96ed77118a55529d0",
+          "lf_sha256": "ec9153f5cf921d2834116831908e9feb16148695aa433a21b0e62a0981072303"
+        },
+        "main": {
+          "blob": "c7b68513b14335bf33ffcbe96ed77118a55529d0",
+          "lf_sha256": "ec9153f5cf921d2834116831908e9feb16148695aa433a21b0e62a0981072303"
+        }
+      }
+    },
+    {
+      "path": "native/include/cybersand/liquid_solver_policy.hpp",
+      "protected": true,
+      "sources": {
+        "LA394": {
+          "blob": "052b6ea6ba7c18ca5997c310abb1951f6b56cd77",
+          "lf_sha256": "c1f2e6b19ad57313eb1c5dd1a4ad56501140d4574f15b26463b4fb513a53827e"
+        },
+        "SOL347": {
+          "blob": "052b6ea6ba7c18ca5997c310abb1951f6b56cd77",
+          "lf_sha256": "c1f2e6b19ad57313eb1c5dd1a4ad56501140d4574f15b26463b4fb513a53827e"
+        },
+        "facade393": {
+          "blob": "052b6ea6ba7c18ca5997c310abb1951f6b56cd77",
+          "lf_sha256": "c1f2e6b19ad57313eb1c5dd1a4ad56501140d4574f15b26463b4fb513a53827e"
+        },
+        "main": {
+          "blob": "052b6ea6ba7c18ca5997c310abb1951f6b56cd77",
+          "lf_sha256": "c1f2e6b19ad57313eb1c5dd1a4ad56501140d4574f15b26463b4fb513a53827e"
+        }
+      }
+    },
+    {
+      "path": "native/include/cybersand/material.hpp",
+      "protected": true,
+      "sources": {
+        "LA394": {
+          "blob": "dcf05895da3015a2e999e3d1cbbae0fdc7fe32b3",
+          "lf_sha256": "3e40f970e3205853a43643b4163041935ccd64d8a018d35a7473c3f95a1d0375"
+        },
+        "SOL347": {
+          "blob": "dcf05895da3015a2e999e3d1cbbae0fdc7fe32b3",
+          "lf_sha256": "3e40f970e3205853a43643b4163041935ccd64d8a018d35a7473c3f95a1d0375"
+        },
+        "facade393": {
+          "blob": "dcf05895da3015a2e999e3d1cbbae0fdc7fe32b3",
+          "lf_sha256": "3e40f970e3205853a43643b4163041935ccd64d8a018d35a7473c3f95a1d0375"
+        },
+        "main": {
+          "blob": "dcf05895da3015a2e999e3d1cbbae0fdc7fe32b3",
+          "lf_sha256": "3e40f970e3205853a43643b4163041935ccd64d8a018d35a7473c3f95a1d0375"
+        }
+      }
+    },
+    {
+      "path": "native/include/cybersand/material_appearance.hpp",
+      "protected": true,
+      "sources": {
+        "LA394": {
+          "blob": "91b74415ffafbf667b3a4beeabcf0ec28ff51c5b",
+          "lf_sha256": "512ae47aeb6e4d3d88d9e5388c6954ae1150cc1ebdfd5bef01483984da9fb0a0"
+        },
+        "SOL347": {
+          "blob": "91b74415ffafbf667b3a4beeabcf0ec28ff51c5b",
+          "lf_sha256": "512ae47aeb6e4d3d88d9e5388c6954ae1150cc1ebdfd5bef01483984da9fb0a0"
+        },
+        "facade393": {
+          "blob": "91b74415ffafbf667b3a4beeabcf0ec28ff51c5b",
+          "lf_sha256": "512ae47aeb6e4d3d88d9e5388c6954ae1150cc1ebdfd5bef01483984da9fb0a0"
+        },
+        "main": {
+          "blob": "91b74415ffafbf667b3a4beeabcf0ec28ff51c5b",
+          "lf_sha256": "512ae47aeb6e4d3d88d9e5388c6954ae1150cc1ebdfd5bef01483984da9fb0a0"
+        }
+      }
+    },
+    {
+      "path": "native/include/cybersand/material_rules.hpp",
+      "protected": true,
+      "sources": {
+        "LA394": {
+          "blob": "7ddd89aea49c9f22c3afedb329ab5b6efde0650b",
+          "lf_sha256": "175b44abd8585b909cb1a85f31b0ba810cf2f7050898bf8b6006a8cc17577362"
+        },
+        "SOL347": {
+          "blob": "7ddd89aea49c9f22c3afedb329ab5b6efde0650b",
+          "lf_sha256": "175b44abd8585b909cb1a85f31b0ba810cf2f7050898bf8b6006a8cc17577362"
+        },
+        "facade393": {
+          "blob": "7ddd89aea49c9f22c3afedb329ab5b6efde0650b",
+          "lf_sha256": "175b44abd8585b909cb1a85f31b0ba810cf2f7050898bf8b6006a8cc17577362"
+        },
+        "main": {
+          "blob": "7ddd89aea49c9f22c3afedb329ab5b6efde0650b",
+          "lf_sha256": "175b44abd8585b909cb1a85f31b0ba810cf2f7050898bf8b6006a8cc17577362"
+        }
+      }
+    },
+    {
+      "path": "native/include/cybersand/precision_storage.hpp",
+      "protected": true,
+      "sources": {
+        "LA394": {
+          "blob": "92788b111182b977ba7a781f367732560fefb8fc",
+          "lf_sha256": "7b7bbdfa6ac5618665b22cf619bbba64c03caeea997a24c94ebdff9902dd4266"
+        },
+        "SOL347": {
+          "blob": "92788b111182b977ba7a781f367732560fefb8fc",
+          "lf_sha256": "7b7bbdfa6ac5618665b22cf619bbba64c03caeea997a24c94ebdff9902dd4266"
+        },
+        "facade393": {
+          "blob": "92788b111182b977ba7a781f367732560fefb8fc",
+          "lf_sha256": "7b7bbdfa6ac5618665b22cf619bbba64c03caeea997a24c94ebdff9902dd4266"
+        },
+        "main": {
+          "blob": "92788b111182b977ba7a781f367732560fefb8fc",
+          "lf_sha256": "7b7bbdfa6ac5618665b22cf619bbba64c03caeea997a24c94ebdff9902dd4266"
+        }
+      }
+    },
+    {
+      "path": "native/include/cybersand/prepared_setup_identity.hpp",
+      "protected": false,
+      "sources": {
+        "LA394": {
+          "blob": "0d6b884f4690e1b3e54da099d32edfb835908699",
+          "lf_sha256": "c923cf352014e143abca6ce8837e536edf3b9d69ea444a6cef805ddc8ea034ee"
+        },
+        "SOL347": {
+          "blob": "b781b76fd74b3a40bc3a46bfa6485f43f61ee01c",
+          "lf_sha256": "febd9208b89ef3d35cfc12dae2c6be9a511e30a9c2c9fae7180f8621611c98ae"
+        },
+        "facade393": {
+          "blob": "b781b76fd74b3a40bc3a46bfa6485f43f61ee01c",
+          "lf_sha256": "febd9208b89ef3d35cfc12dae2c6be9a511e30a9c2c9fae7180f8621611c98ae"
+        },
+        "main": {
+          "blob": "b781b76fd74b3a40bc3a46bfa6485f43f61ee01c",
+          "lf_sha256": "febd9208b89ef3d35cfc12dae2c6be9a511e30a9c2c9fae7180f8621611c98ae"
+        }
+      }
+    },
+    {
+      "path": "native/include/cybersand/prepared_world.hpp",
+      "protected": false,
+      "sources": {
+        "LA394": {
+          "blob": "f4217521140d4a799d293d81d84ca435524ccc7a",
+          "lf_sha256": "abd765988754bbc754e0f16fdc2d52c9055a0149b282995837cfbe9f2a166b4a"
+        },
+        "SOL347": {
+          "blob": "b0f1dc8dbcd0d002877a92765d7636852021dd87",
+          "lf_sha256": "e2c6e7c1f579355463aeee0c4d0f4f6f6bddc25cbdc615cb61aeb3af7e6a0985"
+        },
+        "facade393": {
+          "blob": "b0f1dc8dbcd0d002877a92765d7636852021dd87",
+          "lf_sha256": "e2c6e7c1f579355463aeee0c4d0f4f6f6bddc25cbdc615cb61aeb3af7e6a0985"
+        },
+        "main": {
+          "blob": "b0f1dc8dbcd0d002877a92765d7636852021dd87",
+          "lf_sha256": "e2c6e7c1f579355463aeee0c4d0f4f6f6bddc25cbdc615cb61aeb3af7e6a0985"
+        }
+      }
+    },
+    {
+      "path": "native/include/cybersand/pressure_optimization.hpp",
+      "protected": false,
+      "sources": {
+        "LA394": {
+          "blob": "570b42aa34bf2161120f2afc53c3487ff7a89942",
+          "lf_sha256": "89186e3b79b9ab0c87ae7e0b9c9c0210358774980e32b2d5e8c38c622eb62092"
+        },
+        "SOL347": {
+          "blob": "570b42aa34bf2161120f2afc53c3487ff7a89942",
+          "lf_sha256": "89186e3b79b9ab0c87ae7e0b9c9c0210358774980e32b2d5e8c38c622eb62092"
+        },
+        "facade393": {
+          "blob": "570b42aa34bf2161120f2afc53c3487ff7a89942",
+          "lf_sha256": "89186e3b79b9ab0c87ae7e0b9c9c0210358774980e32b2d5e8c38c622eb62092"
+        },
+        "main": {
+          "blob": "3fffc9cbcbd46f8e0b3376ed59a6ee4e48e8a27a",
+          "lf_sha256": "4ecc1609b07fd4ecbd50c752e11d8722c3353e3e6bbc17097c7a59967d9b6d33"
+        }
+      }
+    },
+    {
+      "path": "native/include/cybersand/pressure_setup_capacity.hpp",
+      "protected": false,
+      "sources": {
+        "LA394": {
+          "blob": "0d7e425728de785aaea9a196108f4833d39dacad",
+          "lf_sha256": "f472d7e0a766f068fbbe26a3026a88aa166135283f3a2b975c37cbf85deb69f1"
+        },
+        "SOL347": {
+          "blob": "6a24a3dbc6d8e5f9d2c75ca0dd55abfd2f82b1fb",
+          "lf_sha256": "e6ce75ad3c2f89368be7b7b936d648196d3004d597bf7674301da03551e02a72"
+        },
+        "facade393": {
+          "blob": "6a24a3dbc6d8e5f9d2c75ca0dd55abfd2f82b1fb",
+          "lf_sha256": "e6ce75ad3c2f89368be7b7b936d648196d3004d597bf7674301da03551e02a72"
+        },
+        "main": {
+          "blob": "6a24a3dbc6d8e5f9d2c75ca0dd55abfd2f82b1fb",
+          "lf_sha256": "e6ce75ad3c2f89368be7b7b936d648196d3004d597bf7674301da03551e02a72"
+        }
+      }
+    },
+    {
+      "path": "native/include/cybersand/quantity_ledger.hpp",
+      "protected": true,
+      "sources": {
+        "LA394": {
+          "blob": "2e211f9a2e59e594cc1a6f1c63b2d34a02118c3a",
+          "lf_sha256": "4345032e718b601a33ac3ffb69a456cd91bcf05ee3ab503650dcb7c06a59c6ad"
+        },
+        "SOL347": {
+          "blob": "2e211f9a2e59e594cc1a6f1c63b2d34a02118c3a",
+          "lf_sha256": "4345032e718b601a33ac3ffb69a456cd91bcf05ee3ab503650dcb7c06a59c6ad"
+        },
+        "facade393": {
+          "blob": "2e211f9a2e59e594cc1a6f1c63b2d34a02118c3a",
+          "lf_sha256": "4345032e718b601a33ac3ffb69a456cd91bcf05ee3ab503650dcb7c06a59c6ad"
+        },
+        "main": {
+          "blob": "2e211f9a2e59e594cc1a6f1c63b2d34a02118c3a",
+          "lf_sha256": "4345032e718b601a33ac3ffb69a456cd91bcf05ee3ab503650dcb7c06a59c6ad"
+        }
+      }
+    },
+    {
+      "path": "native/include/cybersand/solid_contact_geometry.hpp",
+      "protected": false,
+      "sources": {
+        "LA394": null,
+        "SOL347": {
+          "blob": "84c67f31ddaa86cad2a176992337ba64826ee78d",
+          "lf_sha256": "53f8852cfe658fa37bb419ef4380e2c2bb4ebdf66af02e77e952813664a44c54"
+        },
+        "facade393": {
+          "blob": "84c67f31ddaa86cad2a176992337ba64826ee78d",
+          "lf_sha256": "53f8852cfe658fa37bb419ef4380e2c2bb4ebdf66af02e77e952813664a44c54"
+        },
+        "main": null
+      }
+    },
+    {
+      "path": "native/include/cybersand/solid_detachment.hpp",
+      "protected": false,
+      "sources": {
+        "LA394": null,
+        "SOL347": {
+          "blob": "617004b802681de49ec70ed4d641f9ec0f2f046a",
+          "lf_sha256": "887e78d0dca8414c4eef8443ba5ebbc78cf5a62e65db71fc85e46fd9f53a533d"
+        },
+        "facade393": {
+          "blob": "617004b802681de49ec70ed4d641f9ec0f2f046a",
+          "lf_sha256": "887e78d0dca8414c4eef8443ba5ebbc78cf5a62e65db71fc85e46fd9f53a533d"
+        },
+        "main": null
+      }
+    },
+    {
+      "path": "native/include/cybersand/transport_policy.hpp",
+      "protected": true,
+      "sources": {
+        "LA394": {
+          "blob": "9998aa1c327bc58b98f64e24813a8dc51aa73674",
+          "lf_sha256": "5943ae6a9479813768d1a62f54895e468288fc19ccb9c2f4b29f4a13aa41dd29"
+        },
+        "SOL347": {
+          "blob": "9998aa1c327bc58b98f64e24813a8dc51aa73674",
+          "lf_sha256": "5943ae6a9479813768d1a62f54895e468288fc19ccb9c2f4b29f4a13aa41dd29"
+        },
+        "facade393": {
+          "blob": "9998aa1c327bc58b98f64e24813a8dc51aa73674",
+          "lf_sha256": "5943ae6a9479813768d1a62f54895e468288fc19ccb9c2f4b29f4a13aa41dd29"
+        },
+        "main": {
+          "blob": "9998aa1c327bc58b98f64e24813a8dc51aa73674",
+          "lf_sha256": "5943ae6a9479813768d1a62f54895e468288fc19ccb9c2f4b29f4a13aa41dd29"
+        }
+      }
+    },
+    {
+      "path": "native/include/cybersand/water_experiment_policy.hpp",
+      "protected": true,
+      "sources": {
+        "LA394": {
+          "blob": "009664f99889797242522b3a76240ebde8867316",
+          "lf_sha256": "60b6ef5e611ba39eb0d6220115eb2f0662bc58e02b56c0966a239e30ad57dfaf"
+        },
+        "SOL347": {
+          "blob": "009664f99889797242522b3a76240ebde8867316",
+          "lf_sha256": "60b6ef5e611ba39eb0d6220115eb2f0662bc58e02b56c0966a239e30ad57dfaf"
+        },
+        "facade393": {
+          "blob": "009664f99889797242522b3a76240ebde8867316",
+          "lf_sha256": "60b6ef5e611ba39eb0d6220115eb2f0662bc58e02b56c0966a239e30ad57dfaf"
+        },
+        "main": {
+          "blob": "009664f99889797242522b3a76240ebde8867316",
+          "lf_sha256": "60b6ef5e611ba39eb0d6220115eb2f0662bc58e02b56c0966a239e30ad57dfaf"
+        }
+      }
+    },
+    {
+      "path": "native/include/cybersand/water_normalization.hpp",
+      "protected": false,
+      "sources": {
+        "LA394": {
+          "blob": "f295e74d7fcc5b442d68530f5b3cd99a14dac5c5",
+          "lf_sha256": "8baef55ed38d3787c10bc1b5ebf79f383438abf1a24b0618b144310155f77c0d"
+        },
+        "SOL347": {
+          "blob": "eac4d477f62d2271cf6e793537b1dbf7edd8fa63",
+          "lf_sha256": "2f9a658621443f817dc6674690f58c213ff81a6f134f68b606d641852f05df05"
+        },
+        "facade393": {
+          "blob": "eac4d477f62d2271cf6e793537b1dbf7edd8fa63",
+          "lf_sha256": "2f9a658621443f817dc6674690f58c213ff81a6f134f68b606d641852f05df05"
+        },
+        "main": {
+          "blob": "eac4d477f62d2271cf6e793537b1dbf7edd8fa63",
+          "lf_sha256": "2f9a658621443f817dc6674690f58c213ff81a6f134f68b606d641852f05df05"
+        }
+      }
+    },
+    {
+      "path": "native/include/cybersand/world.hpp",
+      "protected": false,
+      "sources": {
+        "LA394": {
+          "blob": "bb2f6e33dd1ad8e4a2b2aec7b34ccfb8229b6cb3",
+          "lf_sha256": "d860bc1868bb248714d3a210a30ce7073e31d5c44d78b8a4f626ca3e127a2d5d"
+        },
+        "SOL347": {
+          "blob": "f584b7b596db285b98f97e778e4abd03b8cc99b4",
+          "lf_sha256": "a9aa6e51cd8c432526376b49ae15e02e4a7838aa296287bf3db6f1b10de99d31"
+        },
+        "facade393": {
+          "blob": "f584b7b596db285b98f97e778e4abd03b8cc99b4",
+          "lf_sha256": "a9aa6e51cd8c432526376b49ae15e02e4a7838aa296287bf3db6f1b10de99d31"
+        },
+        "main": {
+          "blob": "65324e291088452066647a199fa5665254045996",
+          "lf_sha256": "c2299260851d003471977f9175b5f452c9badb277d07e056db148329faec55e9"
+        }
+      }
+    },
+    {
+      "path": "native/src/material_rules.cpp",
+      "protected": true,
+      "sources": {
+        "LA394": {
+          "blob": "23483fc8e70b7902ad9fe9416716f371df2aa013",
+          "lf_sha256": "8fd1509bfcef162c5cb6028e9af38c563ad651822b9fcfcc2e79a569d185afa3"
+        },
+        "SOL347": {
+          "blob": "23483fc8e70b7902ad9fe9416716f371df2aa013",
+          "lf_sha256": "8fd1509bfcef162c5cb6028e9af38c563ad651822b9fcfcc2e79a569d185afa3"
+        },
+        "facade393": {
+          "blob": "23483fc8e70b7902ad9fe9416716f371df2aa013",
+          "lf_sha256": "8fd1509bfcef162c5cb6028e9af38c563ad651822b9fcfcc2e79a569d185afa3"
+        },
+        "main": {
+          "blob": "23483fc8e70b7902ad9fe9416716f371df2aa013",
+          "lf_sha256": "8fd1509bfcef162c5cb6028e9af38c563ad651822b9fcfcc2e79a569d185afa3"
+        }
+      }
+    },
+    {
+      "path": "native/src/world.cpp",
+      "protected": true,
+      "sources": {
+        "LA394": {
+          "blob": "aed1bb10e480493397f5c5eac8ba2336f495b9f9",
+          "lf_sha256": "a47955f79ed5fbc8bc0ca8e2892ed4eb0ddbd728b841bc08ccee14a4c239e4a7"
+        },
+        "SOL347": {
+          "blob": "d55f59ad6ae1d88c7e0aa7f3fb5ebe787b0b9eca",
+          "lf_sha256": "91cecf308d01ef214f491f3dc1f353f10c9db17a55162b983fc4ecf80e6363e6"
+        },
+        "facade393": {
+          "blob": "d55f59ad6ae1d88c7e0aa7f3fb5ebe787b0b9eca",
+          "lf_sha256": "91cecf308d01ef214f491f3dc1f353f10c9db17a55162b983fc4ecf80e6363e6"
+        },
+        "main": {
+          "blob": "a6afd8cad4264ac2eca0362d14711158e3606760",
+          "lf_sha256": "b7a129f44eccc7c33dbd2f0d84802ab096140dcaa9b5b3a83d45dd3bf85fbad1"
+        }
+      }
+    },
+    {
+      "path": "native/src/world_conservative_displacement.inc",
+      "protected": false,
+      "sources": {
+        "LA394": null,
+        "SOL347": {
+          "blob": "97ecb071e7134b4bd9972fc6ae375ee9cc0cbb27",
+          "lf_sha256": "c9dd8dc0da262dc0a20f2c193c4714fa3de4e3ab0ebe66731550dac8563bf6d9"
+        },
+        "facade393": {
+          "blob": "97ecb071e7134b4bd9972fc6ae375ee9cc0cbb27",
+          "lf_sha256": "c9dd8dc0da262dc0a20f2c193c4714fa3de4e3ab0ebe66731550dac8563bf6d9"
+        },
+        "main": null
+      }
+    },
+    {
+      "path": "native/src/world_inertial.inc",
+      "protected": true,
+      "sources": {
+        "LA394": {
+          "blob": "b070dda02477d2eb461d8d2082ee063e04710093",
+          "lf_sha256": "8a5d3680e96ca47a3f496be5a8b953084d2c6d2e0bd723c3214b87bdbc3580b5"
+        },
+        "SOL347": {
+          "blob": "efd7602fbb4b8dde0e056474b141ce17cd73dcd0",
+          "lf_sha256": "f9e891dafa9c61e76460b5b3a720e3e522e7b63c381e81539e5e508b2719a0dd"
+        },
+        "facade393": {
+          "blob": "efd7602fbb4b8dde0e056474b141ce17cd73dcd0",
+          "lf_sha256": "f9e891dafa9c61e76460b5b3a720e3e522e7b63c381e81539e5e508b2719a0dd"
+        },
+        "main": {
+          "blob": "efd7602fbb4b8dde0e056474b141ce17cd73dcd0",
+          "lf_sha256": "f9e891dafa9c61e76460b5b3a720e3e522e7b63c381e81539e5e508b2719a0dd"
+        }
+      }
+    },
+    {
+      "path": "native/src/world_pressure.inc",
+      "protected": true,
+      "sources": {
+        "LA394": {
+          "blob": "f8a33495e8d8c2bb5fcda48fce0d8c1919c611b3",
+          "lf_sha256": "a1dd5c486dad16f114cce3b38d292407edb91e5bbaf03d0193dcc4ecd7338e62"
+        },
+        "SOL347": {
+          "blob": "d42a2403dac5705540bceeaf96a2b0dd2b3bc3b4",
+          "lf_sha256": "0e6c8b916d9a457fc09d63f496b9acb5b8b61f55c3c09311d8bcf90bbf92b947"
+        },
+        "facade393": {
+          "blob": "d42a2403dac5705540bceeaf96a2b0dd2b3bc3b4",
+          "lf_sha256": "0e6c8b916d9a457fc09d63f496b9acb5b8b61f55c3c09311d8bcf90bbf92b947"
+        },
+        "main": {
+          "blob": "a2b6cdff0ddda548906fd034ebafb62b23742f60",
+          "lf_sha256": "d766e808e88287f3f9ef1b833d790106e56eb512654a350716c8573beb30a874"
+        }
+      }
+    },
+    {
+      "path": "native/src/world_pressure_cache.inc",
+      "protected": false,
+      "sources": {
+        "LA394": {
+          "blob": "54a4033541272e28afc95585b7c55e45a497cd56",
+          "lf_sha256": "e1c7d24a4aff4827ce1d55de3120523b63428c38b0ac350d6aa94132389113fc"
+        },
+        "SOL347": {
+          "blob": "54a4033541272e28afc95585b7c55e45a497cd56",
+          "lf_sha256": "e1c7d24a4aff4827ce1d55de3120523b63428c38b0ac350d6aa94132389113fc"
+        },
+        "facade393": {
+          "blob": "54a4033541272e28afc95585b7c55e45a497cd56",
+          "lf_sha256": "e1c7d24a4aff4827ce1d55de3120523b63428c38b0ac350d6aa94132389113fc"
+        },
+        "main": {
+          "blob": "98de8a5621f5968cf3016e7f10d500da9bef9c15",
+          "lf_sha256": "9a90d1cae841fbb151658c4ed130d3f7b7fdb2bc883d2d2bfec54715476511b7"
+        }
+      }
+    },
+    {
+      "path": "native/src/world_pressure_cache_state.inc",
+      "protected": false,
+      "sources": {
+        "LA394": {
+          "blob": "5a46e37407a4e731585a9098af7df48baae315ce",
+          "lf_sha256": "91da78af36e78e07f1cc3de2c9899b0ad98c171df9b418a6170f6372816279e0"
+        },
+        "SOL347": {
+          "blob": "5a46e37407a4e731585a9098af7df48baae315ce",
+          "lf_sha256": "91da78af36e78e07f1cc3de2c9899b0ad98c171df9b418a6170f6372816279e0"
+        },
+        "facade393": {
+          "blob": "5a46e37407a4e731585a9098af7df48baae315ce",
+          "lf_sha256": "91da78af36e78e07f1cc3de2c9899b0ad98c171df9b418a6170f6372816279e0"
+        },
+        "main": {
+          "blob": "8341cac9b958f3e8ea0633a0311788ce231d24b3",
+          "lf_sha256": "7574911cff039d2e8f471c0e8d4a29310a397d492254d679ecebe5fa0537169a"
+        }
+      }
+    },
+    {
+      "path": "native/src/world_pressure_state.inc",
+      "protected": false,
+      "sources": {
+        "LA394": {
+          "blob": "c97a96eab6740d8c7875a5d21980f7016a26d18c",
+          "lf_sha256": "5b76ffa88753b242d9caa47810234f916c8740433d3d2f132727ae5346f3238d"
+        },
+        "SOL347": {
+          "blob": "b4c0e77e3f9e46aec92f979b4fba6067eb237282",
+          "lf_sha256": "4a70898ee23d1fbcb07a7771498156049113816f8699322001d847087336b50c"
+        },
+        "facade393": {
+          "blob": "b4c0e77e3f9e46aec92f979b4fba6067eb237282",
+          "lf_sha256": "4a70898ee23d1fbcb07a7771498156049113816f8699322001d847087336b50c"
+        },
+        "main": {
+          "blob": "b4c0e77e3f9e46aec92f979b4fba6067eb237282",
+          "lf_sha256": "4a70898ee23d1fbcb07a7771498156049113816f8699322001d847087336b50c"
+        }
+      }
+    },
+    {
+      "path": "native/src/world_quantity.inc",
+      "protected": true,
+      "sources": {
+        "LA394": {
+          "blob": "f44dbdc0ea4c04cd3d7e19f460e86bb095bcc2f9",
+          "lf_sha256": "627936a33c9ed58b6841f04466bf83aefe83b451ceb0da22baa19269ed5ef074"
+        },
+        "SOL347": {
+          "blob": "f44dbdc0ea4c04cd3d7e19f460e86bb095bcc2f9",
+          "lf_sha256": "627936a33c9ed58b6841f04466bf83aefe83b451ceb0da22baa19269ed5ef074"
+        },
+        "facade393": {
+          "blob": "f44dbdc0ea4c04cd3d7e19f460e86bb095bcc2f9",
+          "lf_sha256": "627936a33c9ed58b6841f04466bf83aefe83b451ceb0da22baa19269ed5ef074"
+        },
+        "main": {
+          "blob": "f44dbdc0ea4c04cd3d7e19f460e86bb095bcc2f9",
+          "lf_sha256": "627936a33c9ed58b6841f04466bf83aefe83b451ceb0da22baa19269ed5ef074"
+        }
+      }
+    },
+    {
+      "path": "native/src/world_solid_detachment.inc",
+      "protected": false,
+      "sources": {
+        "LA394": null,
+        "SOL347": {
+          "blob": "50beef3476a55aef757c4a1b4544f079c201b980",
+          "lf_sha256": "68499bf17ebb836c87fe45fa81262eef6bffa4cf3f3da33bf5fa774d93fc7c17"
+        },
+        "facade393": {
+          "blob": "50beef3476a55aef757c4a1b4544f079c201b980",
+          "lf_sha256": "68499bf17ebb836c87fe45fa81262eef6bffa4cf3f3da33bf5fa774d93fc7c17"
+        },
+        "main": null
+      }
+    },
+    {
+      "path": "native/tests/fixtures/material_liveness_campaign_v1.json",
+      "protected": false,
+      "sources": {
+        "LA394": {
+          "blob": "0da7d77887f55bdaacc2f1b344ff48bfc16c98c5",
+          "lf_sha256": "320bd76b5bc69d68fe7ed21324999f9f1b9272109da646138a2b31820f1f2b4b"
+        },
+        "SOL347": null,
+        "facade393": null,
+        "main": {
+          "blob": "0da7d77887f55bdaacc2f1b344ff48bfc16c98c5",
+          "lf_sha256": "320bd76b5bc69d68fe7ed21324999f9f1b9272109da646138a2b31820f1f2b4b"
+        }
+      }
+    },
+    {
+      "path": "native/tests/material_liveness_probe.cpp",
+      "protected": false,
+      "sources": {
+        "LA394": {
+          "blob": "5185801e469cfed975b901243a42f3a02a0e1ee4",
+          "lf_sha256": "26e421d2b9de3e4e6c0c6e7e74f503f3f26f7baf17b02c6d02712eb15dcc9bb9"
+        },
+        "SOL347": null,
+        "facade393": null,
+        "main": {
+          "blob": "5185801e469cfed975b901243a42f3a02a0e1ee4",
+          "lf_sha256": "26e421d2b9de3e4e6c0c6e7e74f503f3f26f7baf17b02c6d02712eb15dcc9bb9"
+        }
+      }
+    },
+    {
+      "path": "native/tests/test_conservative_displacement.cpp",
+      "protected": false,
+      "sources": {
+        "LA394": null,
+        "SOL347": {
+          "blob": "6dfbfdb63739fc84ebe0760eed1f89823defe46b",
+          "lf_sha256": "13a6273c022b2428cdc146cbabb5b228fea45d574e06a271e687749853b803c2"
+        },
+        "facade393": {
+          "blob": "6dfbfdb63739fc84ebe0760eed1f89823defe46b",
+          "lf_sha256": "13a6273c022b2428cdc146cbabb5b228fea45d574e06a271e687749853b803c2"
+        },
+        "main": null
+      }
+    },
+    {
+      "path": "native/tests/test_lcb_pressure.cpp",
+      "protected": false,
+      "sources": {
+        "LA394": {
+          "blob": "2872ab98a6ce13882cd5061efd3a81e9d3275a8f",
+          "lf_sha256": "d7866960e2304872ca06049a7f562bd6ba1a2d6d3c109bc4bc5811b00c23e07f"
+        },
+        "SOL347": {
+          "blob": "2872ab98a6ce13882cd5061efd3a81e9d3275a8f",
+          "lf_sha256": "d7866960e2304872ca06049a7f562bd6ba1a2d6d3c109bc4bc5811b00c23e07f"
+        },
+        "facade393": {
+          "blob": "2872ab98a6ce13882cd5061efd3a81e9d3275a8f",
+          "lf_sha256": "d7866960e2304872ca06049a7f562bd6ba1a2d6d3c109bc4bc5811b00c23e07f"
+        },
+        "main": {
+          "blob": "da96d90c82ffd0c183e7c8664fe616513ea82d6f",
+          "lf_sha256": "398483ccaced145c29b387c1fe7b9fe8afe4b794b64a74bc9d89c371b0bf508f"
+        }
+      }
+    },
+    {
+      "path": "native/tests/test_pressure_optimization.inc",
+      "protected": false,
+      "sources": {
+        "LA394": {
+          "blob": "9624c159a879d2d8dae0388c13858db1c7f3b741",
+          "lf_sha256": "d8d505b25f831e4cb1b049df57e45b59d7510acf575adc74179601e3edc4724d"
+        },
+        "SOL347": {
+          "blob": "9624c159a879d2d8dae0388c13858db1c7f3b741",
+          "lf_sha256": "d8d505b25f831e4cb1b049df57e45b59d7510acf575adc74179601e3edc4724d"
+        },
+        "facade393": {
+          "blob": "9624c159a879d2d8dae0388c13858db1c7f3b741",
+          "lf_sha256": "d8d505b25f831e4cb1b049df57e45b59d7510acf575adc74179601e3edc4724d"
+        },
+        "main": {
+          "blob": "222ec515c77dada3a40b40c3d309653b993be6d0",
+          "lf_sha256": "46a679707c8e89563c07978158f79e814420190ba76d4e9ed13c7020bdcd52a9"
+        }
+      }
+    },
+    {
+      "path": "native/tests/test_pressure_setup_capacity.cpp",
+      "protected": false,
+      "sources": {
+        "LA394": {
+          "blob": "24686944d8327254ef50439870dae12521d072b6",
+          "lf_sha256": "9df3963809e48936803f8460866f49e72af4324a22a3a1156aa1413b2d41ba7b"
+        },
+        "SOL347": {
+          "blob": "6446244520f8e75d54b251b9e068e89595667346",
+          "lf_sha256": "6cda4c5a317698b8bd49264e4329efd12c95d12ddb840dfe27bfa0ad7dcc47f8"
+        },
+        "facade393": {
+          "blob": "6446244520f8e75d54b251b9e068e89595667346",
+          "lf_sha256": "6cda4c5a317698b8bd49264e4329efd12c95d12ddb840dfe27bfa0ad7dcc47f8"
+        },
+        "main": {
+          "blob": "6446244520f8e75d54b251b9e068e89595667346",
+          "lf_sha256": "6cda4c5a317698b8bd49264e4329efd12c95d12ddb840dfe27bfa0ad7dcc47f8"
+        }
+      }
+    },
+    {
+      "path": "native/tests/test_pressure_wake_summaries.inc",
+      "protected": false,
+      "sources": {
+        "LA394": null,
+        "SOL347": null,
+        "facade393": null,
+        "main": {
+          "blob": "bee0da6ac82ace6240bc4032b05e01bb2e0831e5",
+          "lf_sha256": "ef6498b8db050c2838163ebfcc92f63824939f80fdd326464fcb38389134b69d"
+        }
+      }
+    },
+    {
+      "path": "native/tests/test_quantity_ledger.cpp",
+      "protected": false,
+      "sources": {
+        "LA394": {
+          "blob": "4c72a90e34ec411220786ae265bcb1b0a6494346",
+          "lf_sha256": "dab718b1a98c8b7e2ae2a34dcbe455f339718bc60408a43912c5c71e603123b6"
+        },
+        "SOL347": {
+          "blob": "a7864193d567352bcb22bd6a9b3425ee9bc31969",
+          "lf_sha256": "1255585ca80f2f359a2edb469f58b739d7cb86a6fa77b0828e666cd4f562473d"
+        },
+        "facade393": {
+          "blob": "a7864193d567352bcb22bd6a9b3425ee9bc31969",
+          "lf_sha256": "1255585ca80f2f359a2edb469f58b739d7cb86a6fa77b0828e666cd4f562473d"
+        },
+        "main": {
+          "blob": "a7864193d567352bcb22bd6a9b3425ee9bc31969",
+          "lf_sha256": "1255585ca80f2f359a2edb469f58b739d7cb86a6fa77b0828e666cd4f562473d"
+        }
+      }
+    },
+    {
+      "path": "native/tests/test_solid_contact_geometry.cpp",
+      "protected": false,
+      "sources": {
+        "LA394": null,
+        "SOL347": {
+          "blob": "40434897549aa4737b033c56ee37ba86422eb4f2",
+          "lf_sha256": "0b03d02a96f2483f6aa89b06ef400b33e4804cd486e9e10784b175db74b31591"
+        },
+        "facade393": {
+          "blob": "40434897549aa4737b033c56ee37ba86422eb4f2",
+          "lf_sha256": "0b03d02a96f2483f6aa89b06ef400b33e4804cd486e9e10784b175db74b31591"
+        },
+        "main": null
+      }
+    },
+    {
+      "path": "native/tests/test_solid_detachment.cpp",
+      "protected": false,
+      "sources": {
+        "LA394": null,
+        "SOL347": {
+          "blob": "cdc2058713eb01a059211e2d064e482dd3a878c2",
+          "lf_sha256": "de81f50fce651c2a7d1b47f7e9d093ceabe3f52261a0e24e1aadae2a6e75bb46"
+        },
+        "facade393": {
+          "blob": "cdc2058713eb01a059211e2d064e482dd3a878c2",
+          "lf_sha256": "de81f50fce651c2a7d1b47f7e9d093ceabe3f52261a0e24e1aadae2a6e75bb46"
+        },
+        "main": null
+      }
+    },
+    {
+      "path": "native/tests/test_workbench_arrivals.cpp",
+      "protected": false,
+      "sources": {
+        "LA394": {
+          "blob": "5f8c1865e5c757f981a662455cca6524d915e4c2",
+          "lf_sha256": "0a74a4b7fe53f631b05d77240ff200ab9b180a8b6e0d8bc46e677aea46d04842"
+        },
+        "SOL347": null,
+        "facade393": null,
+        "main": null
+      }
+    },
+    {
+      "path": "native/tests/test_workbench_pressure_heads.cpp",
+      "protected": false,
+      "sources": {
+        "LA394": {
+          "blob": "41d367babe203cd96b05dbc052fde349562ef7c5",
+          "lf_sha256": "1c692a92cafc7c45d027c2da063466629ea2b0f8f8b9b2cda238ffe8520a5289"
+        },
+        "SOL347": null,
+        "facade393": null,
+        "main": null
+      }
+    },
+    {
+      "path": "native/tests/test_world.cpp",
+      "protected": false,
+      "sources": {
+        "LA394": {
+          "blob": "8f963b3f32a20655192ecfc35c818ff6fc2df9e3",
+          "lf_sha256": "230fad9643e05926c3c0191446272e2f2d75e032e393b9318c6167f81fee27ab"
+        },
+        "SOL347": {
+          "blob": "8f963b3f32a20655192ecfc35c818ff6fc2df9e3",
+          "lf_sha256": "230fad9643e05926c3c0191446272e2f2d75e032e393b9318c6167f81fee27ab"
+        },
+        "facade393": {
+          "blob": "8f963b3f32a20655192ecfc35c818ff6fc2df9e3",
+          "lf_sha256": "230fad9643e05926c3c0191446272e2f2d75e032e393b9318c6167f81fee27ab"
+        },
+        "main": {
+          "blob": "82a54cb4764cbc2e63771c00bad2ee8e489cf90f",
+          "lf_sha256": "a9f71f02c5dc2c8bdb506f1b074a74efc178014c4362d0321aa6271cb4bb18d6"
+        }
+      }
+    },
+    {
+      "path": "tools/lcb/derive_capability_matrix.py",
+      "protected": true,
+      "sources": {
+        "LA394": {
+          "blob": "d38647630f1731c4fdd800d412f39c15007580b3",
+          "lf_sha256": "8ccea6c3bca94116e1714fd4a2ae0b3bbef046e604c4ffe734bca46c54b5d5ea"
+        },
+        "SOL347": {
+          "blob": "d38647630f1731c4fdd800d412f39c15007580b3",
+          "lf_sha256": "8ccea6c3bca94116e1714fd4a2ae0b3bbef046e604c4ffe734bca46c54b5d5ea"
+        },
+        "facade393": {
+          "blob": "d38647630f1731c4fdd800d412f39c15007580b3",
+          "lf_sha256": "8ccea6c3bca94116e1714fd4a2ae0b3bbef046e604c4ffe734bca46c54b5d5ea"
+        },
+        "main": {
+          "blob": "d38647630f1731c4fdd800d412f39c15007580b3",
+          "lf_sha256": "8ccea6c3bca94116e1714fd4a2ae0b3bbef046e604c4ffe734bca46c54b5d5ea"
+        }
+      }
+    },
+    {
+      "path": "tools/lcb/native_policy_artifacts.py",
+      "protected": true,
+      "sources": {
+        "LA394": {
+          "blob": "e1f84d81326f3238160024d1bc8a9a255d92013a",
+          "lf_sha256": "1eba32bb3e3e80a4d6cb62219287421abee454b32865cde183bd2d451523c230"
+        },
+        "SOL347": {
+          "blob": "e1f84d81326f3238160024d1bc8a9a255d92013a",
+          "lf_sha256": "1eba32bb3e3e80a4d6cb62219287421abee454b32865cde183bd2d451523c230"
+        },
+        "facade393": {
+          "blob": "e1f84d81326f3238160024d1bc8a9a255d92013a",
+          "lf_sha256": "1eba32bb3e3e80a4d6cb62219287421abee454b32865cde183bd2d451523c230"
+        },
+        "main": {
+          "blob": "e1f84d81326f3238160024d1bc8a9a255d92013a",
+          "lf_sha256": "1eba32bb3e3e80a4d6cb62219287421abee454b32865cde183bd2d451523c230"
+        }
+      }
+    },
+    {
+      "path": "tools/lcb/policy_contract.py",
+      "protected": true,
+      "sources": {
+        "LA394": {
+          "blob": "cd3ecffb3582731c5b32775ef72bf9a6cac75c9f",
+          "lf_sha256": "3b9d6634f884621a3506cea761af7500e484d513b0e5bb75e2a81361fe9a81b2"
+        },
+        "SOL347": {
+          "blob": "cd3ecffb3582731c5b32775ef72bf9a6cac75c9f",
+          "lf_sha256": "3b9d6634f884621a3506cea761af7500e484d513b0e5bb75e2a81361fe9a81b2"
+        },
+        "facade393": {
+          "blob": "cd3ecffb3582731c5b32775ef72bf9a6cac75c9f",
+          "lf_sha256": "3b9d6634f884621a3506cea761af7500e484d513b0e5bb75e2a81361fe9a81b2"
+        },
+        "main": {
+          "blob": "cd3ecffb3582731c5b32775ef72bf9a6cac75c9f",
+          "lf_sha256": "3b9d6634f884621a3506cea761af7500e484d513b0e5bb75e2a81361fe9a81b2"
+        }
+      }
+    },
+    {
+      "path": "tools/material_catalogue/compatibility.py",
+      "protected": false,
+      "sources": {
+        "LA394": {
+          "blob": "83d069eafec616607f9b3b477b89688fe303e4e0",
+          "lf_sha256": "02c7d3b1243556a810a8c01ac4a6f013910bcae1876b8955528deb2ad866ce2f"
+        },
+        "SOL347": {
+          "blob": "10da0afbe8190840c36ffe5d6d14ff4aa5eec2d0",
+          "lf_sha256": "32c6c4c289a91a1e19498b21bfbca9dcc2b58e1040489653942fd7160ec1bd5a"
+        },
+        "facade393": {
+          "blob": "10da0afbe8190840c36ffe5d6d14ff4aa5eec2d0",
+          "lf_sha256": "32c6c4c289a91a1e19498b21bfbca9dcc2b58e1040489653942fd7160ec1bd5a"
+        },
+        "main": {
+          "blob": "fbc8bcb39295829a979be0b2d3c0cc760e41a498",
+          "lf_sha256": "6d6a9fabb2728543adeae67312d6297aa8d9bcbe23f7727692452c6cc86d4f2a"
+        }
+      }
+    },
+    {
+      "path": "tools/material_catalogue/test_compatibility.py",
+      "protected": false,
+      "sources": {
+        "LA394": {
+          "blob": "ee9e0d7f5370fc439a4ff72a8c38f3e3ea09d57e",
+          "lf_sha256": "2392574819b89be795b9aae841486199c33e83ffa519b139d903323ff71480a4"
+        },
+        "SOL347": {
+          "blob": "80bbf15038c3465a7b7943e3f443e6956fe7ced8",
+          "lf_sha256": "be1aaed9c3fc366d4b3bc53b2cb59521539145e7427ce8fd8c14862c0981f195"
+        },
+        "facade393": {
+          "blob": "80bbf15038c3465a7b7943e3f443e6956fe7ced8",
+          "lf_sha256": "be1aaed9c3fc366d4b3bc53b2cb59521539145e7427ce8fd8c14862c0981f195"
+        },
+        "main": {
+          "blob": "ee9e0d7f5370fc439a4ff72a8c38f3e3ea09d57e",
+          "lf_sha256": "2392574819b89be795b9aae841486199c33e83ffa519b139d903323ff71480a4"
+        }
+      }
+    }
+  ],
+  "admissible_composition": false,
+  "reason": "Distinct protected World/pressure/inertial bytes and missing SOL ownership substrate; no combined source admission. #393 facade repair changes no protected consumer."
+}
