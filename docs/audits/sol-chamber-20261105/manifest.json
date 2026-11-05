@@ -172,8 +172,11 @@
     },
     {
       "path": "reference-trajectories.json",
-      "bytes": 14279717,
-      "sha256": "66939597ed86d926acba3bcb536a5fef8864894f429abbbafb73cbf7154d59bd"
+      "bytes": 8012009,
+      "sha256": "1311adc5f70246376182d448d36890219dba5b490866a890468ee5b5ed4df97d",
+      "previous_formatted_bytes": 14279717,
+      "previous_formatted_sha256": "66939597ed86d926acba3bcb536a5fef8864894f429abbbafb73cbf7154d59bd",
+      "representation": "Minified JSON derivative; parsed-value equality verified; previous formatted bytes retained at fb927761"
     }
   ],
   "local_raw_files": [
@@ -13825,5 +13828,5 @@
     "corrected_matrix_passed": 192,
     "total_attempted_episodes_including_interrupted": 227
   },
-  "assembly_tool_sha256": "f3973f0bef17358cb34d98a6c131ef01ab549a2e2db5002c8796b18a03c45c17"
+  "assembly_tool_sha256": "95ce38863c5257a5da9d8684d8e94d1af8bcdc512286283671b3b8ad8108c457"
 }

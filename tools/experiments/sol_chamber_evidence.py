@@ -10,7 +10,10 @@ import shutil
 ROOT=Path(__file__).resolve().parents[2]
 def sha(raw):return hashlib.sha256(raw).hexdigest()
 def load(path):return json.loads(path.read_text(encoding="utf-8-sig"))
-def write(path,value):path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes((json.dumps(value,indent=2)+"\n").encode())
+def write(path,value):
+    path.parent.mkdir(parents=True,exist_ok=True)
+    text=json.dumps(value,separators=(",",":")) if path.name=="reference-trajectories.json" else json.dumps(value,indent=2)
+    path.write_bytes((text+"\n").encode())
 
 def main():
     parser=argparse.ArgumentParser(__doc__);parser.add_argument("output",type=Path);args=parser.parse_args()
