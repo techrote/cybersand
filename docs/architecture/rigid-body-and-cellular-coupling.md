@@ -76,6 +76,23 @@ shared-host means do not qualify the original SOL CPU gate or universal60Hz. Ori
 eligibility, composition, physical clearance and general default promotion do
 not follow. No capacity/pass/gain changes or penetration correction are added.
 
+### Chamber workers and material memory
+
+**Current source-bound observations:** requested native worker counts of one or
+four match construction/configuration readback. The small240episode chamber
+matrix has one job and one observed participant per dispatch, including its
+requested four-worker runs. Those chamber runs do not establish actual four-way
+native participation. The separately qualified72episode distributed workload
+records four actual participants for its requested-four runs. The later shared-body
+node-trace workload observes two to four; these are different fixtures, not a
+universal scaling result or simultaneous utilization measurement.
+
+For the2048² distributed profile, the resident-cell estimate is53,167,104bytes
+and arrival-history storage is42,467,328bytes. Their95,634,432byte sum covers only
+those known components; it is not total material heap or process memory. Capacity,
+retained/refused work, observation cost and native pool participation stay explicit
+in the [full live evidence](../audits/2026-11-05-sol-active-normal-live.md).
+
 ### Bounded node and batch trace
 
 **Current dependent diagnostic source:** `solve_compound` accepts optional
