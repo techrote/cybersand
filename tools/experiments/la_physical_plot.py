@@ -22,7 +22,7 @@ def main():
           ("LA-SELECTIVE-LIVE-PASSIVE-GATED","Changed-state v2","#458454","--"),
           ("LA-SELECTIVE-SEPARATING-GUARD","Separating v3","#8a4694",":")]
     plt.rcParams.update({"font.size":10,"axes.spines.top":False,"axes.spines.right":False})
-    fig,axes=plt.subplots(1,3,figsize=(13,4.3))
+    fig,grid=plt.subplots(2,2,figsize=(11,7.5));axes=grid.flatten()
     for panel,case,title in [(0,"barrel-rest","Synchronous barrel support"),(1,"actual-step-delayed-support","Support after a real Rapier delay")]:
         for arm,label,color,style in arms:
             d=read(case,arm);steps=d["steps"];origin=d["authored"][0]["state"]["pose"][5]
@@ -39,10 +39,15 @@ def main():
     axes[2].axhline(-3,color="black",lw=1,ls="--",label="Externally reversed live velocity")
     axes[2].set(title="Stale response after velocity reversal",ylabel="Immediate applied vY (cells/s)")
     axes[2].grid(axis="y",alpha=.18)
+    for case,label,color in [("barrel-rest","Barrel","#245a81"),("needle-rest","Needle","#c76b18"),("scooper-rest","Scooper","#458454")]:
+        d=read(case,"LA-SELECTIVE");tail=d["steps"][-120:]
+        axes[3].plot([(s["step"]+1)/60 for s in tail],[sum(v*v for v in s["after_step"][0]["velocity"])**.5 for s in tail],label=label,color=color,lw=1)
+    axes[3].set(title="Residual speed in the terminal 120 steps",xlabel="Time (s)",ylabel="Baseline speed (cells/s)")
+    axes[3].grid(alpha=.18);axes[3].legend(fontsize=8)
     axes[0].legend(fontsize=9,loc="upper left");axes[2].legend(fontsize=8,loc="lower right")
-    fig.suptitle("LA-SELECTIVE: preventing stale acceleration must preserve support",fontsize=14)
-    fig.text(.5,.015,"Actual Windows / worker 1 / source98443ca2 / native budget20. v1/v2 rejected for support; v3 remains opt-in.\nShading: terminal120-step observation. These plots do not establish original SOL clearance or universal passivity.",ha="center",fontsize=9)
-    fig.tight_layout(rect=(0,.12,1,.91));args.output.parent.mkdir(parents=True,exist_ok=True)
+    fig.suptitle("Measured support, residual motion, and the stale-response guard",fontsize=14)
+    fig.text(.5,.015,"Actual Windows / worker 1 / source 98443ca2 / native budget 20. v1/v2 rejected for support; v3 remains opt-in.\nShading: terminal 120 steps. Bounded pose and final speed do not prove sustained equilibrium.\nThese plots do not establish original SOL clearance or universal passivity.",ha="center",fontsize=9)
+    fig.tight_layout(rect=(0,.1,1,.95));args.output.parent.mkdir(parents=True,exist_ok=True)
     fig.savefig(args.output,dpi=160)
     args.output.with_suffix(".inputs.json").write_text(json.dumps(dict(matplotlib=matplotlib.__version__,inputs=inputs,output_sha256=hashlib.sha256(args.output.read_bytes()).hexdigest()),indent=2)+"\n",encoding="utf-8")
 

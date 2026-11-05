@@ -88,6 +88,7 @@ def main():
     parser.add_argument("--sequential-platforms",action="store_true")
     parser.add_argument("--tests-only",action="store_true",help="Run import/safety/scoped fixtures without physical episodes")
     parser.add_argument("--shared-host-timings",action="store_true",help="Select separately registered009shared-host measurements")
+    parser.add_argument("--apparatus-oracles",action="store_true",help="Run the force-lifetime oracle and registered generic smoke")
     args=parser.parse_args()
     assert Path(args.run).name==args.run and args.run not in [".",".."]
     info=identity();output=ROOT/"build/la-physical"/args.run
@@ -128,6 +129,10 @@ def main():
             return row["clean"]
         if not run("import"):return rows
         if not run("passive-safety","test_la_passive_response"):return rows
+        if args.apparatus_oracles:
+            data=folder/"smoke-data";data.mkdir()
+            run("force-accounting","test_la_force_accounting",{"LA_FORCE_OUTPUT":str(folder/"force-accounting.json") if platform=="windows" else process.wsl_path(folder/"force-accounting.json")})
+            run("default-smoke","test_la_physical_campaign",{"LA_PHYSICAL_OUTPUT":str(data) if platform=="windows" else process.wsl_path(data)})
         if args.existing_tests:
             for name in process.SCOPED:run("workbench-"+name,"test_workbench_"+name)
         for repeat in range(args.repeats):
