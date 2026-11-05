@@ -23,7 +23,7 @@ def maximum(rows,key):return max((r.get(key,0) for r in rows),default=0)
 def main():
     parser=argparse.ArgumentParser(__doc__);parser.add_argument("runs",nargs="+")
     parser.add_argument("--output",type=Path,default=ROOT/"docs/audits/la-physical-20261105")
-    args=parser.parse_args();episodes=[];cohorts=[];receipts={};inventory={};causal=[];supports=[];timing_groups=defaultdict(list)
+    args=parser.parse_args();episodes=[];cohorts=[];receipts={};inventory={};causal=[];supports=[];timing_groups=defaultdict(list);validated_payloads={}
     for run in args.runs:
         directory=ROOT/"build/la-physical"/run;reduced=read(directory/"reduced.json");receipt=read(directory/"result.json")
         receipts[run]=receipt;rows=reduced["results"]
@@ -37,8 +37,15 @@ def main():
             max_RID_readback_error=maximum(rows,"max_RID_readback_error"),
             reduction_sha256=digest((directory/"reduced.json").read_bytes())))
         for r in rows:
-            path=Path(r["report_path"]);raw=path.read_bytes();assert digest(raw)==r["report_sha256"]
+            path=Path(r["report_path"]).resolve();raw=path.read_bytes();assert digest(raw)==r["report_sha256"]
             d=json.loads(raw);steps=d["steps"];platform=next(p for p in receipt["matrix"]["platforms"] if p in path.parts)
+            for key in ["initial_payload","final_payload","removal_before","removal_after"]:
+                metadata=d.get(key)
+                if not metadata or not metadata.get("bytes"):continue
+                name=metadata["path"]
+                if name.startswith("/mnt/c/"):name="C:/"+name[7:]
+                payload_path=Path(name).resolve()
+                validated_payloads[payload_path]=dict(bytes=metadata["bytes"],sha256=metadata["sha256"],hash_origin="capture SHA independently verified by the retained complete reduction")
             atoms=[row for s in steps for row in s["native_response"]["rows"]]
             applied=[row for s in steps for row in s["application"]["bodies"]]
             counts=Counter()
@@ -71,6 +78,7 @@ def main():
                 initial_geometry=r["initial_geometry"],last_geometry=r["geometry_observations"][-1] if r["geometry_observations"] else None,
                 max_area_by_material=dict(material_area),max_convex_proxy_depth_by_material=dict(material_depth),max_cell_centres_inside=dict(centres),
                 stability=r["stability"],static_screen=static,final_bodies=steps[-1]["after_step"],
+                maximum_terminal120_speed=[max(math.hypot(*s["after_step"][i]["velocity"]) for s in steps[-120:]) for i in range(len(d["authored"]))],
                 arrival_count=sum(a["arrival_count"] for a in atoms),arrival_missing=sum(a["arrival_missing"] for a in atoms),arrival_misaligned=sum(a["arrival_misaligned"] for a in atoms),
                 event_norm_sum=sum(math.hypot(*a["event_accepted"]) for a in atoms),event_torque_sum=sum(a["event_torque"] for a in atoms),
                 displaced=sum(a["displaced"] for a in atoms),unresolved=sum(a["unresolved"] for a in atoms),
@@ -106,7 +114,10 @@ def main():
             for path in folder.rglob("*"):
                 if not path.is_file() or "godot" in path.relative_to(folder).parts:continue
                 if path.suffix not in [".json",".cyps",".log"]:continue
-                inventory[str(path.relative_to(ROOT))]=dict(bytes=path.stat().st_size,sha256=digest(path.read_bytes()))
+                if path.resolve() in validated_payloads:
+                    value=validated_payloads[path.resolve()];assert path.stat().st_size==value["bytes"]
+                    inventory[str(path.relative_to(ROOT))]=value
+                else:inventory[str(path.relative_to(ROOT))]=dict(bytes=path.stat().st_size,sha256=digest(path.read_bytes()),hash_origin="publisher direct read")
     repeats=[]
     for key,rows in sorted(timing_groups.items()):
         repeats.append(dict(run=key[0],platform=key[1],case=key[2],arm=key[3],workers=key[4],repeats=len(rows),

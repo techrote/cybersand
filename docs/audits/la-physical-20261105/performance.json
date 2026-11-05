@@ -1,0 +1,2139 @@
+{
+  "units": "microseconds",
+  "scope": "instrumented local host timings; originalSOL2msgate not applied",
+  "groups": [
+    {
+      "run": "workload-pilot",
+      "platform": "linux",
+      "case": "bounded-Sand-Dust-stream",
+      "arm": "LA",
+      "workers": 1,
+      "repeats": 1,
+      "repeat_means_us": [
+        6372.772222222222
+      ],
+      "worst_unrounded_repeat_mean_us": 6372.772222222222,
+      "maximum_observed_us": 12282,
+      "terminal60_means_us": [
+        7983.75
+      ],
+      "actual_participants": [
+        1
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "linux",
+      "case": "bounded-Sand-Dust-stream",
+      "arm": "LA",
+      "workers": 4,
+      "repeats": 1,
+      "repeat_means_us": [
+        2693.3444444444444
+      ],
+      "worst_unrounded_repeat_mean_us": 2693.3444444444444,
+      "maximum_observed_us": 4521,
+      "terminal60_means_us": [
+        3086.7
+      ],
+      "actual_participants": [
+        4
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "linux",
+      "case": "bounded-Sand-Dust-stream",
+      "arm": "LA-EVENT-OFF",
+      "workers": 1,
+      "repeats": 1,
+      "repeat_means_us": [
+        6727.222222222223
+      ],
+      "worst_unrounded_repeat_mean_us": 6727.222222222223,
+      "maximum_observed_us": 13395,
+      "terminal60_means_us": [
+        7837.8
+      ],
+      "actual_participants": [
+        1
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "linux",
+      "case": "bounded-Sand-Dust-stream",
+      "arm": "LA-EVENT-OFF",
+      "workers": 4,
+      "repeats": 1,
+      "repeat_means_us": [
+        2553.588888888889
+      ],
+      "worst_unrounded_repeat_mean_us": 2553.588888888889,
+      "maximum_observed_us": 3995,
+      "terminal60_means_us": [
+        2669.4
+      ],
+      "actual_participants": [
+        4
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "linux",
+      "case": "bounded-Sand-Dust-stream",
+      "arm": "LA-SELECTIVE",
+      "workers": 1,
+      "repeats": 1,
+      "repeat_means_us": [
+        6823.2
+      ],
+      "worst_unrounded_repeat_mean_us": 6823.2,
+      "maximum_observed_us": 14018,
+      "terminal60_means_us": [
+        7388.416666666667
+      ],
+      "actual_participants": [
+        1
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "linux",
+      "case": "bounded-Sand-Dust-stream",
+      "arm": "LA-SELECTIVE",
+      "workers": 4,
+      "repeats": 1,
+      "repeat_means_us": [
+        2664.8611111111113
+      ],
+      "worst_unrounded_repeat_mean_us": 2664.8611111111113,
+      "maximum_observed_us": 4818,
+      "terminal60_means_us": [
+        2687.8
+      ],
+      "actual_participants": [
+        4
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "linux",
+      "case": "bounded-Sand-Dust-stream",
+      "arm": "LA-SELECTIVE-LIVE-PASSIVE",
+      "workers": 1,
+      "repeats": 1,
+      "repeat_means_us": [
+        6401.9111111111115
+      ],
+      "worst_unrounded_repeat_mean_us": 6401.9111111111115,
+      "maximum_observed_us": 11150,
+      "terminal60_means_us": [
+        6739.3
+      ],
+      "actual_participants": [
+        1
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "linux",
+      "case": "bounded-Sand-Dust-stream",
+      "arm": "LA-SELECTIVE-LIVE-PASSIVE",
+      "workers": 4,
+      "repeats": 1,
+      "repeat_means_us": [
+        2719.1666666666665
+      ],
+      "worst_unrounded_repeat_mean_us": 2719.1666666666665,
+      "maximum_observed_us": 4403,
+      "terminal60_means_us": [
+        2932.7833333333333
+      ],
+      "actual_participants": [
+        4
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "linux",
+      "case": "bounded-Sand-Dust-stream",
+      "arm": "LA-SELECTIVE-LIVE-PASSIVE-GATED",
+      "workers": 1,
+      "repeats": 1,
+      "repeat_means_us": [
+        6242.788888888889
+      ],
+      "worst_unrounded_repeat_mean_us": 6242.788888888889,
+      "maximum_observed_us": 12522,
+      "terminal60_means_us": [
+        6945.933333333333
+      ],
+      "actual_participants": [
+        1
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "linux",
+      "case": "bounded-Sand-Dust-stream",
+      "arm": "LA-SELECTIVE-LIVE-PASSIVE-GATED",
+      "workers": 4,
+      "repeats": 1,
+      "repeat_means_us": [
+        2509.633333333333
+      ],
+      "worst_unrounded_repeat_mean_us": 2509.633333333333,
+      "maximum_observed_us": 7360,
+      "terminal60_means_us": [
+        2710.266666666667
+      ],
+      "actual_participants": [
+        4
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "linux",
+      "case": "bounded-Sand-Dust-stream",
+      "arm": "LA-SELECTIVE-SEPARATING-GUARD",
+      "workers": 1,
+      "repeats": 1,
+      "repeat_means_us": [
+        6588.55
+      ],
+      "worst_unrounded_repeat_mean_us": 6588.55,
+      "maximum_observed_us": 17401,
+      "terminal60_means_us": [
+        9224.233333333334
+      ],
+      "actual_participants": [
+        1
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "linux",
+      "case": "bounded-Sand-Dust-stream",
+      "arm": "LA-SELECTIVE-SEPARATING-GUARD",
+      "workers": 4,
+      "repeats": 1,
+      "repeat_means_us": [
+        2552.738888888889
+      ],
+      "worst_unrounded_repeat_mean_us": 2552.738888888889,
+      "maximum_observed_us": 4001,
+      "terminal60_means_us": [
+        2710.633333333333
+      ],
+      "actual_participants": [
+        4
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "linux",
+      "case": "bounded-Sand-Dust-stream",
+      "arm": "RFT",
+      "workers": 1,
+      "repeats": 1,
+      "repeat_means_us": [
+        6908.144444444444
+      ],
+      "worst_unrounded_repeat_mean_us": 6908.144444444444,
+      "maximum_observed_us": 12326,
+      "terminal60_means_us": [
+        7697.55
+      ],
+      "actual_participants": [
+        1
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "linux",
+      "case": "bounded-Sand-Dust-stream",
+      "arm": "RFT",
+      "workers": 4,
+      "repeats": 1,
+      "repeat_means_us": [
+        2755.6222222222223
+      ],
+      "worst_unrounded_repeat_mean_us": 2755.6222222222223,
+      "maximum_observed_us": 5177,
+      "terminal60_means_us": [
+        3171.633333333333
+      ],
+      "actual_participants": [
+        4
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "linux",
+      "case": "bounded-dense-collision",
+      "arm": "LA",
+      "workers": 1,
+      "repeats": 1,
+      "repeat_means_us": [
+        4593.672222222222
+      ],
+      "worst_unrounded_repeat_mean_us": 4593.672222222222,
+      "maximum_observed_us": 6704,
+      "terminal60_means_us": [
+        4726.833333333333
+      ],
+      "actual_participants": [
+        1
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "linux",
+      "case": "bounded-dense-collision",
+      "arm": "LA",
+      "workers": 4,
+      "repeats": 1,
+      "repeat_means_us": [
+        2649.6944444444443
+      ],
+      "worst_unrounded_repeat_mean_us": 2649.6944444444443,
+      "maximum_observed_us": 3827,
+      "terminal60_means_us": [
+        2625.0
+      ],
+      "actual_participants": [
+        4
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "linux",
+      "case": "bounded-dense-collision",
+      "arm": "LA-EVENT-OFF",
+      "workers": 1,
+      "repeats": 1,
+      "repeat_means_us": [
+        5460.561111111111
+      ],
+      "worst_unrounded_repeat_mean_us": 5460.561111111111,
+      "maximum_observed_us": 8479,
+      "terminal60_means_us": [
+        5871.233333333334
+      ],
+      "actual_participants": [
+        1
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "linux",
+      "case": "bounded-dense-collision",
+      "arm": "LA-EVENT-OFF",
+      "workers": 4,
+      "repeats": 1,
+      "repeat_means_us": [
+        2646.2555555555555
+      ],
+      "worst_unrounded_repeat_mean_us": 2646.2555555555555,
+      "maximum_observed_us": 4354,
+      "terminal60_means_us": [
+        2531.4166666666665
+      ],
+      "actual_participants": [
+        4
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "linux",
+      "case": "bounded-dense-collision",
+      "arm": "LA-SELECTIVE",
+      "workers": 1,
+      "repeats": 1,
+      "repeat_means_us": [
+        5237.377777777778
+      ],
+      "worst_unrounded_repeat_mean_us": 5237.377777777778,
+      "maximum_observed_us": 11895,
+      "terminal60_means_us": [
+        5800.783333333334
+      ],
+      "actual_participants": [
+        1
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "linux",
+      "case": "bounded-dense-collision",
+      "arm": "LA-SELECTIVE",
+      "workers": 4,
+      "repeats": 1,
+      "repeat_means_us": [
+        2615.8055555555557
+      ],
+      "worst_unrounded_repeat_mean_us": 2615.8055555555557,
+      "maximum_observed_us": 3816,
+      "terminal60_means_us": [
+        2553.55
+      ],
+      "actual_participants": [
+        4
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "linux",
+      "case": "bounded-dense-collision",
+      "arm": "LA-SELECTIVE-LIVE-PASSIVE",
+      "workers": 1,
+      "repeats": 1,
+      "repeat_means_us": [
+        4844.55
+      ],
+      "worst_unrounded_repeat_mean_us": 4844.55,
+      "maximum_observed_us": 9412,
+      "terminal60_means_us": [
+        5713.783333333334
+      ],
+      "actual_participants": [
+        1
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "linux",
+      "case": "bounded-dense-collision",
+      "arm": "LA-SELECTIVE-LIVE-PASSIVE",
+      "workers": 4,
+      "repeats": 1,
+      "repeat_means_us": [
+        2477.188888888889
+      ],
+      "worst_unrounded_repeat_mean_us": 2477.188888888889,
+      "maximum_observed_us": 3652,
+      "terminal60_means_us": [
+        2551.7833333333333
+      ],
+      "actual_participants": [
+        4
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "linux",
+      "case": "bounded-dense-collision",
+      "arm": "LA-SELECTIVE-LIVE-PASSIVE-GATED",
+      "workers": 1,
+      "repeats": 1,
+      "repeat_means_us": [
+        5797.011111111111
+      ],
+      "worst_unrounded_repeat_mean_us": 5797.011111111111,
+      "maximum_observed_us": 9668,
+      "terminal60_means_us": [
+        7100.15
+      ],
+      "actual_participants": [
+        1
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "linux",
+      "case": "bounded-dense-collision",
+      "arm": "LA-SELECTIVE-LIVE-PASSIVE-GATED",
+      "workers": 4,
+      "repeats": 1,
+      "repeat_means_us": [
+        2547.8
+      ],
+      "worst_unrounded_repeat_mean_us": 2547.8,
+      "maximum_observed_us": 3735,
+      "terminal60_means_us": [
+        2538.483333333333
+      ],
+      "actual_participants": [
+        4
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "linux",
+      "case": "bounded-dense-collision",
+      "arm": "LA-SELECTIVE-SEPARATING-GUARD",
+      "workers": 1,
+      "repeats": 1,
+      "repeat_means_us": [
+        6398.533333333334
+      ],
+      "worst_unrounded_repeat_mean_us": 6398.533333333334,
+      "maximum_observed_us": 16136,
+      "terminal60_means_us": [
+        7491.45
+      ],
+      "actual_participants": [
+        1
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "linux",
+      "case": "bounded-dense-collision",
+      "arm": "LA-SELECTIVE-SEPARATING-GUARD",
+      "workers": 4,
+      "repeats": 1,
+      "repeat_means_us": [
+        2808.116666666667
+      ],
+      "worst_unrounded_repeat_mean_us": 2808.116666666667,
+      "maximum_observed_us": 5000,
+      "terminal60_means_us": [
+        3251.9
+      ],
+      "actual_participants": [
+        4
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "linux",
+      "case": "bounded-dense-collision",
+      "arm": "RFT",
+      "workers": 1,
+      "repeats": 1,
+      "repeat_means_us": [
+        4886.455555555555
+      ],
+      "worst_unrounded_repeat_mean_us": 4886.455555555555,
+      "maximum_observed_us": 7335,
+      "terminal60_means_us": [
+        5360.633333333333
+      ],
+      "actual_participants": [
+        1
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "linux",
+      "case": "bounded-dense-collision",
+      "arm": "RFT",
+      "workers": 4,
+      "repeats": 1,
+      "repeat_means_us": [
+        2292.088888888889
+      ],
+      "worst_unrounded_repeat_mean_us": 2292.088888888889,
+      "maximum_observed_us": 3990,
+      "terminal60_means_us": [
+        2289.0666666666666
+      ],
+      "actual_participants": [
+        4
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "linux",
+      "case": "bounded-quiet-contact",
+      "arm": "LA",
+      "workers": 1,
+      "repeats": 1,
+      "repeat_means_us": [
+        2877.211111111111
+      ],
+      "worst_unrounded_repeat_mean_us": 2877.211111111111,
+      "maximum_observed_us": 4524,
+      "terminal60_means_us": [
+        2963.2833333333333
+      ],
+      "actual_participants": [
+        1
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "linux",
+      "case": "bounded-quiet-contact",
+      "arm": "LA",
+      "workers": 4,
+      "repeats": 1,
+      "repeat_means_us": [
+        1544.5388888888888
+      ],
+      "worst_unrounded_repeat_mean_us": 1544.5388888888888,
+      "maximum_observed_us": 2741,
+      "terminal60_means_us": [
+        1687.2
+      ],
+      "actual_participants": [
+        4
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "linux",
+      "case": "bounded-quiet-contact",
+      "arm": "LA-EVENT-OFF",
+      "workers": 1,
+      "repeats": 1,
+      "repeat_means_us": [
+        2603.038888888889
+      ],
+      "worst_unrounded_repeat_mean_us": 2603.038888888889,
+      "maximum_observed_us": 4722,
+      "terminal60_means_us": [
+        2682.0833333333335
+      ],
+      "actual_participants": [
+        1
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "linux",
+      "case": "bounded-quiet-contact",
+      "arm": "LA-EVENT-OFF",
+      "workers": 4,
+      "repeats": 1,
+      "repeat_means_us": [
+        1572.9388888888889
+      ],
+      "worst_unrounded_repeat_mean_us": 1572.9388888888889,
+      "maximum_observed_us": 3243,
+      "terminal60_means_us": [
+        1627.7333333333333
+      ],
+      "actual_participants": [
+        4
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "linux",
+      "case": "bounded-quiet-contact",
+      "arm": "LA-SELECTIVE",
+      "workers": 1,
+      "repeats": 1,
+      "repeat_means_us": [
+        3470.116666666667
+      ],
+      "worst_unrounded_repeat_mean_us": 3470.116666666667,
+      "maximum_observed_us": 9546,
+      "terminal60_means_us": [
+        4202.583333333333
+      ],
+      "actual_participants": [
+        1
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "linux",
+      "case": "bounded-quiet-contact",
+      "arm": "LA-SELECTIVE",
+      "workers": 4,
+      "repeats": 1,
+      "repeat_means_us": [
+        1584.6222222222223
+      ],
+      "worst_unrounded_repeat_mean_us": 1584.6222222222223,
+      "maximum_observed_us": 3874,
+      "terminal60_means_us": [
+        1596.25
+      ],
+      "actual_participants": [
+        4
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "linux",
+      "case": "bounded-quiet-contact",
+      "arm": "LA-SELECTIVE-LIVE-PASSIVE",
+      "workers": 1,
+      "repeats": 1,
+      "repeat_means_us": [
+        3345.2944444444443
+      ],
+      "worst_unrounded_repeat_mean_us": 3345.2944444444443,
+      "maximum_observed_us": 7000,
+      "terminal60_means_us": [
+        3610.4333333333334
+      ],
+      "actual_participants": [
+        1
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "linux",
+      "case": "bounded-quiet-contact",
+      "arm": "LA-SELECTIVE-LIVE-PASSIVE",
+      "workers": 4,
+      "repeats": 1,
+      "repeat_means_us": [
+        1587.5166666666667
+      ],
+      "worst_unrounded_repeat_mean_us": 1587.5166666666667,
+      "maximum_observed_us": 2412,
+      "terminal60_means_us": [
+        1693.7333333333333
+      ],
+      "actual_participants": [
+        4
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "linux",
+      "case": "bounded-quiet-contact",
+      "arm": "LA-SELECTIVE-LIVE-PASSIVE-GATED",
+      "workers": 1,
+      "repeats": 1,
+      "repeat_means_us": [
+        3793.1222222222223
+      ],
+      "worst_unrounded_repeat_mean_us": 3793.1222222222223,
+      "maximum_observed_us": 7975,
+      "terminal60_means_us": [
+        4603.716666666666
+      ],
+      "actual_participants": [
+        1
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "linux",
+      "case": "bounded-quiet-contact",
+      "arm": "LA-SELECTIVE-LIVE-PASSIVE-GATED",
+      "workers": 4,
+      "repeats": 1,
+      "repeat_means_us": [
+        1491.7055555555555
+      ],
+      "worst_unrounded_repeat_mean_us": 1491.7055555555555,
+      "maximum_observed_us": 2646,
+      "terminal60_means_us": [
+        1509.7
+      ],
+      "actual_participants": [
+        4
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "linux",
+      "case": "bounded-quiet-contact",
+      "arm": "LA-SELECTIVE-SEPARATING-GUARD",
+      "workers": 1,
+      "repeats": 1,
+      "repeat_means_us": [
+        3550.7166666666667
+      ],
+      "worst_unrounded_repeat_mean_us": 3550.7166666666667,
+      "maximum_observed_us": 8618,
+      "terminal60_means_us": [
+        4237.85
+      ],
+      "actual_participants": [
+        1
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "linux",
+      "case": "bounded-quiet-contact",
+      "arm": "LA-SELECTIVE-SEPARATING-GUARD",
+      "workers": 4,
+      "repeats": 1,
+      "repeat_means_us": [
+        1720.3166666666666
+      ],
+      "worst_unrounded_repeat_mean_us": 1720.3166666666666,
+      "maximum_observed_us": 3378,
+      "terminal60_means_us": [
+        1856.35
+      ],
+      "actual_participants": [
+        4
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "linux",
+      "case": "bounded-quiet-contact",
+      "arm": "RFT",
+      "workers": 1,
+      "repeats": 1,
+      "repeat_means_us": [
+        4564.333333333333
+      ],
+      "worst_unrounded_repeat_mean_us": 4564.333333333333,
+      "maximum_observed_us": 11730,
+      "terminal60_means_us": [
+        4637.533333333334
+      ],
+      "actual_participants": [
+        1
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "linux",
+      "case": "bounded-quiet-contact",
+      "arm": "RFT",
+      "workers": 4,
+      "repeats": 1,
+      "repeat_means_us": [
+        1500.3111111111111
+      ],
+      "worst_unrounded_repeat_mean_us": 1500.3111111111111,
+      "maximum_observed_us": 2506,
+      "terminal60_means_us": [
+        1534.5166666666667
+      ],
+      "actual_participants": [
+        4
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "linux",
+      "case": "large-Sand-Dust-stream",
+      "arm": "LA",
+      "workers": 1,
+      "repeats": 1,
+      "repeat_means_us": [
+        12828.957894736843
+      ],
+      "worst_unrounded_repeat_mean_us": 12828.957894736843,
+      "maximum_observed_us": 20596,
+      "terminal60_means_us": [
+        14213.816666666668
+      ],
+      "actual_participants": [
+        1
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "linux",
+      "case": "large-Sand-Dust-stream",
+      "arm": "LA",
+      "workers": 4,
+      "repeats": 1,
+      "repeat_means_us": [
+        5034.115789473684
+      ],
+      "worst_unrounded_repeat_mean_us": 5034.115789473684,
+      "maximum_observed_us": 7533,
+      "terminal60_means_us": [
+        5479.466666666666
+      ],
+      "actual_participants": [
+        4
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "linux",
+      "case": "large-Sand-Dust-stream",
+      "arm": "LA-EVENT-OFF",
+      "workers": 1,
+      "repeats": 1,
+      "repeat_means_us": [
+        14809.105263157895
+      ],
+      "worst_unrounded_repeat_mean_us": 14809.105263157895,
+      "maximum_observed_us": 21534,
+      "terminal60_means_us": [
+        14951.333333333334
+      ],
+      "actual_participants": [
+        1
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "linux",
+      "case": "large-Sand-Dust-stream",
+      "arm": "LA-EVENT-OFF",
+      "workers": 4,
+      "repeats": 1,
+      "repeat_means_us": [
+        5569.063157894737
+      ],
+      "worst_unrounded_repeat_mean_us": 5569.063157894737,
+      "maximum_observed_us": 8162,
+      "terminal60_means_us": [
+        6255.183333333333
+      ],
+      "actual_participants": [
+        4
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "linux",
+      "case": "large-Sand-Dust-stream",
+      "arm": "LA-SELECTIVE",
+      "workers": 1,
+      "repeats": 1,
+      "repeat_means_us": [
+        11880.378947368421
+      ],
+      "worst_unrounded_repeat_mean_us": 11880.378947368421,
+      "maximum_observed_us": 17609,
+      "terminal60_means_us": [
+        13071.5
+      ],
+      "actual_participants": [
+        1
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "linux",
+      "case": "large-Sand-Dust-stream",
+      "arm": "LA-SELECTIVE",
+      "workers": 4,
+      "repeats": 1,
+      "repeat_means_us": [
+        5376.042105263158
+      ],
+      "worst_unrounded_repeat_mean_us": 5376.042105263158,
+      "maximum_observed_us": 7516,
+      "terminal60_means_us": [
+        5499.516666666666
+      ],
+      "actual_participants": [
+        4
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "linux",
+      "case": "large-Sand-Dust-stream",
+      "arm": "LA-SELECTIVE-LIVE-PASSIVE",
+      "workers": 1,
+      "repeats": 1,
+      "repeat_means_us": [
+        13346.82105263158
+      ],
+      "worst_unrounded_repeat_mean_us": 13346.82105263158,
+      "maximum_observed_us": 18536,
+      "terminal60_means_us": [
+        14374.233333333334
+      ],
+      "actual_participants": [
+        1
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "linux",
+      "case": "large-Sand-Dust-stream",
+      "arm": "LA-SELECTIVE-LIVE-PASSIVE",
+      "workers": 4,
+      "repeats": 1,
+      "repeat_means_us": [
+        5691.884210526316
+      ],
+      "worst_unrounded_repeat_mean_us": 5691.884210526316,
+      "maximum_observed_us": 8820,
+      "terminal60_means_us": [
+        6431.483333333334
+      ],
+      "actual_participants": [
+        4
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "linux",
+      "case": "large-Sand-Dust-stream",
+      "arm": "LA-SELECTIVE-LIVE-PASSIVE-GATED",
+      "workers": 1,
+      "repeats": 1,
+      "repeat_means_us": [
+        14113.78947368421
+      ],
+      "worst_unrounded_repeat_mean_us": 14113.78947368421,
+      "maximum_observed_us": 20662,
+      "terminal60_means_us": [
+        15967.833333333334
+      ],
+      "actual_participants": [
+        1
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "linux",
+      "case": "large-Sand-Dust-stream",
+      "arm": "LA-SELECTIVE-LIVE-PASSIVE-GATED",
+      "workers": 4,
+      "repeats": 1,
+      "repeat_means_us": [
+        5120.61052631579
+      ],
+      "worst_unrounded_repeat_mean_us": 5120.61052631579,
+      "maximum_observed_us": 7445,
+      "terminal60_means_us": [
+        5747.5
+      ],
+      "actual_participants": [
+        4
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "linux",
+      "case": "large-Sand-Dust-stream",
+      "arm": "LA-SELECTIVE-SEPARATING-GUARD",
+      "workers": 1,
+      "repeats": 1,
+      "repeat_means_us": [
+        12893.263157894737
+      ],
+      "worst_unrounded_repeat_mean_us": 12893.263157894737,
+      "maximum_observed_us": 19328,
+      "terminal60_means_us": [
+        14704.016666666666
+      ],
+      "actual_participants": [
+        1
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "linux",
+      "case": "large-Sand-Dust-stream",
+      "arm": "LA-SELECTIVE-SEPARATING-GUARD",
+      "workers": 4,
+      "repeats": 1,
+      "repeat_means_us": [
+        4892.136842105263
+      ],
+      "worst_unrounded_repeat_mean_us": 4892.136842105263,
+      "maximum_observed_us": 6613,
+      "terminal60_means_us": [
+        5188.416666666667
+      ],
+      "actual_participants": [
+        4
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "linux",
+      "case": "large-Sand-Dust-stream",
+      "arm": "RFT",
+      "workers": 1,
+      "repeats": 1,
+      "repeat_means_us": [
+        12561.547368421052
+      ],
+      "worst_unrounded_repeat_mean_us": 12561.547368421052,
+      "maximum_observed_us": 23334,
+      "terminal60_means_us": [
+        14182.266666666666
+      ],
+      "actual_participants": [
+        1
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "linux",
+      "case": "large-Sand-Dust-stream",
+      "arm": "RFT",
+      "workers": 4,
+      "repeats": 1,
+      "repeat_means_us": [
+        6426.557894736842
+      ],
+      "worst_unrounded_repeat_mean_us": 6426.557894736842,
+      "maximum_observed_us": 10916,
+      "terminal60_means_us": [
+        7159.616666666667
+      ],
+      "actual_participants": [
+        4
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "windows",
+      "case": "bounded-Sand-Dust-stream",
+      "arm": "LA",
+      "workers": 1,
+      "repeats": 1,
+      "repeat_means_us": [
+        5013.583333333333
+      ],
+      "worst_unrounded_repeat_mean_us": 5013.583333333333,
+      "maximum_observed_us": 7441,
+      "terminal60_means_us": [
+        5645.216666666666
+      ],
+      "actual_participants": [
+        1
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "windows",
+      "case": "bounded-Sand-Dust-stream",
+      "arm": "LA",
+      "workers": 4,
+      "repeats": 1,
+      "repeat_means_us": [
+        2358.25
+      ],
+      "worst_unrounded_repeat_mean_us": 2358.25,
+      "maximum_observed_us": 3762,
+      "terminal60_means_us": [
+        2660.1666666666665
+      ],
+      "actual_participants": [
+        4
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "windows",
+      "case": "bounded-Sand-Dust-stream",
+      "arm": "LA-EVENT-OFF",
+      "workers": 1,
+      "repeats": 1,
+      "repeat_means_us": [
+        5602.383333333333
+      ],
+      "worst_unrounded_repeat_mean_us": 5602.383333333333,
+      "maximum_observed_us": 17245,
+      "terminal60_means_us": [
+        6913.65
+      ],
+      "actual_participants": [
+        1
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "windows",
+      "case": "bounded-Sand-Dust-stream",
+      "arm": "LA-EVENT-OFF",
+      "workers": 4,
+      "repeats": 1,
+      "repeat_means_us": [
+        2386.927777777778
+      ],
+      "worst_unrounded_repeat_mean_us": 2386.927777777778,
+      "maximum_observed_us": 4074,
+      "terminal60_means_us": [
+        2867.8
+      ],
+      "actual_participants": [
+        4
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "windows",
+      "case": "bounded-Sand-Dust-stream",
+      "arm": "LA-SELECTIVE",
+      "workers": 1,
+      "repeats": 1,
+      "repeat_means_us": [
+        5298.366666666667
+      ],
+      "worst_unrounded_repeat_mean_us": 5298.366666666667,
+      "maximum_observed_us": 8122,
+      "terminal60_means_us": [
+        6254.866666666667
+      ],
+      "actual_participants": [
+        1
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "windows",
+      "case": "bounded-Sand-Dust-stream",
+      "arm": "LA-SELECTIVE",
+      "workers": 4,
+      "repeats": 1,
+      "repeat_means_us": [
+        2549.0444444444443
+      ],
+      "worst_unrounded_repeat_mean_us": 2549.0444444444443,
+      "maximum_observed_us": 14327,
+      "terminal60_means_us": [
+        3260.6
+      ],
+      "actual_participants": [
+        3,
+        4
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "windows",
+      "case": "bounded-Sand-Dust-stream",
+      "arm": "LA-SELECTIVE-LIVE-PASSIVE",
+      "workers": 1,
+      "repeats": 1,
+      "repeat_means_us": [
+        5135.666666666667
+      ],
+      "worst_unrounded_repeat_mean_us": 5135.666666666667,
+      "maximum_observed_us": 8433,
+      "terminal60_means_us": [
+        6557.2
+      ],
+      "actual_participants": [
+        1
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "windows",
+      "case": "bounded-Sand-Dust-stream",
+      "arm": "LA-SELECTIVE-LIVE-PASSIVE",
+      "workers": 4,
+      "repeats": 1,
+      "repeat_means_us": [
+        2331.4444444444443
+      ],
+      "worst_unrounded_repeat_mean_us": 2331.4444444444443,
+      "maximum_observed_us": 3425,
+      "terminal60_means_us": [
+        2668.5
+      ],
+      "actual_participants": [
+        4
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "windows",
+      "case": "bounded-Sand-Dust-stream",
+      "arm": "LA-SELECTIVE-LIVE-PASSIVE-GATED",
+      "workers": 1,
+      "repeats": 1,
+      "repeat_means_us": [
+        5058.061111111111
+      ],
+      "worst_unrounded_repeat_mean_us": 5058.061111111111,
+      "maximum_observed_us": 9981,
+      "terminal60_means_us": [
+        6011.033333333334
+      ],
+      "actual_participants": [
+        1
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "windows",
+      "case": "bounded-Sand-Dust-stream",
+      "arm": "LA-SELECTIVE-LIVE-PASSIVE-GATED",
+      "workers": 4,
+      "repeats": 1,
+      "repeat_means_us": [
+        2057.061111111111
+      ],
+      "worst_unrounded_repeat_mean_us": 2057.061111111111,
+      "maximum_observed_us": 2991,
+      "terminal60_means_us": [
+        2206.383333333333
+      ],
+      "actual_participants": [
+        4
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "windows",
+      "case": "bounded-Sand-Dust-stream",
+      "arm": "LA-SELECTIVE-SEPARATING-GUARD",
+      "workers": 1,
+      "repeats": 1,
+      "repeat_means_us": [
+        5268.672222222222
+      ],
+      "worst_unrounded_repeat_mean_us": 5268.672222222222,
+      "maximum_observed_us": 8843,
+      "terminal60_means_us": [
+        6972.0
+      ],
+      "actual_participants": [
+        1
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "windows",
+      "case": "bounded-Sand-Dust-stream",
+      "arm": "LA-SELECTIVE-SEPARATING-GUARD",
+      "workers": 4,
+      "repeats": 1,
+      "repeat_means_us": [
+        2522.9444444444443
+      ],
+      "worst_unrounded_repeat_mean_us": 2522.9444444444443,
+      "maximum_observed_us": 5244,
+      "terminal60_means_us": [
+        2755.266666666667
+      ],
+      "actual_participants": [
+        4
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "windows",
+      "case": "bounded-Sand-Dust-stream",
+      "arm": "RFT",
+      "workers": 1,
+      "repeats": 1,
+      "repeat_means_us": [
+        4705.222222222223
+      ],
+      "worst_unrounded_repeat_mean_us": 4705.222222222223,
+      "maximum_observed_us": 9917,
+      "terminal60_means_us": [
+        6285.1
+      ],
+      "actual_participants": [
+        1
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "windows",
+      "case": "bounded-Sand-Dust-stream",
+      "arm": "RFT",
+      "workers": 4,
+      "repeats": 1,
+      "repeat_means_us": [
+        2377.6944444444443
+      ],
+      "worst_unrounded_repeat_mean_us": 2377.6944444444443,
+      "maximum_observed_us": 4178,
+      "terminal60_means_us": [
+        2325.9
+      ],
+      "actual_participants": [
+        3,
+        4
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "windows",
+      "case": "bounded-dense-collision",
+      "arm": "LA",
+      "workers": 1,
+      "repeats": 1,
+      "repeat_means_us": [
+        4096.416666666667
+      ],
+      "worst_unrounded_repeat_mean_us": 4096.416666666667,
+      "maximum_observed_us": 6106,
+      "terminal60_means_us": [
+        4535.166666666667
+      ],
+      "actual_participants": [
+        1
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "windows",
+      "case": "bounded-dense-collision",
+      "arm": "LA",
+      "workers": 4,
+      "repeats": 1,
+      "repeat_means_us": [
+        2551.0222222222224
+      ],
+      "worst_unrounded_repeat_mean_us": 2551.0222222222224,
+      "maximum_observed_us": 5156,
+      "terminal60_means_us": [
+        2359.766666666667
+      ],
+      "actual_participants": [
+        4
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "windows",
+      "case": "bounded-dense-collision",
+      "arm": "LA-EVENT-OFF",
+      "workers": 1,
+      "repeats": 1,
+      "repeat_means_us": [
+        5839.733333333334
+      ],
+      "worst_unrounded_repeat_mean_us": 5839.733333333334,
+      "maximum_observed_us": 9774,
+      "terminal60_means_us": [
+        6298.55
+      ],
+      "actual_participants": [
+        1
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "windows",
+      "case": "bounded-dense-collision",
+      "arm": "LA-EVENT-OFF",
+      "workers": 4,
+      "repeats": 1,
+      "repeat_means_us": [
+        2621.0222222222224
+      ],
+      "worst_unrounded_repeat_mean_us": 2621.0222222222224,
+      "maximum_observed_us": 5327,
+      "terminal60_means_us": [
+        2953.616666666667
+      ],
+      "actual_participants": [
+        4
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "windows",
+      "case": "bounded-dense-collision",
+      "arm": "LA-SELECTIVE",
+      "workers": 1,
+      "repeats": 1,
+      "repeat_means_us": [
+        4518.477777777778
+      ],
+      "worst_unrounded_repeat_mean_us": 4518.477777777778,
+      "maximum_observed_us": 7934,
+      "terminal60_means_us": [
+        4671.366666666667
+      ],
+      "actual_participants": [
+        1
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "windows",
+      "case": "bounded-dense-collision",
+      "arm": "LA-SELECTIVE",
+      "workers": 4,
+      "repeats": 1,
+      "repeat_means_us": [
+        2285.9444444444443
+      ],
+      "worst_unrounded_repeat_mean_us": 2285.9444444444443,
+      "maximum_observed_us": 3766,
+      "terminal60_means_us": [
+        2492.2166666666667
+      ],
+      "actual_participants": [
+        4
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "windows",
+      "case": "bounded-dense-collision",
+      "arm": "LA-SELECTIVE-LIVE-PASSIVE",
+      "workers": 1,
+      "repeats": 1,
+      "repeat_means_us": [
+        5018.216666666666
+      ],
+      "worst_unrounded_repeat_mean_us": 5018.216666666666,
+      "maximum_observed_us": 7584,
+      "terminal60_means_us": [
+        5030.766666666666
+      ],
+      "actual_participants": [
+        1
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "windows",
+      "case": "bounded-dense-collision",
+      "arm": "LA-SELECTIVE-LIVE-PASSIVE",
+      "workers": 4,
+      "repeats": 1,
+      "repeat_means_us": [
+        2576.572222222222
+      ],
+      "worst_unrounded_repeat_mean_us": 2576.572222222222,
+      "maximum_observed_us": 4937,
+      "terminal60_means_us": [
+        2657.8333333333335
+      ],
+      "actual_participants": [
+        4
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "windows",
+      "case": "bounded-dense-collision",
+      "arm": "LA-SELECTIVE-LIVE-PASSIVE-GATED",
+      "workers": 1,
+      "repeats": 1,
+      "repeat_means_us": [
+        5268.25
+      ],
+      "worst_unrounded_repeat_mean_us": 5268.25,
+      "maximum_observed_us": 8125,
+      "terminal60_means_us": [
+        4998.2
+      ],
+      "actual_participants": [
+        1
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "windows",
+      "case": "bounded-dense-collision",
+      "arm": "LA-SELECTIVE-LIVE-PASSIVE-GATED",
+      "workers": 4,
+      "repeats": 1,
+      "repeat_means_us": [
+        2587.1
+      ],
+      "worst_unrounded_repeat_mean_us": 2587.1,
+      "maximum_observed_us": 6359,
+      "terminal60_means_us": [
+        2405.366666666667
+      ],
+      "actual_participants": [
+        3,
+        4
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "windows",
+      "case": "bounded-dense-collision",
+      "arm": "LA-SELECTIVE-SEPARATING-GUARD",
+      "workers": 1,
+      "repeats": 1,
+      "repeat_means_us": [
+        5533.066666666667
+      ],
+      "worst_unrounded_repeat_mean_us": 5533.066666666667,
+      "maximum_observed_us": 8302,
+      "terminal60_means_us": [
+        6397.566666666667
+      ],
+      "actual_participants": [
+        1
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "windows",
+      "case": "bounded-dense-collision",
+      "arm": "LA-SELECTIVE-SEPARATING-GUARD",
+      "workers": 4,
+      "repeats": 1,
+      "repeat_means_us": [
+        2331.2722222222224
+      ],
+      "worst_unrounded_repeat_mean_us": 2331.2722222222224,
+      "maximum_observed_us": 3545,
+      "terminal60_means_us": [
+        2442.9166666666665
+      ],
+      "actual_participants": [
+        4
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "windows",
+      "case": "bounded-dense-collision",
+      "arm": "RFT",
+      "workers": 1,
+      "repeats": 1,
+      "repeat_means_us": [
+        5084.705555555555
+      ],
+      "worst_unrounded_repeat_mean_us": 5084.705555555555,
+      "maximum_observed_us": 9282,
+      "terminal60_means_us": [
+        5440.416666666667
+      ],
+      "actual_participants": [
+        1
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "windows",
+      "case": "bounded-dense-collision",
+      "arm": "RFT",
+      "workers": 4,
+      "repeats": 1,
+      "repeat_means_us": [
+        2179.822222222222
+      ],
+      "worst_unrounded_repeat_mean_us": 2179.822222222222,
+      "maximum_observed_us": 5060,
+      "terminal60_means_us": [
+        2330.7
+      ],
+      "actual_participants": [
+        4
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "windows",
+      "case": "bounded-quiet-contact",
+      "arm": "LA",
+      "workers": 1,
+      "repeats": 1,
+      "repeat_means_us": [
+        1942.2777777777778
+      ],
+      "worst_unrounded_repeat_mean_us": 1942.2777777777778,
+      "maximum_observed_us": 3955,
+      "terminal60_means_us": [
+        1895.8666666666666
+      ],
+      "actual_participants": [
+        1
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "windows",
+      "case": "bounded-quiet-contact",
+      "arm": "LA",
+      "workers": 4,
+      "repeats": 1,
+      "repeat_means_us": [
+        1264.0777777777778
+      ],
+      "worst_unrounded_repeat_mean_us": 1264.0777777777778,
+      "maximum_observed_us": 2473,
+      "terminal60_means_us": [
+        1207.5166666666667
+      ],
+      "actual_participants": [
+        3,
+        4
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "windows",
+      "case": "bounded-quiet-contact",
+      "arm": "LA-EVENT-OFF",
+      "workers": 1,
+      "repeats": 1,
+      "repeat_means_us": [
+        1997.2777777777778
+      ],
+      "worst_unrounded_repeat_mean_us": 1997.2777777777778,
+      "maximum_observed_us": 4949,
+      "terminal60_means_us": [
+        2227.233333333333
+      ],
+      "actual_participants": [
+        1
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "windows",
+      "case": "bounded-quiet-contact",
+      "arm": "LA-EVENT-OFF",
+      "workers": 4,
+      "repeats": 1,
+      "repeat_means_us": [
+        1196.5666666666666
+      ],
+      "worst_unrounded_repeat_mean_us": 1196.5666666666666,
+      "maximum_observed_us": 1886,
+      "terminal60_means_us": [
+        1227.7666666666667
+      ],
+      "actual_participants": [
+        4
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "windows",
+      "case": "bounded-quiet-contact",
+      "arm": "LA-SELECTIVE",
+      "workers": 1,
+      "repeats": 1,
+      "repeat_means_us": [
+        2555.072222222222
+      ],
+      "worst_unrounded_repeat_mean_us": 2555.072222222222,
+      "maximum_observed_us": 9568,
+      "terminal60_means_us": [
+        2210.8
+      ],
+      "actual_participants": [
+        1
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "windows",
+      "case": "bounded-quiet-contact",
+      "arm": "LA-SELECTIVE",
+      "workers": 4,
+      "repeats": 1,
+      "repeat_means_us": [
+        1292.1166666666666
+      ],
+      "worst_unrounded_repeat_mean_us": 1292.1166666666666,
+      "maximum_observed_us": 2508,
+      "terminal60_means_us": [
+        1243.8
+      ],
+      "actual_participants": [
+        4
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "windows",
+      "case": "bounded-quiet-contact",
+      "arm": "LA-SELECTIVE-LIVE-PASSIVE",
+      "workers": 1,
+      "repeats": 1,
+      "repeat_means_us": [
+        2109.366666666667
+      ],
+      "worst_unrounded_repeat_mean_us": 2109.366666666667,
+      "maximum_observed_us": 3696,
+      "terminal60_means_us": [
+        2310.75
+      ],
+      "actual_participants": [
+        1
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "windows",
+      "case": "bounded-quiet-contact",
+      "arm": "LA-SELECTIVE-LIVE-PASSIVE",
+      "workers": 4,
+      "repeats": 1,
+      "repeat_means_us": [
+        1282.6055555555556
+      ],
+      "worst_unrounded_repeat_mean_us": 1282.6055555555556,
+      "maximum_observed_us": 2697,
+      "terminal60_means_us": [
+        1445.5333333333333
+      ],
+      "actual_participants": [
+        4
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "windows",
+      "case": "bounded-quiet-contact",
+      "arm": "LA-SELECTIVE-LIVE-PASSIVE-GATED",
+      "workers": 1,
+      "repeats": 1,
+      "repeat_means_us": [
+        2445.1388888888887
+      ],
+      "worst_unrounded_repeat_mean_us": 2445.1388888888887,
+      "maximum_observed_us": 7037,
+      "terminal60_means_us": [
+        2748.0833333333335
+      ],
+      "actual_participants": [
+        1
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "windows",
+      "case": "bounded-quiet-contact",
+      "arm": "LA-SELECTIVE-LIVE-PASSIVE-GATED",
+      "workers": 4,
+      "repeats": 1,
+      "repeat_means_us": [
+        1568.6722222222222
+      ],
+      "worst_unrounded_repeat_mean_us": 1568.6722222222222,
+      "maximum_observed_us": 6319,
+      "terminal60_means_us": [
+        1774.4166666666667
+      ],
+      "actual_participants": [
+        3,
+        4
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "windows",
+      "case": "bounded-quiet-contact",
+      "arm": "LA-SELECTIVE-SEPARATING-GUARD",
+      "workers": 1,
+      "repeats": 1,
+      "repeat_means_us": [
+        2590.027777777778
+      ],
+      "worst_unrounded_repeat_mean_us": 2590.027777777778,
+      "maximum_observed_us": 6921,
+      "terminal60_means_us": [
+        3175.15
+      ],
+      "actual_participants": [
+        1
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "windows",
+      "case": "bounded-quiet-contact",
+      "arm": "LA-SELECTIVE-SEPARATING-GUARD",
+      "workers": 4,
+      "repeats": 1,
+      "repeat_means_us": [
+        1127.0333333333333
+      ],
+      "worst_unrounded_repeat_mean_us": 1127.0333333333333,
+      "maximum_observed_us": 1956,
+      "terminal60_means_us": [
+        1187.5666666666666
+      ],
+      "actual_participants": [
+        4
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "windows",
+      "case": "bounded-quiet-contact",
+      "arm": "RFT",
+      "workers": 1,
+      "repeats": 1,
+      "repeat_means_us": [
+        1980.8333333333333
+      ],
+      "worst_unrounded_repeat_mean_us": 1980.8333333333333,
+      "maximum_observed_us": 3924,
+      "terminal60_means_us": [
+        2151.633333333333
+      ],
+      "actual_participants": [
+        1
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "windows",
+      "case": "bounded-quiet-contact",
+      "arm": "RFT",
+      "workers": 4,
+      "repeats": 1,
+      "repeat_means_us": [
+        1173.0166666666667
+      ],
+      "worst_unrounded_repeat_mean_us": 1173.0166666666667,
+      "maximum_observed_us": 2344,
+      "terminal60_means_us": [
+        1172.3333333333333
+      ],
+      "actual_participants": [
+        4
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "windows",
+      "case": "large-Sand-Dust-stream",
+      "arm": "LA",
+      "workers": 1,
+      "repeats": 1,
+      "repeat_means_us": [
+        12444.463157894737
+      ],
+      "worst_unrounded_repeat_mean_us": 12444.463157894737,
+      "maximum_observed_us": 18370,
+      "terminal60_means_us": [
+        13751.933333333332
+      ],
+      "actual_participants": [
+        1
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "windows",
+      "case": "large-Sand-Dust-stream",
+      "arm": "LA",
+      "workers": 4,
+      "repeats": 1,
+      "repeat_means_us": [
+        5128.8105263157895
+      ],
+      "worst_unrounded_repeat_mean_us": 5128.8105263157895,
+      "maximum_observed_us": 7301,
+      "terminal60_means_us": [
+        5764.266666666666
+      ],
+      "actual_participants": [
+        4
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "windows",
+      "case": "large-Sand-Dust-stream",
+      "arm": "LA-EVENT-OFF",
+      "workers": 1,
+      "repeats": 1,
+      "repeat_means_us": [
+        10467.957894736843
+      ],
+      "worst_unrounded_repeat_mean_us": 10467.957894736843,
+      "maximum_observed_us": 14647,
+      "terminal60_means_us": [
+        11621.633333333333
+      ],
+      "actual_participants": [
+        1
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "windows",
+      "case": "large-Sand-Dust-stream",
+      "arm": "LA-EVENT-OFF",
+      "workers": 4,
+      "repeats": 1,
+      "repeat_means_us": [
+        7608.5684210526315
+      ],
+      "worst_unrounded_repeat_mean_us": 7608.5684210526315,
+      "maximum_observed_us": 52729,
+      "terminal60_means_us": [
+        6865.083333333333
+      ],
+      "actual_participants": [
+        4
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "windows",
+      "case": "large-Sand-Dust-stream",
+      "arm": "LA-SELECTIVE",
+      "workers": 1,
+      "repeats": 1,
+      "repeat_means_us": [
+        11161.168421052631
+      ],
+      "worst_unrounded_repeat_mean_us": 11161.168421052631,
+      "maximum_observed_us": 16802,
+      "terminal60_means_us": [
+        12399.466666666667
+      ],
+      "actual_participants": [
+        1
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "windows",
+      "case": "large-Sand-Dust-stream",
+      "arm": "LA-SELECTIVE",
+      "workers": 4,
+      "repeats": 1,
+      "repeat_means_us": [
+        4850.515789473684
+      ],
+      "worst_unrounded_repeat_mean_us": 4850.515789473684,
+      "maximum_observed_us": 6548,
+      "terminal60_means_us": [
+        5357.733333333334
+      ],
+      "actual_participants": [
+        4
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "windows",
+      "case": "large-Sand-Dust-stream",
+      "arm": "LA-SELECTIVE-LIVE-PASSIVE",
+      "workers": 1,
+      "repeats": 1,
+      "repeat_means_us": [
+        11365.77894736842
+      ],
+      "worst_unrounded_repeat_mean_us": 11365.77894736842,
+      "maximum_observed_us": 16601,
+      "terminal60_means_us": [
+        13120.75
+      ],
+      "actual_participants": [
+        1
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "windows",
+      "case": "large-Sand-Dust-stream",
+      "arm": "LA-SELECTIVE-LIVE-PASSIVE",
+      "workers": 4,
+      "repeats": 1,
+      "repeat_means_us": [
+        5235.2
+      ],
+      "worst_unrounded_repeat_mean_us": 5235.2,
+      "maximum_observed_us": 8043,
+      "terminal60_means_us": [
+        5664.233333333334
+      ],
+      "actual_participants": [
+        4
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "windows",
+      "case": "large-Sand-Dust-stream",
+      "arm": "LA-SELECTIVE-LIVE-PASSIVE-GATED",
+      "workers": 1,
+      "repeats": 1,
+      "repeat_means_us": [
+        11589.673684210526
+      ],
+      "worst_unrounded_repeat_mean_us": 11589.673684210526,
+      "maximum_observed_us": 16462,
+      "terminal60_means_us": [
+        12644.016666666666
+      ],
+      "actual_participants": [
+        1
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "windows",
+      "case": "large-Sand-Dust-stream",
+      "arm": "LA-SELECTIVE-LIVE-PASSIVE-GATED",
+      "workers": 4,
+      "repeats": 1,
+      "repeat_means_us": [
+        5463.252631578947
+      ],
+      "worst_unrounded_repeat_mean_us": 5463.252631578947,
+      "maximum_observed_us": 9959,
+      "terminal60_means_us": [
+        6142.6
+      ],
+      "actual_participants": [
+        4
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "windows",
+      "case": "large-Sand-Dust-stream",
+      "arm": "LA-SELECTIVE-SEPARATING-GUARD",
+      "workers": 1,
+      "repeats": 1,
+      "repeat_means_us": [
+        10826.21052631579
+      ],
+      "worst_unrounded_repeat_mean_us": 10826.21052631579,
+      "maximum_observed_us": 17117,
+      "terminal60_means_us": [
+        12181.95
+      ],
+      "actual_participants": [
+        1
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "windows",
+      "case": "large-Sand-Dust-stream",
+      "arm": "LA-SELECTIVE-SEPARATING-GUARD",
+      "workers": 4,
+      "repeats": 1,
+      "repeat_means_us": [
+        4882.873684210526
+      ],
+      "worst_unrounded_repeat_mean_us": 4882.873684210526,
+      "maximum_observed_us": 7159,
+      "terminal60_means_us": [
+        5328.483333333334
+      ],
+      "actual_participants": [
+        4
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "windows",
+      "case": "large-Sand-Dust-stream",
+      "arm": "RFT",
+      "workers": 1,
+      "repeats": 1,
+      "repeat_means_us": [
+        11286.2
+      ],
+      "worst_unrounded_repeat_mean_us": 11286.2,
+      "maximum_observed_us": 17975,
+      "terminal60_means_us": [
+        12652.416666666666
+      ],
+      "actual_participants": [
+        1
+      ]
+    },
+    {
+      "run": "workload-pilot",
+      "platform": "windows",
+      "case": "large-Sand-Dust-stream",
+      "arm": "RFT",
+      "workers": 4,
+      "repeats": 1,
+      "repeat_means_us": [
+        5073.789473684211
+      ],
+      "worst_unrounded_repeat_mean_us": 5073.789473684211,
+      "maximum_observed_us": 7141,
+      "terminal60_means_us": [
+        5509.45
+      ],
+      "actual_participants": [
+        4
+      ]
+    }
+  ]
+}
