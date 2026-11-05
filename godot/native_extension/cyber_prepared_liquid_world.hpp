@@ -410,17 +410,18 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
             const auto& norm = prepared.setup().normalization_receipt();
             const auto produced = (norm ? norm->totals().positive_delta : 0U) + transfer.halo_normalization_produced;
             const auto consumed = (norm ? norm->totals().negative_delta : 0U) + transfer.halo_normalization_consumed;
-            const auto water_before = before.water_visible + before.water_overfill;
-            const auto water_after = after.water_visible + after.water_overfill;
-            if (water_before + produced != water_after + consumed + transfer.discarded_overfill + transfer.clipped_visible_water)
+            // In-flight parcel Water is part of both owners' inventory (BW-001).
+            const auto water_before = before.water_visible + before.water_overfill + before.water_ballistic;
+            const auto water_after = after.water_visible + after.water_overfill + after.water_ballistic;
+            if (water_before + produced != water_after + consumed + transfer.discarded_overfill + transfer.clipped_visible_water +
+                    transfer.discarded_in_flight_water)
                 throw std::logic_error("Workbench conversion Water balance did not close");
             conversion_receipt["requested"] = convert;
             conversion_receipt["source_policy_sha256"] = prepared_liquid_detail::digest(adapter->world_->liquid_solver_policy().policy_hash());
             conversion_receipt["target_policy_sha256"] = prepared_liquid_detail::digest(pending->world->liquid_solver_policy().policy_hash());
             conversion_receipt["discarded_water_overfill"] = transfer.discarded_overfill;
-            // BW-001: parcels in flight are not retained cells; a rebuild drops
-            // them explicitly (they never entered either visible+overfill total).
-            conversion_receipt["discarded_in_flight_water"] = static_cast<std::int64_t>(before.water_ballistic);
+            conversion_receipt["preserved_in_flight_water"] = static_cast<std::int64_t>(transfer.preserved_in_flight_water);
+            conversion_receipt["discarded_in_flight_water"] = static_cast<std::int64_t>(transfer.discarded_in_flight_water);
             conversion_receipt["discarded_gas_amount"] = transfer.discarded_gas;
             conversion_receipt["preserved_water_overfill"] = transfer.preserved_overfill;
             conversion_receipt["preserved_gas_amount"] = transfer.preserved_gas;

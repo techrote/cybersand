@@ -209,6 +209,31 @@ World::WorkbenchLiquidTransfer World::inherit_workbench_liquid_state(const World
     }
     if (transfer.preserved_overfill + transfer.discarded_overfill != source.quantity_.water_overfill)
         throw std::logic_error("Workbench pressure overfill transfer did not close");
+    // BW-001: carry parcels in flight into a ballistic owner, booked like inherited
+    // overfill (an explicit ExternalEdit source of the candidate); otherwise report them.
+    for (const auto& origin : source.ballistic_parcels_) {
+        const bool fits = config_.ballistic_water.enabled &&
+            ballistic_parcels_.size() < config_.ballistic_water.capacity &&
+            (!whole_cell_water_enabled() || origin.quantity == maximum) && origin.quantity <= maximum;
+        if (!fits) { transfer.discarded_in_flight_water += origin.quantity; continue; }
+        auto parcel = origin;
+        parcel.age = 0;
+        parcel.source_body = 0;
+        parcel.vx = std::clamp(parcel.vx, -config_.ballistic_water.max_speed_q, config_.ballistic_water.max_speed_q);
+        parcel.vy = std::clamp(parcel.vy, -config_.ballistic_water.max_speed_q, config_.ballistic_water.max_speed_q);
+        ballistic_parcels_.push_back(parcel);
+        quantity_.kinds[static_cast<std::size_t>(QuantityKind::ExternalEdit)].produced += parcel.quantity;
+        quantity_.water_ballistic += parcel.quantity;
+        auto& l = ballistic_ledger_;
+        ++l.injected_parcels;
+        l.injected_quantity += parcel.quantity;
+        l.launch_px += static_cast<std::int64_t>(parcel.quantity) * parcel.vx;
+        l.launch_py += static_cast<std::int64_t>(parcel.quantity) * parcel.vy;
+        l.maximum_live = std::max<std::uint64_t>(l.maximum_live, ballistic_parcels_.size());
+        transfer.preserved_in_flight_water += parcel.quantity;
+    }
+    if (transfer.preserved_in_flight_water + transfer.discarded_in_flight_water != source.quantity_.water_ballistic)
+        throw std::logic_error("Workbench in-flight Water transfer did not close");
     validate_quantity_ledger(true);
     return transfer;
 }

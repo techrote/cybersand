@@ -137,6 +137,20 @@ Dictionary CyberNativeCellWorld::get_water_spray() const {
     d["live"] = static_cast<std::int64_t>(snapshot.live);
     d["capacity"] = static_cast<std::int64_t>(snapshot.capacity);
     d["in_flight_quantity"] = static_cast<std::int64_t>(snapshot.in_flight_quantity);
+    // Exact closed-system readback: grid + in-flight Water against the source/sink ledger.
+    if (!world_->has_failed()) {
+        const auto q = world_->quantity_ledger();
+        std::uint64_t produced = q.baseline_water, consumed = 0;
+        for (const auto& flow : q.kinds) { produced += flow.produced; consumed += flow.consumed; }
+        Dictionary water;
+        water["visible"] = static_cast<std::int64_t>(q.water_visible);
+        water["overfill"] = static_cast<std::int64_t>(q.water_overfill);
+        water["ballistic"] = static_cast<std::int64_t>(q.water_ballistic);
+        water["total"] = static_cast<std::int64_t>(q.water_visible + q.water_overfill + q.water_ballistic);
+        water["expected"] = static_cast<std::int64_t>(produced - consumed);
+        d["water"] = water;
+    }
+    d["native_tick_ms"] = simulation_time_ms_;
     // Bounded presentation/telemetry summary of the live parcels (cells, cells/tick).
     if (snapshot.live != 0U) {
         std::vector<cybersand::BallisticParcel> parcels(std::min<std::size_t>(snapshot.live, 8'192));

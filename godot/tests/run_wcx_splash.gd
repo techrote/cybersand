@@ -79,10 +79,24 @@ func recipe(kind: String, policy: PackedInt32Array, family: String) -> Dictionar
 		for y: int in range(320, SURFACE - 8, 8): data.edits.append([x, y, 8, 0])
 	if kind == "roof":
 		for x: int in range(150, 362, 12): data.edits.append([x, 268, 6, WALL])
+	if kind == "sandbank":
+		for x: int in range(112, 216, 8):
+			for y: int in range(330, 412, 8): data.edits.append([x, y, 8, SAND])
 	data.selected = 0
 	data.next_id = 2
 	if kind in ["drop", "roof", "repeat"]:
 		data.actors = [Setup.instance(Setup.BARREL, 1, Vector2(256, 236 if kind != "roof" else 286))]
+	elif kind == "sandbank":
+		data.actors = [Setup.instance(Setup.BARREL, 1, Vector2(214, 300))]
+	elif kind == "flyer":
+		data.actors = [Setup.instance("kestrel", 1, Vector2(256, 230))]
+	elif kind == "multi":
+		# Staggered heights: four independent bodies strike one native World in turn.
+		data.actors = []
+		var spots := [[170, 300], [230, 250], [290, 190], [350, 130]]
+		for i: int in range(spots.size()):
+			data.actors.append(Setup.instance(Setup.BARREL, i + 1, Vector2(spots[i][0], spots[i][1])))
+		data.next_id = spots.size() + 1
 	else:
 		# The physical session needs a body: park the barrel on a shelf outside the basin.
 		data.edits.append([40, 490, 10, WALL])
@@ -137,7 +151,8 @@ func run_case(kind: String, family: String, policy: PackedInt32Array, enabled: b
 	var first: int = int(host.latest_snapshot.tick_index) if host.latest_snapshot != null else 0
 	var trace := []
 	var peak := {"live": 0, "in_flight": 0, "top_row": 1e9, "rows_above": 0.0, "width": 0.0, "airborne_ticks": 0,
-		"peak_speed": 0.0, "launched": 0, "deposited": 0, "refused": 0}
+		"peak_speed": 0.0, "launched": 0, "deposited": 0, "refused": 0, "ledger_breaks": 0,
+		"max_total": -1, "min_total": 1 << 62}
 	var until := Time.get_ticks_msec() + WATCHDOG_MS
 	var observed := -1
 	var initial_pixels := water_pixels()
@@ -154,7 +169,15 @@ func run_case(kind: String, family: String, policy: PackedInt32Array, enabled: b
 		var state: Dictionary = session.workbench_actor_state(1)
 		var w: Dictionary = context.get("water_spray", {})
 		var parcels: Dictionary = w.get("parcels", {})
-		var sample := {"t": t, "live": int(w.get("live", 0)), "in_flight": int(w.get("in_flight_quantity", 0))}
+		var sample := {"t": t, "live": int(w.get("live", 0)), "in_flight": int(w.get("in_flight_quantity", 0)),
+			"tick_ms": float(w.get("native_tick_ms", 0.0))}
+		var water: Dictionary = w.get("water", {})
+		if not water.is_empty():
+			sample.total = int(water.total)
+			if int(water.total) != int(water.expected):
+				peak.ledger_breaks += 1
+			peak.max_total = maxi(peak.max_total, int(water.total))
+			peak.min_total = mini(peak.min_total, int(water.total))
 		if not state.is_empty():
 			sample.merge({"y": state.position.y, "vy": state.linear_velocity.y, "x": state.position.x})
 		if not parcels.is_empty():
@@ -184,7 +207,16 @@ func run_case(kind: String, family: String, policy: PackedInt32Array, enabled: b
 		"final_live": int(final_spray.get("live", -1)), "final_in_flight": int(final_spray.get("in_flight_quantity", -1)),
 		"ledger": final_spray.get("ledger", {}), "totals": final_spray.get("totals", {}),
 		"receipt": final_spray.get("receipt", {}), "trace": trace})
+	var times := []
+	for sample: Dictionary in trace: times.append(float(sample.get("tick_ms", 0.0)))
+	times.sort()
+	var p50: float = times[times.size() / 2] if not times.is_empty() else 0.0
+	var p95: float = times[int(times.size() * 0.95)] if not times.is_empty() else 0.0
+	rows.back()["tick_ms_p50"] = p50
+	rows.back()["tick_ms_p95"] = p95
 	print("WCX002 ", kind, " ", family, " spray=", enabled, " ticks=", observed, " launched=", peak.launched,
+		" ledger_breaks=", peak.ledger_breaks, " total[", peak.min_total, ",", peak.max_total, "]",
+		" tick_ms p50=", snappedf(p50, 0.001), " p95=", snappedf(p95, 0.001),
 		" peak_live=", peak.live, " rows_above=", snappedf(peak.rows_above, 0.1), " width=", snappedf(peak.width, 0.1),
 		" airborne=", peak.airborne_ticks, " peak_speed=", snappedf(peak.peak_speed, 0.01), " deposited=", peak.deposited,
 		" refused=", peak.refused, " pixels ", initial_pixels, "->", water_pixels())

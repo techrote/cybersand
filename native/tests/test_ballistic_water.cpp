@@ -593,3 +593,37 @@ void test_ballistic_water_engulfed_parcel_column() {
         closes(world, "engulfed column");
     }
 }
+
+void test_ballistic_water_retained_rebuild_inheritance() {
+    // A workbench retained rebuild carries parcels into a ballistic owner and
+    // reports (never silently loses) them for a non-ballistic owner.
+    auto source_config = config();
+    World source(source_config);
+    for (std::int64_t x = 1; x <= 6; ++x) source.set(x, 6, Material::Water);
+    require(source.launch_ballistic_water(2, 6, centre(2), centre(3), 100, -300).outcome == BallisticLaunchOutcome::Launched &&
+                source.launch_ballistic_water(5, 6, centre(5), centre(2), -100, -500).outcome == BallisticLaunchOutcome::Launched,
+            "source launches");
+    const auto in_flight = source.quantity_ledger().water_ballistic;
+    normalization::FinalSetupInput input;
+    input.setup.domain = {0, 0, 8, 8};
+    for (std::int64_t x = 1; x <= 6; ++x)
+        if (source.stored_material(x, 6) == Material::Water)
+            input.cells.push_back({x, 6, Material::Water, source.stored_state_a(x, 6), source.stored_state_b(x, 6), 200});
+    const auto candidate = [&](const WorldConfig& cfg) {
+        auto result = PreparedWorldBuilder::prepare(cfg, input, normalization::NormalizationOptIn::None);
+        require(std::holds_alternative<PreparedWorld>(result), "candidate setup");
+        return std::get<PreparedWorld>(result).take_world();
+    };
+    auto kept = candidate(source_config);
+    const auto receipt = kept->inherit_workbench_liquid_state(source, {0, 0, 8, 8}, false, false);
+    require(receipt.preserved_in_flight_water == in_flight && receipt.discarded_in_flight_water == 0U &&
+                kept->ballistic_parcel_count() == 2U && kept->quantity_ledger().water_ballistic == in_flight,
+            "ballistic owner did not inherit the parcels");
+    closes(*kept, "inherited");
+    WorldConfig plain = source_config;
+    plain.ballistic_water = {};
+    auto dropped_owner = candidate(plain);
+    const auto dropped = dropped_owner->inherit_workbench_liquid_state(source, {0, 0, 8, 8}, false, false);
+    require(dropped.discarded_in_flight_water == in_flight && dropped.preserved_in_flight_water == 0U &&
+                dropped_owner->ballistic_parcel_count() == 0U, "non-ballistic owner did not report discarded parcels");
+}

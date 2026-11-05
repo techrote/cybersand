@@ -364,6 +364,8 @@ public:
         std::uint64_t clipped_water_overfill = 0, clipped_gas_amount = 0, clipped_gas_labels = 0;
         std::uint64_t clipped_pressure_flow_cells = 0, clipped_inertial_cells = 0, clipped_thermal_cells = 0;
         std::uint64_t halo_normalization_produced = 0, halo_normalization_consumed = 0;
+        // BW-001: in-flight parcel Water carried into (or refused by) the new owner.
+        std::uint64_t preserved_in_flight_water = 0, discarded_in_flight_water = 0;
     };
     WorkbenchLiquidTransfer inherit_workbench_liquid_state(const World& source, RectI64 canvas,
         bool allow_conversion, bool normalize_water);
