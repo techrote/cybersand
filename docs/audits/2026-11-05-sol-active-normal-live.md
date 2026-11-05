@@ -190,9 +190,9 @@ on both actual hosts (38host commands total). [Native receipts](sol-active-norma
 [custody manifest](sol-active-normal-live-20261105/manifest.json) preserve hashes.
 Recorded smoke getter means are25.1–31.394444444444446µs, including diagnostic
 packet construction; these are not an isolated solver-cost or engine-speedup
-claim. Full chamber worker/repeat evidence follows below. Authored/material
-and distributed workload evaluation remains pending. No original SOL CPU pass
-is claimed.
+claim. At that smoke checkpoint authored/material and distributed workload
+evaluation remained pending; the completed cohorts appear below. No original
+SOL CPU pass is claimed.
 
 Documentation, historical M11 and the additive retrieval route pass at637eea42.
 The default repository checker exits1 with exactly8canonical native-source
@@ -242,8 +242,8 @@ This is not evidence of four-way scaling. Resident-cell estimate is2625536bytes;
 selective arrival history adds2097152bytes, reported separately. Their sum is
 only two known components, not total process/native memory. Getter costs include
 passive solve and diagnostic packet construction, with full observation and
-shared-host qualifiers. The later16-patch workload must qualify actual multiple
-participants and2048² material memory/capacity separately.
+shared-host qualifiers. The subsequently completed16-patch workload below
+separately qualifies actual multiple participants and2048² material components.
 
 The independent reducer now checks all Cartesian coordinates, missing/duplicate
 attempts, complete180-step windows, source/report hashes, and matched initial
@@ -322,7 +322,8 @@ nearly unchanged. Do not interpret the terminal-speed improvement as clearance.
 The mixed-body regression blocks general active-normal promotion. Kestrel's
 terminal-window rotation span rises approximately.507555→1.170533radians; its
 horizontal span also rises. Representative final total body KE is1.15113→6.02775.
-Sampled maximum Sand area/depth improves.396555/.245776→.314063/.192145; that
+Maximum individual-body sampled Sand area/depth improves
+.396555/.245776→.314063/.192145; that
 coexists with worse endpoint motion. The powered needle has zero selected
 arrivals and separately recorded controller work; it is not powered SOL escape.
 Wrapped-angle span is not an unwrapped rotation distance.
@@ -361,8 +362,14 @@ history bytes (42.467328decimal MB). Their known sum95634432bytes excludes other
 native allocations, Rapier, Godot and process overhead. This is not total memory.
 The stream workload has zero selected arrivals at its bodies despite declared
 material insertion; zero is observed, not an omitted test. Dense collision
-records72→82arrivals and sampled maximum Sand area3.504768→3.153210cell²/depth
-.510877→.501347cell. Material source ledgers close; no clearance claim follows.
+records72→82arrivals and maximum individual-body sampled Sand area
+3.504768→3.153210cell²/depth
+.510877→.501347cell. This area maximum is not the simultaneous sum across all
+bodies: representative dense-roster summed maxima are4.287390→4.263749cell²,
+and shared-body summed maxima are.486732→.371826cell². The public area field
+takes the maximum for one body at one sample. Material source ledgers close;
+no clearance claim follows. An internal read-only review verifies artifact
+hashes and identifies this labeling clarification; external acceptance remains pending.
 
 | Host / requested workers | Range of episode mean simulation µs | Range of episode mean getter µs |
 | --- | --- | --- |

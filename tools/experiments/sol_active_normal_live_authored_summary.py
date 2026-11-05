@@ -29,6 +29,7 @@ def main():
         derivative=folder/'independent-001'/(entry['name']+'.json');assert sha(derivative)==entry['derivative_sha256'];data=read(derivative)
         assert row['configured_workers']==[c['workers']]
         areas=Counter();depths=Counter();outside=0
+        # Maximum for one body at one sample, not a simultaneous roster sum.
         for observation in data['geometry_observations']:
             for body in observation['bodies']:
                 if body['outside']:outside+=1;continue
