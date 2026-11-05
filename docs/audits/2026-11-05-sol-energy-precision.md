@@ -150,6 +150,27 @@ validation records actual docs/repository/M11/retrieval/guard exits. Native
 optimized/ASan/UBSan and MSVC are **NOT RUN** for this script-only repair; #393's
 source-qualified historical results remain inherited, not fresh candidate passes.
 
+### Repository validation
+
+At checkpoint `32c40879`, documentation and historical M11 pass; 22 original
+guard-adversary tests and 15 liquid-policy oracle tests pass. Execution-policy
+suite reports 14 tests, nine skipped, five executed passes. Both evidence
+adversary runs pass 9/9. Whitespace passes. Frozen retrieval remains 19/32 rank-1,
+32/32 rank-5; the additive post-result numerical supplement is 3/3 rank-1.
+Manual context review retains mechanism, timing and admission qualifiers; lexical
+hits alone are not answer correctness.
+
+The first documentation attempt fails six references to five missing companion
+files. The separate workspace revision
+`a15e06ca6f37750b66b89936424e0d018b203f7b` supplies those exact files, with
+their hashes retained; no source file or frozen question is changed. Fresh
+documentation then passes. Repository check still fails the **eight inherited
+native runtime input mismatches**. Native libraries remain unmaterialized in
+this isolated pure-script/Rapier project. The original MAT guard still exits 1
+at protected `world.cpp` drift; neither it nor `world_pressure.inc` is repaired
+or admitted. [Validation receipts](sol-energy-20261105/validation.json) preserve
+both attempts and actual command exits. These failures preclude integration.
+
 ## Decisions and next work
 
 | Decision | Source-bound disposition |
