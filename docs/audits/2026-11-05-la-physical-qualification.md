@@ -80,6 +80,10 @@ All thresholds were declared before outcomes. No post-result gain/threshold tuni
 
 ## Real authored apparatus and observations
 
+### Prospective008follow-up registration
+
+Before implementing or observing008, register two additional180stepcases with the same seven arms, source/gains/budget/seed/1/60cadence and fresh1/4worker Windows/Linux sessions. `angular-Scooper-reversal` uses the authored Scooper on the unchanged bed, initialomega+0.3rad/s and zero linear velocity; immediately after native response atstep0apply the externally accounted torque impulse `-2*I*live_omega`. `near-Sand-reversal` uses the authored barrel/bed, initialvY+3, sixSand cells at `(125..130,112)` above the initial hulltop114, and the existing measured linear reversal atstep1. Do not move the challenge origin after observing arrivals. Zero arrivals or a dormant gate remain executed outcomes, not grounds to retime the fixture. Test angular sign reversal and preservation of genuine event+legacy components under the opt-in guard; reject a claim if no causal gate/event is observed or ownership/material/readback fails. This adds coverage; it changes no006law or earlier cohort.
+
 The private Rapier World2D uses actual `PhysicalActorSession` rigs and their collision rectangles, not synthetic replacements. Authored barrel mass1/inertia21.6667, Needle0.065/0.31417, Kestrel0.1/0.975 and five-proxy concave Scooper0.18/24.7901are read back from the server. Authored gravity remains92.12(barrel) or38(flyers). Layer/mask1and native hard colliders are enabled except the separately labelled collision-disabled isolation.
 
 Fresh World/session per arm; seed0,1/60cadence, budget20, matched native tuples/body geometry/pose/mass/inertia/gravity/actions/publication and observation windows. One neutral dynamic Rapier step with gravity temporarily zero occurs before native construction, with pose/velocity/omega invariance checked, then exact authored gravity restored. This is the registered warm-up, not a claim that old unprimed actions succeeded.
