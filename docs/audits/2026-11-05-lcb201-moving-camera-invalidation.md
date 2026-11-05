@@ -200,6 +200,39 @@ Protected source, third step: `native/src/world.cpp` LF SHA-256
 `184c02da856f37a46bb1923f68f7ddf1dd10256d12b82e6dbe22c2c5163e9d5e` → `09d8b4fa772e40699492d4364b27e43bce081e5c60e101be3e15556e7d2eb6e9` at source commit `73429b3c6a05f62ef127b621470569602102c47b` (issue 201, PR 405), proposed as a reviewed
 behaviour-preserving transition pending independent review.
 
+## Ready-state CI: region-flip control updated
+
+First ready-state CI on head `d1df30b7de6379a4b9399d3104e21ae9b9a1b11a`
+(runs 42096309262, 42096309286, 42096309524, 42096310051; 2026-11-05):
+
+- All six Native families passed (native-normal, asan-ubsan, tsan, worldgen,
+  soliding-normal, soliding-asan), as did the apparatus, execution budgets and
+  20 of 21 Linux Godot shards (built from this source in CI).
+- The consistency job, the Windows shards and the palette cohorts refused with
+  the expected stale-runtime gate (`world.hpp`/`world.cpp` changed; the retained
+  Windows/Linux runtimes need rebuilding). This is a release gate, not a defect.
+- **One real failure.** Linux shard 10/21,
+  [`test_simulation_worker_interest_ownership.gd`](../../godot/tests/test_simulation_worker_interest_ownership.gd):
+  "previous ordering rebuilds the index every tick (rebuilds=0)". The
+  [#201 region-flip test](2026-11-04-lcb201-region-flip.md) kept the old
+  camera-then-scenario ordering as a negative control, expecting at least 15 of
+  16 index rebuilds, because each selected-core change used to call
+  `cache->cold()`. This branch removes that invalidation on purpose, so the
+  control now sees 0 rebuilds. The test's premise had become obsolete; this was
+  not a regression.
+
+The control is updated, not deleted. It now asserts the new guarantee
+(`flipped == 0`: per-tick region flips alone rebuild nothing), so it is stricter
+than before. The owned-ordering assertion (`owned == 0`) and the counter-liveness
+check (`index_rebuilds > 0` from the initial build) are unchanged. The worker's
+fixed-interest ordering stays as written: it remains the owner semantics for the
+window, though it no longer protects the cache. Local verification: Windows
+GDExtension built from this worktree with pinned LLVM-MinGW 20260826 / Clang
+23.1.0 (DLL SHA-256 `9aad672877a0ec1afe179239b1fa07eb37f46c48cc4f1e4c6a94cc1976326db8`),
+Godot 4.7-stable headless: `test_simulation_worker_interest_ownership.gd` 57/0
+(`{"owned_16_ticks":0,"previous_ordering_16_ticks":0}`),
+`test_lcb_pressure_optimization.gd` 4152/0.
+
 ## Gaps and next steps
 
 1. Desktop in-app before/after with the worker's camera window (the #370 host
@@ -208,5 +241,6 @@ behaviour-preserving transition pending independent review.
 2. The inclusion wake is now the dominant moving-camera cost. Measuring how much
    of it is necessary (blocks that were asleep and untouched while excluded) is
    the next experiment; changing it is out of scope without an owner decision.
-3. Windows and Linux CI gates, independent review and ready-state qualification
-   remain required before integration.
+3. Source-matched Windows/Linux runtime publication (the stale-runtime gate),
+   a green rerun on that head, independent review and the owner's integration
+   decision remain required.
