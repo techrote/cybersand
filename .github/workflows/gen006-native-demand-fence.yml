@@ -7,8 +7,10 @@ on:
     paths:
       - native/tests/test_gen006_demand_fence.cpp
       - native/tests/test_gen006_async_owner_race.cpp
+      - native/tests/test_gen006_interest_budget.cpp
       - .github/workflows/gen006-native-demand-fence.yml
       - docs/audits/2026-11-05-gen006-native-demand-fence.md
+      - docs/audits/2026-11-05-gen006-native-interest-capacity-route.md
   workflow_dispatch:
 
 permissions:
@@ -60,7 +62,7 @@ jobs:
               -I native/include -c "$src" -o "$obj" 2>&1 | tee -a build/gen006-demand-fence/compile.log
             common_objects+=("$obj")
           done
-          for test in demand_fence async_owner_race; do
+          for test in demand_fence async_owner_race interest_budget; do
             timeout 250s g++-13 -std=c++20 -O0 -g1 -pthread -Wall -Wextra -Wpedantic \
               -I native/include "native/tests/test_gen006_${test}.cpp" \
               "${common_objects[@]}" -o "build/gen006-demand-fence/${test}" \
@@ -75,8 +77,11 @@ jobs:
           timeout 120s build/gen006-demand-fence/async_owner_race 2>&1 | tee build/gen006-demand-fence/async-observations.txt
           grep -q 'GEN006_DEMAND_FENCE_PASS' build/gen006-demand-fence/observations.txt
           grep -q 'GEN006_ASYNC_OWNER_PASS' build/gen006-demand-fence/async-observations.txt
+          timeout 120s build/gen006-demand-fence/interest_budget 2>&1 | tee build/gen006-demand-fence/interest-observations.txt
+          grep -q '^GEN006_INTEREST_BUDGET_PASS' build/gen006-demand-fence/interest-observations.txt
           test "$(grep -c 'result=PASS' build/gen006-demand-fence/observations.txt)" = 2
           test "$(grep -c 'result=PASS' build/gen006-demand-fence/async-observations.txt)" = 2
+          test "$(grep -c 'result=PASS' build/gen006-demand-fence/interest-observations.txt)" = 2
       - name: Preserve source-pinned original evidence and any failures
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
@@ -90,5 +95,6 @@ jobs:
             build/gen006-demand-fence/compile.log
             build/gen006-demand-fence/observations.txt
             build/gen006-demand-fence/async-observations.txt
+            build/gen006-demand-fence/interest-observations.txt
           if-no-files-found: warn
           retention-days: 45
