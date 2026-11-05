@@ -1,0 +1,145 @@
+name: INV154 bounded UI copy-cost discriminator (diagnostic)
+
+on:
+  push:
+    branches:
+      - perf/inv154-microscenario-frame-copy-probe-20261105
+    paths:
+      - godot/tests/performance/test_microscenario_refresh_copy_cost.gd
+      - .github/workflows/inv154-microscenario-copy-probe.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: inv154-copy-probe-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  windows-synthetic-probe:
+    runs-on: windows-2022
+    timeout-minutes: 25
+    defaults:
+      run:
+        shell: bash
+    env:
+      PYTHONUTF8: '1'
+      GODOT_SILENCE_ROOT_WARNING: '1'
+    steps:
+      - name: Disable implicit Windows text conversion
+        run: |
+          git config --global core.autocrlf false
+          git config --global core.eol lf
+
+      - name: Check out exact diagnostic source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 1
+          lfs: false
+          persist-credentials: false
+
+      - name: Select Python
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+
+      - name: Validate policy, source identity and standalone synthetic test
+        timeout-minutes: 5
+        run: |
+          set -euo pipefail
+          mkdir -p build/inv154-probe
+          git rev-parse HEAD | tee build/inv154-probe/source-sha.txt
+          test "$(git rev-parse HEAD)" = "${{ github.sha }}"
+          git rev-parse 'HEAD^{tree}' | tee build/inv154-probe/source-tree.txt
+          python tools/ci/check_ci_provider_policy.py 2>&1 | tee build/inv154-probe/provider-policy.log
+          git diff --check
+          test -f godot/tests/performance/test_microscenario_refresh_copy_cost.gd
+
+      - name: Obtain pinned official Windows Godot 4.7
+        timeout-minutes: 12
+        run: |
+          set -euo pipefail
+          mkdir -p build/inv154-probe
+          curl --fail --location --retry 2 --connect-timeout 60 --max-time 600 \
+            --output build/inv154-probe/Godot_v4.7-stable_win64.exe.zip \
+            https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip
+          python - <<'PY'
+          import ast
+          import hashlib
+          import json
+          import zipfile
+          from pathlib import Path
+
+          evidence = Path('build/inv154-probe')
+          source = ast.parse(Path('tools/ci/run_windows_godot_regressions.py').read_text(encoding='utf-8'))
+          pin = next(ast.literal_eval(node.value) for node in source.body
+                     if isinstance(node, ast.Assign) and any(
+                         isinstance(t, ast.Name) and t.id == 'GODOT_SHA512' for t in node.targets))
+          archive = evidence / 'Godot_v4.7-stable_win64.exe.zip'
+          digest = hashlib.sha512(archive.read_bytes()).hexdigest()
+          if digest != pin:
+              raise RuntimeError('Godot archive SHA512 does not match source pin')
+          with zipfile.ZipFile(archive) as bundle:
+              if bundle.testzip() is not None:
+                  raise RuntimeError('Godot ZIP failed CRC')
+              member = 'Godot_v4.7-stable_win64_console.exe'
+              if bundle.namelist().count(member) != 1:
+                  raise RuntimeError('Missing or duplicated official console engine')
+              bundle.extract(member, evidence / 'engine')
+          (evidence / 'engine-identity.json').write_text(
+              json.dumps({'archive_sha512': digest, 'member': member}, indent=2) + '\n',
+              encoding='utf-8')
+          PY
+
+      - name: Run bounded standalone experiment and validate readback
+        timeout-minutes: 8
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          import os
+          import shutil
+          import subprocess
+          from pathlib import Path
+
+          evidence = Path('build/inv154-probe').resolve()
+          scratch = evidence / 'standalone'
+          scratch.mkdir(exist_ok=True)
+          (scratch / 'project.godot').write_text(
+              'config_version=5\n\n[application]\nconfig/name="INV154 Synthetic Copy Probe"\n', encoding='utf-8')
+          shutil.copyfile('godot/tests/performance/test_microscenario_refresh_copy_cost.gd', scratch / 'test.gd')
+          godot = evidence / 'engine' / 'Godot_v4.7-stable_win64_console.exe'
+          proc = subprocess.run(
+              [str(godot), '--headless', '--path', str(scratch), '--script', 'res://test.gd'],
+              stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, timeout=420,
+              env={**os.environ, 'GODOT_SILENCE_ROOT_WARNING': '1'})
+          (evidence / 'godot-stdout.txt').write_text(proc.stdout, encoding='utf-8')
+          print(proc.stdout)
+          data_lines = [line.split('INV154_MICROSCENARIO_COPY_PROBE ', 1)[1]
+                        for line in proc.stdout.splitlines()
+                        if line.startswith('INV154_MICROSCENARIO_COPY_PROBE ')]
+          if proc.returncode != 0 or len(data_lines) != 1:
+              raise RuntimeError(f'Actual Godot execution failed: exit={proc.returncode}, records={len(data_lines)}')
+          result = json.loads(data_lines[0])
+          if result['failures'] != 0 or len(result['cases']) != 36 or result['os_name'] != 'Windows':
+              raise RuntimeError('Godot readback contract failed')
+          (evidence / 'result.json').write_text(json.dumps(result, indent=2) + '\n', encoding='utf-8')
+          print('INV154 Windows standalone probe complete: 36 raw result rows; no real-Main FPS claim')
+          PY
+
+      - name: Retain source, engine, raw positive and negative outcomes
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: inv154-copy-probe-windows-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            build/inv154-probe/source-sha.txt
+            build/inv154-probe/source-tree.txt
+            build/inv154-probe/provider-policy.log
+            build/inv154-probe/engine-identity.json
+            build/inv154-probe/godot-stdout.txt
+            build/inv154-probe/result.json
+          if-no-files-found: warn
+          retention-days: 30
