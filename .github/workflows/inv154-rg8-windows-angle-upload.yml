@@ -1,0 +1,184 @@
+name: INV154 RG8 graphical ANGLE upload diagnostic
+
+on:
+  push:
+    branches: [perf/inv154-rg8-upload-windows-angle-20261105]
+    paths:
+      - godot/tests/performance/test_rg8_windows_angle_upload_probe.gd
+      - .github/workflows/inv154-rg8-windows-angle-upload.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  windows-graphical-rg8-api:
+    runs-on: windows-2022
+    timeout-minutes: 25
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Preserve repository checkout line endings
+        run: |
+          git config --global core.autocrlf false
+          git config --global core.eol lf
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          lfs: false
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Run exact-source Windows graphical Godot 4.7 ANGLE RG8 experiment
+        timeout-minutes: 20
+        env:
+          EXPECTED_HEAD: ${{ github.sha }}
+          GODOT_SILENCE_ROOT_WARNING: '1'
+        run: |
+          set -euo pipefail
+          mkdir -p build/inv154-rg8-angle
+          python tools/ci/check_ci_provider_policy.py > build/inv154-rg8-angle/provider-policy.log 2>&1
+          git diff --check
+          python - <<'PY'
+          import ast
+          import hashlib
+          import json
+          import os
+          import shutil
+          import subprocess
+          import urllib.request
+          import zipfile
+          from pathlib import Path
+
+          out = Path('build/inv154-rg8-angle').resolve()
+          def save(name, content):
+              (out/name).write_text(content, encoding='utf-8')
+          def cmd(*args, **kwargs):
+              return subprocess.check_output(args, text=True, **kwargs).strip()
+          head = cmd('git','rev-parse','HEAD')
+          tree = cmd('git','rev-parse','HEAD^{tree}')
+          save('source-identity.json',json.dumps({'sha':head,'tree':tree},indent=2)+'\n')
+          if head != os.environ['EXPECTED_HEAD']:
+              raise RuntimeError('checked-out source not the triggering SHA')
+          main_path = 'godot/scripts/main.gd'
+          source_sha = cmd('git','hash-object',main_path)
+          if source_sha != '791ef440efd6edb206c6f1be33989cb62e9213b2':
+              raise RuntimeError('production Main source guard changed: '+source_sha)
+          main = Path(main_path).read_text(encoding='utf-8')
+          if not all(token in main for token in
+              ('func finish_texture_upload(', 'func update_render_texture()', 'texture.update(image)',
+               'func apply_render_patches_to_image(', 'image.blit_rect(')):
+              raise RuntimeError('render publication/update path changed')
+          source_file = Path('godot/tests/performance/test_rg8_windows_angle_upload_probe.gd')
+          save('source-guards.json',json.dumps({
+              'main_blob':source_sha,'probe_sha256':hashlib.sha256(source_file.read_bytes()).hexdigest()
+          },indent=2)+'\n')
+          ast_tree = ast.parse(Path('tools/ci/run_windows_godot_regressions.py').read_text(encoding='utf-8'))
+          pin = next(ast.literal_eval(node.value) for node in ast_tree.body
+              if isinstance(node, ast.Assign) and any(
+                  isinstance(t, ast.Name) and t.id == 'GODOT_SHA512' for t in node.targets))
+          archive = out/'godot-official.zip'
+          url = 'https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip'
+          urllib.request.urlretrieve(url,archive)
+          digest = hashlib.sha512(archive.read_bytes()).hexdigest()
+          if digest != pin:
+              raise RuntimeError('Godot official archive failed source SHA512 pin')
+          with zipfile.ZipFile(archive) as z:
+              if z.testzip() is not None:
+                  raise RuntimeError('Godot ZIP CRC failure')
+              for member in ('Godot_v4.7-stable_win64.exe','Godot_v4.7-stable_win64_console.exe'):
+                  if z.namelist().count(member)!=1:
+                      raise RuntimeError('official Godot member missing: '+member)
+                  z.extract(member,out/'engine')
+          save('engine-identity.json',json.dumps({'url':url,'sha512':digest},indent=2)+'\n')
+          for name, query in [
+              ('video-controllers.json','Get-CimInstance Win32_VideoController | Select-Object Name,DriverVersion,VideoProcessor,PNPDeviceID | ConvertTo-Json -Depth 4'),
+              ('processor.json','Get-CimInstance Win32_Processor | Select-Object Name,NumberOfCores,NumberOfLogicalProcessors | ConvertTo-Json -Depth 4'),
+              ('os.json','Get-CimInstance Win32_OperatingSystem | Select-Object Caption,Version,BuildNumber | ConvertTo-Json -Depth 4')]:
+              probe = subprocess.run(['powershell','-NoProfile','-NonInteractive','-Command',query],
+                  stdout=subprocess.PIPE,stderr=subprocess.STDOUT,text=True,timeout=30)
+              save(name,probe.stdout)
+              if probe.returncode:
+                  raise RuntimeError('machine identity query failed: '+name)
+          scratch = out/'standalone'
+          scratch.mkdir(parents=True)
+          (scratch/'project.godot').write_text(
+              'config_version=5\n[application]\nconfig/name="INV154 RG8 upload probe"\n[rendering]\nrenderer/rendering_method="gl_compatibility"\n',
+              encoding='utf-8')
+          shutil.copyfile(source_file,scratch/'probe.gd')
+          engine = out/'engine/Godot_v4.7-stable_win64_console.exe'
+          env = {**os.environ, 'GODOT_SILENCE_ROOT_WARNING':'1'}
+          imp = subprocess.run([str(engine),'--headless','--editor','--path',str(scratch),'--import'],
+              stdout=subprocess.PIPE,stderr=subprocess.STDOUT,text=True,timeout=100,env=env)
+          save('import.log',imp.stdout)
+          if imp.returncode:
+              raise RuntimeError('standalone import failed with code '+str(imp.returncode))
+          argv=[str(engine),'--path',str(scratch),'--rendering-driver','opengl3_angle',
+                '--script','res://probe.gd']
+          save('command.json',json.dumps(argv,indent=2)+'\n')
+          run = subprocess.run(argv,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,
+              text=True,timeout=235,env=env)
+          save('godot.log',run.stdout)
+          prefix='INV154_RG8_UPLOAD '
+          matches=[line[len(prefix):] for line in run.stdout.splitlines() if line.startswith(prefix)]
+          if run.returncode or len(matches)!=1:
+              print(run.stdout[-7000:])
+              raise RuntimeError(f'Godot graphical case not qualified: exit {run.returncode}, readbacks {len(matches)}')
+          report=json.loads(matches[0])
+          expected={(size,arm,rep) for size in (256,1024)
+              for arm in ('static_no_upload','single_pixel_full_upload','bulk_fill_full_upload')
+              for rep in range(3)}
+          rows=report['rows']
+          actual={(r['size'],r['arm'],r['repeat']) for r in rows}
+          if (report['schema']!='inv154-rg8-angle-upload-v1' or report['failures']!=0
+               or report['os_name']!='Windows' or report['display_server']=='headless'
+               or not report['godot_version'].startswith('4.7')
+               or len(rows)!=18 or actual!=expected):
+              raise RuntimeError('wrong renderer/source/result inventory')
+          summary=[]
+          for r in rows:
+              samples=r['samples']
+              if len(samples)!=40:
+                  raise RuntimeError('missing frame samples')
+              for t in samples:
+                  if not all(type(t[k]) is int and t[k]>=0 for k in
+                      ('prepare_usec','upload_api_usec','frame_wait_usec','frame_interval_usec','start_usec','post_draw_usec')):
+                      raise RuntimeError('invalid monotonic timing')
+                  if t['post_draw_usec'] < t['start_usec']:
+                      raise RuntimeError('nonmonotonic frame markers')
+              if r['arm']=='single_pixel_full_upload' and r['pixel_write_checks']!=40:
+                  raise RuntimeError('pixel-mutation positive control missing')
+              if r['submitted_bytes_per_upload'] != (0 if r['arm']=='static_no_upload' else r['size']**2*2):
+                  raise RuntimeError('incorrect RG8 full-upload accounting')
+              values=sorted(x['upload_api_usec'] for x in samples)
+              summary.append({'size':r['size'],'arm':r['arm'],'repeat':r['repeat'],
+                  'n':len(values),'p50_api_usec':(values[19]+values[20])/2,
+                  'p95_api_usec':values[37], 'p99_api_usec':values[39],
+                  'max_api_usec':values[-1]})
+          save('result.json',json.dumps(report,indent=2)+'\n')
+          save('summary.json',json.dumps(summary,indent=2)+'\n')
+          print('PASS: actual Windows graphical ANGLE Godot 4.7; 18 rows x 40 frames; no native World/Rapier/Main')
+          print(json.dumps(summary,indent=2))
+          PY
+      - name: Preserve raw output, provenance and all negative evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: inv154-windows-angle-rg8-api
+          path: |
+            build/inv154-rg8-angle/source-identity.json
+            build/inv154-rg8-angle/source-guards.json
+            build/inv154-rg8-angle/provider-policy.log
+            build/inv154-rg8-angle/engine-identity.json
+            build/inv154-rg8-angle/video-controllers.json
+            build/inv154-rg8-angle/processor.json
+            build/inv154-rg8-angle/os.json
+            build/inv154-rg8-angle/import.log
+            build/inv154-rg8-angle/command.json
+            build/inv154-rg8-angle/godot.log
+            build/inv154-rg8-angle/result.json
+            build/inv154-rg8-angle/summary.json
+          if-no-files-found: warn
+          retention-days: 30
