@@ -58,10 +58,11 @@ def main():
                 "project.godot":b'config_version=5\n[application]\nconfig/name="SOL response isolated Rapier regression"\n[physics]\n2d/physics_engine="Rapier2D"\n[rendering]\nrenderer/rendering_method="gl_compatibility"\n'}
             for name in scripts+["tests/"+name+".gd" for name in tests]:material[name]=(ROOT/"godot"/name).read_bytes().replace(b"\r\n",b"\n")
             for name in e.git("ls-files","godot/addons/godot-rapier2d").decode().splitlines():
-                if "/bin/" not in name or name==manifest["artifact"]:material[str(Path(name).relative_to("godot")).replace("\\","/")]=(ROOT/name).read_bytes()
+                if not name.endswith(".import") and ("/bin/" not in name or name==manifest["artifact"]):material[str(Path(name).relative_to("godot")).replace("\\","/")]=(ROOT/name).read_bytes()
             for name,raw in material.items():
                 target=project/name;target.parent.mkdir(parents=True,exist_ok=True);target.write_bytes(raw)
             inputs[project.name]={name:dict(sha256=e.sha(raw),bytes=len(raw)) for name,raw in material.items()}
+            e.write(folder/"inputs.json",dict(source=source,tree=e.git("rev-parse","HEAD^{tree}").decode().strip(),engines=engines,inputs=inputs))
             for test in [None,*tests]:
                 argv=[e.ENGINES[platform],"--headless","--audio-driver","Dummy","--path",str(project) if platform=="windows" else e.wsl(project)]
                 argv+=( ["--editor","--import","--quit"] if test is None else ["--script","res://tests/"+test+".gd"] )
