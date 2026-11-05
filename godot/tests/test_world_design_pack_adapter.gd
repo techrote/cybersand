@@ -77,7 +77,7 @@ func _run() -> void:
 	var output: Dictionary = Adapter.build_combined(pack)
 	_expect(output.ok, "valid scene-family fixture must build")
 	if output.ok:
-		_expect(output.size == Vector2i(12, 7) and output.rg8_bytes == 168,
+		_expect(output["size"] == Vector2i(12, 7) and output.rg8_bytes == 168,
 			"native scene size/byte count")
 		_expect(output.data == _oracle(), "independent literal 12x7 oracle, including overwrite order")
 		_expect(output.rg8_sha256 == EXPECTED_SHA256, "independent precomputed SHA-256")
@@ -105,7 +105,7 @@ func _run() -> void:
 			"explicit material ID 0 can overwrite existing material")
 		_expect(_cell(hollow.data, 4, 0, 0) == Vector2i.ZERO,
 			"variant swap to ID 0 is an explicit erasure")
-		_expect(original.size == Vector2i(4, 3), "individual geometry is native-cell sized")
+		_expect(original["size"] == Vector2i(4, 3), "individual geometry is native-cell sized")
 	var combined: Dictionary = pack.duplicate(true)
 	combined.erase("scene")
 	combined["combined_scene"] = {"size": [1370, 7], "baseline_y": 5,
@@ -113,7 +113,7 @@ func _run() -> void:
 	var wide: Dictionary = Adapter.build_combined(combined)
 	_expect(wide.ok, "combined_scene supports >1024-cell width and origin-offset placement")
 	if wide.ok:
-		_expect(wide.size == Vector2i(1370, 7) and wide.rg8_bytes == 1370 * 7 * 2,
+		_expect(wide["size"] == Vector2i(1370, 7) and wide.rg8_bytes == 1370 * 7 * 2,
 			"full large width retained without clipping")
 		_expect(_cell(wide.data, 1370, 1300, 2).x == 43,
 			"combined_scene feature_id/origin places exact native cell")
