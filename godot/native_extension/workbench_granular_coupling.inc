@@ -386,6 +386,38 @@ Dictionary CyberNativeCellWorld::workbench_body_result(std::size_t id) const {
         row["passive_scale"]=passive.scale; row["normal_raw"]=passive.raw_normal; row["tangent_raw"]=passive.raw_tangent;
         row["normal_cap_hits"]=passive.normal_cap_hits; row["tangent_cap_hits"]=passive.tangent_cap_hits;
         row["bins"]=passive.bins; row["updates"]=passive.updates; row["quadrature_clamps"]=passive.quadrature_clamps;
+        // Diagnostic-fixture-only copied contact-bin evidence. This exports the
+        // exact immutable inputs used by solve_compound without changing
+        // contact ownership, response policy, application, or World state.
+        Array contact_bins;
+        for (int proxy_index=owner.first; proxy_index<owner.first+owner.count; ++proxy_index) {
+            const auto& proxy_bins=workbench_->bins[proxy_index];
+            for (std::size_t local_bin=0; local_bin<proxy_bins.size(); ++local_bin) {
+                const auto& bin=proxy_bins[local_bin];
+                if (!bin.count) continue;
+                const auto quadrature=cybersand::gcr::quadrature(bin);
+                Dictionary copied;
+                copied["proxy_id"]=static_cast<std::int64_t>(proxy_index);
+                copied["local_bin"]=static_cast<std::int64_t>(local_bin);
+                copied["count"]=static_cast<std::int64_t>(bin.count);
+                copied["position_sum_f64"]=PackedFloat64Array{bin.position_sum.x,bin.position_sum.y};
+                copied["centroid_f64"]=PackedFloat64Array{
+                    bin.position_sum.x/static_cast<double>(bin.count),
+                    bin.position_sum.y/static_cast<double>(bin.count)};
+                copied["normal_f64"]=PackedFloat64Array{bin.normal.x,bin.normal.y};
+                copied["maximum_radius"]=bin.maximum_radius;
+                copied["tangent_mean"]=bin.tangent_mean;
+                copied["tangent_m2"]=bin.tangent_m2;
+                copied["tangent_min"]=bin.tangent_min;
+                copied["tangent_max"]=bin.tangent_max;
+                copied["quadrature_nodes"]=static_cast<std::int64_t>(quadrature.nodes);
+                copied["quadrature_low_f64"]=PackedFloat64Array{quadrature.low.x,quadrature.low.y};
+                copied["quadrature_high_f64"]=PackedFloat64Array{quadrature.high.x,quadrature.high.y};
+                copied["quadrature_clamped"]=quadrature.clamped;
+                contact_bins.push_back(copied);
+            }
+        }
+        row["contact_bins"]=contact_bins;
     }
     return row;
 }
