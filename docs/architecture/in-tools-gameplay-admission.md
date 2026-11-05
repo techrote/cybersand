@@ -35,19 +35,21 @@ Current main also owns the World, quantity ledger, Water normalization, IN execu
 
 ## Minimal production authority
 
-The reviewed current-main source set has eleven inputs:
+The reviewed current-main source set has thirteen inputs:
 
 1. `godot/scripts/usable_catalog.gd`
 2. `godot/scripts/usable_runtime.gd`
 3. `godot/scripts/physical_usable_script.gd`
 4. `godot/scripts/physical_actor_session.gd`
-5. `godot/scripts/simulation_worker.gd`
-6. `godot/native_extension/cyber_native_cell_world.cpp`
-7. `godot/native_extension/cyber_native_cell_world.hpp`
-8. `native/include/cybersand/world.hpp`
-9. `native/src/world.cpp`
-10. `native/include/cybersand/water_normalization.hpp`
-11. `native/src/world_inertial.inc`
+5. `godot/scripts/physical_usable_runtime.gd`
+6. `godot/scripts/physical_usable_equipment.gd`
+7. `godot/scripts/simulation_worker.gd`
+8. `godot/native_extension/cyber_native_cell_world.cpp`
+9. `godot/native_extension/cyber_native_cell_world.hpp`
+10. `native/include/cybersand/world.hpp`
+11. `native/src/world.cpp`
+12. `native/include/cybersand/water_normalization.hpp`
+13. `native/src/world_inertial.inc`
 
 Each path is bound to the exact Git blob present on the adopted main. The checker also refuses a successor that modifies any of these production authority paths while continuing to claim this admission.
 
