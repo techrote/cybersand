@@ -280,6 +280,7 @@ python tools/experiments/sol_chamber_campaign.py --run <fresh-name>
 python tools/experiments/sol_chamber_reduce.py build/sol-chamber/<fresh-name>
 python tools/experiments/test_sol_chamber_reduce.py
 python tools/experiments/sol_chamber_review_reference.py docs/audits/sol-chamber-20261105
+python tools/experiments/sol_chamber_make_packet.py build/sol-chamber-review
 ```
 
 Existing run/derivative directories refuse overwrite. The portable final command
@@ -290,6 +291,13 @@ attempted episodes (including the interrupted one), raw logs, CYPS, reports and
 derivatives; its manifest distinguishes unavailable interrupted work from zero.
 No raw console log, runtime binary, environment, cache or archive is committed.
 The fixed raw report and CYPS are requested scientific data, not build output.
+
+The ignored full packet contains the exact source snapshot/dependent patch,
+all2,727 original local raw identities, validation commands and the two executed
+native runtime overrides. It is a local audit handover, not a release. After
+unpacking source and raw directories, `sol_chamber_review_packet.py raw
+--verify-only` verifies all identities; omit that flag for fresh full reduction
+through portable path resolution. The archive has its own checksum/CRC receipt.
 
 Every one of the192 initial full CYPS payloads is byte-identical within its
 matched case across modes/hosts/workers/repeats, independently checked after
