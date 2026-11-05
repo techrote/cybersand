@@ -122,7 +122,7 @@ func run_chamber_steps(spec: Dictionary, mode: String, body: RigidBody2D, bridge
 		timer=Time.get_ticks_usec();var ticked: bool = world.simulation_tick() if prepared else false
 		var native_us: int = Time.get_ticks_usec()-timer
 		boundaries.append(census(world,body,"after_native_tick"))
-		var response: Dictionary = world.workbench_coupling_results()
+		var response: Dictionary = coupling_result(world)
 		var record: Dictionary = {"step":step,"sample":sample,"boundaries":boundaries,"prepared":prepared,"ticked":ticked,
 			"response":response,"force":force,"before":before,"preparation_us":preparation_us,"native_tick_us":native_us}
 		record.after_external_drive=after_external
@@ -159,7 +159,7 @@ func run_chamber_steps(spec: Dictionary, mode: String, body: RigidBody2D, bridge
 		record.counterfactual_second_force_increment=(force/60.0).dot(record.after_application.velocity)+0.5*(float(force.x/60.0)*float(force.x/60.0))/float(before.mass)
 		record.rapier_kinetic_delta=float(record.after_step.kinetic)-float(record.after_application.kinetic)
 		record.energy_scope="Pinned Rapier force API is an immediate Fdt impulse: external_api_kinetic_delta is observed drive work; endpoint Fdx and a hypothetical second force increment are diagnostics only. Hard-contact and native grain energy not independently reconstructed"
-		record.statistics=preparer.inspect_statistics(world)
+		record.statistics=copied_statistics(preparer,world)
 		record.observer_us=0
 		for boundary: Dictionary in boundaries:record.observer_us+=int(boundary.observer_us)
 		record.export_us=0
@@ -169,6 +169,12 @@ func run_chamber_steps(spec: Dictionary, mode: String, body: RigidBody2D, bridge
 		record.elapsed_us=Time.get_ticks_usec()-start
 		report.steps.append(record)
 	check(report.steps.size()==int(registration.steps),"full registered step coverage")
+
+func coupling_result(world: Variant) -> Dictionary:
+	return world.workbench_coupling_results()
+
+func copied_statistics(preparer: Variant, world: Variant) -> Dictionary:
+	return preparer.inspect_statistics(world)
 
 func run() -> void:
 	registration=JSON.parse_string(FileAccess.get_file_as_string(CHAMBER_PROFILE))
