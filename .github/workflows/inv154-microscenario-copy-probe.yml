@@ -144,7 +144,7 @@ jobs:
           from pathlib import Path
 
           contract = Path('godot/scripts/microscenario_contract.gd').read_text(encoding='utf-8')
-          if not re.search(r'^const MAX_OBSERVATIONS: int = 24\\s*$', contract, flags=re.MULTILINE):
+          if not re.search(r'^const MAX_OBSERVATIONS: int = 24\s*$', contract, flags=re.MULTILINE):
               raise RuntimeError('Current source contract observation limit no longer matches the benchmark (24)')
           host = Path('godot/scripts/microscenario_host.gd').read_text(encoding='utf-8')
           if '"interaction_inspection":_interaction_inspection.duplicate(true)' not in host:
@@ -176,7 +176,7 @@ jobs:
                   or any(x['synthetic_inspection_pairs'] > 300 for x in cases)):
               raise RuntimeError('Envelope readback invalid; no positive result may be claimed')
           (evidence / 'envelope-result.json').write_text(
-              json.dumps(result, indent=2) + '\\n', encoding='utf-8')
+              json.dumps(result, indent=2) + '\n', encoding='utf-8')
           print('INV154 Windows source-bound envelope: 39 pairs, 78 rows, 0 unexpected parity failures; negative-control divergences required')
           PY
 
