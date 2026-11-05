@@ -52,6 +52,9 @@ def main():
             platforms[platform]=dict(manifest_path=path,manifest_sha256=digest(raw),native_inputs=manifest['source_inputs'],build_inputs=manifest.get('build_inputs',{}),
                 artifact=manifest.get('artifact'),declared_sha256=manifest.get('sha256'),toolchain=manifest.get('toolchain',manifest.get('compiler')),bindings=manifest.get('bindings',manifest.get('godot_cpp_library_sha256')),qualification=manifest.get('acceptance'))
         manifests[label]=platforms
+        # Transition metadata alone does not authenticate the referenced records.
+        for step in transitions(p.git('show',commit+':tools/material_catalogue/compatibility.py')):
+            paths.add(step['record'])
         records[label]=dict(commit=commit,tree=p.git('rev-parse',commit+'^{tree}').decode().strip(),merge_base_with_live=p.git('merge-base',commit,sources['live429']).decode().strip())
     objects=sorted({table[path]['blob'] for table in tables.values() for path in paths if path in table and table[path]['kind']=='blob'})
     retained={table[path]['blob'] for table in tables.values() for path in ['tools/material_catalogue/compatibility.py','materials/catalogue/compatibility-lock.json']}

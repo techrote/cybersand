@@ -78,6 +78,12 @@ not follow. No capacity/pass/gain changes or penetration correction are added.
 
 ## Granular response cost and observation
 
+The [Planned SOL offline authority contract](../operations/sol-authority-offline-contract.md)
+specifies complete copied eligibility evidence and a one-use no-op lease model.
+It provides no live capture/Active hold, native/RID actuation or source-composition
+admission. Ordinary pause and prepared-owner adoption are insufficient for that
+separate cross-owner recovery lifecycle.
+
 **Current experimental evidence:** [SOL-CHAMBER-COST-001](../audits/2026-11-05-sol-response-cost.md)
 isolates `workbench_coupling_results()` from the native tick. The getter includes
 the passive solve and serial response construction; the older four-stage

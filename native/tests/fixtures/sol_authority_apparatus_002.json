@@ -1,0 +1,29 @@
+{
+  "registration": "SOL-AUTHORITY-OFFLINE-002-APPARATUS",
+  "date": "2026-11-05",
+  "parent": "SOL-AUTHORITY-OFFLINE-001",
+  "live_authority": false,
+  "actuation_permitted": false,
+  "retained_attempt": {
+    "path": "build/sol-active-normal-live/authority-map-001/inventory/source-map.json",
+    "sha256": "eddd8a793f5f850e9b44ab916a372d5609e4ebb0439850d3f5b20a0ab4104dd5",
+    "source": "6e2200a6",
+    "process_exit": 0,
+    "qualification": "INCOMPLETE provenance scope:1352 rows omitted three transition-record files; metadata entries alone insufficient"
+  },
+  "correction": "Add every record referenced by each pinned guard transition before hashing rows. Retain original attempt, lock, source pins and all historical hashes unchanged.",
+  "model_scope": {
+    "mask_policy": "synthetic-cell-centre-001; not a statement of admitted live mask policy",
+    "native_input_digest": "19315d08020e7278ea8826579e60d16c43f2ba6b718e8e227e233f208a1c4254",
+    "native_input_digest_encoding": "SHA256 sorted-key compact JSON of published build.identity.native_inputs",
+    "runtime_receipt": "docs/audits/sol-active-normal-live-20261105/build.json",
+    "census_limit": 16384,
+    "event_limit": 256,
+    "consumed_lease_limit": 8,
+    "fixed_lease_event_deadline": 32,
+    "rigid_basis_check_tolerance": 0.000001,
+    "hard_filter": 0.000000001,
+    "qualification": "Bounds precede serialization; caller-supplied copied source/runtime digest consistency is not native capture authority. Actual counters remain zero."
+  },
+  "timing": "Registered before the first offline capture/lease adversarial campaign; not a production physics parameter change or SOL364-D clock"
+}

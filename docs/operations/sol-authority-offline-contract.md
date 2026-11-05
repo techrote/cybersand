@@ -57,6 +57,16 @@ The initial model is bounded at16384census cells,256events and8consumed leases.
 It covers ambient200 tuple temperature, granular2Sand/14Dust and hard1Wall/43
 RedBrick only; other materials/temperatures are out of this model's scope. These
 are offline apparatus limits, not production material policy or capacity changes.
+The [prospective apparatus amendment](../../native/tests/fixtures/sol_authority_apparatus_002.json)
+freezes a synthetic cell-centre mask policy,32event deadline and supplied
+experimental84-input/runtime digests before execution. Collection/primitive
+bounds precede serialization. Optimized Python is refused because it disables
+the model's assertion checks. No real owner token is constructed.
+
+The first source-map attempt exits0 but internal review finds three missing
+transition-record files in its1352rows. Amendment002 retains its raw hash and
+INCOMPLETE provenance qualification. The corrected tool includes every referenced
+record before hashing; the original result remains unchanged and unadmitted.
 
 ## E2 no-op lease
 
