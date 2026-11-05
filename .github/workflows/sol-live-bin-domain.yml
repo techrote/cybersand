@@ -24,8 +24,8 @@ jobs:
       - name: Verify exact blobs
         shell: bash
         run: |
-          test "$(git hash-object native/include/cybersand/granular_contact_response.hpp)" = a25710443f16e96a0ff02d8a4c0e7f734ca466f2
-          test "$(git hash-object tools/experiments/sol_live_bin_domain_regression.cpp)" = bfae617a46b9a0e69d6999fdcf40da0fc8e2f815
+          test "$(git hash-object native/include/cybersand/granular_contact_response.hpp)" = ce97fa104126404eed32b749873e0d4e36a6b56a
+          test "$(git hash-object tools/experiments/sol_live_bin_domain_regression.cpp)" = 0861e0ab12e2fef50274c731b0c84a78ff0aab9f
       - name: Parent RED and guarded GREEN
         shell: bash
         run: |
@@ -38,10 +38,10 @@ jobs:
           set -e
           cat parent.log
           test "$red_exit" -eq 1
-          grep -q 'SOL_LIVE_BIN_DOMAIN invalid_checks=32 valid_controls=6 failures=32' parent.log
+          grep -q 'SOL_LIVE_BIN_DOMAIN invalid_checks=40 valid_controls=12 failures=40' parent.log
           g++ -std=c++20 -O2 -Wall -Wextra -Werror -I native/include tools/experiments/sol_live_bin_domain_regression.cpp -o guarded
           ./guarded | tee guarded.log
-          grep -q 'SOL_LIVE_BIN_DOMAIN invalid_checks=32 valid_controls=6 failures=0' guarded.log
+          grep -q 'SOL_LIVE_BIN_DOMAIN invalid_checks=40 valid_controls=12 failures=0' guarded.log
       - name: Candidate ASan and UBSan
         shell: bash
         run: |
@@ -69,8 +69,8 @@ jobs:
       - name: Verify exact blobs
         shell: pwsh
         run: |
-          if ((git hash-object native/include/cybersand/granular_contact_response.hpp).Trim() -ne "a25710443f16e96a0ff02d8a4c0e7f734ca466f2") { throw "Header blob changed" }
-          if ((git hash-object tools/experiments/sol_live_bin_domain_regression.cpp).Trim() -ne "bfae617a46b9a0e69d6999fdcf40da0fc8e2f815") { throw "Test blob changed" }
+          if ((git hash-object native/include/cybersand/granular_contact_response.hpp).Trim() -ne "ce97fa104126404eed32b749873e0d4e36a6b56a") { throw "Header blob changed" }
+          if ((git hash-object tools/experiments/sol_live_bin_domain_regression.cpp).Trim() -ne "0861e0ab12e2fef50274c731b0c84a78ff0aab9f") { throw "Test blob changed" }
       - name: Parent RED and guarded GREEN
         shell: pwsh
         run: |
@@ -80,12 +80,12 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw "Parent compilation failed" }
           & .\parent_red.exe | Tee-Object -FilePath parent.log
           if ($LASTEXITCODE -ne 1) { throw "Parent did not fail as expected" }
-          if (-not (Select-String -Path parent.log -SimpleMatch "SOL_LIVE_BIN_DOMAIN invalid_checks=32 valid_controls=6 failures=32")) { throw "Unexpected parent RED count" }
+          if (-not (Select-String -Path parent.log -SimpleMatch "SOL_LIVE_BIN_DOMAIN invalid_checks=40 valid_controls=12 failures=40")) { throw "Unexpected parent RED count" }
           cl /nologo /std:c++20 /EHsc /O2 /I native/include tools/experiments/sol_live_bin_domain_regression.cpp /Fe:guarded.exe
           if ($LASTEXITCODE -ne 0) { throw "Candidate compilation failed" }
           & .\guarded.exe | Tee-Object -FilePath guarded.log
           if ($LASTEXITCODE -ne 0) { throw "Candidate regression failed" }
-          if (-not (Select-String -Path guarded.log -SimpleMatch "SOL_LIVE_BIN_DOMAIN invalid_checks=32 valid_controls=6 failures=0")) { throw "Unexpected candidate GREEN count" }
+          if (-not (Select-String -Path guarded.log -SimpleMatch "SOL_LIVE_BIN_DOMAIN invalid_checks=40 valid_controls=12 failures=0")) { throw "Unexpected candidate GREEN count" }
       - uses: actions/upload-artifact@v4
         if: always()
         with:

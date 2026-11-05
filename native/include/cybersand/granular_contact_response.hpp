@@ -129,6 +129,20 @@ inline Result solve_compound(const Body& b, std::span<const Bin* const> bins,
                 out.passive_rejected=true; out.scale=0; return out;
             }
         }
+        // Bin::add() maintains mean within the observed tangent extrema.
+        // A copied occupied Bin violating that constraint must not silently
+        // collapse two quadrature nodes to one and apply a different impulse.
+        // Permit bounded binary64 accumulation roundoff at large coordinates;
+        // the scale is computed only after the finite-domain checks above.
+        if(bin->count) {
+            const double magnitude=std::max({1.,std::abs(bin->tangent_min),
+                std::abs(bin->tangent_mean),std::abs(bin->tangent_max)});
+            const double tolerance=8.*std::numeric_limits<double>::epsilon()*magnitude;
+            if(bin->tangent_mean<bin->tangent_min-tolerance ||
+               bin->tangent_mean>bin->tangent_max+tolerance) {
+                out.passive_rejected=true; out.scale=0; return out;
+            }
+        }
         samples+=bin->count;
     }
     if(!std::isfinite(capacity_scale) || capacity_scale<1 || capacity_scale>4096 || !std::isfinite(available) || !std::isfinite(base_budget) || base_budget<5 || base_budget>80) { out.passive_rejected=true; return out; }
