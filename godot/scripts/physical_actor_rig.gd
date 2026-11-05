@@ -22,6 +22,7 @@ const PROFILE_VERSION: int = 1
 const TERRAIN_MASK: int = 1
 const ReviewFleetController = preload("res://scripts/gcr_review_fleet_controller.gd")
 const ReviewFleet = preload("res://scripts/gcr_review_fleet.gd")
+const FlyerPreferences = preload("res://scripts/flyer_preferences.gd")
 const PlayerVehicle = preload("res://scripts/player_vehicle_controller.gd")
 const PlayerAcrobat = preload("res://scripts/player_acrobat_controller.gd")
 const FlightProfile = preload("res://scripts/physical_flight_profile.gd")
@@ -296,9 +297,9 @@ static func valid_action(action: Dictionary) -> bool:
 
 static func valid_review_options(options: Dictionary) -> bool:
 	if options.is_empty(): return true # Retained RFT reference authoring.
-	if options.size()<4 or options.size()>7: return false
+	if options.size()<4 or options.size()>8: return false
 	for key: Variant in options:
-		if key not in ["response","budget","mass_multiplier","inertia_multiplier","thrust_multiplier","torque_multiplier","boost_multiplier"]: return false
+		if key not in ["response","budget","mass_multiplier","inertia_multiplier","thrust_multiplier","torque_multiplier","boost_multiplier","customization"]: return false
 	if not options.get("response") is String or options.response not in ["LA","LA-EVENT-OFF","LA-SELECTIVE","RFT"]: return false
 	for key: String in ["budget","mass_multiplier","inertia_multiplier"]:
 		if not _finite_number(options.get(key)): return false
@@ -309,6 +310,7 @@ static func valid_review_options(options: Dictionary) -> bool:
 	for key: String in ["thrust_multiplier","torque_multiplier"]:
 		if options.has(key) and (not _finite_number(options[key]) or float(options[key])<0.0 or float(options[key])>64.0): return false
 	if options.has("boost_multiplier") and (not _finite_number(options.boost_multiplier) or float(options.boost_multiplier)<1.0 or float(options.boost_multiplier)>8.0): return false
+	if options.has("customization") and not FlyerPreferences.validate_tuning(options.customization).is_empty(): return false
 	return true
 
 
@@ -322,10 +324,12 @@ func configure(definition: Dictionary, origin: Vector2, slot: int = 0, incarnati
 	if not invalid.is_empty():
 		fault = invalid
 		return ERR_INVALID_DATA
-	# Developer overrides apply only to the exact retained single-hull fleet.
+	# Developer overrides apply only to the exact retained authored fleet.
 	# Validate ordinary authored mass first; never widen catalogue admission.
 	var passive: bool = definition.get("id") == &"reference_barrel"
 	if not valid_review_options(review_options) or (not review_options.is_empty() and review_fleet_index==-1 and not passive):
+		return ERR_INVALID_DATA
+	if review_options.has("customization") and review_fleet_index==-1:
 		return ERR_INVALID_DATA
 	if review_fleet_index!=-1:
 		if not ReviewFleet.valid_index(review_fleet_index): return ERR_INVALID_DATA
@@ -361,11 +365,23 @@ func configure(definition: Dictionary, origin: Vector2, slot: int = 0, incarnati
 	_definition = definition.duplicate(true)
 	_profile = _definition.get("profile", {})
 	if review_fleet_index!=-1:
-		# Only the already validated, exact retained fleet can change propulsion
-		# ceilings. Omitted controls preserve its authored force and torque.
+		# Only the already validated, exact retained fleet can apply private
+		# actuation settings. Omitted controls preserve its authored values.
 		_profile["fleet_force"] = float(_profile.fleet_force)*float(review_options.get("thrust_multiplier",1.0))
 		_profile["fleet_torque"] = float(_profile.fleet_torque)*float(review_options.get("torque_multiplier",1.0))
 		_profile["fleet_boost_multiplier"] = float(review_options.get("boost_multiplier",2.0))
+		if review_options.has("customization"):
+			# Private preferences modify the validated copy, never authored JSON or
+			# definition identity. Omission retains the historical controller path.
+			var tuning: Dictionary = review_options.customization.duplicate(true)
+			_profile["fleet_customization"] = tuning
+			for mapping: Array in [["acceleration","fleet_accel"],["speed","speed"],
+					["turn_speed","fleet_turn_speed"],["turn_acceleration","fleet_turn_accel"],
+					["throttle_response","fleet_slew"],["drag","fleet_drag"],
+					["stabilization","fleet_attitude_gain"],["stabilization_damping","fleet_attitude_damping"]]:
+				_profile[mapping[1]] = float(_profile[mapping[1]])*float(tuning[mapping[0]])
+			_profile.gravity = clampf(float(_profile.gravity)*float(tuning.gravity),0.0,500.0)
+			_profile.angular_drag = clampf(float(_profile.angular_drag)*float(tuning.angular_drag),0.0,8.0)
 	_part_defs = _definition.parts
 	_player_controller = null
 	_flight_controller = null
@@ -423,7 +439,8 @@ func configure(definition: Dictionary, origin: Vector2, slot: int = 0, incarnati
 		body.collision_layer = TERRAIN_MASK
 		body.collision_mask = TERRAIN_MASK
 		var material: PhysicsMaterial = PhysicsMaterial.new()
-		material.friction = clampf(float(part.get("friction", 0.8)), 0.0, 1.0)
+		var friction_scale: float = float(_profile.fleet_customization.friction) if _profile.has("fleet_customization") else 1.0
+		material.friction = clampf(float(part.get("friction", 0.8))*friction_scale, 0.0, 1.0)
 		material.bounce = clampf(float(part.get("bounce", 0.02)), 0.0, 0.6)
 		if rig_id == &"reference_barrel":
 			body.gravity_scale = 0.094

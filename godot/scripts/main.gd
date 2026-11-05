@@ -2037,6 +2037,9 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func _unhandled_key_input(event: InputEvent) -> void:
 	if shared_workbench != null:
+		if shared_workbench.controls_blocked():
+			get_viewport().set_input_as_handled()
+			return
 		if event is InputEventKey and event.pressed and not event.echo and not get_viewport().gui_get_focus_owner() is LineEdit:
 			match event.keycode:
 				KEY_P,KEY_ESCAPE: shared_workbench.toggle_pause()
@@ -3908,25 +3911,18 @@ func actor_pointer_aim_at(pointer: Vector2) -> Vector2:
 func _workbench_key(key: Key) -> bool:
 	return Input.is_key_pressed(key) or Input.is_physical_key_pressed(key)
 
+func workbench_controls_blocked() -> bool:
+	return shared_workbench != null and shared_workbench.controls_blocked()
+
 func _publish_workbench_keyboard() -> void:
 	if physical_actor_session == null or shared_workbench.pilot_slot < 0: return
 	if paused or simulation_worker.has_failed() or not pending_microscenario_apply.is_empty() or not _actor_window_has_focus() \
-		or get_viewport().gui_get_focus_owner() is LineEdit or get_viewport().gui_get_focus_owner() is TextEdit:
+		or shared_workbench.controls_blocked() or get_viewport().gui_get_focus_owner() is LineEdit or get_viewport().gui_get_focus_owner() is TextEdit:
 		if not _actor_input_rearm: cancel_playable_course_input()
 		return
-	var action := CyberPlayerPlaygroundInput.sample(true,true)
-	var ports := {"q":_workbench_key(KEY_Q),"e":_workbench_key(KEY_E),
-		"s":_workbench_key(KEY_S) or _workbench_key(KEY_DOWN),"boost":_workbench_key(KEY_SHIFT)}
-	action.secondary = _workbench_key(KEY_CTRL)
-	var pads := Input.get_connected_joypads()
-	if not pads.is_empty():
-		var pad := pads[0]
-		ports.q = ports.q or Input.is_joy_button_pressed(pad,JOY_BUTTON_LEFT_SHOULDER)
-		ports.e = ports.e or Input.is_joy_button_pressed(pad,JOY_BUTTON_RIGHT_SHOULDER)
-		ports.s = ports.s or Input.get_joy_axis(pad,JOY_AXIS_LEFT_Y) > 0.2
-		action.secondary = action.secondary or Input.is_joy_button_pressed(pad,JOY_BUTTON_B)
-	if physical_actor_session.observation(shared_workbench.pilot_slot).get("model","") == &"kestrel":
-		action.move.y = -1.0 if _workbench_key(KEY_W) or _workbench_key(KEY_UP) else minf(0.0,action.move.y)
+	var sampled: Dictionary = shared_workbench.sample_controls()
+	var action: Dictionary = sampled.action
+	var ports: Dictionary = sampled.ports
 	if _actor_input_rearm:
 		if CyberPlayerPlaygroundInput.active(action) or ports.q or ports.e or ports.s or ports.boost: return
 		_actor_input_rearm = false

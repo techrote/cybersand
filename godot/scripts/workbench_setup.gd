@@ -2,6 +2,7 @@ extends RefCounted
 
 # A starting construction recipe. Native runtime state and command leases are never serialized.
 const Fleet = preload("res://scripts/gcr_review_fleet.gd")
+const Preferences = preload("res://scripts/flyer_preferences.gd")
 const BARREL := "reference_barrel"
 const RESPONSES := ["LA-SELECTIVE", "LA", "LA-EVENT-OFF", "RFT"]
 const MATERIALS := [2,14,29,13,19,23,25,26,27,3,58,0]
@@ -11,20 +12,34 @@ const MAX_RUNS := 4096
 const MAX_STAMPS := 2048
 const DIRECTORY := "user://workbench"
 const BYTE_LIMIT := 1024 * 1024
+const VERSION: int = 3
 const DEFAULT_OPTIONS := {"budget":20.0,"mass_multiplier":1.0,"inertia_multiplier":1.0,
 	"thrust_multiplier":1.0,"torque_multiplier":1.0,"boost_multiplier":2.0}
 const ROOT_KEYS := ["version","extent","actors","next_id","selected","edits","response","liquid_policy",
 	"normalize","rule_radius","source","material","brush","fire"]
 
 static func fresh(policy: PackedInt32Array, extent := Vector2i(2048,2048)) -> Dictionary:
-	return {"version":2,"extent":[extent.x,extent.y],"actors":[],"next_id":1,"selected":0,"edits":[],
+	return {"version":VERSION,"extent":[extent.x,extent.y],"actors":[],"next_id":1,"selected":0,"edits":[],
 		"response":"LA-SELECTIVE","liquid_policy":Array(policy),"normalize":false,"rule_radius":2,
 		"source":[],"material":2,"brush":8,"fire":false}
 
 static func instance(model: String, id: int, pos: Vector2) -> Dictionary:
 	var index := Fleet.index_for_id(model)
-	return {"id":id,"model":model,"hash":Fleet.definition_hash(index) if index >= 0 else "reference-barrel-v1",
+	var value := {"id":id,"model":model,"hash":Fleet.definition_hash(index) if index >= 0 else "reference-barrel-v1",
 		"spawn":[pos.x,pos.y],"options":DEFAULT_OPTIONS.duplicate()}
+	if index >= 0:
+		value["customization"] = Preferences.tuning_defaults(Fleet.authoring_record(index).capabilities)
+	return value
+
+static func normalized(setup: Dictionary) -> Dictionary:
+	# Version 2 starts retain their six applied body values and gain neutral
+	# movement/emission settings. Bindings belong to private user preferences.
+	var result := setup.duplicate(true)
+	result.version = VERSION
+	for value: Dictionary in result.actors:
+		if value.model != BARREL and not value.has("customization"):
+			value["customization"] = Preferences.tuning_defaults(Fleet.authoring_record(Fleet.index_for_id(value.model)).capabilities)
+	return result
 
 static func extent_of(setup: Dictionary) -> Vector2i:
 	return Vector2i(int(setup.extent[0]),int(setup.extent[1]))
@@ -45,7 +60,8 @@ static func _integer(value: Variant, low: int, high: int) -> bool:
 	return _number(value,low,high) and floor(value) == value
 
 static func _actor_error(a: Variant, size: Vector2i, response: String) -> String:
-	if not _keys(a,["id","model","hash","spawn","options"]) or not _integer(a.id,1,2147483646) or not a.model is String:
+	if not (_keys(a,["id","model","hash","spawn","options"]) or _keys(a,["id","model","hash","spawn","options","customization"])) \
+		or not _integer(a.id,1,2147483646) or not a.model is String:
 		return "Invalid actor fields or instance ID."
 	var model := str(a.model)
 	var index := Fleet.index_for_id(model)
@@ -68,13 +84,21 @@ static func _actor_error(a: Variant, size: Vector2i, response: String) -> String
 			return "Body setting outside admission: " + key
 	if response == "RFT" and a.options.budget != 20.0:
 		return "RFT requires a budget of 20 on every body."
+	if a.has("customization"):
+		if model == BARREL: return "A passive barrel has no flyer controls or emitters."
+		var tuning_error: String = Preferences.validate_tuning(a.customization)
+		if not tuning_error.is_empty(): return tuning_error
+		var capabilities: Dictionary = Fleet.authoring_record(index).capabilities
+		for port: String in ["q","e","s"]:
+			if int(capabilities.get("dispenser_"+port,0)) == 0 and int(a.customization[port+"_material"]) != 0:
+				return "This flyer has no " + port.to_upper() + " dispenser."
 	return ""
 
 static func _material(value: Variant, powders_only := false) -> bool:
 	return _integer(value,0,255) and int(value) in (MATERIALS.slice(0,9) if powders_only else MATERIALS)
 
 static func validate(value: Variant, check_starting_paint: bool = true) -> String:
-	if not _keys(value,ROOT_KEYS) or not _integer(value.version,2,2):
+	if not _keys(value,ROOT_KEYS) or not _integer(value.version,2,VERSION):
 		return "Unsupported starting setup format."
 	if not value.extent is Array or value.extent.size() != 2:
 		return "Invalid canvas extent."
@@ -115,6 +139,7 @@ static func physical_definitions(setup: Dictionary) -> Array:
 	for actor: Dictionary in setup.actors:
 		var options: Dictionary = actor.options.duplicate()
 		options.response = setup.response
+		if actor.has("customization"): options["customization"] = actor.customization.duplicate(true)
 		result.append({"model":actor.model,"instance_id":int(actor.id),"producer":"passive" if actor.model == BARREL else "human",
 			"position":point(actor.spawn),"workbench_options":options,"canvas_extent":extent_of(setup)})
 	return result
@@ -215,4 +240,4 @@ static func read_named(label: String) -> Dictionary:
 		setup_data.edits[i] = Array(PackedInt32Array(setup_data.edits[i]))
 	for a: Dictionary in setup_data.actors:
 		a.id = int(a.id)
-	return {"setup":setup_data}
+	return {"setup":normalized(setup_data)}

@@ -7,6 +7,8 @@ func _input(event: InputEvent) -> void:
 func handle_navigation_input(event: InputEvent, viewport: Viewport) -> void:
 	if OS.has_feature("web") or bool(ProjectSettings.get_setting("cybersand/web_demo", false)): return
 	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_F2:
+		var scene: Node = get_tree().current_scene
+		if scene != null and scene.has_method("workbench_controls_blocked") and scene.workbench_controls_blocked(): return
 		viewport.set_input_as_handled()
 		return_to_launcher()
 

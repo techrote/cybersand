@@ -8,6 +8,7 @@ var _parts: Array = []
 var source_origin: Vector2 = Vector2.INF
 var _origin: Vector2 = Vector2.ZERO
 var _view_size: Vector2 = Vector2.ONE
+const MAX_EXHAUST_PIXELS: int = 160
 
 
 func _ready() -> void:
@@ -53,6 +54,66 @@ func _point(world: Vector2) -> Vector2:
 	return (world - _origin) * size / _view_size
 
 
+func exhaust_pixels(exhaust: Dictionary) -> Array[Dictionary]:
+	var result: Array[Dictionary] = []
+	if exhaust.is_empty() or not exhaust.get("pose") is Transform2D or not exhaust.get("bounds") is Rect2: return result
+	var pose: Transform2D = exhaust.pose
+	var bounds: Rect2 = exhaust.bounds
+	if not pose.is_finite() or not bounds.has_area(): return result
+	var main: float = clampf(float(exhaust.get("main", 0.0)), -1.0, 1.0)
+	var side: float = clampf(float(exhaust.get("side", 0.0)), -1.0, 1.0)
+	var turn: float = clampf(float(exhaust.get("turn", 0.0)), -1.0, 1.0)
+	var board: bool = bool(exhaust.get("board", false))
+	var centre := bounds.get_center()
+	var jets: Array[Dictionary] = []
+	if absf(main) > 0.001:
+		var direction := Vector2(0, signf(main))
+		if board: direction = direction.rotated(-pose.get_rotation())
+		var nozzle_y: float = bounds.end.y + 0.5 if main > 0.0 else bounds.position.y - 0.5
+		if board:
+			for offset: float in [-0.28, 0.28]:
+				jets.append({"origin":Vector2(centre.x + bounds.size.x * offset, nozzle_y), "direction":direction, "strength":absf(main)})
+		else: jets.append({"origin":Vector2(centre.x, nozzle_y), "direction":direction, "strength":absf(main)})
+	if absf(side) > 0.001:
+		var direction := Vector2(-signf(side), 0)
+		if board: direction = direction.rotated(-pose.get_rotation())
+		jets.append({"origin":Vector2(bounds.position.x - 0.5 if side > 0.0 else bounds.end.x + 0.5, centre.y),
+			"direction":direction, "strength":absf(side)})
+	if absf(turn) > 0.001:
+		jets.append({"origin":Vector2(bounds.position.x, bounds.end.y + 0.5 if turn > 0.0 else bounds.position.y - 0.5),
+			"direction":Vector2(0, signf(turn)), "strength":absf(turn) * 0.6})
+		jets.append({"origin":Vector2(bounds.end.x - 1.0, bounds.position.y - 0.5 if turn > 0.0 else bounds.end.y + 0.5),
+			"direction":Vector2(0, -signf(turn)), "strength":absf(turn) * 0.6})
+	var outer := Color("327dc7") if not bool(exhaust.get("boost", false)) else Color("e88539")
+	var core := Color("eaffff")
+	var middle := Color("78e7f5") if not bool(exhaust.get("boost", false)) else Color("ffe09a")
+	var phase: int = posmod(int(exhaust.get("phase", 0)), 3)
+	var emitted: Dictionary = {}
+	for jet: Dictionary in jets:
+		var length: int = clampi(3 + ceili(float(jet.strength) * 4.0) + int(phase == 1), 3, 8)
+		var direction: Vector2 = jet.direction
+		var across := direction.orthogonal()
+		for step: int in range(length):
+			var width: int = 1 if step < length - 2 else 0
+			for cross_offset: int in range(-width, width + 1):
+				if result.size() >= MAX_EXHAUST_PIXELS: return result
+				var world: Vector2 = pose * (Vector2(jet.origin) + direction * step + across * cross_offset)
+				var cell := Vector2i(floori(world.x), floori(world.y))
+				if emitted.has(cell): continue
+				emitted[cell] = true
+				var color: Color = outer if cross_offset != 0 else (core if step < 2 else middle)
+				result.append({"cell":cell,"color":color})
+	return result
+
+
+func _draw_exhaust(exhaust: Dictionary) -> void:
+	var pixel_size: Vector2 = size / _view_size
+	for pixel: Dictionary in exhaust_pixels(exhaust):
+		# One native-world pixel per rect, snapped before presentation scaling.
+		# No antialiasing, separate particle simulation or material writes.
+		draw_rect(Rect2(_point(Vector2(pixel.cell)), pixel_size), pixel.color)
+
+
 func _draw_markings(part: Dictionary) -> void:
 	var pose: Transform2D = part.transform
 	var half: Vector2 = Vector2(part.size)*0.5
@@ -82,6 +143,8 @@ func _draw() -> void:
 		for delta: Vector2 in [Vector2.ZERO,Vector2(4,0),Vector2(4,24),Vector2(0,24),Vector2.ZERO]:
 			outline.append(_point(source_origin + delta))
 		draw_polyline(outline,Color("80e9d1"),1.0)
+	for part: Dictionary in _parts:
+		if part.has("gcr_exhaust"): _draw_exhaust(part.gcr_exhaust)
 	for part: Dictionary in _parts:
 		var vertices: PackedVector2Array = polygon(part)
 		var color: Color = part.color
