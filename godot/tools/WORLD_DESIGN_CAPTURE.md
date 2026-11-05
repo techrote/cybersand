@@ -20,7 +20,7 @@ CYBERSAND_SOURCE_REVISION="$(git rev-parse HEAD)" godot --path godot \
 
 Options: `--mode=combined|individual|both` (default both),
 `--scale=1..8` (integer, default 2), `--time=<nonnegative finite seconds>`
-(default 1.37), `--glow=on|off` (default on), `--tile-cells=64..2048`
+(default 1.37), `--glow=on|off` (default on), `--tile-cells=even 64..2048`
 (default 512; viewport including halo must remain <=8192 physical pixels).
 `--pack` is an explicit path and `--output` must be absolute.
 `--design-revision` records the **caller-provided** design Git revision;
@@ -98,6 +98,11 @@ godot --headless --path godot \
 # Real framebuffer smoke; MUST be run with a display backed renderer.
 xvfb-run -a godot --path godot \
   --script res://tests/capture_world_design_pack_smoke.gd
+# All 15 full-width PR454 source packs, exact independent RG8 SHA-256 oracles.
+godot --headless --path godot \
+  --script res://tests/check_world_design_pack_oracle.gd -- \
+  --packs=/absolute/read-only/PR454/docs/world-design \
+  --design-revision=f68516b7e4faefb8c776a89169365a7e8dd55d37
 # Existing applicable real material presentation check, same display constraint.
 xvfb-run -a godot --path godot \
   --script res://tests/test_material_presentation_render.gd
@@ -145,11 +150,24 @@ All packs contain eight placements. A combined scene wider than 1024 is
 ordinary in this set and requires full-width or tiled shader readback.
 The native material sample checks excluded reserved ID 10.
 
+**Additional executed source-data check:** An independent in-memory RG8
+reconstruction processed all 15 exact-source packs, applied their terrain
+and placed feature rectangles and variant swaps in order, and computed
+SHA-256 on each complete RG8 array: **15/15 completed, 0 coordinate
+or conversion errors, 9,874,024 combined RG8 bytes**. Independently
+calculated expected RG8 hashes, dimensions and source Git blob IDs
+are retained in
+`godot/tools/world_design_pack_expected_rg8_20261105.json`.
+The separate `check_world_design_pack_oracle.gd` program compares the **real
+Godot adapter** against all 15 independent expected arrays once Godot
+and the exact PR454 read-only source export are available. This checksum
+generation did **not** execute Godot and cannot establish shader correctness.
+
 ### Qualification and art-worker handoff
 
-**Existing evidence:** only external static source-pack shape inspection
-and the independent expected-byte oracle generation have executed in
-this author's environment. The environment had an Xvfb display but
+**Existing evidence:** external source-pack shape inspection and a
+second full-geometry, independent expected-RG8/SHA-256 reconstruction
+have executed in this author's environment. The environment had an Xvfb display but
 `command -v godot` reported no Godot binary. Consequently there are
 **no actual adapter PNGs, no Godot test exits, no cross-GPU/Windows
 qualification, and no verified full-pack engine-capture claim** in this
