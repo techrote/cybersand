@@ -39,7 +39,7 @@ if(process.argv.includes('--source')){
  const native=fs.readFileSync(path.resolve(dir,'../../../native/include/cybersand/material.hpp'),'utf8');
  const catalogue=JSON.parse(fs.readFileSync(path.resolve(dir,'../../../materials/catalogue/catalogue.json'),'utf8')).native.materials;
  const enums=native.slice(native.indexOf('enum class Material :'),native.indexOf('enum class MaterialState'));
- const ids=new Map([...enums.matchAll(/^\\s*(\\w+)\\s*=\\s*(\\d+),/gm)].map(m=>[+m[2],m[1]]));
+ const ids=new Map([...enums.matchAll(/^\s*(\w+)\s*=\s*(\d+),/gm)].map(m=>[+m[2],m[1]]));
  for(const v of p.palette){
   const actual=catalogue.find(x=>x.id===v.id);
   need(actual&&actual.valid&&ids.get(v.id)===v.enum_name,'source enum '+v.id);
