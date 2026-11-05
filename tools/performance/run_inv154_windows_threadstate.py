@@ -21,6 +21,7 @@ import json
 import math
 import os
 from pathlib import Path
+from datetime import datetime, timezone
 import re
 import shutil
 import statistics
@@ -928,6 +929,80 @@ def etw_capability() -> dict:
         result["general_profile_details"] = detail.stdout + "\n" + detail.stderr
     return result
 
+def xperf_wall_clock(unix_usec: int) -> str:
+    value = datetime.fromtimestamp(unix_usec / 1_000_000.0, tz=timezone.utc)
+    return value.strftime("%Y/%m/%d:%H:%M:%S.") + f"{value.microsecond:06d}+UTC"
+
+
+def postprocess_etw(trace: Path, trial: dict, capability: dict) -> dict:
+    xperf = capability["tools"].get("xperf")
+    if not xperf or not trace.exists():
+        return {"attempted": False, "reason": "xperf or ETL unavailable"}
+
+    sync = {
+        point["label"]: int(point["unix_usec"])
+        for point in trial["summary"].get("sync_points", [])
+    }
+    if "timed_a_start" not in sync or "timed_b_end" not in sync:
+        return {"attempted": False, "reason": "timed-arm Unix sync points unavailable"}
+
+    start = xperf_wall_clock(sync["timed_a_start"])
+    end = xperf_wall_clock(sync["timed_b_end"])
+    output_dir = trace.parent
+    symbol_env = os.environ.copy()
+    symbol_env["_NT_SYMBOL_PATH"] = (
+        "srv*" + str(output_dir / "symbols") + "*https://msdl.microsoft.com/download/symbols"
+    )
+    jobs = [
+        (
+            "tracestats",
+            output_dir / "tracestats.txt",
+            [xperf, "-i", str(trace), "-o", str(output_dir / "tracestats.txt"),
+             "-a", "tracestats", "-timespan", "actual", "-detail", "stack", "-timezone", "utc"],
+            os.environ.copy(),
+        ),
+        (
+            "cswitch_thread",
+            output_dir / "cswitch-thread.txt",
+            [xperf, "-i", str(trace), "-o", str(output_dir / "cswitch-thread.txt"),
+             "-a", "cswitch", "-thread", "-range", start, end],
+            os.environ.copy(),
+        ),
+        (
+            "profile_detail",
+            output_dir / "profile-detail.txt",
+            [xperf, "-i", str(trace), "-symbols", "-o", str(output_dir / "profile-detail.txt"),
+             "-a", "profile", "-detail", "-range", start, end],
+            symbol_env,
+        ),
+        (
+            "timed_window_dump",
+            output_dir / "timed-window-dump.txt",
+            [xperf, "-i", str(trace), "-symbols", "-o", str(output_dir / "timed-window-dump.txt"),
+             "-a", "dumper", "-range", start, end, "-stacktimeshifting"],
+            symbol_env,
+        ),
+    ]
+    result = {
+        "attempted": True,
+        "range_start_utc": start,
+        "range_end_utc": end,
+        "jobs": {},
+    }
+    for name, output, argv, env in jobs:
+        proc = run_cmd(argv, timeout=300, env=env)
+        result["jobs"][name] = {
+            "exit": proc.returncode,
+            "output": str(output.relative_to(ROOT)),
+            "output_exists": output.exists(),
+            "output_size": output.stat().st_size if output.exists() else 0,
+            "stdout": proc.stdout[-8000:],
+            "stderr": proc.stderr[-8000:],
+        }
+    write_json(output_dir / "xperf-postprocess.json", result)
+    return result
+
+
 def run_etw_trial(engine: Path, source_revision: str, capability: dict) -> dict:
     if not capability["tools"].get("wpr"):
         capability["unavailable_reason"] = "wpr.exe not present"
@@ -949,7 +1024,7 @@ def run_etw_trial(engine: Path, source_revision: str, capability: dict) -> dict:
             engine,
             THREADSTATE_FIXTURE,
             "etw1",
-            sampler_enabled=True,
+            sampler_enabled=False,
             source_revision=source_revision,
         )
     finally:
@@ -962,12 +1037,19 @@ def run_etw_trial(engine: Path, source_revision: str, capability: dict) -> dict:
         capability["trace_size"] = trace.stat().st_size if trace.exists() else 0
         if stop.returncode != 0:
             run_cmd(["wpr", "-cancel"], timeout=30)
+    postprocess = (
+        postprocess_etw(trace, trial, capability)
+        if capability.get("trace_exists") and trial is not None
+        else {"attempted": False, "reason": "capture or trial unavailable"}
+    )
     return {
         "captured": bool(capability.get("trace_exists")),
         "trial_summary": summarize_trial(trial) if trial else None,
+        "postprocess": postprocess,
         "note": (
-            "Raw ETL captured with GeneralProfile. Automatic WPA table export and "
-            "symbol resolution are only claimed if a supported exporter/profile is available."
+            "Raw ETL captured with GeneralProfile; xperf post-processing is restricted "
+            "to the absolute timed-arm window. Symbol resolution is attempted with the "
+            "Microsoft symbol server; missing Godot/Rapier private symbols remain explicit."
         ),
     }
 
