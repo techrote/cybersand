@@ -245,7 +245,7 @@ static func build_combined(pack: Variant) -> Dictionary:
 	var info: Dictionary = inspect(pack)
 	if not info.ok:
 		return info
-	var size: Vector2i = info.size
+	var size: Vector2i = info["size"]
 	var data: PackedByteArray = _blank(size)
 	for rectangle: Array in info.terrain:
 		_stamp(data, size.x, rectangle, Vector2i.ZERO)
