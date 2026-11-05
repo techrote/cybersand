@@ -374,7 +374,7 @@ Dictionary CyberNativeCellWorld::workbench_body_result(std::size_t id) const {
     Vec support_point{}, support_normal{};
     if (passive.capacity>0 && !passive.passive_rejected) for (std::size_t i=0;i<bin_count;++i) {
         const auto& bin=*bins[i];
-        if (!bin.count || bin.normal.y>=-std::sqrt(.5)) continue;
+        if (!bin.count || bin.normal.y>=-.35) continue;
         support_samples+=bin.count;
         support_point=support_point+bin.position_sum;
         support_normal=support_normal+bin.normal*static_cast<double>(bin.count);
