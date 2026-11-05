@@ -284,6 +284,17 @@ remain explicit, with sampled ROI/convex-proxy geometry scope.
 
 ## Refusals and custody qualifications
 
+The registered authored192 and workload72 matrices execute at119ac3a5 on actual
+Windows/Linux hosts with configured workers1/4, three repeats and unchanged
+native runtimes. Independent authored reduction at that same source completes
+all264episodes,132paired pristine-input groups and60480steps with every owner
+application and material source ledger checked. This is coverage/accounting
+qualification, not original SOL authority or physical-clearance acceptance.
+The new post-result `sol_active_normal_live_authored_summary.py` synthesizes the
+retained independent results without changing any physics input or adding a
+success threshold. Its separately source-pinned execution/public datasets follow
+in the next checkpoint. Both independent raw manifests remain retained locally.
+
 All failed attempts remain retained. Build001 refuses before compilation:
 MSYS SDK path handling on Windows and CRLF wrapper shebang on Linux. Build002
 compiles both runtimes but lacks a pre-build generated-header inventory;003
