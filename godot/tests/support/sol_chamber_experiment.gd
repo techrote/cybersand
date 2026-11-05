@@ -83,6 +83,9 @@ func chamber_episode(spec: Dictionary, mode: String, workers: int, repeat: int, 
 	report.fixed_delta=bridge.fixed_delta()
 	check(int(report.physics_tick_rate)==60 and report.fixed_delta==1.0/60.0,"registered actual cadence")
 	if committed:
+		committed=configure_fresh_world(world,mode,report)
+		check(committed,"fresh World experiment configuration")
+	if committed:
 		check(bridge.rebuild_hard_surface_colliders_from_rectangles(world.get_hard_surface_rectangles())>0,"real hard Wall collision bodies")
 		report.construction_receipt=world.get_applied_liquid_construction_receipt()
 		report.initial=census(world,body,"initial")
@@ -169,6 +172,9 @@ func run_chamber_steps(spec: Dictionary, mode: String, body: RigidBody2D, bridge
 		record.elapsed_us=Time.get_ticks_usec()-start
 		report.steps.append(record)
 	check(report.steps.size()==int(registration.steps),"full registered step coverage")
+
+func configure_fresh_world(_world: Variant, _mode: String, _report: Dictionary) -> bool:
+	return true
 
 func coupling_result(world: Variant) -> Dictionary:
 	return world.workbench_coupling_results()

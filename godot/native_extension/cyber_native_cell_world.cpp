@@ -421,6 +421,7 @@ void CyberNativeCellWorld::paint_disc(std::int64_t centre_x, std::int64_t centre
 }
 
 void CyberNativeCellWorld::prepare_rigid_body_coupling(const PackedFloat32Array& states, bool resolve_overlaps) {
+    if (workbench_) workbench_->normal_policy_locked = true;
     if (workbench_ || world_ == nullptr || world_->has_failed()) return;
     parse_body_states(states);
     prepare_body_coupling(resolve_overlaps);
@@ -836,6 +837,7 @@ void CyberNativeCellWorld::record_impulse(std::uint16_t body_id, Vector2 impulse
 }
 
 PackedFloat32Array CyberNativeCellWorld::rigid_body_results() const {
+    if (workbench_) workbench_->normal_policy_locked = true;
     if (workbench_) return {};
     PackedFloat32Array results;
     if (world_ == nullptr || world_->has_failed()) return results;

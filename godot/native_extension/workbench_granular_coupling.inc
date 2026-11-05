@@ -373,18 +373,20 @@ Dictionary CyberNativeCellWorld::workbench_body_result(std::size_t id) const {
     row["passive_impulse"]=sampled_vec(passive.impulse.x,passive.impulse.y); row["passive_torque"]=passive.torque;
     row["passivity_rejected"]=passive.passive_rejected; row["nodes"]=passive.nodes;
     row["normal_policy"]=workbench_->normal_policy==cybersand::gcr::NormalPolicy::Original ? "original":"active-normal-001";
-    // Scalar64 copied diagnostics avoid Vector2 real_t truncation. Passive energy
-    // is relative to the post-event state, before the separate legacy term.
-    row["passive_state_f64"]=PackedFloat64Array{state.velocity.x,state.velocity.y,state.com.x,state.com.y,
-        state.omega,state.mass,state.inertia,state.mu};
-    row["passive_raw_wrench_f64"]=PackedFloat64Array{passive.raw_impulse.x,passive.raw_impulse.y,passive.raw_torque};
-    row["passive_accepted_wrench_f64"]=PackedFloat64Array{passive.impulse.x,passive.impulse.y,passive.torque};
-    row["legacy_wrench_f64"]=PackedFloat64Array{applied_legacy.x,applied_legacy.y,legacy_moment*legacy_scale};
-    row["total_wrench_f64"]=PackedFloat64Array{impulse.x,impulse.y,torque};
-    row["passive_energy_before"]=passive.energy_before; row["passive_energy_after"]=passive.energy_after;
-    row["passive_scale"]=passive.scale; row["normal_raw"]=passive.raw_normal; row["tangent_raw"]=passive.raw_tangent;
-    row["normal_cap_hits"]=passive.normal_cap_hits; row["tangent_cap_hits"]=passive.tangent_cap_hits;
-    row["bins"]=passive.bins; row["updates"]=passive.updates; row["quadrature_clamps"]=passive.quadrature_clamps;
+    if (diagnostic_fixture_) {
+        // Scalar64 copied diagnostics avoid Vector2 real_t truncation. Passive energy
+        // is relative to the post-event state, before the separate legacy term.
+        row["passive_state_f64"]=PackedFloat64Array{state.velocity.x,state.velocity.y,state.com.x,state.com.y,
+            state.omega,state.mass,state.inertia,state.mu};
+        row["passive_raw_wrench_f64"]=PackedFloat64Array{passive.raw_impulse.x,passive.raw_impulse.y,passive.raw_torque};
+        row["passive_accepted_wrench_f64"]=PackedFloat64Array{passive.impulse.x,passive.impulse.y,passive.torque};
+        row["legacy_wrench_f64"]=PackedFloat64Array{applied_legacy.x,applied_legacy.y,legacy_moment*legacy_scale};
+        row["total_wrench_f64"]=PackedFloat64Array{impulse.x,impulse.y,torque};
+        row["passive_energy_before"]=passive.energy_before; row["passive_energy_after"]=passive.energy_after;
+        row["passive_scale"]=passive.scale; row["normal_raw"]=passive.raw_normal; row["tangent_raw"]=passive.raw_tangent;
+        row["normal_cap_hits"]=passive.normal_cap_hits; row["tangent_cap_hits"]=passive.tangent_cap_hits;
+        row["bins"]=passive.bins; row["updates"]=passive.updates; row["quadrature_clamps"]=passive.quadrature_clamps;
+    }
     return row;
 }
 

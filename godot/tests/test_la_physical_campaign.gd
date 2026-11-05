@@ -187,6 +187,8 @@ func episode(spec: Dictionary, arm: String, workers: int, repeat: int, output: S
 		"intent":"exploratory","definition_hash":checked.hash,"initial_bodies":initial_bodies,"simulation_window_enabled":false})
 	check(token>0 and preparer.commit_liquid_world(world,token),"native construction: "+str(preparer.get_last_error()))
 	if token<=0: session.close(); viewport.free(); return
+	if not configure_fresh_world(world,baseline,{}):
+		check(false,"fresh World experiment configuration");session.close();viewport.free();return
 	check(session.bridge.rebuild_hard_surface_colliders_from_rectangles(world.get_hard_surface_rectangles())>0,"real hard terrain")
 	var name: String = spec.id+"-"+arm+"-w"+str(workers)+"-r"+str(repeat)
 	var report: Dictionary = {"id":name,"registration":registration.id,"source":OS.get_environment("CYBERSAND_SOURCE_REVISION"),
@@ -243,7 +245,7 @@ func episode(spec: Dictionary, arm: String, workers: int, repeat: int, output: S
 		native_start=Time.get_ticks_usec()
 		var ticked: bool = world.simulation_tick() if prepared else false
 		var tick_us: int = Time.get_ticks_usec()-native_start
-		var response: Dictionary = world.workbench_coupling_results()
+		var response: Dictionary = coupling_result(world)
 		check(prepared and ticked and response.get("valid",false) and response.get("response")==baseline,"native source/mode/healthy tick")
 		if not response.get("valid",false):
 			report.failure_attempt={"step":step,"elapsed_us":Time.get_ticks_usec()-start,"preparation_us":preparation_us,
@@ -350,6 +352,12 @@ func episode(spec: Dictionary, arm: String, workers: int, repeat: int, output: S
 	if file!=null: file.store_string(JSON.stringify(plain(report)))
 	viewport.free()
 	print("LA_PHYSICAL_EPISODE ",name," steps=",report.steps.size()," failures=",report.failures.size())
+
+func configure_fresh_world(_world: Variant, _mode: String, _report: Dictionary) -> bool:
+	return true
+
+func coupling_result(world: Variant) -> Dictionary:
+	return world.workbench_coupling_results()
 
 func load_registration(path: String) -> Dictionary:
 	var current: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(path))
