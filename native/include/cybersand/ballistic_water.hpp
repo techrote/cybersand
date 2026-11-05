@@ -31,11 +31,20 @@ struct BallisticWaterConfig {
     std::int32_t max_speed_q = 1'536;        // per-axis |v| cap (6 cells / tick)
     std::int32_t air_drag = 2;               // per-tick drag numerator / 256
     std::int32_t restitution = 72;           // normal rebound on hard contact, / 256
-    std::int32_t friction = 176;             // tangential retention on hard contact, / 256
+    std::int32_t friction = 128;             // tangential Coulomb coefficient (of the normal impulse), / 256
     std::int32_t settle_speed_q = 64;        // at or below this after contact: deposit
     std::uint32_t maximum_age_ticks = 900;   // forced deposition attempt (no immortal parcels)
     std::int32_t deposit_radius = 2;         // bounded Chebyshev deposition search
     std::uint32_t maximum_contacts = 6;      // rebounds before forced deposition
+    // WCX-FR face release (experimental, off by default): a Water cell on a tall
+    // vertical face (an Empty side neighbour beside a column of at least
+    // face_min_height Water rows) may leave as a parcel at dam-break speed
+    // face_speed / 256 * sqrt(2 g h). Serialized, deterministic, budgeted.
+    bool face_release = false;
+    std::int32_t face_min_height = 6;
+    std::uint32_t face_budget = 48;          // releases per tick
+    std::int32_t face_speed = 192;           // / 256 of sqrt(2 g h)
+    std::uint32_t face_period = 3;           // a column sheds at most once per period ticks
 
     [[nodiscard]] friend bool operator==(const BallisticWaterConfig&, const BallisticWaterConfig&) = default;
 };
@@ -83,6 +92,7 @@ struct BallisticLedger {
     std::uint64_t deposited_parcels = 0, deposited_quantity = 0, deposit_writes = 0;
     std::uint64_t deferred_deposits = 0, refused_launches = 0, forced_deposits = 0;
     std::uint64_t column_deposits = 0; // writes reached through an engulfing Water column
+    std::uint64_t face_releases = 0;   // WCX-FR face cells released (a subset of launched)
     std::uint64_t terrain_contacts = 0, body_contacts = 0, surface_entries = 0;
     std::uint64_t ceiling_contacts = 0, boundary_contacts = 0;
     std::uint64_t parcel_ticks = 0, cell_steps = 0, maximum_live = 0;
@@ -98,6 +108,9 @@ struct BallisticLedger {
 
 struct BallisticWaterSnapshot {
     bool enabled = false;
+    // Diagnostic wall time of the last tick's serial parcel pass; never hashed,
+    // persisted or used by simulation.
+    std::uint64_t last_advance_nanoseconds = 0;
     std::uint32_t live = 0;
     std::uint32_t capacity = 0;
     std::uint64_t in_flight_quantity = 0;
@@ -115,7 +128,9 @@ struct BallisticWaterSnapshot {
           std::int64_t{BallisticWaterConfig::kSelfContactGraceTicks}, std::int64_t{c.capacity},
           std::int64_t{c.gravity_q}, std::int64_t{c.max_speed_q}, std::int64_t{c.air_drag},
           std::int64_t{c.restitution}, std::int64_t{c.friction}, std::int64_t{c.settle_speed_q},
-          std::int64_t{c.maximum_age_ticks}, std::int64_t{c.deposit_radius}, std::int64_t{c.maximum_contacts}}) {
+          std::int64_t{c.maximum_age_ticks}, std::int64_t{c.deposit_radius}, std::int64_t{c.maximum_contacts},
+          std::int64_t{c.face_release}, std::int64_t{c.face_min_height}, std::int64_t{c.face_budget},
+          std::int64_t{c.face_speed}, std::int64_t{c.face_period}}) {
         std::array<std::uint8_t, 8> bytes{};
         for (unsigned i = 0; i < 8; ++i)
             bytes[i] = static_cast<std::uint8_t>(static_cast<std::uint64_t>(value) >> (8U * i));

@@ -3744,6 +3744,7 @@ void test_lcb_inertial_storage_capture();
 void test_lcb_inertial_residual_motion();
 void test_lcb_inertial_admission();
 void test_ballistic_water_defaults_unchanged();
+void test_ballistic_water_face_release_dam_break();
 void test_ballistic_water_retained_rebuild_inheritance();
 void test_ballistic_water_engulfed_parcel_column();
 void test_ballistic_water_run_receipt_identity();
@@ -4009,6 +4010,7 @@ int main(int argc, char** argv) {
         {"BW-001 ballistic Water run receipt identity", test_ballistic_water_run_receipt_identity},
         {"BW-001 ballistic Water engulfed parcel column", test_ballistic_water_engulfed_parcel_column},
         {"BW-001 ballistic Water retained rebuild inheritance", test_ballistic_water_retained_rebuild_inheritance},
+        {"BW-001 ballistic Water face release dam break", test_ballistic_water_face_release_dam_break},
         {"IN-B1 signed vertical control and identity", test_inertial_signed_vertical_control_and_identity},
         {"IN-B1 signed vertical arc ceiling parity", test_inertial_signed_vertical_arc_ceiling_parity},
         {"IN-B1 signed vertical support and hybrid", test_inertial_signed_vertical_support_and_hybrid},

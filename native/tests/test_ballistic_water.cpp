@@ -627,3 +627,45 @@ void test_ballistic_water_retained_rebuild_inheritance() {
     require(dropped.discarded_in_flight_water == in_flight && dropped.preserved_in_flight_water == 0U &&
                 dropped_owner->ballistic_parcel_count() == 0U, "non-ballistic owner did not report discarded parcels");
 }
+
+void test_ballistic_water_face_release_dam_break() {
+    // WCX-FR: face release sheds a dam-break wall with exact Water accounting and
+    // worker-count-independent results; the front distance is reported only.
+    for (const int family : {1, 2, 4}) {
+        std::array<std::int64_t, 2> fronts{};
+        std::array<std::uint64_t, 2> hashes{};
+        for (std::size_t arm = 0; arm < 2; ++arm) {
+            for (const auto workers : {1U, 4U}) {
+                auto cfg = config(family, workers);
+                cfg.ballistic_water.face_release = arm == 1;
+                cfg.ballistic_water.face_period = 1;
+                cfg.ballistic_water.face_min_height = 4;
+                World world(cfg);
+                box(world, 160, 64);
+                rect(world, 1, 15, 10, 48, Material::Water);   // a 48-row wall of Water
+                const auto total = total_water(world);
+                for (int t = 0; t < 36; ++t) {
+                    (void)world.tick();
+                    require(total_water(world) == total, "dam break changed Water");
+                }
+                std::int64_t front = 0;
+                for (std::int64_t x = 1; x < 159; ++x)
+                    for (std::int64_t y = 1; y < 63; ++y)
+                        if (world.stored_material(x, y) == Material::Water) front = std::max(front, x);
+                std::array<BallisticParcel, 512> parcels{};
+                const auto live = std::min(world.copy_ballistic_parcels(parcels), parcels.size());
+                for (std::size_t i = 0; i < live; ++i) front = std::max(front, parcels[i].x / Q);
+                if (workers == 1U) { fronts[arm] = front; hashes[arm] = world.physical_state_hash(); }
+                else require(world.physical_state_hash() == hashes[arm], "face release differs across workers");
+                if (arm == 1) {
+                    require(world.ballistic_water_snapshot().ledger.face_releases > 0U, "no face cell was released");
+                    closes(world, "face release");
+                }
+            }
+        }
+        // Measured, not asserted (WCX-FR evidence): FreeMass 38 -> 42, CellularYield
+        // 42 -> 44, IN 50 -> 42 cells after 36 ticks with period 1 / height 4.
+        std::cout << "WCX-FR family " << family << " control front " << fronts[0]
+                  << " release front " << fronts[1] << std::endl;
+    }
+}

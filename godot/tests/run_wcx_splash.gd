@@ -136,8 +136,11 @@ func run_case(kind: String, family: String, policy: PackedInt32Array, enabled: b
 	# Frame the basin, its splash band and the jet apex (16:9).
 	ui._set_view(Vector2(88, 228), Vector2i(352, 198))
 	var worker = host.simulation_worker
+	# Complete settings every case: adapter spray settings persist across World
+	# rebuilds, so a previous case's jet must be explicitly switched off.
 	var settings := spray.duplicate()
 	settings.enabled = enabled and kind != "jet"
+	settings.jet_enabled = false
 	if kind == "jet":
 		settings.merge({"jet_enabled": enabled, "jet_origin": Vector2i(200, 343), "jet_angle": -62.0,
 			"jet_speed": 3.4, "jet_rate": 3, "jet_quantity": 96}, true)
@@ -170,7 +173,7 @@ func run_case(kind: String, family: String, policy: PackedInt32Array, enabled: b
 		var w: Dictionary = context.get("water_spray", {})
 		var parcels: Dictionary = w.get("parcels", {})
 		var sample := {"t": t, "live": int(w.get("live", 0)), "in_flight": int(w.get("in_flight_quantity", 0)),
-			"tick_ms": float(w.get("native_tick_ms", 0.0))}
+			"tick_ms": float(w.get("native_tick_ms", 0.0)), "parcel_ms": float(w.get("parcel_pass_ms", 0.0))}
 		var water: Dictionary = w.get("water", {})
 		if not water.is_empty():
 			sample.total = int(water.total)

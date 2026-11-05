@@ -151,6 +151,7 @@ Dictionary CyberNativeCellWorld::get_water_spray() const {
         d["water"] = water;
     }
     d["native_tick_ms"] = simulation_time_ms_;
+    d["parcel_pass_ms"] = static_cast<double>(snapshot.last_advance_nanoseconds) / 1e6;
     // Bounded presentation/telemetry summary of the live parcels (cells, cells/tick).
     if (snapshot.live != 0U) {
         std::vector<cybersand::BallisticParcel> parcels(std::min<std::size_t>(snapshot.live, 8'192));

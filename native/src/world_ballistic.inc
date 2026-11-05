@@ -44,7 +44,8 @@ void World::validate_ballistic_config() const {
         c.air_drag < 0 || c.air_drag > 64 || c.restitution < 0 || c.restitution > 256 ||
         c.friction < 0 || c.friction > 256 || c.settle_speed_q < 0 || c.settle_speed_q > c.max_speed_q ||
         c.maximum_age_ticks == 0U || c.maximum_age_ticks > 1'000'000U || c.deposit_radius < 0 ||
-        c.deposit_radius > 2 || c.maximum_contacts > 32U)
+        c.deposit_radius > 2 || c.maximum_contacts > 32U || c.face_min_height < 2 || c.face_min_height > 64 ||
+        c.face_budget > 1024U || c.face_speed < 0 || c.face_speed > 512 || c.face_period == 0U || c.face_period > 64U)
         throw std::invalid_argument("ballistic_water_v1 configuration outside its admitted envelope");
 }
 
@@ -59,6 +60,7 @@ BallisticWaterSnapshot World::ballistic_water_snapshot() const noexcept {
         out.momentum_y += static_cast<std::int64_t>(p.quantity) * p.vy;
     }
     out.ledger = ballistic_ledger_;
+    out.last_advance_nanoseconds = ballistic_advance_nanoseconds_;
     return out;
 }
 
@@ -148,12 +150,13 @@ World::BallisticCell World::classify_ballistic_cell(std::int64_t x, std::int64_t
 }
 
 BallisticLaunchResult World::admit_ballistic_spawn(std::int64_t spawn_x, std::int64_t spawn_y,
-                                                   std::int32_t vx, std::int32_t vy) const noexcept {
+                                                   std::int32_t vx, std::int32_t vy, bool internal) const noexcept {
     BallisticLaunchResult result;
     const auto& c = config_.ballistic_water;
     if (!c.enabled) { result.outcome = BallisticLaunchOutcome::Disabled; return result; }
     if (tick_failed_) { result.outcome = BallisticLaunchOutcome::WorldFailed; return result; }
-    if (tick_in_progress_) { result.outcome = BallisticLaunchOutcome::TickInProgress; return result; }
+    // Only the World's own serialized tick-entry passes launch during a tick.
+    if (tick_in_progress_ && !internal) { result.outcome = BallisticLaunchOutcome::TickInProgress; return result; }
     constexpr std::int64_t limit = std::int64_t{1} << 52;
     if (std::abs(vx) > c.max_speed_q || std::abs(vy) > c.max_speed_q || spawn_x < -limit || spawn_x > limit ||
         spawn_y < -limit || spawn_y > limit) {
@@ -177,7 +180,14 @@ BallisticLaunchResult World::admit_ballistic_spawn(std::int64_t spawn_x, std::in
 BallisticLaunchResult World::launch_ballistic_water(std::int64_t source_x, std::int64_t source_y,
         std::int64_t spawn_x, std::int64_t spawn_y, std::int32_t vx, std::int32_t vy,
         std::uint16_t source_body, std::uint32_t maximum_quantity) {
-    auto result = admit_ballistic_spawn(spawn_x, spawn_y, vx, vy);
+    return launch_ballistic_water_internal(source_x, source_y, spawn_x, spawn_y, vx, vy, source_body,
+                                           maximum_quantity, false);
+}
+
+BallisticLaunchResult World::launch_ballistic_water_internal(std::int64_t source_x, std::int64_t source_y,
+        std::int64_t spawn_x, std::int64_t spawn_y, std::int32_t vx, std::int32_t vy,
+        std::uint16_t source_body, std::uint32_t maximum_quantity, bool internal) {
+    auto result = admit_ballistic_spawn(spawn_x, spawn_y, vx, vy, internal);
     result.live = static_cast<std::uint32_t>(ballistic_parcels_.size());
     if (result.outcome == BallisticLaunchOutcome::CapacityFull) ++ballistic_ledger_.refused_launches;
     if (result.outcome != BallisticLaunchOutcome::Launched) return result;
@@ -355,8 +365,81 @@ void World::mark_ballistic_render_dirty(std::int64_t x, std::int64_t y) noexcept
     chunk->dirty_max_y = std::max(chunk->dirty_max_y, target.local_y);
 }
 
+// WCX-FR: shed cells from tall vertical Water faces as parcels so a "wall of
+// water" collapses at dam-break speed instead of one cell per tick. Serialized at
+// tick entry over sorted active chunks and blocks (bottom-up), so the result is
+// independent of worker count. Every release is an exact launch transfer.
+void World::release_water_faces() {
+    const auto& c = config_.ballistic_water;
+    if (!c.enabled || !c.face_release || c.face_budget == 0U) return;
+    auto& coords = ballistic_face_chunks_;
+    coords.clear();
+    for (const auto& [coord, chunk] : chunks_)
+        if (chunk->active && coords.size() < coords.capacity()) coords.push_back(coord);
+    std::sort(coords.begin(), coords.end());
+    const auto size = config_.chunk_size;
+    const auto block = config_.activity_block_size;
+    std::uint32_t budget = c.face_budget;
+    const auto water_at = [&](std::int64_t x, std::int64_t y) {
+        return stored_material(x, y) == Material::Water && transient_obstacle_at(x, y) == 0U;
+    };
+    const auto open_at = [&](std::int64_t x, std::int64_t y) {
+        return stored_material(x, y) == Material::Empty && transient_obstacle_at(x, y) == 0U &&
+               find_chunk(address(x, y).chunk) != nullptr;
+    };
+    for (const auto coord : coords) {
+        auto* chunk = find_chunk(coord);
+        if (chunk == nullptr) continue;
+        const auto per_axis = static_cast<std::size_t>(chunk->activity_blocks_per_axis);
+        for (std::size_t b = 0; b < chunk->activity_blocks.size() && budget != 0U; ++b) {
+            if (!chunk->activity_blocks[b].active) continue;
+            const auto first_x = static_cast<std::int32_t>(b % per_axis) * block;
+            const auto first_y = static_cast<std::int32_t>(b / per_axis) * block;
+            const auto last_x = std::min(first_x + block, size), last_y = std::min(first_y + block, size);
+            for (auto ly = last_y - 1; ly >= first_y && budget != 0U; --ly) {
+                for (auto lx = first_x; lx < last_x && budget != 0U; ++lx) {
+                    const auto& cell = chunk->cells[static_cast<std::size_t>(ly) * static_cast<std::size_t>(size) +
+                                                    static_cast<std::size_t>(lx)];
+                    if (cell.material_value() != Material::Water) continue;
+                    const auto x = coord.x * size + lx, y = coord.y * size + ly;
+                    if (transient_obstacle_at(x, y) != 0U) continue;
+                    if ((tick_index_ + mix64(static_cast<std::uint64_t>(x) * 0x9e3779b97f4a7c15ULL)) % c.face_period != 0U)
+                        continue;
+                    // A vertical face: open beside this cell and beside the cell above it.
+                    const auto first_side = deterministic_direction(x, y);
+                    std::int32_t side = 0;
+                    for (const auto s : {first_side, -first_side})
+                        if (open_at(x + s, y) && open_at(x + s, y - 1)) { side = s; break; }
+                    if (side == 0) continue;
+                    std::int64_t height = 0;
+                    while (height < 64 && water_at(x, y - 1 - height)) ++height;
+                    if (height < c.face_min_height) continue;
+                    // Integer sqrt(2 g h) in q256 per tick, scaled by face_speed / 256.
+                    const auto energy = static_cast<std::uint64_t>(2 * c.gravity_q) *
+                                        static_cast<std::uint64_t>(height * kBallisticQ);
+                    auto root = static_cast<std::uint64_t>(std::sqrt(static_cast<double>(energy)));
+                    while (root * root > energy) --root;
+                    while ((root + 1) * (root + 1) <= energy) ++root;
+                    const auto speed = std::min<std::int64_t>(c.max_speed_q,
+                        static_cast<std::int64_t>(root) * c.face_speed / 256);
+                    const auto r = launch_ballistic_water_internal(x, y, (x + side) * kBallisticQ + kBallisticQ / 2,
+                        y * kBallisticQ + kBallisticQ / 2, static_cast<std::int32_t>(side * speed), 0, 0,
+                        std::numeric_limits<std::uint32_t>::max(), true);
+                    if (r.outcome != BallisticLaunchOutcome::Launched) continue;
+                    ++ballistic_ledger_.face_releases;
+                    --budget;
+                }
+            }
+        }
+    }
+}
+
 void World::advance_ballistic_water() {
-    if (!config_.ballistic_water.enabled || ballistic_parcels_.empty()) return;
+    ballistic_advance_nanoseconds_ = 0;
+    if (!config_.ballistic_water.enabled) return;
+    const auto started = std::chrono::steady_clock::now();
+    release_water_faces();
+    if (ballistic_parcels_.empty()) return;
     std::size_t index = 0;
     while (index < ballistic_parcels_.size()) {
         auto& parcel = ballistic_parcels_[index];
@@ -370,6 +453,8 @@ void World::advance_ballistic_water() {
             ++index;
         }
     }
+    ballistic_advance_nanoseconds_ = static_cast<std::uint64_t>(
+        std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::steady_clock::now() - started).count());
 }
 
 bool World::step_ballistic_parcel(BallisticParcel& p) {
@@ -440,14 +525,25 @@ bool World::step_ballistic_parcel(BallisticParcel& p) {
             if (!hit_x && !hit_y) hit_x = hit_y = true;
         }
         const auto before_x = p.vx, before_y = p.vy;
+        // Rebound with restitution; tangential Coulomb friction removes
+        // friction/256 of the normal impulse, so a grazing sheet skims and runs
+        // out while a hard impact stops it.
+        const auto coulomb = [&](std::int32_t tangent, std::int32_t normal_impulse) {
+            const auto loss = static_cast<std::int32_t>(static_cast<std::int64_t>(normal_impulse) * c.friction / 256);
+            const auto magnitude = std::max(0, std::abs(tangent) - loss);
+            return tangent < 0 ? -magnitude : magnitude;
+        };
+        std::int32_t normal_impulse = 0;
         if (hit_y) {
             p.vy = -ballistic_scale(p.vy, c.restitution);
-            if (!hit_x) p.vx = ballistic_scale(p.vx, c.friction);
+            normal_impulse = std::abs(p.vy - before_y);
+            if (!hit_x) p.vx = coulomb(p.vx, normal_impulse);
             if (dcy < 0) ++l.ceiling_contacts;
         }
         if (hit_x) {
             p.vx = -ballistic_scale(p.vx, c.restitution);
-            if (!hit_y) p.vy = ballistic_scale(p.vy, c.friction);
+            normal_impulse = std::max(normal_impulse, std::abs(p.vx - before_x));
+            if (!hit_y) p.vy = coulomb(p.vy, std::abs(p.vx - before_x));
         }
         const auto dpx = ballistic_checked_product(q, p.vx - before_x);
         const auto dpy = ballistic_checked_product(q, p.vy - before_y);
@@ -467,7 +563,9 @@ bool World::step_ballistic_parcel(BallisticParcel& p) {
         // Stay inside the last free cell, at the sub-cell point nearest the contact.
         p.x = std::clamp(tx, cx * kBallisticQ, cx * kBallisticQ + kBallisticQ - 1);
         p.y = std::clamp(ty, cy * kBallisticQ, cy * kBallisticQ + kBallisticQ - 1);
-        if (p.contacts < 255U) ++p.contacts;
+        // Only real impacts count toward forced deposition; resting/sliding
+        // contact (normal impulse within a few ticks of gravity) does not.
+        if (normal_impulse > 3 * c.gravity_q && p.contacts < 255U) ++p.contacts;
         contact = true;
     }
     if (surface) return deposit_ballistic_parcel(p, cx, cy, &surface_cell);

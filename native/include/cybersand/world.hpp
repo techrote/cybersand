@@ -522,6 +522,7 @@ private:
     QuantityLedgerSnapshot quantity_{};
     std::vector<BallisticParcel> ballistic_parcels_;
     BallisticLedger ballistic_ledger_{};
+    std::uint64_t ballistic_advance_nanoseconds_ = 0; // diagnostic only
     std::array<std::int64_t, kMaximumTransientBodies + 1U> ballistic_body_px_{}, ballistic_body_py_{};
     enum class BallisticCell : std::uint8_t { Free, Water, Solid, Body, Outside };
     void validate_ballistic_config() const;
@@ -536,7 +537,12 @@ private:
     [[nodiscard]] BallisticCell classify_ballistic_cell(std::int64_t x, std::int64_t y,
         const BallisticParcel& parcel, std::uint16_t& body) const noexcept;
     [[nodiscard]] BallisticLaunchResult admit_ballistic_spawn(std::int64_t spawn_x, std::int64_t spawn_y,
-        std::int32_t vx, std::int32_t vy) const noexcept;
+        std::int32_t vx, std::int32_t vy, bool internal = false) const noexcept;
+    [[nodiscard]] BallisticLaunchResult launch_ballistic_water_internal(std::int64_t source_x, std::int64_t source_y,
+        std::int64_t spawn_x, std::int64_t spawn_y, std::int32_t vx, std::int32_t vy,
+        std::uint16_t source_body, std::uint32_t maximum_quantity, bool internal);
+    void release_water_faces();
+    std::vector<ChunkCoord> ballistic_face_chunks_;
     void overlay_ballistic_render(RectI64 region, std::span<std::uint8_t> destination,
                                   std::size_t stride_bytes, std::size_t bytes_per_cell) const noexcept;
     // Extends only the render dirty rectangle (no activity, wake or pressure input).
