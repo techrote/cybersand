@@ -97,5 +97,5 @@ static func capabilities(id: String) -> Dictionary:
 static func controls(id: String) -> String:
 	if kind(id) == "mechanical": return Player.controls(StringName(id))
 	if kind(id) == "material":
-		return "WASD guides native cells · Space surges · Shift spreads/squeezes · C gathers\nNeutral admitted input keeps cohesion active; reset does not create another cloud."
+		return "WASD guides native cells · Space surges · Shift spreads/squeezes · C gathers\nFields act in Play. Paused Step advances cells without field input. Reset does not create another cloud."
 	return ""

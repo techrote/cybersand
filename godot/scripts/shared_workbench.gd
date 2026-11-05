@@ -342,7 +342,7 @@ func open_flyer_options() -> bool:
 	var profile := _profile(a.model)
 	profile.options = a.options.duplicate(true)
 	profile.tuning = a.get("customization",Preferences.tuning_defaults(_caps(a.model))).duplicate(true)
-	profile.fire_enabled = fire_enabled
+	profile.fire_enabled = fire_enabled if Actors.kind(str(a.model)) == "flyer" else false
 	_options_panel.open_profile(Actors.name_for(a.model),profile,_caps(a.model))
 	return true
 
@@ -816,7 +816,7 @@ func apply_settings() -> bool:
 		var profile := _profile(a.model)
 		profile.options = a.options.duplicate(true)
 		profile.tuning = a.get("customization",Preferences.tuning_defaults(_caps(a.model))).duplicate(true)
-		profile.fire_enabled = fire_enabled
+		profile.fire_enabled = fire_enabled if Actors.kind(str(a.model)) == "flyer" else false
 		_pending_profile = {"model":a.model,"value":profile}
 	return true
 

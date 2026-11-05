@@ -57,12 +57,18 @@ func compose() -> void:
 	var points := [Vector2(180,200),Vector2(350,200),Vector2(520,200),Vector2(1150,200),Vector2(700,200),Vector2(900,200),Vector2(1280,340),Vector2(1400,340)]
 	var start := Setup.fresh(PackedInt32Array(ui.applied.liquid_policy),Vector2i(1536,512))
 	for index: int in models.size(): start.actors.append(Setup.instance(models[index],index+1,points[index]))
-	start.next_id = 9; start.selected = EQUIPPED
+	start.next_id = 9; start.selected = EQUIPPED; start.fire = true
 	if not check(ui.apply(start),"submit mixed1536x512 canvas"): return
 	if not await acknowledged("mixed composition acknowledged"): return
 	check(host.physical_actor_session._definitions.size() == 6 and host.physical_actor_session.bodies().size() > 8,"articulation coexists beyond eight actual bodies")
 	check(ui.pilot_slot == 3 and ui.body_state(EQUIPPED).position.x > 1024,"selected nonfirst Acrobat is beyond historical effect bounds")
 	check(host._playable_course_gamepad_active(),"shared first-pad event bridge admits selected mechanical player")
+	if not check(ui.open_flyer_options(),"mechanical options open from global-Fire recipe"): return
+	var edited: Dictionary = ui._options_panel.staged_profile()
+	check(not edited.fire_enabled and ui.Preferences.validate_profile(edited,Actors.capabilities("acrobat")).is_empty(),"hidden Fire cannot invalidate mechanical profile")
+	ui._options_panel.hide()
+	if not check(ui.apply_flyer_profile(edited),"save valid mechanical controls without Fire grant"): return
+	if not await acknowledged("mechanical non-Fire profile acknowledged"): return
 	var frame: Dictionary = host.physical_actor_session.equipment_frame()
 	var eq := equipment()
 	var aliases: Array = []
@@ -189,12 +195,21 @@ func native_only() -> void:
 	start.rule_radius = int(ui.applied.rule_radius)
 	start.actors = [Setup.instance("dryswarm",1,Vector2(1120,220)),Setup.instance("liquidswarm",2,Vector2(1360,220))]
 	start.next_id = 3; start.selected = 1
+	start.fire = true
 	if not check(ui.apply(start),"native-only authored start"): return
 	if not await acknowledged("native-only World acknowledged"): return
 	check(host.physical_actor_session == null,"native-only players share worker World without physical session")
 	var seed: Dictionary = host.tower_context.get("workbench_material_seed",{})
 	check(seed.get("players",[]).size() == 2,"native-only seed receipt has two players")
 	for row: Dictionary in seed.get("players",[]): check(row.inserted == 256 and row.refused == 0,"native-only256-cell seed")
+	if not check(ui.open_flyer_options(),"native options open from global-Fire recipe"): return
+	var edited: Dictionary = ui._options_panel.staged_profile()
+	check(not edited.fire_enabled and ui.Preferences.validate_profile(edited,Actors.capabilities("dryswarm")).is_empty(),"hidden Fire cannot invalidate native bindings")
+	ui._options_panel.hide()
+	if not check(ui.apply_flyer_profile(edited),"save native bindings without Fire grant"): return
+	if not await acknowledged("native non-Fire profile acknowledged"): return
+	seed = host.tower_context.get("workbench_material_seed",{})
+	check(seed.get("players",[]).is_empty(),"native binding save retains parcels without reseeding")
 	for id: int in [1,2]:
 		check(ui.select_instance(id),"select native-only instance")
 		check(ui.body_state(id).position.x > 1024 and ui.pilot_slot == -1,"native field beyond1024 has no fake rig")
