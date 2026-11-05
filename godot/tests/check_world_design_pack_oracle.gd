@@ -68,7 +68,7 @@ func _run() -> void:
 			failed += 1
 			continue
 		var expected_size: Array = entry["dimensions_cells"]
-		var size_ok: bool = built.size == Vector2i(expected_size[0], expected_size[1])
+		var size_ok: bool = built["size"] == Vector2i(expected_size[0], expected_size[1])
 		var sha_ok: bool = built.rg8_sha256 == entry.get("rg8_sha256", "")
 		var bytes_ok: bool = built.rg8_bytes == entry.get("rg8_bytes", -1)
 		if size_ok and sha_ok and bytes_ok:
@@ -77,7 +77,7 @@ func _run() -> void:
 		else:
 			failed += 1
 			push_error("WORLD_PACK_ORACLE: mismatch " + slug + " size=" +
-				str(built.size) + " sha256=" + built.rg8_sha256 + " bytes=" +
+				str(built["size"]) + " sha256=" + built.rg8_sha256 + " bytes=" +
 				str(built.rg8_bytes))
 	var total: int = expected.size()
 	print("WORLD_PACK_ORACLE: expected=%d passed=%d failed=%d design=%s" % [
