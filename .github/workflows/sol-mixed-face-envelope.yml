@@ -1,0 +1,77 @@
+name: SOL mixed-face envelope diagnostic (branch-scoped)
+
+on:
+  push:
+    branches:
+      - sol/mixed-face-envelope-probe-20261105
+  pull_request:
+    branches:
+      - codex/sol-active-normal-live-20261105
+    paths:
+      - 'tools/experiments/sol_conservative_face_envelope.cpp'
+      - '.github/workflows/sol-mixed-face-envelope.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  linux-value-only:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify immutable solver and reproducer blobs
+        shell: bash
+        run: |
+          test "$(git hash-object native/include/cybersand/granular_contact_response.hpp)" = c9af2c0aac1efb1ac271897d2c29120c8c81566c
+          test "$(git hash-object tools/experiments/sol_conservative_face_envelope.cpp)" = c1b1f93ec96457afc7dd60ce07d61edc2fc53bb5
+      - name: GCC and Clang optimized
+        shell: bash
+        run: |
+          set -eu
+          g++ --version | head -1
+          clang++ --version | head -1
+          g++ -std=c++20 -O2 -Wall -Wextra -Werror -I native/include tools/experiments/sol_conservative_face_envelope.cpp -o sol_gcc
+          ./sol_gcc | tee gcc.log
+          clang++ -std=c++20 -O2 -Wall -Wextra -Werror -I native/include tools/experiments/sol_conservative_face_envelope.cpp -o sol_clang
+          ./sol_clang | tee clang.log
+          grep -q 'PASS signed_source_value_only_envelope' gcc.log
+          grep -q 'PASS signed_source_value_only_envelope' clang.log
+      - name: Sanitizer run (GCC ASan/UBSan; LSan disabled)
+        shell: bash
+        run: |
+          set -eu
+          g++ -std=c++20 -O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined -Wall -Wextra -Werror -I native/include tools/experiments/sol_conservative_face_envelope.cpp -o sol_san
+          ASAN_OPTIONS=detect_leaks=0 ./sol_san | tee sanitizer.log
+          grep -q 'PASS signed_source_value_only_envelope' sanitizer.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: sol-mixed-face-envelope-linux
+          path: |
+            gcc.log
+            clang.log
+            sanitizer.log
+  windows-msvc-value-only:
+    runs-on: windows-2022
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ilammy/msvc-dev-cmd@v1
+      - name: Verify immutable source blobs
+        shell: pwsh
+        run: |
+          if ((git hash-object native/include/cybersand/granular_contact_response.hpp) -ne 'c9af2c0aac1efb1ac271897d2c29120c8c81566c') { throw 'Solver source mismatch' }
+          if ((git hash-object tools/experiments/sol_conservative_face_envelope.cpp) -ne 'c1b1f93ec96457afc7dd60ce07d61edc2fc53bb5') { throw 'Experiment source mismatch' }
+      - name: Compile and execute with genuine Windows MSVC
+        shell: pwsh
+        run: |
+          cl /nologo /std:c++20 /EHsc /O2 /W4 /WX /I native\include tools\experiments\sol_conservative_face_envelope.cpp /Fe:sol_envelope.exe
+          if ($LASTEXITCODE -ne 0) { throw 'MSVC compilation failed' }
+          .\sol_envelope.exe | Tee-Object -FilePath msvc.log
+          if ($LASTEXITCODE -ne 0) { throw 'MSVC execution failed' }
+          if (-not (Select-String -Quiet -Path msvc.log -Pattern 'PASS signed_source_value_only_envelope')) { throw 'Enveloped witness missing' }
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: sol-mixed-face-envelope-windows
+          path: msvc.log
