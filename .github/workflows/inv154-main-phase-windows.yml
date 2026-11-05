@@ -1,0 +1,164 @@
+name: INV154 source-guarded graphical Main phase attribution
+
+on:
+  push:
+    branches: [perf/inv154-main-phase-windows-20261105]
+    paths:
+      - godot/tests/performance/test_main_callback_windows_probe.gd
+      - .github/workflows/inv154-main-phase-windows.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: inv154-main-phase-${{ github.sha }}
+  cancel-in-progress: false
+
+jobs:
+  windows-graphical-main:
+    runs-on: windows-2022
+    timeout-minutes: 30
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Preserve byte-exact checkout for native pins
+        run: |
+          git config --global core.autocrlf false
+          git config --global core.eol lf
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          lfs: false
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Materialize exact Windows native and Rapier runtime pins
+        timeout-minutes: 12
+        shell: bash
+        run: |
+          set -euo pipefail
+          git lfs install --local
+          git lfs pull --include="godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll,godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll" --exclude=""
+      - name: Actual Windows graphical Main phase observation (single finite pair)
+        timeout-minutes: 22
+        env:
+          EXPECTED_HEAD: ${{ github.sha }}
+          GODOT_SILENCE_ROOT_WARNING: '1'
+          PYTHONUTF8: '1'
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/inv154-main-phase
+          python tools/ci/check_ci_provider_policy.py > build/inv154-main-phase/provider-policy.log 2>&1
+          git diff --check
+          python - <<'PY'
+          import ast, hashlib, json, os, subprocess, sys, urllib.request, zipfile
+          from pathlib import Path
+          out=Path('build/inv154-main-phase').resolve()
+          def write(name, payload):
+              (out/name).write_text(payload,encoding='utf-8')
+          def sh(*args):
+              return subprocess.check_output(args, text=True,timeout=45).strip()
+          sha=sh('git','rev-parse','HEAD')
+          tree=sh('git','rev-parse','HEAD^{tree}')
+          if sha!=os.environ['EXPECTED_HEAD']:
+              raise RuntimeError('source head does not equal workflow triggering SHA')
+          main_blob=sh('git','hash-object','godot/scripts/main.gd')
+          if main_blob!='791ef440efd6edb206c6f1be33989cb62e9213b2':
+              raise RuntimeError('current-main Main source changed; reauthorize measurement')
+          probe=Path('godot/tests/performance/test_main_callback_windows_probe.gd')
+          sample=probe.read_text(encoding='utf-8')
+          for hook in ('func consume_worker_snapshot()', 'func update_shader_parameters()',
+                       'func update_worker_frame_state()', 'func update_camera(delta: float)',
+                       'func handle_painting()', 'func update_brush_preview()'):
+              if hook not in sample: raise RuntimeError('required diagnostic hook missing: '+hook)
+          sys.path.insert(0,'tools/ci')
+          import run_windows_godot_regressions as runtime
+          with runtime.metadata_budget():
+              runtime_identity=runtime.verify_retained_runtime(Path.cwd())
+          write('source-and-runtime.json',json.dumps({'head':sha,'tree':tree,
+              'main_blob':main_blob,'probe_sha256':hashlib.sha256(probe.read_bytes()).hexdigest(),
+              'runtime':runtime_identity},indent=2)+'\n')
+          url='https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip'
+          archive=out/'official-godot.zip'
+          urllib.request.urlretrieve(url,archive)
+          digest=hashlib.sha512(archive.read_bytes()).hexdigest()
+          if digest != runtime.GODOT_SHA512: raise RuntimeError('Godot official SHA512 pin changed')
+          with zipfile.ZipFile(archive) as z:
+              if z.testzip() is not None: raise RuntimeError('Godot archive CRC failure')
+              member='Godot_v4.7-stable_win64_console.exe'
+              if z.namelist().count(member)!=1: raise RuntimeError('Godot console executable missing')
+              z.extract(member,out/'engine')
+          archive.unlink()
+          write('engine-identity.json',json.dumps({'version':'4.7-stable',
+              'url':url,'archive_sha512':digest},indent=2)+'\n')
+          for name,command in (
+              ('video-controllers.json','Get-CimInstance Win32_VideoController | Select-Object Name,DriverVersion,VideoProcessor,PNPDeviceID | ConvertTo-Json -Depth 5'),
+              ('processor.json','Get-CimInstance Win32_Processor | Select-Object Name,NumberOfCores,NumberOfLogicalProcessors | ConvertTo-Json -Depth 4'),
+              ('os.json','Get-CimInstance Win32_OperatingSystem | Select-Object Caption,Version,BuildNumber | ConvertTo-Json -Depth 4')):
+              ps=subprocess.run(['powershell','-NoProfile','-NonInteractive','-Command',command],
+                  capture_output=True,text=True,timeout=40)
+              write(name,ps.stdout+'\n'+ps.stderr)
+              if ps.returncode: raise RuntimeError('Host identity read failed: '+name)
+          engine=out/'engine/Godot_v4.7-stable_win64_console.exe'
+          env={**os.environ,'GODOT_SILENCE_ROOT_WARNING':'1',
+               'CYBERSAND_PHASE_OUTPUT':str(out),
+               'CYBERSAND_SOURCE_REVISION':sha}
+          imp=subprocess.run([str(engine),'--headless','--editor','--path','godot','--import'],
+              capture_output=True,stderr=subprocess.STDOUT if False else subprocess.PIPE,
+              text=True,timeout=130,env=env)
+          write('import.log',imp.stdout+'\n'+imp.stderr)
+          if imp.returncode: raise RuntimeError('Project import failed: '+str(imp.returncode))
+          argv=[str(engine),'--rendering-driver','opengl3_angle','--path','godot',
+                '--script','res://tests/performance/test_main_callback_windows_probe.gd']
+          write('command.json',json.dumps(argv,indent=2)+'\n')
+          try:
+              run=subprocess.run(argv,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,
+                  text=True,timeout=745,env=env)
+          except subprocess.TimeoutExpired as exc:
+              write('timeout.log',str(exc))
+              raise
+          write('godot.log',run.stdout)
+          matches=[line.split('INV154_MAIN_PHASE ',1)[1] for line in run.stdout.splitlines()
+                   if line.startswith('INV154_MAIN_PHASE ')]
+          if run.returncode or len(matches)!=1:
+              print(run.stdout[-10000:])
+              raise RuntimeError('no successful actual Windows Main result: exit '+str(run.returncode))
+          record=json.loads(matches[0])
+          if (record.get('schema')!='inv154-main-phase-observer-v1'
+              or record.get('platform')!='Windows'
+              or record.get('display_server')=='headless'
+              or record.get('failures')!=0
+              or not record.get('joined_worker')
+              or record.get('overflow')
+              or record.get('accepted_brush_commands',0)<=0):
+              raise RuntimeError('native lifecycle, actual workload or bounded data incomplete')
+          for phase in ('baseline','brush'):
+              arm=record[phase]
+              if arm['process'].get('n',0)<40 or arm['render_interval_ms'].get('n',0)<40:
+                  raise RuntimeError('Missing real graphical process/frame samples in '+phase)
+              if arm.get('native_ticks_per_second',0)<=0 or arm.get('rapier_steps_per_second',0)<=0:
+                  raise RuntimeError('Native or Rapier did not advance during '+phase)
+              for metric in ('process','render_interval_ms','worker_publication_age_ms'):
+                  if arm[metric].get('n',0)<30:
+                      raise RuntimeError('Incomplete timing data '+phase+'/'+metric)
+          write('summary.json',json.dumps(record,indent=2)+'\n')
+          print('PASS: actual Windows ANGLE graphical Main/World/Rapier, distinct callback vs frame clocks; 4-s baseline and 4-s brush')
+          print(json.dumps({p:{k:record[p][k] for k in ('process','render_interval_ms',
+              'native_ticks_per_second','rapier_steps_per_second',
+              'subcalls_inclusive_ms')} for p in ('baseline','brush')},indent=2))
+          PY
+      - name: Preserve raw samples, runtime/source and original failures
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: inv154-actual-windows-main-phase-${{ github.run_id }}
+          path: |
+            build/inv154-main-phase/*.json
+            build/inv154-main-phase/*.log
+          if-no-files-found: warn
+          retention-days: 30
