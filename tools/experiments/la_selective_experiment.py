@@ -95,13 +95,16 @@ def authenticate():
         for path,digest in rapier["source_inputs"].items():
             assert sha((ROOT/path).read_bytes().replace(b"\r\n",b"\n")) == digest, path
         if platform == "windows":
-            engine_hash = sha(Path(ENGINES[platform]).read_bytes())
+            launcher_hash = sha(Path(ENGINES[platform]).read_bytes())
+            # The official Windows console launcher starts the sibling engine.
+            engine_hash = sha(Path(ENGINES[platform].replace("_console.exe",".exe")).read_bytes())
             version = subprocess.check_output([ENGINES[platform],"--version"]).decode().strip()
         else:
             engine_hash = subprocess.check_output(["wsl","-d","Ubuntu-24.04","--","sha256sum",ENGINES[platform]]).decode().split()[0]
             version = subprocess.check_output(["wsl","-d","Ubuntu-24.04","--",ENGINES[platform],"--version"]).decode().strip()
         assert engine_hash == manifest["godot_executable_sha256"] and version == manifest["godot_version"]
-        manifest["authenticated_engine"] = dict(path=ENGINES[platform],sha256=engine_hash,version=version)
+        manifest["authenticated_engine"] = dict(path=ENGINES[platform],sha256=engine_hash,version=version,
+            launcher_sha256=launcher_hash if platform=="windows" else engine_hash)
         manifest["authenticated_rapier"] = rapier
         inventories[platform] = manifest
     dependencies = {p: sha((ROOT/p).read_bytes()) for p in git("ls-files", "godot/addons", "third_party").decode().splitlines()

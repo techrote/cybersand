@@ -226,6 +226,7 @@ func episode(spec: Dictionary, mode: String, workers: int) -> void:
 			"Rapier_step_energy_delta":after.kinetic-after_application.kinetic,
 			"geometry_before_step":geometry_before,"geometry_after_step":geometry(stored,rig.rectangles,after.pose,spec.material),
 			"inventory_before_preparation":inventory(prior_inventory),
+			"native_statistics":preparer.inspect_statistics(world),
 			"stored_inventory":inventory(stored)}))
 		if mode=="LA-EVENT-OFF": check(row.event_accepted==Vector2.ZERO and row.event_torque==0,"event-off retains zero event wrench")
 		if spec.material==3: check(row.arrival_count==0,"Water excluded from arrivals")
