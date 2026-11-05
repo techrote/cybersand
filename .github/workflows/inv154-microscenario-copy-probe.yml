@@ -84,12 +84,13 @@ jobs:
           with zipfile.ZipFile(archive) as bundle:
               if bundle.testzip() is not None:
                   raise RuntimeError('Godot ZIP failed CRC')
-              member = 'Godot_v4.7-stable_win64_console.exe'
-              if bundle.namelist().count(member) != 1:
-                  raise RuntimeError('Missing or duplicated official console engine')
-              bundle.extract(member, evidence / 'engine')
+              members = ('Godot_v4.7-stable_win64.exe', 'Godot_v4.7-stable_win64_console.exe')
+              for member in members:
+                  if bundle.namelist().count(member) != 1:
+                      raise RuntimeError('Missing or duplicated official engine member: ' + member)
+                  bundle.extract(member, evidence / 'engine')
           (evidence / 'engine-identity.json').write_text(
-              json.dumps({'archive_sha512': digest, 'member': member}, indent=2) + '\n',
+              json.dumps({'archive_sha512': digest, 'members': list(members)}, indent=2) + '\n',
               encoding='utf-8')
           PY
 
