@@ -118,7 +118,7 @@ func edit_profile() -> void:
 	check(not host._actor_input_rearm,"neutral input rearms new bindings")
 	key(KEY_G,true)
 	host._publish_workbench_keyboard()
-	check(host.physical_actor_session._commands[ui.pilot_slot].get("primary",false),"new binding actuates through leased session")
+	check(host.physical_actor_session._commands[ui.pilot_slot].get("primary",false),"new binding actuates through leased session: "+host.physical_actor_session.last_error+" / "+str(host.physical_actor_session._commands[ui.pilot_slot])+" rearm="+str(host._actor_input_rearm))
 	key(KEY_G,false)
 	var epoch: int = host._physical_epoch
 	ui._input(key(KEY_4,true)); key(KEY_4,false)
@@ -134,12 +134,15 @@ func edit_profile() -> void:
 	# explicit instance tuning outranks the user's saved defaults.
 	var legacy: Dictionary = ui.applied.duplicate(true)
 	legacy.version = 2
-	for a: Dictionary in legacy.actors: a.erase("customization")
+	for a: Dictionary in legacy.actors:
+		a.erase("customization")
+		a.erase("usable_index")
+		a.erase("usable_power")
 	legacy.actors[0].options.mass_multiplier = 2.5
 	check(Setup.validate(legacy).is_empty(),"legacy v2 start accepted")
 	check(ui.apply(legacy),"load legacy authored settings")
 	if not await wait_for(ready,"legacy start installed"): return
-	check(ui.applied.version == 3 and ui.applied.actors[0].options.mass_multiplier == 2.5 and ui.applied.actors[0].customization.acceleration == 1.0,"legacy migration preserves instance values with neutral extensions")
+	check(ui.applied.version == Setup.VERSION and ui.applied.actors[0].options.mass_multiplier == 2.5 and ui.applied.actors[0].customization.acceleration == 1.0 and ui.applied.actors[0].usable_index == -1,"legacy migration preserves instance values with neutral extensions")
 	check(ui.open_flyer_options(),"open cancelled edit")
 	editor.hide()
 	check(not ui.controls_blocked() and host.paused,"cancel restores original paused state")

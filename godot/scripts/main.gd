@@ -6,6 +6,8 @@ const PhysicalSession = preload("res://scripts/physical_actor_session.gd")
 const PhysicalOverlay = preload("res://scripts/physical_actor_overlay.gd")
 const PhysicalLoadouts = preload("res://scripts/physical_usable_loadouts.gd")
 const PhysicalEquipment = preload("res://scripts/physical_usable_equipment.gd")
+const WorkbenchActors = preload("res://scripts/workbench_actor_catalog.gd")
+const WorkbenchMaterialPlayers = preload("res://scripts/workbench_material_players.gd")
 const PlayerCourse = preload("res://scripts/player_playground_course.gd")
 const PlayableCourseLap = preload("res://scripts/playable_course_lap.gd")
 const PlayableCourseOverlay = preload("res://scripts/playable_course_overlay.gd")
@@ -38,6 +40,8 @@ var physical_actor_overlay: CyberPhysicalActorOverlay
 var _workbench_wait_sample: int = -1
 var _workbench_collider_frame: int = -1
 var shared_workbench: Control
+var _workbench_material_sequences: Dictionary = {}
+var _workbench_requested_equipment: Dictionary = {}
 var world_extent := Vector2i(CyberCellWorld.WORLD_WIDTH,CyberCellWorld.WORLD_HEIGHT)
 var playable_course_overlay: Control
 var _physical_epoch: int = 0
@@ -745,7 +749,8 @@ func apply_playable_session(selection: Dictionary, policy: PackedInt32Array,
 # acknowledgement, World stepping and Rapier adoption remain the shared owners'.
 func workbench_apply(candidate: Dictionary, actors: Array, rectangles: Array, extent: Vector2i,
 		policy: PackedInt32Array, normalize_water: bool, radius: int, response: String,
-		preserve_cells: bool = false, convert_liquid_inventory: bool = false, resume_play: bool = false) -> bool:
+		preserve_cells: bool = false, convert_liquid_inventory: bool = false, resume_play: bool = false,
+		material_players: Array = []) -> bool:
 	if shared_workbench == null: return false
 	if not pending_microscenario_apply.is_empty():
 		microscenario_error = "Wait for the pending workbench installation."
@@ -756,6 +761,13 @@ func workbench_apply(candidate: Dictionary, actors: Array, rectangles: Array, ex
 	if response not in ["LA-SELECTIVE","LA","LA-EVENT-OFF","RFT"]:
 		microscenario_error = "Unknown workbench response"
 		return false
+	cancel_playable_course_input()
+	var equipment_custody: Dictionary = {}
+	if preserve_cells and physical_actor_session != null:
+		equipment_custody = physical_actor_session.export_workbench_equipment()
+		if not equipment_custody.get("ok",false):
+			microscenario_error = "Equipment handoff refused: "+str(equipment_custody.get("error","unavailable"))
+			return false
 	var definition := CyberMicroScenarioContract.base(CyberMicroScenarioContract.WORKBENCH_ID)
 	definition.schema_version = 2
 	definition["extent"] = [extent.x,extent.y]
@@ -773,8 +785,13 @@ func workbench_apply(candidate: Dictionary, actors: Array, rectangles: Array, ex
 	var normalize_now := normalize_water and (not preserve_cells or convert_liquid_inventory)
 	var settings := {"intent":"exploratory","normalization":"water-normalize-v1" if normalize_now else "",
 		"maximum_rule_radius":radius,"workbench_response":response,"workbench_retain_cells":preserve_cells,
+		"workbench_material_players":material_players.duplicate(true),
+		"workbench_material_run_id":Crypto.new().generate_random_bytes(16).hex_encode(),
+		"workbench_equipment_frame":{"version":PhysicalEquipment.VERSION,"run_id":Crypto.new().generate_random_bytes(16).hex_encode(),
+			"epoch":_physical_epoch+1,"tick":0,"suspended":true,"actors":[],"devices":[],"canvas_extent":extent},
 		"workbench_sample":{"session":_microscenario_request_serial+1,"epoch":_physical_epoch+1,
 			"states":PackedFloat64Array(),"geometry":PackedFloat64Array(),"bodies":[],"emitters":[]}}
+	if not equipment_custody.is_empty(): settings["workbench_equipment_custody"] = equipment_custody
 	# Lossy conversion belongs only to an explicit developer policy switch.
 	# Ordinary replacements (including Apply of an unchanged policy) keep
 	# all compatible native inventory and use the normal refusal contract.
@@ -856,6 +873,14 @@ func _apply_microscenario_definition(definition: Dictionary, mode: String, actor
 				definitions = player_configuration.workbench_actors
 			if not staged.prepare(self,definitions,_physical_epoch+1):
 				microscenario_error = staged.last_error;staged.close();return false
+		if checked.definition.id == CyberMicroScenarioContract.WORKBENCH_ID:
+			if controlled_setup.has("workbench_equipment_custody"):
+				var custody_error: String = staged.session.restore_workbench_equipment(controlled_setup.workbench_equipment_custody)
+				if not custody_error.is_empty():
+					microscenario_error = "Equipment handoff refused: "+custody_error
+					staged.close(); return false
+			controlled_setup = controlled_setup.duplicate(true)
+			controlled_setup.workbench_equipment_frame = staged.session.equipment_frame()
 		# Signal connection and all rig/equipment/space construction precede the
 		# native preparation. The exact same graph survives successful adoption.
 		if staged.owner_kind()=="articulated": staged.session.input_cancelled.connect(_on_physical_actor_input_cancelled)
@@ -961,7 +986,17 @@ func _microscenario_installed(definition: Dictionary) -> void:
 			world_view.texture = texture
 			world_shader.set_shader_parameter("current_world_texture",texture)
 			world_shader.set_shader_parameter("previous_world_texture",previous_texture)
+		if physical_actor_session != null and latest_snapshot != null:
+			physical_actor_session.accept_equipment_feedback(latest_snapshot.physical_usables)
 		shared_workbench.installed(pending_microscenario_apply.workbench)
+		if not bool(pending_microscenario_apply.get("controlled_liquid_setup",{}).get("workbench_retain_cells",false)):
+			_workbench_requested_equipment.clear()
+		else:
+			var mechanical_ids: Dictionary = {}
+			for actor: Dictionary in pending_microscenario_apply.workbench.actors:
+				if WorkbenchActors.kind(str(actor.model)) == "mechanical": mechanical_ids[int(actor.id)] = true
+			for id: int in _workbench_requested_equipment.keys():
+				if not mechanical_ids.has(id): _workbench_requested_equipment.erase(id)
 	elif showcase_presentation != null:
 		showcase_presentation.installed(definition)
 	if shared_workbench == null and blacksite_nine_presentation != null:
@@ -1886,7 +1921,7 @@ func _process(delta: float) -> void:
 	maximum_frame_time_ms = maxf(maximum_frame_time_ms, frame_time_ms)
 	consume_worker_snapshot()
 	_advance_prepared_physical_candidate()
-	if _pending_physical_candidate == null and shared_workbench == null: refresh_actor_usables()
+	if _pending_physical_candidate == null and (shared_workbench == null or physical_actor_session != null): refresh_actor_usables()
 	gameplay_recorder.poll_finalization()
 	_refresh_recording_button()
 	sync_player_presentation_position()
@@ -1919,7 +1954,8 @@ func _process(delta: float) -> void:
 	)
 	physical_actor_overlay.present(
 		physical_actor_session.render_parts(workbench_display_frame()) if physical_actor_session != null else [],
-		camera_origin.floor(), current_view_size, view_content_rect())
+		camera_origin.floor(), current_view_size, view_content_rect(),
+		latest_snapshot.lab_context.get("workbench_material_players",{}).get("actors",[]) if shared_workbench != null and latest_snapshot != null else [])
 	update_worker_frame_state()
 	update_shader_parameters()
 
@@ -2046,8 +2082,12 @@ func _unhandled_key_input(event: InputEvent) -> void:
 				KEY_R: shared_workbench.reset_selected()
 				KEY_PERIOD: shared_workbench.step_once()
 				KEY_B: shared_workbench.burst()
-				_: return
+				_:
+					_publish_workbench_keyboard()
+					return
 			get_viewport().set_input_as_handled()
+		elif event is InputEventKey and not event.echo:
+			_publish_workbench_keyboard()
 		return
 	if physical_rig_id != &"" and event is InputEventKey \
 		and (event.keycode in ACTOR_CONTROL_KEYS or event.keycode in PHYSICAL_TOOL_KEYS \
@@ -3374,7 +3414,19 @@ func _publish_physical_body_state() -> void:
 			var sample: Dictionary = physical_actor_session.pack_workbench_sample()
 			if not sample.is_empty() and not sample.states.is_empty():
 				_workbench_wait_sample = int(sample.states[10])
-				simulation_worker.set_workbench_sample(sample)
+				var requests: Array = physical_actor_session.drain_equipment_requests()
+				sample["equipment_frame"] = physical_actor_session.equipment_frame()
+				sample["equipment_requests"] = requests
+				sample["effects"] = physical_actor_session.drain_effects()
+				var admission: Dictionary = simulation_worker.set_workbench_sample(sample)
+				if not bool(admission.get("sample_accepted",false)):
+					_workbench_wait_sample = -1
+					paused = true
+					cancel_playable_course_input()
+					microscenario_error = "Workbench sample refused: "+str(admission.get("reason","admission"))
+					return
+				if admission.get("status") == "refused":
+					physical_actor_session.reject_equipment_requests(requests,str(admission.get("reason","admission")))
 		return
 	var effects: Array = physical_actor_session.drain_effects() if physical_actor_session != null else []
 	var states: PackedFloat32Array = pack_rigid_body_states()
@@ -3485,6 +3537,11 @@ func _playable_course_controls_active() -> bool:
 
 
 func _playable_course_gamepad_active() -> bool:
+	if shared_workbench != null:
+		var selected: Dictionary = shared_workbench.actor(shared_workbench.applied,shared_workbench.selected_id())
+		return _actor_window_has_focus() and not shared_workbench.busy() and not shared_workbench.controls_blocked() \
+			and not get_viewport().gui_get_focus_owner() is LineEdit and not get_viewport().gui_get_focus_owner() is TextEdit \
+			and WorkbenchActors.kind(str(selected.get("model",""))) in ["flyer","mechanical","material"]
 	return _playable_course_controls_active() and playable_session_options.controls == "keyboard_gamepad"
 
 
@@ -3497,10 +3554,12 @@ func _on_playable_course_gui_focus_changed(control: Control) -> void:
 func cancel_playable_course_input() -> void:
 	if shared_workbench != null:
 		_actor_input_rearm = true
+		_actor_usable_pointer_rearm = true
 		shared_workbench.cancel_stroke()
 		if physical_actor_session != null and shared_workbench.pilot_slot >= 0:
 			physical_actor_session.cancel_input(shared_workbench.pilot_slot,_physical_epoch,&"human")
 		simulation_worker.cancel_workbench_emission()
+		simulation_worker.cancel_workbench_material_input()
 		return
 	if not _playable_course_controls_active(): return
 	_actor_input_rearm = true
@@ -3527,6 +3586,7 @@ func set_playable_course_paused(value: bool) -> bool:
 
 
 func toggle_playable_course_pause() -> bool:
+	if shared_workbench != null: return shared_workbench.toggle_pause()
 	# Paused is deliberately excluded from context ownership: an owned pause
 	# key can resume, but a popup, another window or construction cannot do so.
 	if not _playable_course_controls_active() or not _actor_keyboard_context_allowed():
@@ -3914,18 +3974,99 @@ func _workbench_key(key: Key) -> bool:
 func workbench_controls_blocked() -> bool:
 	return shared_workbench != null and shared_workbench.controls_blocked()
 
+func workbench_material_player_state(instance_id: int) -> Dictionary:
+	if shared_workbench == null or latest_snapshot == null: return {}
+	var frame: Dictionary = latest_snapshot.lab_context.get("workbench_material_players",{})
+	for view: Dictionary in frame.get("actors",[]):
+		if int(view.get("instance_id",0)) == instance_id: return view.duplicate(true)
+	return {}
+
+func workbench_reset_material_player(instance_id: int, position: Vector2) -> bool:
+	if shared_workbench == null or not pending_microscenario_apply.is_empty() or simulation_worker.has_failed(): return false
+	cancel_playable_course_input()
+	return simulation_worker.reset_workbench_material_player(instance_id,position)
+
+func workbench_equipment_observation(instance_id: int) -> Dictionary:
+	if shared_workbench == null or physical_actor_session == null: return {}
+	var slot: int = physical_actor_session.slot_for_instance(instance_id)
+	if slot < 0: return {}
+	var view: Dictionary = physical_actor_session.observation(slot)
+	var result: Dictionary = view.get("equipment",{}).duplicate(true)
+	var requested: Dictionary = _workbench_requested_equipment.get(instance_id,{})
+	result["power"] = requested.get("power",shared_workbench.actor(shared_workbench.applied,instance_id).get("usable_power",1.0))
+	if not requested.is_empty() and int(result.get("usable_index",-2)) == int(requested.usable_index) and not result.get("pending",false):
+		_workbench_requested_equipment.erase(instance_id)
+	return result
+
+func workbench_select_usable(instance_id: int, usable_index: int, power: float) -> bool:
+	if shared_workbench == null or physical_actor_session == null or not pending_microscenario_apply.is_empty() \
+		or simulation_worker.has_failed() or usable_index < -1 or usable_index >= UsableCatalog.count() \
+		or not is_finite(power) or power < 0.0 or power > 1.0: return false
+	var definition: Dictionary = shared_workbench.actor(shared_workbench.applied,instance_id)
+	if WorkbenchActors.kind(str(definition.get("model",""))) != "mechanical": return false
+	var slot: int = physical_actor_session.slot_for_instance(instance_id)
+	if slot < 0: return false
+	var equipment: Dictionary = physical_actor_session.observation(slot).get("equipment",{})
+	if not equipment.get("attached",false) or equipment.get("pending",false):
+		microscenario_error = "Recover the released equipment and finish its pending use before retooling."
+		return false
+	_workbench_requested_equipment[instance_id] = {"usable_index":usable_index,"power":power}
+	_actor_usable_pointer_rearm = true
+	# Paused selection remains pending until an ordinary acknowledged play/step.
+	# It does not reconfigure a chassis or claim an equipment acknowledgement here.
+	if not paused: _publish_workbench_keyboard()
+	return true
+
+func _workbench_pointer_aim(instance_id: int) -> Vector2:
+	var content: Rect2 = view_content_rect()
+	var pointer: Vector2 = world_view.get_local_mouse_position()
+	if not pointer.is_finite() or not content.has_point(pointer) or content.size.x <= 0 or content.size.y <= 0: return Vector2.ZERO
+	var state: Dictionary = shared_workbench.body_state(instance_id)
+	var position: Variant = state.get("position")
+	if not position is Vector2 or not position.is_finite(): return Vector2.ZERO
+	var target: Vector2 = camera_origin.floor()+(pointer-content.position)/content.size*Vector2(current_view_size)
+	return (target-position).normalized()
+
 func _publish_workbench_keyboard() -> void:
-	if physical_actor_session == null or shared_workbench.pilot_slot < 0: return
-	if paused or simulation_worker.has_failed() or not pending_microscenario_apply.is_empty() or not _actor_window_has_focus() \
+	if shared_workbench == null or shared_workbench.selected_id() <= 0: return
+	var instance_id: int = shared_workbench.selected_id()
+	var definition: Dictionary = shared_workbench.actor(shared_workbench.applied,instance_id)
+	var kind: String = WorkbenchActors.kind(str(definition.get("model","")))
+	if kind == "passive" or kind.is_empty(): return
+	if (paused and not shared_workbench.step_requested) or simulation_worker.has_failed() or not pending_microscenario_apply.is_empty() or not _actor_window_has_focus() \
 		or shared_workbench.controls_blocked() or get_viewport().gui_get_focus_owner() is LineEdit or get_viewport().gui_get_focus_owner() is TextEdit:
 		if not _actor_input_rearm: cancel_playable_course_input()
 		return
+	if kind != "material" and (physical_actor_session == null or shared_workbench.pilot_slot < 0): return
 	var sampled: Dictionary = shared_workbench.sample_controls()
 	var action: Dictionary = sampled.action
 	var ports: Dictionary = sampled.ports
+	var buttons: Dictionary = shared_workbench.sample_usable_buttons()
 	if _actor_input_rearm:
-		if CyberPlayerPlaygroundInput.active(action) or ports.q or ports.e or ports.s or ports.boost: return
+		if CyberPlayerPlaygroundInput.active(action) or ports.q or ports.e or ports.s or ports.boost \
+			or buttons.trigger or buttons.alternate or buttons.drop or buttons.attach: return
 		_actor_input_rearm = false
+	if kind == "material":
+		var view: Dictionary = workbench_material_player_state(instance_id)
+		if view.is_empty() or view.get("suspended",true): return
+		var identity: String = "%s:%s:%s:%s" % [view.run_id,view.epoch,instance_id,view.control_generation]
+		var sequence: int = maxi(int(view.last_sequence),int(_workbench_material_sequences.get(identity,-1)))+1
+		_workbench_material_sequences[identity] = sequence
+		# Bound the main-thread value cache across arbitrary World replacements.
+		if _workbench_material_sequences.size() > 16:
+			_workbench_material_sequences = {identity:sequence}
+		simulation_worker.queue_workbench_material_command(WorkbenchMaterialPlayers.make_command(view,sequence,action))
+		return
+	var aim: Vector2 = _workbench_pointer_aim(instance_id)
+	if aim != Vector2.ZERO: action["aim"] = aim
+	if kind == "mechanical":
+		var selection: Dictionary = _workbench_requested_equipment.get(instance_id,shared_workbench.usable_selection())
+		if _actor_usable_pointer_rearm:
+			if buttons.trigger or buttons.alternate or buttons.drop or buttons.attach:
+				buttons = {"trigger":false,"alternate":false,"drop":false,"attach":false}
+			else: _actor_usable_pointer_rearm = false
+		action["equipment"] = {"usable_index":int(selection.usable_index),"power":float(selection.power),"aim":aim,
+			"trigger":bool(buttons.trigger),"alternate":bool(buttons.alternate),"drop":bool(buttons.drop),"attach":bool(buttons.attach)}
 	physical_actor_session.submit_workbench_action(shared_workbench.selected_id(),action,ports,shared_workbench.fire_enabled)
 
 func publish_actor_keyboard_input() -> void:

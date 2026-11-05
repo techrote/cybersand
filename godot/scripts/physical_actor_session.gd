@@ -6,6 +6,7 @@ signal input_cancelled(actor_id: int, actor_epoch: int)
 # ACT-004 main-thread owner. Only copied commands/observations/effects cross its
 # boundary. The native cellular worker never receives these nodes or RIDs.
 const Fleet = preload("res://scripts/gcr_review_fleet.gd")
+const PlayerCatalog = preload("res://scripts/player_actor_catalog.gd")
 const WorkbenchBridge = preload("res://scripts/workbench_physics_bridge.gd")
 const WorkbenchEmitter = preload("res://scripts/workbench_emitter.gd")
 const Catalog = preload("res://scripts/physical_actor_catalog.gd")
@@ -63,22 +64,38 @@ var rejected_commands: int = 0
 
 
 static func _valid_retained_motion(value: Variant) -> bool:
-	if not value is Dictionary or value.size() != 3 or not value.has_all(["rotation","angular_velocity","linear_velocity"]): return false
-	return _finite_scalar(value.rotation) and _finite_scalar(value.angular_velocity) and value.linear_velocity is Vector2 and value.linear_velocity.is_finite()
+	if not value is Dictionary or not value.has_all(["rotation","angular_velocity","linear_velocity"]): return false
+	for key: Variant in value:
+		if key not in ["rotation","angular_velocity","linear_velocity","parts","controller"]: return false
+	if not (_finite_scalar(value.rotation) and _finite_scalar(value.angular_velocity) and value.linear_velocity is Vector2 and value.linear_velocity.is_finite()): return false
+	if value.has("parts"):
+		if not value.parts is Array or value.parts.is_empty() or value.parts.size() > MAX_PARTS: return false
+		for part: Variant in value.parts:
+			if not part is Dictionary or part.size() != 4 or not part.has_all(["position","rotation","linear_velocity","angular_velocity"]): return false
+			if not part.position is Vector2 or not part.position.is_finite() or not _finite_scalar(part.rotation) \
+				or not part.linear_velocity is Vector2 or not part.linear_velocity.is_finite() or not _finite_scalar(part.angular_velocity): return false
+	if value.has("controller") and not value.controller is Dictionary: return false
+	return true
 
 
 static func _finite_scalar(value: Variant) -> bool:
 	return (value is int or value is float) and is_finite(float(value))
 
 
-static func _hulls_inside(extent: Vector2i, origin: Vector2, angle: float, index: int) -> bool:
-	var pose := Transform2D(angle,origin)
-	var shapes: Array = Fleet.collision_rects(index) if index >= 0 else [{"center":Vector2.ZERO,"size":Vector2(8,14)}]
-	for shape: Dictionary in shapes:
-		for sign_x: float in [-1.0,1.0]:
-			for sign_y: float in [-1.0,1.0]:
-				var point: Vector2 = pose * (shape.center + shape.size * Vector2(sign_x,sign_y)*0.5)
-				if point.x<0 or point.y<0 or point.x>extent.x or point.y>extent.y: return false
+static func _hulls_inside(extent: Vector2i, origin: Vector2, motion: Dictionary, prepared: Dictionary) -> bool:
+	if motion.has("parts") and motion.parts.size() != prepared.parts.size(): return false
+	var angle: float = float(motion.get("rotation",0.0))
+	for part_index: int in prepared.parts.size():
+		var part: Dictionary = prepared.parts[part_index]
+		var pose := Transform2D(angle+float(part.get("angle",0.0)),origin+Vector2(part.offset).rotated(angle))
+		if motion.has("parts"):
+			pose = Transform2D(float(motion.parts[part_index].rotation),motion.parts[part_index].position)
+		var shapes: Array = part.get("collision_rects",[{"center":Vector2.ZERO,"size":part.size}])
+		for shape: Dictionary in shapes:
+			for sign_x: float in [-1.0,1.0]:
+				for sign_y: float in [-1.0,1.0]:
+					var point: Vector2 = pose * (shape.center+shape.size*Vector2(sign_x,sign_y)*0.5)
+					if point.x<0 or point.y<0 or point.x>extent.x or point.y>extent.y: return false
 	return true
 
 
@@ -96,6 +113,8 @@ static func valid_definitions(definitions: Array) -> bool:
 		var model := StringName(str(value.get("model", "")))
 		var producer := StringName(str(value.get("producer", "")))
 		var fleet_index: int = Fleet.index_for_id(str(model)) if workbench else -1
+		var prepared: Dictionary = Equipment.definition(Fleet.definition(fleet_index)) if workbench and fleet_index >= 0 else Equipment.definition(Catalog.entry(model),Loadouts.entry(model))
+		if prepared.is_empty(): return false
 		if workbench != value.has("workbench_options"): return false
 		if workbench:
 			if not _integer(value.get("instance_id"), 1, 9007199254740991) or identities.has(int(value.instance_id)):
@@ -110,11 +129,18 @@ static func valid_definitions(definitions: Array) -> bool:
 			if extent != Vector2i.ZERO and extent != value.canvas_extent: return false
 			extent = value.canvas_extent
 			if extent.x < 1 or extent.y < 1 or extent.x > 2048 or extent.y > 2048: return false
-			if (fleet_index < 0 and model != Catalog.PASSIVE_BARREL) or (fleet_index >= 0 and producer != &"human"):
+			if (fleet_index < 0 and model != Catalog.PASSIVE_BARREL and not PlayerCatalog.has_rig(model)) \
+				or (model != Catalog.PASSIVE_BARREL and producer != &"human"):
 				return false
 			if value.has("retained_motion") and not _valid_retained_motion(value.retained_motion): return false
 			var motion: Dictionary = value.get("retained_motion",{})
-			if not _hulls_inside(extent,value.position,float(motion.get("rotation",0)),fleet_index): return false
+			if not _hulls_inside(extent,value.position,motion,prepared): return false
+			if motion.has("controller") and not motion.controller.is_empty():
+				if model == &"acrobat":
+					if not Rig.PlayerAcrobat.valid_workbench_state(motion.controller): return false
+				elif PlayerCatalog.has_rig(model):
+					if not Rig.PlayerVehicle.valid_workbench_state(motion.controller): return false
+				else: return false
 		if model == Catalog.PASSIVE_BARREL:
 			if producer != &"passive" or value.get("usable_index", -1) != -1:
 				return false
@@ -125,7 +151,6 @@ static func valid_definitions(definitions: Array) -> bool:
 		if not workbench and value.has("retained_motion"): return false
 		if not workbench and (value.position.x < 0.0 or value.position.y < 0.0 or value.position.x >= 1024.0 or value.position.y >= 1024.0):
 			return false
-		var prepared: Dictionary = Equipment.definition(Fleet.definition(fleet_index)) if workbench and fleet_index >= 0 else Equipment.definition(Catalog.entry(model), Loadouts.entry(model))
 		if prepared.is_empty() or not _integer(value.get("usable_index", Loadouts.entry(model).get("usable_index", -1)), -1, 31):
 			return false
 		if model in Flight.IDS and int(value.get("usable_index", -1)) != -1:
@@ -175,9 +200,7 @@ func configure(definitions: Array, space: RID, new_epoch: int = 1) -> bool:
 			close()
 			return false
 		if definition.has("retained_motion"):
-			var body: RigidBody2D = rig.bodies()[0]
-			body.global_rotation = float(definition.retained_motion.rotation)
-			PhysicsServer2D.body_set_state(body.get_rid(), PhysicsServer2D.BODY_STATE_TRANSFORM, body.global_transform)
+			_restore_workbench_transforms(rig,definition.retained_motion,definition.position)
 		var item = Equipment.new()
 		if not item.configure(rig, run_id, epoch, index, _body_offsets[index],
 			int(definition.get("usable_index", loadout.get("usable_index", -1)))):
@@ -280,11 +303,12 @@ func workbench_actor_state(instance_id: int) -> Dictionary:
 	var angular: float = PhysicsServer2D.body_get_state(rid, PhysicsServer2D.BODY_STATE_ANGULAR_VELOCITY)
 	return {"instance_id":instance_id, "model":str(_definitions[slot].model), "position":pose.origin,
 		"rotation":pose.get_rotation(), "linear_velocity":linear, "angular_velocity":angular, "mass":body.mass, "inertia":body.inertia,
+		"assembly_mass":rig._total_mass,"assembly_inertia":rig._assembly_inertia,"body_count":rig.bodies().size(),
 		"gravity":body.gravity_scale * float(ProjectSettings.get_setting("physics/2d/default_gravity")),
 		"force_limit":float(rig._profile.get("fleet_force",0.0)), "torque_limit":float(rig._profile.get("fleet_torque",0.0)),
 		"budget":float(_definitions[slot].workbench_options.budget),
-		"customization":rig._profile.get("fleet_customization", {}).duplicate(true),
-		"movement":{"acceleration":float(rig._profile.get("fleet_accel", 0.0)),
+		"customization":rig._profile.get("fleet_customization",rig._profile.get("workbench_customization",{})).duplicate(true),
+		"movement":{"acceleration":float(rig._profile.get("fleet_accel",rig._profile.get("accel",0.0))),
 			"speed_target":float(rig._profile.get("speed", 0.0)),
 			"turn_speed":float(rig._profile.get("fleet_turn_speed", 0.0)),
 			"turn_acceleration":float(rig._profile.get("fleet_turn_accel", 0.0)),
@@ -295,7 +319,59 @@ func workbench_actor_state(instance_id: int) -> Dictionary:
 			"friction":float(PhysicsServer2D.body_get_param(rid, PhysicsServer2D.BODY_PARAM_FRICTION)),
 			"angular_drag":body.angular_damp},
 		"definition_hash":str(rig._profile.get("fleet_definition_hash","")),
-		"control_generation":_generations[slot], "controller":rig._player_controller.observation() if rig._player_controller != null else {}}
+		"control_generation":_generations[slot], "controller":rig._player_controller.observation() if rig._player_controller != null else {},
+		"retained_motion":export_workbench_motion(instance_id)}
+
+
+func export_workbench_motion(instance_id: int) -> Dictionary:
+	var slot: int = slot_for_instance(instance_id)
+	if slot < 0 or not bridge is WorkbenchBridge: return {}
+	var parts: Array = []
+	for body: RigidBody2D in _rigs[slot].bodies():
+		var rid: RID = body.get_rid()
+		var pose: Transform2D = PhysicsServer2D.body_get_state(rid,PhysicsServer2D.BODY_STATE_TRANSFORM)
+		parts.append({"position":pose.origin,"rotation":pose.get_rotation(),
+			"linear_velocity":PhysicsServer2D.body_get_state(rid,PhysicsServer2D.BODY_STATE_LINEAR_VELOCITY),
+			"angular_velocity":PhysicsServer2D.body_get_state(rid,PhysicsServer2D.BODY_STATE_ANGULAR_VELOCITY)})
+	var result: Dictionary = {"rotation":parts[0].rotation,"linear_velocity":parts[0].linear_velocity,
+		"angular_velocity":parts[0].angular_velocity,"parts":parts}
+	var controller: RefCounted = _rigs[slot]._player_controller
+	if controller != null and controller.has_method("export_workbench_state"):
+		result["controller"] = controller.export_workbench_state()
+	return result
+
+
+func export_workbench_reset_motion(instance_id: int, new_spawn: Vector2) -> Dictionary:
+	# Explicit actor reset neutralizes its attached assembly. Released equipment
+	# is an independent physical object and keeps its existing pose/momentum.
+	var slot: int = slot_for_instance(instance_id)
+	if slot < 0 or not new_spawn.is_finite(): return {}
+	var state: Dictionary = _equipment[slot].observation()
+	if state.get("state") not in ["released","fixed","deployed"]: return {}
+	var catalogue: Dictionary = _catalogue[slot]
+	if catalogue.get("mounts",[]).is_empty(): return {}
+	var held: int = int(catalogue.mounts[0].get("held_part",-1))
+	var retained: Dictionary = export_workbench_motion(instance_id)
+	if held < 0 or held >= retained.get("parts",[]).size(): return {}
+	var parts: Array = []
+	for definition: Dictionary in catalogue.parts:
+		parts.append({"position":new_spawn+Vector2(definition.offset),"rotation":float(definition.get("angle",0.0)),
+			"linear_velocity":Vector2.ZERO,"angular_velocity":0.0})
+	parts[held] = retained.parts[held].duplicate(true)
+	return {"rotation":parts[0].rotation,"linear_velocity":Vector2.ZERO,"angular_velocity":0.0,"parts":parts}
+
+
+func _restore_workbench_transforms(rig, motion: Dictionary, origin: Vector2) -> void:
+	var parts: Array[RigidBody2D] = rig.bodies()
+	for index: int in parts.size():
+		var body: RigidBody2D = parts[index]
+		var pose: Transform2D = body.global_transform
+		if motion.has("parts"):
+			pose = Transform2D(float(motion.parts[index].rotation),motion.parts[index].position)
+		else:
+			pose = Transform2D(pose.get_rotation()+float(motion.rotation),origin+(pose.origin-origin).rotated(float(motion.rotation)))
+		body.global_transform = pose
+		PhysicsServer2D.body_set_state(body.get_rid(),PhysicsServer2D.BODY_STATE_TRANSFORM,pose)
 
 
 func adopt_retained_motion() -> void:
@@ -305,11 +381,31 @@ func adopt_retained_motion() -> void:
 	for slot: int in range(_definitions.size()):
 		if not _definitions[slot].has("retained_motion"): continue
 		var motion: Dictionary = _definitions[slot].retained_motion
-		var body: RigidBody2D = _rigs[slot].bodies()[0]
-		body.linear_velocity = motion.linear_velocity
-		body.angular_velocity = motion.angular_velocity
-		PhysicsServer2D.body_set_state(body.get_rid(), PhysicsServer2D.BODY_STATE_LINEAR_VELOCITY, motion.linear_velocity)
-		PhysicsServer2D.body_set_state(body.get_rid(), PhysicsServer2D.BODY_STATE_ANGULAR_VELOCITY, motion.angular_velocity)
+		var bodies: Array[RigidBody2D] = _rigs[slot].bodies()
+		for part: int in bodies.size():
+			var body: RigidBody2D = bodies[part]
+			var linear: Vector2 = motion.linear_velocity
+			var angular: float = float(motion.angular_velocity)
+			if motion.has("parts"):
+				linear = motion.parts[part].linear_velocity
+				angular = float(motion.parts[part].angular_velocity)
+			else:
+				var offset: Vector2 = body.global_position-bodies[0].global_position
+				linear += Vector2(-offset.y,offset.x)*angular
+			body.linear_velocity = linear
+			body.angular_velocity = angular
+			PhysicsServer2D.body_set_state(body.get_rid(),PhysicsServer2D.BODY_STATE_LINEAR_VELOCITY,linear)
+			PhysicsServer2D.body_set_state(body.get_rid(),PhysicsServer2D.BODY_STATE_ANGULAR_VELOCITY,angular)
+		if motion.has("controller") and not motion.controller.is_empty():
+			_rigs[slot]._player_controller.restore_workbench_state(motion.controller)
+	# The provisional owner freezes every body, then unfreezes the assembly on
+	# adoption. Reapply genuine deployed-equipment ownership after that blanket
+	# hold is removed; a fixed processor is not a new dynamic payload.
+	for rig in _rigs:
+		for part: int in rig._fixed_equipment:
+			var body: RigidBody2D = rig.bodies()[part]
+			body.freeze_mode = RigidBody2D.FREEZE_MODE_STATIC
+			body.freeze = true
 	bridge.refresh_all_states()
 
 
@@ -317,7 +413,8 @@ func pack_workbench_sample() -> Dictionary:
 	if not _active or not bridge is WorkbenchBridge: return {}
 	var drives: Array[bool] = []
 	for rig in _rigs:
-		drives.append(not rig._action.is_empty() and (rig._last_impulse != Vector2.ZERO or rig._last_torque_impulse != 0.0))
+		var wheel_drive: bool = rig._player_wheel_speeds.values().any(func(value: Variant) -> bool: return absf(float(value)) > 0.000001)
+		drives.append(not rig._action.is_empty() and (rig._last_impulse != Vector2.ZERO or rig._last_torque_impulse != 0.0 or wheel_drive))
 	var packet: Dictionary = bridge.pack_sample(drives)
 	if packet.is_empty(): return packet
 	packet["emitters"] = []
@@ -327,10 +424,12 @@ func pack_workbench_sample() -> Dictionary:
 		if int(_workbench_emitted_at.get(slot,-1)) == tick or _commands[slot].is_empty() or tick >= _deadlines[slot]: continue
 		if binding.generation != _generations[slot] or binding.sequence != _sequences[slot]: continue
 		_workbench_emitted_at[slot] = tick
+		var body_index: int = bridge.root_body_index(slot)
+		var member: Dictionary = bridge.member_descriptor(body_index)
 		var identity: Dictionary = {"actor_slot":slot, "instance_id":_definitions[slot].instance_id,
 			"session":packet.session, "epoch":epoch, "generation":binding.generation, "sequence":binding.sequence,
-			"tick":tick, "first_proxy":packet.bodies[slot].first_proxy, "count":packet.bodies[slot].count}
-		packet.emitters.append_array(WorkbenchEmitter.intents(_rigs[slot], bridge.body_transform(slot), binding, identity))
+			"tick":tick, "first_proxy":member.first_proxy, "count":member.count}
+		packet.emitters.append_array(WorkbenchEmitter.intents(_rigs[slot],bridge.body_transform(body_index),binding,identity))
 	return packet
 
 
@@ -723,6 +822,7 @@ func complete_step() -> void:
 		tick += 1
 		for index: int in range(_rigs.size()):
 			_capture_flight_step(index)
+			if bridge is WorkbenchBridge: _rigs[index].set_granular_support_step(bridge.manual_step_count())
 			_rigs[index].complete_step()
 			_rigs[index].refresh_observation()
 			# Fault quarantine retires both unconsumed input and copied tool work.
@@ -753,17 +853,63 @@ func equipment_frame() -> Dictionary:
 		for index: int in range(_rigs.size()):
 			var parts: Array = []
 			for part: Dictionary in _rigs[index].observation().get("parts", []):
-				parts.append({"body_id": _body_offsets[index] + int(part.index) + 1,
-					"position": part.position, "rotation": part.rotation, "half_extents": Vector2(part.size) * 0.5})
+				var row: Dictionary = {"body_id": _body_offsets[index] + int(part.index) + 1,
+					"position": part.position, "rotation": part.rotation, "half_extents": Vector2(part.size) * 0.5}
+				if bridge is WorkbenchBridge: row["proxy_ids"] = bridge.proxies_for_body(_body_offsets[index]+int(part.index))
+				parts.append(row)
 			var frame: Dictionary = _equipment[index].frame(_generations[index], tick, _deadlines[index],
 				not _suspended and str(_rigs[index].fault).is_empty(), parts)
+			if bridge is WorkbenchBridge:
+				# Equipment-free flyers still identify foreign target masks. No mount
+				# or equipment capability is created by this copied publication.
+				if frame.is_empty() and not parts.is_empty():
+					frame = {"actor_id":index,"generation":_generations[index],"equipment_epoch":1,
+						"instance_id":"%s:%d:absent" % [run_id,index],"usable_index":-1,"state":"none","body_id":0,
+						"position":parts[0].position,"rotation":parts[0].rotation,"half_extents":parts[0].half_extents,
+						"muzzle":parts[0].position,"direction":Vector2.RIGHT,"owner_origin":parts[0].position,
+						"active":false,"lease_deadline":-1,"parts":parts}
+				frame["workbench_instance_id"] = int(_definitions[index].instance_id)
+				frame["workbench_model"] = str(_definitions[index].model)
 			if not frame.is_empty():
 				actors.append(frame)
 			var device: Dictionary = _equipment[index].device_frame()
 			if not device.is_empty():
 				devices.append(device)
-	return {"version": Equipment.VERSION, "run_id": run_id, "epoch": epoch, "tick": tick,
+	var result: Dictionary = {"version": Equipment.VERSION, "run_id": run_id, "epoch": epoch, "tick": tick,
 		"suspended": _suspended or not _active, "actors": actors, "devices": devices}
+	if bridge is WorkbenchBridge and not _definitions.is_empty(): result["canvas_extent"] = _definitions[0].canvas_extent
+	return result
+
+
+func export_workbench_equipment() -> Dictionary:
+	if not _active or not bridge is WorkbenchBridge: return {"ok":true,"actors":{}}
+	var actors: Dictionary = {}
+	for slot: int in range(_equipment.size()):
+		var custody: Dictionary = _equipment[slot].custody_state()
+		if not custody.ok: return custody
+		actors[int(_definitions[slot].instance_id)] = {"model":str(_definitions[slot].model),"equipment":custody.value}
+	return {"ok":true,"actors":actors}
+
+
+func restore_workbench_equipment(custody: Dictionary) -> String:
+	if not _active or not bridge is WorkbenchBridge or not custody.get("ok",false) or not custody.get("actors") is Dictionary:
+		return "equipment_custody_owner"
+	if custody.actors.size() > MAX_ACTORS: return "equipment_custody_capacity"
+	var retained: Dictionary = {}
+	for slot: int in range(_equipment.size()):
+		var id: int = int(_definitions[slot].instance_id)
+		var record: Dictionary = custody.actors.get(id,{})
+		if record.is_empty(): continue
+		retained[id] = true
+		if record.get("model") != str(_definitions[slot].model):
+			if record.get("equipment",{}).get("state") not in ["none","held"]: return "Return dropped equipment before replacing its actor."
+			continue
+		var error: String = _equipment[slot].restore_custody(record.get("equipment",{}))
+		if not error.is_empty(): return error
+	for id: Variant in custody.actors:
+		if not retained.has(id) and custody.actors[id].get("equipment",{}).get("state") not in ["held","none"]:
+			return "Return dropped equipment before removing its actor."
+	return ""
 
 
 func drain_equipment_requests() -> Array:

@@ -36,6 +36,7 @@ var refused_reads_last: int = 0
 var refused_writes_last: int = 0
 var _centres: PackedVector2Array = PackedVector2Array()
 var _bounds: Array[Rect2] = []
+var _world_extent := Vector2i(1024,1024) # Sampled legacy default; physical copied frames may select a finite canvas.
 
 func _new_actor() -> Dictionary:
 	return {
@@ -61,6 +62,7 @@ func configure(actor_count: int) -> bool:
 	_hits_last.clear()
 	_tick = 0
 	_next_entity_id = 1
+	_world_extent = Vector2i(1024,1024)
 	return true
 
 func clear() -> void:
@@ -701,7 +703,7 @@ func _write_if_empty(point: Vector2i, material: int, world) -> bool:
 	return _read(point, world) == EMPTY and _write(point, material, world)
 
 func _inside_world(point: Vector2i) -> bool:
-	return point.x >= 0 and point.y >= 0 and point.x < 1024 and point.y < 1024
+	return point.x >= 0 and point.y >= 0 and point.x < _world_extent.x and point.y < _world_extent.y
 
 func _inside_any_actor(point: Vector2) -> bool:
 	for rect: Rect2 in _bounds:

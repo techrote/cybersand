@@ -37,21 +37,32 @@ bool CyberNativeCellWorld::parse_workbench_sample(WorkbenchSample& next, const W
         const Dictionary row = owners[i];
         const auto id = integer(row,"id"), first = integer(row,"first_proxy"), count = integer(row,"count");
         const auto instance = integer(row,"instance_id"), generation = integer(row,"generation");
+        const auto part = row.has("part_index") ? integer(row,"part_index") : 0;
         const double budget = number(row,"budget"), gravity = number(row,"gravity");
         if (id < 1 || id > static_cast<int>(kWorkbenchBodies) || next.owners[id].instance ||
-            instance < 1 || generation < 1 || first < 1 || count < 1 || count > 8 ||
+            instance < 1 || instance > exact_integer_limit || generation < 1 || generation > exact_integer_limit ||
+            part < 0 || part >= 8 || first < 1 || count < 1 || count > 8 ||
             first > proxy_count - count + 1 || !std::isfinite(budget) || budget < 5 || budget > 80 ||
             (retained.response == "RFT" && budget != 20) || !std::isfinite(gravity) || gravity < 0 ||
             row.get("external_drive",Variant()).get_type() != Variant::BOOL) return false;
-        for (const auto& owner : next.owners) if (owner.instance == instance) return false;
-        next.owners[id] = {instance,generation,static_cast<int>(first),static_cast<int>(count),budget,gravity,row["external_drive"]};
+        for (const auto& owner : next.owners)
+            if (owner.instance == instance && owner.part_index == part) return false;
+        next.owners[id] = {instance,generation,static_cast<int>(first),static_cast<int>(count),static_cast<int>(part),budget,gravity,row["external_drive"]};
         const auto& previous = old.owners[id];
         if (old.session && (previous.instance != instance || previous.generation != generation ||
-            previous.first != first || previous.count != count || previous.budget != budget)) return false;
+            previous.first != first || previous.count != count || previous.part_index != part || previous.budget != budget)) return false;
         for (auto proxy = first; proxy < first + count; ++proxy) {
             if (next.owner_of[proxy]) return false;
             next.owner_of[proxy] = static_cast<std::uint16_t>(id);
         }
+    }
+    // Bounded identity scan; physical-owner count does not grant more actors.
+    std::array<std::int64_t,kWorkbenchActors> actors{};
+    std::size_t actor_count=0;
+    for (const auto& owner : next.owners) {
+        if (!owner.instance || std::find(actors.begin(),actors.end(),owner.instance)!=actors.end()) continue;
+        if (actor_count==actors.size()) return false;
+        actors[actor_count++]=owner.instance;
     }
     for (std::size_t id = 1; id < old.owners.size(); ++id)
         if (old.session && old.owners[id].instance != next.owners[id].instance) return false;
@@ -344,6 +355,7 @@ Dictionary CyberNativeCellWorld::workbench_body_result(std::size_t id) const {
     if (!std::isfinite(impulse.x) || !std::isfinite(impulse.y) || !std::isfinite(torque)) return {};
     Dictionary row;
     row["id"]=static_cast<std::int64_t>(id); row["instance_id"]=owner.instance; row["generation"]=owner.generation;
+    row["part_index"]=owner.part_index;
     row["sample"]=body.sample_serial; row["com"]=body.com;
     row["impulse"]=sampled_vec(impulse.x,impulse.y); row["torque"]=torque;
     row["correction"]=sampled_vec(correction.x,correction.y); row["budget"]=owner.budget;
@@ -356,6 +368,24 @@ Dictionary CyberNativeCellWorld::workbench_body_result(std::size_t id) const {
     row["normal_capacity"]=passive.capacity; row["body_capacity"]=cap; row["event_cost"]=cost*event_scale;
     row["passive_impulse"]=sampled_vec(passive.impulse.x,passive.impulse.y); row["passive_torque"]=passive.torque;
     row["passivity_rejected"]=passive.passive_rejected; row["nodes"]=passive.nodes;
+    // Controllers observe admitted upward support without a second impulse or
+    // synthetic Rapier collider. Side/overhead contacts cannot ground a part.
+    std::int64_t support_samples=0;
+    Vec support_point{}, support_normal{};
+    if (passive.capacity>0 && !passive.passive_rejected) for (std::size_t i=0;i<bin_count;++i) {
+        const auto& bin=*bins[i];
+        if (!bin.count || bin.normal.y>=-.35) continue;
+        support_samples+=bin.count;
+        support_point=support_point+bin.position_sum;
+        support_normal=support_normal+bin.normal*static_cast<double>(bin.count);
+    }
+    Dictionary support;
+    if (support_samples>0 && length(support_normal)>0) {
+        support["samples"]=support_samples;
+        support["position"]=sampled_vec(support_point.x/support_samples,support_point.y/support_samples);
+        support["normal"]=sampled_vec(support_normal.x/length(support_normal),support_normal.y/length(support_normal));
+    }
+    row["support"]=support;
     return row;
 }
 
@@ -366,6 +396,7 @@ Dictionary CyberNativeCellWorld::workbench_coupling_results() const {
     result["response"]=workbench_->response; result["extent"]=extent_;
     result["proxy_limit"]=cybersand::World::kMaximumTransientBodies;
     result["body_limit"]=static_cast<std::int64_t>(kWorkbenchBodies);
+    result["actor_limit"]=static_cast<std::int64_t>(kWorkbenchActors);
     result["world_mask_cell_limit"]=static_cast<std::int64_t>(extent_.x)*extent_.y;
     result["native_mask_reserved"]=static_cast<std::int64_t>(world_->transient_occupancy_capacity());
     result["raster_indices_reserved"]=static_cast<std::int64_t>(raster_indices_.capacity());

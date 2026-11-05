@@ -4,7 +4,7 @@ status: Current
 document-kind: contract
 scope: Experimental U01-U32 catalogue, physical equipment and deployed processors; retained sampled equipment compatibility, copied control and native material authority
 canonical-for: [actor-usables-catalogue, actor-usable-behaviour, actor-usable-control]
-last-reviewed: 2026-10-19
+last-reviewed: 2026-11-05
 related-documents: [physical-actor-rigs.md, actor-rigs.md, actor-control-prototypes.md, materials-and-rule-kernels.md, ../architecture/data-ownership-and-lifetimes.md, ../reference/interfaces-and-message-contracts.md, ../reference/configuration-reference.md, ../operations/local-build-and-validation.md, ../reference/status-and-roadmap.md, ../audits/2026-10-19-act005-physical-usables.md]
 ---
 
@@ -64,6 +64,40 @@ continue after release/cancellation, freeze while simulation is paused and clear
 on a fresh actor/World reset. Cancelled physical input retires pending requests
 and late receipts without teleporting a released body or erasing actor momentum.
 Changing equipment while a trigger is held requires release before rearming.
+
+### Shared workbench equipment
+
+**Current development-branch source:** the five mechanical player presets use
+this same U01–U32 equipment owner inside the shared desktop workbench. Select a
+mechanical instance, choose its usable and power, then use **M**, **N** and **U**
+for activation, release and nearby reattachment. The explicit usable tool mode
+also accepts pointer primary/alternate input; painting and firing do not consume
+the same pointer gesture. Existing eight-flyer dispenser ports remain their
+authored capability. A flyer with no physical equipment mount is not assigned a
+hidden held chassis; native Sand/Water player fields have no Rapier mount.
+The [player/workbench guide](player-control-playground.md) owns the full controls.
+
+Equipment requests and source geometry accompany the exact same copied
+workbench body sample. Canonical physical part IDs are distinct from native
+rectangle-proxy IDs, including Scooper's five proxies. Aliases preserve source
+clearance's exact-footprint rule and return foreign projectile hits to the
+correct physical part. Equipment-free physical flyers publish passive target
+parts without receiving a mount. Projectile hits are copied telemetry; they do
+not currently apply target damage or a separate Rapier impulse. The finite
+workbench canvas may extend to 2048 cells per
+side; the retained sampled runtime still defaults to 1024. Bounds select the
+existing effect implementation and do not change recipes, filters or chemistry.
+
+Unrelated prepared actor/settings/liquid replacements carry equipment identity,
+attachment, charge/cooldown and committed worker payload/device state by stable
+workbench instance. Staging does not mutate the retained owner, and adoption
+occurs only after the existing World/physical acknowledgement. A dropped chassis
+cannot be replaced by a fresh copy. Removing or replacing a model that owns live
+committed payloads/processors is explicitly refused; a fresh experiment may
+retire them deliberately. Named starting setups record initial usable/power,
+not a resumed live inventory. The [wire and custody contract](../reference/interfaces-and-message-contracts.md#workbench-body-equipment-and-material-player-join)
+owns these boundaries; the [dated integration record](../audits/2026-11-05-workbench-player-usables.md)
+owns actual runtime/platform qualification and the unmerged review state.
 
 ## U01–U12: material deposition and destruction tools
 
@@ -132,6 +166,8 @@ before releasing the physical chassis.
 **Physical placement:** primary releases the existing equipment body. After
 supported low-speed settling, the owner fixes that same body at its current
 pose and submits a deployment request. Only worker admission enables processing.
+Support may come from hard Rapier terrain or a fresh admitted upward granular
+contact for that exact chassis; a detached tool does not ground its actor.
 The copied object pose belongs to its actor, instance, equipment epoch and stable
 body ID. Dropping a chassis alone does not automatically start a processor.
 

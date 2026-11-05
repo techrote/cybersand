@@ -23,6 +23,10 @@ const TERRAIN_MASK: int = 1
 const ReviewFleetController = preload("res://scripts/gcr_review_fleet_controller.gd")
 const ReviewFleet = preload("res://scripts/gcr_review_fleet.gd")
 const FlyerPreferences = preload("res://scripts/flyer_preferences.gd")
+const PlayerCatalog = preload("res://scripts/player_actor_catalog.gd")
+const PhysicalCatalog = preload("res://scripts/physical_actor_catalog.gd")
+const UsableEquipment = preload("res://scripts/physical_usable_equipment.gd")
+const UsableLoadouts = preload("res://scripts/physical_usable_loadouts.gd")
 const PlayerVehicle = preload("res://scripts/player_vehicle_controller.gd")
 const PlayerAcrobat = preload("res://scripts/player_acrobat_controller.gd")
 const FlightProfile = preload("res://scripts/physical_flight_profile.gd")
@@ -77,6 +81,8 @@ var _air_jumps: int = 0
 var _grip_normal: Vector2 = Vector2.UP
 var _grip_local_offset: Vector2 = Vector2.ZERO
 var _support: Dictionary = {}
+var _granular_support: Dictionary = {}
+var _granular_support_step: int = 0
 var _sensors: Dictionary = {}
 var _ray_count: int = 0
 var _tick: int = 0
@@ -324,13 +330,20 @@ func configure(definition: Dictionary, origin: Vector2, slot: int = 0, incarnati
 	if not invalid.is_empty():
 		fault = invalid
 		return ERR_INVALID_DATA
-	# Developer overrides apply only to the exact retained authored fleet.
+	# Developer overrides apply to admitted source-authored workbench actors.
 	# Validate ordinary authored mass first; never widen catalogue admission.
 	var passive: bool = definition.get("id") == &"reference_barrel"
-	if not valid_review_options(review_options) or (not review_options.is_empty() and review_fleet_index==-1 and not passive):
+	var player: bool = review_fleet_index == -1 and PlayerCatalog.has_rig(StringName(str(definition.get("id",""))))
+	if not valid_review_options(review_options) or (not review_options.is_empty() and review_fleet_index==-1 and not passive and not player):
 		return ERR_INVALID_DATA
-	if review_options.has("customization") and review_fleet_index==-1:
+	if review_options.has("customization") and review_fleet_index==-1 and not player:
 		return ERR_INVALID_DATA
+	if player and not review_options.is_empty():
+		var source: Dictionary = UsableEquipment.definition(PhysicalCatalog.entry(StringName(str(definition.id))),UsableLoadouts.entry(StringName(str(definition.id))))
+		if definition != source: return ERR_INVALID_DATA
+		if review_options.has("customization"):
+			for port: String in ["q","e","s"]:
+				if int(review_options.customization[port+"_material"]) != 0: return ERR_INVALID_DATA
 	if review_fleet_index!=-1:
 		if not ReviewFleet.valid_index(review_fleet_index): return ERR_INVALID_DATA
 		var expected: Dictionary = ReviewFleet.definition(review_fleet_index)
@@ -364,6 +377,20 @@ func configure(definition: Dictionary, origin: Vector2, slot: int = 0, incarnati
 			return ERR_INVALID_DATA
 	_definition = definition.duplicate(true)
 	_profile = _definition.get("profile", {})
+	if player and not review_options.is_empty():
+		var tuning: Dictionary = review_options.get("customization",FlyerPreferences.tuning_defaults()).duplicate(true)
+		_profile["workbench_customization"] = tuning
+		for mapping: Array in [["acceleration","accel"],["speed","speed"]]:
+			if _profile.has(mapping[1]): _profile[mapping[1]] = float(_profile[mapping[1]])*float(tuning[mapping[0]])
+		_profile.gravity = clampf(float(_profile.get("gravity",156.0))*float(tuning.gravity),0.0,500.0)
+		_profile.angular_drag = clampf(float(_profile.get("angular_drag",0.25))*float(tuning.angular_drag),0.0,8.0)
+		_profile["workbench_thrust_scale"] = float(review_options.get("thrust_multiplier",1.0))
+		_profile["workbench_torque_scale"] = float(review_options.get("torque_multiplier",1.0))
+		if _profile.has("thrust"): _profile.thrust = float(_profile.thrust)*float(tuning.acceleration)
+		_profile.gyro = float(_profile.get("gyro",22.0))*float(tuning.stabilization)*float(_profile.workbench_torque_scale)
+		_profile.gyro_kp = float(_profile.get("gyro_kp",12.0))*float(tuning.stabilization)
+		_profile.damping = float(_profile.get("damping",4.0))*float(tuning.stabilization_damping)
+		_profile.air_drag = clampf(float(_profile.get("air_drag",.1))*float(tuning.drag),0.0,3.0)
 	if review_fleet_index!=-1:
 		# Only the already validated, exact retained fleet can apply private
 		# actuation settings. Omitted controls preserve its authored values.
@@ -425,7 +452,11 @@ func configure(definition: Dictionary, origin: Vector2, slot: int = 0, incarnati
 		if not review_options.is_empty():
 			# Explicit positive inertia, including tiny developer masses, is set
 			# before all cached properties and the Rapier bridge are constructed.
-			body.inertia = (float(part.inertia)*float(review_options.get("mass_multiplier",1.0)) if compound else body.mass*Vector2(part.size).length_squared()/12.0)*float(review_options.inertia_multiplier)
+			# Preserve disk inertia for real player wheels as well as rectangle
+			# and compound inertia. Neutral workbench settings are shape-faithful.
+			if not player:
+				body.inertia = float(part.inertia)*float(review_options.get("mass_multiplier",1.0)) if compound else body.mass*Vector2(part.size).length_squared()/12.0
+			body.inertia *= float(review_options.inertia_multiplier)
 		body.gravity_scale = _gravity / maxf(1.0, float(ProjectSettings.get_setting("physics/2d/default_gravity", 980.0)))
 		if _flight_controller != null:
 			body.gravity_scale = flight_gravity_scale
@@ -439,7 +470,7 @@ func configure(definition: Dictionary, origin: Vector2, slot: int = 0, incarnati
 		body.collision_layer = TERRAIN_MASK
 		body.collision_mask = TERRAIN_MASK
 		var material: PhysicsMaterial = PhysicsMaterial.new()
-		var friction_scale: float = float(_profile.fleet_customization.friction) if _profile.has("fleet_customization") else 1.0
+		var friction_scale: float = float(_profile.get("fleet_customization",_profile.get("workbench_customization",{})).get("friction",1.0))
 		material.friction = clampf(float(part.get("friction", 0.8))*friction_scale, 0.0, 1.0)
 		material.bounce = clampf(float(part.get("bounce", 0.02)), 0.0, 0.6)
 		if rig_id == &"reference_barrel":
@@ -1078,6 +1109,10 @@ func _gyro(target_angle: float, dt: float, gain: float = 1.0) -> void:
 
 
 func _angular_target(target: float, dt: float, maximum: float) -> void:
+	if _profile.has("workbench_customization"):
+		var tuning: Dictionary = _profile.workbench_customization
+		target = clampf(target*float(tuning.turn_speed),-24.0,24.0)
+		maximum = clampf(maximum*float(tuning.turn_acceleration)*float(_profile.workbench_torque_scale),0.0,MAX_ANGULAR_ACCELERATION)
 	var acceleration: float = clampf((target - _angular_velocities[0]) * 5.0, -maximum, maximum)
 	_apply_angular_impulse(0, acceleration * _inertias[0] * dt)
 
@@ -1301,7 +1336,7 @@ func _spend(amount: float) -> float:
 func _apply_rig_impulse(impulse: Vector2) -> void:
 	if not impulse.is_finite():
 		return
-	var bounded: Vector2 = impulse.limit_length(_total_mass * MAX_IMPULSE_PER_MASS)
+	var bounded: Vector2 = (impulse*float(_profile.get("workbench_thrust_scale",1.0))).limit_length(_total_mass * MAX_IMPULSE_PER_MASS)
 	_last_impulse += bounded
 	for index: int in range(_parts.size()):
 		if not _detached.has(index):
@@ -1387,6 +1422,8 @@ func _react_support(impulse: Vector2) -> void:
 	if _support.is_empty() or not _support.has("rid"):
 		return
 	var rid: RID = _support.rid
+	if _profile.has("workbench_thrust_scale"):
+		impulse = (impulse*float(_profile.workbench_thrust_scale)).limit_length(_total_mass*MAX_IMPULSE_PER_MASS)
 	if rid.is_valid() and PhysicsServer2D.body_get_mode(rid) == PhysicsServer2D.BODY_MODE_RIGID:
 		var transform: Transform2D = PhysicsServer2D.body_get_state(rid, PhysicsServer2D.BODY_STATE_TRANSFORM)
 		PhysicsServer2D.body_apply_impulse(rid, impulse, Vector2(_support.position) - transform.origin)
@@ -1418,6 +1455,24 @@ func _refresh_states() -> void:
 			for body: RigidBody2D in _parts:
 				body.freeze = true
 			return
+
+
+func set_granular_support_step(step: int) -> void:
+	_granular_support_step = step
+
+
+func set_granular_support(part_index: int, witness: Dictionary, until_step: int = -1) -> void:
+	# Called only by the main-thread workbench bridge after the same complete
+	# packet/age/geometry admission used for its wrench. No live native state.
+	if part_index < 0 or part_index >= _parts.size(): return
+	if witness.is_empty():
+		_granular_support.erase(part_index)
+		return
+	_granular_support[part_index] = {"until":until_step,"witness":witness.duplicate(true)}
+
+
+func clear_granular_support() -> void:
+	_granular_support.clear()
 
 
 func _sense() -> void:
@@ -1470,6 +1525,14 @@ func _sense() -> void:
 				if normal.y < -0.35:
 					_support = {"position": direct.get_contact_collider_position(contact), "normal": normal, "rid": rid, "part": index}
 					break
+	if _support.is_empty():
+		for part: int in _granular_support:
+			var retained: Dictionary = _granular_support[part]
+			if _detached.has(part) or _granular_support_step>int(retained.until): continue
+			var witness: Dictionary = retained.witness
+			_support = {"position":witness.position,"normal":witness.normal,"part":part,
+				"granular":true,"samples":witness.samples}
+			break
 
 
 func _ray(from: Vector2, to: Vector2) -> Dictionary:
@@ -1751,6 +1814,13 @@ func _refresh_equipment_state() -> void:
 	# copied result, rather than initiating new space queries on every read.
 	var clearance: bool = _ray(pose.origin, muzzle).is_empty()
 	var supported: Dictionary = _ray(pose.origin, pose.origin + Vector2.DOWN * (vertical + 1.3))
+	if supported.is_empty() and _granular_support.has(held):
+		var retained: Dictionary = _granular_support[held]
+		if _granular_support_step <= int(retained.until):
+			# The released chassis has its own admitted contact witness. It can
+			# settle a processor on powder without grounding the remote actor or
+			# creating a collider/RID or another response impulse.
+			supported = retained.witness
 	var pickup_clear: bool = grip.distance_to(pose.origin) <= 8.0 and _ray(grip, pose.origin).is_empty()
 	_equipment_state = {"held_part": held, "host_part": host, "mount_id": str(mount.get("id", "usable")),
 		"mount_type": str(mount.get("type", "mounted")), "aim_limits": mount.get("physical_limits", mount.get("limits", Vector2(-PI, PI))),

@@ -489,9 +489,81 @@ The physical session rejects a complete assembly beyond capacity before spawning
 SetP circular wheels supply their diameter as a circumscribed square in this
 unchanged rectangle layout. Rapier hard contact and graphics use circles;
 native masks and displacement retain the explicit conservative approximation.
-General contours and cellular torque feedback remain Planned; these private
-packed records are not an unrestricted public network protocol. Numerical response and sample-age policy belong in
+This retained stride-11 route does not carry a cellular torque result. The
+workbench's separate response packet below can carry a wrench; generalized
+contours remain Planned. These private packed records are not an unrestricted
+public network protocol. Numerical response and sample-age policy belong in
 [coupling](../architecture/rigid-body-and-cellular-coupling.md).
+
+### Workbench body, equipment and material-player join
+
+**Current development-branch source:**
+[`WorkbenchBridge`](../../godot/scripts/workbench_physics_bridge.gd) publishes
+`PackedFloat64Array` states with stride 17, four geometry values per rectangle,
+and physical-owner dictionaries. One through eight actor identities share at
+most 64 physical bodies and 64 rectangle proxies. Member `id` addresses one
+physical body; `instance_id` identifies its actor; optional `part_index` defaults
+to zero for retained single-body callers. Each `(instance_id, part_index)` is
+unique. `first_proxy`/`count` give that body's contiguous geometry range. Compound
+shapes share one mass/inertia/COM and response budget; articulated parts remain
+independent owners. Native admission is in
+[`parse_workbench_sample`](../../godot/native_extension/workbench_granular_coupling.inc).
+
+The stride fields are proxy ID, rectangle centre x/y, angle, full size x/y,
+velocity x/y, angular velocity, mass, sample serial, inertia, COM x/y, friction,
+physical delta and session serial. Owner metadata carries generation, budget,
+gravity and external-drive state. Results echo physical/actor/part identity and
+sample properties with one wrench per physical body. Existing session/epoch,
+duplicate, age and corner-travel checks still gate main-thread application.
+Frozen physical processors retain masks while rejecting dynamic correction and
+impulses. Admitted copied support observations inform grounding without adding
+another response owner or support RID.
+
+`CyberSimulationWorker.set_workbench_sample(sample) -> Dictionary` joins optional
+`equipment_frame`, `equipment_requests` and `effects` at the same mutex boundary
+as body geometry. `sample_accepted` reports coupling publication separately from
+equipment request admission. The exclusive worker extracts this whole capture
+once, prepares its native masks and consumes matching equipment geometry; it
+does not reread a later sample or install a second rigid-body mask owner.
+Equipment requests retain their existing eight-request/one-inflight-per-actor
+capacity, generation revalidation, paused/failed refusal and changed-cell receipts.
+
+The existing version-1 equipment frame admits optional `canvas_extent: Vector2i`
+(sides 1–2048), plus `workbench_instance_id`/`workbench_model` on actor rows and
+`proxy_ids: PackedInt32Array` on physical parts. Each part owns one through eight
+unique native proxies; no proxy belongs to two physical parts. Absent aliases
+retain the legacy physical-ID mapping and absent extent retains 1024². The
+workbench worker additionally binds supplied extent to its installed canvas.
+Equipment-free physical actors publish only copied target-mask ownership, with
+no mount or activation capability. Hit feedback maps native proxy contacts back
+to canonical physical-body IDs; source exemption remains restricted to its own
+prefix/exact footprint, not all limbs of the actor.
+
+`PhysicalActorSession.export_workbench_equipment` and
+`restore_workbench_equipment` exchange bounded values keyed by stable actor
+instance. Pending unresolved equipment receipts refuse export. A candidate
+equipment frame lets the exclusive owner stage its authoritative charge,
+cooldown, payload motion, processor stock/history and owner remapping before
+commit. It adopts that runtime only after the native World swap succeeds.
+Acknowledging that already committed physical epoch while its initial frame is
+held is idempotent; it cannot clear the newly staged inventory publication.
+Unsupported removal/model replacement of live committed owners refuses visibly;
+an explicit fresh experiment can retire them. Starting-setup usable/power fields
+are initial authoring values, not serialization of this live custody state.
+
+The same desktop owner routes native material-player commands through
+`queue_workbench_material_command`, `cancel_workbench_material_input` and
+`reset_workbench_material_player`. The value-only
+[`WorkbenchMaterialPlayers`](../../godot/scripts/workbench_material_players.gd)
+uses the existing ten-field material action envelope and six-tick observation
+lease. Its `actor_id` is the stable workbench instance; physical action actor IDs
+remain current session slots, fenced by their run and epoch. Physical and material actors share the same eight-instance admission
+bound. Native cells remain authoritative; a field player has no invented Rapier
+body. New explicit material spawns seed only empty/unmasked cells after successful
+World installation and mask preparation, before ordinary ticking; receipts
+separate requested, inserted and refused cells. Retained resets move the control
+centre without relocating/replenishing parcels. Actual source/runtime results
+and review limits are in the [integration audit](../audits/2026-11-05-workbench-player-usables.md).
 
 ## Immutable dirty snapshot contract
 
@@ -1023,15 +1095,17 @@ The [physical Blacksite experiment](../operations/physical-actor-programme.md) r
 
 ## Player material field control
 
-**Current experimental, dedicated playground:** the GDExtension method is
+**Current experimental native adapter:** the GDExtension method is
 `apply_player_material_field(center: Vector2i, direction: Vector2,
 material_id: int, mode: int, phase: int) -> Dictionary`.
 Only the exclusive native-World owner may call it, outside native ticks. It is
-not forwarded through the ordinary desktop worker. The
+forwarded through the workbench's exclusive desktop owner on its development
+branch; the retained standalone playground remains a separate synchronous owner. The
 [playground contract](../systems/player-control-playground.md) owns user behavior;
 [configuration](configuration-reference.md#player-playground-values) owns limits.
 
-`center` must lie inside the adapter's 1024² domain. Direction must be finite and
+`center` must lie inside the adapter's installed finite domain: 1024² for the
+retained standalone scene, or the workbench's admitted extent. Direction must be finite and
 unit-bounded; material is Sand (2) or Water (3), mode is 0–3, and phase is an
 integer from 0 through 2,147,483,647. Modes are normal cohesion/loft (0), surge
 (1), dry spread/liquid squeeze (2), and gather (3). The owner uses the current
@@ -1375,6 +1449,18 @@ and current fixed pose. Body-state values can be published at the same mutex
 boundary, preserving their relationship with the source/muzzle frame. No node,
 RID, live World or controller object crosses that boundary.
 
+#### How are delayed physical equipment requests and receipts fenced?
+
+A delayed physical equipment request cannot activate a replaced, dropped or
+cancelled tool using its former authority. The worker queue is bounded to eight
+requests and one in-flight request per actor. After extraction, the worker
+rechecks the current run/epoch, equipment instance/epoch, control generation and
+lease before any material transaction. Drop, retool and cancellation retire
+pending authority; cancellation and consumption share the mutex. Already
+committed payloads/processors retain their separate lifecycle. A delayed receipt
+must match the exact pending token and current physical owner; consuming that
+token precedes recoil, so replay cannot apply it twice or resurrect equipment.
+
 Each request has `version`, `run_id`, `epoch`, `actor_id`, `generation`,
 `equipment_epoch`, `instance_id`, `usable_index`, `body_id`, `sequence`,
 `request_id`, `operation` and `power`. Instance/request IDs are Strings. A
@@ -1392,6 +1478,15 @@ and add `accepted`, `consumed`, `reason`, `changed_cells`, worker tick, charge a
 cooldown. `accept_equipment_feedback` admits only matching current identity and
 new readback; a matching pending token is consumed before applying recoil.
 Refused use cannot apply recoil or silently change item ownership.
+
+The main-thread equipment controller advances a local charge/cooldown prediction
+on physical steps; worker feedback supplies the serialized ledger. Its displayed
+`observation.equipment` can differ at pause/adoption boundaries. Committed use and inventory-custody
+qualification use the matching `physical_usables.actors` row, bound to the
+current run, actor epoch and equipment instance/epoch/body/usable identity.
+Those read-only resource comparisons do not weaken request or receipt generation
+checks. Sources: `PhysicalUsableEquipment.advance` and
+`PhysicalUsableRuntime.PhysicalEngine.advance_physical`.
 
 `observation.equipment` exposes the physical grip/body pose, current and requested
 aim, limits, clearance, release/reattach readiness, selected usable, cooldown,

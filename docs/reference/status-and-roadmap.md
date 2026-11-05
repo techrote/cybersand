@@ -10,6 +10,12 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+## Shared player/workbench integration — 5 November 2026
+
+Current unmerged source reconciles [seven player presets and 32 usables](../systems/player-control-playground.md#player-actors-and-usables-in-the-shared-workbench--5-november-2026) with the existing eight flyers and shared painting/liquid controls. Five mechanical players retain articulation and equipment; two native fields use the existing exclusive worker-owned World. [Configuration](configuration-reference.md#workbench-player-actor-and-material-field-bounds) separates eight logical actors from 64 physical owners/proxies, support observations, setup-v4 initial equipment and no-refill field reset.
+
+The successor consumes unmerged #402 over merged #394; both PRs remain unmerged. No sleep, material law, SOL import, new LiquidDrain law or response-coefficient change is included. Actual failures, rebuilt runtimes and owner review belong to the [dated audit](../audits/2026-11-05-workbench-player-usables.md). PLAY/REM-004, hardware and Web acceptance remain separately owned.
+
 ## MAT-AUTH reviewed per-file transitions — 2026-11-04
 
 The owner approved a narrow way to admit a reviewed, behaviour-preserving edit

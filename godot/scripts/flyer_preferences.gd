@@ -80,8 +80,9 @@ static func _canonical_key(code: int) -> int:
 	return code-32 if code >= 97 and code <= 122 else code
 
 
-static func reserved_key(code: int) -> bool:
-	return _canonical_key(code) in RESERVED
+static func reserved_key(code: int, capabilities: Dictionary = {}) -> bool:
+	var key := _canonical_key(code)
+	return key in RESERVED or (bool(capabilities.get("usables",false)) and key in [KEY_M,KEY_N,KEY_U])
 
 
 static func key_label(code: int) -> String:
@@ -94,7 +95,7 @@ static func binding_label(binding: Array) -> String:
 	return " / ".join(labels) if not labels.is_empty() else "Unbound"
 
 
-static func validate_bindings(value: Variant) -> String:
+static func validate_bindings(value: Variant, capabilities: Dictionary = {}) -> String:
 	if not _keys(value,ACTIONS): return "Missing or unknown flyer actions."
 	for action: String in ACTIONS:
 		if not value[action] is Array or value[action].size() > 2:
@@ -105,7 +106,7 @@ static func validate_bindings(value: Variant) -> String:
 			# validation. Modifier masks/chords are not silently treated as keys.
 			if not _integer(candidate,1,KEY_UNKNOWN-1): return "Invalid key for "+action+"."
 			var code: int = _canonical_key(int(candidate))
-			if reserved_key(code): return key_label(code)+" is reserved for workbench tools/navigation."
+			if reserved_key(code,capabilities): return key_label(code)+" is reserved for workbench tools/navigation or this actor's equipment."
 			if key_label(code).is_empty(): return "Unknown key for "+action+"."
 			if used.has(code): return "Duplicate key within "+action+"."
 			used[code] = true
@@ -115,6 +116,17 @@ static func validate_bindings(value: Variant) -> String:
 static func default_profile(capabilities: Dictionary = {}) -> Dictionary:
 	return {"options":DEFAULT_OPTIONS.duplicate(true),"tuning":tuning_defaults(capabilities),
 		"bindings":default_bindings(),"fire_enabled":false}
+
+static func neutral_options_and_tuning(options: Dictionary, tuning: Dictionary, capabilities: Dictionary = {}) -> bool:
+	if not _keys(options,DEFAULT_OPTIONS.keys()) or not _keys(tuning,TUNING_DEFAULTS.keys()): return false
+	for key: String in DEFAULT_OPTIONS:
+		if not _number(options[key],-INF,INF) or float(options[key]) != float(DEFAULT_OPTIONS[key]): return false
+	var defaults := tuning_defaults(capabilities)
+	for key: String in defaults:
+		if defaults[key] is bool:
+			if not tuning[key] is bool or tuning[key] != defaults[key]: return false
+		elif not _number(tuning[key],-INF,INF) or float(tuning[key]) != float(defaults[key]): return false
+	return true
 
 
 static func validate_profile(value: Variant, capabilities: Dictionary = {}) -> String:
@@ -127,10 +139,14 @@ static func validate_profile(value: Variant, capabilities: Dictionary = {}) -> S
 		if not _number(value.options[key],low,high): return "Body setting outside admission: "+key
 	var error: String = validate_tuning(value.tuning)
 	if not error.is_empty(): return error
+	if capabilities.get("kind","") in ["mechanical","material"] and value.fire_enabled:
+		return "This actor has no authored flyer Fire source."
+	if capabilities.get("kind","") == "material" and not neutral_options_and_tuning(value.options,value.tuning,capabilities):
+		return "Native material players have bindings, not rigid-body or emitter multipliers."
 	for port: String in ["q","e","s"]:
 		if capabilities.has("dispenser_"+port) and int(capabilities["dispenser_"+port]) == 0 and int(value.tuning[port+"_material"]) != 0:
 			return "This flyer has no "+port.to_upper()+" dispenser."
-	return validate_bindings(value.bindings)
+	return validate_bindings(value.bindings,capabilities)
 
 
 static func keys_pressed(binding: Array, state: Dictionary) -> bool:
@@ -141,12 +157,12 @@ static func keys_pressed(binding: Array, state: Dictionary) -> bool:
 
 static func from_state(bindings: Dictionary, keys: Dictionary, stick: Vector2 = Vector2.ZERO,
 		buttons: Vector3i = Vector3i.ZERO, lean: float = 0.0, gamepad_ports: Dictionary = {},
-		reverse_thrust: bool = true) -> Dictionary:
+		reverse_thrust: bool = true, legacy_secondary: bool = false) -> Dictionary:
 	var held: Dictionary = {}
 	for name: String in ACTIONS: held[name] = keys_pressed(bindings.get(name,[]),keys)
 	var canonical := {KEY_W:held.move_up,KEY_S:held.move_down and reverse_thrust,
 		KEY_A:held.move_left,KEY_D:held.move_right,KEY_SPACE:held.primary,
-		KEY_Q:held.utility_left,KEY_E:held.utility_right,KEY_SHIFT:held.brake,KEY_C:held.assist}
+		KEY_Q:held.utility_left,KEY_E:held.utility_right,KEY_SHIFT:held.boost if legacy_secondary else held.brake,KEY_C:held.assist}
 	var action: Dictionary = PlaygroundInput.from_state(canonical,stick,buttons,lean)
 	if not reverse_thrust:
 		# Kestrel's S dispenses without cancelling simultaneous forward thrust.
@@ -155,11 +171,11 @@ static func from_state(bindings: Dictionary, keys: Dictionary, stick: Vector2 = 
 		action.aim = Vector2(action.move).normalized()
 	var ports := {"q":held.utility_left or bool(gamepad_ports.get("q",lean < -0.01)),
 		"e":held.utility_right or bool(gamepad_ports.get("e",lean > 0.01)),
-		"s":held.dispenser_s or bool(gamepad_ports.get("s",stick.y > 0.2)),"boost":held.boost}
+		"s":held.dispenser_s or bool(gamepad_ports.get("s",stick.y > 0.2)),"boost":held.boost and not legacy_secondary}
 	return {"action":action,"ports":ports}
 
 
-static func sample(bindings: Dictionary, include_gamepad: bool = true, reverse_thrust: bool = true) -> Dictionary:
+static func sample(bindings: Dictionary, include_gamepad: bool = true, reverse_thrust: bool = true, legacy_secondary: bool = false) -> Dictionary:
 	var keys: Dictionary = {}
 	for name: String in ACTIONS:
 		for value: Variant in bindings.get(name,[]):
@@ -179,7 +195,7 @@ static func sample(bindings: Dictionary, include_gamepad: bool = true, reverse_t
 		ports = {"q":Input.is_joy_button_pressed(pad,JOY_BUTTON_LEFT_SHOULDER),
 			"e":Input.is_joy_button_pressed(pad,JOY_BUTTON_RIGHT_SHOULDER),"s":raw.y > 0.2}
 		lean = float(int(ports.e)-int(ports.q))
-	return from_state(bindings,keys,stick,buttons,lean,ports,reverse_thrust)
+	return from_state(bindings,keys,stick,buttons,lean,ports,reverse_thrust,legacy_secondary)
 
 
 func configure_models(models: Dictionary) -> void:

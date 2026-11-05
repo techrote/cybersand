@@ -1,0 +1,137 @@
+{
+  "version": 1,
+  "reviewed": "2026-11-05",
+  "purpose": "Additive source-backed shared-workbench player/usables questions; frozen32/PLAY12/challenge157 remain untouched. Source and actual qualification are separate.",
+  "questions": [
+    {
+      "id": "WB-PLAY-ROSTER",
+      "query": "Can I use the seven player playground actors and physical usables beside the flyers in the shared painting workbench?",
+      "canonical": [
+        "systems/player-control-playground.md"
+      ],
+      "facts": [
+        "All eight flyers and seven player presets are offered in Pilot/Place model; five mechanical players retain articulated Rapier assemblies, while Dust Devil and Undertow use native material fields.",
+        "A passive barrel remains placeable. Up to eight logical actors share the canvas, with 64 physical owners and 64 rectangle proxies.",
+        "The five mechanical players can select the 32 existing physical usables; flyers and material fields have no equipment mount.",
+        "This source successor consumes unmerged #402 over merged #394 and is not owner gameplay acceptance or issue completion."
+      ],
+      "sources": [
+        "../godot/scripts/workbench_actor_catalog.gd",
+        "../godot/scripts/workbench_setup.gd",
+        "../godot/scripts/shared_workbench.gd",
+        "../godot/scripts/physical_actor_session.gd",
+        "../godot/scripts/workbench_material_players.gd"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "WB-PLAY-IDENTITY",
+      "query": "How do eight logical workbench actors relate to 64 rigid bodies, compound proxies, part_index and granular response budgets?",
+      "canonical": [
+        "reference/configuration-reference.md"
+      ],
+      "facts": [
+        "Eight actors may contain up to eight articulated parts each, within 64 physical owners and 64 total native rectangle proxies.",
+        "Independent bodies have unique physical ids and (instance_id,part_index) tuples; omitted legacy part defaults to zero and duplicate tuples refuse.",
+        "One independent body owns its mass/inertia/budget/application fence; compound Scooper proxies share one body rather than multiplying its budget.",
+        "Support observations share wrench age/geometry admission; fixed equipment cannot be moved by correction, and an ownership-mode change retires old samples."
+      ],
+      "sources": [
+        "../godot/scripts/workbench_actor_catalog.gd",
+        "../godot/scripts/workbench_setup.gd",
+        "../godot/scripts/shared_workbench.gd",
+        "../godot/scripts/physical_actor_session.gd",
+        "../godot/scripts/workbench_material_players.gd"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "WB-PLAY-CONTROLS",
+      "query": "Does Shift still slide the Acrobat and brake the bike after moving player playground controls into the workbench?",
+      "canonical": [
+        "systems/player-control-playground.md",
+        "reference/configuration-reference.md"
+      ],
+      "facts": [
+        "Mechanical/material players retain Shift secondary while flyers keep Shift boost and Ctrl brake.",
+        "Actor options saves per-model keyboard bindings; brackets select models, Tab cycles instances and number keys remain reserved.",
+        "Mechanical movement impulse/body torque multipliers do not retune built-in wheel/joint motors; native fields accept bindings only.",
+        "Flyer boost/throttle response/side swap/emission controls do not acquire meanings for unsupported player capabilities."
+      ],
+      "sources": [
+        "../godot/scripts/workbench_actor_catalog.gd",
+        "../godot/scripts/workbench_setup.gd",
+        "../godot/scripts/shared_workbench.gd",
+        "../godot/scripts/physical_actor_session.gd",
+        "../godot/scripts/workbench_material_players.gd"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "WB-PLAY-FIELD",
+      "query": "Do native Sand cloud and Water blob players in the workbench create another World, teleport cells or refill when reset?",
+      "canonical": [
+        "systems/player-control-playground.md",
+        "reference/configuration-reference.md"
+      ],
+      "facts": [
+        "Material players call the existing native field in the exclusive worker-owned workbench World; no standalone extra World or fake Rapier body is created.",
+        "A new explicit placement attempts a 256-cell seed into empty unmasked locations, reporting insertion/refusal; retained resets and peer edits do not replenish it.",
+        "Reset/move changes the control centre and retires input without moving, erasing or recreating cells; removing a field leaves native material behind.",
+        "The field selects matching local material rather than persistent parcel identities, follows the centroid at most four cells/tick, and has a six-tick issued-observation lease."
+      ],
+      "sources": [
+        "../godot/scripts/workbench_actor_catalog.gd",
+        "../godot/scripts/workbench_setup.gd",
+        "../godot/scripts/shared_workbench.gd",
+        "../godot/scripts/physical_actor_session.gd",
+        "../godot/scripts/workbench_material_players.gd"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "WB-PLAY-EQUIPMENT",
+      "query": "How do I use, drop and recover physical equipment without accidentally painting, and what must survive a workbench settings change?",
+      "canonical": [
+        "systems/player-control-playground.md",
+        "systems/actor-usables.md"
+      ],
+      "facts": [
+        "Choose a mechanical player, usable and power, then wait for ordinary play/step acknowledgement while held equipment is available.",
+        "Use equipment routes pointer trigger/alternate; Paint routes brush input; M uses, N drops and U attempts local clear-path reattachment.",
+        "Graph changes use bounded runtime custody/refusal instead of silently refilling charge, duplicating dropped chassis or deleting committed payloads.",
+        "Inventory, recipe and conservation semantics stay in the existing usable owner; a material-field actor or flyer has no equipment topology."
+      ],
+      "sources": [
+        "../godot/scripts/workbench_actor_catalog.gd",
+        "../godot/scripts/workbench_setup.gd",
+        "../godot/scripts/shared_workbench.gd",
+        "../godot/scripts/physical_actor_session.gd",
+        "../godot/scripts/workbench_material_players.gd"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "WB-PLAY-RECIPE",
+      "query": "Does workbench setup version 4 save live player articulation, charge and projectiles, or just the initial actor and usable recipe?",
+      "canonical": [
+        "systems/player-control-playground.md",
+        "reference/configuration-reference.md"
+      ],
+      "facts": [
+        "Version 4 stores explicit actor definitions/spawns/tuning plus initial usable_index -1..31 and usable_power 0..1.",
+        "Valid versions 2/3 migrate with preserved options, neutral missing controls and empty equipment.",
+        "Starting recipes do not resume live motion, tool charge, projectiles or processor stock; runtime graph custody is a different mechanism.",
+        "Keyboard bindings remain private model preferences rather than serialized map content."
+      ],
+      "sources": [
+        "../godot/scripts/workbench_actor_catalog.gd",
+        "../godot/scripts/workbench_setup.gd",
+        "../godot/scripts/shared_workbench.gd",
+        "../godot/scripts/physical_actor_session.gd",
+        "../godot/scripts/workbench_material_players.gd"
+      ],
+      "revision_sensitive": true
+    }
+  ]
+}

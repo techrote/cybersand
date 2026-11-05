@@ -10,6 +10,12 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 
 # Retrieval question index
 
+## Shared workbench actors and usables — 5 November 2026
+
+[Shared player controls](../systems/player-control-playground.md#player-actors-and-usables-in-the-shared-workbench--5-november-2026) answer how to place the seven presets beside flyers, use equipment without painting conflicts, retain Shift secondary, and steer native Sand/Water. [Configuration](configuration-reference.md#workbench-player-actor-and-material-field-bounds) owns eight actors versus 64 body/proxy identities, mapped/unsupported options, version-4 starting recipes and no-refill field bounds. [Usable ownership](../systems/actor-usables.md) owns inventory, payload, processor and custody semantics.
+
+[Six questions](retrieval-questions-workbench-players.json) are additive; frozen32, PLAY12 and challenge157 remain unchanged. Dated source/runtime evidence remains excluded from ordinary retrieval and is not gameplay acceptance.
+
 ## Material liveness Phase A and implementation admission — 2026-11-04
 
 | Question | Canonical route |

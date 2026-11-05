@@ -28,14 +28,18 @@ func until(predicate: Callable, why: String) -> bool:
 		await process_frame
 	return require(false,why)
 
-func click_at(viewport: Viewport, position: Vector2, button: MouseButton = MOUSE_BUTTON_LEFT) -> void:
+func click_at(_viewport: Viewport, position: Vector2, button: MouseButton = MOUSE_BUTTON_LEFT) -> void:
 	for down: bool in [true,false]:
 		var event := InputEventMouseButton.new()
 		event.position = position
 		event.global_position = position
 		event.button_index = button
 		event.pressed = down
-		viewport.push_input(event,true)
+		event.button_mask = (1 << (int(button)-1)) if down else 0
+		# PopupMenu reads Input's held-button state when it opens. Sending only
+		# to Viewport leaves that state empty: a tall palette covers its trigger,
+		# then mistakes the opening release for a new menu-item selection.
+		Input.parse_input_event(event)
 		await process_frame
 
 func click(button: Button) -> void:

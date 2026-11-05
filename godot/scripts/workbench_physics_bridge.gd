@@ -1,7 +1,7 @@
 extends "res://scripts/rapier_physics_bridge.gd"
 
-# Admitted workbench assemblies contain one rigid body per stable instance.
-# Proxies own no inertia, drive, history, application fence or impulse.
+# A stable actor instance may contain several independent articulated bodies.
+# Compound proxies share one body's inertia/history/budget, never another part's.
 const MAX_AGE: int = 1
 const MAX_CORNER_TRAVEL: float = 0.5
 const MAX_SESSION: int = 9007199254740991
@@ -17,6 +17,8 @@ var _serial: int = 0
 var _geometry := PackedFloat64Array()
 var _members: Array[Dictionary] = []
 var _rects: Array = []
+var _rigs: Array = []
+var _proxy_to_body := PackedInt32Array()
 var _history: Array[Dictionary] = []
 var _accepted_samples := PackedInt64Array()
 var _last_snapshot: int = -1
@@ -28,18 +30,28 @@ func configure_instances(definitions: Array, rigs: Array, epoch: int) -> Error:
 	var owner: MainLoop = Engine.get_main_loop()
 	if owner == null: return ERR_INVALID_DATA
 	var previous_session: int = int(owner.get_meta(SESSION_META,0))
-	if not _initialized or rigs.size() != _body_rids.size() or _session != 0 or previous_session < 0 or previous_session >= MAX_SESSION: return ERR_INVALID_DATA
+	if not _initialized or rigs.size() != definitions.size() or rigs.is_empty() or rigs.size() > 8 or _session != 0 or previous_session < 0 or previous_session >= MAX_SESSION: return ERR_INVALID_DATA
+	var body_count: int = 0
+	for rig in rigs: body_count += rig.bodies().size()
+	if body_count != _body_rids.size() or body_count > 64: return ERR_INVALID_DATA
+	_rigs = rigs.duplicate()
+	_proxy_to_body.resize(65)
+	_proxy_to_body.fill(-1)
 	var first: int = 1
 	for slot: int in range(rigs.size()):
-		var rectangles: Array = rigs[slot].collision_rects()
-		if rigs[slot].bodies().size() != 1 or rectangles.is_empty() or first + rectangles.size() - 1 > 64: return ERR_INVALID_DATA
 		var definition: Dictionary = definitions[slot]
-		_members.append({"id":slot + 1, "instance_id":int(definition.instance_id), "generation":epoch,
-			"first_proxy":first, "count":rectangles.size(), "budget":float(definition.workbench_options.budget)})
-		_rects.append(rectangles)
-		for rect: Dictionary in rectangles:
-			_geometry.append_array(PackedFloat64Array([rect.center.x, rect.center.y, rect.size.x, rect.size.y]))
-		first += rectangles.size()
+		for part: int in rigs[slot].bodies().size():
+			var rectangles: Array = rigs[slot].collision_rects(part)
+			if rectangles.is_empty() or first + rectangles.size() - 1 > 64: return ERR_INVALID_DATA
+			var body_index: int = _members.size()
+			_members.append({"id":body_index + 1, "instance_id":int(definition.instance_id), "generation":epoch,
+				"part_index":part,"actor_slot":slot,"first_proxy":first,"count":rectangles.size(),
+				"budget":float(definition.workbench_options.budget)})
+			_rects.append(rectangles)
+			for rect: Dictionary in rectangles:
+				_proxy_to_body[first] = body_index
+				_geometry.append_array(PackedFloat64Array([rect.center.x,rect.center.y,rect.size.x,rect.size.y]))
+				first += 1
 	_response = definitions[0].workbench_options.response
 	_epoch = epoch
 	_session = previous_session + 1
@@ -51,7 +63,7 @@ func configure_instances(definitions: Array, rigs: Array, epoch: int) -> Error:
 
 
 func pack_sample(drives: Array[bool]) -> Dictionary:
-	if OS.get_thread_caller_id() != OS.get_main_thread_id() or not _initialized or _session == 0 or drives.size() != _members.size(): return {}
+	if OS.get_thread_caller_id() != OS.get_main_thread_id() or not _initialized or _session == 0 or drives.size() != _rigs.size(): return {}
 	var serial: int = (_serial + 1) % SAMPLE_SERIAL_LIMIT
 	var states := PackedFloat64Array()
 	var bodies: Array[Dictionary] = []
@@ -71,9 +83,10 @@ func pack_sample(drives: Array[bool]) -> Dictionary:
 		if not pose.is_finite() or not com.is_finite() or not direct.linear_velocity.is_finite() or not is_finite(direct.angular_velocity): return {}
 		if not is_finite(mass) or not is_finite(inertia) or not is_finite(gravity) or not is_finite(friction) or mass <= 0 or inertia <= 0: return {}
 		var member: Dictionary = _members[slot].duplicate()
-		member.merge({"gravity":gravity, "external_drive":drives[slot]})
+		member.merge({"gravity":gravity,"external_drive":drives[int(member.actor_slot)],"display_origin":pose.origin})
 		bodies.append(member)
-		history.append({"pose":pose, "com":com, "mass":mass, "inertia":inertia, "gravity":gravity, "external_drive":drives[slot]})
+		history.append({"pose":pose,"com":com,"mass":mass,"inertia":inertia,"gravity":gravity,
+			"external_drive":drives[int(member.actor_slot)],"fixed":_bodies[slot].freeze})
 		var proxy_id: int = member.first_proxy
 		for rectangle: Dictionary in _rects[slot]:
 			var center: Vector2 = pose * Vector2(rectangle.center)
@@ -93,7 +106,9 @@ func display_pose(slot: int, frame: Dictionary) -> Transform2D:
 	# still read the authoritative main-thread RID.
 	if frame.get("session") == _session and frame.get("epoch") == _epoch:
 		var member: Dictionary = _members[slot]
-		var entry: Dictionary = frame.instances.get(member.instance_id,{})
+		var entry: Dictionary = frame.get("bodies",{}).get(int(member.id),{})
+		if entry.is_empty() and member.part_index == 0:
+			entry = frame.get("instances",{}).get(member.instance_id,{})
 		if entry.get("generation") == member.generation and entry.get("pose") is Transform2D:
 			return entry.pose
 	return body_transform(slot)
@@ -101,6 +116,33 @@ func display_pose(slot: int, frame: Dictionary) -> Transform2D:
 
 func retire_provisional_samples() -> void:
 	for slot: int in range(_history.size()): _history[slot] = {}
+	for rig in _rigs: rig.clear_granular_support()
+
+
+func member_descriptor(body_index: int) -> Dictionary:
+	return _members[body_index].duplicate(true) if body_index >= 0 and body_index < _members.size() else {}
+
+
+func proxies_for_body(body_index: int) -> PackedInt32Array:
+	var result := PackedInt32Array()
+	if body_index < 0 or body_index >= _members.size(): return result
+	var member: Dictionary = _members[body_index]
+	for proxy: int in range(member.first_proxy,member.first_proxy+member.count): result.append(proxy)
+	return result
+
+
+func proxy_ids_for_body(body_index: int) -> PackedInt32Array:
+	return proxies_for_body(body_index)
+
+
+func physical_body_for_proxy(proxy: int) -> int:
+	return _proxy_to_body[proxy] if proxy >= 1 and proxy < _proxy_to_body.size() else -1
+
+
+func root_body_index(actor_slot: int) -> int:
+	for index: int in _members.size():
+		if _members[index].actor_slot == actor_slot and _members[index].part_index == 0: return index
+	return -1
 
 
 func sampled_pose(instance_id: int, serial: int) -> Dictionary:
@@ -108,7 +150,7 @@ func sampled_pose(instance_id: int, serial: int) -> Dictionary:
 	var frame: Dictionary = _history[serial % _history.size()]
 	if frame.get("serial") != serial: return {}
 	for slot: int in range(_members.size()):
-		if _members[slot].instance_id == instance_id:
+		if _members[slot].instance_id == instance_id and _members[slot].part_index == 0:
 			return {"pose":frame.bodies[slot].pose, "session":_session, "epoch":_epoch, "sample":serial}
 	return {}
 
@@ -134,7 +176,15 @@ func apply_packet(snapshot_serial: int, packet: Dictionary) -> int:
 		if slot < 0 or slot >= _members.size() or seen.has(slot): return _refuse("body")
 		seen[slot] = true
 		var member: Dictionary = _members[slot]
-		if row.get("instance_id") != member.instance_id or row.get("generation") != member.generation or row.get("budget") != member.budget: return _refuse("identity")
+		if row.get("instance_id") != member.instance_id or row.get("part_index",0) != member.part_index or row.get("generation") != member.generation or row.get("budget") != member.budget: return _refuse("identity")
+		var support: Variant = row.get("support",{})
+		if not support is Dictionary: return _refuse("support")
+		if not support.is_empty() and (support.size() != 3 or not support.has_all(["position","normal","samples"]) \
+			or not support.samples is int or support.samples < 1 or support.samples > 1048576 \
+			or not support.position is Vector2 or not support.position.is_finite() \
+			or not support.normal is Vector2 or not support.normal.is_finite() \
+			or support.normal.y >= -0.35 or not is_equal_approx(support.normal.length_squared(),1.0)):
+			return _refuse("support")
 		if not row.get("sample") is int or row.sample < 0 or row.sample >= SAMPLE_SERIAL_LIMIT: return _refuse("sample")
 		for key: String in ["impulse","correction","com"]:
 			if not row.get(key) is Vector2 or not Vector2(row[key]).is_finite(): return _refuse("wrench")
@@ -154,6 +204,14 @@ func apply_packet(snapshot_serial: int, packet: Dictionary) -> int:
 		if sample.com != row.com or sample.gravity != row.get("gravity") or sample.external_drive != row.get("external_drive") or not is_equal_approx(sample.mass, float(row.get("mass",-1))) or not is_equal_approx(sample.inertia,float(row.get("inertia",-1))): return _refuse("sample_properties")
 		var direct := PhysicsServer2D.body_get_direct_state(_body_rids[slot])
 		if direct == null: return _refuse("retired")
+		if bool(sample.fixed) != _bodies[slot].freeze:
+			actions.append({"id":row.id,"sample":serial,"refusal":"body_mode_changed"})
+			continue
+		if _bodies[slot].freeze:
+			# A deployed processor retains occupancy but its main-thread owner
+			# fixed this physical body. Correction cannot unfix or translate it.
+			actions.append({"id":row.id,"sample":serial,"refusal":"fixed_body"})
+			continue
 		var pose: Transform2D = direct.transform
 		if not pose.is_finite(): return _refuse("nonfinite_pose")
 		if not _within_sample_geometry(slot, sample.pose, pose):
@@ -165,14 +223,18 @@ func apply_packet(snapshot_serial: int, packet: Dictionary) -> int:
 		var scale: float = 1.0 / (1.0 + float(age) * 0.25)
 		if not is_finite(torque) or not (Vector2(row.impulse) * scale).is_finite(): return _refuse("wrench")
 		actions.append({"id":row.id, "instance_id":member.instance_id, "sample":serial, "age":age,
-			"impulse":row.impulse * scale, "torque":torque * scale, "correction":correction})
+			"impulse":row.impulse * scale,"torque":torque * scale,"correction":correction,
+			"support":support.duplicate(true),"support_until":int(record.step)+MAX_AGE})
 	# Validate the complete batch before mutating any RID. A stale peer does
 	# not spend another body's independently retained sample authority.
 	_last_snapshot = snapshot_serial
 	_last_results_applied = 0
 	for action: Dictionary in actions:
-		if action.has("refusal"): continue
 		var slot: int = action.id - 1
+		var member: Dictionary = _members[slot]
+		_rigs[int(member.actor_slot)].set_granular_support_step(manual_step_count())
+		_rigs[int(member.actor_slot)].set_granular_support(int(member.part_index),action.get("support",{}),int(action.get("support_until",-1)))
+		if action.has("refusal"): continue
 		_accepted_samples[slot] = action.sample
 		_apply(slot, action)
 	last_application.bodies = actions
@@ -211,4 +273,6 @@ func _apply(slot: int, action: Dictionary) -> void:
 func shutdown() -> void:
 	_session = 0
 	_history.clear()
+	_rigs.clear()
+	_proxy_to_body.clear()
 	super.shutdown()

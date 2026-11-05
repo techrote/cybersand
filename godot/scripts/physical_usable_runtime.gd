@@ -23,6 +23,7 @@ class PhysicalEngine extends "res://scripts/usable_runtime.gd":
 	var receipts: Dictionary = {}
 	var last_sequences: PackedInt64Array = PackedInt64Array()
 	var body_owners: Dictionary = {}
+	var proxy_bodies: Dictionary = {} # Native proxy -> canonical main-thread physical body ID.
 	var device_history: Dictionary = {} # At most eight actors × ten catalogue processors.
 	var active_world: Object
 	var last_error: String = ""
@@ -36,6 +37,7 @@ class PhysicalEngine extends "res://scripts/usable_runtime.gd":
 		frame = {}
 		receipts.clear()
 		body_owners.clear()
+		proxy_bodies.clear()
 		device_history.clear()
 		last_sequences.resize(MAX_ACTORS)
 		last_sequences.fill(-1)
@@ -73,10 +75,12 @@ class PhysicalEngine extends "res://scripts/usable_runtime.gd":
 			return
 		run_id = str(next_frame.run_id)
 		frame = next_frame.duplicate(true)
+		_world_extent = next_frame.get("canvas_extent",Vector2i(1024,1024))
 		last_error = ""
 		_reset_budget()
 		active_world = world
 		body_owners.clear()
+		proxy_bodies.clear()
 		_centres.resize(MAX_ACTORS)
 		for actor: Dictionary in frame.actors:
 			var owner: int = int(actor.actor_id)
@@ -84,11 +88,9 @@ class PhysicalEngine extends "res://scripts/usable_runtime.gd":
 			_actors[owner].usable_index = actor.usable_index
 			_actors[owner].position = actor.position
 			for part: Dictionary in actor.parts:
-				body_owners[int(part.body_id)] = owner
-			if int(actor.body_id) > 0:
-				body_owners[int(actor.body_id)] = owner
-		for device: Dictionary in frame.devices:
-			body_owners[int(device.body_id)] = int(device.actor_id)
+				for proxy: int in CyberPhysicalUsableRuntime.proxy_ids(part):
+					body_owners[proxy] = owner
+					proxy_bodies[proxy] = int(part.body_id)
 		_sync_devices()
 		if bool(frame.suspended):
 			for request: Variant in requests:
@@ -132,6 +134,7 @@ class PhysicalEngine extends "res://scripts/usable_runtime.gd":
 		for pose: Dictionary in frame.actors:
 			var owner: int = int(pose.actor_id)
 			_actors[owner]["cell_patch"] = {}
+			if pose.has("workbench_instance_id") and (int(pose.body_id) == 0 or int(pose.usable_index) < 0): continue
 			if read_count_last + 81 > MAX_READS:
 				continue
 			var center: Vector2 = Vector2(pose.muzzle) + Vector2(pose.direction).normalized() * 6.0
@@ -233,7 +236,7 @@ class PhysicalEngine extends "res://scripts/usable_runtime.gd":
 				break
 		if published.is_empty() or str(published.state) not in ["fixed", "settled", "deployed"]:
 			return "device_missing"
-		if _body_at(Vector2i(Vector2(pose.position).floor())) != int(pose.body_id):
+		if not _source_body_at(Vector2i(Vector2(pose.position).floor()),pose):
 			return "source_identity"
 		var obj: Dictionary = {
 			"entity_id": _allocate_id(), "owner": owner, "actor_id": owner,
@@ -286,7 +289,7 @@ class PhysicalEngine extends "res://scripts/usable_runtime.gd":
 			obj.cooldown = maxf(0.0, float(obj.cooldown) - dt)
 			if float(obj.age) >= float(obj.lifetime) or int(obj.stock) <= 0:
 				obj.status = "expired" if float(obj.age) >= float(obj.lifetime) else "exhausted"
-			elif _body_at(Vector2i(Vector2(obj.position).floor())) != int(obj.body_id):
+			elif not _source_body_at(Vector2i(Vector2(obj.position).floor()),_actor_frame(int(obj.actor_id))):
 				obj.status = "body_missing"
 			elif float(obj.cooldown) <= 0.0:
 				var definition: Dictionary = Catalog.entry(int(obj.usable_index))
@@ -329,6 +332,10 @@ class PhysicalEngine extends "res://scripts/usable_runtime.gd":
 		read_count_last += 1
 		return int(active_world.rigid_body_id_at(point.x, point.y))
 
+	func _source_body_at(point: Vector2i, pose: Dictionary) -> bool:
+		var proxy: int = _body_at(point)
+		return proxy > 0 and int(proxy_bodies.get(proxy,-1)) == int(pose.get("body_id",0))
+
 	func _source_clear(pose: Dictionary, world: Object) -> bool:
 		var source: Vector2 = pose.position
 		var target: Vector2 = pose.muzzle
@@ -344,7 +351,7 @@ class PhysicalEngine extends "res://scripts/usable_runtime.gd":
 		# Jointed parts can overlap at native cell resolution. Another own part's
 		# mask is an allowed alias only inside the held source's exact oriented
 		# footprint. This cannot exempt a separately occluding own limb.
-		if source_mask != source_id and (int(body_owners.get(source_mask, -1)) != owner \
+		if int(proxy_bodies.get(source_mask,-1)) != source_id and (int(body_owners.get(source_mask, -1)) != owner \
 			or not _inside_source_footprint(cell, pose)):
 			source_diagnostic["reason"] = "source_identity"
 			return false
@@ -388,7 +395,7 @@ class PhysicalEngine extends "res://scripts/usable_runtime.gd":
 	func _source_cell_clear(point: Vector2i, pose: Dictionary, own_prefix: bool, world: Object) -> bool:
 		var body: int = _body_at(point)
 		if body != 0:
-			var own: bool = own_prefix and (body == int(pose.body_id) \
+			var own: bool = own_prefix and (int(proxy_bodies.get(body,-1)) == int(pose.body_id) \
 				or (int(body_owners.get(body, -1)) == int(pose.actor_id) and _inside_source_footprint(point, pose)))
 			if not own:
 				source_diagnostic.merge({"reason": "body_occlusion", "blocked_cell": point, "blocked_body_id": body}, true)
@@ -423,7 +430,7 @@ class PhysicalEngine extends "res://scripts/usable_runtime.gd":
 		if body > 0 and target >= 0 and target != int(projectile.owner):
 			_record_hit(projectile, target)
 			if not _hits_last.is_empty():
-				_hits_last[-1]["target_body_id"] = body
+				_hits_last[-1]["target_body_id"] = int(proxy_bodies.get(body,body))
 			_projectiles.remove_at(index)
 			return false
 		return super._impact_projectile(index, projectile, definition, contact, world)
@@ -492,6 +499,68 @@ func snapshot() -> Dictionary:
 	return _engine.physical_snapshot()
 
 
+func prepare_workbench_transfer(next_frame: Dictionary, preserve: bool) -> Dictionary:
+	# Executed only by the exclusive worker while its old World is held. The
+	# candidate has no authority until the surrounding native owner swap commits.
+	var error: String = frame_error(next_frame)
+	if not error.is_empty(): return {"ok":false,"error":error}
+	var candidate := CyberPhysicalUsableRuntime.new()
+	var next: PhysicalEngine = candidate._engine
+	next.reset_physical(int(next_frame.epoch))
+	next.run_id = str(next_frame.run_id)
+	next.frame = next_frame.duplicate(true)
+	next._world_extent = next_frame.get("canvas_extent",Vector2i(1024,1024))
+	if not preserve: return {"ok":true,"runtime":candidate}
+	var remap: Dictionary = {}
+	for previous: Dictionary in _engine.frame.get("actors",[]):
+		if not previous.has("workbench_instance_id"): continue
+		for current: Dictionary in next_frame.actors:
+			if current.get("workbench_instance_id") == previous.workbench_instance_id \
+				and current.get("workbench_model") == previous.get("workbench_model"):
+				remap[int(previous.actor_id)] = int(current.actor_id)
+				break
+	for projectile: Dictionary in _engine._projectiles:
+		if not remap.has(int(projectile.owner)):
+			return {"ok":false,"error":"Wait for the actor's committed payloads before removing/replacing it, or explicitly start a fresh experiment."}
+	for object: Dictionary in _engine._objects:
+		if not remap.has(int(object.actor_id)):
+			return {"ok":false,"error":"Recover the deployed processor before removing/replacing its actor, or explicitly start a fresh experiment."}
+	next._tick = _engine._tick
+	next._next_entity_id = _engine._next_entity_id
+	next._effects = _engine._effects.duplicate(true)
+	for previous: Variant in remap:
+		var current: int = int(remap[previous])
+		next._actors[current] = _engine._actors[int(previous)].duplicate(true)
+		var pose: Dictionary = actor_row(next_frame,current)
+		next._actors[current].usable_index = int(pose.usable_index)
+		next._actors[current].position = pose.position
+		next._actors[current]["cell_patch"] = {} # Derived old-World observation has no new-epoch authority.
+	for original: Dictionary in _engine._projectiles:
+		var copied: Dictionary = original.duplicate(true)
+		copied.owner = int(remap[int(original.owner)])
+		next._projectiles.append(copied)
+	for original: Dictionary in _engine._objects:
+		var copied: Dictionary = original.duplicate(true)
+		var current: int = int(remap[int(original.actor_id)])
+		var pose: Dictionary = actor_row(next_frame,current)
+		if pose.instance_id != original.instance_id or pose.equipment_epoch != original.equipment_epoch \
+			or pose.usable_index != original.usable_index or pose.state not in ["fixed","deployed"]:
+			return {"ok":false,"error":"Prepared processor custody no longer matches its physical chassis."}
+		copied.owner = current
+		copied.actor_id = current
+		copied.body_id = int(pose.body_id)
+		copied.position = pose.position
+		copied.rotation = pose.rotation
+		copied.half_extents = pose.half_extents
+		copied.physical_key = next._device_key(pose)
+		next._objects.append(copied)
+	for key: Variant in _engine.device_history:
+		var pieces: PackedStringArray = str(key).split(":")
+		if pieces.size() == 2 and remap.has(pieces[0].to_int()):
+			next.device_history["%d:%d" % [int(remap[pieces[0].to_int()]),pieces[1].to_int()]] = _engine.device_history[key].duplicate(true)
+	return {"ok":true,"runtime":candidate}
+
+
 static func actor_row(frame: Dictionary, actor_id: int) -> Dictionary:
 	for row: Variant in frame.get("actors", []):
 		if row is Dictionary and row.get("actor_id") is int and int(row.actor_id) == actor_id:
@@ -499,9 +568,15 @@ static func actor_row(frame: Dictionary, actor_id: int) -> Dictionary:
 	return {}
 
 
+static func proxy_ids(part: Dictionary) -> PackedInt32Array:
+	return part.get("proxy_ids",PackedInt32Array([int(part.get("body_id",0))]))
+
+
 static func frame_error(frame: Dictionary) -> String:
-	if not _allowed_keys(frame, ["version", "run_id", "epoch", "tick", "suspended", "actors", "devices"]):
+	if not _allowed_keys(frame, ["version", "run_id", "epoch", "tick", "suspended", "actors", "devices", "canvas_extent"]):
 		return "frame_fields"
+	if frame.has("canvas_extent") and (not frame.canvas_extent is Vector2i or frame.canvas_extent.x < 1 or frame.canvas_extent.y < 1 or frame.canvas_extent.x > 2048 or frame.canvas_extent.y > 2048):
+		return "canvas_extent"
 	if frame.get("version") != 1 or not frame.get("epoch") is int or int(frame.epoch) <= 0 \
 		or not frame.get("tick") is int or int(frame.tick) < 0:
 		return "frame_identity"
@@ -513,13 +588,16 @@ static func frame_error(frame: Dictionary) -> String:
 		return "frame_capacity"
 	var seen_actors: Dictionary = {}
 	var seen_bodies: Dictionary = {}
+	var seen_proxies: Dictionary = {}
 	for row: Variant in frame.actors:
 		if not row is Dictionary:
 			return "actor_type"
 		if not _allowed_keys(row, ["actor_id", "generation", "equipment_epoch", "instance_id", "usable_index",
 			"state", "body_id", "position", "rotation", "half_extents", "muzzle", "direction", "owner_origin",
-			"active", "lease_deadline", "parts"]):
+			"active", "lease_deadline", "parts", "workbench_instance_id", "workbench_model"]):
 			return "actor_fields"
+		if row.has("workbench_instance_id") and (not row.workbench_instance_id is int or row.workbench_instance_id < 1 or row.workbench_instance_id > 2147483646): return "workbench_instance_id"
+		if row.has("workbench_model") and (not row.workbench_model is String or row.workbench_model.is_empty() or row.workbench_model.length() > 64): return "workbench_model"
 		for key: String in ["actor_id", "generation", "equipment_epoch", "usable_index", "body_id", "lease_deadline"]:
 			if not row.get(key) is int:
 				return "actor_identity"
@@ -543,8 +621,19 @@ static func frame_error(frame: Dictionary) -> String:
 				or not part.get("half_extents") is Vector2 or not Vector2(part.half_extents).is_finite() \
 				or not _finite_number(part.get("rotation")):
 				return "part_identity"
-			if not _allowed_keys(part, ["body_id", "position", "rotation", "half_extents"]):
+			if not _allowed_keys(part, ["body_id", "position", "rotation", "half_extents", "proxy_ids"]):
 				return "part_fields"
+			if owned_parts.has(part.body_id) or Vector2(part.half_extents).x <= 0.0 or Vector2(part.half_extents).y <= 0.0: return "part_identity"
+			if seen_bodies.has(part.body_id) and int(seen_bodies[part.body_id]) != int(row.actor_id): return "duplicate_body_owner"
+			if part.has("proxy_ids"):
+				if not part.proxy_ids is PackedInt32Array or part.proxy_ids.is_empty() or part.proxy_ids.size() > 8: return "proxy_ids"
+				var local: Dictionary = {}
+				for proxy: int in part.proxy_ids:
+					if proxy < 1 or proxy > 64 or local.has(proxy): return "proxy_ids"
+					local[proxy] = true
+			for proxy: int in proxy_ids(part):
+				if seen_proxies.has(proxy): return "duplicate_proxy_owner"
+				seen_proxies[proxy] = part.body_id
 			if owned_parts.has(part.body_id) or Vector2(part.half_extents).x <= 0.0 or Vector2(part.half_extents).y <= 0.0:
 				return "part_identity"
 			owned_parts[part.body_id] = part

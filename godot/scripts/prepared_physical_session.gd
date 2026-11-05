@@ -52,7 +52,13 @@ func owner_kind() -> String:
 
 func _capture_frozen_pose() -> bool:
 	PhysicsServer2D.space_set_active(viewport.world_2d.space,false)
-	for body: RigidBody2D in bodies(): body.freeze = true
+	for body: RigidBody2D in bodies():
+		# Retained articulated poses set Node2D transforms during construction.
+		# Flush their deferred notifications before capturing actual server state;
+		# a later notification can otherwise change an angle by a float ULP even
+		# in this frozen, non-stepping space and correctly fail exact identity.
+		body.force_update_transform()
+		body.freeze = true
 	physics_bridge().refresh_all_states()
 	_initial_states = physics_bridge().pack_body_states()
 	_initial_pose = _pose_values(_initial_states)

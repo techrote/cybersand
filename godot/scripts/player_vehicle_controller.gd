@@ -54,6 +54,7 @@ func _ground_vehicle(rig, action: Dictionary, dt: float, effort: float,
 			tangent = -tangent
 		var target: float = effective * float(rig._profile.speed) * effort
 		var acceleration: float = 420.0 if brake else 100.0 if bike else 135.0
+		acceleration *= float(rig._profile.get("workbench_customization",{}).get("acceleration",1.0))
 		var change: float = clampf(target - velocity.dot(tangent), -acceleration * dt, acceleration * dt)
 		if absf(effective) > 0.01 or brake:
 			var impulse: Vector2 = tangent * change * rig._total_mass
@@ -124,6 +125,7 @@ func _flight(rig, action: Dictionary, dt: float, effort: float,
 		var force: float = float(rig._profile.thrust) * throttle * effort
 		rig._apply_rig_impulse(Vector2.UP.rotated(angle) * force * dt * rig._total_mass)
 	var damping: float = 8.5 if brake else 0.32 if barrel else 0.08 if _drift else 1.4
+	damping *= float(rig._profile.get("workbench_customization",{}).get("drag",1.0))
 	var drag: Vector2 = (-velocity * minf(1.0, damping * dt)).limit_length((650.0 if brake else 220.0) * dt)
 	rig._apply_rig_impulse(drag * rig._total_mass)
 	var excess: float = velocity.length() - float(rig._profile.speed)
@@ -148,3 +150,19 @@ func observation() -> Dictionary:
 	return {"controller": "player-vehicle/v1", "movement_mode": _mode,
 		"preload": _preload, "preload_armed": _preload_armed, "drift": _drift,
 		"throttle": _throttle, "lean": _lean, "thrust": _thrust}
+
+
+static func valid_workbench_state(value: Variant) -> bool:
+	return value is Dictionary and value.size() == 1 and value.get("drift") is bool
+
+
+func export_workbench_state() -> Dictionary:
+	# A graph transaction cancels held edges/preload, not the selected flight mode.
+	return {"drift":_drift}
+
+
+func restore_workbench_state(value: Dictionary) -> bool:
+	if not valid_workbench_state(value): return false
+	cancel()
+	_drift = value.drift
+	return true

@@ -1,0 +1,2956 @@
+{
+  "schema": 1,
+  "source_base": "ba9cbc89029be88b812af59b19e5c59829bbcd90",
+  "dependency_pr": 402,
+  "dependency_head": "80bae8847fc2428a213f8b0e5e1c8fcd7e1b80ff",
+  "head": "ae683dddc1633a8590bdb9b256ae32d64aba2c86",
+  "branch": "codex/workbench-player-usables-20261105",
+  "status": "Draft; no merge authorization; final-head evidence is separately bound in the PR ledger",
+  "source_lf_sha256": {
+    "godot/native_extension/cyber_native_cell_world.hpp": "6e5fb1d5558260cb0d23b40d754265192e3ba7f684e377a70665d234a3dc53c4",
+    "godot/native_extension/workbench_granular_coupling.inc": "b42718caaeeb8fb545769ac99eb623303dc120fde126c9e114d90f7575ea1fde",
+    "godot/scripts/flyer_options_panel.gd": "3d145f13f886b64606aee1005cbbfc4503c34ac1891b476287d830b6114346dd",
+    "godot/scripts/flyer_preferences.gd": "bd250b8ee93463c12d04c2a6412630fc3ac5b99a91d2f3e78d0bf3d5bc5cf51b",
+    "godot/scripts/main.gd": "4fef4bac4381451b279d360b076fc4a1ad3bc988b9bc873b88e3b118c1fe36d9",
+    "godot/scripts/physical_actor_overlay.gd": "0710570dc798b0d5d90f8ddaee19c21c075317ba24ac0a1ad58c8099e9d47184",
+    "godot/scripts/physical_actor_rig.gd": "6e05b3e995d1eca69fbe4df03cdef3e8a351aadd15e9caec602d4b79f4448cfe",
+    "godot/scripts/physical_actor_session.gd": "ba7b5c653a71073c8bf76aef58ddc96828bbc9bd1884df606a5333f699bc8efb",
+    "godot/scripts/physical_usable_equipment.gd": "c467abedc66699a4116601405b9912b20bf4b4410a00ebe5fb8ce06b73e62218",
+    "godot/scripts/physical_usable_runtime.gd": "f66ef2ab4c762c3d118a7b5c4050b5526435f133a1506512801f22130757c374",
+    "godot/scripts/player_acrobat_controller.gd": "51000a2038d24fd9cdc0ff27d14b2e77c6fb7707ef876e8f7769144505618a4b",
+    "godot/scripts/player_vehicle_controller.gd": "83e646a63b83dde51a11e2b5fcf1ec569a388c98920ecdb72befef6456119e50",
+    "godot/scripts/prepared_physical_session.gd": "73570f77be6fce65dfcbc810d6c3ce8bfc6de41f16d1f5812f1eb54666ad973f",
+    "godot/scripts/shared_workbench.gd": "379e0aac6756cc2c69361d7d63843018c7d9c252f3aaab213e27f16ab70ca6b5",
+    "godot/scripts/simulation_worker.gd": "2c53b8514b7374575898abc93b806bce0a3dc00b8389d49f5777dde33aabfdb2",
+    "godot/scripts/usable_runtime.gd": "5eeff6c271ba1fa091be1689f3e0989ff879387911a1325ea6aef7fb47ba33bb",
+    "godot/scripts/workbench_actor_catalog.gd": "1c48ac923d579603e16e80f2753a56ef5c796d15fd1c9a583e2f2577f4b7076d",
+    "godot/scripts/workbench_material_players.gd": "99089c49c613dde372bf5ba795d1e3d8e2023114497eea280406d4233a34f035",
+    "godot/scripts/workbench_physics_bridge.gd": "1267094d2778daa2d3703cafcc8c828e19ee2e110369b4bb5e1271ecee2edb8c",
+    "godot/scripts/workbench_setup.gd": "65c694a45032a7aadfa3829b799d985c9556bd66d420b3733efe2c67ad9d0349",
+    "godot/tests/test_flyer_options_ui.gd": "c644f7c86b4fa9d61fde3f3751f35b10fc71245e3097b76cadfa090362042e7d",
+    "godot/tests/test_workbench_actor_catalog.gd": "136d8e41cbf61ffe90a8aed04ad97c728edd9d7667e9d5e6f321f4037c217288",
+    "godot/tests/test_workbench_actor_options.gd": "9714a41b9dd757d278c64fc2bd9f29fecefd928978efa5fe8ac4005c673cf244",
+    "godot/tests/test_workbench_articulated.gd": "3109022a95cdf95f49a66b0eb49b019d046f5f918c0d2af71e953031d92c87a2",
+    "godot/tests/test_workbench_canvas.gd": "6ce1b79fc76f9a0d181ebddb127bbe42e473ed9e1e6410df22f472bb896e7619",
+    "godot/tests/test_workbench_liquid_edges.gd": "8a0460c2101fcd02fa300901ea1e84dad65a485f46f9184ada6916492a24636f",
+    "godot/tests/test_workbench_material_players.gd": "7401f5ee04fb9f72ef6668741a3ff948201c7a7f1f3f9afb1d580dfdc3d2edba",
+    "godot/tests/test_workbench_player_composition.gd": "d7c3363abc0acde7bcd8bc7fd5da627204694e56c9cc226b2cdf5c9d2eb8e647",
+    "godot/tests/test_workbench_player_roster.gd": "a119aedffec8b8b21e220564c057f789b0823183333c56d508adb66cb8931ec5",
+    "godot/tests/test_workbench_powder_deployment.gd": "1e10fa4fa0c30fb190c8c1225a1365ee6be0cb4a52f6817dbcc8fc329a86d4af",
+    "godot/tests/test_workbench_prepared_pose.gd": "f17e1ce124f7906c23b9210d5f1192bd2510cda2cd438e161cfaed236a075cd3",
+    "godot/tests/test_workbench_rotated_support.gd": "4aacd8e3d4769905412f304e1d07483090acf58fe2ea2ac0138ed00bce2013b2",
+    "godot/tests/test_workbench_usables.gd": "a3a8b87903ccc1ba65c66587be2aace683337c6ac2a2fb7b8dd6cd784d7611af"
+  },
+  "runtime_provenance": {
+    "windows": {
+      "acceptance": "Articulated workbench capacity and rotated support observation, with unchanged native wrench laws. Source-matched Windows/Linux local headless qualification is recorded in the dated audit and hashed receipts; owner composed gameplay, hardware gamepad, Web and hosted release gates remain unqualified. Draft and unmerged.",
+      "artifact": "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+      "build_commit": "4ac84de57f10e8fc54b5216bdaf65643fe295154",
+      "build_input_scope": "Native build scripts and dependency pins only; resource/host source and execution are qualified in separate scoped receipts.",
+      "build_inputs": {
+        "third_party/godot-runtime.lock.json": "38addc53f9c4e64afc024a7ce5dc1bef9c6238148ce6e66dcc63e9ec70d106fe",
+        "third_party/native-toolchain.lock.json": "1d279b5fb4a09ae668c963dce794a3d7b7eac7d95aa88dc48fdf48189fc84414",
+        "tools/build_native_extension_windows.sh": "3308b5aeebb4064130d3d6fe36a23b02c2709f0793dd7e3de1e4e73df4c8b940",
+        "tools/build_pinned_godot_cpp.sh": "72552f5aa59e418b4fd84b21e27d3e35c0217603ba0d553d58bdeb70c49520ea",
+        "tools/prepare_native_build_env.sh": "ad9faa94d24d0cd95c9274f7ce5c938a2876154a39a39078c1e116cdd44bb336",
+        "tools/verify_pinned_source_tree.py": "a0524839c9a2857906013c9cef6327dfd3fd1878372da05ca16c34a497eaea97"
+      },
+      "evidence": "docs/audits/2026-11-05-workbench-player-usables.md",
+      "godot_cpp_library_sha256": "2629ba35adc7b1263deeb1155d674252e1e4188c2c89d1d7158e816d18f957df",
+      "godot_version": "4.7.stable.official.5b4e0cb0f",
+      "platform": "Windows x86_64",
+      "schema_version": 1,
+      "sha256": "edbcf08f33fa1c08459890b39de98f05b1044e61cdc2aa59de5511421f01f82f",
+      "size": 4927488,
+      "source_commit": "4ac84de57f10e8fc54b5216bdaf65643fe295154",
+      "source_input_hash_kind": "SHA-256 of canonical LF production native source and headers",
+      "source_inputs": {
+        "godot/native_extension/cyber_demo_bridge.hpp": "2d9b3a1ff120d469717d2e36248087104c00990e9b91d2629d22ea27676e243a",
+        "godot/native_extension/cyber_native_cell_world.cpp": "d2774a6cfbd57a4b40663515ffe4a17f71abb8da073dadc3da0eaa3bacbb44c1",
+        "godot/native_extension/cyber_native_cell_world.hpp": "6e5fb1d5558260cb0d23b40d754265192e3ba7f684e377a70665d234a3dc53c4",
+        "godot/native_extension/cyber_observation_values.hpp": "47af553dafed4129aa689fef0e33214d3612148bbcb6b2c10dd6164dbcc3768f",
+        "godot/native_extension/cyber_prepared_level_payload.hpp": "bb414a0f5d2b6272dec3c9f386cee99eb70e1c2f1b5ce74b23fd5953f06c1b5a",
+        "godot/native_extension/cyber_prepared_liquid_world.hpp": "d19d417fb764be86478b247ac3ce6ccb0fa89f7de3385668c73f263f19cf6b06",
+        "godot/native_extension/cyber_world_generator.cpp": "c819ab654d8bc53a04a3362b2dc8f44415238f0b58753882ae993c0ac6dfd64b",
+        "godot/native_extension/cyber_world_generator.hpp": "8be2561cb5e81dee79b55fbe6431f3f50fca1ba89e4ec693fe12f4bed71e0822",
+        "godot/native_extension/generation_grammar_adapter.inc": "363255bf521f90435b620052ee8be288da5cefc4e7afe18f6871512949716b53",
+        "godot/native_extension/generation_grammar_inspection.inc": "5557ce1ef75f72862315ea69a196fd8c8449b7a6c9748e9bf57ee42dbfd3664c",
+        "godot/native_extension/generation_planes_adapter.inc": "f4b2eeba64b57140fb8e9f4f1ca5830cb12fc19b27c2b60367d65d51ff0e4d6b",
+        "godot/native_extension/generation_planes_inspection.inc": "299e87cf74bac6a4ace81e78e8ee052d4be8487f34be2e4c419680a07f9b0f72",
+        "godot/native_extension/generation_planes_methods.inc": "fcbffa284c0d2955bfcbf4ec40961f4ac4432400803470fa6f5f2984df6bf051",
+        "godot/native_extension/generation_workbench_inspection.inc": "13efa68f55fe2273ecf07a041ffcd5b4a274f808c9cb8f18fd260c4302c4e3cf",
+        "godot/native_extension/generation_workbench_methods.inc": "a7b74a41d6282777bd77220e6480258720dfde698938d3bef75d68a2841ae0d8",
+        "godot/native_extension/pressure_optimization_inspection.inc": "e31280bec687c478d37b6dd169d46593adb4397c6584c9c597c98d6cb2d9420e",
+        "godot/native_extension/register_types.cpp": "2a225e31225918746121285f79f5dc91b3808ac3ec0a980d4eac62467e81c5c1",
+        "godot/native_extension/workbench_granular_coupling.inc": "b42718caaeeb8fb545769ac99eb623303dc120fde126c9e114d90f7575ea1fde",
+        "godot/native_extension/workbench_retained_setup.hpp": "ecb5a3e615ab7642b554c07a250d384579297b57644551a3fe1d876d0219f54a",
+        "native/include/cybersand/bounded_ordered_index.hpp": "79105fd5fe6f3a7f1bda463984aec01b2d067400957c60f88e38db86cc180147",
+        "native/include/cybersand/c_api.h": "7d62023cc3dc611fadc92a56cf26f050965b5c5b32ab8e1fd001b0c3469934b1",
+        "native/include/cybersand/default_demo_recipe.hpp": "1ca54bd4939c2e7e458279fbd928c700cf835be5f72772472f7f01e911c69df4",
+        "native/include/cybersand/demo_snapshot.hpp": "95362db4821cc50f1591384ea67f4b8a263016222eb79671e09573e983429163",
+        "native/include/cybersand/generation_fields.hpp": "e405c49a96e912ce07535c57fc42467849384eddb43d405718bbefa98356da79",
+        "native/include/cybersand/generation_grammar.hpp": "c44524b7523b93f403fb5e8cf751040197e7689850c980fe21bb9dd8a8c922a0",
+        "native/include/cybersand/generation_numeric.hpp": "231fd8547985397103388d863297009aee8df944d3be453e6a88ca24ee18bb3a",
+        "native/include/cybersand/generation_planes.hpp": "b0a2cf2c045664cff32818f0e3a6a36b64e95a61d52923091fe1201673968947",
+        "native/include/cybersand/generation_spatial.hpp": "8e02a001775915dc8d8fe9b79c0a1ffb65b51989ffd424a7b847d741a49065e2",
+        "native/include/cybersand/generation_typed_fields.hpp": "012dc286192086b134b1b0e21811aac25ca4cb62b20fd742895698c90d13f151",
+        "native/include/cybersand/granular_contact_response.hpp": "32877bbd6fc7eb85feabab5452250f4a318388cd7b5e7a64b93576123c7caedb",
+        "native/include/cybersand/inertial_cellular.hpp": "5349dbdf709720bcc560da8c75cc1b2a2c9e2e9d10f52fc4ee4b51eede1d77b1",
+        "native/include/cybersand/interaction_policy.hpp": "d959a2ef74afee0f9c2f794ef5ee5362f1d8cfe6fc86a733acf2a17fec54d5ff",
+        "native/include/cybersand/interaction_rules.hpp": "aaffab99ddc7413f82a77de69b9d97aea37bd8cf46211b867ed303a6776448a5",
+        "native/include/cybersand/liquid_comparison.hpp": "9212e0833cd5d2ff07ec37584a1579440991e87bcba7ee4aae88e4fc798e3105",
+        "native/include/cybersand/liquid_construction_refusal.hpp": "542db1338fc6bb86abf8d7b5c9eda664a4f172e19c99c94c9ee0da737d9f0c61",
+        "native/include/cybersand/liquid_policy_catalogue.hpp": "ec9153f5cf921d2834116831908e9feb16148695aa433a21b0e62a0981072303",
+        "native/include/cybersand/liquid_run_receipt.hpp": "2ec1203c3b5e20355d6dcd716b4c729beb353612e83ddfaf9cb9c0c9d1b46f67",
+        "native/include/cybersand/liquid_run_receipt_native_capture.hpp": "2c67c60aacb4ed160d69deef995f4d628fdc1714cdaadfadda80492b035901c2",
+        "native/include/cybersand/liquid_solver_policy.hpp": "c1f2e6b19ad57313eb1c5dd1a4ad56501140d4574f15b26463b4fb513a53827e",
+        "native/include/cybersand/material.hpp": "3e40f970e3205853a43643b4163041935ccd64d8a018d35a7473c3f95a1d0375",
+        "native/include/cybersand/material_appearance.hpp": "512ae47aeb6e4d3d88d9e5388c6954ae1150cc1ebdfd5bef01483984da9fb0a0",
+        "native/include/cybersand/material_rules.hpp": "175b44abd8585b909cb1a85f31b0ba810cf2f7050898bf8b6006a8cc17577362",
+        "native/include/cybersand/physics_diagnostics.hpp": "f027346b04b12ca67a1d38d1e772ff3992ab0a1807f710ca4b709631dac7f0e4",
+        "native/include/cybersand/precision_storage.hpp": "7b7bbdfa6ac5618665b22cf619bbba64c03caeea997a24c94ebdff9902dd4266",
+        "native/include/cybersand/prepared_setup_identity.hpp": "c923cf352014e143abca6ce8837e536edf3b9d69ea444a6cef805ddc8ea034ee",
+        "native/include/cybersand/prepared_world.hpp": "abd765988754bbc754e0f16fdc2d52c9055a0149b282995837cfbe9f2a166b4a",
+        "native/include/cybersand/pressure_flow.hpp": "706e6726f6e5799d45dce9c163592d3a9964b8dac0028f2b7099cae1a0bed38e",
+        "native/include/cybersand/pressure_optimization.hpp": "4ecc1609b07fd4ecbd50c752e11d8722c3353e3e6bbc17097c7a59967d9b6d33",
+        "native/include/cybersand/pressure_setup_capacity.hpp": "f472d7e0a766f068fbbe26a3026a88aa166135283f3a2b975c37cbf85deb69f1",
+        "native/include/cybersand/quantity_ledger.hpp": "4345032e718b601a33ac3ffb69a456cd91bcf05ee3ab503650dcb7c06a59c6ad",
+        "native/include/cybersand/render_snapshot.hpp": "116733aa9b0a384bd739764fb099bc2a95ac19022ba6688e085229898c0db7a3",
+        "native/include/cybersand/scheduler_geometry.hpp": "69ad265aa5cb9823131b46c533a511c71fe089c2f2e3cae3d9950086f6f51460",
+        "native/include/cybersand/settled_discovery.hpp": "e98d772de9ed42397da48b30dc20cd8527ef1100a71757cf0b8a0a6811b150c3",
+        "native/include/cybersand/settled_regions.hpp": "05577c38da9e7fa6f2bbf1e6d589ee104dba71a840974843ff582326900493a1",
+        "native/include/cybersand/settled_world_discovery.hpp": "ab71dc2e0e13b0cc580ba3ce981a321f36b7b83d7904dd899f8746fd0e8d7138",
+        "native/include/cybersand/sha256.hpp": "0dd46c3dd8d3222c659b6b602e0c798f3c22afc034a7f1587d6ca7bcb5b1fcf7",
+        "native/include/cybersand/soliding_lifecycle.hpp": "044335712b4bfcec62a239a57092f11bc5598cc1b9a2427ef0ddbaf1d1d214cd",
+        "native/include/cybersand/transport_policy.hpp": "5943ae6a9479813768d1a62f54895e468288fc19ccb9c2f4b29f4a13aa41dd29",
+        "native/include/cybersand/water_cellular_yield.hpp": "64166e69983a5373a5d61539126e813d7797a69b61abd2d314f723bedd4fdd85",
+        "native/include/cybersand/water_experiment_policy.hpp": "60b6ef5e611ba39eb0d6220115eb2f0662bc58e02b56c0966a239e30ad57dfaf",
+        "native/include/cybersand/water_normalization.hpp": "8baef55ed38d3787c10bc1b5ebf79f383438abf1a24b0618b144310155f77c0d",
+        "native/include/cybersand/world.hpp": "d860bc1868bb248714d3a210a30ce7073e31d5c44d78b8a4f626ca3e127a2d5d",
+        "native/include/cybersand/world_generation.hpp": "28007e89dc009d68af125e2c04d77a5fb6aec48ec9758a4079affa016f3dca5c",
+        "native/src/c_api.cpp": "48d079c7787ad6f555f23d38b85f0b27e1e937483c32cf2c8e9a4bfa8b0f4ec4",
+        "native/src/generation_fields.cpp": "0f4139421792d9e17c069b542620356a2978a09f7254bc4f11c1b725729a4df3",
+        "native/src/generation_grammar.cpp": "9c0367c885f1107c00cc143334c57b49617bb7b0e7a02f5373fdd4d4bdf40453",
+        "native/src/generation_planes.cpp": "fde22fa3495dacefc779a6187dd954289c9e0fc4c5ba83036a036f42d537a7cb",
+        "native/src/generation_spatial.cpp": "8f99e577b7bec07142daf7c0e273146991528cdc3a13e6bf2301f14a7f049961",
+        "native/src/generation_typed_fields.cpp": "c3d2c2767cd0a10af967e8c975f11cbad9761e2b819d013fc5f7cf91bd832f5d",
+        "native/src/material_rules.cpp": "8fd1509bfcef162c5cb6028e9af38c563ad651822b9fcfcc2e79a569d185afa3",
+        "native/src/render_snapshot.cpp": "b905363461d4aa31ffbeb94bd6717993597b9da23b5ea5d8fc717a56662dbf04",
+        "native/src/render_snapshot_internal.hpp": "c36e3b4f41db0f4ac96788a74f66b92407690dccc8609951428ec7b54c292998",
+        "native/src/scheduler_geometry.cpp": "6ddfd5c5601a63edbcc1a8c430dcfe6332cbe54109c6b1d3763f933a6be38764",
+        "native/src/settled_world_discovery.cpp": "5f56ab11ac22eb6af105f52a3abca4ef91a0db1d0046855793123fa941e728b6",
+        "native/src/world.cpp": "a47955f79ed5fbc8bc0ca8e2892ed4eb0ddbd728b841bc08ccee14a4c239e4a7",
+        "native/src/world_generation.cpp": "cf9eb2efef6ac9a9e49bd40eb9fac1915fd967071920816100703d1ae306b535",
+        "native/src/world_inertial.inc": "8a5d3680e96ca47a3f496be5a8b953084d2c6d2e0bd723c3214b87bdbc3580b5",
+        "native/src/world_pressure.inc": "7b28bf216bf70af7059267cae31117f1f01e88d0e5f276f61d67280ab5c6d2e5",
+        "native/src/world_pressure_cache.inc": "9a90d1cae841fbb151658c4ed130d3f7b7fdb2bc883d2d2bfec54715476511b7",
+        "native/src/world_pressure_cache_state.inc": "7574911cff039d2e8f471c0e8d4a29310a397d492254d679ecebe5fa0537169a",
+        "native/src/world_pressure_column_failure.inc": "103cd884f1fd1ed6ca279be47aa6b8ba9f848f1c1205c632fa176c02e182a268",
+        "native/src/world_pressure_gas_cache.inc": "1372e7696d14653ddfd099bb07c24f9255080ce0d09b4304e267162d7d53e2d8",
+        "native/src/world_pressure_state.inc": "4662e9dd157af0bbf1e9cd262985f56c042eb7ca4e09d4edee97f82e2ce24696",
+        "native/src/world_quantity.inc": "627936a33c9ed58b6841f04466bf83aefe83b451ceb0da22baa19269ed5ef074"
+      },
+      "source_tree": "9b773aea6fac85c7acb41efd206024032f57ad3b",
+      "status": "scoped-local-execution",
+      "toolchain": "Windows-hosted LLVM-MinGW 20260826 UCRT, clang/LLD 23.1.0; godot-cpp 101ae38034304346a46ea9ea84ae156d3e860496; SCons 4.10.1"
+    },
+    "linux": {
+      "acceptance": "Articulated workbench capacity and rotated support observation, with unchanged native wrench laws. Source-matched Windows/Linux local headless qualification is recorded in the dated audit and hashed receipts; owner composed gameplay, hardware gamepad, Web and hosted release gates remain unqualified. Draft and unmerged.",
+      "artifact": "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+      "build_commit": "4ac84de57f10e8fc54b5216bdaf65643fe295154",
+      "build_input_scope": "Native build scripts and dependency pins only; resource/host source and execution are qualified in separate scoped receipts.",
+      "build_inputs": {
+        "third_party/godot-runtime.lock.json": "38addc53f9c4e64afc024a7ce5dc1bef9c6238148ce6e66dcc63e9ec70d106fe",
+        "third_party/native-toolchain.lock.json": "1d279b5fb4a09ae668c963dce794a3d7b7eac7d95aa88dc48fdf48189fc84414",
+        "tools/build_native_extension.sh": "cdb1702ab2d896ff1147147124cb79bf9df4f73dee07ec72f32e09dd6fee0313",
+        "tools/build_pinned_godot_cpp.sh": "72552f5aa59e418b4fd84b21e27d3e35c0217603ba0d553d58bdeb70c49520ea",
+        "tools/prepare_native_build_env.sh": "ad9faa94d24d0cd95c9274f7ce5c938a2876154a39a39078c1e116cdd44bb336",
+        "tools/toolchains/g++": "eda84507126d2e657dfd20386a0da6eecc5ebe8d650102075f5b539da8334b09",
+        "tools/verify_pinned_source_tree.py": "a0524839c9a2857906013c9cef6327dfd3fd1878372da05ca16c34a497eaea97"
+      },
+      "evidence": "docs/audits/2026-11-05-workbench-player-usables.md",
+      "godot_cpp_library_sha256": "bc5f860471475c745ebad2b45988607a15c9a35c6996b0f08fea37570e6ef666",
+      "godot_version": "4.7.stable.official.5b4e0cb0f",
+      "platform": "Linux x86_64",
+      "schema_version": 1,
+      "sha256": "047d24d3d9fb1cb70bafb813bbd96058794244893dcd5f98429626308622c0d0",
+      "size": 4334048,
+      "source_commit": "4ac84de57f10e8fc54b5216bdaf65643fe295154",
+      "source_input_hash_kind": "SHA-256 of canonical LF production native source and headers",
+      "source_inputs": {
+        "godot/native_extension/cyber_demo_bridge.hpp": "2d9b3a1ff120d469717d2e36248087104c00990e9b91d2629d22ea27676e243a",
+        "godot/native_extension/cyber_native_cell_world.cpp": "d2774a6cfbd57a4b40663515ffe4a17f71abb8da073dadc3da0eaa3bacbb44c1",
+        "godot/native_extension/cyber_native_cell_world.hpp": "6e5fb1d5558260cb0d23b40d754265192e3ba7f684e377a70665d234a3dc53c4",
+        "godot/native_extension/cyber_observation_values.hpp": "47af553dafed4129aa689fef0e33214d3612148bbcb6b2c10dd6164dbcc3768f",
+        "godot/native_extension/cyber_prepared_level_payload.hpp": "bb414a0f5d2b6272dec3c9f386cee99eb70e1c2f1b5ce74b23fd5953f06c1b5a",
+        "godot/native_extension/cyber_prepared_liquid_world.hpp": "d19d417fb764be86478b247ac3ce6ccb0fa89f7de3385668c73f263f19cf6b06",
+        "godot/native_extension/cyber_world_generator.cpp": "c819ab654d8bc53a04a3362b2dc8f44415238f0b58753882ae993c0ac6dfd64b",
+        "godot/native_extension/cyber_world_generator.hpp": "8be2561cb5e81dee79b55fbe6431f3f50fca1ba89e4ec693fe12f4bed71e0822",
+        "godot/native_extension/generation_grammar_adapter.inc": "363255bf521f90435b620052ee8be288da5cefc4e7afe18f6871512949716b53",
+        "godot/native_extension/generation_grammar_inspection.inc": "5557ce1ef75f72862315ea69a196fd8c8449b7a6c9748e9bf57ee42dbfd3664c",
+        "godot/native_extension/generation_planes_adapter.inc": "f4b2eeba64b57140fb8e9f4f1ca5830cb12fc19b27c2b60367d65d51ff0e4d6b",
+        "godot/native_extension/generation_planes_inspection.inc": "299e87cf74bac6a4ace81e78e8ee052d4be8487f34be2e4c419680a07f9b0f72",
+        "godot/native_extension/generation_planes_methods.inc": "fcbffa284c0d2955bfcbf4ec40961f4ac4432400803470fa6f5f2984df6bf051",
+        "godot/native_extension/generation_workbench_inspection.inc": "13efa68f55fe2273ecf07a041ffcd5b4a274f808c9cb8f18fd260c4302c4e3cf",
+        "godot/native_extension/generation_workbench_methods.inc": "a7b74a41d6282777bd77220e6480258720dfde698938d3bef75d68a2841ae0d8",
+        "godot/native_extension/pressure_optimization_inspection.inc": "e31280bec687c478d37b6dd169d46593adb4397c6584c9c597c98d6cb2d9420e",
+        "godot/native_extension/register_types.cpp": "2a225e31225918746121285f79f5dc91b3808ac3ec0a980d4eac62467e81c5c1",
+        "godot/native_extension/workbench_granular_coupling.inc": "b42718caaeeb8fb545769ac99eb623303dc120fde126c9e114d90f7575ea1fde",
+        "godot/native_extension/workbench_retained_setup.hpp": "ecb5a3e615ab7642b554c07a250d384579297b57644551a3fe1d876d0219f54a",
+        "native/include/cybersand/bounded_ordered_index.hpp": "79105fd5fe6f3a7f1bda463984aec01b2d067400957c60f88e38db86cc180147",
+        "native/include/cybersand/c_api.h": "7d62023cc3dc611fadc92a56cf26f050965b5c5b32ab8e1fd001b0c3469934b1",
+        "native/include/cybersand/default_demo_recipe.hpp": "1ca54bd4939c2e7e458279fbd928c700cf835be5f72772472f7f01e911c69df4",
+        "native/include/cybersand/demo_snapshot.hpp": "95362db4821cc50f1591384ea67f4b8a263016222eb79671e09573e983429163",
+        "native/include/cybersand/generation_fields.hpp": "e405c49a96e912ce07535c57fc42467849384eddb43d405718bbefa98356da79",
+        "native/include/cybersand/generation_grammar.hpp": "c44524b7523b93f403fb5e8cf751040197e7689850c980fe21bb9dd8a8c922a0",
+        "native/include/cybersand/generation_numeric.hpp": "231fd8547985397103388d863297009aee8df944d3be453e6a88ca24ee18bb3a",
+        "native/include/cybersand/generation_planes.hpp": "b0a2cf2c045664cff32818f0e3a6a36b64e95a61d52923091fe1201673968947",
+        "native/include/cybersand/generation_spatial.hpp": "8e02a001775915dc8d8fe9b79c0a1ffb65b51989ffd424a7b847d741a49065e2",
+        "native/include/cybersand/generation_typed_fields.hpp": "012dc286192086b134b1b0e21811aac25ca4cb62b20fd742895698c90d13f151",
+        "native/include/cybersand/granular_contact_response.hpp": "32877bbd6fc7eb85feabab5452250f4a318388cd7b5e7a64b93576123c7caedb",
+        "native/include/cybersand/inertial_cellular.hpp": "5349dbdf709720bcc560da8c75cc1b2a2c9e2e9d10f52fc4ee4b51eede1d77b1",
+        "native/include/cybersand/interaction_policy.hpp": "d959a2ef74afee0f9c2f794ef5ee5362f1d8cfe6fc86a733acf2a17fec54d5ff",
+        "native/include/cybersand/interaction_rules.hpp": "aaffab99ddc7413f82a77de69b9d97aea37bd8cf46211b867ed303a6776448a5",
+        "native/include/cybersand/liquid_comparison.hpp": "9212e0833cd5d2ff07ec37584a1579440991e87bcba7ee4aae88e4fc798e3105",
+        "native/include/cybersand/liquid_construction_refusal.hpp": "542db1338fc6bb86abf8d7b5c9eda664a4f172e19c99c94c9ee0da737d9f0c61",
+        "native/include/cybersand/liquid_policy_catalogue.hpp": "ec9153f5cf921d2834116831908e9feb16148695aa433a21b0e62a0981072303",
+        "native/include/cybersand/liquid_run_receipt.hpp": "2ec1203c3b5e20355d6dcd716b4c729beb353612e83ddfaf9cb9c0c9d1b46f67",
+        "native/include/cybersand/liquid_run_receipt_native_capture.hpp": "2c67c60aacb4ed160d69deef995f4d628fdc1714cdaadfadda80492b035901c2",
+        "native/include/cybersand/liquid_solver_policy.hpp": "c1f2e6b19ad57313eb1c5dd1a4ad56501140d4574f15b26463b4fb513a53827e",
+        "native/include/cybersand/material.hpp": "3e40f970e3205853a43643b4163041935ccd64d8a018d35a7473c3f95a1d0375",
+        "native/include/cybersand/material_appearance.hpp": "512ae47aeb6e4d3d88d9e5388c6954ae1150cc1ebdfd5bef01483984da9fb0a0",
+        "native/include/cybersand/material_rules.hpp": "175b44abd8585b909cb1a85f31b0ba810cf2f7050898bf8b6006a8cc17577362",
+        "native/include/cybersand/physics_diagnostics.hpp": "f027346b04b12ca67a1d38d1e772ff3992ab0a1807f710ca4b709631dac7f0e4",
+        "native/include/cybersand/precision_storage.hpp": "7b7bbdfa6ac5618665b22cf619bbba64c03caeea997a24c94ebdff9902dd4266",
+        "native/include/cybersand/prepared_setup_identity.hpp": "c923cf352014e143abca6ce8837e536edf3b9d69ea444a6cef805ddc8ea034ee",
+        "native/include/cybersand/prepared_world.hpp": "abd765988754bbc754e0f16fdc2d52c9055a0149b282995837cfbe9f2a166b4a",
+        "native/include/cybersand/pressure_flow.hpp": "706e6726f6e5799d45dce9c163592d3a9964b8dac0028f2b7099cae1a0bed38e",
+        "native/include/cybersand/pressure_optimization.hpp": "4ecc1609b07fd4ecbd50c752e11d8722c3353e3e6bbc17097c7a59967d9b6d33",
+        "native/include/cybersand/pressure_setup_capacity.hpp": "f472d7e0a766f068fbbe26a3026a88aa166135283f3a2b975c37cbf85deb69f1",
+        "native/include/cybersand/quantity_ledger.hpp": "4345032e718b601a33ac3ffb69a456cd91bcf05ee3ab503650dcb7c06a59c6ad",
+        "native/include/cybersand/render_snapshot.hpp": "116733aa9b0a384bd739764fb099bc2a95ac19022ba6688e085229898c0db7a3",
+        "native/include/cybersand/scheduler_geometry.hpp": "69ad265aa5cb9823131b46c533a511c71fe089c2f2e3cae3d9950086f6f51460",
+        "native/include/cybersand/settled_discovery.hpp": "e98d772de9ed42397da48b30dc20cd8527ef1100a71757cf0b8a0a6811b150c3",
+        "native/include/cybersand/settled_regions.hpp": "05577c38da9e7fa6f2bbf1e6d589ee104dba71a840974843ff582326900493a1",
+        "native/include/cybersand/settled_world_discovery.hpp": "ab71dc2e0e13b0cc580ba3ce981a321f36b7b83d7904dd899f8746fd0e8d7138",
+        "native/include/cybersand/sha256.hpp": "0dd46c3dd8d3222c659b6b602e0c798f3c22afc034a7f1587d6ca7bcb5b1fcf7",
+        "native/include/cybersand/soliding_lifecycle.hpp": "044335712b4bfcec62a239a57092f11bc5598cc1b9a2427ef0ddbaf1d1d214cd",
+        "native/include/cybersand/transport_policy.hpp": "5943ae6a9479813768d1a62f54895e468288fc19ccb9c2f4b29f4a13aa41dd29",
+        "native/include/cybersand/water_cellular_yield.hpp": "64166e69983a5373a5d61539126e813d7797a69b61abd2d314f723bedd4fdd85",
+        "native/include/cybersand/water_experiment_policy.hpp": "60b6ef5e611ba39eb0d6220115eb2f0662bc58e02b56c0966a239e30ad57dfaf",
+        "native/include/cybersand/water_normalization.hpp": "8baef55ed38d3787c10bc1b5ebf79f383438abf1a24b0618b144310155f77c0d",
+        "native/include/cybersand/world.hpp": "d860bc1868bb248714d3a210a30ce7073e31d5c44d78b8a4f626ca3e127a2d5d",
+        "native/include/cybersand/world_generation.hpp": "28007e89dc009d68af125e2c04d77a5fb6aec48ec9758a4079affa016f3dca5c",
+        "native/src/c_api.cpp": "48d079c7787ad6f555f23d38b85f0b27e1e937483c32cf2c8e9a4bfa8b0f4ec4",
+        "native/src/generation_fields.cpp": "0f4139421792d9e17c069b542620356a2978a09f7254bc4f11c1b725729a4df3",
+        "native/src/generation_grammar.cpp": "9c0367c885f1107c00cc143334c57b49617bb7b0e7a02f5373fdd4d4bdf40453",
+        "native/src/generation_planes.cpp": "fde22fa3495dacefc779a6187dd954289c9e0fc4c5ba83036a036f42d537a7cb",
+        "native/src/generation_spatial.cpp": "8f99e577b7bec07142daf7c0e273146991528cdc3a13e6bf2301f14a7f049961",
+        "native/src/generation_typed_fields.cpp": "c3d2c2767cd0a10af967e8c975f11cbad9761e2b819d013fc5f7cf91bd832f5d",
+        "native/src/material_rules.cpp": "8fd1509bfcef162c5cb6028e9af38c563ad651822b9fcfcc2e79a569d185afa3",
+        "native/src/render_snapshot.cpp": "b905363461d4aa31ffbeb94bd6717993597b9da23b5ea5d8fc717a56662dbf04",
+        "native/src/render_snapshot_internal.hpp": "c36e3b4f41db0f4ac96788a74f66b92407690dccc8609951428ec7b54c292998",
+        "native/src/scheduler_geometry.cpp": "6ddfd5c5601a63edbcc1a8c430dcfe6332cbe54109c6b1d3763f933a6be38764",
+        "native/src/settled_world_discovery.cpp": "5f56ab11ac22eb6af105f52a3abca4ef91a0db1d0046855793123fa941e728b6",
+        "native/src/world.cpp": "a47955f79ed5fbc8bc0ca8e2892ed4eb0ddbd728b841bc08ccee14a4c239e4a7",
+        "native/src/world_generation.cpp": "cf9eb2efef6ac9a9e49bd40eb9fac1915fd967071920816100703d1ae306b535",
+        "native/src/world_inertial.inc": "8a5d3680e96ca47a3f496be5a8b953084d2c6d2e0bd723c3214b87bdbc3580b5",
+        "native/src/world_pressure.inc": "7b28bf216bf70af7059267cae31117f1f01e88d0e5f276f61d67280ab5c6d2e5",
+        "native/src/world_pressure_cache.inc": "9a90d1cae841fbb151658c4ed130d3f7b7fdb2bc883d2d2bfec54715476511b7",
+        "native/src/world_pressure_cache_state.inc": "7574911cff039d2e8f471c0e8d4a29310a397d492254d679ecebe5fa0537169a",
+        "native/src/world_pressure_column_failure.inc": "103cd884f1fd1ed6ca279be47aa6b8ba9f848f1c1205c632fa176c02e182a268",
+        "native/src/world_pressure_gas_cache.inc": "1372e7696d14653ddfd099bb07c24f9255080ce0d09b4304e267162d7d53e2d8",
+        "native/src/world_pressure_state.inc": "4662e9dd157af0bbf1e9cd262985f56c042eb7ca4e09d4edee97f82e2ce24696",
+        "native/src/world_quantity.inc": "627936a33c9ed58b6841f04466bf83aefe83b451ceb0da22baa19269ed5ef074"
+      },
+      "source_tree": "9b773aea6fac85c7acb41efd206024032f57ad3b",
+      "status": "scoped-local-execution",
+      "toolchain": "WSL Ubuntu 24.04 x86_64, GCC 13.3.0, GNU ld 2.42; godot-cpp 101ae38034304346a46ea9ea84ae156d3e860496; SCons 4.10.1"
+    }
+  },
+  "raw_evidence_manifest": [
+    {
+      "path": "build/workbench-articulated-campaign/receipt.json",
+      "sha256": "7d02fb866104ce8c69260976c9ec09fa52d222f514ee0027b2da3a4f7a9c81fd",
+      "bytes": 47765
+    },
+    {
+      "path": "build/workbench-articulated-campaign/windows/test_flyer_tuning/console.log",
+      "sha256": "ed3d8136d08192b59e87e646693173f978850fbcd20beca8f9499a75a24c9d63",
+      "bytes": 686
+    },
+    {
+      "path": "build/workbench-articulated-campaign/windows/test_physical_actor_rigs/console.log",
+      "sha256": "49b39948d99f14fec20fc72cb627585fa9f002a99f6b7591339159798eaf07c2",
+      "bytes": 178209
+    },
+    {
+      "path": "build/workbench-articulated-campaign/windows/test_physical_actor_session/console.log",
+      "sha256": "b53c36aa74dfe1b78bd6f4cd0fe8f5d8a58b0ad1784de1e2161e247732299d72",
+      "bytes": 276
+    },
+    {
+      "path": "build/workbench-articulated-campaign/windows/test_player_acrobat/console.log",
+      "sha256": "00050b88e95dbc92252f7b80b61a436f29d84c1fe9f9cb3160bd7a633599ec22",
+      "bytes": 268
+    },
+    {
+      "path": "build/workbench-articulated-campaign/windows/test_player_acrobat_physics/console.log",
+      "sha256": "b4e16c00c640187f0b17343c90612146236e662ff4df1cd14cd854ae61cca5d9",
+      "bytes": 775
+    },
+    {
+      "path": "build/workbench-articulated-campaign/windows/test_player_vehicle_controls/console.log",
+      "sha256": "8e0395d5e807c1b9adac0e8fdc162d79436673fa6932ab5a1adae1edd4cd2ea3",
+      "bytes": 655
+    },
+    {
+      "path": "build/workbench-articulated-campaign/windows/test_workbench_articulated/console.log",
+      "sha256": "65a8f10068f82ef2984b789775e74a52e61cf12e6a9820efab133bdae4cbec7c",
+      "bytes": 435
+    },
+    {
+      "path": "build/workbench-articulated-campaign/windows/test_workbench_fleet_session/console.log",
+      "sha256": "634f905ac03e58d4737bde7eb8adf6ec8d661ce01f04c9b26bb3fe581f4a3724",
+      "bytes": 262
+    },
+    {
+      "path": "build/workbench-articulated-campaign/linux/test_flyer_tuning/console.log",
+      "sha256": "350ec2ce8a79b1fc5653921e91ad7683e23e5eb87a1277be7e52e42e41a86258",
+      "bytes": 682
+    },
+    {
+      "path": "build/workbench-articulated-campaign/linux/test_physical_actor_rigs/console.log",
+      "sha256": "f80f160d8da595298943ccf50de8ace64a294a6d2a7cde726d1deb74c41dc7f0",
+      "bytes": 176991
+    },
+    {
+      "path": "build/workbench-articulated-campaign/linux/test_physical_actor_session/console.log",
+      "sha256": "9d8f422c231aca0af0e647c18285cb07554afca1de70b00c02c2561d7d28dd84",
+      "bytes": 272
+    },
+    {
+      "path": "build/workbench-articulated-campaign/linux/test_player_acrobat/console.log",
+      "sha256": "6ccd1e53d794f29b0610c44e63be731fc7cb98d452fde8d97c80172e3a3ed48d",
+      "bytes": 264
+    },
+    {
+      "path": "build/workbench-articulated-campaign/linux/test_player_acrobat_physics/console.log",
+      "sha256": "601cc7d9b6e57ec8e7c212e920d938e6f7bf4fe2e00f427cd412653162674f82",
+      "bytes": 769
+    },
+    {
+      "path": "build/workbench-articulated-campaign/linux/test_player_vehicle_controls/console.log",
+      "sha256": "b4a82fe8c933ab9cbe4e3410d2d7ee515ab3afe55814b0d9c200d35463da6358",
+      "bytes": 645
+    },
+    {
+      "path": "build/workbench-articulated-campaign/linux/test_workbench_articulated/console.log",
+      "sha256": "d175fa52ca9056071521fa98e78a446da8b3830dad492e206eee45d789c2810d",
+      "bytes": 428
+    },
+    {
+      "path": "build/workbench-articulated-campaign/linux/test_workbench_fleet_session/console.log",
+      "sha256": "de1a37723411ff3f440a3a7ffa1857ef7c78f992dfd435ead9e0af40307bae72",
+      "bytes": 258
+    },
+    {
+      "path": "build/workbench-articulated-campaign-final/receipt.json",
+      "sha256": "be9fc409407ef0350c06e64c4c765a4cd3472940a8f963ed800cdf3856a98f2a",
+      "bytes": 47811
+    },
+    {
+      "path": "build/workbench-articulated-campaign-final/windows/test_flyer_tuning/console.log",
+      "sha256": "ed3d8136d08192b59e87e646693173f978850fbcd20beca8f9499a75a24c9d63",
+      "bytes": 686
+    },
+    {
+      "path": "build/workbench-articulated-campaign-final/windows/test_physical_actor_rigs/console.log",
+      "sha256": "397f5244c60bd49095f3ba4a45f09c1354815caa080ad8dbfc58dc0887911fc4",
+      "bytes": 178338
+    },
+    {
+      "path": "build/workbench-articulated-campaign-final/windows/test_physical_actor_session/console.log",
+      "sha256": "b53c36aa74dfe1b78bd6f4cd0fe8f5d8a58b0ad1784de1e2161e247732299d72",
+      "bytes": 276
+    },
+    {
+      "path": "build/workbench-articulated-campaign-final/windows/test_player_acrobat/console.log",
+      "sha256": "00050b88e95dbc92252f7b80b61a436f29d84c1fe9f9cb3160bd7a633599ec22",
+      "bytes": 268
+    },
+    {
+      "path": "build/workbench-articulated-campaign-final/windows/test_player_acrobat_physics/console.log",
+      "sha256": "b4e16c00c640187f0b17343c90612146236e662ff4df1cd14cd854ae61cca5d9",
+      "bytes": 775
+    },
+    {
+      "path": "build/workbench-articulated-campaign-final/windows/test_player_vehicle_controls/console.log",
+      "sha256": "8e0395d5e807c1b9adac0e8fdc162d79436673fa6932ab5a1adae1edd4cd2ea3",
+      "bytes": 655
+    },
+    {
+      "path": "build/workbench-articulated-campaign-final/windows/test_workbench_articulated/console.log",
+      "sha256": "3967fb33fc4d4d2e1018ff2b1c591bd6ed5ae7adefb579468454f305723a40cf",
+      "bytes": 435
+    },
+    {
+      "path": "build/workbench-articulated-campaign-final/windows/test_workbench_fleet_session/console.log",
+      "sha256": "634f905ac03e58d4737bde7eb8adf6ec8d661ce01f04c9b26bb3fe581f4a3724",
+      "bytes": 262
+    },
+    {
+      "path": "build/workbench-articulated-campaign-final/linux/test_flyer_tuning/console.log",
+      "sha256": "350ec2ce8a79b1fc5653921e91ad7683e23e5eb87a1277be7e52e42e41a86258",
+      "bytes": 682
+    },
+    {
+      "path": "build/workbench-articulated-campaign-final/linux/test_physical_actor_rigs/console.log",
+      "sha256": "9c26d18d671c0c0a0723fef70af5c9418ffa3fd6ac3c63936b6c6ffc7bb1f92d",
+      "bytes": 177041
+    },
+    {
+      "path": "build/workbench-articulated-campaign-final/linux/test_physical_actor_session/console.log",
+      "sha256": "9d8f422c231aca0af0e647c18285cb07554afca1de70b00c02c2561d7d28dd84",
+      "bytes": 272
+    },
+    {
+      "path": "build/workbench-articulated-campaign-final/linux/test_player_acrobat/console.log",
+      "sha256": "6ccd1e53d794f29b0610c44e63be731fc7cb98d452fde8d97c80172e3a3ed48d",
+      "bytes": 264
+    },
+    {
+      "path": "build/workbench-articulated-campaign-final/linux/test_player_acrobat_physics/console.log",
+      "sha256": "601cc7d9b6e57ec8e7c212e920d938e6f7bf4fe2e00f427cd412653162674f82",
+      "bytes": 769
+    },
+    {
+      "path": "build/workbench-articulated-campaign-final/linux/test_player_vehicle_controls/console.log",
+      "sha256": "b4a82fe8c933ab9cbe4e3410d2d7ee515ab3afe55814b0d9c200d35463da6358",
+      "bytes": 645
+    },
+    {
+      "path": "build/workbench-articulated-campaign-final/linux/test_workbench_articulated/console.log",
+      "sha256": "76821e8af11886ec72017cf02a81fbb493298adca57cd6a3fff5b4fd0e13c1c9",
+      "bytes": 428
+    },
+    {
+      "path": "build/workbench-articulated-campaign-final/linux/test_workbench_fleet_session/console.log",
+      "sha256": "de1a37723411ff3f440a3a7ffa1857ef7c78f992dfd435ead9e0af40307bae72",
+      "bytes": 258
+    },
+    {
+      "path": "build/workbench-articulated-final-pose-powder/receipt.json",
+      "sha256": "17494bbff976eab06c9629da624f4297fe7d00a039ff524e82a6b1ece7c7ed55",
+      "bytes": 38503
+    },
+    {
+      "path": "build/workbench-articulated-final-pose-powder/windows/test_prepared_physical_owner/console.log",
+      "sha256": "1909b3b5b7a7afe47ac8d5984f464a6ebc0e80114311a2e38120b16d34cd8ece",
+      "bytes": 276
+    },
+    {
+      "path": "build/workbench-articulated-final-pose-powder/windows/test_workbench_articulated/console.log",
+      "sha256": "e59bd51b0254d76ac2ae22feb0f959936cc7dd52bc20097c8f9f75826492b3c1",
+      "bytes": 435
+    },
+    {
+      "path": "build/workbench-articulated-final-pose-powder/windows/test_workbench_fleet_session/console.log",
+      "sha256": "634f905ac03e58d4737bde7eb8adf6ec8d661ce01f04c9b26bb3fe581f4a3724",
+      "bytes": 262
+    },
+    {
+      "path": "build/workbench-articulated-final-pose-powder/windows/test_workbench_powder_deployment/console.log",
+      "sha256": "bed9eb4c9e56a9ea3a56679f11b874167b50aaba3f86a965fa66589693403b1c",
+      "bytes": 998
+    },
+    {
+      "path": "build/workbench-articulated-final-pose-powder/windows/test_workbench_prepared_pose/console.log",
+      "sha256": "92886cb1a1fbca51170949d4a3e37134ef7efa093d35d26da21d9e9f1b0a316d",
+      "bytes": 277
+    },
+    {
+      "path": "build/workbench-articulated-final-pose-powder/linux/test_prepared_physical_owner/console.log",
+      "sha256": "bcaa81dcf05a8b4f68fdad8b2ff7c7e5c7a402a3f45fe8a73b9343303d3bf32a",
+      "bytes": 272
+    },
+    {
+      "path": "build/workbench-articulated-final-pose-powder/linux/test_workbench_articulated/console.log",
+      "sha256": "23e52512badc3c2e18308d52866f85933ee604baa2a0b6f281d5bf4a6d127b18",
+      "bytes": 428
+    },
+    {
+      "path": "build/workbench-articulated-final-pose-powder/linux/test_workbench_fleet_session/console.log",
+      "sha256": "de1a37723411ff3f440a3a7ffa1857ef7c78f992dfd435ead9e0af40307bae72",
+      "bytes": 258
+    },
+    {
+      "path": "build/workbench-articulated-final-pose-powder/linux/test_workbench_powder_deployment/console.log",
+      "sha256": "5517205b814432739729d3c2f8e0553de563c557be80e0a7ebad0ddac1d7fa51",
+      "bytes": 993
+    },
+    {
+      "path": "build/workbench-articulated-final-pose-powder/linux/test_workbench_prepared_pose/console.log",
+      "sha256": "c220faac5e16b2780f67222172ab25f8d05c7c61581b4b004f0aaf045a3cd421",
+      "bytes": 273
+    },
+    {
+      "path": "build/workbench-articulated-mode-fence/receipt.json",
+      "sha256": "423a4b1d767051b0adb99aef148ab4bfa2fd23aa0331b24fcf1386e0a33be2f0",
+      "bytes": 11877
+    },
+    {
+      "path": "build/workbench-articulated-mode-fence/windows/test_workbench_articulated/console.log",
+      "sha256": "a9c09b4421492a3222d6a7eae63e3505eaf1318b4801b45e2861fbfabc3da77e",
+      "bytes": 435
+    },
+    {
+      "path": "build/workbench-articulated-mode-fence/windows/test_workbench_fleet_session/console.log",
+      "sha256": "634f905ac03e58d4737bde7eb8adf6ec8d661ce01f04c9b26bb3fe581f4a3724",
+      "bytes": 262
+    },
+    {
+      "path": "build/workbench-articulated-mode-fence/linux/test_workbench_articulated/console.log",
+      "sha256": "4d7af2a82c3291ca80f687e51051d84a16bbf3160d5ffa92ffb6d29a2ee1d6f0",
+      "bytes": 428
+    },
+    {
+      "path": "build/workbench-articulated-mode-fence/linux/test_workbench_fleet_session/console.log",
+      "sha256": "de1a37723411ff3f440a3a7ffa1857ef7c78f992dfd435ead9e0af40307bae72",
+      "bytes": 258
+    },
+    {
+      "path": "build/workbench-articulated-v2-final/receipt.json",
+      "sha256": "2aba098562feadfa637d51ca2281ac164045cecce988708ee9f45733139dff35",
+      "bytes": 11872
+    },
+    {
+      "path": "build/workbench-articulated-v2-final/windows/test_workbench_articulated/console.log",
+      "sha256": "e59bd51b0254d76ac2ae22feb0f959936cc7dd52bc20097c8f9f75826492b3c1",
+      "bytes": 435
+    },
+    {
+      "path": "build/workbench-articulated-v2-final/windows/test_workbench_fleet_session/console.log",
+      "sha256": "634f905ac03e58d4737bde7eb8adf6ec8d661ce01f04c9b26bb3fe581f4a3724",
+      "bytes": 262
+    },
+    {
+      "path": "build/workbench-articulated-v2-final/linux/test_workbench_articulated/console.log",
+      "sha256": "23e52512badc3c2e18308d52866f85933ee604baa2a0b6f281d5bf4a6d127b18",
+      "bytes": 428
+    },
+    {
+      "path": "build/workbench-articulated-v2-final/linux/test_workbench_fleet_session/console.log",
+      "sha256": "de1a37723411ff3f440a3a7ffa1857ef7c78f992dfd435ead9e0af40307bae72",
+      "bytes": 258
+    },
+    {
+      "path": "build/workbench-edge-diagnostic/console.log",
+      "sha256": "44e90236891281a8c8afb6da0f29500cadac9ad7fcb9e862254354822354f5bc",
+      "bytes": 1643
+    },
+    {
+      "path": "build/workbench-edge-diagnostic-attempt02/console.log",
+      "sha256": "fe42c4b6e970d7fb5452d52f1d0bab93c9d8bde6062e91b41d1b22ac85f35dad",
+      "bytes": 1828
+    },
+    {
+      "path": "build/workbench-edge-diagnostic-attempt03/console.log",
+      "sha256": "d9889cecbc80c3f095aa60c2d36a7ebf789fde5a8a6cdd005baa554a14548f87",
+      "bytes": 2163
+    },
+    {
+      "path": "build/workbench-edge-diagnostic-attempt04/console.log",
+      "sha256": "3ce343921969ff3fc29ac24aff2691ba04c36ca59991d5edfd3c4ebb8e3ebc66",
+      "bytes": 2184
+    },
+    {
+      "path": "build/workbench-edge-diagnostic-attempt05/console.log",
+      "sha256": "2964ed9c66b0f912bee04cc17af75ef5eee9915a0f5f7568bd8b30d24dcca5da",
+      "bytes": 35147
+    },
+    {
+      "path": "build/workbench-edge-diagnostic-attempt05/flyer-profiles.json",
+      "sha256": "97b93869398422fe57225edac5f9343bcef61ec94c6a5079e7dbfa2062d3a859",
+      "bytes": 821
+    },
+    {
+      "path": "build/workbench-edge-fixed/receipt.json",
+      "sha256": "15ffb60f5aa2a5f20c4a134767a48e1c5616a220f9b298da064b0b177d3d4bf0",
+      "bytes": 33197
+    },
+    {
+      "path": "build/workbench-edge-fixed/linux/console.log",
+      "sha256": "c58bfcce4229e11aede28141928689d4c3eb937a3708c60e9b6d21596c204e66",
+      "bytes": 9167
+    },
+    {
+      "path": "build/workbench-edge-fixed/linux/flyer-profiles.json",
+      "sha256": "97b93869398422fe57225edac5f9343bcef61ec94c6a5079e7dbfa2062d3a859",
+      "bytes": 821
+    },
+    {
+      "path": "build/workbench-edge-fixed/windows/console.log",
+      "sha256": "f4a397b11b70dffc54b12d27e6041e78e6ad4a754a230fecba316a0bc64e5e97",
+      "bytes": 9164
+    },
+    {
+      "path": "build/workbench-edge-fixed/windows/flyer-profiles.json",
+      "sha256": "97b93869398422fe57225edac5f9343bcef61ec94c6a5079e7dbfa2062d3a859",
+      "bytes": 821
+    },
+    {
+      "path": "build/workbench-final-legacy/receipt.json",
+      "sha256": "0dc57d76ffab07523274bae48a7f83743da59acacc5f3508bec624ad8d096050",
+      "bytes": 1006499
+    },
+    {
+      "path": "build/workbench-final-legacy/runner.log",
+      "sha256": "f01f230db2678d714dd64f49dfe42f1406c6992b5c2f0a331ec38bb8259182cc",
+      "bytes": 36994
+    },
+    {
+      "path": "build/workbench-final-legacy/windows/test_workbench_boundary_retention/console.log",
+      "sha256": "486faa242fded9853af3f83f3a235006317c4946c12ba18ef5fdabf2adb856fc",
+      "bytes": 3178
+    },
+    {
+      "path": "build/workbench-final-legacy/windows/test_workbench_canvas/console.log",
+      "sha256": "2cdda1b63ae90f9c04b3c668d7e49c2ae045ec3077deb1ef6eb5ecc792914524",
+      "bytes": 600
+    },
+    {
+      "path": "build/workbench-final-legacy/windows/test_workbench_canvas/flyer-profiles.json",
+      "sha256": "ef6641d1082b0fb85d1e730bef080a281b40c12eed763b2011426d049c0d9b54",
+      "bytes": 821
+    },
+    {
+      "path": "build/workbench-final-legacy/windows/test_workbench_desktop_interest/console.log",
+      "sha256": "5bce0330d1edc178d9e83ab079262ae2abaae37561d72261f40226991e4893ff",
+      "bytes": 2816
+    },
+    {
+      "path": "build/workbench-final-legacy/windows/test_workbench_failure_recovery/console.log",
+      "sha256": "092338f404816f7596a3d9d8b518d179c4f8bb54f1f65c4e2d450b91bb9911fa",
+      "bytes": 268
+    },
+    {
+      "path": "build/workbench-final-legacy/windows/test_workbench_fleet_session/console.log",
+      "sha256": "634f905ac03e58d4737bde7eb8adf6ec8d661ce01f04c9b26bb3fe581f4a3724",
+      "bytes": 262
+    },
+    {
+      "path": "build/workbench-final-legacy/windows/test_workbench_hard_placement/console.log",
+      "sha256": "340180d107b6d009ee07cbec4e4cc25485479f8bcfee450266d3562b6990e842",
+      "bytes": 262
+    },
+    {
+      "path": "build/workbench-final-legacy/windows/test_workbench_input/console.log",
+      "sha256": "ad15434d332108a56fcd20f7b1c29b30baba3339c4d2379e2018bc420289efbc",
+      "bytes": 1863
+    },
+    {
+      "path": "build/workbench-final-legacy/windows/test_workbench_liquid_edges/console.log",
+      "sha256": "b99a1ccd090b3e87ace453e877b19735507b1de104acee9fc7d245b7763dd241",
+      "bytes": 808
+    },
+    {
+      "path": "build/workbench-final-legacy/windows/test_workbench_live_liquid_edit/console.log",
+      "sha256": "7c8f14adb2ccc0b5fdcfa44149299d23c7b1f30a36b7eebc812769d50c23d128",
+      "bytes": 1169
+    },
+    {
+      "path": "build/workbench-final-legacy/windows/test_workbench_physics_play/console.log",
+      "sha256": "bfb68461f24c1b905c87e6665789ce41d771f2f705f62bf10602b151686b1019",
+      "bytes": 11208
+    },
+    {
+      "path": "build/workbench-final-legacy/windows/test_workbench_pilot_ui/console.log",
+      "sha256": "e552b6c8178f7e38044fd393dd14d44f2a98078dcdbef20afdf2eab323d76600",
+      "bytes": 865
+    },
+    {
+      "path": "build/workbench-final-legacy/windows/test_workbench_pilot_ui/flyer-profiles.json",
+      "sha256": "f191273d2bc82f4a5e47e015b9b5bdb361ba70a16dc713290d7e274e42d48045",
+      "bytes": 1621
+    },
+    {
+      "path": "build/workbench-final-legacy/windows/test_workbench_retained_pressure/console.log",
+      "sha256": "407abc85b75d4e8f515b3a9dd886eb9ebe9e945b902bc122f28c814a0e0b0a60",
+      "bytes": 284
+    },
+    {
+      "path": "build/workbench-final-legacy/linux/test_workbench_boundary_retention/console.log",
+      "sha256": "591ecbd3e84fe7e5b31b2de8f5e0f49fc364a40f22416861c3ea4beb0fa62a3c",
+      "bytes": 3171
+    },
+    {
+      "path": "build/workbench-final-legacy/linux/test_workbench_canvas/console.log",
+      "sha256": "bfaa979b9c75c27fcf20815b1c62d2499ff80c2464d4ec27301c327771fe224a",
+      "bytes": 597
+    },
+    {
+      "path": "build/workbench-final-legacy/linux/test_workbench_canvas/flyer-profiles.json",
+      "sha256": "ef6641d1082b0fb85d1e730bef080a281b40c12eed763b2011426d049c0d9b54",
+      "bytes": 821
+    },
+    {
+      "path": "build/workbench-final-legacy/linux/test_workbench_desktop_interest/console.log",
+      "sha256": "0a617815871bbadf245178956bd9d744bae148327dfc3dfb6c8476358a81a6d1",
+      "bytes": 2812
+    },
+    {
+      "path": "build/workbench-final-legacy/linux/test_workbench_failure_recovery/console.log",
+      "sha256": "08e6c5e6fb7d8555647e13fa884c3beb069ab479dea751f1476517ff772ce093",
+      "bytes": 264
+    },
+    {
+      "path": "build/workbench-final-legacy/linux/test_workbench_fleet_session/console.log",
+      "sha256": "de1a37723411ff3f440a3a7ffa1857ef7c78f992dfd435ead9e0af40307bae72",
+      "bytes": 258
+    },
+    {
+      "path": "build/workbench-final-legacy/linux/test_workbench_hard_placement/console.log",
+      "sha256": "20c993e4b569ea2e16a5a2d3c7a594e0e037c3923381f94623ad3e2b7688b4ff",
+      "bytes": 258
+    },
+    {
+      "path": "build/workbench-final-legacy/linux/test_workbench_input/console.log",
+      "sha256": "d099d3afc511575642460b5ed2a957c0232b972ecd78802d1bf1f2454070c617",
+      "bytes": 1859
+    },
+    {
+      "path": "build/workbench-final-legacy/linux/test_workbench_liquid_edges/console.log",
+      "sha256": "f8bcdbb6fdfd203a0c345dcb665c5877aa088f5f95fa4306859a1153bca397e2",
+      "bytes": 797
+    },
+    {
+      "path": "build/workbench-final-legacy/linux/test_workbench_live_liquid_edit/console.log",
+      "sha256": "c5d8a0f81c88e2e2f79336bbce5156fd71fc7b154f52e2e70482771f18776481",
+      "bytes": 1164
+    },
+    {
+      "path": "build/workbench-final-legacy/linux/test_workbench_physics_play/console.log",
+      "sha256": "9074f2931a482726867a1e3d698860b72a0a76701f13aa9857153c9cae578c1b",
+      "bytes": 11194
+    },
+    {
+      "path": "build/workbench-final-legacy/linux/test_workbench_pilot_ui/console.log",
+      "sha256": "05649b61218a5b7717c7bf1eb34041fc5811fdfe9cf24215b11008d0cfa961b7",
+      "bytes": 846
+    },
+    {
+      "path": "build/workbench-final-legacy/linux/test_workbench_pilot_ui/flyer-profiles.json",
+      "sha256": "f191273d2bc82f4a5e47e015b9b5bdb361ba70a16dc713290d7e274e42d48045",
+      "bytes": 1621
+    },
+    {
+      "path": "build/workbench-final-legacy/linux/test_workbench_retained_pressure/console.log",
+      "sha256": "3a6a19b8a36e99e6592b9ee6743b3b0a566fe31ae1a43fee1ab665783d939428",
+      "bytes": 280
+    },
+    {
+      "path": "build/workbench-integration/companion-copies.json",
+      "sha256": "ce702a3ea086eea561e0a29cf108ab99bf5c0b25b45fc2bbfde9e6f2243d24d4",
+      "bytes": 1262
+    },
+    {
+      "path": "build/workbench-integration/docs-in-progress.log",
+      "sha256": "6d4ad06e5c16ee82770fd672c363033eb33a1a41f0b97e41e48698d656d8c0d9",
+      "bytes": 901
+    },
+    {
+      "path": "build/workbench-integration/install-make.log",
+      "sha256": "912053cded5e2111493522b38ed7b0ae7139fb4f4960bbc0047068c2ba5a6127",
+      "bytes": 1332
+    },
+    {
+      "path": "build/workbench-integration/intake-material-guard.log",
+      "sha256": "50174e75669bf15c0d521884f313715b5769054ca583572e3e734d0d06c14ae7",
+      "bytes": 2587
+    },
+    {
+      "path": "build/workbench-integration/m11.log",
+      "sha256": "e5d2a8eecef5876957dc4ecff01b99af696053871616d2dea563371d44b2427b",
+      "bytes": 318
+    },
+    {
+      "path": "build/workbench-integration/main-parse-final.log",
+      "sha256": "d53c18e4ac8861149a7e4f88d80760e79ec39e3fa23935ec0d77ef75f0b89198",
+      "bytes": 225
+    },
+    {
+      "path": "build/workbench-integration/main-parse-initial.log",
+      "sha256": "d53c18e4ac8861149a7e4f88d80760e79ec39e3fa23935ec0d77ef75f0b89198",
+      "bytes": 225
+    },
+    {
+      "path": "build/workbench-integration/material-players-final-linux.log",
+      "sha256": "baf6c698dd03d5bb0451f4f83712be25e5d36c40840d778229353ef2c77b5e95",
+      "bytes": 281
+    },
+    {
+      "path": "build/workbench-integration/material-players-final-windows.log",
+      "sha256": "baf6c698dd03d5bb0451f4f83712be25e5d36c40840d778229353ef2c77b5e95",
+      "bytes": 281
+    },
+    {
+      "path": "build/workbench-integration/material-players-first.log",
+      "sha256": "20813b25d462934f878fc1b57ce604ce35e36334d5553e7b45480ca11d376895",
+      "bytes": 841
+    },
+    {
+      "path": "build/workbench-integration/material-players-second.log",
+      "sha256": "baf6c698dd03d5bb0451f4f83712be25e5d36c40840d778229353ef2c77b5e95",
+      "bytes": 281
+    },
+    {
+      "path": "build/workbench-integration/native-core-second.log",
+      "sha256": "00ccc8a128253b0963ce65520505df8edb368f10f382c9fcdad75819bcca2e81",
+      "bytes": 43581
+    },
+    {
+      "path": "build/workbench-integration/native-core.log",
+      "sha256": "798518efd81c8b800d46c7bfe26f532808cb2d347bb6a36420bc03e3b598de42",
+      "bytes": 70
+    },
+    {
+      "path": "build/workbench-integration/native-sanitizer.log",
+      "sha256": "a758f5be9c03b3c7a3ac0b8aa66ac609326024bb5946bd19a0e45f0cd2617229",
+      "bytes": 34436
+    },
+    {
+      "path": "build/workbench-physics-final-isolated/receipt.json",
+      "sha256": "a814fa2e3c769dbc8867739e903d6d4da1a82707dfd0fad5ce688353d615188d",
+      "bytes": 236635
+    },
+    {
+      "path": "build/workbench-physics-final-isolated/linux/console.log",
+      "sha256": "e2785e39cb0bce5995ccdd9dd96bf99c20643d48d36f6711974f66dc761429a4",
+      "bytes": 11215
+    },
+    {
+      "path": "build/workbench-physics-final-isolated/linux/receipt.json",
+      "sha256": "8de822cb58168a491ead09514e02aae03a40a2dc52ac51dd17e41177951fa084",
+      "bytes": 114525
+    },
+    {
+      "path": "build/workbench-physics-final-isolated/linux/report.json",
+      "sha256": "2cf4b66bab937fce4f6102d656249523eb8f77b50a72b18755939cbc6a42ac3f",
+      "bytes": 15951
+    },
+    {
+      "path": "build/workbench-physics-final-isolated/windows/console.log",
+      "sha256": "0c0d5aa7f3b3ea03e69af9973a6a5134fc5df779cd457bac8bca1907b57feb1a",
+      "bytes": 11279
+    },
+    {
+      "path": "build/workbench-physics-final-isolated/windows/receipt.json",
+      "sha256": "7fadc63ee4b68ccb40cd8f460a3b6ad0219365fb2152dd8c80d8606c55cb07f2",
+      "bytes": 114106
+    },
+    {
+      "path": "build/workbench-physics-final-isolated/windows/report.json",
+      "sha256": "77546742e9d0e61b32726fc0b4033778223b3401dbb95b2fdfa337139f5ce646",
+      "bytes": 15994
+    },
+    {
+      "path": "build/workbench-player-runtimes/build-result.json",
+      "sha256": "82f5e914d79d362a79db54fcd07a39738dd3c5f7fee5b1e11fe8d0282f166988",
+      "bytes": 2048
+    },
+    {
+      "path": "build/workbench-player-runtimes/floor-receipt.json",
+      "sha256": "ffb19539d4e39501fbeaec810b58a42d30693f8bb3950fc494f25fe72fdf8560",
+      "bytes": 953
+    },
+    {
+      "path": "build/workbench-player-runtimes/floor.log",
+      "sha256": "03231ceef99b45c3afc35b2ac492d3f8259714ad53433ca4be7a8d09fe59145c",
+      "bytes": 120
+    },
+    {
+      "path": "build/workbench-player-runtimes/linux-build-receipt.json",
+      "sha256": "502dddd7b464ffba6d8c4b20fc6d7d385ddb26870bd4cdf89a9fa4ea86d108aa",
+      "bytes": 921
+    },
+    {
+      "path": "build/workbench-player-runtimes/linux-build.log",
+      "sha256": "95ca675a0bc118274128c97211810ceb53ef1a32153b49ff42363de99f6b4ba8",
+      "bytes": 23165
+    },
+    {
+      "path": "build/workbench-player-runtimes/source-inputs.json",
+      "sha256": "2b7b066aaa1a47a91b3442a57f4559ac23cba437db4a41b89062425a42514234",
+      "bytes": 10280
+    },
+    {
+      "path": "build/workbench-player-runtimes/windows-build-receipt.json",
+      "sha256": "6bcd0bdc5e678912f0153313ba058f3886900d0d6c2ed489b1eccdf1eff1b002",
+      "bytes": 821
+    },
+    {
+      "path": "build/workbench-player-runtimes/windows-build.log",
+      "sha256": "071a4b656160b60570780716673fd9bf39e649909dfb7a52bb27bc682096e9bf",
+      "bytes": 2778
+    },
+    {
+      "path": "build/workbench-player-runtimes-v2/build-result.json",
+      "sha256": "64c9a5daf0f882b4cbc4e6cfb363d7fadf82561653c48a307a4c2d7f39a1e7a0",
+      "bytes": 2053
+    },
+    {
+      "path": "build/workbench-player-runtimes-v2/floor-receipt.json",
+      "sha256": "9b5fdce9f704572e7f6b24c0cc1a0bc78a96c846886523d10cf77f16d0e3d990",
+      "bytes": 959
+    },
+    {
+      "path": "build/workbench-player-runtimes-v2/floor.log",
+      "sha256": "03231ceef99b45c3afc35b2ac492d3f8259714ad53433ca4be7a8d09fe59145c",
+      "bytes": 120
+    },
+    {
+      "path": "build/workbench-player-runtimes-v2/linux-build-receipt.json",
+      "sha256": "e608f90487fc3384344959ad90a292694d9bec029cc8bfc852ac285ecfcfff43",
+      "bytes": 924
+    },
+    {
+      "path": "build/workbench-player-runtimes-v2/linux-build.log",
+      "sha256": "cc520618fbb1d248e603df4ef6f30640685fd55c3842499c940cfee5ba816c49",
+      "bytes": 23171
+    },
+    {
+      "path": "build/workbench-player-runtimes-v2/source-inputs.json",
+      "sha256": "41fa404d4050e24b9b485eebb5da4512d052a4a63dedae858704d9a0fcecb5b6",
+      "bytes": 10280
+    },
+    {
+      "path": "build/workbench-player-runtimes-v2/windows-build-receipt.json",
+      "sha256": "078946476d70e4d450c71ef615327e614d1683964057b0f415d48d61e4824924",
+      "bytes": 823
+    },
+    {
+      "path": "build/workbench-player-runtimes-v2/windows-build.log",
+      "sha256": "0d09077160c6f07259addfed501ad85287464c3ab416c28b431de9ebe302b484",
+      "bytes": 2784
+    },
+    {
+      "path": "build/workbench-prepared-diagnosis/console.log",
+      "sha256": "42680c1a2ffaf5975d77c7d2cb76b76aa0c151b3bc6e3f84cde4ba42355ec2ba",
+      "bytes": 3002
+    },
+    {
+      "path": "build/workbench-prepared-diagnosis/flyer-profiles.json",
+      "sha256": "11b0853cd9b723cd8e2a5b70bc6ac94225858a5be4d781a96a10bd054e299005",
+      "bytes": 1618
+    },
+    {
+      "path": "build/workbench-prepared-diagnosis-refresh/console.log",
+      "sha256": "8ddb8c4f73a56400c5e2cb9824e8886396ba9eafaccb06bf427ca83ae35fee0a",
+      "bytes": 3002
+    },
+    {
+      "path": "build/workbench-prepared-diagnosis-refresh/flyer-profiles.json",
+      "sha256": "11b0853cd9b723cd8e2a5b70bc6ac94225858a5be4d781a96a10bd054e299005",
+      "bytes": 1618
+    },
+    {
+      "path": "build/workbench-prepared-original-replay/console.log",
+      "sha256": "3c70f6a693ba6f45a4cb179b855360951a1e16c5247909d7cceb1f2fad4296fb",
+      "bytes": 2911
+    },
+    {
+      "path": "build/workbench-prepared-original-replay/flyer-profiles.json",
+      "sha256": "11b0853cd9b723cd8e2a5b70bc6ac94225858a5be4d781a96a10bd054e299005",
+      "bytes": 1618
+    },
+    {
+      "path": "build/workbench-roster/catalog-linux.log",
+      "sha256": "baad2bc3520e0d4d83e0a7455b4f0f82eec3ac370a53bda1ab1f11c54c4ec1d3",
+      "bytes": 279
+    },
+    {
+      "path": "build/workbench-roster/catalog-windows-final.log",
+      "sha256": "baad2bc3520e0d4d83e0a7455b4f0f82eec3ac370a53bda1ab1f11c54c4ec1d3",
+      "bytes": 279
+    },
+    {
+      "path": "build/workbench-roster/catalog-windows.log",
+      "sha256": "75931fa23550d58ab4dd62fb27ef354b6fb5fdb44002508ad7280cdb4c77b183",
+      "bytes": 279
+    },
+    {
+      "path": "build/workbench-roster/options-linux.log",
+      "sha256": "c5d8a18c2e7eb4ac45cc301cef30f2ddcb3b6b4afc12ec2f41ff523aac829f6f",
+      "bytes": 443
+    },
+    {
+      "path": "build/workbench-roster/options-windows-attempt02.log",
+      "sha256": "c5d8a18c2e7eb4ac45cc301cef30f2ddcb3b6b4afc12ec2f41ff523aac829f6f",
+      "bytes": 443
+    },
+    {
+      "path": "build/workbench-roster/options-windows-final.log",
+      "sha256": "c5d8a18c2e7eb4ac45cc301cef30f2ddcb3b6b4afc12ec2f41ff523aac829f6f",
+      "bytes": 443
+    },
+    {
+      "path": "build/workbench-roster/options-windows.log",
+      "sha256": "da62c4c536d372d862d32ca249b2e223eb257985fc8cdd97a3f8824eac895398",
+      "bytes": 1050
+    },
+    {
+      "path": "build/workbench-roster/parse-composition-final.log",
+      "sha256": "d53c18e4ac8861149a7e4f88d80760e79ec39e3fa23935ec0d77ef75f0b89198",
+      "bytes": 225
+    },
+    {
+      "path": "build/workbench-roster/parse-composition-fire-fix.log",
+      "sha256": "d53c18e4ac8861149a7e4f88d80760e79ec39e3fa23935ec0d77ef75f0b89198",
+      "bytes": 225
+    },
+    {
+      "path": "build/workbench-roster/parse-composition-v2.log",
+      "sha256": "d53c18e4ac8861149a7e4f88d80760e79ec39e3fa23935ec0d77ef75f0b89198",
+      "bytes": 225
+    },
+    {
+      "path": "build/workbench-roster/parse-ui.log",
+      "sha256": "d53c18e4ac8861149a7e4f88d80760e79ec39e3fa23935ec0d77ef75f0b89198",
+      "bytes": 225
+    },
+    {
+      "path": "build/workbench-roster/receipt-final.json",
+      "sha256": "cdbb2697292577ba490a5922b96555e499d3b67a3e70a32b8c4b6cf4fea660cb",
+      "bytes": 36469
+    },
+    {
+      "path": "build/workbench-roster/receipt-preliminary.json",
+      "sha256": "25287440eb7d4071e5a50fad67cd4613b9e97b8856e28dd0abc2102ef0069928",
+      "bytes": 4333
+    },
+    {
+      "path": "build/workbench-roster/composition-linux-final/console.log",
+      "sha256": "b8617f86749a40f1782d6aeaa0275054352036b93bd6e6b3bc2c91ec27a481e5",
+      "bytes": 2819
+    },
+    {
+      "path": "build/workbench-roster/composition-linux-final/flyer-profiles.json",
+      "sha256": "11b0853cd9b723cd8e2a5b70bc6ac94225858a5be4d781a96a10bd054e299005",
+      "bytes": 1618
+    },
+    {
+      "path": "build/workbench-roster/composition-linux-v2-attempt01/console.log",
+      "sha256": "a7b6cc919f75628279ae09be6015adc42c2fb2f2ef191203245122c52b93c9f7",
+      "bytes": 2973
+    },
+    {
+      "path": "build/workbench-roster/composition-linux-v2-attempt01/flyer-profiles.json",
+      "sha256": "11b0853cd9b723cd8e2a5b70bc6ac94225858a5be4d781a96a10bd054e299005",
+      "bytes": 1618
+    },
+    {
+      "path": "build/workbench-roster/composition-windows-attempt01/console.log",
+      "sha256": "5720ad86d020744643afda57beb5368b8ea59f07baa73958f4b89802baa35f79",
+      "bytes": 778
+    },
+    {
+      "path": "build/workbench-roster/composition-windows-attempt02/console.log",
+      "sha256": "e4ec4934a6607da051a3dde971a232740bcc2a53a8b5fbf73d696f4fb5cddc2d",
+      "bytes": 1407
+    },
+    {
+      "path": "build/workbench-roster/composition-windows-attempt02/flyer-profiles.json",
+      "sha256": "11b0853cd9b723cd8e2a5b70bc6ac94225858a5be4d781a96a10bd054e299005",
+      "bytes": 1618
+    },
+    {
+      "path": "build/workbench-roster/composition-windows-attempt03/console.log",
+      "sha256": "2188cc86bfdc9510e079cf585049dfc4e749c0e38a8283ceecbb473542e9f521",
+      "bytes": 2188
+    },
+    {
+      "path": "build/workbench-roster/composition-windows-attempt03/flyer-profiles.json",
+      "sha256": "aea360c26f0dca2f0c26c8d3abef23e4537cf3e9e89b182651150deb9f19d556",
+      "bytes": 822
+    },
+    {
+      "path": "build/workbench-roster/composition-windows-attempt04/console.log",
+      "sha256": "62546dbf6062156bf9e82596b6d241c6a1ec52d8443e10fcc33cd77569657e9f",
+      "bytes": 1197
+    },
+    {
+      "path": "build/workbench-roster/composition-windows-final/console.log",
+      "sha256": "e4467ad55563e0e09ecb6cbfa729bea3585976cff0e4f47f9eca81c8a4cb8510",
+      "bytes": 2819
+    },
+    {
+      "path": "build/workbench-roster/composition-windows-final/flyer-profiles.json",
+      "sha256": "11b0853cd9b723cd8e2a5b70bc6ac94225858a5be4d781a96a10bd054e299005",
+      "bytes": 1618
+    },
+    {
+      "path": "build/workbench-roster/composition-windows-v2-attempt01/console.log",
+      "sha256": "353bf7506e66d72705000eab08d38df38f51f6a1a8d4164bdf97eb924b7de1c5",
+      "bytes": 2157
+    },
+    {
+      "path": "build/workbench-roster/composition-windows-v2-attempt01/flyer-profiles.json",
+      "sha256": "caad1c5461c92b3356d4380ebeb43749b0cfaf70d3e6736aedc2883ff4a78bde",
+      "bytes": 1619
+    },
+    {
+      "path": "build/workbench-roster/host-windows/profile.json",
+      "sha256": "63fbd8af7af6cd1b497b0b46d91b7b1411e22cb15bed31589f8798c8ab9f3bd6",
+      "bytes": 821
+    },
+    {
+      "path": "build/workbench-roster/host-windows/writer.log",
+      "sha256": "35c061350b9316cdab18f2a2025d774f96b59b0fc9838b79322e1c3a2e5e49a1",
+      "bytes": 834
+    },
+    {
+      "path": "build/workbench-roster/host-windows-attempt02/profile.json",
+      "sha256": "63fbd8af7af6cd1b497b0b46d91b7b1411e22cb15bed31589f8798c8ab9f3bd6",
+      "bytes": 821
+    },
+    {
+      "path": "build/workbench-roster/host-windows-attempt02/writer.log",
+      "sha256": "2c7eadb58618117a76fd2e9dee7f66ddec38e640e91a6e8b37b7809eb4f2af1b",
+      "bytes": 430
+    },
+    {
+      "path": "build/workbench-roster/players-host-windows/console.log",
+      "sha256": "f401a73b95c7bad122fee1aa45adc1e38de450e9eaf6a73449ea246fb485aaf0",
+      "bytes": 278
+    },
+    {
+      "path": "build/workbench-roster/players-host-windows/flyer-profiles.json",
+      "sha256": "0e1fea918e1fb11e15a25f1c680fd2aacdf85e233c433ddf89367a17b5035314",
+      "bytes": 823
+    },
+    {
+      "path": "build/workbench-roster/qualified-windows-attempt02/test_flyer_preferences/console.log",
+      "sha256": "d6943ea2bd9381c985d8ea64f0a93ad50fd4104f494dcdb541d5202a4fe28cf3",
+      "bytes": 430
+    },
+    {
+      "path": "build/workbench-roster/qualified-windows-attempt02/test_workbench_player_composition/console.log",
+      "sha256": "5015c0601409255a396e3a4b8113952c1a823d145a9287b5d49ad37556af8a48",
+      "bytes": 3011
+    },
+    {
+      "path": "build/workbench-roster/qualified-windows-attempt02/test_workbench_player_composition/flyer-profiles.json",
+      "sha256": "9c8bfd232317e0238b3e7c56a98da9480c4e9110c2cea1a1b2934d087dc8a182",
+      "bytes": 2415
+    },
+    {
+      "path": "build/workbench-roster/qualified-windows/test_workbench_actor_catalog/console.log",
+      "sha256": "2a02f69837235a8d0464fe417193fd69faf8a89cd419323c236560bb540b1a29",
+      "bytes": 279
+    },
+    {
+      "path": "build/workbench-roster/qualified-windows/test_workbench_actor_options/console.log",
+      "sha256": "c7a33b33b6dcb6fff20c987ca9ebf42d80b71fe364336c69b39de1db48a57bb7",
+      "bytes": 443
+    },
+    {
+      "path": "build/workbench-roster/qualified-windows/test_workbench_player_composition/console.log",
+      "sha256": "a4e715fba8f1d9b9215a1bc58b127da901313c0c53b4de1229bf10de6af52963",
+      "bytes": 3068
+    },
+    {
+      "path": "build/workbench-roster/qualified-windows/test_workbench_player_composition/flyer-profiles.json",
+      "sha256": "9c8bfd232317e0238b3e7c56a98da9480c4e9110c2cea1a1b2934d087dc8a182",
+      "bytes": 2415
+    },
+    {
+      "path": "build/workbench-roster/qualified-windows/test_workbench_player_roster/console.log",
+      "sha256": "2a401a2f801578b75c02d0956a70834eca0bd5db2ca3e0a322e1141988ccbea4",
+      "bytes": 278
+    },
+    {
+      "path": "build/workbench-roster/qualified-windows/test_workbench_player_roster/flyer-profiles.json",
+      "sha256": "0e1fea918e1fb11e15a25f1c680fd2aacdf85e233c433ddf89367a17b5035314",
+      "bytes": 823
+    },
+    {
+      "path": "build/workbench-roster/qualified-linux-attempt02/test_flyer_preferences/console.log",
+      "sha256": "ad13cdcaad341630b91b925c6d2c84113f62bd5ff6d116b4273e3f4aeb2e798b",
+      "bytes": 423
+    },
+    {
+      "path": "build/workbench-roster/qualified-linux-attempt02/test_workbench_player_composition/console.log",
+      "sha256": "2f3c0a4cde311f918de18c97e1551a52fb1ed0ecfdd4c535798cf777a44be805",
+      "bytes": 3006
+    },
+    {
+      "path": "build/workbench-roster/qualified-linux-attempt02/test_workbench_player_composition/flyer-profiles.json",
+      "sha256": "9c8bfd232317e0238b3e7c56a98da9480c4e9110c2cea1a1b2934d087dc8a182",
+      "bytes": 2415
+    },
+    {
+      "path": "build/workbench-roster/qualified-linux/test_workbench_actor_catalog/console.log",
+      "sha256": "2a02f69837235a8d0464fe417193fd69faf8a89cd419323c236560bb540b1a29",
+      "bytes": 279
+    },
+    {
+      "path": "build/workbench-roster/qualified-linux/test_workbench_actor_options/console.log",
+      "sha256": "c7a33b33b6dcb6fff20c987ca9ebf42d80b71fe364336c69b39de1db48a57bb7",
+      "bytes": 443
+    },
+    {
+      "path": "build/workbench-roster/qualified-linux/test_workbench_player_composition/console.log",
+      "sha256": "495127a663a68a54269f0d9e3db429112bb307f523484f218ed02a94435ad77b",
+      "bytes": 3068
+    },
+    {
+      "path": "build/workbench-roster/qualified-linux/test_workbench_player_composition/flyer-profiles.json",
+      "sha256": "9c8bfd232317e0238b3e7c56a98da9480c4e9110c2cea1a1b2934d087dc8a182",
+      "bytes": 2415
+    },
+    {
+      "path": "build/workbench-roster/qualified-linux/test_workbench_player_roster/console.log",
+      "sha256": "2a401a2f801578b75c02d0956a70834eca0bd5db2ca3e0a322e1141988ccbea4",
+      "bytes": 278
+    },
+    {
+      "path": "build/workbench-roster/qualified-linux/test_workbench_player_roster/flyer-profiles.json",
+      "sha256": "0e1fea918e1fb11e15a25f1c680fd2aacdf85e233c433ddf89367a17b5035314",
+      "bytes": 823
+    },
+    {
+      "path": "build/workbench-roster/final-windows/test_flyer_preferences/console.log",
+      "sha256": "d6943ea2bd9381c985d8ea64f0a93ad50fd4104f494dcdb541d5202a4fe28cf3",
+      "bytes": 430
+    },
+    {
+      "path": "build/workbench-roster/final-windows/test_workbench_actor_catalog/console.log",
+      "sha256": "2a02f69837235a8d0464fe417193fd69faf8a89cd419323c236560bb540b1a29",
+      "bytes": 279
+    },
+    {
+      "path": "build/workbench-roster/final-windows/test_workbench_actor_options/console.log",
+      "sha256": "c7a33b33b6dcb6fff20c987ca9ebf42d80b71fe364336c69b39de1db48a57bb7",
+      "bytes": 443
+    },
+    {
+      "path": "build/workbench-roster/final-windows/test_workbench_player_roster/console.log",
+      "sha256": "2a401a2f801578b75c02d0956a70834eca0bd5db2ca3e0a322e1141988ccbea4",
+      "bytes": 278
+    },
+    {
+      "path": "build/workbench-roster/final-windows/test_workbench_player_roster/flyer-profiles.json",
+      "sha256": "0e1fea918e1fb11e15a25f1c680fd2aacdf85e233c433ddf89367a17b5035314",
+      "bytes": 823
+    },
+    {
+      "path": "build/workbench-roster/final-linux/test_flyer_preferences/console.log",
+      "sha256": "d6943ea2bd9381c985d8ea64f0a93ad50fd4104f494dcdb541d5202a4fe28cf3",
+      "bytes": 430
+    },
+    {
+      "path": "build/workbench-roster/final-linux/test_workbench_actor_catalog/console.log",
+      "sha256": "2a02f69837235a8d0464fe417193fd69faf8a89cd419323c236560bb540b1a29",
+      "bytes": 279
+    },
+    {
+      "path": "build/workbench-roster/final-linux/test_workbench_actor_options/console.log",
+      "sha256": "c7a33b33b6dcb6fff20c987ca9ebf42d80b71fe364336c69b39de1db48a57bb7",
+      "bytes": 443
+    },
+    {
+      "path": "build/workbench-roster/final-linux/test_workbench_player_roster/console.log",
+      "sha256": "2a401a2f801578b75c02d0956a70834eca0bd5db2ca3e0a322e1141988ccbea4",
+      "bytes": 278
+    },
+    {
+      "path": "build/workbench-roster/final-linux/test_workbench_player_roster/flyer-profiles.json",
+      "sha256": "0e1fea918e1fb11e15a25f1c680fd2aacdf85e233c433ddf89367a17b5035314",
+      "bytes": 823
+    },
+    {
+      "path": "build/workbench-usables/admission-attempt02.log",
+      "sha256": "bc2ac585f9687a70dad1968c1ed53f14338d9ea3575ba12f1a5f5df5971a8bc0",
+      "bytes": 283
+    },
+    {
+      "path": "build/workbench-usables/docs-check-complete.log",
+      "sha256": "f51a865d1af5a365f90ec1154b97329ddbf1b0b7a58a97be927cc481f9cd5f22",
+      "bytes": 756
+    },
+    {
+      "path": "build/workbench-usables/docs-check-final.log",
+      "sha256": "6d4ad06e5c16ee82770fd672c363033eb33a1a41f0b97e41e48698d656d8c0d9",
+      "bytes": 901
+    },
+    {
+      "path": "build/workbench-usables/docs-check.log",
+      "sha256": "2489aef96cc83653b029fcd5ae83ee96dd51edfa2732c101c4284045b8a5fc7b",
+      "bytes": 1176
+    },
+    {
+      "path": "build/workbench-usables/retrieval-challenges-complete.json",
+      "sha256": "8085ecbf5598d0f66a78e3f734e9a5170e03a046d09626462e764182a2705f94",
+      "bytes": 2603558
+    },
+    {
+      "path": "build/workbench-usables/retrieval-challenges-complete.log",
+      "sha256": "847382d78ed40d262b67d302414536e2bf27851460d5250461ba7301c05b34d3",
+      "bytes": 24499
+    },
+    {
+      "path": "build/workbench-usables/retrieval-challenges-final.json",
+      "sha256": "81fe218b4e117b8eee6826549564ab188c9bbfad2b036e58e157744626204b82",
+      "bytes": 2599915
+    },
+    {
+      "path": "build/workbench-usables/retrieval-challenges-final.log",
+      "sha256": "5343d5089725f84226c6c40132b58db936d931c3b42c38026b89860fd7e41173",
+      "bytes": 24499
+    },
+    {
+      "path": "build/workbench-usables/retrieval-challenges.log",
+      "sha256": "c33f5f84ee096b813b43e8a34b0e66b0b4b62a4e223ffeeab5ab32003c9b4ebc",
+      "bytes": 1585
+    },
+    {
+      "path": "build/workbench-usables/runtime-attempt01.log",
+      "sha256": "c9578df42ea3158aabf8215b9f6b10879b65b1d77b125409faf6d6c3e5d79260",
+      "bytes": 294
+    },
+    {
+      "path": "build/workbench-usables/summary.json",
+      "sha256": "7ecb438f042afafaf462c0b95bddc98965fef328d131ca9a50803a08b51f4a7b",
+      "bytes": 23582
+    },
+    {
+      "path": "build/workbench-usables/test_physical_usables_admission-attempt01.log",
+      "sha256": "c3587aa2488069915edf103e007303ecef6619a115e7117bf7e038fe3117d4aa",
+      "bytes": 603
+    },
+    {
+      "path": "build/workbench-usables/test_physical_usable_equipment-attempt01.log",
+      "sha256": "a54926433c4bee47881e93e3a54ec4dfeac1cc0aeb889699a3e6b3d1503140fd",
+      "bytes": 650
+    },
+    {
+      "path": "build/workbench-usables/test_physical_usable_lifecycle-attempt01.log",
+      "sha256": "bed11a394a813bfac2a633710a35ed9d9f34eafef0b2baad6e117dcf1fd84a68",
+      "bytes": 279
+    },
+    {
+      "path": "build/workbench-usables/workbench-adoption-fix.log",
+      "sha256": "cbeaeda4ca75f444aff212fa742d7b5cd759d5ba8e84de1cebe708f2e1b9d6d3",
+      "bytes": 350
+    },
+    {
+      "path": "build/workbench-usables/workbench-attempt01.log",
+      "sha256": "37abf1a6128acd1dbf2dd818338fa0a5afdb6953212626e06ab344732b3e4d07",
+      "bytes": 350
+    },
+    {
+      "path": "build/workbench-usables/workbench-attempt02.log",
+      "sha256": "37abf1a6128acd1dbf2dd818338fa0a5afdb6953212626e06ab344732b3e4d07",
+      "bytes": 350
+    },
+    {
+      "path": "build/workbench-usables/workbench-attempt03.log",
+      "sha256": "37abf1a6128acd1dbf2dd818338fa0a5afdb6953212626e06ab344732b3e4d07",
+      "bytes": 350
+    },
+    {
+      "path": "build/workbench-usables/workbench-attempt04.log",
+      "sha256": "21a2758d3db11082943c58cbfcc1c055c44450fb3a69dcfd0bc119c0a652f99e",
+      "bytes": 350
+    },
+    {
+      "path": "build/workbench-usables/workbench-attempt05.log",
+      "sha256": "ac450bf5b3021b2effb0afcca7f62c89f34c19428bddebb2d6d24f0611819060",
+      "bytes": 350
+    },
+    {
+      "path": "build/workbench-usables/workbench-linux-current.log",
+      "sha256": "ac450bf5b3021b2effb0afcca7f62c89f34c19428bddebb2d6d24f0611819060",
+      "bytes": 350
+    },
+    {
+      "path": "build/workbench-usables/adoption-final/receipt.json",
+      "sha256": "7a254caf00aa9a7a44839669d590877114ce11e4e3e4674ff221346330d302a0",
+      "bytes": 805105
+    },
+    {
+      "path": "build/workbench-usables/cohort/receipt.json",
+      "sha256": "7d46eb9c035c6f21d301151ddd6a52e004f4c2e057ad2b52db0685425eae1e42",
+      "bytes": 2400537
+    },
+    {
+      "path": "build/workbench-usables/final-backend/receipt.json",
+      "sha256": "8114c0f8f0abce88cd4f72780de3f41b6ba049a79e0a5007c5fa097578004f0d",
+      "bytes": 802078
+    },
+    {
+      "path": "build/workbench-usables/final-backend/windows/test_physical_usables_admission/console.log",
+      "sha256": "0de1c655efa8f6abeec1804ee8970b48dac91d08463074bff805791cea57846f",
+      "bytes": 282
+    },
+    {
+      "path": "build/workbench-usables/final-backend/windows/test_physical_usables_runtime/console.log",
+      "sha256": "61d7152f26832e5cdd285c5bab2a621a59a5bd2dbb7211aced3d618c581e2021",
+      "bytes": 293
+    },
+    {
+      "path": "build/workbench-usables/final-backend/windows/test_workbench_usables/console.log",
+      "sha256": "42d43015c7ceefbe770d84f3588e35bd91bb1ac74bc1cc938757740db4e58d6f",
+      "bytes": 349
+    },
+    {
+      "path": "build/workbench-usables/final-backend/linux/test_physical_usables_admission/console.log",
+      "sha256": "c3000dcf134a28cb1bf39eeae39b7bfd8ec4b3b75d7debffca9236f7ec22ef7c",
+      "bytes": 278
+    },
+    {
+      "path": "build/workbench-usables/final-backend/linux/test_physical_usables_runtime/console.log",
+      "sha256": "2e25934313d27706fa095fec619fc40503fc9722d29b948db7bb931b592f5c0b",
+      "bytes": 289
+    },
+    {
+      "path": "build/workbench-usables/final-backend/linux/test_workbench_usables/console.log",
+      "sha256": "227be3be5974a0015fdd25b9e348971ca71edadb8816bb587da7a2d6b09af2ea",
+      "bytes": 345
+    },
+    {
+      "path": "build/workbench-usables/cohort/windows/test_actor_usables_integration/console.log",
+      "sha256": "2bfb794122172a1e8705b1a6e721a50d7c4d6cbcedcaa8b6b0b10dbd3bfec0a7",
+      "bytes": 277
+    },
+    {
+      "path": "build/workbench-usables/cohort/windows/test_physical_usables_admission/console.log",
+      "sha256": "0de1c655efa8f6abeec1804ee8970b48dac91d08463074bff805791cea57846f",
+      "bytes": 282
+    },
+    {
+      "path": "build/workbench-usables/cohort/windows/test_physical_usables_desktop/console.log",
+      "sha256": "7816480495d28bbb8cb0cf9fd879d9426b04f7ace54918c96ef41d4fd2d530df",
+      "bytes": 281
+    },
+    {
+      "path": "build/workbench-usables/cohort/windows/test_physical_usables_runtime/console.log",
+      "sha256": "61d7152f26832e5cdd285c5bab2a621a59a5bd2dbb7211aced3d618c581e2021",
+      "bytes": 293
+    },
+    {
+      "path": "build/workbench-usables/cohort/windows/test_physical_usable_equipment/console.log",
+      "sha256": "94e16781920d418f726714d38136df7087520a51727f3865899762618f558fc5",
+      "bytes": 649
+    },
+    {
+      "path": "build/workbench-usables/cohort/windows/test_physical_usable_lifecycle/console.log",
+      "sha256": "7328ef3f5d46248780ea126b655e1549b6cdc0b088e1ce794372ca9daf54a9a7",
+      "bytes": 278
+    },
+    {
+      "path": "build/workbench-usables/cohort/windows/test_usables/console.log",
+      "sha256": "8210f90e3d8ac0d5318c9f02b45cfa81ba94244a76224015929462208adcd05d",
+      "bytes": 261
+    },
+    {
+      "path": "build/workbench-usables/cohort/windows/test_usable_session/console.log",
+      "sha256": "cce2f1ce211c4265aa5d5338bbd3cac7d93b914108ac147661bad7917ad4e1fe",
+      "bytes": 267
+    },
+    {
+      "path": "build/workbench-usables/cohort/windows/test_workbench_usables/console.log",
+      "sha256": "ca599912ecb6004c7784bf08b7ee548aa6c1a38013404e120016c3e33b3b88f8",
+      "bytes": 349
+    },
+    {
+      "path": "build/workbench-usables/cohort/linux/test_actor_usables_integration/console.log",
+      "sha256": "9b19bf7130602b30c1a48fc23256a0ee5010fe4633a18df81370992fbfd61a24",
+      "bytes": 273
+    },
+    {
+      "path": "build/workbench-usables/cohort/linux/test_physical_usables_admission/console.log",
+      "sha256": "c3000dcf134a28cb1bf39eeae39b7bfd8ec4b3b75d7debffca9236f7ec22ef7c",
+      "bytes": 278
+    },
+    {
+      "path": "build/workbench-usables/cohort/linux/test_physical_usables_desktop/console.log",
+      "sha256": "7914b7f9cdbd9ddadaadacc53ebb69f01667111c7d8df25ae25089e6f7cdbb69",
+      "bytes": 277
+    },
+    {
+      "path": "build/workbench-usables/cohort/linux/test_physical_usables_runtime/console.log",
+      "sha256": "2e25934313d27706fa095fec619fc40503fc9722d29b948db7bb931b592f5c0b",
+      "bytes": 289
+    },
+    {
+      "path": "build/workbench-usables/cohort/linux/test_physical_usable_equipment/console.log",
+      "sha256": "9a05ec55192c60ff3c59635de81a35948a603e9b973cfce5a2b4ba21876659bc",
+      "bytes": 644
+    },
+    {
+      "path": "build/workbench-usables/cohort/linux/test_physical_usable_lifecycle/console.log",
+      "sha256": "62e13d8ae6a6c07cc96705c9c560d5651b8c0f43d267410185945a53338f6ac1",
+      "bytes": 274
+    },
+    {
+      "path": "build/workbench-usables/cohort/linux/test_usables/console.log",
+      "sha256": "aa3a7a8043a1c90bfb7034802f5c1f6fbac81ff25dab19342ed34285601ab5f6",
+      "bytes": 257
+    },
+    {
+      "path": "build/workbench-usables/cohort/linux/test_usable_session/console.log",
+      "sha256": "1d6bf8a5764c48e4b77c937928736a759c64ac1a388fc21026b576e1834d3ab9",
+      "bytes": 263
+    },
+    {
+      "path": "build/workbench-usables/cohort/linux/test_workbench_usables/console.log",
+      "sha256": "dc1585386e51e2eeca0e7f3fe0ccac303c8faf0f836d23debe88fcf2441079b8",
+      "bytes": 345
+    },
+    {
+      "path": "build/workbench-usables/adoption-final/windows/test_physical_usables_admission/console.log",
+      "sha256": "0de1c655efa8f6abeec1804ee8970b48dac91d08463074bff805791cea57846f",
+      "bytes": 282
+    },
+    {
+      "path": "build/workbench-usables/adoption-final/windows/test_physical_usables_runtime/console.log",
+      "sha256": "61d7152f26832e5cdd285c5bab2a621a59a5bd2dbb7211aced3d618c581e2021",
+      "bytes": 293
+    },
+    {
+      "path": "build/workbench-usables/adoption-final/windows/test_workbench_usables/console.log",
+      "sha256": "b1247617111c69fd7d6e71b3505a0d6780485b009664bd2fae77e5bf6fb95de0",
+      "bytes": 349
+    },
+    {
+      "path": "build/workbench-usables/adoption-final/linux/test_physical_usables_admission/console.log",
+      "sha256": "c3000dcf134a28cb1bf39eeae39b7bfd8ec4b3b75d7debffca9236f7ec22ef7c",
+      "bytes": 278
+    },
+    {
+      "path": "build/workbench-usables/adoption-final/linux/test_physical_usables_runtime/console.log",
+      "sha256": "2e25934313d27706fa095fec619fc40503fc9722d29b948db7bb931b592f5c0b",
+      "bytes": 289
+    },
+    {
+      "path": "build/workbench-usables/adoption-final/linux/test_workbench_usables/console.log",
+      "sha256": "957fabb0a6b521ba108fd2eaa073cd62f7882e72df3c23780bf341ad6d3b9320",
+      "bytes": 345
+    }
+  ],
+  "native_core": {
+    "command": "timeout 2400 make test CXX=/home/i/render-publication-abc-tools/driver/tools/toolchains/g++",
+    "exit": 0,
+    "core_tests": 166,
+    "log": "build/workbench-integration/native-core-second.log"
+  },
+  "native_sanitizer": {
+    "command": "timeout 2400 make sanitize CXX=/home/i/render-publication-abc-tools/driver/tools/toolchains/g++",
+    "exit": 0,
+    "core_tests": 166,
+    "asan": "detect_leaks=1:strict_string_checks=1",
+    "log": "build/workbench-integration/native-sanitizer.log"
+  },
+  "limits": [
+    "No merge; owner composed-play acceptance pending",
+    "Physical gamepad/focus and Web not qualified by headless tests",
+    "Circle masks remain circumscribed rectangles",
+    "Native fields have no persistent parcel identity",
+    "Existing processor recipes count cell slots, not heat/Water mass/stoichiometry",
+    "Native field input acts in Play; paused Step advances cells without field actuation",
+    "Existing physical interception is not a damage/extra-impact implementation",
+    "Draft hosted CI skips are not execution passes; this task does not claim release or owner gameplay acceptance"
+  ],
+  "scoped_receipts": {
+    "build/workbench-usables/summary.json": {
+      "sha256": "7ecb438f042afafaf462c0b95bddc98965fef328d131ca9a50803a08b51f4a7b",
+      "scope": "Head plus explicit uncommitted delta. All32 physical usable definitions executed against actual native adapter; new extent/alias/custody/copied admission tests separately scoped as unit contracts. Source closure hashes are per raw receipt, not final PR head.",
+      "results": [
+        {
+          "platform": "windows",
+          "exit": 0,
+          "seconds": 1.523,
+          "summary": [
+            "WORKBENCH_USABLES {\"checks\":36,\"failures\":[],\"scope\":\"copied contract/runtime unit; native catalogue qualified separately\"}"
+          ]
+        },
+        {
+          "platform": "windows",
+          "exit": 0,
+          "seconds": 1.053,
+          "summary": [
+            "USABLE002_NATIVE checks=243 failures=0 native=executed catalogue=32"
+          ]
+        },
+        {
+          "platform": "windows",
+          "exit": 0,
+          "seconds": 0.864,
+          "summary": [
+            "Physical usable equipment: 307 assertions, 0 failures"
+          ]
+        },
+        {
+          "platform": "windows",
+          "exit": 0,
+          "seconds": 0.874,
+          "summary": [
+            "Physical usable lifecycle: 39 assertions, 0 failures"
+          ]
+        },
+        {
+          "platform": "windows",
+          "exit": 0,
+          "seconds": 1.52,
+          "summary": [
+            "USABLE002_ADMISSION checks=35 failures=0 native=executed"
+          ]
+        },
+        {
+          "platform": "windows",
+          "exit": 0,
+          "seconds": 3.28,
+          "summary": [
+            "PHYSICAL_USABLE_DESKTOP_RESULT assertions=28 failures=0"
+          ]
+        },
+        {
+          "platform": "windows",
+          "exit": 0,
+          "seconds": 0.402,
+          "summary": [
+            "USABLES: 196 assertions; 0 failures"
+          ]
+        },
+        {
+          "platform": "windows",
+          "exit": 0,
+          "seconds": 0.399,
+          "summary": [
+            "USABLE_SESSION: 28 assertions; 0 failures"
+          ]
+        },
+        {
+          "platform": "windows",
+          "exit": 0,
+          "seconds": 2.818,
+          "summary": [
+            "ACTOR_USABLE_INTEGRATION: 29 assertions; 0 failures"
+          ]
+        },
+        {
+          "platform": "linux",
+          "exit": 0,
+          "seconds": 4.008,
+          "summary": [
+            "WORKBENCH_USABLES {\"checks\":36,\"failures\":[],\"scope\":\"copied contract/runtime unit; native catalogue qualified separately\"}"
+          ]
+        },
+        {
+          "platform": "linux",
+          "exit": 0,
+          "seconds": 1.13,
+          "summary": [
+            "USABLE002_NATIVE checks=243 failures=0 native=executed catalogue=32"
+          ]
+        },
+        {
+          "platform": "linux",
+          "exit": 0,
+          "seconds": 1.826,
+          "summary": [
+            "Physical usable equipment: 307 assertions, 0 failures"
+          ]
+        },
+        {
+          "platform": "linux",
+          "exit": 0,
+          "seconds": 1.722,
+          "summary": [
+            "Physical usable lifecycle: 39 assertions, 0 failures"
+          ]
+        },
+        {
+          "platform": "linux",
+          "exit": 0,
+          "seconds": 3.859,
+          "summary": [
+            "USABLE002_ADMISSION checks=35 failures=0 native=executed"
+          ]
+        },
+        {
+          "platform": "linux",
+          "exit": 0,
+          "seconds": 7.837,
+          "summary": [
+            "PHYSICAL_USABLE_DESKTOP_RESULT assertions=28 failures=0"
+          ]
+        },
+        {
+          "platform": "linux",
+          "exit": 0,
+          "seconds": 0.631,
+          "summary": [
+            "USABLES: 196 assertions; 0 failures"
+          ]
+        },
+        {
+          "platform": "linux",
+          "exit": 0,
+          "seconds": 0.626,
+          "summary": [
+            "USABLE_SESSION: 28 assertions; 0 failures"
+          ]
+        },
+        {
+          "platform": "linux",
+          "exit": 0,
+          "seconds": 6.809,
+          "summary": [
+            "ACTOR_USABLE_INTEGRATION: 29 assertions; 0 failures"
+          ]
+        },
+        {
+          "platform": "windows",
+          "exit": 0,
+          "seconds": 2.404,
+          "summary": [
+            "WORKBENCH_USABLES {\"checks\":41,\"failures\":[],\"scope\":\"copied contract/runtime unit; native catalogue qualified separately\"}"
+          ]
+        },
+        {
+          "platform": "windows",
+          "exit": 0,
+          "seconds": 1.516,
+          "summary": [
+            "USABLE002_NATIVE checks=243 failures=0 native=executed catalogue=32"
+          ]
+        },
+        {
+          "platform": "windows",
+          "exit": 0,
+          "seconds": 2.451,
+          "summary": [
+            "USABLE002_ADMISSION checks=35 failures=0 native=executed"
+          ]
+        },
+        {
+          "platform": "linux",
+          "exit": 0,
+          "seconds": 4.93,
+          "summary": [
+            "WORKBENCH_USABLES {\"checks\":41,\"failures\":[],\"scope\":\"copied contract/runtime unit; native catalogue qualified separately\"}"
+          ]
+        },
+        {
+          "platform": "linux",
+          "exit": 0,
+          "seconds": 1.594,
+          "summary": [
+            "USABLE002_NATIVE checks=243 failures=0 native=executed catalogue=32"
+          ]
+        },
+        {
+          "platform": "linux",
+          "exit": 0,
+          "seconds": 5.465,
+          "summary": [
+            "USABLE002_ADMISSION checks=35 failures=0 native=executed"
+          ]
+        }
+      ]
+    },
+    "build/workbench-usables/adoption-final/receipt.json": {
+      "sha256": "7a254caf00aa9a7a44839669d590877114ce11e4e3e4674ff221346330d302a0",
+      "scope": "Current local delta, uncommitted source maps before/after each process; actual native and copied-unit boundaries explicit in fixture summaries",
+      "results": [
+        {
+          "platform": "windows",
+          "exit": 0,
+          "seconds": 2.043,
+          "summary": [
+            "WORKBENCH_USABLES {\"checks\":43,\"failures\":[],\"scope\":\"copied contract/runtime unit; native catalogue qualified separately\"}"
+          ]
+        },
+        {
+          "platform": "windows",
+          "exit": 0,
+          "seconds": 1.085,
+          "summary": [
+            "USABLE002_NATIVE checks=243 failures=0 native=executed catalogue=32"
+          ]
+        },
+        {
+          "platform": "windows",
+          "exit": 0,
+          "seconds": 1.539,
+          "summary": [
+            "USABLE002_ADMISSION checks=35 failures=0 native=executed"
+          ]
+        },
+        {
+          "platform": "linux",
+          "exit": 0,
+          "seconds": 6.401,
+          "summary": [
+            "WORKBENCH_USABLES {\"checks\":43,\"failures\":[],\"scope\":\"copied contract/runtime unit; native catalogue qualified separately\"}"
+          ]
+        },
+        {
+          "platform": "linux",
+          "exit": 0,
+          "seconds": 0.98,
+          "summary": [
+            "USABLE002_NATIVE checks=243 failures=0 native=executed catalogue=32"
+          ]
+        },
+        {
+          "platform": "linux",
+          "exit": 0,
+          "seconds": 6.314,
+          "summary": [
+            "USABLE002_ADMISSION checks=35 failures=0 native=executed"
+          ]
+        }
+      ]
+    },
+    "build/workbench-roster/receipt-final.json": {
+      "sha256": "cdbb2697292577ba490a5922b96555e499d3b67a3e70a32b8c4b6cf4fea660cb",
+      "scope": "C roster/UI leaf and actual shared-Main host qualification. Owned source frozen local delta; parent performs final commit/exact-head release gates. No owner gameplay or hardware gamepad acceptance claimed.",
+      "results": [
+        {
+          "platform": "windows",
+          "case": "test_workbench_actor_catalog",
+          "exit": 0
+        },
+        {
+          "platform": "windows",
+          "case": "test_workbench_actor_options",
+          "exit": 0
+        },
+        {
+          "platform": "windows",
+          "case": "test_workbench_player_roster",
+          "exit": 0
+        },
+        {
+          "platform": "windows",
+          "case": "test_workbench_player_composition",
+          "exit": 0
+        },
+        {
+          "platform": "windows",
+          "case": "test_flyer_preferences",
+          "exit": 0
+        },
+        {
+          "platform": "linux",
+          "case": "test_workbench_actor_catalog",
+          "exit": 0
+        },
+        {
+          "platform": "linux",
+          "case": "test_workbench_actor_options",
+          "exit": 0
+        },
+        {
+          "platform": "linux",
+          "case": "test_workbench_player_roster",
+          "exit": 0
+        },
+        {
+          "platform": "linux",
+          "case": "test_workbench_player_composition",
+          "exit": 0
+        },
+        {
+          "platform": "linux",
+          "case": "test_flyer_preferences",
+          "exit": 0
+        }
+      ],
+      "total_checks_per_os": 1189
+    },
+    "build/workbench-articulated-v2-final/receipt.json": {
+      "sha256": "2aba098562feadfa637d51ca2281ac164045cecce988708ee9f45733139dff35",
+      "scope": "Owned-source frozen local delta; shared integration work may continue; exact final-head qualification separate",
+      "results": [
+        {
+          "platform": "windows",
+          "exit": 0,
+          "seconds": 1.6017003000015393,
+          "timeout_seconds": 1200,
+          "changed_inputs": []
+        },
+        {
+          "platform": "linux",
+          "exit": 0,
+          "seconds": 2.310416400025133,
+          "timeout_seconds": 1200,
+          "changed_inputs": []
+        },
+        {
+          "platform": "windows",
+          "exit": 0,
+          "seconds": 0.9359258000040427,
+          "timeout_seconds": 1200,
+          "changed_inputs": []
+        },
+        {
+          "platform": "linux",
+          "exit": 0,
+          "seconds": 1.4849618000444025,
+          "timeout_seconds": 1200,
+          "changed_inputs": []
+        }
+      ]
+    },
+    "build/workbench-articulated-final-pose-powder/receipt.json": {
+      "sha256": "17494bbff976eab06c9629da624f4297fe7d00a039ff524e82a6b1ece7c7ed55",
+      "scope": "Owned-source frozen local delta; shared integration work may continue; exact final-head qualification separate",
+      "results": [
+        {
+          "platform": "windows",
+          "exit": 0,
+          "seconds": 1.414809999987483,
+          "timeout_seconds": 1200,
+          "changed_inputs": []
+        },
+        {
+          "platform": "windows",
+          "exit": 0,
+          "seconds": 0.7900844999821857,
+          "timeout_seconds": 1200,
+          "changed_inputs": []
+        },
+        {
+          "platform": "linux",
+          "exit": 0,
+          "seconds": 2.550921800022479,
+          "timeout_seconds": 1200,
+          "changed_inputs": []
+        },
+        {
+          "platform": "windows",
+          "exit": 0,
+          "seconds": 1.452739400032442,
+          "timeout_seconds": 1200,
+          "changed_inputs": []
+        },
+        {
+          "platform": "linux",
+          "exit": 0,
+          "seconds": 1.981868700007908,
+          "timeout_seconds": 1200,
+          "changed_inputs": []
+        },
+        {
+          "platform": "windows",
+          "exit": 0,
+          "seconds": 0.8928893000120297,
+          "timeout_seconds": 1200,
+          "changed_inputs": []
+        },
+        {
+          "platform": "windows",
+          "exit": 0,
+          "seconds": 1.3343623999971896,
+          "timeout_seconds": 1200,
+          "changed_inputs": []
+        },
+        {
+          "platform": "linux",
+          "exit": 0,
+          "seconds": 2.361802700033877,
+          "timeout_seconds": 1200,
+          "changed_inputs": []
+        },
+        {
+          "platform": "linux",
+          "exit": 0,
+          "seconds": 1.8256325999973342,
+          "timeout_seconds": 1200,
+          "changed_inputs": []
+        },
+        {
+          "platform": "linux",
+          "exit": 0,
+          "seconds": 2.3653566999710165,
+          "timeout_seconds": 1200,
+          "changed_inputs": []
+        }
+      ]
+    },
+    "build/workbench-core-final-addendum.json": {
+      "sha256": "57f211ec91b5fa1d3df887b452825aacafb82f3b04eda3bbe379992c4ee10ef4",
+      "scope": "Uncommitted source delta after v2 runtime; parent final exact-head qualification separate",
+      "results": []
+    },
+    "build/workbench-final-legacy/receipt.json": {
+      "sha256": "0dc57d76ffab07523274bae48a7f83743da59acacc5f3508bec624ad8d096050",
+      "scope": "Frozen implementation head; exact source/native inputs hashed before and after each case",
+      "results": [
+        {
+          "os": "windows",
+          "case": "test_workbench_input",
+          "status": "completed",
+          "exit": 0,
+          "seconds": 6.1819140911102295,
+          "timeout_seconds": 1200.0,
+          "summary": [
+            "WORKBENCH_INPUT {\"checks\":24,\"failures\":[],\"receipts\":{\"1/main-fire/inserted\":{\"attempted_cells\":1,\"changed_cells\":1,\"endpoint_reasons\":{},\"epoch\":1,\"instance_id\":1,\"material\":6,\"nozzle\":\"main-fire\",\"occupancy_reads\":36,\"point\":\"(244, 233)\",\"reason\":\"\",\"refused_cells\":0,\"requested_cells\":1,\"sequence\":32,\"tick\":18},\"1/s-rear/blocked\":{\"attempted_cells\":1,\"changed_cells\":0,\"endpoint_reasons\":{\"blocked\":1},\"epoch\":1,\"instance_id\":1,\"material\":26,\"nozzle\":\"s-rear\",\"occupancy_reads\":18,\"point\":\"(247, 234)\",\"reason\":\"blocked\",\"refused_cells\":1,\"requested_cells\":1,\"sequence\":32,\"tick\":18},\"1/s-rear/inserted\":{\"attempted_cells\":1,\"changed_cells\":1,\"endpoint_reasons\":{},\"epoch\":1,\"instance_id\":1,\"material\":26,\"nozzle\":\"s-rear\",\"occupancy_reads\":28,\"point\":\"(251, 235)\",\"reason\":\"\",\"refused_cells\":0,\"requested_cells\":1,\"sequence\":23,\"tick\":12},\"1/side-fire/inserted\":{\"attempted_cells\":1,\"changed_cells\":1,\"endpoint_reasons\":{},\"epoch\":1,\"instance_id\":1,\"material\":6,\"nozzle\":\"side-fire\",\"occupancy_reads\":22,\"point\":\"(218, 213)\",\"reason\":\"\",\"refused_cells\":0,\"requested_cells\":1,\"sequence\":50,\"tick\":42},\"2/e-right/inserted\":{\"attempted_cells\":1,\"changed_cells\":1,\"endpoint_reasons\":{},\"epoch\":2,\"instance_id\":2,\"material\":8,\"nozzle\":\"e-right\",\"occupancy_reads\":33,\"point\":\"(329, 232)\",\"reason\":\"\",\"refused_cells\":0,\"requested_cells\":1,\"sequence\":19,\"tick\":18},\"2/q-left/blocked\":{\"attempted_cells\":1,\"changed_cells\":0,\"endpoint_reasons\":{\"blocked\":1},\"epoch\":2,\"instance_id\":2,\"material\":12,\"nozzle\":\"q-left\",\"occupancy_reads\":14,\"point\":\"(321, 230)\",\"reason\":\"blocked\",\"refused_cells\":1,\"requested_cells\":1,\"sequence\":19,\"tick\":18}}}"
+          ],
+          "changed_inputs": []
+        },
+        {
+          "os": "linux",
+          "case": "test_workbench_input",
+          "status": "completed",
+          "exit": 0,
+          "seconds": 9.881117820739746,
+          "timeout_seconds": 1200.0,
+          "summary": [
+            "WORKBENCH_INPUT {\"checks\":24,\"failures\":[],\"receipts\":{\"1/main-fire/inserted\":{\"attempted_cells\":1,\"changed_cells\":1,\"endpoint_reasons\":{},\"epoch\":1,\"instance_id\":1,\"material\":6,\"nozzle\":\"main-fire\",\"occupancy_reads\":36,\"point\":\"(244, 233)\",\"reason\":\"\",\"refused_cells\":0,\"requested_cells\":1,\"sequence\":26,\"tick\":18},\"1/s-rear/blocked\":{\"attempted_cells\":1,\"changed_cells\":0,\"endpoint_reasons\":{\"blocked\":1},\"epoch\":1,\"instance_id\":1,\"material\":26,\"nozzle\":\"s-rear\",\"occupancy_reads\":18,\"point\":\"(247, 234)\",\"reason\":\"blocked\",\"refused_cells\":1,\"requested_cells\":1,\"sequence\":26,\"tick\":18},\"1/s-rear/inserted\":{\"attempted_cells\":1,\"changed_cells\":1,\"endpoint_reasons\":{},\"epoch\":1,\"instance_id\":1,\"material\":26,\"nozzle\":\"s-rear\",\"occupancy_reads\":28,\"point\":\"(251, 235)\",\"reason\":\"\",\"refused_cells\":0,\"requested_cells\":1,\"sequence\":20,\"tick\":12},\"1/side-fire/inserted\":{\"attempted_cells\":1,\"changed_cells\":1,\"endpoint_reasons\":{},\"epoch\":1,\"instance_id\":1,\"material\":6,\"nozzle\":\"side-fire\",\"occupancy_reads\":22,\"point\":\"(218, 213)\",\"reason\":\"\",\"refused_cells\":0,\"requested_cells\":1,\"sequence\":42,\"tick\":42},\"2/e-right/inserted\":{\"attempted_cells\":1,\"changed_cells\":1,\"endpoint_reasons\":{},\"epoch\":2,\"instance_id\":2,\"material\":8,\"nozzle\":\"e-right\",\"occupancy_reads\":33,\"point\":\"(329, 232)\",\"reason\":\"\",\"refused_cells\":0,\"requested_cells\":1,\"sequence\":24,\"tick\":18},\"2/q-left/blocked\":{\"attempted_cells\":1,\"changed_cells\":0,\"endpoint_reasons\":{\"blocked\":1},\"epoch\":2,\"instance_id\":2,\"material\":12,\"nozzle\":\"q-left\",\"occupancy_reads\":14,\"point\":\"(321, 230)\",\"reason\":\"blocked\",\"refused_cells\":1,\"requested_cells\":1,\"sequence\":24,\"tick\":18}}}"
+          ],
+          "changed_inputs": []
+        },
+        {
+          "os": "windows",
+          "case": "test_workbench_pilot_ui",
+          "status": "completed",
+          "exit": 0,
+          "seconds": 20.89556646347046,
+          "timeout_seconds": 3940.0,
+          "summary": [
+            "WORKBENCH_PILOT_UI {\"assertions\":179,\"failures\":[]}"
+          ],
+          "changed_inputs": []
+        },
+        {
+          "os": "linux",
+          "case": "test_workbench_pilot_ui",
+          "status": "completed",
+          "exit": 0,
+          "seconds": 22.612976789474487,
+          "timeout_seconds": 3940.0,
+          "summary": [
+            "WORKBENCH_PILOT_UI {\"assertions\":179,\"failures\":[]}"
+          ],
+          "changed_inputs": []
+        },
+        {
+          "os": "windows",
+          "case": "test_workbench_physics_play",
+          "status": "completed",
+          "exit": 0,
+          "seconds": 28.195971250534058,
+          "timeout_seconds": 1200.0,
+          "summary": [
+            "WORKBENCH_PHYSICS {\"assertions\":72,\"case\":\"WORKBENCH_001 shared physics\",\"failures\":[],\"results\":[{\"age_drops\":2,\"arrivals\":7,\"barrel_end\":\"(340.0932, 254.0002)\",\"burial_grains\":{\"left\":57,\"overhead\":70,\"right\":43,\"under\":89},\"case\":\"Sand burial\",\"delivered\":3.44956803321838,\"delivered_torque\":0.352940839535202,\"end\":[248.254516601563,230.157958984375],\"force\":31.1201610565186,\"granular_torque\":0.306862748929397,\"landed_y\":235.916000366211,\"max_rotation\":0.184235736727715,\"max_y\":236.050247192383,\"min_y\":220.0,\"native_frame\":true,\"native_ticks\":273,\"normal\":0.579671038193887,\"source\":{\"armed\":true,\"attempted\":416,\"blocked\":4,\"burst_queued\":false,\"inserted\":412,\"material\":2,\"max_stream_ticks\":600,\"origin\":\"(241, 176)\",\"stream_enabled\":true,\"stream_ticks\":80},\"torque\":10.751410898616,\"wrench\":0.56408703327179},{\"age_drops\":2,\"arrivals\":7,\"barrel_end\":\"(340.0932, 254.0002)\",\"burial_grains\":{\"left\":57,\"overhead\":69,\"right\":43,\"under\":89},\"case\":\"Dust burial\",\"delivered\":3.44956803321838,\"delivered_torque\":0.440015361789502,\"end\":[248.171142578125,229.994476318359],\"force\":31.1202507019043,\"granular_torque\":0.440015361789502,\"landed_y\":235.916000366211,\"max_rotation\":0.194764524698257,\"max_y\":236.050247192383,\"min_y\":220.0,\"native_frame\":true,\"native_ticks\":274,\"normal\":3.4485292048812,\"source\":{\"armed\":true,\"attempted\":412,\"blocked\":4,\"burst_queued\":false,\"inserted\":408,\"material\":14,\"max_stream_ticks\":600,\"origin\":\"(241, 176)\",\"stream_enabled\":true,\"stream_ticks\":79},\"torque\":11.0141435509099,\"wrench\":3.44956803321838},{\"after_tip\":5,\"after_tip_application_history_retired\":false,\"after_tip_identity\":{\"completed_tick\":289,\"epoch\":3,\"frame_tick\":289,\"generation\":3,\"instance\":1,\"render_serial\":431,\"render_tick\":289,\"revision\":2612,\"sample\":290,\"sample_tick\":288,\"session\":3,\"uploaded_generation\":5,\"uploaded_revision\":2612,\"uploaded_serial\":431,\"world_generation\":5},\"after_tip_material\":{\"above_rim\":0,\"below_floor\":5,\"cavity\":5,\"inside_solid\":3,\"mean_x\":345.346153846154,\"mean_y\":197.192307692308,\"points\":[[379.5,160.5],[380.5,160.5],[380.5,161.5],[380.5,162.5],[381.5,162.5],[380.5,163.5],[381.5,163.5],[382.5,163.5],[293.5,244.5],[284.5,253.5],[286.5,253.5],[290.5,253.5],[287.5,260.5]],\"pose\":[376.92138671875,153.719879150391,1.20744061470032],\"total\":13},\"after_tip_native_tick\":289,\"after_tip_sampled_material\":{\"above_rim\":0,\"below_floor\":5,\"cavity\":8,\"inside_solid\":0,\"mean_x\":345.346153846154,\"mean_y\":197.192307692308,\"points\":[[379.5,160.5],[380.5,160.5],[380.5,161.5],[380.5,162.5],[381.5,162.5],[380.5,163.5],[381.5,163.5],[382.5,163.5],[293.5,244.5],[284.5,253.5],[286.5,253.5],[290.5,253.5],[287.5,260.5]],\"pose\":[376.410888671875,153.578979492188,1.20696198940277],\"total\":13},\"age_drops\":2,\"arrivals\":7,\"barrel_end\":\"(340.0, 254.0002)\",\"carried\":6,\"carried_application_history_retired\":false,\"carried_identity\":{\"completed_tick\":199,\"epoch\":3,\"frame_tick\":199,\"generation\":3,\"instance\":1,\"render_serial\":363,\"render_tick\":199,\"revision\":2131,\"sample\":200,\"sample_tick\":198,\"session\":3,\"uploaded_generation\":5,\"uploaded_revision\":2131,\"uploaded_serial\":363,\"world_generation\":5},\"carried_material\":{\"above_rim\":0,\"below_floor\":1,\"cavity\":6,\"inside_solid\":6,\"mean_x\":294.5,\"mean_y\":162.5,\"points\":[[292.5,161.5],[293.5,161.5],[294.5,161.5],[295.5,161.5],[296.5,161.5],[297.5,161.5],[298.5,161.5],[299.5,161.5],[300.5,161.5],[301.5,161.5],[284.5,163.5],[286.5,163.5],[287.5,170.5]],\"pose\":[305.62158203125,161.772216796875,-0.00120917183812708],\"total\":13},\"carried_native_tick\":199,\"carried_sampled_material\":{\"above_rim\":0,\"below_floor\":1,\"cavity\":10,\"inside_solid\":1,\"mean_x\":294.5,\"mean_y\":162.5,\"points\":[[292.5,161.5],[293.5,161.5],[294.5,161.5],[295.5,161.5],[296.5,161.5],[297.5,161.5],[298.5,161.5],[299.5,161.5],[300.5,161.5],[301.5,161.5],[284.5,163.5],[286.5,163.5],[287.5,170.5]],\"pose\":[304.44775390625,162.113616943359,-0.0012194539885968],\"total\":13},\"carry_x\":60.62158203125,\"case\":\"Scooper native load and tilt\",\"delivered\":0.280000001192093,\"delivered_torque\":1.207939453125,\"drawn_pieces\":5,\"end\":[376.92138671875,153.719879150391],\"force\":23.0,\"granular_torque\":0.87869140625,\"lateral_start\":0,\"lateral_start_application_history_retired\":false,\"lateral_start_identity\":{\"completed_tick\":134,\"epoch\":3,\"frame_tick\":134,\"generation\":3,\"instance\":1,\"render_serial\":324,\"render_tick\":133,\"revision\":1719,\"sample\":135,\"sample_tick\":133,\"session\":3,\"uploaded_generation\":5,\"uploaded_revision\":1719,\"uploaded_serial\":324,\"world_generation\":5},\"lateral_start_material\":{\"above_rim\":0,\"below_floor\":0,\"cavity\":0,\"inside_solid\":13,\"mean_x\":247.5,\"mean_y\":192.5,\"points\":[[241.5,192.5],[242.5,192.5],[243.5,192.5],[244.5,192.5],[245.5,192.5],[246.5,192.5],[247.5,192.5],[248.5,192.5],[249.5,192.5],[250.5,192.5],[251.5,192.5],[252.5,192.5],[253.5,192.5]],\"pose\":[250.7744140625,192.376861572266,0.0000118613270387868],\"total\":13},\"lateral_start_native_tick\":134,\"lateral_start_sampled_material\":{\"above_rim\":0,\"below_floor\":0,\"cavity\":13,\"inside_solid\":0,\"mean_x\":247.5,\"mean_y\":192.5,\"points\":[[241.5,192.5],[242.5,192.5],[243.5,192.5],[244.5,192.5],[245.5,192.5],[246.5,192.5],[247.5,192.5],[248.5,192.5],[249.5,192.5],[250.5,192.5],[251.5,192.5],[252.5,192.5],[253.5,192.5]],\"pose\":[250.346008300781,193.006439208984,0.000012834671906603],\"total\":13},\"lift_distance\":12.8652191162109,\"lifted\":13,\"lifted_application_history_retired\":false,\"lifted_identity\":{\"completed_tick\":109,\"epoch\":3,\"frame_tick\":109,\"generation\":3,\"instance\":1,\"render_serial\":307,\"render_tick\":109,\"revision\":1493,\"sample\":110,\"sample_tick\":108,\"session\":3,\"uploaded_generation\":5,\"uploaded_revision\":1493,\"uploaded_serial\":307,\"world_generation\":5},\"lifted_material\":{\"above_rim\":0,\"below_floor\":0,\"cavity\":13,\"inside_solid\":0,\"mean_x\":247.5,\"mean_y\":209.5,\"points\":[[241.5,209.5],[242.5,209.5],[243.5,209.5],[244.5,209.5],[245.5,209.5],[246.5,209.5],[247.5,209.5],[248.5,209.5],[249.5,209.5],[250.5,209.5],[251.5,209.5],[252.5,209.5],[253.5,209.5]],\"pose\":[245.0,209.982131958008,0.0000825037423055619],\"total\":13},\"lifted_native_tick\":109,\"lifted_sampled_material\":{\"above_rim\":0,\"below_floor\":0,\"cavity\":13,\"inside_solid\":0,\"mean_x\":247.5,\"mean_y\":209.5,\"points\":[[241.5,209.5],[242.5,209.5],[243.5,209.5],[244.5,209.5],[245.5,209.5],[246.5,209.5],[247.5,209.5],[248.5,209.5],[249.5,209.5],[250.5,209.5],[251.5,209.5],[252.5,209.5],[253.5,209.5]],\"pose\":[245.0,210.773666381836,0.0000889169459696859],\"total\":13},\"loaded\":13,\"loaded_application_history_retired\":false,\"loaded_identity\":{\"completed_tick\":75,\"epoch\":3,\"frame_tick\":75,\"generation\":3,\"instance\":1,\"render_serial\":294,\"render_tick\":74,\"revision\":1332,\"sample\":76,\"sample_tick\":74,\"session\":3,\"uploaded_generation\":5,\"uploaded_revision\":1332,\"uploaded_serial\":294,\"world_generation\":5},\"loaded_material\":{\"above_rim\":0,\"below_floor\":0,\"cavity\":13,\"inside_solid\":0,\"mean_x\":245.730769230769,\"mean_y\":221.884615384615,\"points\":[[245.5,220.5],[246.5,220.5],[244.5,221.5],[245.5,221.5],[246.5,221.5],[247.5,221.5],[242.5,222.5],[243.5,222.5],[244.5,222.5],[245.5,222.5],[246.5,222.5],[247.5,222.5],[248.5,222.5]],\"pose\":[245.0,222.847351074219,0.000252540339715779],\"total\":13},\"loaded_native_tick\":75,\"loaded_sampled_material\":{\"above_rim\":0,\"below_floor\":0,\"cavity\":13,\"inside_solid\":0,\"mean_x\":245.730769230769,\"mean_y\":221.884615384615,\"points\":[[245.5,220.5],[246.5,220.5],[244.5,221.5],[245.5,221.5],[246.5,221.5],[247.5,221.5],[242.5,222.5],[243.5,222.5],[244.5,222.5],[245.5,222.5],[246.5,222.5],[247.5,222.5],[248.5,222.5]],\"pose\":[245.0,222.847351074219,0.000252540339715779],\"total\":13},\"max_rotation\":1.20744061470032,\"max_y\":222.941650390625,\"min_y\":151.291427612305,\"native_frame\":true,\"native_ticks\":289,\"normal\":0.0,\"shape_count\":5,\"tip_rotation\":1.20744061470032,\"torque\":1189.92654418945,\"wrench\":0.280000001192093},{\"age_drops\":3,\"arrivals\":0,\"barrel_contact_samples\":144,\"barrel_lift\":9.1414794921875,\"barrel_y\":249.001663208008,\"case\":\"mixed body impact\",\"delivered\":0.0,\"delivered_torque\":0.0,\"end\":[245.000091552734,245.977127075195],\"first_y\":256.281219482422,\"force\":184.0,\"granular_torque\":0.0,\"max_rotation\":0.000667366373818368,\"max_y\":256.282257080078,\"min_y\":235.0,\"native_frame\":true,\"needle\":{\"angular_velocity\":0.0000466139645141084,\"assembly_inertia\":0.628333330154419,\"assembly_mass\":0.259999990463257,\"body_count\":1,\"budget\":5.0,\"control_generation\":1,\"controller\":{\"applied_force\":\"(0.0, 0.0)\",\"applied_torque\":0.0,\"boost_multiplier\":1.0,\"controller\":\"gcr-review-fleet/v1\",\"force_cap\":0.0,\"movement_mode\":\"cancelled\",\"side_thrust\":0.0,\"thrust\":0.0},\"customization\":{\"acceleration\":1.0,\"angular_drag\":1.0,\"drag\":1.0,\"e_amount\":1.0,\"e_material\":0,\"fire_amount\":1.0,\"friction\":1.0,\"gravity\":1.0,\"q_amount\":1.0,\"q_material\":0,\"s_amount\":1.0,\"s_material\":0,\"speed\":1.0,\"stabilization\":1.0,\"stabilization_damping\":1.0,\"swap_side_thrusters\":false,\"throttle_response\":1.0,\"thruster_visuals\":true,\"turn_acceleration\":1.0,\"turn_speed\":1.0},\"definition_hash\":\"9d52fc8f375d05a7660f14d1097000405c1cc5b1bf5d31d4fbd4d473fb847560\",\"force_limit\":12.0,\"gravity\":38.0000008642673,\"inertia\":0.628333330154419,\"instance_id\":3,\"linear_velocity\":\"(0.0001, 0.000041)\",\"mass\":0.259999990463257,\"model\":\"needle\",\"movement\":{\"acceleration\":160.0,\"angular_drag\":0.180000007152557,\"drag\":0.16,\"friction\":0.800000011920929,\"speed_target\":130.0,\"stabilization\":10.0,\"stabilization_damping\":4.0,\"throttle_response\":6.0,\"turn_acceleration\":28.0,\"turn_speed\":6.0},\"position\":\"(344.9972, 259.5002)\",\"retained_motion\":{\"angular_velocity\":0.0000466139645141084,\"linear_velocity\":\"(0.0001, 0.000041)\",\"parts\":[{\"angular_velocity\":0.0000466139645141084,\"linear_velocity\":\"(0.0001, 0.000041)\",\"position\":\"(344.9972, 259.5002)\",\"rotation\":0.0000726205398677848}],\"rotation\":0.0000726205398677848},\"rotation\":0.0000726205398677848,\"torque_limit\":10.0},\"normal\":0.0,\"torque\":121.918055226894,\"wrench\":0.0}]}"
+          ],
+          "changed_inputs": [
+            "godot/tests/test_workbench_player_composition.gd"
+          ]
+        },
+        {
+          "os": "linux",
+          "case": "test_workbench_physics_play",
+          "status": "completed",
+          "exit": 0,
+          "seconds": 31.37939763069153,
+          "timeout_seconds": 1200.0,
+          "summary": [
+            "WORKBENCH_PHYSICS {\"assertions\":72,\"case\":\"WORKBENCH_001 shared physics\",\"failures\":[],\"results\":[{\"age_drops\":2,\"arrivals\":7,\"barrel_end\":\"(340.0932, 254.0002)\",\"burial_grains\":{\"left\":57,\"overhead\":70,\"right\":43,\"under\":89},\"case\":\"Sand burial\",\"delivered\":3.44956803321838,\"delivered_torque\":0.352940849958903,\"end\":[248.254516601562,230.157958984375],\"force\":31.1201610565186,\"granular_torque\":0.352940849958903,\"landed_y\":235.916000366211,\"max_rotation\":0.184235736727715,\"max_y\":236.050247192383,\"min_y\":220.0,\"native_frame\":true,\"native_ticks\":274,\"normal\":3.4485292048812,\"source\":{\"armed\":true,\"attempted\":412,\"blocked\":4,\"burst_queued\":false,\"inserted\":408,\"material\":2,\"max_stream_ticks\":600,\"origin\":\"(241, 176)\",\"stream_enabled\":true,\"stream_ticks\":79},\"torque\":10.7514111310741,\"wrench\":3.44956803321838},{\"age_drops\":2,\"arrivals\":7,\"barrel_end\":\"(340.0932, 254.0002)\",\"burial_grains\":{\"left\":57,\"overhead\":70,\"right\":43,\"under\":89},\"case\":\"Dust burial\",\"delivered\":3.44956803321838,\"delivered_torque\":0.444219091828188,\"end\":[248.1865234375,229.996917724609],\"force\":31.1234931945801,\"granular_torque\":0.444219091828188,\"landed_y\":235.916000366211,\"max_rotation\":0.197830229997635,\"max_y\":236.050247192383,\"min_y\":220.0,\"native_frame\":true,\"native_ticks\":274,\"normal\":3.4485292048812,\"source\":{\"armed\":true,\"attempted\":412,\"blocked\":4,\"burst_queued\":false,\"inserted\":408,\"material\":14,\"max_stream_ticks\":600,\"origin\":\"(241, 176)\",\"stream_enabled\":true,\"stream_ticks\":79},\"torque\":11.0161809301054,\"wrench\":3.44956803321838},{\"after_tip\":5,\"after_tip_application_history_retired\":false,\"after_tip_identity\":{\"completed_tick\":289,\"epoch\":3,\"frame_tick\":289,\"generation\":3,\"instance\":1,\"render_serial\":391,\"render_tick\":289,\"revision\":2618,\"sample\":290,\"sample_tick\":288,\"session\":3,\"uploaded_generation\":5,\"uploaded_revision\":2618,\"uploaded_serial\":391,\"world_generation\":5},\"after_tip_material\":{\"above_rim\":0,\"below_floor\":5,\"cavity\":5,\"inside_solid\":3,\"mean_x\":345.346153846154,\"mean_y\":197.192307692308,\"points\":[[379.5,160.5],[380.5,160.5],[380.5,161.5],[380.5,162.5],[381.5,162.5],[380.5,163.5],[381.5,163.5],[382.5,163.5],[293.5,244.5],[284.5,253.5],[286.5,253.5],[290.5,253.5],[287.5,260.5]],\"pose\":[376.92138671875,153.719879150391,1.20744061470032],\"total\":13},\"after_tip_native_tick\":289,\"after_tip_sampled_material\":{\"above_rim\":0,\"below_floor\":5,\"cavity\":8,\"inside_solid\":0,\"mean_x\":345.346153846154,\"mean_y\":197.192307692308,\"points\":[[379.5,160.5],[380.5,160.5],[380.5,161.5],[380.5,162.5],[381.5,162.5],[380.5,163.5],[381.5,163.5],[382.5,163.5],[293.5,244.5],[284.5,253.5],[286.5,253.5],[290.5,253.5],[287.5,260.5]],\"pose\":[376.410888671875,153.578979492188,1.20696210861206],\"total\":13},\"age_drops\":2,\"arrivals\":7,\"barrel_end\":\"(340.0, 254.0002)\",\"carried\":6,\"carried_application_history_retired\":false,\"carried_identity\":{\"completed_tick\":199,\"epoch\":3,\"frame_tick\":199,\"generation\":3,\"instance\":1,\"render_serial\":305,\"render_tick\":199,\"revision\":2137,\"sample\":200,\"sample_tick\":198,\"session\":3,\"uploaded_generation\":5,\"uploaded_revision\":2137,\"uploaded_serial\":305,\"world_generation\":5},\"carried_material\":{\"above_rim\":0,\"below_floor\":1,\"cavity\":6,\"inside_solid\":6,\"mean_x\":294.5,\"mean_y\":162.5,\"points\":[[292.5,161.5],[293.5,161.5],[294.5,161.5],[295.5,161.5],[296.5,161.5],[297.5,161.5],[298.5,161.5],[299.5,161.5],[300.5,161.5],[301.5,161.5],[284.5,163.5],[286.5,163.5],[287.5,170.5]],\"pose\":[305.62158203125,161.772216796875,-0.00120917183812708],\"total\":13},\"carried_native_tick\":199,\"carried_sampled_material\":{\"above_rim\":0,\"below_floor\":1,\"cavity\":10,\"inside_solid\":1,\"mean_x\":294.5,\"mean_y\":162.5,\"points\":[[292.5,161.5],[293.5,161.5],[294.5,161.5],[295.5,161.5],[296.5,161.5],[297.5,161.5],[298.5,161.5],[299.5,161.5],[300.5,161.5],[301.5,161.5],[284.5,163.5],[286.5,163.5],[287.5,170.5]],\"pose\":[304.44775390625,162.113616943359,-0.00121945410501212],\"total\":13},\"carry_x\":60.62158203125,\"case\":\"Scooper native load and tilt\",\"delivered\":0.280000001192093,\"delivered_torque\":1.207939453125,\"drawn_pieces\":5,\"end\":[376.92138671875,153.719879150391],\"force\":23.0,\"granular_torque\":1.207939453125,\"lateral_start\":0,\"lateral_start_application_history_retired\":false,\"lateral_start_identity\":{\"completed_tick\":134,\"epoch\":3,\"frame_tick\":134,\"generation\":3,\"instance\":1,\"render_serial\":267,\"render_tick\":133,\"revision\":1725,\"sample\":135,\"sample_tick\":133,\"session\":3,\"uploaded_generation\":5,\"uploaded_revision\":1725,\"uploaded_serial\":267,\"world_generation\":5},\"lateral_start_material\":{\"above_rim\":0,\"below_floor\":0,\"cavity\":0,\"inside_solid\":13,\"mean_x\":247.5,\"mean_y\":192.5,\"points\":[[241.5,192.5],[242.5,192.5],[243.5,192.5],[244.5,192.5],[245.5,192.5],[246.5,192.5],[247.5,192.5],[248.5,192.5],[249.5,192.5],[250.5,192.5],[251.5,192.5],[252.5,192.5],[253.5,192.5]],\"pose\":[250.7744140625,192.376861572266,0.0000118613270387868],\"total\":13},\"lateral_start_native_tick\":134,\"lateral_start_sampled_material\":{\"above_rim\":0,\"below_floor\":0,\"cavity\":13,\"inside_solid\":0,\"mean_x\":247.5,\"mean_y\":192.5,\"points\":[[241.5,192.5],[242.5,192.5],[243.5,192.5],[244.5,192.5],[245.5,192.5],[246.5,192.5],[247.5,192.5],[248.5,192.5],[249.5,192.5],[250.5,192.5],[251.5,192.5],[252.5,192.5],[253.5,192.5]],\"pose\":[250.346008300781,193.006439208984,0.000012834671906603],\"total\":13},\"lift_distance\":12.8652191162109,\"lifted\":13,\"lifted_application_history_retired\":false,\"lifted_identity\":{\"completed_tick\":109,\"epoch\":3,\"frame_tick\":109,\"generation\":3,\"instance\":1,\"render_serial\":250,\"render_tick\":109,\"revision\":1499,\"sample\":110,\"sample_tick\":108,\"session\":3,\"uploaded_generation\":5,\"uploaded_revision\":1499,\"uploaded_serial\":250,\"world_generation\":5},\"lifted_material\":{\"above_rim\":0,\"below_floor\":0,\"cavity\":13,\"inside_solid\":0,\"mean_x\":247.5,\"mean_y\":209.5,\"points\":[[241.5,209.5],[242.5,209.5],[243.5,209.5],[244.5,209.5],[245.5,209.5],[246.5,209.5],[247.5,209.5],[248.5,209.5],[249.5,209.5],[250.5,209.5],[251.5,209.5],[252.5,209.5],[253.5,209.5]],\"pose\":[245.0,209.982131958008,0.0000825037423055619],\"total\":13},\"lifted_native_tick\":109,\"lifted_sampled_material\":{\"above_rim\":0,\"below_floor\":0,\"cavity\":13,\"inside_solid\":0,\"mean_x\":247.5,\"mean_y\":209.5,\"points\":[[241.5,209.5],[242.5,209.5],[243.5,209.5],[244.5,209.5],[245.5,209.5],[246.5,209.5],[247.5,209.5],[248.5,209.5],[249.5,209.5],[250.5,209.5],[251.5,209.5],[252.5,209.5],[253.5,209.5]],\"pose\":[245.0,210.773666381836,0.0000889169459696859],\"total\":13},\"loaded\":13,\"loaded_application_history_retired\":false,\"loaded_identity\":{\"completed_tick\":74,\"epoch\":3,\"frame_tick\":74,\"generation\":3,\"instance\":1,\"render_serial\":238,\"render_tick\":74,\"revision\":1338,\"sample\":75,\"sample_tick\":73,\"session\":3,\"uploaded_generation\":5,\"uploaded_revision\":1338,\"uploaded_serial\":238,\"world_generation\":5},\"loaded_material\":{\"above_rim\":0,\"below_floor\":0,\"cavity\":13,\"inside_solid\":0,\"mean_x\":245.730769230769,\"mean_y\":221.884615384615,\"points\":[[245.5,220.5],[246.5,220.5],[244.5,221.5],[245.5,221.5],[246.5,221.5],[247.5,221.5],[242.5,222.5],[243.5,222.5],[244.5,222.5],[245.5,222.5],[246.5,222.5],[247.5,222.5],[248.5,222.5]],\"pose\":[245.0,222.847351074219,0.000252540368819609],\"total\":13},\"loaded_native_tick\":74,\"loaded_sampled_material\":{\"above_rim\":0,\"below_floor\":0,\"cavity\":13,\"inside_solid\":0,\"mean_x\":245.730769230769,\"mean_y\":221.884615384615,\"points\":[[245.5,220.5],[246.5,220.5],[244.5,221.5],[245.5,221.5],[246.5,221.5],[247.5,221.5],[242.5,222.5],[243.5,222.5],[244.5,222.5],[245.5,222.5],[246.5,222.5],[247.5,222.5],[248.5,222.5]],\"pose\":[245.0,222.791961669922,0.000266726972768083],\"total\":13},\"max_rotation\":1.20744061470032,\"max_y\":222.941650390625,\"min_y\":151.291427612305,\"native_frame\":true,\"native_ticks\":289,\"normal\":0.0,\"shape_count\":5,\"tip_rotation\":1.20744061470032,\"torque\":1189.92654418945,\"wrench\":0.280000001192093},{\"age_drops\":3,\"arrivals\":0,\"barrel_contact_samples\":144,\"barrel_lift\":9.1414794921875,\"barrel_y\":249.001663208008,\"case\":\"mixed body impact\",\"delivered\":0.0,\"delivered_torque\":0.0,\"end\":[245.000091552734,245.977127075195],\"first_y\":256.281219482422,\"force\":184.0,\"granular_torque\":0.0,\"max_rotation\":0.000667366373818368,\"max_y\":256.282257080078,\"min_y\":235.006591796875,\"native_frame\":true,\"needle\":{\"angular_velocity\":0.0000466139645141084,\"assembly_inertia\":0.628333330154419,\"assembly_mass\":0.259999990463257,\"body_count\":1,\"budget\":5.0,\"control_generation\":1,\"controller\":{\"applied_force\":\"(0.0, 0.0)\",\"applied_torque\":0.0,\"boost_multiplier\":1.0,\"controller\":\"gcr-review-fleet/v1\",\"force_cap\":0.0,\"movement_mode\":\"cancelled\",\"side_thrust\":0.0,\"thrust\":0.0},\"customization\":{\"acceleration\":1.0,\"angular_drag\":1.0,\"drag\":1.0,\"e_amount\":1.0,\"e_material\":0,\"fire_amount\":1.0,\"friction\":1.0,\"gravity\":1.0,\"q_amount\":1.0,\"q_material\":0,\"s_amount\":1.0,\"s_material\":0,\"speed\":1.0,\"stabilization\":1.0,\"stabilization_damping\":1.0,\"swap_side_thrusters\":false,\"throttle_response\":1.0,\"thruster_visuals\":true,\"turn_acceleration\":1.0,\"turn_speed\":1.0},\"definition_hash\":\"9d52fc8f375d05a7660f14d1097000405c1cc5b1bf5d31d4fbd4d473fb847560\",\"force_limit\":12.0,\"gravity\":38.0000008642673,\"inertia\":0.628333330154419,\"instance_id\":3,\"linear_velocity\":\"(0.0001, 0.000041)\",\"mass\":0.259999990463257,\"model\":\"needle\",\"movement\":{\"acceleration\":160.0,\"angular_drag\":0.180000007152557,\"drag\":0.16,\"friction\":0.800000011920929,\"speed_target\":130.0,\"stabilization\":10.0,\"stabilization_damping\":4.0,\"throttle_response\":6.0,\"turn_acceleration\":28.0,\"turn_speed\":6.0},\"position\":\"(344.9972, 259.5002)\",\"retained_motion\":{\"angular_velocity\":0.0000466139645141084,\"linear_velocity\":\"(0.0001, 0.000041)\",\"parts\":[{\"angular_velocity\":0.0000466139645141084,\"linear_velocity\":\"(0.0001, 0.000041)\",\"position\":\"(344.9972, 259.5002)\",\"rotation\":0.0000726205398677848}],\"rotation\":0.0000726205398677848},\"rotation\":0.0000726205398677848,\"torque_limit\":10.0},\"normal\":0.0,\"torque\":121.918055226894,\"wrench\":0.0}]}"
+          ],
+          "changed_inputs": [
+            "godot/tests/test_workbench_player_composition.gd"
+          ]
+        },
+        {
+          "os": "windows",
+          "case": "test_workbench_canvas",
+          "status": "completed",
+          "exit": 0,
+          "seconds": 29.785151958465576,
+          "timeout_seconds": 3940.0,
+          "summary": [
+            "WORKBENCH_CANVAS 83 checks, 0 failures"
+          ],
+          "changed_inputs": []
+        },
+        {
+          "os": "windows",
+          "case": "test_workbench_live_liquid_edit",
+          "status": "completed",
+          "exit": 0,
+          "seconds": 7.110677242279053,
+          "timeout_seconds": 3940.0,
+          "summary": [
+            "WORKBENCH_LIVE_LIQUID failures=0"
+          ],
+          "changed_inputs": []
+        },
+        {
+          "os": "linux",
+          "case": "test_workbench_canvas",
+          "status": "completed",
+          "exit": 0,
+          "seconds": 30.657623529434204,
+          "timeout_seconds": 3940.0,
+          "summary": [
+            "WORKBENCH_CANVAS 83 checks, 0 failures"
+          ],
+          "changed_inputs": []
+        },
+        {
+          "os": "windows",
+          "case": "test_workbench_liquid_edges",
+          "status": "completed",
+          "exit": 1,
+          "seconds": 3.7697432041168213,
+          "timeout_seconds": 3940.0,
+          "summary": [
+            "WORKBENCH_EDGE {\"cases\":[],\"checks\":2,\"failures\":[\"real toolbar popup open\"]}"
+          ],
+          "changed_inputs": []
+        },
+        {
+          "os": "windows",
+          "case": "test_workbench_retained_pressure",
+          "status": "completed",
+          "exit": 0,
+          "seconds": 0.8816685676574707,
+          "timeout_seconds": 1200.0,
+          "summary": [
+            "WORKBENCH_RETAINED_PRESSURE overfill=11 gas=20 failures=[]"
+          ],
+          "changed_inputs": []
+        },
+        {
+          "os": "windows",
+          "case": "test_workbench_hard_placement",
+          "status": "completed",
+          "exit": 0,
+          "seconds": 0.6100194454193115,
+          "timeout_seconds": 1200.0,
+          "summary": [
+            "WORKBENCH_HARD_PLACEMENT failures=[]"
+          ],
+          "changed_inputs": []
+        },
+        {
+          "os": "windows",
+          "case": "test_workbench_failure_recovery",
+          "status": "completed",
+          "exit": 0,
+          "seconds": 4.9612274169921875,
+          "timeout_seconds": 3940.0,
+          "summary": [
+            "WORKBENCH_FAILURE_RECOVERY {\"failures\":[]}"
+          ],
+          "changed_inputs": []
+        },
+        {
+          "os": "linux",
+          "case": "test_workbench_live_liquid_edit",
+          "status": "completed",
+          "exit": 0,
+          "seconds": 9.838392734527588,
+          "timeout_seconds": 3940.0,
+          "summary": [
+            "WORKBENCH_LIVE_LIQUID failures=0"
+          ],
+          "changed_inputs": []
+        },
+        {
+          "os": "windows",
+          "case": "test_workbench_desktop_interest",
+          "status": "completed",
+          "exit": 0,
+          "seconds": 8.58889627456665,
+          "timeout_seconds": 1200.0,
+          "summary": [
+            "WORKBENCH_INTEREST {\"failures\":[],\"observations\":{\"active_blocks\":0,\"body_rows\":[{\"arrival_count\":0,\"arrival_misaligned\":0,\"arrival_missing\":0,\"body_capacity\":20.0,\"budget\":20.0,\"com\":\"(1400.0, 1250.094)\",\"contacts\":0,\"correction\":\"(0.0, 0.0)\",\"displaced\":0,\"event_accepted\":\"(0.0, 0.0)\",\"event_cost\":0.0,\"event_torque\":0.0,\"external_drive\":true,\"generation\":1,\"gravity\":38.0000008642673,\"id\":1,\"impulse\":\"(0.0, 0.0)\",\"inertia\":24.7901363372803,\"instance_id\":1,\"mass\":0.180000007152557,\"nodes\":0,\"normal_accepted\":0.0,\"normal_capacity\":0.0,\"part_index\":0,\"passive_impulse\":\"(0.0, 0.0)\",\"passive_torque\":0.0,\"passivity_rejected\":false,\"proxy_count\":5,\"sample\":17,\"support\":{},\"tangent_accepted\":0.0,\"torque\":0.0,\"unresolved\":0},{\"arrival_count\":0,\"arrival_misaligned\":0,\"arrival_missing\":0,\"body_capacity\":40.0,\"budget\":40.0,\"com\":\"(88.0, 111.3722)\",\"contacts\":0,\"correction\":\"(0.0, 0.0)\",\"displaced\":0,\"event_accepted\":\"(0.0, 0.0)\",\"event_cost\":0.0,\"event_torque\":0.0,\"external_drive\":false,\"generation\":1,\"gravity\":38.0000008642673,\"id\":2,\"impulse\":\"(0.0, 0.0)\",\"inertia\":0.628333330154419,\"instance_id\":2,\"mass\":0.129999995231628,\"nodes\":0,\"normal_accepted\":0.0,\"normal_capacity\":0.0,\"part_index\":0,\"passive_impulse\":\"(0.0, 0.0)\",\"passive_torque\":0.0,\"passivity_rejected\":false,\"proxy_count\":1,\"sample\":17,\"support\":{},\"tangent_accepted\":0.0,\"torque\":0.0,\"unresolved\":0},{\"arrival_count\":0,\"arrival_misaligned\":0,\"arrival_missing\":0,\"body_capacity\":20.0,\"budget\":20.0,\"com\":\"(1480.0, 1253.255)\",\"contacts\":0,\"correction\":\"(0.0, 0.0)\",\"displaced\":0,\"event_accepted\":\"(0.0, 0.0)\",\"event_cost\":0.0,\"event_torque\":0.0,\"external_drive\":false,\"generation\":1,\"gravity\":92.1199968457222,\"id\":3,\"impulse\":\"(0.0, 0.0)\",\"inertia\":21.6666660308838,\"instance_id\":3,\"mass\":1.0,\"nodes\":0,\"normal_accepted\":0.0,\"normal_capacity\":0.0,\"part_index\":0,\"passive_impulse\":\"(0.0, 0.0)\",\"passive_torque\":0.0,\"passivity_rejected\":false,\"proxy_count\":1,\"sample\":17,\"support\":{},\"tangent_accepted\":0.0,\"torque\":0.0,\"unresolved\":0}],\"camera\":\"(0.0, 0.0)\",\"distant_actor\":\"(1400.0, 1250.104)\",\"edge_refusal\":\"A body reached the finite canvas edge. Move, reset or remove it while paused.\",\"error\":\"\",\"godot_peak_static_bytes\":123204670,\"last_native_ms\":0.0,\"native_tick\":0,\"near_actor\":\"(88.0, 111.7337)\",\"source\":{\"armed\":true,\"attempted\":156,\"blocked\":4,\"burst_queued\":false,\"inserted\":152,\"material\":2,\"max_stream_ticks\":600,\"origin\":\"(1566, 1314)\",\"stream_enabled\":false,\"stream_ticks\":15},\"status\":\"Choose an actor to pilot, or use Place model to add an independent instance.\",\"visited\":0,\"worker_step_ms\":0.354}}"
+          ],
+          "changed_inputs": []
+        },
+        {
+          "os": "linux",
+          "case": "test_workbench_liquid_edges",
+          "status": "completed",
+          "exit": 1,
+          "seconds": 7.382945775985718,
+          "timeout_seconds": 3940.0,
+          "summary": [
+            "WORKBENCH_EDGE {\"cases\":[],\"checks\":2,\"failures\":[\"real toolbar popup open\"]}"
+          ],
+          "changed_inputs": []
+        },
+        {
+          "os": "windows",
+          "case": "test_workbench_boundary_retention",
+          "status": "completed",
+          "exit": 0,
+          "seconds": 0.6359190940856934,
+          "timeout_seconds": 1200.0,
+          "summary": [
+            "WORKBENCH_BOUNDARY_RETENTION failures=[]"
+          ],
+          "changed_inputs": []
+        },
+        {
+          "os": "windows",
+          "case": "test_workbench_fleet_session",
+          "status": "completed",
+          "exit": 0,
+          "seconds": 0.8079087734222412,
+          "timeout_seconds": 1200.0,
+          "summary": [
+            "WORKBENCH_FLEET checks=88 failures=0"
+          ],
+          "changed_inputs": []
+        },
+        {
+          "os": "linux",
+          "case": "test_workbench_retained_pressure",
+          "status": "completed",
+          "exit": 0,
+          "seconds": 1.1483795642852783,
+          "timeout_seconds": 1200.0,
+          "summary": [
+            "WORKBENCH_RETAINED_PRESSURE overfill=11 gas=20 failures=[]"
+          ],
+          "changed_inputs": []
+        },
+        {
+          "os": "linux",
+          "case": "test_workbench_hard_placement",
+          "status": "completed",
+          "exit": 0,
+          "seconds": 0.8279850482940674,
+          "timeout_seconds": 1200.0,
+          "summary": [
+            "WORKBENCH_HARD_PLACEMENT failures=[]"
+          ],
+          "changed_inputs": []
+        },
+        {
+          "os": "linux",
+          "case": "test_workbench_failure_recovery",
+          "status": "completed",
+          "exit": 0,
+          "seconds": 8.43784761428833,
+          "timeout_seconds": 3940.0,
+          "summary": [
+            "WORKBENCH_FAILURE_RECOVERY {\"failures\":[]}"
+          ],
+          "changed_inputs": []
+        },
+        {
+          "os": "linux",
+          "case": "test_workbench_desktop_interest",
+          "status": "completed",
+          "exit": 0,
+          "seconds": 11.997462272644043,
+          "timeout_seconds": 1200.0,
+          "summary": [
+            "WORKBENCH_INTEREST {\"failures\":[],\"observations\":{\"active_blocks\":0,\"body_rows\":[{\"arrival_count\":0,\"arrival_misaligned\":0,\"arrival_missing\":0,\"body_capacity\":20.0,\"budget\":20.0,\"com\":\"(1400.0, 1250.094)\",\"contacts\":0,\"correction\":\"(0.0, 0.0)\",\"displaced\":0,\"event_accepted\":\"(0.0, 0.0)\",\"event_cost\":0.0,\"event_torque\":0.0,\"external_drive\":true,\"generation\":1,\"gravity\":38.0000008642673,\"id\":1,\"impulse\":\"(0.0, 0.0)\",\"inertia\":24.7901363372803,\"instance_id\":1,\"mass\":0.180000007152557,\"nodes\":0,\"normal_accepted\":0.0,\"normal_capacity\":0.0,\"part_index\":0,\"passive_impulse\":\"(0.0, 0.0)\",\"passive_torque\":0.0,\"passivity_rejected\":false,\"proxy_count\":5,\"sample\":17,\"support\":{},\"tangent_accepted\":0.0,\"torque\":0.0,\"unresolved\":0},{\"arrival_count\":0,\"arrival_misaligned\":0,\"arrival_missing\":0,\"body_capacity\":40.0,\"budget\":40.0,\"com\":\"(88.0, 111.3722)\",\"contacts\":0,\"correction\":\"(0.0, 0.0)\",\"displaced\":0,\"event_accepted\":\"(0.0, 0.0)\",\"event_cost\":0.0,\"event_torque\":0.0,\"external_drive\":false,\"generation\":1,\"gravity\":38.0000008642673,\"id\":2,\"impulse\":\"(0.0, 0.0)\",\"inertia\":0.628333330154419,\"instance_id\":2,\"mass\":0.129999995231628,\"nodes\":0,\"normal_accepted\":0.0,\"normal_capacity\":0.0,\"part_index\":0,\"passive_impulse\":\"(0.0, 0.0)\",\"passive_torque\":0.0,\"passivity_rejected\":false,\"proxy_count\":1,\"sample\":17,\"support\":{},\"tangent_accepted\":0.0,\"torque\":0.0,\"unresolved\":0},{\"arrival_count\":0,\"arrival_misaligned\":0,\"arrival_missing\":0,\"body_capacity\":20.0,\"budget\":20.0,\"com\":\"(1480.0, 1253.255)\",\"contacts\":0,\"correction\":\"(0.0, 0.0)\",\"displaced\":0,\"event_accepted\":\"(0.0, 0.0)\",\"event_cost\":0.0,\"event_torque\":0.0,\"external_drive\":false,\"generation\":1,\"gravity\":92.1199968457222,\"id\":3,\"impulse\":\"(0.0, 0.0)\",\"inertia\":21.6666660308838,\"instance_id\":3,\"mass\":1.0,\"nodes\":0,\"normal_accepted\":0.0,\"normal_capacity\":0.0,\"part_index\":0,\"passive_impulse\":\"(0.0, 0.0)\",\"passive_torque\":0.0,\"passivity_rejected\":false,\"proxy_count\":1,\"sample\":17,\"support\":{},\"tangent_accepted\":0.0,\"torque\":0.0,\"unresolved\":0}],\"camera\":\"(0.0, 0.0)\",\"distant_actor\":\"(1400.0, 1250.104)\",\"edge_refusal\":\"A body reached the finite canvas edge. Move, reset or remove it while paused.\",\"error\":\"\",\"godot_peak_static_bytes\":123098746,\"last_native_ms\":0.0,\"native_tick\":0,\"near_actor\":\"(88.0, 111.7337)\",\"source\":{\"armed\":true,\"attempted\":152,\"blocked\":4,\"burst_queued\":false,\"inserted\":148,\"material\":2,\"max_stream_ticks\":600,\"origin\":\"(1566, 1314)\",\"stream_enabled\":false,\"stream_ticks\":14},\"status\":\"Choose an actor to pilot, or use Place model to add an independent instance.\",\"visited\":0,\"worker_step_ms\":0.319}}"
+          ],
+          "changed_inputs": []
+        },
+        {
+          "os": "linux",
+          "case": "test_workbench_boundary_retention",
+          "status": "completed",
+          "exit": 0,
+          "seconds": 0.7160475254058838,
+          "timeout_seconds": 1200.0,
+          "summary": [
+            "WORKBENCH_BOUNDARY_RETENTION failures=[]"
+          ],
+          "changed_inputs": []
+        },
+        {
+          "os": "linux",
+          "case": "test_workbench_fleet_session",
+          "status": "completed",
+          "exit": 0,
+          "seconds": 1.6246356964111328,
+          "timeout_seconds": 1200.0,
+          "summary": [
+            "WORKBENCH_FLEET checks=88 failures=0"
+          ],
+          "changed_inputs": []
+        }
+      ]
+    },
+    "build/workbench-physics-final-isolated/receipt.json": {
+      "sha256": "a814fa2e3c769dbc8867739e903d6d4da1a82707dfd0fad5ce688353d615188d",
+      "scope": "Isolated final workbench physics-play rerun with source drift census",
+      "results": [
+        {
+          "platform": "windows",
+          "exit": 0,
+          "seconds": 28.85400460002711,
+          "timeout_seconds": 1200,
+          "changed_inputs": [],
+          "failures": []
+        },
+        {
+          "platform": "linux",
+          "exit": 0,
+          "seconds": 36.587786499992944,
+          "timeout_seconds": 1200,
+          "changed_inputs": [],
+          "failures": []
+        }
+      ]
+    },
+    "build/workbench-edge-fixed/receipt.json": {
+      "sha256": "15ffb60f5aa2a5f20c4a134767a48e1c5616a220f9b298da064b0b177d3d4bf0",
+      "scope": "Legacy liquid-edge pointer fixture repair only; no production source change",
+      "results": [
+        {
+          "platform": "windows",
+          "case": "test_workbench_liquid_edges",
+          "exit": 0,
+          "summary": {
+            "cases": [
+              {
+                "edge": "left",
+                "edit": {
+                  "clipped_gas_amount": 0,
+                  "clipped_gas_labels": 0,
+                  "clipped_inertial_cells": 0,
+                  "clipped_material_cells": 0,
+                  "clipped_materials": {},
+                  "clipped_pressure_flow_cells": 0,
+                  "clipped_thermal_cells": 0,
+                  "clipped_visible_water": 0,
+                  "clipped_water_overfill": 0,
+                  "discarded_gas_amount": 0,
+                  "discarded_inertial_cells": 0,
+                  "discarded_pressure_flow_cells": 0,
+                  "discarded_water_overfill": 0,
+                  "halo_normalization_consumed": 0,
+                  "halo_normalization_produced": 0,
+                  "normalization_consumed": 0,
+                  "normalization_produced": 0,
+                  "preserved_gas_amount": 0,
+                  "preserved_halo_cells": 21,
+                  "preserved_halo_materials": {
+                    "3": 21
+                  },
+                  "preserved_halo_visible_water": 5291,
+                  "preserved_inertial_cells": 0,
+                  "preserved_water_overfill": 0,
+                  "requested": false,
+                  "source_policy_sha256": "f67a65e86df64b4353ec62f20164ac392698c64cc5ff4ce79d8d95abc199a8dc",
+                  "target_policy_sha256": "f67a65e86df64b4353ec62f20164ac392698c64cc5ff4ce79d8d95abc199a8dc",
+                  "water_after": 88740,
+                  "water_before": 88740
+                },
+                "outgoing": {
+                  "clipped_gas_amount": 0,
+                  "clipped_gas_labels": 0,
+                  "clipped_inertial_cells": 0,
+                  "clipped_material_cells": 0,
+                  "clipped_materials": {},
+                  "clipped_pressure_flow_cells": 0,
+                  "clipped_thermal_cells": 0,
+                  "clipped_visible_water": 0,
+                  "clipped_water_overfill": 0,
+                  "discarded_gas_amount": 0,
+                  "discarded_inertial_cells": 0,
+                  "discarded_pressure_flow_cells": 102,
+                  "discarded_water_overfill": 120,
+                  "halo_normalization_consumed": 0,
+                  "halo_normalization_produced": 0,
+                  "normalization_consumed": 0,
+                  "normalization_produced": 0,
+                  "preserved_gas_amount": 0,
+                  "preserved_halo_cells": 21,
+                  "preserved_halo_materials": {
+                    "3": 21
+                  },
+                  "preserved_halo_visible_water": 5291,
+                  "preserved_inertial_cells": 0,
+                  "preserved_water_overfill": 0,
+                  "requested": true,
+                  "source_policy_sha256": "f67a65e86df64b4353ec62f20164ac392698c64cc5ff4ce79d8d95abc199a8dc",
+                  "target_policy_sha256": "4b7922ad7badb443556d82ea0c624c259da7b75e85f92f87cdab216f95cab53a",
+                  "water_after": 88620,
+                  "water_before": 88740
+                },
+                "outgoing_source": {
+                  "clipped_gas_amount": 0,
+                  "clipped_gas_labels": 0,
+                  "clipped_inertial_cells": 0,
+                  "clipped_material_cells": 0,
+                  "clipped_materials": {},
+                  "clipped_pressure_flow_cells": 0,
+                  "clipped_thermal_cells": 0,
+                  "clipped_visible_water": 0,
+                  "clipped_water_overfill": 0,
+                  "discarded_gas_amount": 0,
+                  "discarded_inertial_cells": 0,
+                  "discarded_pressure_flow_cells": 0,
+                  "discarded_water_overfill": 0,
+                  "halo_normalization_consumed": 0,
+                  "halo_normalization_produced": 0,
+                  "normalization_consumed": 0,
+                  "normalization_produced": 0,
+                  "preserved_gas_amount": 0,
+                  "preserved_halo_cells": 21,
+                  "preserved_halo_materials": {
+                    "3": 21
+                  },
+                  "preserved_halo_visible_water": 5291,
+                  "preserved_inertial_cells": 0,
+                  "preserved_water_overfill": 120,
+                  "requested": false,
+                  "source_policy_sha256": "f67a65e86df64b4353ec62f20164ac392698c64cc5ff4ce79d8d95abc199a8dc",
+                  "target_policy_sha256": "f67a65e86df64b4353ec62f20164ac392698c64cc5ff4ce79d8d95abc199a8dc",
+                  "water_after": 88740,
+                  "water_before": 88740
+                },
+                "outgoing_status": "Liquid settings applied. Water quantity 88740 → 88620. Kept 21 cells outside the canvas (21 water), including 5291 visible Water units. Discarded 120 pressure overfill units, pressure flow in 102 cells.",
+                "side": 512,
+                "status": "Placed Midge #1 at (200.0, 200.0) (session 1). Water quantity 88740 → 88740. Kept 21 cells outside the canvas (21 water), including 5291 visible Water units.",
+                "switch": {
+                  "clipped_gas_amount": 0,
+                  "clipped_gas_labels": 0,
+                  "clipped_inertial_cells": 0,
+                  "clipped_material_cells": 0,
+                  "clipped_materials": {},
+                  "clipped_pressure_flow_cells": 0,
+                  "clipped_thermal_cells": 0,
+                  "clipped_visible_water": 0,
+                  "clipped_water_overfill": 0,
+                  "discarded_gas_amount": 0,
+                  "discarded_inertial_cells": 0,
+                  "discarded_pressure_flow_cells": 0,
+                  "discarded_water_overfill": 0,
+                  "halo_normalization_consumed": 0,
+                  "halo_normalization_produced": 0,
+                  "normalization_consumed": 0,
+                  "normalization_produced": 0,
+                  "preserved_gas_amount": 0,
+                  "preserved_halo_cells": 21,
+                  "preserved_halo_materials": {
+                    "3": 21
+                  },
+                  "preserved_halo_visible_water": 5291,
+                  "preserved_inertial_cells": 0,
+                  "preserved_water_overfill": 0,
+                  "requested": true,
+                  "source_policy_sha256": "4b7922ad7badb443556d82ea0c624c259da7b75e85f92f87cdab216f95cab53a",
+                  "target_policy_sha256": "f67a65e86df64b4353ec62f20164ac392698c64cc5ff4ce79d8d95abc199a8dc",
+                  "water_after": 88740,
+                  "water_before": 88740
+                },
+                "workers": {
+                  "collection_usec": 14,
+                  "completed_tick": 16,
+                  "native_tick_ms": 0.2,
+                  "phase_jobs": [
+                    1,
+                    1,
+                    1,
+                    1
+                  ],
+                  "sampled_usec": 4303505,
+                  "scope": "maximum distinct task-claiming participants in one phase dispatch of this completed tick; an inline nonempty phase counts the owner as one; not utilization or simultaneous execution",
+                  "sequence": 2,
+                  "worker_capacity": 6,
+                  "workers_observed": 1,
+                  "world_generation": 3
+                }
+              },
+              {
+                "edge": "bottom",
+                "edit": {
+                  "clipped_gas_amount": 0,
+                  "clipped_gas_labels": 0,
+                  "clipped_inertial_cells": 0,
+                  "clipped_material_cells": 0,
+                  "clipped_materials": {},
+                  "clipped_pressure_flow_cells": 0,
+                  "clipped_thermal_cells": 0,
+                  "clipped_visible_water": 0,
+                  "clipped_water_overfill": 0,
+                  "discarded_gas_amount": 0,
+                  "discarded_inertial_cells": 0,
+                  "discarded_pressure_flow_cells": 0,
+                  "discarded_water_overfill": 0,
+                  "halo_normalization_consumed": 0,
+                  "halo_normalization_produced": 0,
+                  "normalization_consumed": 0,
+                  "normalization_produced": 0,
+                  "preserved_gas_amount": 0,
+                  "preserved_halo_cells": 93,
+                  "preserved_halo_materials": {
+                    "3": 53,
+                    "14": 40
+                  },
+                  "preserved_halo_visible_water": 13460,
+                  "preserved_inertial_cells": 0,
+                  "preserved_water_overfill": 0,
+                  "requested": false,
+                  "source_policy_sha256": "f67a65e86df64b4353ec62f20164ac392698c64cc5ff4ce79d8d95abc199a8dc",
+                  "target_policy_sha256": "f67a65e86df64b4353ec62f20164ac392698c64cc5ff4ce79d8d95abc199a8dc",
+                  "water_after": 112455,
+                  "water_before": 112455
+                },
+                "outgoing": {
+                  "clipped_gas_amount": 0,
+                  "clipped_gas_labels": 0,
+                  "clipped_inertial_cells": 0,
+                  "clipped_material_cells": 0,
+                  "clipped_materials": {},
+                  "clipped_pressure_flow_cells": 0,
+                  "clipped_thermal_cells": 0,
+                  "clipped_visible_water": 0,
+                  "clipped_water_overfill": 0,
+                  "discarded_gas_amount": 0,
+                  "discarded_inertial_cells": 0,
+                  "discarded_pressure_flow_cells": 23,
+                  "discarded_water_overfill": 0,
+                  "halo_normalization_consumed": 0,
+                  "halo_normalization_produced": 0,
+                  "normalization_consumed": 0,
+                  "normalization_produced": 0,
+                  "preserved_gas_amount": 0,
+                  "preserved_halo_cells": 93,
+                  "preserved_halo_materials": {
+                    "3": 53,
+                    "14": 40
+                  },
+                  "preserved_halo_visible_water": 13461,
+                  "preserved_inertial_cells": 0,
+                  "preserved_water_overfill": 0,
+                  "requested": true,
+                  "source_policy_sha256": "f67a65e86df64b4353ec62f20164ac392698c64cc5ff4ce79d8d95abc199a8dc",
+                  "target_policy_sha256": "4b7922ad7badb443556d82ea0c624c259da7b75e85f92f87cdab216f95cab53a",
+                  "water_after": 112455,
+                  "water_before": 112455
+                },
+                "outgoing_source": {
+                  "clipped_gas_amount": 0,
+                  "clipped_gas_labels": 0,
+                  "clipped_inertial_cells": 0,
+                  "clipped_material_cells": 0,
+                  "clipped_materials": {},
+                  "clipped_pressure_flow_cells": 0,
+                  "clipped_thermal_cells": 0,
+                  "clipped_visible_water": 0,
+                  "clipped_water_overfill": 0,
+                  "discarded_gas_amount": 0,
+                  "discarded_inertial_cells": 0,
+                  "discarded_pressure_flow_cells": 0,
+                  "discarded_water_overfill": 0,
+                  "halo_normalization_consumed": 0,
+                  "halo_normalization_produced": 0,
+                  "normalization_consumed": 0,
+                  "normalization_produced": 0,
+                  "preserved_gas_amount": 0,
+                  "preserved_halo_cells": 93,
+                  "preserved_halo_materials": {
+                    "3": 53,
+                    "14": 40
+                  },
+                  "preserved_halo_visible_water": 13461,
+                  "preserved_inertial_cells": 0,
+                  "preserved_water_overfill": 0,
+                  "requested": false,
+                  "source_policy_sha256": "f67a65e86df64b4353ec62f20164ac392698c64cc5ff4ce79d8d95abc199a8dc",
+                  "target_policy_sha256": "f67a65e86df64b4353ec62f20164ac392698c64cc5ff4ce79d8d95abc199a8dc",
+                  "water_after": 112455,
+                  "water_before": 112455
+                },
+                "outgoing_status": "Liquid settings applied. Water quantity 112455 → 112455. Kept 93 cells outside the canvas (53 water, 40 dust), including 13461 visible Water units. Discarded pressure flow in 23 cells.",
+                "side": 2048,
+                "status": "Placed Midge #1 at (200.0, 200.0) (session 4). Water quantity 112455 → 112455. Kept 93 cells outside the canvas (53 water, 40 dust), including 13460 visible Water units.",
+                "switch": {
+                  "clipped_gas_amount": 0,
+                  "clipped_gas_labels": 0,
+                  "clipped_inertial_cells": 0,
+                  "clipped_material_cells": 0,
+                  "clipped_materials": {},
+                  "clipped_pressure_flow_cells": 0,
+                  "clipped_thermal_cells": 0,
+                  "clipped_visible_water": 0,
+                  "clipped_water_overfill": 0,
+                  "discarded_gas_amount": 0,
+                  "discarded_inertial_cells": 0,
+                  "discarded_pressure_flow_cells": 0,
+                  "discarded_water_overfill": 0,
+                  "halo_normalization_consumed": 0,
+                  "halo_normalization_produced": 0,
+                  "normalization_consumed": 0,
+                  "normalization_produced": 0,
+                  "preserved_gas_amount": 0,
+                  "preserved_halo_cells": 93,
+                  "preserved_halo_materials": {
+                    "3": 53,
+                    "14": 40
+                  },
+                  "preserved_halo_visible_water": 13460,
+                  "preserved_inertial_cells": 0,
+                  "preserved_water_overfill": 0,
+                  "requested": true,
+                  "source_policy_sha256": "4b7922ad7badb443556d82ea0c624c259da7b75e85f92f87cdab216f95cab53a",
+                  "target_policy_sha256": "f67a65e86df64b4353ec62f20164ac392698c64cc5ff4ce79d8d95abc199a8dc",
+                  "water_after": 112455,
+                  "water_before": 112455
+                },
+                "workers": {
+                  "collection_usec": 43,
+                  "completed_tick": 17,
+                  "native_tick_ms": 0.5362,
+                  "phase_jobs": [
+                    0,
+                    0,
+                    1,
+                    1
+                  ],
+                  "sampled_usec": 9028530,
+                  "scope": "maximum distinct task-claiming participants in one phase dispatch of this completed tick; an inline nonempty phase counts the owner as one; not utilization or simultaneous execution",
+                  "sequence": 5,
+                  "worker_capacity": 6,
+                  "workers_observed": 1,
+                  "world_generation": 8
+                }
+              }
+            ],
+            "checks": 70,
+            "failures": []
+          },
+          "failures": [],
+          "checks": 70
+        },
+        {
+          "platform": "linux",
+          "case": "test_workbench_liquid_edges",
+          "exit": 0,
+          "summary": {
+            "cases": [
+              {
+                "edge": "left",
+                "edit": {
+                  "clipped_gas_amount": 0,
+                  "clipped_gas_labels": 0,
+                  "clipped_inertial_cells": 0,
+                  "clipped_material_cells": 0,
+                  "clipped_materials": {},
+                  "clipped_pressure_flow_cells": 0,
+                  "clipped_thermal_cells": 0,
+                  "clipped_visible_water": 0,
+                  "clipped_water_overfill": 0,
+                  "discarded_gas_amount": 0,
+                  "discarded_inertial_cells": 0,
+                  "discarded_pressure_flow_cells": 0,
+                  "discarded_water_overfill": 0,
+                  "halo_normalization_consumed": 0,
+                  "halo_normalization_produced": 0,
+                  "normalization_consumed": 0,
+                  "normalization_produced": 0,
+                  "preserved_gas_amount": 0,
+                  "preserved_halo_cells": 21,
+                  "preserved_halo_materials": {
+                    "3": 21
+                  },
+                  "preserved_halo_visible_water": 5291,
+                  "preserved_inertial_cells": 0,
+                  "preserved_water_overfill": 0,
+                  "requested": false,
+                  "source_policy_sha256": "f67a65e86df64b4353ec62f20164ac392698c64cc5ff4ce79d8d95abc199a8dc",
+                  "target_policy_sha256": "f67a65e86df64b4353ec62f20164ac392698c64cc5ff4ce79d8d95abc199a8dc",
+                  "water_after": 88740,
+                  "water_before": 88740
+                },
+                "outgoing": {
+                  "clipped_gas_amount": 0,
+                  "clipped_gas_labels": 0,
+                  "clipped_inertial_cells": 0,
+                  "clipped_material_cells": 0,
+                  "clipped_materials": {},
+                  "clipped_pressure_flow_cells": 0,
+                  "clipped_thermal_cells": 0,
+                  "clipped_visible_water": 0,
+                  "clipped_water_overfill": 0,
+                  "discarded_gas_amount": 0,
+                  "discarded_inertial_cells": 0,
+                  "discarded_pressure_flow_cells": 102,
+                  "discarded_water_overfill": 120,
+                  "halo_normalization_consumed": 0,
+                  "halo_normalization_produced": 0,
+                  "normalization_consumed": 0,
+                  "normalization_produced": 0,
+                  "preserved_gas_amount": 0,
+                  "preserved_halo_cells": 21,
+                  "preserved_halo_materials": {
+                    "3": 21
+                  },
+                  "preserved_halo_visible_water": 5291,
+                  "preserved_inertial_cells": 0,
+                  "preserved_water_overfill": 0,
+                  "requested": true,
+                  "source_policy_sha256": "f67a65e86df64b4353ec62f20164ac392698c64cc5ff4ce79d8d95abc199a8dc",
+                  "target_policy_sha256": "4b7922ad7badb443556d82ea0c624c259da7b75e85f92f87cdab216f95cab53a",
+                  "water_after": 88620,
+                  "water_before": 88740
+                },
+                "outgoing_source": {
+                  "clipped_gas_amount": 0,
+                  "clipped_gas_labels": 0,
+                  "clipped_inertial_cells": 0,
+                  "clipped_material_cells": 0,
+                  "clipped_materials": {},
+                  "clipped_pressure_flow_cells": 0,
+                  "clipped_thermal_cells": 0,
+                  "clipped_visible_water": 0,
+                  "clipped_water_overfill": 0,
+                  "discarded_gas_amount": 0,
+                  "discarded_inertial_cells": 0,
+                  "discarded_pressure_flow_cells": 0,
+                  "discarded_water_overfill": 0,
+                  "halo_normalization_consumed": 0,
+                  "halo_normalization_produced": 0,
+                  "normalization_consumed": 0,
+                  "normalization_produced": 0,
+                  "preserved_gas_amount": 0,
+                  "preserved_halo_cells": 21,
+                  "preserved_halo_materials": {
+                    "3": 21
+                  },
+                  "preserved_halo_visible_water": 5291,
+                  "preserved_inertial_cells": 0,
+                  "preserved_water_overfill": 120,
+                  "requested": false,
+                  "source_policy_sha256": "f67a65e86df64b4353ec62f20164ac392698c64cc5ff4ce79d8d95abc199a8dc",
+                  "target_policy_sha256": "f67a65e86df64b4353ec62f20164ac392698c64cc5ff4ce79d8d95abc199a8dc",
+                  "water_after": 88740,
+                  "water_before": 88740
+                },
+                "outgoing_status": "Liquid settings applied. Water quantity 88740 → 88620. Kept 21 cells outside the canvas (21 water), including 5291 visible Water units. Discarded 120 pressure overfill units, pressure flow in 102 cells.",
+                "side": 512,
+                "status": "Placed Midge #1 at (200.0, 200.0) (session 1). Water quantity 88740 → 88740. Kept 21 cells outside the canvas (21 water), including 5291 visible Water units.",
+                "switch": {
+                  "clipped_gas_amount": 0,
+                  "clipped_gas_labels": 0,
+                  "clipped_inertial_cells": 0,
+                  "clipped_material_cells": 0,
+                  "clipped_materials": {},
+                  "clipped_pressure_flow_cells": 0,
+                  "clipped_thermal_cells": 0,
+                  "clipped_visible_water": 0,
+                  "clipped_water_overfill": 0,
+                  "discarded_gas_amount": 0,
+                  "discarded_inertial_cells": 0,
+                  "discarded_pressure_flow_cells": 0,
+                  "discarded_water_overfill": 0,
+                  "halo_normalization_consumed": 0,
+                  "halo_normalization_produced": 0,
+                  "normalization_consumed": 0,
+                  "normalization_produced": 0,
+                  "preserved_gas_amount": 0,
+                  "preserved_halo_cells": 21,
+                  "preserved_halo_materials": {
+                    "3": 21
+                  },
+                  "preserved_halo_visible_water": 5291,
+                  "preserved_inertial_cells": 0,
+                  "preserved_water_overfill": 0,
+                  "requested": true,
+                  "source_policy_sha256": "4b7922ad7badb443556d82ea0c624c259da7b75e85f92f87cdab216f95cab53a",
+                  "target_policy_sha256": "f67a65e86df64b4353ec62f20164ac392698c64cc5ff4ce79d8d95abc199a8dc",
+                  "water_after": 88740,
+                  "water_before": 88740
+                },
+                "workers": {
+                  "collection_usec": 20,
+                  "completed_tick": 17,
+                  "native_tick_ms": 0.405447,
+                  "phase_jobs": [
+                    1,
+                    1,
+                    1,
+                    1
+                  ],
+                  "sampled_usec": 7619005,
+                  "scope": "maximum distinct task-claiming participants in one phase dispatch of this completed tick; an inline nonempty phase counts the owner as one; not utilization or simultaneous execution",
+                  "sequence": 2,
+                  "worker_capacity": 6,
+                  "workers_observed": 1,
+                  "world_generation": 3
+                }
+              },
+              {
+                "edge": "bottom",
+                "edit": {
+                  "clipped_gas_amount": 0,
+                  "clipped_gas_labels": 0,
+                  "clipped_inertial_cells": 0,
+                  "clipped_material_cells": 0,
+                  "clipped_materials": {},
+                  "clipped_pressure_flow_cells": 0,
+                  "clipped_thermal_cells": 0,
+                  "clipped_visible_water": 0,
+                  "clipped_water_overfill": 0,
+                  "discarded_gas_amount": 0,
+                  "discarded_inertial_cells": 0,
+                  "discarded_pressure_flow_cells": 0,
+                  "discarded_water_overfill": 0,
+                  "halo_normalization_consumed": 0,
+                  "halo_normalization_produced": 0,
+                  "normalization_consumed": 0,
+                  "normalization_produced": 0,
+                  "preserved_gas_amount": 0,
+                  "preserved_halo_cells": 93,
+                  "preserved_halo_materials": {
+                    "3": 53,
+                    "14": 40
+                  },
+                  "preserved_halo_visible_water": 13443,
+                  "preserved_inertial_cells": 0,
+                  "preserved_water_overfill": 0,
+                  "requested": false,
+                  "source_policy_sha256": "f67a65e86df64b4353ec62f20164ac392698c64cc5ff4ce79d8d95abc199a8dc",
+                  "target_policy_sha256": "f67a65e86df64b4353ec62f20164ac392698c64cc5ff4ce79d8d95abc199a8dc",
+                  "water_after": 112455,
+                  "water_before": 112455
+                },
+                "outgoing": {
+                  "clipped_gas_amount": 0,
+                  "clipped_gas_labels": 0,
+                  "clipped_inertial_cells": 0,
+                  "clipped_material_cells": 0,
+                  "clipped_materials": {},
+                  "clipped_pressure_flow_cells": 0,
+                  "clipped_thermal_cells": 0,
+                  "clipped_visible_water": 0,
+                  "clipped_water_overfill": 0,
+                  "discarded_gas_amount": 0,
+                  "discarded_inertial_cells": 0,
+                  "discarded_pressure_flow_cells": 19,
+                  "discarded_water_overfill": 0,
+                  "halo_normalization_consumed": 0,
+                  "halo_normalization_produced": 0,
+                  "normalization_consumed": 0,
+                  "normalization_produced": 0,
+                  "preserved_gas_amount": 0,
+                  "preserved_halo_cells": 93,
+                  "preserved_halo_materials": {
+                    "3": 53,
+                    "14": 40
+                  },
+                  "preserved_halo_visible_water": 13444,
+                  "preserved_inertial_cells": 0,
+                  "preserved_water_overfill": 0,
+                  "requested": true,
+                  "source_policy_sha256": "f67a65e86df64b4353ec62f20164ac392698c64cc5ff4ce79d8d95abc199a8dc",
+                  "target_policy_sha256": "4b7922ad7badb443556d82ea0c624c259da7b75e85f92f87cdab216f95cab53a",
+                  "water_after": 112455,
+                  "water_before": 112455
+                },
+                "outgoing_source": {
+                  "clipped_gas_amount": 0,
+                  "clipped_gas_labels": 0,
+                  "clipped_inertial_cells": 0,
+                  "clipped_material_cells": 0,
+                  "clipped_materials": {},
+                  "clipped_pressure_flow_cells": 0,
+                  "clipped_thermal_cells": 0,
+                  "clipped_visible_water": 0,
+                  "clipped_water_overfill": 0,
+                  "discarded_gas_amount": 0,
+                  "discarded_inertial_cells": 0,
+                  "discarded_pressure_flow_cells": 0,
+                  "discarded_water_overfill": 0,
+                  "halo_normalization_consumed": 0,
+                  "halo_normalization_produced": 0,
+                  "normalization_consumed": 0,
+                  "normalization_produced": 0,
+                  "preserved_gas_amount": 0,
+                  "preserved_halo_cells": 93,
+                  "preserved_halo_materials": {
+                    "3": 53,
+                    "14": 40
+                  },
+                  "preserved_halo_visible_water": 13444,
+                  "preserved_inertial_cells": 0,
+                  "preserved_water_overfill": 0,
+                  "requested": false,
+                  "source_policy_sha256": "f67a65e86df64b4353ec62f20164ac392698c64cc5ff4ce79d8d95abc199a8dc",
+                  "target_policy_sha256": "f67a65e86df64b4353ec62f20164ac392698c64cc5ff4ce79d8d95abc199a8dc",
+                  "water_after": 112455,
+                  "water_before": 112455
+                },
+                "outgoing_status": "Liquid settings applied. Water quantity 112455 → 112455. Kept 93 cells outside the canvas (53 water, 40 dust), including 13444 visible Water units. Discarded pressure flow in 19 cells.",
+                "side": 2048,
+                "status": "Placed Midge #1 at (200.0, 200.0) (session 4). Water quantity 112455 → 112455. Kept 93 cells outside the canvas (53 water, 40 dust), including 13443 visible Water units.",
+                "switch": {
+                  "clipped_gas_amount": 0,
+                  "clipped_gas_labels": 0,
+                  "clipped_inertial_cells": 0,
+                  "clipped_material_cells": 0,
+                  "clipped_materials": {},
+                  "clipped_pressure_flow_cells": 0,
+                  "clipped_thermal_cells": 0,
+                  "clipped_visible_water": 0,
+                  "clipped_water_overfill": 0,
+                  "discarded_gas_amount": 0,
+                  "discarded_inertial_cells": 0,
+                  "discarded_pressure_flow_cells": 0,
+                  "discarded_water_overfill": 0,
+                  "halo_normalization_consumed": 0,
+                  "halo_normalization_produced": 0,
+                  "normalization_consumed": 0,
+                  "normalization_produced": 0,
+                  "preserved_gas_amount": 0,
+                  "preserved_halo_cells": 93,
+                  "preserved_halo_materials": {
+                    "3": 53,
+                    "14": 40
+                  },
+                  "preserved_halo_visible_water": 13443,
+                  "preserved_inertial_cells": 0,
+                  "preserved_water_overfill": 0,
+                  "requested": true,
+                  "source_policy_sha256": "4b7922ad7badb443556d82ea0c624c259da7b75e85f92f87cdab216f95cab53a",
+                  "target_policy_sha256": "f67a65e86df64b4353ec62f20164ac392698c64cc5ff4ce79d8d95abc199a8dc",
+                  "water_after": 112455,
+                  "water_before": 112455
+                },
+                "workers": {
+                  "collection_usec": 27,
+                  "completed_tick": 17,
+                  "native_tick_ms": 0.599271,
+                  "phase_jobs": [
+                    0,
+                    0,
+                    1,
+                    1
+                  ],
+                  "sampled_usec": 11482728,
+                  "scope": "maximum distinct task-claiming participants in one phase dispatch of this completed tick; an inline nonempty phase counts the owner as one; not utilization or simultaneous execution",
+                  "sequence": 5,
+                  "worker_capacity": 6,
+                  "workers_observed": 1,
+                  "world_generation": 8
+                }
+              }
+            ],
+            "checks": 70,
+            "failures": []
+          },
+          "failures": [],
+          "checks": 70
+        }
+      ]
+    }
+  }
+}

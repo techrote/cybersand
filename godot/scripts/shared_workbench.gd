@@ -2,11 +2,13 @@ extends VBoxContainer
 
 const Setup = preload("res://scripts/workbench_setup.gd")
 const Fleet = Setup.Fleet
+const Actors = Setup.Actors
+const Usables = preload("res://scripts/usable_catalog.gd")
 const Preferences = preload("res://scripts/flyer_preferences.gd")
 const OptionsPanel = preload("res://scripts/flyer_options_panel.gd")
 const RESPONSE_LABELS := ["LA-SA · selective arrivals","LA · all events","LA · events off","RFT · fixed 20"]
 const ZOOMS := [Vector2i(240,135),Vector2i(480,270),Vector2i(960,540)]
-const TOOL_NAMES := ["Paint","Place body","Select body","Move selected","Place source"]
+const TOOL_NAMES := ["Paint","Place body","Select body","Move selected","Place source","Use equipment"]
 var host: Control
 var applied: Dictionary = {}
 var pilot_slot := -1
@@ -23,6 +25,7 @@ var _liquid_action := false
 var _pending_request_serial := 0
 var _instances := OptionButton.new()
 var _material := OptionButton.new()
+var _source_material := OptionButton.new()
 var _response := OptionButton.new()
 var _camera := OptionButton.new()
 var _brush := SpinBox.new()
@@ -55,6 +58,14 @@ var _runtime_profiles: Dictionary = {}
 var _pending_profile: Dictionary = {}
 var _options_resume: bool = false
 var _profile_error: String = ""
+var _usable := OptionButton.new()
+var _usable_power := SpinBox.new()
+var _usable_status := Label.new()
+var _pending_usable: Dictionary = {}
+var _pending_usables: Dictionary = {}
+var _pending_preserve: bool = false
+var _usable_trigger := false
+var _usable_alternate := false
 
 func _row(parent: Control) -> HFlowContainer:
 	var row := HFlowContainer.new()
@@ -119,9 +130,9 @@ func setup(controller: Control, recovery: Dictionary = {}) -> void:
 	theme = compact
 	var row := _row(self)
 	_label(row,"Pilot")
-	_picker(row,_roster,["Choose flyer…"],_roster_changed)
+	_picker(row,_roster,["Choose actor…"],_roster_changed)
 	_fill_roster()
-	_button(row,"Flyer options…",open_flyer_options)
+	_button(row,"Actor options…",open_flyer_options)
 	_button(row,"Play / Pause [P]",toggle_pause)
 	_button(row,"Step [.]",step_once)
 	_button(row,"Reset selected [R]",reset_selected)
@@ -133,9 +144,8 @@ func setup(controller: Control, recovery: Dictionary = {}) -> void:
 	_button(row,"Details",func() -> void: _details.visible = not _details.visible)
 	_button(row,"Menu [F2]",func() -> void: get_tree().change_scene_to_file("res://feature_launcher.tscn"))
 	row = _row(self)
-	_picker(row,_tool,TOOL_NAMES)
-	var names: Array = Fleet.names()
-	names.append("Passive barrel")
+	_picker(row,_tool,TOOL_NAMES,func(_index: int) -> void: _cancel())
+	var names: Array = Actors.names()
 	_label(row,"Place model")
 	_picker(row,_model,names)
 	_model.tooltip_text = "Model for Place at X/Y, cursor placement, and Replace selected. Use Pilot to switch immediately."
@@ -145,11 +155,29 @@ func setup(controller: Control, recovery: Dictionary = {}) -> void:
 	_button(row,"Focus",focus_selected)
 	_button(row,"Replace with model",replace_selected)
 	_button(row,"Remove",remove_selected)
-	_picker(row,_material,Setup.MATERIAL_NAMES,func(i: int) -> void:
-		if not applied.is_empty(): applied.material = Setup.MATERIALS[i])
+	_label(row,"Usable")
+	var usable_names: Array = ["None"]
+	for index: int in Usables.count(): usable_names.append(Usables.name_for(index))
+	_picker(row,_usable,usable_names,func(_index: int) -> void: request_usable())
+	_spin(row,"Power",_usable_power,0.0,1.0,0.05,1.0)
+	_usable_power.value_changed.connect(func(_value: float) -> void: request_usable())
+	_usable_status.text = "M use · N drop · U attach"
+	row.add_child(_usable_status)
+	var material_names: Array = Setup.MATERIAL_NAMES.duplicate()
+	var palette := Setup.paint_materials()
+	for index: int in range(Setup.MATERIALS.size(),palette.size()): material_names.append(host.material_name(int(palette[index])))
+	_material.fit_to_longest_item = false
+	_material.custom_minimum_size.x = 130
+	_material.clip_text = true
+	_picker(row,_material,material_names,func(i: int) -> void:
+		if not applied.is_empty(): applied.material = Setup.paint_materials()[i]
+		if i < 9: _source_material.select(i))
 	_spin(row,"Brush",_brush,2,24,1,8)
 	_brush.value_changed.connect(func(value: float) -> void:
 		if not applied.is_empty(): applied.brush = int(value))
+	_label(row,"Powder source")
+	_picker(row,_source_material,Setup.MATERIAL_NAMES.slice(0,9))
+	_source_material.tooltip_text = "Powder for the next source placement. Painting can select other materials independently."
 	_button(row,"Source at X/Y",func() -> void: place_source(Vector2i(entered_position())))
 	_button(row,"Burst [B]",burst)
 	_stream.text = "Stream ≤600 ticks"
@@ -212,18 +240,18 @@ func setup(controller: Control, recovery: Dictionary = {}) -> void:
 
 func _fill_roster() -> void:
 	_roster.clear()
-	_roster.add_item("Observer / choose flyer",0)
-	for index: int in range(Fleet.count()): _roster.add_item(Fleet.names()[index],index+1)
-	_roster.tooltip_text = "Pilot a flyer. [ / ] cycles models; Tab cycles placed instances. Number keys are reserved for material/usables selection."
+	_roster.add_item("Observer / choose actor",0)
+	var ids := Actors.pilot_ids()
+	for index: int in ids.size(): _roster.add_item(Actors.name_for(ids[index]),index+1)
+	_roster.tooltip_text = "Pilot an actor. [ / ] cycles models; Tab cycles placed instances. Number keys are reserved for material/usables selection."
 
 func _configure_preferences() -> void:
 	var models := {}
-	for index: int in Fleet.count(): models[Fleet.stable_id(index)] = Fleet.authoring_record(index).capabilities
+	for id: String in Actors.pilot_ids(): models[id] = _caps(id)
 	preferences.configure_models(models)
 
 func _caps(model: String) -> Dictionary:
-	var index := Fleet.index_for_id(model)
-	return Fleet.authoring_record(index).capabilities if index >= 0 else {}
+	return Actors.capabilities(model)
 
 func _profile(model: String) -> Dictionary:
 	var value: Dictionary = _runtime_profiles[model].duplicate(true) if _runtime_profiles.has(model) else preferences.profile(model)
@@ -243,22 +271,79 @@ func _profiled_instance(model: String, id: int, pos: Vector2) -> Dictionary:
 func controls_blocked() -> bool:
 	return _options_panel != null and _options_panel.visible
 
+func usable_tool_active() -> bool:
+	return _tool.selected == 5 and Actors.kind(str(actor(applied,selected_id()).get("model",""))) == "mechanical"
+
+func usable_selection() -> Dictionary:
+	var selected := actor(applied,selected_id())
+	if not _pending_usable.is_empty() and int(_pending_usable.instance_id) == selected_id():
+		return {"usable_index":int(_pending_usable.index),"power":float(_pending_usable.power)}
+	return {"usable_index":int(selected.get("usable_index",-1)),"power":float(selected.get("usable_power",1.0))}
+
+func sample_usable_buttons() -> Dictionary:
+	var active := Actors.kind(str(actor(applied,selected_id()).get("model",""))) == "mechanical"
+	return {"trigger":active and ((_usable_trigger and usable_tool_active()) or Input.is_physical_key_pressed(KEY_M) or Input.is_key_pressed(KEY_M)),
+		"alternate":active and _usable_alternate and usable_tool_active(),
+		"drop":active and (Input.is_physical_key_pressed(KEY_N) or Input.is_key_pressed(KEY_N)),
+		"attach":active and (Input.is_physical_key_pressed(KEY_U) or Input.is_key_pressed(KEY_U))}
+
+func request_usable() -> bool:
+	if applied.is_empty() or busy(): return false
+	var selected := actor(applied,selected_id())
+	if Actors.kind(str(selected.get("model",""))) != "mechanical": return refuse("This actor has no equipment mount.")
+	var index: int = _usable.selected-1
+	var power: float = _usable_power.value
+	if not host.workbench_select_usable(selected_id(),index,power):
+		_usable.select(int(selected.get("usable_index",-1))+1)
+		_usable_status.text = "Retool refused; retain the held chassis and release input."
+		return false
+	_pending_usable = {"instance_id":selected_id(),"index":index,"power":power}
+	_pending_usables[selected_id()] = _pending_usable.duplicate(true)
+	_usable_status.text = "Retooling pending · play/step to acknowledge"
+	return true
+
+func _poll_usable() -> void:
+	if _usable.disabled or applied.is_empty(): return
+	var observed: Dictionary = host.workbench_equipment_observation(selected_id())
+	if observed.is_empty(): return
+	var acknowledged_choice := false
+	if not _pending_usable.is_empty() and int(_pending_usable.instance_id) == selected_id():
+		if int(observed.get("usable_index",-2)) == int(_pending_usable.index) and not bool(observed.get("pending",false)):
+			var selected := actor(applied,selected_id())
+			selected.usable_index = int(_pending_usable.index)
+			selected.usable_power = float(_pending_usable.power)
+			_usable.select(selected.usable_index+1)
+			_usable_power.set_value_no_signal(selected.usable_power)
+			acknowledged_choice = true
+			_pending_usables.erase(selected_id())
+			_pending_usable.clear()
+		else:
+			_usable_status.text = "Retool pending · %s" % str(observed.get("last_result",observed.get("state","")))
+			return
+	if not acknowledged_choice and not bool(observed.get("pending",false)) and int(observed.get("usable_index",-2)) >= -1 and int(observed.get("usable_index",-2)) < Usables.count():
+		var selected := actor(applied,selected_id())
+		selected.usable_index = int(observed.usable_index)
+		selected.usable_power = float(observed.get("power",selected.get("usable_power",1.0)))
+		_usable.select(selected.usable_index+1)
+		_usable_power.set_value_no_signal(selected.usable_power)
+	_usable_status.text = "%s · charge %.0f · M use / N drop / U attach" % [str(observed.get("state","")),float(observed.get("charge",0.0))]
+
 func sample_controls() -> Dictionary:
 	if _active_profile.is_empty(): return Preferences.from_state(Preferences.default_bindings(),{})
-	return Preferences.sample(_active_profile.bindings,true,bool(_active_caps.get("reverse_thrust",true)))
+	return Preferences.sample(_active_profile.bindings,true,bool(_active_caps.get("reverse_thrust",true)),bool(_active_caps.get("legacy_secondary",false)))
 
 func open_flyer_options() -> bool:
 	if not _editable(): return false
 	var a := actor(applied,selected_id())
-	if a.is_empty() or a.model == Setup.BARREL: return refuse("Choose a flyer before editing its controls.")
+	if a.is_empty() or a.model == Setup.BARREL: return refuse("Choose a controllable actor before editing its controls.")
 	_options_resume = not host.paused
 	if _options_resume: toggle_pause()
 	_cancel()
 	var profile := _profile(a.model)
 	profile.options = a.options.duplicate(true)
 	profile.tuning = a.get("customization",Preferences.tuning_defaults(_caps(a.model))).duplicate(true)
-	profile.fire_enabled = fire_enabled
-	_options_panel.open_profile(Fleet.names()[Fleet.index_for_id(a.model)],profile,_caps(a.model))
+	profile.fire_enabled = fire_enabled if Actors.kind(str(a.model)) == "flyer" else false
+	_options_panel.open_profile(Actors.name_for(a.model),profile,_caps(a.model))
 	return true
 
 func _options_closed() -> void:
@@ -315,14 +400,14 @@ func _fire_changed(enabled: bool) -> void:
 
 func _sync_roster() -> void:
 	var selected := actor(applied,selected_id())
-	_roster.select(Fleet.index_for_id(str(selected.get("model","")))+1)
+	_roster.select(Actors.pilot_ids().find(str(selected.get("model","")))+1)
 
 
 func _roster_changed(index: int) -> void:
 	# The popup displays the applied pilot until owner acknowledgement.
 	_sync_roster()
 	if index == 0: select_instance(0)
-	else: pilot_model(Fleet.stable_id(index-1))
+	else: pilot_model(Actors.pilot_ids()[index-1])
 
 
 func _commit_field() -> void:
@@ -334,7 +419,7 @@ func selected_id() -> int:
 	return int(applied.get("selected",0))
 
 func model_choice() -> String:
-	return Fleet.stable_id(_model.selected) if Fleet.valid_index(_model.selected) else Setup.BARREL
+	return Actors.ids()[_model.selected] if _model.selected >= 0 and _model.selected < Actors.ids().size() else Setup.BARREL
 
 func entered_position() -> Vector2:
 	return Vector2(_position[0].value,_position[1].value)
@@ -345,7 +430,10 @@ func actor(setup_data: Dictionary, id: int) -> Dictionary:
 	return {}
 
 func body_state(id: int) -> Dictionary:
-	if id <= 0 or host.physical_actor_session == null: return {}
+	if id <= 0: return {}
+	var definition := actor(applied,id)
+	if Actors.kind(str(definition.get("model",""))) == "material": return host.workbench_material_player_state(id)
+	if host.physical_actor_session == null: return {}
 	return host.physical_actor_session.workbench_actor_state(id)
 
 func refuse(reason: String) -> bool:
@@ -382,22 +470,27 @@ func apply(candidate: Dictionary, preserve: bool = false, reset_id: int = 0,
 	# Retained authoring transfers the current native cells. Stamp replay and
 	# its rectangle limit apply only when constructing an authored start.
 	var definitions := Setup.physical_definitions(candidate)
+	var material_players := Setup.material_definitions(candidate)
 	if preserve:
 		for a: Dictionary in definitions:
-			if int(a.instance_id) == reset_id: continue
+			if int(a.instance_id) == reset_id:
+				if host.physical_actor_session != null:
+					var reset_motion: Dictionary = host.physical_actor_session.export_workbench_reset_motion(int(a.instance_id),a.position)
+					if not reset_motion.is_empty(): a.retained_motion = reset_motion
+				continue
 			var state := body_state(int(a.instance_id))
 			if not state.is_empty():
 				a.position = state.position
-				a.retained_motion = {"rotation":state.rotation,"linear_velocity":state.linear_velocity,
-					"angular_velocity":state.angular_velocity}
+				a.retained_motion = host.physical_actor_session.export_workbench_motion(int(a.instance_id))
 		_saved_view = {"origin":host.camera_origin,"size":host.current_view_size}
 	else:
 		_saved_view.clear()
 	_cancel()
 	var ok: bool = host.workbench_apply(candidate,definitions,runs,Setup.extent_of(candidate),
-		PackedInt32Array(candidate.liquid_policy),candidate.normalize,int(candidate.rule_radius),str(candidate.response),preserve,convert_liquid_inventory,resume_play)
+		PackedInt32Array(candidate.liquid_policy),candidate.normalize,int(candidate.rule_radius),str(candidate.response),preserve,convert_liquid_inventory,resume_play,material_players)
 	if not ok: return refuse(host.microscenario_error)
 	_pending_request_serial = int(host.pending_microscenario_apply.serial)
+	_pending_preserve = preserve
 	return true
 
 func new_canvas() -> bool:
@@ -405,17 +498,24 @@ func new_canvas() -> bool:
 	if not applied.is_empty() and not host.simulation_worker.has_failed() and not _editable(): return false
 	var size := Vector2i(int(_extent[0].value),int(_extent[1].value))
 	var candidate := Setup.fresh(_liquids.bridge.default_liquid_policy(),size)
+	candidate.rule_radius = int(applied.get("rule_radius",2))
+	var validation: Dictionary = _liquids.bridge.validate_liquid_policy(PackedInt32Array(candidate.liquid_policy))
+	if not validation.get("accepted",false): return refuse("Default liquid policy was not admitted.")
+	candidate.rule_radius = maxi(candidate.rule_radius,int(validation.get("receipt",{}).get("minimum_rule_radius",2)))
 	if host.simulation_worker.has_failed(): return host.workbench_restart(candidate)
 	return apply(candidate)
 
 func installed(candidate: Dictionary) -> void:
 	_pending_request_serial = 0
 	applied = Setup.normalized(candidate)
+	if not _pending_preserve: _pending_usables.clear()
+	else:
+		for id: int in _pending_usables.keys():
+			if Actors.kind(str(actor(applied,id).get("model",""))) != "mechanical": _pending_usables.erase(id)
 	_configure_preferences()
 	var roster_choice := _model.selected
 	_model.clear()
-	for name_text: String in Fleet.names(): _model.add_item(name_text)
-	_model.add_item("Passive barrel")
+	for name_text: String in Actors.names(): _model.add_item(name_text)
 	_model.select(clampi(roster_choice,0,_model.item_count-1))
 	_fill_roster()
 	_reload_rollback.clear()
@@ -439,7 +539,8 @@ func installed(candidate: Dictionary) -> void:
 	_extent[0].value = size.x
 	_extent[1].value = size.y
 	for axis: int in 2: _position[axis].max_value = size[axis]-1
-	_material.select(Setup.MATERIALS.find(int(applied.material)))
+	_material.select(Setup.paint_materials().find(int(applied.material)))
+	_source_material.select(Setup.MATERIALS.find(int(applied.source[2])) if not applied.source.is_empty() else 0)
 	_brush.set_value_no_signal(applied.brush)
 	_requested_response = applied.response
 	_response.select(Setup.RESPONSES.find(_requested_response))
@@ -467,7 +568,7 @@ func installed(candidate: Dictionary) -> void:
 		_liquid_action = false
 		message = "Liquid settings applied."
 	else:
-		message = "Choose a flyer to pilot, or use Place model to add an independent body."
+		message = "Choose an actor to pilot, or use Place model to add an independent instance."
 	var receipt: Dictionary = host.tower_context.get("liquid_construction_receipt",{}).get("workbench_conversion",{})
 	message += _inventory_report(receipt,rounded_on_apply)
 	if not _pending_profile.is_empty():
@@ -576,6 +677,16 @@ func select_instance(id: int, installing: bool = false) -> bool:
 	if not a.is_empty():
 		_position[0].value = a.spawn[0]
 		_position[1].value = a.spawn[1]
+	_pending_usable = _pending_usables.get(id,{}).duplicate(true)
+	_usable.select(int(_pending_usable.get("index",a.get("usable_index",-1)))+1)
+	_usable_power.set_value_no_signal(float(_pending_usable.get("power",a.get("usable_power",1.0))))
+	_usable.disabled = Actors.kind(str(a.get("model",""))) != "mechanical"
+	_usable_power.editable = not _usable.disabled
+	_usable_status.text = "M use · N drop · U attach" if not _usable.disabled else "No equipment mount"
+	if not _pending_usable.is_empty(): _usable_status.text = "Retooling pending · play/step to acknowledge"
+	_fire.disabled = Actors.kind(str(a.get("model",""))) != "flyer"
+	for key: String in _fields:
+		_fields[key].editable = Actors.kind(str(a.get("model",""))) != "material" and not (Actors.kind(str(a.get("model",""))) == "mechanical" and key == "boost_multiplier")
 	_sync_roster()
 	if not installing:
 		_reveal_selected()
@@ -598,7 +709,7 @@ func _change_actor(candidate: Dictionary, id: int, label: String) -> bool:
 
 func pilot_model(model: String) -> bool:
 	if busy() or applied.is_empty(): return refuse("Wait for the current owner transaction.")
-	if not Fleet.valid_index(Fleet.index_for_id(model)): return refuse("Unknown pilot model.")
+	if model not in Actors.pilot_ids(): return refuse("Unknown pilot model.")
 	var current := actor(applied,selected_id())
 	if current.get("model","") == model: return select_instance(selected_id())
 	for other: Dictionary in applied.actors:
@@ -628,7 +739,7 @@ func _replace_actor(model: String) -> bool:
 	var replacement := _profiled_instance(model,int(next.next_id),Setup.point(old.spawn))
 	# A saved model profile takes precedence. On the first visit, keep the
 	# accepted comparison tuning; advanced values remain model-specific.
-	if model == Setup.BARREL or (not preferences.has_saved(model) and not _runtime_profiles.has(model)):
+	if model == Setup.BARREL or (Actors.kind(model) == "flyer" and Actors.kind(str(old.model)) == "flyer" and not preferences.has_saved(model) and not _runtime_profiles.has(model)):
 		replacement.options = old.options.duplicate(true)
 	if model != Setup.BARREL: next.fire = _profile(model).fire_enabled
 	next.actors[next.actors.find(old)] = replacement
@@ -668,6 +779,11 @@ func move_selected() -> bool:
 	if selected_id() == 0: return refuse("Select an instance first.")
 	var next := applied.duplicate(true)
 	var pos := entered_position()
+	if Actors.kind(str(actor(next,selected_id()).model)) == "material":
+		_cancel()
+		if not host.workbench_reset_material_player(selected_id(),pos): return refuse("Native field move was refused.")
+		message = "Field centre moved; existing material retained. Save reset spawn separately."
+		return true
 	actor(next,selected_id()).spawn = [pos.x,pos.y]
 	return _change_actor(next,selected_id(),"Moved")
 
@@ -675,6 +791,12 @@ func reset_selected() -> bool:
 	if host.simulation_worker.has_failed():
 		return host.workbench_restart(applied)
 	if selected_id() == 0: return refuse("Choose a flyer under Pilot or select an instance to reset.")
+	var selected := actor(applied,selected_id())
+	if Actors.kind(str(selected.model)) == "material":
+		_cancel()
+		if not host.workbench_reset_material_player(selected_id(),Setup.point(selected.spawn)): return refuse("Native field reset was refused.")
+		message = "Field reset to saved spawn; existing material retained."
+		return true
 	return _change_actor(applied,selected_id(),"Reset")
 
 func restore_start() -> bool:
@@ -687,14 +809,14 @@ func apply_settings() -> bool:
 	var next := applied.duplicate(true)
 	next.response = _requested_response
 	var a := actor(next,selected_id())
-	if not a.is_empty():
+	if not a.is_empty() and Actors.kind(str(a.model)) != "material":
 		for key: String in _fields: a.options[key] = _fields[key].value
 	if not apply(next,true,0,false,not host.paused): return false
 	if not a.is_empty() and a.model != Setup.BARREL:
 		var profile := _profile(a.model)
 		profile.options = a.options.duplicate(true)
 		profile.tuning = a.get("customization",Preferences.tuning_defaults(_caps(a.model))).duplicate(true)
-		profile.fire_enabled = fire_enabled
+		profile.fire_enabled = fire_enabled if Actors.kind(str(a.model)) == "flyer" else false
 		_pending_profile = {"model":a.model,"value":profile}
 	return true
 
@@ -718,7 +840,7 @@ func reload_definitions(manifest: String = Fleet.DEFAULT_MANIFEST) -> bool:
 	if not Fleet.reload_definitions(manifest): return refuse(Fleet.last_error())
 	var next := applied.duplicate(true)
 	for a: Dictionary in next.actors:
-		if a.model != Setup.BARREL: a.hash = Fleet.definition_hash(Fleet.index_for_id(a.model))
+		if a.model != Setup.BARREL: a.hash = Actors.definition_hash(a.model)
 	if not apply(next,true,selected_id(),false,not host.paused):
 		Fleet.restore_registry(previous)
 		return false
@@ -757,6 +879,8 @@ func _cancel() -> void:
 
 func cancel_stroke() -> void:
 	_drag_button = 0
+	_usable_trigger = false
+	_usable_alternate = false
 	_pan = false
 	_last_cell = Vector2i(-1,-1)
 	_stream.set_pressed_no_signal(false)
@@ -780,7 +904,7 @@ func step_once() -> bool:
 
 func paint(pos: Vector2i, material: int) -> bool:
 	if busy() or applied.is_empty(): return false
-	if material not in Setup.MATERIALS or not Rect2i(Vector2i.ZERO,Setup.extent_of(applied)).has_point(pos): return false
+	if material not in Setup.paint_materials() or not Rect2i(Vector2i.ZERO,Setup.extent_of(applied)).has_point(pos): return false
 	var stamp := [pos.x,pos.y,int(applied.brush),material]
 	var new_stamp: bool = applied.edits.is_empty() or applied.edits.back() != stamp
 	if new_stamp and applied.edits.size() >= Setup.MAX_STAMPS: return refuse("Starting paint capacity exhausted.")
@@ -800,10 +924,11 @@ func paint(pos: Vector2i, material: int) -> bool:
 func place_source(pos: Vector2i) -> bool:
 	if applied.is_empty() or busy(): return refuse("Wait for the session.")
 	var next := applied.duplicate(true)
-	next.source = [pos.x,pos.y,int(applied.material)]
+	var source_material: int = Setup.MATERIALS[_source_material.selected]
+	next.source = [pos.x,pos.y,source_material]
 	var error := Setup.validate(next)
 	if not error.is_empty(): return refuse(error)
-	if not host.workbench_source(pos,int(applied.material),"configure"): return refuse("Worker refused source.")
+	if not host.workbench_source(pos,source_material,"configure"): return refuse("Worker refused source.")
 	applied.source = next.source
 	_stream.set_pressed_no_signal(false)
 	return true
@@ -868,9 +993,10 @@ func _input(event: InputEvent) -> void:
 		var next := posmod(current+direction,applied.actors.size())+1
 		select_instance(_instances.get_item_id(next))
 	elif event.keycode in [KEY_BRACKETLEFT,KEY_BRACKETRIGHT]:
-		var current: int = Fleet.index_for_id(str(actor(applied,selected_id()).get("model","")))
+		var pilots := Actors.pilot_ids()
+		var current: int = pilots.find(str(actor(applied,selected_id()).get("model","")))
 		var direction: int = -1 if event.keycode == KEY_BRACKETLEFT else 1
-		pilot_model(Fleet.stable_id(posmod(current+direction,Fleet.count())))
+		pilot_model(pilots[posmod(current+direction,pilots.size())])
 	else: return
 	get_viewport().set_input_as_handled()
 
@@ -896,6 +1022,13 @@ func _world_input(event: InputEvent) -> void:
 			return
 		if event.button_index not in [MOUSE_BUTTON_LEFT,MOUSE_BUTTON_RIGHT]: return
 		_commit_field()
+		if _tool.selected == 5:
+			if usable_tool_active():
+				if event.button_index == MOUSE_BUTTON_LEFT: _usable_trigger = event.pressed
+				else: _usable_alternate = event.pressed
+				host._publish_workbench_keyboard()
+			get_viewport().set_input_as_handled()
+			return
 		_drag_button = event.button_index if event.pressed else 0
 		_last_cell = Vector2i(-1,-1)
 	elif event is InputEventMouseMotion:
@@ -924,6 +1057,7 @@ func _world_input(event: InputEvent) -> void:
 
 func _process(_delta: float) -> void:
 	if host == null: return
+	_poll_usable()
 	if step_pending:
 		if host.simulation_worker.has_failed() or not str(host.tower_context.get("workbench_refusal","")).is_empty():
 			step_requested = false
@@ -982,16 +1116,18 @@ func _process(_delta: float) -> void:
 		if host.physical_actor_session != null:
 			var ledger: Dictionary = host.rapier_bridge.last_application
 			for entry: Dictionary in ledger.get("bodies",[]):
-				if int(entry.id)-1 == host.physical_actor_session.slot_for_instance(selected_id()):
+				if int(entry.get("instance_id",-1)) == selected_id():
 					delivery = entry
 					break
 			if delivery.is_empty(): delivery = {"refusal":ledger.get("refusal","pending")}
 		var actual := "Observer" if selected.is_empty() else "%s #%d · mass %.3f · inertia %.3f · force ceiling %.2f · torque ceiling %.2f" % [
-			selected.model,selected_id(),selected.mass,selected.inertia,selected.force_limit,selected.torque_limit]
+			selected.get("model",""),selected_id(),selected.get("mass",0.0),selected.get("inertia",0.0),selected.get("force_limit",0.0),selected.get("torque_limit",0.0)]
+		if Actors.kind(str(actor(applied,selected_id()).get("model",""))) == "material":
+			actual = "%s #%d · native material field · no rigid body" % [selected.get("model",""),selected_id()]
 		_detail_label.text = "%s\n%s\nWorld requested %s / native %s · body budget %s · native J %s / torque %s · arrivals %s · proxies %s\nRapier application %s\nLiquid r%d · %s\n%s" % [
 			_runtime_label,actual,_requested_response,gcr.get("response","pending"),selected_row.get("budget","—"),selected_row.get("impulse","—"),
 			selected_row.get("torque","—"),selected_row.get("arrival_count","—"),selected_row.get("proxy_count","—"),str(delivery),
-			int(policy.get("maximum_rule_radius",0)),", ".join(assignments),Fleet.controls(Fleet.index_for_id(str(actor(applied,selected_id()).get("model",""))))]
+			int(policy.get("maximum_rule_radius",0)),", ".join(assignments),Actors.controls(str(actor(applied,selected_id()).get("model",""))) if Actors.kind(str(actor(applied,selected_id()).get("model",""))) != "flyer" else Fleet.controls(Fleet.index_for_id(str(actor(applied,selected_id()).get("model",""))))]
 		_detail_label.text += "\nWorld limits · %s bodies, %s proxies, %s raster cells · arrivals %s bytes" % [
 			gcr.get("body_limit","—"),gcr.get("proxy_limit","—"),gcr.get("world_mask_cell_limit","—"),gcr.get("arrival_storage_bytes","—")]
 		_detail_label.text += "\n" + _participation_report(host.latest_snapshot)
