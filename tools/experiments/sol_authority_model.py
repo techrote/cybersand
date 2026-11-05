@@ -161,6 +161,8 @@ class LeaseModel:
                 self.state='EXPIRED';self.active=None;raise AssertionError('fixed deadline expired; step remains consumed')
             if kind in ['grant','capture','main_validate','noop_ack','release']:
                 assert identity_valid(stamp),'typed identity required on every identity-bearing event'
+                # A refused competing request is not an admitted history sample.
+                if kind=='grant':assert self.active is None,'exclusive lease busy; request leaves progress unchanged'
                 if stamp['world'] in self.aggregate_bindings:
                     if self.aggregate_bindings[stamp['world']]!=binding(stamp):
                         if kind!='grant' and self.active:self.active=None;self.state='INVALIDATED'
@@ -178,7 +180,6 @@ class LeaseModel:
                 assert self.aggregate_bindings.get(stamp['world'],resource_binding)==resource_binding,'one-aggregate World binding changed; aliases cannot renew'
                 assert stamp['world'] not in self.retired and stable not in self.terminal,'retired/terminal incarnation'
                 assert self.world in [None,stamp['world']],'old World not retired'
-                assert self.active is None,'exclusive lease busy'
                 assert self.generations.get(stable,stamp['generation'])==stamp['generation'],'body generation changed without World retirement'
                 assert stamp['actual_step']>=self.actual_steps.get(stable,0),'actual step clock reversal'
                 assert key not in self.consumed,'actual step already consumed'

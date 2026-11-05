@@ -10,6 +10,11 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+The [offline SOL capture/lease contract](operations/sol-authority-offline-contract.md)
+models refusals and one-use accounting with no native/RID calls. Its
+[source/evidence dossier](audits/2026-11-05-sol-authority-offline.md) preserves
+unadmitted composition, historical geometry negatives and retained failed reviews.
+
 The [live normal-policy follow-up](audits/2026-11-05-sol-active-normal-live.md)
 qualifies an opt-in native policy with fresh runtimes and both-host lifecycle
 checks and complete240chamber/192authored/72workload matrices. Mixed-body motion

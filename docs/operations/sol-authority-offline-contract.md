@@ -100,6 +100,10 @@ Known partial-fault reports latch terminal even after ordinary expiry. Trace
 overflow clears active into a terminal capacity/expired outcome, retaining all
 consumption and attempt counts. Deadline arithmetic is bounded and inclusive
 atgrant+32. Copied failed/unknown health refuses; this does not query a real World.
+An unadmitted busy grant leaves held identity/progress unchanged. It is a refused
+request, not an observed backend-step advance. A newer-step identity supplied
+on capture/main/ACK/release invalidates the lease as observed history. This
+transactional distinction is registered separately inamendment005.
 
 ## Qualification and later admission
 

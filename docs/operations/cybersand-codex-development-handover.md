@@ -25,6 +25,17 @@ policy default, all source guards, historical capacity/physical failures and
 Draft status. Next SOL work is a fresh source/ownership conflict map and offline
 E1/E2 refusal/lease contract; it grants no live capture, hold or actuation.
 
+The [offline authority dossier](../audits/2026-11-05-sol-authority-offline.md)
+now supplies a1355path/92native-input conflict map, exact original geometry/RLE
+negatives and a bounded copied-value lease model. Source map/extraction32902aa6,
+corrected20test-per-host source5f1c1b81 and curation0a771370 are distinct. Earlier
+failed expectations and review-invalidated14test passes are retained. The005
+busy-request state clarification and public custody test add a separate22test
+checkpoint. Every model result has false live authority/actuation; original
+support/member ownership remain unavailable. Native84 and DLL/SO source are
+unchanged. Continue with a prospectively registered full application-ledger
+replay before a new live physics change; keep all PRs Draft and upstream intact.
+
 ## Exact SOL geometry chamber lane — 2026-11-05
 
 Root alone owns `codex/sol-normal-active-20261105`, based on fixed Draft416

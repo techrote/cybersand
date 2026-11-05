@@ -27,6 +27,11 @@ mixed-body motion regression blocking promotion. Distributed requested-four
 episodes have four actual participants; arrival-history memory and shared-host
 cost remain explicit. Original SOL ownership/material admission stays separate.
 
+The [offline SOL authority contract](../operations/sol-authority-offline-contract.md)
+adds a1355path source map and adversarial copied-value lease model, with retained
+failed/review-invalidated attempts. It supplies no native capture/Active hold,
+RID work, support/member-identity proof or original SOL recovery admission.
+
 The [separate response-cost lane](../audits/2026-11-05-sol-response-cost.md)
 qualifies48single-body sessions and24observer pairs:13–22µs response generation
 in this small workload, with roughly12–13ms full-census overhead. This isolates

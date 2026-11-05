@@ -112,14 +112,29 @@ reproducers confirm them. The
 retains raw script/log hashes and specifies corrections before a20test campaign.
 No native code or physical threshold changes. Original support eligibility and
 member-identity ownership remain UNAVAILABLE; the one-cell synthetic halo and
-empty-only synthetic mask do not prove either. Final tests/review follow separately.
+empty-only synthetic mask do not prove either.
+
+Corrected20tests pass on actual Windows Python and WSL Linux Python at5f1c1b81,
+with all eight reproduced defects covered. [Curated results](sol-authority-20261105/offline-results.json)
+execute at0a771370 and retain every prior attempt/qualification, both host
+commands/exits/raw-log hashes and a complete zero-actuation no-op trace.
+[Synthetic copied input](sol-authority-20261105/synthetic-capture.json),
+[review reproductions](sol-authority-20261105/review-reproduction.json) and
+[result custody](sol-authority-20261105/result-custody.json) remain distinct from
+the historical inputs and actual physics runs. Internal adversarial re-review
+confirms all eight prior defects are fixed and identifies one fail-closed
+busy-request/history inconsistency. [Amendment005](../../native/tests/fixtures/sol_authority_apparatus_005.json)
+chooses transactional busy-grant refusal and adds a regression plus public
+custody verification. The prior20test artifact is retained unchanged; the new
+22test run is separate. No compiled native input differs from buildff0d7cf5.
+External independent acceptance and a separate owner decision remain pending.
 
 ## Source-bound decisions
 
 | Decision | Status |
 | --- | --- |
 | Current source-conflict inventory | PASS for declared1355path scope; material/runtime admission remains separate |
-| Offline envelope/lease apparatus | CONDITIONAL pending corrected exact-source tests and independent adversarial review |
+| Offline envelope/lease apparatus | CONDITIONAL;20tests pass per host, internal review repairs recorded, final state/custody22test checkpoint and external acceptance separate |
 | Real owner E1 capture / E2 Active hold | UNAVAILABLE; copied-value rules do not implement either |
 | Original SOL physical clearance | NO-GO; historical failures unchanged |
 | Cross-source/MAT-AUTH integration | NO-GO; no composed tree or owner admission |

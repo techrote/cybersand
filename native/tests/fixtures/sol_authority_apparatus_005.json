@@ -1,0 +1,12 @@
+{
+  "registration": "SOL-AUTHORITY-OFFLINE-005-STATE-CLARIFICATION",
+  "date": "2026-11-05",
+  "parent": "SOL-AUTHORITY-OFFLINE-004-PROTOCOL-REPAIR",
+  "reviewed_source": "5f1c1b815922a06ed9c930d44e4d4e4b551eb4c9",
+  "review": "All eight reproduced defects fixed; no accepted renewal/terminal escape/live authority found. One fail-closed inconsistency: refused busy next-step grant advanced progress while retaining older active HELD.",
+  "chosen_rule": "A busy competing grant is an unadmitted request and leaves progress/active identity unchanged. A newer actual-step stamp on capture/main/ACK/release is observed history and invalidates the held lease. Clock advances/expiry still apply; no consumed-step refund.",
+  "validation": "Add busy-request/observed-step regression and public custody test;22tests per actual Python host before publication",
+  "live_authority": false,
+  "actuation_permitted": false,
+  "thresholds": "No geometry,filter,capacity,deadline,native arithmetic or physics change"
+}

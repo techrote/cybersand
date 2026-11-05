@@ -10,6 +10,17 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 
 # Retrieval question index
 
+For offline SOL copied-data completeness versus live capture, Active-hold,
+support and member-identity authority, retrieve the
+[offline contract](../operations/sol-authority-offline-contract.md).
+`retrieval-questions-sol-authority-offline.json` adds scoped protocol questions;
+no model success grants recovery or source-composition permission.
+
+For completed192authored/72workload accounting, mixed-body regression, actual
+workers and material-memory/cost scope, retrieve
+[the live policy boundary](../architecture/rigid-body-and-cellular-coupling.md#opt-in-live-normal-policy).
+`retrieval-questions-sol-active-normal-gameplay.json` is additive.
+
 For full240chamber coverage versus clearance and actual worker participation,
 retrieve [the live policy boundary](../architecture/rigid-body-and-cellular-coupling.md#opt-in-live-normal-policy).
 `retrieval-questions-sol-active-normal-full.json` adds post-result scope questions.

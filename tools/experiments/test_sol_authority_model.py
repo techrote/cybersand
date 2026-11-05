@@ -26,6 +26,16 @@ def synthetic_capture():
         stored_com=source['center'],mass=mass,geometric_inertia=source['inertia'],body_inertia=inertia,pose=pose,velocity=[0,0],omega=0,footprint=[43,26,31,40],census=census)
 
 class CaptureTests(unittest.TestCase):
+    def test_published_results_preserve_failed_and_review_invalidated_attempts(self):
+        folder=HISTORICAL.parent;custody=json.loads((folder/'result-custody.json').read_text(encoding='utf-8'))
+        for name,value in custody['files'].items():self.assertEqual(hashlib.sha256((folder/name).read_bytes()).hexdigest(),value)
+        data=json.loads((folder/'offline-results.json').read_text(encoding='utf-8'))
+        self.assertEqual([a['test_count'] for a in data['attempts']],[13,14,14,20,20])
+        self.assertEqual([a['command']['exit'] for a in data['attempts']],[1,0,0,0,0])
+        self.assertTrue(all('INCOMPLETE' in a['qualification'] for a in data['attempts'][1:3]))
+        self.assertFalse(data['live_authority']);self.assertFalse(data['actuation_permitted'])
+        self.assertEqual((data['native_mutations'],data['rid_calls'],data['generated_work']),(0,0,0))
+
     def test_complete_synthetic_is_never_authority(self):
         packet=synthetic_capture();before=m.encoded(packet);r=m.validate_capture(packet)
         self.assertEqual(r['status'],'COMPLETE_FOR_NOOP_MODEL');self.assertFalse(r['live_authority']);self.assertFalse(r['actuation_permitted'])
@@ -100,6 +110,13 @@ class LeaseTests(unittest.TestCase):
                 changed[field]=changed[field]+1 if type(changed[field]) is int else ('aggregate-2' if field=='body' else '0'*64)
                 self.assertFalse(self.model.event('grant',2,stamp=changed)['accepted'])
             self.assertEqual(self.model.snapshot()['consumed_leases'],1)
+
+    def test_busy_grant_is_transactional_but_observed_step_advance_invalidates(self):
+        self.grant();newer=copy.deepcopy(self.stamp);newer['actual_step']=1
+        self.assertFalse(self.model.event('grant',1,stamp=newer)['accepted']);self.assertEqual(self.model.state,'HELD')
+        self.assertTrue(self.model.event('capture',2,stamp=self.stamp,packet=self.packet)['accepted'])
+        self.assertFalse(self.model.event('main_validate',3,stamp=newer,capture_digest=hashlib.sha256(m.encoded(self.packet)).hexdigest())['accepted'])
+        self.assertEqual((self.model.state,self.model.snapshot()['consumed_leases']),('INVALIDATED',1))
 
     def test_trace_capacity_retires_even_an_expired_active_lease(self):
         for now,expected in [(0,'MODEL_CAPACITY_FAILURE'),(100,'EXPIRED')]:
