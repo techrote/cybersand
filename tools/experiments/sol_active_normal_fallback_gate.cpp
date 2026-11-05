@@ -30,6 +30,8 @@ int main(){
   require(!old.historical_fallback_used,"default response must never claim fallback");
   require(candidate.historical_fallback_used && repeated.historical_fallback_used,"registered refusal must report fallback");
   require(!candidate.passive_rejected && !old.passive_rejected,"historical response is passive");
+  require(candidate.energy_after<=candidate.energy_before+1e-6*std::max(1.,candidate.energy_before),
+    "accepted fallback must respect the original energy limit");
   require(eq(old.impulse.x,candidate.impulse.x)&&eq(old.impulse.y,candidate.impulse.y)&&eq(old.torque,candidate.torque)
     &&eq(old.energy_after,candidate.energy_after),"fallback must return bit-exact historical result");
   require(eq(candidate.impulse.x,repeated.impulse.x)&&eq(candidate.torque,repeated.torque)
