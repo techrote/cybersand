@@ -1,5 +1,6 @@
 extends "res://tests/test_la_physical_campaign.gd"
 const NormalPolicy = preload("res://tests/support/sol_active_normal_policy.gd")
+var constructed_workers: int = 0
 
 func observed_f64_bits(values: Array) -> String:
 	var raw := PackedByteArray();raw.resize(values.size()*8)
@@ -19,9 +20,14 @@ func body_state(body: RigidBody2D) -> Dictionary:
 	return state
 
 func configure_fresh_world(world: Variant, mode: String, _report: Dictionary) -> bool:
-	return NormalPolicy.configure(world,mode)
+	if not NormalPolicy.configure(world,mode):return false
+	var construction: Dictionary = world.get_applied_liquid_construction_receipt()
+	constructed_workers=int(construction.get("worker_threads",0))
+	return constructed_workers==int(OS.get_environment("LA_PHYSICAL_WORKERS"))
 
 func coupling_result(world: Variant) -> Dictionary:
 	var packet: Dictionary = NormalPolicy.result(world,"LA-SELECTIVE")
+	packet["native_workers_configured"]=world.get_worker_threads()
+	packet["native_workers_constructed"]=constructed_workers
 	check(not packet.has("policy_refusal"),"native policy readback before application")
 	return packet

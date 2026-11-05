@@ -62,6 +62,13 @@ class LiveEvidence(unittest.TestCase):
         self.assertFalse(coverage['complete_registered_execution'])
         self.assertEqual(len(matrix.coordinates(receipt,True)),240)
 
+    def test_registered_remaining_coordinate_counts(self):
+        source=read(DATA/'smoke-execution.json')
+        for suite,count in [('authored',192),('workload',72)]:
+            data=copy.deepcopy(source);data['matrix'].update(suite=suite,cases='',arms='',platforms='windows,linux',workers='1,4',repeats=3)
+            self.assertEqual(len(matrix.coordinates(data)),count)
+            self.assertEqual(len(matrix.coordinates(data,True)),count)
+
     def test_missing_duplicate_and_unknown_coordinates_refused(self):
         source=read(DATA/'smoke-execution.json')
         host=source['hosts']['windows']

@@ -9,11 +9,14 @@ def digest(value):
     return hashlib.sha256(json.dumps(value,sort_keys=True,separators=(',',':'),allow_nan=False).encode()).hexdigest()
 
 def coordinates(receipt,full=False):
-    profile=receipt['registration']['chamber'];params=receipt['matrix']
+    params=receipt['matrix'];profile=receipt['registration'][params['suite']]
     platforms=profile['platforms'] if full else params['platforms'].split(',')
     workers=profile['workers'] if full else list(map(int,params['workers'].split(',')))
     repeats=profile['repeats'] if full else params['repeats']
     cases=profile['cases'];arms=profile['arms']
+    if arms and isinstance(arms[0],str):
+        by_id={a['id']:a for a in receipt['registration']['chamber']['arms']}
+        arms=[by_id[name] for name in arms]
     if not full:
         if params['cases']:cases=[c for c in cases if c in params['cases'].split(',')]
         if params['arms']:arms=[a for a in arms if a['id'] in params['arms'].split(',')]

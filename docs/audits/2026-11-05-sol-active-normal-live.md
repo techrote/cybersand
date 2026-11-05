@@ -271,6 +271,17 @@ bit strings. All policies/hosts use the same observer. No force, body state,
 response arithmetic, native source or runtime is changed. Copied Godot source
 is separately authenticated. Historical reports remain unchanged.
 
+The first authored pilot completes8fresh supported Sand/Dust episodes at9ac0bc67,
+with source/project equality on both hosts. All180steps per episode and741
+fixture checks pass. Its raw reports lack explicit configured-worker readback;
+that observation remains unavailable in this retained pilot. Before the full
+matrix, amendmentc1e0d8c3 adds the existing adapter/constructor worker-count values
+to derived test packets, alongside actual participant counters. It changes no
+native code or physics. Independent authored reduction must check every owner
+application, including accepted zero-wrench owners; a global accepted flag alone
+cannot hide a refused peer. Material insertion/removal and powered actuator work
+remain explicit, with sampled ROI/convex-proxy geometry scope.
+
 ## Refusals and custody qualifications
 
 All failed attempts remain retained. Build001 refuses before compilation:
