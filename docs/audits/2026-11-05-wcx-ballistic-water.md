@@ -151,7 +151,13 @@ droplets across most of the 290-cell basin, which may be wider than desired.
 contact law changed from multiplicative tangential retention (176/256 per contact)
 to Coulomb friction (128/256 of the normal impulse) with impact-only contact
 counting. Droplets now slide farther on floors and roofs. The matrix is evidence for
-the earlier law and must be repeated on the final source.
+the earlier law. **Repeated on the final source** (`f666a6c6`, local runtime
+`9bb630d5d47148511bd9a39971e1e50df174d264f06c937cc5ca4505789d6f2d`; scenes drop, jet,
+roof, multi; FreeMass, PressureFlow, gas-free PressureFlow, CellularYield, IN; 40
+rows): 0 ledger breaks, every control launched 0, and splash metrics are unchanged
+within a few cells (drop apex 52–55 rows; multi 88.6–91.0 rows). In the host the
+gas-free PressureFlow reference arm is cheaper than gas-on PressureFlow: drop control
+p50 7.06 vs 9.55 ms, multi 6.92 vs 9.91 ms, quiet jet control 2.72 vs 11.71 ms.
 
 ## WCX-FR face release
 

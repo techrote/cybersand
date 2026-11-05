@@ -74,7 +74,9 @@ int main(int argc, char** argv) {
             {"pressure_dormant_gas", 3, 2, 1}, {"pressure_dormant_nogas", 3, 2, 0},
         };
         constexpr std::int64_t W = 1024, H = 192, floor_y = 184;
+        const char* only = std::getenv("WCX_SURGE_ARM");
         for (const auto& arm : arms) {
+            if (only != nullptr && std::string(only) != arm.name) continue;
             WorldConfig config;
             config.liquid_solver_policy = policy_for(arm);
             config.maximum_rule_radius = arm.family == 4 ? 3 : 2;
@@ -120,6 +122,19 @@ int main(int argc, char** argv) {
                 }
                 if (arrival < 0 && current[static_cast<std::size_t>(W - 40)] > 14) arrival = t;
                 previous.swap(current);
+            }
+            if (arm.family == 3) {
+                const auto c = world.pressure_optimization_snapshot().counters;
+                const double n = static_cast<double>(ticks) + 1e-9;
+                std::fprintf(stderr, "PROFILE %s prep_ms=%.3f gas_ms=%.3f head_ms=%.3f water_calls=%.0f motion_calls=%.0f "
+                             "cert_attempts=%.0f cert_reuses=%.0f cert_saved=%.0f cert_declines=%.0f columns=%.0f rows=%.0f "
+                             "fallbacks=%llu final_cells=%.0f base_cells=%.0f\n",
+                             arm.name, c.preparation_nanoseconds / n / 1e6, c.gas_nanoseconds / n / 1e6,
+                             c.head_nanoseconds / n / 1e6, c.water_material_calls / n, c.water_motion_calls / n,
+                             c.certificate_attempts / n, c.certificate_reuses / n, c.certificate_saved_calls / n,
+                             c.certificate_declines / n, c.columns_recomputed / n, c.rows_recomputed / n,
+                             static_cast<unsigned long long>(c.reference_fallbacks), c.final_cells_written / n,
+                             c.base_cells_written / n);
             }
             std::printf("{\"arm\":\"%s\",\"workers\":%u,\"ticks\":%d,\"tick_p50_ms\":%.4f,\"tick_p95_ms\":%.4f,"
                         "\"tick_mean_ms\":%.4f,\"surface_motion_per_tick\":%.2f,\"late_motion_per_tick\":%.2f,"
