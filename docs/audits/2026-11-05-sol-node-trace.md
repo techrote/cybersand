@@ -31,7 +31,7 @@ committed. Root alone writes Draft429, dependent on fixed421 `4cd9ca19`.
 | --- | --- |
 | Frozen physical value oracle | Nine compiled variants preserve38cases |
 | New trace value tests |43cases, two policies,64,902checks per Linux optimized, strict ASan/UBSan and actual Windows MSVC binary |
-| Native World/arrival/core |28commands;166core tests per optimized/strict-sanitizer variant |
+| Linux native World/arrival/core |28commands;166core tests per optimized/strict-sanitizer variant |
 | Actual Windows/Linux Godot/Rapier |98existing policy and107new lifecycle assertions per host; passive/force/smoke and all12affected workbench suites pass |
 | Registered physical campaign |16fresh episodes,2,880steps,8,640actual body applications; one repeat, policiesOriginal/Active × traceoff/on × hostsWindows/Linux × requestedworkers1/4 |
 | Complete node captures |4,320, every batch reconstructed; maximum4nodes in this fleet workload |
@@ -165,6 +165,17 @@ checkpoint2bbabbac also exceeds the128MiBZIP cap; no current ZIP repair or
 accepted package publication is claimed here. Final docs/M11/repository,
 material and focused regression/retrieval results are source-bound in the PR
 checkpoint and ignored validation receipt.
+
+The [first final-validation attempt](sol-node-trace-20261105/validation-attempt-001.json)
+at930ceec7 passes docs/M11/material, all57focused Python regressions and all
+retrieval process commands. Its repository command explicitly requests complete
+materialization: it reports22errors, comprising the8native source/accepted-manifest
+mismatches and14unmaterialized non-desktop LFS artifacts. The wrapper mistakenly
+expects8after asking for the stricter scope and fails before creating its overall
+receipt. Logs/results are retained. Final validation records ordinary repository
+provenance and the stricter materialization check separately; neither is a pass.
+Actual Windows/Linux desktop native/Rapier artifacts are materialized and run;
+Web/Android/iOS/macOS/other-architecture execution is not qualified here.
 
 | Separate decision | Source-bound disposition |
 | --- | --- |
