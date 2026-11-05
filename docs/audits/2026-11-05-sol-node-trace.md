@@ -61,6 +61,19 @@ ff0d7cf5receipt. It pins the new registration/wire and writes fresh outputs belo
 `build/sol-node-trace/runtimes-001`, retaining native84, frozen manifests and32
 material-custody files. Actual extension builds and Godot execution remain pending.
 
+Both fresh extensions build successfully at0b76d261, with84native inputs,32
+material-custody files and unchanged10,230Windows/1,165Linux dependency entries
+before/after each build. Windows DLL SHA isa15c0a84e0cf208698f80588cc5ad1f2eb4f47c5110acec7d834d983f0cda1e3;
+Linux SO SHA isd86457925c314b2f14daf0e16df7241940663f6fa9273e5db1eee2b26c73b730.
+These fresh outputs remain experimental. Actual Godot lifecycle, scoped suites
+and the registered live trace campaign are not yet executed.
+
+The new derived authored fixture configures trace before the normal helper's
+first getter. Trace observation failures record fixture failures without changing
+the physical response packet. New lifecycle fixtures exercise selector order,
+early locks, three-owner captures, held packet reuse/replacement/reset/teardown
+and explicit off. Existing source-qualified suites and old fixtures are retained.
+
 The initial resource plan retains5GiBfree and atmost2GiBnew artifacts. Actual
 buffer size and observer cost must be measured; copied diagnostic payload cost
 is not ordinary gameplay or original SOL CPU performance. Original SOL material/

@@ -1,0 +1,6 @@
+{
+  "id": "SOL-NODE-TRACE-001-AUTHORED",
+  "extends": "res://tests/fixtures/la_physical/registration-v5.json",
+  "arms": ["LA-SELECTIVE"],
+  "scope": "Original shared-body inputs; separately fresh original/active policy and traceoff/on sessions; source-qualified observation only"
+}
