@@ -195,6 +195,21 @@
       "path": "publication-checks.json",
       "bytes": 5038,
       "sha256": "2c8eca2c673435aa85b942a23367f5548336043924eb5ea1459d3b5f2db3b76a"
+    },
+    {
+      "path": "passive-values.json",
+      "bytes": 148093,
+      "sha256": "d15e83e230300f0e1f60dafbbd779e01d789ceba1fbf2666635d534e74e9aba6"
+    },
+    {
+      "path": "passive-observations.json",
+      "bytes": 469597,
+      "sha256": "16e8c4c40fe6de5aeead27666221196e0156e1ff7873de998b90b6e90ddfa242"
+    },
+    {
+      "path": "linux-full-reduction.json",
+      "bytes": 1512,
+      "sha256": "257791d74b44e164ac645d4c9c907f58a3d61d43effb187ab37e4402c5220eb1"
     }
   ],
   "local_raw_files": [

@@ -24,6 +24,13 @@ Original SOL clearance/CPU failures, hard refusals, capture/hold/application and
 MAT-AUTH composition gates and #365's block remain separate. A future numerical
 or passive-solver refinement needs its own registration and compiled evidence.
 
+The separate25case unchanged-header value diagnostic confirms analytic
+four-pass residual on actual Linux optimized/strict sanitizers and Windows
+MSVC. It is investigation of the existing bounded approximation; no alternative
+solver or general nonpenetration guarantee is implemented. Prioritize an
+independently reviewed residual/contact policy and separately isolated response-
+generation cost before any live refinement or default promotion.
+
 ## MAT-AUTH reviewed per-file transitions — 2026-11-04
 
 The owner approved a narrow way to admit a reviewed, behaviour-preserving edit

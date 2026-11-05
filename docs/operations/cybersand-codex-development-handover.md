@@ -23,6 +23,15 @@ targets #393 and changes only scalar planner energy. Neither lane composes nativ
 SOL into workbench authority or admits restoration. Keep publication Draft and
 seek independent adversarial review before any owner integration decision.
 
+The chamber lane is published as [Draft #411](https://github.com/techrote/cybersand/pull/411)
+against #400. Its separately registered unchanged-header diagnostic executes at
+`786576f6` on GCC optimized/strict sanitizers and actual Windows MSVC:25cases,
+three workspace replays, including two expected refusals per binary. It confirms
+finite-pass denominator dilution, with no production solver change. Full192case
+raw reduction also reproduces on Linux; external independent acceptance remains
+pending. Source archive exceeds the unchanged cap, including an inherited parent
+failure. Keep the local raw packet and per-file custody receipts.
+
 ## MAT-AUTH-002 Phase A integration gate — 2026-11-04
 
 The owner now authorizes current-main reconciliation, focused preflight, a

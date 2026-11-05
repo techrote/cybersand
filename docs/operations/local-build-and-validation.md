@@ -27,6 +27,16 @@ committed evidence has its own custody manifest. Read the
 [dated scope and failures](../audits/2026-11-05-sol-chamber-yielding.md).
 This opt-in support fixture introduces no new public fleet model or default.
 
+For the separately registered unchanged-header diagnostic, run
+`python tools/experiments/sol_passive_values.py build/<fresh-name>` from a clean
+committed Windows checkout with WSL Ubuntu24.04/GCC13 and MSVC14.38 available.
+It compiles/runs optimized and strict ASan/UBSan Linux binaries and an actual
+Windows MSVC binary; it refuses source/header drift and output reuse. For a
+portable audit without either compiler, use
+`python tools/experiments/test_sol_passive_values.py` against committed data.
+The25cases and ten corrupt-evidence controls qualify synthetic value arithmetic,
+not World/GDExtension execution, original SOL authority or an engine CPU gate.
+
 ## Opt-in LA-SELECTIVE comparison
 
 The #394-dependent experiment has a native witness, actual Godot/Rapier matched sessions and independent historical geometry checks. From its owned Windows checkout run `python tools/experiments/la_selective_experiment.py identity`, then `native`, `comparison-primed` and `scoped` as separate invocations. Use `--run <new-directory-name>` for a rerun; the runner refuses to overwrite process logs. It authenticates retained native inputs, materialized native/Rapier bytes and actual engine identities, copies the project, and invokes actual Windows and WSL Linux hosts. The registered native build uses GCC optimized and strict ASan/UBSan; actual Windows MSVC is a separate receipt. Comparison processes have 300-second bounds, scoped hosts 180 seconds, and native compiles 900 seconds. `python tools/experiments/la_selective_geometry.py` reads unchanged historical Git records; `python tools/experiments/la_selective_reduce.py` retains complete-window source-bound reductions. See the [dossier](../audits/2026-11-05-la-selective-sol-experiment.md) for exact checkpoints, failed attempts and missing admission gates. These tools add no build-provider or production-default change.

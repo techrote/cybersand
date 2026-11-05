@@ -11,6 +11,23 @@ last-reviewed: 2026-11-05
 
 # Rigid-body and cellular coupling
 
+## Bounded passive contact residual
+
+**Current source, qualified synthetic diagnostic:** the compound value solver
+weights each node by its share of all admitted samples and performs four normal/
+tangent batches. At zero lever arm, with inactive caps and approaching sample
+fraction `a`, the remaining incoming velocity is `(1-a)^4` times its initial
+value. Support/separating samples can therefore dilute arrest without consuming
+the available normal capacity. This is the declared bounded approximation, not
+a convergence or nonpenetration guarantee. The unchanged final energy gate
+rejects energy-increasing wrenches but supplies no residual-speed gate.
+
+[SOL-PASSIVE-VALUES-001](../audits/2026-11-05-sol-chamber-yielding.md#unchanged-passive-value-diagnostic)
+checks this relation on actual Linux optimized/strict ASan+UBSan and actual
+Windows MSVC using the unchanged header. It also checks friction, rotation,
+capacity, refusal and workspace reuse. These synthetic bins carry no material
+eligibility, live World/Rapier authority or original SOL clearance claim.
+
 ## Pinned Rapier drive sequencing in chamber experiments
 
 **Current on authenticated desktop Rapier v0.35.2:** the addon implements

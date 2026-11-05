@@ -352,4 +352,61 @@ Source-archive gate: **FAIL**. Snapshot cde1c6b2 is 177,331,113 bytes against th
 
 The four-stage subtotal excludes response generation: workbench_coupling_results invokes the passive solve after native_tick_us stops. That getter and serial response construction are included in whole measured step time and Other measured step work, not separately isolated here. This subtotal cannot qualify solver cost.
 
-Prospective follow-up SOL-PASSIVE-VALUES-001 is registered in [the fixed 25-case value profile](../../native/tests/fixtures/sol_passive_values_001.json) before its apparatus exists. It tests the unchanged header, including analytic finite-pass residual, cap/friction/rotation/refusal controls and workspace reuse, on Linux optimized/sanitized and actual Windows MSVC. Synthetic contacts grant no live material or SOL authority; no alternative solver is introduced. Results will be recorded separately from the 192 chamber episodes.
+Follow-up SOL-PASSIVE-VALUES-001 was registered in [the fixed 25-case value profile](../../native/tests/fixtures/sol_passive_values_001.json) before apparatus implementation and execution. It tests the unchanged header, including analytic finite-pass residual, cap/friction/rotation/refusal controls and workspace reuse, on Linux optimized/sanitized and actual Windows MSVC. Synthetic contacts grant no live material or SOL authority; no alternative solver is introduced. Its results below remain separate from the 192 chamber episodes.
+
+## Unchanged passive value diagnostic
+
+Registration `aa1176e1` precedes apparatus and execution `786576f6`.
+[Complete value receipts](sol-chamber-20261105/passive-values.json) and
+[common observations](sol-chamber-20261105/passive-observations.json) retain
+all inputs, bin moments, node weights/capacities/impulses, residual normal
+speeds, energy and result counters. Parsed observations are identical across
+Linux GCC13.3 optimized, strict ASan/UBSan and actual Windows MSVC19.38.33145.
+Original raw bytes differ by a Windows line ending and remain separately hashed.
+All three variants pass the 25 registered cases and three workspace replays;
+23 cases are accepted values and two are expected null/overflow refusals.
+Each binary also runs 25 maximum-node workspace-priming solves: 100 actual
+solver calls per binary, 300 overall. None is removed from process elapsed time.
+
+| Approaching sample fraction | Front capacity, unit mass | Remaining incoming speed after four passes |
+| --- | ---: | ---: |
+| 1 | 20 | 0 |
+| 1/2 | 10 | 0.0625 |
+| 1/4 | 5 | 0.31640625 |
+| 1/8 | 2.5 | 0.586181640625 |
+
+Both perpendicular support and separating samples produce this dilution, with
+no normal cap hit. The separately registered mass520/inertia70453.6484375
+control gives the same one-quarter-fraction residual under budget10400; it
+does not reconstruct the chamber's live contacts. Rotation/friction controls,
+zero-cap and low-cap controls, empty/zero-count bins and 512-bin maximum storage
+also match their prospective oracles. The two-node maximum reaches1024nodes
+and8192updates. No alternative arithmetic, extra pass, gain, force or correction
+is implemented or tuned.
+
+This establishes a finite-pass residual mechanism in the current approximation.
+It does not prove that this is the only cause of the full chamber trajectory,
+nor grant original SOL eligibility/ownership or physical clearance. Complete
+coupled energy closure, continuous clearance and solver cost remain unqualified.
+Whole test-process elapsed times are0.137s optimized Linux,0.150s sanitized Linux
+and0.105s Windows, including startup, 100 solves, serialization and output;
+they are not per-solve engine timings or the original SOL CPU gate.
+
+`python tools/experiments/test_sol_passive_values.py` reproduces the portable
+analytic/input ledger and refuses ten corrupt-evidence controls, including
+support-normal substitution, count changes, null/overflow relabelling and
+maximum-node counter corruption. Rebuild/re-execute with
+`python tools/experiments/sol_passive_values.py build/<fresh-owned-name>`;
+the runner refuses dirty source or output reuse and hashes the unchanged
+header, fixture, apparatus, GCC driver/frontend, MSVC and all three binaries.
+MSVC implicit `CL`/`_CL_` flags are cleared. No logs/binaries are committed.
+The `b5744ae7` full chamber packet predates this diagnostic. Its additional raw
+files are separately indexed in `passive-values.json`; complete structured
+observations are committed once, with equality and distinct raw-byte hashes for
+all three variants. The earlier packet's source or custody is not relabelled.
+
+The [complete192episode reduction](sol-chamber-20261105/linux-full-reduction.json) additionally executes on Linux at
+`b5744ae7`: all192initial/complete/conservation checks pass, full matrix coverage
+holds, and every episode summary is exactly equal to the prior reduction.
+This is a platform reproduction by the owning investigation, not the separate
+independent adversarial acceptance review still required for an owner decision.
