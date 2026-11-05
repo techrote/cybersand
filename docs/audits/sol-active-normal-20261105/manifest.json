@@ -34,6 +34,16 @@
       "path": "source-adapter.json",
       "bytes": 2420,
       "sha256": "acf5b457de60dc4abd5cf09f049f592237c669c6918fbe73a1d2a70b5ca0ed66"
+    },
+    {
+      "path": "validation.json",
+      "bytes": 9363,
+      "sha256": "cc8f9503e8a100fa4ed27f25f98e10e705fe9fd23e35412a81808a93e7e9763c"
+    },
+    {
+      "path": "source-artifacts.json",
+      "bytes": 934,
+      "sha256": "9f3bd00a195a58c4c169af388ac8f380da1c822567c2e79fcba6829f7c93bcdd"
     }
   ],
   "local_raw_files": [

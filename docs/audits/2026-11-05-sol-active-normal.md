@@ -130,3 +130,22 @@ Reproduce at the pinned execution source with
 `python tools/experiments/sol_active_normal.py build/<fresh-name>` and
 `python tools/experiments/sol_active_normal_compare.py build/<fresh-name>`.
 Source guards reject changed inputs/header and directories refuse overwrite.
+
+At `954167cd`, [validation](sol-active-normal-20261105/validation.json) passes
+documentation, historical M11, repository/runtime provenance, original material
+guard, new/old portable value audits, six geometry adversaries and whitespace.
+Frozen retrieval remains19/32rank1 and32/32rank5; chamber2/3rank1 and3/3rank5;
+passive1/1, cost2/2 and the separate active-normal question1/1rank1. Manual
+fact review preserves synthetic/live, capacity and energy limits. No original
+guard, source digest, policy/query/persistence oracle or runtime pin is relaxed.
+
+**Source archive FAIL:** [artifact receipts](sol-active-normal-20261105/source-artifacts.json)
+at `954167cd` record178,351,626bytes, SHA-256
+`383ae5e3b35a449727f3862b7269d695918971bb1769427dd666081726260f1c`,
+above unchanged134,217,728bytes. The dependent patch is2,254,314bytes, SHA-256
+`3868a3f85534f36e751553f1405481c20a58bfd6a44afa8ad11c1f0bff12974d`.
+These ignored local artifacts are handover files, not a release. Later metadata
+commits remain outside that source snapshot. Historical84/84clearance failures,
+64/84depth failures,36/36async overlaps,1452/1452refusals, CPU/archive/MAT failures
+and365's block remain unchanged. Separate independent adversarial review must
+precede any owner promotion or integration decision; keep this PR Draft.
