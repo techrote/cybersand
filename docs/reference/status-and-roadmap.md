@@ -10,6 +10,20 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+## Compound granular behaviour and SOL boundary — 2026-11-05
+
+**Current dependent experiment:** the exact520/six-proxy
+[chamber profile](../audits/2026-11-05-sol-chamber-yielding.md) starts with valid
+Sand/rigid occupancy and compares closed/open vacancy under fixed drive and
+unforced controls. Motionless entrapment can be valid. In a closed driven
+selective case, conserved counts and tuples coexist with substantial geometric
+overlap; bounded dissipative response is not a rigid nonpenetration proof.
+Full-source comparative observations and cost qualifiers remain source-bound.
+This work changes no production default or native physics implementation.
+Original SOL clearance/CPU failures, hard refusals, capture/hold/application and
+MAT-AUTH composition gates and #365's block remain separate. A future numerical
+or passive-solver refinement needs its own registration and compiled evidence.
+
 ## MAT-AUTH reviewed per-file transitions — 2026-11-04
 
 The owner approved a narrow way to admit a reviewed, behaviour-preserving edit

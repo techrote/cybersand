@@ -10,6 +10,12 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+The [exact compound chamber experiment](audits/2026-11-05-sol-chamber-yielding.md)
+tests valid entrapment versus driven yielding through the existing workbench
+path. [Force sequencing](architecture/rigid-body-and-cellular-coupling.md#pinned-rapier-drive-sequencing-in-chamber-experiments)
+and independent full-square geometry distinguish applied work, preserved tuples
+and actual nonpenetration. Original SOL source/ownership admission is separate.
+
 The [LA-SELECTIVE mechanism and promotion boundary](systems/player-control-playground.md#la-selective-mechanism-and-experimental-admission) routes the 2026-11-05 owner direction and [dependent LA/SOL experiment](audits/2026-11-05-la-selective-sol-experiment.md). Experimental surrogate evidence does not admit original SOL recovery or combined material authority.
 
 The [real-body physical qualification](audits/2026-11-05-la-physical-qualification.md) continues #400 against reconciled84-input source. [Valid entrapment](systems/player-control-playground.md#valid-entrapment-and-experimental-physical-response) is a possible equilibrium success; invalid overlap and original SOL authority remain separate.

@@ -28,6 +28,12 @@ def payload(meta):
     assert result["sha256"]==meta["sha256"] and result["bytes"]==meta["bytes"]
     return result
 
+def kinetic(state):
+    vx,vy,w=struct.unpack("<3d",bytes.fromhex(state["velocity_omega_f64le"]))
+    result=.5*state["mass"]*(vx*vx+vy*vy)+.5*state["inertia"]*w*w
+    assert abs(result-state["kinetic"])<=max(1e-8,abs(result)*1e-13),"Kinetic display inconsistent with exact state"
+    return result
+
 def geometry(capture,rectangles):
     key=(capture["state"]["pose_f64le"],tuple(capture["origin"]),tuple(capture["size"]),tuple(map(tuple,capture["material_runs"])),tuple(map(tuple,capture["mask_runs"])),tuple(map(tuple,rectangles)))
     if key in CACHE:return CACHE[key]
@@ -60,7 +66,7 @@ def calculate_geometry(capture,rectangles):
     own={index for index,value in enumerate(mask) if value}
     vacant=sum(cells[(y-oy)*width+x-ox]==0 and mask[(y-oy)*width+x-ox]==0 for y in range(61,101) for x in range(49,96))
     return dict(sand_area=areas[2],sand_max_depth=depths[2],area_by_material=dict(areas),max_depth_by_material=dict(depths),hard_exclusions=hard,
-        exact_proxy_union=polygons,complete_in_fixed_roi=not outside,body_center_cells=len(centres),actual_mask_cells=len(own),
+        recorded_transform_proxy_union=polygons,complete_in_fixed_roi=not outside,body_center_cells=len(centres),actual_mask_cells=len(own),
         centre_mask_symmetric_difference=len(own^centres),sand_cells_under_actual_mask=sum(cells[i]==2 for i in own),
         chamber_unmasked_empty_cells=vacant,roi_counts=dict(Counter(cells)),sand_roi_sum_y=sum(oy+i//width for i,m in enumerate(cells) if m==2),
         body_position=[tx,ty],body_basis_determinant=xx*yy-xy*yx)
@@ -120,7 +126,16 @@ def report(path,profile):
             for key in ["worker_threads_observed","resident_cell_bytes","resident_chunks","chunk_allocations","temperature_field_allocations"]:
                 peaks[key]=max(peaks[key],step.get("statistics",{}).get("values",{}).get(key,0))
         live=step.get("live_before_application",step["boundaries"][2]["state"] if len(step["boundaries"])>=3 else None)
-        response_delta=float(step["after_application"]["kinetic"])-float(live["kinetic"]) if live is not None and "after_application" in step else None
+        response_delta=kinetic(step["after_application"])-kinetic(live) if live is not None and "after_application" in step else None
+        if machine_valid:
+            action=application["bodies"][0]
+            assert action["instance_id"]==520 and action["sample"]==step["sample"]["states"][10] and application["snapshot"]==step["step"]+1
+            vx,vy,w=struct.unpack("<3d",bytes.fromhex(live["velocity_omega_f64le"]));actual=struct.unpack("<3d",bytes.fromhex(step["after_application"]["velocity_omega_f64le"]))
+            predicted=[(0 if v*corr<0 else v)+j/live["mass"] for v,corr,j in zip([vx,vy],action["correction"],action["impulse"])]
+            assert math.hypot(predicted[0]-actual[0],predicted[1]-actual[1])<=1e-5 and abs(w+action["torque"]/live["inertia"]-actual[2])<=1e-5,"Independent RID application mismatch"
+            if "after_external_drive" in step:
+                delta=kinetic(step["after_external_drive"])-kinetic(step["before"])
+                assert abs(delta-step["external_api_kinetic_delta"])<=max(1e-8,abs(delta)*1e-13)
         if response_delta is not None:candidate_work+=response_delta
         drive_work+=step.get("force_endpoint_work_estimate",0)
         if "payload" in step:payload(step["payload"])
@@ -133,7 +148,7 @@ def report(path,profile):
         maximum_observed_sand_area=maximum_area,maximum_observed_sand_depth=maximum_depth,hard_exclusion_steps=hard_steps,
         observed_arrivals=arrival if data["mode"]=="LA-SELECTIVE" else None,arrival_qualifier="Nonselective modes disable arrival-history instrumentation",
         candidate_kinetic_delta_sum=candidate_work,force_endpoint_work_estimate_sum=drive_work,cost_us=dict(costs),native_peaks=dict(peaks),native_counters=dict(counters),wrench_component_sums=dict(wrenches),
-        scope="Exact geometry surrogate; centre-mask and endpoint metrics do not certify continuous clearance, parcel routes or original SOL authority")
+        scope="Original shape identity with float64 union of recorded quantized basis/local rectangles; not captured internal Rapier vertices. Tiny boundary results remain geometry conditional. Masks/endpoints do not certify continuous clearance, parcel routes or original SOL authority")
 
 def main():
     parser=argparse.ArgumentParser(__doc__);parser.add_argument("directory",type=Path);parser.add_argument("--output",type=Path);args=parser.parse_args()

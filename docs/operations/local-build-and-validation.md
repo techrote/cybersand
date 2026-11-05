@@ -10,6 +10,23 @@ related-documents: [source-checkpoint-and-recovery.md, testing-validation-and-re
 
 # Local build and validation
 
+## Exact compound chamber experiment — 2026-11-05
+
+On `codex/sol-chamber-yielding-20261105`, use
+`python tools/experiments/sol_chamber_campaign.py --run <new-name>` for the
+registered 192 episodes; `--cases`, `--arms`, `--platforms`, `--workers` and
+`--repeats` explicitly select a partial matrix. Authenticate the unchanged
+native84 source, retained dependencies and source-equivalent build receipt
+before any run. Never substitute absent ignored runtimes or refresh published
+hashes. `python tools/experiments/sol_chamber_reduce.py <run-directory>` emits
+independent geometry/mask/CYPS analysis into a fresh derivative directory;
+`--output <new-directory>` preserves earlier reductions.
+`python tools/experiments/test_sol_chamber_reduce.py` checks the original hard
+filter and malformed census controls. Raw logs/CYPS stay ignored and hashed;
+committed evidence has its own custody manifest. Read the
+[dated scope and failures](../audits/2026-11-05-sol-chamber-yielding.md).
+This opt-in support fixture introduces no new public fleet model or default.
+
 ## Opt-in LA-SELECTIVE comparison
 
 The #394-dependent experiment has a native witness, actual Godot/Rapier matched sessions and independent historical geometry checks. From its owned Windows checkout run `python tools/experiments/la_selective_experiment.py identity`, then `native`, `comparison-primed` and `scoped` as separate invocations. Use `--run <new-directory-name>` for a rerun; the runner refuses to overwrite process logs. It authenticates retained native inputs, materialized native/Rapier bytes and actual engine identities, copies the project, and invokes actual Windows and WSL Linux hosts. The registered native build uses GCC optimized and strict ASan/UBSan; actual Windows MSVC is a separate receipt. Comparison processes have 300-second bounds, scoped hosts 180 seconds, and native compiles 900 seconds. `python tools/experiments/la_selective_geometry.py` reads unchanged historical Git records; `python tools/experiments/la_selective_reduce.py` retains complete-window source-bound reductions. See the [dossier](../audits/2026-11-05-la-selective-sol-experiment.md) for exact checkpoints, failed attempts and missing admission gates. These tools add no build-provider or production-default change.

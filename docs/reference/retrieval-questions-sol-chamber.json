@@ -1,0 +1,28 @@
+{
+  "version": 1,
+  "frozen_date": "2026-11-05",
+  "purpose": "Additive post-result chamber development questions; not blind evaluation or replacement of any frozen set.",
+  "questions": [
+    {
+      "id": "SOL-CHAMBER-EQUILIBRIUM-001",
+      "query": "Can a motionless rigid body in initially clear closed Sand occupancy be a valid entrapment result, and does this prove original SOL clearance?",
+      "canonical": ["systems/player-control-playground.md", "reference/status-and-roadmap.md"],
+      "facts": ["Valid static equilibrium does not require spontaneous escape.", "The exact520 geometry fixture is a surrogate through existing workbench ownership, not original native aggregate admission.", "Driven penetration and original historical failures remain separate."],
+      "sources": ["../godot/tests/fixtures/sol_chamber/registration.json", "../godot/tests/support/sol_chamber_experiment.gd"]
+    },
+    {
+      "id": "SOL-CHAMBER-FORCE-001",
+      "query": "When does pinned Rapier apply_central_force change velocity relative to native sampling, and how are external drive and response work separated?",
+      "canonical": ["architecture/rigid-body-and-cellular-coupling.md"],
+      "facts": ["The pinned addon applies one immediate Fdt impulse using configured physics cadence.", "Measure external API kinetic change before sampling, and response work from live preapplication state.", "Endpoint Fdx and a hypothetical second force increment are diagnostics, not additional applied work."],
+      "sources": ["../third_party/rapier-bvh-build.lock.json", "../godot/tests/support/sol_chamber_experiment.gd"]
+    },
+    {
+      "id": "SOL-CHAMBER-CLEARANCE-001",
+      "query": "Do conserved tuples, a dissipative passive impulse, centre mask clearance or displacement totals prove full-square granular nonpenetration and a valid parcel route?",
+      "canonical": ["systems/player-control-playground.md", "architecture/rigid-body-and-cellular-coupling.md"],
+      "facts": ["Counts and exact tuple multisets can coexist with substantial full-square overlap.", "Recorded-transform geometry and actual centre masks are distinct observations; endpoints do not certify continuous rotated sweeps.", "Displaced totals do not identify parcel routes or admit SOL recovery authority."],
+      "sources": ["../tools/experiments/sol_chamber_reduce.py", "../godot/native_extension/workbench_granular_coupling.inc"]
+    }
+  ]
+}

@@ -1,15 +1,32 @@
 ---
 title: Rigid-body and cellular coupling
 document-kind: contract
-canonical-for: [rigid-body-cellular-coupling]
+canonical-for: [rigid-body-cellular-coupling, rapier-force-impulse-sequencing]
 status: Current
 scope: Rectangle occupancy, bounded displacement/impulses and Rapier hard contact; generalized physics and exact replay remain absent
 keywords: [Rapier2D, occupancy mask, sweep, CCD, terrain budget, impulse, unresolved overlap]
 related-documents: [simulation-tick-and-threading.md, data-ownership-and-lifetimes.md, ../reference/interfaces-and-message-contracts.md, ../operations/rapier-2d-migration-runbook.md, ../audits/2026-09-24-rem002-issue11-integration-forensics.md, ../audits/2026-09-25-pchar001-player-representation-experiment.md]
-last-reviewed: 2026-10-22
+last-reviewed: 2026-11-05
 ---
 
 # Rigid-body and cellular coupling
+
+## Pinned Rapier drive sequencing in chamber experiments
+
+**Current on authenticated desktop Rapier v0.35.2:** the addon implements
+`body_apply_central_force` as one immediate `F*dt` impulse using the configured
+physics tick rate. In the registered 60Hz chamber operator sequence, native
+sampling already sees that updated velocity. Measure external API work between
+precall/postcall states, then response work between live preapplication and
+postapplication states. An endpoint `F*dx` estimate does not replace the actual
+drive impulse's kinetic change. A hypothetical force increment after response
+is counterfactual and must not be added as applied work.
+
+The [source-pinned chamber ledger](../audits/2026-11-05-sol-chamber-yielding.md#force-accounting-correction)
+links the exact addon implementation, host observations and the corrected
+apparatus registration. This is backend/source-specific behaviour, not a
+portable promise about every PhysicsServer implementation. Existing ownership,
+one-use application and default response contracts remain unchanged.
 
 ## When a crate moves through sand, are its pixels erased and restored?
 

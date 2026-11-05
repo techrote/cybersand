@@ -10,6 +10,17 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 
 # Retrieval question index
 
+## Exact compound chamber and force accounting
+
+For valid entrapment versus driven full-square overlap, retrieve the
+[playground physical boundary](../systems/player-control-playground.md#valid-entrapment-and-experimental-physical-response).
+For the immediate force impulse and external/response work split, retrieve
+[pinned Rapier sequencing](../architecture/rigid-body-and-cellular-coupling.md#pinned-rapier-drive-sequencing-in-chamber-experiments).
+The [dated chamber ledger](../audits/2026-11-05-sol-chamber-yielding.md) retains
+failed attempts, exact geometry/source and comparative performance qualifiers.
+`retrieval-questions-sol-chamber.json` is an additive post-result development
+supplement; existing frozen questions remain unchanged.
+
 ## Material liveness Phase A and implementation admission — 2026-11-04
 
 | Question | Canonical route |
