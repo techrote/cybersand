@@ -207,6 +207,24 @@ landed. The parcel pass is under 0.3 % of that tick. Reducing the bulk response 
 a splash (faster settling, or a cheaper surface solver) is the main performance
 opportunity.
 
+## Protected-source transitions (proposed)
+
+Each protected consumer below keeps Current behaviour for every World that
+does not opt in (Current hashes, CYPS2/3, quantity schema 1 and receipt bytes
+are unchanged; the full native suite passes) and adds opt-in BW-001/IN-B1/WCX-FR
+paths. They are proposed reviewed transitions for issue 362 and PR 406, pending
+independent review and the owner's admission; they are not behaviour-neutral for
+Worlds that enable the experiment. Source commit for every target:
+`30419bdac24902b47bab3756d3116008bec8f0ca`.
+
+| Path | From LF SHA-256 | To LF SHA-256 |
+|---|---|---|
+| `native/include/cybersand/quantity_ledger.hpp` | `4345032e718b601a33ac3ffb69a456cd91bcf05ee3ab503650dcb7c06a59c6ad` | `d8c6463c7cea7193e8257115f6eddee911cc85467d5f2ab9be830f6ee7756a79` |
+| `native/src/world_quantity.inc` | `627936a33c9ed58b6841f04466bf83aefe83b451ceb0da22baa19269ed5ef074` | `d9e6835d092193e4976c728d90121c6dee4b421337e056b5fc3c74975491af6e` |
+| `native/src/world.cpp` | `a47955f79ed5fbc8bc0ca8e2892ed4eb0ddbd728b841bc08ccee14a4c239e4a7` | `93ab7874e913bf696ffcdb85724d01f860bbd53c160dd9b7ea3f8daf28026b85` |
+| `native/src/world_pressure.inc` | `7b28bf216bf70af7059267cae31117f1f01e88d0e5f276f61d67280ab5c6d2e5` | `21fade10be70387a41438586a3ca88c022af078e5ea11bc016ee20e7a9792573` |
+| `native/src/world_inertial.inc` | `8a5d3680e96ca47a3f496be5a8b953084d2c6d2e0bd723c3214b87bdbc3580b5` | `51fa78b33df7ea5e7e468c670b348ae24a19fd41905e2e78d9e841fa99af1491` |
+
 ## Gaps
 
 - No human gameplay acceptance; frame captures are automated.
