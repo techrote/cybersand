@@ -117,6 +117,7 @@ def authenticate():
     result["test_inputs"] = {p:sha((ROOT/p).read_bytes()) for p in [
         "native/tests/test_la_selective_experiment.cpp","godot/tests/test_la_selective_experiment.gd",
         "godot/tests/fixtures/la_selective/registration.json","godot/tests/fixtures/la_selective/registration-full-path.json",
+        "godot/tests/fixtures/la_selective/registration-primed.json",
         "tools/experiments/la_selective_experiment.py"]}
     return result
 
@@ -139,7 +140,7 @@ def hosts(scope):
         rows = []
         env = dict(os.environ, CYBERSAND_SOURCE_REVISION=identity["source"])
         tests = [("import", None)]
-        if scope in ["comparison","comparison-full"]: tests += [("experiment-w1", 1), ("experiment-w4", 4)]
+        if scope in ["comparison","comparison-full","comparison-primed"]: tests += [("experiment-w1", 1), ("experiment-w4", 4)]
         elif scope == "scoped": tests += [("workbench_"+s, None) for s in SCOPED]
         else: raise ValueError(scope)
         for name, workers in tests:
@@ -154,7 +155,8 @@ def hosts(scope):
                 result_path = folder/(name+".json")
                 current_env["LA_EXPERIMENT_WORKERS"] = str(workers)
                 current_env["LA_EXPERIMENT_OUTPUT"] = str(result_path) if platform == "windows" else wsl_path(result_path)
-                current_env["LA_EXPERIMENT_PROFILE"] = "res://tests/fixtures/la_selective/registration"+ ("-full-path" if scope=="comparison-full" else "")+".json"
+                suffix={"comparison":"","comparison-full":"-full-path","comparison-primed":"-primed"}[scope]
+                current_env["LA_EXPERIMENT_PROFILE"] = "res://tests/fixtures/la_selective/registration"+suffix+".json"
             if platform == "linux":
                 forwarded = ["CYBERSAND_SOURCE_REVISION="+identity["source"]]
                 if workers: forwarded += [k+"="+current_env[k] for k in ["LA_EXPERIMENT_WORKERS", "LA_EXPERIMENT_OUTPUT","LA_EXPERIMENT_PROFILE"]]
@@ -168,7 +170,7 @@ def hosts(scope):
                 row["data_sha256"] = sha(result_path.read_bytes())
             rows.append(row)
             write(folder/"receipt.json", dict(identity=identity, inputs=inputs, results=rows))
-            if not row["clean"]: break
+            if name=="import" and not row["clean"]: break
         return rows
     with concurrent.futures.ThreadPoolExecutor(max_workers=2) as pool:
         results = dict(zip(ENGINES, pool.map(platform_run, ENGINES)))
@@ -214,7 +216,7 @@ def native():
 def main():
     global OUT
     parser = argparse.ArgumentParser(__doc__)
-    parser.add_argument("stage", choices=["identity", "comparison", "comparison-full", "scoped", "native"])
+    parser.add_argument("stage", choices=["identity", "comparison", "comparison-full", "comparison-primed", "scoped", "native"])
     parser.add_argument("--run", default="la-selective", help="new bounded output directory name under build")
     args = parser.parse_args()
     assert Path(args.run).name==args.run and args.run not in [".",".."]

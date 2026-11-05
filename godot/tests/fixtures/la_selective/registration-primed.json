@@ -1,0 +1,9 @@
+{
+  "id": "LA-SOL-SURROGATE-003-PRIMED",
+  "registered_date": "2026-11-05",
+  "extends": "res://tests/fixtures/la_selective/registration.json",
+  "resolve_overlaps": true,
+  "backend_warmup_steps": 1,
+  "reason": "Independent readback found every nonzero step-zero action ineffective in the new unprimed fixture. Execute one neutral zero-gravity Rapier initialization step before native construction, equally for every fresh arm. Preserve 001 and 002 failures. No response arithmetic, gains, budgets, challenges or physical thresholds change.",
+  "admission": "Full-path surrogate with an initialized backend. Exact original SOL authority, full native tuple/energy admission and 120+60 clearance remain unavailable."
+}

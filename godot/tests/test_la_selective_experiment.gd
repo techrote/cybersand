@@ -4,7 +4,7 @@ extends SceneTree
 # thread; native World retains its own pool. No public fleet or solver changes.
 const Contract = preload("res://scripts/microscenario_contract.gd")
 const Bridge = preload("res://scripts/workbench_physics_bridge.gd")
-const PROFILE = "res://tests/fixtures/la_selective/registration-full-path.json"
+const PROFILE = "res://tests/fixtures/la_selective/registration-primed.json"
 const DAM = "res://tests/fixtures/lcb/lcb.dam.water.freemass.reference.v1.json"
 class FixtureRig extends RefCounted:
 	var rectangles: Array = []
@@ -158,6 +158,9 @@ func episode(spec: Dictionary, mode: String, workers: int) -> void:
 	host.add_child(body)
 	var physics := Bridge.new()
 	check(physics.initialize(host.get_world_2d().space,[body],PackedVector2Array([Vector2(40,50)]))==OK,"actual Rapier initialize")
+	var before_warmup: Dictionary = state(body)
+	for i: int in int(profile.get("backend_warmup_steps",0)): physics.step()
+	check(state(body).pose==before_warmup.pose and state(body).velocity==Vector2.ZERO and state(body).omega==0,"neutral backend initialization preserves pristine pose")
 	check(physics.configure_instances([{"instance_id":42,"workbench_options":{"response":mode,"budget":20.0}}],[rig],1)==OK,"one body / compound ownership")
 	var packet: Dictionary = physics.pack_sample([false])
 	var world: Variant = ClassDB.instantiate(&"CyberNativeCellWorld")
@@ -179,6 +182,8 @@ func episode(spec: Dictionary, mode: String, workers: int) -> void:
 		"initial_body":plain(state(body)),"steps":[],"qualification":"#394 common-transform surrogate; no native SOL handoff"}
 	var elapsed_owner: int = 0
 	var elapsed_application: int = 0
+	var control_application_us: int = 0
+	var control_application_attempts: int = 0
 	for step: int in profile.steps:
 		var before: Dictionary = state(body)
 		var challenge_before: float = before.kinetic
@@ -199,12 +204,15 @@ func episode(spec: Dictionary, mode: String, workers: int) -> void:
 		var row: Dictionary = response.rows[0]
 		# Rejected foreign-owner packets cannot consume the real sample.
 		if step==0:
+			var control_start: int = Time.get_ticks_usec()
 			var wrong: Dictionary = response.duplicate(true)
 			wrong.epoch+=1
 			check(physics.apply_packet(100000,wrong)==0 and physics.last_application.refusal=="owner_or_response","epoch refusal")
 			wrong=response.duplicate(true)
 			wrong.rows[0].instance_id+=1
 			check(physics.apply_packet(100000,wrong)==0 and physics.last_application.refusal=="identity","owner refusal")
+			control_application_us+=Time.get_ticks_usec()-control_start
+			control_application_attempts+=2
 		var stored: Dictionary = snapshot(world)
 		var geometry_before: Dictionary = geometry(stored,rig.rectangles,sampled.pose,spec.material)
 		start=Time.get_ticks_usec()
@@ -213,6 +221,15 @@ func episode(spec: Dictionary, mode: String, workers: int) -> void:
 		elapsed_application+=application_us
 		var delivery: Dictionary = physics.last_application.duplicate(true)
 		var after_application: Dictionary = state(body)
+		var action: Dictionary = delivery.bodies[0]
+		var predicted: Vector2 = sampled.velocity
+		if predicted.x*action.correction.x<0: predicted.x=0
+		if predicted.y*action.correction.y<0: predicted.y=0
+		predicted+=Vector2(action.impulse)/sampled.mass
+		var velocity_residual: float = predicted.distance_to(after_application.velocity)
+		var omega_residual: float = absf(sampled.omega+float(action.torque)/sampled.inertia-after_application.omega)
+		if int(profile.get("backend_warmup_steps",0))>0:
+			check(velocity_residual<=1e-5 and omega_residual<=1e-5,"actual RID impulse readback (float precision)")
 		physics.step()
 		var after: Dictionary = state(body)
 		var legacy: Vector2 = row.impulse-row.event_accepted-row.passive_impulse
@@ -222,6 +239,7 @@ func episode(spec: Dictionary, mode: String, workers: int) -> void:
 			"sampled_body":sampled,"before":before,"after_application":after_application,"after_step":after,
 			"candidate_row":row,"legacy_residual":legacy,"legacy_torque_residual":row.torque-row.event_torque-row.passive_torque,
 			"application":delivery,"nonzero_applied_bodies":applied,"owner_us":owner_us,"application_us":application_us,
+			"velocity_readback_residual":velocity_residual,"omega_readback_residual":omega_residual,
 			"external_challenge_work":sampled.kinetic-challenge_before,"response_energy_delta":after_application.kinetic-sampled.kinetic,
 			"Rapier_step_energy_delta":after.kinetic-after_application.kinetic,
 			"geometry_before_step":geometry_before,"geometry_after_step":geometry(stored,rig.rectangles,after.pose,spec.material),
@@ -230,7 +248,10 @@ func episode(spec: Dictionary, mode: String, workers: int) -> void:
 			"stored_inventory":inventory(stored)}))
 		if mode=="LA-EVENT-OFF": check(row.event_accepted==Vector2.ZERO and row.event_torque==0,"event-off retains zero event wrench")
 		if spec.material==3: check(row.arrival_count==0,"Water excluded from arrivals")
+		var duplicate_start: int = Time.get_ticks_usec()
 		check(physics.apply_packet(step+1,response)==0 and physics.last_application.refusal=="duplicate_snapshot","one-use snapshot")
+		control_application_us+=Time.get_ticks_usec()-duplicate_start
+		control_application_attempts+=1
 	report.owner_total_us=elapsed_owner
 	report.application_total_us=elapsed_application
 	report.final_inventory=inventory(snapshot(world))
@@ -239,6 +260,7 @@ func episode(spec: Dictionary, mode: String, workers: int) -> void:
 	packet=physics.pack_sample([false])
 	check(world.prepare_workbench_coupling(packet.states,packet.geometry,packet.bodies,packet.session,packet.epoch,profile.resolve_overlaps),"publication control prepare")
 	var held: Dictionary = world.workbench_coupling_results()
+	var control_start: int = Time.get_ticks_usec()
 	physics.pack_sample([false])
 	physics.apply_packet(1001,held)
 	report.age_one=plain(physics.last_application.duplicate(true))
@@ -246,6 +268,10 @@ func episode(spec: Dictionary, mode: String, workers: int) -> void:
 	physics.apply_packet(1002,held)
 	report.stale=plain(physics.last_application.duplicate(true))
 	check(physics.last_application.bodies[0].get("refusal")=="age","stale publication refused")
+	control_application_us+=Time.get_ticks_usec()-control_start
+	control_application_attempts+=2
+	report.control_application_us=control_application_us
+	report.control_application_attempts=control_application_attempts
 	reports.append(report)
 	physics.shutdown()
 	host.free()
