@@ -134,6 +134,13 @@ REVIEWED_TRANSITIONS: tuple[dict, ...] = ({'path': 'native/src/world_pressure.in
   'source_commit': '9adb98c1671808c01c4919dd79846e68b202c452',
   'record': 'docs/audits/2026-11-05-lcb201-moving-camera-invalidation.md',
   'issue': 201,
+  'pr': 405},
+ {'path': 'native/src/world.cpp',
+  'from_lf_sha256': 'b713711374e1ba887bcdd9a49629c11aaf66b55b621b347f1fe0d050d569bc0a',
+  'to_lf_sha256': '184c02da856f37a46bb1923f68f7ddf1dd10256d12b82e6dbe22c2c5163e9d5e',
+  'source_commit': '4be6590f8dde3c7d67ffe729e7284cc61d0f1d8b',
+  'record': 'docs/audits/2026-11-05-lcb201-moving-camera-invalidation.md',
+  'issue': 201,
   'pr': 405})
 
 

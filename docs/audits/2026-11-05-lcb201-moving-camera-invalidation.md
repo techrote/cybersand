@@ -158,6 +158,10 @@ The gain is engine-wide (any material with pair chemistry probes neighbours this
 way), not specific to PressureFlow. The next candidate is the per-sample chunk
 hash lookup in the PressureFlow kernel and wake scan.
 
+Protected source, second step: `native/src/world.cpp` LF SHA-256
+`b713711374e1ba887bcdd9a49629c11aaf66b55b621b347f1fe0d050d569bc0a` → `184c02da856f37a46bb1923f68f7ddf1dd10256d12b82e6dbe22c2c5163e9d5e` at source commit `4be6590f8dde3c7d67ffe729e7284cc61d0f1d8b` (issue 201, PR 405), proposed as a reviewed
+behaviour-preserving transition pending independent review.
+
 ## Gaps and next steps
 
 1. Desktop in-app before/after with the worker's camera window (the #370 host
