@@ -75,8 +75,8 @@ func _parse_arguments() -> String:
 		return "--scale must be between 1 and 8"
 	if is_nan(presentation_time) or is_inf(presentation_time) or presentation_time < 0.0:
 		return "--time must be finite and nonnegative"
-	if tile_cells < 64 or tile_cells > 2048 or (tile_cells + PAD_CELLS * 2) * scale > 8192:
-		return "--tile-cells/--scale exceed the bounded 8192-pixel capture viewport"
+	if tile_cells < 64 or tile_cells > 2048 or tile_cells % 2 != 0 or (tile_cells + PAD_CELLS * 2) * scale > 8192:
+		return "--tile-cells must be even (64..2048), with padded view <=8192 pixels"
 	if not output_path.is_absolute_path():
 		return "--output must be an absolute directory"
 	return ""
@@ -278,11 +278,15 @@ func _render_rg8(input: Dictionary) -> Dictionary:
 		for x: int in range(0, size.x, tile_cells):
 			var inner: Rect2i = Rect2i(x, y, mini(tile_cells, size.x - x),
 				mini(tile_cells, size.y - y))
-			var start: Vector2i = Vector2i(maxi(0, x - PAD_CELLS),
-				maxi(0, y - PAD_CELLS))
-			var end: Vector2i = Vector2i(mini(size.x, inner.end.x + PAD_CELLS),
-				mini(size.y, inner.end.y + PAD_CELLS))
-			var view: Vector2i = end - start
+			# Every tile begins on the same even world-cell sampling phase.
+			# Constant 32-cell overdraw (including outside world bounds) makes
+			# the half-resolution emission shader phase-consistent at seams.
+			var start: Vector2i = inner.position - Vector2i(PAD_CELLS, PAD_CELLS)
+			var view: Vector2i = inner.size + Vector2i(PAD_CELLS * 2, PAD_CELLS * 2)
+			if view.x % 2 != 0:
+				view.x += 1
+			if view.y % 2 != 0:
+				view.y += 1
 			var tile: Dictionary = await _readback(img, start, view)
 			if not tile.ok:
 				return tile
