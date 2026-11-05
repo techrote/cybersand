@@ -1,0 +1,27 @@
+{
+  "source": "3a29f794489f725c9222249f3e79efbf6c95a70b",
+  "result": {
+    "name": "complete-reduction",
+    "command": [
+      "python",
+      "tools/experiments/sol_chamber_cost_reduce.py",
+      "build/sol-response-cost/registered-matrix",
+      "--output",
+      "build/sol-response-cost/registered-matrix/reduction-002"
+    ],
+    "requested_command": [
+      "python",
+      "tools/experiments/sol_chamber_cost_reduce.py",
+      "build/sol-response-cost/registered-matrix",
+      "--output",
+      "build/sol-response-cost/registered-matrix/reduction-002"
+    ],
+    "exit": 0,
+    "clean": true,
+    "timeout_seconds": 300,
+    "seconds": 34.62493779999204,
+    "log": "build\\sol-response-cost\\sealing-3a29\\complete-reduction.log",
+    "log_sha256": "d96e8ccb8e1ec4935a426a52d3c2f927b1da49791e81915e90e4b115aab1d4bb",
+    "markers": []
+  }
+}

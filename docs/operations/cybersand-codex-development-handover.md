@@ -12,6 +12,13 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 ## Exact SOL geometry chamber lane — 2026-11-05
 
+Root separately owns `codex/sol-response-cost-20261105`, dependent on411's fixed
+`b424032b`. Its [cost dossier](../audits/2026-11-05-sol-response-cost.md) records
+48matched sessions at `a47be4e2`,24equivalent observer pairs, actual getter cost
+and the unchanged physical overlap. No source/production-default integration is
+performed. Native84/runtimes remain inherited/source-authenticated. Keep both
+lanes Draft; new evidence does not replace the original SOL failures/hold gates.
+
 Root alone owns `codex/sol-chamber-yielding-20261105`, based on unchanged #400
 `a38098b1`. Its [registered chamber dossier](../audits/2026-11-05-sol-chamber-yielding.md)
 separates valid static entrapment, driven geometric overlap, corrected force

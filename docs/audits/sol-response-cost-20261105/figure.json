@@ -1,0 +1,15 @@
+{
+  "exit": 0,
+  "matplotlib": "3.10.7",
+  "script_sha256": "07231eceece34a70dc8e18f7d22d5316685add139274ba3a300862de9f2cc4f1",
+  "input_sha256": "e2b9ba12f4ddff6af58329e134c57292a4716b3d41c1e3c3dc66551363bb1c04",
+  "output_sha256": "25dc456a1bdab9fadda48763e6655c34960abda1a91ef10203ca4c013407c8b9",
+  "source_qualifier": "Added plotting script; physical execution a47be4e2",
+  "visual_review": "PASS; axes, units, population and scope readable",
+  "command": [
+    "C:/Users/_/.codex/worktrees/sol-chamber-20261105/khybersand/build/sol-chamber/plot-env/Scripts/python.exe",
+    "tools/experiments/sol_chamber_cost_figure.py",
+    "docs/audits/sol-response-cost-20261105/comparison.json",
+    "docs/audits/sol-response-cost-20261105/cost-breakdown.png"
+  ]
+}

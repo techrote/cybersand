@@ -28,6 +28,24 @@ Windows MSVC using the unchanged header. It also checks friction, rotation,
 capacity, refusal and workspace reuse. These synthetic bins carry no material
 eligibility, live World/Rapier authority or original SOL clearance claim.
 
+## Granular response cost and observation
+
+**Current experimental evidence:** [SOL-CHAMBER-COST-001](../audits/2026-11-05-sol-response-cost.md)
+isolates `workbench_coupling_results()` from the native tick. The getter includes
+the passive solve and serial response construction; the older four-stage
+subtotal omitted it. In48fresh single-body sessions at `a47be4e2`,24full/minimal
+observer pairs match body states, response/application and all scheduled exports.
+Recorded response-generation means are12.739–22.25µs for this256² workload.
+Full per-cell/mask observation adds roughly11.8–13.1ms per recorded step compared
+with minimal observation. This is test-apparatus overhead, not a shipped speedup.
+
+Minimal observation still records body states, statistics and exports; export
+peaks prevent universal60Hz claims. Requested workers1/4 are read back correctly
+but each native phase has at most one job and one actual participant. This
+does not qualify scaling, dense/stress memory or the original24group SOL CPU
+gate. The solver's measured finite-pass residual and driven overlap remain
+unchanged; low response-generation cost is not collision correctness.
+
 ## Pinned Rapier drive sequencing in chamber experiments
 
 **Current on authenticated desktop Rapier v0.35.2:** the addon implements

@@ -1,0 +1,3878 @@
+{
+  "source": "a47be4e2d2a3208650cc4665fc83ca3c5acedaa5",
+  "registration": "SOL-CHAMBER-COST-001",
+  "requested_matrix": {
+    "platforms": [
+      "windows",
+      "linux"
+    ],
+    "workers": [
+      1,
+      4
+    ],
+    "cases": [
+      "closed-unforced",
+      "closed-driven"
+    ],
+    "repeats": 3,
+    "observers": [
+      "full",
+      "minimal"
+    ]
+  },
+  "complete_requested_matrix": true,
+  "full_registered_matrix": true,
+  "missing_coordinates": [],
+  "pairs": [
+    {
+      "coordinates": [
+        "windows",
+        "closed-unforced",
+        1,
+        0
+      ],
+      "equivalent": true,
+      "different_signature_sections": [],
+      "endpoint_payloads_equal": true,
+      "omitted_from_signature": [
+        "scoped body RID",
+        "session/epoch identity after per-report binding checks"
+      ],
+      "elapsed_difference_us": 11955.727777777778
+    },
+    {
+      "coordinates": [
+        "windows",
+        "closed-unforced",
+        1,
+        1
+      ],
+      "equivalent": true,
+      "different_signature_sections": [],
+      "endpoint_payloads_equal": true,
+      "omitted_from_signature": [
+        "scoped body RID",
+        "session/epoch identity after per-report binding checks"
+      ],
+      "elapsed_difference_us": 11847.988888888889
+    },
+    {
+      "coordinates": [
+        "windows",
+        "closed-unforced",
+        1,
+        2
+      ],
+      "equivalent": true,
+      "different_signature_sections": [],
+      "endpoint_payloads_equal": true,
+      "omitted_from_signature": [
+        "scoped body RID",
+        "session/epoch identity after per-report binding checks"
+      ],
+      "elapsed_difference_us": 11914.833333333334
+    },
+    {
+      "coordinates": [
+        "windows",
+        "closed-unforced",
+        4,
+        0
+      ],
+      "equivalent": true,
+      "different_signature_sections": [],
+      "endpoint_payloads_equal": true,
+      "omitted_from_signature": [
+        "scoped body RID",
+        "session/epoch identity after per-report binding checks"
+      ],
+      "elapsed_difference_us": 12057.222222222223
+    },
+    {
+      "coordinates": [
+        "windows",
+        "closed-unforced",
+        4,
+        1
+      ],
+      "equivalent": true,
+      "different_signature_sections": [],
+      "endpoint_payloads_equal": true,
+      "omitted_from_signature": [
+        "scoped body RID",
+        "session/epoch identity after per-report binding checks"
+      ],
+      "elapsed_difference_us": 12249.038888888888
+    },
+    {
+      "coordinates": [
+        "windows",
+        "closed-unforced",
+        4,
+        2
+      ],
+      "equivalent": true,
+      "different_signature_sections": [],
+      "endpoint_payloads_equal": true,
+      "omitted_from_signature": [
+        "scoped body RID",
+        "session/epoch identity after per-report binding checks"
+      ],
+      "elapsed_difference_us": 11759.994444444445
+    },
+    {
+      "coordinates": [
+        "windows",
+        "closed-driven",
+        1,
+        0
+      ],
+      "equivalent": true,
+      "different_signature_sections": [],
+      "endpoint_payloads_equal": true,
+      "omitted_from_signature": [
+        "scoped body RID",
+        "session/epoch identity after per-report binding checks"
+      ],
+      "elapsed_difference_us": 11795.25
+    },
+    {
+      "coordinates": [
+        "windows",
+        "closed-driven",
+        1,
+        1
+      ],
+      "equivalent": true,
+      "different_signature_sections": [],
+      "endpoint_payloads_equal": true,
+      "omitted_from_signature": [
+        "scoped body RID",
+        "session/epoch identity after per-report binding checks"
+      ],
+      "elapsed_difference_us": 11927.95
+    },
+    {
+      "coordinates": [
+        "windows",
+        "closed-driven",
+        1,
+        2
+      ],
+      "equivalent": true,
+      "different_signature_sections": [],
+      "endpoint_payloads_equal": true,
+      "omitted_from_signature": [
+        "scoped body RID",
+        "session/epoch identity after per-report binding checks"
+      ],
+      "elapsed_difference_us": 12219.272222222222
+    },
+    {
+      "coordinates": [
+        "windows",
+        "closed-driven",
+        4,
+        0
+      ],
+      "equivalent": true,
+      "different_signature_sections": [],
+      "endpoint_payloads_equal": true,
+      "omitted_from_signature": [
+        "scoped body RID",
+        "session/epoch identity after per-report binding checks"
+      ],
+      "elapsed_difference_us": 11870.777777777777
+    },
+    {
+      "coordinates": [
+        "windows",
+        "closed-driven",
+        4,
+        1
+      ],
+      "equivalent": true,
+      "different_signature_sections": [],
+      "endpoint_payloads_equal": true,
+      "omitted_from_signature": [
+        "scoped body RID",
+        "session/epoch identity after per-report binding checks"
+      ],
+      "elapsed_difference_us": 12293.8
+    },
+    {
+      "coordinates": [
+        "windows",
+        "closed-driven",
+        4,
+        2
+      ],
+      "equivalent": true,
+      "different_signature_sections": [],
+      "endpoint_payloads_equal": true,
+      "omitted_from_signature": [
+        "scoped body RID",
+        "session/epoch identity after per-report binding checks"
+      ],
+      "elapsed_difference_us": 11754.011111111111
+    },
+    {
+      "coordinates": [
+        "linux",
+        "closed-unforced",
+        1,
+        0
+      ],
+      "equivalent": true,
+      "different_signature_sections": [],
+      "endpoint_payloads_equal": true,
+      "omitted_from_signature": [
+        "scoped body RID",
+        "session/epoch identity after per-report binding checks"
+      ],
+      "elapsed_difference_us": 12933.866666666667
+    },
+    {
+      "coordinates": [
+        "linux",
+        "closed-unforced",
+        1,
+        1
+      ],
+      "equivalent": true,
+      "different_signature_sections": [],
+      "endpoint_payloads_equal": true,
+      "omitted_from_signature": [
+        "scoped body RID",
+        "session/epoch identity after per-report binding checks"
+      ],
+      "elapsed_difference_us": 12996.538888888888
+    },
+    {
+      "coordinates": [
+        "linux",
+        "closed-unforced",
+        1,
+        2
+      ],
+      "equivalent": true,
+      "different_signature_sections": [],
+      "endpoint_payloads_equal": true,
+      "omitted_from_signature": [
+        "scoped body RID",
+        "session/epoch identity after per-report binding checks"
+      ],
+      "elapsed_difference_us": 12895.777777777777
+    },
+    {
+      "coordinates": [
+        "linux",
+        "closed-unforced",
+        4,
+        0
+      ],
+      "equivalent": true,
+      "different_signature_sections": [],
+      "endpoint_payloads_equal": true,
+      "omitted_from_signature": [
+        "scoped body RID",
+        "session/epoch identity after per-report binding checks"
+      ],
+      "elapsed_difference_us": 13055.91111111111
+    },
+    {
+      "coordinates": [
+        "linux",
+        "closed-unforced",
+        4,
+        1
+      ],
+      "equivalent": true,
+      "different_signature_sections": [],
+      "endpoint_payloads_equal": true,
+      "omitted_from_signature": [
+        "scoped body RID",
+        "session/epoch identity after per-report binding checks"
+      ],
+      "elapsed_difference_us": 12686.672222222222
+    },
+    {
+      "coordinates": [
+        "linux",
+        "closed-unforced",
+        4,
+        2
+      ],
+      "equivalent": true,
+      "different_signature_sections": [],
+      "endpoint_payloads_equal": true,
+      "omitted_from_signature": [
+        "scoped body RID",
+        "session/epoch identity after per-report binding checks"
+      ],
+      "elapsed_difference_us": 12806.416666666666
+    },
+    {
+      "coordinates": [
+        "linux",
+        "closed-driven",
+        1,
+        0
+      ],
+      "equivalent": true,
+      "different_signature_sections": [],
+      "endpoint_payloads_equal": true,
+      "omitted_from_signature": [
+        "scoped body RID",
+        "session/epoch identity after per-report binding checks"
+      ],
+      "elapsed_difference_us": 12818.477777777778
+    },
+    {
+      "coordinates": [
+        "linux",
+        "closed-driven",
+        1,
+        1
+      ],
+      "equivalent": true,
+      "different_signature_sections": [],
+      "endpoint_payloads_equal": true,
+      "omitted_from_signature": [
+        "scoped body RID",
+        "session/epoch identity after per-report binding checks"
+      ],
+      "elapsed_difference_us": 12762.43888888889
+    },
+    {
+      "coordinates": [
+        "linux",
+        "closed-driven",
+        1,
+        2
+      ],
+      "equivalent": true,
+      "different_signature_sections": [],
+      "endpoint_payloads_equal": true,
+      "omitted_from_signature": [
+        "scoped body RID",
+        "session/epoch identity after per-report binding checks"
+      ],
+      "elapsed_difference_us": 12744.666666666666
+    },
+    {
+      "coordinates": [
+        "linux",
+        "closed-driven",
+        4,
+        0
+      ],
+      "equivalent": true,
+      "different_signature_sections": [],
+      "endpoint_payloads_equal": true,
+      "omitted_from_signature": [
+        "scoped body RID",
+        "session/epoch identity after per-report binding checks"
+      ],
+      "elapsed_difference_us": 12901.25
+    },
+    {
+      "coordinates": [
+        "linux",
+        "closed-driven",
+        4,
+        1
+      ],
+      "equivalent": true,
+      "different_signature_sections": [],
+      "endpoint_payloads_equal": true,
+      "omitted_from_signature": [
+        "scoped body RID",
+        "session/epoch identity after per-report binding checks"
+      ],
+      "elapsed_difference_us": 13018.166666666666
+    },
+    {
+      "coordinates": [
+        "linux",
+        "closed-driven",
+        4,
+        2
+      ],
+      "equivalent": true,
+      "different_signature_sections": [],
+      "endpoint_payloads_equal": true,
+      "omitted_from_signature": [
+        "scoped body RID",
+        "session/epoch identity after per-report binding checks"
+      ],
+      "elapsed_difference_us": 12875.91111111111
+    }
+  ],
+  "episodes": [
+    {
+      "platform": "windows",
+      "case": "closed-unforced",
+      "workers": 1,
+      "repeat": 0,
+      "observer": "full",
+      "source": "a47be4e2d2a3208650cc4665fc83ca3c5acedaa5",
+      "pid": 42040,
+      "complete": true,
+      "exact_tuple_conservation": true,
+      "report": {
+        "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-full-w1-r0/closed-unforced-LA-SELECTIVE-w1-r0.json",
+        "sha256": "48a8a6c79c0404968e599b6e52dc58722ee7183375037eb8b1c3f4b2920d6b75"
+      },
+      "initial_payload_sha256": "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc",
+      "final_payload_sha256": "0e9c1680db4ff46830b1f23574577e22e97f9f65a8a9c6d6b494e1acf882b540",
+      "timings": {
+        "preparation_us": {
+          "sum_us": 25654,
+          "mean_us": 142.5222222222222,
+          "max_us": 269
+        },
+        "native_tick_us": {
+          "sum_us": 28527,
+          "mean_us": 158.48333333333332,
+          "max_us": 302
+        },
+        "response_generation_us": {
+          "sum_us": 3739,
+          "mean_us": 20.772222222222222,
+          "max_us": 121
+        },
+        "application_us": {
+          "sum_us": 11203,
+          "mean_us": 62.23888888888889,
+          "max_us": 108
+        },
+        "rapier_us": {
+          "sum_us": 15348,
+          "mean_us": 85.26666666666667,
+          "max_us": 239
+        },
+        "statistics_us": {
+          "sum_us": 2760,
+          "mean_us": 15.333333333333334,
+          "max_us": 99
+        },
+        "observer_us": {
+          "sum_us": 2119148,
+          "mean_us": 11773.044444444444,
+          "max_us": 14943
+        },
+        "export_us": {
+          "sum_us": 171563,
+          "mean_us": 953.1277777777777,
+          "max_us": 37015
+        },
+        "elapsed_us": {
+          "sum_us": 2406461,
+          "mean_us": 13369.227777777778,
+          "max_us": 52963
+        }
+      },
+      "process_seconds": 4.561856299987994,
+      "episode_us": 2531784,
+      "participant_max": 1,
+      "arrival_history_peak": 2097152,
+      "resident_bytes_peak": 2625536,
+      "maximum_sand_area": 0,
+      "maximum_sand_depth": 0,
+      "geometry_scope": "full five-boundary recorded-transform audit"
+    },
+    {
+      "platform": "windows",
+      "case": "closed-unforced",
+      "workers": 1,
+      "repeat": 0,
+      "observer": "minimal",
+      "source": "a47be4e2d2a3208650cc4665fc83ca3c5acedaa5",
+      "pid": 40940,
+      "complete": true,
+      "exact_tuple_conservation": true,
+      "report": {
+        "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-minimal-w1-r0/closed-unforced-LA-SELECTIVE-w1-r0.json",
+        "sha256": "59ec24bf8437960e359e4f966c8be8da0a039bee89092e577815db1347410ba3"
+      },
+      "initial_payload_sha256": "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc",
+      "final_payload_sha256": "0e9c1680db4ff46830b1f23574577e22e97f9f65a8a9c6d6b494e1acf882b540",
+      "timings": {
+        "preparation_us": {
+          "sum_us": 23602,
+          "mean_us": 131.12222222222223,
+          "max_us": 272
+        },
+        "native_tick_us": {
+          "sum_us": 26604,
+          "mean_us": 147.8,
+          "max_us": 248
+        },
+        "response_generation_us": {
+          "sum_us": 3040,
+          "mean_us": 16.88888888888889,
+          "max_us": 93
+        },
+        "application_us": {
+          "sum_us": 7406,
+          "mean_us": 41.144444444444446,
+          "max_us": 90
+        },
+        "rapier_us": {
+          "sum_us": 8826,
+          "mean_us": 49.03333333333333,
+          "max_us": 212
+        },
+        "statistics_us": {
+          "sum_us": 1981,
+          "mean_us": 11.005555555555556,
+          "max_us": 89
+        },
+        "observer_us": {
+          "sum_us": 7257,
+          "mean_us": 40.31666666666667,
+          "max_us": 120
+        },
+        "export_us": {
+          "sum_us": 156912,
+          "mean_us": 871.7333333333333,
+          "max_us": 26917
+        },
+        "elapsed_us": {
+          "sum_us": 254430,
+          "mean_us": 1413.5,
+          "max_us": 27758
+        }
+      },
+      "process_seconds": 1.3981827999814413,
+      "episode_us": 374518,
+      "participant_max": 1,
+      "arrival_history_peak": 2097152,
+      "resident_bytes_peak": 2625536,
+      "maximum_sand_area": null,
+      "maximum_sand_depth": null,
+      "geometry_scope": "intermediate geometry unavailable; paired trajectory/payload equivalence only"
+    },
+    {
+      "platform": "windows",
+      "case": "closed-driven",
+      "workers": 1,
+      "repeat": 0,
+      "observer": "full",
+      "source": "a47be4e2d2a3208650cc4665fc83ca3c5acedaa5",
+      "pid": 28724,
+      "complete": true,
+      "exact_tuple_conservation": true,
+      "report": {
+        "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-full-w1-r0/closed-driven-LA-SELECTIVE-w1-r0.json",
+        "sha256": "7129e71a6b8ce37e5f7277dcf4209034da671830d1e0d4ceaba555e58c32d3df"
+      },
+      "initial_payload_sha256": "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc",
+      "final_payload_sha256": "678726600b1e7f78555d2a9c991e70450a54870761e9c33597a1b14f7cece331",
+      "timings": {
+        "preparation_us": {
+          "sum_us": 28252,
+          "mean_us": 156.95555555555555,
+          "max_us": 302
+        },
+        "native_tick_us": {
+          "sum_us": 28110,
+          "mean_us": 156.16666666666666,
+          "max_us": 297
+        },
+        "response_generation_us": {
+          "sum_us": 3635,
+          "mean_us": 20.194444444444443,
+          "max_us": 104
+        },
+        "application_us": {
+          "sum_us": 11606,
+          "mean_us": 64.47777777777777,
+          "max_us": 122
+        },
+        "rapier_us": {
+          "sum_us": 16682,
+          "mean_us": 92.67777777777778,
+          "max_us": 211
+        },
+        "statistics_us": {
+          "sum_us": 2567,
+          "mean_us": 14.261111111111111,
+          "max_us": 107
+        },
+        "observer_us": {
+          "sum_us": 2104309,
+          "mean_us": 11690.605555555556,
+          "max_us": 14198
+        },
+        "export_us": {
+          "sum_us": 159710,
+          "mean_us": 887.2777777777778,
+          "max_us": 28769
+        },
+        "elapsed_us": {
+          "sum_us": 2383555,
+          "mean_us": 13241.972222222223,
+          "max_us": 40890
+        }
+      },
+      "process_seconds": 4.389530799991917,
+      "episode_us": 2494829,
+      "participant_max": 1,
+      "arrival_history_peak": 2097152,
+      "resident_bytes_peak": 2625536,
+      "maximum_sand_area": 38.76508869923395,
+      "maximum_sand_depth": 1.3963688876541198,
+      "geometry_scope": "full five-boundary recorded-transform audit"
+    },
+    {
+      "platform": "windows",
+      "case": "closed-driven",
+      "workers": 1,
+      "repeat": 0,
+      "observer": "minimal",
+      "source": "a47be4e2d2a3208650cc4665fc83ca3c5acedaa5",
+      "pid": 5624,
+      "complete": true,
+      "exact_tuple_conservation": true,
+      "report": {
+        "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-minimal-w1-r0/closed-driven-LA-SELECTIVE-w1-r0.json",
+        "sha256": "aa0a3d86ecefd7420fa13a3b9f61bdf5bc6878a8704b149857086b3cf7d44db1"
+      },
+      "initial_payload_sha256": "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc",
+      "final_payload_sha256": "678726600b1e7f78555d2a9c991e70450a54870761e9c33597a1b14f7cece331",
+      "timings": {
+        "preparation_us": {
+          "sum_us": 26309,
+          "mean_us": 146.1611111111111,
+          "max_us": 242
+        },
+        "native_tick_us": {
+          "sum_us": 26307,
+          "mean_us": 146.15,
+          "max_us": 250
+        },
+        "response_generation_us": {
+          "sum_us": 2893,
+          "mean_us": 16.072222222222223,
+          "max_us": 74
+        },
+        "application_us": {
+          "sum_us": 7771,
+          "mean_us": 43.172222222222224,
+          "max_us": 130
+        },
+        "rapier_us": {
+          "sum_us": 9595,
+          "mean_us": 53.30555555555556,
+          "max_us": 167
+        },
+        "statistics_us": {
+          "sum_us": 1782,
+          "mean_us": 9.9,
+          "max_us": 64
+        },
+        "observer_us": {
+          "sum_us": 7661,
+          "mean_us": 42.56111111111111,
+          "max_us": 115
+        },
+        "export_us": {
+          "sum_us": 158639,
+          "mean_us": 881.3277777777778,
+          "max_us": 26693
+        },
+        "elapsed_us": {
+          "sum_us": 260410,
+          "mean_us": 1446.7222222222222,
+          "max_us": 27534
+        }
+      },
+      "process_seconds": 1.4055167000042275,
+      "episode_us": 373560,
+      "participant_max": 1,
+      "arrival_history_peak": 2097152,
+      "resident_bytes_peak": 2625536,
+      "maximum_sand_area": null,
+      "maximum_sand_depth": null,
+      "geometry_scope": "intermediate geometry unavailable; paired trajectory/payload equivalence only"
+    },
+    {
+      "platform": "windows",
+      "case": "closed-unforced",
+      "workers": 4,
+      "repeat": 0,
+      "observer": "full",
+      "source": "a47be4e2d2a3208650cc4665fc83ca3c5acedaa5",
+      "pid": 2332,
+      "complete": true,
+      "exact_tuple_conservation": true,
+      "report": {
+        "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-full-w4-r0/closed-unforced-LA-SELECTIVE-w4-r0.json",
+        "sha256": "d58168700e2dc38e1ebf65a78ce38c37934533ddd2368184c5a3649a3d3a93a6"
+      },
+      "initial_payload_sha256": "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc",
+      "final_payload_sha256": "0e9c1680db4ff46830b1f23574577e22e97f9f65a8a9c6d6b494e1acf882b540",
+      "timings": {
+        "preparation_us": {
+          "sum_us": 27098,
+          "mean_us": 150.54444444444445,
+          "max_us": 293
+        },
+        "native_tick_us": {
+          "sum_us": 29586,
+          "mean_us": 164.36666666666667,
+          "max_us": 296
+        },
+        "response_generation_us": {
+          "sum_us": 3741,
+          "mean_us": 20.783333333333335,
+          "max_us": 88
+        },
+        "application_us": {
+          "sum_us": 11942,
+          "mean_us": 66.34444444444445,
+          "max_us": 164
+        },
+        "rapier_us": {
+          "sum_us": 16912,
+          "mean_us": 93.95555555555555,
+          "max_us": 214
+        },
+        "statistics_us": {
+          "sum_us": 2643,
+          "mean_us": 14.683333333333334,
+          "max_us": 92
+        },
+        "observer_us": {
+          "sum_us": 2135151,
+          "mean_us": 11861.95,
+          "max_us": 14772
+        },
+        "export_us": {
+          "sum_us": 172977,
+          "mean_us": 960.9833333333333,
+          "max_us": 37913
+        },
+        "elapsed_us": {
+          "sum_us": 2430368,
+          "mean_us": 13502.044444444444,
+          "max_us": 50610
+        }
+      },
+      "process_seconds": 4.555414800008293,
+      "episode_us": 2550067,
+      "participant_max": 1,
+      "arrival_history_peak": 2097152,
+      "resident_bytes_peak": 2625536,
+      "maximum_sand_area": 0,
+      "maximum_sand_depth": 0,
+      "geometry_scope": "full five-boundary recorded-transform audit"
+    },
+    {
+      "platform": "windows",
+      "case": "closed-unforced",
+      "workers": 4,
+      "repeat": 0,
+      "observer": "minimal",
+      "source": "a47be4e2d2a3208650cc4665fc83ca3c5acedaa5",
+      "pid": 3672,
+      "complete": true,
+      "exact_tuple_conservation": true,
+      "report": {
+        "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-minimal-w4-r0/closed-unforced-LA-SELECTIVE-w4-r0.json",
+        "sha256": "53d16407f3a7983b35554208ee3335c7378777f36b499cf53073c1691137c925"
+      },
+      "initial_payload_sha256": "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc",
+      "final_payload_sha256": "0e9c1680db4ff46830b1f23574577e22e97f9f65a8a9c6d6b494e1acf882b540",
+      "timings": {
+        "preparation_us": {
+          "sum_us": 23437,
+          "mean_us": 130.20555555555555,
+          "max_us": 273
+        },
+        "native_tick_us": {
+          "sum_us": 27072,
+          "mean_us": 150.4,
+          "max_us": 283
+        },
+        "response_generation_us": {
+          "sum_us": 2848,
+          "mean_us": 15.822222222222223,
+          "max_us": 71
+        },
+        "application_us": {
+          "sum_us": 7576,
+          "mean_us": 42.08888888888889,
+          "max_us": 139
+        },
+        "rapier_us": {
+          "sum_us": 8993,
+          "mean_us": 49.96111111111111,
+          "max_us": 183
+        },
+        "statistics_us": {
+          "sum_us": 1907,
+          "mean_us": 10.594444444444445,
+          "max_us": 68
+        },
+        "observer_us": {
+          "sum_us": 7814,
+          "mean_us": 43.41111111111111,
+          "max_us": 192
+        },
+        "export_us": {
+          "sum_us": 160650,
+          "mean_us": 892.5,
+          "max_us": 27679
+        },
+        "elapsed_us": {
+          "sum_us": 260068,
+          "mean_us": 1444.8222222222223,
+          "max_us": 28624
+        }
+      },
+      "process_seconds": 1.3967350000166334,
+      "episode_us": 374978,
+      "participant_max": 1,
+      "arrival_history_peak": 2097152,
+      "resident_bytes_peak": 2625536,
+      "maximum_sand_area": null,
+      "maximum_sand_depth": null,
+      "geometry_scope": "intermediate geometry unavailable; paired trajectory/payload equivalence only"
+    },
+    {
+      "platform": "windows",
+      "case": "closed-driven",
+      "workers": 4,
+      "repeat": 0,
+      "observer": "full",
+      "source": "a47be4e2d2a3208650cc4665fc83ca3c5acedaa5",
+      "pid": 39512,
+      "complete": true,
+      "exact_tuple_conservation": true,
+      "report": {
+        "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-full-w4-r0/closed-driven-LA-SELECTIVE-w4-r0.json",
+        "sha256": "635aab6b77ed53a711e541d8de529ef7d64890085cebd7d3dcd0868100ef254b"
+      },
+      "initial_payload_sha256": "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc",
+      "final_payload_sha256": "678726600b1e7f78555d2a9c991e70450a54870761e9c33597a1b14f7cece331",
+      "timings": {
+        "preparation_us": {
+          "sum_us": 28739,
+          "mean_us": 159.6611111111111,
+          "max_us": 307
+        },
+        "native_tick_us": {
+          "sum_us": 28297,
+          "mean_us": 157.20555555555555,
+          "max_us": 294
+        },
+        "response_generation_us": {
+          "sum_us": 3839,
+          "mean_us": 21.32777777777778,
+          "max_us": 103
+        },
+        "application_us": {
+          "sum_us": 11881,
+          "mean_us": 66.00555555555556,
+          "max_us": 118
+        },
+        "rapier_us": {
+          "sum_us": 16227,
+          "mean_us": 90.15,
+          "max_us": 198
+        },
+        "statistics_us": {
+          "sum_us": 2698,
+          "mean_us": 14.988888888888889,
+          "max_us": 88
+        },
+        "observer_us": {
+          "sum_us": 2118007,
+          "mean_us": 11766.705555555556,
+          "max_us": 13968
+        },
+        "export_us": {
+          "sum_us": 164196,
+          "mean_us": 912.2,
+          "max_us": 28836
+        },
+        "elapsed_us": {
+          "sum_us": 2402740,
+          "mean_us": 13348.555555555555,
+          "max_us": 41531
+        }
+      },
+      "process_seconds": 4.576282499998342,
+      "episode_us": 2517464,
+      "participant_max": 1,
+      "arrival_history_peak": 2097152,
+      "resident_bytes_peak": 2625536,
+      "maximum_sand_area": 38.76508869923395,
+      "maximum_sand_depth": 1.3963688876541198,
+      "geometry_scope": "full five-boundary recorded-transform audit"
+    },
+    {
+      "platform": "windows",
+      "case": "closed-driven",
+      "workers": 4,
+      "repeat": 0,
+      "observer": "minimal",
+      "source": "a47be4e2d2a3208650cc4665fc83ca3c5acedaa5",
+      "pid": 40340,
+      "complete": true,
+      "exact_tuple_conservation": true,
+      "report": {
+        "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-minimal-w4-r0/closed-driven-LA-SELECTIVE-w4-r0.json",
+        "sha256": "a873e6677b051953a9ca993fd3b2a0754f8415c7ddceeaf9ab7d0cbc2caad423"
+      },
+      "initial_payload_sha256": "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc",
+      "final_payload_sha256": "678726600b1e7f78555d2a9c991e70450a54870761e9c33597a1b14f7cece331",
+      "timings": {
+        "preparation_us": {
+          "sum_us": 26576,
+          "mean_us": 147.64444444444445,
+          "max_us": 277
+        },
+        "native_tick_us": {
+          "sum_us": 26277,
+          "mean_us": 145.98333333333332,
+          "max_us": 288
+        },
+        "response_generation_us": {
+          "sum_us": 2991,
+          "mean_us": 16.616666666666667,
+          "max_us": 115
+        },
+        "application_us": {
+          "sum_us": 7728,
+          "mean_us": 42.93333333333333,
+          "max_us": 95
+        },
+        "rapier_us": {
+          "sum_us": 9646,
+          "mean_us": 53.58888888888889,
+          "max_us": 175
+        },
+        "statistics_us": {
+          "sum_us": 2031,
+          "mean_us": 11.283333333333333,
+          "max_us": 80
+        },
+        "observer_us": {
+          "sum_us": 7545,
+          "mean_us": 41.916666666666664,
+          "max_us": 144
+        },
+        "export_us": {
+          "sum_us": 163628,
+          "mean_us": 909.0444444444445,
+          "max_us": 28964
+        },
+        "elapsed_us": {
+          "sum_us": 266000,
+          "mean_us": 1477.7777777777778,
+          "max_us": 29858
+        }
+      },
+      "process_seconds": 1.3991063000285067,
+      "episode_us": 376717,
+      "participant_max": 1,
+      "arrival_history_peak": 2097152,
+      "resident_bytes_peak": 2625536,
+      "maximum_sand_area": null,
+      "maximum_sand_depth": null,
+      "geometry_scope": "intermediate geometry unavailable; paired trajectory/payload equivalence only"
+    },
+    {
+      "platform": "windows",
+      "case": "closed-unforced",
+      "workers": 1,
+      "repeat": 1,
+      "observer": "minimal",
+      "source": "a47be4e2d2a3208650cc4665fc83ca3c5acedaa5",
+      "pid": 37896,
+      "complete": true,
+      "exact_tuple_conservation": true,
+      "report": {
+        "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-minimal-w1-r1/closed-unforced-LA-SELECTIVE-w1-r1.json",
+        "sha256": "7a888e39137cb36e4999707cc11bc9b69a2f15044430dfadf96dbb4fc2105d08"
+      },
+      "initial_payload_sha256": "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc",
+      "final_payload_sha256": "0e9c1680db4ff46830b1f23574577e22e97f9f65a8a9c6d6b494e1acf882b540",
+      "timings": {
+        "preparation_us": {
+          "sum_us": 23111,
+          "mean_us": 128.39444444444445,
+          "max_us": 232
+        },
+        "native_tick_us": {
+          "sum_us": 26169,
+          "mean_us": 145.38333333333333,
+          "max_us": 229
+        },
+        "response_generation_us": {
+          "sum_us": 2817,
+          "mean_us": 15.65,
+          "max_us": 80
+        },
+        "application_us": {
+          "sum_us": 7272,
+          "mean_us": 40.4,
+          "max_us": 82
+        },
+        "rapier_us": {
+          "sum_us": 8941,
+          "mean_us": 49.672222222222224,
+          "max_us": 194
+        },
+        "statistics_us": {
+          "sum_us": 2049,
+          "mean_us": 11.383333333333333,
+          "max_us": 100
+        },
+        "observer_us": {
+          "sum_us": 7323,
+          "mean_us": 40.68333333333333,
+          "max_us": 104
+        },
+        "export_us": {
+          "sum_us": 163574,
+          "mean_us": 908.7444444444444,
+          "max_us": 30292
+        },
+        "elapsed_us": {
+          "sum_us": 259800,
+          "mean_us": 1443.3333333333333,
+          "max_us": 30784
+        }
+      },
+      "process_seconds": 1.3273601999972016,
+      "episode_us": 373659,
+      "participant_max": 1,
+      "arrival_history_peak": 2097152,
+      "resident_bytes_peak": 2625536,
+      "maximum_sand_area": null,
+      "maximum_sand_depth": null,
+      "geometry_scope": "intermediate geometry unavailable; paired trajectory/payload equivalence only"
+    },
+    {
+      "platform": "windows",
+      "case": "closed-unforced",
+      "workers": 1,
+      "repeat": 1,
+      "observer": "full",
+      "source": "a47be4e2d2a3208650cc4665fc83ca3c5acedaa5",
+      "pid": 13836,
+      "complete": true,
+      "exact_tuple_conservation": true,
+      "report": {
+        "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-full-w1-r1/closed-unforced-LA-SELECTIVE-w1-r1.json",
+        "sha256": "2e22ec1652de4542ce0e3f4d50432b7bf3679dc514acb4f481bc90eb4949cde3"
+      },
+      "initial_payload_sha256": "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc",
+      "final_payload_sha256": "0e9c1680db4ff46830b1f23574577e22e97f9f65a8a9c6d6b494e1acf882b540",
+      "timings": {
+        "preparation_us": {
+          "sum_us": 25649,
+          "mean_us": 142.49444444444444,
+          "max_us": 271
+        },
+        "native_tick_us": {
+          "sum_us": 28219,
+          "mean_us": 156.7722222222222,
+          "max_us": 312
+        },
+        "response_generation_us": {
+          "sum_us": 3625,
+          "mean_us": 20.13888888888889,
+          "max_us": 156
+        },
+        "application_us": {
+          "sum_us": 11014,
+          "mean_us": 61.18888888888889,
+          "max_us": 148
+        },
+        "rapier_us": {
+          "sum_us": 15900,
+          "mean_us": 88.33333333333333,
+          "max_us": 183
+        },
+        "statistics_us": {
+          "sum_us": 2351,
+          "mean_us": 13.061111111111112,
+          "max_us": 59
+        },
+        "observer_us": {
+          "sum_us": 2110405,
+          "mean_us": 11724.472222222223,
+          "max_us": 14915
+        },
+        "export_us": {
+          "sum_us": 166877,
+          "mean_us": 927.0944444444444,
+          "max_us": 28805
+        },
+        "elapsed_us": {
+          "sum_us": 2392438,
+          "mean_us": 13291.322222222223,
+          "max_us": 42641
+        }
+      },
+      "process_seconds": 4.478550600004382,
+      "episode_us": 2507970,
+      "participant_max": 1,
+      "arrival_history_peak": 2097152,
+      "resident_bytes_peak": 2625536,
+      "maximum_sand_area": 0,
+      "maximum_sand_depth": 0,
+      "geometry_scope": "full five-boundary recorded-transform audit"
+    },
+    {
+      "platform": "windows",
+      "case": "closed-driven",
+      "workers": 1,
+      "repeat": 1,
+      "observer": "minimal",
+      "source": "a47be4e2d2a3208650cc4665fc83ca3c5acedaa5",
+      "pid": 12932,
+      "complete": true,
+      "exact_tuple_conservation": true,
+      "report": {
+        "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-minimal-w1-r1/closed-driven-LA-SELECTIVE-w1-r1.json",
+        "sha256": "91fdca9095fcc79b47618230a9f2ffcbd136ddf13adc9fd48649f6e3423275d4"
+      },
+      "initial_payload_sha256": "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc",
+      "final_payload_sha256": "678726600b1e7f78555d2a9c991e70450a54870761e9c33597a1b14f7cece331",
+      "timings": {
+        "preparation_us": {
+          "sum_us": 27719,
+          "mean_us": 153.99444444444444,
+          "max_us": 345
+        },
+        "native_tick_us": {
+          "sum_us": 28388,
+          "mean_us": 157.7111111111111,
+          "max_us": 290
+        },
+        "response_generation_us": {
+          "sum_us": 3180,
+          "mean_us": 17.666666666666668,
+          "max_us": 88
+        },
+        "application_us": {
+          "sum_us": 8440,
+          "mean_us": 46.888888888888886,
+          "max_us": 168
+        },
+        "rapier_us": {
+          "sum_us": 9826,
+          "mean_us": 54.58888888888889,
+          "max_us": 174
+        },
+        "statistics_us": {
+          "sum_us": 2091,
+          "mean_us": 11.616666666666667,
+          "max_us": 70
+        },
+        "observer_us": {
+          "sum_us": 8047,
+          "mean_us": 44.705555555555556,
+          "max_us": 124
+        },
+        "export_us": {
+          "sum_us": 158327,
+          "mean_us": 879.5944444444444,
+          "max_us": 28238
+        },
+        "elapsed_us": {
+          "sum_us": 267130,
+          "mean_us": 1484.0555555555557,
+          "max_us": 28968
+        }
+      },
+      "process_seconds": 1.4305503999930806,
+      "episode_us": 382735,
+      "participant_max": 1,
+      "arrival_history_peak": 2097152,
+      "resident_bytes_peak": 2625536,
+      "maximum_sand_area": null,
+      "maximum_sand_depth": null,
+      "geometry_scope": "intermediate geometry unavailable; paired trajectory/payload equivalence only"
+    },
+    {
+      "platform": "windows",
+      "case": "closed-driven",
+      "workers": 1,
+      "repeat": 1,
+      "observer": "full",
+      "source": "a47be4e2d2a3208650cc4665fc83ca3c5acedaa5",
+      "pid": 44532,
+      "complete": true,
+      "exact_tuple_conservation": true,
+      "report": {
+        "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-full-w1-r1/closed-driven-LA-SELECTIVE-w1-r1.json",
+        "sha256": "6adb3af38943ef0bbcfadb620d51aa0059ea90450495f7a403d0f270bedf1510"
+      },
+      "initial_payload_sha256": "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc",
+      "final_payload_sha256": "678726600b1e7f78555d2a9c991e70450a54870761e9c33597a1b14f7cece331",
+      "timings": {
+        "preparation_us": {
+          "sum_us": 29169,
+          "mean_us": 162.05,
+          "max_us": 316
+        },
+        "native_tick_us": {
+          "sum_us": 29146,
+          "mean_us": 161.92222222222222,
+          "max_us": 322
+        },
+        "response_generation_us": {
+          "sum_us": 3539,
+          "mean_us": 19.66111111111111,
+          "max_us": 83
+        },
+        "application_us": {
+          "sum_us": 11847,
+          "mean_us": 65.81666666666666,
+          "max_us": 114
+        },
+        "rapier_us": {
+          "sum_us": 16551,
+          "mean_us": 91.95,
+          "max_us": 192
+        },
+        "statistics_us": {
+          "sum_us": 2385,
+          "mean_us": 13.25,
+          "max_us": 88
+        },
+        "observer_us": {
+          "sum_us": 2129637,
+          "mean_us": 11831.316666666668,
+          "max_us": 14728
+        },
+        "export_us": {
+          "sum_us": 161853,
+          "mean_us": 899.1833333333333,
+          "max_us": 27611
+        },
+        "elapsed_us": {
+          "sum_us": 2414161,
+          "mean_us": 13412.005555555555,
+          "max_us": 40248
+        }
+      },
+      "process_seconds": 4.360165299964137,
+      "episode_us": 2525361,
+      "participant_max": 1,
+      "arrival_history_peak": 2097152,
+      "resident_bytes_peak": 2625536,
+      "maximum_sand_area": 38.76508869923395,
+      "maximum_sand_depth": 1.3963688876541198,
+      "geometry_scope": "full five-boundary recorded-transform audit"
+    },
+    {
+      "platform": "windows",
+      "case": "closed-unforced",
+      "workers": 4,
+      "repeat": 1,
+      "observer": "minimal",
+      "source": "a47be4e2d2a3208650cc4665fc83ca3c5acedaa5",
+      "pid": 30056,
+      "complete": true,
+      "exact_tuple_conservation": true,
+      "report": {
+        "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-minimal-w4-r1/closed-unforced-LA-SELECTIVE-w4-r1.json",
+        "sha256": "f6a6edda87962af7403803d64a05b517e2d95df3efce3afcb83c76ec39a71b36"
+      },
+      "initial_payload_sha256": "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc",
+      "final_payload_sha256": "0e9c1680db4ff46830b1f23574577e22e97f9f65a8a9c6d6b494e1acf882b540",
+      "timings": {
+        "preparation_us": {
+          "sum_us": 23522,
+          "mean_us": 130.67777777777778,
+          "max_us": 247
+        },
+        "native_tick_us": {
+          "sum_us": 26903,
+          "mean_us": 149.4611111111111,
+          "max_us": 253
+        },
+        "response_generation_us": {
+          "sum_us": 3096,
+          "mean_us": 17.2,
+          "max_us": 113
+        },
+        "application_us": {
+          "sum_us": 7604,
+          "mean_us": 42.24444444444445,
+          "max_us": 101
+        },
+        "rapier_us": {
+          "sum_us": 9127,
+          "mean_us": 50.705555555555556,
+          "max_us": 194
+        },
+        "statistics_us": {
+          "sum_us": 1964,
+          "mean_us": 10.911111111111111,
+          "max_us": 68
+        },
+        "observer_us": {
+          "sum_us": 7567,
+          "mean_us": 42.03888888888889,
+          "max_us": 98
+        },
+        "export_us": {
+          "sum_us": 166863,
+          "mean_us": 927.0166666666667,
+          "max_us": 31731
+        },
+        "elapsed_us": {
+          "sum_us": 265727,
+          "mean_us": 1476.2611111111112,
+          "max_us": 32788
+        }
+      },
+      "process_seconds": 1.3154617000254802,
+      "episode_us": 380914,
+      "participant_max": 1,
+      "arrival_history_peak": 2097152,
+      "resident_bytes_peak": 2625536,
+      "maximum_sand_area": null,
+      "maximum_sand_depth": null,
+      "geometry_scope": "intermediate geometry unavailable; paired trajectory/payload equivalence only"
+    },
+    {
+      "platform": "windows",
+      "case": "closed-unforced",
+      "workers": 4,
+      "repeat": 1,
+      "observer": "full",
+      "source": "a47be4e2d2a3208650cc4665fc83ca3c5acedaa5",
+      "pid": 23484,
+      "complete": true,
+      "exact_tuple_conservation": true,
+      "report": {
+        "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-full-w4-r1/closed-unforced-LA-SELECTIVE-w4-r1.json",
+        "sha256": "bfd53838b2a8342ec402a1144d55b7b39f9bf80288fdcc4a82994d90400e14d7"
+      },
+      "initial_payload_sha256": "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc",
+      "final_payload_sha256": "0e9c1680db4ff46830b1f23574577e22e97f9f65a8a9c6d6b494e1acf882b540",
+      "timings": {
+        "preparation_us": {
+          "sum_us": 27507,
+          "mean_us": 152.81666666666666,
+          "max_us": 292
+        },
+        "native_tick_us": {
+          "sum_us": 30743,
+          "mean_us": 170.79444444444445,
+          "max_us": 433
+        },
+        "response_generation_us": {
+          "sum_us": 3897,
+          "mean_us": 21.65,
+          "max_us": 88
+        },
+        "application_us": {
+          "sum_us": 12890,
+          "mean_us": 71.61111111111111,
+          "max_us": 166
+        },
+        "rapier_us": {
+          "sum_us": 17828,
+          "mean_us": 99.04444444444445,
+          "max_us": 256
+        },
+        "statistics_us": {
+          "sum_us": 2752,
+          "mean_us": 15.28888888888889,
+          "max_us": 72
+        },
+        "observer_us": {
+          "sum_us": 2164331,
+          "mean_us": 12024.06111111111,
+          "max_us": 16119
+        },
+        "export_us": {
+          "sum_us": 178071,
+          "mean_us": 989.2833333333333,
+          "max_us": 38695
+        },
+        "elapsed_us": {
+          "sum_us": 2470554,
+          "mean_us": 13725.3,
+          "max_us": 54121
+        }
+      },
+      "process_seconds": 4.463857299997471,
+      "episode_us": 2595862,
+      "participant_max": 1,
+      "arrival_history_peak": 2097152,
+      "resident_bytes_peak": 2625536,
+      "maximum_sand_area": 0,
+      "maximum_sand_depth": 0,
+      "geometry_scope": "full five-boundary recorded-transform audit"
+    },
+    {
+      "platform": "windows",
+      "case": "closed-driven",
+      "workers": 4,
+      "repeat": 1,
+      "observer": "minimal",
+      "source": "a47be4e2d2a3208650cc4665fc83ca3c5acedaa5",
+      "pid": 48628,
+      "complete": true,
+      "exact_tuple_conservation": true,
+      "report": {
+        "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-minimal-w4-r1/closed-driven-LA-SELECTIVE-w4-r1.json",
+        "sha256": "ba1dbec116cc66c82c8d3670047cf290f18aba4938cd46ff9ad96b7af6001c6d"
+      },
+      "initial_payload_sha256": "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc",
+      "final_payload_sha256": "678726600b1e7f78555d2a9c991e70450a54870761e9c33597a1b14f7cece331",
+      "timings": {
+        "preparation_us": {
+          "sum_us": 26595,
+          "mean_us": 147.75,
+          "max_us": 269
+        },
+        "native_tick_us": {
+          "sum_us": 26997,
+          "mean_us": 149.98333333333332,
+          "max_us": 247
+        },
+        "response_generation_us": {
+          "sum_us": 3148,
+          "mean_us": 17.488888888888887,
+          "max_us": 229
+        },
+        "application_us": {
+          "sum_us": 7993,
+          "mean_us": 44.40555555555556,
+          "max_us": 135
+        },
+        "rapier_us": {
+          "sum_us": 9718,
+          "mean_us": 53.98888888888889,
+          "max_us": 197
+        },
+        "statistics_us": {
+          "sum_us": 1869,
+          "mean_us": 10.383333333333333,
+          "max_us": 101
+        },
+        "observer_us": {
+          "sum_us": 7747,
+          "mean_us": 43.03888888888889,
+          "max_us": 139
+        },
+        "export_us": {
+          "sum_us": 158895,
+          "mean_us": 882.75,
+          "max_us": 28898
+        },
+        "elapsed_us": {
+          "sum_us": 262466,
+          "mean_us": 1458.1444444444444,
+          "max_us": 29822
+        }
+      },
+      "process_seconds": 1.408832799992524,
+      "episode_us": 375897,
+      "participant_max": 1,
+      "arrival_history_peak": 2097152,
+      "resident_bytes_peak": 2625536,
+      "maximum_sand_area": null,
+      "maximum_sand_depth": null,
+      "geometry_scope": "intermediate geometry unavailable; paired trajectory/payload equivalence only"
+    },
+    {
+      "platform": "windows",
+      "case": "closed-driven",
+      "workers": 4,
+      "repeat": 1,
+      "observer": "full",
+      "source": "a47be4e2d2a3208650cc4665fc83ca3c5acedaa5",
+      "pid": 26692,
+      "complete": true,
+      "exact_tuple_conservation": true,
+      "report": {
+        "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-full-w4-r1/closed-driven-LA-SELECTIVE-w4-r1.json",
+        "sha256": "5b24f5ed45947e7d0aefb2dedec032ffa4640cd852a2a0a1512ebf78f00bfc24"
+      },
+      "initial_payload_sha256": "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc",
+      "final_payload_sha256": "678726600b1e7f78555d2a9c991e70450a54870761e9c33597a1b14f7cece331",
+      "timings": {
+        "preparation_us": {
+          "sum_us": 31171,
+          "mean_us": 173.17222222222222,
+          "max_us": 349
+        },
+        "native_tick_us": {
+          "sum_us": 31120,
+          "mean_us": 172.88888888888889,
+          "max_us": 326
+        },
+        "response_generation_us": {
+          "sum_us": 3983,
+          "mean_us": 22.127777777777776,
+          "max_us": 87
+        },
+        "application_us": {
+          "sum_us": 13029,
+          "mean_us": 72.38333333333334,
+          "max_us": 139
+        },
+        "rapier_us": {
+          "sum_us": 18775,
+          "mean_us": 104.30555555555556,
+          "max_us": 341
+        },
+        "statistics_us": {
+          "sum_us": 2654,
+          "mean_us": 14.744444444444444,
+          "max_us": 95
+        },
+        "observer_us": {
+          "sum_us": 2173720,
+          "mean_us": 12076.222222222223,
+          "max_us": 15569
+        },
+        "export_us": {
+          "sum_us": 169599,
+          "mean_us": 942.2166666666667,
+          "max_us": 32433
+        },
+        "elapsed_us": {
+          "sum_us": 2475350,
+          "mean_us": 13751.944444444445,
+          "max_us": 48024
+        }
+      },
+      "process_seconds": 4.554447699978482,
+      "episode_us": 2592257,
+      "participant_max": 1,
+      "arrival_history_peak": 2097152,
+      "resident_bytes_peak": 2625536,
+      "maximum_sand_area": 38.76508869923395,
+      "maximum_sand_depth": 1.3963688876541198,
+      "geometry_scope": "full five-boundary recorded-transform audit"
+    },
+    {
+      "platform": "windows",
+      "case": "closed-unforced",
+      "workers": 1,
+      "repeat": 2,
+      "observer": "full",
+      "source": "a47be4e2d2a3208650cc4665fc83ca3c5acedaa5",
+      "pid": 35124,
+      "complete": true,
+      "exact_tuple_conservation": true,
+      "report": {
+        "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-full-w1-r2/closed-unforced-LA-SELECTIVE-w1-r2.json",
+        "sha256": "622a6a2be34f3d481f2486ff8de51fc452fff56fb1028f70dc2c21238c86266e"
+      },
+      "initial_payload_sha256": "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc",
+      "final_payload_sha256": "0e9c1680db4ff46830b1f23574577e22e97f9f65a8a9c6d6b494e1acf882b540",
+      "timings": {
+        "preparation_us": {
+          "sum_us": 25851,
+          "mean_us": 143.61666666666667,
+          "max_us": 283
+        },
+        "native_tick_us": {
+          "sum_us": 28829,
+          "mean_us": 160.1611111111111,
+          "max_us": 313
+        },
+        "response_generation_us": {
+          "sum_us": 3629,
+          "mean_us": 20.16111111111111,
+          "max_us": 74
+        },
+        "application_us": {
+          "sum_us": 11663,
+          "mean_us": 64.79444444444445,
+          "max_us": 120
+        },
+        "rapier_us": {
+          "sum_us": 16592,
+          "mean_us": 92.17777777777778,
+          "max_us": 189
+        },
+        "statistics_us": {
+          "sum_us": 2600,
+          "mean_us": 14.444444444444445,
+          "max_us": 109
+        },
+        "observer_us": {
+          "sum_us": 2131789,
+          "mean_us": 11843.272222222222,
+          "max_us": 14340
+        },
+        "export_us": {
+          "sum_us": 158024,
+          "mean_us": 877.9111111111112,
+          "max_us": 27825
+        },
+        "elapsed_us": {
+          "sum_us": 2409041,
+          "mean_us": 13383.56111111111,
+          "max_us": 40296
+        }
+      },
+      "process_seconds": 4.274605300044641,
+      "episode_us": 2522925,
+      "participant_max": 1,
+      "arrival_history_peak": 2097152,
+      "resident_bytes_peak": 2625536,
+      "maximum_sand_area": 0,
+      "maximum_sand_depth": 0,
+      "geometry_scope": "full five-boundary recorded-transform audit"
+    },
+    {
+      "platform": "windows",
+      "case": "closed-unforced",
+      "workers": 1,
+      "repeat": 2,
+      "observer": "minimal",
+      "source": "a47be4e2d2a3208650cc4665fc83ca3c5acedaa5",
+      "pid": 44112,
+      "complete": true,
+      "exact_tuple_conservation": true,
+      "report": {
+        "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-minimal-w1-r2/closed-unforced-LA-SELECTIVE-w1-r2.json",
+        "sha256": "b97b2173ddffd1baa26c6906716020c520cfdcb96d458c903081b7f8d07464e7"
+      },
+      "initial_payload_sha256": "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc",
+      "final_payload_sha256": "0e9c1680db4ff46830b1f23574577e22e97f9f65a8a9c6d6b494e1acf882b540",
+      "timings": {
+        "preparation_us": {
+          "sum_us": 24616,
+          "mean_us": 136.75555555555556,
+          "max_us": 275
+        },
+        "native_tick_us": {
+          "sum_us": 28161,
+          "mean_us": 156.45,
+          "max_us": 305
+        },
+        "response_generation_us": {
+          "sum_us": 3200,
+          "mean_us": 17.77777777777778,
+          "max_us": 114
+        },
+        "application_us": {
+          "sum_us": 7773,
+          "mean_us": 43.18333333333333,
+          "max_us": 91
+        },
+        "rapier_us": {
+          "sum_us": 9763,
+          "mean_us": 54.23888888888889,
+          "max_us": 186
+        },
+        "statistics_us": {
+          "sum_us": 1999,
+          "mean_us": 11.105555555555556,
+          "max_us": 67
+        },
+        "observer_us": {
+          "sum_us": 7921,
+          "mean_us": 44.00555555555555,
+          "max_us": 94
+        },
+        "export_us": {
+          "sum_us": 160718,
+          "mean_us": 892.8777777777777,
+          "max_us": 28707
+        },
+        "elapsed_us": {
+          "sum_us": 264371,
+          "mean_us": 1468.7277777777779,
+          "max_us": 29674
+        }
+      },
+      "process_seconds": 1.312201599997934,
+      "episode_us": 383977,
+      "participant_max": 1,
+      "arrival_history_peak": 2097152,
+      "resident_bytes_peak": 2625536,
+      "maximum_sand_area": null,
+      "maximum_sand_depth": null,
+      "geometry_scope": "intermediate geometry unavailable; paired trajectory/payload equivalence only"
+    },
+    {
+      "platform": "windows",
+      "case": "closed-driven",
+      "workers": 1,
+      "repeat": 2,
+      "observer": "full",
+      "source": "a47be4e2d2a3208650cc4665fc83ca3c5acedaa5",
+      "pid": 17100,
+      "complete": true,
+      "exact_tuple_conservation": true,
+      "report": {
+        "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-full-w1-r2/closed-driven-LA-SELECTIVE-w1-r2.json",
+        "sha256": "b1fbba8dcc081194341677544fc34cb0473cb3d49f6f2a4bfc7e8711f0a5fc79"
+      },
+      "initial_payload_sha256": "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc",
+      "final_payload_sha256": "678726600b1e7f78555d2a9c991e70450a54870761e9c33597a1b14f7cece331",
+      "timings": {
+        "preparation_us": {
+          "sum_us": 30788,
+          "mean_us": 171.04444444444445,
+          "max_us": 361
+        },
+        "native_tick_us": {
+          "sum_us": 30417,
+          "mean_us": 168.98333333333332,
+          "max_us": 411
+        },
+        "response_generation_us": {
+          "sum_us": 4005,
+          "mean_us": 22.25,
+          "max_us": 136
+        },
+        "application_us": {
+          "sum_us": 13498,
+          "mean_us": 74.9888888888889,
+          "max_us": 149
+        },
+        "rapier_us": {
+          "sum_us": 19197,
+          "mean_us": 106.65,
+          "max_us": 203
+        },
+        "statistics_us": {
+          "sum_us": 2768,
+          "mean_us": 15.377777777777778,
+          "max_us": 82
+        },
+        "observer_us": {
+          "sum_us": 2147444,
+          "mean_us": 11930.244444444445,
+          "max_us": 16351
+        },
+        "export_us": {
+          "sum_us": 183881,
+          "mean_us": 1021.5611111111111,
+          "max_us": 35497
+        },
+        "elapsed_us": {
+          "sum_us": 2463731,
+          "mean_us": 13687.394444444444,
+          "max_us": 50833
+        }
+      },
+      "process_seconds": 4.564012700051535,
+      "episode_us": 2590514,
+      "participant_max": 1,
+      "arrival_history_peak": 2097152,
+      "resident_bytes_peak": 2625536,
+      "maximum_sand_area": 38.76508869923395,
+      "maximum_sand_depth": 1.3963688876541198,
+      "geometry_scope": "full five-boundary recorded-transform audit"
+    },
+    {
+      "platform": "windows",
+      "case": "closed-driven",
+      "workers": 1,
+      "repeat": 2,
+      "observer": "minimal",
+      "source": "a47be4e2d2a3208650cc4665fc83ca3c5acedaa5",
+      "pid": 20412,
+      "complete": true,
+      "exact_tuple_conservation": true,
+      "report": {
+        "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-minimal-w1-r2/closed-driven-LA-SELECTIVE-w1-r2.json",
+        "sha256": "c473c96e3fbd05fae57a7f427244a7ba83518ae087670983fe4ef64a1bc2257b"
+      },
+      "initial_payload_sha256": "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc",
+      "final_payload_sha256": "678726600b1e7f78555d2a9c991e70450a54870761e9c33597a1b14f7cece331",
+      "timings": {
+        "preparation_us": {
+          "sum_us": 26673,
+          "mean_us": 148.18333333333334,
+          "max_us": 242
+        },
+        "native_tick_us": {
+          "sum_us": 27305,
+          "mean_us": 151.69444444444446,
+          "max_us": 262
+        },
+        "response_generation_us": {
+          "sum_us": 2979,
+          "mean_us": 16.55,
+          "max_us": 105
+        },
+        "application_us": {
+          "sum_us": 8302,
+          "mean_us": 46.12222222222222,
+          "max_us": 131
+        },
+        "rapier_us": {
+          "sum_us": 9571,
+          "mean_us": 53.172222222222224,
+          "max_us": 163
+        },
+        "statistics_us": {
+          "sum_us": 1812,
+          "mean_us": 10.066666666666666,
+          "max_us": 72
+        },
+        "observer_us": {
+          "sum_us": 8253,
+          "mean_us": 45.85,
+          "max_us": 119
+        },
+        "export_us": {
+          "sum_us": 159151,
+          "mean_us": 884.1722222222222,
+          "max_us": 28866
+        },
+        "elapsed_us": {
+          "sum_us": 264262,
+          "mean_us": 1468.1222222222223,
+          "max_us": 29682
+        }
+      },
+      "process_seconds": 1.3078334999736398,
+      "episode_us": 372193,
+      "participant_max": 1,
+      "arrival_history_peak": 2097152,
+      "resident_bytes_peak": 2625536,
+      "maximum_sand_area": null,
+      "maximum_sand_depth": null,
+      "geometry_scope": "intermediate geometry unavailable; paired trajectory/payload equivalence only"
+    },
+    {
+      "platform": "windows",
+      "case": "closed-unforced",
+      "workers": 4,
+      "repeat": 2,
+      "observer": "full",
+      "source": "a47be4e2d2a3208650cc4665fc83ca3c5acedaa5",
+      "pid": 28012,
+      "complete": true,
+      "exact_tuple_conservation": true,
+      "report": {
+        "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-full-w4-r2/closed-unforced-LA-SELECTIVE-w4-r2.json",
+        "sha256": "de079781e416ddab0bd3457bdcd66dd246c79264d45b09a5ba8fc3c63043ac13"
+      },
+      "initial_payload_sha256": "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc",
+      "final_payload_sha256": "0e9c1680db4ff46830b1f23574577e22e97f9f65a8a9c6d6b494e1acf882b540",
+      "timings": {
+        "preparation_us": {
+          "sum_us": 24983,
+          "mean_us": 138.79444444444445,
+          "max_us": 250
+        },
+        "native_tick_us": {
+          "sum_us": 27952,
+          "mean_us": 155.2888888888889,
+          "max_us": 270
+        },
+        "response_generation_us": {
+          "sum_us": 3512,
+          "mean_us": 19.511111111111113,
+          "max_us": 112
+        },
+        "application_us": {
+          "sum_us": 11347,
+          "mean_us": 63.03888888888889,
+          "max_us": 137
+        },
+        "rapier_us": {
+          "sum_us": 15947,
+          "mean_us": 88.59444444444445,
+          "max_us": 177
+        },
+        "statistics_us": {
+          "sum_us": 2408,
+          "mean_us": 13.377777777777778,
+          "max_us": 76
+        },
+        "observer_us": {
+          "sum_us": 2095308,
+          "mean_us": 11640.6,
+          "max_us": 13802
+        },
+        "export_us": {
+          "sum_us": 167609,
+          "mean_us": 931.1611111111112,
+          "max_us": 29755
+        },
+        "elapsed_us": {
+          "sum_us": 2377562,
+          "mean_us": 13208.677777777777,
+          "max_us": 42325
+        }
+      },
+      "process_seconds": 4.753441599954385,
+      "episode_us": 2490509,
+      "participant_max": 1,
+      "arrival_history_peak": 2097152,
+      "resident_bytes_peak": 2625536,
+      "maximum_sand_area": 0,
+      "maximum_sand_depth": 0,
+      "geometry_scope": "full five-boundary recorded-transform audit"
+    },
+    {
+      "platform": "windows",
+      "case": "closed-unforced",
+      "workers": 4,
+      "repeat": 2,
+      "observer": "minimal",
+      "source": "a47be4e2d2a3208650cc4665fc83ca3c5acedaa5",
+      "pid": 37000,
+      "complete": true,
+      "exact_tuple_conservation": true,
+      "report": {
+        "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-unforced-minimal-w4-r2/closed-unforced-LA-SELECTIVE-w4-r2.json",
+        "sha256": "867085e15b77d6d2e1f284445b5a3e5695fbfd930f41d746cbef0def5e492f63"
+      },
+      "initial_payload_sha256": "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc",
+      "final_payload_sha256": "0e9c1680db4ff46830b1f23574577e22e97f9f65a8a9c6d6b494e1acf882b540",
+      "timings": {
+        "preparation_us": {
+          "sum_us": 23533,
+          "mean_us": 130.73888888888888,
+          "max_us": 270
+        },
+        "native_tick_us": {
+          "sum_us": 26522,
+          "mean_us": 147.34444444444443,
+          "max_us": 285
+        },
+        "response_generation_us": {
+          "sum_us": 3083,
+          "mean_us": 17.127777777777776,
+          "max_us": 86
+        },
+        "application_us": {
+          "sum_us": 7560,
+          "mean_us": 42.0,
+          "max_us": 88
+        },
+        "rapier_us": {
+          "sum_us": 9195,
+          "mean_us": 51.083333333333336,
+          "max_us": 173
+        },
+        "statistics_us": {
+          "sum_us": 1955,
+          "mean_us": 10.86111111111111,
+          "max_us": 70
+        },
+        "observer_us": {
+          "sum_us": 7529,
+          "mean_us": 41.827777777777776,
+          "max_us": 108
+        },
+        "export_us": {
+          "sum_us": 162241,
+          "mean_us": 901.3388888888888,
+          "max_us": 29610
+        },
+        "elapsed_us": {
+          "sum_us": 260763,
+          "mean_us": 1448.6833333333334,
+          "max_us": 30590
+        }
+      },
+      "process_seconds": 1.4076566000003368,
+      "episode_us": 371738,
+      "participant_max": 1,
+      "arrival_history_peak": 2097152,
+      "resident_bytes_peak": 2625536,
+      "maximum_sand_area": null,
+      "maximum_sand_depth": null,
+      "geometry_scope": "intermediate geometry unavailable; paired trajectory/payload equivalence only"
+    },
+    {
+      "platform": "windows",
+      "case": "closed-driven",
+      "workers": 4,
+      "repeat": 2,
+      "observer": "full",
+      "source": "a47be4e2d2a3208650cc4665fc83ca3c5acedaa5",
+      "pid": 43560,
+      "complete": true,
+      "exact_tuple_conservation": true,
+      "report": {
+        "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-full-w4-r2/closed-driven-LA-SELECTIVE-w4-r2.json",
+        "sha256": "c48442144d327d9ff9627f609f2c9470928778d55f85e576386662bde6a99882"
+      },
+      "initial_payload_sha256": "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc",
+      "final_payload_sha256": "678726600b1e7f78555d2a9c991e70450a54870761e9c33597a1b14f7cece331",
+      "timings": {
+        "preparation_us": {
+          "sum_us": 28451,
+          "mean_us": 158.0611111111111,
+          "max_us": 318
+        },
+        "native_tick_us": {
+          "sum_us": 28126,
+          "mean_us": 156.25555555555556,
+          "max_us": 326
+        },
+        "response_generation_us": {
+          "sum_us": 3625,
+          "mean_us": 20.13888888888889,
+          "max_us": 79
+        },
+        "application_us": {
+          "sum_us": 11758,
+          "mean_us": 65.32222222222222,
+          "max_us": 141
+        },
+        "rapier_us": {
+          "sum_us": 16024,
+          "mean_us": 89.02222222222223,
+          "max_us": 199
+        },
+        "statistics_us": {
+          "sum_us": 2491,
+          "mean_us": 13.838888888888889,
+          "max_us": 81
+        },
+        "observer_us": {
+          "sum_us": 2094417,
+          "mean_us": 11635.65,
+          "max_us": 14633
+        },
+        "export_us": {
+          "sum_us": 174171,
+          "mean_us": 967.6166666666667,
+          "max_us": 32437
+        },
+        "elapsed_us": {
+          "sum_us": 2388258,
+          "mean_us": 13268.1,
+          "max_us": 44864
+        }
+      },
+      "process_seconds": 4.37321679998422,
+      "episode_us": 2496473,
+      "participant_max": 1,
+      "arrival_history_peak": 2097152,
+      "resident_bytes_peak": 2625536,
+      "maximum_sand_area": 38.76508869923395,
+      "maximum_sand_depth": 1.3963688876541198,
+      "geometry_scope": "full five-boundary recorded-transform audit"
+    },
+    {
+      "platform": "windows",
+      "case": "closed-driven",
+      "workers": 4,
+      "repeat": 2,
+      "observer": "minimal",
+      "source": "a47be4e2d2a3208650cc4665fc83ca3c5acedaa5",
+      "pid": 20284,
+      "complete": true,
+      "exact_tuple_conservation": true,
+      "report": {
+        "path": "build/sol-response-cost/registered-matrix/windows/observations/closed-driven-minimal-w4-r2/closed-driven-LA-SELECTIVE-w4-r2.json",
+        "sha256": "108ee68bc9398e0460adfcc0e53cecbe15578a155908c8eaab54624224eff5cf"
+      },
+      "initial_payload_sha256": "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc",
+      "final_payload_sha256": "678726600b1e7f78555d2a9c991e70450a54870761e9c33597a1b14f7cece331",
+      "timings": {
+        "preparation_us": {
+          "sum_us": 28147,
+          "mean_us": 156.37222222222223,
+          "max_us": 287
+        },
+        "native_tick_us": {
+          "sum_us": 27947,
+          "mean_us": 155.26111111111112,
+          "max_us": 286
+        },
+        "response_generation_us": {
+          "sum_us": 3184,
+          "mean_us": 17.68888888888889,
+          "max_us": 88
+        },
+        "application_us": {
+          "sum_us": 8372,
+          "mean_us": 46.51111111111111,
+          "max_us": 124
+        },
+        "rapier_us": {
+          "sum_us": 10623,
+          "mean_us": 59.016666666666666,
+          "max_us": 171
+        },
+        "statistics_us": {
+          "sum_us": 1998,
+          "mean_us": 11.1,
+          "max_us": 81
+        },
+        "observer_us": {
+          "sum_us": 8483,
+          "mean_us": 47.12777777777778,
+          "max_us": 167
+        },
+        "export_us": {
+          "sum_us": 162416,
+          "mean_us": 902.3111111111111,
+          "max_us": 30732
+        },
+        "elapsed_us": {
+          "sum_us": 272536,
+          "mean_us": 1514.088888888889,
+          "max_us": 31642
+        }
+      },
+      "process_seconds": 1.3994289000402205,
+      "episode_us": 387104,
+      "participant_max": 1,
+      "arrival_history_peak": 2097152,
+      "resident_bytes_peak": 2625536,
+      "maximum_sand_area": null,
+      "maximum_sand_depth": null,
+      "geometry_scope": "intermediate geometry unavailable; paired trajectory/payload equivalence only"
+    },
+    {
+      "platform": "linux",
+      "case": "closed-unforced",
+      "workers": 1,
+      "repeat": 0,
+      "observer": "full",
+      "source": "a47be4e2d2a3208650cc4665fc83ca3c5acedaa5",
+      "pid": 423,
+      "complete": true,
+      "exact_tuple_conservation": true,
+      "report": {
+        "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-full-w1-r0/closed-unforced-LA-SELECTIVE-w1-r0.json",
+        "sha256": "72210eddf8bdb8434e58baee6af067258e57b033b0f32c5358471295cdcfa246"
+      },
+      "initial_payload_sha256": "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc",
+      "final_payload_sha256": "0e9c1680db4ff46830b1f23574577e22e97f9f65a8a9c6d6b494e1acf882b540",
+      "timings": {
+        "preparation_us": {
+          "sum_us": 42800,
+          "mean_us": 237.77777777777777,
+          "max_us": 416
+        },
+        "native_tick_us": {
+          "sum_us": 52648,
+          "mean_us": 292.4888888888889,
+          "max_us": 643
+        },
+        "response_generation_us": {
+          "sum_us": 3478,
+          "mean_us": 19.322222222222223,
+          "max_us": 50
+        },
+        "application_us": {
+          "sum_us": 13224,
+          "mean_us": 73.46666666666667,
+          "max_us": 215
+        },
+        "rapier_us": {
+          "sum_us": 32004,
+          "mean_us": 177.8,
+          "max_us": 1498
+        },
+        "statistics_us": {
+          "sum_us": 2219,
+          "mean_us": 12.327777777777778,
+          "max_us": 39
+        },
+        "observer_us": {
+          "sum_us": 2280274,
+          "mean_us": 12668.18888888889,
+          "max_us": 15287
+        },
+        "export_us": {
+          "sum_us": 294942,
+          "mean_us": 1638.5666666666666,
+          "max_us": 54165
+        },
+        "elapsed_us": {
+          "sum_us": 2750488,
+          "mean_us": 15280.488888888889,
+          "max_us": 69115
+        }
+      },
+      "process_seconds": 5.448612400039565,
+      "episode_us": 2973972,
+      "participant_max": 1,
+      "arrival_history_peak": 2097152,
+      "resident_bytes_peak": 2625536,
+      "maximum_sand_area": 0,
+      "maximum_sand_depth": 0,
+      "geometry_scope": "full five-boundary recorded-transform audit"
+    },
+    {
+      "platform": "linux",
+      "case": "closed-unforced",
+      "workers": 1,
+      "repeat": 0,
+      "observer": "minimal",
+      "source": "a47be4e2d2a3208650cc4665fc83ca3c5acedaa5",
+      "pid": 471,
+      "complete": true,
+      "exact_tuple_conservation": true,
+      "report": {
+        "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-minimal-w1-r0/closed-unforced-LA-SELECTIVE-w1-r0.json",
+        "sha256": "fc80d387db70a191bd56a3d8b0ef51523c3801561a56c98f7556dddbe8fc2d4b"
+      },
+      "initial_payload_sha256": "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc",
+      "final_payload_sha256": "0e9c1680db4ff46830b1f23574577e22e97f9f65a8a9c6d6b494e1acf882b540",
+      "timings": {
+        "preparation_us": {
+          "sum_us": 39619,
+          "mean_us": 220.10555555555555,
+          "max_us": 312
+        },
+        "native_tick_us": {
+          "sum_us": 48773,
+          "mean_us": 270.9611111111111,
+          "max_us": 650
+        },
+        "response_generation_us": {
+          "sum_us": 2401,
+          "mean_us": 13.338888888888889,
+          "max_us": 28
+        },
+        "application_us": {
+          "sum_us": 7300,
+          "mean_us": 40.55555555555556,
+          "max_us": 179
+        },
+        "rapier_us": {
+          "sum_us": 18003,
+          "mean_us": 100.01666666666667,
+          "max_us": 1272
+        },
+        "statistics_us": {
+          "sum_us": 1620,
+          "mean_us": 9.0,
+          "max_us": 37
+        },
+        "observer_us": {
+          "sum_us": 6631,
+          "mean_us": 36.83888888888889,
+          "max_us": 167
+        },
+        "export_us": {
+          "sum_us": 281255,
+          "mean_us": 1562.5277777777778,
+          "max_us": 54923
+        },
+        "elapsed_us": {
+          "sum_us": 422392,
+          "mean_us": 2346.6222222222223,
+          "max_us": 57499
+        }
+      },
+      "process_seconds": 2.442178800003603,
+      "episode_us": 630791,
+      "participant_max": 1,
+      "arrival_history_peak": 2097152,
+      "resident_bytes_peak": 2625536,
+      "maximum_sand_area": null,
+      "maximum_sand_depth": null,
+      "geometry_scope": "intermediate geometry unavailable; paired trajectory/payload equivalence only"
+    },
+    {
+      "platform": "linux",
+      "case": "closed-driven",
+      "workers": 1,
+      "repeat": 0,
+      "observer": "full",
+      "source": "a47be4e2d2a3208650cc4665fc83ca3c5acedaa5",
+      "pid": 517,
+      "complete": true,
+      "exact_tuple_conservation": true,
+      "report": {
+        "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-full-w1-r0/closed-driven-LA-SELECTIVE-w1-r0.json",
+        "sha256": "965ae9ad4e28e06297ea3e19bd4d093699ccf80043e8d562b89797c87eff7a72"
+      },
+      "initial_payload_sha256": "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc",
+      "final_payload_sha256": "678726600b1e7f78555d2a9c991e70450a54870761e9c33597a1b14f7cece331",
+      "timings": {
+        "preparation_us": {
+          "sum_us": 49802,
+          "mean_us": 276.6777777777778,
+          "max_us": 2405
+        },
+        "native_tick_us": {
+          "sum_us": 50280,
+          "mean_us": 279.3333333333333,
+          "max_us": 647
+        },
+        "response_generation_us": {
+          "sum_us": 3331,
+          "mean_us": 18.505555555555556,
+          "max_us": 33
+        },
+        "application_us": {
+          "sum_us": 11978,
+          "mean_us": 66.54444444444445,
+          "max_us": 200
+        },
+        "rapier_us": {
+          "sum_us": 28202,
+          "mean_us": 156.67777777777778,
+          "max_us": 1248
+        },
+        "statistics_us": {
+          "sum_us": 2014,
+          "mean_us": 11.188888888888888,
+          "max_us": 18
+        },
+        "observer_us": {
+          "sum_us": 2264478,
+          "mean_us": 12580.433333333332,
+          "max_us": 14810
+        },
+        "export_us": {
+          "sum_us": 283941,
+          "mean_us": 1577.45,
+          "max_us": 51840
+        },
+        "elapsed_us": {
+          "sum_us": 2720730,
+          "mean_us": 15115.166666666666,
+          "max_us": 67578
+        }
+      },
+      "process_seconds": 5.442954800033476,
+      "episode_us": 2944074,
+      "participant_max": 1,
+      "arrival_history_peak": 2097152,
+      "resident_bytes_peak": 2625536,
+      "maximum_sand_area": 38.76508869923395,
+      "maximum_sand_depth": 1.3963688876541198,
+      "geometry_scope": "full five-boundary recorded-transform audit"
+    },
+    {
+      "platform": "linux",
+      "case": "closed-driven",
+      "workers": 1,
+      "repeat": 0,
+      "observer": "minimal",
+      "source": "a47be4e2d2a3208650cc4665fc83ca3c5acedaa5",
+      "pid": 566,
+      "complete": true,
+      "exact_tuple_conservation": true,
+      "report": {
+        "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-minimal-w1-r0/closed-driven-LA-SELECTIVE-w1-r0.json",
+        "sha256": "88c444b11691e114f2dfb19d65b6af192316bfa596b879ef9147395cf52e1924"
+      },
+      "initial_payload_sha256": "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc",
+      "final_payload_sha256": "678726600b1e7f78555d2a9c991e70450a54870761e9c33597a1b14f7cece331",
+      "timings": {
+        "preparation_us": {
+          "sum_us": 45624,
+          "mean_us": 253.46666666666667,
+          "max_us": 387
+        },
+        "native_tick_us": {
+          "sum_us": 47681,
+          "mean_us": 264.89444444444445,
+          "max_us": 615
+        },
+        "response_generation_us": {
+          "sum_us": 2374,
+          "mean_us": 13.188888888888888,
+          "max_us": 25
+        },
+        "application_us": {
+          "sum_us": 7295,
+          "mean_us": 40.52777777777778,
+          "max_us": 75
+        },
+        "rapier_us": {
+          "sum_us": 17791,
+          "mean_us": 98.83888888888889,
+          "max_us": 1256
+        },
+        "statistics_us": {
+          "sum_us": 1591,
+          "mean_us": 8.838888888888889,
+          "max_us": 25
+        },
+        "observer_us": {
+          "sum_us": 6421,
+          "mean_us": 35.672222222222224,
+          "max_us": 83
+        },
+        "export_us": {
+          "sum_us": 268070,
+          "mean_us": 1489.2777777777778,
+          "max_us": 45263
+        },
+        "elapsed_us": {
+          "sum_us": 413404,
+          "mean_us": 2296.688888888889,
+          "max_us": 47006
+        }
+      },
+      "process_seconds": 2.419850000005681,
+      "episode_us": 629918,
+      "participant_max": 1,
+      "arrival_history_peak": 2097152,
+      "resident_bytes_peak": 2625536,
+      "maximum_sand_area": null,
+      "maximum_sand_depth": null,
+      "geometry_scope": "intermediate geometry unavailable; paired trajectory/payload equivalence only"
+    },
+    {
+      "platform": "linux",
+      "case": "closed-unforced",
+      "workers": 4,
+      "repeat": 0,
+      "observer": "full",
+      "source": "a47be4e2d2a3208650cc4665fc83ca3c5acedaa5",
+      "pid": 611,
+      "complete": true,
+      "exact_tuple_conservation": true,
+      "report": {
+        "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-full-w4-r0/closed-unforced-LA-SELECTIVE-w4-r0.json",
+        "sha256": "d936c7a9de6d05039ff02d4c0a725c3869cdc514e2965e25487caa6dcf72b24e"
+      },
+      "initial_payload_sha256": "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc",
+      "final_payload_sha256": "0e9c1680db4ff46830b1f23574577e22e97f9f65a8a9c6d6b494e1acf882b540",
+      "timings": {
+        "preparation_us": {
+          "sum_us": 42360,
+          "mean_us": 235.33333333333334,
+          "max_us": 398
+        },
+        "native_tick_us": {
+          "sum_us": 51918,
+          "mean_us": 288.43333333333334,
+          "max_us": 620
+        },
+        "response_generation_us": {
+          "sum_us": 3438,
+          "mean_us": 19.1,
+          "max_us": 61
+        },
+        "application_us": {
+          "sum_us": 13066,
+          "mean_us": 72.58888888888889,
+          "max_us": 204
+        },
+        "rapier_us": {
+          "sum_us": 32217,
+          "mean_us": 178.98333333333332,
+          "max_us": 1214
+        },
+        "statistics_us": {
+          "sum_us": 2170,
+          "mean_us": 12.055555555555555,
+          "max_us": 20
+        },
+        "observer_us": {
+          "sum_us": 2283220,
+          "mean_us": 12684.555555555555,
+          "max_us": 15974
+        },
+        "export_us": {
+          "sum_us": 306769,
+          "mean_us": 1704.2722222222221,
+          "max_us": 60287
+        },
+        "elapsed_us": {
+          "sum_us": 2764298,
+          "mean_us": 15357.211111111112,
+          "max_us": 77690
+        }
+      },
+      "process_seconds": 5.715761700004805,
+      "episode_us": 2989336,
+      "participant_max": 1,
+      "arrival_history_peak": 2097152,
+      "resident_bytes_peak": 2625536,
+      "maximum_sand_area": 0,
+      "maximum_sand_depth": 0,
+      "geometry_scope": "full five-boundary recorded-transform audit"
+    },
+    {
+      "platform": "linux",
+      "case": "closed-unforced",
+      "workers": 4,
+      "repeat": 0,
+      "observer": "minimal",
+      "source": "a47be4e2d2a3208650cc4665fc83ca3c5acedaa5",
+      "pid": 668,
+      "complete": true,
+      "exact_tuple_conservation": true,
+      "report": {
+        "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-minimal-w4-r0/closed-unforced-LA-SELECTIVE-w4-r0.json",
+        "sha256": "85f050afbdefc60d80ddf96fa6f3fa9f400b2bc3503140b1d9a0acd4e194bb7d"
+      },
+      "initial_payload_sha256": "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc",
+      "final_payload_sha256": "0e9c1680db4ff46830b1f23574577e22e97f9f65a8a9c6d6b494e1acf882b540",
+      "timings": {
+        "preparation_us": {
+          "sum_us": 39921,
+          "mean_us": 221.78333333333333,
+          "max_us": 307
+        },
+        "native_tick_us": {
+          "sum_us": 49662,
+          "mean_us": 275.9,
+          "max_us": 616
+        },
+        "response_generation_us": {
+          "sum_us": 2396,
+          "mean_us": 13.311111111111112,
+          "max_us": 30
+        },
+        "application_us": {
+          "sum_us": 7171,
+          "mean_us": 39.83888888888889,
+          "max_us": 179
+        },
+        "rapier_us": {
+          "sum_us": 17699,
+          "mean_us": 98.32777777777778,
+          "max_us": 1220
+        },
+        "statistics_us": {
+          "sum_us": 1578,
+          "mean_us": 8.766666666666667,
+          "max_us": 19
+        },
+        "observer_us": {
+          "sum_us": 6619,
+          "mean_us": 36.772222222222226,
+          "max_us": 88
+        },
+        "export_us": {
+          "sum_us": 272554,
+          "mean_us": 1514.1888888888889,
+          "max_us": 46979
+        },
+        "elapsed_us": {
+          "sum_us": 414234,
+          "mean_us": 2301.3,
+          "max_us": 49443
+        }
+      },
+      "process_seconds": 2.4297107000020333,
+      "episode_us": 635321,
+      "participant_max": 1,
+      "arrival_history_peak": 2097152,
+      "resident_bytes_peak": 2625536,
+      "maximum_sand_area": null,
+      "maximum_sand_depth": null,
+      "geometry_scope": "intermediate geometry unavailable; paired trajectory/payload equivalence only"
+    },
+    {
+      "platform": "linux",
+      "case": "closed-driven",
+      "workers": 4,
+      "repeat": 0,
+      "observer": "full",
+      "source": "a47be4e2d2a3208650cc4665fc83ca3c5acedaa5",
+      "pid": 721,
+      "complete": true,
+      "exact_tuple_conservation": true,
+      "report": {
+        "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-full-w4-r0/closed-driven-LA-SELECTIVE-w4-r0.json",
+        "sha256": "429b64f07f3784c1425b924c1c4396f66a2911f5c7a64abea06f212b5f1ec67e"
+      },
+      "initial_payload_sha256": "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc",
+      "final_payload_sha256": "678726600b1e7f78555d2a9c991e70450a54870761e9c33597a1b14f7cece331",
+      "timings": {
+        "preparation_us": {
+          "sum_us": 47271,
+          "mean_us": 262.6166666666667,
+          "max_us": 406
+        },
+        "native_tick_us": {
+          "sum_us": 50238,
+          "mean_us": 279.1,
+          "max_us": 803
+        },
+        "response_generation_us": {
+          "sum_us": 3118,
+          "mean_us": 17.322222222222223,
+          "max_us": 30
+        },
+        "application_us": {
+          "sum_us": 11377,
+          "mean_us": 63.205555555555556,
+          "max_us": 154
+        },
+        "rapier_us": {
+          "sum_us": 27739,
+          "mean_us": 154.10555555555555,
+          "max_us": 1258
+        },
+        "statistics_us": {
+          "sum_us": 1930,
+          "mean_us": 10.722222222222221,
+          "max_us": 22
+        },
+        "observer_us": {
+          "sum_us": 2279889,
+          "mean_us": 12666.05,
+          "max_us": 14348
+        },
+        "export_us": {
+          "sum_us": 286744,
+          "mean_us": 1593.0222222222221,
+          "max_us": 51406
+        },
+        "elapsed_us": {
+          "sum_us": 2734401,
+          "mean_us": 15191.116666666667,
+          "max_us": 65496
+        }
+      },
+      "process_seconds": 5.309839099994861,
+      "episode_us": 2946318,
+      "participant_max": 1,
+      "arrival_history_peak": 2097152,
+      "resident_bytes_peak": 2625536,
+      "maximum_sand_area": 38.76508869923395,
+      "maximum_sand_depth": 1.3963688876541198,
+      "geometry_scope": "full five-boundary recorded-transform audit"
+    },
+    {
+      "platform": "linux",
+      "case": "closed-driven",
+      "workers": 4,
+      "repeat": 0,
+      "observer": "minimal",
+      "source": "a47be4e2d2a3208650cc4665fc83ca3c5acedaa5",
+      "pid": 778,
+      "complete": true,
+      "exact_tuple_conservation": true,
+      "report": {
+        "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-minimal-w4-r0/closed-driven-LA-SELECTIVE-w4-r0.json",
+        "sha256": "cbc6068420a9355e2daebd02588663dcef973978b1332c92c89b147482412cf6"
+      },
+      "initial_payload_sha256": "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc",
+      "final_payload_sha256": "678726600b1e7f78555d2a9c991e70450a54870761e9c33597a1b14f7cece331",
+      "timings": {
+        "preparation_us": {
+          "sum_us": 45045,
+          "mean_us": 250.25,
+          "max_us": 372
+        },
+        "native_tick_us": {
+          "sum_us": 47314,
+          "mean_us": 262.85555555555555,
+          "max_us": 606
+        },
+        "response_generation_us": {
+          "sum_us": 2392,
+          "mean_us": 13.28888888888889,
+          "max_us": 40
+        },
+        "application_us": {
+          "sum_us": 7200,
+          "mean_us": 40.0,
+          "max_us": 117
+        },
+        "rapier_us": {
+          "sum_us": 17609,
+          "mean_us": 97.82777777777778,
+          "max_us": 1303
+        },
+        "statistics_us": {
+          "sum_us": 1526,
+          "mean_us": 8.477777777777778,
+          "max_us": 17
+        },
+        "observer_us": {
+          "sum_us": 6428,
+          "mean_us": 35.71111111111111,
+          "max_us": 88
+        },
+        "export_us": {
+          "sum_us": 268455,
+          "mean_us": 1491.4166666666667,
+          "max_us": 46761
+        },
+        "elapsed_us": {
+          "sum_us": 412176,
+          "mean_us": 2289.866666666667,
+          "max_us": 49287
+        }
+      },
+      "process_seconds": 2.4235615999787115,
+      "episode_us": 623922,
+      "participant_max": 1,
+      "arrival_history_peak": 2097152,
+      "resident_bytes_peak": 2625536,
+      "maximum_sand_area": null,
+      "maximum_sand_depth": null,
+      "geometry_scope": "intermediate geometry unavailable; paired trajectory/payload equivalence only"
+    },
+    {
+      "platform": "linux",
+      "case": "closed-unforced",
+      "workers": 1,
+      "repeat": 1,
+      "observer": "minimal",
+      "source": "a47be4e2d2a3208650cc4665fc83ca3c5acedaa5",
+      "pid": 831,
+      "complete": true,
+      "exact_tuple_conservation": true,
+      "report": {
+        "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-minimal-w1-r1/closed-unforced-LA-SELECTIVE-w1-r1.json",
+        "sha256": "ca450eb8048378275b425b24e5096052fbf5c227dfbe0e3996178084a238830a"
+      },
+      "initial_payload_sha256": "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc",
+      "final_payload_sha256": "0e9c1680db4ff46830b1f23574577e22e97f9f65a8a9c6d6b494e1acf882b540",
+      "timings": {
+        "preparation_us": {
+          "sum_us": 39993,
+          "mean_us": 222.18333333333334,
+          "max_us": 357
+        },
+        "native_tick_us": {
+          "sum_us": 47984,
+          "mean_us": 266.5777777777778,
+          "max_us": 588
+        },
+        "response_generation_us": {
+          "sum_us": 2304,
+          "mean_us": 12.8,
+          "max_us": 26
+        },
+        "application_us": {
+          "sum_us": 6947,
+          "mean_us": 38.59444444444444,
+          "max_us": 75
+        },
+        "rapier_us": {
+          "sum_us": 17651,
+          "mean_us": 98.06111111111112,
+          "max_us": 1234
+        },
+        "statistics_us": {
+          "sum_us": 1564,
+          "mean_us": 8.688888888888888,
+          "max_us": 28
+        },
+        "observer_us": {
+          "sum_us": 6455,
+          "mean_us": 35.861111111111114,
+          "max_us": 66
+        },
+        "export_us": {
+          "sum_us": 275758,
+          "mean_us": 1531.9888888888888,
+          "max_us": 49514
+        },
+        "elapsed_us": {
+          "sum_us": 415417,
+          "mean_us": 2307.8722222222223,
+          "max_us": 51950
+        }
+      },
+      "process_seconds": 2.44604580005398,
+      "episode_us": 627411,
+      "participant_max": 1,
+      "arrival_history_peak": 2097152,
+      "resident_bytes_peak": 2625536,
+      "maximum_sand_area": null,
+      "maximum_sand_depth": null,
+      "geometry_scope": "intermediate geometry unavailable; paired trajectory/payload equivalence only"
+    },
+    {
+      "platform": "linux",
+      "case": "closed-unforced",
+      "workers": 1,
+      "repeat": 1,
+      "observer": "full",
+      "source": "a47be4e2d2a3208650cc4665fc83ca3c5acedaa5",
+      "pid": 876,
+      "complete": true,
+      "exact_tuple_conservation": true,
+      "report": {
+        "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-full-w1-r1/closed-unforced-LA-SELECTIVE-w1-r1.json",
+        "sha256": "70ae523c85350cc1000f223d5c04fe28c01030fcf8eec2f93ae54142ea8dd6d0"
+      },
+      "initial_payload_sha256": "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc",
+      "final_payload_sha256": "0e9c1680db4ff46830b1f23574577e22e97f9f65a8a9c6d6b494e1acf882b540",
+      "timings": {
+        "preparation_us": {
+          "sum_us": 42431,
+          "mean_us": 235.7277777777778,
+          "max_us": 445
+        },
+        "native_tick_us": {
+          "sum_us": 52721,
+          "mean_us": 292.89444444444445,
+          "max_us": 615
+        },
+        "response_generation_us": {
+          "sum_us": 3398,
+          "mean_us": 18.877777777777776,
+          "max_us": 52
+        },
+        "application_us": {
+          "sum_us": 12525,
+          "mean_us": 69.58333333333333,
+          "max_us": 159
+        },
+        "rapier_us": {
+          "sum_us": 29531,
+          "mean_us": 164.0611111111111,
+          "max_us": 1286
+        },
+        "statistics_us": {
+          "sum_us": 2204,
+          "mean_us": 12.244444444444444,
+          "max_us": 36
+        },
+        "observer_us": {
+          "sum_us": 2296381,
+          "mean_us": 12757.672222222222,
+          "max_us": 15011
+        },
+        "export_us": {
+          "sum_us": 288030,
+          "mean_us": 1600.1666666666667,
+          "max_us": 51696
+        },
+        "elapsed_us": {
+          "sum_us": 2754794,
+          "mean_us": 15304.41111111111,
+          "max_us": 65190
+        }
+      },
+      "process_seconds": 5.315671099990141,
+      "episode_us": 2963996,
+      "participant_max": 1,
+      "arrival_history_peak": 2097152,
+      "resident_bytes_peak": 2625536,
+      "maximum_sand_area": 0,
+      "maximum_sand_depth": 0,
+      "geometry_scope": "full five-boundary recorded-transform audit"
+    },
+    {
+      "platform": "linux",
+      "case": "closed-driven",
+      "workers": 1,
+      "repeat": 1,
+      "observer": "minimal",
+      "source": "a47be4e2d2a3208650cc4665fc83ca3c5acedaa5",
+      "pid": 921,
+      "complete": true,
+      "exact_tuple_conservation": true,
+      "report": {
+        "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-minimal-w1-r1/closed-driven-LA-SELECTIVE-w1-r1.json",
+        "sha256": "2b3b057dc12121f001eaa09bc857d9ab4623fccfc00abaafb6e15cc37a192fc0"
+      },
+      "initial_payload_sha256": "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc",
+      "final_payload_sha256": "678726600b1e7f78555d2a9c991e70450a54870761e9c33597a1b14f7cece331",
+      "timings": {
+        "preparation_us": {
+          "sum_us": 46255,
+          "mean_us": 256.97222222222223,
+          "max_us": 364
+        },
+        "native_tick_us": {
+          "sum_us": 49885,
+          "mean_us": 277.1388888888889,
+          "max_us": 656
+        },
+        "response_generation_us": {
+          "sum_us": 2508,
+          "mean_us": 13.933333333333334,
+          "max_us": 32
+        },
+        "application_us": {
+          "sum_us": 7765,
+          "mean_us": 43.138888888888886,
+          "max_us": 130
+        },
+        "rapier_us": {
+          "sum_us": 19001,
+          "mean_us": 105.56111111111112,
+          "max_us": 1195
+        },
+        "statistics_us": {
+          "sum_us": 1673,
+          "mean_us": 9.294444444444444,
+          "max_us": 21
+        },
+        "observer_us": {
+          "sum_us": 6740,
+          "mean_us": 37.44444444444444,
+          "max_us": 87
+        },
+        "export_us": {
+          "sum_us": 274459,
+          "mean_us": 1524.7722222222221,
+          "max_us": 48679
+        },
+        "elapsed_us": {
+          "sum_us": 425955,
+          "mean_us": 2366.4166666666665,
+          "max_us": 51215
+        }
+      },
+      "process_seconds": 2.425580399984028,
+      "episode_us": 642874,
+      "participant_max": 1,
+      "arrival_history_peak": 2097152,
+      "resident_bytes_peak": 2625536,
+      "maximum_sand_area": null,
+      "maximum_sand_depth": null,
+      "geometry_scope": "intermediate geometry unavailable; paired trajectory/payload equivalence only"
+    },
+    {
+      "platform": "linux",
+      "case": "closed-driven",
+      "workers": 1,
+      "repeat": 1,
+      "observer": "full",
+      "source": "a47be4e2d2a3208650cc4665fc83ca3c5acedaa5",
+      "pid": 966,
+      "complete": true,
+      "exact_tuple_conservation": true,
+      "report": {
+        "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-full-w1-r1/closed-driven-LA-SELECTIVE-w1-r1.json",
+        "sha256": "98619f7ee641dc2861fb912884a2e7b8450e5b3b17e0874df8c020c3c89ae660"
+      },
+      "initial_payload_sha256": "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc",
+      "final_payload_sha256": "678726600b1e7f78555d2a9c991e70450a54870761e9c33597a1b14f7cece331",
+      "timings": {
+        "preparation_us": {
+          "sum_us": 47233,
+          "mean_us": 262.40555555555557,
+          "max_us": 410
+        },
+        "native_tick_us": {
+          "sum_us": 50600,
+          "mean_us": 281.1111111111111,
+          "max_us": 624
+        },
+        "response_generation_us": {
+          "sum_us": 3472,
+          "mean_us": 19.288888888888888,
+          "max_us": 44
+        },
+        "application_us": {
+          "sum_us": 13141,
+          "mean_us": 73.00555555555556,
+          "max_us": 214
+        },
+        "rapier_us": {
+          "sum_us": 29778,
+          "mean_us": 165.43333333333334,
+          "max_us": 1131
+        },
+        "statistics_us": {
+          "sum_us": 2177,
+          "mean_us": 12.094444444444445,
+          "max_us": 31
+        },
+        "observer_us": {
+          "sum_us": 2260226,
+          "mean_us": 12556.81111111111,
+          "max_us": 14288
+        },
+        "export_us": {
+          "sum_us": 288289,
+          "mean_us": 1601.6055555555556,
+          "max_us": 53146
+        },
+        "elapsed_us": {
+          "sum_us": 2723194,
+          "mean_us": 15128.855555555556,
+          "max_us": 66465
+        }
+      },
+      "process_seconds": 5.325216399971396,
+      "episode_us": 2936213,
+      "participant_max": 1,
+      "arrival_history_peak": 2097152,
+      "resident_bytes_peak": 2625536,
+      "maximum_sand_area": 38.76508869923395,
+      "maximum_sand_depth": 1.3963688876541198,
+      "geometry_scope": "full five-boundary recorded-transform audit"
+    },
+    {
+      "platform": "linux",
+      "case": "closed-unforced",
+      "workers": 4,
+      "repeat": 1,
+      "observer": "minimal",
+      "source": "a47be4e2d2a3208650cc4665fc83ca3c5acedaa5",
+      "pid": 1014,
+      "complete": true,
+      "exact_tuple_conservation": true,
+      "report": {
+        "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-minimal-w4-r1/closed-unforced-LA-SELECTIVE-w4-r1.json",
+        "sha256": "b23e413d3e36884bff045386e6a73e582914f27c307018e0ece5b76e7f94a3a3"
+      },
+      "initial_payload_sha256": "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc",
+      "final_payload_sha256": "0e9c1680db4ff46830b1f23574577e22e97f9f65a8a9c6d6b494e1acf882b540",
+      "timings": {
+        "preparation_us": {
+          "sum_us": 40811,
+          "mean_us": 226.7277777777778,
+          "max_us": 366
+        },
+        "native_tick_us": {
+          "sum_us": 49271,
+          "mean_us": 273.72777777777776,
+          "max_us": 604
+        },
+        "response_generation_us": {
+          "sum_us": 2445,
+          "mean_us": 13.583333333333334,
+          "max_us": 28
+        },
+        "application_us": {
+          "sum_us": 7132,
+          "mean_us": 39.62222222222222,
+          "max_us": 91
+        },
+        "rapier_us": {
+          "sum_us": 18407,
+          "mean_us": 102.2611111111111,
+          "max_us": 1107
+        },
+        "statistics_us": {
+          "sum_us": 1690,
+          "mean_us": 9.38888888888889,
+          "max_us": 22
+        },
+        "observer_us": {
+          "sum_us": 6823,
+          "mean_us": 37.90555555555556,
+          "max_us": 76
+        },
+        "export_us": {
+          "sum_us": 275454,
+          "mean_us": 1530.3,
+          "max_us": 47975
+        },
+        "elapsed_us": {
+          "sum_us": 419637,
+          "mean_us": 2331.3166666666666,
+          "max_us": 50350
+        }
+      },
+      "process_seconds": 2.423144100001082,
+      "episode_us": 633374,
+      "participant_max": 1,
+      "arrival_history_peak": 2097152,
+      "resident_bytes_peak": 2625536,
+      "maximum_sand_area": null,
+      "maximum_sand_depth": null,
+      "geometry_scope": "intermediate geometry unavailable; paired trajectory/payload equivalence only"
+    },
+    {
+      "platform": "linux",
+      "case": "closed-unforced",
+      "workers": 4,
+      "repeat": 1,
+      "observer": "full",
+      "source": "a47be4e2d2a3208650cc4665fc83ca3c5acedaa5",
+      "pid": 1068,
+      "complete": true,
+      "exact_tuple_conservation": true,
+      "report": {
+        "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-full-w4-r1/closed-unforced-LA-SELECTIVE-w4-r1.json",
+        "sha256": "7ab8dd72692a44916977c6114796d6639883d6d78d952a8e58f72913908dfaeb"
+      },
+      "initial_payload_sha256": "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc",
+      "final_payload_sha256": "0e9c1680db4ff46830b1f23574577e22e97f9f65a8a9c6d6b494e1acf882b540",
+      "timings": {
+        "preparation_us": {
+          "sum_us": 41423,
+          "mean_us": 230.12777777777777,
+          "max_us": 414
+        },
+        "native_tick_us": {
+          "sum_us": 52048,
+          "mean_us": 289.15555555555557,
+          "max_us": 684
+        },
+        "response_generation_us": {
+          "sum_us": 3202,
+          "mean_us": 17.788888888888888,
+          "max_us": 42
+        },
+        "application_us": {
+          "sum_us": 12072,
+          "mean_us": 67.06666666666666,
+          "max_us": 162
+        },
+        "rapier_us": {
+          "sum_us": 29254,
+          "mean_us": 162.5222222222222,
+          "max_us": 1256
+        },
+        "statistics_us": {
+          "sum_us": 2130,
+          "mean_us": 11.833333333333334,
+          "max_us": 27
+        },
+        "observer_us": {
+          "sum_us": 2251456,
+          "mean_us": 12508.08888888889,
+          "max_us": 15230
+        },
+        "export_us": {
+          "sum_us": 283761,
+          "mean_us": 1576.45,
+          "max_us": 52939
+        },
+        "elapsed_us": {
+          "sum_us": 2703238,
+          "mean_us": 15017.988888888889,
+          "max_us": 66704
+        }
+      },
+      "process_seconds": 5.431478999962565,
+      "episode_us": 2928046,
+      "participant_max": 1,
+      "arrival_history_peak": 2097152,
+      "resident_bytes_peak": 2625536,
+      "maximum_sand_area": 0,
+      "maximum_sand_depth": 0,
+      "geometry_scope": "full five-boundary recorded-transform audit"
+    },
+    {
+      "platform": "linux",
+      "case": "closed-driven",
+      "workers": 4,
+      "repeat": 1,
+      "observer": "minimal",
+      "source": "a47be4e2d2a3208650cc4665fc83ca3c5acedaa5",
+      "pid": 1124,
+      "complete": true,
+      "exact_tuple_conservation": true,
+      "report": {
+        "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-minimal-w4-r1/closed-driven-LA-SELECTIVE-w4-r1.json",
+        "sha256": "28d1f8010c805811b4db11c6e301246bf1e8ce644b94ec2963204e0284a70080"
+      },
+      "initial_payload_sha256": "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc",
+      "final_payload_sha256": "678726600b1e7f78555d2a9c991e70450a54870761e9c33597a1b14f7cece331",
+      "timings": {
+        "preparation_us": {
+          "sum_us": 46280,
+          "mean_us": 257.1111111111111,
+          "max_us": 459
+        },
+        "native_tick_us": {
+          "sum_us": 48995,
+          "mean_us": 272.19444444444446,
+          "max_us": 600
+        },
+        "response_generation_us": {
+          "sum_us": 2521,
+          "mean_us": 14.005555555555556,
+          "max_us": 48
+        },
+        "application_us": {
+          "sum_us": 7440,
+          "mean_us": 41.333333333333336,
+          "max_us": 82
+        },
+        "rapier_us": {
+          "sum_us": 18071,
+          "mean_us": 100.39444444444445,
+          "max_us": 1141
+        },
+        "statistics_us": {
+          "sum_us": 1571,
+          "mean_us": 8.727777777777778,
+          "max_us": 17
+        },
+        "observer_us": {
+          "sum_us": 6637,
+          "mean_us": 36.87222222222222,
+          "max_us": 130
+        },
+        "export_us": {
+          "sum_us": 271501,
+          "mean_us": 1508.338888888889,
+          "max_us": 47293
+        },
+        "elapsed_us": {
+          "sum_us": 419884,
+          "mean_us": 2332.688888888889,
+          "max_us": 49680
+        }
+      },
+      "process_seconds": 2.4186613999772817,
+      "episode_us": 627330,
+      "participant_max": 1,
+      "arrival_history_peak": 2097152,
+      "resident_bytes_peak": 2625536,
+      "maximum_sand_area": null,
+      "maximum_sand_depth": null,
+      "geometry_scope": "intermediate geometry unavailable; paired trajectory/payload equivalence only"
+    },
+    {
+      "platform": "linux",
+      "case": "closed-driven",
+      "workers": 4,
+      "repeat": 1,
+      "observer": "full",
+      "source": "a47be4e2d2a3208650cc4665fc83ca3c5acedaa5",
+      "pid": 1178,
+      "complete": true,
+      "exact_tuple_conservation": true,
+      "report": {
+        "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-full-w4-r1/closed-driven-LA-SELECTIVE-w4-r1.json",
+        "sha256": "05284e26161f8eca8e2200fa9cdd986fe06dd6376875b92d04211176e0bc7a18"
+      },
+      "initial_payload_sha256": "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc",
+      "final_payload_sha256": "678726600b1e7f78555d2a9c991e70450a54870761e9c33597a1b14f7cece331",
+      "timings": {
+        "preparation_us": {
+          "sum_us": 48001,
+          "mean_us": 266.6722222222222,
+          "max_us": 495
+        },
+        "native_tick_us": {
+          "sum_us": 53249,
+          "mean_us": 295.8277777777778,
+          "max_us": 594
+        },
+        "response_generation_us": {
+          "sum_us": 3561,
+          "mean_us": 19.783333333333335,
+          "max_us": 42
+        },
+        "application_us": {
+          "sum_us": 13620,
+          "mean_us": 75.66666666666667,
+          "max_us": 163
+        },
+        "rapier_us": {
+          "sum_us": 31620,
+          "mean_us": 175.66666666666666,
+          "max_us": 1105
+        },
+        "statistics_us": {
+          "sum_us": 2156,
+          "mean_us": 11.977777777777778,
+          "max_us": 28
+        },
+        "observer_us": {
+          "sum_us": 2288915,
+          "mean_us": 12716.194444444445,
+          "max_us": 14743
+        },
+        "export_us": {
+          "sum_us": 292046,
+          "mean_us": 1622.4777777777779,
+          "max_us": 52237
+        },
+        "elapsed_us": {
+          "sum_us": 2763154,
+          "mean_us": 15350.855555555556,
+          "max_us": 66643
+        }
+      },
+      "process_seconds": 5.314782300032675,
+      "episode_us": 2969935,
+      "participant_max": 1,
+      "arrival_history_peak": 2097152,
+      "resident_bytes_peak": 2625536,
+      "maximum_sand_area": 38.76508869923395,
+      "maximum_sand_depth": 1.3963688876541198,
+      "geometry_scope": "full five-boundary recorded-transform audit"
+    },
+    {
+      "platform": "linux",
+      "case": "closed-unforced",
+      "workers": 1,
+      "repeat": 2,
+      "observer": "full",
+      "source": "a47be4e2d2a3208650cc4665fc83ca3c5acedaa5",
+      "pid": 1234,
+      "complete": true,
+      "exact_tuple_conservation": true,
+      "report": {
+        "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-full-w1-r2/closed-unforced-LA-SELECTIVE-w1-r2.json",
+        "sha256": "b9cc0db6f9dd2953c4903dc2bf6127c0c2ad911ce2f6ebcaef19d2eec612d363"
+      },
+      "initial_payload_sha256": "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc",
+      "final_payload_sha256": "0e9c1680db4ff46830b1f23574577e22e97f9f65a8a9c6d6b494e1acf882b540",
+      "timings": {
+        "preparation_us": {
+          "sum_us": 42261,
+          "mean_us": 234.78333333333333,
+          "max_us": 410
+        },
+        "native_tick_us": {
+          "sum_us": 51688,
+          "mean_us": 287.15555555555557,
+          "max_us": 642
+        },
+        "response_generation_us": {
+          "sum_us": 3396,
+          "mean_us": 18.866666666666667,
+          "max_us": 58
+        },
+        "application_us": {
+          "sum_us": 12649,
+          "mean_us": 70.27222222222223,
+          "max_us": 153
+        },
+        "rapier_us": {
+          "sum_us": 30096,
+          "mean_us": 167.2,
+          "max_us": 1388
+        },
+        "statistics_us": {
+          "sum_us": 2185,
+          "mean_us": 12.13888888888889,
+          "max_us": 27
+        },
+        "observer_us": {
+          "sum_us": 2270750,
+          "mean_us": 12615.277777777777,
+          "max_us": 15280
+        },
+        "export_us": {
+          "sum_us": 283077,
+          "mean_us": 1572.65,
+          "max_us": 51314
+        },
+        "elapsed_us": {
+          "sum_us": 2725077,
+          "mean_us": 15139.316666666668,
+          "max_us": 64736
+        }
+      },
+      "process_seconds": 5.428424000041559,
+      "episode_us": 2943207,
+      "participant_max": 1,
+      "arrival_history_peak": 2097152,
+      "resident_bytes_peak": 2625536,
+      "maximum_sand_area": 0,
+      "maximum_sand_depth": 0,
+      "geometry_scope": "full five-boundary recorded-transform audit"
+    },
+    {
+      "platform": "linux",
+      "case": "closed-unforced",
+      "workers": 1,
+      "repeat": 2,
+      "observer": "minimal",
+      "source": "a47be4e2d2a3208650cc4665fc83ca3c5acedaa5",
+      "pid": 1280,
+      "complete": true,
+      "exact_tuple_conservation": true,
+      "report": {
+        "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-minimal-w1-r2/closed-unforced-LA-SELECTIVE-w1-r2.json",
+        "sha256": "efbe389ffb5e684148fd58a88f4dbbb54f4e2d89b8a2cda34dfdaa081c80e4c8"
+      },
+      "initial_payload_sha256": "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc",
+      "final_payload_sha256": "0e9c1680db4ff46830b1f23574577e22e97f9f65a8a9c6d6b494e1acf882b540",
+      "timings": {
+        "preparation_us": {
+          "sum_us": 40731,
+          "mean_us": 226.28333333333333,
+          "max_us": 338
+        },
+        "native_tick_us": {
+          "sum_us": 47892,
+          "mean_us": 266.06666666666666,
+          "max_us": 599
+        },
+        "response_generation_us": {
+          "sum_us": 2293,
+          "mean_us": 12.738888888888889,
+          "max_us": 28
+        },
+        "application_us": {
+          "sum_us": 6872,
+          "mean_us": 38.17777777777778,
+          "max_us": 144
+        },
+        "rapier_us": {
+          "sum_us": 17006,
+          "mean_us": 94.47777777777777,
+          "max_us": 1160
+        },
+        "statistics_us": {
+          "sum_us": 1732,
+          "mean_us": 9.622222222222222,
+          "max_us": 105
+        },
+        "observer_us": {
+          "sum_us": 6371,
+          "mean_us": 35.394444444444446,
+          "max_us": 62
+        },
+        "export_us": {
+          "sum_us": 264773,
+          "mean_us": 1470.9611111111112,
+          "max_us": 44855
+        },
+        "elapsed_us": {
+          "sum_us": 403837,
+          "mean_us": 2243.538888888889,
+          "max_us": 46321
+        }
+      },
+      "process_seconds": 2.454110499995295,
+      "episode_us": 614290,
+      "participant_max": 1,
+      "arrival_history_peak": 2097152,
+      "resident_bytes_peak": 2625536,
+      "maximum_sand_area": null,
+      "maximum_sand_depth": null,
+      "geometry_scope": "intermediate geometry unavailable; paired trajectory/payload equivalence only"
+    },
+    {
+      "platform": "linux",
+      "case": "closed-driven",
+      "workers": 1,
+      "repeat": 2,
+      "observer": "full",
+      "source": "a47be4e2d2a3208650cc4665fc83ca3c5acedaa5",
+      "pid": 1325,
+      "complete": true,
+      "exact_tuple_conservation": true,
+      "report": {
+        "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-full-w1-r2/closed-driven-LA-SELECTIVE-w1-r2.json",
+        "sha256": "4309e029ba2d0ab742e2db9644ecb44a2520fd2a0d2b2ac6c826c0edc68278a7"
+      },
+      "initial_payload_sha256": "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc",
+      "final_payload_sha256": "678726600b1e7f78555d2a9c991e70450a54870761e9c33597a1b14f7cece331",
+      "timings": {
+        "preparation_us": {
+          "sum_us": 48041,
+          "mean_us": 266.89444444444445,
+          "max_us": 544
+        },
+        "native_tick_us": {
+          "sum_us": 50292,
+          "mean_us": 279.4,
+          "max_us": 666
+        },
+        "response_generation_us": {
+          "sum_us": 3372,
+          "mean_us": 18.733333333333334,
+          "max_us": 56
+        },
+        "application_us": {
+          "sum_us": 12423,
+          "mean_us": 69.01666666666667,
+          "max_us": 143
+        },
+        "rapier_us": {
+          "sum_us": 29875,
+          "mean_us": 165.97222222222223,
+          "max_us": 1249
+        },
+        "statistics_us": {
+          "sum_us": 2053,
+          "mean_us": 11.405555555555555,
+          "max_us": 21
+        },
+        "observer_us": {
+          "sum_us": 2258481,
+          "mean_us": 12547.116666666667,
+          "max_us": 15406
+        },
+        "export_us": {
+          "sum_us": 283469,
+          "mean_us": 1574.8277777777778,
+          "max_us": 52099
+        },
+        "elapsed_us": {
+          "sum_us": 2715624,
+          "mean_us": 15086.8,
+          "max_us": 65681
+        }
+      },
+      "process_seconds": 5.599041799956467,
+      "episode_us": 2935891,
+      "participant_max": 1,
+      "arrival_history_peak": 2097152,
+      "resident_bytes_peak": 2625536,
+      "maximum_sand_area": 38.76508869923395,
+      "maximum_sand_depth": 1.3963688876541198,
+      "geometry_scope": "full five-boundary recorded-transform audit"
+    },
+    {
+      "platform": "linux",
+      "case": "closed-driven",
+      "workers": 1,
+      "repeat": 2,
+      "observer": "minimal",
+      "source": "a47be4e2d2a3208650cc4665fc83ca3c5acedaa5",
+      "pid": 1374,
+      "complete": true,
+      "exact_tuple_conservation": true,
+      "report": {
+        "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-minimal-w1-r2/closed-driven-LA-SELECTIVE-w1-r2.json",
+        "sha256": "93b3ad8b29784b3626ec78dab30f7bc7b156fd2cba2f10c7fc4e80f68aa80e3e"
+      },
+      "initial_payload_sha256": "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc",
+      "final_payload_sha256": "678726600b1e7f78555d2a9c991e70450a54870761e9c33597a1b14f7cece331",
+      "timings": {
+        "preparation_us": {
+          "sum_us": 46334,
+          "mean_us": 257.4111111111111,
+          "max_us": 394
+        },
+        "native_tick_us": {
+          "sum_us": 49018,
+          "mean_us": 272.3222222222222,
+          "max_us": 615
+        },
+        "response_generation_us": {
+          "sum_us": 2567,
+          "mean_us": 14.261111111111111,
+          "max_us": 57
+        },
+        "application_us": {
+          "sum_us": 7662,
+          "mean_us": 42.56666666666667,
+          "max_us": 88
+        },
+        "rapier_us": {
+          "sum_us": 18330,
+          "mean_us": 101.83333333333333,
+          "max_us": 1192
+        },
+        "statistics_us": {
+          "sum_us": 1632,
+          "mean_us": 9.066666666666666,
+          "max_us": 21
+        },
+        "observer_us": {
+          "sum_us": 6896,
+          "mean_us": 38.31111111111111,
+          "max_us": 107
+        },
+        "export_us": {
+          "sum_us": 271467,
+          "mean_us": 1508.15,
+          "max_us": 46844
+        },
+        "elapsed_us": {
+          "sum_us": 421584,
+          "mean_us": 2342.133333333333,
+          "max_us": 49383
+        }
+      },
+      "process_seconds": 2.4164742999710143,
+      "episode_us": 628447,
+      "participant_max": 1,
+      "arrival_history_peak": 2097152,
+      "resident_bytes_peak": 2625536,
+      "maximum_sand_area": null,
+      "maximum_sand_depth": null,
+      "geometry_scope": "intermediate geometry unavailable; paired trajectory/payload equivalence only"
+    },
+    {
+      "platform": "linux",
+      "case": "closed-unforced",
+      "workers": 4,
+      "repeat": 2,
+      "observer": "full",
+      "source": "a47be4e2d2a3208650cc4665fc83ca3c5acedaa5",
+      "pid": 1419,
+      "complete": true,
+      "exact_tuple_conservation": true,
+      "report": {
+        "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-full-w4-r2/closed-unforced-LA-SELECTIVE-w4-r2.json",
+        "sha256": "dc738507859d5f3b0ca8603c981bb8d12a48235efeec1124acad595e6c49cf20"
+      },
+      "initial_payload_sha256": "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc",
+      "final_payload_sha256": "0e9c1680db4ff46830b1f23574577e22e97f9f65a8a9c6d6b494e1acf882b540",
+      "timings": {
+        "preparation_us": {
+          "sum_us": 41781,
+          "mean_us": 232.11666666666667,
+          "max_us": 416
+        },
+        "native_tick_us": {
+          "sum_us": 50870,
+          "mean_us": 282.6111111111111,
+          "max_us": 734
+        },
+        "response_generation_us": {
+          "sum_us": 3386,
+          "mean_us": 18.81111111111111,
+          "max_us": 49
+        },
+        "application_us": {
+          "sum_us": 12553,
+          "mean_us": 69.7388888888889,
+          "max_us": 129
+        },
+        "rapier_us": {
+          "sum_us": 30035,
+          "mean_us": 166.86111111111111,
+          "max_us": 1157
+        },
+        "statistics_us": {
+          "sum_us": 2231,
+          "mean_us": 12.394444444444444,
+          "max_us": 30
+        },
+        "observer_us": {
+          "sum_us": 2267838,
+          "mean_us": 12599.1,
+          "max_us": 13590
+        },
+        "export_us": {
+          "sum_us": 298636,
+          "mean_us": 1659.088888888889,
+          "max_us": 53963
+        },
+        "elapsed_us": {
+          "sum_us": 2735802,
+          "mean_us": 15198.9,
+          "max_us": 67754
+        }
+      },
+      "process_seconds": 5.354834900004789,
+      "episode_us": 2946440,
+      "participant_max": 1,
+      "arrival_history_peak": 2097152,
+      "resident_bytes_peak": 2625536,
+      "maximum_sand_area": 0,
+      "maximum_sand_depth": 0,
+      "geometry_scope": "full five-boundary recorded-transform audit"
+    },
+    {
+      "platform": "linux",
+      "case": "closed-unforced",
+      "workers": 4,
+      "repeat": 2,
+      "observer": "minimal",
+      "source": "a47be4e2d2a3208650cc4665fc83ca3c5acedaa5",
+      "pid": 1475,
+      "complete": true,
+      "exact_tuple_conservation": true,
+      "report": {
+        "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-unforced-minimal-w4-r2/closed-unforced-LA-SELECTIVE-w4-r2.json",
+        "sha256": "fc6e9d474964c6dcfb15fde9159c1f0ce70984693215ae47fd1028b1b89d2a3c"
+      },
+      "initial_payload_sha256": "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc",
+      "final_payload_sha256": "0e9c1680db4ff46830b1f23574577e22e97f9f65a8a9c6d6b494e1acf882b540",
+      "timings": {
+        "preparation_us": {
+          "sum_us": 40847,
+          "mean_us": 226.92777777777778,
+          "max_us": 465
+        },
+        "native_tick_us": {
+          "sum_us": 52021,
+          "mean_us": 289.00555555555553,
+          "max_us": 901
+        },
+        "response_generation_us": {
+          "sum_us": 2451,
+          "mean_us": 13.616666666666667,
+          "max_us": 29
+        },
+        "application_us": {
+          "sum_us": 7239,
+          "mean_us": 40.21666666666667,
+          "max_us": 87
+        },
+        "rapier_us": {
+          "sum_us": 18398,
+          "mean_us": 102.21111111111111,
+          "max_us": 1206
+        },
+        "statistics_us": {
+          "sum_us": 1638,
+          "mean_us": 9.1,
+          "max_us": 20
+        },
+        "observer_us": {
+          "sum_us": 7023,
+          "mean_us": 39.016666666666666,
+          "max_us": 266
+        },
+        "export_us": {
+          "sum_us": 283726,
+          "mean_us": 1576.2555555555555,
+          "max_us": 50102
+        },
+        "elapsed_us": {
+          "sum_us": 430647,
+          "mean_us": 2392.483333333333,
+          "max_us": 52601
+        }
+      },
+      "process_seconds": 2.5466168000129983,
+      "episode_us": 649168,
+      "participant_max": 1,
+      "arrival_history_peak": 2097152,
+      "resident_bytes_peak": 2625536,
+      "maximum_sand_area": null,
+      "maximum_sand_depth": null,
+      "geometry_scope": "intermediate geometry unavailable; paired trajectory/payload equivalence only"
+    },
+    {
+      "platform": "linux",
+      "case": "closed-driven",
+      "workers": 4,
+      "repeat": 2,
+      "observer": "full",
+      "source": "a47be4e2d2a3208650cc4665fc83ca3c5acedaa5",
+      "pid": 1529,
+      "complete": true,
+      "exact_tuple_conservation": true,
+      "report": {
+        "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-full-w4-r2/closed-driven-LA-SELECTIVE-w4-r2.json",
+        "sha256": "ba38003bc6f5e1d679b40c340d9127ca56d33dce5e26fe76f8d393ac962b5a32"
+      },
+      "initial_payload_sha256": "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc",
+      "final_payload_sha256": "678726600b1e7f78555d2a9c991e70450a54870761e9c33597a1b14f7cece331",
+      "timings": {
+        "preparation_us": {
+          "sum_us": 49114,
+          "mean_us": 272.85555555555555,
+          "max_us": 497
+        },
+        "native_tick_us": {
+          "sum_us": 53907,
+          "mean_us": 299.48333333333335,
+          "max_us": 1124
+        },
+        "response_generation_us": {
+          "sum_us": 3670,
+          "mean_us": 20.38888888888889,
+          "max_us": 48
+        },
+        "application_us": {
+          "sum_us": 14497,
+          "mean_us": 80.53888888888889,
+          "max_us": 180
+        },
+        "rapier_us": {
+          "sum_us": 32252,
+          "mean_us": 179.17777777777778,
+          "max_us": 1158
+        },
+        "statistics_us": {
+          "sum_us": 2275,
+          "mean_us": 12.63888888888889,
+          "max_us": 26
+        },
+        "observer_us": {
+          "sum_us": 2297132,
+          "mean_us": 12761.844444444445,
+          "max_us": 15551
+        },
+        "export_us": {
+          "sum_us": 289116,
+          "mean_us": 1606.2,
+          "max_us": 51285
+        },
+        "elapsed_us": {
+          "sum_us": 2773308,
+          "mean_us": 15407.266666666666,
+          "max_us": 65347
+        }
+      },
+      "process_seconds": 5.518839099968318,
+      "episode_us": 2988194,
+      "participant_max": 1,
+      "arrival_history_peak": 2097152,
+      "resident_bytes_peak": 2625536,
+      "maximum_sand_area": 38.76508869923395,
+      "maximum_sand_depth": 1.3963688876541198,
+      "geometry_scope": "full five-boundary recorded-transform audit"
+    },
+    {
+      "platform": "linux",
+      "case": "closed-driven",
+      "workers": 4,
+      "repeat": 2,
+      "observer": "minimal",
+      "source": "a47be4e2d2a3208650cc4665fc83ca3c5acedaa5",
+      "pid": 1586,
+      "complete": true,
+      "exact_tuple_conservation": true,
+      "report": {
+        "path": "build/sol-response-cost/registered-matrix/linux/observations/closed-driven-minimal-w4-r2/closed-driven-LA-SELECTIVE-w4-r2.json",
+        "sha256": "b87582e9b127579c82457aad19f84c19d0bd54b5890ae9eed135164f5e1aa6fd"
+      },
+      "initial_payload_sha256": "5c6b9c73885bc2071405fbe3e6b55387b17f4a67d696232b61deada4b0ec35cc",
+      "final_payload_sha256": "678726600b1e7f78555d2a9c991e70450a54870761e9c33597a1b14f7cece331",
+      "timings": {
+        "preparation_us": {
+          "sum_us": 47304,
+          "mean_us": 262.8,
+          "max_us": 434
+        },
+        "native_tick_us": {
+          "sum_us": 49580,
+          "mean_us": 275.44444444444446,
+          "max_us": 724
+        },
+        "response_generation_us": {
+          "sum_us": 2594,
+          "mean_us": 14.411111111111111,
+          "max_us": 45
+        },
+        "application_us": {
+          "sum_us": 7824,
+          "mean_us": 43.46666666666667,
+          "max_us": 85
+        },
+        "rapier_us": {
+          "sum_us": 20536,
+          "mean_us": 114.08888888888889,
+          "max_us": 1200
+        },
+        "statistics_us": {
+          "sum_us": 1763,
+          "mean_us": 9.794444444444444,
+          "max_us": 21
+        },
+        "observer_us": {
+          "sum_us": 7132,
+          "mean_us": 39.62222222222222,
+          "max_us": 86
+        },
+        "export_us": {
+          "sum_us": 299971,
+          "mean_us": 1666.5055555555555,
+          "max_us": 52849
+        },
+        "elapsed_us": {
+          "sum_us": 455644,
+          "mean_us": 2531.3555555555554,
+          "max_us": 53645
+        }
+      },
+      "process_seconds": 2.528739100031089,
+      "episode_us": 691084,
+      "participant_max": 1,
+      "arrival_history_peak": 2097152,
+      "resident_bytes_peak": 2625536,
+      "maximum_sand_area": null,
+      "maximum_sand_depth": null,
+      "geometry_scope": "intermediate geometry unavailable; paired trajectory/payload equivalence only"
+    }
+  ],
+  "all_pairs_equivalent": true,
+  "process_attempts": 50,
+  "failed_processes": 0,
+  "all_child_seconds": 214.8026229000534,
+  "campaign_elapsed_seconds": 245.3720390999806,
+  "scope": "Shared-host API wall intervals; one-body surrogate, not original SOL CPU gate or scaling proof",
+  "reducer_source": "3a29f794489f725c9222249f3e79efbf6c95a70b",
+  "reducer_sha256": "1d2c6607284b87fd877f41f0cd7fadea722d801cd73566cc803f7802d037490d"
+}

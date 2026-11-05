@@ -1,0 +1,60 @@
+{
+  "scope": "Post-run hardware/kernel observation; no frequency, load or isolation claim during the timed campaign",
+  "source": "3a29f794489f725c9222249f3e79efbf6c95a70b",
+  "commands": [
+    {
+      "name": "windows",
+      "command": [
+        "powershell.exe",
+        "-NoProfile",
+        "-Command",
+        "Get-CimInstance Win32_Processor | Select-Object Name,NumberOfCores,NumberOfLogicalProcessors | ConvertTo-Json -Compress"
+      ],
+      "requested_command": [
+        "powershell.exe",
+        "-NoProfile",
+        "-Command",
+        "Get-CimInstance Win32_Processor | Select-Object Name,NumberOfCores,NumberOfLogicalProcessors | ConvertTo-Json -Compress"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 30,
+      "seconds": 2.454569800000172,
+      "log": "build\\sol-response-cost\\host-observation\\windows.log",
+      "log_sha256": "64f4a4cadc5694b6b7fdfa790fda67fcc73c803f3de949e53bd39920e51f2557",
+      "markers": []
+    },
+    {
+      "name": "linux",
+      "command": [
+        "wsl.exe",
+        "-d",
+        "Ubuntu-24.04",
+        "--",
+        "timeout",
+        "--signal=TERM",
+        "--kill-after=5s",
+        "30s",
+        "uname",
+        "-srvm"
+      ],
+      "requested_command": [
+        "wsl.exe",
+        "-d",
+        "Ubuntu-24.04",
+        "--",
+        "uname",
+        "-srvm"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 30,
+      "seconds": 0.14193159999558702,
+      "log": "build\\sol-response-cost\\host-observation\\linux.log",
+      "log_sha256": "e9b1adcdefc7810517c0c06b28b9856145f016e8a94083aa0fa6be2ab171bf98",
+      "markers": []
+    }
+  ],
+  "windows": "{\"Name\":\"AMD Ryzen 5 5600X 6-Core Processor             \",\"NumberOfCores\":6,\"NumberOfLogicalProcessors\":12}\n",
+  "linux": "Linux 6.18.54.1-microsoft-standard-WSL2 #1 SMP PREEMPT_DYNAMIC Tue Oct  6 19:13:07 UTC 2026 x86_64\n"
+}

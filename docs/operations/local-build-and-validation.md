@@ -12,6 +12,15 @@ related-documents: [source-checkpoint-and-recovery.md, testing-validation-and-re
 
 ## Exact compound chamber experiment — 2026-11-05
 
+The separate [response-cost registration and evidence](../audits/2026-11-05-sol-response-cost.md)
+on `codex/sol-response-cost-20261105` uses
+`python tools/experiments/sol_chamber_cost.py --run <fresh-name>`, followed by
+`python tools/experiments/sol_chamber_cost_reduce.py build/sol-response-cost/<fresh-name>`.
+`python tools/experiments/test_sol_chamber_cost.py` audits the committed raw
+reference pair without native/Godot execution. Partial selections stay partial;
+all lifetime, export and trajectory premises must pass before paired latency is
+reported. Actual worker configuration differs from actual job participation.
+
 On `codex/sol-chamber-yielding-20261105`, use
 `python tools/experiments/sol_chamber_campaign.py --run <new-name>` for the
 registered 192 episodes; `--cases`, `--arms`, `--platforms`, `--workers` and

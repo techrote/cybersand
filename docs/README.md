@@ -10,6 +10,11 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+[Granular response cost and observation](architecture/rigid-body-and-cellular-coupling.md#granular-response-cost-and-observation)
+separates native response generation from test census/export overhead. The
+[dated48session comparison](audits/2026-11-05-sol-response-cost.md) preserves
+matched physics and remaining original SOL/CPU/ownership gates.
+
 The [exact compound chamber experiment](audits/2026-11-05-sol-chamber-yielding.md)
 tests valid entrapment versus driven yielding through the existing workbench
 path. [Force sequencing](architecture/rigid-body-and-cellular-coupling.md#pinned-rapier-drive-sequencing-in-chamber-experiments)

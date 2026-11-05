@@ -1,0 +1,34 @@
+{
+  "source": "b21d772762d538e8389dee659e22a392e81f9db3",
+  "script_sha256": "db6752ee0b4f61e0bf83af29dd0d87c107ecce5cdaa322016710f4202568f7ba",
+  "result": {
+    "name": "probe",
+    "command": [
+      "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+      "--headless",
+      "--audio-driver",
+      "Dummy",
+      "--path",
+      "C:\\Users\\_\\.codex\\worktrees\\sol-response-cost-20261105\\khybersand\\build\\sol-response-cost\\initial\\windows\\godot",
+      "--script",
+      "C:\\Users\\_\\.codex\\worktrees\\sol-response-cost-20261105\\khybersand\\build\\sol-response-cost\\type-probe\\probe.gd"
+    ],
+    "requested_command": [
+      "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+      "--headless",
+      "--audio-driver",
+      "Dummy",
+      "--path",
+      "C:\\Users\\_\\.codex\\worktrees\\sol-response-cost-20261105\\khybersand\\build\\sol-response-cost\\initial\\windows\\godot",
+      "--script",
+      "C:\\Users\\_\\.codex\\worktrees\\sol-response-cost-20261105\\khybersand\\build\\sol-response-cost\\type-probe\\probe.gd"
+    ],
+    "exit": 0,
+    "clean": true,
+    "timeout_seconds": 60,
+    "seconds": 0.31245109997689724,
+    "log": "build\\sol-response-cost\\type-probe\\probe.log",
+    "log_sha256": "735da588e641c66e6c1aaac763e67a016bda54a20ef22e852420bc288a9b9846",
+    "markers": []
+  }
+}
