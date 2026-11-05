@@ -11,6 +11,7 @@ import struct
 ROOT=Path(__file__).resolve().parents[2]
 spec=importlib.util.spec_from_file_location("physical_reduce",Path(__file__).with_name("la_physical_reduce.py"))
 r=importlib.util.module_from_spec(spec);spec.loader.exec_module(r)
+CACHE={}
 
 def decode(runs,size):
     values=[]
@@ -27,6 +28,13 @@ def payload(meta):
     return result
 
 def geometry(capture,rectangles):
+    key=(capture["state"]["pose_f64le"],tuple(capture["origin"]),tuple(capture["size"]),tuple(map(tuple,capture["material_runs"])),tuple(map(tuple,capture["mask_runs"])),tuple(map(tuple,rectangles)))
+    if key in CACHE:return CACHE[key]
+    result=calculate_geometry(capture,rectangles)
+    if len(CACHE)>=256:CACHE.clear()
+    CACHE[key]=result;return result
+
+def calculate_geometry(capture,rectangles):
     xx,xy,yx,yy,tx,ty=struct.unpack("<6d",bytes.fromhex(capture["state"]["pose_f64le"]))
     assert all(math.isfinite(v) for v in [xx,xy,yx,yy,tx,ty])
     ox,oy=capture["origin"];width,height=capture["size"];size=width*height
@@ -57,6 +65,7 @@ def geometry(capture,rectangles):
         body_position=[tx,ty],body_basis_determinant=xx*yy-xy*yx)
 
 def report(path,profile):
+    CACHE.clear()
     raw=path.read_bytes();data=json.loads(raw)
     binary=bytes.fromhex(data["geometry_f64le"]);values=struct.unpack("<"+"d"*(len(binary)//8),binary)
     rectangles=[values[i:i+4] for i in range(0,len(values),4)];assert len(rectangles)==6
@@ -68,8 +77,13 @@ def report(path,profile):
     valid_initial=initial["complete_in_fixed_roi"] and initial["sand_area"]<=1e-6 and initial["sand_max_depth"]<=2e-5 and not initial["hard_exclusions"]
     assert [s["step"] for s in data["steps"]]==list(range(len(data["steps"]))),"Step gap/reordering"
     steps=[];costs=Counter();arrival=0;maximum_area=0;maximum_depth=0;hard_steps=0;candidate_work=0.0;drive_work=0.0
+    counters=Counter();peaks=Counter();wrenches=Counter()
     for step in data["steps"]:
         complete=[b["boundary"] for b in step["boundaries"]]==profile["boundaries"]
+        for capture in step["boundaries"]:
+            assert capture["world_instance"]==data["initial"]["world_instance"] and capture["state"]["rid"]==data["initial"]["state"]["rid"],"Owner/body identity changed"
+        if complete:
+            assert [b["native_tick"] for b in step["boundaries"]]==[step["step"],step["step"],step["step"]+1,step["step"]+1,step["step"]+1],"Native clock misalignment"
         measurements=[dict(boundary=b["boundary"],tick=b["native_tick"],revision=b["revision"],**geometry(b,rectangles)) for b in step["boundaries"]]
         for measure in measurements:
             maximum_area=max(maximum_area,measure["sand_area"]);maximum_depth=max(maximum_depth,measure["sand_max_depth"])
@@ -78,7 +92,18 @@ def report(path,profile):
         if step.get("response",{}).get("valid"):
             assert step["response"]["response"]==data["mode"]
             assert step["response"]["session"]==step["sample"]["session"] and step["response"]["epoch"]==step["sample"]["epoch"]
+            assert step["response"]["sample_tick"]==step["step"],"Stale publication"
+            assert all(row["sample"]==step["sample"]["states"][10] and row["instance_id"]==520 and row["generation"]==1 and row["proxy_count"]==6 for row in step["response"]["rows"])
             arrival+=sum(row["arrival_count"] for row in step["response"]["rows"])
+            peaks["arrival_storage_bytes"]=max(peaks["arrival_storage_bytes"],step["response"]["arrival_storage_bytes"])
+            for row in step["response"]["rows"]:
+                for key in ["arrival_missing","arrival_misaligned","displaced","unresolved","passivity_rejected"]:counters[key]+=row[key]
+                for index,axis in enumerate(["x","y"]):
+                    for name in ["impulse","event_accepted","passive_impulse"]:wrenches[name+"_"+axis]+=row[name][index]
+                    wrenches["legacy_residual_"+axis]+=row["impulse"][index]-row["event_accepted"][index]-row["passive_impulse"][index]
+                for name in ["torque","event_torque","passive_torque"]:wrenches[name]+=row[name]
+            for key in ["worker_threads_observed","resident_cell_bytes","resident_chunks","chunk_allocations","temperature_field_allocations"]:
+                peaks[key]=max(peaks[key],step.get("statistics",{}).get("values",{}).get(key,0))
         candidate_work+=step.get("candidate_kinetic_delta",0);drive_work+=step.get("force_endpoint_work_estimate",0)
         if "payload" in step:payload(step["payload"])
         steps.append(dict(step=step["step"],complete_boundaries=complete,terminal=step.get("terminal"),geometry=measurements))
@@ -89,7 +114,7 @@ def report(path,profile):
         material_count_conservation=conserved,initial_payload=initial_payload,final_payload=final_payload,
         maximum_observed_sand_area=maximum_area,maximum_observed_sand_depth=maximum_depth,hard_exclusion_steps=hard_steps,
         observed_arrivals=arrival if data["mode"]=="LA-SELECTIVE" else None,arrival_qualifier="Nonselective modes disable arrival-history instrumentation",
-        candidate_kinetic_delta_sum=candidate_work,force_endpoint_work_estimate_sum=drive_work,cost_us=dict(costs),
+        candidate_kinetic_delta_sum=candidate_work,force_endpoint_work_estimate_sum=drive_work,cost_us=dict(costs),native_peaks=dict(peaks),native_counters=dict(counters),wrench_component_sums=dict(wrenches),
         scope="Exact geometry surrogate; centre-mask and endpoint metrics do not certify continuous clearance, parcel routes or original SOL authority")
 
 def main():
