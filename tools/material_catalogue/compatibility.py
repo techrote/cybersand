@@ -127,7 +127,14 @@ REVIEWED_TRANSITIONS: tuple[dict, ...] = ({'path': 'native/src/world_pressure.in
   'source_commit': 'acce570e667c7e2cc3ef83ab451e7dff262006a9',
   'record': 'docs/audits/2026-11-04-workbench394-ready-validation.md',
   'issue': 391,
-  'pr': 394})
+  'pr': 394},
+ {'path': 'native/src/world.cpp',
+  'from_lf_sha256': 'a47955f79ed5fbc8bc0ca8e2892ed4eb0ddbd728b841bc08ccee14a4c239e4a7',
+  'to_lf_sha256': 'b713711374e1ba887bcdd9a49629c11aaf66b55b621b347f1fe0d050d569bc0a',
+  'source_commit': '9adb98c1671808c01c4919dd79846e68b202c452',
+  'record': 'docs/audits/2026-11-05-lcb201-moving-camera-invalidation.md',
+  'issue': 201,
+  'pr': 405})
 
 
 class CompatibilityError(ValueError):

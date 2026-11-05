@@ -45,7 +45,7 @@ needs its own owner decision and qualification.
 | Base | accepted main `ba9cbc89029be88b812af59b19e5c59829bbcd90` (tree `3af18f50e6094776263119623b64a1b2f4ca0ab2`), #394 merged |
 | Branch | `claude/pf201-moving-camera` (separate from the ballistic Water branch; no ballistic code) |
 | Production change | `native/src/world.cpp` `World::set_simulation_region`: the selected-core-change `pressure_->cache->cold()` is removed; the settled-discovery inclusion request and tick-entry inclusion wake are unchanged |
-| Protected source | `native/src/world.cpp` LF SHA-256 `a47955f7…c239e4a7` → `b7137113…d569bc0a`; registered as a reviewed transition in `tools/material_catalogue/compatibility.py` |
+| Protected source | `native/src/world.cpp` LF SHA-256 `a47955f79ed5fbc8bc0ca8e2892ed4eb0ddbd728b841bc08ccee14a4c239e4a7` → `b713711374e1ba887bcdd9a49629c11aaf66b55b621b347f1fe0d050d569bc0a` at source commit `9adb98c1671808c01c4919dd79846e68b202c452`; proposed reviewed transition (issue 201, PR 405) in `tools/material_catalogue/compatibility.py`, pending independent review and the owner's admission |
 | New regression | `native/tests/test_pressure_moving_region.inc`, test "LCB-002 #201 moving region keeps exact warm pressure caches" |
 | New apparatus | `native/bench/lcb201_moving_camera.cpp` |
 
