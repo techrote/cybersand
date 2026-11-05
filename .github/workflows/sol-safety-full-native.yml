@@ -1,0 +1,152 @@
+name: SOL safety complete Native qualification
+
+on:
+  push:
+    branches: [sol/safety-composition-20261105]
+  pull_request:
+    branches: [codex/sol-active-normal-live-20261105]
+    types: [opened, synchronize, reopened]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+  pull-requests: read
+
+concurrency:
+  group: sol-safety-full-native-${{ github.event_name }}-${{ github.run_id }}
+  cancel-in-progress: false
+
+env:
+  CYBERSAND_CI_WATCHDOG_SCALE: '1'
+
+jobs:
+  policy:
+    name: Native evidence/provider policy and complete matrix
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    outputs:
+      matrix: ${{ steps.budgets.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - name: Verify exact source and derive complete family budgets
+        id: budgets
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          python3 tools/ci/run_timed_command.py --policy-key operation_seconds             --label native-budget-plan --output-dir build/sol-safety-native-full/policy/budget-command --             python3 tools/ci/native_execution_policy.py matrix --output build/sol-safety-native-full/policy/matrix.json
+          printf 'matrix=%s\n' "$(cat build/sol-safety-native-full/policy/matrix.json)" >> "$GITHUB_OUTPUT"
+          python3 tools/ci/native_execution_policy.py inventory --output build/sol-safety-native-full/policy/budgets.json
+      - name: Execute provider/evidence failure controls
+        run: |
+          set -euo pipefail
+          for check in check_ci_provider_policy test_ci_provider_policy test_native_shards test_worldgen_build_inventory test_native_watchdogs; do
+            python3 tools/ci/run_timed_command.py --policy-key operation_seconds               --label "$check" --output-dir "build/sol-safety-native-full/policy/$check" --               python3 "tools/ci/$check.py"
+          done
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: sol-safety-native-policy-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/sol-safety-native-full/policy/
+          if-no-files-found: error
+          retention-days: 90
+
+  native-shards:
+    name: Complete Native family / ${{ matrix.suite }}
+    needs: policy
+    if: always() && needs.policy.outputs.matrix != ''
+    runs-on: ubuntu-24.04
+    timeout-minutes: ${{ matrix.job_minutes }}
+    strategy:
+      fail-fast: false
+      max-parallel: 6
+      matrix: ${{ fromJSON(needs.policy.outputs.matrix) }}
+    env:
+      CC: gcc-13
+      CXX: g++-13
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - name: Record compiler/linker and exact source
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          gcc-13 --version
+          g++-13 --version
+          ld --version
+          make --version
+      - name: Execute complete test family with repository watchdogs
+        id: execute
+        shell: bash
+        env:
+          SUITE: ${{ matrix.suite }}
+          FAMILY_TIMEOUT_SECONDS: ${{ matrix.family_seconds }}
+        run: |
+          set -euo pipefail
+          mkdir -p "build/native-parallel/$SUITE"
+          set +e
+          (
+            set -euo pipefail
+            echo "source_sha=$GITHUB_SHA suite=$SUITE run=$GITHUB_RUN_ID attempt=$GITHUB_RUN_ATTEMPT"
+            echo "compiler=$(g++-13 --version | head -n 1)"
+            python3 tools/ci/run_timed_command.py               --policy-key native_suite_seconds --label "native-family-$SUITE"               --timeout-seconds "$FAMILY_TIMEOUT_SECONDS"               --output-dir "build/native-parallel/$SUITE/family" --               bash tools/ci/run_native_family.sh "$SUITE" "build/native-parallel/$SUITE"
+            echo "Native family passed: $SUITE"
+          ) 2>&1 | tee "build/native-parallel/$SUITE/run.log"
+          original_status=("${PIPESTATUS[@]}")
+          set -e
+          printf '%s\n' "${original_status[0]}" > "build/native-parallel/$SUITE/family-exit-code.txt"
+          printf '%s\n' "${original_status[1]}" > "build/native-parallel/$SUITE/log-capture-exit-code.txt"
+          if [ "${original_status[0]}" -ne 0 ]; then exit "${original_status[0]}"; fi
+          exit "${original_status[1]}"
+      - name: Record exact original family outcome
+        if: always()
+        env:
+          SUITE: ${{ matrix.suite }}
+          SUITE_OUTCOME: ${{ steps.execute.outcome }}
+        run: |
+          python3 tools/ci/verify_native_shards.py record             --suite "$SUITE" --outcome "$SUITE_OUTCOME"             --source-sha "$GITHUB_SHA" --run-id "$GITHUB_RUN_ID"             --run-attempt "$GITHUB_RUN_ATTEMPT" --output build/native-parallel
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: sol-safety-native-shard-${{ matrix.suite }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            build/native-parallel/
+            build/physics-cli-validation/
+            build/stage3b-validation-*.json
+          if-no-files-found: error
+          retention-days: 90
+
+  aggregate:
+    name: Complete exact-source Native aggregate
+    needs: [policy,native-shards]
+    if: always()
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        if: always()
+        with:
+          pattern: sol-safety-native-shard-*-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/native-evidence
+      - name: Independently verify complete exact-source Native qualification
+        if: always()
+        env:
+          POLICY_RESULT: ${{ needs.policy.result }}
+          MATRIX_RESULT: ${{ needs.native-shards.result }}
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          python3 tools/ci/verify_native_shards.py verify             --directory build/native-evidence             --source-sha "$GITHUB_SHA" --run-id "$GITHUB_RUN_ID"             --run-attempt "$GITHUB_RUN_ATTEMPT"             --policy-result "$POLICY_RESULT" --matrix-result "$MATRIX_RESULT"             --output build/sol-safety-native-full/aggregate.json
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: sol-safety-native-aggregate-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/sol-safety-native-full/
+          if-no-files-found: error
+          retention-days: 90
