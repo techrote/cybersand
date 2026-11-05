@@ -30,7 +30,8 @@ def main():
     assert set(platforms)<=set(profile["platforms"]) and set(workers)<=set(profile["workers"])
     folder=ROOT/"build/sol-chamber"/args.run;assert not folder.exists();folder.mkdir(parents=True)
     rows=[];effective={}
-    manifest=dict(identity=info,registration=profile,matrix=dict(platforms=platforms,workers=workers,cases=[s["id"] for s in cases],arms=arms,repeats=args.repeats),results=rows,effective_inputs=effective)
+    apparatus=json.loads((ROOT/"godot/tests/fixtures/sol_chamber/apparatus-002.json").read_text(encoding="utf-8"))
+    manifest=dict(identity=info,registration=profile,apparatus=apparatus,matrix=dict(platforms=platforms,workers=workers,cases=[s["id"] for s in cases],arms=arms,repeats=args.repeats),results=rows,effective_inputs=effective)
     p.write(folder/"receipt.json",manifest)
     for platform in platforms:
         host=folder/platform;project=host/"godot"

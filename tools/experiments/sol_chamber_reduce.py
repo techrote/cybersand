@@ -7,6 +7,7 @@ import json
 import math
 from pathlib import Path
 import struct
+from itertools import product
 
 ROOT=Path(__file__).resolve().parents[2]
 spec=importlib.util.spec_from_file_location("physical_reduce",Path(__file__).with_name("la_physical_reduce.py"))
@@ -69,12 +70,24 @@ def report(path,profile):
     raw=path.read_bytes();data=json.loads(raw)
     binary=bytes.fromhex(data["geometry_f64le"]);values=struct.unpack("<"+"d"*(len(binary)//8),binary)
     rectangles=[values[i:i+4] for i in range(0,len(values),4)];assert len(rectangles)==6
+    f32=lambda x:struct.unpack("<f",struct.pack("<f",x))[0]
+    com=(f32(32+3293/130),f32(16+175/8))
+    expected_rectangles=[(f32(x+w/2-com[0]),f32(y+h/2-com[1]),w,h) for x,y,w,h in profile["source_rectangles"]]
+    assert rectangles==expected_rectangles,"Registered shape differs"
+    initial_state=data["initial"]["state"]
+    assert struct.unpack("<6d",bytes.fromhex(initial_state["pose_f64le"]))==(1,0,0,1,f32(com[0]+6),f32(com[1]+35)),"Initial pose differs"
+    assert initial_state["mass"]==520 and abs(initial_state["inertia"]-f32(profile["nominal_inertia"]))<1e-9
+    assert len(data["actual_shapes"])==6
+    assert struct.unpack("<3d",bytes.fromhex(initial_state["velocity_omega_f64le"]))==(0,0,0),"Pristine motion differs"
+    for shape,(cx,cy,w,h) in zip(data["actual_shapes"],expected_rectangles):
+        assert tuple(map(f32,shape["transform"]))==(1,0,0,1,cx,cy) and tuple(shape["data"])==(w/2,h/2),"Actual Rapier shapes differ"
     initial=geometry(data["initial"],rectangles);final=geometry(data["final"],rectangles)
     initial_payload=payload(data["initial_payload"]);final_payload=payload(data["final_payload"])
     expected=profile["stored_sand_counts"]["open" if data["case"]["open"] else "closed"]
     assert initial_payload["material_counts"]=={1:178,2:expected},"Initial map differs from registration"
     assert initial["chamber_unmasked_empty_cells"]==(560 if data["case"]["open"] else 0),"Initial vacancy differs"
     valid_initial=initial["complete_in_fixed_roi"] and initial["sand_area"]<=1e-6 and initial["sand_max_depth"]<=2e-5 and not initial["hard_exclusions"]
+    valid_initial=valid_initial and initial["body_center_cells"]==initial["actual_mask_cells"]==520 and initial["centre_mask_symmetric_difference"]==0
     assert [s["step"] for s in data["steps"]]==list(range(len(data["steps"]))),"Step gap/reordering"
     steps=[];costs=Counter();arrival=0;maximum_area=0;maximum_depth=0;hard_steps=0;candidate_work=0.0;drive_work=0.0
     counters=Counter();peaks=Counter();wrenches=Counter()
@@ -89,7 +102,9 @@ def report(path,profile):
             maximum_area=max(maximum_area,measure["sand_area"]);maximum_depth=max(maximum_depth,measure["sand_max_depth"])
         hard_steps+=any(m["hard_exclusions"] for m in measurements)
         for key in ["preparation_us","native_tick_us","application_us","rapier_us","observer_us","export_us","elapsed_us"]:costs[key]+=int(step.get(key,0))
-        if step.get("response",{}).get("valid"):
+        response=step.get("response",{});application=step.get("application",{})
+        machine_valid=step.get("prepared")==True and step.get("ticked")==True and all(not b["failed"] for b in step["boundaries"]) and response.get("valid")==True and len(response.get("rows",[]))==1 and application.get("accepted")==True and len(application.get("bodies",[]))==1
+        if response.get("valid") and len(response.get("rows",[]))==1:
             assert step["response"]["response"]==data["mode"]
             assert step["response"]["session"]==step["sample"]["session"] and step["response"]["epoch"]==step["sample"]["epoch"]
             assert step["response"]["sample_tick"]==step["step"],"Stale publication"
@@ -104,31 +119,44 @@ def report(path,profile):
                 for name in ["torque","event_torque","passive_torque"]:wrenches[name]+=row[name]
             for key in ["worker_threads_observed","resident_cell_bytes","resident_chunks","chunk_allocations","temperature_field_allocations"]:
                 peaks[key]=max(peaks[key],step.get("statistics",{}).get("values",{}).get(key,0))
-        candidate_work+=step.get("candidate_kinetic_delta",0);drive_work+=step.get("force_endpoint_work_estimate",0)
+        live=step.get("live_before_application",step["boundaries"][2]["state"] if len(step["boundaries"])>=3 else None)
+        response_delta=float(step["after_application"]["kinetic"])-float(live["kinetic"]) if live is not None and "after_application" in step else None
+        if response_delta is not None:candidate_work+=response_delta
+        drive_work+=step.get("force_endpoint_work_estimate",0)
         if "payload" in step:payload(step["payload"])
-        steps.append(dict(step=step["step"],complete_boundaries=complete,terminal=step.get("terminal"),geometry=measurements))
-    complete=len(steps)==profile["steps"] and all(s["complete_boundaries"] and not s["terminal"] for s in steps) and not data["failures"]
+        steps.append(dict(step=step["step"],complete_boundaries=complete,machine_valid=machine_valid,terminal=step.get("terminal"),geometry=measurements,recomputed_response_kinetic_delta=response_delta,original_reported_response_kinetic_delta=step.get("candidate_kinetic_delta")))
+    complete=len(steps)==profile["steps"] and all(s["complete_boundaries"] and s["machine_valid"] and not s["terminal"] for s in steps) and not data["failures"]
     conserved=final_payload is not None and initial_payload["material_counts"]==final_payload["material_counts"]
     return dict(id=data["id"],source=data["source"],mode=data["mode"],case=data["case"],requested_workers=data["requested_workers"],repeat=data["repeat"],raw_sha256=r.sha(raw),
         valid_initial_geometry=valid_initial,complete_episode=complete,initial=initial,final=final,steps=steps,
-        material_count_conservation=conserved,initial_payload=initial_payload,final_payload=final_payload,
+        material_count_conservation=conserved,exact_tuple_multiset_conservation=final_payload is not None and initial_payload["tuple_multiset"]==final_payload["tuple_multiset"],initial_payload=initial_payload,final_payload=final_payload,
         maximum_observed_sand_area=maximum_area,maximum_observed_sand_depth=maximum_depth,hard_exclusion_steps=hard_steps,
         observed_arrivals=arrival if data["mode"]=="LA-SELECTIVE" else None,arrival_qualifier="Nonselective modes disable arrival-history instrumentation",
         candidate_kinetic_delta_sum=candidate_work,force_endpoint_work_estimate_sum=drive_work,cost_us=dict(costs),native_peaks=dict(peaks),native_counters=dict(counters),wrench_component_sums=dict(wrenches),
         scope="Exact geometry surrogate; centre-mask and endpoint metrics do not certify continuous clearance, parcel routes or original SOL authority")
 
 def main():
-    parser=argparse.ArgumentParser(__doc__);parser.add_argument("directory",type=Path);args=parser.parse_args()
+    parser=argparse.ArgumentParser(__doc__);parser.add_argument("directory",type=Path);parser.add_argument("--output",type=Path);args=parser.parse_args()
+    output=args.output or args.directory/"reduction";assert not output.exists(),"Preserve prior derivative";output.mkdir(parents=True)
     receipt=json.loads((args.directory/"receipt.json").read_text(encoding="utf-8"));profile=receipt["registration"];rows=[]
     for process in receipt["results"]:
         for item in process.get("reports",[]):
             path=ROOT/item["path"];assert r.sha(path.read_bytes())==item["sha256"]
-            result=report(path,profile);target=path.with_suffix(".metrics.json")
+            platform=path.resolve().relative_to(args.directory.resolve()).parts[0]
+            result=report(path,profile);result.update(platform=platform,report_path=item["path"])
+            target=output/(platform+"-"+result["id"]+".metrics.json")
             assert not target.exists(),"Preserve prior reduction";target.write_text(json.dumps(result)+"\n",encoding="utf-8")
             rows.append({key:value for key,value in result.items() if key not in ["steps","initial_payload","final_payload"]})
-    summary=dict(registration=profile["id"],source=receipt["identity"]["source"],matrix=receipt["matrix"],episodes=rows,
+    matrix=receipt["matrix"]
+    expected=set(product(matrix["platforms"],matrix["cases"],matrix["arms"],matrix["workers"],range(matrix["repeats"])))
+    coordinates=Counter((row["platform"],row["case"]["id"],row["mode"],row["requested_workers"],row["repeat"]) for row in rows)
+    assert set(coordinates)<=expected,"Unexpected matrix coordinates"
+    missing=sorted(expected-set(coordinates));duplicates=[list(k) for k,v in coordinates.items() if v!=1]
+    summary=dict(registration=profile["id"],source=receipt["identity"]["source"],matrix=matrix,episodes=rows,
+        full_matrix_coverage=not missing and not duplicates,missing_coordinates=missing,duplicate_coordinates=duplicates,
+        reducer_sha256=r.sha(Path(__file__).read_bytes().replace(b"\r\n",b"\n")),
         process_attempts=len(receipt["results"]),process_failures=sum(not row["clean"] for row in receipt["results"]))
-    target=args.directory/"reduced.json";assert not target.exists();target.write_text(json.dumps(summary,indent=2)+"\n",encoding="utf-8")
+    target=output/"reduced.json";assert not target.exists();target.write_text(json.dumps(summary,indent=2)+"\n",encoding="utf-8")
     print(json.dumps(dict(reports=len(rows),valid_initial=sum(row["valid_initial_geometry"] for row in rows),complete=sum(row["complete_episode"] for row in rows),conserved=sum(row["material_count_conservation"] for row in rows),process_failures=summary["process_failures"])))
 
 if __name__=="__main__":main()

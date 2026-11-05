@@ -24,7 +24,9 @@ func body_state(body: RigidBody2D) -> Dictionary:
 	return {"pose":d.transform,"pose_f64le":bits(plain(d.transform)),"velocity":v,"omega":w,
 		"velocity_omega_f64le":bits([v.x,v.y,w]),"mass":mass,"inertia":inertia,
 		"kinetic":0.5*mass*(float(v.x)*float(v.x)+float(v.y)*float(v.y))+0.5*inertia*w*w,
-		"potential":0.0,"center_of_mass_local":d.center_of_mass_local,"rid":body.get_rid().get_id()}
+		"potential":0.0,"center_of_mass_local":d.center_of_mass_local,"rid":body.get_rid().get_id(),
+		"gravity_scale":body.gravity_scale,"linear_damp":body.linear_damp,"angular_damp":body.angular_damp,
+		"can_sleep":body.can_sleep,"collision_layer":body.collision_layer,"collision_mask":body.collision_mask}
 
 func runs(values: Variant) -> Array:
 	var result: Array = [];var last: int = -1;var count: int = 0
@@ -72,10 +74,14 @@ func chamber_episode(spec: Dictionary, mode: String, workers: int, repeat: int, 
 	check(committed,"exact compound constructor: "+str(preparer.get_last_error()))
 	var name: String = spec.id+"-"+mode+"-w"+str(workers)+"-r"+str(repeat)
 	var report: Dictionary = {"schema":"cybersand.sol-chamber.episode.v1","registration":registration.id,"id":name,
+		"apparatus":"SOL-CHAMBER-001-APPARATUS-002",
 		"source":OS.get_environment("CYBERSAND_SOURCE_REVISION"),"case":spec,"mode":mode,"requested_workers":workers,"repeat":repeat,
 		"geometry":rig.rectangles,"geometry_source_sha256":FileAccess.get_sha256(CHAMBER_SOURCE),"initial_sample":sample,
 		"nominal_inertia":registration.nominal_inertia,"pristine":pristine,"steps":[],"constructed":committed,
 		"scope":"exact520 geometry surrogate; no native RedBrick aggregate or originalSOL authority"}
+	report.physics_tick_rate=ProjectSettings.get_setting("physics/common/physics_ticks_per_second",60)
+	report.fixed_delta=bridge.fixed_delta()
+	check(int(report.physics_tick_rate)==60 and report.fixed_delta==1.0/60.0,"registered actual cadence")
 	if committed:
 		check(bridge.rebuild_hard_surface_colliders_from_rectangles(world.get_hard_surface_rectangles())>0,"real hard Wall collision bodies")
 		report.construction_receipt=world.get_applied_liquid_construction_receipt()
@@ -105,6 +111,7 @@ func run_chamber_steps(spec: Dictionary, mode: String, body: RigidBody2D, bridge
 		var before: Dictionary = body_state(body)
 		var force := Vector2(60.0*float(registration.mass),0) if spec.driven and step>=30 and step<150 else Vector2.ZERO
 		if force!=Vector2.ZERO:PhysicsServer2D.body_apply_central_force(body.get_rid(),force)
+		var after_external: Dictionary = body_state(body)
 		var drives: Array[bool] = [force!=Vector2.ZERO]
 		var sample: Dictionary = bridge.pack_sample(drives)
 		boundaries.append(census(world,body,"before_preparation"))
@@ -118,10 +125,15 @@ func run_chamber_steps(spec: Dictionary, mode: String, body: RigidBody2D, bridge
 		var response: Dictionary = world.workbench_coupling_results()
 		var record: Dictionary = {"step":step,"sample":sample,"boundaries":boundaries,"prepared":prepared,"ticked":ticked,
 			"response":response,"force":force,"before":before,"preparation_us":preparation_us,"native_tick_us":native_us}
+		record.after_external_drive=after_external
+		record.external_api_kinetic_delta=float(after_external.kinetic)-float(before.kinetic)
 		if not prepared or not ticked or not response.get("valid",false):
 			check(false,"native failed/refused; no physical clearance claim")
 			record.terminal="native_failed_or_refused";report.steps.append(record);break
 		check(response.get("response")==mode,"applied native response selector")
+		var live: Dictionary = body_state(body)
+		record.live_before_application=live
+		record.preapplication_kinetic_delta=float(live.kinetic)-float(after_external.kinetic)
 		timer=Time.get_ticks_usec();bridge.apply_packet(step+1,response)
 		record.application_us=Time.get_ticks_usec()-timer
 		record.application=bridge.last_application.duplicate(true)
@@ -131,22 +143,22 @@ func run_chamber_steps(spec: Dictionary, mode: String, body: RigidBody2D, bridge
 			check(false,"application refused; no physical clearance claim")
 			record.terminal="application_refused";report.steps.append(record);break
 		var action: Dictionary = record.application.bodies[0]
-		var predicted: Vector2 = before.velocity
+		var predicted: Vector2 = live.velocity
 		if predicted.x*action.correction.x<0:predicted.x=0
 		if predicted.y*action.correction.y<0:predicted.y=0
-		predicted+=Vector2(action.impulse)/float(before.mass)
+		predicted+=Vector2(action.impulse)/float(live.mass)
 		record.velocity_residual=predicted.distance_to(record.after_application.velocity)
-		record.omega_residual=absf(float(before.omega)+float(action.torque)/float(before.inertia)-float(record.after_application.omega))
+		record.omega_residual=absf(float(live.omega)+float(action.torque)/float(live.inertia)-float(record.after_application.omega))
 		check(record.velocity_residual<=1e-5 and record.omega_residual<=1e-5,"existing actual RID readback tolerance")
-		record.candidate_kinetic_delta=float(record.after_application.kinetic)-float(before.kinetic)
+		record.candidate_kinetic_delta=float(record.after_application.kinetic)-float(live.kinetic)
 		timer=Time.get_ticks_usec();bridge.step();record.rapier_us=Time.get_ticks_usec()-timer
 		record.after_step=body_state(body)
 		boundaries.append(census(world,body,"after_rapier_step"))
 		record.force_endpoint_work_estimate=force.dot(record.after_step.pose.origin-record.after_application.pose.origin)
 		record.force_impulse=force/60.0
-		record.free_force_kinetic_increment=(force/60.0).dot(record.after_application.velocity)+0.5*(float(force.x/60.0)*float(force.x/60.0))/float(before.mass)
+		record.counterfactual_second_force_increment=(force/60.0).dot(record.after_application.velocity)+0.5*(float(force.x/60.0)*float(force.x/60.0))/float(before.mass)
 		record.rapier_kinetic_delta=float(record.after_step.kinetic)-float(record.after_application.kinetic)
-		record.energy_scope="Endpoint force-work estimate; hard-contact/internal integration work and native grain kinetic energy not independently reconstructed"
+		record.energy_scope="Pinned Rapier force API is an immediate Fdt impulse: external_api_kinetic_delta is observed drive work; endpoint Fdx and a hypothetical second force increment are diagnostics only. Hard-contact and native grain energy not independently reconstructed"
 		record.statistics=preparer.inspect_statistics(world)
 		record.observer_us=0
 		for boundary: Dictionary in boundaries:record.observer_us+=int(boundary.observer_us)
