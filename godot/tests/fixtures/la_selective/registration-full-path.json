@@ -1,0 +1,8 @@
+{
+  "id": "LA-SOL-SURROGATE-002-FULL-PATH",
+  "registered_date": "2026-11-05",
+  "extends": "res://tests/fixtures/la_selective/registration.json",
+  "resolve_overlaps": true,
+  "reason": "Mechanism review found that false bypasses boundary/passive preparation. Retain 001 as event-isolation evidence; exercise the existing full production preparation path separately. No arithmetic, budget, threshold, scenario, challenge or observation-window change.",
+  "admission": "Surrogate only. Existing native material relocation/correction is measured, not new SOL ownership or physical recovery. No original-SOL or 120+60 acceptance claim."
+}

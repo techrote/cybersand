@@ -4,7 +4,7 @@ extends SceneTree
 # thread; native World retains its own pool. No public fleet or solver changes.
 const Contract = preload("res://scripts/microscenario_contract.gd")
 const Bridge = preload("res://scripts/workbench_physics_bridge.gd")
-const PROFILE = "res://tests/fixtures/la_selective/registration.json"
+const PROFILE = "res://tests/fixtures/la_selective/registration-full-path.json"
 const DAM = "res://tests/fixtures/lcb/lcb.dam.water.freemass.reference.v1.json"
 class FixtureRig extends RefCounted:
 	var rectangles: Array = []
@@ -175,6 +175,7 @@ func episode(spec: Dictionary, mode: String, workers: int) -> void:
 		physics.shutdown(); host.free(); return
 	var report: Dictionary = {"case":spec.id,"mode":mode,"workers":workers,"session":packet.session,"epoch":1,
 		"geometry":plain(rig.rectangles),"initial_input":plain(packet),"initial_inventory":inventory(snapshot(world)),
+		"initial_geometry":geometry(snapshot(world),rig.rectangles,state(body).pose,spec.material),
 		"initial_body":plain(state(body)),"steps":[],"qualification":"#394 common-transform surrogate; no native SOL handoff"}
 	var elapsed_owner: int = 0
 	var elapsed_application: int = 0
@@ -186,8 +187,9 @@ func episode(spec: Dictionary, mode: String, workers: int) -> void:
 			PhysicsServer2D.body_apply_torque_impulse(body.get_rid(),0.5)
 		packet=physics.pack_sample([false])
 		var sampled: Dictionary = state(body)
+		var prior_inventory: Dictionary = snapshot(world)
 		var start: int = Time.get_ticks_usec()
-		var prepared: bool = world.prepare_workbench_coupling(packet.states,packet.geometry,packet.bodies,packet.session,packet.epoch,false)
+		var prepared: bool = world.prepare_workbench_coupling(packet.states,packet.geometry,packet.bodies,packet.session,packet.epoch,profile.resolve_overlaps)
 		var ticked: bool = world.simulation_tick() if prepared else false
 		var response: Dictionary = world.workbench_coupling_results()
 		var owner_us: int = Time.get_ticks_usec()-start
@@ -223,6 +225,7 @@ func episode(spec: Dictionary, mode: String, workers: int) -> void:
 			"external_challenge_work":sampled.kinetic-challenge_before,"response_energy_delta":after_application.kinetic-sampled.kinetic,
 			"Rapier_step_energy_delta":after.kinetic-after_application.kinetic,
 			"geometry_before_step":geometry_before,"geometry_after_step":geometry(stored,rig.rectangles,after.pose,spec.material),
+			"inventory_before_preparation":inventory(prior_inventory),
 			"stored_inventory":inventory(stored)}))
 		if mode=="LA-EVENT-OFF": check(row.event_accepted==Vector2.ZERO and row.event_torque==0,"event-off retains zero event wrench")
 		if spec.material==3: check(row.arrival_count==0,"Water excluded from arrivals")
@@ -233,7 +236,7 @@ func episode(spec: Dictionary, mode: String, workers: int) -> void:
 	check(report.steps.size()==profile.steps,"complete registered observation window")
 	# Prospective publication controls, after the measurement window, equal in all arms.
 	packet=physics.pack_sample([false])
-	check(world.prepare_workbench_coupling(packet.states,packet.geometry,packet.bodies,packet.session,packet.epoch,false),"publication control prepare")
+	check(world.prepare_workbench_coupling(packet.states,packet.geometry,packet.bodies,packet.session,packet.epoch,profile.resolve_overlaps),"publication control prepare")
 	var held: Dictionary = world.workbench_coupling_results()
 	physics.pack_sample([false])
 	physics.apply_packet(1001,held)
@@ -247,7 +250,13 @@ func episode(spec: Dictionary, mode: String, workers: int) -> void:
 	host.free()
 
 func run() -> void:
-	profile=JSON.parse_string(FileAccess.get_file_as_string(PROFILE))
+	var profile_path: String = OS.get_environment("LA_EXPERIMENT_PROFILE")
+	if profile_path.is_empty(): profile_path=PROFILE
+	profile=JSON.parse_string(FileAccess.get_file_as_string(profile_path))
+	if profile.has("extends"):
+		var inherited: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(profile.extends))
+		inherited.merge(profile,true)
+		profile=inherited
 	checked=Contract.validate(Contract.parse(FileAccess.get_file_as_string(DAM)).definition)
 	var selected_workers: int = int(OS.get_environment("LA_EXPERIMENT_WORKERS"))
 	if selected_workers==0: selected_workers=1

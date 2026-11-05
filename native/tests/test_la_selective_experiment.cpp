@@ -43,9 +43,12 @@ int main() {
             for(int x=11;x<=13;++x) require(world.set_transient_obstacle(x,14,1),"repeat mask");
             (void)world.tick();
             require(world.transient_arrival_count(1)==0,"stopped contact cannot replenish provenance");
-            unsigned count=0;
-            for(int y=0;y<512;++y) for(int x=0;x<512;++x) count+=world.stored_material(x,y)==material;
-            require(count==64,"native tuple count conserved");
+            unsigned count=0, water_quantity=0;
+            for(int y=0;y<512;++y) for(int x=0;x<512;++x) if(world.stored_material(x,y)==material) {
+                ++count; water_quantity+=world.stored_state_a(x,y);
+            }
+            require(material==Material::Water ? water_quantity==64U*255U : count==64,
+                    "native granular count / Water FreeMass quantity conserved");
             world.clear(); require(world.granular_arrival_storage_bytes()==0,"reset retires history");
         }
         std::cout<<"LA_SELECTIVE_NATIVE checks="<<checks<<" failures=0\n";

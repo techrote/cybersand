@@ -78,12 +78,31 @@ def authenticate():
     paths = {p.relative_to(ROOT).as_posix() for d in ["native/include", "native/src", "godot/native_extension"]
              for p in (ROOT/d).rglob("*") if p.is_file() and p.suffix in suffixes}
     for platform, filename in [("windows", "runtime-provenance.json"), ("linux", "runtime-provenance.linux.json")]:
-        manifest = json.loads((ROOT/"godot/addons/cybersand_native"/filename).read_text())
+        manifest_path = "godot/addons/cybersand_native/"+filename
+        manifest_bytes = (ROOT/manifest_path).read_bytes().replace(b"\r\n", b"\n")
+        assert manifest_bytes == git("show", source+":"+manifest_path), "mutable runtime provenance"
+        manifest = json.loads(manifest_bytes)
         assert paths == set(manifest["source_inputs"]), "incomplete runtime inventory"
         for path, digest in manifest["source_inputs"].items():
             assert sha((ROOT/path).read_bytes().replace(b"\r\n", b"\n")) == digest, path
             assert git("show", BASE+":"+path) == git("show", source+":"+path), path
         assert sha((ROOT/manifest["artifact"]).read_bytes()) == manifest["sha256"]
+        rapier_path = "godot/addons/godot-rapier2d/runtime-provenance."+platform+".json"
+        rapier_bytes = (ROOT/rapier_path).read_bytes().replace(b"\r\n", b"\n")
+        assert rapier_bytes == git("show",source+":"+rapier_path), "mutable Rapier provenance"
+        rapier = json.loads(rapier_bytes)
+        assert sha((ROOT/rapier["artifact"]).read_bytes()) == rapier["sha256"]
+        for path,digest in rapier["source_inputs"].items():
+            assert sha((ROOT/path).read_bytes().replace(b"\r\n",b"\n")) == digest, path
+        if platform == "windows":
+            engine_hash = sha(Path(ENGINES[platform]).read_bytes())
+            version = subprocess.check_output([ENGINES[platform],"--version"]).decode().strip()
+        else:
+            engine_hash = subprocess.check_output(["wsl","-d","Ubuntu-24.04","--","sha256sum",ENGINES[platform]]).decode().split()[0]
+            version = subprocess.check_output(["wsl","-d","Ubuntu-24.04","--",ENGINES[platform],"--version"]).decode().strip()
+        assert engine_hash == manifest["godot_executable_sha256"] and version == manifest["godot_version"]
+        manifest["authenticated_engine"] = dict(path=ENGINES[platform],sha256=engine_hash,version=version)
+        manifest["authenticated_rapier"] = rapier
         inventories[platform] = manifest
     dependencies = {p: sha((ROOT/p).read_bytes()) for p in git("ls-files", "godot/addons", "third_party").decode().splitlines()
                     if (ROOT/p).is_file() and ("/bin/" in p or p.endswith("lock.json"))}
@@ -92,7 +111,10 @@ def authenticate():
                   dependencies=dependencies,
                   local_delta=git("status", "--short").decode(),
                   profile_sha256=sha((ROOT/"godot/tests/fixtures/la_selective/registration.json").read_bytes()))
-    write(OUT/"identity.json", result)
+    result["test_inputs"] = {p:sha((ROOT/p).read_bytes()) for p in [
+        "native/tests/test_la_selective_experiment.cpp","godot/tests/test_la_selective_experiment.gd",
+        "godot/tests/fixtures/la_selective/registration.json","godot/tests/fixtures/la_selective/registration-full-path.json",
+        "tools/experiments/la_selective_experiment.py"]}
     return result
 
 
@@ -114,7 +136,7 @@ def hosts(scope):
         rows = []
         env = dict(os.environ, CYBERSAND_SOURCE_REVISION=identity["source"])
         tests = [("import", None)]
-        if scope == "comparison": tests += [("experiment-w1", 1), ("experiment-w4", 4)]
+        if scope in ["comparison","comparison-full"]: tests += [("experiment-w1", 1), ("experiment-w4", 4)]
         elif scope == "scoped": tests += [("workbench_"+s, None) for s in SCOPED]
         else: raise ValueError(scope)
         for name, workers in tests:
@@ -129,12 +151,18 @@ def hosts(scope):
                 result_path = folder/(name+".json")
                 current_env["LA_EXPERIMENT_WORKERS"] = str(workers)
                 current_env["LA_EXPERIMENT_OUTPUT"] = str(result_path) if platform == "windows" else wsl_path(result_path)
+                current_env["LA_EXPERIMENT_PROFILE"] = "res://tests/fixtures/la_selective/registration"+ ("-full-path" if scope=="comparison-full" else "")+".json"
             if platform == "linux":
                 forwarded = ["CYBERSAND_SOURCE_REVISION="+identity["source"]]
-                if workers: forwarded += [k+"="+current_env[k] for k in ["LA_EXPERIMENT_WORKERS", "LA_EXPERIMENT_OUTPUT"]]
+                if workers: forwarded += [k+"="+current_env[k] for k in ["LA_EXPERIMENT_WORKERS", "LA_EXPERIMENT_OUTPUT","LA_EXPERIMENT_PROFILE"]]
                 args = ["wsl", "-d", "Ubuntu-24.04", "--", "env", *forwarded, *args]
             row = command(name, args, folder, current_env, 300 if workers else 180)
-            if workers and result_path.exists(): row["data_sha256"] = sha(result_path.read_bytes())
+            if workers:
+                assert result_path.exists(), "missing experiment observations"
+                data=json.loads(result_path.read_text())
+                assert data["source"] == identity["source"] and data["failures"] == [] and len(data["episodes"])==32
+                assert all(e["workers"]==workers and len(e["steps"])==24 for e in data["episodes"])
+                row["data_sha256"] = sha(result_path.read_bytes())
             rows.append(row)
             write(folder/"receipt.json", dict(identity=identity, inputs=inputs, results=rows))
             if not row["clean"]: break
@@ -157,14 +185,14 @@ def native():
         prefix = ["wsl", "-d", "Ubuntu-24.04", "--cd", linux_root, "--"]
         objects = []
         for name in sources:
-            target = "build/la-selective/native-qualified/"+variant+"-"+name+".o"
+            target = (folder/(variant+"-"+name+".o")).relative_to(ROOT).as_posix()
             row = command("compile-"+variant+"-"+name, prefix+["g++", "-std=c++20", "-pthread", "-Inative/include", *flags,
                           "-c", "native/src/"+name+".cpp", "-o", target], folder, timeout=900)
             results.append(row)
             if not row["clean"]: return False
             objects.append(target)
         for test in ["la_selective_experiment", "workbench_arrivals", "workbench_pressure_heads"]:
-            binary = "build/la-selective/native-qualified/"+variant+"-"+test
+            binary = (folder/(variant+"-"+test)).relative_to(ROOT).as_posix()
             row = command("link-"+variant+"-"+test,prefix+["g++", "-std=c++20", "-pthread", "-Inative/include", *flags,
                           *objects, "native/tests/test_"+test+".cpp", "-o", binary],folder,timeout=180)
             results.append(row)
@@ -175,15 +203,21 @@ def native():
             results.append(row)
             write(folder/"receipt.json", dict(source=identity["source"],results=results))
             if not row["clean"]: return False
+    after=authenticate()
+    assert after["test_inputs"]==identity["test_inputs"] and after["runtimes"]==identity["runtimes"]
     return True
 
 
 def main():
+    global OUT
     parser = argparse.ArgumentParser(__doc__)
-    parser.add_argument("stage", choices=["identity", "comparison", "scoped", "native"])
+    parser.add_argument("stage", choices=["identity", "comparison", "comparison-full", "scoped", "native"])
+    parser.add_argument("--run", default="la-selective", help="new bounded output directory name under build")
     args = parser.parse_args()
+    assert Path(args.run).name==args.run and args.run not in [".",".."]
+    OUT=ROOT/"build"/args.run
     OUT.mkdir(parents=True, exist_ok=True)
-    if args.stage=="identity": authenticate(); return 0
+    if args.stage=="identity": write(OUT/"identity.json",authenticate()); return 0
     return int(not (native() if args.stage=="native" else hosts(args.stage)))
 
 
