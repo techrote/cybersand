@@ -224,7 +224,7 @@ jobs:
               for r in rows:
                   expected_mode='copied_timed' if label.startswith('timed_') else 'original_super'
                   if r.get('dispatch_mode')!=expected_mode: raise RuntimeError('Wrong dispatcher mode '+label)
-              wrapper_rows[label]={'captured':len(rows),'over_40ms':large,'operation_samples':observed,'keys':sorted(all_keys)
+              wrapper_rows[label]={'captured':len(rows),'over_40ms':large,'operation_samples':observed,'keys':sorted(all_keys)}
           write('stage-readback.json',json.dumps(wrapper_rows,indent=2)+'\n')
 
           write('phase-pair-analysis.json',json.dumps(traces,indent=2)+'\n')
