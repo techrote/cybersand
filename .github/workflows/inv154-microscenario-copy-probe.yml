@@ -6,6 +6,7 @@ on:
       - perf/inv154-microscenario-frame-copy-probe-20261105
     paths:
       - godot/tests/performance/test_microscenario_refresh_copy_cost.gd
+      - godot/tests/performance/test_microscenario_copy_envelope.gd
       - .github/workflows/inv154-microscenario-copy-probe.yml
   workflow_dispatch:
 
@@ -130,6 +131,55 @@ jobs:
           print('INV154 Windows standalone probe complete: 36 raw result rows; no real-Main FPS claim')
           PY
 
+      - name: Run source-bounded MicroScenario observation and inspection control
+        timeout-minutes: 8
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          import os
+          import re
+          import shutil
+          import subprocess
+          from pathlib import Path
+
+          contract = Path('godot/scripts/microscenario_contract.gd').read_text(encoding='utf-8')
+          if not re.search(r'^const MAX_OBSERVATIONS: int = 24\\s*$', contract, flags=re.MULTILINE):
+              raise RuntimeError('Current source contract observation limit no longer matches the benchmark (24)')
+          host = Path('godot/scripts/microscenario_host.gd').read_text(encoding='utf-8')
+          if '"interaction_inspection":_interaction_inspection.duplicate(true)' not in host:
+              raise RuntimeError('Actual owner summary inspection field changed: synthetic-shape provenance invalid')
+          evidence = Path('build/inv154-probe').resolve()
+          scratch = evidence / 'standalone'
+          shutil.copyfile('godot/tests/performance/test_microscenario_copy_envelope.gd',
+                          scratch / 'envelope.gd')
+          godot = evidence / 'engine' / 'Godot_v4.7-stable_win64_console.exe'
+          proc = subprocess.run(
+              [str(godot), '--headless', '--path', str(scratch),
+               '--script', 'res://envelope.gd'],
+              stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, timeout=420,
+              env={**os.environ, 'GODOT_SILENCE_ROOT_WARNING': '1'})
+          (evidence / 'godot-envelope-stdout.txt').write_text(proc.stdout, encoding='utf-8')
+          print(proc.stdout)
+          marker = 'INV154_MICROSCENARIO_ENVELOPE_PROBE '
+          records = [line[len(marker):] for line in proc.stdout.splitlines()
+                     if line.startswith(marker)]
+          if proc.returncode != 0 or len(records) != 1:
+              raise RuntimeError(f'Actual Windows Godot envelope execution failed: exit={proc.returncode}; records={len(records)}')
+          result = json.loads(records[0])
+          cases = result['cases']
+          negatives = [x for x in cases if x['kind'] == 'inplace_negative_control']
+          if (result['os_name'] != 'Windows' or result['failures'] != 0
+                  or result['pair_checks'] != 39 or len(cases) != 78
+                  or len(negatives) != 6
+                  or any(x['observations'] > 24 for x in cases)
+                  or any(x['synthetic_inspection_pairs'] > 300 for x in cases)):
+              raise RuntimeError('Envelope readback invalid; no positive result may be claimed')
+          (evidence / 'envelope-result.json').write_text(
+              json.dumps(result, indent=2) + '\\n', encoding='utf-8')
+          print('INV154 Windows source-bound envelope: 39 pairs, 78 rows, 0 unexpected parity failures; negative-control divergences required')
+          PY
+
       - name: Retain source, engine, raw positive and negative outcomes
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
@@ -142,5 +192,7 @@ jobs:
             build/inv154-probe/engine-identity.json
             build/inv154-probe/godot-stdout.txt
             build/inv154-probe/result.json
+            build/inv154-probe/godot-envelope-stdout.txt
+            build/inv154-probe/envelope-result.json
           if-no-files-found: warn
           retention-days: 30
