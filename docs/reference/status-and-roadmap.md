@@ -4,7 +4,7 @@ status: Current
 document-kind: reference
 scope: Current implementation map, unresolved correctness and policy decisions, and bounded next checkpoints
 canonical-for: [implementation-status, foundational-priorities, open-decisions]
-last-reviewed: 2026-11-04
+last-reviewed: 2026-11-05
 related-documents: [validation-evidence.md, invariants.md, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/development-claims-remediation-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../operations/github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
@@ -1902,6 +1902,12 @@ The [desktop development workbench](../systems/player-control-playground.md#deve
 
 The [edge-conversion and desktop pacing follow-up](../audits/2026-11-04-workbench-boundary-and-pacing.md) covers live solver changes after material leaves the canvas, render-independent body stepping, and parity and throughput of workbench pressure-column dispatch.
 
-The [PR #394 cleanup](../audits/2026-11-04-workbench394-cleanup.md) retains tuning across missing-model pilot replacement and repairs the fleet registry shutdown lifetime. Its [three-consumer MAT source transition](../audits/2026-11-04-workbench394-material-source-transition.md) reuses the approved #396 mechanism and preserves the frozen lock. Technical admission, owner adoption and merge are separately recorded; #394 remains Draft and unmerged.
+The [PR #394 cleanup](../audits/2026-11-04-workbench394-cleanup.md) retains tuning across missing-model pilot replacement and repairs the fleet registry shutdown lifetime. Its [three-consumer MAT source transition](../audits/2026-11-04-workbench394-material-source-transition.md) reuses the approved #396 mechanism and preserves the frozen lock. Technical admission, owner adoption and merge are separately recorded; that cleanup checkpoint kept #394 Draft and unmerged.
 
 The owner accepted the playable workbench and authorized [current-main reconciliation and Ready qualification](../audits/2026-11-04-workbench394-ready-validation.md). Accepted main now includes #396 and #382 at `ee92dc45`; the combined native source requires rebuilt desktop runtimes and its own complete gates. The earlier Draft checkpoints remain historical; merge remains held.
+
+## LA-SELECTIVE primary-response experiment — 2026-11-05
+
+**Approved direction:** LA-SELECTIVE is the intended primary granular gameplay response candidate. **Current experimental implementation:** a separate #394-dependent branch adds opt-in matched fixtures and evidence tooling, preserving production native sources, gains, budgets, catalogue identities and all four selectable workbench controls. The [mechanism and admission scope](../systems/player-control-playground.md#la-selective-mechanism-and-experimental-admission) and [dated comparison](../audits/2026-11-05-la-selective-sol-experiment.md) distinguish real arrivals, stationary burial and native material relocation. General desktop default promotion remains **Planned**. Original SOL physical clearance and combined #394/#347/#393 MAT/ownership integration remain unproved; no restoration, merge, ready transition or production default change is admitted.
+
+**Current continuation:** #400 retains its ancestry and ordinarily reconciles #394 `77c60b8e`/84 native inputs. #394 merged externally to main `ba9cbc89` with the same tree. Real-body profiles004–007 add valid static contact, moving and supported arrivals, force/control cases, conservative tuple capture, actual four-worker stress and separately bounded workloads. The [physical-response qualification](../audits/2026-11-05-la-physical-qualification.md) retains two rejected support filters and a narrower opt-in stale-separation hypothesis. Stable legitimate entrapment can pass; initially invalid overlap and original SOL authority remain separate. Experimental variants stay disabled by default, and broad promotion remains unqualified.

@@ -1,0 +1,13 @@
+{
+  "id": "LA-PHYSICAL-005-STATE-CHANGE-GATED",
+  "registered_date": "2026-11-05",
+  "extends": "res://tests/fixtures/la_physical/registration-v1.json",
+  "arms": ["LA-SELECTIVE", "LA", "LA-EVENT-OFF", "RFT", "LA-SELECTIVE-LIVE-PASSIVE", "LA-SELECTIVE-LIVE-PASSIVE-GATED"],
+  "hypothesis": "004's unconditional passive-work filter suppresses discrete support and worsens initially valid barrel equilibrium. Revalidate only when live velocity/omega differs exactly from immutable sampled values. Synchronous unchanged-state application must remain the upstream control; physical-step delay may still falsify support suitability.",
+  "previous_result": "Prototype source3a55a936: strict v1 removes positive stale passive work but barrel-rest terminal speed1.52896 versus baseline0.00768; strict v1 is rejected for general promotion. Keep all records.",
+  "variant": {"id":"passive-live-on-change-v2","default":false,"gating":"exact live velocity/omega inequality against successful pack_sample history; nonwrapping first-sample configuration lock","same_quadratic_as":"passive-live-v1","rollback":"Reject promotion if real-step-delayed gravity support worsens, synchronous control differs, accounting/refusal/precision fails. Do not tune gains or thresholds."},
+  "extra_cases": [
+    {"id":"actual-step-delayed-support","kind":"static","models":["reference_barrel"],"layout":"bed","physical_step_before_application":true},
+    {"id":"actual-step-delayed-impact","kind":"dynamic","models":["kestrel"],"layout":"arrival","material":2,"physical_step_before_application":true}
+  ]
+}

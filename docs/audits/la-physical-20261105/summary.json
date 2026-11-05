@@ -1,0 +1,165 @@
+{
+  "source": "3e6153269954b2282e0c5fc5e96b10c6d807207e",
+  "publisher_sha256": "12db89af7139a41b5a105de3ac8157c6d8d939469a96cfd0f730a1f1ff3cddcd",
+  "publisher_local_delta": " M docs/audits/la-physical-20261105/response-comparison.inputs.json\n M docs/audits/la-physical-20261105/response-comparison.png\n?? docs/audits/la-physical-20261105/qualification-receipts.json\n?? docs/audits/la-physical-20261105/retained-attempts.json\n?? docs/audits/la-physical-20261105/source-and-patch.json\n",
+  "scope": "Source-qualified episode summaries, not originalSOL or universal gameplay acceptance",
+  "cohorts": [
+    {
+      "run": "authored-matrix-v2",
+      "source": "98443ca24583ea2c8c3b2b015889a682e5a8a3c6",
+      "tree": "b2ea2038e371f65b5dcf2be7c39fd530ec75f7cf",
+      "registration": "LA-PHYSICAL-007-BOUNDED-WORKLOAD",
+      "matrix": {
+        "cases": [
+          "barrel-rest",
+          "barrel-partial-valid",
+          "barrel-constrained-valid",
+          "barrel-wall-and-Sand",
+          "needle-rest",
+          "scooper-rest",
+          "Sand-impact",
+          "Dust-oblique-impact",
+          "scooper-stream",
+          "rotating-kestrel",
+          "powered-needle",
+          "shared-granular-bodies",
+          "force-ladder-weak",
+          "force-ladder-medium",
+          "force-ladder-strong",
+          "support-removal",
+          "live-velocity-reversal",
+          "age-one-velocity-reversal",
+          "collision-disabled-isolation",
+          "invalid-Sand-overlap",
+          "invalid-Wall-overlap",
+          "actual-step-delayed-support",
+          "actual-step-delayed-impact",
+          "supported-Sand-impact",
+          "supported-Dust-impact"
+        ],
+        "workers": [
+          1,
+          4
+        ],
+        "platforms": [
+          "windows",
+          "linux"
+        ],
+        "repeats": 1
+      },
+      "coverage": "complete-registered-matrix",
+      "episodes": 700,
+      "observed_steps": 161280,
+      "failed_episodes": 0,
+      "closed_tuple_passes": 644,
+      "source_ledger_passes": 700,
+      "missing_final_capture": 0,
+      "max_RID_readback_error": 1.946299364988421e-06,
+      "reduction_sha256": "c2da31124283e33d419c068b09d42ed7afb0b4d0975a269e905afd9bdd7a67c6"
+    },
+    {
+      "run": "workload-pilot",
+      "source": "98443ca24583ea2c8c3b2b015889a682e5a8a3c6",
+      "tree": "b2ea2038e371f65b5dcf2be7c39fd530ec75f7cf",
+      "registration": "LA-PHYSICAL-007-BOUNDED-WORKLOAD",
+      "matrix": {
+        "cases": [
+          "large-Sand-Dust-stream",
+          "bounded-quiet-contact",
+          "bounded-Sand-Dust-stream",
+          "bounded-dense-collision"
+        ],
+        "workers": [
+          1,
+          4
+        ],
+        "platforms": [
+          "windows",
+          "linux"
+        ],
+        "repeats": 1
+      },
+      "coverage": "complete-attempted-matrix-with-failures",
+      "episodes": 112,
+      "observed_steps": 17780,
+      "failed_episodes": 28,
+      "closed_tuple_passes": 56,
+      "source_ledger_passes": 84,
+      "missing_final_capture": 28,
+      "max_RID_readback_error": 6.536743769445089e-07,
+      "reduction_sha256": "bc7fc5d54313fc208c12ebc2b3f9c511c22e6dddef9a2684d590ef914ea9c978"
+    },
+    {
+      "run": "angular-near-arrival-v2",
+      "source": "1cde808e39a5853cdf42520a934d890e1eb1fd8e",
+      "tree": "9404dbb23626d9d43b1cdf82a28f9da1f1a67b28",
+      "registration": "LA-PHYSICAL-008-ANGULAR-AND-NEAR-ARRIVAL",
+      "matrix": {
+        "cases": [
+          "angular-Scooper-reversal",
+          "near-Sand-reversal"
+        ],
+        "workers": [
+          1,
+          4
+        ],
+        "platforms": [
+          "windows",
+          "linux"
+        ],
+        "repeats": 1
+      },
+      "coverage": "complete-registered-matrix",
+      "episodes": 56,
+      "observed_steps": 10080,
+      "failed_episodes": 0,
+      "closed_tuple_passes": 56,
+      "source_ledger_passes": 56,
+      "missing_final_capture": 0,
+      "max_RID_readback_error": 1.1920928955078125e-07,
+      "reduction_sha256": "c8c8beda2145935bf913ae622a200d81e3e79ab8a38ab4660eefa6dee4edb804"
+    },
+    {
+      "run": "shared-host-performance",
+      "source": "fd26309284bad1e37190e91d05715655204cc0a8",
+      "tree": "a4982f3971ae4f7708ccca8a04f9651132b33f13",
+      "registration": "LA-PHYSICAL-009-SHARED-HOST-TIMINGS",
+      "matrix": {
+        "cases": [
+          "bounded-quiet-contact",
+          "bounded-Sand-Dust-stream",
+          "bounded-dense-collision"
+        ],
+        "workers": [
+          1,
+          4
+        ],
+        "platforms": [
+          "windows",
+          "linux"
+        ],
+        "repeats": 3
+      },
+      "coverage": "complete-registered-matrix",
+      "episodes": 180,
+      "observed_steps": 32400,
+      "failed_episodes": 0,
+      "closed_tuple_passes": 120,
+      "source_ledger_passes": 180,
+      "missing_final_capture": 0,
+      "max_RID_readback_error": 6.536743769445089e-07,
+      "reduction_sha256": "c54d721462178fa931c69ae28b9b59432f0d541e68727b92c1edf21ccd9f1f12"
+    }
+  ],
+  "total_episodes": 1048,
+  "total_observed_steps": 221540,
+  "attempted_failed_episodes": 28,
+  "max_RID_readback_error": 1.946299364988421e-06,
+  "limitations": [
+    "Global native parcel momentum/kinetic energy unavailable",
+    "Whole-cell masks and sampled/live geometry differ",
+    "Raw local captures required to repeat full reduction",
+    "No actual human/device acceptance or originalSOL composition",
+    "Total heap allocations and per-worker utilization unavailable"
+  ]
+}

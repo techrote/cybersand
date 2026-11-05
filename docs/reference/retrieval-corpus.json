@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "reviewed": "2026-11-04",
+  "reviewed": "2026-11-05",
   "scope": "Explicit current-answer corpus; status and scope must accompany every chunk. Historical records are separately routed, never silently mixed into current answers.",
   "documents": [
     "MATERIAL_LAB.md",
@@ -136,6 +136,9 @@
   ],
   "excluded": [
     {"path":"audits/2026-11-04-workbench394-ready-validation.md","reason":"Dated owner acceptance, accepted-main pressure reconciliation and exact resulting-source qualification. Retrieve current controls through the player playground guide and transition rules through the material shadow guide."},
+
+    {"path":"audits/2026-11-05-la-selective-sol-experiment.md","reason":"Dated dependent LA-SELECTIVE experiment and retained failures. Player-control-playground owns Current mechanism and promotion scope; no original SOL authority, main default or combined-source acceptance."},
+    {"path":"audits/2026-11-05-la-physical-qualification.md","reason":"Dated #400 real-body continuation and source-qualified physical/stress evidence, rejected variants and narrow separating guard. Player-control-playground owns valid-entrapment interpretation; no universal passivity, original SOL authority or production promotion."},
     {"path":"audits/2026-11-04-workbench394-cleanup.md","reason":"Dated PR394 lifetime, tuning, runtime and corrected log evidence. Retrieve current controls through the player playground guide."},
     {"path":"audits/2026-11-04-workbench394-material-source-transition.md","reason":"Exact three-consumer admission evidence and source review. The material catalogue shadow guide owns the transition mechanism."},
     {"path":"audits/2026-11-04-workbench-boundary-and-pacing.md","reason":"Source-matched developer workbench edge conversions and timing evidence. Retrieve controls and ownership through the player playground and simulation threading guides."},

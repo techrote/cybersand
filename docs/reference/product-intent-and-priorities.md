@@ -4,7 +4,7 @@ status: Current
 document-kind: reference
 scope: Approved owner direction and deliberately preserved behavior; not current implementation or performance evidence
 canonical-for: [owner-intent, product-priorities, preserved-material-feel]
-last-reviewed: 2026-10-30
+last-reviewed: 2026-11-05
 related-documents: [status-and-roadmap.md, ../decisions/ADR-008-bounded-approximate-fidelity.md, ../operations/microscenarios-programme.md, ../operations/water-hybrid-pressure-extension-programme.md]
 ---
 
@@ -301,3 +301,9 @@ Owner feedback for issue #13: Mercury through Sand is especially satisfying and 
 ## Physical actor preferences — 2026-10-18
 
 The owner prefers the barrel’s kinetic feel, Vector/Jolt’s scripted energy, articulated machines, collider-matched polygon graphics and usable attachments tested in constrained maps. Preserve Gyrocrate and Bellows character. The [physical actor programme](../operations/physical-actor-programme.md) records the full dated preferences, implementation boundary and follow-up sequence.
+
+## Granular primary-response direction — 2026-11-05
+
+The owner intends LA-SELECTIVE / LA-SA selective arrivals as the primary granular/body gameplay response candidate and authorizes a bounded #394-dependent comparison. This preserves LA, events off, RFT and source-qualified historical SOL as distinct controls. It does not authorize main default changes, SOL recovery claims, combined-source admission or integration. The [workbench mechanism](../systems/player-control-playground.md#la-selective-mechanism-and-experimental-admission) and [experiment dossier](../audits/2026-11-05-la-selective-sol-experiment.md) retain those separate decisions.
+
+**Owner clarification, 2026-11-05:** valid static entrapment is desirable when forces and available material displacement do not permit motion. Escape from stationary burial is not an acceptance objective. Genuine arrivals should cause causal impacts; established contact should support and resist without manufacturing repeated impact energy. Invalid material/body overlap remains a separate correctness problem. Continue #400 with real authored bodies, independent material/response accounting and registered opt-in refinements; keep Draft and stop before integration. The [canonical physical scope](../systems/player-control-playground.md#valid-entrapment-and-experimental-physical-response) routes new evidence without rewriting the old surrogate cohorts.

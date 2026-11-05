@@ -4,7 +4,7 @@ status: Current
 document-kind: guide
 scope: Short onboarding sequence and checkpoint protocol; product intent, source identity and contracts have canonical homes
 canonical-for: [development-onboarding]
-last-reviewed: 2026-11-04
+last-reviewed: 2026-11-05
 related-documents: [source-checkpoint-and-recovery.md, ../reference/product-intent-and-priorities.md, ../reference/status-and-roadmap.md, microscenarios-programme.md, development-claims-remediation-programme.md, water-hybrid-pressure-extension-programme.md, github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
@@ -1718,3 +1718,9 @@ PR #169 integrates [Strata Theatre](../systems/depth-layers-and-parallax.md) wit
 ## WORKBENCH-001 shared desktop destination
 
 The revised #391 candidate starts at main 751edc0b, which includes #390. For fresh work on playable engine capabilities, use the [shared desktop workbench](../systems/player-control-playground.md#development-workbench-on-desktop) and the [dated intake and qualification record](../audits/2026-11-04-workbench-consolidation.md). Keep the separate #389 experience reference and #392 first attempt recoverable. The linked Draft branch and its protected-source disposition determine current integration status.
+
+## LA-SELECTIVE dependent experiment — 2026-11-05
+
+The [bounded LA/SOL experiment](../audits/2026-11-05-la-selective-sol-experiment.md) owns opt-in comparison fixtures on a separate branch from #394 `f44488e9`. Preserve its ordinary admission ancestry and all upstream branches. The owner intends LA-SELECTIVE as the primary granular gameplay candidate; general desktop promotion remains separate. Before using its results, distinguish event-only profile 001, full preparation profile 002 and neutral Rapier initialization profile 003. Retain the original Water-count oracle failure, unprimed first-action readback failures and asynchronous workbench regression failures. No original SOL ownership or MAT composition is admitted. Keep the dependent PR Draft and stop before integration.
+
+The [real-body continuation](../audits/2026-11-05-la-physical-qualification.md) reconciles newer #394 `77c60b8e` by ordinary merge `8f6412da`, retaining the protected material transition ancestry and rebuilding both native runtimes. #394 was subsequently merged externally as main `ba9cbc89`, whose tree is identical. Preserve old384episodes/9,216steps as their own83-input cohort. Profiles004–007 qualify real barrel/Needle/Kestrel/Scooper sessions, not native SOL aggregates. Valid constrained rest is a possible success; invalid overlap is separate. Retain strict/gated support-filter failures, pre-close payload-hash failures, aborted runs and capacity quarantine. Full campaigns require explicit case selection; ordinary discovery runs a separately registered short smoke. Only root writes this branch. Do not merge #400 or enable its experimental application variants globally.

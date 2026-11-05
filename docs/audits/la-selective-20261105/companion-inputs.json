@@ -1,0 +1,27 @@
+[
+  {
+    "source": "C:\\Users\\_\\.codex\\worktrees\\workbench-394-cleanup\\SOURCE-PROVENANCE.json",
+    "target": "C:\\Users\\_\\.codex\\worktrees\\la-selective-sol\\SOURCE-PROVENANCE.json",
+    "sha256": "49b86e67fa7b753f7e0904923a66192aed0348c280a46ef6750c0392e193f30d"
+  },
+  {
+    "source": "C:\\Users\\_\\.codex\\worktrees\\workbench-394-cleanup\\docs\\WEB_THREADING.md",
+    "target": "C:\\Users\\_\\.codex\\worktrees\\la-selective-sol\\docs\\WEB_THREADING.md",
+    "sha256": "85b13f5d943ad6017fa4fa264bf8f9a54c9d49f80e40697a770d0524a3b9cd34"
+  },
+  {
+    "source": "C:\\Users\\_\\.codex\\worktrees\\workbench-394-cleanup\\tools\\dev.py",
+    "target": "C:\\Users\\_\\.codex\\worktrees\\la-selective-sol\\tools\\dev.py",
+    "sha256": "e9aaee35d135012f24b030acccb25d76f0e38893c58ff019138880f73f50f8ea"
+  },
+  {
+    "source": "C:\\Users\\_\\.codex\\worktrees\\workbench-394-cleanup\\docs\\LOCAL_DEVELOPMENT.md",
+    "target": "C:\\Users\\_\\.codex\\worktrees\\la-selective-sol\\docs\\LOCAL_DEVELOPMENT.md",
+    "sha256": "fafc00052588507c63380fbe312b875345699a5a145a4135ea81de461d0ab95d"
+  },
+  {
+    "source": "C:\\Users\\_\\.codex\\worktrees\\workbench-394-cleanup\\validation\\browser-results.json",
+    "target": "C:\\Users\\_\\.codex\\worktrees\\la-selective-sol\\validation\\browser-results.json",
+    "sha256": "de154dd896b78384069be360c0f9424efa2ade182e6729eca6a242fcf9839839"
+  }
+]

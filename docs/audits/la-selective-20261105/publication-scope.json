@@ -1,0 +1,25 @@
+{
+  "date": "2026-11-05",
+  "authorization": "Owner requested publishing the saved experiment as a Draft PR for ChatGPT assessment.",
+  "publication_kind": "Draft dependent evidence review; no integration",
+  "owned_branch": "codex/experiment-la-selective-sol-feasibility-20261105",
+  "saved_experiment_head": "07e55019c5105aacb0ed9deff8375ae214b3d624",
+  "experiment_parent_PR394": "f44488e9b24c61db3924685ef3723296ab768533",
+  "primed_execution_source": "ec0ddb9235c42176f240d4289fa021f8647b36fc",
+  "target_PR": 394,
+  "target_branch": "codex/workbench-consolidation-retry-20261104",
+  "target_head_observed": "77c60b8e0f9b17192a4e04b20cd37ec55096c2c3",
+  "target_state_observed": "Ready; open; unmerged; independently managed by its owner task",
+  "incoming_changes_after_38b9464e": [
+    "simulation_worker.gd",
+    "workbench_physics_bridge.gd",
+    "workbench fleet and physics qualification controls",
+    "runtime provenance and documentation"
+  ],
+  "source_reconciliation_performed": false,
+  "current_target_or_synthetic_merge_runtime_qualified_by_this_experiment": false,
+  "production_default_change": false,
+  "original_SOL_clearance_proved": false,
+  "combined_SOL_material_ownership_admission": false,
+  "required_before_integration": "Separate admitted source reconciliation, fresh qualification and independent adversarial review; preserve original ancestry and failed evidence."
+}

@@ -1,0 +1,39 @@
+{
+  "type": "internal read-only adversarial review; separate later owner-admission review remains required",
+  "primed_source": "ec0ddb9235c42176f240d4289fa021f8647b36fc",
+  "verdict": "PASS within declared surrogate scope, CONDITIONAL for promotion; no original SOL acceptance",
+  "checks": {
+    "cohorts": 4,
+    "episodes": 128,
+    "steps": 3072,
+    "fresh_sessions_per_process": 32,
+    "matching_initial_nonreference_comparisons": 96,
+    "finite_float_values_checked": 418792,
+    "max_RID_velocity_omega_residual": 1.47453745439186e-07,
+    "actual_host_native_participants": [
+      1
+    ],
+    "conserved": [
+      "Sand count",
+      "Dust count",
+      "Wall count",
+      "Water quantity"
+    ]
+  },
+  "retained_gaps": [
+    "Original SOL authority absent",
+    "Unprimed001/002 lose first nonzero actions",
+    "Float32 area metric coarser than original SOL threshold",
+    "Windows initial asynchronous display/census failure remains unresolved",
+    "Older Linux artifact fails supported ABI floor",
+    "No representative full-host actual-four-worker scientific comparison",
+    "No complete tuple/combined-mechanical-energy proof"
+  ],
+  "custody_corrections": [
+    "Preserve eight host source/input/runtime identity receipts",
+    "Fail reduction on missing cohort",
+    "Support matching --run reduction input",
+    "Bound WSL process group inside Linux for future runs",
+    "Preserve source-native identity at native stage for future runs"
+  ]
+}

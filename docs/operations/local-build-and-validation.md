@@ -4,11 +4,21 @@ status: Current
 document-kind: guide
 scope: Pinned source build entry points, Windows workspace wrappers, platform boundaries and freshness limits
 canonical-for: [build-entry-points, dependency-pins, build-freshness]
-last-reviewed: 2026-10-31
+last-reviewed: 2026-11-05
 related-documents: [source-checkpoint-and-recovery.md, testing-validation-and-replay.md, web-threading.md, deepworks-exhibition.md, ../systems/depth-layers-and-parallax.md]
 ---
 
 # Local build and validation
+
+## Opt-in LA-SELECTIVE comparison
+
+The #394-dependent experiment has a native witness, actual Godot/Rapier matched sessions and independent historical geometry checks. From its owned Windows checkout run `python tools/experiments/la_selective_experiment.py identity`, then `native`, `comparison-primed` and `scoped` as separate invocations. Use `--run <new-directory-name>` for a rerun; the runner refuses to overwrite process logs. It authenticates retained native inputs, materialized native/Rapier bytes and actual engine identities, copies the project, and invokes actual Windows and WSL Linux hosts. The registered native build uses GCC optimized and strict ASan/UBSan; actual Windows MSVC is a separate receipt. Comparison processes have 300-second bounds, scoped hosts 180 seconds, and native compiles 900 seconds. `python tools/experiments/la_selective_geometry.py` reads unchanged historical Git records; `python tools/experiments/la_selective_reduce.py` retains complete-window source-bound reductions. See the [dossier](../audits/2026-11-05-la-selective-sol-experiment.md) for exact checkpoints, failed attempts and missing admission gates. These tools add no build-provider or production-default change.
+
+Those historical tools deliberately reject the reconciled84-input native source. For profiles004–007 use `python tools/experiments/la_physical_campaign.py --run <new-name> --cases barrel-rest,live-velocity-reversal --workers 1,4 --platforms windows,linux`. The source-pinned runner requires a fresh build receipt and both runtime outputs under ignored `build/la-physical/runtimes`; reconstruct them using the exact pinned SDK/compiler/environment recipe in the [new evidence packet](../audits/2026-11-05-la-physical-qualification.md). It authenticates native inventories, engines, Rapier and copied effective projects, including the explicitly different fresh Windows DLL. `--tests-only --existing-tests` runs the affected12workbench fixtures without physical episodes. Use `--sequential-platforms --repeats 3` and an otherwise idle host for dedicated workload timings; concurrent comparative campaigns are not isolated benchmarks. Each engine process is bounded at300seconds.
+
+For the separate009shared-host timing registration add `--shared-host-timings --sequential-platforms --repeats 3` with the three explicit bounded workload case names. It logs ambient Godot activity and excludes observer cost from case timing; it cannot certify idle-host scaling. `--tests-only --apparatus-oracles` runs the real Rapier force-lifetime oracle and the separately registered short default smoke. `python tools/experiments/la_physical_summarize.py <run-names>` publishes compact complete-matrix ledgers after reduction. Optional figures use `la_physical_plot.py <actual-host-folder> <output.png>` with matplotlib3.10.7; plot dependencies stay outside the source tree and have no runtime role.
+
+Reduce a complete run with `python tools/experiments/la_physical_reduce.py build/la-physical/<new-name>/windows build/la-physical/<new-name>/linux --matrix build/la-physical/<new-name>/result.json --output build/la-physical/<new-name>/reduced.json`. CYPS2 capture must close the file before SHA calculation; capture metadata and the embedded checksum are independently verified. Complete failed matrices remain labelled attempted with failures, never physical passes. A subset reduction is explicitly partial. Double clipping and convex-proxy depth are diagnostic geometry; they do not replace the original SOL oracle. Generic `test_la_physical_campaign.gd` invocation runs its separate144-step smoke, with unique evidence paths; explicit case selection runs the registered full windows.
 
 ## PLAY LIFE010 raw-evidence gate — 2026-10-31
 

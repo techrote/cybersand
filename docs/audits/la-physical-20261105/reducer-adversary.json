@@ -1,0 +1,60 @@
+{
+  "source": "2c8191da1f5764d3c6695b81b9ddcdf75392b4a0",
+  "results": [
+    {
+      "name": "capture-receipt-corruption",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "build/la-physical/reducer-adversary.py",
+        "adversary-logged-v2"
+      ],
+      "requested_command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "build/la-physical/reducer-adversary.py",
+        "adversary-logged-v2"
+      ],
+      "exit": 0,
+      "clean": true,
+      "timeout_seconds": 180,
+      "seconds": 0.20918570004869252,
+      "log": "build\\la-physical\\adversary-logged-v2\\capture-receipt-corruption.log",
+      "log_sha256": "3cfa7a54361d3d0f1959c9079dc96cbdd3bdce9f3b15e56cb476ffa45ce696bd",
+      "markers": [
+        "REDUCER_ADVERSARY checks=1 failures=0"
+      ]
+    },
+    {
+      "name": "reject-smoke-as-complete",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/experiments/la_physical_reduce.py",
+        "build/la-physical/force-and-smoke/windows/smoke-data",
+        "--matrix",
+        "build/la-physical/force-and-smoke/result.json",
+        "--output",
+        "build/la-physical/adversary-logged-v2/invalid.json"
+      ],
+      "requested_command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/experiments/la_physical_reduce.py",
+        "build/la-physical/force-and-smoke/windows/smoke-data",
+        "--matrix",
+        "build/la-physical/force-and-smoke/result.json",
+        "--output",
+        "build/la-physical/adversary-logged-v2/invalid.json"
+      ],
+      "exit": 1,
+      "clean": false,
+      "timeout_seconds": 180,
+      "seconds": 0.6674741000169888,
+      "log": "build\\la-physical\\adversary-logged-v2\\reject-smoke-as-complete.log",
+      "log_sha256": "558b1c75cf914a91377c2123f2149e5340ef69d5bcecb683fc27e71f17adad1d",
+      "markers": []
+    }
+  ],
+  "expected_exits": [
+    0,
+    1
+  ],
+  "status": "PASS for expected custody/completeness refusals; not physics acceptance"
+}

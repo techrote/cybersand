@@ -1,0 +1,222 @@
+{
+  "heads": {
+    "experiment_parent": {
+      "commit": "f44488e9b24c61db3924685ef3723296ab768533",
+      "tree": "ef05658fdefae69177495b4b37fb851631118ecd"
+    },
+    "fresh_PR394": {
+      "commit": "38b9464efcfad8b0368418b1c2c6b96e4a5528b0",
+      "tree": "dbf68b4d0c95418aa56d0467cbfa8ac567117765"
+    }
+  },
+  "fresh_PR394_state": "Ready; open; unmerged; changed by separate owner task",
+  "changed_files": [
+    {
+      "path": ".github/workflows/lcb201-p1-runtime-publication.yml",
+      "experiment_parent": null,
+      "fresh_PR394": "e3e84958153e29e92944eaffe60e4ae8af09d92e764c64cdd14e60462a4b053c"
+    },
+    {
+      "path": "docs/architecture/pressure-optimization.md",
+      "experiment_parent": "24fd673599f15c1b0f75829cf51c1e2470ab2372a6848678ebc403722b2c26f7",
+      "fresh_PR394": "297f5b9428e14e245d50753e76cddabd8149993707e7fe888a7b62d361328b9b"
+    },
+    {
+      "path": "docs/architecture/simulation-tick-and-threading.md",
+      "experiment_parent": "932e01e4eb4cacc1071925565d7784904a395e4117e0fded208579f8c30a3924",
+      "fresh_PR394": "23ae342c6d824e75b5cfe64fb7e94b294a84c41663b118b29dadf859867939cb"
+    },
+    {
+      "path": "docs/audits/2026-11-04-lcb201-p1-wake-summaries.md",
+      "experiment_parent": null,
+      "fresh_PR394": "97b4bd4e5b37cb646862ed1d55ee0ca8be254588606ccb1755eadc59de11e1be"
+    },
+    {
+      "path": "docs/audits/2026-11-04-lcb201-world-pressure-transition.md",
+      "experiment_parent": null,
+      "fresh_PR394": "2f828f3d976d133ccf960b3d720b3b6bcb716fb67606bc4fc5b6093a40a73e3f"
+    },
+    {
+      "path": "docs/audits/2026-11-04-workbench394-cleanup.md",
+      "experiment_parent": "e3b6241bac29a80525c33b582fb09899619e6ace1b6d8b5d5b62066ccb908e97",
+      "fresh_PR394": "d58351ae464d03efce7d64b1232fa9d882e8c23aaa403a0247abfb72441a5cc2"
+    },
+    {
+      "path": "docs/audits/2026-11-04-workbench394-material-source-transition.md",
+      "experiment_parent": "8ae7104f438333f005f3a634e8496ff41325eeeb5ccf9af08610d6f97858e5fe",
+      "fresh_PR394": "16f78a457b0c285af6e59fb95d4c59b149d823950cdff8698e91d80b80bd1c09"
+    },
+    {
+      "path": "docs/audits/2026-11-04-workbench394-ready-validation.md",
+      "experiment_parent": null,
+      "fresh_PR394": "15dd452badafda9996a8afe03fc1c60159582f93a516edbdc84995db043fd16c"
+    },
+    {
+      "path": "docs/audits/lcb201-idle-cost-2026-11-04/summary-p1.json",
+      "experiment_parent": null,
+      "fresh_PR394": "0cc3513e9d439122366ba48d1865f24b38a70def3d586abaa517c23561008e87"
+    },
+    {
+      "path": "docs/audits/workbench-391/ready-preflight-summary.json",
+      "experiment_parent": null,
+      "fresh_PR394": "a13a72de2bbb481a82a5b70e24eb70d64e3088e1cf199ed9327839860d6a2331"
+    },
+    {
+      "path": "docs/reference/configuration-reference.md",
+      "experiment_parent": "e57a9019e1494c48da898eaaf32dd9e016b066b248d6c040b254de07cbb33fee",
+      "fresh_PR394": "55b9dbf297f8913dd1c2005c76632f7a644cf753e629762cd863d62e5c0866db"
+    },
+    {
+      "path": "docs/reference/interfaces-and-message-contracts.md",
+      "experiment_parent": "f5a110e89417b120b4c594dc5a998f70398733dedcb0c80446b69a3d6c97171a",
+      "fresh_PR394": "9672c8ba6893566a2ba35d1a22774624c06d50eabb0073dafd74c151cb959329"
+    },
+    {
+      "path": "docs/reference/invariants.md",
+      "experiment_parent": "c135744916f021c23296df4d3f6cbcc1cc4283fff07c8050044092a77ad88081",
+      "fresh_PR394": "2d0be5f8556cd995462d7c744ea3daad2d10bf91eac6da6d6cfea6b9bb8a117b"
+    },
+    {
+      "path": "docs/reference/retrieval-corpus.json",
+      "experiment_parent": "b2ceddbab97fdda9f7e20ce9997f561dab6ea3843cdc234ae3cc4ff213729ab7",
+      "fresh_PR394": "b3cf3fc823261eac6153d7f8997e53f363d7dd6359c951c1accb0c5cfcafc1b5"
+    },
+    {
+      "path": "docs/reference/retrieval-index.md",
+      "experiment_parent": "2d49fb6e7ada9df41facc9346215a68b212dda7fb419d5ac1b4f5c533b901ba4",
+      "fresh_PR394": "fcfde55d80c0a81e3886e394d7dd12f3060388b28bc5c03892ccafbc52db7ef9"
+    },
+    {
+      "path": "docs/reference/status-and-roadmap.md",
+      "experiment_parent": "de846b3e80fc9072924b0308e8eb8949bfd29b29bd9a59af804e874d52c99033",
+      "fresh_PR394": "623cbf1f6cf99fbc5ac26827e152c394dcd3885c4642428177fa8f13191d4944"
+    },
+    {
+      "path": "docs/systems/player-control-playground.md",
+      "experiment_parent": "ec430afd0ab477aea769b805f0248db16ace1315060e232f47b4c74b87c09aa7",
+      "fresh_PR394": "313002d47bd1276085544dc40a9558e54d7daf03192d0b4c5318b53b1d37b0a0"
+    },
+    {
+      "path": "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+      "experiment_parent": "76a320861da36ba1a65d8c103e2d7b4ed3fec3fe3bdf4610f61317e66bcaa8fe",
+      "fresh_PR394": "9e988fbd019a89e4d69d37fbd37a595c3a66e41bfe5bd2b66952cfca9b3f4667"
+    },
+    {
+      "path": "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+      "experiment_parent": "bc2c74d53b0195b09e8d0e9066be153c266cad78a69b1b76ac8b89bfec299d4c",
+      "fresh_PR394": "faa0c46cb644d047899553a03a35b35866d90c830f4c596487688ce7def4b5b6"
+    },
+    {
+      "path": "godot/addons/cybersand_native/runtime-provenance.json",
+      "experiment_parent": "1cce9973a921a9d5cefc7c2f772d7f6ccd580c580df67ac03f3a45ed7965e67e",
+      "fresh_PR394": "43541c4d163f4f74b6398e3912a074b889600e6377428e8530f39a79ab0cdca6"
+    },
+    {
+      "path": "godot/addons/cybersand_native/runtime-provenance.linux.json",
+      "experiment_parent": "5e02c5c5deeba081c750330598bedec74d46acdf10d7c65ef27e97fea1a71b29",
+      "fresh_PR394": "c64bea79610d022e5c1399ac20d34f189976d5247f691658ddea32dd4f3dafeb"
+    },
+    {
+      "path": "godot/tests/test_lcb_pressure_optimization.gd",
+      "experiment_parent": "8703ba42436866e5f5fe24f84c929f79373e138ba4e6d6083c742a9a7ad430c3",
+      "fresh_PR394": "1c0751e31c6d500532c29f0c78f93eb3b1a1a1d6a11d53d64fabf1de39803ab5"
+    },
+    {
+      "path": "native/include/cybersand/pressure_optimization.hpp",
+      "experiment_parent": "89186e3b79b9ab0c87ae7e0b9c9c0210358774980e32b2d5e8c38c622eb62092",
+      "fresh_PR394": "4ecc1609b07fd4ecbd50c752e11d8722c3353e3e6bbc17097c7a59967d9b6d33"
+    },
+    {
+      "path": "native/src/world_pressure.inc",
+      "experiment_parent": "a1dd5c486dad16f114cce3b38d292407edb91e5bbaf03d0193dcc4ecd7338e62",
+      "fresh_PR394": "7b28bf216bf70af7059267cae31117f1f01e88d0e5f276f61d67280ab5c6d2e5"
+    },
+    {
+      "path": "native/src/world_pressure_cache.inc",
+      "experiment_parent": "e1c7d24a4aff4827ce1d55de3120523b63428c38b0ac350d6aa94132389113fc",
+      "fresh_PR394": "9a90d1cae841fbb151658c4ed130d3f7b7fdb2bc883d2d2bfec54715476511b7"
+    },
+    {
+      "path": "native/src/world_pressure_cache_state.inc",
+      "experiment_parent": "91da78af36e78e07f1cc3de2c9899b0ad98c171df9b418a6170f6372816279e0",
+      "fresh_PR394": "7574911cff039d2e8f471c0e8d4a29310a397d492254d679ecebe5fa0537169a"
+    },
+    {
+      "path": "native/src/world_pressure_column_failure.inc",
+      "experiment_parent": null,
+      "fresh_PR394": "103cd884f1fd1ed6ca279be47aa6b8ba9f848f1c1205c632fa176c02e182a268"
+    },
+    {
+      "path": "native/src/world_pressure_state.inc",
+      "experiment_parent": "5b76ffa88753b242d9caa47810234f916c8740433d3d2f132727ae5346f3238d",
+      "fresh_PR394": "4662e9dd157af0bbf1e9cd262985f56c042eb7ca4e09d4edee97f82e2ce24696"
+    },
+    {
+      "path": "native/tests/test_lcb_pressure.cpp",
+      "experiment_parent": "d7866960e2304872ca06049a7f562bd6ba1a2d6d3c109bc4bc5811b00c23e07f",
+      "fresh_PR394": "61b1914cfea18b4fbac44a8516a5dcfa6709bc486ab2c6138addfaee94b10694"
+    },
+    {
+      "path": "native/tests/test_pressure_column_failure.inc",
+      "experiment_parent": null,
+      "fresh_PR394": "d32071c94db2dce2bc785fe6da40c153657f84ba4b942102c60d53356660f943"
+    },
+    {
+      "path": "native/tests/test_pressure_optimization.inc",
+      "experiment_parent": "d8d505b25f831e4cb1b049df57e45b59d7510acf575adc74179601e3edc4724d",
+      "fresh_PR394": "46a679707c8e89563c07978158f79e814420190ba76d4e9ed13c7020bdcd52a9"
+    },
+    {
+      "path": "native/tests/test_pressure_wake_summaries.inc",
+      "experiment_parent": null,
+      "fresh_PR394": "ef6498b8db050c2838163ebfcc92f63824939f80fdd326464fcb38389134b69d"
+    },
+    {
+      "path": "native/tests/test_world.cpp",
+      "experiment_parent": "230fad9643e05926c3c0191446272e2f2d75e032e393b9318c6167f81fee27ab",
+      "fresh_PR394": "a9f71f02c5dc2c8bdb506f1b074a74efc178014c4362d0321aa6271cb4bb18d6"
+    },
+    {
+      "path": "tools/ci/lcb201_p1_publish_request.json",
+      "experiment_parent": null,
+      "fresh_PR394": "e2359a33acfbe1f0b5963eda8ec5684a41352ce3773b38b4a1cc2a6af098c605"
+    },
+    {
+      "path": "tools/ci/lcb201_p1_runtime_publication.py",
+      "experiment_parent": null,
+      "fresh_PR394": "026fbef345d3aa65f6e40458e868d66045f74224c14a14079bfb3b506081ac79"
+    },
+    {
+      "path": "tools/ci/test_lcb201_p1_runtime_publication.py",
+      "experiment_parent": null,
+      "fresh_PR394": "4d32529f91b34792a7b164736607359b44c4ef899b4e013a313cc68be715f768"
+    },
+    {
+      "path": "tools/ci/verify_play_life011.py",
+      "experiment_parent": "38da2a2dd85bfffa0eb26b31ab2265a12ffd2905cbf1b7ff9f5eb8a8ce262621",
+      "fresh_PR394": "6611a028181d25d794a1445dc0e82c33173c2352347b7c07cb3827fe8606ce21"
+    },
+    {
+      "path": "tools/lcb/pressure_optimization_cost.py",
+      "experiment_parent": "bbdb30a5f6755d7ae7d3637bd22dfd08247e4bc7ac591221171c91d25d14d209",
+      "fresh_PR394": "39dfdce3080335b0c895530a5ea21996d7166e9a2f0d4d528899802b97ef74b6"
+    },
+    {
+      "path": "tools/material_catalogue/compatibility.py",
+      "experiment_parent": "02c7d3b1243556a810a8c01ac4a6f013910bcae1876b8955528deb2ad866ce2f",
+      "fresh_PR394": "5c9d100c9fe2d45606171d1de48eb3f5f4f30e2a1062387d6d650230a359d0c9"
+    }
+  ],
+  "production_inputs": {
+    "experiment_parent": 83,
+    "fresh_PR394": 84
+  },
+  "scope": "Git LF blobs and LFS pointers only for incoming source; no incoming native runtime executed here",
+  "decision": "retain local experiment; no stale Draft publication or automatic source merge",
+  "other_upstream_heads_unchanged": {
+    "main": "ee92dc45b12455f01218394fd773da516caf356e",
+    "PR347": "1598115c9065239cc1eaec11e99077274b457be1",
+    "PR393": "e4c2649e82d943554f4dc6a0634336770cda08f6",
+    "PR386": "b661a6f354f8c51e79759d22ad4573a875964b43"
+  }
+}

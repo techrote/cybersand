@@ -20,7 +20,19 @@ TEST_HEADERS := $(wildcard native/tests/*.inc native/tests/*.hpp)
 BENCH_SOURCES := native/bench/benchmark.cpp
 PHYSICS_CHARACTERISATION_SOURCES := $(SIMULATION_SOURCES) native/src/render_snapshot.cpp native/bench/physics_characterisation.cpp
 
-.PHONY: all soliding-test soliding-sanitize soliding-benchmark-smoke soliding-stage3-cost-smoke soliding-stage3b-validation-apparatus-test soliding-stage3b-runtime-storage-test soliding-stage3b-spatial-index-test soliding-stage3b-sparse-mutation-witness-test test c-header-check benchmark shared debug sanitize thread-sanitize clean
+.PHONY: all soliding-test soliding-sanitize soliding-benchmark-smoke soliding-stage3-cost-smoke soliding-stage3b-validation-apparatus-test soliding-stage3b-runtime-storage-test soliding-stage3b-spatial-index-test soliding-stage3b-sparse-mutation-witness-test test c-header-check benchmark shared debug sanitize thread-sanitize clean la-arrival-direction-test la-arrival-direction-sanitize
+
+$(BUILD_DIR)/la_arrival_direction: $(SIMULATION_SOURCES) $(CORE_HEADERS) native/tests/test_la_arrival_direction.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) -O3 -DNDEBUG -pthread $(SIMULATION_SOURCES) native/tests/test_la_arrival_direction.cpp -o $@
+
+$(BUILD_DIR)/la_arrival_direction_sanitized: $(SIMULATION_SOURCES) $(CORE_HEADERS) native/tests/test_la_arrival_direction.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) -O1 -g1 -fno-omit-frame-pointer -fsanitize=address,undefined -pthread $(SIMULATION_SOURCES) native/tests/test_la_arrival_direction.cpp -o $@
+
+la-arrival-direction-test: $(BUILD_DIR)/la_arrival_direction
+	./$(BUILD_DIR)/la_arrival_direction
+
+la-arrival-direction-sanitize: $(BUILD_DIR)/la_arrival_direction_sanitized
+	ASAN_OPTIONS=detect_leaks=1:halt_on_error=1 UBSAN_OPTIONS=halt_on_error=1 ./$(BUILD_DIR)/la_arrival_direction_sanitized
 
 all: test benchmark shared
 
