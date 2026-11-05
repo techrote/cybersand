@@ -63,6 +63,9 @@ func compose() -> void:
 	check(host.physical_actor_session._definitions.size() == 6 and host.physical_actor_session.bodies().size() > 8,"articulation coexists beyond eight actual bodies")
 	check(ui.pilot_slot == 3 and ui.body_state(EQUIPPED).position.x > 1024,"selected nonfirst Acrobat is beyond historical effect bounds")
 	check(host._playable_course_gamepad_active(),"shared first-pad event bridge admits selected mechanical player")
+	var seed: Dictionary = host.tower_context.get("workbench_material_seed",{})
+	check(seed.get("players",[]).size() == 2,"two material players seeded through same prepared World")
+	for row: Dictionary in seed.get("players",[]): check(row.inserted == 256 and row.refused == 0,"actual native seed receipt256")
 	if not check(ui.open_flyer_options(),"mechanical options open from global-Fire recipe"): return
 	var edited: Dictionary = ui._options_panel.staged_profile()
 	check(not edited.fire_enabled and ui.Preferences.validate_profile(edited,Actors.capabilities("acrobat")).is_empty(),"hidden Fire cannot invalidate mechanical profile")
@@ -77,9 +80,8 @@ func compose() -> void:
 		for part: Dictionary in actor_frame.parts:
 			if part.body_id == eq.body_id: aliases = Array(part.get("proxy_ids",[]))
 	check(not aliases.is_empty() and aliases[0] != eq.body_id,"compound predecessor supplies explicit shifted mask alias")
-	var seed: Dictionary = host.tower_context.get("workbench_material_seed",{})
-	check(seed.get("players",[]).size() == 2,"two material players seeded through same prepared World")
-	for row: Dictionary in seed.get("players",[]): check(row.inserted == 256 and row.refused == 0,"actual native seed receipt256")
+	seed = host.tower_context.get("workbench_material_seed",{})
+	check(seed.get("players",[]).is_empty(),"mechanical binding save retains both native fields without reseeding")
 	ui._usable.select(1); ui._usable_power.set_value_no_signal(0.6)
 	if not check(ui.request_usable(),"paused live Sand Scatter selection admitted"): return
 	check(not ui._pending_usable.is_empty() and ui.actor(ui.applied,EQUIPPED).usable_index == -1,"paused submission is not an equipment acknowledgement")

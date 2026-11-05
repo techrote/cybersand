@@ -1,5 +1,5 @@
 {
-  "acceptance": "Articulated workbench capacity and rotated support observation build. Native wrench laws unchanged; pinned source/tools and Linux runtime floor verified. Scoped target OS qualification pending; keep Draft and unmerged.",
+  "acceptance": "Articulated workbench capacity and rotated support observation, with unchanged native wrench laws. Source-matched Windows/Linux local headless qualification is recorded in the dated audit and hashed receipts; owner composed gameplay, hardware gamepad, Web and hosted release gates remain unqualified. Draft and unmerged.",
   "artifact": "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
   "build_commit": "4ac84de57f10e8fc54b5216bdaf65643fe295154",
   "build_input_scope": "Native build scripts and dependency pins only; resource/host source and execution are qualified in separate scoped receipts.",
@@ -108,6 +108,6 @@
     "native/src/world_quantity.inc": "627936a33c9ed58b6841f04466bf83aefe83b451ceb0da22baa19269ed5ef074"
   },
   "source_tree": "9b773aea6fac85c7acb41efd206024032f57ad3b",
-  "status": "built-not-executed",
+  "status": "scoped-local-execution",
   "toolchain": "WSL Ubuntu 24.04 x86_64, GCC 13.3.0, GNU ld 2.42; godot-cpp 101ae38034304346a46ea9ea84ae156d3e860496; SCons 4.10.1"
 }
