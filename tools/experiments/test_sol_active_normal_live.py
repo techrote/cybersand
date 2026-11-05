@@ -8,6 +8,7 @@ import struct
 import unittest
 import sol_active_normal_live_reduce as r
 import sol_active_normal_live_matrix as matrix
+import sol_active_normal_live_authored_reduce as authored
 
 ROOT=Path(__file__).resolve().parents[2]
 DATA=ROOT/'docs/audits/sol-active-normal-live-20261105'
@@ -16,6 +17,45 @@ def read(path):return json.loads(path.read_text(encoding='utf-8'))
 def sha(path):return hashlib.sha256(path.read_bytes()).hexdigest()
 
 class LiveEvidence(unittest.TestCase):
+    def test_authored_and_workload_full_custody_and_scope(self):
+        for suite,episodes,steps,groups in [('authored',192,47520,96),('workload',72,12960,36)]:
+            custody=read(DATA/(suite+'-full-custody.json'))
+            for item in custody['artifacts']:
+                self.assertEqual(sha(DATA/item['public_file']),item['public_lf_sha256'])
+                self.assertNotIn(b'\r\n',(DATA/item['public_file']).read_bytes())
+            summary=read(DATA/(suite+'-full-summary.json'))
+            self.assertEqual((summary['episodes'],summary['steps']),(episodes,steps))
+            self.assertEqual(len(summary['common_initial_inputs']),groups)
+            self.assertTrue(all(g['matched'] for g in summary['common_initial_inputs']))
+            self.assertTrue(summary['all_material_source_ledgers_close'])
+            self.assertTrue(summary['all_closed_tuple_multisets_equal'])
+            self.assertLessEqual(summary['maximum_RID_error'],1e-5)
+            self.assertTrue(matrix.coverage(read(DATA/(suite+'-full-execution.json')))['complete_registered_execution'])
+            self.assertEqual(sum(sum(v['participant_tick_distribution'].values()) for v in summary['worker_participation']),steps)
+            if suite=='workload':
+                self.assertTrue(all(set(v['participant_tick_distribution'])=={str(v['requested_workers'])} for v in summary['worker_participation']))
+
+    def test_all_owner_application_and_ten_corruptions(self):
+        custody=read(DATA/'authored-application-excerpt-custody.json')
+        path=DATA/custody['public_file'];self.assertEqual(sha(path),custody['public_lf_sha256'])
+        source=read(path);coordinate=custody['coordinate']
+        result=authored.application_audit(source,coordinate)
+        self.assertEqual((result['owner_count'],len(result['records'])),(3,6))
+        def step(data):return data['steps'][0]
+        changes=[lambda d:step(d)['application']['bodies'][1].__setitem__('refusal','stale-peer'),
+            lambda d:step(d)['application']['bodies'].pop(),
+            lambda d:step(d)['native_response']['rows'][1].__setitem__('id',1),
+            lambda d:step(d)['native_response']['rows'][1].__setitem__('generation',-1),
+            lambda d:step(d)['native_response'].__setitem__('sample_tick',-1),
+            lambda d:step(d)['native_response'].__setitem__('native_workers_configured',4),
+            lambda d:step(d)['after_application'][0].__setitem__('kinetic',12345),
+            lambda d:step(d)['application']['bodies'][0]['impulse'].__setitem__(0,12345),
+            lambda d:d['steps'][1]['native_response']['rows'][0].__setitem__('sample',step(d)['native_response']['rows'][0]['sample']),
+            lambda d:d['lifecycle'][1].__setitem__('native_unchanged',False)]
+        for index,change in enumerate(changes):
+            data=copy.deepcopy(source);change(data)
+            with self.subTest(corruption=index),self.assertRaises(AssertionError):authored.application_audit(data,coordinate)
+
     def test_artifact_custody(self):
         manifest=read(DATA/'manifest.json')
         for name,digest in manifest['files'].items():

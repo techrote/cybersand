@@ -29,7 +29,7 @@ SHA`3dc4af0caa5375ff6c7a41ed1ba4f8428c559fad8f3c7b25c42d6ab65331015c`:
 **NO-GO** against the unchanged134217728byte ZIP cap. The519526400byte expanded
 TAR is an additional artifact, not the original ZIP gate. The14743247byte
 patch has SHA`30055732049987dc9c9887f238133690a3ef9e176bbc0e14b1b78ff443a2ec6f`.
-Logs/binaries/archives remain ignored. Six portable evidence tests pass,
+Logs/binaries/archives remain ignored. At that checkpoint six portable evidence tests pass,
 including independent public raw geometry/recorded-trajectory checks, per-host
 Original summary parity and seven deliberately corrupted scalar/policy records.
 Source/runtime provenance drift and the archive failure remain integration
@@ -282,18 +282,111 @@ application, including accepted zero-wrench owners; a global accepted flag alone
 cannot hide a refused peer. Material insertion/removal and powered actuator work
 remain explicit, with sampled ROI/convex-proxy geometry scope.
 
-## Refusals and custody qualifications
+## Completed authored and distributed qualification
 
 The registered authored192 and workload72 matrices execute at119ac3a5 on actual
-Windows/Linux hosts with configured workers1/4, three repeats and unchanged
-native runtimes. Independent authored reduction at that same source completes
-all264episodes,132paired pristine-input groups and60480steps with every owner
-application and material source ledger checked. This is coverage/accounting
-qualification, not original SOL authority or physical-clearance acceptance.
-The new post-result `sol_active_normal_live_authored_summary.py` synthesizes the
-retained independent results without changing any physics input or adding a
-success threshold. Its separately source-pinned execution/public datasets follow
-in the next checkpoint. Both independent raw manifests remain retained locally.
+Windows/Linux hosts, configured workers1/4 and three repeats. Independent analysis
+at the same source checks all264episodes,132paired pristine-input groups and
+60480steps. All owners pass actual application reconstruction; all material
+insertion/removal ledgers close. This is accounting qualification, not264physics
+acceptance passes. The runtime build source staysff0d7cf5. Post-result synthesis
+executes at29157359; additive LF curation executes atb94dff80. No simulation
+input, policy arithmetic, capacity or numerical gate changes between these runs.
+
+The [authored summary](sol-active-normal-live-20261105/authored-full-summary.json),
+[192 episode results](sol-active-normal-live-20261105/authored-full-episodes.json)
+and [custody](sol-active-normal-live-20261105/authored-full-custody.json) preserve
+the execution receipt and independent reduction separately. All96paired initial
+groups match. The47,520steps contain56,160body applications. All168closed tuple
+multisets match;24support-removal episodes separately remove128Wall and936Sand
+cells, leaving216Sand cells. Maximum actual RID reconstruction error is
+9.254113865181974e-7 against unchanged1e-5 tolerance.
+
+| Authored case | Original → active-normal observation | Interpretation |
+| --- | --- | --- |
+| Resting barrel | Terminal speed0.0076797092333436 unchanged; no arrivals | Resting control preserved |
+| Valid constrained barrel | Terminal speed1.55077409744263→0.00396963953971863; actual arrivals280→408 | Terminal static screen improves; maximum overlap hardly changes |
+| Resting scooper | Terminal speed0.0001407971→0.0001406912; no arrivals | Small difference, both pass screen |
+| Supported Sand / Dust | Eight actual arrivals each episode, both policies; response work+0.03199999857 /+0.02204999958 | Genuine material2/14 arrival/application controls preserved |
+| Shared barrel/Kestrel/scooper | Terminal speeds1.494745→3.423880,0.452049→0.678274,0.047503→0.081941 | Mixed-body motion regression despite smaller sampled overlap |
+| Powered needle | Terminal speed64.70938→64.69390; no arrivals | Actuation plus gravity/contact, not passive recovery |
+| Support removal | Terminal speed115.0355835 identical; no arrivals | Declared geometry change preserved |
+
+The registered terminal120-step static screen passes24/36Original and36/36
+candidate static episodes. It is not a clearance screen or evidence beyond
+that window. The constrained barrel retains bounded vertical oscillation and
+ends in a different correction phase. Its candidate final Sand overlap is
+larger:3.73413cell²/.466766cell versus3.54913/.443642, while maximum overlap is
+nearly unchanged. Do not interpret the terminal-speed improvement as clearance.
+
+The mixed-body regression blocks general active-normal promotion. Kestrel's
+terminal-window rotation span rises approximately.507555→1.170533radians; its
+horizontal span also rises. Representative final total body KE is1.15113→6.02775.
+Sampled maximum Sand area/depth improves.396555/.245776→.314063/.192145; that
+coexists with worse endpoint motion. The powered needle has zero selected
+arrivals and separately recorded controller work; it is not powered SOL escape.
+Wrapped-angle span is not an unwrapped rotation distance.
+
+Sand/Dust impact controls preserve12granular plus128Wall cells each. Their
+missing-event counts remain2874/3634, with zero misalignment, eight actual
+selected arrivals and zero native passive-energy change. Subsequent Rapier
+support/contact removes their positive event response work. They do not exercise
+simultaneous nonzero passive-bearing benefit. Small Wall overlaps are retained
+in sampled geometry; arrival-control PASS does not certify hard clearance.
+The constrained barrel's different arrival totals follow different trajectories;
+they are not a prescribed matched arrival schedule.
+
+Existing corrections remain materially active in authored cases. Representative
+constrained-barrel correction-potential sums are269.1434/268.2944. Zero chamber
+correction does not transfer here. Native post-event passive energy, actual
+application work, correction potential and gravity/contact work are distinct.
+Preapplication work is zero and native passive rejections are zero throughout,
+but some actual application body-steps add KE. Full grain/body energy conservation
+is unavailable. Scalar64 observed body KE and retained real_t-based legacy KE
+differ by up to.00023583372; both observations remain in the raw reports.
+Authored geometry is sampled post-step material ROI and maximum individual
+convex-proxy depth, without the chamber's five-boundary mask/union certification.
+
+The [workload summary](sol-active-normal-live-20261105/workload-full-summary.json),
+[72 episode results](sol-active-normal-live-20261105/workload-full-episodes.json)
+and [custody](sol-active-normal-live-20261105/workload-full-custody.json) contain
+12960steps and36matched initial groups. The16-patch2048² cases are quiet contact,
+Sand/Dust stream and dense collision. Every requested-four workload tick reports
+four actual participants:3240ticks per host; requested-one reports one. Authored
+supported impacts only reach two participants even when four are configured.
+Participation is distinct from utilization, speedup and guaranteed scheduling.
+
+Every workload episode reports53167104resident-cell bytes plus42467328arrival
+history bytes (42.467328decimal MB). Their known sum95634432bytes excludes other
+native allocations, Rapier, Godot and process overhead. This is not total memory.
+The stream workload has zero selected arrivals at its bodies despite declared
+material insertion; zero is observed, not an omitted test. Dense collision
+records72→82arrivals and sampled maximum Sand area3.504768→3.153210cell²/depth
+.510877→.501347cell. Material source ledgers close; no clearance claim follows.
+
+| Host / requested workers | Range of episode mean simulation µs | Range of episode mean getter µs |
+| --- | --- | --- |
+| Windows1 |1461.92778–3294.34444 |20.45556–56.48333 |
+| Windows4 |859.27778–1956.25 |21.10556–56.82778 |
+| Linux1 |1957.06111–3904.20556 |21.75–45.37222 |
+| Linux4 |1185.17222–2320.12222 |20.97222–44.90556 |
+
+These ranges include all three cases, policies and repeats. Full unrounded
+per-episode means, maxima, process duration and every control attempt/time remain
+in public results; preparation commands remain in the execution receipt. Getter
+includes native solve and diagnostic packet construction; simulation includes
+other work. Runs use a shared host and fixed Original-then-Active ordering, so
+they do not isolate causal policy overhead. This workbench workload is not the
+original inclusive24-group/3-repeat/2ms SOL CPU gate or universal60Hz evidence.
+No capacity failure occurs here. The historical64-patch28/28quarantine after95
+ticks remains unchanged; successful16-patch cases do not repair that limit.
+
+The [two-step three-owner excerpt](sol-active-normal-live-20261105/authored-application-excerpt.json)
+is copied exactly for portable adversarial application tests; its
+[custody](sol-active-normal-live-20261105/authored-application-excerpt-custody.json)
+retains the full raw-report hash. It is not a full-window physics artifact.
+
+## Refusals and custody qualifications
 
 All failed attempts remain retained. Build001 refuses before compilation:
 MSYS SDK path handling on Windows and CRLF wrapper shebang on Linux. Build002
@@ -327,12 +420,14 @@ source-archive cap failures are not cured by this experiment.
 | Decision | Current status |
 | --- | --- |
 | Intended primary LA-SELECTIVE granular gameplay response | CONDITIONAL; owner direction retained, no general-default promotion |
-| Active-normal live benefit to SOL-like collisions | CONDITIONAL; full240chamber evidence shows smaller driven overlap, residual clearance failure and tiny open-unforced overlap; authored/workload gates pending |
+| Active-normal live benefit to SOL-like collisions | CONDITIONAL; driven overlap and constrained-barrel terminal screen improve, while residual clearance failure and mixed-body motion regressions block promotion |
 | Original SOL physical clearance | NO-GO; authority/eligibility unavailable, historical failures unchanged |
 | Cross-source ownership/MAT-AUTH integration | NO-GO; no admitted SOL composition and canonical runtime drift remains |
 
-The smallest later promotion is to complete the registered live/native/platform
-and cost matrix, obtain separate independent adversarial review, then seek an
+The registered live/native/platform and cost matrices are complete within their
+declared scope. The smallest later promotion requires resolving the mixed-body
+regression in a newly preregistered experiment, separate independent adversarial
+review, then an
 owner decision for a source-pinned supported-desktop default and canonical
 runtime/provenance update. Preserve selectable LA/LA-EVENT-OFF/RFT and liquid
 policy. None of those later integration actions is authorized by these results.

@@ -1,0 +1,2145 @@
+{
+  "initial_sample": {
+    "bodies": [
+      {
+        "budget": 20.0,
+        "count": 1,
+        "external_drive": false,
+        "first_proxy": 1,
+        "generation": 1,
+        "gravity": 92.1199968457222,
+        "id": 1,
+        "instance_id": 1
+      },
+      {
+        "budget": 20.0,
+        "count": 1,
+        "external_drive": false,
+        "first_proxy": 2,
+        "generation": 1,
+        "gravity": 38.0000008642673,
+        "id": 2,
+        "instance_id": 2
+      },
+      {
+        "budget": 20.0,
+        "count": 5,
+        "external_drive": false,
+        "first_proxy": 3,
+        "generation": 1,
+        "gravity": 38.0000008642673,
+        "id": 3,
+        "instance_id": 3
+      }
+    ],
+    "epoch": 1,
+    "geometry": [
+      0.0,
+      0.0,
+      8.0,
+      14.0,
+      0.0,
+      0.0,
+      9.0,
+      6.0,
+      0.0,
+      1.71875,
+      33.0,
+      4.0,
+      -15.0,
+      -4.28125,
+      3.0,
+      8.0,
+      15.0,
+      -4.28125,
+      3.0,
+      8.0,
+      -12.5,
+      -1.78125,
+      2.0,
+      3.0,
+      12.5,
+      -1.78125,
+      2.0,
+      3.0
+    ],
+    "session": 1,
+    "states": [
+      1.0,
+      128.0,
+      121.0,
+      0.0,
+      8.0,
+      14.0,
+      0.0,
+      0.0,
+      0.0,
+      1.0,
+      1.0,
+      21.6666660308838,
+      128.0,
+      121.0,
+      0.779999971389771,
+      0.0166666666666667,
+      1.0,
+      2.0,
+      184.0,
+      125.0,
+      0.0,
+      9.0,
+      6.0,
+      0.0,
+      0.0,
+      0.0,
+      0.100000001490116,
+      1.0,
+      0.975000023841858,
+      184.0,
+      125.0,
+      0.800000011920929,
+      0.0166666666666667,
+      1.0,
+      3.0,
+      240.0,
+      126.0,
+      0.0,
+      33.0,
+      4.0,
+      0.0,
+      0.0,
+      0.0,
+      0.180000007152557,
+      1.0,
+      24.7901363372803,
+      240.0,
+      124.28125,
+      0.800000011920929,
+      0.0166666666666667,
+      1.0,
+      4.0,
+      225.0,
+      120.0,
+      0.0,
+      3.0,
+      8.0,
+      0.0,
+      0.0,
+      0.0,
+      0.180000007152557,
+      1.0,
+      24.7901363372803,
+      240.0,
+      124.28125,
+      0.800000011920929,
+      0.0166666666666667,
+      1.0,
+      5.0,
+      255.0,
+      120.0,
+      0.0,
+      3.0,
+      8.0,
+      0.0,
+      0.0,
+      0.0,
+      0.180000007152557,
+      1.0,
+      24.7901363372803,
+      240.0,
+      124.28125,
+      0.800000011920929,
+      0.0166666666666667,
+      1.0,
+      6.0,
+      227.5,
+      122.5,
+      0.0,
+      2.0,
+      3.0,
+      0.0,
+      0.0,
+      0.0,
+      0.180000007152557,
+      1.0,
+      24.7901363372803,
+      240.0,
+      124.28125,
+      0.800000011920929,
+      0.0166666666666667,
+      1.0,
+      7.0,
+      252.5,
+      122.5,
+      0.0,
+      2.0,
+      3.0,
+      0.0,
+      0.0,
+      0.0,
+      0.180000007152557,
+      1.0,
+      24.7901363372803,
+      240.0,
+      124.28125,
+      0.800000011920929,
+      0.0166666666666667,
+      1.0
+    ]
+  },
+  "steps": [
+    {
+      "after_application": [
+        {
+          "inertia": 21.6666660308838,
+          "kinetic": 1.98645956399046,
+          "kinetic_legacy_f32_length_squared": 1.98645955383897,
+          "mass": 1.0,
+          "omega": 0.00148537673521787,
+          "pose": [
+            1.0,
+            -5.28160313594376e-17,
+            5.28160313594376e-17,
+            1.0,
+            128.0,
+            120.860382080078
+          ],
+          "pose_f64le": "000000000000f03f0000004045728ebc0000004045728e3c000000000000f03f00000000000060400000008010375e40",
+          "potential": -11133.6580159896,
+          "velocity": [
+            1.99320602416992,
+            -0.00103396037593484
+          ],
+          "velocity_omega_f64le": "000000002ce4ff3f00000080bef050bf000000201f56583f"
+        },
+        {
+          "inertia": 0.975000023841858,
+          "kinetic": 19.993138359659,
+          "kinetic_legacy_f32_length_squared": 19.9931385337996,
+          "mass": 0.100000001490116,
+          "omega": 0.000482131988974288,
+          "pose": [
+            1.0,
+            -5.6196257162955e-19,
+            5.6196257162955e-19,
+            1.0,
+            184.0,
+            124.942665100098
+          ],
+          "pose_f64le": "000000000000f03f0000002096bb24bc0000002096bb243c000000000000f03f0000000000006740000000a0543c5f40",
+          "potential": -474.782145253563,
+          "velocity": [
+            19.9965686798096,
+            -4.49307262897491e-05
+          ],
+          "velocity_omega_f64le": "000000201fff334000000000808e07bf00000020d5983f3f"
+        },
+        {
+          "inertia": 24.7901363372803,
+          "kinetic": 11.1009845327201,
+          "kinetic_legacy_f32_length_squared": 11.1009851492788,
+          "mass": 0.180000007152557,
+          "omega": 0.00099166261497885,
+          "pose": [
+            1.0,
+            -0.000269604293862358,
+            0.000269604293862358,
+            1.0,
+            239.998962402344,
+            124.254676818848
+          ],
+          "pose_f64le": "000000000000f03f000000a035ab31bf000000a035ab313f000000000000f03f00000080f7ff6d40000000a04c105f40",
+          "potential": -849.902042543056,
+          "velocity": [
+            11.1060380935669,
+            -0.00707903318107128
+          ],
+          "velocity_omega_f64le": "000000a04a36264000000080e7fe7cbf000000a0553f503f"
+        }
+      ],
+      "after_step": [
+        {
+          "inertia": 21.6666660308838,
+          "kinetic": 3.13729616614589,
+          "kinetic_legacy_f32_length_squared": 3.13729617332322,
+          "mass": 1.0,
+          "omega": 0.00145269115455449,
+          "pose": [
+            1.0,
+            2.47562802542234e-05,
+            -2.47562802542234e-05,
+            1.0,
+            128.033203125,
+            120.876358032227
+          ],
+          "pose_f64le": "000000000000f03f000000a076f5f93e000000a076f5f9be000000000000f03f00000000100160400000004016385e40",
+          "potential": -11135.1297206511,
+          "velocity": [
+            1.98493528366089,
+            1.52793276309967
+          ],
+          "velocity_omega_f64le": "000000804bc2ff3f000000a06972f83f0000004007cd573f"
+        },
+        {
+          "inertia": 0.975000023841858,
+          "kinetic": 20.0131910755621,
+          "kinetic_legacy_f32_length_squared": 20.0131916340074,
+          "mass": 0.100000001490116,
+          "omega": 0.000480689923278987,
+          "pose": [
+            1.0,
+            8.03553393780021e-06,
+            -8.03553393780021e-06,
+            1.0,
+            184.333251953125,
+            124.949256896973
+          ],
+          "pose_f64le": "000000000000f03f000000600bdae03e000000600bdae0be000000000000f03f00000000aa0a6740000000a0c03c5f40",
+          "potential": -474.807194082631,
+          "velocity": [
+            19.9965686798096,
+            0.633288502693176
+          ],
+          "velocity_omega_f64le": "000000201fff334000000040e643e43f00000080a3803f3f"
+        },
+        {
+          "inertia": 24.7901363372803,
+          "kinetic": 11.1362774672253,
+          "kinetic_legacy_f32_length_squared": 11.136277970331,
+          "mass": 0.180000007152557,
+          "omega": 0.000988696585409343,
+          "pose": [
+            1.0,
+            -0.000253076577791944,
+            0.000253076577791944,
+            1.0,
+            240.18408203125,
+            124.261161804199
+          ],
+          "pose_f64le": "000000000000f03f000000a0eb9530bf000000a0eb95303f000000000000f03f00000000e4056e40000000e0b6105f40",
+          "potential": -849.946399845633,
+          "velocity": [
+            11.1060380935669,
+            0.626254439353943
+          ],
+          "velocity_omega_f64le": "000000a04a362640000000c0460ae43f000000e0e432503f"
+        }
+      ],
+      "application": {
+        "accepted": true,
+        "application_variant": "baseline",
+        "bodies": [
+          {
+            "age": 0,
+            "correction": [
+              0.0,
+              0.0
+            ],
+            "id": 1,
+            "impulse": [
+              -0.00679397629573941,
+              -0.00871022697538137
+            ],
+            "instance_id": 1,
+            "live_velocity_changed": false,
+            "omega_residual": 1.14528142828793e-10,
+            "passive_energy_accepted": -0.013569899468471,
+            "passive_energy_linear": -0.0136548146158835,
+            "passive_energy_quadratic": 8.49151474125731e-05,
+            "passive_energy_unscaled": -0.013569899468471,
+            "passive_impulse_before": [
+              -0.00679397629573941,
+              -0.00871022697538137
+            ],
+            "passive_revalidation_active": false,
+            "passive_scale": 1.0,
+            "passive_torque_before": 0.032183164133456,
+            "sample": 32,
+            "torque": 0.032183164133456,
+            "velocity_residual": 0.0
+          },
+          {
+            "age": 0,
+            "correction": [
+              0.0,
+              0.0
+            ],
+            "id": 2,
+            "impulse": [
+              -0.000343090592650697,
+              -0.000428863248089328
+            ],
+            "instance_id": 2,
+            "live_velocity_changed": false,
+            "omega_residual": 1.63173218426654e-11,
+            "passive_energy_accepted": -0.00686201032653106,
+            "passive_energy_linear": -0.00686363182070737,
+            "passive_energy_quadratic": 1.62149417631484e-06,
+            "passive_energy_unscaled": -0.00686201032653106,
+            "passive_impulse_before": [
+              -0.000343090592650697,
+              -0.000428863248089328
+            ],
+            "passive_revalidation_active": false,
+            "passive_scale": 1.0,
+            "passive_torque_before": 0.000470078716654243,
+            "sample": 32,
+            "torque": 0.000470078716654243,
+            "velocity_residual": 0.0
+          },
+          {
+            "age": 0,
+            "correction": [
+              0.0,
+              0.0
+            ],
+            "id": 3,
+            "impulse": [
+              -0.00173526629805565,
+              -0.00216788449324667
+            ],
+            "instance_id": 3,
+            "live_velocity_changed": false,
+            "omega_residual": 3.9266285318737e-11,
+            "passive_energy_accepted": -0.0192844015068934,
+            "passive_energy_linear": -0.0193064923534658,
+            "passive_energy_quadratic": 2.20908465724128e-05,
+            "passive_energy_unscaled": -0.0192844015068934,
+            "passive_impulse_before": [
+              -0.00173526629805565,
+              -0.00216788449324667
+            ],
+            "passive_revalidation_active": false,
+            "passive_scale": 1.0,
+            "passive_torque_before": -0.00577112899120403,
+            "sample": 32,
+            "torque": -0.00577112899120403,
+            "velocity_residual": 0.0
+          }
+        ],
+        "refusal": "",
+        "snapshot": 31
+      },
+      "application_us": 93,
+      "before": [
+        {
+          "inertia": 21.6666660308838,
+          "kinetic": 2.94625344528892e-05,
+          "kinetic_legacy_f32_length_squared": 2.94625351671129e-05,
+          "mass": 1.0,
+          "omega": -1.31976878491072e-16,
+          "pose": [
+            1.0,
+            -5.28160313594376e-17,
+            5.28160313594376e-17,
+            1.0,
+            128.0,
+            120.860382080078
+          ],
+          "pose_f64le": "000000000000f03f0000004045728ebc0000004045728e3c000000000000f03f00000000000060400000008010375e40",
+          "potential": -11133.6580159896,
+          "velocity": [
+            -9.73772263690475e-16,
+            0.00767626659944654
+          ],
+          "velocity_omega_f64le": "00000060bb8ad1bc0000002026717f3f000000601605a3bc"
+        },
+        {
+          "inertia": 0.975000023841858,
+          "kinetic": 9.00450217817415e-07,
+          "kinetic_legacy_f32_length_squared": 9.00450245128901e-07,
+          "mass": 0.100000001490116,
+          "omega": -8.8774677700416e-19,
+          "pose": [
+            1.0,
+            -5.6196257162955e-19,
+            5.6196257162955e-19,
+            1.0,
+            184.0,
+            124.942665100098
+          ],
+          "pose_f64le": "000000000000f03f0000002096bb24bc0000002096bb243c000000000000f03f0000000000006740000000a0543c5f40",
+          "potential": -474.782145253563,
+          "velocity": [
+            -7.53474353199245e-18,
+            0.00424370169639587
+          ],
+          "velocity_omega_f64le": "00000040ba5f61bc00000000d861713f00000000446030bc"
+        },
+        {
+          "inertia": 24.7901363372803,
+          "kinetic": 2.26801221075209e-05,
+          "kinetic_legacy_f32_length_squared": 2.26801222225977e-05,
+          "mass": 0.180000007152557,
+          "omega": 0.00122446205932647,
+          "pose": [
+            1.0,
+            -0.000269604293862358,
+            0.000269604293862358,
+            1.0,
+            239.998962402344,
+            124.254676818848
+          ],
+          "pose_f64le": "000000000000f03f000000a035ab31bf000000a035ab313f000000000000f03f00000080f7ff6d40000000a04c105f40",
+          "potential": -849.902042543056,
+          "velocity": [
+            0.00456764176487923,
+            0.00496476888656616
+          ],
+          "velocity_omega_f64le": "0000000085b5723f00000000f055743f00000020c40f543f"
+        }
+      ],
+      "controllers": [
+        {},
+        {
+          "applied_force": [
+            0.0,
+            0.0
+          ],
+          "applied_torque": 0.0,
+          "boost_multiplier": 1.0,
+          "controller": "gcr-review-fleet/v1",
+          "force_cap": 0.0,
+          "movement_mode": "cancelled",
+          "side_thrust": 0.0,
+          "thrust": 0.0
+        },
+        {
+          "applied_force": [
+            0.0,
+            0.0
+          ],
+          "applied_torque": 0.0,
+          "boost_multiplier": 1.0,
+          "controller": "gcr-review-fleet/v1",
+          "force_cap": 0.0,
+          "movement_mode": "cancelled",
+          "side_thrust": 0.0,
+          "thrust": 0.0
+        }
+      ],
+      "emission_requests": 0,
+      "external": [
+        {
+          "force": [
+            0.0,
+            0.0
+          ],
+          "impulse": [
+            2.0,
+            0.0
+          ],
+          "impulse_work": 2.0,
+          "torque_impulse": 0.0
+        },
+        {
+          "force": [
+            0.0,
+            0.0
+          ],
+          "impulse": [
+            2.0,
+            0.0
+          ],
+          "impulse_work": 20.0000002980232,
+          "torque_impulse": 0.0
+        },
+        {
+          "force": [
+            0.0,
+            0.0
+          ],
+          "impulse": [
+            2.0,
+            0.0
+          ],
+          "impulse_work": 11.1202469052589,
+          "torque_impulse": 0.0
+        }
+      ],
+      "geometry": [
+        {
+          "material_runs": [
+            [
+              0,
+              255
+            ],
+            [
+              2,
+              60
+            ]
+          ],
+          "native_hash": "25010c1290e9397d",
+          "origin": [
+            122,
+            111
+          ],
+          "pose": [
+            1.0,
+            2.47562802542234e-05,
+            -2.47562802542234e-05,
+            1.0,
+            128.033203125,
+            120.876358032227
+          ],
+          "size": [
+            15,
+            21
+          ]
+        },
+        {
+          "material_runs": [
+            [
+              0,
+              144
+            ],
+            [
+              2,
+              64
+            ]
+          ],
+          "native_hash": "25010c1290e9397d",
+          "origin": [
+            177,
+            119
+          ],
+          "pose": [
+            1.0,
+            8.03553393780021e-06,
+            -8.03553393780021e-06,
+            1.0,
+            184.333251953125,
+            124.949256896973
+          ],
+          "size": [
+            16,
+            13
+          ]
+        },
+        {
+          "material_runs": [
+            [
+              0,
+              608
+            ],
+            [
+              2,
+              20
+            ],
+            [
+              0,
+              19
+            ],
+            [
+              2,
+              22
+            ],
+            [
+              0,
+              17
+            ],
+            [
+              2,
+              25
+            ],
+            [
+              0,
+              14
+            ],
+            [
+              2,
+              27
+            ],
+            [
+              0,
+              8
+            ]
+          ],
+          "native_hash": "25010c1290e9397d",
+          "origin": [
+            221,
+            113
+          ],
+          "pose": [
+            1.0,
+            -0.000253076577791944,
+            0.000253076577791944,
+            1.0,
+            240.18408203125,
+            124.261161804199
+          ],
+          "size": [
+            40,
+            19
+          ]
+        }
+      ],
+      "inserted_materials": {},
+      "live_before_application": [
+        {
+          "inertia": 21.6666660308838,
+          "kinetic": 2.00002946253445,
+          "kinetic_legacy_f32_length_squared": 2.00002956390381,
+          "mass": 1.0,
+          "omega": -1.31976878491072e-16,
+          "pose": [
+            1.0,
+            -5.28160313594376e-17,
+            5.28160313594376e-17,
+            1.0,
+            128.0,
+            120.860382080078
+          ],
+          "pose_f64le": "000000000000f03f0000004045728ebc0000004045728e3c000000000000f03f00000000000060400000008010375e40",
+          "potential": -11133.6580159896,
+          "velocity": [
+            2.0,
+            0.00767626659944654
+          ],
+          "velocity_omega_f64le": "00000000000000400000002026717f3f000000601605a3bc"
+        },
+        {
+          "inertia": 0.975000023841858,
+          "kinetic": 20.0000011984734,
+          "kinetic_legacy_f32_length_squared": 20.0000018239022,
+          "mass": 0.100000001490116,
+          "omega": -8.8774677700416e-19,
+          "pose": [
+            1.0,
+            -5.6196257162955e-19,
+            5.6196257162955e-19,
+            1.0,
+            184.0,
+            124.942665100098
+          ],
+          "pose_f64le": "000000000000f03f0000002096bb24bc0000002096bb243c000000000000f03f0000000000006740000000a0543c5f40",
+          "potential": -474.782145253563,
+          "velocity": [
+            20.0,
+            0.00424370169639587
+          ],
+          "velocity_omega_f64le": "000000000000344000000000d861713f00000000446030bc"
+        },
+        {
+          "inertia": 24.7901363372803,
+          "kinetic": 11.120269585381,
+          "kinetic_legacy_f32_length_squared": 11.1202691174484,
+          "mass": 0.180000007152557,
+          "omega": 0.00122446205932647,
+          "pose": [
+            1.0,
+            -0.000269604293862358,
+            0.000269604293862358,
+            1.0,
+            239.998962402344,
+            124.254676818848
+          ],
+          "pose_f64le": "000000000000f03f000000a035ab31bf000000a035ab313f000000000000f03f00000080f7ff6d40000000a04c105f40",
+          "potential": -849.902042543056,
+          "velocity": [
+            11.1156787872314,
+            0.00496476888656616
+          ],
+          "velocity_omega_f64le": "000000403a3b264000000000f055743f00000020c40f543f"
+        }
+      ],
+      "native_response": {
+        "arrival_storage_bytes": 4718592,
+        "body_limit": 8,
+        "epoch": 1,
+        "extent": [
+          512,
+          512
+        ],
+        "getter_us": 43,
+        "native_mask_reserved": 262144,
+        "native_workers_configured": 1,
+        "native_workers_constructed": 1,
+        "normal_policy": "active-normal-001",
+        "normal_policy_locked": true,
+        "proxy_limit": 64,
+        "raster_indices_reserved": 262144,
+        "response": "LA-SELECTIVE",
+        "rows": [
+          {
+            "arrival_count": 0,
+            "arrival_misaligned": 0,
+            "arrival_missing": 0,
+            "bins": 2,
+            "body_capacity": 20.0,
+            "budget": 20.0,
+            "com": [
+              128.0,
+              120.860382080078
+            ],
+            "contacts": 16,
+            "correction": [
+              0.0,
+              0.0
+            ],
+            "displaced": 0,
+            "event_accepted": [
+              0.0,
+              0.0
+            ],
+            "event_cost": 0.0,
+            "event_torque": 0.0,
+            "external_drive": true,
+            "generation": 1,
+            "gravity": 92.1199968457222,
+            "id": 1,
+            "impulse": [
+              -0.00679397629573941,
+              -0.00871022697538137
+            ],
+            "inertia": 21.6666660308838,
+            "instance_id": 1,
+            "legacy_wrench_f64": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "mass": 1.0,
+            "nodes": 4,
+            "normal_accepted": 0.00871022651676886,
+            "normal_cap_hits": 0,
+            "normal_capacity": 16.0,
+            "normal_policy": "active-normal-001",
+            "normal_raw": 0.0417306936684747,
+            "passive_accepted_wrench_f64": [
+              -0.00679397643387813,
+              -0.00871022651676886,
+              0.032183164133456
+            ],
+            "passive_energy_after": 1.98645956279017,
+            "passive_energy_before": 2.00002946253445,
+            "passive_impulse": [
+              -0.00679397629573941,
+              -0.00871022697538137
+            ],
+            "passive_raw_wrench_f64": [
+              -0.00679397643387813,
+              -0.00871022651676886,
+              0.032183164133456
+            ],
+            "passive_scale": 1.0,
+            "passive_state_f64": [
+              2.0,
+              0.00767626659944654,
+              128.0,
+              120.860382080078,
+              -1.31976878491072e-16,
+              1.0,
+              21.6666660308838,
+              0.779999971389771
+            ],
+            "passive_torque": 0.032183164133456,
+            "passivity_rejected": false,
+            "proxy_count": 1,
+            "quadrature_clamps": 0,
+            "sample": 32,
+            "tangent_accepted": 0.00679397643387813,
+            "tangent_cap_hits": 16,
+            "tangent_raw": 9.75704921165963,
+            "torque": 0.032183164133456,
+            "total_wrench_f64": [
+              -0.00679397629573941,
+              -0.00871022697538137,
+              0.032183164133456
+            ],
+            "unresolved": 0,
+            "updates": 32
+          },
+          {
+            "arrival_count": 0,
+            "arrival_misaligned": 0,
+            "arrival_missing": 0,
+            "bins": 2,
+            "body_capacity": 20.0,
+            "budget": 20.0,
+            "com": [
+              184.0,
+              124.942665100098
+            ],
+            "contacts": 18,
+            "correction": [
+              0.0,
+              0.0
+            ],
+            "displaced": 0,
+            "event_accepted": [
+              0.0,
+              0.0
+            ],
+            "event_cost": 0.0,
+            "event_torque": 0.0,
+            "external_drive": true,
+            "generation": 1,
+            "gravity": 38.0000008642673,
+            "id": 2,
+            "impulse": [
+              -0.000343090592650697,
+              -0.000428863248089328
+            ],
+            "inertia": 0.975000023841858,
+            "instance_id": 2,
+            "legacy_wrench_f64": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "mass": 0.100000001490116,
+            "nodes": 4,
+            "normal_accepted": 0.000428863247979764,
+            "normal_cap_hits": 0,
+            "normal_capacity": 16.0,
+            "normal_policy": "active-normal-001",
+            "normal_raw": 0.0019957087774783,
+            "passive_accepted_wrench_f64": [
+              -0.00034309060349626,
+              -0.000428863247979764,
+              0.000470078716654243
+            ],
+            "passive_energy_after": 19.99313918793,
+            "passive_energy_before": 20.0000011984734,
+            "passive_impulse": [
+              -0.000343090592650697,
+              -0.000428863248089328
+            ],
+            "passive_raw_wrench_f64": [
+              -0.00034309060349626,
+              -0.000428863247979764,
+              0.000470078716654243
+            ],
+            "passive_scale": 1.0,
+            "passive_state_f64": [
+              20.0,
+              0.00424370169639587,
+              184.0,
+              124.942665100098,
+              -8.8774677700416e-19,
+              0.100000001490116,
+              0.975000023841858,
+              0.800000011920929
+            ],
+            "passive_torque": 0.000470078716654243,
+            "passivity_rejected": false,
+            "proxy_count": 1,
+            "quadrature_clamps": 0,
+            "sample": 32,
+            "tangent_accepted": 0.00034309060349626,
+            "tangent_cap_hits": 16,
+            "tangent_raw": 16.6372167388579,
+            "torque": 0.000470078716654243,
+            "total_wrench_f64": [
+              -0.000343090592650697,
+              -0.000428863248089328,
+              0.000470078716654243
+            ],
+            "unresolved": 0,
+            "updates": 32
+          },
+          {
+            "arrival_count": 0,
+            "arrival_misaligned": 0,
+            "arrival_missing": 0,
+            "bins": 2,
+            "body_capacity": 20.0,
+            "budget": 20.0,
+            "com": [
+              239.998962402344,
+              124.254676818848
+            ],
+            "contacts": 40,
+            "correction": [
+              0.0,
+              0.0
+            ],
+            "displaced": 0,
+            "event_accepted": [
+              0.0,
+              0.0
+            ],
+            "event_cost": 0.0,
+            "event_torque": 0.0,
+            "external_drive": true,
+            "generation": 1,
+            "gravity": 38.0000008642673,
+            "id": 3,
+            "impulse": [
+              -0.00173526629805565,
+              -0.00216788449324667
+            ],
+            "inertia": 24.7901363372803,
+            "instance_id": 3,
+            "legacy_wrench_f64": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "mass": 0.180000007152557,
+            "nodes": 4,
+            "normal_accepted": 0.00216835224446268,
+            "normal_cap_hits": 0,
+            "normal_capacity": 20.0,
+            "normal_policy": "active-normal-001",
+            "normal_raw": 0.00768123795882421,
+            "passive_accepted_wrench_f64": [
+              -0.0017352663554436,
+              -0.00216788448799587,
+              -0.00577112899120403
+            ],
+            "passive_energy_after": 11.1009851832367,
+            "passive_energy_before": 11.120269585381,
+            "passive_impulse": [
+              -0.00173526629805565,
+              -0.00216788449324667
+            ],
+            "passive_raw_wrench_f64": [
+              -0.0017352663554436,
+              -0.00216788448799587,
+              -0.00577112899120403
+            ],
+            "passive_scale": 1.0,
+            "passive_state_f64": [
+              11.1156787872314,
+              0.00496476888656616,
+              239.998962402344,
+              124.254676818848,
+              0.00122446205932647,
+              0.180000007152557,
+              24.7901363372803,
+              0.800000011920929
+            ],
+            "passive_torque": -0.00577112899120403,
+            "passivity_rejected": false,
+            "proxy_count": 5,
+            "quadrature_clamps": 0,
+            "sample": 32,
+            "tangent_accepted": 0.00173468182141892,
+            "tangent_cap_hits": 16,
+            "tangent_raw": 29.0667841308013,
+            "torque": -0.00577112899120403,
+            "total_wrench_f64": [
+              -0.0017352663554436,
+              -0.00216788448799587,
+              -0.00577112899120403
+            ],
+            "unresolved": 0,
+            "updates": 32
+          }
+        ],
+        "sample_tick": 30,
+        "session": 1,
+        "valid": true,
+        "world_mask_cell_limit": 262144
+      },
+      "native_tick_us": 428,
+      "observation_us": 11159,
+      "preapplication_step_us": 0,
+      "preparation_us": 99,
+      "rapier_us": 254,
+      "sampled": [
+        {
+          "inertia": 21.6666660308838,
+          "kinetic": 2.00002946253445,
+          "kinetic_legacy_f32_length_squared": 2.00002956390381,
+          "mass": 1.0,
+          "omega": -1.31976878491072e-16,
+          "pose": [
+            1.0,
+            -5.28160313594376e-17,
+            5.28160313594376e-17,
+            1.0,
+            128.0,
+            120.860382080078
+          ],
+          "pose_f64le": "000000000000f03f0000004045728ebc0000004045728e3c000000000000f03f00000000000060400000008010375e40",
+          "potential": -11133.6580159896,
+          "velocity": [
+            2.0,
+            0.00767626659944654
+          ],
+          "velocity_omega_f64le": "00000000000000400000002026717f3f000000601605a3bc"
+        },
+        {
+          "inertia": 0.975000023841858,
+          "kinetic": 20.0000011984734,
+          "kinetic_legacy_f32_length_squared": 20.0000018239022,
+          "mass": 0.100000001490116,
+          "omega": -8.8774677700416e-19,
+          "pose": [
+            1.0,
+            -5.6196257162955e-19,
+            5.6196257162955e-19,
+            1.0,
+            184.0,
+            124.942665100098
+          ],
+          "pose_f64le": "000000000000f03f0000002096bb24bc0000002096bb243c000000000000f03f0000000000006740000000a0543c5f40",
+          "potential": -474.782145253563,
+          "velocity": [
+            20.0,
+            0.00424370169639587
+          ],
+          "velocity_omega_f64le": "000000000000344000000000d861713f00000000446030bc"
+        },
+        {
+          "inertia": 24.7901363372803,
+          "kinetic": 11.120269585381,
+          "kinetic_legacy_f32_length_squared": 11.1202691174484,
+          "mass": 0.180000007152557,
+          "omega": 0.00122446205932647,
+          "pose": [
+            1.0,
+            -0.000269604293862358,
+            0.000269604293862358,
+            1.0,
+            239.998962402344,
+            124.254676818848
+          ],
+          "pose_f64le": "000000000000f03f000000a035ab31bf000000a035ab313f000000000000f03f00000080f7ff6d40000000a04c105f40",
+          "potential": -849.902042543056,
+          "velocity": [
+            11.1156787872314,
+            0.00496476888656616
+          ],
+          "velocity_omega_f64le": "000000403a3b264000000000f055743f00000020c40f543f"
+        }
+      ],
+      "simulation_us": 1416,
+      "statistics": {
+        "completed_tick": 31,
+        "limits": {
+          "active_chunks": 128,
+          "active_cores": 1024,
+          "deferred_events": 1024,
+          "maximum_chunks": 128,
+          "maximum_explosion_radius": 64
+        },
+        "ok": true,
+        "phase_jobs_last_tick": [
+          3,
+          2,
+          4,
+          4
+        ],
+        "scope": "completed native tick counts and current storage; worker_threads_observed is maximum distinct task-claiming participants in one dispatch, not utilization",
+        "unavailable": [
+          "total heap allocations",
+          "per-worker utilization",
+          "per-worker time share",
+          "pending queue occupancy/high-water",
+          "per-cell sleeping status"
+        ],
+        "values": {
+          "active_blocks_after": 29,
+          "active_chunks": 5,
+          "chunk_allocations": 0,
+          "deferred_events_processed": 0,
+          "moved_cells": 208,
+          "resident_cell_bytes": 5907456,
+          "resident_chunks": 36,
+          "scheduled_cores": 13,
+          "temperature_field_allocations": 0,
+          "visited_cells": 3456,
+          "worker_threads_observed": 1
+        }
+      },
+      "step": 30
+    },
+    {
+      "after_application": [
+        {
+          "inertia": 21.6666660308838,
+          "kinetic": 2.19301498036796,
+          "kinetic_legacy_f32_length_squared": 2.19301501612574,
+          "mass": 1.0,
+          "omega": 0.138720378279686,
+          "pose": [
+            1.0,
+            2.47562802542234e-05,
+            -2.47562802542234e-05,
+            1.0,
+            128.033203125,
+            120.860542297363
+          ],
+          "pose_f64le": "000000000000f03f000000a076f5f93e000000a076f5f9be000000000000f03f00000000100160400000002013375e40",
+          "potential": -11133.6727752054,
+          "velocity": [
+            1.28435015678406,
+            -1.52300214767456
+          ],
+          "velocity_omega_f64le": "000000c0b28cf43f00000080375ef8bf000000e096c1c13f"
+        },
+        {
+          "inertia": 0.975000023841858,
+          "kinetic": 19.0050776832546,
+          "kinetic_legacy_f32_length_squared": 19.0050780398176,
+          "mass": 0.100000001490116,
+          "omega": 0.0632407665252686,
+          "pose": [
+            1.0,
+            8.03553393780021e-06,
+            -8.03553393780021e-06,
+            1.0,
+            184.333251953125,
+            124.942733764648
+          ],
+          "pose_f64le": "000000000000f03f000000600bdae03e000000600bdae0be000000000000f03f00000000aa0a6740000000c0553c5f40",
+          "potential": -474.782406178866,
+          "velocity": [
+            19.4846897125244,
+            -0.639859914779663
+          ],
+          "velocity_omega_f64le": "000000a0147c334000000080bb79e4bf000000008c30b03f"
+        },
+        {
+          "inertia": 24.7901363372803,
+          "kinetic": 10.1703381241561,
+          "kinetic_legacy_f32_length_squared": 10.1703382676499,
+          "mass": 0.180000007152557,
+          "omega": 0.0106254955753684,
+          "pose": [
+            1.0,
+            -0.000253076577791944,
+            0.000253076577791944,
+            1.0,
+            240.18408203125,
+            124.256744384766
+          ],
+          "pose_f64le": "000000000000f03f000000a0eb9530bf000000a0eb95303f000000000000f03f00000000e4056e40000000806e105f40",
+          "potential": -849.916184694819,
+          "velocity": [
+            10.6116285324097,
+            -0.617691874504089
+          ],
+          "velocity_omega_f64le": "0000006027392540000000c021c4e3bf000000e0d1c2853f"
+        }
+      ],
+      "after_step": [
+        {
+          "inertia": 21.6666660308838,
+          "kinetic": 1.01741825827525,
+          "kinetic_legacy_f32_length_squared": 1.0174182639556,
+          "mass": 1.0,
+          "omega": 0.135667845606804,
+          "pose": [
+            0.99999725818634,
+            0.00233676028437912,
+            -0.00233676028437912,
+            0.99999725818634,
+            128.054626464844,
+            120.851150512695
+          ],
+          "pose_f64le": "00000040faffef3f000000a08a24633f000000a08a2463bf00000040faffef3f00000080bf0160400000004079365e40",
+          "potential": -11132.8076040314,
+          "velocity": [
+            1.2790207862854,
+            0.0122799016535282
+          ],
+          "velocity_omega_f64le": "00000080de76f43f000000803426893f00000060905dc13f"
+        },
+        {
+          "inertia": 0.975000023841858,
+          "kinetic": 18.9845971313545,
+          "kinetic_legacy_f32_length_squared": 18.9845967281571,
+          "mass": 0.100000001490116,
+          "omega": 0.0630516111850739,
+          "pose": [
+            0.999999463558197,
+            0.00106204813346267,
+            -0.00106204813346267,
+            0.999999463558197,
+            184.658020019531,
+            124.938659667969
+          ],
+          "pose_f64le": "000000e0feffef3f000000808d66513f000000808d6651bf000000e0feffef3f000000800e15674000000000133c5f40",
+          "potential": -474.7669246109,
+          "velocity": [
+            19.4846897125244,
+            -0.00652649998664856
+          ],
+          "velocity_omega_f64le": "000000a0147c33400000000088bb7abf000000802624b03f"
+        },
+        {
+          "inertia": 24.7901363372803,
+          "kinetic": 10.1360128904779,
+          "kinetic_legacy_f32_length_squared": 10.1360127381624,
+          "mass": 0.180000007152557,
+          "omega": 0.0105937141925097,
+          "pose": [
+            1.0,
+            -7.59849936002865e-05,
+            7.59849936002865e-05,
+            1.0,
+            240.360961914063,
+            124.253051757813
+          ],
+          "pose_f64le": "000000000000f03f0000004044eb13bf0000004044eb133f000000000000f03f000000008d0b6e400000000032105f40",
+          "potential": -849.890927124881,
+          "velocity": [
+            10.6116285324097,
+            0.0156415700912476
+          ],
+          "velocity_omega_f64le": "0000006027392540000000005804903f0000004028b2853f"
+        }
+      ],
+      "application": {
+        "accepted": true,
+        "application_variant": "baseline",
+        "bodies": [
+          {
+            "age": 0,
+            "correction": [
+              0.0,
+              -0.015816193073988
+            ],
+            "id": 1,
+            "impulse": [
+              -0.700585126876831,
+              -1.52300214767456
+            ],
+            "instance_id": 1,
+            "live_velocity_changed": false,
+            "omega_residual": 2.6517873730203e-09,
+            "passive_energy_accepted": 0.223008086469,
+            "passive_energy_linear": -1.3862956405665,
+            "passive_energy_quadratic": 1.6093037270355,
+            "passive_energy_unscaled": 0.223008086469,
+            "passive_impulse_before": [
+              -0.700585126876831,
+              -1.52300214767456
+            ],
+            "passive_revalidation_active": false,
+            "passive_scale": 1.0,
+            "passive_torque_before": 2.97413319122746,
+            "sample": 33,
+            "torque": 2.97413319122746,
+            "velocity_residual": 0.0
+          },
+          {
+            "age": 0,
+            "correction": [
+              0.0,
+              -0.00652587879449129
+            ],
+            "id": 2,
+            "impulse": [
+              -0.051187951117754,
+              -0.0639859884977341
+            ],
+            "instance_id": 2,
+            "live_velocity_changed": false,
+            "omega_residual": 1.0229475599921e-09,
+            "passive_energy_accepted": -0.988061722975736,
+            "passive_energy_linear": -1.02355396617071,
+            "passive_energy_quadratic": 0.0354922431949708,
+            "passive_energy_unscaled": -0.988061722975736,
+            "passive_impulse_before": [
+              -0.051187951117754,
+              -0.0639859884977341
+            ],
+            "passive_revalidation_active": false,
+            "passive_scale": 1.0,
+            "passive_torque_before": 0.0611910771806306,
+            "sample": 33,
+            "torque": 0.0611910771806306,
+            "velocity_residual": 5.96046447753906e-08
+          },
+          {
+            "age": 0,
+            "correction": [
+              0.0,
+              -0.00441384315490723
+            ],
+            "id": 3,
+            "impulse": [
+              -0.0889937877655029,
+              -0.111184537410736
+            ],
+            "instance_id": 3,
+            "live_velocity_changed": false,
+            "omega_residual": 1.1310829356459e-10,
+            "passive_energy_accepted": -0.930642499249245,
+            "passive_energy_linear": -0.988132199814614,
+            "passive_energy_quadratic": 0.0574897005653684,
+            "passive_energy_unscaled": -0.930642499249245,
+            "passive_impulse_before": [
+              -0.0889937877655029,
+              -0.111184537410736
+            ],
+            "passive_revalidation_active": false,
+            "passive_scale": 1.0,
+            "passive_torque_before": 0.23889755801208,
+            "sample": 33,
+            "torque": 0.23889755801208,
+            "velocity_residual": 0.0
+          }
+        ],
+        "refusal": "",
+        "snapshot": 32
+      },
+      "application_us": 109,
+      "before": [
+        {
+          "inertia": 21.6666660308838,
+          "kinetic": 3.13729616614589,
+          "kinetic_legacy_f32_length_squared": 3.13729617332322,
+          "mass": 1.0,
+          "omega": 0.00145269115455449,
+          "pose": [
+            1.0,
+            2.47562802542234e-05,
+            -2.47562802542234e-05,
+            1.0,
+            128.033203125,
+            120.876358032227
+          ],
+          "pose_f64le": "000000000000f03f000000a076f5f93e000000a076f5f9be000000000000f03f00000000100160400000004016385e40",
+          "potential": -11135.1297206511,
+          "velocity": [
+            1.98493528366089,
+            1.52793276309967
+          ],
+          "velocity_omega_f64le": "000000804bc2ff3f000000a06972f83f0000004007cd573f"
+        },
+        {
+          "inertia": 0.975000023841858,
+          "kinetic": 20.0131910755621,
+          "kinetic_legacy_f32_length_squared": 20.0131916340074,
+          "mass": 0.100000001490116,
+          "omega": 0.000480689923278987,
+          "pose": [
+            1.0,
+            8.03553393780021e-06,
+            -8.03553393780021e-06,
+            1.0,
+            184.333251953125,
+            124.949256896973
+          ],
+          "pose_f64le": "000000000000f03f000000600bdae03e000000600bdae0be000000000000f03f00000000aa0a6740000000a0c03c5f40",
+          "potential": -474.807194082631,
+          "velocity": [
+            19.9965686798096,
+            0.633288502693176
+          ],
+          "velocity_omega_f64le": "000000201fff334000000040e643e43f00000080a3803f3f"
+        },
+        {
+          "inertia": 24.7901363372803,
+          "kinetic": 11.1362774672253,
+          "kinetic_legacy_f32_length_squared": 11.136277970331,
+          "mass": 0.180000007152557,
+          "omega": 0.000988696585409343,
+          "pose": [
+            1.0,
+            -0.000253076577791944,
+            0.000253076577791944,
+            1.0,
+            240.18408203125,
+            124.261161804199
+          ],
+          "pose_f64le": "000000000000f03f000000a0eb9530bf000000a0eb95303f000000000000f03f00000000e4056e40000000e0b6105f40",
+          "potential": -849.946399845633,
+          "velocity": [
+            11.1060380935669,
+            0.626254439353943
+          ],
+          "velocity_omega_f64le": "000000a04a362640000000c0460ae43f000000e0e432503f"
+        }
+      ],
+      "controllers": [
+        {},
+        {
+          "applied_force": [
+            0.0,
+            0.0
+          ],
+          "applied_torque": 0.0,
+          "boost_multiplier": 1.0,
+          "controller": "gcr-review-fleet/v1",
+          "force_cap": 0.0,
+          "movement_mode": "cancelled",
+          "side_thrust": 0.0,
+          "thrust": 0.0
+        },
+        {
+          "applied_force": [
+            0.0,
+            0.0
+          ],
+          "applied_torque": 0.0,
+          "boost_multiplier": 1.0,
+          "controller": "gcr-review-fleet/v1",
+          "force_cap": 0.0,
+          "movement_mode": "cancelled",
+          "side_thrust": 0.0,
+          "thrust": 0.0
+        }
+      ],
+      "emission_requests": 0,
+      "external": [
+        {
+          "force": [
+            0.0,
+            0.0
+          ],
+          "impulse": [
+            0.0,
+            0.0
+          ],
+          "impulse_work": 0.0,
+          "torque_impulse": 0.0
+        },
+        {
+          "force": [
+            0.0,
+            0.0
+          ],
+          "impulse": [
+            0.0,
+            0.0
+          ],
+          "impulse_work": 0.0,
+          "torque_impulse": 0.0
+        },
+        {
+          "force": [
+            0.0,
+            0.0
+          ],
+          "impulse": [
+            0.0,
+            0.0
+          ],
+          "impulse_work": 0.0,
+          "torque_impulse": 0.0
+        }
+      ],
+      "geometry": [
+        {
+          "material_runs": [
+            [
+              0,
+              255
+            ],
+            [
+              2,
+              60
+            ]
+          ],
+          "native_hash": "639739720816ec70",
+          "origin": [
+            122,
+            111
+          ],
+          "pose": [
+            0.99999725818634,
+            0.00233676028437912,
+            -0.00233676028437912,
+            0.99999725818634,
+            128.054626464844,
+            120.851150512695
+          ],
+          "size": [
+            15,
+            21
+          ]
+        },
+        {
+          "material_runs": [
+            [
+              0,
+              144
+            ],
+            [
+              2,
+              64
+            ]
+          ],
+          "native_hash": "639739720816ec70",
+          "origin": [
+            178,
+            119
+          ],
+          "pose": [
+            0.999999463558197,
+            0.00106204813346267,
+            -0.00106204813346267,
+            0.999999463558197,
+            184.658020019531,
+            124.938659667969
+          ],
+          "size": [
+            16,
+            13
+          ]
+        },
+        {
+          "material_runs": [
+            [
+              0,
+              608
+            ],
+            [
+              2,
+              20
+            ],
+            [
+              0,
+              19
+            ],
+            [
+              2,
+              22
+            ],
+            [
+              0,
+              17
+            ],
+            [
+              2,
+              24
+            ],
+            [
+              0,
+              15
+            ],
+            [
+              2,
+              27
+            ],
+            [
+              0,
+              8
+            ]
+          ],
+          "native_hash": "639739720816ec70",
+          "origin": [
+            221,
+            113
+          ],
+          "pose": [
+            1.0,
+            -7.59849936002865e-05,
+            7.59849936002865e-05,
+            1.0,
+            240.360961914063,
+            124.253051757813
+          ],
+          "size": [
+            40,
+            19
+          ]
+        }
+      ],
+      "inserted_materials": {},
+      "live_before_application": [
+        {
+          "inertia": 21.6666660308838,
+          "kinetic": 3.13729616614589,
+          "kinetic_legacy_f32_length_squared": 3.13729617332322,
+          "mass": 1.0,
+          "omega": 0.00145269115455449,
+          "pose": [
+            1.0,
+            2.47562802542234e-05,
+            -2.47562802542234e-05,
+            1.0,
+            128.033203125,
+            120.876358032227
+          ],
+          "pose_f64le": "000000000000f03f000000a076f5f93e000000a076f5f9be000000000000f03f00000000100160400000004016385e40",
+          "potential": -11135.1297206511,
+          "velocity": [
+            1.98493528366089,
+            1.52793276309967
+          ],
+          "velocity_omega_f64le": "000000804bc2ff3f000000a06972f83f0000004007cd573f"
+        },
+        {
+          "inertia": 0.975000023841858,
+          "kinetic": 20.0131910755621,
+          "kinetic_legacy_f32_length_squared": 20.0131916340074,
+          "mass": 0.100000001490116,
+          "omega": 0.000480689923278987,
+          "pose": [
+            1.0,
+            8.03553393780021e-06,
+            -8.03553393780021e-06,
+            1.0,
+            184.333251953125,
+            124.949256896973
+          ],
+          "pose_f64le": "000000000000f03f000000600bdae03e000000600bdae0be000000000000f03f00000000aa0a6740000000a0c03c5f40",
+          "potential": -474.807194082631,
+          "velocity": [
+            19.9965686798096,
+            0.633288502693176
+          ],
+          "velocity_omega_f64le": "000000201fff334000000040e643e43f00000080a3803f3f"
+        },
+        {
+          "inertia": 24.7901363372803,
+          "kinetic": 11.1362774672253,
+          "kinetic_legacy_f32_length_squared": 11.136277970331,
+          "mass": 0.180000007152557,
+          "omega": 0.000988696585409343,
+          "pose": [
+            1.0,
+            -0.000253076577791944,
+            0.000253076577791944,
+            1.0,
+            240.18408203125,
+            124.261161804199
+          ],
+          "pose_f64le": "000000000000f03f000000a0eb9530bf000000a0eb95303f000000000000f03f00000000e4056e40000000e0b6105f40",
+          "potential": -849.946399845633,
+          "velocity": [
+            11.1060380935669,
+            0.626254439353943
+          ],
+          "velocity_omega_f64le": "000000a04a362640000000c0460ae43f000000e0e432503f"
+        }
+      ],
+      "native_response": {
+        "arrival_storage_bytes": 4718592,
+        "body_limit": 8,
+        "epoch": 1,
+        "extent": [
+          512,
+          512
+        ],
+        "getter_us": 46,
+        "native_mask_reserved": 262144,
+        "native_workers_configured": 1,
+        "native_workers_constructed": 1,
+        "normal_policy": "active-normal-001",
+        "normal_policy_locked": true,
+        "proxy_limit": 64,
+        "raster_indices_reserved": 262144,
+        "response": "LA-SELECTIVE",
+        "rows": [
+          {
+            "arrival_count": 0,
+            "arrival_misaligned": 0,
+            "arrival_missing": 0,
+            "bins": 2,
+            "body_capacity": 20.0,
+            "budget": 20.0,
+            "com": [
+              128.033203125,
+              120.876358032227
+            ],
+            "contacts": 16,
+            "correction": [
+              0.0,
+              -0.015816193073988
+            ],
+            "displaced": 0,
+            "event_accepted": [
+              0.0,
+              0.0
+            ],
+            "event_cost": 0.0,
+            "event_torque": 0.0,
+            "external_drive": false,
+            "generation": 1,
+            "gravity": 92.1199968457222,
+            "id": 1,
+            "impulse": [
+              -0.700585126876831,
+              -1.52300214767456
+            ],
+            "inertia": 21.6666660308838,
+            "instance_id": 1,
+            "legacy_wrench_f64": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "mass": 1.0,
+            "nodes": 4,
+            "normal_accepted": 1.52298480806898,
+            "normal_cap_hits": 0,
+            "normal_capacity": 16.0,
+            "normal_policy": "active-normal-001",
+            "normal_raw": 7.2440113105887,
+            "passive_accepted_wrench_f64": [
+              -0.700585140254955,
+              -1.52300215241775,
+              2.96305260115072
+            ],
+            "passive_energy_after": 1.03172508540241,
+            "passive_energy_before": 3.13729616614589,
+            "passive_impulse": [
+              -0.700585126876831,
+              -1.52300214767456
+            ],
+            "passive_raw_wrench_f64": [
+              -0.700585140254955,
+              -1.52300215241775,
+              2.96305260115072
+            ],
+            "passive_scale": 1.0,
+            "passive_state_f64": [
+              1.98493528366089,
+              1.52793276309967,
+              128.033203125,
+              120.876358032227,
+              0.00145269115455449,
+              1.0,
+              21.6666660308838,
+              0.779999971389771
+            ],
+            "passive_torque": 2.96305260115072,
+            "passivity_rejected": false,
+            "proxy_count": 1,
+            "quadrature_clamps": 0,
+            "sample": 33,
+            "tangent_accepted": 0.700622843908379,
+            "tangent_cap_hits": 3,
+            "tangent_raw": 3.60637042471424,
+            "torque": 2.96305260115072,
+            "total_wrench_f64": [
+              -0.700585126876831,
+              -1.52300214767456,
+              2.96305260115072
+            ],
+            "unresolved": 0,
+            "updates": 32
+          },
+          {
+            "arrival_count": 0,
+            "arrival_misaligned": 0,
+            "arrival_missing": 0,
+            "bins": 2,
+            "body_capacity": 20.0,
+            "budget": 20.0,
+            "com": [
+              184.333251953125,
+              124.949256896973
+            ],
+            "contacts": 18,
+            "correction": [
+              0.0,
+              -0.00652587879449129
+            ],
+            "displaced": 0,
+            "event_accepted": [
+              0.0,
+              0.0
+            ],
+            "event_cost": 0.0,
+            "event_torque": 0.0,
+            "external_drive": false,
+            "generation": 1,
+            "gravity": 38.0000008642673,
+            "id": 2,
+            "impulse": [
+              -0.051187951117754,
+              -0.0639859884977341
+            ],
+            "inertia": 0.975000023841858,
+            "instance_id": 2,
+            "legacy_wrench_f64": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "mass": 0.100000001490116,
+            "nodes": 4,
+            "normal_accepted": 0.0639855799533704,
+            "normal_cap_hits": 0,
+            "normal_capacity": 18.0,
+            "normal_policy": "active-normal-001",
+            "normal_raw": 0.281419929980347,
+            "passive_accepted_wrench_f64": [
+              -0.051187950565512,
+              -0.0639859912779501,
+              0.0608570308070211
+            ],
+            "passive_energy_after": 18.9845867043909,
+            "passive_energy_before": 20.0131910755621,
+            "passive_impulse": [
+              -0.051187951117754,
+              -0.0639859884977341
+            ],
+            "passive_raw_wrench_f64": [
+              -0.051187950565512,
+              -0.0639859912779501,
+              0.0608570308070211
+            ],
+            "passive_scale": 1.0,
+            "passive_state_f64": [
+              19.9965686798096,
+              0.633288502693176,
+              184.333251953125,
+              124.949256896973,
+              0.000480689923278987,
+              0.100000001490116,
+              0.975000023841858,
+              0.800000011920929
+            ],
+            "passive_torque": 0.0608570308070211,
+            "passivity_rejected": false,
+            "proxy_count": 1,
+            "quadrature_clamps": 0,
+            "sample": 33,
+            "tangent_accepted": 0.0511884647254639,
+            "tangent_cap_hits": 16,
+            "tangent_raw": 16.2478192434772,
+            "torque": 0.0608570308070211,
+            "total_wrench_f64": [
+              -0.051187951117754,
+              -0.0639859884977341,
+              0.0608570308070211
+            ],
+            "unresolved": 0,
+            "updates": 32
+          },
+          {
+            "arrival_count": 0,
+            "arrival_misaligned": 0,
+            "arrival_missing": 0,
+            "bins": 2,
+            "body_capacity": 20.0,
+            "budget": 20.0,
+            "com": [
+              240.18408203125,
+              124.261161804199
+            ],
+            "contacts": 40,
+            "correction": [
+              0.0,
+              -0.00441384315490723
+            ],
+            "displaced": 0,
+            "event_accepted": [
+              0.0,
+              0.0
+            ],
+            "event_cost": 0.0,
+            "event_torque": 0.0,
+            "external_drive": false,
+            "generation": 1,
+            "gravity": 38.0000008642673,
+            "id": 3,
+            "impulse": [
+              -0.0889937877655029,
+              -0.111184537410736
+            ],
+            "inertia": 24.7901363372803,
+            "instance_id": 3,
+            "legacy_wrench_f64": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "mass": 0.180000007152557,
+            "nodes": 4,
+            "normal_accepted": 0.111207058202403,
+            "normal_cap_hits": 0,
+            "normal_capacity": 20.0,
+            "normal_policy": "active-normal-001",
+            "normal_raw": 0.487935971378212,
+            "passive_accepted_wrench_f64": [
+              -0.0889937889400046,
+              -0.111184539519654,
+              0.238504753391292
+            ],
+            "passive_energy_after": 10.136000974722,
+            "passive_energy_before": 11.1362774672253,
+            "passive_impulse": [
+              -0.0889937877655029,
+              -0.111184537410736
+            ],
+            "passive_raw_wrench_f64": [
+              -0.0889937889400046,
+              -0.111184539519654,
+              0.238504753391292
+            ],
+            "passive_scale": 1.0,
+            "passive_state_f64": [
+              11.1060380935669,
+              0.626254439353943,
+              240.18408203125,
+              124.261161804199,
+              0.000988696585409343,
+              0.180000007152557,
+              24.7901363372803,
+              0.800000011920929
+            ],
+            "passive_torque": 0.238504753391292,
+            "passivity_rejected": false,
+            "proxy_count": 5,
+            "quadrature_clamps": 0,
+            "sample": 33,
+            "tangent_accepted": 0.0889656478876139,
+            "tangent_cap_hits": 16,
+            "tangent_raw": 28.0627524876872,
+            "torque": 0.238504753391292,
+            "total_wrench_f64": [
+              -0.0889937889400046,
+              -0.111184539519654,
+              0.238504753391292
+            ],
+            "unresolved": 0,
+            "updates": 32
+          }
+        ],
+        "sample_tick": 31,
+        "session": 1,
+        "valid": true,
+        "world_mask_cell_limit": 262144
+      },
+      "native_tick_us": 435,
+      "observation_us": 11066,
+      "preapplication_step_us": 0,
+      "preparation_us": 99,
+      "rapier_us": 274,
+      "sampled": [
+        {
+          "inertia": 21.6666660308838,
+          "kinetic": 3.13729616614589,
+          "kinetic_legacy_f32_length_squared": 3.13729617332322,
+          "mass": 1.0,
+          "omega": 0.00145269115455449,
+          "pose": [
+            1.0,
+            2.47562802542234e-05,
+            -2.47562802542234e-05,
+            1.0,
+            128.033203125,
+            120.876358032227
+          ],
+          "pose_f64le": "000000000000f03f000000a076f5f93e000000a076f5f9be000000000000f03f00000000100160400000004016385e40",
+          "potential": -11135.1297206511,
+          "velocity": [
+            1.98493528366089,
+            1.52793276309967
+          ],
+          "velocity_omega_f64le": "000000804bc2ff3f000000a06972f83f0000004007cd573f"
+        },
+        {
+          "inertia": 0.975000023841858,
+          "kinetic": 20.0131910755621,
+          "kinetic_legacy_f32_length_squared": 20.0131916340074,
+          "mass": 0.100000001490116,
+          "omega": 0.000480689923278987,
+          "pose": [
+            1.0,
+            8.03553393780021e-06,
+            -8.03553393780021e-06,
+            1.0,
+            184.333251953125,
+            124.949256896973
+          ],
+          "pose_f64le": "000000000000f03f000000600bdae03e000000600bdae0be000000000000f03f00000000aa0a6740000000a0c03c5f40",
+          "potential": -474.807194082631,
+          "velocity": [
+            19.9965686798096,
+            0.633288502693176
+          ],
+          "velocity_omega_f64le": "000000201fff334000000040e643e43f00000080a3803f3f"
+        },
+        {
+          "inertia": 24.7901363372803,
+          "kinetic": 11.1362774672253,
+          "kinetic_legacy_f32_length_squared": 11.136277970331,
+          "mass": 0.180000007152557,
+          "omega": 0.000988696585409343,
+          "pose": [
+            1.0,
+            -0.000253076577791944,
+            0.000253076577791944,
+            1.0,
+            240.18408203125,
+            124.261161804199
+          ],
+          "pose_f64le": "000000000000f03f000000a0eb9530bf000000a0eb95303f000000000000f03f00000000e4056e40000000e0b6105f40",
+          "potential": -849.946399845633,
+          "velocity": [
+            11.1060380935669,
+            0.626254439353943
+          ],
+          "velocity_omega_f64le": "000000a04a362640000000c0460ae43f000000e0e432503f"
+        }
+      ],
+      "simulation_us": 1469,
+      "statistics": {
+        "completed_tick": 32,
+        "limits": {
+          "active_chunks": 128,
+          "active_cores": 1024,
+          "deferred_events": 1024,
+          "maximum_chunks": 128,
+          "maximum_explosion_radius": 64
+        },
+        "ok": true,
+        "phase_jobs_last_tick": [
+          3,
+          2,
+          5,
+          4
+        ],
+        "scope": "completed native tick counts and current storage; worker_threads_observed is maximum distinct task-claiming participants in one dispatch, not utilization",
+        "unavailable": [
+          "total heap allocations",
+          "per-worker utilization",
+          "per-worker time share",
+          "pending queue occupancy/high-water",
+          "per-cell sleeping status"
+        ],
+        "values": {
+          "active_blocks_after": 30,
+          "active_chunks": 6,
+          "chunk_allocations": 0,
+          "deferred_events_processed": 0,
+          "moved_cells": 210,
+          "resident_cell_bytes": 5907456,
+          "resident_chunks": 36,
+          "scheduled_cores": 14,
+          "temperature_field_allocations": 0,
+          "visited_cells": 3456,
+          "worker_threads_observed": 1
+        }
+      },
+      "step": 31
+    }
+  ],
+  "lifecycle": [
+    {
+      "accepted": false,
+      "application_variant": "baseline",
+      "bodies": [
+        {
+          "id": 1,
+          "refusal": "age",
+          "sample": 181
+        },
+        {
+          "id": 2,
+          "refusal": "age",
+          "sample": 181
+        },
+        {
+          "id": 3,
+          "refusal": "age",
+          "sample": 181
+        }
+      ],
+      "refusal": "",
+      "snapshot": 999998
+    },
+    {
+      "duplicate_owner_refused": true,
+      "native_unchanged": true,
+      "reset_coupling_retired": true
+    },
+    {
+      "accepted": false,
+      "retired_session": 1
+    }
+  ]
+}

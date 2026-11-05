@@ -66,7 +66,13 @@ Native strict/optimized and both-host workbench regressions pass. The full240cha
 conserves tuples, but all120driven episodes still fail strict clearance.
 Open driven overlap improves less (38.0664→29.3796cell²); tiny open unforced
 overlap persists. Requested4workers still have one actual participant per
-dispatch here. Authored/material and distributed workload gates remain pending. Original SOL
+dispatch here. The192authored/72distributed episodes now pass independent
+application/material accounting. Active-normal improves the constrained-barrel
+terminal screen but increases mixed-body endpoint motion; general promotion is
+unsupported. Sand/Dust arrival controls remain intact. Distributed requested-four
+runs record four participants each tick;2048² resident cells and arrival history
+are separate53167104/42467328byte components, not total memory. Instrumented
+shared-host means do not qualify the original SOL CPU gate or universal60Hz. Original SOL
 eligibility, composition, physical clearance and general default promotion do
 not follow. No capacity/pass/gain changes or penetration correction are added.
 

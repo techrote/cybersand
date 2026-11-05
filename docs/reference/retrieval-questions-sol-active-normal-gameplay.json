@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "frozen_date": "2026-11-05",
+  "purpose": "Additive completed authored/workload evidence questions; older frozen sets unchanged",
+  "questions": [
+    {
+      "id": "SOL-ACTIVE-NORMAL-GAMEPLAY-001",
+      "query": "Do the completed192 authored episodes establish uniform active-normal stability improvement or permit general promotion?",
+      "canonical": ["architecture/rigid-body-and-cellular-coupling.md"],
+      "facts": [
+        "All-owner application and material accounting pass, which is distinct from physics acceptance.",
+        "Constrained-barrel terminal stability improves but mixed-body endpoint motion worsens; general promotion is unsupported.",
+        "Sand/Dust arrival controls remain intact and original SOL admission remains separate."
+      ],
+      "sources": ["../tools/experiments/sol_active_normal_live_authored_reduce.py", "../tools/experiments/sol_active_normal_live_authored_summary.py"]
+    },
+    {
+      "id": "SOL-ACTIVE-NORMAL-GAMEPLAY-002",
+      "query": "What do the72 distributed workload episodes prove about actual native workers,2048 squared memory and the original SOL CPU gate?",
+      "canonical": ["architecture/rigid-body-and-cellular-coupling.md"],
+      "facts": [
+        "Requested-four distributed runs record four actual participants each tick, unlike the small chamber.",
+        "53167104resident-cell bytes and42467328arrival-history bytes are separate known components, not total memory.",
+        "Shared-host instrumented workbench means do not qualify the original SOL CPU gate or universal60Hz."
+      ],
+      "sources": ["../native/tests/fixtures/sol_active_normal_live_001.json", "../tools/experiments/sol_active_normal_live_authored_summary.py"]
+    }
+  ]
+}

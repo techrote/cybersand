@@ -21,8 +21,11 @@ workbench regressions pass. Independent smoke reduction shows smaller driven
 overlap (area38.7651→14.2322cell²), with strict clearance still failing.
 Full240chamber evidence now covers bothhosts/workers1/4/three repeats, with
 all120driven episodes still failing strict clearance; actual participation in
-this small chamber remains one. Authored and distributed workload gates remain
-pending. Original SOL ownership/material admission stays separate.
+this small chamber remains one. All192authored and72distributed episodes now
+pass accounting, with a constrained-barrel terminal-screen benefit but a
+mixed-body motion regression blocking promotion. Distributed requested-four
+episodes have four actual participants; arrival-history memory and shared-host
+cost remain explicit. Original SOL ownership/material admission stays separate.
 
 The [separate response-cost lane](../audits/2026-11-05-sol-response-cost.md)
 qualifies48single-body sessions and24observer pairs:13–22µs response generation

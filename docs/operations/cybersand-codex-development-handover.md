@@ -10,6 +10,21 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## Live granular policy and SOL progression — 2026-11-05
+
+Root alone owns Draft429 `codex/sol-active-normal-live-20261105`, dependent on
+fixed421 `4cd9ca19`. The [live dossier](../audits/2026-11-05-sol-active-normal-live.md)
+records complete240chamber,192authored and72distributed episodes. The latter
+two execute/analyze at119ac3a5 with unchanged source-qualified fresh runtimes;
+synthesis29157359 and curationb94dff80 are separate analysis checkpoints.
+All120driven chamber episodes still fail strict clearance. Constrained-barrel
+terminal stability improves, but mixed-body motion regresses; no promotion is
+admitted. Distributed requested-four runs observe four participants; cell and
+arrival-history memory/cost are separately qualified. Preserve Original normal
+policy default, all source guards, historical capacity/physical failures and
+Draft status. Next SOL work is a fresh source/ownership conflict map and offline
+E1/E2 refusal/lease contract; it grants no live capture, hold or actuation.
+
 ## Exact SOL geometry chamber lane — 2026-11-05
 
 Root alone owns `codex/sol-normal-active-20261105`, based on fixed Draft416

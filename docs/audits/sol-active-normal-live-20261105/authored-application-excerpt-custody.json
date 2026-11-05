@@ -1,0 +1,21 @@
+{
+  "curation_source": "b94dff80402799a5a46710a3f819433127d95a48",
+  "source_path": "build\\sol-active-normal-live\\authored-full-001\\windows\\shared-granular-bodies-selective-active-w1-r0\\shared-granular-bodies-LA-SELECTIVE-w1-r0.json",
+  "source_sha256": "ce640d7bb67f7b15cb7c1fe18f9fd1a79a52c65e2b090e4bf5db3e910d8891cb",
+  "public_file": "authored-application-excerpt.json",
+  "public_lf_sha256": "dd1d7c46c8840ea31bf464c39c258e2272a29efaaae339667eed5e8c77ca152c",
+  "coordinate": {
+    "platform": "windows",
+    "case": "shared-granular-bodies",
+    "arm_id": "selective-active",
+    "normal_policy": "active-normal-001",
+    "mode": "LA-SELECTIVE",
+    "workers": 1,
+    "repeat": 0
+  },
+  "copied_steps": [
+    30,
+    31
+  ],
+  "scope": "Exact copied application-audit fields from two steps of a three-owner episode; not full-window physics evidence."
+}

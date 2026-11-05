@@ -12,7 +12,8 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 The [live normal-policy follow-up](audits/2026-11-05-sol-active-normal-live.md)
 qualifies an opt-in native policy with fresh runtimes and both-host lifecycle
-checks; full physics and cost admission remain separate.
+checks and complete240chamber/192authored/72workload matrices. Mixed-body motion
+regression, residual penetration and source admission still block promotion.
 
 The [active-normal copied-value candidate](audits/2026-11-05-sol-active-normal.md)
 tests bounded normal relaxation with unchanged capacity/friction controls.
