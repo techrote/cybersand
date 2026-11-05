@@ -8,6 +8,7 @@ const MAX_SESSION: int = 9007199254740991
 const ExperimentalPassive = preload("res://scripts/experimental_passive_response.gd")
 var _application_variant: String = "baseline"
 var _application_policy_locked: bool = false
+var _application_diagnostics: bool = false
 # Godot 4.7's static-variable script lifetime can retain unrelated preloaded
 # scripts or fault while retiring a stepped Rapier session. The main loop owns
 # this scalar counter instead. It survives bridge/scene replacement without
@@ -33,6 +34,7 @@ func configure_application_variant(value: String) -> bool:
 	if OS.get_thread_caller_id()!=OS.get_main_thread_id() or not _initialized or _application_policy_locked or _last_snapshot>=0: return false
 	if value not in ["baseline","passive-live-v1","passive-live-on-change-v2","passive-separating-v3"] or (value!="baseline" and _response!="LA-SELECTIVE"): return false
 	_application_variant=value
+	_application_diagnostics=true
 	return true
 
 
@@ -184,7 +186,7 @@ func apply_packet(snapshot_serial: int, packet: Dictionary) -> int:
 		var has_passive: bool = row.get("passive_impulse") is Vector2 and Vector2(row.passive_impulse).is_finite() \
 			and (row.get("passive_torque") is float or row.get("passive_torque") is int) and is_finite(float(row.passive_torque))
 		if _application_variant!="baseline" and not has_passive: return _refuse("passive_wrench")
-		if has_passive:
+		if has_passive and _application_diagnostics:
 			var live_mass: float = PhysicsServer2D.body_get_param(_body_rids[slot],PhysicsServer2D.BODY_PARAM_MASS)
 			var live_inertia: float = PhysicsServer2D.body_get_param(_body_rids[slot],PhysicsServer2D.BODY_PARAM_INERTIA)
 			var live_velocity: Vector2 = direct.linear_velocity

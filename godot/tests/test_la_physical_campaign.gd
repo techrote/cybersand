@@ -5,7 +5,7 @@ extends SceneTree
 const Session = preload("res://scripts/physical_actor_session.gd")
 const Fleet = preload("res://scripts/gcr_review_fleet.gd")
 const Contract = preload("res://scripts/microscenario_contract.gd")
-const REGISTRATION = "res://tests/fixtures/la_physical/registration-v3.json"
+const REGISTRATION = "res://tests/fixtures/la_physical/registration-v4.json"
 const DAM = "res://tests/fixtures/lcb/lcb.dam.water.freemass.reference.v1.json"
 var failures: Array[String] = []
 var checks: int = 0
@@ -155,7 +155,7 @@ func episode(spec: Dictionary, arm: String, workers: int, repeat: int, output: S
 	for index: int in bodies.size():
 		var x: int = 128+index*56
 		if layout!="arrival": rectangles.append_array(PackedInt32Array([x-24,128,48,24,2]))
-		rectangles.append_array(PackedInt32Array([x-32,152,64,2,1]))
+		rectangles.append_array(PackedInt32Array([x-32,128 if spec.get("hard_supported",false) else 152,64,2,1]))
 		if layout in ["banks","cage"]:
 			var hull_bounds: Rect2 = rectangle_bounds(geometries[index],float(spec.get("angle",0.0)))
 			var left: int = floori(x+hull_bounds.position.x)
@@ -168,8 +168,8 @@ func episode(spec: Dictionary, arm: String, workers: int, repeat: int, output: S
 		if layout=="invalid-wall": rectangles.append_array(PackedInt32Array([x-2,118,4,4,1]))
 	var sources: Array = []
 	if spec.has("distributed"):
-		for y: int in 8:
-			for x: int in 8:
+		for y: int in int(spec.get("grid",8)):
+			for x: int in int(spec.get("grid",8)):
 				var sx: int = 96+224*x
 				var sy: int = 256+224*y
 				var m: int = 2 if (x+y)%2==0 else 14
@@ -240,7 +240,12 @@ func episode(spec: Dictionary, arm: String, workers: int, repeat: int, output: S
 		var tick_us: int = Time.get_ticks_usec()-native_start
 		var response: Dictionary = world.workbench_coupling_results()
 		check(prepared and ticked and response.get("valid",false) and response.get("response")==baseline,"native source/mode/healthy tick")
-		if not response.get("valid",false): break
+		if not response.get("valid",false):
+			report.failure_attempt={"step":step,"elapsed_us":Time.get_ticks_usec()-start,"preparation_us":preparation_us,
+				"native_tick_us":tick_us,"prepared":prepared,"ticked":ticked,"failed":world.has_failed(),
+				"native_error":world.get_last_tick_error(),"failure_count":world.get_tick_failure_count(),"response":plain(response)}
+			check(session.apply_workbench_results(step+1,response)==0,"failed native publication cannot apply")
+			break
 		# An explicit reversible actuator impulse changes live velocity without
 		# changing sampled geometry. This is a separate registered causal case.
 		if step==int(spec.get("reverse_step",-1)):
@@ -306,7 +311,7 @@ func episode(spec: Dictionary, arm: String, workers: int, repeat: int, output: S
 		var c0: int = Time.get_ticks_usec()
 		check(session.apply_workbench_results(step+1,response)==0 and session.bridge.last_application.refusal=="duplicate_snapshot","duplicate consumption refusal")
 		total_control_us+=Time.get_ticks_usec()-c0; total_controls+=1
-	report.final_payload=save_payload(preparer,world,output+"/"+name+"-final.cyps")
+	report.final_payload=null if world.has_failed() else save_payload(preparer,world,output+"/"+name+"-final.cyps")
 	report.control_application_attempts=total_controls; report.control_application_us=total_control_us
 	check(report.steps.size()==steps,"complete registered observation window")
 	var held: Dictionary = world.workbench_coupling_results()

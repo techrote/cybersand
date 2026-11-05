@@ -83,10 +83,11 @@ def main():
     parser.add_argument("--workers",default="1,4")
     parser.add_argument("--repeats",type=int,default=1)
     parser.add_argument("--existing-tests",action="store_true")
+    parser.add_argument("--sequential-platforms",action="store_true")
     args=parser.parse_args()
     assert Path(args.run).name==args.run and args.run not in [".",".."]
     info=identity();output=ROOT/"build/la-physical"/args.run
-    registration=load_registration(ROOT/"godot/tests/fixtures/la_physical/registration-v3.json")
+    registration=load_registration(ROOT/"godot/tests/fixtures/la_physical/registration-v4.json")
     cases=[c for c in registration["cases"] if not args.cases or c["id"] in args.cases.split(",")]
     if args.cases:assert {c["id"] for c in cases}==set(args.cases.split(","))
 
@@ -134,7 +135,9 @@ def main():
                     # A failure remains retained; independent cases continue.
         return rows
     platforms=args.platforms.split(",")
-    with concurrent.futures.ThreadPoolExecutor(max_workers=len(platforms)) as pool:results=dict(zip(platforms,pool.map(host,platforms)))
+    if args.sequential_platforms:results={platform:host(platform) for platform in platforms}
+    else:
+        with concurrent.futures.ThreadPoolExecutor(max_workers=len(platforms)) as pool:results=dict(zip(platforms,pool.map(host,platforms)))
     assert info["copied_inputs"]==identity()["copied_inputs"],"source changed during campaign"
     process.write(output/"result.json",dict(identity=info,results=results,registration=registration,
         matrix=dict(cases=[c["id"] for c in cases],workers=list(map(int,args.workers.split(","))),platforms=platforms,repeats=args.repeats)))
