@@ -1,0 +1,578 @@
+name: INV154 Windows space_step thread CPU occupancy
+
+on:
+  push:
+    branches: [perf/inv154-space-step-threadtime-20261105]
+    paths:
+      - godot/tests/performance/test_main_space_step_threadtime_windows.gd
+      - .github/workflows/inv154-space-step-threadtime-windows.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: inv154-space-step-threadtime-${{ github.sha }}
+  cancel-in-progress: false
+
+jobs:
+  windows-threadtime:
+    runs-on: windows-2022
+    timeout-minutes: 35
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Preserve byte-exact checkout for native pins
+        run: |
+          git config --global core.autocrlf false
+          git config --global core.eol lf
+
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          lfs: false
+          persist-credentials: false
+
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+
+      - name: Materialize exact Windows native and Rapier runtime pins
+        timeout-minutes: 12
+        run: |
+          set -euo pipefail
+          git lfs install --local
+          git lfs pull --include="godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll,godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll" --exclude=""
+
+      - name: Run original and thread-time-qualified Windows trials
+        timeout-minutes: 27
+        env:
+          EXPECTED_HEAD: ${{ github.sha }}
+          GODOT_SILENCE_ROOT_WARNING: '1'
+          PYTHONUTF8: '1'
+        run: |
+          set -euo pipefail
+          mkdir -p build/inv154-threadtime
+          python tools/ci/check_ci_provider_policy.py > build/inv154-threadtime/provider-policy.log 2>&1
+          git diff --check
+          python - <<'PY'
+          import bisect
+          import csv
+          import hashlib
+          import json
+          import math
+          import os
+          import shutil
+          import statistics
+          import subprocess
+          import sys
+          import textwrap
+          import time
+          import urllib.request
+          import zipfile
+          from pathlib import Path
+
+          ROOT = Path.cwd()
+          OUT = (ROOT / "build/inv154-threadtime").resolve()
+          PARENT = "2e937ee37532b06d46fa49205ff2e51c1a9baa2e"
+          PARENT_FIXTURE = "godot/tests/performance/test_main_rapier_bridge_split_windows.gd"
+          PROFILE_FIXTURE = "godot/tests/performance/test_main_space_step_threadtime_windows.gd"
+          EXPECTED_MAIN_BLOB = "791ef440efd6edb206c6f1be33989cb62e9213b2"
+          EXPECTED_PARENT_FIXTURE_BLOB = "692472a85cf39ab6f646086859b69783d1c987bb"
+          EXPECTED_BRIDGE_BLOB = "87eea1f36b11375eb40be6a833433871000fbb2e"
+
+          def write(path, payload):
+              path = Path(path)
+              path.parent.mkdir(parents=True, exist_ok=True)
+              path.write_text(payload, encoding="utf-8")
+
+          def sh(*args):
+              return subprocess.check_output(args, text=True, timeout=60).strip()
+
+          head = sh("git", "rev-parse", "HEAD")
+          tree = sh("git", "rev-parse", "HEAD^{tree}")
+          if head != os.environ["EXPECTED_HEAD"]:
+              raise RuntimeError("checkout does not equal workflow triggering SHA")
+          if subprocess.run(["git","merge-base","--is-ancestor",PARENT,head]).returncode:
+              raise RuntimeError("diagnostic branch is not descended from exact #449 head")
+          main_blob = sh("git","hash-object","godot/scripts/main.gd")
+          parent_fixture_blob = sh("git","hash-object",PARENT_FIXTURE)
+          bridge_blob = sh("git","hash-object","godot/scripts/rapier_physics_bridge.gd")
+          if main_blob != EXPECTED_MAIN_BLOB:
+              raise RuntimeError("production Main differs from frozen #449 source")
+          if parent_fixture_blob != EXPECTED_PARENT_FIXTURE_BLOB:
+              raise RuntimeError("original #449 workload fixture changed")
+          if bridge_blob != EXPECTED_BRIDGE_BLOB:
+              raise RuntimeError("Rapier bridge source differs from #449 evidence source")
+          changed = sh("git","diff","--name-only",PARENT+"...HEAD").splitlines()
+          allowed = {
+              PROFILE_FIXTURE,
+              ".github/workflows/inv154-space-step-threadtime-windows.yml",
+          }
+          if set(changed) != allowed:
+              raise RuntimeError("diagnostic branch changed files outside scoped additions: "+repr(changed))
+          source_identity = {
+              "head": head, "tree": tree, "parent_449": PARENT,
+              "main_blob": main_blob, "parent_fixture_blob": parent_fixture_blob,
+              "rapier_bridge_blob": bridge_blob,
+              "profile_fixture_sha256": hashlib.sha256((ROOT/PROFILE_FIXTURE).read_bytes()).hexdigest(),
+              "changed_files_from_449": changed,
+              "production_files_modified": False,
+          }
+          write(OUT/"source-identity.json", json.dumps(source_identity, indent=2)+"\n")
+
+          # Preserve host identity before execution.
+          ps_items = {
+              "video-controllers.txt": "Get-CimInstance Win32_VideoController | Select-Object Name,DriverVersion,VideoProcessor,PNPDeviceID | Format-List | Out-String",
+              "processor.txt": "Get-CimInstance Win32_Processor | Select-Object Name,NumberOfCores,NumberOfLogicalProcessors | Format-List | Out-String",
+              "os.txt": "Get-CimInstance Win32_OperatingSystem | Select-Object Caption,Version,BuildNumber | Format-List | Out-String",
+          }
+          for name, cmd in ps_items.items():
+              p = subprocess.run(["powershell","-NoProfile","-NonInteractive","-Command",cmd],
+                                 capture_output=True,text=True,timeout=45)
+              write(OUT/name, p.stdout+"\n"+p.stderr)
+              if p.returncode:
+                  raise RuntimeError("host identity read failed: "+name)
+
+          # Reuse repository-pinned Godot 4.7 identity logic from #449.
+          sys.path.insert(0, str(ROOT/"tools/ci"))
+          import run_windows_godot_regressions as runtime
+          with runtime.metadata_budget():
+              runtime_identity = runtime.verify_retained_runtime(ROOT)
+          write(OUT/"runtime-identity.json", json.dumps(runtime_identity, indent=2)+"\n")
+          url = "https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip"
+          archive = OUT/"official-godot.zip"
+          urllib.request.urlretrieve(url, archive)
+          digest = hashlib.sha512(archive.read_bytes()).hexdigest()
+          if digest != runtime.GODOT_SHA512:
+              raise RuntimeError("official Godot archive identity changed")
+          engine_dir = OUT/"engine"
+          engine_dir.mkdir(exist_ok=True)
+          with zipfile.ZipFile(archive) as z:
+              if z.testzip() is not None:
+                  raise RuntimeError("Godot archive CRC failure")
+              for member in ("Godot_v4.7-stable_win64.exe","Godot_v4.7-stable_win64_console.exe"):
+                  z.extract(member, engine_dir)
+          archive.unlink()
+          engine = engine_dir/"Godot_v4.7-stable_win64_console.exe"
+          write(OUT/"engine-identity.json", json.dumps({"version":"4.7-stable","url":url,"archive_sha512":digest}, indent=2)+"\n")
+
+          import_env = {**os.environ, "GODOT_SILENCE_ROOT_WARNING":"1"}
+          imp = subprocess.run([str(engine),"--headless","--editor","--path","godot","--import"],
+                               stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+                               text=True, timeout=150, env=import_env)
+          write(OUT/"import.log", imp.stdout)
+          if imp.returncode:
+              raise RuntimeError("Godot import failed")
+
+          sampler_code = r'''
+          import ctypes, csv, json, sys, time
+          from ctypes import wintypes
+          from pathlib import Path
+
+          pid = int(sys.argv[1])
+          out_csv = Path(sys.argv[2])
+          out_meta = Path(sys.argv[3])
+          k32 = ctypes.WinDLL("kernel32", use_last_error=True)
+          user32 = ctypes.WinDLL("user32", use_last_error=True)
+          winmm = ctypes.WinDLL("winmm", use_last_error=True)
+
+          PROCESS_QUERY_LIMITED_INFORMATION = 0x1000
+          THREAD_QUERY_LIMITED_INFORMATION = 0x0800
+          TH32CS_SNAPTHREAD = 0x00000004
+          STILL_ACTIVE = 259
+          INVALID_HANDLE_VALUE = ctypes.c_void_p(-1).value
+
+          class THREADENTRY32(ctypes.Structure):
+              _fields_ = [
+                  ("dwSize", wintypes.DWORD), ("cntUsage", wintypes.DWORD),
+                  ("th32ThreadID", wintypes.DWORD), ("th32OwnerProcessID", wintypes.DWORD),
+                  ("tpBasePri", wintypes.LONG), ("tpDeltaPri", wintypes.LONG),
+                  ("dwFlags", wintypes.DWORD),
+              ]
+
+          def ft_value(ft):
+              return (int(ft.dwHighDateTime) << 32) | int(ft.dwLowDateTime)
+
+          def thread_times(handle):
+              c=e=k=u=wintypes.FILETIME()
+              c=wintypes.FILETIME(); e=wintypes.FILETIME(); k=wintypes.FILETIME(); u=wintypes.FILETIME()
+              if not k32.GetThreadTimes(handle, ctypes.byref(c), ctypes.byref(e), ctypes.byref(k), ctypes.byref(u)):
+                  raise OSError(ctypes.get_last_error(), "GetThreadTimes")
+              return ft_value(c), ft_value(k), ft_value(u)
+
+          def process_times(handle):
+              c=wintypes.FILETIME(); e=wintypes.FILETIME(); k=wintypes.FILETIME(); u=wintypes.FILETIME()
+              if not k32.GetProcessTimes(handle, ctypes.byref(c), ctypes.byref(e), ctypes.byref(k), ctypes.byref(u)):
+                  raise OSError(ctypes.get_last_error(), "GetProcessTimes")
+              return ft_value(c), ft_value(k), ft_value(u)
+
+          def list_threads():
+              snap = k32.CreateToolhelp32Snapshot(TH32CS_SNAPTHREAD, 0)
+              if snap == INVALID_HANDLE_VALUE:
+                  raise OSError(ctypes.get_last_error(), "CreateToolhelp32Snapshot")
+              ent = THREADENTRY32(); ent.dwSize = ctypes.sizeof(ent)
+              rows=[]
+              ok=k32.Thread32First(snap, ctypes.byref(ent))
+              while ok:
+                  if ent.th32OwnerProcessID == pid:
+                      h=k32.OpenThread(THREAD_QUERY_LIMITED_INFORMATION, False, ent.th32ThreadID)
+                      if h:
+                          try:
+                              created,kern,user=thread_times(h)
+                              rows.append({"tid":int(ent.th32ThreadID),"created_100ns":created,
+                                           "kernel_100ns":kern,"user_100ns":user})
+                          finally:
+                              k32.CloseHandle(h)
+                  ok=k32.Thread32Next(snap, ctypes.byref(ent))
+              k32.CloseHandle(snap)
+              return rows
+
+          proc = k32.OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION, False, pid)
+          if not proc:
+              raise OSError(ctypes.get_last_error(), "OpenProcess")
+
+          found = {"tid": 0}
+          CALLBACK = ctypes.WINFUNCTYPE(wintypes.BOOL, wintypes.HWND, wintypes.LPARAM)
+          @CALLBACK
+          def enum_cb(hwnd, lparam):
+              p=wintypes.DWORD()
+              tid=user32.GetWindowThreadProcessId(hwnd, ctypes.byref(p))
+              if p.value == pid and user32.IsWindowVisible(hwnd):
+                  found["tid"] = int(tid)
+                  return False
+              return True
+
+          deadline=time.monotonic()+45
+          while not found["tid"] and time.monotonic()<deadline:
+              user32.EnumWindows(enum_cb, 0)
+              if not found["tid"]:
+                  time.sleep(0.01)
+
+          threads=list_threads()
+          earliest=min(threads, key=lambda r:r["created_100ns"])["tid"] if threads else 0
+          selected=found["tid"] or earliest
+          if not selected:
+              raise RuntimeError("could not identify graphical/main Windows thread")
+          th=k32.OpenThread(THREAD_QUERY_LIMITED_INFORMATION, False, selected)
+          if not th:
+              raise OSError(ctypes.get_last_error(), "OpenThread(main)")
+          meta={"schema":"inv154-thread-sampler-v1","pid":pid,"window_thread_id":found["tid"],
+                "earliest_thread_id":earliest,"selected_thread_id":selected,
+                "window_matches_earliest":bool(found["tid"] and found["tid"]==earliest),
+                "initial_threads":threads}
+          out_meta.write_text(json.dumps(meta,indent=2)+"\n",encoding="utf-8")
+
+          winmm.timeBeginPeriod(1)
+          try:
+              with out_csv.open("w",newline="",encoding="utf-8") as f:
+                  w=csv.writer(f)
+                  w.writerow(["seq","perf_ns","unix_ns","thread_kernel_100ns","thread_user_100ns",
+                              "process_kernel_100ns","process_user_100ns"])
+                  seq=0
+                  while True:
+                      code=wintypes.DWORD()
+                      if not k32.GetExitCodeProcess(proc, ctypes.byref(code)) or code.value != STILL_ACTIVE:
+                          break
+                      perf_ns=time.perf_counter_ns()
+                      unix_ns=time.time_ns()
+                      _,tk,tu=thread_times(th)
+                      _,pk,pu=process_times(proc)
+                      w.writerow([seq,perf_ns,unix_ns,tk,tu,pk,pu])
+                      seq+=1
+                      if seq % 128 == 0:
+                          f.flush()
+                      time.sleep(0.001)
+          finally:
+              winmm.timeEndPeriod(1)
+              k32.CloseHandle(th)
+              k32.CloseHandle(proc)
+          '''
+          sampler_path = OUT/"thread_sampler.py"
+          write(sampler_path, textwrap.dedent(sampler_code))
+
+          wpr = shutil.which("wpr.exe")
+          xperf = shutil.which("xperf.exe")
+          wpaexporter = shutil.which("wpaexporter.exe")
+          etw_cap = {"wpr":wpr, "xperf":xperf, "wpaexporter":wpaexporter,
+                     "attempted":False, "started":False, "stopped":False,
+                     "profile":None, "start_attempts":[]}
+          write(OUT/"etw-capability-initial.json", json.dumps(etw_cap, indent=2)+"\n")
+
+          def start_wpr(trial_dir):
+              if not wpr:
+                  return False
+              etw_cap["attempted"]=True
+              subprocess.run([wpr,"-cancel"],capture_output=True,text=True,timeout=30)
+              for profile in ("CPU","GeneralProfile"):
+                  p=subprocess.run([wpr,"-start",profile,"-filemode"],capture_output=True,text=True,timeout=45)
+                  etw_cap["start_attempts"].append({"profile":profile,"returncode":p.returncode,
+                                                   "stdout":p.stdout,"stderr":p.stderr})
+                  if p.returncode==0:
+                      etw_cap["started"]=True
+                      etw_cap["profile"]=profile
+                      write(trial_dir/"wpr-start.txt",p.stdout+"\n"+p.stderr)
+                      return True
+              return False
+
+          def stop_wpr(trial_dir):
+              if not (wpr and etw_cap["started"]):
+                  return
+              etl=trial_dir/"thread-time.etl"
+              p=subprocess.run([wpr,"-stop",str(etl)],capture_output=True,text=True,timeout=120)
+              write(trial_dir/"wpr-stop.txt",p.stdout+"\n"+p.stderr)
+              etw_cap["stopped"] = p.returncode==0 and etl.exists()
+              etw_cap["etl_bytes"] = etl.stat().st_size if etl.exists() else 0
+              if p.returncode:
+                  subprocess.run([wpr,"-cancel"],capture_output=True,text=True,timeout=30)
+
+          def validate_record(record, trial):
+              if (record.get("schema")!="inv154-bridge-split-v1" or record.get("platform")!="Windows"
+                  or record.get("display_server")=="headless" or record.get("failures")!=0
+                  or not record.get("joined_worker") or record.get("overflow")
+                  or record.get("accepted_brush_commands",-1)!=0
+                  or record.get("requested_fps_readbacks")!={"baseline_a":60,"timed_a":60,"timed_b":60,"baseline_b":60}):
+                  raise RuntimeError("invalid original ABBA lifecycle in "+trial)
+
+          def run_trial(name, profiled=False, etw=False):
+              td=OUT/name
+              td.mkdir(parents=True,exist_ok=True)
+              env={**os.environ,"GODOT_SILENCE_ROOT_WARNING":"1","PYTHONUTF8":"1",
+                   "CYBERSAND_PHASE_OUTPUT":str(td),"CYBERSAND_SOURCE_REVISION":head}
+              script=PROFILE_FIXTURE if profiled else PARENT_FIXTURE
+              argv=[str(engine),"--rendering-driver","opengl3_angle","--path","godot",
+                    "--script","res://"+script.split("godot/",1)[1]]
+              write(td/"command.json",json.dumps(argv,indent=2)+"\n")
+              etw_started = start_wpr(td) if etw else False
+              started=time.time()
+              p=subprocess.Popen(argv,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,
+                                 text=True,env=env)
+              sampler=None
+              if profiled:
+                  sampler=subprocess.Popen([sys.executable,str(sampler_path),str(p.pid),
+                                             str(td/"thread-samples.csv"),str(td/"thread-sampler-meta.json")],
+                                            stdout=subprocess.PIPE,stderr=subprocess.STDOUT,text=True)
+              try:
+                  stdout,_=p.communicate(timeout=760)
+              except subprocess.TimeoutExpired:
+                  p.kill()
+                  stdout,_=p.communicate()
+                  write(td/"godot.log",stdout)
+                  raise
+              write(td/"godot.log",stdout)
+              if sampler is not None:
+                  try:
+                      sout,_=sampler.communicate(timeout=60)
+                  except subprocess.TimeoutExpired:
+                      sampler.kill(); sout,_=sampler.communicate()
+                  write(td/"sampler.log",sout)
+                  if sampler.returncode:
+                      raise RuntimeError("thread sampler failed in "+name+": "+sout[-4000:])
+              if etw_started:
+                  stop_wpr(td)
+              matches=[line.split("INV154_BRIDGE_SPLIT ",1)[1] for line in stdout.splitlines()
+                       if line.startswith("INV154_BRIDGE_SPLIT ")]
+              write(td/"process-exit.json",json.dumps({"returncode":p.returncode,
+                    "elapsed_seconds":time.time()-started,"profiled":profiled,
+                    "etw_requested":etw,"etw_started":etw_started},indent=2)+"\n")
+              if p.returncode or len(matches)!=1:
+                  raise RuntimeError("Godot trial failed/incomplete: "+name)
+              record=json.loads(matches[0])
+              validate_record(record,name)
+              raw_path=td/"physics-bridge-split.json"
+              if not raw_path.exists():
+                  raise RuntimeError("missing raw physics rows: "+name)
+              raw=json.loads(raw_path.read_text(encoding="utf-8"))
+              return record, raw
+
+          trial_order=[
+              ("unprofiled-1",False,False),
+              ("profiled-1",True,True),
+              ("unprofiled-2",False,False),
+              ("profiled-2",True,False),
+              ("unprofiled-3",False,False),
+              ("profiled-3",True,False),
+          ]
+          records={}
+          raws={}
+          for name,profiled,etw in trial_order:
+              rec,raw=run_trial(name,profiled,etw)
+              records[name]=rec
+              raws[name]=raw
+              if name=="unprofiled-1":
+                  longs=[r for r in raw["physics_rows"] if int(r["duration_usec"])>40000]
+                  timed=[r for r in longs if r["phase"] in ("timed_a","timed_b")]
+                  repro={"long_callbacks_all_arms":len(longs),"long_callbacks_timed_arms":len(timed),
+                         "reproduced":len(longs)>0 and len(timed)>0,
+                         "timed_space_step_usec":sum(max(0,int(r.get("bridge_step_usec",-1))) for r in timed),
+                         "timed_callback_usec":sum(int(r["duration_usec"]) for r in timed)}
+                  write(OUT/"reproduction-first-trial.json",json.dumps(repro,indent=2)+"\n")
+
+          write(OUT/"etw-capability.json", json.dumps(etw_cap,indent=2)+"\n")
+
+          def quantile(vals,q):
+              vals=sorted(vals)
+              if not vals: return None
+              return vals[int(round((len(vals)-1)*q))]
+
+          def arm_summary(raw):
+              rows=raw["physics_rows"]
+              result={}
+              for phase in ("baseline_a","timed_a","timed_b","baseline_b"):
+                  pr=[r for r in rows if r["phase"]==phase]
+                  ds=[int(r["duration_usec"])/1000.0 for r in pr]
+                  result[phase]={"callbacks":len(pr),"over_40ms":sum(v>40 for v in ds),
+                                 "p50_ms":quantile(ds,.5),"p95_ms":quantile(ds,.95),
+                                 "p99_ms":quantile(ds,.99),"max_ms":max(ds) if ds else None}
+              return result
+
+          trial_summaries={name:arm_summary(raw) for name,raw in raws.items()}
+          write(OUT/"trial-frame-distributions.json",json.dumps(trial_summaries,indent=2)+"\n")
+
+          # Profiler perturbation: compare medians of per-trial physics p50 and callback counts.
+          def trial_p50(summary):
+              return statistics.median(summary[p]["p50_ms"] for p in ("baseline_a","timed_a","timed_b","baseline_b"))
+          def trial_callbacks(summary):
+              return sum(summary[p]["callbacks"] for p in ("baseline_a","timed_a","timed_b","baseline_b"))
+          up=[trial_p50(trial_summaries[f"unprofiled-{i}"]) for i in range(1,4)]
+          pp=[trial_p50(trial_summaries[f"profiled-{i}"]) for i in range(1,4)]
+          uc=[trial_callbacks(trial_summaries[f"unprofiled-{i}"]) for i in range(1,4)]
+          pc=[trial_callbacks(trial_summaries[f"profiled-{i}"]) for i in range(1,4)]
+          perturb={"unprofiled_trial_p50_ms":up,"profiled_trial_p50_ms":pp,
+                   "unprofiled_callbacks":uc,"profiled_callbacks":pc,
+                   "p50_ratio_profiled_over_unprofiled":statistics.median(pp)/statistics.median(up),
+                   "callback_ratio_profiled_over_unprofiled":statistics.median(pc)/statistics.median(uc)}
+          perturb["excessive"] = (perturb["p50_ratio_profiled_over_unprofiled"]>1.25
+                                    or perturb["callback_ratio_profiled_over_unprofiled"]<0.90
+                                    or perturb["callback_ratio_profiled_over_unprofiled"]>1.10)
+          write(OUT/"profiler-perturbation.json",json.dumps(perturb,indent=2)+"\n")
+
+          def load_samples(path):
+              rows=[]
+              with path.open(newline="",encoding="utf-8") as f:
+                  for r in csv.DictReader(f):
+                      unix_usec=int(r["unix_ns"])/1000.0
+                      thread_cpu_100ns=int(r["thread_kernel_100ns"])+int(r["thread_user_100ns"])
+                      process_cpu_100ns=int(r["process_kernel_100ns"])+int(r["process_user_100ns"])
+                      rows.append((unix_usec,thread_cpu_100ns,process_cpu_100ns))
+              return rows
+
+          def interp(samples, target, index):
+              times=[r[0] for r in samples]
+              j=bisect.bisect_left(times,target)
+              if j<=0 or j>=len(samples):
+                  return None
+              a=samples[j-1]; b=samples[j]
+              if b[0]<=a[0]:
+                  return float(a[index])
+              f=(target-a[0])/(b[0]-a[0])
+              return float(a[index])+(float(b[index])-float(a[index]))*f
+
+          events=[]
+          for i in range(1,4):
+              name=f"profiled-{i}"
+              raw=raws[name]
+              samples=load_samples(OUT/name/"thread-samples.csv")
+              meta=json.loads((OUT/name/"thread-sampler-meta.json").read_text(encoding="utf-8"))
+              for row in raw["physics_rows"]:
+                  if row["phase"] not in ("timed_a","timed_b") or int(row["duration_usec"])<=40000:
+                      continue
+                  if int(row.get("bridge_step_delta",0))!=1 or int(row.get("bridge_step_usec",-1))<=0:
+                      continue
+                  marker=int(row.get("profile_rapier_step_start_usec",-1))
+                  sync_ticks=int(row.get("profile_sync_ticks_usec",-1))
+                  sync_unix=int(row.get("profile_sync_unix_usec",-1))
+                  if marker<0 or sync_ticks<0 or sync_unix<0:
+                      continue
+                  # Production bridge calls space_step first. Its own monotonic duration readback
+                  # supplies the interval length; the test-only bridge-entry marker is the start
+                  # alignment, with only the initialized check and one clock read between them.
+                  start_unix = float(sync_unix - (sync_ticks-marker))
+                  duration_usec=float(int(row["bridge_step_usec"]))
+                  end_unix=start_unix+duration_usec
+                  t0=interp(samples,start_unix,1); t1=interp(samples,end_unix,1)
+                  p0=interp(samples,start_unix,2); p1=interp(samples,end_unix,2)
+                  if None in (t0,t1,p0,p1):
+                      continue
+                  thread_cpu_usec=max(0.0,(t1-t0)/10.0)
+                  process_cpu_usec=max(0.0,(p1-p0)/10.0)
+                  occ=thread_cpu_usec/duration_usec if duration_usec>0 else 0.0
+                  proc_ratio=process_cpu_usec/duration_usec if duration_usec>0 else 0.0
+                  events.append({
+                      "trial":name,"phase":row["phase"],
+                      "physics_duration_usec":int(row["duration_usec"]),
+                      "space_step_usec":int(row["bridge_step_usec"]),
+                      "space_step_start_unix_usec":start_unix,
+                      "thread_cpu_usec":thread_cpu_usec,
+                      "thread_cpu_occupancy":occ,
+                      "process_cpu_usec":process_cpu_usec,
+                      "process_cpu_per_wall":proc_ratio,
+                      "sampler_window_thread_id":meta["window_thread_id"],
+                      "sampler_earliest_thread_id":meta["earliest_thread_id"],
+                      "window_matches_earliest":meta["window_matches_earliest"],
+                  })
+
+          write(OUT/"long-event-threadtime.json",json.dumps(events,indent=2)+"\n")
+          n=len(events)
+          cpu_hits=sum(e["thread_cpu_occupancy"]>=0.80 for e in events)
+          off_hits=sum(e["thread_cpu_occupancy"]<=0.40 for e in events)
+          cpu_fraction=cpu_hits/n if n else 0.0
+          off_fraction=off_hits/n if n else 0.0
+          classification="INCONCLUSIVE"
+          rationale=[]
+          if n<20:
+              rationale.append("fewer than 20 aligned long space_step events")
+          elif perturb["excessive"]:
+              rationale.append("profiling perturbation exceeded preregistered p50/callback bounds")
+          elif cpu_fraction>=0.80:
+              classification="CPU DOMINATED"
+              rationale.append("at least 80% of long events had at least 80% main-thread CPU occupancy")
+          elif off_fraction>=0.80:
+              classification="OFF-CPU DOMINATED"
+              rationale.append("at least 80% of long events had at least 60% main-thread non-running time")
+              rationale.append("per-thread CPU counters cannot distinguish blocking from ready-but-descheduled time")
+          else:
+              rationale.append("long-event CPU occupancy did not satisfy either preregistered dominance threshold")
+
+          result={
+              "schema":"inv154-space-step-threadtime-v1",
+              "classification":classification,
+              "aligned_long_events":n,
+              "cpu_dominated_event_count":cpu_hits,
+              "cpu_dominated_event_fraction":cpu_fraction,
+              "off_cpu_dominated_event_count":off_hits,
+              "off_cpu_dominated_event_fraction":off_fraction,
+              "thread_cpu_occupancy_p50":quantile([e["thread_cpu_occupancy"] for e in events],.5),
+              "thread_cpu_occupancy_p95":quantile([e["thread_cpu_occupancy"] for e in events],.95),
+              "process_cpu_per_wall_p50":quantile([e["process_cpu_per_wall"] for e in events],.5),
+              "profile_perturbation":perturb,
+              "first_unprofiled_reproduction":json.loads((OUT/"reproduction-first-trial.json").read_text()),
+              "etw":etw_cap,
+              "rationale":rationale,
+              "limits":[
+                  "Fallback occupancy measures the graphical/main Windows thread around production space_step wall intervals.",
+                  "Process CPU is retained as a secondary control but is not uniquely attributable to Rapier because the native simulation worker remains active.",
+                  "Without decoded ETW thread-state evidence, off-CPU time cannot be separated into blocked versus ready/descheduled intervals.",
+                  "Microsoft Basic Render Driver remains the hosted graphical cohort; this is not discrete-GPU end-user qualification."
+              ],
+              "source_identity":source_identity,
+          }
+          write(OUT/"classification.json",json.dumps(result,indent=2)+"\n")
+          print(json.dumps(result,indent=2))
+          PY
+
+      - name: Preserve raw Windows traces and classification
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: inv154-space-step-threadtime-${{ github.run_id }}
+          path: |
+            build/inv154-threadtime/**/*.json
+            build/inv154-threadtime/**/*.csv
+            build/inv154-threadtime/**/*.log
+            build/inv154-threadtime/**/*.txt
+            build/inv154-threadtime/**/*.etl
+          if-no-files-found: warn
+          retention-days: 30
