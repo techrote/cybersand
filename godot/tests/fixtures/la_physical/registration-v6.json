@@ -1,0 +1,12 @@
+{
+  "id":"LA-PHYSICAL-009-SHARED-HOST-TIMINGS",
+  "registered_date":"2026-11-05",
+  "extends":"res://tests/fixtures/la_physical/registration-v5.json",
+  "arms":["LA-SELECTIVE","LA","LA-EVENT-OFF","RFT","LA-SELECTIVE-SEPARATING-GUARD"],
+  "objective":"Separate source-qualified shared-host timing campaign. The007isolation attempt was interrupted after another owner's Godot qualification was observed on the samephysicalhost. Do not label these timings idle-host, controlledscaling or the originalSOLCPUgate.",
+  "performance_repeats":3,
+  "cases_selected":["bounded-quiet-contact","bounded-Sand-Dust-stream","bounded-dense-collision"],
+  "host_condition":"Platforms sequential, ownscientificbuild/test/reducerwork stopped during measuredcases; otherowneractivity maycontinue and is logged. Record observercost separately fromcasecommand. No affinity, priority, capacity or physics changes.",
+  "interpretation":"Three unroundedrepeatmeans, maxima and stagecosts with ambientprocessledger. Descriptive local cost/memory/capacity only; strict007idle-host qualification remainsUNAVAILABLE. Rejectedv1/v2filters are retained in earliercohorts, not promotion/costcandidates here.",
+  "rollback":"Any missing/failedwindow, accounting/source/RID drift or absent4workerpeak remainsfailed/unavailable. Shared-hostvariation cannot establish a universalspeedup or60Hzguarantee."
+}
