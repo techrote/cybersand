@@ -5,7 +5,7 @@ document-kind: evidence
 scope: Single bounded value-only passive-contact experiment on accepted main; no production-mode or SOL-restoration admission
 canonical-for: []
 last-reviewed: 2026-11-05
-related-documents: [2026-11-05-sol-chamber-yielding.md, ../architecture/rigid-body-and-cellular-coupling.md]
+related-documents: [../architecture/rigid-body-and-cellular-coupling.md]
 ---
 
 # SOL active-normal dilution experiment — 5 November 2026
