@@ -3,6 +3,7 @@
 #include "cybersand/world.hpp"
 #include "cybersand/world_generation.hpp"
 
+#include <algorithm>
 #include <cstdint>
 #include <iostream>
 #include <memory>
