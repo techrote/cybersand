@@ -38,6 +38,14 @@ bool CyberNativeCellWorld::admit_solid_workbench_sample(const WorkbenchSample& n
     for (std::size_t i=2;i<next.owners.size();++i) if (next.owners[i].instance) return false;
     if (workbench_->solid_token != source.token || workbench_->solid_generation != source.body_generation) return false;
     const auto& physical = next.proxies[1];
+    if (!workbench_->sampled && workbench_->sample.session) {
+        for (int i=1;i<=owner.count;++i) {
+            const auto& a=next.proxies[i];const auto& b=workbench_->sample.proxies[i];
+            if (a.center!=b.center || a.com!=b.com || a.rotation!=b.rotation ||
+                a.velocity!=b.velocity || a.angular_velocity!=b.angular_velocity ||
+                a.sample_serial!=b.sample_serial) return false;
+        }
+    }
     const auto close = [](double a,double b) {
         return std::abs(a-b) <= 4*std::numeric_limits<real_t>::epsilon()*std::max({1.,std::abs(a),std::abs(b)});
     };
