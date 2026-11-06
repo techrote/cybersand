@@ -322,9 +322,10 @@ func _owner_host_identity() -> String:
 	if OS.get_name() == "Linux":
 		var boot: String = _identity_command("cat", PackedStringArray(["/proc/sys/kernel/random/boot_id"]))
 		var pid_ns: String = _identity_command("readlink", PackedStringArray(["/proc/self/ns/pid"]))
-		if boot.is_empty() or not pid_ns.begins_with("pid:[") or not pid_ns.ends_with("]"):
+		var owner_uid: String = _identity_command("id", PackedStringArray(["-u"]))
+		if boot.is_empty() or not pid_ns.begins_with("pid:[") or not pid_ns.ends_with("]") or not owner_uid.is_valid_int():
 			return ""
-		return "Linux:" + boot + ":" + pid_ns
+		return "Linux:" + boot + ":" + pid_ns + ":uid=" + owner_uid
 	if OS.get_name() == "Windows":
 		# MachineGuid alone is insufficient across OS boots. Include the real
 		# system boot timestamp; never trust the inherited COMPUTERNAME string.
