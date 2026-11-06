@@ -76,6 +76,10 @@ func ledger() -> Dictionary:
 	return equipment().get("metered_drain", {})
 
 
+func in_tools_owner() -> Dictionary:
+	return equipment().get("in_tools", {})
+
+
 func sink() -> int:
 	return int(ledger().get("water_units_removed" if active_material == 3 else "brine_cells_removed", 0))
 
@@ -123,11 +127,14 @@ func equip(profile_index: int = 1, usable: int = 9, power: float = 0.5,
 	panel.usable_choice.item_selected.emit(usable + 1)
 	panel.drain_profile_choice.select(profile_index)
 	panel.drain_profile_choice.item_selected.emit(profile_index)
+	var expected_profile: String = panel.selected_drain_profile()
+	var expected_material: int = panel.selected_drain_material()
 	panel.usable_power_slider.value = power
 	panel._equip_only_button.pressed.emit()
 	var done: bool = await wait_for(func() -> bool:
 		return not desktop._actor_usable_transition_pending and int(equipment().get("usable_index", -99)) == usable \
-			and equipment().get("profile", "") == (Equipment.METERED_PROFILE if profile_index > 0 else "") \
+			and equipment().get("profile", "") == expected_profile \
+			and int(equipment().get("material", 0)) == expected_material \
 			and not desktop.actor_prototype_panel.visible)
 	if done:
 		await wait_for(func() -> bool: return not desktop._actor_input_rearm and not desktop._actor_usable_pointer_rearm)
@@ -481,6 +488,79 @@ func _ordinary_control() -> void:
 	await _joined_census("ordinary-u10-after",before)
 
 
+
+func _in_tools_gameplay_profiles() -> void:
+	# Real Main + asynchronous SimulationWorker + real Rapier equipment. The
+	# dedicated native/controller tests provide the full quantity and aperture
+	# physics; this path proves the actual F5 selector/input/receipt/readback route.
+	desktop.simulation_worker.start_worker(desktop.character_position)
+	if not await install(3,4):
+		return
+	if not expect(await equip(4,Equipment.IN_TOOLS_NOZZLE_USABLE,0.5),
+		"actual F5 selector equips directed IN nozzle on existing U02 Water Lance"):
+		return
+	if not expect(await wait_for(func() -> bool: return bool(in_tools_owner().get("available",false))),
+		"actual worker publishes finite #361 source ownership into the gameplay equipment readback"):
+		return
+	var before_owner: Dictionary = in_tools_owner().duplicate(true)
+	var before_uses: int = int(equipment().get("accepted_uses",0))
+	var started_tick: int = desktop.physical_actor_session.tick
+	key(KEY_M,true)
+	await wait_for(func() -> bool:
+		return int(equipment().get("accepted_uses",0)) > before_uses \
+			or desktop.physical_actor_session.tick - started_tick >= int(fixture.activation_observation_physical_ticks))
+	key(KEY_M,false)
+	var nozzle_receipt: Dictionary = equipment().get("last_receipt",{}).duplicate(true)
+	var nozzle_outcome: Dictionary = nozzle_receipt.get("in_tools",{})
+	expect(int(equipment().get("accepted_uses",0)) > before_uses and nozzle_receipt.get("accepted",false),
+		"held M drives one real #361 nozzle activation through Main/Session/Worker/native World")
+	expect(nozzle_outcome.get("status") == "applied" and nozzle_outcome.get("kind") == "directed_in_nozzle" \
+		and nozzle_outcome.get("transport_mode") == "inertial_cellular_source_v1" \
+		and not bool(nozzle_outcome.get("ballistic_transport",true)) \
+		and int(nozzle_outcome.get("source_credit",0)) > 0 and int(nozzle_outcome.get("sink_debit",-1)) == 0,
+		"real gameplay receipt visibly proves ordinary IN source accounting with no ballistic fallback")
+	expect(int(in_tools_owner().get("water_units_remaining",-1)) < int(before_owner.get("water_units_remaining",-1)) \
+		and int(in_tools_owner().get("water_units_remaining",0)) + int(in_tools_owner().get("water_units_admitted",0)) \
+			== int(in_tools_owner().get("water_units_initial",-1)),
+		"real worker source readback closes the finite nozzle stock ledger")
+	reports.append({"case":"directed-in-nozzle-main","receipt":nozzle_receipt,
+		"before_owner":before_owner,"after_owner":in_tools_owner().duplicate(true),
+		"actor":desktop.physical_actor_observation()})
+
+	# Reconstruct the controlled Water-IN map, then opt U10 into the leak profile.
+	if not await install(3,4):
+		return
+	desktop.test_aim = Vector2.LEFT
+	if not expect(await equip(3,Equipment.IN_TOOLS_LEAK_USABLE,0.5),
+		"actual F5 selector equips reversible leak on existing U10"):
+		return
+	if not expect(await wait_for(func() -> bool: return bool(in_tools_owner().get("available",false))),
+		"leak profile receives the same current native owner identity"):
+		return
+	var settle_tick: int = desktop.physical_actor_session.tick
+	await wait_for(func() -> bool:
+		return desktop.physical_actor_session.tick - settle_tick >= int(fixture.aim_settle_physical_ticks))
+	var leak_uses: int = int(equipment().get("accepted_uses",0))
+	started_tick = desktop.physical_actor_session.tick
+	key(KEY_M,true)
+	await wait_for(func() -> bool:
+		return int(equipment().get("accepted_uses",0)) > leak_uses \
+			or desktop.physical_actor_session.tick - started_tick >= int(fixture.activation_observation_physical_ticks))
+	key(KEY_M,false)
+	var leak_receipt: Dictionary = equipment().get("last_receipt",{}).duplicate(true)
+	var leak_outcome: Dictionary = leak_receipt.get("in_tools",{})
+	expect(int(equipment().get("accepted_uses",0)) > leak_uses and leak_receipt.get("accepted",false),
+		"held M opens an authored Wall aperture through the real U10 gameplay route")
+	expect(leak_outcome.get("status") == "applied" and leak_outcome.get("kind") == "reversible_leak" \
+		and int(leak_outcome.get("source_credit",-1)) == 0 and int(leak_outcome.get("sink_debit",-1)) == 0 \
+		and int(leak_outcome.get("quantity_delta",-1)) == 0 and bool(in_tools_owner().get("aperture_open",false)),
+		"real gameplay leak receipt/readback carries zero source/sink quantity and owned open aperture")
+	expect("leak OPEN" in desktop.actor_prototype_button.text,
+		"ordinary gameplay status surface visibly reports the open #361 leak")
+	reports.append({"case":"reversible-leak-main","receipt":leak_receipt,
+		"owner":in_tools_owner().duplicate(true),"actor":desktop.physical_actor_observation(),
+		"status_text":desktop.actor_prototype_button.text})
+
 func run() -> void:
 	var source: String = FileAccess.get_file_as_string(FIXTURE)
 	fixture = JSON.parse_string(source)
@@ -544,6 +624,7 @@ func run() -> void:
 	await _negative_control("under_actor",["body_masked","source_blocked"])
 	desktop.simulation_worker.start_worker(desktop.character_position)
 	await _ordinary_control()
+	await _in_tools_gameplay_profiles()
 	finish()
 
 
