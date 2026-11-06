@@ -121,6 +121,7 @@ def build_native(root, out, *, sanitizers=False, tsan=False):
 
 
 def benchmark_build(root, apparatus, out, verify=False):
+    out.mkdir(parents=True, exist_ok=True)
     binary = out / ("neighbour_verify" if verify else "neighbour_bench")
     cmd = ["g++-13", "-std=c++20", "-O2", "-g", "-fno-omit-frame-pointer",
            "-pthread", "-I", root / "native/include"]
@@ -211,6 +212,7 @@ def metrics(rows, cycles):
 
 
 def maybe_profile(binary, scene, cwd, out, label):
+    out.mkdir(parents=True, exist_ok=True)
     profiler = shutil.which("perf")
     if not profiler:
         return {"status": "unavailable", "reason": "perf not installed"}
@@ -331,7 +333,7 @@ def main():
                            label, trees[kind])
             row["implementation"], row["cycle"], row["position"] = kind, cycle, position
             runs.append(row)
-            save(out / "raw" / "runs.json", runs)
+            save(out / "raw" / "runs.json", [dict((key, value) for key, value in r.items() if key != "_semantic_signature") for r in runs])
     extended = []
     if opts.extended:
         for kind, workers in (("baseline", 1), ("candidate", 1),
@@ -341,7 +343,7 @@ def main():
                            label, trees[kind])
             row["implementation"] = kind
             extended.append(row)
-            save(out / "raw" / "extended.json", extended)
+            save(out / "raw" / "extended.json", [dict((key, value) for key, value in r.items() if key != "_semantic_signature") for r in extended])
 
     oracle = []
     if opts.verify_cursor:
@@ -350,7 +352,7 @@ def main():
             label = f"cursor_oracle_{workers}w_600"
             row = tick_run(binary, scene, workers, 600, out / "raw", label, trees["candidate"])
             oracle.append(row)
-            save(out / "raw" / "oracle.json", oracle)
+            save(out / "raw" / "oracle.json", [dict((key, value) for key, value in r.items() if key != "_semantic_signature") for r in oracle])
     parity_problems = compare_semantics(runs, extended + oracle)
     results = metrics(runs, opts.cycles)
     profiles = {}
