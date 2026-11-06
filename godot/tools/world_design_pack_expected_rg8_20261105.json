@@ -1,0 +1,206 @@
+{
+  "type": "INDEPENDENT SOURCE-PACK CELL ORACLE; NOT GODOT EXECUTION OR A PNG",
+  "design_revision": "f68516b7e4faefb8c776a89169365a7e8dd55d37",
+  "source_main_at_design": "ba9cbc89029be88b812af59b19e5c59829bbcd90",
+  "algorithm": "Original pack JSON: in-order terrain stamps, then in-order local feature rectangles translated by placements with selected ID swaps; RG8 ID/fixture condition bytes; SHA-256 on packed row-major bytes",
+  "condition_policy": "capture_material_review.gd synthetic creation-state conditions; 36=200; all other unlisted 0",
+  "total_collections": 15,
+  "total_features": 120,
+  "entries": [
+    {
+      "collection": "lumen-fault",
+      "pack_blob_sha1": "439b1db913e71d64de1b8aae2b4ee50855f415d0",
+      "dimensions_cells": [
+        640,
+        256
+      ],
+      "feature_count": 8,
+      "placements": 8,
+      "rg8_bytes": 327680,
+      "rg8_sha256": "2cd29ba59acbc56b484ed950b805c029085d1b4cefa3dc33b2daa97c2172d207",
+      "nonempty_cells": 39279
+    },
+    {
+      "collection": "chalkbone-coast",
+      "pack_blob_sha1": "5675c05352642b4646fb14124ac6dbbf88e3be05",
+      "dimensions_cells": [
+        768,
+        256
+      ],
+      "feature_count": 8,
+      "placements": 8,
+      "rg8_bytes": 393216,
+      "rg8_sha256": "e3a032104ba6318c2df8ab1569006300028b5442983df1ae384c827f53ef9ace",
+      "nonempty_cells": 72209
+    },
+    {
+      "collection": "carved-ice-choir",
+      "pack_blob_sha1": "631a0f9714972740d3ec54a306e876c61fcc60a6",
+      "dimensions_cells": [
+        800,
+        320
+      ],
+      "feature_count": 8,
+      "placements": 8,
+      "rg8_bytes": 512000,
+      "rg8_sha256": "2b8a96fb1b94d35f38eab9772f1ab336690ecb79ad2e06a32ccd367315b24c4a",
+      "nonempty_cells": 114364
+    },
+    {
+      "collection": "ashroot-nursery",
+      "pack_blob_sha1": "928d60dd7eb77f808f8bd52cc46862d0bc3c1c1d",
+      "dimensions_cells": [
+        960,
+        330
+      ],
+      "feature_count": 8,
+      "placements": 8,
+      "rg8_bytes": 633600,
+      "rg8_sha256": "9cd6540c4d0991cf7d951b91aa4befb7fb5873f916a8aadebded89ee966c6294",
+      "nonempty_cells": 95574
+    },
+    {
+      "collection": "emberglass-fumaroles",
+      "pack_blob_sha1": "155bc4bebf80c168547d76a65227373ce1a4abfb",
+      "dimensions_cells": [
+        1056,
+        238
+      ],
+      "feature_count": 8,
+      "placements": 8,
+      "rg8_bytes": 502656,
+      "rg8_sha256": "a9eaca1e0bf9f53e047dabd1172f3da5886fddac5d9096a663d8af8c38c0a39e",
+      "nonempty_cells": 100088
+    },
+    {
+      "collection": "silt-clockworks",
+      "pack_blob_sha1": "ad713dc540d83d94e8948a68a38e02461f63115e",
+      "dimensions_cells": [
+        1184,
+        264
+      ],
+      "feature_count": 8,
+      "placements": 8,
+      "rg8_bytes": 625152,
+      "rg8_sha256": "c04e11f2b3f4996add00f22cc49eb09aa938fa33de573df493538b8abccfdda1",
+      "nonempty_cells": 153716
+    },
+    {
+      "collection": "signal-orchard",
+      "pack_blob_sha1": "eaabdc8d05ca44943f9c2070a1a88d11f22a6e56",
+      "dimensions_cells": [
+        1220,
+        296
+      ],
+      "feature_count": 8,
+      "placements": 8,
+      "rg8_bytes": 722240,
+      "rg8_sha256": "6b3cdd29416ade6e58fc78f8c411a7d3d2f9bfb91d25b051e280f89c78ebb804",
+      "nonempty_cells": 107662
+    },
+    {
+      "collection": "dust-meridian",
+      "pack_blob_sha1": "07cf83d7be594e1e8d20f2c2f044ccf6c8397eb9",
+      "dimensions_cells": [
+        1320,
+        280
+      ],
+      "feature_count": 8,
+      "placements": 8,
+      "rg8_bytes": 739200,
+      "rg8_sha256": "717bc4bd638786bbdece1fba3f7421f65943c343867ca528a6eb7dc7132ceccd",
+      "nonempty_cells": 95147
+    },
+    {
+      "collection": "cathedral-of-capacitors",
+      "pack_blob_sha1": "863e5be944cc1cf447512621bb3ef0320fafbf90",
+      "dimensions_cells": [
+        1240,
+        278
+      ],
+      "feature_count": 8,
+      "placements": 8,
+      "rg8_bytes": 689440,
+      "rg8_sha256": "ff45a10e1881ab760e8a40e4093b5028b353007acd129ccf7349fcf3ad78ff1a",
+      "nonempty_cells": 65253
+    },
+    {
+      "collection": "mirror-marsh",
+      "pack_blob_sha1": "1f97677234813bb7e7f0c03176d9897038d50c98",
+      "dimensions_cells": [
+        1320,
+        308
+      ],
+      "feature_count": 8,
+      "placements": 8,
+      "rg8_bytes": 813120,
+      "rg8_sha256": "2866f8afa002959651b9c0f769f6811cb073ba4c81622e09320fcbb7d48edef2",
+      "nonempty_cells": 60979
+    },
+    {
+      "collection": "drowned-observatory",
+      "pack_blob_sha1": "cd426c96ca5ffc78737051a49672ef9dd7c9106b",
+      "dimensions_cells": [
+        1320,
+        280
+      ],
+      "feature_count": 8,
+      "placements": 8,
+      "rg8_bytes": 739200,
+      "rg8_sha256": "4d3e138003dfbd183d6e1aee7fa2ef0f8eb1377eebc2e43b746fbfd014b246ba",
+      "nonempty_cells": 58703
+    },
+    {
+      "collection": "ironroot-necropolis",
+      "pack_blob_sha1": "2ce9d16c31c6f4e46828f7fc011da6ab20394064",
+      "dimensions_cells": [
+        1270,
+        310
+      ],
+      "feature_count": 8,
+      "placements": 8,
+      "rg8_bytes": 787400,
+      "rg8_sha256": "b25004dff027eabf78a62957a00e32543d1e335921578538f35a93a41514f825",
+      "nonempty_cells": 51336
+    },
+    {
+      "collection": "tectonic-archive",
+      "pack_blob_sha1": "b8bc2b7ca462fefdbb3ccde5ff29696ed52645fc",
+      "dimensions_cells": [
+        1360,
+        316
+      ],
+      "feature_count": 8,
+      "placements": 8,
+      "rg8_bytes": 859520,
+      "rg8_sha256": "208ca5367125221661491ee7e3e68f7b54ad6c8842e6e049e7920f37a771360a",
+      "nonempty_cells": 51287
+    },
+    {
+      "collection": "coral-telegraph",
+      "pack_blob_sha1": "36963df4722d599307119349650728559e41866b",
+      "dimensions_cells": [
+        1370,
+        324
+      ],
+      "feature_count": 8,
+      "placements": 8,
+      "rg8_bytes": 887760,
+      "rg8_sha256": "f66f8b2a951784064193e20d102e381e59007709e67f14c4c761a1d6577c3202",
+      "nonempty_cells": 55713
+    },
+    {
+      "collection": "fallow-carnival",
+      "pack_blob_sha1": "0242f3429cfd831ce6302affec93e5430fc4e21b",
+      "dimensions_cells": [
+        1420,
+        226
+      ],
+      "feature_count": 8,
+      "placements": 8,
+      "rg8_bytes": 641840,
+      "rg8_sha256": "9369f9b2b8524baed6e7dab3a8563560455234c07a074e92da8bda11d80d2be4",
+      "nonempty_cells": 65953
+    }
+  ]
+}
