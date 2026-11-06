@@ -50,7 +50,7 @@ jobs:
           retention-days: 3
           if-no-files-found: error
 
-  native-baseline:
+  native-candidate:
     runs-on: ubuntu-24.04
     timeout-minutes: 35
     steps:
@@ -70,8 +70,30 @@ jobs:
         run: ./build/tests 'LCB-002'
       - name: Workbench parallel
         run: ./build/tests 'Workbench parallel'
-      - name: Documentation and repository checks
+      - name: Candidate three-arm per-run differential
+        run: ./build/tests 'PressureFlow per-run'
+      - name: Complete candidate native test suite
+        run: ./build/tests
+      - name: Documentation and repository checks independently
+        if: always()
+        shell: bash
         run: |
-          python3 tools/ci/check_docs.py
-          python3 tools/ci/check_m11_consistency.py
-          python3 tools/ci/check_repository.py
+          set +e
+          mkdir -p build/pf-run/validation
+          failures=0
+          for script in tools/ci/check_docs.py tools/ci/check_m11_consistency.py tools/ci/check_repository.py; do
+            name="$(basename "$script" .py)"
+            python3 "$script" > "build/pf-run/validation/$name.log" 2>&1
+            rc=$?
+            printf '%s exit=%s\n' "$name" "$rc"
+            tail -n 25 "build/pf-run/validation/$name.log"
+            if [ "$rc" -ne 0 ]; then failures=1; fi
+          done
+          exit "$failures"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pf-run-validation-${{ github.sha }}
+          path: build/pf-run/validation/
+          retention-days: 7
+          if-no-files-found: warn
