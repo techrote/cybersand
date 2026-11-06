@@ -323,7 +323,7 @@ def main() -> int:
             "schema": schema,
             "state": "prepared",
             "attempt_id": fake_token,
-            "output_path": str(fake_output),
+            "output_path": str(fake_output).replace("\\", "/"),
             "pack_path": str(pack_path),
             "process_id": 123,
             "owner_host": host,
@@ -366,7 +366,7 @@ def main() -> int:
         reuse_id = "54321-98765-" + str(unrelated_pid)
         write_json(reuse_claim / "transaction.json", {
             "schema": 3, "state": "prepared", "attempt_id": reuse_id,
-            "output_path": str(reuse_output), "pack_path": str(pack_path),
+            "output_path": str(reuse_output).replace("\\", "/"), "pack_path": str(pack_path),
             "process_id": unrelated_pid, "owner_host": stable_host,
             "owner_process_started": "1",
         })
