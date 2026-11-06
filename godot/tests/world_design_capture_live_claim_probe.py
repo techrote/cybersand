@@ -139,6 +139,7 @@ def main() -> int:
     second_stream = None
     token = ""
     denied = False
+    original_identity: dict = {}
 
     identity = {
         "source_sha": source_sha,
@@ -168,6 +169,11 @@ def main() -> int:
             transaction_path = claim / "transaction.json"
             transaction = json.loads(transaction_path.read_text()) if transaction_path.exists() else {}
             token = str(transaction.get("attempt_id", ""))
+            original_identity = transaction
+            check(transaction.get("schema") == 3 and
+                  isinstance(transaction.get("owner_host"), str) and
+                  bool(transaction.get("owner_process_started")),
+                  "claim-stable-owner-namespace-and-process-start", transaction)
             check(bool(token) and transaction.get("state") == "prepared",
                   "live-claim-transaction-available", transaction)
             check(not (output / "capture-manifest.json").exists(),
@@ -298,12 +304,16 @@ def main() -> int:
         check(False, "dead-owner-recovery-not-admissible-after-live-token-breach",
               {"denied": denied, "original_token": token})
 
-    # Fail-closed negative controls: an explicit attempt token alone cannot
-    # recover a legacy transaction or a transaction from another host namespace.
-    # These cases must not rename the original claim or create any output.
-    for label, schema, host in (
-        ("legacy-transaction", 1, ""),
-        ("foreign-host-transaction", 2, "foreign-host-that-is-not-the-runner"),
+    # A known attempt token and a matching environment-supplied HOSTNAME are
+    # not sufficient recovery proof. Exercise source-verified owner identity
+    # mismatches with a real Godot process on both supported platforms.
+    stable_host = str(original_identity.get("owner_host", ""))
+    for label, schema, host, started in (
+        ("legacy-schema-1", 1, stable_host, "1"),
+        ("legacy-schema-2", 2, stable_host, "1"),
+        ("foreign-host-transaction", 3, "foreign-host-that-is-not-the-runner", "1"),
+        ("namespace-collision-transaction", 3, stable_host + "-other-pid-namespace", "1"),
+        ("unknown-process-generation", 3, stable_host, ""),
     ):
         fake_output = evidence / "adversarial" / label
         fake_claim = Path(str(fake_output) + ".world-capture-claim")
@@ -317,13 +327,13 @@ def main() -> int:
             "pack_path": str(pack_path),
             "process_id": 123,
             "owner_host": host,
+            "owner_process_started": started,
         })
         prior_sha = sha256(fake_transaction)
         fake_log = evidence / "logs" / (label + ".log")
         fake_cmd = engine + [
             "--pack=" + str(pack_path), "--output=" + str(fake_output),
-            "--mode=combined", "--scale=1",
-            "--recover-claim=" + fake_token,
+            "--mode=combined", "--scale=1", "--recover-claim=" + fake_token,
         ]
         try:
             with fake_log.open("wb") as stream:
@@ -334,7 +344,7 @@ def main() -> int:
         except subprocess.TimeoutExpired:
             fake_code = 124
             with fake_log.open("ab") as stream:
-                stream.write(b"TIMEOUT: invalid recovery did not finish\\n")
+                stream.write(b"TIMEOUT: invalid recovery did not finish\n")
         processes.append({
             "name": label, "command": fake_cmd, "observed_exit": fake_code,
             "log": str(fake_log.relative_to(evidence).as_posix()),
@@ -345,6 +355,48 @@ def main() -> int:
               not Path(str(fake_output) + ".world-capture-recovered-" + fake_token).exists() and
               not (fake_output / "capture-manifest.json").exists(),
               label + "-no-claim-mutation")
+
+    # PID reuse is simulated with a real, *currently running unrelated*
+    # process's PID and a stale process-start identity. The owner of the old
+    # transaction is provably different from this live process generation.
+    if stable_host:
+        reuse_output = evidence / "adversarial" / "pid-reuse-recovery"
+        reuse_claim = Path(str(reuse_output) + ".world-capture-claim")
+        unrelated_pid = os.getpid()
+        reuse_id = "54321-98765-" + str(unrelated_pid)
+        write_json(reuse_claim / "transaction.json", {
+            "schema": 3, "state": "prepared", "attempt_id": reuse_id,
+            "output_path": str(reuse_output), "pack_path": str(pack_path),
+            "process_id": unrelated_pid, "owner_host": stable_host,
+            "owner_process_started": "1",
+        })
+        reuse_log = evidence / "logs" / "pid-reuse-recovery.log"
+        reuse_cmd = engine + [
+            "--pack=" + str(pack_path), "--output=" + str(reuse_output),
+            "--mode=combined", "--scale=1",
+            "--recover-claim=" + reuse_id,
+        ]
+        with reuse_log.open("wb") as stream:
+            try:
+                done = subprocess.run(reuse_cmd, stdout=stream,
+                                      stderr=subprocess.STDOUT,
+                                      env=environment, timeout=120, check=False)
+                reuse_code = done.returncode
+            except subprocess.TimeoutExpired:
+                reuse_code = 124
+        processes.append({"name": "pid-reuse-recovery",
+                          "command": reuse_cmd, "observed_exit": reuse_code,
+                          "log": "logs/pid-reuse-recovery.log"})
+        check(reuse_code == 0, "pid-reuse-stale-owner-recovery-exit",
+              {"code": reuse_code, "unrelated_process_alive": True,
+               "unrelated_pid": unrelated_pid})
+        check(Path(str(reuse_output) + ".world-capture-recovered-" + reuse_id).is_dir(),
+              "pid-reuse-previous-claim-archived")
+        reuse_manifest = reuse_output / "capture-manifest.json"
+        check(reuse_manifest.is_file() and
+              json.loads(reuse_manifest.read_text()).get("success") is True,
+              "pid-reuse-new-generation-committed")
+        check(not reuse_claim.exists(), "pid-reuse-new-owner-claim-released")
 
     # Failed and in-progress staging never becomes an authoritative complete
     # manifest. Do not delete negative artifacts even when this test fails.
