@@ -120,8 +120,8 @@ These are behaviour-preserving, execution-only edits. Every World's cell
 results, hashes and receipts are unchanged (see Exactness). They are proposed
 reviewed transitions for issue 362 and PR 406, pending independent review and
 the owner's admission. The source edit is commit `8bbabb2d`; each transition is
-pinned to the commit that adds this table, which carries byte-identical
-sources.
+pinned to `35c1373ef31c8ed96fd9752eecbc3f129b34c5ba`, the commit that adds this table, which carries
+byte-identical sources.
 
 | Path | From LF SHA-256 | To LF SHA-256 |
 |---|---|---|

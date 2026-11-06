@@ -190,6 +190,20 @@ REVIEWED_TRANSITIONS: tuple[dict, ...] = ({'path': 'native/src/world_pressure.in
   'source_commit': 'b4e78e5d425023156f1b8ca4b2ca4e2f81a2505a',
   'record': 'docs/audits/2026-11-06-workbench-pf-tick-cost.md',
   'issue': 362,
+  'pr': 406},
+ {'path': 'native/src/world.cpp',
+  'from_lf_sha256': '09685e01cdd7e2bb898f46ce3c9ab97b7427ac34e7568875a3bdfd7866190ac5',
+  'to_lf_sha256': 'a69a70332450ed246753457f85fcedfa0e3a36e848486e12c441a059c3574d1e',
+  'source_commit': '35c1373ef31c8ed96fd9752eecbc3f129b34c5ba',
+  'record': 'docs/audits/2026-11-06-whole-engine-bench.md',
+  'issue': 362,
+  'pr': 406},
+ {'path': 'native/src/material_rules.cpp',
+  'from_lf_sha256': '8fd1509bfcef162c5cb6028e9af38c563ad651822b9fcfcc2e79a569d185afa3',
+  'to_lf_sha256': '3afda824571842e387b0cac70218ee5f1f96005d07aaaafcf95c146c3eee3254',
+  'source_commit': '35c1373ef31c8ed96fd9752eecbc3f129b34c5ba',
+  'record': 'docs/audits/2026-11-06-whole-engine-bench.md',
+  'issue': 362,
   'pr': 406})
 
 
