@@ -7,6 +7,8 @@ on:
     paths:
       - native/tests/test_gen006_cyps_scaling.cpp
       - native/tests/test_gen006_reset_aba.cpp
+      - native/tests/test_gen006_native_restart.cpp
+      - tools/experiments/gen006_native_restart.py
       - .github/workflows/gen006-native-cyps-scaling.yml
       - docs/audits/2026-11-06-gen006-native-cyps-scaling.md
   workflow_dispatch:
@@ -158,6 +160,35 @@ jobs:
               assert r["old_checkpoint_bytes"]>0 and r["new_checkpoint_bytes"]>0
           PY
 
+      - name: Build and exercise actual native checkpoint independent-process restart
+        shell: bash
+        timeout-minutes: 15
+        run: |
+          set -euo pipefail
+          test "$(git hash-object native/src/world.cpp)" = "aed1bb10e480493397f5c5eac8ba2336f495b9f9"
+          test "$(git hash-object native/include/cybersand/world.hpp)" = "bb2f6e33dd1ad8e4a2b2aec7b34ccfb8229b6cb3"
+          timeout 720s g++-13 -std=c++20 -O2 -g0 -DNDEBUG -pthread \
+            -Wall -Wextra -Wpedantic -I native/include \
+            native/src/world.cpp native/src/material_rules.cpp \
+            native/src/scheduler_geometry.cpp native/src/settled_world_discovery.cpp \
+            native/tests/test_gen006_native_restart.cpp \
+            -o build/gen006-cyps-scaling/native-restart-probe \
+            2>&1 | tee build/gen006-cyps-scaling/native-restart-compile.log
+          timeout 180s python3 tools/experiments/gen006_native_restart.py \
+            --native build/gen006-cyps-scaling/native-restart-probe \
+            --out build/gen006-cyps-scaling \
+            2>&1 | tee build/gen006-cyps-scaling/native-restart.log
+          grep -q 'GEN006_NATIVE_PROCESS_RESTART_PASS cohorts=2' \
+            build/gen006-cyps-scaling/native-restart.log
+          python3 - <<'PY'
+          import json
+          x=json.load(open("build/gen006-cyps-scaling/native-restart-witness.json"))
+          assert len(x["cohorts"])==2
+          assert {c["configured_workers"] for c in x["cohorts"]}=={1,4}
+          assert all(c["result"]=="PASS" for c in x["cohorts"])
+          assert not x["power_cut_durability_tested"] and not x["selective_eviction_tested"]
+          PY
+
       - name: Preserve raw measurements and failures
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
@@ -181,5 +212,8 @@ jobs:
             build/gen006-cyps-scaling/reset-aba-compile.log
             build/gen006-cyps-scaling/reset-aba.log
             build/gen006-cyps-scaling/reset-aba.jsonl
+            build/gen006-cyps-scaling/native-restart-compile.log
+            build/gen006-cyps-scaling/native-restart.log
+            build/gen006-cyps-scaling/native-restart-witness.json
           if-no-files-found: warn
           retention-days: 45
