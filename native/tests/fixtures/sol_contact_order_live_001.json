@@ -1,0 +1,22 @@
+{
+  "registration": "SOL-CONTACT-ORDER-LIVE-001",
+  "status": "prospective experiment; not original SOL recovery admission",
+  "parent": "61924a9788f507620706dfa19d28dc12d819156b",
+  "pure_reference": "SOL-CONTACT-ORDER-VALUES-001 / values-003",
+  "structures": ["tree", "building"],
+  "hosts": ["windows", "linux"],
+  "workers": [1, 4],
+  "packed_arms": ["off", "pre", "post"],
+  "dry_arms": ["off"],
+  "steps": 720,
+  "episode_origin": "first actual Rapier step after zero-step cut/commit/finalize handoff",
+  "rest_window": [600, 719],
+  "rest_screen": {"max_com_speed": 0.5, "max_abs_omega": 0.02, "max_position_axis_span": 0.5, "max_angle_span": 0.05},
+  "controls": "Fresh World and Rapier session each run; same source tuple map, shape union, pose, unit member mass, native inertia, gravity, damping, ordinary 3 impulse and 0.5 correction caps, Sand planner and energy/geometry guards; no thrust or controls. Existing independently paced 60Hz native/main publication schedule; actual timing is measured, not deterministic replay.",
+  "post_boundary": "One frame-local copied observation only after ordinary response accepts; apply after exactly one confirmed bridge.step and before publication. Current sample is captured current plus one modulo 1000000. Original contact timestamp/sample unchanged; maximum age one and vertex drift 0.25 unchanged. No retry, queue, recapture or re-stamp.",
+  "ownership": "Revalidate worker, generation, body instance/RID, bridge, epoch and token after step. Retire on reset/close/pause/failure/busy. Discard if terrain prevents step. Failed post-application readback pauses and returns before publication. One-use bridge lease unchanged.",
+  "coverage": "32 episodes, 23040 observed Rapier steps if complete. Independent reduction of lossless body bits, exact source proxy union and paused terminal native material census. Terminal census is not a synchronized 120+60 physical-clearance evaluator.",
+  "negative_prediction": "Pure post replay is predominantly stale. A refusal is not support or physical clearance. No thresholds, caps or sample age may be tuned after outcome inspection.",
+  "resource": {"collection_cap_bytes": 2147483648, "minimum_free_bytes": 5368709120},
+  "authority_limits": "No E1/E2 admission, no cross-source LA/SOL composition, no native changes, no MAT-AUTH or original CPU-gate claim. Preserve all historical failures. Keep parent #460 unchanged and Draft."
+}
