@@ -129,7 +129,7 @@ def main() -> int:
             token = str(tx.get("attempt_id", ""))
             check(bool(token) and tx.get("schema") == 3 and
                   tx.get("owner_process_started") and
-                  tx.get("owner_host") == "Linux:" + host_boot + ":" + host_namespace,
+                  tx.get("owner_host") == "Linux:" + host_boot + ":" + host_namespace + ":uid=" + str(os.geteuid()),
                   "host-owner-identity-genuine", tx)
             if token:
                 # Docker deliberately uses the *same* hostname string and
