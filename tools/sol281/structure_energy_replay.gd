@@ -1,5 +1,5 @@
 extends SceneTree
-const Control=preload("res://control.gd")
+const BaselinePlanner=preload("res://control.gd")
 const Candidate=preload("res://candidate.gd")
 var checks: int = 0
 var failures: Array[String] = []
@@ -49,7 +49,7 @@ func run() -> void:
 		for centre: Array in item.proxy_centres:centres.append(vector(centre))
 		for size: Array in item.proxy_sizes:sizes.append(vector(size))
 		var observation: Dictionary = restore(item.observation)
-		var old: Dictionary = Control.plan(observation,pose,velocity,a[8],a[9],a[10],centres,sizes)
+		var old: Dictionary = BaselinePlanner.plan(observation,pose,velocity,a[8],a[9],a[10],centres,sizes)
 		var candidate: Dictionary = Candidate.plan(observation,pose,velocity,a[8],a[9],a[10],centres,sizes)
 		check(old.get("outcome")==item.expected_outcome and not old.get("accepted",true),"actual refusal reproduces "+str(item.id))
 		results.append({"id":item.id,"control":plain(old),"candidate":plain(candidate),"control_bits":bits(old),"candidate_bits":bits(candidate)})

@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Replay genuine no-mutation SOL planner refusals; no native/Rapier instantiation."""
+import argparse
 import json
 from pathlib import Path
 import shutil
@@ -9,7 +10,8 @@ import structure_cut as p
 ROOT=p.ROOT
 CANDIDATE='bbca191544f6a578ee14323c08d48021904893f7'
 def main():
-    info=p.identity();folder=p.OUT/'energy-replay-001';assert not folder.exists();folder.mkdir()
+    parser=argparse.ArgumentParser(__doc__);parser.add_argument('--run',required=True);args=parser.parse_args();assert Path(args.run).name==args.run and args.run not in ['.','..']
+    info=p.identity();folder=p.OUT/args.run;assert not folder.exists();folder.mkdir()
     baseline=p.OUT/'packed-001';receipt=json.loads((baseline/'receipt.json').read_text(encoding='utf-8'))
     assert receipt['post_source_equality'];cases=[];raw=[]
     for host,state in receipt['hosts'].items():
