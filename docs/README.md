@@ -4,11 +4,20 @@ status: Current
 document-kind: navigation
 scope: Entry routes and authority rules for the focused documentation hierarchy
 canonical-for: []
-last-reviewed: 2026-11-05
+last-reviewed: 2026-11-06
 related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.md, operations/documentation-maintenance.md, operations/microscenarios-programme.md, operations/development-claims-remediation-programme.md, operations/water-hybrid-pressure-extension-programme.md, architecture/pressure-optimization.md]
 ---
 
 # CyberSand documentation
+
+## Actual structural SOL cuts
+
+For cut tree/building ownership, unit mass/inertia, relative material-weight
+limits and falling/collision/settling, start at the
+[structural contract](systems/solid-detachment.md#actual-cut-structures-mass-and-settling--2026-11-06)
+and [48-episode source-bound dossier](audits/2026-11-06-sol-structural-cut-behaviour.md).
+The dependent numerical repair preserves dry settling; dense-Sand recovery and
+strict clearance remain NO-GO. Keep Draft; no accepted-default or MAT transition.
 
 ## Native structural detachment
 

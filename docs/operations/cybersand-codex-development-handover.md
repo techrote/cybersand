@@ -4,11 +4,28 @@ status: Current
 document-kind: guide
 scope: Short onboarding sequence and checkpoint protocol; product intent, source identity and contracts have canonical homes
 canonical-for: [development-onboarding]
-last-reviewed: 2026-11-05
+last-reviewed: 2026-11-06
 related-documents: [source-checkpoint-and-recovery.md, ../reference/product-intent-and-priorities.md, ../reference/status-and-roadmap.md, microscenarios-programme.md, development-claims-remediation-programme.md, water-hybrid-pressure-extension-programme.md, github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
 # Development handover
+
+## Actual SOL cut structures and numerical repair — 2026-11-06
+
+Continue structural work from the isolated dependent branch
+`codex/sol-structure-cut-20261106`, based on exact #393e4 and retaining #347159
+and #407bbca ancestry. Read the [cut/mass/settling dossier](../audits/2026-11-06-sol-structural-cut-behaviour.md)
+and [current source contract](../systems/solid-detachment.md#actual-cut-structures-mass-and-settling--2026-11-06).
+One root writer; upstream branches and accepted main remain unchanged; keep Draft.
+
+Actual cuts/ownership/unit-mass and dry falling/collision/rest pass in48 fresh
+Windows/Linux1/4-worker episodes. The source-pinned scalar energy repair passes
+replay and actual application checks. Dense Sand still moves/overlaps and strict
+hard depth fails; no solved SOL or material-weight calibration claim. Flyer/
+Kestrel work is a separate compatibility history, not the next SOL acceptance
+case. Next freeze actual structural contact/publication/load diagnostics before
+any newly registered physical law. Preserve all old failures, frozen guard,
+#365block and E1/E2 authority requirements; no cross-source World/pressure port.
 
 ## SOL energy precision dependent candidate — 2026-11-05
 

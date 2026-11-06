@@ -30,11 +30,12 @@ def main():
                     expected_outcome=response['outcome'],state_bits=row['after_application']['bits'],observation=row['contact_observation'],proxy_centres=data['proxy_centres'],proxy_sizes=data['proxy_sizes']))
     assert len(raw)==8 and cases
     inputs=folder/'inputs.json';p.write(inputs,dict(registration='SOL-STRUCTURE-ENERGY-REPLAY-001',cases=cases))
-    control=(ROOT/'godot/scripts/solid_contact_response.gd').read_bytes()
+    # Retain the historical control after this branch consumes the repair.
+    control=p.git('show',p.BASE+':godot/scripts/solid_contact_response.gd')
     candidate=p.git('show',CANDIDATE+':godot/scripts/solid_contact_response.gd')
     probe=(ROOT/'tools/sol281/structure_energy_replay.gd').read_bytes()
     result=dict(identity=info,physical_receipt_sha256=p.sha(baseline/'receipt.json'),raw=raw,input_sha256=p.sha(inputs),cases=len(cases),
-        candidate_source=CANDIDATE,control_sha256=p.sha(ROOT/'godot/scripts/solid_contact_response.gd'),candidate_sha256=p.hashlib.sha256(candidate).hexdigest(),hosts={},
+        candidate_source=CANDIDATE,control_source=p.BASE,control_sha256=p.hashlib.sha256(control).hexdigest(),candidate_sha256=p.hashlib.sha256(candidate).hexdigest(),hosts={},
         scope='Retrospective pure-planner diagnosis of genuine no-mutation refusals. No new physical episode, native World, Rapier body or workers; no force/geometry/threshold change.')
     for host in ['windows','linux']:
         target=folder/host;project=target/'godot';project.mkdir(parents=True)

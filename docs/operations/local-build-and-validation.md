@@ -4,11 +4,38 @@ status: Current
 document-kind: guide
 scope: Pinned source build entry points, Windows workspace wrappers, platform boundaries and freshness limits
 canonical-for: [build-entry-points, dependency-pins, build-freshness]
-last-reviewed: 2026-11-05
+last-reviewed: 2026-11-06
 related-documents: [source-checkpoint-and-recovery.md, testing-validation-and-replay.md, web-threading.md, deepworks-exhibition.md, ../systems/depth-layers-and-parallax.md]
 ---
 
 # Local build and validation
+
+## Actual structural cut qualification — 2026-11-06
+
+On the isolated #393-dependent branch, first commit a clean source and run
+`python tools/sol281/structure_cut.py build --run runtimes-001` into a new output
+folder. Authenticated actual Windows/Linux host engines, SDK/generated headers,
+compilers and Rapier artifacts must exist. Then run
+`python tools/sol281/structure_cut.py hosts --run <new-dry> --suite dry` and the
+same command with `--run <new-packed> --suite packed`. Each matrix uses fresh
+World/Rapier sessions, actual native cuts, both hosts and workers1/4. Existing
+folders refuse overwrite. Original material/physics sources and registration
+must match the runner's source pins; this is not a generic main command.
+
+Run `python tools/sol281/reduce_structure_cut.py --runs <dry> <packed> --output <new-json>`
+and `python tools/sol281/test_structure_reducer.py`. The independent reducer
+rejects incomplete/duplicate coordinates and wrong handoff receipts, checks full
+ownership/tuples/proxy M/COM/I and clips actual server shapes independently.
+It preserves the1e-9 hard witness filter. Dry720 last120 is registered; packed360
+last120 is descriptive. Paused Sand endpoints are not synchronized clearance.
+`structure_energy_replay.py --run <new>` is the retrospective baseline diagnosis:
+its control path must still be baseline, not silently changed to the repair.
+
+The [dossier and receipts](../audits/2026-11-06-sol-structural-cut-behaviour.md)
+separate actual Windows LLVM-MinGW extension, native Windows MSVC, actual WSL
+GCC optimized/strictASanUBSan, pure math and real Rapier. They retain failed
+apparatus attempts and unknowns. Observer timings do not qualify original24-group/
+three-repeat CPU≤2ms, and runtime success does not accept frozen material guards.
 
 ## Isolated SOL planner precision — 2026-11-05
 

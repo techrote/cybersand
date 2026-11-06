@@ -4,11 +4,21 @@ status: Current
 document-kind: navigation
 scope: Question-to-canonical-document routes; detailed answers belong to the linked contracts
 canonical-for: []
-last-reviewed: 2026-11-05
+last-reviewed: 2026-11-06
 related-documents: [../README.md, retrieval-corpus.json, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../architecture/pressure-optimization.md]
 ---
 
 # Retrieval question index
+
+## Actual structural SOL cut and mass routing
+
+For actual cut tree/building aggregate ownership, mass/inertia, relative material
+weight and settling, retrieve the [structural source contract](../systems/solid-detachment.md#actual-cut-structures-mass-and-settling--2026-11-06)
+and [host qualification commands](../operations/local-build-and-validation.md#actual-structural-cut-qualification--2026-11-06).
+The dated [48-episode result](../audits/2026-11-06-sol-structural-cut-behaviour.md)
+separates dry rest, numerical repair and failed dense-Sand clearance. Additive
+`retrieval-questions-sol-structure.json` is post-result development evaluation;
+frozen questions and historical failures remain unchanged.
 
 ## Structural detachment routing
 

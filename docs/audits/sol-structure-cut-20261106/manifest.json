@@ -1,0 +1,371 @@
+{
+  "date": "2026-11-06",
+  "owning_branch": "codex/sol-structure-cut-20261106",
+  "code_checkpoint": "d5c3e05f0c4e6193e7f97a485736ab4bf65698b4",
+  "input_tree": "ac7701fd226f80ea7949354f884d3a91d3999c56",
+  "base": "e4c2649e82d943554f4dc6a0634336770cda08f6",
+  "sol_source": "1598115c9065239cc1eaec11e99077274b457be1",
+  "repair_ancestry": "bbca191544f6a578ee14323c08d48021904893f7",
+  "raw_dependent_patch": {
+    "path": "C:\\Users\\_\\.codex\\worktrees\\sol-structure-cut-20261106\\khybersand\\build\\sol-structure-cut\\dependent-code.patch",
+    "sha256": "ed6e376f75e8e297593f66bad489d1ada3067d1317fbf56fdf93cd108d6ffea8",
+    "bytes": 2894694
+  },
+  "native_delta_from393": [],
+  "upstream": [
+    {
+      "command": [
+        "C:/Program Files/GitHub CLI/gh.exe",
+        "pr",
+        "view",
+        "347",
+        "--repo",
+        "techrote/cybersand",
+        "--json",
+        "number,isDraft,headRefName,headRefOid,baseRefName,state"
+      ],
+      "exit": 0,
+      "result": {
+        "baseRefName": "main",
+        "headRefName": "sol-detach-001-current-main",
+        "headRefOid": "1598115c9065239cc1eaec11e99077274b457be1",
+        "isDraft": true,
+        "number": 347,
+        "state": "OPEN"
+      }
+    },
+    {
+      "command": [
+        "C:/Program Files/GitHub CLI/gh.exe",
+        "pr",
+        "view",
+        "386",
+        "--repo",
+        "techrote/cybersand",
+        "--json",
+        "number,isDraft,headRefName,headRefOid,baseRefName,state"
+      ],
+      "exit": 0,
+      "result": {
+        "baseRefName": "main",
+        "headRefName": "audit/mat-sol-protected-consumer-20261104",
+        "headRefOid": "b661a6f354f8c51e79759d22ad4573a875964b43",
+        "isDraft": true,
+        "number": 386,
+        "state": "OPEN"
+      }
+    },
+    {
+      "command": [
+        "C:/Program Files/GitHub CLI/gh.exe",
+        "pr",
+        "view",
+        "393",
+        "--repo",
+        "techrote/cybersand",
+        "--json",
+        "number,isDraft,headRefName,headRefOid,baseRefName,state"
+      ],
+      "exit": 0,
+      "result": {
+        "baseRefName": "sol-detach-001-current-main",
+        "headRefName": "fix/sol347-facade-refusal-20261104-095628",
+        "headRefOid": "e4c2649e82d943554f4dc6a0634336770cda08f6",
+        "isDraft": true,
+        "number": 393,
+        "state": "OPEN"
+      }
+    },
+    {
+      "command": [
+        "C:/Program Files/GitHub CLI/gh.exe",
+        "pr",
+        "view",
+        "394",
+        "--repo",
+        "techrote/cybersand",
+        "--json",
+        "number,isDraft,headRefName,headRefOid,baseRefName,state"
+      ],
+      "exit": 0,
+      "result": {
+        "baseRefName": "main",
+        "headRefName": "codex/workbench-consolidation-retry-20261104",
+        "headRefOid": "77c60b8e0f9b17192a4e04b20cd37ec55096c2c3",
+        "isDraft": false,
+        "number": 394,
+        "state": "MERGED"
+      }
+    },
+    {
+      "command": [
+        "C:/Program Files/GitHub CLI/gh.exe",
+        "pr",
+        "view",
+        "400",
+        "--repo",
+        "techrote/cybersand",
+        "--json",
+        "number,isDraft,headRefName,headRefOid,baseRefName,state"
+      ],
+      "exit": 0,
+      "result": {
+        "baseRefName": "codex/workbench-consolidation-retry-20261104",
+        "headRefName": "codex/experiment-la-selective-sol-feasibility-20261105",
+        "headRefOid": "a38098b1a807fc3ac7b60166e75b217dd7bc629e",
+        "isDraft": true,
+        "number": 400,
+        "state": "OPEN"
+      }
+    },
+    {
+      "command": [
+        "C:/Program Files/GitHub CLI/gh.exe",
+        "pr",
+        "view",
+        "407",
+        "--repo",
+        "techrote/cybersand",
+        "--json",
+        "number,isDraft,headRefName,headRefOid,baseRefName,state"
+      ],
+      "exit": 0,
+      "result": {
+        "baseRefName": "fix/sol347-facade-refusal-20261104-095628",
+        "headRefName": "codex/sol-energy-precision-20261105",
+        "headRefOid": "bbca191544f6a578ee14323c08d48021904893f7",
+        "isDraft": true,
+        "number": 407,
+        "state": "OPEN"
+      }
+    },
+    {
+      "command": [
+        "C:/Program Files/GitHub CLI/gh.exe",
+        "pr",
+        "view",
+        "429",
+        "--repo",
+        "techrote/cybersand",
+        "--json",
+        "number,isDraft,headRefName,headRefOid,baseRefName,state"
+      ],
+      "exit": 0,
+      "result": {
+        "baseRefName": "codex/sol-normal-active-20261105",
+        "headRefName": "codex/sol-active-normal-live-20261105",
+        "headRefOid": "67f93a28bc05fc3b90beec9ea32e60f0864af642",
+        "isDraft": true,
+        "number": 429,
+        "state": "OPEN"
+      }
+    }
+  ],
+  "main_remote": "06522e300dcf91efbab0ac8f4f4370af72cf2029\trefs/heads/main",
+  "retained": [
+    {
+      "path": "C:\\Users\\_\\.codex\\worktrees\\sol-structure-cut-20261106\\khybersand\\build\\sol-structure-cut\\dry-001",
+      "bytes": 277676878
+    },
+    {
+      "path": "C:\\Users\\_\\.codex\\worktrees\\sol-structure-cut-20261106\\khybersand\\build\\sol-structure-cut\\dry-002",
+      "bytes": 291271013
+    },
+    {
+      "path": "C:\\Users\\_\\.codex\\worktrees\\sol-structure-cut-20261106\\khybersand\\build\\sol-structure-cut\\dry-003",
+      "bytes": 609721465
+    },
+    {
+      "path": "C:\\Users\\_\\.codex\\worktrees\\sol-structure-cut-20261106\\khybersand\\build\\sol-structure-cut\\dry-fixed-001",
+      "bytes": 207039647
+    },
+    {
+      "path": "C:\\Users\\_\\.codex\\worktrees\\sol-structure-cut-20261106\\khybersand\\build\\sol-structure-cut\\energy-replay-001",
+      "bytes": 773171
+    },
+    {
+      "path": "C:\\Users\\_\\.codex\\worktrees\\sol-structure-cut-20261106\\khybersand\\build\\sol-structure-cut\\energy-replay-002",
+      "bytes": 854765
+    },
+    {
+      "path": "C:\\Users\\_\\.codex\\worktrees\\sol-structure-cut-20261106\\khybersand\\build\\sol-structure-cut\\original-001",
+      "bytes": 277510319
+    },
+    {
+      "path": "C:\\Users\\_\\.codex\\worktrees\\sol-structure-cut-20261106\\khybersand\\build\\sol-structure-cut\\original-002",
+      "bytes": 555265662
+    },
+    {
+      "path": "C:\\Users\\_\\.codex\\worktrees\\sol-structure-cut-20261106\\khybersand\\build\\sol-structure-cut\\packed-001",
+      "bytes": 656448957
+    },
+    {
+      "path": "C:\\Users\\_\\.codex\\worktrees\\sol-structure-cut-20261106\\khybersand\\build\\sol-structure-cut\\packed-fixed-001",
+      "bytes": 250837723
+    },
+    {
+      "path": "C:\\Users\\_\\.codex\\worktrees\\sol-structure-cut-20261106\\khybersand\\build\\sol-structure-cut\\rapier-fixed-001",
+      "bytes": 46882
+    },
+    {
+      "path": "C:\\Users\\_\\.codex\\worktrees\\sol-structure-cut-20261106\\khybersand\\build\\sol-structure-cut\\runtimes-001",
+      "bytes": 13985867
+    }
+  ],
+  "retained_files": [
+    {
+      "source": "C:\\Users\\_\\.codex\\worktrees\\sol-structure-cut-20261106\\khybersand\\build\\sol-structure-cut\\runtimes-001\\receipt.json",
+      "path": "docs\\audits\\sol-structure-cut-20261106\\runtimes-001\\receipt.json",
+      "sha256": "b6af76ff9c454f9d4ce4a20aeede47bb0806b923d5fa6aa039c20580bdbcc869",
+      "bytes": 37392
+    },
+    {
+      "source": "C:\\Users\\_\\.codex\\worktrees\\sol-structure-cut-20261106\\khybersand\\build\\sol-structure-cut\\original-001\\receipt.json",
+      "path": "docs\\audits\\sol-structure-cut-20261106\\original-001\\receipt.json",
+      "sha256": "0f03f8f7a6a5b8ca50f805fa25afa2d486ead4cdd6df365a00dbea4475ce6eaf",
+      "bytes": 225661
+    },
+    {
+      "source": "C:\\Users\\_\\.codex\\worktrees\\sol-structure-cut-20261106\\khybersand\\build\\sol-structure-cut\\original-002\\receipt.json",
+      "path": "docs\\audits\\sol-structure-cut-20261106\\original-002\\receipt.json",
+      "sha256": "fee924ac9b11ce5fae327f8c0d52f1e63b372e0cf40b2602e04a3acc473b67b8",
+      "bytes": 340505
+    },
+    {
+      "source": "C:\\Users\\_\\.codex\\worktrees\\sol-structure-cut-20261106\\khybersand\\build\\sol-structure-cut\\dry-001\\receipt.json",
+      "path": "docs\\audits\\sol-structure-cut-20261106\\dry-001\\receipt.json",
+      "sha256": "109ac670bdcdc231dbdfc31cee007ef68bc096630452d4b02d7317e2ab9b1561",
+      "bytes": 227382
+    },
+    {
+      "source": "C:\\Users\\_\\.codex\\worktrees\\sol-structure-cut-20261106\\khybersand\\build\\sol-structure-cut\\dry-002\\receipt.json",
+      "path": "docs\\audits\\sol-structure-cut-20261106\\dry-002\\receipt.json",
+      "sha256": "2441dd8783b3d7d0857572de57113e58a557089f2efdceaaa05dab04a58440f0",
+      "bytes": 229750
+    },
+    {
+      "source": "C:\\Users\\_\\.codex\\worktrees\\sol-structure-cut-20261106\\khybersand\\build\\sol-structure-cut\\dry-003\\receipt.json",
+      "path": "docs\\audits\\sol-structure-cut-20261106\\dry-003\\receipt.json",
+      "sha256": "11cbf54e83857d4e8f902c7c3d81cb329bd58ae5f41d5d0cf3a7550ab82724f4",
+      "bytes": 346325
+    },
+    {
+      "source": "C:\\Users\\_\\.codex\\worktrees\\sol-structure-cut-20261106\\khybersand\\build\\sol-structure-cut\\packed-001\\receipt.json",
+      "path": "docs\\audits\\sol-structure-cut-20261106\\packed-001\\receipt.json",
+      "sha256": "cd86e51a39fa2c2cb65044bcf2ae7eaa421ef448814b143044f9b107d43702ff",
+      "bytes": 358234
+    },
+    {
+      "source": "C:\\Users\\_\\.codex\\worktrees\\sol-structure-cut-20261106\\khybersand\\build\\sol-structure-cut\\dry-fixed-001\\receipt.json",
+      "path": "docs\\audits\\sol-structure-cut-20261106\\dry-fixed-001\\receipt.json",
+      "sha256": "bc9ba50e5b2ca0a26087816d77e59117220668a5e3ce332752c60ad470bab620",
+      "bytes": 347504
+    },
+    {
+      "source": "C:\\Users\\_\\.codex\\worktrees\\sol-structure-cut-20261106\\khybersand\\build\\sol-structure-cut\\packed-fixed-001\\receipt.json",
+      "path": "docs\\audits\\sol-structure-cut-20261106\\packed-fixed-001\\receipt.json",
+      "sha256": "286486ffe6a93cb38f22244d976c44f17e58374ebfeb31d059857d2e6107ffb6",
+      "bytes": 359574
+    },
+    {
+      "source": "C:\\Users\\_\\.codex\\worktrees\\sol-structure-cut-20261106\\khybersand\\build\\sol-structure-cut\\energy-replay-001\\receipt.json",
+      "path": "docs\\audits\\sol-structure-cut-20261106\\energy-replay-001\\receipt.json",
+      "sha256": "51ce4e4917de91bd9576865b8da42773f317ba4a38db1485304e11f76271fe10",
+      "bytes": 36177
+    },
+    {
+      "source": "C:\\Users\\_\\.codex\\worktrees\\sol-structure-cut-20261106\\khybersand\\build\\sol-structure-cut\\energy-replay-002\\receipt.json",
+      "path": "docs\\audits\\sol-structure-cut-20261106\\energy-replay-002\\receipt.json",
+      "sha256": "db8bd30c0466dc0f316b22313c17355667495d12f9b75d4533b944076d8fd94b",
+      "bytes": 36526
+    },
+    {
+      "source": "C:\\Users\\_\\.codex\\worktrees\\sol-structure-cut-20261106\\khybersand\\build\\sol-structure-cut\\rapier-fixed-001\\receipt.json",
+      "path": "docs\\audits\\sol-structure-cut-20261106\\rapier-fixed-001\\receipt.json",
+      "sha256": "94a857eb8ff862b0d5a7604347b62550b5265d3fa09f40358b900df7cf3106d2",
+      "bytes": 31927
+    },
+    {
+      "source": "C:\\Users\\_\\.codex\\worktrees\\sol-structure-cut-20261106\\khybersand\\build\\sol-structure-cut\\energy-replay-002\\inputs.json",
+      "path": "docs\\audits\\sol-structure-cut-20261106\\energy-replay-002\\inputs.json",
+      "sha256": "c0bddbc0dcb300ebbb6e9b239499166bbac7fe56f4c569dd1fe16d6c61651a31",
+      "bytes": 645543
+    },
+    {
+      "source": "C:\\Users\\_\\.codex\\worktrees\\sol-structure-cut-20261106\\khybersand\\build\\sol-structure-cut\\energy-replay-002\\windows\\results.json",
+      "path": "docs\\audits\\sol-structure-cut-20261106\\energy-replay-002\\windows\\results.json",
+      "sha256": "e2b2617e913efae936e7e87755b231747b858ab7fb64774b0e70c6ad420a97f4",
+      "bytes": 40810
+    },
+    {
+      "source": "C:\\Users\\_\\.codex\\worktrees\\sol-structure-cut-20261106\\khybersand\\build\\sol-structure-cut\\energy-replay-002\\linux\\results.json",
+      "path": "docs\\audits\\sol-structure-cut-20261106\\energy-replay-002\\linux\\results.json",
+      "sha256": "e2b2617e913efae936e7e87755b231747b858ab7fb64774b0e70c6ad420a97f4",
+      "bytes": 40810
+    },
+    {
+      "source": "C:\\Users\\_\\.codex\\worktrees\\sol-structure-cut-20261106\\khybersand\\build\\sol-energy\\structure-fixed-001\\receipt.json",
+      "path": "docs\\audits\\sol-structure-cut-20261106\\precision\\receipt.json",
+      "sha256": "12fcc3e29d25bdf66259c8683f4411f1b5abcee60badc47206860a1ef3d5f88b",
+      "bytes": 7787
+    },
+    {
+      "source": "C:\\Users\\_\\.codex\\worktrees\\sol-structure-cut-20261106\\khybersand\\build\\sol-energy\\structure-fixed-001\\reduced.json",
+      "path": "docs\\audits\\sol-structure-cut-20261106\\precision\\reduced.json",
+      "sha256": "cdd0e01e9bb2f1aa13839cff897864fb3eb366ca93ec8181683f34e38f047455",
+      "bytes": 17432
+    },
+    {
+      "source": "C:\\Users\\_\\.codex\\worktrees\\sol-structure-cut-20261106\\khybersand\\build\\sol-energy\\structure-fixed-001\\windows\\results.json",
+      "path": "docs\\audits\\sol-structure-cut-20261106\\precision\\windows\\results.json",
+      "sha256": "7574e5fef3dadf798b98b2fadb10059d2927f9af61702f78f1f4770c8e3120e2",
+      "bytes": 1196141
+    },
+    {
+      "source": "C:\\Users\\_\\.codex\\worktrees\\sol-structure-cut-20261106\\khybersand\\build\\sol-energy\\structure-fixed-001\\linux\\results.json",
+      "path": "docs\\audits\\sol-structure-cut-20261106\\precision\\linux\\results.json",
+      "sha256": "15f3c4dbbb959d216092cd83c7b7beff04aeac159c2f6884291acb51a723dd30",
+      "bytes": 1196141
+    },
+    {
+      "source": "C:/Users/_/sol-structure-native-20261106-msvc-002/qualification.json",
+      "path": "docs\\audits\\sol-structure-cut-20261106\\native-msvc.json",
+      "sha256": "d963bea6f4f30af8ac3f579444a92cf67a2724a433df67cba74f4395fbd83857",
+      "bytes": 58086
+    },
+    {
+      "source": "C:/Users/_/sol-structure-native-20261106-linux-001/receipt.json",
+      "path": "docs\\audits\\sol-structure-cut-20261106\\native-linux.json",
+      "sha256": "62b89103e720f97eebcbf2d434206c8a84247c07c175b016a3e79e725737990b",
+      "bytes": 79833
+    },
+    {
+      "source": "C:\\Users\\_\\.codex\\worktrees\\sol-structure-cut-20261106\\khybersand\\build\\sol-structure-cut\\companion.json",
+      "path": "docs\\audits\\sol-structure-cut-20261106\\companion.json",
+      "sha256": "c1532daa44a8512704bde71ad60d56a98757ee1aecc12581ef4b9b07f72bdc89",
+      "bytes": 1332
+    },
+    {
+      "source": "C:\\Users\\_\\.codex\\worktrees\\sol-structure-cut-20261106\\khybersand\\build\\sol-structure-cut\\reducer-crosshost.json",
+      "path": "docs\\audits\\sol-structure-cut-20261106\\reducer-crosshost.json",
+      "sha256": "53c3afff49a6490f976e726aa5615897d3c3f06d9d4442612c2f2f696766bac1",
+      "bytes": 124
+    }
+  ],
+  "reduced": {
+    "path": "C:\\Users\\_\\.codex\\worktrees\\sol-structure-cut-20261106\\khybersand\\build\\sol-structure-cut\\reduced-complete-004.json",
+    "sha256": "4d6c3df8c7905aa9fa610457856e0134ea810d2ec443ed43337df0350a53c1a8"
+  },
+  "failures_preserved": [
+    "original-001 preflight KeyError old manifest schema; no trajectory",
+    "dry-001 missing commit field, incomplete apparatus; terminated owned process tree receipt retained",
+    "energy-replay-001 native Control class name collision, both hosts no physical episode",
+    "MSVC-001 rejected abbreviated requested commit before compilation, empty directory retained",
+    "Linux reducer first invocation rejected retained Windows path separators; no output",
+    "First documentation check six missing references/five companion files; exact separately pinned files then materialized",
+    "Initial manual energy reducer test omitted required report argument; later9adversarialchecks pass"
+  ],
+  "raw_log_scope": "Scientific runners retain commands/exits/timeouts and raw log hashes. Initial manual diagnostic invocation errors remain tool-transcript records; no invented raw file receipt.",
+  "resource_scope": "Original structure artifact cap4GiB and5GiB reserve preserved; native qualification also retained outside checkout. No prior evidence deleted.",
+  "platform_scope": "Actual Windows LLVM-MinGW extension and MSVC native checks; actual WSL Linux GCC extension, optimized/strictASanUBSan native checks. No MSVC-built GDExtension claim."
+}

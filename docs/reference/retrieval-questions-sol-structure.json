@@ -1,0 +1,53 @@
+{
+  "version": 1,
+  "frozen_date": "2026-11-06",
+  "purpose": "Additive post-result development evaluation, not blind acceptance or replacement of frozen sets.",
+  "questions": [
+    {
+      "id": "SOL-STRUCTURE-MASS-001",
+      "query": "How are actual cut tree and building aggregate ownership mass inertia and relative Sand object material weight checked before SOL physics tuning?",
+      "canonical": [
+        "systems/solid-detachment.md"
+      ],
+      "facts": [
+        "One unit mass per member; exact cell-square inertia and actual one-body/proxy union checks.",
+        "Catalogue density ranks are not calibrated physical Sand/object weight; no stale mass/gravity defect in dry tests."
+      ],
+      "sources": [
+        "../native/src/world_solid_detachment.inc",
+        "../godot/scripts/solid_detachment_session.gd"
+      ]
+    },
+    {
+      "id": "SOL-STRUCTURE-RESULT-001",
+      "query": "Do actual structural cut falling collision and dry settling pass while packed Sand recovery and strict clearance still fail after scalar energy repair?",
+      "canonical": [
+        "systems/solid-detachment.md",
+        "reference/status-and-roadmap.md"
+      ],
+      "facts": [
+        "48 episodes23,040steps actual Windows/Linux workers1/4; dry rest passes.",
+        "All32packed windows nonquiet and strict depth fails; numerical repair does not solve originalSOL."
+      ],
+      "sources": [
+        "../godot/tests/test_sol_structure_cut.gd",
+        "../tools/sol281/reduce_structure_cut.py"
+      ]
+    },
+    {
+      "id": "SOL-STRUCTURE-EXECUTION-001",
+      "query": "How to rerun actual native structural cut qualification and independent complete matrix reduction without treating flyer or paused Sand endpoint as original SOL clearance?",
+      "canonical": [
+        "operations/local-build-and-validation.md",
+        "systems/solid-detachment.md"
+      ],
+      "facts": [
+        "New folders refuse overwrite; fresh source-qualified World/Rapier per coordinate.",
+        "Reducer checks handoff, exact union and complete matrix; Sand endpoints async, dry vs packed windows distinct."
+      ],
+      "sources": [
+        "../tools/sol281/structure_cut.py"
+      ]
+    }
+  ]
+}

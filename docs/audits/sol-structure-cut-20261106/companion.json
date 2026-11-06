@@ -1,0 +1,30 @@
+{
+  "revision": "a15e06ca6f37750b66b89936424e0d018b203f7b",
+  "files": [
+    {
+      "path": "C:\\Users\\_\\.codex\\worktrees\\sol-structure-cut-20261106\\SOURCE-PROVENANCE.json",
+      "sha256": "49b86e67fa7b753f7e0904923a66192aed0348c280a46ef6750c0392e193f30d",
+      "source_path": "SOURCE-PROVENANCE.json"
+    },
+    {
+      "path": "C:\\Users\\_\\.codex\\worktrees\\sol-structure-cut-20261106\\docs\\WEB_THREADING.md",
+      "sha256": "85b13f5d943ad6017fa4fa264bf8f9a54c9d49f80e40697a770d0524a3b9cd34",
+      "source_path": "docs/WEB_THREADING.md"
+    },
+    {
+      "path": "C:\\Users\\_\\.codex\\worktrees\\sol-structure-cut-20261106\\tools\\dev.py",
+      "sha256": "e9aaee35d135012f24b030acccb25d76f0e38893c58ff019138880f73f50f8ea",
+      "source_path": "tools/dev.py"
+    },
+    {
+      "path": "C:\\Users\\_\\.codex\\worktrees\\sol-structure-cut-20261106\\docs\\LOCAL_DEVELOPMENT.md",
+      "sha256": "4fb2ef9423f4a7cc64cfa50b4c0947673ae56b7ecf766c266c4bd809657b772f",
+      "source_path": "docs/LOCAL_DEVELOPMENT.md"
+    },
+    {
+      "path": "C:\\Users\\_\\.codex\\worktrees\\sol-structure-cut-20261106\\validation\\browser-results.json",
+      "sha256": "de154dd896b78384069be360c0f9424efa2ade182e6729eca6a242fcf9839839",
+      "source_path": "validation/browser-results.json"
+    }
+  ]
+}

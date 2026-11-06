@@ -4,11 +4,43 @@ status: Current
 document-kind: contract
 scope: Opt-in single native aggregate, conservative Sand/Water displacement, exact contact observations and separately enabled supported-Sand resistance; draft implementation, not full issue acceptance
 canonical-for: [native-structural-detachment-runtime, conservative-detachment-displacement, detachment-sand-contact-experiment]
-last-reviewed: 2026-11-05
+last-reviewed: 2026-11-06
 related-documents: [../operations/soliding-programme.md, ../architecture/soliding-lifecycle.md, ../architecture/rigid-body-and-cellular-coupling.md, ../audits/2026-11-01-sol281-current-main.md, ../audits/2026-11-03-sol281-dense-contact-registration.md, ../audits/2026-11-03-sol281-dense-contact.md]
 ---
 
 # Native structural detachment
+
+## Actual cut structures, mass and settling — 2026-11-06
+
+**Current on the isolated dependent Draft, not accepted main:** actual native
+support cuts transfer the original520-member/six-proxy RedBrick tree and a
+separately registered356-member/five-proxy RedBrick building to one Rapier body
+each. Source owns tuples before commit, aggregate owns them after; full tuples,
+exact rectangle unions and actual server M/COM/I are independently checked.
+The [structural evidence](../audits/2026-11-06-sol-structural-cut-behaviour.md)
+records48 fresh episodes/23,040 steps on actual Windows/Linux, workers1/4.
+
+Mass is one unit per structural member; inertia includes each unit square's1/6.
+Material catalogue density ranks do not provide calibrated relative Sand/object
+weight. No stale mass/gravity defect was found in dry cuts. Ordinary cap3 is
+separate from hard Rapier contacts and the opt-in Sand response; its weight ratio
+alone is not permission to tune physics. Homogeneous Wall/RedBrick remain the
+admissible materials; Wood/reactive/mixed cohesion is unavailable.
+
+Both baseline and scalar64 repair pass8/8 dry720 rest screens; all32 packed360
+late windows remain nonquiet, and strict hard-depth references fail even when
+dry bodies sleep. The repaired planner's2,826 accepted Sand applications pass an
+independent actual-state scalar64 energy audit;52 nondissipative/one invalid
+witness refusals remain. Existing bridge float32 energy readback and1e-4 guard
+are unchanged. This is a numerical repair with preserved dry falling/collision/
+settling, not originalSOL recovery or a closed total-energy proof.
+
+LA-SELECTIVE remains the owner's intended primary granular gameplay candidate,
+but is not a matched arm in this source-local SOL lane. No #394 World/material
+composition, production default change, gravity-support law or #365 restoration
+is admitted. Freeze actual structural publication/load diagnostics and establish
+relative-weight units before any new support/force tuning. Original clearance,
+CPU, source/runtime and MAT-AUTH integration blockers remain.
 
 ## Public refusal and authoritative readback — 2026-11-04
 

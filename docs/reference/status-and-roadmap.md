@@ -4,11 +4,29 @@ status: Current
 document-kind: reference
 scope: Current implementation map, unresolved correctness and policy decisions, and bounded next checkpoints
 canonical-for: [implementation-status, foundational-priorities, open-decisions]
-last-reviewed: 2026-11-05
+last-reviewed: 2026-11-06
 related-documents: [validation-evidence.md, invariants.md, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/development-claims-remediation-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../operations/github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
 # Status and foundational roadmap
+
+## Actual structural SOL progression — 2026-11-06
+
+**Current isolated Draft:** actual cut tree/building ownership and unit-cell mass/
+inertia are qualified; baseline/repaired dry settling pass. The [source-bound
+result](../audits/2026-11-06-sol-structural-cut-behaviour.md) fixes a reproduced
+float32 energy-norm defect, with2,826 actual repaired Sand responses passing
+scalar64 backend passivity audit. All32 packed late windows retain motion;
+strict clearance and original acceptance remain NO-GO. Physical relative Sand/
+object weight is not calibrated from catalogue density ranks.
+
+**Planned next:** deterministic structural publication/load diagnosis, separate
+ordinary capped response/correction/Sand support accounting and retained-refusal
+traces; establish physical mass units before force tuning. A new recovery law
+requires prospective work/energy registration and needed E1/E2 admission.
+LA-SELECTIVE owner-primary intent remains conditional; this source has no matched
+LA arm or #394 material/World composition. Keep all dependent PRs Draft and #365
+blocked. No flyer surrogate, quiet endpoint or safe refusal accepts original SOL.
 
 ## SOL numerical repair and remaining physics — 2026-11-05
 
