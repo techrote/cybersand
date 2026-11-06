@@ -32,6 +32,18 @@ function validate(p){
   need(pl.anchor_world[0]===pl.origin[0]+f.anchor.point[0]&&pl.anchor_world[1]===p.combined_scene.baseline_y,'anchor world');
   for(const a of f.rectangles){const target=variant?+(variant.swap[String(a[4])]??a[4]):a[4];const m=mat.get(target);need(!!m&&!m.movable&&m.kernel===0,'dynamic dry scene '+f.id);}
  }
+ const sc=p.combined_scene;let artCount=0;
+ for(const key of ['backdrop_rectangles','foreground_rectangles']){
+  need(Array.isArray(sc[key])&&sc[key].length>=100,'scene art presence '+key);
+  for(const a of sc[key]){
+   need(Array.isArray(a)&&a.length===5&&a.every(Number.isInteger),'scene art integer '+key);
+   const [x,y,w,h,id]=a,m=mat.get(id);
+   need(x>=0&&y>=0&&w>0&&h>0&&x+w<=sc.size[0]&&y+h<=sc.size[1],'scene art bounds '+key);
+   need(!!m&&!m.movable&&m.kernel===0,'scene art fixed material '+key);
+   artCount++;
+  }
+ }
+ need(artCount>=400,'scene art depth');
  return count;
 }
 const count=validate(p);
@@ -61,7 +73,11 @@ if(process.argv.includes('--negative')){
   p=>p.combined_scene.placements[1].feature_id='unknown',
   p=>p.combined_scene.placements[2].origin[0]=50,
   p=>p.features[5].rectangles[0][3]=900,
-  p=>p.palette.push({...p.palette[0]})
+  p=>p.palette.push({...p.palette[0]}),
+  p=>p.combined_scene.backdrop_rectangles[0][0]=-1,
+  p=>p.combined_scene.foreground_rectangles[0][2]=0,
+  p=>p.combined_scene.backdrop_rectangles[1][4]=3,
+  p=>p.combined_scene.foreground_rectangles[1][1]=900
  ];
  let rejected=0;
  for(const edit of edits){const copy=structuredClone(p);edit(copy);try{validate(copy)}catch{rejected++}}
@@ -69,3 +85,4 @@ if(process.argv.includes('--negative')){
  console.log(rejected+'/'+edits.length,'bad mutations correctly rejected');
 }
 console.log('PASS',p.features.length,'features,',count,'rectangles,',p.palette.length,'materials; dry scene fixed');
+console.log('PASS composed art',p.combined_scene.backdrop_rectangles.length,'backdrop,',p.combined_scene.foreground_rectangles.length,'foreground fixed scene rectangles');
