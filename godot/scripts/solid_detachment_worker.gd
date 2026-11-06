@@ -143,7 +143,9 @@ func _apply_lab(command: Dictionary) -> bool:
 	if not _world.has_method(&"solid_detachment_command"):
 		_solid_pending_reply = {"ok":false,"outcome":"NativeAPIUnavailable"}
 	else:
-		_solid_pending_reply = _world.solid_detachment_command(input)
+		if input.get("action","")=="workbench_bind":
+			_solid_pending_reply={"ok":bool(_world.diagnostic_bind_solid_workbench(input)),"outcome":"WorkbenchBinding"}
+		else:_solid_pending_reply = _world.solid_detachment_command(input)
 		# Optional diagnostic values are copied only by the exclusive worker.
 		# They expose neither the native World nor a mutable aggregate payload.
 		var points: Variant = input.get("probe_points", PackedInt32Array())

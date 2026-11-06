@@ -119,6 +119,7 @@ public:
         const Array& bodies, std::int64_t session, std::int64_t epoch, bool resolve_overlaps);
     [[nodiscard]] Dictionary workbench_coupling_results() const;
     bool diagnostic_enable_solid_workbench();
+    bool diagnostic_bind_solid_workbench(const Dictionary& request);
     [[nodiscard]] String get_last_tick_error() const;
     [[nodiscard]] Dictionary get_water_experiment_policy() const;
     // Applied LCB-001 liquid solver policy receipt of the live World. The

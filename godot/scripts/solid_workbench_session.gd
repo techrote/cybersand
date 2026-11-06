@@ -47,8 +47,15 @@ func _publish_compound_states() -> bool:
 
 func _prime_compound_coupling() -> bool:
 	if not workbench_law:return await super._prime_compound_coupling()
-	if not _publish_compound_states():return false
 	var this_generation: int=generation;var owner: CyberSimulationWorker=worker
+	var sample: Dictionary=(bridge as WorkbenchBridge).pack_sample([false])
+	if sample.is_empty():return false
+	var bound: Dictionary=await command({"action":"workbench_bind","token":str(source_receipt.token),
+		"body_generation":generation,"sample":sample})
+	if not _owns(this_generation,owner) or not bound.get("ok",false):return false
+	if not owner.install_solid_workbench_sample(sample):return false
+	workbench_wait_sample=int(sample.states[10]);_coupling_sample_serial=workbench_wait_sample
+	_coupling_state_publications+=1
 	var deadline: int=Time.get_ticks_msec()+Watchdogs.milliseconds("operation_seconds")
 	while _owns(this_generation,owner) and Time.get_ticks_msec()<deadline:
 		var s: CyberSimulationSnapshot=owner.take_latest_snapshot(0)

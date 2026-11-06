@@ -78,6 +78,7 @@ void CyberNativeCellWorld::_bind_methods() {
     ClassDB::bind_method(D_METHOD("diagnostic_replay_conservative_contact", "capsule"), &CyberNativeCellWorld::diagnostic_replay_conservative_contact);
     ClassDB::bind_method(D_METHOD("diagnostic_reset", "options"), &CyberNativeCellWorld::diagnostic_reset);
     ClassDB::bind_method(D_METHOD("diagnostic_enable_solid_workbench"), &CyberNativeCellWorld::diagnostic_enable_solid_workbench);
+    ClassDB::bind_method(D_METHOD("diagnostic_bind_solid_workbench","request"), &CyberNativeCellWorld::diagnostic_bind_solid_workbench);
     ClassDB::bind_method(D_METHOD("diagnostic_fill_rect", "origin", "size", "material", "state_b"), &CyberNativeCellWorld::diagnostic_fill_rect, DEFVAL(0));
     ClassDB::bind_method(D_METHOD("diagnostic_relocate_cell", "from", "to"),
                          &CyberNativeCellWorld::diagnostic_relocate_cell);
