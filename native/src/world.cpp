@@ -809,6 +809,10 @@ World::World(WorldConfig config)
                 (config_.chunk_size + config_.activity_block_size - 1) / config_.activity_block_size);
             pressure_->row_tasks.reserve(config_.maximum_chunk_count * blocks_per_axis);
             pressure_->row_wakes.resize(config_.maximum_chunk_count * blocks_per_axis * blocks_per_axis);
+            pressure_->gas_tasks.reserve(config_.maximum_chunk_count);
+            pressure_->gas_seed_words = (static_cast<std::size_t>(config_.chunk_size) *
+                                         static_cast<std::size_t>(config_.chunk_size) + 63U) / 64U;
+            pressure_->gas_seed_bits.resize(config_.maximum_chunk_count * pressure_->gas_seed_words);
         }
         if (selection->variant != LiquidSolverVariant::Reference) {
             if (config_.pressure_optimization.index_chunk_capacity == 0U)

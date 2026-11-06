@@ -68,7 +68,11 @@ auto work(const PressureOptimizationCounters& c) {
     return std::tie(c.columns_recomputed,c.rows_recomputed,c.base_cells_written,
                     c.final_cells_written,c.gas_reference_passes,c.water_material_calls,c.water_motion_calls,
                     c.certificate_invalidation_cells,c.certificate_attempts,c.certificate_reuses,
-                    c.certificate_layer_activations);
+                    c.certificate_layer_activations,
+                    // The pooled gas seed pre-pass and label pass book the same work.
+                    c.gas_seed_cells,c.gas_seed_probes,c.gas_bfs_cells,c.gas_bfs_probes,c.gas_bfs_nodes,
+                    c.gas_relabel_cells,c.gas_identity_nodes,c.gas_restart_fallbacks,
+                    c.gas_component_reuses,c.gas_member_validations,c.gas_reuses);
 }
 
 void compare(const World& reference, const World& candidate) {

@@ -557,6 +557,15 @@ void World::resolve_gas_topology(bool allow_cache) {
     // the sentinel minimum (never a resident cell coordinate the BFS would push).
     constexpr std::int64_t kNodeMarker = std::numeric_limits<std::int64_t>::min();
 
+    // One-entry chunk lookup cache for the seed/BFS phase: no chunk is created
+    // or retired between here and the label pass, so a cached pointer (or a
+    // cached absence) stays exact. Neighbour probes mostly stay in one chunk.
+    ChunkCoord cached_coord{std::numeric_limits<std::int64_t>::min(), std::numeric_limits<std::int64_t>::min()};
+    Chunk* cached_chunk = nullptr;
+    const auto chunk_at = [&](ChunkCoord coord) -> Chunk* {
+        if (coord != cached_coord) { cached_coord = coord; cached_chunk = find_chunk(coord); }
+        return cached_chunk;
+    };
     const auto visit = [&](std::int64_t x, std::int64_t y) {
         ++state.optimization.gas_bfs_probes;
         if (stop) return;
@@ -565,7 +574,7 @@ void World::resolve_gas_topology(bool allow_cache) {
         if (transient_obstacle_at(x, y) != 0U) return;
         auto& region = state.regions[current];
         const auto target = address(x, y);
-        auto* chunk = find_chunk(target.chunk);
+        auto* chunk = chunk_at(target.chunk);
         if (chunk == nullptr) {
             for (const auto& node : state.nodes) {
                 if (node.coord != target.chunk) continue;
@@ -643,7 +652,7 @@ void World::resolve_gas_topology(bool allow_cache) {
         ++state.optimization.gas_seed_probes;
         if (transient_obstacle_at(x, y) != 0U) return false;
         const auto target = address(x, y);
-        const auto* chunk = find_chunk(target.chunk);
+        const auto* chunk = chunk_at(target.chunk);
         if (chunk == nullptr) {
             return std::none_of(state.nodes.begin(), state.nodes.end(),
                                 [&](const State::ChunkNode& node) { return node.coord == target.chunk; });
@@ -692,31 +701,109 @@ void World::resolve_gas_topology(bool allow_cache) {
     // Seeds in a fixed order: Empty cells beside unmasked Water, and Empty cells
     // still carrying a live compartment label (so no compartment is ever skipped,
     // including one held entirely by Empty or unallocated cells).
-    for (const auto coord : coordinates) {
-        if (retry_requested) break;
-        auto* chunk = find_chunk(coord);
-        const auto origin_x = coord.x * size;
-        const auto origin_y = coord.y * size;
-        for (std::int32_t local_y = 0; local_y < size && !retry_requested; ++local_y) {
-            for (std::int32_t local_x = 0; local_x < size && !retry_requested; ++local_x) {
-                const auto index = static_cast<std::size_t>(local_y) * static_cast<std::size_t>(size) +
-                                   static_cast<std::size_t>(local_x);
-                ++state.optimization.gas_seed_cells;
-                const auto material = chunk->cells[index].material_value();
-                const auto x = origin_x + local_x;
-                const auto y = origin_y + local_y;
-                if (material == Material::Water) {
-                    if (transient_obstacle_at(x, y) != 0U) continue;
-                    const std::array<std::pair<std::int64_t, std::int64_t>, 4> around{{
-                        {x, y - 1}, {x - 1, y}, {x + 1, y}, {x, y + 1}}};
-                    for (const auto& [nx, ny] : around) {
-                        if (seed_needed(nx, ny)) fill(nx, ny);
-                        if (retry_requested) break;
+    const auto seed_cell = [&](const Chunk& chunk, std::size_t index, std::int64_t x, std::int64_t y) {
+        const auto material = chunk.cells[index].material_value();
+        if (material == Material::Water) {
+            if (transient_obstacle_at(x, y) != 0U) return;
+            const std::array<std::pair<std::int64_t, std::int64_t>, 4> around{{
+                {x, y - 1}, {x - 1, y}, {x + 1, y}, {x, y + 1}}};
+            for (const auto& [nx, ny] : around) {
+                if (seed_needed(nx, ny)) fill(nx, ny);
+                if (retry_requested) break;
+            }
+        } else if (material == Material::Empty) {
+            const auto label = chunk.pressure->cells[index].gas;
+            if (label != 0U && label != kAtmosphereLabel && label != kVacuumLabel && seed_needed(x, y))
+                fill(x, y);
+        }
+    };
+    // Workbench pre-pass (read-only, one pool task per chunk): a cell is a seed
+    // candidate when its serial step can do anything. Unmasked Water qualifies
+    // only beside an unmasked Empty or non-resident neighbour (otherwise every
+    // seed_needed probe is false whatever the visit stamps or chunk nodes), and
+    // Empty only with a live compartment label. Materials, labels, masks and
+    // the chunk map do not change before the label pass. Skipped Water still
+    // books its four probes, so every counter matches the full scan. A cached
+    // replay can request a mid-scan restart, so that path keeps the full scan.
+    const bool pooled_seed = state.gas_tasks.capacity() != 0 &&
+                             coordinates.size() <= state.gas_tasks.capacity() &&
+                             !(allow_cache && gas_cache != nullptr && gas_cache->gas_ready);
+    if (pooled_seed) {
+        state.gas_tasks.clear();
+        for (std::size_t position = 0; position < coordinates.size(); ++position)
+            state.gas_tasks.push_back({position, 0U, false});
+        const auto words = state.gas_seed_words;
+        const auto prefilter = [&](State::GasChunkTask& task) noexcept {
+            const auto coord = coordinates[task.position];
+            const auto& chunk = *find_chunk(coord);
+            auto* bits = state.gas_seed_bits.data() + task.position * words;
+            std::fill(bits, bits + words, std::uint64_t{0});
+            const auto origin_x = coord.x * size;
+            const auto origin_y = coord.y * size;
+            const auto open = [&](std::int64_t nx, std::int64_t ny) {
+                if (transient_obstacle_at(nx, ny) != 0U) return false;
+                const auto at = address(nx, ny);
+                const auto* other = at.chunk == coord ? &chunk : find_chunk(at.chunk);
+                return other == nullptr || other->cells[at.index].material_value() == Material::Empty;
+            };
+            for (std::int32_t local_y = 0; local_y < size; ++local_y) {
+                for (std::int32_t local_x = 0; local_x < size; ++local_x) {
+                    const auto index = static_cast<std::size_t>(local_y) * static_cast<std::size_t>(size) +
+                                       static_cast<std::size_t>(local_x);
+                    const auto material = chunk.cells[index].material_value();
+                    bool candidate = false;
+                    if (material == Material::Water) {
+                        const auto x = origin_x + local_x;
+                        const auto y = origin_y + local_y;
+                        if (transient_obstacle_at(x, y) != 0U) continue;
+                        candidate = open(x, y - 1) || open(x - 1, y) || open(x + 1, y) || open(x, y + 1);
+                        if (!candidate) ++task.skipped_water;
+                    } else if (material == Material::Empty) {
+                        const auto label = chunk.pressure->cells[index].gas;
+                        candidate = label != 0U && label != kAtmosphereLabel && label != kVacuumLabel;
                     }
-                } else if (material == Material::Empty) {
-                    const auto label = chunk->pressure->cells[index].gas;
-                    if (label != 0U && label != kAtmosphereLabel && label != kVacuumLabel && seed_needed(x, y))
-                        fill(x, y);
+                    if (candidate) bits[index / 64U] |= std::uint64_t{1} << (index % 64U);
+                }
+            }
+        };
+        struct Batch { decltype(prefilter)& run; std::vector<State::GasChunkTask>& tasks; };
+        Batch batch{prefilter, state.gas_tasks};
+        if (batch.tasks.size() >= config_.parallel_job_threshold) {
+            parallel_->pool->dispatch(batch.tasks.size(), &batch, [](void* ptr, std::size_t i) noexcept {
+                auto& work = *static_cast<Batch*>(ptr);
+                work.run(work.tasks[i]);
+            });
+        } else {
+            for (auto& task : batch.tasks) prefilter(task);
+        }
+        const auto cells = static_cast<std::uint64_t>(size) * static_cast<std::uint64_t>(size);
+        for (const auto& task : state.gas_tasks) {
+            const auto coord = coordinates[task.position];
+            const auto* chunk = find_chunk(coord);
+            state.optimization.gas_seed_cells += cells;
+            state.optimization.gas_seed_probes += 4U * task.skipped_water;
+            const auto* bits = state.gas_seed_bits.data() + task.position * words;
+            for (std::size_t word = 0; word < words; ++word) {
+                for (auto pending = bits[word]; pending != 0U; pending &= pending - 1U) {
+                    const auto index = word * 64U + static_cast<std::size_t>(std::countr_zero(pending));
+                    seed_cell(*chunk, index,
+                              coord.x * size + static_cast<std::int64_t>(index % static_cast<std::size_t>(size)),
+                              coord.y * size + static_cast<std::int64_t>(index / static_cast<std::size_t>(size)));
+                }
+            }
+        }
+    } else {
+        for (const auto coord : coordinates) {
+            if (retry_requested) break;
+            auto* chunk = find_chunk(coord);
+            const auto origin_x = coord.x * size;
+            const auto origin_y = coord.y * size;
+            for (std::int32_t local_y = 0; local_y < size && !retry_requested; ++local_y) {
+                for (std::int32_t local_x = 0; local_x < size && !retry_requested; ++local_x) {
+                    const auto index = static_cast<std::size_t>(local_y) * static_cast<std::size_t>(size) +
+                                       static_cast<std::size_t>(local_x);
+                    ++state.optimization.gas_seed_cells;
+                    seed_cell(*chunk, index, origin_x + local_x, origin_y + local_y);
                 }
             }
         }
@@ -948,12 +1035,14 @@ void World::resolve_gas_topology(bool allow_cache) {
         for (auto& cell : chunk.pressure->cells) { cell.gas = label; ++state.optimization.gas_relabel_cells; }
     }
     bool labels_changed = false;
-    for (const auto coord : coordinates) {
+    // Each chunk writes only its own labels from the now read-only region and
+    // compartment tables, so the workbench pool may run one task per chunk.
+    const auto relabel_chunk = [&](ChunkCoord coord) noexcept {
+        bool changed = false;
         auto* chunk = find_chunk(coord);
         auto& visits = chunk->pressure->visit;
         auto& cells = chunk->pressure->cells;
         for (std::size_t index = 0; index < cells.size(); ++index) {
-            ++state.optimization.gas_relabel_cells;
             const auto mark = visits[index];
             if ((mark & 0xFFFF0000U) != stamp) {
                 // Masked Empty cells do not contribute volume or overlap, but
@@ -967,15 +1056,40 @@ void World::resolve_gas_topology(bool allow_cache) {
                 if (label != 0U && label != kAtmosphereLabel && label != kVacuumLabel &&
                     state.find(label) == nullptr) {
                     cells[index].gas = kVacuumLabel;
-                    labels_changed = true;
+                    changed = true;
                 }
                 continue;
             }
             const auto label = state.regions[mark & 0xFFFFU].label;
-            labels_changed = labels_changed || cells[index].gas != label;
+            changed = changed || cells[index].gas != label;
             cells[index].gas = label;
         }
+        return changed;
+    };
+    if (state.gas_tasks.capacity() != 0 && coordinates.size() <= state.gas_tasks.capacity()) {
+        state.gas_tasks.clear();
+        for (std::size_t position = 0; position < coordinates.size(); ++position)
+            state.gas_tasks.push_back({position, 0U, false});
+        struct Batch {
+            decltype(relabel_chunk)& run;
+            std::vector<State::GasChunkTask>& tasks;
+            const std::vector<ChunkCoord>& order;
+        };
+        Batch batch{relabel_chunk, state.gas_tasks, coordinates};
+        if (batch.tasks.size() >= config_.parallel_job_threshold) {
+            parallel_->pool->dispatch(batch.tasks.size(), &batch, [](void* ptr, std::size_t i) noexcept {
+                auto& work = *static_cast<Batch*>(ptr);
+                work.tasks[i].labels_changed = work.run(work.order[work.tasks[i].position]);
+            });
+        } else {
+            for (auto& task : batch.tasks) task.labels_changed = relabel_chunk(coordinates[task.position]);
+        }
+        for (const auto& task : state.gas_tasks) labels_changed = labels_changed || task.labels_changed;
+    } else {
+        for (const auto coord : coordinates) labels_changed = relabel_chunk(coord) || labels_changed;
     }
+    for (const auto coord : coordinates)
+        state.optimization.gas_relabel_cells += find_chunk(coord)->pressure->cells.size();
     // Bounded atmosphere exploration can still extend its authoritative label
     // prefix after a topology edit. Unchanged Water/amount is insufficient for
     // reuse: require a complete reference pass that is a fixed point of the

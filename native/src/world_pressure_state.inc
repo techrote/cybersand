@@ -217,4 +217,16 @@ struct World::PressureState {
     };
     std::vector<HeadRowTask> row_tasks;
     std::vector<RowWake> row_wakes;
+    // Workbench gas pass: one task per resident chunk (sorted order). The seed
+    // pre-pass marks the cells whose serial seed step can do anything and
+    // counts the probes the skipped Water cells would have made; the label
+    // pass writes only its own chunk. Reserved only with a native pool.
+    struct GasChunkTask {
+        std::size_t position = 0;
+        std::uint64_t skipped_water = 0;
+        bool labels_changed = false;
+    };
+    std::vector<GasChunkTask> gas_tasks;
+    std::vector<std::uint64_t> gas_seed_bits; // gas_seed_words per task position
+    std::size_t gas_seed_words = 0;
 };

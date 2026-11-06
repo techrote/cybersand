@@ -401,6 +401,16 @@ void World::release_water_faces() {
                     const auto& cell = chunk->cells[static_cast<std::size_t>(ly) * static_cast<std::size_t>(size) +
                                                     static_cast<std::size_t>(lx)];
                     if (cell.material_value() != Material::Water) continue;
+                    // A face needs an Empty cell beside it (open_at); interior
+                    // Water with both in-chunk horizontal neighbours non-Empty
+                    // cannot release. Same result as the full test, without its
+                    // hash and four map lookups (every check below is pure).
+                    if (lx > 0 && lx + 1 < size) {
+                        const auto row = static_cast<std::size_t>(ly) * static_cast<std::size_t>(size);
+                        if (chunk->cells[row + static_cast<std::size_t>(lx - 1)].material_value() != Material::Empty &&
+                            chunk->cells[row + static_cast<std::size_t>(lx + 1)].material_value() != Material::Empty)
+                            continue;
+                    }
                     const auto x = coord.x * size + lx, y = coord.y * size + ly;
                     if (transient_obstacle_at(x, y) != 0U) continue;
                     if ((tick_index_ + mix64(static_cast<std::uint64_t>(x) * 0x9e3779b97f4a7c15ULL)) % c.face_period != 0U)
