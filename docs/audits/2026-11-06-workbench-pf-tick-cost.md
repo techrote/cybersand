@@ -114,6 +114,21 @@ worker-interest tests, run against DLL `d1f1d9c1`. The canvas test
 (`test_workbench_canvas.gd`, 109 checks) now also covers a fine-core rebuild
 that installs and simulates.
 
+## Protected-source transitions (proposed)
+
+These edits keep Current behaviour for every World without
+`workbench_parallel_pressure_heads`. With it, they are bit-exact to the serial
+pass (above), so physical semantics are unchanged; the change is execution
+only. They are proposed reviewed transitions for issue 362 and PR 406, pending
+independent review and the owner's admission. The source edit is commit
+`c4292730`; the reviewed transition is pinned to the commit that adds this
+table, which carries byte-identical sources.
+
+| Path | From LF SHA-256 | To LF SHA-256 |
+|---|---|---|
+| `native/src/world.cpp` | `93ab7874e913bf696ffcdb85724d01f860bbd53c160dd9b7ea3f8daf28026b85` | `09685e01cdd7e2bb898f46ce3c9ab97b7427ac34e7568875a3bdfd7866190ac5` |
+| `native/src/world_pressure.inc` | `8f7649cda6561eb6d44ebca5b11cfeec41210105bf7e0d20435ede4b03077012` | `f89c9d6b6bcb1f4c76e2432ab4bc99ae22c45f0587aea0de33c06b21e13cac27` |
+
 ## Gaps
 
 - Windows only, on one machine. There is no Linux, Web or CI-runner timing, and
