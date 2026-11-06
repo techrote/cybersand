@@ -178,7 +178,14 @@ func apply_leak(world: Object, owner: int, request: Dictionary, target: Vector2i
 		return result
 
 	var point: Vector2i = target
-	if not open:
+	if open:
+		if _apertures.has(owner):
+			result.reason = "aperture_already_open" if _apertures[owner] == target \
+				else "owned_aperture_already_open"
+			result["point"] = _apertures[owner]
+			result["aperture_open"] = true
+			return result
+	else:
 		if not _apertures.has(owner):
 			result.reason = "no_owned_aperture"
 			return result
