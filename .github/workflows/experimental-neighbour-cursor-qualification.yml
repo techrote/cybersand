@@ -1,16 +1,21 @@
 name: Experimental neighbour cursor paired qualification
 
 on:
+  push:
+    branches:
+      - codex/neighbour-cursor-independent-qualification-20261106
+    paths:
+      - native/bench/**
+      - native/src/world.cpp
+      - native/include/cybersand/world.hpp
   workflow_dispatch:
-    # Manual exact-head reruns while the original hosted qualification remains in flight.
-    # Restore a scoped push trigger after preserving the current run's artifacts.
 
 permissions:
   contents: read
 
 concurrency:
   group: neighbour-cursor-qualification-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   native-qualification:
