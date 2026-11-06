@@ -104,6 +104,8 @@ jobs:
         run: timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 -m unittest discover -s tools/ci -p test_validation_contracts.py
       - name: Test soliding evidence integrity contracts
         run: timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 -m unittest discover -s tools/experiments -p test_soliding_baseline_reduction.py
+      - name: Test coupled-lockstep evidence reducer contracts
+        run: timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 -m unittest discover -s tools/lockstep -p test_reduce_coupling_lockstep.py
       - name: Evaluate current retrieval routes
         id: retrieval
         run: |
