@@ -6,7 +6,7 @@ function renderSvg(p){
  const out=[],rect=(x,y,w,h,c,attr="")=>out.push(`<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${c}" ${attr}/>`),escape=s=>String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;"),txt=(x,y,s,z=14,c="#e5e9f5")=>out.push(`<text x="${x}" y="${y}" font-family="monospace" font-size="${z}" fill="${c}">${escape(s)}</text>`);
  function stamp(f,x,y,z,variant){const v=variant?f.variants.find(v=>v.id===variant):null;for(const [rx,ry,w,h,mid] of f.rectangles){const id=v&&v.swap[String(mid)]!==undefined?+v.swap[String(mid)]:mid;rect(x+rx*z,y+ry*z,w*z,h*z,colors.get(id))}}
  out.push('<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="2320" viewBox="0 0 1600 2320" role="img" aria-label="Fallow Carnival eight CyberSand source-colour modules and dry panorama">');
- rect(0,0,1600,1450,"#0c0e1b");rect(0,0,1600,76,"#181627");txt(35,43,"FALLOW CARNIVAL  /  THE LAST LIGHTS OF THE MIDWAY",27);txt(36,66,"WORLD DESIGN 015  |  FIXED MATERIAL SOURCE COLOURS  |  DESIGN PREVIEW, NOT SIMULATION",12,"#bda8ce");
+ rect(0,0,1600,2320,"#0c0e1b");rect(0,0,1600,76,"#181627");txt(35,43,"FALLOW CARNIVAL  /  THE LAST LIGHTS OF THE MIDWAY",27);txt(36,66,"WORLD DESIGN 015  |  FIXED MATERIAL SOURCE COLOURS  |  DESIGN PREVIEW, NOT SIMULATION",12,"#bda8ce");
  rect(28,88,1544,344,"#191b2a",'rx="8"');txt(46,113,"PANORAMA / DRY NO-MOTION PROPOSAL / 1420 x 226 cells",16,"#ddd1ec");const sc=p.combined_scene,z=1.043,x0=46,y0=137;
  rect(x0,y0,sc.size[0]*z,sc.size[1]*z,"#090e1a");rect(x0,y0+sc.baseline_y*z,sc.size[0]*z,1,"#7c7987");
  for(const [rx,ry,w,h,mid] of sc.backdrop_rectangles)rect(x0+rx*z,y0+ry*z,w*z,h*z,colors.get(mid));
