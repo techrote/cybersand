@@ -13,7 +13,7 @@ function svgForPack(p){
  const rect=(x,y,w,h,id)=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${colour(id)}" fill-opacity="${alpha(id).toFixed(3)}"/>`;
  const feature=(f,variant,x,y)=>{const v=f.variants.find(z=>z.id===variant);const sw=v?v.swap:{};return `<g transform="translate(${x} ${y})">`+f.rectangles.map(r=>rect(r[0],r[1],r[2],r[3],Object.prototype.hasOwnProperty.call(sw,String(r[4]))?sw[String(r[4])]:r[4])).join("")+"</g>";};
  const s=p.scene, W=1280;
- const parts=[`<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="853" viewBox="0 0 1280 853" role="img" aria-label="Emberglass Fumaroles combined volcanic scene and eight modular features">`,
+ const parts=[`<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="1510" viewBox="0 0 1280 1510" role="img" aria-label="Emberglass Fumaroles combined volcanic scene and eight modular features">`,
  `<rect width="1280" height="853" fill="#0d1019"/>`,
  `<rect x="0" y="0" width="1280" height="94" fill="#151923"/>`,
  `<text x="66" y="42" font-family="monospace" font-size="27" font-weight="bold" fill="#f1dcb1">EMBERGLASS / FUMAROLES</text>`,
@@ -36,7 +36,30 @@ function svgForPack(p){
   parts.push(`<rect x="${x+3}" y="${y+27}" width="250" height="132" fill="#090c16"/>`);
   parts.push(`<g transform="translate(${dx.toFixed(2)} ${dy.toFixed(2)}) scale(${scale.toFixed(5)})">${f.rectangles.map(r=>rect(...r)).join("")}</g>`);
  });
- parts.push(`<text x="70" y="841" font-family="monospace" font-size="11" fill="#8c97a2">DESIGN-ONLY • NO ENGINE / GODOT CAPTURE • BRIGHT AMBER IS AN INERT SOLID • STEAM / LAVA / MOLTEN GLASS REQUIRE TICK TESTS</text></svg>`);
+
+ const alt=p.alternate_scene;
+ parts.push('<text x="70" y="871" font-family="monospace" font-size="13" fill="#d1a874">03 — INVERTED KILN / SECOND DRY ASSEMBLY · SAME EIGHT MODULES</text>');
+ parts.push('<rect x="64" y="885" width="1152" height="271" rx="8" fill="#090c16" stroke="#343743"/>');
+ parts.push('<g transform="translate(70 897) scale(1.08)">');
+ parts.push(...alt.terrain_rectangles.map(r=>rect(...r)));
+ parts.push(...alt.placements.map(z=>feature(p.features.find(f=>f.id===z.feature),z.variant,z.x,z.y)));
+ parts.push('</g>');
+ const [aw,ah]=alt.size,cells=new Uint16Array(aw*ah);
+ const paint=(r,ox=0,oy=0,sw={})=>{
+  const [x,y,w,h,id]=r,m=Object.prototype.hasOwnProperty.call(sw,String(id))?sw[String(id)]:id;
+  for(let yy=y+oy;yy<y+oy+h;yy++)cells.fill(m,yy*aw+x+ox,yy*aw+x+ox+w);
+ };
+ alt.terrain_rectangles.forEach(r=>paint(r));
+ alt.placements.forEach(z=>{const f=p.features.find(f=>f.id===z.feature),v=f.variants.find(v=>v.id===z.variant);f.rectangles.forEach(r=>paint(r,z.x,z.y,v?v.swap:{}));});
+ parts.push('<text x="70" y="1184" font-family="monospace" font-size="13" fill="#d1a874">04 — SOURCE-CELL DETAIL STUDIES / 2.4× · NOT ENGINE PIXELS</text>');
+ for(const [px,sx,sy,label] of [[64,305,52,'CRUCIBLE / RUINED RETAINING ARCH'],[646,728,82,'EASTERN FAULT / SURVEY TERRACE']]){
+  parts.push(`<rect x="${px}" y="1201" width="552" height="192" fill="#090c16" stroke="#343743"/>`);
+  parts.push(`<g transform="translate(${px} 1201) scale(2.4)">`);
+  for(let yy=0;yy<80;yy++){let xx=0;while(xx<230){let id=cells[(sy+yy)*aw+sx+xx],end=xx+1;while(end<230&&cells[(sy+yy)*aw+sx+end]===id)end++;if(id!==0)parts.push(rect(xx,yy,end-xx,1,id));xx=end;}}
+  parts.push('</g>');parts.push(`<text x="${px+3}" y="1417" font-family="monospace" font-size="11" fill="#d1a874">${label}</text>`);
+ }
+ parts.push('<text x="70" y="1471" font-family="monospace" font-size="11" fill="#9fb3bb">ORDERED SOURCE-MATERIAL RECTANGLES · EMPTY CELLS DO NOT CLEAR HOST TERRAIN</text>');
+ parts.push('<text x="70" y="1491" font-family="monospace" font-size="11" fill="#8c97a2">DESIGN ONLY / NO GODOT, THERMAL, FLUID, COLLISION OR PERFORMANCE QUALIFICATION</text></svg>');
  return parts.join("\n")+"\n";
 }
 const expected=svgForPack(pack);

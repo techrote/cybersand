@@ -68,8 +68,17 @@ function validatePack(p, sourceMaterials){
   for(const rr of f.rectangles){const m=pal.get(Object.prototype.hasOwnProperty.call(sw,String(rr[4]))?sw[String(rr[4])]:rr[4]);
    if(m.movable||m.kernel!==0)fail("gallery not inert "+f.id+" "+m.id);}
  }
+ const alt=p.alternate_scene;
+ if(!alt||alt.size[0]!==p.scene.size[0]||alt.size[1]!==p.scene.size[1]||!Array.isArray(alt.terrain_rectangles)||alt.terrain_rectangles.length<200||alt.placements.length!==8)fail("alternate shape");
+ for(const rr of alt.terrain_rectangles){testRect(rr,...alt.size,"alternate terrain");if(pal.get(rr[4]).movable||pal.get(rr[4]).kernel!==0)fail("active alternate terrain");}
+ const seenAlt=new Set();let right=-1;
+ for(const z of alt.placements){const f=p.features.find(f=>f.id===z.feature);if(!f||seenAlt.has(z.feature))fail("alternate duplicate/missing feature");seenAlt.add(z.feature);
+ if(!Number.isInteger(z.x)||!Number.isInteger(z.y)||z.x<0||z.y<0||z.x+f.size[0]>alt.size[0]||z.y+f.size[1]>alt.size[1]||z.y+f.size[1]!==211||z.x<right+7)fail("alternate seam/clearance");
+ right=z.x+f.size[0];const swap=mapVariant(f,z.variant);
+ for(const rr of f.rectangles){let id=Object.prototype.hasOwnProperty.call(swap,String(rr[4]))?swap[String(rr[4])]:rr[4],m=pal.get(id);if(!m||m.movable||m.kernel!==0)fail("active alternate feature "+f.id);}
+ }
  if(rectCount<135||variantCount!==16)fail("insufficient deliverables");
- return {features:ids.size,feature_rectangles:rectCount,terrain_rectangles:p.scene.terrain_rectangles.length,variants:variantCount,placements:placed.size,palette:pal.size};
+ return {features:ids.size,feature_rectangles:rectCount,terrain_rectangles:p.scene.terrain_rectangles.length,alternate_rectangles:alt.terrain_rectangles.length,variants:variantCount,placements:placed.size,palette:pal.size};
 }
 function blobSha(bytes){return crypto.createHash("sha1").update(Buffer.from("blob "+bytes.length+"\0")).update(bytes).digest("hex");}
 function sourceMaterialCheck(){
@@ -97,7 +106,12 @@ function selfTest(){
  p=>p.scene.placements[0].x=5000,
  p=>p.scene.placements[4].variant=null,
  p=>p.scene.placements[2].y=1,
- p=>p.scene.placements[1].x=5
+ p=>p.scene.placements[1].x=5,
+ p=>p.alternate_scene.terrain_rectangles[0][0]=-1,
+ p=>p.alternate_scene.terrain_rectangles[1][4]=8,
+ p=>p.alternate_scene.placements[0].x=9999,
+ p=>p.alternate_scene.placements[1].feature=p.alternate_scene.placements[0].feature,
+ p=>p.alternate_scene.placements[2].variant="invalid"
  ];
  for(const fn of mods){const v=structuredClone(pack);fn(v);try{validatePack(v,mats)}catch(e){rejected++;}}
  if(rejected!==mods.length)throw Error("Mutation refusal "+rejected+"/"+mods.length);
