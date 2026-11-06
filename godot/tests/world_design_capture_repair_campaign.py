@@ -516,6 +516,42 @@ def main() -> int:
         check(not (alias_real/"capture-manifest.json").exists(),
               "alias-rejection-preserves-target")
 
+    # Windows SUBST is a real non-link path alias: it does not rely on
+    # reparse-point detection and therefore exercises filesystem equivalence.
+    if args.platform=="windows":
+        subst_drive=None
+        subst_attempts=[]
+        for letter in "ZYXWVUTSRQPONMLKJIHGF":
+            candidate=letter+":"
+            if Path(candidate+"/").exists():
+                continue
+            result=subprocess.run(["cmd","/c","subst",candidate,str(alias_real)],
+                                  capture_output=True,text=True,check=False)
+            subst_attempts.append({"drive":candidate,"returncode":result.returncode,
+                                   "stdout":result.stdout,"stderr":result.stderr})
+            if result.returncode==0:
+                subst_drive=candidate
+                break
+        check(subst_drive is not None,"windows-subst-alias-created",subst_attempts)
+        if subst_drive is not None:
+            try:
+                run("alias_subst_input_child",gcmd("tools/capture_world_design_pack.gd","--",
+                    "--pack="+subst_drive+"/pack.json",
+                    "--output="+str(alias_real/"subst-input-child"),
+                    "--mode=combined","--scale=1"),"nonzero",120)
+                run("alias_subst_output_child",gcmd("tools/capture_world_design_pack.gd","--",
+                    "--pack="+str(alias_pack),
+                    "--output="+subst_drive+"/subst-output-child",
+                    "--mode=combined","--scale=1"),"nonzero",120)
+                check(not Path(str(alias_real/"subst-input-child")+".world-capture-claim").exists() and
+                      not Path(subst_drive+"/subst-output-child.world-capture-claim").exists(),
+                      "windows-subst-alias-rejects-before-claim")
+            finally:
+                removed=subprocess.run(["cmd","/c","subst",subst_drive,"/D"],
+                                       capture_output=True,text=True,check=False)
+                check(removed.returncode==0,"windows-subst-alias-removed",
+                      {"stdout":removed.stdout,"stderr":removed.stderr})
+
     missing=(evidence/"fixtures"/"absent.json")
     run("adverse_missing-pack",gcmd("tools/capture_world_design_pack.gd","--",
         "--pack="+str(missing),"--output="+str(evidence/"adversarial"/"out-missing"),
@@ -557,6 +593,28 @@ def main() -> int:
                 extra=("--recover-claim="+rollback_id,))
         check((rollback_target/"capture-manifest.json").exists(),
               "rollback-failure-explicit-recovery-succeeds")
+
+    # Claim cleanup is part of the transaction contract too. A post-commit
+    # release failure must return nonzero while preserving the already committed
+    # manifest and an attempt-addressable recovery record.
+    release_target=adverse("claim-release-failure",small,expectation="nonzero",
+        extra=("--test-fail-claim-release=on",),expect_manifest_absent=False)
+    release_manifest=release_target/"capture-manifest.json"
+    check(release_manifest.is_file() and
+          json.loads(release_manifest.read_text()).get("success") is True,
+          "claim-release-failure-preserves-committed-manifest")
+    release_claim=Path(str(release_target)+".world-capture-claim")
+    release_tx=release_claim/"transaction.json"
+    release_record=json.loads(release_tx.read_text()) if release_tx.exists() else {}
+    check(release_claim.is_dir() and release_record.get("state")=="release_failed" and
+          release_record.get("requires_recovery") is True,
+          "claim-release-failure-retains-recoverable-transaction",release_record)
+    release_id=str(release_record.get("attempt_id",""))
+    if release_id:
+        adverse("claim-release-recovery",small,expectation="zero",out=release_target,
+                extra=("--recover-claim="+release_id,),expect_manifest_absent=False)
+        check(not Path(str(release_target)+".world-capture-claim").exists(),
+              "claim-release-explicit-recovery-releases-live-claim")
 
     # R5 caller declaration vs independently verified checkout.
     fake_env={"CYBERSAND_SOURCE_REVISION":"d"*40}
