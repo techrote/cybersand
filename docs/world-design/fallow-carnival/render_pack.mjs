@@ -37,7 +37,7 @@ function renderSvg(p){
  for(const [rx,ry,w,h,mid] of alt.foreground_rectangles)rect(ax+rx*az,ay+ry*az,w*az,h*az,colors.get(mid));
  txt(47,1912,"Two-level dry diorama: lost procession, broken inspection viaduct, failed wheel lift and emptied arcades.",12,"#b3b8d0");
  txt(36,1975,"ALTERNATE CLOSE STUDIES / SOURCE COLOURS ONLY",16,"#d9c8e0");
- for(const c of [{x:28,title:"STRANDED MECHANISM / FRACTURED WHEEL CROWN",view:"590 30 380 310"},{x:812,title:"LAST FARE / BROKEN EASTERN CLAIM ATRIUM",view:"1030 76 390 241"}]){
+ for(const c of [{x:28,title:"FOUR LOST CLAIMS / EXCHEQUER & MASK ATELIER",view:"63 245 500 110"},{x:812,title:"SEIZED GOVERNOR / GLASS-CLAIM RELIQUARY",view:"676 242 495 112"}]){
    rect(c.x,1987,760,265,"#191b2a",'rx="8"');
    txt(c.x+12,2009,c.title,13,"#c6cadd");
    out.push(`<svg x="${c.x+12}" y="2022" width="736" height="211" viewBox="${c.view}">`);
