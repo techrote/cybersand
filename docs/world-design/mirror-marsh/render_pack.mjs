@@ -54,8 +54,8 @@ function renderSvg(p){
  for(const r of alt.terrain_rectangles)put(srcRect(r[0],r[1],r[2],r[3],r[4]));
  for(const loc of alt.placements){const f=p.features.find(q=>q.id===loc.feature_id);draw(f,loc.origin[0],loc.origin[1],1,loc.variant)}
  for(const r of alt.foreground_rectangles)put(srcRect(r[0],r[1],r[2],r[3],r[4]));put("</svg>");};
- altCrop(51,"III / COLLAPSED GEODETIC CROWN AND BURIED REGISTERS",555,41);
- altCrop(767,"IV / INCLINOMETERS AND BROKEN EAST BANK STAIRS",878,111);
+ altCrop(51,"III / SIX BURIED REGISTERS / BLIND LUNAR ARCHIVE",196,183);
+ altCrop(767,"IV / BLIND INCLINOMETERS AND SALT-RETURN COFFER",951,181);
  put(text(54,2084,"TWO DISTINCT SOURCE-COLOUR DIORAMAS  ·  NO REFLECTION / BRINE / PHYSICS OR GODOT CLAIM",12,"#83a7a2"));
 put("</svg>");
  return c.join("\n")+"\n";
