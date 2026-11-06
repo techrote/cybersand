@@ -237,10 +237,36 @@ func rectangle_merge() -> void:
 			[0,0,4],[0,0,4,4,Setup.WATER,1],[0,0,30,Setup.FIRE]]:
 		mixed.edits = [bad]
 		check(not Setup.validate(mixed).is_empty(),"invalid stamp refused: "+str(bad))
+	# Compaction keeps every stamped cell and drops erased strokes.
+	mixed.edits = [[10,10,40,30,Setup.WATER],[30,20,6,Setup.SAND],[200,100,1,300,Setup.WALL],[30,20,6,0],[0,0,512,4,Setup.WALL]]
+	for i: int in 200: mixed.edits.append([100+i%50,300,8,0])
+	var compact: Dictionary = Setup.compact_edits(mixed)
+	var before := _reference_cells(mixed)
+	var squeezed := mixed.duplicate(true)
+	squeezed.edits = compact.get("edits",[])
+	check(not compact.has("error") and squeezed.edits.size() < 40 and Setup.validate(squeezed).is_empty()
+		and _reference_cells(squeezed) == before,"compaction reproduces the cells without erase history (%d stamps)" % squeezed.edits.size())
 	mixed.edits = [[0,0,4,4,Setup.FIRE]]
 	mixed.material = Setup.FIRE
 	check(not Setup.validate(mixed).is_empty(),"staged materials stay out of the brush palette")
 	check(not panel.paint(Vector2i(4,4),Setup.FIRE),"brush refuses a staged-only material")
+
+# A full paint history (mostly erasing) compacts instead of refusing the stroke.
+func paint_compaction() -> bool:
+	if not check(installed(),"installed before paint compaction"): return false
+	var saved: Array = panel.applied.edits.duplicate(true)
+	var full := []
+	# Repeated strokes and erasing over one area, as a long paint session records.
+	for i: int in Setup.MAX_STAMPS: full.append([100+(i%40)*2,120+(i/1024)*3,6,Setup.WATER if i%3 != 0 else 0])
+	panel.applied.edits = full
+	var before := _reference_cells(panel.applied)
+	var painted: bool = panel.paint(Vector2i(1900,1900),Setup.SAND)
+	check(painted and panel.applied.edits.size() < Setup.MAX_STAMPS,"full history compacts and accepts the stroke (%d records) / %s busy=%s" % [panel.applied.edits.size(),panel.message,str(panel.busy())])
+	var after: Dictionary = panel.applied.duplicate(true)
+	after.edits = after.edits.slice(0,after.edits.size()-1)
+	check(_reference_cells(after) == before,"compacted history keeps every stamped cell")
+	panel.applied.edits = saved
+	return true
 
 # The built-in "stress-canvas": admitted, eight barrels, most staged materials
 # present, and it simulates.
@@ -332,7 +358,7 @@ func run() -> void:
 				await inspect()
 		else:
 			rectangle_merge()
-			if await builtin_water() and await builtin_bench() and await builtin_stress(): await author()
+			if await builtin_water() and await builtin_bench() and await builtin_stress() and paint_compaction(): await author()
 	else: check(false,"workbench launch")
 	main.queue_free()
 	await process_frame

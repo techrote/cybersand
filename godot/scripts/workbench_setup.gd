@@ -11,7 +11,10 @@ const MATERIAL_NAMES := ["Sand","Dust","Rust","Stone","Seed","Salt","Sodium","Gu
 	"Lava","Oil","Acid","Wood","Ice","Metal"]
 const MAX_BODIES := 8
 const MAX_RUNS := 4096
-const MAX_STAMPS := 2048
+# Starting paint records. When the brush fills them, the history is compacted
+# into box stamps of its merged rectangles (compact_edits), so the practical
+# bound is the native construction budget of MAX_RUNS rectangles.
+const MAX_STAMPS := 4096
 const DIRECTORY := "user://workbench"
 const BYTE_LIMIT := 1024 * 1024
 const DEFAULT_OPTIONS := {"budget":20.0,"mass_multiplier":1.0,"inertia_multiplier":1.0,
@@ -478,6 +481,17 @@ static func rectangles(setup: Dictionary) -> Dictionary:
 			runs.append_array([start,y,x-start,1,mat])
 	return {"runs":runs}
 
+
+# The same starting cells as box stamps of the merged rectangles: erased and
+# overpainted strokes disappear (Erase runs are never recorded).
+static func compact_edits(setup: Dictionary) -> Dictionary:
+	var result := rectangles(setup)
+	if result.has("error"): return result
+	var runs: Array = result.runs
+	var edits := []
+	for i: int in range(0, runs.size(), 5):
+		edits.append([int(runs[i]), int(runs[i+1]), int(runs[i+2]), int(runs[i+3]), int(runs[i+4])])
+	return {"edits": edits}
 
 static func _path(label: String) -> String:
 	if label.is_empty() or label.length() > 48:

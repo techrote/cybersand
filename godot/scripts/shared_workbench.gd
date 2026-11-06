@@ -645,7 +645,13 @@ func paint(pos: Vector2i, material: int) -> bool:
 	if material not in Setup.MATERIALS or not Rect2i(Vector2i.ZERO,Setup.extent_of(applied)).has_point(pos): return false
 	var stamp := [pos.x,pos.y,int(applied.brush),material]
 	var new_stamp: bool = applied.edits.is_empty() or applied.edits.back() != stamp
-	if new_stamp and applied.edits.size() >= Setup.MAX_STAMPS: return refuse("Starting paint capacity exhausted.")
+	if new_stamp and applied.edits.size() >= Setup.MAX_STAMPS:
+		# Compact the recorded history into the same cells' merged rectangles.
+		var compacted := Setup.compact_edits(applied)
+		if compacted.has("error"): return refuse(compacted.error)
+		if compacted.edits.size() >= Setup.MAX_STAMPS:
+			return refuse("Starting terrain is too detailed to record more paint (%d rectangles)." % Setup.MAX_RUNS)
+		applied.edits = compacted.edits
 	# The usual stroke path costs one record. Check coalesced capacity only when
 	# the maximum possible row count would exceed the reconstruction budget.
 	var runs := 2*int(applied.brush)+1

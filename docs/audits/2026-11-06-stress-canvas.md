@@ -215,6 +215,22 @@ the append, `check_repository.py` reports no errors locally. The full ready-head
 CI remains a separate gate. The scoped publication covers only its five Godot
 cases.
 
+## Paint-history compaction (later the same day)
+
+Owner feedback: the 2,048-stamp starting-paint limit was annoying, and erasing
+counted against it. The limit is now 4,096 records (`MAX_STAMPS`, equal to
+`MAX_RUNS`). When the brush fills them, `Setup.compact_edits` replaces the
+history with box stamps of its merged rectangles. Those are the same cells, and
+Erase runs are never recorded, so erasing gives capacity back. Painting is
+refused only when the final terrain needs more than the native 4,096
+construction rectangles.
+
+`test_workbench_canvas.gd` covers it with 164 checks, 0 failures:
+
+- compaction of mixed and erase-heavy histories against an independent raster;
+- a full 4,096-record session that compacts and accepts the next stroke with
+  every cell kept.
+
 ## Next investigations
 
 1. **Hard-surface packet (5.4 ms per tick).**
