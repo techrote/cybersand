@@ -32,6 +32,7 @@ var max_working_mib: int = 256
 var require_verified_source: bool = false
 var test_fail_publication: bool = false
 var test_fail_rollback: bool = false
+var test_fail_claim_release: bool = false
 var test_pause_before_publication_ms: int = 0
 var test_pause_phase: String = "prepared"
 var recover_claim_id: String = ""
@@ -104,6 +105,10 @@ func _parse_arguments() -> String:
 			if OS.get_environment("CYBERSAND_CAPTURE_FAULT_INJECTION") != "1":
 				return "rollback fault injection requires explicit test environment"
 			test_fail_rollback = true
+		elif argument == "--test-fail-claim-release=on":
+			if OS.get_environment("CYBERSAND_CAPTURE_FAULT_INJECTION") != "1":
+				return "claim-release fault injection requires explicit test environment"
+			test_fail_claim_release = true
 		elif argument.begins_with("--test-pause-before-publication-ms="):
 			if OS.get_environment("CYBERSAND_CAPTURE_FAULT_INJECTION") != "1":
 				return "publication pause injection requires explicit test environment"
@@ -176,6 +181,26 @@ func _linked_component(path: String) -> String:
 	return ""
 
 
+# Compare an existing target directory against every existing ancestor of a
+# possibly-nonexistent path. This supplements lexical containment for filesystem
+# aliases such as Windows short-name/subst paths without resolving through links
+# (links/reparse points are rejected separately above).
+func _ancestor_equivalent(path: String, target: String) -> bool:
+	if not DirAccess.dir_exists_absolute(target):
+		return false
+	var cursor: String = path.replace("\\", "/").simplify_path()
+	while true:
+		if DirAccess.dir_exists_absolute(cursor):
+			var access: DirAccess = DirAccess.open(cursor)
+			if access != null and access.is_equivalent(cursor, target):
+				return true
+		var parent: String = cursor.get_base_dir()
+		if parent.is_empty() or parent == cursor:
+			break
+		cursor = parent
+	return false
+
+
 func _validate_paths() -> String:
 	var source_dir: String = pack_path.get_base_dir().replace("\\", "/").simplify_path()
 	var destination: String = output_path.replace("\\", "/").simplify_path()
@@ -185,12 +210,14 @@ func _validate_paths() -> String:
 	var destination_alias: String = _linked_component(destination)
 	if not destination_alias.is_empty():
 		return "output path contains a symlink/junction/reparse point: " + destination_alias
-	if _path_contains(source_dir, destination):
+	if _path_contains(source_dir, destination) or _ancestor_equivalent(destination, source_dir):
 		return "--output must not be equal to or inside the input pack directory"
-	if _path_contains(destination, source_dir):
+	if _path_contains(destination, source_dir) or (
+		DirAccess.dir_exists_absolute(destination) and _ancestor_equivalent(source_dir, destination)):
 		return "--output must not equal or contain the input pack directory"
 	var project_root: String = ProjectSettings.globalize_path("res://").get_base_dir().replace("\\", "/").simplify_path()
-	if _path_contains(destination, project_root):
+	if _path_contains(destination, project_root) or (
+		DirAccess.dir_exists_absolute(destination) and _ancestor_equivalent(project_root, destination)):
 		return "--output must not equal or contain the CyberSand source/workspace root"
 	var key: String = _path_key(destination)
 	if key == "/" or (key.length() == 3 and key.substr(1, 2) == ":/"):
@@ -242,12 +269,36 @@ func _release_claim() -> bool:
 		return true
 	if transaction_requires_recovery:
 		return false
-	var transaction_file: String = claim_path.path_join("transaction.json")
-	if FileAccess.file_exists(transaction_file) and DirAccess.remove_absolute(transaction_file) != OK:
+	if test_fail_claim_release:
+		transaction_requires_recovery = true
+		_write_transaction("release_failed", {
+			"error": "fault-injected claim release failure",
+			"fault_injected": true})
 		return false
-	if DirAccess.dir_exists_absolute(claim_path) and DirAccess.remove_absolute(claim_path) != OK:
+	# Relinquish the fixed claim name with one same-parent rename. If this fails,
+	# the original claim and its transaction remain intact and explicitly
+	# recoverable. Cleanup of the released archive is non-authoritative.
+	var released_path: String = output_path + ".world-capture-released-" + attempt_id
+	if DirAccess.dir_exists_absolute(released_path) or FileAccess.file_exists(released_path):
+		transaction_requires_recovery = true
+		_write_transaction("release_failed", {
+			"error": "claim release archive path is unexpectedly occupied",
+			"released_path": released_path})
+		return false
+	_write_transaction("releasing", {"released_path": released_path})
+	if DirAccess.rename_absolute(claim_path, released_path) != OK:
+		transaction_requires_recovery = true
+		_write_transaction("release_failed", {
+			"error": "cannot atomically relinquish publication claim",
+			"released_path": released_path})
 		return false
 	claim_acquired = false
+	var transaction_file: String = released_path.path_join("transaction.json")
+	if FileAccess.file_exists(transaction_file) and DirAccess.remove_absolute(transaction_file) != OK:
+		push_warning("retained released publication transaction archive: " + released_path)
+		return true
+	if DirAccess.dir_exists_absolute(released_path) and DirAccess.remove_absolute(released_path) != OK:
+		push_warning("retained released publication claim archive: " + released_path)
 	return true
 
 
@@ -280,25 +331,43 @@ func _prepare_target() -> String:
 	return ""
 
 func _status(code: int, error: String) -> void:
-	var result: Dictionary = {"status": "failed" if code != 0 else "complete",
+	var preliminary: Dictionary = {"status": "failed" if code != 0 else "complete",
 		"success": code == 0, "exit_code": code, "attempt_id": attempt_id,
 		"message": error}
-	print("WORLD_DESIGN_CAPTURE ", JSON.stringify(result))
 	if code != 0:
 		if not staging_path.is_empty() and DirAccess.dir_exists_absolute(staging_path):
 			var unpublished: String = staging_path.path_join("capture-manifest.json")
 			if FileAccess.file_exists(unpublished):
 				if DirAccess.remove_absolute(unpublished) != OK:
 					push_error("failed to invalidate uncommitted staging manifest: " + unpublished)
-			_write_json(staging_path.path_join("capture-status.json"), result)
+			_write_json(staging_path.path_join("capture-status.json"), preliminary)
 		if claim_acquired:
 			_write_transaction("recovery_required" if transaction_requires_recovery else "failed",
 				{"exit_code": code, "message": error,
 					"staging_path": staging_path, "generation_path": generation_path,
 					"rollback_or_transaction_failure": transaction_requires_recovery})
-	if not _release_claim() and claim_acquired:
+	var final_code: int = code
+	var final_error: String = error
+	var released: bool = _release_claim()
+	if not released and claim_acquired:
+		if code == 0:
+			final_code = 5
+			final_error = error + "; publication committed but claim release failed; explicit recovery required"
+			transaction_requires_recovery = true
+			_write_transaction("release_failed", {
+				"exit_code": final_code, "message": final_error,
+				"publication_committed": manifest.get("success", false)})
+			if DirAccess.dir_exists_absolute(output_path):
+				_write_json(output_path.path_join("capture-status.json"), {
+					"status": "committed_recovery_required", "success": true,
+					"exit_code": final_code, "attempt_id": attempt_id,
+					"message": final_error, "claim_recovery_required": true})
 		push_error("publication claim retained for recovery: " + claim_path)
-	quit(code)
+	var result: Dictionary = {"status": "failed" if final_code != 0 else "complete",
+		"success": final_code == 0, "exit_code": final_code, "attempt_id": attempt_id,
+		"message": final_error, "publication_committed": manifest.get("success", false)}
+	print("WORLD_DESIGN_CAPTURE ", JSON.stringify(result))
+	quit(final_code)
 
 func _write_json(path: String, value: Variant) -> bool:
 	var temp: String = path + ".pending"

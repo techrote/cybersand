@@ -558,6 +558,28 @@ def main() -> int:
         check((rollback_target/"capture-manifest.json").exists(),
               "rollback-failure-explicit-recovery-succeeds")
 
+    # Claim cleanup is part of the transaction contract too. A post-commit
+    # release failure must return nonzero while preserving the already committed
+    # manifest and an attempt-addressable recovery record.
+    release_target=adverse("claim-release-failure",small,expectation="nonzero",
+        extra=("--test-fail-claim-release=on",),expect_manifest_absent=False)
+    release_manifest=release_target/"capture-manifest.json"
+    check(release_manifest.is_file() and
+          json.loads(release_manifest.read_text()).get("success") is True,
+          "claim-release-failure-preserves-committed-manifest")
+    release_claim=Path(str(release_target)+".world-capture-claim")
+    release_tx=release_claim/"transaction.json"
+    release_record=json.loads(release_tx.read_text()) if release_tx.exists() else {}
+    check(release_claim.is_dir() and release_record.get("state")=="release_failed" and
+          release_record.get("requires_recovery") is True,
+          "claim-release-failure-retains-recoverable-transaction",release_record)
+    release_id=str(release_record.get("attempt_id",""))
+    if release_id:
+        adverse("claim-release-recovery",small,expectation="zero",out=release_target,
+                extra=("--recover-claim="+release_id,),expect_manifest_absent=False)
+        check(not Path(str(release_target)+".world-capture-claim").exists(),
+              "claim-release-explicit-recovery-releases-live-claim")
+
     # R5 caller declaration vs independently verified checkout.
     fake_env={"CYBERSAND_SOURCE_REVISION":"d"*40}
     lie=adverse("false-source-claim",small,expectation="zero",override=fake_env)

@@ -16,10 +16,11 @@ Linux OpenGL/llvmpipe and Windows ANGLE outputs preserved as workflow artifacts.
   pack/output containment, the CyberSand workspace root, existing-directory
   custody and every existing path component **before any output mutation**.
   Symlinks, Windows junctions and other reparse-point aliases in either path are
-  rejected, including a nonexistent output child beneath a linked parent. A
-  non-empty existing output is accepted only when it is an already-owned
-  CyberSand capture root.
-  Each attempt acquires an atomic sibling `.world-capture-claim` directory.
+  rejected, including a nonexistent output child beneath a linked parent.
+  Existing-ancestor filesystem equivalence checks supplement lexical containment
+  so non-link aliases cannot bypass pack/workspace ancestry checks. A non-empty
+  existing output is accepted only when it is an already-owned CyberSand capture
+  root. Each attempt acquires an atomic sibling `.world-capture-claim` directory.
   Generated PNG/RG8/metadata remain in a unique sibling stage and never contain
   a success manifest. Publication moves the validated stage to an immutable
   `.world-capture-generations/<attempt>` directory inside the stable output
@@ -32,7 +33,11 @@ Linux OpenGL/llvmpipe and Windows ANGLE outputs preserved as workflow artifacts.
   `--recover-claim=<attempt-id>` after confirming the old process is dead.
   Fault-injected rollback failure retains both the non-authoritative generation
   and transaction record with `requires_recovery=true` rather than claiming
-  restoration.
+  restoration. Claim release itself is atomic: the fixed claim directory is
+  renamed to an attempt-specific released archive before best-effort cleanup.
+  A release failure leaves the original claim and transaction intact, changes an
+  otherwise-successful process exit to nonzero, and requires explicit
+  attempt-ID recovery without invalidating an already committed root manifest.
 - **R2 — schema identity:** `schema_id` must equal
   `cybersand.world-feature-pack.proposal` and `schema_version` must be numeric
   one (Godot JSON parses integer JSON tokens as float values). Missing IDs,

@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - tools/world-design-capture-repair-r1-r5-20261106
+      - tools/world-design-capture-final-repair-independent-20261106
   workflow_dispatch:
 
 permissions:
