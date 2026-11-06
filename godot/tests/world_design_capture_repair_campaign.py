@@ -516,6 +516,42 @@ def main() -> int:
         check(not (alias_real/"capture-manifest.json").exists(),
               "alias-rejection-preserves-target")
 
+    # Windows SUBST is a real non-link path alias: it does not rely on
+    # reparse-point detection and therefore exercises filesystem equivalence.
+    if args.platform=="windows":
+        subst_drive=None
+        subst_attempts=[]
+        for letter in "ZYXWVUTSRQPONMLKJIHGF":
+            candidate=letter+":"
+            if Path(candidate+"/").exists():
+                continue
+            result=subprocess.run(["cmd","/c","subst",candidate,str(alias_real)],
+                                  capture_output=True,text=True,check=False)
+            subst_attempts.append({"drive":candidate,"returncode":result.returncode,
+                                   "stdout":result.stdout,"stderr":result.stderr})
+            if result.returncode==0:
+                subst_drive=candidate
+                break
+        check(subst_drive is not None,"windows-subst-alias-created",subst_attempts)
+        if subst_drive is not None:
+            try:
+                run("alias_subst_input_child",gcmd("tools/capture_world_design_pack.gd","--",
+                    "--pack="+subst_drive+"/pack.json",
+                    "--output="+str(alias_real/"subst-input-child"),
+                    "--mode=combined","--scale=1"),"nonzero",120)
+                run("alias_subst_output_child",gcmd("tools/capture_world_design_pack.gd","--",
+                    "--pack="+str(alias_pack),
+                    "--output="+subst_drive+"/subst-output-child",
+                    "--mode=combined","--scale=1"),"nonzero",120)
+                check(not Path(str(alias_real/"subst-input-child")+".world-capture-claim").exists() and
+                      not Path(subst_drive+"/subst-output-child.world-capture-claim").exists(),
+                      "windows-subst-alias-rejects-before-claim")
+            finally:
+                removed=subprocess.run(["cmd","/c","subst",subst_drive,"/D"],
+                                       capture_output=True,text=True,check=False)
+                check(removed.returncode==0,"windows-subst-alias-removed",
+                      {"stdout":removed.stdout,"stderr":removed.stderr})
+
     missing=(evidence/"fixtures"/"absent.json")
     run("adverse_missing-pack",gcmd("tools/capture_world_design_pack.gd","--",
         "--pack="+str(missing),"--output="+str(evidence/"adversarial"/"out-missing"),
