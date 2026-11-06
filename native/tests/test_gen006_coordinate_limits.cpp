@@ -457,6 +457,91 @@ void signed_malformed_checkpoint_cohort(std::uint32_t workers) {
               <<",\"source\":\"native_World_CYPS2\",\"result\":\"PASS\"}\n";
 }
 
+
+// Native decision witness for GEN-006: the existing "dirty" queue is a
+// consumable presentation hint, NOT a durable mutation journal or save ACK.
+// Two valid snapshots bracket a later explicit Empty edit across signed chunks.
+// Draining every render hint leaves a newer authoritative mutation unsaved by
+// the older checkpoint. No production write path or persistence format is added.
+void render_dirty_not_persistent_ack_cohort(std::uint32_t workers) {
+    const auto c = config(workers);
+    std::vector<Material> p(static_cast<std::size_t>(kSide*kSide), Material::Empty);
+    p[0] = Material::Wall;
+    p[1] = Material::Wall;
+    p[2] = Material::Water;
+    World live(c);
+    require(live.install_generated_chunk({-1,0}, p)==ChunkInstallOutcome::Installed &&
+            live.install_generated_chunk({0,0}, p)==ChunkInstallOutcome::Installed,
+            "render-dirty witness failed to admit signed native chunks");
+    // Admission itself may dirty the presentation; consume it before editing.
+    (void)live.take_dirty_chunks();
+    require(live.dirty_chunk_count()==0U &&
+            live.stored_material(-128,0)==Material::Wall &&
+            live.stored_material(0,0)==Material::Wall,
+            "render-dirty witness initial state invalid");
+
+    require(live.set_cell_state(-128,0,Material::Empty,0,0) &&
+            live.set_cell_state(2,0,Material::Water,17,0),
+            "render-dirty witness first native mutation refused");
+    live.set_temperature(2,0,417);
+    require(live.dirty_chunk_count()==2U,
+            "first signed-chunk edits did not mark both presentation regions");
+    const auto earlier = live.save_physical_state();
+    const auto earlier_hash = live.physical_state_hash();
+    require(!earlier.empty() && earlier.size()<1024U*1024U,
+            "first genuine whole-World CYPS checkpoint invalid");
+    require(live.take_dirty_chunks().size()==2U &&
+            live.dirty_chunk_count()==0U,
+            "presentation collection did not consume both dirty hints");
+    // A valid earlier snapshot is in flight; the second edit must not become
+    // persistently clean merely because the renderer consumed its notification.
+    require(live.set_cell_state(0,0,Material::Empty,0,0),
+            "later explicit Empty tombstone refused");
+    require(live.dirty_chunk_count()==1U,
+            "later signed-seam edit did not mark presentation dirty");
+    const auto newer = live.save_physical_state();
+    const auto newer_hash = live.physical_state_hash();
+    require(newer!=earlier && newer_hash!=earlier_hash,
+            "later native mutation not reflected in physical checkpoint");
+    require(live.take_dirty_chunks().size()==1U &&
+            live.dirty_chunk_count()==0U &&
+            live.stored_material(0,0)==Material::Empty,
+            "render drain incorrectly equated with native mutation recovery");
+
+    auto old_world=World::restore_physical_state(c,earlier);
+    auto new_world=World::restore_physical_state(c,newer);
+    require(old_world && new_world &&
+            old_world->physical_state_hash()==earlier_hash &&
+            new_world->physical_state_hash()==newer_hash,
+            "both native revision snapshots failed independent decoder restore");
+    require(old_world->stored_material(-128,0)==Material::Empty &&
+            old_world->stored_material(0,0)==Material::Wall &&
+            new_world->stored_material(0,0)==Material::Empty &&
+            new_world->stored_material(-128,0)==Material::Empty,
+            "stale native checkpoint did not demonstrably omit later Empty edit");
+    require(old_world->stored_state_a(2,0)==17U &&
+            new_world->stored_state_a(2,0)==17U &&
+            old_world->liquid_mass(2,0)==17U &&
+            new_world->liquid_mass(2,0)==17U &&
+            old_world->stored_temperature(2,0)==417 &&
+            new_world->stored_temperature(2,0)==417,
+            "native Water/temperature continuity lost in revision control");
+    require(live.chunk_count()==2U && !live.has_failed() &&
+            live.physical_state_hash()==newer_hash &&
+            live.save_physical_state()==newer,
+            "render notification consumption modified physical authority");
+    // There are intentionally zero ticks here, thus no observed pool workers.
+    // Existing event and edge cohorts separately qualify real pool workers.
+    std::cout << "GEN006_NATIVE_RENDER_DIRTY_NOT_SAVE_ACK_JSON {\"configured_workers\":"
+              << workers << ",\"actual_pool_workers\":0,\"chunks\":2"
+              << ",\"render_dirty_after_both_drains\":0"
+              << ",\"earlier_checkpoint_bytes\":" << earlier.size()
+              << ",\"newer_checkpoint_bytes\":" << newer.size()
+              << ",\"older_restore_misses_later_empty\":true"
+              << ",\"water_mass\":17,\"temperature\":417"
+              << ",\"native_selective_eviction\":false,\"result\":\"PASS\"}\n";
+}
+
 }
 int main() {
     try {
@@ -464,6 +549,8 @@ int main() {
         cohort(4);
         signed_malformed_checkpoint_cohort(1);
         signed_malformed_checkpoint_cohort(4);
+        render_dirty_not_persistent_ack_cohort(1);
+        render_dirty_not_persistent_ack_cohort(4);
         pending_event_region_cohort(1, false);
         pending_event_region_cohort(4, false);
         pending_event_region_cohort(1, true);
