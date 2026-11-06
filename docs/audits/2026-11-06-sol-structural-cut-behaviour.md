@@ -42,7 +42,8 @@ runtime/source receipts and performance/refusal counters. Compact
 steps' independent hard geometry, scalar KE, potential change, aggregate
 application/correction and publication identities. Raw full native/Rapier reports
 and logs stay in the manifest's local paths with SHA-256 receipts; binaries/logs
-are not committed. A consumer without those raw files has the public reduced
+are not committed. Public text copies have separate Git-LF hashes; original raw
+receipt hashes continue to identify the unchanged local evidence. A consumer without those raw files has the public reduced
 packet and replay inputs, not independent access to every original contact cache.
 
 ## Actual cut, ownership and mass before the repair
