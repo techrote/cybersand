@@ -61,6 +61,7 @@ class AdmissionTests(unittest.TestCase):
         record = copy.deepcopy(self.record)
         row = next(row for row in record["authority"] if row["path"] == "native/src/world.cpp")
         row["base_blob"] = "0" * 40
+        row["status"] = "changed"  # pass structural relation; exercise Git base identity
         with self.assertRaisesRegex(subject.AdmissionError, "base blob mismatch"):
             subject.check(record=record)
 
@@ -68,6 +69,7 @@ class AdmissionTests(unittest.TestCase):
         record = copy.deepcopy(self.record)
         row = next(row for row in record["authority"] if row["path"] == "native/src/world.cpp")
         row["admitted_blob"] = "0" * 40
+        row["status"] = "changed"  # pass structural relation; exercise anchor identity
         with self.assertRaisesRegex(subject.AdmissionError, "admission anchor blob mismatch"):
             subject.check(record=record)
 
