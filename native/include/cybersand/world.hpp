@@ -553,6 +553,9 @@ private:
         std::uint16_t source_body, std::uint32_t maximum_quantity, bool internal);
     void release_water_faces();
     std::vector<ChunkCoord> ballistic_face_chunks_;
+    // Face-release pre-pass: per listed chunk, one bit per activity block that
+    // holds any Water (pooled; reserved with face release when blocks <= 64).
+    std::vector<std::uint64_t> ballistic_face_water_;
     void overlay_ballistic_render(RectI64 region, std::span<std::uint8_t> destination,
                                   std::size_t stride_bytes, std::size_t bytes_per_cell) const noexcept;
     // Extends only the render dirty rectangle (no activity, wake or pressure input).

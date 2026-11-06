@@ -793,7 +793,10 @@ World::World(WorldConfig config)
     transient_obstacles_ = std::make_unique<TransientObstacleState>();
     validate_ballistic_config();
     if (config_.ballistic_water.enabled) ballistic_parcels_.reserve(config_.ballistic_water.capacity);
-    if (config_.ballistic_water.face_release) ballistic_face_chunks_.reserve(config_.maximum_chunk_count);
+    if (config_.ballistic_water.face_release) {
+        ballistic_face_chunks_.reserve(config_.maximum_chunk_count);
+        ballistic_face_water_.resize(config_.maximum_chunk_count);
+    }
     if (pressure_requested) {
         pressure_ = std::make_unique<PressureState>(pressure_parameters_from(config_.liquid_solver_policy));
         pressure_->sorted_coordinates.reserve(config_.maximum_chunk_count);

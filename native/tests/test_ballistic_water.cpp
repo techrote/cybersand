@@ -628,6 +628,47 @@ void test_ballistic_water_retained_rebuild_inheritance() {
                 dropped_owner->ballistic_parcel_count() == 0U, "non-ballistic owner did not report discarded parcels");
 }
 
+// The pooled face-release pre-pass (40 small chunks, Water-free and sleeping
+// blocks between several walls) releases exactly what the serial scan does.
+void test_ballistic_water_face_release_pooled_prepass() {
+    for (const int family : {1, 3}) {
+        std::uint64_t serial_hash = 0, serial_releases = 0, serial_launched = 0;
+        for (const auto workers : {1U, 4U}) {
+            auto cfg = config(family, workers);
+            cfg.chunk_size = cfg.scheduling_core_size = 16;
+            cfg.activity_block_size = 4;
+            cfg.maximum_chunk_count = cfg.active_chunk_capacity = 512;
+            cfg.active_core_capacity = 1024;
+            cfg.ballistic_water.face_release = true;
+            cfg.ballistic_water.face_period = 1;
+            cfg.ballistic_water.face_min_height = 4;
+            cfg.ballistic_water.face_budget = 24;
+            World world(cfg);
+            box(world, 320, 128);
+            for (const std::int64_t x : {1, 100, 200})
+                rect(world, x, 47, 8, 80, Material::Water);
+            rect(world, 260, 90, 40, 37, Material::Sand);
+            const auto total = total_water(world);
+            for (int t = 0; t < 48; ++t) {
+                (void)world.tick();
+                require(total_water(world) == total, "pooled face release changed Water");
+            }
+            const auto ledger = world.ballistic_water_snapshot().ledger;
+            if (workers == 1U) {
+                serial_hash = world.physical_state_hash();
+                serial_releases = ledger.face_releases;
+                serial_launched = ledger.launched_parcels;
+                require(serial_releases > 0U, "no face cell was released");
+            } else {
+                require(world.physical_state_hash() == serial_hash && ledger.face_releases == serial_releases &&
+                            ledger.launched_parcels == serial_launched,
+                        "pooled face-release pre-pass differs from the serial scan");
+            }
+            closes(world, "pooled face release");
+        }
+    }
+}
+
 void test_ballistic_water_face_release_dam_break() {
     // WCX-FR: face release sheds a dam-break wall with exact Water accounting and
     // worker-count-independent results; the front distance is reported only.

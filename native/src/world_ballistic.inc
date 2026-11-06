@@ -380,6 +380,39 @@ void World::release_water_faces() {
     const auto size = config_.chunk_size;
     const auto block = config_.activity_block_size;
     std::uint32_t budget = c.face_budget;
+    // Pooled pre-pass: which activity blocks hold any Water. A launch only
+    // lowers its own Water source cell (to less Water or Empty) and never
+    // writes Water elsewhere, so a block without Water now stays without it
+    // for this pass and its serial scan could not release anything. Every
+    // block of each listed chunk is classified, because a launch may wake a
+    // block that was asleep when the pass began. Results are unchanged.
+    const auto blocks_per_axis = static_cast<std::size_t>((size + block - 1) / block);
+    const bool pooled = parallel_ != nullptr && parallel_->pool != nullptr &&
+                        blocks_per_axis * blocks_per_axis <= 64U &&
+                        coords.size() <= ballistic_face_water_.size() &&
+                        // A small canvas scans faster than it dispatches.
+                        coords.size() >= std::max<std::size_t>(config_.parallel_job_threshold, 32U);
+    if (pooled) {
+        struct Batch { World* world; const std::vector<ChunkCoord>* coords; std::size_t per_axis; };
+        Batch work{this, &coords, blocks_per_axis};
+        parallel_->pool->dispatch(coords.size(), &work, [](void* ptr, std::size_t i) noexcept {
+            auto& run = *static_cast<Batch*>(ptr);
+            auto& world = *run.world;
+            const auto* chunk = world.find_chunk((*run.coords)[i]);
+            std::uint64_t bits = 0;
+            if (chunk != nullptr) {
+                const auto chunk_size = static_cast<std::size_t>(world.config_.chunk_size);
+                const auto block_size = static_cast<std::size_t>(world.config_.activity_block_size);
+                for (std::size_t index = 0; index < chunk->cells.size(); ++index) {
+                    if (chunk->cells[index].material_value() != Material::Water) continue;
+                    const auto bx = (index % chunk_size) / block_size;
+                    const auto by = (index / chunk_size) / block_size;
+                    bits |= std::uint64_t{1} << (by * run.per_axis + bx);
+                }
+            }
+            world.ballistic_face_water_[i] = bits;
+        });
+    }
     const auto water_at = [&](std::int64_t x, std::int64_t y) {
         return stored_material(x, y) == Material::Water && transient_obstacle_at(x, y) == 0U;
     };
@@ -387,12 +420,14 @@ void World::release_water_faces() {
         return stored_material(x, y) == Material::Empty && transient_obstacle_at(x, y) == 0U &&
                find_chunk(address(x, y).chunk) != nullptr;
     };
-    for (const auto coord : coords) {
+    for (std::size_t listed = 0; listed < coords.size(); ++listed) {
+        const auto coord = coords[listed];
         auto* chunk = find_chunk(coord);
         if (chunk == nullptr) continue;
         const auto per_axis = static_cast<std::size_t>(chunk->activity_blocks_per_axis);
         for (std::size_t b = 0; b < chunk->activity_blocks.size() && budget != 0U; ++b) {
             if (!chunk->activity_blocks[b].active) continue;
+            if (pooled && ((ballistic_face_water_[listed] >> b) & 1U) == 0U) continue;
             const auto first_x = static_cast<std::int32_t>(b % per_axis) * block;
             const auto first_y = static_cast<std::int32_t>(b / per_axis) * block;
             const auto last_x = std::min(first_x + block, size), last_y = std::min(first_y + block, size);

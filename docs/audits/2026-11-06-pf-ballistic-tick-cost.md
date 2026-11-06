@@ -150,6 +150,76 @@ both transitions are pinned.
 | `native/src/world.cpp` | `3c90c5887800f75936a3e75c57030dcf4c7809640652ea2fc03f3e6b597ab654` | `97e605b556c178f6169c1c89fff49041d5640b8fb0f728a6fc3d6c43506f4f00` |
 | `native/src/world_pressure.inc` | `af5bcaf27e4e7bd17d65279aaddb074359db20ff9c06cb5dfabf1a573e02be18` | `894068b587b17b215c993d0eea5c5f14a8a818d4c1430c246f13bdec66653738` |
 
+## Gas-off pass
+
+This second pass uses the same configuration with PressureFlow gas off.
+my-canvas and bench-canvas already held 60 ticks/s, so the target was
+stress-canvas. On the native bench, its gas-off tick is 17.1 ms without ballistic
+Water or diagnostics, against 10.0 ms for default liquids. That ~7 ms of
+PressureFlow cost is about 4 ms of head preparation (column pass 2.9 ms, row pass
+1.3 ms) and about 3 ms of kernel. Ballistic Water and diagnostics add roughly
+1–1.5 ms each.
+
+**Findings:**
+
+- **Dormant falls back to the full reference recompute.** On stress-canvas,
+  88% of ticks take the full reference head recompute
+  (`reference_fallbacks 0.877` per tick). The repair estimate adds the whole
+  resident area once anything is dirty, and that exceeds the 4 Mi-cell
+  `head_repair_cell_budget`.
+- **Raising the budget would not help.** About 2,039 of 2,048 columns are dirty
+  every tick. bench-canvas and my-canvas show the same pattern (979/1,024 and
+  457/512), because any cell change in a column dirties the whole column.
+- **Face release dominated ballistic Water.** On stress-canvas, ballistic advance
+  cost 1.6–1.9 ms per tick, serially, with only 74 live parcels. Almost all of it
+  was the face-release scan visiting every cell of about 2,100 active blocks.
+
+**One exact change kept: a pooled face-release pre-pass.** One task per listed
+chunk records which activity blocks hold any Water. The serial scan skips the
+others. It covers every block of each chunk, because a launch may wake a block
+that was asleep. A launch only lowers its own Water source cell and never writes
+Water elsewhere, so a block without Water before the pass stays without it and
+its scan could release nothing. The pool is used only from 32 listed chunks,
+because on my-canvas the dispatch cost more than the scan.
+
+A new native regression, `BW-001 ballistic Water face release pooled pre-pass
+matches serial`, uses 160 small chunks, Water walls, Water-free sand and
+sleeping blocks. Comparing 1 and 4 workers for FreeMass and PressureFlow, it
+checks the physical hash, face releases and launches. A scratch probe confirmed
+the pooled pass runs (35–39 listed chunks).
+
+| Measurement (native, 6 workers) | Before | After |
+|---|---|---|
+| stress-canvas ballistic advance | 1.94 ms | 0.91 ms |
+| stress-canvas tick | 21.4 ms | 18.7 ms (noisy) |
+| bench-canvas ballistic advance | 0.37 ms | 0.27 ms |
+
+Final hashes are identical (stress `3e8732d482c0a918`, bench
+`1c0c3766bacae13e`, my-canvas `3a85b92b27334f9b`).
+
+**Workbench, DLL `85b08402`, gas off:**
+
+| Canvas | Native tick | Ticks/s |
+|---|---|---|
+| stress-canvas | 22.5–23.2 ms (was 24.7 ms) | 18.4–18.7 (unchanged) |
+| bench-canvas | 6.58 ms | 59.3 |
+| my-canvas | 4.15 ms | 59.7 |
+
+stress-canvas is now bounded by its per-tick worker chain: the native tick plus
+the hard-surface packet (6.4–6.7 ms), render snapshot (3.2–3.3 ms) and
+publication (2.9–3.1 ms), aligned to physics frames.
+
+**Two trials measured and rejected:**
+
+- Walking head columns in batches of eight, for cache-line reuse. Heads went
+  from 4.1 to 5.1–5.6 ms.
+- A last-slot hint in the diagnostic histogram. There was no measurable change
+  beyond run-to-run noise of about ±1.5 ms.
+
+**Checks:** 186 native tests pass (Windows), and ASan/UBSan pass the full suite.
+TSan is clean for worker parity, determinism, Workbench parallel, BW-001,
+explosion and phased. The same ten Godot regressions pass on DLL `85b08402`.
+
 ## Remaining costs and next investigations
 
 1. **Gas BFS, about 2.4 ms serial.** This bounded atmosphere exploration
@@ -163,8 +233,14 @@ both transitions are pinned.
 3. **stress-canvas with gas off** costs 24.7 ms with PressureFlow, against
    about 14 ms with default liquids. PressureFlow head preparation and kernels
    at 2048×1024 are the next target.
-4. The hard-surface packet (1.3–1.4 ms on bench-canvas) and worker publication
-   (~1.1 ms) still lengthen each lock-step tick.
+4. The hard-surface packet still lengthens each lock-step tick: 1.3–1.4 ms on
+   bench-canvas and 6.4–6.7 ms on stress-canvas. Worker publication adds about
+   1.1 and 3 ms respectively. Rebuilding only the collision chunks changed since
+   the last revision is the largest remaining stress-canvas lever.
+5. A provably exact skip of Water-free head columns (about 40–47% of columns at
+   the start on these canvases) could save about 1 ms on stress-canvas. It needs
+   a per-column record that the previous heads are all `kNoHead`, and was not
+   attempted.
 
 ## Gaps
 
