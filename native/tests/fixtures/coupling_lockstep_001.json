@@ -1,0 +1,129 @@
+{
+  "registration": "COUPLING-LOCKSTEP-001",
+  "status": "prospective feasibility measurement; opt-in default-off apparatus; not a production default, replay format, multiplayer contract or strict runtime policy",
+  "registered": "2026-11-06",
+  "parent": "06522e300dcf91efbab0ac8f4f4370af72cf2029",
+  "question": "Can the desktop native cell World plus main-thread Rapier bodies be advanced so that repeated runs are bit-identical, if native tick N consumes exactly the body publication made after Rapier step N-1 and Rapier step N applies exactly the native result of tick N?",
+  "hypotheses": {
+    "H_race": "Ordinary desktop run-to-run divergence is caused by the independently paced worker preparing whichever body sample main last published (publication/tick phase), not by native or Rapier arithmetic.",
+    "H_lockstep_repeatable": "With the lockstep fence, repeated same-host runs are bit-identical for 1 and 4 native workers.",
+    "H_cross_host": "Windows and WSL Linux lockstep runs are bit-identical. Expected to FAIL because the Rapier build lacks enhanced-determinism and platform libm transcendental results may differ; recorded either way."
+  },
+  "fixture": {
+    "base": "godot/tests/test_physics_async.gd seed-0 geometry (Sand column 96 x 384 cells between Wall, gravity_scale .094, linear_damp .15, angular_damp .35, CCD/defaults as that fixture)",
+    "script": "godot/tests/test_coupling_lockstep.gd",
+    "bodies": "Three 8x14 rectangles: two side by side at the Sand surface and one dropped onto them, so Rapier body-body contacts and the native coupling both participate",
+    "ticks": 600,
+    "fresh_process_per_episode": true
+  },
+  "arms": {
+    "async": "Unchanged production pacing: worker free-runs on its 60 Hz wall-clock deadline and prepares whatever body sample main last published; main applies the newest snapshot each physics frame.",
+    "lockstep": "CyberSimulationWorker.set_lockstep_coupling(true) before start. Worker does not latch or tick until a body publication newer than the last one it ticked on exists (non-blocking 100 us poll, counted; a hold longer than hold_timeout_usec=250000 increments a timeout counter once per hold and keeps refusing to advance on stale input). Main (fixture) skips a physics frame, counted, until the newest snapshot consumed its last publication; a main hold longer than 5 s fails the episode."
+  },
+  "matrix": {
+    "hosts": [
+      "windows",
+      "linux (WSL Ubuntu-24.04)"
+    ],
+    "workers": [
+      1,
+      4
+    ],
+    "arms": [
+      "async",
+      "lockstep"
+    ],
+    "repeats": 5,
+    "episodes": 40
+  },
+  "recorded_per_rapier_step": "lossless f64 encodings of each body transform (x, y, origin), linear and angular velocity after the step; applied snapshot serial, native tick, consumed body publication, consumed prepared states bytes and native result bytes",
+  "recorded_per_native_tick": "World physical_state_hash on the exclusive owner",
+  "recorded_final": "diagnostic_snapshot state_hash/content_hash, wall time, holds, timeouts, result-age histogram, worker overruns",
+  "first_divergence_classes": {
+    "RACE": "At the first differing step all earlier steps are equal and the two runs applied results prepared from different body publications or native ticks.",
+    "NATIVE": "Same consumed prepared states (and native tick) but different native results or physical_state_hash.",
+    "RAPIER": "Same pre-step body bits and same applied results but different post-step body bits.",
+    "OTHER": "Anything else; reported with values."
+  },
+  "decision_rule": {
+    "a_REPEATABLE": "Per host and worker count, all 5 lockstep repeats equal repeat 0 on every recorded field with zero worker timeouts and zero failed episodes. Worker parity additionally requires lockstep w1 == w4 per host.",
+    "a_async_control": "Descriptive: count async repeat pairs that differ and classify each first divergence. If no async pair differs, the race is UNDEMONSTRATED in this fixture and (a) is reported as weaker evidence.",
+    "b_CROSS_HOST_MATCH": "Windows lockstep repeat 0 equals Linux lockstep repeat 0 on every recorded field, per worker count. Otherwise DIFFER, with first divergent step and class.",
+    "c_cost": "Descriptive: wall seconds per 600 steps, Rapier steps per wall second, main held frames and fraction, worker hold time distribution and timeouts, result age (async histogram vs lockstep). No production threshold is set by this registration."
+  },
+  "smoke": "One lockstep and one async w1 episode per host may run first to check mechanics; smoke outcomes are excluded from every decision and retained.",
+  "resource": {
+    "timeout_seconds_per_episode": 300,
+    "collection_cap_bytes": 1073741824
+  },
+  "authority_limits": "No default, main.gd pacing, native, Rapier, material or physics-parameter change. No replay, save-format, multiplayer or Web claim. Inherited guard failures stay blockers; no guard or hash refresh.",
+  "amendment_001": {
+    "reason": "Registered matrix-001 completed first. smoke-001 (excluded) located the first Windows/Linux lockstep difference at step 39: identical Rapier Transform2D bits but a 1-ulp different float32 rotation from Transform2D.get_rotation() (platform atan2f) in the packed body sample; native results then differed at step 54 and Rapier post-step bits at 57. This amendment adds exploratory arms only; it does not change any matrix-001 decision.",
+    "arms": {
+      "lockstep_f64rot": "Fixture-only: as lockstep, but each packed rotation is replaced by GDScript atan2(float(basis.x.y), float(basis.x.x)) evaluated in double and stored as float32. Production packing is unchanged.",
+      "long_horizon": "lockstep and lockstep_f64rot at 1800 ticks, to probe repeatability and cross-host agreement beyond 600 steps.",
+      "load": "async and lockstep with a synthetic native-owner delay (0, 8000, 14000, 20000 us) added before each completed tick is published, Windows, workers 4, 2 repeats, 600 ticks. Descriptive cost curve only."
+    },
+    "matrix": {
+      "f64rot": {
+        "hosts": [
+          "windows",
+          "linux"
+        ],
+        "workers": [
+          1,
+          4
+        ],
+        "arms": [
+          "lockstep",
+          "lockstep-f64rot"
+        ],
+        "repeats": 3,
+        "ticks": 600
+      },
+      "long_horizon": {
+        "hosts": [
+          "windows",
+          "linux"
+        ],
+        "workers": [
+          1,
+          4
+        ],
+        "arms": [
+          "lockstep",
+          "lockstep-f64rot"
+        ],
+        "repeats": 2,
+        "ticks": 1800
+      },
+      "load": {
+        "hosts": [
+          "windows"
+        ],
+        "workers": [
+          4
+        ],
+        "arms": [
+          "async",
+          "lockstep"
+        ],
+        "repeats": 2,
+        "ticks": 600,
+        "delay_usec": [
+          0,
+          8000,
+          14000,
+          20000
+        ]
+      }
+    },
+    "decisions": {
+      "f64rot_cross_host": "Descriptive: report first cross-host divergence step and class for lockstep_f64rot versus lockstep. MATCH only if every recorded field is equal.",
+      "long_horizon_repeatable": "Descriptive: same-host repeats equal to repeat 0 at 1800 ticks."
+    },
+    "authority_limits": "Exploratory development lane. No production packing, native, Rapier or default change follows from this amendment.",
+    "registered": "2026-11-06, after matrix-001 completed and was reduced; matrix-001 decisions are unchanged",
+    "apparatus_defect": "matrix-001 read diagnostic_snapshot keys state_hash/content_hash, but the adapter returns state_hash as \"hash\" and no content_hash, so both final-hash fields were empty strings in all 40 episodes and that tail comparison was vacuous. Per-tick physical_state_hash and per-step body/result/state bits were complete. Amendment runs record state_hash from \"hash\" plus a final physical_state_hash. matrix-001 evidence is retained unchanged."
+  }
+}
