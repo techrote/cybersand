@@ -17,6 +17,7 @@ env:
 
 jobs:
   linux-graphical-baseline:
+    if: github.run_number == 1
     runs-on: ubuntu-24.04
     timeout-minutes: 55
     steps:
@@ -281,10 +282,10 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          E="$RUNNER_TEMP/pr457-windows-evidence"
+          E="$(cygpath -u "$RUNNER_TEMP")/pr457-windows-evidence"
           rm -rf "$E"; mkdir -p "$E"/{logs,candidate,selector,design-export,analysis}
-          GODOT_ZIP="$RUNNER_TEMP/Godot_v4.7-stable_win64.exe.zip"
-          GODOT_DIR="$RUNNER_TEMP/godot-4.7-win"
+          GODOT_ZIP="$(cygpath -u "$RUNNER_TEMP")/Godot_v4.7-stable_win64.exe.zip"
+          GODOT_DIR="$(cygpath -u "$RUNNER_TEMP")/godot-4.7-win"
           curl --fail --location --retry 3 --output "$GODOT_ZIP" "https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip"
           python - <<'PY'
           import hashlib, os, pathlib
