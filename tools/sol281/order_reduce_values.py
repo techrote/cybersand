@@ -32,7 +32,8 @@ def reduce(folder):
                         count+=1;change=energy(a['output_bits'])-energy(a['input_bits']);max_gain=max(max_gain,change)
                         assert change<=max(1e-8,energy(a['input_bits'])*1e-8)+1e-9
                         dj+=plan['total_impulse'][1];nonempty+=bool(plan['impulses'])
-                        vchange=energy(a['unapplied_s1_bits'])-energy(source['steps'][row['step']]['s1'])
+                        index=int(row['step']);assert index==row['step']
+                        vchange=energy(a['unapplied_s1_bits'])-energy(source['steps'][index]['s1'])
                         virtual_gains+=vchange>1e-8;virtual_max=max(virtual_max,vchange)
                     controls=source['steps'][0];mass=state(controls['s1'])[9];g=abs(controls['gravity'][1]);dt=controls['dt']
                     arms[arm]=dict(effective_outcomes=dict(outcomes),numerical_outcomes_including_ineligible=dict(numerical),eligible_accepted=count,eligible_nonempty=nonempty,selected_jy_sum=dj,opposing_gravity_fraction_all_frames=-dj/(mass*g*dt*len(rows)),max_scalar64_energy_gain=max_gain,unapplied_on_actual_s1_gain_count=virtual_gains,unapplied_on_actual_s1_max_gain=virtual_max)

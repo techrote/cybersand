@@ -77,6 +77,7 @@ var _coupling_stale_results: int = 0
 var _coupling_last_impulse: Vector2 = Vector2.ZERO
 var _coupling_last_correction: Vector2 = Vector2.ZERO
 var sand_resistance_enabled: bool = false
+var sand_contact_order: String = "pre" # Opt-in experiment; existing default.
 var contact_measurement_enabled: bool = false
 var last_contact_observation: Dictionary = {}
 var last_contact_response: Dictionary = {}
@@ -481,20 +482,21 @@ func _prime_compound_coupling() -> bool:
 		OS.delay_usec(500)
 	return false
 
-func _consume_compound_results() -> void:
+func _consume_compound_results() -> Dictionary:
 	if worker == null or bridge == null or not is_instance_valid(body):
-		return
+		return {}
 	var snapshot: CyberSimulationSnapshot = worker.take_latest_snapshot(_coupling_snapshot_serial)
 	if snapshot == null:
-		return
+		return {}
 	_coupling_snapshot_serial = snapshot.serial
 	_coupling_last_native_tick = snapshot.tick_index
 	if snapshot.simulation_failed:
 		_fail("Native owner failed; Rapier held at its last admitted pose; reset the complete session")
-		return
+		return {}
 	if snapshot.rigid_body_epoch != physics_epoch:
-		return
+		return {}
 	_record_contact_observation(snapshot.solid_contact_observation, snapshot.solid_contact_work)
+	_observe_worker_participation(snapshot.native_worker_participation)
 	_last_worker_step_ms = snapshot.worker_step_time_ms
 	_last_native_tick_ms = snapshot.simulation_time_ms
 	_timed_snapshots += 1
@@ -505,7 +507,7 @@ func _consume_compound_results() -> void:
 	if snapshot.hard_surface_chunk_rectangles_valid and snapshot.hard_surface_revision != _terrain_revision:
 		if not bridge.queue_hard_surface_chunk_snapshot(snapshot.hard_surface_chunk_rectangles):
 			_fail("Changed terrain collider publication refused; reset required")
-			return
+			return {}
 		_terrain_revision = snapshot.hard_surface_revision
 		_terrain_refreshes += 1
 	_coupling_result_snapshots += 1
@@ -525,7 +527,7 @@ func _consume_compound_results() -> void:
 		"current_sample_serial":_coupling_sample_serial}
 	_coupling_stale_results += int(applied.get("stale_records", 0))
 	if not applied.get("accepted", false):
-		return
+		return {}
 	_coupling_last_applied_sample = int(applied.sample_serial)
 	_coupling_contacts += int(applied.contacts)
 	_coupling_displaced += int(applied.displaced)
@@ -536,32 +538,63 @@ func _consume_compound_results() -> void:
 	_coupling_last_impulse = applied.impulse
 	_coupling_last_correction = applied.correction
 	if sand_resistance_enabled:
-		var contact_started: int = Time.get_ticks_usec()
-		last_contact_response = bridge.apply_solid_sand_contact(snapshot.solid_contact_observation,
-			0, snapshot.serial, snapshot.tick_index, snapshot.simulation_world_revision,
-			physics_epoch, str(source_receipt.token),
-			generation, int(applied.sample_serial), _coupling_sample_serial,
-			_coupling_local_centers, _coupling_sizes)
-		var contact_ms: float = float(Time.get_ticks_usec() - contact_started) / 1000.0
-		# Receipt identity accompanies refusals as well as successful responses.
-		# It does not turn a prior accepted response into this sample's result.
-		last_contact_response["snapshot_serial"] = snapshot.serial
-		last_contact_response["evaluated"] = true
-		last_contact_response["source_sample_serial"] = int(applied.sample_serial)
-		last_contact_response["current_sample_serial"] = _coupling_sample_serial
-		last_contact_response["receipt_usec"] = contact_started
-		_contact_metrics.response_attempts += 1
-		_contact_metrics.response_ms_all_attempts += contact_ms
-		_contact_metrics.response_ms_max_attempt = maxf(_contact_metrics.response_ms_max_attempt, contact_ms)
-		var stage_sum: float = 0.0
-		for stage: String in ["rid_state_ms", "planner_ms", "impulse_apply_ms", "readback_ms"]:
-			var stage_ms: float = float(last_contact_response.get(stage, 0.0))
-			stage_sum += stage_ms
-			_contact_metrics["response_" + stage + "_all_attempts"] += stage_ms
-		# Includes early identity refusals, wrapper calls and stage instrumentation;
-		# it is retained rather than silently dropped from the original numerator.
-		_contact_metrics.response_other_ms_all_attempts += contact_ms - stage_sum
-		_record_contact_response(last_contact_response)
+		var e: Dictionary = {"observation":snapshot.solid_contact_observation.duplicate(true),
+			"snapshot":snapshot.serial,"tick":snapshot.tick_index,"revision":snapshot.simulation_world_revision,
+			"epoch":physics_epoch,"token":str(source_receipt.token),"generation":generation,
+			"worker":worker.get_instance_id(),"bridge":bridge.get_instance_id(),
+			"body":body.get_instance_id(),"rid":body.get_rid().get_id(),
+			"sample":int(applied.sample_serial),"current":_coupling_sample_serial,
+			"manual_step":bridge.manual_step_count()}
+		if sand_contact_order == "post":
+			return e # Frame-local owned values; no retained queue or retry.
+		_apply_contact_envelope(e, 0)
+	return {}
+
+func _contact_owner_matches(e: Dictionary, advanced: int) -> bool:
+	return not e.is_empty() and active and not physics_paused and not _failed and not transaction_busy \
+		and worker != null and bridge != null and is_instance_valid(body) \
+		and generation == int(e.generation) and physics_epoch == int(e.epoch) \
+		and str(source_receipt.get("token", "")) == str(e.token) \
+		and worker.get_instance_id() == int(e.worker) and bridge.get_instance_id() == int(e.bridge) \
+		and body.get_instance_id() == int(e.body) and body.get_rid().get_id() == int(e.rid) \
+		and _coupling_sample_serial == int(e.current) \
+		and bridge.manual_step_count() == int(e.manual_step) + advanced
+
+func _apply_contact_envelope(e: Dictionary, advanced: int) -> bool:
+	if not _contact_owner_matches(e, advanced):return false
+	_observe_contact_boundary("before_sand", e, advanced)
+	var contact_started: int = Time.get_ticks_usec()
+	# A completed physical step ages the original witness before publication.
+	var current: int = (int(e.current) + advanced) % COUPLING_SAMPLE_LIMIT
+	last_contact_response = bridge.apply_solid_sand_contact(e.observation,
+		0, int(e.snapshot), int(e.tick), int(e.revision), int(e.epoch), str(e.token),
+		int(e.generation), int(e.sample), current, _coupling_local_centers, _coupling_sizes)
+	var contact_ms: float = float(Time.get_ticks_usec() - contact_started) / 1000.0
+	last_contact_response["snapshot_serial"] = int(e.snapshot)
+	last_contact_response["evaluated"] = true
+	last_contact_response["source_sample_serial"] = int(e.sample)
+	last_contact_response["current_sample_serial"] = current
+	last_contact_response["receipt_usec"] = contact_started
+	last_contact_response["application_order"] = sand_contact_order
+	_contact_metrics.response_attempts += 1
+	_contact_metrics.response_ms_all_attempts += contact_ms
+	_contact_metrics.response_ms_max_attempt = maxf(_contact_metrics.response_ms_max_attempt, contact_ms)
+	var stage_sum: float = 0.0
+	for stage: String in ["rid_state_ms", "planner_ms", "impulse_apply_ms", "readback_ms"]:
+		var stage_ms: float = float(last_contact_response.get(stage, 0.0))
+		stage_sum += stage_ms
+		_contact_metrics["response_" + stage + "_all_attempts"] += stage_ms
+	_contact_metrics.response_other_ms_all_attempts += contact_ms - stage_sum
+	_record_contact_response(last_contact_response)
+	_observe_contact_boundary("after_sand", e, advanced)
+	return not _failed and _contact_owner_matches(e, advanced)
+
+func _observe_contact_boundary(_stage: String, _envelope: Dictionary, _advanced: int) -> void:
+	# Synchronous value-only test seam. No await, publish or owner mutation.
+	pass
+
+func _observe_worker_participation(_values: Dictionary) -> void:
+	pass
 
 func _observe_compound_application(_applied: Dictionary, _results: PackedFloat32Array,
 		_states: PackedFloat32Array, _snapshot_serial: int, _native_tick: int,
@@ -637,8 +670,17 @@ func _record_contact_response(response: Dictionary) -> void:
 
 func physics_step() -> void:
 	if active and not physics_paused and not transaction_busy and bridge != null:
+		if sand_contact_order not in ["pre", "post"]:
+			_fail("Unknown experimental contact order")
+			return
+		var owner_generation: int = generation
+		var owner_worker: CyberSimulationWorker = worker
+		var owner_bridge: CyberRapierPhysicsBridge = bridge
+		var owner_body: RigidBody2D = body
+		var owner_epoch: int = physics_epoch
+		var owner_token: String = str(source_receipt.get("token", ""))
 		var sync_start: int = Time.get_ticks_usec()
-		_consume_compound_results()
+		var deferred: Dictionary = _consume_compound_results()
 		_record_main_sync(Time.get_ticks_usec() - sync_start)
 		if physics_paused:
 			return
@@ -649,12 +691,23 @@ func physics_step() -> void:
 			if bridge.pending_hard_surface_chunks() > 0:
 				return
 		var step_start: int = Time.get_ticks_usec()
+		var prior_step: int = bridge.manual_step_count()
 		bridge.step()
+		if not _owns(owner_generation, owner_worker) or bridge != owner_bridge or body != owner_body \
+			or not active or physics_paused or _failed or transaction_busy or physics_epoch != owner_epoch \
+			or str(source_receipt.get("token", "")) != owner_token:
+			return # Never publish or apply into a retired/replaced owner.
+		if bridge.manual_step_count() != prior_step + 1:
+			_fail("Rapier step did not advance exactly once")
+			return
 		var step_usec: int = Time.get_ticks_usec() - step_start
 		_rapier_step_usec += step_usec
 		_rapier_step_max_usec = maxi(_rapier_step_max_usec, step_usec)
 		_timed_rapier_steps += 1
 		sync_start = Time.get_ticks_usec()
+		if not deferred.is_empty() and not _apply_contact_envelope(deferred, 1):
+			_record_main_sync(Time.get_ticks_usec() - sync_start)
+			return # Includes terminal readback failure; lease stays consumed.
 		var published: bool = _publish_compound_states()
 		_record_main_sync(Time.get_ticks_usec() - sync_start)
 		if not published:
