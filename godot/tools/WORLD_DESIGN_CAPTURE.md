@@ -120,7 +120,9 @@ PID reused by an unrelated process could also block otherwise valid recovery.
 The new **schema-3** transaction records a process-start identity alongside
 the previous PID, attempt ID and output path. On Linux, the runtime identity is
 the `/proc/sys/kernel/random/boot_id` plus the kernel PID-namespace inode
-reported by `readlink /proc/self/ns/pid`; the original process generation is
+reported by `readlink /proc/self/ns/pid` and the effective UID from `id -u`;
+this also avoids incorrectly treating an owner hidden by cross-user procfs
+restrictions as dead. The original process generation is
 `/proc/<pid>/stat` field 22 (start tick). Procfs pseudo-files are read through
 a subprocess rather than a zero-length Godot file read.
 
