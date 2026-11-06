@@ -5335,12 +5335,20 @@ HardSurfaceInvalidation World::take_hard_surface_invalidation() {
                 bits &= bits - 1U;
             }
         }
-        chunk->hard_surface_dirty_tiles.fill(0);
+        // Do not retire any stamp until collection and vector growth have
+        // succeeded for every chunk. An allocation failure leaves the entire
+        // invalidation stream intact for an owner retry or full recovery.
     }
     std::sort(result.tiles.begin(), result.tiles.end());
     result.tiles.erase(std::unique(result.tiles.begin(), result.tiles.end()),
                        result.tiles.end());
     if (result.full_refresh) result.tiles.clear();
+    // Transactional acknowledgement: no operation below this point allocates
+    // or throws. Render dirty state remains completely independent.
+    for (auto& [coord, chunk] : chunks_) {
+        (void)coord;
+        chunk->hard_surface_dirty_tiles.fill(0);
+    }
     return result;
 }
 

@@ -1194,7 +1194,9 @@ PackedInt32Array CyberNativeCellWorld::get_hard_surface_chunk_rectangles() const
     if (has_failed()) return hard_surface_chunk_rectangles_;
     if (world_ == nullptr) return {};
     const auto hard_revision = static_cast<std::uint64_t>(get_hard_surface_revision());
-    if (hard_surface_chunk_rectangles_revision_ == hard_revision) return hard_surface_chunk_rectangles_;
+    if (hard_surface_chunk_rectangles_revision_ == hard_revision &&
+        hard_surface_cache_valid_ && hard_surface_cache_world_ == world_.get())
+        return hard_surface_chunk_rectangles_;
 
     // The complete packet remains byte-for-byte compatible with
     // hard_surface_chunks_from_cells(). World owns a separate 64x64 collider
@@ -1208,9 +1210,14 @@ PackedInt32Array CyberNativeCellWorld::get_hard_surface_chunk_rectangles() const
     const auto chunk_count = static_cast<std::size_t>(columns) * static_cast<std::size_t>(rows);
     const auto bit_count = words * static_cast<std::size_t>(extent_.y);
     const bool cold =
+        !hard_surface_cache_valid_ ||
+        hard_surface_cache_world_ != world_.get() ||
         hard_surface_cache_extent_ != extent_ ||
         hard_surface_chunk_cache_.size() != chunk_count ||
         hard_surface_bits_.size() != bit_count;
+    // This must precede both invalidation consumption and any cache update.
+    // Exceptions and failed publication leave an explicit cold-recovery fence.
+    hard_surface_cache_valid_ = false;
     if (cold) {
         hard_surface_bits_.assign(bit_count, 0U);
         hard_surface_chunk_cache_.assign(chunk_count, {});
@@ -1372,6 +1379,8 @@ PackedInt32Array CyberNativeCellWorld::get_hard_surface_chunk_rectangles() const
     packed[1U + chunk_count] = static_cast<std::int32_t>(cursor);
     hard_surface_chunk_rectangles_ = result;
     hard_surface_chunk_rectangles_revision_ = hard_revision;
+    hard_surface_cache_world_ = world_.get();
+    hard_surface_cache_valid_ = true;
     return hard_surface_chunk_rectangles_;
 }
 

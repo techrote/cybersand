@@ -224,6 +224,10 @@ private:
     struct HardSurfaceRectangle { std::int32_t x = 0, y = 0, width = 0, height = 0; };
     mutable std::vector<std::uint64_t> hard_surface_bits_;
     mutable std::vector<std::vector<HardSurfaceRectangle>> hard_surface_chunk_cache_;
+    // The invalidation stream is consumed before packet assembly. A partial
+    // rebuild must not allow the next query to trust residual tile bits.
+    mutable bool hard_surface_cache_valid_ = false;
+    mutable const cybersand::World* hard_surface_cache_world_ = nullptr;
     mutable Vector2i hard_surface_cache_extent_{};
     mutable std::uint64_t hard_surface_chunks_rebuilt_ = 0, hard_surface_chunks_reused_ = 0;
     mutable std::uint64_t hard_surface_full_mask_copies_ = 0;
