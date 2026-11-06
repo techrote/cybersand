@@ -16,6 +16,15 @@ for(let v of f.variants)for(let [from,to] of Object.entries(v.swap))if(!pm.has(N
 if(f.status==="inert-static"&&f.rectangles.some(z=>pm.get(z[4]).kernel!==0||pm.get(z[4]).movable))errors.push("not inert "+f.id);
 }
 for(let z of p.scene.terrain_rectangles){check(z,...p.scene.size,"terrain");if(pm.get(z[4])&&(pm.get(z[4]).movable||pm.get(z[4]).kernel!==0))errors.push("reactive exhibition terrain");}
+const alt=p.alternate_scene;
+if(!alt||alt.id===p.scene.id||alt.id!=="ashroot-descending-seed-ossuary-02"||!Array.isArray(alt.size)||alt.size[0]!==960||alt.size[1]!==390)errors.push("alternate identity");
+else{
+ if(!Array.isArray(alt.terrain_rectangles)||alt.terrain_rectangles.length<400)errors.push("alternate terrain");
+ else for(let z of alt.terrain_rectangles){check(z,...alt.size,"alternate terrain");if(pm.has(z[4])&&(pm.get(z[4]).movable||pm.get(z[4]).kernel!==0))errors.push("alternate reactive terrain");}
+ if(!Array.isArray(alt.placements)||alt.placements.length!==8||new Set(alt.placements.map(q=>q.feature)).size!==8)errors.push("alternate inventory");
+ else for(let q of alt.placements){let f=fm.get(q.feature),v=f?.variants.find(x=>x.id===q.variant);if(!f||!v||!Number.isInteger(q.x)||!Number.isInteger(q.y)||q.x<0||q.y<0||q.x+f.size[0]>alt.size[0]||q.y+f.size[1]>alt.size[1]){errors.push("alternate placement bounds");continue;}for(let z of f.rectangles){let id=v.swap[String(z[4])]??z[4],m=pm.get(id);if(!m||m.movable||m.kernel!==0)errors.push("alternate active variant "+f.id);}}
+}
+
 const placed=[];
 for(let q of p.scene.placements){const f=fm.get(q.feature),v=f?.variants.find(x=>x.id===q.variant);
 if(!f||!v||!Number.isInteger(q.x)||!Number.isInteger(q.y)||q.x<0||q.y<0||q.x+f.size[0]>p.scene.size[0]||q.y+f.size[1]>p.scene.size[1]){errors.push("placement bounds or variant");continue;}
@@ -41,6 +50,7 @@ if(process.argv.includes("--source-check")) {
 }
 if(process.argv.includes("--self-test")) {
  const mutations=[p=>p.features[0].rectangles[0][4]=10,p=>p.features[0].rectangles[0][3]=9999,p=>p.features[0].variants[0].swap["11"]=10,p=>p.features[7].rectangles[0][4]=19,p=>p.scene.placements[0].x=-1,p=>p.scene.placements[0].y=0,p=>p.scene.placements[1].variant="missing",p=>p.scene.placements[2].x=160,p=>p.features[0].variants[1].id="petrified",p=>p.schema_version=2];
+ mutations.push(p=>p.alternate_scene.terrain_rectangles[0][4]=18,p=>p.alternate_scene.terrain_rectangles[0][0]=-1,p=>p.alternate_scene.placements.pop(),p=>p.alternate_scene.placements[1].variant="missing",p=>p.alternate_scene.placements[3].x=900,p=>p.alternate_scene.id=p.scene.id,p=>p.alternate_scene.placements[0].feature=p.alternate_scene.placements[1].feature);
  mutations.forEach((fn,i)=>{let q=structuredClone(p);fn(q);if(!validate(q).length)errors.push("negative control accepted "+i);});
 }
 if(errors.length){console.error(errors.join("\n"));process.exitCode=1;}
