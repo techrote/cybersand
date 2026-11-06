@@ -5,7 +5,6 @@
   "tree": "7b96105234c683fb36a940e5a140f705ed395e52",
   "parent_checkpoint": "4ee0e59181f622f875bef80e4b20ae4f0bde60c7",
   "dependent_base": "e4c2649e82d943554f4dc6a0634336770cda08f6",
-  "physics_delta": "None this campaign: only synchronous no-op observation seam in production session; native/Rapier bridge/planner unchanged.",
   "raw_delta": {
     "path": "C:\\Users\\_\\.codex\\worktrees\\sol-structure-cut-20261106\\khybersand\\build\\sol-structure-cut\\stage-dependent.patch",
     "sha256": "f4228c76f054bc68aa8b35e3e561e2203b43325dd2362199f20c414087bf1ef7"
@@ -19,7 +18,6 @@
   "custody": "Original raw artifacts unchanged; published text copies use Git LF normalization with separate git_lf_sha256 hashes. Session key is run/host/coordinate; body RID/token are process/session local, not globally unique authority.",
   "physical_requalification": "Native inputs unchanged and existing exact build receipts verified by both runners. Actual Linux/Windows1/4worker execution. No new native/compiler/sanitizer matrix rerun for a GDScript no-op observer; prior native scopes retained.",
   "scope": "24fresh episodes/11520steps; ordinary/Sand/backend attribution, not a matched counterfactual, material weight calibration, closed total-energy ledger, originalSOLclearance, or CPUgate.",
-  "known_residual": "First Windows treeOff sample ordinary receiptJ(.04,.28), applicationcount1 but immediate measured momentumzero: model residual.2828427135. Cause unestablished. Excludingstep0 maxlinear residual.00139510754. Do not call every residual float32rounding or claim exact nativewrench closure.",
   "independent_review": "Read-only source and accounting reviews GO for scoped diagnosis. Separate independent adversarial review remains required before owner promotion.",
   "resource": {
     "structure_bytes": 3838567411,
@@ -164,5 +162,10 @@
     "structure_bytes": 4289857747,
     "cap_bytes": 4294967296,
     "free": 18876723200
-  }
+  },
+  "stage_campaign_production_delta": "None this campaign: only synchronous no-op observation seam in production session; native/Rapier bridge/planner unchanged.",
+  "initialization_repair_production_delta": "AUTO COM before native M/customI; pointvelocity aboutactualCOM; no force/cap/shape/mass retuning or warmstep. Guard-only descendant returns empty on null directstate; actualnullpath unexecuted.",
+  "stage_original_residual": "First Windows treeOff sample ordinary receiptJ(.04,.28), applicationcount1 but immediate measured momentumzero: model residual.2828427135. Cause unestablished. Excludingstep0 maxlinear residual.00139510754. Do not call every residual float32rounding or claim exact nativewrench closure.",
+  "current_residual_interpretation": "Original firstsample discrepancy prompted independent backend oracle. Runtime source controls reproduce lost firstcustom-COM impulses and repair honors firstactualpacket. Later reconstruction residuals remain diagnostic, not universally explained as floatrounding.",
+  "remaining_collection_budget_bytes": 5109549
 }
