@@ -5,13 +5,13 @@ import order_common as o
 import structure_cut as p
 
 def main():
-    ap=argparse.ArgumentParser(__doc__);ap.add_argument('--run',required=True);a=ap.parse_args();assert Path(a.run).name==a.run
+    ap=argparse.ArgumentParser(__doc__);ap.add_argument('--run',required=True);ap.add_argument('--gates-only',action='store_true');a=ap.parse_args();assert Path(a.run).name==a.run
     info=o.identity();o.resource();folder=o.OUT/a.run;assert not folder.exists();folder.mkdir()
     buildpath=o.PARENT/'build/sol-structure-cut/runtimes-001/receipt.json';build=json.loads(buildpath.read_text(encoding='utf-8'));assert build['post_source_equality']
     assert info['source_inputs']==build['identity']['source_inputs'] and info['material_inputs']==build['identity']['material_inputs']
     parentpath,parent=o.parent_receipt();copied={n:o.sha(o.ROOT/n) for n in p.git('ls-files','godot').decode().splitlines() if (o.ROOT/n).is_file()}
     reg=o.ROOT/'native/tests/fixtures/sol_contact_order_live_001.json'
-    receipt=dict(identity=info,registration_sha256=o.sha(reg),parent_build_receipt_sha256=o.sha(buildpath),parent_execution_receipt_sha256=o.sha(parentpath),copied_inputs=copied,hosts={},scope='Source-local SOL; actual hosts, fresh sessions, diagnostic overhead included. Not original CPU gate or synchronized clearance.')
+    receipt=dict(identity=info,registration_sha256=o.sha(reg),gates_only=a.gates_only,parent_build_receipt_sha256=o.sha(buildpath),parent_execution_receipt_sha256=o.sha(parentpath),copied_inputs=copied,hosts={},scope='Source-local SOL; actual hosts, fresh sessions, diagnostic overhead included. Not original CPU gate or synchronized clearance.')
     def save():p.write(folder/'receipt.json',receipt)
     save()
     for host in ['windows','linux']:
@@ -36,11 +36,11 @@ def main():
             if host=='linux':argv=['wsl.exe','-d','Ubuntu-24.04','--','env',*[k+'='+v for k,v in environment.items()],*argv]
             row=p.command(name,argv,target,dict(os.environ,**environment),timeout);rows.append(row);save();return row
         imported=run('import');assert imported['clean'],'Retain failed import; stop'
-        for test in ['test_solid_contact_response','test_solid_contact_fences']:
+        for test in ['test_solid_contact_response','test_solid_contact_fences']+(['test_sol_contact_order'] if a.gates_only else []):
             assert run(test,test)['clean'],'Retain failed focused gate; stop'
-        for workers in [1,4]:
+        for workers in ([1] if a.gates_only else [1,4]):
             for structure in ['tree','building']:
-                for surroundings,arm in [('empty','off'),('packed_sand','off'),('packed_sand','pre'),('packed_sand','post')]:
+                for surroundings,arm in ([('packed_sand','post')] if a.gates_only else [('empty','off'),('packed_sand','off'),('packed_sand','pre'),('packed_sand','post')]):
                     o.resource();name=f'{structure}-{surroundings}-{arm}-w{workers}';output=target/(name+'.json')
                     row=run(name,'test_sol_structure_cut',dict(SOL_ORDER_PROFILE='1',SOL_CONTACT_ORDER='post' if arm=='post' else 'pre',SOL_STRUCTURE=structure,SOL_SURROUNDINGS=surroundings,SOL_SAND_RESPONSE=str(int(arm!='off')),SOL_WORKERS=str(workers),SOL_OUTPUT=str(output) if host=='windows' else p.wsl(output),SOL_STAGE_TRACE='1',SOL_COMPACT_EVIDENCE='1'))
                     if output.exists():

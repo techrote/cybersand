@@ -546,6 +546,7 @@ func _consume_compound_results() -> Dictionary:
 			"sample":int(applied.sample_serial),"current":_coupling_sample_serial,
 			"manual_step":bridge.manual_step_count()}
 		if sand_contact_order == "post":
+			last_contact_response["outcome"] = "DeferredPostContact"
 			return e # Frame-local owned values; no retained queue or retry.
 		_apply_contact_envelope(e, 0)
 	return {}
@@ -668,11 +669,11 @@ func _record_contact_response(response: Dictionary) -> void:
 	_contact_metrics.response_ms_total += float(response.application_ms)
 	_contact_metrics.latency_ms_total += float(response.publication_latency_ms)
 
-func physics_step() -> void:
+func physics_step() -> Dictionary:
 	if active and not physics_paused and not transaction_busy and bridge != null:
 		if sand_contact_order not in ["pre", "post"]:
 			_fail("Unknown experimental contact order")
-			return
+			return {"outcome":"UnknownContactOrder","deferred":false}
 		var owner_generation: int = generation
 		var owner_worker: CyberSimulationWorker = worker
 		var owner_bridge: CyberRapierPhysicsBridge = bridge
@@ -683,23 +684,24 @@ func physics_step() -> void:
 		var deferred: Dictionary = _consume_compound_results()
 		_record_main_sync(Time.get_ticks_usec() - sync_start)
 		if physics_paused:
-			return
+			return {"outcome":"HeldAfterConsume","deferred":not deferred.is_empty()}
 		if bridge.pending_hard_surface_chunks() > 0:
 			var started: int = Time.get_ticks_usec()
 			bridge.process_hard_surface_collider_budget(16, 0)
 			_terrain_refresh_usec += Time.get_ticks_usec() - started
 			if bridge.pending_hard_surface_chunks() > 0:
-				return
+				if not deferred.is_empty():last_contact_response["outcome"] = "DeferredTerrainPending"
+				return {"outcome":"TerrainPending","deferred":not deferred.is_empty()}
 		var step_start: int = Time.get_ticks_usec()
 		var prior_step: int = bridge.manual_step_count()
 		bridge.step()
 		if not _owns(owner_generation, owner_worker) or bridge != owner_bridge or body != owner_body \
 			or not active or physics_paused or _failed or transaction_busy or physics_epoch != owner_epoch \
 			or str(source_receipt.get("token", "")) != owner_token:
-			return # Never publish or apply into a retired/replaced owner.
+			return {"outcome":"OwnerRetired","deferred":not deferred.is_empty()}
 		if bridge.manual_step_count() != prior_step + 1:
 			_fail("Rapier step did not advance exactly once")
-			return
+			return {"outcome":"StepNotAdvanced","deferred":not deferred.is_empty()}
 		var step_usec: int = Time.get_ticks_usec() - step_start
 		_rapier_step_usec += step_usec
 		_rapier_step_max_usec = maxi(_rapier_step_max_usec, step_usec)
@@ -707,11 +709,14 @@ func physics_step() -> void:
 		sync_start = Time.get_ticks_usec()
 		if not deferred.is_empty() and not _apply_contact_envelope(deferred, 1):
 			_record_main_sync(Time.get_ticks_usec() - sync_start)
-			return # Includes terminal readback failure; lease stays consumed.
+			return {"outcome":"PostContactStopped","deferred":true}
 		var published: bool = _publish_compound_states()
 		_record_main_sync(Time.get_ticks_usec() - sync_start)
 		if not published:
 			_fail("Compound native occupancy publication failed; reset required")
+			return {"outcome":"PublicationFailed","deferred":not deferred.is_empty()}
+		return {"outcome":"Published","deferred":not deferred.is_empty()}
+	return {"outcome":"Inactive","deferred":false}
 
 func _record_main_sync(usec: int) -> void:
 	_main_sync_usec += usec
@@ -882,6 +887,7 @@ func close() -> void:
 	last_contact_response = {}
 	_contact_metrics = {}
 	sand_resistance_enabled = false
+	sand_contact_order = "pre"
 	contact_measurement_enabled = false
 	status = "closed"
 

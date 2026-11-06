@@ -17,14 +17,16 @@ class Probe:
 			"source_sample":envelope.sample,"captured_current":envelope.current,
 			"snapshot":envelope.snapshot,"tick":envelope.tick,"revision":str(envelope.revision),
 			"epoch":envelope.epoch,"token":envelope.token,"generation":envelope.generation}
-	func physics_step() -> void:
-		super.physics_step()
-		if measured.is_empty():return
+	func physics_step() -> Dictionary:
+		var audit: Dictionary = super.physics_step()
+		if measured.is_empty() or not _contact_metrics.has("response_attempts"):return audit
 		# Deferred responses exist only after physics_step completes.
 		measured["response_attempts_delta"]=int(_contact_metrics.response_attempts)-int(measured.metrics_before.physical_contact.response_attempts)
 		measured["response_is_new"]=measured.response_attempts_delta>0
 		measured["response"]=last_contact_response.duplicate(true)
 		measured["worker_participation"]=participation.duplicate(true)
+		measured["step_audit"]=audit
+		return audit
 	func _author_surroundings(native: Object, kind: String) -> bool:
 		if structure=="building":
 			# Setup only, while this thread exclusively owns native; cut stays real.
