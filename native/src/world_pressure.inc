@@ -419,7 +419,13 @@ void World::prepare_pressure_tick() {
                 using U = std::uint64_t;
                 auto& work = state.optimization;
                 const auto started = Clock::now();
+                U probes=0, selected_runs=0, dirty_spans=0, base_candidates=0, row_candidates=0;
                 const auto finish = [&](bool accepted) {
+                    work.head_preflight_probes += probes;
+                    work.head_preflight_runs += selected_runs;
+                    work.head_preflight_dirty_spans += dirty_spans;
+                    work.head_candidate_base_cells += base_candidates;
+                    work.head_candidate_row_cells += row_candidates;
                     work.head_preflight_nanoseconds += static_cast<U>(
                         std::chrono::duration_cast<std::chrono::nanoseconds>(Clock::now()-started).count());
                     return accepted;
