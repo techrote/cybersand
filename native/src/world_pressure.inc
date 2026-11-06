@@ -515,7 +515,9 @@ void World::prepare_pressure_tick() {
                                     if (dirty) {
                                         if (!add(base_candidates,1U) || !possible_row(pos,ly)) return refuse(true);
                                     }
-                                    if (!close_run(pos,ly==0 ? 0 : ly-1,dirty)) return refuse(true);
+                                    const auto floor_position=ly==0 ? pos-1 : pos;
+                                    const auto floor_local=ly==0 ? config_.chunk_size-1 : ly-1;
+                                    if (!close_run(floor_position,floor_local,dirty)) return refuse(true);
                                     // An unmasked liquid is transparent to the
                                     // upward load scan; a boundary cuts the cone,
                                     // but a dirty boundary itself can change it.
@@ -1583,6 +1585,7 @@ void World::compute_pressure_heads() {
             if (segment_open && pending) resolve(pending_from, previous_x, {});
 
             }
+            const auto wake_started=std::chrono::steady_clock::now();
             // Actionable-gradient wake for cells in sleeping blocks (same stencil
             // and start dead band as the kernel).
             //
@@ -1685,6 +1688,9 @@ void World::compute_pressure_heads() {
                     }
                 }
             }
+            task.wake_nanoseconds += static_cast<std::uint64_t>(
+                std::chrono::duration_cast<std::chrono::nanoseconds>(
+                    std::chrono::steady_clock::now()-wake_started).count());
         }
     };
     // Owner-only certificate invalidation of one run of changed final heads
@@ -1727,6 +1733,7 @@ void World::compute_pressure_heads() {
     const auto merge_rows = [&](const RowTask& task) {
         state.optimization.rows_recomputed += task.rows;
         state.optimization.final_cells_written += task.finals;
+        state.optimization.head_wake_worker_nanoseconds += task.wake_nanoseconds;
         if (cached) {
             cache->wake_segments_skipped += task.skipped;
             cache->wake_segments_scanned += task.scanned;
