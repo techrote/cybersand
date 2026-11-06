@@ -6,6 +6,7 @@ on:
     paths:
       - 'tools/experiments/gen006_windows_lease_probe.py'
       - 'tools/experiments/gen006_staged_writer_gc_probe.py'
+      - 'tools/experiments/gen006_blob_quota_race_probe.py'
       - '.github/workflows/gen006-reader-lease-crossplatform.yml'
   workflow_dispatch:
 
@@ -71,6 +72,17 @@ jobs:
           python -c "import json,sys; d=json.load(open(sys.argv[1])); assert d['unleased']['reader']['reason']=='BLOB_MISSING'; assert d['leased']['reader']['status']=='READ_OK'; assert d['crashed']['gc']['retired']==1" "$RUNNER_TEMP/gen006-winlease/witness.json"
           python -c "import hashlib,pathlib,sys,json; p=pathlib.Path(sys.argv[1]); print(json.dumps(dict(script_sha256=hashlib.sha256(p.read_bytes()).hexdigest())))" tools/experiments/gen006_windows_lease_probe.py > "$RUNNER_TEMP/gen006-winlease/script.json"
           python -c "import hashlib,pathlib,sys,json; p=pathlib.Path(sys.argv[1]); print(json.dumps(dict(staged_script_sha256=hashlib.sha256(p.read_bytes()).hexdigest())))" tools/experiments/gen006_staged_writer_gc_probe.py > "$RUNNER_TEMP/gen006-winlease/staged-script.json"
+          # GEN-006 quota admission race: two real writers at 15/16 blobs,
+          # negative unguarded check/insert and positive serialized control.
+          python tools/experiments/gen006_blob_quota_race_probe.py --test > "$RUNNER_TEMP/gen006-winlease/quota-tests.log" 2>&1 || {
+            cat "$RUNNER_TEMP/gen006-winlease/quota-tests.log"
+            exit 1
+          }
+          cat "$RUNNER_TEMP/gen006-winlease/quota-tests.log"
+          python tools/experiments/gen006_blob_quota_race_probe.py --witness "$RUNNER_TEMP/gen006-winlease/quota-witness.json"
+          python -c "import json,sys; d=json.load(open(sys.argv[1])); assert d['unsafe']['after_two_writers']==17; assert d['unsafe']['gc']['reason']=='BLOB_BUDGET'; assert d['serialized']['after_two_writers']==16; assert d['serialized']['final_files']==2" "$RUNNER_TEMP/gen006-winlease/quota-witness.json"
+          python -m py_compile tools/experiments/gen006_blob_quota_race_probe.py
+          python -c "import hashlib,pathlib,sys,json; p=pathlib.Path(sys.argv[1]); print(json.dumps(dict(quota_script_sha256=hashlib.sha256(p.read_bytes()).hexdigest())))" tools/experiments/gen006_blob_quota_race_probe.py > "$RUNNER_TEMP/gen006-winlease/quota-script.json"
       - name: Retain negative and positive evidence, including failure
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
@@ -129,6 +141,17 @@ jobs:
           python -c "import json,sys; d=json.load(open(sys.argv[1])); assert d['unleased']['reader']['reason']=='BLOB_MISSING'; assert d['leased']['reader']['status']=='READ_OK'; assert d['crashed']['gc']['retired']==1" "$RUNNER_TEMP/gen006-winlease/witness.json"
           python -c "import hashlib,pathlib,sys,json; p=pathlib.Path(sys.argv[1]); print(json.dumps(dict(script_sha256=hashlib.sha256(p.read_bytes()).hexdigest())))" tools/experiments/gen006_windows_lease_probe.py > "$RUNNER_TEMP/gen006-winlease/script.json"
           python -c "import hashlib,pathlib,sys,json; p=pathlib.Path(sys.argv[1]); print(json.dumps(dict(staged_script_sha256=hashlib.sha256(p.read_bytes()).hexdigest())))" tools/experiments/gen006_staged_writer_gc_probe.py > "$RUNNER_TEMP/gen006-winlease/staged-script.json"
+          # GEN-006 quota admission race: two real writers at 15/16 blobs,
+          # negative unguarded check/insert and positive serialized control.
+          python tools/experiments/gen006_blob_quota_race_probe.py --test > "$RUNNER_TEMP/gen006-winlease/quota-tests.log" 2>&1 || {
+            cat "$RUNNER_TEMP/gen006-winlease/quota-tests.log"
+            exit 1
+          }
+          cat "$RUNNER_TEMP/gen006-winlease/quota-tests.log"
+          python tools/experiments/gen006_blob_quota_race_probe.py --witness "$RUNNER_TEMP/gen006-winlease/quota-witness.json"
+          python -c "import json,sys; d=json.load(open(sys.argv[1])); assert d['unsafe']['after_two_writers']==17; assert d['unsafe']['gc']['reason']=='BLOB_BUDGET'; assert d['serialized']['after_two_writers']==16; assert d['serialized']['final_files']==2" "$RUNNER_TEMP/gen006-winlease/quota-witness.json"
+          python -m py_compile tools/experiments/gen006_blob_quota_race_probe.py
+          python -c "import hashlib,pathlib,sys,json; p=pathlib.Path(sys.argv[1]); print(json.dumps(dict(quota_script_sha256=hashlib.sha256(p.read_bytes()).hexdigest())))" tools/experiments/gen006_blob_quota_race_probe.py > "$RUNNER_TEMP/gen006-winlease/quota-script.json"
       - name: Retain negative and positive evidence, including failure
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
