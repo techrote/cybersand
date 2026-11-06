@@ -71,6 +71,7 @@ jobs:
           GODOT_CPP_ROOT: ${{ runner.temp }}/godot-cpp
           SCONS_PYTHON: ${{ runner.temp }}/scons/bin/python
           SCONS_JOBS: "2"
+          LLVM_MINGW_ROOT: ${{ runner.temp }}/llvm-mingw
         run: |
           set -euo pipefail
           timeout 35m tools/build_pinned_godot_cpp.sh windows
