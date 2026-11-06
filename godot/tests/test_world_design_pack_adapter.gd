@@ -188,6 +188,10 @@ func _run() -> void:
 	_reject(mutation, "schema_version")
 	mutation = pack.duplicate(true)
 	mutation.schema_version = 1.0
+	_expect(Adapter.inspect(mutation).ok,
+		"Godot JSON's floating representation of exact integer 1 remains supported")
+	mutation = pack.duplicate(true)
+	mutation.schema_version = 1.5
 	_reject(mutation, "schema_version")
 	mutation = pack.duplicate(true)
 	mutation.schema_version = "1"
