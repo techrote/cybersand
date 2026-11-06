@@ -111,3 +111,21 @@ Use `workbench_order_reduce.py --run NEW_MATRIX` for the independent evaluation.
 Every source must be clean, committed and authenticated; failed collections stay
 intact. The canonical documentation routes are updated with this registration;
 dated execution identities/results will be added without rewriting this premise.
+
+## Qualification strengthening before primary execution
+
+The original registration commit is`6464afd577d1fbde0f10cc2648f2992c534e41de`.
+Smoke001 passes on both hosts:60 unique adapter bodies/201 checks per host,
+20 exact copied-control comparisons each, and16 fresh12-step actual-cut
+startup episodes. An independent audit verifies all400 pure-adapter and960
+actual-cut primitive transitions. No720-step ordering outcomes have run yet.
+
+Independent review found the initial automated gate trusted adapter summary
+booleans and did not bind prerequisite hashes completely. The additive
+`SOL-WORKBENCH-ORDER-001-APPARATUS-AMENDMENT-001` requires that same independent
+primitive/coordinate/source validation at admission and reduction, and binds
+qualification, facade, build, engine and input/report/log hashes. Actual
+post-import project size is checked; reservation leases release in finally.
+This strengthens custody without changing the original profile, action blocks,
+tolerances, matrix, decision or physical parameters. Smoke001 remains intact;
+a new exact-source qualification must precede the primary matrix.

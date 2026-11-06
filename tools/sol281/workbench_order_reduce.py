@@ -6,6 +6,69 @@ import workbench_order_common as w
 import workbench_reduce as q
 import reduce_structure_cut as r
 
+PIN_RECEIPT=Path('C:/Users/_/.codex/worktrees/sol-structure-cut-20261106/khybersand/build/sol-structure-cut/mass-fix-001/receipt.json')
+
+def authenticate_inputs(host,project):
+    assert not host.get('post_inventory_unexpected',[])
+    for name,digest in host['effective_inputs'].items():
+        path=project/name
+        if path.is_file() and p.sha(path)==digest:continue
+        original=w.ROOT/'godot'/name
+        assert name.endswith('.import') and original.is_file() and path.is_file() and path.read_bytes().replace(b'\r\n',b'\n')==original.read_bytes().replace(b'\r\n',b'\n'),'Changed host input'
+
+def qualification(folder,identity,build_sha):
+    """Reconstruct the prerequisite, including actual reversed-arm delivery."""
+    path=folder/'receipt.json';receipt=q.load(path)
+    assert receipt['post_source_equality'] and not receipt['errors'] and receipt['matrix']['smoke'] and receipt['identity']==identity
+    assert receipt['build_receipt_sha256']==build_sha and p.sha(PIN_RECEIPT)==receipt['engine_pin_receipt_sha256']
+    profile=q.load(w.ROOT/w.FIXTURE);assert p.sha(w.ROOT/w.FIXTURE)==identity['ordering_registration_sha256']
+    assert set(receipt['hosts'])=={'windows','linux'};reports=[];count=0;physical=0
+    for host,h in receipt['hosts'].items():
+        authenticate_inputs(h,folder/host/'godot');seen=set();adapter_seen=False
+        for c in h['commands']:
+            assert c['clean'] and p.sha(w.ROOT/c['log'])==c['log_sha256']
+            if 'report' not in c:continue
+            raw=c['report'];d=q.archive(w.ROOT/raw['path'],raw);reports.append(raw)
+            assert d['source']==identity['source_commit'] and d['platform'].lower()==host and not d['failures']
+            if c.get('apparatus'):
+                assert not adapter_seen and d['registration']=='SOL-WORKBENCH-ORDER-001-ADAPTER';adapter_seen=True
+                cases=d['cases'];coordinates={(x['structure'],x['case'],x['implementation']) for x in cases}
+                expected={(s,x['name'],arm) for s in ['tree','building'] for x in profile['adapter_cases'] for arm in ['production','correction-first','impulse-first']}
+                assert len(cases)==len(coordinates)==60 and coordinates==expected
+                for case in cases:
+                    assert case['before']['bits']==case['before']['server_bits'] and case['after']['bits']==case['after']['server_bits']
+                    if case['implementation']=='production':continue
+                    stages=case['stages'];assert [x['stage'] for x in stages]==profile['stage_order'][case['implementation']]
+                    assert stages[0]['bits']==case['before']['bits'] and stages[-1]['bits']==case['after']['bits']
+                    for s in stages:
+                        assert s['bits']==s['server_bits'] and s['manual_step']==0 and s['body_rid']==stages[0]['body_rid'] and s['body_instance']==stages[0]['body_instance']
+                    for b,a in zip(stages,stages[1:]):primitive(r.state(b),r.state(a),a['stage'],case['action']);count+=1
+                    if case['implementation']=='correction-first':assert case['after']==next(x['after'] for x in cases if (x['structure'],x['case'],x['implementation'])==(case['structure'],case['case'],'production'))
+            else:
+                assert c['report_complete'] and d['registration']=='SOL-WORKBENCH-ORDER-001' and d['apparatus_only'] and len(d['steps'])==12
+                coordinate=(d['structure'],d['surroundings'],d['arm']);assert coordinate not in seen;seen.add(coordinate);physical+=1
+                n=520 if d['structure']=='tree' else 356;inertia=r.state(d['initial_body'])[10];q.controls(d,n,inertia);r.handoff(d,n)
+                q.cells(d['initial_native']);q.cells(d['final_native'])
+                for row in d['steps']:
+                    assert [x['stage'] for x in row['order_stages']]==profile['stage_order'][d['arm']]
+                    for s in row['order_stages']:q.body_ok(s,d,n,inertia);assert s['bits']==s['server_bits']
+                    for b,a in zip(row['order_stages'],row['order_stages'][1:]):primitive(r.state(b),r.state(a),a['stage'],row['order_action']);count+=1
+        assert adapter_seen and seen=={(s,e,arm) for s in ['tree','building'] for e in ['packed_sand','mixed'] for arm in profile['arms']}
+    facade_path=w.OUT/'facade-002/receipt.json';facade=q.load(facade_path)
+    assert facade['post_source_equality'] and facade['build_receipt_sha256']==build_sha and facade['identity']['source_inputs']==identity['source_inputs'] and facade['identity']['material_inputs']==identity['material_inputs']
+    facade_reports=[]
+    for host,h in facade['hosts'].items():
+        assert h['post_input_equality'];authenticate_inputs(h,facade_path.parent/host/'godot')
+        for c in h['commands']:
+            assert c['clean'] and p.sha(w.ROOT/c['log'])==c['log_sha256']
+            if 'report' not in c:continue
+            raw=c['report'];assert p.sha(w.ROOT/raw['path'])==raw['sha256'];d=q.load(w.ROOT/raw['path'])
+            assert d['schema']=='cybersand.sol-facade-refusals.v1' and not d['failures'] and d['checks']==3260 and d['case_count']==16 and d['workers'] in [1,4] and d['platform'].lower()==host
+            assert len(d['cases'])==16 and {x['case'] for x in d['cases']}==p.facade.EXTENDED_CASES and all(x['checks']>0 and not x['failures'] for x in d['cases'])
+            assert d['script_sha256']==identity['source_inputs']['godot/tests/test_sol_facade_refusals.gd']['sha256'];facade_reports.append(raw)
+    assert len(facade_reports)==4
+    return dict(path=str(path.relative_to(w.ROOT)),sha256=p.sha(path),build_receipt_sha256=build_sha,engine_pin_receipt_sha256=p.sha(PIN_RECEIPT),facade_receipt_sha256=p.sha(facade_path),adapter_and_smoke_primitive_checks=count,smoke_episodes=physical,reports=reports,facade_reports=facade_reports)
+
 def primitive(before,after,stage,action):
     """Check actual delivery before any later clip can cancel it."""
     assert all(math.isfinite(x) for x in before+after) and before[9:]==after[9:]
@@ -97,9 +160,13 @@ def main():
     folder=w.OUT/a.run;dst=folder/'reduction.json';assert not dst.exists();receipt=q.load(folder/'receipt.json');assert receipt['post_source_equality'] and not receipt['errors'] and not receipt['matrix']['smoke']
     assert p.sha(w.ROOT/w.FIXTURE)==receipt['identity']['ordering_registration_sha256'];assert set(receipt['hosts'])=={'windows','linux'}
     buildpath=w.OUT/receipt['matrix']['build']/'receipt.json';assert p.sha(buildpath)==receipt['build_receipt_sha256'];build=q.load(buildpath);assert build['post_source_equality'] and build['identity']['source_inputs']==receipt['identity']['source_inputs']
+    assert build['identity']['material_inputs']==receipt['identity']['material_inputs'] and p.sha(PIN_RECEIPT)==receipt['engine_pin_receipt_sha256']
+    for name,digest in receipt['identity']['experiment_inputs'].items():assert p.sha(w.ROOT/name)==digest,'Experiment input differs from executed source'
+    assert qualification(w.OUT/receipt['matrix']['qualification'],receipt['identity'],receipt['build_receipt_sha256'])==receipt['qualification']
     episodes=[]
     for host,h in receipt['hosts'].items():
         assert not h['post_inventory_unexpected'];seen=set();project=folder/host/'godot'
+        assert h['compiled_native']==build['platforms'][host] and p.sha(w.ROOT/h['compiled_native']['output'])==h['compiled_native']['sha256']
         for name,digest in h['effective_inputs'].items():
             path=project/name
             if path.is_file() and p.sha(path)==digest:continue
