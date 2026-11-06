@@ -61,3 +61,19 @@ The original carnival modules now sit inside a dry interconnected abandoned aeri
 **New data:** `combined_scene.backdrop_rectangles` adds **2178** bounded, source-palette inert construction rectangles (stamped before the eight reusable features). The eight feature IDs, 16 variants, 8 placements and 3 patterns are preserved, with 997 feature rectangles. A source-colour ordered-cell comparison against the original panorama identifies **38823** changed cells; **67.4%** are unwritten. `preview.svg` now includes two enlarged study crops, still *only flat material-colour illustration*, not engine rendering. Backdrop validation includes integer/bounds/material non-mobility checks and four negative cases.
 
 **Limits:** geometry alone does not certify skyway support, passage clearance, simulated ride motion, neon emission, wet containment, native performance or acceptance relative to five real CyberSand gallery references. Blank preview canvas never clears native terrain. Reproduce from a source-matched checkout with `node docs/world-design/fallow-carnival/validate_pack.mjs --source --negative` and `node docs/world-design/fallow-carnival/render_pack.mjs --check`, inspect actual process exit codes and seek a real Godot capture before artistic admission.
+
+## Alternate flagship — The Unclaimed Procession (6 November 2026)
+
+**Second, spatially distinct dry composition**, `alternate_scene`, is **1420×356** native-material cells. This ruin stages a once-raised carnival mechanical court above a collapsed two-level procession: the original wheel is displaced to a high central terrace above a failed empty maintenance lift, while the arch, ticket chamber, carousel, prize gallery, mirror maze and two petrified games step down across fractured boarding decks. Eight unequally supported foundations, voided wheel supports, a snapped overhead inspection viaduct, intermittent pennants, a severed cable run, a damaged registrar's gantry, stripped prize sockets, fallen slates and small corrosion/fastening groups tell a single abandoned-fairground story. Some gaps are deliberately *unstamped air*; they do not erase host matter.
+
+The alternate contains **892 ordered inert terrain/structure stamps** and **138 foreground wear stamps**, painted respectively before and after eight reused module placements. The original 1420×226 panorama, eight original features, all 16 variants and three assembly patterns are preserved byte-identically in source JSON. The alternate repositions those eight reusable features vertically as well as horizontally; each remains at its original 1× scale and 0° orientation. Their source-defined dry variants substitute Sand/Dust/Water/Brine only for this illustration. Earlier source claims and risk notes still apply.
+
+`preview.svg` now includes the original panorama, all module cards, and a second full panorama plus two close studies. It is **deterministic source-colour SVG, never a Godot screenshot**. Enhanced validation checks alternate stamp bounds, exact palette inertness, placement anchors, unique features, no module bounding overlap and substituted variant inactivity. No ride movement, electrical illumination, reflection, fluid containment, actor clearance, native performance, or production import has been qualified. Comparison to the five original graphical gallery references remains unaccepted until comparable actual captures and independent human review.
+
+To validate in a real full checkout with matching pinned source identities:
+
+```sh
+node docs/world-design/fallow-carnival/validate_pack.mjs --source --negative
+node docs/world-design/fallow-carnival/render_pack.mjs --check
+node docs/world-design/fallow-carnival/render_pack.mjs --write
+```
