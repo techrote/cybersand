@@ -14,9 +14,13 @@ class DiagnosticWorker:
 		super._populate_specialized_snapshot(snapshot)
 		if _simulation_failed:return
 		var rows: Array = []
-		# id, sample, observation impulse xy, pre-final xy, bearing xy, support samples.
+		# id, sample, observation impulse xy, pre-final xy, bearing xy, support samples
+		# (written by native only after its velocity gate), below-contact faces
+		# (boundary histogram face 2, recorded before any velocity gate).
 		for row: Array in _world.diagnostic_body_metrics():
-			rows.append([row[0],row[1],row[8],row[9],row[10],row[11],row[17],row[18],row[19]])
+			var faces: Array = row[16];var kinds: int = faces.size() / 4;var below: int = 0
+			for material: int in range(kinds):below += int(faces[2 * kinds + material])
+			rows.append([row[0],row[1],row[8],row[9],row[10],row[11],row[17],row[18],row[19],below])
 		var entry: Dictionary = {"serial":snapshot.serial,"tick":snapshot.tick_index,
 			"epoch":snapshot.rigid_body_epoch,"rows":rows,
 			"states":snapshot.current_rigid_body_states.to_byte_array().hex_encode(),

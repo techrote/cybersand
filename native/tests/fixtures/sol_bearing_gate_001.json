@@ -41,6 +41,17 @@
   },
   "negative_prediction": "Off is expected to show low gate_fraction. A SUPPORTED result attributes the post/pre difference; it does not admit post, a support law, a gate change, material-weight calibration or original clearance.",
   "apparatus_smoke": "A --smoke run (focused existing gates plus one tree packed post worker1 episode per host) checks capture/alignment/model mechanics only. Its outcomes are excluded from every decision; an apparatus failure is retained, repaired in a new commit and the registered matrix runs fresh afterwards.",
+  "amendment_001": {
+    "reason": "smoke-001 apparatus failure (retained): native writes diagnostic support_samples only after the velocity gate passes (cyber_native_cell_world.cpp:882-886), so gated proxies always report zero support and gate_fraction was 0 by construction. The model check itself passed 3468/3468 Windows and 4230/4230 Linux. smoke-001 Windows diverged from live-001 at step 104 because native tick 106 prepared sample 104 instead of 105 (publication/tick race) with identical earlier inputs and results.",
+    "support_proxy": "supported_proxy is replaced by below_contact: the native boundary-pressure face histogram (recorded before any velocity gate) counts at least one body cell of that proxy with a movable non-wall material directly below. granular_support_at is stricter, so below_contact is an UPPER BOUND on support and lost_correction becomes lost_correction_upper.",
+    "calibration": "On ungated proxies (prepared vy > 0) native support_samples is reported. precision = P(support_samples > 0 | below_contact) and recall = P(below_contact | support_samples > 0), per episode.",
+    "decision_rule": {
+      "H_gate_SUPPORTED": "As the original rule using lost_correction_upper, and additionally every eligible episode has precision >= .9 and recall >= .9.",
+      "H_gate_REJECTED_AS_PRIMARY": "As the original rule using lost_correction_upper (an upper bound cannot overstate rejection); calibration is reported.",
+      "otherwise": "INCONCLUSIVE."
+    },
+    "non_perturbation": "Bit equality alone cannot identify perturbation under publication/tick races. Each Windows pre/post episode is classified at its first after_step difference from live-001: RACE if the consumed native_states_bits differ at that step while all earlier steps are equal; PERTURBATION if the prepared states are equal and the results differ. NON_PERTURBING_WINDOWS requires every Windows pre/post episode to be fully equal or RACE. Two Windows telemetry-off replays (tree post w1, building pre w1) with the same source are descriptive controls for ordinary run-to-run races."
+  },
   "resource": {"collection_cap_bytes": 1610612736, "minimum_free_bytes": 5368709120},
   "authority_limits": "No E1/E2, LA/SOL composition, native change, MAT-AUTH or CPU-gate claim. Preserve all historical failures and inherited guard failures. Keep #460 and #461 unchanged and Draft; this branch is a Draft dependent."
 }

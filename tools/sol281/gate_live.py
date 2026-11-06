@@ -49,11 +49,12 @@ def main():
         imported=run('import');assert imported['clean'],'Retain failed import; stop'
         for test in ['test_solid_contact_response','test_solid_contact_fences','test_sol_contact_order']:
             assert run(test,test)['clean'],'Retain failed focused gate; stop'
-        cases=[(1,'tree','post','post')] if a.smoke else [(w,s,arm,order) for w in [1,4] for s in ['tree','building'] for arm,order in ARMS]
-        for workers,structure,arm,order in cases:
-            resource();name=f'{structure}-packed_sand-{arm}-w{workers}';output=target/(name+'.json')
+        cases=[(1,'tree','post','post',True)] if a.smoke else [(w,s,arm,order,True) for w in [1,4] for s in ['tree','building'] for arm,order in ARMS]
+        if host=='windows' and not a.smoke:cases+=[(1,'tree','post','post',False),(1,'building','pre','pre',False)]  # telemetry-off race controls
+        for workers,structure,arm,order,telemetry in cases:
+            resource();name=('' if telemetry else 'replay-')+f'{structure}-packed_sand-{arm}-w{workers}';output=target/(name+'.json')
             row=run(name,'test_sol_structure_cut',dict(SOL_ORDER_PROFILE='1',SOL_CONTACT_ORDER=order,SOL_STRUCTURE=structure,SOL_SURROUNDINGS='packed_sand',SOL_SAND_RESPONSE=str(int(arm!='off')),SOL_WORKERS=str(workers),
-                SOL_OUTPUT=str(output) if host=='windows' else p.wsl(output),SOL_STAGE_TRACE='1',SOL_COMPACT_EVIDENCE='1',SOL_BEARING_DIAGNOSTIC='1'))
+                SOL_OUTPUT=str(output) if host=='windows' else p.wsl(output),SOL_STAGE_TRACE='1',SOL_COMPACT_EVIDENCE='1',SOL_BEARING_DIAGNOSTIC=str(int(telemetry))))
             if output.exists():
                 d=json.loads(output.read_text(encoding='utf-8'));row['report']=dict(path=str(output.relative_to(o.ROOT)),sha256=o.sha(output),bytes=output.stat().st_size);row['report_complete']=not d['failures'] and len(d['steps'])==720
             else:row['report_complete']=False
