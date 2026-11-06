@@ -47,8 +47,8 @@ std::vector<Material> payload() {
 void cohort(std::uint32_t workers) {
     const auto c = config(workers);
     const auto p = payload();
-    // Real native workers execute only on ordinary signed resident chunks.
-    // Extremely distant chunks are separately tested at a tick-free owner boundary.
+    // Ordinary signed chunks establish an independent native worker control.
+    // The extreme-coordinate cohort now also performs real phased ticks.
     World running(c);
     for (int i=0; i<8; ++i) {
         require(running.install_generated_chunk({static_cast<std::int64_t>(i*2-2),0},p)
@@ -128,13 +128,48 @@ void cohort(std::uint32_t workers) {
     require(restored->install_generated_chunk({valid_lo,0},p)==
             ChunkInstallOutcome::AlreadyResident, "resident edge replacement accepted");
     require(restored->physical_state_hash()==before, "resident refusal mutated state");
+    // Separate from admission: exercise the actual phased native scheduler at
+    // the representable i64 boundaries, then compare independently executed
+    // original/restored Worlds after every successful fixed tick. This does not
+    // implement an eviction/reload transaction or certify historical imports.
+    std::uint32_t edge_tick_workers = 0;
+    std::uint32_t restored_tick_workers = 0;
+    for (int step=0; step<3; ++step) {
+        const auto a = edges.tick();
+        const auto b = restored->tick();
+        edge_tick_workers = std::max(edge_tick_workers, a.worker_threads_observed);
+        restored_tick_workers = std::max(restored_tick_workers, b.worker_threads_observed);
+        require(!edges.has_failed() && !restored->has_failed(),
+                "extreme-coordinate native tick quarantined");
+        require(edges.completed_tick_index()==restored->completed_tick_index(),
+                "extreme-coordinate original/restored clock drift");
+        require(edges.physical_state_hash()==restored->physical_state_hash(),
+                "extreme-coordinate fixed-tick physical state diverged");
+        require(edges.chunk_count()==6 && restored->chunk_count()==6,
+                "extreme-coordinate tick unexpectedly changed residency");
+    }
+    require(edge_tick_workers>=1 && edge_tick_workers<=workers &&
+            restored_tick_workers>=1 && restored_tick_workers<=workers,
+            "extreme-coordinate tick did not observe valid native worker participation");
+    const auto continuation_hash=edges.physical_state_hash();
+    const auto continuation_checkpoint=edges.save_physical_state();
+    require(!continuation_checkpoint.empty() &&
+            continuation_checkpoint.size()<16*1024*1024,
+            "extreme-coordinate post-tick checkpoint absent/unbounded");
+    auto resumed=World::restore_physical_state(c,continuation_checkpoint);
+    require(resumed && resumed->physical_state_hash()==continuation_hash &&
+            resumed->completed_tick_index()==edges.completed_tick_index(),
+            "extreme-coordinate post-tick native checkpoint restore mismatch");
     std::cout << "GEN006_NATIVE_COORD_LIMIT_JSON {\"configured_workers\":"<<workers
               <<",\"actual_observed_workers\":"<<observed
               <<",\"resident_edge_chunks\":6,\"rejected_coordinates\":8"
               <<",\"min_accepted_chunk\":"<<valid_lo
               <<",\"max_accepted_chunk\":"<<valid_hi
               <<",\"checkpoint_bytes\":"<<bytes.size()
-              <<",\"continuation_at_extreme\":\"not_tested\""
+              <<",\"extreme_tick_workers\":"<<edge_tick_workers
+              <<",\"restored_tick_workers\":"<<restored_tick_workers
+              <<",\"continuation_checkpoint_bytes\":"<<continuation_checkpoint.size()
+              <<",\"continuation_at_extreme\":\"three_native_ticks\""
               <<",\"result\":\"PASS\"}\n";
 }
 }
