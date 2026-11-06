@@ -75,6 +75,29 @@ function validatePack(p,c,h){
   }
  }
 
+
+ const alt=p.alternate_scene;check(alt&&alt.size?.[0]===1320&&alt.size?.[1]===280&&alt.baseline_y===244,"alternate dimensions");
+ check(alt.id==="planetarium-procession"&&typeof alt.title==="string","alternate identity");
+ const altIds=new Set();
+ check(Array.isArray(alt.placements)&&alt.placements.length===p.features.length,"alternate placement count");
+ for(const pos of alt.placements){
+  const ft=seen.get(pos.feature_id);check(ft&&!altIds.has(ft.id),"alternate missing/duplicate module");altIds.add(ft.id);
+  const [x,y]=pos.origin,[W,H]=ft.size;
+  check(Number.isInteger(x)&&Number.isInteger(y)&&x>=0&&y>=0&&x+W<=alt.size[0]&&y+H<=alt.size[1]&&y+H===alt.baseline_y,"alternate placement bounds/baseline");
+  check(pos.anchor_world[0]===x+Math.floor(W/2)&&pos.anchor_world[1]===alt.baseline_y,"alternate module anchor");
+  const vv=ft.variants.find(t=>t.id===pos.variant);check(vv,"alternate variant identity");
+  for(const rr of ft.rectangles){const id=vv.swap[String(rr[4])]??rr[4],m=mats.get(id);check(m&&!m.movable&&m.kernel===0,"active alt module "+ft.id+" material "+id);}
+ }
+ for(const key of ["backdrop_rectangles","foreground_rectangles"]){
+  check(Array.isArray(alt[key])&&alt[key].length>=10,"alternate art layer "+key);
+  for(const rr of alt[key]){
+   check(Array.isArray(rr)&&rr.length===5&&rr.every(Number.isInteger),"alternate rectangle shape");
+   const [x,y,w,h,id]=rr,m=mats.get(id);
+   check(x>=0&&y>=0&&w>0&&h>0&&x+w<=alt.size[0]&&y+h<=alt.size[1],"alternate rectangle bounds");
+   check(m&&!m.movable&&m.kernel===0,"alternate source-fixed material "+id);
+  }
+ }
+
  return {features:seen.size,rectangles:total,materials:mats.size,variants:p.features.reduce((a,f)=>a+f.variants.length,0),dry_scene_placements:placed.size,patterns:scene.patterns.length,scene_art_rectangles:artRectangles};
 }
 const directory=dirname(fileURLToPath(import.meta.url));
@@ -100,7 +123,15 @@ if(process.argv.includes("--negative")){
  p=>p.combined_scene.patterns[0].sequence[0]="unknown",
  p=>p.combined_scene.backdrop_rectangles[0][0]=-1,
  p=>p.combined_scene.backdrop_rectangles[0][4]=3,
- p=>p.combined_scene.foreground_rectangles[0][2]=5000
+ p=>p.combined_scene.foreground_rectangles[0][2]=5000,
+ p=>p.alternate_scene.placements[0].origin[0]=-1,
+ p=>p.alternate_scene.placements[0].origin[1]=0,
+ p=>p.alternate_scene.placements[0].variant="dust-clock",
+ p=>p.alternate_scene.placements[1].feature_id=p.alternate_scene.placements[0].feature_id,
+ p=>p.alternate_scene.backdrop_rectangles[0][0]=-2,
+ p=>p.alternate_scene.backdrop_rectangles[0][4]=3,
+ p=>p.alternate_scene.foreground_rectangles[0][2]=3000,
+ p=>p.alternate_scene.foreground_rectangles[0][4]=14
  ];
  let denied=0;
  for(const change of mutations){const damaged=JSON.parse(JSON.stringify(p));change(damaged);try{validatePack(damaged,c,h)}catch{denied++}}
