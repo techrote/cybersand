@@ -4,6 +4,7 @@ extends RefCounted
 # The only owner of physical-equipment cellular effects. No scene node, body RID,
 # controller or main-thread callback crosses this copied-value boundary.
 const Catalog = preload("res://scripts/usable_catalog.gd")
+const MeteredDrain = preload("res://scripts/metered_liquid_drain.gd")
 const MAX_ACTORS: int = 8
 const MAX_REQUESTS: int = 8
 const MAX_DEVICES: int = 16
@@ -27,6 +28,10 @@ class PhysicalEngine extends "res://scripts/usable_runtime.gd":
 	var active_world: Object
 	var last_error: String = ""
 	var source_diagnostic: Dictionary = {}
+	# This survives equipment/session resets. Its stock and fault latch retire
+	# only when native readback proves the World itself was reconstructed.
+	var metered := MeteredDrain.new()
+	var metered_outcome: Dictionary = {}
 
 	func reset_physical(next_epoch: int = -1) -> void:
 		configure(MAX_ACTORS)
@@ -41,8 +46,13 @@ class PhysicalEngine extends "res://scripts/usable_runtime.gd":
 		last_sequences.fill(-1)
 		last_error = ""
 		source_diagnostic.clear()
+		metered_outcome.clear()
 
 	func advance_physical(delta: float, world: Object, next_frame: Dictionary, requests: Array) -> void:
+		metered.refresh(world)
+		if metered.terminal:
+			last_error = "metered_owner_terminal"
+			return
 		var error: String = CyberPhysicalUsableRuntime.frame_error(next_frame)
 		if not error.is_empty():
 			last_error = error
@@ -70,6 +80,10 @@ class PhysicalEngine extends "res://scripts/usable_runtime.gd":
 			or not world.has_method(&"rigid_body_id_at") or not world.has_method(&"emit_disc") \
 			or (world.has_method(&"has_failed") and bool(world.has_failed())):
 			last_error = "world_unavailable"
+			for request: Variant in requests:
+				if request is Dictionary:
+					metered_outcome = {}
+					_store_receipt(request, false, false, "world_unavailable", 0)
 			return
 		run_id = str(next_frame.run_id)
 		frame = next_frame.duplicate(true)
@@ -93,6 +107,7 @@ class PhysicalEngine extends "res://scripts/usable_runtime.gd":
 		if bool(frame.suspended):
 			for request: Variant in requests:
 				if request is Dictionary:
+					metered_outcome = {}
 					_store_receipt(request, false, false, "suspended", 0)
 			active_world = null
 			return
@@ -108,6 +123,7 @@ class PhysicalEngine extends "res://scripts/usable_runtime.gd":
 			_actors[index].cooldown = maxf(0.0, float(_actors[index].cooldown) - dt)
 		var seen: Dictionary = {}
 		for request: Variant in requests:
+			metered_outcome = {}
 			if not request is Dictionary:
 				last_error = "request_type"
 				continue
@@ -123,6 +139,12 @@ class PhysicalEngine extends "res://scripts/usable_runtime.gd":
 			seen[owner] = true
 			last_sequences[owner] = int(request.sequence)
 			_execute(request, world)
+			if metered.terminal:
+				# No peer effect, observation publication, projectile or recipe may
+				# continue after an uncertain/partial destructive operation.
+				last_error = "metered_owner_terminal"
+				active_world = null
+				return
 		_observe_local(world)
 		active_world = null
 
@@ -186,8 +208,23 @@ class PhysicalEngine extends "res://scripts/usable_runtime.gd":
 		elif float(actor.charge) + 0.0001 < float(definition.cost):
 			reason = "no-charge"
 		elif category == Catalog.CATEGORY_TOOL:
-			reason = _apply_tool(owner, definition, Vector2(pose.direction).normalized(),
-				float(request.power) * (0.35 if operation == "alternate" else 1.0), world)
+			if int(request.version) == 2:
+				metered_outcome = metered.apply(world, pose, request,
+					float(request.power) * (0.35 if operation == "alternate" else 1.0),
+					MAX_READS - read_count_last, MAX_WRITES - write_count_last, int(frame.tick))
+				read_count_last += int(metered_outcome.get("reads_used", 0))
+				var verified: int = 0
+				for transition: Dictionary in metered_outcome.get("transitions", []):
+					if bool(transition.get("verified_removed", false)):
+						verified += 1
+				write_count_last += verified
+				sink_slots_last += verified
+				reason = str(metered_outcome.get("reason", "metered_fault"))
+				if metered_outcome.get("status") == "applied":
+					_add_effect(Vector2(metered_outcome.intake_center), definition.color, 2.0, "metered-drain")
+			else:
+				reason = _apply_tool(owner, definition, Vector2(pose.direction).normalized(),
+					float(request.power) * (0.35 if operation == "alternate" else 1.0), world)
 		else:
 			reason = _launch(owner, definition, Vector2(pose.direction).normalized(), float(request.power), world)
 		var accepted: bool = reason in ["applied", "launched", "deployed", "activated"]
@@ -208,6 +245,38 @@ class PhysicalEngine extends "res://scripts/usable_runtime.gd":
 		if owner >= 0 and owner < _actors.size():
 			receipt.charge = float(_actors[owner].charge)
 			receipt.cooldown = float(_actors[owner].cooldown)
+			if request.get("version") == 2:
+				var outcome: Dictionary = metered_outcome.duplicate(true)
+				if outcome.is_empty():
+					var stock: Dictionary = metered.observation(owner)
+					var unit: String = "water_units" if receipt.get("material") == 3 else "brine_cells"
+					var remaining: int = int(stock.get(unit + "_remaining", 0))
+					outcome = {"profile": MeteredDrain.PROFILE, "provenance": MeteredDrain.PROVENANCE,
+						"status": "refused", "reason": reason, "command_id": receipt.get("request_id", ""),
+						"requested_material": receipt.get("material"), "requested_policy_hash": receipt.get("policy_hash"),
+						"requested_quantity_budget": receipt.get("quantity_budget"), "requested_range": 29.0,
+						"requested_radius": 4, "maximum_targets": MeteredDrain.MAX_TARGETS,
+						"world_instance_id": stock.get("world_instance_id", 0),
+						"native_generation": stock.get("native_generation", -1),
+						"applied_policy_hash": stock.get("policy_hash", ""),
+						"physical_frame_tick": int(frame.get("tick", -1)),
+						"completed_tick_before": int(stock.get("completed_tick", -1)),
+						"completed_tick_after": int(stock.get("completed_tick", -1)),
+						"observation_status": "not_dispatched", "quantity_complete": true,
+						"water_units_removed": 0, "brine_cells_removed": 0, "sink_debit": 0,
+						"budget_before": remaining, "remaining_budget": remaining,
+						"eligible_target_count": 0, "eligible_quantity": 0,
+						"reads_used": 0, "writes_attempted": 0, "command_overhead_usec": 0,
+						"read_accounting": MeteredDrain.READ_ACCOUNTING,
+						"transitions": [], "targets": []}
+					for key: String in CyberPhysicalUsableRuntime.IDENTITY_KEYS:
+						if key not in ["usable_index", "actor_id"]:
+							outcome[key] = receipt.get(key)
+				outcome["activation_accepted"] = accepted
+				outcome["charge_cost"] = 0.85 if accepted else 0.0
+				outcome["charge_after"] = receipt.charge
+				outcome["cooldown_after"] = receipt.cooldown
+				receipt["metered_drain"] = outcome
 			receipts[owner] = receipt
 		else:
 			last_error = reason
@@ -459,6 +528,7 @@ class PhysicalEngine extends "res://scripts/usable_runtime.gd":
 			for key: String in CyberPhysicalUsableRuntime.IDENTITY_KEYS:
 				actor[key] = frame.get(key) if key in ["run_id", "epoch"] else pose.get(key)
 			actor["state"] = pose.state
+			actor["metered_drain"] = metered.observation(int(pose.actor_id))
 			actor["ready"] = not bool(frame.get("suspended", true)) and bool(pose.active) \
 				and str(pose.state) == "held" and int(pose.usable_index) >= 0 and float(actor.cooldown) <= 0.00001 \
 				and float(actor.charge) >= float(Catalog.entry(int(pose.usable_index)).get("cost", 0.0))
@@ -472,6 +542,8 @@ class PhysicalEngine extends "res://scripts/usable_runtime.gd":
 		result["receipts"] = receipts.values().duplicate(true)
 		result["last_error"] = last_error
 		result["physical"] = true
+		result["metered_terminal"] = metered.terminal
+		result["metered_fault"] = metered.terminal_evidence.duplicate(true)
 		return result
 
 
@@ -490,6 +562,14 @@ func step(delta: float, world: Object, frame: Dictionary, requests: Array = []) 
 
 func snapshot() -> Dictionary:
 	return _engine.physical_snapshot()
+
+
+func metered_terminal() -> bool:
+	return _engine.metered.terminal
+
+
+func refresh_metered_owner(world: Object) -> void:
+	_engine.metered.refresh(world)
 
 
 static func actor_row(frame: Dictionary, actor_id: int) -> Dictionary:
@@ -518,8 +598,22 @@ static func frame_error(frame: Dictionary) -> String:
 			return "actor_type"
 		if not _allowed_keys(row, ["actor_id", "generation", "equipment_epoch", "instance_id", "usable_index",
 			"state", "body_id", "position", "rotation", "half_extents", "muzzle", "direction", "owner_origin",
-			"active", "lease_deadline", "parts"]):
+			"active", "lease_deadline", "parts", "profile", "material", "native_generation",
+			"policy_hash", "world_instance_id", "quantity_budget", "metered_request_id"]):
 			return "actor_fields"
+		if row.has("profile"):
+			if row.get("profile") != MeteredDrain.PROFILE or row.get("usable_index") != 9 \
+				or not row.get("material") is int or row.material not in [3, 24] \
+				or not row.get("native_generation") is int or not row.get("world_instance_id") is int \
+				or not row.get("quantity_budget") is int or not row.get("policy_hash") is String \
+				or not row.get("metered_request_id") is String:
+				return "metered_profile_fields"
+		else:
+			for extra: String in MeteredDrain.REQUEST_FIELDS:
+				if row.has(extra):
+					return "metered_profile_fields"
+			if row.has("metered_request_id"):
+				return "metered_profile_fields"
 		for key: String in ["actor_id", "generation", "equipment_epoch", "usable_index", "body_id", "lease_deadline"]:
 			if not row.get(key) is int:
 				return "actor_identity"
@@ -599,19 +693,41 @@ static func frame_error(frame: Dictionary) -> String:
 
 
 static func request_error(request: Dictionary, frame: Dictionary) -> String:
-	if request.size() != REQUEST_KEYS.size():
+	var metered: bool = request.get("version") == 2
+	var expected_keys: Array[String] = REQUEST_KEYS.duplicate()
+	if metered:
+		expected_keys.append_array(MeteredDrain.REQUEST_FIELDS)
+	if request.size() != expected_keys.size():
 		return "request_fields"
 	for key: Variant in request:
-		if str(key) not in REQUEST_KEYS:
+		if str(key) not in expected_keys:
 			return "request_fields"
 	for key: String in ["version", "epoch", "actor_id", "generation", "equipment_epoch", "usable_index", "body_id", "sequence"]:
 		if not request.get(key) is int:
 			return "request_integer"
-	if request.version != 1 or request.epoch != frame.get("epoch") or request.run_id != frame.get("run_id"):
+	if request.version not in [1, 2] or request.epoch != frame.get("epoch") or request.run_id != frame.get("run_id"):
 		return "epoch"
 	var row: Dictionary = actor_row(frame, int(request.actor_id))
 	if row.is_empty():
 		return "actor_id"
+	if metered:
+		if request.get("profile") != MeteredDrain.PROFILE or request.get("usable_index") != 9 \
+			or request.get("operation") not in ["use", "alternate"]:
+			return "metered_profile"
+		for key: String in ["material", "native_generation", "world_instance_id", "quantity_budget"]:
+			if not request.get(key) is int:
+				return "metered_integer"
+		if request.material not in [3, 24] or request.native_generation < 0 or request.world_instance_id == 0 \
+			or request.quantity_budget <= 0 or request.quantity_budget > 16 * 255 \
+			or not request.get("policy_hash") is String or str(request.policy_hash).length() != 64:
+			return "metered_identity_or_budget"
+		for key: String in MeteredDrain.REQUEST_FIELDS:
+			if request.get(key) != row.get(key):
+				return "metered_" + key
+		if request.get("request_id") != row.get("metered_request_id", ""):
+			return "metered_released"
+	elif row.has("profile"):
+		return "metered_version_required"
 	for key: String in IDENTITY_KEYS:
 		if key not in ["run_id", "epoch"] and request.get(key) != row.get(key):
 			return key
@@ -668,6 +784,10 @@ static func receipt(request: Dictionary, accepted: bool, consumed: bool, reason:
 		# a refusal snapshot. All valid request fields are scalar values.
 		result[key] = value if value is String or value is int or value is bool \
 			or (value is float and is_finite(float(value))) else null
+	if request.get("version") == 2:
+		for key: String in MeteredDrain.REQUEST_FIELDS:
+			var value: Variant = request.get(key)
+			result[key] = value if value is String or value is int else null
 	result["actor_id"] = int(request.actor_id) if request.get("actor_id") is int else -1
 	result["accepted"] = accepted
 	result["consumed"] = consumed
