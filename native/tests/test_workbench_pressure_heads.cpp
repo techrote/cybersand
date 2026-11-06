@@ -170,9 +170,13 @@ void gap_preflight_commit_bound() {
         w.set(2, y, Material::Wall);
         w.set(4, y, Material::Wall);
     }
-    w.set(3, 19, Material::Wall);
-    (void)w.set_cell_state(3, 17, Material::Water, 255, 0);
-    (void)w.set_cell_state(3, 18, Material::Water, 255, 0);
+    w.set(3, 18, Material::Wall);
+    // Water begins at local Y=0 in the lower resident chunk: an Empty
+    // first row would legitimately terminate the dirty dependency cone.
+    require(w.set_cell_state(3, 16, Material::Water, w.config().water_experiment_policy.maximum(), 0),
+            "gap-budget first lower Water slot admitted");
+    require(w.set_cell_state(3, 17, Material::Water, w.config().water_experiment_policy.maximum(), 0),
+            "gap-budget second lower Water slot admitted");
     require(w.chunk_count() == 2U, "nonresident intermediate Y chunk");
     (void)w.tick(); // warm index; retire initial full-height dirtiness
     const auto before = w.pressure_optimization_snapshot().counters;
