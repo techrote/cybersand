@@ -36,7 +36,7 @@ ORDERS = (
     (("baseline", 6), ("candidate", 6), ("candidate", 1), ("baseline", 1)),
     (("candidate", 6), ("baseline", 6), ("baseline", 1), ("candidate", 1)),
     (("baseline", 1), ("candidate", 1), ("candidate", 6), ("baseline", 6)),
-    (("candidate", 6), ("baseline", 6), ("baseline", 1), ("candidate", 1)),
+    (("candidate", 1), ("baseline", 1), ("baseline", 6), ("candidate", 6)),
 )
 WORK_KEYS = ("visited", "moved", "cores", "active_blocks", "chunk_allocations",
              "temperature_field_allocations", "deferred_events", "dirty_chunks",
