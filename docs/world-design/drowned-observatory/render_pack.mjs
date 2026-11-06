@@ -10,9 +10,9 @@ function renderSvg(pack){
  const rect=(x,y,w,h,fill,rx=0)=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${rx}" fill="${fill}"/>`;
  const txt=(x,y,t,size=14,fill="#e3ebe8",weight=400)=>`<text x="${x}" y="${y}" font-family="monospace" font-size="${size}" fill="${fill}" font-weight="${weight}">${esc(t)}</text>`;
  const draw=(f,x,y,scale,variant)=>{const v=f.variants.find(q=>q.id===variant);lines.push(`<g transform="translate(${x},${y}) scale(${scale})" shape-rendering="crispEdges">`);for(const [rx,ry,w,h,id] of f.rectangles){const target=v?.swap?.[String(id)]??id;lines.push(rect(rx,ry,w,h,tint(target)))}lines.push("</g>")};
- lines.push(`<svg xmlns="http://www.w3.org/2000/svg" width="1480" height="1870" viewBox="0 0 1480 1870" role="img" aria-label="Drowned Observatory two source-colour astronomical dioramas, two alternate close details and eight reusable modules">`);
+ lines.push(`<svg xmlns="http://www.w3.org/2000/svg" width="1480" height="2140" viewBox="0 0 1480 2140" role="img" aria-label="Drowned Observatory two source-colour astronomical dioramas, four alternate close details and eight reusable modules">`);
  lines.push(`<title>Drowned Observatory — Night of the Submerged Equator</title><desc>Source-colour illustration for staged map-authoring. Not a native simulation or Godot screenshot.</desc>`);
- lines.push(rect(0,0,1480,1110,"#091723"));
+ lines.push(rect(0,0,1480,2140,"#091723"));
  lines.push(rect(30,20,1420,58,"#1d3041",7));lines.push(txt(51,57,"DROWNED OBSERVATORY / FRACTURED EQUATOR / SILENT MERIDIAN",24,"#ebebd9",700));
  lines.push(txt(1220,56,"COLLECTION 011",14,"#cbb779",700));lines.push(txt(50,110,"1320 × 280 DRY CELLS / FRACTURED MERIDIAN / STAGED GEOLOGY",14,"#b1c5c7",600));
  lines.push(rect(48,122,1384,326,"#132637",7));lines.push(rect(63,134,1354,292,"#0d1e2e",4));
@@ -63,10 +63,13 @@ function renderSvg(pack){
   for(const r of subject.foreground_rectangles)paint(r,[0,0],null);
   lines.push(txt(px,py+ch*2+27,label,13,"#d5dfdd",600));
  };
- lines.push(txt(51,1478,"TWO 2× ALTERNATE SOURCE-CELL DETAILS / NOT GODOT OR NATIVE PRESENTATION",14,"#c8d8d8",600));
+ lines.push(txt(51,1478,"TWO 2× UPPER-REGISTER DETAILS / NOT GODOT OR NATIVE PRESENTATION",14,"#c8d8d8",600));
  paintCrop(500,0,310,130,65,1512,"I / DISCONTINUOUS AZIMUTH WHEEL AND FRACTURED UPPER CHOIR",altScene);
  paintCrop(970,110,310,130,780,1512,"II / FAILED PROCESSIONAL BRIDGE AND EASTERN STONE REGISTER",altScene);
- lines.push(txt(51,1840,"Flat SVG geometry: source-colour only. Unwritten voids do not clear host terrain.",12,"#91abb8"));
+ lines.push(txt(51,1869,"TWO 2× CARVED-FOUNDATION DETAILS / EXACT NATIVE-CELL RASTER; NO HOST CLEARING",14,"#c8d8d8",600));
+ paintCrop(18,210,310,70,65,1895,"III / WESTERN FLOOD INDEX AND BROKEN THEODOLITE VAULT",altScene);
+ paintCrop(989,210,310,70,780,1895,"IV / WITNESS REGISTER AND LOST STAR LEDGER",altScene);
+ lines.push(txt(51,2110,"Flat SVG geometry: source-colour only. Unwritten voids do not clear host terrain.",12,"#91abb8"));
 
  lines.push("</svg>");
  return lines.join("\n")+"\n";
