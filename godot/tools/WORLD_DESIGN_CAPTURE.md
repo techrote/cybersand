@@ -18,7 +18,9 @@ Linux OpenGL/llvmpipe and Windows ANGLE outputs preserved as workflow artifacts.
   Symlinks, Windows junctions and other reparse-point aliases in either path are
   rejected, including a nonexistent output child beneath a linked parent.
   Existing-ancestor filesystem equivalence checks supplement lexical containment
-  so non-link aliases cannot bypass pack/workspace ancestry checks. A non-empty
+  so non-link aliases cannot bypass pack/workspace ancestry checks; the Windows
+  campaign exercises this with a real `SUBST` drive alias in addition to junction
+  coverage. A non-empty
   existing output is accepted only when it is an already-owned CyberSand capture
   root. Each attempt acquires an atomic sibling `.world-capture-claim` directory.
   Generated PNG/RG8/metadata remain in a unique sibling stage and never contain
