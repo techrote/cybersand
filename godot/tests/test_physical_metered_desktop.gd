@@ -555,7 +555,7 @@ func _in_tools_gameplay_profiles() -> void:
 		and int(leak_outcome.get("source_credit",-1)) == 0 and int(leak_outcome.get("sink_debit",-1)) == 0 \
 		and int(leak_outcome.get("quantity_delta",-1)) == 0 and bool(in_tools_owner().get("aperture_open",false)),
 		"real gameplay leak receipt/readback carries zero source/sink quantity and owned open aperture")
-	expect("leak OPEN" in desktop.actor_prototype_button.text,
+	expect(await wait_for(func() -> bool: return "leak OPEN" in desktop.actor_prototype_button.text),
 		"ordinary gameplay status surface visibly reports the open #361 leak")
 	reports.append({"case":"reversible-leak-main","receipt":leak_receipt,
 		"owner":in_tools_owner().duplicate(true),"actor":desktop.physical_actor_observation(),
