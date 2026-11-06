@@ -114,7 +114,7 @@ func _applied_pressure() -> Dictionary:
 		if int(item.get("material", -1)) == Setup.WATER:
 			water = item
 			break
-	var parameters: Dictionary = policy.get("parameters", {})
+	var parameters: Dictionary = policy.get("family_parameters", {})
 	var pressure: Dictionary = parameters.get("pressure_flow_v1", {})
 	return {
 		"family": str(water.get("applied_family", "")),
