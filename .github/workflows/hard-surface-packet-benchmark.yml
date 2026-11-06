@@ -1,0 +1,266 @@
+name: Hard-surface packet same-host benchmark
+
+on:
+  push:
+    branches:
+      - gpt/hs-packet-benchmark-20261106
+
+permissions:
+  contents: read
+
+env:
+  GODOT_URL: https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7
+  GODOT_SHA256: 0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c
+  GODOT_VERSION: 4.7.stable.official.5b4e0cb0f
+  GODOT_CPP_COMMIT: 101ae38034304346a46ea9ea84ae156d3e860496
+  PARENT_SHA: 4a80af2a891332176a3912a235582d77d076a185
+  CANDIDATE_SHA: 97c19098fd2c238a75815836d4982668999f3f92
+  CYBERSAND_CI_WATCHDOG_SCALE: "1"
+
+jobs:
+  benchmark:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - name: Check out benchmark harness
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+
+      - name: Check out exact parent
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: 4a80af2a891332176a3912a235582d77d076a185
+          path: parent
+          lfs: false
+
+      - name: Check out exact candidate
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: 97c19098fd2c238a75815836d4982668999f3f92
+          path: candidate
+          lfs: false
+
+      - name: Verify exact source identities
+        run: |
+          set -euo pipefail
+          test "$(git -C parent rev-parse HEAD)" = "$PARENT_SHA"
+          test "$(git -C candidate rev-parse HEAD)" = "$CANDIDATE_SHA"
+          test -z "$(git -C parent status --porcelain)"
+          test -z "$(git -C candidate status --porcelain)"
+
+      - name: Apply observational timing overlay to parent only
+        run: |
+          set -euo pipefail
+          cp candidate/godot/scripts/simulation_snapshot.gd parent/godot/scripts/simulation_snapshot.gd
+          cp candidate/godot/scripts/simulation_worker.gd parent/godot/scripts/simulation_worker.gd
+          cp candidate/godot/scripts/hard_surface_packet_profile.gd parent/godot/scripts/hard_surface_packet_profile.gd
+          python3 - <<'PY'
+          import subprocess
+          expected = {
+              "godot/scripts/simulation_snapshot.gd": (6, 0),
+              "godot/scripts/simulation_worker.gd": (16, 0),
+          }
+          output = subprocess.check_output(
+              ["git", "-C", "parent", "diff", "--numstat", "--",
+               "godot/scripts/simulation_snapshot.gd",
+               "godot/scripts/simulation_worker.gd"],
+              text=True,
+          )
+          seen = {}
+          for line in output.splitlines():
+              add, delete, path = line.split("\t")
+              seen[path] = (int(add), int(delete))
+          if seen != expected:
+              raise SystemExit(f"unexpected parent timing overlay: {seen!r}")
+          status = subprocess.check_output(
+              ["git", "-C", "parent", "status", "--porcelain"], text=True
+          ).splitlines()
+          paths = {line[3:] for line in status}
+          required = set(expected) | {"godot/scripts/hard_surface_packet_profile.gd"}
+          if paths != required:
+              raise SystemExit(f"unexpected parent benchmark changes: {paths!r}")
+          subprocess.check_call(["git", "-C", "parent", "diff", "--check"])
+          PY
+          mkdir -p build/hard-surface-benchmark
+          git -C parent diff -- godot/scripts/simulation_snapshot.gd godot/scripts/simulation_worker.gd             > build/hard-surface-benchmark/parent-observational-overlay.patch
+
+      - name: Materialize the pinned Rapier runtime
+        run: |
+          set -euo pipefail
+          git -C candidate lfs install --local
+          git -C candidate lfs pull --include="godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so" --exclude=""
+          echo "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a  candidate/godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so" | sha256sum --check --strict
+          cp candidate/godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so              parent/godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so
+          echo "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a  parent/godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so" | sha256sum --check --strict
+
+      - name: Install pinned SCons
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/scons"
+          "$RUNNER_TEMP/scons/bin/python" -m pip install --require-hashes -r candidate/tools/requirements-build.txt
+          "$RUNNER_TEMP/scons/bin/python" -c 'import SCons; assert SCons.__version__ == "4.10.1"'
+
+      - name: Check out and build exact godot-cpp
+        run: |
+          set -euo pipefail
+          mkdir "$RUNNER_TEMP/godot-cpp"
+          git -C "$RUNNER_TEMP/godot-cpp" init
+          git -C "$RUNNER_TEMP/godot-cpp" remote add origin https://github.com/godotengine/godot-cpp.git
+          git -C "$RUNNER_TEMP/godot-cpp" fetch --depth=1 origin "$GODOT_CPP_COMMIT"
+          git -C "$RUNNER_TEMP/godot-cpp" checkout --detach FETCH_HEAD
+          test "$(git -C "$RUNNER_TEMP/godot-cpp" rev-parse HEAD)" = "$GODOT_CPP_COMMIT"
+          (
+            cd candidate
+            GODOT_CPP_ROOT="$RUNNER_TEMP/godot-cpp"             SCONS_PYTHON="$RUNNER_TEMP/scons/bin/python"             SCONS_JOBS=2             CYBERSAND_REAL_CXX=/usr/bin/g++-13             LINUX_CXX=/usr/bin/g++-13             tools/build_pinned_godot_cpp.sh linux
+          )
+
+      - name: Build source-matched parent and candidate extensions
+        run: |
+          set -euo pipefail
+          for variant in parent candidate; do
+            mkdir -p "$RUNNER_TEMP/$variant"
+            (
+              cd "$variant"
+              GODOT_CPP_ROOT="$RUNNER_TEMP/godot-cpp"               SCONS_PYTHON="$RUNNER_TEMP/scons/bin/python"               SCONS_JOBS=2               CYBERSAND_REAL_CXX=/usr/bin/g++-13               LINUX_CXX=/usr/bin/g++-13               CYBERSAND_NATIVE_OUTPUT="$RUNNER_TEMP/$variant/libcybersand_native.linux.x86_64.so"               tools/build_native_extension.sh
+            )
+            file "$RUNNER_TEMP/$variant/libcybersand_native.linux.x86_64.so"
+            cp "$RUNNER_TEMP/$variant/libcybersand_native.linux.x86_64.so"                "$variant/godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so"
+            "$variant/tools/check_linux_runtime_floor.sh"
+          done
+
+      - name: Prepare exact Godot 4.7 runtime
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 3 --output "$RUNNER_TEMP/godot.zip" "$GODOT_URL"
+          echo "$GODOT_SHA256  $RUNNER_TEMP/godot.zip" | sha256sum --check --strict
+          mkdir "$RUNNER_TEMP/godot"
+          unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/godot"
+          GODOT_BIN="$(find "$RUNNER_TEMP/godot" -maxdepth 1 -type f -name 'Godot*' -print -quit)"
+          test -n "$GODOT_BIN"
+          chmod +x "$GODOT_BIN"
+          test "$("$GODOT_BIN" --version)" = "$GODOT_VERSION"
+          echo "GODOT_BIN=$GODOT_BIN" >> "$GITHUB_ENV"
+
+      - name: Record same-host provenance
+        run: |
+          set -euo pipefail
+          {
+            echo "benchmark_workflow_sha=$(git rev-parse HEAD)"
+            echo "parent_sha=$PARENT_SHA"
+            echo "candidate_sha=$CANDIDATE_SHA"
+            echo "godot_version=$GODOT_VERSION"
+            echo "godot_zip_sha256=$GODOT_SHA256"
+            echo "godot_cpp_commit=$GODOT_CPP_COMMIT"
+            echo "scons=4.10.1"
+            echo "parent_native_sha256=$(sha256sum "$RUNNER_TEMP/parent/libcybersand_native.linux.x86_64.so" | cut -d' ' -f1)"
+            echo "candidate_native_sha256=$(sha256sum "$RUNNER_TEMP/candidate/libcybersand_native.linux.x86_64.so" | cut -d' ' -f1)"
+            echo "rapier_sha256=$(sha256sum candidate/godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so | cut -d' ' -f1)"
+            echo "uname=$(uname -a)"
+            echo "gcc=$(g++-13 --version | head -n1)"
+          } > build/hard-surface-benchmark/provenance.txt
+          lscpu > build/hard-surface-benchmark/lscpu.txt
+
+      - name: Run three interleaved my/bench/stress repetitions
+        run: |
+          set -euo pipefail
+          mkdir -p build/hard-surface-benchmark
+          run_one() {
+            variant="$1"
+            repetition="$2"
+            if test "$variant" = parent; then
+              source_sha="$PARENT_SHA"
+            else
+              source_sha="$CANDIDATE_SHA"
+            fi
+            (
+              cd "$variant"
+              CYBERSAND_SOURCE_SHA="$source_sha"               timeout 900 "$GODOT_BIN" --headless --path godot                 --script res://scripts/hard_surface_packet_profile.gd -- --workbench
+            ) 2>&1 | tee "build/hard-surface-benchmark/$variant-r$repetition.log"
+          }
+          run_one parent 1
+          run_one candidate 1
+          run_one candidate 2
+          run_one parent 2
+          run_one parent 3
+          run_one candidate 3
+
+      - name: Reduce raw profile records
+        if: always()
+        run: |
+          python3 - <<'PY'
+          import json
+          import pathlib
+          import statistics
+
+          root = pathlib.Path("build/hard-surface-benchmark")
+          records = []
+          for path in sorted(root.glob("*-r*.log")):
+              stem = path.stem
+              variant, repetition = stem.split("-r", 1)
+              for line in path.read_text(errors="replace").splitlines():
+                  marker = "HARD_SURFACE_PROFILE "
+                  if marker not in line:
+                      continue
+                  record = json.loads(line.split(marker, 1)[1])
+                  record["variant"] = variant
+                  record["repetition"] = int(repetition)
+                  records.append(record)
+
+          with (root / "records.jsonl").open("w") as handle:
+              for record in records:
+                  handle.write(json.dumps(record, sort_keys=True) + "\n")
+
+          if len(records) != 18:
+              raise SystemExit(f"expected 18 profile records, got {len(records)}")
+
+          expected = {"my-canvas", "bench-canvas", "stress-canvas"}
+          for variant in ("parent", "candidate"):
+              subset = [r for r in records if r["variant"] == variant]
+              if {r["canvas"] for r in subset} != expected or len(subset) != 9:
+                  raise SystemExit(f"incomplete {variant} profile set")
+
+          metrics = [
+              "simulation",
+              "snapshot_copy_total",
+              "render_exchange_executed",
+              "hard_surface_packet_executed",
+              "publication_build",
+          ]
+          summary = {
+              "schema": "cybersand-hard-surface-same-host-benchmark-v1",
+              "parent_sha": "4a80af2a891332176a3912a235582d77d076a185",
+              "candidate_sha": "97c19098fd2c238a75815836d4982668999f3f92",
+              "canvases": {},
+          }
+          for canvas in sorted(expected):
+              entry = {}
+              for metric in metrics:
+                  means = {}
+                  for variant in ("parent", "candidate"):
+                      values = [
+                          float(r[metric]["mean_ms"])
+                          for r in records
+                          if r["variant"] == variant and r["canvas"] == canvas
+                      ]
+                      means[variant] = values
+                      entry[f"{metric}_{variant}_replicate_means_ms"] = values
+                      entry[f"{metric}_{variant}_median_mean_ms"] = statistics.median(values)
+                  parent = statistics.median(means["parent"])
+                  candidate = statistics.median(means["candidate"])
+                  entry[f"{metric}_delta_ms"] = candidate - parent
+                  entry[f"{metric}_speedup_x"] = parent / candidate if candidate > 0 else None
+                  entry[f"{metric}_reduction_percent"] = (
+                      100.0 * (parent - candidate) / parent if parent > 0 else None
+                  )
+              summary["canvases"][canvas] = entry
+          (root / "summary.json").write_text(json.dumps(summary, indent=2, sort_keys=True) + "\n")
+          print(json.dumps(summary, indent=2, sort_keys=True))
+          PY
+
+      - name: Retain benchmark evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: hard-surface-packet-same-host-benchmark
+          path: build/hard-surface-benchmark/
+          if-no-files-found: error
+          retention-days: 30
