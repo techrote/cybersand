@@ -136,3 +136,14 @@ Only after head/final-hash parity, CYPS, wakes/certificates, full native and
 Godot regression matrices, sanitizers and a **positive** head-time improvement
 may this draft progress toward independent review. Even then do not merge
 without owner authorization.
+
+
+## Additive qualification checkpoint — 6 November 2026, 21:48 UTC
+
+- The complete candidate native `./build/tests` run finished **PASS: 189 tests**, GCC 14.2 Linux source-matched to the pinned candidate native tree. Its 24-case, 2,400-tick per-run differential is included.
+- The independently submitted stacked **Draft PR #476** is [here](https://github.com/techrote/cybersand/pull/476). The PR must remain Draft/unmerged: source/head dependency on #406 is pinned; no accepted protected-source transition or positive speedup is demonstrated.
+- On candidate [GitHub Docs/provenance run 42299519412](https://github.com/techrote/cybersand/actions/runs/42299519412), the workflow scheduling inventory **PASSED** after protecting independently requested manual runs, but the MAT-AUTH shadow compatibility check **FAILED** for the edited `native/src/world_pressure.inc`: the reviewed protected source hash `26051b0d10ab10d65db822c993742e0a0bf13711f3bd56158e95d77735737aca` does not match candidate `5f01c143ebe8e7f52ab08a0b137b8fae4e3a0e9eaa6f424b67236f4b438d28a2`. **Do not refresh or weaken the guard.** A separately reviewed protected-consumer transition is required before admission.
+- The Draft's routine native/Godot platform workflows are policy-suppressed; the dedicated experimental branch build supplies only its explicitly recorded targeted evidence. Neither missing routine platform runs nor documentation guard failures are represented as passes.
+- Final source/CI checkout identity may advance for documentation/qualification-only commits; record the tested native tree and final PR SHA separately.
+
+**Disposition remains REPAIR REQUIRED / PERFORMANCE NO-GO** even if all routine tests later pass, until the work budget is proved and a real workbench speedup is shown.
