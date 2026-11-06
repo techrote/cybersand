@@ -71,6 +71,7 @@ Dictionary CyberNativeCellWorld::inspect_pressure_optimization() const {
     CYBERSAND_PRESSURE_OBSERVE(index_chunk_capacity);
     CYBERSAND_PRESSURE_OBSERVE(head_repair_cell_budget);
     CYBERSAND_PRESSURE_OBSERVE(derived_capacity_bytes);
+    CYBERSAND_PRESSURE_OBSERVE(run_repair_capacity_bytes);
     CYBERSAND_PRESSURE_OBSERVE(worker_counter_capacity_bytes);
     CYBERSAND_PRESSURE_OBSERVE(common_counter_bytes);
     CYBERSAND_PRESSURE_OBSERVE(certificate_buffer_capacity_bytes);
