@@ -3966,6 +3966,7 @@ void test_liquid_run_receipt_native_identity();
 void test_liquid_construction_refusal_native_issuance();
 void test_quantity_ledger();
 
+void test_pressure_run_repair();
 int main(int argc, char** argv) {
     struct Test {
         const char* name;
@@ -4156,6 +4157,7 @@ int main(int argc, char** argv) {
         {"IN-B1 signed vertical arc ceiling parity", test_inertial_signed_vertical_arc_ceiling_parity},
         {"IN-B1 signed vertical support and hybrid", test_inertial_signed_vertical_support_and_hybrid},
         {"Workbench parallel PressureFlow heads match serial (all variants)", test_workbench_pressure_heads_parallel_exact},
+        {"PressureFlow per-run exact native differential", test_pressure_run_repair},
         {"Pair reaction tables match the authored resolver", test_pair_reaction_tables_match_resolver},
         {"Active-core capacity counts distinct cores", test_active_core_capacity_counts_distinct_cores},
         {"Hard-surface bits match the display projection", test_hard_surface_bits_match_projection},

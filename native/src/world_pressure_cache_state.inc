@@ -15,6 +15,24 @@ struct World::PressureCache {
         }
     };
 
+    // An independent, conservative local-Y invalidation for each indexed
+    // (resident chunk, local X). One interval is deliberately a union hull:
+    // reversing/overlapping edits never erase a dependency.
+    struct DirtyY {
+        std::uint16_t lo = std::numeric_limits<std::uint16_t>::max();
+        std::uint16_t hi = 0;
+        [[nodiscard]] bool set() const noexcept {
+            return lo != std::numeric_limits<std::uint16_t>::max();
+        }
+        void include(std::int32_t first, std::int32_t last) noexcept {
+            lo = std::min(lo, static_cast<std::uint16_t>(first));
+            hi = std::max(hi, static_cast<std::uint16_t>(last));
+        }
+    };
+    struct RepairSpan {
+        std::int64_t lo = 0, hi = -1;
+    };
+
     struct GasMember {
         std::uint32_t chunk_slot = 0, cell_index = 0;
     };
@@ -45,6 +63,18 @@ struct World::PressureCache {
         // column-order position (positions are disjoint between column tasks),
         // OR-merged into rows by the owner after the join.
         column_row_marks.resize(capacity);
+        // cell_area is the admitted square chunk side squared (8..1024).
+        // Reserve all preflight and parallel-column plan storage at construction;
+        // resizing at a cold index rebuild cannot allocate on a hot tick.
+        side = 8U;
+        while (side < 1'024U && side * side < cell_area) ++side;
+        if (side * side != cell_area || capacity > std::numeric_limits<std::size_t>::max() / side)
+            throw std::invalid_argument("invalid bounded pressure cache geometry");
+        const auto slots = capacity * side;
+        dirty_y.resize(slots);
+        repair_spans.resize(slots);
+        repair_counts.resize(slots);
+        candidate_rows.resize(capacity);
         wake_words_per_chunk = (cell_area + 63U) / 64U;
         if (capacity <= std::numeric_limits<std::size_t>::max() / wake_words_per_chunk) {
             wake_clean.reserve(capacity * wake_words_per_chunk);
@@ -129,6 +159,16 @@ struct World::PressureCache {
         bits = {};
     }
 
+    void mark_y(std::size_t slot, std::int32_t first_x, std::int32_t last_x,
+                std::int32_t first_y, std::int32_t last_y) noexcept {
+        if (!complete) return;
+        if (slot >= column_order.size() || first_x < 0 || first_y < 0 ||
+            last_x >= static_cast<std::int32_t>(side) || last_y >= static_cast<std::int32_t>(side) ||
+            first_x > last_x || first_y > last_y) { cold(); return; }
+        for (auto x = first_x; x <= last_x; ++x)
+            dirty_y[slot * side + static_cast<std::size_t>(x)].include(first_y,last_y);
+    }
+
     void reset_certificate_admission() noexcept {
         certificate_layer_enabled=false; certificate_contents_cold=true;
         certificate_window_active=false; certificate_tick_eligible=false;
@@ -143,7 +183,7 @@ struct World::PressureCache {
 
     void cold() noexcept {
         complete = false; membership_dirty = true; gas_dirty = true;
-        use_heads = false;
+        use_heads = false; use_run_repair = false; full_column_repair = true;
         certificate_layer_enabled=false; certificate_contents_cold=true;
         certificate_tick_eligible=false;
         gas_ready = false;
@@ -156,6 +196,15 @@ struct World::PressureCache {
     std::vector<Group> columns, rows;
     std::vector<std::size_t> dirty_columns, dirty_rows;
     std::vector<std::array<std::uint64_t, 16>> column_row_marks;
+    // Every derived index has fixed-capacity run plans. Each dirty column has
+    // at most one span per resident chunk. Plans are constructed by the owner,
+    // then read disjointly by pooled column jobs, never mutated by workers.
+    std::size_t side = 0;
+    std::vector<DirtyY> dirty_y;
+    std::vector<RepairSpan> repair_spans;
+    std::vector<std::size_t> repair_counts;
+    std::vector<std::array<std::uint64_t, 16>> candidate_rows;
+    bool full_column_repair = true, use_run_repair = false;
     std::vector<std::uint64_t> certificate_changed;
     PressureOptimizationCounters counters{};
     PressureOptimizationStatus status = PressureOptimizationStatus::Cold;

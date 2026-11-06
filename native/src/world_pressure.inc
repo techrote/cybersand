@@ -407,23 +407,176 @@ void World::prepare_pressure_tick() {
                 if (cache->dormant) cache->certificate_contents_cold=true;
                 // Gauges and Empty labels feed the x+-2 wake samples (#201 P1).
                 cache->wake_reset();
+                cache->full_column_repair = true;
                 for (std::size_t i = 0; i < cache->columns.size(); ++i)
                     cache->mark(true, i, 0, config_.chunk_size - 1);
             }
+            // Cold membership and any gas-topology pass retain the original
+            // whole-column repair. Local edits use the two-phase bounded
+            // planner; no cached base/final value is touched during preflight.
             std::uint64_t estimated = 0;
-            for (const auto group : cache->dirty_columns) {
-                const auto& column = cache->columns[group];
-                std::uint64_t count = 0;
-                for (const auto word : column.dirty) count += static_cast<std::uint64_t>(std::popcount(word));
-                estimated += count * (column.last - column.first) * static_cast<std::uint64_t>(config_.chunk_size);
+            bool admitted = true;
+            cache->use_run_repair = false;
+            const auto budget = cache->config.head_repair_cell_budget;
+            const auto charge = [&](std::uint64_t work) noexcept -> bool {
+                if (estimated > budget || work > budget - estimated) return false;
+                estimated += work;
+                return true;
+            };
+            if (cache->full_column_repair) {
+                for (const auto group : cache->dirty_columns) {
+                    const auto& column = cache->columns[group];
+                    std::uint64_t count = 0;
+                    for (const auto word : column.dirty)
+                        count += static_cast<std::uint64_t>(std::popcount(word));
+                    const auto cells = count * (column.last - column.first) *
+                        static_cast<std::uint64_t>(config_.chunk_size);
+                    if (!charge(cells)) { admitted = false; break; }
+                }
+                if (admitted && (!cache->dirty_columns.empty() || !cache->dirty_rows.empty()))
+                    admitted = charge(static_cast<std::uint64_t>(chunks_.size()) *
+                        static_cast<std::uint64_t>(config_.chunk_size) *
+                        static_cast<std::uint64_t>(config_.chunk_size));
+            } else {
+                const auto plan_start = Clock::now();
+                const auto side = cache->side;
+                const auto size = static_cast<std::int64_t>(config_.chunk_size);
+                std::uint64_t probes = 0, extents = 0, spans = 0, selected = 0;
+                // The preflight probe limit is deliberately independent of
+                // stored extents. A pathological liquid column cannot consume
+                // unbounded discovery work before the reference fallback.
+                const auto probe = [&](std::int64_t x, std::int64_t y,
+                                       bool& resident, bool& water, bool& liquid) -> bool {
+                    if (probes == std::numeric_limits<std::uint64_t>::max() || ++probes > budget)
+                        return false;
+                    // Respect the mask-first dependency barrier. A masked
+                    // position in a missing chunk must not bridge a run.
+                    const bool masked = transient_obstacle_at(x,y) != 0U;
+                    const auto at = address(x,y);
+                    const auto* chunk = find_chunk(at.chunk);
+                    resident = chunk != nullptr;
+                    water = liquid = false;
+                    if (!resident || masked) return true;
+                    const auto material = chunk->cells[at.index].material_value();
+                    water = material == Material::Water;
+                    liquid = MaterialRules::descriptor(material).state == MaterialState::Liquid;
+                    return true;
+                };
+                for (std::size_t row = 0; row < cache->rows.size(); ++row)
+                    cache->candidate_rows[row] = cache->rows[row].dirty;
+                for (const auto group : cache->dirty_columns) {
+                    if (!admitted) break;
+                    const auto& column = cache->columns[group];
+                    for (std::int32_t local_x = 0; local_x < size && admitted; ++local_x) {
+                        if (!column.test(local_x)) continue;
+                        const auto x = column.key * size + local_x;
+                        std::size_t count = 0;
+                        for (auto position = column.first; position < column.last; ++position) {
+                            const auto& dirty = cache->dirty_y[position * side + static_cast<std::size_t>(local_x)];
+                            // A dirty-X bit covers the whole chunk-X group,
+                            // but only edited member chunks carry a dirty-Y
+                            // witness. Other resident chunks are not dirty.
+                            if (!dirty.set()) continue;
+                            ++extents;
+                            const auto origin = cache->column_order[position].y * size;
+                            std::int64_t first = origin + dirty.lo;
+                            std::int64_t last = origin + dirty.hi;
+                            bool resident = false, water = false, liquid = false;
+                            // The run immediately above an edited floor and
+                            // the run containing an edited Water cell need
+                            // their complete original top boundary.
+                            while (first != std::numeric_limits<std::int64_t>::min()) {
+                                if (!probe(x,first-1,resident,water,liquid)) { admitted = false; break; }
+                                if (!water) break;
+                                --first;
+                            }
+                            if (!admitted) break;
+                            // Traverse all liquid below the changed interval,
+                            // including foreign-liquid strata, through the
+                            // first resident barrier. This covers lower Water
+                            // whose top_pressure read the edited location.
+                            while (last != std::numeric_limits<std::int64_t>::max()) {
+                                if (!probe(x,last+1,resident,water,liquid)) { admitted = false; break; }
+                                if (!resident) break;
+                                ++last;
+                                if (!liquid) break;
+                            }
+                            if (!admitted) break;
+                            const auto slot = (column.first + count) * side + static_cast<std::size_t>(local_x);
+                            if (count != 0U) {
+                                auto& previous = cache->repair_spans[(column.first + count-1U) * side +
+                                                                      static_cast<std::size_t>(local_x)];
+                                if (first <= previous.hi ||
+                                    (previous.hi != std::numeric_limits<std::int64_t>::max() && first == previous.hi+1)) {
+                                    previous.hi = std::max(previous.hi,last);
+                                    continue;
+                                }
+                            }
+                            cache->repair_spans[slot] = {first,last};
+                            ++count;
+                        }
+                        if (count == 0U) {
+                            // A dirty X with no Y witness in *any* resident
+                            // chunk has an incomplete producer trace.
+                            cache->complete = false;
+                            admitted = false;
+                            break;
+                        }
+                        cache->repair_counts[group * side + static_cast<std::size_t>(local_x)] = count;
+                        spans += count;
+                        // The planner charges *all* positions within selected
+                        // spans, and conservatively assumes every one could
+                        // change its base and require a full-width row pass.
+                        for (std::size_t i = 0; i < count && admitted; ++i) {
+                            const auto& span = cache->repair_spans[(column.first+i)*side + static_cast<std::size_t>(local_x)];
+                            for (auto position=column.first; position<column.last; ++position) {
+                                const auto coord=cache->column_order[position];
+                                const auto origin=coord.y*size;
+                                const auto lo=std::max(span.lo,origin);
+                                const auto hi=std::min(span.hi,origin+size-1);
+                                if (lo>hi) continue;
+                                const auto count_cells=static_cast<std::uint64_t>(hi-lo+1);
+                                if (selected > budget || count_cells > budget-selected) {
+                                    admitted = false; break;
+                                }
+                                selected += count_cells;
+                                const auto row_group=find_chunk(coord)->pressure->row_group;
+                                auto& bits=cache->candidate_rows[row_group];
+                                for (auto y=lo; y<=hi; ++y) {
+                                    const auto local=static_cast<std::size_t>(y-origin);
+                                    bits[local/64U] |= std::uint64_t{1}<<(local%64U);
+                                }
+                            }
+                        }
+                    }
+                }
+                if (admitted) admitted = charge(probes) && charge(selected);
+                if (admitted) for (std::size_t row=0; row<cache->rows.size(); ++row) {
+                    std::uint64_t rows = 0;
+                    for (const auto word : cache->candidate_rows[row])
+                        rows += static_cast<std::uint64_t>(std::popcount(word));
+                    const auto width = cache->rows[row].last - cache->rows[row].first;
+                    if (!charge(rows * width * static_cast<std::uint64_t>(size))) {
+                        admitted = false; break;
+                    }
+                }
+                state.optimization.head_preflight_probes += probes;
+                state.optimization.head_dirty_y_extents += extents;
+                if (admitted) {
+                    cache->use_run_repair = true;
+                    state.optimization.head_repair_spans += spans;
+                    state.optimization.head_repair_selected_cells += selected;
+                }
+                state.optimization.head_preflight_nanoseconds +=
+                    static_cast<std::uint64_t>(std::chrono::duration_cast<std::chrono::nanoseconds>(
+                        Clock::now()-plan_start).count());
             }
-            // A changed base column may alter a complete row interpolation.
-            // Reserve the full resident row closure before publishing any head.
-            if (!cache->dirty_columns.empty() || !cache->dirty_rows.empty())
-                estimated += static_cast<std::uint64_t>(chunks_.size()) *
-                    static_cast<std::uint64_t>(config_.chunk_size) * static_cast<std::uint64_t>(config_.chunk_size);
-            if (estimated <= cache->config.head_repair_cell_budget) cache->use_heads = true;
-            else cache->status = PressureOptimizationStatus::ReferenceBudgetFallback;
+            if (admitted) cache->use_heads = true;
+            else {
+                ++state.optimization.head_repair_budget_fallbacks;
+                cache->status = cache->complete ? PressureOptimizationStatus::ReferenceBudgetFallback
+                                                : PressureOptimizationStatus::ReferenceCapacityFallback;
+            }
         }
         if (!cache->use_heads) {
             ++state.optimization.reference_fallbacks;
@@ -436,6 +589,9 @@ void World::prepare_pressure_tick() {
         }
     }
     compute_pressure_heads();
+    // A successful full cached preparation has populated every base. The
+    // following tick may safely admit bounded local-Y repair.
+    if (cache != nullptr && cache->use_heads) cache->full_column_repair = false;
     prepare_pressure_certificates();
     if (cache != nullptr && cache->use_heads) cache->status = PressureOptimizationStatus::Ready;
     const auto end = Clock::now();
@@ -1185,102 +1341,135 @@ void World::compute_pressure_heads() {
 
     using HeadTask = PressureState::HeadColumnTask;
     const auto prepare_columns = [&](HeadTask& task, std::size_t group) {
+        const auto start = std::chrono::steady_clock::now();
         const auto begin = task.begin, end = task.end;
         for (std::int32_t local_x = 0; local_x < size; ++local_x) {
             if (cached && !cache->columns[group].test(local_x)) continue;
             ++task.columns;
-            // Each slot in a visited column receives exactly one base head:
-            // either kNoHead or the result of closing its vertical Water run.
-            task.writes += (end - begin) * static_cast<std::size_t>(size);
             const auto x = coordinates[begin].x * size + local_x;
-            // Walk the chunk column; runs never bridge an unallocated chunk.
-            bool open = false;
-            std::size_t run_chunk = 0;
-            std::int32_t run_local = 0;
-            std::int64_t run_top = 0;
-            std::int64_t total = 0;
-            std::optional<std::int64_t> top;
-            const auto close_run = [&](std::size_t floor_chunk, std::int32_t floor_local, std::int64_t floor_y,
-                                       bool supported) {
-                auto chunk_position = run_chunk;
-                auto local = run_local;
-                for (std::int64_t y = run_top; y <= floor_y; ++y) {
-                    auto& chunk = *find_chunk(coordinates[chunk_position]);
-                    const auto index = static_cast<std::size_t>(local) * static_cast<std::size_t>(size) +
-                                       static_cast<std::size_t>(local_x);
-                    std::int64_t value = 0;
-                    if (!supported) {
-                        value = cell_quantity(chunk, index) + top.value_or(0);
-                        put_base(chunk, chunk_position, index, static_cast<std::int32_t>(clamp_head(value)));
-                    } else {
-                        const auto compacted = std::max<std::int64_t>(0, total - (floor_y - y) * maximum);
-                        if (top.has_value()) {
-                            put_base(chunk, chunk_position, index, static_cast<std::int32_t>(clamp_head(*top + compacted)));
+            // A repair span begins at or above every touched complete Water
+            // run and ends at its first barrier or non-resident gap. The same
+            // scan/close_run arithmetic serves full and partial preparations.
+            const auto scan_span = [&](std::int64_t first_y, std::int64_t last_y) {
+                bool open = false;
+                std::size_t run_chunk = 0;
+                std::int32_t run_local = 0;
+                std::int64_t run_top = 0;
+                std::int64_t total = 0;
+                std::optional<std::int64_t> top;
+                const auto close_run = [&](std::size_t floor_chunk, std::int32_t floor_local,
+                                           std::int64_t floor_y, bool supported) {
+                    ++task.runs;
+                    auto chunk_position = run_chunk;
+                    auto local = run_local;
+                    for (std::int64_t y = run_top; y <= floor_y; ++y) {
+                        auto& chunk = *find_chunk(coordinates[chunk_position]);
+                        const auto index = static_cast<std::size_t>(local) * static_cast<std::size_t>(size) +
+                                           static_cast<std::size_t>(local_x);
+                        std::int64_t value = 0;
+                        if (!supported) {
+                            value = cell_quantity(chunk,index) + top.value_or(0);
+                            put_base(chunk,chunk_position,index,static_cast<std::int32_t>(clamp_head(value)));
                         } else {
-                            put_base(chunk, chunk_position, index, static_cast<std::int32_t>(
-                                kUnknownHeadBase - std::min(compacted, kHeadClamp)));
-                            ++task.unknown;
+                            const auto compacted = std::max<std::int64_t>(0,total-(floor_y-y)*maximum);
+                            if (top.has_value()) {
+                                put_base(chunk,chunk_position,index,
+                                         static_cast<std::int32_t>(clamp_head(*top+compacted)));
+                            } else {
+                                put_base(chunk,chunk_position,index,static_cast<std::int32_t>(
+                                    kUnknownHeadBase-std::min(compacted,kHeadClamp)));
+                                ++task.unknown;
+                            }
+                        }
+                        ++task.heads;
+                        if (++local == size) { local=0; ++chunk_position; }
+                    }
+                    (void)floor_chunk;
+                    (void)floor_local;
+                    open=false;
+                };
+                std::size_t previous_position = begin;
+                std::int32_t previous_local = 0;
+                std::int64_t previous_y = 0;
+                bool visited = false;
+                for (auto position=begin; position<end; ++position) {
+                    const auto coord=coordinates[position];
+                    const auto origin=coord.y*size;
+                    if (origin+size-1 < first_y || origin>last_y) continue;
+                    const auto first_local=static_cast<std::int32_t>(
+                        std::max<std::int64_t>(0,first_y-origin));
+                    const auto last_local=static_cast<std::int32_t>(
+                        std::min<std::int64_t>(size-1,last_y-origin));
+                    if (open && visited && coordinates[previous_position].y + 1 != coord.y) {
+                        // The run's floor lies immediately above a missing
+                        // chunk. Missing membership is always unsupported.
+                        close_run(previous_position,previous_local,previous_y,false);
+                    }
+                    auto& chunk=*find_chunk(coord);
+                    task.writes+=static_cast<std::uint64_t>(last_local-first_local+1);
+                    for (auto local_y=first_local; local_y<=last_local; ++local_y) {
+                        const auto y=origin+local_y;
+                        const auto index=static_cast<std::size_t>(local_y)*static_cast<std::size_t>(size)+
+                                         static_cast<std::size_t>(local_x);
+                        const auto material=chunk.cells[index].material_value();
+                        const bool water=material==Material::Water && transient_obstacle_at(x,y)==0U;
+                        if (water) {
+                            if (!open) {
+                                open=true;
+                                run_chunk=position;
+                                run_local=local_y;
+                                run_top=y;
+                                total=0;
+                                top=top_pressure(x,y);
+                            }
+                            total+=cell_quantity(chunk,index);
+                            continue;
+                        }
+                        put_base(chunk,position,index,kNoHead);
+                        if (open) {
+                            const bool supported=!(material==Material::Empty && transient_obstacle_at(x,y)==0U);
+                            close_run(position,local_y,y-1,supported);
                         }
                     }
-                    ++task.heads;
-                    if (++local == size) {
-                        local = 0;
-                        ++chunk_position;
-                    }
+                    previous_position=position;
+                    previous_local=last_local;
+                    previous_y=origin+last_local;
+                    visited=true;
                 }
-                (void)floor_chunk;
-                (void)floor_local;
-                open = false;
+                if (open) close_run(previous_position,previous_local,previous_y,false);
             };
-            for (auto position = begin; position < end; ++position) {
-                const auto coord = coordinates[position];
-                if (open && position > begin && coordinates[position - 1].y + 1 != coord.y) {
-                    // The run's floor sits above an unallocated (Empty) chunk.
-                    close_run(position - 1, size - 1, coordinates[position - 1].y * size + size - 1, false);
+            if (cached && cache->use_run_repair) {
+                const auto n=cache->repair_counts[group*cache->side+static_cast<std::size_t>(local_x)];
+                for (std::size_t i=0; i<n; ++i) {
+                    const auto span=cache->repair_spans[(begin+i)*cache->side+static_cast<std::size_t>(local_x)];
+                    scan_span(span.lo,span.hi);
                 }
-                auto& chunk = *find_chunk(coord);
-                for (std::int32_t local_y = 0; local_y < size; ++local_y) {
-                    const auto y = coord.y * size + local_y;
-                    const auto index = static_cast<std::size_t>(local_y) * static_cast<std::size_t>(size) +
-                                       static_cast<std::size_t>(local_x);
-                    const auto material = chunk.cells[index].material_value();
-                    const bool water = material == Material::Water && transient_obstacle_at(x, y) == 0U;
-                    if (water) {
-                        if (!open) {
-                            open = true;
-                            run_chunk = position;
-                            run_local = local_y;
-                            run_top = y;
-                            total = 0;
-                            top = top_pressure(x, y);
-                        }
-                        total += cell_quantity(chunk, index);
-                        continue;
-                    }
-                    put_base(chunk, position, index, kNoHead);
-                    if (open) {
-                        const bool supported = !(material == Material::Empty && transient_obstacle_at(x, y) == 0U);
-                        close_run(position, local_y, y - 1, supported);
-                    }
-                }
-            }
-            if (open) {
-                const auto last = coordinates[end - 1];
-                close_run(end - 1, size - 1, last.y * size + size - 1, false);
+            } else {
+                scan_span(coordinates[begin].y*size,coordinates[end-1].y*size+size-1);
             }
         }
+        task.nanoseconds+=static_cast<std::uint64_t>(std::chrono::duration_cast<std::chrono::nanoseconds>(
+            std::chrono::steady_clock::now()-start).count());
     };
     const auto merge_counts = [&](const HeadTask& task) {
         state.optimization.columns_recomputed += task.columns;
         state.optimization.base_cells_written += task.writes;
+        state.optimization.head_columns_nanoseconds += task.nanoseconds;
+        if (cached && cache->use_run_repair) state.optimization.head_repair_runs += task.runs;
         state.diagnostics.unknown_heads += task.unknown;
         state.diagnostics.head_cells += task.heads;
         if (!cached) return;
         // Owner-only, in task order: publish the private row marks and retire
         // the consumed column group exactly as the serial pass did.
-        for (auto position = task.begin; position < task.end; ++position)
+        for (auto position = task.begin; position < task.end; ++position) {
             cache->merge_row_marks(find_chunk(coordinates[position])->pressure->row_group,
                                    cache->column_row_marks[position]);
+            // A chunk-X group is retired once only, after the column workers
+            // join. No producer can race the owner merge at a phase barrier.
+            for (std::int32_t local_x=0; local_x<size; ++local_x)
+                if (cache->columns[task.group].test(local_x))
+                    cache->dirty_y[position*cache->side+static_cast<std::size_t>(local_x)]={};
+        }
         cache->columns[task.group].dirty = {};
         cache->columns[task.group].queued = false;
     };
@@ -1355,6 +1544,7 @@ void World::compute_pressure_heads() {
     const auto row_band = [&](RowTask& task) {
         const auto begin = task.begin, end = task.end, group = task.group;
         for (std::int32_t local_y = task.first_row; local_y < task.last_row; ++local_y) {
+            const auto row_start = std::chrono::steady_clock::now();
             const auto y = row_coordinates[begin].y * size + local_y;
             if (!cached || cache->rows[group].test(local_y)) {
             ++task.rows;
@@ -1435,6 +1625,8 @@ void World::compute_pressure_heads() {
             if (segment_open && pending) resolve(pending_from, previous_x, {});
 
             }
+            const auto wake_start = std::chrono::steady_clock::now();
+            task.interpolation_ns += static_cast<std::uint64_t>(std::chrono::duration_cast<std::chrono::nanoseconds>(wake_start-row_start).count());
             // Actionable-gradient wake for cells in sleeping blocks (same stencil
             // and start dead band as the kernel).
             //
@@ -1537,6 +1729,8 @@ void World::compute_pressure_heads() {
                     }
                 }
             }
+            task.wake_ns += static_cast<std::uint64_t>(std::chrono::duration_cast<std::chrono::nanoseconds>(
+                std::chrono::steady_clock::now()-wake_start).count());
         }
     };
     // Owner-only certificate invalidation of one run of changed final heads
@@ -1579,6 +1773,8 @@ void World::compute_pressure_heads() {
     const auto merge_rows = [&](const RowTask& task) {
         state.optimization.rows_recomputed += task.rows;
         state.optimization.final_cells_written += task.finals;
+        state.optimization.head_interpolation_nanoseconds += task.interpolation_ns;
+        state.optimization.head_wake_nanoseconds += task.wake_ns;
         if (cached) {
             cache->wake_segments_skipped += task.skipped;
             cache->wake_segments_scanned += task.scanned;

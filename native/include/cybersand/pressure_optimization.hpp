@@ -5,11 +5,13 @@
 
 namespace cybersand {
 
+// Execution v5 adds deterministic bounded local-Y/run-head repair and the
+// preflight work bound; v4's physical pressure operator remains unchanged.
 // Execution v3's deterministic certificate work budget is not a wall-clock
 // break-even model. Fixed weights and windows are bound by execution identity.
 // Execution v4 (#201 P1) adds derived sleeping-segment wake summaries; physical
 // results are unchanged, derived work differs, so the identity changes.
-inline constexpr std::uint64_t kPressureOptimizationExecutionVersion = 4;
+inline constexpr std::uint64_t kPressureOptimizationExecutionVersion = 5;
 inline constexpr std::uint8_t kPressureCertificateWarmupVisits = 1;
 inline constexpr std::uint8_t kPressureCertificateBackoffVisits = 8;
 inline constexpr std::uint8_t kPressureCertificateTrialTicks = 8;
@@ -68,6 +70,13 @@ struct PressureOptimizationCounters : PressureKernelWork {
     std::uint64_t preparation_nanoseconds = 0;
     std::uint64_t gas_nanoseconds = 0;
     std::uint64_t head_nanoseconds = 0;
+    // The column/row/wake times are summed task wall times (can overlap on the
+    // pool); head_nanoseconds is full owner wall-clock preparation time.
+    std::uint64_t head_preflight_nanoseconds = 0, head_columns_nanoseconds = 0;
+    std::uint64_t head_interpolation_nanoseconds = 0, head_wake_nanoseconds = 0;
+    std::uint64_t head_preflight_probes = 0, head_dirty_y_extents = 0;
+    std::uint64_t head_repair_spans = 0, head_repair_selected_cells = 0;
+    std::uint64_t head_repair_runs = 0, head_repair_budget_fallbacks = 0;
     std::uint64_t gas_seed_cells = 0, gas_seed_probes = 0;
     std::uint64_t gas_bfs_cells = 0, gas_bfs_probes = 0, gas_bfs_nodes = 0;
     std::uint64_t gas_member_validations = 0, gas_member_stamps = 0, gas_component_reuses = 0;
