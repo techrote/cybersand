@@ -1068,7 +1068,7 @@ func _worker_ownership() -> void:
 	var prior_cells: PackedByteArray = before_fault.render_patch_cells.duplicate()
 	worker.set_physical_usable_state(frame,[request],_states())
 	worker._consume_physical_usables(_extract(worker),EPOCH,true,frame)
-	expect(worker._simulation_failed and worker._paused and not worker._metered_owner_fault.is_empty(),
+	expect(worker._simulation_failed and worker._paused and not worker._experimental_owner_fault.is_empty(),
 		"worker latches partial metered fault despite healthy native flag")
 	expect(not world.has_failed() and runtime.metered_terminal(),
 		"host quarantine is distinct from native tick-health flag")
@@ -1083,7 +1083,7 @@ func _worker_ownership() -> void:
 	physical = world.get_physical_state_hash()
 	worker._running = false
 	worker.stop_worker()
-	var retained_fault: Dictionary = worker._metered_owner_fault.duplicate(true)
+	var retained_fault: Dictionary = worker._experimental_owner_fault.duplicate(true)
 	# Put the legacy lab dispatch in its active state so release/floor work
 	# would reach its native mutation path without the terminal-owner fence.
 	worker._lab_active = true
@@ -1098,11 +1098,11 @@ func _worker_ownership() -> void:
 		and world.get_tick_index() == 0,
 		"terminal restart neither ticks, mutates nor republishes partial authority")
 	expect(worker._lab_status.contains("terminal") and worker._lab_inputs.is_empty() and worker._lab_floor == 0
-		and worker._metered_owner_fault == retained_fault,
+		and worker._experimental_owner_fault == retained_fault,
 		"queued legacy release/floor/capture refuses before touching terminal authority or evidence")
 	reports.append({"case":"terminal-owner-rejects-legacy-lab","scope":"real queued worker dispatch after partial-fault injection",
 		"command":legacy_command,"reason":worker._lab_status,"physical_hash_before":physical,
-		"physical_hash_after":world.get_physical_state_hash(),"fault_evidence_unchanged":worker._metered_owner_fault == retained_fault})
+		"physical_hash_after":world.get_physical_state_hash(),"fault_evidence_unchanged":worker._experimental_owner_fault == retained_fault})
 	reports.append({"case":"worker-partial-fault","scope":"test-injected skipped second native erase",
 		"fault":failed.physical_usables.metered_fault,"physical_hash":physical,"native_failed":world.has_failed()})
 	var retired_generation: int = world.get_liquid_policy_session_generation()
@@ -1116,7 +1116,7 @@ func _worker_ownership() -> void:
 	# The owner has joined; read actual replacement identity only now.
 	expect(not worker.has_failed() and not runtime.metered_terminal()
 		and world.get_liquid_policy_session_generation() != retired_generation
-		and worker._metered_owner_fault.is_empty(),
+		and worker._experimental_owner_fault.is_empty(),
 		"actual worker reset replaces native generation and retires terminal evidence")
 	frame.run_id = "metered-fresh-owner-after-fault"
 	frame.tick += 1
