@@ -4,11 +4,13 @@ status: Current
 document-kind: navigation
 scope: Entry routes and authority rules for the focused documentation hierarchy
 canonical-for: []
-last-reviewed: 2026-11-04
+last-reviewed: 2026-11-05
 related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.md, operations/documentation-maintenance.md, operations/microscenarios-programme.md, operations/development-claims-remediation-programme.md, operations/water-hybrid-pressure-extension-programme.md, architecture/pressure-optimization.md]
 ---
 
 # CyberSand documentation
+
+Desktop workbench: [saved per-flyer controls and options](systems/player-control-playground.md#saved-flyer-controls-and-options--5-november-2026), [profile/source/actuator bounds](reference/configuration-reference.md#saved-flyer-options-and-bindings) and [four additive retrieval questions](reference/retrieval-questions-flyer-options.json). The workbench baseline merged in [#394](https://github.com/techrote/cybersand/pull/394); the saved-options successor remains a separate unmerged development change. Its [dated source/runtime record](audits/2026-11-05-workbench-flyer-options.md) owns actual execution and remaining gameplay/platform qualification, without replacing current control or ownership contracts.
 
 Material authoring: [#357 is merged as an owner-adopted Planned baseline](architecture/material-authoring-catalogue-plan.md#12-owner-adoption-and-shadow-compiler-handover--2026-11-04).
 The [#353-A shadow compiler](operations/material-catalogue-shadow.md) merged in

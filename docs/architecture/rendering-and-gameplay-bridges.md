@@ -6,7 +6,7 @@ status: Current
 scope: Native publication outcomes, Godot render consumption and current gameplay commands; resource lifetime and wire layouts are linked
 keywords: [RenderBridge, GameplayBridge, RG8, immutable snapshot, full texture upload, backpressure, emission queue]
 related-documents: [data-ownership-and-lifetimes.md, rigid-body-and-cellular-coupling.md, ../reference/interfaces-and-message-contracts.md, ../systems/material-appearance-and-rendering.md]
-last-reviewed: 2026-10-19
+last-reviewed: 2026-11-05
 ---
 
 # Rendering and gameplay bridges
@@ -109,6 +109,19 @@ without changing cell state. `K` controls presentation smoothing; `H` controls
 publication cadence. Neither is a strict simulation-accuracy switch.
 [Appearance](../systems/material-appearance-and-rendering.md) owns shader details.
 
+### Cosmetic workbench flyer exhaust
+
+The desktop workbench's flyer exhaust is a separate cosmetic overlay. A live
+leased GCR controller supplies its actuator telemetry, and the overlay uses the
+already presented body pose; a compound Scooper supplies one cue per physical
+body, rather than duplicating it for each rectangle proxy. Disabling cosmetic
+exhaust does not disable material sources, and enabling it creates no cells.
+Real Fire and authored dispenser requests cross the existing cellular-owner
+source path separately. The
+[flyer guide](../systems/player-control-playground.md#saved-flyer-controls-and-options--5-november-2026)
+owns controls; private values and receipt fields are in
+[interfaces](../reference/interfaces-and-message-contracts.md#private-workbench-nozzle-and-preference-values).
+
 **Planned:** true GPU subregion submission, palette-change records, measured
 compression/coalescing and tuned production snapshot defaults. Lower native
 copy volume does not establish any of those features.
@@ -129,9 +142,11 @@ command queue. Rapier exchanges packed samples/results, described by the
 **Approved:** the production GameplayBridge should accept bounded data-only
 commands at identified tick boundaries and publish immutable results. **Planned:**
 its generalized schema, stable IDs, queue capacity, acceptance/rejection result,
-target-tick semantics and retention policy. The existing dynamic emission array
-has no production full-queue policy. Snapshot backpressure does not define
-command backpressure.
+target-tick semantics and retention policy. The current desktop arrays refuse
+after eight pending disc commands or eight explicit footprints, as recorded in
+[interfaces](../reference/interfaces-and-message-contracts.md#gameplay-command-contract).
+These prototype bounds do not implement the generalized production command
+contract. Snapshot backpressure does not define command backpressure.
 
 ## What must a bridge change verify?
 

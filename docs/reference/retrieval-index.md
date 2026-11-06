@@ -4,7 +4,7 @@ status: Current
 document-kind: navigation
 scope: Question-to-canonical-document routes; detailed answers belong to the linked contracts
 canonical-for: []
-last-reviewed: 2026-11-04
+last-reviewed: 2026-11-05
 related-documents: [../README.md, retrieval-corpus.json, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../architecture/pressure-optimization.md]
 ---
 
@@ -406,3 +406,12 @@ coalesced publication counts, use the [player-control contract](../systems/playe
 How do I place multiple independently configured flyers with a passive barrel, select granular and liquid responses, paint a large canvas and save an authored start? Use the [desktop workbench controls and format](../systems/player-control-playground.md#development-workbench-on-desktop) and its [qualification record](../audits/2026-11-04-workbench-consolidation.md). Tuning retention and lifetime corrections are in the [cleanup evidence](../audits/2026-11-04-workbench394-cleanup.md); MAT source admission is [separate](../audits/2026-11-04-workbench394-material-source-transition.md).
 
 For #394 owner acceptance, accepted-main pressure reconciliation and final gate status, use the [resulting-source qualification record](../audits/2026-11-04-workbench394-ready-validation.md). Current workbench controls remain in the player playground guide.
+
+How do I save separate keyboard bindings, invert Kestrel's side thrusters, tune
+handling and material emitters, or distinguish cosmetic exhaust from real Fire?
+Use [saved flyer controls and options](../systems/player-control-playground.md#saved-flyer-controls-and-options--5-november-2026),
+[configuration and capacities](configuration-reference.md#desktop-workbench-message-bounds),
+and the [focused validation commands](../operations/local-build-and-validation.md#desktop-workbench-flyer-options--2026-11-05).
+The [four additive questions](retrieval-questions-flyer-options.json) leave the
+frozen question sets unchanged. Baseline #394 is merged; the separate options
+successor and its current qualification are recorded in the [dated options audit](../audits/2026-11-05-workbench-flyer-options.md).

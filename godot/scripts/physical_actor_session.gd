@@ -283,6 +283,17 @@ func workbench_actor_state(instance_id: int) -> Dictionary:
 		"gravity":body.gravity_scale * float(ProjectSettings.get_setting("physics/2d/default_gravity")),
 		"force_limit":float(rig._profile.get("fleet_force",0.0)), "torque_limit":float(rig._profile.get("fleet_torque",0.0)),
 		"budget":float(_definitions[slot].workbench_options.budget),
+		"customization":rig._profile.get("fleet_customization", {}).duplicate(true),
+		"movement":{"acceleration":float(rig._profile.get("fleet_accel", 0.0)),
+			"speed_target":float(rig._profile.get("speed", 0.0)),
+			"turn_speed":float(rig._profile.get("fleet_turn_speed", 0.0)),
+			"turn_acceleration":float(rig._profile.get("fleet_turn_accel", 0.0)),
+			"throttle_response":float(rig._profile.get("fleet_slew", 0.0)),
+			"drag":float(rig._profile.get("fleet_drag", 0.0)),
+			"stabilization":float(rig._profile.get("fleet_attitude_gain", 0.0)),
+			"stabilization_damping":float(rig._profile.get("fleet_attitude_damping", 0.0)),
+			"friction":float(PhysicsServer2D.body_get_param(rid, PhysicsServer2D.BODY_PARAM_FRICTION)),
+			"angular_drag":body.angular_damp},
 		"definition_hash":str(rig._profile.get("fleet_definition_hash","")),
 		"control_generation":_generations[slot], "controller":rig._player_controller.observation() if rig._player_controller != null else {}}
 
@@ -786,6 +797,39 @@ func accept_equipment_feedback(snapshot_value: Dictionary) -> int:
 	return accepted
 
 
+func _gcr_exhaust(index: int, physical_pose: Transform2D, display_frame: Dictionary = {}) -> Dictionary:
+	if not _active or _suspended or _commands[index].is_empty() or tick >= _deadlines[index]: return {}
+	if bridge is WorkbenchBridge and not display_frame.is_empty():
+		if display_frame.get("session") != bridge._session or display_frame.get("epoch") != epoch: return {}
+		var entry: Dictionary = display_frame.get("instances", {}).get(int(_definitions[index].instance_id), {})
+		if entry.get("generation") != epoch or not entry.get("pose") is Transform2D: return {}
+	var rig = _rigs[index]
+	var profile: Dictionary = rig._profile
+	if str(profile.get("player_controller", "")) != "gcr_review_fleet" or rig._player_controller == null \
+		or not str(rig.fault).is_empty() or not physical_pose.is_finite(): return {}
+	if not bool(profile.get("fleet_customization", {}).get("thruster_visuals", true)): return {}
+	var controller: Dictionary = rig._player_controller.observation()
+	var force: Vector2 = controller.get("applied_force", Vector2.ZERO)
+	var torque: float = float(controller.get("applied_torque", 0.0))
+	if not force.is_finite() or not is_finite(torque): return {}
+	var board: bool = str(profile.get("fleet_control_mode", "")) == "hoverboard"
+	var main: float = float(controller.get("thrust", 0.0)) if force.length_squared() > 0.000001 else 0.0
+	var side: float = float(controller.get("side_thrust", 0.0)) if force.length_squared() > 0.000001 else 0.0
+	if board:
+		# A hovering deck really applies its gravity-compensating actuator even
+		# with neutral movement. Cosmetic jets show that live effort, not Fire.
+		var ceiling: float = maxf(float(profile.get("fleet_force", 1.0)), 0.001)
+		main = clampf(-force.y / ceiling, -1.0, 1.0)
+		side = clampf(force.x / ceiling, -1.0, 1.0)
+	var turn: float = clampf(torque / maxf(float(profile.get("fleet_torque", 1.0)), 0.001), -1.0, 1.0)
+	if absf(main) <= 0.001 and absf(side) <= 0.001 and absf(turn) <= 0.001: return {}
+	var hull: Rect2 = rig._definition.get("bounds", Rect2(-rig._sizes[0] * 0.5, rig._sizes[0]))
+	return {"pose":physical_pose,"bounds":hull,"main":clampf(main, -1.0, 1.0),
+		"side":clampf(side, -1.0, 1.0),"turn":turn,"board":board,"phase":tick % 3,
+		"boost":float(controller.get("boost_multiplier", 1.0)) > 1.0,
+		"epoch":epoch,"generation":int(_generations[index]),"sequence":int(_sequences[index])}
+
+
 func render_parts(display_frame: Dictionary = {}) -> Array:
 	var result: Array = []
 	for index: int in range(_rigs.size()):
@@ -796,6 +840,7 @@ func render_parts(display_frame: Dictionary = {}) -> Array:
 			var body: RigidBody2D = actor_bodies[part_index]
 			var body_index: int = _body_offsets[index]+part_index
 			var physical_pose: Transform2D = bridge.display_pose(body_index,display_frame) if bridge is WorkbenchBridge else bridge.body_transform(body_index)
+			var exhaust: Dictionary = _gcr_exhaust(index, physical_pose, display_frame) if part_index == 0 else {}
 			if str(parts[part_index].get("shape","rectangle"))=="rectangle_union":
 				var shape_index: int=0
 				for child in body.get_children():
@@ -804,6 +849,7 @@ func render_parts(display_frame: Dictionary = {}) -> Array:
 						"physical_part_id":str(parts[part_index].id),"physical_body_index":_body_offsets[index]+part_index,
 						"markings":_rigs[index]._profile.get("fleet_markings",""),
 						"transform":physical_pose*child.transform,"size":child.shape.size,"color":parts[part_index].color,"shape":"rectangle"})
+					if shape_index == 0 and not exhaust.is_empty(): result[-1]["gcr_exhaust"] = exhaust
 					shape_index+=1
 				continue
 			var shape: Shape2D = body.get_child(0).shape
@@ -812,6 +858,7 @@ func render_parts(display_frame: Dictionary = {}) -> Array:
 				"transform": physical_pose,
 				"size": dimensions, "color": parts[part_index].color,
 				"shape": "circle" if shape is CircleShape2D else "rectangle"}
+			if not exhaust.is_empty(): presented["gcr_exhaust"] = exhaust
 			if _rigs[index]._profile.has("fleet_markings"): presented["markings"] = _rigs[index]._profile.fleet_markings
 			if not flight.is_empty() and part_index == 0:
 				var controller: Dictionary = flight.get("controller", {})

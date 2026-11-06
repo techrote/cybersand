@@ -28,21 +28,24 @@ func advance(rig, action: Dictionary, dt: float, effort: float) -> void:
 	if bool(profile.get("fleet_reverse_thrust",fleet_index!=2)) and move.y > 0. and not primary: wanted = -move.y*.4
 	_throttle = move_toward(_throttle,wanted,float(profile.fleet_slew)*dt)
 	_side_throttle = clampf(float(action.get("trim",0.)),-1.,1.) if bool(profile.get("fleet_side_thrusters",fleet_index in [1,2,4])) else 0.
+	if bool(profile.get("fleet_customization",{}).get("swap_side_thrusters",false)):
+		_side_throttle = -_side_throttle
+	var hover_gravity: float = float(profile.gravity) if profile.has("fleet_customization") else 38.0
 	var acceleration: Vector2
 	if board:
 		# Antigravity is a bounded actuator, not a contact or position constraint.
-		acceleration = Vector2(move.x*float(profile.fleet_accel),move.y*float(profile.fleet_accel)*.65-38.)
+		acceleration = Vector2(move.x*float(profile.fleet_accel),move.y*float(profile.fleet_accel)*.65-hover_gravity)
 		if primary: acceleration.y -= float(profile.fleet_accel)*.7
 	else:
 		acceleration = Vector2.UP.rotated(angle)*float(profile.fleet_accel)*_throttle
 		acceleration += Vector2.RIGHT.rotated(angle)*float(profile.fleet_accel)*SIDE_THRUST_FACTOR*_side_throttle
 	# The leased review-room modifier scales propulsion, never hover compensation,
 	# drag, the brake or angular commands. Preserve the old unboosted expressions.
-	var propulsion: Vector2 = acceleration + Vector2(0,38.0) if board else acceleration
+	var propulsion: Vector2 = acceleration + Vector2(0,hover_gravity) if board else acceleration
 	_boost = float(profile.get("fleet_boost_multiplier",2.0)) if rig.review_boost_held() and not brake and propulsion.length_squared()>0.000001 else 1.0
 	if _boost!=1.0:
 		acceleration = propulsion*_boost
-		if board: acceleration.y-=38.0
+		if board: acceleration.y-=hover_gravity
 	var drag: float = 4.5 if brake else float(profile.fleet_drag)
 	acceleration -= velocity*drag
 	var excess: float = maxf(0.,velocity.length()-float(profile.speed))

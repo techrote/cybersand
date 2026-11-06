@@ -310,3 +310,19 @@ The main-thread Rapier owner takes its completion acknowledgement and body wrenc
 The [dated workbench measurements](../audits/2026-11-04-workbench-boundary-and-pacing.md) separate render cadence, completed physics ticks, fixed-work native throughput and process CPU usage.
 
 The workbench reference pressure-column callback captures failures into a fixed value rather than retaining `std::exception_ptr`. It records a standard exception category and at most a [192-byte diagnostic](../reference/configuration-reference.md#workbench-pressure-column-scratch), with explicit truncation. After the unchanged dispatch barrier drains, the owner reconstructs the standard exception; `World::tick()` then applies the existing failed-world quarantine. Unknown/custom exception types normalize as described in the [ABI repair and qualification](../audits/2026-11-04-workbench394-ready-validation.md). No worker calls Godot, and the successful pressure algorithm/counters and material ownership remain unchanged.
+
+Saved per-flyer preferences remain main-thread-owned copied values. Input sampling
+and file access occur in the desktop controls layer. Applying physical options
+uses the existing prepared-owner acknowledgement before persistence; a disk
+failure after acceptance is reported without pretending the World/graph rolled
+back. The options editor cancels leases and requires neutral release before
+rearm. No native pool worker gains input, file, scene-tree or live Rapier access.
+
+The physical producer converts fractional source rates into bounded integer
+amounts at its existing cadence, then sends immutable nozzle intents with the
+body sample. The exclusive cellular owner retains identity/path/occupancy checks
+before insertion; material laws and the native coupling layout remain unchanged.
+Cosmetic exhaust uses the presentation path separately. See
+[private interfaces](../reference/interfaces-and-message-contracts.md#private-workbench-nozzle-and-preference-values),
+[rendering ownership](rendering-and-gameplay-bridges.md#cosmetic-workbench-flyer-exhaust)
+and the [current flyer controls](../systems/player-control-playground.md#saved-flyer-controls-and-options--5-november-2026).

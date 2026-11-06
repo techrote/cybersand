@@ -4,7 +4,7 @@ status: Current
 document-kind: guide
 scope: Short onboarding sequence and checkpoint protocol; product intent, source identity and contracts have canonical homes
 canonical-for: [development-onboarding]
-last-reviewed: 2026-11-04
+last-reviewed: 2026-11-05
 related-documents: [source-checkpoint-and-recovery.md, ../reference/product-intent-and-priorities.md, ../reference/status-and-roadmap.md, microscenarios-programme.md, development-claims-remediation-programme.md, water-hybrid-pressure-extension-programme.md, github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
@@ -1717,4 +1717,18 @@ PR #169 integrates [Strata Theatre](../systems/depth-layers-and-parallax.md) wit
 
 ## WORKBENCH-001 shared desktop destination
 
-The revised #391 candidate starts at main 751edc0b, which includes #390. For fresh work on playable engine capabilities, use the [shared desktop workbench](../systems/player-control-playground.md#development-workbench-on-desktop) and the [dated intake and qualification record](../audits/2026-11-04-workbench-consolidation.md). Keep the separate #389 experience reference and #392 first attempt recoverable. The linked Draft branch and its protected-source disposition determine current integration status.
+The accepted #391 / #394 workbench is merged at `ba9cbc89029be88b812af59b19e5c59829bbcd90`.
+For fresh work on playable engine capabilities, use the [shared desktop workbench](../systems/player-control-playground.md#development-workbench-on-desktop)
+and the [resulting-source qualification record](../audits/2026-11-04-workbench394-ready-validation.md).
+The earlier [intake](../audits/2026-11-04-workbench-consolidation.md), separate
+#389 experience reference and #392 first attempt remain historical evidence.
+
+The separate unmerged flyer-options successor adds [private per-model profiles](../systems/player-control-playground.md#saved-flyer-controls-and-options--5-november-2026)
+for bindings, handling and authored emitters. The Pilot selector or brackets
+select models; number keys are reserved for future painting/usables. Bindings
+are local preferences, not map content, and cosmetic exhaust remains separate
+from real native emissions. Preserve prepared-owner acknowledgement, input
+lease cancellation/rearm and visible persistence failures. Use the [focused tests](local-build-and-validation.md#desktop-workbench-flyer-options--2026-11-05)
+and [dated options record](../audits/2026-11-05-workbench-flyer-options.md) before
+claiming runtime or owner acceptance; no native material law or sleep change is
+authorized by this authoring work.

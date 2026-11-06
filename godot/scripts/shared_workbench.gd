@@ -2,6 +2,8 @@ extends VBoxContainer
 
 const Setup = preload("res://scripts/workbench_setup.gd")
 const Fleet = Setup.Fleet
+const Preferences = preload("res://scripts/flyer_preferences.gd")
+const OptionsPanel = preload("res://scripts/flyer_options_panel.gd")
 const RESPONSE_LABELS := ["LA-SA · selective arrivals","LA · all events","LA · events off","RFT · fixed 20"]
 const ZOOMS := [Vector2i(240,135),Vector2i(480,270),Vector2i(960,540)]
 const TOOL_NAMES := ["Paint","Place body","Select body","Move selected","Place source"]
@@ -45,6 +47,14 @@ var _zoom := 1
 var _last_status_ms := -1000
 var _runtime_label := ""
 var _processor_label := ""
+var preferences = Preferences.new()
+var _options_panel
+var _active_profile: Dictionary = {}
+var _active_caps: Dictionary = {}
+var _runtime_profiles: Dictionary = {}
+var _pending_profile: Dictionary = {}
+var _options_resume: bool = false
+var _profile_error: String = ""
 
 func _row(parent: Control) -> HFlowContainer:
 	var row := HFlowContainer.new()
@@ -88,6 +98,12 @@ func _spin(row: Control, caption: String, field: SpinBox, low: float, high: floa
 
 func setup(controller: Control, recovery: Dictionary = {}) -> void:
 	host = controller
+	_configure_preferences()
+	var custom_path: String = str(ProjectSettings.get_setting("cybersand/flyer_profile_path",""))
+	if custom_path.is_empty() and not OS.get_environment("CYBERSAND_TEST_ARTIFACT_DIR").is_empty():
+		custom_path = OS.get_environment("CYBERSAND_TEST_ARTIFACT_DIR").path_join("flyer-profiles.json")
+	if not custom_path.is_empty(): preferences.file_path = custom_path
+	_profile_error = preferences.load_profiles()
 	host.tower_panel.refresh(false,0,{})
 	var layout: Control = host.get_node("Layout")
 	for child: Control in layout.get_children():
@@ -105,6 +121,7 @@ func setup(controller: Control, recovery: Dictionary = {}) -> void:
 	_label(row,"Pilot")
 	_picker(row,_roster,["Choose flyer…"],_roster_changed)
 	_fill_roster()
+	_button(row,"Flyer options…",open_flyer_options)
 	_button(row,"Play / Pause [P]",toggle_pause)
 	_button(row,"Step [.]",step_once)
 	_button(row,"Reset selected [R]",reset_selected)
@@ -150,9 +167,7 @@ func setup(controller: Control, recovery: Dictionary = {}) -> void:
 	_button(row,"Defaults",defaults)
 	_fire.text = "Thruster fire"
 	_fire.focus_mode = Control.FOCUS_NONE
-	_fire.toggled.connect(func(enabled: bool) -> void:
-		fire_enabled = enabled
-		if not applied.is_empty(): applied.fire = enabled)
+	_fire.toggled.connect(_fire_changed)
 	row.add_child(_fire)
 	add_child(_details)
 	_details.visibility_changed.connect(_details_visibility_changed)
@@ -180,6 +195,12 @@ func setup(controller: Control, recovery: Dictionary = {}) -> void:
 	_details.add_child(_detail_label)
 	_status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	add_child(_status)
+	_options_panel = OptionsPanel.new()
+	_options_panel.request_apply = apply_flyer_profile
+	_options_panel.material_name = host.material_name
+	_options_panel.visibility_changed.connect(func() -> void:
+		if not _options_panel.visible: _options_closed())
+	add_child(_options_panel)
 	DisplayServer.window_set_title("CyberSand · Development workbench")
 	_processor_label = "%s · %d logical CPUs" % [OS.get_processor_name(),OS.get_processor_count()]
 	var binary := "cybersand_native.windows.x86_64.dll" if OS.get_name() == "Windows" else "libcybersand_native.linux.x86_64.so"
@@ -193,7 +214,103 @@ func _fill_roster() -> void:
 	_roster.clear()
 	_roster.add_item("Observer / choose flyer",0)
 	for index: int in range(Fleet.count()): _roster.add_item(Fleet.names()[index],index+1)
-	_roster.tooltip_text = "Pilot an existing flyer. If absent, switch the selected flyer at its saved spawn or place a flyer at X/Y."
+	_roster.tooltip_text = "Pilot a flyer. [ / ] cycles models; Tab cycles placed instances. Number keys are reserved for material/usables selection."
+
+func _configure_preferences() -> void:
+	var models := {}
+	for index: int in Fleet.count(): models[Fleet.stable_id(index)] = Fleet.authoring_record(index).capabilities
+	preferences.configure_models(models)
+
+func _caps(model: String) -> Dictionary:
+	var index := Fleet.index_for_id(model)
+	return Fleet.authoring_record(index).capabilities if index >= 0 else {}
+
+func _profile(model: String) -> Dictionary:
+	var value: Dictionary = _runtime_profiles[model].duplicate(true) if _runtime_profiles.has(model) else preferences.profile(model)
+	var error: String = Preferences.validate_profile(value,_caps(model))
+	if error.is_empty(): return value
+	_profile_error = "Saved %s profile is incompatible: %s" % [model,error]
+	return Preferences.default_profile(_caps(model))
+
+func _profiled_instance(model: String, id: int, pos: Vector2) -> Dictionary:
+	var value := Setup.instance(model,id,pos)
+	if model != Setup.BARREL:
+		var profile := _profile(model)
+		value.options = profile.options.duplicate(true)
+		value.customization = profile.tuning.duplicate(true)
+	return value
+
+func controls_blocked() -> bool:
+	return _options_panel != null and _options_panel.visible
+
+func sample_controls() -> Dictionary:
+	if _active_profile.is_empty(): return Preferences.from_state(Preferences.default_bindings(),{})
+	return Preferences.sample(_active_profile.bindings,true,bool(_active_caps.get("reverse_thrust",true)))
+
+func open_flyer_options() -> bool:
+	if not _editable(): return false
+	var a := actor(applied,selected_id())
+	if a.is_empty() or a.model == Setup.BARREL: return refuse("Choose a flyer before editing its controls.")
+	_options_resume = not host.paused
+	if _options_resume: toggle_pause()
+	_cancel()
+	var profile := _profile(a.model)
+	profile.options = a.options.duplicate(true)
+	profile.tuning = a.get("customization",Preferences.tuning_defaults(_caps(a.model))).duplicate(true)
+	profile.fire_enabled = fire_enabled
+	_options_panel.open_profile(Fleet.names()[Fleet.index_for_id(a.model)],profile,_caps(a.model))
+	return true
+
+func _options_closed() -> void:
+	_cancel()
+	if _pending_profile.is_empty(): _restore_options_play()
+
+func _restore_options_play() -> void:
+	if _options_resume and not host.simulation_worker.has_failed() and not busy():
+		host.paused = false
+		host.update_worker_frame_state()
+	_options_resume = false
+
+func apply_flyer_profile(profile: Dictionary) -> bool:
+	if not _editable(): return false
+	var a := actor(applied,selected_id())
+	if a.is_empty() or a.model == Setup.BARREL: return refuse("Choose a flyer first.")
+	var error: String = Preferences.validate_profile(profile,_caps(a.model))
+	if not error.is_empty(): return refuse(error)
+	var next := applied.duplicate(true)
+	var changed := actor(next,selected_id())
+	changed.options = profile.options.duplicate(true)
+	changed.customization = profile.tuning.duplicate(true)
+	next.fire = profile.fire_enabled
+	next.response = _requested_response
+	if not apply(next,true,0,false,_options_resume or not host.paused): return false
+	_pending_profile = {"model":a.model,"value":profile.duplicate(true)}
+	return true
+
+func _persist_profile(model: String, value: Dictionary) -> void:
+	# A successful graph remains applied if storage fails. Keep its bindings
+	# for this session and report that only persistence failed.
+	_runtime_profiles[model] = value.duplicate(true)
+	_profile_error = preferences.commit_profile(model,value)
+	if not _profile_error.is_empty(): _profile_error = "Applied for this session; " + _profile_error
+
+func _fire_changed(enabled: bool) -> void:
+	if busy() or controls_blocked():
+		_fire.set_pressed_no_signal(fire_enabled)
+		refuse("Wait for the current settings transaction.")
+		return
+	_cancel()
+	fire_enabled = enabled
+	if applied.is_empty(): return
+	applied.fire = enabled
+	var a := actor(applied,selected_id())
+	if a.is_empty() or a.model == Setup.BARREL: return
+	var profile := _profile(a.model)
+	profile.options = a.options.duplicate(true)
+	profile.tuning = a.get("customization",Preferences.tuning_defaults(_caps(a.model))).duplicate(true)
+	profile.fire_enabled = enabled
+	_persist_profile(a.model,profile)
+	_active_profile = profile.duplicate(true)
 
 
 func _sync_roster() -> void:
@@ -256,6 +373,7 @@ func apply(candidate: Dictionary, preserve: bool = false, reset_id: int = 0,
 		candidate.edits = applied.edits
 	var error := Setup.validate(candidate,not preserve)
 	if not error.is_empty(): return refuse(error)
+	candidate = Setup.normalized(candidate)
 	var runs := []
 	if not preserve:
 		var recipe := Setup.rectangles(candidate)
@@ -292,7 +410,8 @@ func new_canvas() -> bool:
 
 func installed(candidate: Dictionary) -> void:
 	_pending_request_serial = 0
-	applied = candidate.duplicate(true)
+	applied = Setup.normalized(candidate)
+	_configure_preferences()
 	var roster_choice := _model.selected
 	_model.clear()
 	for name_text: String in Fleet.names(): _model.add_item(name_text)
@@ -351,6 +470,13 @@ func installed(candidate: Dictionary) -> void:
 		message = "Choose a flyer to pilot, or use Place model to add an independent body."
 	var receipt: Dictionary = host.tower_context.get("liquid_construction_receipt",{}).get("workbench_conversion",{})
 	message += _inventory_report(receipt,rounded_on_apply)
+	if not _pending_profile.is_empty():
+		var saved: Dictionary = _pending_profile
+		_pending_profile = {}
+		_persist_profile(saved.model,saved.value)
+		_active_profile = saved.value.duplicate(true)
+		_options_resume = false
+		message = "Applied and saved %s controls/options." % str(saved.model).capitalize() if _profile_error.is_empty() else _profile_error
 
 
 func _material_counts(counts: Dictionary) -> String:
@@ -441,6 +567,12 @@ func select_instance(id: int, installing: bool = false) -> bool:
 	_instances.select(_instances.get_item_index(id))
 	var options: Dictionary = a.get("options",Setup.DEFAULT_OPTIONS)
 	for key: String in _fields: _fields[key].value = options[key]
+	_active_caps = _caps(str(a.get("model","")))
+	_active_profile = {} if a.is_empty() or a.model == Setup.BARREL else _profile(a.model)
+	if not installing and not _active_profile.is_empty():
+		fire_enabled = _active_profile.fire_enabled
+		applied.fire = fire_enabled
+		_fire.set_pressed_no_signal(fire_enabled)
 	if not a.is_empty():
 		_position[0].value = a.spawn[0]
 		_position[1].value = a.spawn[1]
@@ -479,7 +611,8 @@ func pilot_model(model: String) -> bool:
 func place(model: String, pos: Vector2) -> bool:
 	if busy() or applied.is_empty(): return refuse("Wait for the current owner transaction.")
 	var next := applied.duplicate(true)
-	next.actors.append(Setup.instance(model,int(next.next_id),pos))
+	next.actors.append(_profiled_instance(model,int(next.next_id),pos))
+	if model != Setup.BARREL: next.fire = _profile(model).fire_enabled
 	next.selected = next.next_id
 	next.next_id = int(next.next_id)+1
 	return _change_actor(next,int(next.selected),"Placed")
@@ -492,10 +625,12 @@ func replace_selected() -> bool:
 func _replace_actor(model: String) -> bool:
 	var next := applied.duplicate(true)
 	var old := actor(next,selected_id())
-	var replacement := Setup.instance(model,int(next.next_id),Setup.point(old.spawn))
-	# A model change keeps the selected instance's applied comparison tuning.
-	# Independent placement and the explicit Defaults action still use defaults.
-	replacement.options = old.options.duplicate(true)
+	var replacement := _profiled_instance(model,int(next.next_id),Setup.point(old.spawn))
+	# A saved model profile takes precedence. On the first visit, keep the
+	# accepted comparison tuning; advanced values remain model-specific.
+	if model == Setup.BARREL or (not preferences.has_saved(model) and not _runtime_profiles.has(model)):
+		replacement.options = old.options.duplicate(true)
+	if model != Setup.BARREL: next.fire = _profile(model).fire_enabled
 	next.actors[next.actors.find(old)] = replacement
 	next.selected = next.next_id
 	next.next_id = int(next.next_id)+1
@@ -554,7 +689,14 @@ func apply_settings() -> bool:
 	var a := actor(next,selected_id())
 	if not a.is_empty():
 		for key: String in _fields: a.options[key] = _fields[key].value
-	return apply(next,true,0,false,not host.paused)
+	if not apply(next,true,0,false,not host.paused): return false
+	if not a.is_empty() and a.model != Setup.BARREL:
+		var profile := _profile(a.model)
+		profile.options = a.options.duplicate(true)
+		profile.tuning = a.get("customization",Preferences.tuning_defaults(_caps(a.model))).duplicate(true)
+		profile.fire_enabled = fire_enabled
+		_pending_profile = {"model":a.model,"value":profile}
+	return true
 
 func defaults() -> bool:
 	if not _editable(): return false
@@ -562,7 +704,13 @@ func defaults() -> bool:
 	next.response = Setup.RESPONSES[0]
 	var a := actor(next,selected_id())
 	if not a.is_empty(): a.options = Setup.DEFAULT_OPTIONS.duplicate()
-	return apply(next,true,0,false,not host.paused)
+	if not a.is_empty() and a.model != Setup.BARREL:
+		a.customization = Preferences.tuning_defaults(_caps(a.model))
+		next.fire = false
+	if not apply(next,true,0,false,not host.paused): return false
+	if not a.is_empty() and a.model != Setup.BARREL:
+		_pending_profile = {"model":a.model,"value":Preferences.default_profile(_caps(a.model))}
+	return true
 
 func reload_definitions(manifest: String = Fleet.DEFAULT_MANIFEST) -> bool:
 	if not _editable(): return false
@@ -700,6 +848,7 @@ func zoom_by(direction: int) -> void:
 
 func _input(event: InputEvent) -> void:
 	if host == null or applied.is_empty() or busy(): return
+	if controls_blocked(): return
 	var focus := get_viewport().gui_get_focus_owner()
 	if focus is LineEdit or focus is TextEdit: return
 	if event is InputEventJoypadButton:
@@ -718,10 +867,10 @@ func _input(event: InputEvent) -> void:
 		var direction := -1 if event.shift_pressed else 1
 		var next := posmod(current+direction,applied.actors.size())+1
 		select_instance(_instances.get_item_id(next))
-	elif event.keycode >= KEY_1 and event.keycode <= KEY_8:
-		var index: int = event.keycode-KEY_1
-		if not Fleet.valid_index(index): return
-		pilot_model(Fleet.stable_id(index))
+	elif event.keycode in [KEY_BRACKETLEFT,KEY_BRACKETRIGHT]:
+		var current: int = Fleet.index_for_id(str(actor(applied,selected_id()).get("model","")))
+		var direction: int = -1 if event.keycode == KEY_BRACKETLEFT else 1
+		pilot_model(Fleet.stable_id(posmod(current+direction,Fleet.count())))
 	else: return
 	get_viewport().set_input_as_handled()
 
@@ -736,7 +885,7 @@ func _pick(pos: Vector2i) -> void:
 	select_instance(0)
 
 func _world_input(event: InputEvent) -> void:
-	if applied.is_empty() or busy(): return
+	if applied.is_empty() or busy() or controls_blocked(): return
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_MIDDLE:
 			_pan = event.pressed
@@ -789,6 +938,8 @@ func _process(_delta: float) -> void:
 		_saved_view.clear()
 		_sync_roster()
 		refuse(host.microscenario_error if not host.microscenario_error.is_empty() else "The requested change was not installed.")
+		_pending_profile.clear()
+		_restore_options_play()
 	if not _reload_rollback.is_empty() and host.pending_microscenario_apply.is_empty():
 		Fleet.restore_registry(_reload_rollback)
 		_reload_rollback.clear()
@@ -807,6 +958,7 @@ func _process(_delta: float) -> void:
 	var gcr: Dictionary = context.get("workbench_gcr",{})
 	var state := "Preparing" if not host.pending_microscenario_apply.is_empty() else ("Paused" if host.paused else "Playing")
 	var reason: String = message
+	if not _profile_error.is_empty() and not reason.contains(_profile_error): reason += " · " + _profile_error
 	# Show a current fault separately. Completed request errors are consumed
 	# once above; an old rejection must not follow later successful actions.
 	var owner_error: String = context.get("workbench_refusal","")
