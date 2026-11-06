@@ -197,13 +197,24 @@ void run_run_repair_differential(int variant, unsigned workers, bool parallel_he
     auto repaired=fixture(workers,parallel_heads,variant,false,gas);
     auto forced=fixture(workers,parallel_heads,variant,true,gas);
     require(forced->chunk_count()>1U, "force-reference arm has multiple chunks");
+    std::uint64_t seed=0x406B624E7ULL ^ (static_cast<std::uint64_t>(variant)*131ULL) ^
+        (static_cast<std::uint64_t>(workers)*43ULL) ^ (parallel_heads ? 17ULL : 0ULL) ^ (gas ? 1ULL : 0ULL);
     for (int tick=0;tick<96;++tick) {
+        // Seeded deterministic differential edits are generated once per tick,
+        // not separately per arm, preserving exact mutation ordering.
+        seed ^= seed << 13; seed ^= seed >> 7; seed ^= seed << 17;
+        const auto rx = -80 + static_cast<int>(seed % 16U);
+        const auto ry = -9 + static_cast<int>((seed >> 13U) % 22U);
+        const auto rm = ((seed >> 35U) & 3U)==0U ? Material::Oil :
+            (((seed >> 35U) & 3U)==1U ? Material::Wall :
+             (((seed >> 35U) & 3U)==2U ? Material::Water : Material::Empty));
         std::array<TickStats,3> observations{};
         std::array<World*,3> worlds{reference.get(),repaired.get(),forced.get()};
         for(std::size_t arm=0;arm<worlds.size();++arm) {
             auto& w=*worlds[arm];
             // Deterministic sparse/high-churn edits at signed positions, run
             // floors, foreign-liquid interfaces and chunk-Y seams.
+            if ((tick%3)==1) w.set(rx,ry,rm);
             if ((tick%7)==0) {
                 const auto x=-79+(tick*11)%17, y=-8+(tick*13)%20;
                 if ((tick&1)!=0) w.set(x,y,Material::Empty);
