@@ -294,7 +294,20 @@ func _archive_claim(archive_path: String, phase: String) -> bool:
 	if DirAccess.make_dir_absolute(archive_path) != OK:
 		return false
 	var nested_claim: String = archive_path.path_join("claim")
-	if DirAccess.rename_absolute(claim_path, nested_claim) != OK:
+	# The child may be populated after reservation by a concurrent actor.
+	# A plain Godot rename could replace it; use the OS no-replace primitive.
+	# Linux: renameat2(RENAME_NOREPLACE). Windows: os.rename uses the
+	# Windows move API and fails when the destination already exists.
+	var python: String = "python" if OS.get_name() == "Windows" else "python3"
+	var probe: String = ("import os,sys,ctypes\\n" +
+		"src,dst=sys.argv[1:3]\\n" +
+		"if os.name=='nt':\\n os.rename(src,dst)\\n" +
+		"else:\\n libc=ctypes.CDLL(None,use_errno=True)\\n fn=libc.renameat2\\n" +
+		" fn.argtypes=[ctypes.c_int,ctypes.c_char_p,ctypes.c_int,ctypes.c_char_p,ctypes.c_uint]\\n" +
+		" fn.restype=ctypes.c_int\\n" +
+		" sys.exit(0 if fn(-100,os.fsencode(src),-100,os.fsencode(dst),1)==0 else 1)\\n")
+	var output: Array = []
+	if OS.execute(python, PackedStringArray(["-c", probe, claim_path, nested_claim]), output) != 0:
 		# Only remove our reservation when it is still empty. Never remove
 		# unexpected objects placed there by another actor.
 		DirAccess.remove_absolute(archive_path)
