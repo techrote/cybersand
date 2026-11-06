@@ -72,3 +72,13 @@ owner-domain/pin/refusal contract before any native writer starts an eviction
 implementation. Explicitly refuse optional state that #435 showed does not
 survive whole-World restore, and defer historical #398 cross-source import.
 No production permission is inferred from a green diagnostic.
+
+
+## Profile control
+
+This second candidate revision runs the same unchanged World and test source
+twice: the initial \`-O0\` debugging profile and an explicitly optimized \`-O2
+-DNDEBUG\` profile. Each has independently validated JSON rows and retains raw
+timings. Do not compare absolute wall times across uncalibrated machines or
+infer a user GPU or Windows throughput result. Treat the profile as provenance,
+not a production setting change.

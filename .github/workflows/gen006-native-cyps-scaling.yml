@@ -79,6 +79,47 @@ jobs:
           print(json.dumps({"source":"actual native World; Linux hosted only","cohorts":rows},indent=2))
           PY
 
+
+      - name: Compile optimized unchanged native World
+        shell: bash
+        timeout-minutes: 15
+        run: |
+          set -euo pipefail
+          timeout 840s g++-13 -std=c++20 -O2 -g0 -DNDEBUG -pthread \
+            -Wall -Wextra -Wpedantic -I native/include \
+            native/src/world.cpp native/src/material_rules.cpp \
+            native/src/scheduler_geometry.cpp native/src/settled_world_discovery.cpp \
+            native/tests/test_gen006_cyps_scaling.cpp \
+            -o build/gen006-cyps-scaling/probe-optimized 2>&1 | tee build/gen006-cyps-scaling/compile-optimized.log
+
+      - name: Execute optimized native cohorts and independently parse raw rows
+        shell: bash
+        timeout-minutes: 5
+        run: |
+          set -euo pipefail
+          timeout 240s build/gen006-cyps-scaling/probe-optimized 2>&1 | tee build/gen006-cyps-scaling/observations-optimized.log
+          grep -q 'GEN006_NATIVE_CYPS_SCALING_PASS' build/gen006-cyps-scaling/observations-optimized.log
+          test "$(grep -c '"result":"PASS"' build/gen006-cyps-scaling/observations-optimized.log)" = 6
+          grep '^{"probe"' build/gen006-cyps-scaling/observations-optimized.log > build/gen006-cyps-scaling/observations-optimized.jsonl
+          python3 - <<'PY' > build/gen006-cyps-scaling/analysis-optimized.json
+          import json, pathlib, statistics
+          p=pathlib.Path("build/gen006-cyps-scaling/observations-optimized.jsonl")
+          rows=[json.loads(line) for line in p.read_text().splitlines()]
+          assert len(rows)==6
+          assert {(r["configured_workers"],r["resident_chunks"]) for r in rows}=={
+              (w,c) for w in (1,4) for c in (1,8,32)}
+          for r in rows:
+              assert len(r["timed_save_ns"])==5 and all(t>0 for t in r["timed_save_ns"])
+              r["median_save_ms"]=statistics.median(r["timed_save_ns"])/1e6
+              r["p95_of_five_ms"]=sorted(r["timed_save_ns"])[-1]/1e6
+          for w in (1,4):
+              cohorts=sorted((r for r in rows if r["configured_workers"]==w),
+                              key=lambda r:r["resident_chunks"])
+              assert cohorts[0]["checkpoint_bytes"] < cohorts[1]["checkpoint_bytes"] < cohorts[2]["checkpoint_bytes"]
+          print(json.dumps({"source":"actual native World; GCC 13 -O2 -DNDEBUG; Linux hosted only",
+                            "cohorts":rows},indent=2))
+          PY
+
       - name: Preserve raw measurements and failures
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
@@ -93,5 +134,9 @@ jobs:
             build/gen006-cyps-scaling/observations.log
             build/gen006-cyps-scaling/observations.jsonl
             build/gen006-cyps-scaling/analysis.json
+            build/gen006-cyps-scaling/compile-optimized.log
+            build/gen006-cyps-scaling/observations-optimized.log
+            build/gen006-cyps-scaling/observations-optimized.jsonl
+            build/gen006-cyps-scaling/analysis-optimized.json
           if-no-files-found: warn
           retention-days: 45
