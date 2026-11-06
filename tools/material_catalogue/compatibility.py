@@ -183,6 +183,13 @@ REVIEWED_TRANSITIONS: tuple[dict, ...] = ({'path': 'native/src/world_pressure.in
   'source_commit': '6c69ba072f0507a3f6ee5966186fecb5070a45b2',
   'record': 'docs/audits/2026-11-06-workbench-pf-tick-cost.md',
   'issue': 362,
+  'pr': 406},
+ {'path': 'native/src/world_pressure.inc',
+  'from_lf_sha256': 'f89c9d6b6bcb1f4c76e2432ab4bc99ae22c45f0587aea0de33c06b21e13cac27',
+  'to_lf_sha256': 'af5bcaf27e4e7bd17d65279aaddb074359db20ff9c06cb5dfabf1a573e02be18',
+  'source_commit': 'b4e78e5d425023156f1b8ca4b2ca4e2f81a2505a',
+  'record': 'docs/audits/2026-11-06-workbench-pf-tick-cost.md',
+  'issue': 362,
   'pr': 406})
 
 

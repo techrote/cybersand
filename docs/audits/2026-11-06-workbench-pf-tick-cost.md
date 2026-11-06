@@ -128,6 +128,11 @@ independent review and the owner's admission. The source edit is commit
 `6c69ba072f0507a3f6ee5966186fecb5070a45b2`, the commit that adds this table,
 which carries byte-identical sources.
 
+A second step for `native/src/world_pressure.inc` carries the TSan correction:
+`f89c9d6b6bcb1f4c76e2432ab4bc99ae22c45f0587aea0de33c06b21e13cac27` → `af5bcaf27e4e7bd17d65279aaddb074359db20ff9c06cb5dfabf1a573e02be18`
+at source commit `b4e78e5d425023156f1b8ca4b2ca4e2f81a2505a` (same issue, PR and
+status as above).
+
 | Path | From LF SHA-256 | To LF SHA-256 |
 |---|---|---|
 | `native/src/world.cpp` | `93ab7874e913bf696ffcdb85724d01f860bbd53c160dd9b7ea3f8daf28026b85` | `09685e01cdd7e2bb898f46ce3c9ab97b7427ac34e7568875a3bdfd7866190ac5` |
