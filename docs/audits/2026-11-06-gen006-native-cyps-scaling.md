@@ -138,3 +138,24 @@ same-value edits, edits-to-Empty and older asynchronous save completions.
 The current negative cases **do not demonstrate an existing production
 persistence bug**, because there is no production sparse persistence writer.
 No protected source, production codec or manual acceptance changed.
+
+
+### Preserved first follow-on run: workflow parser negative
+
+At first follow-on head \`311e316aadbb62e314c4b5286040c5dfe07b77e7\`
+(tree \`b56a020db9869936a473b22bad5e4dbc3bc39220\`), the
+[Ubuntu native run #42180054964](https://github.com/techrote/cybersand/actions/runs/42180054964)
+**failed the legacy workflow grep**, which counted eight
+\`"result":"PASS"\` rows after the two new diagnostic records were
+added, instead of the six pre-existing scaling records. The actual
+native fixture completed **248 assertions with zero native failures**
+in this \`-O0\` run; the source-locked raw failure and artifact are
+retained. This is NOT a passing workflow qualification; \`-O2\` was
+not attempted on the failed run.
+
+The follow-on correction scopes the six-row count to exact
+\`gen006_native_cyps_scaling\` records, while separately validating
+the two new \`gen006_native_dirty_ack\` records with JSON field
+checks. No native fixture, assertions, production World or defaults
+are changed by this parser correction. Require a new complete
+exact-head hosted run before claiming acceptance.

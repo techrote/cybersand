@@ -59,7 +59,7 @@ jobs:
           set -euo pipefail
           timeout 240s build/gen006-cyps-scaling/probe 2>&1 | tee build/gen006-cyps-scaling/observations.log
           grep -q 'GEN006_NATIVE_CYPS_SCALING_PASS' build/gen006-cyps-scaling/observations.log
-          test "$(grep -c '"result":"PASS"' build/gen006-cyps-scaling/observations.log)" = 6
+          test "$(grep -c '^{"probe":"gen006_native_cyps_scaling"' build/gen006-cyps-scaling/observations.log)" = 6
           test "$(grep -c '^GEN006_NATIVE_DIRTY_ACK_JSON ' build/gen006-cyps-scaling/observations.log)" = 2
           sed -n 's/^GEN006_NATIVE_DIRTY_ACK_JSON //p' build/gen006-cyps-scaling/observations.log > build/gen006-cyps-scaling/dirty-ack.jsonl
           python3 -c 'import json; r=[json.loads(x) for x in open("build/gen006-cyps-scaling/dirty-ack.jsonl")]; assert len(r)==2 and all(x["result"]=="PASS" and x["native_restored_water_mass"]==17 and x["owner_intent_generation"]==x["owner_ack_generation"]==3 for x in r)'
@@ -102,7 +102,7 @@ jobs:
           set -euo pipefail
           timeout 240s build/gen006-cyps-scaling/probe-optimized 2>&1 | tee build/gen006-cyps-scaling/observations-optimized.log
           grep -q 'GEN006_NATIVE_CYPS_SCALING_PASS' build/gen006-cyps-scaling/observations-optimized.log
-          test "$(grep -c '"result":"PASS"' build/gen006-cyps-scaling/observations-optimized.log)" = 6
+          test "$(grep -c '^{"probe":"gen006_native_cyps_scaling"' build/gen006-cyps-scaling/observations-optimized.log)" = 6
           test "$(grep -c '^GEN006_NATIVE_DIRTY_ACK_JSON ' build/gen006-cyps-scaling/observations-optimized.log)" = 2
           sed -n 's/^GEN006_NATIVE_DIRTY_ACK_JSON //p' build/gen006-cyps-scaling/observations-optimized.log > build/gen006-cyps-scaling/dirty-ack-optimized.jsonl
           python3 -c 'import json; r=[json.loads(x) for x in open("build/gen006-cyps-scaling/dirty-ack-optimized.jsonl")]; assert len(r)==2 and all(x["result"]=="PASS" and x["native_restored_water_mass"]==17 and x["owner_intent_generation"]==x["owner_ack_generation"]==3 for x in r)'
