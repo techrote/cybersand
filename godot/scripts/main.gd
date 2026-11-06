@@ -1419,6 +1419,7 @@ func recording_runtime_identity() -> Dictionary:
 			"simulation_window_enabled": simulation_window_enabled,
 			"cadence_lod_enabled": cadence_lod_enabled,
 			"liquid_surface_adhesion_enabled": liquid_surface_adhesion_enabled,
+			"lockstep_coupling_enabled": lockstep_coupling_enabled,
 			"view_size": [current_view_size.x, current_view_size.y],
 			"simulation_margin": [simulation_margin.x, simulation_margin.y],
 			"requested_native_worker_threads": int(
@@ -1531,6 +1532,22 @@ var latest_snapshot: CyberSimulationSnapshot
 var worker_start_error: Error = OK
 var consumed_snapshot_serial: int = -1
 var worker_publication_counter = SnapshotPublicationCounter.new()
+
+# Opt-in coupled lockstep (owner decision 2026-11-06; COUPLING-LOCKSTEP-001).
+# Default off; enabled only by the --lockstep-coupling launch argument on
+# desktop. Rapier step N then applies exactly the native result that consumed
+# main's previous body publication. Main holds by skipping physics frames, never
+# by blocking; a hold longer than the limit steps without a fresh result and is
+# counted, so a stall becomes slow motion or a counted stale step, never a freeze.
+const LOCKSTEP_MAIN_HOLD_LIMIT_MSEC: int = 500
+var lockstep_coupling_enabled: bool = false
+var _lockstep_published: int = 0
+var _lockstep_applied_serial: int = -1
+var _lockstep_applied_publication: int = -1
+var _lockstep_hold_started_msec: int = -1
+var lockstep_main_held_frames: int = 0
+var lockstep_main_hold_timeouts: int = 0
+var lockstep_main_fenced_steps: int = 0
 
 var image: Image
 var texture: ImageTexture
@@ -1770,6 +1787,9 @@ func _ready() -> void:
 		for body: RigidBody2D in rigid_bodies:
 			body.freeze = true
 	camera_origin = clamped_camera_origin(character_centre() - Vector2(current_view_size) * 0.5)
+	# Pacing is fixed before the worker starts; the worker refuses later changes.
+	lockstep_coupling_enabled = (lockstep_coupling_requested()
+		and simulation_worker.set_lockstep_coupling(true))
 	update_worker_frame_state()
 	_publish_physical_body_state()
 	simulation_worker.set_render_snapshot_hz(render_snapshot_hz)
@@ -1971,6 +1991,13 @@ func _physics_process(_delta: float) -> void:
 		and pending_microscenario_apply.is_empty()
 		and (physical_actor_session == null or _physical_terrain_ready)
 	):
+		if lockstep_coupling_enabled and shared_workbench == null:
+			# Peek (not consume) the newest completion; rendering still takes it in _process.
+			var fenced_snapshot: CyberSimulationSnapshot = simulation_worker.take_latest_snapshot(0)
+			if _lockstep_hold(fenced_snapshot):
+				return # Skip this physics frame: no step and no new publication.
+			if fenced_snapshot != null:
+				physics_snapshot = fenced_snapshot
 		apply_latest_rigid_body_results(physics_snapshot)
 		if physical_actor_session != null:
 			physical_actor_session.advance(rapier_bridge.fixed_delta())
@@ -2820,8 +2847,45 @@ func test_rigid_body_rotation(body_index: int) -> float:
 			return 0.0
 
 
+func lockstep_coupling_requested() -> bool:
+	# Desktop only: Web already waits for native ticks on its own owner.
+	return not OS.has_feature("web") and "--lockstep-coupling" in OS.get_cmdline_user_args()
+
+
+func _lockstep_hold(snapshot: CyberSimulationSnapshot) -> bool:
+	# True while the newest completion has not consumed main's last publication
+	# or was already applied. Bounded: past the limit one counted stale step runs.
+	if (snapshot != null and snapshot.consumed_rigid_body_publication == _lockstep_published
+		and snapshot.serial != _lockstep_applied_serial):
+		_lockstep_hold_started_msec = -1
+		_lockstep_applied_serial = snapshot.serial
+		_lockstep_applied_publication = snapshot.consumed_rigid_body_publication
+		lockstep_main_fenced_steps += 1
+		return false
+	var now_msec: int = Time.get_ticks_msec()
+	if _lockstep_hold_started_msec < 0:
+		_lockstep_hold_started_msec = now_msec
+	elif now_msec - _lockstep_hold_started_msec > LOCKSTEP_MAIN_HOLD_LIMIT_MSEC:
+		_lockstep_hold_started_msec = -1
+		lockstep_main_hold_timeouts += 1
+		return false
+	lockstep_main_held_frames += 1
+	return true
+
+
+func lockstep_coupling_status() -> Dictionary:
+	var status: Dictionary = {"enabled":lockstep_coupling_enabled,
+		"main_fenced_steps":lockstep_main_fenced_steps, "main_held_frames":lockstep_main_held_frames,
+		"main_hold_timeouts":lockstep_main_hold_timeouts,
+		"main_hold_limit_msec":LOCKSTEP_MAIN_HOLD_LIMIT_MSEC, "published":_lockstep_published}
+	status.worker = simulation_worker.lockstep_metrics()
+	return status
+
+
 func pack_rigid_body_states() -> PackedFloat32Array:
 	if rapier_bridge.is_initialized():
+		# The bridge can be replaced by actor sessions; set packing at every use.
+		rapier_bridge.deterministic_rotation_packing = lockstep_coupling_enabled
 		return rapier_bridge.pack_body_states()
 	var states: PackedFloat32Array = PackedFloat32Array()
 	fallback_rigid_body_sample_serial = (
@@ -3383,6 +3447,8 @@ func _publish_physical_body_state() -> void:
 			physical_actor_session.reject_equipment_requests(requests, str(admission.get("reason", "admission")))
 	simulation_worker.set_rigid_body_states(states,
 		_body_owner_epoch(), effects)
+	# Re-read: a refused publication leaves the counter (and the fence) unchanged.
+	_lockstep_published = simulation_worker.rigid_body_publication()
 
 
 func physical_actor_observation(actor_id: int = 0) -> Dictionary:
