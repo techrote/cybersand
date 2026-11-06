@@ -1,0 +1,7 @@
+{
+  "registration":"SOL-WORKBENCH-APPARATUS-AMENDMENT-002",
+  "before_scientific_matrix":true,
+  "retained_failure":"smoke-002 rejected the final multi-command census on both hosts because the four separate owner turns did not share an identical World hash/tick. The failure remained visible; no endpoint metric was fabricated or admitted.",
+  "repair":"Issue all four bounded512x512 snapshots within ONE existing dedicated-owner command, preventing any tick/mask preparation between tiles. Keep strict payload/hash/tick checks. All native APIs and physical parameters unchanged. Existing successful canvas/physics controls retain their executed-source scope; --quick skips repeating those expensive unchanged suites during apparatus-only fixes.",
+  "scope":"No change to original144-episode matrix, physical metrics, rest thresholds or decision rule."
+}

@@ -5,7 +5,7 @@ import structure_cut as p
 import workbench_common as w
 
 def main():
-    ap=argparse.ArgumentParser(__doc__);ap.add_argument('--run',required=True);ap.add_argument('--build',required=True);ap.add_argument('--smoke',action='store_true');a=ap.parse_args()
+    ap=argparse.ArgumentParser(__doc__);ap.add_argument('--run',required=True);ap.add_argument('--build',required=True);ap.add_argument('--smoke',action='store_true');ap.add_argument('--quick',action='store_true');a=ap.parse_args()
     assert Path(a.run).name==a.run and Path(a.build).name==a.build
     info=w.identity();w.resource();folder=w.OUT/a.run;assert not folder.exists();folder.mkdir()
     buildpath=w.OUT/a.build/'receipt.json';build=json.loads(buildpath.read_text(encoding='utf-8'));assert build['post_source_equality']
@@ -38,7 +38,9 @@ def main():
             c=p.command('engine-hash',['wsl.exe','-d','Ubuntu-24.04','--','sha256sum',engine],target);commands.append(c);assert c['clean'] and (w.ROOT/c['log']).read_text(encoding='utf-8').split()[0]==pin['sha256']
         assert run('import')['clean'],'Retain failed import; stop before physical matrix'
         if a.smoke:
-            for script in ['test_solid_contact_response','test_solid_contact_fences','test_sol_contact_order','test_workbench_fleet_session','test_workbench_desktop_interest','test_workbench_canvas','test_workbench_physics_play']:
+            scripts=['test_solid_contact_response','test_solid_contact_fences','test_sol_contact_order','test_workbench_fleet_session','test_workbench_desktop_interest']
+            if not a.quick:scripts+=['test_workbench_canvas','test_workbench_physics_play']
+            for script in scripts:
                 assert run(script,script)['clean'],'Retain focused gate failure; do not run registered matrix'
         for workers in ([1] if a.smoke else [1,4]):
             for repeat in range(1 if a.smoke or workers==4 else 5):

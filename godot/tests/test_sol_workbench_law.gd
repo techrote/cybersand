@@ -8,15 +8,12 @@ class Probe:
 	var handoff_native: Dictionary={}
 	var bind_checks: Array=[]
 	func full_census() -> Dictionary:
-		var out: Dictionary={};var tiles: Array=[];var hash_value: String="";var tick: int=-1
-		for origin: Vector2i in [Vector2i(0,0),Vector2i(512,0),Vector2i(0,512),Vector2i(512,512)]:
-			var value: Dictionary=await command({"action":"inspect","snapshot_origin":origin,"snapshot_size":Vector2i(512,512),"include_body_metrics":true})
-			var tile: Dictionary=value.get("diagnostic_snapshot",{})
-			if not value.get("ok",false) or tile.get("cells",PackedByteArray()).size()!=512*512:return {}
-			if out.is_empty():out=value.duplicate();out.erase("diagnostic_snapshot");hash_value=str(tile.hash);tick=int(tile.completed_ticks)
-			elif str(tile.hash)!=hash_value or int(tile.completed_ticks)!=tick:return {}
-			tile["origin"]=origin;tile["size"]=Vector2i(512,512);tiles.append(tile)
-		out["diagnostic_tiles"]=tiles
+		var out: Dictionary=await command({"action":"inspect","snapshot_tiles":true,"include_body_metrics":true})
+		var tiles: Array=out.get("diagnostic_tiles",[])
+		if not out.get("ok",false) or tiles.size()!=4:return {}
+		for tile: Dictionary in tiles:
+			if tile.get("cells",PackedByteArray()).size()!=512*512:return {}
+			if tile.hash!=tiles[0].hash or tile.completed_ticks!=tiles[0].completed_ticks:return {}
 		return out
 	func _bind_initial_workbench(sample: Dictionary) -> Dictionary:
 		if OS.get_environment("SOL_SMOKE")=="1":

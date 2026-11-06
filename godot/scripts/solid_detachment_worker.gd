@@ -162,6 +162,14 @@ func _apply_lab(command: Dictionary) -> bool:
 		if snapshot_origin is Vector2i and snapshot_size is Vector2i and snapshot_size.x > 0 and snapshot_size.y > 0:
 			_solid_pending_reply["diagnostic_snapshot"] = _world.diagnostic_snapshot(
 				snapshot_origin, snapshot_size, false)
+		if bool(input.get("snapshot_tiles",false)):
+			# One exclusive-owner command: no native tick/mask preparation can
+			# interleave the bounded diagnostic reads. No World storage escapes.
+			var tiles: Array=[]
+			for origin: Vector2i in [Vector2i(0,0),Vector2i(512,0),Vector2i(0,512),Vector2i(512,512)]:
+				var tile: Dictionary=_world.diagnostic_snapshot(origin,Vector2i(512,512),false)
+				tile["origin"]=origin;tile["size"]=Vector2i(512,512);tiles.append(tile)
+			_solid_pending_reply["diagnostic_tiles"]=tiles
 		if bool(input.get("include_body_metrics", false)):
 			_solid_pending_reply["body_metrics"] = _world.diagnostic_body_metrics()
 	_solid_pending_reply["request_id"] = _solid_last_request
