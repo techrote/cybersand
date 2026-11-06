@@ -35,6 +35,8 @@ var test_fail_rollback: bool = false
 var test_fail_claim_release: bool = false
 var test_pause_before_publication_ms: int = 0
 var test_pause_phase: String = "prepared"
+var test_pause_before_archive_ms: int = 0
+var test_pause_archive_phase: String = "recovery"
 var recover_claim_id: String = ""
 var attempt_id: String = ""
 var staging_path: String = ""
@@ -42,6 +44,8 @@ var generation_path: String = ""
 var claim_path: String = ""
 var claim_acquired: bool = false
 var owner_host: String = ""
+var owner_pid_namespace: String = ""
+var owner_boot_id: String = ""
 var transaction_requires_recovery: bool = false
 var framebuffer_pause_consumed: bool = false
 var manifest: Dictionary = {}
@@ -123,6 +127,19 @@ func _parse_arguments() -> String:
 			test_pause_phase = argument.trim_prefix("--test-pause-phase=")
 			if test_pause_phase not in ["framebuffer", "validated", "prepared", "published-data"]:
 				return "test pause phase must be framebuffer, validated, prepared or published-data"
+		elif argument.begins_with("--test-pause-before-archive-ms="):
+			if OS.get_environment("CYBERSAND_CAPTURE_FAULT_INJECTION") != "1":
+				return "archive pause injection requires explicit test environment"
+			var archive_ms: String = argument.trim_prefix("--test-pause-before-archive-ms=")
+			if not archive_ms.is_valid_int() or int(archive_ms) < 1 or int(archive_ms) > 30000:
+				return "archive pause must be between 1 and 30000 milliseconds"
+			test_pause_before_archive_ms = int(archive_ms)
+		elif argument.begins_with("--test-pause-archive-phase="):
+			if OS.get_environment("CYBERSAND_CAPTURE_FAULT_INJECTION") != "1":
+				return "archive pause injection requires explicit test environment"
+			test_pause_archive_phase = argument.trim_prefix("--test-pause-archive-phase=")
+			if test_pause_archive_phase not in ["recovery", "release"]:
+				return "archive pause phase must be recovery or release"
 		elif argument.begins_with("--recover-claim="):
 			recover_claim_id = argument.trim_prefix("--recover-claim=")
 			if recover_claim_id.is_empty():
@@ -258,12 +275,44 @@ func _output_custody_error() -> String:
 func _write_transaction(state: String, extra: Dictionary = {}) -> bool:
 	if claim_path.is_empty() or not DirAccess.dir_exists_absolute(claim_path):
 		return false
-	var record: Dictionary = {"schema": 2, "state": state, "attempt_id": attempt_id,
+	var record: Dictionary = {"schema": 3, "state": state, "attempt_id": attempt_id,
 		"output_path": output_path, "pack_path": pack_path,
 		"process_id": OS.get_process_id(), "owner_host": owner_host,
+		"owner_pid_namespace": owner_pid_namespace, "owner_boot_id": owner_boot_id,
 		"requires_recovery": transaction_requires_recovery}
 	record.merge(extra, true)
 	return _write_json(claim_path.path_join("transaction.json"), record)
+
+
+# A reservation of the public archive name must be exclusive. Never
+# rename the claim over a previously unreserved sibling archive path.
+# The private claim slot is inside the container allocated by this attempt.
+func _archive_claim(archive_path: String, phase: String) -> bool:
+	if test_pause_before_archive_ms > 0 and test_pause_archive_phase == phase:
+		print("test pause archive phase=" + phase, " ms=", test_pause_before_archive_ms)
+		OS.delay_msec(test_pause_before_archive_ms)
+	if DirAccess.make_dir_absolute(archive_path) != OK:
+		return false
+	var nested_claim: String = archive_path.path_join("claim")
+	if DirAccess.rename_absolute(claim_path, nested_claim) != OK:
+		# Only remove our reservation when it is still empty. Never remove
+		# unexpected objects placed there by another actor.
+		DirAccess.remove_absolute(archive_path)
+		return false
+	return true
+
+
+# The Linux PID namespace and boot identity are captured by the owner itself.
+# Both must match on recovery; otherwise even ESRCH is not proof of death.
+func _linux_owner_identity() -> bool:
+	var output: Array = []
+	if OS.execute("readlink", PackedStringArray(["/proc/self/ns/pid"]), output) != 0:
+		return false
+	if output.size() != 1:
+		return false
+	owner_pid_namespace = str(output[0]).strip_edges()
+	owner_boot_id = FileAccess.get_file_as_string("/proc/sys/kernel/random/boot_id").strip_edges()
+	return owner_pid_namespace.begins_with("pid:[") and owner_pid_namespace.ends_with("]") and not owner_boot_id.is_empty()
 
 
 func _release_claim() -> bool:
@@ -281,26 +330,24 @@ func _release_claim() -> bool:
 	# the original claim and its transaction remain intact and explicitly
 	# recoverable. Cleanup of the released archive is non-authoritative.
 	var released_path: String = output_path + ".world-capture-released-" + attempt_id
-	if DirAccess.dir_exists_absolute(released_path) or FileAccess.file_exists(released_path):
-		transaction_requires_recovery = true
-		_write_transaction("release_failed", {
-			"error": "claim release archive path is unexpectedly occupied",
-			"released_path": released_path})
-		return false
 	_write_transaction("releasing", {"released_path": released_path})
-	if DirAccess.rename_absolute(claim_path, released_path) != OK:
+	if not _archive_claim(released_path, "release"):
 		transaction_requires_recovery = true
 		_write_transaction("release_failed", {
-			"error": "cannot atomically relinquish publication claim",
+			"error": "cannot reserve or archive publication claim without clobber",
 			"released_path": released_path})
 		return false
 	claim_acquired = false
-	var transaction_file: String = released_path.path_join("transaction.json")
+	var nested_claim: String = released_path.path_join("claim")
+	var transaction_file: String = nested_claim.path_join("transaction.json")
 	if FileAccess.file_exists(transaction_file) and DirAccess.remove_absolute(transaction_file) != OK:
-		push_warning("retained released publication transaction archive: " + released_path)
+		push_warning("retained released publication transaction archive: " + nested_claim)
 		return true
-	if DirAccess.dir_exists_absolute(released_path) and DirAccess.remove_absolute(released_path) != OK:
-		push_warning("retained released publication claim archive: " + released_path)
+	if DirAccess.remove_absolute(nested_claim) != OK:
+		push_warning("retained released publication claim archive: " + nested_claim)
+		return true
+	if DirAccess.remove_absolute(released_path) != OK:
+		push_warning("retained released publication archive container: " + released_path)
 	return true
 
 
@@ -329,9 +376,25 @@ func _owner_liveness(pid: int) -> String:
 	if pid <= 0:
 		return "unknown"
 	if OS.get_name() == "Linux":
-		if not DirAccess.dir_exists_absolute("/proc"):
+		# kill(2) returns ESRCH only in the same PID namespace. EPERM
+		# (including restricted process visibility) is an alive owner.
+		# Python is used solely as an errno-preserving OS syscall adapter:
+		# missing interpreter, unexpected errno, or failed probe => unknown.
+		var current: Array = []
+		if OS.execute("readlink", PackedStringArray(["/proc/self/ns/pid"]), current) != 0 or current.size() != 1:
 			return "unknown"
-		return "alive" if DirAccess.dir_exists_absolute("/proc/" + str(pid)) else "dead"
+		if str(current[0]).strip_edges() != owner_pid_namespace:
+			return "unknown"
+		if FileAccess.get_file_as_string("/proc/sys/kernel/random/boot_id").strip_edges() != owner_boot_id:
+			return "unknown"
+		var probe_output: Array = []
+		var probe: String = ("import os,errno,sys\ntry:\n os.kill(int(sys.argv[1]),0)\n print('alive')\n" +
+			"except OSError as e:\n print('dead' if e.errno==errno.ESRCH else 'alive' if e.errno==errno.EPERM else 'unknown')\n")
+		var code: int = OS.execute("python3", PackedStringArray(["-c", probe, str(pid)]), probe_output)
+		if code != 0 or probe_output.size() != 1:
+			return "unknown"
+		var result: String = str(probe_output[0]).strip_edges()
+		return result if result in ["alive", "dead"] else "unknown"
 	if OS.get_name() == "Windows":
 		var output: Array = []
 		var probe: String = ("$ErrorActionPreference = 'Stop'; " +
@@ -354,6 +417,8 @@ func _prepare_target() -> String:
 	if not custody.is_empty():
 		return custody
 	owner_host = _owner_host_identity()
+	if OS.get_name() == "Linux" and not _linux_owner_identity():
+		return "cannot establish Linux owner namespace and boot identity"
 	if owner_host.is_empty():
 		return "cannot establish local host identity for safe publication claim"
 	attempt_id = "%d-%d-%d" % [int(Time.get_unix_time_from_system()), Time.get_ticks_usec(), OS.get_process_id()]
@@ -369,7 +434,7 @@ func _prepare_target() -> String:
 			return "--recover-claim does not match the existing transaction attempt id"
 		# Refuse schema-1/partial/cross-host records: there is no trustworthy
 		# evidence that their recorded PID can be checked in this OS namespace.
-		if typeof(stale) != TYPE_DICTIONARY or int(stale.get("schema", 0)) != 2:
+		if typeof(stale) != TYPE_DICTIONARY or int(stale.get("schema", 0)) != 3:
 			return "output is already claimed; legacy or incomplete transaction cannot be safely recovered"
 		var owner_pid_value: Variant = stale.get("process_id", null)
 		if typeof(owner_pid_value) not in [TYPE_INT, TYPE_FLOAT]:
@@ -379,16 +444,19 @@ func _prepare_target() -> String:
 			return "output is already claimed; attempt and owner process identity disagree"
 		if str(stale.get("owner_host", "")) != owner_host or stale.get("output_path") != output_path:
 			return "output is already claimed; owner host or output identity cannot be verified"
+		if OS.get_name() == "Linux":
+			if str(stale.get("owner_pid_namespace", "")) != owner_pid_namespace:
+				return "output is already claimed; Linux PID namespace identity is unverified"
+			if str(stale.get("owner_boot_id", "")) != owner_boot_id:
+				return "output is already claimed; Linux boot identity is unverified"
 		var state: String = _owner_liveness(previous_pid)
 		if state == "alive":
 			return "output is already claimed by live attempt " + stale_id + "; recovery cannot evict an active process"
 		if state != "dead":
 			return "output is already claimed; previous owner liveness is unverified"
 		var recovered: String = output_path + ".world-capture-recovered-" + recover_claim_id
-		if DirAccess.dir_exists_absolute(recovered) or FileAccess.file_exists(recovered):
-			return "recovery archive already exists: " + recovered
-		if DirAccess.rename_absolute(claim_path, recovered) != OK:
-			return "cannot archive stale publication claim"
+		if not _archive_claim(recovered, "recovery"):
+			return "cannot reserve or archive stale publication claim without clobber"
 	if DirAccess.make_dir_absolute(claim_path) != OK:
 		return "cannot acquire exclusive publication claim"
 	claim_acquired = true
