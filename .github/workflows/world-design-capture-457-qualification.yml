@@ -1,0 +1,409 @@
+name: PR457 independent graphical qualification
+
+on:
+  push:
+    branches:
+      - qualification/world-design-capture-457-20261106
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  CANDIDATE_SHA: cff6c7f947147a250e5a5c3bb9d46b0df39b376c
+  DESIGN_SHA: f68516b7e4faefb8c776a89169365a7e8dd55d37
+  MAIN_SHA: 06522e300dcf91efbab0ac8f4f4370af72cf2029
+  GODOT_VERSION: 4.7.stable.official.5b4e0cb0f
+
+jobs:
+  linux-graphical-baseline:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 55
+    steps:
+      - name: Check out exact candidate source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: cff6c7f947147a250e5a5c3bb9d46b0df39b376c
+          fetch-depth: 0
+          lfs: true
+
+      - name: Execute Linux X11 llvmpipe campaign
+        shell: bash
+        run: |
+          set -u
+          E="$RUNNER_TEMP/pr457-linux-evidence"
+          rm -rf "$E"
+          mkdir -p "$E"/{logs,captures,adversarial,material-review,analysis,design-export}
+          printf 'candidate=%s\ndesign=%s\nmain=%s\nrunner_os=%s\nrunner_arch=%s\n' "$CANDIDATE_SHA" "$DESIGN_SHA" "$MAIN_SHA" "$RUNNER_OS" "$RUNNER_ARCH" > "$E/identity.txt"
+          uname -a >> "$E/identity.txt"
+          cat /etc/os-release >> "$E/identity.txt"
+          git rev-parse HEAD >> "$E/identity.txt"
+          git status --short >> "$E/identity.txt"
+
+          GODOT_ZIP="$RUNNER_TEMP/Godot_v4.7-stable_linux.x86_64.zip"
+          GODOT_DIR="$RUNNER_TEMP/godot-4.7"
+          curl --fail --location --retry 3 --output "$GODOT_ZIP" "https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_linux.x86_64.zip"
+          echo "0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c  $GODOT_ZIP" | sha256sum -c - | tee "$E/logs/godot-archive-sha256.log"
+          rm -rf "$GODOT_DIR"; mkdir -p "$GODOT_DIR"
+          unzip -q "$GODOT_ZIP" -d "$GODOT_DIR"
+          GODOT="$GODOT_DIR/Godot_v4.7-stable_linux.x86_64"
+          chmod +x "$GODOT"
+          "$GODOT" --version | tee "$E/logs/godot-version.log"
+          sha256sum "$GODOT" | tee "$E/logs/godot-binary-sha256.log"
+
+          git fetch --no-tags origin "$DESIGN_SHA"
+          git archive "$DESIGN_SHA" docs/world-design | tar -xf - -C "$E/design-export"
+          chmod -R a-w "$E/design-export"
+          PACKS="$E/design-export/docs/world-design"
+
+          sha256sum             godot/shaders/material_palette.gdshader             godot/shaders/material_emission.gdshader             godot/shaders/glow_composite.gdshader             godot/scripts/material_appearance_lut.gd             godot/scripts/palette_shader_selector.gd             godot/tools/capture_world_design_pack.gd             godot/tools/world_design_pack_adapter.gd             > "$E/source-sha256.txt"
+
+          export CYBERSAND_SOURCE_REVISION="$CANDIDATE_SHA"
+          export LIBGL_ALWAYS_SOFTWARE=1
+          export GALLIUM_DRIVER=llvmpipe
+          export LP_NUM_THREADS=2
+          export GALLIVM_PERF=nopt
+          export DISPLAY=:99
+          Xvfb :99 -screen 0 1920x1080x24 -nolisten tcp >"$E/logs/xvfb.log" 2>&1 &
+          XVFB_PID=$!
+          sleep 2
+          echo "xvfb_pid=$XVFB_PID display=$DISPLAY" >> "$E/identity.txt"
+
+          run_case() {
+            name="$1"; shift
+            printf '%s\t' "$name" >> "$E/commands.tsv"
+            printf '%q ' "$@" >> "$E/commands.tsv"
+            printf '\n' >> "$E/commands.tsv"
+            set +e
+            "$@" >"$E/logs/$name.log" 2>&1
+            code=$?
+            set -e
+            printf '%s\t%d\n' "$name" "$code" >> "$E/exits.tsv"
+            return 0
+          }
+          set -e
+
+          run_case graphical_import timeout 240s "$GODOT" --verbose --rendering-method gl_compatibility --rendering-driver opengl3 --path godot --editor --quit
+          run_case adapter_geometry timeout 120s "$GODOT" --headless --path godot --script res://tests/test_world_design_pack_adapter.gd
+          run_case oracle_15 timeout 180s "$GODOT" --headless --path godot --script res://tests/check_world_design_pack_oracle.gd -- --packs="$PACKS" --design-revision="$DESIGN_SHA"
+          run_case material_presentation_regression timeout 240s "$GODOT" --verbose --rendering-method gl_compatibility --rendering-driver opengl3 --path godot --script res://tests/test_material_presentation_render.gd
+          run_case graphical_smoke timeout 300s "$GODOT" --verbose --rendering-method gl_compatibility --rendering-driver opengl3 --path godot --script res://tests/capture_world_design_pack_smoke.gd
+          run_case material_review timeout 420s "$GODOT" --verbose --rendering-method gl_compatibility --rendering-driver opengl3 --path godot --script res://tests/capture_material_review.gd -- --output="$E/material-review" --plates=liquids,shapes,statics --clip-frames=0
+
+          capture() {
+            name="$1"; slug="$2"; t="$3"; glow="$4"; out="$E/captures/$name"
+            run_case "capture_$name" timeout 600s "$GODOT" --verbose --rendering-method gl_compatibility --rendering-driver opengl3 --path godot --script res://tools/capture_world_design_pack.gd --               --pack="$PACKS/$slug/pack.json" --output="$out" --mode=both --scale=2 --time="$t" --glow="$glow" --design-revision="$DESIGN_SHA"
+          }
+          capture lumen-a lumen-fault 1.37 on
+          capture ember-a emberglass-fumaroles 1.37 on
+          capture cathedral-a cathedral-of-capacitors 1.37 on
+          capture coral-a coral-telegraph 1.37 on
+          capture lumen-b lumen-fault 1.37 on
+          capture lumen-time lumen-fault 2.13 on
+          capture lumen-noglow lumen-fault 1.37 off
+          capture cathedral-b cathedral-of-capacitors 1.37 on
+          capture cathedral-time cathedral-of-capacitors 2.13 on
+          capture cathedral-noglow cathedral-of-capacitors 1.37 off
+
+          python3 - <<'PY'
+          import json, os, pathlib
+          e=pathlib.Path(os.environ["RUNNER_TEMP"])/"pr457-linux-evidence"
+          small={
+            "schema_id":"cybersand.world-feature-pack.proposal",
+            "features":[{"id":"brick","size":[16,16],"rectangles":[[0,0,16,16,43]],"variants":[]}],
+            "scene":{"size":[32,24],"rectangles":[[0,20,32,4,40]],"placements":[{"feature":"brick","x":4,"y":2,"variant":None}]}
+          }
+          adv=e/"adversarial"
+          (adv/"small.json").write_text(json.dumps(small)+"\n")
+          x=json.loads(json.dumps(small)); x["schema_id"]="cybersand.world-feature-pack.unknown"; (adv/"unknown-schema-id.json").write_text(json.dumps(x)+"\n")
+          x=json.loads(json.dumps(small)); x["schema_version"]=999; (adv/"unknown-schema-version.json").write_text(json.dumps(x)+"\n")
+          x=json.loads(json.dumps(small)); x["scene"]["placements"][0]["x"]=31; (adv/"oob-placement.json").write_text(json.dumps(x)+"\n")
+          x=json.loads(json.dumps(small)); x["scene"]["placements"][0]["variant"]="does-not-exist"; (adv/"unknown-variant.json").write_text(json.dumps(x)+"\n")
+          huge={"schema_id":"cybersand.world-feature-pack.proposal","features":[],"scene":{"size":[4096,4096],"rectangles":[],"placements":[]}}
+          (adv/"huge-safe.json").write_text(json.dumps(huge)+"\n")
+          invalid={"schema_id":"cybersand.world-feature-pack.proposal","features":[],"scene":{"size":[4097,4096],"rectangles":[],"placements":[]}}
+          (adv/"huge-invalid.json").write_text(json.dumps(invalid)+"\n")
+          PY
+
+          SMALL="$E/adversarial/small.json"
+          R1="$E/adversarial/r1-reuse"
+          run_case r1_success timeout 240s "$GODOT" --rendering-method gl_compatibility --rendering-driver opengl3 --path godot --script res://tools/capture_world_design_pack.gd -- --pack="$SMALL" --output="$R1" --mode=both --scale=2 --time=1.37 --glow=on --design-revision="$DESIGN_SHA"
+          if [ -f "$R1/capture-manifest.json" ]; then sha256sum "$R1/capture-manifest.json" > "$E/adversarial/r1-before.sha256"; fi
+          run_case r1_bad_cli timeout 120s "$GODOT" --rendering-method gl_compatibility --rendering-driver opengl3 --path godot --script res://tools/capture_world_design_pack.gd -- --pack="$SMALL" --output="$R1" --mode=both --scale=999 --time=1.37 --glow=on --design-revision="$DESIGN_SHA"
+          if [ -f "$R1/capture-manifest.json" ]; then sha256sum "$R1/capture-manifest.json" > "$E/adversarial/r1-after.sha256"; else echo "MISSING" > "$E/adversarial/r1-after.sha256"; fi
+
+          for c in unknown-schema-id unknown-schema-version oob-placement unknown-variant; do
+            run_case "adversarial_$c" timeout 240s "$GODOT" --rendering-method gl_compatibility --rendering-driver opengl3 --path godot --script res://tools/capture_world_design_pack.gd -- --pack="$E/adversarial/$c.json" --output="$E/adversarial/out-$c" --mode=combined --scale=2 --time=1.37 --glow=on --design-revision="$DESIGN_SHA"
+          done
+          run_case missing_pack timeout 120s "$GODOT" --rendering-method gl_compatibility --rendering-driver opengl3 --path godot --script res://tools/capture_world_design_pack.gd -- --pack="$E/adversarial/no-such-pack.json" --output="$E/adversarial/out-missing" --mode=combined --scale=2 --time=1.37 --glow=on --design-revision="$DESIGN_SHA"
+
+          mkdir -p "$E/adversarial/readonly-parent"
+          chmod 555 "$E/adversarial/readonly-parent"
+          run_case inaccessible_output timeout 120s "$GODOT" --rendering-method gl_compatibility --rendering-driver opengl3 --path godot --script res://tools/capture_world_design_pack.gd -- --pack="$SMALL" --output="$E/adversarial/readonly-parent/new-output" --mode=combined --scale=2 --time=1.37 --glow=on --design-revision="$DESIGN_SHA"
+          chmod 755 "$E/adversarial/readonly-parent"
+
+          run_case interrupted_capture timeout 1s "$GODOT" --rendering-method gl_compatibility --rendering-driver opengl3 --path godot --script res://tools/capture_world_design_pack.gd -- --pack="$PACKS/coral-telegraph/pack.json" --output="$E/adversarial/interrupted" --mode=both --scale=2 --time=1.37 --glow=on --design-revision="$DESIGN_SHA"
+
+          cat > godot/tests/_qualification_budget_probe.gd <<'GDSCRIPT'
+          extends SceneTree
+          const Adapter = preload("res://tools/world_design_pack_adapter.gd")
+          func _init() -> void:
+              call_deferred("_run")
+          func _run() -> void:
+              var safe_excessive := {"schema_id":"cybersand.world-feature-pack.proposal","features":[],"scene":{"size":[4096,4096],"rectangles":[],"placements":[]}}
+              var invalid := {"schema_id":"cybersand.world-feature-pack.proposal","features":[],"scene":{"size":[4097,4096],"rectangles":[],"placements":[]}}
+              var a: Dictionary = Adapter.inspect(safe_excessive)
+              var b: Dictionary = Adapter.inspect(invalid)
+              print("BUDGET_PROBE ", JSON.stringify({
+                  "4096x4096_inspect_ok": a.get("ok", false),
+                  "4097x4096_inspect_ok": b.get("ok", false),
+                  "scale": 8,
+                  "requested_output": [32768,32768],
+                  "rgb8_bytes_if_allocated": 32768 * 32768 * 3,
+                  "allocation_attempted": false
+              }))
+              quit(0)
+          GDSCRIPT
+          run_case budget_probe timeout 120s "$GODOT" --headless --path godot --script res://tests/_qualification_budget_probe.gd
+          rm -f godot/tests/_qualification_budget_probe.gd
+
+          python3 -m pip install --disable-pip-version-check --quiet pillow
+          python3 - <<'PY'
+          import hashlib, json, os, pathlib
+          from PIL import Image, ImageChops, __version__ as pillow_version
+
+          e=pathlib.Path(os.environ["RUNNER_TEMP"])/"pr457-linux-evidence"
+          oracle=json.loads((pathlib.Path("godot/tools/world_design_pack_expected_rg8_20261105.json")).read_text())
+          expected={x["collection"]:x for x in oracle["entries"]}
+          primaries={"lumen-a":"lumen-fault","ember-a":"emberglass-fumaroles","cathedral-a":"cathedral-of-capacitors","coral-a":"coral-telegraph"}
+          summary={"pillow":pillow_version,"primary":{},"comparisons":{},"seams":{},"r1":{}}
+          def sha(p):
+              return hashlib.sha256(pathlib.Path(p).read_bytes()).hexdigest()
+          for name,slug in primaries.items():
+              d=e/"captures"/name
+              mp=d/"capture-manifest.json"
+              rec={"manifest_exists":mp.exists()}
+              if mp.exists():
+                  m=json.loads(mp.read_text())
+                  rec.update({"status":m.get("status"),"success":m.get("success"),"scene_dimensions_cells":m.get("scene_dimensions_cells"),
+                              "godot_version":m.get("godot_version"),"os":m.get("os"),"display":m.get("display"),
+                              "rendering_method":m.get("rendering_method"),"graphics_adapter":m.get("graphics_adapter"),
+                              "adapter_vendor":m.get("adapter_vendor"),"api":m.get("api"),
+                              "captures":len(m.get("captures",[])),"inputs":len(m.get("inputs",[]))})
+                  png=d/"combined.png"
+                  if png.exists():
+                      im=Image.open(png).convert("RGB")
+                      rec["combined_png"]={"size":list(im.size),"sha256":sha(png)}
+                  rg=d/"inputs"/"combined.rg8"
+                  if rg.exists():
+                      rec["combined_rg8_sha256"]=sha(rg)
+                      rec["oracle_rg8_sha256"]=expected[slug]["rg8_sha256"]
+                      rec["oracle_match"]=rec["combined_rg8_sha256"]==rec["oracle_rg8_sha256"]
+              summary["primary"][name]=rec
+
+          def compare(a,b,key):
+              pa=e/"captures"/a/"combined.png"; pb=e/"captures"/b/"combined.png"
+              r={"a_exists":pa.exists(),"b_exists":pb.exists()}
+              if pa.exists() and pb.exists():
+                  ia=Image.open(pa).convert("RGB"); ib=Image.open(pb).convert("RGB")
+                  r["same_size"]=ia.size==ib.size; r["sha256_a"]=sha(pa); r["sha256_b"]=sha(pb); r["byte_identical"]=r["sha256_a"]==r["sha256_b"]
+                  if ia.size==ib.size:
+                      diff=ImageChops.difference(ia,ib)
+                      bbox=diff.getbbox(); r["bbox"]=bbox
+                      changed=sum(1 for p in diff.getdata() if p!=(0,0,0))
+                      r["changed_pixels"]=changed; r["total_pixels"]=ia.size[0]*ia.size[1]
+                      if bbox:
+                          diff.save(e/"analysis"/(key+"-diff.png"))
+              summary["comparisons"][key]=r
+          compare("lumen-a","lumen-b","lumen-repeat")
+          compare("lumen-a","lumen-time","lumen-time")
+          compare("lumen-a","lumen-noglow","lumen-glow")
+          compare("cathedral-a","cathedral-b","cathedral-repeat")
+          compare("cathedral-a","cathedral-time","cathedral-time")
+          compare("cathedral-a","cathedral-noglow","cathedral-glow")
+
+          for name in primaries:
+              p=e/"captures"/name/"combined.png"
+              if not p.exists(): continue
+              im=Image.open(p).convert("RGB")
+              xs=[1024,2048]
+              rows=[]
+              for x in xs:
+                  if x<=0 or x>=im.size[0]: continue
+                  left=im.crop((max(0,x-32),0,min(im.size[0],x+32),im.size[1]))
+                  out=e/"analysis"/f"{name}-seam-x{x}.png"; left.save(out)
+                  diffs=[]
+                  for y in range(im.size[1]):
+                      a=im.getpixel((x-1,y)); b=im.getpixel((x,y))
+                      diffs.append(sum(abs(a[i]-b[i]) for i in range(3)))
+                  rows.append({"x":x,"mean_cross_seam_abs_rgb":sum(diffs)/len(diffs),"max_cross_seam_abs_rgb":max(diffs),"crop":out.name})
+              summary["seams"][name]=rows
+
+          before=e/"adversarial"/"r1-before.sha256"; after=e/"adversarial"/"r1-after.sha256"
+          summary["r1"]={"before":before.read_text().strip() if before.exists() else None,
+                         "after":after.read_text().strip() if after.exists() else None,
+                         "manifest_survives":(e/"adversarial"/"r1-reuse"/"capture-manifest.json").exists()}
+          (e/"analysis"/"summary.json").write_text(json.dumps(summary,indent=2)+"\n")
+          PY
+
+          python3 - <<'PY'
+          import hashlib, os, pathlib
+          e=pathlib.Path(os.environ["RUNNER_TEMP"])/"pr457-linux-evidence"
+          lines=[]
+          for p in sorted(x for x in e.rglob("*") if x.is_file()):
+              h=hashlib.sha256(p.read_bytes()).hexdigest()
+              lines.append(f"{h}  {p.relative_to(e).as_posix()}")
+          (e/"SHA256SUMS.txt").write_text("\n".join(lines)+"\n")
+          PY
+          kill "$XVFB_PID" || true
+
+      - name: Upload complete Linux evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: pr457-linux-graphical-evidence
+          path: ${{ runner.temp }}/pr457-linux-evidence
+          retention-days: 30
+          if-no-files-found: error
+
+  windows-angle-r3:
+    runs-on: windows-2022
+    timeout-minutes: 35
+    steps:
+      - name: Check out exact candidate source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: cff6c7f947147a250e5a5c3bb9d46b0df39b376c
+          fetch-depth: 0
+          lfs: true
+
+      - name: Execute Windows ANGLE capture/selector comparison
+        shell: bash
+        run: |
+          set -euo pipefail
+          E="$RUNNER_TEMP/pr457-windows-evidence"
+          rm -rf "$E"; mkdir -p "$E"/{logs,candidate,selector,design-export,analysis}
+          GODOT_ZIP="$RUNNER_TEMP/Godot_v4.7-stable_win64.exe.zip"
+          GODOT_DIR="$RUNNER_TEMP/godot-4.7-win"
+          curl --fail --location --retry 3 --output "$GODOT_ZIP" "https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip"
+          python - <<'PY'
+          import hashlib, os, pathlib
+          p=pathlib.Path(os.environ["RUNNER_TEMP"])/"Godot_v4.7-stable_win64.exe.zip"
+          h=hashlib.sha512(p.read_bytes()).hexdigest()
+          exp="41645a908eb3181d6f2d1201ed7b6d6f095f6a23aaed8903d5d255277cc8d142814f3e6817f865b3cac142c39b8aff99280091d3bbdaa301517730b3ba0522b9"
+          print("sha512",h)
+          assert h==exp,(h,exp)
+          PY
+          rm -rf "$GODOT_DIR"; mkdir -p "$GODOT_DIR"; unzip -q "$GODOT_ZIP" -d "$GODOT_DIR"
+          GODOT="$GODOT_DIR/Godot_v4.7-stable_win64_console.exe"
+          "$GODOT" --version | tee "$E/logs/godot-version.log"
+          python - <<'PY'
+          import hashlib, os, pathlib
+          p=pathlib.Path(os.environ["RUNNER_TEMP"])/"godot-4.7-win"/"Godot_v4.7-stable_win64_console.exe"
+          print(hashlib.sha256(p.read_bytes()).hexdigest(), p)
+          PY
+
+          git fetch --no-tags origin "$DESIGN_SHA"
+          git archive "$DESIGN_SHA" docs/world-design | tar -xf - -C "$E/design-export"
+          PACK="$E/design-export/docs/world-design/lumen-fault/pack.json"
+          export CYBERSAND_SOURCE_REVISION="$CANDIDATE_SHA"
+
+          cat > godot/tests/_qualification_selector_probe.gd <<'GDSCRIPT'
+          extends SceneTree
+          func _init() -> void:
+              call_deferred("_run")
+          func _run() -> void:
+              var source: Shader = load("res://shaders/material_palette.gdshader")
+              var selected: Shader = CyberPaletteShader.for_current_renderer(source)
+              print("SELECTOR_PROBE ", JSON.stringify({
+                  "display": DisplayServer.get_name(),
+                  "method": RenderingServer.get_current_rendering_method(),
+                  "driver": RenderingServer.get_current_rendering_driver_name(),
+                  "adapter": RenderingServer.get_video_adapter_name(),
+                  "vendor": RenderingServer.get_video_adapter_vendor(),
+                  "api": RenderingServer.get_video_adapter_api_version(),
+                  "provenance": CyberPaletteShader.provenance(selected),
+                  "candidate_direct_source_sha256": source.code.sha256_text()
+              }))
+              quit(0)
+          GDSCRIPT
+          cp godot/tools/capture_world_design_pack.gd godot/tests/_qualification_capture_selector.gd
+          python - <<'PY'
+          from pathlib import Path
+          p=Path("godot/tests/_qualification_capture_selector.gd")
+          s=p.read_text()
+          old='palette_shader = load("res://shaders/material_palette.gdshader")'
+          new='palette_shader = CyberPaletteShader.for_current_renderer(load("res://shaders/material_palette.gdshader"))'
+          assert old in s
+          p.write_text(s.replace(old,new,1))
+          PY
+
+          python - <<'PY'
+          import json, os, pathlib, shlex, subprocess, time
+          e=pathlib.Path(os.environ["RUNNER_TEMP"])/"pr457-windows-evidence"
+          godot=pathlib.Path(os.environ["RUNNER_TEMP"])/"godot-4.7-win"/"Godot_v4.7-stable_win64_console.exe"
+          pack=e/"design-export"/"docs/world-design/lumen-fault/pack.json"
+          env=os.environ.copy()
+          cases=[
+            ("angle_import",[str(godot),"--verbose","--rendering-method","gl_compatibility","--rendering-driver","opengl3_angle","--path","godot","--editor","--quit"],180),
+            ("selector_probe",[str(godot),"--verbose","--rendering-method","gl_compatibility","--rendering-driver","opengl3_angle","--path","godot","--script","res://tests/_qualification_selector_probe.gd"],180),
+            ("material_presentation",[str(godot),"--verbose","--rendering-method","gl_compatibility","--rendering-driver","opengl3_angle","--path","godot","--script","res://tests/test_material_presentation_render.gd"],240),
+            ("graphical_smoke",[str(godot),"--verbose","--rendering-method","gl_compatibility","--rendering-driver","opengl3_angle","--path","godot","--script","res://tests/capture_world_design_pack_smoke.gd"],300),
+            ("candidate_capture",[str(godot),"--verbose","--rendering-method","gl_compatibility","--rendering-driver","opengl3_angle","--path","godot","--script","res://tools/capture_world_design_pack.gd","--",
+              f"--pack={pack}",f"--output={e/'candidate'}","--mode=both","--scale=2","--time=1.37","--glow=on",f"--design-revision={os.environ['DESIGN_SHA']}"],300),
+            ("selector_capture",[str(godot),"--verbose","--rendering-method","gl_compatibility","--rendering-driver","opengl3_angle","--path","godot","--script","res://tests/_qualification_capture_selector.gd","--",
+              f"--pack={pack}",f"--output={e/'selector'}","--mode=both","--scale=2","--time=1.37","--glow=on",f"--design-revision={os.environ['DESIGN_SHA']}"],300),
+          ]
+          rows=[]
+          for name,cmd,timeout in cases:
+              start=time.time()
+              log=e/"logs"/f"{name}.log"
+              try:
+                  cp=subprocess.run(cmd,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,text=True,env=env,timeout=timeout)
+                  code=cp.returncode; out=cp.stdout; timed=False
+              except subprocess.TimeoutExpired as ex:
+                  code=124; timed=True
+                  raw=ex.stdout or ""
+                  out=raw.decode(errors="replace") if isinstance(raw,bytes) else raw
+              log.write_text(out or "",errors="replace")
+              rows.append({"name":name,"exit":code,"timeout":timed,"seconds":round(time.time()-start,3),"command":cmd})
+          (e/"commands.json").write_text(json.dumps(rows,indent=2)+"\n")
+          PY
+
+          python -m pip install --disable-pip-version-check --quiet pillow
+          python - <<'PY'
+          import hashlib, json, os, pathlib
+          from PIL import Image, ImageChops, __version__ as pv
+          e=pathlib.Path(os.environ["RUNNER_TEMP"])/"pr457-windows-evidence"
+          out={"pillow":pv}
+          for arm in ("candidate","selector"):
+              p=e/arm/"combined.png"
+              out[arm]={"exists":p.exists()}
+              if p.exists():
+                  im=Image.open(p).convert("RGB")
+                  out[arm].update(size=list(im.size),sha256=hashlib.sha256(p.read_bytes()).hexdigest())
+                  m=e/arm/"capture-manifest.json"
+                  if m.exists(): out[arm]["manifest"]=json.loads(m.read_text())
+          a=e/"candidate"/"combined.png"; b=e/"selector"/"combined.png"
+          if a.exists() and b.exists():
+              ia=Image.open(a).convert("RGB"); ib=Image.open(b).convert("RGB")
+              d=ImageChops.difference(ia,ib)
+              out["comparison"]={"same_size":ia.size==ib.size,"bbox":d.getbbox(),
+                "changed_pixels":sum(1 for p in d.getdata() if p!=(0,0,0))}
+              if d.getbbox(): d.save(e/"analysis"/"candidate-vs-selector-diff.png")
+          (e/"analysis"/"summary.json").write_text(json.dumps(out,indent=2,default=str)+"\n")
+          lines=[]
+          for p in sorted(x for x in e.rglob("*") if x.is_file()):
+              lines.append(f"{hashlib.sha256(p.read_bytes()).hexdigest()}  {p.relative_to(e).as_posix()}")
+          (e/"SHA256SUMS.txt").write_text("\n".join(lines)+"\n")
+          PY
+          rm -f godot/tests/_qualification_selector_probe.gd godot/tests/_qualification_capture_selector.gd
+
+      - name: Upload Windows ANGLE evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: pr457-windows-angle-evidence
+          path: ${{ runner.temp }}/pr457-windows-evidence
+          retention-days: 30
+          if-no-files-found: error
