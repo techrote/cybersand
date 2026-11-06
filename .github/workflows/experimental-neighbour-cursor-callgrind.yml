@@ -1,0 +1,64 @@
+name: Experimental neighbour cursor Callgrind instruction profile
+
+on:
+  push:
+    branches:
+      - codex/neighbour-cursor-independent-qualification-20261106
+    paths:
+      - tools/perf/callgrind_neighbour_cursor.cpp
+      - tools/perf/run_neighbour_cursor_callgrind.py
+      - .github/workflows/experimental-neighbour-cursor-callgrind.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: neighbour-cursor-callgrind-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  baseline-candidate-callgrind:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 75
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Check source identity and available profiler
+        shell: bash
+        run: |
+          set -euxo pipefail
+          git rev-parse HEAD
+          g++-13 --version
+          python3 -m py_compile tools/perf/run_neighbour_cursor_callgrind.py
+          python3 tools/ci/check_ci_provider_policy.py
+          if ! command -v valgrind || ! command -v callgrind_annotate; then
+            sudo apt-get update -qq
+            sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq valgrind
+          fi
+          valgrind --version
+      - name: Profile same 16 stress-canvas ticks for original and cursor
+        shell: bash
+        run: |
+          set -euxo pipefail
+          ulimit -c 0
+          python3 tools/perf/run_neighbour_cursor_callgrind.py \
+            --repo . \
+            --out "${RUNNER_TEMP}/cursor-callgrind" \
+            --candidate "${GITHUB_SHA}" \
+            --ticks 16 \
+            | tee "${RUNNER_TEMP}/cursor-callgrind-summary.log"
+      - name: Publish instruction count, source lines and original profile evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: neighbour-cursor-callgrind-${{ github.sha }}
+          retention-days: 14
+          if-no-files-found: warn
+          path: |
+            ${{ runner.temp }}/cursor-callgrind-summary.log
+            ${{ runner.temp }}/cursor-callgrind/*.json
+            ${{ runner.temp }}/cursor-callgrind/*.log
+            ${{ runner.temp }}/cursor-callgrind/*.callgrind
