@@ -206,6 +206,13 @@ historical CPU failures, the #365 restoration block, the frozen material guard,
 the eight inherited runtime source mismatches, hard-material exclusions and the
 tiny RedBrick filter.
 
+## Owner decisions
+
+The [review and owner-decision record](2026-11-06-sol-review-and-owner-decisions.md)
+records the 2026-11-06 owner decision: SOL adopts main's workbench granular contact
+law (LA-SELECTIVE), subject to a registered repeated experiment on the actual cut
+structures with unchanged mass and caps.
+
 ## Next action
 
 A decidable attribution needs phase control, not more single episodes. Two
