@@ -6,6 +6,27 @@ class Probe:
 	var frame: Dictionary={}
 	var participation: Dictionary={}
 	var handoff_native: Dictionary={}
+	var bind_checks: Array=[]
+	func _bind_initial_workbench(sample: Dictionary) -> Dictionary:
+		if OS.get_environment("SOL_SMOKE")=="1":
+			for kind: String in ["token","generation","placement","mass","budget"]:
+				var bad: Dictionary={"action":"workbench_bind","token":str(source_receipt.token),"body_generation":generation,"sample":sample.duplicate(true)}
+				if kind=="token":bad.token="foreign:owner"
+				elif kind=="generation":bad.body_generation=generation+1
+				elif kind=="budget":bad.sample.bodies[0].budget=21.
+				else:
+					var values: PackedFloat64Array=bad.sample.states
+					for offset: int in range(0,values.size(),17):
+						if kind=="mass":values[offset+9]+=1.
+						else:values[offset+1]+=1.;values[offset+12]+=1.
+					bad.sample.states=values
+				var reply: Dictionary=await command(bad)
+				bind_checks.append({"kind":kind,"refused":not reply.get("ok",true),"body":read()})
+		var bound: Dictionary=await super._bind_initial_workbench(sample)
+		if OS.get_environment("SOL_SMOKE")=="1" and bound.get("ok",false):
+			var duplicate: Dictionary=await super._bind_initial_workbench(sample)
+			bind_checks.append({"kind":"duplicate","refused":not duplicate.get("ok",true),"body":read()})
+		return bound
 	func _prime_compound_coupling() -> bool:
 		if not await super._prime_compound_coupling():return false
 		# Capture once while the handoff is already frozen. Pausing an uncompleted
@@ -117,6 +138,7 @@ func run() -> void:
 	var target: int=12 if OS.get_environment("SOL_SMOKE")=="1" else 720
 	check(s.source_receipt.member_count==n and s.commit_receipt.aggregate_owned==n,"full actual source ownership")
 	check(s.bridge.manual_step_count()==0 and s.bridge._body_rids.size()==1,"one body and zero-step handoff")
+	for proof: Dictionary in s.bind_checks:check(proof.refused and proof.body.manual_step==0,"binding refusal "+str(proof.kind))
 	var initial: Dictionary=s.handoff_native
 	check(initial.aggregate_owned==n and initial.native_source_members==0,"sole aggregate ownership")
 	var shapes: Array=[]
@@ -125,6 +147,7 @@ func run() -> void:
 		shapes.append({"type":PhysicsServer2D.shape_get_type(shape),"data":PhysicsServer2D.shape_get_data(shape),"transform":PhysicsServer2D.body_get_shape_transform(s.body.get_rid(),i),"owner_disabled":s.body.is_shape_owner_disabled(s.body.shape_find_owner(i))})
 	var report: Dictionary={"registration":"SOL-WORKBENCH-LAW-001","source":OS.get_environment("CYBERSAND_SOURCE_REVISION"),"platform":OS.get_name(),
 		"structure":structure,"surroundings":surroundings,"arm":arm,"workers":workers,"repeat":repeat,
+		"apparatus_only":target!=720,"binding_checks":s.bind_checks,
 		"before_cut":census(before),"prepared":s.source_receipt,"commit":s.commit_receipt,"activation":s.final_receipt,"initial_native":census(initial),
 		"initial_body":s.read(),"server_shapes":shapes,"proxy_centres":s._coupling_local_centers,"proxy_sizes":s._coupling_sizes,"proxy_masses":s._coupling_masses,
 		"body_rid":s.body.get_rid().get_id(),"body_instance":s.body.get_instance_id(),"provisional_sample":s.workbench_provisional,

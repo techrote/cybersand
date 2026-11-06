@@ -27,11 +27,15 @@ class DispatchSession:
 	var publish_ok: bool=true
 	var source_age: int=0
 	var capture_enabled: bool=true
+	var reject_application: bool=false
+	func _apply_contact_envelope(e: Dictionary,advanced: int) -> bool:
+		if reject_application:return false
+		return super._apply_contact_envelope(e,advanced)
 	func envelope() -> Dictionary:
 		return {"observation":{},"snapshot":1,"tick":19,"revision":31,"epoch":physics_epoch,
 			"token":str(source_receipt.token),"generation":generation,"worker":worker.get_instance_id(),
 			"bridge":bridge.get_instance_id(),"body":body.get_instance_id(),"rid":body.get_rid().get_id(),
-			"sample":(_coupling_sample_serial-source_age+1000000)%1000000,"current":_coupling_sample_serial,"manual_step":bridge.manual_step_count()}
+			"sample":(_coupling_sample_serial-source_age+1000000)%1000000,"current":_coupling_sample_serial,"manual_step":bridge.manual_step_count(),"accounting":_deferred_accounting}
 	func _consume_compound_results() -> Dictionary:
 		captured=envelope()
 		if bridge is DispatchBridge:(bridge as DispatchBridge).actions.append("ordinary")
@@ -71,6 +75,7 @@ func check(ok: bool,why: String) -> void:
 func setup(s: DispatchSession,b: CyberRapierPhysicsBridge,body: RigidBody2D) -> void:
 	s.worker=Worker.new();s.bridge=b;s.body=body;s.active=true;s.physics_paused=false
 	s.generation=7;s.physics_epoch=2;s.source_receipt={"token":"23:1"};s.sand_contact_order="post"
+	s._deferred_accounting={"captured":0,"dropped":0,"failed_applications":0,"reasons":{}}
 	s._coupling_sample_serial=1;s._coupling_local_centers=PackedVector2Array([Vector2.ZERO]);s._coupling_sizes=PackedVector2Array([Vector2(4,2)])
 	s._contact_metrics={"response_attempts":0,"response_ms_all_attempts":0.,"response_ms_max_attempt":0.,
 		"response_rid_state_ms_all_attempts":0.,"response_planner_ms_all_attempts":0.,"response_impulse_apply_ms_all_attempts":0.,
@@ -108,8 +113,13 @@ func run() -> void:
 			"nonadvance":b.advance=false
 			"terrain":b.pending=1
 		s.physics_step();check(not b.actions.has("sand") and s.publications==0,key+" prevents Sand and publication")
+		check(s.captured.accounting.dropped==1,key+" counted as dropped deferred work")
 		check(not s.captured.is_empty(),key+" captured work remains in test denominator")
 		retire(s)
+	var rejected:=DispatchSession.new();var rejected_bridge:=DispatchBridge.new();setup(rejected,rejected_bridge,body);rejected.reject_application=true
+	rejected.physics_step();check(rejected._failed and rejected.physics_paused and rejected.publications==0,"unexpected post ownership rejection fail-stops")
+	rejected.set_paused(false);rejected.physics_step();check(rejected_bridge.manual_step_count()==1,"unpause cannot advance after unexpected rejection")
+	retire(rejected)
 	var default_session:=Session.new();default_session.sand_contact_order="post";default_session.close()
 	check(default_session.sand_contact_order=="pre","teardown resets opt-in")
 	var actual:=FaultBridge.new();var bodies: Array[RigidBody2D]=[body]

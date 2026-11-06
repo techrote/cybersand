@@ -50,8 +50,7 @@ func _prime_compound_coupling() -> bool:
 	var this_generation: int=generation;var owner: CyberSimulationWorker=worker
 	var sample: Dictionary=(bridge as WorkbenchBridge).pack_sample([false])
 	if sample.is_empty():return false
-	var bound: Dictionary=await command({"action":"workbench_bind","token":str(source_receipt.token),
-		"body_generation":generation,"sample":sample})
+	var bound: Dictionary=await _bind_initial_workbench(sample)
 	if not _owns(this_generation,owner) or not bound.get("ok",false):return false
 	if not owner.install_solid_workbench_sample(sample):return false
 	workbench_wait_sample=int(sample.states[10]);_coupling_sample_serial=workbench_wait_sample
@@ -69,6 +68,10 @@ func _prime_compound_coupling() -> bool:
 		await _tree.process_frame
 		OS.delay_usec(500)
 	return false
+
+func _bind_initial_workbench(sample: Dictionary) -> Dictionary:
+	return await command({"action":"workbench_bind","token":str(source_receipt.token),
+		"body_generation":generation,"sample":sample})
 
 func _after_unfreeze() -> bool:
 	if not workbench_law:return super._after_unfreeze()
