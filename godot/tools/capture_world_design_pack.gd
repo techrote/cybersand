@@ -41,6 +41,7 @@ var staging_path: String = ""
 var generation_path: String = ""
 var claim_path: String = ""
 var claim_acquired: bool = false
+var owner_host: String = ""
 var transaction_requires_recovery: bool = false
 var framebuffer_pause_consumed: bool = false
 var manifest: Dictionary = {}
@@ -257,9 +258,10 @@ func _output_custody_error() -> String:
 func _write_transaction(state: String, extra: Dictionary = {}) -> bool:
 	if claim_path.is_empty() or not DirAccess.dir_exists_absolute(claim_path):
 		return false
-	var record: Dictionary = {"schema": 1, "state": state, "attempt_id": attempt_id,
+	var record: Dictionary = {"schema": 2, "state": state, "attempt_id": attempt_id,
 		"output_path": output_path, "pack_path": pack_path,
-		"process_id": OS.get_process_id(), "requires_recovery": transaction_requires_recovery}
+		"process_id": OS.get_process_id(), "owner_host": owner_host,
+		"requires_recovery": transaction_requires_recovery}
 	record.merge(extra, true)
 	return _write_json(claim_path.path_join("transaction.json"), record)
 
@@ -302,10 +304,58 @@ func _release_claim() -> bool:
 	return true
 
 
+# A recovery token identifies a transaction, but is NOT permission to evict a
+# running owner. A hostname distinguishes local PID namespaces from shared paths.
+# No automatic takeover is possible if host identity/liveness is unprovable.
+func _owner_host_identity() -> String:
+	var host: String = ""
+	if OS.get_name() == "Windows":
+		host = OS.get_environment("COMPUTERNAME").strip_edges()
+	elif OS.get_name() == "Linux":
+		host = OS.get_environment("HOSTNAME").strip_edges()
+	if host.is_empty():
+		var output: Array = []
+		if OS.execute("hostname", PackedStringArray(), output) == 0 and not output.is_empty():
+			host = str(output[0]).strip_edges()
+	if host.is_empty():
+		return ""
+	return OS.get_name() + ":" + host.to_lower()
+
+
+# OS.is_process_running() is documented for Godot-spawned child PIDs, whereas
+# the capture owner can be started independently (e.g. Python/GitHub Actions).
+# Use the host's OS process table; unrecognized/error states fail closed.
+func _owner_liveness(pid: int) -> String:
+	if pid <= 0:
+		return "unknown"
+	if OS.get_name() == "Linux":
+		if not DirAccess.dir_exists_absolute("/proc"):
+			return "unknown"
+		return "alive" if DirAccess.dir_exists_absolute("/proc/" + str(pid)) else "dead"
+	if OS.get_name() == "Windows":
+		var output: Array = []
+		var probe: String = ("$ErrorActionPreference = 'Stop'; " +
+			"try { $null = Get-Process -Id %d -ErrorAction Stop; " +
+			"[Console]::Out.Write('alive') } catch { " +
+			"if ($_.CategoryInfo.Category -eq 'ObjectNotFound') { " +
+			"[Console]::Out.Write('dead') } else { [Console]::Out.Write('unknown') } }") % pid
+		var code: int = OS.execute("powershell.exe",
+			PackedStringArray(["-NoProfile", "-NonInteractive", "-Command", probe]), output)
+		if code != 0 or output.size() != 1:
+			return "unknown"
+		var result: String = str(output[0]).strip_edges()
+		if result in ["alive", "dead"]:
+			return result
+	return "unknown"
+
+
 func _prepare_target() -> String:
 	var custody: String = _output_custody_error()
 	if not custody.is_empty():
 		return custody
+	owner_host = _owner_host_identity()
+	if owner_host.is_empty():
+		return "cannot establish local host identity for safe publication claim"
 	attempt_id = "%d-%d-%d" % [int(Time.get_unix_time_from_system()), Time.get_ticks_usec(), OS.get_process_id()]
 	claim_path = output_path + ".world-capture-claim"
 	if FileAccess.file_exists(claim_path) and not DirAccess.dir_exists_absolute(claim_path):
@@ -317,6 +367,23 @@ func _prepare_target() -> String:
 			return "output is already claimed by attempt " + stale_id + "; explicit --recover-claim=<attempt-id> is required after confirming the process is no longer active"
 		if recover_claim_id != stale_id:
 			return "--recover-claim does not match the existing transaction attempt id"
+		# Refuse schema-1/partial/cross-host records: there is no trustworthy
+		# evidence that their recorded PID can be checked in this OS namespace.
+		if typeof(stale) != TYPE_DICTIONARY or int(stale.get("schema", 0)) != 2:
+			return "output is already claimed; legacy or incomplete transaction cannot be safely recovered"
+		var owner_pid_value: Variant = stale.get("process_id", null)
+		if typeof(owner_pid_value) not in [TYPE_INT, TYPE_FLOAT]:
+			return "output is already claimed; owner process identity is malformed"
+		var previous_pid: int = int(owner_pid_value)
+		if previous_pid <= 0 or not stale_id.ends_with("-" + str(previous_pid)):
+			return "output is already claimed; attempt and owner process identity disagree"
+		if str(stale.get("owner_host", "")) != owner_host or stale.get("output_path") != output_path:
+			return "output is already claimed; owner host or output identity cannot be verified"
+		var state: String = _owner_liveness(previous_pid)
+		if state == "alive":
+			return "output is already claimed by live attempt " + stale_id + "; recovery cannot evict an active process"
+		if state != "dead":
+			return "output is already claimed; previous owner liveness is unverified"
 		var recovered: String = output_path + ".world-capture-recovered-" + recover_claim_id
 		if DirAccess.dir_exists_absolute(recovered) or FileAccess.file_exists(recovered):
 			return "recovery archive already exists: " + recovered
