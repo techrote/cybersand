@@ -1311,6 +1311,11 @@ void test_failed_tick_stops_until_clear() {
             require(threw && world.tick_index() == 2, "capacity failure lost attempted identity");
             require(world.has_failed() && world.completed_tick_index() == 1,
                     "partial tick was reported as completed");
+            bool hard_invalidation_threw = false;
+            try { (void)world.take_hard_surface_invalidation(); }
+            catch (const std::logic_error&) { hard_invalidation_threw = true; }
+            require(hard_invalidation_threw,
+                    "failed World exposed partial collider invalidation");
             require(with_event ? world.get(20, 20) == Material::Fire &&
                                      world.get(21, 20) == Material::Empty
                                : world.content_hash() == before_content,
@@ -1327,6 +1332,9 @@ void test_failed_tick_stops_until_clear() {
             try { world.set(40, 20, Material::Sand); } catch (const std::logic_error&) { threw = true; }
             require(threw && world.state_hash() == failed_state, "failed mutation was not rejected");
             world.clear();
+            const auto reset_hard = world.take_hard_surface_invalidation();
+            require(reset_hard.full_refresh,
+                    "failed-World clear did not request collider full refresh");
             require(!world.has_failed() && world.completed_tick_index() == 0, "clear retained failure");
             world.set(20, 20, Material::Sand);
             const auto recovered = world.tick();
