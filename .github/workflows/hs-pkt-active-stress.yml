@@ -44,12 +44,18 @@ jobs:
           echo "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a  godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so" | sha256sum --check --strict
           for arm in control candidate; do
             root="$RUNNER_TEMP/hs-$arm"
-            cp godot/scripts/hard_surface_active_stress_profile.gd "$root/godot/scripts/hard_surface_active_stress_profile.gd"
+            # #406 lacks the diagnostic stage-time fields; the exact same
+            # timing-only snapshot/worker overlay is required on both arms.
+            # Native code, simulation law and solver configurations remain
+            # pinned to their original, unmodified source identities.
+            for f in hard_surface_active_stress_profile.gd simulation_worker.gd simulation_snapshot.gd; do
+              cp "godot/scripts/$f" "$root/godot/scripts/$f"
+              cmp "godot/scripts/$f" "$root/godot/scripts/$f"
+            done
             cp godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so "$root/godot/addons/godot-rapier2d/bin/"
-            cmp godot/scripts/hard_surface_active_stress_profile.gd "$root/godot/scripts/hard_surface_active_stress_profile.gd"
           done
           mkdir -p build/hs-active-abba
-          sha256sum godot/scripts/hard_surface_active_stress_profile.gd > build/hs-active-abba/diagnostic-script.sha256
+          sha256sum godot/scripts/hard_surface_active_stress_profile.gd godot/scripts/simulation_worker.gd godot/scripts/simulation_snapshot.gd > build/hs-active-abba/diagnostic-script.sha256
           git -C "$RUNNER_TEMP/hs-control" status --porcelain=v1 > build/hs-active-abba/control-overlay-status.txt
           git -C "$RUNNER_TEMP/hs-candidate" status --porcelain=v1 > build/hs-active-abba/candidate-overlay-status.txt
           git log -1 --format='%H %T %s' "$CONTROL_SHA" > build/hs-active-abba/control-source.txt
