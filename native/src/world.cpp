@@ -5290,6 +5290,42 @@ void World::copy_material_cells(RectI64 region, std::span<std::uint8_t> destinat
     overlay_ballistic_render(region, destination, stride_bytes, 1U);
 }
 
+void World::copy_hard_surface_bits(RectI64 region, std::span<std::uint64_t> destination) const {
+    if (region.width <= 0 || region.height <= 0 || region.width % 64 != 0)
+        throw std::invalid_argument("Hard-surface bit region must be a positive multiple of 64 wide");
+    const auto words = static_cast<std::size_t>(region.width / 64);
+    if (destination.size() / words < static_cast<std::size_t>(region.height))
+        throw std::invalid_argument("Hard-surface bit destination is too small");
+    static const auto hard = [] {
+        std::array<bool, 256> table{};
+        for (std::size_t id = 0; id < table.size(); ++id)
+            table[id] = MaterialRules::is_hard_surface(static_cast<Material>(id));
+        return table;
+    }();
+    const auto end_x = region.x + region.width;
+    for (std::int64_t row = 0; row < region.height; ++row) {
+        auto* output = destination.data() + static_cast<std::size_t>(row) * words;
+        std::fill(output, output + words, std::uint64_t{0});
+        const auto world_y = region.y + row;
+        auto world_x = region.x;
+        while (world_x < end_x) {
+            const auto first = address(world_x, world_y);
+            const auto* chunk = find_chunk(first.chunk);
+            const auto run = std::min<std::int64_t>(
+                end_x - world_x, static_cast<std::int64_t>(config_.chunk_size - first.local_x));
+            if (chunk != nullptr) {
+                for (std::int64_t offset = 0; offset < run; ++offset) {
+                    const auto material = chunk->cells[first.index + static_cast<std::size_t>(offset)].material_value();
+                    if (!hard[static_cast<std::uint8_t>(material)]) continue;
+                    const auto bit = static_cast<std::size_t>(world_x - region.x + offset);
+                    output[bit / 64U] |= std::uint64_t{1} << (bit % 64U);
+                }
+            }
+            world_x += run;
+        }
+    }
+}
+
 void World::copy_rgba(RectI64 region, std::span<std::uint8_t> destination, std::size_t stride_bytes) const {
     (void)validate_copy_layout(region, 4U, stride_bytes, destination.size());
 

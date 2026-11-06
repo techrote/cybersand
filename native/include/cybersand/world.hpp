@@ -476,6 +476,13 @@ public:
     void copy_material_cells(RectI64 region, std::span<std::uint8_t> destination,
                              std::size_t stride_bytes) const;
     void copy_rgba(RectI64 region, std::span<std::uint8_t> destination, std::size_t stride_bytes) const;
+    // One bit per cell (bit x % 64 of word x / 64 in each row), set where the
+    // stored material is a hard surface (MaterialRules::is_hard_surface).
+    // region.width must be a positive multiple of 64; non-resident cells are
+    // Empty. The display dithering and parcel overlay of copy_material_cells
+    // only exchange Water and Empty, neither of which is a hard surface, so
+    // this mask equals is_hard_surface of that projection cell by cell.
+    void copy_hard_surface_bits(RectI64 region, std::span<std::uint64_t> destination) const;
 
 private:
     [[nodiscard]] std::uint64_t physical_state_hash_impl(

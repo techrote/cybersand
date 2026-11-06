@@ -3728,6 +3728,45 @@ void test_player_field_native_tick_quantity_and_worker_parity() {
 
 // MaterialRules' namespace-scope pair tables must answer exactly as the
 // authored InteractionRules resolver for every material pair and roll.
+// The collider mask equals is_hard_surface of the display projection cell by
+// cell: every material id, dithered fractional Water and non-resident cells.
+void test_hard_surface_bits_match_projection() {
+    WorldConfig config{};
+    config.worker_threads = 1;
+    World world(config);
+    world.reserve_region({0, 0, 256, 128});
+    for (std::int64_t y = 0; y < 128; ++y)
+        for (std::int64_t x = 0; x < 256; ++x) {
+            const auto id = static_cast<std::uint8_t>((x * 7 + y * 13) % 132);
+            if (id == 10) continue;
+            const auto material = static_cast<Material>(id);
+            if (material == Material::Water) {
+                require(world.set_cell_state(x, y, Material::Water, static_cast<std::uint16_t>(1 + (x + y) % 200), 0),
+                        "fractional Water accepted");
+            } else {
+                world.set(x, y, material);
+            }
+        }
+    const cybersand::RectI64 region{-64, -64, 384, 256}; // includes non-resident chunks
+    std::vector<std::uint8_t> projection(static_cast<std::size_t>(region.width * region.height));
+    world.copy_material_cells(region, projection, static_cast<std::size_t>(region.width));
+    std::vector<std::uint64_t> bits(static_cast<std::size_t>(region.width / 64 * region.height));
+    world.copy_hard_surface_bits(region, bits);
+    std::size_t hard = 0;
+    for (std::int64_t y = 0; y < region.height; ++y)
+        for (std::int64_t x = 0; x < region.width; ++x) {
+            const auto expected = cybersand::MaterialRules::is_hard_surface(
+                static_cast<Material>(projection[static_cast<std::size_t>(y * region.width + x)]));
+            const auto word = bits[static_cast<std::size_t>(y * (region.width / 64) + x / 64)];
+            require(((word >> (x % 64)) & 1U) == (expected ? 1U : 0U), "hard-surface bit differs from projection");
+            hard += expected ? 1U : 0U;
+        }
+    require(hard > 0U, "fixture must contain hard surfaces");
+    bool refused = false;
+    try { world.copy_hard_surface_bits({0, 0, 100, 1}, bits); } catch (const std::invalid_argument&) { refused = true; }
+    require(refused, "non-multiple-of-64 hard-surface region accepted");
+}
+
 // Active-core capacity bounds distinct scheduling cores, not active blocks:
 // sixteen active 32-cell blocks inside four 64-cell cores fit a capacity of
 // four, evolve exactly like an unbounded World, and a capacity of three still
@@ -4076,6 +4115,7 @@ int main(int argc, char** argv) {
         {"Workbench parallel PressureFlow heads match serial (all variants)", test_workbench_pressure_heads_parallel_exact},
         {"Pair reaction tables match the authored resolver", test_pair_reaction_tables_match_resolver},
         {"Active-core capacity counts distinct cores", test_active_core_capacity_counts_distinct_cores},
+        {"Hard-surface bits match the display projection", test_hard_surface_bits_match_projection},
     };
 
     std::size_t passed = 0;

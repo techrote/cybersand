@@ -226,6 +226,56 @@ owner's admission.
 TSan is clean for worker parity, determinism, Workbench parallel, BW-001,
 explosion and phased. The same ten Godot regressions pass on DLL `85b08402`.
 
+## Incremental collider packet
+
+`CyberNativeCellWorld::get_hard_surface_chunk_rectangles` rebuilt every 64×64
+collision chunk on each hard-surface revision. Reacting terrain bumps the
+revision every tick. A temporary probe on stress-canvas, gas off, measured an
+average of 2.55 ms projecting the dithered display cells and 4.61 ms building
+the rectangles, about 7.2 ms in total. The build cost comes from an out-of-line
+`is_hard_surface` call per cell and hash maps on every row.
+
+**Change:**
+
+1. A new World method, `copy_hard_surface_bits`, writes a one-bit-per-cell
+   hard-surface mask from stored materials through a 256-entry table. The
+   display projection's dithering and parcel overlay only exchange Water and
+   Empty, neither of which is a hard surface, so the mask equals
+   `is_hard_surface` of the projection cell by cell.
+2. The adapter keeps the previous mask and each chunk's rectangles. A chunk's
+   rectangles depend only on its own 64×64 block, so an unchanged block reuses
+   its cached rectangles. A changed block is rebuilt from its bits with the same
+   run-merge rule and final sort. The packet layout is unchanged.
+3. Two diagnostics are added:
+   - `diagnostic_full_hard_surface_chunk_rectangles`, the previous full build;
+   - `diagnostic_hard_surface_packet_stats`, rebuilt and reused chunk counts.
+
+**Exactness:**
+
+- `Hard-surface bits match the display projection` (native) checks every
+  material id, dithered fractional Water and non-resident chunks, and the
+  refusal of regions whose width is not a multiple of 64.
+- `test_hard_surface_incremental_packet.gd` compares the incremental packet
+  with the full rebuild after each of 90 ticks of paint, erasure, Fire on Wood,
+  Lava on Glass and Acid on Metal. It records 183 checks, 0 failures, 685 chunks
+  rebuilt and 22,611 reused.
+- The existing `test_liquid_physical_preparation.gd` check that pending and
+  applied terrain projections agree exactly still passes. So do 14 other
+  terrain, Rapier and workbench regressions.
+
+**Workbench measurements:**
+
+| Canvas | Packet before | Packet after | Ticks/s |
+|---|---|---|---|
+| stress-canvas, gas off | 6.4–6.7 ms | 1.8–2.0 ms | 18.4–18.7 → 19.4–20.7 |
+| bench-canvas | 1.3–1.5 ms | 0.35–0.39 ms | |
+
+stress-canvas remains bound by its 23 ms native tick. In this session,
+bench-canvas with gas on measured 44.8 ticks/s at an 11.3 ms native tick,
+against an earlier 9.9 ms run. That native difference is machine variance,
+since the packet only shrank. The remaining stress-canvas packet time is the
+serial mask copy of about 2 Mi cells.
+
 ## Remaining costs and next investigations
 
 1. **Gas BFS, about 2.4 ms serial.** This bounded atmosphere exploration
@@ -239,10 +289,10 @@ explosion and phased. The same ten Godot regressions pass on DLL `85b08402`.
 3. **stress-canvas with gas off** costs 24.7 ms with PressureFlow, against
    about 14 ms with default liquids. PressureFlow head preparation and kernels
    at 2048×1024 are the next target.
-4. The hard-surface packet still lengthens each lock-step tick: 1.3–1.4 ms on
-   bench-canvas and 6.4–6.7 ms on stress-canvas. Worker publication adds about
-   1.1 and 3 ms respectively. Rebuilding only the collision chunks changed since
-   the last revision is the largest remaining stress-canvas lever.
+4. The hard-surface packet is now incremental (see above). The render
+   snapshot (about 3.3 ms) and publication (about 1.9 ms) on stress-canvas
+   remain. A parallel or dirty-tracked mask copy could take the remaining
+   packet time below 1 ms.
 5. A provably exact skip of Water-free head columns (about 40–47% of columns at
    the start on these canvases) could save about 1 ms on stress-canvas. It needs
    a per-column record that the previous heads are all `kNoHead`, and was not

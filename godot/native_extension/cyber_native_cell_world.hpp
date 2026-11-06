@@ -218,6 +218,14 @@ private:
     mutable PackedByteArray render_cells_;
     mutable PackedInt32Array hard_surface_rectangles_;
     mutable PackedInt32Array hard_surface_chunk_rectangles_;
+    // Incremental chunk packet: the hard-surface mask behind the last packet
+    // and each 64x64 collision chunk's rectangles, a pure function of its mask
+    // block. A chunk whose block is unchanged reuses its rectangles.
+    struct HardSurfaceRectangle { std::int32_t x = 0, y = 0, width = 0, height = 0; };
+    mutable std::vector<std::uint64_t> hard_surface_bits_, hard_surface_previous_bits_;
+    mutable std::vector<std::vector<HardSurfaceRectangle>> hard_surface_chunk_cache_;
+    mutable Vector2i hard_surface_cache_extent_{};
+    mutable std::uint64_t hard_surface_chunks_rebuilt_ = 0, hard_surface_chunks_reused_ = 0;
     mutable std::uint64_t render_cells_revision_ = UINT64_MAX;
     mutable std::uint64_t hard_surface_rectangles_revision_ = UINT64_MAX;
     mutable std::uint64_t hard_surface_chunk_rectangles_revision_ = UINT64_MAX;
@@ -338,6 +346,9 @@ private:
     void clear_observations();
     [[nodiscard]] static BodyStates parse_body_state_values(const PackedFloat32Array& states, bool strict);
     [[nodiscard]] static PackedInt32Array hard_surface_chunks_from_cells(const PackedByteArray& cells, Vector2i extent);
+    // Diagnostic: the chunk packet rebuilt in full from the display projection.
+    [[nodiscard]] PackedInt32Array diagnostic_full_hard_surface_chunk_rectangles() const;
+    [[nodiscard]] Dictionary diagnostic_hard_surface_packet_stats() const;
     static void rasterize_transform_in(cybersand::World& world, Vector2i extent, std::vector<std::int32_t>* indices,
         std::uint16_t body_id, Vector2 center, double rotation, Vector2 half_size);
     void parse_body_states(const PackedFloat32Array& states);
