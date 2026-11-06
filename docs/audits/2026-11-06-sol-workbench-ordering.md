@@ -351,3 +351,29 @@ Windows worker1 repeat0 episodes, with exact proxy shapes and integer endpoint
 maps. Presentation poses/metrics are rounded to six decimals; between endpoints
 the initial material map is explicitly a frozen reference, never fabricated
 moving-grain evidence. The canvas neither reruns physics nor changes defaults.
+
+## Repository checkpoint and live upstream inventory
+
+At `67e9db4010bd8d387102ce82f3232b8f83431410`, all15 separate gates pass:
+docs, historical M11, materialized repository, frozen material guard, generated
+material parity, state/geometry/workbench/ordering adverse-observer tests,
+complete93-input runtime/LFS roster and evidence hash, original32 retrieval
+questions, three historical-order questions, three workbench questions, three
+new ordering questions and diff check. The15 command rows include the four
+retrieval invocations separately. Their command/timeouts/exits and log hashes
+are in [checks.json](sol-workbench-order-20261106/checks.json), receipt SHA-256
+`5eca1bf405d259376b285da6ffd9845f5d21f7d70e0064d92b258c8023501966`. These infrastructure passes do not override the physical
+NO-GO or Linux ABI-floor failure. Runtime evidence hashes still bind the new
+scoped record, not an inherited acceptance record.
+
+Fresh publication inventory finds main at
+`7e2c2fd1aa2759590d63d5dfb53ce9e4c0a76e4b`; the experiment continues to use its
+explicitly merged/pinned main ancestor `554d27b199e10613c01dbd7933f3fc6205d3ecdb`.
+No later main change is silently imported or declared tested. #460 remains at
+`61924a9788f507620706dfa19d28dc12d819156b`, #461 at
+`cba3c0de35c4fae410b2fa16fa821524308c1ce8`, both Draft and unchanged.
+The raw dependent patch is recoverable with
+`git diff c0be3a4ea42643e762f9ef55285cdcb23342d97a..HEAD`; source ancestry,
+P2 and prospective registration commits remain intact. Only the owned branch
+is published. Subsequent evidence-only seals retain identical experiment and
+compiled native inputs and receive an additional exact-head check collection.
