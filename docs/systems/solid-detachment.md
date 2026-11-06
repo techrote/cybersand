@@ -10,6 +10,19 @@ related-documents: [../operations/soliding-programme.md, ../architecture/solidin
 
 # Native structural detachment
 
+## Fixed-action correction and impulse ordering — 2026-11-06
+
+**Current registration, no new efficacy result:** after the reviewed P2 fix,
+test-local bridges compare correction/clip→combined impulse/torque and the reverse
+on actual cut tree/building, both using main LA-SELECTIVE and its same fence.
+No mass/inertia/gravity/damping/cap/budget or public/default change. The exact
+computed action and torque remain fixed; production bridge/law are unchanged.
+The [prospective dossier](../audits/2026-11-06-sol-workbench-ordering.md) registers
+96×720 fresh episodes, five primary repeats/cell, primitive-stage readback and
+unchanged rest thresholds. Old144-episode results remain historical, not replaced.
+P2 now returns world_failed for terminal quarantine;3,260 facade checks pass on
+each host/worker1/4. Keep Draft and all physical/CPU/runtime-floor blockers.
+
 ## Workbench-law actual cuts — 2026-11-06
 
 **Current on the isolated dependent Draft #466:** owner D1 selects main's

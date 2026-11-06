@@ -10,6 +10,19 @@ related-documents: [source-checkpoint-and-recovery.md, testing-validation-and-re
 
 # Local build and validation
 
+## SOL fixed-action ordering registration — 2026-11-06
+
+The [new registration](../audits/2026-11-06-sol-workbench-ordering.md) uses
+workbench_order_live.py with --smoke, then --qualification pointing to that
+successful exact-source collection for the96-episode matrix. Reduce with
+workbench_order_reduce.py. All artifacts including rebuilt P2 runtimes/hosts
+share a separate2GiB cap and5GiB reserve, with concurrent report reservations.
+The new sole writer checkout is inside C:/khybersand/build/sol466-order-owned;
+prior worktree/evidence stay read-only. Actual P2 native builds and four facade
+runs pass; minimal import shutdown crashes remain retained setup failures.
+Windows LLVM-MinGW and actual WSL Linux are distinct from MSVC/portable-floor
+acceptance. No original SOL CPU or universal60Hz claim. Keep Draft.
+
 ## SOL workbench law qualification — 2026-11-06
 
 Use `python tools/sol281/workbench_build.py --run NEW_BUILD`, then

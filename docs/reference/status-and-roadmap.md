@@ -10,6 +10,16 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+## SOL fixed-action ordering registration — 2026-11-06
+
+**Current P2 repair / Planned registered physics comparison:** explicit
+world_failed diagnostic is restored and actual host/worker facade checks pass.
+The [new96-episode registration](../audits/2026-11-06-sol-workbench-ordering.md)
+compares correction/clip vs combined impulse/torque ordering under the same
+native LA-SELECTIVE law/fence and physical parameters. No result is available
+at registration. Old settling NO-GO and original SOL/runtime/CPU/storage blockers
+remain; no threshold tuning or accepted-default promotion. Keep #466 Draft.
+
 ## SOL workbench-law repeated result — 2026-11-06
 
 **Current isolated Draft #466:** D1's main LA-SELECTIVE workbench package is

@@ -11,6 +11,15 @@ last-reviewed: 2026-11-06
 
 # Interfaces and message contracts
 
+## SOL coupling diagnostic correction
+
+The reviewed P2 correction restores the existing public distinction before any
+parse/mutation: unavailable World→world_unavailable; failed World→world_failed;
+SOL fence→native_refusal. The actual capacity-failure facade regression now
+asserts world_failed. This changes diagnostic status, not mutation authority.
+The [ordering registration](../audits/2026-11-06-sol-workbench-ordering.md) adds
+only test-local primitive-stage values, no production packet/ABI or mode change.
+
 ## SOL workbench diagnostic adapter
 
 `diagnostic_enable_solid_workbench()` is diagnostic-only, once before worker

@@ -1,0 +1,281 @@
+{
+  "registration": "SOL-WORKBENCH-ORDER-001",
+  "owner_direction": "2026-11-06: fix P2 then preregister and execute correction/passive-impulse ordering on actual cuts; keep466 Draft and unchanged physical parameters",
+  "parent": "c0be3a4ea42643e762f9ef55285cdcb23342d97a",
+  "compiled_p2_source": "9a78d136246d34b9760d64f2c0dffa53c5561eb1",
+  "unchanged_old_registration_sha256": "a978d5b7a98fe16d852345bfaa42c545fafded2f6ffbe34c52fcb884d9bfdfdb",
+  "arms": [
+    "correction-first",
+    "impulse-first"
+  ],
+  "primary": {
+    "hosts": [
+      "windows",
+      "linux"
+    ],
+    "workers": [
+      1
+    ],
+    "structures": [
+      "tree",
+      "building"
+    ],
+    "surroundings": [
+      "packed_sand",
+      "mixed"
+    ],
+    "repeats": 5
+  },
+  "spot": {
+    "hosts": [
+      "windows",
+      "linux"
+    ],
+    "workers": [
+      4
+    ],
+    "structures": [
+      "tree",
+      "building"
+    ],
+    "surroundings": [
+      "packed_sand",
+      "mixed"
+    ],
+    "repeats": 1,
+    "scope": "configured-worker/ownership compatibility only, no repeated efficacy or four-way utilization claim"
+  },
+  "episodes": 96,
+  "physical_steps_per_episode": 720,
+  "total_physical_steps": 69120,
+  "rest_window": [
+    600,
+    719
+  ],
+  "rest_screen": {
+    "max_com_speed": 0.5,
+    "max_abs_omega": 0.02,
+    "max_position_axis_span": 0.5,
+    "max_unwrapped_angle_span": 0.05
+  },
+  "decision": "Each of four packed host/structure worker1 cells requires all5 valid complete repeats, impulse-first rest>=3/5 AND median terminal Sand area AND depth <= corresponding newly executed correction-first medians. Any complete packed failure => NO-GO; incomplete/invalid evidence=>UNAVAILABLE/INCONCLUSIVE without denominator reduction. Packed pass but mixed nonregression fail=>CONDITIONAL.",
+  "mixed_nonregression": "Each primary mixed host/structure cell: all5 valid complete; impulse-first median area/depth<=correction-first and rest_count>=correction-first. Passing this relative screen is not successful mixed settling. Observe terminal Water separately; intermediate Water contact remains unqualified.",
+  "fixed_action": "Both use unmodified main native LA-SELECTIVE packet and production WorkbenchBridge.apply_packet preflight/age/identity/torque calculation. Only test-local _apply exchanges correction+direction-dependent velocity clipping and central+torque impulse blocks. Preserve the computed post-correction-COM torque exactly in both arms. This is fixed-action application ordering, not a recomputed force line of action or changed passive solver.",
+  "total_wrench": "Impulse block applies the complete existing combined passive+selected-event+legacy wrench once. It does not apply components separately. Tail attribution to passive is descriptive when events/legacy are zero; mixed terms remain distinct in recorded packet.",
+  "controls": "Real native cut/commit/finalize, original520tree6proxies and356building5proxies, full exact tuple/shape union, same fresh World/body/session, initial map/pose/zero motion/default seed/policy, unit member mass/native inertia, gravity_scale0.094, authored damping0.04/0.04, existing legacy caps3/.5 and WBbudget20. No propulsion; SOL281Sand and separate ordinary application remain off. Both arms use identical main completed-sample fence/overlap handling/worker schedule/terrain budget and identical stage observation. No force/gain/cap/weight/threshold tuning.",
+  "order": "repeat-major arm rotation: repeat0 correction-first/impulse-first,1 reverse, alternating through4. Structures tree/building then packed/mixed fixed. Hosts may run concurrently; timings diagnostic only.",
+  "stage_order": {
+    "correction-first": [
+      "before_action",
+      "after_translation",
+      "after_clip",
+      "after_central_impulse",
+      "after_torque_impulse",
+      "after_wake"
+    ],
+    "impulse-first": [
+      "before_action",
+      "after_central_impulse",
+      "after_torque_impulse",
+      "after_translation",
+      "after_clip",
+      "after_wake"
+    ]
+  },
+  "readback": "Every stage actual scalar bits, direct and server pose/velocity/omega, local/world COM, M/I, controls, RID/instance/owner epoch/generation/sample/manual step. Verify central impulse before any subsequent clip cancellation. Independently account translation potential change, clip momentum/KE, central/torque work and integration. Finite/ownership/admission failures stop; never invent zero action or closed material energy proof.",
+  "precision": "Existing geometric COM/control tolerance4float32ULP; each primitive mutation readback uses16 propagated float32ULP. Preserve force arithmetic; readback bounds are not solver caps. Compare copied correction-first block with production _apply exact final body bits on fresh actual Rapier bodies before matrix admission.",
+  "apparatus": {
+    "hosts": [
+      "windows",
+      "linux"
+    ],
+    "workers": 1,
+    "pure_adapter_cases": "two exact structural proxy geometries, ten fixed action/velocity cases, production/copy-control/reverse, 60 fresh bodies per host, no World and no efficacy claim",
+    "smoke": "12-step actual-cut startup per2structures*2surroundings*2arms*2hosts; not used as settling evidence"
+  },
+  "attempts": {
+    "maximum_main_attempts": 14400,
+    "wall_timeout_seconds": 300
+  },
+  "statistics": "All five values,median,min,max,IQR per primary cell for terminal Sand area/depth, COM tail OLS sink, acceptance/ages and speed; worker4 separately. Sink cells/step and cells per nominal simulation second; wall pacing separate. No single-episode efficacy conclusions.",
+  "resource": {
+    "collection_cap_bytes": 2147483648,
+    "minimum_free_bytes": 5368709120,
+    "next_report_reservation_bytes": 67108864,
+    "host_project_cap_bytes": 268435456,
+    "custody": "All new campaign artifacts including builds/hosts/reports share2GiB. Check free/cap before copying and each episode; lock reserves64MiB per concurrently executing report. Gzip losslessly, authenticate raw/compressed hashes and lengths before retiring only newly created raw staging. Never delete old collections."
+  },
+  "preserve": "Old144episode results, all original SOL clearance84/84/depth64/84/async36/36/refusal1452/1452/CPU failures, hard exclusions/tinyRedBrick1e-9/#365; F1 mechanism engaged causal role unproven; post-ordering NO-GO. No120+60 clearance clock, supported-Linux floor relaxation, restoration/E1/E2 authority, accepted default, Ready or merge. Linux GLIBC2.35/GLIBCXX3.4.31 floor blockers remain.",
+  "adapter_cases": [
+    {
+      "name": "zero",
+      "velocity": [
+        0,
+        0
+      ],
+      "omega": 0,
+      "impulse": [
+        0,
+        0
+      ],
+      "torque": 0,
+      "correction": [
+        0,
+        0
+      ]
+    },
+    {
+      "name": "central",
+      "velocity": [
+        1,
+        2
+      ],
+      "omega": 0,
+      "impulse": [
+        3,
+        -5
+      ],
+      "torque": 0,
+      "correction": [
+        0,
+        0
+      ]
+    },
+    {
+      "name": "torque",
+      "velocity": [
+        0,
+        0
+      ],
+      "omega": 0.02,
+      "impulse": [
+        0,
+        0
+      ],
+      "torque": 50,
+      "correction": [
+        0,
+        0
+      ]
+    },
+    {
+      "name": "clip_y_before",
+      "velocity": [
+        0,
+        2
+      ],
+      "omega": 0,
+      "impulse": [
+        0,
+        -500
+      ],
+      "torque": 0,
+      "correction": [
+        0,
+        -0.01
+      ]
+    },
+    {
+      "name": "clip_y_after",
+      "velocity": [
+        0,
+        -2
+      ],
+      "omega": 0,
+      "impulse": [
+        0,
+        1500
+      ],
+      "torque": 0,
+      "correction": [
+        0,
+        -0.01
+      ]
+    },
+    {
+      "name": "clip_x",
+      "velocity": [
+        2,
+        0
+      ],
+      "omega": 0,
+      "impulse": [
+        -500,
+        0
+      ],
+      "torque": 0,
+      "correction": [
+        -0.01,
+        0
+      ]
+    },
+    {
+      "name": "both_axes",
+      "velocity": [
+        2,
+        3
+      ],
+      "omega": 0.01,
+      "impulse": [
+        -300,
+        -500
+      ],
+      "torque": 400,
+      "correction": [
+        -0.01,
+        -0.02
+      ]
+    },
+    {
+      "name": "no_clip",
+      "velocity": [
+        -1,
+        -1
+      ],
+      "omega": -0.01,
+      "impulse": [
+        20,
+        30
+      ],
+      "torque": -20,
+      "correction": [
+        -0.01,
+        -0.02
+      ]
+    },
+    {
+      "name": "translation_only",
+      "velocity": [
+        0,
+        0
+      ],
+      "omega": 0,
+      "impulse": [
+        0,
+        0
+      ],
+      "torque": 0,
+      "correction": [
+        0.02,
+        -0.03
+      ]
+    },
+    {
+      "name": "recorded_tree_boundary",
+      "velocity": [
+        0.008779079653322697,
+        1.5658546686172485
+      ],
+      "omega": 0.0006267921417020261,
+      "impulse": [
+        28.050498962402344,
+        -682.146240234375
+      ],
+      "torque": 370.62282191982365,
+      "correction": [
+        0,
+        -0.00903084222227335
+      ]
+    }
+  ]
+}

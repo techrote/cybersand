@@ -11,6 +11,15 @@ last-reviewed: 2026-11-06
 
 # Rigid-body and cellular coupling
 
+## Fixed-action SOL application-order registration
+
+The [new ordering experiment](../systems/solid-detachment.md#fixed-action-correction-and-impulse-ordering--2026-11-06)
+exchanges only the test-local correction/clip and combined impulse/torque blocks.
+Both use production apply_packet, the same corrected-COM torque, native law,
+completed-sample fence and physical constants. Stage-level actual readback must
+prove impulse delivery before any later clip cancellation. This is not a
+recomputed force line of action, altered passive solve or accepted default.
+
 ## SOL adopts the workbench package experimentally
 
 The [opt-in actual-cut route](../systems/solid-detachment.md#workbench-law-actual-cuts--2026-11-06)

@@ -10,6 +10,14 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+## Fixed-action SOL application ordering
+
+The [registered actual-cut comparison](audits/2026-11-06-sol-workbench-ordering.md)
+follows the reviewed P2 diagnostic fix. Both arms retain the native law, sample
+fence and physical parameters; primitive readback separates impulse delivery
+from clipping. Its96 fresh episodes do not replace the old law/pacing campaign.
+No outcome is claimed at registration; keep Draft and historical blockers.
+
 ## Actual cut structures under the workbench law
 
 The [current opt-in contract](systems/solid-detachment.md#workbench-law-actual-cuts--2026-11-06)

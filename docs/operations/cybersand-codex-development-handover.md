@@ -10,6 +10,18 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## SOL fixed-action ordering continuation — 2026-11-06
+
+Sole writer moved to C:/khybersand/build/sol466-order-owned/khybersand on the
+same #466 feature branch, retainingc0be3a4e ancestry. Prior external worktree is
+read-only. P2 repair9a78d136 restores terminal world_failed and passes3,260
+facade checks on each actual host/worker1/4. Read the
+[prospective ordering dossier](../audits/2026-11-06-sol-workbench-ordering.md)
+before running. It freezes96 fresh actual-cut episodes, unchanged controls and
+primitive-stage readback; no new ordering outcomes exist at registration.
+Old law/pacing NO-GO, material guard, Linux floor and original SOL blockers stay
+source-qualified. Keep #466 and parents Draft; no mass/cap/default/merge changes.
+
 ## SOL workbench package comparison — 2026-11-06
 
 Continue from sole-writer `codex/sol-workbench-law-20261106`, Draft #466 against
