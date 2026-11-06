@@ -4,13 +4,18 @@ status: Current
 document-kind: navigation
 scope: Entry routes and authority rules for the focused documentation hierarchy
 canonical-for: []
-last-reviewed: 2026-11-04
+last-reviewed: 2026-11-05
 related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.md, operations/documentation-maintenance.md, operations/microscenarios-programme.md, operations/development-claims-remediation-programme.md, operations/water-hybrid-pressure-extension-programme.md, architecture/pressure-optimization.md]
 ---
 
 # CyberSand documentation
 
 ## Native structural detachment
+
+The [dependent planner precision candidate](systems/solid-detachment.md#planner-energy-precision--dependent-candidate-2026-11-05)
+corrects scalar energy evaluation, with [dated results and limitations](audits/2026-11-05-sol-energy-precision.md).
+It preserves native ownership and integration blockers; mixed planner timings
+are not an engine performance claim.
 
 The isolated [public refusal and authoritative readback repair](systems/solid-detachment.md#public-refusal-and-authoritative-readback--2026-11-04)
 has its own [source/qualification ledger](audits/2026-11-04-sol-facade-refusal-repair.md).

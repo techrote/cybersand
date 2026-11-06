@@ -1,0 +1,207 @@
+{
+  "identity": {
+    "source": "861440e9004bb3dc7ddd6e6c2c88547ce91067e6",
+    "tree": "0ab05375bbf67c51da3742f14fa51c8501f68b66",
+    "local_delta": "",
+    "base": "e4c2649e82d943554f4dc6a0634336770cda08f6",
+    "registration": {
+      "id": "SOL-ENERGY-001",
+      "registered_date": "2026-11-05",
+      "parent": "e4c2649e82d943554f4dc6a0634336770cda08f6",
+      "baseline": {
+        "path": "godot/scripts/solid_contact_response.gd",
+        "blob": "91419e852adbd4140cca90a737fe11795450483f",
+        "sha256": "4fa2e74e5cef1f5b211e1a71287acc358d2984e6fb8bdb03cd977adbed473be1",
+        "bytes": 20154
+      },
+      "historical_diagnostic": "8e25c3a9c2c18b5b22c95d641601a07eea81c195:docs/audits/sol347-independent-20261104/planner-numeric/",
+      "hypothesis": "Explicit scalar float64 products evaluate kinetic energy of the same stored rounded velocities more accurately than the current binary32 vector norm, without changing impulses or energy limits.",
+      "candidate": "Only replace _energy linear norm with float64 vx*vx+vy*vy. Angular term unchanged.",
+      "arms": [
+        "baseline",
+        "baseline-trace",
+        "scalar64",
+        "scalar64-trace"
+      ],
+      "grid": {
+        "omega": [
+          -10,
+          -1,
+          -0.1,
+          0,
+          0.1,
+          1,
+          10
+        ],
+        "delta": [
+          1e-06,
+          1e-05,
+          0.0001,
+          0.001,
+          0.01,
+          0.1
+        ],
+        "vx": [
+          0,
+          3
+        ],
+        "vy": "Vector2(vx,-omega*offset.x+delta).y",
+        "cases": 84,
+        "replays": 3
+      },
+      "geometry": "Exact historical six rectangles,520members,mass520,COM(32+3293/130,16+175/8),I109907693/1560; synthetic supported bottom witness from the unchanged historical probe. Not native eligibility.",
+      "controls": [
+        "approaching,separating,stationary,sub-approach",
+        "nonfinite/nonpositive body inputs",
+        "finite initial energy overflow",
+        "energy-only norm overflow/underflow at vx1e20/1e-30",
+        "two orthogonal witness normals,v=(3,12),omega=-1/0/1"
+      ],
+      "genuine_refusals": "omega=-10,delta1e-5,vx0/3: rounded proposed-state energy exceeds the unchanged bound; retain refusals even if ideal impulse algebra dissipates.",
+      "invariants": {
+        "sweeps": 4,
+        "planner_relative": 1e-08,
+        "planner_absolute": 1e-08,
+        "unchanged_bridge_readback_relative": 0.0001,
+        "empty_refusals": true,
+        "immutable_inputs": true,
+        "trace_plain_exact_parity": true,
+        "same_arithmetic_prefix_until_guard_divergence": true
+      },
+      "capture": "All initial/step/final energy guards: scalar64LE/component32LE bits, rounded velocities/omega, energies,tolerance,ordered impulses. Independent scalar64 reduction audits accepted and refused states.",
+      "timing": {
+        "scope": "pure planner only; not originalSOL24group2msgate",
+        "grid_cycles": 30,
+        "repeats": 3,
+        "orders": [
+          [
+            "baseline",
+            "scalar64"
+          ],
+          [
+            "scalar64",
+            "baseline"
+          ],
+          [
+            "baseline",
+            "scalar64"
+          ]
+        ],
+        "trace_timed": false
+      },
+      "hosts": [
+        "actual Windows Godot4.7",
+        "actual Linux Godot4.7"
+      ],
+      "process_timeout_seconds": 120,
+      "rollback": "No gain/threshold/grid tuning. Reject claimed benefit on failed invariants or genuine-refusal admission; later sweeps may legitimately refuse, so no required final acceptance count.",
+      "exclusions": [
+        "nativeWorld/Rapier",
+        "live ownership hold/application",
+        "MAT admission",
+        "clearance",
+        "production defaults",
+        "merge/Ready"
+      ]
+    },
+    "history": {
+      "registration.md.txt": {
+        "sha256": "63d8b79b3518a6c3934cf4c54cc9fccfd8a23c6fb03de0daef310a96f36fa426"
+      },
+      "probe.gd.txt": {
+        "sha256": "94cb00d85bf6f18e7785e38026609760f632a345e6f0c01c13c839e67edb0523"
+      },
+      "results.json": {
+        "sha256": "71686adf10b77809a19a0ff20b7caaaa3c79c85c37fd1f5676d48c473b1653aa"
+      },
+      "exact_case_replay.json": {
+        "sha256": "db6ec160dff55873144a371060ae767a1824f2b5a7b446352a243b9689f74e83"
+      }
+    },
+    "inputs": {
+      "baseline.gd": {
+        "sha256": "4fa2e74e5cef1f5b211e1a71287acc358d2984e6fb8bdb03cd977adbed473be1",
+        "bytes": 20154
+      },
+      "scalar64.gd": {
+        "sha256": "fede9db7c4eda6af91d85bdacda0e32f8473932d886cda15552177af816b658d",
+        "bytes": 20355
+      },
+      "baseline-trace.gd": {
+        "sha256": "5126361366bc7ffc7284c694147f36b3b570d1c47b6c454fd6ba6f6a48747537",
+        "bytes": 20867
+      },
+      "scalar64-trace.gd": {
+        "sha256": "394bce468e1191caae6f688c587cd3ca01cc0d4b4808eb2be55f35f28da57ab1",
+        "bytes": 21068
+      },
+      "probe.gd": {
+        "sha256": "1a6dbfab40a2a9da16e48ca63f9577e1b044c66abb3e05eae454abce291d68f1",
+        "bytes": 6871
+      },
+      "project.godot": {
+        "sha256": "772dc9a489f4b36244a6cbcf66051d1cbfe5fbc69cc2ead8a6cf2b39701d8270",
+        "bytes": 132
+      }
+    },
+    "runner_sha256": "b5d59ad850e5d2630a41c91d558e96d72018ee3642d068a9d36684f3e846f417",
+    "engines": {
+      "windows": {
+        "path": "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+        "sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+        "launcher_sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+        "version": "4.7.stable.official.5b4e0cb0f"
+      },
+      "linux": {
+        "path": "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+        "sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "launcher_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "version": "4.7.stable.official.5b4e0cb0f"
+      }
+    }
+  },
+  "results": {
+    "windows": {
+      "command": [
+        "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+        "--headless",
+        "--path",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-energy-20261105\\khybersand\\build\\sol-energy\\precision-first\\windows",
+        "--script",
+        "res://probe.gd"
+      ],
+      "exit": 0,
+      "clean": true,
+      "seconds": 1.8133909000316635,
+      "log": "build\\sol-energy\\precision-first\\windows.log",
+      "log_sha256": "4622cc5f16865cd95360fc9275727f90a560d3d1d1e4ed23d4bef544576acc2c",
+      "results_sha256": "3e6277f91fcd7570d743eec479dfadc73761ab9bccec909cae6596d842da0010"
+    },
+    "linux": {
+      "command": [
+        "wsl",
+        "-d",
+        "Ubuntu-24.04",
+        "--",
+        "timeout",
+        "--signal=TERM",
+        "--kill-after=5s",
+        "120s",
+        "env",
+        "CYBERSAND_SOURCE_REVISION=861440e9004bb3dc7ddd6e6c2c88547ce91067e6",
+        "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/mnt/c/Users/_/.codex/worktrees/sol-energy-20261105/khybersand/build/sol-energy/precision-first/linux",
+        "--script",
+        "res://probe.gd"
+      ],
+      "exit": 0,
+      "clean": true,
+      "seconds": 1.5118289000238292,
+      "log": "build\\sol-energy\\precision-first\\linux.log",
+      "log_sha256": "171c4d2ac1a8316d3bc1eb17eadd727a5459b68e2961f54152abdbaac997d586",
+      "results_sha256": "978a73fcaa7d153048d8e7d2e2ce807a49173839cf46268bd8f2fa82f5c761d4"
+    }
+  }
+}

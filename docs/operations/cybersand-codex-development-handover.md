@@ -4,11 +4,25 @@ status: Current
 document-kind: guide
 scope: Short onboarding sequence and checkpoint protocol; product intent, source identity and contracts have canonical homes
 canonical-for: [development-onboarding]
-last-reviewed: 2026-11-04
+last-reviewed: 2026-11-05
 related-documents: [source-checkpoint-and-recovery.md, ../reference/product-intent-and-priorities.md, ../reference/status-and-roadmap.md, microscenarios-programme.md, development-claims-remediation-programme.md, water-hybrid-pressure-extension-programme.md, github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
 # Development handover
+
+## SOL energy precision dependent candidate — 2026-11-05
+
+`codex/sol-energy-precision-20261105` branches from unchanged #393 `e4c2649e`.
+Its only production delta evaluates planner kinetic energy using scalar64
+component products. Read the [source, timing and qualification ledger](../audits/2026-11-05-sol-energy-precision.md)
+and [mechanism boundary](../systems/solid-detachment.md#planner-energy-precision--dependent-candidate-2026-11-05).
+Both Godot hosts correct eight false refusals and two false acceptances on the
+fixed 84-input grid, retaining genuine refusals. Runtime Rapier regressions are
+separate from the Windows editor-import failure and inherited native gates.
+Keep the PR Draft and dependent on #393; no material-source admission,
+restoration, production-default change or integration follows. Next physics work
+must distinguish valid constrained occupancy from invalid overlap, with exact
+aggregate geometry, physical drive and material/energy accounting.
 
 ## Isolated SOL facade refusal repair — 2026-11-04
 

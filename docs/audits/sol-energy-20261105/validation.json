@@ -1,0 +1,292 @@
+{
+  "first_attempt": {
+    "source": "32c4087948bad4ac1c460e72ea4c9ba2446df380",
+    "tree": "cca593c42bad500f87b81f66c35b24cd5ff8d123",
+    "local_delta": " M docs/audits/sol-energy-20261105/precision-first/receipt.json\n M docs/audits/sol-energy-20261105/precision-first/reduced.json\n M docs/audits/sol-energy-20261105/rapier-authored-inputs/receipt.json\n M docs/audits/sol-energy-20261105/rapier-authored-inputs/windows-runtime-only.json\n M docs/audits/sol-energy-20261105/rapier-first/receipt.json\n M docs/audits/sol-energy-20261105/rapier-qualified/inputs.json\n M docs/audits/sol-energy-20261105/rapier-qualified/receipt.json\n",
+    "results": {
+      "m11": {
+        "command": [
+          "python",
+          "tools/ci/check_m11_consistency.py"
+        ],
+        "exit": 0,
+        "clean": true,
+        "seconds": 1.423133999982383,
+        "log": "build\\sol-energy\\validation-1\\m11.log",
+        "log_sha256": "e5d2a8eecef5876957dc4ecff01b99af696053871616d2dea563371d44b2427b"
+      },
+      "guard": {
+        "command": [
+          "python",
+          "tools/material_catalogue/compatibility.py",
+          "--check"
+        ],
+        "exit": 1,
+        "clean": false,
+        "seconds": 1.4824363000225276,
+        "log": "build\\sol-energy\\validation-1\\guard.log",
+        "log_sha256": "357b61dc0a22da3ff1e31cf5110b51f680c2f9c0c0d8a232c045886c9c26b370"
+      },
+      "docs": {
+        "command": [
+          "python",
+          "tools/ci/check_docs.py"
+        ],
+        "exit": 1,
+        "clean": false,
+        "seconds": 3.605865299992729,
+        "log": "build\\sol-energy\\validation-1\\docs.log",
+        "log_sha256": "f60fb25af9955e0cf18b74b48fd501e51ceb1a3cb54394c3ae45310a9913ac2a"
+      },
+      "retrieval": {
+        "command": [
+          "python",
+          "tools/docs/retrieval_eval.py",
+          "--output",
+          "C:\\Users\\_\\.codex\\worktrees\\sol-energy-20261105\\khybersand\\build\\sol-energy\\validation-1\\retrieval.json"
+        ],
+        "exit": 0,
+        "clean": true,
+        "seconds": 0.7047490999684669,
+        "log": "build\\sol-energy\\validation-1\\retrieval.log",
+        "log_sha256": "028d621a772f74c1fce675b3781e01c3d1e47090dc8d50cfb16ea30738bddbcc"
+      },
+      "retrieval-energy": {
+        "command": [
+          "python",
+          "tools/docs/retrieval_eval.py",
+          "--queries",
+          "docs/reference/retrieval-questions-sol-energy.json",
+          "--output",
+          "C:\\Users\\_\\.codex\\worktrees\\sol-energy-20261105\\khybersand\\build\\sol-energy\\validation-1\\retrieval-energy.json"
+        ],
+        "exit": 0,
+        "clean": true,
+        "seconds": 0.510737499978859,
+        "log": "build\\sol-energy\\validation-1\\retrieval-energy.log",
+        "log_sha256": "2aac6df042fec7a54a2a3ff2e23f99c1fa8fd3b248007d6c4d9ec096103e7c29"
+      },
+      "reducer-windows": {
+        "command": [
+          "python",
+          "tools/sol281/test_energy_reducer.py",
+          "docs/audits/sol-energy-20261105/precision-first/windows/results.json"
+        ],
+        "exit": 0,
+        "clean": true,
+        "seconds": 0.935942200012505,
+        "log": "build\\sol-energy\\validation-1\\reducer-windows.log",
+        "log_sha256": "fe43bb227275121c67e490c54e1f050e1f685c00f93356397daf5188003ce68c"
+      },
+      "whitespace": {
+        "command": [
+          "git",
+          "diff",
+          "--check"
+        ],
+        "exit": 0,
+        "clean": true,
+        "seconds": 0.06044770003063604,
+        "log": "build\\sol-energy\\validation-1\\whitespace.log",
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "reducer-linux": {
+        "command": [
+          "python",
+          "tools/sol281/test_energy_reducer.py",
+          "docs/audits/sol-energy-20261105/precision-first/linux/results.json"
+        ],
+        "exit": 0,
+        "clean": true,
+        "seconds": 0.87097490002634,
+        "log": "build\\sol-energy\\validation-1\\reducer-linux.log",
+        "log_sha256": "fe43bb227275121c67e490c54e1f050e1f685c00f93356397daf5188003ce68c"
+      },
+      "repository": {
+        "command": [
+          "python",
+          "tools/ci/check_repository.py"
+        ],
+        "exit": 1,
+        "clean": false,
+        "seconds": 5.477399299968965,
+        "log": "build\\sol-energy\\validation-1\\repository.log",
+        "log_sha256": "f8fb84d3315cd83a0fbb59eb4c6cbf65251523d8cd7b9fea045d67d0f0f19133"
+      }
+    }
+  },
+  "after_companion_materialization": {
+    "source": "32c4087948bad4ac1c460e72ea4c9ba2446df380",
+    "tree": "cca593c42bad500f87b81f66c35b24cd5ff8d123",
+    "local_delta": "",
+    "results": {
+      "m11": {
+        "command": [
+          "python",
+          "tools/ci/check_m11_consistency.py"
+        ],
+        "exit": 0,
+        "clean": true,
+        "seconds": 1.239246400014963,
+        "log": "build\\sol-energy\\validation-2\\m11.log",
+        "log_sha256": "e5d2a8eecef5876957dc4ecff01b99af696053871616d2dea563371d44b2427b"
+      },
+      "docs": {
+        "command": [
+          "python",
+          "tools/ci/check_docs.py"
+        ],
+        "exit": 0,
+        "clean": true,
+        "seconds": 2.3279518999624997,
+        "log": "build\\sol-energy\\validation-2\\docs.log",
+        "log_sha256": "f1420043217d68768dee495e6a3aae18281f2885459017470c1cef09453546f9"
+      },
+      "guard": {
+        "command": [
+          "python",
+          "tools/material_catalogue/compatibility.py",
+          "--check"
+        ],
+        "exit": 1,
+        "clean": false,
+        "seconds": 1.4028980999719352,
+        "log": "build\\sol-energy\\validation-2\\guard.log",
+        "log_sha256": "357b61dc0a22da3ff1e31cf5110b51f680c2f9c0c0d8a232c045886c9c26b370"
+      },
+      "policy-oracle": {
+        "command": [
+          "python",
+          "tools/lcb/test_policy_contract.py"
+        ],
+        "exit": 0,
+        "clean": true,
+        "seconds": 0.26769020000938326,
+        "log": "build\\sol-energy\\validation-2\\policy-oracle.log",
+        "log_sha256": "4631b8fdffd37c33c3fd7273391558ca4cc643aef8031b356778404d7ccdd66b"
+      },
+      "repository": {
+        "command": [
+          "python",
+          "tools/ci/check_repository.py"
+        ],
+        "exit": 1,
+        "clean": false,
+        "seconds": 3.562109699996654,
+        "log": "build\\sol-energy\\validation-2\\repository.log",
+        "log_sha256": "068dbfa53b998e9d92098c4df01c9ffb30388fd38f897a074ce6d6c6dd2afe06"
+      },
+      "watchdogs": {
+        "command": [
+          "python",
+          "tools/ci/test_execution_policy.py"
+        ],
+        "exit": 0,
+        "clean": true,
+        "seconds": 0.6577152000390925,
+        "log": "build\\sol-energy\\validation-2\\watchdogs.log",
+        "log_sha256": "2425ecf4ebf4ff15504462972cf79c03c290a8747c2eca18efd3dfa3a7594b33"
+      },
+      "reducer-linux": {
+        "command": [
+          "python",
+          "tools/sol281/test_energy_reducer.py",
+          "docs/audits/sol-energy-20261105/precision-first/linux/results.json"
+        ],
+        "exit": 0,
+        "clean": true,
+        "seconds": 0.8911641000304371,
+        "log": "build\\sol-energy\\validation-2\\reducer-linux.log",
+        "log_sha256": "fe43bb227275121c67e490c54e1f050e1f685c00f93356397daf5188003ce68c"
+      },
+      "reducer-windows": {
+        "command": [
+          "python",
+          "tools/sol281/test_energy_reducer.py",
+          "docs/audits/sol-energy-20261105/precision-first/windows/results.json"
+        ],
+        "exit": 0,
+        "clean": true,
+        "seconds": 0.9181137999985367,
+        "log": "build\\sol-energy\\validation-2\\reducer-windows.log",
+        "log_sha256": "fe43bb227275121c67e490c54e1f050e1f685c00f93356397daf5188003ce68c"
+      },
+      "whitespace": {
+        "command": [
+          "git",
+          "diff",
+          "--check"
+        ],
+        "exit": 0,
+        "clean": true,
+        "seconds": 0.04941300000064075,
+        "log": "build\\sol-energy\\validation-2\\whitespace.log",
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "guard-adverse": {
+        "command": [
+          "python",
+          "tools/material_catalogue/test_compatibility.py"
+        ],
+        "exit": 0,
+        "clean": true,
+        "seconds": 26.47272510000039,
+        "log": "build\\sol-energy\\validation-2\\guard-adverse.log",
+        "log_sha256": "561de11e893f1671928ea14a05f33e48e55b0def3027d2b168ef937c97d8e10c"
+      }
+    }
+  },
+  "companion": {
+    "revision": "a15e06ca6f37750b66b89936424e0d018b203f7b",
+    "scope": "Separate companion files, no source tree change",
+    "files": [
+      {
+        "path": "C:\\Users\\_\\.codex\\worktrees\\sol-energy-20261105\\SOURCE-PROVENANCE.json",
+        "source_path": "SOURCE-PROVENANCE.json",
+        "bytes": 74804,
+        "sha256": "49b86e67fa7b753f7e0904923a66192aed0348c280a46ef6750c0392e193f30d"
+      },
+      {
+        "path": "C:\\Users\\_\\.codex\\worktrees\\sol-energy-20261105\\docs\\WEB_THREADING.md",
+        "source_path": "docs/WEB_THREADING.md",
+        "bytes": 540,
+        "sha256": "85b13f5d943ad6017fa4fa264bf8f9a54c9d49f80e40697a770d0524a3b9cd34"
+      },
+      {
+        "path": "C:\\Users\\_\\.codex\\worktrees\\sol-energy-20261105\\tools\\dev.py",
+        "source_path": "tools/dev.py",
+        "bytes": 10390,
+        "sha256": "e9aaee35d135012f24b030acccb25d76f0e38893c58ff019138880f73f50f8ea"
+      },
+      {
+        "path": "C:\\Users\\_\\.codex\\worktrees\\sol-energy-20261105\\docs\\LOCAL_DEVELOPMENT.md",
+        "source_path": "docs/LOCAL_DEVELOPMENT.md",
+        "bytes": 6560,
+        "sha256": "4fb2ef9423f4a7cc64cfa50b4c0947673ae56b7ecf766c266c4bd809657b772f"
+      },
+      {
+        "path": "C:\\Users\\_\\.codex\\worktrees\\sol-energy-20261105\\validation\\browser-results.json",
+        "source_path": "validation/browser-results.json",
+        "bytes": 5978,
+        "sha256": "de154dd896b78384069be360c0f9424efa2ade182e6729eca6a242fcf9839839"
+      }
+    ]
+  },
+  "retrieval": {
+    "retrieval.json": {
+      "questions": 32,
+      "canonical_hit_at_1": 19,
+      "canonical_hit_at_k": 32,
+      "mrr_at_k": 0.7536,
+      "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+    },
+    "retrieval-energy.json": {
+      "questions": 3,
+      "canonical_hit_at_1": 3,
+      "canonical_hit_at_k": 3,
+      "mrr_at_k": 1.0,
+      "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+    }
+  },
+  "scope": "Script-only numerical repair; inherited native guard/runtime mismatches remain failures; watchdog9skips not passes"
+}

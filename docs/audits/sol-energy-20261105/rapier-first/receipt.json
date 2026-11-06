@@ -1,0 +1,1078 @@
+{
+  "source": "e07104849e4c24b1cd93d697aafd53ce0e24dc7e",
+  "scope": "Unchanged regression fixture, actual Rapier; no nativeWorld or SOL authority/clearance claim",
+  "inputs": {
+    "windows-baseline": {
+      "scripts/solid_contact_response.gd": {
+        "sha256": "4fa2e74e5cef1f5b211e1a71287acc358d2984e6fb8bdb03cd977adbed473be1",
+        "bytes": 20154
+      },
+      "project.godot": {
+        "sha256": "b9f980a000b352ff87ff8f302ad0c9c7b7e09788a27bef6d9cea912f2009ebac",
+        "bytes": 181
+      },
+      "scripts/rapier_physics_bridge.gd": {
+        "sha256": "2b4186b3e558f96051edded62ea1c4494a6ff018eeee73f3fad715fcdb2f0c5f",
+        "bytes": 45298
+      },
+      "scripts/rigid_body_coupling.gd": {
+        "sha256": "a3f5562be71adcdb209b6c45a7e67374bc05a419816b195c48e65d1e0e66d142",
+        "bytes": 2674
+      },
+      "tests/test_solid_contact_response.gd": {
+        "sha256": "35f28cc48a04a575ebe878a3eb5bccdfab8cccb0da94123a79f4bcfbd697449e",
+        "bytes": 32471
+      },
+      "tests/test_solid_detachment_compound_response.gd": {
+        "sha256": "42b1441a03153d6af07ab0494b05565b342dcfa75aa9be0520d18f7b7634145d",
+        "bytes": 8487
+      },
+      "addons/godot-rapier2d/LICENSE": {
+        "sha256": "e4ef4fcabb96d2ec7908d3ce798f847a0bbfe65d5ed2fcf489a0d9dedcce54f5",
+        "bytes": 1123
+      },
+      "addons/godot-rapier2d/Radial2D.svg": {
+        "sha256": "711d58ac177fd8c097405a2e8ae4132ac5f7ca1113d05ac5fbc12d2d3e79910a",
+        "bytes": 989
+      },
+      "addons/godot-rapier2d/Radial2D.svg.import": {
+        "sha256": "9b560fca94b9c53c16fe619e31cf80b4425dc0b7657bcd6f38af90843725543d",
+        "bytes": 1118
+      },
+      "addons/godot-rapier2d/THIRDPARTY.txt": {
+        "sha256": "238d1caad628310bb5956a9abdbcfed61d34a2260b8dd7addd702745fab93098",
+        "bytes": 16112
+      },
+      "addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll": {
+        "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+        "bytes": 9987072
+      },
+      "addons/godot-rapier2d/circle_mesh.tres": {
+        "sha256": "b2170cd7d0a0d2606725b8a6d76b62244d90636280b5aecc81db76eddc0e824b",
+        "bytes": 620
+      },
+      "addons/godot-rapier2d/custom_nodes/rapier_animatable_body_2d.gd": {
+        "sha256": "af2773eb9e2c7a4f54e3c9016e5371b67e55a58e657032e4b92ba623bebd9658",
+        "bytes": 489
+      },
+      "addons/godot-rapier2d/custom_nodes/rapier_animatable_body_2d.gd.uid": {
+        "sha256": "f2aa4518dc6b3f31a0b14f554db348701903d7fc51939d28900b894fdb2078e6",
+        "bytes": 21
+      },
+      "addons/godot-rapier2d/custom_nodes/rapier_area_2d.gd": {
+        "sha256": "ffaa295c883a1a2ef023a8d59e2ba8a7245d70932c2c9a5cfb94654e2b30c816",
+        "bytes": 469
+      },
+      "addons/godot-rapier2d/custom_nodes/rapier_area_2d.gd.uid": {
+        "sha256": "84a39186546eeaedc3b664810deb00c21c80b4b298148952f1a7751886adbd43",
+        "bytes": 21
+      },
+      "addons/godot-rapier2d/custom_nodes/rapier_character_body_2d.gd": {
+        "sha256": "7bf6ad292a12b4bb8571fcf10ae37e287e655c079ec3b2ea802c5da3588a9e91",
+        "bytes": 487
+      },
+      "addons/godot-rapier2d/custom_nodes/rapier_character_body_2d.gd.uid": {
+        "sha256": "5917428dbce56669b872799097d254b10925d7bb7c2c2d8715883c259a48e128",
+        "bytes": 21
+      },
+      "addons/godot-rapier2d/custom_nodes/rapier_damped_spring_joint_2d.gd": {
+        "sha256": "d5a1107bc03aa54f9455fe3fe73f6b5442548ec403a4bea2244495bdc09143b7",
+        "bytes": 2870
+      },
+      "addons/godot-rapier2d/custom_nodes/rapier_damped_spring_joint_2d.gd.uid": {
+        "sha256": "be0511542271047b2ba464dc67c2965871b5cf306a318e2f5364d9626feef113",
+        "bytes": 21
+      },
+      "addons/godot-rapier2d/custom_nodes/rapier_fixed_joint_2d.gd": {
+        "sha256": "64b92ee37dbc26ec1dc3dfad695a78b0d428c094acf7d2b0ae4f151abb198ea4",
+        "bytes": 1058
+      },
+      "addons/godot-rapier2d/custom_nodes/rapier_fixed_joint_2d.gd.uid": {
+        "sha256": "bbcd60035ec8b9b3e348a87e86ce84a89dda24584475c38f38d87b1b42cf7bda",
+        "bytes": 20
+      },
+      "addons/godot-rapier2d/custom_nodes/rapier_groove_joint_2d.gd": {
+        "sha256": "6cb96f25dddb1d94f61f968f897bac26ccdbd44b3f541042d2a858563f70f107",
+        "bytes": 2654
+      },
+      "addons/godot-rapier2d/custom_nodes/rapier_groove_joint_2d.gd.uid": {
+        "sha256": "73e3e36e976a5aaf6232c4fd3729cb9f613e15c2648f9eb5bc3ef51b5823c1f2",
+        "bytes": 21
+      },
+      "addons/godot-rapier2d/custom_nodes/rapier_physical_bone_2d.gd": {
+        "sha256": "fa8d994cb7f2ef19b8201918de38da142abf075e8416d4dfaec67730f894dde2",
+        "bytes": 1619
+      },
+      "addons/godot-rapier2d/custom_nodes/rapier_physical_bone_2d.gd.uid": {
+        "sha256": "1afbc09345826e9aab9c6b5469233373212ef8ce14ebd202960c6cc9b62ea894",
+        "bytes": 21
+      },
+      "addons/godot-rapier2d/custom_nodes/rapier_pin_joint_2d.gd": {
+        "sha256": "c372ec67f3a3bbfdafcd750ba54652cc7698c713e4d03fdfb1d66186c40c6208",
+        "bytes": 4395
+      },
+      "addons/godot-rapier2d/custom_nodes/rapier_pin_joint_2d.gd.uid": {
+        "sha256": "00b18ea2e8cc7965a1051f73006d9a0710e61cc7e2b75b32044a52f5e6fd607b",
+        "bytes": 21
+      },
+      "addons/godot-rapier2d/custom_nodes/rapier_rigid_body_2d.gd": {
+        "sha256": "ca4fd7aece6633f81b11394d33aff9c68d948e52bbbe2f90323a3d51381be51e",
+        "bytes": 2191
+      },
+      "addons/godot-rapier2d/custom_nodes/rapier_rigid_body_2d.gd.uid": {
+        "sha256": "e7f89f338526bb8e6cd9783e7e2282a5169136c95e859d122f03291c93c66c23",
+        "bytes": 20
+      },
+      "addons/godot-rapier2d/custom_nodes/rapier_rope_joint_2d.gd": {
+        "sha256": "229f1f324792763987661d241ec857807d2eff7f5ebf41a2faf1d37866771ea5",
+        "bytes": 1335
+      },
+      "addons/godot-rapier2d/custom_nodes/rapier_rope_joint_2d.gd.uid": {
+        "sha256": "34f51816e357d4a92ee873c0aad79f247d949639c4ba69e0365de4835f5d872e",
+        "bytes": 20
+      },
+      "addons/godot-rapier2d/custom_nodes/rapier_static_body_2d.gd": {
+        "sha256": "4ba255cec5693dca071c96bad04ca2200059ceac06cfba373c1158410a771919",
+        "bytes": 481
+      },
+      "addons/godot-rapier2d/custom_nodes/rapier_static_body_2d.gd.uid": {
+        "sha256": "1bfe6bddbf322218badb1ebf942f4b3f31073b3dec2a679251218df9362e071c",
+        "bytes": 21
+      },
+      "addons/godot-rapier2d/faucet_2d.gd": {
+        "sha256": "0b04dd8506fa599aee6b29cf1e0641904f4c3ae36a0a7d5cdaec4f69e291cf15",
+        "bytes": 853
+      },
+      "addons/godot-rapier2d/faucet_2d.gd.uid": {
+        "sha256": "95a96b750d3482f356bc5fda700d8d0f72d1dc1719d6257214caa2b18df71bc9",
+        "bytes": 21
+      },
+      "addons/godot-rapier2d/fluid_2d_circle.gd": {
+        "sha256": "97b3a9a7fd1ca93ba9a70ba9b8b52552d64ee3855d6d79405d84533e7256bffb",
+        "bytes": 200
+      },
+      "addons/godot-rapier2d/fluid_2d_circle.gd.uid": {
+        "sha256": "8c700c72b993cec1801e1e6a52531aa54d9ec6bf866a67e1bcd6c9694a77f0e5",
+        "bytes": 21
+      },
+      "addons/godot-rapier2d/fluid_2d_rectangle.gd": {
+        "sha256": "c0583cab00432f4a981e93cab0c0abda078fdafe16dfe0e8282871a6672bcf9d",
+        "bytes": 323
+      },
+      "addons/godot-rapier2d/fluid_2d_rectangle.gd.uid": {
+        "sha256": "cb2b0442b9494ac26d06ce00561013571f30d6a3e58d4fa56034b4a04d5d5423",
+        "bytes": 21
+      },
+      "addons/godot-rapier2d/fluid_2d_renderer.gd": {
+        "sha256": "c45c520cf2e9d2600a2ddf93f0df7a66fd7283fb75e2edefc1df4e725e407fa1",
+        "bytes": 881
+      },
+      "addons/godot-rapier2d/fluid_2d_renderer.gd.uid": {
+        "sha256": "6ea851cf5a6b599017545856d272d0b585ff4342553fcefa594617da2fc9c4ed",
+        "bytes": 21
+      },
+      "addons/godot-rapier2d/fluid_2d_shader_renderer.gd": {
+        "sha256": "889044a8b35d1382e2ec9efb699d1b964f38edca264c76a9ea2d9240b9a510c8",
+        "bytes": 2632
+      },
+      "addons/godot-rapier2d/fluid_2d_shader_renderer.gd.uid": {
+        "sha256": "67fb67e5444db61e4556df7a4544c740c309f23b8abc144709225f622dcaa56b",
+        "bytes": 20
+      },
+      "addons/godot-rapier2d/godot-rapier2d.gdextension": {
+        "sha256": "2b8b2115e94ca5d1a1494b6052dbf65f0fff7b4acce752d4c8367350a820eb14",
+        "bytes": 2486
+      },
+      "addons/godot-rapier2d/godot-rapier2d.gdextension.uid": {
+        "sha256": "0089ba95a19f87c64524e8ce80ed7014587caf5f8b8365b4bfe90f35965e42b3",
+        "bytes": 21
+      },
+      "addons/godot-rapier2d/icons/Fluid2D.svg": {
+        "sha256": "b5c214f850f42f2ae7a5b074cbc2f0f0d09218984b0f8b51797d18fa05e373af",
+        "bytes": 558
+      },
+      "addons/godot-rapier2d/icons/Fluid2D.svg.import": {
+        "sha256": "e2c800a9eac87c0989efe5aa646d16e2c75e665005250420b97ce1525e68d390",
+        "bytes": 1121
+      },
+      "addons/godot-rapier2d/icons/StateManager2D.svg": {
+        "sha256": "9919026525d1b53edf904a74031e3b33e722b33b14e86ff32f3f323881c36ef1",
+        "bytes": 3492
+      },
+      "addons/godot-rapier2d/icons/StateManager2D.svg.import": {
+        "sha256": "7fe48849837bd7a399b92db5ca780e163bc00e1f7d8ead074b6a2c7a1bf26d90",
+        "bytes": 1113
+      },
+      "addons/godot-rapier2d/logo_square_2d.png": {
+        "sha256": "d3387239654b30b3e24ca3c42e9c320a11b130031df7ac65caee8d39341212f2",
+        "bytes": 31025
+      },
+      "addons/godot-rapier2d/logo_square_2d.png.import": {
+        "sha256": "e19e505076e4d2a7cce0af093d27f1e2d99c281ca21d5a584c38bd63b484bf48",
+        "bytes": 1008
+      },
+      "addons/godot-rapier2d/plugin.info.cfg": {
+        "sha256": "68ce562424fbe41e1b540d7a6c3a188ccc5322ad17c1461f85b7b34d33ce66a2",
+        "bytes": 212
+      },
+      "addons/godot-rapier2d/runtime-provenance.linux.json": {
+        "sha256": "5855a3132da91af8d3a9edffd520fbe8599f17f423fc791bd29fe9861e27c11b",
+        "bytes": 4095
+      },
+      "addons/godot-rapier2d/runtime-provenance.windows.json": {
+        "sha256": "9c850d36f67aa47964f8e714f2f7bbd39eff7ea6c8849d1a48712b49db8bb2a0",
+        "bytes": 4193
+      },
+      "addons/godot-rapier2d/water_shader.gdshader": {
+        "sha256": "ae74c3093dfc12580810a7f06c3ee7e4ac0f354cd4f2a8d73bef2c8431026fdc",
+        "bytes": 631
+      },
+      "addons/godot-rapier2d/water_shader.gdshader.uid": {
+        "sha256": "c03a83954f380f3dd0639bea411dd955167f0051d03a5d15b69e16a5f1052f2f",
+        "bytes": 21
+      },
+      "addons/godot-rapier2d/water_shader.tres": {
+        "sha256": "c9c96beff528fe906be8b44a69eaa60ec675fdbb75670cc2de5d2869a5c0f477",
+        "bytes": 432
+      }
+    },
+    "windows-scalar64": {
+      "scripts/solid_contact_response.gd": {
+        "sha256": "fede9db7c4eda6af91d85bdacda0e32f8473932d886cda15552177af816b658d",
+        "bytes": 20355
+      },
+      "project.godot": {
+        "sha256": "b9f980a000b352ff87ff8f302ad0c9c7b7e09788a27bef6d9cea912f2009ebac",
+        "bytes": 181
+      },
+      "scripts/rapier_physics_bridge.gd": {
+        "sha256": "2b4186b3e558f96051edded62ea1c4494a6ff018eeee73f3fad715fcdb2f0c5f",
+        "bytes": 45298
+      },
+      "scripts/rigid_body_coupling.gd": {
+        "sha256": "a3f5562be71adcdb209b6c45a7e67374bc05a419816b195c48e65d1e0e66d142",
+        "bytes": 2674
+      },
+      "tests/test_solid_contact_response.gd": {
+        "sha256": "35f28cc48a04a575ebe878a3eb5bccdfab8cccb0da94123a79f4bcfbd697449e",
+        "bytes": 32471
+      },
+      "tests/test_solid_detachment_compound_response.gd": {
+        "sha256": "42b1441a03153d6af07ab0494b05565b342dcfa75aa9be0520d18f7b7634145d",
+        "bytes": 8487
+      },
+      "addons/godot-rapier2d/LICENSE": {
+        "sha256": "e4ef4fcabb96d2ec7908d3ce798f847a0bbfe65d5ed2fcf489a0d9dedcce54f5",
+        "bytes": 1123
+      },
+      "addons/godot-rapier2d/Radial2D.svg": {
+        "sha256": "711d58ac177fd8c097405a2e8ae4132ac5f7ca1113d05ac5fbc12d2d3e79910a",
+        "bytes": 989
+      },
+      "addons/godot-rapier2d/Radial2D.svg.import": {
+        "sha256": "9b560fca94b9c53c16fe619e31cf80b4425dc0b7657bcd6f38af90843725543d",
+        "bytes": 1118
+      },
+      "addons/godot-rapier2d/THIRDPARTY.txt": {
+        "sha256": "238d1caad628310bb5956a9abdbcfed61d34a2260b8dd7addd702745fab93098",
+        "bytes": 16112
+      },
+      "addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll": {
+        "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+        "bytes": 9987072
+      },
+      "addons/godot-rapier2d/circle_mesh.tres": {
+        "sha256": "b2170cd7d0a0d2606725b8a6d76b62244d90636280b5aecc81db76eddc0e824b",
+        "bytes": 620
+      },
+      "addons/godot-rapier2d/custom_nodes/rapier_animatable_body_2d.gd": {
+        "sha256": "af2773eb9e2c7a4f54e3c9016e5371b67e55a58e657032e4b92ba623bebd9658",
+        "bytes": 489
+      },
+      "addons/godot-rapier2d/custom_nodes/rapier_animatable_body_2d.gd.uid": {
+        "sha256": "f2aa4518dc6b3f31a0b14f554db348701903d7fc51939d28900b894fdb2078e6",
+        "bytes": 21
+      },
+      "addons/godot-rapier2d/custom_nodes/rapier_area_2d.gd": {
+        "sha256": "ffaa295c883a1a2ef023a8d59e2ba8a7245d70932c2c9a5cfb94654e2b30c816",
+        "bytes": 469
+      },
+      "addons/godot-rapier2d/custom_nodes/rapier_area_2d.gd.uid": {
+        "sha256": "84a39186546eeaedc3b664810deb00c21c80b4b298148952f1a7751886adbd43",
+        "bytes": 21
+      },
+      "addons/godot-rapier2d/custom_nodes/rapier_character_body_2d.gd": {
+        "sha256": "7bf6ad292a12b4bb8571fcf10ae37e287e655c079ec3b2ea802c5da3588a9e91",
+        "bytes": 487
+      },
+      "addons/godot-rapier2d/custom_nodes/rapier_character_body_2d.gd.uid": {
+        "sha256": "5917428dbce56669b872799097d254b10925d7bb7c2c2d8715883c259a48e128",
+        "bytes": 21
+      },
+      "addons/godot-rapier2d/custom_nodes/rapier_damped_spring_joint_2d.gd": {
+        "sha256": "d5a1107bc03aa54f9455fe3fe73f6b5442548ec403a4bea2244495bdc09143b7",
+        "bytes": 2870
+      },
+      "addons/godot-rapier2d/custom_nodes/rapier_damped_spring_joint_2d.gd.uid": {
+        "sha256": "be0511542271047b2ba464dc67c2965871b5cf306a318e2f5364d9626feef113",
+        "bytes": 21
+      },
+      "addons/godot-rapier2d/custom_nodes/rapier_fixed_joint_2d.gd": {
+        "sha256": "64b92ee37dbc26ec1dc3dfad695a78b0d428c094acf7d2b0ae4f151abb198ea4",
+        "bytes": 1058
+      },
+      "addons/godot-rapier2d/custom_nodes/rapier_fixed_joint_2d.gd.uid": {
+        "sha256": "bbcd60035ec8b9b3e348a87e86ce84a89dda24584475c38f38d87b1b42cf7bda",
+        "bytes": 20
+      },
+      "addons/godot-rapier2d/custom_nodes/rapier_groove_joint_2d.gd": {
+        "sha256": "6cb96f25dddb1d94f61f968f897bac26ccdbd44b3f541042d2a858563f70f107",
+        "bytes": 2654
+      },
+      "addons/godot-rapier2d/custom_nodes/rapier_groove_joint_2d.gd.uid": {
+        "sha256": "73e3e36e976a5aaf6232c4fd3729cb9f613e15c2648f9eb5bc3ef51b5823c1f2",
+        "bytes": 21
+      },
+      "addons/godot-rapier2d/custom_nodes/rapier_physical_bone_2d.gd": {
+        "sha256": "fa8d994cb7f2ef19b8201918de38da142abf075e8416d4dfaec67730f894dde2",
+        "bytes": 1619
+      },
+      "addons/godot-rapier2d/custom_nodes/rapier_physical_bone_2d.gd.uid": {
+        "sha256": "1afbc09345826e9aab9c6b5469233373212ef8ce14ebd202960c6cc9b62ea894",
+        "bytes": 21
+      },
+      "addons/godot-rapier2d/custom_nodes/rapier_pin_joint_2d.gd": {
+        "sha256": "c372ec67f3a3bbfdafcd750ba54652cc7698c713e4d03fdfb1d66186c40c6208",
+        "bytes": 4395
+      },
+      "addons/godot-rapier2d/custom_nodes/rapier_pin_joint_2d.gd.uid": {
+        "sha256": "00b18ea2e8cc7965a1051f73006d9a0710e61cc7e2b75b32044a52f5e6fd607b",
+        "bytes": 21
+      },
+      "addons/godot-rapier2d/custom_nodes/rapier_rigid_body_2d.gd": {
+        "sha256": "ca4fd7aece6633f81b11394d33aff9c68d948e52bbbe2f90323a3d51381be51e",
+        "bytes": 2191
+      },
+      "addons/godot-rapier2d/custom_nodes/rapier_rigid_body_2d.gd.uid": {
+        "sha256": "e7f89f338526bb8e6cd9783e7e2282a5169136c95e859d122f03291c93c66c23",
+        "bytes": 20
+      },
+      "addons/godot-rapier2d/custom_nodes/rapier_rope_joint_2d.gd": {
+        "sha256": "229f1f324792763987661d241ec857807d2eff7f5ebf41a2faf1d37866771ea5",
+        "bytes": 1335
+      },
+      "addons/godot-rapier2d/custom_nodes/rapier_rope_joint_2d.gd.uid": {
+        "sha256": "34f51816e357d4a92ee873c0aad79f247d949639c4ba69e0365de4835f5d872e",
+        "bytes": 20
+      },
+      "addons/godot-rapier2d/custom_nodes/rapier_static_body_2d.gd": {
+        "sha256": "4ba255cec5693dca071c96bad04ca2200059ceac06cfba373c1158410a771919",
+        "bytes": 481
+      },
+      "addons/godot-rapier2d/custom_nodes/rapier_static_body_2d.gd.uid": {
+        "sha256": "1bfe6bddbf322218badb1ebf942f4b3f31073b3dec2a679251218df9362e071c",
+        "bytes": 21
+      },
+      "addons/godot-rapier2d/faucet_2d.gd": {
+        "sha256": "0b04dd8506fa599aee6b29cf1e0641904f4c3ae36a0a7d5cdaec4f69e291cf15",
+        "bytes": 853
+      },
+      "addons/godot-rapier2d/faucet_2d.gd.uid": {
+        "sha256": "95a96b750d3482f356bc5fda700d8d0f72d1dc1719d6257214caa2b18df71bc9",
+        "bytes": 21
+      },
+      "addons/godot-rapier2d/fluid_2d_circle.gd": {
+        "sha256": "97b3a9a7fd1ca93ba9a70ba9b8b52552d64ee3855d6d79405d84533e7256bffb",
+        "bytes": 200
+      },
+      "addons/godot-rapier2d/fluid_2d_circle.gd.uid": {
+        "sha256": "8c700c72b993cec1801e1e6a52531aa54d9ec6bf866a67e1bcd6c9694a77f0e5",
+        "bytes": 21
+      },
+      "addons/godot-rapier2d/fluid_2d_rectangle.gd": {
+        "sha256": "c0583cab00432f4a981e93cab0c0abda078fdafe16dfe0e8282871a6672bcf9d",
+        "bytes": 323
+      },
+      "addons/godot-rapier2d/fluid_2d_rectangle.gd.uid": {
+        "sha256": "cb2b0442b9494ac26d06ce00561013571f30d6a3e58d4fa56034b4a04d5d5423",
+        "bytes": 21
+      },
+      "addons/godot-rapier2d/fluid_2d_renderer.gd": {
+        "sha256": "c45c520cf2e9d2600a2ddf93f0df7a66fd7283fb75e2edefc1df4e725e407fa1",
+        "bytes": 881
+      },
+      "addons/godot-rapier2d/fluid_2d_renderer.gd.uid": {
+        "sha256": "6ea851cf5a6b599017545856d272d0b585ff4342553fcefa594617da2fc9c4ed",
+        "bytes": 21
+      },
+      "addons/godot-rapier2d/fluid_2d_shader_renderer.gd": {
+        "sha256": "889044a8b35d1382e2ec9efb699d1b964f38edca264c76a9ea2d9240b9a510c8",
+        "bytes": 2632
+      },
+      "addons/godot-rapier2d/fluid_2d_shader_renderer.gd.uid": {
+        "sha256": "67fb67e5444db61e4556df7a4544c740c309f23b8abc144709225f622dcaa56b",
+        "bytes": 20
+      },
+      "addons/godot-rapier2d/godot-rapier2d.gdextension": {
+        "sha256": "2b8b2115e94ca5d1a1494b6052dbf65f0fff7b4acce752d4c8367350a820eb14",
+        "bytes": 2486
+      },
+      "addons/godot-rapier2d/godot-rapier2d.gdextension.uid": {
+        "sha256": "0089ba95a19f87c64524e8ce80ed7014587caf5f8b8365b4bfe90f35965e42b3",
+        "bytes": 21
+      },
+      "addons/godot-rapier2d/icons/Fluid2D.svg": {
+        "sha256": "b5c214f850f42f2ae7a5b074cbc2f0f0d09218984b0f8b51797d18fa05e373af",
+        "bytes": 558
+      },
+      "addons/godot-rapier2d/icons/Fluid2D.svg.import": {
+        "sha256": "e2c800a9eac87c0989efe5aa646d16e2c75e665005250420b97ce1525e68d390",
+        "bytes": 1121
+      },
+      "addons/godot-rapier2d/icons/StateManager2D.svg": {
+        "sha256": "9919026525d1b53edf904a74031e3b33e722b33b14e86ff32f3f323881c36ef1",
+        "bytes": 3492
+      },
+      "addons/godot-rapier2d/icons/StateManager2D.svg.import": {
+        "sha256": "7fe48849837bd7a399b92db5ca780e163bc00e1f7d8ead074b6a2c7a1bf26d90",
+        "bytes": 1113
+      },
+      "addons/godot-rapier2d/logo_square_2d.png": {
+        "sha256": "d3387239654b30b3e24ca3c42e9c320a11b130031df7ac65caee8d39341212f2",
+        "bytes": 31025
+      },
+      "addons/godot-rapier2d/logo_square_2d.png.import": {
+        "sha256": "e19e505076e4d2a7cce0af093d27f1e2d99c281ca21d5a584c38bd63b484bf48",
+        "bytes": 1008
+      },
+      "addons/godot-rapier2d/plugin.info.cfg": {
+        "sha256": "68ce562424fbe41e1b540d7a6c3a188ccc5322ad17c1461f85b7b34d33ce66a2",
+        "bytes": 212
+      },
+      "addons/godot-rapier2d/runtime-provenance.linux.json": {
+        "sha256": "5855a3132da91af8d3a9edffd520fbe8599f17f423fc791bd29fe9861e27c11b",
+        "bytes": 4095
+      },
+      "addons/godot-rapier2d/runtime-provenance.windows.json": {
+        "sha256": "9c850d36f67aa47964f8e714f2f7bbd39eff7ea6c8849d1a48712b49db8bb2a0",
+        "bytes": 4193
+      },
+      "addons/godot-rapier2d/water_shader.gdshader": {
+        "sha256": "ae74c3093dfc12580810a7f06c3ee7e4ac0f354cd4f2a8d73bef2c8431026fdc",
+        "bytes": 631
+      },
+      "addons/godot-rapier2d/water_shader.gdshader.uid": {
+        "sha256": "c03a83954f380f3dd0639bea411dd955167f0051d03a5d15b69e16a5f1052f2f",
+        "bytes": 21
+      },
+      "addons/godot-rapier2d/water_shader.tres": {
+        "sha256": "c9c96beff528fe906be8b44a69eaa60ec675fdbb75670cc2de5d2869a5c0f477",
+        "bytes": 432
+      }
+    },
+    "linux-baseline": {
+      "scripts/solid_contact_response.gd": {
+        "sha256": "4fa2e74e5cef1f5b211e1a71287acc358d2984e6fb8bdb03cd977adbed473be1",
+        "bytes": 20154
+      },
+      "project.godot": {
+        "sha256": "b9f980a000b352ff87ff8f302ad0c9c7b7e09788a27bef6d9cea912f2009ebac",
+        "bytes": 181
+      },
+      "scripts/rapier_physics_bridge.gd": {
+        "sha256": "2b4186b3e558f96051edded62ea1c4494a6ff018eeee73f3fad715fcdb2f0c5f",
+        "bytes": 45298
+      },
+      "scripts/rigid_body_coupling.gd": {
+        "sha256": "a3f5562be71adcdb209b6c45a7e67374bc05a419816b195c48e65d1e0e66d142",
+        "bytes": 2674
+      },
+      "tests/test_solid_contact_response.gd": {
+        "sha256": "35f28cc48a04a575ebe878a3eb5bccdfab8cccb0da94123a79f4bcfbd697449e",
+        "bytes": 32471
+      },
+      "tests/test_solid_detachment_compound_response.gd": {
+        "sha256": "42b1441a03153d6af07ab0494b05565b342dcfa75aa9be0520d18f7b7634145d",
+        "bytes": 8487
+      },
+      "addons/godot-rapier2d/LICENSE": {
+        "sha256": "e4ef4fcabb96d2ec7908d3ce798f847a0bbfe65d5ed2fcf489a0d9dedcce54f5",
+        "bytes": 1123
+      },
+      "addons/godot-rapier2d/Radial2D.svg": {
+        "sha256": "711d58ac177fd8c097405a2e8ae4132ac5f7ca1113d05ac5fbc12d2d3e79910a",
+        "bytes": 989
+      },
+      "addons/godot-rapier2d/Radial2D.svg.import": {
+        "sha256": "9b560fca94b9c53c16fe619e31cf80b4425dc0b7657bcd6f38af90843725543d",
+        "bytes": 1118
+      },
+      "addons/godot-rapier2d/THIRDPARTY.txt": {
+        "sha256": "238d1caad628310bb5956a9abdbcfed61d34a2260b8dd7addd702745fab93098",
+        "bytes": 16112
+      },
+      "addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so": {
+        "sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+        "bytes": 117275416
+      },
+      "addons/godot-rapier2d/circle_mesh.tres": {
+        "sha256": "b2170cd7d0a0d2606725b8a6d76b62244d90636280b5aecc81db76eddc0e824b",
+        "bytes": 620
+      },
+      "addons/godot-rapier2d/custom_nodes/rapier_animatable_body_2d.gd": {
+        "sha256": "af2773eb9e2c7a4f54e3c9016e5371b67e55a58e657032e4b92ba623bebd9658",
+        "bytes": 489
+      },
+      "addons/godot-rapier2d/custom_nodes/rapier_animatable_body_2d.gd.uid": {
+        "sha256": "f2aa4518dc6b3f31a0b14f554db348701903d7fc51939d28900b894fdb2078e6",
+        "bytes": 21
+      },
+      "addons/godot-rapier2d/custom_nodes/rapier_area_2d.gd": {
+        "sha256": "ffaa295c883a1a2ef023a8d59e2ba8a7245d70932c2c9a5cfb94654e2b30c816",
+        "bytes": 469
+      },
+      "addons/godot-rapier2d/custom_nodes/rapier_area_2d.gd.uid": {
+        "sha256": "84a39186546eeaedc3b664810deb00c21c80b4b298148952f1a7751886adbd43",
+        "bytes": 21
+      },
+      "addons/godot-rapier2d/custom_nodes/rapier_character_body_2d.gd": {
+        "sha256": "7bf6ad292a12b4bb8571fcf10ae37e287e655c079ec3b2ea802c5da3588a9e91",
+        "bytes": 487
+      },
+      "addons/godot-rapier2d/custom_nodes/rapier_character_body_2d.gd.uid": {
+        "sha256": "5917428dbce56669b872799097d254b10925d7bb7c2c2d8715883c259a48e128",
+        "bytes": 21
+      },
+      "addons/godot-rapier2d/custom_nodes/rapier_damped_spring_joint_2d.gd": {
+        "sha256": "d5a1107bc03aa54f9455fe3fe73f6b5442548ec403a4bea2244495bdc09143b7",
+        "bytes": 2870
+      },
+      "addons/godot-rapier2d/custom_nodes/rapier_damped_spring_joint_2d.gd.uid": {
+        "sha256": "be0511542271047b2ba464dc67c2965871b5cf306a318e2f5364d9626feef113",
+        "bytes": 21
+      },
+      "addons/godot-rapier2d/custom_nodes/rapier_fixed_joint_2d.gd": {
+        "sha256": "64b92ee37dbc26ec1dc3dfad695a78b0d428c094acf7d2b0ae4f151abb198ea4",
+        "bytes": 1058
+      },
+      "addons/godot-rapier2d/custom_nodes/rapier_fixed_joint_2d.gd.uid": {
+        "sha256": "bbcd60035ec8b9b3e348a87e86ce84a89dda24584475c38f38d87b1b42cf7bda",
+        "bytes": 20
+      },
+      "addons/godot-rapier2d/custom_nodes/rapier_groove_joint_2d.gd": {
+        "sha256": "6cb96f25dddb1d94f61f968f897bac26ccdbd44b3f541042d2a858563f70f107",
+        "bytes": 2654
+      },
+      "addons/godot-rapier2d/custom_nodes/rapier_groove_joint_2d.gd.uid": {
+        "sha256": "73e3e36e976a5aaf6232c4fd3729cb9f613e15c2648f9eb5bc3ef51b5823c1f2",
+        "bytes": 21
+      },
+      "addons/godot-rapier2d/custom_nodes/rapier_physical_bone_2d.gd": {
+        "sha256": "fa8d994cb7f2ef19b8201918de38da142abf075e8416d4dfaec67730f894dde2",
+        "bytes": 1619
+      },
+      "addons/godot-rapier2d/custom_nodes/rapier_physical_bone_2d.gd.uid": {
+        "sha256": "1afbc09345826e9aab9c6b5469233373212ef8ce14ebd202960c6cc9b62ea894",
+        "bytes": 21
+      },
+      "addons/godot-rapier2d/custom_nodes/rapier_pin_joint_2d.gd": {
+        "sha256": "c372ec67f3a3bbfdafcd750ba54652cc7698c713e4d03fdfb1d66186c40c6208",
+        "bytes": 4395
+      },
+      "addons/godot-rapier2d/custom_nodes/rapier_pin_joint_2d.gd.uid": {
+        "sha256": "00b18ea2e8cc7965a1051f73006d9a0710e61cc7e2b75b32044a52f5e6fd607b",
+        "bytes": 21
+      },
+      "addons/godot-rapier2d/custom_nodes/rapier_rigid_body_2d.gd": {
+        "sha256": "ca4fd7aece6633f81b11394d33aff9c68d948e52bbbe2f90323a3d51381be51e",
+        "bytes": 2191
+      },
+      "addons/godot-rapier2d/custom_nodes/rapier_rigid_body_2d.gd.uid": {
+        "sha256": "e7f89f338526bb8e6cd9783e7e2282a5169136c95e859d122f03291c93c66c23",
+        "bytes": 20
+      },
+      "addons/godot-rapier2d/custom_nodes/rapier_rope_joint_2d.gd": {
+        "sha256": "229f1f324792763987661d241ec857807d2eff7f5ebf41a2faf1d37866771ea5",
+        "bytes": 1335
+      },
+      "addons/godot-rapier2d/custom_nodes/rapier_rope_joint_2d.gd.uid": {
+        "sha256": "34f51816e357d4a92ee873c0aad79f247d949639c4ba69e0365de4835f5d872e",
+        "bytes": 20
+      },
+      "addons/godot-rapier2d/custom_nodes/rapier_static_body_2d.gd": {
+        "sha256": "4ba255cec5693dca071c96bad04ca2200059ceac06cfba373c1158410a771919",
+        "bytes": 481
+      },
+      "addons/godot-rapier2d/custom_nodes/rapier_static_body_2d.gd.uid": {
+        "sha256": "1bfe6bddbf322218badb1ebf942f4b3f31073b3dec2a679251218df9362e071c",
+        "bytes": 21
+      },
+      "addons/godot-rapier2d/faucet_2d.gd": {
+        "sha256": "0b04dd8506fa599aee6b29cf1e0641904f4c3ae36a0a7d5cdaec4f69e291cf15",
+        "bytes": 853
+      },
+      "addons/godot-rapier2d/faucet_2d.gd.uid": {
+        "sha256": "95a96b750d3482f356bc5fda700d8d0f72d1dc1719d6257214caa2b18df71bc9",
+        "bytes": 21
+      },
+      "addons/godot-rapier2d/fluid_2d_circle.gd": {
+        "sha256": "97b3a9a7fd1ca93ba9a70ba9b8b52552d64ee3855d6d79405d84533e7256bffb",
+        "bytes": 200
+      },
+      "addons/godot-rapier2d/fluid_2d_circle.gd.uid": {
+        "sha256": "8c700c72b993cec1801e1e6a52531aa54d9ec6bf866a67e1bcd6c9694a77f0e5",
+        "bytes": 21
+      },
+      "addons/godot-rapier2d/fluid_2d_rectangle.gd": {
+        "sha256": "c0583cab00432f4a981e93cab0c0abda078fdafe16dfe0e8282871a6672bcf9d",
+        "bytes": 323
+      },
+      "addons/godot-rapier2d/fluid_2d_rectangle.gd.uid": {
+        "sha256": "cb2b0442b9494ac26d06ce00561013571f30d6a3e58d4fa56034b4a04d5d5423",
+        "bytes": 21
+      },
+      "addons/godot-rapier2d/fluid_2d_renderer.gd": {
+        "sha256": "c45c520cf2e9d2600a2ddf93f0df7a66fd7283fb75e2edefc1df4e725e407fa1",
+        "bytes": 881
+      },
+      "addons/godot-rapier2d/fluid_2d_renderer.gd.uid": {
+        "sha256": "6ea851cf5a6b599017545856d272d0b585ff4342553fcefa594617da2fc9c4ed",
+        "bytes": 21
+      },
+      "addons/godot-rapier2d/fluid_2d_shader_renderer.gd": {
+        "sha256": "889044a8b35d1382e2ec9efb699d1b964f38edca264c76a9ea2d9240b9a510c8",
+        "bytes": 2632
+      },
+      "addons/godot-rapier2d/fluid_2d_shader_renderer.gd.uid": {
+        "sha256": "67fb67e5444db61e4556df7a4544c740c309f23b8abc144709225f622dcaa56b",
+        "bytes": 20
+      },
+      "addons/godot-rapier2d/godot-rapier2d.gdextension": {
+        "sha256": "2b8b2115e94ca5d1a1494b6052dbf65f0fff7b4acce752d4c8367350a820eb14",
+        "bytes": 2486
+      },
+      "addons/godot-rapier2d/godot-rapier2d.gdextension.uid": {
+        "sha256": "0089ba95a19f87c64524e8ce80ed7014587caf5f8b8365b4bfe90f35965e42b3",
+        "bytes": 21
+      },
+      "addons/godot-rapier2d/icons/Fluid2D.svg": {
+        "sha256": "b5c214f850f42f2ae7a5b074cbc2f0f0d09218984b0f8b51797d18fa05e373af",
+        "bytes": 558
+      },
+      "addons/godot-rapier2d/icons/Fluid2D.svg.import": {
+        "sha256": "e2c800a9eac87c0989efe5aa646d16e2c75e665005250420b97ce1525e68d390",
+        "bytes": 1121
+      },
+      "addons/godot-rapier2d/icons/StateManager2D.svg": {
+        "sha256": "9919026525d1b53edf904a74031e3b33e722b33b14e86ff32f3f323881c36ef1",
+        "bytes": 3492
+      },
+      "addons/godot-rapier2d/icons/StateManager2D.svg.import": {
+        "sha256": "7fe48849837bd7a399b92db5ca780e163bc00e1f7d8ead074b6a2c7a1bf26d90",
+        "bytes": 1113
+      },
+      "addons/godot-rapier2d/logo_square_2d.png": {
+        "sha256": "d3387239654b30b3e24ca3c42e9c320a11b130031df7ac65caee8d39341212f2",
+        "bytes": 31025
+      },
+      "addons/godot-rapier2d/logo_square_2d.png.import": {
+        "sha256": "e19e505076e4d2a7cce0af093d27f1e2d99c281ca21d5a584c38bd63b484bf48",
+        "bytes": 1008
+      },
+      "addons/godot-rapier2d/plugin.info.cfg": {
+        "sha256": "68ce562424fbe41e1b540d7a6c3a188ccc5322ad17c1461f85b7b34d33ce66a2",
+        "bytes": 212
+      },
+      "addons/godot-rapier2d/runtime-provenance.linux.json": {
+        "sha256": "5855a3132da91af8d3a9edffd520fbe8599f17f423fc791bd29fe9861e27c11b",
+        "bytes": 4095
+      },
+      "addons/godot-rapier2d/runtime-provenance.windows.json": {
+        "sha256": "9c850d36f67aa47964f8e714f2f7bbd39eff7ea6c8849d1a48712b49db8bb2a0",
+        "bytes": 4193
+      },
+      "addons/godot-rapier2d/water_shader.gdshader": {
+        "sha256": "ae74c3093dfc12580810a7f06c3ee7e4ac0f354cd4f2a8d73bef2c8431026fdc",
+        "bytes": 631
+      },
+      "addons/godot-rapier2d/water_shader.gdshader.uid": {
+        "sha256": "c03a83954f380f3dd0639bea411dd955167f0051d03a5d15b69e16a5f1052f2f",
+        "bytes": 21
+      },
+      "addons/godot-rapier2d/water_shader.tres": {
+        "sha256": "c9c96beff528fe906be8b44a69eaa60ec675fdbb75670cc2de5d2869a5c0f477",
+        "bytes": 432
+      }
+    },
+    "linux-scalar64": {
+      "scripts/solid_contact_response.gd": {
+        "sha256": "fede9db7c4eda6af91d85bdacda0e32f8473932d886cda15552177af816b658d",
+        "bytes": 20355
+      },
+      "project.godot": {
+        "sha256": "b9f980a000b352ff87ff8f302ad0c9c7b7e09788a27bef6d9cea912f2009ebac",
+        "bytes": 181
+      },
+      "scripts/rapier_physics_bridge.gd": {
+        "sha256": "2b4186b3e558f96051edded62ea1c4494a6ff018eeee73f3fad715fcdb2f0c5f",
+        "bytes": 45298
+      },
+      "scripts/rigid_body_coupling.gd": {
+        "sha256": "a3f5562be71adcdb209b6c45a7e67374bc05a419816b195c48e65d1e0e66d142",
+        "bytes": 2674
+      },
+      "tests/test_solid_contact_response.gd": {
+        "sha256": "35f28cc48a04a575ebe878a3eb5bccdfab8cccb0da94123a79f4bcfbd697449e",
+        "bytes": 32471
+      },
+      "tests/test_solid_detachment_compound_response.gd": {
+        "sha256": "42b1441a03153d6af07ab0494b05565b342dcfa75aa9be0520d18f7b7634145d",
+        "bytes": 8487
+      },
+      "addons/godot-rapier2d/LICENSE": {
+        "sha256": "e4ef4fcabb96d2ec7908d3ce798f847a0bbfe65d5ed2fcf489a0d9dedcce54f5",
+        "bytes": 1123
+      },
+      "addons/godot-rapier2d/Radial2D.svg": {
+        "sha256": "711d58ac177fd8c097405a2e8ae4132ac5f7ca1113d05ac5fbc12d2d3e79910a",
+        "bytes": 989
+      },
+      "addons/godot-rapier2d/Radial2D.svg.import": {
+        "sha256": "9b560fca94b9c53c16fe619e31cf80b4425dc0b7657bcd6f38af90843725543d",
+        "bytes": 1118
+      },
+      "addons/godot-rapier2d/THIRDPARTY.txt": {
+        "sha256": "238d1caad628310bb5956a9abdbcfed61d34a2260b8dd7addd702745fab93098",
+        "bytes": 16112
+      },
+      "addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so": {
+        "sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+        "bytes": 117275416
+      },
+      "addons/godot-rapier2d/circle_mesh.tres": {
+        "sha256": "b2170cd7d0a0d2606725b8a6d76b62244d90636280b5aecc81db76eddc0e824b",
+        "bytes": 620
+      },
+      "addons/godot-rapier2d/custom_nodes/rapier_animatable_body_2d.gd": {
+        "sha256": "af2773eb9e2c7a4f54e3c9016e5371b67e55a58e657032e4b92ba623bebd9658",
+        "bytes": 489
+      },
+      "addons/godot-rapier2d/custom_nodes/rapier_animatable_body_2d.gd.uid": {
+        "sha256": "f2aa4518dc6b3f31a0b14f554db348701903d7fc51939d28900b894fdb2078e6",
+        "bytes": 21
+      },
+      "addons/godot-rapier2d/custom_nodes/rapier_area_2d.gd": {
+        "sha256": "ffaa295c883a1a2ef023a8d59e2ba8a7245d70932c2c9a5cfb94654e2b30c816",
+        "bytes": 469
+      },
+      "addons/godot-rapier2d/custom_nodes/rapier_area_2d.gd.uid": {
+        "sha256": "84a39186546eeaedc3b664810deb00c21c80b4b298148952f1a7751886adbd43",
+        "bytes": 21
+      },
+      "addons/godot-rapier2d/custom_nodes/rapier_character_body_2d.gd": {
+        "sha256": "7bf6ad292a12b4bb8571fcf10ae37e287e655c079ec3b2ea802c5da3588a9e91",
+        "bytes": 487
+      },
+      "addons/godot-rapier2d/custom_nodes/rapier_character_body_2d.gd.uid": {
+        "sha256": "5917428dbce56669b872799097d254b10925d7bb7c2c2d8715883c259a48e128",
+        "bytes": 21
+      },
+      "addons/godot-rapier2d/custom_nodes/rapier_damped_spring_joint_2d.gd": {
+        "sha256": "d5a1107bc03aa54f9455fe3fe73f6b5442548ec403a4bea2244495bdc09143b7",
+        "bytes": 2870
+      },
+      "addons/godot-rapier2d/custom_nodes/rapier_damped_spring_joint_2d.gd.uid": {
+        "sha256": "be0511542271047b2ba464dc67c2965871b5cf306a318e2f5364d9626feef113",
+        "bytes": 21
+      },
+      "addons/godot-rapier2d/custom_nodes/rapier_fixed_joint_2d.gd": {
+        "sha256": "64b92ee37dbc26ec1dc3dfad695a78b0d428c094acf7d2b0ae4f151abb198ea4",
+        "bytes": 1058
+      },
+      "addons/godot-rapier2d/custom_nodes/rapier_fixed_joint_2d.gd.uid": {
+        "sha256": "bbcd60035ec8b9b3e348a87e86ce84a89dda24584475c38f38d87b1b42cf7bda",
+        "bytes": 20
+      },
+      "addons/godot-rapier2d/custom_nodes/rapier_groove_joint_2d.gd": {
+        "sha256": "6cb96f25dddb1d94f61f968f897bac26ccdbd44b3f541042d2a858563f70f107",
+        "bytes": 2654
+      },
+      "addons/godot-rapier2d/custom_nodes/rapier_groove_joint_2d.gd.uid": {
+        "sha256": "73e3e36e976a5aaf6232c4fd3729cb9f613e15c2648f9eb5bc3ef51b5823c1f2",
+        "bytes": 21
+      },
+      "addons/godot-rapier2d/custom_nodes/rapier_physical_bone_2d.gd": {
+        "sha256": "fa8d994cb7f2ef19b8201918de38da142abf075e8416d4dfaec67730f894dde2",
+        "bytes": 1619
+      },
+      "addons/godot-rapier2d/custom_nodes/rapier_physical_bone_2d.gd.uid": {
+        "sha256": "1afbc09345826e9aab9c6b5469233373212ef8ce14ebd202960c6cc9b62ea894",
+        "bytes": 21
+      },
+      "addons/godot-rapier2d/custom_nodes/rapier_pin_joint_2d.gd": {
+        "sha256": "c372ec67f3a3bbfdafcd750ba54652cc7698c713e4d03fdfb1d66186c40c6208",
+        "bytes": 4395
+      },
+      "addons/godot-rapier2d/custom_nodes/rapier_pin_joint_2d.gd.uid": {
+        "sha256": "00b18ea2e8cc7965a1051f73006d9a0710e61cc7e2b75b32044a52f5e6fd607b",
+        "bytes": 21
+      },
+      "addons/godot-rapier2d/custom_nodes/rapier_rigid_body_2d.gd": {
+        "sha256": "ca4fd7aece6633f81b11394d33aff9c68d948e52bbbe2f90323a3d51381be51e",
+        "bytes": 2191
+      },
+      "addons/godot-rapier2d/custom_nodes/rapier_rigid_body_2d.gd.uid": {
+        "sha256": "e7f89f338526bb8e6cd9783e7e2282a5169136c95e859d122f03291c93c66c23",
+        "bytes": 20
+      },
+      "addons/godot-rapier2d/custom_nodes/rapier_rope_joint_2d.gd": {
+        "sha256": "229f1f324792763987661d241ec857807d2eff7f5ebf41a2faf1d37866771ea5",
+        "bytes": 1335
+      },
+      "addons/godot-rapier2d/custom_nodes/rapier_rope_joint_2d.gd.uid": {
+        "sha256": "34f51816e357d4a92ee873c0aad79f247d949639c4ba69e0365de4835f5d872e",
+        "bytes": 20
+      },
+      "addons/godot-rapier2d/custom_nodes/rapier_static_body_2d.gd": {
+        "sha256": "4ba255cec5693dca071c96bad04ca2200059ceac06cfba373c1158410a771919",
+        "bytes": 481
+      },
+      "addons/godot-rapier2d/custom_nodes/rapier_static_body_2d.gd.uid": {
+        "sha256": "1bfe6bddbf322218badb1ebf942f4b3f31073b3dec2a679251218df9362e071c",
+        "bytes": 21
+      },
+      "addons/godot-rapier2d/faucet_2d.gd": {
+        "sha256": "0b04dd8506fa599aee6b29cf1e0641904f4c3ae36a0a7d5cdaec4f69e291cf15",
+        "bytes": 853
+      },
+      "addons/godot-rapier2d/faucet_2d.gd.uid": {
+        "sha256": "95a96b750d3482f356bc5fda700d8d0f72d1dc1719d6257214caa2b18df71bc9",
+        "bytes": 21
+      },
+      "addons/godot-rapier2d/fluid_2d_circle.gd": {
+        "sha256": "97b3a9a7fd1ca93ba9a70ba9b8b52552d64ee3855d6d79405d84533e7256bffb",
+        "bytes": 200
+      },
+      "addons/godot-rapier2d/fluid_2d_circle.gd.uid": {
+        "sha256": "8c700c72b993cec1801e1e6a52531aa54d9ec6bf866a67e1bcd6c9694a77f0e5",
+        "bytes": 21
+      },
+      "addons/godot-rapier2d/fluid_2d_rectangle.gd": {
+        "sha256": "c0583cab00432f4a981e93cab0c0abda078fdafe16dfe0e8282871a6672bcf9d",
+        "bytes": 323
+      },
+      "addons/godot-rapier2d/fluid_2d_rectangle.gd.uid": {
+        "sha256": "cb2b0442b9494ac26d06ce00561013571f30d6a3e58d4fa56034b4a04d5d5423",
+        "bytes": 21
+      },
+      "addons/godot-rapier2d/fluid_2d_renderer.gd": {
+        "sha256": "c45c520cf2e9d2600a2ddf93f0df7a66fd7283fb75e2edefc1df4e725e407fa1",
+        "bytes": 881
+      },
+      "addons/godot-rapier2d/fluid_2d_renderer.gd.uid": {
+        "sha256": "6ea851cf5a6b599017545856d272d0b585ff4342553fcefa594617da2fc9c4ed",
+        "bytes": 21
+      },
+      "addons/godot-rapier2d/fluid_2d_shader_renderer.gd": {
+        "sha256": "889044a8b35d1382e2ec9efb699d1b964f38edca264c76a9ea2d9240b9a510c8",
+        "bytes": 2632
+      },
+      "addons/godot-rapier2d/fluid_2d_shader_renderer.gd.uid": {
+        "sha256": "67fb67e5444db61e4556df7a4544c740c309f23b8abc144709225f622dcaa56b",
+        "bytes": 20
+      },
+      "addons/godot-rapier2d/godot-rapier2d.gdextension": {
+        "sha256": "2b8b2115e94ca5d1a1494b6052dbf65f0fff7b4acce752d4c8367350a820eb14",
+        "bytes": 2486
+      },
+      "addons/godot-rapier2d/godot-rapier2d.gdextension.uid": {
+        "sha256": "0089ba95a19f87c64524e8ce80ed7014587caf5f8b8365b4bfe90f35965e42b3",
+        "bytes": 21
+      },
+      "addons/godot-rapier2d/icons/Fluid2D.svg": {
+        "sha256": "b5c214f850f42f2ae7a5b074cbc2f0f0d09218984b0f8b51797d18fa05e373af",
+        "bytes": 558
+      },
+      "addons/godot-rapier2d/icons/Fluid2D.svg.import": {
+        "sha256": "e2c800a9eac87c0989efe5aa646d16e2c75e665005250420b97ce1525e68d390",
+        "bytes": 1121
+      },
+      "addons/godot-rapier2d/icons/StateManager2D.svg": {
+        "sha256": "9919026525d1b53edf904a74031e3b33e722b33b14e86ff32f3f323881c36ef1",
+        "bytes": 3492
+      },
+      "addons/godot-rapier2d/icons/StateManager2D.svg.import": {
+        "sha256": "7fe48849837bd7a399b92db5ca780e163bc00e1f7d8ead074b6a2c7a1bf26d90",
+        "bytes": 1113
+      },
+      "addons/godot-rapier2d/logo_square_2d.png": {
+        "sha256": "d3387239654b30b3e24ca3c42e9c320a11b130031df7ac65caee8d39341212f2",
+        "bytes": 31025
+      },
+      "addons/godot-rapier2d/logo_square_2d.png.import": {
+        "sha256": "e19e505076e4d2a7cce0af093d27f1e2d99c281ca21d5a584c38bd63b484bf48",
+        "bytes": 1008
+      },
+      "addons/godot-rapier2d/plugin.info.cfg": {
+        "sha256": "68ce562424fbe41e1b540d7a6c3a188ccc5322ad17c1461f85b7b34d33ce66a2",
+        "bytes": 212
+      },
+      "addons/godot-rapier2d/runtime-provenance.linux.json": {
+        "sha256": "5855a3132da91af8d3a9edffd520fbe8599f17f423fc791bd29fe9861e27c11b",
+        "bytes": 4095
+      },
+      "addons/godot-rapier2d/runtime-provenance.windows.json": {
+        "sha256": "9c850d36f67aa47964f8e714f2f7bbd39eff7ea6c8849d1a48712b49db8bb2a0",
+        "bytes": 4193
+      },
+      "addons/godot-rapier2d/water_shader.gdshader": {
+        "sha256": "ae74c3093dfc12580810a7f06c3ee7e4ac0f354cd4f2a8d73bef2c8431026fdc",
+        "bytes": 631
+      },
+      "addons/godot-rapier2d/water_shader.gdshader.uid": {
+        "sha256": "c03a83954f380f3dd0639bea411dd955167f0051d03a5d15b69e16a5f1052f2f",
+        "bytes": 21
+      },
+      "addons/godot-rapier2d/water_shader.tres": {
+        "sha256": "c9c96beff528fe906be8b44a69eaa60ec675fdbb75670cc2de5d2869a5c0f477",
+        "bytes": 432
+      }
+    }
+  },
+  "results": [
+    {
+      "command": [
+        "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+        "--headless",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-energy-20261105\\khybersand\\build\\sol-energy\\rapier-first\\windows-baseline",
+        "--editor",
+        "--quit"
+      ],
+      "exit": 3221225477,
+      "clean": false,
+      "seconds": 6.034235399973113,
+      "log": "build\\sol-energy\\rapier-first\\windows-baseline-import.log",
+      "log_sha256": "f98517ff275624f1f4671c8a511ae4c9be99bb989b11167a17d848879949d92a"
+    },
+    {
+      "command": [
+        "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+        "--headless",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-energy-20261105\\khybersand\\build\\sol-energy\\rapier-first\\windows-scalar64",
+        "--editor",
+        "--quit"
+      ],
+      "exit": 3221225477,
+      "clean": false,
+      "seconds": 5.443138599977829,
+      "log": "build\\sol-energy\\rapier-first\\windows-scalar64-import.log",
+      "log_sha256": "f98517ff275624f1f4671c8a511ae4c9be99bb989b11167a17d848879949d92a"
+    },
+    {
+      "command": [
+        "wsl",
+        "-d",
+        "Ubuntu-24.04",
+        "--",
+        "timeout",
+        "--signal=TERM",
+        "--kill-after=5s",
+        "120s",
+        "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "/mnt/c/Users/_/.codex/worktrees/sol-energy-20261105/khybersand/build/sol-energy/rapier-first/linux-baseline",
+        "--editor",
+        "--quit"
+      ],
+      "exit": 0,
+      "clean": true,
+      "seconds": 6.136793199984822,
+      "log": "build\\sol-energy\\rapier-first\\linux-baseline-import.log",
+      "log_sha256": "21d86d4e9d012c2d6d707bfda1a341f8b37c46bf9339a0439793f53f8d65c606"
+    },
+    {
+      "command": [
+        "wsl",
+        "-d",
+        "Ubuntu-24.04",
+        "--",
+        "timeout",
+        "--signal=TERM",
+        "--kill-after=5s",
+        "120s",
+        "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "/mnt/c/Users/_/.codex/worktrees/sol-energy-20261105/khybersand/build/sol-energy/rapier-first/linux-baseline",
+        "--script",
+        "res://tests/test_solid_contact_response.gd"
+      ],
+      "exit": 0,
+      "clean": false,
+      "seconds": 0.4093989999964833,
+      "log": "build\\sol-energy\\rapier-first\\linux-baseline-test_solid_contact_response.log",
+      "log_sha256": "5c76814970a7a83168ea0ad9ea26b505145644c66a3b0b2e6c4154edea3a9199"
+    },
+    {
+      "command": [
+        "wsl",
+        "-d",
+        "Ubuntu-24.04",
+        "--",
+        "timeout",
+        "--signal=TERM",
+        "--kill-after=5s",
+        "120s",
+        "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "/mnt/c/Users/_/.codex/worktrees/sol-energy-20261105/khybersand/build/sol-energy/rapier-first/linux-scalar64",
+        "--editor",
+        "--quit"
+      ],
+      "exit": 0,
+      "clean": true,
+      "seconds": 3.7149924999685027,
+      "log": "build\\sol-energy\\rapier-first\\linux-scalar64-import.log",
+      "log_sha256": "21d86d4e9d012c2d6d707bfda1a341f8b37c46bf9339a0439793f53f8d65c606"
+    },
+    {
+      "command": [
+        "wsl",
+        "-d",
+        "Ubuntu-24.04",
+        "--",
+        "timeout",
+        "--signal=TERM",
+        "--kill-after=5s",
+        "120s",
+        "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "/mnt/c/Users/_/.codex/worktrees/sol-energy-20261105/khybersand/build/sol-energy/rapier-first/linux-scalar64",
+        "--script",
+        "res://tests/test_solid_contact_response.gd"
+      ],
+      "exit": 0,
+      "clean": false,
+      "seconds": 0.49929849995533004,
+      "log": "build\\sol-energy\\rapier-first\\linux-scalar64-test_solid_contact_response.log",
+      "log_sha256": "a4a6186d767440cf5091f745bfc750d96d39017f0f6a89df5240c864f6808ddd"
+    }
+  ]
+}

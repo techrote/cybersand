@@ -4,13 +4,20 @@ status: Current
 document-kind: navigation
 scope: Question-to-canonical-document routes; detailed answers belong to the linked contracts
 canonical-for: []
-last-reviewed: 2026-11-04
+last-reviewed: 2026-11-05
 related-documents: [../README.md, retrieval-corpus.json, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../architecture/pressure-optimization.md]
 ---
 
 # Retrieval question index
 
 ## Structural detachment routing
+
+For binary32 norm cancellation, scalar64 planning guards and the difference
+between planner cost and SOL clearance, retrieve the
+[dependent precision contract](../systems/solid-detachment.md#planner-energy-precision--dependent-candidate-2026-11-05)
+and the [build entry points](../operations/local-build-and-validation.md#isolated-sol-planner-precision--2026-11-05).
+The additive `retrieval-questions-sol-energy.json` supplement is post-result
+development evaluation; older frozen questions remain unchanged.
 
 For public hash refusal, safe simulation-window changes and native adhesion
 readback, retrieve the [facade contract](../systems/solid-detachment.md#public-refusal-and-authoritative-readback--2026-11-04)
