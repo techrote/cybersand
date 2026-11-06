@@ -233,8 +233,11 @@ files. Raw `packed-001` evidence (20 files, 21.1 MiB, with a per-file
 manifest) is sealed host-locally as
 `C:/CyberSand-evidence/PR-lockstep-opt-in-packed-001-20261106-a7236701.zip`
 (3.8 MiB, SHA-256
-`c06081023a2a4cb6e179a1e879d11deca8458627e79f3e798d98b7f763aadaaf`). It is not
-part of the published #464 archive, and publishing it needs its own owner approval.
+`c06081023a2a4cb6e179a1e879d11deca8458627e79f3e798d98b7f763aadaaf`). With
+owner approval it was published on 2026-11-06 with an LF `.sha256` file as the
+pre-release [`evidence-lockstep-opt-in-packed-001-20261106`](https://github.com/techrote/cybersand/releases/tag/evidence-lockstep-opt-in-packed-001-20261106)
+(tag target `e91325db`); a fresh download verified. Reducing it also needs
+`horizon-001` from the #464 evidence release.
 
 ## Results
 
