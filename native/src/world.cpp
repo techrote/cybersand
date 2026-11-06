@@ -4481,6 +4481,11 @@ void World::gather_active_cores() {
     for (const auto chunk_coord : active_chunk_scratch_) {
         const auto* chunk = find_chunk(chunk_coord);
         if (chunk == nullptr) continue;
+        // Several activity blocks share one core. Entries recorded for this
+        // chunk are checked first, so the capacity bounds distinct cores (as
+        // named) rather than active blocks; the final sort/unique below still
+        // removes any duplicate across chunks. The resulting set is unchanged.
+        const auto chunk_first_core = active_core_scratch_.size();
         const auto chunk_origin_x = chunk_coord.x * config_.chunk_size;
         const auto chunk_origin_y = chunk_coord.y * config_.chunk_size;
         for (std::int32_t block_y = 0; block_y < chunk->activity_blocks_per_axis; ++block_y) {
@@ -4507,10 +4512,15 @@ void World::gather_active_cores() {
                         if (selected_core_region_ &&
                             (core_x < selected_core_region_->min_x || core_x > selected_core_region_->max_x ||
                              core_y < selected_core_region_->min_y || core_y > selected_core_region_->max_y)) continue;
+                        const SchedulingCoreCoord core{core_x, core_y};
+                        if (std::find(active_core_scratch_.begin() +
+                                          static_cast<std::ptrdiff_t>(chunk_first_core),
+                                      active_core_scratch_.end(), core) != active_core_scratch_.end())
+                            continue;
                         if (active_core_scratch_.size() >= config_.active_core_capacity) {
                             throw std::runtime_error("active scheduling-core capacity exhausted");
                         }
-                        active_core_scratch_.push_back({core_x, core_y});
+                        active_core_scratch_.push_back(core);
                     }
                 }
             }

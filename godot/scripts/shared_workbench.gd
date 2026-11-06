@@ -604,9 +604,10 @@ func load_setup() -> bool:
 	if not host.simulation_worker.has_failed() and not _editable(): return false
 	var result := Setup.read_named(_name.text)
 	# Until the owner saves their own file of the name, "my-canvas" opens the
-	# built-in water evaluation start and "bench-canvas" the whole-engine
-	# benchmark. A saved file of the name always wins.
-	if _name.text in [Setup.DEFAULT_LABEL,Setup.BENCH_LABEL] and not FileAccess.file_exists(Setup._path(_name.text)):
+	# built-in water evaluation start, "bench-canvas" the whole-engine
+	# benchmark and "stress-canvas" the heavy-activity stress start. A saved
+	# file of the name always wins.
+	if _name.text in Setup.BUILTIN_LABELS and not FileAccess.file_exists(Setup._path(_name.text)):
 		if _liquids == null or _liquids.bridge == null: return refuse("Native policy interface unavailable.")
 		result = {"setup":Setup.builtin(_name.text,_liquids.bridge.default_liquid_policy())}
 	if result.has("error"): return refuse(result.error)
@@ -648,7 +649,7 @@ func paint(pos: Vector2i, material: int) -> bool:
 	# The usual stroke path costs one record. Check coalesced capacity only when
 	# the maximum possible row count would exceed the reconstruction budget.
 	var runs := 2*int(applied.brush)+1
-	for old: Array in applied.edits: runs += 2*int(old[2])+1
+	for old: Array in applied.edits: runs += Setup.stamp_rows(old)
 	if new_stamp and runs > Setup.MAX_RUNS:
 		applied.edits.append(stamp)
 		var recipe := Setup.rectangles(applied)

@@ -42,7 +42,9 @@ func fixture() -> Dictionary:
 	definition.body_enabled = true
 	definition.player_enabled = false
 	definition.tools = ["paint"]
-	definition.interest = {"policy":"fixed","region":[0,0,64,64]}
+	# Two 64-cell scheduling cores: capacity one counts distinct cores, so the
+	# injected failure needs activity in both (see the emission below).
+	definition.interest = {"policy":"fixed","region":[0,0,128,64]}
 	return definition
 
 
@@ -69,7 +71,7 @@ func emissions_published(after_revision: int) -> bool:
 	return (desktop.latest_snapshot.paused and not desktop.latest_snapshot.simulation_failed
 		and desktop.latest_snapshot.simulation_world_revision > after_revision
 		and desktop.latest_snapshot.world_revision == desktop.latest_snapshot.simulation_world_revision
-		and desktop.image.get_pixel(20,20).r8 == 2 and desktop.image.get_pixel(48,20).r8 == 2)
+		and desktop.image.get_pixel(20,20).r8 == 2 and desktop.image.get_pixel(84,20).r8 == 2)
 
 
 func render_acknowledged(after_serial: int, identity: Dictionary) -> bool:
@@ -155,7 +157,9 @@ func exercise(worker: CyberSimulationWorker) -> bool:
 	if not ready:
 		return false
 	var before_emission_revision: int = desktop.latest_snapshot.simulation_world_revision
-	expect(worker.queue_emit_cells(PackedInt32Array([20,20,48,20]), 2),
+	# The two points sit in distinct 64-cell scheduling cores, so capacity one
+	# is exhausted by distinct cores (not merely by two blocks of one core).
+	expect(worker.queue_emit_cells(PackedInt32Array([20,20,84,20]), 2),
 		"one bounded public emission batch is admitted by the exclusive owner")
 	ready = await wait_for(Callable(self, "emissions_published").bind(before_emission_revision))
 	expect(ready, "owner publishes both admitted Sand points into Main's actual presentation before another tick")

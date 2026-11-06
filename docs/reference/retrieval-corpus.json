@@ -563,6 +563,10 @@
       "reason": "Dated #406 branch evidence for the bench-canvas start, the workbench hard-surface pacing defect and three exact per-cell engine speedups. Retrieve the contracts through the threading, profiling and configuration pages."
     },
     {
+      "path": "audits/2026-11-06-stress-canvas.md",
+      "reason": "Dated #406 branch evidence for the stress-canvas start, box stamps with merged construction rectangles, the distinct-core capacity correction and the per-tick MicroScenario summary copy. Retrieve the contracts through the configuration, capacity and player-control pages."
+    },
+    {
       "path": "audits/2026-11-06-workbench-pf-tick-cost.md",
       "reason": "Dated #406 branch evidence for the workbench lock-step pacing defect, exact parallel PressureFlow head preparation and the opt-in fine-core geometry. Retrieve the contract through the threading and PressureFlow architecture pages."
     }

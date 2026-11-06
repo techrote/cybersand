@@ -40,6 +40,64 @@ const SALT := 23
 const SODIUM := 25
 const GUNPOWDER := 26
 const COAL := 27
+const STRESS_LABEL := "stress-canvas"
+const BUILTIN_LABELS := [DEFAULT_LABEL,BENCH_LABEL,STRESS_LABEL]
+const SMOKE := 4
+const FIRE := 6
+const PLANT := 11
+const DUST := 14
+const MITE := 15
+const ROCKET := 17
+const FUNGUS := 18
+const SEED := 19
+const SLUSH := 21
+const STEAM := 22
+const BRINE := 24
+const RUST := 29
+const CEMENT := 30
+const TOXIC_SLUDGE := 32
+const MERCURY := 33
+const SPARK := 34
+const GLASS := 35
+const MOLTEN_GLASS := 36
+const OAK_TIMBER := 46
+const THATCH := 47
+const PINE_PLANKS := 81
+const CARDBOARD := 93
+const MARBLE := 98
+const CHALK := 99
+const BASALT := 100
+const OBSIDIAN := 101
+const ADOBE := 102
+const RAW_CLAY := 103
+const PACKED_SNOW := 105
+const ROCK_SALT := 106
+const GYPSUM := 107
+const QUICKLIME := 108
+const RAMMED_EARTH := 109
+const SANDBAG := 110
+const ZINC := 113
+const MAGNESIUM := 115
+const THERMITE := 116
+const BARE_IRON := 117
+const GLASS_BLOCK := 120
+const FROSTED_GLASS := 121
+const QUARTZ := 122
+const URANIUM_GLASS := 123
+const SUGAR_GLASS := 124
+const WAX := 125
+const SULFUR := 126
+const PHOSPHOR := 127
+const POLYMER := 128
+# Starting paint may also use these staged materials (built-in stress canvas);
+# the brush palette and powder sources stay limited to MATERIALS.
+const STAGED_MATERIALS := [SMOKE,FIRE,PLANT,MITE,ROCKET,FUNGUS,SLUSH,STEAM,BRINE,CEMENT,TOXIC_SLUDGE,
+	MERCURY,SPARK,GLASS,MOLTEN_GLASS,OAK_TIMBER,THATCH,PINE_PLANKS,CARDBOARD,MARBLE,CHALK,BASALT,OBSIDIAN,
+	ADOBE,RAW_CLAY,PACKED_SNOW,ROCK_SALT,GYPSUM,QUICKLIME,RAMMED_EARTH,SANDBAG,ZINC,MAGNESIUM,THERMITE,
+	BARE_IRON,GLASS_BLOCK,FROSTED_GLASS,QUARTZ,URANIUM_GLASS,SUGAR_GLASS,WAX,SULFUR,PHOSPHOR,POLYMER]
+
+static func _box(edits: Array, from: Vector2i, to: Vector2i, material: int) -> void:
+	edits.append([from.x,from.y,to.x-from.x,to.y-from.y,material])
 
 static func _fill(edits: Array, from: Vector2i, to: Vector2i, radius: int, material: int) -> void:
 	# Disc centres stay inset by the radius, so a fill never paints outside its box.
@@ -132,9 +190,125 @@ static func engine_benchmark(policy: PackedInt32Array) -> Dictionary:
 	data.material = LAVA
 	return data
 
+# Built-in "stress-canvas" heavy-activity start (used only while no user file
+# of that name exists). 2048 x 1024, two tiers of eight zones; the shelf
+# between them has pour gaps so upper-tier products fall into the lower tier.
+# Most simulated materials and every reactive building material are staged
+# against their authored pair partners, thermal sources or combustion, with
+# eight barrels dropped into the pools. Cloner is excluded (unbounded growth).
+static func stress_canvas(policy: PackedInt32Array) -> Dictionary:
+	var data := fresh(policy,Vector2i(2048,1024))
+	var e: Array = data.edits
+	# ---- Upper tier (shelf at y 512). ----
+	# U0 snowfield: packed snow and ice under salt, with a steam pocket.
+	_box(e,Vector2i(12,420),Vector2i(244,508),PACKED_SNOW)
+	_box(e,Vector2i(40,330),Vector2i(120,410),ICE)
+	_box(e,Vector2i(150,360),Vector2i(230,410),STEAM)
+	_box(e,Vector2i(60,200),Vector2i(200,240),SALT)
+	# U1 glassworks: glass pillars under a hanging lava slab.
+	var glasses := [GLASS,GLASS_BLOCK,FROSTED_GLASS,QUARTZ,URANIUM_GLASS]
+	for i: int in glasses.size():
+		_box(e,Vector2i(268+i*46,400),Vector2i(306+i*46,508),glasses[i])
+	_box(e,Vector2i(272,250),Vector2i(496,310),LAVA)
+	# U2 pyrotechnics: woods, gunpowder, magnesium and thermite under fire.
+	var fuels := [PINE_PLANKS,OAK_TIMBER,THATCH,CARDBOARD,WOOD,GUNPOWDER,MAGNESIUM,THERMITE]
+	for i: int in fuels.size():
+		_box(e,Vector2i(524+i*30,420),Vector2i(552+i*30,508),fuels[i])
+	_box(e,Vector2i(524,404),Vector2i(672,420),FIRE)              # fire on the woods
+	_box(e,Vector2i(674,410),Vector2i(762,420),SPARK)             # sparks on the charges
+	_box(e,Vector2i(560,300),Vector2i(720,330),OIL)               # oil slick dripping onto the fire
+	# U3 foundry: wax, sulfur, polymer, phosphor and sugar glass under lava.
+	var melts := [WAX,SULFUR,POLYMER,PHOSPHOR,SUGAR_GLASS]
+	_box(e,Vector2i(918,420),Vector2i(956,430),FIRE)              # phosphor needs open fire
+	for i: int in melts.size():
+		_box(e,Vector2i(780+i*46,430),Vector2i(818+i*46,508),melts[i])
+	_box(e,Vector2i(790,300),Vector2i(1010,350),LAVA)
+	_box(e,Vector2i(960,200),Vector2i(1010,250),WATER)
+	# U4 avalanche: sand, dust, rust and coal hills over a pour gap.
+	_box(e,Vector2i(1036,120),Vector2i(1150,360),SAND)
+	_box(e,Vector2i(1150,160),Vector2i(1268,360),DUST)
+	_box(e,Vector2i(1060,380),Vector2i(1140,470),RUST)
+	_box(e,Vector2i(1160,380),Vector2i(1250,470),COAL)
+	# U5 biology: plant, seed, fungus and mites by a pool.
+	_box(e,Vector2i(1292,440),Vector2i(1420,508),WATER)
+	_box(e,Vector2i(1430,400),Vector2i(1524,508),PLANT)
+	_box(e,Vector2i(1300,360),Vector2i(1400,400),SEED)
+	_box(e,Vector2i(1440,330),Vector2i(1520,380),FUNGUS)
+	_box(e,Vector2i(1320,250),Vector2i(1500,290),MITE)
+	# U6 sludge: toxic sludge, Water, mercury and slush.
+	_box(e,Vector2i(1548,450),Vector2i(1660,508),TOXIC_SLUDGE)
+	_box(e,Vector2i(1560,300),Vector2i(1660,380),WATER)
+	_box(e,Vector2i(1680,450),Vector2i(1780,508),MERCURY)
+	_box(e,Vector2i(1690,330),Vector2i(1780,400),SLUSH)
+	# U7 oil depot: oil tank under sparks, cement with Water, a rocket stack.
+	_box(e,Vector2i(1804,430),Vector2i(1940,508),OIL)
+	_box(e,Vector2i(1820,330),Vector2i(1920,360),SPARK)
+	_box(e,Vector2i(1950,440),Vector2i(2036,508),CEMENT)
+	_box(e,Vector2i(1956,300),Vector2i(2030,360),WATER)
+	_box(e,Vector2i(1860,412),Vector2i(1900,430),ROCKET)          # rockets on the oil tank
+	# ---- Lower tier (floor at y 1016). ----
+	# L0 volcano: lava lake, basalt and obsidian under Water rain.
+	_box(e,Vector2i(12,930),Vector2i(244,1012),LAVA)
+	_box(e,Vector2i(30,850),Vector2i(110,930),BASALT)
+	_box(e,Vector2i(140,850),Vector2i(220,930),OBSIDIAN)
+	_box(e,Vector2i(40,600),Vector2i(220,680),WATER)
+	# L1 quench trough under the glassworks pour gap, with molten glass.
+	_box(e,Vector2i(268,930),Vector2i(496,1012),WATER)
+	_box(e,Vector2i(300,700),Vector2i(460,760),MOLTEN_GLASS)
+	# L2 chemistry: acid bath taking metals, marble and chalk.
+	_box(e,Vector2i(524,900),Vector2i(760,1012),ACID)
+	var reagents := [METAL,BARE_IRON,ZINC,MARBLE,CHALK]
+	for i: int in reagents.size():                                # submerged blocks
+		_box(e,Vector2i(536+i*46,950),Vector2i(566+i*46,1012),reagents[i])
+	_box(e,Vector2i(560,780),Vector2i(720,820),METAL)             # falling metal powder
+	# L3 salt lake: Water with salt, rock salt and sodium; brine under fire.
+	_box(e,Vector2i(780,930),Vector2i(890,1012),WATER)
+	_box(e,Vector2i(900,930),Vector2i(1010,1012),BRINE)
+	_box(e,Vector2i(800,960),Vector2i(840,1012),ROCK_SALT)        # submerged rock salt
+	_box(e,Vector2i(790,860),Vector2i(850,900),SALT)
+	_box(e,Vector2i(860,820),Vector2i(890,850),SODIUM)
+	_box(e,Vector2i(920,840),Vector2i(1000,880),FIRE)
+	# L4 earthworks: Water released over clays, earths, gypsum and quicklime.
+	var earths := [ADOBE,RAW_CLAY,RAMMED_EARTH,GYPSUM,QUICKLIME,SANDBAG]
+	for i: int in earths.size():
+		_box(e,Vector2i(1036+i*38,930),Vector2i(1068+i*38,1012),earths[i])
+	_box(e,Vector2i(1040,700),Vector2i(1260,780),WATER)
+	# L5 refinery fire: oil on Water with coal and a fire front.
+	_box(e,Vector2i(1292,960),Vector2i(1524,1012),WATER)
+	_box(e,Vector2i(1292,910),Vector2i(1524,960),OIL)
+	_box(e,Vector2i(1300,860),Vector2i(1380,910),COAL)
+	_box(e,Vector2i(1420,896),Vector2i(1510,910),FIRE)            # fire front on the oil
+	# L6 dam break against a sand bank.
+	_box(e,Vector2i(1548,620),Vector2i(1650,1012),WATER)
+	for x: int in range(1660,1780,8):                              # stepped bank
+		_box(e,Vector2i(x,1012-(x-1650)*5/8),Vector2i(x+8,1012),SAND)
+	# L7 thermal clash: lava against ice and packed snow, glass shards.
+	_box(e,Vector2i(1804,940),Vector2i(1920,1012),LAVA)
+	_box(e,Vector2i(1930,900),Vector2i(2036,1012),PACKED_SNOW)
+	_box(e,Vector2i(1830,760),Vector2i(1920,840),ICE)
+	_box(e,Vector2i(1940,760),Vector2i(2020,820),GLASS)
+	# ---- Structure, painted last. ----
+	_box(e,Vector2i(0,1012),Vector2i(2048,1024),WALL)              # floor
+	_box(e,Vector2i(0,16),Vector2i(8,1012),WALL)                   # sides
+	_box(e,Vector2i(2040,16),Vector2i(2048,1012),WALL)
+	# Shelf with pour gaps under the glassworks, avalanche and sludge zones.
+	for span: Array in [[8,380],[400,1180],[1220,1600],[1620,2040]]:
+		_box(e,Vector2i(span[0],508),Vector2i(span[1],516),WALL)
+	for x: int in range(256,2048,256):                             # zone dividers
+		_box(e,Vector2i(x-4,420),Vector2i(x+4,508),WALL)
+		_box(e,Vector2i(x-4,880),Vector2i(x+4,1012),WALL)
+	_box(e,Vector2i(268,316),Vector2i(496,322),GLASS)              # glass shelf under the lava slab (melts)
+	var spots := [[350,560],[640,700],[840,700],[960,760],[1150,600],[1400,700],[1600,540],[1980,640]]
+	for i: int in spots.size():
+		data.actors.append(instance(BARREL,i+1,Vector2(spots[i][0],spots[i][1])))
+	data.next_id = spots.size()+1
+	data.material = WATER
+	return data
+
 static func builtin(label: String, policy: PackedInt32Array) -> Dictionary:
 	if label == DEFAULT_LABEL: return water_evaluation(policy)
 	if label == BENCH_LABEL: return engine_benchmark(policy)
+	if label == STRESS_LABEL: return stress_canvas(policy)
 	return {}
 
 static func instance(model: String, id: int, pos: Vector2) -> Dictionary:
@@ -189,6 +363,22 @@ static func _actor_error(a: Variant, size: Vector2i, response: String) -> String
 static func _material(value: Variant, powders_only := false) -> bool:
 	return _integer(value,0,255) and int(value) in (MATERIALS.slice(0,9) if powders_only else MATERIALS)
 
+# A stamp is a brush disc [x, y, radius, material] or an axis-aligned box
+# [x, y, width, height, material] (built-in starts; never produced by the brush).
+static func _stamp_valid(stamp: Variant, size: Vector2i) -> bool:
+	if not stamp is Array or not _integer(stamp[0] if stamp.size() > 0 else null,0,size.x-1) 			or not _integer(stamp[1] if stamp.size() > 1 else null,0,size.y-1):
+		return false
+	if stamp.size() == 4:
+		return _integer(stamp[2],2,24) and _stamp_material(stamp[3])
+	return stamp.size() == 5 and _integer(stamp[2],1,size.x-int(stamp[0])) 		and _integer(stamp[3],1,size.y-int(stamp[1])) and _stamp_material(stamp[4])
+
+# Rows a stamp can touch (the brush's coalesced-capacity estimate).
+static func stamp_rows(stamp: Array) -> int:
+	return int(stamp[3]) if stamp.size() == 5 else 2*int(stamp[2])+1
+
+static func _stamp_material(value: Variant) -> bool:
+	return _material(value) or (_integer(value,0,255) and int(value) in STAGED_MATERIALS)
+
 static func validate(value: Variant, check_starting_paint: bool = true) -> String:
 	if not _keys(value,ROOT_KEYS) or not _integer(value.version,2,2):
 		return "Unsupported starting setup format."
@@ -216,8 +406,7 @@ static func validate(value: Variant, check_starting_paint: bool = true) -> Strin
 	if check_starting_paint:
 		if value.edits.size() > MAX_STAMPS: return "Starting paint capacity exhausted."
 		for stamp: Variant in value.edits:
-			if not stamp is Array or stamp.size() != 4 or not _integer(stamp[0],0,size.x-1) or not _integer(stamp[1],0,size.y-1) or not _integer(stamp[2],2,24) or not _material(stamp[3]):
-				return "Invalid brush stamp."
+			if not _stamp_valid(stamp,size): return "Invalid brush stamp."
 	if not value.source is Array or (not value.source.is_empty() and (value.source.size() != 3 or not _integer(value.source[0],0,size.x-4) or not _integer(value.source[1],0,size.y-24) or not _material(value.source[2],true))):
 		return "Place the entire 4 × 24 powder source inside the canvas."
 	if not value.liquid_policy is Array or value.liquid_policy.is_empty() or value.liquid_policy.size() > 4096:
@@ -242,6 +431,15 @@ static func rectangles(setup: Dictionary) -> Dictionary:
 	var size := extent_of(setup)
 	var rows := {}
 	for stamp: Array in setup.edits:
+		if stamp.size() == 5:
+			for row_y: int in range(int(stamp[1]),int(stamp[1])+int(stamp[3])):
+				if not rows.has(row_y):
+					var blank := PackedByteArray()
+					blank.resize(size.x)
+					rows[row_y] = blank
+				var box_row: PackedByteArray = rows[row_y]
+				for column: int in range(int(stamp[0]),int(stamp[0])+int(stamp[2])): box_row[column] = int(stamp[4])
+			continue
 		var x := int(stamp[0])
 		var y := int(stamp[1])
 		var radius := int(stamp[2])
@@ -255,7 +453,11 @@ static func rectangles(setup: Dictionary) -> Dictionary:
 			var row: PackedByteArray = rows[row_y]
 			for column: int in range(maxi(0,x-half),mini(size.x,x+half+1)):
 				row[column] = int(stamp[3])
+	# A run identical (start, width, material) to one ending on the previous
+	# row extends that rectangle downward, so painted boxes cost one record.
+	# The rectangles never overlap; they cover exactly the painted cells.
 	var runs := []
+	var open := {}
 	var row_keys := rows.keys()
 	row_keys.sort()
 	for y: int in row_keys:
@@ -266,7 +468,13 @@ static func rectangles(setup: Dictionary) -> Dictionary:
 			var mat := int(row[x])
 			while x < size.x and row[x] == mat: x += 1
 			if mat == 0: continue
-			if runs.size() >= MAX_RUNS*5: return {"error":"Starting terrain exceeds 4096 horizontal runs."}
+			var key := Vector3i(start,x-start,mat)
+			var index: int = open.get(key,-1)
+			if index >= 0 and int(runs[index+1])+int(runs[index+3]) == y:
+				runs[index+3] = int(runs[index+3])+1
+				continue
+			if runs.size() >= MAX_RUNS*5: return {"error":"Starting terrain exceeds 4096 rectangles."}
+			open[key] = runs.size()
 			runs.append_array([start,y,x-start,1,mat])
 	return {"runs":runs}
 

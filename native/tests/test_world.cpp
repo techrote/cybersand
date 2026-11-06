@@ -3728,6 +3728,37 @@ void test_player_field_native_tick_quantity_and_worker_parity() {
 
 // MaterialRules' namespace-scope pair tables must answer exactly as the
 // authored InteractionRules resolver for every material pair and roll.
+// Active-core capacity bounds distinct scheduling cores, not active blocks:
+// sixteen active 32-cell blocks inside four 64-cell cores fit a capacity of
+// four, evolve exactly like an unbounded World, and a capacity of three still
+// fails explicitly.
+void test_active_core_capacity_counts_distinct_cores() {
+    const auto build = [](std::size_t capacity) {
+        WorldConfig config{};
+        config.worker_threads = 1;
+        config.active_core_capacity = capacity;
+        auto world = std::make_unique<World>(config);
+        world->reserve_region({0, 0, 128, 128});
+        for (int by = 0; by < 4; ++by)
+            for (int bx = 0; bx < 4; ++bx) world->set(16 + 32 * bx, 8 + 32 * by, Material::Sand);
+        return world;
+    };
+    auto bounded = build(4);
+    auto reference = build(4096);
+    for (int tick = 0; tick < 6; ++tick) {
+        const auto stats = bounded->tick();
+        (void)reference->tick();
+        require(!bounded->has_failed() && stats.scheduled_cores <= 4,
+                "four distinct cores exhausted a four-core capacity");
+    }
+    require(bounded->physical_state_hash() == reference->physical_state_hash(),
+            "distinct-core capacity changed the simulated cells");
+    auto tight = build(3);
+    bool threw = false;
+    try { (void)tight->tick(); } catch (const std::runtime_error&) { threw = true; }
+    require(threw && tight->has_failed(), "a fourth distinct core did not exhaust a three-core capacity");
+}
+
 void test_pair_reaction_tables_match_resolver() {
     std::size_t reacting = 0;
     for (unsigned s = 0; s < 256U; ++s) {
@@ -4042,6 +4073,7 @@ int main(int argc, char** argv) {
         {"IN-B1 signed vertical support and hybrid", test_inertial_signed_vertical_support_and_hybrid},
         {"Workbench parallel PressureFlow heads match serial (all variants)", test_workbench_pressure_heads_parallel_exact},
         {"Pair reaction tables match the authored resolver", test_pair_reaction_tables_match_resolver},
+        {"Active-core capacity counts distinct cores", test_active_core_capacity_counts_distinct_cores},
     };
 
     std::size_t passed = 0;

@@ -352,7 +352,7 @@ subset, with the separate liquid-policy entry point noted below.
 | `maximum_rule_radius` | 2 | Prepared write expansion; active catalogue requires at least 2 |
 | `worker_threads` | 1 | Standalone worker count; adapter overrides below |
 | `parallel_job_threshold` | 8 | Minimum phase jobs before pool dispatch |
-| `active_core_capacity` | 4096 | Gathered core candidates/results; checked before deduplication |
+| `active_core_capacity` | 4096 | Gathered core candidates/results; distinct cores per chunk are checked, cross-chunk duplicates removed after |
 | `active_chunk_capacity` | 4096 | Active-chunk scratch bound |
 | `maximum_chunk_count` | 4096 | Resident chunk limit |
 | `deferred_event_capacity` | 1024 | Accepted explosion queue bound |
@@ -721,9 +721,11 @@ Current native `set_simulation_region` rejects nonpositive sizes and inclusive
 endpoint overflow. Null selects all cores; finite bounds normalize to intersecting
 cores. Same-coverage requests are equivalent for activity. Region transitions
 reuse existing resident metadata passes, and retained excluded activity still
-counts toward active-chunk capacity. Candidate-core capacity is checked before
-deduplication; a re-entry wake may explicitly fail under a small construction
-budget. Failed regions cannot be retried by reducing the window. See the
+counts toward active-chunk capacity. Candidate-core capacity counts distinct
+cores within each chunk (since the 2026-11-06 #406
+[stress-canvas correction](../audits/2026-11-06-stress-canvas.md); several active
+blocks of one core previously counted separately); a re-entry wake may still
+explicitly fail under a small construction budget. Failed regions cannot be retried by reducing the window. See the
 [interest contract](../systems/world-storage-and-interest-region.md).
 
 ## Which settings belong only to physics experiments?
