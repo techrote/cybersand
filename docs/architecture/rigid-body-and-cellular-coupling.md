@@ -11,6 +11,16 @@ last-reviewed: 2026-11-06
 
 # Rigid-body and cellular coupling
 
+## SOL contact ordering experiment
+
+The [isolated route](../systems/solid-detachment.md#contact-and-gravity-ordering--2026-11-06)
+can apply unchanged Sand response after one confirmed Rapier advance and before
+publication. This ages the original witness by one before packing increments its
+serial. Publication/native tick/physical step are distinct clocks; independent
+60Hz loops supply age0/1, becoming post age1/2. No source sample/timestamp refresh,
+relaxed age/drift/energy guard, mass/cap change or new continuous support force
+is admitted. More support with worse burial is a negative settling result.
+
 ## Source-local SOL mass readiness — 2026-11-06
 
 The isolated [initialization candidate](../systems/solid-detachment.md#first-impulse-backend-readiness--2026-11-06)

@@ -10,6 +10,21 @@ related-documents: [source-checkpoint-and-recovery.md, testing-validation-and-re
 
 # Local build and validation
 
+## SOL contact ordering qualification — 2026-11-06
+
+Use `python tools/sol281/order_values.py --run NEW` and `order_reduce_values.py`
+for authenticated retained values; `order_live.py --run NEW` executes32 fresh
+cut episodes on actual Windows/Linux, workers1/4. Add `--gates-only` for planner,
+fence/dispatch tests and four post qualifications. `order_reduce_live.py --run NEW`
+audits body bits, exact union, geometry, quantities and energy; `--output NEW.json`
+preserves earlier derivations. `test_order_reduction.py` rejects foreign/invalid/
+frozen/nonfinite/policy-mismatched states. Tools are in `tools/sol281`; source-bound
+parent artifacts and commands are recorded in the [dossier](../audits/2026-11-06-sol-contact-gravity-order.md).
+Child collection2GiB/5GiB reserve is separate from the parent's4GiB. Reused native
+binaries require source equality; actual engines/Rapier are authenticated. These
+are real Windows-host tests, not new MSVC/ASan/UBSan native execution. Observer
+timing is not original SOL CPU admission. Keep Draft and retain guard failures.
+
 ## SOL stage and mass-readiness qualification — 2026-11-06
 
 On the isolated393-dependent branch, use fresh names with

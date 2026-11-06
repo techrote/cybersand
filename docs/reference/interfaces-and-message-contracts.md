@@ -6,10 +6,20 @@ status: Current
 scope: Current C ABI, procedural-generation C++/Godot surfaces and private packed layouts; proposed gameplay/reconfiguration contracts remain distinct
 keywords: [C API v2, material_info_v3, material_info_v4, body packet, INPUT_STRIDE, RG8, gameplay command]
 related-documents: [../architecture/data-ownership-and-lifetimes.md, ../architecture/simulation-tick-and-threading.md, ../architecture/rendering-and-gameplay-bridges.md, level-saves-and-replay.md, ../architecture/pressure-optimization.md]
-last-reviewed: 2026-11-04
+last-reviewed: 2026-11-06
 ---
 
 # Interfaces and message contracts
+
+## SOL experimental order dispositions
+
+`SolidDetachmentSession.physics_step()` returns a value dictionary with `outcome`
+and `deferred` (a captured post envelope existed). Outcomes: `Published`,
+`Inactive`, `UnknownContactOrder`, `HeldAfterConsume`, `TerrainPending`,
+`OwnerRetired`, `StepNotAdvanced`, `PostContactStopped`, `PublicationFailed`.
+Callers may ignore it; tests retain it. A discard is not a bridge attempt or
+physical clearance. Actual response receipts retain source/current samples,
+snapshot and applied order. See the [detachment contract](../systems/solid-detachment.md#contact-and-gravity-ordering--2026-11-06).
 
 ## SOL public boundary results — 2026-11-04
 

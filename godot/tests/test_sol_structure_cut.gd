@@ -5,6 +5,28 @@ class Probe:
 	var structure: String = "tree"
 	var stage_trace: bool = false
 	var measured: Dictionary = {}
+	var participation: Dictionary = {}
+	func _create_worker() -> CyberSimulationWorker:
+		var result: CyberSimulationWorker = super._create_worker()
+		result.set_worker_participation_sampling(true)
+		return result
+	func _observe_worker_participation(values: Dictionary) -> void:
+		participation = values.duplicate(true)
+	func _observe_contact_boundary(stage: String, envelope: Dictionary, advanced: int) -> void:
+		measured[stage] = {"state":read(),"advanced":advanced,
+			"source_sample":envelope.sample,"captured_current":envelope.current,
+			"snapshot":envelope.snapshot,"tick":envelope.tick,"revision":str(envelope.revision),
+			"epoch":envelope.epoch,"token":envelope.token,"generation":envelope.generation}
+	func physics_step() -> Dictionary:
+		var audit: Dictionary = super.physics_step()
+		if measured.is_empty() or not _contact_metrics.has("response_attempts"):return audit
+		# Deferred responses exist only after physics_step completes.
+		measured["response_attempts_delta"]=int(_contact_metrics.response_attempts)-int(measured.metrics_before.physical_contact.response_attempts)
+		measured["response_is_new"]=measured.response_attempts_delta>0
+		measured["response"]=last_contact_response.duplicate(true)
+		measured["worker_participation"]=participation.duplicate(true)
+		measured["step_audit"]=audit
+		return audit
 	func _author_surroundings(native: Object, kind: String) -> bool:
 		if structure=="building":
 			# Setup only, while this thread exclusively owns native; cut stays real.
@@ -46,10 +68,10 @@ class Probe:
 			"bits":bits([p.x.x,p.x.y,p.y.x,p.y.y,p.origin.x,p.origin.y,v.x,v.y,w,m,inertia]),
 			"sample_serial":_coupling_sample_serial,"snapshot_serial":_coupling_snapshot_serial,"native_tick":_coupling_last_native_tick,
 			"physics_epoch":physics_epoch,"generation":generation,"terrain_revision":_terrain_revision}
-	func _consume_compound_results() -> void:
+	func _consume_compound_results() -> Dictionary:
 		measured={"before":read(),"metrics_before":coupling_metrics(),"ordinary_stage_calls":0,
 			"ordinary_stage":{"observed":false,"reason":"No ordinary bridge invocation in this consume"}}
-		super._consume_compound_results()
+		var deferred: Dictionary = super._consume_compound_results()
 		measured["after_application"]=read();measured["metrics_after"]=coupling_metrics()
 		measured["new_snapshot"]=measured.before.snapshot_serial!=measured.after_application.snapshot_serial
 		measured["ordinary_records_delta"]=_coupling_result_records-int(measured.metrics_before.result_records)
@@ -59,6 +81,7 @@ class Probe:
 		measured["response_is_new"]=measured.response_attempts_delta>0
 		measured["response"]=last_contact_response.duplicate(true)
 		measured["contact_observation"]=last_contact_observation.duplicate(true)
+		return deferred
 	func _observe_compound_application(applied: Dictionary, results: PackedFloat32Array,
 			states: PackedFloat32Array, snapshot_serial: int, native_tick: int,
 			world_revision: int, owner_epoch: int) -> void:
@@ -113,6 +136,9 @@ func run() -> void:
 	var compact_evidence: bool = OS.get_environment("SOL_COMPACT_EVIDENCE")=="1"
 	var workers: int = int(OS.get_environment("SOL_WORKERS"))
 	var steps: int = 720 if surroundings=="empty" else 360
+	var order_profile: bool = OS.get_environment("SOL_ORDER_PROFILE")=="1"
+	var contact_order: String = OS.get_environment("SOL_CONTACT_ORDER")
+	if order_profile:steps=720
 	var output: String = OS.get_environment("SOL_OUTPUT")
 	if output.is_empty() or FileAccess.file_exists(output):
 		printerr("SOL_STRUCTURE refuses missing/existing output path");quit(1);return
@@ -121,6 +147,9 @@ func run() -> void:
 	var opened: bool = await session.open(root,workers,surroundings,true,enabled,true)
 	check(opened,"actual SOL source opens: "+session.last_error)
 	if not opened:session.close();quit(1);return
+	if order_profile:
+		check(contact_order in ["pre","post"],"registered contact order")
+		session.sand_contact_order=contact_order
 	var intact: Dictionary = await session.observe_intact()
 	check(intact.get("outcome")=="Anchored","uncut structure remains native and anchored")
 	var before: Dictionary = await session.inspect_coupling(PackedInt32Array(),Rect2i(0,0,160,128))
@@ -144,6 +173,7 @@ func run() -> void:
 			"transform":PhysicsServer2D.body_get_shape_transform(session.body.get_rid(),index),
 			"owner_disabled":session.body.is_shape_owner_disabled(session.body.shape_find_owner(index))})
 	var report: Dictionary = {"registration":"SOL-STRUCTURE-CUT-001","source":OS.get_environment("CYBERSAND_SOURCE_REVISION"),
+		"order_registration":"SOL-CONTACT-ORDER-LIVE-001" if order_profile else "","contact_order":session.sand_contact_order,
 		"platform":OS.get_name(),"structure":structure,"surroundings":surroundings,"sand_response":enabled,"workers":workers,
 		"stage_trace":session.stage_trace,"stage_registration":"SOL-STRUCTURE-STAGES-001" if session.stage_trace else "",
 		"compact_delta_counters":compact_evidence,"mass_readiness_evidence":"Cached scalar/COM readback alone is insufficient; isolated known-wrench oracle and actual permitted response supply behavioral evidence",
@@ -167,9 +197,16 @@ func run() -> void:
 				check(int(row.ordinary_stage_calls)==1 and mid.manual_step==prior and row.before.manual_step==prior and row.after_application.manual_step==prior,"no physics step between application stages")
 				check(mid.body_rid==report.body_rid and mid.physics_epoch==row.before.physics_epoch and mid.generation==row.before.generation,"midpoint same authoritative body/session")
 				if not row.ordinary_stage.receipt.get("accepted",false):check(mid.bits==row.before.bits,"refused ordinary stage is mutation-free")
-				if not row.response_is_new or not row.response.get("accepted",false):
+				if session.sand_contact_order=="post" or not row.response_is_new or not row.response.get("accepted",false):
 					if not row.response.get("failed",false):check(mid.bits==row.after_application.bits,"disabled or refused Sand is mutation-free")
 			else:check(int(row.ordinary_stage_calls)==0 and row.before.bits==row.after_application.bits,"unobserved ordinary stage does not reuse held work")
+		if order_profile and row.response_is_new:
+			check(row.has("before_sand") and row.has("after_sand"),"both actual Sand boundaries observed")
+			var pre: Dictionary=row.before_sand;var post: Dictionary=row.after_sand
+			check(pre.advanced==int(contact_order=="post") and pre.state.manual_step==prior+int(contact_order=="post"),"actual application stage")
+			check(row.response.current_sample_serial==(int(pre.captured_current)+int(pre.advanced))%1000000,"physical step ages witness")
+			check(row.after_step.sample_serial==(int(pre.captured_current)+1)%1000000,"exactly one publication increment")
+			if not row.response.get("accepted",false) and not row.response.get("failed",false):check(pre.state.bits==post.state.bits,"Sand refusal makes no RID change")
 		if compact_evidence:
 			# Deltas above and final complete metrics retain every attempt/refusal;
 			# omit two redundant cumulative dictionaries from each serialized frame.
