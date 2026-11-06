@@ -52,4 +52,24 @@ for placement in scene["placements"]:
     check(x >= 0 and y >= 0 and x+f["size"][0] <= scene["size"][0] and y+f["size"][1] <= scene["size"][1],
           "out-of-bounds composite placement")
 check(sum(r[4] == 3 for f in features.values() for r in f["rectangles"]) == 1, "cistern Water count drift")
+
+# ALT-A: the alternate view is a distinct dry composition with exactly eight unchanged original modules.
+alt = pack.get("alternate_scene")
+check(isinstance(alt, dict) and alt.get("size") == [640, 256], "missing or invalid alternate scene")
+rectangles(alt["rectangles"], alt["size"], "alternate composite", False)
+check(len(alt["placements"]) == 8, "alternate must reuse exactly eight modules")
+check({p["feature"] for p in alt["placements"]} == set(features), "alternate feature reuse drift")
+check(all((p["feature"],p["x"],p["y"]) not in {(q["feature"],q["x"],q["y"]) for q in scene["placements"]} for p in alt["placements"]), "alternate is not a relocated composition")
+for placement in alt["placements"]:
+    f=features[placement["feature"]]
+    x,y=placement["x"],placement["y"]
+    check(all(type(z) is int for z in (x,y)) and x >= 0 and y >= 0 and x+f["size"][0] <= alt["size"][0] and y+f["size"][1] <= alt["size"][1], "alternate placement out of bounds")
+    variant=placement["variant"]
+    allowed={"base"} | {v["id"] for v in f["variants"]}
+    check(variant in allowed, "unknown alternate variant")
+    swap=next((v["swap"] for v in f["variants"] if v["id"] == variant), {})
+    for rect in f["rectangles"]:
+        material=swap.get(str(rect[4]), rect[4])
+        check(material in palette and not palette[material]["movable"], "alternate placement contains mobile material")
+check(next(p for p in alt["placements"] if p["feature"]=="sealed-cistern")["variant"]=="dry", "active cistern not allowed in dry alternate")
 print("PASS: 8 source-checked authoring pieces, bounds/variant/classification checks; native execution NOT performed")
