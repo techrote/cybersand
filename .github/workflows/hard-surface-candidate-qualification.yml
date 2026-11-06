@@ -1,0 +1,218 @@
+name: HS-PKT temporary candidate qualification
+on:
+  pull_request:
+    types: [ready_for_review, synchronize, reopened]
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: hs-pkt-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+env:
+  GODOT_CPP_COMMIT: 101ae38034304346a46ea9ea84ae156d3e860496
+  LLVM_MINGW_URL: https://github.com/mstorsjo/llvm-mingw/releases/download/20260826/llvm-mingw-20260826-ucrt-ubuntu-22.04-x86_64.tar.xz
+  LLVM_MINGW_SHA256: cee8d2ce3da5145ce4dc882e70d0b0719a783d53a99752c60948fc0659975a65
+  GODOT_WINDOWS_URL: https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip
+  GODOT_URL: https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7
+  GODOT_SHA256: 0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c
+  GODOT_VERSION: 4.7.stable.official.5b4e0cb0f
+  CYBERSAND_CI_WATCHDOG_SCALE: "1"
+  GITHUB_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+jobs:
+  build-windows-candidate:
+    if: github.event.pull_request.number == 470 && github.event.pull_request.draft == false
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          lfs: false
+      - name: Prepare pinned cross-build dependencies
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/scons"
+          "$RUNNER_TEMP/scons/bin/python" -m pip install --require-hashes -r tools/requirements-build.txt
+          mkdir "$RUNNER_TEMP/godot-cpp"
+          git -C "$RUNNER_TEMP/godot-cpp" init
+          git -C "$RUNNER_TEMP/godot-cpp" remote add origin https://github.com/godotengine/godot-cpp.git
+          timeout 1200 git -C "$RUNNER_TEMP/godot-cpp" fetch --depth=1 origin "$GODOT_CPP_COMMIT"
+          git -C "$RUNNER_TEMP/godot-cpp" checkout --detach FETCH_HEAD
+          test "$(git -C "$RUNNER_TEMP/godot-cpp" rev-parse HEAD)" = "$GODOT_CPP_COMMIT"
+          timeout 1200 curl --fail --location --retry 3 --output "$RUNNER_TEMP/llvm.tar.xz" "$LLVM_MINGW_URL"
+          echo "$LLVM_MINGW_SHA256  $RUNNER_TEMP/llvm.tar.xz" | sha256sum --check --strict
+          mkdir "$RUNNER_TEMP/llvm-mingw"
+          tar -xJf "$RUNNER_TEMP/llvm.tar.xz" -C "$RUNNER_TEMP/llvm-mingw" --strip-components=1
+          if test ! -e "$RUNNER_TEMP/llvm-mingw/bin/x86_64-w64-mingw32-gcc-ar"; then
+            ln -s llvm-ar "$RUNNER_TEMP/llvm-mingw/bin/x86_64-w64-mingw32-gcc-ar"
+          fi
+      - name: Build and attest ephemeral Windows candidate
+        env:
+          GODOT_CPP_ROOT: ${{ runner.temp }}/godot-cpp
+          SCONS_PYTHON: ${{ runner.temp }}/scons/bin/python
+          SCONS_JOBS: "2"
+          LLVM_MINGW_ROOT: ${{ runner.temp }}/llvm-mingw
+          WINDOWS_CXX: ${{ runner.temp }}/llvm-mingw/bin/x86_64-w64-mingw32-g++
+          CYBERSAND_NATIVE_OUTPUT: ${{ runner.temp }}/cybersand_native.windows.x86_64.dll
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_HEAD_SHA"
+          timeout 3600 tools/build_pinned_godot_cpp.sh windows
+          timeout 3600 tools/build_native_extension_windows.sh
+          python3 tools/ci/run_hard_surface_windows_candidate.py stage --binary "$CYBERSAND_NATIVE_OUTPUT" --output build/hs-candidate
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: hs-candidate-dll-${{ github.run_id }}
+          path: build/hs-candidate/
+          retention-days: 1
+          if-no-files-found: error
+  windows-candidate-tests:
+    name: Candidate-only Windows ${{ matrix.shard }}
+    needs: build-windows-candidate
+    if: needs.build-windows-candidate.result == 'success'
+    runs-on: windows-2022
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      max-parallel: 8
+      matrix:
+        shard: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
+    defaults:
+      run:
+        shell: bash
+    env:
+      GODOT_SILENCE_ROOT_WARNING: "1"
+      PYTHONUTF8: "1"
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          lfs: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: "3.12"
+      - name: Materialize pinned Rapier
+        run: |
+          set -euo pipefail
+          git lfs install --local
+          git lfs pull --include="godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll" --exclude=""
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: hs-candidate-dll-${{ github.run_id }}
+          path: build/hs-candidate
+      - name: Download pinned Godot 4.7 for Windows
+        run: |
+          curl --fail --location --retry 3 --connect-timeout 60 --max-time 1200 --output "$RUNNER_TEMP/godot-windows.zip" "$GODOT_WINDOWS_URL"
+      - name: Verify exact candidate and execute unchanged Windows case runner
+        run: |
+          python tools/ci/run_hard_surface_windows_candidate.py run --artifact build/hs-candidate --godot-archive "$RUNNER_TEMP/godot-windows.zip" --expected-source-sha "$GITHUB_HEAD_SHA" --shard-count 20 --shard-index ${{ matrix.shard }} --execution-seconds 6800 --output "build/hs-windows/shard-${{ matrix.shard }}"
+      - name: Retain raw case evidence, not DLLs
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: hs-windows-evidence-${{ matrix.shard }}-${{ github.run_id }}
+          path: build/hs-windows/shard-${{ matrix.shard }}/
+          retention-days: 30
+          if-no-files-found: warn
+  same-host-abba:
+    name: Same-host parent/candidate three-canvas benchmark
+    if: github.event.pull_request.number == 470 && github.event.pull_request.draft == false
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    env:
+      PARENT_SHA: 4a80af2a891332176a3912a235582d77d076a185
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+          lfs: false
+      - name: Prepare exact parent and identical diagnostic overlays
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_HEAD_SHA"
+          git lfs install --local
+          git lfs pull --include="godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so" --exclude=""
+          echo "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a  godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so" | sha256sum --check --strict
+          GIT_LFS_SKIP_SMUDGE=1 git worktree add --detach "$RUNNER_TEMP/hs-parent" "$PARENT_SHA"
+          cp godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so "$RUNNER_TEMP/hs-parent/godot/addons/godot-rapier2d/bin/"
+          for f in simulation_snapshot.gd simulation_worker.gd hard_surface_packet_profile.gd; do
+            cp "godot/scripts/$f" "$RUNNER_TEMP/hs-parent/godot/scripts/$f"
+            cmp "godot/scripts/$f" "$RUNNER_TEMP/hs-parent/godot/scripts/$f"
+          done
+          mkdir -p build/hs-abba
+          git -C "$RUNNER_TEMP/hs-parent" status --porcelain > build/hs-abba/control-worktree-delta.txt
+          sha256sum godot/scripts/simulation_snapshot.gd godot/scripts/simulation_worker.gd godot/scripts/hard_surface_packet_profile.gd > build/hs-abba/instrumentation-hashes.txt
+      - name: Install pinned Linux toolchain and Godot
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/scons"
+          "$RUNNER_TEMP/scons/bin/python" -m pip install --require-hashes -r tools/requirements-build.txt
+          mkdir "$RUNNER_TEMP/godot-cpp"
+          git -C "$RUNNER_TEMP/godot-cpp" init
+          git -C "$RUNNER_TEMP/godot-cpp" remote add origin https://github.com/godotengine/godot-cpp.git
+          timeout 1200 git -C "$RUNNER_TEMP/godot-cpp" fetch --depth=1 origin "$GODOT_CPP_COMMIT"
+          git -C "$RUNNER_TEMP/godot-cpp" checkout --detach FETCH_HEAD
+          timeout 1200 curl --fail --location --retry 3 --output "$RUNNER_TEMP/godot.zip" "$GODOT_URL"
+          echo "$GODOT_SHA256  $RUNNER_TEMP/godot.zip" | sha256sum --check --strict
+          mkdir "$RUNNER_TEMP/godot"
+          unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/godot"
+          GODOT_BIN="$(find "$RUNNER_TEMP/godot" -maxdepth 1 -type f -name 'Godot*' -print -quit)"
+          chmod +x "$GODOT_BIN"
+          test "$("$GODOT_BIN" --version)" = "$GODOT_VERSION"
+          echo "GODOT_BIN=$GODOT_BIN" >> "$GITHUB_ENV"
+          bash tools/ci/prepare_linux_display.sh
+      - name: Build separate parent and candidate native libraries
+        env:
+          GODOT_CPP_ROOT: ${{ runner.temp }}/godot-cpp
+          SCONS_PYTHON: ${{ runner.temp }}/scons/bin/python
+          SCONS_JOBS: "2"
+          CYBERSAND_REAL_CXX: /usr/bin/g++-13
+          LINUX_CXX: /usr/bin/g++-13
+        run: |
+          set -euo pipefail
+          timeout 3600 tools/build_pinned_godot_cpp.sh linux
+          (cd "$RUNNER_TEMP/hs-parent"; CYBERSAND_NATIVE_OUTPUT="$RUNNER_TEMP/hs-parent.so" timeout 3600 tools/build_native_extension.sh)
+          CYBERSAND_NATIVE_OUTPUT="$RUNNER_TEMP/hs-candidate.so" timeout 3600 tools/build_native_extension.sh
+          sha256sum "$RUNNER_TEMP/hs-parent.so" "$RUNNER_TEMP/hs-candidate.so" > build/hs-abba/runtime-hashes.txt
+      - name: Measure actual workbench with A B B A ordering
+        run: |
+          set -euo pipefail
+          export LIBGL_ALWAYS_SOFTWARE=1 LP_NUM_THREADS=2 GALLIVM_PERF=nopt
+          for record in 1-control 2-candidate 3-candidate 4-control; do
+            arm="${record#?-}"
+            if test "$arm" = control; then
+              source="$RUNNER_TEMP/hs-parent"; source_sha="$PARENT_SHA"; native="$RUNNER_TEMP/hs-parent.so"
+            else
+              source="$GITHUB_WORKSPACE"; source_sha="$GITHUB_HEAD_SHA"; native="$RUNNER_TEMP/hs-candidate.so"
+            fi
+            cp "$native" "$source/godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so"
+            (cd "$source"; CYBERSAND_SOURCE_SHA="$source_sha" timeout 1500 xvfb-run --auto-servernum --server-args="-screen 0 1920x1080x24 -nolisten tcp" "$GODOT_BIN" --headless --path godot --script res://scripts/hard_surface_packet_profile.gd -- --workbench) 2>&1 | tee "build/hs-abba/$record.log"
+          done
+          python3 - <<'PY'
+          from pathlib import Path
+          import json
+          root=Path('build/hs-abba')
+          records=[]
+          for name in ('1-control','2-candidate','3-candidate','4-control'):
+              log=(root/(name+'.log')).read_text(errors='replace')
+              rows=[line.split('HARD_SURFACE_PROFILE ',1)[1] for line in log.splitlines() if 'HARD_SURFACE_PROFILE {' in line]
+              if len(rows)!=3:
+                  raise RuntimeError(f'{name}: expected three canvas receipts, got {len(rows)}')
+              for row in rows:
+                  value=json.loads(row); value['arm']=name
+                  if value['observed_snapshots'] < 100:
+                      raise RuntimeError(f'{name}: incomplete observed snapshots')
+                  records.append(value)
+          (root/'ab-ba.json').write_text(json.dumps({'schema':'hs-pkt-abba-v1','profiles':records},indent=2)+'\\n')
+          for value in records:
+              print('HS_ABBA',value['canvas'],value['arm'],json.dumps(value['hard_surface_packet_executed']))
+          PY
+      - name: Retain measurements, not native binaries
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: hs-pkt-abba-${{ github.run_id }}
+          path: build/hs-abba/
+          retention-days: 30
+          if-no-files-found: warn

@@ -257,3 +257,67 @@ committing rebuilt binaries: this task explicitly forbids runtime binary
 publication without owner approval. A source implementation and source-level byte
 oracle must not be converted into a runtime exactness or performance claim by
 inference.
+
+## Continuation: exact-head Native evidence and transactional repair — 2026-11-06
+
+The previous STOP ledger is historical and must not be rewritten as though
+its pending jobs had executed at that time. Subsequently, at the unchanged
+candidate head `97c19098fd2c238a75815836d4982668999f3f92`:
+
+- [Native workflow 42295743251](https://github.com/techrote/cybersand/actions/runs/42295743251)
+  completed successfully, including 190 C++ tests in native-normal,
+  ASan/UBSan and TSan. This includes the two new hard-surface invalidation
+  cases. Runtime logs, not merely the green workflow summary, establish execution.
+- [GDExtension workflow 42295743187](https://github.com/techrote/cybersand/actions/runs/42295743187)
+  built the Linux and Windows extensions successfully. Its Windows regression
+  shards executed zero actual cases: the retained Windows DLL source manifest
+  correctly rejected the modified `cyber_native_cell_world.cpp`. Some
+  Linux shards passed with ephemeral exact-source builds; the full Linux
+  suite did not complete. Neither is an all-OS qualification.
+- [Docs 42298402388](https://github.com/techrote/cybersand/actions/runs/42298402388)
+  passed after the earlier Ready attempt's intentionally failed retained
+  runtime source-provenance gate. Palette-shader qualification also rejected
+  a mismatched retained native runtime.
+- A successful cross-build, source-valid C++ tests and an authored
+  Godot byte-oracle are not equivalent to running the Godot oracle on
+  the rebuilt candidate.
+
+The independent review identified a two-part exception-safety hazard:
+
+1. `World::take_hard_surface_invalidation()` previously cleared per-chunk
+   tile bits while adding entries to a growing `std::vector`.
+   Allocation failure partway through the loop could leave earlier chunks'
+   flags lost and later chunks' flags pending. Collection now retains **all**
+   flags until growth, sorting and deduplication succeed, then retires
+   them in a nonthrowing pass.
+2. `CyberNativeCellWorld::get_hard_surface_chunk_rectangles()` previously
+   mutated its mask cache after consuming invalidation but had no persistent
+   failed-publication marker. An exception followed by a separate new hard
+   change could let the next query trust a partial cache. The adapter now
+   marks cache invalid before any consumption or mutation, sets it valid only
+   after committing the complete packet, and binds validity to the actual
+   `World*` incarnation. Interrupted queries force full mask recovery.
+
+Protected-source transition (explicit MAT-AUTH chain, not a rewrite of
+the original #470 transition):
+
+| Path | LF SHA-256 before | LF SHA-256 after | Source commit |
+|---|---|---|---|
+| `native/src/world.cpp` | `d743ca60406fc8f220206e005b37996f1d182005b1b86e0ed6591f050608fe1c` | `8bf0cb0058b139c32c030f5bbbc7e7e4555814c601598e1d6c7abecf7397d7fb` | `9ad76b21854b3e44fc9444f8293d3c36c619746b` |
+
+This commit also changes the adapter's `.cpp` and `.hpp` transaction
+guard; neither changes render packet fields or simulation law. The
+transition is registered against issue #362 and Draft PR #470, pending
+fresh hosted compatibility and runtime qualification. No pass claims
+carry over to the repaired source head.
+
+The ordinary Windows retained-DLL gate requires a committed LFS
+pointer and matching published manifest and therefore intentionally
+rejects new source. A separate ephemeral candidate workflow can test
+a rebuilt, source-matched Windows DLL in its CI workspace without
+replacing the retained runtime or relaxing its release gate. Such
+candidate execution is **not** the canonical retained-runtime result.
+
+The full three-canvas same-host before/after profiling remains required.
+Parallel full-mask copying remains rejected absent comparable measurements.
+Do not merge, publish replacement runtime binaries or claim acceptance.

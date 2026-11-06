@@ -253,6 +253,13 @@ REVIEWED_TRANSITIONS: tuple[dict, ...] = ({'path': 'native/src/world_pressure.in
   'source_commit': '51d462537480324a4c11b3bf92f1ecb1882d8685',
   'record': 'docs/audits/2026-11-06-hard-surface-packet-incremental.md',
   'issue': 362,
+  'pr': 470},
+ {'path': 'native/src/world.cpp',
+  'from_lf_sha256': 'd743ca60406fc8f220206e005b37996f1d182005b1b86e0ed6591f050608fe1c',
+  'to_lf_sha256': '8bf0cb0058b139c32c030f5bbbc7e7e4555814c601598e1d6c7abecf7397d7fb',
+  'source_commit': '9ad76b21854b3e44fc9444f8293d3c36c619746b',
+  'record': 'docs/audits/2026-11-06-hard-surface-packet-incremental.md',
+  'issue': 362,
   'pr': 470})
 
 
