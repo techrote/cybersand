@@ -5,6 +5,7 @@ on:
     branches:
       - tools/world-design-capture-live-claim-probe-20261106
       - tools/world-design-capture-live-owner-repair-20261106
+      - tools/world-design-capture-final-r1d-visibility-archive-repair-20261106
   workflow_dispatch:
 
 permissions:
@@ -55,6 +56,10 @@ jobs:
           set +e
           python3 godot/tests/world_design_capture_live_claim_probe.py --godot "$GODOT" --platform linux --evidence "$E" | tee "$E/logs/campaign-stdout.log"
           CAMPAIGN_EXIT=${PIPESTATUS[0]}
+          python -m py_compile godot/tests/world_design_capture_r1d_probe.py
+          python3 godot/tests/world_design_capture_r1d_probe.py --godot "$GODOT" --platform linux --evidence "$E/r1d" | tee "$E/logs/r1d-stdout.log"
+          R1D_EXIT=${PIPESTATUS[0]}
+          if [ "$R1D_EXIT" -ne 0 ]; then CAMPAIGN_EXIT="$R1D_EXIT"; fi
           set -e
           git diff --exit-code -- godot/project.godot
           # Shell owns final evidence hashing, after tee flushes its live log.
@@ -115,6 +120,10 @@ jobs:
           set +e
           python godot/tests/world_design_capture_live_claim_probe.py --godot "$(cygpath -w "$GODOT")" --platform windows --evidence "$(cygpath -w "$E")" | tee "$E/logs/campaign-stdout.log"
           CAMPAIGN_EXIT=${PIPESTATUS[0]}
+          python -m py_compile godot/tests/world_design_capture_r1d_probe.py
+          python godot/tests/world_design_capture_r1d_probe.py --godot "$(cygpath -w "$GODOT")" --platform windows --evidence "$(cygpath -w "$E/r1d")" | tee "$E/logs/r1d-stdout.log"
+          R1D_EXIT=${PIPESTATUS[0]}
+          if [ "$R1D_EXIT" -ne 0 ]; then CAMPAIGN_EXIT="$R1D_EXIT"; fi
           set -e
           git diff --exit-code -- godot/project.godot
           # Shell owns final evidence hashing, after tee flushes its live log.
