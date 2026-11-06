@@ -132,6 +132,44 @@ to provide supplemental function/source-line attribution without elevated
 their own exact-head evidence readback; at the time of this report, both are
 running.
 
+## Completed independent focused edge-case qualification (23:38 UTC)
+
+**PASS** — exact-head [hosted run 42312672077](https://github.com/techrote/cybersand/actions/runs/42312672077),
+[source-pinned input and 66 original log/JSON files](https://github.com/techrote/cybersand/actions/runs/42312672077/artifacts/13548524780).
+Source reference `4a80af2a891332176a3912a235582d77d076a185`,
+cursor `0ddfacd143d53191b2d16947f64aeebfe3e819c2`, both protected
+`native/src/world.cpp` LF hashes match those established above. GCC 13.3.0,
+`-O2 -g -fno-omit-frame-pointer` on Linux/GitHub-hosted 4-logical-CPU machine.
+
+The **identical source-neutral fixture** `native/bench/neighbour_cursor_focused.cpp`
+was linked separately against the original and cursor simulation translation units,
+with `CYBERSAND_VERIFY_LOCAL_NEIGHBOUR` enabled for the cursor. It covers:
+- Signed 128-cell seams, corners, absent and newly prepared chunks (`seams128`);
+- Signed non-power-of-two **192-cell** chunks under valid 64-core/32-block geometry
+  (`seams192`);
+- Transient body-mask installation, removal and reacquisition, with interacting
+  neighbours and scheduled wakes (`masked128`);
+- Full 192-cell preprepared region, changing reactive materials and epoch wrap
+  beyond ticks 255/256/512 (`epochs192`).
+
+| Qualification | Execution | Result |
+|---|---|---|
+| Baseline vs candidate with 1 and 6 workers | 4 scenes × 2 engines × 2 worker settings × 520 ticks = 16 complete runs | **PASS**, zero state/physical/content checkpoint and per-tick deterministic-work discrepancies |
+| Candidate ASan/UBSan, guarded local oracle | 4 scenes × 2 worker settings × 520 ticks = 8 complete runs | **PASS**, outputs match unsanitized candidate exactly |
+| Candidate TSan, guarded local oracle | 192 signed-seam and 128 dynamic-mask scenes × 6 workers × 520 ticks = 2 complete runs | **PASS**, outputs match unsanitized candidate exactly |
+| Machine, fixture and source identification | Exact Git SHAs, LF SHA-256, compiler and execution flags in raw evidence | **PASS** |
+
+Checkpoint ticks include 1, 2, 16, 31–33, 63–65, 127–129, 150, 255–257,
+300, 383–385, 450 and 511–513/520. These 16 source- and worker-paired
+replays are new independent correctness evidence, **not** additional
+statistical repetitions for speedup inference.
+
+**Remaining:** independent source/acceptance review, permitted function/line
+profile, six-core/12-logical-CPU late-activity repeated speedup measurement,
+protected-source admission only after a positive benefit decision, and
+source-matched Godot/Native exact-head acceptance. The status remains
+**REVISE** rather than ACCEPT/merge.
+
 ## Required follow-up and admission gate
 
 1. Decode all artifacts; classify full native/sanitizer/TSan results, including environmental failures. Compile and execute full native tests with `CYBERSAND_VERIFY_LOCAL_NEIGHBOUR` where practicable, concentrating on signed seams, nonpower-two chunks, transient masks, reaction wake, and changing material values in a rule. Non-power-two chunk size 192 is valid for six-worker phased geometry (aligned to 64-core), unlike 48.
