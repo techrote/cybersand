@@ -189,6 +189,32 @@ the transition is pinned.
 |---|---|---|
 | `native/src/world.cpp` | `a69a70332450ed246753457f85fcedfa0e3a36e848486e12c441a059c3574d1e` | `3c90c5887800f75936a3e75c57030dcf4c7809640652ea2fc03f3e6b597ab654` |
 
+## Runtime publication (request 2)
+
+The owner approved republication on 2026-11-06. Request sequence 2 (`0425de96`)
+armed the unchanged branch-scoped publisher. Run
+[42206032690](https://github.com/techrote/cybersand/actions/runs/42206032690)
+(attempt 1, 10:53–11:07 UTC) passed every job:
+
+- the publisher guards;
+- admission;
+- the four native groups;
+- the Linux build and execution;
+- the Windows cross-build and Windows execution;
+- publication.
+
+Bot commit `b95e9f39` appended only the four runtime/manifest paths.
+
+| Runtime | SHA-256 | Bytes |
+|---|---|---|
+| `cybersand_native.windows.x86_64.dll` | `4f2833a9b4717bb479f0194e5dad10ea505502b2ceefb407728449613da2096a` | 5,036,032 |
+| `libcybersand_native.linux.x86_64.so` | `939035474df7d3347bf58017fa7ab0f8b36e0aeb91c07356f5be69a4187f79ba` | 4,480,224 |
+
+The toolchains are LLVM-MinGW 20260826 / Clang 23.1.0 and g++-13 13.3.0. After
+the append, `check_repository.py` reports no errors locally. The full ready-head
+CI remains a separate gate. The scoped publication covers only its five Godot
+cases.
+
 ## Next investigations
 
 1. **Hard-surface packet (5.4 ms per tick).**
@@ -210,8 +236,8 @@ the transition is pinned.
 
 ## Gaps
 
-- One machine (Windows and WSL); no Web build, CI timing or published runtime
-  containing these changes.
+- One machine (Windows and WSL); no Web build or CI timing. The published
+  request-2 runtimes cover only the publisher's scoped cases.
 - The native bench uses the default Water kernel, not the workbench FreeMass
   policy.
 - `Performance.TIME_PROCESS` reported 25–50 ms means with spikes of up to
