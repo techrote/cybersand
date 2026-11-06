@@ -33,7 +33,7 @@ for(let i=0;i<p.features.length;i++){
  lines.push(rects(f,null,x,y,s));
 }
 lines.push('<text x="62" y="1590" font-family="monospace" font-size="21" fill="#d6c8a7">THE LAST REGISTER / ARCHITECTURAL STUDIES</text>');
-const crops=[{x:440,y:45,w:340,h:125,name:'01 / FRACTURED BELL-CROWN & INVENTORY SLAB'},{x:885,y:110,w:340,h:125,name:'02 / SEVERED CONVEYOR & EASTERN ARCHIVES'}];
+const crops=[{x:65,y:30,w:340,h:125,name:'01 / MELTED NAMES FOUNDRY & CUT VAULTS'},{x:885,y:110,w:340,h:125,name:'02 / SEVERED CONVEYOR & EASTERN ARCHIVES'}];
 for(let i=0;i<crops.length;i++){
  const c=crops[i],bx=60+i*770,by=1620,ix=bx+18,iy=by+44,s=2;
  lines.push('<rect x="'+bx+'" y="'+by+'" width="735" height="310" rx="10" fill="#141c25" stroke="#384651"/>');
