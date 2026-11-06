@@ -1278,12 +1278,16 @@ reset/lab replacement and invalid actor-slot refusals remain explicit.
 **Current, opt-in only (2026-11-06):** every accepted body publication through
 `set_rigid_body_states` or `set_physical_usable_state` increments a mutex-owned
 counter read by `rigid_body_publication()`. The additive snapshot field
-`consumed_rigid_body_publication` names the publication latched with
-`current_rigid_body_states` (`-1` before the owner loop publishes).
+`consumed_rigid_body_publication` names the publication consumed by the last
+successfully completed native tick (`-1` before one). Paused, reset-only and
+failed turns keep the previous value, even though they latch a newer sample
+(corrected 2026-11-06 after review; earlier the field copied the latched value).
 `set_lockstep_coupling(enabled, hold_timeout_usec = 250000)` is default off and
 refused after `start_worker`. It fences only the ordinary coupling path; labs,
 MicroScenarios and the workbench keep their own pacing. `lockstep_metrics()`
-returns copied `ticks`, `holds`, hold time and `timeouts`. No production caller
+returns copied `ticks`, `holds`, hold time, `timeouts`, `superseded_publications`
+(publications replaced before a fenced tick consumed them) and
+`completed_publication`. No production caller
 enables it. See [coupled desktop determinism](../architecture/determinism-and-boundary-transfers.md#coupled-desktop-determinism--2026-11-06).
 
 `physical_actor_effect_admission()` and the additive snapshot field of the same

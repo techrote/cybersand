@@ -17,7 +17,10 @@ Draft branch `claude/gifted-franklin-0cd8e3` holds registration
 `set_lockstep_coupling` worker fence and the
 [feasibility audit](../audits/2026-11-06-coupling-lockstep-feasibility.md).
 No default or `main.gd` pacing changed. Before adopting a lockstep mode, read the
-audit's remaining-source list and its recommendation.
+audit's remaining-source list and its recommendation. An independent review
+(2026-11-06) required reducer, validation and publication-semantics repairs;
+they are recorded in the audit's review section, and every decision was
+unchanged on re-reduction. Promotion still needs exact-head runtime CI.
 
 ## MAT-AUTH-002 Phase A integration gate — 2026-11-04
 

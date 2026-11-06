@@ -116,6 +116,11 @@ results and the per-tick `physical_state_hash`. The fixture's steps per second
 stayed within 1.3% of the asynchronous control at nominal load. When native
 work approached the 16.7 ms frame, lockstep slowed simulated time instead of
 letting results go stale.
+After an independent review, the reducer was repaired to compare the applied
+snapshot serial and to validate every artifact and the complete registered
+matrix before deciding, and the snapshot field now reports only the publication
+consumed by a successfully completed tick. Re-reducing the retained traces
+changed no decision.
 
 **Not established:** cross-platform identity in production. Windows and Linux
 lockstep runs diverged. Rapier transforms were still bit-equal when the packed

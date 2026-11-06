@@ -243,10 +243,20 @@ named in the runner and WSL `Ubuntu-24.04` for Linux.
 godot --headless --path godot --script res://tests/test_coupling_lockstep.gd
 python tools/lockstep/run_coupling_lockstep.py --run NEW [--hosts windows,linux] [--arms async,lockstep] [--ticks 600] [--delay-usec 0]
 python tools/lockstep/reduce_coupling_lockstep.py --run NEW
+python -m unittest discover -s tools/lockstep -p test_reduce_coupling_lockstep.py
+godot --headless --path godot --script res://tests/test_coupling_lockstep_semantics.gd
 ```
 
-Evidence stays in uncommitted `build/coupling-lockstep/`. Results and
-limits are in the [feasibility audit](../audits/2026-11-06-coupling-lockstep-feasibility.md).
+The reducer validates the complete registered matrix and every artifact
+(source identity, result/log hashes, durations, tick and trace coverage, fence
+invariants) before deciding, and writes `reduction-v2.json`. Any validation
+error yields no decisions and exit 2. Its negative regressions run in
+Documentation CI. `test_coupling_lockstep_semantics.gd` checks pause, reset,
+failure and duplicate publications for the consumed-publication field.
+
+Evidence is written to uncommitted `build/coupling-lockstep/`. Results, the
+sealed evidence archive and limits are in the
+[feasibility audit](../audits/2026-11-06-coupling-lockstep-feasibility.md).
 
 ## Required future validation
 
