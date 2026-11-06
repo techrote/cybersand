@@ -1,10 +1,11 @@
-name: GEN-006 cross-platform reader lease GC preflight
+name: GEN-006 cross-platform checkpoint lifetime preflight
 
 on:
   pull_request:
     types: [opened, synchronize, reopened]
     paths:
       - 'tools/experiments/gen006_windows_lease_probe.py'
+      - 'tools/experiments/gen006_staged_writer_gc_probe.py'
       - '.github/workflows/gen006-reader-lease-crossplatform.yml'
   workflow_dispatch:
 
@@ -22,7 +23,7 @@ env:
 
 jobs:
   linux:
-    name: ubuntu-24.04 / actual OS-process lease probe
+    name: ubuntu-24.04 / actual OS-process checkpoint lifetime
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
@@ -58,9 +59,18 @@ jobs:
           }
           cat "$RUNNER_TEMP/gen006-winlease/tests.log"
           python tools/experiments/gen006_windows_lease_probe.py --witness "$RUNNER_TEMP/gen006-winlease/witness.json"
-          python -m py_compile tools/experiments/gen006_windows_lease_probe.py
+          # New bounded experiment: staged writer files versus concurrent GC.
+          python tools/experiments/gen006_staged_writer_gc_probe.py --test > "$RUNNER_TEMP/gen006-winlease/staged-tests.log" 2>&1 || {
+            cat "$RUNNER_TEMP/gen006-winlease/staged-tests.log"
+            exit 1
+          }
+          cat "$RUNNER_TEMP/gen006-winlease/staged-tests.log"
+          python tools/experiments/gen006_staged_writer_gc_probe.py --witness "$RUNNER_TEMP/gen006-winlease/staged-witness.json"
+          python -c "import json,sys; d=json.load(open(sys.argv[1])); assert d['naive']['read']['reason']=='BLOB_MISSING'; assert d['guarded']['writer']['reason']=='STAGED_BLOB_MISSING'; assert d['lease']['read']['status']=='READ_OK'; assert d['crash']['gc']['retired']==1; assert d['stale']['writer']['reason']=='STALE_ROOT'; assert d['corrupt']['writer']['reason']=='STAGED_BLOB_CORRUPT'" "$RUNNER_TEMP/gen006-winlease/staged-witness.json"
+          python -m py_compile tools/experiments/gen006_windows_lease_probe.py tools/experiments/gen006_staged_writer_gc_probe.py
           python -c "import json,sys; d=json.load(open(sys.argv[1])); assert d['unleased']['reader']['reason']=='BLOB_MISSING'; assert d['leased']['reader']['status']=='READ_OK'; assert d['crashed']['gc']['retired']==1" "$RUNNER_TEMP/gen006-winlease/witness.json"
           python -c "import hashlib,pathlib,sys,json; p=pathlib.Path(sys.argv[1]); print(json.dumps(dict(script_sha256=hashlib.sha256(p.read_bytes()).hexdigest())))" tools/experiments/gen006_windows_lease_probe.py > "$RUNNER_TEMP/gen006-winlease/script.json"
+          python -c "import hashlib,pathlib,sys,json; p=pathlib.Path(sys.argv[1]); print(json.dumps(dict(staged_script_sha256=hashlib.sha256(p.read_bytes()).hexdigest())))" tools/experiments/gen006_staged_writer_gc_probe.py > "$RUNNER_TEMP/gen006-winlease/staged-script.json"
       - name: Retain negative and positive evidence, including failure
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
@@ -71,7 +81,7 @@ jobs:
           retention-days: 90
 
   windows:
-    name: windows-2022 / actual OS-process lease probe
+    name: windows-2022 / actual OS-process checkpoint lifetime
     runs-on: windows-2022
     timeout-minutes: 15
     steps:
@@ -107,9 +117,18 @@ jobs:
           }
           cat "$RUNNER_TEMP/gen006-winlease/tests.log"
           python tools/experiments/gen006_windows_lease_probe.py --witness "$RUNNER_TEMP/gen006-winlease/witness.json"
-          python -m py_compile tools/experiments/gen006_windows_lease_probe.py
+          # New bounded experiment: staged writer files versus concurrent GC.
+          python tools/experiments/gen006_staged_writer_gc_probe.py --test > "$RUNNER_TEMP/gen006-winlease/staged-tests.log" 2>&1 || {
+            cat "$RUNNER_TEMP/gen006-winlease/staged-tests.log"
+            exit 1
+          }
+          cat "$RUNNER_TEMP/gen006-winlease/staged-tests.log"
+          python tools/experiments/gen006_staged_writer_gc_probe.py --witness "$RUNNER_TEMP/gen006-winlease/staged-witness.json"
+          python -c "import json,sys; d=json.load(open(sys.argv[1])); assert d['naive']['read']['reason']=='BLOB_MISSING'; assert d['guarded']['writer']['reason']=='STAGED_BLOB_MISSING'; assert d['lease']['read']['status']=='READ_OK'; assert d['crash']['gc']['retired']==1; assert d['stale']['writer']['reason']=='STALE_ROOT'; assert d['corrupt']['writer']['reason']=='STAGED_BLOB_CORRUPT'" "$RUNNER_TEMP/gen006-winlease/staged-witness.json"
+          python -m py_compile tools/experiments/gen006_windows_lease_probe.py tools/experiments/gen006_staged_writer_gc_probe.py
           python -c "import json,sys; d=json.load(open(sys.argv[1])); assert d['unleased']['reader']['reason']=='BLOB_MISSING'; assert d['leased']['reader']['status']=='READ_OK'; assert d['crashed']['gc']['retired']==1" "$RUNNER_TEMP/gen006-winlease/witness.json"
           python -c "import hashlib,pathlib,sys,json; p=pathlib.Path(sys.argv[1]); print(json.dumps(dict(script_sha256=hashlib.sha256(p.read_bytes()).hexdigest())))" tools/experiments/gen006_windows_lease_probe.py > "$RUNNER_TEMP/gen006-winlease/script.json"
+          python -c "import hashlib,pathlib,sys,json; p=pathlib.Path(sys.argv[1]); print(json.dumps(dict(staged_script_sha256=hashlib.sha256(p.read_bytes()).hexdigest())))" tools/experiments/gen006_staged_writer_gc_probe.py > "$RUNNER_TEMP/gen006-winlease/staged-script.json"
       - name: Retain negative and positive evidence, including failure
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
