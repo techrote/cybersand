@@ -6,7 +6,7 @@ function makeSvg(p){
  const rect=(x,y,w,h,c,attr="")=>out.push(`<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${c}" ${attr}/>`);
  const txt=(x,y,s,sz=14,c="#e6edf7")=>out.push(`<text x="${x}" y="${y}" font-family="monospace" font-size="${sz}" fill="${c}">${String(s).replaceAll("&","&amp;").replaceAll("<","&lt;")}</text>`);
  function stamp(f,x,y,k,variant){const v=variant?f.variants.find(v=>v.id===variant):null;for(const [xx,yy,w,h,id] of f.rectangles){let mid=v&&v.swap[String(id)]!==undefined?+v.swap[String(id)]:id;rect(x+xx*k,y+yy*k,w*k,h*k,colors.get(mid))}}
- out.push('<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="2280" viewBox="0 0 1600 2280" role="img" aria-label="Coral Telegraph eight modular material-only feature designs and dry combined environment">');
+ out.push('<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="2620" viewBox="0 0 1600 2620" role="img" aria-label="Coral Telegraph eight modular material-only feature designs and dry combined environment">');
  rect(0,0,1600,2280,"#08121f");txt(38,44,"CORAL TELEGRAPH  /  THE SILENT CABLE TRANSEPT",29);txt(38,69,"WORLD DESIGN 014  •  SOURCE-COLOUR SCHEMATIC  •  NOT NATIVE SIMULATION",13,"#82a4b8");
  rect(30,86,1540,383,"#122438",'rx="10"');txt(47,111,"DRY COMBINED SEAFLOOR / 1370 x 324 native cells",17);
  const sc=p.combined_scene,z=1.04,x0=54,y0=128;rect(x0,y0,sc.size[0]*z,sc.size[1]*z,"#081724");rect(x0,y0+sc.baseline_y*z,sc.size[0]*z,1,"#506679");
@@ -49,7 +49,10 @@ function makeSvg(p){
  }
  altCrop(46,1983,558,209,"A / severed listening hoop and broken return bridge","ct-alt-a");
  altCrop(817,1983,800,265,"B / lower ledger chambers and petrified dry test basins","ct-alt-b");
- txt(36,2253,"Art only: no Godot image, physics, signals, reflection, pressure, fluid or clearance claims.",12,"#9aabbf");
+ txt(36,2277,"FLAGSHIP LOWER REGISTERS  /  2.15x FLAT SOURCE-COLOUR STUDIES",15,"#a5bdcc");
+ crop(46,2310,349,241,"C / seven dead repeater sockets and conductor spine","ct-flag-c");
+ crop(817,2310,1035,241,"D / blind salinity ledger and broken gauge","ct-flag-d");
+ txt(36,2583,"Art only: no Godot image, physics, signals, reflection, pressure, fluid or clearance claims.",12,"#9aabbf");
 out.push("</svg>");return out.join("\n")+"\n";
 }
 const p=JSON.parse(fs.readFileSync(path.join(__dirname,"pack.json"),"utf8")),out=path.join(__dirname,"preview.svg"),s=makeSvg(p);
