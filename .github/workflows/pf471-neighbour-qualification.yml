@@ -1,8 +1,8 @@
 name: PF471 neighbour cursor execution qualification
 
+# Primary execution campaign completed. Retain exact manual reproduction without
+# rerunning the expensive matrix for evidence/documentation descendants.
 on:
-  push:
-    branches: [codex/fast-in-chunk-neighbour-cursor-20261106]
   workflow_dispatch:
 
 permissions:
