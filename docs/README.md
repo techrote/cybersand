@@ -12,11 +12,12 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 ## Fixed-action SOL application ordering
 
-The [registered actual-cut comparison](audits/2026-11-06-sol-workbench-ordering.md)
-follows the reviewed P2 diagnostic fix. Both arms retain the native law, sample
-fence and physical parameters; primitive readback separates impulse delivery
-from clipping. Its96 fresh episodes do not replace the old law/pacing campaign.
-No outcome is claimed at registration; keep Draft and historical blockers.
+The [preregistered actual-cut result](audits/2026-11-06-sol-workbench-ordering.md)
+follows the reviewed P2 repair. All96 episodes/69,120 steps complete; reversing
+correction/clip and combined impulse/torque fails rest and worsens burial/sink.
+Both arms retain the same law, fence, M/I, gravity and caps. Production order
+stays unchanged. See the [canonical SOL route](systems/solid-detachment.md#fixed-action-correction-and-impulse-ordering--2026-11-06)
+for qualified status, full-stage evidence and remaining platform/SOL blockers.
 
 ## Actual cut structures under the workbench law
 

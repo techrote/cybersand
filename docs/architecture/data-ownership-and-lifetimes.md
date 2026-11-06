@@ -11,6 +11,16 @@ last-reviewed: 2026-11-06
 
 # Data ownership and lifetimes
 
+## SOL ordering observation ownership
+
+The [fixed-action ordering test](../systems/solid-detachment.md#fixed-action-correction-and-impulse-ordering--2026-11-06)
+retains value-only primitive readbacks on the main-thread Rapier owner. It does
+not retain mutable World storage or call Godot from pool workers. Six states
+per accepted action keep exact body/epoch/sample identities and primitive
+chronology. Held attempts do not advance the body. Census follows a paused
+exclusive-owner command; recorded native tick gaps are0/1, not restamped as
+synchronized clearance. The negative result grants no authority transfer.
+
 ## SOL workbench diagnostic ownership
 
 The [actual-cut workbench experiment](../systems/solid-detachment.md#workbench-law-actual-cuts--2026-11-06)

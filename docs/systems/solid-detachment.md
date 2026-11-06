@@ -12,16 +12,27 @@ related-documents: [../operations/soliding-programme.md, ../architecture/solidin
 
 ## Fixed-action correction and impulse ordering — 2026-11-06
 
-**Current registration, no new efficacy result:** after the reviewed P2 fix,
-test-local bridges compare correction/clip→combined impulse/torque and the reverse
-on actual cut tree/building, both using main LA-SELECTIVE and its same fence.
-No mass/inertia/gravity/damping/cap/budget or public/default change. The exact
-computed action and torque remain fixed; production bridge/law are unchanged.
-The [prospective dossier](../audits/2026-11-06-sol-workbench-ordering.md) registers
-96×720 fresh episodes, five primary repeats/cell, primitive-stage readback and
-unchanged rest thresholds. Old144-episode results remain historical, not replaced.
-P2 now returns world_failed for terminal quarantine;3,260 facade checks pass on
-each host/worker1/4. Keep Draft and all physical/CPU/runtime-floor blockers.
+**Current result: NO-GO for impulse-first order.** The preregistered actual-cut
+comparison completes96 fresh episodes/69,120 physical steps on Windows/Linux,
+workers1 with five repeats and separate worker4 spots. Both arms use the same
+LA-SELECTIVE law, fence, computed torque, M/I, gravity/damping and caps. Only a
+test-local adapter exchanges correction/velocity clipping with the combined
+central/torque impulse block. Production application order stays unchanged.
+
+Packed and mixed rest are0/20 per arm; reversal worsens median Sand area/depth
+and tail sinking in all8 primary comparisons. Packed-tree area0.831949 ->55.137890
+cell2, building1.632579 ->52.301418. Every cell's five geometry/sink observations
+repeat exactly (IQR0), without a population-uncertainty claim. All345,600
+primitive transitions pass actual delivery/readback. Missing/misaligned arrival
+histories stay counted; correction-first tail events are zero, while reversed
+tails include real arrivals. More upward impulse is not physical clearance.
+
+The [dated dossier](../audits/2026-11-06-sol-workbench-ordering.md) retains the
+prospective rule, full medians/spreads, terminal census age0/1, clipped work and
+independent audit. P2 restores world_failed at terminal quarantine; four actual
+host worker1/4 facade runs pass3,260 checks each. Fresh runtime identities do
+not clear the Linux ABI floor. Keep #466 Draft; F1 remains mechanism engaged,
+causal role unproven; original SOL failures, hard exclusions and #365 stand.
 
 ## Workbench-law actual cuts — 2026-11-06
 

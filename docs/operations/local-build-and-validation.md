@@ -12,16 +12,25 @@ related-documents: [source-checkpoint-and-recovery.md, testing-validation-and-re
 
 ## SOL fixed-action ordering registration — 2026-11-06
 
-The [new registration](../audits/2026-11-06-sol-workbench-ordering.md) uses
-workbench_order_live.py with --smoke, then --qualification pointing to that
-successful exact-source collection for the96-episode matrix. Reduce with
-workbench_order_reduce.py. All artifacts including rebuilt P2 runtimes/hosts
-share a separate2GiB cap and5GiB reserve, with concurrent report reservations.
-The new sole writer checkout is inside C:/khybersand/build/sol466-order-owned;
-prior worktree/evidence stay read-only. Actual P2 native builds and four facade
-runs pass; minimal import shutdown crashes remain retained setup failures.
-Windows LLVM-MinGW and actual WSL Linux are distinct from MSVC/portable-floor
-acceptance. No original SOL CPU or universal60Hz claim. Keep Draft.
+The [new actual-cut ordering dossier](../audits/2026-11-06-sol-workbench-ordering.md)
+records P2 builds at9a78d136, source13a9ec68 qualification/matrix and96 episodes
+/69,120 steps, with fixed M/I, gravity/damping and caps. Use
+`workbench_order_live.py --run NEW_SMOKE --build NEW_BUILD --smoke`, then
+`--run NEW_MATRIX --build NEW_BUILD --qualification NEW_SMOKE`;
+`workbench_order_reduce.py --run NEW_MATRIX` evaluates the frozen rule.
+`workbench_order_check.py --run NEW_CHECK` runs separate exact-head docs/M11,
+materialized repository, material guard/compiler, runtime93-input roster,
+focused adverse observers and original/additive retrieval gates.
+
+Reversal is physical NO-GO; four actual P2 facade runs pass3,260 checks each.
+All new artifacts share2GiB cap/5GiB reserve, with project/report leases and
+lossless authenticated archives. Full native source/build and actual loaded
+engine/Rapier identities are separate from scientific success. The unchanged
+Linux floor checker fails GLIBC2.35/GLIBCXX3.4.31. Actual Windows LLVM-MinGW and
+WSL Ubuntu24.04 are not MSVC/full-release/portable-floor acceptance. Historical
+core ASan/UBSan results are authenticated unchanged-source evidence, not reruns.
+The old collections and source qualifiers stay intact. No original CPU or60Hz
+claim; keep Draft.
 
 ## SOL workbench law qualification — 2026-11-06
 

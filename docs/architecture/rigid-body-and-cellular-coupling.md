@@ -13,12 +13,13 @@ last-reviewed: 2026-11-06
 
 ## Fixed-action SOL application-order registration
 
-The [new ordering experiment](../systems/solid-detachment.md#fixed-action-correction-and-impulse-ordering--2026-11-06)
-exchanges only the test-local correction/clip and combined impulse/torque blocks.
-Both use production apply_packet, the same corrected-COM torque, native law,
-completed-sample fence and physical constants. Stage-level actual readback must
-prove impulse delivery before any later clip cancellation. This is not a
-recomputed force line of action, altered passive solve or accepted default.
+The [fixed-action ordering result](../systems/solid-detachment.md#fixed-action-correction-and-impulse-ordering--2026-11-06)
+uses one native World/body, the same LA-SELECTIVE law/fence/constants and a
+test-only exchange of correction/clip versus the combined impulse/torque block.
+All96 episodes and345,600 primitive transitions are admitted; the reversed arm
+fails rest and worsens burial/sink. Production order and computed torque stay
+unchanged. This body-work ledger is not total Sand energy closure or separate
+passive/event/legacy causal attribution. No new authority/default follows.
 
 ## SOL adopts the workbench package experimentally
 

@@ -12,15 +12,21 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 ## SOL fixed-action ordering continuation — 2026-11-06
 
-Sole writer moved to C:/khybersand/build/sol466-order-owned/khybersand on the
-same #466 feature branch, retainingc0be3a4e ancestry. Prior external worktree is
-read-only. P2 repair9a78d136 restores terminal world_failed and passes3,260
-facade checks on each actual host/worker1/4. Read the
-[prospective ordering dossier](../audits/2026-11-06-sol-workbench-ordering.md)
-before running. It freezes96 fresh actual-cut episodes, unchanged controls and
-primitive-stage readback; no new ordering outcomes exist at registration.
-Old law/pacing NO-GO, material guard, Linux floor and original SOL blockers stay
-source-qualified. Keep #466 and parents Draft; no mass/cap/default/merge changes.
+The sole writer is `C:/khybersand/build/sol466-order-owned/khybersand`, retaining
+`codex/sol-workbench-law-20261106` and Draft #466 against #461. Prior external
+worktrees/evidence and the unrelated dirty root checkout stay unchanged.
+P2 source9a78d136 restores terminal world_failed; fresh Windows/Linux binaries
+pass four worker1/4 facade suites of3,260 checks. Scientific source13a9ec68
+completes the [registered96-episode ordering experiment](../audits/2026-11-06-sol-workbench-ordering.md).
+
+Result is NO-GO: neither arm rests, and impulse-first worsens median Sand
+area/depth/sink in every primary comparison. Native law, fence, M/I,
+gravity/damping, caps/budget and production order remain unchanged. Full stage
+delivery/body-work audit passes, with zero independent geometry/rest/sink
+disagreement. New scoped runtime manifests bind build9a and validation13a;
+old evidence retains its source qualifiers. Linux GLIBC2.35/GLIBCXX3.4.31 still
+exceeds the supported floor. Keep Draft; no Ready, merge, default, restoration
+or E1/E2 authority. Review the negative result before any new support-law work.
 
 ## SOL workbench package comparison — 2026-11-06
 

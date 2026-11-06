@@ -12,13 +12,21 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 ## SOL fixed-action ordering registration — 2026-11-06
 
-**Current P2 repair / Planned registered physics comparison:** explicit
-world_failed diagnostic is restored and actual host/worker facade checks pass.
-The [new96-episode registration](../audits/2026-11-06-sol-workbench-ordering.md)
-compares correction/clip vs combined impulse/torque ordering under the same
-native LA-SELECTIVE law/fence and physical parameters. No result is available
-at registration. Old settling NO-GO and original SOL/runtime/CPU/storage blockers
-remain; no threshold tuning or accepted-default promotion. Keep #466 Draft.
+**Current qualified negative experiment:** P2 diagnostic repair passes four
+actual Windows/Linux worker1/4 facade suites (3,260 checks each). The
+[registered fixed-action ordering comparison](../audits/2026-11-06-sol-workbench-ordering.md)
+completes96 episodes/69,120 steps. Both arms retain the same LA-SELECTIVE law,
+completed-sample fence, mass/inertia, gravity/damping and caps. Reversal fails
+rest (packed0/20 and mixed0/20 in each arm), worsens Sand area/depth/sink in all8
+primary comparisons and remains test-only. Five repeats per cell have zero
+observed geometry/sink spread. Independent delivery and body-work audits pass;
+this does not prove original SOL clearance or close total material energy.
+
+**NO-GO** for ordering promotion or SOL settling; **CONDITIONAL** intended
+LA-SELECTIVE gameplay direction retains D1. Linux ABI floor, historical SOL CPU,
+#365 and source/ownership gates remain blockers. #466 stays Draft against #461;
+#460/#461 unchanged. Next is independent review and a registered contact
+support/correction geometry audit, before any equation or weight/cap change.
 
 ## SOL workbench-law repeated result — 2026-11-06
 
