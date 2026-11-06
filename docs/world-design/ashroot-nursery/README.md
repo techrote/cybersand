@@ -51,3 +51,11 @@ Validator checks schema, native IDs, rectangles, anchors, 16 variants, placement
 ## Next independent candidates
 
 Silt Clockworks — abandoned hydraulic regulators; Emberglass Fumaroles — refractory volcanic vents; Signal Orchard — engineered signal forest.
+
+## A2 flagship terrain pass — The Fossil Heart Atrium (6 November 2026)
+
+The **960×330 lower atrium** is reshaped as an interconnected petrified fungal nursery instead of eight free-standing objects in a rectangular cavern. A deliberately ruptured, stepped upper stone canopy frames asymmetric fossil root arches, smaller buttressing counter-roots, hanging rootlets, two interrupted overhead cultivation walkways, braced columns and eroded access niches. A suspended open-centre fossil spore heart is an interior focal point, while low sediment terraces and fractured earth bands connect the original modules. Thin stone scars, cut joints and occasional quartz/phosphor mineral inclusions supply smaller-scale authored detail without asserting biological activity or actual light emission.
+
+The composition adds **864 ordered, inert scene terrain rectangles**, preserving all eight source modules, sixteen variants and eight existing placed exhibition versions. Render ordering remains terrain first, module placements last; unwritten negative space never means an automatic host erase. Ordered native-material raster comparison of the 960×330 scene: **54,351 changed visible cells of 316,800**, including **46,118 changes above y=190**, with **53.1% unwritten air** retained. These geometry measurements are not artistic acceptance scores.
+
+Source-verified additions use only currently kernel-None, immovable native IDs. Active original module variants and their Water/Plant/Fungus/Seed implications are unchanged. The regenerated SVG remains a flat, source-colour schematic—not a Godot shader frame, source-matched simulation fixture or proof of clearance. Independent gallery comparison and native rendering/physics remain unqualified. Next iteration: alternate descending nursery-vault composition that reuses the same eight original modules and includes equivalent-scale close-detail crops.
