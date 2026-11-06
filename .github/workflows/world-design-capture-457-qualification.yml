@@ -558,3 +558,120 @@ jobs:
           path: ${{ runner.temp }}/pr457-adversarial-evidence
           retention-days: 30
           if-no-files-found: error
+
+
+  linux-current-design-checkpoint:
+    if: github.run_number >= 4
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    env:
+      DESIGN_SHA: cc1f4ce0d1cba7fdc2b1913bff840f90b674048d
+    steps:
+      - name: Check out exact candidate source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: cff6c7f947147a250e5a5c3bb9d46b0df39b376c
+          fetch-depth: 0
+          lfs: true
+
+      - name: Execute current-design graphical checkpoint
+        shell: bash
+        run: |
+          set -u
+          E="$RUNNER_TEMP/pr457-current-design-evidence"
+          rm -rf "$E"
+          mkdir -p "$E"/{logs,captures,design-export,analysis}
+          printf 'candidate=%s\ndesign=%s\nmain=%s\nrunner_os=%s\nrunner_arch=%s\n' "$CANDIDATE_SHA" "$DESIGN_SHA" "$MAIN_SHA" "$RUNNER_OS" "$RUNNER_ARCH" > "$E/identity.txt"
+          uname -a >> "$E/identity.txt"
+          cat /etc/os-release >> "$E/identity.txt"
+          git rev-parse HEAD >> "$E/identity.txt"
+
+          GODOT_ZIP="$RUNNER_TEMP/Godot_v4.7-stable_linux.x86_64.zip"
+          GODOT_DIR="$RUNNER_TEMP/godot-4.7-current-design"
+          curl --fail --location --retry 3 --output "$GODOT_ZIP" "https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_linux.x86_64.zip"
+          echo "0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c  $GODOT_ZIP" | sha256sum -c - | tee "$E/logs/godot-archive-sha256.log"
+          rm -rf "$GODOT_DIR"; mkdir -p "$GODOT_DIR"
+          unzip -q "$GODOT_ZIP" -d "$GODOT_DIR"
+          GODOT="$GODOT_DIR/Godot_v4.7-stable_linux.x86_64"
+          chmod +x "$GODOT"
+          "$GODOT" --version | tee "$E/logs/godot-version.log"
+          sha256sum "$GODOT" | tee "$E/logs/godot-binary-sha256.log"
+
+          git fetch --no-tags origin "$DESIGN_SHA"
+          git archive "$DESIGN_SHA" docs/world-design | tar -xf - -C "$E/design-export"
+          chmod -R a-w "$E/design-export"
+          PACKS="$E/design-export/docs/world-design"
+          git diff --name-status f68516b7e4faefb8c776a89169365a7e8dd55d37 "$DESIGN_SHA" -- docs/world-design > "$E/design-drift.txt"
+          sha256sum "$PACKS"/dust-meridian/{pack.json,README.md,preview.svg} > "$E/dust-current-source-sha256.txt"
+
+          export CYBERSAND_SOURCE_REVISION="$CANDIDATE_SHA"
+          export LIBGL_ALWAYS_SOFTWARE=1 GALLIUM_DRIVER=llvmpipe LP_NUM_THREADS=2 GALLIVM_PERF=nopt DISPLAY=:99
+          Xvfb :99 -screen 0 1920x1080x24 -nolisten tcp >"$E/logs/xvfb.log" 2>&1 &
+          XVFB_PID=$!
+          sleep 2
+
+          run_case() {
+            name="$1"; shift
+            printf '%s\t' "$name" >> "$E/commands.tsv"
+            printf '%q ' "$@" >> "$E/commands.tsv"
+            printf '\n' >> "$E/commands.tsv"
+            set +e
+            "$@" >"$E/logs/$name.log" 2>&1
+            code=$?
+            set -e
+            printf '%s\t%d\n' "$name" "$code" >> "$E/exits.tsv"
+            return 0
+          }
+          set -e
+
+          run_case graphical_import timeout 240s "$GODOT" --verbose --rendering-method gl_compatibility --rendering-driver opengl3 --path godot --editor --quit
+          run_case adapter_geometry timeout 120s "$GODOT" --headless --path godot --script res://tests/test_world_design_pack_adapter.gd
+          run_case oracle_current_15 timeout 240s "$GODOT" --headless --path godot --script res://tests/check_world_design_pack_oracle.gd -- --packs="$PACKS" --design-revision="$DESIGN_SHA"
+          run_case material_presentation_regression timeout 240s "$GODOT" --verbose --rendering-method gl_compatibility --rendering-driver opengl3 --path godot --script res://tests/test_material_presentation_render.gd
+          run_case capture_lumen_current timeout 600s "$GODOT" --verbose --rendering-method gl_compatibility --rendering-driver opengl3 --path godot --script res://tools/capture_world_design_pack.gd -- --pack="$PACKS/lumen-fault/pack.json" --output="$E/captures/lumen-current" --mode=both --scale=2 --time=1.37 --glow=on --design-revision="$DESIGN_SHA"
+          run_case capture_dust_current timeout 600s "$GODOT" --verbose --rendering-method gl_compatibility --rendering-driver opengl3 --path godot --script res://tools/capture_world_design_pack.gd -- --pack="$PACKS/dust-meridian/pack.json" --output="$E/captures/dust-current" --mode=both --scale=2 --time=1.37 --glow=on --design-revision="$DESIGN_SHA"
+
+          python3 - <<'PY'
+          import hashlib, json, os, pathlib
+          e=pathlib.Path(os.environ["RUNNER_TEMP"])/"pr457-current-design-evidence"
+          out={"identity":(e/"identity.txt").read_text(errors="replace"),
+               "design_drift":(e/"design-drift.txt").read_text(errors="replace"),
+               "exits":{},"captures":{}}
+          for line in (e/"exits.tsv").read_text().splitlines():
+              n,c=line.split("\t"); out["exits"][n]=int(c)
+          for name in ("lumen-current","dust-current"):
+              d=e/"captures"/name
+              rec={}
+              for rel in ("capture-manifest.json","combined.png","inputs/combined.rg8"):
+                  p=d/rel
+                  rec[rel]={"exists":p.exists()}
+                  if p.exists():
+                      rec[rel]["sha256"]=hashlib.sha256(p.read_bytes()).hexdigest()
+              if (d/"capture-manifest.json").exists():
+                  m=json.loads((d/"capture-manifest.json").read_text())
+                  rec["manifest_summary"]={
+                      "status":m.get("status"),"success":m.get("success"),
+                      "scene_dimensions_cells":m.get("scene_dimensions_cells"),
+                      "display":m.get("display"),"rendering_method":m.get("rendering_method"),
+                      "graphics_adapter":m.get("graphics_adapter"),"api":m.get("api"),
+                      "captures":len(m.get("captures",[])),"inputs":len(m.get("inputs",[]))
+                  }
+              out["captures"][name]=rec
+          oracle_log=(e/"logs/oracle_current_15.log").read_text(errors="replace")
+          out["oracle_tail"]=oracle_log[-12000:]
+          (e/"analysis/summary.json").write_text(json.dumps(out,indent=2)+"\n")
+          lines=[]
+          for p in sorted(x for x in e.rglob("*") if x.is_file()):
+              lines.append(f"{hashlib.sha256(p.read_bytes()).hexdigest()}  {p.relative_to(e).as_posix()}")
+          (e/"SHA256SUMS.txt").write_text("\n".join(lines)+"\n")
+          PY
+          kill "$XVFB_PID" || true
+
+      - name: Upload current-design evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: pr457-current-design-evidence
+          path: ${{ runner.temp }}/pr457-current-design-evidence
+          retention-days: 30
+          if-no-files-found: error
