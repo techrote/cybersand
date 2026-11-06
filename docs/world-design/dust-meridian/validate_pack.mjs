@@ -22,7 +22,19 @@ const validate=function validate(p,src){
  for(const recipe of p.repeatable_patterns)if(recipe.modules.some(x=>!ids.has(x)))bad("pattern");
  if(src)for(const x of p.palette){const m=src.native.materials.find(y=>y.id===x.id&&y.valid);if(!m)bad("missing source");
   for(const key of ["name","state","movable","kernel","rgba","lateral_flow","viscosity_index","initial_state_a","initial_state_b"])if(JSON.stringify(x[key])!==JSON.stringify(m[key]))bad("catalogue drift "+x.id+" "+key)}
- return {features:p.features.length,rectangles,variants,palette:p.palette.length,placements:seen.size};
+ const alt=p.alternate_scene;
+ if(!alt||alt.id!=="sunken-azimuth"||!Array.isArray(alt.size)||alt.size.length!==2||alt.size.some(x=>!Number.isSafeInteger(x)||x<=0))bad("alternate shape");
+ if(!Array.isArray(alt.terrain_rectangles)||!Array.isArray(alt.placements))bad("alternate arrays");
+ for(const a of alt.terrain_rectangles){check(a,alt.size);if(pm.get(a[4]).movable||pm.get(a[4]).kernel!==0)bad("alternate terrain mobile")}
+ const altSeen=new Set();
+ for(const pl of alt.placements){
+ const f=p.features.find(x=>x.id===pl.feature);if(!f||altSeen.has(pl.feature))bad("alternate feature");altSeen.add(pl.feature);
+ if(!Number.isSafeInteger(pl.x)||!Number.isSafeInteger(pl.y)||pl.x<0||pl.y<0||pl.x+f.size[0]>alt.size[0]||pl.y+f.size[1]>alt.size[1])bad("alternate placement");
+ const v=f.variants.find(x=>x.id===pl.variant);if(!v)bad("alternate variant");
+ for(const a of f.rectangles){const id=+(v.swap[String(a[4])]??a[4]),material=pm.get(id);if(!material||material.movable||material.kernel!==0)bad("alternate dynamic "+pl.feature)}
+ }
+ if(altSeen.size!==8)bad("alternate coverage");
+ return {features:p.features.length,rectangles,variants,palette:p.palette.length,placements:seen.size,alternate_rectangles:alt.terrain_rectangles.length};
 };
 const [,,packPath='pack.json',cataloguePath,flag]=process.argv;
 const p=JSON.parse(fs.readFileSync(packPath,'utf8'));
@@ -34,7 +46,15 @@ if(flag==='--negative'){
  p=>p.features[2].rectangles[0][4]=999,p=>p.features[0].id=p.features[1].id,
  p=>p.features[4].variants[0].swap={"118":888},p=>p.features[6].variants[0].swap={"99":2},
  p=>p.scene.placements[6].variant="dust-hour",p=>p.scene.placements[7].variant="salt-inscription",
- p=>p.scene.placements[0].x=9999,p=>p.scene.placements.splice(1,1),p=>p.scene.terrain_rectangles[0][4]=2];
+ p=>p.scene.placements[0].x=9999,p=>p.scene.placements.splice(1,1),p=>p.scene.terrain_rectangles[0][4]=2,
+ p=>p.alternate_scene.terrain_rectangles[0][4]=2,
+ p=>p.alternate_scene.placements[0].x=-1,
+ p=>p.alternate_scene.placements[6].variant="dust-hour",
+ p=>p.alternate_scene.placements[7].variant="salt-inscription",
+ p=>p.alternate_scene.placements.splice(0,1),
+ p=>p.alternate_scene.placements[0].feature=p.alternate_scene.placements[1].feature,
+ p=>p.alternate_scene.terrain_rectangles[10][2]=99999,
+ p=>delete p.alternate_scene];
  let n=0;for(const f of mutations){const q=structuredClone(p);f(q);try{validate(q,src)}catch{n++}}
  if(n!==mutations.length)throw Error('negative test failure '+n+'/'+mutations.length);
  console.log('negative mutations rejected '+n+'/'+mutations.length);

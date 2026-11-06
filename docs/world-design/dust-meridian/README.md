@@ -2,7 +2,7 @@
 
 **DRAFT; design-only. Do not merge.** A ruined desert-navigation system: cardinal obelisk, half-buried gateway, silent wind harp, star cairn, crystallized compass, terraced windbreak, sand clock and dust archive. Unlike Signal Orchard's electrical groves or Silt Clockworks' tidal machinery, this collection uses geology, spatial bearings and long, empty desert horizons.
 
-![Eight modules and one assembled dry environment](preview.svg)
+![Eight modules and two assembled dry environments](preview.svg)
 
 ## Exact source and staging contract
 
@@ -25,7 +25,7 @@ Ocher SandstoneBlock **39**, RammedEarth **109** and PackedEarth **56** dominate
 | `sand-clock` | 116×120 | granular hourglass | dynamic Sand **2**, kernel **1** |
 | `dust-scriptorium` | 126×98 | dispersing dust inscriptions | dynamic Dust **14**, kernel **12** |
 
-**Variants and scene:** Each module has two substitution variants (16 total), with precisely ordered geometry, anchors, clearance guidance and neighbour rules. The single **1320×280-cell** `Latitude of Broken North` composition places all eight at explicit coordinates, using `petrified-hour` (Sand **2** → SandstoneBlock **39**) and `chalk-inscription` (Dust **14** → fixed ChalkBlock **99**); its other six modules are source-fixed. `ChalkBlock` can still respond to Water; "fixed" is not a claim of global chemical inertness. `dune-weir:adobe-rampart` uses water-reactive AdobeBrick **102**. Dry scene substitutions are visually representational, not recorded granular volumes.
+**Variants and scene:** Each module has two substitution variants (16 total), with precisely ordered geometry, anchors, clearance guidance and neighbour rules. The original **1320×280-cell** `Latitude of Broken North` composition places all eight at explicit coordinates, using `petrified-hour` (Sand **2** → SandstoneBlock **39**) and `chalk-inscription` (Dust **14** → fixed ChalkBlock **99**); its other six modules are source-fixed. `ChalkBlock` can still respond to Water; "fixed" is not a claim of global chemical inertness. `dune-weir:adobe-rampart` uses water-reactive AdobeBrick **102**. Dry scene substitutions are visually representational, not recorded granular volumes.
 
 **Repeatable patterns:** `broken-survey-line` (Needle → Cairn → Salt Compass, >=20 cell gaps), `pilgrim-threshold` (Waygate → Harp → Weir, >=22), and `sediment-archive` (Weir → Sand Clock → Scriptorium, >=24; fixed variants mandatory). Do not stamp active source versions into general maps.
 
@@ -33,7 +33,7 @@ Ocher SandstoneBlock **39**, RammedEarth **109** and PackedEarth **56** dominate
 
 - **Static scenery candidates:** all combined-scene materials have source `movable=false`, `kernel=0`, but can still participate in pair reactions. Avoid claiming permanent static behavior in thermal, acidic or wet hosts. The broad dry scene floor is a staging sketch only.
 - **Evolving modules:** Sand and Dust are movable powders; source alone cannot establish retained shape, mass conservation in cavities, settlement duration, oscillation, erosion or dispersal. Isolate each in a native fixture and record exact source, cell counts and tick timing.
-- **Performance risk:** the pack now contains 278 local feature material rectangles and 704 combined-scene terrain rectangles; dense repeats plus mobile particles may increase kernel and contact costs. No frame/tick measurement performed.
+- **Performance risk:** the pack retains 278 local module rectangles, 704 original scene rectangles and 1042 alternate scene rectangles; dense repeats plus mobile particles may increase kernel and contact costs. No frame/tick measurement performed.
 - **Authoring admission gates:** specify negative-space clearing authority, material-ID compatibility, persistence format, rotation policy, collision/player clearance, actor spawn exclusion, tile-edge stitching, thermal and wet interactions, runtime fixtures, shader captures and a deterministic import/export receipt. Avoid importing production maps directly from this draft.
 - **Presentation:** `preview.svg` is source-colour vector geometry; it is NOT a native or Godot screenshot.
 
@@ -59,3 +59,13 @@ The reusable `half-buried-waygate` and `wind-harp-pylons` also gain worn masonry
 Validation: `validatePack` checked-in function against exact pinned source shadow, plus **12/12** negative mutations; `render` checked-in function reproduces the original SVG byte-identically and deterministically regenerates the improved SVG. Execution took place in an isolated JavaScript V8 runner, **not** a Node CLI subprocess: local `node validate_pack.mjs ... --negative` and `node render_pack.mjs ... --check` exits are **not available** because no checkout could be accessed from the shell. Run those commands from a real checkout before admission. Source material/header/interaction identities were checked at the recorded baseline. Real Godot output, performance, host clearing, actor clearance and wet/thermal reactions remain untested. The generated `preview.svg` is a flat-colour schematic.
 
 **Next alternate:** reuse all eight modules on a serpentine descending canyon path with lower observatory and changed line-of-sight, rather than adding more modules. Independent human review and reference-gallery comparison remain open.
+
+## Worker B — The Sunken Azimuth (6 November 2026)
+
+A distinct **1320×448-cell** dry descending observatory contrasts with the original *Latitude of Broken North*. Four upper instruments survey a monumental **fractured cardinal wheel** and discontinuous viaduct; four lower documentation courts descend toward a buried slate-and-chalk field register. Eroded ledges, unequal bearing piers, terraced steps, broken rigging, damaged inscribed slabs, exposed strata and fallen measuring stones tell a story of repair and abandonment. Two SVG detail crops examine the wheel and lower records. They are **source-colour geometry only, not a Godot render**.
+
+The 1,042 new fixed-material terrain rectangles cover 141,916 / 591,360 cells (24.0% before module overlays). All eight original reusable modules, sixteen variants, three pattern recipes and the original flagship remain untouched. Active Sand/Dust source variants are excluded; the alternate uses `petrified-hour` and `chalk-inscription`. Fixed kernel IDs do not imply global chemical inertness.
+
+**Qualification:** the exact committed `render` and `validate` functions were evaluated in isolated V8 with pinned source identities; all 20 original and alternate negative mutations rejected, and rendering was byte-identical on repetition. This is **not** a local Node CLI subprocess result. Full CLI execution remains untested because local git checkout could not resolve github.com. Real Godot/native graphics, collision and host clearance, wet/thermal interactions, wind, sand/dust transport, performance and independent comparative human gallery acceptance remain untested.
+
+Next: full-checkout `node validate_pack.mjs docs/world-design/dust-meridian/pack.json materials/catalogue/catalogue.json --negative` and `node render_pack.mjs docs/world-design/dust-meridian/pack.json docs/world-design/dust-meridian/preview.svg --check`; then matched-scale visual critique and Cathedral of Capacitors structural refinement.
