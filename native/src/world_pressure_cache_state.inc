@@ -9,9 +9,26 @@ struct World::PressureCache {
         // (or row) within this sparse chunk-coordinate group.
         std::array<std::uint64_t, 16> dirty{};
         bool queued = false;
+        // Whole-column admission after gas or a cold membership rebuild.
+        bool full_height_dirty = false;
         [[nodiscard]] bool test(std::int32_t local) const noexcept {
             return (dirty[static_cast<std::size_t>(local) / 64U] &
                     (std::uint64_t{1} << (static_cast<unsigned>(local) % 64U))) != 0U;
+        }
+    };
+
+    // One conservative inclusive changed-Y hull per indexed chunk/local-X.
+    // The preallocated storage is owner-only and never grows in a tick.
+    struct DirtyY {
+        std::uint16_t first = std::numeric_limits<std::uint16_t>::max();
+        std::uint16_t last = 0;
+        [[nodiscard]] bool contains(std::int32_t y) const noexcept {
+            return first != std::numeric_limits<std::uint16_t>::max() &&
+                   y >= first && y <= last;
+        }
+        void add(std::int32_t lo, std::int32_t hi) noexcept {
+            first = std::min(first, static_cast<std::uint16_t>(lo));
+            last = std::max(last, static_cast<std::uint16_t>(hi));
         }
     };
 
@@ -45,6 +62,16 @@ struct World::PressureCache {
         // column-order position (positions are disjoint between column tasks),
         // OR-merged into rows by the owner after the join.
         column_row_marks.resize(capacity);
+        // The World config guarantees a square chunk area, with width <= 1024.
+        // Derive it without changing the protected World constructor call.
+        std::size_t side = 0;
+        while (side < 1024U && side + 1U <= cell_area / (side + 1U)) ++side;
+        if (side != 0U && side * side == cell_area &&
+            capacity <= std::numeric_limits<std::size_t>::max() / side) {
+            column_width = side;
+            column_y_dirty.resize(capacity * side);
+        }
+        prospective_rows.resize(capacity);
         wake_words_per_chunk = (cell_area + 63U) / 64U;
         if (capacity <= std::numeric_limits<std::size_t>::max() / wake_words_per_chunk) {
             wake_clean.reserve(capacity * wake_words_per_chunk);
@@ -89,6 +116,32 @@ struct World::PressureCache {
         const auto it = std::lower_bound(gas_components.begin(), gas_components.end(), id,
             [](const auto& component, auto value) { return component.id < value; });
         return it != gas_components.end() && it->id == id ? &*it : nullptr;
+    }
+
+    [[nodiscard]] bool mark_y(std::size_t slot, std::int32_t x0, std::int32_t x1,
+                              std::int32_t y0, std::int32_t y1) noexcept {
+        if (!complete) return false;
+        if (slot >= column_order.size() || column_width == 0U ||
+            slot >= column_y_dirty.size() / column_width || x0 < 0 || y0 < 0 ||
+            x1 < x0 || y1 < y0 || static_cast<std::size_t>(x1) >= column_width ||
+            static_cast<std::size_t>(y1) >= column_width) {
+            cold(); return false;
+        }
+        for (auto x = x0; x <= x1; ++x)
+            column_y_dirty[slot * column_width + static_cast<std::size_t>(x)].add(y0,y1);
+        return true;
+    }
+    [[nodiscard]] bool y_dirty(std::size_t group, std::size_t slot,
+                               std::int32_t x, std::int32_t y) const noexcept {
+        return columns[group].full_height_dirty ||
+               column_y_dirty[slot * column_width + static_cast<std::size_t>(x)].contains(y);
+    }
+    void retire_y(std::size_t group, std::size_t begin, std::size_t end) noexcept {
+        for (auto slot = begin; slot < end; ++slot)
+            for (std::size_t x=0; x<column_width; ++x)
+                if (columns[group].test(static_cast<std::int32_t>(x)))
+                    column_y_dirty[slot * column_width + x] = {};
+        columns[group].full_height_dirty = false;
     }
 
     void mark(bool column, std::size_t group, std::int32_t first, std::int32_t last) noexcept {
@@ -156,6 +209,10 @@ struct World::PressureCache {
     std::vector<Group> columns, rows;
     std::vector<std::size_t> dirty_columns, dirty_rows;
     std::vector<std::array<std::uint64_t, 16>> column_row_marks;
+    std::size_t column_width = 0;
+    std::vector<DirtyY> column_y_dirty;
+    // Upper bound on possibly changed final-head rows; never published as rows.dirty.
+    std::vector<std::array<std::uint64_t, 16>> prospective_rows;
     std::vector<std::uint64_t> certificate_changed;
     PressureOptimizationCounters counters{};
     PressureOptimizationStatus status = PressureOptimizationStatus::Cold;
