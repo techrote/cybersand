@@ -173,7 +173,7 @@ func _nozzle() -> void:
 	expect(_submit(), "release is admitted before worker completion")
 	expect(not _item().pending and session.drain_equipment_requests().is_empty(),
 		"release retires uncommitted nozzle authority immediately")
-	expect(Runtime.request_error(request, session.equipment_frame()) == "experimental_released",
+	expect(Runtime.request_error(request, session.equipment_frame()) == "in_tools_released",
 		"extracted nozzle token fails the current-frame release fence")
 	expect(_deliver(_nozzle_receipt(request, true, 7)) == 0,
 		"late success for released source token cannot apply recoil or source acceptance")
