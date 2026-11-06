@@ -12,7 +12,7 @@ function renderSvg(p){
  const draw=(f,x,y,scale,variant)=>{const v=f.variants.find(e=>e.id===variant);put(`<g transform="translate(${x},${y}) scale(${scale})" shape-rendering="crispEdges">`);for(const [rx,ry,w,h,id] of f.rectangles){const next=(v&&v.swap[String(id)]!==undefined)?v.swap[String(id)]:id;put(srcRect(rx,ry,w,h,next))}put("</g>")};
  const rect=(x,y,w,h,fill,rx=0)=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${rx}" fill="${fill}"/>`;
  const text=(x,y,content,size=16,fill="#dae9eb",weight=400,anchor="start")=>`<text x="${x}" y="${y}" font-family="ui-monospace,SFMono-Regular,Consolas,monospace" font-size="${size}" font-weight="${weight}" text-anchor="${anchor}" fill="${fill}">${escape(content)}</text>`;
- const W=1490,H=2116;put(`<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" role="img" aria-label="Mirror Marsh world design staging sheet, all eight modules and a dry composition">`);put(`<title>Mirror Marsh — source-colour feature collection 010</title><desc>Design-stage illustration only, not native simulation, optical reflection, lighting or a Godot screenshot. Non-stamped background is visual framing.</desc>`);
+ const W=1490,H=2405;put(`<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" role="img" aria-label="Mirror Marsh world design staging sheet, all eight modules and a dry composition">`);put(`<title>Mirror Marsh — source-colour feature collection 010</title><desc>Design-stage illustration only, not native simulation, optical reflection, lighting or a Godot screenshot. Non-stamped background is visual framing.</desc>`);
  put(rect(0,0,W,H,"#0b1720"));put(rect(32,22,W-64,49,"#152a31",9));put(text(54,55,"MIRROR MARSH / RELIQUARIES OF THE STILL TIDE",26,"#e3efe8",700));put(text(1438,54,"PACK 010 / DESIGN ONLY",13,"#79b9b4",600,"end"));
  put(text(51,100,"THE LAST CAUSEWAY  ·  1320 × 308 DRY CELLS  ·  FICTIONAL OPTICS",14,"#a3babd",600));put(rect(49,111,1392,343,"#14232b",8));put(rect(60,122,1370,318,"#101e28",3));
  const fx=75,fy=134;put(`<path d="M${fx} ${fy+p.combined_scene.baseline_y+0.5} h1320" stroke="#54837d" opacity=".35" stroke-dasharray="4 5" fill="none"/>`);
@@ -56,7 +56,15 @@ function renderSvg(p){
  for(const r of alt.foreground_rectangles)put(srcRect(r[0],r[1],r[2],r[3],r[4]));put("</svg>");};
  altCrop(51,"III / SIX BURIED REGISTERS / BLIND LUNAR ARCHIVE",196,183);
  altCrop(767,"IV / BLIND INCLINOMETERS AND SALT-RETURN COFFER",951,181);
- put(text(54,2084,"TWO DISTINCT SOURCE-COLOUR DIORAMAS  ·  NO REFLECTION / BRINE / PHYSICS OR GODOT CLAIM",12,"#83a7a2"));
+ put(text(53,2094,"05 / THE UNGIVEN TIDE CHIMES  ·  WESTERN REED-BANK RELIQUARY",14,"#a8c8c3",600));
+ const chimeCrop=(x,label,vx,vy,vw,vh)=>{put(text(x,2123,label,12,"#c9d9d4",650));put(rect(x,2133,672,225,"#172b32",7));
+ put('<svg x="'+(x+7)+'" y="2140" width="658" height="210" viewBox="'+vx+' '+vy+' '+vw+' '+vh+'" preserveAspectRatio="xMidYMid meet" aria-label="'+escape(label)+'">');
+ put(rect(vx,vy,vw,vh,"#101e28"));for(const r of alt.terrain_rectangles)put(srcRect(r[0],r[1],r[2],r[3],r[4]));
+ for(const loc of alt.placements){const f=p.features.find(q=>q.id===loc.feature_id);draw(f,loc.origin[0],loc.origin[1],1,loc.variant)}
+ for(const r of alt.foreground_rectangles)put(srcRect(r[0],r[1],r[2],r[3],r[4]));put("</svg>");};
+ chimeCrop(51,"V / FRACTURED TALLY CANOPY AND REED-BANK MAST",90,18,318,141);
+ chimeCrop(767,"VI / STRANDED CHIMES AND LOST PILGRIM STAIRS",133,73,234,123);
+ put(text(54,2384,"TWO SOURCE-COLOUR DIORAMAS · NO GODOT / OPTICS / WATER / SOUND / CLEARANCE CLAIM",12,"#83a7a2"));
 put("</svg>");
  return c.join("\n")+"\n";
 }
