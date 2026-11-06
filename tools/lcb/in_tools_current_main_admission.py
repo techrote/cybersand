@@ -15,6 +15,21 @@ ROOT = Path(__file__).resolve().parents[2]
 RECORD = ROOT / "godot/tests/fixtures/lcb/in_tools/in-tools-current-main-admission.2026-11-05.json"
 SCHEMA = "in-tools-current-main-admission-v1"
 EXPECTED_AUTHORITY_COUNT = 13
+EXPECTED_AUTHORITY_PATHS = frozenset({
+    "godot/scripts/usable_catalog.gd",
+    "godot/scripts/usable_runtime.gd",
+    "godot/scripts/physical_usable_script.gd",
+    "godot/scripts/physical_actor_session.gd",
+    "godot/scripts/physical_usable_runtime.gd",
+    "godot/scripts/physical_usable_equipment.gd",
+    "godot/scripts/simulation_worker.gd",
+    "godot/native_extension/cyber_native_cell_world.cpp",
+    "godot/native_extension/cyber_native_cell_world.hpp",
+    "native/include/cybersand/world.hpp",
+    "native/src/world.cpp",
+    "native/include/cybersand/water_normalization.hpp",
+    "native/src/world_inertial.inc",
+})
 EXPECTED_PLANS = {
     "in-tools.valve-side.v2",
     "in-tools.valve-bottom.v2",
@@ -100,14 +115,26 @@ def validate_record(record: dict[str, Any]) -> None:
         raise AdmissionError("authority count differs from minimal reviewed set")
     if record["authority_count"] != EXPECTED_AUTHORITY_COUNT:
         raise AdmissionError("declared authority_count differs")
-    paths = [row.get("path") for row in authority if isinstance(row, dict)]
-    if len(paths) != len(set(paths)) or len(paths) != EXPECTED_AUTHORITY_COUNT:
-        raise AdmissionError("authority paths are incomplete or duplicated")
+    # The registration is mutable evidence, not the source of the authority list.
+    # Validate every path before trusting any registered blob or role.
+    paths: list[str] = []
     for row in authority:
-        if set(row) != {"path", "git_blob", "role"}:
+        if not isinstance(row, dict) or set(row) != {"path", "git_blob", "role"}:
             raise AdmissionError(f"invalid authority row: {row}")
-        if not isinstance(row["path"], str) or not row["path"]:
+        path = row["path"]
+        if not isinstance(path, str) or not path:
             raise AdmissionError("invalid authority path")
+        paths.append(path)
+    actual_paths = set(paths)
+    if len(actual_paths) != len(paths):
+        raise AdmissionError("authority paths are incomplete or duplicated")
+    if actual_paths != EXPECTED_AUTHORITY_PATHS:
+        raise AdmissionError(
+            "authority path set differs from pinned reviewed set: "
+            f"missing={sorted(EXPECTED_AUTHORITY_PATHS - actual_paths)} "
+            f"unexpected={sorted(actual_paths - EXPECTED_AUTHORITY_PATHS)}"
+        )
+    for row in authority:
         blob = row["git_blob"]
         if not isinstance(blob, str) or len(blob) != 40 or any(c not in "0123456789abcdef" for c in blob):
             raise AdmissionError(f"invalid Git blob for {row['path']}")
@@ -157,7 +184,9 @@ def check(record: dict[str, Any] | None = None, root: Path = ROOT) -> dict[str, 
             raise AdmissionError(
                 f"working source changed for {path}: {working_blob} != {expected}"
             )
-        if not _git_ok(root, "diff", "--quiet", base, "--", path):
+        # git diff <base> -- <path> checks the working tree, not HEAD. An
+        # otherwise clean-looking worktree may mask a modified descendant commit.
+        if not _git_ok(root, "diff", "--quiet", base, "HEAD", "--", path):
             raise AdmissionError(f"successor modifies production authority path: {path}")
         checked.append({"path": path, "git_blob": expected})
 
