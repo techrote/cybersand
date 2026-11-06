@@ -55,3 +55,11 @@ python3 docs/world-design/signal-orchard/render_pack.py
 ```
 
 The renderer and validator intentionally require no engine installation. Passing them cannot substitute for native simulation, Godot/actor-clearance evidence, material mutation ownership or production admission.
+
+## Refinement B5 — The Ninth Harvest (6 November 2026)
+
+**Delivered design-only source-cell artwork:** the former flat, unbroken upper beam and evenly spaced eight-object prospect are replaced by an asymmetrical abandoned engineered orchard. A fractured, double-banded mechanical calibration crown occupies the centre; six unequal stone/metal pilasters carry interrupted inspection walks; a damaged western switch-house yields to rusted diagnostic terraces; the eastern failed harvest gantry hangs unpowered receiver weights above open breaks. Designed copper/verdigris branches, laminated canopy petals, engraved register plates, cable-bundle root lines, local corrosion, and stepped archaeological foundations establish manufacturing logic and deliberate wear without filling the vital silhouette voids. All geometry is deterministic native-ID rectangle painting, not an engine effect.
+
+The composed prospect uses **1949 ordered fixed/native-kernel-None terrain stamps** before the original **eight unchanged module placements**, with their existing 16 variants, anchors, three repeatable patterns and active standalone experiments preserved. The renderer also adds two scale-matched crops from the **same** scene rectangle and variant data (centre calibration rosette and damaged receiver gantry), not painted overlays or Godot captures. The apron, gaps, and cable undercroft are *proposals*, not verified walking clearance, electrical transmission, physics, water containment, reflections or effects. Visible empty space does not erase preexisting host cells.
+
+Reproduction: `python3 docs/world-design/signal-orchard/validate_pack.py --source-check`, then `python3 docs/world-design/signal-orchard/render_pack.py --check`. These commands require a source-matched full checkout; the design worker's isolated JavaScript geometric checks must not be described as those subprocesses unless actually run. Reference-gallery superiority and native/Godot capture remain unqualified pending independent visual review.
