@@ -2882,3 +2882,23 @@ std::unique_ptr<World> World::restore_physical_state(const WorldConfig& executio
     catch (const std::exception&) { refuse_state("invalid quantity ledger"); }
     return world;
 }
+
+ 
+// Experimental fixed-storage observation; no allocation and no mutable pointer exposure.
+// Vector::capacity() is queried after construction, not inferred from requested reserve().
+std::size_t World::pressure_topology_reserved_bytes() const noexcept {
+    if (!pressure_) return 0;
+    const auto& p = *pressure_;
+    const auto bytes = [](const auto& v) noexcept -> std::size_t {
+        using Element = typename std::decay_t<decltype(v)>::value_type;
+        return v.capacity() * sizeof(Element);
+    };
+    return sizeof(p) + bytes(p.compartments) + bytes(p.next_compartments) +
+        bytes(p.history) + bytes(p.queue) + bytes(p.regions) +
+        bytes(p.overlaps) + bytes(p.nodes) + bytes(p.uf_parent) +
+        bytes(p.component_order) + bytes(p.member_compartments) +
+        bytes(p.member_regions) + bytes(p.sorted_coordinates) +
+        bytes(p.column_tasks) + bytes(p.row_tasks) + bytes(p.row_wakes) +
+        bytes(p.gas_tasks) + bytes(p.gas_seed_bits) +
+        bytes(p.job_optimization);
+}
