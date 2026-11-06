@@ -110,3 +110,11 @@ The primary *Emberglass Scar* gains a fractured volcanic corona above the quench
 **Preview:** `render_pack.mjs` now adds two deterministic 2.4× native-source-cell studies covering western cross-beds and eastern shear, making the design sheet 1280×2050. Four prior buried-register detail studies remain present. SVG is flat catalogue-colour, not Godot rendering. Artistic superiority over the five gallery references has not been independently accepted.
 
 **Limits:** Native material identifiers and palette remain unchanged. No actual Godot, thermal, fluid, collider, clearance, physical support or performance qualification; no production import authorization.
+
+## Worker A — The Interrupted Quench Escarpment (6 November 2026)
+
+The **1056×238** dry *Inverted Kiln* alternate acquires a more distinctive, asymmetric overhead geological vista: a long folded western batholith and a higher fractured eastern scarp face one another across a broad open kiln throat. Both have individually shaped column courses, restrained warm stratigraphy, actual Empty-cell fault openings, an eroded assay niche, five eastern cooling-record slips, vitrified inert pendant fractures and isolated lithic debris. These fixed material-cell forms do **not** prove physically suspended rock, real thermal flow, cooling, lighting, glass transparency or actor clearance.
+
+The alt-only terrain has **1789 → 2170** ordered rectangles (+381, all verified source-fixed/Empty IDs). Ordered last-write-wins native-ID raster comparison with parent `9f2a0882a129`: **30426 changed cells**, **672 formerly painted cells explicitly opened**, **21630 formerly unwritten cells painted**, **87452 unwritten/Empty cells**. The original flagship, eight modules, sixteen variants and both placement sets are unchanged. The deterministic source-colour SVG retains existing views and recrops its two alternate close studies to the new scarps.
+
+Evidence is flat SVG/source-cell interpretation only, not a Godot/native capture. Full-checkout `node docs/world-design/emberglass-fumaroles/validate_pack.mjs --source-check --self-test` and `node docs/world-design/emberglass-fumaroles/render_pack.mjs --check` remain the required real Node CLI gates. Engine visual acceptance, t=0/60/600 thermal and fluid behavior, physical clearance/performance and five-reference human comparison remain untested.

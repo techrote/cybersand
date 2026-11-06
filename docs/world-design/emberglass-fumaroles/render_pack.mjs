@@ -51,8 +51,8 @@ function svgForPack(p){
  };
  alt.terrain_rectangles.forEach(r=>paint(r));
  alt.placements.forEach(z=>{const f=p.features.find(f=>f.id===z.feature),v=f.variants.find(v=>v.id===z.variant);f.rectangles.forEach(r=>paint(r,z.x,z.y,v?v.swap:{}));});
- parts.push('<text x="70" y="1184" font-family="monospace" font-size="13" fill="#d1a874">04 — SOURCE-CELL DETAIL STUDIES / 2.4× · NOT ENGINE PIXELS</text>');
- for(const [px,sx,sy,label] of [[64,305,52,'CRUCIBLE / RUINED RETAINING ARCH'],[646,728,82,'EASTERN FAULT / SURVEY TERRACE']]){
+ parts.push('<text x="70" y="1184" font-family="monospace" font-size="13" fill="#d1a874">04 — INTERRUPTED QUENCH ESCARPMENT / SOURCE-CELL STUDIES · 2.4×</text>');
+ for(const [px,sx,sy,label] of [[64,242,30,'WESTERN COOLING SCARP / FOSSIL ASSAY NICHE'],[646,688,30,'EASTERN QUENCH FAULT / INERT GLASS TEARS']]){
   parts.push(`<rect x="${px}" y="1201" width="552" height="192" fill="#090c16" stroke="#343743"/>`);
   parts.push(`<g transform="translate(${px} 1201) scale(2.4)">`);
   for(let yy=0;yy<80;yy++){let xx=0;while(xx<230){let id=cells[(sy+yy)*aw+sx+xx],end=xx+1;while(end<230&&cells[(sy+yy)*aw+sx+end]===id)end++;if(id!==0)parts.push(rect(xx,yy,end-xx,1,id));xx=end;}}
