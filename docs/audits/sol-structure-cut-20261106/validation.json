@@ -1,4 +1,206 @@
 {
-  "status": "PENDING_EXACT_CHECKPOINT_CHECKS",
-  "scope": "Runtime evidence has separate executed source identities; repository/material admission not assumed."
+  "source": "1b54b9f0d7abc9784f17b9e28120e75253474c13",
+  "tree": "e531beef12c449a513fd8437a6e986f443f2db22",
+  "local_delta": "",
+  "commands": {
+    "guard": {
+      "name": "guard",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/material_catalogue/compatibility.py",
+        "--check"
+      ],
+      "exit": 1,
+      "seconds": 1.3202715999796055,
+      "timeout_seconds": 120,
+      "log": "build\\sol-structure-cut\\validation-001\\guard.log",
+      "log_sha256": "357b61dc0a22da3ff1e31cf5110b51f680c2f9c0c0d8a232c045886c9c26b370",
+      "clean": false
+    },
+    "m11": {
+      "name": "m11",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/ci/check_m11_consistency.py"
+      ],
+      "exit": 0,
+      "seconds": 1.3949392999638803,
+      "timeout_seconds": 120,
+      "log": "build\\sol-structure-cut\\validation-001\\m11.log",
+      "log_sha256": "e5d2a8eecef5876957dc4ecff01b99af696053871616d2dea563371d44b2427b",
+      "clean": true
+    },
+    "retrieval-structure": {
+      "name": "retrieval-structure",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/docs/retrieval_eval.py",
+        "--queries",
+        "docs/reference/retrieval-questions-sol-structure.json",
+        "--output",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-structure-cut-20261106\\khybersand\\build\\sol-structure-cut\\validation-001\\retrieval-structure.json"
+      ],
+      "exit": 0,
+      "seconds": 0.5170539999962784,
+      "timeout_seconds": 120,
+      "log": "build\\sol-structure-cut\\validation-001\\retrieval-structure.log",
+      "log_sha256": "a55a07e8f0507a1f518587db930fc1800b90e994334120ae1e11010a14342b44",
+      "clean": true
+    },
+    "retrieval": {
+      "name": "retrieval",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/docs/retrieval_eval.py",
+        "--output",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-structure-cut-20261106\\khybersand\\build\\sol-structure-cut\\validation-001\\retrieval.json"
+      ],
+      "exit": 0,
+      "seconds": 0.6708958999952301,
+      "timeout_seconds": 120,
+      "log": "build\\sol-structure-cut\\validation-001\\retrieval.log",
+      "log_sha256": "367701fa63a4f6b94e042b953dc945847907af1b2d49dbdbd8275175904b2bae",
+      "clean": true
+    },
+    "structure-tests": {
+      "name": "structure-tests",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/sol281/test_structure_reducer.py"
+      ],
+      "exit": 0,
+      "seconds": 0.1938217999995686,
+      "timeout_seconds": 120,
+      "log": "build\\sol-structure-cut\\validation-001\\structure-tests.log",
+      "log_sha256": "7a14a6b7a78ab0c73959601709b293818678a1cfb496728a9dcd17340f008027",
+      "clean": true
+    },
+    "retrieval-energy": {
+      "name": "retrieval-energy",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/docs/retrieval_eval.py",
+        "--queries",
+        "docs/reference/retrieval-questions-sol-energy.json",
+        "--output",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-structure-cut-20261106\\khybersand\\build\\sol-structure-cut\\validation-001\\retrieval-energy.json"
+      ],
+      "exit": 0,
+      "seconds": 0.5187251000315882,
+      "timeout_seconds": 120,
+      "log": "build\\sol-structure-cut\\validation-001\\retrieval-energy.log",
+      "log_sha256": "b7ca5a7729f046e8ef2deabb07a5d5507a62efc8f24123945a234f9e9c85f1a8",
+      "clean": true
+    },
+    "diff": {
+      "name": "diff",
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit": 0,
+      "seconds": 0.05295799998566508,
+      "timeout_seconds": 120,
+      "log": "build\\sol-structure-cut\\validation-001\\diff.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "clean": true
+    },
+    "docs": {
+      "name": "docs",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/ci/check_docs.py"
+      ],
+      "exit": 0,
+      "seconds": 2.5264167000423186,
+      "timeout_seconds": 120,
+      "log": "build\\sol-structure-cut\\validation-001\\docs.log",
+      "log_sha256": "057c6edd85a84a25326d8990f14b8b9484995d1650e742d3f64c5d2880f0d7b4",
+      "clean": true
+    },
+    "energy-tests": {
+      "name": "energy-tests",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/sol281/test_energy_reducer.py",
+        "build/sol-energy/structure-fixed-001/windows/results.json"
+      ],
+      "exit": 0,
+      "seconds": 0.8682330000447109,
+      "timeout_seconds": 120,
+      "log": "build\\sol-structure-cut\\validation-001\\energy-tests.log",
+      "log_sha256": "fe43bb227275121c67e490c54e1f050e1f685c00f93356397daf5188003ce68c",
+      "clean": true
+    },
+    "repository": {
+      "name": "repository",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/ci/check_repository.py",
+        "--require-materialized"
+      ],
+      "exit": 1,
+      "seconds": 3.5216416000039317,
+      "timeout_seconds": 120,
+      "log": "build\\sol-structure-cut\\validation-001\\repository.log",
+      "log_sha256": "cc8d900bad34f0873d9cae6054cfe5891fd2286f5fe31af9c9a47f647bd9c593",
+      "clean": false
+    }
+  },
+  "companion": {
+    "revision": "a15e06ca6f37750b66b89936424e0d018b203f7b",
+    "files": [
+      {
+        "path": "C:\\Users\\_\\.codex\\worktrees\\sol-structure-cut-20261106\\SOURCE-PROVENANCE.json",
+        "sha256": "49b86e67fa7b753f7e0904923a66192aed0348c280a46ef6750c0392e193f30d",
+        "source_path": "SOURCE-PROVENANCE.json"
+      },
+      {
+        "path": "C:\\Users\\_\\.codex\\worktrees\\sol-structure-cut-20261106\\docs\\WEB_THREADING.md",
+        "sha256": "85b13f5d943ad6017fa4fa264bf8f9a54c9d49f80e40697a770d0524a3b9cd34",
+        "source_path": "docs/WEB_THREADING.md"
+      },
+      {
+        "path": "C:\\Users\\_\\.codex\\worktrees\\sol-structure-cut-20261106\\tools\\dev.py",
+        "sha256": "e9aaee35d135012f24b030acccb25d76f0e38893c58ff019138880f73f50f8ea",
+        "source_path": "tools/dev.py"
+      },
+      {
+        "path": "C:\\Users\\_\\.codex\\worktrees\\sol-structure-cut-20261106\\docs\\LOCAL_DEVELOPMENT.md",
+        "sha256": "4fb2ef9423f4a7cc64cfa50b4c0947673ae56b7ecf766c266c4bd809657b772f",
+        "source_path": "docs/LOCAL_DEVELOPMENT.md"
+      },
+      {
+        "path": "C:\\Users\\_\\.codex\\worktrees\\sol-structure-cut-20261106\\validation\\browser-results.json",
+        "sha256": "de154dd896b78384069be360c0f9424efa2ade182e6729eca6a242fcf9839839",
+        "source_path": "validation/browser-results.json"
+      }
+    ]
+  },
+  "qualification": "Per-check outcomes remain separate; failed source/material/runtime gates preclude integration.",
+  "retrieval_summaries": {
+    "retrieval": {
+      "questions": 32,
+      "canonical_hit_at_1": 19,
+      "canonical_hit_at_k": 32,
+      "mrr_at_k": 0.7536,
+      "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+    },
+    "retrieval-structure": {
+      "questions": 3,
+      "canonical_hit_at_1": 2,
+      "canonical_hit_at_k": 3,
+      "mrr_at_k": 0.8333,
+      "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+    },
+    "retrieval-energy": {
+      "questions": 3,
+      "canonical_hit_at_1": 3,
+      "canonical_hit_at_k": 3,
+      "mrr_at_k": 1.0,
+      "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+    }
+  },
+  "integration": "NO-GO: frozen World material source guard and eight published runtime input mismatches remain; local source-matched experiment binaries do not replace accepted manifests."
 }

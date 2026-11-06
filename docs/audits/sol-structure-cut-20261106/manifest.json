@@ -367,5 +367,146 @@
   ],
   "raw_log_scope": "Scientific runners retain commands/exits/timeouts and raw log hashes. Initial manual diagnostic invocation errors remain tool-transcript records; no invented raw file receipt.",
   "resource_scope": "Original structure artifact cap4GiB and5GiB reserve preserved; native qualification also retained outside checkout. No prior evidence deleted.",
-  "platform_scope": "Actual Windows LLVM-MinGW extension and MSVC native checks; actual WSL Linux GCC extension, optimized/strictASanUBSan native checks. No MSVC-built GDExtension claim."
+  "platform_scope": "Actual Windows LLVM-MinGW extension and MSVC native checks; actual WSL Linux GCC extension, optimized/strictASanUBSan native checks. No MSVC-built GDExtension claim.",
+  "final_replay_qualification": {
+    "source": "1b54b9f0d7abc9784f17b9e28120e75253474c13",
+    "receipt_sha256": "ef5c9a4f740d97d8cd1a9e743e095ec03db2abc961633a023a9d62e7a33af7ad",
+    "cases": 53,
+    "body_state": "lossless",
+    "witnesses": "recorded/reconstructed baseline witnesses; default JSON precision qualification retained"
+  },
+  "independent_review": {
+    "disposition": "GO to publish Draft scoped partial/negative physical result; no integration or solvedSOL",
+    "scope": "Independent readonly source/energy replay review and corrected48-episode reducer audit; no agent writer",
+    "accepted_repaired_responses": 2826,
+    "scalar_backend_energy_increases_over_planner_bound": 0,
+    "remaining_refusals": {
+      "NonDissipativeResponse": 52,
+      "InvalidGeometryWitness": 1
+    },
+    "formal_review": "Separate independent adversarial PR review requested before owner decision"
+  },
+  "public_packet_inventory": {
+    "companion.json": {
+      "sha256": "c1532daa44a8512704bde71ad60d56a98757ee1aecc12581ef4b9b07f72bdc89",
+      "bytes": 1332
+    },
+    "comparison.json": {
+      "sha256": "67d8769e41cf29fb185f399c5fc9802a4698dbcdea50d3c3e667b42137fdb43f",
+      "bytes": 418893
+    },
+    "native-linux.json": {
+      "sha256": "62b89103e720f97eebcbf2d434206c8a84247c07c175b016a3e79e725737990b",
+      "bytes": 79833
+    },
+    "native-msvc.json": {
+      "sha256": "d963bea6f4f30af8ac3f579444a92cf67a2724a433df67cba74f4395fbd83857",
+      "bytes": 58086
+    },
+    "reducer-crosshost.json": {
+      "sha256": "53c3afff49a6490f976e726aa5615897d3c3f06d9d4442612c2f2f696766bac1",
+      "bytes": 124
+    },
+    "step-ledgers.json": {
+      "sha256": "5fd128adf78b85fadcaec745df01f4bb3ebf9fcd9a0ac3c57f9954e6e4e61507",
+      "bytes": 3287578
+    },
+    "validation.json": {
+      "sha256": "70e14a42d2c4b427c5672b3849ad8a71234db792a42ff4e4513741261f2860dc",
+      "bytes": 8073
+    },
+    "dry-001/receipt.json": {
+      "sha256": "109ac670bdcdc231dbdfc31cee007ef68bc096630452d4b02d7317e2ab9b1561",
+      "bytes": 227382
+    },
+    "dry-002/receipt.json": {
+      "sha256": "2441dd8783b3d7d0857572de57113e58a557089f2efdceaaa05dab04a58440f0",
+      "bytes": 229750
+    },
+    "dry-003/receipt.json": {
+      "sha256": "11cbf54e83857d4e8f902c7c3d81cb329bd58ae5f41d5d0cf3a7550ab82724f4",
+      "bytes": 346325
+    },
+    "dry-fixed-001/receipt.json": {
+      "sha256": "bc9ba50e5b2ca0a26087816d77e59117220668a5e3ce332752c60ad470bab620",
+      "bytes": 347504
+    },
+    "energy-replay-001/receipt.json": {
+      "sha256": "51ce4e4917de91bd9576865b8da42773f317ba4a38db1485304e11f76271fe10",
+      "bytes": 36177
+    },
+    "energy-replay-002/inputs.json": {
+      "sha256": "c0bddbc0dcb300ebbb6e9b239499166bbac7fe56f4c569dd1fe16d6c61651a31",
+      "bytes": 645543
+    },
+    "energy-replay-002/receipt.json": {
+      "sha256": "db8bd30c0466dc0f316b22313c17355667495d12f9b75d4533b944076d8fd94b",
+      "bytes": 36526
+    },
+    "energy-replay-003/receipt.json": {
+      "sha256": "ef5c9a4f740d97d8cd1a9e743e095ec03db2abc961633a023a9d62e7a33af7ad",
+      "bytes": 36589
+    },
+    "original-001/receipt.json": {
+      "sha256": "0f03f8f7a6a5b8ca50f805fa25afa2d486ead4cdd6df365a00dbea4475ce6eaf",
+      "bytes": 225661
+    },
+    "original-002/receipt.json": {
+      "sha256": "fee924ac9b11ce5fae327f8c0d52f1e63b372e0cf40b2602e04a3acc473b67b8",
+      "bytes": 340505
+    },
+    "packed-001/receipt.json": {
+      "sha256": "cd86e51a39fa2c2cb65044bcf2ae7eaa421ef448814b143044f9b107d43702ff",
+      "bytes": 358234
+    },
+    "packed-fixed-001/receipt.json": {
+      "sha256": "286486ffe6a93cb38f22244d976c44f17e58374ebfeb31d059857d2e6107ffb6",
+      "bytes": 359574
+    },
+    "precision/receipt.json": {
+      "sha256": "12fcc3e29d25bdf66259c8683f4411f1b5abcee60badc47206860a1ef3d5f88b",
+      "bytes": 7787
+    },
+    "precision/reduced.json": {
+      "sha256": "cdd0e01e9bb2f1aa13839cff897864fb3eb366ca93ec8181683f34e38f047455",
+      "bytes": 17432
+    },
+    "rapier-fixed-001/receipt.json": {
+      "sha256": "94a857eb8ff862b0d5a7604347b62550b5265d3fa09f40358b900df7cf3106d2",
+      "bytes": 31927
+    },
+    "runtimes-001/receipt.json": {
+      "sha256": "b6af76ff9c454f9d4ce4a20aeede47bb0806b923d5fa6aa039c20580bdbcc869",
+      "bytes": 37392
+    },
+    "precision/linux/results.json": {
+      "sha256": "15f3c4dbbb959d216092cd83c7b7beff04aeac159c2f6884291acb51a723dd30",
+      "bytes": 1196141
+    },
+    "precision/windows/results.json": {
+      "sha256": "7574e5fef3dadf798b98b2fadb10059d2927f9af61702f78f1f4770c8e3120e2",
+      "bytes": 1196141
+    },
+    "energy-replay-003/linux/results.json": {
+      "sha256": "e2b2617e913efae936e7e87755b231747b858ab7fb64774b0e70c6ad420a97f4",
+      "bytes": 40810
+    },
+    "energy-replay-003/windows/results.json": {
+      "sha256": "e2b2617e913efae936e7e87755b231747b858ab7fb64774b0e70c6ad420a97f4",
+      "bytes": 40810
+    },
+    "energy-replay-002/linux/results.json": {
+      "sha256": "e2b2617e913efae936e7e87755b231747b858ab7fb64774b0e70c6ad420a97f4",
+      "bytes": 40810
+    },
+    "energy-replay-002/windows/results.json": {
+      "sha256": "e2b2617e913efae936e7e87755b231747b858ab7fb64774b0e70c6ad420a97f4",
+      "bytes": 40810
+    }
+  },
+  "final_local_resource": {
+    "structure_bytes": 3250111072,
+    "outside_native_bytes": 217556901,
+    "free": 20199686144
+  }
 }
