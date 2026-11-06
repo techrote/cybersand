@@ -193,10 +193,14 @@ compiler flags. Its Python summary command failed with `ZeroDivisionError`
 because it mistakenly read the `summary: 0` header from outside the active
 instrumentation interval. The original raw profile files **are complete and
 independently inspected**, with actual `totals: Ir` (instruction counts).
-The parser is corrected on #477 and a separate rerun
-[#42314416637](https://github.com/techrote/cybersand/actions/runs/42314416637)
-is in progress at the time of this checkpoint. Do not mark that second run
-PASS until its logs are examined.
+The parser was corrected on #477 and the independent exact-head
+[rerun #42314416637](https://github.com/techrote/cybersand/actions/runs/42314416637)
+**PASSED** at commit `f3046d6fc8c7694bfd9060bc554371bd1d995724`,
+reporting the same `Ir` totals, hashes and deterministic counters; original
+[qualified artifact #13549687979](https://github.com/techrote/cybersand/actions/runs/42314416637/artifacts/13549687979)
+contains `summary.json`, both `.callgrind` raw files, function/line
+annotations, commands and source revisions. This is the completed diagnostic
+profile gate, not an elapsed-CPU `perf` pass.
 
 | Callgrind property | Baseline #406 | Cursor #471 | Delta |
 |---|---:|---:|---:|
