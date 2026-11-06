@@ -254,8 +254,9 @@ error yields no decisions and exit 2. Its negative regressions run in
 Documentation CI. `test_coupling_lockstep_semantics.gd` checks pause, reset,
 failure and duplicate publications for the consumed-publication field.
 
-Evidence is written to uncommitted `build/coupling-lockstep/`. Results, the
-sealed evidence archive and limits are in the
+Evidence is written to uncommitted `build/coupling-lockstep/`. The sealed
+archive is published as the `evidence-coupling-lockstep-001-20261106`
+pre-release asset. Results, its hash and limits are in the
 [feasibility audit](../audits/2026-11-06-coupling-lockstep-feasibility.md).
 
 ## Required future validation
