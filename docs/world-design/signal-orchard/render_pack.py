@@ -65,17 +65,17 @@ for z in placements:
         scene_details.append(R([*r[:4], v["swap"].get(str(r[4]), r[4])]))
     scene_details.append("</g>")
 out.extend([
-    '<text x="50" y="967" font-family="monospace" font-size="16" fill="#b6e8d2">03 / TENSION CROWN • ACTUAL SOURCE-CELL CROP, NOT ENGINE OUTPUT</text>',
+    '<text x="50" y="967" font-family="monospace" font-size="16" fill="#b6e8d2">03 / SEVERED SIGNAL ARTERY • SOURCE-CELL CROP, NOT ENGINE OUTPUT</text>',
     '<rect x="45" y="987" width="660" height="289" rx="8" fill="#070e18" stroke="#4b6260"/>',
     '<rect x="735" y="987" width="660" height="289" rx="8" fill="#070e18" stroke="#4b6260"/>',
     '<svg x="62" y="1007" width="626" height="249" viewBox="375 12 315 125" preserveAspectRatio="xMidYMid meet">',
     *scene_details,
     '</svg>',
-    '<svg x="752" y="1007" width="626" height="249" viewBox="795 64 315 125" preserveAspectRatio="xMidYMid meet">',
+    '<svg x="752" y="1007" width="626" height="249" viewBox="790 171 315 125" preserveAspectRatio="xMidYMid meet">',
     *scene_details,
     '</svg>',
     '<text x="62" y="1270" font-family="monospace" font-size="12" fill="#9db4a9">LEFT: FRACTURED ROSETTE / REPAIR TRUSSES</text>',
-    '<text x="752" y="1270" font-family="monospace" font-size="12" fill="#9db4a9">RIGHT: FAILED HARVEST GANTRY / RECEIVERS</text>',
+    '<text x="752" y="1270" font-family="monospace" font-size="12" fill="#9db4a9">RIGHT: BURIED RELAY CRYPT / SEVERED CABLES</text>',
 ])
 out.extend([
     '<text x="50" y="1310" font-family="monospace" font-size="12" fill="#9db4a9">DESIGN ONLY • DRY SCENE SUBSTITUTES WATER / SPARK • NOT SIMULATION OR GODOT RENDER</text>',
