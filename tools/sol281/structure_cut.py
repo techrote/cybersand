@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Source-local structural SOL baseline; actual Windows and WSL Linux."""
 import argparse
+import ast
 import concurrent.futures
 import hashlib
 import json
@@ -111,14 +112,26 @@ def hosts(args):
             row=command(name,argv,host,dict(os.environ,**forwarded),timeout=300);rows.append(row);save();return row
         version=run('version',version=True);assert version['clean']
         native_manifest=json.loads((ROOT/('godot/addons/cybersand_native/runtime-provenance'+('.linux' if platform=='linux' else '')+'.json')).read_text(encoding='utf-8'))
-        assert (ROOT/version['log']).read_text(encoding='utf-8').strip()==native_manifest['godot_version']
+        validation_path=ROOT/native_manifest['validation_output'];assert sha(validation_path)==native_manifest['validation_sha256']
+        validation=json.loads(validation_path.read_text(encoding='utf-8'));cohort=validation['cohorts'][0]
+        cohort_path=ROOT/cohort['report'];assert sha(cohort_path)==cohort['report_sha256']
+        engine_pin=json.loads(cohort_path.read_text(encoding='utf-8'))['engine']
+        lock=json.loads((ROOT/'third_party/godot-runtime.lock.json').read_text(encoding='utf-8'))
+        assert engine_pin['version']==lock['godot_version']
+        assert (ROOT/version['log']).read_text(encoding='utf-8').strip()==engine_pin['version']
         if platform=='windows':
             engine=sha(ENGINES[platform].replace('_console.exe','.exe'));launcher=sha(ENGINES[platform])
-            assert launcher==native_manifest['godot_validation_executable_sha256']
+            tree=ast.parse((ROOT/'tools/ci/run_windows_godot_regressions.py').read_text(encoding='utf-8'))
+            archive_pin=next(ast.literal_eval(n.value) for n in tree.body if isinstance(n,ast.Assign) and any(isinstance(t,ast.Name) and t.id=='GODOT_SHA512' for t in n.targets))
+            assert engine_pin['archive_hash']==archive_pin
+            assert launcher==engine_pin['executables'][Path(ENGINES[platform]).name]
         else:
             row=command('engine-hash',['wsl.exe','-d','Ubuntu-24.04','--','sha256sum',ENGINES[platform]],host);rows.append(row);assert row['clean']
             engine=(ROOT/row['log']).read_text(encoding='utf-8').split()[0];launcher=engine
-        assert engine==native_manifest['godot_executable_sha256'];state['engine']=dict(sha256=engine,launcher_sha256=launcher,version=native_manifest['godot_version']);save()
+            assert engine_pin['archive_hash']==lock['editor']['sha256']
+        executable_name=Path(ENGINES[platform].replace('_console.exe','.exe')).name
+        assert engine==engine_pin['executables'][executable_name]
+        state['engine']=dict(sha256=engine,launcher_sha256=launcher,version=engine_pin['version'],pin=engine_pin,validation_sha256=sha(validation_path),cohort_sha256=sha(cohort_path));save()
         imported=run('import')
         if imported['clean']:
             for worker in map(int,args.workers.split(',')):
