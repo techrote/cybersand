@@ -80,6 +80,7 @@ jobs:
           name: world-design-capture-repair-linux
           path: ${{ runner.temp }}/world-design-capture-repair-linux
           retention-days: 90
+          include-hidden-files: true
           if-no-files-found: error
 
   windows-angle:
@@ -141,4 +142,5 @@ jobs:
           name: world-design-capture-repair-windows-angle
           path: ${{ runner.temp }}/world-design-capture-repair-windows
           retention-days: 90
+          include-hidden-files: true
           if-no-files-found: error

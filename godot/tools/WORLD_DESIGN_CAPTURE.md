@@ -75,22 +75,25 @@ it is an explicit stale-claim recovery action and archives the prior transaction
 record rather than deleting it.
 
 A fixed time repeats byte-identically on the same platform/rendering settings.
-Alternate tile sizes may produce tiny off-seam GLES3 floating-point differences
-without any boundary-band seams: the repair campaign retains exact differing
-pixel coordinates, counts, bounding boxes and maximum channel deltas. It tests
-horizontal **and** vertical joins at multiple tile sizes/scales in square, wide
-and tall material-varied fixtures on Linux llvmpipe and Windows ANGLE, alongside
-the historical Lumen comparison. The gate requires zero changed pixels within
-32 physical pixels on each tested join and bounds off-join rounding to 5/255
-per RGB channel affecting no more than 0.25% of pixels. This is *not* a
-cross-platform byte-equality claim and does not relabel the historical strict
-pixel mismatch as a parity pass.
+The capture rig anchors both the production palette pass and emission pass to
+one fixed virtual world canvas (world bounds plus the 32-cell halo) and clips
+tile viewports out of that canvas. Tile size therefore changes bounded working
+set and stitching only; it must not reset shader UV/world-coordinate phase.
+The repair campaign retains exact differing pixel coordinates, counts, bounding
+boxes, maximum channel deltas and horizontal/vertical seam-band metrics at
+multiple tile sizes/scales in square, wide and tall material-varied fixtures on
+Linux llvmpipe and Windows ANGLE, alongside the historical Lumen comparison.
+Historical strict mismatches remain recorded as historical facts; a corrected
+head must establish its own exact or explicitly bounded measurements rather
+than inherit that outcome or silently widen a tolerance.
 
 Evidence must be source-pinned to the actual tested commit; the workflow
-retains raw files with `SHA256SUMS.txt` recomputed **after** the runner's live
-stdout log closes. Original failing runs are kept distinct from later corrected
-runs. Full 15-collection/120-feature current-design graphical acceptance and
-human reference comparison remain separate, subsequent activities.
+retains raw files, including the immutable hidden generation directories named
+by committed manifests, with `SHA256SUMS.txt` recomputed **after** the runner's
+live stdout log closes. Original failing runs are kept distinct from later
+corrected runs. Full 15-collection/120-feature current-design graphical
+acceptance and human reference comparison remain separate, subsequent
+activities.
 
 ## Command
 

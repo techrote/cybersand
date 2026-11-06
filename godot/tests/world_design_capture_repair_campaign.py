@@ -557,16 +557,16 @@ def main() -> int:
     # A renderer-affecting project configuration change must dirty the verified
     # source boundary and fail mandatory verification.
     project_file=root/"godot/project.godot"
-    project_original=project_file.read_text()
+    project_original=project_file.read_bytes()
     try:
-        marker='textures/canvas_textures/default_texture_filter=0'
+        marker=b'textures/canvas_textures/default_texture_filter=0'
+        replacement=b'textures/canvas_textures/default_texture_filter=1'
         check(marker in project_original,"project-render-config-marker-present")
-        project_file.write_text(project_original.replace(marker,
-            'textures/canvas_textures/default_texture_filter=1',1))
+        project_file.write_bytes(project_original.replace(marker,replacement,1))
         adverse("dirty-render-config",small,
                 extra=("--require-verified-source=on",))
     finally:
-        project_file.write_text(project_original)
+        project_file.write_bytes(project_original)
     check(sha(project_file)==identity["raw_shader_hashes"]["godot/project.godot"],
           "project-render-config-restored")
 

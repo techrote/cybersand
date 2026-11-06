@@ -287,8 +287,10 @@ func _status(code: int, error: String) -> void:
 					push_error("failed to invalidate uncommitted staging manifest: " + unpublished)
 			_write_json(staging_path.path_join("capture-status.json"), result)
 		if claim_acquired:
-			_write_transaction("failed", {"exit_code": code, "message": error,
-				"staging_path": staging_path, "generation_path": generation_path})
+			_write_transaction("recovery_required" if transaction_requires_recovery else "failed",
+				{"exit_code": code, "message": error,
+					"staging_path": staging_path, "generation_path": generation_path,
+					"rollback_or_transaction_failure": transaction_requires_recovery})
 	if not _release_claim() and claim_acquired:
 		push_error("publication claim retained for recovery: " + claim_path)
 	quit(code)
@@ -386,23 +388,31 @@ func _source_identity() -> Dictionary:
 	var declared: String = OS.get_environment("CYBERSAND_SOURCE_REVISION")
 	var checkout: String = ""
 	var clean: bool = false
-	var root_path: String = ProjectSettings.globalize_path("res://").get_base_dir()
+	var project_path: String = ProjectSettings.globalize_path("res://").simplify_path()
+	var repo_root: String = ""
 	var result: Array = []
 	var code: int = OS.execute("git", PackedStringArray([
-		"-C", root_path, "rev-parse", "--verify", "HEAD"]), result, true)
+		"-C", project_path, "rev-parse", "--show-toplevel"]), result, true)
 	if code == 0 and result.size() > 0:
-		var value: String = str(result[0]).strip_edges()
-		if value.length() == 40 and value.is_valid_hex_number():
-			checkout = value
+		repo_root = str(result[0]).strip_edges()
+	if not repo_root.is_empty():
+		result.clear()
+		code = OS.execute("git", PackedStringArray([
+			"-C", repo_root, "rev-parse", "--verify", "HEAD"]), result, true)
+		if code == 0 and result.size() > 0:
+			var value: String = str(result[0]).strip_edges()
+			if value.length() == 40 and value.is_valid_hex_number():
+				checkout = value
 	if not checkout.is_empty():
 		result.clear()
 		code = OS.execute("git", PackedStringArray([
-			"-C", root_path, "status", "--porcelain", "--untracked-files=no",
+			"-C", repo_root, "status", "--porcelain", "--untracked-files=no",
 			"--", "godot/project.godot", "godot/tools", "godot/shaders", "godot/scripts"]), result, true)
 		clean = code == 0 and (result.is_empty() or str(result[0]).strip_edges().is_empty())
 	return {"source_revision_declared": declared,
 		"verified_source_revision": checkout if clean else "",
 		"git_checkout_head": checkout,
+		"git_worktree_root": repo_root,
 		"capture_source_tree_clean": clean,
 		"verification_paths": ["godot/project.godot", "godot/tools", "godot/shaders", "godot/scripts"],
 		"declared_matches_verified": clean and not declared.is_empty() and declared == checkout,
@@ -552,12 +562,17 @@ func _make_rig(input: Image, camera: Vector2i, view: Vector2i) -> Dictionary:
 	viewport.add_child(background)
 	var source_texture: ImageTexture = ImageTexture.create_from_image(input)
 	var world_size: Vector2 = Vector2(input.get_size())
+	# Anchor shader coordinates to one virtual canvas for the whole world rather
+	# than resetting UV over each tile. This preserves the production shader
+	# source while making world_pixel/cell_fraction independent of tile size.
+	var virtual_origin: Vector2 = Vector2(-PAD_CELLS, -PAD_CELLS)
+	var virtual_view: Vector2 = world_size + Vector2(PAD_CELLS * 2, PAD_CELLS * 2)
 	var palette: ShaderMaterial = ShaderMaterial.new()
 	palette.shader = palette_shader
 	palette.set_shader_parameter("world_size_px", world_size)
-	palette.set_shader_parameter("view_size_px", Vector2(view))
+	palette.set_shader_parameter("view_size_px", virtual_view)
 	palette.set_shader_parameter("view_rect_uv", Vector4(0.0, 0.0, 1.0, 1.0))
-	palette.set_shader_parameter("camera_origin_px", Vector2(camera))
+	palette.set_shader_parameter("camera_origin_px", virtual_origin)
 	palette.set_shader_parameter("player_origin_px", Vector2(-1000, -1000))
 	palette.set_shader_parameter("condition_projection_enabled", 1.0)
 	palette.set_shader_parameter("water_presentation_mode", 0.0)
@@ -572,7 +587,8 @@ func _make_rig(input: Image, camera: Vector2i, view: Vector2i) -> Dictionary:
 	palette.set_shader_parameter("material_lut_size", Vector2(
 		CyberMaterialAppearanceLut.ATLAS_WIDTH, CyberMaterialAppearanceLut.ATLAS_HEIGHT))
 	var world_rect: TextureRect = TextureRect.new()
-	world_rect.size = Vector2(output_size)
+	world_rect.position = (virtual_origin - Vector2(camera)) * float(scale)
+	world_rect.size = virtual_view * float(scale)
 	world_rect.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	world_rect.stretch_mode = TextureRect.STRETCH_SCALE
 	world_rect.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
@@ -592,12 +608,13 @@ func _make_rig(input: Image, camera: Vector2i, view: Vector2i) -> Dictionary:
 	emission.set_shader_parameter("world_texture", source_texture)
 	emission.set_shader_parameter("material_program_lut", program_lut)
 	emission.set_shader_parameter("world_size_px", world_size)
-	emission.set_shader_parameter("view_size_px", Vector2(view))
-	emission.set_shader_parameter("camera_origin_px", Vector2(camera))
+	emission.set_shader_parameter("view_size_px", virtual_view)
+	emission.set_shader_parameter("camera_origin_px", virtual_origin)
 	emission.set_shader_parameter("condition_projection_enabled", 1.0)
 	emission.set_shader_parameter("presentation_time_override", presentation_time)
 	var source: ColorRect = ColorRect.new()
-	source.size = Vector2(glow_viewport.size)
+	source.position = (virtual_origin - Vector2(camera)) * 0.5
+	source.size = virtual_view * 0.5
 	source.color = Color.WHITE
 	source.material = emission
 	glow_viewport.add_child(source)
