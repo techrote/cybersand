@@ -13,7 +13,7 @@ function svgForPack(p){
  const rect=(x,y,w,h,id)=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${colour(id)}" fill-opacity="${alpha(id).toFixed(3)}"/>`;
  const feature=(f,variant,x,y)=>{const v=f.variants.find(z=>z.id===variant);const sw=v?v.swap:{};return `<g transform="translate(${x} ${y})">`+f.rectangles.map(r=>rect(r[0],r[1],r[2],r[3],Object.prototype.hasOwnProperty.call(sw,String(r[4]))?sw[String(r[4])]:r[4])).join("")+"</g>";};
  const s=p.scene, W=1280;
- const parts=[`<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="1765" viewBox="0 0 1280 1765" role="img" aria-label="Emberglass Fumaroles combined volcanic scene and eight modular features">`,
+ const parts=[`<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="2050" viewBox="0 0 1280 2050" role="img" aria-label="Emberglass Fumaroles combined volcanic scene and eight modular features">`,
  `<rect width="1280" height="1765" fill="#0d1019"/>`,
  `<rect x="0" y="0" width="1280" height="94" fill="#151923"/>`,
  `<text x="66" y="42" font-family="monospace" font-size="27" font-weight="bold" fill="#f1dcb1">EMBERGLASS / FUMAROLES</text>`,
@@ -69,8 +69,15 @@ function svgForPack(p){
   for(let yy=0;yy<80;yy++){let xx=0;while(xx<230){let id=mc[(sy+yy)*mw+sx+xx],end=xx+1;while(end<230&&mc[(sy+yy)*mw+sx+end]===id)end++;if(id>=0&&id!==0)parts.push(rect(xx,yy,end-xx,1,id));xx=end;}}
   parts.push('</g>');parts.push(`<text x="${px+3}" y="1666" font-family="monospace" font-size="11" fill="#d1a874">${label}</text>`);
  }
- parts.push('<text x="70" y="1724" font-family="monospace" font-size="11" fill="#9fb3bb">ORDERED SOURCE RECTANGLES · UNSTAMPED CELLS DO NOT CLEAR HOST TERRAIN</text>');
- parts.push('<text x="70" y="1746" font-family="monospace" font-size="11" fill="#8c97a2">DESIGN ONLY / NO GODOT, THERMAL, FLUID, COLLISION OR PERFORMANCE QUALIFICATION</text></svg>');
+ parts.push('<text x="70" y="1694" font-family="monospace" font-size="13" fill="#d1a874">06 — BROKEN CALDERA DIADEM / SOURCE-CELL CLOSE STUDIES · 2.4×</text>');
+ for(const [px,sx,sy,label] of [[64,394,48,'WESTERN CROSS-BEDS / QUENCH LEDGERS'],[646,615,48,'EASTERN SHEAR / FUSED-GLASS TEETH']]){
+  parts.push(`<rect x="${px}" y="1712" width="552" height="192" fill="#090c16" stroke="#343743"/>`);
+  parts.push(`<g transform="translate(${px} 1712) scale(2.4)">`);
+  for(let yy=0;yy<80;yy++){let xx=0;while(xx<230){let id=mc[(sy+yy)*mw+sx+xx],end=xx+1;while(end<230&&mc[(sy+yy)*mw+sx+end]===id)end++;if(id>=0&&id!==0)parts.push(rect(xx,yy,end-xx,1,id));xx=end;}}
+  parts.push('</g>');parts.push(`<text x="${px+3}" y="1926" font-family="monospace" font-size="11" fill="#d1a874">${label}</text>`);
+ }
+ parts.push('<text x="70" y="1995" font-family="monospace" font-size="11" fill="#9fb3bb">ORDERED SOURCE RECTANGLES · UNSTAMPED CELLS DO NOT CLEAR HOST TERRAIN</text>');
+ parts.push('<text x="70" y="2018" font-family="monospace" font-size="11" fill="#8c97a2">DESIGN ONLY / NO GODOT, THERMAL, FLUID, COLLISION OR PERFORMANCE QUALIFICATION</text></svg>');
  return parts.join("\n")+"\n";
 }
 const expected=svgForPack(pack);
