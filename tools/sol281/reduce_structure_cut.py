@@ -8,6 +8,20 @@ def ke(a):return .5*a[9]*(a[6]**2+a[7]**2)+.5*a[10]*a[8]**2
 def near(x,y):
     b=struct.unpack('<I',struct.pack('<f',abs(y)))[0];rounded=struct.unpack('<f',struct.pack('<I',b))[0];ulp=struct.unpack('<f',struct.pack('<I',b+1))[0]-rounded
     return abs(x-y)<=4*ulp
+def handoff(d,n):
+    pre=d['prepared'];commit=d['commit'];active=d['activation']
+    assert pre['native_source_members']==n and pre['aggregate_owned']==0 and pre['cut_applied'] and pre['phase']==2 and pre['source_probe']==43
+    assert commit['ok'] and commit['aggregate_owned']==n and commit['phase']==4 and commit['source_probe']==0
+    assert active['ok'] and active['aggregate_owned']==n and active['phase']==6
+    assert pre['token']==commit['token']==active['token']
+    assert commit['body_id']==active['body_id'] and commit['body_generation']==active['body_generation']
+    assert d['initial_body']['manual_step']==0 and d['body_rid']>0
+def coordinate(d,host,structure,surroundings,response,workers,source):
+    assert (d['platform'].lower(),d['structure'],d['surroundings'],d['sand_response'],d['workers'],d['source'])==(host,structure,surroundings,response,workers,source)
+def physical_commands(commands,expected):
+    selected=[c for c in commands if c['name'] in expected]
+    assert len(selected)==len(expected) and {c['name'] for c in selected}==set(expected),'Missing or duplicate physical coordinate'
+    return selected
 def transform(p,xy):return (p[0]*xy[0]+p[2]*xy[1]+p[4],p[1]*xy[0]+p[3]*xy[1]+p[5])
 def corners(p,s):
     hx,hy=s['data'];return [transform(p,transform(s['transform'],xy)) for xy in [(-hx,-hy),(hx,-hy),(hx,hy),(-hx,hy)]]
@@ -65,6 +79,7 @@ def rest(rows):
 def episode(d,raw):
     assert not d['failures'];steps=d['steps'];expected=720 if d['surroundings']=='empty' else 360;assert len(steps)==expected
     pre=d['prepared'];n=pre['member_count'];members=[tuple(pre['members'][i:i+6]) for i in range(0,len(pre['members']),6)];xy={(m[0],m[1]) for m in members}
+    handoff(d,n)
     assert len(xy)==len(members)==n and all(m[2:]==(43,0,0,200) for m in members)
     cx=sum(x+.5 for x,y in xy)/n;cy=sum(y+.5 for x,y in xy)/n;inertia=sum((x+.5-cx)**2+(y+.5-cy)**2+1/6 for x,y in xy)
     assert pre['mass']==n and near(pre['center'][0],cx) and near(pre['center'][1],cy) and near(pre['inertia'],inertia)
@@ -75,6 +90,7 @@ def episode(d,raw):
     for i,s in enumerate(d['server_shapes']):
         x,y,w,h=rects[i*4:i*4+4];assert s['type']==4 and not s['owner_disabled'] and not d['scene_shapes'][i]['disabled'] and s['data']==[w/2,h/2] and d['proxy_sizes'][i]==[w,h]
         t=s['transform'];assert t[:4]==[1.,0.,0.,1.] and near(t[4],x+w/2-pre['center'][0]) and near(t[5],y+h/2-pre['center'][1])
+        assert d['proxy_masses'][i]==w*h and all(near(a,b) for a,b in zip(d['proxy_centres'][i],t[4:6]))
     if d['structure']=='tree':assert n==520 and (60,32) not in xy and (68,50) not in xy
     else:assert n==356
     for r in [d['initial_native'],d['final_native']]:assert r['aggregate_owned']==n and r['native_source_members']==0 and r['members']==pre['members'] and not r['worker_failed'] and r['configured_workers']==d['workers']
@@ -82,13 +98,16 @@ def episode(d,raw):
     assert hard=={p:m for p,m in final.items() if m in (1,43)} and collections.Counter(before.values())[43]-collections.Counter(initial.values())[43]==n+8
     assert not xy&{p for p,m in initial.items() if m==43}
     counts0=collections.Counter(initial.values());assert counts0==collections.Counter(final.values()),'native material quantities changed'
-    geoms=[];ledger=[];sand_deltas=[];outcomes=collections.Counter()
+    geoms=[];ledger=[];sand_deltas=[];outcomes=collections.Counter();vertex_speeds=[]
     for index,row in enumerate(steps):
         assert row['step']==index
         for label in ['before','after_application','after_step']:
             r=row[label];a=state(r);assert all(math.isfinite(v) for v in a) and a[9]==n and near(a[10],inertia) and r['valid'] and not r['frozen'] and r['generation']==d['initial_body']['generation'] and r['physics_epoch']==d['initial_body']['physics_epoch']
+            assert r['gravity']==d['initial_body']['gravity'] and r['terrain_revision']==d['initial_body']['terrain_revision']
         b=state(row['before']);a=state(row['after_application']);s=state(row['after_step']);assert row['after_step']['manual_step']==index+1
         geom=geometry(s[:6],d['server_shapes'],hard);geoms.append(geom);response=row['response'];delta=None
+        com=transform(s[:6],row['after_step']['local_com'])
+        vertex_speeds.append(max(math.hypot(s[6]-s[8]*(y-com[1]),s[7]+s[8]*(x-com[0])) for shape in d['server_shapes'] for x,y in corners(s[:6],shape)))
         if row['response_is_new']:
             outcomes[response['outcome']]+=1
             if response.get('accepted'):delta=ke(a)-response['energy_before'];sand_deltas.append(delta)
@@ -97,15 +116,23 @@ def episode(d,raw):
     times=[r['elapsed_us']/1000 for r in steps]
     out={k:d[k] for k in ['source','workers','structure','surroundings','sand_response','checks']}
     out.update(raw=raw,host=d['platform'],steps=expected,ownership_pass=True,mass=n,geometric_com=[cx,cy],geometric_inertia=inertia,actual_inertia=state(d['initial_body'])[10],proxies=pre['shape_count'],member_tuple_sha256=hashlib.sha256(json.dumps(members,separators=(',',':')).encode()).hexdigest(),native_material_counts=dict(counts0),native_material_conserved=True,hard_map_constant=True,gravity=d['initial_body']['gravity'],linear_damp=d['initial_body']['linear_damp'],angular_damp=d['initial_body']['angular_damp'],gravity_impulse_per60=n*d['initial_body']['gravity'][1]/60,ordinary_cap=d['authored']['ordinary_impulse_cap'],first_reported_contact=next((i for i,r in enumerate(steps) if r['after_step']['contacts']),None),first_sleep=next((i for i,r in enumerate(steps) if r['after_step']['sleeping']),None),tail120=rest([r['after_step'] for r in steps[-120:]]),peak_hard_area=max(g['area'] for g in geoms),peak_hard_depth=max(g['depth'] for g in geoms),terminal_hard=geoms[-1],tail120_hard_area_reference_pass=all(g['area']<=1e-6 for g in geoms[-120:]),tail120_hard_depth_reference_pass=all(g['depth']<=2e-5 for g in geoms[-120:]),initial_sand=geometry(state(d['initial_body'])[:6],d['server_shapes'],{p:m for p,m in initial.items() if m==2}),terminal_sand=geometry(state(steps[-1]['after_step'])[:6],d['server_shapes'],{p:m for p,m in final.items() if m==2}),response_outcomes=dict(outcomes),sand_receipt_ke_delta_sum=sum(sand_deltas),sand_receipt_ke_delta_max=max(sand_deltas,default=None),all_metrics=metrics,observed_main_ms_mean=sum(times)/len(times),observed_main_ms_max=max(times),contact_limit_steps=sum(r['after_step']['contact_report_may_be_truncated'] for r in steps),ledger=ledger)
+    out['tail120'].update(window=[expected-120,expected-1],screen_scope='registered_dry' if expected==720 else 'descriptive_packed',independent_max_vertex_speed=max(vertex_speeds[-120:]))
     return out
 def main():
     p=argparse.ArgumentParser(__doc__);p.add_argument('--runs',nargs='+',required=True);p.add_argument('--output',type=Path,required=True);args=p.parse_args();assert not args.output.exists();results=[];receipts=[]
     for name in args.runs:
         folder=ROOT/'build/sol-structure-cut'/name;receipt=json.loads((folder/'receipt.json').read_text());assert receipt['post_source_equality'];receipts.append(dict(run=name,sha256=sha(folder/'receipt.json'),identity=receipt['identity']))
+        matrix=receipt['matrix'];assert matrix['suite'] in ['dry','packed'];assert set(receipt['hosts'])==set(matrix['platforms'].split(','))
         for host,h in receipt['hosts'].items():
-            for command in h['commands']:
-                if 'report' not in command:continue
-                raw=command['report'];path=ROOT/raw['path'];assert command['clean'] and command['report_complete'] and sha(path)==raw['sha256'];d=json.loads(path.read_text());assert d['source']==receipt['identity']['source_commit'];row=episode(d,raw);row['run']=name;results.append(row)
+            expected={}
+            for worker in map(int,matrix['workers'].split(',')):
+                for structure in ['tree','building']:
+                    for response in ([False,True] if matrix['suite']=='packed' else [False]):
+                        surroundings='packed_sand' if matrix['suite']=='packed' else 'empty';key=f'{structure}-{surroundings}-response{int(response)}-w{worker}';expected[key]=(structure,surroundings,response,worker)
+            physical=physical_commands(h['commands'],expected)
+            assert all(c['clean'] for c in h['commands']) and not h['post_inventory']['unexpected_changes']
+            for command in physical:
+                raw=command['report'];path=ROOT/raw['path'];assert command['report_complete'] and sha(path)==raw['sha256'];d=json.loads(path.read_text());coordinate(d,host,*expected[command['name']],receipt['identity']['source_commit']);row=episode(d,raw);row['run']=name;results.append(row)
     output=dict(reducer_sha256=sha(__file__),qualifiers=['Per-step hard geometry uses unchanged inert native map and actual server shapes. Sand endpoint map is paused after trajectory, not synchronized clearance.','Receipt energy_before baseline usesfloat32norm; repair scalar64. Actual after_application KE from11doublebits; combined application includes ordinary and Sand. Contact impulses cached. No total Sand energy or original CPU pass.'],receipts=receipts,episodes=results)
     args.output.parent.mkdir(parents=True,exist_ok=True);args.output.write_text(json.dumps(output,indent=2)+'\n',encoding='utf-8');print('episodes',len(results),'steps',sum(r['steps'] for r in results))
 if __name__=='__main__':main()
