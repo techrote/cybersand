@@ -170,12 +170,74 @@ protected-source admission only after a positive benefit decision, and
 source-matched Godot/Native exact-head acceptance. The status remains
 **REVISE** rather than ACCEPT/merge.
 
-## Required follow-up and admission gate
+## Final remaining gates and reproduction handover
 
-1. Decode all artifacts; classify full native/sanitizer/TSan results, including environmental failures. Compile and execute full native tests with `CYBERSAND_VERIFY_LOCAL_NEIGHBOUR` where practicable, concentrating on signed seams, nonpower-two chunks, transient masks, reaction wake, and changing material values in a rule. Non-power-two chunk size 192 is valid for six-worker phased geometry (aligned to 64-core), unlike 48.
-2. Check 1, 6, reference and candidate at ticks 150/300/450/600 and 1800; preserve exact state, physical and deterministic work parity for all versions. If mismatch or failure is observed, isolate source vs harness vs baseline before alteration.
-3. Review `perf` function/line profiles where permitted; if hosted `perf` is blocked, obtain a supplementary host with permissions and do not represent missing profiles as pass.
-4. Decide performance based on six paired repeats and confidence intervals, not an assumed 5–10%. If neutral or slower, REJECT the optimisation instead of requesting source admission.
-5. Only after affirmative technical decision and independent review, prepare the reviewed protected-source transition with commit ancestry, then qualify exact head with documentation/provenance, Native and Godot CI. Leave #471 and #477 Draft in the meantime.
+**Completed and no longer outstanding:** full reference and candidate 188-test
+native suites, full candidate ASan/UBSan 188-test suite, seven focused original
+TSan selections, 24 source-pinned stress-canvas 600-tick runs, four
+1,800-tick extensions, guarded cursor-oracle runs, and 16 additional independent
+520-tick signed/mask/non-power-of-two/epoch replays plus 8 sanitizer and 2 TSan
+edge-case replays. Details and source identities are in the exact-head records
+above, with failures of the original *benchmark runner* separated from actual
+engine execution.
 
+**Current repository-state qualification:** PR #406 was merged by an independent
+actor at 22:08 UTC; PR #471 subsequently advanced from `0df569bf` to
+`cd26abd96bb4d620f123e3fbb199354b8ee2c482` by adding only the
+`native/bench/neighbour_cursor_adversary.cpp` fixture and
+`.github/workflows/pf471-neighbour-qualification.yml`. Our measured
+`native/src/world.cpp` bytes and `native/bench/neighbour_cursor_bench.cpp`
+are unchanged, so previous engine-level outcomes remain source-relevant. The
+new separate #471 workflow [#42313096990](https://github.com/techrote/cybersand/actions/runs/42313096990)
+requires its own final exact-head result and must not be silently counted green.
+
+1. **Profile the actual read path.** CI [#42313028634](https://github.com/techrote/cybersand/actions/runs/42313028634)
+   collects bounded early-tick `Callgrind` instruction counts/function/source
+   annotations on the identical stress scene and source pair. Its interpretation
+   must remain instruction-level, not a wall-time speedup or an equivalent
+   Linux `perf` profile. Run permitted `perf` on a capable host for full
+   elapsed-CPU and function/line profiles; do not circumvent host security.
+2. **Decide sustained worker benefit.** CI [#42313589873](https://github.com/techrote/cybersand/actions/runs/42313589873)
+   adds six balanced pairs of 1,800-tick 6-worker replays (12 runs total) and
+   reports both complete and late-activity 1201–1800 tick speedup and confidence
+   intervals. This is still an oversubscribed 4-logical-CPU hosted environment;
+   the critical target remains a repeat on actual 6-core/12-logical-CPU hardware.
+3. **Independent review.** Have a separate reviewer read #471's unchanged
+   `KernelReadCursor` code, the owner-side adversary, and the original artifact
+   evidence against the exact source, distinguishing existing baseline issues
+   from cursor regressions. Do not expand into a 3×3 cached chunk directory on
+   speculation.
+4. **Decision:** ACCEPT FOR FURTHER ADMISSION only if exactness remains established,
+   the 6-worker total-tick effect is reproducible and worthwhile, and independent
+   review agrees the risk/complexity is justified. REJECT if neutral, slower, or
+   practically marginal on the deployment workload; otherwise keep REVISE with
+   the concrete missing profile/hardware result.
+5. **Protected-source admission**, if and only if the decision is positive:
+   independently review the LF SHA-256 transition
+   `5a9de5e09a8665392677902ab501696aafefb5bbd2d2800e3dc1059b87a6f17d`
+   to `bbd9741311bc67905934048633846b8d011efd760033edd0ff9e88be5b262868`,
+   establish required ancestry of the actual byte-identical source commit, and
+   prepare an authorized `REVIEWED_TRANSITIONS` entry with this audit.
+   **Never** bypass the guard or refresh the retained immutable lock. Exact-head
+   documentation/provenance, Native and Godot regression checks and owner
+   acceptance are still required after any transition.
+
+For a native Linux/WSL machine with six physical cores, 12 logical CPUs,
+`g++-13` and access to both source revisions, the existing branch contains
+the source-identical bounded six-worker comparison script:
+
+```sh
+git fetch origin claude/water-ballistic-hybrid codex/fast-in-chunk-neighbour-cursor-20261106
+python3 tools/perf/paired_extended_neighbour_cursor.py \
+  --repo . \
+  --out "/var/tmp/cybersand-nr-$(date -u +%Y%m%d-%H%M%S)" \
+  --baseline 4a80af2a891332176a3912a235582d77d076a185 \
+  --candidate cd26abd96bb4d620f123e3fbb199354b8ee2c482
+```
+
+Keep the target machine otherwise idle where possible, capture CPU topology,
+kernel/compiler/tool versions, six actual pool claimants, all raw CSVs and paired
+CIs, and preserve the evidence outside Actions artifact retention.
+
+**Final disposition pending ongoing profile/sustained timing: REVISE.**
 **No merge. No production runtime publication.**
