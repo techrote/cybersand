@@ -42,7 +42,7 @@ function renderSvg(pack) {
   const crops=[
     {x:260,y:19,w:121,h:77,label:"SEVERED ROOF · GLASS-SCAR VEINS"},
     {x:325,y:134,w:125,h:78,label:"THE RIFT · ABANDONED WALKWAY"},
-    {x:277,y:74,w:151,h:94,label:"ALT · FRACTURED DATUM HALO"}
+    {x:422,y:121,w:210,h:131,label:"ALT · WITNESS ADITS / BROKEN FOOTING"}
   ];
   crops.forEach((c,i)=>{
     const px=54+i*482, py=1393, sc=455/c.w;
