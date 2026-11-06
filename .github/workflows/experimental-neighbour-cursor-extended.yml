@@ -1,0 +1,61 @@
+name: Experimental neighbour cursor sustained six-worker timing
+
+on:
+  push:
+    branches:
+      - codex/neighbour-cursor-independent-qualification-20261106
+    paths:
+      - tools/perf/paired_extended_neighbour_cursor.py
+      - .github/workflows/experimental-neighbour-cursor-extended.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: neighbour-cursor-extended-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  paired-sustained-six-worker:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 65
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Validate source and provenance
+        shell: bash
+        run: |
+          set -euxo pipefail
+          git rev-parse HEAD
+          g++-13 --version
+          python3 -m py_compile tools/perf/paired_extended_neighbour_cursor.py
+          python3 -m py_compile native/bench/run_neighbour_cursor.py
+          python3 tools/ci/check_ci_provider_policy.py
+      - name: Balanced six-worker paired 1800-tick campaign
+        shell: bash
+        run: |
+          set -euxo pipefail
+          ulimit -c 0
+          python3 tools/perf/paired_extended_neighbour_cursor.py \
+            --repo . \
+            --out "${RUNNER_TEMP}/neighbour-extended" \
+            --baseline 4a80af2a891332176a3912a235582d77d076a185 \
+            --candidate "${GITHUB_SHA}" \
+            | tee "${RUNNER_TEMP}/neighbour-extended-summary.log"
+      - name: Preserve original timing and work-parity data, never runtimes
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: neighbour-cursor-extended-${{ github.sha }}
+          retention-days: 14
+          if-no-files-found: warn
+          path: |
+            ${{ runner.temp }}/neighbour-extended-summary.log
+            ${{ runner.temp }}/neighbour-extended/*.json
+            ${{ runner.temp }}/neighbour-extended/*.log
+            ${{ runner.temp }}/neighbour-extended/build_*/*.log
+            ${{ runner.temp }}/neighbour-extended/raw/*.csv
+            ${{ runner.temp }}/neighbour-extended/raw/*.log
