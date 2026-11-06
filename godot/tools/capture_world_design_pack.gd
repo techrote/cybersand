@@ -13,6 +13,11 @@ extends SceneTree
 const Adapter = preload("res://tools/world_design_pack_adapter.gd")
 const BACKGROUND: Color = Color(0.031, 0.043, 0.071, 1.0)
 const PAD_CELLS: int = 32 # More than the glow/emission footprint at tile seams.
+# The half-resolution emission pass evaluates UV*view_size exactly at intended
+# odd integer cell coordinates before floor(). A tiny positive capture-uniform
+# bias keeps those values on the intended side of the boundary across GLSL and
+# ANGLE/D3D floating-point interpolation without changing shader source.
+const EMISSION_COORD_EPSILON: float = 0.001
 const DEFAULT_TILE_CELLS: int = 512
 
 var pack_path: String = ""
@@ -22,8 +27,24 @@ var scale: int = 2
 var presentation_time: float = 1.37
 var glow_enabled: bool = true
 var tile_cells: int = DEFAULT_TILE_CELLS
-var design_revision: String = "unverified-external-source"
+var design_revision: String = ""
+var max_working_mib: int = 256
+var require_verified_source: bool = false
+var test_fail_publication: bool = false
+var test_fail_rollback: bool = false
+var test_pause_before_publication_ms: int = 0
+var test_pause_phase: String = "prepared"
+var recover_claim_id: String = ""
+var attempt_id: String = ""
+var staging_path: String = ""
+var generation_path: String = ""
+var claim_path: String = ""
+var claim_acquired: bool = false
+var transaction_requires_recovery: bool = false
+var framebuffer_pause_consumed: bool = false
 var manifest: Dictionary = {}
+var resource_budget: Dictionary = {}
+var palette_selection: Dictionary = {}
 var palette_shader: Shader
 var emission_shader: Shader
 var composite_shader: Shader
@@ -65,10 +86,51 @@ func _parse_arguments() -> String:
 			tile_cells = int(number)
 		elif argument.begins_with("--design-revision="):
 			design_revision = argument.trim_prefix("--design-revision=")
+		elif argument.begins_with("--max-working-mib="):
+			var number: String = argument.trim_prefix("--max-working-mib=")
+			if not number.is_valid_int():
+				return "--max-working-mib requires an integer"
+			max_working_mib = int(number)
+		elif argument.begins_with("--require-verified-source="):
+			var value: String = argument.trim_prefix("--require-verified-source=")
+			if value not in ["on", "off"]:
+				return "--require-verified-source must be on or off"
+			require_verified_source = value == "on"
+		elif argument == "--test-fail-publication=on":
+			if OS.get_environment("CYBERSAND_CAPTURE_FAULT_INJECTION") != "1":
+				return "publication fault injection requires explicit test environment"
+			test_fail_publication = true
+		elif argument == "--test-fail-rollback=on":
+			if OS.get_environment("CYBERSAND_CAPTURE_FAULT_INJECTION") != "1":
+				return "rollback fault injection requires explicit test environment"
+			test_fail_rollback = true
+		elif argument.begins_with("--test-pause-before-publication-ms="):
+			if OS.get_environment("CYBERSAND_CAPTURE_FAULT_INJECTION") != "1":
+				return "publication pause injection requires explicit test environment"
+			var number: String = argument.trim_prefix("--test-pause-before-publication-ms=")
+			if not number.is_valid_int() or int(number) < 1 or int(number) > 30000:
+				return "test pause must be between 1 and 30000 milliseconds"
+			test_pause_before_publication_ms = int(number)
+		elif argument.begins_with("--test-pause-phase="):
+			if OS.get_environment("CYBERSAND_CAPTURE_FAULT_INJECTION") != "1":
+				return "publication phase pause requires explicit test environment"
+			test_pause_phase = argument.trim_prefix("--test-pause-phase=")
+			if test_pause_phase not in ["framebuffer", "validated", "prepared", "published-data"]:
+				return "test pause phase must be framebuffer, validated, prepared or published-data"
+		elif argument.begins_with("--recover-claim="):
+			recover_claim_id = argument.trim_prefix("--recover-claim=")
+			if recover_claim_id.is_empty():
+				return "--recover-claim requires the exact stale attempt id"
 		else:
 			return "unknown argument: " + argument
 	if pack_path.is_empty() or output_path.is_empty():
 		return "explicit --pack and --output are required"
+	if not pack_path.is_absolute_path():
+		return "--pack must be absolute"
+	if not output_path.is_absolute_path():
+		return "--output must be an absolute directory"
+	if max_working_mib < 16 or max_working_mib > Adapter.MAX_BUDGET_MIB:
+		return "--max-working-mib must be within 16..1024"
 	if not (mode in ["both", "combined", "individual"]):
 		return "--mode must be both, combined or individual"
 	if scale < 1 or scale > 8:
@@ -77,24 +139,166 @@ func _parse_arguments() -> String:
 		return "--time must be finite and nonnegative"
 	if tile_cells < 64 or tile_cells > 2048 or tile_cells % 2 != 0 or (tile_cells + PAD_CELLS * 2) * scale > 8192:
 		return "--tile-cells must be even (64..2048), with padded view <=8192 pixels"
-	if not output_path.is_absolute_path():
-		return "--output must be an absolute directory"
-	var source_dir: String = pack_path.get_base_dir().simplify_path()
-	var destination: String = output_path.simplify_path()
-	if destination == source_dir or destination.begins_with(source_dir + "/"):
-		return "--output must not be inside the input pack's source directory"
+	pack_path = pack_path.replace("\\", "/").simplify_path()
+	output_path = output_path.replace("\\", "/").simplify_path()
+	return _validate_paths()
+
+
+func _path_key(path: String) -> String:
+	var value: String = path.replace("\\", "/").simplify_path()
+	while value.length() > 1 and value.ends_with("/"):
+		if value.length() == 3 and value.substr(1, 2) == ":/":
+			break
+		value = value.substr(0, value.length() - 1)
+	return value.to_lower() if OS.get_name() == "Windows" else value
+
+
+func _path_contains(ancestor: String, child: String) -> bool:
+	var a: String = _path_key(ancestor)
+	var c: String = _path_key(child)
+	if a == c:
+		return true
+	if a == "/":
+		return c.begins_with("/")
+	return c.begins_with(a + "/")
+
+
+func _linked_component(path: String) -> String:
+	var cursor: String = path.replace("\\", "/").simplify_path()
+	while true:
+		var parent: String = cursor.get_base_dir()
+		if parent.is_empty() or parent == cursor:
+			return ""
+		var access: DirAccess = DirAccess.open(parent)
+		if access != null and access.is_link(cursor.get_file()):
+			return cursor
+		cursor = parent
 	return ""
 
 
+func _validate_paths() -> String:
+	var source_dir: String = pack_path.get_base_dir().replace("\\", "/").simplify_path()
+	var destination: String = output_path.replace("\\", "/").simplify_path()
+	var source_alias: String = _linked_component(pack_path)
+	if not source_alias.is_empty():
+		return "input pack path contains a symlink/junction/reparse point: " + source_alias
+	var destination_alias: String = _linked_component(destination)
+	if not destination_alias.is_empty():
+		return "output path contains a symlink/junction/reparse point: " + destination_alias
+	if _path_contains(source_dir, destination):
+		return "--output must not be equal to or inside the input pack directory"
+	if _path_contains(destination, source_dir):
+		return "--output must not equal or contain the input pack directory"
+	var project_root: String = ProjectSettings.globalize_path("res://").get_base_dir().replace("\\", "/").simplify_path()
+	if _path_contains(destination, project_root):
+		return "--output must not equal or contain the CyberSand source/workspace root"
+	var key: String = _path_key(destination)
+	if key == "/" or (key.length() == 3 and key.substr(1, 2) == ":/"):
+		return "--output must not be a filesystem root"
+	if DirAccess.dir_exists_absolute(destination):
+		var source_access: DirAccess = DirAccess.open(source_dir)
+		if source_access != null and source_access.is_equivalent(source_dir, destination):
+			return "--output resolves to the input pack directory"
+	return ""
+
+
+func _output_custody_error() -> String:
+	if FileAccess.file_exists(output_path) and not DirAccess.dir_exists_absolute(output_path):
+		return "output path already exists as a file"
+	if not DirAccess.dir_exists_absolute(output_path):
+		return ""
+	var access: DirAccess = DirAccess.open(output_path)
+	if access == null:
+		return "cannot inspect existing output directory"
+	var files: PackedStringArray = access.get_files()
+	var dirs: PackedStringArray = access.get_directories()
+	if files.is_empty() and dirs.is_empty():
+		return ""
+	var owner_path: String = output_path.path_join(".world-capture-owner.json")
+	if FileAccess.file_exists(owner_path):
+		var owner: Variant = JSON.parse_string(FileAccess.get_file_as_string(owner_path))
+		if typeof(owner) == TYPE_DICTIONARY and owner.get("owner") == "cybersand-world-design-capture":
+			return ""
+	var manifest_path: String = output_path.path_join("capture-manifest.json")
+	if FileAccess.file_exists(manifest_path):
+		var record: Variant = JSON.parse_string(FileAccess.get_file_as_string(manifest_path))
+		if typeof(record) == TYPE_DICTIONARY and record.get("fixture") == "res://tools/capture_world_design_pack.gd":
+			return ""
+	return "refusing non-empty output directory without CyberSand capture ownership metadata"
+
+
+func _write_transaction(state: String, extra: Dictionary = {}) -> bool:
+	if claim_path.is_empty() or not DirAccess.dir_exists_absolute(claim_path):
+		return false
+	var record: Dictionary = {"schema": 1, "state": state, "attempt_id": attempt_id,
+		"output_path": output_path, "pack_path": pack_path,
+		"process_id": OS.get_process_id(), "requires_recovery": transaction_requires_recovery}
+	record.merge(extra, true)
+	return _write_json(claim_path.path_join("transaction.json"), record)
+
+
+func _release_claim() -> bool:
+	if not claim_acquired:
+		return true
+	if transaction_requires_recovery:
+		return false
+	var transaction_file: String = claim_path.path_join("transaction.json")
+	if FileAccess.file_exists(transaction_file) and DirAccess.remove_absolute(transaction_file) != OK:
+		return false
+	if DirAccess.dir_exists_absolute(claim_path) and DirAccess.remove_absolute(claim_path) != OK:
+		return false
+	claim_acquired = false
+	return true
+
+
+func _prepare_target() -> String:
+	var custody: String = _output_custody_error()
+	if not custody.is_empty():
+		return custody
+	attempt_id = "%d-%d-%d" % [int(Time.get_unix_time_from_system()), Time.get_ticks_usec(), OS.get_process_id()]
+	claim_path = output_path + ".world-capture-claim"
+	if FileAccess.file_exists(claim_path) and not DirAccess.dir_exists_absolute(claim_path):
+		return "publication claim path is occupied by a file: " + claim_path
+	if DirAccess.dir_exists_absolute(claim_path):
+		var stale: Variant = JSON.parse_string(FileAccess.get_file_as_string(claim_path.path_join("transaction.json")))
+		var stale_id: String = str(stale.get("attempt_id", "")) if typeof(stale) == TYPE_DICTIONARY else ""
+		if recover_claim_id.is_empty():
+			return "output is already claimed by attempt " + stale_id + "; explicit --recover-claim=<attempt-id> is required after confirming the process is no longer active"
+		if recover_claim_id != stale_id:
+			return "--recover-claim does not match the existing transaction attempt id"
+		var recovered: String = output_path + ".world-capture-recovered-" + recover_claim_id
+		if DirAccess.dir_exists_absolute(recovered) or FileAccess.file_exists(recovered):
+			return "recovery archive already exists: " + recovered
+		if DirAccess.rename_absolute(claim_path, recovered) != OK:
+			return "cannot archive stale publication claim"
+	if DirAccess.make_dir_absolute(claim_path) != OK:
+		return "cannot acquire exclusive publication claim"
+	claim_acquired = true
+	if not _write_transaction("claimed"):
+		transaction_requires_recovery = true
+		return "cannot write publication transaction record"
+	return ""
+
 func _status(code: int, error: String) -> void:
 	var result: Dictionary = {"status": "failed" if code != 0 else "complete",
-		"success": code == 0, "exit_code": code, "message": error}
+		"success": code == 0, "exit_code": code, "attempt_id": attempt_id,
+		"message": error}
 	print("WORLD_DESIGN_CAPTURE ", JSON.stringify(result))
-	if not output_path.is_empty() and output_path.is_absolute_path() and DirAccess.dir_exists_absolute(output_path):
-		if code != 0:
-			_write_json(output_path.path_join("capture-status.json"), result)
+	if code != 0:
+		if not staging_path.is_empty() and DirAccess.dir_exists_absolute(staging_path):
+			var unpublished: String = staging_path.path_join("capture-manifest.json")
+			if FileAccess.file_exists(unpublished):
+				if DirAccess.remove_absolute(unpublished) != OK:
+					push_error("failed to invalidate uncommitted staging manifest: " + unpublished)
+			_write_json(staging_path.path_join("capture-status.json"), result)
+		if claim_acquired:
+			_write_transaction("recovery_required" if transaction_requires_recovery else "failed",
+				{"exit_code": code, "message": error,
+					"staging_path": staging_path, "generation_path": generation_path,
+					"rollback_or_transaction_failure": transaction_requires_recovery})
+	if not _release_claim() and claim_acquired:
+		push_error("publication claim retained for recovery: " + claim_path)
 	quit(code)
-
 
 func _write_json(path: String, value: Variant) -> bool:
 	var temp: String = path + ".pending"
@@ -110,7 +314,7 @@ func _write_json(path: String, value: Variant) -> bool:
 
 
 func _save_png(image: Image, relative: String, category: String, extra: Dictionary = {}) -> bool:
-	var absolute: String = output_path.path_join(relative)
+	var absolute: String = staging_path.path_join(relative)
 	if DirAccess.make_dir_recursive_absolute(absolute.get_base_dir()) != OK:
 		return false
 	if image == null or image.is_empty() or image.save_png(absolute) != OK:
@@ -122,11 +326,14 @@ func _save_png(image: Image, relative: String, category: String, extra: Dictiona
 		"provenance": "Godot SubViewport framebuffer readback"}
 	entry.merge(extra, true)
 	manifest.captures.append(entry)
+	if not framebuffer_pause_consumed:
+		framebuffer_pause_consumed = true
+		_test_pause("framebuffer")
 	return true
 
 
 func _save_input(input: Dictionary, relative: String) -> bool:
-	var absolute: String = output_path.path_join(relative)
+	var absolute: String = staging_path.path_join(relative)
 	if DirAccess.make_dir_recursive_absolute(absolute.get_base_dir()) != OK:
 		return false
 	var file: FileAccess = FileAccess.open(absolute, FileAccess.WRITE)
@@ -161,7 +368,13 @@ func _read_pack() -> Dictionary:
 
 
 func _load_shaders() -> bool:
-	palette_shader = load("res://shaders/material_palette.gdshader")
+	var original_palette: Shader = load("res://shaders/material_palette.gdshader")
+	if original_palette == null:
+		return false
+	palette_shader = CyberPaletteShader.for_current_renderer(original_palette)
+	palette_selection = CyberPaletteShader.provenance(palette_shader)
+	if not palette_selection.get("source_bound", false) or not palette_selection.get("source_file_bound", false):
+		return false
 	emission_shader = load("res://shaders/material_emission.gdshader")
 	composite_shader = load("res://shaders/glow_composite.gdshader")
 	if palette_shader == null or emission_shader == null or composite_shader == null:
@@ -172,6 +385,172 @@ func _load_shaders() -> bool:
 		return false
 	return true
 
+
+
+# Best-effort Git checkout identity is separate from caller-supplied strings.
+# An exported pack outside Git still has a verified content SHA-256.
+func _source_identity() -> Dictionary:
+	var declared: String = OS.get_environment("CYBERSAND_SOURCE_REVISION")
+	var checkout: String = ""
+	var clean: bool = false
+	var project_path: String = ProjectSettings.globalize_path("res://").simplify_path()
+	var repo_root: String = ""
+	var result: Array = []
+	var code: int = OS.execute("git", PackedStringArray([
+		"-C", project_path, "rev-parse", "--show-toplevel"]), result, true)
+	if code == 0 and result.size() > 0:
+		repo_root = str(result[0]).strip_edges()
+	if not repo_root.is_empty():
+		result.clear()
+		code = OS.execute("git", PackedStringArray([
+			"-C", repo_root, "rev-parse", "--verify", "HEAD"]), result, true)
+		if code == 0 and result.size() > 0:
+			var value: String = str(result[0]).strip_edges()
+			if value.length() == 40 and value.is_valid_hex_number():
+				checkout = value
+	if not checkout.is_empty():
+		result.clear()
+		code = OS.execute("git", PackedStringArray([
+			"-C", repo_root, "status", "--porcelain", "--untracked-files=no",
+			"--", "godot/project.godot", "godot/tools", "godot/shaders", "godot/scripts"]), result, true)
+		clean = code == 0 and (result.is_empty() or str(result[0]).strip_edges().is_empty())
+	return {"source_revision_declared": declared,
+		"verified_source_revision": checkout if clean else "",
+		"git_checkout_head": checkout,
+		"git_worktree_root": repo_root,
+		"capture_source_tree_clean": clean,
+		"verification_paths": ["godot/project.godot", "godot/tools", "godot/shaders", "godot/scripts"],
+		"declared_matches_verified": clean and not declared.is_empty() and declared == checkout,
+		"source_verification": "clean Git checkout for project/render config, capture tools, shaders and scripts" if clean else "unverified working source"}
+
+
+func _test_pause(phase: String) -> void:
+	if test_pause_before_publication_ms > 0 and test_pause_phase == phase:
+		print("WORLD_DESIGN_CAPTURE test pause phase=" + phase + " attempt=" + attempt_id)
+		OS.delay_msec(test_pause_before_publication_ms)
+
+
+func _create_stage() -> bool:
+	if not claim_acquired:
+		return false
+	staging_path = output_path + ".world-capture-stage-" + attempt_id
+	if DirAccess.dir_exists_absolute(staging_path) or FileAccess.file_exists(staging_path):
+		return false
+	if DirAccess.make_dir_absolute(staging_path) != OK:
+		return false
+	_write_transaction("staging", {"staging_path": staging_path})
+	return true
+
+
+func _verify_staging() -> bool:
+	for entry: Dictionary in manifest.inputs + manifest.captures:
+		var path: String = staging_path.path_join(str(entry["file"]))
+		if not FileAccess.file_exists(path):
+			return false
+		if FileAccess.get_sha256(path) != entry["sha256"]:
+			return false
+		if FileAccess.get_file_as_bytes(path).size() != int(entry["bytes"]):
+			return false
+	return true
+
+
+func _rollback_generation(reason: String) -> bool:
+	if generation_path.is_empty() or not DirAccess.dir_exists_absolute(generation_path):
+		return true
+	if test_fail_rollback:
+		transaction_requires_recovery = true
+		_write_transaction("rollback_failed", {"reason": reason,
+			"generation_path": generation_path, "staging_path": staging_path,
+			"fault_injected": true})
+		return false
+	if DirAccess.dir_exists_absolute(staging_path) or FileAccess.file_exists(staging_path):
+		transaction_requires_recovery = true
+		_write_transaction("rollback_failed", {"reason": reason,
+			"generation_path": generation_path, "staging_path": staging_path,
+			"error": "staging path unexpectedly occupied"})
+		return false
+	if DirAccess.rename_absolute(generation_path, staging_path) != OK:
+		transaction_requires_recovery = true
+		_write_transaction("rollback_failed", {"reason": reason,
+			"generation_path": generation_path, "staging_path": staging_path,
+			"error": "generation rename rollback failed"})
+		return false
+	generation_path = ""
+	_write_transaction("rolled_back", {"reason": reason, "staging_path": staging_path})
+	return true
+
+
+func _publish_capture() -> bool:
+	if not _verify_staging():
+		return false
+	_test_pause("validated")
+	manifest.status = "prepared"
+	manifest.success = false
+	manifest.capture_count = manifest.captures.size()
+	manifest.input_count = manifest.inputs.size()
+	manifest.attempt_id = attempt_id
+	if not _write_json(staging_path.path_join("capture-prepared.json"), manifest):
+		return false
+	if not _write_json(staging_path.path_join("capture-status.json"),
+		{"status": "prepared", "success": false, "attempt_id": attempt_id,
+			"capture_count": manifest.capture_count, "input_count": manifest.input_count}):
+		return false
+	_write_transaction("prepared", {"staging_path": staging_path})
+	_test_pause("prepared")
+	var path_error: String = _validate_paths()
+	if not path_error.is_empty():
+		_write_transaction("path_revalidation_failed", {"message": path_error})
+		return false
+	var custody: String = _output_custody_error()
+	if not custody.is_empty():
+		_write_transaction("custody_revalidation_failed", {"message": custody})
+		return false
+	if not DirAccess.dir_exists_absolute(output_path):
+		if DirAccess.make_dir_recursive_absolute(output_path) != OK:
+			return false
+	var owner_path: String = output_path.path_join(".world-capture-owner.json")
+	if not FileAccess.file_exists(owner_path):
+		if not _write_json(owner_path, {"schema": 1, "owner": "cybersand-world-design-capture"}):
+			return false
+	var generation_root: String = output_path.path_join(".world-capture-generations")
+	if DirAccess.make_dir_recursive_absolute(generation_root) != OK:
+		return false
+	generation_path = generation_root.path_join(attempt_id)
+	if DirAccess.dir_exists_absolute(generation_path) or FileAccess.file_exists(generation_path):
+		return false
+	if DirAccess.rename_absolute(staging_path, generation_path) != OK:
+		return false
+	_write_transaction("generation_published", {"generation_path": generation_path})
+	_test_pause("published-data")
+	if test_fail_publication:
+		_rollback_generation("fault-injected failure after generation publication")
+		return false
+	var prefix: String = ".world-capture-generations/" + attempt_id
+	var final_manifest: Dictionary = manifest.duplicate(true)
+	for entry: Dictionary in final_manifest.inputs:
+		entry.file = prefix + "/" + str(entry.file)
+	for entry: Dictionary in final_manifest.captures:
+		entry.file = prefix + "/" + str(entry.file)
+	final_manifest.status = "complete"
+	final_manifest.success = true
+	final_manifest.publication_model = "immutable generation + atomic root manifest"
+	final_manifest.generation = prefix
+	if not _write_json(output_path.path_join("capture-manifest.json"), final_manifest):
+		_rollback_generation("root manifest commit failed")
+		return false
+	manifest = final_manifest
+	staging_path = ""
+	_write_transaction("committed", {"generation_path": generation_path,
+		"manifest_path": output_path.path_join("capture-manifest.json")})
+	# The manifest is the authoritative commit point. A status write after this
+	# may be absent after hard termination, but cannot make the committed bytes
+	# incomplete or misleading.
+	_write_json(output_path.path_join("capture-status.json"),
+		{"status": "complete", "success": true, "attempt_id": attempt_id,
+			"capture_count": manifest.capture_count, "input_count": manifest.input_count,
+			"generation": prefix})
+	generation_path = ""
+	return true
 
 func _make_rig(input: Image, camera: Vector2i, view: Vector2i) -> Dictionary:
 	var output_size: Vector2i = view * scale
@@ -228,7 +607,8 @@ func _make_rig(input: Image, camera: Vector2i, view: Vector2i) -> Dictionary:
 	emission.set_shader_parameter("world_texture", source_texture)
 	emission.set_shader_parameter("material_program_lut", program_lut)
 	emission.set_shader_parameter("world_size_px", world_size)
-	emission.set_shader_parameter("view_size_px", Vector2(view))
+	emission.set_shader_parameter("view_size_px",
+		Vector2(view) + Vector2(EMISSION_COORD_EPSILON, EMISSION_COORD_EPSILON))
 	emission.set_shader_parameter("camera_origin_px", Vector2(camera))
 	emission.set_shader_parameter("condition_projection_enabled", 1.0)
 	emission.set_shader_parameter("presentation_time_override", presentation_time)
@@ -330,20 +710,10 @@ func _run() -> void:
 	if not error.is_empty():
 		_status(2, error)
 		return
-	if DirAccess.make_dir_recursive_absolute(output_path) != OK:
-		_status(5, "cannot create output directory")
+	error = _prepare_target()
+	if not error.is_empty():
+		_status(5, error)
 		return
-	# Delete a previous successful manifest before any new work, to prevent a
-	# failed attempt leaving misleading earlier success in this output folder.
-	var complete_path: String = output_path.path_join("capture-manifest.json")
-	var status_path: String = output_path.path_join("capture-status.json")
-	if FileAccess.file_exists(status_path) and DirAccess.remove_absolute(status_path) != OK:
-		_status(5, "cannot invalidate existing capture status")
-		return
-	if FileAccess.file_exists(complete_path):
-		if DirAccess.remove_absolute(complete_path) != OK:
-			_status(5, "cannot invalidate existing complete manifest")
-			return
 	if DisplayServer.get_name() == "headless":
 		_status(3, "graphical DisplayServer required; headless is NOT a pass")
 		return
@@ -351,21 +721,43 @@ func _run() -> void:
 	if not loaded.ok:
 		_status(2, loaded.error)
 		return
+	var info: Dictionary = loaded.info
+	resource_budget = Adapter.capture_resource_budget(info, scale, tile_cells, mode, max_working_mib)
+	if not resource_budget.ok:
+		_status(2, resource_budget.error)
+		return
+	var source_identity: Dictionary = _source_identity()
+	if require_verified_source and not source_identity.declared_matches_verified:
+		_status(2, "mandatory source revision verification failed; declared revision does not match a clean Git checkout")
+		return
 	if not _load_shaders():
 		_status(3, "failed to load production material shaders/LUT")
 		return
+	if not _create_stage():
+		_status(5, "cannot create isolated capture staging directory")
+		return
 	DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
-	var info: Dictionary = loaded.info
 	manifest = {"status": "incomplete", "success": false,
 		"fixture": "res://tools/capture_world_design_pack.gd",
 		"source_revision": OS.get_environment("CYBERSAND_SOURCE_REVISION"),
-		"design_pack_revision": design_revision, "pack_path": pack_path,
+		"source_revision_role": "caller declaration; not independently verified",
+		"source_identity": source_identity,
+		"design_pack_revision": design_revision,
+		"design_revision_declared": design_revision,
+		"design_revision_verified": null,
+		"design_revision_verification": "external content-addressed pack; Git revision not asserted",
+		"pack_path": pack_path,
 		"pack_sha256": loaded.sha256, "family": info.family,
 		"scene_dimensions_cells": [info["size"].x, info["size"].y],
 		"features_declared": info.features.size(),
 		"godot_version": Engine.get_version_info().string,
 		"os": OS.get_name(), "display": DisplayServer.get_name(),
 		"rendering_method": RenderingServer.get_current_rendering_method(),
+		"rendering_driver": RenderingServer.get_current_rendering_driver_name(),
+		"palette_selection": palette_selection,
+		"executable_path": OS.get_executable_path(),
+		"executable_sha256": FileAccess.get_sha256(OS.get_executable_path()),
+		"resource_budget": resource_budget,
 		"graphics_adapter": RenderingServer.get_video_adapter_name(),
 		"adapter_vendor": RenderingServer.get_video_adapter_vendor(),
 		"api": RenderingServer.get_video_adapter_api_version(),
@@ -384,6 +776,13 @@ func _run() -> void:
 			"emission": FileAccess.get_sha256("res://shaders/material_emission.gdshader"),
 			"glow_composite": FileAccess.get_sha256("res://shaders/glow_composite.gdshader"),
 			"appearance_lut_script": FileAccess.get_sha256("res://scripts/material_appearance_lut.gd")},
+		"render_source_sha256": {
+			"project.godot": FileAccess.get_sha256("res://project.godot"),
+			"palette_selector": FileAccess.get_sha256("res://scripts/palette_shader_selector.gd"),
+			"appearance_lut_script": FileAccess.get_sha256("res://scripts/material_appearance_lut.gd"),
+			"palette": FileAccess.get_sha256("res://shaders/material_palette.gdshader"),
+			"emission": FileAccess.get_sha256("res://shaders/material_emission.gdshader"),
+			"glow_composite": FileAccess.get_sha256("res://shaders/glow_composite.gdshader")},
 		"inputs": [], "captures": []}
 	if mode == "combined" or mode == "both":
 		var combined: Dictionary = Adapter.build_combined(loaded.pack)
@@ -422,11 +821,7 @@ func _run() -> void:
 				"standalone feature viewport render", {"variant": "base"}):
 				_status(5, "cannot save feature PNG: " + feature_id)
 				return
-	manifest.status = "complete"
-	manifest.success = true
-	manifest.capture_count = manifest.captures.size()
-	manifest.input_count = manifest.inputs.size()
-	if not _write_json(complete_path, manifest):
-		_status(5, "could not atomically publish complete manifest")
+	if not _publish_capture():
+		_status(5, "failed to verify/publish isolated capture; incomplete staging retained")
 		return
-	_status(0, "completed genuine Godot framebuffer captures in " + output_path)
+	_status(0, "published verified genuine Godot framebuffer captures in " + output_path)

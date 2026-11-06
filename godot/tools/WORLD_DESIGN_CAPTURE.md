@@ -1,6 +1,117 @@
 # World-design pack capture — experimental Godot tooling
 
-**Status:** Draft tooling, NOT graphical-qualified or production-admitted. Source: `tools/world-design-godot-capture-20261105`, based on main `06522e300dcf91efbab0ac8f4f4370af72cf2029`. Design fixture: PR #454 exact inspected head `f68516b7e4faefb8c776a89169365a7e8dd55d37`. Neither the design schema nor the renderer is changed.
+**Status:** Experimental tooling; the original #457 and dependent Draft repair #462 are NOT production-admitted. Source parent: `tools/world-design-godot-capture-20261105` / `cff6c7f947147a250e5a5c3bb9d46b0df39b376c`, based on main `06522e300dcf91efbab0ac8f4f4370af72cf2029`. The original #454 oracle is pinned to `f68516b7e4faefb8c776a89169365a7e8dd55d37`; the repair's current read-only design snapshot is `e0da52a1d477606ac3ca737a9da2c9022cee4253`. Neither the design schema/art nor production renderer is changed.
+
+
+## Dependent corrective Draft PR #462 — capture protocol and admission (6 November 2026)
+
+This section describes the **repair implementation**, not permission to merge or a
+claim of physical simulation/production qualification. Prior negative evidence is
+retained in #457 and its original GitHub-hosted artifact archives. The independent
+repair checks are in `godot/tests/world_design_capture_repair_campaign.py` and
+`.github/workflows/world-design-capture-repair-qualification.yml`, with actual
+Linux OpenGL/llvmpipe and Windows ANGLE outputs preserved as workflow artifacts.
+
+- **R1 — fail closed transaction:** validate both directions of canonical
+  pack/output containment, the CyberSand workspace root, existing-directory
+  custody and every existing path component **before any output mutation**.
+  Symlinks, Windows junctions and other reparse-point aliases in either path are
+  rejected, including a nonexistent output child beneath a linked parent. A
+  non-empty existing output is accepted only when it is an already-owned
+  CyberSand capture root.
+  Each attempt acquires an atomic sibling `.world-capture-claim` directory.
+  Generated PNG/RG8/metadata remain in a unique sibling stage and never contain
+  a success manifest. Publication moves the validated stage to an immutable
+  `.world-capture-generations/<attempt>` directory inside the stable output
+  root; the **only authoritative commit point** is the subsequent atomic
+  replacement of root `capture-manifest.json`, whose entries point into that
+  generation. The requested output directory and any previous generation are
+  never renamed away. A malformed retry therefore leaves the previous committed
+  manifest untouched. Hard-killed attempts retain their claim/transaction
+  record; an operator may recover only by supplying the exact recorded
+  `--recover-claim=<attempt-id>` after confirming the old process is dead.
+  Fault-injected rollback failure retains both the non-authoritative generation
+  and transaction record with `requires_recovery=true` rather than claiming
+  restoration.
+- **R2 — schema identity:** `schema_id` must equal
+  `cybersand.world-feature-pack.proposal` and `schema_version` must be numeric
+  one (Godot JSON parses integer JSON tokens as float values). Missing IDs,
+  nonnumeric/unsupported versions and mixed `scene` / `combined_scene`
+  placement structures fail rather than silently reinterpreting formats.
+- **R3 — shader:** use existing `CyberPaletteShader.for_current_renderer()`.
+  The selected full or ANGLE bounded-crossfade variant, raw source bytes,
+  source-file binding, emission/composite/LUT script hashes, rendering method,
+  driver, adapter and actual graphical Godot executable SHA-256 are recorded.
+- **R4 — budgets:** `--max-working-mib=16..1024` (default 256) rejects estimated
+  excessive combined RGB8 buffers, RG8 source/texture, tile+halo HDR viewport
+  buffers, detail crops, staged and previous output duplication, before any
+  output image allocation. Per-output physical pixels are capped at 16,777,216
+  as well as existing native size and 32,768-pixel side limits. Large-width
+  collections above 1,024 native cells remain supported; limits are
+  conservative estimates rather than measured peak allocator usage.
+- **N1 — smoke:** isolated input/output roots; two real graphical child captures,
+  pixel/hash repeat, source isolation, structured manifest checks, shader
+  detail variation, and a malformed same-destination second invocation.
+- **R5 — provenance:** `source_revision` and `design_pack_revision` are retained
+  for backward discovery but are explicitly caller-declared. `source_identity`
+  distinguishes caller declaration from independently obtained clean Git HEAD
+  and now verifies `godot/project.godot` as well as capture tools, scripts and
+  shaders. `render_source_sha256` records the actual project configuration,
+  palette-selector, LUT and shader bytes that can affect a capture.
+  `design_revision_verified` is null for read-only exported packs outside a
+  Git checkout; `pack_sha256` is the immutable content address. For policy
+  requiring a checked-out exact source, use `--require-verified-source=on`,
+  which fails if the declaration does not match a clean checkout **or if any
+  verified renderer/configuration source is dirty**.
+
+The fault-injection switches `--test-fail-publication=on`,
+`--test-fail-rollback=on`, `--test-pause-before-publication-ms=N` and
+`--test-pause-phase=framebuffer|validated|prepared|published-data` only work
+with `CYBERSAND_CAPTURE_FAULT_INJECTION=1`; these are test-only knobs, never
+production capture defaults. Qualification hard-kills a real Godot process in
+all four windows. None of those pre-commit states contains authoritative
+complete-success metadata. `--recover-claim=<attempt-id>` is not automatic:
+it is an explicit stale-claim recovery action and archives the prior transaction
+record rather than deleting it.
+
+A fixed time repeats byte-identically on the same platform/rendering settings.
+The half-resolution production emission shader intentionally maps each glow
+texel to a 2x2 cell block. Because its `floor(UV * view_size_px)` expression
+lands mathematically on odd integer coordinates, the capture rig applies a
+small positive **uniform-only** epsilon to `view_size_px`; this keeps GLSL and
+ANGLE interpolation on the intended side of the same integer boundary without
+editing or substituting the production shader source. The qualification
+campaign includes a strict glow-off tile-size control to isolate palette
+mapping from emission/glow mapping.
+It retains exact differing pixel coordinates, counts, bounding boxes, maximum
+channel deltas and horizontal/vertical seam-band metrics at multiple tile
+sizes/scales in square, wide and tall material-varied fixtures on Linux
+llvmpipe and Windows ANGLE, alongside the historical Lumen comparison.
+
+The historical pre-correction Linux Lumen result remains a negative control:
+**1,253 / 655,360 pixels differed, max channel delta 5/255, zero differences
+inside the two tested ±32px vertical seam bands, and no interior horizontal
+join was exercised.** It is not relabelled a parity pass. After stabilising the
+half-resolution emission coordinate, the diagnostic predecessor
+`c040da1d…` produced exact Windows ANGLE tile parity in every exercised case
+and exact Linux glow-off/scale-1/wide/tall parity. Linux retained only one
+1/255 Lumen pixel and nine 1/255 scale-2 stress pixels; the largest ±32px seam
+band contained six changed pixels. The qualification bound is therefore
+deliberately absolute, not percentage-based: **Linux only**, at most 16 changed
+pixels total, max channel delta 1/255, and at most 8 changed pixels in any
+tested ±32px seam band, and only for the full-glow Lumen and scale-2 stress
+comparisons. All glow-off controls, all Windows comparisons, and the remaining
+Linux tile comparisons require exact pixel identity. This narrow bound would
+reject the historical 1,253-pixel result and both earlier ANGLE failures by a
+large margin.
+
+Evidence must be source-pinned to the actual tested commit; the workflow
+retains raw files, including the immutable hidden generation directories named
+by committed manifests, with `SHA256SUMS.txt` recomputed **after** the runner's
+live stdout log closes. Original failing runs are kept distinct from later
+corrected runs. Full 15-collection/120-feature current-design graphical
+acceptance and human reference comparison remain separate, subsequent
+activities.
 
 ## Command
 
