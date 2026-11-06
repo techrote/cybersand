@@ -263,6 +263,13 @@ the rectangles, about 7.2 ms in total. The build cost comes from an out-of-line
   applied terrain projections agree exactly still passes. So do 14 other
   terrain, Rapier and workbench regressions.
 
+The source edit is commit `0b408ae97c061d7263a3322022429aa32a0385a6`. It adds a read-only World accessor and
+changes `native/src/world.cpp` from LF SHA-256
+`5f510058ae43c8dcf6adc2df62b7fde580d5f509012c8c7a358a54f2a7dc2129` to
+`5a9de5e09a8665392677902ab501696aafefb5bbd2d2800e3dc1059b87a6f17d`. This is a
+proposed reviewed transition for issue 362 and PR 406, pending review and the
+owner's admission.
+
 **Workbench measurements:**
 
 | Canvas | Packet before | Packet after | Ticks/s |

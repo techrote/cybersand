@@ -232,6 +232,13 @@ REVIEWED_TRANSITIONS: tuple[dict, ...] = ({'path': 'native/src/world_pressure.in
   'source_commit': '481011090a9a56fb06311144b5bfb26f8f1028a4',
   'record': 'docs/audits/2026-11-06-pf-ballistic-tick-cost.md',
   'issue': 362,
+  'pr': 406},
+ {'path': 'native/src/world.cpp',
+  'from_lf_sha256': '5f510058ae43c8dcf6adc2df62b7fde580d5f509012c8c7a358a54f2a7dc2129',
+  'to_lf_sha256': '5a9de5e09a8665392677902ab501696aafefb5bbd2d2800e3dc1059b87a6f17d',
+  'source_commit': '0b408ae97c061d7263a3322022429aa32a0385a6',
+  'record': 'docs/audits/2026-11-06-pf-ballistic-tick-cost.md',
+  'issue': 362,
   'pr': 406})
 
 
