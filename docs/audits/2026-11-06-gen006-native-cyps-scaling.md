@@ -159,3 +159,65 @@ the two new \`gen006_native_dirty_ack\` records with JSON field
 checks. No native fixture, assertions, production World or defaults
 are changed by this parser correction. Require a new complete
 exact-head hosted run before claiming acceptance.
+
+
+## Follow-on — genuine native clear/reinitialize and external save-ACK ABA (2026-11-06)
+
+**EXPERIMENTAL / DRAFT / DO NOT MERGE.** The earlier dirty/ACK probe
+showed that mutation-generation checks are necessary, but a generation number
+can **repeat** after a World/session reset. A stale asynchronous save completion
+from before the reset can therefore appear current if the external persistence
+owner checks only the numeric mutation generation.
+
+New separate, test-only source file
+\`native/tests/test_gen006_reset_aba.cpp\` uses unchanged actual native
+\`World\` with eight signed sparse chunks, real Water/Sand/Wall scheduling,
+and separately observed 1/4-configured native workers. It:
+
+1. Completes two genuine ticks, erases an original Wall to **Empty**,
+   then captures a real whole-World CYPS snapshot.
+2. Calls actual \`World::clear()\`, verifies old residents are gone,
+   reinstalls the same signed chunks, completes two more native ticks,
+   and changes the same old Wall coordinate to Water with
+   \`state_a=17\` / native liquid mass 17.
+3. Captures and genuinely restores the two distinct native checkpoint
+   byte strings, checking old Empty/new Water17 material and state.
+4. Supplies the *old* generation-1 save completion to a clearly labelled
+   **in-test generation-only owner ACK model** after the new session's
+   legitimate intent generation also reached 1. The inadequate model
+   accepts it: a deterministic **ABA counterexample**, not an observed
+   production ACK defect.
+5. Demonstrates the stronger **test-only** identity fence refusing old
+   world/session, chunk incarnation, future generation and duplicate ACKs,
+   while accepting the correct current receipt. It retains the pending
+   new intent after every refusal.
+6. Compares three actual source-identical fixed ticks after a **whole-World**
+   save/restore (not selective eviction), reporting observed workers.
+
+The branch-only Ubuntu 24.04 GCC13 \`-O2 -DNDEBUG\` workflow compiles
+the extra fixture against the exact native World sources and explicitly
+pins the \`world.cpp\` and \`world.hpp\` source blobs. It retains raw compiler
+logs, two JSON cohort rows and the complete native execution transcript even
+on failed runs. Previous O0/O2 scaling and dirty-ACK cohorts remain untouched.
+A Windows/Linux cross-platform root lease or actual disk publication is NOT
+tested by this new fixture; separate #458 evidence covers *synthetic* OS
+coordination. No selective native chunk retirement, actor/sidecar persistence,
+old-recipe import #398, default or production serialization policy is adopted.
+
+Reproduce in a checkout of the exact candidate head:
+
+\`\`\`sh
+g++-13 -std=c++20 -O2 -g0 -DNDEBUG -pthread -Wall -Wextra -Wpedantic \
+  -I native/include native/src/world.cpp native/src/material_rules.cpp \
+  native/src/scheduler_geometry.cpp native/src/settled_world_discovery.cpp \
+  native/tests/test_gen006_reset_aba.cpp -o /tmp/gen006-reset-aba
+/tmp/gen006-reset-aba
+\`\`\`
+
+**New gate exposed:** a future authoritative durable-save ACK must bind
+nonreusable world/session **and** chunk incarnation identities as well as
+mutation generation and the exact durable-root publication it acknowledges.
+A generation-only receipt may be insufficient across a live reset even when
+the mutation-generation code correctly rejects older numbers. Neither this
+control nor #230's proposed schema grants permission to implement or merge
+the production coordinator. **Status pending exact-head hosted execution.**

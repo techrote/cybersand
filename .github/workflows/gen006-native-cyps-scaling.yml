@@ -6,6 +6,7 @@ on:
       - experiment/gen006-native-cyps-scaling-20261106
     paths:
       - native/tests/test_gen006_cyps_scaling.cpp
+      - native/tests/test_gen006_reset_aba.cpp
       - .github/workflows/gen006-native-cyps-scaling.yml
       - docs/audits/2026-11-06-gen006-native-cyps-scaling.md
   workflow_dispatch:
@@ -126,6 +127,37 @@ jobs:
                             "cohorts":rows},indent=2))
           PY
 
+      - name: Build and run real native reset/ACK ABA diagnostic (optimized Linux)
+        shell: bash
+        timeout-minutes: 15
+        run: |
+          set -euo pipefail
+          test "$(git hash-object native/src/world.cpp)" = "aed1bb10e480493397f5c5eac8ba2336f495b9f9"
+          test "$(git hash-object native/include/cybersand/world.hpp)" = "bb2f6e33dd1ad8e4a2b2aec7b34ccfb8229b6cb3"
+          timeout 720s g++-13 -std=c++20 -O2 -g0 -DNDEBUG -pthread \
+            -Wall -Wextra -Wpedantic -I native/include \
+            native/src/world.cpp native/src/material_rules.cpp \
+            native/src/scheduler_geometry.cpp native/src/settled_world_discovery.cpp \
+            native/tests/test_gen006_reset_aba.cpp \
+            -o build/gen006-cyps-scaling/reset-aba-probe 2>&1 | tee build/gen006-cyps-scaling/reset-aba-compile.log
+          timeout 180s build/gen006-cyps-scaling/reset-aba-probe 2>&1 | tee build/gen006-cyps-scaling/reset-aba.log
+          grep -q 'GEN006_NATIVE_RESET_ABA_PASS' build/gen006-cyps-scaling/reset-aba.log
+          sed -n 's/^GEN006_NATIVE_RESET_ABA_JSON //p' build/gen006-cyps-scaling/reset-aba.log > build/gen006-cyps-scaling/reset-aba.jsonl
+          python3 - <<'PY'
+          import json
+          p="build/gen006-cyps-scaling/reset-aba.jsonl"
+          rows=[json.loads(s) for s in open(p)]
+          assert len(rows)==2 and {r["configured_workers"] for r in rows}=={1,4}
+          for r in rows:
+              assert r["result"]=="PASS" and r["resident_chunks"]==8
+              assert r["old_observed_workers"]>=1 and r["new_observed_workers"]>=1
+              assert r["generation_only_stale_ack_accepted"] is True
+              assert r["identity_fence_stale_ack_refused"] is True
+              assert r["same_source_fixed_tick_control"]==3
+              assert r["old_edit"]=="Empty" and r["new_edit"]=="Water17"
+              assert r["old_checkpoint_bytes"]>0 and r["new_checkpoint_bytes"]>0
+          PY
+
       - name: Preserve raw measurements and failures
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
@@ -146,5 +178,8 @@ jobs:
             build/gen006-cyps-scaling/observations-optimized.jsonl
             build/gen006-cyps-scaling/dirty-ack-optimized.jsonl
             build/gen006-cyps-scaling/analysis-optimized.json
+            build/gen006-cyps-scaling/reset-aba-compile.log
+            build/gen006-cyps-scaling/reset-aba.log
+            build/gen006-cyps-scaling/reset-aba.jsonl
           if-no-files-found: warn
           retention-days: 45
