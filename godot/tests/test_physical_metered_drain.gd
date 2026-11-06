@@ -1183,6 +1183,24 @@ func run() -> void:
 	_capacity_and_fault_discrimination()
 	_native_persistence_and_failure()
 	await _worker_ownership()
+	var performance_rows: Array = []
+	for report: Dictionary in reports:
+		if report.get("case") == "quantity-and-shutoff" and report.get("material") == 3 \
+			and report.get("bits") == 8 and not bool(report.get("fractional", false)) \
+			and int(report.get("family", 0)) in [1, 4]:
+			performance_rows.append({
+				"family": int(report.family),
+				"configured_workers": int(report.configured_workers),
+				"command_owner_usec": int(report.command_owner_usec),
+				"native_tick_ms": report.native_tick_ms,
+				"changed_cells": int(report.command.get("changed_cells", 0)),
+			})
+	print("IN_TOOLS_361_DRAIN_PERF: " + JSON.stringify({
+		"schema":"in-tools-361-drain-performance-v1",
+		"comparison":"same U10 geometry/power, full-cell Water, FreeMass family=1 versus IN family=4",
+		"rows":performance_rows,
+		"claim":"measurement only; single-command owner timing plus eight post-shutoff native ticks; no hard performance threshold"
+	}))
 	var packet: String = JSON.stringify({"schema":"in-tools-metered-drain-native-host-v1",
 		"fixture_id":fixture.id,"fixture_sha256":fixture_digest,
 		"scope":"real native World and physical owner; headless; no physical input/graphical qualification",
