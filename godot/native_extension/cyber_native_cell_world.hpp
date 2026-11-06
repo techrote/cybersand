@@ -116,6 +116,10 @@ public:
                                     std::int64_t normalized_mass,
                                     std::int64_t coherence);
     bool water_experiment_erase_rect(Vector2i origin, Vector2i size);
+    // IN-TOOLS #361: bounded serialized-owner commands. These are deliberately
+    // source/aperture-qualified rather than a general velocity or cell editor.
+    [[nodiscard]] Dictionary in_tools_inject_water_source(Vector2i point, Vector2i velocity_q);
+    [[nodiscard]] Dictionary in_tools_set_aperture(Vector2i point, bool open);
     [[nodiscard]] Dictionary water_experiment_observation(
         Vector2i origin, Vector2i size) const;
     // LCB-001 pressure_flow_v1 (#200) inspection. Serialized owner-only reads of
