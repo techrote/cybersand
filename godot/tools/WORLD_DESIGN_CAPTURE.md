@@ -237,7 +237,7 @@ For `--mode=both`:
 - `capture-status.json` and `WORLD_DESIGN_CAPTURE` structured log line:
   exit status 0 success; 2 malformed inputs/schema; 3 unavailable graphical
   renderer or shader/LUT; 4 failed framebuffer/readback; 5 I/O failure.
-  An earlier complete manifest is invalidated before the next capture.
+  The previous committed root manifest remains authoritative throughout the next capture until a new complete root manifest is atomically committed; staging never invalidates the prior committed generation.
 
 Use distinct output directories for separate packs and compare their
 manifests. Bulk captured PNG/byte products belong in downloadable
