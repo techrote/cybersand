@@ -41,13 +41,13 @@ function renderSvg(pack) {
   s+='<text x="54" y="1377" fill="#d7e3e1" font-family="monospace" font-size="18">03 — MATERIAL-SOURCE DETAIL STUDIES / VECTOR CROPS (NOT GODOT)</text>';
   const crops=[
     {x:112,y:11,w:185,h:96,label:"ALT · SUNDERED SURVEY CROWN / WESTERN ARM"},
-    {x:325,y:134,w:125,h:78,label:"THE RIFT · ABANDONED WALKWAY"},
+    {x:325,y:134,w:125,h:78,label:"THE RIFT · SEVERED DATUM EXCHANGE"},
     {x:422,y:121,w:210,h:131,label:"ALT · WITNESS ADITS / BROKEN FOOTING"}
   ];
   crops.forEach((c,i)=>{
     const px=54+i*482, py=1393, sc=455/c.w;
     s+='<rect x="'+px+'" y="'+py+'" width="455" height="284" rx="5" fill="#080b12" stroke="#415960"/>';
-    s+='<g clip-path="url(#crop-'+i+')"><g transform="translate('+px+' '+py+') scale('+sc+') translate('+-c.x+' '+-c.y+')"><use xlink:href="#'+(i===2?"alternate-scene":"atlas-scene")+'"/></g></g>';
+    s+='<g clip-path="url(#crop-'+i+')"><g transform="translate('+px+' '+py+') scale('+sc+') translate('+-c.x+' '+-c.y+')"><use xlink:href="#'+(i===0||i===2?"alternate-scene":"atlas-scene")+'"/></g></g>';
     s+='<text x="'+(px+6)+'" y="1701" fill="#b6c9c9" font-family="monospace" font-size="14">'+escape(c.label)+'</text>';
   });
   s+='<text x="54" y="1756" fill="#d9e9e5" font-family="monospace" font-size="18">04 — EIGHT REUSABLE MODULES / BASE GEOMETRY · VARIANTS PRESERVED</text>';
