@@ -1,0 +1,7 @@
+{
+  "registration":"SOL-WORKBENCH-APPARATUS-AMENDMENT-001",
+  "before_scientific_matrix":true,
+  "retained_failure":"smoke-001 startup/body/mode/fences passed but full1024x1024 diagnostic_snapshot was refused by the existing512x768 API bound; empty census escaped engine checks. No smoke result contributes to physical decisions.",
+  "repair":"Capture four512x512 diagnostic tiles while the World is already paused, using existing exclusive-owner commands. Require nonempty262144-cell payload per tile and identical whole-World hash/completed tick across allfour; preserve origin,size,counts,storedWatermass,RLE. Validate before/initial/final coverage explicitly. No native API bound, material, physics or threshold changes.",
+  "scope":"Apparatus custody correction only; original SOL-WORKBENCH-LAW-001 thresholds,144-cell matrix and decision rule remain frozen."
+}

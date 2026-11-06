@@ -7,6 +7,17 @@ class Probe:
 	var participation: Dictionary={}
 	var handoff_native: Dictionary={}
 	var bind_checks: Array=[]
+	func full_census() -> Dictionary:
+		var out: Dictionary={};var tiles: Array=[];var hash_value: String="";var tick: int=-1
+		for origin: Vector2i in [Vector2i(0,0),Vector2i(512,0),Vector2i(0,512),Vector2i(512,512)]:
+			var value: Dictionary=await command({"action":"inspect","snapshot_origin":origin,"snapshot_size":Vector2i(512,512),"include_body_metrics":true})
+			var tile: Dictionary=value.get("diagnostic_snapshot",{})
+			if not value.get("ok",false) or tile.get("cells",PackedByteArray()).size()!=512*512:return {}
+			if out.is_empty():out=value.duplicate();out.erase("diagnostic_snapshot");hash_value=str(tile.hash);tick=int(tile.completed_ticks)
+			elif str(tile.hash)!=hash_value or int(tile.completed_ticks)!=tick:return {}
+			tile["origin"]=origin;tile["size"]=Vector2i(512,512);tiles.append(tile)
+		out["diagnostic_tiles"]=tiles
+		return out
 	func _bind_initial_workbench(sample: Dictionary) -> Dictionary:
 		if OS.get_environment("SOL_SMOKE")=="1":
 			for kind: String in ["token","generation","placement","mass","budget"]:
@@ -31,7 +42,7 @@ class Probe:
 		if not await super._prime_compound_coupling():return false
 		# Capture once while the handoff is already frozen. Pausing an uncompleted
 		# live WB sample for an initial census would change its pacing admission.
-		handoff_native=await command({"action":"inspect","snapshot_origin":Vector2i.ZERO,"snapshot_size":Vector2i(1024,1024),"include_body_metrics":true})
+		handoff_native=await full_census()
 		return handoff_native.get("ok",false)
 	func _create_worker() -> CyberSimulationWorker:
 		var result: CyberSimulationWorker=super._create_worker();result.set_worker_participation_sampling(true);return result
@@ -108,15 +119,15 @@ func plain(value: Variant) -> Variant:
 	return value
 func census(value: Dictionary) -> Dictionary:
 	var out: Dictionary=value.duplicate(true)
-	if out.has("diagnostic_snapshot"):
-		var d: Dictionary=out.diagnostic_snapshot;var runs: Array=[];var previous: int=-1;var count: int=0
+	for d: Dictionary in out.get("diagnostic_tiles",[]):
+		var runs: Array=[];var previous: int=-1;var count: int=0
 		for m: int in d.get("cells",PackedByteArray()):
 			if m!=previous:
 				if count:runs.append([previous,count])
 				previous=m;count=0
 			count+=1
 		if count:runs.append([previous,count])
-		d.erase("cells");d["material_runs"]=runs;d["origin"]=Vector2i.ZERO;d["size"]=Vector2i(1024,1024)
+		d.erase("cells");d["material_runs"]=runs
 	return out
 func _initialize() -> void:run.call_deferred()
 func run() -> void:
@@ -131,7 +142,8 @@ func run() -> void:
 	check(opened,"fresh authoritative session opens: "+s.last_error)
 	if not opened:s.close();quit(1);return
 	check((await s.observe_intact()).get("outcome")=="Anchored","intact structure anchored")
-	var region:=Rect2i(0,0,1024,1024);var before: Dictionary=await s.inspect_coupling(PackedInt32Array(),region)
+	var before: Dictionary=await s.full_census()
+	check(not before.is_empty(),"complete stable full-domain initial census")
 	check(await s.cut_and_release(),"real cut/commit/finalize: "+s.last_error)
 	if not s.active:s.close();quit(1);return
 	var n: int=520 if structure=="tree" else 356
@@ -182,7 +194,8 @@ func run() -> void:
 			distinct=int(s.participation.sequence);report.participation.append(plain(s.participation))
 		if s._failed:check(false,s.last_error);break
 	s.set_paused(true)
-	var final: Dictionary=await s.inspect_coupling(PackedInt32Array(),region)
+	var final: Dictionary=await s.full_census()
+	check(not final.is_empty(),"complete stable full-domain final census")
 	check(completed==target,"complete registered physical-step observation")
 	check(final.get("aggregate_owned")==n and final.get("native_source_members")==0 and final.get("members")==s.source_receipt.members,"final ownership and tuples")
 	check(not s.workbench_law or int(s._contact_metrics.response_attempts)==0,"no SOL281 Sand on workbench arm")
