@@ -41,7 +41,7 @@ def runrects(pixels,wh,px,py,scale,palette):
                 while end<w and row[end]==mat:end+=1
                 runs.add((x,end,mat));x=end
         nxt={}
-        for key in runs:
+        for key in sorted(runs):
             nxt[key]=active[key] if key in active else y
         for key,start in active.items():
             if key not in nxt:flush(key,start,y)
@@ -51,8 +51,8 @@ def runrects(pixels,wh,px,py,scale,palette):
 def generate(pack):
     palette={x['id']:x for x in pack['palette']}
     features={f['id']:f for f in pack['features']}
-    parts=['''<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1080" viewBox="0 0 1200 1080" role="img" aria-label="Chalkbone Coast combined shore scene and eight modular design schematics">
-<rect width="1200" height="1080" fill="#0B1521"/>
+    parts=['''<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1420" viewBox="0 0 1200 1420" role="img" aria-label="Chalkbone Coast combined shore scene and eight modular design schematics">
+<rect width="1200" height="1420" fill="#0B1521"/>
 <text x="28" y="46" fill="#F0E4D4" font-family="monospace" font-size="28" font-weight="bold">CHALKBONE COAST // DESIGN SHEET 002</text>
 <text x="28" y="70" fill="#B7C5CC" font-family="monospace" font-size="13">SOURCE-COLOUR RECTANGLES · NOT GAMEPLAY / PHYSICS / GODOT CAPTURE</text>
 <text x="28" y="102" fill="#DBD6C8" font-family="monospace" font-size="17">COMBINED LITTORAL SECTION · 768 × 256 CELLS</text>
@@ -75,6 +75,15 @@ def generate(pack):
         parts.append(runrects(raster(f['size'],f['rectangles'],features),f['size'],ox,oy,scale,palette))
         parts.append(f'<text x="{x+11}" y="{y+213}" fill="#9CAFB0" font-family="monospace" font-size="10">BASE VARIANT · NO SIM TEST</text>')
     parts.append('<text x="28" y="1060" fill="#92ADB7" font-family="monospace" font-size="12">Flat RGBA from pinned shadow catalogue. Visual overlaps use last-write-wins rastering. ID 24 Brine and ID 23 Salt are mobile in the native catalogue.</text>')
+    parts.append('<text x="28" y="1116" fill="#DBD6C8" font-family="monospace" font-size="17">FOSSIL VAULT / DARK-SOLID CRYPT · TRUE NATIVE-CELL DETAIL CROPS</text>')
+    for ox, sx, sy, title in ((36, 460, 16, 'FOSSIL VAULT · DRY SOURCE COLOURS'), (624, 130, 123, 'STRATA CRYPT · INSET IS SOLID ROCK')):
+        crop = []
+        for cy in range(sy, sy+100):
+            crop.extend(pw[cy*sr['size'][0]+sx:cy*sr['size'][0]+sx+240])
+        parts.append(f'<rect x="{ox}" y="1150" width="480" height="200" fill="#0D2029" stroke="#4F7580" stroke-width="1"/>')
+        parts.append(runrects(crop,(240,100),ox,1150,2,palette))
+        parts.append(f'<text x="{ox+2}" y="1376" fill="#EBD8BE" font-family="monospace" font-size="12">{title}</text>')
+    parts.append('<text x="28" y="1402" fill="#92ADB7" font-family="monospace" font-size="12">Inert scene substitutions only. Flat palette schematics: no Godot/physics/water/reflection/clearance qualification.</text>')
     parts.append('</svg>')
     return '\n'.join(parts)+'\n'
 
