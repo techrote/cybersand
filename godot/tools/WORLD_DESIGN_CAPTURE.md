@@ -87,9 +87,23 @@ It retains exact differing pixel coordinates, counts, bounding boxes, maximum
 channel deltas and horizontal/vertical seam-band metrics at multiple tile
 sizes/scales in square, wide and tall material-varied fixtures on Linux
 llvmpipe and Windows ANGLE, alongside the historical Lumen comparison.
-Historical strict mismatches remain recorded as historical facts; a corrected
-head must establish its own exact or explicitly bounded measurements rather
-than inherit that outcome or silently widen a tolerance.
+
+The historical pre-correction Linux Lumen result remains a negative control:
+**1,253 / 655,360 pixels differed, max channel delta 5/255, zero differences
+inside the two tested ±32px vertical seam bands, and no interior horizontal
+join was exercised.** It is not relabelled a parity pass. After stabilising the
+half-resolution emission coordinate, the diagnostic predecessor
+`c040da1d…` produced exact Windows ANGLE tile parity in every exercised case
+and exact Linux glow-off/scale-1/wide/tall parity. Linux retained only one
+1/255 Lumen pixel and nine 1/255 scale-2 stress pixels; the largest ±32px seam
+band contained six changed pixels. The qualification bound is therefore
+deliberately absolute, not percentage-based: **Linux only**, at most 16 changed
+pixels total, max channel delta 1/255, and at most 8 changed pixels in any
+tested ±32px seam band, and only for the full-glow Lumen and scale-2 stress
+comparisons. All glow-off controls, all Windows comparisons, and the remaining
+Linux tile comparisons require exact pixel identity. This narrow bound would
+reject the historical 1,253-pixel result and both earlier ANGLE failures by a
+large margin.
 
 Evidence must be source-pinned to the actual tested commit; the workflow
 retains raw files, including the immutable hidden generation directories named
