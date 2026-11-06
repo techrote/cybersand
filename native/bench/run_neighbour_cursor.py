@@ -36,7 +36,7 @@ ORDERS = (
     (("baseline", 6), ("candidate", 6), ("candidate", 1), ("baseline", 1)),
     (("candidate", 6), ("baseline", 6), ("baseline", 1), ("candidate", 1)),
     (("baseline", 1), ("candidate", 1), ("candidate", 6), ("baseline", 6)),
-    (("candidate", 6), ("baseline", 6), ("baseline", 1), ("candidate", 1)),
+    (("candidate", 1), ("baseline", 1), ("baseline", 6), ("candidate", 6)),
 )
 WORK_KEYS = ("visited", "moved", "cores", "active_blocks", "chunk_allocations",
              "temperature_field_allocations", "deferred_events", "dirty_chunks",
@@ -134,6 +134,7 @@ def benchmark_build(root, apparatus, out, verify=False):
 
 
 def tick_run(binary, scene, workers, ticks, out, label, cwd):
+    out.mkdir(parents=True, exist_ok=True)
     per_tick = out / (label + ".csv")
     result = run([binary, scene, workers, ticks, per_tick], cwd=cwd, log=out / (label + ".log"))
     try:
