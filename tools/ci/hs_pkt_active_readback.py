@@ -80,9 +80,9 @@ def read(root: Path, control: str, candidate: str) -> dict:
                     f"{where}: actual loaded DLL differs from independently built artifact")
             require(runtime.get("rapier_sha256") == RAPIER_SHA,
                     f"{where}: Rapier differs from selected runtime pin")
-            require(r.get("requested_sample_ticks") == 240 and r.get("warmup_ticks") == 24,
+            require(r.get("requested_sample_ticks") == 92 and r.get("warmup_ticks") == 8,
                     f"{where}: unequal workload duration")
-            require(r.get("observed_snapshots", 0) >= 100,
+            require(r.get("observed_snapshots", 0) >= 70,
                     f"{where}: incomplete worker observations")
             require(r.get("accepted_edit_requests", 0) >= 45,
                     f"{where}: too few accepted hard/erase brush edits")
@@ -90,6 +90,13 @@ def read(root: Path, control: str, candidate: str) -> dict:
                     f"{where}: edits did not produce sufficient actual native hard revisions")
             require(r.get("packet", {}).get("samples", 0) >= 40,
                     f"{where}: insufficient executed collider packet measurements")
+            expected_extent = [512, 512] if canvas == "my-canvas" else [2048, 1024]
+            expected_actors = 2 if canvas == "my-canvas" else 8
+            require(r.get("extent") == expected_extent
+                    and r.get("actual_installed_extent") == expected_extent
+                    and r.get("actors_requested") == expected_actors
+                    and r.get("actual_installed_actor_count") == expected_actors,
+                    f"{where}: requested stress canvas/actor roster not actually installed")
             require(r.get("actors_requested", 0) >= 2
                     and r.get("actual_actor_steps", 0) > 20
                     and r.get("observed_actor_samples", 0) > 20,

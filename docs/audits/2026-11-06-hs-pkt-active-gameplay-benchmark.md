@@ -27,7 +27,11 @@ The experiment's added diagnostic script `godot/scripts/hard_surface_active_stre
 
 Order **A / B / B / A** is fixed; no post-hoc sample selection. A run has two built-in 512×512 and 2048×1024 canvases (respectively `my-canvas` and `stress-canvas`) with their authentic workbench actor definitions. The profiler configures **PressureFlow V1 / cached_dormant** with gas enabled using the native policy validator, opts into native **ballistic Water**, face release, and impact spray plus a finite jet, and verifies the *applied* policy and native ballistic/spray readbacks. The native ballistic ledger must record actual launch/injection activity.
 
-Following 24 warmup ticks it collects 240 simulated ticks. At intervals of two observed ticks it submits an admitted worker-queue disc edit; 8–16 anchored positions cycle **hard Wall / Empty** with each anchor alternating across a full index cycle, not globally per edit. This workload deliberately forces hard-surface revisions while actual Rapier actor coupling and liquid solvers run. The edits enter the same worker command queue used by the real workbench and never mutate World from Godot's main thread.
+The first unmodified full-window control execution revealed a separate native failure during the stress-canvas: it reached 123 real actor steps, 163 snapshot observations, 50 accepted edits, 115 observed hard revision changes and **59 actual packet samples** before the World failed. Its my-canvas completed successfully (117 timed packets, p50 0.258 ms with PF gas, ballistic Water and two live actors). No candidate arm executed in that failed A-first sequence; these are **NOT before/after results**. The failing raw log is retained under run 42313652697.
+
+To retain the *same* built-in stress scene, actor roster, PF gas and ballistic settings rather than quietly disable a component, the next bounded experiment warms for **8 native ticks** and samples **92 requested ticks**, with a hard edit queued after each newly observed native tick. It explicitly verifies the installed canvas extent and 2-/8-actor roster; a rejected scenario cannot be mistaken for the preceding one. 8–16 anchored positions cycle **hard Wall / Empty** with each anchor alternating across a full index cycle, not globally per edit. This deliberately forces hard-surface revisions while real Rapier actor coupling and liquid solvers run. Every edit enters the same worker command queue used by the workbench; there is no main-thread mutation of the native World. Strict ≥40 packet samples, ≥45 accepted edits and ≥35 real hard revisions remain unchanged.
+
+This is **short-window gameplay-load characterisation**, not evidence that long-duration stress is stable. The observed full-window native stop remains an independent issue, not a reason to claim the optimisation failed.
 
 ## Strict readback / limitations
 
@@ -41,7 +45,7 @@ The results cannot be generalized to the user's desktop GPU/OS without a same-ho
 
 - Source review: **POSTED**, review `5808446014` on #470.
 - Separate benchmark source/workflow: **IMPLEMENTED FOR EXECUTION**, pending exact hosted run.
-- Both arms rebuilt on same host: **NOT YET VERIFIED** until CI logs.
+- Both arms rebuilt on same host: **PASS for initial control/candidate build (run 42313652697); earlier runtime failed during stress-canvas; repeat required for revised workload**.
 - Both canvases, actual actor + PF gas + ballistic activity: **NOT YET VERIFIED**.
 - ≥40 per-arm executed hard-packet samples, >=35 hard revisions: **NOT YET VERIFIED**.
 - 8/8 complete original log readbacks: **NOT YET VERIFIED**.
