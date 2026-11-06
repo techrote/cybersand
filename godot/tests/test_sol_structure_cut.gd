@@ -156,7 +156,9 @@ func run() -> void:
 	check(file!=null,"evidence output writable")
 	report["checks"]=checks;report["failures"]=failures
 	if file==null:quit(1);return
-	file.store_string(JSON.stringify(plain(report)));file.flush()
+	# Explicit full-precision decimal serialization for native scalar witnesses;
+	# body-state bit envelopes remain the lossless independent measurement.
+	file.store_string(JSON.stringify(plain(report),"",true,true));file.flush()
 	var write_error: Error = file.get_error();file.close()
 	if write_error!=OK:printerr("SOL_STRUCTURE evidence write failed ",write_error);quit(1);return
 	print("SOL_STRUCTURE checks=",checks," failures=",failures.size()," steps=",report.steps.size());quit(int(not failures.is_empty()))

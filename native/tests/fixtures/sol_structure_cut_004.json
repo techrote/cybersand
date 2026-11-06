@@ -1,0 +1,8 @@
+{
+  "registration":"SOL-STRUCTURE-CUT-004",
+  "date":"2026-11-06",
+  "amends":"SOL-STRUCTURE-ENERGY-FIX-001 capture only; unchanged registered trajectories and gates",
+  "custody":"Baseline physical reports preserved unchanged. Old11-double body envelopes are lossless, but witness area/depth/weight used default JSON decimal formatting. Energy replay reproduces outcomes using lossless body state and recorded/reconstructed witnesses; not every original native float bit is established. New captures use JSON full_precision=true.",
+  "energy":"Post-fix planner energy_before is scalar64 over actual RID input components; compare independently computed scalar64 KE of after_application bit envelope to that receipt, retaining production bridge float32-norm readback and unchanged1e-4 terminal guard separately. Before/after_application spans ordinary plus Sand response; do not attribute its entire work to Sand. Native cells lack a calibrated Newtonian Sand mass/energy state.",
+  "resource":"Copy only actual host native/Rapier binary; preserve source hashes and explicit omitted-nonhost inventory. Preserve previous artifacts. Check4GiB cap and5GiB free reserve before each host and after execution."
+}

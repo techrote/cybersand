@@ -92,16 +92,24 @@ def hosts(args):
     save()
     for platform in args.platforms.split(','):
         assert platform in BINARIES
+        resource=json.loads((ROOT/'native/tests/fixtures/sol_structure_cut_001.json').read_text(encoding='utf-8'))['resource']
+        used=sum(p.stat().st_size for p in OUT.rglob('*') if p.is_file())
+        free=shutil.disk_usage(OUT).free
+        assert used<resource['cap_bytes'] and free>=resource['minimum_free_bytes'],'Retain evidence; resource budget exhausted'
         host=folder/platform;project=host/'godot';host.mkdir();rows=[]
+        rapier=json.loads((ROOT/f'godot/addons/godot-rapier2d/runtime-provenance.{platform}.json').read_text(encoding='utf-8'))
+        selected_binaries={rapier['artifact'],'godot/addons/cybersand_native/bin/'+BINARIES[platform]}
+        omitted={}
         for name in copied:
+            if '/bin/' in name and name not in selected_binaries:
+                omitted[name]=copied[name];continue
             dst=project/Path(name).relative_to('godot');dst.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(ROOT/name,dst)
         native=build_receipt['platforms'][platform];assert native['clean'] and sha(ROOT/native['output'])==native['sha256']
         shutil.copyfile(ROOT/native['output'],project/'addons/cybersand_native/bin'/BINARIES[platform])
-        rapier=json.loads((ROOT/f'godot/addons/godot-rapier2d/runtime-provenance.{platform}.json').read_text(encoding='utf-8'))
         assert sha(ROOT/rapier['artifact'])==rapier['sha256']
         for name,digest in rapier['source_inputs'].items():assert lfsha(ROOT/name)==digest,name
         inventory={p.relative_to(project).as_posix():sha(p) for p in project.rglob('*') if p.is_file()}
-        state=dict(commands=rows,effective_inputs=inventory,compiled_native=native,rapier=rapier);receipt['hosts'][platform]=state;save()
+        state=dict(commands=rows,effective_inputs=inventory,omitted_nonhost_binaries=omitted,resource_before=dict(bytes=used,free=free),compiled_native=native,rapier=rapier);receipt['hosts'][platform]=state;save()
         def run(name,script=None,extra=None,env=None,version=False):
             forwarded=dict(CYBERSAND_SOURCE_REVISION=info['source_commit'],**(env or {}));argv=[ENGINES[platform]]
             if version:argv+=['--version']
@@ -166,6 +174,8 @@ def hosts(args):
             else:changes.append(name)
         state['post_inventory']=dict(unexpected_changes=changes,import_LF_normalization_only=normalized);save();assert not changes
     assert info==identity() and copied=={n:sha(ROOT/n) for n in copied}
+    receipt['resource_after']=dict(bytes=sum(p.stat().st_size for p in OUT.rglob('*') if p.is_file()),free=shutil.disk_usage(OUT).free)
+    assert receipt['resource_after']['bytes']<=resource['cap_bytes'] and receipt['resource_after']['free']>=resource['minimum_free_bytes']
     receipt['post_source_equality']=True;save()
     return int(not all(c['clean'] and c.get('report_complete',True) for h in receipt['hosts'].values() for c in h['commands']))
 
