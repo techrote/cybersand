@@ -98,6 +98,12 @@ var rigid_body_unresolved_last_tick: int = 0
 var simulation_time_ms: float = 0.0
 var worker_step_time_ms: float = 0.0
 var snapshot_copy_time_ms: float = 0.0
+# Diagnostic-only decomposition of _publish_snapshot. These are timing
+# observations, never render/collider transport fields and never admission
+# inputs; existing consumers may ignore them.
+var render_exchange_time_ms: float = 0.0
+var hard_surface_packet_time_ms: float = 0.0
+var snapshot_publication_time_ms: float = 0.0
 var worker_overruns: int = 0
 var tick_failure_count: int = 0
 var last_tick_error: String = ""
