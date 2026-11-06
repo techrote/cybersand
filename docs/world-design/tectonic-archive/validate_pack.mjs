@@ -44,6 +44,14 @@ function validate(p){
   }
  }
  need(artCount>=400,'scene art depth');
+ const alt=p.alternate_scene;
+ need(alt&&alt.id==='synclinal-rebinding'&&alt.size[0]===1360&&alt.size[1]===420,'alternate identity');
+ need(alt.placements.length===8&&new Set(alt.placements.map(z=>z.feature_id)).size===8,'alternate eight modules');
+ const tiers=[];
+ for(const pl of alt.placements){const f=fm.get(pl.feature_id);need(!!f,'alt module');const v=pl.variant?f.variants.find(z=>z.id===pl.variant):null;need(!pl.variant||!!v,'alt variant');need(pl.origin.length===2&&pl.origin.every(Number.isInteger)&&pl.origin[0]>=0&&pl.origin[1]>=0&&pl.origin[0]+f.size[0]<=1360&&pl.origin[1]+f.size[1]<=420,'alt placement bounds');need(pl.anchor_world[0]===pl.origin[0]+f.anchor.point[0]&&pl.anchor_world[1]===pl.origin[1]+f.size[1],'alt anchor');tiers.push(pl.origin[1]+f.size[1]);for(const a of f.rectangles){const id=v?+(v.swap[String(a[4])]??a[4]):a[4];const m=mat.get(id);need(!!m&&!m.movable&&m.kernel===0,'alt dynamic module');}}
+ need(tiers.filter(z=>z===187).length===4&&tiers.filter(z=>z===375).length===4,'alternate distinct tiers');
+ need(alt.backdrop_rectangles.length>=400&&alt.foreground_rectangles.length>=40,'alternate authored geometry');
+ for(const k of ['backdrop_rectangles','foreground_rectangles'])for(const a of alt[k]){need(Array.isArray(a)&&a.length===5&&a.every(Number.isInteger),'alt stamp shape');const [x,y,w,h,id]=a,m=mat.get(id);need(x>=0&&y>=0&&w>0&&h>0&&x+w<=1360&&y+h<=420,'alt stamp bounds');need(!!m&&!m.movable&&m.kernel===0,'alt active stamp');}
  return count;
 }
 const count=validate(p);
@@ -77,7 +85,14 @@ if(process.argv.includes('--negative')){
   p=>p.combined_scene.backdrop_rectangles[0][0]=-1,
   p=>p.combined_scene.foreground_rectangles[0][2]=0,
   p=>p.combined_scene.backdrop_rectangles[1][4]=3,
-  p=>p.combined_scene.foreground_rectangles[1][1]=900
+  p=>p.alternate_scene.placements.pop(),
+  p=>p.alternate_scene.placements[0].origin[0]=-1,
+  p=>p.alternate_scene.placements[1].variant='unknown',
+  p=>p.alternate_scene.placements[2].anchor_world[0]=-1,
+  p=>p.alternate_scene.backdrop_rectangles[0][4]=3,
+  p=>p.alternate_scene.foreground_rectangles[0][2]=0,
+  p=>p.alternate_scene.foreground_rectangles[0][1]=900,
+    p=>p.combined_scene.foreground_rectangles[1][1]=900
  ];
  let rejected=0;
  for(const edit of edits){const copy=structuredClone(p);edit(copy);try{validate(copy)}catch{rejected++}}
