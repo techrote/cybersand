@@ -13,6 +13,7 @@ var _spray := CheckButton.new()
 var _jet := CheckButton.new()
 var _pf_gas := CheckButton.new()
 var _face := CheckButton.new()
+var _fine := CheckButton.new()
 var _status := Label.new()
 var _fields: Dictionary = {}
 var _jet_point: Callable
@@ -63,7 +64,10 @@ func build(owner: Control, parent: Control, row_factory: Callable, jet_point: Ca
 	_pf_gas.button_pressed = true
 	_pf_gas.tooltip_text = "PressureFlow gas topology. Off = gas-free PressureFlow: same surging in open/vented scenes at lower cost. Staged in the liquid selection; applies on Apply liquid selection."
 	_pf_gas.toggled.connect(_set_pressure_gas)
-	for toggle: CheckButton in [_ballistic, _signed, _face, _spray, _jet, _pf_gas]:
+	_fine.text = "Fine cores"
+	_fine.tooltip_text = "Construction option: 32-cell scheduling cores (default 64). Splits the parallel scan's critical path, roughly halving tick cost with dense liquid. A different, equally deterministic update order. Applies on rebuild."
+	_fine.toggled.connect(func(on: bool) -> void: _construction("workbench_fine_cores", on))
+	for toggle: CheckButton in [_ballistic, _signed, _face, _spray, _jet, _pf_gas, _fine]:
 		toggle.focus_mode = Control.FOCUS_NONE
 		row.add_child(toggle)
 	for spec: Array in SPINS:

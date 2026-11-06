@@ -155,11 +155,30 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
         config->workbench_parallel_pressure_heads = workbench;
         // Bound the finite reservation, halo, eligible chunks and active task list.
         // Ordinary controlled/demo replacements keep their established limits.
+        if (options.has("workbench_fine_cores") && (!workbench || options["workbench_fine_cores"].get_type() != Variant::BOOL))
+            throw std::invalid_argument("Fine scheduling cores require the workbench and a boolean value");
         if (workbench) {
             const auto halo_columns = (extent.x + config->chunk_size - 1) / config->chunk_size + 2;
             const auto halo_rows = (extent.y + config->chunk_size - 1) / config->chunk_size + 2;
             config->maximum_chunk_count = std::max<std::size_t>(128, halo_columns * halo_rows);
             config->active_chunk_capacity = config->maximum_chunk_count;
+            // Workbench performance option: 32-cell scheduling cores split the
+            // phased scan's critical path (the slowest core of each phase).
+            // A different, equally deterministic update geometry; never exact
+            // to the 64-cell default. Capacity covers every halo core.
+            if (static_cast<bool>(options.get("workbench_fine_cores", false))) {
+                constexpr std::int32_t kFineCore = 32;
+                if (config->chunk_size % kFineCore != 0 || kFineCore % config->activity_block_size != 0 ||
+                    config->maximum_rule_radius > kFineCore / 2)
+                    throw std::invalid_argument("Fine scheduling cores do not fit this chunk geometry");
+                config->scheduling_core_size = kFineCore;
+                const auto per_chunk = static_cast<std::size_t>(config->chunk_size / kFineCore);
+                config->active_core_capacity = std::max(config->active_core_capacity,
+                    static_cast<std::size_t>(halo_columns) * per_chunk * static_cast<std::size_t>(halo_rows) * per_chunk);
+            } else {
+                // Never inherit a previous build's fine geometry.
+                config->scheduling_core_size = cybersand::WorldConfig{}.scheduling_core_size;
+            }
         } else if (adapter->workbench_) {
             config->maximum_chunk_count = 128;
             config->active_chunk_capacity = 128;

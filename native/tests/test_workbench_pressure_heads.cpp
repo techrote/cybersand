@@ -1,5 +1,6 @@
-// Workbench pressure-flow/reference column dispatch must reproduce the serial
-// column pass and its subsequent row repair, wake decisions and kernel state.
+// Workbench pressure-flow column dispatch (reference, cached and cached_dormant)
+// must reproduce the serial column pass and its subsequent row repair, wake
+// decisions and kernel state.
 #include "cybersand/world.hpp"
 
 #include <array>
@@ -24,11 +25,12 @@ void fill(World& w, int x, int y, int width, int height, Material material) {
             w.set(x+dx, y+dy, material);
 }
 
-std::unique_ptr<World> fixture(unsigned workers, bool parallel_heads) {
+std::unique_ptr<World> fixture(unsigned workers, bool parallel_heads, int variant) {
     auto words = LiquidSolverPolicy::default_request();
-    words[21] = 3; // Water pressure_flow_v1, reference variant
+    words[21] = 3; // Water pressure_flow_v1
+    words[22] = variant; // 0 reference, 1 cached, 2 cached_dormant
     const auto pf = LiquidSolverPolicy::decode(std::span<const std::int32_t>(words));
-    require(pf.accepted(), "reference policy");
+    require(pf.accepted(), "pressure policy");
     WorldConfig cfg;
     cfg.liquid_solver_policy = *pf.policy;
     cfg.workbench_parallel_pressure_heads = parallel_heads;
@@ -64,7 +66,9 @@ auto diagnostics(const PressureFlowDiagnostics& d) {
 
 auto work(const PressureOptimizationCounters& c) {
     return std::tie(c.columns_recomputed,c.rows_recomputed,c.base_cells_written,
-                    c.final_cells_written,c.gas_reference_passes,c.water_material_calls,c.water_motion_calls);
+                    c.final_cells_written,c.gas_reference_passes,c.water_material_calls,c.water_motion_calls,
+                    c.certificate_invalidation_cells,c.certificate_attempts,c.certificate_reuses,
+                    c.certificate_layer_activations);
 }
 
 void compare(const World& reference, const World& candidate) {
@@ -91,10 +95,11 @@ void compare(const World& reference, const World& candidate) {
     }
 }
 
-void run() {
-    std::array<std::unique_ptr<World>,4> worlds{fixture(1,false),fixture(6,false),fixture(1,true),fixture(6,true)};
+void run(int variant) {
+    std::array<std::unique_ptr<World>,4> worlds{fixture(1,false,variant),fixture(6,false,variant),
+                                                fixture(1,true,variant),fixture(6,true,variant)};
     std::uint64_t unknown = 0, wakes = 0, live_gas = 0;
-    for (int tick = 0; tick < 42; ++tick) {
+    for (int tick = 0; tick < 160; ++tick) {
         std::array<TickStats,4> stats;
         for (std::size_t arm = 0; arm < worlds.size(); ++arm) {
             auto& w = *worlds[arm];
@@ -121,18 +126,16 @@ void run() {
                     stats[0].visited_cells == stats[arm].visited_cells, "tick scheduling/active blocks");
         }
     }
-    std::cout << "unknown=" << unknown << " wakes=" << wakes << " gas_samples=" << live_gas << '\n';
+    const auto counters = worlds[0]->pressure_optimization_snapshot().counters;
+    std::cout << "variant=" << variant << " cert_reuses=" << counters.certificate_reuses
+              << " cert_invalidations=" << counters.certificate_invalidation_cells << " unknown=" << unknown << " wakes=" << wakes << " gas_samples=" << live_gas << '\n';
     require(unknown > 0 && live_gas > 0 && wakes > 0, "fixture must exercise lid repair, sealed gas and pressure wake");
 }
 }
 
-int main() {
-    try {
-        run();
-        std::cout << "WORKBENCH_PRESSURE_HEADS checks=" << checks << " failures=0\n";
-        return 0;
-    } catch (const std::exception& e) {
-        std::cerr << "WORKBENCH_PRESSURE_HEADS failure at check " << checks << ": " << e.what() << '\n';
-        return 1;
-    }
+// Part of the native `tests` binary (Makefile TEST_SOURCES), so the normal,
+// ASan/UBSan and TSan families all run the parallel head path.
+void test_workbench_pressure_heads_parallel_exact() {
+    for (const int variant : {0, 1, 2}) run(variant);
+    std::cout << "WORKBENCH_PRESSURE_HEADS checks=" << checks << '\n';
 }

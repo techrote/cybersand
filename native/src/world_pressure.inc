@@ -1003,22 +1003,34 @@ void World::compute_pressure_heads() {
             return a.x != b.x ? a.x < b.x : a.y < b.y;
         });
     }
-    const auto put_base = [&](Chunk& chunk, std::size_t index, std::int32_t value) {
+    // A column task writes only its own chunk column: base heads, and the
+    // private row-dirty record of each column-order position it owns.
+    const auto put_base = [&](Chunk& chunk, std::size_t position, std::size_t index, std::int32_t value) {
         if (!cached) { chunk.pressure->head[index] = value; return; }
         auto& old = chunk.pressure->base_head[index];
         if (old != value) {
             old = value;
-            const auto row = static_cast<std::int32_t>(index / static_cast<std::size_t>(size));
-            cache->mark(false, chunk.pressure->row_group, row, row);
+            const auto row = index / static_cast<std::size_t>(size);
+            cache->column_row_marks[position][row / 64U] |= std::uint64_t{1} << (row % 64U);
         }
     };
-    const auto put_final = [&](Chunk& chunk, std::size_t index, std::int32_t value) {
-        ++state.optimization.final_cells_written;
+    // A row-band task owns every chunk with its row coordinate: their heads,
+    // wake bits (clear_pressure_wake never leaves the chunk row) and activity
+    // flags. A deferred (pooled) band leaves certificate invalidation, an
+    // idempotent fill that nothing in this pass reads, to the owner's merge.
+    using RowTask = PressureState::HeadRowTask;
+    const auto put_final = [&](RowTask& task, Chunk& chunk, std::size_t index, std::int32_t value) {
+        ++task.finals;
         auto& old = chunk.pressure->head[index];
         if (cached && old != value) {
             const auto local_x = static_cast<std::int32_t>(index % static_cast<std::size_t>(size));
             const auto local_y = static_cast<std::int32_t>(index / static_cast<std::size_t>(size));
-            invalidate_pressure_certificates(chunk.pressure->coordinate, local_x, local_y, local_x, local_y);
+            if (task.deferred) {
+                cache->certificate_changed[static_cast<std::size_t>(chunk.pressure->gas_chunk_slot) *
+                    cache->wake_words_per_chunk + index / 64U] |= std::uint64_t{1} << (index % 64U);
+            } else {
+                invalidate_pressure_certificates(chunk.pressure->coordinate, local_x, local_y, local_x, local_y);
+            }
             clear_pressure_wake(*cache, [this](ChunkCoord c) { return find_chunk(c); }, size,
                                 chunk.pressure->coordinate, local_x, local_y, local_x, local_y);
         }
@@ -1078,13 +1090,13 @@ void World::compute_pressure_heads() {
                     std::int64_t value = 0;
                     if (!supported) {
                         value = cell_quantity(chunk, index) + top.value_or(0);
-                        put_base(chunk, index, static_cast<std::int32_t>(clamp_head(value)));
+                        put_base(chunk, chunk_position, index, static_cast<std::int32_t>(clamp_head(value)));
                     } else {
                         const auto compacted = std::max<std::int64_t>(0, total - (floor_y - y) * maximum);
                         if (top.has_value()) {
-                            put_base(chunk, index, static_cast<std::int32_t>(clamp_head(*top + compacted)));
+                            put_base(chunk, chunk_position, index, static_cast<std::int32_t>(clamp_head(*top + compacted)));
                         } else {
-                            put_base(chunk, index, static_cast<std::int32_t>(
+                            put_base(chunk, chunk_position, index, static_cast<std::int32_t>(
                                 kUnknownHeadBase - std::min(compacted, kHeadClamp)));
                             ++task.unknown;
                         }
@@ -1124,7 +1136,7 @@ void World::compute_pressure_heads() {
                         total += cell_quantity(chunk, index);
                         continue;
                     }
-                    put_base(chunk, index, kNoHead);
+                    put_base(chunk, position, index, kNoHead);
                     if (open) {
                         const bool supported = !(material == Material::Empty && transient_obstacle_at(x, y) == 0U);
                         close_run(position, local_y, y - 1, supported);
@@ -1142,8 +1154,17 @@ void World::compute_pressure_heads() {
         state.optimization.base_cells_written += task.writes;
         state.diagnostics.unknown_heads += task.unknown;
         state.diagnostics.head_cells += task.heads;
+        if (!cached) return;
+        // Owner-only, in task order: publish the private row marks and retire
+        // the consumed column group exactly as the serial pass did.
+        for (auto position = task.begin; position < task.end; ++position)
+            cache->merge_row_marks(find_chunk(coordinates[position])->pressure->row_group,
+                                   cache->column_row_marks[position]);
+        cache->columns[task.group].dirty = {};
+        cache->columns[task.group].queued = false;
     };
-    const bool pool_columns = !cache && state.column_tasks.capacity() != 0;
+    // Reserved only for the opt-in workbench route with a native pool.
+    const bool pool_columns = state.column_tasks.capacity() != 0;
     state.column_tasks.clear();
     std::size_t begin = 0, column_task = 0;
     while (cached ? column_task < cache->dirty_columns.size() : begin < coordinates.size()) {
@@ -1155,7 +1176,7 @@ void World::compute_pressure_heads() {
         } else {
             while (end < coordinates.size() && coordinates[end].x == coordinates[begin].x) ++end;
         }
-        HeadTask task{begin,end};
+        HeadTask task{begin,end,group};
         if (pool_columns) {
             if (state.column_tasks.size() == state.column_tasks.capacity())
                 throw std::length_error("Workbench pressure column capacity exhausted");
@@ -1163,24 +1184,24 @@ void World::compute_pressure_heads() {
         } else {
             prepare_columns(task,group);
             merge_counts(task);
-            if (cached) { cache->columns[group].dirty = {}; cache->columns[group].queued = false; }
         }
         begin = end;
     }
     if (pool_columns) {
-        // Different chunk columns share neither head storage nor counters.
-        // Gas gauges and transient masks are immutable for this pass. Join
-        // before sorting coordinates or starting row interpolation/wakes.
+        // Different chunk columns share neither head storage, counters nor
+        // row-mark records. Gas gauges, transient masks, column dirty bits and
+        // the chunk map are read-only for this pass. Join before merging
+        // marks, sorting coordinates or starting row interpolation/wakes.
         struct Batch { decltype(prepare_columns)& prepare; std::vector<HeadTask>& tasks; };
         Batch batch{prepare_columns,state.column_tasks};
         if (batch.tasks.size() >= config_.parallel_job_threshold) {
             parallel_->pool->dispatch(batch.tasks.size(),&batch,[](void* ptr, std::size_t i) noexcept {
                 auto& run = *static_cast<Batch*>(ptr);
                 auto& task = run.tasks[i];
-                task.error.capture([&] { run.prepare(task,0); });
+                task.error.capture([&] { run.prepare(task,task.group); });
             });
         } else {
-            for (auto& task : batch.tasks) prepare_columns(task,0);
+            for (auto& task : batch.tasks) prepare_columns(task,task.group);
         }
         for (const auto& task : batch.tasks) {
             task.error.raise_if_present();
@@ -1196,15 +1217,26 @@ void World::compute_pressure_heads() {
         return a.y != b.y ? a.y < b.y : a.x < b.x;
     });
     const auto start_band = std::max<std::int64_t>(1, (PressureFlowParameters::kStartDeadBand255 * maximum + 127) / 255);
-    begin = 0;
-    while (begin < row_coordinates.size()) {
-        auto end = begin;
-        while (end < row_coordinates.size() && row_coordinates[end].y == row_coordinates[begin].y) ++end;
-        const auto group = cached ? find_chunk(row_coordinates[begin])->pressure->row_group : 0U;
-        for (std::int32_t local_y = 0; local_y < size; ++local_y) {
+    const auto blocks_per_axis = static_cast<std::size_t>((size + config_.activity_block_size - 1) / config_.activity_block_size);
+    const auto blocks_per_chunk = blocks_per_axis * blocks_per_axis;
+    // Deferred wakes keep the band-private activation; the global physics
+    // event, wake count (and discovery, which disables deferral) follow in the
+    // serial band order at the merge.
+    const auto wake_block = [&](RowTask& task, ChunkCoord coord, Chunk& chunk, std::size_t block_index) {
+        if (!task.deferred) { wake_activity_block(coord, chunk, block_index); return; }
+        auto& block = chunk.activity_blocks[block_index];
+        if (block.active) return;
+        block.active = true;
+        block.quiet_ticks = 0;
+        chunk.active = true;
+        state.row_wakes[task.wake_base + task.wakes++] = {coord, block_index};
+    };
+    const auto row_band = [&](RowTask& task) {
+        const auto begin = task.begin, end = task.end, group = task.group;
+        for (std::int32_t local_y = task.first_row; local_y < task.last_row; ++local_y) {
             const auto y = row_coordinates[begin].y * size + local_y;
             if (!cached || cache->rows[group].test(local_y)) {
-            ++state.optimization.rows_recomputed;
+            ++task.rows;
             // Segment state.
             struct Known {
                 bool valid = false;
@@ -1231,7 +1263,7 @@ void World::compute_pressure_heads() {
                     } else if (right.valid) {
                         value = right.value;
                     }
-                    put_final(chunk, target.index, static_cast<std::int32_t>(clamp_head(value)));
+                    put_final(task, chunk, target.index, static_cast<std::int32_t>(clamp_head(value)));
                 }
             };
             std::int64_t previous_x = 0;
@@ -1250,7 +1282,7 @@ void World::compute_pressure_heads() {
                     const auto index = static_cast<std::size_t>(local_y) * static_cast<std::size_t>(size) +
                                        static_cast<std::size_t>(local_x);
                     const auto value = cached ? chunk.pressure->base_head[index] : chunk.pressure->head[index];
-                    if (cached && !is_unknown_head(value)) put_final(chunk, index, value);
+                    if (cached && !is_unknown_head(value)) put_final(task, chunk, index, value);
                     previous_x = x;
                     have_previous = true;
                     if (value == kNoHead) {
@@ -1315,8 +1347,8 @@ void World::compute_pressure_heads() {
                         continue;
                     }
                     if (chunk_elide) {
-                        if (cache->wake_test(segment_bit, segment_cells)) { ++cache->wake_segments_skipped; continue; }
-                        ++cache->wake_segments_scanned;
+                        if (cache->wake_test(segment_bit, segment_cells)) { ++task.skipped; continue; }
+                        ++task.scanned;
                     }
                     bool woke = false;
                     for (std::int32_t local_x = first; local_x < last; ++local_x) {
@@ -1364,7 +1396,7 @@ void World::compute_pressure_heads() {
                             actionable = gradient > start_band || gradient < -start_band;
                         }
                         if (actionable) {
-                            wake_activity_block(coord, chunk, block_index);
+                            wake_block(task, coord, chunk, block_index);
                             woke = true;
                             break;
                         }
@@ -1385,8 +1417,140 @@ void World::compute_pressure_heads() {
                 }
             }
         }
-        if (cached) { cache->rows[group].dirty = {}; cache->rows[group].queued = false; }
+    };
+    // Owner-only certificate invalidation of one run of changed final heads
+    // in a chunk row: the same filled cells and the same per-cell counter sum
+    // as invalidate_pressure_certificates for each cell of the run.
+    const auto invalidate_run = [&](ChunkCoord coord, std::int32_t x0, std::int32_t x1, std::int32_t y) {
+        if (!cache->dormant) return;
+        if (!cache->certificate_layer_enabled || cache->certificate_contents_cold || !cache->complete ||
+            !cache->use_heads) {
+            cache->certificate_contents_cold = true;
+            return;
+        }
+        for (std::int32_t dy = -1; dy <= 1; ++dy) {
+            const auto first_y = std::max(0, y - 2 - dy * size);
+            const auto last_y = std::min(size - 1, y + 2 - dy * size);
+            if (first_y > last_y) continue;
+            for (std::int32_t dx = -1; dx <= 1; ++dx) {
+                const auto offset = dx * size;
+                const auto first_x = std::max(0, x0 - 2 - offset);
+                const auto last_x = std::min(size - 1, x1 + 2 - offset);
+                if (first_x > last_x) continue;
+                auto* chunk = find_chunk({coord.x + dx, coord.y + dy});
+                if (chunk == nullptr) continue;
+                std::uint64_t per_row = 0;
+                for (auto x = x0; x <= x1; ++x) {
+                    const auto a = std::max(0, x - 2 - offset), b = std::min(size - 1, x + 2 - offset);
+                    if (a <= b) per_row += static_cast<std::uint64_t>(b - a + 1);
+                }
+                auto& certificates = chunk->pressure->rest_certificate;
+                for (auto row = first_y; row <= last_y; ++row) {
+                    const auto start = static_cast<std::size_t>(row) * static_cast<std::size_t>(size);
+                    std::fill(certificates.begin() + static_cast<std::ptrdiff_t>(start + static_cast<std::size_t>(first_x)),
+                              certificates.begin() + static_cast<std::ptrdiff_t>(start + static_cast<std::size_t>(last_x) + 1U),
+                              PressureChunk::kCertificateWarmup);
+                    state.optimization.certificate_invalidation_cells += per_row;
+                }
+            }
+        }
+    };
+    const auto merge_rows = [&](const RowTask& task) {
+        state.optimization.rows_recomputed += task.rows;
+        state.optimization.final_cells_written += task.finals;
+        if (cached) {
+            cache->wake_segments_skipped += task.skipped;
+            cache->wake_segments_scanned += task.scanned;
+        }
+        for (std::size_t i = 0; i < task.wakes; ++i) {
+            record_physics(PhysicsEvent::BlockWake, Material::Empty, Material::Empty, 0, 0, nullptr);
+            ++state.diagnostics.woken_blocks;
+        }
+        // The last sub-band of a chunk row retires its consumed row group.
+        if (cached && task.last_row == size) { cache->rows[task.group].dirty = {}; cache->rows[task.group].queued = false; }
+        if (!task.deferred || !cached) return;
+        const auto words = cache->wake_words_per_chunk;
+        const auto first_word = static_cast<std::size_t>(task.first_row) * static_cast<std::size_t>(size) / 64U;
+        const auto last_word = static_cast<std::size_t>(task.last_row) * static_cast<std::size_t>(size) / 64U;
+        for (auto position = task.begin; position < task.end; ++position) {
+            const auto coord = row_coordinates[position];
+            const auto slot = static_cast<std::size_t>(find_chunk(coord)->pressure->gas_chunk_slot);
+            bool open = false;
+            std::int32_t run_y = 0, run_first = 0, run_last = 0;
+            for (auto word = first_word; word < last_word; ++word) {
+                auto& bits = cache->certificate_changed[slot * words + word];
+                while (bits != 0U) {
+                    const auto index = word * 64U + static_cast<std::size_t>(std::countr_zero(bits));
+                    bits &= bits - 1U;
+                    const auto local_x = static_cast<std::int32_t>(index % static_cast<std::size_t>(size));
+                    const auto local_y = static_cast<std::int32_t>(index / static_cast<std::size_t>(size));
+                    if (open && local_y == run_y && local_x == run_last + 1) { run_last = local_x; continue; }
+                    if (open) invalidate_run(coord, run_first, run_last, run_y);
+                    open = true; run_y = local_y; run_first = run_last = local_x;
+                }
+            }
+            if (open) invalidate_run(coord, run_first, run_last, run_y);
+        }
+    };
+    // Bands may run on the pool when the workbench route reserved tasks, no
+    // settled discovery observes wakes, and every indexed chunk has a valid
+    // wake/certificate slot (otherwise the serial pass may reset wake bits).
+    // Sub-bands are activity-block rows, so every block, wake word and
+    // certificate word belongs to exactly one task (word-aligned rows only).
+    const auto sub_rows = config_.activity_block_size;
+    bool pool_rows = state.row_tasks.capacity() != 0 && settled_discovery_ == nullptr &&
+                     (static_cast<std::size_t>(sub_rows) * static_cast<std::size_t>(size)) % 64U == 0U;
+    if (pool_rows && cached) {
+        const auto needed = cache->column_order.size() * cache->wake_words_per_chunk;
+        pool_rows = cache->certificate_changed.size() >= needed;
+        for (const auto coord : row_coordinates)
+            pool_rows = pool_rows && static_cast<std::size_t>(find_chunk(coord)->pressure->gas_chunk_slot) <
+                                         cache->column_order.size();
+    }
+    state.row_tasks.clear();
+    begin = 0;
+    while (begin < row_coordinates.size()) {
+        auto end = begin;
+        while (end < row_coordinates.size() && row_coordinates[end].y == row_coordinates[begin].y) ++end;
+        for (std::int32_t first_row = 0; first_row < size; first_row += sub_rows) {
+            RowTask task;
+            task.begin = begin;
+            task.end = end;
+            task.first_row = first_row;
+            task.last_row = std::min(size, first_row + sub_rows);
+            task.group = cached ? find_chunk(row_coordinates[begin])->pressure->row_group : 0U;
+            task.deferred = pool_rows;
+            // One block row per chunk of the band can wake in this sub-band.
+            task.wake_base = begin * blocks_per_chunk +
+                static_cast<std::size_t>(first_row / sub_rows) * (end - begin) * blocks_per_axis;
+            if (pool_rows) {
+                if (state.row_tasks.size() == state.row_tasks.capacity() ||
+                    task.wake_base + (end - begin) * blocks_per_axis > state.row_wakes.size())
+                    throw std::length_error("Workbench pressure row capacity exhausted");
+                state.row_tasks.push_back(task);
+            } else {
+                row_band(task);
+                merge_rows(task);
+            }
+        }
         begin = end;
+    }
+    if (pool_rows) {
+        struct RowBatch { decltype(row_band)& run; std::vector<RowTask>& tasks; };
+        RowBatch batch{row_band, state.row_tasks};
+        if (batch.tasks.size() >= config_.parallel_job_threshold) {
+            parallel_->pool->dispatch(batch.tasks.size(), &batch, [](void* ptr, std::size_t i) noexcept {
+                auto& rows = *static_cast<RowBatch*>(ptr);
+                auto& task = rows.tasks[i];
+                task.error.capture([&] { rows.run(task); });
+            });
+        } else {
+            for (auto& task : batch.tasks) row_band(task);
+        }
+        for (const auto& task : batch.tasks) {
+            task.error.raise_if_present();
+            merge_rows(task);
+        }
     }
     if (cached) cache->dirty_rows.clear();
 }

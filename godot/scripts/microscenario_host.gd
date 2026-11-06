@@ -118,7 +118,7 @@ func install(world: Variant, value: Variant, mode: String = "Inspect", instrumen
 			options.workbench_retain_cells = controlled_setup.get("workbench_retain_cells",false)
 			if controlled_setup.get("workbench_convert_liquid_inventory",false):
 				options.workbench_convert_liquid_inventory = true
-			for key: String in ["workbench_ballistic","workbench_inertial_signed","workbench_face_release"]:
+			for key: String in ["workbench_ballistic","workbench_inertial_signed","workbench_face_release","workbench_fine_cores"]:
 				if controlled_setup.get(key,false): options[key] = true
 			for key: String in ["workbench_face_budget","workbench_face_speed","workbench_face_period","workbench_face_min_height"]:
 				if controlled_setup.get(key) is int: options[key] = controlled_setup[key]

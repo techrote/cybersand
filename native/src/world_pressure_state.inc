@@ -197,9 +197,24 @@ struct World::PressureState {
     std::vector<std::uint32_t> member_regions;
     std::vector<ChunkCoord> sorted_coordinates;
     struct HeadColumnTask {
-        std::size_t begin = 0, end = 0;
+        std::size_t begin = 0, end = 0, group = 0;
         std::uint64_t columns = 0, writes = 0, heads = 0, unknown = 0;
         pressure_column_detail::PressureColumnFailure error{};
     };
     std::vector<HeadColumnTask> column_tasks;
+    // Workbench row sub-bands: one task per (chunk row, activity-block row);
+    // deferred block wakes are stored from wake_base and replayed in order.
+    struct HeadRowTask {
+        std::size_t begin = 0, end = 0, group = 0, wakes = 0, wake_base = 0;
+        std::int32_t first_row = 0, last_row = 0;
+        std::uint64_t rows = 0, finals = 0, skipped = 0, scanned = 0;
+        bool deferred = false;
+        pressure_column_detail::PressureColumnFailure error{};
+    };
+    struct RowWake {
+        ChunkCoord coord{};
+        std::size_t block = 0;
+    };
+    std::vector<HeadRowTask> row_tasks;
+    std::vector<RowWake> row_wakes;
 };

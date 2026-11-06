@@ -18,6 +18,7 @@ const SIMULATION_HZ: float = 60.0
 const FIXED_TIMESTEP: float = 1.0 / SIMULATION_HZ
 const TICK_INTERVAL_USEC: int = 16667
 const MAX_BACKLOG_TICKS: int = 3
+const WORKBENCH_SAMPLE_POLL_USEC: int = 250
 const EMISSION_MATERIAL_MASK: int = 255
 const EMISSION_FLAGS_SHIFT: int = 8
 const DEFAULT_RENDER_SNAPSHOT_INTERVAL_USEC: int = 16667
@@ -1189,6 +1190,13 @@ func set_frame_state(
 	_mutex.unlock()
 
 
+func _workbench_sample_pending() -> bool:
+	_mutex.lock()
+	var states: Variant = _workbench_sample.get("states",null)
+	var pending: bool = states != null and states.size() > 10 and int(states[10]) >= 0 		and int(states[10]) != _workbench_prepared_sample
+	_mutex.unlock()
+	return pending
+
 func set_workbench_sample(value: Dictionary) -> void:
 	_mutex.lock()
 	if not value.is_empty() and not _workbench_sample.is_empty() and _prepared_physical_frame_hold.is_empty() \
@@ -2093,6 +2101,16 @@ func _worker_loop() -> void:
 
 		next_tick_usec += TICK_INTERVAL_USEC
 		var now_usec: int = Time.get_ticks_usec()
+		if _workbench_extent != Vector2i.ZERO and not _simulation_failed:
+			# Workbench lock-step: Rapier steps only after this worker completes
+			# the published body sample. A free-running timer drifts in phase
+			# against the physics frame and misses alternate frames (exact 30 Hz
+			# plateaus) even for short ticks, so wake as soon as the next sample
+			# arrives. Still one tick per sample; never earlier than the sample.
+			while now_usec < next_tick_usec and not _workbench_sample_pending():
+				OS.delay_usec(WORKBENCH_SAMPLE_POLL_USEC)
+				now_usec = Time.get_ticks_usec()
+			next_tick_usec = mini(next_tick_usec, now_usec)
 		var wait_usec: int = next_tick_usec - now_usec
 		if wait_usec > 0:
 			OS.delay_usec(wait_usec)

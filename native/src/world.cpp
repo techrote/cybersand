@@ -791,9 +791,13 @@ World::World(WorldConfig config)
                 parallel_->results[i].effects.pressure_work = &pressure_->job_optimization[i];
         }
         const auto selection = config_.liquid_solver_policy.assignment(3U);
-        if (config_.workbench_parallel_pressure_heads && parallel_ && parallel_->pool &&
-            selection->variant == LiquidSolverVariant::Reference)
+        if (config_.workbench_parallel_pressure_heads && parallel_ && parallel_->pool) {
             pressure_->column_tasks.reserve(config_.maximum_chunk_count);
+            const auto blocks_per_axis = static_cast<std::size_t>(
+                (config_.chunk_size + config_.activity_block_size - 1) / config_.activity_block_size);
+            pressure_->row_tasks.reserve(config_.maximum_chunk_count * blocks_per_axis);
+            pressure_->row_wakes.resize(config_.maximum_chunk_count * blocks_per_axis * blocks_per_axis);
+        }
         if (selection->variant != LiquidSolverVariant::Reference) {
             if (config_.pressure_optimization.index_chunk_capacity == 0U)
                 throw std::invalid_argument("pressure index capacity must be positive");

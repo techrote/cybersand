@@ -141,6 +141,18 @@ func builtin_water() -> bool:
 	var launched := int(main.tower_context.get("water_spray",{}).get("ledger",{}).get("launched_quantity",0))
 	check(launched > 0,"tuned face release launches parcels (%d)" % launched)
 	await until(installed,"paused after face release")
+	# Fine scheduling cores: workbench-only boolean construction option.
+	main.workbench_water_options = {"workbench_fine_cores":true}
+	panel._name.text = Setup.DEFAULT_LABEL
+	loaded = check(panel.load_setup(),"fine-core rebuild / "+panel.message)
+	panel._name.text = test_name
+	if not loaded or not await until(installed,"fine-core start installed"): return false
+	var fine_tick: int = main.latest_snapshot.tick_index
+	panel.toggle_pause()
+	await until(func(): return int(main.latest_snapshot.tick_index) >= fine_tick+30,"fine-core ticks")
+	panel.toggle_pause()
+	check(not main.simulation_worker.has_failed() and int(main.latest_snapshot.tick_index) >= fine_tick+30,"fine-core World simulates")
+	await until(installed,"paused after fine cores")
 	main.workbench_water_options = seeded
 	for axis: int in 2: panel._extent[axis].value = 2048
 	if not check(panel.new_canvas(),"blank canvas after built-in start"): return false

@@ -3759,6 +3759,7 @@ void test_ballistic_water_render_overlay_and_forced_age();
 void test_inertial_signed_vertical_control_and_identity();
 void test_inertial_signed_vertical_arc_ceiling_parity();
 void test_inertial_signed_vertical_support_and_hybrid();
+void test_workbench_pressure_heads_parallel_exact();
 void test_water_inertial_admission();
 void test_water_inertial_coherence_contact();
 void test_water_inertial_carrying();
@@ -4014,6 +4015,7 @@ int main(int argc, char** argv) {
         {"IN-B1 signed vertical control and identity", test_inertial_signed_vertical_control_and_identity},
         {"IN-B1 signed vertical arc ceiling parity", test_inertial_signed_vertical_arc_ceiling_parity},
         {"IN-B1 signed vertical support and hybrid", test_inertial_signed_vertical_support_and_hybrid},
+        {"Workbench parallel PressureFlow heads match serial (all variants)", test_workbench_pressure_heads_parallel_exact},
     };
 
     std::size_t passed = 0;
