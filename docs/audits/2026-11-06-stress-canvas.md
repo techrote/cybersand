@@ -182,7 +182,8 @@ This is a behaviour-preserving, execution-only edit to the core-candidate
 capacity check. Cell results, hashes and the scheduled core set are unchanged;
 the change only removes spurious exhaustion. It is proposed as a reviewed
 transition for issue 362 and PR 406, pending independent review and the owner's
-admission.
+admission. The source edit and this record are commit `5fbf0a39c43a234fec2c092d52ea43066bf49335`, to which
+the transition is pinned.
 
 | Path | From LF SHA-256 | To LF SHA-256 |
 |---|---|---|

@@ -204,6 +204,13 @@ REVIEWED_TRANSITIONS: tuple[dict, ...] = ({'path': 'native/src/world_pressure.in
   'source_commit': '35c1373ef31c8ed96fd9752eecbc3f129b34c5ba',
   'record': 'docs/audits/2026-11-06-whole-engine-bench.md',
   'issue': 362,
+  'pr': 406},
+ {'path': 'native/src/world.cpp',
+  'from_lf_sha256': 'a69a70332450ed246753457f85fcedfa0e3a36e848486e12c441a059c3574d1e',
+  'to_lf_sha256': '3c90c5887800f75936a3e75c57030dcf4c7809640652ea2fc03f3e6b597ab654',
+  'source_commit': '5fbf0a39c43a234fec2c092d52ea43066bf49335',
+  'record': 'docs/audits/2026-11-06-stress-canvas.md',
+  'issue': 362,
   'pr': 406})
 
 
