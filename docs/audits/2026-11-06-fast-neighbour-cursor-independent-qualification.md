@@ -181,8 +181,13 @@ the original full native suite and then the full suite built with
 That commit adds no new `native/src/world.cpp` bytes relative to the cursor
 checkpoint originally measured; see the independent source-diff readback.
 [Native and oracle original evidence artifact](https://github.com/techrote/cybersand/actions/runs/42313096990/artifacts/13550106854).
-The source-owner's ASan/UBSan, TSan and new ABBA benchmark jobs are independent
-gates and not included in this completed-job PASS.
+The owner-side full ASan/UBSan sanitizer family (job `128219159816`) also
+**PASSED** at candidate `cd26abd96bb4d620f123e3fbb199354b8ee2c482`, with
+`188 tests passed`, GCC 13.3.0, compiler `-O1 -g -fno-omit-frame-pointer`
+and `-fsanitize=address,undefined`. Its build and execution completed with
+exit 0, including `RENDER_COPY_QUALIFICATION` 153,284 assertions/0 failures
+and pressure capacity 52 assertions/0 failures. Source-owner TSan and ABBA
+benchmark are separate pending evidence gates, not included in this ASan result.
 
 ## Original source-pinned Callgrind read-path attribution
 
