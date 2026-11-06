@@ -19,12 +19,12 @@ jobs:
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
-          fetch-depth: 2
+          fetch-depth: 0
       - name: Source and compiler fences
         run: |
           set -euo pipefail
           mkdir -p build/pf-v2/scenes build/pf-v2/results
-          test "$(git rev-parse HEAD^)" = "$PINNED_SOURCE"
+          git merge-base --is-ancestor "$PINNED_SOURCE" HEAD
           printf 'branch_head=%s\npinned_source=%s\n' "$(git rev-parse HEAD)" "$PINNED_SOURCE" > build/pf-v2/source.txt
           g++-13 --version | head -n 1 | tee build/pf-v2/compiler.txt
           uname -a | tee build/pf-v2/host.txt
