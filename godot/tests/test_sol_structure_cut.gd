@@ -3,6 +3,7 @@ extends SceneTree
 class Probe:
 	extends "res://scripts/solid_detachment_session.gd"
 	var structure: String = "tree"
+	var stage_trace: bool = false
 	var measured: Dictionary = {}
 	func _author_surroundings(native: Object, kind: String) -> bool:
 		if structure=="building":
@@ -38,6 +39,7 @@ class Probe:
 					var offset: Vector2 = p.basis_xform(shape.position+rectangle.size*Vector2(sx,sy)*0.5-d.center_of_mass_local)
 					maximum_vertex_speed=maxf(maximum_vertex_speed,(v+Vector2(-w*offset.y,w*offset.x)).length())
 		return {"valid":true,"pose":p,"velocity":v,"omega":w,"mass":m,"inertia":inertia,"local_com":d.center_of_mass_local,
+			"body_rid":rid.get_id(),"body_instance":body.get_instance_id(),"fixed_delta":bridge.fixed_delta(),
 			"gravity":d.total_gravity,"linear_damp":d.total_linear_damp,"angular_damp":d.total_angular_damp,"reported_dt":d.step,
 			"sleeping":d.sleeping,"frozen":body.freeze,"contacts":contacts,"contact_report_limit":16,"contact_report_may_be_truncated":contacts.size()==16,"contact_impulse_freshness":"cached_report; sleeping freshness unqualified","maximum_vertex_speed":maximum_vertex_speed,
 			"kinetic":0.5*m*(float(v.x)*v.x+float(v.y)*v.y)+0.5*inertia*w*w,"manual_step":bridge.manual_step_count(),
@@ -45,7 +47,8 @@ class Probe:
 			"sample_serial":_coupling_sample_serial,"snapshot_serial":_coupling_snapshot_serial,"native_tick":_coupling_last_native_tick,
 			"physics_epoch":physics_epoch,"generation":generation,"terrain_revision":_terrain_revision}
 	func _consume_compound_results() -> void:
-		measured={"before":read(),"metrics_before":coupling_metrics()}
+		measured={"before":read(),"metrics_before":coupling_metrics(),"ordinary_stage_calls":0,
+			"ordinary_stage":{"observed":false,"reason":"No ordinary bridge invocation in this consume"}}
 		super._consume_compound_results()
 		measured["after_application"]=read();measured["metrics_after"]=coupling_metrics()
 		measured["new_snapshot"]=measured.before.snapshot_serial!=measured.after_application.snapshot_serial
@@ -56,6 +59,16 @@ class Probe:
 		measured["response_is_new"]=measured.response_attempts_delta>0
 		measured["response"]=last_contact_response.duplicate(true)
 		measured["contact_observation"]=last_contact_observation.duplicate(true)
+	func _observe_compound_application(applied: Dictionary, results: PackedFloat32Array,
+			states: PackedFloat32Array, snapshot_serial: int, native_tick: int,
+			world_revision: int, owner_epoch: int) -> void:
+		if not stage_trace:return
+		measured["ordinary_stage_calls"]=int(measured.ordinary_stage_calls)+1
+		measured["ordinary_stage"]={"observed":true,"state":read(),"receipt":applied.duplicate(true),
+			"native_results_bits":results.duplicate().to_byte_array().hex_encode(),
+			"native_states_bits":states.duplicate().to_byte_array().hex_encode(),
+			"snapshot_serial":snapshot_serial,"native_tick":native_tick,"world_revision":str(world_revision),
+			"owner_epoch":owner_epoch,"capture_usec":Time.get_ticks_usec()}
 	static func bits(values: Array) -> String:
 		var bytes := PackedByteArray();bytes.resize(values.size()*8)
 		for index: int in values.size():bytes.encode_double(index*8,float(values[index]))
@@ -103,7 +116,7 @@ func run() -> void:
 	if output.is_empty() or FileAccess.file_exists(output):
 		printerr("SOL_STRUCTURE refuses missing/existing output path");quit(1);return
 	check(structure in ["tree","building"] and surroundings in ["empty","packed_sand"] and workers in [1,4],"registered input")
-	var session := Probe.new();session.structure=structure
+	var session := Probe.new();session.structure=structure;session.stage_trace=OS.get_environment("SOL_STAGE_TRACE")=="1"
 	var opened: bool = await session.open(root,workers,surroundings,true,enabled,true)
 	check(opened,"actual SOL source opens: "+session.last_error)
 	if not opened:session.close();quit(1);return
@@ -131,6 +144,7 @@ func run() -> void:
 			"owner_disabled":session.body.is_shape_owner_disabled(session.body.shape_find_owner(index))})
 	var report: Dictionary = {"registration":"SOL-STRUCTURE-CUT-001","source":OS.get_environment("CYBERSAND_SOURCE_REVISION"),
 		"platform":OS.get_name(),"structure":structure,"surroundings":surroundings,"sand_response":enabled,"workers":workers,
+		"stage_trace":session.stage_trace,"stage_registration":"SOL-STRUCTURE-STAGES-001" if session.stage_trace else "",
 		"intact":intact,"before_cut":census(before),"prepared":session.source_receipt.duplicate(true),"commit":session.commit_receipt.duplicate(true),
 		"activation":session.final_receipt.duplicate(true),"initial_native":census(initial),"initial_body":session.read(),"scene_shapes":shapes,"server_shapes":server_shapes,"physical_gate_status":"PENDING_INDEPENDENT_REDUCTION",
 		"proxy_centres":session._coupling_local_centers,"proxy_masses":session._coupling_masses,"proxy_sizes":session._coupling_sizes,
@@ -144,6 +158,16 @@ func run() -> void:
 		check(session.bridge.manual_step_count()==prior+1,"one actual Rapier step")
 		if session.bridge.manual_step_count()!=prior+1:break
 		var row: Dictionary = session.measured.duplicate(true);row["step"]=index;row["after_step"]=session.read();row["elapsed_us"]=Time.get_ticks_usec()-started
+		if session.stage_trace:
+			check(int(row.ordinary_stage_calls)<=1,"bounded ordinary observation")
+			if row.ordinary_stage.observed:
+				var mid: Dictionary = row.ordinary_stage.state
+				check(int(row.ordinary_stage_calls)==1 and mid.manual_step==prior and row.before.manual_step==prior and row.after_application.manual_step==prior,"no physics step between application stages")
+				check(mid.body_rid==report.body_rid and mid.physics_epoch==row.before.physics_epoch and mid.generation==row.before.generation,"midpoint same authoritative body/session")
+				if not row.ordinary_stage.receipt.get("accepted",false):check(mid.bits==row.before.bits,"refused ordinary stage is mutation-free")
+				if not row.response_is_new or not row.response.get("accepted",false):
+					if not row.response.get("failed",false):check(mid.bits==row.after_application.bits,"disabled or refused Sand is mutation-free")
+			else:check(int(row.ordinary_stage_calls)==0 and row.before.bits==row.after_application.bits,"unobserved ordinary stage does not reuse held work")
 		report.steps.append(plain(row))
 	var final: Dictionary = await session.inspect_coupling(PackedInt32Array(),Rect2i(0,0,160,128))
 	check(final.get("aggregate_owned")==expected and final.get("native_source_members")==0,"final exclusive payload ownership")

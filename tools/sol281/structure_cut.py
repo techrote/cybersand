@@ -159,7 +159,7 @@ def hosts(args):
                         surroundings='packed_sand' if args.suite=='packed' else 'empty'
                         name=structure+'-'+surroundings+'-response'+str(int(enabled))+'-w'+str(worker)
                         output=host/(name+'.json');path=str(output) if platform=='windows' else wsl(output)
-                        row=run(name,'test_sol_structure_cut',env=dict(SOL_STRUCTURE=structure,SOL_SURROUNDINGS=surroundings,SOL_SAND_RESPONSE=str(int(enabled)),SOL_WORKERS=str(worker),SOL_OUTPUT=path))
+                        row=run(name,'test_sol_structure_cut',env=dict(SOL_STRUCTURE=structure,SOL_SURROUNDINGS=surroundings,SOL_SAND_RESPONSE=str(int(enabled)),SOL_WORKERS=str(worker),SOL_OUTPUT=path,SOL_STAGE_TRACE=str(int(args.stage_trace))))
                         row['report_complete']=False
                         if output.exists():
                             row['report']=dict(path=str(output.relative_to(ROOT)),sha256=sha(output),bytes=output.stat().st_size)
@@ -181,5 +181,5 @@ def hosts(args):
 
 if __name__=='__main__':
     parser=argparse.ArgumentParser(__doc__);parser.add_argument('action',choices=['build','hosts']);parser.add_argument('--run',required=True)
-    parser.add_argument('--suite',choices=['original','smoke','dry','packed'],default='original');parser.add_argument('--platforms',default='windows,linux');parser.add_argument('--workers',default='1,4');args=parser.parse_args()
+    parser.add_argument('--suite',choices=['original','smoke','dry','packed'],default='original');parser.add_argument('--platforms',default='windows,linux');parser.add_argument('--workers',default='1,4');parser.add_argument('--stage-trace',action='store_true');args=parser.parse_args()
     assert Path(args.run).name==args.run and args.run not in ['.','..'];raise SystemExit(build(args.run) if args.action=='build' else hosts(args))

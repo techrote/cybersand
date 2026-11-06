@@ -510,6 +510,9 @@ func _consume_compound_results() -> void:
 	var applied: Dictionary = bridge.apply_compound_cellular_results(
 		snapshot.serial, snapshot.rigid_body_results, 0, _coupling_sample_serial,
 		_coupling_local_centers, _coupling_masses, COUPLING_IMPULSE_CAP, COUPLING_CORRECTION_CAP)
+	_observe_compound_application(applied, snapshot.rigid_body_results,
+		snapshot.current_rigid_body_states, snapshot.serial, snapshot.tick_index,
+		snapshot.simulation_world_revision, snapshot.rigid_body_epoch)
 	last_contact_response = {"accepted":false, "evaluated":false,
 		"outcome":"ResponseDisabled" if not sand_resistance_enabled else "CompoundResponseRefused",
 		"compound_outcome":applied.get("outcome", "Unknown"), "snapshot_serial":snapshot.serial,
@@ -554,6 +557,13 @@ func _consume_compound_results() -> void:
 		# it is retained rather than silently dropped from the original numerator.
 		_contact_metrics.response_other_ms_all_attempts += contact_ms - stage_sum
 		_record_contact_response(last_contact_response)
+
+func _observe_compound_application(_applied: Dictionary, _results: PackedFloat32Array,
+		_states: PackedFloat32Array, _snapshot_serial: int, _native_tick: int,
+		_world_revision: int, _owner_epoch: int) -> void:
+	# Synchronous value-only test seam. Production neither retains these values
+	# nor changes state here. Overrides must not await, publish or mutate owners.
+	pass
 
 func _record_contact_observation(observation: Dictionary, work: Dictionary) -> void:
 	if not contact_measurement_enabled:
