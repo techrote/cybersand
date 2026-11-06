@@ -1,0 +1,55 @@
+name: Experimental neighbour cursor timing-only control
+
+on:
+  push:
+    branches:
+      - codex/neighbour-cursor-timing-only-20261106
+
+permissions:
+  contents: read
+
+concurrency:
+  group: neighbour-timing-only-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  paired-native-timing:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Verify pinned fixture and compiler
+        shell: bash
+        run: |
+          set -euxo pipefail
+          g++-13 --version
+          python3 native/bench/verify_neighbour_stress.py
+          python3 -m py_compile native/bench/run_neighbour_cursor.py
+      - name: Record paired baseline/candidate, worker parity, activity growth and perf if available
+        shell: bash
+        run: |
+          set -euxo pipefail
+          python3 native/bench/run_neighbour_cursor.py \
+            --repo . --out /tmp/neighbour-timing \
+            --baseline 4a80af2a891332176a3912a235582d77d076a185 \
+            --candidate 7abee56161c809bf46a4cabbff41b51a7bba350c \
+            --cycles 6 --extended --verify-cursor \
+            | tee /tmp/neighbour-timing-summary.log
+      - name: Upload raw timing data, execution logs and profiles
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: neighbour-cursor-balanced-timing-${{ github.sha }}
+          retention-days: 14
+          if-no-files-found: warn
+          path: |
+            /tmp/neighbour-timing-summary.log
+            /tmp/neighbour-timing/*.json
+            /tmp/neighbour-timing/*.log
+            /tmp/neighbour-timing/*/*.log
+            /tmp/neighbour-timing/raw/*.csv
+            /tmp/neighbour-timing/raw/*.json
+            /tmp/neighbour-timing/perf/*.data
