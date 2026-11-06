@@ -813,6 +813,115 @@ void recipe_intent_ambiguity_cohort(std::uint32_t workers) {
              <<",\"result\":\"PASS\"}\n";
 }
 
+
+// GEN-006: a durable ACK cannot use *cell-content equality* as its version.
+// Test-only ACK owner receipt. Source is the actual native World/CYPS decoder.
+// Two genuine changes can return the authoritative tuples to their original
+// values while the intervening player intent/dirty generations still matter.
+void same_content_save_ack_aba_cohort(std::uint32_t workers) {
+    const auto c=config(workers);
+    std::vector<Material> initial(static_cast<std::size_t>(kSide*kSide),Material::Empty);
+    initial[static_cast<std::size_t>(20*kSide)] = Material::Wall;
+    initial[static_cast<std::size_t>(20*kSide+127)] = Material::Wall;
+    initial[static_cast<std::size_t>(48*kSide+48)] = Material::Water;
+    World live(c);
+    for (auto coord : {ChunkCoord{-1,0}, ChunkCoord{0,0}}) {
+        require(live.install_generated_chunk(coord,initial)==ChunkInstallOutcome::Installed,
+                "content ABA native signed-chunk admission refused");
+    }
+    require(live.set_cell_state(-1,20,Material::Empty,0,0) &&
+            live.set_cell_state(48,48,Material::Water,17,0),
+            "content ABA signed Empty / Water17 setup refused");
+    live.set_temperature(48,48,417);
+    require(live.stored_material(-1,20)==Material::Empty &&
+            live.stored_material(0,20)==Material::Wall &&
+            live.liquid_mass(48,48)==17 && live.stored_temperature(48,48)==417,
+            "content ABA authoritative setup mismatch");
+
+    const auto first_content=live.content_hash();
+    const auto first_bytes=live.save_physical_state();
+    require(!first_bytes.empty() && first_bytes.size()<1024*1024,
+            "content ABA first native CYPS checkpoint missing or unbounded");
+
+    // An asynchronous capture of generation 1 is in flight while the exclusive
+    // owner performs two actual native value transitions in the same session.
+    require(live.set_cell_state(0,20,Material::Empty,0,0) &&
+            live.set_cell_state(48,48,Material::Water,19,0),
+            "content ABA intermediate native edits refused");
+    const auto middle_content=live.content_hash();
+    require(middle_content!=first_content &&
+            live.stored_material(0,20)==Material::Empty &&
+            live.liquid_mass(48,48)==19,
+            "content ABA intermediate native state did not differ");
+    require(live.set_cell_state(0,20,Material::Wall,0,0) &&
+            live.set_cell_state(48,48,Material::Water,17,0),
+            "content ABA restoration edits refused");
+    const auto final_content=live.content_hash();
+    require(final_content==first_content &&
+            live.stored_material(-1,20)==Material::Empty &&
+            live.stored_material(0,20)==Material::Wall &&
+            live.liquid_mass(48,48)==17 &&
+            live.stored_temperature(48,48)==417,
+            "real native content did not complete signed Empty/Water17 ABA cycle");
+
+    const auto final_bytes=live.save_physical_state();
+    require(!final_bytes.empty() && final_bytes.size()<1024*1024,
+            "content ABA final native CYPS checkpoint missing or unbounded");
+    auto old_restore=World::restore_physical_state(c,first_bytes);
+    auto final_restore=World::restore_physical_state(c,final_bytes);
+    require(old_restore && final_restore &&
+            old_restore->content_hash()==first_content &&
+            final_restore->content_hash()==final_content &&
+            old_restore->content_hash()==final_restore->content_hash(),
+            "native CYPS decoding broke the equal-content ABA witness");
+    // Unsafe negative control: a content digest or comparison alone has no way
+    // to notice the intervening owner mutations or preserve their provenance.
+    const bool unsafe_content_only_ack =
+        old_restore->content_hash()==final_restore->content_hash();
+    require(unsafe_content_only_ack,
+            "content-only stale ACK negative control unexpectedly refused");
+
+    struct Receipt {
+        std::uint64_t session;
+        std::uint64_t incarnation;
+        std::uint64_t mutation_generation;
+    };
+    constexpr Receipt stale{91,7,1}, current{91,7,3};
+    const auto can_ack=[](Receipt saved, Receipt now, bool root_published,
+                          bool previously_acknowledged) {
+        return root_published && !previously_acknowledged &&
+               saved.session==now.session &&
+               saved.incarnation==now.incarnation &&
+               saved.mutation_generation==now.mutation_generation;
+    };
+    require(!can_ack(stale,current,true,false),
+            "old generation ACK was accepted after content returned to same digest");
+    require(!can_ack({90,7,3},current,true,false) &&
+            !can_ack({91,8,3},current,true,false) &&
+            !can_ack({91,7,4},current,true,false),
+            "session/incarnation/generation fence allowed wrong ACK");
+    require(!can_ack(current,current,false,false),
+            "failed durable-root publication falsely enabled ACK");
+    require(can_ack(current,current,true,false) &&
+            !can_ack(current,current,true,true),
+            "test-only exact-generation ACK or duplicate refusal failed");
+    require(!can_ack(current,{91,7,4},true,false),
+            "new native owner mutation failed to invalidate previous ACK");
+
+    std::cout<<"GEN006_NATIVE_CONTENT_ACK_ABA_JSON {\"configured_workers\":"
+             <<workers<<",\"actual_workers\":0,\"signed_chunks\":2"
+             <<",\"same_content_after_two_edits\":true"
+             <<",\"intermediate_differs\":true"
+             <<",\"explicit_empty\":true,\"water_quantity\":17,\"temperature\":417"
+             <<",\"first_native_bytes\":"<<first_bytes.size()
+             <<",\"final_native_bytes\":"<<final_bytes.size()
+             <<",\"stale_content_only_ack_unsafe\":true"
+             <<",\"test_only_generation_fence_refuses_stale\":true"
+             <<",\"production_durable_ack\":false,\"selective_eviction\":false"
+             <<",\"result\":\"PASS\"}\n";
+}
+
+
 }
 int main() {
     try {
@@ -826,6 +935,8 @@ int main() {
         simulation_only_persistence_gap_cohort(4);
         recipe_intent_ambiguity_cohort(1);
         recipe_intent_ambiguity_cohort(4);
+        same_content_save_ack_aba_cohort(1);
+        same_content_save_ack_aba_cohort(4);
         pending_event_region_cohort(1, false);
         pending_event_region_cohort(4, false);
         pending_event_region_cohort(1, true);
