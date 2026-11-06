@@ -508,7 +508,7 @@ func submit(command: Variant, producer: StringName = &"policy") -> bool:
 		if bool(action.get(button, false)) != bool(_accepted_buttons[actor_id].get(button, false)):
 			edges.append({"button": button, "pressed": bool(action.get(button, false))})
 	for button: String in Equipment.BUTTON_KEYS:
-		if str(equipment_action.get("profile", _equipment[actor_id].profile)) == Equipment.METERED_PROFILE \
+		if not str(equipment_action.get("profile", _equipment[actor_id].profile)).is_empty() \
 			and button in ["trigger", "alternate"]:
 			continue # Experimental metered activation uses the latest admitted held state.
 		var key: String = "equipment_" + button
@@ -657,7 +657,7 @@ func advance(delta: float) -> void:
 			if not command.equipment.is_empty():
 				for button: String in Equipment.BUTTON_KEYS:
 					command.equipment[button] = bool(_applied_buttons[index].get("equipment_" + button, false))
-				if str(command.equipment.get("profile", _equipment[index].profile)) == Equipment.METERED_PROFILE:
+				if not str(command.equipment.get("profile", _equipment[index].profile)).is_empty():
 					for button: String in ["trigger", "alternate"]:
 						command.equipment[button] = bool(_commands[index].equipment.get(button, false))
 		_equipment[index].pre_advance(command.get("equipment", {}), command.get("aim", Vector2.ZERO), not command.is_empty())
