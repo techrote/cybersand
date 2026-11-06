@@ -25,6 +25,7 @@ var tile_cells: int = DEFAULT_TILE_CELLS
 var design_revision: String = ""
 var max_working_mib: int = 256
 var require_verified_source: bool = false
+var test_fail_publication: bool = false
 var attempt_id: String = ""
 var staging_path: String = ""
 var manifest: Dictionary = {}
@@ -81,6 +82,10 @@ func _parse_arguments() -> String:
 			if value not in ["on", "off"]:
 				return "--require-verified-source must be on or off"
 			require_verified_source = value == "on"
+		elif argument == "--test-fail-publication=on":
+			if OS.get_environment("CYBERSAND_CAPTURE_FAULT_INJECTION") != "1":
+				return "publication fault injection requires explicit test environment"
+			test_fail_publication = true
 		else:
 			return "unknown argument: " + argument
 	if pack_path.is_empty() or output_path.is_empty():
@@ -299,6 +304,10 @@ func _publish_capture() -> bool:
 	if not _write_json(staging_path.path_join("capture-status.json"),
 		{"status": "complete", "success": true, "attempt_id": attempt_id,
 			"capture_count": manifest.capture_count, "input_count": manifest.input_count}):
+		return false
+	# Test-only failure at the post-validation/pre-rename publication seam.
+	# Failure remains non-authoritative at the destination.
+	if test_fail_publication:
 		return false
 	var previous_path: String = ""
 	if DirAccess.dir_exists_absolute(output_path):
