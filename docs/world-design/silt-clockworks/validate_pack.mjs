@@ -33,8 +33,23 @@ function validate(p,source){
  last=z.x+f.size[0];for(const rr of f.rectangles){const m=mats.get(v.swap[String(rr[4])]??rr[4]);if(m.movable||m.kernel!==0)throw Error("gallery active "+f.id)}
  }
  for(const rr of p.scene.terrain_rectangles){checkRect(rr,...p.scene.size);const m=mats.get(rr[4]);if(m.movable||m.kernel!==0)throw Error("active terrain")}
+ const alt=p.alternate_scene;
+ if(!alt||alt.id!=="the-underflow-reliquary"||alt.size[0]!==1184||alt.size[1]!==420)throw Error("alternate identity/bounds");
+ if(!Array.isArray(alt.placements)||alt.placements.length!==8||!Array.isArray(alt.terrain_rectangles)||alt.terrain_rectangles.length<250)throw Error("alternate count");
+ const seenAlt=new Set(),boxes=[];let upper=0,lower=0;
+ for(const z of alt.placements){
+   const f=feats.get(z.feature);if(!f||seenAlt.has(z.feature))throw Error("alternate reuse "+z.feature);
+   seenAlt.add(z.feature);const v=f.variants.find(v=>v.id===z.variant);if(!v)throw Error("alternate variant "+z.feature);
+   if(!Number.isInteger(z.x)||!Number.isInteger(z.y)||z.x<0||z.y<0||z.x+f.size[0]>alt.size[0]||z.y+f.size[1]>alt.size[1])throw Error("alternate placement bounds");
+   const b=[z.x,z.y,z.x+f.size[0],z.y+f.size[1]];
+   if(boxes.some(a=>b[0]<a[2]&&b[2]>a[0]&&b[1]<a[3]&&b[3]>a[1]))throw Error("alternate module overlap");
+   boxes.push(b);if(z.y<180)upper++;if(z.y>240)lower++;
+   for(const rr of f.rectangles){const m=mats.get(v.swap[String(rr[4])]??rr[4]);if(m.movable||m.kernel!==0)throw Error("alternate active "+f.id)}
+ }
+ if(upper!==4||lower!==4)throw Error("alternate two-tier architecture");
+ for(const rr of alt.terrain_rectangles){checkRect(rr,...alt.size);const m=mats.get(rr[4]);if(m.movable||m.kernel!==0)throw Error("alternate active terrain")}
  if(count<165||vcount!==16)throw Error("below substantive minimum");
- return {modules:p.features.length,rectangles:count,variants:vcount,material_ids:p.palette.length,patterns:p.repeatable_patterns.length,scene_rectangles:p.scene.terrain_rectangles.length};
+ return {modules:p.features.length,rectangles:count,variants:vcount,material_ids:p.palette.length,patterns:p.repeatable_patterns.length,scene_rectangles:p.scene.terrain_rectangles.length,alternate_rectangles:alt.terrain_rectangles.length,alternate_placements:alt.placements.length};
 }
 const out=validate(p,source);let rejected=0;
 if(process.argv.includes("--self-test")){const bad=[
@@ -43,7 +58,7 @@ p=>p.features[0].rectangles[0][2]=9999,p=>p.features[0].rectangles[0][4]=500,
 p=>p.features[0].variants=[],p=>p.features[1].anchor.point[1]=1,
 p=>p.features[3].variants[0].swap={"999":54},p=>p.scene.placements[3].x=1,
 p=>p.scene.placements[5].variant=null,p=>p.scene.placements[2].y=0,
-p=>p.scene.terrain_rectangles.push([0,0,5,5,3]),p=>p.features[7].rectangles[0][3]=0];
+p=>p.scene.terrain_rectangles.push([0,0,5,5,3]),p=>p.features[7].rectangles[0][3]=0,p=>p.alternate_scene.terrain_rectangles.push([0,0,3,3,3]),p=>p.alternate_scene.terrain_rectangles[0][2]=9000,p=>p.alternate_scene.placements[0].x=-1,p=>p.alternate_scene.placements[5].feature="tide-gauge",p=>p.alternate_scene.placements[7].variant="missing",p=>p.alternate_scene.placements[0].y=275,p=>p.alternate_scene.placements[1].x=85];
 for(const edit of bad){const clone=structuredClone(p);edit(clone);try{validate(clone,source)}catch(e){rejected++}}
 if(rejected!==bad.length)throw Error("refusal count "+rejected+"/"+bad.length)}
 console.log(JSON.stringify({status:"PASS",...out,source_check:sourceCheck,mutation_rejections:rejected}));
