@@ -40,7 +40,7 @@ function renderSvg(pack) {
   s+='<text x="54" y="1367" fill="#83999d" font-family="monospace" font-size="14">EIGHT REUSED MODULES · NO ACTIVE WATER PLACED · NO PHYSICS OR LIGHT CLAIMS</text>';
   s+='<text x="54" y="1377" fill="#d7e3e1" font-family="monospace" font-size="18">03 — MATERIAL-SOURCE DETAIL STUDIES / VECTOR CROPS (NOT GODOT)</text>';
   const crops=[
-    {x:260,y:19,w:121,h:77,label:"SEVERED ROOF · GLASS-SCAR VEINS"},
+    {x:112,y:11,w:185,h:96,label:"ALT · SUNDERED SURVEY CROWN / WESTERN ARM"},
     {x:325,y:134,w:125,h:78,label:"THE RIFT · ABANDONED WALKWAY"},
     {x:422,y:121,w:210,h:131,label:"ALT · WITNESS ADITS / BROKEN FOOTING"}
   ];
