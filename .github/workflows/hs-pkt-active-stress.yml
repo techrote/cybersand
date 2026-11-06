@@ -1,0 +1,138 @@
+name: HS-PKT active actor + PressureFlow gas + ballistic A/B/B/A
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: hs-pkt-active-stress-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+env:
+  CONTROL_SHA: 4a80af2a891332176a3912a235582d77d076a185
+  CANDIDATE_SHA: 6aa03fe21dbe88b308793f377e4d223a90e4da8f
+  GODOT_CPP_COMMIT: 101ae38034304346a46ea9ea84ae156d3e860496
+  GODOT_URL: https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7
+  GODOT_SHA256: 0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c
+  GODOT_VERSION: 4.7.stable.official.5b4e0cb0f
+  CYBERSAND_CI_WATCHDOG_SCALE: "1"
+jobs:
+  source-matched-gameplay-abba:
+    # This is a strictly experimental benchmark, not a required PR #470
+    # release gate. It runs on Draft and never modifies the qualified source.
+    if: startsWith(github.head_ref, 'experiment/hs-pkt-active-stress-')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - name: Checkout source of experiment (not the source being benchmarked)
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+          lfs: false
+      - name: Pin control and candidate source and shared diagnostic-only script
+        run: |
+          set -euo pipefail
+          git cat-file -e "$CONTROL_SHA^{commit}"
+          git cat-file -e "$CANDIDATE_SHA^{commit}"
+          GIT_LFS_SKIP_SMUDGE=1 git worktree add --detach "$RUNNER_TEMP/hs-control" "$CONTROL_SHA"
+          GIT_LFS_SKIP_SMUDGE=1 git worktree add --detach "$RUNNER_TEMP/hs-candidate" "$CANDIDATE_SHA"
+          test "$(git -C "$RUNNER_TEMP/hs-control" rev-parse HEAD)" = "$CONTROL_SHA"
+          test "$(git -C "$RUNNER_TEMP/hs-candidate" rev-parse HEAD)" = "$CANDIDATE_SHA"
+          git lfs install --local
+          git lfs pull --include="godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so" --exclude=""
+          echo "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a  godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so" | sha256sum --check --strict
+          for arm in control candidate; do
+            root="$RUNNER_TEMP/hs-$arm"
+            cp godot/scripts/hard_surface_active_stress_profile.gd "$root/godot/scripts/hard_surface_active_stress_profile.gd"
+            cp godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so "$root/godot/addons/godot-rapier2d/bin/"
+            cmp godot/scripts/hard_surface_active_stress_profile.gd "$root/godot/scripts/hard_surface_active_stress_profile.gd"
+          done
+          mkdir -p build/hs-active-abba
+          sha256sum godot/scripts/hard_surface_active_stress_profile.gd > build/hs-active-abba/diagnostic-script.sha256
+          git -C "$RUNNER_TEMP/hs-control" status --porcelain=v1 > build/hs-active-abba/control-overlay-status.txt
+          git -C "$RUNNER_TEMP/hs-candidate" status --porcelain=v1 > build/hs-active-abba/candidate-overlay-status.txt
+          git log -1 --format='%H %T %s' "$CONTROL_SHA" > build/hs-active-abba/control-source.txt
+          git log -1 --format='%H %T %s' "$CANDIDATE_SHA" > build/hs-active-abba/candidate-source.txt
+      - name: Obtain pinned native compiler dependencies and Godot
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/scons"
+          "$RUNNER_TEMP/scons/bin/python" -m pip install --require-hashes -r tools/requirements-build.txt
+          "$RUNNER_TEMP/scons/bin/python" -c 'import SCons; assert SCons.__version__ == "4.10.1"'
+          mkdir "$RUNNER_TEMP/godot-cpp"
+          git -C "$RUNNER_TEMP/godot-cpp" init
+          git -C "$RUNNER_TEMP/godot-cpp" remote add origin https://github.com/godotengine/godot-cpp.git
+          timeout 1200 git -C "$RUNNER_TEMP/godot-cpp" fetch --depth=1 origin "$GODOT_CPP_COMMIT"
+          git -C "$RUNNER_TEMP/godot-cpp" checkout --detach FETCH_HEAD
+          timeout 1200 curl --fail --location --retry 3 --output "$RUNNER_TEMP/godot.zip" "$GODOT_URL"
+          echo "$GODOT_SHA256  $RUNNER_TEMP/godot.zip" | sha256sum --check --strict
+          mkdir "$RUNNER_TEMP/godot"
+          unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/godot"
+          GODOT_BIN="$(find "$RUNNER_TEMP/godot" -maxdepth 1 -type f -name 'Godot*' -print -quit)"
+          test -n "$GODOT_BIN"
+          chmod +x "$GODOT_BIN"
+          test "$("$GODOT_BIN" --version)" = "$GODOT_VERSION"
+          echo "GODOT_BIN=$GODOT_BIN" >> "$GITHUB_ENV"
+          bash tools/ci/prepare_linux_display.sh
+      - name: Build both exact native sources with same toolchain
+        env:
+          GODOT_CPP_ROOT: ${{ runner.temp }}/godot-cpp
+          SCONS_PYTHON: ${{ runner.temp }}/scons/bin/python
+          SCONS_JOBS: "2"
+          CYBERSAND_REAL_CXX: /usr/bin/g++-13
+          LINUX_CXX: /usr/bin/g++-13
+        run: |
+          set -euo pipefail
+          timeout 3600 tools/build_pinned_godot_cpp.sh linux
+          (
+            cd "$RUNNER_TEMP/hs-control"
+            export CYBERSAND_NATIVE_OUTPUT="$RUNNER_TEMP/hs-control.so"
+            timeout 3600 tools/build_native_extension.sh
+          )
+          (
+            cd "$RUNNER_TEMP/hs-candidate"
+            export CYBERSAND_NATIVE_OUTPUT="$RUNNER_TEMP/hs-candidate.so"
+            timeout 3600 tools/build_native_extension.sh
+          )
+          file "$RUNNER_TEMP/hs-control.so" "$RUNNER_TEMP/hs-candidate.so"
+          sha256sum "$RUNNER_TEMP/hs-control.so" "$RUNNER_TEMP/hs-candidate.so" > build/hs-active-abba/native-binary.sha256
+      - name: Execute hard-terrain actor/PF-gas/ballistic ABBA on actual workbench
+        run: |
+          set -euo pipefail
+          export LIBGL_ALWAYS_SOFTWARE=1 LP_NUM_THREADS=2 GALLIVM_PERF=nopt
+          for arm in A-control B-candidate B2-candidate A2-control; do
+            if [[ "$arm" == *control ]]; then
+              source="$RUNNER_TEMP/hs-control"
+              source_sha="$CONTROL_SHA"
+              native="$RUNNER_TEMP/hs-control.so"
+            else
+              source="$RUNNER_TEMP/hs-candidate"
+              source_sha="$CANDIDATE_SHA"
+              native="$RUNNER_TEMP/hs-candidate.so"
+            fi
+            cp "$native" "$source/godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so"
+            echo "HS_ACTIVE_ARM_BEGIN $arm $source_sha"
+            (
+              cd "$source"
+              export CYBERSAND_SOURCE_SHA="$source_sha"
+              timeout 1000 xvfb-run --auto-servernum \
+                --server-args="-screen 0 1920x1080x24 -nolisten tcp" \
+                "$GODOT_BIN" --headless --path godot \
+                --script res://scripts/hard_surface_active_stress_profile.gd
+            ) 2>&1 | tee "build/hs-active-abba/$arm.log"
+          done
+      - name: Verify all eight source-pinned actual profile receipts
+        run: |
+          python3 tools/ci/hs_pkt_active_readback.py \
+            --root build/hs-active-abba \
+            --control "$CONTROL_SHA" \
+            --candidate "$CANDIDATE_SHA"
+      - name: Retain original logs/receipts and binary hashes, never DLLs
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: hs-pkt-active-abba-${{ github.run_id }}
+          path: build/hs-active-abba/
+          retention-days: 30
+          if-no-files-found: warn
