@@ -75,8 +75,8 @@ def generate(pack):
         parts.append(runrects(raster(f['size'],f['rectangles'],features),f['size'],ox,oy,scale,palette))
         parts.append(f'<text x="{x+11}" y="{y+213}" fill="#9CAFB0" font-family="monospace" font-size="10">BASE VARIANT · NO SIM TEST</text>')
     parts.append('<text x="28" y="1060" fill="#92ADB7" font-family="monospace" font-size="12">Flat RGBA from pinned shadow catalogue. Visual overlaps use last-write-wins rastering. ID 24 Brine and ID 23 Salt are mobile in the native catalogue.</text>')
-    parts.append('<text x="28" y="1116" fill="#DBD6C8" font-family="monospace" font-size="17">FOSSIL VAULT / DARK-SOLID CRYPT · TRUE NATIVE-CELL DETAIL CROPS</text>')
-    for ox, sx, sy, title in ((36, 460, 16, 'FOSSIL VAULT · DRY SOURCE COLOURS'), (624, 130, 123, 'STRATA CRYPT · INSET IS SOLID ROCK')):
+    parts.append('<text x="28" y="1116" fill="#DBD6C8" font-family="monospace" font-size="17">THE LOST BONE TIDE · TRUE NATIVE-CELL HEADLAND DETAIL CROPS</text>')
+    for ox, sx, sy, title in ((36, 0, 0, 'WIND-CUT WITNESS HALL · CALCITE RELIEF'), (624, 210, 0, 'SHEARED VERTEBRAL SPAN · CHALK ARCHIVE')):
         crop = []
         for cy in range(sy, sy+100):
             crop.extend(pw[cy*sr['size'][0]+sx:cy*sr['size'][0]+sx+240])
