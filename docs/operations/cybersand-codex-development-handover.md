@@ -10,6 +10,23 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## SOL stage diagnosis and first-impulse repair — 2026-11-06
+
+Read the [stage/readiness result](../audits/2026-11-06-sol-stage-and-mass-readiness.md)
+before further physics work. Ordinary clipping, Sand response and backend
+integration are now separately measured. Correct cached mass/inertia did not
+prove readiness: both hosts reproduce lost first custom-COM impulses. The AUTO
+COM/custom-inertia candidate recovers them without a handoff warm step, retaining
+native ownership/geometry/M/I. Tested normal sourcec0d completes64 backend cases
+and24 fresh actual-cut episodes/11,520 steps. Subsequent null guard is syntax-
+qualified only; preserve exact source/runtime distinctions.
+
+All8 dry cases settle; all16 packed cases remain nonquiet. Relative Sand/object
+physical weight and original SOL clearance remain unresolved. Next is a separately
+registered pure-value order/load diagnostic, not cap tuning or a live support law.
+Same sole-writer branch/base393; no World/pressure/MAT composition or #365 work.
+Prior Draft creation was automatically blocked; any later PR must remain Draft.
+
 ## Actual SOL cut structures and numerical repair — 2026-11-06
 
 Continue structural work from the isolated dependent branch

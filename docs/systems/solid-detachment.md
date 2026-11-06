@@ -10,6 +10,30 @@ related-documents: [../operations/soliding-programme.md, ../architecture/solidin
 
 # Native structural detachment
 
+## First-impulse backend readiness — 2026-11-06
+
+**Current on the isolated candidate branch:** `_prepare_body()` selects AUTO COM
+before the unchanged native mass/custom inertia. The exact homogeneous unit-cell
+rectangle union has the same mathematical centroid; shape positions and body
+origin remain unchanged. `_pack_compound_states()` uses actual COM for proxy
+point velocities. No warm-up step, diagnostic impulse, new support force or
+material-weight tuning enters the real handoff.
+
+The [stage/readiness dossier](../audits/2026-11-06-sol-stage-and-mass-readiness.md)
+corrects the interpretation of earlier parameter checks: cached M/I readback is
+not backend readiness proof. Both actual hosts reproduce lost fresh-custom
+impulses; the64-case oracle preserves48 ready controls and16 legacy negatives,
+including doubled custom inertia. Sourcec0d passes24 fresh cut episodes/11,520
+steps, exact ownership/union/M/I/worldCOM checks and zero-step handoff. Eight dry
+runs settle; sixteen packed runs remain nonquiet. The guard-only descendant has
+actual host syntax checks, not an executed null-backend fault.
+
+Stage accounting shows ordinary correction/velocity clipping dominates late
+load cancellation in many cases; cap3 alone is an incomplete weight explanation.
+Gravity acts after the current responses. No material-weight calibration, total
+conservation, changed-order recovery, original clearance or integration admission
+follows. Original strict geometry/material/runtime/CPU/#365 blockers remain.
+
 ## Actual cut structures, mass and settling — 2026-11-06
 
 **Current on the isolated dependent Draft, not accepted main:** actual native

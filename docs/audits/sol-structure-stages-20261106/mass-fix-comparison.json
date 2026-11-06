@@ -1,0 +1,5604 @@
+{
+  "reducer_sha256": "8a7dfb3368b50d5df2a11a75831df64cca6ad2cc9950471822eb113cc4c23518",
+  "base_reducer_sha256": "908404269f3d4fe031bc6cfe643e7637682832ec329b538be265db90f0d191b4",
+  "receipts": [
+    {
+      "run": "mass-fix-001",
+      "sha256": "0a9cec76ab38fac7f6ccdad7ab0a1a74bb893f4b60d0272b607820ba0e40f905",
+      "source": "c0d8544fc01653c329a7ff0f235666532967d29d"
+    }
+  ],
+  "episodes": [
+    {
+      "full": {
+        "samples": 720,
+        "gravity_load_sum": 574828.76953125,
+        "ordinary_support_ratio": 0.0,
+        "clip_support_ratio": 0.0,
+        "sand_support_ratio": 0.0,
+        "stage_energy_sum": [
+          0.0,
+          0.0,
+          -970450.625237552
+        ],
+        "stage_energy_positive_sum": [
+          0.0,
+          0.0,
+          5106.283430977957
+        ],
+        "clip_ke": 0.0,
+        "correction_potential": 0.0,
+        "ordinary_impulse_ke": 0.0,
+        "sand_ke": 0.0,
+        "max_ordinary_angle_delta": 0.0,
+        "basis_roundtrip_steps": 0,
+        "correction_steps": 0,
+        "clip_steps": 0,
+        "wake_requests": 0,
+        "ordinary_outcomes": {
+          "Accepted": 720
+        },
+        "sand_outcomes": {
+          "NOT_EXECUTED": 720
+        },
+        "cap_hits": 0,
+        "discarded_impulse_magnitude": 0.0,
+        "peak_speed": 47.05835581791309,
+        "rms_speed": 8.410502808161304,
+        "peak_abs_omega": 1.2738564014434814,
+        "sleeping": 515,
+        "max_ordinary_momentum_residual": 0.0
+      },
+      "tail120": {
+        "samples": 120,
+        "gravity_load_sum": 95804.794921875,
+        "ordinary_support_ratio": 0.0,
+        "clip_support_ratio": 0.0,
+        "sand_support_ratio": 0.0,
+        "stage_energy_sum": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "stage_energy_positive_sum": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "clip_ke": 0.0,
+        "correction_potential": 0.0,
+        "ordinary_impulse_ke": 0.0,
+        "sand_ke": 0.0,
+        "max_ordinary_angle_delta": 0.0,
+        "basis_roundtrip_steps": 0,
+        "correction_steps": 0,
+        "clip_steps": 0,
+        "wake_requests": 0,
+        "ordinary_outcomes": {
+          "Accepted": 120
+        },
+        "sand_outcomes": {
+          "NOT_EXECUTED": 120
+        },
+        "cap_hits": 0,
+        "discarded_impulse_magnitude": 0.0,
+        "peak_speed": 0.0,
+        "rms_speed": 0.0,
+        "peak_abs_omega": 0.0,
+        "sleeping": 120,
+        "max_ordinary_momentum_residual": 0.0
+      },
+      "window": [
+        600,
+        719
+      ],
+      "run": "mass-fix-001",
+      "host": "windows",
+      "structure": "tree",
+      "workers": 1,
+      "sand_response": false,
+      "raw": {
+        "path": "build\\sol-structure-cut\\mass-fix-001\\windows\\tree-empty-response0-w1.json",
+        "sha256": "9eb5ff4e284b4afe1e5860494978fa9f529945a247698333afa68a6c0bad3551",
+        "bytes": 5628544
+      },
+      "registered_dry_rest": {
+        "samples": 120,
+        "max_speed": 0.0,
+        "max_abs_omega": 0.0,
+        "x_span": 0.0,
+        "y_span": 0.0,
+        "angle_span": 0.0,
+        "max_vertex_speed": 0.0,
+        "sleeping": 120,
+        "screen_pass": true,
+        "window": [
+          600,
+          719
+        ],
+        "screen_scope": "registered_dry",
+        "independent_max_vertex_speed": 0.0
+      },
+      "descriptive_motion": {
+        "samples": 120,
+        "max_speed": 0.0,
+        "max_abs_omega": 0.0,
+        "x_span": 0.0,
+        "y_span": 0.0,
+        "angle_span": 0.0,
+        "max_vertex_speed": 0.0,
+        "sleeping": 120,
+        "screen_pass": true,
+        "window": [
+          600,
+          719
+        ],
+        "screen_scope": "registered_dry",
+        "independent_max_vertex_speed": 0.0
+      },
+      "terminal_hard": {
+        "area": 6.199472015226739e-07,
+        "depth": 0.0007697546045619674,
+        "witnesses": 1,
+        "deepest": {
+          "proxy": 3,
+          "cell": [
+            88,
+            72
+          ],
+          "material": 1,
+          "area": 6.199472015226739e-07,
+          "depth": 0.0007697546045619674
+        }
+      },
+      "terminal_sand": {
+        "area": 0.0,
+        "depth": 0.0,
+        "witnesses": 0,
+        "deepest": null
+      },
+      "native_material_counts": {
+        "43": 101,
+        "1": 512
+      },
+      "all_attempt_metrics": {
+        "contacts": 0,
+        "correction_applications": 0,
+        "displaced": 0,
+        "impulse_applications": 0,
+        "last_correction": [
+          0.0,
+          0.0
+        ],
+        "last_impulse": [
+          0.0,
+          0.0
+        ],
+        "main_sync_ms_max": 0.543,
+        "main_sync_ms_total": 178.788,
+        "main_sync_segments": 1440,
+        "native_tick": 721,
+        "native_tick_ms": 0.0841,
+        "observed_native_tick_ms_max": 0.553,
+        "observed_native_tick_ms_total": 59.495000000000026,
+        "observed_worker_step_ms_max": 0.697,
+        "observed_worker_step_ms_total": 166.37499999999977,
+        "physical_contact": {
+          "angular_momentum_change_sum": 0.0,
+          "area_samples": 2.1539377318037403,
+          "energy_change_sum": 0.0,
+          "energy_violations": 0,
+          "geometry_ms_max": 0.1922,
+          "geometry_ms_total": 52.131800000000005,
+          "geometry_probes": 1424263,
+          "impulse_magnitude_sum": 0.0,
+          "impulse_x_sum": 0.0,
+          "impulse_y_sum": 0.0,
+          "latency_ms_total": 0.0,
+          "max_impulse_magnitude": 0.0,
+          "max_penetration": 0.18230056762695312,
+          "max_sand_penetration": 0.0,
+          "observations": 720,
+          "overlap_cell_samples": 598,
+          "owner_ready_latency_ms_max": 11.029,
+          "owner_ready_latency_ms_total": 7021.4760000000115,
+          "owner_ready_receipts": 720,
+          "refused_observations": 0,
+          "response_accepts": 0,
+          "response_attempts": 0,
+          "response_failures": {},
+          "response_impulse_apply_ms_all_attempts": 0.0,
+          "response_ms_all_attempts": 0.0,
+          "response_ms_max_attempt": 0.0,
+          "response_ms_total": 0.0,
+          "response_other_ms_all_attempts": 0.0,
+          "response_planner_ms_all_attempts": 0.0,
+          "response_readback_ms_all_attempts": 0.0,
+          "response_refusals": {},
+          "response_rid_state_ms_all_attempts": 0.0,
+          "sand_area_samples": 0.0,
+          "torque_impulse_sum": 0.0,
+          "worker_complete_attempts": 722,
+          "worker_contact_ms_max": 0.201,
+          "worker_contact_ms_total": 54.717,
+          "worker_envelope_ms_all_attempts": 1.49,
+          "worker_geometry_probes": 1425927,
+          "worker_native_call_ms_all_attempts": 53.227,
+          "worker_native_geometry_ms_all_attempts": 49.19439999999999,
+          "worker_native_payload_freeze_ms_all_attempts": 0.8127000000000031,
+          "worker_observation_attempts": 730,
+          "worker_refused_attempts": 8,
+          "worker_support_probes": 0
+        },
+        "proxy_count": 6,
+        "proxy_mass": 520.0,
+        "rapier_step_ms_max": 0.368,
+        "rapier_step_ms_total": 43.611,
+        "result_records": 4320,
+        "result_snapshots": 720,
+        "sample_serial": 721,
+        "sand_resistance_enabled": false,
+        "stale_results": 0,
+        "state_publications": 721,
+        "terrain_refresh_ms": 1.342,
+        "terrain_refreshes": 2,
+        "terrain_revision": 1671,
+        "timed_rapier_steps": 720,
+        "timed_snapshots": 720,
+        "unresolved": 0,
+        "worker_step_ms": 0.228
+      },
+      "observed_steps": 720
+    },
+    {
+      "full": {
+        "samples": 360,
+        "gravity_load_sum": 287414.384765625,
+        "ordinary_support_ratio": 0.0030679287984952323,
+        "clip_support_ratio": 0.7962994968073649,
+        "sand_support_ratio": 0.0,
+        "stage_energy_sum": [
+          -310196.8598128739,
+          0.0,
+          -191263.75629877904
+        ],
+        "stage_energy_positive_sum": [
+          18.07545641530305,
+          0.0,
+          0.0
+        ],
+        "clip_ke": -368199.5467337337,
+        "correction_potential": 58627.005718164146,
+        "ordinary_impulse_ke": -624.3073906275827,
+        "sand_ke": 0.0,
+        "max_ordinary_angle_delta": 2.260778064755442e-08,
+        "basis_roundtrip_steps": 52,
+        "correction_steps": 140,
+        "clip_steps": 140,
+        "wake_requests": 360,
+        "ordinary_outcomes": {
+          "Accepted": 360
+        },
+        "sand_outcomes": {
+          "NOT_EXECUTED": 360
+        },
+        "cap_hits": 268,
+        "discarded_impulse_magnitude": 0.0,
+        "peak_speed": 18.10555135874784,
+        "rms_speed": 7.358235443603851,
+        "peak_abs_omega": 0.3304065763950348,
+        "sleeping": 0,
+        "max_ordinary_momentum_residual": 0.00034785270932286266
+      },
+      "tail120": {
+        "samples": 120,
+        "gravity_load_sum": 95804.794921875,
+        "ordinary_support_ratio": 0.003757304652988087,
+        "clip_support_ratio": 0.9845226282640261,
+        "sand_support_ratio": 0.0,
+        "stage_energy_sum": [
+          -96967.65710017039,
+          0.0,
+          -23784.609244316816
+        ],
+        "stage_energy_positive_sum": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "clip_ke": -141956.05198121702,
+        "correction_potential": 45090.68256480619,
+        "ordinary_impulse_ke": -102.28767456916921,
+        "sand_ke": 0.0,
+        "max_ordinary_angle_delta": 2.260778064755442e-08,
+        "basis_roundtrip_steps": 25,
+        "correction_steps": 61,
+        "clip_steps": 61,
+        "wake_requests": 120,
+        "ordinary_outcomes": {
+          "Accepted": 120
+        },
+        "sand_outcomes": {
+          "NOT_EXECUTED": 120
+        },
+        "cap_hits": 120,
+        "discarded_impulse_magnitude": 0.0,
+        "peak_speed": 6.940640181970372,
+        "rms_speed": 5.966511417393289,
+        "peak_abs_omega": 0.04790319502353668,
+        "sleeping": 0,
+        "max_ordinary_momentum_residual": 0.00018000271887599103
+      },
+      "window": [
+        240,
+        359
+      ],
+      "run": "mass-fix-001",
+      "host": "windows",
+      "structure": "tree",
+      "workers": 1,
+      "sand_response": false,
+      "raw": {
+        "path": "build\\sol-structure-cut\\mass-fix-001\\windows\\tree-packed_sand-response0-w1.json",
+        "sha256": "8172619bc0bc0af617528d229d493f9370754f7967b2877aaeb3a58c9edba765",
+        "bytes": 5494657
+      },
+      "registered_dry_rest": null,
+      "descriptive_motion": {
+        "samples": 120,
+        "max_speed": 6.940640181970372,
+        "max_abs_omega": 0.04790319502353668,
+        "x_span": 10.812255859375,
+        "y_span": 2.4253921508789062,
+        "angle_span": 0.07650488774558528,
+        "max_vertex_speed": 7.551275730133057,
+        "sleeping": 0,
+        "screen_pass": false,
+        "window": [
+          240,
+          359
+        ],
+        "screen_scope": "descriptive_packed",
+        "independent_max_vertex_speed": 7.551275594758673
+      },
+      "terminal_hard": {
+        "area": 0.0,
+        "depth": 0.0,
+        "witnesses": 0,
+        "deepest": null
+      },
+      "terminal_sand": {
+        "area": 47.81863827653005,
+        "depth": 2.6432224237530164,
+        "witnesses": 72,
+        "deepest": {
+          "proxy": 5,
+          "cell": [
+            76,
+            65
+          ],
+          "material": 2,
+          "area": 1.0,
+          "depth": 2.6432224237530164
+        }
+      },
+      "native_material_counts": {
+        "1": 588,
+        "43": 101,
+        "2": 1176
+      },
+      "all_attempt_metrics": {
+        "contacts": 27767,
+        "correction_applications": 140,
+        "displaced": 81,
+        "impulse_applications": 450,
+        "last_correction": [
+          0.0,
+          0.0
+        ],
+        "last_impulse": [
+          0.01862945593893528,
+          -2.999864101409912
+        ],
+        "main_sync_ms_max": 0.755,
+        "main_sync_ms_total": 107.652,
+        "main_sync_segments": 720,
+        "native_tick": 361,
+        "native_tick_ms": 0.2797,
+        "observed_native_tick_ms_max": 0.5582,
+        "observed_native_tick_ms_total": 51.70010000000002,
+        "observed_worker_step_ms_max": 0.715,
+        "observed_worker_step_ms_total": 109.60799999999999,
+        "physical_contact": {
+          "angular_momentum_change_sum": 0.0,
+          "area_samples": 10864.407058802959,
+          "energy_change_sum": 0.0,
+          "energy_violations": 0,
+          "geometry_ms_max": 0.4843,
+          "geometry_ms_total": 57.35679999999996,
+          "geometry_probes": 613506,
+          "impulse_magnitude_sum": 0.0,
+          "impulse_x_sum": 0.0,
+          "impulse_y_sum": 0.0,
+          "latency_ms_total": 0.0,
+          "max_impulse_magnitude": 0.0,
+          "max_penetration": 2.698554155899462,
+          "max_sand_penetration": 2.698554155899462,
+          "observations": 360,
+          "overlap_cell_samples": 15756,
+          "owner_ready_latency_ms_max": 9.827,
+          "owner_ready_latency_ms_total": 2844.598999999999,
+          "owner_ready_receipts": 360,
+          "refused_observations": 0,
+          "response_accepts": 0,
+          "response_attempts": 0,
+          "response_failures": {},
+          "response_impulse_apply_ms_all_attempts": 0.0,
+          "response_ms_all_attempts": 0.0,
+          "response_ms_max_attempt": 0.0,
+          "response_ms_total": 0.0,
+          "response_other_ms_all_attempts": 0.0,
+          "response_planner_ms_all_attempts": 0.0,
+          "response_readback_ms_all_attempts": 0.0,
+          "response_refusals": {},
+          "response_rid_state_ms_all_attempts": 0.0,
+          "sand_area_samples": 10864.407058802959,
+          "torque_impulse_sum": 0.0,
+          "worker_complete_attempts": 362,
+          "worker_contact_ms_max": 0.493,
+          "worker_contact_ms_total": 58.781,
+          "worker_envelope_ms_all_attempts": 0.781,
+          "worker_geometry_probes": 615170,
+          "worker_native_call_ms_all_attempts": 58.0,
+          "worker_native_geometry_ms_all_attempts": 55.74090000000002,
+          "worker_native_payload_freeze_ms_all_attempts": 0.6705999999999999,
+          "worker_observation_attempts": 370,
+          "worker_refused_attempts": 8,
+          "worker_support_probes": 141804
+        },
+        "proxy_count": 6,
+        "proxy_mass": 520.0,
+        "rapier_step_ms_max": 0.297,
+        "rapier_step_ms_total": 27.908,
+        "result_records": 2160,
+        "result_snapshots": 360,
+        "sample_serial": 361,
+        "sand_resistance_enabled": false,
+        "stale_results": 0,
+        "state_publications": 361,
+        "terrain_refresh_ms": 1.344,
+        "terrain_refreshes": 2,
+        "terrain_revision": 1747,
+        "timed_rapier_steps": 360,
+        "timed_snapshots": 360,
+        "unresolved": 10784,
+        "worker_step_ms": 0.566
+      },
+      "observed_steps": 360
+    },
+    {
+      "full": {
+        "samples": 360,
+        "gravity_load_sum": 287414.384765625,
+        "ordinary_support_ratio": 0.0030798781343320996,
+        "clip_support_ratio": 0.8200452382023621,
+        "sand_support_ratio": 0.1062533809616231,
+        "stage_energy_sum": [
+          -280811.2366247976,
+          -62141.68414385454,
+          -89627.5969951246
+        ],
+        "stage_energy_positive_sum": [
+          5.323441383894533,
+          0.0,
+          0.0
+        ],
+        "clip_ke": -306077.49110450025,
+        "correction_potential": 25197.986976150423,
+        "ordinary_impulse_ke": 68.27882741698697,
+        "sand_ke": -62141.684143853694,
+        "max_ordinary_angle_delta": 2.0827050195570962e-08,
+        "basis_roundtrip_steps": 50,
+        "correction_steps": 208,
+        "clip_steps": 208,
+        "wake_requests": 360,
+        "ordinary_outcomes": {
+          "Accepted": 360
+        },
+        "sand_outcomes": {
+          "Accepted": 334,
+          "NonDissipativeResponse": 26
+        },
+        "cap_hits": 268,
+        "discarded_impulse_magnitude": 0.0,
+        "peak_speed": 9.263134084440042,
+        "rms_speed": 4.1670891104151995,
+        "peak_abs_omega": 0.3663121461868286,
+        "sleeping": 0,
+        "max_ordinary_momentum_residual": 0.0002319578161393586
+      },
+      "tail120": {
+        "samples": 120,
+        "gravity_load_sum": 95804.794921875,
+        "ordinary_support_ratio": 0.00358026100063062,
+        "clip_support_ratio": 0.9471253069108801,
+        "sand_support_ratio": 0.059320928966890514,
+        "stage_energy_sum": [
+          -121403.09283167543,
+          -14004.568476486951,
+          -21361.061026092153
+        ],
+        "stage_energy_positive_sum": [
+          0.022600390948355198,
+          0.0,
+          0.0
+        ],
+        "clip_ke": -132435.52387827187,
+        "correction_potential": 10940.050634723157,
+        "ordinary_impulse_ke": 92.38046430786528,
+        "sand_ke": -14004.568476486831,
+        "max_ordinary_angle_delta": 2.0827050195570962e-08,
+        "basis_roundtrip_steps": 23,
+        "correction_steps": 64,
+        "clip_steps": 64,
+        "wake_requests": 120,
+        "ordinary_outcomes": {
+          "Accepted": 120
+        },
+        "sand_outcomes": {
+          "Accepted": 120
+        },
+        "cap_hits": 107,
+        "discarded_impulse_magnitude": 0.0,
+        "peak_speed": 5.246929736437543,
+        "rms_speed": 3.1357924577384173,
+        "peak_abs_omega": 0.18875545263290405,
+        "sleeping": 0,
+        "max_ordinary_momentum_residual": 6.387348982086992e-05
+      },
+      "window": [
+        240,
+        359
+      ],
+      "run": "mass-fix-001",
+      "host": "windows",
+      "structure": "tree",
+      "workers": 1,
+      "sand_response": true,
+      "raw": {
+        "path": "build\\sol-structure-cut\\mass-fix-001\\windows\\tree-packed_sand-response1-w1.json",
+        "sha256": "68fc6fd51b5765b976ab5e0ee63a0c2e00b3e7ff0d7e0fdbafd5d35cc363bf27",
+        "bytes": 5185956
+      },
+      "registered_dry_rest": null,
+      "descriptive_motion": {
+        "samples": 120,
+        "max_speed": 5.246929736437543,
+        "max_abs_omega": 0.18875545263290405,
+        "x_span": 3.711456298828125,
+        "y_span": 3.097126007080078,
+        "angle_span": 0.1848102769380378,
+        "max_vertex_speed": 8.482368469238281,
+        "sleeping": 0,
+        "screen_pass": false,
+        "window": [
+          240,
+          359
+        ],
+        "screen_scope": "descriptive_packed",
+        "independent_max_vertex_speed": 8.482368944467437
+      },
+      "terminal_hard": {
+        "area": 0.0,
+        "depth": 0.0,
+        "witnesses": 0,
+        "deepest": null
+      },
+      "terminal_sand": {
+        "area": 16.534360445122932,
+        "depth": 2.6388628474756786,
+        "witnesses": 30,
+        "deepest": {
+          "proxy": 5,
+          "cell": [
+            56,
+            58
+          ],
+          "material": 2,
+          "area": 1.0,
+          "depth": 2.6388628474756786
+        }
+      },
+      "native_material_counts": {
+        "1": 588,
+        "43": 101,
+        "2": 1176
+      },
+      "all_attempt_metrics": {
+        "contacts": 14359,
+        "correction_applications": 208,
+        "displaced": 1,
+        "impulse_applications": 378,
+        "last_correction": [
+          0.0,
+          -0.005061449017375708
+        ],
+        "last_impulse": [
+          -0.16685397922992706,
+          -2.9944279193878174
+        ],
+        "main_sync_ms_max": 1.919,
+        "main_sync_ms_total": 321.607,
+        "main_sync_segments": 720,
+        "native_tick": 361,
+        "native_tick_ms": 0.1172,
+        "observed_native_tick_ms_max": 0.8275,
+        "observed_native_tick_ms_total": 47.42199999999993,
+        "observed_worker_step_ms_max": 2.441,
+        "observed_worker_step_ms_total": 102.29900000000008,
+        "physical_contact": {
+          "angular_momentum_change_sum": 76630.52896718569,
+          "area_samples": 2694.7006628996996,
+          "energy_change_sum": -62141.6809535114,
+          "energy_violations": 0,
+          "geometry_ms_max": 0.3381,
+          "geometry_ms_total": 37.541200000000025,
+          "geometry_probes": 495654,
+          "impulse_magnitude_sum": 122983.49117683817,
+          "impulse_x_sum": -2649.232766419649,
+          "impulse_y_sum": -30538.750172287226,
+          "latency_ms_total": 3533.5600000000013,
+          "max_impulse_magnitude": 736.60791015625,
+          "max_penetration": 2.6982599413823274,
+          "max_sand_penetration": 2.6982599413823274,
+          "observations": 360,
+          "overlap_cell_samples": 6418,
+          "owner_ready_latency_ms_max": 11.068,
+          "owner_ready_latency_ms_total": 3565.3040000000015,
+          "owner_ready_receipts": 360,
+          "refused_observations": 0,
+          "response_accepts": 334,
+          "response_attempts": 360,
+          "response_failures": {},
+          "response_impulse_apply_ms_all_attempts": 2.726999999999991,
+          "response_ms_all_attempts": 209.78900000000013,
+          "response_ms_max_attempt": 1.191,
+          "response_ms_total": 195.29000000000002,
+          "response_other_ms_all_attempts": 4.358999999999993,
+          "response_planner_ms_all_attempts": 198.82300000000006,
+          "response_readback_ms_all_attempts": 3.4329999999999887,
+          "response_refusals": {
+            "NonDissipativeResponse": 26
+          },
+          "response_rid_state_ms_all_attempts": 0.44700000000000034,
+          "sand_area_samples": 2694.7006628996996,
+          "torque_impulse_sum": 76630.51818712801,
+          "worker_complete_attempts": 362,
+          "worker_contact_ms_max": 0.347,
+          "worker_contact_ms_total": 39.016,
+          "worker_envelope_ms_all_attempts": 0.791,
+          "worker_geometry_probes": 497318,
+          "worker_native_call_ms_all_attempts": 38.225,
+          "worker_native_geometry_ms_all_attempts": 35.96890000000001,
+          "worker_native_payload_freeze_ms_all_attempts": 0.5102000000000013,
+          "worker_observation_attempts": 370,
+          "worker_refused_attempts": 8,
+          "worker_support_probes": 57762
+        },
+        "proxy_count": 6,
+        "proxy_mass": 520.0,
+        "rapier_step_ms_max": 1.161,
+        "rapier_step_ms_total": 31.084,
+        "result_records": 2160,
+        "result_snapshots": 360,
+        "sample_serial": 361,
+        "sand_resistance_enabled": true,
+        "stale_results": 0,
+        "state_publications": 361,
+        "terrain_refresh_ms": 1.336,
+        "terrain_refreshes": 2,
+        "terrain_revision": 1747,
+        "timed_rapier_steps": 360,
+        "timed_snapshots": 360,
+        "unresolved": 2488,
+        "worker_step_ms": 0.265
+      },
+      "observed_steps": 360
+    },
+    {
+      "full": {
+        "samples": 720,
+        "gravity_load_sum": 393536.619140625,
+        "ordinary_support_ratio": 0.0,
+        "clip_support_ratio": 0.0,
+        "sand_support_ratio": 0.0,
+        "stage_energy_sum": [
+          0.0,
+          0.0,
+          -575754.9103052353
+        ],
+        "stage_energy_positive_sum": [
+          0.0,
+          0.0,
+          2468.5867656180635
+        ],
+        "clip_ke": 0.0,
+        "correction_potential": 0.0,
+        "ordinary_impulse_ke": 0.0,
+        "sand_ke": 0.0,
+        "max_ordinary_angle_delta": 0.0,
+        "basis_roundtrip_steps": 0,
+        "correction_steps": 0,
+        "clip_steps": 0,
+        "wake_requests": 0,
+        "ordinary_outcomes": {
+          "Accepted": 720
+        },
+        "sand_outcomes": {
+          "NOT_EXECUTED": 720
+        },
+        "cap_hits": 0,
+        "discarded_impulse_magnitude": 0.0,
+        "peak_speed": 40.43696004708319,
+        "rms_speed": 7.775338816427069,
+        "peak_abs_omega": 1.4784444570541382,
+        "sleeping": 501,
+        "max_ordinary_momentum_residual": 0.0
+      },
+      "tail120": {
+        "samples": 120,
+        "gravity_load_sum": 65589.4365234375,
+        "ordinary_support_ratio": 0.0,
+        "clip_support_ratio": 0.0,
+        "sand_support_ratio": 0.0,
+        "stage_energy_sum": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "stage_energy_positive_sum": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "clip_ke": 0.0,
+        "correction_potential": 0.0,
+        "ordinary_impulse_ke": 0.0,
+        "sand_ke": 0.0,
+        "max_ordinary_angle_delta": 0.0,
+        "basis_roundtrip_steps": 0,
+        "correction_steps": 0,
+        "clip_steps": 0,
+        "wake_requests": 0,
+        "ordinary_outcomes": {
+          "Accepted": 120
+        },
+        "sand_outcomes": {
+          "NOT_EXECUTED": 120
+        },
+        "cap_hits": 0,
+        "discarded_impulse_magnitude": 0.0,
+        "peak_speed": 0.0,
+        "rms_speed": 0.0,
+        "peak_abs_omega": 0.0,
+        "sleeping": 120,
+        "max_ordinary_momentum_residual": 0.0
+      },
+      "window": [
+        600,
+        719
+      ],
+      "run": "mass-fix-001",
+      "host": "windows",
+      "structure": "building",
+      "workers": 1,
+      "sand_response": false,
+      "raw": {
+        "path": "build\\sol-structure-cut\\mass-fix-001\\windows\\building-empty-response0-w1.json",
+        "sha256": "796dfbe7cb708616fa42ab6a7bb822e316d32315fd6860acff66f5f65a871eb7",
+        "bytes": 5726783
+      },
+      "registered_dry_rest": {
+        "samples": 120,
+        "max_speed": 0.0,
+        "max_abs_omega": 0.0,
+        "x_span": 0.0,
+        "y_span": 0.0,
+        "angle_span": 0.0,
+        "max_vertex_speed": 0.0,
+        "sleeping": 120,
+        "screen_pass": true,
+        "window": [
+          600,
+          719
+        ],
+        "screen_scope": "registered_dry",
+        "independent_max_vertex_speed": 0.0
+      },
+      "descriptive_motion": {
+        "samples": 120,
+        "max_speed": 0.0,
+        "max_abs_omega": 0.0,
+        "x_span": 0.0,
+        "y_span": 0.0,
+        "angle_span": 0.0,
+        "max_vertex_speed": 0.0,
+        "sleeping": 120,
+        "screen_pass": true,
+        "window": [
+          600,
+          719
+        ],
+        "screen_scope": "registered_dry",
+        "independent_max_vertex_speed": 0.0
+      },
+      "terminal_hard": {
+        "area": 0.002814855793284548,
+        "depth": 0.0001877011006712337,
+        "witnesses": 24,
+        "deepest": {
+          "proxy": 3,
+          "cell": [
+            81,
+            72
+          ],
+          "material": 1,
+          "area": 3.1624861789482055e-05,
+          "depth": 0.0001877011006712337
+        }
+      },
+      "terminal_sand": {
+        "area": 0.0,
+        "depth": 0.0,
+        "witnesses": 0,
+        "deepest": null
+      },
+      "native_material_counts": {
+        "43": 101,
+        "1": 512
+      },
+      "all_attempt_metrics": {
+        "contacts": 0,
+        "correction_applications": 0,
+        "displaced": 0,
+        "impulse_applications": 0,
+        "last_correction": [
+          0.0,
+          0.0
+        ],
+        "last_impulse": [
+          0.0,
+          0.0
+        ],
+        "main_sync_ms_max": 0.61,
+        "main_sync_ms_total": 193.922,
+        "main_sync_segments": 1440,
+        "native_tick": 721,
+        "native_tick_ms": 0.062,
+        "observed_native_tick_ms_max": 0.5392,
+        "observed_native_tick_ms_total": 44.00159999999995,
+        "observed_worker_step_ms_max": 0.65,
+        "observed_worker_step_ms_total": 130.88299999999998,
+        "physical_contact": {
+          "angular_momentum_change_sum": 0.0,
+          "area_samples": 3.503047494032049,
+          "energy_change_sum": 0.0,
+          "energy_violations": 0,
+          "geometry_ms_max": 0.1692,
+          "geometry_ms_total": 33.33069999999999,
+          "geometry_probes": 409609,
+          "impulse_magnitude_sum": 0.0,
+          "impulse_x_sum": 0.0,
+          "impulse_y_sum": 0.0,
+          "latency_ms_total": 0.0,
+          "max_impulse_magnitude": 0.0,
+          "max_penetration": 0.18230056762695312,
+          "max_sand_penetration": 0.0,
+          "observations": 720,
+          "overlap_cell_samples": 11565,
+          "owner_ready_latency_ms_max": 8.29,
+          "owner_ready_latency_ms_total": 5045.984999999992,
+          "owner_ready_receipts": 720,
+          "refused_observations": 0,
+          "response_accepts": 0,
+          "response_attempts": 0,
+          "response_failures": {},
+          "response_impulse_apply_ms_all_attempts": 0.0,
+          "response_ms_all_attempts": 0.0,
+          "response_ms_max_attempt": 0.0,
+          "response_ms_total": 0.0,
+          "response_other_ms_all_attempts": 0.0,
+          "response_planner_ms_all_attempts": 0.0,
+          "response_readback_ms_all_attempts": 0.0,
+          "response_refusals": {},
+          "response_rid_state_ms_all_attempts": 0.0,
+          "sand_area_samples": 0.0,
+          "torque_impulse_sum": 0.0,
+          "worker_complete_attempts": 722,
+          "worker_contact_ms_max": 0.176,
+          "worker_contact_ms_total": 36.217,
+          "worker_envelope_ms_all_attempts": 1.702,
+          "worker_geometry_probes": 410797,
+          "worker_native_call_ms_all_attempts": 34.515,
+          "worker_native_geometry_ms_all_attempts": 30.072899999999983,
+          "worker_native_payload_freeze_ms_all_attempts": 0.9254000000000008,
+          "worker_observation_attempts": 730,
+          "worker_refused_attempts": 8,
+          "worker_support_probes": 0
+        },
+        "proxy_count": 5,
+        "proxy_mass": 356.0,
+        "rapier_step_ms_max": 0.247,
+        "rapier_step_ms_total": 49.58,
+        "result_records": 3600,
+        "result_snapshots": 720,
+        "sample_serial": 721,
+        "sand_resistance_enabled": false,
+        "stale_results": 0,
+        "state_publications": 721,
+        "terrain_refresh_ms": 1.326,
+        "terrain_refreshes": 2,
+        "terrain_revision": 2439,
+        "timed_rapier_steps": 720,
+        "timed_snapshots": 720,
+        "unresolved": 0,
+        "worker_step_ms": 0.172
+      },
+      "observed_steps": 720
+    },
+    {
+      "full": {
+        "samples": 360,
+        "gravity_load_sum": 196768.3095703125,
+        "ordinary_support_ratio": 0.004752435474365009,
+        "clip_support_ratio": 0.856809557590544,
+        "sand_support_ratio": 0.0,
+        "stage_energy_sum": [
+          -125002.38803730626,
+          0.0,
+          -146751.40443422878
+        ],
+        "stage_energy_positive_sum": [
+          14.88621274009347,
+          0.0,
+          0.0
+        ],
+        "clip_ke": -168847.61426848941,
+        "correction_potential": 44291.71000278555,
+        "ordinary_impulse_ke": -446.53990734238323,
+        "sand_ke": 0.0,
+        "max_ordinary_angle_delta": 3.279525129240568e-08,
+        "basis_roundtrip_steps": 63,
+        "correction_steps": 286,
+        "clip_steps": 286,
+        "wake_requests": 360,
+        "ordinary_outcomes": {
+          "Accepted": 360
+        },
+        "sand_outcomes": {
+          "NOT_EXECUTED": 360
+        },
+        "cap_hits": 296,
+        "discarded_impulse_magnitude": 0.0,
+        "peak_speed": 18.08619053612333,
+        "rms_speed": 8.344947860006146,
+        "peak_abs_omega": 0.474206805229187,
+        "sleeping": 0,
+        "max_ordinary_momentum_residual": 0.00032444298526148387
+      },
+      "tail120": {
+        "samples": 120,
+        "gravity_load_sum": 65589.4365234375,
+        "ordinary_support_ratio": 0.005483541049158114,
+        "clip_support_ratio": 0.9911295621444116,
+        "sand_support_ratio": 0.0,
+        "stage_energy_sum": [
+          -25684.367317444878,
+          0.0,
+          -23051.049511790276
+        ],
+        "stage_energy_positive_sum": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "clip_ke": -49467.189622751466,
+        "correction_potential": 23802.267000691965,
+        "ordinary_impulse_ke": -19.44471959790036,
+        "sand_ke": 0.0,
+        "max_ordinary_angle_delta": 3.279525129240568e-08,
+        "basis_roundtrip_steps": 27,
+        "correction_steps": 120,
+        "clip_steps": 120,
+        "wake_requests": 120,
+        "ordinary_outcomes": {
+          "Accepted": 120
+        },
+        "sand_outcomes": {
+          "NOT_EXECUTED": 120
+        },
+        "cap_hits": 120,
+        "discarded_impulse_magnitude": 0.0,
+        "peak_speed": 7.684353581358063,
+        "rms_speed": 4.383457890599736,
+        "peak_abs_omega": 0.06813281029462814,
+        "sleeping": 0,
+        "max_ordinary_momentum_residual": 0.000189927875923782
+      },
+      "window": [
+        240,
+        359
+      ],
+      "run": "mass-fix-001",
+      "host": "windows",
+      "structure": "building",
+      "workers": 1,
+      "sand_response": false,
+      "raw": {
+        "path": "build\\sol-structure-cut\\mass-fix-001\\windows\\building-packed_sand-response0-w1.json",
+        "sha256": "17387980eb4b62503cc5027ae83dd4fa525827788d89563f6b44fcefaee50df2",
+        "bytes": 5930516
+      },
+      "registered_dry_rest": null,
+      "descriptive_motion": {
+        "samples": 120,
+        "max_speed": 7.684353581358063,
+        "max_abs_omega": 0.06813281029462814,
+        "x_span": 4.7468109130859375,
+        "y_span": 1.164703369140625,
+        "angle_span": 0.03897825548532463,
+        "max_vertex_speed": 8.33130931854248,
+        "sleeping": 0,
+        "screen_pass": false,
+        "window": [
+          240,
+          359
+        ],
+        "screen_scope": "descriptive_packed",
+        "independent_max_vertex_speed": 8.33130986260436
+      },
+      "terminal_hard": {
+        "area": 0.0,
+        "depth": 0.0,
+        "witnesses": 0,
+        "deepest": null
+      },
+      "terminal_sand": {
+        "area": 52.980878144868214,
+        "depth": 2.6969614882339457,
+        "witnesses": 81,
+        "deepest": {
+          "proxy": 3,
+          "cell": [
+            104,
+            59
+          ],
+          "material": 2,
+          "area": 1.0,
+          "depth": 2.6969614882339457
+        }
+      },
+      "native_material_counts": {
+        "1": 588,
+        "43": 101,
+        "2": 1176
+      },
+      "all_attempt_metrics": {
+        "contacts": 27944,
+        "correction_applications": 286,
+        "displaced": 69,
+        "impulse_applications": 817,
+        "last_correction": [
+          0.0,
+          -0.006007006391882896
+        ],
+        "last_impulse": [
+          -0.010137283243238926,
+          -2.99272084236145
+        ],
+        "main_sync_ms_max": 0.638,
+        "main_sync_ms_total": 116.257,
+        "main_sync_segments": 720,
+        "native_tick": 361,
+        "native_tick_ms": 0.0978,
+        "observed_native_tick_ms_max": 0.5187,
+        "observed_native_tick_ms_total": 40.56800000000003,
+        "observed_worker_step_ms_max": 0.637,
+        "observed_worker_step_ms_total": 86.18500000000009,
+        "physical_contact": {
+          "angular_momentum_change_sum": 0.0,
+          "area_samples": 10954.911398419395,
+          "energy_change_sum": 0.0,
+          "energy_violations": 0,
+          "geometry_ms_max": 0.4373,
+          "geometry_ms_total": 55.06210000000001,
+          "geometry_probes": 432635,
+          "impulse_magnitude_sum": 0.0,
+          "impulse_x_sum": 0.0,
+          "impulse_y_sum": 0.0,
+          "latency_ms_total": 0.0,
+          "max_impulse_magnitude": 0.0,
+          "max_penetration": 2.7041485910704965,
+          "max_sand_penetration": 2.7041485910704965,
+          "observations": 360,
+          "overlap_cell_samples": 16508,
+          "owner_ready_latency_ms_max": 10.716,
+          "owner_ready_latency_ms_total": 3257.4839999999976,
+          "owner_ready_receipts": 360,
+          "refused_observations": 0,
+          "response_accepts": 0,
+          "response_attempts": 0,
+          "response_failures": {},
+          "response_impulse_apply_ms_all_attempts": 0.0,
+          "response_ms_all_attempts": 0.0,
+          "response_ms_max_attempt": 0.0,
+          "response_ms_total": 0.0,
+          "response_other_ms_all_attempts": 0.0,
+          "response_planner_ms_all_attempts": 0.0,
+          "response_readback_ms_all_attempts": 0.0,
+          "response_refusals": {},
+          "response_rid_state_ms_all_attempts": 0.0,
+          "sand_area_samples": 10954.911398419395,
+          "torque_impulse_sum": 0.0,
+          "worker_complete_attempts": 362,
+          "worker_contact_ms_max": 0.442,
+          "worker_contact_ms_total": 56.611,
+          "worker_envelope_ms_all_attempts": 0.837,
+          "worker_geometry_probes": 433823,
+          "worker_native_call_ms_all_attempts": 55.774,
+          "worker_native_geometry_ms_all_attempts": 53.309200000000004,
+          "worker_native_payload_freeze_ms_all_attempts": 0.724,
+          "worker_observation_attempts": 370,
+          "worker_refused_attempts": 8,
+          "worker_support_probes": 153513
+        },
+        "proxy_count": 5,
+        "proxy_mass": 356.0,
+        "rapier_step_ms_max": 0.27,
+        "rapier_step_ms_total": 29.702,
+        "result_records": 1800,
+        "result_snapshots": 360,
+        "sample_serial": 361,
+        "sand_resistance_enabled": false,
+        "stale_results": 0,
+        "state_publications": 361,
+        "terrain_refresh_ms": 1.387,
+        "terrain_refreshes": 2,
+        "terrain_revision": 2515,
+        "timed_rapier_steps": 360,
+        "timed_snapshots": 360,
+        "unresolved": 10913,
+        "worker_step_ms": 0.236
+      },
+      "observed_steps": 360
+    },
+    {
+      "full": {
+        "samples": 360,
+        "gravity_load_sum": 196768.3095703125,
+        "ordinary_support_ratio": 0.004746914760932757,
+        "clip_support_ratio": 0.8334027632799328,
+        "sand_support_ratio": 0.08703646546142246,
+        "stage_energy_sum": [
+          -115936.49492115108,
+          -43829.40585966129,
+          -64488.84543390549
+        ],
+        "stage_energy_positive_sum": [
+          24.536784028168768,
+          0.0,
+          0.0
+        ],
+        "clip_ke": -143949.5835996198,
+        "correction_potential": 27940.763685017824,
+        "ordinary_impulse_ke": 72.26868991079384,
+        "sand_ke": -43829.40585966075,
+        "max_ordinary_angle_delta": 1.6900582822110266e-08,
+        "basis_roundtrip_steps": 49,
+        "correction_steps": 300,
+        "clip_steps": 300,
+        "wake_requests": 360,
+        "ordinary_outcomes": {
+          "Accepted": 360
+        },
+        "sand_outcomes": {
+          "Accepted": 340,
+          "NonDissipativeResponse": 20
+        },
+        "cap_hits": 298,
+        "discarded_impulse_magnitude": 0.0,
+        "peak_speed": 10.086055561272422,
+        "rms_speed": 3.500862809792429,
+        "peak_abs_omega": 0.4512846767902374,
+        "sleeping": 0,
+        "max_ordinary_momentum_residual": 0.00017131426616089125
+      },
+      "tail120": {
+        "samples": 120,
+        "gravity_load_sum": 65589.4365234375,
+        "ordinary_support_ratio": 0.0054442269104761016,
+        "clip_support_ratio": 0.9044521858062238,
+        "sand_support_ratio": 0.04711560999528853,
+        "stage_energy_sum": [
+          -26199.864092676667,
+          -1217.3803906904068,
+          -14053.894368009875
+        ],
+        "stage_energy_positive_sum": [
+          23.604918482946232,
+          0.0,
+          0.0
+        ],
+        "clip_ke": -42061.91392546132,
+        "correction_potential": 15818.012129707262,
+        "ordinary_impulse_ke": 44.0377470803567,
+        "sand_ke": -1217.3803906898324,
+        "max_ordinary_angle_delta": 5.244526368741731e-09,
+        "basis_roundtrip_steps": 24,
+        "correction_steps": 120,
+        "clip_steps": 120,
+        "wake_requests": 120,
+        "ordinary_outcomes": {
+          "Accepted": 120
+        },
+        "sand_outcomes": {
+          "Accepted": 113,
+          "NonDissipativeResponse": 7
+        },
+        "cap_hits": 120,
+        "discarded_impulse_magnitude": 0.0,
+        "peak_speed": 1.9362777276574903,
+        "rms_speed": 1.5015783104963354,
+        "peak_abs_omega": 0.061427660286426544,
+        "sleeping": 0,
+        "max_ordinary_momentum_residual": 2.286848372190803e-05
+      },
+      "window": [
+        240,
+        359
+      ],
+      "run": "mass-fix-001",
+      "host": "windows",
+      "structure": "building",
+      "workers": 1,
+      "sand_response": true,
+      "raw": {
+        "path": "build\\sol-structure-cut\\mass-fix-001\\windows\\building-packed_sand-response1-w1.json",
+        "sha256": "3abb0d616485663a4680a1152096c2ab94f7b88293232b8d8d5f0569cbb9d414",
+        "bytes": 5429600
+      },
+      "registered_dry_rest": null,
+      "descriptive_motion": {
+        "samples": 120,
+        "max_speed": 1.9362777276574903,
+        "max_abs_omega": 0.061427660286426544,
+        "x_span": 0.6785507202148438,
+        "y_span": 1.252227783203125,
+        "angle_span": 0.030113340461058014,
+        "max_vertex_speed": 3.0853214263916016,
+        "sleeping": 0,
+        "screen_pass": false,
+        "window": [
+          240,
+          359
+        ],
+        "screen_scope": "descriptive_packed",
+        "independent_max_vertex_speed": 3.085321490949619
+      },
+      "terminal_hard": {
+        "area": 0.0,
+        "depth": 0.0,
+        "witnesses": 0,
+        "deepest": null
+      },
+      "terminal_sand": {
+        "area": 20.367032541776812,
+        "depth": 2.6029759647611,
+        "witnesses": 34,
+        "deepest": {
+          "proxy": 4,
+          "cell": [
+            54,
+            60
+          ],
+          "material": 2,
+          "area": 1.0,
+          "depth": 2.6029759647611
+        }
+      },
+      "native_material_counts": {
+        "1": 588,
+        "43": 101,
+        "2": 1176
+      },
+      "all_attempt_metrics": {
+        "contacts": 15742,
+        "correction_applications": 300,
+        "displaced": 0,
+        "impulse_applications": 505,
+        "last_correction": [
+          0.0,
+          -0.0024371054023504257
+        ],
+        "last_impulse": [
+          -0.2430112063884735,
+          -2.9770514965057373
+        ],
+        "main_sync_ms_max": 1.795,
+        "main_sync_ms_total": 346.951,
+        "main_sync_segments": 720,
+        "native_tick": 361,
+        "native_tick_ms": 0.1104,
+        "observed_native_tick_ms_max": 0.6166,
+        "observed_native_tick_ms_total": 44.12100000000001,
+        "observed_worker_step_ms_max": 0.806,
+        "observed_worker_step_ms_total": 86.36599999999996,
+        "physical_contact": {
+          "angular_momentum_change_sum": 45258.470955356024,
+          "area_samples": 2749.6796994772603,
+          "energy_change_sum": -43829.409723768826,
+          "energy_violations": 0,
+          "geometry_ms_max": 0.2285,
+          "geometry_ms_total": 32.716300000000004,
+          "geometry_probes": 306090,
+          "impulse_magnitude_sum": 71971.70487575734,
+          "impulse_x_sum": -5498.921888247132,
+          "impulse_y_sum": -17126.018217639998,
+          "latency_ms_total": 4094.429999999998,
+          "max_impulse_magnitude": 456.8974304199219,
+          "max_penetration": 2.5964390621045172,
+          "max_sand_penetration": 2.5964390621045172,
+          "observations": 360,
+          "overlap_cell_samples": 6719,
+          "owner_ready_latency_ms_max": 12.426,
+          "owner_ready_latency_ms_total": 4072.5119999999993,
+          "owner_ready_receipts": 360,
+          "refused_observations": 0,
+          "response_accepts": 340,
+          "response_attempts": 360,
+          "response_failures": {},
+          "response_impulse_apply_ms_all_attempts": 2.695999999999996,
+          "response_ms_all_attempts": 234.81800000000007,
+          "response_ms_max_attempt": 1.368,
+          "response_ms_total": 217.34999999999997,
+          "response_other_ms_all_attempts": 4.390000000000007,
+          "response_planner_ms_all_attempts": 223.94299999999996,
+          "response_readback_ms_all_attempts": 3.3529999999999838,
+          "response_refusals": {
+            "NonDissipativeResponse": 20
+          },
+          "response_rid_state_ms_all_attempts": 0.43600000000000033,
+          "sand_area_samples": 2749.6796994772603,
+          "torque_impulse_sum": 45258.46182231605,
+          "worker_complete_attempts": 362,
+          "worker_contact_ms_max": 0.233,
+          "worker_contact_ms_total": 34.062,
+          "worker_envelope_ms_all_attempts": 0.763,
+          "worker_geometry_probes": 307278,
+          "worker_native_call_ms_all_attempts": 33.299,
+          "worker_native_geometry_ms_all_attempts": 31.174299999999995,
+          "worker_native_payload_freeze_ms_all_attempts": 0.4995000000000008,
+          "worker_observation_attempts": 370,
+          "worker_refused_attempts": 8,
+          "worker_support_probes": 60471
+        },
+        "proxy_count": 5,
+        "proxy_mass": 356.0,
+        "rapier_step_ms_max": 0.446,
+        "rapier_step_ms_total": 31.473,
+        "result_records": 1800,
+        "result_snapshots": 360,
+        "sample_serial": 361,
+        "sand_resistance_enabled": true,
+        "stale_results": 0,
+        "state_publications": 361,
+        "terrain_refresh_ms": 1.377,
+        "terrain_refreshes": 2,
+        "terrain_revision": 2515,
+        "timed_rapier_steps": 360,
+        "timed_snapshots": 360,
+        "unresolved": 2606,
+        "worker_step_ms": 0.231
+      },
+      "observed_steps": 360
+    },
+    {
+      "full": {
+        "samples": 720,
+        "gravity_load_sum": 574828.76953125,
+        "ordinary_support_ratio": 0.0,
+        "clip_support_ratio": 0.0,
+        "sand_support_ratio": 0.0,
+        "stage_energy_sum": [
+          0.0,
+          0.0,
+          -970450.625237552
+        ],
+        "stage_energy_positive_sum": [
+          0.0,
+          0.0,
+          5106.283430977957
+        ],
+        "clip_ke": 0.0,
+        "correction_potential": 0.0,
+        "ordinary_impulse_ke": 0.0,
+        "sand_ke": 0.0,
+        "max_ordinary_angle_delta": 0.0,
+        "basis_roundtrip_steps": 0,
+        "correction_steps": 0,
+        "clip_steps": 0,
+        "wake_requests": 0,
+        "ordinary_outcomes": {
+          "Accepted": 720
+        },
+        "sand_outcomes": {
+          "NOT_EXECUTED": 720
+        },
+        "cap_hits": 0,
+        "discarded_impulse_magnitude": 0.0,
+        "peak_speed": 47.05835581791309,
+        "rms_speed": 8.410502808161304,
+        "peak_abs_omega": 1.2738564014434814,
+        "sleeping": 515,
+        "max_ordinary_momentum_residual": 0.0
+      },
+      "tail120": {
+        "samples": 120,
+        "gravity_load_sum": 95804.794921875,
+        "ordinary_support_ratio": 0.0,
+        "clip_support_ratio": 0.0,
+        "sand_support_ratio": 0.0,
+        "stage_energy_sum": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "stage_energy_positive_sum": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "clip_ke": 0.0,
+        "correction_potential": 0.0,
+        "ordinary_impulse_ke": 0.0,
+        "sand_ke": 0.0,
+        "max_ordinary_angle_delta": 0.0,
+        "basis_roundtrip_steps": 0,
+        "correction_steps": 0,
+        "clip_steps": 0,
+        "wake_requests": 0,
+        "ordinary_outcomes": {
+          "Accepted": 120
+        },
+        "sand_outcomes": {
+          "NOT_EXECUTED": 120
+        },
+        "cap_hits": 0,
+        "discarded_impulse_magnitude": 0.0,
+        "peak_speed": 0.0,
+        "rms_speed": 0.0,
+        "peak_abs_omega": 0.0,
+        "sleeping": 120,
+        "max_ordinary_momentum_residual": 0.0
+      },
+      "window": [
+        600,
+        719
+      ],
+      "run": "mass-fix-001",
+      "host": "windows",
+      "structure": "tree",
+      "workers": 4,
+      "sand_response": false,
+      "raw": {
+        "path": "build\\sol-structure-cut\\mass-fix-001\\windows\\tree-empty-response0-w4.json",
+        "sha256": "6a23178a8fe2959101724ae9d114cc035f5e62d6674161517670090a259ae351",
+        "bytes": 5628496
+      },
+      "registered_dry_rest": {
+        "samples": 120,
+        "max_speed": 0.0,
+        "max_abs_omega": 0.0,
+        "x_span": 0.0,
+        "y_span": 0.0,
+        "angle_span": 0.0,
+        "max_vertex_speed": 0.0,
+        "sleeping": 120,
+        "screen_pass": true,
+        "window": [
+          600,
+          719
+        ],
+        "screen_scope": "registered_dry",
+        "independent_max_vertex_speed": 0.0
+      },
+      "descriptive_motion": {
+        "samples": 120,
+        "max_speed": 0.0,
+        "max_abs_omega": 0.0,
+        "x_span": 0.0,
+        "y_span": 0.0,
+        "angle_span": 0.0,
+        "max_vertex_speed": 0.0,
+        "sleeping": 120,
+        "screen_pass": true,
+        "window": [
+          600,
+          719
+        ],
+        "screen_scope": "registered_dry",
+        "independent_max_vertex_speed": 0.0
+      },
+      "terminal_hard": {
+        "area": 6.199472015226739e-07,
+        "depth": 0.0007697546045619674,
+        "witnesses": 1,
+        "deepest": {
+          "proxy": 3,
+          "cell": [
+            88,
+            72
+          ],
+          "material": 1,
+          "area": 6.199472015226739e-07,
+          "depth": 0.0007697546045619674
+        }
+      },
+      "terminal_sand": {
+        "area": 0.0,
+        "depth": 0.0,
+        "witnesses": 0,
+        "deepest": null
+      },
+      "native_material_counts": {
+        "43": 101,
+        "1": 512
+      },
+      "all_attempt_metrics": {
+        "contacts": 0,
+        "correction_applications": 0,
+        "displaced": 0,
+        "impulse_applications": 0,
+        "last_correction": [
+          0.0,
+          0.0
+        ],
+        "last_impulse": [
+          0.0,
+          0.0
+        ],
+        "main_sync_ms_max": 0.373,
+        "main_sync_ms_total": 167.682,
+        "main_sync_segments": 1440,
+        "native_tick": 721,
+        "native_tick_ms": 0.0658,
+        "observed_native_tick_ms_max": 0.5508,
+        "observed_native_tick_ms_total": 52.31250000000001,
+        "observed_worker_step_ms_max": 0.693,
+        "observed_worker_step_ms_total": 152.107,
+        "physical_contact": {
+          "angular_momentum_change_sum": 0.0,
+          "area_samples": 2.1539377318037403,
+          "energy_change_sum": 0.0,
+          "energy_violations": 0,
+          "geometry_ms_max": 0.1731,
+          "geometry_ms_total": 51.6757,
+          "geometry_probes": 1424263,
+          "impulse_magnitude_sum": 0.0,
+          "impulse_x_sum": 0.0,
+          "impulse_y_sum": 0.0,
+          "latency_ms_total": 0.0,
+          "max_impulse_magnitude": 0.0,
+          "max_penetration": 0.18230056762695312,
+          "max_sand_penetration": 0.0,
+          "observations": 720,
+          "overlap_cell_samples": 598,
+          "owner_ready_latency_ms_max": 13.488,
+          "owner_ready_latency_ms_total": 8844.720000000007,
+          "owner_ready_receipts": 720,
+          "refused_observations": 0,
+          "response_accepts": 0,
+          "response_attempts": 0,
+          "response_failures": {},
+          "response_impulse_apply_ms_all_attempts": 0.0,
+          "response_ms_all_attempts": 0.0,
+          "response_ms_max_attempt": 0.0,
+          "response_ms_total": 0.0,
+          "response_other_ms_all_attempts": 0.0,
+          "response_planner_ms_all_attempts": 0.0,
+          "response_readback_ms_all_attempts": 0.0,
+          "response_refusals": {},
+          "response_rid_state_ms_all_attempts": 0.0,
+          "sand_area_samples": 0.0,
+          "torque_impulse_sum": 0.0,
+          "worker_complete_attempts": 722,
+          "worker_contact_ms_max": 0.223,
+          "worker_contact_ms_total": 54.214,
+          "worker_envelope_ms_all_attempts": 1.449,
+          "worker_geometry_probes": 1425927,
+          "worker_native_call_ms_all_attempts": 52.765,
+          "worker_native_geometry_ms_all_attempts": 48.4931,
+          "worker_native_payload_freeze_ms_all_attempts": 0.6957000000000032,
+          "worker_observation_attempts": 730,
+          "worker_refused_attempts": 8,
+          "worker_support_probes": 0
+        },
+        "proxy_count": 6,
+        "proxy_mass": 520.0,
+        "rapier_step_ms_max": 0.327,
+        "rapier_step_ms_total": 42.341,
+        "result_records": 4320,
+        "result_snapshots": 720,
+        "sample_serial": 721,
+        "sand_resistance_enabled": false,
+        "stale_results": 0,
+        "state_publications": 721,
+        "terrain_refresh_ms": 1.355,
+        "terrain_refreshes": 2,
+        "terrain_revision": 1671,
+        "timed_rapier_steps": 720,
+        "timed_snapshots": 720,
+        "unresolved": 0,
+        "worker_step_ms": 0.184
+      },
+      "observed_steps": 720
+    },
+    {
+      "full": {
+        "samples": 360,
+        "gravity_load_sum": 287414.384765625,
+        "ordinary_support_ratio": 0.0030679287984952323,
+        "clip_support_ratio": 0.7962994968073649,
+        "sand_support_ratio": 0.0,
+        "stage_energy_sum": [
+          -310196.8598128739,
+          0.0,
+          -191263.75629877904
+        ],
+        "stage_energy_positive_sum": [
+          18.07545641530305,
+          0.0,
+          0.0
+        ],
+        "clip_ke": -368199.5467337337,
+        "correction_potential": 58627.005718164146,
+        "ordinary_impulse_ke": -624.3073906275827,
+        "sand_ke": 0.0,
+        "max_ordinary_angle_delta": 2.260778064755442e-08,
+        "basis_roundtrip_steps": 52,
+        "correction_steps": 140,
+        "clip_steps": 140,
+        "wake_requests": 360,
+        "ordinary_outcomes": {
+          "Accepted": 360
+        },
+        "sand_outcomes": {
+          "NOT_EXECUTED": 360
+        },
+        "cap_hits": 268,
+        "discarded_impulse_magnitude": 0.0,
+        "peak_speed": 18.10555135874784,
+        "rms_speed": 7.358235443603851,
+        "peak_abs_omega": 0.3304065763950348,
+        "sleeping": 0,
+        "max_ordinary_momentum_residual": 0.00034785270932286266
+      },
+      "tail120": {
+        "samples": 120,
+        "gravity_load_sum": 95804.794921875,
+        "ordinary_support_ratio": 0.003757304652988087,
+        "clip_support_ratio": 0.9845226282640261,
+        "sand_support_ratio": 0.0,
+        "stage_energy_sum": [
+          -96967.65710017039,
+          0.0,
+          -23784.609244316816
+        ],
+        "stage_energy_positive_sum": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "clip_ke": -141956.05198121702,
+        "correction_potential": 45090.68256480619,
+        "ordinary_impulse_ke": -102.28767456916921,
+        "sand_ke": 0.0,
+        "max_ordinary_angle_delta": 2.260778064755442e-08,
+        "basis_roundtrip_steps": 25,
+        "correction_steps": 61,
+        "clip_steps": 61,
+        "wake_requests": 120,
+        "ordinary_outcomes": {
+          "Accepted": 120
+        },
+        "sand_outcomes": {
+          "NOT_EXECUTED": 120
+        },
+        "cap_hits": 120,
+        "discarded_impulse_magnitude": 0.0,
+        "peak_speed": 6.940640181970372,
+        "rms_speed": 5.966511417393289,
+        "peak_abs_omega": 0.04790319502353668,
+        "sleeping": 0,
+        "max_ordinary_momentum_residual": 0.00018000271887599103
+      },
+      "window": [
+        240,
+        359
+      ],
+      "run": "mass-fix-001",
+      "host": "windows",
+      "structure": "tree",
+      "workers": 4,
+      "sand_response": false,
+      "raw": {
+        "path": "build\\sol-structure-cut\\mass-fix-001\\windows\\tree-packed_sand-response0-w4.json",
+        "sha256": "1c2b161f8042c0eb7640d3427ea69c4edfef702a6d546c728f6f6bb4d742e049",
+        "bytes": 5494687
+      },
+      "registered_dry_rest": null,
+      "descriptive_motion": {
+        "samples": 120,
+        "max_speed": 6.940640181970372,
+        "max_abs_omega": 0.04790319502353668,
+        "x_span": 10.812255859375,
+        "y_span": 2.4253921508789062,
+        "angle_span": 0.07650488774558528,
+        "max_vertex_speed": 7.551275730133057,
+        "sleeping": 0,
+        "screen_pass": false,
+        "window": [
+          240,
+          359
+        ],
+        "screen_scope": "descriptive_packed",
+        "independent_max_vertex_speed": 7.551275594758673
+      },
+      "terminal_hard": {
+        "area": 0.0,
+        "depth": 0.0,
+        "witnesses": 0,
+        "deepest": null
+      },
+      "terminal_sand": {
+        "area": 47.81863827653005,
+        "depth": 2.6432224237530164,
+        "witnesses": 72,
+        "deepest": {
+          "proxy": 5,
+          "cell": [
+            76,
+            65
+          ],
+          "material": 2,
+          "area": 1.0,
+          "depth": 2.6432224237530164
+        }
+      },
+      "native_material_counts": {
+        "1": 588,
+        "43": 101,
+        "2": 1176
+      },
+      "all_attempt_metrics": {
+        "contacts": 27767,
+        "correction_applications": 140,
+        "displaced": 81,
+        "impulse_applications": 450,
+        "last_correction": [
+          0.0,
+          0.0
+        ],
+        "last_impulse": [
+          0.01862945593893528,
+          -2.999864101409912
+        ],
+        "main_sync_ms_max": 0.519,
+        "main_sync_ms_total": 108.035,
+        "main_sync_segments": 720,
+        "native_tick": 361,
+        "native_tick_ms": 0.1651,
+        "observed_native_tick_ms_max": 0.5413,
+        "observed_native_tick_ms_total": 50.65989999999998,
+        "observed_worker_step_ms_max": 0.707,
+        "observed_worker_step_ms_total": 105.24799999999985,
+        "physical_contact": {
+          "angular_momentum_change_sum": 0.0,
+          "area_samples": 10864.407058802959,
+          "energy_change_sum": 0.0,
+          "energy_violations": 0,
+          "geometry_ms_max": 0.3408,
+          "geometry_ms_total": 56.890999999999984,
+          "geometry_probes": 613506,
+          "impulse_magnitude_sum": 0.0,
+          "impulse_x_sum": 0.0,
+          "impulse_y_sum": 0.0,
+          "latency_ms_total": 0.0,
+          "max_impulse_magnitude": 0.0,
+          "max_penetration": 2.698554155899462,
+          "max_sand_penetration": 2.698554155899462,
+          "observations": 360,
+          "overlap_cell_samples": 15756,
+          "owner_ready_latency_ms_max": 9.245,
+          "owner_ready_latency_ms_total": 2634.344999999999,
+          "owner_ready_receipts": 360,
+          "refused_observations": 0,
+          "response_accepts": 0,
+          "response_attempts": 0,
+          "response_failures": {},
+          "response_impulse_apply_ms_all_attempts": 0.0,
+          "response_ms_all_attempts": 0.0,
+          "response_ms_max_attempt": 0.0,
+          "response_ms_total": 0.0,
+          "response_other_ms_all_attempts": 0.0,
+          "response_planner_ms_all_attempts": 0.0,
+          "response_readback_ms_all_attempts": 0.0,
+          "response_refusals": {},
+          "response_rid_state_ms_all_attempts": 0.0,
+          "sand_area_samples": 10864.407058802959,
+          "torque_impulse_sum": 0.0,
+          "worker_complete_attempts": 362,
+          "worker_contact_ms_max": 0.345,
+          "worker_contact_ms_total": 58.344,
+          "worker_envelope_ms_all_attempts": 0.77,
+          "worker_geometry_probes": 615170,
+          "worker_native_call_ms_all_attempts": 57.574,
+          "worker_native_geometry_ms_all_attempts": 55.24670000000005,
+          "worker_native_payload_freeze_ms_all_attempts": 0.6437999999999999,
+          "worker_observation_attempts": 370,
+          "worker_refused_attempts": 8,
+          "worker_support_probes": 141804
+        },
+        "proxy_count": 6,
+        "proxy_mass": 520.0,
+        "rapier_step_ms_max": 0.327,
+        "rapier_step_ms_total": 28.811,
+        "result_records": 2160,
+        "result_snapshots": 360,
+        "sample_serial": 361,
+        "sand_resistance_enabled": false,
+        "stale_results": 0,
+        "state_publications": 361,
+        "terrain_refresh_ms": 1.347,
+        "terrain_refreshes": 2,
+        "terrain_revision": 1747,
+        "timed_rapier_steps": 360,
+        "timed_snapshots": 360,
+        "unresolved": 10784,
+        "worker_step_ms": 0.321
+      },
+      "observed_steps": 360
+    },
+    {
+      "full": {
+        "samples": 360,
+        "gravity_load_sum": 287414.384765625,
+        "ordinary_support_ratio": 0.0030798781343320996,
+        "clip_support_ratio": 0.8200452382023621,
+        "sand_support_ratio": 0.1062533809616231,
+        "stage_energy_sum": [
+          -280811.2366247976,
+          -62141.68414385454,
+          -89627.5969951246
+        ],
+        "stage_energy_positive_sum": [
+          5.323441383894533,
+          0.0,
+          0.0
+        ],
+        "clip_ke": -306077.49110450025,
+        "correction_potential": 25197.986976150423,
+        "ordinary_impulse_ke": 68.27882741698697,
+        "sand_ke": -62141.684143853694,
+        "max_ordinary_angle_delta": 2.0827050195570962e-08,
+        "basis_roundtrip_steps": 50,
+        "correction_steps": 208,
+        "clip_steps": 208,
+        "wake_requests": 360,
+        "ordinary_outcomes": {
+          "Accepted": 360
+        },
+        "sand_outcomes": {
+          "Accepted": 334,
+          "NonDissipativeResponse": 26
+        },
+        "cap_hits": 268,
+        "discarded_impulse_magnitude": 0.0,
+        "peak_speed": 9.263134084440042,
+        "rms_speed": 4.1670891104151995,
+        "peak_abs_omega": 0.3663121461868286,
+        "sleeping": 0,
+        "max_ordinary_momentum_residual": 0.0002319578161393586
+      },
+      "tail120": {
+        "samples": 120,
+        "gravity_load_sum": 95804.794921875,
+        "ordinary_support_ratio": 0.00358026100063062,
+        "clip_support_ratio": 0.9471253069108801,
+        "sand_support_ratio": 0.059320928966890514,
+        "stage_energy_sum": [
+          -121403.09283167543,
+          -14004.568476486951,
+          -21361.061026092153
+        ],
+        "stage_energy_positive_sum": [
+          0.022600390948355198,
+          0.0,
+          0.0
+        ],
+        "clip_ke": -132435.52387827187,
+        "correction_potential": 10940.050634723157,
+        "ordinary_impulse_ke": 92.38046430786528,
+        "sand_ke": -14004.568476486831,
+        "max_ordinary_angle_delta": 2.0827050195570962e-08,
+        "basis_roundtrip_steps": 23,
+        "correction_steps": 64,
+        "clip_steps": 64,
+        "wake_requests": 120,
+        "ordinary_outcomes": {
+          "Accepted": 120
+        },
+        "sand_outcomes": {
+          "Accepted": 120
+        },
+        "cap_hits": 107,
+        "discarded_impulse_magnitude": 0.0,
+        "peak_speed": 5.246929736437543,
+        "rms_speed": 3.1357924577384173,
+        "peak_abs_omega": 0.18875545263290405,
+        "sleeping": 0,
+        "max_ordinary_momentum_residual": 6.387348982086992e-05
+      },
+      "window": [
+        240,
+        359
+      ],
+      "run": "mass-fix-001",
+      "host": "windows",
+      "structure": "tree",
+      "workers": 4,
+      "sand_response": true,
+      "raw": {
+        "path": "build\\sol-structure-cut\\mass-fix-001\\windows\\tree-packed_sand-response1-w4.json",
+        "sha256": "ef84db5e2d4bb3243b2937c178c3ccba1f964fb09470329e2f717d0ef4fad5a5",
+        "bytes": 5185614
+      },
+      "registered_dry_rest": null,
+      "descriptive_motion": {
+        "samples": 120,
+        "max_speed": 5.246929736437543,
+        "max_abs_omega": 0.18875545263290405,
+        "x_span": 3.711456298828125,
+        "y_span": 3.097126007080078,
+        "angle_span": 0.1848102769380378,
+        "max_vertex_speed": 8.482368469238281,
+        "sleeping": 0,
+        "screen_pass": false,
+        "window": [
+          240,
+          359
+        ],
+        "screen_scope": "descriptive_packed",
+        "independent_max_vertex_speed": 8.482368944467437
+      },
+      "terminal_hard": {
+        "area": 0.0,
+        "depth": 0.0,
+        "witnesses": 0,
+        "deepest": null
+      },
+      "terminal_sand": {
+        "area": 16.534360445122932,
+        "depth": 2.6388628474756786,
+        "witnesses": 30,
+        "deepest": {
+          "proxy": 5,
+          "cell": [
+            56,
+            58
+          ],
+          "material": 2,
+          "area": 1.0,
+          "depth": 2.6388628474756786
+        }
+      },
+      "native_material_counts": {
+        "1": 588,
+        "43": 101,
+        "2": 1176
+      },
+      "all_attempt_metrics": {
+        "contacts": 14359,
+        "correction_applications": 208,
+        "displaced": 1,
+        "impulse_applications": 378,
+        "last_correction": [
+          0.0,
+          -0.005061449017375708
+        ],
+        "last_impulse": [
+          -0.16685397922992706,
+          -2.9944279193878174
+        ],
+        "main_sync_ms_max": 1.3,
+        "main_sync_ms_total": 307.674,
+        "main_sync_segments": 720,
+        "native_tick": 361,
+        "native_tick_ms": 0.1189,
+        "observed_native_tick_ms_max": 0.616,
+        "observed_native_tick_ms_total": 46.09670000000001,
+        "observed_worker_step_ms_max": 0.745,
+        "observed_worker_step_ms_total": 97.19400000000003,
+        "physical_contact": {
+          "angular_momentum_change_sum": 76630.52896718569,
+          "area_samples": 2694.7006628996996,
+          "energy_change_sum": -62141.6809535114,
+          "energy_violations": 0,
+          "geometry_ms_max": 0.256,
+          "geometry_ms_total": 39.62219999999999,
+          "geometry_probes": 495654,
+          "impulse_magnitude_sum": 122983.49117683817,
+          "impulse_x_sum": -2649.232766419649,
+          "impulse_y_sum": -30538.750172287226,
+          "latency_ms_total": 3009.6789999999983,
+          "max_impulse_magnitude": 736.60791015625,
+          "max_penetration": 2.6982599413823274,
+          "max_sand_penetration": 2.6982599413823274,
+          "observations": 360,
+          "overlap_cell_samples": 6418,
+          "owner_ready_latency_ms_max": 9.567,
+          "owner_ready_latency_ms_total": 3008.642,
+          "owner_ready_receipts": 360,
+          "refused_observations": 0,
+          "response_accepts": 334,
+          "response_attempts": 360,
+          "response_failures": {},
+          "response_impulse_apply_ms_all_attempts": 2.3219999999999934,
+          "response_ms_all_attempts": 203.39799999999997,
+          "response_ms_max_attempt": 0.965,
+          "response_ms_total": 189.45999999999995,
+          "response_other_ms_all_attempts": 4.097999999999998,
+          "response_planner_ms_all_attempts": 193.3659999999999,
+          "response_readback_ms_all_attempts": 3.168999999999984,
+          "response_refusals": {
+            "NonDissipativeResponse": 26
+          },
+          "response_rid_state_ms_all_attempts": 0.44300000000000034,
+          "sand_area_samples": 2694.7006628996996,
+          "torque_impulse_sum": 76630.51818712801,
+          "worker_complete_attempts": 362,
+          "worker_contact_ms_max": 0.26,
+          "worker_contact_ms_total": 41.073,
+          "worker_envelope_ms_all_attempts": 0.75,
+          "worker_geometry_probes": 497318,
+          "worker_native_call_ms_all_attempts": 40.323,
+          "worker_native_geometry_ms_all_attempts": 38.0309,
+          "worker_native_payload_freeze_ms_all_attempts": 0.5133000000000009,
+          "worker_observation_attempts": 370,
+          "worker_refused_attempts": 8,
+          "worker_support_probes": 57762
+        },
+        "proxy_count": 6,
+        "proxy_mass": 520.0,
+        "rapier_step_ms_max": 0.273,
+        "rapier_step_ms_total": 28.425,
+        "result_records": 2160,
+        "result_snapshots": 360,
+        "sample_serial": 361,
+        "sand_resistance_enabled": true,
+        "stale_results": 0,
+        "state_publications": 361,
+        "terrain_refresh_ms": 1.298,
+        "terrain_refreshes": 2,
+        "terrain_revision": 1747,
+        "timed_rapier_steps": 360,
+        "timed_snapshots": 360,
+        "unresolved": 2488,
+        "worker_step_ms": 0.264
+      },
+      "observed_steps": 360
+    },
+    {
+      "full": {
+        "samples": 720,
+        "gravity_load_sum": 393536.619140625,
+        "ordinary_support_ratio": 0.0,
+        "clip_support_ratio": 0.0,
+        "sand_support_ratio": 0.0,
+        "stage_energy_sum": [
+          0.0,
+          0.0,
+          -575754.9103052353
+        ],
+        "stage_energy_positive_sum": [
+          0.0,
+          0.0,
+          2468.5867656180635
+        ],
+        "clip_ke": 0.0,
+        "correction_potential": 0.0,
+        "ordinary_impulse_ke": 0.0,
+        "sand_ke": 0.0,
+        "max_ordinary_angle_delta": 0.0,
+        "basis_roundtrip_steps": 0,
+        "correction_steps": 0,
+        "clip_steps": 0,
+        "wake_requests": 0,
+        "ordinary_outcomes": {
+          "Accepted": 720
+        },
+        "sand_outcomes": {
+          "NOT_EXECUTED": 720
+        },
+        "cap_hits": 0,
+        "discarded_impulse_magnitude": 0.0,
+        "peak_speed": 40.43696004708319,
+        "rms_speed": 7.775338816427069,
+        "peak_abs_omega": 1.4784444570541382,
+        "sleeping": 501,
+        "max_ordinary_momentum_residual": 0.0
+      },
+      "tail120": {
+        "samples": 120,
+        "gravity_load_sum": 65589.4365234375,
+        "ordinary_support_ratio": 0.0,
+        "clip_support_ratio": 0.0,
+        "sand_support_ratio": 0.0,
+        "stage_energy_sum": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "stage_energy_positive_sum": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "clip_ke": 0.0,
+        "correction_potential": 0.0,
+        "ordinary_impulse_ke": 0.0,
+        "sand_ke": 0.0,
+        "max_ordinary_angle_delta": 0.0,
+        "basis_roundtrip_steps": 0,
+        "correction_steps": 0,
+        "clip_steps": 0,
+        "wake_requests": 0,
+        "ordinary_outcomes": {
+          "Accepted": 120
+        },
+        "sand_outcomes": {
+          "NOT_EXECUTED": 120
+        },
+        "cap_hits": 0,
+        "discarded_impulse_magnitude": 0.0,
+        "peak_speed": 0.0,
+        "rms_speed": 0.0,
+        "peak_abs_omega": 0.0,
+        "sleeping": 120,
+        "max_ordinary_momentum_residual": 0.0
+      },
+      "window": [
+        600,
+        719
+      ],
+      "run": "mass-fix-001",
+      "host": "windows",
+      "structure": "building",
+      "workers": 4,
+      "sand_response": false,
+      "raw": {
+        "path": "build\\sol-structure-cut\\mass-fix-001\\windows\\building-empty-response0-w4.json",
+        "sha256": "24237ae2da776dc4ea6ec05d656e5b19386bf1094eb5919ac74ea9ea4e5ac84b",
+        "bytes": 5726757
+      },
+      "registered_dry_rest": {
+        "samples": 120,
+        "max_speed": 0.0,
+        "max_abs_omega": 0.0,
+        "x_span": 0.0,
+        "y_span": 0.0,
+        "angle_span": 0.0,
+        "max_vertex_speed": 0.0,
+        "sleeping": 120,
+        "screen_pass": true,
+        "window": [
+          600,
+          719
+        ],
+        "screen_scope": "registered_dry",
+        "independent_max_vertex_speed": 0.0
+      },
+      "descriptive_motion": {
+        "samples": 120,
+        "max_speed": 0.0,
+        "max_abs_omega": 0.0,
+        "x_span": 0.0,
+        "y_span": 0.0,
+        "angle_span": 0.0,
+        "max_vertex_speed": 0.0,
+        "sleeping": 120,
+        "screen_pass": true,
+        "window": [
+          600,
+          719
+        ],
+        "screen_scope": "registered_dry",
+        "independent_max_vertex_speed": 0.0
+      },
+      "terminal_hard": {
+        "area": 0.002814855793284548,
+        "depth": 0.0001877011006712337,
+        "witnesses": 24,
+        "deepest": {
+          "proxy": 3,
+          "cell": [
+            81,
+            72
+          ],
+          "material": 1,
+          "area": 3.1624861789482055e-05,
+          "depth": 0.0001877011006712337
+        }
+      },
+      "terminal_sand": {
+        "area": 0.0,
+        "depth": 0.0,
+        "witnesses": 0,
+        "deepest": null
+      },
+      "native_material_counts": {
+        "43": 101,
+        "1": 512
+      },
+      "all_attempt_metrics": {
+        "contacts": 0,
+        "correction_applications": 0,
+        "displaced": 0,
+        "impulse_applications": 0,
+        "last_correction": [
+          0.0,
+          0.0
+        ],
+        "last_impulse": [
+          0.0,
+          0.0
+        ],
+        "main_sync_ms_max": 0.487,
+        "main_sync_ms_total": 167.012,
+        "main_sync_segments": 1440,
+        "native_tick": 721,
+        "native_tick_ms": 0.0378,
+        "observed_native_tick_ms_max": 0.5104,
+        "observed_native_tick_ms_total": 35.21690000000006,
+        "observed_worker_step_ms_max": 0.616,
+        "observed_worker_step_ms_total": 113.4600000000002,
+        "physical_contact": {
+          "angular_momentum_change_sum": 0.0,
+          "area_samples": 3.503047494032049,
+          "energy_change_sum": 0.0,
+          "energy_violations": 0,
+          "geometry_ms_max": 0.1632,
+          "geometry_ms_total": 30.976799999999983,
+          "geometry_probes": 409609,
+          "impulse_magnitude_sum": 0.0,
+          "impulse_x_sum": 0.0,
+          "impulse_y_sum": 0.0,
+          "latency_ms_total": 0.0,
+          "max_impulse_magnitude": 0.0,
+          "max_penetration": 0.18230056762695312,
+          "max_sand_penetration": 0.0,
+          "observations": 720,
+          "overlap_cell_samples": 11565,
+          "owner_ready_latency_ms_max": 12.925,
+          "owner_ready_latency_ms_total": 8509.13999999999,
+          "owner_ready_receipts": 720,
+          "refused_observations": 0,
+          "response_accepts": 0,
+          "response_attempts": 0,
+          "response_failures": {},
+          "response_impulse_apply_ms_all_attempts": 0.0,
+          "response_ms_all_attempts": 0.0,
+          "response_ms_max_attempt": 0.0,
+          "response_ms_total": 0.0,
+          "response_other_ms_all_attempts": 0.0,
+          "response_planner_ms_all_attempts": 0.0,
+          "response_readback_ms_all_attempts": 0.0,
+          "response_refusals": {},
+          "response_rid_state_ms_all_attempts": 0.0,
+          "sand_area_samples": 0.0,
+          "torque_impulse_sum": 0.0,
+          "worker_complete_attempts": 722,
+          "worker_contact_ms_max": 0.168,
+          "worker_contact_ms_total": 33.429,
+          "worker_envelope_ms_all_attempts": 1.442,
+          "worker_geometry_probes": 410797,
+          "worker_native_call_ms_all_attempts": 31.987,
+          "worker_native_geometry_ms_all_attempts": 28.241099999999992,
+          "worker_native_payload_freeze_ms_all_attempts": 0.6932000000000028,
+          "worker_observation_attempts": 730,
+          "worker_refused_attempts": 8,
+          "worker_support_probes": 0
+        },
+        "proxy_count": 5,
+        "proxy_mass": 356.0,
+        "rapier_step_ms_max": 0.298,
+        "rapier_step_ms_total": 43.233,
+        "result_records": 3600,
+        "result_snapshots": 720,
+        "sample_serial": 721,
+        "sand_resistance_enabled": false,
+        "stale_results": 0,
+        "state_publications": 721,
+        "terrain_refresh_ms": 1.329,
+        "terrain_refreshes": 2,
+        "terrain_revision": 2439,
+        "timed_rapier_steps": 720,
+        "timed_snapshots": 720,
+        "unresolved": 0,
+        "worker_step_ms": 0.137
+      },
+      "observed_steps": 720
+    },
+    {
+      "full": {
+        "samples": 360,
+        "gravity_load_sum": 196768.3095703125,
+        "ordinary_support_ratio": 0.004752435474365009,
+        "clip_support_ratio": 0.856809557590544,
+        "sand_support_ratio": 0.0,
+        "stage_energy_sum": [
+          -125002.38803730626,
+          0.0,
+          -146751.40443422878
+        ],
+        "stage_energy_positive_sum": [
+          14.88621274009347,
+          0.0,
+          0.0
+        ],
+        "clip_ke": -168847.61426848941,
+        "correction_potential": 44291.71000278555,
+        "ordinary_impulse_ke": -446.53990734238323,
+        "sand_ke": 0.0,
+        "max_ordinary_angle_delta": 3.279525129240568e-08,
+        "basis_roundtrip_steps": 63,
+        "correction_steps": 286,
+        "clip_steps": 286,
+        "wake_requests": 360,
+        "ordinary_outcomes": {
+          "Accepted": 360
+        },
+        "sand_outcomes": {
+          "NOT_EXECUTED": 360
+        },
+        "cap_hits": 296,
+        "discarded_impulse_magnitude": 0.0,
+        "peak_speed": 18.08619053612333,
+        "rms_speed": 8.344947860006146,
+        "peak_abs_omega": 0.474206805229187,
+        "sleeping": 0,
+        "max_ordinary_momentum_residual": 0.00032444298526148387
+      },
+      "tail120": {
+        "samples": 120,
+        "gravity_load_sum": 65589.4365234375,
+        "ordinary_support_ratio": 0.005483541049158114,
+        "clip_support_ratio": 0.9911295621444116,
+        "sand_support_ratio": 0.0,
+        "stage_energy_sum": [
+          -25684.367317444878,
+          0.0,
+          -23051.049511790276
+        ],
+        "stage_energy_positive_sum": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "clip_ke": -49467.189622751466,
+        "correction_potential": 23802.267000691965,
+        "ordinary_impulse_ke": -19.44471959790036,
+        "sand_ke": 0.0,
+        "max_ordinary_angle_delta": 3.279525129240568e-08,
+        "basis_roundtrip_steps": 27,
+        "correction_steps": 120,
+        "clip_steps": 120,
+        "wake_requests": 120,
+        "ordinary_outcomes": {
+          "Accepted": 120
+        },
+        "sand_outcomes": {
+          "NOT_EXECUTED": 120
+        },
+        "cap_hits": 120,
+        "discarded_impulse_magnitude": 0.0,
+        "peak_speed": 7.684353581358063,
+        "rms_speed": 4.383457890599736,
+        "peak_abs_omega": 0.06813281029462814,
+        "sleeping": 0,
+        "max_ordinary_momentum_residual": 0.000189927875923782
+      },
+      "window": [
+        240,
+        359
+      ],
+      "run": "mass-fix-001",
+      "host": "windows",
+      "structure": "building",
+      "workers": 4,
+      "sand_response": false,
+      "raw": {
+        "path": "build\\sol-structure-cut\\mass-fix-001\\windows\\building-packed_sand-response0-w4.json",
+        "sha256": "730262d01a3632a13e568ae416dc78a88dc680493ad133fe79833e1026cfac33",
+        "bytes": 5930521
+      },
+      "registered_dry_rest": null,
+      "descriptive_motion": {
+        "samples": 120,
+        "max_speed": 7.684353581358063,
+        "max_abs_omega": 0.06813281029462814,
+        "x_span": 4.7468109130859375,
+        "y_span": 1.164703369140625,
+        "angle_span": 0.03897825548532463,
+        "max_vertex_speed": 8.33130931854248,
+        "sleeping": 0,
+        "screen_pass": false,
+        "window": [
+          240,
+          359
+        ],
+        "screen_scope": "descriptive_packed",
+        "independent_max_vertex_speed": 8.33130986260436
+      },
+      "terminal_hard": {
+        "area": 0.0,
+        "depth": 0.0,
+        "witnesses": 0,
+        "deepest": null
+      },
+      "terminal_sand": {
+        "area": 52.980878144868214,
+        "depth": 2.6969614882339457,
+        "witnesses": 81,
+        "deepest": {
+          "proxy": 3,
+          "cell": [
+            104,
+            59
+          ],
+          "material": 2,
+          "area": 1.0,
+          "depth": 2.6969614882339457
+        }
+      },
+      "native_material_counts": {
+        "1": 588,
+        "43": 101,
+        "2": 1176
+      },
+      "all_attempt_metrics": {
+        "contacts": 27944,
+        "correction_applications": 286,
+        "displaced": 69,
+        "impulse_applications": 817,
+        "last_correction": [
+          0.0,
+          -0.006007006391882896
+        ],
+        "last_impulse": [
+          -0.010137283243238926,
+          -2.99272084236145
+        ],
+        "main_sync_ms_max": 0.7,
+        "main_sync_ms_total": 122.154,
+        "main_sync_segments": 720,
+        "native_tick": 361,
+        "native_tick_ms": 0.0988,
+        "observed_native_tick_ms_max": 0.5281,
+        "observed_native_tick_ms_total": 42.17770000000002,
+        "observed_worker_step_ms_max": 0.645,
+        "observed_worker_step_ms_total": 90.12200000000001,
+        "physical_contact": {
+          "angular_momentum_change_sum": 0.0,
+          "area_samples": 10954.911398419395,
+          "energy_change_sum": 0.0,
+          "energy_violations": 0,
+          "geometry_ms_max": 0.4605,
+          "geometry_ms_total": 58.119800000000005,
+          "geometry_probes": 432635,
+          "impulse_magnitude_sum": 0.0,
+          "impulse_x_sum": 0.0,
+          "impulse_y_sum": 0.0,
+          "latency_ms_total": 0.0,
+          "max_impulse_magnitude": 0.0,
+          "max_penetration": 2.7041485910704965,
+          "max_sand_penetration": 2.7041485910704965,
+          "observations": 360,
+          "overlap_cell_samples": 16508,
+          "owner_ready_latency_ms_max": 10.934,
+          "owner_ready_latency_ms_total": 3324.5999999999976,
+          "owner_ready_receipts": 360,
+          "refused_observations": 0,
+          "response_accepts": 0,
+          "response_attempts": 0,
+          "response_failures": {},
+          "response_impulse_apply_ms_all_attempts": 0.0,
+          "response_ms_all_attempts": 0.0,
+          "response_ms_max_attempt": 0.0,
+          "response_ms_total": 0.0,
+          "response_other_ms_all_attempts": 0.0,
+          "response_planner_ms_all_attempts": 0.0,
+          "response_readback_ms_all_attempts": 0.0,
+          "response_refusals": {},
+          "response_rid_state_ms_all_attempts": 0.0,
+          "sand_area_samples": 10954.911398419395,
+          "torque_impulse_sum": 0.0,
+          "worker_complete_attempts": 362,
+          "worker_contact_ms_max": 0.467,
+          "worker_contact_ms_total": 59.698,
+          "worker_envelope_ms_all_attempts": 0.887,
+          "worker_geometry_probes": 433823,
+          "worker_native_call_ms_all_attempts": 58.811,
+          "worker_native_geometry_ms_all_attempts": 56.261500000000005,
+          "worker_native_payload_freeze_ms_all_attempts": 0.7721,
+          "worker_observation_attempts": 370,
+          "worker_refused_attempts": 8,
+          "worker_support_probes": 153513
+        },
+        "proxy_count": 5,
+        "proxy_mass": 356.0,
+        "rapier_step_ms_max": 0.288,
+        "rapier_step_ms_total": 31.805,
+        "result_records": 1800,
+        "result_snapshots": 360,
+        "sample_serial": 361,
+        "sand_resistance_enabled": false,
+        "stale_results": 0,
+        "state_publications": 361,
+        "terrain_refresh_ms": 1.353,
+        "terrain_refreshes": 2,
+        "terrain_revision": 2515,
+        "timed_rapier_steps": 360,
+        "timed_snapshots": 360,
+        "unresolved": 10913,
+        "worker_step_ms": 0.238
+      },
+      "observed_steps": 360
+    },
+    {
+      "full": {
+        "samples": 360,
+        "gravity_load_sum": 196768.3095703125,
+        "ordinary_support_ratio": 0.004746914760932757,
+        "clip_support_ratio": 0.8334027632799328,
+        "sand_support_ratio": 0.08703646546142246,
+        "stage_energy_sum": [
+          -115936.49492115108,
+          -43829.40585966129,
+          -64488.84543390549
+        ],
+        "stage_energy_positive_sum": [
+          24.536784028168768,
+          0.0,
+          0.0
+        ],
+        "clip_ke": -143949.5835996198,
+        "correction_potential": 27940.763685017824,
+        "ordinary_impulse_ke": 72.26868991079384,
+        "sand_ke": -43829.40585966075,
+        "max_ordinary_angle_delta": 1.6900582822110266e-08,
+        "basis_roundtrip_steps": 49,
+        "correction_steps": 300,
+        "clip_steps": 300,
+        "wake_requests": 360,
+        "ordinary_outcomes": {
+          "Accepted": 360
+        },
+        "sand_outcomes": {
+          "Accepted": 340,
+          "NonDissipativeResponse": 20
+        },
+        "cap_hits": 298,
+        "discarded_impulse_magnitude": 0.0,
+        "peak_speed": 10.086055561272422,
+        "rms_speed": 3.500862809792429,
+        "peak_abs_omega": 0.4512846767902374,
+        "sleeping": 0,
+        "max_ordinary_momentum_residual": 0.00017131426616089125
+      },
+      "tail120": {
+        "samples": 120,
+        "gravity_load_sum": 65589.4365234375,
+        "ordinary_support_ratio": 0.0054442269104761016,
+        "clip_support_ratio": 0.9044521858062238,
+        "sand_support_ratio": 0.04711560999528853,
+        "stage_energy_sum": [
+          -26199.864092676667,
+          -1217.3803906904068,
+          -14053.894368009875
+        ],
+        "stage_energy_positive_sum": [
+          23.604918482946232,
+          0.0,
+          0.0
+        ],
+        "clip_ke": -42061.91392546132,
+        "correction_potential": 15818.012129707262,
+        "ordinary_impulse_ke": 44.0377470803567,
+        "sand_ke": -1217.3803906898324,
+        "max_ordinary_angle_delta": 5.244526368741731e-09,
+        "basis_roundtrip_steps": 24,
+        "correction_steps": 120,
+        "clip_steps": 120,
+        "wake_requests": 120,
+        "ordinary_outcomes": {
+          "Accepted": 120
+        },
+        "sand_outcomes": {
+          "Accepted": 113,
+          "NonDissipativeResponse": 7
+        },
+        "cap_hits": 120,
+        "discarded_impulse_magnitude": 0.0,
+        "peak_speed": 1.9362777276574903,
+        "rms_speed": 1.5015783104963354,
+        "peak_abs_omega": 0.061427660286426544,
+        "sleeping": 0,
+        "max_ordinary_momentum_residual": 2.286848372190803e-05
+      },
+      "window": [
+        240,
+        359
+      ],
+      "run": "mass-fix-001",
+      "host": "windows",
+      "structure": "building",
+      "workers": 4,
+      "sand_response": true,
+      "raw": {
+        "path": "build\\sol-structure-cut\\mass-fix-001\\windows\\building-packed_sand-response1-w4.json",
+        "sha256": "0f786547104dd20e6639945f5d7ee874d3116dfa266894ee25f9ea0fc2329082",
+        "bytes": 5429258
+      },
+      "registered_dry_rest": null,
+      "descriptive_motion": {
+        "samples": 120,
+        "max_speed": 1.9362777276574903,
+        "max_abs_omega": 0.061427660286426544,
+        "x_span": 0.6785507202148438,
+        "y_span": 1.252227783203125,
+        "angle_span": 0.030113340461058014,
+        "max_vertex_speed": 3.0853214263916016,
+        "sleeping": 0,
+        "screen_pass": false,
+        "window": [
+          240,
+          359
+        ],
+        "screen_scope": "descriptive_packed",
+        "independent_max_vertex_speed": 3.085321490949619
+      },
+      "terminal_hard": {
+        "area": 0.0,
+        "depth": 0.0,
+        "witnesses": 0,
+        "deepest": null
+      },
+      "terminal_sand": {
+        "area": 20.367032541776812,
+        "depth": 2.6029759647611,
+        "witnesses": 34,
+        "deepest": {
+          "proxy": 4,
+          "cell": [
+            54,
+            60
+          ],
+          "material": 2,
+          "area": 1.0,
+          "depth": 2.6029759647611
+        }
+      },
+      "native_material_counts": {
+        "1": 588,
+        "43": 101,
+        "2": 1176
+      },
+      "all_attempt_metrics": {
+        "contacts": 15742,
+        "correction_applications": 300,
+        "displaced": 0,
+        "impulse_applications": 505,
+        "last_correction": [
+          0.0,
+          -0.0024371054023504257
+        ],
+        "last_impulse": [
+          -0.2430112063884735,
+          -2.9770514965057373
+        ],
+        "main_sync_ms_max": 2.056,
+        "main_sync_ms_total": 347.098,
+        "main_sync_segments": 720,
+        "native_tick": 361,
+        "native_tick_ms": 0.1523,
+        "observed_native_tick_ms_max": 0.5779,
+        "observed_native_tick_ms_total": 47.22130000000001,
+        "observed_worker_step_ms_max": 0.699,
+        "observed_worker_step_ms_total": 91.263,
+        "physical_contact": {
+          "angular_momentum_change_sum": 45258.470955356024,
+          "area_samples": 2749.6796994772603,
+          "energy_change_sum": -43829.409723768826,
+          "energy_violations": 0,
+          "geometry_ms_max": 0.3593,
+          "geometry_ms_total": 36.52419999999999,
+          "geometry_probes": 306090,
+          "impulse_magnitude_sum": 71971.70487575734,
+          "impulse_x_sum": -5498.921888247132,
+          "impulse_y_sum": -17126.018217639998,
+          "latency_ms_total": 3130.171999999999,
+          "max_impulse_magnitude": 456.8974304199219,
+          "max_penetration": 2.5964390621045172,
+          "max_sand_penetration": 2.5964390621045172,
+          "observations": 360,
+          "overlap_cell_samples": 6719,
+          "owner_ready_latency_ms_max": 9.718,
+          "owner_ready_latency_ms_total": 3049.3700000000013,
+          "owner_ready_receipts": 360,
+          "refused_observations": 0,
+          "response_accepts": 340,
+          "response_attempts": 360,
+          "response_failures": {},
+          "response_impulse_apply_ms_all_attempts": 2.6519999999999926,
+          "response_ms_all_attempts": 236.20899999999997,
+          "response_ms_max_attempt": 1.39,
+          "response_ms_total": 219.052,
+          "response_other_ms_all_attempts": 4.461999999999996,
+          "response_planner_ms_all_attempts": 225.24599999999998,
+          "response_readback_ms_all_attempts": 3.395999999999986,
+          "response_refusals": {
+            "NonDissipativeResponse": 20
+          },
+          "response_rid_state_ms_all_attempts": 0.45300000000000035,
+          "sand_area_samples": 2749.6796994772603,
+          "torque_impulse_sum": 45258.46182231605,
+          "worker_complete_attempts": 362,
+          "worker_contact_ms_max": 0.368,
+          "worker_contact_ms_total": 37.909,
+          "worker_envelope_ms_all_attempts": 0.734,
+          "worker_geometry_probes": 307278,
+          "worker_native_call_ms_all_attempts": 37.175,
+          "worker_native_geometry_ms_all_attempts": 34.53690000000001,
+          "worker_native_payload_freeze_ms_all_attempts": 0.5346000000000005,
+          "worker_observation_attempts": 370,
+          "worker_refused_attempts": 8,
+          "worker_support_probes": 60471
+        },
+        "proxy_count": 5,
+        "proxy_mass": 356.0,
+        "rapier_step_ms_max": 0.3,
+        "rapier_step_ms_total": 31.168,
+        "result_records": 1800,
+        "result_snapshots": 360,
+        "sample_serial": 361,
+        "sand_resistance_enabled": true,
+        "stale_results": 0,
+        "state_publications": 361,
+        "terrain_refresh_ms": 1.356,
+        "terrain_refreshes": 2,
+        "terrain_revision": 2515,
+        "timed_rapier_steps": 360,
+        "timed_snapshots": 360,
+        "unresolved": 2606,
+        "worker_step_ms": 0.329
+      },
+      "observed_steps": 360
+    },
+    {
+      "full": {
+        "samples": 720,
+        "gravity_load_sum": 574828.76953125,
+        "ordinary_support_ratio": 0.0,
+        "clip_support_ratio": 0.0,
+        "sand_support_ratio": 0.0,
+        "stage_energy_sum": [
+          0.0,
+          0.0,
+          -970450.625237552
+        ],
+        "stage_energy_positive_sum": [
+          0.0,
+          0.0,
+          5106.283430977957
+        ],
+        "clip_ke": 0.0,
+        "correction_potential": 0.0,
+        "ordinary_impulse_ke": 0.0,
+        "sand_ke": 0.0,
+        "max_ordinary_angle_delta": 0.0,
+        "basis_roundtrip_steps": 0,
+        "correction_steps": 0,
+        "clip_steps": 0,
+        "wake_requests": 0,
+        "ordinary_outcomes": {
+          "Accepted": 720
+        },
+        "sand_outcomes": {
+          "NOT_EXECUTED": 720
+        },
+        "cap_hits": 0,
+        "discarded_impulse_magnitude": 0.0,
+        "peak_speed": 47.05835581791309,
+        "rms_speed": 8.410502808161304,
+        "peak_abs_omega": 1.2738564014434814,
+        "sleeping": 515,
+        "max_ordinary_momentum_residual": 0.0
+      },
+      "tail120": {
+        "samples": 120,
+        "gravity_load_sum": 95804.794921875,
+        "ordinary_support_ratio": 0.0,
+        "clip_support_ratio": 0.0,
+        "sand_support_ratio": 0.0,
+        "stage_energy_sum": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "stage_energy_positive_sum": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "clip_ke": 0.0,
+        "correction_potential": 0.0,
+        "ordinary_impulse_ke": 0.0,
+        "sand_ke": 0.0,
+        "max_ordinary_angle_delta": 0.0,
+        "basis_roundtrip_steps": 0,
+        "correction_steps": 0,
+        "clip_steps": 0,
+        "wake_requests": 0,
+        "ordinary_outcomes": {
+          "Accepted": 120
+        },
+        "sand_outcomes": {
+          "NOT_EXECUTED": 120
+        },
+        "cap_hits": 0,
+        "discarded_impulse_magnitude": 0.0,
+        "peak_speed": 0.0,
+        "rms_speed": 0.0,
+        "peak_abs_omega": 0.0,
+        "sleeping": 120,
+        "max_ordinary_momentum_residual": 0.0
+      },
+      "window": [
+        600,
+        719
+      ],
+      "run": "mass-fix-001",
+      "host": "linux",
+      "structure": "tree",
+      "workers": 1,
+      "sand_response": false,
+      "raw": {
+        "path": "build\\sol-structure-cut\\mass-fix-001\\linux\\tree-empty-response0-w1.json",
+        "sha256": "c834a556062834a3c35080cb75371dbdc6dd1db3627dfc1305b08b8182b81ac4",
+        "bytes": 5633277
+      },
+      "registered_dry_rest": {
+        "samples": 120,
+        "max_speed": 0.0,
+        "max_abs_omega": 0.0,
+        "x_span": 0.0,
+        "y_span": 0.0,
+        "angle_span": 0.0,
+        "max_vertex_speed": 0.0,
+        "sleeping": 120,
+        "screen_pass": true,
+        "window": [
+          600,
+          719
+        ],
+        "screen_scope": "registered_dry",
+        "independent_max_vertex_speed": 0.0
+      },
+      "descriptive_motion": {
+        "samples": 120,
+        "max_speed": 0.0,
+        "max_abs_omega": 0.0,
+        "x_span": 0.0,
+        "y_span": 0.0,
+        "angle_span": 0.0,
+        "max_vertex_speed": 0.0,
+        "sleeping": 120,
+        "screen_pass": true,
+        "window": [
+          600,
+          719
+        ],
+        "screen_scope": "registered_dry",
+        "independent_max_vertex_speed": 0.0
+      },
+      "terminal_hard": {
+        "area": 6.199472015226739e-07,
+        "depth": 0.0007697546045619674,
+        "witnesses": 1,
+        "deepest": {
+          "proxy": 3,
+          "cell": [
+            88,
+            72
+          ],
+          "material": 1,
+          "area": 6.199472015226739e-07,
+          "depth": 0.0007697546045619674
+        }
+      },
+      "terminal_sand": {
+        "area": 0.0,
+        "depth": 0.0,
+        "witnesses": 0,
+        "deepest": null
+      },
+      "native_material_counts": {
+        "43": 101,
+        "1": 512
+      },
+      "all_attempt_metrics": {
+        "contacts": 0,
+        "correction_applications": 0,
+        "displaced": 0,
+        "impulse_applications": 0,
+        "last_correction": [
+          0.0,
+          0.0
+        ],
+        "last_impulse": [
+          0.0,
+          0.0
+        ],
+        "main_sync_ms_max": 0.577,
+        "main_sync_ms_total": 194.467,
+        "main_sync_segments": 1440,
+        "native_tick": 721,
+        "native_tick_ms": 0.111998,
+        "observed_native_tick_ms_max": 1.154343,
+        "observed_native_tick_ms_total": 92.64478299999992,
+        "observed_worker_step_ms_max": 1.445,
+        "observed_worker_step_ms_total": 241.26800000000003,
+        "physical_contact": {
+          "angular_momentum_change_sum": 0.0,
+          "area_samples": 2.1539377300723306,
+          "energy_change_sum": 0.0,
+          "energy_violations": 0,
+          "geometry_ms_max": 0.216287,
+          "geometry_ms_total": 91.92498600000005,
+          "geometry_probes": 1424263,
+          "impulse_magnitude_sum": 0.0,
+          "impulse_x_sum": 0.0,
+          "impulse_y_sum": 0.0,
+          "latency_ms_total": 0.0,
+          "max_impulse_magnitude": 0.0,
+          "max_penetration": 0.18230056762695312,
+          "max_sand_penetration": 0.0,
+          "observations": 720,
+          "overlap_cell_samples": 598,
+          "owner_ready_latency_ms_max": 11.147,
+          "owner_ready_latency_ms_total": 7521.599999999997,
+          "owner_ready_receipts": 720,
+          "refused_observations": 0,
+          "response_accepts": 0,
+          "response_attempts": 0,
+          "response_failures": {},
+          "response_impulse_apply_ms_all_attempts": 0.0,
+          "response_ms_all_attempts": 0.0,
+          "response_ms_max_attempt": 0.0,
+          "response_ms_total": 0.0,
+          "response_other_ms_all_attempts": 0.0,
+          "response_planner_ms_all_attempts": 0.0,
+          "response_readback_ms_all_attempts": 0.0,
+          "response_refusals": {},
+          "response_rid_state_ms_all_attempts": 0.0,
+          "sand_area_samples": 0.0,
+          "torque_impulse_sum": 0.0,
+          "worker_complete_attempts": 722,
+          "worker_contact_ms_max": 0.229,
+          "worker_contact_ms_total": 95.579,
+          "worker_envelope_ms_all_attempts": 1.618,
+          "worker_geometry_probes": 1425927,
+          "worker_native_call_ms_all_attempts": 93.961,
+          "worker_native_geometry_ms_all_attempts": 87.707498,
+          "worker_native_payload_freeze_ms_all_attempts": 1.3949709999999989,
+          "worker_observation_attempts": 730,
+          "worker_refused_attempts": 8,
+          "worker_support_probes": 0
+        },
+        "proxy_count": 6,
+        "proxy_mass": 520.0,
+        "rapier_step_ms_max": 3.773,
+        "rapier_step_ms_total": 94.056,
+        "result_records": 4320,
+        "result_snapshots": 720,
+        "sample_serial": 721,
+        "sand_resistance_enabled": false,
+        "stale_results": 0,
+        "state_publications": 721,
+        "terrain_refresh_ms": 2.127,
+        "terrain_refreshes": 2,
+        "terrain_revision": 1671,
+        "timed_rapier_steps": 720,
+        "timed_snapshots": 720,
+        "unresolved": 0,
+        "worker_step_ms": 0.29
+      },
+      "observed_steps": 720
+    },
+    {
+      "full": {
+        "samples": 360,
+        "gravity_load_sum": 287414.384765625,
+        "ordinary_support_ratio": 0.0030679287984952323,
+        "clip_support_ratio": 0.7962994968073649,
+        "sand_support_ratio": 0.0,
+        "stage_energy_sum": [
+          -310196.8598128739,
+          0.0,
+          -191263.75629877904
+        ],
+        "stage_energy_positive_sum": [
+          18.07545641530305,
+          0.0,
+          0.0
+        ],
+        "clip_ke": -368199.5467337337,
+        "correction_potential": 58627.005718164146,
+        "ordinary_impulse_ke": -624.3073906275827,
+        "sand_ke": 0.0,
+        "max_ordinary_angle_delta": 2.260778064755442e-08,
+        "basis_roundtrip_steps": 52,
+        "correction_steps": 140,
+        "clip_steps": 140,
+        "wake_requests": 360,
+        "ordinary_outcomes": {
+          "Accepted": 360
+        },
+        "sand_outcomes": {
+          "NOT_EXECUTED": 360
+        },
+        "cap_hits": 268,
+        "discarded_impulse_magnitude": 0.0,
+        "peak_speed": 18.10555135874784,
+        "rms_speed": 7.358235443603851,
+        "peak_abs_omega": 0.3304065763950348,
+        "sleeping": 0,
+        "max_ordinary_momentum_residual": 0.00034785270932286266
+      },
+      "tail120": {
+        "samples": 120,
+        "gravity_load_sum": 95804.794921875,
+        "ordinary_support_ratio": 0.003757304652988087,
+        "clip_support_ratio": 0.9845226282640261,
+        "sand_support_ratio": 0.0,
+        "stage_energy_sum": [
+          -96967.65710017039,
+          0.0,
+          -23784.609244316816
+        ],
+        "stage_energy_positive_sum": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "clip_ke": -141956.05198121702,
+        "correction_potential": 45090.68256480619,
+        "ordinary_impulse_ke": -102.28767456916921,
+        "sand_ke": 0.0,
+        "max_ordinary_angle_delta": 2.260778064755442e-08,
+        "basis_roundtrip_steps": 25,
+        "correction_steps": 61,
+        "clip_steps": 61,
+        "wake_requests": 120,
+        "ordinary_outcomes": {
+          "Accepted": 120
+        },
+        "sand_outcomes": {
+          "NOT_EXECUTED": 120
+        },
+        "cap_hits": 120,
+        "discarded_impulse_magnitude": 0.0,
+        "peak_speed": 6.940640181970372,
+        "rms_speed": 5.966511417393289,
+        "peak_abs_omega": 0.04790319502353668,
+        "sleeping": 0,
+        "max_ordinary_momentum_residual": 0.00018000271887599103
+      },
+      "window": [
+        240,
+        359
+      ],
+      "run": "mass-fix-001",
+      "host": "linux",
+      "structure": "tree",
+      "workers": 1,
+      "sand_response": false,
+      "raw": {
+        "path": "build\\sol-structure-cut\\mass-fix-001\\linux\\tree-packed_sand-response0-w1.json",
+        "sha256": "6e500965fc949b13d8c3528ce2e57a30be64cb0d0912c7d0b4f978a505735082",
+        "bytes": 5496674
+      },
+      "registered_dry_rest": null,
+      "descriptive_motion": {
+        "samples": 120,
+        "max_speed": 6.940640181970372,
+        "max_abs_omega": 0.04790319502353668,
+        "x_span": 10.812255859375,
+        "y_span": 2.4253921508789062,
+        "angle_span": 0.07650488774558528,
+        "max_vertex_speed": 7.551275730133057,
+        "sleeping": 0,
+        "screen_pass": false,
+        "window": [
+          240,
+          359
+        ],
+        "screen_scope": "descriptive_packed",
+        "independent_max_vertex_speed": 7.551275594758673
+      },
+      "terminal_hard": {
+        "area": 0.0,
+        "depth": 0.0,
+        "witnesses": 0,
+        "deepest": null
+      },
+      "terminal_sand": {
+        "area": 47.81863827653005,
+        "depth": 2.6432224237530164,
+        "witnesses": 72,
+        "deepest": {
+          "proxy": 5,
+          "cell": [
+            76,
+            65
+          ],
+          "material": 2,
+          "area": 1.0,
+          "depth": 2.6432224237530164
+        }
+      },
+      "native_material_counts": {
+        "1": 588,
+        "43": 101,
+        "2": 1176
+      },
+      "all_attempt_metrics": {
+        "contacts": 27767,
+        "correction_applications": 140,
+        "displaced": 81,
+        "impulse_applications": 450,
+        "last_correction": [
+          0.0,
+          0.0
+        ],
+        "last_impulse": [
+          0.01862945593893528,
+          -2.999864101409912
+        ],
+        "main_sync_ms_max": 1.514,
+        "main_sync_ms_total": 145.412,
+        "main_sync_segments": 720,
+        "native_tick": 361,
+        "native_tick_ms": 0.320305,
+        "observed_native_tick_ms_max": 0.626853,
+        "observed_native_tick_ms_total": 96.31744400000005,
+        "observed_worker_step_ms_max": 0.941,
+        "observed_worker_step_ms_total": 184.06200000000004,
+        "physical_contact": {
+          "angular_momentum_change_sum": 0.0,
+          "area_samples": 10864.407155062596,
+          "energy_change_sum": 0.0,
+          "energy_violations": 0,
+          "geometry_ms_max": 0.340978,
+          "geometry_ms_total": 68.98600200000001,
+          "geometry_probes": 613506,
+          "impulse_magnitude_sum": 0.0,
+          "impulse_x_sum": 0.0,
+          "impulse_y_sum": 0.0,
+          "latency_ms_total": 0.0,
+          "max_impulse_magnitude": 0.0,
+          "max_penetration": 2.698554155899462,
+          "max_sand_penetration": 2.698554155899462,
+          "observations": 360,
+          "overlap_cell_samples": 15756,
+          "owner_ready_latency_ms_max": 8.216,
+          "owner_ready_latency_ms_total": 2369.731999999999,
+          "owner_ready_receipts": 360,
+          "refused_observations": 0,
+          "response_accepts": 0,
+          "response_attempts": 0,
+          "response_failures": {},
+          "response_impulse_apply_ms_all_attempts": 0.0,
+          "response_ms_all_attempts": 0.0,
+          "response_ms_max_attempt": 0.0,
+          "response_ms_total": 0.0,
+          "response_other_ms_all_attempts": 0.0,
+          "response_planner_ms_all_attempts": 0.0,
+          "response_readback_ms_all_attempts": 0.0,
+          "response_refusals": {},
+          "response_rid_state_ms_all_attempts": 0.0,
+          "sand_area_samples": 10864.407155062596,
+          "torque_impulse_sum": 0.0,
+          "worker_complete_attempts": 362,
+          "worker_contact_ms_max": 0.348,
+          "worker_contact_ms_total": 70.795,
+          "worker_envelope_ms_all_attempts": 0.823,
+          "worker_geometry_probes": 615170,
+          "worker_native_call_ms_all_attempts": 69.972,
+          "worker_native_geometry_ms_all_attempts": 66.38080199999999,
+          "worker_native_payload_freeze_ms_all_attempts": 2.0101949999999995,
+          "worker_observation_attempts": 370,
+          "worker_refused_attempts": 8,
+          "worker_support_probes": 141804
+        },
+        "proxy_count": 6,
+        "proxy_mass": 520.0,
+        "rapier_step_ms_max": 3.843,
+        "rapier_step_ms_total": 71.835,
+        "result_records": 2160,
+        "result_snapshots": 360,
+        "sample_serial": 361,
+        "sand_resistance_enabled": false,
+        "stale_results": 0,
+        "state_publications": 361,
+        "terrain_refresh_ms": 1.895,
+        "terrain_refreshes": 2,
+        "terrain_revision": 1747,
+        "timed_rapier_steps": 360,
+        "timed_snapshots": 360,
+        "unresolved": 10784,
+        "worker_step_ms": 0.571
+      },
+      "observed_steps": 360
+    },
+    {
+      "full": {
+        "samples": 360,
+        "gravity_load_sum": 287414.384765625,
+        "ordinary_support_ratio": 0.0031268652347265545,
+        "clip_support_ratio": 0.8251277847215597,
+        "sand_support_ratio": 0.10359947933692859,
+        "stage_energy_sum": [
+          -283793.221205815,
+          -62825.70037996699,
+          -86023.52966201399
+        ],
+        "stage_energy_positive_sum": [
+          4.099634748883545,
+          0.0,
+          0.0
+        ],
+        "clip_ke": -307773.64966907946,
+        "correction_potential": 23889.43492759019,
+        "ordinary_impulse_ke": 90.99362897003596,
+        "sand_ke": -62825.700379970665,
+        "max_ordinary_angle_delta": 2.4881229854223363e-08,
+        "basis_roundtrip_steps": 62,
+        "correction_steps": 207,
+        "clip_steps": 207,
+        "wake_requests": 359,
+        "ordinary_outcomes": {
+          "Accepted": 360
+        },
+        "sand_outcomes": {
+          "Accepted": 354,
+          "NonDissipativeResponse": 6
+        },
+        "cap_hits": 275,
+        "discarded_impulse_magnitude": 0.0,
+        "peak_speed": 9.128290186080843,
+        "rms_speed": 4.07942378796663,
+        "peak_abs_omega": 0.36182740330696106,
+        "sleeping": 0,
+        "max_ordinary_momentum_residual": 0.0002458672451175937
+      },
+      "tail120": {
+        "samples": 120,
+        "gravity_load_sum": 95804.794921875,
+        "ordinary_support_ratio": 0.0036479916128550963,
+        "clip_support_ratio": 0.9416738316474458,
+        "sand_support_ratio": 0.06460653727593835,
+        "stage_energy_sum": [
+          -124175.23143313569,
+          -14611.04179874505,
+          -21141.863833477022
+        ],
+        "stage_energy_positive_sum": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "clip_ke": -133856.56183701212,
+        "correction_potential": 9607.74327736348,
+        "ordinary_impulse_ke": 73.587219783372,
+        "sand_ke": -14611.041798747665,
+        "max_ordinary_angle_delta": 2.4881229854223363e-08,
+        "basis_roundtrip_steps": 23,
+        "correction_steps": 60,
+        "clip_steps": 60,
+        "wake_requests": 120,
+        "ordinary_outcomes": {
+          "Accepted": 120
+        },
+        "sand_outcomes": {
+          "Accepted": 120
+        },
+        "cap_hits": 113,
+        "discarded_impulse_magnitude": 0.0,
+        "peak_speed": 5.22541870681101,
+        "rms_speed": 3.0955137071295566,
+        "peak_abs_omega": 0.18833337724208832,
+        "sleeping": 0,
+        "max_ordinary_momentum_residual": 6.469012673146256e-05
+      },
+      "window": [
+        240,
+        359
+      ],
+      "run": "mass-fix-001",
+      "host": "linux",
+      "structure": "tree",
+      "workers": 1,
+      "sand_response": true,
+      "raw": {
+        "path": "build\\sol-structure-cut\\mass-fix-001\\linux\\tree-packed_sand-response1-w1.json",
+        "sha256": "b1a3bddcd80e66ac89f466e66bbfd1f2686ad445b00a4560e10ca73527218454",
+        "bytes": 5207337
+      },
+      "registered_dry_rest": null,
+      "descriptive_motion": {
+        "samples": 120,
+        "max_speed": 5.22541870681101,
+        "max_abs_omega": 0.18833337724208832,
+        "x_span": 3.66748046875,
+        "y_span": 3.164653778076172,
+        "angle_span": 0.17839937516292415,
+        "max_vertex_speed": 8.45952320098877,
+        "sleeping": 0,
+        "screen_pass": false,
+        "window": [
+          240,
+          359
+        ],
+        "screen_scope": "descriptive_packed",
+        "independent_max_vertex_speed": 8.459524115131826
+      },
+      "terminal_hard": {
+        "area": 0.0,
+        "depth": 0.0,
+        "witnesses": 0,
+        "deepest": null
+      },
+      "terminal_sand": {
+        "area": 17.62694075012678,
+        "depth": 2.6791832247876357,
+        "witnesses": 31,
+        "deepest": {
+          "proxy": 5,
+          "cell": [
+            56,
+            58
+          ],
+          "material": 2,
+          "area": 1.0,
+          "depth": 2.6791832247876357
+        }
+      },
+      "native_material_counts": {
+        "1": 588,
+        "43": 101,
+        "2": 1176
+      },
+      "all_attempt_metrics": {
+        "contacts": 14621,
+        "correction_applications": 207,
+        "displaced": 0,
+        "impulse_applications": 367,
+        "last_correction": [
+          0.0,
+          -0.004273711703717709
+        ],
+        "last_impulse": [
+          -0.23808325827121735,
+          -2.988436222076416
+        ],
+        "main_sync_ms_max": 1.396,
+        "main_sync_ms_total": 324.517,
+        "main_sync_segments": 720,
+        "native_tick": 361,
+        "native_tick_ms": 0.306454,
+        "observed_native_tick_ms_max": 0.800174,
+        "observed_native_tick_ms_total": 90.31554299999999,
+        "observed_worker_step_ms_max": 7.57,
+        "observed_worker_step_ms_total": 176.584,
+        "physical_contact": {
+          "angular_momentum_change_sum": 66417.11828826054,
+          "area_samples": 2755.9370344367017,
+          "energy_change_sum": -62825.705006373304,
+          "energy_violations": 0,
+          "geometry_ms_max": 0.320849,
+          "geometry_ms_total": 49.107952000000004,
+          "geometry_probes": 493433,
+          "impulse_magnitude_sum": 124948.86044160416,
+          "impulse_x_sum": -2255.641025543213,
+          "impulse_y_sum": -29775.980704108253,
+          "latency_ms_total": 1385.4160000000018,
+          "max_impulse_magnitude": 1183.3736572265625,
+          "max_penetration": 2.6969065049549514,
+          "max_sand_penetration": 2.6969065049549514,
+          "observations": 360,
+          "overlap_cell_samples": 6459,
+          "owner_ready_latency_ms_max": 13.359,
+          "owner_ready_latency_ms_total": 1174.3959999999986,
+          "owner_ready_receipts": 360,
+          "refused_observations": 0,
+          "response_accepts": 354,
+          "response_attempts": 360,
+          "response_failures": {},
+          "response_impulse_apply_ms_all_attempts": 2.8489999999999887,
+          "response_ms_all_attempts": 197.325,
+          "response_ms_max_attempt": 0.862,
+          "response_ms_total": 187.85099999999994,
+          "response_other_ms_all_attempts": 4.987999999999996,
+          "response_planner_ms_all_attempts": 185.4769999999999,
+          "response_readback_ms_all_attempts": 3.4049999999999856,
+          "response_refusals": {
+            "NonDissipativeResponse": 6
+          },
+          "response_rid_state_ms_all_attempts": 0.6060000000000004,
+          "sand_area_samples": 2755.9370344367017,
+          "torque_impulse_sum": 66417.12173996866,
+          "worker_complete_attempts": 362,
+          "worker_contact_ms_max": 0.342,
+          "worker_contact_ms_total": 52.265,
+          "worker_envelope_ms_all_attempts": 0.793,
+          "worker_geometry_probes": 495097,
+          "worker_native_call_ms_all_attempts": 51.472,
+          "worker_native_geometry_ms_all_attempts": 47.28507000000001,
+          "worker_native_payload_freeze_ms_all_attempts": 1.1825479999999997,
+          "worker_observation_attempts": 370,
+          "worker_refused_attempts": 8,
+          "worker_support_probes": 58131
+        },
+        "proxy_count": 6,
+        "proxy_mass": 520.0,
+        "rapier_step_ms_max": 4.418,
+        "rapier_step_ms_total": 69.526,
+        "result_records": 2160,
+        "result_snapshots": 360,
+        "sample_serial": 361,
+        "sand_resistance_enabled": true,
+        "stale_results": 0,
+        "state_publications": 361,
+        "terrain_refresh_ms": 2.108,
+        "terrain_refreshes": 2,
+        "terrain_revision": 1747,
+        "timed_rapier_steps": 360,
+        "timed_snapshots": 360,
+        "unresolved": 2560,
+        "worker_step_ms": 0.539
+      },
+      "observed_steps": 360
+    },
+    {
+      "full": {
+        "samples": 720,
+        "gravity_load_sum": 393536.619140625,
+        "ordinary_support_ratio": 0.0,
+        "clip_support_ratio": 0.0,
+        "sand_support_ratio": 0.0,
+        "stage_energy_sum": [
+          0.0,
+          0.0,
+          -575754.9103052353
+        ],
+        "stage_energy_positive_sum": [
+          0.0,
+          0.0,
+          2468.5867656180635
+        ],
+        "clip_ke": 0.0,
+        "correction_potential": 0.0,
+        "ordinary_impulse_ke": 0.0,
+        "sand_ke": 0.0,
+        "max_ordinary_angle_delta": 0.0,
+        "basis_roundtrip_steps": 0,
+        "correction_steps": 0,
+        "clip_steps": 0,
+        "wake_requests": 0,
+        "ordinary_outcomes": {
+          "Accepted": 711,
+          "DuplicateOrOldSample": 9
+        },
+        "sand_outcomes": {
+          "NOT_EXECUTED": 720
+        },
+        "cap_hits": 0,
+        "discarded_impulse_magnitude": 0.0,
+        "peak_speed": 40.43696004708319,
+        "rms_speed": 7.775338816427069,
+        "peak_abs_omega": 1.4784444570541382,
+        "sleeping": 501,
+        "max_ordinary_momentum_residual": 0.0
+      },
+      "tail120": {
+        "samples": 120,
+        "gravity_load_sum": 65589.4365234375,
+        "ordinary_support_ratio": 0.0,
+        "clip_support_ratio": 0.0,
+        "sand_support_ratio": 0.0,
+        "stage_energy_sum": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "stage_energy_positive_sum": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "clip_ke": 0.0,
+        "correction_potential": 0.0,
+        "ordinary_impulse_ke": 0.0,
+        "sand_ke": 0.0,
+        "max_ordinary_angle_delta": 0.0,
+        "basis_roundtrip_steps": 0,
+        "correction_steps": 0,
+        "clip_steps": 0,
+        "wake_requests": 0,
+        "ordinary_outcomes": {
+          "Accepted": 120
+        },
+        "sand_outcomes": {
+          "NOT_EXECUTED": 120
+        },
+        "cap_hits": 0,
+        "discarded_impulse_magnitude": 0.0,
+        "peak_speed": 0.0,
+        "rms_speed": 0.0,
+        "peak_abs_omega": 0.0,
+        "sleeping": 120,
+        "max_ordinary_momentum_residual": 0.0
+      },
+      "window": [
+        600,
+        719
+      ],
+      "run": "mass-fix-001",
+      "host": "linux",
+      "structure": "building",
+      "workers": 1,
+      "sand_response": false,
+      "raw": {
+        "path": "build\\sol-structure-cut\\mass-fix-001\\linux\\building-empty-response0-w1.json",
+        "sha256": "8affb93b2ab6b2b9af26a380abdb0e3d8b4a47c04aabebb073a6c9d67307fc5f",
+        "bytes": 5729884
+      },
+      "registered_dry_rest": {
+        "samples": 120,
+        "max_speed": 0.0,
+        "max_abs_omega": 0.0,
+        "x_span": 0.0,
+        "y_span": 0.0,
+        "angle_span": 0.0,
+        "max_vertex_speed": 0.0,
+        "sleeping": 120,
+        "screen_pass": true,
+        "window": [
+          600,
+          719
+        ],
+        "screen_scope": "registered_dry",
+        "independent_max_vertex_speed": 0.0
+      },
+      "descriptive_motion": {
+        "samples": 120,
+        "max_speed": 0.0,
+        "max_abs_omega": 0.0,
+        "x_span": 0.0,
+        "y_span": 0.0,
+        "angle_span": 0.0,
+        "max_vertex_speed": 0.0,
+        "sleeping": 120,
+        "screen_pass": true,
+        "window": [
+          600,
+          719
+        ],
+        "screen_scope": "registered_dry",
+        "independent_max_vertex_speed": 0.0
+      },
+      "terminal_hard": {
+        "area": 0.002814855793284548,
+        "depth": 0.0001877011006712337,
+        "witnesses": 24,
+        "deepest": {
+          "proxy": 3,
+          "cell": [
+            81,
+            72
+          ],
+          "material": 1,
+          "area": 3.1624861789482055e-05,
+          "depth": 0.0001877011006712337
+        }
+      },
+      "terminal_sand": {
+        "area": 0.0,
+        "depth": 0.0,
+        "witnesses": 0,
+        "deepest": null
+      },
+      "native_material_counts": {
+        "43": 101,
+        "1": 512
+      },
+      "all_attempt_metrics": {
+        "contacts": 0,
+        "correction_applications": 0,
+        "displaced": 0,
+        "impulse_applications": 0,
+        "last_correction": [
+          0.0,
+          0.0
+        ],
+        "last_impulse": [
+          0.0,
+          0.0
+        ],
+        "main_sync_ms_max": 0.518,
+        "main_sync_ms_total": 185.513,
+        "main_sync_segments": 1440,
+        "native_tick": 720,
+        "native_tick_ms": 0.048046,
+        "observed_native_tick_ms_max": 0.614463,
+        "observed_native_tick_ms_total": 51.25022999999996,
+        "observed_worker_step_ms_max": 7.262,
+        "observed_worker_step_ms_total": 158.05999999999995,
+        "physical_contact": {
+          "angular_momentum_change_sum": 0.0,
+          "area_samples": 3.446630255732303,
+          "energy_change_sum": 0.0,
+          "energy_violations": 0,
+          "geometry_ms_max": 0.15069,
+          "geometry_ms_total": 40.368268,
+          "geometry_probes": 409518,
+          "impulse_magnitude_sum": 0.0,
+          "impulse_x_sum": 0.0,
+          "impulse_y_sum": 0.0,
+          "latency_ms_total": 0.0,
+          "max_impulse_magnitude": 0.0,
+          "max_penetration": 0.18230056762695312,
+          "max_sand_penetration": 0.0,
+          "observations": 720,
+          "overlap_cell_samples": 11564,
+          "owner_ready_latency_ms_max": 16.274,
+          "owner_ready_latency_ms_total": 11115.472000000007,
+          "owner_ready_receipts": 720,
+          "refused_observations": 0,
+          "response_accepts": 0,
+          "response_attempts": 0,
+          "response_failures": {},
+          "response_impulse_apply_ms_all_attempts": 0.0,
+          "response_ms_all_attempts": 0.0,
+          "response_ms_max_attempt": 0.0,
+          "response_ms_total": 0.0,
+          "response_other_ms_all_attempts": 0.0,
+          "response_planner_ms_all_attempts": 0.0,
+          "response_readback_ms_all_attempts": 0.0,
+          "response_refusals": {},
+          "response_rid_state_ms_all_attempts": 0.0,
+          "sand_area_samples": 0.0,
+          "torque_impulse_sum": 0.0,
+          "worker_complete_attempts": 721,
+          "worker_contact_ms_max": 0.165,
+          "worker_contact_ms_total": 44.57,
+          "worker_envelope_ms_all_attempts": 1.906,
+          "worker_geometry_probes": 410112,
+          "worker_native_call_ms_all_attempts": 42.664,
+          "worker_native_geometry_ms_all_attempts": 36.871065000000016,
+          "worker_native_payload_freeze_ms_all_attempts": 0.7767869999999992,
+          "worker_observation_attempts": 729,
+          "worker_refused_attempts": 8,
+          "worker_support_probes": 0
+        },
+        "proxy_count": 5,
+        "proxy_mass": 356.0,
+        "rapier_step_ms_max": 3.938,
+        "rapier_step_ms_total": 92.662,
+        "result_records": 3555,
+        "result_snapshots": 720,
+        "sample_serial": 721,
+        "sand_resistance_enabled": false,
+        "stale_results": 0,
+        "state_publications": 721,
+        "terrain_refresh_ms": 1.986,
+        "terrain_refreshes": 2,
+        "terrain_revision": 2439,
+        "timed_rapier_steps": 720,
+        "timed_snapshots": 720,
+        "unresolved": 0,
+        "worker_step_ms": 0.163
+      },
+      "observed_steps": 720
+    },
+    {
+      "full": {
+        "samples": 360,
+        "gravity_load_sum": 196768.3095703125,
+        "ordinary_support_ratio": 0.004670977772182002,
+        "clip_support_ratio": 0.859877206686744,
+        "sand_support_ratio": 0.0,
+        "stage_energy_sum": [
+          -124854.39066771558,
+          0.0,
+          -150591.07733329106
+        ],
+        "stage_energy_positive_sum": [
+          7.343035633908585,
+          0.0,
+          2364.9406683188863
+        ],
+        "clip_ke": -170733.62342817368,
+        "correction_potential": 46153.60190910101,
+        "ordinary_impulse_ke": -274.369027075631,
+        "sand_ke": 0.0,
+        "max_ordinary_angle_delta": 3.38164389823703e-08,
+        "basis_roundtrip_steps": 75,
+        "correction_steps": 292,
+        "clip_steps": 292,
+        "wake_requests": 355,
+        "ordinary_outcomes": {
+          "Accepted": 356,
+          "DuplicateOrOldSample": 1,
+          "NOT_EXECUTED": 3
+        },
+        "sand_outcomes": {
+          "NOT_EXECUTED": 360
+        },
+        "cap_hits": 298,
+        "discarded_impulse_magnitude": 0.0,
+        "peak_speed": 19.585737914145042,
+        "rms_speed": 8.483170135665356,
+        "peak_abs_omega": 0.5005367994308472,
+        "sleeping": 0,
+        "max_ordinary_momentum_residual": 0.00033235923290895374
+      },
+      "tail120": {
+        "samples": 120,
+        "gravity_load_sum": 65589.4365234375,
+        "ordinary_support_ratio": 0.005483748888177912,
+        "clip_support_ratio": 0.9906892784235958,
+        "sand_support_ratio": 0.0,
+        "stage_energy_sum": [
+          -25822.758717817254,
+          0.0,
+          -23240.783443316584
+        ],
+        "stage_energy_positive_sum": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "clip_ke": -49429.44768508083,
+        "correction_potential": 23620.744111754,
+        "ordinary_impulse_ke": -14.055147005332117,
+        "sand_ke": 0.0,
+        "max_ordinary_angle_delta": 3.32757625898239e-08,
+        "basis_roundtrip_steps": 30,
+        "correction_steps": 120,
+        "clip_steps": 120,
+        "wake_requests": 120,
+        "ordinary_outcomes": {
+          "Accepted": 120
+        },
+        "sand_outcomes": {
+          "NOT_EXECUTED": 120
+        },
+        "cap_hits": 120,
+        "discarded_impulse_magnitude": 0.0,
+        "peak_speed": 7.757496531283653,
+        "rms_speed": 4.233117635664701,
+        "peak_abs_omega": 0.05778886750340462,
+        "sleeping": 0,
+        "max_ordinary_momentum_residual": 0.00018881787334423
+      },
+      "window": [
+        240,
+        359
+      ],
+      "run": "mass-fix-001",
+      "host": "linux",
+      "structure": "building",
+      "workers": 1,
+      "sand_response": false,
+      "raw": {
+        "path": "build\\sol-structure-cut\\mass-fix-001\\linux\\building-packed_sand-response0-w1.json",
+        "sha256": "b66a67853d87a17ff10031b0b3943f79b78f235bc4e34a781deb55037c546a0c",
+        "bytes": 5955039
+      },
+      "registered_dry_rest": null,
+      "descriptive_motion": {
+        "samples": 120,
+        "max_speed": 7.757496531283653,
+        "max_abs_omega": 0.05778886750340462,
+        "x_span": 4.2741546630859375,
+        "y_span": 1.1685676574707031,
+        "angle_span": 0.03293828468848459,
+        "max_vertex_speed": 8.390295028686523,
+        "sleeping": 0,
+        "screen_pass": false,
+        "window": [
+          240,
+          359
+        ],
+        "screen_scope": "descriptive_packed",
+        "independent_max_vertex_speed": 8.390295349044722
+      },
+      "terminal_hard": {
+        "area": 0.0,
+        "depth": 0.0,
+        "witnesses": 0,
+        "deepest": null
+      },
+      "terminal_sand": {
+        "area": 53.60239680318955,
+        "depth": 2.6282569354579834,
+        "witnesses": 82,
+        "deepest": {
+          "proxy": 3,
+          "cell": [
+            102,
+            58
+          ],
+          "material": 2,
+          "area": 1.0,
+          "depth": 2.6282569354579834
+        }
+      },
+      "native_material_counts": {
+        "1": 588,
+        "43": 101,
+        "2": 1176
+      },
+      "all_attempt_metrics": {
+        "contacts": 26940,
+        "correction_applications": 292,
+        "displaced": 58,
+        "impulse_applications": 833,
+        "last_correction": [
+          0.0,
+          -0.005929268896579742
+        ],
+        "last_impulse": [
+          -0.005956787616014481,
+          -2.99554443359375
+        ],
+        "main_sync_ms_max": 0.778,
+        "main_sync_ms_total": 136.108,
+        "main_sync_segments": 720,
+        "native_tick": 360,
+        "native_tick_ms": 0.14858,
+        "observed_native_tick_ms_max": 0.778811,
+        "observed_native_tick_ms_total": 71.56057899999999,
+        "observed_worker_step_ms_max": 7.282,
+        "observed_worker_step_ms_total": 145.75400000000005,
+        "physical_contact": {
+          "angular_momentum_change_sum": 0.0,
+          "area_samples": 10778.912040753863,
+          "energy_change_sum": 0.0,
+          "energy_violations": 0,
+          "geometry_ms_max": 0.334561,
+          "geometry_ms_total": 68.66616599999999,
+          "geometry_probes": 438242,
+          "impulse_magnitude_sum": 0.0,
+          "impulse_x_sum": 0.0,
+          "impulse_y_sum": 0.0,
+          "latency_ms_total": 0.0,
+          "max_impulse_magnitude": 0.0,
+          "max_penetration": 2.704932399240895,
+          "max_sand_penetration": 2.704932399240895,
+          "observations": 357,
+          "overlap_cell_samples": 16418,
+          "owner_ready_latency_ms_max": 17.317,
+          "owner_ready_latency_ms_total": 5549.8520000000035,
+          "owner_ready_receipts": 357,
+          "refused_observations": 0,
+          "response_accepts": 0,
+          "response_attempts": 0,
+          "response_failures": {},
+          "response_impulse_apply_ms_all_attempts": 0.0,
+          "response_ms_all_attempts": 0.0,
+          "response_ms_max_attempt": 0.0,
+          "response_ms_total": 0.0,
+          "response_other_ms_all_attempts": 0.0,
+          "response_planner_ms_all_attempts": 0.0,
+          "response_readback_ms_all_attempts": 0.0,
+          "response_refusals": {},
+          "response_rid_state_ms_all_attempts": 0.0,
+          "sand_area_samples": 10777.364362077453,
+          "torque_impulse_sum": 0.0,
+          "worker_complete_attempts": 361,
+          "worker_contact_ms_max": 0.344,
+          "worker_contact_ms_total": 71.08,
+          "worker_envelope_ms_all_attempts": 0.831,
+          "worker_geometry_probes": 440402,
+          "worker_native_call_ms_all_attempts": 70.249,
+          "worker_native_geometry_ms_all_attempts": 65.983372,
+          "worker_native_payload_freeze_ms_all_attempts": 2.062552,
+          "worker_observation_attempts": 369,
+          "worker_refused_attempts": 8,
+          "worker_support_probes": 153918
+        },
+        "proxy_count": 5,
+        "proxy_mass": 356.0,
+        "rapier_step_ms_max": 3.58,
+        "rapier_step_ms_total": 79.847,
+        "result_records": 1780,
+        "result_snapshots": 357,
+        "sample_serial": 361,
+        "sand_resistance_enabled": false,
+        "stale_results": 0,
+        "state_publications": 361,
+        "terrain_refresh_ms": 1.753,
+        "terrain_refreshes": 2,
+        "terrain_revision": 2515,
+        "timed_rapier_steps": 360,
+        "timed_snapshots": 357,
+        "unresolved": 10754,
+        "worker_step_ms": 0.314
+      },
+      "observed_steps": 360
+    },
+    {
+      "full": {
+        "samples": 360,
+        "gravity_load_sum": 196768.3095703125,
+        "ordinary_support_ratio": 0.00486693590596324,
+        "clip_support_ratio": 0.8596348844391746,
+        "sand_support_ratio": 0.10472634546892094,
+        "stage_energy_sum": [
+          -163938.71836210485,
+          -20254.933482880937,
+          -45579.47077895282
+        ],
+        "stage_energy_positive_sum": [
+          1189.2525502718054,
+          0.0,
+          0.0
+        ],
+        "clip_ke": -193799.58715673853,
+        "correction_potential": 29568.089487433434,
+        "ordinary_impulse_ke": 292.8018639688017,
+        "sand_ke": -20254.93348288204,
+        "max_ordinary_angle_delta": 1.6230234101133334e-08,
+        "basis_roundtrip_steps": 81,
+        "correction_steps": 252,
+        "clip_steps": 252,
+        "wake_requests": 328,
+        "ordinary_outcomes": {
+          "Accepted": 329,
+          "DuplicateOrOldSample": 1,
+          "NOT_EXECUTED": 30
+        },
+        "sand_outcomes": {
+          "Accepted": 324,
+          "NOT_EXECUTED": 31,
+          "NonDissipativeResponse": 5
+        },
+        "cap_hits": 321,
+        "discarded_impulse_magnitude": 0.0,
+        "peak_speed": 5.637991436719927,
+        "rms_speed": 2.8256488862190094,
+        "peak_abs_omega": 0.17877036333084106,
+        "sleeping": 0,
+        "max_ordinary_momentum_residual": 5.341045138723894e-05
+      },
+      "tail120": {
+        "samples": 120,
+        "gravity_load_sum": 65589.4365234375,
+        "ordinary_support_ratio": 0.005410002745142788,
+        "clip_support_ratio": 0.8293184171110176,
+        "sand_support_ratio": 0.08705661132012282,
+        "stage_energy_sum": [
+          -21904.228800359415,
+          -2833.0335506210104,
+          -15089.565448984737
+        ],
+        "stage_energy_positive_sum": [
+          471.80100667569786,
+          0.0,
+          0.0
+        ],
+        "clip_ke": -37004.85343826167,
+        "correction_potential": 15042.630416655913,
+        "ordinary_impulse_ke": 57.994057126315056,
+        "sand_ke": -2833.0335506219694,
+        "max_ordinary_angle_delta": 4.570715306240203e-09,
+        "basis_roundtrip_steps": 29,
+        "correction_steps": 118,
+        "clip_steps": 118,
+        "wake_requests": 119,
+        "ordinary_outcomes": {
+          "Accepted": 119,
+          "NOT_EXECUTED": 1
+        },
+        "sand_outcomes": {
+          "Accepted": 119,
+          "NOT_EXECUTED": 1
+        },
+        "cap_hits": 119,
+        "discarded_impulse_magnitude": 0.0,
+        "peak_speed": 2.987288387757701,
+        "rms_speed": 1.4701211837920227,
+        "peak_abs_omega": 0.05062859132885933,
+        "sleeping": 0,
+        "max_ordinary_momentum_residual": 1.9278380533923e-05
+      },
+      "window": [
+        240,
+        359
+      ],
+      "run": "mass-fix-001",
+      "host": "linux",
+      "structure": "building",
+      "workers": 1,
+      "sand_response": true,
+      "raw": {
+        "path": "build\\sol-structure-cut\\mass-fix-001\\linux\\building-packed_sand-response1-w1.json",
+        "sha256": "33ccc99b9d5aaae6f67aa278d8c760f2be961c55cb272ed02d650a733c1e3324",
+        "bytes": 5381001
+      },
+      "registered_dry_rest": null,
+      "descriptive_motion": {
+        "samples": 120,
+        "max_speed": 2.987288387757701,
+        "max_abs_omega": 0.05062859132885933,
+        "x_span": 0.8861541748046875,
+        "y_span": 1.2163124084472656,
+        "angle_span": 0.037151023164261276,
+        "max_vertex_speed": 3.3441216945648193,
+        "sleeping": 0,
+        "screen_pass": false,
+        "window": [
+          240,
+          359
+        ],
+        "screen_scope": "descriptive_packed",
+        "independent_max_vertex_speed": 3.3441218719654318
+      },
+      "terminal_hard": {
+        "area": 0.0,
+        "depth": 0.0,
+        "witnesses": 0,
+        "deepest": null
+      },
+      "terminal_sand": {
+        "area": 23.306657196842647,
+        "depth": 2.504823054891986,
+        "witnesses": 41,
+        "deepest": {
+          "proxy": 4,
+          "cell": [
+            54,
+            60
+          ],
+          "material": 2,
+          "area": 1.0,
+          "depth": 2.504823054891986
+        }
+      },
+      "native_material_counts": {
+        "1": 588,
+        "43": 101,
+        "2": 1176
+      },
+      "all_attempt_metrics": {
+        "contacts": 15352,
+        "correction_applications": 252,
+        "displaced": 0,
+        "impulse_applications": 481,
+        "last_correction": [
+          0.0,
+          -0.002453357446938753
+        ],
+        "last_impulse": [
+          -0.20656223595142365,
+          -2.9863975048065186
+        ],
+        "main_sync_ms_max": 1.844,
+        "main_sync_ms_total": 330.286,
+        "main_sync_segments": 720,
+        "native_tick": 360,
+        "native_tick_ms": 0.201934,
+        "observed_native_tick_ms_max": 0.776317,
+        "observed_native_tick_ms_total": 76.74353500000001,
+        "observed_worker_step_ms_max": 7.493,
+        "observed_worker_step_ms_total": 145.68099999999995,
+        "physical_contact": {
+          "angular_momentum_change_sum": -13986.42089001432,
+          "area_samples": 2966.867101838221,
+          "energy_change_sum": -20254.931923311855,
+          "energy_violations": 0,
+          "geometry_ms_max": 0.237046,
+          "geometry_ms_total": 40.036223000000035,
+          "geometry_probes": 316284,
+          "impulse_magnitude_sum": 68610.32297525537,
+          "impulse_x_sum": -1357.3513929322362,
+          "impulse_y_sum": -20606.82592352107,
+          "latency_ms_total": 3057.3610000000012,
+          "max_impulse_magnitude": 1082.7835693359375,
+          "max_penetration": 2.664216167344513,
+          "max_sand_penetration": 2.664216167344513,
+          "observations": 330,
+          "overlap_cell_samples": 6709,
+          "owner_ready_latency_ms_max": 16.863,
+          "owner_ready_latency_ms_total": 2839.3630000000003,
+          "owner_ready_receipts": 330,
+          "refused_observations": 0,
+          "response_accepts": 324,
+          "response_attempts": 329,
+          "response_failures": {},
+          "response_impulse_apply_ms_all_attempts": 2.4689999999999936,
+          "response_ms_all_attempts": 201.45800000000006,
+          "response_ms_max_attempt": 1.16,
+          "response_ms_total": 193.88799999999998,
+          "response_other_ms_all_attempts": 4.1179999999999986,
+          "response_planner_ms_all_attempts": 191.3490000000001,
+          "response_readback_ms_all_attempts": 3.0529999999999906,
+          "response_refusals": {
+            "NonDissipativeResponse": 5
+          },
+          "response_rid_state_ms_all_attempts": 0.46900000000000036,
+          "sand_area_samples": 2966.867101838221,
+          "torque_impulse_sum": -13986.425580559764,
+          "worker_complete_attempts": 361,
+          "worker_contact_ms_max": 0.249,
+          "worker_contact_ms_total": 46.595,
+          "worker_envelope_ms_all_attempts": 0.764,
+          "worker_geometry_probes": 346173,
+          "worker_native_call_ms_all_attempts": 45.831,
+          "worker_native_geometry_ms_all_attempts": 41.85066800000004,
+          "worker_native_payload_freeze_ms_all_attempts": 1.1353339999999998,
+          "worker_observation_attempts": 369,
+          "worker_refused_attempts": 8,
+          "worker_support_probes": 64800
+        },
+        "proxy_count": 5,
+        "proxy_mass": 356.0,
+        "rapier_step_ms_max": 3.508,
+        "rapier_step_ms_total": 72.083,
+        "result_records": 1645,
+        "result_snapshots": 330,
+        "sample_serial": 361,
+        "sand_resistance_enabled": true,
+        "stale_results": 0,
+        "state_publications": 361,
+        "terrain_refresh_ms": 2.061,
+        "terrain_refreshes": 2,
+        "terrain_revision": 2515,
+        "timed_rapier_steps": 360,
+        "timed_snapshots": 330,
+        "unresolved": 2733,
+        "worker_step_ms": 0.398
+      },
+      "observed_steps": 360
+    },
+    {
+      "full": {
+        "samples": 720,
+        "gravity_load_sum": 574828.76953125,
+        "ordinary_support_ratio": 0.0,
+        "clip_support_ratio": 0.0,
+        "sand_support_ratio": 0.0,
+        "stage_energy_sum": [
+          0.0,
+          0.0,
+          -970450.625237552
+        ],
+        "stage_energy_positive_sum": [
+          0.0,
+          0.0,
+          5106.283430977957
+        ],
+        "clip_ke": 0.0,
+        "correction_potential": 0.0,
+        "ordinary_impulse_ke": 0.0,
+        "sand_ke": 0.0,
+        "max_ordinary_angle_delta": 0.0,
+        "basis_roundtrip_steps": 0,
+        "correction_steps": 0,
+        "clip_steps": 0,
+        "wake_requests": 0,
+        "ordinary_outcomes": {
+          "Accepted": 720
+        },
+        "sand_outcomes": {
+          "NOT_EXECUTED": 720
+        },
+        "cap_hits": 0,
+        "discarded_impulse_magnitude": 0.0,
+        "peak_speed": 47.05835581791309,
+        "rms_speed": 8.410502808161304,
+        "peak_abs_omega": 1.2738564014434814,
+        "sleeping": 515,
+        "max_ordinary_momentum_residual": 0.0
+      },
+      "tail120": {
+        "samples": 120,
+        "gravity_load_sum": 95804.794921875,
+        "ordinary_support_ratio": 0.0,
+        "clip_support_ratio": 0.0,
+        "sand_support_ratio": 0.0,
+        "stage_energy_sum": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "stage_energy_positive_sum": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "clip_ke": 0.0,
+        "correction_potential": 0.0,
+        "ordinary_impulse_ke": 0.0,
+        "sand_ke": 0.0,
+        "max_ordinary_angle_delta": 0.0,
+        "basis_roundtrip_steps": 0,
+        "correction_steps": 0,
+        "clip_steps": 0,
+        "wake_requests": 0,
+        "ordinary_outcomes": {
+          "Accepted": 120
+        },
+        "sand_outcomes": {
+          "NOT_EXECUTED": 120
+        },
+        "cap_hits": 0,
+        "discarded_impulse_magnitude": 0.0,
+        "peak_speed": 0.0,
+        "rms_speed": 0.0,
+        "peak_abs_omega": 0.0,
+        "sleeping": 120,
+        "max_ordinary_momentum_residual": 0.0
+      },
+      "window": [
+        600,
+        719
+      ],
+      "run": "mass-fix-001",
+      "host": "linux",
+      "structure": "tree",
+      "workers": 4,
+      "sand_response": false,
+      "raw": {
+        "path": "build\\sol-structure-cut\\mass-fix-001\\linux\\tree-empty-response0-w4.json",
+        "sha256": "67f547efa659144132bdf626f9619aa20d756be2aa0b8bc1c4e4596d25e7ab95",
+        "bytes": 5633130
+      },
+      "registered_dry_rest": {
+        "samples": 120,
+        "max_speed": 0.0,
+        "max_abs_omega": 0.0,
+        "x_span": 0.0,
+        "y_span": 0.0,
+        "angle_span": 0.0,
+        "max_vertex_speed": 0.0,
+        "sleeping": 120,
+        "screen_pass": true,
+        "window": [
+          600,
+          719
+        ],
+        "screen_scope": "registered_dry",
+        "independent_max_vertex_speed": 0.0
+      },
+      "descriptive_motion": {
+        "samples": 120,
+        "max_speed": 0.0,
+        "max_abs_omega": 0.0,
+        "x_span": 0.0,
+        "y_span": 0.0,
+        "angle_span": 0.0,
+        "max_vertex_speed": 0.0,
+        "sleeping": 120,
+        "screen_pass": true,
+        "window": [
+          600,
+          719
+        ],
+        "screen_scope": "registered_dry",
+        "independent_max_vertex_speed": 0.0
+      },
+      "terminal_hard": {
+        "area": 6.199472015226739e-07,
+        "depth": 0.0007697546045619674,
+        "witnesses": 1,
+        "deepest": {
+          "proxy": 3,
+          "cell": [
+            88,
+            72
+          ],
+          "material": 1,
+          "area": 6.199472015226739e-07,
+          "depth": 0.0007697546045619674
+        }
+      },
+      "terminal_sand": {
+        "area": 0.0,
+        "depth": 0.0,
+        "witnesses": 0,
+        "deepest": null
+      },
+      "native_material_counts": {
+        "43": 101,
+        "1": 512
+      },
+      "all_attempt_metrics": {
+        "contacts": 0,
+        "correction_applications": 0,
+        "displaced": 0,
+        "impulse_applications": 0,
+        "last_correction": [
+          0.0,
+          0.0
+        ],
+        "last_impulse": [
+          0.0,
+          0.0
+        ],
+        "main_sync_ms_max": 0.845,
+        "main_sync_ms_total": 203.25,
+        "main_sync_segments": 1440,
+        "native_tick": 721,
+        "native_tick_ms": 0.170958,
+        "observed_native_tick_ms_max": 0.6684,
+        "observed_native_tick_ms_total": 95.03718899999993,
+        "observed_worker_step_ms_max": 0.891,
+        "observed_worker_step_ms_total": 253.8420000000001,
+        "physical_contact": {
+          "angular_momentum_change_sum": 0.0,
+          "area_samples": 2.1539377300723306,
+          "energy_change_sum": 0.0,
+          "energy_violations": 0,
+          "geometry_ms_max": 0.201166,
+          "geometry_ms_total": 92.63535999999993,
+          "geometry_probes": 1424263,
+          "impulse_magnitude_sum": 0.0,
+          "impulse_x_sum": 0.0,
+          "impulse_y_sum": 0.0,
+          "latency_ms_total": 0.0,
+          "max_impulse_magnitude": 0.0,
+          "max_penetration": 0.18230056762695312,
+          "max_sand_penetration": 0.0,
+          "observations": 720,
+          "overlap_cell_samples": 598,
+          "owner_ready_latency_ms_max": 10.977,
+          "owner_ready_latency_ms_total": 6527.458000000002,
+          "owner_ready_receipts": 720,
+          "refused_observations": 0,
+          "response_accepts": 0,
+          "response_attempts": 0,
+          "response_failures": {},
+          "response_impulse_apply_ms_all_attempts": 0.0,
+          "response_ms_all_attempts": 0.0,
+          "response_ms_max_attempt": 0.0,
+          "response_ms_total": 0.0,
+          "response_other_ms_all_attempts": 0.0,
+          "response_planner_ms_all_attempts": 0.0,
+          "response_readback_ms_all_attempts": 0.0,
+          "response_refusals": {},
+          "response_rid_state_ms_all_attempts": 0.0,
+          "sand_area_samples": 0.0,
+          "torque_impulse_sum": 0.0,
+          "worker_complete_attempts": 722,
+          "worker_contact_ms_max": 0.226,
+          "worker_contact_ms_total": 98.6,
+          "worker_envelope_ms_all_attempts": 1.593,
+          "worker_geometry_probes": 1425927,
+          "worker_native_call_ms_all_attempts": 97.007,
+          "worker_native_geometry_ms_all_attempts": 88.48292300000003,
+          "worker_native_payload_freeze_ms_all_attempts": 1.4552890000000005,
+          "worker_observation_attempts": 730,
+          "worker_refused_attempts": 8,
+          "worker_support_probes": 0
+        },
+        "proxy_count": 6,
+        "proxy_mass": 520.0,
+        "rapier_step_ms_max": 3.566,
+        "rapier_step_ms_total": 96.845,
+        "result_records": 4320,
+        "result_snapshots": 720,
+        "sample_serial": 721,
+        "sand_resistance_enabled": false,
+        "stale_results": 0,
+        "state_publications": 721,
+        "terrain_refresh_ms": 1.841,
+        "terrain_refreshes": 2,
+        "terrain_revision": 1671,
+        "timed_rapier_steps": 720,
+        "timed_snapshots": 720,
+        "unresolved": 0,
+        "worker_step_ms": 0.389
+      },
+      "observed_steps": 720
+    },
+    {
+      "full": {
+        "samples": 360,
+        "gravity_load_sum": 287414.384765625,
+        "ordinary_support_ratio": 0.0027323020585246455,
+        "clip_support_ratio": 0.8023725470077676,
+        "sand_support_ratio": 0.0,
+        "stage_energy_sum": [
+          -330678.9384466426,
+          0.0,
+          -195325.07733496162
+        ],
+        "stage_energy_positive_sum": [
+          14853.118710413342,
+          0.0,
+          4964.3861992449965
+        ],
+        "clip_ke": -396473.0042806276,
+        "correction_potential": 66290.65107000992,
+        "ordinary_impulse_ke": -496.5852185489148,
+        "sand_ke": 0.0,
+        "max_ordinary_angle_delta": 2.3294635886905724e-08,
+        "basis_roundtrip_steps": 44,
+        "correction_steps": 160,
+        "clip_steps": 160,
+        "wake_requests": 323,
+        "ordinary_outcomes": {
+          "Accepted": 324,
+          "DuplicateOrOldSample": 1,
+          "NOT_EXECUTED": 35
+        },
+        "sand_outcomes": {
+          "NOT_EXECUTED": 360
+        },
+        "cap_hits": 245,
+        "discarded_impulse_magnitude": 0.0,
+        "peak_speed": 19.598659926136452,
+        "rms_speed": 7.54478625728291,
+        "peak_abs_omega": 0.34593164920806885,
+        "sleeping": 0,
+        "max_ordinary_momentum_residual": 0.00034785272311177445
+      },
+      "tail120": {
+        "samples": 120,
+        "gravity_load_sum": 95804.794921875,
+        "ordinary_support_ratio": 0.0036947383546256057,
+        "clip_support_ratio": 0.9933617070350856,
+        "sand_support_ratio": 0.0,
+        "stage_energy_sum": [
+          -65824.11431221338,
+          0.0,
+          -23577.74207634898
+        ],
+        "stage_energy_positive_sum": [
+          14840.315206080675,
+          0.0,
+          0.0
+        ],
+        "clip_ke": -113649.75979427999,
+        "correction_potential": 47843.55738837272,
+        "ordinary_impulse_ke": -17.91188884762505,
+        "sand_ke": 0.0,
+        "max_ordinary_angle_delta": 2.3294635886905724e-08,
+        "basis_roundtrip_steps": 24,
+        "correction_steps": 88,
+        "clip_steps": 88,
+        "wake_requests": 118,
+        "ordinary_outcomes": {
+          "Accepted": 118,
+          "NOT_EXECUTED": 2
+        },
+        "sand_outcomes": {
+          "NOT_EXECUTED": 120
+        },
+        "cap_hits": 118,
+        "discarded_impulse_magnitude": 0.0,
+        "peak_speed": 7.75299527072522,
+        "rms_speed": 5.871539870360479,
+        "peak_abs_omega": 0.044804636389017105,
+        "sleeping": 0,
+        "max_ordinary_momentum_residual": 0.00020623212475651936
+      },
+      "window": [
+        240,
+        359
+      ],
+      "run": "mass-fix-001",
+      "host": "linux",
+      "structure": "tree",
+      "workers": 4,
+      "sand_response": false,
+      "raw": {
+        "path": "build\\sol-structure-cut\\mass-fix-001\\linux\\tree-packed_sand-response0-w4.json",
+        "sha256": "c7ea5c5d40b7343f417aea10d10658552614a9e9546762c16728e01bc285ab4d",
+        "bytes": 5729145
+      },
+      "registered_dry_rest": null,
+      "descriptive_motion": {
+        "samples": 120,
+        "max_speed": 7.75299527072522,
+        "max_abs_omega": 0.044804636389017105,
+        "x_span": 10.8572998046875,
+        "y_span": 1.706817626953125,
+        "angle_span": 0.06790043946264412,
+        "max_vertex_speed": 8.302946090698242,
+        "sleeping": 0,
+        "screen_pass": false,
+        "window": [
+          240,
+          359
+        ],
+        "screen_scope": "descriptive_packed",
+        "independent_max_vertex_speed": 8.302946698455003
+      },
+      "terminal_hard": {
+        "area": 0.0,
+        "depth": 0.0,
+        "witnesses": 0,
+        "deepest": null
+      },
+      "terminal_sand": {
+        "area": 52.32106152751021,
+        "depth": 2.6857293927872803,
+        "witnesses": 79,
+        "deepest": {
+          "proxy": 5,
+          "cell": [
+            81,
+            59
+          ],
+          "material": 2,
+          "area": 1.0,
+          "depth": 2.6857293927872803
+        }
+      },
+      "native_material_counts": {
+        "1": 588,
+        "43": 101,
+        "2": 1176
+      },
+      "all_attempt_metrics": {
+        "contacts": 27275,
+        "correction_applications": 160,
+        "displaced": 71,
+        "impulse_applications": 491,
+        "last_correction": [
+          0.0,
+          0.0
+        ],
+        "last_impulse": [
+          0.02169465646147728,
+          -2.9998648166656494
+        ],
+        "main_sync_ms_max": 1.383,
+        "main_sync_ms_total": 163.223,
+        "main_sync_segments": 720,
+        "native_tick": 360,
+        "native_tick_ms": 0.165363,
+        "observed_native_tick_ms_max": 0.775875,
+        "observed_native_tick_ms_total": 85.84178999999995,
+        "observed_worker_step_ms_max": 7.32,
+        "observed_worker_step_ms_total": 179.74399999999994,
+        "physical_contact": {
+          "angular_momentum_change_sum": 0.0,
+          "area_samples": 10529.484089482137,
+          "energy_change_sum": 0.0,
+          "energy_violations": 0,
+          "geometry_ms_max": 0.389422,
+          "geometry_ms_total": 69.603917,
+          "geometry_probes": 563273,
+          "impulse_magnitude_sum": 0.0,
+          "impulse_x_sum": 0.0,
+          "impulse_y_sum": 0.0,
+          "latency_ms_total": 0.0,
+          "max_impulse_magnitude": 0.0,
+          "max_penetration": 2.6981741790506075,
+          "max_sand_penetration": 2.6981741790506075,
+          "observations": 325,
+          "overlap_cell_samples": 15532,
+          "owner_ready_latency_ms_max": 16.921,
+          "owner_ready_latency_ms_total": 3324.969999999999,
+          "owner_ready_receipts": 325,
+          "refused_observations": 0,
+          "response_accepts": 0,
+          "response_attempts": 0,
+          "response_failures": {},
+          "response_impulse_apply_ms_all_attempts": 0.0,
+          "response_ms_all_attempts": 0.0,
+          "response_ms_max_attempt": 0.0,
+          "response_ms_total": 0.0,
+          "response_other_ms_all_attempts": 0.0,
+          "response_planner_ms_all_attempts": 0.0,
+          "response_readback_ms_all_attempts": 0.0,
+          "response_refusals": {},
+          "response_rid_state_ms_all_attempts": 0.0,
+          "sand_area_samples": 10527.393977093769,
+          "torque_impulse_sum": 0.0,
+          "worker_complete_attempts": 361,
+          "worker_contact_ms_max": 0.402,
+          "worker_contact_ms_total": 78.009,
+          "worker_envelope_ms_all_attempts": 0.806,
+          "worker_geometry_probes": 622262,
+          "worker_native_call_ms_all_attempts": 77.203,
+          "worker_native_geometry_ms_all_attempts": 72.93688499999996,
+          "worker_native_payload_freeze_ms_all_attempts": 2.20875,
+          "worker_observation_attempts": 369,
+          "worker_refused_attempts": 8,
+          "worker_support_probes": 152046
+        },
+        "proxy_count": 6,
+        "proxy_mass": 520.0,
+        "rapier_step_ms_max": 3.435,
+        "rapier_step_ms_total": 73.106,
+        "result_records": 1944,
+        "result_snapshots": 325,
+        "sample_serial": 361,
+        "sand_resistance_enabled": false,
+        "stale_results": 0,
+        "state_publications": 361,
+        "terrain_refresh_ms": 2.082,
+        "terrain_refreshes": 2,
+        "terrain_revision": 1747,
+        "timed_rapier_steps": 360,
+        "timed_snapshots": 325,
+        "unresolved": 10448,
+        "worker_step_ms": 0.404
+      },
+      "observed_steps": 360
+    },
+    {
+      "full": {
+        "samples": 360,
+        "gravity_load_sum": 287414.384765625,
+        "ordinary_support_ratio": 0.0028055053112560355,
+        "clip_support_ratio": 0.8087520763019,
+        "sand_support_ratio": 0.0979413368171923,
+        "stage_energy_sum": [
+          -264846.023697532,
+          -82421.55776588293,
+          -101057.40462860581
+        ],
+        "stage_energy_positive_sum": [
+          270.3042655738536,
+          0.0,
+          0.0
+        ],
+        "clip_ke": -310720.6232133824,
+        "correction_potential": 45841.89852230251,
+        "ordinary_impulse_ke": 32.701048004707616,
+        "sand_ke": -82421.55776587925,
+        "max_ordinary_angle_delta": 3.355150601791479e-08,
+        "basis_roundtrip_steps": 43,
+        "correction_steps": 227,
+        "clip_steps": 226,
+        "wake_requests": 336,
+        "ordinary_outcomes": {
+          "Accepted": 337,
+          "DuplicateOrOldSample": 23
+        },
+        "sand_outcomes": {
+          "Accepted": 333,
+          "NOT_EXECUTED": 23,
+          "PoseDrift": 4
+        },
+        "cap_hits": 238,
+        "discarded_impulse_magnitude": 0.0,
+        "peak_speed": 10.954575925639823,
+        "rms_speed": 4.670082652672522,
+        "peak_abs_omega": 0.3806978464126587,
+        "sleeping": 0,
+        "max_ordinary_momentum_residual": 0.00023549215088287343
+      },
+      "tail120": {
+        "samples": 120,
+        "gravity_load_sum": 95804.794921875,
+        "ordinary_support_ratio": 0.003674403561548272,
+        "clip_support_ratio": 0.9654361433329921,
+        "sand_support_ratio": 0.036000614784403424,
+        "stage_energy_sum": [
+          -48878.01587205799,
+          -4534.283916241489,
+          -19550.022623070516
+        ],
+        "stage_energy_positive_sum": [
+          266.9568618745543,
+          0.0,
+          0.0
+        ],
+        "clip_ke": -78907.47978538614,
+        "correction_potential": 30008.619741182774,
+        "ordinary_impulse_ke": 20.844205170680823,
+        "sand_ke": -4534.283916238426,
+        "max_ordinary_angle_delta": 3.355150601791479e-08,
+        "basis_roundtrip_steps": 21,
+        "correction_steps": 114,
+        "clip_steps": 113,
+        "wake_requests": 120,
+        "ordinary_outcomes": {
+          "Accepted": 120
+        },
+        "sand_outcomes": {
+          "Accepted": 120
+        },
+        "cap_hits": 117,
+        "discarded_impulse_magnitude": 0.0,
+        "peak_speed": 6.706216417896459,
+        "rms_speed": 2.1744299992775042,
+        "peak_abs_omega": 0.23069311678409576,
+        "sleeping": 0,
+        "max_ordinary_momentum_residual": 9.587409457074002e-05
+      },
+      "window": [
+        240,
+        359
+      ],
+      "run": "mass-fix-001",
+      "host": "linux",
+      "structure": "tree",
+      "workers": 4,
+      "sand_response": true,
+      "raw": {
+        "path": "build\\sol-structure-cut\\mass-fix-001\\linux\\tree-packed_sand-response1-w4.json",
+        "sha256": "029159ee82368b4259e033b6015c61099bfc254000db89875c5ee83de62cec5b",
+        "bytes": 5130185
+      },
+      "registered_dry_rest": null,
+      "descriptive_motion": {
+        "samples": 120,
+        "max_speed": 6.706216417896459,
+        "max_abs_omega": 0.23069311678409576,
+        "x_span": 1.01898193359375,
+        "y_span": 1.315826416015625,
+        "angle_span": 0.04288758383887337,
+        "max_vertex_speed": 10.4961576461792,
+        "sleeping": 0,
+        "screen_pass": false,
+        "window": [
+          240,
+          359
+        ],
+        "screen_scope": "descriptive_packed",
+        "independent_max_vertex_speed": 10.49615762019125
+      },
+      "terminal_hard": {
+        "area": 0.0,
+        "depth": 0.0,
+        "witnesses": 0,
+        "deepest": null
+      },
+      "terminal_sand": {
+        "area": 17.641423271935892,
+        "depth": 2.7031386554319567,
+        "witnesses": 30,
+        "deepest": {
+          "proxy": 5,
+          "cell": [
+            56,
+            58
+          ],
+          "material": 2,
+          "area": 1.0,
+          "depth": 2.7031386554319567
+        }
+      },
+      "native_material_counts": {
+        "1": 588,
+        "43": 101,
+        "2": 1176
+      },
+      "all_attempt_metrics": {
+        "contacts": 12980,
+        "correction_applications": 227,
+        "displaced": 4,
+        "impulse_applications": 450,
+        "last_correction": [
+          0.0,
+          -0.005561442580074072
+        ],
+        "last_impulse": [
+          -0.12436055392026901,
+          -2.9957363605499268
+        ],
+        "main_sync_ms_max": 1.437,
+        "main_sync_ms_total": 334.213,
+        "main_sync_segments": 720,
+        "native_tick": 360,
+        "native_tick_ms": 0.210563,
+        "observed_native_tick_ms_max": 0.735178,
+        "observed_native_tick_ms_total": 92.5824189999999,
+        "observed_worker_step_ms_max": 7.324,
+        "observed_worker_step_ms_total": 181.68699999999984,
+        "physical_contact": {
+          "angular_momentum_change_sum": 93541.00840384871,
+          "area_samples": 3008.7657497429304,
+          "energy_change_sum": -82421.55957819516,
+          "energy_violations": 0,
+          "geometry_ms_max": 0.299829,
+          "geometry_ms_total": 54.58915199999999,
+          "geometry_probes": 552210,
+          "impulse_magnitude_sum": 112444.13772900496,
+          "impulse_x_sum": -5293.775710806251,
+          "impulse_y_sum": -28149.749301914126,
+          "latency_ms_total": 5285.183000000001,
+          "max_impulse_magnitude": 1773.083251953125,
+          "max_penetration": 2.704763143120134,
+          "max_sand_penetration": 2.704763143120134,
+          "observations": 360,
+          "overlap_cell_samples": 6554,
+          "owner_ready_latency_ms_max": 15.756,
+          "owner_ready_latency_ms_total": 5461.633999999998,
+          "owner_ready_receipts": 360,
+          "refused_observations": 0,
+          "response_accepts": 333,
+          "response_attempts": 337,
+          "response_failures": {},
+          "response_impulse_apply_ms_all_attempts": 2.6919999999999904,
+          "response_ms_all_attempts": 196.78499999999997,
+          "response_ms_max_attempt": 1.0,
+          "response_ms_total": 189.95999999999995,
+          "response_other_ms_all_attempts": 4.725999999999993,
+          "response_planner_ms_all_attempts": 185.4580000000001,
+          "response_readback_ms_all_attempts": 3.4159999999999884,
+          "response_refusals": {
+            "PoseDrift": 4
+          },
+          "response_rid_state_ms_all_attempts": 0.4930000000000004,
+          "sand_area_samples": 3008.7657497429304,
+          "torque_impulse_sum": 93541.0240906775,
+          "worker_complete_attempts": 361,
+          "worker_contact_ms_max": 0.316,
+          "worker_contact_ms_total": 57.287,
+          "worker_envelope_ms_all_attempts": 0.78,
+          "worker_geometry_probes": 553042,
+          "worker_native_call_ms_all_attempts": 56.507,
+          "worker_native_geometry_ms_all_attempts": 52.61160899999996,
+          "worker_native_payload_freeze_ms_all_attempts": 1.3515749999999995,
+          "worker_observation_attempts": 369,
+          "worker_refused_attempts": 8,
+          "worker_support_probes": 58986
+        },
+        "proxy_count": 6,
+        "proxy_mass": 520.0,
+        "rapier_step_ms_max": 3.731,
+        "rapier_step_ms_total": 80.437,
+        "result_records": 2022,
+        "result_snapshots": 360,
+        "sample_serial": 361,
+        "sand_resistance_enabled": true,
+        "stale_results": 0,
+        "state_publications": 361,
+        "terrain_refresh_ms": 2.007,
+        "terrain_refreshes": 2,
+        "terrain_revision": 1747,
+        "timed_rapier_steps": 360,
+        "timed_snapshots": 360,
+        "unresolved": 2776,
+        "worker_step_ms": 0.415
+      },
+      "observed_steps": 360
+    },
+    {
+      "full": {
+        "samples": 720,
+        "gravity_load_sum": 393536.619140625,
+        "ordinary_support_ratio": 0.0,
+        "clip_support_ratio": 0.0,
+        "sand_support_ratio": 0.0,
+        "stage_energy_sum": [
+          0.0,
+          0.0,
+          -575754.9103052353
+        ],
+        "stage_energy_positive_sum": [
+          0.0,
+          0.0,
+          2468.5867656180635
+        ],
+        "clip_ke": 0.0,
+        "correction_potential": 0.0,
+        "ordinary_impulse_ke": 0.0,
+        "sand_ke": 0.0,
+        "max_ordinary_angle_delta": 0.0,
+        "basis_roundtrip_steps": 0,
+        "correction_steps": 0,
+        "clip_steps": 0,
+        "wake_requests": 0,
+        "ordinary_outcomes": {
+          "Accepted": 677,
+          "NOT_EXECUTED": 43
+        },
+        "sand_outcomes": {
+          "NOT_EXECUTED": 720
+        },
+        "cap_hits": 0,
+        "discarded_impulse_magnitude": 0.0,
+        "peak_speed": 40.43696004708319,
+        "rms_speed": 7.775338816427069,
+        "peak_abs_omega": 1.4784444570541382,
+        "sleeping": 501,
+        "max_ordinary_momentum_residual": 0.0
+      },
+      "tail120": {
+        "samples": 120,
+        "gravity_load_sum": 65589.4365234375,
+        "ordinary_support_ratio": 0.0,
+        "clip_support_ratio": 0.0,
+        "sand_support_ratio": 0.0,
+        "stage_energy_sum": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "stage_energy_positive_sum": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "clip_ke": 0.0,
+        "correction_potential": 0.0,
+        "ordinary_impulse_ke": 0.0,
+        "sand_ke": 0.0,
+        "max_ordinary_angle_delta": 0.0,
+        "basis_roundtrip_steps": 0,
+        "correction_steps": 0,
+        "clip_steps": 0,
+        "wake_requests": 0,
+        "ordinary_outcomes": {
+          "Accepted": 120
+        },
+        "sand_outcomes": {
+          "NOT_EXECUTED": 120
+        },
+        "cap_hits": 0,
+        "discarded_impulse_magnitude": 0.0,
+        "peak_speed": 0.0,
+        "rms_speed": 0.0,
+        "peak_abs_omega": 0.0,
+        "sleeping": 120,
+        "max_ordinary_momentum_residual": 0.0
+      },
+      "window": [
+        600,
+        719
+      ],
+      "run": "mass-fix-001",
+      "host": "linux",
+      "structure": "building",
+      "workers": 4,
+      "sand_response": false,
+      "raw": {
+        "path": "build\\sol-structure-cut\\mass-fix-001\\linux\\building-empty-response0-w4.json",
+        "sha256": "7cb9f0e13c143a9253705fdef9d700a2a7bfc9ea58bb14c23f2477ba2a4872f2",
+        "bytes": 5625263
+      },
+      "registered_dry_rest": {
+        "samples": 120,
+        "max_speed": 0.0,
+        "max_abs_omega": 0.0,
+        "x_span": 0.0,
+        "y_span": 0.0,
+        "angle_span": 0.0,
+        "max_vertex_speed": 0.0,
+        "sleeping": 120,
+        "screen_pass": true,
+        "window": [
+          600,
+          719
+        ],
+        "screen_scope": "registered_dry",
+        "independent_max_vertex_speed": 0.0
+      },
+      "descriptive_motion": {
+        "samples": 120,
+        "max_speed": 0.0,
+        "max_abs_omega": 0.0,
+        "x_span": 0.0,
+        "y_span": 0.0,
+        "angle_span": 0.0,
+        "max_vertex_speed": 0.0,
+        "sleeping": 120,
+        "screen_pass": true,
+        "window": [
+          600,
+          719
+        ],
+        "screen_scope": "registered_dry",
+        "independent_max_vertex_speed": 0.0
+      },
+      "terminal_hard": {
+        "area": 0.002814855793284548,
+        "depth": 0.0001877011006712337,
+        "witnesses": 24,
+        "deepest": {
+          "proxy": 3,
+          "cell": [
+            81,
+            72
+          ],
+          "material": 1,
+          "area": 3.1624861789482055e-05,
+          "depth": 0.0001877011006712337
+        }
+      },
+      "terminal_sand": {
+        "area": 0.0,
+        "depth": 0.0,
+        "witnesses": 0,
+        "deepest": null
+      },
+      "native_material_counts": {
+        "43": 101,
+        "1": 512
+      },
+      "all_attempt_metrics": {
+        "contacts": 0,
+        "correction_applications": 0,
+        "displaced": 0,
+        "impulse_applications": 0,
+        "last_correction": [
+          0.0,
+          0.0
+        ],
+        "last_impulse": [
+          0.0,
+          0.0
+        ],
+        "main_sync_ms_max": 0.576,
+        "main_sync_ms_total": 227.946,
+        "main_sync_segments": 1440,
+        "native_tick": 720,
+        "native_tick_ms": 0.060151,
+        "observed_native_tick_ms_max": 0.586126,
+        "observed_native_tick_ms_total": 62.31542199999997,
+        "observed_worker_step_ms_max": 0.743,
+        "observed_worker_step_ms_total": 191.2200000000001,
+        "physical_contact": {
+          "angular_momentum_change_sum": 0.0,
+          "area_samples": 3.3886612623652614,
+          "energy_change_sum": 0.0,
+          "energy_violations": 0,
+          "geometry_ms_max": 0.18747,
+          "geometry_ms_total": 45.199594999999995,
+          "geometry_probes": 381706,
+          "impulse_magnitude_sum": 0.0,
+          "impulse_x_sum": 0.0,
+          "impulse_y_sum": 0.0,
+          "latency_ms_total": 0.0,
+          "max_impulse_magnitude": 0.0,
+          "max_penetration": 0.18230056762695312,
+          "max_sand_penetration": 0.0,
+          "observations": 677,
+          "overlap_cell_samples": 10961,
+          "owner_ready_latency_ms_max": 16.905,
+          "owner_ready_latency_ms_total": 7282.100000000004,
+          "owner_ready_receipts": 677,
+          "refused_observations": 0,
+          "response_accepts": 0,
+          "response_attempts": 0,
+          "response_failures": {},
+          "response_impulse_apply_ms_all_attempts": 0.0,
+          "response_ms_all_attempts": 0.0,
+          "response_ms_max_attempt": 0.0,
+          "response_ms_total": 0.0,
+          "response_other_ms_all_attempts": 0.0,
+          "response_planner_ms_all_attempts": 0.0,
+          "response_readback_ms_all_attempts": 0.0,
+          "response_refusals": {},
+          "response_rid_state_ms_all_attempts": 0.0,
+          "sand_area_samples": 0.0,
+          "torque_impulse_sum": 0.0,
+          "worker_complete_attempts": 721,
+          "worker_contact_ms_max": 0.195,
+          "worker_contact_ms_total": 52.695,
+          "worker_envelope_ms_all_attempts": 2.053,
+          "worker_geometry_probes": 410327,
+          "worker_native_call_ms_all_attempts": 50.642,
+          "worker_native_geometry_ms_all_attempts": 43.99302399999999,
+          "worker_native_payload_freeze_ms_all_attempts": 1.2626060000000001,
+          "worker_observation_attempts": 729,
+          "worker_refused_attempts": 8,
+          "worker_support_probes": 0
+        },
+        "proxy_count": 5,
+        "proxy_mass": 356.0,
+        "rapier_step_ms_max": 3.555,
+        "rapier_step_ms_total": 98.842,
+        "result_records": 3385,
+        "result_snapshots": 677,
+        "sample_serial": 721,
+        "sand_resistance_enabled": false,
+        "stale_results": 0,
+        "state_publications": 721,
+        "terrain_refresh_ms": 2.271,
+        "terrain_refreshes": 2,
+        "terrain_revision": 2439,
+        "timed_rapier_steps": 720,
+        "timed_snapshots": 677,
+        "unresolved": 0,
+        "worker_step_ms": 0.273
+      },
+      "observed_steps": 720
+    },
+    {
+      "full": {
+        "samples": 360,
+        "gravity_load_sum": 196768.3095703125,
+        "ordinary_support_ratio": 0.004685420835047819,
+        "clip_support_ratio": 0.8600151117754256,
+        "sand_support_ratio": 0.0,
+        "stage_energy_sum": [
+          -125249.78627655492,
+          0.0,
+          -150554.86163805425
+        ],
+        "stage_energy_positive_sum": [
+          8.108154190471396,
+          0.0,
+          2358.9502955495846
+        ],
+        "clip_ke": -170756.59449108024,
+        "correction_potential": 45822.8324271217,
+        "ordinary_impulse_ke": -316.0239913612939,
+        "sand_ke": 0.0,
+        "max_ordinary_angle_delta": 3.3987165859450386e-08,
+        "basis_roundtrip_steps": 68,
+        "correction_steps": 292,
+        "clip_steps": 292,
+        "wake_requests": 358,
+        "ordinary_outcomes": {
+          "Accepted": 359,
+          "DuplicateOrOldSample": 1
+        },
+        "sand_outcomes": {
+          "NOT_EXECUTED": 360
+        },
+        "cap_hits": 299,
+        "discarded_impulse_magnitude": 0.0,
+        "peak_speed": 19.577382022531317,
+        "rms_speed": 8.484367932875784,
+        "peak_abs_omega": 0.5006259083747864,
+        "sleeping": 0,
+        "max_ordinary_momentum_residual": 0.00029846563057937375
+      },
+      "tail120": {
+        "samples": 120,
+        "gravity_load_sum": 65589.4365234375,
+        "ordinary_support_ratio": 0.005483357665950598,
+        "clip_support_ratio": 0.9911333058753381,
+        "sand_support_ratio": 0.0,
+        "stage_energy_sum": [
+          -26109.700656127417,
+          0.0,
+          -23242.171064105118
+        ],
+        "stage_energy_positive_sum": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "clip_ke": -49468.25170956704,
+        "correction_potential": 23365.9114964772,
+        "ordinary_impulse_ke": -7.3604438469479305,
+        "sand_ke": 0.0,
+        "max_ordinary_angle_delta": 3.3987165859450386e-08,
+        "basis_roundtrip_steps": 23,
+        "correction_steps": 120,
+        "clip_steps": 120,
+        "wake_requests": 120,
+        "ordinary_outcomes": {
+          "Accepted": 120
+        },
+        "sand_outcomes": {
+          "NOT_EXECUTED": 120
+        },
+        "cap_hits": 120,
+        "discarded_impulse_magnitude": 0.0,
+        "peak_speed": 7.758996446743574,
+        "rms_speed": 4.234019711151468,
+        "peak_abs_omega": 0.05027613416314125,
+        "sleeping": 0,
+        "max_ordinary_momentum_residual": 0.00022279984087138953
+      },
+      "window": [
+        240,
+        359
+      ],
+      "run": "mass-fix-001",
+      "host": "linux",
+      "structure": "building",
+      "workers": 4,
+      "sand_response": false,
+      "raw": {
+        "path": "build\\sol-structure-cut\\mass-fix-001\\linux\\building-packed_sand-response0-w4.json",
+        "sha256": "aad9a5a25bc0e8809df0526d5050acb201917da0669d336007dd312c946cef7e",
+        "bytes": 5946363
+      },
+      "registered_dry_rest": null,
+      "descriptive_motion": {
+        "samples": 120,
+        "max_speed": 7.758996446743574,
+        "max_abs_omega": 0.05027613416314125,
+        "x_span": 4.2550048828125,
+        "y_span": 1.177215576171875,
+        "angle_span": 0.026473183337701878,
+        "max_vertex_speed": 8.392168045043945,
+        "sleeping": 0,
+        "screen_pass": false,
+        "window": [
+          240,
+          359
+        ],
+        "screen_scope": "descriptive_packed",
+        "independent_max_vertex_speed": 8.392168309560482
+      },
+      "terminal_hard": {
+        "area": 0.0,
+        "depth": 0.0,
+        "witnesses": 0,
+        "deepest": null
+      },
+      "terminal_sand": {
+        "area": 53.99695800734468,
+        "depth": 2.698073265787251,
+        "witnesses": 83,
+        "deepest": {
+          "proxy": 3,
+          "cell": [
+            102,
+            58
+          ],
+          "material": 2,
+          "area": 1.0,
+          "depth": 2.698073265787251
+        }
+      },
+      "native_material_counts": {
+        "1": 588,
+        "43": 101,
+        "2": 1176
+      },
+      "all_attempt_metrics": {
+        "contacts": 27034,
+        "correction_applications": 292,
+        "displaced": 57,
+        "impulse_applications": 835,
+        "last_correction": [
+          0.0,
+          -0.005903851240873337
+        ],
+        "last_impulse": [
+          0.012125691398978233,
+          -2.9952571392059326
+        ],
+        "main_sync_ms_max": 0.919,
+        "main_sync_ms_total": 150.447,
+        "main_sync_segments": 720,
+        "native_tick": 360,
+        "native_tick_ms": 0.185975,
+        "observed_native_tick_ms_max": 0.750349,
+        "observed_native_tick_ms_total": 76.95665599999997,
+        "observed_worker_step_ms_max": 7.258,
+        "observed_worker_step_ms_total": 159.92900000000012,
+        "physical_contact": {
+          "angular_momentum_change_sum": 0.0,
+          "area_samples": 10787.096987822926,
+          "energy_change_sum": 0.0,
+          "energy_violations": 0,
+          "geometry_ms_max": 0.428814,
+          "geometry_ms_total": 66.146176,
+          "geometry_probes": 439523,
+          "impulse_magnitude_sum": 0.0,
+          "impulse_x_sum": 0.0,
+          "impulse_y_sum": 0.0,
+          "latency_ms_total": 0.0,
+          "max_impulse_magnitude": 0.0,
+          "max_penetration": 2.705758847800899,
+          "max_sand_penetration": 2.705758847800899,
+          "observations": 360,
+          "overlap_cell_samples": 16426,
+          "owner_ready_latency_ms_max": 16.39,
+          "owner_ready_latency_ms_total": 5568.872000000004,
+          "owner_ready_receipts": 360,
+          "refused_observations": 0,
+          "response_accepts": 0,
+          "response_attempts": 0,
+          "response_failures": {},
+          "response_impulse_apply_ms_all_attempts": 0.0,
+          "response_ms_all_attempts": 0.0,
+          "response_ms_max_attempt": 0.0,
+          "response_ms_total": 0.0,
+          "response_other_ms_all_attempts": 0.0,
+          "response_planner_ms_all_attempts": 0.0,
+          "response_readback_ms_all_attempts": 0.0,
+          "response_refusals": {},
+          "response_rid_state_ms_all_attempts": 0.0,
+          "sand_area_samples": 10785.224307474964,
+          "torque_impulse_sum": 0.0,
+          "worker_complete_attempts": 361,
+          "worker_contact_ms_max": 0.449,
+          "worker_contact_ms_total": 69.404,
+          "worker_envelope_ms_all_attempts": 0.787,
+          "worker_geometry_probes": 440117,
+          "worker_native_call_ms_all_attempts": 68.617,
+          "worker_native_geometry_ms_all_attempts": 63.39218700000001,
+          "worker_native_payload_freeze_ms_all_attempts": 2.059826,
+          "worker_observation_attempts": 369,
+          "worker_refused_attempts": 8,
+          "worker_support_probes": 153684
+        },
+        "proxy_count": 5,
+        "proxy_mass": 356.0,
+        "rapier_step_ms_max": 3.632,
+        "rapier_step_ms_total": 78.001,
+        "result_records": 1795,
+        "result_snapshots": 360,
+        "sample_serial": 361,
+        "sand_resistance_enabled": false,
+        "stale_results": 0,
+        "state_publications": 361,
+        "terrain_refresh_ms": 1.969,
+        "terrain_refreshes": 2,
+        "terrain_revision": 2515,
+        "timed_rapier_steps": 360,
+        "timed_snapshots": 360,
+        "unresolved": 10744,
+        "worker_step_ms": 0.431
+      },
+      "observed_steps": 360
+    },
+    {
+      "full": {
+        "samples": 360,
+        "gravity_load_sum": 196768.3095703125,
+        "ordinary_support_ratio": 0.004762858650577814,
+        "clip_support_ratio": 0.8423968147826553,
+        "sand_support_ratio": 0.0899029774995101,
+        "stage_energy_sum": [
+          -123112.49123538635,
+          -40019.387391625205,
+          -57465.87553592166
+        ],
+        "stage_energy_positive_sum": [
+          35.01579165761359,
+          0.0,
+          0.0
+        ],
+        "clip_ke": -150500.41826426645,
+        "correction_potential": 27267.34003846161,
+        "ordinary_impulse_ke": 120.53076815869754,
+        "sand_ke": -40019.38739162455,
+        "max_ordinary_angle_delta": 1.5429379440767832e-08,
+        "basis_roundtrip_steps": 61,
+        "correction_steps": 297,
+        "clip_steps": 297,
+        "wake_requests": 360,
+        "ordinary_outcomes": {
+          "Accepted": 360
+        },
+        "sand_outcomes": {
+          "Accepted": 347,
+          "NonDissipativeResponse": 13
+        },
+        "cap_hits": 298,
+        "discarded_impulse_magnitude": 0.0,
+        "peak_speed": 10.098553393987366,
+        "rms_speed": 3.3635948119822325,
+        "peak_abs_omega": 0.44646021723747253,
+        "sleeping": 0,
+        "max_ordinary_momentum_residual": 0.00016941907313266472
+      },
+      "tail120": {
+        "samples": 120,
+        "gravity_load_sum": 65589.4365234375,
+        "ordinary_support_ratio": 0.005442249644404765,
+        "clip_support_ratio": 0.8865577103666723,
+        "sand_support_ratio": 0.060522803464454294,
+        "stage_energy_sum": [
+          -25147.92124549998,
+          -1456.471211391734,
+          -14229.285714178812
+        ],
+        "stage_energy_positive_sum": [
+          34.083927454426885,
+          0.0,
+          0.0
+        ],
+        "clip_ke": -40521.06697654526,
+        "correction_potential": 15323.609333647415,
+        "ordinary_impulse_ke": 49.53640255983376,
+        "sand_ke": -1456.4712113930777,
+        "max_ordinary_angle_delta": 6.5158254347608136e-09,
+        "basis_roundtrip_steps": 38,
+        "correction_steps": 120,
+        "clip_steps": 120,
+        "wake_requests": 120,
+        "ordinary_outcomes": {
+          "Accepted": 120
+        },
+        "sand_outcomes": {
+          "Accepted": 120
+        },
+        "cap_hits": 120,
+        "discarded_impulse_magnitude": 0.0,
+        "peak_speed": 1.661723745135393,
+        "rms_speed": 1.4855684088986065,
+        "peak_abs_omega": 0.051032211631536484,
+        "sleeping": 0,
+        "max_ordinary_momentum_residual": 2.8471462428569794e-05
+      },
+      "window": [
+        240,
+        359
+      ],
+      "run": "mass-fix-001",
+      "host": "linux",
+      "structure": "building",
+      "workers": 4,
+      "sand_response": true,
+      "raw": {
+        "path": "build\\sol-structure-cut\\mass-fix-001\\linux\\building-packed_sand-response1-w4.json",
+        "sha256": "74084c0ff399660bd44f7a7baa6029b1810dc5e11bd7d9caad019865d0754f80",
+        "bytes": 5411353
+      },
+      "registered_dry_rest": null,
+      "descriptive_motion": {
+        "samples": 120,
+        "max_speed": 1.661723745135393,
+        "max_abs_omega": 0.051032211631536484,
+        "x_span": 0.72747802734375,
+        "y_span": 1.2301712036132812,
+        "angle_span": 0.03141831031287701,
+        "max_vertex_speed": 2.548365831375122,
+        "sleeping": 0,
+        "screen_pass": false,
+        "window": [
+          240,
+          359
+        ],
+        "screen_scope": "descriptive_packed",
+        "independent_max_vertex_speed": 2.548365924614049
+      },
+      "terminal_hard": {
+        "area": 0.0,
+        "depth": 0.0,
+        "witnesses": 0,
+        "deepest": null
+      },
+      "terminal_sand": {
+        "area": 19.02043507191795,
+        "depth": 2.517741900494329,
+        "witnesses": 34,
+        "deepest": {
+          "proxy": 4,
+          "cell": [
+            54,
+            60
+          ],
+          "material": 2,
+          "area": 1.0,
+          "depth": 2.517741900494329
+        }
+      },
+      "native_material_counts": {
+        "1": 588,
+        "43": 101,
+        "2": 1176
+      },
+      "all_attempt_metrics": {
+        "contacts": 15423,
+        "correction_applications": 297,
+        "displaced": 0,
+        "impulse_applications": 497,
+        "last_correction": [
+          0.0,
+          -0.002547049894928932
+        ],
+        "last_impulse": [
+          -0.27783265709877014,
+          -2.9763426780700684
+        ],
+        "main_sync_ms_max": 2.091,
+        "main_sync_ms_total": 354.99,
+        "main_sync_segments": 720,
+        "native_tick": 361,
+        "native_tick_ms": 0.228785,
+        "observed_native_tick_ms_max": 0.726658,
+        "observed_native_tick_ms_total": 87.664184,
+        "observed_worker_step_ms_max": 0.919,
+        "observed_worker_step_ms_total": 150.09700000000007,
+        "physical_contact": {
+          "angular_momentum_change_sum": 24006.856160762552,
+          "area_samples": 2591.5401088194626,
+          "energy_change_sum": -40019.38902492043,
+          "energy_violations": 0,
+          "geometry_ms_max": 0.260552,
+          "geometry_ms_total": 40.65621799999999,
+          "geometry_probes": 304141,
+          "impulse_magnitude_sum": 72944.69216302736,
+          "impulse_x_sum": -4004.843539185822,
+          "impulse_y_sum": -17690.056796742603,
+          "latency_ms_total": 3407.324999999999,
+          "max_impulse_magnitude": 456.8974304199219,
+          "max_penetration": 2.5109639762136715,
+          "max_sand_penetration": 2.5109639762136715,
+          "observations": 360,
+          "overlap_cell_samples": 6552,
+          "owner_ready_latency_ms_max": 9.671,
+          "owner_ready_latency_ms_total": 3268.271000000001,
+          "owner_ready_receipts": 360,
+          "refused_observations": 0,
+          "response_accepts": 347,
+          "response_attempts": 360,
+          "response_failures": {},
+          "response_impulse_apply_ms_all_attempts": 3.1969999999999907,
+          "response_ms_all_attempts": 226.84900000000005,
+          "response_ms_max_attempt": 1.446,
+          "response_ms_total": 216.0719999999999,
+          "response_other_ms_all_attempts": 4.848999999999997,
+          "response_planner_ms_all_attempts": 214.65500000000011,
+          "response_readback_ms_all_attempts": 3.586999999999989,
+          "response_refusals": {
+            "NonDissipativeResponse": 13
+          },
+          "response_rid_state_ms_all_attempts": 0.5610000000000004,
+          "sand_area_samples": 2591.5401088194626,
+          "torque_impulse_sum": 24006.855019651353,
+          "worker_complete_attempts": 362,
+          "worker_contact_ms_max": 0.272,
+          "worker_contact_ms_total": 42.963,
+          "worker_envelope_ms_all_attempts": 0.743,
+          "worker_geometry_probes": 305329,
+          "worker_native_call_ms_all_attempts": 42.22,
+          "worker_native_geometry_ms_all_attempts": 38.69927399999998,
+          "worker_native_payload_freeze_ms_all_attempts": 1.2815400000000012,
+          "worker_observation_attempts": 370,
+          "worker_refused_attempts": 8,
+          "worker_support_probes": 58968
+        },
+        "proxy_count": 5,
+        "proxy_mass": 356.0,
+        "rapier_step_ms_max": 3.646,
+        "rapier_step_ms_total": 78.207,
+        "result_records": 1800,
+        "result_snapshots": 360,
+        "sample_serial": 361,
+        "sand_resistance_enabled": true,
+        "stale_results": 0,
+        "state_publications": 361,
+        "terrain_refresh_ms": 2.012,
+        "terrain_refreshes": 2,
+        "terrain_revision": 2515,
+        "timed_rapier_steps": 360,
+        "timed_snapshots": 360,
+        "unresolved": 2431,
+        "worker_step_ms": 0.434
+      },
+      "observed_steps": 360
+    }
+  ],
+  "qualifiers": [
+    "Actual stage attribution, not counterfactual causation or schedule-matched replay.",
+    "M*g*dt is a load reference including zero/refused/sleeping frames. Correction clipping and potential work are separate from applied impulses.",
+    "Native wrench float32 reconstruction residual is diagnostic; backend stage includes gravity/damping/hardcontact/wake/integration; cached contact impulses never integrated. No closed-system energy/physical clearance/CPU acceptance."
+  ],
+  "summary_only": true
+}

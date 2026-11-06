@@ -10,6 +10,31 @@ related-documents: [source-checkpoint-and-recovery.md, testing-validation-and-re
 
 # Local build and validation
 
+## SOL stage and mass-readiness qualification — 2026-11-06
+
+On the isolated393-dependent branch, use fresh names with
+`python tools/sol281/structure_cut.py hosts --run <new> --suite packed --stage-trace`
+and `--suite dry`. Four stage states distinguish ordinary correction/clipping,
+Sand and backend changes. The existing source-pinned `runtimes-001` receipt is
+required; native/build inputs must still match. The stage observer changes
+asynchronous timing and is not a bit-identical replay of earlier trajectories.
+
+`--suite mass-init` runs the original isolated12-case-per-host initialization
+oracle. `--suite mass-fix --stage-trace` runs the expanded32-case-per-host oracle
+plus the full fresh dry/packed native-cut matrix in one authenticated project per
+host. The latter compacts redundant cumulative frame dictionaries while retaining
+state/input/response values, deltas and final all-attempt metrics. Warm stepping
+exists only as a zero-G backend control, never in native handoff.
+
+Use `reduce_structure_stages.py --runs <run> --summary-only --output <new-json>`,
+`reduce_mass_initialization.py --run <run> --output <new-json>`,
+`test_structure_stages.py` and `test_stage_admission.py <raw-physical-report>`
+from `tools/sol281` via Python. Existing directories/output files refuse overwrite.
+See the [complete source/platform ledger](../audits/2026-11-06-sol-stage-and-mass-readiness.md)
+for actual host hashes, cached-readback limitations, null-guard syntax-only scope,
+resource cap and unchanged physical/integration failures. No new native/compiler
+execution is implied when exact earlier native inputs are reused.
+
 ## Actual structural cut qualification — 2026-11-06
 
 On the isolated #393-dependent branch, first commit a clean source and run

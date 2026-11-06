@@ -1,0 +1,52 @@
+{
+  "version": 1,
+  "frozen_date": "2026-11-06",
+  "purpose": "Additive post-result development evaluation, not blind acceptance or replacement of frozen questions.",
+  "questions": [
+    {
+      "id": "SOL-STAGES-READINESS-001",
+      "query": "Why can correct cached SOL mass and inertia still lose the first impulse, and how does automatic COM with custom inertia repair backend readiness?",
+      "canonical": [
+        "systems/solid-detachment.md",
+        "architecture/rigid-body-and-cellular-coupling.md"
+      ],
+      "facts": [
+        "Cached M/I do not establish effective backend mass readiness; fresh custom COM/inertia loses initial impulses.",
+        "AUTO before explicit M/I retains inertia; doubled inertia halves angular response; no handoff warmstep."
+      ],
+      "sources": [
+        "../godot/scripts/solid_detachment_session.gd",
+        "../godot/tests/test_sol_mass_initialization.gd"
+      ]
+    },
+    {
+      "id": "SOL-STAGES-SUPPORT-001",
+      "query": "How do ordinary correction velocity clipping Sand response and Rapier gravity explain continued movement of cut tree building structures without proving a new support law or calibrated material weight?",
+      "canonical": [
+        "systems/solid-detachment.md",
+        "reference/status-and-roadmap.md"
+      ],
+      "facts": [
+        "Clipping dominates many late load-reference ratios; gravity acts after responses.",
+        "Dry settles, packed remains nonquiet; no closed energy or original clearance proof."
+      ],
+      "sources": [
+        "../tools/sol281/reduce_structure_stages.py"
+      ]
+    },
+    {
+      "id": "SOL-STAGES-EXECUTION-001",
+      "query": "How do source-local SOL mass-fix stage traces and isolated backend initialization oracle preserve controls runtime source and cumulative resource bounds?",
+      "canonical": [
+        "operations/local-build-and-validation.md"
+      ],
+      "facts": [
+        "Fresh projects/worlds, native source equality and actual hosts are required.",
+        "Combined mass-fix reuses immutable host project and omits redundant counters; final all-attempt metrics remain."
+      ],
+      "sources": [
+        "../tools/sol281/structure_cut.py"
+      ]
+    }
+  ]
+}

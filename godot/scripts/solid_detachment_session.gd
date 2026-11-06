@@ -438,7 +438,7 @@ func _pack_compound_states() -> PackedFloat32Array:
 	var omega: float = angular_velocity()
 	var direct: PhysicsDirectBodyState2D = PhysicsServer2D.body_get_direct_state(body.get_rid())
 	if direct == null:
-		return states # Existing empty-publication failure path holds/quarantines.
+		return states # Existing empty-publication failure path refuses/pauses.
 	var world_com: Vector2 = transform * direct.center_of_mass_local
 	for index: int in range(_coupling_local_centers.size()):
 		var world_center: Vector2 = transform * _coupling_local_centers[index]

@@ -10,6 +10,17 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 
 # Retrieval question index
 
+## SOL cached mass versus first-impulse readiness
+
+For effective backend mass readiness, automatic COM with custom inertia, four-stage
+support accounting and why the repair does not solve dense Sand, retrieve the
+[detachment contract](../systems/solid-detachment.md#first-impulse-backend-readiness--2026-11-06),
+[coupling contract](../architecture/rigid-body-and-cellular-coupling.md#source-local-sol-mass-readiness--2026-11-06)
+and [qualification commands](../operations/local-build-and-validation.md#sol-stage-and-mass-readiness-qualification--2026-11-06).
+The dated [result](../audits/2026-11-06-sol-stage-and-mass-readiness.md) and additive
+`retrieval-questions-sol-stages.json` are post-result evidence/development routes;
+older frozen questions and failures remain unchanged.
+
 ## Actual structural SOL cut and mass routing
 
 For actual cut tree/building aggregate ownership, mass/inertia, relative material

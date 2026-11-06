@@ -10,6 +10,15 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+## SOL first-impulse readiness and stage trace
+
+The [current readiness contract](systems/solid-detachment.md#first-impulse-backend-readiness--2026-11-06)
+and [source-bound result](audits/2026-11-06-sol-stage-and-mass-readiness.md) explain
+why correct cached mass could accompany lost first impulses, the narrow AUTO-COM
+repair and separate ordinary/Sand/backend measurements. Dry settling passes;
+dense-Sand settling and original clearance remain NO-GO. Keep the branch isolated
+and any PR Draft; cached values or a repaired first impulse do not admit integration.
+
 ## Actual structural SOL cuts
 
 For cut tree/building ownership, unit mass/inertia, relative material-weight

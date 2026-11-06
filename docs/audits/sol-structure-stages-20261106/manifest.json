@@ -37,6 +37,16 @@
       "git_lf_sha256": "a2a4871ff0db4badd71c8b6239a85ae03c997281bb7b819dbef8517280e97795",
       "bytes": 275023
     },
+    "mass-fix-comparison.json": {
+      "raw_copy_sha256": "e6213f600df3a1836798042f8cd70abb84822618a5ef2b55437f871659efdeaa",
+      "git_lf_sha256": "b13b0ff425d46823b2917507a792e4d0431d65734a1d11aa3ee293d7743a3109",
+      "bytes": 186054
+    },
+    "mass-fix-oracle.json": {
+      "raw_copy_sha256": "6292c5daed5b19b76aa077ff41fd8f68805800e289c932fb0d38b9fdfa3ec8c9",
+      "git_lf_sha256": "6292c5daed5b19b76aa077ff41fd8f68805800e289c932fb0d38b9fdfa3ec8c9",
+      "bytes": 83908
+    },
     "stage-cycle-witness.json": {
       "raw_copy_sha256": "74a7cd1642a6fdc5fa9f2819f30140818b03ac3f3fcd25e9aff8f64a01979253",
       "git_lf_sha256": "20b84bd041ec244c36341e08fe65e48f3d2183fd8f367b529e587caf278100fa",
@@ -57,6 +67,46 @@
       "git_lf_sha256": "0981054a9e62b5f3da01dd6cb36b6b974d2413aea114355ea49e51900757ec3c",
       "bytes": 10413205
     },
+    "validation.json": {
+      "raw_copy_sha256": "721d3901615fce093d2efcbbc12901fbd98fb798aeb4d175fdb0cc5a6c0f5f25",
+      "git_lf_sha256": "721d3901615fce093d2efcbbc12901fbd98fb798aeb4d175fdb0cc5a6c0f5f25",
+      "bytes": 50
+    },
+    "mass-fix-001/linux-oracle.json": {
+      "raw_copy_sha256": "60e3b42e6370f4838d7b3dd6db40e90d56f21feb301a8bcb81a37ac19a57d290",
+      "git_lf_sha256": "60e3b42e6370f4838d7b3dd6db40e90d56f21feb301a8bcb81a37ac19a57d290",
+      "bytes": 66091
+    },
+    "mass-fix-001/receipt.json": {
+      "raw_copy_sha256": "0a9cec76ab38fac7f6ccdad7ab0a1a74bb893f4b60d0272b607820ba0e40f905",
+      "git_lf_sha256": "0a9cec76ab38fac7f6ccdad7ab0a1a74bb893f4b60d0272b607820ba0e40f905",
+      "bytes": 374934
+    },
+    "mass-fix-001/windows-oracle.json": {
+      "raw_copy_sha256": "1a39fc67c18ce52d8e207e120c3d016fe2798700c484155b7824c8c934956529",
+      "git_lf_sha256": "1a39fc67c18ce52d8e207e120c3d016fe2798700c484155b7824c8c934956529",
+      "bytes": 66093
+    },
+    "mass-guard-parse-001/receipt.json": {
+      "raw_copy_sha256": "a62e62c221840b6289bfc88e80d7c85cff40ee70833fdefe6c64343e76bf587f",
+      "git_lf_sha256": "a62e62c221840b6289bfc88e80d7c85cff40ee70833fdefe6c64343e76bf587f",
+      "bytes": 2029
+    },
+    "mass-init-001/linux-oracle.json": {
+      "raw_copy_sha256": "99a240adb2daf5ed153b097d28004c7c363aa6eaae36b7876bc60b9eb0379616",
+      "git_lf_sha256": "99a240adb2daf5ed153b097d28004c7c363aa6eaae36b7876bc60b9eb0379616",
+      "bytes": 24363
+    },
+    "mass-init-001/receipt.json": {
+      "raw_copy_sha256": "a1175764de9df2ad6d2388b35988d473e6f511f9eabfe361086bc579ca630da4",
+      "git_lf_sha256": "a1175764de9df2ad6d2388b35988d473e6f511f9eabfe361086bc579ca630da4",
+      "bytes": 339217
+    },
+    "mass-init-001/windows-oracle.json": {
+      "raw_copy_sha256": "ba90938e98a5c5557b2e19847679cfa4ede98adca04e26e5003f4736be56b0a0",
+      "git_lf_sha256": "ba90938e98a5c5557b2e19847679cfa4ede98adca04e26e5003f4736be56b0a0",
+      "bytes": 24365
+    },
     "stages-dry-001/receipt.json": {
       "raw_copy_sha256": "6edcf0d8dc4296b16e032db102fbf8ca8d2603c5d57180676fde79018382b168",
       "git_lf_sha256": "6edcf0d8dc4296b16e032db102fbf8ca8d2603c5d57180676fde79018382b168",
@@ -67,5 +117,19 @@
       "git_lf_sha256": "c89e2eaac14c0f3fa4a204da458bd4d2fc151d3351ee6f8fd4959e65237d327e",
       "bytes": 359929
     }
+  },
+  "repair": {
+    "registration": "0c0fc3da",
+    "tested_source": "c0d8544f",
+    "guard_descendant": "1d83c881",
+    "backend_cases": 64,
+    "ready_controls": 48,
+    "lost_legacy_controls": 16,
+    "native_cut_episodes": 24,
+    "physical_steps": 11520,
+    "dry_rest_pass": 8,
+    "packed_quiet_pass": 0,
+    "first_impulse_residual": 5.125249824e-09,
+    "null_state_fault": "NOT_EXECUTED; both actualhosts syntaxpass; refuse/pause normal failurepath, not newnativephase proof"
   }
 }

@@ -10,6 +10,20 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+## SOL backend initialization repair — 2026-11-06
+
+**Current isolated candidate:** a reproduced first-impulse loss is repaired by
+AUTO COM before explicit native M/I, with actual-COM proxy velocities. Cached
+readback alone had not proved effective mass readiness. The [source-bound result](../audits/2026-11-06-sol-stage-and-mass-readiness.md)
+qualifies64 backend cases and24 new native-cut episodes on both hosts/workers.
+Dry rest remains passing; every packed case still moves and strict clearance
+remains unaccepted. No weight calibration, force retuning or new solver is claimed.
+
+**Planned:** pure-value comparison of current versus gravity/damping-predicted
+planner inputs on retained actual structural contacts, before any separately
+registered live order/load-aware candidate. Keep material/authority/runtime/CPU
+and#365 blockers; no owner-primary LA default promotion or #394 composition.
+
 ## Actual structural SOL progression — 2026-11-06
 
 **Current isolated Draft:** actual cut tree/building ownership and unit-cell mass/
