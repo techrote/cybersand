@@ -1,0 +1,139 @@
+name: PF gas capacity research (isolated)
+on:
+  push:
+    branches: [research/pf-gas-capacity-native-20261106-gpt6-2120]
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: pf-gas-capacity-isolated
+  cancel-in-progress: true
+jobs:
+  measurements:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Record exact execution provenance
+        run: |
+          set -euo pipefail
+          mkdir -p build/pf-gas-capacity/{bin,fixtures,rows,logs,saves}
+          git rev-parse HEAD | tee build/pf-gas-capacity/source-sha.txt
+          git rev-parse HEAD^ | tee build/pf-gas-capacity/parent-sha.txt
+          g++-13 --version | head -1 | tee build/pf-gas-capacity/compiler.txt
+          uname -a | tee build/pf-gas-capacity/platform.txt
+          sha256sum godot/scripts/workbench_setup.gd native/bench/pf_gas_capacity_native.cpp native/include/cybersand/pressure_flow.hpp \
+            | tee build/pf-gas-capacity/input-sha256.txt
+      - name: Export original built-in workbench fixtures with Godot 4.7
+        id: fixtures
+        continue-on-error: true
+        run: |
+          set -euo pipefail
+          url='https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7'
+          mkdir -p "$RUNNER_TEMP/pf-godot"
+          timeout 300 curl -fL --retry 3 -o "$RUNNER_TEMP/pf-godot.zip" "$url"
+          echo "0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c  $RUNNER_TEMP/pf-godot.zip" | sha256sum --check --strict
+          unzip -q "$RUNNER_TEMP/pf-godot.zip" -d "$RUNNER_TEMP/pf-godot"
+          GODOT_BIN="$(find "$RUNNER_TEMP/pf-godot" -maxdepth 1 -type f -name 'Godot*' | head -1)"
+          chmod +x "$GODOT_BIN"
+          "$GODOT_BIN" --version
+          export PF_CAPACITY_FIXTURE_DIR="$GITHUB_WORKSPACE/build/pf-gas-capacity/fixtures"
+          timeout 180 "$GODOT_BIN" --headless --path godot --script res://tests/pf_capacity_export_fixtures.gd \
+            2>&1 | tee build/pf-gas-capacity/logs/godot-export.log
+          for name in my-canvas bench-canvas stress-canvas; do
+            test -s "build/pf-gas-capacity/fixtures/$name.csv"
+          done
+          sha256sum build/pf-gas-capacity/fixtures/*.csv | tee build/pf-gas-capacity/fixtures/sha256.txt
+      - name: Compile C1024/C2048/C4096 against full native World sources
+        run: |
+          set -euo pipefail
+          for cap in 1024 2048 4096; do
+            echo "Compiling C$cap"
+            /usr/bin/time -v g++-13 -std=c++20 -O2 -DNDEBUG -Wall -Wextra -pthread -I native/include \
+              -DCYBERSAND_PF_GAS_CAPACITY="$cap" \
+              native/src/world.cpp native/src/material_rules.cpp native/src/scheduler_geometry.cpp \
+              native/src/settled_world_discovery.cpp native/bench/pf_gas_capacity_native.cpp \
+              -o "build/pf-gas-capacity/bin/C$cap" \
+              >"build/pf-gas-capacity/logs/compile-C$cap.log" 2>&1 || {
+                cat "build/pf-gas-capacity/logs/compile-C$cap.log"; exit 1; }
+            sha256sum "build/pf-gas-capacity/bin/C$cap" | tee -a build/pf-gas-capacity/binary-sha256.txt
+          done
+      - name: Execute actual World ticks, boundary cases, native variants
+        run: |
+          set -uo pipefail
+          root=build/pf-gas-capacity
+          : > "$root/outcomes.tsv"
+          case_run() {
+            local cap="$1" scene="$2" variant="$3" workers="$4" ticks="$5" count="$6"
+            local name="C${cap}_${scene}_v${variant}_w${workers}_n${count}"
+            echo "RUN $name ticks=$ticks"
+            timeout 480 "$root/bin/C$cap" "$scene" "$variant" "$workers" "$ticks" \
+                "$count" "$root/fixtures/$scene.csv" "$root/saves/$name" \
+                >"$root/rows/$name.csv" 2>"$root/logs/$name.log"
+            local status="$?"
+            printf '%s\t%s\n' "$name" "$status" >> "$root/outcomes.tsv"
+            if [ "$status" -ne 0 ]; then cat "$root/logs/$name.log"; fi
+          }
+          for cap in 1024 2048 4096; do
+            case_run "$cap" default 0 1 120 1025
+            case_run "$cap" isolated 0 1 30 1024
+            case_run "$cap" isolated 1 4 10 1024
+            case_run "$cap" isolated 2 1 10 1024
+            case_run "$cap" isolated 0 1 2 "$((cap+1))"
+            case_run "$cap" dynamic 0 1 3 1025
+            case_run "$cap" unseeded 0 1 2 1025
+            case_run "$cap" atmosphere 0 1 2 16384
+            case_run "$cap" atmosphere 0 1 2 16385
+            if [ "$cap" -ge 2048 ]; then
+              case_run "$cap" isolated 0 1 3 2048
+              case_run "$cap" dynamic 0 1 3 2049
+            fi
+            if [ "$cap" -eq 4096 ]; then
+              case_run "$cap" isolated 0 1 3 4096
+              case_run "$cap" isolated 0 1 2 4097
+              case_run "$cap" dynamic 0 1 3 4097
+            fi
+            for scene in my-canvas bench-canvas stress-canvas; do
+              if [ -s "$root/fixtures/$scene.csv" ]; then
+                case_run "$cap" "$scene" 0 1 120 0
+                case_run "$cap" "$scene" 1 4 60 0
+                case_run "$cap" "$scene" 2 1 60 0
+              else
+                printf '%s\tSKIPPED fixture unavailable\n' "C${cap}_${scene}" >> "$root/outcomes.tsv"
+              fi
+            done
+          done
+          cat "$root/outcomes.tsv"
+          if grep -vE $'\t(0|SKIPPED fixture unavailable)$' "$root/outcomes.tsv" | grep -q .; then
+            echo "Non-zero experimental executable status; inspect original logs" >&2
+            exit 1
+          fi
+      - name: Cross-capacity CYPS decoder and old-ceiling byte identity
+        if: always()
+        run: |
+          set -uo pipefail
+          root=build/pf-gas-capacity
+          : > "$root/cyps-compat.tsv"
+          for cap in 1024 2048 4096; do
+            for source in 1024 2048 4096; do
+              file="$root/saves/C${source}_isolated_v0_w1_n1024-t1.cyps"
+              if [ ! -s "$file" ] || [ ! -x "$root/bin/C$cap" ]; then
+                printf '%s\t%s\tSKIPPED\n' "$cap" "$source" >> "$root/cyps-compat.tsv"
+                continue
+              fi
+              "$root/bin/C$cap" --restore 0 1 "$file" >"$root/logs/restore-C${cap}-from-C${source}.log" 2>&1
+              printf '%s\t%s\t%s\n' "$cap" "$source" "$?" >> "$root/cyps-compat.tsv"
+            done
+          done
+          sha256sum "$root"/saves/C*_isolated_v0_w1_n1024-t1.cyps \
+            >"$root/identical-old-ceiling-sha256.txt" 2>/dev/null || true
+          cat "$root/cyps-compat.tsv"
+      - name: Preserve raw observations and original failures
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: pf-gas-capacity-native-evidence
+          path: build/pf-gas-capacity/
+          if-no-files-found: error
+          retention-days: 90
