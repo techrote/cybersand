@@ -609,6 +609,8 @@ func _failed_world() -> void:
 		"known native adhesion remains authoritative while World is failed")
 	world.prepare_rigid_body_coupling(PackedFloat32Array(), false)
 	_status(world.get_last_boundary_result(), false, "prepare_rigid_body_coupling", 0, "failed-world coupling")
+	check(str(world.get_last_boundary_result().get("code", "")) == "world_failed",
+		"failed-world coupling preserves terminal quarantine diagnostic")
 	check(not bool(world.diagnostic_fill_rect(Vector2i(20,20), Vector2i.ONE, 2)), "failed owner cannot acknowledge a cell write")
 	check(not bool(world.simulation_tick()) and bool(world.has_failed())
 		and int(world.get_attempted_tick_index()) == failed_at and int(world.get_tick_failure_count()) == failure_count,

@@ -444,7 +444,8 @@ void CyberNativeCellWorld::paint_disc(std::int64_t centre_x, std::int64_t centre
 void CyberNativeCellWorld::prepare_rigid_body_coupling(
     const PackedFloat32Array& states, bool resolve_overlaps) {
     if (!world_ || world_->has_failed() || world_->solid_detachment_fenced()) {
-        (void)boundary_result("prepare_rigid_body_coupling", false, "native_refusal",
+        (void)boundary_result("prepare_rigid_body_coupling", false,
+            !world_ ? "world_unavailable" : (world_->has_failed() ? "world_failed" : "native_refusal"),
             "Rigid-body preparation requires a healthy unfenced native owner");
         return;
     }
