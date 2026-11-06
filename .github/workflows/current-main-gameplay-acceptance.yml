@@ -197,14 +197,14 @@ jobs:
           cp build/current-main-runtime/toolchain.txt "$E/toolchain.txt"
           cp godot/tests/current_main_gameplay_acceptance.gd "$E/current_main_gameplay_acceptance.gd"
           {
-            echo "# Reproduce this acceptance source"
+            echo '# Reproduce this acceptance source'
             echo
-            echo "- Production baseline: `$REGISTERED_MAIN`"
-            echo "- Qualification head: `$GITHUB_SHA`"
-            echo "- Use the retained Windows DLL whose SHA-256 is in `runtime.sha256`."
-            echo "- Use official Godot 4.7 archive SHA-512 `$GODOT_WINDOWS_SHA512`."
-            echo "- Materialize the pinned Windows Rapier DLL and run the retained GDScript through the production Godot project with `gl_compatibility / opengl3_angle`."
-            echo "- The three profiles are my-canvas and bench-canvas with PressureFlow gas on, stress-canvas with PressureFlow gas off; all use cached_dormant PressureFlow, ballistic Water, face release and runtime impact spray."
+            printf '%s\n' "- Production baseline: $REGISTERED_MAIN"
+            printf '%s\n' "- Qualification head: $GITHUB_SHA"
+            echo '- Use the retained Windows DLL whose SHA-256 is in runtime.sha256.'
+            printf '%s\n' "- Use official Godot 4.7 archive SHA-512 $GODOT_WINDOWS_SHA512."
+            echo '- Materialize the pinned Windows Rapier DLL and run the retained GDScript through the production Godot project with gl_compatibility / opengl3_angle.'
+            echo '- The three profiles are my-canvas and bench-canvas with PressureFlow gas on, stress-canvas with PressureFlow gas off; all use cached_dormant PressureFlow, ballistic Water, face release and runtime impact spray.'
           } > "$E/REPRODUCE.md"
           set +e
           "$GODOT" --verbose --rendering-method gl_compatibility --rendering-driver opengl3_angle --path godot --script res://tests/current_main_gameplay_acceptance.gd > "$E/godot.log" 2>&1

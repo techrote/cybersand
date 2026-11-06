@@ -242,7 +242,7 @@ func _water_assignment(desktop) -> Dictionary:
 	return {}
 
 func _stage_pressureflow(desktop, panel, gas_on: bool) -> bool:
-	var bridge: Object = panel._liquids.bridge
+	var bridge: Variant = panel._liquids.bridge
 	var request := PackedInt32Array(panel.applied.liquid_policy)
 	var selected: Dictionary = {}
 	for option: Dictionary in bridge.liquid_policy_assignment_choices(request, Setup.WATER):
@@ -312,7 +312,7 @@ func _profile(desktop, panel, profile: Dictionary) -> Dictionary:
 	var ok := await _load_profile(desktop, panel, profile)
 	if not ok:
 		return {"name":name, "completed":false, "setup_failed":true}
-	var spray_request_ok := panel.water_spray.request({"enabled":true, "jet_enabled":false})
+	var spray_request_ok: bool = bool(panel.water_spray.request({"enabled":true, "jet_enabled":false}))
 	expect(spray_request_ok, name + " impact-spray request queued")
 	if desktop.paused:
 		panel.toggle_pause()
