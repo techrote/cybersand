@@ -7,6 +7,8 @@ extends CyberSimulationWorker
 var tick_limit: int = 600
 var tick_hashes: PackedStringArray = PackedStringArray()
 var recorded_tick: int = 0
+# Amendment_001 load arm: synthetic extra native-owner time per completed tick.
+var native_delay_usec: int = 0
 
 func prepare_trace(limit: int) -> bool:
 	if limit < 1 or limit > CyberPhysicsCharacterisation.MAX_TICKS:
@@ -23,8 +25,10 @@ func _publish_snapshot(
 		rigid_body_states: PackedFloat32Array = PackedFloat32Array(),
 		rigid_body_epoch: int = 0
 ) -> void:
-	super._publish_snapshot(step_ms, paused, interval, force_full, rigid_body_states, rigid_body_epoch)
 	var tick: int = int(_world.get_tick_index())
+	if native_delay_usec > 0 and tick > recorded_tick:
+		OS.delay_usec(native_delay_usec)
+	super._publish_snapshot(step_ms, paused, interval, force_full, rigid_body_states, rigid_body_epoch)
 	if tick > recorded_tick and tick <= tick_limit and not _simulation_failed:
 		tick_hashes[tick] = str(_world.get_physical_state_hash())
 		recorded_tick = tick

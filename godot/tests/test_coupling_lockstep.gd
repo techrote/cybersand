@@ -1,7 +1,9 @@
 extends SceneTree
 
 # COUPLING-LOCKSTEP-001 (native/tests/fixtures/coupling_lockstep_001.json).
-# Usage: --script res://tests/test_coupling_lockstep.gd -- <output-dir|-> <async|lockstep> <workers> <ticks>
+# Usage: --script res://tests/test_coupling_lockstep.gd -- <output-dir|-> <async|lockstep|lockstep-f64rot> <workers> <ticks> [native_delay_usec]
+# lockstep-f64rot (amendment_001, fixture-only) repacks each rotation from the
+# basis with double-precision atan2; production packing is unchanged.
 # Geometry is test_physics_async.gd seed 0 with three 8x14 bodies. Every Rapier
 # step records lossless body bits plus the exact consumed native publication.
 # Without arguments it runs a short lockstep self-check and exits 0 on success.
@@ -29,6 +31,14 @@ static func body_bits(rids: Array[RID]) -> String:
 		values.append_array([t.x.x, t.x.y, t.y.x, t.y.y, t.origin.x, t.origin.y, v.x, v.y, w])
 	return bits(values)
 
+static func pack(bridge: CyberRapierPhysicsBridge, mode: String, count: int) -> PackedFloat32Array:
+	var states: PackedFloat32Array = bridge.pack_body_states()
+	if mode == "lockstep-f64rot":
+		for index: int in count:
+			var t: Transform2D = bridge.body_transform(index)
+			states[index * CyberRigidBodyCoupling.INPUT_STRIDE + CyberRigidBodyCoupling.INPUT_ROTATION] = atan2(float(t.x.y), float(t.x.x))
+	return states
+
 func _fail(message: String) -> void:
 	push_error("COUPLING_LOCKSTEP " + message)
 	quit(1)
@@ -40,8 +50,9 @@ func _run() -> void:
 	var mode: String = "lockstep" if args.size() < 2 else args[1]
 	var workers: int = 1 if args.size() < 3 else int(args[2])
 	var ticks: int = 90 if args.size() < 4 else int(args[3])
-	if mode not in ["async", "lockstep"] or workers < 1 or workers > 8 or ticks < 2 or ticks > CyberPhysicsCharacterisation.MAX_TICKS:
-		_fail("usage: <output|-> <async|lockstep> <workers 1..8> <ticks 2..7200>")
+	var delay_usec: int = 0 if args.size() < 5 else int(args[4])
+	if mode not in ["async", "lockstep", "lockstep-f64rot"] or delay_usec < 0 or delay_usec > 50000 or workers < 1 or workers > 8 or ticks < 2 or ticks > CyberPhysicsCharacterisation.MAX_TICKS:
+		_fail("usage: <output|-> <async|lockstep|lockstep-f64rot> <workers 1..8> <ticks 2..7200> [delay_usec 0..50000]")
 		return
 	var world: Object = ClassDB.instantiate(&"CyberNativeCellWorld")
 	if not world.diagnostic_reset({"workers": workers}):
@@ -94,11 +105,13 @@ func _run() -> void:
 	if not worker.prepare_trace(ticks):
 		_fail("trace capacity rejected")
 		return
-	if mode == "lockstep" and not worker.set_lockstep_coupling(true):
+	worker.native_delay_usec = delay_usec
+	var fenced: bool = mode.begins_with("lockstep")
+	if fenced and not worker.set_lockstep_coupling(true):
 		_fail("lockstep coupling refused before start")
 		return
 	worker.set_frame_state(0, false, false, Vector2i(left + 48, surface), Vector2i(left - 4, 0), Vector2i(104, floor_y + 4), 0, 0, true, true, true)
-	worker.set_rigid_body_states(bridge.pack_body_states())
+	worker.set_rigid_body_states(pack(bridge, mode, starts.size()))
 	var published: int = worker.rigid_body_publication()
 	var initial_bits: String = body_bits(rids)
 	var start_usec: int = Time.get_ticks_usec()
@@ -128,7 +141,7 @@ func _run() -> void:
 			bridge.shutdown()
 			_fail("native failure or fixture deadline in " + mode)
 			return
-		if mode == "lockstep" and (snapshot.consumed_rigid_body_publication != published or snapshot.serial == last_applied_serial):
+		if fenced and (snapshot.consumed_rigid_body_publication != published or snapshot.serial == last_applied_serial):
 			# Bounded non-blocking main hold: skip this physics frame.
 			held_frames += 1
 			if hold_started_msec < 0:
@@ -156,7 +169,7 @@ func _run() -> void:
 			"pre": pre_bits, "post": body_bits(rids),
 			"character": bits([snapshot.character_position.x, snapshot.character_position.y,
 				snapshot.character_velocity.x, snapshot.character_velocity.y])})
-		worker.set_rigid_body_states(bridge.pack_body_states())
+		worker.set_rigid_body_states(pack(bridge, mode, starts.size()))
 		published = worker.rigid_body_publication()
 		worker.acknowledge_render_snapshot(snapshot.render_snapshot_serial)
 	var wall_usec: int = Time.get_ticks_usec() - start_usec
@@ -170,7 +183,8 @@ func _run() -> void:
 		"worker_overruns": snapshot.worker_overruns, "lockstep": worker.lockstep_metrics(),
 		"native_worker_threads": int(world.get_worker_threads()) if world.has_method(&"get_worker_threads") else -1,
 		"initial_bits": initial_bits, "final_bits": body_bits(rids),
-		"state_hash": str(final.get("state_hash", "")), "content_hash": str(final.get("content_hash", "")),
+		"state_hash": str(final.get("hash", "")), "final_physical_hash": str(world.get_physical_state_hash()),
+		"native_delay_usec": delay_usec,
 		"tick_hashes": Array(worker.tick_hashes), "steps": steps, "platform": OS.get_name(),
 		"engine": Engine.get_version_info().get("string", "")}
 	bridge.shutdown()

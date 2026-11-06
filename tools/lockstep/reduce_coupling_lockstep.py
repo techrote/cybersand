@@ -33,7 +33,7 @@ def compare(a, b):
         return dict(equal=False, step=k, tick=tick, fields=differing, kind=kind, tick_hash_equal_at_step=hash_equal,
                     first_tick_hash_difference=first_hash(a, b))
     tails = dict(steps=len(a['steps']) == len(b['steps']), final_bits=a['final_bits'] == b['final_bits'],
-                 state_hash=a['state_hash'] == b['state_hash'], content_hash=a['content_hash'] == b['content_hash'],
+                 state_hash=a['state_hash'] == b['state_hash'], final_physical_hash=a.get('final_physical_hash') == b.get('final_physical_hash'),
                  tick_hashes=a['tick_hashes'] == b['tick_hashes'])
     if all(tails.values()):
         return dict(equal=True)
@@ -99,24 +99,28 @@ def main():
                                           detail=[p for p in pairs if not p['equal']][:10])
     hosts = sorted({k[0] for k in groups})
     workers = sorted({k[2] for k in groups})
+    arms = sorted({k[1] for k in groups})
+    fenced = [arm for arm in arms if arm.startswith('lockstep')]
     for host in hosts:
-        a, b = groups.get((host, 'lockstep', workers[0])), groups.get((host, 'lockstep', workers[-1]))
-        if a and b and a[0] and b[0] and len(workers) > 1:
-            out['worker_parity'][host] = compare(a[0], b[0])
+        for arm in fenced:
+            a, b = groups.get((host, arm, workers[0])), groups.get((host, arm, workers[-1]))
+            if a and b and a[0] and b[0] and len(workers) > 1:
+                out['worker_parity']['%s/%s' % (host, arm)] = compare(a[0], b[0])
     if len(hosts) > 1:
-        for arm in ('lockstep', 'async'):
+        for arm in arms:
             for w in workers:
                 a, b = groups.get((hosts[0], arm, w)), groups.get((hosts[1], arm, w))
                 if a and b and a[0] and b[0]:
                     out['cross_host']['%s/w%d' % (arm, w)] = compare(a[0], b[0])
     rep = out['repeatability']
-    out['decisions']['a_lockstep_repeatable'] = {h: all(rep['%s/lockstep/w%d' % (h, w)]['all_equal_to_repeat0']
-                                                        and out['groups']['%s/lockstep/w%d' % (h, w)]['cost']['worker_timeouts'] == 0
-                                                        for w in workers) for h in hosts}
-    out['decisions']['a_worker_parity'] = {h: v['equal'] for h, v in out['worker_parity'].items()}
+    out['decisions']['a_lockstep_repeatable'] = {'%s/%s' % (h, arm): all(rep['%s/%s/w%d' % (h, arm, w)]['all_equal_to_repeat0']
+                                                        and out['groups']['%s/%s/w%d' % (h, arm, w)]['cost']['worker_timeouts'] == 0
+                                                        for w in workers) for h in hosts for arm in fenced}
+    out['decisions']['a_worker_parity'] = {k: v['equal'] for k, v in out['worker_parity'].items()}
     out['decisions']['a_async_control_differing_pairs'] = {k: '%d/%d' % (v['differing_pairs'], v['pairs'])
                                                           for k, v in rep.items() if '/async/' in k}
     out['decisions']['b_cross_host_lockstep_match'] = {k: v['equal'] for k, v in out['cross_host'].items() if k.startswith('lockstep')}
+    out['decisions']['b_cross_host_first_divergence'] = {k: [v.get('step'), v.get('kind'), v.get('fields')] for k, v in out['cross_host'].items() if not v['equal']}
     path = ROOT / 'build/coupling-lockstep' / args.run / 'reduction.json'
     path.write_text(json.dumps(out, indent=2) + '\n', encoding='utf-8')
     print(json.dumps(out['decisions'], indent=2))

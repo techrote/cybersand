@@ -40,17 +40,17 @@ def linux_engine_sha():
     return subprocess.check_output(['wsl.exe', '-d', 'Ubuntu-24.04', '--', 'sha256sum', ENGINES['linux']]).decode().split()[0]
 
 
-def episode(host, arm, workers, ticks, folder):
+def episode(host, arm, workers, ticks, folder, delay):
     folder.mkdir(parents=True)
     log = folder / 'godot.log'
     timeout = CAP['timeout_seconds_per_episode']
     if host == 'windows':
         argv = [ENGINES['windows'], '--headless', '--path', str(ROOT / 'godot'), '--script',
-                'res://tests/test_coupling_lockstep.gd', '--', str(folder), arm, str(workers), str(ticks)]
+                'res://tests/test_coupling_lockstep.gd', '--', str(folder), arm, str(workers), str(ticks), str(delay)]
     else:
         argv = ['wsl.exe', '-d', 'Ubuntu-24.04', '--', 'timeout', '--signal=TERM', '--kill-after=5s', f'{timeout}s',
                 ENGINES['linux'], '--headless', '--path', wsl(ROOT / 'godot'), '--script',
-                'res://tests/test_coupling_lockstep.gd', '--', wsl(folder), arm, str(workers), str(ticks)]
+                'res://tests/test_coupling_lockstep.gd', '--', wsl(folder), arm, str(workers), str(ticks), str(delay)]
     start = time.monotonic()
     with log.open('wb') as handle:
         process = subprocess.Popen(argv, cwd=ROOT, stdout=handle, stderr=subprocess.STDOUT)
@@ -62,7 +62,7 @@ def episode(host, arm, workers, ticks, folder):
             code = 124
     text = log.read_text(encoding='utf-8', errors='replace')
     result = folder / f'{arm}-w{workers}.json'
-    row = dict(host=host, arm=arm, workers=workers, ticks=ticks, exit=code, seconds=time.monotonic() - start,
+    row = dict(host=host, arm=arm, workers=workers, ticks=ticks, delay_usec=delay, exit=code, seconds=time.monotonic() - start,
                clean=code == 0 and 'SCRIPT ERROR' not in text and 'COUPLING_LOCKSTEP {' in text and result.is_file(),
                log_sha256=sha(log), result=str(result.relative_to(ROOT)) if result.is_file() else None,
                result_sha256=sha(result) if result.is_file() else None)
@@ -78,6 +78,7 @@ def main():
     parser.add_argument('--arms', default='async,lockstep')
     parser.add_argument('--repeats', type=int, default=5)
     parser.add_argument('--ticks', type=int, default=600)
+    parser.add_argument('--delay-usec', type=int, default=0)
     args = parser.parse_args()
     assert not git('status', '--porcelain', '--', 'godot', 'native', 'tools'), 'Commit source before execution'
     folder = OUT / args.run
@@ -99,7 +100,7 @@ def main():
                 for arm in args.arms.split(','):
                     used = sum(p.stat().st_size for p in OUT.rglob('*') if p.is_file())
                     assert used < CAP['collection_cap_bytes'], 'Resource cap reached; retain evidence'
-                    row = episode(host, arm, workers, args.ticks, folder / host / f'{arm}-w{workers}-r{repeat}')
+                    row = episode(host, arm, workers, args.ticks, folder / host / f'{arm}-w{workers}-r{repeat}', args.delay_usec)
                     row['repeat'] = repeat
                     receipt['episodes'].append(row)
                     path.write_text(json.dumps(receipt, indent=2) + '\n', encoding='utf-8')
