@@ -2203,12 +2203,18 @@ func _publish_snapshot(
 			_pending_render_worker_overruns = _worker_overruns
 			render_generation_advanced = true
 	var current_hard_surface_revision: int = int(_world.hard_surface_revision)
+	# The workbench lock-step steps Rapier only against the current revision,
+	# so a throttled packet would cap the whole session at the throttle rate
+	# whenever reactions edit hard terrain every tick (about 4 ticks/s). Its
+	# native packet is cached per revision; other modes keep the throttle.
+	var workbench_lockstep: bool = _workbench_extent != Vector2i.ZERO
 	if (
 		force_render_full_refresh
 		or rigid_body_epoch != _snapshot_hard_surface_epoch
 		or _snapshot_hard_surface_revision < 0
 		or (current_hard_surface_revision != _snapshot_hard_surface_revision
-			and now_usec - _last_hard_surface_snapshot_usec >= HARD_SURFACE_SNAPSHOT_INTERVAL_USEC)
+			and (workbench_lockstep
+				or now_usec - _last_hard_surface_snapshot_usec >= HARD_SURFACE_SNAPSHOT_INTERVAL_USEC))
 	):
 		# A new physical owner/reset cannot acknowledge a retained terrain
 		# packet from its predecessor, even inside the ordinary edit throttle.

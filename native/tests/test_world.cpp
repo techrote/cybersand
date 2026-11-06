@@ -3726,6 +3726,31 @@ void test_player_field_native_tick_quantity_and_worker_parity() {
     }
 }
 
+// MaterialRules' namespace-scope pair tables must answer exactly as the
+// authored InteractionRules resolver for every material pair and roll.
+void test_pair_reaction_tables_match_resolver() {
+    std::size_t reacting = 0;
+    for (unsigned s = 0; s < 256U; ++s) {
+        const auto source = static_cast<cybersand::Material>(s);
+        require(cybersand::MaterialRules::has_pair_reactions(source) == cybersand::InteractionRules::has_pair_rule(source),
+                "pair participant table differs from the resolver");
+        for (unsigned t = 0; t < 256U; ++t) {
+            const auto target = static_cast<cybersand::Material>(t);
+            for (const unsigned roll : {0U, 1U, 63U, 127U, 128U, 200U, 254U, 255U}) {
+                const auto expected = cybersand::InteractionRules::resolve_pair(source, target, static_cast<std::uint8_t>(roll));
+                const auto actual = cybersand::MaterialRules::pair_reaction(source, target, static_cast<std::uint8_t>(roll));
+                require(actual.has_value() == expected.selected, "pair reaction selection differs from the resolver");
+                if (!actual) continue;
+                ++reacting;
+                require(actual->source_product == expected.source_product &&
+                        actual->target_product == expected.target_product &&
+                        actual->rule_index == expected.rule_index, "pair reaction products differ from the resolver");
+            }
+        }
+    }
+    require(reacting > 0U, "fixture must exercise reacting pairs");
+}
+
 } // namespace
 
 void test_liquid_policy_sha256_known_answers();
@@ -4016,6 +4041,7 @@ int main(int argc, char** argv) {
         {"IN-B1 signed vertical arc ceiling parity", test_inertial_signed_vertical_arc_ceiling_parity},
         {"IN-B1 signed vertical support and hybrid", test_inertial_signed_vertical_support_and_hybrid},
         {"Workbench parallel PressureFlow heads match serial (all variants)", test_workbench_pressure_heads_parallel_exact},
+        {"Pair reaction tables match the authored resolver", test_pair_reaction_tables_match_resolver},
     };
 
     std::size_t passed = 0;

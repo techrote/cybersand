@@ -660,10 +660,11 @@ Sources: [main.gd](../../godot/scripts/main.gd),
 | `TICK_INTERVAL_USEC` / `MAX_BACKLOG_TICKS` | 16667 / 3 |
 | Render publication choices/default | 30/45/60 Hz; default 45 |
 | `DEFAULT_RENDER_SNAPSHOT_INTERVAL_USEC` | 22222 |
-| `HARD_SURFACE_SNAPSHOT_INTERVAL_USEC` | 250000, desktop extraction sampling |
+| `HARD_SURFACE_SNAPSHOT_INTERVAL_USEC` | 250000, desktop extraction sampling; not applied under the workbench lock-step, which publishes every changed hard-surface revision |
 | `HARD_SURFACE_REBUILD_INTERVAL` | 0.10 s, controller sync cooldown |
-| `HARD_SURFACE_CHUNKS_PER_FRAME` | 32 queued chunks |
+| `HARD_SURFACE_CHUNKS_PER_FRAME` | 32 rebuilt chunks; unchanged queued chunks no longer count against it |
 | `HARD_SURFACE_FRAME_BUDGET_USEC` | 750, checked between chunk rebuilds |
+| `WORKBENCH_HARD_SURFACE_CHUNKS_PER_FRAME` / `..._FRAME_BUDGET_USEC` | 128 / 4000, workbench lock-step only, while Rapier is blocked on the current terrain |
 | `MAX_PENDING_RENDER_PATCHES` | 256 before full-refresh recovery |
 | Pending render-byte recovery threshold | Greater than 2,097,152 bytes |
 | `RENDER_PATCH_METADATA_STRIDE` | 6 integers |

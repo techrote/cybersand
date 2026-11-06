@@ -4,8 +4,11 @@ extends RefCounted
 const Fleet = preload("res://scripts/gcr_review_fleet.gd")
 const BARREL := "reference_barrel"
 const RESPONSES := ["LA-SELECTIVE", "LA", "LA-EVENT-OFF", "RFT"]
-const MATERIALS := [2,14,29,13,19,23,25,26,27,3,58,0]
-const MATERIAL_NAMES := ["Sand","Dust","Rust","Stone","Seed","Salt","Sodium","Gunpowder","Coal","Water","Hard wall","Erase"]
+# The first nine are the powders a 4 x 24 source may emit; later entries are
+# paint-only (liquids, reactive and thermal materials) and stay appended.
+const MATERIALS := [2,14,29,13,19,23,25,26,27,3,58,0,8,16,12,7,9,28]
+const MATERIAL_NAMES := ["Sand","Dust","Rust","Stone","Seed","Salt","Sodium","Gunpowder","Coal","Water","Hard wall","Erase",
+	"Lava","Oil","Acid","Wood","Ice","Metal"]
 const MAX_BODIES := 8
 const MAX_RUNS := 4096
 const MAX_STAMPS := 2048
@@ -22,9 +25,21 @@ static func fresh(policy: PackedInt32Array, extent := Vector2i(2048,2048)) -> Di
 		"source":[],"material":2,"brush":8,"fire":false}
 
 const DEFAULT_LABEL := "my-canvas"
+const BENCH_LABEL := "bench-canvas"
 const WATER := 3
 const SAND := 2
 const WALL := 58
+const STONE := 13
+const LAVA := 8
+const OIL := 16
+const ACID := 12
+const WOOD := 7
+const ICE := 9
+const METAL := 28
+const SALT := 23
+const SODIUM := 25
+const GUNPOWDER := 26
+const COAL := 27
 
 static func _fill(edits: Array, from: Vector2i, to: Vector2i, radius: int, material: int) -> void:
 	# Disc centres stay inset by the radius, so a fill never paints outside its box.
@@ -64,6 +79,63 @@ static func water_evaluation(policy: PackedInt32Array) -> Dictionary:
 	data.next_id = 3
 	data.material = WATER
 	return data
+
+# Built-in "bench-canvas" whole-engine benchmark start (used only while no user
+# file of that name exists). 1024 x 512 with eight barrels over four reacting
+# zones, left to right: a Water dam column against a sand dune under a falling
+# sand curtain; a lava basin fed by a Water shelf and hanging ice; an oil-on-
+# Water tank under a wood deck with gunpowder, coal and a lava drip; an acid
+# bath taking falling metal beside a brine pool with salt and sodium. Powder,
+# liquid, thermal, combustion, chemistry and body coupling all run at once.
+static func engine_benchmark(policy: PackedInt32Array) -> Dictionary:
+	var data := fresh(policy,Vector2i(1024,512))
+	var edits: Array = data.edits
+	# A: dam and dune.
+	_fill(edits,Vector2i(8,296),Vector2i(92,500),12,WATER)
+	for x: int in range(98,246,6):
+		_fill(edits,Vector2i(x,500-(x-92)*6/10),Vector2i(x+8,500),4,SAND)
+	_fill(edits,Vector2i(132,150),Vector2i(232,214),8,SAND)
+	# B: lava basin, Water shelf and hanging ice.
+	_fill(edits,Vector2i(268,436),Vector2i(494,500),10,LAVA)
+	_fill(edits,Vector2i(272,236),Vector2i(398,296),10,WATER)
+	_fill(edits,Vector2i(420,360),Vector2i(472,412),8,ICE)
+	# C: oil on Water, wood deck, gunpowder, coal and a lava drip.
+	_fill(edits,Vector2i(518,462),Vector2i(754,500),8,WATER)
+	_fill(edits,Vector2i(518,418),Vector2i(754,462),8,OIL)
+	_fill(edits,Vector2i(690,340),Vector2i(742,366),6,GUNPOWDER)
+	_fill(edits,Vector2i(530,342),Vector2i(586,366),6,COAL)
+	_fill(edits,Vector2i(616,292),Vector2i(660,332),8,LAVA)
+	# D: acid bath with falling metal; brine pool with salt and sodium.
+	_fill(edits,Vector2i(778,448),Vector2i(890,500),8,ACID)
+	_fill(edits,Vector2i(800,380),Vector2i(864,428),8,METAL)
+	_fill(edits,Vector2i(902,440),Vector2i(1010,500),8,WATER)
+	_fill(edits,Vector2i(916,356),Vector2i(964,404),8,SALT)
+	_fill(edits,Vector2i(978,376),Vector2i(1002,400),4,SODIUM)
+	# Structure, painted last.
+	_wall(edits,Vector2i(0,506),Vector2i(1023,506))
+	_wall(edits,Vector2i(3,24),Vector2i(3,506))
+	_wall(edits,Vector2i(1020,24),Vector2i(1020,506))
+	_wall(edits,Vector2i(262,404),Vector2i(262,506))
+	_wall(edits,Vector2i(500,404),Vector2i(500,506))
+	_wall(edits,Vector2i(270,302),Vector2i(400,302),3)
+	_wall(edits,Vector2i(512,376),Vector2i(512,506))
+	_wall(edits,Vector2i(760,376),Vector2i(760,506))
+	for x: int in range(520,752,4): edits.append([x,372,3,WOOD])
+	_wall(edits,Vector2i(772,404),Vector2i(772,506))
+	_wall(edits,Vector2i(896,404),Vector2i(896,506),3)
+	_wall(edits,Vector2i(1014,404),Vector2i(1014,506))
+	var spots := [[60,240],[176,96],[330,190],[452,300],[600,250],[716,300],[832,320],[950,300]]
+	data.actors = []
+	for i: int in spots.size():
+		data.actors.append(instance(BARREL,i+1,Vector2(spots[i][0],spots[i][1])))
+	data.next_id = spots.size()+1
+	data.material = LAVA
+	return data
+
+static func builtin(label: String, policy: PackedInt32Array) -> Dictionary:
+	if label == DEFAULT_LABEL: return water_evaluation(policy)
+	if label == BENCH_LABEL: return engine_benchmark(policy)
+	return {}
 
 static func instance(model: String, id: int, pos: Vector2) -> Dictionary:
 	var index := Fleet.index_for_id(model)

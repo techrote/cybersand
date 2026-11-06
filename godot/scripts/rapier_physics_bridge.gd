@@ -440,8 +440,11 @@ func process_hard_surface_collider_budget(
 	var start_usec: int = Time.get_ticks_usec()
 	var chunk_count: int = _pending_hard_surface_chunk_snapshot[0]
 	var processed: int = 0
+	var rebuilt: int = 0
 	_clear_full_hard_surface_shapes()
-	while processed < maximum_chunks and _pending_hard_surface_chunks > 0:
+	# Only replaced chunks consume the chunk budget; an unchanged chunk costs a
+	# slice comparison. The time budget still bounds every call.
+	while rebuilt < maximum_chunks and _pending_hard_surface_chunks > 0:
 		var chunk_index: int = _pending_hard_surface_scan_cursor
 		var rectangle_start: int = _pending_hard_surface_chunk_snapshot[chunk_index + 1]
 		var rectangle_end: int = _pending_hard_surface_chunk_snapshot[chunk_index + 2]
@@ -461,6 +464,7 @@ func process_hard_surface_collider_budget(
 			_hard_surface_shape_count += (
 				next_rectangles.size() / 4 - previous_shape_count
 			)
+			rebuilt += 1
 
 		_pending_hard_surface_scan_cursor = (chunk_index + 1) % chunk_count
 		_pending_hard_surface_chunks -= 1

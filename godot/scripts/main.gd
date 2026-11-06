@@ -88,6 +88,11 @@ const TEST_RIGID_BODY_SIZE: Vector2 = Vector2(8.0, 14.0)
 const HARD_SURFACE_REBUILD_INTERVAL: float = 0.10
 const HARD_SURFACE_CHUNKS_PER_FRAME: int = 32
 const HARD_SURFACE_FRAME_BUDGET_USEC: int = 750
+# Workbench lock-step: Rapier cannot step until the current terrain is
+# installed, so a blocked frame spends a larger (still bounded) budget rather
+# than idling for several rendered frames per terrain revision.
+const WORKBENCH_HARD_SURFACE_CHUNKS_PER_FRAME: int = 128
+const WORKBENCH_HARD_SURFACE_FRAME_BUDGET_USEC: int = 4000
 const RENDER_PATCH_METADATA_STRIDE: int = 6
 const RENDER_SNAPSHOT_HZ_PRESETS: Array[int] = [30, 45, 60]
 const BRUSH_SHAPES: Array[String] = ["circle", "square", "rectangle"]
@@ -3051,7 +3056,7 @@ func _workbench_terrain_installed(snapshot: CyberSimulationSnapshot) -> bool:
 		sync_hard_surface_colliders(snapshot)
 	if rapier_bridge.pending_hard_surface_chunks() > 0 and _workbench_collider_frame != Engine.get_process_frames():
 		_workbench_collider_frame = Engine.get_process_frames()
-		rapier_bridge.process_hard_surface_collider_budget(HARD_SURFACE_CHUNKS_PER_FRAME,HARD_SURFACE_FRAME_BUDGET_USEC)
+		rapier_bridge.process_hard_surface_collider_budget(WORKBENCH_HARD_SURFACE_CHUNKS_PER_FRAME,WORKBENCH_HARD_SURFACE_FRAME_BUDGET_USEC)
 	if last_hard_surface_revision != required or rapier_bridge.pending_hard_surface_chunks() != 0: return false
 	_physical_terrain_ready = true
 	return true

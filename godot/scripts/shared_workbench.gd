@@ -603,11 +603,12 @@ func save_setup() -> bool:
 func load_setup() -> bool:
 	if not host.simulation_worker.has_failed() and not _editable(): return false
 	var result := Setup.read_named(_name.text)
-	# Until the owner saves their own "my-canvas", that name opens the built-in
-	# water evaluation start. A saved file of the name always wins.
-	if _name.text == Setup.DEFAULT_LABEL and not FileAccess.file_exists(Setup._path(_name.text)):
+	# Until the owner saves their own file of the name, "my-canvas" opens the
+	# built-in water evaluation start and "bench-canvas" the whole-engine
+	# benchmark. A saved file of the name always wins.
+	if _name.text in [Setup.DEFAULT_LABEL,Setup.BENCH_LABEL] and not FileAccess.file_exists(Setup._path(_name.text)):
 		if _liquids == null or _liquids.bridge == null: return refuse("Native policy interface unavailable.")
-		result = {"setup":Setup.water_evaluation(_liquids.bridge.default_liquid_policy())}
+		result = {"setup":Setup.builtin(_name.text,_liquids.bridge.default_liquid_policy())}
 	if result.has("error"): return refuse(result.error)
 	if host.simulation_worker.has_failed(): return host.workbench_restart(result.setup)
 	return apply(result.setup)

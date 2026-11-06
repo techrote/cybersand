@@ -158,6 +158,38 @@ func builtin_water() -> bool:
 	if not check(panel.new_canvas(),"blank canvas after built-in start"): return false
 	return await until(func(): return installed() and panel.applied.actors.is_empty() and main.image.get_width() == 2048,"blank 2048 canvas")
 
+# The built-in "bench-canvas" whole-engine benchmark: admitted within the paint
+# and run budgets, eight barrels, every zone's materials, and it simulates.
+func builtin_bench() -> bool:
+	var recipe: Dictionary = Setup.engine_benchmark(panel._liquids.bridge.default_liquid_policy())
+	var runs: Dictionary = Setup.rectangles(recipe)
+	check(Setup.validate(recipe).is_empty() and not runs.has("error"),"built-in bench start admits")
+	check(recipe.edits.size() <= Setup.MAX_STAMPS and runs.get("runs",[]).size() / 5 <= Setup.MAX_RUNS,"bench start inside paint/run budgets")
+	if FileAccess.file_exists(Setup._path(Setup.BENCH_LABEL)):
+		print("WORKBENCH_CANVAS: user bench-canvas exists; built-in load skipped")
+		return true
+	var test_name: String = panel._name.text
+	panel._name.text = Setup.BENCH_LABEL
+	var loaded: bool = check(panel.load_setup(),"built-in bench-canvas load / "+panel.message)
+	panel._name.text = test_name
+	if not loaded or not await until(installed,"built-in bench-canvas installed"): return false
+	check(main.tower_context.workbench_gcr.extent == Vector2i(1024,512) and main.physical_actor_session.bodies().size() == 8,"bench extent and eight barrels")
+	var seen := {}
+	var data: PackedByteArray = main.image.get_data()
+	var channels: int = 2 if main.image.get_format() == Image.FORMAT_RG8 else 1
+	for i: int in range(0,data.size(),channels): seen[int(data[i])] = true
+	for material: int in [Setup.WATER,Setup.SAND,Setup.LAVA,Setup.OIL,Setup.ACID,Setup.WOOD,Setup.ICE,Setup.METAL,Setup.SALT,Setup.SODIUM,Setup.GUNPOWDER,Setup.COAL]:
+		check(seen.has(material),"bench material painted: %d" % material)
+	var tick: int = main.latest_snapshot.tick_index
+	panel.toggle_pause()
+	await until(func(): return int(main.latest_snapshot.tick_index) >= tick+90,"bench ticks")
+	panel.toggle_pause()
+	check(not main.simulation_worker.has_failed() and int(main.latest_snapshot.tick_index) >= tick+90,"bench World simulates with reactions and bodies")
+	await until(installed,"paused after bench")
+	for axis: int in 2: panel._extent[axis].value = 2048
+	if not check(panel.new_canvas(),"blank canvas after bench start"): return false
+	return await until(func(): return installed() and panel.applied.actors.is_empty() and main.image.get_width() == 2048,"blank 2048 canvas after bench")
+
 func inspect() -> void:
 	var gcr: Dictionary = main.tower_context.workbench_gcr
 	check(gcr.extent == Vector2i(2048,2048) and gcr.response == "LA-SELECTIVE","actual extent and selected response")
@@ -212,7 +244,7 @@ func run() -> void:
 			if check(panel.load_setup(),"load from separate process / "+panel.message+" / "+main.microscenario_error) and await until(installed,"reload acknowledged"):
 				await inspect()
 		else:
-			if await builtin_water(): await author()
+			if await builtin_water() and await builtin_bench(): await author()
 	else: check(false,"workbench launch")
 	main.queue_free()
 	await process_frame

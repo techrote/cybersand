@@ -504,6 +504,16 @@ private:
     bool flow_mixing_enabled_ = false;
     bool flow_carrying_enabled_ = false;
     std::unordered_map<ChunkCoord, std::unique_ptr<Chunk>, ChunkCoordHash> chunks_;
+    // Dense, authoritative mirror of chunks_ inside one reserved coordinate
+    // window (owner-maintained; read-only during jobs). Coordinates outside it
+    // use the hash map. Pointers are stable: chunks are only inserted or
+    // cleared all together.
+    std::vector<Chunk*> chunk_directory_;
+    std::int64_t chunk_directory_x_ = 0, chunk_directory_y_ = 0;
+    std::int64_t chunk_directory_width_ = 0, chunk_directory_height_ = 0;
+    void cover_chunk_directory(ChunkCoord first, ChunkCoord last);
+    // log2(chunk_size) for power-of-two chunk sizes, else -1 (exact division).
+    std::int32_t chunk_shift_ = -1;
     std::vector<ChunkCoord> active_chunk_scratch_;
     std::vector<SchedulingCoreCoord> active_core_scratch_;
     std::vector<ExplosionCommand> pending_explosions_;

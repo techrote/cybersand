@@ -52,6 +52,16 @@ std::uint64_t allocate_discovery_incarnation() {
     return static_cast<std::int32_t>(remainder < 0 ? remainder + divisor : remainder);
 }
 
+// Namespace-scope copy of the derived pair partner sets: an inline rejection of
+// non-reacting neighbours before MaterialRules::pair_reaction (same answer as
+// its own first test; interaction_rules.hpp is unchanged).
+constexpr auto kPairPartners = cybersand::InteractionRules::build_partner_sets();
+[[nodiscard]] inline bool may_pair_react(cybersand::Material source, cybersand::Material target) noexcept {
+    const auto s = static_cast<std::uint8_t>(source);
+    const auto t = static_cast<std::uint8_t>(target);
+    return ((kPairPartners[s][t >> 6U] >> (t & 63U)) & 1U) != 0U;
+}
+
 [[nodiscard]] constexpr std::uint64_t mix64(std::uint64_t value) noexcept {
     value ^= value >> 30U;
     value *= 0xbf58476d1ce4e5b9ULL;
@@ -703,6 +713,8 @@ World::World(WorldConfig config)
     if (config_.chunk_size < 8 || config_.chunk_size > 1'024) {
         throw std::invalid_argument("chunk_size must be between 8 and 1024");
     }
+    if (std::has_single_bit(static_cast<std::uint32_t>(config_.chunk_size)))
+        chunk_shift_ = std::countr_zero(static_cast<std::uint32_t>(config_.chunk_size));
     if (config_.sleep_after_quiet_ticks == 0) {
         throw std::invalid_argument("sleep_after_quiet_ticks must be greater than zero");
     }
@@ -1542,6 +1554,20 @@ const WorldConfig& World::config() const noexcept { return config_; }
 SimulationBackend World::backend() const noexcept { return config_.backend; }
 
 World::Address World::address(std::int64_t x, std::int64_t y) const noexcept {
+    if (chunk_shift_ >= 0) {
+        // Power-of-two chunks: C++20 arithmetic shift is floor division and
+        // the mask is the non-negative remainder, for every int64 coordinate.
+        const auto mask = static_cast<std::int64_t>(config_.chunk_size) - 1;
+        const auto local_x = static_cast<std::int32_t>(x & mask);
+        const auto local_y = static_cast<std::int32_t>(y & mask);
+        return {
+            {x >> chunk_shift_, y >> chunk_shift_},
+            local_x,
+            local_y,
+            (static_cast<std::size_t>(local_y) << static_cast<unsigned>(chunk_shift_)) +
+                static_cast<std::size_t>(local_x),
+        };
+    }
     const auto chunk_x = floor_div(x, config_.chunk_size);
     const auto chunk_y = floor_div(y, config_.chunk_size);
     const auto local_x = positive_mod(x, config_.chunk_size);
@@ -1556,13 +1582,48 @@ World::Address World::address(std::int64_t x, std::int64_t y) const noexcept {
 }
 
 World::Chunk* World::find_chunk(ChunkCoord coord) noexcept {
+    return const_cast<Chunk*>(static_cast<const World*>(this)->find_chunk(coord));
+}
+
+const World::Chunk* World::find_chunk(ChunkCoord coord) const noexcept {
+    // Unsigned offsets reject both sides of the window in one comparison.
+    const auto dx = static_cast<std::uint64_t>(coord.x - chunk_directory_x_);
+    const auto dy = static_cast<std::uint64_t>(coord.y - chunk_directory_y_);
+    if (dx < static_cast<std::uint64_t>(chunk_directory_width_) &&
+        dy < static_cast<std::uint64_t>(chunk_directory_height_))
+        return chunk_directory_[dy * static_cast<std::uint64_t>(chunk_directory_width_) + dx];
     const auto found = chunks_.find(coord);
     return found == chunks_.end() ? nullptr : found->second.get();
 }
 
-const World::Chunk* World::find_chunk(ChunkCoord coord) const noexcept {
-    const auto found = chunks_.find(coord);
-    return found == chunks_.end() ? nullptr : found->second.get();
+void World::cover_chunk_directory(ChunkCoord first, ChunkCoord last) {
+    // Grow the window to the union of the current window and [first, last]
+    // plus a one-chunk halo, then rebuild it from chunks_. Setup-time only
+    // (reserve_region); a window larger than the bounded slot budget is
+    // simply not installed and the hash map keeps serving every lookup.
+    auto min_x = first.x - 1, min_y = first.y - 1, max_x = last.x + 1, max_y = last.y + 1;
+    if (chunk_directory_width_ > 0) {
+        min_x = std::min(min_x, chunk_directory_x_);
+        min_y = std::min(min_y, chunk_directory_y_);
+        max_x = std::max(max_x, chunk_directory_x_ + chunk_directory_width_ - 1);
+        max_y = std::max(max_y, chunk_directory_y_ + chunk_directory_height_ - 1);
+    }
+    const auto width = max_x - min_x + 1, height = max_y - min_y + 1;
+    const auto budget = static_cast<std::int64_t>(
+        std::max<std::size_t>(4096U, 4U * config_.maximum_chunk_count));
+    if (width <= 0 || height <= 0 || width > budget || height > budget / width) return;
+    if (width == chunk_directory_width_ && height == chunk_directory_height_ &&
+        min_x == chunk_directory_x_ && min_y == chunk_directory_y_) return;
+    std::vector<Chunk*> directory(static_cast<std::size_t>(width * height), nullptr);
+    for (const auto& [coord, chunk] : chunks_) {
+        if (coord.x < min_x || coord.x > max_x || coord.y < min_y || coord.y > max_y) continue;
+        directory[static_cast<std::size_t>((coord.y - min_y) * width + (coord.x - min_x))] = chunk.get();
+    }
+    chunk_directory_ = std::move(directory);
+    chunk_directory_x_ = min_x;
+    chunk_directory_y_ = min_y;
+    chunk_directory_width_ = width;
+    chunk_directory_height_ = height;
 }
 
 World::Chunk& World::ensure_chunk(ChunkCoord coord) {
@@ -1584,6 +1645,14 @@ World::Chunk& World::ensure_chunk(ChunkCoord coord) {
         chunk->granular_arrivals = std::make_unique<std::vector<std::uint64_t>>(chunk->cells.size(), 0);
     }
     const auto [iterator, inserted] = chunks_.try_emplace(coord, std::move(chunk));
+    if (inserted) {
+        const auto dx = static_cast<std::uint64_t>(coord.x - chunk_directory_x_);
+        const auto dy = static_cast<std::uint64_t>(coord.y - chunk_directory_y_);
+        if (dx < static_cast<std::uint64_t>(chunk_directory_width_) &&
+            dy < static_cast<std::uint64_t>(chunk_directory_height_))
+            chunk_directory_[dy * static_cast<std::uint64_t>(chunk_directory_width_) + dx] =
+                iterator->second.get();
+    }
     if (inserted && iterator->second->granular_arrivals)
         granular_arrival_storage_bytes_ += iterator->second->granular_arrivals->size()*sizeof(std::uint64_t);
     if (inserted) register_discovery_chunk(coord, *iterator->second);
@@ -2678,6 +2747,7 @@ void World::reserve_region(RectI64 region) {
         throw std::runtime_error("reserve region exceeds remaining chunk capacity");
     }
     chunks_.reserve(chunks_.size() + missing);
+    cover_chunk_directory(minimum_address.chunk, maximum_address.chunk);
     for (auto chunk_y = minimum_address.chunk.y; chunk_y <= maximum_address.chunk.y; ++chunk_y) {
         for (auto chunk_x = minimum_address.chunk.x; chunk_x <= maximum_address.chunk.x; ++chunk_x) {
             (void)ensure_chunk({chunk_x, chunk_y});
@@ -2855,6 +2925,7 @@ void World::clear() {
     tick_failed_ = false;
     clear_transient_obstacles();
     chunks_.clear();
+    std::fill(chunk_directory_.begin(), chunk_directory_.end(), nullptr);
     granular_arrival_storage_bytes_ = 0;
     reset_quantity_ledger();
     reset_ballistic_water();
@@ -3483,6 +3554,7 @@ bool World::update_rule_kernel(RuleKernel kernel, Material source_material,
         for (std::size_t step = 0; step < kMooreNeighbours.size(); ++step) {
             const auto [target_x, target_y] = neighbour(start + step);
             const auto target = get(target_x, target_y);
+            if (!may_pair_react(material, target)) continue;
             const auto reaction =
                 MaterialRules::pair_reaction(material, target, probability_roll);
             if (!reaction.has_value()) continue;
@@ -4169,7 +4241,8 @@ void World::schedule_pending_reaction_wake(Material material, std::int64_t x,
         const auto target = get(x + offset.x, y + offset.y);
         if (has_pair_reactions && !pair_pending) {
             // A failed probability roll must retain its next opportunity too.
-            pair_pending = MaterialRules::pair_reaction(material, target, 0U).has_value();
+            pair_pending = may_pair_react(material, target) &&
+                           MaterialRules::pair_reaction(material, target, 0U).has_value();
         }
         if (is_ice) {
             melt_pending = melt_pending || is_hot(target);
