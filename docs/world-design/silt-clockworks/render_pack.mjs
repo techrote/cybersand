@@ -5,8 +5,8 @@ function render(p){
  const palette=new Map(p.palette.map(m=>[m.id,m]));
  const rect=r=>{const [x,y,w,h,id]=r,m=palette.get(id),a=m.rgba;return `<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="rgb(${a[0]},${a[1]},${a[2]})" fill-opacity="${(a[3]/255).toFixed(3)}"/>`};
  const s=p.scene,alt=p.alternate_scene,sceneInk=(scene)=>[...scene.terrain_rectangles.map(rect),...scene.placements.map(z=>{const f=p.features.find(f=>f.id===z.feature),v=f.variants.find(v=>v.id===z.variant);return `<g transform="translate(${z.x} ${z.y})">${f.rectangles.map(r=>rect([r[0],r[1],r[2],r[3],v.swap[String(r[4])]??r[4]])).join("")}</g>`})].join(""),parts=[
- `<svg xmlns="http://www.w3.org/2000/svg" width="1380" height="1760" viewBox="0 0 1380 1760" role="img" aria-label="Silt Clockworks material-feature design sheet">`,
- `<rect width="1380" height="930" fill="#0b131c"/>`,
+ `<svg xmlns="http://www.w3.org/2000/svg" width="1380" height="2010" viewBox="0 0 1380 2010" role="img" aria-label="Silt Clockworks material-feature design sheet">`,
+ `<rect width="1380" height="2010" fill="#0b131c"/>`,
  `<rect x="0" y="0" width="1380" height="100" fill="#15212c"/>`,
  `<text x="54" y="40" font-family="monospace" font-weight="bold" font-size="30" fill="#e5d6ab">SILT / CLOCKWORKS</text>`,
  `<text x="55" y="68" font-family="monospace" font-size="13" fill="#91b7b8">CYBERSAND • WORLD-DESIGN COLLECTION 006 • MATERIAL-CELL / T=0 PROPOSAL</text>`,
@@ -30,7 +30,13 @@ function render(p){
  parts.push(`<text x="${bx+12}" y="1508" font-family="monospace" font-size="13" fill="#dbc58f">${c.name}</text>`);
  parts.push(`<svg x="${bx+10}" y="1521" width="606" height="162" viewBox="${c.x} ${c.y} ${c.w} ${c.h}" preserveAspectRatio="xMidYMid meet">`,sceneInk(alt),`</svg>`);
  }
- parts.push(`<text x="58" y="1744" font-family="monospace" font-size="12" fill="#90a5aa">DESIGN ONLY • DRY INSETS ARE SOLID MATERIALS • NO NATIVE WATER/CHEMISTRY OR GODOT VALIDATION</text>`,`</svg>`);
+ const flagshipCrops=[{name:"06 — BROKEN ZERO-TIDE DATUM / RUPTURED GANTRY",x:566,y:16,w:356,h:130},{name:"07 — FOUR BURIED REGISTER VAULTS / DRY ARCHIVES",x:85,y:216,w:1010,h:48}];
+ for(let i=0;i<flagshipCrops.length;i++){const c=flagshipCrops[i],bx=48+i*652;
+ parts.push(`<rect x="${bx}" y="1720" width="629" height="226" rx="8" fill="#101b25" stroke="#38505a" stroke-width="2"/>`);
+ parts.push(`<text x="${bx+12}" y="1743" font-family="monospace" font-size="13" fill="#dbc58f">${c.name}</text>`);
+ parts.push(`<svg x="${bx+10}" y="1751" width="606" height="179" viewBox="${c.x} ${c.y} ${c.w} ${c.h}" preserveAspectRatio="xMidYMid meet">`,sceneInk(s),`</svg>`);
+ }
+ parts.push(`<text x="58" y="1988" font-family="monospace" font-size="12" fill="#90a5aa">DESIGN ONLY • DRY INSETS ARE SOLID MATERIALS • NO NATIVE WATER/CHEMISTRY OR GODOT VALIDATION</text>`,`</svg>`);
  return parts.join("\n")+"\n";
 }
 const actual=render(JSON.parse(fs.readFileSync(path.join(dir,"pack.json"),"utf8"))),file=path.join(dir,"preview.svg");
