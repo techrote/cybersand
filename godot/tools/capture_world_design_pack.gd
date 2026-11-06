@@ -259,7 +259,7 @@ func _output_custody_error() -> String:
 func _write_transaction(state: String, extra: Dictionary = {}) -> bool:
 	if claim_path.is_empty() or not DirAccess.dir_exists_absolute(claim_path):
 		return false
-	var record: Dictionary = {"schema": 2, "state": state, "attempt_id": attempt_id,
+	var record: Dictionary = {"schema": 3, "state": state, "attempt_id": attempt_id,
 		"output_path": output_path, "pack_path": pack_path,
 		"process_id": OS.get_process_id(), "owner_host": owner_host,
 		"owner_process_started": owner_process_started,
@@ -430,7 +430,7 @@ func _prepare_target() -> String:
 			return "output is already claimed by attempt " + stale_id + "; explicit --recover-claim=<attempt-id> is required after confirming the process is no longer active"
 		if recover_claim_id != stale_id:
 			return "--recover-claim does not match the existing transaction attempt id"
-		# Refuse schema-1/partial/cross-host records: there is no trustworthy
+		# Refuse schema-1/2, incomplete or cross-namespace records: there is no trustworthy
 		# evidence that their recorded PID can be checked in this OS namespace.
 		if typeof(stale) != TYPE_DICTIONARY or int(stale.get("schema", 0)) != 3:
 			return "output is already claimed; legacy or incomplete transaction cannot be safely recovered"
