@@ -8,9 +8,9 @@ const renderSVG=function renderSVG(p){
  const paint=(f,variant)=>{const va=variant?f.variants.find(v=>v.id===variant):null;return f.rectangles.map(([x,y,w,h,id])=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" ${rgba(Number(va?.swap?.[id]??id))}/>`).join("")};
  const sceneRectangles=rr=>(rr||[]).map(([x,y,w,h,id])=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" ${rgba(id)}/>`).join("");
  const scenePaint=(s)=>sceneRectangles(s.backdrop_rectangles)+s.placements.map(at=>{const f=p.features.find(v=>v.id===at.feature_id);return `<g transform="translate(${at.origin[0]},${at.origin[1]})">${paint(f,at.variant)}</g>`}).join("")+sceneRectangles(s.foreground_rectangles);
- const totalW=1500,totalH=2110;const items=[];
+ const totalW=1500,totalH=2480;const items=[];
  items.push(`<svg xmlns="http://www.w3.org/2000/svg" width="${totalW}" height="${totalH}" viewBox="0 0 ${totalW} ${totalH}">`);
- items.push(`<rect width="${totalW}" height="${totalH}" fill="#0b111b"/><rect x="26" y="24" width="1448" height="2082" rx="18" fill="#141d29" stroke="#344355"/>`);
+ items.push(`<rect width="${totalW}" height="${totalH}" fill="#0b111b"/><rect x="26" y="24" width="1448" height="2452" rx="18" fill="#141d29" stroke="#344355"/>`);
  items.push(`<text x="56" y="72" fill="#e3eaf5" font-family="monospace" font-size="32" font-weight="700">CATHEDRAL OF CAPACITORS</text><text x="57" y="102" fill="#8fbcc9" font-family="monospace" font-size="15">WORLD DESIGN / COLLECTION 009 / SOURCE COLOURS / NON-SIMULATED GEOMETRY</text>`);
  items.push(`<rect x="54" y="130" width="1390" height="325" rx="12" fill="#0a1019" stroke="#344355"/>`);
  items.push(`<text x="74" y="157" fill="#abb9c8" font-family="monospace" font-size="16">PROCESSION OF ZERO CURRENT — 1240 × 278 cells, fixed-material variants</text>`);
@@ -39,7 +39,15 @@ const renderSVG=function renderSVG(p){
  items.push(`<defs><clipPath id="${cid}"><rect x="${x+13}" y="${y+37}" width="662" height="233"/></clipPath></defs>`);
  items.push(`<g clip-path="url(#${cid})"><g transform="translate(${x+13},${y+37}) scale(1.8) translate(${-ox},${-oy})">${scenePaint(p.alternate_scene)}</g></g>`);
  }
- items.push(`<text x="55" y="2088" fill="#8096a6" font-family="monospace" font-size="13">DRAFT SOURCE-COLOUR PAINT ORDER / NOT NATIVE TICKS, GODOT SHADERS, ACTOR CLEARANCE OR IMPORTABLE WORLD.</text></svg>`);
+ items.push(`<text x="55" y="2092" fill="#a9c0d0" font-family="monospace" font-size="17" font-weight="700">SIX BURIED REGISTERS / STRUCTURAL DETAIL / 2.1x / FLAT MATERIAL COLOURS</text>`);
+ for(const [i,ox,oy,title] of [[0,33,267,"WEST / BUS, RECTIFIER, BROKEN WINDING"],[1,565,259,"CENTRE / SEVERED RETURN SPAN"],[2,1125,264,"EAST / RECORDER AND TERMINAL COFFINS"]]){
+  const x=54+i*468,y=2110,clipId="undervault-"+i;
+  items.push(`<rect x="${x}" y="${y}" width="442" height="305" rx="9" fill="#0a1019" stroke="#344355"/>`);
+  items.push(`<text x="${x+12}" y="${y+23}" fill="#b7c9d3" font-family="monospace" font-size="12">${title}</text>`);
+  items.push(`<defs><clipPath id="${clipId}"><rect x="${x+10}" y="${y+34}" width="422" height="258"/></clipPath></defs>`);
+  items.push(`<g clip-path="url(#${clipId})"><g transform="translate(${x+10},${y+34}) scale(2.1) translate(${-ox},${-oy})">${scenePaint(p.alternate_scene)}</g></g>`);
+ }
+ items.push(`<text x="55" y="2458" fill="#8096a6" font-family="monospace" font-size="13">DRAFT SOURCE-COLOUR PAINT ORDER / NOT NATIVE TICKS, GODOT SHADERS, ACTOR CLEARANCE OR IMPORTABLE WORLD.</text></svg>`);
  return items.join("\n")+"\n";
 };
 const pack=JSON.parse(fs.readFileSync(new URL('./pack.json',import.meta.url),'utf8'));
