@@ -30,7 +30,7 @@ for(let i=0;i<pack.features.length;i++){
  lines.push('<rect x="'+(x-8)+'" y="'+(y-6)+'" width="'+(f.size[0]*s+16)+'" height="'+(f.size[1]*s+12)+'" fill="#0c1623"/>',draw(f,null,x,y,s));
 }
 
-lines.push('<text x="60" y="1719" font-family="monospace" font-size="22" fill="#f0e3cb">FLAGSHIP STRATA / APPROX 2× SCALE</text>');
+lines.push('<text x="60" y="1719" font-family="monospace" font-size="22" fill="#f0e3cb">THE UNBOUND AEON GATE / FAULT-FACING FOLIOS · APPROX 2×</text>');
 const closeup=(px,py,vx,vy,vw,vh,alternate=false)=>{
  const sc=alternate?pack.alternate_scene:pack.combined_scene;
  lines.push('<rect x="'+(px-3)+'" y="'+(py-3)+'" width="722" height="246" rx="8" fill="#18212d" stroke="#485466"/>');
@@ -38,7 +38,7 @@ const closeup=(px,py,vx,vy,vw,vh,alternate=false)=>{
  for(const pl of sc.placements){const f=pack.features.find(z=>z.id===pl.feature_id);lines.push(draw(f,pl.variant,pl.origin[0],pl.origin[1],1));}
  lines.push(drawArt(sc.foreground_rectangles,0,0,1),'</svg>');
 };
-closeup(60,1741,180,22,345,116);
+closeup(60,1741,518,36,355,124);
 closeup(822,1741,816,18,345,116);
 lines.push('<text x="60" y="2010" font-family="monospace" font-size="22" fill="#f0e3cb">SYNCLINAL REBINDING / DRY ALTERNATE DETAIL SECTIONS</text>');
 closeup(60,2040,160,183,340,114,true);
