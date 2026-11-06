@@ -1,0 +1,291 @@
+name: IN-TOOLS 361 source-matched qualification
+
+on:
+  push:
+    branches:
+      - feat/in-tools-361-implementation-20261106
+    paths:
+      - '.github/workflows/in-tools-361-qualification.yml'
+      - 'tools/lcb/in_tools_361_qualification_trigger.txt'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: in-tools-361-source-matched-${{ github.sha }}
+  cancel-in-progress: false
+
+env:
+  GODOT_URL: https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7
+  GODOT_SHA256: 0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c
+  GODOT_VERSION: 4.7.stable.official.5b4e0cb0f
+  GODOT_CPP_COMMIT: 101ae38034304346a46ea9ea84ae156d3e860496
+  GODOT_WINDOWS_URL: https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip
+  LLVM_MINGW_URL: https://github.com/mstorsjo/llvm-mingw/releases/download/20260826/llvm-mingw-20260826-ucrt-ubuntu-22.04-x86_64.tar.xz
+  LLVM_MINGW_SHA256: cee8d2ce3da5145ce4dc882e70d0b0719a783d53a99752c60948fc0659975a65
+  PYTHONUTF8: '1'
+  GODOT_SILENCE_ROOT_WARNING: '1'
+
+jobs:
+  native:
+    name: native / ${{ matrix.suite }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 360
+    strategy:
+      fail-fast: false
+      matrix:
+        suite: [native-normal, asan-ubsan, tsan]
+    steps:
+      - name: Check out exact source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+      - name: Record exact identity
+        run: |
+          set -euo pipefail
+          mkdir -p "build/in-tools-361/native-${{ matrix.suite }}"
+          git rev-parse HEAD | tee "build/in-tools-361/native-${{ matrix.suite }}/source-sha.txt"
+          git rev-parse HEAD^{tree} | tee "build/in-tools-361/native-${{ matrix.suite }}/source-tree.txt"
+          test "$(git rev-parse HEAD)" = "${{ github.sha }}"
+      - name: Execute registered native family
+        run: |
+          set -euo pipefail
+          bash tools/ci/run_native_family.sh "${{ matrix.suite }}" "build/in-tools-361/native-${{ matrix.suite }}"
+      - name: Retain native evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: in-tools-361-native-${{ matrix.suite }}-${{ github.run_id }}
+          path: build/in-tools-361/native-${{ matrix.suite }}/
+          if-no-files-found: warn
+          retention-days: 90
+
+  linux-source-matched:
+    name: Linux source-matched Godot 4.7
+    runs-on: ubuntu-24.04
+    timeout-minutes: 300
+    steps:
+      - name: Check out exact source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          lfs: false
+          fetch-depth: 0
+      - name: Materialize Rapier runtime
+        run: |
+          set -euo pipefail
+          git lfs install --local
+          git lfs pull --include="godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so" --exclude=""
+      - name: Install pinned SCons
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/scons"
+          "$RUNNER_TEMP/scons/bin/python" -m pip install --require-hashes -r tools/requirements-build.txt
+          "$RUNNER_TEMP/scons/bin/python" -c 'import SCons; assert SCons.__version__ == "4.10.1"'
+      - name: Check out exact godot-cpp
+        run: |
+          set -euo pipefail
+          mkdir "$RUNNER_TEMP/godot-cpp"
+          git -C "$RUNNER_TEMP/godot-cpp" init
+          git -C "$RUNNER_TEMP/godot-cpp" remote add origin https://github.com/godotengine/godot-cpp.git
+          git -C "$RUNNER_TEMP/godot-cpp" fetch --depth=1 origin "$GODOT_CPP_COMMIT"
+          git -C "$RUNNER_TEMP/godot-cpp" checkout --detach FETCH_HEAD
+          test "$(git -C "$RUNNER_TEMP/godot-cpp" rev-parse HEAD)" = "$GODOT_CPP_COMMIT"
+      - name: Build exact Linux extension
+        env:
+          GODOT_CPP_ROOT: ${{ runner.temp }}/godot-cpp
+          SCONS_PYTHON: ${{ runner.temp }}/scons/bin/python
+          SCONS_JOBS: '2'
+          CYBERSAND_REAL_CXX: /usr/bin/g++-13
+          LINUX_CXX: /usr/bin/g++-13
+          CYBERSAND_NATIVE_OUTPUT: ${{ runner.temp }}/libcybersand_native.linux.x86_64.so
+        run: |
+          set -euo pipefail
+          tools/build_pinned_godot_cpp.sh linux
+          tools/build_native_extension.sh
+          cp "$CYBERSAND_NATIVE_OUTPUT" godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so
+          mkdir -p build/in-tools-361/linux
+          git rev-parse HEAD > build/in-tools-361/linux/source-sha.txt
+          git rev-parse HEAD^{tree} > build/in-tools-361/linux/source-tree.txt
+          sha256sum "$CYBERSAND_NATIVE_OUTPUT" | tee build/in-tools-361/linux/native-sha256.txt
+      - name: Prepare exact Godot
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 3 --output "$RUNNER_TEMP/godot.zip" "$GODOT_URL"
+          echo "$GODOT_SHA256  $RUNNER_TEMP/godot.zip" | sha256sum --check --strict
+          unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/godot"
+          GODOT_BIN="$(find "$RUNNER_TEMP/godot" -maxdepth 1 -type f -name 'Godot*' -print -quit)"
+          chmod +x "$GODOT_BIN"
+          test "$("$GODOT_BIN" --version)" = "$GODOT_VERSION"
+          echo "GODOT_BIN=$GODOT_BIN" >> "$GITHUB_ENV"
+      - name: Execute focused and affected Godot regressions
+        run: |
+          set -euo pipefail
+          mkdir -p build/in-tools-361/linux/logs
+          cases=(
+            test_in_tools_361_adapter
+            test_physical_metered_drain
+            test_physical_metered_equipment
+            test_lcb_inertial_adapter
+            test_liquid_desktop_default_host
+          )
+          failed=0
+          for case in "${cases[@]}"; do
+            set +e
+            "$GODOT_BIN" --headless --path godot --script "res://tests/${case}.gd" >"build/in-tools-361/linux/logs/${case}.log" 2>&1
+            code=$?
+            set -e
+            printf '%s\n' "$code" >"build/in-tools-361/linux/logs/${case}.exit.txt"
+            cat "build/in-tools-361/linux/logs/${case}.log"
+            if [ "$code" -ne 0 ]; then failed=1; fi
+          done
+          exit "$failed"
+      - name: Retain Linux evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: in-tools-361-linux-${{ github.run_id }}
+          path: build/in-tools-361/linux/
+          if-no-files-found: error
+          retention-days: 90
+
+  windows-build:
+    name: Windows source-matched DLL build
+    runs-on: ubuntu-24.04
+    timeout-minutes: 300
+    steps:
+      - name: Check out exact source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+      - name: Install pinned SCons
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/scons"
+          "$RUNNER_TEMP/scons/bin/python" -m pip install --require-hashes -r tools/requirements-build.txt
+      - name: Check out exact godot-cpp
+        run: |
+          set -euo pipefail
+          mkdir "$RUNNER_TEMP/godot-cpp"
+          git -C "$RUNNER_TEMP/godot-cpp" init
+          git -C "$RUNNER_TEMP/godot-cpp" remote add origin https://github.com/godotengine/godot-cpp.git
+          git -C "$RUNNER_TEMP/godot-cpp" fetch --depth=1 origin "$GODOT_CPP_COMMIT"
+          git -C "$RUNNER_TEMP/godot-cpp" checkout --detach FETCH_HEAD
+      - name: Prepare exact LLVM-MinGW
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 3 --output "$RUNNER_TEMP/llvm-mingw.tar.xz" "$LLVM_MINGW_URL"
+          echo "$LLVM_MINGW_SHA256  $RUNNER_TEMP/llvm-mingw.tar.xz" | sha256sum --check --strict
+          mkdir "$RUNNER_TEMP/llvm-mingw"
+          tar -xJf "$RUNNER_TEMP/llvm-mingw.tar.xz" -C "$RUNNER_TEMP/llvm-mingw" --strip-components=1
+          if test ! -e "$RUNNER_TEMP/llvm-mingw/bin/x86_64-w64-mingw32-gcc-ar"; then
+            ln -s llvm-ar "$RUNNER_TEMP/llvm-mingw/bin/x86_64-w64-mingw32-gcc-ar"
+          fi
+      - name: Build exact Windows extension
+        env:
+          GODOT_CPP_ROOT: ${{ runner.temp }}/godot-cpp
+          SCONS_PYTHON: ${{ runner.temp }}/scons/bin/python
+          SCONS_JOBS: '2'
+          LLVM_MINGW_ROOT: ${{ runner.temp }}/llvm-mingw
+          WINDOWS_CXX: ${{ runner.temp }}/llvm-mingw/bin/x86_64-w64-mingw32-g++
+          CYBERSAND_NATIVE_OUTPUT: ${{ runner.temp }}/cybersand_native.windows.x86_64.dll
+        run: |
+          set -euo pipefail
+          tools/build_pinned_godot_cpp.sh windows
+          tools/build_native_extension_windows.sh
+          mkdir -p build/in-tools-361/windows-runtime
+          cp "$CYBERSAND_NATIVE_OUTPUT" build/in-tools-361/windows-runtime/cybersand_native.windows.x86_64.dll
+          git rev-parse HEAD > build/in-tools-361/windows-runtime/source-sha.txt
+          git rev-parse HEAD^{tree} > build/in-tools-361/windows-runtime/source-tree.txt
+          sha256sum "$CYBERSAND_NATIVE_OUTPUT" > build/in-tools-361/windows-runtime/native-sha256.txt
+          file "$CYBERSAND_NATIVE_OUTPUT"
+      - name: Publish source-matched Windows runtime
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: in-tools-361-windows-runtime-${{ github.run_id }}
+          path: build/in-tools-361/windows-runtime/
+          if-no-files-found: error
+          retention-days: 90
+
+  windows-source-matched:
+    name: Actual Windows source-matched Godot 4.7
+    needs: windows-build
+    runs-on: windows-2022
+    timeout-minutes: 240
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Check out exact source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          lfs: false
+          fetch-depth: 0
+      - name: Select Python
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Download source-matched extension
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: in-tools-361-windows-runtime-${{ github.run_id }}
+          path: build/in-tools-361/windows-runtime
+      - name: Verify and stage exact Windows runtimes
+        run: |
+          set -euo pipefail
+          test "$(cat build/in-tools-361/windows-runtime/source-sha.txt)" = "${{ github.sha }}"
+          cp build/in-tools-361/windows-runtime/cybersand_native.windows.x86_64.dll godot/addons/cybersand_native/bin/
+          git lfs install --local
+          git lfs pull --include="godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll" --exclude=""
+      - name: Download official Windows Godot
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 3 --output "$RUNNER_TEMP/godot-windows.zip" "$GODOT_WINDOWS_URL"
+          mkdir -p "$RUNNER_TEMP/godot-windows"
+          python - <<'PY'
+          import os, zipfile
+          z=os.path.join(os.environ["RUNNER_TEMP"],"godot-windows.zip")
+          out=os.path.join(os.environ["RUNNER_TEMP"],"godot-windows")
+          with zipfile.ZipFile(z) as f: f.extractall(out)
+          PY
+          GODOT_CONSOLE="$(find "$RUNNER_TEMP/godot-windows" -maxdepth 1 -type f -name '*console.exe' -print -quit)"
+          test -n "$GODOT_CONSOLE"
+          "$GODOT_CONSOLE" --version | tee build/in-tools-361/windows-runtime/godot-version.txt
+          echo "GODOT_CONSOLE=$GODOT_CONSOLE" >> "$GITHUB_ENV"
+      - name: Execute focused tests and historical discriminator on actual Windows
+        run: |
+          set -euo pipefail
+          mkdir -p build/in-tools-361/windows/logs
+          git rev-parse HEAD > build/in-tools-361/windows/source-sha.txt
+          git rev-parse HEAD^{tree} > build/in-tools-361/windows/source-tree.txt
+          cases=(
+            test_in_tools_361_adapter
+            test_physical_metered_drain
+            test_physical_metered_equipment
+            test_liquid_desktop_default_host
+          )
+          failed=0
+          for case in "${cases[@]}"; do
+            set +e
+            "$GODOT_CONSOLE" --headless --path godot --script "res://tests/${case}.gd" >"build/in-tools-361/windows/logs/${case}.log" 2>&1
+            code=$?
+            set -e
+            printf '%s\n' "$code" >"build/in-tools-361/windows/logs/${case}.exit.txt"
+            cat "build/in-tools-361/windows/logs/${case}.log"
+            if [ "$code" -ne 0 ]; then failed=1; fi
+          done
+          exit "$failed"
+      - name: Retain actual Windows source-matched evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: in-tools-361-windows-execution-${{ github.run_id }}
+          path: |
+            build/in-tools-361/windows/
+            build/in-tools-361/windows-runtime/
+          if-no-files-found: error
+          retention-days: 90
