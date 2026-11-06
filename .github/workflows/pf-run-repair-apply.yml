@@ -18,6 +18,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           persist-credentials: true
+          fetch-depth: 12
       - name: Validate exact upstream dependency and patch digest
         shell: bash
         run: |
