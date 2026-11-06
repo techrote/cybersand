@@ -54,10 +54,13 @@ int main(int argc, char** argv) {
         cfg.activity_block_size = 8;
         cfg.scheduling_core_size = 16;
         cfg.parallel_job_threshold = 2;
-        cfg.initial_chunk_reserve = 8;
-        cfg.maximum_chunk_count = 64;
-        cfg.active_chunk_capacity = 64;
-        cfg.active_core_capacity = 64;
+        // Reactive products may legitimately expand beyond the initially
+        // addressed signed 7x7 mask domain. This is an apparatus capacity,
+        // not an optimization or simulation-law limit.
+        cfg.initial_chunk_reserve = 32;
+        cfg.maximum_chunk_count = 256;
+        cfg.active_chunk_capacity = 256;
+        cfg.active_core_capacity = 1024;
         cfg.sleep_after_quiet_ticks = 2;
         World world(cfg);
         world.configure_transient_obstacles({-48, -48, 112, 112});
