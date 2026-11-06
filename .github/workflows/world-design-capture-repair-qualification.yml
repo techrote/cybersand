@@ -6,6 +6,7 @@ on:
       - tools/world-design-capture-repair-r1-r5-20261106
       - tools/world-design-capture-final-repair-independent-20261106
       - tools/world-design-capture-live-owner-repair-20261106
+      - tools/world-design-capture-final-r1d-visibility-archive-repair-20261106
   workflow_dispatch:
 
 permissions:
