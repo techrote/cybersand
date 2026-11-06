@@ -6,15 +6,14 @@ on:
       - codex/neighbour-cursor-independent-qualification-20261106
     paths:
       - tools/perf/paired_extended_neighbour_cursor.py
-      - .github/workflows/experimental-neighbour-cursor-extended.yml
   workflow_dispatch:
 
 permissions:
   contents: read
 
 concurrency:
-  group: neighbour-cursor-extended-${{ github.ref }}
-  cancel-in-progress: true
+  group: neighbour-cursor-extended-${{ github.ref }}-${{ github.run_id }}
+  cancel-in-progress: false
 
 jobs:
   paired-sustained-six-worker:
