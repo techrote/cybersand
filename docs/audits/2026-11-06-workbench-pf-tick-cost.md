@@ -52,8 +52,11 @@ related-documents: [../architecture/pressure-flow-v1.md, ../architecture/simulat
 - Source: #406 branch `claude/water-ballistic-hybrid` at `8f189e09` plus this
   change (see the commit that adds this record).
 - Windows DLL (local, pinned LLVM-MinGW 20260826 / Clang 23.1.0):
-  `d1f1d9c1e863bc98865e0884d70b06810f4bd5b00b26557bcc88d3b45b6b40ce`. This is
-  not a published runtime.
+  `d1f1d9c1e863bc98865e0884d70b06810f4bd5b00b26557bcc88d3b45b6b40ce` for the
+  tables below, built from `c4292730`. After the TSan correction (below) the
+  DLL is `85e6293116d5efa8d99874171153068bfb5288eb1438d3512b00dc979832c1d6`.
+  On that DLL, dormant gas-free PressureFlow measured 6.28 ms (4.99 ms with
+  fine cores), both at 179–180 ticks per 3 s. Neither is a published runtime.
 - Machine: 12 logical CPUs, so the adapter's automatic policy gives 6 native
   workers. The GPU is a TITAN RTX, rendering a 1920×1080 window with Godot
   4.7-stable.
@@ -129,6 +132,27 @@ which carries byte-identical sources.
 |---|---|---|
 | `native/src/world.cpp` | `93ab7874e913bf696ffcdb85724d01f860bbd53c160dd9b7ea3f8daf28026b85` | `09685e01cdd7e2bb898f46ce3c9ab97b7427ac34e7568875a3bdfd7866190ac5` |
 | `native/src/world_pressure.inc` | `8f7649cda6561eb6d44ebca5b11cfeec41210105bf7e0d20435ede4b03077012` | `f89c9d6b6bcb1f4c76e2432ab4bc99ae22c45f0587aea0de33c06b21e13cac27` |
+
+## Sanitizers and a corrected race
+
+The exactness test and the `my-canvas` bench were also built with g++ 13.3.0
+under WSL Ubuntu 24.04 (`-O1 -g`). TSan ran under `setarch -R`, because this
+kernel's ASLR otherwise aborts TSan with "unexpected memory mapping".
+
+- **Found:** the first TSan run on `c4292730` reported a data race.
+  `chunk.active = true` in the deferred wake path is written by every sub-band
+  of the same chunk. The value is always `true`, but the race is undefined
+  behaviour.
+- **Fix:** the chunk flag is now set during the owner's serial wake replay.
+  Nothing in the row pass reads it.
+- **After the fix:**
+  - TSan: the exactness test passes 14,405,631 checks with no reports.
+  - TSan: the bench runs 90 ticks with 6 workers and no reports for dormant
+    gas-off, cached gas-on, reference with fine cores, and dormant gas-on with
+    fine cores.
+  - ASan/UBSan: the exactness test is clean.
+  - Windows: the native `tests` binary passes 183 tests. Seven workbench and
+    PressureFlow Godot tests pass on DLL `85e62931`.
 
 ## Gaps
 

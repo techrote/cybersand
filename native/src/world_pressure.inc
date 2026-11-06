@@ -1219,16 +1219,16 @@ void World::compute_pressure_heads() {
     const auto start_band = std::max<std::int64_t>(1, (PressureFlowParameters::kStartDeadBand255 * maximum + 127) / 255);
     const auto blocks_per_axis = static_cast<std::size_t>((size + config_.activity_block_size - 1) / config_.activity_block_size);
     const auto blocks_per_chunk = blocks_per_axis * blocks_per_axis;
-    // Deferred wakes keep the band-private activation; the global physics
-    // event, wake count (and discovery, which disables deferral) follow in the
-    // serial band order at the merge.
+    // Deferred wakes keep the sub-band-private block activation. The chunk
+    // flag (shared by a chunk's sub-bands, read by nothing in this pass), the
+    // global physics event and the wake count (discovery disables deferral)
+    // follow in the serial band order at the merge.
     const auto wake_block = [&](RowTask& task, ChunkCoord coord, Chunk& chunk, std::size_t block_index) {
         if (!task.deferred) { wake_activity_block(coord, chunk, block_index); return; }
         auto& block = chunk.activity_blocks[block_index];
         if (block.active) return;
         block.active = true;
         block.quiet_ticks = 0;
-        chunk.active = true;
         state.row_wakes[task.wake_base + task.wakes++] = {coord, block_index};
     };
     const auto row_band = [&](RowTask& task) {
@@ -1464,6 +1464,7 @@ void World::compute_pressure_heads() {
         }
         for (std::size_t i = 0; i < task.wakes; ++i) {
             record_physics(PhysicsEvent::BlockWake, Material::Empty, Material::Empty, 0, 0, nullptr);
+            find_chunk(state.row_wakes[task.wake_base + i].coord)->active = true;
             ++state.diagnostics.woken_blocks;
         }
         // The last sub-band of a chunk row retires its consumed row group.
