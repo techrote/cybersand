@@ -831,9 +831,10 @@ static func request_error(request: Dictionary, frame: Dictionary) -> String:
 			if request.get(key) != row.get(key):
 				return "experimental_" + key
 		if request.get("request_id") != row.get("metered_request_id", ""):
-			return "experimental_released"
+			return "metered_released" if metered else "in_tools_released"
 	elif row.has("profile"):
-		return "experimental_version_required"
+		return "metered_version_required" if row.get("profile") == MeteredDrain.PROFILE \
+			else "in_tools_version_required"
 	for key: String in IDENTITY_KEYS:
 		if key not in ["run_id", "epoch"] and request.get(key) != row.get(key):
 			return key
