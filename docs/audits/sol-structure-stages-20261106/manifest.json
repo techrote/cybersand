@@ -68,9 +68,9 @@
       "bytes": 10413205
     },
     "validation.json": {
-      "raw_copy_sha256": "721d3901615fce093d2efcbbc12901fbd98fb798aeb4d175fdb0cc5a6c0f5f25",
-      "git_lf_sha256": "721d3901615fce093d2efcbbc12901fbd98fb798aeb4d175fdb0cc5a6c0f5f25",
-      "bytes": 50
+      "raw_copy_sha256": "d8c8c175df2469d90c849fe673d751d677098c7f76161a4832e9de8e7259d9aa",
+      "git_lf_sha256": "d8c8c175df2469d90c849fe673d751d677098c7f76161a4832e9de8e7259d9aa",
+      "bytes": 6100
     },
     "mass-fix-001/linux-oracle.json": {
       "raw_copy_sha256": "60e3b42e6370f4838d7b3dd6db40e90d56f21feb301a8bcb81a37ac19a57d290",
@@ -131,5 +131,38 @@
     "packed_quiet_pass": 0,
     "first_impulse_residual": 5.125249824e-09,
     "null_state_fault": "NOT_EXECUTED; both actualhosts syntaxpass; refuse/pause normal failurepath, not newnativephase proof"
+  },
+  "final_review": {
+    "disposition": "GO for source-bound Draft initialization candidate; no solvedSand/clearance/integration admission",
+    "tested_source": "c0d8544fc01653c329a7ff0f235666532967d29d",
+    "guard_syntax_source": "1d83c8818180318e86b17f69f543a60b0e2e3a54",
+    "known_wrench_ready_cases": 48,
+    "legacy_lost_cases": 16,
+    "world_COM_max_float32_ULP": 0.460675,
+    "first_native_packet_linear_residual": 5.125249824e-09,
+    "first_genuine_all_packed_max_linear_residual": 5.24e-05,
+    "first_genuine_all_packed_max_angular_residual": 3.13e-07,
+    "all_first_packet_zero_cases": "Six packed sessions legitimately first request nonzero impulse atstep1or2; zero initialrequests notlostimpulses.",
+    "dry_rest_pass": 8,
+    "packed_quiet_pass": 0,
+    "Sand_outcomes": {
+      "accepted": 2706,
+      "NonDissipativeResponse": 116,
+      "PoseDrift": 4,
+      "not_executed_On": 54
+    },
+    "review_scope": "Two independent readonly reviews; no worker wrote files or ran engines/builds. Separate independent adversarial PR review required before owner decision."
+  },
+  "final_reviewable_patch": {
+    "checkpoint": "fb5c089ccf8e4f0da695bc8b1c6a06a818fa0542",
+    "tree": "393e32b2c4bd93c48c4c49cd78c8d3be3837f10c",
+    "path": "C:\\Users\\_\\.codex\\worktrees\\sol-structure-cut-20261106\\khybersand\\build\\sol-structure-cut\\stage-and-mass-final.patch",
+    "sha256": "218613e565646ceae854b34bfa11a7c4aa266c9a11f5038dc156914a846a98b1",
+    "bytes": 12907304
+  },
+  "final_resource": {
+    "structure_bytes": 4289857747,
+    "cap_bytes": 4294967296,
+    "free": 18876723200
   }
 }

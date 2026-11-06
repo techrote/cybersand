@@ -1,3 +1,164 @@
 {
-  "status": "PENDING_EXACT_CHECKPOINT_CHECKS"
+  "source": "fb5c089ccf8e4f0da695bc8b1c6a06a818fa0542",
+  "tree": "393e32b2c4bd93c48c4c49cd78c8d3be3837f10c",
+  "local_delta": "",
+  "commands": {
+    "guard": {
+      "name": "guard",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/material_catalogue/compatibility.py",
+        "--check"
+      ],
+      "exit": 1,
+      "seconds": 1.1171106999972835,
+      "timeout_seconds": 120,
+      "log": "build\\sol-structure-cut\\stages-validation-001\\guard.log",
+      "log_sha256": "357b61dc0a22da3ff1e31cf5110b51f680c2f9c0c0d8a232c045886c9c26b370",
+      "clean": false
+    },
+    "m11": {
+      "name": "m11",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/ci/check_m11_consistency.py"
+      ],
+      "exit": 0,
+      "seconds": 1.2560128000332043,
+      "timeout_seconds": 120,
+      "log": "build\\sol-structure-cut\\stages-validation-001\\m11.log",
+      "log_sha256": "e5d2a8eecef5876957dc4ecff01b99af696053871616d2dea563371d44b2427b",
+      "clean": true
+    },
+    "retrieval": {
+      "name": "retrieval",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/docs/retrieval_eval.py",
+        "--output",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-structure-cut-20261106\\khybersand\\build\\sol-structure-cut\\stages-validation-001\\retrieval.json"
+      ],
+      "exit": 0,
+      "seconds": 0.5190775000373833,
+      "timeout_seconds": 120,
+      "log": "build\\sol-structure-cut\\stages-validation-001\\retrieval.log",
+      "log_sha256": "91f3d2c733ddce6f09b23672e09582dfe54d68b91d3e2c9b90ab3198ac5c93df",
+      "clean": true
+    },
+    "retrieval-stages": {
+      "name": "retrieval-stages",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/docs/retrieval_eval.py",
+        "--queries",
+        "docs/reference/retrieval-questions-sol-stages.json",
+        "--output",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-structure-cut-20261106\\khybersand\\build\\sol-structure-cut\\stages-validation-001\\retrieval-stages.json"
+      ],
+      "exit": 0,
+      "seconds": 0.41354610002599657,
+      "timeout_seconds": 120,
+      "log": "build\\sol-structure-cut\\stages-validation-001\\retrieval-stages.log",
+      "log_sha256": "7a13dc3a201976f81c3e58c08fbc8aaa6fc8982e56b80c3f144ba013dbf801c0",
+      "clean": true
+    },
+    "structure-tests": {
+      "name": "structure-tests",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/sol281/test_structure_reducer.py"
+      ],
+      "exit": 0,
+      "seconds": 0.15524270001333207,
+      "timeout_seconds": 120,
+      "log": "build\\sol-structure-cut\\stages-validation-001\\structure-tests.log",
+      "log_sha256": "7a14a6b7a78ab0c73959601709b293818678a1cfb496728a9dcd17340f008027",
+      "clean": true
+    },
+    "stage-tests": {
+      "name": "stage-tests",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/sol281/test_structure_stages.py"
+      ],
+      "exit": 0,
+      "seconds": 0.15254280000226572,
+      "timeout_seconds": 120,
+      "log": "build\\sol-structure-cut\\stages-validation-001\\stage-tests.log",
+      "log_sha256": "d4096016f94b3e2f854d42c86eca1d620c32a0e1545d3bdfb4b98c0627fef27a",
+      "clean": true
+    },
+    "diff": {
+      "name": "diff",
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit": 0,
+      "seconds": 0.04591789998812601,
+      "timeout_seconds": 120,
+      "log": "build\\sol-structure-cut\\stages-validation-001\\diff.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "clean": true
+    },
+    "stage-adverse": {
+      "name": "stage-adverse",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/sol281/test_stage_admission.py",
+        "build/sol-structure-cut/mass-fix-001/windows/tree-packed_sand-response1-w1.json"
+      ],
+      "exit": 0,
+      "seconds": 0.20537979999789968,
+      "timeout_seconds": 120,
+      "log": "build\\sol-structure-cut\\stages-validation-001\\stage-adverse.log",
+      "log_sha256": "8dbd70bef690adb77af87977cb0ecfbfe9f64e9034a4d632f4bea56e93207a88",
+      "clean": true
+    },
+    "docs": {
+      "name": "docs",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/ci/check_docs.py"
+      ],
+      "exit": 0,
+      "seconds": 2.750934900017455,
+      "timeout_seconds": 120,
+      "log": "build\\sol-structure-cut\\stages-validation-001\\docs.log",
+      "log_sha256": "c445ceb80e878d13647c363b19bc6b48832762a90fe0b70afcab24b0d22aa1d7",
+      "clean": true
+    },
+    "repository": {
+      "name": "repository",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/ci/check_repository.py",
+        "--require-materialized"
+      ],
+      "exit": 1,
+      "seconds": 3.6909887999645434,
+      "timeout_seconds": 120,
+      "log": "build\\sol-structure-cut\\stages-validation-001\\repository.log",
+      "log_sha256": "5aa350fb5aca1050c741dbd41110505f9c868f6658466e693302a651a780e08d",
+      "clean": false
+    }
+  },
+  "integration": "NO-GO: frozen material and published runtime source-input differences retained; this task does not refresh them.",
+  "retrieval_summaries": {
+    "retrieval": {
+      "questions": 32,
+      "canonical_hit_at_1": 19,
+      "canonical_hit_at_k": 32,
+      "mrr_at_k": 0.7536,
+      "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+    },
+    "retrieval-stages": {
+      "questions": 3,
+      "canonical_hit_at_1": 2,
+      "canonical_hit_at_k": 3,
+      "mrr_at_k": 0.8333,
+      "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+    }
+  }
 }
