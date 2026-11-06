@@ -162,8 +162,14 @@ func _controller_accounting() -> void:
 	expect(leak.status == "applied" and bool(controller.observation(0).aperture_open)
 		and int(leak.source_credit) == 0 and int(leak.sink_debit) == 0 and int(leak.quantity_delta) == 0,
 		"controller owns a reversible zero-quantity leak aperture")
+	var second: Dictionary = controller.apply_leak(
+		world, 0, _request(controller, world, Controller.PROFILE_LEAK, 0),
+		Vector2i(20, 20), true, 10)
+	expect(second.status == "refused" and second.reason == "owned_aperture_already_open"
+		and world.material_at(20, 20) == WALL and world.material_at(21, 20) == 0,
+		"one actor cannot orphan its first aperture by opening a second")
 	var close_request: Dictionary = _request(controller, world, Controller.PROFILE_LEAK, 0)
-	var close: Dictionary = controller.apply_leak(world, 0, close_request, Vector2i.ZERO, false, 10)
+	var close: Dictionary = controller.apply_leak(world, 0, close_request, Vector2i.ZERO, false, 11)
 	expect(close.status == "applied" and not bool(controller.observation(0).aperture_open)
 		and world.material_at(21, 20) == WALL, "alternate closes the same owned aperture")
 
