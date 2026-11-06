@@ -80,7 +80,9 @@ func run() -> void:
 				result["effective_outcome"]=outcome;arms[arm]=result
 				if arm=="current" and item.recorded_new:
 					check(outcome==item.recorded_outcome,"current source outcome reproduces "+str(data.id)+"/"+str(item.step))
-					if plan.get("accepted",false) and admission=="Admitted":check(plain(plan.total_impulse)==item.recorded_impulse and plan.torque_impulse==item.recorded_torque,"current wrench reproduces")
+					if plan.get("accepted",false) and admission=="Admitted":
+						result["recorded_parse_bits"]=bits([item.recorded_impulse[0],item.recorded_impulse[1],item.recorded_torque])
+						check(bits([plan.total_impulse.x,plan.total_impulse.y,plan.torque_impulse])==item.recorded_wrench_bits,"lossless current wrench reproduces")
 			rows.append({"step":item.step,"arms":arms})
 		sessions.append({"id":data.id,"rows":rows})
 	var handle:=FileAccess.open(output,FileAccess.WRITE);check(handle!=null,"output writable")
