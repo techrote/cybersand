@@ -118,6 +118,7 @@ def main() -> int:
                 docker_prefix = [
                     "docker", "run", "--rm", "--pid=private",
                     "--hostname", host_name, "-e", "HOSTNAME=" + host_name,
+                    "-e", "CYBERSAND_CAPTURE_FAULT_INJECTION=1",
                     "--user", str(os.getuid()) + ":" + str(os.getgid()),
                     "--volume", str(repo) + ":" + str(repo) + ":ro",
                     "--volume", str(E) + ":" + str(E) + ":rw",
