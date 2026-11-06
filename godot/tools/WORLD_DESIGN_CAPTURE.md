@@ -1,6 +1,75 @@
 # World-design pack capture — experimental Godot tooling
 
-**Status:** Draft tooling, NOT graphical-qualified or production-admitted. Source: `tools/world-design-godot-capture-20261105`, based on main `06522e300dcf91efbab0ac8f4f4370af72cf2029`. Design fixture: PR #454 exact inspected head `f68516b7e4faefb8c776a89169365a7e8dd55d37`. Neither the design schema nor the renderer is changed.
+**Status:** Experimental tooling; the original #457 and dependent Draft repair #462 are NOT production-admitted. Source parent: `tools/world-design-godot-capture-20261105` / `cff6c7f947147a250e5a5c3bb9d46b0df39b376c`, based on main `06522e300dcf91efbab0ac8f4f4370af72cf2029`. The original #454 oracle is pinned to `f68516b7e4faefb8c776a89169365a7e8dd55d37`; the repair's current read-only design snapshot is `e0da52a1d477606ac3ca737a9da2c9022cee4253`. Neither the design schema/art nor production renderer is changed.
+
+
+## Dependent corrective Draft PR #462 — capture protocol and admission (6 November 2026)
+
+This section describes the **repair implementation**, not permission to merge or a
+claim of physical simulation/production qualification. Prior negative evidence is
+retained in #457 and its original GitHub-hosted artifact archives. The independent
+repair checks are in `godot/tests/world_design_capture_repair_campaign.py` and
+`.github/workflows/world-design-capture-repair-qualification.yml`, with actual
+Linux OpenGL/llvmpipe and Windows ANGLE outputs preserved as workflow artifacts.
+
+- **R1 — fail closed:** extract absolute `--pack` and `--output` targets before
+  validating other switches. Disallow any output under the pack directory.
+  Invalidate an earlier `capture-manifest.json` and issue attempt-specific
+  `capture-status.json` **before** late argument validation. Write generated
+  PNG/RG8/metadata to a unique, adjacent staging directory, verify all hashes
+  and recorded byte counts, then publish the completed stage by filesystem
+  rename. The prior destination is moved to a unique backup sibling, preserving
+  old files including unrelated data rather than deleting them. Failed/interrupted
+  stages have no authoritative manifest at the requested destination. Directories
+  moved to sibling backups require explicit later user cleanup; the adapter does
+  not automatically delete them. Do not treat a failure status as success.
+- **R2 — schema identity:** `schema_id` must equal
+  `cybersand.world-feature-pack.proposal` and `schema_version` must be numeric
+  one (Godot JSON parses integer JSON tokens as float values). Missing IDs,
+  nonnumeric/unsupported versions and mixed `scene` / `combined_scene`
+  placement structures fail rather than silently reinterpreting formats.
+- **R3 — shader:** use existing `CyberPaletteShader.for_current_renderer()`.
+  The selected full or ANGLE bounded-crossfade variant, raw source bytes,
+  source-file binding, emission/composite/LUT script hashes, rendering method,
+  driver, adapter and actual graphical Godot executable SHA-256 are recorded.
+- **R4 — budgets:** `--max-working-mib=16..1024` (default 256) rejects estimated
+  excessive combined RGB8 buffers, RG8 source/texture, tile+halo HDR viewport
+  buffers, detail crops, staged and previous output duplication, before any
+  output image allocation. Per-output physical pixels are capped at 16,777,216
+  as well as existing native size and 32,768-pixel side limits. Large-width
+  collections above 1,024 native cells remain supported; limits are
+  conservative estimates rather than measured peak allocator usage.
+- **N1 — smoke:** isolated input/output roots; two real graphical child captures,
+  pixel/hash repeat, source isolation, structured manifest checks, shader
+  detail variation, and a malformed same-destination second invocation.
+- **R5 — provenance:** `source_revision` and `design_pack_revision` are retained
+  for backward discovery but are explicitly caller-declared. `source_identity`
+  distinguishes caller declaration from independently obtained clean Git HEAD.
+  `design_revision_verified` is null for read-only exported packs outside a
+  Git checkout; `pack_sha256` is the immutable content address. For policy
+  requiring a checked-out exact source, use `--require-verified-source=on`,
+  which fails if the declaration does not match a clean checkout.
+
+The fault-injection switches `--test-fail-publication=on` and
+`--test-pause-before-publication-ms=N` only work with
+`CYBERSAND_CAPTURE_FAULT_INJECTION=1`; these are test-only knobs, never
+production capture defaults. The latter permits a real process to be killed
+after staged framebuffer files validate but before publication.
+
+A fixed time repeats byte-identically on the same platform/rendering settings.
+Alternate tile sizes may produce tiny off-seam GLES3 floating-point differences
+without any boundary-band seams: the repair campaign retains exact pixel
+difference counts and failure history, requires zero changed pixels within
+32 physical pixels on each tested tile join, and bounds off-join rounding to
+5/255 per RGB channel affecting no more than 0.25% of pixels. This is *not*
+a cross-platform byte-equality claim and does not waive current production
+material presentation tests.
+
+Evidence must be source-pinned to the actual tested commit; the workflow
+retains raw files with `SHA256SUMS.txt` recomputed **after** the runner's live
+stdout log closes. Original failing runs are kept distinct from later corrected
+runs. Full 15-collection/120-feature current-design graphical acceptance and
+human reference comparison remain separate, subsequent activities.
 
 ## Command
 

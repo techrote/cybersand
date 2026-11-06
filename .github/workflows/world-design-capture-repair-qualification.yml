@@ -55,7 +55,22 @@ jobs:
           trap 'kill "$XVFB_PID" 2>/dev/null || :' EXIT
           sleep 2
           python3 -m pip install --disable-pip-version-check --quiet pillow
+          set +e
           python3 godot/tests/world_design_capture_repair_campaign.py --godot "$GODOT" --platform linux --evidence "$E" --frozen "$E/design-frozen/docs/world-design" --current "$E/design-current/docs/world-design" | tee "$E/logs/campaign-stdout.log"
+          CAMPAIGN_EXIT=${PIPESTATUS[0]}
+          set -e
+          # Shell owns final evidence hashing, after tee flushes its live log.
+          python - "$E" <<'PY'
+          from pathlib import Path
+          import hashlib, sys
+          root=Path(sys.argv[1])
+          rows=[]
+          for path in sorted(p for p in root.rglob("*") if p.is_file() and p.name!="SHA256SUMS.txt"):
+              rows.append(hashlib.sha256(path.read_bytes()).hexdigest()+"  "+path.relative_to(root).as_posix())
+          (root/"SHA256SUMS.txt").write_text("\n".join(rows)+"\n",encoding="utf-8")
+          print("Evidence SHA256SUMS.txt verified entries",len(rows))
+          PY
+          exit "$CAMPAIGN_EXIT"
       - name: Retain entire Linux graphical evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
@@ -99,7 +114,22 @@ jobs:
           git archive "$FROZEN_SHA" docs/world-design | tar -xf - -C "$E/design-frozen"
           git archive "$CURRENT_SHA" docs/world-design | tar -xf - -C "$E/design-current"
           python -m pip install --disable-pip-version-check --quiet pillow
+          set +e
           python godot/tests/world_design_capture_repair_campaign.py --godot "$(cygpath -w "$GODOT")" --platform windows --evidence "$(cygpath -w "$E")" --frozen "$(cygpath -w "$E/design-frozen/docs/world-design")" --current "$(cygpath -w "$E/design-current/docs/world-design")" | tee "$E/logs/campaign-stdout.log"
+          CAMPAIGN_EXIT=${PIPESTATUS[0]}
+          set -e
+          # Shell owns final evidence hashing, after tee flushes its live log.
+          python - "$E" <<'PY'
+          from pathlib import Path
+          import hashlib, sys
+          root=Path(sys.argv[1])
+          rows=[]
+          for path in sorted(p for p in root.rglob("*") if p.is_file() and p.name!="SHA256SUMS.txt"):
+              rows.append(hashlib.sha256(path.read_bytes()).hexdigest()+"  "+path.relative_to(root).as_posix())
+          (root/"SHA256SUMS.txt").write_text("\n".join(rows)+"\n",encoding="utf-8")
+          print("Evidence SHA256SUMS.txt verified entries",len(rows))
+          PY
+          exit "$CAMPAIGN_EXIT"
       - name: Retain entire Windows ANGLE graphical evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
