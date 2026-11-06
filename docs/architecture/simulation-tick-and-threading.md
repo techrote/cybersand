@@ -114,6 +114,14 @@ serial checks prevent duplicate application. See
 [main `_physics_process`](../../godot/scripts/main.gd) and
 [Rapier `step`](../../godot/scripts/rapier_physics_bridge.gd).
 
+**Opt-in prototype, default off (2026-11-06):** with `set_lockstep_coupling(true)` the
+ordinary coupling path ticks only after a body publication newer than its
+previous tick's. It does not wait on the wall-clock deadline. Holds poll every
+100 µs and count a timeout once a hold exceeds 250 ms, but stale input is still
+refused. Only the [COUPLING-LOCKSTEP-001 fixture](../../godot/tests/test_coupling_lockstep.gd)
+pairs it with a main-side frame hold. See
+[coupled desktop determinism](determinism-and-boundary-transfers.md#coupled-desktop-determinism--2026-11-06).
+
 ## Physical actor scheduling
 
 **Current ACT-004/ACT-005 desktop:** live bodies, joints and

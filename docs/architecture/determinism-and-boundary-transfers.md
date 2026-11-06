@@ -95,6 +95,45 @@ or pending behavior. Neither hash captures Rapier solver internals. Full replay
 requirements and CYSD1 level-byte comparison belong in
 [level saves versus replay](../reference/level-saves-and-replay.md).
 
+## Coupled desktop determinism — 2026-11-06
+
+**Current default (unchanged):** desktop native cells and main-thread Rapier are
+independently paced. The worker prepares whichever body sample main last
+published (`CyberSimulationWorker._worker_loop` → `prepare_rigid_body_coupling`).
+The two timelines therefore race, and the [COUPLING-LOCKSTEP-001 measurement](../audits/2026-11-06-coupling-lockstep-feasibility.md)
+found that every pair of repeated asynchronous runs diverged by that race, on
+Windows and on WSL Linux.
+
+**Current, opt-in prototype only:** `CyberSimulationWorker.set_lockstep_coupling(true)`
+is default off and refused after start. It makes native tick N wait, without
+blocking main, for the body publication made after Rapier step N−1. A main-side
+hold that skips a physics frame until the newest snapshot consumed its last
+publication exists only in the [fixture](../../godot/tests/test_coupling_lockstep.gd).
+`main.gd` does not use it. Under that pair of fences, repeated runs were
+bit-identical on each host, and 1 and 4 native workers gave identical results.
+The comparison covered per-step lossless body bits, consumed samples, native
+results and the per-tick `physical_state_hash`. The fixture's steps per second
+stayed within 1.3% of the asynchronous control at nominal load. When native
+work approached the 16.7 ms frame, lockstep slowed simulated time instead of
+letting results go stale.
+
+**Not established:** cross-platform identity in production. Windows and Linux
+lockstep runs diverged. Rapier transforms were still bit-equal when the packed
+float32 rotation from `Transform2D.get_rotation()` (platform `atan2f`) differed
+by one ulp. A fixture-only repack with a double `atan2` then matched Windows and
+WSL Linux on every recorded field for 1,800 ticks on x86-64. That shows the
+remaining gap can be closed in principle; it does not guarantee it. The [audit](../audits/2026-11-06-coupling-lockstep-feasibility.md) lists
+the remaining sources. They include platform transcendental math in packing
+and native rasterization, a Rapier build without `enhanced-determinism`, the
+coverage of hashes and saves, and the omission of input capture.
+
+The workbench host has a narrower Current fence: `_workbench_wait_sample` is
+matched against `workbench_completed_sample`. Its pacing is recorded in the
+[workbench audit](../audits/2026-11-04-workbench-boundary-and-pacing.md); its
+repeatability has not been measured. **Planned:** a production lockstep mode,
+input capture, and complete replay identity. Exact multiplayer lockstep across
+platforms is not admitted.
+
 ## Which boundaries still limit the guarantee?
 
 **Current:** phased exclusion retains activity and re-entry wakes newly included

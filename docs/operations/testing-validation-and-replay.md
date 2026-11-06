@@ -229,6 +229,25 @@ uses a numeric tolerance. [Level saves and replay](../reference/level-saves-and-
 owns the format and omitted continuation state. Complete replay persistence and
 a selectable strict runtime policy remain **Planned**.
 
+## Coupled lockstep measurement — 2026-11-06
+
+The [COUPLING-LOCKSTEP-001 fixture](../../godot/tests/test_coupling_lockstep.gd)
+compares lossless per-step body bits, consumed samples, native results and the
+per-tick `physical_state_hash` across fresh processes. Run without arguments, it
+is a short self-check: each step must apply the result of publication N−1. Run
+the registered measurement from a committed, clean source with materialized LFS
+runtimes. The runner uses a 300 s per-episode bound, the pinned Godot 4.7 paths
+named in the runner and WSL `Ubuntu-24.04` for Linux.
+
+```text
+godot --headless --path godot --script res://tests/test_coupling_lockstep.gd
+python tools/lockstep/run_coupling_lockstep.py --run NEW [--hosts windows,linux] [--arms async,lockstep] [--ticks 600] [--delay-usec 0]
+python tools/lockstep/reduce_coupling_lockstep.py --run NEW
+```
+
+Evidence stays in uncommitted `build/coupling-lockstep/`. Results and
+limits are in the [feasibility audit](../audits/2026-11-06-coupling-lockstep-feasibility.md).
+
 ## Required future validation
 
 These are **Planned gates**, not executed pass lists:

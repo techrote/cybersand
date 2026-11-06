@@ -1275,6 +1275,17 @@ fields are `epoch`, `status`, `reason`, `requested`, `queued` and `refused`.
 `batch_capacity` from `pending_capacity`. Epoch, failed-world, pause, pending
 reset/lab replacement and invalid actor-slot refusals remain explicit.
 
+**Current, opt-in only (2026-11-06):** every accepted body publication through
+`set_rigid_body_states` or `set_physical_usable_state` increments a mutex-owned
+counter read by `rigid_body_publication()`. The additive snapshot field
+`consumed_rigid_body_publication` names the publication latched with
+`current_rigid_body_states` (`-1` before the owner loop publishes).
+`set_lockstep_coupling(enabled, hold_timeout_usec = 250000)` is default off and
+refused after `start_worker`. It fences only the ordinary coupling path; labs,
+MicroScenarios and the workbench keep their own pacing. `lockstep_metrics()`
+returns copied `ticks`, `holds`, hold time and `timeouts`. No production caller
+enables it. See [coupled desktop determinism](../architecture/determinism-and-boundary-transfers.md#coupled-desktop-determinism--2026-11-06).
+
 `physical_actor_effect_admission()` and the additive snapshot field of the same
 name return copied `capacity`, `pending_requests`, accepted/refused batch and
 request counts, `overflow_batches` and `last_batch`, bound to the current effect

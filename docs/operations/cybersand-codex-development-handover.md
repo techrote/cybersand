@@ -10,6 +10,15 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## Coupling lockstep feasibility — 2026-11-06
+
+Draft branch `claude/gifted-franklin-0cd8e3` holds registration
+`coupling_lockstep_001.json`, its amendment, a default-off
+`set_lockstep_coupling` worker fence and the
+[feasibility audit](../audits/2026-11-06-coupling-lockstep-feasibility.md).
+No default or `main.gd` pacing changed. Before adopting a lockstep mode, read the
+audit's remaining-source list and its recommendation.
+
 ## MAT-AUTH-002 Phase A integration gate — 2026-11-04
 
 The owner now authorizes current-main reconciliation, focused preflight, a
