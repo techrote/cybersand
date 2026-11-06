@@ -192,11 +192,8 @@ func _nozzle() -> void:
 	forged = good.duplicate(true)
 	forged.in_tools.ballistic_transport = true
 	forged.in_tools.transport_mode = "ballistic_water_v1"
-	# Transport labels are evidence copied from the worker; acceptance is bound
-	# primarily to measured quantity. A forged mode must not become authority:
-	# retain it only as an observable test-control and reject by policy below.
-	expect(bool(forged.in_tools.ballistic_transport),
-		"ballistic-labelled control is distinguishable from the accepted IN receipt")
+	expect(_deliver(forged) == 0,
+		"ballistic-labelled copied outcome is rejected before it can masquerade as #361 IN transport")
 	var before_uses: int = int(_item().accepted_uses)
 	expect(_deliver(good) == 1 and int(_item().accepted_uses) == before_uses + 1,
 		"valid source-credit receipt is consumed exactly once by real Rapier equipment")
