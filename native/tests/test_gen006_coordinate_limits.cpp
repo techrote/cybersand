@@ -735,6 +735,84 @@ void simulation_only_persistence_gap_cohort(std::uint32_t workers) {
               << ",\"selective_eviction\":false,\"result\":\"PASS\"}\n";
 }
 
+// GEN-006: test-only same-value edit-intent/rebase ambiguity, NOT a codec.
+// Native physical state can reproduce values but not why a player placed Wall.
+void recipe_intent_ambiguity_cohort(std::uint32_t workers) {
+    const auto c=config(workers);
+    std::vector<Material> baseline(static_cast<std::size_t>(kSide*kSide),Material::Empty);
+    baseline[static_cast<std::size_t>(20*kSide)] = Material::Wall;
+    baseline[static_cast<std::size_t>(20*kSide+127)] = Material::Wall;
+    baseline[static_cast<std::size_t>(48*kSide+48)] = Material::Water;
+    World untouched(c), edited(c);
+    for (auto coord : {ChunkCoord{-1,0},ChunkCoord{0,0}}) {
+        require(untouched.install_generated_chunk(coord,baseline)==ChunkInstallOutcome::Installed,
+                "untouched native generator baseline refused");
+        require(edited.install_generated_chunk(coord,baseline)==ChunkInstallOutcome::Installed,
+                "edited native generator baseline refused");
+    }
+    require(edited.set_cell_state(0,20,Material::Empty,0,0) &&
+            edited.set_cell_state(0,20,Material::Wall,0,0),
+            "real native erase then same-value Wall placement failed");
+    for (World* w : {&untouched,&edited}) {
+        require(w->set_cell_state(-1,20,Material::Empty,0,0) &&
+                w->set_cell_state(48,48,Material::Water,17,0),
+                "signed Empty or native Water17 modification failed");
+        w->set_temperature(48,48,417);
+        require(w->stored_material(-1,20)==Material::Empty &&
+                w->stored_material(0,20)==Material::Wall &&
+                w->liquid_mass(48,48)==17 &&
+                w->stored_temperature(48,48)==417,
+                "native material/state/temperature readback mismatch");
+    }
+    // The real native material-state content hash cannot distinguish untouched
+    // Wall from a deliberate erase-and-replace Wall.
+    require(untouched.content_hash()==edited.content_hash(),
+            "final native cell content should agree despite distinct edit history");
+    const auto plain_bytes=untouched.save_physical_state();
+    const auto edited_bytes=edited.save_physical_state();
+    require(!plain_bytes.empty() && !edited_bytes.empty() &&
+            plain_bytes.size()<1024*1024 && edited_bytes.size()<1024*1024,
+            "real native checkpoint length unavailable or unbounded");
+    auto plain=World::restore_physical_state(c,plain_bytes);
+    auto changed=World::restore_physical_state(c,edited_bytes);
+    require(plain && changed && plain->physical_state_hash()==untouched.physical_state_hash() &&
+            changed->physical_state_hash()==edited.physical_state_hash(),
+            "native distinct histories failed CYPS roundtrip");
+    require(plain->content_hash()==changed->content_hash() &&
+            changed->stored_material(0,20)==Material::Wall &&
+            changed->stored_material(-1,20)==Material::Empty &&
+            changed->stored_state_a(48,48)==17 &&
+            changed->stored_temperature(48,48)==417,
+            "restored signed Water/Empty values differ or fail");
+    constexpr auto new_baseline=Material::Sand;
+    const auto naive=[](Material old_value,Material revision,Material live) {
+        return live==old_value?revision:live;
+    };
+    const auto intent_fenced=[](Material old_value,Material revision,Material live,
+                                bool external_explicit_edit) {
+        return external_explicit_edit||live!=old_value?live:revision;
+    };
+    require(naive(Material::Wall,new_baseline,changed->stored_material(0,20))==
+            new_baseline,"value-only rebase negative control absent");
+    require(intent_fenced(Material::Wall,new_baseline,plain->stored_material(0,20),false)==
+            new_baseline && intent_fenced(Material::Wall,new_baseline,
+            changed->stored_material(0,20),true)==Material::Wall &&
+            intent_fenced(Material::Wall,new_baseline,
+            changed->stored_material(-1,20),true)==Material::Empty,
+            "test-only owner edit-intent fence failed");
+    require(changed->install_generated_chunk({0,0},baseline)==
+            ChunkInstallOutcome::AlreadyResident,
+            "native fresh-only installer allowed rebase of resident");
+    std::cout<<"GEN006_RECIPE_INTENT_AMBIGUITY_JSON {\"configured_workers\":"
+             <<workers<<",\"actual_workers\":0,\"signed_chunks\":2"
+             <<",\"equal_native_content\":true,\"same_value_edit_intent_in_content\":false"
+             <<",\"explicit_empty\":true,\"water_quantity\":17,\"temperature\":417"
+             <<",\"native_plain_bytes\":"<<plain_bytes.size()
+             <<",\"native_edited_bytes\":"<<edited_bytes.size()
+             <<",\"intent_receipt\":\"TEST_ONLY\",\"production_rebase\":false"
+             <<",\"result\":\"PASS\"}\n";
+}
+
 }
 int main() {
     try {
@@ -746,6 +824,8 @@ int main() {
         render_dirty_not_persistent_ack_cohort(4);
         simulation_only_persistence_gap_cohort(1);
         simulation_only_persistence_gap_cohort(4);
+        recipe_intent_ambiguity_cohort(1);
+        recipe_intent_ambiguity_cohort(4);
         pending_event_region_cohort(1, false);
         pending_event_region_cohort(4, false);
         pending_event_region_cohort(1, true);
