@@ -1367,9 +1367,13 @@ void World::compute_pressure_heads() {
             };
             for (auto position = begin; position < end; ++position) {
                 const auto coord = coordinates[position];
-                if (open && position > begin && coordinates[position - 1].y + 1 != coord.y) {
-                    // The run's floor sits above an unallocated (Empty) chunk.
-                    close_run(position - 1, size - 1, coordinates[position - 1].y * size + size - 1, false, false);
+                if (position > begin && coordinates[position - 1].y + 1 != coord.y) {
+                    // A nonresident (Empty) chunk terminates *every* pressure
+                    // dependency, not only an open Water run. The preflight
+                    // already resets chain_dirty here unconditionally; commit
+                    // must make the same selection before derived writes.
+                    if (open)
+                        close_run(position - 1, size - 1, coordinates[position - 1].y * size + size - 1, false, false);
                     chain_dirty=false;
                 }
                 auto& chunk = *find_chunk(coord);
