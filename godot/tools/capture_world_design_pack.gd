@@ -320,7 +320,7 @@ func _identity_command(program: String, arguments: PackedStringArray) -> String:
 
 func _owner_host_identity() -> String:
 	if OS.get_name() == "Linux":
-		var boot: String = FileAccess.get_file_as_string("/proc/sys/kernel/random/boot_id").strip_edges()
+		var boot: String = _identity_command("cat", PackedStringArray(["/proc/sys/kernel/random/boot_id"]))
 		var pid_ns: String = _identity_command("readlink", PackedStringArray(["/proc/self/ns/pid"]))
 		if boot.is_empty() or not pid_ns.begins_with("pid:[") or not pid_ns.ends_with("]"):
 			return ""
@@ -348,7 +348,7 @@ func _linux_process_started(pid: int) -> String:
 	var file: String = "/proc/" + str(pid) + "/stat"
 	if not FileAccess.file_exists(file):
 		return ""
-	var stat: String = FileAccess.get_file_as_string(file)
+	var stat: String = _identity_command("cat", PackedStringArray([file]))
 	var end_comm: int = stat.rfind(")")
 	if end_comm < 0 or end_comm + 2 >= stat.length():
 		return ""
