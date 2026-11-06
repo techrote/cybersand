@@ -50,7 +50,10 @@ constexpr std::array<std::string_view, 4> kFallbacks{"index", "head", "member", 
  X(gas_cache_build_cells) X(gas_cache_builds) X(gas_component_proof_checks) \
  X(gas_member_initializations) X(gas_member_builds) X(gas_invalidation_pairs) \
  X(gas_component_invalidations) X(gas_dirty_chunks_queued) X(gas_capacity_fallbacks) \
- X(gas_budget_fallbacks) X(gas_restart_fallbacks) X(gas_relabel_cells) X(gas_identity_nodes) X(gas_stamp_clear_cells)
+ X(gas_budget_fallbacks) X(gas_restart_fallbacks) X(gas_relabel_cells) X(gas_identity_nodes) X(gas_stamp_clear_cells) \
+ X(head_preflight_nanoseconds) X(head_preflight_probes) X(head_preflight_runs) X(head_preflight_dirty_spans) \
+ X(head_candidate_base_cells) X(head_candidate_row_cells) X(head_preflight_budget_rejections) \
+ X(head_column_nanoseconds) X(head_row_nanoseconds) X(head_wake_worker_nanoseconds)
 
 void require(bool value, std::string_view message) {
     if (!value) throw std::runtime_error(std::string(message));

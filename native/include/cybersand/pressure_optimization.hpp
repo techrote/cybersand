@@ -9,7 +9,8 @@ namespace cybersand {
 // break-even model. Fixed weights and windows are bound by execution identity.
 // Execution v4 (#201 P1) adds derived sleeping-segment wake summaries; physical
 // results are unchanged, derived work differs, so the identity changes.
-inline constexpr std::uint64_t kPressureOptimizationExecutionVersion = 4;
+// Execution v5 adds bounded local-Y/per-run pressure base-head repair.
+inline constexpr std::uint64_t kPressureOptimizationExecutionVersion = 5;
 inline constexpr std::uint8_t kPressureCertificateWarmupVisits = 1;
 inline constexpr std::uint8_t kPressureCertificateBackoffVisits = 8;
 inline constexpr std::uint8_t kPressureCertificateTrialTicks = 8;
@@ -76,6 +77,13 @@ struct PressureOptimizationCounters : PressureKernelWork {
     std::uint64_t gas_invalidation_pairs = 0, gas_component_invalidations = 0, gas_dirty_chunks_queued = 0;
     std::uint64_t gas_capacity_fallbacks = 0, gas_budget_fallbacks = 0, gas_restart_fallbacks = 0;
     std::uint64_t gas_relabel_cells = 0, gas_identity_nodes = 0, gas_stamp_clear_cells = 0;
+    // Execution v5: non-authoritative run discovery/repair cost evidence.
+    std::uint64_t head_preflight_nanoseconds = 0, head_preflight_probes = 0;
+    std::uint64_t head_preflight_runs = 0, head_preflight_dirty_spans = 0;
+    std::uint64_t head_candidate_base_cells = 0, head_candidate_row_cells = 0;
+    std::uint64_t head_preflight_budget_rejections = 0;
+    std::uint64_t head_column_nanoseconds = 0, head_row_nanoseconds = 0;
+    std::uint64_t head_wake_worker_nanoseconds = 0;
 };
 
 struct PressureOptimizationSnapshot {
@@ -97,6 +105,7 @@ struct PressureOptimizationSnapshot {
     std::size_t index_chunk_capacity = 0;
     std::uint64_t head_repair_cell_budget = 0;
     std::size_t derived_capacity_bytes = 0;
+    std::size_t run_repair_capacity_bytes = 0;
     std::size_t worker_counter_capacity_bytes = 0;
     std::size_t common_counter_bytes = 0;
     std::size_t gas_components = 0, gas_valid_components = 0, gas_members = 0, gas_member_capacity = 0;

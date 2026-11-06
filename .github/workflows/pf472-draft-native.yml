@@ -1,0 +1,63 @@
+# Supplemental source-matched execution for Draft #472.
+# This does not replace or waive the repository's standard protected gates.
+name: PF472 Draft Native Compilation and Differential Qualification
+# NO-GO: preserve reproducibility, avoid Draft-branch push fan-out.
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  native-compile-and-differential:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 175
+    env:
+      CXX: g++-13
+    steps:
+      - name: Checkout exact pushed commit
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Record source and compiler identity
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/pf472-qualification
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          printf 'source=%s\n' "$GITHUB_SHA" | tee build/pf472-qualification/identity.txt
+          git status --short | tee -a build/pf472-qualification/identity.txt
+          g++-13 --version | head -n 1 | tee -a build/pf472-qualification/identity.txt
+          python3 tools/ci/check_ci_provider_policy.py | tee build/pf472-qualification/provider.json
+      - name: Compile actual registered native tests (GCC 13)
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 tools/ci/run_timed_command.py --policy-key native_suite_seconds \
+            --label pf472-native-compile \
+            --output-dir build/pf472-qualification/compile -- \
+            make CXX=g++-13 build/tests
+      - name: Run focused PressureFlow and parallel workbench regressions
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 tools/ci/run_timed_command.py --policy-key native_suite_seconds \
+            --label pf472-lcb-002 \
+            --output-dir build/pf472-qualification/lcb-002 -- \
+            ./build/tests LCB-002
+          python3 tools/ci/run_timed_command.py --policy-key native_suite_seconds \
+            --label pf472-workbench-parallel \
+            --output-dir build/pf472-qualification/workbench -- \
+            ./build/tests 'Workbench parallel'
+      - name: Full registered native regression binary
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 tools/ci/run_timed_command.py --policy-key native_suite_seconds \
+            --label pf472-full-native \
+            --output-dir build/pf472-qualification/full-native -- \
+            ./build/tests
+      - name: Preserve actual command, failure and source evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: pf472-draft-native-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/pf472-qualification/
+          if-no-files-found: warn
+          retention-days: 90

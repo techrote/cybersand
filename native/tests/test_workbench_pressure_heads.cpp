@@ -25,10 +25,17 @@ void fill(World& w, int x, int y, int width, int height, Material material) {
             w.set(x+dx, y+dy, material);
 }
 
-std::unique_ptr<World> fixture(unsigned workers, bool parallel_heads, int variant) {
+std::unique_ptr<World> fixture(unsigned workers, bool parallel_heads, int variant,
+                               bool force_reference = false, bool gas_enabled = true) {
     auto words = LiquidSolverPolicy::default_request();
     words[21] = 3; // Water pressure_flow_v1
     words[22] = variant; // 0 reference, 1 cached, 2 cached_dormant
+    if (!gas_enabled) {
+        const auto count_at=words.size()-2U;
+        words[count_at]=1;
+        words.insert(words.begin()+static_cast<std::ptrdiff_t>(count_at)+1,
+                     {3, 1, 2, 0, 64}); // accepted pressure block: gas=off
+    }
     const auto pf = LiquidSolverPolicy::decode(std::span<const std::int32_t>(words));
     require(pf.accepted(), "pressure policy");
     WorldConfig cfg;
@@ -39,6 +46,7 @@ std::unique_ptr<World> fixture(unsigned workers, bool parallel_heads, int varian
     cfg.activity_block_size = 8;
     cfg.maximum_chunk_count = cfg.active_chunk_capacity = cfg.active_core_capacity = 256;
     cfg.parallel_job_threshold = 2;
+    if (force_reference) cfg.pressure_optimization.index_chunk_capacity = 1;
     auto w = std::make_unique<World>(cfg);
     w->configure_transient_obstacles({-96,-64,240,128});
 
@@ -135,11 +143,173 @@ void run(int variant) {
               << " cert_invalidations=" << counters.certificate_invalidation_cells << " unknown=" << unknown << " wakes=" << wakes << " gas_samples=" << live_gas << '\n';
     require(unknown > 0 && live_gas > 0 && wakes > 0, "fixture must exercise lid repair, sealed gas and pressure wake");
 }
+
+// Regression for the budget's read-only preflight / writing-column boundary.
+// A dirty foreign liquid in a resident chunk with no Water below it must not
+// propagate a false dependency across a missing vertical chunk into a clean
+// supported Water run. The preflight and committed write footprint must agree.
+void gap_preflight_commit_bound() {
+    auto words = LiquidSolverPolicy::default_request();
+    words[21] = 3; words[22] = 1; // pressure cached
+    const auto count_at = words.size() - 2U;
+    words[count_at] = 1;
+    words.insert(words.begin() + static_cast<std::ptrdiff_t>(count_at) + 1,
+                 {3, 1, 2, 0, 64}); // gas off: no topology-wide invalidation
+    const auto policy = LiquidSolverPolicy::decode(std::span<const std::int32_t>(words));
+    require(policy.accepted(), "gap-budget accepted policy");
+    WorldConfig cfg;
+    cfg.liquid_solver_policy = *policy.policy;
+    cfg.chunk_size = cfg.scheduling_core_size = cfg.activity_block_size = 8;
+    cfg.maximum_chunk_count = cfg.active_chunk_capacity = cfg.active_core_capacity = 16;
+    cfg.initial_chunk_reserve = 2;
+    cfg.worker_threads = 1;
+    World w(cfg);
+    w.reserve_region({0, 0, 8, 8});
+    w.reserve_region({0, 16, 8, 8});
+    for (int y = 16; y < 20; ++y) {
+        w.set(2, y, Material::Wall);
+        w.set(4, y, Material::Wall);
+    }
+    w.set(3, 18, Material::Wall);
+    // Water begins at local Y=0 in the lower resident chunk: an Empty
+    // first row would legitimately terminate the dirty dependency cone.
+    require(w.set_cell_state(3, 16, Material::Water, w.config().water_experiment_policy.maximum(), 0),
+            "gap-budget first lower Water slot admitted");
+    require(w.set_cell_state(3, 17, Material::Water, w.config().water_experiment_policy.maximum(), 0),
+            "gap-budget second lower Water slot admitted");
+    require(w.chunk_count() == 2U, "nonresident intermediate Y chunk");
+    (void)w.tick(); // warm index; retire initial full-height dirtiness
+    const auto before = w.pressure_optimization_snapshot().counters;
+    w.set(3, 7, Material::Oil); // final cell of upper chunk: no Water run there
+    (void)w.tick();
+    const auto after = w.pressure_optimization_snapshot().counters;
+    require(after.reference_fallbacks == before.reference_fallbacks,
+            "gap-budget control remains in admitted cached head path");
+    require(after.head_preflight_probes > before.head_preflight_probes,
+            "gap-budget control actually traversed selective preflight");
+    const auto budgeted = after.head_candidate_base_cells - before.head_candidate_base_cells;
+    const auto committed = after.base_cells_written - before.base_cells_written;
+    require(committed <= budgeted,
+            "gap preflight must conservatively bound committed base writes");
+}
+
+void compare_run_repair_arms(const World& reference, const World& candidate,
+                             const World& forced, const TickStats& a,
+                             const TickStats& b, const TickStats& c) {
+    const auto projection = LiquidStateProjection::PressureVariantEquivalenceV1;
+    require(reference.liquid_comparison_hash(projection) ==
+            candidate.liquid_comparison_hash(projection), "reference versus repaired physical projection");
+    require(candidate.liquid_comparison_hash(projection) ==
+            forced.liquid_comparison_hash(projection), "repaired versus forced physical projection");
+    require(candidate.physical_state_hash()==forced.physical_state_hash(),
+            "same variant raw complete physical hash");
+    require(candidate.save_physical_state()==forced.save_physical_state(),
+            "same variant exact CYPS continuation bytes");
+    require(reference.quantity_ledger()==candidate.quantity_ledger() &&
+            candidate.quantity_ledger()==forced.quantity_ledger(), "quantity ledgers");
+    require(reference.gas_next_id()==candidate.gas_next_id() &&
+            candidate.gas_next_id()==forced.gas_next_id(), "gas next identity");
+    require(reference.gas_topology_revision()==candidate.gas_topology_revision() &&
+            candidate.gas_topology_revision()==forced.gas_topology_revision(),
+            "gas topology revisions");
+    require(reference.gas_history().size()==candidate.gas_history().size() &&
+            candidate.gas_history().size()==forced.gas_history().size(), "gas history sizes");
+    require(reference.gas_compartments().size()==candidate.gas_compartments().size() &&
+            candidate.gas_compartments().size()==forced.gas_compartments().size(),
+            "gas compartment counts");
+    require(reference.pressure_flow_diagnostics().woken_blocks ==
+            candidate.pressure_flow_diagnostics().woken_blocks &&
+            candidate.pressure_flow_diagnostics().woken_blocks ==
+            forced.pressure_flow_diagnostics().woken_blocks, "wake decisions");
+    require(a.phase_jobs==b.phase_jobs && b.phase_jobs==c.phase_jobs &&
+            a.visited_cells==b.visited_cells && b.visited_cells==c.visited_cells &&
+            a.active_blocks_after==b.active_blocks_after &&
+            b.active_blocks_after==c.active_blocks_after, "phase and activity scheduling");
+
+    std::vector<ChunkCoord> coords(reference.chunk_count()), repaired(candidate.chunk_count()), full(forced.chunk_count());
+    require(reference.copy_pressure_head_chunk_coordinates(coords)==coords.size() &&
+            candidate.copy_pressure_head_chunk_coordinates(repaired)==repaired.size() &&
+            forced.copy_pressure_head_chunk_coordinates(full)==full.size(), "head roster copied");
+    require(coords==repaired && coords==full, "resident chunk coordinates exact");
+    const int size=reference.config().chunk_size;
+    for (const auto coord:coords) for (int y=0;y<size;++y) for(int x=0;x<size;++x) {
+        const auto wx=coord.x*size+x, wy=coord.y*size+y;
+        const auto head=reference.prepared_pressure_head(wx,wy);
+        require(head==candidate.prepared_pressure_head(wx,wy) &&
+                head==forced.prepared_pressure_head(wx,wy),
+                "every resident prepared head status and signed value");
+    }
+}
+
+void run_run_repair_differential(int variant, unsigned workers, bool parallel_heads, bool gas) {
+    auto reference=fixture(workers,parallel_heads,0,false,gas);
+    auto repaired=fixture(workers,parallel_heads,variant,false,gas);
+    auto forced=fixture(workers,parallel_heads,variant,true,gas);
+    require(forced->chunk_count()>1U, "force-reference arm has multiple chunks");
+    std::uint64_t seed=0x406B624E7ULL ^ (static_cast<std::uint64_t>(variant)*131ULL) ^
+        (static_cast<std::uint64_t>(workers)*43ULL) ^ (parallel_heads ? 17ULL : 0ULL) ^ (gas ? 1ULL : 0ULL);
+    for (int tick=0;tick<96;++tick) {
+        // Seeded deterministic differential edits are generated once per tick,
+        // not separately per arm, preserving exact mutation ordering.
+        seed ^= seed << 13; seed ^= seed >> 7; seed ^= seed << 17;
+        const auto rx = -80 + static_cast<int>(seed % 16U);
+        const auto ry = -9 + static_cast<int>((seed >> 13U) % 22U);
+        const auto rm = ((seed >> 35U) & 3U)==0U ? Material::Oil :
+            (((seed >> 35U) & 3U)==1U ? Material::Wall :
+             (((seed >> 35U) & 3U)==2U ? Material::Water : Material::Empty));
+        std::array<TickStats,3> observations{};
+        std::array<World*,3> worlds{reference.get(),repaired.get(),forced.get()};
+        for(std::size_t arm=0;arm<worlds.size();++arm) {
+            auto& w=*worlds[arm];
+            // Deterministic sparse/high-churn edits at signed positions, run
+            // floors, foreign-liquid interfaces and chunk-Y seams.
+            if ((tick%3)==1) w.set(rx,ry,rm);
+            if ((tick%7)==0) {
+                const auto x=-79+(tick*11)%17, y=-8+(tick*13)%20;
+                if ((tick&1)!=0) w.set(x,y,Material::Empty);
+                else (void)w.set_cell_state(x,y,Material::Water,125,0);
+            }
+            if ((tick%9)==0) {
+                const auto x=40+(tick*5)%22, y=-13+(tick*7)%24;
+                w.set(x,y,(tick%3)==0 ? Material::Oil : Material::Water);
+            }
+            if ((tick%11)==0) w.set(-23,-53,(tick&1) ? Material::Oil : Material::Water);
+            if ((tick%13)==0) {
+                w.clear_transient_obstacles();
+                for(int i=0;i<5;++i)
+                    require(w.set_transient_obstacle(-25+i+(tick%3),-10,1), "moving transient mask");
+            }
+            if (tick==36) w.set(45,-16,Material::Empty); // sealed vent
+            if (tick==51) w.set(45,-16,Material::Wall); // reseal
+            if (tick==73) w.set(1,11,Material::Water); // cold sparse island
+            if (tick==79) w.set(1,11,Material::Empty);
+            observations[arm]=w.tick();
+        }
+        compare_run_repair_arms(*reference,*repaired,*forced,
+                                observations[0],observations[1],observations[2]);
+    }
+    const auto rc=repaired->pressure_optimization_snapshot().counters;
+    const auto fc=forced->pressure_optimization_snapshot().counters;
+    require(fc.reference_fallbacks>0U, "same-variant forced reference fallback executed");
+    require(rc.head_preflight_probes>0U, "new native run preflight executed");
+    std::cout << "RUN_REPAIR_DIFF variant=" << variant << " workers=" << workers
+              << " pooled=" << parallel_heads << " gas=" << gas
+              << " probes=" << rc.head_preflight_probes
+              << " selected_runs=" << rc.head_preflight_runs
+              << " repairs=" << rc.base_cells_written
+              << " fallback=" << rc.reference_fallbacks << '\n';
+}
 }
 
 // Part of the native `tests` binary (Makefile TEST_SOURCES), so the normal,
 // ASan/UBSan and TSan families all run the parallel head path.
 void test_workbench_pressure_heads_parallel_exact() {
+    gap_preflight_commit_bound();
     for (const int variant : {0, 1, 2}) run(variant);
+    for (const int variant : {1, 2})
+        for (const auto workers : {1U,4U,6U})
+            for (const bool pooled : {false,true})
+                for (const bool gas : {false,true})
+                    run_run_repair_differential(variant,workers,pooled,gas);
     std::cout << "WORKBENCH_PRESSURE_HEADS checks=" << checks << '\n';
 }

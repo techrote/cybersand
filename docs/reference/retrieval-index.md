@@ -4,11 +4,20 @@ status: Current
 document-kind: navigation
 scope: Question-to-canonical-document routes; detailed answers belong to the linked contracts
 canonical-for: []
-last-reviewed: 2026-11-04
-related-documents: [../README.md, retrieval-corpus.json, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../architecture/pressure-optimization.md]
+last-reviewed: 2026-11-06
+related-documents: [../README.md, retrieval-corpus.json, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../architecture/pressure-optimization.md, ../audits/2026-11-06-pf-run-head-repair-draft.md]
 ---
 
 # Retrieval question index
+
+## Experimental PressureFlow run repair — 2026-11-06
+
+**Branch-only; unqualified:** [bounded run-head repair Draft and exactness/benchmark
+handover](../audits/2026-11-06-pf-run-head-repair-draft.md), with the
+[accepted pressure-cache contract](../architecture/pressure-optimization.md#experimental-execution-v5-local-y-run-repair-draft-472-unqualified)
+and [current #406 workbench baseline](../audits/2026-11-06-pf-ballistic-tick-cost.md).
+This is not accepted-main native exactness or an observed stress-canvas speedup.
+
 
 ## Material liveness Phase A and implementation admission — 2026-11-04
 
