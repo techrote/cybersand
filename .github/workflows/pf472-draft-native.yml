@@ -1,10 +1,8 @@
 # Supplemental source-matched execution for Draft #472.
 # This does not replace or waive the repository's standard protected gates.
 name: PF472 Draft Native Compilation and Differential Qualification
+# NO-GO: preserve reproducibility, avoid Draft-branch push fan-out.
 on:
-  push:
-    branches:
-      - sol6/pf-run-head-repair-20261106-2100
   workflow_dispatch:
 permissions:
   contents: read

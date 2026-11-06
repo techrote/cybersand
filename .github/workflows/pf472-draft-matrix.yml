@@ -1,9 +1,8 @@
 # Supplemental Draft-only engineering evidence. This file does NOT replace,
 # waive or modify protected Native, Godot, documentation or MAT-AUTH gates.
 name: PF472 Draft Sanitizers and Source-Matched Native Proxy
+# NO-GO: manual reproduction only; do not re-run per documentation push.
 on:
-  push:
-    branches: [sol6/pf-run-head-repair-20261106-2100]
   workflow_dispatch:
 permissions:
   contents: read
