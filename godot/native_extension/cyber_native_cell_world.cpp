@@ -77,6 +77,7 @@ void CyberNativeCellWorld::_bind_methods() {
     ClassDB::bind_method(D_METHOD("solid_detachment_contact_observation"), &CyberNativeCellWorld::solid_detachment_contact_observation);
     ClassDB::bind_method(D_METHOD("diagnostic_replay_conservative_contact", "capsule"), &CyberNativeCellWorld::diagnostic_replay_conservative_contact);
     ClassDB::bind_method(D_METHOD("diagnostic_reset", "options"), &CyberNativeCellWorld::diagnostic_reset);
+    ClassDB::bind_method(D_METHOD("diagnostic_enable_solid_workbench"), &CyberNativeCellWorld::diagnostic_enable_solid_workbench);
     ClassDB::bind_method(D_METHOD("diagnostic_fill_rect", "origin", "size", "material", "state_b"), &CyberNativeCellWorld::diagnostic_fill_rect, DEFVAL(0));
     ClassDB::bind_method(D_METHOD("diagnostic_relocate_cell", "from", "to"),
                          &CyberNativeCellWorld::diagnostic_relocate_cell);
@@ -441,6 +442,11 @@ void CyberNativeCellWorld::paint_disc(std::int64_t centre_x, std::int64_t centre
 
 void CyberNativeCellWorld::prepare_rigid_body_coupling(
     const PackedFloat32Array& states, bool resolve_overlaps) {
+    if (!world_ || world_->has_failed() || world_->solid_detachment_fenced()) {
+        (void)boundary_result("prepare_rigid_body_coupling", false, "native_refusal",
+            "Rigid-body preparation requires a healthy unfenced native owner");
+        return;
+    }
     if (workbench_) {
         (void)boundary_result("prepare_rigid_body_coupling", false, "wrong_coupling_channel",
             "Workbench owners require the complete immutable workbench sample");
@@ -502,8 +508,10 @@ void CyberNativeCellWorld::prepare_body_coupling(bool resolve_overlaps) {
         previous_bodies_ = current_bodies_;
         boundary_success(operation, "applied", "Rigid-body preparation applied");
     } catch (const std::exception& error) {
+        if (workbench_) throw;
         (void)boundary_result(operation, false, "native_refusal", error.what());
     } catch (...) {
+        if (workbench_) throw;
         (void)boundary_result(operation, false, "native_refusal", "Unknown native exception during rigid-body preparation");
     }
 }
@@ -2408,5 +2416,6 @@ std::int64_t CyberNativeCellWorld::get_tick_failure_count() const {
 #include "solid_contact_adapter.inc"
 
 #include "workbench_granular_coupling.inc"
+#include "solid_workbench_adapter.inc"
 
 }  // namespace godot

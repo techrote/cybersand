@@ -118,6 +118,7 @@ public:
     bool prepare_workbench_coupling(const PackedFloat64Array& states, const PackedFloat64Array& geometry,
         const Array& bodies, std::int64_t session, std::int64_t epoch, bool resolve_overlaps);
     [[nodiscard]] Dictionary workbench_coupling_results() const;
+    bool diagnostic_enable_solid_workbench();
     [[nodiscard]] String get_last_tick_error() const;
     [[nodiscard]] Dictionary get_water_experiment_policy() const;
     // Applied LCB-001 liquid solver policy receipt of the live World. The
@@ -291,6 +292,9 @@ private:
     };
     struct Workbench {
         String response;
+        bool solid_aggregate = false;
+        cybersand::soliding::SolidToken solid_token{};
+        std::uint64_t solid_generation = 0;
         WorkbenchSample sample;
         bool valid = false, sampled = false;
         std::uint64_t prepared_tick = 0;
@@ -303,6 +307,7 @@ private:
         std::int64_t session, std::int64_t epoch);
     void prepare_body_coupling(bool resolve_overlaps);
     void accumulate_workbench_contacts();
+    bool admit_solid_workbench_sample(const WorkbenchSample& sample, std::int64_t epoch);
     bool authored_entry_normal(std::uint16_t proxy, std::int32_t x, std::int32_t y,
         Vector2& outward, double& penetration) const;
     Dictionary workbench_body_result(std::size_t id) const;

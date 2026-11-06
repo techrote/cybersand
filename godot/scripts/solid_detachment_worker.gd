@@ -10,6 +10,20 @@ var _solid_last_request: int = 0
 var _solid_refused_replacements: int = 0
 # Set before start_worker and immutable for this owner's lifetime.
 var solid_contact_observations_enabled: bool = false
+
+func install_solid_workbench_sample(value: Dictionary) -> bool:
+	# One initial immutable roster, installed while this owner is paused after
+	# native finalize. Native independently checks the active aggregate/geometry.
+	_mutex.lock()
+	var ok: bool = _paused and not _reset_requested and _workbench_sample.is_empty() \
+		and value.get("epoch",0)>0 and value.get("session",0)>0 and not value.get("states",PackedFloat64Array()).is_empty()
+	if ok:
+		_workbench_sample=value.duplicate(true)
+		_rigid_body_epoch=int(value.epoch)
+		_rigid_body_states=PackedFloat32Array()
+		_workbench_extent=Vector2i(CyberCellWorld.WORLD_WIDTH,CyberCellWorld.WORLD_HEIGHT)
+	_mutex.unlock()
+	return ok
 var _contact_attempts: int = 0
 var _contact_usec: int = 0
 var _contact_max_usec: int = 0

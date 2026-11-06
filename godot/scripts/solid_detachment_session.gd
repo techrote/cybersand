@@ -82,11 +82,13 @@ var contact_measurement_enabled: bool = false
 var last_contact_observation: Dictionary = {}
 var last_contact_response: Dictionary = {}
 var _contact_metrics: Dictionary = {}
+var _deferred_accounting: Dictionary = {}
 
 func open(parent: Node, workers: int = 4, surroundings: String = "empty",
 		conservative_displacement: bool = true, sand_resistance: bool = false,
 		measure_contacts: bool = false) -> bool:
 	close()
+	_deferred_accounting = {"captured":0,"dropped":0,"reasons":{}}
 	_parent = parent
 	_tree = parent.get_tree()
 	generation += 1
@@ -148,6 +150,12 @@ func open(parent: Node, workers: int = 4, surroundings: String = "empty",
 
 func _create_worker() -> CyberSimulationWorker:
 	return Worker.new()
+
+func _create_bridge() -> CyberRapierPhysicsBridge:
+	return CyberRapierPhysicsBridge.new()
+
+func _after_unfreeze() -> bool:
+	return true
 
 
 func _author_surroundings(native: Object, kind: String) -> bool:
@@ -303,6 +311,7 @@ func cut_and_release() -> bool:
 	body.freeze = false
 	body.sleeping = false
 	bridge.refresh_all_states()
+	if not _after_unfreeze():return _fail("Live compound publication refused after frozen priming")
 	_release_in_progress = false
 	status = "native aggregate — live Rapier + exact compound cellular coupling"
 	set_paused(false)
@@ -353,7 +362,7 @@ func _prepare_body(prepared: Dictionary) -> bool:
 		return false
 	if not is_instance_valid(body) or not body.get_rid().is_valid():
 		return false
-	bridge = CyberRapierPhysicsBridge.new()
+	bridge = _create_bridge()
 	var bodies: Array[RigidBody2D] = [body]
 	if bridge.initialize(viewport.world_2d.space,bodies,PackedVector2Array([Vector2(29,38)])) != OK:
 		return false
@@ -538,7 +547,7 @@ func _consume_compound_results() -> Dictionary:
 	_coupling_last_impulse = applied.impulse
 	_coupling_last_correction = applied.correction
 	if sand_resistance_enabled:
-		var e: Dictionary = {"observation":snapshot.solid_contact_observation.duplicate(true),
+		var e: Dictionary = {"observation":snapshot.solid_contact_observation,
 			"snapshot":snapshot.serial,"tick":snapshot.tick_index,"revision":snapshot.simulation_world_revision,
 			"epoch":physics_epoch,"token":str(source_receipt.token),"generation":generation,
 			"worker":worker.get_instance_id(),"bridge":bridge.get_instance_id(),
@@ -546,6 +555,9 @@ func _consume_compound_results() -> Dictionary:
 			"sample":int(applied.sample_serial),"current":_coupling_sample_serial,
 			"manual_step":bridge.manual_step_count()}
 		if sand_contact_order == "post":
+			e.observation = snapshot.solid_contact_observation.duplicate(true)
+			e["accounting"] = _deferred_accounting
+			_deferred_accounting.captured += 1
 			last_contact_response["outcome"] = "DeferredPostContact"
 			return e # Frame-local owned values; no retained queue or retry.
 		_apply_contact_envelope(e, 0)
@@ -596,6 +608,17 @@ func _observe_contact_boundary(_stage: String, _envelope: Dictionary, _advanced:
 
 func _observe_worker_participation(_values: Dictionary) -> void:
 	pass
+
+func _record_deferred_drop(e: Dictionary, reason: String) -> void:
+	if e.is_empty():return
+	# The captured dictionary belongs to that generation even if close/open has
+	# installed new counters. Never write a replacement owner's response/metrics.
+	var counts: Dictionary = e.get("accounting",{})
+	if not counts.is_empty():
+		counts.dropped += 1
+		counts.reasons[reason] = int(counts.reasons.get(reason,0)) + 1
+	if generation == int(e.generation) and worker != null and worker.get_instance_id() == int(e.worker):
+		last_contact_response["outcome"] = reason
 
 func _observe_compound_application(_applied: Dictionary, _results: PackedFloat32Array,
 		_states: PackedFloat32Array, _snapshot_serial: int, _native_tick: int,
@@ -684,13 +707,14 @@ func physics_step() -> Dictionary:
 		var deferred: Dictionary = _consume_compound_results()
 		_record_main_sync(Time.get_ticks_usec() - sync_start)
 		if physics_paused:
+			_record_deferred_drop(deferred,"HeldAfterConsume")
 			return {"outcome":"HeldAfterConsume","deferred":not deferred.is_empty()}
 		if bridge.pending_hard_surface_chunks() > 0:
 			var started: int = Time.get_ticks_usec()
 			bridge.process_hard_surface_collider_budget(16, 0)
 			_terrain_refresh_usec += Time.get_ticks_usec() - started
 			if bridge.pending_hard_surface_chunks() > 0:
-				if not deferred.is_empty():last_contact_response["outcome"] = "DeferredTerrainPending"
+				_record_deferred_drop(deferred,"DeferredTerrainPending")
 				return {"outcome":"TerrainPending","deferred":not deferred.is_empty()}
 		var step_start: int = Time.get_ticks_usec()
 		var prior_step: int = bridge.manual_step_count()
@@ -698,8 +722,10 @@ func physics_step() -> Dictionary:
 		if not _owns(owner_generation, owner_worker) or bridge != owner_bridge or body != owner_body \
 			or not active or physics_paused or _failed or transaction_busy or physics_epoch != owner_epoch \
 			or str(source_receipt.get("token", "")) != owner_token:
+			_record_deferred_drop(deferred,"OwnerRetired")
 			return {"outcome":"OwnerRetired","deferred":not deferred.is_empty()}
 		if bridge.manual_step_count() != prior_step + 1:
+			_record_deferred_drop(deferred,"StepNotAdvanced")
 			_fail("Rapier step did not advance exactly once")
 			return {"outcome":"StepNotAdvanced","deferred":not deferred.is_empty()}
 		var step_usec: int = Time.get_ticks_usec() - step_start
@@ -708,6 +734,9 @@ func physics_step() -> Dictionary:
 		_timed_rapier_steps += 1
 		sync_start = Time.get_ticks_usec()
 		if not deferred.is_empty() and not _apply_contact_envelope(deferred, 1):
+			_record_deferred_drop(deferred,"PostContactStopped")
+			if _owns(owner_generation,owner_worker) and bridge == owner_bridge and not _failed:
+				_fail("Deferred contact rejected after a physical step; reset required")
 			_record_main_sync(Time.get_ticks_usec() - sync_start)
 			return {"outcome":"PostContactStopped","deferred":true}
 		var published: bool = _publish_compound_states()
@@ -790,6 +819,7 @@ func inspect_coupling(points: PackedInt32Array = PackedInt32Array(),
 
 func coupling_metrics() -> Dictionary:
 	return {"proxy_count":_coupling_local_centers.size(), "proxy_mass":_coupling_total_mass,
+		"deferred_contact":_deferred_accounting.duplicate(true),
 		"sand_resistance_enabled":sand_resistance_enabled, "physical_contact":_contact_metrics.duplicate(true),
 		"state_publications":_coupling_state_publications, "result_snapshots":_coupling_result_snapshots,
 		"result_records":_coupling_result_records, "contacts":_coupling_contacts,
@@ -886,6 +916,7 @@ func close() -> void:
 	last_contact_observation = {}
 	last_contact_response = {}
 	_contact_metrics = {}
+	_deferred_accounting = {}
 	sand_resistance_enabled = false
 	sand_contact_order = "pre"
 	contact_measurement_enabled = false

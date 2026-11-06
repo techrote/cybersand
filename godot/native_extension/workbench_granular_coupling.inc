@@ -122,6 +122,7 @@ bool CyberNativeCellWorld::prepare_workbench_coupling(const PackedFloat64Array& 
     workbench_->valid = false;
     WorkbenchSample next;
     if (!parse_workbench_sample(next,*workbench_,states,geometry,owners,session,epoch)) return false;
+    if (workbench_->solid_aggregate && !admit_solid_workbench_sample(next,epoch)) return false;
     try {
         workbench_->sample = next;
         current_bodies_ = next.proxies;
