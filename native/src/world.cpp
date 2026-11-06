@@ -52,6 +52,16 @@ std::uint64_t allocate_discovery_incarnation() {
     return static_cast<std::int32_t>(remainder < 0 ? remainder + divisor : remainder);
 }
 
+// Namespace-scope copy of the derived pair partner sets: an inline rejection of
+// non-reacting neighbours before MaterialRules::pair_reaction (same answer as
+// its own first test; interaction_rules.hpp is unchanged).
+constexpr auto kPairPartners = cybersand::InteractionRules::build_partner_sets();
+[[nodiscard]] inline bool may_pair_react(cybersand::Material source, cybersand::Material target) noexcept {
+    const auto s = static_cast<std::uint8_t>(source);
+    const auto t = static_cast<std::uint8_t>(target);
+    return ((kPairPartners[s][t >> 6U] >> (t & 63U)) & 1U) != 0U;
+}
+
 [[nodiscard]] constexpr std::uint64_t mix64(std::uint64_t value) noexcept {
     value ^= value >> 30U;
     value *= 0xbf58476d1ce4e5b9ULL;
@@ -663,12 +673,15 @@ World::World(WorldConfig config)
     if (auto refusal = config_.liquid_solver_policy.admission_refusal())
         throw LiquidPolicyRefused(std::move(*refusal));
     inertial_parameters_ = inertial_parameters_for_policy(config_.liquid_solver_policy);
+    inertial_parameters_.signed_vertical = config_.inertial_signed_vertical;
     const bool pressure_requested = policy_selects_pressure(config_.liquid_solver_policy);
     for (const auto& item : config_.liquid_solver_policy.assignments()) {
         if (item.family != LiquidSolverFamily::InertialCellularV1) continue;
         inertial_materials_[item.material] = true;
         inertial_enabled_ = true;
     }
+    if (config_.inertial_signed_vertical && !inertial_enabled_)
+        throw std::invalid_argument("IN-B1 signed-vertical law requires an applied inertial assignment");
     if (inertial_enabled_ && config_.maximum_rule_radius < InertialParameters::kExecutionRadius)
         throw std::invalid_argument("inertial_cellular_v1 requires complete execution radius three");
     const auto water_assignment = config_.liquid_solver_policy.assignment(static_cast<std::uint16_t>(Material::Water));
@@ -700,6 +713,8 @@ World::World(WorldConfig config)
     if (config_.chunk_size < 8 || config_.chunk_size > 1'024) {
         throw std::invalid_argument("chunk_size must be between 8 and 1024");
     }
+    if (std::has_single_bit(static_cast<std::uint32_t>(config_.chunk_size)))
+        chunk_shift_ = std::countr_zero(static_cast<std::uint32_t>(config_.chunk_size));
     if (config_.sleep_after_quiet_ticks == 0) {
         throw std::invalid_argument("sleep_after_quiet_ticks must be greater than zero");
     }
@@ -776,6 +791,12 @@ World::World(WorldConfig config)
         parallel_ = std::make_unique<ParallelState>(config_);
     }
     transient_obstacles_ = std::make_unique<TransientObstacleState>();
+    validate_ballistic_config();
+    if (config_.ballistic_water.enabled) ballistic_parcels_.reserve(config_.ballistic_water.capacity);
+    if (config_.ballistic_water.face_release) {
+        ballistic_face_chunks_.reserve(config_.maximum_chunk_count);
+        ballistic_face_water_.resize(config_.maximum_chunk_count);
+    }
     if (pressure_requested) {
         pressure_ = std::make_unique<PressureState>(pressure_parameters_from(config_.liquid_solver_policy));
         pressure_->sorted_coordinates.reserve(config_.maximum_chunk_count);
@@ -785,9 +806,17 @@ World::World(WorldConfig config)
                 parallel_->results[i].effects.pressure_work = &pressure_->job_optimization[i];
         }
         const auto selection = config_.liquid_solver_policy.assignment(3U);
-        if (config_.workbench_parallel_pressure_heads && parallel_ && parallel_->pool &&
-            selection->variant == LiquidSolverVariant::Reference)
+        if (config_.workbench_parallel_pressure_heads && parallel_ && parallel_->pool) {
             pressure_->column_tasks.reserve(config_.maximum_chunk_count);
+            const auto blocks_per_axis = static_cast<std::size_t>(
+                (config_.chunk_size + config_.activity_block_size - 1) / config_.activity_block_size);
+            pressure_->row_tasks.reserve(config_.maximum_chunk_count * blocks_per_axis);
+            pressure_->row_wakes.resize(config_.maximum_chunk_count * blocks_per_axis * blocks_per_axis);
+            pressure_->gas_tasks.reserve(config_.maximum_chunk_count);
+            pressure_->gas_seed_words = (static_cast<std::size_t>(config_.chunk_size) *
+                                         static_cast<std::size_t>(config_.chunk_size) + 63U) / 64U;
+            pressure_->gas_seed_bits.resize(config_.maximum_chunk_count * pressure_->gas_seed_words);
+        }
         if (selection->variant != LiquidSolverVariant::Reference) {
             if (config_.pressure_optimization.index_chunk_capacity == 0U)
                 throw std::invalid_argument("pressure index capacity must be positive");
@@ -1500,6 +1529,9 @@ RenderPublishResult RenderSnapshotExchange::publish(World& world) {
                                          world.config_.water_experiment_policy);
             }
         }
+        // BW-001: in-flight parcels are presentation-only overlays of owned state.
+        world.overlay_ballistic_render(slot.patches[patch_index].world_rect,
+            std::span<std::uint8_t>(slot.cells.data() + byte_offset, height * stride), stride, 2U);
         byte_offset += height * stride;
     }
 
@@ -1529,6 +1561,20 @@ const WorldConfig& World::config() const noexcept { return config_; }
 SimulationBackend World::backend() const noexcept { return config_.backend; }
 
 World::Address World::address(std::int64_t x, std::int64_t y) const noexcept {
+    if (chunk_shift_ >= 0) {
+        // Power-of-two chunks: C++20 arithmetic shift is floor division and
+        // the mask is the non-negative remainder, for every int64 coordinate.
+        const auto mask = static_cast<std::int64_t>(config_.chunk_size) - 1;
+        const auto local_x = static_cast<std::int32_t>(x & mask);
+        const auto local_y = static_cast<std::int32_t>(y & mask);
+        return {
+            {x >> chunk_shift_, y >> chunk_shift_},
+            local_x,
+            local_y,
+            (static_cast<std::size_t>(local_y) << static_cast<unsigned>(chunk_shift_)) +
+                static_cast<std::size_t>(local_x),
+        };
+    }
     const auto chunk_x = floor_div(x, config_.chunk_size);
     const auto chunk_y = floor_div(y, config_.chunk_size);
     const auto local_x = positive_mod(x, config_.chunk_size);
@@ -1543,13 +1589,48 @@ World::Address World::address(std::int64_t x, std::int64_t y) const noexcept {
 }
 
 World::Chunk* World::find_chunk(ChunkCoord coord) noexcept {
+    return const_cast<Chunk*>(static_cast<const World*>(this)->find_chunk(coord));
+}
+
+const World::Chunk* World::find_chunk(ChunkCoord coord) const noexcept {
+    // Unsigned offsets reject both sides of the window in one comparison.
+    const auto dx = static_cast<std::uint64_t>(coord.x - chunk_directory_x_);
+    const auto dy = static_cast<std::uint64_t>(coord.y - chunk_directory_y_);
+    if (dx < static_cast<std::uint64_t>(chunk_directory_width_) &&
+        dy < static_cast<std::uint64_t>(chunk_directory_height_))
+        return chunk_directory_[dy * static_cast<std::uint64_t>(chunk_directory_width_) + dx];
     const auto found = chunks_.find(coord);
     return found == chunks_.end() ? nullptr : found->second.get();
 }
 
-const World::Chunk* World::find_chunk(ChunkCoord coord) const noexcept {
-    const auto found = chunks_.find(coord);
-    return found == chunks_.end() ? nullptr : found->second.get();
+void World::cover_chunk_directory(ChunkCoord first, ChunkCoord last) {
+    // Grow the window to the union of the current window and [first, last]
+    // plus a one-chunk halo, then rebuild it from chunks_. Setup-time only
+    // (reserve_region); a window larger than the bounded slot budget is
+    // simply not installed and the hash map keeps serving every lookup.
+    auto min_x = first.x - 1, min_y = first.y - 1, max_x = last.x + 1, max_y = last.y + 1;
+    if (chunk_directory_width_ > 0) {
+        min_x = std::min(min_x, chunk_directory_x_);
+        min_y = std::min(min_y, chunk_directory_y_);
+        max_x = std::max(max_x, chunk_directory_x_ + chunk_directory_width_ - 1);
+        max_y = std::max(max_y, chunk_directory_y_ + chunk_directory_height_ - 1);
+    }
+    const auto width = max_x - min_x + 1, height = max_y - min_y + 1;
+    const auto budget = static_cast<std::int64_t>(
+        std::max<std::size_t>(4096U, 4U * config_.maximum_chunk_count));
+    if (width <= 0 || height <= 0 || width > budget || height > budget / width) return;
+    if (width == chunk_directory_width_ && height == chunk_directory_height_ &&
+        min_x == chunk_directory_x_ && min_y == chunk_directory_y_) return;
+    std::vector<Chunk*> directory(static_cast<std::size_t>(width * height), nullptr);
+    for (const auto& [coord, chunk] : chunks_) {
+        if (coord.x < min_x || coord.x > max_x || coord.y < min_y || coord.y > max_y) continue;
+        directory[static_cast<std::size_t>((coord.y - min_y) * width + (coord.x - min_x))] = chunk.get();
+    }
+    chunk_directory_ = std::move(directory);
+    chunk_directory_x_ = min_x;
+    chunk_directory_y_ = min_y;
+    chunk_directory_width_ = width;
+    chunk_directory_height_ = height;
 }
 
 World::Chunk& World::ensure_chunk(ChunkCoord coord) {
@@ -1571,6 +1652,14 @@ World::Chunk& World::ensure_chunk(ChunkCoord coord) {
         chunk->granular_arrivals = std::make_unique<std::vector<std::uint64_t>>(chunk->cells.size(), 0);
     }
     const auto [iterator, inserted] = chunks_.try_emplace(coord, std::move(chunk));
+    if (inserted) {
+        const auto dx = static_cast<std::uint64_t>(coord.x - chunk_directory_x_);
+        const auto dy = static_cast<std::uint64_t>(coord.y - chunk_directory_y_);
+        if (dx < static_cast<std::uint64_t>(chunk_directory_width_) &&
+            dy < static_cast<std::uint64_t>(chunk_directory_height_))
+            chunk_directory_[dy * static_cast<std::uint64_t>(chunk_directory_width_) + dx] =
+                iterator->second.get();
+    }
     if (inserted && iterator->second->granular_arrivals)
         granular_arrival_storage_bytes_ += iterator->second->granular_arrivals->size()*sizeof(std::uint64_t);
     if (inserted) register_discovery_chunk(coord, *iterator->second);
@@ -2215,6 +2304,7 @@ void World::clear_transient_obstacles() {
     }
     state.occupied_indices.clear();
     state.reset_contacts();
+    reset_ballistic_body_impulses();
 }
 
 std::uint16_t World::transient_obstacle_at(std::int64_t x, std::int64_t y) const noexcept {
@@ -2468,6 +2558,7 @@ std::int64_t World::transient_contact_impulse_y(std::uint16_t body_id) const noe
 void World::clear_transient_contact_observations() noexcept {
     if (has_failed()) return;
     transient_obstacles_->reset_contacts();
+    reset_ballistic_body_impulses();
 }
 void World::enable_transient_granular_wrenches(bool enabled) noexcept {
     if (has_failed()) return;
@@ -2663,6 +2754,7 @@ void World::reserve_region(RectI64 region) {
         throw std::runtime_error("reserve region exceeds remaining chunk capacity");
     }
     chunks_.reserve(chunks_.size() + missing);
+    cover_chunk_directory(minimum_address.chunk, maximum_address.chunk);
     for (auto chunk_y = minimum_address.chunk.y; chunk_y <= maximum_address.chunk.y; ++chunk_y) {
         for (auto chunk_x = minimum_address.chunk.x; chunk_x <= maximum_address.chunk.x; ++chunk_x) {
             (void)ensure_chunk({chunk_x, chunk_y});
@@ -2840,8 +2932,10 @@ void World::clear() {
     tick_failed_ = false;
     clear_transient_obstacles();
     chunks_.clear();
+    std::fill(chunk_directory_.begin(), chunk_directory_.end(), nullptr);
     granular_arrival_storage_bytes_ = 0;
     reset_quantity_ledger();
+    reset_ballistic_water();
     active_chunk_scratch_.clear();
     active_core_scratch_.clear();
     pending_explosions_.clear();
@@ -3467,6 +3561,7 @@ bool World::update_rule_kernel(RuleKernel kernel, Material source_material,
         for (std::size_t step = 0; step < kMooreNeighbours.size(); ++step) {
             const auto [target_x, target_y] = neighbour(start + step);
             const auto target = get(target_x, target_y);
+            if (!may_pair_react(material, target)) continue;
             const auto reaction =
                 MaterialRules::pair_reaction(material, target, probability_roll);
             if (!reaction.has_value()) continue;
@@ -4153,7 +4248,8 @@ void World::schedule_pending_reaction_wake(Material material, std::int64_t x,
         const auto target = get(x + offset.x, y + offset.y);
         if (has_pair_reactions && !pair_pending) {
             // A failed probability roll must retain its next opportunity too.
-            pair_pending = MaterialRules::pair_reaction(material, target, 0U).has_value();
+            pair_pending = may_pair_react(material, target) &&
+                           MaterialRules::pair_reaction(material, target, 0U).has_value();
         }
         if (is_ice) {
             melt_pending = melt_pending || is_hot(target);
@@ -4280,6 +4376,9 @@ void World::begin_tick(TickStats& stats) {
     // carry the current epoch and therefore begin material simulation on the
     // following tick instead of receiving an accidental double update.
     apply_pending_explosions(stats);
+    // BW-001 parcels advance serially at the same boundary: deposits are
+    // visible to pressure preparation and simulate from the next tick.
+    advance_ballistic_water();
     // Serial, deterministic gas topology and head preparation. It may wake
     // sleeping blocks, so it precedes the active-chunk list for this tick.
     if (pressure_ != nullptr) prepare_pressure_tick();
@@ -4389,6 +4488,11 @@ void World::gather_active_cores() {
     for (const auto chunk_coord : active_chunk_scratch_) {
         const auto* chunk = find_chunk(chunk_coord);
         if (chunk == nullptr) continue;
+        // Several activity blocks share one core. Entries recorded for this
+        // chunk are checked first, so the capacity bounds distinct cores (as
+        // named) rather than active blocks; the final sort/unique below still
+        // removes any duplicate across chunks. The resulting set is unchanged.
+        const auto chunk_first_core = active_core_scratch_.size();
         const auto chunk_origin_x = chunk_coord.x * config_.chunk_size;
         const auto chunk_origin_y = chunk_coord.y * config_.chunk_size;
         for (std::int32_t block_y = 0; block_y < chunk->activity_blocks_per_axis; ++block_y) {
@@ -4415,10 +4519,15 @@ void World::gather_active_cores() {
                         if (selected_core_region_ &&
                             (core_x < selected_core_region_->min_x || core_x > selected_core_region_->max_x ||
                              core_y < selected_core_region_->min_y || core_y > selected_core_region_->max_y)) continue;
+                        const SchedulingCoreCoord core{core_x, core_y};
+                        if (std::find(active_core_scratch_.begin() +
+                                          static_cast<std::ptrdiff_t>(chunk_first_core),
+                                      active_core_scratch_.end(), core) != active_core_scratch_.end())
+                            continue;
                         if (active_core_scratch_.size() >= config_.active_core_capacity) {
                             throw std::runtime_error("active scheduling-core capacity exhausted");
                         }
-                        active_core_scratch_.push_back({core_x, core_y});
+                        active_core_scratch_.push_back(core);
                     }
                 }
             }
@@ -4572,7 +4681,7 @@ void World::merge_job_effects(const JobEffects& effects) {
     if (pressure_ != nullptr) merge_pressure_effects(effects);
     if (inertial_enabled_) {
         auto& a=inertial_ledger_; const auto& b=effects.inertial;
-        a.gravity_y+=b.gravity_y; a.impulse_x+=b.impulse_x; a.impulse_y+=b.impulse_y;
+        a.gravity_y+=b.gravity_y; a.gravity_speed+=b.gravity_speed; a.impulse_x+=b.impulse_x; a.impulse_y+=b.impulse_y;
         a.loss+=b.loss; a.support+=b.support; a.remainder+=b.remainder;
         a.updates+=b.updates; a.unit_moves+=b.unit_moves; a.density_swaps+=b.density_swaps;
         a.contacts+=b.contacts; a.rests+=b.rests; a.velocity_retired+=b.velocity_retired;
@@ -5137,6 +5246,7 @@ void World::copy_render_cells(RectI64 region, std::span<std::uint8_t> destinatio
             processed += run;
         }
     }
+    overlay_ballistic_render(region, destination, stride_bytes, 2U);
 }
 
 void World::copy_material_cells(RectI64 region, std::span<std::uint8_t> destination,
@@ -5177,6 +5287,43 @@ void World::copy_material_cells(RectI64 region, std::span<std::uint8_t> destinat
             world_x += run;
         }
     }
+    overlay_ballistic_render(region, destination, stride_bytes, 1U);
+}
+
+void World::copy_hard_surface_bits(RectI64 region, std::span<std::uint64_t> destination) const {
+    if (region.width <= 0 || region.height <= 0 || region.width % 64 != 0)
+        throw std::invalid_argument("Hard-surface bit region must be a positive multiple of 64 wide");
+    const auto words = static_cast<std::size_t>(region.width / 64);
+    if (destination.size() / words < static_cast<std::size_t>(region.height))
+        throw std::invalid_argument("Hard-surface bit destination is too small");
+    static const auto hard = [] {
+        std::array<bool, 256> table{};
+        for (std::size_t id = 0; id < table.size(); ++id)
+            table[id] = MaterialRules::is_hard_surface(static_cast<Material>(id));
+        return table;
+    }();
+    const auto end_x = region.x + region.width;
+    for (std::int64_t row = 0; row < region.height; ++row) {
+        auto* output = destination.data() + static_cast<std::size_t>(row) * words;
+        std::fill(output, output + words, std::uint64_t{0});
+        const auto world_y = region.y + row;
+        auto world_x = region.x;
+        while (world_x < end_x) {
+            const auto first = address(world_x, world_y);
+            const auto* chunk = find_chunk(first.chunk);
+            const auto run = std::min<std::int64_t>(
+                end_x - world_x, static_cast<std::int64_t>(config_.chunk_size - first.local_x));
+            if (chunk != nullptr) {
+                for (std::int64_t offset = 0; offset < run; ++offset) {
+                    const auto material = chunk->cells[first.index + static_cast<std::size_t>(offset)].material_value();
+                    if (!hard[static_cast<std::uint8_t>(material)]) continue;
+                    const auto bit = static_cast<std::size_t>(world_x - region.x + offset);
+                    output[bit / 64U] |= std::uint64_t{1} << (bit % 64U);
+                }
+            }
+            world_x += run;
+        }
+    }
 }
 
 void World::copy_rgba(RectI64 region, std::span<std::uint8_t> destination, std::size_t stride_bytes) const {
@@ -5210,5 +5357,6 @@ void World::copy_rgba(RectI64 region, std::span<std::uint8_t> destination, std::
 #include "world_pressure_gas_cache.inc"
 #include "world_pressure.inc"
 #include "world_inertial.inc"
+#include "world_ballistic.inc"
 
 }  // namespace cybersand

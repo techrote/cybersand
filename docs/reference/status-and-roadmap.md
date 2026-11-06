@@ -10,6 +10,19 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+## Ballistic Water, IN-B1 and workbench spray (#362) — 2026-11-05
+
+**Experimental draft, not on main; no default changed.** The
+[ballistic Water reference](../architecture/ballistic-water-v1.md) adds an opt-in
+native parcel owner (BW-001 `ballistic_water_v1`) that moves exact Water quantity
+between any bulk family and ballistic flight, an opt-in signed-vertical IN law
+(IN-B1), and a workbench impact-spray/jet law. The
+[dated evidence](../audits/2026-11-05-wcx-ballistic-water.md) shows identical
+Water trajectories across LA-SA/LA/events-off/RFT in pure Water, an exact
+closed-system Water total during real Rapier splashes in four families, and a
+≈52–55-row crown splash. Human gameplay acceptance, platform CI, runtime
+publication, reviewed protected-source transitions and independent review remain open.
+
 ## MAT-AUTH reviewed per-file transitions — 2026-11-04
 
 The owner approved a narrow way to admit a reviewed, behaviour-preserving edit

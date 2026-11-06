@@ -209,6 +209,31 @@ World::WorkbenchLiquidTransfer World::inherit_workbench_liquid_state(const World
     }
     if (transfer.preserved_overfill + transfer.discarded_overfill != source.quantity_.water_overfill)
         throw std::logic_error("Workbench pressure overfill transfer did not close");
+    // BW-001: carry parcels in flight into a ballistic owner, booked like inherited
+    // overfill (an explicit ExternalEdit source of the candidate); otherwise report them.
+    for (const auto& origin : source.ballistic_parcels_) {
+        const bool fits = config_.ballistic_water.enabled &&
+            ballistic_parcels_.size() < config_.ballistic_water.capacity &&
+            (!whole_cell_water_enabled() || origin.quantity == maximum) && origin.quantity <= maximum;
+        if (!fits) { transfer.discarded_in_flight_water += origin.quantity; continue; }
+        auto parcel = origin;
+        parcel.age = 0;
+        parcel.source_body = 0;
+        parcel.vx = std::clamp(parcel.vx, -config_.ballistic_water.max_speed_q, config_.ballistic_water.max_speed_q);
+        parcel.vy = std::clamp(parcel.vy, -config_.ballistic_water.max_speed_q, config_.ballistic_water.max_speed_q);
+        ballistic_parcels_.push_back(parcel);
+        quantity_.kinds[static_cast<std::size_t>(QuantityKind::ExternalEdit)].produced += parcel.quantity;
+        quantity_.water_ballistic += parcel.quantity;
+        auto& l = ballistic_ledger_;
+        ++l.injected_parcels;
+        l.injected_quantity += parcel.quantity;
+        l.launch_px += static_cast<std::int64_t>(parcel.quantity) * parcel.vx;
+        l.launch_py += static_cast<std::int64_t>(parcel.quantity) * parcel.vy;
+        l.maximum_live = std::max<std::uint64_t>(l.maximum_live, ballistic_parcels_.size());
+        transfer.preserved_in_flight_water += parcel.quantity;
+    }
+    if (transfer.preserved_in_flight_water + transfer.discarded_in_flight_water != source.quantity_.water_ballistic)
+        throw std::logic_error("Workbench in-flight Water transfer did not close");
     validate_quantity_ledger(true);
     return transfer;
 }
@@ -532,6 +557,15 @@ void World::resolve_gas_topology(bool allow_cache) {
     // the sentinel minimum (never a resident cell coordinate the BFS would push).
     constexpr std::int64_t kNodeMarker = std::numeric_limits<std::int64_t>::min();
 
+    // One-entry chunk lookup cache for the seed/BFS phase: no chunk is created
+    // or retired between here and the label pass, so a cached pointer (or a
+    // cached absence) stays exact. Neighbour probes mostly stay in one chunk.
+    ChunkCoord cached_coord{std::numeric_limits<std::int64_t>::min(), std::numeric_limits<std::int64_t>::min()};
+    Chunk* cached_chunk = nullptr;
+    const auto chunk_at = [&](ChunkCoord coord) -> Chunk* {
+        if (coord != cached_coord) { cached_coord = coord; cached_chunk = find_chunk(coord); }
+        return cached_chunk;
+    };
     const auto visit = [&](std::int64_t x, std::int64_t y) {
         ++state.optimization.gas_bfs_probes;
         if (stop) return;
@@ -540,7 +574,7 @@ void World::resolve_gas_topology(bool allow_cache) {
         if (transient_obstacle_at(x, y) != 0U) return;
         auto& region = state.regions[current];
         const auto target = address(x, y);
-        auto* chunk = find_chunk(target.chunk);
+        auto* chunk = chunk_at(target.chunk);
         if (chunk == nullptr) {
             for (const auto& node : state.nodes) {
                 if (node.coord != target.chunk) continue;
@@ -618,7 +652,7 @@ void World::resolve_gas_topology(bool allow_cache) {
         ++state.optimization.gas_seed_probes;
         if (transient_obstacle_at(x, y) != 0U) return false;
         const auto target = address(x, y);
-        const auto* chunk = find_chunk(target.chunk);
+        const auto* chunk = chunk_at(target.chunk);
         if (chunk == nullptr) {
             return std::none_of(state.nodes.begin(), state.nodes.end(),
                                 [&](const State::ChunkNode& node) { return node.coord == target.chunk; });
@@ -667,31 +701,109 @@ void World::resolve_gas_topology(bool allow_cache) {
     // Seeds in a fixed order: Empty cells beside unmasked Water, and Empty cells
     // still carrying a live compartment label (so no compartment is ever skipped,
     // including one held entirely by Empty or unallocated cells).
-    for (const auto coord : coordinates) {
-        if (retry_requested) break;
-        auto* chunk = find_chunk(coord);
-        const auto origin_x = coord.x * size;
-        const auto origin_y = coord.y * size;
-        for (std::int32_t local_y = 0; local_y < size && !retry_requested; ++local_y) {
-            for (std::int32_t local_x = 0; local_x < size && !retry_requested; ++local_x) {
-                const auto index = static_cast<std::size_t>(local_y) * static_cast<std::size_t>(size) +
-                                   static_cast<std::size_t>(local_x);
-                ++state.optimization.gas_seed_cells;
-                const auto material = chunk->cells[index].material_value();
-                const auto x = origin_x + local_x;
-                const auto y = origin_y + local_y;
-                if (material == Material::Water) {
-                    if (transient_obstacle_at(x, y) != 0U) continue;
-                    const std::array<std::pair<std::int64_t, std::int64_t>, 4> around{{
-                        {x, y - 1}, {x - 1, y}, {x + 1, y}, {x, y + 1}}};
-                    for (const auto& [nx, ny] : around) {
-                        if (seed_needed(nx, ny)) fill(nx, ny);
-                        if (retry_requested) break;
+    const auto seed_cell = [&](const Chunk& chunk, std::size_t index, std::int64_t x, std::int64_t y) {
+        const auto material = chunk.cells[index].material_value();
+        if (material == Material::Water) {
+            if (transient_obstacle_at(x, y) != 0U) return;
+            const std::array<std::pair<std::int64_t, std::int64_t>, 4> around{{
+                {x, y - 1}, {x - 1, y}, {x + 1, y}, {x, y + 1}}};
+            for (const auto& [nx, ny] : around) {
+                if (seed_needed(nx, ny)) fill(nx, ny);
+                if (retry_requested) break;
+            }
+        } else if (material == Material::Empty) {
+            const auto label = chunk.pressure->cells[index].gas;
+            if (label != 0U && label != kAtmosphereLabel && label != kVacuumLabel && seed_needed(x, y))
+                fill(x, y);
+        }
+    };
+    // Workbench pre-pass (read-only, one pool task per chunk): a cell is a seed
+    // candidate when its serial step can do anything. Unmasked Water qualifies
+    // only beside an unmasked Empty or non-resident neighbour (otherwise every
+    // seed_needed probe is false whatever the visit stamps or chunk nodes), and
+    // Empty only with a live compartment label. Materials, labels, masks and
+    // the chunk map do not change before the label pass. Skipped Water still
+    // books its four probes, so every counter matches the full scan. A cached
+    // replay can request a mid-scan restart, so that path keeps the full scan.
+    const bool pooled_seed = state.gas_tasks.capacity() != 0 &&
+                             coordinates.size() <= state.gas_tasks.capacity() &&
+                             !(allow_cache && gas_cache != nullptr && gas_cache->gas_ready);
+    if (pooled_seed) {
+        state.gas_tasks.clear();
+        for (std::size_t position = 0; position < coordinates.size(); ++position)
+            state.gas_tasks.push_back({position, 0U, false});
+        const auto words = state.gas_seed_words;
+        const auto prefilter = [&](State::GasChunkTask& task) noexcept {
+            const auto coord = coordinates[task.position];
+            const auto& chunk = *find_chunk(coord);
+            auto* bits = state.gas_seed_bits.data() + task.position * words;
+            std::fill(bits, bits + words, std::uint64_t{0});
+            const auto origin_x = coord.x * size;
+            const auto origin_y = coord.y * size;
+            const auto open = [&](std::int64_t nx, std::int64_t ny) {
+                if (transient_obstacle_at(nx, ny) != 0U) return false;
+                const auto at = address(nx, ny);
+                const auto* other = at.chunk == coord ? &chunk : find_chunk(at.chunk);
+                return other == nullptr || other->cells[at.index].material_value() == Material::Empty;
+            };
+            for (std::int32_t local_y = 0; local_y < size; ++local_y) {
+                for (std::int32_t local_x = 0; local_x < size; ++local_x) {
+                    const auto index = static_cast<std::size_t>(local_y) * static_cast<std::size_t>(size) +
+                                       static_cast<std::size_t>(local_x);
+                    const auto material = chunk.cells[index].material_value();
+                    bool candidate = false;
+                    if (material == Material::Water) {
+                        const auto x = origin_x + local_x;
+                        const auto y = origin_y + local_y;
+                        if (transient_obstacle_at(x, y) != 0U) continue;
+                        candidate = open(x, y - 1) || open(x - 1, y) || open(x + 1, y) || open(x, y + 1);
+                        if (!candidate) ++task.skipped_water;
+                    } else if (material == Material::Empty) {
+                        const auto label = chunk.pressure->cells[index].gas;
+                        candidate = label != 0U && label != kAtmosphereLabel && label != kVacuumLabel;
                     }
-                } else if (material == Material::Empty) {
-                    const auto label = chunk->pressure->cells[index].gas;
-                    if (label != 0U && label != kAtmosphereLabel && label != kVacuumLabel && seed_needed(x, y))
-                        fill(x, y);
+                    if (candidate) bits[index / 64U] |= std::uint64_t{1} << (index % 64U);
+                }
+            }
+        };
+        struct Batch { decltype(prefilter)& run; std::vector<State::GasChunkTask>& tasks; };
+        Batch batch{prefilter, state.gas_tasks};
+        if (batch.tasks.size() >= config_.parallel_job_threshold) {
+            parallel_->pool->dispatch(batch.tasks.size(), &batch, [](void* ptr, std::size_t i) noexcept {
+                auto& work = *static_cast<Batch*>(ptr);
+                work.run(work.tasks[i]);
+            });
+        } else {
+            for (auto& task : batch.tasks) prefilter(task);
+        }
+        const auto cells = static_cast<std::uint64_t>(size) * static_cast<std::uint64_t>(size);
+        for (const auto& task : state.gas_tasks) {
+            const auto coord = coordinates[task.position];
+            const auto* chunk = find_chunk(coord);
+            state.optimization.gas_seed_cells += cells;
+            state.optimization.gas_seed_probes += 4U * task.skipped_water;
+            const auto* bits = state.gas_seed_bits.data() + task.position * words;
+            for (std::size_t word = 0; word < words; ++word) {
+                for (auto pending = bits[word]; pending != 0U; pending &= pending - 1U) {
+                    const auto index = word * 64U + static_cast<std::size_t>(std::countr_zero(pending));
+                    seed_cell(*chunk, index,
+                              coord.x * size + static_cast<std::int64_t>(index % static_cast<std::size_t>(size)),
+                              coord.y * size + static_cast<std::int64_t>(index / static_cast<std::size_t>(size)));
+                }
+            }
+        }
+    } else {
+        for (const auto coord : coordinates) {
+            if (retry_requested) break;
+            auto* chunk = find_chunk(coord);
+            const auto origin_x = coord.x * size;
+            const auto origin_y = coord.y * size;
+            for (std::int32_t local_y = 0; local_y < size && !retry_requested; ++local_y) {
+                for (std::int32_t local_x = 0; local_x < size && !retry_requested; ++local_x) {
+                    const auto index = static_cast<std::size_t>(local_y) * static_cast<std::size_t>(size) +
+                                       static_cast<std::size_t>(local_x);
+                    ++state.optimization.gas_seed_cells;
+                    seed_cell(*chunk, index, origin_x + local_x, origin_y + local_y);
                 }
             }
         }
@@ -772,14 +884,21 @@ void World::resolve_gas_topology(bool allow_cache) {
         }
         bool any_atmosphere = false;
         for (const auto r : members_r) any_atmosphere = any_atmosphere || state.regions[r].atmosphere;
-        const auto create = [&](std::uint32_t r) {
+        const auto create = [&](std::uint32_t r, bool sealed_from_open = false) {
             if (next.size() >= PressureFlowParameters::kCompartmentCapacity)
                 throw std::runtime_error("pressure gas compartment capacity exhausted");
             auto& region = state.regions[r];
             State::Compartment made;
             made.id = allocate_gas_compartment_id(state.next_id);
             // Newly sealed gas is atmospheric; kernel-vacated cells are vacuum.
-            made.amount = region.fresh_cells + region.atmosphere_cells;
+            // A region sealing off from the open atmosphere (no prior
+            // compartment and some cells already labelled atmosphere) holds
+            // atmospheric gas in its whole volume: Water that drained from its
+            // cells while it was open was replaced by air, even where the
+            // bounded label pass had not yet relabelled those vacuum cells.
+            // Water-born voids without atmosphere cells keep the vacuum rule
+            // (#406, owner approved 2026-11-06).
+            made.amount = sealed_from_open ? region.volume : region.fresh_cells + region.atmosphere_cells;
             made.volume = region.volume;
             made.anchor_x = region.lowest_x;
             made.anchor_y = region.lowest_y;
@@ -815,7 +934,7 @@ void World::resolve_gas_topology(bool allow_cache) {
                 state.regions[members_r.front()].label = kVacuumLabel;
                 continue;
             }
-            create(members_r.front());
+            create(members_r.front(), region.atmosphere_cells != 0U);
             continue;
         }
         std::uint64_t absorbed = 0;
@@ -923,12 +1042,14 @@ void World::resolve_gas_topology(bool allow_cache) {
         for (auto& cell : chunk.pressure->cells) { cell.gas = label; ++state.optimization.gas_relabel_cells; }
     }
     bool labels_changed = false;
-    for (const auto coord : coordinates) {
+    // Each chunk writes only its own labels from the now read-only region and
+    // compartment tables, so the workbench pool may run one task per chunk.
+    const auto relabel_chunk = [&](ChunkCoord coord) noexcept {
+        bool changed = false;
         auto* chunk = find_chunk(coord);
         auto& visits = chunk->pressure->visit;
         auto& cells = chunk->pressure->cells;
         for (std::size_t index = 0; index < cells.size(); ++index) {
-            ++state.optimization.gas_relabel_cells;
             const auto mark = visits[index];
             if ((mark & 0xFFFF0000U) != stamp) {
                 // Masked Empty cells do not contribute volume or overlap, but
@@ -942,15 +1063,40 @@ void World::resolve_gas_topology(bool allow_cache) {
                 if (label != 0U && label != kAtmosphereLabel && label != kVacuumLabel &&
                     state.find(label) == nullptr) {
                     cells[index].gas = kVacuumLabel;
-                    labels_changed = true;
+                    changed = true;
                 }
                 continue;
             }
             const auto label = state.regions[mark & 0xFFFFU].label;
-            labels_changed = labels_changed || cells[index].gas != label;
+            changed = changed || cells[index].gas != label;
             cells[index].gas = label;
         }
+        return changed;
+    };
+    if (state.gas_tasks.capacity() != 0 && coordinates.size() <= state.gas_tasks.capacity()) {
+        state.gas_tasks.clear();
+        for (std::size_t position = 0; position < coordinates.size(); ++position)
+            state.gas_tasks.push_back({position, 0U, false});
+        struct Batch {
+            decltype(relabel_chunk)& run;
+            std::vector<State::GasChunkTask>& tasks;
+            const std::vector<ChunkCoord>& order;
+        };
+        Batch batch{relabel_chunk, state.gas_tasks, coordinates};
+        if (batch.tasks.size() >= config_.parallel_job_threshold) {
+            parallel_->pool->dispatch(batch.tasks.size(), &batch, [](void* ptr, std::size_t i) noexcept {
+                auto& work = *static_cast<Batch*>(ptr);
+                work.tasks[i].labels_changed = work.run(work.order[work.tasks[i].position]);
+            });
+        } else {
+            for (auto& task : batch.tasks) task.labels_changed = relabel_chunk(coordinates[task.position]);
+        }
+        for (const auto& task : state.gas_tasks) labels_changed = labels_changed || task.labels_changed;
+    } else {
+        for (const auto coord : coordinates) labels_changed = relabel_chunk(coord) || labels_changed;
     }
+    for (const auto coord : coordinates)
+        state.optimization.gas_relabel_cells += find_chunk(coord)->pressure->cells.size();
     // Bounded atmosphere exploration can still extend its authoritative label
     // prefix after a topology edit. Unchanged Water/amount is insufficient for
     // reuse: require a complete reference pass that is a fixed point of the
@@ -978,22 +1124,34 @@ void World::compute_pressure_heads() {
             return a.x != b.x ? a.x < b.x : a.y < b.y;
         });
     }
-    const auto put_base = [&](Chunk& chunk, std::size_t index, std::int32_t value) {
+    // A column task writes only its own chunk column: base heads, and the
+    // private row-dirty record of each column-order position it owns.
+    const auto put_base = [&](Chunk& chunk, std::size_t position, std::size_t index, std::int32_t value) {
         if (!cached) { chunk.pressure->head[index] = value; return; }
         auto& old = chunk.pressure->base_head[index];
         if (old != value) {
             old = value;
-            const auto row = static_cast<std::int32_t>(index / static_cast<std::size_t>(size));
-            cache->mark(false, chunk.pressure->row_group, row, row);
+            const auto row = index / static_cast<std::size_t>(size);
+            cache->column_row_marks[position][row / 64U] |= std::uint64_t{1} << (row % 64U);
         }
     };
-    const auto put_final = [&](Chunk& chunk, std::size_t index, std::int32_t value) {
-        ++state.optimization.final_cells_written;
+    // A row-band task owns every chunk with its row coordinate: their heads,
+    // wake bits (clear_pressure_wake never leaves the chunk row) and activity
+    // flags. A deferred (pooled) band leaves certificate invalidation, an
+    // idempotent fill that nothing in this pass reads, to the owner's merge.
+    using RowTask = PressureState::HeadRowTask;
+    const auto put_final = [&](RowTask& task, Chunk& chunk, std::size_t index, std::int32_t value) {
+        ++task.finals;
         auto& old = chunk.pressure->head[index];
         if (cached && old != value) {
             const auto local_x = static_cast<std::int32_t>(index % static_cast<std::size_t>(size));
             const auto local_y = static_cast<std::int32_t>(index / static_cast<std::size_t>(size));
-            invalidate_pressure_certificates(chunk.pressure->coordinate, local_x, local_y, local_x, local_y);
+            if (task.deferred) {
+                cache->certificate_changed[static_cast<std::size_t>(chunk.pressure->gas_chunk_slot) *
+                    cache->wake_words_per_chunk + index / 64U] |= std::uint64_t{1} << (index % 64U);
+            } else {
+                invalidate_pressure_certificates(chunk.pressure->coordinate, local_x, local_y, local_x, local_y);
+            }
             clear_pressure_wake(*cache, [this](ChunkCoord c) { return find_chunk(c); }, size,
                                 chunk.pressure->coordinate, local_x, local_y, local_x, local_y);
         }
@@ -1053,13 +1211,13 @@ void World::compute_pressure_heads() {
                     std::int64_t value = 0;
                     if (!supported) {
                         value = cell_quantity(chunk, index) + top.value_or(0);
-                        put_base(chunk, index, static_cast<std::int32_t>(clamp_head(value)));
+                        put_base(chunk, chunk_position, index, static_cast<std::int32_t>(clamp_head(value)));
                     } else {
                         const auto compacted = std::max<std::int64_t>(0, total - (floor_y - y) * maximum);
                         if (top.has_value()) {
-                            put_base(chunk, index, static_cast<std::int32_t>(clamp_head(*top + compacted)));
+                            put_base(chunk, chunk_position, index, static_cast<std::int32_t>(clamp_head(*top + compacted)));
                         } else {
-                            put_base(chunk, index, static_cast<std::int32_t>(
+                            put_base(chunk, chunk_position, index, static_cast<std::int32_t>(
                                 kUnknownHeadBase - std::min(compacted, kHeadClamp)));
                             ++task.unknown;
                         }
@@ -1099,7 +1257,7 @@ void World::compute_pressure_heads() {
                         total += cell_quantity(chunk, index);
                         continue;
                     }
-                    put_base(chunk, index, kNoHead);
+                    put_base(chunk, position, index, kNoHead);
                     if (open) {
                         const bool supported = !(material == Material::Empty && transient_obstacle_at(x, y) == 0U);
                         close_run(position, local_y, y - 1, supported);
@@ -1117,8 +1275,17 @@ void World::compute_pressure_heads() {
         state.optimization.base_cells_written += task.writes;
         state.diagnostics.unknown_heads += task.unknown;
         state.diagnostics.head_cells += task.heads;
+        if (!cached) return;
+        // Owner-only, in task order: publish the private row marks and retire
+        // the consumed column group exactly as the serial pass did.
+        for (auto position = task.begin; position < task.end; ++position)
+            cache->merge_row_marks(find_chunk(coordinates[position])->pressure->row_group,
+                                   cache->column_row_marks[position]);
+        cache->columns[task.group].dirty = {};
+        cache->columns[task.group].queued = false;
     };
-    const bool pool_columns = !cache && state.column_tasks.capacity() != 0;
+    // Reserved only for the opt-in workbench route with a native pool.
+    const bool pool_columns = state.column_tasks.capacity() != 0;
     state.column_tasks.clear();
     std::size_t begin = 0, column_task = 0;
     while (cached ? column_task < cache->dirty_columns.size() : begin < coordinates.size()) {
@@ -1130,7 +1297,7 @@ void World::compute_pressure_heads() {
         } else {
             while (end < coordinates.size() && coordinates[end].x == coordinates[begin].x) ++end;
         }
-        HeadTask task{begin,end};
+        HeadTask task{begin,end,group};
         if (pool_columns) {
             if (state.column_tasks.size() == state.column_tasks.capacity())
                 throw std::length_error("Workbench pressure column capacity exhausted");
@@ -1138,24 +1305,24 @@ void World::compute_pressure_heads() {
         } else {
             prepare_columns(task,group);
             merge_counts(task);
-            if (cached) { cache->columns[group].dirty = {}; cache->columns[group].queued = false; }
         }
         begin = end;
     }
     if (pool_columns) {
-        // Different chunk columns share neither head storage nor counters.
-        // Gas gauges and transient masks are immutable for this pass. Join
-        // before sorting coordinates or starting row interpolation/wakes.
+        // Different chunk columns share neither head storage, counters nor
+        // row-mark records. Gas gauges, transient masks, column dirty bits and
+        // the chunk map are read-only for this pass. Join before merging
+        // marks, sorting coordinates or starting row interpolation/wakes.
         struct Batch { decltype(prepare_columns)& prepare; std::vector<HeadTask>& tasks; };
         Batch batch{prepare_columns,state.column_tasks};
         if (batch.tasks.size() >= config_.parallel_job_threshold) {
             parallel_->pool->dispatch(batch.tasks.size(),&batch,[](void* ptr, std::size_t i) noexcept {
                 auto& run = *static_cast<Batch*>(ptr);
                 auto& task = run.tasks[i];
-                task.error.capture([&] { run.prepare(task,0); });
+                task.error.capture([&] { run.prepare(task,task.group); });
             });
         } else {
-            for (auto& task : batch.tasks) prepare_columns(task,0);
+            for (auto& task : batch.tasks) prepare_columns(task,task.group);
         }
         for (const auto& task : batch.tasks) {
             task.error.raise_if_present();
@@ -1171,15 +1338,26 @@ void World::compute_pressure_heads() {
         return a.y != b.y ? a.y < b.y : a.x < b.x;
     });
     const auto start_band = std::max<std::int64_t>(1, (PressureFlowParameters::kStartDeadBand255 * maximum + 127) / 255);
-    begin = 0;
-    while (begin < row_coordinates.size()) {
-        auto end = begin;
-        while (end < row_coordinates.size() && row_coordinates[end].y == row_coordinates[begin].y) ++end;
-        const auto group = cached ? find_chunk(row_coordinates[begin])->pressure->row_group : 0U;
-        for (std::int32_t local_y = 0; local_y < size; ++local_y) {
+    const auto blocks_per_axis = static_cast<std::size_t>((size + config_.activity_block_size - 1) / config_.activity_block_size);
+    const auto blocks_per_chunk = blocks_per_axis * blocks_per_axis;
+    // Deferred wakes keep the sub-band-private block activation. The chunk
+    // flag (shared by a chunk's sub-bands, read by nothing in this pass), the
+    // global physics event and the wake count (discovery disables deferral)
+    // follow in the serial band order at the merge.
+    const auto wake_block = [&](RowTask& task, ChunkCoord coord, Chunk& chunk, std::size_t block_index) {
+        if (!task.deferred) { wake_activity_block(coord, chunk, block_index); return; }
+        auto& block = chunk.activity_blocks[block_index];
+        if (block.active) return;
+        block.active = true;
+        block.quiet_ticks = 0;
+        state.row_wakes[task.wake_base + task.wakes++] = {coord, block_index};
+    };
+    const auto row_band = [&](RowTask& task) {
+        const auto begin = task.begin, end = task.end, group = task.group;
+        for (std::int32_t local_y = task.first_row; local_y < task.last_row; ++local_y) {
             const auto y = row_coordinates[begin].y * size + local_y;
             if (!cached || cache->rows[group].test(local_y)) {
-            ++state.optimization.rows_recomputed;
+            ++task.rows;
             // Segment state.
             struct Known {
                 bool valid = false;
@@ -1206,7 +1384,7 @@ void World::compute_pressure_heads() {
                     } else if (right.valid) {
                         value = right.value;
                     }
-                    put_final(chunk, target.index, static_cast<std::int32_t>(clamp_head(value)));
+                    put_final(task, chunk, target.index, static_cast<std::int32_t>(clamp_head(value)));
                 }
             };
             std::int64_t previous_x = 0;
@@ -1225,7 +1403,7 @@ void World::compute_pressure_heads() {
                     const auto index = static_cast<std::size_t>(local_y) * static_cast<std::size_t>(size) +
                                        static_cast<std::size_t>(local_x);
                     const auto value = cached ? chunk.pressure->base_head[index] : chunk.pressure->head[index];
-                    if (cached && !is_unknown_head(value)) put_final(chunk, index, value);
+                    if (cached && !is_unknown_head(value)) put_final(task, chunk, index, value);
                     previous_x = x;
                     have_previous = true;
                     if (value == kNoHead) {
@@ -1290,8 +1468,8 @@ void World::compute_pressure_heads() {
                         continue;
                     }
                     if (chunk_elide) {
-                        if (cache->wake_test(segment_bit, segment_cells)) { ++cache->wake_segments_skipped; continue; }
-                        ++cache->wake_segments_scanned;
+                        if (cache->wake_test(segment_bit, segment_cells)) { ++task.skipped; continue; }
+                        ++task.scanned;
                     }
                     bool woke = false;
                     for (std::int32_t local_x = first; local_x < last; ++local_x) {
@@ -1339,7 +1517,7 @@ void World::compute_pressure_heads() {
                             actionable = gradient > start_band || gradient < -start_band;
                         }
                         if (actionable) {
-                            wake_activity_block(coord, chunk, block_index);
+                            wake_block(task, coord, chunk, block_index);
                             woke = true;
                             break;
                         }
@@ -1360,8 +1538,141 @@ void World::compute_pressure_heads() {
                 }
             }
         }
-        if (cached) { cache->rows[group].dirty = {}; cache->rows[group].queued = false; }
+    };
+    // Owner-only certificate invalidation of one run of changed final heads
+    // in a chunk row: the same filled cells and the same per-cell counter sum
+    // as invalidate_pressure_certificates for each cell of the run.
+    const auto invalidate_run = [&](ChunkCoord coord, std::int32_t x0, std::int32_t x1, std::int32_t y) {
+        if (!cache->dormant) return;
+        if (!cache->certificate_layer_enabled || cache->certificate_contents_cold || !cache->complete ||
+            !cache->use_heads) {
+            cache->certificate_contents_cold = true;
+            return;
+        }
+        for (std::int32_t dy = -1; dy <= 1; ++dy) {
+            const auto first_y = std::max(0, y - 2 - dy * size);
+            const auto last_y = std::min(size - 1, y + 2 - dy * size);
+            if (first_y > last_y) continue;
+            for (std::int32_t dx = -1; dx <= 1; ++dx) {
+                const auto offset = dx * size;
+                const auto first_x = std::max(0, x0 - 2 - offset);
+                const auto last_x = std::min(size - 1, x1 + 2 - offset);
+                if (first_x > last_x) continue;
+                auto* chunk = find_chunk({coord.x + dx, coord.y + dy});
+                if (chunk == nullptr) continue;
+                std::uint64_t per_row = 0;
+                for (auto x = x0; x <= x1; ++x) {
+                    const auto a = std::max(0, x - 2 - offset), b = std::min(size - 1, x + 2 - offset);
+                    if (a <= b) per_row += static_cast<std::uint64_t>(b - a + 1);
+                }
+                auto& certificates = chunk->pressure->rest_certificate;
+                for (auto row = first_y; row <= last_y; ++row) {
+                    const auto start = static_cast<std::size_t>(row) * static_cast<std::size_t>(size);
+                    std::fill(certificates.begin() + static_cast<std::ptrdiff_t>(start + static_cast<std::size_t>(first_x)),
+                              certificates.begin() + static_cast<std::ptrdiff_t>(start + static_cast<std::size_t>(last_x) + 1U),
+                              PressureChunk::kCertificateWarmup);
+                    state.optimization.certificate_invalidation_cells += per_row;
+                }
+            }
+        }
+    };
+    const auto merge_rows = [&](const RowTask& task) {
+        state.optimization.rows_recomputed += task.rows;
+        state.optimization.final_cells_written += task.finals;
+        if (cached) {
+            cache->wake_segments_skipped += task.skipped;
+            cache->wake_segments_scanned += task.scanned;
+        }
+        for (std::size_t i = 0; i < task.wakes; ++i) {
+            record_physics(PhysicsEvent::BlockWake, Material::Empty, Material::Empty, 0, 0, nullptr);
+            find_chunk(state.row_wakes[task.wake_base + i].coord)->active = true;
+            ++state.diagnostics.woken_blocks;
+        }
+        // The last sub-band of a chunk row retires its consumed row group.
+        if (cached && task.last_row == size) { cache->rows[task.group].dirty = {}; cache->rows[task.group].queued = false; }
+        if (!task.deferred || !cached) return;
+        const auto words = cache->wake_words_per_chunk;
+        const auto first_word = static_cast<std::size_t>(task.first_row) * static_cast<std::size_t>(size) / 64U;
+        const auto last_word = static_cast<std::size_t>(task.last_row) * static_cast<std::size_t>(size) / 64U;
+        for (auto position = task.begin; position < task.end; ++position) {
+            const auto coord = row_coordinates[position];
+            const auto slot = static_cast<std::size_t>(find_chunk(coord)->pressure->gas_chunk_slot);
+            bool open = false;
+            std::int32_t run_y = 0, run_first = 0, run_last = 0;
+            for (auto word = first_word; word < last_word; ++word) {
+                auto& bits = cache->certificate_changed[slot * words + word];
+                while (bits != 0U) {
+                    const auto index = word * 64U + static_cast<std::size_t>(std::countr_zero(bits));
+                    bits &= bits - 1U;
+                    const auto local_x = static_cast<std::int32_t>(index % static_cast<std::size_t>(size));
+                    const auto local_y = static_cast<std::int32_t>(index / static_cast<std::size_t>(size));
+                    if (open && local_y == run_y && local_x == run_last + 1) { run_last = local_x; continue; }
+                    if (open) invalidate_run(coord, run_first, run_last, run_y);
+                    open = true; run_y = local_y; run_first = run_last = local_x;
+                }
+            }
+            if (open) invalidate_run(coord, run_first, run_last, run_y);
+        }
+    };
+    // Bands may run on the pool when the workbench route reserved tasks, no
+    // settled discovery observes wakes, and every indexed chunk has a valid
+    // wake/certificate slot (otherwise the serial pass may reset wake bits).
+    // Sub-bands are activity-block rows, so every block, wake word and
+    // certificate word belongs to exactly one task (word-aligned rows only).
+    const auto sub_rows = config_.activity_block_size;
+    bool pool_rows = state.row_tasks.capacity() != 0 && settled_discovery_ == nullptr &&
+                     (static_cast<std::size_t>(sub_rows) * static_cast<std::size_t>(size)) % 64U == 0U;
+    if (pool_rows && cached) {
+        const auto needed = cache->column_order.size() * cache->wake_words_per_chunk;
+        pool_rows = cache->certificate_changed.size() >= needed;
+        for (const auto coord : row_coordinates)
+            pool_rows = pool_rows && static_cast<std::size_t>(find_chunk(coord)->pressure->gas_chunk_slot) <
+                                         cache->column_order.size();
+    }
+    state.row_tasks.clear();
+    begin = 0;
+    while (begin < row_coordinates.size()) {
+        auto end = begin;
+        while (end < row_coordinates.size() && row_coordinates[end].y == row_coordinates[begin].y) ++end;
+        for (std::int32_t first_row = 0; first_row < size; first_row += sub_rows) {
+            RowTask task;
+            task.begin = begin;
+            task.end = end;
+            task.first_row = first_row;
+            task.last_row = std::min(size, first_row + sub_rows);
+            task.group = cached ? find_chunk(row_coordinates[begin])->pressure->row_group : 0U;
+            task.deferred = pool_rows;
+            // One block row per chunk of the band can wake in this sub-band.
+            task.wake_base = begin * blocks_per_chunk +
+                static_cast<std::size_t>(first_row / sub_rows) * (end - begin) * blocks_per_axis;
+            if (pool_rows) {
+                if (state.row_tasks.size() == state.row_tasks.capacity() ||
+                    task.wake_base + (end - begin) * blocks_per_axis > state.row_wakes.size())
+                    throw std::length_error("Workbench pressure row capacity exhausted");
+                state.row_tasks.push_back(task);
+            } else {
+                row_band(task);
+                merge_rows(task);
+            }
+        }
         begin = end;
+    }
+    if (pool_rows) {
+        struct RowBatch { decltype(row_band)& run; std::vector<RowTask>& tasks; };
+        RowBatch batch{row_band, state.row_tasks};
+        if (batch.tasks.size() >= config_.parallel_job_threshold) {
+            parallel_->pool->dispatch(batch.tasks.size(), &batch, [](void* ptr, std::size_t i) noexcept {
+                auto& rows = *static_cast<RowBatch*>(ptr);
+                auto& task = rows.tasks[i];
+                task.error.capture([&] { rows.run(task); });
+            });
+        } else {
+            for (auto& task : batch.tasks) row_band(task);
+        }
+        for (const auto& task : batch.tasks) {
+            task.error.raise_if_present();
+            merge_rows(task);
+        }
     }
     if (cached) cache->dirty_rows.clear();
 }
@@ -1843,6 +2154,27 @@ std::uint64_t World::physical_state_hash_impl(std::optional<LiquidStateProjectio
     if (inertial_enabled_) {
         for (const auto byte:inertial_extension_identity(inertial_parameters_)) hash_byte(hash,byte);
     }
+    if (config_.ballistic_water.enabled) {
+        // BW-001: every parcel is physical state; cumulative counters are not quiescent content.
+        for (const auto byte : ballistic_water_identity(config_.ballistic_water)) hash_byte(hash, byte);
+        hash_integer(hash, static_cast<std::uint64_t>(ballistic_parcels_.size()));
+        for (const auto& p : ballistic_parcels_) {
+            hash_integer(hash, p.x); hash_integer(hash, p.y); hash_integer(hash, p.vx); hash_integer(hash, p.vy);
+            hash_integer(hash, p.quantity); hash_integer(hash, p.age); hash_integer(hash, p.source_body);
+            hash_integer(hash, p.contacts); hash_integer(hash, p.deferrals);
+        }
+        if (!quiescent) {
+            const auto& l = ballistic_ledger_;
+            for (const auto v : {l.launched_parcels, l.launched_quantity, l.injected_parcels, l.injected_quantity,
+                                 l.deposited_parcels, l.deposited_quantity, l.deposit_writes, l.deferred_deposits,
+                                 l.refused_launches, l.forced_deposits, l.terrain_contacts, l.body_contacts,
+                                 l.surface_entries, l.ceiling_contacts, l.boundary_contacts, l.parcel_ticks,
+                                 l.cell_steps, l.maximum_live, l.column_deposits, l.face_releases, l.film_skims}) hash_integer(hash, v);
+            for (const auto v : {l.launch_px, l.launch_py, l.gravity_py, l.drag_px, l.drag_py, l.contact_px,
+                                 l.contact_py, l.body_px, l.body_py, l.clamp_px, l.clamp_py, l.deposit_px,
+                                 l.deposit_py}) hash_integer(hash, v);
+        }
+    }
     hash_integer(hash, static_cast<std::uint8_t>(pressure_ != nullptr));
     if (pressure_ != nullptr) {
         hash_integer(hash, PressureFlowParameters::kVersion);
@@ -2025,6 +2357,22 @@ std::vector<std::uint8_t> World::save_physical_state() const {
     const auto envelope = config_.liquid_solver_policy.envelope();
     out.put(static_cast<std::uint32_t>(envelope.size()));
     for (const auto word : envelope) out.put(word);
+    if (physical_state_format_version() == 4U) {
+        // CYPS4 extension flags: bit0 IN sidecars, bit1 BW-001 parcels, bit2 IN-B1 signed law.
+        out.put(static_cast<std::uint8_t>((inertial_enabled_ ? 1U : 0U) |
+                                          (config_.ballistic_water.enabled ? 2U : 0U) |
+                                          (inertial_parameters_.signed_vertical ? 4U : 0U)));
+    }
+    if (config_.ballistic_water.enabled) {
+        const auto& c = config_.ballistic_water;
+        out.put(BallisticWaterConfig::kVersion);
+        out.put(c.capacity); out.put(c.gravity_q); out.put(c.max_speed_q); out.put(c.air_drag);
+        out.put(c.restitution); out.put(c.friction); out.put(c.settle_speed_q); out.put(c.maximum_age_ticks);
+        out.put(c.deposit_radius); out.put(c.maximum_contacts);
+        out.put(static_cast<std::uint8_t>(c.face_release)); out.put(c.face_min_height); out.put(c.face_budget);
+        out.put(c.face_speed); out.put(c.face_period); out.put(static_cast<std::uint8_t>(c.film_skim));
+        for (const auto byte : ballistic_water_identity(c)) out.put(byte);
+    }
     if (inertial_enabled_) {
         out.put(InertialParameters::kVersion);
         for (const auto byte:inertial_extension_identity(inertial_parameters_)) out.put(byte);
@@ -2143,6 +2491,24 @@ std::vector<std::uint8_t> World::save_physical_state() const {
         for (const auto v:{s.gravity_y,s.impulse_x,s.impulse_y,s.loss,s.support,s.remainder,
                           s.retired_x,s.retired_y,s.external_x,s.external_y,s.external_speed}) out.put(v);
         for (const auto v:{s.updates,s.unit_moves,s.density_swaps,s.contacts,s.rests,s.velocity_retired,s.maximum_read_reach,s.maximum_write_reach}) out.put(v);
+        if (inertial_parameters_.signed_vertical) out.put(s.gravity_speed);
+    }
+    if (config_.ballistic_water.enabled) {
+        validate_ballistic_ledger();
+        out.put(static_cast<std::uint32_t>(ballistic_parcels_.size()));
+        for (const auto& p : ballistic_parcels_) {
+            out.put(p.x); out.put(p.y); out.put(p.vx); out.put(p.vy); out.put(p.quantity); out.put(p.age);
+            out.put(p.source_body); out.put(p.contacts); out.put(p.deferrals);
+        }
+        const auto& l = ballistic_ledger_;
+        for (const auto v : {l.launched_parcels, l.launched_quantity, l.injected_parcels, l.injected_quantity,
+                                 l.deposited_parcels, l.deposited_quantity, l.deposit_writes, l.deferred_deposits,
+                                 l.refused_launches, l.forced_deposits, l.terrain_contacts, l.body_contacts,
+                                 l.surface_entries, l.ceiling_contacts, l.boundary_contacts, l.parcel_ticks,
+                                 l.cell_steps, l.maximum_live, l.column_deposits, l.face_releases, l.film_skims}) out.put(v);
+        for (const auto v : {l.launch_px, l.launch_py, l.gravity_py, l.drag_px, l.drag_py, l.contact_px,
+                                 l.contact_py, l.body_px, l.body_py, l.clamp_px, l.clamp_py, l.deposit_px,
+                                 l.deposit_py}) out.put(v);
     }
     const auto digest = Sha256::of(out.bytes);
     out.bytes.insert(out.bytes.end(), digest.begin(), digest.end());
@@ -2157,7 +2523,7 @@ std::unique_ptr<World> World::restore_physical_state(const WorldConfig& executio
     StateReader in(body);
     if (in.get<std::uint32_t>() != kPhysicalStateMagic) refuse_state("bad magic");
     const auto format=in.get<std::uint32_t>();
-    if (format != 2U && format != 3U) refuse_state("unknown format version");
+    if (format != 2U && format != 3U && format != 4U) refuse_state("unknown format version");
     // WorldConfig contains the fixed transport catalogue. Keep preparation's
     // copy off the caller/decoder stack (notably MSVC debug's 1 MiB default).
     auto config_owner = std::make_unique<WorldConfig>(execution);
@@ -2203,10 +2569,39 @@ std::unique_ptr<World> World::restore_physical_state(const WorldConfig& executio
         config.liquid_solver_policy.assignments().end(),[](const auto& a) {
             return a.family==LiquidSolverFamily::InertialCellularV1;
         });
-    if (has_inertial != (format==3U)) refuse_state("IN requires its explicit CYPS3 format");
+    std::uint8_t extensions = format == 3U ? 1U : 0U;
+    if (format == 4U) {
+        extensions = in.get<std::uint8_t>();
+        if ((extensions & ~7U) != 0U || (extensions & 6U) == 0U ||
+            ((extensions & 4U) != 0U && (extensions & 1U) == 0U))
+            refuse_state("unknown CYPS4 extension set");
+    }
+    if (has_inertial != ((extensions & 1U) != 0U)) refuse_state("IN requires its explicit CYPS3/CYPS4 format");
+    config.ballistic_water = {};
+    config.inertial_signed_vertical = (extensions & 4U) != 0U;
+    if ((extensions & 2U) != 0U) {
+        auto& c = config.ballistic_water;
+        if (in.get<std::uint16_t>() != BallisticWaterConfig::kVersion) refuse_state("unknown ballistic Water contract");
+        c.enabled = true;
+        c.capacity = in.get<std::uint32_t>(); c.gravity_q = in.get<std::int32_t>(); c.max_speed_q = in.get<std::int32_t>();
+        c.air_drag = in.get<std::int32_t>(); c.restitution = in.get<std::int32_t>(); c.friction = in.get<std::int32_t>();
+        c.settle_speed_q = in.get<std::int32_t>(); c.maximum_age_ticks = in.get<std::uint32_t>();
+        c.deposit_radius = in.get<std::int32_t>(); c.maximum_contacts = in.get<std::uint32_t>();
+        const auto face = in.get<std::uint8_t>();
+        if (face > 1U) refuse_state("invalid ballistic face-release flag");
+        c.face_release = face != 0U; c.face_min_height = in.get<std::int32_t>(); c.face_budget = in.get<std::uint32_t>();
+        c.face_speed = in.get<std::int32_t>(); c.face_period = in.get<std::uint32_t>();
+        const auto skim = in.get<std::uint8_t>();
+        if (skim > 1U) refuse_state("invalid ballistic film-skim flag");
+        c.film_skim = skim != 0U;
+        for (const auto expected : ballistic_water_identity(c))
+            if (in.get<std::uint8_t>() != expected) refuse_state("unknown ballistic Water identity");
+    }
     if (has_inertial) {
         if (in.get<std::uint16_t>() != InertialParameters::kVersion) refuse_state("unknown IN state contract");
-        for (const auto expected:inertial_extension_identity(inertial_parameters_for_policy(config.liquid_solver_policy)))
+        auto restored_parameters = inertial_parameters_for_policy(config.liquid_solver_policy);
+        restored_parameters.signed_vertical = config.inertial_signed_vertical;
+        for (const auto expected:inertial_extension_identity(restored_parameters))
             if (in.get<std::uint8_t>() != expected) refuse_state("unknown IN parameter/state identity");
     }
     config.settled_discovery_enabled = false;
@@ -2266,7 +2661,7 @@ std::unique_ptr<World> World::restore_physical_state(const WorldConfig& executio
             refuse_state("chunk coordinate overflow");
         if (w.find_chunk(coord) != nullptr) refuse_state("duplicate chunk");
         const auto flags = in.get<std::uint8_t>();
-        if ((flags & ~(format==3U ? 7U:3U)) != 0U) refuse_state("unknown chunk flags");
+        if ((flags & ~((extensions & 1U) != 0U ? 7U:3U)) != 0U) refuse_state("unknown chunk flags");
         if (((flags & 4U)!=0U)!=w.inertial_enabled_) refuse_state("IN sidecar presence mismatch");
         if (((flags & 2U) != 0U) != (w.pressure_ != nullptr)) refuse_state("pressure sidecar presence mismatch");
         auto& chunk = w.ensure_chunk(coord);
@@ -2341,7 +2736,8 @@ std::unique_ptr<World> World::restore_physical_state(const WorldConfig& executio
             if ((s.vx || s.vy || s.ax || s.ay) && !w.inertial_family(chunk.cells[i].material_value()))
                 refuse_state("IN motion on another family");
             if (s.vx < -InertialParameters::kVmax || s.vx > InertialParameters::kVmax ||
-                s.vy < 0 || s.vy > InertialParameters::kVmax ||
+                (s.vy < 0 && !w.inertial_parameters_.signed_vertical) || s.vy < -InertialParameters::kVmax ||
+                s.vy > InertialParameters::kVmax ||
                 std::abs(s.ax)>=InertialParameters::kQ || std::abs(s.ay)>=InertialParameters::kQ)
                 refuse_state("IN motion outside its declared domain");
         }
@@ -2445,15 +2841,39 @@ std::unique_ptr<World> World::restore_physical_state(const WorldConfig& executio
     } else if (!labelled.empty()) {
         refuse_state("gas labels without a pressure family");
     }
-    if (format==3U) {
+    if ((extensions & 1U) != 0U) {
         auto& s=w.inertial_ledger_;
         for (auto* v:{&s.gravity_y,&s.impulse_x,&s.impulse_y,&s.loss,&s.support,&s.remainder,
                      &s.retired_x,&s.retired_y,&s.external_x,&s.external_y,&s.external_speed}) *v=in.get<std::int64_t>();
         for (auto* v:{&s.updates,&s.unit_moves,&s.density_swaps,&s.contacts,&s.rests,&s.velocity_retired,&s.maximum_read_reach,&s.maximum_write_reach})
             *v=in.get<std::uint64_t>();
-        if (s.gravity_y<0 || s.loss<0 || s.support<0 || s.support>s.loss ||
+        s.gravity_speed = (extensions & 4U) != 0U ? in.get<std::int64_t>() : s.gravity_y;
+        if (s.gravity_y<0 || (s.loss<0 && (extensions & 4U) == 0U) || s.support<0 ||
+            (s.support>s.loss && (extensions & 4U) == 0U) ||
             s.maximum_read_reach>3U || s.maximum_write_reach>2U)
             refuse_state("IN ledger outside its declared domain");
+    }
+    if ((extensions & 2U) != 0U) {
+        const auto count = in.get<std::uint32_t>();
+        if (count > w.config_.ballistic_water.capacity) refuse_state("ballistic parcel count exceeds capacity");
+        for (std::uint32_t i = 0; i < count; ++i) {
+            BallisticParcel p;
+            p.x = in.get<std::int64_t>(); p.y = in.get<std::int64_t>();
+            p.vx = in.get<std::int32_t>(); p.vy = in.get<std::int32_t>();
+            p.quantity = in.get<std::uint32_t>(); p.age = in.get<std::uint32_t>();
+            p.source_body = in.get<std::uint16_t>(); p.contacts = in.get<std::uint8_t>(); p.deferrals = in.get<std::uint8_t>();
+            if (p.source_body > kMaximumTransientBodies) refuse_state("ballistic parcel body identity out of range");
+            w.ballistic_parcels_.push_back(p);
+        }
+        auto& l = w.ballistic_ledger_;
+        for (auto* v : {&l.launched_parcels, &l.launched_quantity, &l.injected_parcels, &l.injected_quantity,
+                                 &l.deposited_parcels, &l.deposited_quantity, &l.deposit_writes, &l.deferred_deposits,
+                                 &l.refused_launches, &l.forced_deposits, &l.terrain_contacts, &l.body_contacts,
+                                 &l.surface_entries, &l.ceiling_contacts, &l.boundary_contacts, &l.parcel_ticks,
+                                 &l.cell_steps, &l.maximum_live, &l.column_deposits, &l.face_releases, &l.film_skims}) *v = in.get<std::uint64_t>();
+        for (auto* v : {&l.launch_px, &l.launch_py, &l.gravity_py, &l.drag_px, &l.drag_py, &l.contact_px,
+                                 &l.contact_py, &l.body_px, &l.body_py, &l.clamp_px, &l.clamp_py, &l.deposit_px,
+                                 &l.deposit_py}) *v = in.get<std::int64_t>();
     }
     if (!in.done()) refuse_state("trailing bytes");
     try { w.validate_inertial_ledger(); }

@@ -352,7 +352,7 @@ subset, with the separate liquid-policy entry point noted below.
 | `maximum_rule_radius` | 2 | Prepared write expansion; active catalogue requires at least 2 |
 | `worker_threads` | 1 | Standalone worker count; adapter overrides below |
 | `parallel_job_threshold` | 8 | Minimum phase jobs before pool dispatch |
-| `active_core_capacity` | 4096 | Gathered core candidates/results; checked before deduplication |
+| `active_core_capacity` | 4096 | Gathered core candidates/results; distinct cores per chunk are checked, cross-chunk duplicates removed after |
 | `active_chunk_capacity` | 4096 | Active-chunk scratch bound |
 | `maximum_chunk_count` | 4096 | Resident chunk limit |
 | `deferred_event_capacity` | 1024 | Accepted explosion queue bound |
@@ -660,10 +660,11 @@ Sources: [main.gd](../../godot/scripts/main.gd),
 | `TICK_INTERVAL_USEC` / `MAX_BACKLOG_TICKS` | 16667 / 3 |
 | Render publication choices/default | 30/45/60 Hz; default 45 |
 | `DEFAULT_RENDER_SNAPSHOT_INTERVAL_USEC` | 22222 |
-| `HARD_SURFACE_SNAPSHOT_INTERVAL_USEC` | 250000, desktop extraction sampling |
+| `HARD_SURFACE_SNAPSHOT_INTERVAL_USEC` | 250000, desktop extraction sampling; not applied under the workbench lock-step, which publishes every changed hard-surface revision |
 | `HARD_SURFACE_REBUILD_INTERVAL` | 0.10 s, controller sync cooldown |
-| `HARD_SURFACE_CHUNKS_PER_FRAME` | 32 queued chunks |
+| `HARD_SURFACE_CHUNKS_PER_FRAME` | 32 rebuilt chunks; unchanged queued chunks no longer count against it |
 | `HARD_SURFACE_FRAME_BUDGET_USEC` | 750, checked between chunk rebuilds |
+| `WORKBENCH_HARD_SURFACE_CHUNKS_PER_FRAME` / `..._FRAME_BUDGET_USEC` | 128 / 4000, workbench lock-step only, while Rapier is blocked on the current terrain |
 | `MAX_PENDING_RENDER_PATCHES` | 256 before full-refresh recovery |
 | Pending render-byte recovery threshold | Greater than 2,097,152 bytes |
 | `RENDER_PATCH_METADATA_STRIDE` | 6 integers |
@@ -720,9 +721,11 @@ Current native `set_simulation_region` rejects nonpositive sizes and inclusive
 endpoint overflow. Null selects all cores; finite bounds normalize to intersecting
 cores. Same-coverage requests are equivalent for activity. Region transitions
 reuse existing resident metadata passes, and retained excluded activity still
-counts toward active-chunk capacity. Candidate-core capacity is checked before
-deduplication; a re-entry wake may explicitly fail under a small construction
-budget. Failed regions cannot be retried by reducing the window. See the
+counts toward active-chunk capacity. Candidate-core capacity counts distinct
+cores within each chunk (since the 2026-11-06 #406
+[stress-canvas correction](../audits/2026-11-06-stress-canvas.md); several active
+blocks of one core previously counted separately); a re-entry wake may still
+explicitly fail under a small construction budget. Failed regions cannot be retried by reducing the window. See the
 [interest contract](../systems/world-storage-and-interest-region.md).
 
 ## Which settings belong only to physics experiments?
@@ -1244,7 +1247,7 @@ these declared logical charges.
 
 ## Workbench pressure-column scratch
 
-`WorldConfig::workbench_parallel_pressure_heads` defaults to false. The opt-in workbench reference PressureFlow route reserves at most `maximum_chunk_count` head-column tasks when a native pool is available. Each task includes a private failure category/flag and a fixed **192-byte** diagnostic buffer; overlong failure text ends with an explicit truncation marker. This adds bounded preallocated task storage, not a new per-cell object, runtime tuning control or healthy tick allocation. Capture performs at most the fixed-buffer scan; exception reconstruction happens on the serialized owner after workers join. The private `native/src/world_pressure_column_failure.inc` value and `World::PressureState::HeadColumnTask` own these limits. Cached P1 wake summaries retain serial preparation. See [threading ownership](../architecture/simulation-tick-and-threading.md#desktop-development-workbench-on-394) and the [resulting-source ABI qualification](../audits/2026-11-04-workbench394-ready-validation.md).
+`WorldConfig::workbench_parallel_pressure_heads` defaults to false. When a native pool is available, the opt-in workbench PressureFlow route reserves at most `maximum_chunk_count` head-column tasks. It covers every variant: reference, cached and cached_dormant. Since the 2026-11-06 #406 branch change, the same route also reserves `maximum_chunk_count` × blocks-per-axis row sub-band tasks and one deferred wake record per activity block. It also reserves `maximum_chunk_count` gas chunk tasks and a one-bit-per-cell seed-candidate bitmap per task (2 KiB per 128-cell chunk) for the pooled gas seed pre-pass and label pass ([evidence](../audits/2026-11-06-pf-ballistic-tick-cost.md)). Each cached index also preallocates one row-dirty record per indexed chunk and a one-bit-per-cell certificate bitmap at construction ([evidence](../audits/2026-11-06-workbench-pf-tick-cost.md)). Each task includes a private failure category/flag and a fixed **192-byte** diagnostic buffer; overlong failure text ends with an explicit truncation marker. This adds bounded preallocated task storage, not a new per-cell object, runtime tuning control or healthy tick allocation. Capture performs at most the fixed-buffer scan; exception reconstruction happens on the serialized owner after workers join. The private `native/src/world_pressure_column_failure.inc` value, `World::PressureState::HeadColumnTask` and `HeadRowTask` own these limits. Row sub-bands run on the pool only without settled discovery and with word-aligned block rows; otherwise the same tasks run serially. The workbench construction option `workbench_fine_cores` (boolean, workbench only, default off) sets `scheduling_core_size` to 32. It raises `active_core_capacity` to cover every halo core. A later build without the option restores the default 64. See [threading ownership](../architecture/simulation-tick-and-threading.md#desktop-development-workbench-on-394) and the [resulting-source ABI qualification](../audits/2026-11-04-workbench394-ready-validation.md).
 
 ## Desktop workbench message bounds
 

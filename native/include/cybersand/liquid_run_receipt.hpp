@@ -178,10 +178,13 @@ inline void cores(encoding::Writer& out, const std::optional<SimulationCoreRange
     out.integer(value->max_x); out.integer(value->max_y);
 }
 inline void quantity_facts(encoding::Writer& out, const QuantityLedgerSnapshot& value) {
-    if (value.schema_version != kQuantityLedgerSchemaVersion)
+    if (value.schema_version != kQuantityLedgerSchemaVersion &&
+        value.schema_version != kQuantityLedgerBallisticSchemaVersion)
         throw std::invalid_argument("unsupported native quantity accounting schema");
     out.integer(value.schema_version); out.integer(value.mass_bits);
     out.integer(value.baseline_water); out.integer(value.water_visible); out.integer(value.water_overfill);
+    // BW-001 schema 2 only: exact in-flight parcel quantity. Schema 1 bytes are unchanged.
+    if (value.schema_version == kQuantityLedgerBallisticSchemaVersion) out.integer(value.water_ballistic);
     const auto flow = [&](const WaterQuantityFlow& item) {
         out.integer(item.produced); out.integer(item.consumed);
     };
@@ -253,6 +256,13 @@ inline void native_facts(encoding::Writer& out, const NativeFacts& facts) {
         boolean(out, v.effective_pressure->gas_enabled); out.integer(v.effective_pressure->atmospheric_head_rows);
     }
     quantity_facts(out, v.quantity);
+    // BW-001 / IN-B1 experimental execution extensions, present only when enabled
+    // (every Current receipt keeps its exact bytes).
+    if (c.ballistic_water.enabled) {
+        out.text("cybersand-ballistic-water-receipt-v1");
+        out.digest(ballistic_water_identity(c.ballistic_water));
+    }
+    if (c.inertial_signed_vertical) out.text("cybersand-inertial-b1-signed-vertical-receipt-v1");
 }
 inline void normalization(encoding::Writer& out, const std::optional<normalization::Receipt>& value,
                           const NativeFacts& facts, const SetupDescriptor& setup) {

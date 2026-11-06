@@ -45,6 +45,8 @@ var _zoom := 1
 var _last_status_ms := -1000
 var _runtime_label := ""
 var _processor_label := ""
+# WCX/BW-001 experimental Water spray controls (separate owner script).
+var water_spray := preload("res://scripts/workbench_water_spray_panel.gd").new()
 
 func _row(parent: Control) -> HFlowContainer:
 	var row := HFlowContainer.new()
@@ -154,6 +156,7 @@ func setup(controller: Control, recovery: Dictionary = {}) -> void:
 		fire_enabled = enabled
 		if not applied.is_empty(): applied.fire = enabled)
 	row.add_child(_fire)
+	water_spray.build(host,self,_row,entered_position)
 	add_child(_details)
 	_details.visibility_changed.connect(_details_visibility_changed)
 	_details.hide()
@@ -600,6 +603,13 @@ func save_setup() -> bool:
 func load_setup() -> bool:
 	if not host.simulation_worker.has_failed() and not _editable(): return false
 	var result := Setup.read_named(_name.text)
+	# Until the owner saves their own file of the name, "my-canvas" opens the
+	# built-in water evaluation start, "bench-canvas" the whole-engine
+	# benchmark and "stress-canvas" the heavy-activity stress start. A saved
+	# file of the name always wins.
+	if _name.text in Setup.BUILTIN_LABELS and not FileAccess.file_exists(Setup._path(_name.text)):
+		if _liquids == null or _liquids.bridge == null: return refuse("Native policy interface unavailable.")
+		result = {"setup":Setup.builtin(_name.text,_liquids.bridge.default_liquid_policy())}
 	if result.has("error"): return refuse(result.error)
 	if host.simulation_worker.has_failed(): return host.workbench_restart(result.setup)
 	return apply(result.setup)
@@ -635,11 +645,17 @@ func paint(pos: Vector2i, material: int) -> bool:
 	if material not in Setup.MATERIALS or not Rect2i(Vector2i.ZERO,Setup.extent_of(applied)).has_point(pos): return false
 	var stamp := [pos.x,pos.y,int(applied.brush),material]
 	var new_stamp: bool = applied.edits.is_empty() or applied.edits.back() != stamp
-	if new_stamp and applied.edits.size() >= Setup.MAX_STAMPS: return refuse("Starting paint capacity exhausted.")
+	if new_stamp and applied.edits.size() >= Setup.MAX_STAMPS:
+		# Compact the recorded history into the same cells' merged rectangles.
+		var compacted := Setup.compact_edits(applied)
+		if compacted.has("error"): return refuse(compacted.error)
+		if compacted.edits.size() >= Setup.MAX_STAMPS:
+			return refuse("Starting terrain is too detailed to record more paint (%d rectangles)." % Setup.MAX_RUNS)
+		applied.edits = compacted.edits
 	# The usual stroke path costs one record. Check coalesced capacity only when
 	# the maximum possible row count would exceed the reconstruction budget.
 	var runs := 2*int(applied.brush)+1
-	for old: Array in applied.edits: runs += 2*int(old[2])+1
+	for old: Array in applied.edits: runs += Setup.stamp_rows(old)
 	if new_stamp and runs > Setup.MAX_RUNS:
 		applied.edits.append(stamp)
 		var recipe := Setup.rectangles(applied)
@@ -817,6 +833,7 @@ func _process(_delta: float) -> void:
 	_status.text = "%s · cell %s · %s · %s   |   source %d inserted / %d blocked" % [
 		state,cursor,str(applied.get("extent","")),reason,int(source.get("inserted",0)),int(source.get("blocked",0))]
 	_status.text += " · granular %s · active Water %s" % [gcr.get("response","pending"),_water_identity(context)]
+	water_spray.refresh(context)
 	if _details.visible:
 		var selected := body_state(selected_id())
 		var policy: Dictionary = context.get("liquid_solver_policy",{})

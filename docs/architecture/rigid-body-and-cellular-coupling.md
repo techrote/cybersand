@@ -117,7 +117,12 @@ Hard-terrain extraction creates 64×64 packets: 256 units for the 1024² demo.
 The consumer checks a 32-chunk/750-microsecond soft rebuild budget between units.
 The preceding native `get_hard_surface_chunk_rectangles` extraction is outside
 that budget, and one indivisible changed chunk may exceed it. This is bounded
-consumer granularity, not an end-to-end frame-time guarantee. Source:
+consumer granularity, not an end-to-end frame-time guarantee. On the #406 branch,
+the extraction reads a one-bit hard-surface mask straight from stored cells
+(`World::copy_hard_surface_bits`). It rebuilds only the 64×64 packets whose mask
+changed since the previous revision, and reuses the others. The packet is
+byte-identical to a full rebuild from the display projection
+([evidence](../audits/2026-11-06-pf-ballistic-tick-cost.md)). Source:
 [native extraction](../../godot/native_extension/cyber_native_cell_world.cpp),
 [Rapier `process_hard_surface_collider_budget`](../../godot/scripts/rapier_physics_bridge.gd).
 

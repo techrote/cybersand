@@ -340,6 +340,11 @@ Dictionary CyberNativeCellWorld::workbench_body_result(std::size_t id) const {
         const auto combined=legacy32+sampled_vec(event.x,event.y)+sampled_vec(passive.impulse.x,passive.impulse.y);
         impulse={combined.x,combined.y};
     }
+    // WCX/BW-001 droplets that struck this body deliver their booked momentum.
+    for (int i=owner.first; i<owner.first+owner.count; ++i) {
+        const auto droplet=spray_droplet_impulse(static_cast<std::uint16_t>(i));
+        impulse=impulse+Vec{droplet.x,droplet.y};
+    }
     const double torque=legacy_moment*legacy_scale+event_torque+passive.torque;
     if (!std::isfinite(impulse.x) || !std::isfinite(impulse.y) || !std::isfinite(torque)) return {};
     Dictionary row;
