@@ -144,6 +144,50 @@ void run(int variant) {
     require(unknown > 0 && live_gas > 0 && wakes > 0, "fixture must exercise lid repair, sealed gas and pressure wake");
 }
 
+// Regression for the budget's read-only preflight / writing-column boundary.
+// A dirty foreign liquid in a resident chunk with no Water below it must not
+// propagate a false dependency across a missing vertical chunk into a clean
+// supported Water run. The preflight and committed write footprint must agree.
+void gap_preflight_commit_bound() {
+    auto words = LiquidSolverPolicy::default_request();
+    words[21] = 3; words[22] = 1; // pressure cached
+    const auto count_at = words.size() - 2U;
+    words[count_at] = 1;
+    words.insert(words.begin() + static_cast<std::ptrdiff_t>(count_at) + 1,
+                 {3, 1, 2, 0, 64}); // gas off: no topology-wide invalidation
+    const auto policy = LiquidSolverPolicy::decode(std::span<const std::int32_t>(words));
+    require(policy.accepted(), "gap-budget accepted policy");
+    WorldConfig cfg;
+    cfg.liquid_solver_policy = *policy.policy;
+    cfg.chunk_size = cfg.scheduling_core_size = cfg.activity_block_size = 8;
+    cfg.maximum_chunk_count = cfg.active_chunk_capacity = cfg.active_core_capacity = 16;
+    cfg.worker_threads = 1;
+    World w(cfg);
+    w.reserve_region({0, 0, 8, 8});
+    w.reserve_region({0, 16, 8, 8});
+    for (int y = 16; y < 20; ++y) {
+        w.set(2, y, Material::Wall);
+        w.set(4, y, Material::Wall);
+    }
+    w.set(3, 19, Material::Wall);
+    (void)w.set_cell_state(3, 17, Material::Water, 255, 0);
+    (void)w.set_cell_state(3, 18, Material::Water, 255, 0);
+    require(w.chunk_count() == 2U, "nonresident intermediate Y chunk");
+    (void)w.tick(); // warm index; retire initial full-height dirtiness
+    const auto before = w.pressure_optimization_snapshot().counters;
+    w.set(3, 7, Material::Oil); // final cell of upper chunk: no Water run there
+    (void)w.tick();
+    const auto after = w.pressure_optimization_snapshot().counters;
+    require(after.reference_fallbacks == before.reference_fallbacks,
+            "gap-budget control remains in admitted cached head path");
+    require(after.head_preflight_probes > before.head_preflight_probes,
+            "gap-budget control actually traversed selective preflight");
+    const auto budgeted = after.head_candidate_base_cells - before.head_candidate_base_cells;
+    const auto committed = after.base_cells_written - before.base_cells_written;
+    require(committed <= budgeted,
+            "gap preflight must conservatively bound committed base writes");
+}
+
 void compare_run_repair_arms(const World& reference, const World& candidate,
                              const World& forced, const TickStats& a,
                              const TickStats& b, const TickStats& c) {
@@ -255,6 +299,7 @@ void run_run_repair_differential(int variant, unsigned workers, bool parallel_he
 // Part of the native `tests` binary (Makefile TEST_SOURCES), so the normal,
 // ASan/UBSan and TSan families all run the parallel head path.
 void test_workbench_pressure_heads_parallel_exact() {
+    gap_preflight_commit_bound();
     for (const int variant : {0, 1, 2}) run(variant);
     for (const int variant : {1, 2})
         for (const auto workers : {1U,4U,6U})
