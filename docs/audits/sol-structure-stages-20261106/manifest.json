@@ -1,0 +1,71 @@
+{
+  "date": "2026-11-06",
+  "branch": "codex/sol-structure-cut-20261106",
+  "code_checkpoint": "1733f75011087a78c2f62d517480d833c2a26887",
+  "tree": "7b96105234c683fb36a940e5a140f705ed395e52",
+  "parent_checkpoint": "4ee0e59181f622f875bef80e4b20ae4f0bde60c7",
+  "dependent_base": "e4c2649e82d943554f4dc6a0634336770cda08f6",
+  "physics_delta": "None this campaign: only synchronous no-op observation seam in production session; native/Rapier bridge/planner unchanged.",
+  "raw_delta": {
+    "path": "C:\\Users\\_\\.codex\\worktrees\\sol-structure-cut-20261106\\khybersand\\build\\sol-structure-cut\\stage-dependent.patch",
+    "sha256": "f4228c76f054bc68aa8b35e3e561e2203b43325dd2362199f20c414087bf1ef7"
+  },
+  "reduced_artifact": {
+    "path": "C:\\Users\\_\\.codex\\worktrees\\sol-structure-cut-20261106\\khybersand\\build\\sol-structure-cut\\stages-complete-reduced-001.json",
+    "sha256": "1df3a54031191826e04e5c314e3d9d9c4f0f658a207be69ee7df01e55454b16c",
+    "bytes": 36801751
+  },
+  "command_scope": "Both physical runners retain every command/exit/log/hash/source/runtime/dependency. Reducer/manual inspections additionally remain in tool transcript; no fabricated raw log for an unsaved inspection.",
+  "custody": "Original raw artifacts unchanged; published text copies use Git LF normalization with separate git_lf_sha256 hashes. Session key is run/host/coordinate; body RID/token are process/session local, not globally unique authority.",
+  "physical_requalification": "Native inputs unchanged and existing exact build receipts verified by both runners. Actual Linux/Windows1/4worker execution. No new native/compiler/sanitizer matrix rerun for a GDScript no-op observer; prior native scopes retained.",
+  "scope": "24fresh episodes/11520steps; ordinary/Sand/backend attribution, not a matched counterfactual, material weight calibration, closed total-energy ledger, originalSOLclearance, or CPUgate.",
+  "known_residual": "First Windows treeOff sample ordinary receiptJ(.04,.28), applicationcount1 but immediate measured momentumzero: model residual.2828427135. Cause unestablished. Excludingstep0 maxlinear residual.00139510754. Do not call every residual float32rounding or claim exact nativewrench closure.",
+  "independent_review": "Read-only source and accounting reviews GO for scoped diagnosis. Separate independent adversarial review remains required before owner promotion.",
+  "resource": {
+    "structure_bytes": 3838567411,
+    "free": 19520700416
+  },
+  "publication": "Owned branch only; any PR must remain Draft against393. Earlier automatic Draftcreation rejection retained; no publication-policy bypass or upstream write.",
+  "inventory": {
+    "comparison.json": {
+      "raw_copy_sha256": "f0cd3b161225093ba368190e08d86ffe52c8c3c06fc9a4a7408882edc0a72e57",
+      "git_lf_sha256": "f0cd3b161225093ba368190e08d86ffe52c8c3c06fc9a4a7408882edc0a72e57",
+      "bytes": 181271
+    },
+    "fixtures.json": {
+      "raw_copy_sha256": "a2a4871ff0db4badd71c8b6239a85ae03c997281bb7b819dbef8517280e97795",
+      "git_lf_sha256": "a2a4871ff0db4badd71c8b6239a85ae03c997281bb7b819dbef8517280e97795",
+      "bytes": 275023
+    },
+    "stage-cycle-witness.json": {
+      "raw_copy_sha256": "74a7cd1642a6fdc5fa9f2819f30140818b03ac3f3fcd25e9aff8f64a01979253",
+      "git_lf_sha256": "20b84bd041ec244c36341e08fe65e48f3d2183fd8f367b529e587caf278100fa",
+      "bytes": 3844
+    },
+    "stage-reducer-crosshost.json": {
+      "raw_copy_sha256": "b84c1ad448b0732b8cce8f06ddd29bae47e829f7fe938e28283788658f12d2e9",
+      "git_lf_sha256": "20c222ee358fff5906b1c5db609fe22e325c6135b774f8013a9a1f911cc16473",
+      "bytes": 668
+    },
+    "stage-reduction-first-failure.json": {
+      "raw_copy_sha256": "79ded19451f37e2c7f2c44b2adee2b9825b9fcbd41aa0f6aaaa35f1b9b06327e",
+      "git_lf_sha256": "1bf86846bf6f3526086e1fd33f0d3603f5ea203a4de65ac2af50afd8e9e02c05",
+      "bytes": 2360
+    },
+    "step-ledgers.json": {
+      "raw_copy_sha256": "0981054a9e62b5f3da01dd6cb36b6b974d2413aea114355ea49e51900757ec3c",
+      "git_lf_sha256": "0981054a9e62b5f3da01dd6cb36b6b974d2413aea114355ea49e51900757ec3c",
+      "bytes": 10413205
+    },
+    "stages-dry-001/receipt.json": {
+      "raw_copy_sha256": "6edcf0d8dc4296b16e032db102fbf8ca8d2603c5d57180676fde79018382b168",
+      "git_lf_sha256": "6edcf0d8dc4296b16e032db102fbf8ca8d2603c5d57180676fde79018382b168",
+      "bytes": 347695
+    },
+    "stages-packed-001/receipt.json": {
+      "raw_copy_sha256": "c89e2eaac14c0f3fa4a204da458bd4d2fc151d3351ee6f8fd4959e65237d327e",
+      "git_lf_sha256": "c89e2eaac14c0f3fa4a204da458bd4d2fc151d3351ee6f8fd4959e65237d327e",
+      "bytes": 359929
+    }
+  }
+}

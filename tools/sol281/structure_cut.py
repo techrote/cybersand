@@ -108,6 +108,8 @@ def hosts(args):
         shutil.copyfile(ROOT/native['output'],project/'addons/cybersand_native/bin'/BINARIES[platform])
         assert sha(ROOT/rapier['artifact'])==rapier['sha256']
         for name,digest in rapier['source_inputs'].items():assert lfsha(ROOT/name)==digest,name
+        if args.suite=='mass-init':
+            fixture=ROOT/'native/tests/fixtures/sol_mass_initialization_001.json';dst=project/'tests/fixtures'/fixture.name;dst.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(fixture,dst)
         inventory={p.relative_to(project).as_posix():sha(p) for p in project.rglob('*') if p.is_file()}
         state=dict(commands=rows,effective_inputs=inventory,omitted_nonhost_binaries=omitted,resource_before=dict(bytes=used,free=free),compiled_native=native,rapier=rapier);receipt['hosts'][platform]=state;save()
         def run(name,script=None,extra=None,env=None,version=False):
@@ -141,7 +143,12 @@ def hosts(args):
         assert engine==engine_pin['executables'][executable_name]
         state['engine']=dict(sha256=engine,launcher_sha256=launcher,version=engine_pin['version'],pin=engine_pin,validation_sha256=sha(validation_path),cohort_sha256=sha(cohort_path));save()
         imported=run('import')
-        if imported['clean']:
+        if imported['clean'] and args.suite=='mass-init':
+            output=host/'mass-init.json';row=run('mass-init','test_sol_mass_initialization',env=dict(SOL_OUTPUT=str(output) if platform=='windows' else wsl(output)));row['report_complete']=False
+            if output.exists():
+                data=json.loads(output.read_text(encoding='utf-8'));row['report']=dict(path=str(output.relative_to(ROOT)),sha256=sha(output));row['report_complete']=not data['failures'] and len(data['cases'])==12
+            save()
+        if imported['clean'] and args.suite!='mass-init':
             for worker in map(int,args.workers.split(',')):
                 assert worker in [1,4]
                 if args.suite=='original':
@@ -181,5 +188,5 @@ def hosts(args):
 
 if __name__=='__main__':
     parser=argparse.ArgumentParser(__doc__);parser.add_argument('action',choices=['build','hosts']);parser.add_argument('--run',required=True)
-    parser.add_argument('--suite',choices=['original','smoke','dry','packed'],default='original');parser.add_argument('--platforms',default='windows,linux');parser.add_argument('--workers',default='1,4');parser.add_argument('--stage-trace',action='store_true');args=parser.parse_args()
+    parser.add_argument('--suite',choices=['original','smoke','dry','packed','mass-init'],default='original');parser.add_argument('--platforms',default='windows,linux');parser.add_argument('--workers',default='1,4');parser.add_argument('--stage-trace',action='store_true');args=parser.parse_args()
     assert Path(args.run).name==args.run and args.run not in ['.','..'];raise SystemExit(build(args.run) if args.action=='build' else hosts(args))

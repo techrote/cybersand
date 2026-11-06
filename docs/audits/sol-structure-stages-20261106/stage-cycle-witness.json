@@ -1,0 +1,158 @@
+[
+  {
+    "step": 357,
+    "states": [
+      {
+        "y": 48.102745056152344,
+        "vy": 1.5235474109649658,
+        "omega": 0.0002208720543421805,
+        "sleep": false
+      },
+      {
+        "y": 48.097869873046875,
+        "vy": -0.008406594395637512,
+        "omega": 0.0006435601972043514,
+        "sleep": false
+      },
+      {
+        "y": 48.097869873046875,
+        "vy": -0.008209945634007454,
+        "omega": 0.0002231202379334718,
+        "sleep": false
+      },
+      {
+        "y": 48.11372756958008,
+        "vy": 1.5235683917999268,
+        "omega": 0.00021931871015112847,
+        "sleep": false
+      }
+    ],
+    "ordinary": {
+      "accepted": true,
+      "contacts": 79,
+      "correction": [
+        0.0,
+        -0.004876502323895693
+      ],
+      "correction_applications": 1,
+      "displaced": 0,
+      "impulse": [
+        -0.13670121133327484,
+        -2.9927473068237305
+      ],
+      "impulse_applications": 2,
+      "outcome": "Accepted",
+      "records": 5,
+      "sample_serial": 357,
+      "stale_records": 0,
+      "unresolved": 24
+    },
+    "Sand_outcome": "Accepted",
+    "Sand_impulses": 8,
+    "raw_sha256": "861bff7c538b9d94941648babf67ff4687cbf27ae57745fc4c11c6d483eae803"
+  },
+  {
+    "step": 358,
+    "states": [
+      {
+        "y": 48.11372756958008,
+        "vy": 1.5235683917999268,
+        "omega": 0.00021931871015112847,
+        "sleep": false
+      },
+      {
+        "y": 48.108848571777344,
+        "vy": -0.008407142013311386,
+        "omega": 0.000641691847704351,
+        "sleep": false
+      },
+      {
+        "y": 48.108848571777344,
+        "vy": -0.008261277340352535,
+        "omega": 0.00021452311193570495,
+        "sleep": false
+      },
+      {
+        "y": 48.12470245361328,
+        "vy": 1.52351713180542,
+        "omega": 0.00021086806373205036,
+        "sleep": false
+      }
+    ],
+    "ordinary": {
+      "accepted": true,
+      "contacts": 79,
+      "correction": [
+        0.0,
+        -0.0048772236332297325
+      ],
+      "correction_applications": 1,
+      "displaced": 1,
+      "impulse": [
+        -0.1346275508403778,
+        -2.9929423332214355
+      ],
+      "impulse_applications": 2,
+      "outcome": "Accepted",
+      "records": 5,
+      "sample_serial": 358,
+      "stale_records": 0,
+      "unresolved": 23
+    },
+    "Sand_outcome": "Accepted",
+    "Sand_impulses": 6,
+    "raw_sha256": "861bff7c538b9d94941648babf67ff4687cbf27ae57745fc4c11c6d483eae803"
+  },
+  {
+    "step": 359,
+    "states": [
+      {
+        "y": 48.12470245361328,
+        "vy": 1.52351713180542,
+        "omega": 0.00021086806373205036,
+        "sleep": false
+      },
+      {
+        "y": 48.11982727050781,
+        "vy": -0.008405826985836029,
+        "omega": 0.0006339946994557977,
+        "sleep": false
+      },
+      {
+        "y": 48.11982727050781,
+        "vy": -0.008225717581808567,
+        "omega": 0.00021126685896888375,
+        "sleep": false
+      },
+      {
+        "y": 48.135684967041016,
+        "vy": 1.5235525369644165,
+        "omega": 0.0002076672826660797,
+        "sleep": false
+      }
+    ],
+    "ordinary": {
+      "accepted": true,
+      "contacts": 78,
+      "correction": [
+        0.0,
+        -0.004875526297837496
+      ],
+      "correction_applications": 1,
+      "displaced": 0,
+      "impulse": [
+        -0.1395619958639145,
+        -2.99247407913208
+      ],
+      "impulse_applications": 2,
+      "outcome": "Accepted",
+      "records": 5,
+      "sample_serial": 359,
+      "stale_records": 0,
+      "unresolved": 23
+    },
+    "Sand_outcome": "Accepted",
+    "Sand_impulses": 8,
+    "raw_sha256": "861bff7c538b9d94941648babf67ff4687cbf27ae57745fc4c11c6d483eae803"
+  }
+]
