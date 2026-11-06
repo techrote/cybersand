@@ -2132,6 +2132,8 @@ func _publish_snapshot(
 		return
 	var copy_start_usec: int = Time.get_ticks_usec()
 	var now_usec: int = Time.get_ticks_usec()
+	var render_exchange_time_ms: float = 0.0
+	var hard_surface_packet_time_ms: float = 0.0
 	var render_serial_before: int = _pending_render_snapshot_serial
 	var render_generation_advanced: bool = false
 	var acknowledged_render_serial: int = 0
@@ -2158,6 +2160,7 @@ func _publish_snapshot(
 			and now_usec - _last_render_snapshot_usec >= render_snapshot_interval_usec
 		)
 	):
+		var render_exchange_start_usec: int = Time.get_ticks_usec()
 		if _world.has_method(&"take_render_snapshot"):
 			var render_packet: Dictionary = _take_native_render_snapshot(
 				force_render_full_refresh
@@ -2202,6 +2205,9 @@ func _publish_snapshot(
 			_pending_render_worker_step_time_ms = worker_step_time_ms
 			_pending_render_worker_overruns = _worker_overruns
 			render_generation_advanced = true
+		render_exchange_time_ms = float(
+			Time.get_ticks_usec() - render_exchange_start_usec
+		) / 1000.0
 	var current_hard_surface_revision: int = int(_world.hard_surface_revision)
 	# The workbench lock-step steps Rapier only against the current revision,
 	# so a throttled packet would cap the whole session at the throttle rate
@@ -2216,6 +2222,7 @@ func _publish_snapshot(
 			and (workbench_lockstep
 				or now_usec - _last_hard_surface_snapshot_usec >= HARD_SURFACE_SNAPSHOT_INTERVAL_USEC))
 	):
+		var hard_surface_start_usec: int = Time.get_ticks_usec()
 		# A new physical owner/reset cannot acknowledge a retained terrain
 		# packet from its predecessor, even inside the ordinary edit throttle.
 		if _world.has_method(&"get_hard_surface_chunk_rectangles"):
@@ -2231,7 +2238,11 @@ func _publish_snapshot(
 		_snapshot_hard_surface_revision = current_hard_surface_revision
 		_snapshot_hard_surface_epoch = rigid_body_epoch
 		_last_hard_surface_snapshot_usec = now_usec
+		hard_surface_packet_time_ms = float(
+			Time.get_ticks_usec() - hard_surface_start_usec
+		) / 1000.0
 	var copy_time_ms: float = float(Time.get_ticks_usec() - copy_start_usec) / 1000.0
+	var publication_start_usec: int = Time.get_ticks_usec()
 
 	var snapshot: CyberSimulationSnapshot = CyberSimulationSnapshot.new()
 	snapshot.actor_prototypes = _actor_session.snapshot()
@@ -2325,6 +2336,8 @@ func _publish_snapshot(
 	snapshot.simulation_time_ms = _world.simulation_time_ms
 	snapshot.worker_step_time_ms = worker_step_time_ms
 	snapshot.snapshot_copy_time_ms = copy_time_ms
+	snapshot.render_exchange_time_ms = render_exchange_time_ms
+	snapshot.hard_surface_packet_time_ms = hard_surface_packet_time_ms
 	snapshot.worker_overruns = _worker_overruns
 	if _world.has_method(&"get_tick_failure_count"):
 		snapshot.tick_failure_count = int(_world.get_tick_failure_count())
@@ -2433,6 +2446,9 @@ func _publish_snapshot(
 			_pending_render_context["workbench_display"] = _workbench_display
 		_freeze_capture(_pending_render_context)
 	snapshot.render_context = _pending_render_context
+	snapshot.snapshot_publication_time_ms = float(
+		Time.get_ticks_usec() - publication_start_usec
+	) / 1000.0
 
 	_mutex.lock()
 	_published_snapshot = snapshot
