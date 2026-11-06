@@ -20,6 +20,13 @@ function validate(p){
   }
   for(const v of f.variants)for(const [from,to] of Object.entries(v.swap))need(material.has(+from)&&material.has(+to),'variant '+v.id);
  }
+ need(Array.isArray(p.combined_scene.terrain_rectangles)&&p.combined_scene.terrain_rectangles.length>0,'terrain field');
+ for(const a of p.combined_scene.terrain_rectangles){
+  need(Array.isArray(a)&&a.length===5&&a.every(Number.isInteger),'terrain shape');
+  const [x,y,w,h,id]=a,m=material.get(id);
+  need(x>=0&&y>=0&&w>0&&h>0&&x+w<=p.combined_scene.size[0]&&y+h<=p.combined_scene.size[1],'terrain bounds');
+  need(!!m&&!m.movable&&m.kernel===0,'active terrain material');
+ }
  for(const pl of p.combined_scene.placements){
   const f=feature.get(pl.feature_id);need(!!f,'unknown scene module');
   need(pl.origin[1]+f.size[1]===p.combined_scene.baseline_y,'baseline');
@@ -58,13 +65,17 @@ if(process.argv.includes('--negative')){
   p=>p.combined_scene.placements[6].variant=null,
   p=>p.combined_scene.placements[7].variant=null,
   p=>p.combined_scene.placements[0].origin[1]=0,
-  p=>p.combined_scene.placements[1].feature_id='unknown'
+  p=>p.combined_scene.placements[1].feature_id='unknown',
+  p=>p.combined_scene.terrain_rectangles[0][0]=-1,
+  p=>p.combined_scene.terrain_rectangles[0][2]=0,
+  p=>p.combined_scene.terrain_rectangles[0][4]=16,
+  p=>p.combined_scene.terrain_rectangles[0][4]=250
  ];
  for(const change of edits){
   const cp=structuredClone(pack);change(cp);
   try{validate(cp)}catch{rejected++}
  }
  need(rejected===edits.length,'negative cases rejected '+rejected+'/'+edits.length);
- console.log('10/10 deliberately-invalid mutations rejected');
+ console.log('14/14 deliberately-invalid mutations rejected');
 }
 console.log('PASS',pack.features.length,'features,',pack.features.reduce((n,f)=>n+f.rectangles.length,0),'rectangles,',pack.palette.length,'source IDs, dry scene fixed');
