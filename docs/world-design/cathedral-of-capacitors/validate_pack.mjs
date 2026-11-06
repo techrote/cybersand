@@ -18,6 +18,18 @@ const scene=p.combined_scene||{};check(scene.placements?.length===p.features?.le
 let rectCount=0;
 for(const at of scene.placements||[]){const f=fmap.get(at.feature_id);check(!!f,"unknown scene feature "+at.feature_id);if(!f)continue;const[x,y]=at.origin;check(x>=0&&y>=0&&x+f.size[0]<=sw&&y+f.size[1]<=sh,"scene extent "+f.id);check(y+f.size[1]===scene.baseline_y,"scene ground mismatch "+f.id);const va=at.variant?f.variants.find(v=>v.id===at.variant):null;check(!at.variant||!!va,"unknown scene variant "+f.id);for(const v of f.rectangles){const id=Number(va?.swap?.[v[4]]??v[4]),m=map.get(id);check(!!m&&!m.movable&&m.kernel===0,"unsafe combined scene "+f.id+" id:"+id);rectCount++;}}
 check(rectCount>=150,"insufficient scene composition");
+for(const layerName of ["backdrop_rectangles","foreground_rectangles"]){
+ const layer=scene[layerName];check(Array.isArray(layer),"missing scene layer "+layerName);
+ if(!Array.isArray(layer))continue;
+ check(layer.length>10,"insufficient scene layer "+layerName);
+ for(const [i,r] of layer.entries()){
+  const shape=Array.isArray(r)&&r.length===5&&r.every(Number.isInteger);
+  check(shape,"invalid art rectangle "+layerName+"#"+i);if(!shape)continue;
+  const [x,y,w,h,id]=r;
+  check(x>=0&&y>=0&&w>0&&h>0&&x+w<=sw&&y+h<=sh,"scene rectangle bounds "+layerName+"#"+i);
+  const m=map.get(id);check(!!m&&!m.movable&&m.kernel===0,"nonfixed scene material "+layerName+"#"+i);
+ }
+}
 return errors;
 };
 const pack=JSON.parse(fs.readFileSync(new URL('./pack.json',import.meta.url),'utf8'));
@@ -25,3 +37,9 @@ const cat=process.argv[2]?JSON.parse(fs.readFileSync(process.argv[2],'utf8')):nu
 const en=process.argv[3]?fs.readFileSync(process.argv[3],'utf8'):null;
 const errors=validatePack(pack,cat,en);
 if(errors.length){console.error(errors.join('\n'));process.exitCode=1;}else console.log('PASS: '+pack.features.length+' features, '+pack.palette.length+' source-pinned palette materials, '+pack.features.reduce((a,f)=>a+f.rectangles.length,0)+' rectangles; dry combined scene');
+
+if(process.argv.includes("--negative")){
+ const defects=[p=>p.combined_scene.backdrop_rectangles[0][0]=-1,p=>p.combined_scene.backdrop_rectangles[0][2]=0,p=>p.combined_scene.backdrop_rectangles[0][3]=999,p=>p.combined_scene.backdrop_rectangles[0][4]=34,p=>p.combined_scene.foreground_rectangles[0][4]=3,p=>p.combined_scene.foreground_rectangles[0][4]=999,p=>p.combined_scene.foreground_rectangles[0][0]=1250,p=>p.combined_scene.foreground_rectangles[0]=[0,0,1,2],p=>p.combined_scene.foreground_rectangles=[]];
+ let refused=0;for(const breakOne of defects){const altered=JSON.parse(JSON.stringify(pack));breakOne(altered);if(validatePack(altered,cat,en).length)refused++}
+ if(refused!==defects.length){console.error("FAIL negatives "+refused+"/"+defects.length);process.exitCode=1}else console.log("PASS "+refused+"/"+defects.length+" negative scene mutations refused");
+}
