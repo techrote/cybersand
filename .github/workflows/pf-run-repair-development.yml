@@ -11,7 +11,7 @@ permissions:
 
 concurrency:
   group: pf-run-repair-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: ${{ github.event_name == 'push' }}
 
 jobs:
   source-package:
