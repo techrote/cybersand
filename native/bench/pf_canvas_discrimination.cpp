@@ -121,7 +121,7 @@ static std::unique_ptr<World> build(const Scene& scene, int variant, bool gas,
         for (std::int64_t y=r.y; y<r.y+r.h; ++y)
             for (std::int64_t x=r.x; x<r.x+r.w; ++x)
                 world->set(x,y,static_cast<Material>(r.material));
-    world->set_simulation_region({0,0,scene.width,scene.height});
+    world->set_simulation_region(RectI64{0,0,scene.width,scene.height});
     world->set_liquid_surface_adhesion_enabled(true);
     return world;
 }
