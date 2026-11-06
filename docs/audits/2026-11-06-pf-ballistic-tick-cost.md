@@ -349,6 +349,31 @@ The source edit is commit `a2373e12fb87d8d5b28efcc6037316fb6f605a14`, and the tr
 owner approved the rule, and the transition is proposed for issue 362 and PR
 406, pending independent review.
 
+## Runtime publication (request 4)
+
+The owner approved this on 2026-11-06. Request sequence 4 (`29310b35`) armed the
+unchanged branch-scoped publisher, from a source that includes the
+sealed-from-open gas rule, the spray re-send and paint compaction. Run
+[42271884078](https://github.com/techrote/cybersand/actions/runs/42271884078)
+(attempt 1, 18:34–18:51 UTC) passed every job:
+
+- the publisher guards;
+- admission;
+- the four native groups;
+- the Linux build and execution;
+- the Windows cross-build and Windows execution;
+- publication.
+
+Bot commit `d8c314d7` appended only the four runtime/manifest paths.
+
+| Runtime | SHA-256 | Bytes |
+|---|---|---|
+| `cybersand_native.windows.x86_64.dll` | `391e7387c3c02f1c46ab4f4b3116edebed2ec12802a1852da2ff871dfa1fceef` | 5,058,560 |
+| `libcybersand_native.linux.x86_64.so` | `f47c0d6313bd6aa79767d2683c9273172822e6a04220a7a609f4c6d85dfb96a4` | 4,503,256 |
+
+After the append, `check_repository.py` reports no errors locally. The full
+ready-head CI remains a separate gate.
+
 ## Remaining costs and next investigations
 
 1. **Gas BFS, about 2.4 ms serial.** This bounded atmosphere exploration
