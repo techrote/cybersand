@@ -123,8 +123,10 @@ pairs it with a main-side frame hold. Since the owner's opt-in decision
 (2026-11-06), `main.gd` does the same when launched with `--lockstep-coupling`
 on desktop: an ordinary physics frame is skipped (no Rapier step, no new
 publication) until the newest snapshot consumed main's last publication, and a
-hold over 500 ms runs one counted stale step. The default launch keeps the
-asynchronous pacing above. See
+hold over 500 ms runs one counted stale step. Where the worker reports its
+fence inactive (`lockstep_fence_active` false: labs, MicroScenarios, prepared
+liquid), main does not hold and counts an unfenced step. The default launch
+keeps the asynchronous pacing above. See
 [coupled desktop determinism](determinism-and-boundary-transfers.md#coupled-desktop-determinism--2026-11-06).
 
 ## Physical actor scheduling

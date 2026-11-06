@@ -257,10 +257,17 @@ failure and duplicate publications for the consumed-publication field.
 
 The opt-in desktop mode (amendment_002) adds two checks.
 `test_coupling_lockstep_desktop.gd` runs the real `main.tscn` worker and Rapier
-path. A default launch must leave lockstep and packing off. An opt-in launch
-must apply, at every Rapier step through play, pause and a world reset, the
-completion that consumed main's previous publication, with no counted stale
-step. Its packed rotations must equal double `atan2` of the basis. Run
+path. A default launch must leave lockstep and packing off. A child process
+launched with the real `--lockstep-coupling` argument must enable it. Through
+play, pause, a world reset and an articulated physical actor, every physics
+callback must publish at most one body sample. Every fenced Rapier step must
+apply the completion that consumed main's previous publication, and in steady
+play advance exactly one native tick, with no counted stale step. In the
+player-course MicroScenario and the Experiment Tower main must never hold while
+the worker reports its fence inactive, and a world reset out of the lab must
+restore the fence. A deliberately slow owner (600 ms per publication) must
+produce counted stale steps without freezing, and the fence must recover when
+the delay ends. Packed rotations must equal double `atan2` of the basis. Run
 `packed-001` with `--arms lockstep-packed --repeats 2 --ticks 1800`. Its
 reduction also validates `horizon-001` and requires repeat 0 of each host and
 worker count to equal that run's `lockstep-f64rot` arm. From amendment_002 on,

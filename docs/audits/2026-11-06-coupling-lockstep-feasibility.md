@@ -239,6 +239,33 @@ pre-release [`evidence-lockstep-opt-in-packed-001-20261106`](https://github.com/
 (tag target `e91325db`); a fresh download verified. Reducing it also needs
 `horizon-001` from the #464 evidence release.
 
+### PR #474 review repairs — 2026-11-06
+
+An independent review of head `289cf088` (GitHub review 5807447786) found two
+coupling-correctness defects in the opt-in mode. Both were real and are repaired.
+
+| Finding | Repair | Regression |
+|---|---|---|
+| P1: the physical-actor path published body states twice per Rapier step (`set_physical_usable_state` and `set_rigid_body_states` both incremented the counter), so a fenced owner could tick twice for one step | `set_physical_usable_state` still stores the sample coherently with its admitted frame but no longer counts as a publication; `set_rigid_body_states` is the single publication point | The desktop test fails if any physics callback publishes more than one sample, or if a steady fenced step advances more than one native tick. Re-adding the increment failed it (2 publications in one callback, actor and lab phases) |
+| P1: main held in modes where the worker was unfenced (labs, MicroScenarios, prepared liquid) | Each snapshot carries `lockstep_fence_active`; when it is false, main steps asynchronously and counts `main_unfenced_steps` instead of holding | Player-course MicroScenario with an articulated actor (60 unfenced steps), Experiment Tower, and a world reset out of the lab restoring the fence; main must never hold while the worker reports its fence inactive. Removing the bypass failed it: main held while unfenced, the unfenced worker advanced two native ticks for one Rapier step, and no unfenced step was counted |
+| P2: the test overrode the launch switch, accepted extra native ticks and did not cover actors, labs or the stale-step fallback | A child process is launched with the real `--lockstep-coupling`. The test adds per-callback publication and per-step tick accounting, an articulated actor, the lab phases, and a deliberately slow owner (600 ms per publication) | Slow owner: 3 counted stale steps and no freeze; after the delay is removed, fenced steps resume with no further timeout |
+
+`packed-001` was not re-run. Neither repair touches its path: the fixture never
+calls `set_physical_usable_state`, never enters a lab and does not use
+`main.gd`. Its identity stays bound to source `a7236701`.
+
+Regressions after the repairs (600 s bound each, same engines): the desktop test
+passed on Windows and WSL Linux (59 assertions, including the CLI child process).
+Windows and Linux passed `test_coupling_lockstep`, `test_coupling_lockstep_semantics`,
+`test_physics_async`, `test_physical_actor_integration` and
+`test_physical_usables_admission`. Windows also passed `test_rem002_body_granular`,
+`test_physical_actor_effect_admission`, `test_physical_usables_desktop`,
+`test_microscenario_controllers` and `test_play_life010_acrobat` (with the runner's
+source-revision and artifact-directory variables). PR #464's exact-head CI passed
+after it left Draft (67 checks). Full-game exactness
+is still not claimed: inputs, terrain installation and labs remain outside the
+fence.
+
 ## Results
 
 ### (a) Same-host repeatability

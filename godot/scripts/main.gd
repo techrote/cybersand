@@ -1544,10 +1544,12 @@ var lockstep_coupling_enabled: bool = false
 var _lockstep_published: int = 0
 var _lockstep_applied_serial: int = -1
 var _lockstep_applied_publication: int = -1
+var _lockstep_applied_tick: int = -1
 var _lockstep_hold_started_msec: int = -1
 var lockstep_main_held_frames: int = 0
 var lockstep_main_hold_timeouts: int = 0
 var lockstep_main_fenced_steps: int = 0
+var lockstep_main_unfenced_steps: int = 0
 
 var image: Image
 var texture: ImageTexture
@@ -1994,9 +1996,14 @@ func _physics_process(_delta: float) -> void:
 		if lockstep_coupling_enabled and shared_workbench == null:
 			# Peek (not consume) the newest completion; rendering still takes it in _process.
 			var fenced_snapshot: CyberSimulationSnapshot = simulation_worker.take_latest_snapshot(0)
-			if _lockstep_hold(fenced_snapshot):
+			if fenced_snapshot != null and not fenced_snapshot.lockstep_fence_active:
+				# The worker is not fenced here (lab, MicroScenario, prepared liquid):
+				# step asynchronously, as the default does, and count it.
+				_lockstep_hold_started_msec = -1
+				lockstep_main_unfenced_steps += 1
+			elif _lockstep_hold(fenced_snapshot):
 				return # Skip this physics frame: no step and no new publication.
-			if fenced_snapshot != null:
+			elif fenced_snapshot != null:
 				physics_snapshot = fenced_snapshot
 		apply_latest_rigid_body_results(physics_snapshot)
 		if physical_actor_session != null:
@@ -2860,6 +2867,7 @@ func _lockstep_hold(snapshot: CyberSimulationSnapshot) -> bool:
 		_lockstep_hold_started_msec = -1
 		_lockstep_applied_serial = snapshot.serial
 		_lockstep_applied_publication = snapshot.consumed_rigid_body_publication
+		_lockstep_applied_tick = snapshot.tick_index
 		lockstep_main_fenced_steps += 1
 		return false
 	var now_msec: int = Time.get_ticks_msec()
@@ -2876,6 +2884,7 @@ func _lockstep_hold(snapshot: CyberSimulationSnapshot) -> bool:
 func lockstep_coupling_status() -> Dictionary:
 	var status: Dictionary = {"enabled":lockstep_coupling_enabled,
 		"main_fenced_steps":lockstep_main_fenced_steps, "main_held_frames":lockstep_main_held_frames,
+		"main_unfenced_steps":lockstep_main_unfenced_steps,
 		"main_hold_timeouts":lockstep_main_hold_timeouts,
 		"main_hold_limit_msec":LOCKSTEP_MAIN_HOLD_LIMIT_MSEC, "published":_lockstep_published}
 	status.worker = simulation_worker.lockstep_metrics()

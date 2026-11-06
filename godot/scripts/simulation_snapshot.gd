@@ -63,6 +63,10 @@ var current_rigid_body_states: PackedFloat32Array = PackedFloat32Array()
 # native tick (-1 before one); paused, reset-only and failed turns keep the
 # previous value. Used by the opt-in lockstep fence.
 var consumed_rigid_body_publication: int = -1
+# True when the worker's opt-in lockstep fence applied at this publication.
+# Labs, MicroScenarios, the workbench and prepared physical liquid are unfenced;
+# main bypasses its frame hold there so both owners agree on the contract.
+var lockstep_fence_active: bool = false
 var rigid_body_epoch: int = 0 # Main-thread physical owner incarnation, or reference 0.
 var physical_actor_effects: Array = [] # Bounded copied native-owner receipts.
 var physical_actor_effect_admission: Dictionary = {} # Copied queue counts and last batch outcome.
