@@ -10,6 +10,18 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## Dependent SOL ordering result — 2026-11-06
+
+Continue from `codex/sol-contact-gravity-order-20261106`, based on stable Draft
+#460`61924a9788f507620706dfa19d28dc12d819156b`. Read the
+[dossier](../audits/2026-11-06-sol-contact-gravity-order.md) and
+[current route](../systems/solid-detachment.md#contact-and-gravity-ordering--2026-11-06).
+One root writer; parent unchanged. Dry8/8 rest passes; packed pre0/8/post0/8.
+Post worsens overlap/vertical drift8/8. Both hosts pass new dispatch/failure
+fences and four post qualifications. No mass/cap/solver/default/MAT change.
+Next is independent review before any separately registered readiness/cadence
+gate. Keep all PRs Draft; this is a negative settling result.
+
 ## SOL stage diagnosis and first-impulse repair — 2026-11-06
 
 [Draft PR #460](https://github.com/techrote/cybersand/pull/460) now publishes the
@@ -28,7 +40,8 @@ qualified only; preserve exact source/runtime distinctions.
 
 All8 dry cases settle; all16 packed cases remain nonquiet. Relative Sand/object
 physical weight and original SOL clearance remain unresolved. Next is a separately
-registered pure-value order/load diagnostic, not cap tuning or a live support law.
+registered order diagnostic, now completed in the dependent result above; no cap
+tuning or live support law follows.
 Same sole-writer branch/base393; no World/pressure/MAT composition or #365 work.
 Prior Draft creation was automatically blocked; any later PR must remain Draft.
 

@@ -6,10 +6,22 @@ status: Current
 scope: Current resource owners, mutation windows, publication retirement and allocation limits; proposed resources are explicitly separated
 keywords: [ownership, lifetime, chunks, immutable lease, render handoff, body mask, queue]
 related-documents: [simulation-tick-and-threading.md, rendering-and-gameplay-bridges.md, ../reference/interfaces-and-message-contracts.md, ../reference/invariants.md]
-last-reviewed: 2026-10-25
+last-reviewed: 2026-11-06
 ---
 
 # Data ownership and lifetimes
+
+## SOL frame-local deferred contact
+
+The [order experiment](../systems/solid-detachment.md#contact-and-gravity-ordering--2026-11-06)
+copies observation/scalar identities only after ordinary acceptance. One
+synchronous call owns that envelope through at most one physical step; post
+application rechecks worker/bridge/body/RID, generation, epoch, token, sample and
+step count. Terrain no-step, retirement, pause, busy or failure discards it.
+Returned dispositions retain skipped work without updating a replacement owner.
+No queue, recapture, new World owner or native mutation path exists. Failed
+application retains its one-use lease and prevents publication; close resets
+the opt-in. Native workers call no Godot. This grants no E1/E2 authority.
 
 The bounded [desktop single-trial-body owner](liquid-prepared-setup-and-receipts.md#desktop-single-trial-body-preparation)
 retains one dynamic barrel/Ripper in an automatically inactive permanent private

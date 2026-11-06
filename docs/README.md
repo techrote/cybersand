@@ -10,6 +10,14 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+## SOL contact and gravity ordering
+
+The [order/clock contract](systems/solid-detachment.md#contact-and-gravity-ordering--2026-11-06)
+and [negative actual-cut result](audits/2026-11-06-sol-contact-gravity-order.md)
+qualify unchanged-mass/cap pre/post Sand application on Windows/Linux. Dry
+settling is preserved; post fails packed settling and worsens burial. Keep the
+child and stable parent#460 Draft; no original SOL or integration acceptance.
+
 ## SOL first-impulse readiness and stage trace
 
 The [current readiness contract](systems/solid-detachment.md#first-impulse-backend-readiness--2026-11-06)

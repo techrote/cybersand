@@ -10,6 +10,25 @@ related-documents: [../operations/soliding-programme.md, ../architecture/solidin
 
 # Native structural detachment
 
+## Contact and gravity ordering — 2026-11-06
+
+**Current isolated experiment:** `sand_contact_order` defaults to `pre`, resets
+on close, and permits explicit `post` in test profiles. Only Sand application
+moves after one confirmed Rapier step and before publication. Unit M/I, exact
+union, ordinary cap3/correction.5, planner and energy guards remain fixed.
+Original witnesses age by that step; age2 refuses. One frame-local value envelope
+revalidates worker/bridge/body/RID/generation/epoch/token. No retry survives terrain
+skip, retirement or failure. `physics_step()` returns a value-only disposition;
+discarded envelopes and actual bridge attempts remain separate denominators.
+Failed readback stops before publication and retains the consumed lease.
+
+The [source-bound result](../audits/2026-11-06-sol-contact-gravity-order.md) executes
+32×720 actual cut steps on Windows/Linux, configured workers1/4: dry8/8 rest,
+packed pre0/8/post0/8. Post worsens terminal Sand area and vertical drift8/8;
+quiet Off burial is not clearance.38 new dispatch checks pass each host, plus
+four post episodes qualify teardown/disposition changes. This is **NO-GO as a
+settling fix**, with no default, weight, original clearance/CPU or MAT admission.
+
 ## First-impulse backend readiness — 2026-11-06
 
 **Current on the isolated candidate branch:** `_prepare_body()` selects AUTO COM

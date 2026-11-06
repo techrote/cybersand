@@ -10,6 +10,16 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 
 # Retrieval question index
 
+## SOL contact and gravity ordering
+
+Retrieve [routing and result](../systems/solid-detachment.md#contact-and-gravity-ordering--2026-11-06),
+[ownership](../architecture/data-ownership-and-lifetimes.md#sol-frame-local-deferred-contact),
+[dispositions](interfaces-and-message-contracts.md#sol-experimental-order-dispositions)
+and [commands](../operations/local-build-and-validation.md#sol-contact-ordering-qualification--2026-11-06).
+The [dated dossier](../audits/2026-11-06-sol-contact-gravity-order.md) stays excluded
+from default retrieval. `retrieval-questions-sol-order.json` is additive post-result
+development evaluation, not a blind scientific acceptance fixture.
+
 ## SOL cached mass versus first-impulse readiness
 
 For effective backend mass readiness, automatic COM with custom inertia, four-stage

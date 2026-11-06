@@ -5,6 +5,14 @@ import order_common as o
 import structure_cut as p
 import reduce_structure_cut as r
 
+def validate_body(body,d,n,inertia,local):
+    a=r.state(body)
+    assert body['valid'] and not body['frozen'] and all(math.isfinite(v) for v in a)
+    assert a[9]==n and r.near(a[10],inertia) and body['body_rid']==d['body_rid'] and body['body_instance']==d['body_instance']
+    assert body['physics_epoch']==d['initial_body']['physics_epoch'] and body['generation']==d['initial_body']['generation']
+    for key in ['gravity','linear_damp','angular_damp','fixed_delta','terrain_revision']:assert body[key]==d['initial_body'][key]
+    assert all(r.near(x,y) for x,y in zip(r.transform(a[:6],local),r.transform(a[:6],body['local_com'])))
+
 def episode(d):
     assert not d['failures'] and len(d['steps'])==720 and d['order_registration']=='SOL-CONTACT-ORDER-LIVE-001'
     n=520 if d['structure']=='tree' else 356;r.handoff(d,n);pre=d['prepared']
@@ -28,14 +36,13 @@ def episode(d):
     for index,row in enumerate(d['steps']):
         assert row['step']==index and row['response_attempts_delta'] in [0,1]
         for label in ['before','after_application','after_step']:
-            body=row[label];a=r.state(body);assert all(math.isfinite(v) for v in a) and a[9]==n and r.near(a[10],inertia) and body['body_rid']==d['body_rid'] and body['body_instance']==d['body_instance']
-            assert body['physics_epoch']==d['initial_body']['physics_epoch'] and body['generation']==d['initial_body']['generation'] and body['gravity']==d['initial_body']['gravity']
-            assert all(r.near(x,y) for x,y in zip(r.transform(a[:6],local),r.transform(a[:6],body['local_com'])))
+            validate_body(row[label],d,n,inertia,local)
         b=r.state(row['before']);a=r.state(row['after_application']);c=r.state(row['after_step']);assert row['after_step']['manual_step']==index+1
         geom=r.geometry(c[:6],d['server_shapes'],hard);geoms.append(geom);delta=None;response=row['response'];age=None
         if row['response_is_new']:
             assert row['response_attempts_delta']==1 and d['sand_response'];outcomes[response['outcome']]+=1
             first=row['before_sand'];last=row['after_sand'];advanced=int(d['contact_order']=='post')
+            validate_body(first['state'],d,n,inertia,local);validate_body(last['state'],d,n,inertia,local)
             assert first['advanced']==last['advanced']==advanced and first['state']['manual_step']==index+advanced
             assert response['current_sample_serial']==(first['captured_current']+advanced)%1000000 and row['after_step']['sample_serial']==(first['captured_current']+1)%1000000
             assert first['snapshot']==last['snapshot']==row['ordinary_stage']['snapshot_serial'] and first['tick']==last['tick']==row['ordinary_stage']['native_tick']
@@ -47,15 +54,16 @@ def episode(d):
             else:assert first['state']['bits']==last['state']['bits'],'Refusal changed RID'
         else:outcomes['NOT_EVALUATED']+=1
         if row.get('worker_participation'):participation.append(row['worker_participation'])
-        potential=-n*row['after_step']['gravity'][1]*(c[5]-b[5])
+        before_com=r.transform(b[:6],row['before']['local_com']);after_com=r.transform(c[:6],row['after_step']['local_com'])
+        potential=-n*row['after_step']['gravity'][1]*(after_com[1]-before_com[1])
         ledger.append(dict(step=index,hard_area=geom['area'],hard_depth=geom['depth'],kinetic_before=r.ke(b),kinetic_after_consume=r.ke(a),kinetic_final=r.ke(c),sand_kinetic_delta=delta,mechanical_change=r.ke(c)-r.ke(b)+potential,ordinary_position_change=[a[4]-b[4],a[5]-b[5]],response_outcome=response.get('outcome') if row['response_is_new'] else 'NOT_EVALUATED',sample_age=age))
     physical=d['metrics']['physical_contact'];assert sum(v for k,v in outcomes.items() if k!='NOT_EVALUATED')==physical['response_attempts'] and not physical['response_failures'] and physical['energy_violations']==0
     terminal=r.state(d['steps'][-1]['after_step']);arm='off' if not d['sand_response'] else d['contact_order'];times=[s['elapsed_us']/1000 for s in d['steps']]
     return dict(host=d['platform'].lower(),workers=d['workers'],structure=d['structure'],surroundings=d['surroundings'],arm=arm,source=d['source'],checks=d['checks'],steps=720,mass=n,inertia=terminal[10],tuple_sha256=hashlib.sha256(json.dumps(members,separators=(',',':')).encode()).hexdigest(),ownership_pass=True,native_material_counts=dict(counts),native_material_conserved=True,rest=r.rest([s['after_step'] for s in d['steps'][600:]]),hard_terminal=geoms[-1],hard_peak_area=max(g['area'] for g in geoms),hard_peak_depth=max(g['depth'] for g in geoms),hard_tail_area_pass=all(g['area']<=1e-6 for g in geoms[600:]),hard_tail_depth_pass=all(g['depth']<=2e-5 for g in geoms[600:]),sand_initial=r.geometry(r.state(d['initial_body'])[:6],d['server_shapes'],{q:m for q,m in initial.items() if m==2}),sand_terminal=r.geometry(terminal[:6],d['server_shapes'],{q:m for q,m in final.items() if m==2}),response_outcomes=dict(outcomes),sample_ages=dict(ages),actual_sand_ke_sum=sum(gains),actual_sand_ke_max=max(gains,default=None),actual_upward_sand_impulse_ratio_all720=-jy/(n*d['initial_body']['gravity'][1]*720/60),body_mechanical_change_sum=sum(v['mechanical_change'] for v in ledger),main_diagnostic_ms_mean=sum(times)/len(times),main_diagnostic_ms_max=max(times),participation_samples=participation,metrics=d['metrics'],ledger=ledger)
 
 def main():
-    ap=argparse.ArgumentParser(__doc__);ap.add_argument('--run',required=True);a=ap.parse_args();assert Path(a.run).name==a.run
-    folder=o.OUT/a.run;dst=folder/'reduction.json';assert not dst.exists();receipt=json.loads((folder/'receipt.json').read_text(encoding='utf-8'));assert receipt['post_source_equality'];rows=[]
+    ap=argparse.ArgumentParser(__doc__);ap.add_argument('--run',required=True);ap.add_argument('--output',default='reduction.json');a=ap.parse_args();assert Path(a.run).name==a.run and Path(a.output).name==a.output
+    folder=o.OUT/a.run;dst=folder/a.output;assert not dst.exists();receipt=json.loads((folder/'receipt.json').read_text(encoding='utf-8'));assert receipt['post_source_equality'];rows=[]
     for host,h in receipt['hosts'].items():
         assert not h['post_inventory_unexpected'];seen=set()
         for c in h['commands']:

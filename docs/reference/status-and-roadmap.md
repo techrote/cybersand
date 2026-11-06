@@ -10,6 +10,17 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+## SOL ordering result — 2026-11-06
+
+**Current isolated experiment:** the [registered comparison](../audits/2026-11-06-sol-contact-gravity-order.md)
+completes32×720 actual cut steps: dry8/8 rest, packed pre0/8/post0/8. Post worsens
+Sand overlap and vertical drift8/8 despite greater support. Same-owner dispatch
+fences pass both hosts. No mass/cap/force-law/default change. Keep parent#460
+stable/Draft and the child Draft. **Planned:** independent adversarial review,
+then a separately registered bounded current-sample readiness/cadence contract
+if admitted. Do not apply predicted gravity wrenches early or tune age/caps.
+Material units, original clearance/CPU, MAT integration and#365 remain blocked.
+
 ## SOL backend initialization repair — 2026-11-06
 
 **Current isolated candidate:** a reproduced first-impulse loss is repaired by
@@ -19,9 +30,8 @@ qualifies64 backend cases and24 new native-cut episodes on both hosts/workers.
 Dry rest remains passing; every packed case still moves and strict clearance
 remains unaccepted. No weight calibration, force retuning or new solver is claimed.
 
-**Planned:** pure-value comparison of current versus gravity/damping-predicted
-planner inputs on retained actual structural contacts, before any separately
-registered live order/load-aware candidate. Keep material/authority/runtime/CPU
+The pure-value and separately registered live ordering comparison now have the
+scoped result above. Keep material/authority/runtime/CPU
 and#365 blockers; no owner-primary LA default promotion or #394 composition.
 
 ## Actual structural SOL progression — 2026-11-06
