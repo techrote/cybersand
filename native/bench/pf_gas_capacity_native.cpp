@@ -296,6 +296,23 @@ int run(int argc,char** argv) {
 }
 }
 int main(int argc,char** argv) {
+    if(argc == 5 && std::string(argv[1]) == "--restore") {
+        try {
+            const int variant=std::stoi(argv[2]),workers=std::stoi(argv[3]);
+            std::ifstream input(argv[4],std::ios::binary);
+            if(!input) throw std::runtime_error("restore input missing");
+            const std::vector<std::uint8_t> bytes(
+                (std::istreambuf_iterator<char>(input)),std::istreambuf_iterator<char>());
+            auto restored=World::restore_physical_state(make_config(variant,workers),bytes);
+            std::cout<<"restore_accepted,capacity="<<PressureFlowParameters::kCompartmentCapacity
+                     <<",live="<<restored->gas_compartments().size()
+                     <<",hash="<<restored->physical_state_hash()<<"\\n";
+            return 0;
+        } catch(const std::exception& e) {
+            std::cerr<<"restore_refused,capacity="<<PressureFlowParameters::kCompartmentCapacity
+                     <<",error="<<e.what()<<"\\n";return 7;
+        }
+    }
     try{return run(argc,argv);}
     catch(const std::exception& e){std::cerr<<"apparatus_error="<<e.what()<<"\n";return 1;}
 }
