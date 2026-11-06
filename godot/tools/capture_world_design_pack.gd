@@ -161,6 +161,13 @@ func _status(code: int, error: String) -> void:
 		if not output_path.is_empty() and output_path.is_absolute_path() and DirAccess.dir_exists_absolute(output_path):
 			_write_json(output_path.path_join("capture-status.json"), result)
 		if not staging_path.is_empty() and DirAccess.dir_exists_absolute(staging_path):
+			# A publication failure may occur after the success manifest was
+			# written but before the directory rename. The uncommitted sibling
+			# must never retain a misleading complete-success marker.
+			var unpublished: String = staging_path.path_join("capture-manifest.json")
+			if FileAccess.file_exists(unpublished):
+				if DirAccess.remove_absolute(unpublished) != OK:
+					push_error("failed to invalidate uncommitted staging manifest: " + unpublished)
 			_write_json(staging_path.path_join("capture-status.json"), result)
 	quit(code)
 

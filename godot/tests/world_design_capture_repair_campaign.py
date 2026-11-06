@@ -373,8 +373,12 @@ def main() -> int:
           "inaccessible-output-does-not-delete-data")
     blocked=adverse("publication-failure",small,
                     extra=("--test-fail-publication=on",))
-    check(any(blocked.parent.glob(blocked.name+".world-capture-stage-*")),
-          "failed-publication-retains-isolated-staging")
+    staged=list(blocked.parent.glob(blocked.name+".world-capture-stage-*"))
+    check(bool(staged),"failed-publication-retains-isolated-staging")
+    check(all(not (folder/"capture-manifest.json").exists() and
+              json.loads((folder/"capture-status.json").read_text()).get("success") is False
+              for folder in staged),
+          "failed-publication-stage-does-not-claim-complete")
     fake_env={"CYBERSAND_SOURCE_REVISION":"d"*40}
     lie=adverse("false-source-claim",small,expectation="zero",override=fake_env)
     lie_m=lie/"capture-manifest.json"
