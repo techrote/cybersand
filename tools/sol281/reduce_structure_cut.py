@@ -132,7 +132,7 @@ def main():
             physical=physical_commands(h['commands'],expected)
             assert all(c['clean'] for c in h['commands']) and not h['post_inventory']['unexpected_changes']
             for command in physical:
-                raw=command['report'];path=ROOT/raw['path'];assert command['report_complete'] and sha(path)==raw['sha256'];d=json.loads(path.read_text());coordinate(d,host,*expected[command['name']],receipt['identity']['source_commit']);row=episode(d,raw);row['run']=name;results.append(row)
+                raw=command['report'];path=ROOT/str(raw['path']).replace('\\','/');assert command['report_complete'] and sha(path)==raw['sha256'];d=json.loads(path.read_text());coordinate(d,host,*expected[command['name']],receipt['identity']['source_commit']);row=episode(d,raw);row['run']=name;results.append(row)
     output=dict(reducer_sha256=sha(__file__),qualifiers=['Per-step hard geometry uses unchanged inert native map and actual server shapes. Sand endpoint map is paused after trajectory, not synchronized clearance.','Receipt energy_before baseline usesfloat32norm; repair scalar64. Actual after_application KE from11doublebits; combined application includes ordinary and Sand. Contact impulses cached. No total Sand energy or original CPU pass.'],receipts=receipts,episodes=results)
     args.output.parent.mkdir(parents=True,exist_ok=True);args.output.write_text(json.dumps(output,indent=2)+'\n',encoding='utf-8');print('episodes',len(results),'steps',sum(r['steps'] for r in results))
 if __name__=='__main__':main()
