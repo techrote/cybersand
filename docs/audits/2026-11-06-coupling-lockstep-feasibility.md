@@ -21,6 +21,11 @@ related-documents: [../architecture/determinism-and-boundary-transfers.md, ../ar
 **Recommendation: lockstep as a selectable mode, not everywhere yet.** The
 evidence follows the [remaining-source list](#remaining-non-determinism-sources).
 
+**Owner decision, 2026-11-06:** after the review repairs, the owner chose
+lockstep as an **opt-in mode**. Asynchronous coupling stays the default for
+ordinary play. Lockstep everywhere was not chosen. Wiring the mode and making
+the packed rotation deterministic are follow-up work in a separate Draft PR.
+
 These results survived an independent review and repair (see
 [review repairs](#review-repairs--2026-11-06)). The repaired reducer also compares
 the applied snapshot serial and validates every artifact and the complete
