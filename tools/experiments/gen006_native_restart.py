@@ -111,6 +111,66 @@ def cohort(exe, root, d, workers):
             "new_root_sha256": hashlib.sha256(root.read_bytes()).hexdigest(),
             "result": "PASS"}
 
+
+def review_event(exe, root, d, workers, water):
+    raw, receipt = unpack(root.read_bytes())
+    rpath = d / "review-event.txt"
+    bpath = d / "review-event.cyps"
+    rpath.write_bytes(receipt)
+    bpath.write_bytes(raw)
+    output = call(exe, "check-event", bpath, rpath, workers, water)
+    need('"executed_once":true' in output and '"continuation_ticks":6' in output
+         and '"result":"PASS"' in output,
+         "native event completion receipt missing or invalid")
+    return output
+
+def event_cohort(exe, root, d, workers):
+    path = d / "event-candidate.cyps"
+    receipt = d / "event-candidate.txt"
+    old_emit = call(exe, "emit-event", path, receipt, workers, 17)
+    need('"pending_events":1' in old_emit, "native producer omitted pending event")
+    staged = d / "event-staged-bundle"
+    staged.write_bytes(pack(path.read_bytes(), receipt.read_bytes()))
+    os.replace(staged, root)
+    old_restart = review_event(exe, root, d, workers, 17)
+    old_digest = hashlib.sha256(root.read_bytes()).hexdigest()
+
+    # An independent native child writes Water19 + the same pending signed-seam
+    # event, exits 17, and never publishes. Old root must still execute once.
+    crash = call(exe, "emit-event-crash", path, receipt, workers, 19, expected=17)
+    need(hashlib.sha256(root.read_bytes()).hexdigest() == old_digest,
+         "prepublication native event crash changed acknowledged root")
+    survived = review_event(exe, root, d, workers, 17)
+
+    # Same-length native CYPS corruption, not an envelope-length refusal.
+    old_raw, old_receipt = unpack(root.read_bytes())
+    bad = bytearray(old_raw)
+    bad[len(bad)//2] ^= 0x40
+    bad_path = d / "event-corrupt.cyps"
+    bad_path.write_bytes(bad)
+    bad_receipt = d / "event-corrupt-receipt.txt"
+    bad_receipt.write_bytes(old_receipt)
+    refused = call(exe, "check-event", bad_path, bad_receipt, workers, 17,
+                   expected=13)
+    need("GEN006_NATIVE_RESTART_REFUSED" in refused and
+         "event native length/receipt mismatch" not in refused,
+         "corrupt native event record was not refused by native decoder")
+
+    updated_emit = call(exe, "emit-event", path, receipt, workers, 19)
+    staged.write_bytes(pack(path.read_bytes(), receipt.read_bytes()))
+    os.replace(staged, root)
+    new_restart = review_event(exe, root, d, workers, 19)
+    new_digest = hashlib.sha256(root.read_bytes()).hexdigest()
+    need(new_digest != old_digest, "event revision root did not change")
+    return {"configured_workers": workers, "old_emit": old_emit,
+            "old_restart": old_restart, "crashed_writer": crash,
+            "old_root_after_crash": survived,
+            "corrupted_native_refusal": refused,
+            "new_emit": updated_emit, "new_restart": new_restart,
+            "old_root_sha256": old_digest, "new_root_sha256": new_digest,
+            "pending_executed_once": True, "continuation_ticks": 6,
+            "signed_chunk_seam": True, "result": "PASS"}
+
 def main():
     p = argparse.ArgumentParser()
     p.add_argument("--native", required=True)
@@ -124,8 +184,14 @@ def main():
         with tempfile.TemporaryDirectory(prefix="gen006-native-restart-") as temp:
             d = Path(temp)
             cohorts.append(cohort(exe, d / "root.bundle", d, workers))
+    event_cohorts = []
+    for workers in (1, 4):
+        with tempfile.TemporaryDirectory(prefix="gen006-native-events-") as temp:
+            d = Path(temp)
+            event_cohorts.append(event_cohort(exe, d / "root.bundle", d, workers))
     doc = {"status": "EXPERIMENTAL", "host": os.name, "cohorts": cohorts,
-           "limit_bytes": LIMIT, "power_cut_durability_tested": False,
+           "event_cohorts": event_cohorts, "limit_bytes": LIMIT,
+           "power_cut_durability_tested": False,
            "selective_eviction_tested": False}
     (out / "native-restart-witness.json").write_text(json.dumps(doc, indent=2) + "\n")
     print("GEN006_NATIVE_PROCESS_RESTART_PASS cohorts=2")
