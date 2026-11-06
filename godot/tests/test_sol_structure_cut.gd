@@ -114,10 +114,11 @@ func run() -> void:
 	if not session.active:session.close();quit(1);return
 	var expected: int = 520 if structure=="tree" else 356
 	check(session.source_receipt.member_count==expected and session.source_receipt.native_source_members==expected,"prepared full source ownership")
-	check(session.commit_receipt.aggregate_owned==expected and session.commit_receipt.native_source_members==0,"committed aggregate sole ownership")
+	check(session.commit_receipt.get("aggregate_owned",-1)==expected,"committed aggregate ownership receipt")
 	check(session.bridge.manual_step_count()==0,"zero physics steps inside handoff")
 	check(session.bridge._body_rids.size()==1 and session.bridge._body_rids[0]==session.body.get_rid(),"one actual aggregate body")
 	var initial: Dictionary = await session.inspect_coupling(PackedInt32Array(),Rect2i(0,0,160,128))
+	check(initial.get("aggregate_owned",-1)==expected and initial.get("native_source_members",-1)==0,"authoritative post-commit sole ownership census")
 	var shapes: Array = []
 	for shape: CollisionShape2D in session._shapes:
 		var rectangle: RectangleShape2D = shape.shape as RectangleShape2D
