@@ -268,6 +268,7 @@ jobs:
           if-no-files-found: error
 
   windows-angle-r3:
+    if: github.run_number == 2
     runs-on: windows-2022
     timeout-minutes: 35
     steps:
@@ -406,5 +407,154 @@ jobs:
         with:
           name: pr457-windows-angle-evidence
           path: ${{ runner.temp }}/pr457-windows-evidence
+          retention-days: 30
+          if-no-files-found: error
+
+
+  linux-adversarial-controls:
+    if: github.run_number == 3
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - name: Check out exact candidate source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: cff6c7f947147a250e5a5c3bb9d46b0df39b376c
+          fetch-depth: 0
+          lfs: true
+
+      - name: Reproduce fail-closed/schema/budget controls
+        shell: bash
+        run: |
+          set -u
+          E="$RUNNER_TEMP/pr457-adversarial-evidence"
+          SRC="$RUNNER_TEMP/pr457-fixture-source"
+          rm -rf "$E" "$SRC"; mkdir -p "$E"/{logs,outputs,analysis} "$SRC"
+          GODOT_ZIP="$RUNNER_TEMP/Godot_v4.7-stable_linux.x86_64.zip"
+          GODOT_DIR="$RUNNER_TEMP/godot-4.7"
+          curl --fail --location --retry 3 --output "$GODOT_ZIP" "https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_linux.x86_64.zip"
+          echo "0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c  $GODOT_ZIP" | sha256sum -c - > "$E/logs/godot-archive-sha256.log"
+          rm -rf "$GODOT_DIR"; mkdir -p "$GODOT_DIR"; unzip -q "$GODOT_ZIP" -d "$GODOT_DIR"
+          GODOT="$GODOT_DIR/Godot_v4.7-stable_linux.x86_64"; chmod +x "$GODOT"
+          "$GODOT" --version > "$E/logs/godot-version.log"
+          sha256sum "$GODOT" > "$E/logs/godot-binary-sha256.log"
+          export CYBERSAND_SOURCE_REVISION="$CANDIDATE_SHA"
+          export LIBGL_ALWAYS_SOFTWARE=1 GALLIUM_DRIVER=llvmpipe LP_NUM_THREADS=2 GALLIVM_PERF=nopt DISPLAY=:99
+          Xvfb :99 -screen 0 1280x720x24 -nolisten tcp >"$E/logs/xvfb.log" 2>&1 &
+          XVFB_PID=$!; sleep 2
+
+          python3 - <<'PY'
+          import json, os, pathlib
+          src=pathlib.Path(os.environ["RUNNER_TEMP"])/"pr457-fixture-source"
+          base={
+            "schema_id":"cybersand.world-feature-pack.proposal",
+            "schema_version":1,
+            "features":[{"id":"brick","size":[16,16],"rectangles":[[0,0,16,16,43]],"variants":[{"id":"alt","swap":{"43":44}}]}],
+            "scene":{"size":[32,24],"rectangles":[[0,20,32,4,40]],"placements":[{"feature":"brick","x":4,"y":2,"variant":None}]}
+          }
+          def put(name,obj): (src/name).write_text(json.dumps(obj)+"\n")
+          put("small.json",base)
+          x=json.loads(json.dumps(base)); x["schema_id"]="cybersand.world-feature-pack.unknown"; put("unknown-schema-id.json",x)
+          x=json.loads(json.dumps(base)); x["schema_version"]=999; put("unknown-schema-version.json",x)
+          x=json.loads(json.dumps(base)); x["scene"]["placements"][0]["x"]=31; put("oob-placement.json",x)
+          x=json.loads(json.dumps(base)); x["scene"]["placements"][0]["variant"]="does-not-exist"; put("unknown-variant.json",x)
+          huge=json.loads(json.dumps(base)); huge["scene"]={"size":[4096,4096],"rectangles":[],"placements":[]}; put("huge-safe.json",huge)
+          too=json.loads(json.dumps(base)); too["scene"]={"size":[4097,4096],"rectangles":[],"placements":[]}; put("huge-invalid.json",too)
+          PY
+
+          run_case() {
+            name="$1"; shift
+            printf '%s\t' "$name" >> "$E/commands.tsv"; printf '%q ' "$@" >> "$E/commands.tsv"; printf '\n' >> "$E/commands.tsv"
+            set +e; "$@" >"$E/logs/$name.log" 2>&1; code=$?; set -e
+            printf '%s\t%d\n' "$name" "$code" >> "$E/exits.tsv"
+            return 0
+          }
+          set -e
+          SMALL="$SRC/small.json"; R1="$E/outputs/r1"
+          run_case r1_success timeout 240s "$GODOT" --rendering-method gl_compatibility --rendering-driver opengl3 --path godot --script res://tools/capture_world_design_pack.gd -- --pack="$SMALL" --output="$R1" --mode=both --scale=2 --time=1.37 --glow=on --design-revision="$DESIGN_SHA"
+          if [ -f "$R1/capture-manifest.json" ]; then sha256sum "$R1/capture-manifest.json" > "$E/analysis/r1-before.sha256"; else echo MISSING > "$E/analysis/r1-before.sha256"; fi
+          run_case r1_bad_cli timeout 120s "$GODOT" --rendering-method gl_compatibility --rendering-driver opengl3 --path godot --script res://tools/capture_world_design_pack.gd -- --pack="$SMALL" --output="$R1" --mode=both --scale=999 --time=1.37 --glow=on --design-revision="$DESIGN_SHA"
+          if [ -f "$R1/capture-manifest.json" ]; then sha256sum "$R1/capture-manifest.json" > "$E/analysis/r1-after.sha256"; else echo MISSING > "$E/analysis/r1-after.sha256"; fi
+          for c in unknown-schema-id unknown-schema-version oob-placement unknown-variant; do
+            run_case "$c" timeout 240s "$GODOT" --rendering-method gl_compatibility --rendering-driver opengl3 --path godot --script res://tools/capture_world_design_pack.gd -- --pack="$SRC/$c.json" --output="$E/outputs/$c" --mode=combined --scale=2 --time=1.37 --glow=on --design-revision="$DESIGN_SHA"
+          done
+          run_case missing_pack timeout 120s "$GODOT" --rendering-method gl_compatibility --rendering-driver opengl3 --path godot --script res://tools/capture_world_design_pack.gd -- --pack="$SRC/no-such.json" --output="$E/outputs/missing" --mode=combined --scale=2 --time=1.37 --glow=on --design-revision="$DESIGN_SHA"
+
+          mkdir -p "$RUNNER_TEMP/pr457-readonly-parent"; chmod 500 "$RUNNER_TEMP/pr457-readonly-parent"
+          run_case inaccessible_output timeout 120s "$GODOT" --rendering-method gl_compatibility --rendering-driver opengl3 --path godot --script res://tools/capture_world_design_pack.gd -- --pack="$SMALL" --output="$RUNNER_TEMP/pr457-readonly-parent/new-output" --mode=combined --scale=2 --time=1.37 --glow=on --design-revision="$DESIGN_SHA"
+          chmod 700 "$RUNNER_TEMP/pr457-readonly-parent"
+
+          git fetch --no-tags origin "$DESIGN_SHA"
+          mkdir -p "$RUNNER_TEMP/pr457-design"; git archive "$DESIGN_SHA" docs/world-design | tar -xf - -C "$RUNNER_TEMP/pr457-design"
+          run_case interrupted_capture timeout 1s "$GODOT" --rendering-method gl_compatibility --rendering-driver opengl3 --path godot --script res://tools/capture_world_design_pack.gd -- --pack="$RUNNER_TEMP/pr457-design/docs/world-design/coral-telegraph/pack.json" --output="$E/outputs/interrupted" --mode=both --scale=2 --time=1.37 --glow=on --design-revision="$DESIGN_SHA"
+
+          cat > godot/tests/_qualification_budget_probe.gd <<'GDSCRIPT'
+          extends SceneTree
+          const Adapter = preload("res://tools/world_design_pack_adapter.gd")
+          func _init() -> void:
+              call_deferred("_run")
+          func _read(path: String) -> Dictionary:
+              var p := JSON.new()
+              if p.parse(FileAccess.get_file_as_string(path)) != OK:
+                  return {}
+              return p.data
+          func _run() -> void:
+              var root := OS.get_environment("PR457_FIXTURE_ROOT")
+              var a: Dictionary = Adapter.inspect(_read(root.path_join("huge-safe.json")))
+              var b: Dictionary = Adapter.inspect(_read(root.path_join("huge-invalid.json")))
+              print("BUDGET_PROBE ", JSON.stringify({
+                  "4096x4096": a,
+                  "4097x4096": b,
+                  "scale": 8,
+                  "requested_output": [32768,32768],
+                  "rgb8_bytes_if_allocated": 32768 * 32768 * 3,
+                  "allocation_attempted": false
+              }))
+              quit(0)
+          GDSCRIPT
+          export PR457_FIXTURE_ROOT="$SRC"
+          run_case budget_probe timeout 120s "$GODOT" --headless --path godot --script res://tests/_qualification_budget_probe.gd
+          rm -f godot/tests/_qualification_budget_probe.gd
+
+          python3 - <<'PY'
+          import hashlib, json, os, pathlib, re
+          e=pathlib.Path(os.environ["RUNNER_TEMP"])/"pr457-adversarial-evidence"
+          exits={}
+          for line in (e/"exits.tsv").read_text().splitlines():
+              n,c=line.split("\t"); exits[n]=int(c)
+          def text(p): return p.read_text(errors="replace") if p.exists() else ""
+          before=text(e/"analysis/r1-before.sha256").strip(); after=text(e/"analysis/r1-after.sha256").strip()
+          def status(name):
+              p=e/"outputs"/name/"capture-manifest.json"
+              if not p.exists(): return {"manifest":False}
+              try:
+                  j=json.loads(p.read_text())
+                  return {"manifest":True,"status":j.get("status"),"success":j.get("success"),"sha256":hashlib.sha256(p.read_bytes()).hexdigest()}
+              except Exception as ex: return {"manifest":True,"parse_error":str(ex)}
+          summary={
+            "exits":exits,
+            "r1":{"before":before,"after":after,"same_manifest_hash":before==after and "MISSING" not in (before,after),
+                  "complete_manifest_after_bad_cli":(e/"outputs/r1/capture-manifest.json").exists(),
+                  "status_after_bad_cli":(e/"outputs/r1/capture-status.json").read_text(errors="replace") if (e/"outputs/r1/capture-status.json").exists() else None},
+            "r2_schema_id":status("unknown-schema-id"),
+            "r2_schema_version":status("unknown-schema-version"),
+            "oob":status("oob-placement"),
+            "unknown_variant":status("unknown-variant"),
+            "interrupted_files":[str(p.relative_to(e/"outputs/interrupted")) for p in sorted((e/"outputs/interrupted").rglob("*")) if p.is_file()] if (e/"outputs/interrupted").exists() else [],
+          }
+          (e/"analysis/summary.json").write_text(json.dumps(summary,indent=2)+"\n")
+          lines=[]
+          for p in sorted(x for x in e.rglob("*") if x.is_file()):
+              lines.append(f"{hashlib.sha256(p.read_bytes()).hexdigest()}  {p.relative_to(e).as_posix()}")
+          (e/"SHA256SUMS.txt").write_text("\n".join(lines)+"\n")
+          PY
+          kill "$XVFB_PID" || true
+
+      - name: Upload adversarial evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: pr457-linux-adversarial-evidence
+          path: ${{ runner.temp }}/pr457-adversarial-evidence
           retention-days: 30
           if-no-files-found: error
