@@ -32,7 +32,7 @@ jobs:
         run: |
           set -euo pipefail
           python3 tools/ci/run_timed_command.py --policy-key native_suite_seconds \
-            --label pf472-native-compile --timeout-seconds 3000 \
+            --label pf472-native-compile \
             --output-dir build/pf472-qualification/compile -- \
             make CXX=g++-13 build/tests
       - name: Run focused PressureFlow and parallel workbench regressions
@@ -40,11 +40,11 @@ jobs:
         run: |
           set -euo pipefail
           python3 tools/ci/run_timed_command.py --policy-key native_suite_seconds \
-            --label pf472-lcb-002 --timeout-seconds 1800 \
+            --label pf472-lcb-002 \
             --output-dir build/pf472-qualification/lcb-002 -- \
             ./build/tests LCB-002
           python3 tools/ci/run_timed_command.py --policy-key native_suite_seconds \
-            --label pf472-workbench-parallel --timeout-seconds 3600 \
+            --label pf472-workbench-parallel \
             --output-dir build/pf472-qualification/workbench -- \
             ./build/tests 'Workbench parallel'
       - name: Full registered native regression binary
@@ -52,7 +52,7 @@ jobs:
         run: |
           set -euo pipefail
           python3 tools/ci/run_timed_command.py --policy-key native_suite_seconds \
-            --label pf472-full-native --timeout-seconds 3900 \
+            --label pf472-full-native \
             --output-dir build/pf472-qualification/full-native -- \
             ./build/tests
       - name: Preserve actual command, failure and source evidence
