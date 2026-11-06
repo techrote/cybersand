@@ -17,6 +17,10 @@ Continue structural work from the isolated dependent branch
 and #407bbca ancestry. Read the [cut/mass/settling dossier](../audits/2026-11-06-sol-structural-cut-behaviour.md)
 and [current source contract](../systems/solid-detachment.md#actual-cut-structures-mass-and-settling--2026-11-06).
 One root writer; upstream branches and accepted main remain unchanged; keep Draft.
+The experiment branch is pushed, but automatic approval review blocked Draft PR
+creation before dispatch ("blocked by policy", no further reason). Readback finds
+no new PR; existing #429 stays Draft. Retain the prepared body and create only a
+Draft against #393 if publication becomes available.
 
 Actual cuts/ownership/unit-mass and dry falling/collision/rest pass in48 fresh
 Windows/Linux1/4-worker episodes. The source-pinned scalar energy repair passes

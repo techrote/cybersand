@@ -583,6 +583,12 @@
       "workspace_copy_sha256": "e2b2617e913efae936e7e87755b231747b858ab7fb64774b0e70c6ad420a97f4",
       "git_lf_sha256": "e2b2617e913efae936e7e87755b231747b858ab7fb64774b0e70c6ad420a97f4",
       "git_lf_bytes": 40810
+    },
+    "publication.json": {
+      "workspace_copy_sha256": "eab27dd98c30181e241f4f449ccb4454908c303edd357b612b10ef5f232f2de1",
+      "git_lf_sha256": "eab27dd98c30181e241f4f449ccb4454908c303edd357b612b10ef5f232f2de1",
+      "bytes": 833,
+      "git_lf_bytes": 833
     }
   },
   "final_local_resource": {
@@ -590,5 +596,18 @@
     "outside_native_bytes": 217556901,
     "free": 20199686144
   },
-  "text_receipt_custody": "Original ignored raw files and their original hashes remain unchanged. Public text receipt copies pass through Git LF normalization; git_lf_sha256 authenticates published bytes. Original raw/workspace-copy SHA256 is a separate identity, not a claim that a normalized Git blob has identical bytes."
+  "text_receipt_custody": "Original ignored raw files and their original hashes remain unchanged. Public text receipt copies pass through Git LF normalization; git_lf_sha256 authenticates published bytes. Original raw/workspace-copy SHA256 is a separate identity, not a claim that a normalized Git blob has identical bytes.",
+  "publication": {
+    "status": "DRAFT_PR_CREATION_BLOCKED",
+    "date": "2026-11-06",
+    "pushed_source": "5261459cec5c67bd2083fe74975d310657132b0e",
+    "branch": "codex/sol-structure-cut-20261106",
+    "intended_base": "fix/sol347-facade-refusal-20261104-095628",
+    "base_head": "e4c2649e82d943554f4dc6a0634336770cda08f6",
+    "new_pr": null,
+    "automatic_review": "Draft creation command rejected before dispatch: blocked by policy. No more specific reason supplied. Publication action not retried through another tool.",
+    "readback": "gh pr list for owned head returned []; remote head equals pushed source. Existing429 remains Draft67f93a28.",
+    "prepared_body": "build/sol-structure-cut/pr-body.md",
+    "review": "https://github.com/techrote/cybersand/compare/fix%2Fsol347-facade-refusal-20261104-095628...codex%2Fsol-structure-cut-20261106?expand=1"
+  }
 }

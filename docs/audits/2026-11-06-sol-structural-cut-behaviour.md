@@ -18,6 +18,13 @@ not a Kestrel/workbench proxy or proof that relative material weight is calibrat
 
 ## Source, scope and custody
 
+**Publication status:** the experiment branch is pushed. Automatic approval review
+rejected Draft PR creation before dispatch with "blocked by policy" and no more
+specific reason. Readback confirms no PR exists for this head; #429 remains Draft
+and unchanged. The [publication receipt](sol-structure-cut-20261106/publication.json)
+records the intended #393 base, pushed checkpoint and prepared local body. Any
+subsequent PR must be Draft; this packet does not claim it already exists.
+
 Root is the only writer of `codex/sol-structure-cut-20261106`, based on #393
 `e4c2649e82d943554f4dc6a0634336770cda08f6`, retaining #347
 `1598115c9065239cc1eaec11e99077274b457be1`. An ordinary local merge retains
