@@ -1,0 +1,63 @@
+extends SceneTree
+const Response = preload("res://response_original.gd")
+const MASS: float = 520.0
+const INERTIA: float = 109907693.0/1560.0
+
+func bits(value: float) -> String:
+	var bytes := PackedByteArray()
+	bytes.resize(8)
+	bytes.encode_double(0,value)
+	return bytes.hex_encode()
+
+func energy_scalar64(v: Vector2,w: float) -> float:
+	var x: float = v.x
+	var y: float = v.y
+	return 0.5*MASS*(x*x+y*y)+0.5*INERTIA*w*w
+
+func _init() -> void:
+	var com := Vector2(32.0+3293.0/130.0,16.0+175.0/8.0)
+	var pose := Transform2D(0,com+Vector2(0,.25))
+	var centers := PackedVector2Array()
+	var sizes := PackedVector2Array()
+	for rect: Rect2 in [Rect2(44,27,29,5),Rect2(44,32,16,1),Rect2(61,32,12,1),
+		Rect2(44,33,29,7),Rect2(50,40,15,4),Rect2(50,44,4,21)]:
+		centers.append(rect.get_center()-com)
+		sizes.append(rect.size)
+	var offset: Vector2 = Vector2(52.5,65.25)-pose.origin
+	var omega: float = 0.1
+	var velocity := Vector2(3,-omega*offset.x+0.00001)
+	var obs := {"schema":"cybersand.sol281.sand-contact.v1","ok":true,"complete":true,
+		"sample_serial":1,"token":"review:1","body_generation":"1","tick":1,"revision":"1",
+		"source_transform":pose,"contacts":[{"proxy":6,"face":2,"cell":Vector2i(52,65),
+		"point":Vector2(52.5,65.25),"normal":Vector2.DOWN,"a":Vector2(53,65.25),
+		"b":Vector2(52,65.25),"depth":.25,"area":.25,"weight":1.0}]}
+	var response: Dictionary = Response.plan(obs,pose,velocity,omega,MASS,INERTIA,centers,sizes)
+	var normal := Vector2.UP
+	var approach: float = (velocity+Vector2(-offset.y,offset.x)*omega).dot(normal)
+	var lever: float = offset.cross(normal)
+	var j: float = -approach/(1.0/MASS+lever*lever/INERTIA)
+	var impulse: Vector2 = normal*j
+	var after_v: Vector2 = velocity+impulse/MASS
+	var after_w: float = omega+offset.cross(impulse)/INERTIA
+	var before_source: float = Response._energy(velocity,omega,MASS,INERTIA)
+	var after_source: float = Response._energy(after_v,after_w,MASS,INERTIA)
+	var before_scalar: float = energy_scalar64(velocity,omega)
+	var after_scalar: float = energy_scalar64(after_v,after_w)
+	var report := {"registration":"SOL347-REVIEW-NUMERIC-001/exact-case-replay",
+		"unmodified_response":response,"vx":velocity.x,"vy":velocity.y,"omega":omega,
+		"offset_x":offset.x,"offset_y":offset.y,"next_vy":after_v.y,"next_omega":after_w,
+		"source_energy_before":before_source,"source_energy_after":after_source,
+		"source_energy_delta":after_source-before_source,"scalar_energy_before":before_scalar,
+		"scalar_energy_after":after_scalar,"scalar_energy_delta":after_scalar-before_scalar,
+		"threshold":1e-8*maxf(1,before_source),"input_vy_f64_le":bits(velocity.y),
+		"input_omega_f64_le":bits(omega),"next_vy_f64_le":bits(after_v.y),
+		"next_omega_f64_le":bits(after_w),"mass_f64_le":bits(MASS),"inertia_f64_le":bits(INERTIA),
+		"source_energy_before_f64_le":bits(before_source),"source_energy_after_f64_le":bits(after_source),
+		"scalar_energy_before_f64_le":bits(before_scalar),"scalar_energy_after_f64_le":bits(after_scalar)}
+	var file := FileAccess.open("res://exact_case_replay.json",FileAccess.WRITE)
+	file.store_string(JSON.stringify(report,"\t"))
+	print("EXACT_CASE_REPLAY ",JSON.stringify(report))
+	var valid: bool = response.get("outcome")=="NonDissipativeResponse" \
+		and response.get("impulses",[1]).is_empty() and after_scalar<before_scalar \
+		and after_source>before_source+1e-8*maxf(1,before_source)
+	quit(0 if valid else 1)

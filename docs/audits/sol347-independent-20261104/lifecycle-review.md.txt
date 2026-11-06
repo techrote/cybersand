@@ -1,0 +1,210 @@
+# Independent #347 lifecycle and physical-response review notes
+
+Review date: 2026-11-04. Frozen inspected head:
+`5b9b5a982e4638f4609309f996b92825d3dc36e4`. The complete-production/source claims
+remain tied to executed source `749fb8b597ad866f7535f26442e904207c4f7611` and runtime
+publication `89d2eb6d280183e495a94b559776dfd8f1cdc196`. This review did not edit any
+checkout, run the full native/Rapier matrix, dispatch CI, or change a branch.
+
+## Disposition and strongest new result
+
+**REPAIR FIRST — confirmed bounded numerical evaluation defect**, owned by the
+aggregate-specific #364 contact path. The unchanged planner can reject a valid,
+approaching, dissipative frozen contact because `_energy()` first calls
+`Vector2.length_squared()`, which rounds the sum in the Vector2 representation
+before multiplication by mass. An independently registered pure-planner test
+reaches this false refusal while preserving the original six-proxy, 520-cell
+fixture geometry, mass and inertia. This does **not** prove that the numerical
+defect caused any specific live refusal or six-second burial; live exact contact
+and response inputs are absent from the retained trace. Synchronized #364 replay
+is still necessary after the bounded repair, with every energy threshold retained.
+
+## Accepted bounded contracts versus remaining lifecycle gaps
+
+| Contract | Source-backed disposition |
+|---|---|
+| Real native support cut and component extraction | Implemented for an explicitly commanded local diagnostic cut. `cut_prepare` performs an intentional native edit and then asks the World to discover a component; refusal does not undo that intentional cut. This is not a production world-wide support-loss scheduler. |
+| Structural admission | One homogeneous ambient Wall/RedBrick component, four-connectivity, fully included/resident 64×64 scope; explicit hard anchors. Unknown edge, masks, pending events, hot/reactive/unsupported neighbours and capacities refuse. Sand and ordinary FreeMass Water remain native and gain no cohesion. |
+| Discovery/memory bounds | At most 1,024 captured members, fixed domain queue and scratch. Native shape storage permits 256, configured fixture limit 128, main-thread proxy interface 64. The host preflights the lower bound before transfer. |
+| Exact payload/shape authority | Prepared/Acknowledged copies are evidence while cells own matter. Commit rechecks tick, terrain revision, token, exact material/state_a/state_b/temperature and masks before retirement. Active native aggregate owns the original tuples while Rapier owns motion. |
+| Handoff and collision authority | Main creates frozen inactive real body/shapes, acknowledges digests/identity, commits native retirement, installs committed static terrain, finalizes matching terrain revision/physics epoch, and primes the copied compound mask before unfreezing. Both clocks are held across the collision switch. Native receipt fields bind trusted main-thread actions; they are not independent native proof that an RID exists. Actual-host fixtures provide that separate evidence. |
+| Geometry and inertia | Six nonoverlapping exact merged rectangles preserve the crown hole and the large void inside the AABB. Unit-cell mass=520; COM=(32+3293/130,16+175/8); polar inertia=109907693/1560. No per-cell rigid bodies or filled bounding-box collision shape. Initial placement occurs once; subsequent gravity/contact/torque move the body. |
+| Cancellation/rollback | Before commit, cancellation retains native authority. After commit but before active motion, rollback rechecks every destination, restores exact native tuples and waits for static collision repair. Active rollback refuses. This is not general rest-to-cell restoration. |
+| Partial failure | Native exceptions preserve actual partial ownership count, quarantine World, and prevent retry as a mutation-free refusal. Post-contact-impulse invalid readback retains consumed identity, reports possible mutation and latches session pause before another Rapier step. |
+| Reset/concurrency | Awaited continuations bind exact worker and generation, including mask priming. Specialized worker refuses native-only reset/scenario replacement. Whole-session close joins owner then retires the actual Rapier body. This is safe session teardown, not production world recovery or persistence. |
+| Sleep/settle | Sleeping retains aggregate-owned payload and a live Rapier body. No active/sleeping aggregate is rasterized into cells. CYPS save and full physical-state hash explicitly refuse pending/active aggregate state. |
+| Unaccepted production scope | Convincing dense granular resistance, sustained clearance, calibrated no-slip rolling, long-duration multi-aggregate lifecycle, dynamic restoration, fracture, reactive Wood, heterogeneous structure, aggregate thermal evolution/persistence, normal gameplay, Web and human/GPU acceptance remain unqualified. |
+
+Key immutable source references:
+
+- [native admission/hand-off](https://github.com/techrote/cybersand/blob/5b9b5a982e4638f4609309f996b92825d3dc36e4/native/src/world_solid_detachment.inc): 55–207 admission; 210–281 ack/commit/finalize; 284–346 cancel/rollback; 244–261 and 313–327 partial-failure quarantine.
+- [native contract types](https://github.com/techrote/cybersand/blob/5b9b5a982e4638f4609309f996b92825d3dc36e4/native/include/cybersand/solid_detachment.hpp): 12–23 fixed capacities/states; 68–86 trusted receipts and borrowed copies.
+- [explicit cut adapter](https://github.com/techrote/cybersand/blob/5b9b5a982e4638f4609309f996b92825d3dc36e4/godot/native_extension/solid_detachment_adapter.inc): 101–135 diagnostic-only admission and deliberate edit before discovery.
+- [session](https://github.com/techrote/cybersand/blob/5b9b5a982e4638f4609309f996b92825d3dc36e4/godot/scripts/solid_detachment_session.gd): 206–301 transaction; 303–355 real body construction; 375–395 rollback; 716–799 teardown/failure latch.
+- [save/hash refusal](https://github.com/techrote/cybersand/blob/5b9b5a982e4638f4609309f996b92825d3dc36e4/native/src/world_pressure.inc): 1528–1530 and 1748–1750.
+- [native exact geometry oracle and ownership tests](https://github.com/techrote/cybersand/blob/5b9b5a982e4638f4609309f996b92825d3dc36e4/native/tests/test_solid_detachment.cpp): 124–173 sole owner; 175–203 analytic geometry/COM/inertia; 205–233 rollback/ABA; 234–330 refusals and populated boundaries.
+- [runtime contract limits](https://github.com/techrote/cybersand/blob/5b9b5a982e4638f4609309f996b92825d3dc36e4/docs/systems/solid-detachment.md): 400–427 sleep/restoration limits and deferred work.
+
+## Physical limitations and discriminating observations
+
+1. **Material relocation and body resistance are separate mechanisms.** Conservative
+   relocation admits only local vacancy paths of 2–5 positions, four cardinal
+   moves, depth-four fixed scratch, at most 64 attempts/320 reserved coordinates
+   per sample. It retains matter when a valid vacancy is unavailable. The older
+   shared 11/9 bridge still supplies its ordinary reaction/correction. Candidate
+   Sand resistance is a separate opt-in normal-impulse channel, not a new material
+   transport solver or imported GCR force law.
+2. **Positive geometry is not the same as an actionable contact.** Native observation
+   measures the whole unit-square overlap against all six oriented proxies.
+   Only ambient supported Sand whose square crosses an actual exterior segment
+   supplies response. Internal sibling seams are removed. A deeply embedded square
+   can have substantial area/depth but zero response segment. A response repair
+   cannot infer arbitrary new forces from those observations without a new contract.
+3. **The current impulse does not recover existing penetration.** For inward unit
+   normal n, lever r, mass M and inertia I, the current candidate uses
+   j=−v_n/(1/M+(r×n)^2/I), only while approaching. In exact arithmetic
+   ΔE=−v_n²/[2(1/M+(r×n)^2/I)]≤0. It is a velocity constraint, not positional
+   separation. At zero approaching speed it contributes nothing. Four fixed
+   sweeps can leave residual approaching contacts; no full convergence guarantee.
+4. **Step ordering matters even with zero publication delay.** The session first
+   applies the ordinary compound correction/impulses, then validates/applies the
+   candidate, then calls `bridge.step()`. Gravity/damping/hard-contact integration
+   follows. It is therefore an inference that perfect observation latency alone
+   may not prevent further gravity-driven entry; that mechanism needs stagewise
+   measurement. The earlier 12-step mechanism control uses zero gravity and a
+   4×2 single-rectangle mechanical control of mass520, not the live six-proxy tree.
+5. **Safe refusal is neither successful contact nor actual energy violation.**
+   Candidate responses require exact publication identity, age≤1 sample, ≤0.25
+   cell maximum vertex drift, authenticated source witness and surviving current
+   intersection. One refused record rejects the whole preflight; rejected plans
+   apply no impulses. The consumed observation is recorded before the ordinary
+   coupling gate, and a rejected ordinary result prevents candidate evaluation.
+   Capture those upstream reasons, not merely the candidate refusal histogram.
+
+Source references: [native observer](https://github.com/techrote/cybersand/blob/5b9b5a982e4638f4609309f996b92825d3dc36e4/godot/native_extension/solid_contact_adapter.inc)
+193–248; [planner](https://github.com/techrote/cybersand/blob/5b9b5a982e4638f4609309f996b92825d3dc36e4/godot/scripts/solid_contact_response.gd)
+186–187 energy, 190–285 admission, 286–375 solver;
+[bridge](https://github.com/techrote/cybersand/blob/5b9b5a982e4638f4609309f996b92825d3dc36e4/godot/scripts/rapier_physics_bridge.gd)
+282–399 ordinary compound result gate, 402–500 contact/terminal readback;
+[session](https://github.com/techrote/cybersand/blob/5b9b5a982e4638f4609309f996b92825d3dc36e4/godot/scripts/solid_detachment_session.gd)
+472–529 gate order and 579–602 step order;
+[controlled mechanism test](https://github.com/techrote/cybersand/blob/5b9b5a982e4638f4609309f996b92825d3dc36e4/godot/tests/test_solid_contact_response.gd)
+3–16 discloses its geometry/gravity scope.
+
+## Retained live refusal census, source 749fb8b5 only
+
+Reanalysis of the four `contact-recovery-w*.json` cohort files under
+`docs/audits/sol281-20261103/hosted/749fb8b597ad866f7535f26442e904207c4f7611/`:
+
+| Counter | All 36 candidate sessions | 12 embedded candidate sessions |
+|---|---:|---:|
+| Owner observation attempts | 13,273 | 4,424 |
+| Complete consumed observations | 12,087 | 3,936 |
+| Candidate response attempts | 11,454 | 3,673 |
+| Accepted candidate plans | 10,721 | 3,509 |
+| ClearedContact preflight refusals | 381 | 75 |
+| NonDissipativeResponse preflight refusals | 332 | 89 |
+| PoseDrift preflight refusals | 17 | 0 |
+| InvalidGeometryWitness preflight refusals | 3 | 0 |
+| Actual reported energy violations | 0 | 0 |
+
+The 633 all-candidate (263 embedded) difference between consumed observations and
+candidate attempts passes through the ordinary-coupling early-return gate; the
+retained counters do not join every skipped observation to its exact upstream
+reason. An accepted plan can also have zero impulses. Neither count establishes
+effective support. The three witness refusals occurred in Windows packed/mixed
+cases, not embedded. Thus witness rejection is a valid hypothesis/control but
+is not an established dominant cause of embedded burial.
+
+The trace stores per-proxy counts/area/depth, contact count, source/current poses,
+omega and identity fields. It does not retain full contact records, native cell
+states, linear velocities, individual impulses, four-stage energy or refusal
+reasons per step. Existing trace alone cannot replay the original causal response.
+See [recovery logger](https://github.com/techrote/cybersand/blob/5b9b5a982e4638f4609309f996b92825d3dc36e4/godot/tests/test_solid_detachment_contact_recovery.gd)
+65–83 and 119–143. Sampled overlap is neither continuous overlap nor a matched
+counterfactual across baseline/candidate trajectories.
+
+Frozen authored quantities are packed Sand1,176; embedded Sand2,016; mixed Sand658
+and Water mass132,090 (=518×255). Preserve these quantities and verify actual
+initial runtime readbacks, rather than assuming geometry authoring alone proves
+the initial state. Source fixture: session 119–163; retained cohort counters
+independently match those quantities.
+
+## New isolated numeric experiment and exact reproduction
+
+`planner-numeric/registration.md` was written before execution. The registration
+sets the exact 84-case grid, three equal replays, controls, stop rules and unchanged
+energy limits. Source planner is byte-identical to #347 and source749fb8b5.
+
+- Godot executable: `/workspace/scratch/b45094545f38/deps/godot-4.7/Godot_v4.7-stable_linux.x86_64`.
+- Godot version: `4.7.stable.official.5b4e0cb0f`.
+- Executable SHA-256: `f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75`.
+- Unchanged planner SHA-256: `d5bebb75d81cf5bc0dce756f7a844f19ad9f145fbd9ca96775ad8f999a061d6d`.
+- Launch from `planner-numeric`: `timeout 30 <executable> --headless --path <planner-numeric-directory> --script res://probe.gd`.
+- Result: 84 cases, 74 Accepted, 10 NonDissipativeResponse, three identical
+  evaluations per case, no failed control or determinism assertion. Every refused
+  plan has an empty impulse array. No native/Rapier bodies or live world were run.
+- Independent scalar64 arithmetic on actually rounded next state: eight of the
+  ten are inside the unchanged energy bound (six have negative energy change,
+  two small positive changes below tolerance). Two are outside the bound and
+  **must remain refused**. Ideal unrounded impulse algebra alone is not permission
+  to accept those two.
+
+Exact selected case, replayed separately only to preserve bit patterns/direct
+Godot scalar64 verification (as permitted in registration):
+
+| Field | Value |
+|---|---|
+| Shapes (x,y,w,h) | (44,27,29,5), (44,32,16,1), (61,32,12,1), (44,33,29,7), (50,40,15,4), (50,44,4,21) |
+| Mass/inertia | 520 / 109907693÷1560 |
+| Source/current pose | angle0; original COM translated down0.25; equal source/current poses |
+| Contact | proxy6, face2, cell(52,65), point(52.5,65.25), a(53,65.25), b(52,65.25), outward normal(0,1), area0.25, depth0.25, weight1 |
+| Actual offset | (-4.830768585205078125,27.125) |
+| Velocity / omega | (3,0.4830868542194366455078125) / 0.1 |
+| Actual rounded proposed next vy / omega | 0.4830783307552337646484375 / 0.100000303664991… |
+| Current `_energy` before / after | 2752.94514575117 / 2752.94530154252 |
+| Current apparent ΔE / allowed bound | +0.00015579134969812 / 0.0000275294514575117 |
+| Scalar64 component energy before / after | 2752.94520306198 / 2752.94520137657 |
+| Scalar64 ΔE | −0.00000168540827871766 |
+| Unmodified planner result | NonDissipativeResponse, accepted=false, impulses=[] |
+
+`exact_case_replay.json` records little-endian float64 bit strings for all decisive
+operands; direct same-Godot scalar arithmetic confirms the result independently
+of decimal JSON/Python round-trips. Example input-vy bits `00000020e5eade3f`,
+next-vy `00000060c1eade3f`, omega `9a9999999999b93f`, next-omega
+`dac9d4b19e99b93f`. The original planner was never modified. No candidate fix
+was written or tested. Root requested an independent second reviewer for this
+diagnostic; that reviewer independently reproduced the eight/two classification.
+
+## Smallest follow-up and legitimate ownership
+
+1. Retain this exact frozen contact as a regression and the two truly over-bound
+   cases as negatives. #364's aggregate response owner should correct numerical
+   energy evaluation so it applies the existing tolerance to accurately accumulated
+   components. Do not relax thresholds, disable preflight/readback, bypass sample
+   fences, add support gains, import GCR, or introduce a gravity/position term.
+2. Qualify a separate source identity for any such edit. The helper is
+   `godot/scripts/solid_contact_response.gd::_energy`; its bridge actual-readback
+   accounting has its own wider1e-4 bound. Changes to shared bridge/ordinary GCR
+   behavior require the #83 owner, not merely aggregate approval. Root's separate
+   #371 protected-source analysis remains a prerequisite for integration of the
+   pre-existing native #347 divergence; a numerical helper fix does not resolve it.
+3. Then run the smallest registered #364 synchronous embedded replay on exact
+   source/runtime, workers1/4, with baseline and original/corrected candidate kept
+   distinct. Capture exact cells and every contact/response input, not counts.
+   Measure source pose, current pose, age/vertex drift, support/segment presence,
+   ordinary-gate outcome, accepted/refused/failed response, per-impulse actual
+   energy and all CPU stages. A per-physics-step observation chain is necessary
+   before calling a sum cell-ticks.
+4. Use stagewise checkpoints before ordinary correction, after ordinary
+   correction, after candidate impulse, and after Rapier gravity/hard collision.
+   Compare ordinary delivery with deliberate held/delayed publication using
+   fixed delay schedules. Same-pose value replay can isolate witness/numeric
+   admission; live closed-loop synchronous controls distinguish that from
+   physically inadequate support. All attempt costs and the original complete
+   observation denominator remain included. Preserve material-evacuation traces
+   to distinguish legitimate clearance from unsupported upward ejection.
+
+No further experiment was run after the bounded grid/exact-case replay. No claim
+of production physical improvement, actual Rapier energy improvement, resolution
+of the2ms baseline miss, human acceptance, merge readiness or #365 admission follows.

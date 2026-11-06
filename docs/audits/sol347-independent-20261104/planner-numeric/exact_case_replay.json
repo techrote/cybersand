@@ -1,0 +1,32 @@
+{
+	"inertia_f64_le": "643cc6635a33f140",
+	"input_omega_f64_le": "9a9999999999b93f",
+	"input_vy_f64_le": "00000020e5eade3f",
+	"mass_f64_le": "0000000000408040",
+	"next_omega": 0.100000303664991,
+	"next_omega_f64_le": "dac9d4b19e99b93f",
+	"next_vy": 0.483078330755234,
+	"next_vy_f64_le": "00000060c1eade3f",
+	"offset_x": -4.83076858520508,
+	"offset_y": 27.125,
+	"omega": 0.1,
+	"registration": "SOL347-REVIEW-NUMERIC-001/exact-case-replay",
+	"scalar_energy_after": 2752.94520137657,
+	"scalar_energy_after_f64_le": "fc506ff1e381a540",
+	"scalar_energy_before": 2752.94520306198,
+	"scalar_energy_before_f64_le": "88dea7f1e381a540",
+	"scalar_energy_delta": -0.00000168540827871766,
+	"source_energy_after": 2752.94530154252,
+	"source_energy_after_f64_le": "f75390fee381a540",
+	"source_energy_before": 2752.94514575117,
+	"source_energy_before_f64_le": "76d624eae381a540",
+	"source_energy_delta": 0.00015579134969812,
+	"threshold": 0.0000275294514575117,
+	"unmodified_response": {
+		"accepted": false,
+		"impulses": [],
+		"outcome": "NonDissipativeResponse"
+	},
+	"vx": 3.0,
+	"vy": 0.483086854219437
+}

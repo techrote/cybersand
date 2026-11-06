@@ -1,0 +1,14 @@
+[
+  {
+    "path": "native/src/world.cpp",
+    "role": "legacy movement, chemistry, thermal and scheduling authority",
+    "locked_lf_sha256": "b7a129f44eccc7c33dbd2f0d84802ab096140dcaa9b5b3a83d45dd3bf85fbad1",
+    "pr347_lf_sha256": "91cecf308d01ef214f491f3dc1f353f10c9db17a55162b983fc4ecf80e6363e6"
+  },
+  {
+    "path": "native/src/world_pressure.inc",
+    "role": "policy admission, physical hash and CYPS restoration",
+    "locked_lf_sha256": "c8cb11512e935d05e099d8f155c1659473a7f61aa301e2e4900e55bdcfe4024b",
+    "pr347_lf_sha256": "0e6c8b916d9a457fc09d63f496b9acb5b8b61f55c3c09311d8bcf90bbf92b947"
+  }
+]

@@ -1,0 +1,213 @@
+{
+  "schema": "cybersand.sol347.review-documentation-validation.v1",
+  "date": "2026-11-04",
+  "base_commit": "7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1",
+  "scope": "Local documentation-only draft validation; no production or runtime execution acceptance",
+  "initial_repository_check": {
+    "status": "failed",
+    "scope": "current source/documentation and artifact identity",
+    "documentation": {
+      "status": "failed",
+      "documents": 119,
+      "navigation_link_documents": 8,
+      "canonical_claims": 235,
+      "local_links": 3582,
+      "heading_anchors": 692,
+      "questions": 32,
+      "errors": [
+        "Q01: missing expected-fact source ../../SOURCE-PROVENANCE.json",
+        "Q04: missing expected-fact source ../../docs/WEB_THREADING.md",
+        "Q28: missing expected-fact source ../../tools/dev.py",
+        "Q28: missing expected-fact source ../../docs/LOCAL_DEVELOPMENT.md",
+        "Q29: missing expected-fact source ../../tools/dev.py",
+        "Q30: missing expected-fact source ../../validation/browser-results.json"
+      ],
+      "warnings": [],
+      "limitations": [
+        "Does not verify source semantics or runtime claims",
+        "Does not fetch external URLs",
+        "Does not rewrite or reattest historical audits",
+        "Retrieval quality requires the separate lexical evaluation and expected-fact review"
+      ]
+    },
+    "materialized_runtime_files": [],
+    "unmaterialized_runtime_files": [
+      "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+      "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+      "godot/addons/godot-rapier2d/bin/godot_rapier.wasm",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.aarch64-linux-android.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.armv7-linux-androideabi.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.i686-linux-android.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.x86_64-linux-android.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.arm64.framework/libgodot_rapier.ios.arm64",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.x86_64.framework/libgodot_rapier.ios.x86_64",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.aarch64-unknown-linux-gnu.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.armv7-unknown-linux-gnueabihf.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.i686-unknown-linux-gnu.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.macos.framework/libgodot_rapier.macos.dylib",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.aarch64-pc-windows-msvc.dll",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.i686-pc-windows-msvc.dll",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+      "godot/addons/godot-rapier2d/bin/wasm-nothreads/godot_rapier.wasm"
+    ],
+    "errors": [
+      "Q01: missing expected-fact source ../../SOURCE-PROVENANCE.json",
+      "Q04: missing expected-fact source ../../docs/WEB_THREADING.md",
+      "Q28: missing expected-fact source ../../tools/dev.py",
+      "Q28: missing expected-fact source ../../docs/LOCAL_DEVELOPMENT.md",
+      "Q29: missing expected-fact source ../../tools/dev.py",
+      "Q30: missing expected-fact source ../../validation/browser-results.json"
+    ],
+    "limitations": [
+      "Identity is not execution evidence; read the dated runtime acceptance report",
+      "Retained vendor binaries and platform execution have separate dated provenance",
+      "Historical M11 integrity is checked separately by check_m11_consistency.py"
+    ]
+  },
+  "companion_inputs": {
+    "source_ref": "6a58311982941b75f46e22109a0829e5acb83c7e",
+    "reason": "Exact companion revision required by current documentation workflow; read-only Git extraction into isolated worktree parent, outside source branch",
+    "files": [
+      {
+        "path": "SOURCE-PROVENANCE.json",
+        "size": 74804,
+        "sha256": "49b86e67fa7b753f7e0904923a66192aed0348c280a46ef6750c0392e193f30d"
+      },
+      {
+        "path": "docs/WEB_THREADING.md",
+        "size": 540,
+        "sha256": "85b13f5d943ad6017fa4fa264bf8f9a54c9d49f80e40697a770d0524a3b9cd34"
+      },
+      {
+        "path": "docs/LOCAL_DEVELOPMENT.md",
+        "size": 6224,
+        "sha256": "fafc00052588507c63380fbe312b875345699a5a145a4135ea81de461d0ab95d"
+      },
+      {
+        "path": "tools/dev.py",
+        "size": 10390,
+        "sha256": "e9aaee35d135012f24b030acccb25d76f0e38893c58ff019138880f73f50f8ea"
+      },
+      {
+        "path": "validation/browser-results.json",
+        "size": 5978,
+        "sha256": "de154dd896b78384069be360c0f9424efa2ade182e6729eca6a242fcf9839839"
+      }
+    ]
+  },
+  "documentation": {
+    "status": "passed",
+    "documents": 119,
+    "navigation_link_documents": 8,
+    "canonical_claims": 235,
+    "local_links": 3582,
+    "heading_anchors": 692,
+    "questions": 32,
+    "errors": [],
+    "warnings": [],
+    "limitations": [
+      "Does not verify source semantics or runtime claims",
+      "Does not fetch external URLs",
+      "Does not rewrite or reattest historical audits",
+      "Retrieval quality requires the separate lexical evaluation and expected-fact review"
+    ]
+  },
+  "repository_provenance": {
+    "status": "passed",
+    "scope": "current source/documentation and artifact identity",
+    "documentation": {
+      "status": "passed",
+      "documents": 119,
+      "navigation_link_documents": 8,
+      "canonical_claims": 235,
+      "local_links": 3582,
+      "heading_anchors": 692,
+      "questions": 32,
+      "errors": [],
+      "warnings": [],
+      "limitations": [
+        "Does not verify source semantics or runtime claims",
+        "Does not fetch external URLs",
+        "Does not rewrite or reattest historical audits",
+        "Retrieval quality requires the separate lexical evaluation and expected-fact review"
+      ]
+    },
+    "materialized_runtime_files": [],
+    "unmaterialized_runtime_files": [
+      "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+      "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+      "godot/addons/godot-rapier2d/bin/godot_rapier.wasm",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.aarch64-linux-android.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.armv7-linux-androideabi.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.i686-linux-android.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.x86_64-linux-android.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.arm64.framework/libgodot_rapier.ios.arm64",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.x86_64.framework/libgodot_rapier.ios.x86_64",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.aarch64-unknown-linux-gnu.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.armv7-unknown-linux-gnueabihf.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.i686-unknown-linux-gnu.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.macos.framework/libgodot_rapier.macos.dylib",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.aarch64-pc-windows-msvc.dll",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.i686-pc-windows-msvc.dll",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+      "godot/addons/godot-rapier2d/bin/wasm-nothreads/godot_rapier.wasm"
+    ],
+    "errors": [],
+    "limitations": [
+      "Identity is not execution evidence; read the dated runtime acceptance report",
+      "Retained vendor binaries and platform execution have separate dated provenance",
+      "Historical M11 integrity is checked separately by check_m11_consistency.py"
+    ]
+  },
+  "historical_m11": {
+    "status": "passed",
+    "scope": "historical M11 integrity; no current runtime acceptance",
+    "historical_source_commit": "05ea45fda7bdd7b0150eb86c4922c202e89e08f4",
+    "records_checked": 18,
+    "source_hashes_checked": 28,
+    "compare_working_tree": false,
+    "working_tree_differences": [],
+    "errors": []
+  },
+  "retrieval": {
+    "method": {
+      "name": "heading-chunk BM25 lexical development baseline",
+      "k": 5,
+      "maximum_body_words": 420,
+      "overlap_words": 0,
+      "k1": 1.2,
+      "b": 0.75,
+      "metadata": "title, path, document-kind, status, scope, canonical-for, last-reviewed, heading path on every chunk when present",
+      "query_expansion": false,
+      "stemming": false,
+      "reranker": false,
+      "embeddings": false,
+      "corpus_policy": "explicit retrieval-corpus.json documents if present; otherwise frozen focused-directory policy plus navigation README/AGENTS; historical audit/uppercase legacy excluded"
+    },
+    "fixture_sha256": "f2727cbe26633359798736537e06c7754db8c5588af90627f79c6bd798bbb6ec",
+    "evaluator_sha256": "a68ebed677cdd2916b18dfc065fe59245c4690707f2d6083e07d108a7b523e59",
+    "corpus_manifest_sha256": "1d1a6dae6db3c44128ffc9d4ff9fd2a85eeeb709fcaad1bb8f9ebfa0121f6fc6",
+    "document_count": 119,
+    "chunk_count": 1591,
+    "summary": {
+      "questions": 32,
+      "canonical_hit_at_1": 19,
+      "canonical_hit_at_k": 32,
+      "mrr_at_k": 0.7536,
+      "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+    }
+  },
+  "commands": [
+    "python3 tools/ci/check_docs.py",
+    "python3 tools/ci/check_repository.py",
+    "python3 tools/ci/check_m11_consistency.py",
+    "python3 tools/docs/retrieval_eval.py --output <isolated-evidence>/review-retrieval.json"
+  ],
+  "limitations": [
+    "Runtime files are authenticated LFS pointers, not newly materialized/executed objects.",
+    "The new historical audit is linked from documentation navigation and intentionally does not change the frozen canonical retrieval corpus.",
+    "Final report and packet link/hash/whitespace checks are performed separately before publication."
+  ]
+}

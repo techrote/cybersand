@@ -1,0 +1,135 @@
+{
+  "schema": "cybersand.sol347.independent-review-packet.v1",
+  "date": "2026-11-04",
+  "scope": "Read-only review plus unchanged pure-planner diagnostic; no native/Rapier physics trial. Text suffixes preserve exact diagnostic bytes as documentation, outside production source and CI.",
+  "original_planner": {
+    "git_ref": "5b9b5a982e4638f4609309f996b92825d3dc36e4",
+    "path": "godot/scripts/solid_contact_response.gd",
+    "sha256": "d5bebb75d81cf5bc0dce756f7a844f19ad9f145fbd9ca96775ad8f999a061d6d",
+    "stored_in_packet": false
+  },
+  "file_count": 24,
+  "files": [
+    {
+      "path": "canonical-source-input-check.json",
+      "bytes": 644,
+      "sha256": "d796a95392079fd8f90cf3ff94e882fcd758112666dbdad9b39cb8d30fca1ecb"
+    },
+    {
+      "path": "checkout-and-manifest-check.json",
+      "bytes": 2040,
+      "sha256": "99b2b1c44d0f10203eb0e5d0da16a4e70cfbc111bfbf775d335f34f7e1b7894d"
+    },
+    {
+      "path": "cpu-evidence-review.md.txt",
+      "bytes": 17019,
+      "sha256": "7e98f2c7ec8c43b043f589cf543b848c8d75da7ae80b6e38abfb83d3dce42dc5"
+    },
+    {
+      "path": "cpu-reanalysis-full.json",
+      "bytes": 128911,
+      "sha256": "41c18fd7a0cf9cc37bdabd5c869cbf7e7075cb74f7d594a7be85847e7fd8755e"
+    },
+    {
+      "path": "cpu-reanalyze.py.txt",
+      "bytes": 7339,
+      "sha256": "ed09488d30bba5cd97377d307d34dfd6afa6f5b3e2744135b1ca0c473146da38"
+    },
+    {
+      "path": "documentation-validation.json",
+      "bytes": 10290,
+      "sha256": "5f583482b9b2abde5190f5dabf732634e8b0ee01c0131a00ab7d1245b1c19acf"
+    },
+    {
+      "path": "gcr-input-verification.json",
+      "bytes": 2571,
+      "sha256": "685aab37bae34953286a35f443e5346a39efb5d9e78888b1ee6a198f0e914f1d"
+    },
+    {
+      "path": "gcr-review.md.txt",
+      "bytes": 16359,
+      "sha256": "6cf6acb58e95a0ecbfba6115fb0335f891c29a1ab9d0556137ca48487b813e38"
+    },
+    {
+      "path": "lifecycle-review.md.txt",
+      "bytes": 17869,
+      "sha256": "d9aaef485d6a45701551623c95cafa848f15ad1c24c1ca9a92c17d222375086f"
+    },
+    {
+      "path": "planner-numeric/exact_case_replay.json",
+      "bytes": 1090,
+      "sha256": "db6ec160dff55873144a371060ae767a1824f2b5a7b446352a243b9689f74e83"
+    },
+    {
+      "path": "planner-numeric/exact_case_replay.log.txt",
+      "bytes": 1087,
+      "sha256": "303180c60687e16fa6951516ca70e44b5addaed0aedfaa0a10504be0656341d1"
+    },
+    {
+      "path": "planner-numeric/execution.log.txt",
+      "bytes": 6499,
+      "sha256": "b773992ed31b6981675aa9dffbf16bc4d652362ca97aa8e4635d2fc39e88cb09"
+    },
+    {
+      "path": "planner-numeric/manifest.original.json",
+      "bytes": 1938,
+      "sha256": "606f07835153dce1ac56c003e7b1a6103ec69775f5ebb93454be8137a6b5d704"
+    },
+    {
+      "path": "planner-numeric/probe.gd.txt",
+      "bytes": 5277,
+      "sha256": "94cb00d85bf6f18e7785e38026609760f632a345e6f0c01c13c839e67edb0523"
+    },
+    {
+      "path": "planner-numeric/project.godot.txt",
+      "bytes": 131,
+      "sha256": "8efd031ee9b6baad9d256c69c58d9807fdaa7fec266cb82239a878afd2b62e73"
+    },
+    {
+      "path": "planner-numeric/registration.md.txt",
+      "bytes": 2929,
+      "sha256": "63d8b79b3518a6c3934cf4c54cc9fccfd8a23c6fb03de0daef310a96f36fa426"
+    },
+    {
+      "path": "planner-numeric/replay_one.gd.txt",
+      "bytes": 3386,
+      "sha256": "366a173bf5d0ab048d4d6a9a8857cca8606c23f069df8084dd006e7b2bc44e89"
+    },
+    {
+      "path": "planner-numeric/results.json",
+      "bytes": 113041,
+      "sha256": "71686adf10b77809a19a0ff20b7caaaa3c79c85c37fd1f5676d48c473b1653aa"
+    },
+    {
+      "path": "planner-numeric/scalar_reanalysis.json",
+      "bytes": 5988,
+      "sha256": "9100b66725ac11a7400d83fc676c956577abaae3ff5be175fcbdc2787c27bf71"
+    },
+    {
+      "path": "planner-numeric/scalar_reanalysis.py.txt",
+      "bytes": 2169,
+      "sha256": "6cccd59b9e064be6ffd8f91358c89a4a2c151336144d3c039c3cf538090fcf07"
+    },
+    {
+      "path": "planner-numeric-independent-review.md.txt",
+      "bytes": 7246,
+      "sha256": "8be8de545e71acc157cdbcf84cec74412f9eeb4a102a1317b0af51b25a09a4af"
+    },
+    {
+      "path": "source-authority.json",
+      "bytes": 4994,
+      "sha256": "fac4d353c3f8d61b683a9195e75939e1159573d3823d606a40820b0085234937"
+    },
+    {
+      "path": "source-lock-comparison.json",
+      "bytes": 610,
+      "sha256": "f9597939155b22d288e49083bbb268939cf61f69c40311b3e607bd4d329ed9da"
+    },
+    {
+      "path": "tree-authority-check.json",
+      "bytes": 1312,
+      "sha256": "978bf4715bd91bc41fa5d4c647107c87adfd3c3f2ed93b3996c8dbf7f2a7a65a"
+    }
+  ],
+  "note": "Reviewer working notes are retained as evidence; the final report owns the synthesis and qualifications."
+}

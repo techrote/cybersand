@@ -10,6 +10,11 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+Structural detachment #347: [independent physical-blocker review](audits/2026-11-04-sol347-independent-physical-review.md)
+records a reproduced numerical false refusal, source-specific CPU/contact evidence,
+GCR NO-GO boundaries and a proposed bounded #364 repair/replay. It is a review
+of the separate draft candidate, not production integration or lifecycle acceptance.
+
 Material authoring: [#357 is merged as an owner-adopted Planned baseline](architecture/material-authoring-catalogue-plan.md#12-owner-adoption-and-shadow-compiler-handover--2026-11-04).
 The [#353-A shadow compiler](operations/material-catalogue-shadow.md) merged in
 [#371](https://github.com/techrote/cybersand/pull/371), accepted main `7ef4856e`;

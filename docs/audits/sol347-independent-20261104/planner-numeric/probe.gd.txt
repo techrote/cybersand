@@ -1,0 +1,104 @@
+extends SceneTree
+
+const Response = preload("res://response_original.gd")
+const MASS: float = 520.0
+const INERTIA: float = 109907693.0 / 1560.0
+
+var centers := PackedVector2Array()
+var sizes := PackedVector2Array()
+var records: Array[Dictionary] = []
+var failures: Array[String] = []
+var observation: Dictionary = {}
+var pose := Transform2D.IDENTITY
+var offset := Vector2.ZERO
+
+func _init() -> void:
+	call_deferred("_run")
+
+func _call(velocity: Vector2, omega: float) -> Dictionary:
+	return Response.plan(observation, pose, velocity, omega, MASS, INERTIA, centers, sizes)
+
+func _first_arithmetic(velocity: Vector2, omega: float) -> Dictionary:
+	var normal := Vector2.UP
+	var at_contact: Vector2 = velocity + Vector2(-offset.y, offset.x) * omega
+	var approach: float = at_contact.dot(normal)
+	var lever: float = offset.cross(normal)
+	var effective_inverse: float = 1.0 / MASS + lever * lever / INERTIA
+	var magnitude: float = -approach / effective_inverse
+	var impulse: Vector2 = normal * magnitude
+	var next_velocity: Vector2 = velocity + impulse / MASS
+	var next_omega: float = omega + offset.cross(impulse) / INERTIA
+	var before: float = Response._energy(velocity, omega, MASS, INERTIA)
+	var after: float = Response._energy(next_velocity, next_omega, MASS, INERTIA)
+	var tolerance: float = maxf(1e-8, before * 1e-8)
+	# Independent scalar arithmetic on the actual decoded Vector2 input.
+	var ideal_approach: float = -float(velocity.y) - float(offset.x) * omega
+	var ideal_k: float = 1.0 / MASS + float(offset.x) * float(offset.x) / INERTIA
+	var ideal_delta: float = -0.5 * ideal_approach * ideal_approach / ideal_k
+	return {"source_approach":approach, "ideal_approach":ideal_approach,
+		"source_before":before, "source_after":after, "source_delta":after-before,
+		"tolerance":tolerance, "ideal_delta":ideal_delta,
+		"first_step_guard_would_refuse":after > before+tolerance,
+		"source_j":magnitude, "source_impulse_y":impulse.y,
+		"source_next_vx":next_velocity.x, "source_next_vy":next_velocity.y,
+		"source_next_omega":next_omega}
+
+func _run() -> void:
+	var source_center := Vector2(32.0 + 3293.0 / 130.0, 16.0 + 175.0 / 8.0)
+	var rectangles := [Rect2(44,27,29,5), Rect2(44,32,16,1), Rect2(61,32,12,1),
+		Rect2(44,33,29,7), Rect2(50,40,15,4), Rect2(50,44,4,21)]
+	var total_area: float = 0.0
+	for rectangle: Rect2 in rectangles:
+		centers.append(rectangle.get_center()-source_center)
+		sizes.append(rectangle.size)
+		total_area += rectangle.get_area()
+	if total_area != 520.0:
+		failures.append("fixture area changed")
+	pose = Transform2D(0.0, source_center + Vector2(0,0.25))
+	var point := Vector2(52.5,65.25)
+	offset = point-pose.origin
+	observation = {"schema":"cybersand.sol281.sand-contact.v1", "ok":true,
+		"complete":true, "sample_serial":1, "token":"review:1", "body_generation":"1",
+		"tick":1, "revision":"1", "source_transform":pose,
+		"contacts":[{"proxy":6, "face":2, "cell":Vector2i(52,65),
+			"point":point, "normal":Vector2.DOWN, "a":Vector2(53,65.25),
+			"b":Vector2(52,65.25), "depth":0.25, "area":0.25, "weight":1.0}]}
+	var controls: Dictionary = {}
+	for item: Dictionary in [{"name":"approaching","v":Vector2(0,12)},
+		{"name":"separating","v":Vector2(0,-12)}, {"name":"stationary","v":Vector2.ZERO}]:
+		var result: Dictionary = _call(item.v,0.0)
+		controls[item.name] = result
+		if not result.get("accepted",false):
+			failures.append("control refusal: " + str(item.name))
+		if item.name == "approaching" and result.get("impulses",[]).is_empty():
+			failures.append("approaching control inactive")
+		if item.name != "approaching" and not result.get("impulses",[1]).is_empty():
+			failures.append("nonapproaching control reacted")
+	if failures.is_empty():
+		for omega: float in [-10.0,-1.0,-0.1,0.0,0.1,1.0,10.0]:
+			for delta: float in [1e-6,1e-5,1e-4,1e-3,0.01,0.1]:
+				for vx: float in [0.0,3.0]:
+					var velocity := Vector2(vx,-omega*offset.x+delta)
+					var result: Dictionary = _call(velocity,omega)
+					for repeat: int in range(2):
+						if _call(velocity,omega) != result:
+							failures.append("unequal frozen replay")
+					if not result.get("accepted",false) and not result.get("impulses",[1]).is_empty():
+						failures.append("refusal exposes partial impulse")
+					records.append({"omega":omega,"delta":delta,"vx":velocity.x,"vy":velocity.y,
+						"result":result,"first_arithmetic":_first_arithmetic(velocity,omega)})
+	var census: Dictionary = {}
+	for record: Dictionary in records:
+		var outcome: String = str(record.result.outcome)
+		census[outcome] = int(census.get(outcome,0))+1
+	var output := {"registration":"SOL347-REVIEW-NUMERIC-001", "runtime":Engine.get_version_info(),
+		"mass":MASS,"inertia":INERTIA,"source_center":source_center,"pose":pose,
+		"centers":centers,"sizes":sizes,"contact_offset":offset,"controls":controls,
+		"grid_cases":records.size(),"replays_per_case":3,"census":census,"failures":failures,"records":records}
+	var file := FileAccess.open("res://results.json",FileAccess.WRITE)
+	file.store_string(JSON.stringify(output,"\t"))
+	print("PURE_PLANNER_CENSUS ",JSON.stringify({"cases":records.size(),"census":census,"failures":failures}))
+	for record: Dictionary in records:
+		if record.result.outcome != "Accepted":
+			print("REFUSED_FROZEN_INPUT ",JSON.stringify(record))
+	quit(0 if failures.is_empty() else 1)

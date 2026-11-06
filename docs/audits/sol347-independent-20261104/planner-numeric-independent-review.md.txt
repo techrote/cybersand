@@ -1,0 +1,49 @@
+# Independent review: SOL347-REVIEW-NUMERIC-001
+
+## Decision
+
+**REPAIR FIRST is justified for a bounded planner energy-evaluation defect.** This diagnostic does not establish that the same defect caused any of the 332 recorded live NonDissipativeResponse refusals, the 2.64–4.05-cell penetration, or the approximately six-second sampled overlap. It does not close #364 or establish any live physical improvement.
+
+The valid claim is that the unchanged planner can reject an otherwise valid, approaching, exact-geometry input as non-dissipative when more accurate evaluation of its own stored proposed state is within the unchanged energy bound. A specific retained case is strictly dissipative. The guard is safe in the sense that it refuses without issuing partial impulses; the defect is a false refusal that can remove useful contact response.
+
+## Independently checked authority and protocol
+
+- `response_original.gd`, #347 head `5b9b5a982e4638f4609309f996b92825d3dc36e4:godot/scripts/solid_contact_response.gd`, and executed source `749fb8b597ad866f7535f26442e904207c4f7611` all have SHA256 `d5bebb75d81cf5bc0dce756f7a844f19ad9f145fbd9ca96775ad8f999a061d6d`.
+- The actual local executable `/workspace/scratch/b45094545f38/deps/godot-4.7/Godot_v4.7-stable_linux.x86_64` hashes to the registered `f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75`; recorded output reports `4.7.stable.official.5b4e0cb0f`.
+- Local filesystem birth/modified times place registration before the probe and execution/results, and show no subsequent registration modification: registration 11:04:12.152; probe 11:04:13.416; execution log starts 11:04:13.658; results 11:04:13.800 (all the filesystem's same offset). This is local/session prospective registration, not a pre-existing Git-hosted timestamp claim.
+- The registered grid is exactly 7 omega values × 6 residuals × 2 tangential velocities = 84. The unchanged calls are repeated three times and the three controls precede the grid. Output reports 74 Accepted, 10 NonDissipativeResponse, zero determinism/control failures. No threshold, gain or coefficient was changed. The 30-second launcher watchdog is supplied by the producing agent; runtime log completes immediately.
+- Exact coverage reconstruction of the six rectangle inputs matches the cut native fixture's 520 cells, without overlap: mass520; COM `(7453/130,303/8)`; inertia `109907693/1560`. Both existing void probes `(60,32)` and `(68,50)` remain outside the union. These agree with `native/tests/test_solid_detachment.cpp:57–79,175–198` and `godot/tests/test_solid_detachment_coupling.gd:62–74`.
+- The synthetic witness is one exterior bottom-face segment of proxy6 translated down0.25 cells, with source/current poses equal. It satisfies the unchanged planner's witness checks, as shown by the active approaching control and refusal reaching the energy guard. It is not a native-produced support observation or a full live-geometry/quantity replay.
+
+## Arithmetic finding
+
+I recomputed energies independently from the JSON numerical state and then decoded the exact-case replay's little-endian binary64 values. For the retained `(omega=0.1, residual=1e-5, vx=3)` case:
+
+| Quantity | Value |
+|---|---:|
+| Source `_energy` before | 2752.9451457511705 |
+| Source `_energy` after | 2752.94530154252 |
+| Source energy change | +0.00015579134969812003 |
+| Unchanged guard tolerance | 0.0000275294514575117 |
+| Scalar64 component energy before | 2752.945203061976 |
+| Scalar64 component energy after | 2752.9452013765676 |
+| Scalar64 energy change | -0.0000016854082787176594 |
+
+Both source energy values are reproduced **bit-for-bit** by binary32 component squaring and addition for `Vector2.length_squared()`, followed by the existing scalar arithmetic. Both reference energy values are independently reproduced **bit-for-bit** by first promoting the stored Vector2 components and squaring/adding in binary64. The exact component values in the replay are representable binary32 values. Thus this result is not a JSON-decimal precision artifact or a changed impulse formula.
+
+The defect location is `godot/scripts/solid_contact_response.gd:186–187`; the guarded use is `:340–347`. The guard compares a small difference of large energies against 1e-8, but the translational squared norm is rounded at Vector2 precision before scalar multiplication. A GDScript scalar `float` return does not restore precision already lost inside the vector operation.
+
+The complete ten-refusal reanalysis yields:
+
+- **8 false refusals relative to the unchanged bound.** Of these, **6 actually decrease** scalar64 energy; **2 increase it slightly but remain within the already-registered tolerance**. Do not describe all eight as strictly dissipative.
+- **2 correctly refused rounded proposals**, both omega=-10/residual1e-5 at vx0/3. Their scalar64 energy increase is approximately0.0422393074, exceeding tolerances approximately0.0412942662/0.0413176662. Their ideal unrounded impulse algebra is dissipative, but the actual rounded planner state is not within the bound. These controls must remain refused unless a separately qualified arithmetic repair changes the actual proposed state.
+
+The exact-case follow-up replays one already registered frozen input and records direct scalar64 arithmetic and bit patterns; it does not extend the population, alter the original planner, or relax the thresholds. I did not rerun Godot or extend the search; this independent review uses source inspection, arithmetic reanalysis and exact-byte decoding.
+
+## Scope and repair boundary
+
+“Actual rounded state” here means the planner's stored computational proposal: Vector2 linear components plus scalar omega. It is **not actual Rapier post-impulse state**, which was neither stepped nor measured in this diagnostic. The input uses the native analytic inertia and GDScript omega grid, not an archived backend readback. A one-contact nonrotated witness also does not qualify rotated geometry, broad simultaneous contacts, asynchronous publication, native support or worker-order behavior.
+
+The smallest legitimate repair is owned by #347/#364: evaluate the planner's kinetic energy from scalar64 component products of the same actual stored state while preserving the impulse law, four sweeps, all original tolerances, refusal semantics and actual-readback latch. Do not merely replace the guard with ideal dissipative algebra or allow every mathematically dissipative impulse: the two genuinely over-bound rounded proposals demonstrate why the measured-state check matters. Do not assume an energy-helper-only change guarantees all eight final four-sweep outcomes become accepted; that must be tested on the frozen grid and controls.
+
+Retain planning 1e-8 and actual-readback 1e-4 thresholds. Preserve source publication and native/runtime identities. Any later protected-source integration still needs the MAT-AUTH compatibility transition already identified by the parent review; this evidence is no authorization to refresh locks or import GCR. After a bounded arithmetic repair is independently qualified, the #364 synchronized/delayed publication experiment remains necessary to determine live relevance and remaining physics limitations.

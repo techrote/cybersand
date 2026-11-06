@@ -1,0 +1,40 @@
+# SOL347-REVIEW-NUMERIC-001 — prospective pure-planner diagnostic
+
+Registered before execution on 2026-11-04. This is an isolated read-only review
+diagnostic, not production physics or a replacement for the live aggregate test.
+
+- Source: exact `godot/scripts/solid_contact_response.gd` from #347 head
+  `5b9b5a982e4638f4609309f996b92825d3dc36e4`, also qualified physics source
+  `749fb8b597ad866f7535f26442e904207c4f7611`.
+- Planner SHA-256: `d5bebb75d81cf5bc0dce756f7a844f19ad9f145fbd9ca96775ad8f999a061d6d`.
+- Godot: `4.7.stable.official.5b4e0cb0f`, Linux x86_64 executable SHA-256
+  `f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75`.
+- Copy the planner unchanged to this scratch directory. No checkout edits,
+  native rebuild, Rapier integration, CI dispatch or tolerance/coefficient change.
+- Preserve the 520-cell RedBrick aggregate's six exact rectangles, both existing
+  geometric void controls, mass 520, COM (32+3293/130, 16+175/8), and polar inertia
+  109907693/1560. Use a synthetic frozen supported exterior witness at the trunk's
+  bottom face, translated down 0.25 cells, with source/current poses equal. This
+  independent test supplies a geometric contact value; it does not claim native
+  support sampling, native trajectory or synchronized publication qualification.
+- Contact: proxy 6, face 2, native unit square (52,65), endpoints (53,65.25) and
+  (52,65.25), point (52.5,65.25), outward normal (0,1), depth/area 0.25,
+  weight 1. All source coordinates are retained, with ordinary Godot Vector2
+  precision. No contact gain or force term is added.
+- Fixed numerical grid: omega = [-10,-1,-0.1,0,0.1,1,10]; approaching residual
+  delta = [1e-6,1e-5,1e-4,1e-3,0.01,0.1]; tangential vx = [0,3];
+  vy = -omega * offset.x + delta, rounded through Vector2 exactly as the planner
+  caller would supply it. 84 cases, each replayed three times for exact equality.
+- Positive/negative controls: obvious approaching contact, separating contact,
+  stationary contact. A refusal with a nonempty impulse array fails the apparatus;
+  any unequal replay fails determinism. Stop after the fixed grid, 30 seconds,
+  parser/runtime failure, or control failure; do not extend the search adaptively.
+- Record unchanged planner decisions and independent scalar float64 energy
+  algebra, plus the source's first numerical impulse arithmetic. If useful after
+  a refusal, a separate instrumented scratch copy may record every guard operand
+  for that exact frozen case only; its decision must match the unchanged planner.
+- Success means discrimination: show whether a valid approaching input can reach
+  NonDissipativeResponse while exact impulse algebra is dissipative. A negative
+  result remains evidence. It does not explain the 332 live refusals without
+  their missing full contact/velocity inputs, and does not authorize relaxing the
+  registered 1e-8 planning or 1e-4 actual-readback energy thresholds.
