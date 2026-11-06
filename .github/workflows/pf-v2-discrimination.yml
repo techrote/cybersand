@@ -1,0 +1,115 @@
+name: PF-V2 current-main named-canvas discrimination
+
+on:
+  push:
+    branches: [sol/pf-v2-discrimination-20261106]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  profile:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 300
+    env:
+      GODOT_URL: https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7
+      GODOT_SHA256: 0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c
+      PINNED_SOURCE: 7e2c2fd1aa2759590d63d5dfb53ce9e4c0a76e4b
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Source and compiler fences
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD^)" = "$PINNED_SOURCE" || test "$(git merge-base HEAD "$PINNED_SOURCE")" = "$PINNED_SOURCE"
+          mkdir -p build/pf-v2/scenes build/pf-v2/results
+          printf 'branch_head=%s\npinned_source=%s\n' "$(git rev-parse HEAD)" "$PINNED_SOURCE" > build/pf-v2/source.txt
+          g++-13 --version | head -n 1 | tee build/pf-v2/compiler.txt
+          uname -a | tee build/pf-v2/host.txt
+          python3 tools/ci/check_ci_provider_policy.py
+      - name: Generate exact built-in scene rectangles from canonical GDScript
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 3 --connect-timeout 60 --max-time 1200 -o "$RUNNER_TEMP/godot.zip" "$GODOT_URL"
+          echo "$GODOT_SHA256  $RUNNER_TEMP/godot.zip" | sha256sum --check --strict
+          unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/godot"
+          GODOT_BIN="$(find "$RUNNER_TEMP/godot" -maxdepth 1 -type f -name 'Godot*' -print -quit)"
+          chmod +x "$GODOT_BIN"
+          "$GODOT_BIN" --headless --path godot --script res://scripts/pf_canvas_extract.gd --             --output="$GITHUB_WORKSPACE/build/pf-v2/scenes" 2>&1 | tee build/pf-v2/scene-extract.log
+          for scene in my-canvas bench-canvas stress-canvas; do test -s "build/pf-v2/scenes/$scene.rects"; done
+      - name: Compile source-pinned native profiler
+        run: |
+          set -euo pipefail
+          g++-13 -std=c++20 -O3 -DNDEBUG -pthread -Wall -Wextra -Wpedantic -Wconversion -Wshadow             -Inative/include             native/src/world.cpp native/src/material_rules.cpp native/src/scheduler_geometry.cpp             native/src/settled_world_discovery.cpp native/src/render_snapshot.cpp native/src/c_api.cpp             native/bench/pf_canvas_discrimination.cpp -o build/pf-v2/pf_canvas_discrimination
+          sha256sum build/pf-v2/pf_canvas_discrimination > build/pf-v2/binary.sha256
+      - name: Run named-scene discrimination
+        shell: bash
+        run: |
+          set -euo pipefail
+          exe=build/pf-v2/pf_canvas_discrimination
+          for scene in my-canvas bench-canvas stress-canvas; do
+            file="build/pf-v2/scenes/$scene.rects"
+            for variant in 0 1 2; do
+              for gas in 0 1; do
+                "$exe" "$file" "$scene" "$variant" "$gas" 6 0 180                   > "build/pf-v2/results/$scene-v$variant-g$gas-w6-base.json"
+              done
+            done
+            for gas in 0 1; do
+              "$exe" "$file" "$scene" 2 "$gas" 1 0 180                 > "build/pf-v2/results/$scene-v2-g$gas-w1-base.json"
+            done
+            "$exe" "$file" "$scene" 2 0 6 1 180               > "build/pf-v2/results/$scene-v2-g0-w6-face.json"
+          done
+      - name: Reduce measurements and choose bottleneck class
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json, pathlib, statistics
+          root=pathlib.Path("build/pf-v2/results")
+          rows=[]
+          for path in sorted(root.glob("*.json")):
+              row=json.loads(path.read_text())
+              row["file"]=path.name
+              rows.append(row)
+          passing=[r for r in rows if r.get("status")=="PASS"]
+          failed=[r for r in rows if r.get("status")!="PASS"]
+          if not passing:
+              raise SystemExit("no passing profiles")
+          # Current-main discrimination uses six-worker cached_dormant base as
+          # the primary ordinary-workbench signal.
+          primary=[r for r in passing if r["variant"]=="cached_dormant" and r["workers"]==6 and not r["face"]]
+          by={(r["scene"],r["gas"]):r for r in primary}
+          decisions=[]
+          for scene in ("my-canvas","bench-canvas","stress-canvas"):
+              off=by.get((scene,False)); on=by.get((scene,True))
+              if off:
+                  decisions.append({"scene":scene,"gas":False,"tick_ms":off["tick_ms"],
+                    "head_share":off["head_ms"]/off["tick_ms"] if off["tick_ms"] else 0,
+                    "gas_share":off["gas_ms"]/off["tick_ms"] if off["tick_ms"] else 0,
+                    "residual_share":off["residual_ms"]/off["tick_ms"] if off["tick_ms"] else 0,
+                    "columns_per_tick":off["columns_per_tick"],"fallbacks_per_tick":off["fallbacks_per_tick"]})
+              if on:
+                  decisions.append({"scene":scene,"gas":True,"tick_ms":on["tick_ms"],
+                    "head_share":on["head_ms"]/on["tick_ms"] if on["tick_ms"] else 0,
+                    "gas_share":on["gas_ms"]/on["tick_ms"] if on["tick_ms"] else 0,
+                    "residual_share":on["residual_ms"]/on["tick_ms"] if on["tick_ms"] else 0,
+                    "columns_per_tick":on["columns_per_tick"],"fallbacks_per_tick":on["fallbacks_per_tick"]})
+          stress_off=by.get(("stress-canvas",False))
+          if stress_off:
+              shares={"head":stress_off["head_ms"],"gas":stress_off["gas_ms"],"kernel_residual":stress_off["residual_ms"]}
+              next_target=max(shares,key=shares.get)
+          else:
+              next_target="stress-gas-off-unavailable"
+          summary={"schema":"pf-v2-named-canvas-discrimination-v1","pinned_source":"7e2c2fd1aa2759590d63d5dfb53ce9e4c0a76e4b",
+                   "rows":rows,"decision_rows":decisions,"next_target_by_stress_gas_off":next_target,
+                   "failures":failed}
+          pathlib.Path("build/pf-v2/summary.json").write_text(json.dumps(summary,indent=2)+"\n")
+          print(json.dumps({"next_target":next_target,"decision_rows":decisions,"failures":failed},indent=2))
+          PY
+      - name: Retain raw evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: pf-v2-discrimination-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/pf-v2/
+          if-no-files-found: error
+          retention-days: 90
