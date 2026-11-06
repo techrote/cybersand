@@ -98,11 +98,13 @@ def main():
         annotation = command(["callgrind_annotate", "--auto=yes", "--show=Ir",
                               "--threshold=0.25", profile_file],
                              tree, out / (kind + "-annotation.log"), timeout=180)
-        # A Callgrind "summary" is instruction count, not elapsed wall time.
+        # Callgrind's "summary: 0" describes the no-instrumentation startup.
+        # Actual instructions after CALLGRIND_START_INSTRUMENTATION live
+        # in the final "totals: <Ir>" record, not the header summary.
         output = profile_file.read_text(encoding="utf-8", errors="replace")
         event = re.search(r"(?m)^events:\s+(\w+)", output)
-        result = re.search(r"(?m)^summary:\s+(\d+)", output)
-        if not event or event.group(1) != "Ir" or not result:
+        result = re.search(r"(?m)^totals:\s+(\d+)", output)
+        if not event or event.group(1) != "Ir" or not result or int(result.group(1)) <= 0:
             raise RuntimeError(f"invalid Callgrind instruction event record for {kind}")
         source_summaries[kind] = {
             "source_commit": sha, "world_lf_sha256": world_sha,
