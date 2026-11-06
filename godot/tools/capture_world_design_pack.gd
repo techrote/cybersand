@@ -42,6 +42,7 @@ var generation_path: String = ""
 var claim_path: String = ""
 var claim_acquired: bool = false
 var owner_host: String = ""
+var owner_process_started: String = ""
 var transaction_requires_recovery: bool = false
 var framebuffer_pause_consumed: bool = false
 var manifest: Dictionary = {}
@@ -258,9 +259,10 @@ func _output_custody_error() -> String:
 func _write_transaction(state: String, extra: Dictionary = {}) -> bool:
 	if claim_path.is_empty() or not DirAccess.dir_exists_absolute(claim_path):
 		return false
-	var record: Dictionary = {"schema": 2, "state": state, "attempt_id": attempt_id,
+	var record: Dictionary = {"schema": 3, "state": state, "attempt_id": attempt_id,
 		"output_path": output_path, "pack_path": pack_path,
 		"process_id": OS.get_process_id(), "owner_host": owner_host,
+		"owner_process_started": owner_process_started,
 		"requires_recovery": transaction_requires_recovery}
 	record.merge(extra, true)
 	return _write_json(claim_path.path_join("transaction.json"), record)
@@ -304,48 +306,107 @@ func _release_claim() -> bool:
 	return true
 
 
-# A recovery token identifies a transaction, but is NOT permission to evict a
-# running owner. A hostname distinguishes local PID namespaces from shared paths.
-# No automatic takeover is possible if host identity/liveness is unprovable.
-func _owner_host_identity() -> String:
-	var host: String = ""
-	if OS.get_name() == "Windows":
-		host = OS.get_environment("COMPUTERNAME").strip_edges()
-	elif OS.get_name() == "Linux":
-		host = OS.get_environment("HOSTNAME").strip_edges()
-	if host.is_empty():
-		var output: Array = []
-		if OS.execute("hostname", PackedStringArray(), output) == 0 and not output.is_empty():
-			host = str(output[0]).strip_edges()
-	if host.is_empty():
+# Recovery requires a stable OS instance + process-namespace identity and
+# the original process's start identity. A user-supplied hostname alone cannot
+# establish process-table visibility on shared volumes (e.g. Linux containers).
+# Failed or unsupported identity probes are UNKNOWN and deny recovery.
+func _identity_command(program: String, arguments: PackedStringArray) -> String:
+	var output: Array = []
+	var code: int = OS.execute(program, arguments, output, true)
+	if code != 0 or output.size() != 1:
 		return ""
-	return OS.get_name() + ":" + host.to_lower()
+	return str(output[0]).strip_edges()
 
 
-# OS.is_process_running() is documented for Godot-spawned child PIDs, whereas
-# the capture owner can be started independently (e.g. Python/GitHub Actions).
-# Use the host's OS process table; unrecognized/error states fail closed.
-func _owner_liveness(pid: int) -> String:
+func _owner_host_identity() -> String:
+	if OS.get_name() == "Linux":
+		var boot: String = _identity_command("cat", PackedStringArray(["/proc/sys/kernel/random/boot_id"]))
+		var pid_ns: String = _identity_command("readlink", PackedStringArray(["/proc/self/ns/pid"]))
+		var owner_uid: String = _identity_command("id", PackedStringArray(["-u"]))
+		if boot.is_empty() or not pid_ns.begins_with("pid:[") or not pid_ns.ends_with("]") or not owner_uid.is_valid_int():
+			return ""
+		return "Linux:" + boot + ":" + pid_ns + ":uid=" + owner_uid
+	if OS.get_name() == "Windows":
+		# MachineGuid alone is insufficient across OS boots. Include the real
+		# system boot timestamp; never trust the inherited COMPUTERNAME string.
+		var probe: String = ("$ErrorActionPreference = 'Stop'; try { " +
+			"$id = (Get-ItemProperty -Path 'HKLM:\\SOFTWARE\\Microsoft\\Cryptography' -Name 'MachineGuid').MachineGuid; " +
+			"$boot = (Get-CimInstance Win32_OperatingSystem).LastBootUpTime.ToUniversalTime().Ticks; " +
+			"if ([string]::IsNullOrWhiteSpace($id)) { exit 2 }; " +
+			"[Console]::Out.Write($id.ToLowerInvariant() + ':' + $boot.ToString()) " +
+			"} catch { exit 3 }")
+		var result: String = _identity_command("powershell.exe",
+			PackedStringArray(["-NoProfile", "-NonInteractive", "-Command", probe]))
+		if result.length() < 40 or result.find(":") < 0:
+			return ""
+		return "Windows:" + result
+	return ""
+
+
+# Linux /proc/<pid>/stat field 22 is the process-start tick. The comm field
+# may include spaces and closing parentheses; split after the LAST ')'.
+func _linux_process_started(pid: int) -> String:
+	var file: String = "/proc/" + str(pid) + "/stat"
+	if not FileAccess.file_exists(file):
+		return ""
+	var stat: String = _identity_command("cat", PackedStringArray([file]))
+	var end_comm: int = stat.rfind(")")
+	if end_comm < 0 or end_comm + 2 >= stat.length():
+		return ""
+	var fields: PackedStringArray = stat.substr(end_comm + 2).split(" ", false)
+	if fields.size() < 20:
+		return ""
+	var start: String = fields[19].strip_edges()
+	return start if start.is_valid_int() and int(start) > 0 else ""
+
+
+func _owner_process_started(pid: int) -> String:
 	if pid <= 0:
+		return ""
+	if OS.get_name() == "Linux":
+		return _linux_process_started(pid)
+	if OS.get_name() == "Windows":
+		var probe: String = ("$ErrorActionPreference = 'Stop'; try { " +
+			"$p = Get-Process -Id %d -ErrorAction Stop; " +
+			"[Console]::Out.Write($p.StartTime.ToUniversalTime().Ticks.ToString()) " +
+			"} catch { exit 3 }") % pid
+		var result: String = _identity_command("powershell.exe",
+			PackedStringArray(["-NoProfile", "-NonInteractive", "-Command", probe]))
+		return result if result.is_valid_int() and int(result) > 0 else ""
+	return ""
+
+
+# "dead" is permitted only within the SAME verified OS/PID namespace.
+# A live, different process using the original numeric PID is NOT the owner;
+# its distinct start identity permits recovery of the original dead attempt.
+func _owner_liveness(pid: int, expected_started: String) -> String:
+	if pid <= 0 or expected_started.is_empty() or not expected_started.is_valid_int():
 		return "unknown"
 	if OS.get_name() == "Linux":
-		if not DirAccess.dir_exists_absolute("/proc"):
+		if not DirAccess.dir_exists_absolute("/proc") or not FileAccess.file_exists("/proc/self/stat"):
 			return "unknown"
-		return "alive" if DirAccess.dir_exists_absolute("/proc/" + str(pid)) else "dead"
+		if not DirAccess.dir_exists_absolute("/proc/" + str(pid)):
+			return "dead"
+		var current: String = _linux_process_started(pid)
+		if current.is_empty():
+			return "unknown"
+		return "alive" if current == expected_started else "dead"
 	if OS.get_name() == "Windows":
-		var output: Array = []
-		var probe: String = ("$ErrorActionPreference = 'Stop'; " +
-			"try { $null = Get-Process -Id %d -ErrorAction Stop; " +
-			"[Console]::Out.Write('alive') } catch { " +
-			"if ($_.CategoryInfo.Category -eq 'ObjectNotFound') { " +
+		var probe: String = ("$ErrorActionPreference = 'Stop'; try { " +
+			"$p = Get-Process -Id %d -ErrorAction Stop; " +
+			"[Console]::Out.Write('alive:' + $p.StartTime.ToUniversalTime().Ticks.ToString()) " +
+			"} catch { if ($_.CategoryInfo.Category -eq 'ObjectNotFound') { " +
 			"[Console]::Out.Write('dead') } else { [Console]::Out.Write('unknown') } }") % pid
-		var code: int = OS.execute("powershell.exe",
-			PackedStringArray(["-NoProfile", "-NonInteractive", "-Command", probe]), output)
-		if code != 0 or output.size() != 1:
+		var result: String = _identity_command("powershell.exe",
+			PackedStringArray(["-NoProfile", "-NonInteractive", "-Command", probe]))
+		if result == "dead":
+			return "dead"
+		if not result.begins_with("alive:"):
 			return "unknown"
-		var result: String = str(output[0]).strip_edges()
-		if result in ["alive", "dead"]:
-			return result
+		var current: String = result.trim_prefix("alive:")
+		if not current.is_valid_int():
+			return "unknown"
+		return "alive" if current == expected_started else "dead"
 	return "unknown"
 
 
@@ -355,7 +416,10 @@ func _prepare_target() -> String:
 		return custody
 	owner_host = _owner_host_identity()
 	if owner_host.is_empty():
-		return "cannot establish local host identity for safe publication claim"
+		return "cannot establish OS boot and PID namespace identity for safe publication claim"
+	owner_process_started = _owner_process_started(OS.get_process_id())
+	if owner_process_started.is_empty():
+		return "cannot establish process-start identity for safe publication claim"
 	attempt_id = "%d-%d-%d" % [int(Time.get_unix_time_from_system()), Time.get_ticks_usec(), OS.get_process_id()]
 	claim_path = output_path + ".world-capture-claim"
 	if FileAccess.file_exists(claim_path) and not DirAccess.dir_exists_absolute(claim_path):
@@ -367,9 +431,9 @@ func _prepare_target() -> String:
 			return "output is already claimed by attempt " + stale_id + "; explicit --recover-claim=<attempt-id> is required after confirming the process is no longer active"
 		if recover_claim_id != stale_id:
 			return "--recover-claim does not match the existing transaction attempt id"
-		# Refuse schema-1/partial/cross-host records: there is no trustworthy
+		# Refuse schema-1/2, incomplete or cross-namespace records: there is no trustworthy
 		# evidence that their recorded PID can be checked in this OS namespace.
-		if typeof(stale) != TYPE_DICTIONARY or int(stale.get("schema", 0)) != 2:
+		if typeof(stale) != TYPE_DICTIONARY or int(stale.get("schema", 0)) != 3:
 			return "output is already claimed; legacy or incomplete transaction cannot be safely recovered"
 		var owner_pid_value: Variant = stale.get("process_id", null)
 		if typeof(owner_pid_value) not in [TYPE_INT, TYPE_FLOAT]:
@@ -379,7 +443,10 @@ func _prepare_target() -> String:
 			return "output is already claimed; attempt and owner process identity disagree"
 		if str(stale.get("owner_host", "")) != owner_host or stale.get("output_path") != output_path:
 			return "output is already claimed; owner host or output identity cannot be verified"
-		var state: String = _owner_liveness(previous_pid)
+		var previous_start: String = str(stale.get("owner_process_started", ""))
+		if previous_start.is_empty() or not previous_start.is_valid_int():
+			return "output is already claimed; previous owner process-start identity is missing"
+		var state: String = _owner_liveness(previous_pid, previous_start)
 		if state == "alive":
 			return "output is already claimed by live attempt " + stale_id + "; recovery cannot evict an active process"
 		if state != "dead":

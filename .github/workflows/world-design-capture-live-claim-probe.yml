@@ -5,6 +5,7 @@ on:
     branches:
       - tools/world-design-capture-live-claim-probe-20261106
       - tools/world-design-capture-live-owner-repair-20261106
+      - tools/world-design-capture-identity-fencing-20261106
   workflow_dispatch:
 
 permissions:

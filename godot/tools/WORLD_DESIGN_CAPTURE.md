@@ -82,7 +82,7 @@ capture with the **correct** `--recover-claim=<attempt-id>` to archive a claim
 and 230/230 Windows passing full-campaign controls did not establish this
 additional concurrency invariant; the negative test was 8/12 on each OS.
 
-This successor implementation changes claim transactions to **schema 2** and
+The earlier corrective #469 implementation changed claim transactions to **schema 2** and
 records a process ID plus a local operating-system/host identity. Explicit
 recovery now checks the exact attempt token, schema, recorded owner PID and
 matching output/host namespace, and then requires positive evidence that the
@@ -93,11 +93,11 @@ Linux checks the local `/proc` process table; Windows uses the system
 `Get-Process` query through PowerShell. Godot's
 `OS.is_process_running()` is not relied on because its documented contract
 only covers PIDs spawned through Godot itself, whereas capture instances are
-typically started by external CI/Python processes. A reused PID conservatively
-blocks recovery. Host identity is a same-machine safety guard, **not** a
+typically started by external CI/Python processes. At that predecessor head, a reused PID conservatively
+blocked recovery. Host identity was a same-machine safety guard, **not** a
 distributed lease or proof of ownership on a shared multi-host filesystem.
 
-Schema-1 claims made by earlier experimental versions are intentionally **not**
+Schema-1 claims made by earlier experimental versions were intentionally **not**
 automatically recoverable after upgrading. Preserve the original transaction
 and seek explicit manual custody/reconciliation; do not delete or rename an
 unknown claim based on a token alone. The actual-process acceptance test is
@@ -108,6 +108,55 @@ generation hashes, plus invalid-transaction negatives. Fresh exact-head
 Linux/Windows test results must be recorded before marking this guard qualified.
 Neither the earlier failure nor the independent-acceptance gate is superseded
 by the presence of this source change.
+
+### R1-D schema-3 process-generation and PID-namespace successor (Draft #478)
+
+The next independent review of #469 found that two *different Linux PID
+namespaces* can share an output mount and an inherited hostname. The previous
+schema-2 recovery test of `/proc/<pid>` might classify a genuinely live owner
+as dead when its PID is not visible from the recovering namespace. A numeric
+PID reused by an unrelated process could also block otherwise valid recovery.
+
+The new **schema-3** transaction records a process-start identity alongside
+the previous PID, attempt ID and output path. On Linux, the runtime identity is
+the `/proc/sys/kernel/random/boot_id` plus the kernel PID-namespace inode
+reported by `readlink /proc/self/ns/pid` and the effective UID from `id -u`;
+this also avoids incorrectly treating an owner hidden by cross-user procfs
+restrictions as dead. The original process generation is
+`/proc/<pid>/stat` field 22 (start tick). Procfs pseudo-files are read through
+a subprocess rather than a zero-length Godot file read.
+
+On Windows, runtime identity uses the actual system `MachineGuid` and Windows
+last-boot timestamp obtained through PowerShell/CIM; process identity uses
+the `Get-Process` start timestamp. Environment `HOSTNAME` or
+`COMPUTERNAME` strings are **not** used as ownership authority.
+
+Explicit recovery now requires the exact schema-3 attempt ID, output path,
+machine/boot/PID-namespace identity, owner PID and owner process generation.
+It refuses legacy schema 1/2, missing data, unsupported platforms and
+unknown probes **without renaming the existing claim**. A process with the
+same numeric PID but a distinct creation timestamp is not the original owner,
+so legitimate stale recovery need not be blocked by PID reuse.
+
+**Verification and boundaries:** the existing actual Godot live/dead recovery
+campaign is extended with wrong/missing namespace metadata, legacy schemas
+and a real living unrelated process assigned a deliberately stale process-start
+identity. This is a *simulated PID-reuse transaction*, not observation of an
+actual OS PID rollover. The additional
+`godot/tests/world_design_capture_pid_namespace_probe.py` invokes real Godot
+from a separate Docker PID namespace with deliberately identical `HOSTNAME`
+and bind-mounted **identical output paths** while the graphical original
+publisher remains alive. See the exact-head workflows and retained logs for
+actual outcome, not merely the presence of the test code.
+
+The implementation is a **same-OS-instance/PID-namespace transaction guard**,
+not an adversary-proof distributed lock, filesystem fencing primitive, or
+defence against malicious code with write access to transaction metadata.
+Unknown process table visibility and machine/namespace identity are fail-closed.
+Unprovable or legacy records require manual custody. The recovery check does
+not establish arbitrary network filesystem atomicity, and this apparatus
+remains Draft until fresh independent acceptance and real current-#454
+reference-capture qualification are completed.
 
 The fault-injection switches `--test-fail-publication=on`,
 `--test-fail-rollback=on`, `--test-pause-before-publication-ms=N` and
