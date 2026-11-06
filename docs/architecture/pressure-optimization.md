@@ -63,6 +63,32 @@ publishing a partial head answer. The snapshot distinguishes cold, pending,
 ready, reference-capacity fallback and reference-budget fallback. Those statuses
 describe derived execution, not a different physical solver.
 
+## Experimental execution v5: local-Y run repair (Draft #472; unqualified)
+
+**Branch-only implementation candidate, not accepted main:**
+[Draft #472](https://github.com/techrote/cybersand/pull/472) depends on
+#406 at pinned source `4a80af2a891332176a3912a235582d77d076a185`.
+Its owner-only cache reserves one inclusive Y hull for every indexed
+chunk/local-X and a private prospective-row bitmap, unions producer edits at
+phase barriers, and preflights affected complete Water runs plus conservative
+full-width row work. Gas topology retains global full-column invalidation;
+missing membership or insufficient derived-work budget invokes the complete
+reference preparation before derived values are committed. The existing
+reference top-load/floor equations, row interpolation, sleeping wakes,
+certificate stencil and worker joins are intended to remain unchanged.
+
+The experimental execution identity changes from 4 to 5 and new counters
+report preflight time/probes, dirty spans, selected runs, possible base/row
+work and column/row/wake costs. Physical laws and defaults are unchanged.
+The capacity bound for new scratch is C × (4S + 128) bytes at the intended
+4-byte Y span and 128-byte row bitmap ABI; it is reported as
+`run_repair_capacity_bytes`. Neither this design sketch nor the attached
+native fixture constitutes an executed native proof. Before admission, the
+independent exact-head A/B/C, worker/sanitizer, native/Godot, producer
+coverage and real scene-matched benchmark gates must pass. The
+[dated Draft evidence](../audits/2026-11-06-pf-run-head-repair-draft.md)
+records the current unqualified status and reproduction steps.
+
 ## Sealed gas discovery reuse
 
 The cache reuses only the BFS discovery of a proven unchanged, sealed positive-ID
