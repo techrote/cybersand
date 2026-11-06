@@ -24,6 +24,26 @@ function validatePack(p,source,header){
    const m=materials.get(id);assert(m&&!m.movable&&m.kernel===0,"active or unknown scene material "+id);
   }
  }
+
+ const a=p.alternate_scene;
+ assert(a&&a.id==="receding-mirror"&&a.size[0]===1320&&a.size[1]===308,"alternate contract");
+ assert(a.placements.length===p.features.length,"alternate feature count");
+ const seen=new Set(),levels=new Set();
+ for(const loc of a.placements){
+ const f=fs.get(loc.feature_id);assert(f&&!seen.has(f.id),"alternate duplicate/unknown feature");seen.add(f.id);
+ const [x,y]=loc.origin,[w,h]=f.size;assert(Number.isInteger(x)&&Number.isInteger(y)&&x>=0&&y>=0&&x+w<=a.size[0]&&y+h<=a.size[1],"alternate placement bounds");
+ assert(loc.anchor_world[0]===x+f.anchor.point[0]&&loc.anchor_world[1]===y+h,"alternate anchor mismatch");levels.add(y+h);
+ const variant=loc.variant==null?null:f.variants.find(q=>q.id===loc.variant);assert(loc.variant===null||variant,"alternate variant missing");
+ for(const r of f.rectangles){const id=variant&&variant.swap[String(r[4])]!==undefined?variant.swap[String(r[4])]:r[4],m=materials.get(id);assert(m&&!m.movable&&m.kernel===0,"alternate active stamp "+id);}
+ }
+ assert(levels.size>=4,"alternate elevations not distinct");
+ for(const group of ["terrain_rectangles","foreground_rectangles"]){
+ assert(Array.isArray(a[group])&&a[group].length>=20,"alternate authored geometry "+group);
+ for(const r of a[group]){assert(Array.isArray(r)&&r.length===5&&r.every(Number.isInteger),"alternate rectangle integrity");
+ const [x,y,w,h,id]=r;assert(x>=0&&y>=0&&w>0&&h>0&&x+w<=a.size[0]&&y+h<=a.size[1],"alternate rectangle bounds");
+ const m=materials.get(id);assert(m&&!m.movable&&m.kernel===0,"alternate material active/unknown "+id);}
+ }
+
  return {terrain:s.terrain_rectangles.length,foreground:s.foreground_rectangles.length,features:p.features.length,rectangles:total,variants:p.features.reduce((n,f)=>n+f.variants.length,0),materials:p.palette.length,scene_placements:s.placements.length,scene_rect_area:dry,patterns:s.patterns.length};
 }
 const dir=dirname(fileURLToPath(import.meta.url));
@@ -49,7 +69,16 @@ if(process.argv.includes("--negative")){
  p=>p.combined_scene.patterns[0].sequence[0]="nonexistent",
  p=>p.combined_scene.terrain_rectangles[0][0]=-1,
  p=>p.combined_scene.terrain_rectangles[0][2]=5000,
- p=>p.combined_scene.foreground_rectangles[0][4]=3
+ p=>p.combined_scene.foreground_rectangles[0][4]=3,
+ p=>p.alternate_scene.placements[0].origin[0]=-3,
+ p=>p.alternate_scene.placements[0].anchor_world[1]=123,
+ p=>p.alternate_scene.placements[6].variant=null,
+ p=>p.alternate_scene.placements[1].feature_id=p.alternate_scene.placements[0].feature_id,
+ p=>p.alternate_scene.placements[2].origin[1]=999,
+ p=>p.alternate_scene.terrain_rectangles[0][4]=3,
+ p=>p.alternate_scene.foreground_rectangles[0][2]=2000,
+ p=>p.alternate_scene.terrain_rectangles[0][0]=-2,
+ p=>p.alternate_scene.placements.forEach(v=>v.anchor_world[1]=272)
  ];
  let refused=0;
  for(const damage of mutate){const invalid=structuredClone(p);damage(invalid);try{validatePack(invalid,c,h)}catch{refused++}}

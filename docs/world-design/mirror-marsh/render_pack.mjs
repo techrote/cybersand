@@ -12,7 +12,7 @@ function renderSvg(p){
  const draw=(f,x,y,scale,variant)=>{const v=f.variants.find(e=>e.id===variant);put(`<g transform="translate(${x},${y}) scale(${scale})" shape-rendering="crispEdges">`);for(const [rx,ry,w,h,id] of f.rectangles){const next=(v&&v.swap[String(id)]!==undefined)?v.swap[String(id)]:id;put(srcRect(rx,ry,w,h,next))}put("</g>")};
  const rect=(x,y,w,h,fill,rx=0)=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${rx}" fill="${fill}"/>`;
  const text=(x,y,content,size=16,fill="#dae9eb",weight=400,anchor="start")=>`<text x="${x}" y="${y}" font-family="ui-monospace,SFMono-Regular,Consolas,monospace" font-size="${size}" font-weight="${weight}" text-anchor="${anchor}" fill="${fill}">${escape(content)}</text>`;
- const W=1490,H=1344;put(`<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" role="img" aria-label="Mirror Marsh world design staging sheet, all eight modules and a dry composition">`);put(`<title>Mirror Marsh — source-colour feature collection 010</title><desc>Design-stage illustration only, not native simulation, optical reflection, lighting or a Godot screenshot. Non-stamped background is visual framing.</desc>`);
+ const W=1490,H=2116;put(`<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" role="img" aria-label="Mirror Marsh world design staging sheet, all eight modules and a dry composition">`);put(`<title>Mirror Marsh — source-colour feature collection 010</title><desc>Design-stage illustration only, not native simulation, optical reflection, lighting or a Godot screenshot. Non-stamped background is visual framing.</desc>`);
  put(rect(0,0,W,H,"#0b1720"));put(rect(32,22,W-64,49,"#152a31",9));put(text(54,55,"MIRROR MARSH / RELIQUARIES OF THE STILL TIDE",26,"#e3efe8",700));put(text(1438,54,"PACK 010 / DESIGN ONLY",13,"#79b9b4",600,"end"));
  put(text(51,100,"THE LAST CAUSEWAY  ·  1320 × 308 DRY CELLS  ·  FICTIONAL OPTICS",14,"#a3babd",600));put(rect(49,111,1392,343,"#14232b",8));put(rect(60,122,1370,318,"#101e28",3));
  const fx=75,fy=134;put(`<path d="M${fx} ${fy+p.combined_scene.baseline_y+0.5} h1320" stroke="#54837d" opacity=".35" stroke-dasharray="4 5" fill="none"/>`);
@@ -37,7 +37,27 @@ function renderSvg(p){
  put("</svg>");};
  crop(51,"I / SHATTERED MOON BEZEL & STILT-SANCTUARY",459,37);
  crop(767,"II / RUINED REED BANK, LENSES & SALT LEVEE",835,149);
- put(text(54,1316,"PINNED NATIVE MATERIAL PALETTE  ·  SOURCE CELL STAMPS  ·  NOT A GODOT IMAGE OR PHYSICAL PROOF",12,"#83a7a2"));put("</svg>");
+ put(text(54,1316,"PINNED NATIVE MATERIAL PALETTE  ·  SOURCE CELL STAMPS  ·  NOT A GODOT IMAGE OR PHYSICAL PROOF",12,"#83a7a2"));
+ const alt=p.alternate_scene;
+ put(text(51,1360,"02 / THE RECEDING MIRROR  ·  ALTERNATE INLAND RELIQUARY",15,"#a8c8c3",600));
+ put(text(53,1380,"REVERSED PILGRIMAGE  ·  UNEQUAL LANDINGS  ·  GEODETIC CROWN  ·  DRY FIXED STAMPS",12,"#9eb3ae"));
+ put(rect(49,1390,1392,342,"#14232b",8));put(rect(60,1401,1370,318,"#101e28",3));
+ const ax=75,ay=1406;
+ put('<path d="M'+ax+' '+(ay+alt.baseline_y+0.5)+' h1320" stroke="#54837d" opacity=".3" stroke-dasharray="4 5" fill="none"/>');
+ for(const r of alt.terrain_rectangles)put(srcRect(ax+r[0],ay+r[1],r[2],r[3],r[4]));
+ for(const loc of alt.placements){const f=p.features.find(q=>q.id===loc.feature_id);draw(f,ax+loc.origin[0],ay+loc.origin[1],1,loc.variant)}
+ for(const r of alt.foreground_rectangles)put(srcRect(ax+r[0],ay+r[1],r[2],r[3],r[4]));
+ put(text(69,1722,"EIGHT REARRANGED MODULES  ·  GAPS ARE UNSTAMPED, NOT HOST CLEARANCE",11,"#9eb3ae"));
+ put(text(53,1765,"04 / ALTERNATE CLOSE STUDIES  ·  SOURCE COLOURS, NO ENGINE LIGHTING",14,"#a8c8c3",600));
+ const altCrop=(x,label,vx,vy)=>{put(text(x,1790,label,12,"#c9d9d4",650));put(rect(x,1799,672,245,"#172b32",7));
+ put('<svg x="'+(x+7)+'" y="1806" width="658" height="231" viewBox="'+vx+' '+vy+' 356 125" preserveAspectRatio="none" aria-label="'+escape(label)+'">');put(rect(vx,vy,356,125,"#101e28"));
+ for(const r of alt.terrain_rectangles)put(srcRect(r[0],r[1],r[2],r[3],r[4]));
+ for(const loc of alt.placements){const f=p.features.find(q=>q.id===loc.feature_id);draw(f,loc.origin[0],loc.origin[1],1,loc.variant)}
+ for(const r of alt.foreground_rectangles)put(srcRect(r[0],r[1],r[2],r[3],r[4]));put("</svg>");};
+ altCrop(51,"III / COLLAPSED GEODETIC CROWN AND BURIED REGISTERS",555,41);
+ altCrop(767,"IV / INCLINOMETERS AND BROKEN EAST BANK STAIRS",878,111);
+ put(text(54,2084,"TWO DISTINCT SOURCE-COLOUR DIORAMAS  ·  NO REFLECTION / BRINE / PHYSICS OR GODOT CLAIM",12,"#83a7a2"));
+put("</svg>");
  return c.join("\n")+"\n";
 }
 const dir=dirname(fileURLToPath(import.meta.url));
