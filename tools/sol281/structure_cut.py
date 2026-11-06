@@ -139,7 +139,11 @@ def hosts(args):
                 if args.suite=='original':
                     output=host/('original-w'+str(worker)+'.json');path=str(output) if platform=='windows' else wsl(output)
                     row=run('original-w'+str(worker),'test_solid_detachment',['--',path,'--workers='+str(worker)])
-                    if output.exists():row['report']=dict(path=str(output.relative_to(ROOT)),sha256=sha(output));save()
+                    row['report_complete']=False
+                    if output.exists():
+                        row['report']=dict(path=str(output.relative_to(ROOT)),sha256=sha(output))
+                        data=json.loads(output.read_text(encoding='utf-8'));row['report_complete']=not data['failures'] and data['rapier_ticks']==600
+                    save()
                     continue
                 structures=['tree'] if args.suite=='smoke' else ['tree','building']
                 for structure in structures:
@@ -148,6 +152,7 @@ def hosts(args):
                         name=structure+'-'+surroundings+'-response'+str(int(enabled))+'-w'+str(worker)
                         output=host/(name+'.json');path=str(output) if platform=='windows' else wsl(output)
                         row=run(name,'test_sol_structure_cut',env=dict(SOL_STRUCTURE=structure,SOL_SURROUNDINGS=surroundings,SOL_SAND_RESPONSE=str(int(enabled)),SOL_WORKERS=str(worker),SOL_OUTPUT=path))
+                        row['report_complete']=False
                         if output.exists():
                             row['report']=dict(path=str(output.relative_to(ROOT)),sha256=sha(output),bytes=output.stat().st_size)
                             data=json.loads(output.read_text(encoding='utf-8'));row['report_complete']=not data['failures'] and len(data['steps'])==(360 if args.suite=='packed' else 720)

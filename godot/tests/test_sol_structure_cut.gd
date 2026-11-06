@@ -39,7 +39,7 @@ class Probe:
 					maximum_vertex_speed=maxf(maximum_vertex_speed,(v+Vector2(-w*offset.y,w*offset.x)).length())
 		return {"valid":true,"pose":p,"velocity":v,"omega":w,"mass":m,"inertia":inertia,"local_com":d.center_of_mass_local,
 			"gravity":d.total_gravity,"linear_damp":d.total_linear_damp,"angular_damp":d.total_angular_damp,"reported_dt":d.step,
-			"sleeping":d.sleeping,"frozen":body.freeze,"contacts":contacts,"maximum_vertex_speed":maximum_vertex_speed,
+			"sleeping":d.sleeping,"frozen":body.freeze,"contacts":contacts,"contact_report_limit":16,"contact_report_may_be_truncated":contacts.size()==16,"contact_impulse_freshness":"cached_report; sleeping freshness unqualified","maximum_vertex_speed":maximum_vertex_speed,
 			"kinetic":0.5*m*(float(v.x)*v.x+float(v.y)*v.y)+0.5*inertia*w*w,"manual_step":bridge.manual_step_count(),
 			"bits":bits([p.x.x,p.x.y,p.y.x,p.y.y,p.origin.x,p.origin.y,v.x,v.y,w,m,inertia]),
 			"sample_serial":_coupling_sample_serial,"snapshot_serial":_coupling_snapshot_serial,"native_tick":_coupling_last_native_tick,
@@ -48,6 +48,12 @@ class Probe:
 		measured={"before":read(),"metrics_before":coupling_metrics()}
 		super._consume_compound_results()
 		measured["after_application"]=read();measured["metrics_after"]=coupling_metrics()
+		measured["new_snapshot"]=measured.before.snapshot_serial!=measured.after_application.snapshot_serial
+		measured["ordinary_records_delta"]=_coupling_result_records-int(measured.metrics_before.result_records)
+		measured["ordinary_impulse_applications_delta"]=_coupling_impulse_applications-int(measured.metrics_before.impulse_applications)
+		measured["ordinary_correction_applications_delta"]=_coupling_correction_applications-int(measured.metrics_before.correction_applications)
+		measured["response_attempts_delta"]=int(_contact_metrics.response_attempts)-int(measured.metrics_before.physical_contact.response_attempts)
+		measured["response_is_new"]=measured.response_attempts_delta>0
 		measured["response"]=last_contact_response.duplicate(true)
 		measured["contact_observation"]=last_contact_observation.duplicate(true)
 	static func bits(values: Array) -> String:
@@ -94,6 +100,8 @@ func run() -> void:
 	var workers: int = int(OS.get_environment("SOL_WORKERS"))
 	var steps: int = 720 if surroundings=="empty" else 360
 	var output: String = OS.get_environment("SOL_OUTPUT")
+	if output.is_empty() or FileAccess.file_exists(output):
+		printerr("SOL_STRUCTURE refuses missing/existing output path");quit(1);return
 	check(structure in ["tree","building"] and surroundings in ["empty","packed_sand"] and workers in [1,4],"registered input")
 	var session := Probe.new();session.structure=structure
 	var opened: bool = await session.open(root,workers,surroundings,true,enabled,true)
@@ -114,10 +122,16 @@ func run() -> void:
 	for shape: CollisionShape2D in session._shapes:
 		var rectangle: RectangleShape2D = shape.shape as RectangleShape2D
 		shapes.append({"position":shape.position,"size":rectangle.size,"disabled":shape.disabled})
+	var server_shapes: Array = []
+	for index: int in PhysicsServer2D.body_get_shape_count(session.body.get_rid()):
+		var shape: RID = PhysicsServer2D.body_get_shape(session.body.get_rid(),index)
+		server_shapes.append({"type":PhysicsServer2D.shape_get_type(shape),"data":PhysicsServer2D.shape_get_data(shape),
+			"transform":PhysicsServer2D.body_get_shape_transform(session.body.get_rid(),index),
+			"owner_disabled":session.body.is_shape_owner_disabled(session.body.shape_find_owner(index))})
 	var report: Dictionary = {"registration":"SOL-STRUCTURE-CUT-001","source":OS.get_environment("CYBERSAND_SOURCE_REVISION"),
 		"platform":OS.get_name(),"structure":structure,"surroundings":surroundings,"sand_response":enabled,"workers":workers,
 		"intact":intact,"before_cut":census(before),"prepared":session.source_receipt.duplicate(true),"commit":session.commit_receipt.duplicate(true),
-		"activation":session.final_receipt.duplicate(true),"initial_native":census(initial),"initial_body":session.read(),"actual_shapes":shapes,
+		"activation":session.final_receipt.duplicate(true),"initial_native":census(initial),"initial_body":session.read(),"scene_shapes":shapes,"server_shapes":server_shapes,"physical_gate_status":"PENDING_INDEPENDENT_REDUCTION",
 		"proxy_centres":session._coupling_local_centers,"proxy_masses":session._coupling_masses,"proxy_sizes":session._coupling_sizes,
 		"body_rid":session.body.get_rid().get_id(),"body_instance":session.body.get_instance_id(),"steps":[],
 		"authored":{"gravity_scale":session.body.gravity_scale,"linear_damp":session.body.linear_damp,"angular_damp":session.body.angular_damp,
@@ -136,7 +150,12 @@ func run() -> void:
 	check(report.steps.size()==steps,"complete registered observation coverage")
 	report["final_native"]=census(final);report["metrics"]=session.coupling_metrics();report["checks"]=checks;report["failures"]=failures
 	session.close();await process_frame
-	check(not FileAccess.file_exists(output),"new evidence output")
+	if FileAccess.file_exists(output):printerr("SOL_STRUCTURE refuses evidence overwrite");quit(1);return
 	var file := FileAccess.open(output,FileAccess.WRITE)
-	if file!=null:file.store_string(JSON.stringify(plain(report)));file.close()
+	check(file!=null,"evidence output writable")
+	report["checks"]=checks;report["failures"]=failures
+	if file==null:quit(1);return
+	file.store_string(JSON.stringify(plain(report)));file.flush()
+	var write_error: Error = file.get_error();file.close()
+	if write_error!=OK:printerr("SOL_STRUCTURE evidence write failed ",write_error);quit(1);return
 	print("SOL_STRUCTURE checks=",checks," failures=",failures.size()," steps=",report.steps.size());quit(int(not failures.is_empty()))
