@@ -168,6 +168,7 @@ func _linked_component(path: String) -> String:
 		if access != null and access.is_link(cursor.get_file()):
 			return cursor
 		cursor = parent
+	return ""
 
 
 func _validate_paths() -> String:

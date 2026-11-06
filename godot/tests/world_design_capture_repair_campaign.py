@@ -410,12 +410,13 @@ def main() -> int:
            "scene":{"size":[32,24],"rectangles":[[0,20,32,4,40]],
                     "placements":[{"feature":"brick","x":4,"y":2,"variant":None}]}}
     base=adverse("base",small,expectation="zero")
-    check((base/"capture-manifest.json").exists(),"positive-adverse-fixture")
-    committed_hash=sha(base/"capture-manifest.json")
+    base_manifest=base/"capture-manifest.json"
+    committed_hash=sha(base_manifest) if check(base_manifest.exists(),
+        "positive-adverse-fixture") else None
     adverse("stale-scale",small,out=base,extra=("--scale=999",),
             expect_manifest_absent=False)
-    check((base/"capture-manifest.json").exists() and
-          sha(base/"capture-manifest.json")==committed_hash,
+    check(committed_hash is not None and base_manifest.exists() and
+          sha(base_manifest)==committed_hash,
           "malformed-retry-preserves-committed-manifest")
     check(not Path(str(base)+".world-capture-claim").exists(),
           "malformed-retry-never-acquires-claim")
