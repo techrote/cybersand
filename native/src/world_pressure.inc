@@ -443,7 +443,6 @@ void World::prepare_pressure_tick() {
                 for (std::size_t i=0; i<cache->rows.size(); ++i)
                     cache->prospective_rows[i] = cache->rows[i].dirty;
 
-                U probes=0, selected_runs=0, dirty_spans=0, base_candidates=0, row_candidates=0;
                 const auto budget = cache->config.head_repair_cell_budget;
                 // The distinct, explicit preflight-probe guard is not a hidden
                 // relaxation of the derived-work cell budget.
