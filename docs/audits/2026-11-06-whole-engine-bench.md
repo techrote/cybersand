@@ -114,6 +114,20 @@ remaining cost is ordinary cell reads across the kernels.
   checks the budgets, eight bodies and every zone material, and that 90 ticks
   simulate.
 
+## Protected-source transitions (proposed)
+
+These are behaviour-preserving, execution-only edits. Every World's cell
+results, hashes and receipts are unchanged (see Exactness). They are proposed
+reviewed transitions for issue 362 and PR 406, pending independent review and
+the owner's admission. The source edit is commit `8bbabb2d`; each transition is
+pinned to the commit that adds this table, which carries byte-identical
+sources.
+
+| Path | From LF SHA-256 | To LF SHA-256 |
+|---|---|---|
+| `native/src/world.cpp` | `09685e01cdd7e2bb898f46ce3c9ab97b7427ac34e7568875a3bdfd7866190ac5` | `a69a70332450ed246753457f85fcedfa0e3a36e848486e12c441a059c3574d1e` |
+| `native/src/material_rules.cpp` | `8fd1509bfcef162c5cb6028e9af38c563ad651822b9fcfcc2e79a569d185afa3` | `3afda824571842e387b0cac70218ee5f1f96005d07aaaafcf95c146c3eee3254` |
+
 ## Gaps
 
 - Windows and WSL on one machine only. There is no Web build, CI-runner timing
