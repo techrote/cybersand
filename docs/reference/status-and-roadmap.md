@@ -10,6 +10,21 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+## SOL workbench-law repeated result — 2026-11-06
+
+**Current isolated Draft #466:** D1's main LA-SELECTIVE workbench package is
+wired to actual cut tree/building with unchanged unit M/I, gravity/damping and
+caps/budget. The [preregistered144-episode result](../audits/2026-11-06-sol-workbench-law.md)
+reduces median burial/depth and tail sink in all8 primary host/structure/
+surroundings cells, but packed rest is0/20 and mixed rest0/20: **NO-GO for
+settling**. Late selected arrivals are zero; passive/correction/integration
+motion persists. F1 remains mechanism engaged, causal role unproven; post NO-GO
+stands. Source/material transition checks pass scoped; Linux GLIBC2.34/GLIBCXX3.4.30 runtime-floor
+compatibility fails. Historical strict clearance/CPU/#365/exclusions remain.
+**Planned:** independent adversarial review, then a new fixed actual-structure
+application/integration trace or common-pacing causal control if selected. No
+weight/cap tuning, default promotion or integration follows this result.
+
 ## SOL ordering result — 2026-11-06
 
 **Current isolated experiment:** the [registered comparison](../audits/2026-11-06-sol-contact-gravity-order.md)

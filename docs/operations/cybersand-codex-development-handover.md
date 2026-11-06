@@ -10,6 +10,26 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## SOL workbench package comparison — 2026-11-06
+
+Continue from sole-writer `codex/sol-workbench-law-20261106`, Draft #466 against
+stable Draft #461cba3c0de; #46061924a97 unchanged. Main554d27b1 is merged with
+admission ancestry preserved. Read the [dossier](../audits/2026-11-06-sol-workbench-law.md),
+[material transitions](../audits/2026-11-06-sol-workbench-material-transition.md)
+and [current contract](../systems/solid-detachment.md#workbench-law-actual-cuts--2026-11-06).
+All144×720 actual-host episodes complete. Workbench greatly reduces burial,
+but five-repeat packed rest0/20 fails preregistered gate; mixed rest0/20 too.
+Tail arrivals are zero and passive/correction/gravity cycling remains. Do not
+repeat the earlier F1 causal attribution or treat mixed nonregression as settling.
+
+Compiled native990cd5d3 and actual matrix026f7d04 have separate authenticated
+identities. Material guard/tools and optimized/sanitized native controls pass;
+new93-input runtime manifests replace stale current ones without rewriting
+history. New Linux SO fails GLIBC2.34/GLIBCXX3.4.30 limits at2.35/3.4.31; actual
+Ubuntu24.04 passes. Keep blocker and all original physical/CPU/#365/exclusions.
+Next is separate adversarial review, with actual structure rest-speed cycling
+as the narrow scientific target. No mass/cap/default/Ready/merge changes.
+
 ## Dependent SOL ordering result — 2026-11-06
 
 Continue from `codex/sol-contact-gravity-order-20261106`, based on stable Draft

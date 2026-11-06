@@ -11,6 +11,22 @@ last-reviewed: 2026-11-06
 
 # Rigid-body and cellular coupling
 
+## SOL adopts the workbench package experimentally
+
+The [opt-in actual-cut route](../systems/solid-detachment.md#workbench-law-actual-cuts--2026-11-06)
+uses one native owner and one Rapier aggregate with main's six/five-proxy
+LA-SELECTIVE contact packet. It disables both legacy SOL281 Sand and separate
+ordinary application to avoid double counting, keeps main's completed-sample
+fence and overlap handling, and preserves M/I, gravity/damping and budget20.
+Arrival-only selection applies to the event wrench; legacy/passive/correction
+terms remain. No-arrival late response can still move the body.
+
+This is a law-plus-pacing package comparison. All five-repeat packed cells show
+less burial but fail rest; no isolated force-law causal claim or synchronized
+original SOL clearance follows. The old observer is incompatible with main's
+whole-M/I-per-proxy packet; its zeros are not a no-Water/no-work observation.
+The actual packet and paused independent census are separate evidence channels.
+
 ## SOL contact ordering experiment
 
 The [isolated route](../systems/solid-detachment.md#contact-and-gravity-ordering--2026-11-06)

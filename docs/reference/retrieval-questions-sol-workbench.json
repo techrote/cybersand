@@ -1,0 +1,56 @@
+{
+  "version": 1,
+  "frozen_date": "2026-11-06",
+  "purpose": "Additive post-result development questions; all earlier frozen question objects remain unchanged.",
+  "questions": [
+    {
+      "id": "SOL-WORKBENCH-RESULT-001",
+      "query": "Does main workbench LA-SELECTIVE fix actual cut tree building settling in packed Sand and mixed Water with five repeats and unchanged mass caps?",
+      "canonical": [
+        "systems/solid-detachment.md",
+        "reference/status-and-roadmap.md"
+      ],
+      "facts": [
+        "144 episodes complete; burial/depth/sink improve all8 primary cells, packed rest0/20 and mixed0/20.",
+        "Mixed nonregression passes but settling NO-GO; law plus pacing package, not equation-only causality."
+      ],
+      "sources": [
+        "../native/tests/fixtures/sol_workbench_law_001.json",
+        "../tools/sol281/workbench_reduce.py"
+      ]
+    },
+    {
+      "id": "SOL-WORKBENCH-OWNER-001",
+      "query": "How does SOL diagnostic workbench adapter bind same native World aggregate token exact proxies and sample fence without double applying old Sand response?",
+      "canonical": [
+        "systems/solid-detachment.md",
+        "architecture/data-ownership-and-lifetimes.md",
+        "reference/interfaces-and-message-contracts.md"
+      ],
+      "facts": [
+        "One World and one body,6/5proxies, explicit source binding and main completed-sample fence.",
+        "SOL281 Sand and separate ordinary application disabled; late zero events still retain passive correction; no E1/E2 authority."
+      ],
+      "sources": [
+        "../godot/native_extension/solid_workbench_adapter.inc",
+        "../godot/scripts/solid_workbench_session.gd"
+      ]
+    },
+    {
+      "id": "SOL-WORKBENCH-EXECUTION-001",
+      "query": "Which commands source authenticated native Windows Linux runtimes material transitions resource cap and Linux hypot GLIBC floor blocker qualify SOL workbench experiment?",
+      "canonical": [
+        "operations/local-build-and-validation.md"
+      ],
+      "facts": [
+        "workbench_build/live/reduce/check use frozen ancestry and complete93native roster;2GiB/5GiBreserve.",
+        "Actual hosts pass with separate native sanitizer/material checks; Linux hypot2.35 fails2.34floor, originalCPU/fullrelease unavailable."
+      ],
+      "sources": [
+        "../tools/sol281/workbench_common.py",
+        "../tools/sol281/workbench_build.py",
+        "../tools/sol281/workbench_live.py"
+      ]
+    }
+  ]
+}

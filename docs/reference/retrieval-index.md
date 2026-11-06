@@ -10,6 +10,16 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 
 # Retrieval question index
 
+## SOL workbench law on actual cut structures
+
+For the opt-in same-World LA-SELECTIVE adapter and zero-arrival late response,
+start at [detachment](../systems/solid-detachment.md#workbench-law-actual-cuts--2026-11-06).
+[Coupling](../architecture/rigid-body-and-cellular-coupling.md#sol-adopts-the-workbench-package-experimentally)
+qualifies the law/pacing comparison; [build qualification](../operations/local-build-and-validation.md#sol-workbench-law-qualification--2026-11-06)
+owns source/runtime/MAT commands and Linux floor blocker. The
+[dated five-repeat result](../audits/2026-11-06-sol-workbench-law.md) preserves
+burial benefit, settling NO-GO and historical failures separately.
+
 ## SOL contact and gravity ordering
 
 Retrieve [routing and result](../systems/solid-detachment.md#contact-and-gravity-ordering--2026-11-06),

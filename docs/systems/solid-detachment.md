@@ -10,6 +10,36 @@ related-documents: [../operations/soliding-programme.md, ../architecture/solidin
 
 # Native structural detachment
 
+## Workbench-law actual cuts — 2026-11-06
+
+**Current on the isolated dependent Draft #466:** owner D1 selects main's
+LA-SELECTIVE workbench law for actual520-member/six-proxy tree and356-member/
+five-proxy building cuts. `solid_workbench_session.gd` is opt-in; ordinary SOL
+still defaults pre. A one-shot diagnostic native adapter binds the existing
+World/token/body generation and exact source pose/M/I before its first sample.
+It calls main's actual contact accumulation and `workbench_granular_coupling.inc`,
+with one physical aggregate/body, budget20, no SOL281 Sand or second ordinary
+application. Main's overlap handling/completed-sample fence are used unchanged;
+legacy controls keep conservative displacement/asynchronous pacing. No mass,
+gravity/damping, cap, material policy or accepted default changes.
+
+The [registered repeated result](../audits/2026-11-06-sol-workbench-law.md) admits
+144 fresh720-step episodes on Windows/Linux, workers1/4. Five-repeat worker1
+packed cells all fail rest (0/20); terminal area/depth and tail sink improve in
+all8 primary comparisons. Mixed nonregression passes, while mixed rest remains
+0/20. Late arrivals/event wrench are zero; passive support/correction/integration
+continues. LA-SELECTIVE is not arrival-only total physics or automatic clearance.
+F1 is mechanism engaged, causal role unproven; post-ordering NO-GO stands.
+Workbench packet readback is authoritative; old SOL contact observation reports
+IncompleteOrIncoherentCompound and cannot qualify intermediate Water contact.
+Actual mixed terminal Water overlap is measured separately.
+
+Reviewed per-file MAT transitions and new93-input native provenance pass scoped
+source checks; the frozen lock and historical results remain unchanged. Linux's
+new SO fails the retained2.34 floor (`hypot@GLIBC_2.35` and GLIBCXX3.4.31>3.4.30) despite actual Ubuntu
+execution passing. Keep Draft, original clearance/CPU/#365/hard-material blockers
+and request independent adversarial review. Reduced burial is not solved settling.
+
 ## Contact and gravity ordering — 2026-11-06
 
 **Current isolated experiment:** `sand_contact_order` defaults to `pre`, resets

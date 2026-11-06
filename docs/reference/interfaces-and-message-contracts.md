@@ -11,6 +11,22 @@ last-reviewed: 2026-11-06
 
 # Interfaces and message contracts
 
+## SOL workbench diagnostic adapter
+
+`diagnostic_enable_solid_workbench()` is diagnostic-only, once before worker
+start/ticks on the existing World. `diagnostic_bind_solid_workbench(Dictionary)`
+requires a paused active SOL aggregate's native token/body generation, matching
+source geometry/original common pose/zero velocity, native M/I, physics epoch,
+main budget20 and no external drive. The first body sample must match; later
+samples follow main's existing parser/identity rules. No general public recovery
+or authority transfer is introduced. Wrong/stale/duplicate bindings refuse.
+
+The worker's optional `snapshot_tiles` command returns four immutable512²
+censuses in one exclusive owner turn. Tick/hash equality and complete coverage
+are checked independently; no1024² single-query limit is weakened. Actual
+workbench packet/application readback is separate from incompatible old SOL
+contact observation. See the [contract and result](../systems/solid-detachment.md#workbench-law-actual-cuts--2026-11-06).
+
 ## SOL experimental order dispositions
 
 `SolidDetachmentSession.physics_step()` returns a value dictionary with `outcome`

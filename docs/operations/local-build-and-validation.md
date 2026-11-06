@@ -10,6 +10,28 @@ related-documents: [source-checkpoint-and-recovery.md, testing-validation-and-re
 
 # Local build and validation
 
+## SOL workbench law qualification — 2026-11-06
+
+Use `python tools/sol281/workbench_build.py --run NEW_BUILD`, then
+`python tools/sol281/workbench_live.py --run NEW_SMOKE --build NEW_BUILD --smoke --quick`.
+Run `workbench_live.py --run NEW_MATRIX --build NEW_BUILD` for registered144 fresh
+episodes; reduce with `workbench_reduce.py --run NEW_MATRIX`. Clean source,
+parent/main ancestry, pinned SDK/dependencies/engines, full native/material input
+maps and source equality are required. Preserve raw failure collections; no
+reduced denominator or source substitution. Collection2GiB, build2GiB, free5GiB
+reserve and lossless archived raw reports are registered before execution.
+
+Actual Windows LLVM-MinGW and WSL Linux builds/hosts pass scoped controls; no
+MSVC claim. New runtimes have exact93-input native rosters and fresh source-bound
+provenance, not inherited main UI/release acceptance. Linux's unchanged runtime
+floor check fails at GLIBC2.35/GLIBCXX3.4.31 against2.34/3.4.30; this remains a compatibility
+blocker. Native optimized/strict sanitizer/material qualification is separate
+from uninstrumented actual Godot/Rapier execution. Workbench wall pacing is not
+the original24×3 SOL CPU gate. Run `workbench_check.py --run NEW_CHECKS` at a clean
+head for docs/M11/materialized repository/material, focused adverse/geometry,
+original/additive retrieval and diff checks. The [dossier](../audits/2026-11-06-sol-workbench-law.md)
+records sources, commands, hashes, repeated NO-GO and missing gates.
+
 ## SOL contact ordering qualification — 2026-11-06
 
 Use `python tools/sol281/order_values.py --run NEW` and `order_reduce_values.py`

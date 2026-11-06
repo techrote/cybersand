@@ -10,6 +10,15 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+## Actual cut structures under the workbench law
+
+The [current opt-in contract](systems/solid-detachment.md#workbench-law-actual-cuts--2026-11-06)
+and [repeated Windows/Linux dossier](audits/2026-11-06-sol-workbench-law.md)
+record144 fresh cut-tree/building episodes. LA-SELECTIVE's workbench package
+reduces burial but fails the fixed settling gate. Read the separate material,
+runtime-floor, ownership and causal qualifiers before assessing Draft #466.
+Keep #460/#461 stable Draft; no accepted default or integration changes.
+
 ## SOL contact and gravity ordering
 
 The [order/clock contract](systems/solid-detachment.md#contact-and-gravity-ordering--2026-11-06)

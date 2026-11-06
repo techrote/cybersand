@@ -11,6 +11,23 @@ last-reviewed: 2026-11-06
 
 # Data ownership and lifetimes
 
+## SOL workbench diagnostic ownership
+
+The [actual-cut workbench experiment](../systems/solid-detachment.md#workbench-law-actual-cuts--2026-11-06)
+attaches once to the same fresh native World before worker ticks. Explicit
+paused token/body-generation/geometry/M/I/placement binding precedes sample1;
+retired provisional history is followed by live sample2 without a warm step.
+The existing main completion fence gates one consumed sample/one Rapier step.
+SOL generation and workbench epoch are separate identities. Only packed values
+cross ownership boundaries; pool workers never call Godot, Rapier/RIDs stay
+main-thread owned. Four census tiles are copied in one paused exclusive-owner
+command with same-tick/hash validation. No mutable storage or new E1/E2 authority.
+
+Review F4–F6 is applied: observation deep copy occurs only for explicit post;
+dropped/failed envelopes retain counters on their captured owner; unexpected
+post application rejection after a step fail-stops before publication. Post
+remains unused/default pre and its physical NO-GO remains historical evidence.
+
 ## SOL frame-local deferred contact
 
 The [order experiment](../systems/solid-detachment.md#contact-and-gravity-ordering--2026-11-06)
