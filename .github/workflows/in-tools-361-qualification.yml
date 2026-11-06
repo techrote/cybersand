@@ -126,20 +126,43 @@ jobs:
           mkdir -p build/in-tools-361/linux/logs
           cases=(
             test_in_tools_361_adapter
+            test_in_tools_361_leak_flow
+            test_in_tools_361_equipment
             test_physical_metered_drain
             test_physical_metered_equipment
+            test_physical_metered_desktop
             test_lcb_inertial_adapter
             test_liquid_desktop_default_host
           )
           failed=0
           for case in "${cases[@]}"; do
+            log="build/in-tools-361/linux/logs/${case}.log"
             set +e
-            "$GODOT_BIN" --headless --path godot --script "res://tests/${case}.gd" >"build/in-tools-361/linux/logs/${case}.log" 2>&1
+            "$GODOT_BIN" --headless --path godot --script "res://tests/${case}.gd" >"$log" 2>&1
             code=$?
             set -e
             printf '%s\n' "$code" >"build/in-tools-361/linux/logs/${case}.exit.txt"
-            cat "build/in-tools-361/linux/logs/${case}.log"
-            if [ "$code" -ne 0 ]; then failed=1; fi
+            cat "$log"
+            if [ "$code" -ne 0 ] || grep -Eq 'SCRIPT ERROR: Parse Error|Failed to load script' "$log"; then
+              failed=1
+              continue
+            fi
+            case "$case" in
+              test_in_tools_361_adapter)
+                grep -Eq 'IN_TOOLS_361_ADAPTER: [0-9]+ assertions; 0 failures' "$log" || failed=1 ;;
+              test_in_tools_361_leak_flow)
+                grep -Eq 'IN_TOOLS_361_LEAK_FLOW: [0-9]+ assertions; 0 failures' "$log" || failed=1 ;;
+              test_in_tools_361_equipment)
+                grep -Eq 'IN_TOOLS_361_EQUIPMENT: [0-9]+ assertions; 0 failures' "$log" || failed=1 ;;
+              test_physical_metered_drain)
+                grep -Eq 'METERED_DRAIN_RESULT checks=[0-9]+ failures=0' "$log" || failed=1 ;;
+              test_physical_metered_equipment)
+                grep -Eq 'Physical metered equipment: [0-9]+ assertions, 0 failures' "$log" || failed=1 ;;
+              test_physical_metered_desktop)
+                grep -Eq 'PHYSICAL_METERED_DESKTOP_RESULT assertions=[0-9]+ failures=0' "$log" || failed=1 ;;
+              test_liquid_desktop_default_host)
+                grep -Eq 'LIQUID_DESKTOP_DEFAULT_HOST: 86 assertions; 0 failures' "$log" || failed=1 ;;
+            esac
           done
           exit "$failed"
       - name: Retain Linux evidence
@@ -264,19 +287,42 @@ jobs:
           git rev-parse HEAD^{tree} > build/in-tools-361/windows/source-tree.txt
           cases=(
             test_in_tools_361_adapter
+            test_in_tools_361_leak_flow
+            test_in_tools_361_equipment
             test_physical_metered_drain
             test_physical_metered_equipment
+            test_physical_metered_desktop
             test_liquid_desktop_default_host
           )
           failed=0
           for case in "${cases[@]}"; do
+            log="build/in-tools-361/windows/logs/${case}.log"
             set +e
-            "$GODOT_CONSOLE" --headless --path godot --script "res://tests/${case}.gd" >"build/in-tools-361/windows/logs/${case}.log" 2>&1
+            "$GODOT_CONSOLE" --headless --path godot --script "res://tests/${case}.gd" >"$log" 2>&1
             code=$?
             set -e
             printf '%s\n' "$code" >"build/in-tools-361/windows/logs/${case}.exit.txt"
-            cat "build/in-tools-361/windows/logs/${case}.log"
-            if [ "$code" -ne 0 ]; then failed=1; fi
+            cat "$log"
+            if [ "$code" -ne 0 ] || grep -Eq 'SCRIPT ERROR: Parse Error|Failed to load script' "$log"; then
+              failed=1
+              continue
+            fi
+            case "$case" in
+              test_in_tools_361_adapter)
+                grep -Eq 'IN_TOOLS_361_ADAPTER: [0-9]+ assertions; 0 failures' "$log" || failed=1 ;;
+              test_in_tools_361_leak_flow)
+                grep -Eq 'IN_TOOLS_361_LEAK_FLOW: [0-9]+ assertions; 0 failures' "$log" || failed=1 ;;
+              test_in_tools_361_equipment)
+                grep -Eq 'IN_TOOLS_361_EQUIPMENT: [0-9]+ assertions; 0 failures' "$log" || failed=1 ;;
+              test_physical_metered_drain)
+                grep -Eq 'METERED_DRAIN_RESULT checks=[0-9]+ failures=0' "$log" || failed=1 ;;
+              test_physical_metered_equipment)
+                grep -Eq 'Physical metered equipment: [0-9]+ assertions, 0 failures' "$log" || failed=1 ;;
+              test_physical_metered_desktop)
+                grep -Eq 'PHYSICAL_METERED_DESKTOP_RESULT assertions=[0-9]+ failures=0' "$log" || failed=1 ;;
+              test_liquid_desktop_default_host)
+                grep -Eq 'LIQUID_DESKTOP_DEFAULT_HOST: 86 assertions; 0 failures' "$log" || failed=1 ;;
+            esac
           done
           exit "$failed"
       - name: Retain actual Windows source-matched evidence
