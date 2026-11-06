@@ -121,8 +121,9 @@ These edits keep Current behaviour for every World without
 pass (above), so physical semantics are unchanged; the change is execution
 only. They are proposed reviewed transitions for issue 362 and PR 406, pending
 independent review and the owner's admission. The source edit is commit
-`c4292730`; the reviewed transition is pinned to the commit that adds this
-table, which carries byte-identical sources.
+`c4292730`; the reviewed transition is pinned to
+`6c69ba072f0507a3f6ee5966186fecb5070a45b2`, the commit that adds this table,
+which carries byte-identical sources.
 
 | Path | From LF SHA-256 | To LF SHA-256 |
 |---|---|---|

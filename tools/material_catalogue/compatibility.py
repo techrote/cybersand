@@ -169,6 +169,20 @@ REVIEWED_TRANSITIONS: tuple[dict, ...] = ({'path': 'native/src/world_pressure.in
   'source_commit': 'f666a6c6e4a4e5fd4091129df463b59ef79acebd',
   'record': 'docs/audits/2026-11-05-wcx-ballistic-water.md',
   'issue': 362,
+  'pr': 406},
+ {'path': 'native/src/world.cpp',
+  'from_lf_sha256': '93ab7874e913bf696ffcdb85724d01f860bbd53c160dd9b7ea3f8daf28026b85',
+  'to_lf_sha256': '09685e01cdd7e2bb898f46ce3c9ab97b7427ac34e7568875a3bdfd7866190ac5',
+  'source_commit': '6c69ba072f0507a3f6ee5966186fecb5070a45b2',
+  'record': 'docs/audits/2026-11-06-workbench-pf-tick-cost.md',
+  'issue': 362,
+  'pr': 406},
+ {'path': 'native/src/world_pressure.inc',
+  'from_lf_sha256': '8f7649cda6561eb6d44ebca5b11cfeec41210105bf7e0d20435ede4b03077012',
+  'to_lf_sha256': 'f89c9d6b6bcb1f4c76e2432ab4bc99ae22c45f0587aea0de33c06b21e13cac27',
+  'source_commit': '6c69ba072f0507a3f6ee5966186fecb5070a45b2',
+  'record': 'docs/audits/2026-11-06-workbench-pf-tick-cost.md',
+  'issue': 362,
   'pr': 406})
 
 
