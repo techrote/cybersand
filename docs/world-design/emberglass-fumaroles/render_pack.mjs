@@ -13,8 +13,8 @@ function svgForPack(p){
  const rect=(x,y,w,h,id)=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${colour(id)}" fill-opacity="${alpha(id).toFixed(3)}"/>`;
  const feature=(f,variant,x,y)=>{const v=f.variants.find(z=>z.id===variant);const sw=v?v.swap:{};return `<g transform="translate(${x} ${y})">`+f.rectangles.map(r=>rect(r[0],r[1],r[2],r[3],Object.prototype.hasOwnProperty.call(sw,String(r[4]))?sw[String(r[4])]:r[4])).join("")+"</g>";};
  const s=p.scene, W=1280;
- const parts=[`<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="1510" viewBox="0 0 1280 1510" role="img" aria-label="Emberglass Fumaroles combined volcanic scene and eight modular features">`,
- `<rect width="1280" height="853" fill="#0d1019"/>`,
+ const parts=[`<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="1765" viewBox="0 0 1280 1765" role="img" aria-label="Emberglass Fumaroles combined volcanic scene and eight modular features">`,
+ `<rect width="1280" height="1765" fill="#0d1019"/>`,
  `<rect x="0" y="0" width="1280" height="94" fill="#151923"/>`,
  `<text x="66" y="42" font-family="monospace" font-size="27" font-weight="bold" fill="#f1dcb1">EMBERGLASS / FUMAROLES</text>`,
  `<text x="68" y="68" font-family="monospace" font-size="12" fill="#9fb3bb">CYBERSAND  •  WORLD-DESIGN COLLECTION 005  •  SOURCE-COLOUR / T=0 PROPOSAL</text>`,
@@ -58,8 +58,19 @@ function svgForPack(p){
   for(let yy=0;yy<80;yy++){let xx=0;while(xx<230){let id=cells[(sy+yy)*aw+sx+xx],end=xx+1;while(end<230&&cells[(sy+yy)*aw+sx+end]===id)end++;if(id!==0)parts.push(rect(xx,yy,end-xx,1,id));xx=end;}}
   parts.push('</g>');parts.push(`<text x="${px+3}" y="1417" font-family="monospace" font-size="11" fill="#d1a874">${label}</text>`);
  }
- parts.push('<text x="70" y="1471" font-family="monospace" font-size="11" fill="#9fb3bb">ORDERED SOURCE-MATERIAL RECTANGLES · EMPTY CELLS DO NOT CLEAR HOST TERRAIN</text>');
- parts.push('<text x="70" y="1491" font-family="monospace" font-size="11" fill="#8c97a2">DESIGN ONLY / NO GODOT, THERMAL, FLUID, COLLISION OR PERFORMANCE QUALIFICATION</text></svg>');
+ const ms=p.scene,mw=ms.size[0],mc=new Int16Array(mw*ms.size[1]).fill(-1);
+ const paintM=(r,ox=0,oy=0,sw={})=>{const[x,y,w,h,id]=r,m=Object.prototype.hasOwnProperty.call(sw,String(id))?sw[String(id)]:id;for(let yy=y+oy;yy<y+oy+h;yy++)mc.fill(m,yy*mw+x+ox,yy*mw+x+ox+w);};
+ ms.terrain_rectangles.forEach(r=>paintM(r));
+ ms.placements.forEach(z=>{const f=p.features.find(f=>f.id===z.feature),v=f.variants.find(v=>v.id===z.variant);f.rectangles.forEach(r=>paintM(r,z.x,z.y,v?v.swap:{}));});
+ parts.push('<text x="70" y="1437" font-family="monospace" font-size="13" fill="#d1a874">05 — FOUR BURIED THERMAL REGISTERS / SOURCE-CELL DETAIL · 2.4×</text>');
+ for(const [px,sx,sy,label] of [[64,245,158,'CRUCIBLE ASSAY / BROKEN HEAT REGISTER'],[646,740,158,'HEATWARD LEDGER / FOSSIL VAULTS']]){
+  parts.push(`<rect x="${px}" y="1452" width="552" height="192" fill="#090c16" stroke="#343743"/>`);
+  parts.push(`<g transform="translate(${px} 1452) scale(2.4)">`);
+  for(let yy=0;yy<80;yy++){let xx=0;while(xx<230){let id=mc[(sy+yy)*mw+sx+xx],end=xx+1;while(end<230&&mc[(sy+yy)*mw+sx+end]===id)end++;if(id>=0&&id!==0)parts.push(rect(xx,yy,end-xx,1,id));xx=end;}}
+  parts.push('</g>');parts.push(`<text x="${px+3}" y="1666" font-family="monospace" font-size="11" fill="#d1a874">${label}</text>`);
+ }
+ parts.push('<text x="70" y="1724" font-family="monospace" font-size="11" fill="#9fb3bb">ORDERED SOURCE RECTANGLES · UNSTAMPED CELLS DO NOT CLEAR HOST TERRAIN</text>');
+ parts.push('<text x="70" y="1746" font-family="monospace" font-size="11" fill="#8c97a2">DESIGN ONLY / NO GODOT, THERMAL, FLUID, COLLISION OR PERFORMANCE QUALIFICATION</text></svg>');
  return parts.join("\n")+"\n";
 }
 const expected=svgForPack(pack);
