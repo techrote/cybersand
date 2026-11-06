@@ -1,0 +1,57 @@
+{
+  "registration": "SOL-BEARING-GATE-001",
+  "status": "prospective observation-only diagnostic; not a settling candidate, support law or original SOL recovery admission",
+  "parent": "cba3c0de35c4fae410b2fa16fa821524308c1ce8",
+  "parent_registration": "SOL-CONTACT-ORDER-LIVE-001 / live-001 (executed at c47f96e053ec42e9eb9f233bf2c28055af3fc993)",
+  "question": "Does the post arm worsen packed burial mainly because the unchanged ordinary native granular bearing gate (cyber_native_cell_world.cpp: no bearing impulse or correction when published proxy velocity.y <= 0) suppresses positional correction after Sand has stopped the published velocity?",
+  "hypotheses": {
+    "H_gate": "Post suppresses ordinary correction via the vy<=0 gate; first-order lost correction accounts for post's extra tail sink.",
+    "H_integration": "Post's extra sink is integration-before-Sand independent of the gate; lost correction is small relative to extra sink.",
+    "H_schedule": "Differences follow Sand acceptance/incoming age, not ordering; examined by the registered acceptance strata."
+  },
+  "structures": ["tree", "building"],
+  "hosts": ["windows", "linux"],
+  "workers": [1, 4],
+  "packed_arms": ["off", "pre", "post"],
+  "surroundings": "packed_sand only",
+  "steps": 720,
+  "tail_window": [600, 719],
+  "controls": "Fresh World/Rapier session per episode; same source tuples, exact proxy union, unit member mass, native inertia, gravity scale .094, damping, ordinary impulse cap 3 and correction cap .5, Sand planner, age-one gate, drift .25 and energy guards as live-001. No thrust, controls, retuning, native source change or new force law.",
+  "only_change": "Native World telemetry (physics_diagnostics.enabled) is turned on through a default-off session seam, and a test-only worker subclass copies diagnostic_body_metrics rows plus the exact prepared states and results of EVERY published native tick into a bounded 64-entry mutex ring that the main-thread probe drains once per physics step. Production defaults remain telemetry off.",
+  "non_perturbation_control": "Each Windows pre/post episode is compared per step with the same host/workers/structure/arm in live-001 by lossless after_step body bits. All 720 equal in all 8 Windows pre/post episodes = NON_PERTURBING_WINDOWS. Otherwise PERTURBATION_UNRESOLVED and the gate conclusion is reported as conditional. Linux and Off are descriptive only (asynchronous schedules).",
+  "definitions": {
+    "applied_result": "A consumed snapshot whose ordinary compound result the bridge accepted in that physics step.",
+    "alignment": "Diagnostic rows, prepared states and results for an applied_result share snapshot serial, native tick and per-proxy sample serial; misaligned entries are excluded and counted.",
+    "previous_prepare": "The ring entry with native tick exactly one less. A missing tick, ring overflow or first entry makes previous_prepare unknown; such results are excluded from counterfactuals and counted.",
+    "supported_proxy": "support_samples > 0 in the aligned diagnostic row.",
+    "gated_proxy": "supported_proxy whose prepared point velocity y <= 0.",
+    "native_model_check": "For supported proxies with 0 < vy <= 4 and known previous_prepare, result correction y must equal -min(.5, .99*max(0, y_now - y_previous)) within 1e-5 cells. Required pass fraction >= .99 per episode, else that episode's counterfactual is INVALID.",
+    "counterfactual_correction": "Replace each gated proxy's correction y with -min(.5, .99*max(0, y_now - y_previous)); take the proxy-mass-weighted sum with ungated actual corrections and limit the vector length to .5 as the bridge does.",
+    "lost_correction": "Actual applied body correction y minus counterfactual body correction y (cells; positive = upward correction withheld). First-order accounting only; it is not a counterfactual trajectory.",
+    "tail_sink": "Mean per-step COM y increase over tail_window steps.",
+    "gate_fraction": "Fraction of applied_results with at least one gated_proxy.",
+    "acceptance_fraction": "Accepted Sand responses / Sand attempts."
+  },
+  "pairs": "Same host, workers and structure: post minus pre. Eligible if both episodes complete, both counterfactuals valid, post acceptance_fraction >= .5 and post tail_sink - pre tail_sink >= .002 cells/step. Ineligible pairs remain reported in a separate stratum.",
+  "ratio": "R = (post tail lost_correction per step - pre tail lost_correction per step) / (post tail_sink - pre tail_sink)",
+  "decision_rule": {
+    "H_gate_SUPPORTED": "In each structure at least 3 of 4 host/worker pairs are eligible, and every eligible pair has post gate_fraction >= .5, pre gate_fraction <= .2 and .5 <= R <= 2.",
+    "H_gate_REJECTED_AS_PRIMARY": "In each structure at least 3 of 4 pairs are eligible and R < .5 in at least 3 eligible pairs.",
+    "otherwise": "INCONCLUSIVE; report every value."
+  },
+  "negative_prediction": "Off is expected to show low gate_fraction. A SUPPORTED result attributes the post/pre difference; it does not admit post, a support law, a gate change, material-weight calibration or original clearance.",
+  "apparatus_smoke": "A --smoke run (focused existing gates plus one tree packed post worker1 episode per host) checks capture/alignment/model mechanics only. Its outcomes are excluded from every decision; an apparatus failure is retained, repaired in a new commit and the registered matrix runs fresh afterwards.",
+  "amendment_001": {
+    "reason": "smoke-001 apparatus failure (retained): native writes diagnostic support_samples only after the velocity gate passes (cyber_native_cell_world.cpp:882-886), so gated proxies always report zero support and gate_fraction was 0 by construction. The model check itself passed 3468/3468 Windows and 4230/4230 Linux. smoke-001 Windows diverged from live-001 at step 104 because native tick 106 prepared sample 104 instead of 105 (publication/tick race) with identical earlier inputs and results.",
+    "support_proxy": "supported_proxy is replaced by below_contact: the native boundary-pressure face histogram (recorded before any velocity gate) counts at least one body cell of that proxy with a movable non-wall material directly below. granular_support_at is stricter, so below_contact is an UPPER BOUND on support and lost_correction becomes lost_correction_upper.",
+    "calibration": "On ungated proxies (prepared vy > 0) native support_samples is reported. precision = P(support_samples > 0 | below_contact) and recall = P(below_contact | support_samples > 0), per episode.",
+    "decision_rule": {
+      "H_gate_SUPPORTED": "As the original rule using lost_correction_upper, and additionally every eligible episode has precision >= .9 and recall >= .9.",
+      "H_gate_REJECTED_AS_PRIMARY": "As the original rule using lost_correction_upper (an upper bound cannot overstate rejection); calibration is reported.",
+      "otherwise": "INCONCLUSIVE."
+    },
+    "non_perturbation": "Bit equality alone cannot identify perturbation under publication/tick races. Each Windows pre/post episode is classified at its first after_step difference from live-001: RACE if the consumed native_states_bits differ at that step while all earlier steps are equal; PERTURBATION if the prepared states are equal and the results differ. NON_PERTURBING_WINDOWS requires every Windows pre/post episode to be fully equal or RACE. Two Windows telemetry-off replays (tree post w1, building pre w1) with the same source are descriptive controls for ordinary run-to-run races."
+  },
+  "resource": {"collection_cap_bytes": 1610612736, "minimum_free_bytes": 5368709120},
+  "authority_limits": "No E1/E2, LA/SOL composition, native change, MAT-AUTH or CPU-gate claim. Preserve all historical failures and inherited guard failures. Keep #460 and #461 unchanged and Draft; this branch is a Draft dependent."
+}

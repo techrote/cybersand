@@ -23,6 +23,13 @@
       "canonical": ["operations/local-build-and-validation.md"],
       "facts": ["order_values and order_live require authenticated source-parent artifacts and fresh sessions.", "Child2GiB/5GiB reserve separate from parent4GiB; configured workers are not four-way utilization; no original CPU admission."],
       "sources": ["../tools/sol281/order_common.py", "../tools/sol281/order_live.py"]
+    },
+    {
+      "id": "SOL-BEARING-GATE-001",
+      "query": "Does post Sand ordering suppress the native granular bearing correction velocity gate and does that explain worse cut tree building burial?",
+      "canonical": ["systems/solid-detachment.md", "architecture/rigid-body-and-cellular-coupling.md"],
+      "facts": ["Bearing impulse and correction are skipped when published proxy velocity.y <= 0; the law reproduces exactly from captured inputs.", "Registered attribution is INCONCLUSIVE: one eligible pair under publication/tick phase sensitivity; no gate, cap or law change."],
+      "sources": ["../native/tests/fixtures/sol_bearing_gate_001.json", "../tools/sol281/gate_reduce.py"]
     }
   ]
 }

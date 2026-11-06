@@ -1,15 +1,56 @@
 extends SceneTree
 
+# SOL-BEARING-GATE-001 observation-only capture. The exclusive worker owner copies
+# the aligned diagnostic rows, prepared states and results of every published
+# native tick into a bounded ring; the main-thread probe drains copied values.
+class DiagnosticWorker:
+	extends "res://scripts/solid_detachment_worker.gd"
+	const GATE_RING: int = 64
+	var _gate_mutex: Mutex = Mutex.new()
+	var _gate_ring: Array = []
+	var _gate_overflow: int = 0
+	var _gate_total: int = 0
+	func _populate_specialized_snapshot(snapshot: CyberSimulationSnapshot) -> void:
+		super._populate_specialized_snapshot(snapshot)
+		if _simulation_failed:return
+		var rows: Array = []
+		# id, sample, observation impulse xy, pre-final xy, bearing xy, support samples
+		# (written by native only after its velocity gate), below-contact faces
+		# (boundary histogram face 2, recorded before any velocity gate).
+		for row: Array in _world.diagnostic_body_metrics():
+			var faces: Array = row[16];var kinds: int = faces.size() / 4;var below: int = 0
+			for material: int in range(kinds):below += int(faces[2 * kinds + material])
+			rows.append([row[0],row[1],row[8],row[9],row[10],row[11],row[17],row[18],row[19],below])
+		var entry: Dictionary = {"serial":snapshot.serial,"tick":snapshot.tick_index,
+			"epoch":snapshot.rigid_body_epoch,"rows":rows,
+			"states":snapshot.current_rigid_body_states.to_byte_array().hex_encode(),
+			"results":snapshot.rigid_body_results.to_byte_array().hex_encode()}
+		_gate_mutex.lock()
+		_gate_total += 1
+		if _gate_ring.size() >= GATE_RING:
+			_gate_ring.pop_front();_gate_overflow += 1
+		_gate_ring.append(entry)
+		_gate_mutex.unlock()
+	func drain_gate() -> Dictionary:
+		_gate_mutex.lock()
+		var out: Dictionary = {"entries":_gate_ring,"overflow":_gate_overflow,"total":_gate_total}
+		_gate_ring = []
+		_gate_mutex.unlock()
+		return out
+
 class Probe:
 	extends "res://scripts/solid_detachment_session.gd"
 	var structure: String = "tree"
 	var stage_trace: bool = false
+	var bearing_diagnostic: bool = false
 	var measured: Dictionary = {}
 	var participation: Dictionary = {}
 	func _create_worker() -> CyberSimulationWorker:
-		var result: CyberSimulationWorker = super._create_worker()
+		var result: CyberSimulationWorker = DiagnosticWorker.new() if bearing_diagnostic else super._create_worker()
 		result.set_worker_participation_sampling(true)
 		return result
+	func _native_telemetry_enabled() -> bool:
+		return bearing_diagnostic
 	func _observe_worker_participation(values: Dictionary) -> void:
 		participation = values.duplicate(true)
 	func _observe_contact_boundary(stage: String, envelope: Dictionary, advanced: int) -> void:
@@ -81,6 +122,8 @@ class Probe:
 		measured["response_is_new"]=measured.response_attempts_delta>0
 		measured["response"]=last_contact_response.duplicate(true)
 		measured["contact_observation"]=last_contact_observation.duplicate(true)
+		if bearing_diagnostic and worker is DiagnosticWorker:
+			measured["bearing_ring"]=(worker as DiagnosticWorker).drain_gate()
 		return deferred
 	func _observe_compound_application(applied: Dictionary, results: PackedFloat32Array,
 			states: PackedFloat32Array, snapshot_serial: int, native_tick: int,
@@ -144,6 +187,7 @@ func run() -> void:
 		printerr("SOL_STRUCTURE refuses missing/existing output path");quit(1);return
 	check(structure in ["tree","building"] and surroundings in ["empty","packed_sand"] and workers in [1,4],"registered input")
 	var session := Probe.new();session.structure=structure;session.stage_trace=OS.get_environment("SOL_STAGE_TRACE")=="1"
+	session.bearing_diagnostic=OS.get_environment("SOL_BEARING_DIAGNOSTIC")=="1"
 	var opened: bool = await session.open(root,workers,surroundings,true,enabled,true)
 	check(opened,"actual SOL source opens: "+session.last_error)
 	if not opened:session.close();quit(1);return
@@ -174,6 +218,7 @@ func run() -> void:
 			"owner_disabled":session.body.is_shape_owner_disabled(session.body.shape_find_owner(index))})
 	var report: Dictionary = {"registration":"SOL-STRUCTURE-CUT-001","source":OS.get_environment("CYBERSAND_SOURCE_REVISION"),
 		"order_registration":"SOL-CONTACT-ORDER-LIVE-001" if order_profile else "","contact_order":session.sand_contact_order,
+		"bearing_registration":"SOL-BEARING-GATE-001" if session.bearing_diagnostic else "","native_telemetry":session.bearing_diagnostic,
 		"platform":OS.get_name(),"structure":structure,"surroundings":surroundings,"sand_response":enabled,"workers":workers,
 		"stage_trace":session.stage_trace,"stage_registration":"SOL-STRUCTURE-STAGES-001" if session.stage_trace else "",
 		"compact_delta_counters":compact_evidence,"mass_readiness_evidence":"Cached scalar/COM readback alone is insufficient; isolated known-wrench oracle and actual permitted response supply behavioral evidence",

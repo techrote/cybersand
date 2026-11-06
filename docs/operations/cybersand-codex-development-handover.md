@@ -10,6 +10,15 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## Dependent SOL bearing-gate diagnostic — 2026-11-06
+
+Branch `claude/sol-bearing-gate-diagnostic-20261106` depends on Draft #461
+`cba3c0de35c4fae410b2fa16fa821524308c1ce8`. Read the [dossier](../audits/2026-11-06-sol-bearing-gate-diagnostic.md). Registration
+`sol_bearing_gate_001.json` and its amendment precede the matrix; smoke-001 is a
+retained apparatus failure. Result INCONCLUSIVE; one eligible pair. Owner decisions are
+in the [decision record](../audits/2026-11-06-sol-review-and-owner-decisions.md). Keep #460,
+#461 and this branch Draft; next is phase control or a registered P2 arm.
+
 ## Dependent SOL ordering result — 2026-11-06
 
 Continue from `codex/sol-contact-gravity-order-20261106`, based on stable Draft

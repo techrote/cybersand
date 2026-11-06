@@ -121,7 +121,7 @@ func open(parent: Node, workers: int = 4, surroundings: String = "empty",
 	var native: Object = worker._world
 	if not native.has_method(&"solid_detachment_command") or not ClassDB.class_exists(&"RapierPhysicsServer2D"):
 		return _fail("Source-matched native detachment and Rapier runtime required; no fallback")
-	if not native.diagnostic_reset({"workers":workers,"telemetry":false,
+	if not native.diagnostic_reset({"workers":workers,"telemetry":_native_telemetry_enabled(),
 		"conservative_displacement":conservative_displacement}):
 		return _fail("Native diagnostic setup refused")
 	native.set_simulation_window_enabled(false)
@@ -148,6 +148,11 @@ func open(parent: Node, workers: int = 4, surroundings: String = "empty",
 
 func _create_worker() -> CyberSimulationWorker:
 	return Worker.new()
+
+func _native_telemetry_enabled() -> bool:
+	# Default-off observation seam. Native telemetry only adds counters and body
+	# diagnostic rows; registered probes must still prove non-perturbation.
+	return false
 
 
 func _author_surroundings(native: Object, kind: String) -> bool:

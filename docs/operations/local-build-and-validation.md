@@ -10,6 +10,16 @@ related-documents: [source-checkpoint-and-recovery.md, testing-validation-and-re
 
 # Local build and validation
 
+## SOL bearing-gate diagnostic — 2026-11-06
+
+`python tools/sol281/gate_live.py --run NEW` runs 24 fresh packed episodes
+(Windows/Linux, workers 1/4, tree/building, off/pre/post) with native telemetry,
+plus two Windows telemetry-off replays; `--smoke` runs focused gates and one post
+episode per host. `gate_reduce.py --run NEW --reference <live-001>` checks
+alignment, the native bearing-law model, support calibration and race
+classification; `test_gate_reduction.py` tests the model. Evidence is local under
+`build/sol-bearing-gate` (1.5 GiB cap, 5 GiB reserve); see the [dossier](../audits/2026-11-06-sol-bearing-gate-diagnostic.md).
+
 ## SOL contact ordering qualification — 2026-11-06
 
 Use `python tools/sol281/order_values.py --run NEW` and `order_reduce_values.py`

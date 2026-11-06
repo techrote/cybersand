@@ -10,6 +10,15 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+## SOL bearing-gate diagnostic — 2026-11-06
+
+**Current dependent diagnostic:** the [registered observation](../audits/2026-11-06-sol-bearing-gate-diagnostic.md)
+reproduces the native bearing law exactly and shows post engaging its
+`velocity.y <= 0` gate where post Sand is accepted; the attribution decision is
+INCONCLUSIVE (one eligible pair; strong publication/tick phase sensitivity).
+**Planned:** a phase-controlled repeat or separately registered live P2
+(publish before Sand) arm. No gate/cap/law/default change; all SOL blockers stand.
+
 ## SOL ordering result — 2026-11-06
 
 **Current isolated experiment:** the [registered comparison](../audits/2026-11-06-sol-contact-gravity-order.md)
