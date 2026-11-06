@@ -114,6 +114,41 @@ def check(pack: dict, repo_root: Path | None = None) -> dict:
             require(x>=px+pw or px>=x+w or y>=py+ph or py>=y+h, f'{fid}: overlapping AABB with {pid}')
         areas.append((fid,x,y,w,h))
     require(base_used <= set(palette), f'palette missing IDs {base_used - set(palette)}')
+    # A second scene is not a fresh feature collection: require all original eight
+    # modules at disjoint positions, valid variants, and no live/moving materials.
+    alt = pack.get('alternate_scene')
+    require(isinstance(alt, dict), 'missing alternate scene')
+    if isinstance(alt, dict):
+        az=alt.get('size',[])
+        require(len(az)==2 and all(type(q) is int and q>0 for q in az), 'alternate invalid size')
+        if len(az)==2 and all(type(q) is int and q>0 for q in az):
+            require(az[0]*az[1]<=400_000, 'alternate raster too large')
+            base_used.update(geometry(alt.get('rectangles',[]),az,'alternate'))
+        counts['alternate_rectangles']=len(alt.get('rectangles',[]))
+        aa=alt.get('placements',[])
+        require(len(aa)==len(features), 'alternate must place all eight features')
+        counts['alternate_placements']=len(aa)
+        occupied=[]; seen_alt=set()
+        for p in aa:
+            fid=p.get('feature')
+            require(fid in by_id,'alternate unknown feature')
+            if fid not in by_id:continue
+            require(fid not in seen_alt,'alternate duplicate feature')
+            seen_alt.add(fid)
+            f=by_id[fid]; x,y=p.get('x'),p.get('y'); w,h=f['size']
+            require(type(x) is int and type(y) is int and x>=0 and y>=0 and x+w<=az[0] and y+h<=az[1],fid+': alternate out of bounds')
+            require(p.get('variant')=='base' or any(v['id']==p.get('variant') for v in f['variants']),fid+': alternate undefined variant')
+            for px,py,pw,ph in occupied:
+                require(x>=px+pw or px>=x+w or y>=py+ph or py>=y+h,fid+': alternate AABB overlaps')
+            occupied.append((x,y,w,h))
+            swap=next((v['swap'] for v in f['variants'] if v['id']==p.get('variant')),{})
+            for r in f['rectangles']:
+                mid=swap.get(str(r[4]),r[4])
+                if mid in palette:
+                    require(not palette[mid]['movable'] and palette[mid]['kernel']==0,fid+': alternate uses moving/reactive material')
+        for r in alt.get('rectangles',[]):
+            if isinstance(r,list) and len(r)==5 and r[4] in palette:
+                require(not palette[r[4]]['movable'] and palette[r[4]]['kernel']==0,'alternate terrain must be dry fixed material')
     # The design pack is source pinned. If checked out in the actual repo, compare
     # both blob identities and every palette row against the authoritative catalogue.
     source_status = 'SKIPPED: full current source not present in this working directory'
@@ -173,7 +208,12 @@ def self_test(base):
     bad(lambda d: d['features'][5].update(status='static'),'active-kernel inside inert static')
     bad(lambda d: d['features'][6].update(status='static'),'fluid inside inert static')
     bad(lambda d: d['palette'][0].update(name='bogus'),'Empty sentinel altered')
-    print('SELF-TEST PASS: 12 independently invalid mutations rejected')
+    bad(lambda d: d['alternate_scene']['rectangles'].append([767,3,2,3,99]),'alternate out of bounds')
+    bad(lambda d: d['alternate_scene']['placements'][0].update(variant='no-such-variant'),'alternate invalid variant')
+    bad(lambda d: d['alternate_scene']['placements'][1].update(x=16,y=56),'alternate overlapping placement')
+    bad(lambda d: d['alternate_scene']['placements'][6].update(variant='base'),'alternate active brine forbidden')
+    bad(lambda d: d['alternate_scene']['rectangles'].append([2,2,1,1,23]),'alternate moving salt forbidden')
+    print('SELF-TEST PASS: 17 independently invalid mutations rejected')
 
 
 def main():

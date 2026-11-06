@@ -51,8 +51,8 @@ def runrects(pixels,wh,px,py,scale,palette):
 def generate(pack):
     palette={x['id']:x for x in pack['palette']}
     features={f['id']:f for f in pack['features']}
-    parts=['''<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1420" viewBox="0 0 1200 1420" role="img" aria-label="Chalkbone Coast combined shore scene and eight modular design schematics">
-<rect width="1200" height="1420" fill="#0B1521"/>
+    parts=['''<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="2400" viewBox="0 0 1200 2400" role="img" aria-label="Chalkbone Coast combined shore scene and eight modular design schematics">
+<rect width="1200" height="2400" fill="#0B1521"/>
 <text x="28" y="46" fill="#F0E4D4" font-family="monospace" font-size="28" font-weight="bold">CHALKBONE COAST // DESIGN SHEET 002</text>
 <text x="28" y="70" fill="#B7C5CC" font-family="monospace" font-size="13">SOURCE-COLOUR RECTANGLES · NOT GAMEPLAY / PHYSICS / GODOT CAPTURE</text>
 <text x="28" y="102" fill="#DBD6C8" font-family="monospace" font-size="17">COMBINED LITTORAL SECTION · 768 × 256 CELLS</text>
@@ -84,6 +84,25 @@ def generate(pack):
         parts.append(runrects(crop,(240,100),ox,1150,2,palette))
         parts.append(f'<text x="{ox+2}" y="1376" fill="#EBD8BE" font-family="monospace" font-size="12">{title}</text>')
     parts.append('<text x="28" y="1402" fill="#92ADB7" font-family="monospace" font-size="12">Inert scene substitutions only. Flat palette schematics: no Godot/physics/water/reflection/clearance qualification.</text>')
+    # Separate source-colour illustration of a second, spatially different placement.
+    # No Godot shaders, living liquids or accepted importer are involved.
+    ar=pack['alternate_scene']; aw,ah=ar['size']
+    alt_pixels=raster(ar['size'],ar['rectangles'],features,ar['placements'])
+    parts.append('<text x="28" y="1458" fill="#DBD6C8" font-family="monospace" font-size="17">ALTERNATE SHORE · THE SPIRAL BREACH · 768 × 352 CELLS</text>')
+    parts.append('<rect x="24" y="1470" width="1152" height="528" fill="#0D2029" stroke="#4F7580" stroke-width="1"/>')
+    parts.append(runrects(alt_pixels,ar['size'],24,1470,1.5,palette))
+    for placement in ar['placements']:
+        tx=24+placement['x']*1.5;ty=1470+placement['y']*1.5
+        parts.append(f'<text x="{tx+2:g}" y="{max(1484,ty-8):g}" fill="#EBD8BE" font-family="monospace" font-size="10">{html.escape(placement["feature"])}</text>')
+    parts.append('<text x="28" y="2040" fill="#DBD6C8" font-family="monospace" font-size="17">SPIRAL FOSSIL / LEFT ERODED COAST · TRUE NATIVE-CELL CROPS</text>')
+    for ox,sx,sy,title in ((36,270,99,'SPIRAL SHELL · DISCONTINUOUS CALYX'),(624,0,153,'LEFT SEDIMENT SCARP · CAVITIES CUT WITH ID 0')):
+        crop=[]
+        for cy in range(sy,sy+100):
+            crop.extend(alt_pixels[cy*aw+sx:cy*aw+sx+240])
+        parts.append(f'<rect x="{ox}" y="2062" width="480" height="200" fill="#0D2029" stroke="#4F7580" stroke-width="1"/>')
+        parts.append(runrects(crop,(240,100),ox,2062,2,palette))
+        parts.append(f'<text x="{ox+2}" y="2290" fill="#EBD8BE" font-family="monospace" font-size="12">{title}</text>')
+    parts.append('<text x="28" y="2354" fill="#92ADB7" font-family="monospace" font-size="12">Dry fixed-cell proposal: ID 0 cuts are explicit. No native Godot, liquid, clearance or physical-support proof.</text>')
     parts.append('</svg>')
     return '\n'.join(parts)+'\n'
 
