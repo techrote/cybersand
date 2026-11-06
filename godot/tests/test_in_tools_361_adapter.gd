@@ -19,11 +19,12 @@ func _initialize() -> void:
 	run.call_deferred()
 
 
-func expect(ok: bool, message: String) -> void:
+func expect(ok: bool, message: String) -> bool:
 	checks += 1
 	if not ok:
 		failures += 1
 		push_error("IN_TOOLS_361_ADAPTER: " + message)
+	return ok
 
 
 func _policy() -> PackedInt32Array:
