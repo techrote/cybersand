@@ -5,6 +5,11 @@ extends RefCounted
 const MATERIAL_COUNT: int = 132
 const MAX_SIDE: int = 16384
 const MAX_CELLS: int = 16777216
+const SCHEMA_ID: String = "cybersand.world-feature-pack.proposal"
+const SCHEMA_VERSION: int = 1
+const MAX_OUTPUT_PIXELS: int = 16777216
+const MAX_BUDGET_MIB: int = 1024
+const CAPTURE_HALO_CELLS: int = 32
 # Grounded in tests/capture_material_review.gd and native material creation states.
 const INITIAL_CONDITION: Dictionary = {
 	3: 255, 4: 240, 6: 240, 11: 32, 12: 255, 15: 1,
@@ -116,6 +121,10 @@ static func _variants_error(feature: Dictionary) -> String:
 static func inspect(pack: Variant) -> Dictionary:
 	if typeof(pack) != TYPE_DICTIONARY:
 		return _failure("top-level pack must be an object")
+	if not pack.has("schema_id") or typeof(pack["schema_id"]) != TYPE_STRING or pack["schema_id"] != SCHEMA_ID:
+		return _failure("unsupported schema_id: expected " + SCHEMA_ID)
+	if not pack.has("schema_version") or typeof(pack["schema_version"]) != TYPE_INT or pack["schema_version"] != SCHEMA_VERSION:
+		return _failure("unsupported schema_version: expected integer 1")
 	var has_scene: bool = pack.has("scene")
 	var has_combined: bool = pack.has("combined_scene")
 	if has_scene == has_combined:
@@ -163,6 +172,10 @@ static func inspect(pack: Variant) -> Dictionary:
 		var placement: Variant = placements[i]
 		if typeof(placement) != TYPE_DICTIONARY:
 			return _failure("placement %d must be an object" % i)
+		if has_scene and (placement.has("feature_id") or placement.has("origin")):
+			return _failure("scene placement contradicts x/y/feature structure")
+		if has_combined and (placement.has("feature") or placement.has("x") or placement.has("y")):
+			return _failure("combined_scene placement contradicts origin/feature_id structure")
 		var feature_id: Variant = placement.get("feature" if has_scene else "feature_id")
 		if typeof(feature_id) != TYPE_STRING or not features.has(feature_id):
 			return _failure("placement %d references missing feature %s" % [i, str(feature_id)])
@@ -190,6 +203,82 @@ static func inspect(pack: Variant) -> Dictionary:
 	# baseline_y is documentation, not terrain or a destructive clearing operation.
 	return {"ok": true, "family": family, "scene": scene, "size": size,
 		"features": features, "terrain": terrain, "placements": normalized}
+
+
+
+# Conservative, checked preallocation budget. RGB8 output + readback conversion,
+# full-world RG8 source/texture, HDR viewports, halos, details, and staged copy.
+# This is an admission estimate, not an allocator's measured peak.
+static func _bounded_product(a: int, b: int, maximum: int) -> int:
+	if a <= 0 or b <= 0 or maximum <= 0 or a > maximum / b:
+		return -1
+	return a * b
+
+
+static func capture_resource_budget(info: Dictionary, selected_scale: int,
+		selected_tile_cells: int, selected_mode: String, max_working_mib: int = 256) -> Dictionary:
+	if not info.get("ok", false):
+		return _failure("resource budget requires an inspected pack")
+	if selected_scale < 1 or selected_scale > 8:
+		return _failure("resource budget: scale outside 1..8")
+	if selected_tile_cells < 64 or selected_tile_cells > 2048 or selected_tile_cells % 2 != 0:
+		return _failure("resource budget: invalid tile size")
+	if selected_mode not in ["both", "combined", "individual"]:
+		return _failure("resource budget: invalid mode")
+	if max_working_mib < 16 or max_working_mib > MAX_BUDGET_MIB:
+		return _failure("resource budget: max-working-mib outside 16..1024")
+	var max_bytes: int = max_working_mib * 1048576
+	var sizes: Array[Vector2i] = []
+	if selected_mode in ["combined", "both"]:
+		sizes.append(info["size"])
+	if selected_mode in ["individual", "both"]:
+		for feature: Dictionary in info.features.values():
+			sizes.append(Vector2i(int(feature["size"][0]), int(feature["size"][1])))
+	var peak_working: int = 0
+	var total_payload: int = 0
+	var largest_pixels: int = 0
+	for size: Vector2i in sizes:
+		var scaled_x: int = _bounded_product(size.x, selected_scale, 32768)
+		var scaled_y: int = _bounded_product(size.y, selected_scale, 32768)
+		if scaled_x < 0 or scaled_y < 0:
+			return _failure("resource budget: scaled dimensions exceed 32768")
+		var pixels: int = _bounded_product(scaled_x, scaled_y, MAX_OUTPUT_PIXELS)
+		if pixels < 0:
+			return _failure("resource budget: scaled output area exceeds %d pixels" % MAX_OUTPUT_PIXELS)
+		largest_pixels = maxi(largest_pixels, pixels)
+		var cells: int = _bounded_product(size.x, size.y, MAX_CELLS)
+		if cells < 0:
+			return _failure("resource budget: source area exceeds native-cell cap")
+		# Conservative tile capacity includes the full two-sided halo. Limit
+		# estimates to the actual source dimensions plus the fixed halo.
+		var tile_x: int = (mini(selected_tile_cells, size.x) + CAPTURE_HALO_CELLS * 2 + 1) * selected_scale
+		var tile_y: int = (mini(selected_tile_cells, size.y) + CAPTURE_HALO_CELLS * 2 + 1) * selected_scale
+		var tile_pixels: int = _bounded_product(tile_x, tile_y, MAX_OUTPUT_PIXELS)
+		if tile_pixels < 0:
+			return _failure("resource budget: tiled HDR viewport area is excessive")
+		# 2*3B RGB8 output/readback, 4B staging/PNG encoder, 3*2B
+		# RG8 copies/texture, 24B per HDR palette+glow tile/readback.
+		var working: int = pixels * 10 + cells * 6 + tile_pixels * 24
+		peak_working = maxi(peak_working, working)
+		# One generated set + a second same-filesystem publication copy;
+		# PNG worst-case approximated by raw RGB8 plus overhead.
+		total_payload += pixels * 4 + cells * 2
+	# Two crops at most; upper bound each by whole combined scene. This
+	# deliberately overestimates layouts with small placed modules.
+	if selected_mode in ["combined", "both"] and info.placements.size() >= 2:
+		var combined_pixels: int = info["size"].x * info["size"].y * selected_scale * selected_scale
+		peak_working += combined_pixels * 3
+		total_payload += combined_pixels * 6
+	var staged_output_bytes: int = total_payload * 2
+	if peak_working > max_bytes or staged_output_bytes > max_bytes:
+		return _failure("resource budget exceeded: peak_working=%d staged_and_current=%d limit=%d bytes" % [
+			peak_working, staged_output_bytes, max_bytes])
+	return {"ok": true, "max_working_bytes": max_bytes,
+		"peak_working_estimate_bytes": peak_working,
+		"staged_and_current_estimate_bytes": staged_output_bytes,
+		"max_output_pixels_per_image": MAX_OUTPUT_PIXELS,
+		"largest_output_pixels": largest_pixels,
+		"tiles_halo_cells": CAPTURE_HALO_CELLS}
 
 
 static func _has_variant(feature: Dictionary, variant_id: String) -> bool:
