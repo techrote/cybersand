@@ -65,6 +65,8 @@ def step(row,d,previous=None):
     receipt=mid['receipt'] if observed else {};correction=(0.,0.);model=None
     if observed:
         assert mid['owner_epoch']==r0['physics_epoch'] and mid['snapshot_serial']==r1['snapshot_serial'] and mid['native_tick']==r1['native_tick']
+        centroid=[sum(4*x['data'][0]*x['data'][1]*x['transform'][4+axis] for x in d['server_shapes'])/s0[9] for axis in range(2)]
+        assert all(base.near(a,b) for a,b in zip(base.transform(s1[:6],r1['local_com']),base.transform(s1[:6],centroid))),'midpoint world COM disagrees with exact proxy centroid'
         if not receipt['accepted']:assert r0['bits']==r1['bits']
         elif receipt['correction_applications']:correction=tuple(receipt['correction'])
         model=ordinary_model(mid,d,s1[:6])

@@ -15,6 +15,7 @@ def main():
     reject('missing_midpoint_call',lambda r:r.update(ordinary_stage_calls=0))
     reject('extra_rapier_step',lambda r:r['ordinary_stage']['state'].update(manual_step=index+1))
     reject('foreign_owner',lambda r:r['ordinary_stage']['state'].update(body_rid=d['body_rid']+1))
+    reject('wrong_midpoint_com',lambda r:r['ordinary_stage']['state'].update(local_com=[.5,.5]))
     reject('wrong_epoch',lambda r:r['ordinary_stage'].update(owner_epoch=987))
     reject('wrong_native_tick',lambda r:r['ordinary_stage'].update(native_tick=-1))
     reject('mutating_ordinary_refusal',lambda r:r['ordinary_stage']['receipt'].update(accepted=False))
