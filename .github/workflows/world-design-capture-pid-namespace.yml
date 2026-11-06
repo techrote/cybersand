@@ -1,0 +1,72 @@
+name: World-design capture real PID namespace regression
+on:
+  push:
+    branches: [tools/world-design-capture-identity-fencing-20261106]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: capture-pidns-${{ github.sha }}
+  cancel-in-progress: false
+env:
+  PYTHONUTF8: '1'
+  GODOT_SILENCE_ROOT_WARNING: '1'
+jobs:
+  linux-docker-pid-namespace:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          lfs: false
+      - name: Run actual two-namespace Godot process adversary
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          E="$RUNNER_TEMP/world-design-capture-pid-namespace"
+          mkdir -p "$E/logs"
+          python3 tools/ci/check_ci_provider_policy.py > "$E/logs/ci-policy.json"
+          Z="$RUNNER_TEMP/Godot_v4.7-stable_linux.x86_64.zip"
+          curl --fail -L --retry 3 -o "$Z" "https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_linux.x86_64.zip"
+          echo "0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c  $Z" | sha256sum -c -
+          unzip -q "$Z" -d "$RUNNER_TEMP/godot-4.7"
+          GODOT="$RUNNER_TEMP/godot-4.7/Godot_v4.7-stable_linux.x86_64"
+          chmod +x "$GODOT"
+          "$GODOT" --version | tee "$E/logs/godot-version.log"
+          sha256sum "$GODOT" > "$E/logs/godot-executable-sha256.log"
+          docker info --format '{{.ServerVersion}}' > "$E/logs/docker-version.log"
+          docker pull ubuntu:24.04 > "$E/logs/docker-pull.log"
+          docker inspect --format '{{.Id}}' ubuntu:24.04 > "$E/logs/docker-image.log"
+          export LIBGL_ALWAYS_SOFTWARE=1 GALLIUM_DRIVER=llvmpipe LP_NUM_THREADS=2 DISPLAY=:99
+          Xvfb :99 -screen 0 1920x1080x24 -nolisten tcp > "$E/logs/xvfb.log" 2>&1 &
+          XVFB_PID=$!
+          trap 'kill "$XVFB_PID" 2>/dev/null || :' EXIT
+          sleep 2
+          python3 -m py_compile godot/tests/world_design_capture_pid_namespace_probe.py
+          set +e
+          python3 godot/tests/world_design_capture_pid_namespace_probe.py --godot "$GODOT" --evidence "$E" > "$E/logs/namespace-stdout.log" 2>&1
+          RESULT=$?
+          set -e
+          cat "$E/logs/namespace-stdout.log"
+          python3 - "$E" <<'PY'
+          import hashlib,sys
+          from pathlib import Path
+          root=Path(sys.argv[1])
+          rows=[hashlib.sha256(p.read_bytes()).hexdigest()+"  "+p.relative_to(root).as_posix()
+                for p in sorted(root.rglob("*")) if p.is_file() and p.name!="SHA256SUMS.txt"]
+          (root/"SHA256SUMS.txt").write_text("\n".join(rows)+"\n")
+          print("SHA256SUMS entries", len(rows))
+          PY
+          exit "$RESULT"
+      - name: Retain real PID namespace proof or failure
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: world-design-capture-real-pid-namespace-linux
+          path: ${{ runner.temp }}/world-design-capture-pid-namespace
+          retention-days: 90
+          include-hidden-files: true
+          if-no-files-found: error
