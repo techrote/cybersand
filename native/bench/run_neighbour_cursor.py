@@ -134,6 +134,7 @@ def benchmark_build(root, apparatus, out, verify=False):
 
 
 def tick_run(binary, scene, workers, ticks, out, label, cwd):
+    out.mkdir(parents=True, exist_ok=True)
     per_tick = out / (label + ".csv")
     result = run([binary, scene, workers, ticks, per_tick], cwd=cwd, log=out / (label + ".log"))
     try:
