@@ -752,6 +752,10 @@ static func _valid_in_tools_outcome(value: Variant, selected_profile: String, ac
 		if not value.get(key) is int or int(value[key]) < 0:
 			return false
 	if selected_profile == IN_TOOLS_NOZZLE_PROFILE:
+		if value.get("kind") != "directed_in_nozzle" \
+			or value.get("transport_mode") != "inertial_cellular_source_v1" \
+			or not value.get("ballistic_transport") is bool or bool(value.ballistic_transport):
+			return false
 		for key: String in ["water_units_added", "budget_before", "remaining_budget"]:
 			if not value.get(key) is int or int(value[key]) < 0:
 				return false
@@ -764,6 +768,8 @@ static func _valid_in_tools_outcome(value: Variant, selected_profile: String, ac
 			return accepted and added > 0 and int(value.remaining_budget) == quantity_budget - added
 		return not accepted and (added == 0 or value.status == "fault")
 	if selected_profile == IN_TOOLS_LEAK_PROFILE:
+		if value.get("kind") != "reversible_leak":
+			return false
 		if int(value.source_credit) != 0 or int(value.sink_debit) != 0 \
 			or int(value.get("quantity_delta", 0)) != 0:
 			return false
