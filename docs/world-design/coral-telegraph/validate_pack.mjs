@@ -20,6 +20,27 @@ function validatePack(p,source=null){
  let v=pl.variant?f.variants.find(z=>z.id===pl.variant):null;if(pl.variant&&!v)fail("unknown variant");
  for(const a of f.rectangles){let id=v&&v.swap[String(a[4])]!==undefined?+v.swap[String(a[4])]:a[4],m=pal.get(id);if(!m||m.movable||m.kernel!==0)fail("moving dry material "+f.id)}}
  if(seen.size!==8)fail("scene incomplete");for(const pattern of scene.patterns){if(pattern.sequence.some(id=>!fm.has(id))||pattern.spacing.length!==pattern.sequence.length-1)fail("pattern")}
+
+ const alt=p.alternate_scene;
+ if(!alt||alt.id!=="broken-return-crypt"||alt.size[0]!==1370||alt.size[1]!==420)fail("alt identity");
+ if(alt.placements.length!==8||new Set(alt.placements.map(x=>x.feature_id)).size!==8)fail("alt membership");
+ const tiers=new Map();
+ for(const pl of alt.placements){
+  const ff=fm.get(pl.feature_id);if(!ff)fail("alt unknown feature");
+  const [x,y]=pl.origin;if(![x,y].every(Number.isInteger)||x<0||y<0||x+ff.size[0]>1370||y+ff.size[1]>420)fail("alt placement");
+  if(pl.anchor_world[0]!==x+ff.anchor.point[0]||pl.anchor_world[1]!==y+ff.size[1])fail("alt anchor");
+  tiers.set(y+ff.size[1],(tiers.get(y+ff.size[1])||0)+1);
+  const v=pl.variant?ff.variants.find(q=>q.id===pl.variant):null;
+  if(pl.variant&&!v)fail("alt variant");
+  for(const a of ff.rectangles){const id=v&&v.swap[String(a[4])]!==undefined?+v.swap[String(a[4])]:a[4],m=pal.get(id);if(!m||m.movable||m.kernel!==0)fail("alt active material")}
+ }
+ if(tiers.size!==2||tiers.get(182)!==4||tiers.get(378)!==4)fail("alt distinct tiers");
+ if(alt.backdrop_rectangles.length<300||alt.foreground_rectangles.length<80)fail("alt rich geometry");
+ for(const key of ["backdrop_rectangles","foreground_rectangles"])for(const a of alt[key]){
+  if(!Array.isArray(a)||a.length!==5||a.some(z=>!Number.isInteger(z)))fail("alt integer rectangle");
+  const [x,y,w,h,id]=a,m=pal.get(id);
+  if(x<0||y<0||w<1||h<1||x+w>1370||y+h>420||!m||m.movable||m.kernel!==0)fail("alt physical bounds");
+ }
  return {modules:p.features.length,rectangles:rects,materials:p.palette.length,variants:p.features.reduce((n,f)=>n+f.variants.length,0),dynamic_modules:moving,patterns:scene.patterns.length,scene_cells:scene.size};
 }
 function blobHash(s){let b=Buffer.from(s,"utf8");return crypto.createHash("sha1").update("blob "+b.length+"\0").update(b).digest("hex")}
@@ -44,7 +65,17 @@ if(process.argv.includes("--negative")){
  x=>x.combined_scene.placements[0].variant="wrong",x=>x.palette[0].kernel=99,
  x=>x.combined_scene.terrain_rectangles[0][0]=-1,
  x=>x.combined_scene.terrain_rectangles[0][2]=9999,
- x=>x.combined_scene.terrain_rectangles[0][4]=3
+ x=>x.combined_scene.terrain_rectangles[0][4]=3,
+ x=>x.alternate_scene.placements.pop(),
+ x=>x.alternate_scene.placements[0].origin[0]=-1,
+ x=>x.alternate_scene.placements[1].anchor_world[1]--,
+ x=>x.alternate_scene.placements[2].feature_id="invalid",
+ x=>x.alternate_scene.placements[3].variant="invalid",
+ x=>x.alternate_scene.placements[4].origin[1]=500,
+ x=>x.alternate_scene.backdrop_rectangles[0][4]=3,
+ x=>x.alternate_scene.foreground_rectangles[0][2]=0,
+ x=>x.alternate_scene.foreground_rectangles[1][0]=-2,
+ x=>x.alternate_scene.backdrop_rectangles[1][3]=9999
  ];
  let n=0;for(let fn of tests){let x=JSON.parse(JSON.stringify(p));fn(x);try{validatePack(x,src)}catch{n++}}
  if(n!==tests.length)throw Error("Negative tests "+n+"/"+tests.length);
