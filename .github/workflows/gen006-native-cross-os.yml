@@ -119,7 +119,7 @@ jobs:
         timeout-minutes: 5
         run: |
           if not exist build\gen006-xos\probe.exe exit /b 1
-          python tools\experiments\gen006_cross_os_probe.py produce --native build\gen006-xos\probe.exe --out build\gen006-xos > build\gen006-xos\producer.log 2>&1
+          python tools\experiments\gen006_cross_os_probe.py produce --native build\gen006-xos\probe.exe --out build\gen006-xos --compare-input build\gen006-xos\inbound > build\gen006-xos\producer.log 2>&1
           if errorlevel 1 (type build\gen006-xos\producer.log & exit /b 1)
           type build\gen006-xos\producer.log
       - name: Preserve original Windows CYPS and receipts
