@@ -508,11 +508,16 @@ func submit(command: Variant, producer: StringName = &"policy") -> bool:
 		if bool(action.get(button, false)) != bool(_accepted_buttons[actor_id].get(button, false)):
 			edges.append({"button": button, "pressed": bool(action.get(button, false))})
 	for button: String in Equipment.BUTTON_KEYS:
+		if str(equipment_action.get("profile", _equipment[actor_id].profile)) == Equipment.METERED_PROFILE \
+			and button in ["trigger", "alternate"]:
+			continue # Experimental metered activation uses the latest admitted held state.
 		var key: String = "equipment_" + button
 		if bool(equipment_action.get(button, false)) != bool(_accepted_buttons[actor_id].get(key, false)):
 			edges.append({"button": key, "pressed": bool(equipment_action.get(button, false))})
 	if _button_edges[actor_id].size() + edges.size() > MAX_BUTTON_EDGES:
 		return _reject("button_edge_capacity")
+	# Release of a metered intake retires its uncommitted token immediately.
+	_equipment[actor_id].release_metered_activation(equipment_action)
 	_button_edges[actor_id].append_array(edges)
 	for button: String in BUTTON_KEYS:
 		_accepted_buttons[actor_id][button] = action.get(button, false)
@@ -652,6 +657,9 @@ func advance(delta: float) -> void:
 			if not command.equipment.is_empty():
 				for button: String in Equipment.BUTTON_KEYS:
 					command.equipment[button] = bool(_applied_buttons[index].get("equipment_" + button, false))
+				if str(command.equipment.get("profile", _equipment[index].profile)) == Equipment.METERED_PROFILE:
+					for button: String in ["trigger", "alternate"]:
+						command.equipment[button] = bool(_commands[index].equipment.get(button, false))
 		_equipment[index].pre_advance(command.get("equipment", {}), command.get("aim", Vector2.ZERO), not command.is_empty())
 		_rigs[index].advance(command, delta, not command.is_empty())
 		if is_flight_actor(index):
