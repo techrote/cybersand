@@ -1,0 +1,197 @@
+name: PF471 neighbour cursor execution qualification
+
+on:
+  push:
+    branches: [codex/fast-in-chunk-neighbour-cursor-20261106]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pf471-neighbour-${{ github.ref }}-${{ github.workflow }}
+  cancel-in-progress: true
+
+jobs:
+  native-and-verify-oracle:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 240
+    env:
+      CXX: g++-13
+      CC: gcc-13
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Record exact source and policy
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          g++-13 --version
+          python3 tools/ci/check_ci_provider_policy.py
+      - name: Full native suite
+        run: |
+          set -euo pipefail
+          make CXX=g++-13 build/tests
+          ./build/tests | tee build/pf471-native.log
+      - name: Full native suite with same-chunk read oracle enabled
+        run: |
+          set -euo pipefail
+          make BUILD_DIR=build/pf471-verify CXX='g++-13 -DCYBERSAND_VERIFY_LOCAL_NEIGHBOUR' build/pf471-verify/tests
+          ./build/pf471-verify/tests | tee build/pf471-verify.log
+      - name: Retain native evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: pf471-native-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            build/pf471-native.log
+            build/pf471-verify.log
+          if-no-files-found: warn
+          retention-days: 90
+
+  sanitizers:
+    name: Full native sanitizer / ${{ matrix.family }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 300
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        family: [asan-ubsan, tsan]
+    env:
+      CXX: g++-13
+      CC: gcc-13
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Run repository sanitizer family
+        env:
+          FAMILY: ${{ matrix.family }}
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          bash tools/ci/run_native_family.sh "$FAMILY" "build/pf471-sanitizers/$FAMILY"
+      - name: Retain sanitizer evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: pf471-${{ matrix.family }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/pf471-sanitizers/
+          if-no-files-found: warn
+          retention-days: 90
+
+  parent-candidate-abba:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 300
+    env:
+      PARENT_SHA: 4a80af2a891332176a3912a235582d77d076a185
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+      - name: Prepare exact source pair
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          git fetch --no-tags origin "$PARENT_SHA"
+          git worktree add --detach "$RUNNER_TEMP/pf471-parent" "$PARENT_SHA"
+          test "$(git -C "$RUNNER_TEMP/pf471-parent" rev-parse HEAD)" = "$PARENT_SHA"
+          test -z "$(git -C "$RUNNER_TEMP/pf471-parent" status --porcelain)"
+          mkdir -p build/pf471-abba/bin build/pf471-abba/runs
+          g++-13 --version | head -n 1 | tee build/pf471-abba/compiler.txt
+          uname -a | tee build/pf471-abba/host.txt
+          printf 'parent=%s\ncandidate=%s\n' "$PARENT_SHA" "$GITHUB_SHA" > build/pf471-abba/source.txt
+      - name: Build same benchmark fixture against parent and candidate
+        shell: bash
+        run: |
+          set -euo pipefail
+          compile_arm() {
+            local root="$1" out="$2"
+            mapfile -t src < <(find "$root/native/src" -maxdepth 1 -name '*.cpp' -print | sort)
+            g++-13 -std=c++20 -O2 -g -fno-omit-frame-pointer -pthread               -Wall -Wextra -Wpedantic -Wconversion -Wshadow               -I"$root/native/include" "${src[@]}"               "$GITHUB_WORKSPACE/native/bench/neighbour_cursor_bench.cpp" -o "$out"
+            sha256sum "$out"
+          }
+          compile_arm "$RUNNER_TEMP/pf471-parent" build/pf471-abba/bin/parent
+          compile_arm "$GITHUB_WORKSPACE" build/pf471-abba/bin/candidate
+          compile_adversary() {
+            local root="$1" out="$2"
+            mapfile -t src < <(find "$root/native/src" -maxdepth 1 -name '*.cpp' -print | sort)
+            g++-13 -std=c++20 -O2 -g -fno-omit-frame-pointer -pthread               -Wall -Wextra -Wpedantic -Wconversion -Wshadow               -I"$root/native/include" "${src[@]}"               "$GITHUB_WORKSPACE/native/bench/neighbour_cursor_adversary.cpp" -o "$out"
+          }
+          compile_adversary "$RUNNER_TEMP/pf471-parent" build/pf471-abba/bin/parent-adversary
+          compile_adversary "$GITHUB_WORKSPACE" build/pf471-abba/bin/candidate-adversary
+          sha256sum build/pf471-abba/bin/* > build/pf471-abba/binaries.sha256
+      - name: Exact signed/mask/chunk-seam adversary
+        run: |
+          set -euo pipefail
+          for workers in 1 6; do
+            build/pf471-abba/bin/parent-adversary "$workers" > "build/pf471-abba/runs/adversary-parent-${workers}.json"
+            build/pf471-abba/bin/candidate-adversary "$workers" > "build/pf471-abba/runs/adversary-candidate-${workers}.json"
+          done
+          python3 - <<'PY'
+          import json, pathlib
+          root=pathlib.Path("build/pf471-abba/runs")
+          rows=[]
+          for workers in (1,6):
+              a=json.loads((root/f"adversary-parent-{workers}.json").read_text())
+              b=json.loads((root/f"adversary-candidate-{workers}.json").read_text())
+              signature=lambda x:(x["state_hash"],x["physical_state_hash"],x["visited"],x["moved"],x["cores"],x["checkpoints"])
+              if signature(a)!=signature(b):
+                  raise SystemExit(f"adversary parity failure workers={workers}: {a} != {b}")
+              if workers==6 and b["max_workers_observed"] < 2:
+                  raise SystemExit(f"adversary six-worker path did not show parallel participation: {b}")
+              rows.append({"workers":workers,"parent":a,"candidate":b})
+          pathlib.Path("build/pf471-abba/adversary-summary.json").write_text(json.dumps({"status":"PASS","rows":rows},indent=2)+"\n")
+          print("PF471_ADVERSARY PASS")
+          PY
+      - name: Same-host A B B A benchmark, three cycles
+        shell: bash
+        run: |
+          set -euo pipefail
+          scene="$GITHUB_WORKSPACE/native/bench/data/neighbour_stress_rectangles.txt"
+          for workers in 1 6; do
+            for cycle in 1 2 3; do
+              for spec in 1-parent 2-candidate 3-candidate 4-parent; do
+                pos="${spec%%-*}"; arm="${spec#*-}"
+                build/pf471-abba/bin/"$arm" "$scene" "$workers" 600                   "build/pf471-abba/runs/w${workers}-c${cycle}-${pos}-${arm}.csv"                   > "build/pf471-abba/runs/w${workers}-c${cycle}-${pos}-${arm}.json"
+              done
+            done
+          done
+          python3 - <<'PY'
+          import json, pathlib, statistics
+          root=pathlib.Path("build/pf471-abba/runs")
+          rows=[]; cycles=[]
+          def sig(r):
+              return (r["state_hash"],r["physical_state_hash"],r["visited_total"],
+                      r["moved_total"],r["scheduled_cores_total"],json.dumps(r["checkpoints"],sort_keys=True))
+          for workers in (1,6):
+              all_rows=[]
+              for cycle in (1,2,3):
+                  current=[]
+                  for pos,arm in ((1,"parent"),(2,"candidate"),(3,"candidate"),(4,"parent")):
+                      p=root/f"w{workers}-c{cycle}-{pos}-{arm}.json"
+                      r=json.loads(p.read_text()); r.update(workers=workers,cycle=cycle,position=pos,arm=arm)
+                      current.append(r); all_rows.append(r); rows.append(r)
+                  if len({sig(r) for r in current}) != 1:
+                      raise SystemExit(f"ABBA parity failure workers={workers} cycle={cycle}")
+                  parent=statistics.mean(r["mean_ms"] for r in current if r["arm"]=="parent")
+                  candidate=statistics.mean(r["mean_ms"] for r in current if r["arm"]=="candidate")
+                  cycles.append({"workers":workers,"cycle":cycle,"parent_ms":parent,
+                                 "candidate_ms":candidate,"ratio":candidate/parent})
+              if len({sig(r) for r in all_rows}) != 1:
+                  raise SystemExit(f"cross-cycle parity failure workers={workers}")
+          summary={"schema":"pf471-neighbour-abba-v1","parent":"4a80af2a891332176a3912a235582d77d076a185",
+                   "candidate":rows[0] and "GITHUB_SHA_PLACEHOLDER","parity":True,"cycles":cycles,
+                   "median_ratio":{str(w):statistics.median(c["ratio"] for c in cycles if c["workers"]==w) for w in (1,6)},
+                   "mean_parent_ms":{str(w):statistics.mean(r["mean_ms"] for r in rows if r["workers"]==w and r["arm"]=="parent") for w in (1,6)},
+                   "mean_candidate_ms":{str(w):statistics.mean(r["mean_ms"] for r in rows if r["workers"]==w and r["arm"]=="candidate") for w in (1,6)}}
+          summary["candidate"]=pathlib.Path("build/pf471-abba/source.txt").read_text().split("candidate=",1)[1].strip()
+          pathlib.Path("build/pf471-abba/summary.json").write_text(json.dumps(summary,indent=2)+"\n")
+          print(json.dumps(summary,indent=2))
+          PY
+      - name: Retain raw A/B evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: pf471-abba-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/pf471-abba/
+          if-no-files-found: error
+          retention-days: 90
