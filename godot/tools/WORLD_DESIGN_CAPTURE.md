@@ -22,10 +22,14 @@ using an exclusive directory creation before moving the original claim into
 its `claim/` child. A collision with the public archive name refuses the
 operation without replacing a pre-existing object; recovery preserves the
 fixed claim, and release returns nonzero without invalidating an already
-committed root manifest. The reserved container is a private protocol
-directory; external writers injecting content into a successfully reserved
-container are outside the currently established filesystem custody model.
-The release archive is best-effort cleaned after claim relinquishment.
+committed root manifest. The final child move is itself an OS no-replace operation: Linux uses
+`renameat2(RENAME_NOREPLACE)` and Windows uses the non-overwriting
+`os.rename` platform behavior, invoked through Python. Even an independently
+inserted child object inside a reserved container cannot be overwritten.
+Python 3 is required on both platforms for archive operations; if unavailable,
+the claim is retained and publication reports a failure rather than falling
+back to a replacing rename. The release archive is best-effort cleaned after
+claim relinquishment.
 
 `--test-pause-before-archive-ms=N` and
 `--test-pause-archive-phase=recovery|release` require
