@@ -38,6 +38,27 @@ function validate(p){
    need(!!m&&!m.movable&&m.kernel===0,'dynamic material in dry gallery '+f.id+' '+a[4]);
   }
  }
+
+ for(const alt of p.combined_scene.alternates??[]){
+  need(typeof alt.id==='string'&&alt.id.length>0,'alternate id');
+  need(Array.isArray(alt.size)&&alt.size.length===2&&alt.size.every(Number.isInteger)&&alt.size.every(n=>n>0),'alternate size');
+  need(Number.isInteger(alt.baseline_y)&&alt.baseline_y>=0&&alt.baseline_y<=alt.size[1],'alternate baseline');
+  need(Array.isArray(alt.terrain_rectangles)&&alt.terrain_rectangles.length>0,'alternate terrain');
+  for(const a of alt.terrain_rectangles){
+   need(Array.isArray(a)&&a.length===5&&a.every(Number.isInteger),'alternate terrain shape');
+   const [x,y,w,h,id]=a,m=material.get(id);
+   need(x>=0&&y>=0&&w>0&&h>0&&x+w<=alt.size[0]&&y+h<=alt.size[1],'alternate bounds');
+   need(!!m&&!m.movable&&m.kernel===0,'alternate dynamic terrain');
+  }
+  need(alt.placements.length===8&&new Set(alt.placements.map(pl=>pl.feature_id)).size===8,'alternate feature count');
+  for(const pl of alt.placements){
+   const f=feature.get(pl.feature_id);need(!!f,'alternate unknown feature');
+   need(pl.origin[1]+f.size[1]===alt.baseline_y&&pl.origin[0]>=0&&pl.origin[0]+f.size[0]<=alt.size[0],'alternate placement bounds');
+   need(Array.isArray(pl.anchor_world)&&pl.anchor_world[0]===pl.origin[0]+f.anchor.point[0]&&pl.anchor_world[1]===alt.baseline_y,'alternate anchor');
+   const v=pl.variant?f.variants.find(v=>v.id===pl.variant):null;need(!pl.variant||!!v,'alternate unknown variant');
+   for(const a of f.rectangles){const m=material.get(v?+(v.swap[String(a[4])]??a[4]):a[4]);need(!!m&&!m.movable&&m.kernel===0,'alternate dynamic module')}
+  }
+ }
  return true;
 }
 validate(pack);
@@ -56,6 +77,12 @@ if(process.argv.includes('--source')){
 if(process.argv.includes('--negative')){
  let rejected=0;
  const edits=[
+  p=>p.combined_scene.alternates[0].terrain_rectangles[0][2]=0,
+  p=>p.combined_scene.alternates[0].terrain_rectangles[0][4]=16,
+  p=>p.combined_scene.alternates[0].placements[1].origin[1]=0,
+  p=>p.combined_scene.alternates[0].placements[7].variant=null,
+  p=>p.combined_scene.alternates[0].placements[2].anchor_world[0]=-1,
+  p=>p.combined_scene.alternates[0].placements[3].feature_id=p.combined_scene.alternates[0].placements[2].feature_id,
   p=>p.features[0].rectangles[0][0]=-1,
   p=>p.features[0].rectangles[0][2]=0,
   p=>p.features[0].rectangles[0][4]=250,
@@ -76,6 +103,6 @@ if(process.argv.includes('--negative')){
   try{validate(cp)}catch{rejected++}
  }
  need(rejected===edits.length,'negative cases rejected '+rejected+'/'+edits.length);
- console.log('14/14 deliberately-invalid mutations rejected');
+ console.log(rejected+'/'+edits.length+' deliberately-invalid mutations rejected');
 }
 console.log('PASS',pack.features.length,'features,',pack.features.reduce((n,f)=>n+f.rectangles.length,0),'rectangles,',pack.palette.length,'source IDs, dry scene fixed');
