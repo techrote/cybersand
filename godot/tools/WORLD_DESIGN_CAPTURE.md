@@ -75,14 +75,18 @@ it is an explicit stale-claim recovery action and archives the prior transaction
 record rather than deleting it.
 
 A fixed time repeats byte-identically on the same platform/rendering settings.
-The capture rig anchors both the production palette pass and emission pass to
-one fixed virtual world canvas (world bounds plus the 32-cell halo) and clips
-tile viewports out of that canvas. Tile size therefore changes bounded working
-set and stitching only; it must not reset shader UV/world-coordinate phase.
-The repair campaign retains exact differing pixel coordinates, counts, bounding
-boxes, maximum channel deltas and horizontal/vertical seam-band metrics at
-multiple tile sizes/scales in square, wide and tall material-varied fixtures on
-Linux llvmpipe and Windows ANGLE, alongside the historical Lumen comparison.
+The half-resolution production emission shader intentionally maps each glow
+texel to a 2x2 cell block. Because its `floor(UV * view_size_px)` expression
+lands mathematically on odd integer coordinates, the capture rig applies a
+small positive **uniform-only** epsilon to `view_size_px`; this keeps GLSL and
+ANGLE interpolation on the intended side of the same integer boundary without
+editing or substituting the production shader source. The qualification
+campaign includes a strict glow-off tile-size control to isolate palette
+mapping from emission/glow mapping.
+It retains exact differing pixel coordinates, counts, bounding boxes, maximum
+channel deltas and horizontal/vertical seam-band metrics at multiple tile
+sizes/scales in square, wide and tall material-varied fixtures on Linux
+llvmpipe and Windows ANGLE, alongside the historical Lumen comparison.
 Historical strict mismatches remain recorded as historical facts; a corrected
 head must establish its own exact or explicitly bounded measurements rather
 than inherit that outcome or silently widen a tolerance.

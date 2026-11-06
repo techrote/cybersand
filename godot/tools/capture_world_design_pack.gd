@@ -13,6 +13,11 @@ extends SceneTree
 const Adapter = preload("res://tools/world_design_pack_adapter.gd")
 const BACKGROUND: Color = Color(0.031, 0.043, 0.071, 1.0)
 const PAD_CELLS: int = 32 # More than the glow/emission footprint at tile seams.
+# The half-resolution emission pass evaluates UV*view_size exactly at intended
+# odd integer cell coordinates before floor(). A tiny positive capture-uniform
+# bias keeps those values on the intended side of the boundary across GLSL and
+# ANGLE/D3D floating-point interpolation without changing shader source.
+const EMISSION_COORD_EPSILON: float = 0.001
 const DEFAULT_TILE_CELLS: int = 512
 
 var pack_path: String = ""
@@ -562,17 +567,12 @@ func _make_rig(input: Image, camera: Vector2i, view: Vector2i) -> Dictionary:
 	viewport.add_child(background)
 	var source_texture: ImageTexture = ImageTexture.create_from_image(input)
 	var world_size: Vector2 = Vector2(input.get_size())
-	# Anchor shader coordinates to one virtual canvas for the whole world rather
-	# than resetting UV over each tile. This preserves the production shader
-	# source while making world_pixel/cell_fraction independent of tile size.
-	var virtual_origin: Vector2 = Vector2(-PAD_CELLS, -PAD_CELLS)
-	var virtual_view: Vector2 = world_size + Vector2(PAD_CELLS * 2, PAD_CELLS * 2)
 	var palette: ShaderMaterial = ShaderMaterial.new()
 	palette.shader = palette_shader
 	palette.set_shader_parameter("world_size_px", world_size)
-	palette.set_shader_parameter("view_size_px", virtual_view)
+	palette.set_shader_parameter("view_size_px", Vector2(view))
 	palette.set_shader_parameter("view_rect_uv", Vector4(0.0, 0.0, 1.0, 1.0))
-	palette.set_shader_parameter("camera_origin_px", virtual_origin)
+	palette.set_shader_parameter("camera_origin_px", Vector2(camera))
 	palette.set_shader_parameter("player_origin_px", Vector2(-1000, -1000))
 	palette.set_shader_parameter("condition_projection_enabled", 1.0)
 	palette.set_shader_parameter("water_presentation_mode", 0.0)
@@ -587,8 +587,7 @@ func _make_rig(input: Image, camera: Vector2i, view: Vector2i) -> Dictionary:
 	palette.set_shader_parameter("material_lut_size", Vector2(
 		CyberMaterialAppearanceLut.ATLAS_WIDTH, CyberMaterialAppearanceLut.ATLAS_HEIGHT))
 	var world_rect: TextureRect = TextureRect.new()
-	world_rect.position = (virtual_origin - Vector2(camera)) * float(scale)
-	world_rect.size = virtual_view * float(scale)
+	world_rect.size = Vector2(output_size)
 	world_rect.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	world_rect.stretch_mode = TextureRect.STRETCH_SCALE
 	world_rect.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
@@ -608,13 +607,13 @@ func _make_rig(input: Image, camera: Vector2i, view: Vector2i) -> Dictionary:
 	emission.set_shader_parameter("world_texture", source_texture)
 	emission.set_shader_parameter("material_program_lut", program_lut)
 	emission.set_shader_parameter("world_size_px", world_size)
-	emission.set_shader_parameter("view_size_px", virtual_view)
-	emission.set_shader_parameter("camera_origin_px", virtual_origin)
+	emission.set_shader_parameter("view_size_px",
+		Vector2(view) + Vector2(EMISSION_COORD_EPSILON, EMISSION_COORD_EPSILON))
+	emission.set_shader_parameter("camera_origin_px", Vector2(camera))
 	emission.set_shader_parameter("condition_projection_enabled", 1.0)
 	emission.set_shader_parameter("presentation_time_override", presentation_time)
 	var source: ColorRect = ColorRect.new()
-	source.position = (virtual_origin - Vector2(camera)) * 0.5
-	source.size = virtual_view * 0.5
+	source.size = Vector2(glow_viewport.size)
 	source.color = Color.WHITE
 	source.material = emission
 	glow_viewport.add_child(source)

@@ -352,12 +352,16 @@ def main() -> int:
     capture("lumen-time","lumen-fault",seconds="2.13")
     capture("lumen-noglow","lumen-fault",glow="off")
     capture("lumen-tiles","lumen-fault",tile=256)
+    capture("lumen-noglow-tiles","lumen-fault",glow="off",tile=256)
     compare("lumen-a","lumen-b",args.platform+"-lumen-repeat",True)
     compare("lumen-a","lumen-time",args.platform+"-lumen-time-control",False)
     compare("lumen-a","lumen-noglow",args.platform+"-lumen-glow-control",False)
-    # Preserve the historical strict mismatch as a measured bounded comparison.
-    compare("lumen-a","lumen-tiles",args.platform+"-lumen-tiling",False,
-            seams_x=(512,1024),tolerance=(0.0025,5))
+    # The no-glow control isolates the palette pass. The corrected emission
+    # coordinate phase is required to make the full glowing result exact too.
+    compare("lumen-noglow","lumen-noglow-tiles",
+            args.platform+"-lumen-tiling-noglow",True,seams_x=(512,1024))
+    compare("lumen-a","lumen-tiles",args.platform+"-lumen-tiling",True,
+            seams_x=(512,1024))
 
     if args.platform=="linux":
         capture("cathedral-b","cathedral-of-capacitors")
