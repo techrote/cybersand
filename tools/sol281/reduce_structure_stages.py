@@ -35,6 +35,11 @@ def ordinary_model(mid,d,pose):
     receipt=mid['receipt'];results=floats(mid['native_results_bits']);states=floats(mid['native_states_bits']);count=len(d['proxy_centres'])
     assert len(results)==count*9 and len(states)==count*11 and all(math.isfinite(x) for x in results+states)
     assert sorted(int(results[i*9]) for i in range(count))==list(range(1,count+1))
+    assert sorted(int(states[i*11]) for i in range(count))==list(range(1,count+1))
+    for i in range(count):
+        proxy=int(states[i*11])-1
+        assert states[i*11+9]==d['proxy_masses'][proxy]
+        assert tuple(states[i*11+4:i*11+6])==tuple(d['proxy_sizes'][proxy])
     assert len({results[i*9+8] for i in range(count)})==1
     raw=[None]*count
     for i in range(count):raw[int(results[i*9])-1]=results[i*9+1:i*9+3]
@@ -63,13 +68,17 @@ def step(row,d,previous=None):
         model=ordinary_model(mid,d,s1[:6])
     else:assert r0['bits']==r2['bits']
     expected_position=tuple(f(s0[4+i]+correction[i]) for i in range(2));assert tuple(s1[4:6])==expected_position
-    assert s1[:4]==s0[:4] and s2[:6]==s1[:6],'application stage changed angular pose or Sand changed pose'
+    assert s2[:6]==s1[:6],'Sand stage changed pose'
+    if not correction[0] and not correction[1]:assert s1[:4]==s0[:4],'basis changed without existing correction setter'
+    basis_delta=[s1[i]-s0[i] for i in range(4)];angle_delta=math.atan2(s1[1],s1[0])-math.atan2(s0[1],s0[0])
     vc=clipped_velocity(s0[6:8],correction);j0=mul(sub(s1[6:8],vc),s0[9]);js=momentum(s1,s2);jb=momentum(s2,s3)
     clip_ke=.5*s0[9]*(dot(vc,vc)-dot(s0[6:8],s0[6:8]));clip_j=mul(sub(vc,s0[6:8]),s0[9]);tau0=s0[10]*(s1[8]-s0[8]);taus=s0[10]*(s2[8]-s1[8])
     e=[energy(s,r) for s,r in zip(states,[r0,r1,r2,r3])];de=[e[i+1]-e[i] for i in range(3)]
     assert abs((e[3]-e[0])-sum(de))<=256*sys.float_info.epsilon*max(1.,*[abs(x) for x in e])
     response=row['response'];response_new=row['response_is_new'];accepted=response_new and response.get('accepted',False)
     if not accepted and not (response_new and response.get('failed',False)):assert r1['bits']==r2['bits']
+    if accepted:
+        assert response['readback_valid'] and base.ke(s2)-base.ke(s1)<=response['energy_tolerance']
     g=r0['gravity'];dt=r0['fixed_delta'];load=load_reference(s0[9],g,dt);dx=sub(s1[4:6],s0[4:6]);correction_u=-s0[9]*dot(g,dx)
     native_residual=None;native_torque_residual=None
     if model and model['accepted']:
@@ -80,7 +89,7 @@ def step(row,d,previous=None):
         native_tick=r1['native_tick'],snapshot=r1['snapshot_serial'],sample=r1['sample_serial'],publication_age_usec=age_usec,
         gravity_load_reference=load,nominal_mg_over60=s0[9]*math.hypot(*g)/60,
         ordinary_impulse=j0,ordinary_torque=tau0,ordinary_support_ratio=normalize(j0,g,load),clip_impulse=clip_j,clip_support_ratio=normalize(clip_j,g,load),clip_ke=clip_ke,
-        correction=dx,correction_potential=correction_u,correction_mechanical=clip_ke+correction_u,ordinary_impulse_ke=base.ke(s1)-base.ke(s0)-clip_ke,
+        ordinary_basis_delta=basis_delta,ordinary_angle_delta=angle_delta,correction=dx,correction_potential=correction_u,correction_mechanical=clip_ke+correction_u,ordinary_impulse_ke=base.ke(s1)-base.ke(s0)-clip_ke,
         sand_impulse=js,sand_torque=taus,sand_support_ratio=normalize(js,g,load),sand_ke=base.ke(s2)-base.ke(s1),backend_impulse=jb,backend_ke=base.ke(s3)-base.ke(s2),
         stage_energy=de,total_energy_change=e[3]-e[0],ordinary_model=model,ordinary_momentum_residual=native_residual,ordinary_torque_residual=native_torque_residual,
         wake_request=bool(observed and receipt.get('accepted') and (receipt.get('correction_applications',0) or receipt.get('impulse_applications',0))),
@@ -92,7 +101,7 @@ def window(rows):
     def ratio(key):return sum((r[key] or 0)*r['gravity_load_reference'] for r in rows)/load if load else None
     energies=[sum(r['stage_energy'][i] for r in rows) for i in range(3)];positive=[sum(max(0.,r['stage_energy'][i]) for r in rows) for i in range(3)]
     return dict(samples=len(rows),gravity_load_sum=load,ordinary_support_ratio=ratio('ordinary_support_ratio'),clip_support_ratio=ratio('clip_support_ratio'),sand_support_ratio=ratio('sand_support_ratio'),stage_energy_sum=energies,stage_energy_positive_sum=positive,clip_ke=sum(r['clip_ke'] for r in rows),correction_potential=sum(r['correction_potential'] for r in rows),ordinary_impulse_ke=sum(r['ordinary_impulse_ke'] for r in rows),sand_ke=sum(r['sand_ke'] for r in rows),
-        correction_steps=sum(r['correction']!= (0.,0.) for r in rows),clip_steps=sum(r['clip_ke']<0 for r in rows),wake_requests=sum(r['wake_request'] for r in rows),ordinary_outcomes=dict(collections.Counter(r['ordinary_outcome'] for r in rows)),sand_outcomes=dict(collections.Counter(r['sand_outcome'] for r in rows)),
+        max_ordinary_angle_delta=max(abs(r['ordinary_angle_delta']) for r in rows),basis_roundtrip_steps=sum(any(x!=0 for x in r['ordinary_basis_delta']) for r in rows),correction_steps=sum(r['correction']!= (0.,0.) for r in rows),clip_steps=sum(r['clip_ke']<0 for r in rows),wake_requests=sum(r['wake_request'] for r in rows),ordinary_outcomes=dict(collections.Counter(r['ordinary_outcome'] for r in rows)),sand_outcomes=dict(collections.Counter(r['sand_outcome'] for r in rows)),
         cap_hits=sum(bool(r['ordinary_model'] and r['ordinary_model'].get('cap_hit')) for r in rows),discarded_impulse_magnitude=sum(r['ordinary_model'].get('discarded_magnitude',0) if r['ordinary_model'] else 0 for r in rows),
         peak_speed=max(math.hypot(*r['after_rapier_velocity']) for r in rows),rms_speed=math.sqrt(sum(dot(r['after_rapier_velocity'],r['after_rapier_velocity']) for r in rows)/len(rows)),peak_abs_omega=max(abs(r['after_rapier_omega']) for r in rows),sleeping=sum(r['sleeping'] for r in rows),
         max_ordinary_momentum_residual=max((math.hypot(*r['ordinary_momentum_residual']) for r in rows if r['ordinary_momentum_residual'] is not None),default=None))
@@ -103,8 +112,9 @@ def episode(d):
 def main():
     p=argparse.ArgumentParser(__doc__);p.add_argument('--runs',nargs='+',required=True);p.add_argument('--output',type=Path,required=True);args=p.parse_args();assert not args.output.exists();episodes=[];receipts=[]
     for run in args.runs:
-        folder=ROOT/'build/sol-structure-cut'/run;r=json.loads((folder/'receipt.json').read_text(encoding='utf-8'));assert r['post_source_equality'] and r['matrix']['stage_trace'];receipts.append(dict(run=run,sha256=base.sha(folder/'receipt.json'),source=r['identity']['source_commit']))
+        folder=ROOT/'build/sol-structure-cut'/run;r=json.loads((folder/'receipt.json').read_text(encoding='utf-8'));assert r['post_source_equality'] and r['matrix']['stage_trace'];assert set(r['hosts'])==set(r['matrix']['platforms'].split(','));receipts.append(dict(run=run,sha256=base.sha(folder/'receipt.json'),source=r['identity']['source_commit']))
         for host,h in r['hosts'].items():
+            assert all(c['clean'] for c in h['commands']) and not h['post_inventory']['unexpected_changes']
             expected={}
             for w in map(int,r['matrix']['workers'].split(',')):
                 for structure in ['tree','building']:
@@ -112,7 +122,7 @@ def main():
                         surroundings='packed_sand' if r['matrix']['suite']=='packed' else 'empty';expected[f'{structure}-{surroundings}-response{int(response)}-w{w}']=(structure,surroundings,response,w)
             for c in base.physical_commands(h['commands'],expected):
                 raw=c['report'];path=ROOT/raw['path'].replace('\\','/');assert c['clean'] and c['report_complete'] and base.sha(path)==raw['sha256'];d=json.loads(path.read_text(encoding='utf-8'));base.coordinate(d,host,*expected[c['name']],r['identity']['source_commit']);qualified=base.episode(d,raw);trace=episode(d)
-                trace.update(run=run,host=host,structure=d['structure'],workers=d['workers'],sand_response=d['sand_response'],raw=raw,registered_dry_rest=qualified['tail120'] if d['surroundings']=='empty' else None,terminal_hard=qualified['terminal_hard'],terminal_sand=qualified['terminal_sand'],native_material_counts=qualified['native_material_counts']);episodes.append(trace)
+                trace.update(run=run,host=host,structure=d['structure'],workers=d['workers'],sand_response=d['sand_response'],raw=raw,registered_dry_rest=qualified['tail120'] if d['surroundings']=='empty' else None,descriptive_motion=qualified['tail120'],terminal_hard=qualified['terminal_hard'],terminal_sand=qualified['terminal_sand'],native_material_counts=qualified['native_material_counts'],all_attempt_metrics=d['metrics']);episodes.append(trace)
     output=dict(reducer_sha256=base.sha(__file__),base_reducer_sha256=base.sha(base.__file__),receipts=receipts,episodes=episodes,qualifiers=['Actual stage attribution, not counterfactual causation or schedule-matched replay.','M*g*dt is a load reference including zero/refused/sleeping frames. Correction clipping and potential work are separate from applied impulses.','Native wrench float32 reconstruction residual is diagnostic; backend stage includes gravity/damping/hardcontact/wake/integration; cached contact impulses never integrated. No closed-system energy/physical clearance/CPU acceptance.'])
     args.output.write_text(json.dumps(output,indent=2)+'\n',encoding='utf-8');print('episodes',len(episodes),'steps',sum(len(e['rows']) for e in episodes))
 if __name__=='__main__':main()

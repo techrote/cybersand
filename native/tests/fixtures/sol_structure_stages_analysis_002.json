@@ -1,0 +1,8 @@
+{
+  "registration":"SOL-STRUCTURE-STAGES-ANALYSIS-002",
+  "date":"2026-11-06",
+  "scope":"Correct an overly strict reducer assumption, retaining the first failure and every raw physical report; no trajectory, physics guard or acceptance threshold changes.",
+  "finding":"First reducer refuses Windows tree Off/w1 step70 because S1 basis is not bit-identical to S0 when existing positional correction sets the complete transform. Coefficients differ at float32 precision; observed maximum angle difference across packed inputs is3.30371777712557e-8rad. All860 observed basis changes accompany existing correction; none occur without it, and no Sand stage changes pose. Re-encoding on transform set is a plausible interpretation, not separately proven backend internals.",
+  "amendment":"Keep exact S1 origin comparison to float32(S0 origin+applied correction). Require exact Sand pose equality and exact ordinary basis equality when no correction setter executes. For existing correction, record basis/angle difference as an observed value without a new tuned pass/fail bound. Original strict hard geometry/1e-9 filter and no additional physics-step/body ownership gates remain unchanged. No extra angular correction is introduced.",
+  "custody":"stage-reduction-first-failure.json and raw report hash retain the failed diagnostic; it is an apparatus assumption failure, not an unexecuted physical test or evidence of successful clearance. Source corrections address analysis only."
+}
