@@ -542,6 +542,120 @@ void render_dirty_not_persistent_ack_cohort(std::uint32_t workers) {
               << ",\"native_selective_eviction\":false,\"result\":\"PASS\"}\n";
 }
 
+
+// Native GEN-006 continuation gap: a simulation tick can change true physical
+// cells/Water mass distribution without a new player/host edit. A rendered
+// dirty notification is consumable and does not become a durable save ACK.
+// This is a whole-World negative/control only: NO production mutation journal,
+// selective eviction, new schema, actor restore, or authority/policy change.
+void simulation_only_persistence_gap_cohort(std::uint32_t workers) {
+    const auto c = config(workers);
+    const auto p = payload();
+    World live(c);
+    for (int i = 0; i < 8; ++i) {
+        require(live.install_generated_chunk({static_cast<std::int64_t>(i-2),0},p) ==
+                    ChunkInstallOutcome::Installed,
+                "simulation-only setup native chunk admission failed");
+    }
+    constexpr std::int64_t wx = -128 + 30;
+    require(live.set_cell_state(wx,30,Material::Water,17,0),
+            "simulation-only Water17 initialization refused");
+    auto water_in_box = [](const World& w) -> std::uint64_t {
+        std::uint64_t total = 0;
+        for (std::int64_t y=27; y<=33; ++y)
+            for (std::int64_t x=wx-3; x<=wx+3; ++x)
+                total += w.liquid_mass(x,y);
+        return total;
+    };
+    // Fingerprint ONLY actual native cell tuples (not tick-index, render dirty,
+    // cumulative counters or configuration). The prepared boxes are sealed,
+    // so Water17 should remain within the interior across ordinary ticks.
+    auto cell_fingerprint = [](const World& w) -> std::uint64_t {
+        std::uint64_t value=14695981039346656037ULL;
+        auto mix=[&](std::uint64_t x) {
+            value^=x;
+            value*=1099511628211ULL;
+        };
+        for(int chunk=-2; chunk<6; ++chunk) {
+            const auto x0=static_cast<std::int64_t>(chunk)*kSide;
+            for (int cy : {30,94}) for (int cx : {30,94}) {
+                for (std::int64_t y=cy-3;y<=cy+3;++y) {
+                    for (std::int64_t x=x0+cx-3;x<=x0+cx+3;++x) {
+                        mix(static_cast<std::uint16_t>(w.stored_material(x,y)));
+                        mix(w.stored_state_a(x,y));
+                        mix(w.stored_state_b(x,y));
+                        mix(static_cast<std::uint16_t>(w.stored_temperature(x,y)));
+                    }
+                }
+            }
+        }
+        return value;
+    };
+    require(water_in_box(live)==17U,"native Water17 box setup quantity mismatch");
+    (void)live.take_dirty_chunks();
+    require(live.dirty_chunk_count()==0U,
+            "simulation-only setup still has presentation notifications");
+    const auto old_cells=cell_fingerprint(live);
+    const auto old_snapshot=live.save_physical_state();
+    require(!old_snapshot.empty() && old_snapshot.size()<4U*1024U*1024U,
+            "simulation-only pre-tick CYPS snapshot absent or oversized");
+    // After this point the host makes NO explicit edit. The native worker
+    // scheduler alone mutates cells. Observe real participating workers.
+    std::uint32_t actually_participating=0;
+    for(int i=0;i<8;++i) {
+        const auto stats=live.tick();
+        actually_participating=std::max(actually_participating,stats.worker_threads_observed);
+        require(!live.has_failed(),"simulation-only native tick failed");
+    }
+    const auto new_cells=cell_fingerprint(live);
+    require(old_cells!=new_cells,
+            "native simulation did not evolve any observed cell tuples");
+    require(water_in_box(live)==17U,
+            "sealed native Water17 box lost/gained quantity");
+    require(actually_participating>=1U && actually_participating<=workers,
+            "native simulation-only fixture missing valid actual worker witness");
+    const auto render_hints=live.take_dirty_chunks();
+    require(!render_hints.empty() && live.dirty_chunk_count()==0U,
+            "native simulation changed cells but render notifications did not drain");
+    const auto new_snapshot=live.save_physical_state();
+    require(new_snapshot!=old_snapshot && new_snapshot.size()<4U*1024U*1024U,
+            "native simulated changes missing from newer CYPS snapshot");
+    auto old_world=World::restore_physical_state(c,old_snapshot);
+    auto current_world=World::restore_physical_state(c,new_snapshot);
+    require(old_world && current_world &&
+            cell_fingerprint(*old_world)==old_cells &&
+            cell_fingerprint(*current_world)==new_cells &&
+            old_world->completed_tick_index()==0U &&
+            current_world->completed_tick_index()==8U,
+            "simulator-produced cell changes were not distinguished by native restart");
+    require(live.dirty_chunk_count()==0U &&
+            cell_fingerprint(live)==new_cells &&
+            water_in_box(*current_world)==17U,
+            "consuming render hints unexpectedly changed physical Water authority");
+    std::uint32_t restored_observed=0;
+    for(int i=0;i<3;++i) {
+        const auto a=live.tick(), b=current_world->tick();
+        restored_observed=std::max(restored_observed,b.worker_threads_observed);
+        require(!live.has_failed() && !current_world->has_failed() &&
+                live.completed_tick_index()==current_world->completed_tick_index() &&
+                live.physical_state_hash()==current_world->physical_state_hash(),
+                "simulation-only native post-restart fixed-tick continuation diverged");
+    }
+    require(restored_observed>=1U && restored_observed<=workers,
+            "restored native World missing valid worker witness");
+    std::cout << "GEN006_NATIVE_SIMULATION_ONLY_NOT_SAVE_ACK_JSON {\"configured_workers\":"
+              << workers << ",\"observed_workers\":" << actually_participating
+              << ",\"restored_observed_workers\":" << restored_observed
+              << ",\"native_chunks\":8,\"simulation_ticks_before_save\":8"
+              << ",\"continuation_ticks\":3,\"water_mass\":17"
+              << ",\"render_hints_consumed\":" << render_hints.size()
+              << ",\"render_dirty_after_drain\":0"
+              << ",\"cell_tuples_changed\":true"
+              << ",\"old_snapshot_bytes\":" << old_snapshot.size()
+              << ",\"new_snapshot_bytes\":" << new_snapshot.size()
+              << ",\"selective_eviction\":false,\"result\":\"PASS\"}\n";
+}
+
 }
 int main() {
     try {
@@ -551,6 +665,8 @@ int main() {
         signed_malformed_checkpoint_cohort(4);
         render_dirty_not_persistent_ack_cohort(1);
         render_dirty_not_persistent_ack_cohort(4);
+        simulation_only_persistence_gap_cohort(1);
+        simulation_only_persistence_gap_cohort(4);
         pending_event_region_cohort(1, false);
         pending_event_region_cohort(4, false);
         pending_event_region_cohort(1, true);
