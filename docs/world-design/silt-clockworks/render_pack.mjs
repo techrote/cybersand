@@ -30,7 +30,7 @@ function render(p){
  parts.push(`<text x="${bx+12}" y="1508" font-family="monospace" font-size="13" fill="#dbc58f">${c.name}</text>`);
  parts.push(`<svg x="${bx+10}" y="1521" width="606" height="162" viewBox="${c.x} ${c.y} ${c.w} ${c.h}" preserveAspectRatio="xMidYMid meet">`,sceneInk(alt),`</svg>`);
  }
- const flagshipCrops=[{name:"06 — BROKEN ZERO-TIDE DATUM / RUPTURED GANTRY",x:566,y:16,w:356,h:130},{name:"07 — FOUR BURIED REGISTER VAULTS / DRY ARCHIVES",x:85,y:216,w:1010,h:48}];
+ const flagshipCrops=[{name:"06 — BROKEN ZERO-TIDE DATUM / RUPTURED GANTRY",x:566,y:16,w:356,h:130},{name:"07 — CRIPPLED ESCAPEMENT / CAVITY DETAIL",x:332,y:211,w:231,h:52}];
  for(let i=0;i<flagshipCrops.length;i++){const c=flagshipCrops[i],bx=48+i*652;
  parts.push(`<rect x="${bx}" y="1720" width="629" height="226" rx="8" fill="#101b25" stroke="#38505a" stroke-width="2"/>`);
  parts.push(`<text x="${bx+12}" y="1743" font-family="monospace" font-size="13" fill="#dbc58f">${c.name}</text>`);
