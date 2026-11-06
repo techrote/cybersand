@@ -18,11 +18,13 @@ jobs:
       PINNED_SOURCE: 7e2c2fd1aa2759590d63d5dfb53ce9e4c0a76e4b
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 2
       - name: Source and compiler fences
         run: |
           set -euo pipefail
-          test "$(git rev-parse HEAD^)" = "$PINNED_SOURCE" || test "$(git merge-base HEAD "$PINNED_SOURCE")" = "$PINNED_SOURCE"
           mkdir -p build/pf-v2/scenes build/pf-v2/results
+          test "$(git rev-parse HEAD^)" = "$PINNED_SOURCE"
           printf 'branch_head=%s\npinned_source=%s\n' "$(git rev-parse HEAD)" "$PINNED_SOURCE" > build/pf-v2/source.txt
           g++-13 --version | head -n 1 | tee build/pf-v2/compiler.txt
           uname -a | tee build/pf-v2/host.txt
