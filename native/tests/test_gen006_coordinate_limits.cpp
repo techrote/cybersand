@@ -620,6 +620,41 @@ void simulation_only_persistence_gap_cohort(std::uint32_t workers) {
     const auto new_snapshot=live.save_physical_state();
     require(new_snapshot!=old_snapshot && new_snapshot.size()<4U*1024U*1024U,
             "native simulated changes missing from newer CYPS snapshot");
+    // TEST-ONLY external persistence-owner model. A native checkpoint was
+    // captured before the next eight real simulation ticks; those ticks, not
+    // another player edit, create a newer revision. The native World currently
+    // exposes no per-chunk persistent mutation-generation or durable ACK API.
+    struct SimSaveReceipt {
+        std::uint64_t session;
+        std::uint64_t incarnation;
+        std::uint64_t generation;
+    };
+    struct SimSaveOwnerFence {
+        std::uint64_t session;
+        std::uint64_t incarnation;
+        std::uint64_t current_generation;
+        std::uint64_t durable_generation;
+        bool acknowledge(const SimSaveReceipt& r, bool durable_publication) {
+            if (!durable_publication || r.session != session ||
+                r.incarnation != incarnation ||
+                r.generation != current_generation ||
+                r.generation <= durable_generation) return false;
+            durable_generation=r.generation;
+            return true;
+        }
+        bool can_evict() const {
+            return durable_generation == current_generation;
+        }
+    };
+    SimSaveOwnerFence owner{73, 11, 1, 0};
+    const SimSaveReceipt before_ticks{73,11,1};
+    const SimSaveReceipt after_ticks{73,11,2};
+    // Generation change is intentionally external, conservative and test-only:
+    // its source is verified native simulation progress, not the display flag.
+    owner.current_generation=2;
+    require(!owner.can_evict(),
+            "simulator mutation incorrectly eligible for eviction before ACK");
+
     auto old_world=World::restore_physical_state(c,old_snapshot);
     auto current_world=World::restore_physical_state(c,new_snapshot);
     require(old_world && current_world &&
@@ -632,6 +667,27 @@ void simulation_only_persistence_gap_cohort(std::uint32_t workers) {
             cell_fingerprint(live)==new_cells &&
             water_in_box(*current_world)==17U,
             "consuming render hints unexpectedly changed physical Water authority");
+    // Negative control: a completion-only boolean would mark the owner clean
+    // using the *older* checkpoint, even though real later cell tuples differ.
+    bool unsafe_completion_only_clean=false;
+    unsafe_completion_only_clean=true; // simulated successful older save
+    require(unsafe_completion_only_clean && old_cells!=new_cells &&
+            cell_fingerprint(*old_world)!=cell_fingerprint(live),
+            "stale native checkpoint did not demonstrate unsafe naive completion");
+    require(!owner.acknowledge(before_ticks,true) && !owner.can_evict(),
+            "late pre-simulation save cleared newer native mutation generation");
+    require(!owner.acknowledge(after_ticks,false) && !owner.can_evict(),
+            "failed publication falsely acknowledged current native state");
+    require(!owner.acknowledge({73,11,3},true) && !owner.can_evict(),
+            "future generation falsely acknowledged");
+    require(!owner.acknowledge({72,11,2},true) && !owner.can_evict(),
+            "older world session falsely acknowledged");
+    require(!owner.acknowledge({73,12,2},true) && !owner.can_evict(),
+            "different chunk incarnation falsely acknowledged");
+    require(owner.acknowledge(after_ticks,true) && owner.can_evict(),
+            "current test-only native snapshot publication receipt refused");
+    require(!owner.acknowledge(after_ticks,true),
+            "duplicate completed save was not idempotently refused");
     std::uint32_t restored_observed=0;
     for(int i=0;i<3;++i) {
         const auto a=live.tick(), b=current_world->tick();
@@ -643,6 +699,23 @@ void simulation_only_persistence_gap_cohort(std::uint32_t workers) {
     }
     require(restored_observed>=1U && restored_observed<=workers,
             "restored native World missing valid worker witness");
+    // Three subsequent ACTUAL native ticks supersede the previously accepted
+    // snapshot. Even without player input, the last ACK must not authorize a
+    // stale eviction. A new native checkpoint is restored as a positive control.
+    const auto post_resume_snapshot=live.save_physical_state();
+    auto post_resume_restore=World::restore_physical_state(c,post_resume_snapshot);
+    require(!post_resume_snapshot.empty() &&
+            post_resume_snapshot!=new_snapshot &&
+            post_resume_restore &&
+            post_resume_restore->completed_tick_index()==11U &&
+            post_resume_restore->physical_state_hash()==live.physical_state_hash(),
+            "post-ACK native simulation revision did not round-trip");
+    owner.current_generation=3;
+    require(!owner.can_evict() &&
+            !owner.acknowledge(after_ticks,true),
+            "late earlier ACK re-admitted eviction after continued native ticks");
+    require(owner.acknowledge({73,11,3},true) && owner.can_evict(),
+            "latest test-only durable receipt control failed");
     std::cout << "GEN006_NATIVE_SIMULATION_ONLY_NOT_SAVE_ACK_JSON {\"configured_workers\":"
               << workers << ",\"observed_workers\":" << actually_participating
               << ",\"restored_observed_workers\":" << restored_observed
@@ -653,6 +726,12 @@ void simulation_only_persistence_gap_cohort(std::uint32_t workers) {
               << ",\"cell_tuples_changed\":true"
               << ",\"old_snapshot_bytes\":" << old_snapshot.size()
               << ",\"new_snapshot_bytes\":" << new_snapshot.size()
+              << ",\"post_resume_snapshot_bytes\":" << post_resume_snapshot.size()
+              << ",\"old_inflight_ack_refused\":true"
+              << ",\"publication_failure_refused\":true"
+              << ",\"session_incarnation_gen_fenced\":true"
+              << ",\"post_ack_simulation_invalidates_eviction\":true"
+              << ",\"save_owner_model\":\"TEST_ONLY\""
               << ",\"selective_eviction\":false,\"result\":\"PASS\"}\n";
 }
 
