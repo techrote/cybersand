@@ -63,3 +63,18 @@ The renderer and validator intentionally require no engine installation. Passing
 The composed prospect uses **1949 ordered fixed/native-kernel-None terrain stamps** before the original **eight unchanged module placements**, with their existing 16 variants, anchors, three repeatable patterns and active standalone experiments preserved. The renderer also adds two scale-matched crops from the **same** scene rectangle and variant data (centre calibration rosette and damaged receiver gantry), not painted overlays or Godot captures. The apron, gaps, and cable undercroft are *proposals*, not verified walking clearance, electrical transmission, physics, water containment, reflections or effects. Visible empty space does not erase preexisting host cells.
 
 Reproduction: `python3 docs/world-design/signal-orchard/validate_pack.py --source-check`, then `python3 docs/world-design/signal-orchard/render_pack.py --check`. These commands require a source-matched full checkout; the design worker's isolated JavaScript geometric checks must not be described as those subprocesses unless actually run. Reference-gallery superiority and native/Godot capture remain unqualified pending independent visual review.
+
+## Refinement B6 — Choir of Unanswered Beacons (6 November 2026)
+
+**Second distinct composition:** a 1320×388-cell dry alternate, preserving the *Ninth Harvest* flagship, all eight original source modules, their sixteen variants and three repeatable assembly patterns. The original eight modules reappear in a reordered, vertically descending-and-rising processional sequence. Its monumental open-centre, broken dual-rib copper receiving canopy is connected to four load-bearing trajectories and dissimilar upper survey masts; interrupted service stairs, stranded suspension wiring, stepped archival foundations, cut-through voids, worn solar-leaf plates and annotated failed harvest ledgers establish a specific lost engineering system.
+
+**Geometry:** 1243 ordered inert/kernel-None backdrop rectangles plus 205 concentrated foreground repair, oxidation and witness markings. The new alternate and two cropped detail studies are generated deterministically from material-ID geometry through `render_pack.py`, not drawn as standalone decorative SVGs. Original Water/Spark source experiments remain untouched; both alternate placements use the existing `dry-mirror` and `cold-lantern` substitutes. Dark-glass, reflector, glow and electrical effects are illustrative only.
+
+**Reproduce in a full source-matched checkout:**
+
+```sh
+python3 docs/world-design/signal-orchard/validate_pack.py --source-check --self-test
+python3 docs/world-design/signal-orchard/render_pack.py --check
+```
+
+At authoring time an actual GitHub checkout attempt failed due to DNS (`git ls-remote`, exit **128**), so **the Python commands above were not executed**. An executed V8 geometry/source-identity pass and 18/18 adversarial invalid-data tests completed; SVG was constructed from the same exact renderer-defined ordered rectangles, but its Python byte-for-byte check is **pending local execution**. Source-colour preview is not native Godot rendering, physics, clearance, water retention, lighting or human artistic acceptance. Visual superiority to the five benchmark gallery images remains unqualified.

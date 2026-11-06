@@ -81,6 +81,43 @@ out.extend([
     '<text x="50" y="1310" font-family="monospace" font-size="12" fill="#9db4a9">DESIGN ONLY • DRY SCENE SUBSTITUTES WATER / SPARK • NOT SIMULATION OR GODOT RENDER</text>',
     "</svg>",
 ])
+
+# The alternate is rendered from the identical native-ID source rectangles and original
+# source modules; it is not a Godot, shader or physics capture.
+out[0] = out[0].replace('height="1324" viewBox="0 0 1440 1324"', 'height="2230" viewBox="0 0 1440 2230"')
+out[1] = out[1].replace('height="1324"', 'height="2230"')
+assert out.pop() == "</svg>"
+alt = p["alternate_scene"]
+alt_details = list(map(R, alt["terrain_rectangles"]))
+for z in alt["placements"]:
+    ff = next(f for f in features if f["id"] == z["feature"])
+    vv = next(v for v in ff["variants"] if v["id"] == z["variant"])
+    alt_details.append('<g transform="translate(' + str(z["x"]) + ' ' + str(z["y"]) + ')">')
+    for r in ff["rectangles"]:
+        alt_details.append(R([*r[:4], vv["swap"].get(str(r[4]), r[4])]))
+    alt_details.append("</g>")
+alt_details.extend(map(R, alt["foreground_rectangles"]))
+out.extend([
+    "<rect x=\"0\" y=\"1324\" width=\"1440\" height=\"906\" fill=\"#0b131b\"/>",
+    "<text x=\"50\" y=\"1363\" font-family=\"monospace\" font-size=\"16\" fill=\"#b6e8d2\">04 / CHOIR OF UNANSWERED BEACONS • ALTERNATE 1320 x 388 DRY CELLS</text>",
+    "<rect x=\"45\" y=\"1420\" width=\"1350\" height=\"410\" rx=\"8\" fill=\"#070e18\" stroke=\"#4b6260\"/>",
+    "<g transform=\"translate(60 1431) scale(1)\">",
+    *alt_details,
+    "</g>",
+    "<text x=\"50\" y=\"1870\" font-family=\"monospace\" font-size=\"16\" fill=\"#b6e8d2\">05 / SILENT HARVEST • SOURCE-CELL DETAIL CROPS</text>",
+    "<rect x=\"45\" y=\"1887\" width=\"660\" height=\"286\" rx=\"8\" fill=\"#070e18\" stroke=\"#4b6260\"/>",
+    "<rect x=\"735\" y=\"1887\" width=\"660\" height=\"286\" rx=\"8\" fill=\"#070e18\" stroke=\"#4b6260\"/>",
+    *alt_details,
+    "<rect x=\"7\" y=\"233\" width=\"152\" height=\"7\" fill=\"rgb(54,56,61)\" opacity=\"1.000\"/>",
+    "<rect x=\"13\" y=\"240\" width=\"140\" height=\"4\" fill=\"rgb(70,83,99)\" opacity=\"1.000\"/>",
+    *alt_details,
+    "</svg>",
+    "<text x=\"62\" y=\"2167\" font-family=\"monospace\" font-size=\"12\" fill=\"#9db4a9\">LEFT: BROKEN CANOPY / SERVICE DESCENT</text>",
+    "<text x=\"752\" y=\"2167\" font-family=\"monospace\" font-size=\"12\" fill=\"#9db4a9\">RIGHT: STRANDED FRUIT / RECEIVER MAST</text>",
+    "<text x=\"50\" y=\"2213\" font-family=\"monospace\" font-size=\"12\" fill=\"#9db4a9\">TWO COMPOSITIONS • 8 REUSED MODULES • PALETTE SVG ONLY • NOT GODOT OUTPUT</text>",
+    "</svg>",
+])
+
 actual = "\n".join(out) + "\n"
 path = here / "preview.svg"
 if "--check" in sys.argv:

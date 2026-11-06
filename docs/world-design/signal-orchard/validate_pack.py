@@ -7,6 +7,7 @@ root=here.parents[2]
 p=json.loads((here/"pack.json").read_text())
 args=argparse.ArgumentParser()
 args.add_argument("--source-check",action="store_true")
+args.add_argument("--self-test",action="store_true")
 opt=args.parse_args()
 assert p["schema_id"]=="cybersand.world-feature-pack.proposal" and p["schema_version"]==1
 assert len(p["features"])==len(p["scene"]["placements"])==8 and len(p["repeatable_patterns"])==3
@@ -55,4 +56,51 @@ for r in p["scene"]["terrain_rectangles"]:
     rect(r,*p["scene"]["size"])
     assert not mats[r[4]]["movable"] and mats[r[4]]["kernel"]==0
 assert count>=200
+
+def validate_alternate(s):
+    assert s["size"] == [1320, 388]
+    assert len(s["terrain_rectangles"]) >= 500 and len(s["foreground_rectangles"]) >= 80
+    for item in s["terrain_rectangles"] + s["foreground_rectangles"]:
+        rect(item, *s["size"])
+        assert not mats[item[4]]["movable"] and mats[item[4]]["kernel"] == 0
+    seen = set()
+    for z in s["placements"]:
+        assert z["feature"] in fs and z["feature"] not in seen
+        seen.add(z["feature"])
+        ft = fs[z["feature"]]
+        var = next((v for v in ft["variants"] if v["id"] == z["variant"]), None)
+        assert var is not None
+        x, y = z["x"], z["y"]
+        assert type(x) == int and type(y) == int and x >= 0 and y >= 0
+        assert x + ft["size"][0] <= s["size"][0] and y + ft["size"][1] <= s["size"][1]
+        for item in ft["rectangles"]:
+            mm = mats[var["swap"].get(str(item[4]), item[4])]
+            assert not mm["movable"] and mm["kernel"] == 0
+    assert len(seen) == 8
+
+validate_alternate(p["alternate_scene"])
+if opt.self_test:
+    import copy
+    def reject(mutator):
+        s = copy.deepcopy(p["alternate_scene"])
+        mutator(s)
+        try:
+            validate_alternate(s)
+        except (AssertionError, KeyError, TypeError):
+            return
+        raise AssertionError("negative alternate mutation not rejected")
+    reject(lambda s: s["terrain_rectangles"][0].__setitem__(0,-1))
+    reject(lambda s: s["terrain_rectangles"][1].__setitem__(2,0))
+    reject(lambda s: s["terrain_rectangles"][2].__setitem__(4,3))
+    reject(lambda s: s["terrain_rectangles"][3].__setitem__(4,34))
+    reject(lambda s: s["terrain_rectangles"][4].__setitem__(4,9999))
+    reject(lambda s: s["foreground_rectangles"][0].__setitem__(4,3))
+    reject(lambda s: s["foreground_rectangles"][1].__setitem__(3,-1))
+    reject(lambda s: s["placements"][0].__setitem__("x",-3))
+    reject(lambda s: s["placements"][1].__setitem__("y",380))
+    reject(lambda s: s["placements"][2].__setitem__("variant","unknown"))
+    reject(lambda s: s["placements"][3].__setitem__("feature",s["placements"][1]["feature"]))
+    reject(lambda s: s["placements"].pop())
+    print("PASS 12 alternate negative mutations rejected")
+
 print(json.dumps({"status":"PASS","modules":len(fs),"rectangles":count,"materials":len(mats),"source_check":opt.source_check}))
