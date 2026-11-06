@@ -1,5 +1,5 @@
 // Standalone native World::tick benchmark; this file is not part of engine builds.
-// Build: g++-13 -std=c++20 -O2 -g -fno-omit-frame-pointer -pthread -I native/include native/src/*.cpp native/bench/neighbour_cursor_bench.cpp -o build/neighbour_cursor_bench
+// Build: see run_neighbour_cursor.py; link Makefile SIMULATION_SOURCES only.
 // Run: build/neighbour_cursor_bench native/bench/data/neighbour_stress_rectangles.txt 6 600 /tmp/ticks.csv
 #include "cybersand/world.hpp"
 #include <algorithm>
@@ -55,7 +55,12 @@ int main(int argc, char** argv) {
         std::ofstream csv;
         if (argc == 5) {
             csv.open(argv[4]); if (!csv) throw std::runtime_error("could not open csv");
-            csv << "tick,ms,visited,moved,cores,active_blocks,workers_observed\n";
+            csv << "tick,ms,visited,moved,cores,active_blocks,workers_observed,"
+                "chunk_allocations,temperature_field_allocations,deferred_events,dirty_chunks,"
+                "active_chunks_before,active_chunks_after";
+            for (std::size_t phase = 0; phase < SchedulerGeometry::kPhaseCount; ++phase)
+                csv << ",phase_jobs_" << phase;
+            csv << "\n";
             csv << std::fixed << std::setprecision(9);
         }
         double total=0,max_ms=0; std::uint64_t visited=0,moved=0,cores=0,allocations=0;
@@ -68,9 +73,16 @@ int main(int argc, char** argv) {
             total+=ms; max_ms=std::max(max_ms,ms);
             visited+=stats.visited_cells; moved+=stats.moved_cells;
             cores+=stats.scheduled_cores; allocations+=stats.chunk_allocations;
-            if (csv) csv << i << "," << ms << "," << stats.visited_cells
-                << "," << stats.moved_cells << "," << stats.scheduled_cores << ","
-                << stats.active_blocks_after << "," << stats.worker_threads_observed << "\n";
+            if (csv) {
+                csv << i << "," << ms << "," << stats.visited_cells
+                    << "," << stats.moved_cells << "," << stats.scheduled_cores << ","
+                    << stats.active_blocks_after << "," << stats.worker_threads_observed << ","
+                    << stats.chunk_allocations << "," << stats.temperature_field_allocations << ","
+                    << stats.deferred_events << "," << stats.dirty_chunks << ","
+                    << stats.active_chunks_before << "," << stats.active_chunks_after;
+                for (const auto count : stats.phase_jobs) csv << "," << count;
+                csv << "\n";
+            }
             if (i%150==0) {
                 if (!first) checkpoints << ","; first=false;
                 checkpoints << "{\"tick\":" << i << ",\"state_hash\":\""
