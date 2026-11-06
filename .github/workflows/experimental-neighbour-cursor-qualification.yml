@@ -1,9 +1,9 @@
 name: Experimental neighbour cursor paired qualification
 
 on:
-  push:
-    branches:
-      - codex/neighbour-cursor-independent-qualification-20261106
+  workflow_dispatch:
+    # Manual exact-head reruns while the original hosted qualification remains in flight.
+    # Restore a scoped push trigger after preserving the current run's artifacts.
 
 permissions:
   contents: read
