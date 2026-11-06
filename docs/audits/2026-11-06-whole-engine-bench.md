@@ -128,10 +128,45 @@ byte-identical sources.
 | `native/src/world.cpp` | `09685e01cdd7e2bb898f46ce3c9ab97b7427ac34e7568875a3bdfd7866190ac5` | `a69a70332450ed246753457f85fcedfa0e3a36e848486e12c441a059c3574d1e` |
 | `native/src/material_rules.cpp` | `8fd1509bfcef162c5cb6028e9af38c563ad651822b9fcfcc2e79a569d185afa3` | `3afda824571842e387b0cac70218ee5f1f96005d07aaaafcf95c146c3eee3254` |
 
+## Scoped runtime publication
+
+The owner approved this on 2026-11-06. A branch-scoped publisher clones the
+#201 moving-camera profile (#405). It changes neither that profile nor the
+shared four-path engine. Its files are:
+
+- [`wbh406-runtime-publication.yml`](../../.github/workflows/wbh406-runtime-publication.yml)
+- [`wbh406_runtime_publication.py`](../../tools/ci/wbh406_runtime_publication.py)
+- the adversarial guards in
+  [`test_wbh406_runtime_publication.py`](../../tools/ci/test_wbh406_runtime_publication.py)
+- the request
+  [`wbh406_publish_request.json`](../../tools/ci/wbh406_publish_request.json)
+  (sequence 1)
+
+Only a push to `claude/water-ballistic-hybrid` that carries the request arms
+it. Four native groups must pass before any build:
+
+- `LCB-002`, including the P1 wake-summary control;
+- `LCB-001 pressure`;
+- `Workbench parallel`, the all-variant parallel-heads exactness test;
+- `Pair reaction`, the 65,536-pair table test.
+
+Then both runtimes are built from the exact source. Each one runs import plus
+`test_lcb_pressure_optimization`, `test_lcb_pressure_reference`,
+`test_liquid_pressure_rapier`, `test_simulation_worker_interest_ownership` and
+`test_workbench_canvas` on its actual target OS. The canvas case must not
+report a skipped built-in load. It has one explicit, stricter bound: 600 s
+against its 3,940 s watchdog. The publish job appends exactly one bot commit
+with the four runtime/manifest paths, guarded by a force-with-lease on the
+built SHA. Full ready-head CI remains a separate gate.
+
+Local guards passed: 25/25 profile tests, the shared-engine suite (unchanged),
+and the CI-provider policy. A local `test_workbench_canvas` log (131/0) contains
+no `ERROR:` or skip text.
+
 ## Gaps
 
-- Windows and WSL on one machine only. There is no Web build, CI-runner timing
-  or published runtime.
+- Windows and WSL on one machine only. There is no Web build or CI-runner
+  timing. The scoped runtime publication above is pending.
 - Gas topology remains serial (see the
   [PF tick-cost record](2026-11-06-workbench-pf-tick-cost.md)).
 - The main-thread full-image texture upload and render cost were not profiled.
