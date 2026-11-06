@@ -7,15 +7,14 @@ on:
     paths:
       - tools/perf/callgrind_neighbour_cursor.cpp
       - tools/perf/run_neighbour_cursor_callgrind.py
-      - .github/workflows/experimental-neighbour-cursor-callgrind.yml
   workflow_dispatch:
 
 permissions:
   contents: read
 
 concurrency:
-  group: neighbour-cursor-callgrind-${{ github.ref }}
-  cancel-in-progress: true
+  group: neighbour-cursor-callgrind-${{ github.ref }}-${{ github.run_id }}
+  cancel-in-progress: false
 
 jobs:
   baseline-candidate-callgrind:
