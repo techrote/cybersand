@@ -17,7 +17,14 @@ function validatePack(p,source,header){
  const s=p.combined_scene;assert(s.placements.length===p.features.length,"scene must include every feature");const placements=new Set();let dry=0;
  for(const loc of s.placements){const f=fs.get(loc.feature_id);assert(f&&!placements.has(f.id),"duplicate or unknown placement");placements.add(f.id);const [x,y]=loc.origin,[W,H]=f.size;assert(Number.isInteger(x)&&Number.isInteger(y)&&x>=0&&y>=0&&x+W<=s.size[0]&&y+H<=s.size[1],"scene placement out of bounds");assert(y+H===s.baseline_y&&loc.anchor_world[0]===x+f.anchor.point[0]&&loc.anchor_world[1]===s.baseline_y,"scene ground anchor mismatch");const v=loc.variant==null?null:f.variants.find(x=>x.id===loc.variant);assert(loc.variant===null||v,"unknown variant");for(const rect of f.rectangles){const id=v&&v.swap[String(rect[4])]!==undefined?v.swap[String(rect[4])]:rect[4],mat=materials.get(id);assert(mat&&!mat.movable&&mat.kernel===0,"active material in dry gallery "+f.id+" "+id);dry+=rect[2]*rect[3]}}
  for(const pattern of s.patterns){assert(pattern.sequence.length>=2&&pattern.spacing.length===pattern.sequence.length-1,"bad pattern");for(const fid of pattern.sequence)assert(fs.has(fid),"unknown pattern feature")}
- return {features:p.features.length,rectangles:total,variants:p.features.reduce((n,f)=>n+f.variants.length,0),materials:p.palette.length,scene_placements:s.placements.length,scene_rect_area:dry,patterns:s.patterns.length};
+ for(const group of ["terrain_rectangles","foreground_rectangles"]){
+  assert(Array.isArray(s[group])&&s[group].length>=10,"missing authored scene group "+group);
+  for(const r of s[group]){assert(Array.isArray(r)&&r.length===5&&r.every(Number.isInteger),"bad scene rectangle");
+   const [x,y,w,h,id]=r;assert(x>=0&&y>=0&&w>0&&h>0&&x+w<=s.size[0]&&y+h<=s.size[1],"scene bounds");
+   const m=materials.get(id);assert(m&&!m.movable&&m.kernel===0,"active or unknown scene material "+id);
+  }
+ }
+ return {terrain:s.terrain_rectangles.length,foreground:s.foreground_rectangles.length,features:p.features.length,rectangles:total,variants:p.features.reduce((n,f)=>n+f.variants.length,0),materials:p.palette.length,scene_placements:s.placements.length,scene_rect_area:dry,patterns:s.patterns.length};
 }
 const dir=dirname(fileURLToPath(import.meta.url));
 const p=JSON.parse(readFileSync(join(dir,"pack.json"),"utf8"));
@@ -39,7 +46,10 @@ if(process.argv.includes("--negative")){
  p=>p.combined_scene.placements[0].origin[0]=-5,
  p=>p.combined_scene.placements[0].anchor_world[1]=-1,
  p=>p.combined_scene.placements[6].variant=null,
- p=>p.combined_scene.patterns[0].sequence[0]="nonexistent"
+ p=>p.combined_scene.patterns[0].sequence[0]="nonexistent",
+ p=>p.combined_scene.terrain_rectangles[0][0]=-1,
+ p=>p.combined_scene.terrain_rectangles[0][2]=5000,
+ p=>p.combined_scene.foreground_rectangles[0][4]=3
  ];
  let refused=0;
  for(const damage of mutate){const invalid=structuredClone(p);damage(invalid);try{validatePack(invalid,c,h)}catch{refused++}}
