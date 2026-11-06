@@ -283,6 +283,31 @@ against an earlier 9.9 ms run. That native difference is machine variance,
 since the packet only shrank. The remaining stress-canvas packet time is the
 serial mask copy of about 2 Mi cells.
 
+## Runtime publication (request 3)
+
+The owner approved this on 2026-11-06. Request sequence 3 (`7fab79ba`) armed the
+unchanged branch-scoped publisher. Run
+[42240246100](https://github.com/techrote/cybersand/actions/runs/42240246100)
+(attempt 1, 15:08–15:21 UTC) passed every job:
+
+- the publisher guards;
+- admission;
+- the four native groups;
+- the Linux build and execution;
+- the Windows cross-build and Windows execution;
+- publication.
+
+Bot commit `77d9e4a0` appended only the four runtime/manifest paths.
+
+| Runtime | SHA-256 | Bytes |
+|---|---|---|
+| `cybersand_native.windows.x86_64.dll` | `584675c7c092acb2db6e944052a902887d8075436a6daaa57fd330df3cee1d87` | 5,058,560 |
+| `libcybersand_native.linux.x86_64.so` | `55478bb8f027d2005fddf447ed378be8e72d4bf0326c111d99b1e09421ec82fb` | 4,503,248 |
+
+The toolchains are LLVM-MinGW 20260826 / Clang 23.1.0 and g++-13 13.3.0. After
+the append, `check_repository.py` reports no errors locally. The full ready-head
+CI remains a separate gate.
+
 ## Remaining costs and next investigations
 
 1. **Gas BFS, about 2.4 ms serial.** This bounded atmosphere exploration
