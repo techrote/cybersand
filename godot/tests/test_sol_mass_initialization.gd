@@ -24,45 +24,53 @@ func _initialize() -> void:run.call_deferred()
 func run() -> void:
 	var output: String = OS.get_environment("SOL_OUTPUT")
 	if output.is_empty() or FileAccess.file_exists(output):printerr("SOL_MASS_INIT refuses output");quit(1);return
-	var profile: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://tests/fixtures/sol_mass_initialization_001.json"))
+	var profile_path: String=OS.get_environment("SOL_MASS_PROFILE")
+	if profile_path.is_empty():profile_path="res://tests/fixtures/sol_mass_initialization_001.json"
+	var profile: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(profile_path))
 	var cases: Array = []
+	var inertia_scales: Array=profile.get("inertia_scales",[1])
 	for structure: String in ["tree","building"]:
 		var fixture: Dictionary = profile.fixtures[structure]
 		for arm: String in profile.arms:
 			for impulse_kind: String in profile.impulses:
-				var viewport := SubViewport.new();viewport.world_2d=World2D.new();root.add_child(viewport)
-				var body := RigidBody2D.new();body.freeze=true;body.collision_layer=0;body.collision_mask=0
-				body.mass=float(fixture.mass);body.inertia=float(fixture.inertia)
-				body.center_of_mass_mode=RigidBody2D.CENTER_OF_MASS_MODE_CUSTOM;body.center_of_mass=Vector2.ZERO
-				if arm=="auto_com_custom_inertia_fresh":body.center_of_mass_mode=RigidBody2D.CENTER_OF_MASS_MODE_AUTO
-				body.gravity_scale=0.;body.linear_damp_mode=RigidBody2D.DAMP_MODE_REPLACE;body.angular_damp_mode=RigidBody2D.DAMP_MODE_REPLACE;body.linear_damp=0.;body.angular_damp=0.
-				body.position=Vector2(fixture.center[0],fixture.center[1]);var shapes: Array[CollisionShape2D] = []
-				for i: int in range(0,fixture.rectangles.size(),4):
-					var shape := CollisionShape2D.new();var rectangle := RectangleShape2D.new();var r: Array=fixture.rectangles
-					rectangle.size=Vector2(r[i+2],r[i+3]);shape.shape=rectangle;shape.position=Vector2(r[i],r[i+1])+rectangle.size*.5-body.position;shape.disabled=true;body.add_child(shape);shapes.append(shape)
-				viewport.add_child(body);await process_frame
-				var bridge := CyberRapierPhysicsBridge.new();var bodies: Array[RigidBody2D]=[body]
-				check(bridge.initialize(viewport.world_2d.space,bodies,PackedVector2Array([Vector2(29,38)]))==OK,"private actual Rapier initializes")
-				for shape: CollisionShape2D in shapes:shape.disabled=false
-				body.freeze=false;body.sleeping=false;bridge.refresh_all_states()
-				var initial: Dictionary=read(body,bridge)
-				if arm=="custom_after_zero_g_step":bridge.step()
-				var before: Dictionary=read(body,bridge)
-				var impulse:=Vector2(3.,0.) if impulse_kind=="central" else Vector2(0.,3.)
-				var offset:=Vector2.ZERO if impulse_kind=="central" else Vector2(1.,0.)
-				var called: bool=bridge._apply_cellular_impulse(0,impulse,offset)
-				var immediate: Dictionary=read(body,bridge);bridge.step();var post: Dictionary=read(body,bridge)
-				var bv: PackedByteArray=str(before.velocity_bits).hex_decode();var iv: PackedByteArray=str(immediate.velocity_bits).hex_decode();var pv: PackedByteArray=str(post.velocity_bits).hex_decode()
-				var expected: Array=[impulse.x/float(fixture.mass),impulse.y/float(fixture.mass),offset.cross(impulse)/float(fixture.inertia)]
-				var observed: Array=[];var post_observed: Array=[];var matches: bool=true
-				for axis: int in 3:
-					observed.append(iv.decode_double(axis*8)-bv.decode_double(axis*8));post_observed.append(pv.decode_double(axis*8)-bv.decode_double(axis*8));matches=matches and close(float(observed[axis]),float(expected[axis]))
-				check(called and initial.steps==0 and before.steps==int(arm=="custom_after_zero_g_step") and post.steps==before.steps+1,"known impulse and exact stage counts")
-				check(before.mass==fixture.mass and is_finite(float(before.inertia)),"declared mass/inertia readable")
-				if arm=="custom_after_zero_g_step":check(matches,"warmed backend obeys known impulse reference")
-				cases.append({"structure":structure,"arm":arm,"impulse_kind":impulse_kind,"expected":expected,"observed":observed,"post_observed":post_observed,"matches_reference":matches,"initial":initial,"before":before,"immediate":immediate,"post":post})
-				bridge.shutdown();viewport.queue_free();await process_frame
-	check(cases.size()==12,"complete2geometry/3arm/2wrench oracle")
+				for inertia_scale: float in inertia_scales:
+					var viewport := SubViewport.new();viewport.world_2d=World2D.new();root.add_child(viewport)
+					var body := RigidBody2D.new();body.freeze=true;body.collision_layer=0;body.collision_mask=0
+					if arm=="auto_com_before_custom_inertia_fresh":
+						body.center_of_mass_mode=RigidBody2D.CENTER_OF_MASS_MODE_AUTO
+						body.mass=float(fixture.mass);body.inertia=float(fixture.inertia)*inertia_scale
+					else:
+						body.mass=float(fixture.mass);body.inertia=float(fixture.inertia)*inertia_scale
+						body.center_of_mass_mode=RigidBody2D.CENTER_OF_MASS_MODE_CUSTOM;body.center_of_mass=Vector2.ZERO
+					if arm=="auto_com_custom_inertia_fresh":body.center_of_mass_mode=RigidBody2D.CENTER_OF_MASS_MODE_AUTO
+					body.gravity_scale=0.;body.linear_damp_mode=RigidBody2D.DAMP_MODE_REPLACE;body.angular_damp_mode=RigidBody2D.DAMP_MODE_REPLACE;body.linear_damp=0.;body.angular_damp=0.
+					body.position=Vector2(fixture.center[0],fixture.center[1]);var shapes: Array[CollisionShape2D] = []
+					for i: int in range(0,fixture.rectangles.size(),4):
+						var shape := CollisionShape2D.new();var rectangle := RectangleShape2D.new();var r: Array=fixture.rectangles
+						rectangle.size=Vector2(r[i+2],r[i+3]);shape.shape=rectangle;shape.position=Vector2(r[i],r[i+1])+rectangle.size*.5-body.position;shape.disabled=true;body.add_child(shape);shapes.append(shape)
+					viewport.add_child(body);await process_frame
+					var bridge := CyberRapierPhysicsBridge.new();var bodies: Array[RigidBody2D]=[body]
+					check(bridge.initialize(viewport.world_2d.space,bodies,PackedVector2Array([Vector2(29,38)]))==OK,"private actual Rapier initializes")
+					for shape: CollisionShape2D in shapes:shape.disabled=false
+					body.freeze=false;body.sleeping=false;bridge.refresh_all_states()
+					var initial: Dictionary=read(body,bridge)
+					if arm=="custom_after_zero_g_step":bridge.step()
+					var before: Dictionary=read(body,bridge)
+					var impulse:=Vector2(3.,0.) if impulse_kind=="central" else Vector2(0.,3.)
+					var offset:=Vector2.ZERO if impulse_kind=="central" else Vector2(1.,0.)
+					var called: bool=bridge._apply_cellular_impulse(0,impulse,offset)
+					var immediate: Dictionary=read(body,bridge);bridge.step();var post: Dictionary=read(body,bridge)
+					var bv: PackedByteArray=str(before.velocity_bits).hex_decode();var iv: PackedByteArray=str(immediate.velocity_bits).hex_decode();var pv: PackedByteArray=str(post.velocity_bits).hex_decode()
+					var expected: Array=[impulse.x/float(fixture.mass),impulse.y/float(fixture.mass),offset.cross(impulse)/(float(fixture.inertia)*inertia_scale)]
+					var observed: Array=[];var post_observed: Array=[];var matches: bool=true
+					for axis: int in 3:
+						observed.append(iv.decode_double(axis*8)-bv.decode_double(axis*8));post_observed.append(pv.decode_double(axis*8)-bv.decode_double(axis*8));matches=matches and close(float(observed[axis]),float(expected[axis]))
+					check(called and initial.steps==0 and before.steps==int(arm=="custom_after_zero_g_step") and post.steps==before.steps+1,"known impulse and exact stage counts")
+					check(before.mass==fixture.mass and is_finite(float(before.inertia)),"declared mass/inertia readable")
+					if arm in ["custom_after_zero_g_step","auto_com_before_custom_inertia_fresh"]:check(matches,"ready backend obeys known impulse and explicit inertia reference")
+					cases.append({"structure":structure,"arm":arm,"inertia_scale":inertia_scale,"impulse_kind":impulse_kind,"expected":expected,"observed":observed,"post_observed":post_observed,"matches_reference":matches,"initial":initial,"before":before,"immediate":immediate,"post":post})
+					bridge.shutdown();viewport.queue_free();await process_frame
+	check(cases.size()==2*profile.arms.size()*profile.impulses.size()*inertia_scales.size(),"complete registered geometry/arm/inertia/wrench oracle")
 	var report: Dictionary={"registration":profile.registration,"source":OS.get_environment("CYBERSAND_SOURCE_REVISION"),"host":OS.get_name(),"scope":"Isolated backend initialization; no nativeWorld or SOLphysicalclearance", "checks":checks,"failures":failures,"cases":cases}
 	var file := FileAccess.open(output,FileAccess.WRITE);check(file!=null,"output writable")
 	if file==null:quit(1);return

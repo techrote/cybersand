@@ -22,13 +22,15 @@ def support(j,g):
     size=math.hypot(*g);return -dot(j,g)/size if size else None
 def normalize(j,g,load):
     value=support(j,g);return value/load if value is not None and load else None
-def wrench(raw,centres,pose,scale):
+def wrench(raw,centres,pose,scale,local_com=(0.,0.)):
     proposed=(0.,0.);applied=(0.,0.);torque=0.;kept=0;discarded=0.;scaled_magnitudes=0.
     for index,centre in enumerate(centres):
         j=tuple(f(x*f(scale)) for x in raw[index]);proposed=add(proposed,j);scaled_magnitudes+=length(j)
         if norm2(j)<=1e-6:discarded+=length(j);continue
         # Float32 transform then subtract origin, matching the existing offset ABI.
         offset=tuple(f(f(f(f(pose[k]*centre[0])+f(pose[k+2]*centre[1]))+pose[k+4])-pose[k+4]) for k in range(2))
+        com_offset=tuple(pose[k]*local_com[0]+pose[k+2]*local_com[1] for k in range(2))
+        offset=sub(offset,com_offset)
         applied=add(applied,j);torque+=cross(offset,j);kept+=1
     return dict(proposed=proposed,applied=applied,torque=torque,applications=kept,discarded_magnitude=discarded,scaled_magnitudes=scaled_magnitudes)
 def ordinary_model(mid,d,pose):
@@ -48,7 +50,7 @@ def ordinary_model(mid,d,pose):
     current=int(mid['state']['sample_serial']);age=(current-sample+1000000)%1000000;assert age<=8
     scale=1/(1+age*.25);budget=sum(length(x)*scale for x in raw);saturated=budget>3.
     if saturated:scale*=3/budget
-    out=wrench(raw,d['proxy_centres'],pose,scale);out.update(accepted=True,age=age,raw_magnitudes=sum(length(x) for x in raw),cap_denominator=budget,cap_hit=saturated,scale=scale)
+    out=wrench(raw,d['proxy_centres'],pose,scale,mid['state']['local_com']);out.update(accepted=True,age=age,raw_magnitudes=sum(length(x) for x in raw),cap_denominator=budget,cap_hit=saturated,scale=scale)
     assert out['applications']==receipt['impulse_applications'],'application threshold/count disagreement'
     return out
 def step(row,d,previous=None):
@@ -110,7 +112,7 @@ def episode(d):
     for r in d['steps']:rows.append(step(r,d,previous));previous=r['after_step']
     return dict(full=window(rows),tail120=window(rows[-120:]),window=[len(rows)-120,len(rows)-1],rows=rows)
 def main():
-    p=argparse.ArgumentParser(__doc__);p.add_argument('--runs',nargs='+',required=True);p.add_argument('--output',type=Path,required=True);args=p.parse_args();assert not args.output.exists();episodes=[];receipts=[]
+    p=argparse.ArgumentParser(__doc__);p.add_argument('--runs',nargs='+',required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--summary-only',action='store_true');args=p.parse_args();assert not args.output.exists();episodes=[];receipts=[]
     for run in args.runs:
         folder=ROOT/'build/sol-structure-cut'/run;r=json.loads((folder/'receipt.json').read_text(encoding='utf-8'));assert r['post_source_equality'] and r['matrix']['stage_trace'];assert set(r['hosts'])==set(r['matrix']['platforms'].split(','));receipts.append(dict(run=run,sha256=base.sha(folder/'receipt.json'),source=r['identity']['source_commit']))
         for host,h in r['hosts'].items():
@@ -118,11 +120,13 @@ def main():
             expected={}
             for w in map(int,r['matrix']['workers'].split(',')):
                 for structure in ['tree','building']:
-                    for response in ([False,True] if r['matrix']['suite']=='packed' else [False]):
-                        surroundings='packed_sand' if r['matrix']['suite']=='packed' else 'empty';expected[f'{structure}-{surroundings}-response{int(response)}-w{w}']=(structure,surroundings,response,w)
+                    choices=[('empty',False),('packed_sand',False),('packed_sand',True)] if r['matrix']['suite']=='mass-fix' else [('packed_sand',False),('packed_sand',True)] if r['matrix']['suite']=='packed' else [('empty',False)]
+                    for surroundings,response in choices:expected[f'{structure}-{surroundings}-response{int(response)}-w{w}']=(structure,surroundings,response,w)
             for c in base.physical_commands(h['commands'],expected):
                 raw=c['report'];path=ROOT/raw['path'].replace('\\','/');assert c['clean'] and c['report_complete'] and base.sha(path)==raw['sha256'];d=json.loads(path.read_text(encoding='utf-8'));base.coordinate(d,host,*expected[c['name']],r['identity']['source_commit']);qualified=base.episode(d,raw);trace=episode(d)
-                trace.update(run=run,host=host,structure=d['structure'],workers=d['workers'],sand_response=d['sand_response'],raw=raw,registered_dry_rest=qualified['tail120'] if d['surroundings']=='empty' else None,descriptive_motion=qualified['tail120'],terminal_hard=qualified['terminal_hard'],terminal_sand=qualified['terminal_sand'],native_material_counts=qualified['native_material_counts'],all_attempt_metrics=d['metrics']);episodes.append(trace)
+                trace.update(run=run,host=host,structure=d['structure'],workers=d['workers'],sand_response=d['sand_response'],raw=raw,registered_dry_rest=qualified['tail120'] if d['surroundings']=='empty' else None,descriptive_motion=qualified['tail120'],terminal_hard=qualified['terminal_hard'],terminal_sand=qualified['terminal_sand'],native_material_counts=qualified['native_material_counts'],all_attempt_metrics=d['metrics'],observed_steps=len(d['steps']))
+                if args.summary_only:trace.pop('rows')
+                episodes.append(trace)
     output=dict(reducer_sha256=base.sha(__file__),base_reducer_sha256=base.sha(base.__file__),receipts=receipts,episodes=episodes,qualifiers=['Actual stage attribution, not counterfactual causation or schedule-matched replay.','M*g*dt is a load reference including zero/refused/sleeping frames. Correction clipping and potential work are separate from applied impulses.','Native wrench float32 reconstruction residual is diagnostic; backend stage includes gravity/damping/hardcontact/wake/integration; cached contact impulses never integrated. No closed-system energy/physical clearance/CPU acceptance.'])
-    args.output.write_text(json.dumps(output,indent=2)+'\n',encoding='utf-8');print('episodes',len(episodes),'steps',sum(len(e['rows']) for e in episodes))
+    output['summary_only']=args.summary_only;args.output.write_text(json.dumps(output,indent=2)+'\n',encoding='utf-8');print('episodes',len(episodes),'steps',sum(e['observed_steps'] for e in episodes))
 if __name__=='__main__':main()

@@ -91,6 +91,8 @@ def episode(d,raw):
         x,y,w,h=rects[i*4:i*4+4];assert s['type']==4 and not s['owner_disabled'] and not d['scene_shapes'][i]['disabled'] and s['data']==[w/2,h/2] and d['proxy_sizes'][i]==[w,h]
         t=s['transform'];assert t[:4]==[1.,0.,0.,1.] and near(t[4],x+w/2-pre['center'][0]) and near(t[5],y+h/2-pre['center'][1])
         assert d['proxy_masses'][i]==w*h and all(near(a,b) for a,b in zip(d['proxy_centres'][i],t[4:6]))
+    # Independent uniform-rectangle centroid, including float32 local offsets.
+    local_centroid=[sum(4*s['data'][0]*s['data'][1]*s['transform'][4+axis] for s in d['server_shapes'])/n for axis in range(2)]
     if d['structure']=='tree':assert n==520 and (60,32) not in xy and (68,50) not in xy
     else:assert n==356
     for r in [d['initial_native'],d['final_native']]:assert r['aggregate_owned']==n and r['native_source_members']==0 and r['members']==pre['members'] and not r['worker_failed'] and r['configured_workers']==d['workers']
@@ -104,6 +106,8 @@ def episode(d,raw):
         for label in ['before','after_application','after_step']:
             r=row[label];a=state(r);assert all(math.isfinite(v) for v in a) and a[9]==n and near(a[10],inertia) and r['valid'] and not r['frozen'] and r['generation']==d['initial_body']['generation'] and r['physics_epoch']==d['initial_body']['physics_epoch']
             assert r['gravity']==d['initial_body']['gravity'] and r['terrain_revision']==d['initial_body']['terrain_revision']
+            expected_com=transform(a[:6],local_centroid);actual_com=transform(a[:6],r['local_com'])
+            assert all(near(x,y) for x,y in zip(actual_com,expected_com)),'actual world COM disagrees with exact proxy centroid'
         b=state(row['before']);a=state(row['after_application']);s=state(row['after_step']);assert row['after_step']['manual_step']==index+1
         geom=geometry(s[:6],d['server_shapes'],hard);geoms.append(geom);response=row['response'];delta=None
         com=transform(s[:6],row['after_step']['local_com'])

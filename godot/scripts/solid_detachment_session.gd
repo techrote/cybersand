@@ -322,10 +322,11 @@ func _prepare_body(prepared: Dictionary) -> bool:
 	body.freeze = true
 	body.collision_layer = 0
 	body.collision_mask = 0
+	# Uniform exact rectangles have the native member centroid. AUTO preserves
+	# pending backend mass recomputation before the first genuine impulse.
+	body.center_of_mass_mode = RigidBody2D.CENTER_OF_MASS_MODE_AUTO
 	body.mass = float(prepared.mass)
 	body.inertia = float(prepared.inertia)
-	body.center_of_mass_mode = RigidBody2D.CENTER_OF_MASS_MODE_CUSTOM
-	body.center_of_mass = Vector2.ZERO
 	body.gravity_scale = 0.094
 	body.linear_damp = 0.04
 	body.angular_damp = 0.04
@@ -435,9 +436,11 @@ func _pack_compound_states() -> PackedFloat32Array:
 	var rotation: float = transform.get_rotation()
 	var linear: Vector2 = bridge.body_linear_velocity(0)
 	var omega: float = angular_velocity()
+	var direct: PhysicsDirectBodyState2D = PhysicsServer2D.body_get_direct_state(body.get_rid())
+	var world_com: Vector2 = transform * direct.center_of_mass_local
 	for index: int in range(_coupling_local_centers.size()):
 		var world_center: Vector2 = transform * _coupling_local_centers[index]
-		var world_offset: Vector2 = world_center - transform.origin
+		var world_offset: Vector2 = world_center - world_com
 		var point_velocity := linear + Vector2(-omega * world_offset.y, omega * world_offset.x)
 		CyberRigidBodyCoupling.append_input(states, index + 1, world_center, rotation,
 			_coupling_sizes[index], point_velocity, omega, _coupling_masses[index],

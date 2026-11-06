@@ -110,6 +110,7 @@ func run() -> void:
 	var structure: String = OS.get_environment("SOL_STRUCTURE")
 	var surroundings: String = OS.get_environment("SOL_SURROUNDINGS")
 	var enabled: bool = OS.get_environment("SOL_SAND_RESPONSE")=="1"
+	var compact_evidence: bool = OS.get_environment("SOL_COMPACT_EVIDENCE")=="1"
 	var workers: int = int(OS.get_environment("SOL_WORKERS"))
 	var steps: int = 720 if surroundings=="empty" else 360
 	var output: String = OS.get_environment("SOL_OUTPUT")
@@ -145,6 +146,7 @@ func run() -> void:
 	var report: Dictionary = {"registration":"SOL-STRUCTURE-CUT-001","source":OS.get_environment("CYBERSAND_SOURCE_REVISION"),
 		"platform":OS.get_name(),"structure":structure,"surroundings":surroundings,"sand_response":enabled,"workers":workers,
 		"stage_trace":session.stage_trace,"stage_registration":"SOL-STRUCTURE-STAGES-001" if session.stage_trace else "",
+		"compact_delta_counters":compact_evidence,"mass_readiness_evidence":"Cached scalar/COM readback alone is insufficient; isolated known-wrench oracle and actual permitted response supply behavioral evidence",
 		"intact":intact,"before_cut":census(before),"prepared":session.source_receipt.duplicate(true),"commit":session.commit_receipt.duplicate(true),
 		"activation":session.final_receipt.duplicate(true),"initial_native":census(initial),"initial_body":session.read(),"scene_shapes":shapes,"server_shapes":server_shapes,"physical_gate_status":"PENDING_INDEPENDENT_REDUCTION",
 		"proxy_centres":session._coupling_local_centers,"proxy_masses":session._coupling_masses,"proxy_sizes":session._coupling_sizes,
@@ -168,6 +170,10 @@ func run() -> void:
 				if not row.response_is_new or not row.response.get("accepted",false):
 					if not row.response.get("failed",false):check(mid.bits==row.after_application.bits,"disabled or refused Sand is mutation-free")
 			else:check(int(row.ordinary_stage_calls)==0 and row.before.bits==row.after_application.bits,"unobserved ordinary stage does not reuse held work")
+		if compact_evidence:
+			# Deltas above and final complete metrics retain every attempt/refusal;
+			# omit two redundant cumulative dictionaries from each serialized frame.
+			row.erase("metrics_before");row.erase("metrics_after")
 		report.steps.append(plain(row))
 	var final: Dictionary = await session.inspect_coupling(PackedInt32Array(),Rect2i(0,0,160,128))
 	check(final.get("aggregate_owned")==expected and final.get("native_source_members")==0,"final exclusive payload ownership")

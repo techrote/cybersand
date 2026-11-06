@@ -108,8 +108,8 @@ def hosts(args):
         shutil.copyfile(ROOT/native['output'],project/'addons/cybersand_native/bin'/BINARIES[platform])
         assert sha(ROOT/rapier['artifact'])==rapier['sha256']
         for name,digest in rapier['source_inputs'].items():assert lfsha(ROOT/name)==digest,name
-        if args.suite=='mass-init':
-            fixture=ROOT/'native/tests/fixtures/sol_mass_initialization_001.json';dst=project/'tests/fixtures'/fixture.name;dst.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(fixture,dst)
+        if args.suite in ['mass-init','mass-fix']:
+            fixture=ROOT/('native/tests/fixtures/sol_mass_initialization_'+('002' if args.suite=='mass-fix' else '001')+'.json');dst=project/'tests/fixtures'/fixture.name;dst.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(fixture,dst)
         inventory={p.relative_to(project).as_posix():sha(p) for p in project.rglob('*') if p.is_file()}
         state=dict(commands=rows,effective_inputs=inventory,omitted_nonhost_binaries=omitted,resource_before=dict(bytes=used,free=free),compiled_native=native,rapier=rapier);receipt['hosts'][platform]=state;save()
         def run(name,script=None,extra=None,env=None,version=False):
@@ -143,10 +143,10 @@ def hosts(args):
         assert engine==engine_pin['executables'][executable_name]
         state['engine']=dict(sha256=engine,launcher_sha256=launcher,version=engine_pin['version'],pin=engine_pin,validation_sha256=sha(validation_path),cohort_sha256=sha(cohort_path));save()
         imported=run('import')
-        if imported['clean'] and args.suite=='mass-init':
-            output=host/'mass-init.json';row=run('mass-init','test_sol_mass_initialization',env=dict(SOL_OUTPUT=str(output) if platform=='windows' else wsl(output)));row['report_complete']=False
+        if imported['clean'] and args.suite in ['mass-init','mass-fix']:
+            output=host/'mass-init.json';row=run('mass-init','test_sol_mass_initialization',env=dict(SOL_OUTPUT=str(output) if platform=='windows' else wsl(output),SOL_MASS_PROFILE='res://tests/fixtures/'+fixture.name));row['report_complete']=False
             if output.exists():
-                data=json.loads(output.read_text(encoding='utf-8'));row['report']=dict(path=str(output.relative_to(ROOT)),sha256=sha(output));row['report_complete']=not data['failures'] and len(data['cases'])==12
+                data=json.loads(output.read_text(encoding='utf-8'));row['report']=dict(path=str(output.relative_to(ROOT)),sha256=sha(output));row['report_complete']=not data['failures'] and len(data['cases'])==(32 if args.suite=='mass-fix' else 12)
             save()
         if imported['clean'] and args.suite!='mass-init':
             for worker in map(int,args.workers.split(',')):
@@ -161,16 +161,16 @@ def hosts(args):
                     save()
                     continue
                 structures=['tree'] if args.suite=='smoke' else ['tree','building']
+                choices=[('empty',False),('packed_sand',False),('packed_sand',True)] if args.suite=='mass-fix' else [('packed_sand',False),('packed_sand',True)] if args.suite=='packed' else [('empty',False)]
                 for structure in structures:
-                    for enabled in ([False,True] if args.suite=='packed' else [False]):
-                        surroundings='packed_sand' if args.suite=='packed' else 'empty'
+                    for surroundings,enabled in choices:
                         name=structure+'-'+surroundings+'-response'+str(int(enabled))+'-w'+str(worker)
                         output=host/(name+'.json');path=str(output) if platform=='windows' else wsl(output)
-                        row=run(name,'test_sol_structure_cut',env=dict(SOL_STRUCTURE=structure,SOL_SURROUNDINGS=surroundings,SOL_SAND_RESPONSE=str(int(enabled)),SOL_WORKERS=str(worker),SOL_OUTPUT=path,SOL_STAGE_TRACE=str(int(args.stage_trace))))
+                        row=run(name,'test_sol_structure_cut',env=dict(SOL_STRUCTURE=structure,SOL_SURROUNDINGS=surroundings,SOL_SAND_RESPONSE=str(int(enabled)),SOL_WORKERS=str(worker),SOL_OUTPUT=path,SOL_STAGE_TRACE=str(int(args.stage_trace)),SOL_COMPACT_EVIDENCE=str(int(args.suite=='mass-fix'))))
                         row['report_complete']=False
                         if output.exists():
                             row['report']=dict(path=str(output.relative_to(ROOT)),sha256=sha(output),bytes=output.stat().st_size)
-                            data=json.loads(output.read_text(encoding='utf-8'));row['report_complete']=not data['failures'] and len(data['steps'])==(360 if args.suite=='packed' else 720)
+                            data=json.loads(output.read_text(encoding='utf-8'));row['report_complete']=not data['failures'] and len(data['steps'])==(360 if surroundings=='packed_sand' else 720)
                         save()
         changes=[];normalized=[]
         for name,digest in inventory.items():
@@ -188,5 +188,5 @@ def hosts(args):
 
 if __name__=='__main__':
     parser=argparse.ArgumentParser(__doc__);parser.add_argument('action',choices=['build','hosts']);parser.add_argument('--run',required=True)
-    parser.add_argument('--suite',choices=['original','smoke','dry','packed','mass-init'],default='original');parser.add_argument('--platforms',default='windows,linux');parser.add_argument('--workers',default='1,4');parser.add_argument('--stage-trace',action='store_true');args=parser.parse_args()
+    parser.add_argument('--suite',choices=['original','smoke','dry','packed','mass-init','mass-fix'],default='original');parser.add_argument('--platforms',default='windows,linux');parser.add_argument('--workers',default='1,4');parser.add_argument('--stage-trace',action='store_true');args=parser.parse_args()
     assert Path(args.run).name==args.run and args.run not in ['.','..'];raise SystemExit(build(args.run) if args.action=='build' else hosts(args))
