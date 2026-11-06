@@ -196,6 +196,21 @@ void World::rebuild_pressure_index() {
             ? static_cast<std::uint32_t>(i) : std::numeric_limits<std::uint32_t>::max();
         ++pressure_->optimization.gas_index_chunks;
     }
+    // Indexed slot order is now stable. Initialise the local-Y index to the
+    // full height on a cold rebuild; no previous base is assumed valid.
+    const auto slots = cache.column_order.size() * cache.side;
+    if (slots > cache.dirty_y.size() || slots > cache.repair_spans.size() ||
+        cache.columns.size() * cache.side > cache.repair_counts.size() ||
+        cache.rows.size() > cache.candidate_rows.size()) {
+        cache.cold(); cache.status = PressureOptimizationStatus::ReferenceCapacityFallback;
+        return;
+    }
+    for (std::size_t i = 0; i < slots; ++i) {
+        cache.dirty_y[i].include(0,config_.chunk_size - 1);
+        cache.repair_spans[i] = {};
+    }
+    cache.full_column_repair = true;
+    cache.use_run_repair = false;
     cache.complete = true; cache.membership_dirty = false;
     if (++cache.incarnation == 0U) ++cache.incarnation;
     // Fresh slots: every wake bit starts cold, within the reserved capacity.
@@ -260,6 +275,13 @@ void World::invalidate_pressure_input(ChunkCoord coord, std::int32_t min_x, std:
         }
     }
     cache.mark(true, chunk->pressure->column_group, min_x, max_x);
+    // The native producer rectangle, not renderer dirt, supplies the Y extent.
+    // A stale slot/membership is a cold full-reference case, never a silent
+    // partial repair. Parallel JobEffects merge here in owner order.
+    const auto slot = static_cast<std::size_t>(chunk->pressure->gas_chunk_slot);
+    if (cache.complete && (slot >= cache.column_order.size() || cache.column_order[slot] != coord))
+        cache.cold();
+    else cache.mark_y(slot, min_x, max_x, min_y, max_y);
     invalidate_pressure_certificates(coord, min_x, min_y, max_x, max_y);
     clear_pressure_wake(cache, [this](ChunkCoord c) { return find_chunk(c); }, config_.chunk_size,
                         coord, min_x, min_y, max_x, max_y);
@@ -300,6 +322,10 @@ PressureOptimizationSnapshot World::pressure_optimization_snapshot() const {
     for (const auto word : cache.wake_clean) out.wake_clean_cells += static_cast<std::size_t>(std::popcount(word));
     out.wake_capacity_bytes = cache.wake_clean.capacity() * sizeof(std::uint64_t);
     out.derived_capacity_bytes = out.wake_capacity_bytes + sizeof(PressureCache) +
+        cache.dirty_y.capacity() * sizeof(PressureCache::DirtyY) +
+        cache.repair_spans.capacity() * sizeof(PressureCache::RepairSpan) +
+        cache.repair_counts.capacity() * sizeof(std::size_t) +
+        cache.candidate_rows.capacity() * sizeof(std::array<std::uint64_t,16>) +
         (cache.column_order.capacity() + cache.row_order.capacity()) * sizeof(ChunkCoord) +
         (cache.columns.capacity() + cache.rows.capacity()) * sizeof(PressureCache::Group) +
         (cache.dirty_columns.capacity() + cache.dirty_rows.capacity()) * sizeof(std::size_t) + out.gas_capacity_bytes;

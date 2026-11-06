@@ -199,6 +199,7 @@ struct World::PressureState {
     struct HeadColumnTask {
         std::size_t begin = 0, end = 0, group = 0;
         std::uint64_t columns = 0, writes = 0, heads = 0, unknown = 0;
+        std::uint64_t runs = 0, nanoseconds = 0;
         pressure_column_detail::PressureColumnFailure error{};
     };
     std::vector<HeadColumnTask> column_tasks;
@@ -208,6 +209,7 @@ struct World::PressureState {
         std::size_t begin = 0, end = 0, group = 0, wakes = 0, wake_base = 0;
         std::int32_t first_row = 0, last_row = 0;
         std::uint64_t rows = 0, finals = 0, skipped = 0, scanned = 0;
+        std::uint64_t interpolation_ns = 0, wake_ns = 0;
         bool deferred = false;
         pressure_column_detail::PressureColumnFailure error{};
     };

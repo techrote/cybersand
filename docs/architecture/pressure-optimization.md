@@ -4,7 +4,7 @@ status: Current
 document-kind: design
 scope: Accepted-main LCB-002 cached and cached_dormant implementation — derived head and sealed-component caches, conservative motion certificates, execution identity, source-qualified cost and remaining product/platform boundaries
 canonical-for: [pressure-optimization, pressure-motion-certificates]
-last-reviewed: 2026-11-04
+last-reviewed: 2026-11-06
 related-documents: [pressure-flow-v1.md, liquid-solver-family-policy.md, liquid-state-transition-matrix.md, liquid-prepared-setup-and-receipts.md, ../reference/configuration-reference.md, ../reference/invariants.md, ../audits/2026-10-25-lcb002-pressure-variants.md, ../audits/2026-11-04-lcb201-pressure-idle-cost.md]
 ---
 
@@ -62,6 +62,20 @@ insufficient repair budget selects a complete reference preparation before
 publishing a partial head answer. The snapshot distinguishes cold, pending,
 ready, reference-capacity fallback and reference-budget fallback. Those statuses
 describe derived execution, not a different physical solver.
+
+## Experimental 6 November 2026 per-run repair (Draft, not admitted)
+
+An isolated #406-stacked [run-level candidate](../audits/2026-11-06-pf-run-head-repair.md)
+adds conservative local-Y extents, preflight run-span closure, exact unchanged
+column/run arithmetic and owner-merged row marks to `cached` and
+`cached_dormant`. Gas-topology runs still require whole-column recomputation,
+and index/budget refusal still chooses complete reference preparation. Derived
+execution identity changes 4 → 5, not the physical pressure law or save schema.
+This is **not Current on main**. The native three-arm differential regression
+passes, but the first source-matched synthetic stress-canvas head timing
+**regresses** (2.50 → 3.80 ms); real host/sanitizer qualification and an upper
+bound on repeated upward `top_pressure` scans are outstanding. **REPAIR
+REQUIRED / NO-GO** to merge as measured; retain negative evidence.
 
 ## Sealed gas discovery reuse
 
