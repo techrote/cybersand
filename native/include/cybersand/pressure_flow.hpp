@@ -20,7 +20,16 @@ struct PressureFlowParameters {
     static constexpr std::int32_t kFlowScale = 1024;
     // Gas regions larger than this many Empty cells are the vented atmosphere.
     static constexpr std::uint32_t kCompartmentVolumeLimit = 16384;
-    static constexpr std::size_t kCompartmentCapacity = 1024;
+    // Research-only compile-time capacity variants. The default remains C1024.
+    // This does NOT change the family contract, policy, receipt, or CYPS version.
+#ifndef CYBERSAND_PF_GAS_CAPACITY
+#define CYBERSAND_PF_GAS_CAPACITY 1024
+#endif
+    static_assert(CYBERSAND_PF_GAS_CAPACITY == 1024 ||
+                  CYBERSAND_PF_GAS_CAPACITY == 2048 ||
+                  CYBERSAND_PF_GAS_CAPACITY == 4096,
+                  "unsupported experimental gas capacity");
+    static constexpr std::size_t kCompartmentCapacity = CYBERSAND_PF_GAS_CAPACITY;
     static constexpr std::size_t kHistoryCapacity = 64;
     static constexpr std::size_t kMaximumParents = 8;
     // Gas gauge pressure saturates at this many mass units (declared bound).
