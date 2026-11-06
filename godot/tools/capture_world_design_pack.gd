@@ -311,7 +311,10 @@ func _linux_owner_identity() -> bool:
 	if output.size() != 1:
 		return false
 	owner_pid_namespace = str(output[0]).strip_edges()
-	owner_boot_id = FileAccess.get_file_as_string("/proc/sys/kernel/random/boot_id").strip_edges()
+	var boot_output: Array = []
+	if OS.execute("cat", PackedStringArray(["/proc/sys/kernel/random/boot_id"]), boot_output) != 0 or boot_output.size() != 1:
+		return false
+	owner_boot_id = str(boot_output[0]).strip_edges()
 	return owner_pid_namespace.begins_with("pid:[") and owner_pid_namespace.ends_with("]") and not owner_boot_id.is_empty()
 
 
@@ -385,7 +388,10 @@ func _owner_liveness(pid: int) -> String:
 			return "unknown"
 		if str(current[0]).strip_edges() != owner_pid_namespace:
 			return "unknown"
-		if FileAccess.get_file_as_string("/proc/sys/kernel/random/boot_id").strip_edges() != owner_boot_id:
+		var boot_output: Array = []
+		if OS.execute("cat", PackedStringArray(["/proc/sys/kernel/random/boot_id"]), boot_output) != 0 or boot_output.size() != 1:
+			return "unknown"
+		if str(boot_output[0]).strip_edges() != owner_boot_id:
 			return "unknown"
 		var probe_output: Array = []
 		var probe: String = ("import os,errno,sys\ntry:\n os.kill(int(sys.argv[1]),0)\n print('alive')\n" +
