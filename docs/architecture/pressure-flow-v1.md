@@ -160,7 +160,8 @@ resolves deterministically (components by smallest root, regions by lowest
 
 | Component | Result |
 |---|---|
-| no old compartment, region holds unresolved/atmosphere cells | **create**: new id, generation 0, amount = unresolved + atmosphere cells (atmospheric for its free volume) |
+| no old compartment, region holds atmosphere cells (it was open to the air) | **create**: new id, generation 0, amount = volume: atmospheric gas in the whole sealed volume, including kernel-vacated cells (#406 branch, owner approved 2026-11-06) |
+| no old compartment, unresolved cells but no atmosphere cells | **create**: new id, generation 0, amount = unresolved cells (atmospheric for its free volume) |
 | no old compartment, vacuum cells only | stays `kVacuumLabel`; no compartment |
 | one old → one region | **continue**: same id/generation; volume recomputed; amount += atmosphere cells absorbed |
 | many old → one region | **merge once**: survivor = lowest id; amount = sum; generation = max+1; ancestry = all parents; others retired `merged` |
@@ -180,6 +181,19 @@ kernel-vacated cell (Water drained by a transfer, a kernel conversion to Empty)
 is `kVacuumLabel`: it adds volume, never amount. A host paint/erase leaves
 `0` (unresolved). This distinction prevents water-born voids from being created
 as atmospheric gas (a defect found during development; see evidence).
+
+**Sealing from the open air (#406 branch, owner approved 2026-11-06).** Labelling
+is bounded, so a region open to the atmosphere can keep vacuum labels on cells its
+Water drained from while open. Previously, sealing such a region counted only its
+unresolved and atmosphere cells as gas, so a pocket that had held Water started
+under-pressured and drew Water in. A region with no prior compartment but some
+atmosphere-labelled cells now seals with atmospheric gas in its whole volume
+(gauge 0). Water-born voids without atmosphere cells stay vacuum, and draining an
+already sealed pocket still lowers its pressure. Regression:
+`LCB-002 PressureFlow pocket sealed from open air is atmospheric` (a drained,
+plugged chamber sealed at gauge −38 before and ≥ 0 after). The Godot pressure,
+policy, LCB contract, scenario-catalogue, WEX-001 and Water Feel regressions are
+unchanged. Evidence: [PF dormant + ballistic record](../audits/2026-11-06-pf-ballistic-tick-cost.md).
 
 **Masked labels at retirement (Current repair branch, acceptance pending).**
 A transient body excludes an Empty cell from gas volume and overlap; it does
@@ -433,4 +447,4 @@ they do not describe source `349d593`.
 
 ## Desktop development workbench execution
 
-On Draft #394, the workbench reference variant can assign independent vertical head columns to the native worker pool during preparation. The serial-reference comparison covers identical heads, gas, quantity, wakes and physical state. Row repair and gas topology still run on the owner. The base scientific host and cached variants retain their existing execution paths. Fixed-work timings and the native parity fixture are in the [dated workbench audit](../audits/2026-11-04-workbench-boundary-and-pacing.md).
+On Draft #394, the workbench reference variant can assign independent vertical head columns to the native worker pool during preparation. The serial-reference comparison covers identical heads, gas, quantity, wakes and physical state. On the #406 branch (2026-11-06), the cached and cached_dormant variants also take this route, and the row repair/wake pass also runs as sub-band tasks. Both stay exact to the serial pass, including certificate and work counters. Gas topology labelling (the BFS and the compartment reducer) still runs on the owner. Since a later #406 change, its whole-world seed scan uses a read-only pooled pre-pass that marks seed candidates, and its label pass runs one pool task per chunk, with identical labels and gas work counters ([evidence](../audits/2026-11-06-pf-ballistic-tick-cost.md)). The base scientific host retains its existing execution path. The workbench "Fine cores" option is a separate, non-exact geometry choice. Measurements are in the [tick-cost evidence](../audits/2026-11-06-workbench-pf-tick-cost.md). Fixed-work timings and the native parity fixture are in the [dated workbench audit](../audits/2026-11-04-workbench-boundary-and-pacing.md).

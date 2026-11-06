@@ -15,6 +15,10 @@ var _before_elapsed_us: int = 0
 var _material_ids: Array[int] = []
 var _interaction_profile: Dictionary = {}
 var _interaction_inspection: Array = []
+# Install-time constant summary parts, frozen once (recursively read-only) and
+# shared by every per-tick summary instead of deep-copied each publication:
+# the pair inspection grows as N(N+1)/2 records for N present materials.
+var _interaction_profile_summary: Dictionary = {}
 var last_error: String = ""
 # Typed LCB-001 refusal {code, material, detail} of the last rejected liquid
 # solver policy request; empty after any other outcome.
@@ -118,6 +122,10 @@ func install(world: Variant, value: Variant, mode: String = "Inspect", instrumen
 			options.workbench_retain_cells = controlled_setup.get("workbench_retain_cells",false)
 			if controlled_setup.get("workbench_convert_liquid_inventory",false):
 				options.workbench_convert_liquid_inventory = true
+			for key: String in ["workbench_ballistic","workbench_inertial_signed","workbench_face_release","workbench_fine_cores"]:
+				if controlled_setup.get(key,false): options[key] = true
+			for key: String in ["workbench_face_budget","workbench_face_speed","workbench_face_period","workbench_face_min_height"]:
+				if controlled_setup.get(key) is int: options[key] = controlled_setup[key]
 		# Only the exclusive owner retains this opaque token between its two
 		# preparation turns. Revalidation above still precedes final commit.
 		var token: int = prepared_token
@@ -179,12 +187,26 @@ func install(world: Variant, value: Variant, mode: String = "Inspect", instrumen
 		if not int(event.material) in _material_ids: _material_ids.append(int(event.material))
 	_material_ids.sort()
 	_interaction_profile = _inspection_bridge.inspect_interaction_profile() if _inspection_bridge != null else {}
-	_interaction_inspection.clear()
+	var inspection: Array = []
 	if _inspection_bridge != null:
 		for left: int in range(_material_ids.size()):
 			for right: int in range(left, _material_ids.size()):
-				_interaction_inspection.append(_inspection_bridge.inspect_interaction(
+				inspection.append(_inspection_bridge.inspect_interaction(
 					_material_ids[left], _material_ids[right], 0))
+	_interaction_inspection = _frozen(inspection)
+	_interaction_profile_summary = _frozen({"schema_id":_interaction_profile.get("schema_id","unavailable"),
+		"schema_version":_interaction_profile.get("schema_version",0),
+		"profile_id":_interaction_profile.get("profile_id","unavailable"),
+		"profile_version":_interaction_profile.get("profile_version",0),
+		"channels":_interaction_profile.get("channels",[]),
+		"layer_kinds":_interaction_profile.get("layer_kinds",[]),
+		"authored_layers":_interaction_profile.get("authored_layers",[]),
+		"catalogue_validation":_interaction_profile.get("catalogue_validation",{}),
+		"coverage":_interaction_profile.get("coverage",[]),
+		"tuning_passes":_interaction_profile.get("tuning_passes",[]),
+		"specialized_rule_count":_interaction_profile.get("specialized_rule_count",0),
+		"specialized_authority":_interaction_profile.get("specialized_authority","unavailable"),
+		"specialized_migration_state":_interaction_profile.get("specialized_migration_state","unavailable")})
 	_definition = candidate.duplicate(true)
 	_definition_hash = str(checked.hash)
 	_transport_hash = str(checked.transport.hash)
@@ -279,7 +301,8 @@ func clear() -> void:
 	_telemetry = null
 	_material_ids.clear()
 	_interaction_profile.clear()
-	_interaction_inspection.clear()
+	_interaction_inspection = []
+	_interaction_profile_summary = {}
 	_definition.clear()
 	_history.clear()
 	_samples.clear()
@@ -462,6 +485,20 @@ func legacy_water_state() -> Dictionary:
 		"initial_quantization_error_numerator_255":_initial_integer*255-_requested_numerator,
 		"explicit_source":_source, "explicit_sink":_sink, "current":_ledger_current}
 
+# A deep copy whose every nested Array/Dictionary is read-only.
+static func _frozen(value: Variant) -> Variant:
+	if value is Array:
+		var array: Array = []
+		for item: Variant in value: array.append(_frozen(item))
+		array.make_read_only()
+		return array
+	if value is Dictionary:
+		var dictionary: Dictionary = {}
+		for key: Variant in value: dictionary[key] = _frozen(value[key])
+		dictionary.make_read_only()
+		return dictionary
+	return value
+
 func summary() -> Dictionary:
 	if not active(): return {}
 	return {"id":_definition.id, "schema_version":_definition.schema_version,
@@ -471,20 +508,8 @@ func summary() -> Dictionary:
 		"source_recipe":_definition.source_recipe, "source_recipe_hash":_definition.source_recipe_hash,
 		"transport_hash":_transport_hash, "water_semantics":_definition.water_semantics.duplicate(),
 		"material_ids":_material_ids.duplicate(), "declared_observations":_definition.observations.duplicate(true),
-		"interaction_profile":{"schema_id":_interaction_profile.get("schema_id","unavailable"),
-			"schema_version":_interaction_profile.get("schema_version",0),
-			"profile_id":_interaction_profile.get("profile_id","unavailable"),
-			"profile_version":_interaction_profile.get("profile_version",0),
-			"channels":_interaction_profile.get("channels",[]).duplicate(true),
-			"layer_kinds":_interaction_profile.get("layer_kinds",[]).duplicate(true),
-			"authored_layers":_interaction_profile.get("authored_layers",[]).duplicate(true),
-			"catalogue_validation":_interaction_profile.get("catalogue_validation",{}).duplicate(true),
-			"coverage":_interaction_profile.get("coverage",[]).duplicate(true),
-			"tuning_passes":_interaction_profile.get("tuning_passes",[]).duplicate(true),
-			"specialized_rule_count":_interaction_profile.get("specialized_rule_count",0),
-			"specialized_authority":_interaction_profile.get("specialized_authority","unavailable"),
-			"specialized_migration_state":_interaction_profile.get("specialized_migration_state","unavailable")},
-		"interaction_inspection":_interaction_inspection.duplicate(true),
+		"interaction_profile":_interaction_profile_summary,
+		"interaction_inspection":_interaction_inspection,
 		"kinetic_contact_baseline":{"transport_hash":_transport_hash,
 			"water_semantics":_definition.water_semantics.duplicate(),
 			"execution":_definition.execution.duplicate(true),

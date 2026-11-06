@@ -129,7 +129,12 @@ fidelity mode exists.
 | Visually moving surface with stable content | Presentation-time shader motion; inspect authority before changing simulation |
 
 The collider consumer's 32-chunk/750 µs limits are checked between chunks and
-exclude extraction/packet handling; one chunk may exceed the time budget.
+exclude extraction/packet handling; one chunk may exceed the time budget. Only
+rebuilt chunks count against the chunk limit. The workbench lock-step publishes
+every hard-surface revision and installs it with a 128-chunk/4 ms budget. The
+2026-11-06 [whole-engine benchmark](../audits/2026-11-06-whole-engine-bench.md)
+shows why: with reacting terrain the 250 ms packet throttle capped a session at
+about 4 ticks/s.
 `ImageTexture.update` still uploads the full 2,097,152-byte RG8 image for a
 changed native publication. Dirty bridge bytes cannot substitute for that cost.
 

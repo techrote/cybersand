@@ -10,6 +10,18 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## Ballistic Water experiment (#362) — 2026-11-05
+
+Experimental branch `claude/water-ballistic-hybrid` (Draft PR) adds BW-001
+ballistic parcels, IN-B1 and the workbench spray/jet controls described in the
+[ballistic Water reference](../architecture/ballistic-water-v1.md); evidence and
+defects corrected during the run are in the
+[dated record](../audits/2026-11-05-wcx-ballistic-water.md). Everything is opt-in
+and no default changed. The separate #201 moving-camera lane is Draft PR #405
+on `claude/pf201-moving-camera`; both branches edit `native/src/world.cpp`, so the
+second to merge must re-chain its reviewed MAT-AUTH transition. Do not merge
+either without the owner's integration decision.
+
 ## MAT-AUTH-002 Phase A integration gate — 2026-11-04
 
 The owner now authorizes current-main reconciliation, focused preflight, a

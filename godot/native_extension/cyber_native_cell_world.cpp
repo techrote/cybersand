@@ -9,6 +9,7 @@
 
 #include <algorithm>
 #include <array>
+#include <bit>
 #include <chrono>
 #include <cstdio>
 #include <cmath>
@@ -74,6 +75,12 @@ void CyberNativeCellWorld::_bind_methods() {
                          &CyberNativeCellWorld::diagnostic_relocate_cell);
     ClassDB::bind_method(D_METHOD("diagnostic_snapshot", "origin", "size", "include_histogram"), &CyberNativeCellWorld::diagnostic_snapshot, DEFVAL(false));
     ClassDB::bind_method(D_METHOD("diagnostic_body_metrics"), &CyberNativeCellWorld::diagnostic_body_metrics);
+    ClassDB::bind_method(D_METHOD("set_water_spray", "settings"), &CyberNativeCellWorld::set_water_spray);
+    ClassDB::bind_method(D_METHOD("get_water_spray"), &CyberNativeCellWorld::get_water_spray);
+    ClassDB::bind_method(D_METHOD("water_spray_before_tick"), &CyberNativeCellWorld::water_spray_before_tick);
+    ClassDB::bind_method(D_METHOD("inject_water_parcel", "position", "velocity_cells_per_tick", "quantity"),
+                         &CyberNativeCellWorld::inject_water_parcel);
+    ClassDB::bind_method(D_METHOD("inspect_ballistic_parcels", "maximum"), &CyberNativeCellWorld::inspect_ballistic_parcels);
     ClassDB::bind_method(D_METHOD("get_water_experiment_policy"),
                          &CyberNativeCellWorld::get_water_experiment_policy);
     ClassDB::bind_method(D_METHOD("get_liquid_solver_policy"),
@@ -148,6 +155,10 @@ void CyberNativeCellWorld::_bind_methods() {
                          &CyberNativeCellWorld::get_hard_surface_rectangles);
     ClassDB::bind_method(D_METHOD("get_hard_surface_chunk_rectangles"),
                          &CyberNativeCellWorld::get_hard_surface_chunk_rectangles);
+    ClassDB::bind_method(D_METHOD("diagnostic_full_hard_surface_chunk_rectangles"),
+                         &CyberNativeCellWorld::diagnostic_full_hard_surface_chunk_rectangles);
+    ClassDB::bind_method(D_METHOD("diagnostic_hard_surface_packet_stats"),
+                         &CyberNativeCellWorld::diagnostic_hard_surface_packet_stats);
     ClassDB::bind_method(D_METHOD("set_interest_center", "world_cell"),
                          &CyberNativeCellWorld::set_interest_center);
     ClassDB::bind_method(D_METHOD("set_simulation_window", "view_origin", "view_size",
@@ -426,6 +437,8 @@ void CyberNativeCellWorld::prepare_rigid_body_coupling(const PackedFloat32Array&
 void CyberNativeCellWorld::prepare_body_coupling(bool resolve_overlaps) {
     world_->clear_transient_obstacles();
     clear_observations();
+    spray_tick_ = {};
+    spray_budget_used_.fill(0);
     raster_indices_.clear();
     for (std::size_t body_id = 1; body_id < current_bodies_.size(); ++body_id) {
         const auto& body = current_bodies_[body_id];
@@ -626,6 +639,16 @@ void CyberNativeCellWorld::reconcile_overlap(std::int32_t cell_index,
 
     if (workbench_) authored_entry_normal(body_id, x, y, outward, penetration);
     const auto target = find_ejection_target(x, y, body_id, outward, penetration);
+    if (material == cybersand::Material::Water && try_water_spray(body, body_id, x, y, outward, target)) {
+        // WCX/BW-001: the displaced Water left as a parcel. The body receives the
+        // same displacement reaction as an ordinary relocation.
+        ++observation.displaced;
+        const auto impulse = -outward * displacement_gain_ * density_scale(material);
+        if (body_diagnostics_) (*body_diagnostics_)[body_id].displacement += impulse;
+        record_impulse(body_id, impulse);
+        ++revision_;
+        return;
+    }
     if (target.x < 0 || !world_->relocate_stored_cell(x, y, target.x, target.y)) {
         ++observation.unresolved;
         const auto impulse = -outward * displacement_gain_;
@@ -850,6 +873,7 @@ PackedFloat32Array CyberNativeCellWorld::rigid_body_results() const {
             static_cast<double>(contact_x) / 1000.0 * contact_gain_,
             static_cast<double>(contact_y) / 1000.0 * contact_gain_,
         };
+        observation.impulse += spray_droplet_impulse(static_cast<std::uint16_t>(body_id));
         if (observation.impulse.length() > impulse_cap_) {
             observation.impulse = observation.impulse.normalized() *
                                   impulse_cap_;
@@ -1171,10 +1195,124 @@ PackedInt32Array CyberNativeCellWorld::get_hard_surface_chunk_rectangles() const
     if (world_ == nullptr) return {};
     const auto hard_revision = static_cast<std::uint64_t>(get_hard_surface_revision());
     if (hard_surface_chunk_rectangles_revision_ == hard_revision) return hard_surface_chunk_rectangles_;
-    if (render_cells_revision_ != revision_) refresh_render_cells();
-    hard_surface_chunk_rectangles_ = hard_surface_chunks_from_cells(render_cells_, extent_);
+    // Same packet as hard_surface_chunks_from_cells(display projection): the
+    // projection's hard mask equals the stored-material mask (see
+    // World::copy_hard_surface_bits), and each chunk's rectangles depend only
+    // on its own 64x64 block, so an unchanged block reuses its rectangles.
+    constexpr std::int32_t chunk_size = 64;
+    if (extent_.x <= 0 || extent_.y <= 0 || extent_.x % chunk_size || extent_.y % chunk_size)
+        throw std::invalid_argument("Invalid terrain chunk extent");
+    const auto words = static_cast<std::size_t>(extent_.x / chunk_size);
+    const auto columns = extent_.x / chunk_size, rows = extent_.y / chunk_size;
+    const auto chunk_count = static_cast<std::size_t>(columns) * static_cast<std::size_t>(rows);
+    const auto bit_count = words * static_cast<std::size_t>(extent_.y);
+    bool cold = hard_surface_cache_extent_ != extent_ || hard_surface_chunk_cache_.size() != chunk_count;
+    if (cold) {
+        hard_surface_bits_.assign(bit_count, 0U);
+        hard_surface_previous_bits_.assign(bit_count, 0U);
+        hard_surface_chunk_cache_.assign(chunk_count, {});
+        hard_surface_cache_extent_ = extent_;
+    }
+    world_->copy_hard_surface_bits({0, 0, extent_.x, extent_.y},
+                                   std::span<std::uint64_t>{hard_surface_bits_.data(), hard_surface_bits_.size()});
+    const auto run_key = [](std::int32_t x, std::int32_t width) {
+        return (static_cast<std::uint64_t>(static_cast<std::uint32_t>(x)) << 32U) | static_cast<std::uint32_t>(width);
+    };
+    struct Open { std::uint64_t key; HardSurfaceRectangle rectangle; };
+    std::vector<Open> active, next;
+    active.reserve(chunk_size / 2 + 1);
+    next.reserve(chunk_size / 2 + 1);
+    std::size_t rectangle_count = 0;
+    for (std::int32_t chunk_y = 0; chunk_y < rows; ++chunk_y) {
+        for (std::int32_t chunk_x = 0; chunk_x < columns; ++chunk_x) {
+            const auto chunk_index = static_cast<std::size_t>(chunk_y) * static_cast<std::size_t>(columns) +
+                                     static_cast<std::size_t>(chunk_x);
+            auto& completed = hard_surface_chunk_cache_[chunk_index];
+            bool changed = cold;
+            for (std::int32_t row = 0; row < chunk_size && !changed; ++row) {
+                const auto word = static_cast<std::size_t>(chunk_y * chunk_size + row) * words +
+                                  static_cast<std::size_t>(chunk_x);
+                changed = hard_surface_bits_[word] != hard_surface_previous_bits_[word];
+            }
+            if (!changed) {
+                ++hard_surface_chunks_reused_;
+                rectangle_count += completed.size();
+                continue;
+            }
+            ++hard_surface_chunks_rebuilt_;
+            // The hard_surface_chunks_from_cells merge: a run identical in
+            // (x, width) to one on the previous row extends that rectangle.
+            completed.clear();
+            active.clear();
+            for (std::int32_t row = 0; row < chunk_size; ++row) {
+                const auto y = chunk_y * chunk_size + row;
+                next.clear();
+                auto bits = hard_surface_bits_[static_cast<std::size_t>(y) * words + static_cast<std::size_t>(chunk_x)];
+                while (bits != 0U) {
+                    const auto start = std::countr_zero(bits);
+                    const auto shifted = bits >> start;
+                    const auto length = shifted == ~std::uint64_t{0} ? 64 - start : std::countr_one(shifted);
+                    const auto first_x = chunk_x * chunk_size + start;
+                    const auto key = run_key(first_x, length);
+                    const auto previous = std::find_if(active.begin(), active.end(),
+                                                       [key](const Open& open) { return open.key == key; });
+                    next.push_back({key, previous == active.end()
+                                             ? HardSurfaceRectangle{first_x, y, length, 1}
+                                             : HardSurfaceRectangle{previous->rectangle.x, previous->rectangle.y,
+                                                                    previous->rectangle.width,
+                                                                    previous->rectangle.height + 1}});
+                    bits = start + length >= 64 ? 0U : bits & (~std::uint64_t{0} << (start + length));
+                }
+                for (const auto& open : active) {
+                    if (std::none_of(next.begin(), next.end(), [&open](const Open& o) { return o.key == open.key; }))
+                        completed.push_back(open.rectangle);
+                }
+                active.swap(next);
+            }
+            for (const auto& open : active) completed.push_back(open.rectangle);
+            std::sort(completed.begin(), completed.end(),
+                      [](const HardSurfaceRectangle& left, const HardSurfaceRectangle& right) {
+                          if (left.y != right.y) return left.y < right.y;
+                          if (left.x != right.x) return left.x < right.x;
+                          if (left.height != right.height) return left.height < right.height;
+                          return left.width < right.width;
+                      });
+            rectangle_count += completed.size();
+        }
+    }
+    std::swap(hard_surface_bits_, hard_surface_previous_bits_);
+    const auto header_size = chunk_count + 2U;
+    PackedInt32Array result;
+    result.resize(static_cast<std::int64_t>(header_size + rectangle_count * 4U));
+    auto* packed = result.ptrw();
+    packed[0] = static_cast<std::int32_t>(chunk_count);
+    auto cursor = header_size;
+    for (std::size_t chunk_index = 0; chunk_index < chunk_count; ++chunk_index) {
+        packed[1U + chunk_index] = static_cast<std::int32_t>(cursor);
+        for (const auto& rectangle : hard_surface_chunk_cache_[chunk_index]) {
+            packed[cursor++] = rectangle.x;
+            packed[cursor++] = rectangle.y;
+            packed[cursor++] = rectangle.width;
+            packed[cursor++] = rectangle.height;
+        }
+    }
+    packed[1U + chunk_count] = static_cast<std::int32_t>(cursor);
+    hard_surface_chunk_rectangles_ = result;
     hard_surface_chunk_rectangles_revision_ = hard_revision;
     return hard_surface_chunk_rectangles_;
+}
+
+PackedInt32Array CyberNativeCellWorld::diagnostic_full_hard_surface_chunk_rectangles() const {
+    if (world_ == nullptr || has_failed()) return {};
+    if (render_cells_revision_ != revision_) refresh_render_cells();
+    return hard_surface_chunks_from_cells(render_cells_, extent_);
+}
+
+Dictionary CyberNativeCellWorld::diagnostic_hard_surface_packet_stats() const {
+    Dictionary out;
+    out["chunks_rebuilt"] = static_cast<std::int64_t>(hard_surface_chunks_rebuilt_);
+    out["chunks_reused"] = static_cast<std::int64_t>(hard_surface_chunks_reused_);
+    return out;
 }
 
 PackedInt32Array CyberNativeCellWorld::hard_surface_chunks_from_cells(const PackedByteArray& material_cells, Vector2i canvas) {
@@ -2133,5 +2271,6 @@ std::int64_t CyberNativeCellWorld::get_tick_failure_count() const {
 #include "pressure_optimization_inspection.inc"
 
 #include "workbench_granular_coupling.inc"
+#include "water_spray_coupling.inc"
 
 }  // namespace godot

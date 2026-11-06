@@ -41,9 +41,17 @@ struct World::PressureCache {
         }
         // #201 P1: one derived wake-clean bit per indexed cell. Reserved here;
         // the index rebuild zero-fills within this capacity (no tick allocation).
+        // Workbench parallel head columns: one private row-dirty record per
+        // column-order position (positions are disjoint between column tasks),
+        // OR-merged into rows by the owner after the join.
+        column_row_marks.resize(capacity);
         wake_words_per_chunk = (cell_area + 63U) / 64U;
-        if (capacity <= std::numeric_limits<std::size_t>::max() / wake_words_per_chunk)
+        if (capacity <= std::numeric_limits<std::size_t>::max() / wake_words_per_chunk) {
             wake_clean.reserve(capacity * wake_words_per_chunk);
+            // Workbench row bands: changed final heads awaiting the owner's
+            // certificate invalidation, one bit per indexed cell (zero at rest).
+            certificate_changed.resize(capacity * wake_words_per_chunk);
+        }
     }
 
     // A set bit means: the last complete wake evaluation of this sleeping cell
@@ -100,6 +108,27 @@ struct World::PressureCache {
         status = PressureOptimizationStatus::Pending;
     }
 
+    // The merge form of mark(false, ...) for a whole private row record. The
+    // final dirty bits, queue membership and status equal the per-cell marks;
+    // the queue order (never consumed in order) may differ.
+    void merge_row_marks(std::size_t group, std::array<std::uint64_t, 16>& bits) noexcept {
+        bool any = false;
+        for (const auto word : bits) any = any || word != 0U;
+        if (!any) return;
+        if (complete && group != kMissing) {
+            auto& item = rows[group];
+            if (!item.queued) {
+                if (dirty_rows.size() == dirty_rows.capacity()) complete = false;
+                else { dirty_rows.push_back(group); item.queued = true; }
+            }
+            if (complete) {
+                for (std::size_t i = 0; i < bits.size(); ++i) item.dirty[i] |= bits[i];
+                status = PressureOptimizationStatus::Pending;
+            }
+        }
+        bits = {};
+    }
+
     void reset_certificate_admission() noexcept {
         certificate_layer_enabled=false; certificate_contents_cold=true;
         certificate_window_active=false; certificate_tick_eligible=false;
@@ -126,6 +155,8 @@ struct World::PressureCache {
     std::vector<ChunkCoord> column_order, row_order;
     std::vector<Group> columns, rows;
     std::vector<std::size_t> dirty_columns, dirty_rows;
+    std::vector<std::array<std::uint64_t, 16>> column_row_marks;
+    std::vector<std::uint64_t> certificate_changed;
     PressureOptimizationCounters counters{};
     PressureOptimizationStatus status = PressureOptimizationStatus::Cold;
     std::uint64_t incarnation = 0;

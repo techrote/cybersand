@@ -92,7 +92,15 @@ static func apply(world: Object, emitters: Array, extent: Vector2i) -> Array:
 			if not _path_clear(proxy,intent.source,intent.target): reason = "blocked"
 			elif proxy.material(cell) != 0 or proxy.mask(cell) != 0 or proxy.exhausted: reason = "occupied"
 		var changed: int = 0
-		if reason.is_empty():
+		var ballistic: bool = int(intent.material) == 3 and world.has_method(&"get_water_spray") 			and bool(world.get_water_spray().get("ballistic_enabled",false))
+		if reason.is_empty() and ballistic:
+			# WCX/BW-001: a Water nozzle fires an owned parcel along the nozzle axis.
+			var axis: Vector2 = (intent.target - intent.source).normalized()
+			var speed: float = float(world.get_water_spray().settings.get("nozzle_speed",2.5))
+			var outcome: String = world.inject_water_parcel(Vector2(cell)+Vector2(0.5,0.5), axis*speed, 255)
+			changed = int(outcome == "launched")
+			if changed == 0: reason = "parcel_" + outcome
+		elif reason.is_empty():
 			world.emit_disc(cell.x, cell.y, 0, int(intent.material))
 			changed = int(int(world.material_at(cell.x,cell.y)) == int(intent.material))
 			if changed == 0: reason = "write_refused"

@@ -99,8 +99,12 @@ The API-specific outcomes are:
 Sources: [World](../../native/src/world.cpp),
 [snapshot publication](../../native/src/world.cpp), and
 [native adapter](../../godot/native_extension/cyber_native_cell_world.cpp).
-Core candidates are capacity-checked before deduplication, so the bound is not
-simply the number of unique output jobs. The
+Core candidates are capacity-checked after deduplication within each chunk;
+cores spanning several chunks (core larger than chunk) can still count once per
+chunk before the final sort/unique, so the bound is not always exactly the number
+of unique output jobs. Before the 2026-11-06 #406
+[stress-canvas correction](../audits/2026-11-06-stress-canvas.md) every active
+activity block counted. The
 [threading contract](../architecture/simulation-tick-and-threading.md) owns
 desktop/Web tick-failure handling.
 
@@ -122,8 +126,8 @@ and production memory/high-water thresholds remain open. Proposed 10%/20%
 margins have unresolved per-side/total semantics; current presets are explicit
 pixel pairs. Current region changes follow the separate
 [pause/re-entry contract](../systems/world-storage-and-interest-region.md#interest-filtering-and-re-entry);
-waking new coverage can exhaust existing candidate capacity (counted before
-deduplication). That produces an explicit quarantined failure, not automatic
+waking new coverage can exhaust existing candidate capacity (distinct cores per
+chunk). That produces an explicit quarantined failure, not automatic
 capacity growth or retry. Offscreen retained activity still counts toward active
 chunk capacity. Region pause/resume does not implement live resize.
 

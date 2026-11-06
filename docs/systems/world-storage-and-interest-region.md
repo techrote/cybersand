@@ -113,8 +113,10 @@ before a tick do not wake work repeatedly. Region handling adds no sparse-world
 lookup pass, cell scan, transition queue or per-tick allocation: it reuses existing
 resident activity metadata passes. Those pre-existing passes and epoch-wrap cell
 clears are not removed. Work remains bounded by resident and candidate capacities;
-core candidate entries still count before deduplication, so re-entry can explicitly
-fail capacity even where several blocks touch the same core.
+core candidates count distinct cores per chunk (several blocks touching one core
+count once since the 2026-11-06 #406
+[stress-canvas correction](../audits/2026-11-06-stress-canvas.md)), so re-entry can
+explicitly fail capacity when it wakes more distinct cores than the budget.
 
 ### Excluded rules and failed-world recovery
 
