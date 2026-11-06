@@ -1,11 +1,14 @@
 // GEN-006 #194: signed i64 native chunk-admission edge and CYPS restore control.
 // EXPERIMENT ONLY. No selective eviction, actor owner, mutation journal or format admission.
 #include "cybersand/world.hpp"
+#include "cybersand/sha256.hpp"
 #include <algorithm>
 #include <cstdint>
 #include <iostream>
 #include <limits>
 #include <stdexcept>
+#include <span>
+#include <string>
 #include <vector>
 
 namespace {
@@ -284,11 +287,183 @@ void pending_event_region_cohort(std::uint32_t workers, bool remote_parallel) {
               << ",\"result\":\"PASS\"}\n";
 }
 
+
+// Signed-digest hostile-input control: integrity is necessary, not a schema gate.
+// Re-sign each synthetic fault with the same canonical SHA-256 implementation
+// used by the real CYPS codec. This is NOT a new storage or import format.
+void signed_malformed_checkpoint_cohort(std::uint32_t workers) {
+    const auto c = config(workers);
+    std::vector<Material> p(static_cast<std::size_t>(kSide*kSide), Material::Empty);
+    p[0] = Material::Water;
+    p[1] = Material::Wall;
+    World live(c);
+    require(live.install_generated_chunk({-1,0},p) == ChunkInstallOutcome::Installed,
+            "signed-fault native baseline admission");
+    require(live.set_cell_state(-128,0,Material::Water,17,0),
+            "signed-fault Water17 setup failed");
+    require(live.set_cell_state(-127,0,Material::Empty,0,0),
+            "signed-fault Empty tombstone setup failed");
+    live.set_temperature(-128,0,417);
+    const auto hash = live.physical_state_hash();
+    const auto good = live.save_physical_state();
+    require(good.size() > 32U && good.size() < 1024U*1024U,
+            "signed-fault real CYPS checkpoint absent or too large");
+    auto valid = World::restore_physical_state(c,good);
+    require(valid && valid->physical_state_hash()==hash &&
+            valid->stored_material(-127,0)==Material::Empty &&
+            valid->stored_state_a(-128,0)==17 &&
+            valid->liquid_mass(-128,0)==17 &&
+            valid->stored_temperature(-128,0)==417,
+            "signed-fault pristine native continuation state invalid");
+
+    // Inspect only the established CYPS2 little-endian layout, with bounds
+    // checks and asserted counts. No hard-coded cell offsets or guessed policy
+    // lengths: derive those from the actual native snapshot.
+    auto read = [&](std::size_t at, unsigned n) -> std::uint64_t {
+        require(n<=8U && at <= good.size()-32U &&
+                n <= good.size()-32U-at, "CYPS cursor exceeds native body");
+        std::uint64_t result=0;
+        for (unsigned i=0;i<n;++i)
+            result |= static_cast<std::uint64_t>(good[at+i])<<(8U*i);
+        return result;
+    };
+    std::size_t cursor=0;
+    auto take=[&](std::size_t n)->std::size_t {
+        require(cursor<=good.size()-32U && n<=good.size()-32U-cursor,
+                "CYPS native envelope truncated during test discovery");
+        const auto at=cursor; cursor+=n; return at;
+    };
+    take(8); // magic and version
+    take(4*5+2+1+4+1+2+1+1+4+1+1+1); // native config through Water policy
+    const auto transport_count_at=take(4);
+    const auto transport_count=read(transport_count_at,4);
+    require(transport_count<=TransportPolicy::packed_size,
+            "test baseline contains unexpected transport length");
+    take(static_cast<std::size_t>(transport_count)*4U);
+    const auto envelope_count_at=take(4);
+    const auto envelope_count=read(envelope_count_at,4);
+    require(envelope_count<=4096U,"test baseline contains oversized policy envelope");
+    take(static_cast<std::size_t>(envelope_count)*4U);
+    take(8); // tick_index
+    const auto completed_tick_at=take(8);
+    take(1+8+1); // update epoch, hard surface revision, adhesion
+    const auto interest_at=take(1);
+    require(read(interest_at,1)==0U,"test baseline unexpectedly has interest region");
+    const auto applied_at=take(1);
+    require(read(applied_at,1)==0U,"test baseline unexpectedly has applied core range");
+    const auto events_at=take(4);
+    require(read(events_at,4)==0U,"test baseline unexpectedly has queued events");
+    const auto chunks_at=take(4);
+    require(read(chunks_at,4)==1U,"test baseline must contain exactly one native chunk");
+    const auto coord_at=take(16);
+    const auto flags_at=take(1);
+    require((read(flags_at,1)&~1U)==0U,"test baseline contains unexpected native sidecar");
+    const auto blocks_at=take(4);
+    const auto block_count=read(blocks_at,4);
+    require(block_count==16U,"test baseline block layout changed");
+    take(static_cast<std::size_t>(block_count)*13U); // active, quiet, next deadline
+    const auto first_cell_at=cursor;
+    require(read(first_cell_at,2)==static_cast<std::uint16_t>(Material::Water),
+            "test baseline first native cell is not Water");
+    require(read(first_cell_at+2U,2)==17U,
+            "test baseline first Water mass is not 17");
+    require(read(first_cell_at+6U,2)==static_cast<std::uint16_t>(Material::Empty),
+            "test baseline second native cell is not explicit Empty");
+
+    auto put=[](std::vector<std::uint8_t>& bytes, std::size_t at,
+                std::uint64_t value, unsigned width) {
+        for (unsigned i=0;i<width;++i)
+            bytes[at+i]=static_cast<std::uint8_t>(value>>(8U*i));
+    };
+    auto seal=[](std::vector<std::uint8_t>& bytes) {
+        const auto content=std::span<const std::uint8_t>(bytes.data(),bytes.size()-32U);
+        const auto digest=Sha256::of(content);
+        std::copy(digest.begin(),digest.end(),bytes.end()-32);
+    };
+    std::uint32_t refused=0;
+    auto negative=[&](const char* label, const char* expected,
+                      std::vector<std::uint8_t> bytes, bool resign) {
+        if(resign) seal(bytes);
+        else require(bytes!=good,"unsigned corruption fixture has no mutation");
+        if(resign) {
+            const auto body=std::span<const std::uint8_t>(bytes.data(),bytes.size()-32U);
+            const auto digest=Sha256::of(body);
+            require(std::equal(digest.begin(),digest.end(),bytes.end()-32),
+                    "signed malformed fixture digest is not authentic");
+        }
+        bool rejected=false;
+        try { auto candidate=World::restore_physical_state(c,bytes); (void)candidate; }
+        catch(const std::invalid_argument& e) {
+            rejected=true;
+            require(std::string(e.what()).find(expected)!=std::string::npos,
+                    "unexpected native malformed-state refusal reason");
+        }
+        require(rejected,"native accepted signed invalid physical state");
+        require(live.physical_state_hash()==hash &&
+                    live.save_physical_state()==good &&
+                    live.chunk_count()==1 &&
+                    live.stored_material(-127,0)==Material::Empty &&
+                    live.liquid_mass(-128,0)==17,
+                "failed candidate import touched still-live authoritative native World");
+        ++refused;
+        std::cout << "GEN006_NATIVE_SIGNED_REFUSAL_JSON {\"workers\":"<<workers
+                  <<",\"case\":\""<<label<<"\",\"expected\":\""<<expected
+                  <<"\",\"digest_recomputed\":"<<(resign?"true":"false")
+                  <<",\"result\":\"REFUSED\"}\n";
+    };
+    auto mutate=[&](const char* name, const char* expected, std::size_t at,
+                    std::uint64_t value, unsigned width) {
+        auto bytes=good;
+        put(bytes,at,value,width);
+        negative(name,expected,std::move(bytes),true);
+    };
+    mutate("bad_magic","bad magic",0,0,4);
+    mutate("future_format","unknown format version",4,99,4);
+    mutate("invalid_backend","unknown backend",30,255,1);
+    mutate("unsupported_water_policy","unsupported Water semantics",44,2,1);
+    mutate("oversized_policy_envelope","liquid policy envelope too large",
+           envelope_count_at,4097,4);
+    mutate("incomplete_tick","not a completed tick boundary",completed_tick_at,1,8);
+    mutate("overcapacity_event_count","too many pending events",events_at,
+           c.deferred_event_capacity+1,4);
+    mutate("overcapacity_chunk_count","chunk count exceeds capacity",chunks_at,
+           c.maximum_chunk_count+1,4);
+    mutate("chunk_coordinate_overflow","chunk coordinate overflow",coord_at,
+           std::numeric_limits<std::int64_t>::max(),8);
+    mutate("unknown_chunk_flags","unknown chunk flags",flags_at,0x80U,1);
+    mutate("activity_block_mismatch","activity block count mismatch",blocks_at,0,4);
+    mutate("unknown_material","invalid material",first_cell_at,65535,2);
+    mutate("zero_water_quantity","Water state outside the experiment policy",
+           first_cell_at+2U,0,2);
+    mutate("nonwater_state_overflow","byte state out of domain",
+           first_cell_at+6U+2U,256,2);
+    {
+        auto bytes=good;
+        bytes.insert(bytes.end()-32,0xff);
+        negative("authenticated_trailing_bytes","trailing bytes",std::move(bytes),true);
+    }
+    {
+        auto bytes=good; bytes[first_cell_at]^=0x80U;
+        negative("tampered_digest","integrity digest mismatch",std::move(bytes),false);
+    }
+    {
+        std::vector<std::uint8_t> bytes{0U,1U};
+        // This intentionally cannot carry a digest.
+        negative("short_file","payload is too short",std::move(bytes),false);
+    }
+    require(refused==17U,"signed malformed-state case census changed");
+    std::cout << "GEN006_NATIVE_SIGNED_REFUSAL_PASS {\"workers\":"<<workers
+              <<",\"cases\":"<<refused<<",\"bytes\":"<<good.size()
+              <<",\"source\":\"native_World_CYPS2\",\"result\":\"PASS\"}\n";
+}
+
 }
 int main() {
     try {
         cohort(1);
         cohort(4);
+        signed_malformed_checkpoint_cohort(1);
+        signed_malformed_checkpoint_cohort(4);
         pending_event_region_cohort(1, false);
         pending_event_region_cohort(4, false);
         pending_event_region_cohort(1, true);
