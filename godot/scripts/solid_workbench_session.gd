@@ -84,6 +84,7 @@ func physics_step() -> Dictionary:
 	var this_generation: int=generation;var owner: CyberSimulationWorker=worker
 	var owner_bridge: CyberRapierPhysicsBridge=bridge;var owner_body: RigidBody2D=body
 	var owner_epoch: int=physics_epoch;var owner_token: String=str(source_receipt.token)
+	var owner_waits: Dictionary=workbench_waits
 	var s: CyberSimulationSnapshot=owner.take_latest_snapshot(0)
 	if s==null:return _held("AwaitingSnapshot")
 	if s.simulation_failed:
@@ -117,7 +118,8 @@ func physics_step() -> Dictionary:
 	var prior: int=bridge.manual_step_count();bridge.step()
 	if not _owns(this_generation,owner) or bridge!=owner_bridge or body!=owner_body or not active \
 		or physics_paused or _failed or transaction_busy or physics_epoch!=owner_epoch or str(source_receipt.get("token",""))!=owner_token:
-		return _held("OwnerRetired")
+		owner_waits["OwnerRetired"]=int(owner_waits.get("OwnerRetired",0))+1
+		return {"outcome":"OwnerRetired","deferred":false}
 	if bridge.manual_step_count()!=prior+1:
 		_fail("Workbench Rapier step failed");return _held("StepNotAdvanced")
 	if not _publish_compound_states():

@@ -88,7 +88,7 @@ func open(parent: Node, workers: int = 4, surroundings: String = "empty",
 		conservative_displacement: bool = true, sand_resistance: bool = false,
 		measure_contacts: bool = false) -> bool:
 	close()
-	_deferred_accounting = {"captured":0,"dropped":0,"reasons":{}}
+	_deferred_accounting = {"captured":0,"dropped":0,"failed_applications":0,"reasons":{}}
 	_parent = parent
 	_tree = parent.get_tree()
 	generation += 1
@@ -614,6 +614,9 @@ func _record_deferred_drop(e: Dictionary, reason: String) -> void:
 	# The captured dictionary belongs to that generation even if close/open has
 	# installed new counters. Never write a replacement owner's response/metrics.
 	var counts: Dictionary = e.get("accounting",{})
+	if reason=="PostContactStopped" and generation==int(e.generation) and last_contact_response.get("failed",false):
+		if not counts.is_empty():counts.failed_applications=int(counts.get("failed_applications",0))+1
+		return # Actual failed application is not dropped/unapplied work.
 	if not counts.is_empty():
 		counts.dropped += 1
 		counts.reasons[reason] = int(counts.reasons.get(reason,0)) + 1
