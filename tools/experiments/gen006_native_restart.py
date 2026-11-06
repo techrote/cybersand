@@ -84,6 +84,17 @@ def cohort(exe, root, d, workers):
     bad_receipt.write_bytes(original_receipt)
     native_refusal = call(exe, "check", bad_path, bad_receipt,
                           workers, 17, expected=13)
+    # Same-length corruption gets past the receipt-length guard into the actual
+    # World::restore_physical_state() decoder. Never count predecoder rejection
+    # as proof that the native CYPS checksum refused malformed state.
+    byte_index = len(raw) // 2
+    bitflip = bytearray(raw)
+    bitflip[byte_index] ^= 0x80
+    bad_path.write_bytes(bitflip)
+    native_decoder_refusal = call(exe, "check", bad_path, bad_receipt,
+                                  workers, 17, expected=13)
+    need("native length/receipt mismatch" not in native_decoder_refusal,
+         "corrupted CYPS was refused only by the length guard")
     updated_log = call(exe, "emit", path, receipt, workers, 19)
     staged.write_bytes(pack(path.read_bytes(), receipt.read_bytes()))
     os.replace(staged, root)
@@ -94,6 +105,7 @@ def cohort(exe, root, d, workers):
             "initial_restart": initial_restart, "native_crash": crashed,
             "old_root_after_crash": surviving_restart,
             "truncated_native_refusal": native_refusal,
+            "same_length_native_decoder_refusal": native_decoder_refusal,
             "new_native": updated_log, "updated_restart": updated_restart,
             "old_root_sha256": initial_digest,
             "new_root_sha256": hashlib.sha256(root.read_bytes()).hexdigest(),
