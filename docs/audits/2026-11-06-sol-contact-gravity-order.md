@@ -221,6 +221,19 @@ repository and do not change historical provenance. A successful docs check is
 separate from the inherited World material-lock failure and eight published
 native-runtime source mismatches; neither guard may be refreshed for this work.
 
+At documentation source `e8d04b30e492858f2a8626043b275a30f1c6bf34`,
+`checks-001` passes docs, historical M11, three adverse-state tests, seven geometry
+controls and diff checks. Original retrieval retains32/32 top-five canonical
+routes (19 first); additive post-result questions retain3/3 first. These are
+retrieval results, not answer/scientific acceptance. Repository check exits1 for
+the same eight inherited Windows/Linux source-input mismatches. Frozen material
+guard exits1 for World: expected LF SHA-256
+`b7a129f44eccc7c33dbd2f0d84802ab096140dcaa9b5b3a83d45dd3bf85fbad1`, actual
+`91cecf308d01ef214f491f3dc1f353f10c9db17a55162b983fc4ecf80e6363e6`.
+These remain integration blockers. The final documentation descendant receives
+a separately retained exact-head `order_check` receipt; do not relabel this dated
+source as the final commit or rewrite its source-qualified runtime evidence.
+
 ## Decisions and next action
 
 | Question | Decision at these sources |
