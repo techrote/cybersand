@@ -2197,6 +2197,9 @@ func _unhandled_key_input(event: InputEvent) -> void:
 			if _playable_course_controls_active():
 				toggle_playable_course_pause()
 			else:
+				# Explicit IN-TOOLS profiles hold worker-owned source/sink/aperture
+				# authority. Revoke their uncommitted token before generic pause.
+				cancel_playable_course_input()
 				paused = not paused
 		KEY_ESCAPE:
 			if _playable_course_controls_active():
@@ -4040,6 +4043,26 @@ func refresh_actor_prototypes() -> void:
 		else:
 			actor_prototype_button.text += " | %s: %s" % [UsableCatalog.name_for(actor_usable_index), str(equipment.get("last_result", "ready"))]
 			actor_prototype_button.tooltip_text = PhysicalCatalog.controls_text(physical_rig_id) + "\nLeft/M use · right alternate · N release · U nearby pickup. Equipment uses the physical mount."
+			var selected_profile: String = str(equipment.get("profile", ""))
+			if selected_profile == PhysicalEquipment.METERED_PROFILE:
+				var meter: Dictionary = equipment.get("metered_drain", {})
+				var water: bool = int(equipment.get("material", 0)) == PhysicalEquipment.METERED_WATER
+				var units: String = "Water units" if water else "Brine cells"
+				actor_prototype_button.text += " | drain %d %s left" % [
+					int(meter.get("water_units_remaining" if water else "brine_cells_remaining", 0)), units]
+				actor_prototype_button.tooltip_text += "\nMetered drain v1 · native generation %d · policy %s" % [
+					int(meter.get("native_generation", -1)), str(meter.get("policy_hash", "")).left(16)]
+			elif selected_profile in [PhysicalEquipment.IN_TOOLS_NOZZLE_PROFILE, PhysicalEquipment.IN_TOOLS_LEAK_PROFILE]:
+				var owner: Dictionary = equipment.get("in_tools", {})
+				if selected_profile == PhysicalEquipment.IN_TOOLS_NOZZLE_PROFILE:
+					actor_prototype_button.text += " | IN source %d units left" % int(owner.get("water_units_remaining", 0))
+					actor_prototype_button.tooltip_text += "\nDirected IN nozzle; no ballistic fallback. Source admitted %d units; remaining %d." % [
+						int(owner.get("water_units_admitted", 0)), int(owner.get("water_units_remaining", 0))]
+				else:
+					actor_prototype_button.text += " | leak %s" % ("OPEN" if bool(owner.get("aperture_open", false)) else "closed")
+					actor_prototype_button.tooltip_text += "\nReversible leak aperture; occupied closure refuses without deleting material."
+				actor_prototype_button.tooltip_text += "\nNative generation %d · policy %s" % [
+					int(owner.get("native_generation", -1)), str(owner.get("policy_hash", "")).left(16)]
 		return
 	if not physical_trial_arm.is_empty():
 		actor_prototype_button.text = "Rapier %s / impulses + torque / F5" % physical_trial_arm
