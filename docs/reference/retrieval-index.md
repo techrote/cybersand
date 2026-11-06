@@ -10,6 +10,13 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 
 # Retrieval question index
 
+## Branch reconciliation and design choices
+
+For how agents reconcile stacked or long-running branches with main, and which
+choices must be recorded for the owner, retrieve
+[reconciliation and design choices](../operations/github-development-and-release.md#reconciliation-and-design-choices).
+It is a record-and-continue rule, not an approval gate.
+
 ## Coupled desktop determinism — 2026-11-06
 
 Retrieve the [determinism contract](../architecture/determinism-and-boundary-transfers.md#coupled-desktop-determinism--2026-11-06),

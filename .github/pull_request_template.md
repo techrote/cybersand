@@ -13,6 +13,14 @@ Describe the concrete behavior change and affected canonical subsystem/ADR.
 - [ ] `tools/ci/check_ci_provider_policy.py` passes; no external provider routing or runner indirection is introduced without an explicit policy migration.
 - [ ] If this is an implementation/behavior PR, the final ready-for-review exact-head Documentation/provenance and applicable Native/GDExtension/Water gates are recorded.
 
+## Design choices
+
+List any choice between competing systems, laws or designs, or any change to
+default behavior or feel, made in this PR or while reconciling it with main. For
+each, give the choice, the alternative, why, and what reversing it would take, in
+plain language. Write "None" if there are none. This informs the owner and does not
+block progress; see [reconciliation and design choices](../docs/operations/github-development-and-release.md#reconciliation-and-design-choices).
+
 ## Remaining gaps
 
 Name failed, skipped, unavailable or manual checks and unresolved decisions.
