@@ -163,10 +163,33 @@ Local guards passed: 25/25 profile tests, the shared-engine suite (unchanged),
 and the CI-provider policy. A local `test_workbench_canvas` log (131/0) contains
 no `ERROR:` or skip text.
 
+**Published.** Run
+[42194937946](https://github.com/techrote/cybersand/actions/runs/42194937946)
+(attempt 1, 2026-11-06 09:25–09:37 UTC) built both runtimes from `297e9979` and
+passed every job:
+
+- the publisher guards;
+- admission;
+- the four native groups;
+- the Linux build and execution;
+- the Windows cross-build and Windows execution;
+- publication.
+
+Bot commit `60b4cda4` appended only the four runtime/manifest paths.
+
+| Runtime | SHA-256 | Bytes | Toolchain |
+|---|---|---|---|
+| `cybersand_native.windows.x86_64.dll` | `0b831fc916a02054703cb3d06b14923beefe40402a572870fbdecc1d79a85155` | 5,035,520 | LLVM-MinGW 20260826 / Clang 23.1.0 |
+| `libcybersand_native.linux.x86_64.so` | `1b7481f3eb503cc846fb5f7d69ecb43c003983544d03652adf0e2d5abb0960ba` | 4,480,224 | g++-13 13.3.0 |
+
+After the append, `check_repository.py` reports no errors locally (there were
+32 stale-runtime errors before). The full ready-head CI remains a separate gate.
+
 ## Gaps
 
 - Windows and WSL on one machine only. There is no Web build or CI-runner
-  timing. The scoped runtime publication above is pending.
+  timing. The scoped publication covers only its five Godot cases; the full
+  ready-head CI has not run.
 - Gas topology remains serial (see the
   [PF tick-cost record](2026-11-06-workbench-pf-tick-cost.md)).
 - The main-thread full-image texture upload and render cost were not profiled.
