@@ -106,6 +106,24 @@ def main() -> int:
         check(paused and owner.poll() is None, "real-host-publisher-paused",
               {"paused": paused, "exit": owner.poll()})
         if paused and owner.poll() is None:
+            # Godot headless still loads fontconfig and writes user:// data.
+            # Build a minimal, pinned-base image with just that runtime
+            # dependency, and provide a writable HOME to the non-root user.
+            dockerfile = E / "Dockerfile.pidns"
+            dockerfile.write_text(
+                "FROM ubuntu:24.04\n"
+                "RUN apt-get update && apt-get install -y --no-install-recommends "
+                "libfontconfig1 && rm -rf /var/lib/apt/lists/*\n",
+                encoding="utf8")
+            image_tag = "cybersand-pidns-godot:" + source_sha[:12]
+            image_build = E / "logs" / "docker-build.log"
+            with image_build.open("wb") as stream:
+                built = subprocess.run(
+                    ["docker", "build", "-t", image_tag, "-f", str(dockerfile), str(E)],
+                    stdout=stream, stderr=subprocess.STDOUT, timeout=180, check=False)
+            if built.returncode != 0:
+                raise RuntimeError("Godot container dependencies unavailable: " +
+                                   image_build.read_text(errors="replace")[-1100:])
             tx_file = claim / "transaction.json"
             tx = json.loads(tx_file.read_text()) if tx_file.exists() else {}
             token = str(tx.get("attempt_id", ""))
@@ -119,13 +137,14 @@ def main() -> int:
                 docker_prefix = [
                     "docker", "run", "--rm",
                     "--hostname", host_name, "-e", "HOSTNAME=" + host_name,
+                    "-e", "HOME=/tmp",
                     "-e", "CYBERSAND_CAPTURE_FAULT_INJECTION=1",
                     "--user", str(os.getuid()) + ":" + str(os.getgid()),
                     "--volume", str(repo) + ":" + str(repo) + ":ro",
                     "--volume", str(E) + ":" + str(E) + ":rw",
                     "--volume", str(godot.parent) + ":" + str(godot.parent) + ":ro",
                     "--workdir", str(repo),
-                    "ubuntu:24.04",
+                    image_tag,
                 ]
                 # Prove the container sees a genuinely different PID namespace.
                 ns_cmd = docker_prefix + ["readlink", "/proc/self/ns/pid"]
