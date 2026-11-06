@@ -380,6 +380,9 @@ public:
     // preparation, storage exposure or freshness/skip authority is implied.
     [[nodiscard]] std::size_t copy_pressure_head_chunk_coordinates(std::span<ChunkCoord> output) const noexcept;
     [[nodiscard]] std::vector<GasCompartmentSnapshot> gas_compartments() const;
+    // Research readback of actual reserved World-owned PF topology vector capacities.
+    // Excludes cache capacity (available via pressure_optimization_snapshot).
+    [[nodiscard]] std::size_t pressure_topology_reserved_bytes() const noexcept;
     [[nodiscard]] std::vector<GasHistoryRecord> gas_history() const;
     [[nodiscard]] GasLedger gas_ledger() const noexcept;
     [[nodiscard]] std::uint64_t gas_topology_revision() const noexcept;
