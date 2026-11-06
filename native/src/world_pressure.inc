@@ -2883,7 +2883,7 @@ std::unique_ptr<World> World::restore_physical_state(const WorldConfig& executio
     return world;
 }
 
- 
+
 // Experimental fixed-storage observation; no allocation and no mutable pointer exposure.
 // Vector::capacity() is queried after construction, not inferred from requested reserve().
 std::size_t World::pressure_topology_reserved_bytes() const noexcept {
