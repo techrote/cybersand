@@ -1,0 +1,97 @@
+name: GEN006 native CYPS whole-World scaling diagnostic (experimental)
+
+on:
+  push:
+    branches:
+      - experiment/gen006-native-cyps-scaling-20261106
+    paths:
+      - native/tests/test_gen006_cyps_scaling.cpp
+      - .github/workflows/gen006-native-cyps-scaling.yml
+      - docs/audits/2026-11-06-gen006-native-cyps-scaling.md
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gen006-native-cyps-scaling
+  cancel-in-progress: false
+
+jobs:
+  linux-native-cyps-scaling:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - name: Check out exact diagnostic commit
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 1
+          lfs: false
+          persist-credentials: false
+
+      - name: Capture exact source and compiler
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/gen006-cyps-scaling
+          git rev-parse HEAD | tee build/gen006-cyps-scaling/source-sha.txt
+          git rev-parse HEAD^{tree} | tee build/gen006-cyps-scaling/source-tree.txt
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          python3 tools/ci/check_ci_provider_policy.py 2>&1 | tee build/gen006-cyps-scaling/provider-policy.log
+          g++-13 --version | head -n 1 | tee build/gen006-cyps-scaling/compiler.txt
+
+      - name: Compile unchanged actual native World plus diagnostic
+        shell: bash
+        timeout-minutes: 15
+        run: |
+          set -euo pipefail
+          timeout 840s g++-13 -std=c++20 -O0 -g1 -pthread \
+            -Wall -Wextra -Wpedantic -I native/include \
+            native/src/world.cpp native/src/material_rules.cpp \
+            native/src/scheduler_geometry.cpp native/src/settled_world_discovery.cpp \
+            native/tests/test_gen006_cyps_scaling.cpp \
+            -o build/gen006-cyps-scaling/probe 2>&1 | tee build/gen006-cyps-scaling/compile.log
+
+      - name: Execute native 1/4-configured-worker, 1/8/32-chunk cohorts
+        shell: bash
+        timeout-minutes: 5
+        run: |
+          set -euo pipefail
+          timeout 240s build/gen006-cyps-scaling/probe 2>&1 | tee build/gen006-cyps-scaling/observations.log
+          grep -q 'GEN006_NATIVE_CYPS_SCALING_PASS' build/gen006-cyps-scaling/observations.log
+          test "$(grep -c '"result":"PASS"' build/gen006-cyps-scaling/observations.log)" = 6
+          grep '^{"probe"' build/gen006-cyps-scaling/observations.log > build/gen006-cyps-scaling/observations.jsonl
+          python3 - <<'PY' > build/gen006-cyps-scaling/analysis.json
+          import json, pathlib, statistics
+          p=pathlib.Path("build/gen006-cyps-scaling/observations.jsonl")
+          rows=[json.loads(line) for line in p.read_text().splitlines()]
+          assert len(rows)==6
+          assert {(r["configured_workers"],r["resident_chunks"]) for r in rows}=={
+            (w,c) for w in (1,4) for c in (1,8,32)}
+          for r in rows:
+            assert len(r["timed_save_ns"])==5 and all(t>0 for t in r["timed_save_ns"])
+            r["median_save_ms"]=statistics.median(r["timed_save_ns"])/1e6
+            r["p95_of_five_ms"]=sorted(r["timed_save_ns"])[-1]/1e6
+          for w in (1,4):
+            cohorts=sorted((r for r in rows if r["configured_workers"]==w),
+                            key=lambda r:r["resident_chunks"])
+            assert cohorts[0]["checkpoint_bytes"] < cohorts[1]["checkpoint_bytes"] < cohorts[2]["checkpoint_bytes"]
+          print(json.dumps({"source":"actual native World; Linux hosted only","cohorts":rows},indent=2))
+          PY
+
+      - name: Preserve raw measurements and failures
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gen006-native-cyps-scaling
+          path: |
+            build/gen006-cyps-scaling/source-sha.txt
+            build/gen006-cyps-scaling/source-tree.txt
+            build/gen006-cyps-scaling/provider-policy.log
+            build/gen006-cyps-scaling/compiler.txt
+            build/gen006-cyps-scaling/compile.log
+            build/gen006-cyps-scaling/observations.log
+            build/gen006-cyps-scaling/observations.jsonl
+            build/gen006-cyps-scaling/analysis.json
+          if-no-files-found: warn
+          retention-days: 45
