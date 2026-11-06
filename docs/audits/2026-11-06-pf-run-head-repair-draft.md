@@ -183,9 +183,27 @@ mask negative evidence.
 | ASan / UBSan / TSan | **NOT RUN** |
 | Real Godot Linux/Windows and actual named scenes | **NOT RUN** |
 | Paired warmed source-matched stress benchmark | **NOT RUN** |
-| Docs/checks `check_docs.py`, `check_m11_consistency.py`, `check_repository.py`, retrieval evaluation | **NOT RUN locally**; inspect Draft PR's exact-head hosted Documentation/provenance check separately |
-| Protected MAT-AUTH source admission, runtime provenance and owner review | **PENDING**; do not refresh frozen protection locks or publish runtime |
+| Docs/checks `check_docs.py`, `check_m11_consistency.py`, `check_repository.py`, retrieval evaluation | **NOT RUN locally**; hosted Documentation/provenance failed *before* these checks at MAT-AUTH protected-source compatibility, so no pass may be attributed to these checks |
+| Protected MAT-AUTH source admission, runtime provenance and owner review | **FAIL** in [hosted Documentation run 42297131161](https://github.com/techrote/cybersand/actions/runs/42297131161): reviewed target SHA-256 `26051b0d10ab10d65db822c993742e0a0bf13711f3bd56158e95d77735737aca` for `native/src/world_pressure.inc`, observed experimental file `934c8229f50c4638e6db2aff2135fbf7209da5599f69002157fe3238ca26de4a`; independent reviewed transition required, no lock refresh |
 | Exactness / no race / <=2.5 ms target | **UNESTABLISHED** |
+
+**Source-matched hosted CI on implementation head `494f1447038996ba32dc3d618c3cf1fa74489d05` (2026-11-06):**
+[Documentation run 42297131161](https://github.com/techrote/cybersand/actions/runs/42297131161)
+failed at the material-catalogue shadow-compatibility check, before the docs,
+provenance, M11 and retrieval steps were reached; native/Godot were skipped
+by the deliberate Draft workflow. This is an **actual negative result**, not a
+pass or a reason to bypass the guard. [Native source-scope advisory run
+42297131107](https://github.com/techrote/cybersand/actions/runs/42297131107)
+passed its report-only classification and does not qualify the native source.
+Subsequent documentation-only commits must be rechecked against their own
+exact head; do not substitute this earlier run as the latest-head gate.
+
+**Research-only extra observation:** the supplied stand-alone
+`pf_run_repair_model.cpp` compiled with GCC 14.2.0 in the limited authoring
+container and returned `OK model_only head_repair seed=0x406b624e7`,
+`edits=1218`, `planned_runs=894`, `dirty_row_recomputes=986`.
+This uses neither native CyberSand World nor the new candidate source.
+It is not native exactness or benchmark evidence.
 
 **STOP / handover:** Keep Draft and unmerged. On a native-enabled runner,
 execute the pinned baseline and candidate, produce smallest counterexamples
