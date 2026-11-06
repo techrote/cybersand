@@ -1,4 +1,7 @@
+
 # CyberSand
+
+<img width="1196" height="2644" alt="cybersand_material_tiles_preview" src="https://github.com/user-attachments/assets/f49ebc85-d2bc-4404-96f2-a4eac07b6deb" />
 
 Desktop opens the [combined feature launcher](docs/operations/physical-actor-programme.md): showcase maps, the Deepworks exhibition, actor/material sandboxes, sampled and physical Thunderbowl, Strata Theatre depth studies, generation authoring and the retained barrel/Ripper Blacksite comparison. F2 returns to the launcher and closes the current session.
 
