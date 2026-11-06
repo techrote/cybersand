@@ -1,0 +1,240 @@
+name: INV154 Acrobat uncapped pacing sweep
+
+on:
+  push:
+    branches: [perf/inv154-acrobat-uncapped-sweep-20261106]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: inv154-acrobat-uncapped-${{ github.sha }}
+  cancel-in-progress: false
+
+env:
+  GODOT_CPP_COMMIT: 101ae38034304346a46ea9ea84ae156d3e860496
+  LLVM_MINGW_URL: https://github.com/mstorsjo/llvm-mingw/releases/download/20260826/llvm-mingw-20260826-ucrt-ubuntu-22.04-x86_64.tar.xz
+  LLVM_MINGW_SHA256: cee8d2ce3da5145ce4dc882e70d0b0719a783d53a99752c60948fc0659975a65
+  GODOT_WINDOWS_URL: https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip
+  GODOT_WINDOWS_SHA512: 41645a908eb3181d6f2d1201ed7b6d6f095f6a23aaed8903d5d255277cc8d142814f3e6817f865b3cac142c39b8aff99280091d3bbdaa301517730b3ba0522b9
+  GODOT_VERSION: 4.7.stable.official.5b4e0cb0f
+
+jobs:
+  build-clock-runtime:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 75
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          lfs: false
+          persist-credentials: false
+
+      - name: Verify isolated source
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          git merge-base --is-ancestor 2f25b6bc4d351a6ae7149ce28dc9c8599404a9e8 HEAD
+          python3 tools/ci/check_ci_provider_policy.py
+          test "$(git diff --name-only 2f25b6bc4d351a6ae7149ce28dc9c8599404a9e8...HEAD | sort)" = "$(printf '%s\n' '.github/workflows/inv154-acrobat-uncapped-sweep-windows.yml' 'godot/tests/performance/inv154_acrobat_uncapped_sweep_windows.gd' | sort)"
+
+      - name: Install pinned SCons
+        run: |
+          python3 -m venv "$RUNNER_TEMP/scons"
+          "$RUNNER_TEMP/scons/bin/python" -m pip install --require-hashes -r tools/requirements-build.txt
+
+      - name: Check out exact godot-cpp
+        run: |
+          set -euo pipefail
+          mkdir "$RUNNER_TEMP/godot-cpp"
+          git -C "$RUNNER_TEMP/godot-cpp" init
+          git -C "$RUNNER_TEMP/godot-cpp" remote add origin https://github.com/godotengine/godot-cpp.git
+          timeout 10m git -C "$RUNNER_TEMP/godot-cpp" fetch --depth=1 origin "$GODOT_CPP_COMMIT"
+          git -C "$RUNNER_TEMP/godot-cpp" checkout --detach FETCH_HEAD
+          test "$(git -C "$RUNNER_TEMP/godot-cpp" rev-parse HEAD)" = "$GODOT_CPP_COMMIT"
+
+      - name: Prepare exact LLVM-MinGW
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 3 --output "$RUNNER_TEMP/llvm-mingw.tar.xz" "$LLVM_MINGW_URL"
+          echo "$LLVM_MINGW_SHA256  $RUNNER_TEMP/llvm-mingw.tar.xz" | sha256sum --check --strict
+          mkdir "$RUNNER_TEMP/llvm-mingw"
+          tar -xJf "$RUNNER_TEMP/llvm-mingw.tar.xz" -C "$RUNNER_TEMP/llvm-mingw" --strip-components=1
+          if test ! -e "$RUNNER_TEMP/llvm-mingw/bin/x86_64-w64-mingw32-gcc-ar"; then
+            ln -s llvm-ar "$RUNNER_TEMP/llvm-mingw/bin/x86_64-w64-mingw32-gcc-ar"
+          fi
+
+      - name: Build application-owned timing runtime
+        env:
+          GODOT_CPP_ROOT: ${{ runner.temp }}/godot-cpp
+          SCONS_PYTHON: ${{ runner.temp }}/scons/bin/python
+          SCONS_JOBS: "2"
+        run: |
+          set -euo pipefail
+          timeout 35m tools/build_pinned_godot_cpp.sh windows
+          REAL_CXX="$RUNNER_TEMP/llvm-mingw/bin/x86_64-w64-mingw32-g++"
+          printf '#!/usr/bin/env bash\nexec "%s" -DCYBERSAND_THREAD_CPU_CLOCK_TEST_HOOK=1 "$@"\n' "$REAL_CXX" > "$RUNNER_TEMP/thread-cpu-cxx"
+          chmod +x "$RUNNER_TEMP/thread-cpu-cxx"
+          git apply --check tools/ci/inv154_thread_cpu_clock_instrumentation.patch
+          git apply tools/ci/inv154_thread_cpu_clock_instrumentation.patch
+          WINDOWS_CXX="$RUNNER_TEMP/thread-cpu-cxx"             CYBERSAND_NATIVE_OUTPUT="$PWD/build/cybersand_native.windows.x86_64.dll"             timeout 20m tools/build_native_extension_windows.sh
+          git checkout -- godot/native_extension/register_types.cpp
+          git diff --exit-code -- godot/native_extension/register_types.cpp
+          sha256sum build/cybersand_native.windows.x86_64.dll > build/runtime.sha256
+
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: inv154-acrobat-clock-runtime-${{ github.run_id }}
+          path: |
+            build/cybersand_native.windows.x86_64.dll
+            build/runtime.sha256
+          retention-days: 1
+
+  sweep:
+    needs: build-clock-runtime
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - label: control-60fps-60hz
+            max_fps: 60
+            physics_hz: 60
+          - label: uncapped-60hz
+            max_fps: 0
+            physics_hz: 60
+          - label: uncapped-120hz
+            max_fps: 0
+            physics_hz: 120
+          - label: uncapped-240hz
+            max_fps: 0
+            physics_hz: 240
+    runs-on: windows-2022
+    timeout-minutes: 30
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Preserve byte-exact checkout
+        run: |
+          git config --global core.autocrlf false
+          git config --global core.eol lf
+
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          lfs: false
+          persist-credentials: false
+
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: inv154-acrobat-clock-runtime-${{ github.run_id }}
+          path: build/runtime
+
+      - name: Materialize Rapier and timing runtime
+        run: |
+          set -euo pipefail
+          (cd build/runtime && sha256sum --check --strict runtime.sha256)
+          git lfs install --local
+          git lfs pull --include="godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll" --exclude=""
+          cp build/runtime/cybersand_native.windows.x86_64.dll godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll
+
+      - name: Run ${{ matrix.label }}
+        env:
+          GODOT_SILENCE_ROOT_WARNING: '1'
+          PYTHONUTF8: '1'
+          CYBERSAND_INV154_MAX_FPS: ${{ matrix.max_fps }}
+          CYBERSAND_INV154_PHYSICS_HZ: ${{ matrix.physics_hz }}
+          SWEEP_LABEL: ${{ matrix.label }}
+        run: |
+          set -euo pipefail
+          OUT="build/sweep/${SWEEP_LABEL}"
+          mkdir -p "$OUT"
+          python - <<'PY'
+          import hashlib, json, os, statistics, subprocess, urllib.request, zipfile
+          from pathlib import Path
+
+          root=Path.cwd()
+          out=root/"build/sweep"/os.environ["SWEEP_LABEL"]
+          archive=out/"godot.zip"
+          urllib.request.urlretrieve(os.environ["GODOT_WINDOWS_URL"],archive)
+          if hashlib.sha512(archive.read_bytes()).hexdigest()!=os.environ["GODOT_WINDOWS_SHA512"]:
+              raise RuntimeError("Godot archive identity mismatch")
+          engine_dir=out/"engine"; engine_dir.mkdir()
+          with zipfile.ZipFile(archive) as z:
+              for member in ("Godot_v4.7-stable_win64.exe","Godot_v4.7-stable_win64_console.exe"):
+                  z.extract(member,engine_dir)
+          archive.unlink()
+          engine=engine_dir/"Godot_v4.7-stable_win64_console.exe"
+          if subprocess.check_output([str(engine),"--version"],text=True,timeout=30).strip()!=os.environ["GODOT_VERSION"]:
+              raise RuntimeError("Godot version mismatch")
+
+          env={**os.environ,"CYBERSAND_PHASE_OUTPUT":str(out.resolve())}
+          imp=subprocess.run([str(engine),"--headless","--editor","--path","godot","--import"],
+              stdout=subprocess.PIPE,stderr=subprocess.STDOUT,text=True,timeout=150,env=env)
+          (out/"import.log").write_text(imp.stdout,encoding="utf-8")
+          if imp.returncode: raise RuntimeError("import failed")
+
+          argv=[str(engine),"--rendering-driver","opengl3_angle","--path","godot",
+                "--script","res://tests/performance/inv154_acrobat_uncapped_sweep_windows.gd"]
+          run=subprocess.run(argv,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,text=True,timeout=745,env=env)
+          (out/"godot.log").write_text(run.stdout,encoding="utf-8")
+          markers=[l.split("INV154_THREAD_CPU ",1)[1] for l in run.stdout.splitlines() if l.startswith("INV154_THREAD_CPU ")]
+          if run.returncode or len(markers)!=1:
+              print(run.stdout[-12000:])
+              raise RuntimeError("sweep fixture failed")
+          record=json.loads(markers[0])
+          raw=json.loads((out/"physics-thread-cpu.json").read_text(encoding="utf-8"))
+          phases=("baseline_a","timed_a","timed_b","baseline_b")
+          timed=[r for r in raw["physics_rows"] if r.get("phase") in ("timed_a","timed_b") and int(r.get("bridge_step_delta",0))==1]
+          step_ms=[int(r["bridge_step_usec"])/1000.0 for r in timed if int(r.get("bridge_step_usec",-1))>=0]
+          bridge_ms=[int(r["wrapper_usec"]["rapier_step"])/1000.0 for r in timed if "rapier_step" in r.get("wrapper_usec",{})]
+          cpu_ms=[int(r["bridge_thread_cpu_100ns"])/10000.0 for r in timed if int(r.get("bridge_thread_cpu_100ns",-1))>=0]
+          def q(vals,p):
+              if not vals: return None
+              vals=sorted(vals); return vals[round((len(vals)-1)*p)]
+          achieved=statistics.median(float(record[p]["rapier_steps_per_second"]) for p in phases)
+          native=statistics.median(float(record[p]["native_ticks_per_second"]) for p in phases)
+          render_rates=[]
+          for p in phases:
+              rows=[r for r in raw["process_rows"] if r.get("phase")==p]
+              if len(rows)>=2:
+                  elapsed=(int(rows[-1]["end_usec"])-int(rows[0]["start_usec"]))/1_000_000
+                  if elapsed>0: render_rates.append(len(rows)/elapsed)
+          arm_cpu=[float(record["arm_thread_cpu"][p]["thread_cpu_fraction"]) for p in phases]
+          summary={
+              "label":os.environ["SWEEP_LABEL"],
+              "requested_max_fps":int(os.environ["CYBERSAND_INV154_MAX_FPS"]),
+              "requested_physics_hz":int(os.environ["CYBERSAND_INV154_PHYSICS_HZ"]),
+              "achieved_rapier_steps_per_second_median":achieved,
+              "native_ticks_per_second_median":native,
+              "render_process_callbacks_per_second_median":statistics.median(render_rates) if render_rates else None,
+              "main_thread_cpu_fraction_arm_median":statistics.median(arm_cpu),
+              "timed_step_count":len(step_ms),
+              "space_step_p50_ms":q(step_ms,.50),
+              "space_step_p95_ms":q(step_ms,.95),
+              "space_step_p99_ms":q(step_ms,.99),
+              "space_step_max_ms":max(step_ms) if step_ms else None,
+              "space_step_over_40ms":sum(x>40 for x in step_ms),
+              "space_step_total_ms":sum(step_ms),
+              "bridge_total_ms":sum(bridge_ms),
+              "per_call_thread_cpu_total_ms":sum(cpu_ms),
+              "cpu_clock_resolution_ms":float(record["thread_cpu_clock_controls"]["observed_resolution_100ns"])/10000.0,
+              "assertions":record["assertions"],"failures":record["failures"],
+          }
+          (out/"sweep-summary.json").write_text(json.dumps(summary,indent=2)+"\n",encoding="utf-8")
+          print("INV154_SWEEP_RESULT "+json.dumps(summary,sort_keys=True))
+          PY
+
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: inv154-acrobat-sweep-${{ matrix.label }}-${{ github.run_id }}
+          path: build/sweep/${{ matrix.label }}/
+          retention-days: 7
