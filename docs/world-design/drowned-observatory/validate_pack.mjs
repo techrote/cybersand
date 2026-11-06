@@ -61,7 +61,21 @@ function validatePack(p,c,h){
   check(pattern.sequence.length>=2&&pattern.spacing.length===pattern.sequence.length-1,"pattern spacing");
   for(const f of pattern.sequence)check(seen.has(f),"unknown pattern module "+f);
  }
- return {features:seen.size,rectangles:total,materials:mats.size,variants:p.features.reduce((a,f)=>a+f.variants.length,0),dry_scene_placements:placed.size,patterns:scene.patterns.length};
+ const artLayers=["backdrop_rectangles","foreground_rectangles"];
+ let artRectangles=0;
+ for(const key of artLayers){
+  const stamps=scene[key];check(Array.isArray(stamps)&&stamps.length>0,"missing authored "+key);
+  for(const r of stamps){
+   check(Array.isArray(r)&&r.length===5&&r.every(Number.isInteger),"invalid authored stamp in "+key);
+   const [x,y,w,h,id]=r;
+   check(x>=0&&y>=0&&w>0&&h>0&&x+w<=scene.size[0]&&y+h<=scene.size[1],"authored stamp bounds "+key);
+   const mat=mats.get(id);
+   check(mat&&!mat.movable&&mat.kernel===0,"active or unknown authored stamp "+key+" material "+id);
+   artRectangles++;
+  }
+ }
+
+ return {features:seen.size,rectangles:total,materials:mats.size,variants:p.features.reduce((a,f)=>a+f.variants.length,0),dry_scene_placements:placed.size,patterns:scene.patterns.length,scene_art_rectangles:artRectangles};
 }
 const directory=dirname(fileURLToPath(import.meta.url));
 const p=JSON.parse(readFileSync(join(directory,"pack.json"),"utf8"));
@@ -83,7 +97,10 @@ if(process.argv.includes("--negative")){
  p=>p.combined_scene.placements[0].origin[0]=-2,
  p=>p.combined_scene.placements[0].anchor_world[1]=-1,
  p=>p.combined_scene.placements[6].variant=null,
- p=>p.combined_scene.patterns[0].sequence[0]="unknown"
+ p=>p.combined_scene.patterns[0].sequence[0]="unknown",
+ p=>p.combined_scene.backdrop_rectangles[0][0]=-1,
+ p=>p.combined_scene.backdrop_rectangles[0][4]=3,
+ p=>p.combined_scene.foreground_rectangles[0][2]=5000
  ];
  let denied=0;
  for(const change of mutations){const damaged=JSON.parse(JSON.stringify(p));change(damaged);try{validatePack(damaged,c,h)}catch{denied++}}
