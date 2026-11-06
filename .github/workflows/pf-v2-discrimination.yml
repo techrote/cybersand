@@ -1,8 +1,8 @@
 name: PF-V2 current-main named-canvas discrimination
 
+# Evidence campaign complete; preserve exact manual reproduction without rerunning
+# the expensive named-scene profile on documentation-only descendants.
 on:
-  push:
-    branches: [sol/pf-v2-discrimination-20261106]
   workflow_dispatch:
 
 permissions:
