@@ -81,6 +81,7 @@ def main() -> int:
         pack = E / "fixtures" / "pack.json"
         write(pack, fixture)
         target = E / "adversarial" / "namespace-live-owner"
+        target.parent.mkdir(parents=True, exist_ok=True)
         claim = Path(str(target) + ".world-capture-claim")
         host_name = os.environ.get("HOSTNAME") or subprocess.check_output(["hostname"], text=True).strip()
         host_namespace = os.readlink("/proc/self/ns/pid")
