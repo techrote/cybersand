@@ -123,8 +123,11 @@ static func inspect(pack: Variant) -> Dictionary:
 		return _failure("top-level pack must be an object")
 	if not pack.has("schema_id") or typeof(pack["schema_id"]) != TYPE_STRING or pack["schema_id"] != SCHEMA_ID:
 		return _failure("unsupported schema_id: expected " + SCHEMA_ID)
-	if not pack.has("schema_version") or typeof(pack["schema_version"]) != TYPE_INT or pack["schema_version"] != SCHEMA_VERSION:
-		return _failure("unsupported schema_version: expected integer 1")
+	# Godot JSON parses numeric tokens as FLOAT (including literal 1). Both the
+	# directly supplied integer and parsed numeric 1.0 identify this v1 schema.
+	# Strings, booleans, nonfinite values, fractions and unknown versions fail.
+	if not pack.has("schema_version") or not _integer(pack["schema_version"]) or int(pack["schema_version"]) != SCHEMA_VERSION:
+		return _failure("unsupported schema_version: expected numeric 1")
 	var has_scene: bool = pack.has("scene")
 	var has_combined: bool = pack.has("combined_scene")
 	if has_scene == has_combined:
