@@ -21,7 +21,7 @@ func _expect(value: bool, message: String) -> void:
 
 
 func _fixture() -> Dictionary:
-	return {"schema_id": "cybersand.world-feature-pack.proposal",
+	return {"schema_id": "cybersand.world-feature-pack.proposal", "schema_version": 1,
 		"features": [
 			{"id": "a", "size": [4, 3], "rectangles": [
 				[0, 0, 4, 3, 1], [1, 1, 2, 1, 77],
@@ -169,5 +169,56 @@ func _run() -> void:
 	mutation = pack.duplicate(true)
 	mutation.combined_scene = {}
 	_reject(mutation, "exactly one")
+
+	# Strict v1 identity: unknown formats must never be rendered as known cells.
+	mutation = pack.duplicate(true)
+	mutation.erase("schema_id")
+	_reject(mutation, "schema_id")
+	mutation = pack.duplicate(true)
+	mutation.schema_id = "cybersand.world-feature-pack.next"
+	_reject(mutation, "schema_id")
+	mutation = pack.duplicate(true)
+	mutation.schema_id = 1
+	_reject(mutation, "schema_id")
+	mutation = pack.duplicate(true)
+	mutation.erase("schema_version")
+	_reject(mutation, "schema_version")
+	mutation = pack.duplicate(true)
+	mutation.schema_version = 999
+	_reject(mutation, "schema_version")
+	mutation = pack.duplicate(true)
+	mutation.schema_version = 1.0
+	_reject(mutation, "schema_version")
+	mutation = pack.duplicate(true)
+	mutation.schema_version = "1"
+	_reject(mutation, "schema_version")
+	mutation = pack.duplicate(true)
+	mutation.scene.placements[0].origin = [2, 1]
+	_reject(mutation, "contradicts")
+	mutation = combined.duplicate(true)
+	mutation.combined_scene.placements[0].x = 1300
+	_reject(mutation, "contradicts")
+	# Pure pre-allocation admission tests: never construct the huge RG8/PNG.
+	var valid_budget: Dictionary = Adapter.capture_resource_budget(parsed, 2, 512, "both", 256)
+	_expect(valid_budget.ok, "valid small both-mode capture fits bounded memory")
+	var wide_info: Dictionary = Adapter.inspect(combined)
+	_expect(wide_info.ok and Adapter.capture_resource_budget(wide_info, 2, 512, "both", 256).ok,
+		"wide source >1024 cells remains capture-admissible")
+	var huge_info: Dictionary = {"ok": true, "size": Vector2i(4096, 4096),
+		"features": {}, "placements": []}
+	var boundary: Dictionary = Adapter.capture_resource_budget(huge_info, 1, 64, "combined", 1024)
+	_expect(boundary.ok and boundary.largest_output_pixels == Adapter.MAX_OUTPUT_PIXELS,
+		"16,777,216 output pixels at scale 1 are an explicit budget boundary")
+	var excessive: Dictionary = Adapter.capture_resource_budget(huge_info, 8, 64, "combined", 1024)
+	_expect(not excessive.ok and "area" in excessive.error, 
+		"4096x4096 scale 8 rejected before any 3GiB image allocation")
+	var just_over: Dictionary = {"ok": true, "size": Vector2i(4097, 4096),
+		"features": {}, "placements": []}
+	_expect(not Adapter.capture_resource_budget(just_over, 1, 64, "combined", 1024).ok,
+		"strict native-area boundary")
+	_expect(not Adapter.capture_resource_budget(parsed, 9, 512, "combined", 256).ok,
+		"resource budget rejects excessive scale")
+	_expect(not Adapter.capture_resource_budget(parsed, 2, 512, "both", 8).ok,
+		"resource budget rejects unsafe configuration")
 	print("WORLD_PACK_ADAPTER assertions=%d failures=%d" % [assertions, failures])
 	quit(1 if failures > 0 else 0)
