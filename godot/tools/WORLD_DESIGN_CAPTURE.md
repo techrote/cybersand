@@ -3,6 +3,45 @@
 **Status:** Experimental tooling; the original #457 and dependent Draft repair #462 are NOT production-admitted. Source parent: `tools/world-design-godot-capture-20261105` / `cff6c7f947147a250e5a5c3bb9d46b0df39b376c`, based on main `06522e300dcf91efbab0ac8f4f4370af72cf2029`. The original #454 oracle is pinned to `f68516b7e4faefb8c776a89169365a7e8dd55d37`; the repair's current read-only design snapshot is `e0da52a1d477606ac3ca737a9da2c9022cee4253`. Neither the design schema/art nor production renderer is changed.
 
 
+## Successor R1-D namespace and archive correction (6 November 2026)
+
+The #469 schema-2 implementation is retained as a historical checkpoint, not
+independent acceptance. This separate successor uses **schema 3** for new
+claims. On Linux, the publishing owner records its host identity, PID,
+`/proc/self/ns/pid` namespace identity and system boot ID. Recovery requires
+an exact token and matching host/output/namespace/boot identities before an
+errno-preserving `kill(pid, 0)` probe. `ESRCH` is dead only in that proven
+same PID namespace; success or `EPERM` is alive; command failure or any
+other errno is unknown and refuses recovery. A recycled live PID is
+conservatively considered alive. Linux recovery requires `python3` as a
+small syscall adapter; absence of that executable fails closed. Schema-1 and
+schema-2 transactions cannot be automatically recovered by this successor.
+
+Both recovery and release reserve an attempt-addressed archive **directory**
+using an exclusive directory creation before moving the original claim into
+its `claim/` child. A collision with the public archive name refuses the
+operation without replacing a pre-existing object; recovery preserves the
+fixed claim, and release returns nonzero without invalidating an already
+committed root manifest. The final child move is itself an OS no-replace operation: Linux uses
+`renameat2(RENAME_NOREPLACE)` and Windows uses the non-overwriting
+`os.rename` platform behavior, invoked through Python. Even an independently
+inserted child object inside a reserved container cannot be overwritten.
+Python 3 is required on both platforms for archive operations; if unavailable,
+the claim is retained and publication reports a failure rather than falling
+back to a replacing rename. The release archive is best-effort cleaned after
+claim relinquishment.
+
+`--test-pause-before-archive-ms=N` and
+`--test-pause-archive-phase=recovery|release` require
+`CYBERSAND_CAPTURE_FAULT_INJECTION=1`. The successor's
+`godot/tests/world_design_capture_r1d_probe.py` supplies actual-process
+archive collision and concurrent-recoverer fixtures. Its synthetic namespace
+identity mismatch is a *fail-closed negative fixture*, not evidence of
+successful restricted procfs mounting; real hidepid/PID-namespace visibility
+qualification remains separate. No distributed/shared-filesystem lease is
+claimed. Historical #468 negative controls and #469 qualification apply only
+to their own source heads.
+
 ## Dependent corrective Draft PR #462 — capture protocol and admission (6 November 2026)
 
 This section describes the **repair implementation**, not permission to merge or a
@@ -237,7 +276,7 @@ For `--mode=both`:
 - `capture-status.json` and `WORLD_DESIGN_CAPTURE` structured log line:
   exit status 0 success; 2 malformed inputs/schema; 3 unavailable graphical
   renderer or shader/LUT; 4 failed framebuffer/readback; 5 I/O failure.
-  An earlier complete manifest is invalidated before the next capture.
+  The previous committed root manifest remains authoritative throughout the next capture until a new complete root manifest is atomically committed; staging never invalidates the prior committed generation.
 
 Use distinct output directories for separate packs and compare their
 manifests. Bulk captured PNG/byte products belong in downloadable
