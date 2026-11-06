@@ -117,7 +117,7 @@ def main() -> int:
                 # Docker deliberately uses the *same* hostname string and
                 # *identical absolute paths* to exclude lexical alias rejection.
                 docker_prefix = [
-                    "docker", "run", "--rm", "--pid=private",
+                    "docker", "run", "--rm",
                     "--hostname", host_name, "-e", "HOSTNAME=" + host_name,
                     "-e", "CYBERSAND_CAPTURE_FAULT_INJECTION=1",
                     "--user", str(os.getuid()) + ":" + str(os.getgid()),
