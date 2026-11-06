@@ -32,12 +32,12 @@ const renderSVG=function renderSVG(p){
   items.push(`<text x="${x+17}" y="${y+315}" fill="#718998" font-family="monospace" font-size="12">${esc(f.role.slice(0,43))}</text>`);
  }
  items.push(`<text x="55" y="1744" fill="#a9c0d0" font-family="monospace" font-size="17" font-weight="700">SOURCE-CELL DETAIL STUDIES / 1.8x / NO SHADERS</text>`);
- for(const [i,ox,oy,title]of [[0,523,40,"LOWER CHOIR / BROKEN DIELECTRIC CORONA"],[1,986,120,"UPPER TRANSEPT / OXIDISED OBSERVATORY"]]){
+ for(const [i,ox,oy,title]of [[0,384,34,"FLAGSHIP / NULL CANTOR REGISTER"],[1,784,83,"FLAGSHIP / SEVERED EASTERN CHOIR"]]){
  const x=54+i*704,y=1770,cid="detail-"+i;
  items.push(`<rect x="${x}" y="${y}" width="688" height="288" rx="10" fill="#0a1019" stroke="#344355"/>`);
  items.push(`<text x="${x+16}" y="${y+25}" fill="#b7c9d3" font-family="monospace" font-size="13">${title}</text>`);
  items.push(`<defs><clipPath id="${cid}"><rect x="${x+13}" y="${y+37}" width="662" height="233"/></clipPath></defs>`);
- items.push(`<g clip-path="url(#${cid})"><g transform="translate(${x+13},${y+37}) scale(1.8) translate(${-ox},${-oy})">${scenePaint(p.alternate_scene)}</g></g>`);
+ items.push(`<g clip-path="url(#${cid})"><g transform="translate(${x+13},${y+37}) scale(1.8) translate(${-ox},${-oy})">${scenePaint(p.combined_scene)}</g></g>`);
  }
  items.push(`<text x="55" y="2092" fill="#a9c0d0" font-family="monospace" font-size="17" font-weight="700">SIX BURIED REGISTERS / STRUCTURAL DETAIL / 2.1x / FLAT MATERIAL COLOURS</text>`);
  for(const [i,ox,oy,title] of [[0,33,267,"WEST / BUS, RECTIFIER, BROKEN WINDING"],[1,565,259,"CENTRE / SEVERED RETURN SPAN"],[2,1125,264,"EAST / RECORDER AND TERMINAL COFFINS"]]){
