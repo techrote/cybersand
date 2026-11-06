@@ -4,11 +4,79 @@ status: Current
 document-kind: guide
 scope: Pinned source build entry points, Windows workspace wrappers, platform boundaries and freshness limits
 canonical-for: [build-entry-points, dependency-pins, build-freshness]
-last-reviewed: 2026-10-31
+last-reviewed: 2026-11-06
 related-documents: [source-checkpoint-and-recovery.md, testing-validation-and-replay.md, web-threading.md, deepworks-exhibition.md, ../systems/depth-layers-and-parallax.md]
 ---
 
 # Local build and validation
+
+## SOL stage and mass-readiness qualification — 2026-11-06
+
+On the isolated393-dependent branch, use fresh names with
+`python tools/sol281/structure_cut.py hosts --run <new> --suite packed --stage-trace`
+and `--suite dry`. Four stage states distinguish ordinary correction/clipping,
+Sand and backend changes. The existing source-pinned `runtimes-001` receipt is
+required; native/build inputs must still match. The stage observer changes
+asynchronous timing and is not a bit-identical replay of earlier trajectories.
+
+`--suite mass-init` runs the original isolated12-case-per-host initialization
+oracle. `--suite mass-fix --stage-trace` runs the expanded32-case-per-host oracle
+plus the full fresh dry/packed native-cut matrix in one authenticated project per
+host. The latter compacts redundant cumulative frame dictionaries while retaining
+state/input/response values, deltas and final all-attempt metrics. Warm stepping
+exists only as a zero-G backend control, never in native handoff.
+
+Use `reduce_structure_stages.py --runs <run> --summary-only --output <new-json>`,
+`reduce_mass_initialization.py --run <run> --output <new-json>`,
+`test_structure_stages.py` and `test_stage_admission.py <raw-physical-report>`
+from `tools/sol281` via Python. Existing directories/output files refuse overwrite.
+See the [complete source/platform ledger](../audits/2026-11-06-sol-stage-and-mass-readiness.md)
+for actual host hashes, cached-readback limitations, null-guard syntax-only scope,
+resource cap and unchanged physical/integration failures. No new native/compiler
+execution is implied when exact earlier native inputs are reused.
+
+## Actual structural cut qualification — 2026-11-06
+
+On the isolated #393-dependent branch, first commit a clean source and run
+`python tools/sol281/structure_cut.py build --run runtimes-001` into a new output
+folder. Authenticated actual Windows/Linux host engines, SDK/generated headers,
+compilers and Rapier artifacts must exist. Then run
+`python tools/sol281/structure_cut.py hosts --run <new-dry> --suite dry` and the
+same command with `--run <new-packed> --suite packed`. Each matrix uses fresh
+World/Rapier sessions, actual native cuts, both hosts and workers1/4. Existing
+folders refuse overwrite. Original material/physics sources and registration
+must match the runner's source pins; this is not a generic main command.
+
+Run `python tools/sol281/reduce_structure_cut.py --runs <dry> <packed> --output <new-json>`
+and `python tools/sol281/test_structure_reducer.py`. The independent reducer
+rejects incomplete/duplicate coordinates and wrong handoff receipts, checks full
+ownership/tuples/proxy M/COM/I and clips actual server shapes independently.
+It preserves the1e-9 hard witness filter. Dry720 last120 is registered; packed360
+last120 is descriptive. Paused Sand endpoints are not synchronized clearance.
+`structure_energy_replay.py --run <new>` is the retrospective baseline diagnosis:
+its control path must still be baseline, not silently changed to the repair.
+
+The [dossier and receipts](../audits/2026-11-06-sol-structural-cut-behaviour.md)
+separate actual Windows LLVM-MinGW extension, native Windows MSVC, actual WSL
+GCC optimized/strictASanUBSan, pure math and real Rapier. They retain failed
+apparatus attempts and unknowns. Observer timings do not qualify original24-group/
+three-repeat CPU≤2ms, and runtime success does not accept frozen material guards.
+
+## Isolated SOL planner precision — 2026-11-05
+
+On the dependent candidate, run `python tools/sol281/energy_precision.py --run <new-name>`,
+then `python tools/sol281/reduce_energy_precision.py build/sol-energy/<new-name>`.
+`python tools/sol281/test_energy_reducer.py <raw-results.json>` checks adversarial
+report admission. The pure project loads neither native World nor Rapier.
+`python tools/sol281/energy_rapier_regressions.py --run <new-name>` separately
+authenticates Rapier and unchanged response fixtures. The explicit
+`--runtime-after-import-failure` option attempts runtime tests while retaining
+every failed import and a failing overall exit. Existing run directories refuse
+overwrite. Host paths are declared in the runner; actual executable hashes and
+version must match the retained pins. These are scoped script/runtime checks,
+separate from native optimized/sanitized and original full SOL CPU gates.
+Read the [dated qualification](../audits/2026-11-05-sol-energy-precision.md)
+for the Windows import failure and source/admission limitations.
 
 ## Structural detachment qualification — 2026-11-01
 

@@ -1,0 +1,7 @@
+{
+  "registration":"SOL-STRUCTURE-CUT-001-APPARATUS-003",
+  "date":"2026-11-06",
+  "retained_failure":"dry001 first Windows tree capture stopped after runtime Dictionary missing native_source_members in immediate commit receipt. No completed trajectory/report; outer process and its actual child processes terminated, raw log and PID custody retained. Not a physical failure or pass.",
+  "correction":"Commit receipt checks aggregate_owned only. Obtain the full native_source_members=0 and aggregate_owned census through existing owner-thread inspect after activation, which actually supplies that field. No fabricated fallback zero.",
+  "scope":"Observation-only fix. All native/Godot production bytes, mass model, physics values, recipe, schedule, thresholds and historical negatives unchanged. Next run is bounded Windows/w1 tree+building qualification before complete matrix."
+}

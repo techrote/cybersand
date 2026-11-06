@@ -4,11 +4,57 @@ status: Current
 document-kind: reference
 scope: Current implementation map, unresolved correctness and policy decisions, and bounded next checkpoints
 canonical-for: [implementation-status, foundational-priorities, open-decisions]
-last-reviewed: 2026-11-04
+last-reviewed: 2026-11-06
 related-documents: [validation-evidence.md, invariants.md, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/development-claims-remediation-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../operations/github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
 # Status and foundational roadmap
+
+## SOL backend initialization repair — 2026-11-06
+
+**Current isolated candidate:** a reproduced first-impulse loss is repaired by
+AUTO COM before explicit native M/I, with actual-COM proxy velocities. Cached
+readback alone had not proved effective mass readiness. The [source-bound result](../audits/2026-11-06-sol-stage-and-mass-readiness.md)
+qualifies64 backend cases and24 new native-cut episodes on both hosts/workers.
+Dry rest remains passing; every packed case still moves and strict clearance
+remains unaccepted. No weight calibration, force retuning or new solver is claimed.
+
+**Planned:** pure-value comparison of current versus gravity/damping-predicted
+planner inputs on retained actual structural contacts, before any separately
+registered live order/load-aware candidate. Keep material/authority/runtime/CPU
+and#365 blockers; no owner-primary LA default promotion or #394 composition.
+
+## Actual structural SOL progression — 2026-11-06
+
+**Current isolated Draft:** actual cut tree/building ownership and unit-cell mass/
+inertia are qualified; baseline/repaired dry settling pass. The [source-bound
+result](../audits/2026-11-06-sol-structural-cut-behaviour.md) fixes a reproduced
+float32 energy-norm defect, with2,826 actual repaired Sand responses passing
+scalar64 backend passivity audit. All32 packed late windows retain motion;
+strict clearance and original acceptance remain NO-GO. Physical relative Sand/
+object weight is not calibrated from catalogue density ranks.
+
+**Planned next:** deterministic structural publication/load diagnosis, separate
+ordinary capped response/correction/Sand support accounting and retained-refusal
+traces; establish physical mass units before force tuning. A new recovery law
+requires prospective work/energy registration and needed E1/E2 admission.
+LA-SELECTIVE owner-primary intent remains conditional; this source has no matched
+LA arm or #394 material/World composition. Keep all dependent PRs Draft and #365
+blocked. No flyer surrogate, quiet endpoint or safe refusal accepts original SOL.
+
+## SOL numerical repair and remaining physics — 2026-11-05
+
+**Current dependent candidate:** scalar64 planner energy corrects both false
+refusal and false acceptance caused by the old binary32 vector norm. The
+[registered comparison](../audits/2026-11-05-sol-energy-precision.md) preserves
+impulses, four sweeps, limits and genuine refusals; planner timing is mixed,
+with no engine-wide speedup claim. Source-native MAT admission, complete live
+capture/hold/application and genuine granular yielding remain separate blockers.
+Actual small-fixture Rapier regression success does not prove original SOL
+clearance. Preserve 84/84 clearance failures, 64/84 depth failures, 36/36 async
+final overlaps, 1,452/1,452 corridor refusals, original CPU failures and #365's
+block. Keep this branch and #347/#393/#386 Draft; inspect the exact-source ledger
+before any later composition or promotion decision.
 
 ## SOL facade repair, separate from physical admission — 2026-11-04
 

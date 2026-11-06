@@ -1,0 +1,187 @@
+{
+  "date": "2026-11-06",
+  "branch": "codex/sol-structure-cut-20261106",
+  "code_checkpoint": "1733f75011087a78c2f62d517480d833c2a26887",
+  "tree": "7b96105234c683fb36a940e5a140f705ed395e52",
+  "parent_checkpoint": "4ee0e59181f622f875bef80e4b20ae4f0bde60c7",
+  "dependent_base": "e4c2649e82d943554f4dc6a0634336770cda08f6",
+  "raw_delta": {
+    "path": "C:\\Users\\_\\.codex\\worktrees\\sol-structure-cut-20261106\\khybersand\\build\\sol-structure-cut\\stage-dependent.patch",
+    "sha256": "f4228c76f054bc68aa8b35e3e561e2203b43325dd2362199f20c414087bf1ef7"
+  },
+  "reduced_artifact": {
+    "path": "C:\\Users\\_\\.codex\\worktrees\\sol-structure-cut-20261106\\khybersand\\build\\sol-structure-cut\\stages-complete-reduced-001.json",
+    "sha256": "1df3a54031191826e04e5c314e3d9d9c4f0f658a207be69ee7df01e55454b16c",
+    "bytes": 36801751
+  },
+  "command_scope": "Both physical runners retain every command/exit/log/hash/source/runtime/dependency. Reducer/manual inspections additionally remain in tool transcript; no fabricated raw log for an unsaved inspection.",
+  "custody": "Original raw artifacts unchanged; published text copies use Git LF normalization with separate git_lf_sha256 hashes. Session key is run/host/coordinate; body RID/token are process/session local, not globally unique authority.",
+  "physical_requalification": "Native inputs unchanged and existing exact build receipts verified by both runners. Actual Linux/Windows1/4worker execution. No new native/compiler/sanitizer matrix rerun for a GDScript no-op observer; prior native scopes retained.",
+  "scope": "24fresh episodes/11520steps; ordinary/Sand/backend attribution, not a matched counterfactual, material weight calibration, closed total-energy ledger, originalSOLclearance, or CPUgate.",
+  "independent_review": "Read-only source and accounting reviews GO for scoped diagnosis. Separate independent adversarial review remains required before owner promotion.",
+  "resource": {
+    "structure_bytes": 3838567411,
+    "free": 19520700416
+  },
+  "publication": "Owned branch only; any PR must remain Draft against393. Earlier automatic Draftcreation rejection retained; no publication-policy bypass or upstream write.",
+  "inventory": {
+    "comparison.json": {
+      "raw_copy_sha256": "f0cd3b161225093ba368190e08d86ffe52c8c3c06fc9a4a7408882edc0a72e57",
+      "git_lf_sha256": "f0cd3b161225093ba368190e08d86ffe52c8c3c06fc9a4a7408882edc0a72e57",
+      "bytes": 181271
+    },
+    "fixtures.json": {
+      "raw_copy_sha256": "a2a4871ff0db4badd71c8b6239a85ae03c997281bb7b819dbef8517280e97795",
+      "git_lf_sha256": "a2a4871ff0db4badd71c8b6239a85ae03c997281bb7b819dbef8517280e97795",
+      "bytes": 275023
+    },
+    "mass-fix-comparison.json": {
+      "raw_copy_sha256": "e6213f600df3a1836798042f8cd70abb84822618a5ef2b55437f871659efdeaa",
+      "git_lf_sha256": "b13b0ff425d46823b2917507a792e4d0431d65734a1d11aa3ee293d7743a3109",
+      "bytes": 186054
+    },
+    "mass-fix-oracle.json": {
+      "raw_copy_sha256": "6292c5daed5b19b76aa077ff41fd8f68805800e289c932fb0d38b9fdfa3ec8c9",
+      "git_lf_sha256": "6292c5daed5b19b76aa077ff41fd8f68805800e289c932fb0d38b9fdfa3ec8c9",
+      "bytes": 83908
+    },
+    "stage-cycle-witness.json": {
+      "raw_copy_sha256": "74a7cd1642a6fdc5fa9f2819f30140818b03ac3f3fcd25e9aff8f64a01979253",
+      "git_lf_sha256": "20b84bd041ec244c36341e08fe65e48f3d2183fd8f367b529e587caf278100fa",
+      "bytes": 3844
+    },
+    "stage-reducer-crosshost.json": {
+      "raw_copy_sha256": "b84c1ad448b0732b8cce8f06ddd29bae47e829f7fe938e28283788658f12d2e9",
+      "git_lf_sha256": "20c222ee358fff5906b1c5db609fe22e325c6135b774f8013a9a1f911cc16473",
+      "bytes": 668
+    },
+    "stage-reduction-first-failure.json": {
+      "raw_copy_sha256": "79ded19451f37e2c7f2c44b2adee2b9825b9fcbd41aa0f6aaaa35f1b9b06327e",
+      "git_lf_sha256": "1bf86846bf6f3526086e1fd33f0d3603f5ea203a4de65ac2af50afd8e9e02c05",
+      "bytes": 2360
+    },
+    "step-ledgers.json": {
+      "raw_copy_sha256": "0981054a9e62b5f3da01dd6cb36b6b974d2413aea114355ea49e51900757ec3c",
+      "git_lf_sha256": "0981054a9e62b5f3da01dd6cb36b6b974d2413aea114355ea49e51900757ec3c",
+      "bytes": 10413205
+    },
+    "validation.json": {
+      "raw_copy_sha256": "d8c8c175df2469d90c849fe673d751d677098c7f76161a4832e9de8e7259d9aa",
+      "git_lf_sha256": "d8c8c175df2469d90c849fe673d751d677098c7f76161a4832e9de8e7259d9aa",
+      "bytes": 6100
+    },
+    "mass-fix-001/linux-oracle.json": {
+      "raw_copy_sha256": "60e3b42e6370f4838d7b3dd6db40e90d56f21feb301a8bcb81a37ac19a57d290",
+      "git_lf_sha256": "60e3b42e6370f4838d7b3dd6db40e90d56f21feb301a8bcb81a37ac19a57d290",
+      "bytes": 66091
+    },
+    "mass-fix-001/receipt.json": {
+      "raw_copy_sha256": "0a9cec76ab38fac7f6ccdad7ab0a1a74bb893f4b60d0272b607820ba0e40f905",
+      "git_lf_sha256": "0a9cec76ab38fac7f6ccdad7ab0a1a74bb893f4b60d0272b607820ba0e40f905",
+      "bytes": 374934
+    },
+    "mass-fix-001/windows-oracle.json": {
+      "raw_copy_sha256": "1a39fc67c18ce52d8e207e120c3d016fe2798700c484155b7824c8c934956529",
+      "git_lf_sha256": "1a39fc67c18ce52d8e207e120c3d016fe2798700c484155b7824c8c934956529",
+      "bytes": 66093
+    },
+    "mass-guard-parse-001/receipt.json": {
+      "raw_copy_sha256": "a62e62c221840b6289bfc88e80d7c85cff40ee70833fdefe6c64343e76bf587f",
+      "git_lf_sha256": "a62e62c221840b6289bfc88e80d7c85cff40ee70833fdefe6c64343e76bf587f",
+      "bytes": 2029
+    },
+    "mass-init-001/linux-oracle.json": {
+      "raw_copy_sha256": "99a240adb2daf5ed153b097d28004c7c363aa6eaae36b7876bc60b9eb0379616",
+      "git_lf_sha256": "99a240adb2daf5ed153b097d28004c7c363aa6eaae36b7876bc60b9eb0379616",
+      "bytes": 24363
+    },
+    "mass-init-001/receipt.json": {
+      "raw_copy_sha256": "a1175764de9df2ad6d2388b35988d473e6f511f9eabfe361086bc579ca630da4",
+      "git_lf_sha256": "a1175764de9df2ad6d2388b35988d473e6f511f9eabfe361086bc579ca630da4",
+      "bytes": 339217
+    },
+    "mass-init-001/windows-oracle.json": {
+      "raw_copy_sha256": "ba90938e98a5c5557b2e19847679cfa4ede98adca04e26e5003f4736be56b0a0",
+      "git_lf_sha256": "ba90938e98a5c5557b2e19847679cfa4ede98adca04e26e5003f4736be56b0a0",
+      "bytes": 24365
+    },
+    "stages-dry-001/receipt.json": {
+      "raw_copy_sha256": "6edcf0d8dc4296b16e032db102fbf8ca8d2603c5d57180676fde79018382b168",
+      "git_lf_sha256": "6edcf0d8dc4296b16e032db102fbf8ca8d2603c5d57180676fde79018382b168",
+      "bytes": 347695
+    },
+    "stages-packed-001/receipt.json": {
+      "raw_copy_sha256": "c89e2eaac14c0f3fa4a204da458bd4d2fc151d3351ee6f8fd4959e65237d327e",
+      "git_lf_sha256": "c89e2eaac14c0f3fa4a204da458bd4d2fc151d3351ee6f8fd4959e65237d327e",
+      "bytes": 359929
+    },
+    "publication.json": {
+      "raw_copy_sha256": "5ff47a6fe3a45f4b07e6c6e8a4590cf179f3ed913da5eae978921c3493753aff",
+      "git_lf_sha256": "5ff47a6fe3a45f4b07e6c6e8a4590cf179f3ed913da5eae978921c3493753aff",
+      "bytes": 702
+    }
+  },
+  "repair": {
+    "registration": "0c0fc3da",
+    "tested_source": "c0d8544f",
+    "guard_descendant": "1d83c881",
+    "backend_cases": 64,
+    "ready_controls": 48,
+    "lost_legacy_controls": 16,
+    "native_cut_episodes": 24,
+    "physical_steps": 11520,
+    "dry_rest_pass": 8,
+    "packed_quiet_pass": 0,
+    "first_impulse_residual": 5.125249824e-09,
+    "null_state_fault": "NOT_EXECUTED; both actualhosts syntaxpass; refuse/pause normal failurepath, not newnativephase proof"
+  },
+  "final_review": {
+    "disposition": "GO for source-bound Draft initialization candidate; no solvedSand/clearance/integration admission",
+    "tested_source": "c0d8544fc01653c329a7ff0f235666532967d29d",
+    "guard_syntax_source": "1d83c8818180318e86b17f69f543a60b0e2e3a54",
+    "known_wrench_ready_cases": 48,
+    "legacy_lost_cases": 16,
+    "world_COM_max_float32_ULP": 0.460675,
+    "first_native_packet_linear_residual": 5.125249824e-09,
+    "first_genuine_all_packed_max_linear_residual": 5.24e-05,
+    "first_genuine_all_packed_max_angular_residual": 3.13e-07,
+    "all_first_packet_zero_cases": "Six packed sessions legitimately first request nonzero impulse atstep1or2; zero initialrequests notlostimpulses.",
+    "dry_rest_pass": 8,
+    "packed_quiet_pass": 0,
+    "Sand_outcomes": {
+      "accepted": 2706,
+      "NonDissipativeResponse": 116,
+      "PoseDrift": 4,
+      "not_executed_On": 54
+    },
+    "review_scope": "Two independent readonly reviews; no worker wrote files or ran engines/builds. Separate independent adversarial PR review required before owner decision."
+  },
+  "final_reviewable_patch": {
+    "checkpoint": "fb5c089ccf8e4f0da695bc8b1c6a06a818fa0542",
+    "tree": "393e32b2c4bd93c48c4c49cd78c8d3be3837f10c",
+    "path": "C:\\Users\\_\\.codex\\worktrees\\sol-structure-cut-20261106\\khybersand\\build\\sol-structure-cut\\stage-and-mass-final.patch",
+    "sha256": "218613e565646ceae854b34bfa11a7c4aa266c9a11f5038dc156914a846a98b1",
+    "bytes": 12907304
+  },
+  "final_resource": {
+    "structure_bytes": 4289857747,
+    "cap_bytes": 4294967296,
+    "free": 18876723200
+  },
+  "stage_campaign_production_delta": "None this campaign: only synchronous no-op observation seam in production session; native/Rapier bridge/planner unchanged.",
+  "initialization_repair_production_delta": "AUTO COM before native M/customI; pointvelocity aboutactualCOM; no force/cap/shape/mass retuning or warmstep. Guard-only descendant returns empty on null directstate; actualnullpath unexecuted.",
+  "stage_original_residual": "First Windows treeOff sample ordinary receiptJ(.04,.28), applicationcount1 but immediate measured momentumzero: model residual.2828427135. Cause unestablished. Excludingstep0 maxlinear residual.00139510754. Do not call every residual float32rounding or claim exact nativewrench closure.",
+  "current_residual_interpretation": "Original firstsample discrepancy prompted independent backend oracle. Runtime source controls reproduce lost firstcustom-COM impulses and repair honors firstactualpacket. Later reconstruction residuals remain diagnostic, not universally explained as floatrounding.",
+  "remaining_collection_budget_bytes": 5109549,
+  "publication_current": {
+    "status": "OPEN_DRAFT",
+    "pr": 460,
+    "url": "https://github.com/techrote/cybersand/pull/460",
+    "base": "fix/sol347-facade-refusal-20261104-095628",
+    "base_sha": "e4c2649e82d943554f4dc6a0634336770cda08f6",
+    "observed_head": "57f8cad5e172bc3c89c20517ee594347bd3b00cc",
+    "isDraft": true,
+    "method": "Literal file edit followed by a separate short gh pr create --draft --body-file command succeeded. Earlier combined shell commands were rejected before dispatch; the automatic reviewer gave only blocked by policy, not a more specific cause.",
+    "scope": "No merge, Ready transition, forcepush, upstream branch edit or admission change. Earlier rejection receipts remain historical evidence."
+  }
+}

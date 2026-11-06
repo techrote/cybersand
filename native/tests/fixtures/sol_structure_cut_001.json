@@ -1,0 +1,25 @@
+{
+  "registration":"SOL-STRUCTURE-CUT-001",
+  "date":"2026-11-06",
+  "base":"e4c2649e82d943554f4dc6a0634336770cda08f6",
+  "sol_source":"1598115c9065239cc1eaec11e99077274b457be1",
+  "purpose":"Actual cut, ownership and mass/loading baseline before physics changes. Flyer regressions are not SOL acceptance.",
+  "fixtures":{
+    "tree":{"members":520,"scope":"Unchanged source RedBrick tree-shaped structure; actual native eight-cell support cut, one body/six exact proxies; hole and concavity preserved."},
+    "building":{"material":43,"rectangles":[[50,27,23,4],[50,31,4,13],[69,31,4,13],[50,44,23,4],[50,48,4,24]],"cut":[50,65,4,2],"seed":[51,34],"members":356,"scope":"Separately authored inert RedBrick single-pier building frame, actual native cut/discovery/commit; not original520 geometry."}
+  },
+  "mass_contract":"Retain source unit mass per member. Independently sum M,cell-centre COM and unit-square I; compare source receipt, proxy areas and actual server values within four float32 ULPs. Descriptor density ranks are not calibrated physical mass. No guessed Sand mass.",
+  "matrix":{
+    "dry":{"structures":["tree","building"],"platforms":["windows","linux"],"workers":[1,4],"steps":720,"episodes":8},
+    "populated":{"structures":["tree","building"],"surroundings":["packed_sand"],"sand_response":[false,true],"platforms":["windows","linux"],"workers":[1,4],"steps":360,"episodes":16}
+  },
+  "measurements":"Every actual Rapier step before/after pose,v,omega,M,I,COM,total gravity/damping, hard contacts/impulses, maximum proxy-vertex speed, existing capped native wrench/correction and sample/publication ages. Native pre-cut/prepared/commit/final full tuples/census/ownership and actual single RID. Per-step hard geometry uses unchanged inert terrain; Sand observations retain asynchronous field age and cannot claim synchronized clearance. Include all observer/refused work and costs.",
+  "gates":{
+    "ownership":"Native owns all source tuples before commit, aggregate owns them after commit; no duplicate native source, exact rectangle union, one actual body, no physics step inside handoff. No pose writes after initial placement.",
+    "motion":"Dry gravity produces downward motion and actual hard contact. NEW diagnostic rest screen last120 of720: peakCOMspeed<=0.5cell/s,peakabsomega<=0.02rad/s,spanx/y<=0.5cell,angle span<=0.05rad. Report maximum vertex speed separately. Not the original120+60 SOL364 clock.",
+    "geometry":"Independently report area/depth and original per-cell/proxy1e-9 hard witnesses. Original area1e-6/depth2e-5 remain separate strict references. Quiet interpenetration is not physical clearance.",
+    "weight":"Record m*g/60 against ordinary aggregate cap3 and separate historical Sand-response wrench. Source cell counts and density ranks do not prove relative physical weight. No force or mass retuning in this baseline. A fix requires a new source-bound registration after a specific defect is identified."
+  },
+  "limits":"HomogeneousWall/RedBrick only; Wood/reactive/mixed cohesion remains refused. No generalized fracture, multiple aggregates, restoration365 or cross-source World/MAT composition. Keep all PRs Draft, original SOL failures and frozen guards unchanged.",
+  "resource":{"cap_bytes":4294967296,"minimum_free_bytes":5368709120}
+}

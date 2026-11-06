@@ -1,0 +1,11 @@
+{
+  "status": "OPEN_DRAFT",
+  "pr": 460,
+  "url": "https://github.com/techrote/cybersand/pull/460",
+  "base": "fix/sol347-facade-refusal-20261104-095628",
+  "base_sha": "e4c2649e82d943554f4dc6a0634336770cda08f6",
+  "observed_head": "57f8cad5e172bc3c89c20517ee594347bd3b00cc",
+  "isDraft": true,
+  "method": "Literal file edit followed by a separate short gh pr create --draft --body-file command succeeded. Earlier combined shell commands were rejected before dispatch; the automatic reviewer gave only blocked by policy, not a more specific cause.",
+  "scope": "No merge, Ready transition, forcepush, upstream branch edit or admission change. Earlier rejection receipts remain historical evidence."
+}

@@ -1,0 +1,2715 @@
+{
+  "reducer_sha256": "26b3ac6f267cbb0f535bec1324a7141b467f6da34ef144ebe7fc63ae75f2bc56",
+  "receipt_sha256": "0a9cec76ab38fac7f6ccdad7ab0a1a74bb893f4b60d0272b607820ba0e40f905",
+  "scope": "Isolated backend initialization only; cached params are not effective mass proof; no nativeWorld or handoff warmstep. Frozen impulse/torque references unchanged; COM lever delta is an extra diagnostic.",
+  "hosts": {
+    "windows": {
+      "raw": {
+        "path": "build\\sol-structure-cut\\mass-fix-001\\windows\\mass-init.json",
+        "sha256": "1a39fc67c18ce52d8e207e120c3d016fe2798700c484155b7824c8c934956529"
+      },
+      "cases": [
+        {
+          "coordinate": [
+            "tree",
+            "custom_fresh",
+            1.0,
+            "central"
+          ],
+          "expected": [
+            0.0057692307692307696,
+            0.0,
+            0.0
+          ],
+          "immediate": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "post": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "immediate_pass": false,
+          "post_pass": false,
+          "post_scalar_params": {
+            "cached_inverse_inertia": 0.0,
+            "cached_inverse_mass": 0.001923076924867928,
+            "direct_velocity_bits": "000000000000000000000000000000000000000000000000",
+            "inertia": 70453.6484375,
+            "local_com": [
+              0.0,
+              0.0
+            ],
+            "mass": 520.0,
+            "pose_bits": "000000000000f03f00000000000000000000000000000080000000000000f03f000000a056aa4c400000000000f04240",
+            "rid": 26,
+            "sleeping": false,
+            "steps": 1,
+            "velocity_bits": "000000000000000000000000000000000000000000000000"
+          },
+          "COM_lever_reference_difference": 0.0
+        },
+        {
+          "coordinate": [
+            "tree",
+            "custom_fresh",
+            2.0,
+            "central"
+          ],
+          "expected": [
+            0.0057692307692307696,
+            0.0,
+            0.0
+          ],
+          "immediate": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "post": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "immediate_pass": false,
+          "post_pass": false,
+          "post_scalar_params": {
+            "cached_inverse_inertia": 0.0,
+            "cached_inverse_mass": 0.001923076924867928,
+            "direct_velocity_bits": "000000000000000000000000000000000000000000000000",
+            "inertia": 140907.296875,
+            "local_com": [
+              0.0,
+              0.0
+            ],
+            "mass": 520.0,
+            "pose_bits": "000000000000f03f00000000000000000000000000000080000000000000f03f000000a056aa4c400000000000f04240",
+            "rid": 46,
+            "sleeping": false,
+            "steps": 1,
+            "velocity_bits": "000000000000000000000000000000000000000000000000"
+          },
+          "COM_lever_reference_difference": 0.0
+        },
+        {
+          "coordinate": [
+            "tree",
+            "custom_fresh",
+            1.0,
+            "offcentre"
+          ],
+          "expected": [
+            0.0,
+            0.0057692307692307696,
+            4.2581186741859875e-05
+          ],
+          "immediate": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "post": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "immediate_pass": false,
+          "post_pass": false,
+          "post_scalar_params": {
+            "cached_inverse_inertia": 0.0,
+            "cached_inverse_mass": 0.001923076924867928,
+            "direct_velocity_bits": "000000000000000000000000000000000000000000000000",
+            "inertia": 70453.6484375,
+            "local_com": [
+              0.0,
+              0.0
+            ],
+            "mass": 520.0,
+            "pose_bits": "000000000000f03f00000000000000000000000000000080000000000000f03f000000a056aa4c400000000000f04240",
+            "rid": 66,
+            "sleeping": false,
+            "steps": 1,
+            "velocity_bits": "000000000000000000000000000000000000000000000000"
+          },
+          "COM_lever_reference_difference": -0.0
+        },
+        {
+          "coordinate": [
+            "tree",
+            "custom_fresh",
+            2.0,
+            "offcentre"
+          ],
+          "expected": [
+            0.0,
+            0.0057692307692307696,
+            2.1290593370929937e-05
+          ],
+          "immediate": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "post": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "immediate_pass": false,
+          "post_pass": false,
+          "post_scalar_params": {
+            "cached_inverse_inertia": 0.0,
+            "cached_inverse_mass": 0.001923076924867928,
+            "direct_velocity_bits": "000000000000000000000000000000000000000000000000",
+            "inertia": 140907.296875,
+            "local_com": [
+              0.0,
+              0.0
+            ],
+            "mass": 520.0,
+            "pose_bits": "000000000000f03f00000000000000000000000000000080000000000000f03f000000a056aa4c400000000000f04240",
+            "rid": 86,
+            "sleeping": false,
+            "steps": 1,
+            "velocity_bits": "000000000000000000000000000000000000000000000000"
+          },
+          "COM_lever_reference_difference": -0.0
+        },
+        {
+          "coordinate": [
+            "tree",
+            "custom_after_zero_g_step",
+            1.0,
+            "central"
+          ],
+          "expected": [
+            0.0057692307692307696,
+            0.0,
+            0.0
+          ],
+          "immediate": [
+            0.005769230891019106,
+            0.0,
+            0.0
+          ],
+          "post": [
+            0.005769230891019106,
+            0.0,
+            0.0
+          ],
+          "immediate_pass": true,
+          "post_pass": true,
+          "post_scalar_params": {
+            "cached_inverse_inertia": 0.0,
+            "cached_inverse_mass": 0.001923076924867928,
+            "direct_velocity_bits": "000000207aa1773f00000000000000000000000000000000",
+            "inertia": 70453.6484375,
+            "local_com": [
+              0.0,
+              0.0
+            ],
+            "mass": 520.0,
+            "pose_bits": "000000000000f03f00000000000000000000000000000080000000000000f03f000000a059aa4c400000000000f04240",
+            "rid": 106,
+            "sleeping": false,
+            "steps": 2,
+            "velocity_bits": "000000207aa1773f00000000000000000000000000000000"
+          },
+          "COM_lever_reference_difference": 0.0
+        },
+        {
+          "coordinate": [
+            "tree",
+            "custom_after_zero_g_step",
+            2.0,
+            "central"
+          ],
+          "expected": [
+            0.0057692307692307696,
+            0.0,
+            0.0
+          ],
+          "immediate": [
+            0.005769230891019106,
+            0.0,
+            0.0
+          ],
+          "post": [
+            0.005769230891019106,
+            0.0,
+            0.0
+          ],
+          "immediate_pass": true,
+          "post_pass": true,
+          "post_scalar_params": {
+            "cached_inverse_inertia": 0.0,
+            "cached_inverse_mass": 0.001923076924867928,
+            "direct_velocity_bits": "000000207aa1773f00000000000000000000000000000000",
+            "inertia": 140907.296875,
+            "local_com": [
+              0.0,
+              0.0
+            ],
+            "mass": 520.0,
+            "pose_bits": "000000000000f03f00000000000000000000000000000080000000000000f03f000000a059aa4c400000000000f04240",
+            "rid": 126,
+            "sleeping": false,
+            "steps": 2,
+            "velocity_bits": "000000207aa1773f00000000000000000000000000000000"
+          },
+          "COM_lever_reference_difference": 0.0
+        },
+        {
+          "coordinate": [
+            "tree",
+            "custom_after_zero_g_step",
+            1.0,
+            "offcentre"
+          ],
+          "expected": [
+            0.0,
+            0.0057692307692307696,
+            4.2581186741859875e-05
+          ],
+          "immediate": [
+            0.0,
+            0.005769230891019106,
+            4.258118860889226e-05
+          ],
+          "post": [
+            0.0,
+            0.005769230891019106,
+            4.258118860889226e-05
+          ],
+          "immediate_pass": true,
+          "post_pass": true,
+          "post_scalar_params": {
+            "cached_inverse_inertia": 0.0,
+            "cached_inverse_mass": 0.001923076924867928,
+            "direct_velocity_bits": "0000000000000000000000207aa1773f000000802653063f",
+            "inertia": 70453.6484375,
+            "local_com": [
+              0.0,
+              0.0
+            ],
+            "mass": 520.0,
+            "pose_bits": "000000000000f03f0000002029d0a73e0000002029d0a7be000000000000f03f000000a056aa4c400000000003f04240",
+            "rid": 146,
+            "sleeping": false,
+            "steps": 2,
+            "velocity_bits": "0000000000000000000000207aa1773f000000802653063f"
+          },
+          "COM_lever_reference_difference": -0.0
+        },
+        {
+          "coordinate": [
+            "tree",
+            "custom_after_zero_g_step",
+            2.0,
+            "offcentre"
+          ],
+          "expected": [
+            0.0,
+            0.0057692307692307696,
+            2.1290593370929937e-05
+          ],
+          "immediate": [
+            0.0,
+            0.005769230891019106,
+            2.129059430444613e-05
+          ],
+          "post": [
+            0.0,
+            0.005769230891019106,
+            2.129059430444613e-05
+          ],
+          "immediate_pass": true,
+          "post_pass": true,
+          "post_scalar_params": {
+            "cached_inverse_inertia": 0.0,
+            "cached_inverse_mass": 0.001923076924867928,
+            "direct_velocity_bits": "0000000000000000000000207aa1773f000000802653f63e",
+            "inertia": 140907.296875,
+            "local_com": [
+              0.0,
+              0.0
+            ],
+            "mass": 520.0,
+            "pose_bits": "000000000000f03f0000002029d0973e0000002029d097be000000000000f03f000000a056aa4c400000000003f04240",
+            "rid": 166,
+            "sleeping": false,
+            "steps": 2,
+            "velocity_bits": "0000000000000000000000207aa1773f000000802653f63e"
+          },
+          "COM_lever_reference_difference": -0.0
+        },
+        {
+          "coordinate": [
+            "tree",
+            "auto_com_custom_inertia_fresh",
+            1.0,
+            "central"
+          ],
+          "expected": [
+            0.0057692307692307696,
+            0.0,
+            0.0
+          ],
+          "immediate": [
+            0.005769230891019106,
+            0.0,
+            0.0
+          ],
+          "post": [
+            0.005769230891019106,
+            0.0,
+            0.0
+          ],
+          "immediate_pass": true,
+          "post_pass": true,
+          "post_scalar_params": {
+            "cached_inverse_inertia": 1.419372892996762e-05,
+            "cached_inverse_mass": 0.001923076924867928,
+            "direct_velocity_bits": "000000207aa1773f00000000000000000000000000000000",
+            "inertia": 70453.6484375,
+            "local_com": [
+              5.868765242666996e-07,
+              2.34750601180167e-07
+            ],
+            "mass": 520.0,
+            "pose_bits": "000000000000f03f00000000000000000000000000000080000000000000f03f000000a059aa4c400000000000f04240",
+            "rid": 186,
+            "sleeping": false,
+            "steps": 1,
+            "velocity_bits": "000000207aa1773f00000000000000000000000000000000"
+          },
+          "COM_lever_reference_difference": 0.0
+        },
+        {
+          "coordinate": [
+            "tree",
+            "auto_com_custom_inertia_fresh",
+            2.0,
+            "central"
+          ],
+          "expected": [
+            0.0057692307692307696,
+            0.0,
+            0.0
+          ],
+          "immediate": [
+            0.005769230891019106,
+            0.0,
+            0.0
+          ],
+          "post": [
+            0.005769230891019106,
+            0.0,
+            0.0
+          ],
+          "immediate_pass": true,
+          "post_pass": true,
+          "post_scalar_params": {
+            "cached_inverse_inertia": 7.09686446498381e-06,
+            "cached_inverse_mass": 0.001923076924867928,
+            "direct_velocity_bits": "000000207aa1773f00000000000000000000000000000000",
+            "inertia": 140907.296875,
+            "local_com": [
+              5.868765242666996e-07,
+              2.34750601180167e-07
+            ],
+            "mass": 520.0,
+            "pose_bits": "000000000000f03f00000000000000000000000000000080000000000000f03f000000a059aa4c400000000000f04240",
+            "rid": 206,
+            "sleeping": false,
+            "steps": 1,
+            "velocity_bits": "000000207aa1773f00000000000000000000000000000000"
+          },
+          "COM_lever_reference_difference": 0.0
+        },
+        {
+          "coordinate": [
+            "tree",
+            "auto_com_custom_inertia_fresh",
+            1.0,
+            "offcentre"
+          ],
+          "expected": [
+            0.0,
+            0.0057692307692307696,
+            4.2581186741859875e-05
+          ],
+          "immediate": [
+            0.0,
+            0.005769230891019106,
+            4.258118860889226e-05
+          ],
+          "post": [
+            0.0,
+            0.005769230891019106,
+            4.258118860889226e-05
+          ],
+          "immediate_pass": true,
+          "post_pass": true,
+          "post_scalar_params": {
+            "cached_inverse_inertia": 1.419372892996762e-05,
+            "cached_inverse_mass": 0.001923076924867928,
+            "direct_velocity_bits": "0000000000000000000000207aa1773f000000802653063f",
+            "inertia": 70453.6484375,
+            "local_com": [
+              5.868765242666996e-07,
+              2.34750601180167e-07
+            ],
+            "mass": 520.0,
+            "pose_bits": "000000000000f03f0000002029d0a73e0000002029d0a7be000000000000f03f000000a056aa4c400000000003f04240",
+            "rid": 226,
+            "sleeping": false,
+            "steps": 1,
+            "velocity_bits": "0000000000000000000000207aa1773f000000802653063f"
+          },
+          "COM_lever_reference_difference": -2.4989899201060784e-11
+        },
+        {
+          "coordinate": [
+            "tree",
+            "auto_com_custom_inertia_fresh",
+            2.0,
+            "offcentre"
+          ],
+          "expected": [
+            0.0,
+            0.0057692307692307696,
+            2.1290593370929937e-05
+          ],
+          "immediate": [
+            0.0,
+            0.005769230891019106,
+            2.129059430444613e-05
+          ],
+          "post": [
+            0.0,
+            0.005769230891019106,
+            2.129059430444613e-05
+          ],
+          "immediate_pass": true,
+          "post_pass": true,
+          "post_scalar_params": {
+            "cached_inverse_inertia": 7.09686446498381e-06,
+            "cached_inverse_mass": 0.001923076924867928,
+            "direct_velocity_bits": "0000000000000000000000207aa1773f000000802653f63e",
+            "inertia": 140907.296875,
+            "local_com": [
+              5.868765242666996e-07,
+              2.34750601180167e-07
+            ],
+            "mass": 520.0,
+            "pose_bits": "000000000000f03f0000002029d0973e0000002029d097be000000000000f03f000000a056aa4c400000000003f04240",
+            "rid": 246,
+            "sleeping": false,
+            "steps": 1,
+            "velocity_bits": "0000000000000000000000207aa1773f000000802653f63e"
+          },
+          "COM_lever_reference_difference": -1.2494949600530392e-11
+        },
+        {
+          "coordinate": [
+            "tree",
+            "auto_com_before_custom_inertia_fresh",
+            1.0,
+            "central"
+          ],
+          "expected": [
+            0.0057692307692307696,
+            0.0,
+            0.0
+          ],
+          "immediate": [
+            0.005769230891019106,
+            0.0,
+            0.0
+          ],
+          "post": [
+            0.005769230891019106,
+            0.0,
+            0.0
+          ],
+          "immediate_pass": true,
+          "post_pass": true,
+          "post_scalar_params": {
+            "cached_inverse_inertia": 1.419372892996762e-05,
+            "cached_inverse_mass": 0.001923076924867928,
+            "direct_velocity_bits": "000000207aa1773f00000000000000000000000000000000",
+            "inertia": 70453.6484375,
+            "local_com": [
+              5.868765242666996e-07,
+              2.34750601180167e-07
+            ],
+            "mass": 520.0,
+            "pose_bits": "000000000000f03f00000000000000000000000000000080000000000000f03f000000a059aa4c400000000000f04240",
+            "rid": 266,
+            "sleeping": false,
+            "steps": 1,
+            "velocity_bits": "000000207aa1773f00000000000000000000000000000000"
+          },
+          "COM_lever_reference_difference": 0.0
+        },
+        {
+          "coordinate": [
+            "tree",
+            "auto_com_before_custom_inertia_fresh",
+            2.0,
+            "central"
+          ],
+          "expected": [
+            0.0057692307692307696,
+            0.0,
+            0.0
+          ],
+          "immediate": [
+            0.005769230891019106,
+            0.0,
+            0.0
+          ],
+          "post": [
+            0.005769230891019106,
+            0.0,
+            0.0
+          ],
+          "immediate_pass": true,
+          "post_pass": true,
+          "post_scalar_params": {
+            "cached_inverse_inertia": 7.09686446498381e-06,
+            "cached_inverse_mass": 0.001923076924867928,
+            "direct_velocity_bits": "000000207aa1773f00000000000000000000000000000000",
+            "inertia": 140907.296875,
+            "local_com": [
+              5.868765242666996e-07,
+              2.34750601180167e-07
+            ],
+            "mass": 520.0,
+            "pose_bits": "000000000000f03f00000000000000000000000000000080000000000000f03f000000a059aa4c400000000000f04240",
+            "rid": 286,
+            "sleeping": false,
+            "steps": 1,
+            "velocity_bits": "000000207aa1773f00000000000000000000000000000000"
+          },
+          "COM_lever_reference_difference": 0.0
+        },
+        {
+          "coordinate": [
+            "tree",
+            "auto_com_before_custom_inertia_fresh",
+            1.0,
+            "offcentre"
+          ],
+          "expected": [
+            0.0,
+            0.0057692307692307696,
+            4.2581186741859875e-05
+          ],
+          "immediate": [
+            0.0,
+            0.005769230891019106,
+            4.258118860889226e-05
+          ],
+          "post": [
+            0.0,
+            0.005769230891019106,
+            4.258118860889226e-05
+          ],
+          "immediate_pass": true,
+          "post_pass": true,
+          "post_scalar_params": {
+            "cached_inverse_inertia": 1.419372892996762e-05,
+            "cached_inverse_mass": 0.001923076924867928,
+            "direct_velocity_bits": "0000000000000000000000207aa1773f000000802653063f",
+            "inertia": 70453.6484375,
+            "local_com": [
+              5.868765242666996e-07,
+              2.34750601180167e-07
+            ],
+            "mass": 520.0,
+            "pose_bits": "000000000000f03f0000002029d0a73e0000002029d0a7be000000000000f03f000000a056aa4c400000000003f04240",
+            "rid": 306,
+            "sleeping": false,
+            "steps": 1,
+            "velocity_bits": "0000000000000000000000207aa1773f000000802653063f"
+          },
+          "COM_lever_reference_difference": -2.4989899201060784e-11
+        },
+        {
+          "coordinate": [
+            "tree",
+            "auto_com_before_custom_inertia_fresh",
+            2.0,
+            "offcentre"
+          ],
+          "expected": [
+            0.0,
+            0.0057692307692307696,
+            2.1290593370929937e-05
+          ],
+          "immediate": [
+            0.0,
+            0.005769230891019106,
+            2.129059430444613e-05
+          ],
+          "post": [
+            0.0,
+            0.005769230891019106,
+            2.129059430444613e-05
+          ],
+          "immediate_pass": true,
+          "post_pass": true,
+          "post_scalar_params": {
+            "cached_inverse_inertia": 7.09686446498381e-06,
+            "cached_inverse_mass": 0.001923076924867928,
+            "direct_velocity_bits": "0000000000000000000000207aa1773f000000802653f63e",
+            "inertia": 140907.296875,
+            "local_com": [
+              5.868765242666996e-07,
+              2.34750601180167e-07
+            ],
+            "mass": 520.0,
+            "pose_bits": "000000000000f03f0000002029d0973e0000002029d097be000000000000f03f000000a056aa4c400000000003f04240",
+            "rid": 326,
+            "sleeping": false,
+            "steps": 1,
+            "velocity_bits": "0000000000000000000000207aa1773f000000802653f63e"
+          },
+          "COM_lever_reference_difference": -1.2494949600530392e-11
+        },
+        {
+          "coordinate": [
+            "building",
+            "custom_fresh",
+            1.0,
+            "central"
+          ],
+          "expected": [
+            0.008426966292134831,
+            0.0,
+            0.0
+          ],
+          "immediate": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "post": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "immediate_pass": false,
+          "post_pass": false,
+          "post_scalar_params": {
+            "cached_inverse_inertia": 0.0,
+            "cached_inverse_mass": 0.002808988792821765,
+            "direct_velocity_bits": "000000000000000000000000000000000000000000000000",
+            "inertia": 59192.15234375,
+            "local_com": [
+              0.0,
+              0.0
+            ],
+            "mass": 356.0,
+            "pose_bits": "000000000000f03f00000000000000000000000000000080000000000000f03f00000000bbd74d40000000208a904440",
+            "rid": 346,
+            "sleeping": false,
+            "steps": 1,
+            "velocity_bits": "000000000000000000000000000000000000000000000000"
+          },
+          "COM_lever_reference_difference": 0.0
+        },
+        {
+          "coordinate": [
+            "building",
+            "custom_fresh",
+            2.0,
+            "central"
+          ],
+          "expected": [
+            0.008426966292134831,
+            0.0,
+            0.0
+          ],
+          "immediate": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "post": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "immediate_pass": false,
+          "post_pass": false,
+          "post_scalar_params": {
+            "cached_inverse_inertia": 0.0,
+            "cached_inverse_mass": 0.002808988792821765,
+            "direct_velocity_bits": "000000000000000000000000000000000000000000000000",
+            "inertia": 118384.3046875,
+            "local_com": [
+              0.0,
+              0.0
+            ],
+            "mass": 356.0,
+            "pose_bits": "000000000000f03f00000000000000000000000000000080000000000000f03f00000000bbd74d40000000208a904440",
+            "rid": 364,
+            "sleeping": false,
+            "steps": 1,
+            "velocity_bits": "000000000000000000000000000000000000000000000000"
+          },
+          "COM_lever_reference_difference": 0.0
+        },
+        {
+          "coordinate": [
+            "building",
+            "custom_fresh",
+            1.0,
+            "offcentre"
+          ],
+          "expected": [
+            0.0,
+            0.008426966292134831,
+            5.0682393183376306e-05
+          ],
+          "immediate": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "post": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "immediate_pass": false,
+          "post_pass": false,
+          "post_scalar_params": {
+            "cached_inverse_inertia": 0.0,
+            "cached_inverse_mass": 0.002808988792821765,
+            "direct_velocity_bits": "000000000000000000000000000000000000000000000000",
+            "inertia": 59192.15234375,
+            "local_com": [
+              0.0,
+              0.0
+            ],
+            "mass": 356.0,
+            "pose_bits": "000000000000f03f00000000000000000000000000000080000000000000f03f00000000bbd74d40000000208a904440",
+            "rid": 382,
+            "sleeping": false,
+            "steps": 1,
+            "velocity_bits": "000000000000000000000000000000000000000000000000"
+          },
+          "COM_lever_reference_difference": -0.0
+        },
+        {
+          "coordinate": [
+            "building",
+            "custom_fresh",
+            2.0,
+            "offcentre"
+          ],
+          "expected": [
+            0.0,
+            0.008426966292134831,
+            2.5341196591688153e-05
+          ],
+          "immediate": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "post": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "immediate_pass": false,
+          "post_pass": false,
+          "post_scalar_params": {
+            "cached_inverse_inertia": 0.0,
+            "cached_inverse_mass": 0.002808988792821765,
+            "direct_velocity_bits": "000000000000000000000000000000000000000000000000",
+            "inertia": 118384.3046875,
+            "local_com": [
+              0.0,
+              0.0
+            ],
+            "mass": 356.0,
+            "pose_bits": "000000000000f03f00000000000000000000000000000080000000000000f03f00000000bbd74d40000000208a904440",
+            "rid": 400,
+            "sleeping": false,
+            "steps": 1,
+            "velocity_bits": "000000000000000000000000000000000000000000000000"
+          },
+          "COM_lever_reference_difference": -0.0
+        },
+        {
+          "coordinate": [
+            "building",
+            "custom_after_zero_g_step",
+            1.0,
+            "central"
+          ],
+          "expected": [
+            0.008426966292134831,
+            0.0,
+            0.0
+          ],
+          "immediate": [
+            0.008426966145634651,
+            0.0,
+            0.0
+          ],
+          "post": [
+            0.008426966145634651,
+            0.0,
+            0.0
+          ],
+          "immediate_pass": true,
+          "post_pass": true,
+          "post_scalar_params": {
+            "cached_inverse_inertia": 0.0,
+            "cached_inverse_mass": 0.002808988792821765,
+            "direct_velocity_bits": "000000402842813f00000000000000000000000000000000",
+            "inertia": 59192.15234375,
+            "local_com": [
+              0.0,
+              0.0
+            ],
+            "mass": 356.0,
+            "pose_bits": "000000000000f03f00000000000000000000000000000080000000000000f03f00000080bfd74d40000000208a904440",
+            "rid": 418,
+            "sleeping": false,
+            "steps": 2,
+            "velocity_bits": "000000402842813f00000000000000000000000000000000"
+          },
+          "COM_lever_reference_difference": 0.0
+        },
+        {
+          "coordinate": [
+            "building",
+            "custom_after_zero_g_step",
+            2.0,
+            "central"
+          ],
+          "expected": [
+            0.008426966292134831,
+            0.0,
+            0.0
+          ],
+          "immediate": [
+            0.008426966145634651,
+            0.0,
+            0.0
+          ],
+          "post": [
+            0.008426966145634651,
+            0.0,
+            0.0
+          ],
+          "immediate_pass": true,
+          "post_pass": true,
+          "post_scalar_params": {
+            "cached_inverse_inertia": 0.0,
+            "cached_inverse_mass": 0.002808988792821765,
+            "direct_velocity_bits": "000000402842813f00000000000000000000000000000000",
+            "inertia": 118384.3046875,
+            "local_com": [
+              0.0,
+              0.0
+            ],
+            "mass": 356.0,
+            "pose_bits": "000000000000f03f00000000000000000000000000000080000000000000f03f00000080bfd74d40000000208a904440",
+            "rid": 436,
+            "sleeping": false,
+            "steps": 2,
+            "velocity_bits": "000000402842813f00000000000000000000000000000000"
+          },
+          "COM_lever_reference_difference": 0.0
+        },
+        {
+          "coordinate": [
+            "building",
+            "custom_after_zero_g_step",
+            1.0,
+            "offcentre"
+          ],
+          "expected": [
+            0.0,
+            0.008426966292134831,
+            5.0682393183376306e-05
+          ],
+          "immediate": [
+            0.0,
+            0.008426966145634651,
+            5.0682392611633986e-05
+          ],
+          "post": [
+            0.0,
+            0.008426966145634651,
+            5.0682392611633986e-05
+          ],
+          "immediate_pass": true,
+          "post_pass": true,
+          "post_scalar_params": {
+            "cached_inverse_inertia": 0.0,
+            "cached_inverse_mass": 0.002808988792821765,
+            "direct_velocity_bits": "0000000000000000000000402842813f000000c079920a3f",
+            "inertia": 59192.15234375,
+            "local_com": [
+              0.0,
+              0.0
+            ],
+            "mass": 356.0,
+            "pose_bits": "000000000000f03f00000060f957ac3e00000060f957acbe000000000000f03f00000000bbd74d40000000a08e904440",
+            "rid": 454,
+            "sleeping": false,
+            "steps": 2,
+            "velocity_bits": "0000000000000000000000402842813f000000c079920a3f"
+          },
+          "COM_lever_reference_difference": -0.0
+        },
+        {
+          "coordinate": [
+            "building",
+            "custom_after_zero_g_step",
+            2.0,
+            "offcentre"
+          ],
+          "expected": [
+            0.0,
+            0.008426966292134831,
+            2.5341196591688153e-05
+          ],
+          "immediate": [
+            0.0,
+            0.008426966145634651,
+            2.5341196305816993e-05
+          ],
+          "post": [
+            0.0,
+            0.008426966145634651,
+            2.5341196305816993e-05
+          ],
+          "immediate_pass": true,
+          "post_pass": true,
+          "post_scalar_params": {
+            "cached_inverse_inertia": 0.0,
+            "cached_inverse_mass": 0.002808988792821765,
+            "direct_velocity_bits": "0000000000000000000000402842813f000000c07992fa3e",
+            "inertia": 118384.3046875,
+            "local_com": [
+              0.0,
+              0.0
+            ],
+            "mass": 356.0,
+            "pose_bits": "000000000000f03f00000060f9579c3e00000060f9579cbe000000000000f03f00000000bbd74d40000000a08e904440",
+            "rid": 472,
+            "sleeping": false,
+            "steps": 2,
+            "velocity_bits": "0000000000000000000000402842813f000000c07992fa3e"
+          },
+          "COM_lever_reference_difference": -0.0
+        },
+        {
+          "coordinate": [
+            "building",
+            "auto_com_custom_inertia_fresh",
+            1.0,
+            "central"
+          ],
+          "expected": [
+            0.008426966292134831,
+            0.0,
+            0.0
+          ],
+          "immediate": [
+            0.008426966145634651,
+            0.0,
+            0.0
+          ],
+          "post": [
+            0.008426966145634651,
+            0.0,
+            0.0
+          ],
+          "immediate_pass": true,
+          "post_pass": true,
+          "post_scalar_params": {
+            "cached_inverse_inertia": 1.6894131476874463e-05,
+            "cached_inverse_mass": 0.002808988792821765,
+            "direct_velocity_bits": "000000402842813f00000000000000000000000000000000",
+            "inertia": 59192.15234375,
+            "local_com": [
+              -1.2001295317531913e-06,
+              -1.7144707271654624e-06
+            ],
+            "mass": 356.0,
+            "pose_bits": "000000000000f03f00000000000000000000000000000080000000000000f03f00000080bfd74d40000000208a904440",
+            "rid": 490,
+            "sleeping": false,
+            "steps": 1,
+            "velocity_bits": "000000402842813f00000000000000000000000000000000"
+          },
+          "COM_lever_reference_difference": 0.0
+        },
+        {
+          "coordinate": [
+            "building",
+            "auto_com_custom_inertia_fresh",
+            2.0,
+            "central"
+          ],
+          "expected": [
+            0.008426966292134831,
+            0.0,
+            0.0
+          ],
+          "immediate": [
+            0.008426966145634651,
+            0.0,
+            0.0
+          ],
+          "post": [
+            0.008426966145634651,
+            0.0,
+            0.0
+          ],
+          "immediate_pass": true,
+          "post_pass": true,
+          "post_scalar_params": {
+            "cached_inverse_inertia": 8.447065738437232e-06,
+            "cached_inverse_mass": 0.002808988792821765,
+            "direct_velocity_bits": "000000402842813f00000000000000000000000000000000",
+            "inertia": 118384.3046875,
+            "local_com": [
+              -1.2001295317531913e-06,
+              -1.7144707271654624e-06
+            ],
+            "mass": 356.0,
+            "pose_bits": "000000000000f03f00000000000000000000000000000080000000000000f03f00000080bfd74d40000000208a904440",
+            "rid": 508,
+            "sleeping": false,
+            "steps": 1,
+            "velocity_bits": "000000402842813f00000000000000000000000000000000"
+          },
+          "COM_lever_reference_difference": 0.0
+        },
+        {
+          "coordinate": [
+            "building",
+            "auto_com_custom_inertia_fresh",
+            1.0,
+            "offcentre"
+          ],
+          "expected": [
+            0.0,
+            0.008426966292134831,
+            5.0682393183376306e-05
+          ],
+          "immediate": [
+            0.0,
+            0.008426966145634651,
+            5.0682392611633986e-05
+          ],
+          "post": [
+            0.0,
+            0.008426966145634651,
+            5.0682392611633986e-05
+          ],
+          "immediate_pass": true,
+          "post_pass": true,
+          "post_scalar_params": {
+            "cached_inverse_inertia": 1.6894131476874463e-05,
+            "cached_inverse_mass": 0.002808988792821765,
+            "direct_velocity_bits": "0000000000000000000000402842813f000000c079920a3f",
+            "inertia": 59192.15234375,
+            "local_com": [
+              -1.2001295317531913e-06,
+              -1.7144707271654624e-06
+            ],
+            "mass": 356.0,
+            "pose_bits": "000000000000f03f00000060f957ac3e00000060f957acbe000000000000f03f00000000bbd74d40000000a08e904440",
+            "rid": 526,
+            "sleeping": false,
+            "steps": 1,
+            "velocity_bits": "0000000000000000000000402842813f000000c079920a3f"
+          },
+          "COM_lever_reference_difference": 6.082543804710512e-11
+        },
+        {
+          "coordinate": [
+            "building",
+            "auto_com_custom_inertia_fresh",
+            2.0,
+            "offcentre"
+          ],
+          "expected": [
+            0.0,
+            0.008426966292134831,
+            2.5341196591688153e-05
+          ],
+          "immediate": [
+            0.0,
+            0.008426966145634651,
+            2.5341196305816993e-05
+          ],
+          "post": [
+            0.0,
+            0.008426966145634651,
+            2.5341196305816993e-05
+          ],
+          "immediate_pass": true,
+          "post_pass": true,
+          "post_scalar_params": {
+            "cached_inverse_inertia": 8.447065738437232e-06,
+            "cached_inverse_mass": 0.002808988792821765,
+            "direct_velocity_bits": "0000000000000000000000402842813f000000c07992fa3e",
+            "inertia": 118384.3046875,
+            "local_com": [
+              -1.2001295317531913e-06,
+              -1.7144707271654624e-06
+            ],
+            "mass": 356.0,
+            "pose_bits": "000000000000f03f00000060f9579c3e00000060f9579cbe000000000000f03f00000000bbd74d40000000a08e904440",
+            "rid": 544,
+            "sleeping": false,
+            "steps": 1,
+            "velocity_bits": "0000000000000000000000402842813f000000c07992fa3e"
+          },
+          "COM_lever_reference_difference": 3.041271902355256e-11
+        },
+        {
+          "coordinate": [
+            "building",
+            "auto_com_before_custom_inertia_fresh",
+            1.0,
+            "central"
+          ],
+          "expected": [
+            0.008426966292134831,
+            0.0,
+            0.0
+          ],
+          "immediate": [
+            0.008426966145634651,
+            0.0,
+            0.0
+          ],
+          "post": [
+            0.008426966145634651,
+            0.0,
+            0.0
+          ],
+          "immediate_pass": true,
+          "post_pass": true,
+          "post_scalar_params": {
+            "cached_inverse_inertia": 1.6894131476874463e-05,
+            "cached_inverse_mass": 0.002808988792821765,
+            "direct_velocity_bits": "000000402842813f00000000000000000000000000000000",
+            "inertia": 59192.15234375,
+            "local_com": [
+              -1.2001295317531913e-06,
+              -1.7144707271654624e-06
+            ],
+            "mass": 356.0,
+            "pose_bits": "000000000000f03f00000000000000000000000000000080000000000000f03f00000080bfd74d40000000208a904440",
+            "rid": 562,
+            "sleeping": false,
+            "steps": 1,
+            "velocity_bits": "000000402842813f00000000000000000000000000000000"
+          },
+          "COM_lever_reference_difference": 0.0
+        },
+        {
+          "coordinate": [
+            "building",
+            "auto_com_before_custom_inertia_fresh",
+            2.0,
+            "central"
+          ],
+          "expected": [
+            0.008426966292134831,
+            0.0,
+            0.0
+          ],
+          "immediate": [
+            0.008426966145634651,
+            0.0,
+            0.0
+          ],
+          "post": [
+            0.008426966145634651,
+            0.0,
+            0.0
+          ],
+          "immediate_pass": true,
+          "post_pass": true,
+          "post_scalar_params": {
+            "cached_inverse_inertia": 8.447065738437232e-06,
+            "cached_inverse_mass": 0.002808988792821765,
+            "direct_velocity_bits": "000000402842813f00000000000000000000000000000000",
+            "inertia": 118384.3046875,
+            "local_com": [
+              -1.2001295317531913e-06,
+              -1.7144707271654624e-06
+            ],
+            "mass": 356.0,
+            "pose_bits": "000000000000f03f00000000000000000000000000000080000000000000f03f00000080bfd74d40000000208a904440",
+            "rid": 580,
+            "sleeping": false,
+            "steps": 1,
+            "velocity_bits": "000000402842813f00000000000000000000000000000000"
+          },
+          "COM_lever_reference_difference": 0.0
+        },
+        {
+          "coordinate": [
+            "building",
+            "auto_com_before_custom_inertia_fresh",
+            1.0,
+            "offcentre"
+          ],
+          "expected": [
+            0.0,
+            0.008426966292134831,
+            5.0682393183376306e-05
+          ],
+          "immediate": [
+            0.0,
+            0.008426966145634651,
+            5.0682392611633986e-05
+          ],
+          "post": [
+            0.0,
+            0.008426966145634651,
+            5.0682392611633986e-05
+          ],
+          "immediate_pass": true,
+          "post_pass": true,
+          "post_scalar_params": {
+            "cached_inverse_inertia": 1.6894131476874463e-05,
+            "cached_inverse_mass": 0.002808988792821765,
+            "direct_velocity_bits": "0000000000000000000000402842813f000000c079920a3f",
+            "inertia": 59192.15234375,
+            "local_com": [
+              -1.2001295317531913e-06,
+              -1.7144707271654624e-06
+            ],
+            "mass": 356.0,
+            "pose_bits": "000000000000f03f00000060f957ac3e00000060f957acbe000000000000f03f00000000bbd74d40000000a08e904440",
+            "rid": 598,
+            "sleeping": false,
+            "steps": 1,
+            "velocity_bits": "0000000000000000000000402842813f000000c079920a3f"
+          },
+          "COM_lever_reference_difference": 6.082543804710512e-11
+        },
+        {
+          "coordinate": [
+            "building",
+            "auto_com_before_custom_inertia_fresh",
+            2.0,
+            "offcentre"
+          ],
+          "expected": [
+            0.0,
+            0.008426966292134831,
+            2.5341196591688153e-05
+          ],
+          "immediate": [
+            0.0,
+            0.008426966145634651,
+            2.5341196305816993e-05
+          ],
+          "post": [
+            0.0,
+            0.008426966145634651,
+            2.5341196305816993e-05
+          ],
+          "immediate_pass": true,
+          "post_pass": true,
+          "post_scalar_params": {
+            "cached_inverse_inertia": 8.447065738437232e-06,
+            "cached_inverse_mass": 0.002808988792821765,
+            "direct_velocity_bits": "0000000000000000000000402842813f000000c07992fa3e",
+            "inertia": 118384.3046875,
+            "local_com": [
+              -1.2001295317531913e-06,
+              -1.7144707271654624e-06
+            ],
+            "mass": 356.0,
+            "pose_bits": "000000000000f03f00000060f9579c3e00000060f9579cbe000000000000f03f00000000bbd74d40000000a08e904440",
+            "rid": 616,
+            "sleeping": false,
+            "steps": 1,
+            "velocity_bits": "0000000000000000000000402842813f000000c07992fa3e"
+          },
+          "COM_lever_reference_difference": 3.041271902355256e-11
+        }
+      ],
+      "ready_controls": 24,
+      "lost_impulse_controls": 8
+    },
+    "linux": {
+      "raw": {
+        "path": "build\\sol-structure-cut\\mass-fix-001\\linux\\mass-init.json",
+        "sha256": "60e3b42e6370f4838d7b3dd6db40e90d56f21feb301a8bcb81a37ac19a57d290"
+      },
+      "cases": [
+        {
+          "coordinate": [
+            "tree",
+            "custom_fresh",
+            1.0,
+            "central"
+          ],
+          "expected": [
+            0.0057692307692307696,
+            0.0,
+            0.0
+          ],
+          "immediate": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "post": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "immediate_pass": false,
+          "post_pass": false,
+          "post_scalar_params": {
+            "cached_inverse_inertia": 0.0,
+            "cached_inverse_mass": 0.001923076924867928,
+            "direct_velocity_bits": "000000000000000000000000000000000000000000000000",
+            "inertia": 70453.6484375,
+            "local_com": [
+              0.0,
+              0.0
+            ],
+            "mass": 520.0,
+            "pose_bits": "000000000000f03f00000000000000000000000000000080000000000000f03f000000a056aa4c400000000000f04240",
+            "rid": 26,
+            "sleeping": false,
+            "steps": 1,
+            "velocity_bits": "000000000000000000000000000000000000000000000000"
+          },
+          "COM_lever_reference_difference": 0.0
+        },
+        {
+          "coordinate": [
+            "tree",
+            "custom_fresh",
+            2.0,
+            "central"
+          ],
+          "expected": [
+            0.0057692307692307696,
+            0.0,
+            0.0
+          ],
+          "immediate": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "post": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "immediate_pass": false,
+          "post_pass": false,
+          "post_scalar_params": {
+            "cached_inverse_inertia": 0.0,
+            "cached_inverse_mass": 0.001923076924867928,
+            "direct_velocity_bits": "000000000000000000000000000000000000000000000000",
+            "inertia": 140907.296875,
+            "local_com": [
+              0.0,
+              0.0
+            ],
+            "mass": 520.0,
+            "pose_bits": "000000000000f03f00000000000000000000000000000080000000000000f03f000000a056aa4c400000000000f04240",
+            "rid": 46,
+            "sleeping": false,
+            "steps": 1,
+            "velocity_bits": "000000000000000000000000000000000000000000000000"
+          },
+          "COM_lever_reference_difference": 0.0
+        },
+        {
+          "coordinate": [
+            "tree",
+            "custom_fresh",
+            1.0,
+            "offcentre"
+          ],
+          "expected": [
+            0.0,
+            0.0057692307692307696,
+            4.2581186741859875e-05
+          ],
+          "immediate": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "post": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "immediate_pass": false,
+          "post_pass": false,
+          "post_scalar_params": {
+            "cached_inverse_inertia": 0.0,
+            "cached_inverse_mass": 0.001923076924867928,
+            "direct_velocity_bits": "000000000000000000000000000000000000000000000000",
+            "inertia": 70453.6484375,
+            "local_com": [
+              0.0,
+              0.0
+            ],
+            "mass": 520.0,
+            "pose_bits": "000000000000f03f00000000000000000000000000000080000000000000f03f000000a056aa4c400000000000f04240",
+            "rid": 66,
+            "sleeping": false,
+            "steps": 1,
+            "velocity_bits": "000000000000000000000000000000000000000000000000"
+          },
+          "COM_lever_reference_difference": -0.0
+        },
+        {
+          "coordinate": [
+            "tree",
+            "custom_fresh",
+            2.0,
+            "offcentre"
+          ],
+          "expected": [
+            0.0,
+            0.0057692307692307696,
+            2.1290593370929937e-05
+          ],
+          "immediate": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "post": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "immediate_pass": false,
+          "post_pass": false,
+          "post_scalar_params": {
+            "cached_inverse_inertia": 0.0,
+            "cached_inverse_mass": 0.001923076924867928,
+            "direct_velocity_bits": "000000000000000000000000000000000000000000000000",
+            "inertia": 140907.296875,
+            "local_com": [
+              0.0,
+              0.0
+            ],
+            "mass": 520.0,
+            "pose_bits": "000000000000f03f00000000000000000000000000000080000000000000f03f000000a056aa4c400000000000f04240",
+            "rid": 86,
+            "sleeping": false,
+            "steps": 1,
+            "velocity_bits": "000000000000000000000000000000000000000000000000"
+          },
+          "COM_lever_reference_difference": -0.0
+        },
+        {
+          "coordinate": [
+            "tree",
+            "custom_after_zero_g_step",
+            1.0,
+            "central"
+          ],
+          "expected": [
+            0.0057692307692307696,
+            0.0,
+            0.0
+          ],
+          "immediate": [
+            0.005769230891019106,
+            0.0,
+            0.0
+          ],
+          "post": [
+            0.005769230891019106,
+            0.0,
+            0.0
+          ],
+          "immediate_pass": true,
+          "post_pass": true,
+          "post_scalar_params": {
+            "cached_inverse_inertia": 0.0,
+            "cached_inverse_mass": 0.001923076924867928,
+            "direct_velocity_bits": "000000207aa1773f00000000000000000000000000000000",
+            "inertia": 70453.6484375,
+            "local_com": [
+              0.0,
+              0.0
+            ],
+            "mass": 520.0,
+            "pose_bits": "000000000000f03f00000000000000000000000000000080000000000000f03f000000a059aa4c400000000000f04240",
+            "rid": 106,
+            "sleeping": false,
+            "steps": 2,
+            "velocity_bits": "000000207aa1773f00000000000000000000000000000000"
+          },
+          "COM_lever_reference_difference": 0.0
+        },
+        {
+          "coordinate": [
+            "tree",
+            "custom_after_zero_g_step",
+            2.0,
+            "central"
+          ],
+          "expected": [
+            0.0057692307692307696,
+            0.0,
+            0.0
+          ],
+          "immediate": [
+            0.005769230891019106,
+            0.0,
+            0.0
+          ],
+          "post": [
+            0.005769230891019106,
+            0.0,
+            0.0
+          ],
+          "immediate_pass": true,
+          "post_pass": true,
+          "post_scalar_params": {
+            "cached_inverse_inertia": 0.0,
+            "cached_inverse_mass": 0.001923076924867928,
+            "direct_velocity_bits": "000000207aa1773f00000000000000000000000000000000",
+            "inertia": 140907.296875,
+            "local_com": [
+              0.0,
+              0.0
+            ],
+            "mass": 520.0,
+            "pose_bits": "000000000000f03f00000000000000000000000000000080000000000000f03f000000a059aa4c400000000000f04240",
+            "rid": 126,
+            "sleeping": false,
+            "steps": 2,
+            "velocity_bits": "000000207aa1773f00000000000000000000000000000000"
+          },
+          "COM_lever_reference_difference": 0.0
+        },
+        {
+          "coordinate": [
+            "tree",
+            "custom_after_zero_g_step",
+            1.0,
+            "offcentre"
+          ],
+          "expected": [
+            0.0,
+            0.0057692307692307696,
+            4.2581186741859875e-05
+          ],
+          "immediate": [
+            0.0,
+            0.005769230891019106,
+            4.258118860889226e-05
+          ],
+          "post": [
+            0.0,
+            0.005769230891019106,
+            4.258118860889226e-05
+          ],
+          "immediate_pass": true,
+          "post_pass": true,
+          "post_scalar_params": {
+            "cached_inverse_inertia": 0.0,
+            "cached_inverse_mass": 0.001923076924867928,
+            "direct_velocity_bits": "0000000000000000000000207aa1773f000000802653063f",
+            "inertia": 70453.6484375,
+            "local_com": [
+              0.0,
+              0.0
+            ],
+            "mass": 520.0,
+            "pose_bits": "000000000000f03f0000002029d0a73e0000002029d0a7be000000000000f03f000000a056aa4c400000000003f04240",
+            "rid": 146,
+            "sleeping": false,
+            "steps": 2,
+            "velocity_bits": "0000000000000000000000207aa1773f000000802653063f"
+          },
+          "COM_lever_reference_difference": -0.0
+        },
+        {
+          "coordinate": [
+            "tree",
+            "custom_after_zero_g_step",
+            2.0,
+            "offcentre"
+          ],
+          "expected": [
+            0.0,
+            0.0057692307692307696,
+            2.1290593370929937e-05
+          ],
+          "immediate": [
+            0.0,
+            0.005769230891019106,
+            2.129059430444613e-05
+          ],
+          "post": [
+            0.0,
+            0.005769230891019106,
+            2.129059430444613e-05
+          ],
+          "immediate_pass": true,
+          "post_pass": true,
+          "post_scalar_params": {
+            "cached_inverse_inertia": 0.0,
+            "cached_inverse_mass": 0.001923076924867928,
+            "direct_velocity_bits": "0000000000000000000000207aa1773f000000802653f63e",
+            "inertia": 140907.296875,
+            "local_com": [
+              0.0,
+              0.0
+            ],
+            "mass": 520.0,
+            "pose_bits": "000000000000f03f0000002029d0973e0000002029d097be000000000000f03f000000a056aa4c400000000003f04240",
+            "rid": 166,
+            "sleeping": false,
+            "steps": 2,
+            "velocity_bits": "0000000000000000000000207aa1773f000000802653f63e"
+          },
+          "COM_lever_reference_difference": -0.0
+        },
+        {
+          "coordinate": [
+            "tree",
+            "auto_com_custom_inertia_fresh",
+            1.0,
+            "central"
+          ],
+          "expected": [
+            0.0057692307692307696,
+            0.0,
+            0.0
+          ],
+          "immediate": [
+            0.005769230891019106,
+            0.0,
+            0.0
+          ],
+          "post": [
+            0.005769230891019106,
+            0.0,
+            0.0
+          ],
+          "immediate_pass": true,
+          "post_pass": true,
+          "post_scalar_params": {
+            "cached_inverse_inertia": 1.419372892996762e-05,
+            "cached_inverse_mass": 0.001923076924867928,
+            "direct_velocity_bits": "000000207aa1773f00000000000000000000000000000000",
+            "inertia": 70453.6484375,
+            "local_com": [
+              5.868765242666996e-07,
+              2.34750601180167e-07
+            ],
+            "mass": 520.0,
+            "pose_bits": "000000000000f03f00000000000000000000000000000080000000000000f03f000000a059aa4c400000000000f04240",
+            "rid": 186,
+            "sleeping": false,
+            "steps": 1,
+            "velocity_bits": "000000207aa1773f00000000000000000000000000000000"
+          },
+          "COM_lever_reference_difference": 0.0
+        },
+        {
+          "coordinate": [
+            "tree",
+            "auto_com_custom_inertia_fresh",
+            2.0,
+            "central"
+          ],
+          "expected": [
+            0.0057692307692307696,
+            0.0,
+            0.0
+          ],
+          "immediate": [
+            0.005769230891019106,
+            0.0,
+            0.0
+          ],
+          "post": [
+            0.005769230891019106,
+            0.0,
+            0.0
+          ],
+          "immediate_pass": true,
+          "post_pass": true,
+          "post_scalar_params": {
+            "cached_inverse_inertia": 7.09686446498381e-06,
+            "cached_inverse_mass": 0.001923076924867928,
+            "direct_velocity_bits": "000000207aa1773f00000000000000000000000000000000",
+            "inertia": 140907.296875,
+            "local_com": [
+              5.868765242666996e-07,
+              2.34750601180167e-07
+            ],
+            "mass": 520.0,
+            "pose_bits": "000000000000f03f00000000000000000000000000000080000000000000f03f000000a059aa4c400000000000f04240",
+            "rid": 206,
+            "sleeping": false,
+            "steps": 1,
+            "velocity_bits": "000000207aa1773f00000000000000000000000000000000"
+          },
+          "COM_lever_reference_difference": 0.0
+        },
+        {
+          "coordinate": [
+            "tree",
+            "auto_com_custom_inertia_fresh",
+            1.0,
+            "offcentre"
+          ],
+          "expected": [
+            0.0,
+            0.0057692307692307696,
+            4.2581186741859875e-05
+          ],
+          "immediate": [
+            0.0,
+            0.005769230891019106,
+            4.258118860889226e-05
+          ],
+          "post": [
+            0.0,
+            0.005769230891019106,
+            4.258118860889226e-05
+          ],
+          "immediate_pass": true,
+          "post_pass": true,
+          "post_scalar_params": {
+            "cached_inverse_inertia": 1.419372892996762e-05,
+            "cached_inverse_mass": 0.001923076924867928,
+            "direct_velocity_bits": "0000000000000000000000207aa1773f000000802653063f",
+            "inertia": 70453.6484375,
+            "local_com": [
+              5.868765242666996e-07,
+              2.34750601180167e-07
+            ],
+            "mass": 520.0,
+            "pose_bits": "000000000000f03f0000002029d0a73e0000002029d0a7be000000000000f03f000000a056aa4c400000000003f04240",
+            "rid": 226,
+            "sleeping": false,
+            "steps": 1,
+            "velocity_bits": "0000000000000000000000207aa1773f000000802653063f"
+          },
+          "COM_lever_reference_difference": -2.4989899201060784e-11
+        },
+        {
+          "coordinate": [
+            "tree",
+            "auto_com_custom_inertia_fresh",
+            2.0,
+            "offcentre"
+          ],
+          "expected": [
+            0.0,
+            0.0057692307692307696,
+            2.1290593370929937e-05
+          ],
+          "immediate": [
+            0.0,
+            0.005769230891019106,
+            2.129059430444613e-05
+          ],
+          "post": [
+            0.0,
+            0.005769230891019106,
+            2.129059430444613e-05
+          ],
+          "immediate_pass": true,
+          "post_pass": true,
+          "post_scalar_params": {
+            "cached_inverse_inertia": 7.09686446498381e-06,
+            "cached_inverse_mass": 0.001923076924867928,
+            "direct_velocity_bits": "0000000000000000000000207aa1773f000000802653f63e",
+            "inertia": 140907.296875,
+            "local_com": [
+              5.868765242666996e-07,
+              2.34750601180167e-07
+            ],
+            "mass": 520.0,
+            "pose_bits": "000000000000f03f0000002029d0973e0000002029d097be000000000000f03f000000a056aa4c400000000003f04240",
+            "rid": 246,
+            "sleeping": false,
+            "steps": 1,
+            "velocity_bits": "0000000000000000000000207aa1773f000000802653f63e"
+          },
+          "COM_lever_reference_difference": -1.2494949600530392e-11
+        },
+        {
+          "coordinate": [
+            "tree",
+            "auto_com_before_custom_inertia_fresh",
+            1.0,
+            "central"
+          ],
+          "expected": [
+            0.0057692307692307696,
+            0.0,
+            0.0
+          ],
+          "immediate": [
+            0.005769230891019106,
+            0.0,
+            0.0
+          ],
+          "post": [
+            0.005769230891019106,
+            0.0,
+            0.0
+          ],
+          "immediate_pass": true,
+          "post_pass": true,
+          "post_scalar_params": {
+            "cached_inverse_inertia": 1.419372892996762e-05,
+            "cached_inverse_mass": 0.001923076924867928,
+            "direct_velocity_bits": "000000207aa1773f00000000000000000000000000000000",
+            "inertia": 70453.6484375,
+            "local_com": [
+              5.868765242666996e-07,
+              2.34750601180167e-07
+            ],
+            "mass": 520.0,
+            "pose_bits": "000000000000f03f00000000000000000000000000000080000000000000f03f000000a059aa4c400000000000f04240",
+            "rid": 266,
+            "sleeping": false,
+            "steps": 1,
+            "velocity_bits": "000000207aa1773f00000000000000000000000000000000"
+          },
+          "COM_lever_reference_difference": 0.0
+        },
+        {
+          "coordinate": [
+            "tree",
+            "auto_com_before_custom_inertia_fresh",
+            2.0,
+            "central"
+          ],
+          "expected": [
+            0.0057692307692307696,
+            0.0,
+            0.0
+          ],
+          "immediate": [
+            0.005769230891019106,
+            0.0,
+            0.0
+          ],
+          "post": [
+            0.005769230891019106,
+            0.0,
+            0.0
+          ],
+          "immediate_pass": true,
+          "post_pass": true,
+          "post_scalar_params": {
+            "cached_inverse_inertia": 7.09686446498381e-06,
+            "cached_inverse_mass": 0.001923076924867928,
+            "direct_velocity_bits": "000000207aa1773f00000000000000000000000000000000",
+            "inertia": 140907.296875,
+            "local_com": [
+              5.868765242666996e-07,
+              2.34750601180167e-07
+            ],
+            "mass": 520.0,
+            "pose_bits": "000000000000f03f00000000000000000000000000000080000000000000f03f000000a059aa4c400000000000f04240",
+            "rid": 286,
+            "sleeping": false,
+            "steps": 1,
+            "velocity_bits": "000000207aa1773f00000000000000000000000000000000"
+          },
+          "COM_lever_reference_difference": 0.0
+        },
+        {
+          "coordinate": [
+            "tree",
+            "auto_com_before_custom_inertia_fresh",
+            1.0,
+            "offcentre"
+          ],
+          "expected": [
+            0.0,
+            0.0057692307692307696,
+            4.2581186741859875e-05
+          ],
+          "immediate": [
+            0.0,
+            0.005769230891019106,
+            4.258118860889226e-05
+          ],
+          "post": [
+            0.0,
+            0.005769230891019106,
+            4.258118860889226e-05
+          ],
+          "immediate_pass": true,
+          "post_pass": true,
+          "post_scalar_params": {
+            "cached_inverse_inertia": 1.419372892996762e-05,
+            "cached_inverse_mass": 0.001923076924867928,
+            "direct_velocity_bits": "0000000000000000000000207aa1773f000000802653063f",
+            "inertia": 70453.6484375,
+            "local_com": [
+              5.868765242666996e-07,
+              2.34750601180167e-07
+            ],
+            "mass": 520.0,
+            "pose_bits": "000000000000f03f0000002029d0a73e0000002029d0a7be000000000000f03f000000a056aa4c400000000003f04240",
+            "rid": 306,
+            "sleeping": false,
+            "steps": 1,
+            "velocity_bits": "0000000000000000000000207aa1773f000000802653063f"
+          },
+          "COM_lever_reference_difference": -2.4989899201060784e-11
+        },
+        {
+          "coordinate": [
+            "tree",
+            "auto_com_before_custom_inertia_fresh",
+            2.0,
+            "offcentre"
+          ],
+          "expected": [
+            0.0,
+            0.0057692307692307696,
+            2.1290593370929937e-05
+          ],
+          "immediate": [
+            0.0,
+            0.005769230891019106,
+            2.129059430444613e-05
+          ],
+          "post": [
+            0.0,
+            0.005769230891019106,
+            2.129059430444613e-05
+          ],
+          "immediate_pass": true,
+          "post_pass": true,
+          "post_scalar_params": {
+            "cached_inverse_inertia": 7.09686446498381e-06,
+            "cached_inverse_mass": 0.001923076924867928,
+            "direct_velocity_bits": "0000000000000000000000207aa1773f000000802653f63e",
+            "inertia": 140907.296875,
+            "local_com": [
+              5.868765242666996e-07,
+              2.34750601180167e-07
+            ],
+            "mass": 520.0,
+            "pose_bits": "000000000000f03f0000002029d0973e0000002029d097be000000000000f03f000000a056aa4c400000000003f04240",
+            "rid": 326,
+            "sleeping": false,
+            "steps": 1,
+            "velocity_bits": "0000000000000000000000207aa1773f000000802653f63e"
+          },
+          "COM_lever_reference_difference": -1.2494949600530392e-11
+        },
+        {
+          "coordinate": [
+            "building",
+            "custom_fresh",
+            1.0,
+            "central"
+          ],
+          "expected": [
+            0.008426966292134831,
+            0.0,
+            0.0
+          ],
+          "immediate": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "post": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "immediate_pass": false,
+          "post_pass": false,
+          "post_scalar_params": {
+            "cached_inverse_inertia": 0.0,
+            "cached_inverse_mass": 0.002808988792821765,
+            "direct_velocity_bits": "000000000000000000000000000000000000000000000000",
+            "inertia": 59192.15234375,
+            "local_com": [
+              0.0,
+              0.0
+            ],
+            "mass": 356.0,
+            "pose_bits": "000000000000f03f00000000000000000000000000000080000000000000f03f00000000bbd74d40000000208a904440",
+            "rid": 346,
+            "sleeping": false,
+            "steps": 1,
+            "velocity_bits": "000000000000000000000000000000000000000000000000"
+          },
+          "COM_lever_reference_difference": 0.0
+        },
+        {
+          "coordinate": [
+            "building",
+            "custom_fresh",
+            2.0,
+            "central"
+          ],
+          "expected": [
+            0.008426966292134831,
+            0.0,
+            0.0
+          ],
+          "immediate": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "post": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "immediate_pass": false,
+          "post_pass": false,
+          "post_scalar_params": {
+            "cached_inverse_inertia": 0.0,
+            "cached_inverse_mass": 0.002808988792821765,
+            "direct_velocity_bits": "000000000000000000000000000000000000000000000000",
+            "inertia": 118384.3046875,
+            "local_com": [
+              0.0,
+              0.0
+            ],
+            "mass": 356.0,
+            "pose_bits": "000000000000f03f00000000000000000000000000000080000000000000f03f00000000bbd74d40000000208a904440",
+            "rid": 364,
+            "sleeping": false,
+            "steps": 1,
+            "velocity_bits": "000000000000000000000000000000000000000000000000"
+          },
+          "COM_lever_reference_difference": 0.0
+        },
+        {
+          "coordinate": [
+            "building",
+            "custom_fresh",
+            1.0,
+            "offcentre"
+          ],
+          "expected": [
+            0.0,
+            0.008426966292134831,
+            5.0682393183376306e-05
+          ],
+          "immediate": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "post": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "immediate_pass": false,
+          "post_pass": false,
+          "post_scalar_params": {
+            "cached_inverse_inertia": 0.0,
+            "cached_inverse_mass": 0.002808988792821765,
+            "direct_velocity_bits": "000000000000000000000000000000000000000000000000",
+            "inertia": 59192.15234375,
+            "local_com": [
+              0.0,
+              0.0
+            ],
+            "mass": 356.0,
+            "pose_bits": "000000000000f03f00000000000000000000000000000080000000000000f03f00000000bbd74d40000000208a904440",
+            "rid": 382,
+            "sleeping": false,
+            "steps": 1,
+            "velocity_bits": "000000000000000000000000000000000000000000000000"
+          },
+          "COM_lever_reference_difference": -0.0
+        },
+        {
+          "coordinate": [
+            "building",
+            "custom_fresh",
+            2.0,
+            "offcentre"
+          ],
+          "expected": [
+            0.0,
+            0.008426966292134831,
+            2.5341196591688153e-05
+          ],
+          "immediate": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "post": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "immediate_pass": false,
+          "post_pass": false,
+          "post_scalar_params": {
+            "cached_inverse_inertia": 0.0,
+            "cached_inverse_mass": 0.002808988792821765,
+            "direct_velocity_bits": "000000000000000000000000000000000000000000000000",
+            "inertia": 118384.3046875,
+            "local_com": [
+              0.0,
+              0.0
+            ],
+            "mass": 356.0,
+            "pose_bits": "000000000000f03f00000000000000000000000000000080000000000000f03f00000000bbd74d40000000208a904440",
+            "rid": 400,
+            "sleeping": false,
+            "steps": 1,
+            "velocity_bits": "000000000000000000000000000000000000000000000000"
+          },
+          "COM_lever_reference_difference": -0.0
+        },
+        {
+          "coordinate": [
+            "building",
+            "custom_after_zero_g_step",
+            1.0,
+            "central"
+          ],
+          "expected": [
+            0.008426966292134831,
+            0.0,
+            0.0
+          ],
+          "immediate": [
+            0.008426966145634651,
+            0.0,
+            0.0
+          ],
+          "post": [
+            0.008426966145634651,
+            0.0,
+            0.0
+          ],
+          "immediate_pass": true,
+          "post_pass": true,
+          "post_scalar_params": {
+            "cached_inverse_inertia": 0.0,
+            "cached_inverse_mass": 0.002808988792821765,
+            "direct_velocity_bits": "000000402842813f00000000000000000000000000000000",
+            "inertia": 59192.15234375,
+            "local_com": [
+              0.0,
+              0.0
+            ],
+            "mass": 356.0,
+            "pose_bits": "000000000000f03f00000000000000000000000000000080000000000000f03f00000080bfd74d40000000208a904440",
+            "rid": 418,
+            "sleeping": false,
+            "steps": 2,
+            "velocity_bits": "000000402842813f00000000000000000000000000000000"
+          },
+          "COM_lever_reference_difference": 0.0
+        },
+        {
+          "coordinate": [
+            "building",
+            "custom_after_zero_g_step",
+            2.0,
+            "central"
+          ],
+          "expected": [
+            0.008426966292134831,
+            0.0,
+            0.0
+          ],
+          "immediate": [
+            0.008426966145634651,
+            0.0,
+            0.0
+          ],
+          "post": [
+            0.008426966145634651,
+            0.0,
+            0.0
+          ],
+          "immediate_pass": true,
+          "post_pass": true,
+          "post_scalar_params": {
+            "cached_inverse_inertia": 0.0,
+            "cached_inverse_mass": 0.002808988792821765,
+            "direct_velocity_bits": "000000402842813f00000000000000000000000000000000",
+            "inertia": 118384.3046875,
+            "local_com": [
+              0.0,
+              0.0
+            ],
+            "mass": 356.0,
+            "pose_bits": "000000000000f03f00000000000000000000000000000080000000000000f03f00000080bfd74d40000000208a904440",
+            "rid": 436,
+            "sleeping": false,
+            "steps": 2,
+            "velocity_bits": "000000402842813f00000000000000000000000000000000"
+          },
+          "COM_lever_reference_difference": 0.0
+        },
+        {
+          "coordinate": [
+            "building",
+            "custom_after_zero_g_step",
+            1.0,
+            "offcentre"
+          ],
+          "expected": [
+            0.0,
+            0.008426966292134831,
+            5.0682393183376306e-05
+          ],
+          "immediate": [
+            0.0,
+            0.008426966145634651,
+            5.0682392611633986e-05
+          ],
+          "post": [
+            0.0,
+            0.008426966145634651,
+            5.0682392611633986e-05
+          ],
+          "immediate_pass": true,
+          "post_pass": true,
+          "post_scalar_params": {
+            "cached_inverse_inertia": 0.0,
+            "cached_inverse_mass": 0.002808988792821765,
+            "direct_velocity_bits": "0000000000000000000000402842813f000000c079920a3f",
+            "inertia": 59192.15234375,
+            "local_com": [
+              0.0,
+              0.0
+            ],
+            "mass": 356.0,
+            "pose_bits": "000000000000f03f00000060f957ac3e00000060f957acbe000000000000f03f00000000bbd74d40000000a08e904440",
+            "rid": 454,
+            "sleeping": false,
+            "steps": 2,
+            "velocity_bits": "0000000000000000000000402842813f000000c079920a3f"
+          },
+          "COM_lever_reference_difference": -0.0
+        },
+        {
+          "coordinate": [
+            "building",
+            "custom_after_zero_g_step",
+            2.0,
+            "offcentre"
+          ],
+          "expected": [
+            0.0,
+            0.008426966292134831,
+            2.5341196591688153e-05
+          ],
+          "immediate": [
+            0.0,
+            0.008426966145634651,
+            2.5341196305816993e-05
+          ],
+          "post": [
+            0.0,
+            0.008426966145634651,
+            2.5341196305816993e-05
+          ],
+          "immediate_pass": true,
+          "post_pass": true,
+          "post_scalar_params": {
+            "cached_inverse_inertia": 0.0,
+            "cached_inverse_mass": 0.002808988792821765,
+            "direct_velocity_bits": "0000000000000000000000402842813f000000c07992fa3e",
+            "inertia": 118384.3046875,
+            "local_com": [
+              0.0,
+              0.0
+            ],
+            "mass": 356.0,
+            "pose_bits": "000000000000f03f00000060f9579c3e00000060f9579cbe000000000000f03f00000000bbd74d40000000a08e904440",
+            "rid": 472,
+            "sleeping": false,
+            "steps": 2,
+            "velocity_bits": "0000000000000000000000402842813f000000c07992fa3e"
+          },
+          "COM_lever_reference_difference": -0.0
+        },
+        {
+          "coordinate": [
+            "building",
+            "auto_com_custom_inertia_fresh",
+            1.0,
+            "central"
+          ],
+          "expected": [
+            0.008426966292134831,
+            0.0,
+            0.0
+          ],
+          "immediate": [
+            0.008426966145634651,
+            0.0,
+            0.0
+          ],
+          "post": [
+            0.008426966145634651,
+            0.0,
+            0.0
+          ],
+          "immediate_pass": true,
+          "post_pass": true,
+          "post_scalar_params": {
+            "cached_inverse_inertia": 1.6894131476874463e-05,
+            "cached_inverse_mass": 0.002808988792821765,
+            "direct_velocity_bits": "000000402842813f00000000000000000000000000000000",
+            "inertia": 59192.15234375,
+            "local_com": [
+              -1.2001295317531913e-06,
+              -1.7144707271654624e-06
+            ],
+            "mass": 356.0,
+            "pose_bits": "000000000000f03f00000000000000000000000000000080000000000000f03f00000080bfd74d40000000208a904440",
+            "rid": 490,
+            "sleeping": false,
+            "steps": 1,
+            "velocity_bits": "000000402842813f00000000000000000000000000000000"
+          },
+          "COM_lever_reference_difference": 0.0
+        },
+        {
+          "coordinate": [
+            "building",
+            "auto_com_custom_inertia_fresh",
+            2.0,
+            "central"
+          ],
+          "expected": [
+            0.008426966292134831,
+            0.0,
+            0.0
+          ],
+          "immediate": [
+            0.008426966145634651,
+            0.0,
+            0.0
+          ],
+          "post": [
+            0.008426966145634651,
+            0.0,
+            0.0
+          ],
+          "immediate_pass": true,
+          "post_pass": true,
+          "post_scalar_params": {
+            "cached_inverse_inertia": 8.447065738437232e-06,
+            "cached_inverse_mass": 0.002808988792821765,
+            "direct_velocity_bits": "000000402842813f00000000000000000000000000000000",
+            "inertia": 118384.3046875,
+            "local_com": [
+              -1.2001295317531913e-06,
+              -1.7144707271654624e-06
+            ],
+            "mass": 356.0,
+            "pose_bits": "000000000000f03f00000000000000000000000000000080000000000000f03f00000080bfd74d40000000208a904440",
+            "rid": 508,
+            "sleeping": false,
+            "steps": 1,
+            "velocity_bits": "000000402842813f00000000000000000000000000000000"
+          },
+          "COM_lever_reference_difference": 0.0
+        },
+        {
+          "coordinate": [
+            "building",
+            "auto_com_custom_inertia_fresh",
+            1.0,
+            "offcentre"
+          ],
+          "expected": [
+            0.0,
+            0.008426966292134831,
+            5.0682393183376306e-05
+          ],
+          "immediate": [
+            0.0,
+            0.008426966145634651,
+            5.0682392611633986e-05
+          ],
+          "post": [
+            0.0,
+            0.008426966145634651,
+            5.0682392611633986e-05
+          ],
+          "immediate_pass": true,
+          "post_pass": true,
+          "post_scalar_params": {
+            "cached_inverse_inertia": 1.6894131476874463e-05,
+            "cached_inverse_mass": 0.002808988792821765,
+            "direct_velocity_bits": "0000000000000000000000402842813f000000c079920a3f",
+            "inertia": 59192.15234375,
+            "local_com": [
+              -1.2001295317531913e-06,
+              -1.7144707271654624e-06
+            ],
+            "mass": 356.0,
+            "pose_bits": "000000000000f03f00000060f957ac3e00000060f957acbe000000000000f03f00000000bbd74d40000000a08e904440",
+            "rid": 526,
+            "sleeping": false,
+            "steps": 1,
+            "velocity_bits": "0000000000000000000000402842813f000000c079920a3f"
+          },
+          "COM_lever_reference_difference": 6.082543804710512e-11
+        },
+        {
+          "coordinate": [
+            "building",
+            "auto_com_custom_inertia_fresh",
+            2.0,
+            "offcentre"
+          ],
+          "expected": [
+            0.0,
+            0.008426966292134831,
+            2.5341196591688153e-05
+          ],
+          "immediate": [
+            0.0,
+            0.008426966145634651,
+            2.5341196305816993e-05
+          ],
+          "post": [
+            0.0,
+            0.008426966145634651,
+            2.5341196305816993e-05
+          ],
+          "immediate_pass": true,
+          "post_pass": true,
+          "post_scalar_params": {
+            "cached_inverse_inertia": 8.447065738437232e-06,
+            "cached_inverse_mass": 0.002808988792821765,
+            "direct_velocity_bits": "0000000000000000000000402842813f000000c07992fa3e",
+            "inertia": 118384.3046875,
+            "local_com": [
+              -1.2001295317531913e-06,
+              -1.7144707271654624e-06
+            ],
+            "mass": 356.0,
+            "pose_bits": "000000000000f03f00000060f9579c3e00000060f9579cbe000000000000f03f00000000bbd74d40000000a08e904440",
+            "rid": 544,
+            "sleeping": false,
+            "steps": 1,
+            "velocity_bits": "0000000000000000000000402842813f000000c07992fa3e"
+          },
+          "COM_lever_reference_difference": 3.041271902355256e-11
+        },
+        {
+          "coordinate": [
+            "building",
+            "auto_com_before_custom_inertia_fresh",
+            1.0,
+            "central"
+          ],
+          "expected": [
+            0.008426966292134831,
+            0.0,
+            0.0
+          ],
+          "immediate": [
+            0.008426966145634651,
+            0.0,
+            0.0
+          ],
+          "post": [
+            0.008426966145634651,
+            0.0,
+            0.0
+          ],
+          "immediate_pass": true,
+          "post_pass": true,
+          "post_scalar_params": {
+            "cached_inverse_inertia": 1.6894131476874463e-05,
+            "cached_inverse_mass": 0.002808988792821765,
+            "direct_velocity_bits": "000000402842813f00000000000000000000000000000000",
+            "inertia": 59192.15234375,
+            "local_com": [
+              -1.2001295317531913e-06,
+              -1.7144707271654624e-06
+            ],
+            "mass": 356.0,
+            "pose_bits": "000000000000f03f00000000000000000000000000000080000000000000f03f00000080bfd74d40000000208a904440",
+            "rid": 562,
+            "sleeping": false,
+            "steps": 1,
+            "velocity_bits": "000000402842813f00000000000000000000000000000000"
+          },
+          "COM_lever_reference_difference": 0.0
+        },
+        {
+          "coordinate": [
+            "building",
+            "auto_com_before_custom_inertia_fresh",
+            2.0,
+            "central"
+          ],
+          "expected": [
+            0.008426966292134831,
+            0.0,
+            0.0
+          ],
+          "immediate": [
+            0.008426966145634651,
+            0.0,
+            0.0
+          ],
+          "post": [
+            0.008426966145634651,
+            0.0,
+            0.0
+          ],
+          "immediate_pass": true,
+          "post_pass": true,
+          "post_scalar_params": {
+            "cached_inverse_inertia": 8.447065738437232e-06,
+            "cached_inverse_mass": 0.002808988792821765,
+            "direct_velocity_bits": "000000402842813f00000000000000000000000000000000",
+            "inertia": 118384.3046875,
+            "local_com": [
+              -1.2001295317531913e-06,
+              -1.7144707271654624e-06
+            ],
+            "mass": 356.0,
+            "pose_bits": "000000000000f03f00000000000000000000000000000080000000000000f03f00000080bfd74d40000000208a904440",
+            "rid": 580,
+            "sleeping": false,
+            "steps": 1,
+            "velocity_bits": "000000402842813f00000000000000000000000000000000"
+          },
+          "COM_lever_reference_difference": 0.0
+        },
+        {
+          "coordinate": [
+            "building",
+            "auto_com_before_custom_inertia_fresh",
+            1.0,
+            "offcentre"
+          ],
+          "expected": [
+            0.0,
+            0.008426966292134831,
+            5.0682393183376306e-05
+          ],
+          "immediate": [
+            0.0,
+            0.008426966145634651,
+            5.0682392611633986e-05
+          ],
+          "post": [
+            0.0,
+            0.008426966145634651,
+            5.0682392611633986e-05
+          ],
+          "immediate_pass": true,
+          "post_pass": true,
+          "post_scalar_params": {
+            "cached_inverse_inertia": 1.6894131476874463e-05,
+            "cached_inverse_mass": 0.002808988792821765,
+            "direct_velocity_bits": "0000000000000000000000402842813f000000c079920a3f",
+            "inertia": 59192.15234375,
+            "local_com": [
+              -1.2001295317531913e-06,
+              -1.7144707271654624e-06
+            ],
+            "mass": 356.0,
+            "pose_bits": "000000000000f03f00000060f957ac3e00000060f957acbe000000000000f03f00000000bbd74d40000000a08e904440",
+            "rid": 598,
+            "sleeping": false,
+            "steps": 1,
+            "velocity_bits": "0000000000000000000000402842813f000000c079920a3f"
+          },
+          "COM_lever_reference_difference": 6.082543804710512e-11
+        },
+        {
+          "coordinate": [
+            "building",
+            "auto_com_before_custom_inertia_fresh",
+            2.0,
+            "offcentre"
+          ],
+          "expected": [
+            0.0,
+            0.008426966292134831,
+            2.5341196591688153e-05
+          ],
+          "immediate": [
+            0.0,
+            0.008426966145634651,
+            2.5341196305816993e-05
+          ],
+          "post": [
+            0.0,
+            0.008426966145634651,
+            2.5341196305816993e-05
+          ],
+          "immediate_pass": true,
+          "post_pass": true,
+          "post_scalar_params": {
+            "cached_inverse_inertia": 8.447065738437232e-06,
+            "cached_inverse_mass": 0.002808988792821765,
+            "direct_velocity_bits": "0000000000000000000000402842813f000000c07992fa3e",
+            "inertia": 118384.3046875,
+            "local_com": [
+              -1.2001295317531913e-06,
+              -1.7144707271654624e-06
+            ],
+            "mass": 356.0,
+            "pose_bits": "000000000000f03f00000060f9579c3e00000060f9579cbe000000000000f03f00000000bbd74d40000000a08e904440",
+            "rid": 616,
+            "sleeping": false,
+            "steps": 1,
+            "velocity_bits": "0000000000000000000000402842813f000000c07992fa3e"
+          },
+          "COM_lever_reference_difference": 3.041271902355256e-11
+        }
+      ],
+      "ready_controls": 24,
+      "lost_impulse_controls": 8
+    }
+  }
+}

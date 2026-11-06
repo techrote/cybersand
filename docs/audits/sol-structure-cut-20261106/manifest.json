@@ -1,0 +1,613 @@
+{
+  "date": "2026-11-06",
+  "owning_branch": "codex/sol-structure-cut-20261106",
+  "code_checkpoint": "d5c3e05f0c4e6193e7f97a485736ab4bf65698b4",
+  "input_tree": "ac7701fd226f80ea7949354f884d3a91d3999c56",
+  "base": "e4c2649e82d943554f4dc6a0634336770cda08f6",
+  "sol_source": "1598115c9065239cc1eaec11e99077274b457be1",
+  "repair_ancestry": "bbca191544f6a578ee14323c08d48021904893f7",
+  "raw_dependent_patch": {
+    "path": "C:\\Users\\_\\.codex\\worktrees\\sol-structure-cut-20261106\\khybersand\\build\\sol-structure-cut\\dependent-code.patch",
+    "sha256": "ed6e376f75e8e297593f66bad489d1ada3067d1317fbf56fdf93cd108d6ffea8",
+    "bytes": 2894694
+  },
+  "native_delta_from393": [],
+  "upstream": [
+    {
+      "command": [
+        "C:/Program Files/GitHub CLI/gh.exe",
+        "pr",
+        "view",
+        "347",
+        "--repo",
+        "techrote/cybersand",
+        "--json",
+        "number,isDraft,headRefName,headRefOid,baseRefName,state"
+      ],
+      "exit": 0,
+      "result": {
+        "baseRefName": "main",
+        "headRefName": "sol-detach-001-current-main",
+        "headRefOid": "1598115c9065239cc1eaec11e99077274b457be1",
+        "isDraft": true,
+        "number": 347,
+        "state": "OPEN"
+      }
+    },
+    {
+      "command": [
+        "C:/Program Files/GitHub CLI/gh.exe",
+        "pr",
+        "view",
+        "386",
+        "--repo",
+        "techrote/cybersand",
+        "--json",
+        "number,isDraft,headRefName,headRefOid,baseRefName,state"
+      ],
+      "exit": 0,
+      "result": {
+        "baseRefName": "main",
+        "headRefName": "audit/mat-sol-protected-consumer-20261104",
+        "headRefOid": "b661a6f354f8c51e79759d22ad4573a875964b43",
+        "isDraft": true,
+        "number": 386,
+        "state": "OPEN"
+      }
+    },
+    {
+      "command": [
+        "C:/Program Files/GitHub CLI/gh.exe",
+        "pr",
+        "view",
+        "393",
+        "--repo",
+        "techrote/cybersand",
+        "--json",
+        "number,isDraft,headRefName,headRefOid,baseRefName,state"
+      ],
+      "exit": 0,
+      "result": {
+        "baseRefName": "sol-detach-001-current-main",
+        "headRefName": "fix/sol347-facade-refusal-20261104-095628",
+        "headRefOid": "e4c2649e82d943554f4dc6a0634336770cda08f6",
+        "isDraft": true,
+        "number": 393,
+        "state": "OPEN"
+      }
+    },
+    {
+      "command": [
+        "C:/Program Files/GitHub CLI/gh.exe",
+        "pr",
+        "view",
+        "394",
+        "--repo",
+        "techrote/cybersand",
+        "--json",
+        "number,isDraft,headRefName,headRefOid,baseRefName,state"
+      ],
+      "exit": 0,
+      "result": {
+        "baseRefName": "main",
+        "headRefName": "codex/workbench-consolidation-retry-20261104",
+        "headRefOid": "77c60b8e0f9b17192a4e04b20cd37ec55096c2c3",
+        "isDraft": false,
+        "number": 394,
+        "state": "MERGED"
+      }
+    },
+    {
+      "command": [
+        "C:/Program Files/GitHub CLI/gh.exe",
+        "pr",
+        "view",
+        "400",
+        "--repo",
+        "techrote/cybersand",
+        "--json",
+        "number,isDraft,headRefName,headRefOid,baseRefName,state"
+      ],
+      "exit": 0,
+      "result": {
+        "baseRefName": "codex/workbench-consolidation-retry-20261104",
+        "headRefName": "codex/experiment-la-selective-sol-feasibility-20261105",
+        "headRefOid": "a38098b1a807fc3ac7b60166e75b217dd7bc629e",
+        "isDraft": true,
+        "number": 400,
+        "state": "OPEN"
+      }
+    },
+    {
+      "command": [
+        "C:/Program Files/GitHub CLI/gh.exe",
+        "pr",
+        "view",
+        "407",
+        "--repo",
+        "techrote/cybersand",
+        "--json",
+        "number,isDraft,headRefName,headRefOid,baseRefName,state"
+      ],
+      "exit": 0,
+      "result": {
+        "baseRefName": "fix/sol347-facade-refusal-20261104-095628",
+        "headRefName": "codex/sol-energy-precision-20261105",
+        "headRefOid": "bbca191544f6a578ee14323c08d48021904893f7",
+        "isDraft": true,
+        "number": 407,
+        "state": "OPEN"
+      }
+    },
+    {
+      "command": [
+        "C:/Program Files/GitHub CLI/gh.exe",
+        "pr",
+        "view",
+        "429",
+        "--repo",
+        "techrote/cybersand",
+        "--json",
+        "number,isDraft,headRefName,headRefOid,baseRefName,state"
+      ],
+      "exit": 0,
+      "result": {
+        "baseRefName": "codex/sol-normal-active-20261105",
+        "headRefName": "codex/sol-active-normal-live-20261105",
+        "headRefOid": "67f93a28bc05fc3b90beec9ea32e60f0864af642",
+        "isDraft": true,
+        "number": 429,
+        "state": "OPEN"
+      }
+    }
+  ],
+  "main_remote": "06522e300dcf91efbab0ac8f4f4370af72cf2029\trefs/heads/main",
+  "retained": [
+    {
+      "path": "C:\\Users\\_\\.codex\\worktrees\\sol-structure-cut-20261106\\khybersand\\build\\sol-structure-cut\\dry-001",
+      "bytes": 277676878
+    },
+    {
+      "path": "C:\\Users\\_\\.codex\\worktrees\\sol-structure-cut-20261106\\khybersand\\build\\sol-structure-cut\\dry-002",
+      "bytes": 291271013
+    },
+    {
+      "path": "C:\\Users\\_\\.codex\\worktrees\\sol-structure-cut-20261106\\khybersand\\build\\sol-structure-cut\\dry-003",
+      "bytes": 609721465
+    },
+    {
+      "path": "C:\\Users\\_\\.codex\\worktrees\\sol-structure-cut-20261106\\khybersand\\build\\sol-structure-cut\\dry-fixed-001",
+      "bytes": 207039647
+    },
+    {
+      "path": "C:\\Users\\_\\.codex\\worktrees\\sol-structure-cut-20261106\\khybersand\\build\\sol-structure-cut\\energy-replay-001",
+      "bytes": 773171
+    },
+    {
+      "path": "C:\\Users\\_\\.codex\\worktrees\\sol-structure-cut-20261106\\khybersand\\build\\sol-structure-cut\\energy-replay-002",
+      "bytes": 854765
+    },
+    {
+      "path": "C:\\Users\\_\\.codex\\worktrees\\sol-structure-cut-20261106\\khybersand\\build\\sol-structure-cut\\original-001",
+      "bytes": 277510319
+    },
+    {
+      "path": "C:\\Users\\_\\.codex\\worktrees\\sol-structure-cut-20261106\\khybersand\\build\\sol-structure-cut\\original-002",
+      "bytes": 555265662
+    },
+    {
+      "path": "C:\\Users\\_\\.codex\\worktrees\\sol-structure-cut-20261106\\khybersand\\build\\sol-structure-cut\\packed-001",
+      "bytes": 656448957
+    },
+    {
+      "path": "C:\\Users\\_\\.codex\\worktrees\\sol-structure-cut-20261106\\khybersand\\build\\sol-structure-cut\\packed-fixed-001",
+      "bytes": 250837723
+    },
+    {
+      "path": "C:\\Users\\_\\.codex\\worktrees\\sol-structure-cut-20261106\\khybersand\\build\\sol-structure-cut\\rapier-fixed-001",
+      "bytes": 46882
+    },
+    {
+      "path": "C:\\Users\\_\\.codex\\worktrees\\sol-structure-cut-20261106\\khybersand\\build\\sol-structure-cut\\runtimes-001",
+      "bytes": 13985867
+    }
+  ],
+  "retained_files": [
+    {
+      "source": "C:\\Users\\_\\.codex\\worktrees\\sol-structure-cut-20261106\\khybersand\\build\\sol-structure-cut\\runtimes-001\\receipt.json",
+      "path": "docs\\audits\\sol-structure-cut-20261106\\runtimes-001\\receipt.json",
+      "bytes": 37392,
+      "original_raw_sha256": "b6af76ff9c454f9d4ce4a20aeede47bb0806b923d5fa6aa039c20580bdbcc869",
+      "git_lf_sha256": "b6af76ff9c454f9d4ce4a20aeede47bb0806b923d5fa6aa039c20580bdbcc869"
+    },
+    {
+      "source": "C:\\Users\\_\\.codex\\worktrees\\sol-structure-cut-20261106\\khybersand\\build\\sol-structure-cut\\original-001\\receipt.json",
+      "path": "docs\\audits\\sol-structure-cut-20261106\\original-001\\receipt.json",
+      "bytes": 225661,
+      "original_raw_sha256": "0f03f8f7a6a5b8ca50f805fa25afa2d486ead4cdd6df365a00dbea4475ce6eaf",
+      "git_lf_sha256": "0f03f8f7a6a5b8ca50f805fa25afa2d486ead4cdd6df365a00dbea4475ce6eaf"
+    },
+    {
+      "source": "C:\\Users\\_\\.codex\\worktrees\\sol-structure-cut-20261106\\khybersand\\build\\sol-structure-cut\\original-002\\receipt.json",
+      "path": "docs\\audits\\sol-structure-cut-20261106\\original-002\\receipt.json",
+      "bytes": 340505,
+      "original_raw_sha256": "fee924ac9b11ce5fae327f8c0d52f1e63b372e0cf40b2602e04a3acc473b67b8",
+      "git_lf_sha256": "fee924ac9b11ce5fae327f8c0d52f1e63b372e0cf40b2602e04a3acc473b67b8"
+    },
+    {
+      "source": "C:\\Users\\_\\.codex\\worktrees\\sol-structure-cut-20261106\\khybersand\\build\\sol-structure-cut\\dry-001\\receipt.json",
+      "path": "docs\\audits\\sol-structure-cut-20261106\\dry-001\\receipt.json",
+      "bytes": 227382,
+      "original_raw_sha256": "109ac670bdcdc231dbdfc31cee007ef68bc096630452d4b02d7317e2ab9b1561",
+      "git_lf_sha256": "109ac670bdcdc231dbdfc31cee007ef68bc096630452d4b02d7317e2ab9b1561"
+    },
+    {
+      "source": "C:\\Users\\_\\.codex\\worktrees\\sol-structure-cut-20261106\\khybersand\\build\\sol-structure-cut\\dry-002\\receipt.json",
+      "path": "docs\\audits\\sol-structure-cut-20261106\\dry-002\\receipt.json",
+      "bytes": 229750,
+      "original_raw_sha256": "2441dd8783b3d7d0857572de57113e58a557089f2efdceaaa05dab04a58440f0",
+      "git_lf_sha256": "2441dd8783b3d7d0857572de57113e58a557089f2efdceaaa05dab04a58440f0"
+    },
+    {
+      "source": "C:\\Users\\_\\.codex\\worktrees\\sol-structure-cut-20261106\\khybersand\\build\\sol-structure-cut\\dry-003\\receipt.json",
+      "path": "docs\\audits\\sol-structure-cut-20261106\\dry-003\\receipt.json",
+      "bytes": 346325,
+      "original_raw_sha256": "11cbf54e83857d4e8f902c7c3d81cb329bd58ae5f41d5d0cf3a7550ab82724f4",
+      "git_lf_sha256": "11cbf54e83857d4e8f902c7c3d81cb329bd58ae5f41d5d0cf3a7550ab82724f4"
+    },
+    {
+      "source": "C:\\Users\\_\\.codex\\worktrees\\sol-structure-cut-20261106\\khybersand\\build\\sol-structure-cut\\packed-001\\receipt.json",
+      "path": "docs\\audits\\sol-structure-cut-20261106\\packed-001\\receipt.json",
+      "bytes": 358234,
+      "original_raw_sha256": "cd86e51a39fa2c2cb65044bcf2ae7eaa421ef448814b143044f9b107d43702ff",
+      "git_lf_sha256": "cd86e51a39fa2c2cb65044bcf2ae7eaa421ef448814b143044f9b107d43702ff"
+    },
+    {
+      "source": "C:\\Users\\_\\.codex\\worktrees\\sol-structure-cut-20261106\\khybersand\\build\\sol-structure-cut\\dry-fixed-001\\receipt.json",
+      "path": "docs\\audits\\sol-structure-cut-20261106\\dry-fixed-001\\receipt.json",
+      "bytes": 347504,
+      "original_raw_sha256": "bc9ba50e5b2ca0a26087816d77e59117220668a5e3ce332752c60ad470bab620",
+      "git_lf_sha256": "bc9ba50e5b2ca0a26087816d77e59117220668a5e3ce332752c60ad470bab620"
+    },
+    {
+      "source": "C:\\Users\\_\\.codex\\worktrees\\sol-structure-cut-20261106\\khybersand\\build\\sol-structure-cut\\packed-fixed-001\\receipt.json",
+      "path": "docs\\audits\\sol-structure-cut-20261106\\packed-fixed-001\\receipt.json",
+      "bytes": 359574,
+      "original_raw_sha256": "286486ffe6a93cb38f22244d976c44f17e58374ebfeb31d059857d2e6107ffb6",
+      "git_lf_sha256": "286486ffe6a93cb38f22244d976c44f17e58374ebfeb31d059857d2e6107ffb6"
+    },
+    {
+      "source": "C:\\Users\\_\\.codex\\worktrees\\sol-structure-cut-20261106\\khybersand\\build\\sol-structure-cut\\energy-replay-001\\receipt.json",
+      "path": "docs\\audits\\sol-structure-cut-20261106\\energy-replay-001\\receipt.json",
+      "bytes": 36177,
+      "original_raw_sha256": "51ce4e4917de91bd9576865b8da42773f317ba4a38db1485304e11f76271fe10",
+      "git_lf_sha256": "51ce4e4917de91bd9576865b8da42773f317ba4a38db1485304e11f76271fe10"
+    },
+    {
+      "source": "C:\\Users\\_\\.codex\\worktrees\\sol-structure-cut-20261106\\khybersand\\build\\sol-structure-cut\\energy-replay-002\\receipt.json",
+      "path": "docs\\audits\\sol-structure-cut-20261106\\energy-replay-002\\receipt.json",
+      "bytes": 36526,
+      "original_raw_sha256": "db8bd30c0466dc0f316b22313c17355667495d12f9b75d4533b944076d8fd94b",
+      "git_lf_sha256": "db8bd30c0466dc0f316b22313c17355667495d12f9b75d4533b944076d8fd94b"
+    },
+    {
+      "source": "C:\\Users\\_\\.codex\\worktrees\\sol-structure-cut-20261106\\khybersand\\build\\sol-structure-cut\\rapier-fixed-001\\receipt.json",
+      "path": "docs\\audits\\sol-structure-cut-20261106\\rapier-fixed-001\\receipt.json",
+      "bytes": 31927,
+      "original_raw_sha256": "94a857eb8ff862b0d5a7604347b62550b5265d3fa09f40358b900df7cf3106d2",
+      "git_lf_sha256": "94a857eb8ff862b0d5a7604347b62550b5265d3fa09f40358b900df7cf3106d2"
+    },
+    {
+      "source": "C:\\Users\\_\\.codex\\worktrees\\sol-structure-cut-20261106\\khybersand\\build\\sol-structure-cut\\energy-replay-002\\inputs.json",
+      "path": "docs\\audits\\sol-structure-cut-20261106\\energy-replay-002\\inputs.json",
+      "bytes": 645543,
+      "original_raw_sha256": "c0bddbc0dcb300ebbb6e9b239499166bbac7fe56f4c569dd1fe16d6c61651a31",
+      "git_lf_sha256": "c0bddbc0dcb300ebbb6e9b239499166bbac7fe56f4c569dd1fe16d6c61651a31"
+    },
+    {
+      "source": "C:\\Users\\_\\.codex\\worktrees\\sol-structure-cut-20261106\\khybersand\\build\\sol-structure-cut\\energy-replay-002\\windows\\results.json",
+      "path": "docs\\audits\\sol-structure-cut-20261106\\energy-replay-002\\windows\\results.json",
+      "bytes": 40810,
+      "original_raw_sha256": "e2b2617e913efae936e7e87755b231747b858ab7fb64774b0e70c6ad420a97f4",
+      "git_lf_sha256": "e2b2617e913efae936e7e87755b231747b858ab7fb64774b0e70c6ad420a97f4"
+    },
+    {
+      "source": "C:\\Users\\_\\.codex\\worktrees\\sol-structure-cut-20261106\\khybersand\\build\\sol-structure-cut\\energy-replay-002\\linux\\results.json",
+      "path": "docs\\audits\\sol-structure-cut-20261106\\energy-replay-002\\linux\\results.json",
+      "bytes": 40810,
+      "original_raw_sha256": "e2b2617e913efae936e7e87755b231747b858ab7fb64774b0e70c6ad420a97f4",
+      "git_lf_sha256": "e2b2617e913efae936e7e87755b231747b858ab7fb64774b0e70c6ad420a97f4"
+    },
+    {
+      "source": "C:\\Users\\_\\.codex\\worktrees\\sol-structure-cut-20261106\\khybersand\\build\\sol-energy\\structure-fixed-001\\receipt.json",
+      "path": "docs\\audits\\sol-structure-cut-20261106\\precision\\receipt.json",
+      "bytes": 7787,
+      "original_raw_sha256": "12fcc3e29d25bdf66259c8683f4411f1b5abcee60badc47206860a1ef3d5f88b",
+      "git_lf_sha256": "7820a0c676bbf8c1852e710156c8ea76e554c0a2cbaeca3f2fa05adda744d464"
+    },
+    {
+      "source": "C:\\Users\\_\\.codex\\worktrees\\sol-structure-cut-20261106\\khybersand\\build\\sol-energy\\structure-fixed-001\\reduced.json",
+      "path": "docs\\audits\\sol-structure-cut-20261106\\precision\\reduced.json",
+      "bytes": 17432,
+      "original_raw_sha256": "cdd0e01e9bb2f1aa13839cff897864fb3eb366ca93ec8181683f34e38f047455",
+      "git_lf_sha256": "215bbaebe6f996980f2c359f38100faae714929c39dfa059f3acf8d78e05c73f"
+    },
+    {
+      "source": "C:\\Users\\_\\.codex\\worktrees\\sol-structure-cut-20261106\\khybersand\\build\\sol-energy\\structure-fixed-001\\windows\\results.json",
+      "path": "docs\\audits\\sol-structure-cut-20261106\\precision\\windows\\results.json",
+      "bytes": 1196141,
+      "original_raw_sha256": "7574e5fef3dadf798b98b2fadb10059d2927f9af61702f78f1f4770c8e3120e2",
+      "git_lf_sha256": "7574e5fef3dadf798b98b2fadb10059d2927f9af61702f78f1f4770c8e3120e2"
+    },
+    {
+      "source": "C:\\Users\\_\\.codex\\worktrees\\sol-structure-cut-20261106\\khybersand\\build\\sol-energy\\structure-fixed-001\\linux\\results.json",
+      "path": "docs\\audits\\sol-structure-cut-20261106\\precision\\linux\\results.json",
+      "bytes": 1196141,
+      "original_raw_sha256": "15f3c4dbbb959d216092cd83c7b7beff04aeac159c2f6884291acb51a723dd30",
+      "git_lf_sha256": "15f3c4dbbb959d216092cd83c7b7beff04aeac159c2f6884291acb51a723dd30"
+    },
+    {
+      "source": "C:/Users/_/sol-structure-native-20261106-msvc-002/qualification.json",
+      "path": "docs\\audits\\sol-structure-cut-20261106\\native-msvc.json",
+      "bytes": 58086,
+      "original_raw_sha256": "d963bea6f4f30af8ac3f579444a92cf67a2724a433df67cba74f4395fbd83857",
+      "git_lf_sha256": "53b2b56804805411b08d95c5c002d0e246a9271b44d26bfb4183f51b13bc4a3b"
+    },
+    {
+      "source": "C:/Users/_/sol-structure-native-20261106-linux-001/receipt.json",
+      "path": "docs\\audits\\sol-structure-cut-20261106\\native-linux.json",
+      "bytes": 79833,
+      "original_raw_sha256": "62b89103e720f97eebcbf2d434206c8a84247c07c175b016a3e79e725737990b",
+      "git_lf_sha256": "62b89103e720f97eebcbf2d434206c8a84247c07c175b016a3e79e725737990b"
+    },
+    {
+      "source": "C:\\Users\\_\\.codex\\worktrees\\sol-structure-cut-20261106\\khybersand\\build\\sol-structure-cut\\companion.json",
+      "path": "docs\\audits\\sol-structure-cut-20261106\\companion.json",
+      "bytes": 1332,
+      "original_raw_sha256": "c1532daa44a8512704bde71ad60d56a98757ee1aecc12581ef4b9b07f72bdc89",
+      "git_lf_sha256": "76263cc46c35db2cc6e7c8121936f33d1caf55de7098bade20e14511336d2740"
+    },
+    {
+      "source": "C:\\Users\\_\\.codex\\worktrees\\sol-structure-cut-20261106\\khybersand\\build\\sol-structure-cut\\reducer-crosshost.json",
+      "path": "docs\\audits\\sol-structure-cut-20261106\\reducer-crosshost.json",
+      "bytes": 124,
+      "original_raw_sha256": "53c3afff49a6490f976e726aa5615897d3c3f06d9d4442612c2f2f696766bac1",
+      "git_lf_sha256": "95698d87163811b5b240e8376c3dee1920c6e73edd6e4f74509413c20cfd095a"
+    }
+  ],
+  "reduced": {
+    "path": "C:\\Users\\_\\.codex\\worktrees\\sol-structure-cut-20261106\\khybersand\\build\\sol-structure-cut\\reduced-complete-004.json",
+    "sha256": "4d6c3df8c7905aa9fa610457856e0134ea810d2ec443ed43337df0350a53c1a8"
+  },
+  "failures_preserved": [
+    "original-001 preflight KeyError old manifest schema; no trajectory",
+    "dry-001 missing commit field, incomplete apparatus; terminated owned process tree receipt retained",
+    "energy-replay-001 native Control class name collision, both hosts no physical episode",
+    "MSVC-001 rejected abbreviated requested commit before compilation, empty directory retained",
+    "Linux reducer first invocation rejected retained Windows path separators; no output",
+    "First documentation check six missing references/five companion files; exact separately pinned files then materialized",
+    "Initial manual energy reducer test omitted required report argument; later9adversarialchecks pass"
+  ],
+  "raw_log_scope": "Scientific runners retain commands/exits/timeouts and raw log hashes. Initial manual diagnostic invocation errors remain tool-transcript records; no invented raw file receipt.",
+  "resource_scope": "Original structure artifact cap4GiB and5GiB reserve preserved; native qualification also retained outside checkout. No prior evidence deleted.",
+  "platform_scope": "Actual Windows LLVM-MinGW extension and MSVC native checks; actual WSL Linux GCC extension, optimized/strictASanUBSan native checks. No MSVC-built GDExtension claim.",
+  "final_replay_qualification": {
+    "source": "1b54b9f0d7abc9784f17b9e28120e75253474c13",
+    "receipt_sha256": "ef5c9a4f740d97d8cd1a9e743e095ec03db2abc961633a023a9d62e7a33af7ad",
+    "cases": 53,
+    "body_state": "lossless",
+    "witnesses": "recorded/reconstructed baseline witnesses; default JSON precision qualification retained"
+  },
+  "independent_review": {
+    "disposition": "GO to publish Draft scoped partial/negative physical result; no integration or solvedSOL",
+    "scope": "Independent readonly source/energy replay review and corrected48-episode reducer audit; no agent writer",
+    "accepted_repaired_responses": 2826,
+    "scalar_backend_energy_increases_over_planner_bound": 0,
+    "remaining_refusals": {
+      "NonDissipativeResponse": 52,
+      "InvalidGeometryWitness": 1
+    },
+    "formal_review": "Separate independent adversarial PR review requested before owner decision"
+  },
+  "public_packet_inventory": {
+    "companion.json": {
+      "bytes": 1332,
+      "workspace_copy_sha256": "c1532daa44a8512704bde71ad60d56a98757ee1aecc12581ef4b9b07f72bdc89",
+      "git_lf_sha256": "76263cc46c35db2cc6e7c8121936f33d1caf55de7098bade20e14511336d2740",
+      "git_lf_bytes": 1303
+    },
+    "comparison.json": {
+      "bytes": 418893,
+      "workspace_copy_sha256": "67d8769e41cf29fb185f399c5fc9802a4698dbcdea50d3c3e667b42137fdb43f",
+      "git_lf_sha256": "67d8769e41cf29fb185f399c5fc9802a4698dbcdea50d3c3e667b42137fdb43f",
+      "git_lf_bytes": 418893
+    },
+    "native-linux.json": {
+      "bytes": 79833,
+      "workspace_copy_sha256": "62b89103e720f97eebcbf2d434206c8a84247c07c175b016a3e79e725737990b",
+      "git_lf_sha256": "62b89103e720f97eebcbf2d434206c8a84247c07c175b016a3e79e725737990b",
+      "git_lf_bytes": 79833
+    },
+    "native-msvc.json": {
+      "bytes": 58086,
+      "workspace_copy_sha256": "d963bea6f4f30af8ac3f579444a92cf67a2724a433df67cba74f4395fbd83857",
+      "git_lf_sha256": "53b2b56804805411b08d95c5c002d0e246a9271b44d26bfb4183f51b13bc4a3b",
+      "git_lf_bytes": 56862
+    },
+    "reducer-crosshost.json": {
+      "bytes": 124,
+      "workspace_copy_sha256": "53c3afff49a6490f976e726aa5615897d3c3f06d9d4442612c2f2f696766bac1",
+      "git_lf_sha256": "95698d87163811b5b240e8376c3dee1920c6e73edd6e4f74509413c20cfd095a",
+      "git_lf_bytes": 119
+    },
+    "step-ledgers.json": {
+      "bytes": 3287578,
+      "workspace_copy_sha256": "5fd128adf78b85fadcaec745df01f4bb3ebf9fcd9a0ac3c57f9954e6e4e61507",
+      "git_lf_sha256": "c2ad448fd8d408705ad695f3280d1b095a766027cf225f97bf7bfb1c3dc67d8f",
+      "git_lf_bytes": 3287577
+    },
+    "validation.json": {
+      "bytes": 8073,
+      "workspace_copy_sha256": "70e14a42d2c4b427c5672b3849ad8a71234db792a42ff4e4513741261f2860dc",
+      "git_lf_sha256": "70e14a42d2c4b427c5672b3849ad8a71234db792a42ff4e4513741261f2860dc",
+      "git_lf_bytes": 8073
+    },
+    "dry-001/receipt.json": {
+      "bytes": 227382,
+      "workspace_copy_sha256": "109ac670bdcdc231dbdfc31cee007ef68bc096630452d4b02d7317e2ab9b1561",
+      "git_lf_sha256": "109ac670bdcdc231dbdfc31cee007ef68bc096630452d4b02d7317e2ab9b1561",
+      "git_lf_bytes": 227382
+    },
+    "dry-002/receipt.json": {
+      "bytes": 229750,
+      "workspace_copy_sha256": "2441dd8783b3d7d0857572de57113e58a557089f2efdceaaa05dab04a58440f0",
+      "git_lf_sha256": "2441dd8783b3d7d0857572de57113e58a557089f2efdceaaa05dab04a58440f0",
+      "git_lf_bytes": 229750
+    },
+    "dry-003/receipt.json": {
+      "bytes": 346325,
+      "workspace_copy_sha256": "11cbf54e83857d4e8f902c7c3d81cb329bd58ae5f41d5d0cf3a7550ab82724f4",
+      "git_lf_sha256": "11cbf54e83857d4e8f902c7c3d81cb329bd58ae5f41d5d0cf3a7550ab82724f4",
+      "git_lf_bytes": 346325
+    },
+    "dry-fixed-001/receipt.json": {
+      "bytes": 347504,
+      "workspace_copy_sha256": "bc9ba50e5b2ca0a26087816d77e59117220668a5e3ce332752c60ad470bab620",
+      "git_lf_sha256": "bc9ba50e5b2ca0a26087816d77e59117220668a5e3ce332752c60ad470bab620",
+      "git_lf_bytes": 347504
+    },
+    "energy-replay-001/receipt.json": {
+      "bytes": 36177,
+      "workspace_copy_sha256": "51ce4e4917de91bd9576865b8da42773f317ba4a38db1485304e11f76271fe10",
+      "git_lf_sha256": "51ce4e4917de91bd9576865b8da42773f317ba4a38db1485304e11f76271fe10",
+      "git_lf_bytes": 36177
+    },
+    "energy-replay-002/inputs.json": {
+      "bytes": 645543,
+      "workspace_copy_sha256": "c0bddbc0dcb300ebbb6e9b239499166bbac7fe56f4c569dd1fe16d6c61651a31",
+      "git_lf_sha256": "c0bddbc0dcb300ebbb6e9b239499166bbac7fe56f4c569dd1fe16d6c61651a31",
+      "git_lf_bytes": 645543
+    },
+    "energy-replay-002/receipt.json": {
+      "bytes": 36526,
+      "workspace_copy_sha256": "db8bd30c0466dc0f316b22313c17355667495d12f9b75d4533b944076d8fd94b",
+      "git_lf_sha256": "db8bd30c0466dc0f316b22313c17355667495d12f9b75d4533b944076d8fd94b",
+      "git_lf_bytes": 36526
+    },
+    "energy-replay-003/receipt.json": {
+      "bytes": 36589,
+      "workspace_copy_sha256": "ef5c9a4f740d97d8cd1a9e743e095ec03db2abc961633a023a9d62e7a33af7ad",
+      "git_lf_sha256": "ef5c9a4f740d97d8cd1a9e743e095ec03db2abc961633a023a9d62e7a33af7ad",
+      "git_lf_bytes": 36589
+    },
+    "original-001/receipt.json": {
+      "bytes": 225661,
+      "workspace_copy_sha256": "0f03f8f7a6a5b8ca50f805fa25afa2d486ead4cdd6df365a00dbea4475ce6eaf",
+      "git_lf_sha256": "0f03f8f7a6a5b8ca50f805fa25afa2d486ead4cdd6df365a00dbea4475ce6eaf",
+      "git_lf_bytes": 225661
+    },
+    "original-002/receipt.json": {
+      "bytes": 340505,
+      "workspace_copy_sha256": "fee924ac9b11ce5fae327f8c0d52f1e63b372e0cf40b2602e04a3acc473b67b8",
+      "git_lf_sha256": "fee924ac9b11ce5fae327f8c0d52f1e63b372e0cf40b2602e04a3acc473b67b8",
+      "git_lf_bytes": 340505
+    },
+    "packed-001/receipt.json": {
+      "bytes": 358234,
+      "workspace_copy_sha256": "cd86e51a39fa2c2cb65044bcf2ae7eaa421ef448814b143044f9b107d43702ff",
+      "git_lf_sha256": "cd86e51a39fa2c2cb65044bcf2ae7eaa421ef448814b143044f9b107d43702ff",
+      "git_lf_bytes": 358234
+    },
+    "packed-fixed-001/receipt.json": {
+      "bytes": 359574,
+      "workspace_copy_sha256": "286486ffe6a93cb38f22244d976c44f17e58374ebfeb31d059857d2e6107ffb6",
+      "git_lf_sha256": "286486ffe6a93cb38f22244d976c44f17e58374ebfeb31d059857d2e6107ffb6",
+      "git_lf_bytes": 359574
+    },
+    "precision/receipt.json": {
+      "bytes": 7787,
+      "workspace_copy_sha256": "12fcc3e29d25bdf66259c8683f4411f1b5abcee60badc47206860a1ef3d5f88b",
+      "git_lf_sha256": "7820a0c676bbf8c1852e710156c8ea76e554c0a2cbaeca3f2fa05adda744d464",
+      "git_lf_bytes": 7580
+    },
+    "precision/reduced.json": {
+      "bytes": 17432,
+      "workspace_copy_sha256": "cdd0e01e9bb2f1aa13839cff897864fb3eb366ca93ec8181683f34e38f047455",
+      "git_lf_sha256": "215bbaebe6f996980f2c359f38100faae714929c39dfa059f3acf8d78e05c73f",
+      "git_lf_bytes": 16920
+    },
+    "rapier-fixed-001/receipt.json": {
+      "bytes": 31927,
+      "workspace_copy_sha256": "94a857eb8ff862b0d5a7604347b62550b5265d3fa09f40358b900df7cf3106d2",
+      "git_lf_sha256": "94a857eb8ff862b0d5a7604347b62550b5265d3fa09f40358b900df7cf3106d2",
+      "git_lf_bytes": 31927
+    },
+    "runtimes-001/receipt.json": {
+      "bytes": 37392,
+      "workspace_copy_sha256": "b6af76ff9c454f9d4ce4a20aeede47bb0806b923d5fa6aa039c20580bdbcc869",
+      "git_lf_sha256": "b6af76ff9c454f9d4ce4a20aeede47bb0806b923d5fa6aa039c20580bdbcc869",
+      "git_lf_bytes": 37392
+    },
+    "precision/linux/results.json": {
+      "bytes": 1196141,
+      "workspace_copy_sha256": "15f3c4dbbb959d216092cd83c7b7beff04aeac159c2f6884291acb51a723dd30",
+      "git_lf_sha256": "15f3c4dbbb959d216092cd83c7b7beff04aeac159c2f6884291acb51a723dd30",
+      "git_lf_bytes": 1196141
+    },
+    "precision/windows/results.json": {
+      "bytes": 1196141,
+      "workspace_copy_sha256": "7574e5fef3dadf798b98b2fadb10059d2927f9af61702f78f1f4770c8e3120e2",
+      "git_lf_sha256": "7574e5fef3dadf798b98b2fadb10059d2927f9af61702f78f1f4770c8e3120e2",
+      "git_lf_bytes": 1196141
+    },
+    "energy-replay-003/linux/results.json": {
+      "bytes": 40810,
+      "workspace_copy_sha256": "e2b2617e913efae936e7e87755b231747b858ab7fb64774b0e70c6ad420a97f4",
+      "git_lf_sha256": "e2b2617e913efae936e7e87755b231747b858ab7fb64774b0e70c6ad420a97f4",
+      "git_lf_bytes": 40810
+    },
+    "energy-replay-003/windows/results.json": {
+      "bytes": 40810,
+      "workspace_copy_sha256": "e2b2617e913efae936e7e87755b231747b858ab7fb64774b0e70c6ad420a97f4",
+      "git_lf_sha256": "e2b2617e913efae936e7e87755b231747b858ab7fb64774b0e70c6ad420a97f4",
+      "git_lf_bytes": 40810
+    },
+    "energy-replay-002/linux/results.json": {
+      "bytes": 40810,
+      "workspace_copy_sha256": "e2b2617e913efae936e7e87755b231747b858ab7fb64774b0e70c6ad420a97f4",
+      "git_lf_sha256": "e2b2617e913efae936e7e87755b231747b858ab7fb64774b0e70c6ad420a97f4",
+      "git_lf_bytes": 40810
+    },
+    "energy-replay-002/windows/results.json": {
+      "bytes": 40810,
+      "workspace_copy_sha256": "e2b2617e913efae936e7e87755b231747b858ab7fb64774b0e70c6ad420a97f4",
+      "git_lf_sha256": "e2b2617e913efae936e7e87755b231747b858ab7fb64774b0e70c6ad420a97f4",
+      "git_lf_bytes": 40810
+    },
+    "publication.json": {
+      "workspace_copy_sha256": "eab27dd98c30181e241f4f449ccb4454908c303edd357b612b10ef5f232f2de1",
+      "git_lf_sha256": "eab27dd98c30181e241f4f449ccb4454908c303edd357b612b10ef5f232f2de1",
+      "bytes": 833,
+      "git_lf_bytes": 833
+    }
+  },
+  "final_local_resource": {
+    "structure_bytes": 3250111072,
+    "outside_native_bytes": 217556901,
+    "free": 20199686144
+  },
+  "text_receipt_custody": "Original ignored raw files and their original hashes remain unchanged. Public text receipt copies pass through Git LF normalization; git_lf_sha256 authenticates published bytes. Original raw/workspace-copy SHA256 is a separate identity, not a claim that a normalized Git blob has identical bytes.",
+  "publication": {
+    "status": "DRAFT_PR_CREATION_BLOCKED",
+    "date": "2026-11-06",
+    "pushed_source": "5261459cec5c67bd2083fe74975d310657132b0e",
+    "branch": "codex/sol-structure-cut-20261106",
+    "intended_base": "fix/sol347-facade-refusal-20261104-095628",
+    "base_head": "e4c2649e82d943554f4dc6a0634336770cda08f6",
+    "new_pr": null,
+    "automatic_review": "Draft creation command rejected before dispatch: blocked by policy. No more specific reason supplied. Publication action not retried through another tool.",
+    "readback": "gh pr list for owned head returned []; remote head equals pushed source. Existing429 remains Draft67f93a28.",
+    "prepared_body": "build/sol-structure-cut/pr-body.md",
+    "review": "https://github.com/techrote/cybersand/compare/fix%2Fsol347-facade-refusal-20261104-095628...codex%2Fsol-structure-cut-20261106?expand=1"
+  }
+}

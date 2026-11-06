@@ -1,0 +1,55 @@
+{
+  "source": "1d83c8818180318e86b17f69f543a60b0e2e3a54",
+  "script_sha256": "d3a71692a2d7f038a91e395687934b854f14831ccf4e5d3d3d8dd09319daafb9",
+  "commands": [
+    {
+      "name": "windows",
+      "command": [
+        "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+        "--headless",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-structure-cut-20261106\\khybersand\\build\\sol-structure-cut\\mass-fix-001\\windows\\godot",
+        "--check-only",
+        "--script",
+        "C:\\Users\\_\\.codex\\worktrees\\sol-structure-cut-20261106\\khybersand\\godot\\scripts\\solid_detachment_session.gd"
+      ],
+      "exit": 0,
+      "seconds": 1.791073200001847,
+      "timeout_seconds": 60,
+      "log": "build\\sol-structure-cut\\mass-guard-parse-001\\windows.log",
+      "log_sha256": "21a186e0c91d055410b55afc9984333d25a1cdb6b9c73b6e7f9df28e9c7d7aa6",
+      "clean": true
+    },
+    {
+      "name": "linux",
+      "command": [
+        "wsl.exe",
+        "-d",
+        "Ubuntu-24.04",
+        "--",
+        "timeout",
+        "--signal=TERM",
+        "--kill-after=5s",
+        "60s",
+        "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "/mnt/c/Users/_/.codex/worktrees/sol-structure-cut-20261106/khybersand/build/sol-structure-cut/mass-fix-001/linux/godot",
+        "--check-only",
+        "--script",
+        "/mnt/c/Users/_/.codex/worktrees/sol-structure-cut-20261106/khybersand/godot/scripts/solid_detachment_session.gd"
+      ],
+      "exit": 0,
+      "seconds": 6.651953399996273,
+      "timeout_seconds": 60,
+      "log": "build\\sol-structure-cut\\mass-guard-parse-001\\linux.log",
+      "log_sha256": "b6354f16b8459dc19d5193c3f40a595a1e52931f8a415b10b2ef42cc1ba6c3a8",
+      "clean": true
+    }
+  ],
+  "scope": "Actual host syntax check of guard-only descendant; normal physics matrix testedc0d. Nullbackend fault branch not executed."
+}

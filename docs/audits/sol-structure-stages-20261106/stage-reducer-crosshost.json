@@ -1,0 +1,20 @@
+{
+  "equal": false,
+  "structural_and_nonfloat_equality": true,
+  "float_differences": [
+    {
+      "path": "/episodes/9/rows/141/ordinary_angle_delta",
+      "windows": 7.928373513266251e-10,
+      "linux": 7.928373374488373e-10,
+      "absolute": 1.3877787807814457e-17
+    },
+    {
+      "path": "/episodes/10/rows/219/ordinary_angle_delta",
+      "windows": 6.949975039916012e-09,
+      "linux": 6.94997492889371e-09,
+      "absolute": 1.1102230246251565e-16
+    }
+  ],
+  "windows_sha256": "1df3a54031191826e04e5c314e3d9d9c4f0f658a207be69ee7df01e55454b16c",
+  "linux_sha256": "a1ecf01359644594471aa1f7fbbdc8bb2aedb7a15a9d835bb209c996658df9ee"
+}

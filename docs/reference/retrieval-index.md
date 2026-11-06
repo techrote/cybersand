@@ -4,13 +4,41 @@ status: Current
 document-kind: navigation
 scope: Question-to-canonical-document routes; detailed answers belong to the linked contracts
 canonical-for: []
-last-reviewed: 2026-11-04
+last-reviewed: 2026-11-06
 related-documents: [../README.md, retrieval-corpus.json, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../architecture/pressure-optimization.md]
 ---
 
 # Retrieval question index
 
+## SOL cached mass versus first-impulse readiness
+
+For effective backend mass readiness, automatic COM with custom inertia, four-stage
+support accounting and why the repair does not solve dense Sand, retrieve the
+[detachment contract](../systems/solid-detachment.md#first-impulse-backend-readiness--2026-11-06),
+[coupling contract](../architecture/rigid-body-and-cellular-coupling.md#source-local-sol-mass-readiness--2026-11-06)
+and [qualification commands](../operations/local-build-and-validation.md#sol-stage-and-mass-readiness-qualification--2026-11-06).
+The dated [result](../audits/2026-11-06-sol-stage-and-mass-readiness.md) and additive
+`retrieval-questions-sol-stages.json` are post-result evidence/development routes;
+older frozen questions and failures remain unchanged.
+
+## Actual structural SOL cut and mass routing
+
+For actual cut tree/building aggregate ownership, mass/inertia, relative material
+weight and settling, retrieve the [structural source contract](../systems/solid-detachment.md#actual-cut-structures-mass-and-settling--2026-11-06)
+and [host qualification commands](../operations/local-build-and-validation.md#actual-structural-cut-qualification--2026-11-06).
+The dated [48-episode result](../audits/2026-11-06-sol-structural-cut-behaviour.md)
+separates dry rest, numerical repair and failed dense-Sand clearance. Additive
+`retrieval-questions-sol-structure.json` is post-result development evaluation;
+frozen questions and historical failures remain unchanged.
+
 ## Structural detachment routing
+
+For binary32 norm cancellation, scalar64 planning guards and the difference
+between planner cost and SOL clearance, retrieve the
+[dependent precision contract](../systems/solid-detachment.md#planner-energy-precision--dependent-candidate-2026-11-05)
+and the [build entry points](../operations/local-build-and-validation.md#isolated-sol-planner-precision--2026-11-05).
+The additive `retrieval-questions-sol-energy.json` supplement is post-result
+development evaluation; older frozen questions remain unchanged.
 
 For public hash refusal, safe simulation-window changes and native adhesion
 readback, retrieve the [facade contract](../systems/solid-detachment.md#public-refusal-and-authoritative-readback--2026-11-04)

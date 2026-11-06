@@ -1,0 +1,9 @@
+{
+  "registration":"SOL-STRUCTURE-CUT-001-APPARATUS-002",
+  "date":"2026-11-06",
+  "before_new_structure_capture":true,
+  "original_controls":"Four unmodified600step native cut tests pass on actualWindows/Linux workers1/4. Enhanced720step/tree/building and packed matrix have not run.",
+  "clarification":"No fixture pose writes after initialplacement; preserve and separately account existing native cellular correction/velocity clipping. The old blanket wording does not remove or conceal that operator.",
+  "observation_fixes":"Refuse existing output, failedwrites or absentreports; checks denominator final. Record actual server shapes/type/data/transforms aswellasscenegeometry. Separate new snapshot/application counter deltas from held latestresponse. Direct contact impulses are cached reported data, sleeping freshness unqualified; reportlimit16 maytruncate. Rawcapture physicalgates remain PENDING_INDEPENDENT_REDUCTION.",
+  "unchanged":"Sourcephysics,unitmassmapping,recipes,initialpose,cut,cap3/correction0.5,gravity/damping,steps/restwindow/thresholds,Worker/Rapierownership andalloriginalfailures. No newphysicsresult ormaterialcalibration."
+}

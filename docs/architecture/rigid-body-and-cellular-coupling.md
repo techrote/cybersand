@@ -6,10 +6,23 @@ status: Current
 scope: Rectangle occupancy, bounded displacement/impulses and Rapier hard contact, plus an opt-in detached-aggregate Sand constraint; generalized physics and exact replay remain absent
 keywords: [Rapier2D, occupancy mask, sweep, CCD, terrain budget, impulse, unresolved overlap]
 related-documents: [simulation-tick-and-threading.md, data-ownership-and-lifetimes.md, ../reference/interfaces-and-message-contracts.md, ../operations/rapier-2d-migration-runbook.md, ../systems/solid-detachment.md, ../audits/2026-09-24-rem002-issue11-integration-forensics.md, ../audits/2026-09-25-pchar001-player-representation-experiment.md]
-last-reviewed: 2026-11-04
+last-reviewed: 2026-11-06
 ---
 
 # Rigid-body and cellular coupling
+
+## Source-local SOL mass readiness — 2026-11-06
+
+The isolated [initialization candidate](../systems/solid-detachment.md#first-impulse-backend-readiness--2026-11-06)
+uses automatic COM with explicit native mass/inertia for the exact uniform
+rectangle partition. Proxy point velocity uses its world offset from actual COM;
+Godot/RIDs remain main-thread owned and only packed values cross to native.
+Cached parameter reads do not establish effective backend mass readiness. The
+[actual oracle and cut qualification](../audits/2026-11-06-sol-stage-and-mass-readiness.md)
+show first impulse/torque recovery without advancing native handoff or altering
+forces. Automatic COM has a small measured local residual; actual world COM is
+checked against proxy centroid within the existing four-float32-ULP bound.
+This does not admit heterogeneous density or new restoration/support physics.
 
 ## Opt-in detached compounds — 2026-11-01
 

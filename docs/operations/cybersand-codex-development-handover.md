@@ -4,11 +4,68 @@ status: Current
 document-kind: guide
 scope: Short onboarding sequence and checkpoint protocol; product intent, source identity and contracts have canonical homes
 canonical-for: [development-onboarding]
-last-reviewed: 2026-11-04
+last-reviewed: 2026-11-06
 related-documents: [source-checkpoint-and-recovery.md, ../reference/product-intent-and-priorities.md, ../reference/status-and-roadmap.md, microscenarios-programme.md, development-claims-remediation-programme.md, water-hybrid-pressure-extension-programme.md, github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
 # Development handover
+
+## SOL stage diagnosis and first-impulse repair — 2026-11-06
+
+[Draft PR #460](https://github.com/techrote/cybersand/pull/460) now publishes the
+owned candidate against #393. A separate short publication command succeeded
+after earlier combined shell commands were rejected. Keep Draft; historical
+rejection receipts below retain their checkpoint scope.
+
+Read the [stage/readiness result](../audits/2026-11-06-sol-stage-and-mass-readiness.md)
+before further physics work. Ordinary clipping, Sand response and backend
+integration are now separately measured. Correct cached mass/inertia did not
+prove readiness: both hosts reproduce lost first custom-COM impulses. The AUTO
+COM/custom-inertia candidate recovers them without a handoff warm step, retaining
+native ownership/geometry/M/I. Tested normal sourcec0d completes64 backend cases
+and24 fresh actual-cut episodes/11,520 steps. Subsequent null guard is syntax-
+qualified only; preserve exact source/runtime distinctions.
+
+All8 dry cases settle; all16 packed cases remain nonquiet. Relative Sand/object
+physical weight and original SOL clearance remain unresolved. Next is a separately
+registered pure-value order/load diagnostic, not cap tuning or a live support law.
+Same sole-writer branch/base393; no World/pressure/MAT composition or #365 work.
+Prior Draft creation was automatically blocked; any later PR must remain Draft.
+
+## Actual SOL cut structures and numerical repair — 2026-11-06
+
+Continue structural work from the isolated dependent branch
+`codex/sol-structure-cut-20261106`, based on exact #393e4 and retaining #347159
+and #407bbca ancestry. Read the [cut/mass/settling dossier](../audits/2026-11-06-sol-structural-cut-behaviour.md)
+and [current source contract](../systems/solid-detachment.md#actual-cut-structures-mass-and-settling--2026-11-06).
+One root writer; upstream branches and accepted main remain unchanged; keep Draft.
+The experiment branch is pushed, but automatic approval review blocked Draft PR
+creation before dispatch ("blocked by policy", no further reason). At that checkpoint, readback found
+no new PR; existing #429 stayed Draft. Retain the prepared body and create only a
+Draft against #393 if publication becomes available.
+
+Actual cuts/ownership/unit-mass and dry falling/collision/rest pass in48 fresh
+Windows/Linux1/4-worker episodes. The source-pinned scalar energy repair passes
+replay and actual application checks. Dense Sand still moves/overlaps and strict
+hard depth fails; no solved SOL or material-weight calibration claim. Flyer/
+Kestrel work is a separate compatibility history, not the next SOL acceptance
+case. Next freeze actual structural contact/publication/load diagnostics before
+any newly registered physical law. Preserve all old failures, frozen guard,
+#365block and E1/E2 authority requirements; no cross-source World/pressure port.
+
+## SOL energy precision dependent candidate — 2026-11-05
+
+`codex/sol-energy-precision-20261105` branches from unchanged #393 `e4c2649e`.
+Its only production delta evaluates planner kinetic energy using scalar64
+component products. Read the [source, timing and qualification ledger](../audits/2026-11-05-sol-energy-precision.md)
+and [mechanism boundary](../systems/solid-detachment.md#planner-energy-precision--dependent-candidate-2026-11-05).
+Both Godot hosts correct eight false refusals and two false acceptances on the
+fixed 84-input grid, retaining genuine refusals. Runtime Rapier regressions are
+separate from the Windows editor-import failure and inherited native gates.
+Keep the PR Draft and dependent on #393; no material-source admission,
+restoration, production-default change or integration follows. Next physics work
+must distinguish valid constrained occupancy from invalid overlap, with exact
+aggregate geometry, physical drive and material/energy accounting.
 
 ## Isolated SOL facade refusal repair — 2026-11-04
 

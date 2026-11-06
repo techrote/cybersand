@@ -1,0 +1,87 @@
+{
+  "registration": "SOL-MASS-INITIALIZATION-001",
+  "date": "2026-11-06",
+  "source": "1733f75011087a78c2f62d517480d833c2a26887",
+  "purpose": "Isolated actual Rapier known-impulse oracle for first-step effective mass readiness, not nativeSOLrecovery or new response physics.",
+  "hypothesis": "Correct cached custom mass/inertia/COM may precede effective Rapier mass recomputation; a first impulse could be lost. This is source-supported but not yet runtime-proved.",
+  "arms": [
+    "custom_fresh",
+    "custom_after_zero_g_step",
+    "auto_com_custom_inertia_fresh"
+  ],
+  "impulses": [
+    "central",
+    "offcentre"
+  ],
+  "controls": "Each arm/wrench/structure creates a fresh one-body private space. Reproduce frozen creation, declared customM/I, initially disabled exact aggregate shapes, then enable and unfreeze with zero manual steps. Zero gravity and replacement-zero damping in all arms isolate initialization. Warm control advances exactlyone zero-force step before applying known J3; fresh arms use none. No native World, cell authority, modified solver or recovery operation exists in this oracle.",
+  "bounds": "Warm control expected deltaV=J/M, deltaOmega=(offset crossJ)/I, tolerance=16*float32_epsilon*max(abs(expected),1e-12). These analytic oracle bounds precede execution and are not changed to fit results. Fresh custom and autoCOM outcomes are measured, not assumed passing. Record cached params/inverseparams, getter/directstate, immediate and poststep actualv/omega/pose and all manual steps.",
+  "custody": "Fixtures are actual source-prepared tree520/sixrectangles and building356/fiverectangles from registered cut reports. This backend-only geometry reuse doesnot establish native aggregate handoff eligibility or original SOLclearance. Native original source and frozen guards unchanged.",
+  "fixtures": {
+    "tree": {
+      "mass": 520.0,
+      "inertia": 70453.64935897427,
+      "center": [
+        57.33076858520508,
+        37.875
+      ],
+      "rectangles": [
+        44,
+        27,
+        29,
+        5,
+        44,
+        32,
+        16,
+        1,
+        61,
+        32,
+        12,
+        1,
+        44,
+        33,
+        29,
+        7,
+        50,
+        40,
+        15,
+        4,
+        50,
+        44,
+        4,
+        21
+      ],
+      "raw_sha256": "6aac335cc93207f2603a7cd34fe7f05ec3f80a5328d6cad80439020094996808"
+    },
+    "building": {
+      "mass": 356.0,
+      "inertia": 59192.15355805243,
+      "center": [
+        59.685394287109375,
+        41.129215240478516
+      ],
+      "rectangles": [
+        50,
+        27,
+        23,
+        4,
+        50,
+        31,
+        4,
+        13,
+        69,
+        31,
+        4,
+        13,
+        50,
+        44,
+        23,
+        4,
+        50,
+        48,
+        4,
+        17
+      ],
+      "raw_sha256": "83a675db8457506094ef243e822643f6616d1692b034d2680e81d9951e66b417"
+    }
+  }
+}

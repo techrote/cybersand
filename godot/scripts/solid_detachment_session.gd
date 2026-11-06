@@ -322,10 +322,11 @@ func _prepare_body(prepared: Dictionary) -> bool:
 	body.freeze = true
 	body.collision_layer = 0
 	body.collision_mask = 0
+	# Uniform exact rectangles have the native member centroid. AUTO preserves
+	# pending backend mass recomputation before the first genuine impulse.
+	body.center_of_mass_mode = RigidBody2D.CENTER_OF_MASS_MODE_AUTO
 	body.mass = float(prepared.mass)
 	body.inertia = float(prepared.inertia)
-	body.center_of_mass_mode = RigidBody2D.CENTER_OF_MASS_MODE_CUSTOM
-	body.center_of_mass = Vector2.ZERO
 	body.gravity_scale = 0.094
 	body.linear_damp = 0.04
 	body.angular_damp = 0.04
@@ -435,9 +436,13 @@ func _pack_compound_states() -> PackedFloat32Array:
 	var rotation: float = transform.get_rotation()
 	var linear: Vector2 = bridge.body_linear_velocity(0)
 	var omega: float = angular_velocity()
+	var direct: PhysicsDirectBodyState2D = PhysicsServer2D.body_get_direct_state(body.get_rid())
+	if direct == null:
+		return states # Existing empty-publication failure path refuses/pauses.
+	var world_com: Vector2 = transform * direct.center_of_mass_local
 	for index: int in range(_coupling_local_centers.size()):
 		var world_center: Vector2 = transform * _coupling_local_centers[index]
-		var world_offset: Vector2 = world_center - transform.origin
+		var world_offset: Vector2 = world_center - world_com
 		var point_velocity := linear + Vector2(-omega * world_offset.y, omega * world_offset.x)
 		CyberRigidBodyCoupling.append_input(states, index + 1, world_center, rotation,
 			_coupling_sizes[index], point_velocity, omega, _coupling_masses[index],
@@ -510,6 +515,9 @@ func _consume_compound_results() -> void:
 	var applied: Dictionary = bridge.apply_compound_cellular_results(
 		snapshot.serial, snapshot.rigid_body_results, 0, _coupling_sample_serial,
 		_coupling_local_centers, _coupling_masses, COUPLING_IMPULSE_CAP, COUPLING_CORRECTION_CAP)
+	_observe_compound_application(applied, snapshot.rigid_body_results,
+		snapshot.current_rigid_body_states, snapshot.serial, snapshot.tick_index,
+		snapshot.simulation_world_revision, snapshot.rigid_body_epoch)
 	last_contact_response = {"accepted":false, "evaluated":false,
 		"outcome":"ResponseDisabled" if not sand_resistance_enabled else "CompoundResponseRefused",
 		"compound_outcome":applied.get("outcome", "Unknown"), "snapshot_serial":snapshot.serial,
@@ -554,6 +562,13 @@ func _consume_compound_results() -> void:
 		# it is retained rather than silently dropped from the original numerator.
 		_contact_metrics.response_other_ms_all_attempts += contact_ms - stage_sum
 		_record_contact_response(last_contact_response)
+
+func _observe_compound_application(_applied: Dictionary, _results: PackedFloat32Array,
+		_states: PackedFloat32Array, _snapshot_serial: int, _native_tick: int,
+		_world_revision: int, _owner_epoch: int) -> void:
+	# Synchronous value-only test seam. Production neither retains these values
+	# nor changes state here. Overrides must not await, publish or mutate owners.
+	pass
 
 func _record_contact_observation(observation: Dictionary, work: Dictionary) -> void:
 	if not contact_measurement_enabled:
