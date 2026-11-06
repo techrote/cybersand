@@ -43,6 +43,17 @@ failure. See [repository development and release](docs/operations/github-develop
 Completion/ownership/validation-premise semantics remain separately owned by the
 [development-claims remediation programme](docs/operations/development-claims-remediation-programme.md).
 
+## Reconciliation and owner-visible design choices
+
+Reconcile branches with main without waiting for the owner; this is not an
+approval gate. When reconciliation (or a stacked branch) has to choose between
+competing systems, laws or designs, or changes default behavior/feel, make the
+best-supported choice, continue, and record it under **Design choices** in the PR:
+what was chosen, the alternative, why, and what reversing it would take, in plain
+language for a non-programmer owner. Mechanical text/docs conflicts need no entry.
+Existing owner actions (merging to main, Ready, deleting finished work, default
+promotion) are unchanged. See [repository development and release](docs/operations/github-development-and-release.md#reconciliation-and-design-choices).
+
 ## Water successor safety
 
 Issue #26 remains closed as a valid negative experiment for its two exact tested
