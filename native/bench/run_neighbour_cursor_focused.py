@@ -56,10 +56,10 @@ def compile_case(root, tree, source, output, flags, label, verify):
     run(command, tree, root / ("compile_" + label + ".log"), timeout=1200)
 
 
-def replay(binary, tree, resultdir, scenario, workers, ticks, suffix):
+def replay(binary, tree, resultdir, scenario, workers, ticks, suffix, env=None):
     name = f"{suffix}_{scenario}_{workers}w_{ticks}ticks"
     proc = run([binary, scenario, workers, ticks], tree,
-               resultdir / (name + ".log"), timeout=360)
+               resultdir / (name + ".log"), timeout=360, env=env)
     try:
         outcome = json.loads(proc.stdout)
     except json.JSONDecodeError as exc:
@@ -168,11 +168,13 @@ def main():
         for case in cases:
             for workers in worker_options:
                 env = os.environ.copy()
+                if kind == "tsan":
+                    env["TSAN_OPTIONS"] = "halt_on_error=1:exitcode=66"
                 if kind == "asan_ubsan":
                     env["ASAN_OPTIONS"] = "detect_leaks=1:halt_on_error=1"
                     env["UBSAN_OPTIONS"] = "halt_on_error=1"
                 result = replay(binary, trees["candidate"], out / "sanitizers",
-                                case, workers, 520, kind)
+                                case, workers, 520, kind, env=env)
                 mismatch = exactness_label(all_rows[(case, "candidate", workers)], result)
                 sanitizer.append({"kind": kind, "case": case, "workers": workers,
                                   "mismatched_fields": mismatch})
