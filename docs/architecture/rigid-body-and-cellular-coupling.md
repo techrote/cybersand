@@ -21,6 +21,11 @@ serial. Publication/native tick/physical step are distinct clocks; independent
 relaxed age/drift/energy guard, mass/cap change or new continuous support force
 is admitted. More support with worse burial is a negative settling result.
 
+The ordinary granular bearing correction (0.99 × downward travel, cap 0.5) is
+gated on published proxy `velocity.y > 0`. Sand applied before publication can
+therefore withhold it; the [bearing-gate diagnostic](../audits/2026-11-06-sol-bearing-gate-diagnostic.md) measures that
+first-order loss but cannot attribute net sink under uncontrolled phase.
+
 ## Source-local SOL mass readiness — 2026-11-06
 
 The isolated [initialization candidate](../systems/solid-detachment.md#first-impulse-backend-readiness--2026-11-06)

@@ -29,6 +29,21 @@ quiet Off burial is not clearance.38 new dispatch checks pass each host, plus
 four post episodes qualify teardown/disposition changes. This is **NO-GO as a
 settling fix**, with no default, weight, original clearance/CPU or MAT admission.
 
+## Bearing-gate diagnostic — 2026-11-06
+
+**Current observation seam:** `_native_telemetry_enabled()` defaults to false; a
+test probe may enable native World telemetry (counters only) and copy aligned
+diagnostic rows, prepared states and results per native tick. The unchanged
+ordinary bearing law skips impulse and correction when a proxy's published
+`velocity.y <= 0`; native writes `support_samples` only past that gate.
+
+The [registered diagnostic](../audits/2026-11-06-sol-bearing-gate-diagnostic.md) reproduces that law exactly (0/83,133 model
+failures) and finds the gate engaged under post far more than pre where post Sand
+is accepted, but its attribution test is **INCONCLUSIVE**: Windows post
+acceptance fell to 0.20–0.61 under publication/tick phase, leaving one eligible
+pair. Non-perturbation is unresolved by its registered rule. No law, cap, mass,
+gate or default change follows; the #461 NO-GO stands.
+
 ## First-impulse backend readiness — 2026-11-06
 
 **Current on the isolated candidate branch:** `_prepare_body()` selects AUTO COM

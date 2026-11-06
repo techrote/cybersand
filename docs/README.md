@@ -10,6 +10,13 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+## SOL bearing-gate diagnostic
+
+The [dependent diagnostic](audits/2026-11-06-sol-bearing-gate-diagnostic.md) and its
+[route](systems/solid-detachment.md#bearing-gate-diagnostic--2026-11-06) test whether
+post Sand suppresses the ordinary bearing correction. The native law reproduces
+exactly; the registered attribution is INCONCLUSIVE under phase sensitivity.
+
 ## SOL contact and gravity ordering
 
 The [order/clock contract](systems/solid-detachment.md#contact-and-gravity-ordering--2026-11-06)

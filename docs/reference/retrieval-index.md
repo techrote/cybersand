@@ -10,6 +10,14 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 
 # Retrieval question index
 
+## SOL bearing-gate diagnostic
+
+Retrieve [route and result](../systems/solid-detachment.md#bearing-gate-diagnostic--2026-11-06),
+[coupling law](../architecture/rigid-body-and-cellular-coupling.md#sol-contact-ordering-experiment)
+and [commands](../operations/local-build-and-validation.md#sol-bearing-gate-diagnostic--2026-11-06).
+The [dated dossier](../audits/2026-11-06-sol-bearing-gate-diagnostic.md) stays excluded
+from default retrieval.
+
 ## SOL contact and gravity ordering
 
 Retrieve [routing and result](../systems/solid-detachment.md#contact-and-gravity-ordering--2026-11-06),
