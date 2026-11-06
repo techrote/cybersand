@@ -884,14 +884,21 @@ void World::resolve_gas_topology(bool allow_cache) {
         }
         bool any_atmosphere = false;
         for (const auto r : members_r) any_atmosphere = any_atmosphere || state.regions[r].atmosphere;
-        const auto create = [&](std::uint32_t r) {
+        const auto create = [&](std::uint32_t r, bool sealed_from_open = false) {
             if (next.size() >= PressureFlowParameters::kCompartmentCapacity)
                 throw std::runtime_error("pressure gas compartment capacity exhausted");
             auto& region = state.regions[r];
             State::Compartment made;
             made.id = allocate_gas_compartment_id(state.next_id);
             // Newly sealed gas is atmospheric; kernel-vacated cells are vacuum.
-            made.amount = region.fresh_cells + region.atmosphere_cells;
+            // A region sealing off from the open atmosphere (no prior
+            // compartment and some cells already labelled atmosphere) holds
+            // atmospheric gas in its whole volume: Water that drained from its
+            // cells while it was open was replaced by air, even where the
+            // bounded label pass had not yet relabelled those vacuum cells.
+            // Water-born voids without atmosphere cells keep the vacuum rule
+            // (#406, owner approved 2026-11-06).
+            made.amount = sealed_from_open ? region.volume : region.fresh_cells + region.atmosphere_cells;
             made.volume = region.volume;
             made.anchor_x = region.lowest_x;
             made.anchor_y = region.lowest_y;
@@ -927,7 +934,7 @@ void World::resolve_gas_topology(bool allow_cache) {
                 state.regions[members_r.front()].label = kVacuumLabel;
                 continue;
             }
-            create(members_r.front());
+            create(members_r.front(), region.atmosphere_cells != 0U);
             continue;
         }
         std::uint64_t absorbed = 0;

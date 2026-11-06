@@ -3728,6 +3728,49 @@ void test_player_field_native_tick_quantity_and_worker_parity() {
 
 // MaterialRules' namespace-scope pair tables must answer exactly as the
 // authored InteractionRules resolver for every material pair and roll.
+// A chamber open to the air drains its Water, then both openings are plugged
+// and Water touches the sealed pocket. Sealing from the open atmosphere holds
+// atmospheric gas in the whole volume, including kernel-vacated cells the
+// bounded label pass had not relabelled (no under-pressure at seal; #406).
+void test_pressure_seal_from_open_is_atmospheric() {
+    for (const int variant : {0, 2}) {
+        auto words = cybersand::LiquidSolverPolicy::default_request();
+        words[21] = 3;
+        words[22] = variant;
+        const auto decoded = cybersand::LiquidSolverPolicy::decode(std::span<const std::int32_t>(words));
+        require(decoded.accepted(), "pressure policy accepted");
+        WorldConfig config{};
+        config.liquid_solver_policy = *decoded.policy;
+        config.maximum_rule_radius = 2;
+        config.worker_threads = 1;
+        World world(config);
+        world.reserve_region({0, 0, 256, 256});
+        const auto rect = [&](int x, int y, int w, int h, Material m) {
+            for (int j = 0; j < h; ++j) for (int i = 0; i < w; ++i) world.set(x + i, y + j, m);
+        };
+        rect(0, 248, 256, 8, Material::Wall);
+        rect(96, 96, 48, 4, Material::Wall);
+        rect(96, 140, 48, 4, Material::Wall);
+        rect(96, 100, 4, 40, Material::Wall);
+        rect(140, 100, 4, 40, Material::Wall);
+        rect(118, 96, 4, 4, Material::Empty);   // top vent to the open air
+        rect(136, 140, 4, 4, Material::Empty);  // bottom drain into the sump
+        rect(100, 100, 40, 40, Material::Water);
+        for (int t = 0; t < 900; ++t) (void)world.tick();
+        rect(118, 96, 4, 4, Material::Wall);
+        rect(136, 140, 4, 4, Material::Wall);
+        for (int t = 0; t < 3; ++t) (void)world.tick();
+        bool found = false;
+        for (const auto& c : world.gas_compartments()) {
+            if (c.anchor_x < 100 || c.anchor_x >= 140 || c.anchor_y < 100 || c.anchor_y >= 140) continue;
+            found = true;
+            require(c.amount >= c.volume && c.gauge >= 0,
+                    "a pocket sealed from the open air started under-pressured");
+        }
+        require(found, "the sealed chamber holds a gas compartment");
+    }
+}
+
 // The collider mask equals is_hard_surface of the display projection cell by
 // cell: every material id, dithered fractional Water and non-resident cells.
 void test_hard_surface_bits_match_projection() {
@@ -4116,6 +4159,7 @@ int main(int argc, char** argv) {
         {"Pair reaction tables match the authored resolver", test_pair_reaction_tables_match_resolver},
         {"Active-core capacity counts distinct cores", test_active_core_capacity_counts_distinct_cores},
         {"Hard-surface bits match the display projection", test_hard_surface_bits_match_projection},
+        {"LCB-002 PressureFlow pocket sealed from open air is atmospheric", test_pressure_seal_from_open_is_atmospheric},
     };
 
     std::size_t passed = 0;

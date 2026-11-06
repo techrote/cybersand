@@ -308,6 +308,42 @@ The toolchains are LLVM-MinGW 20260826 / Clang 23.1.0 and g++-13 13.3.0. After
 the append, `check_repository.py` reports no errors locally. The full ready-head
 CI remains a separate gate.
 
+## Gas law: sealing from the open air
+
+The owner observed this while play-testing my-canvas: trapped air was respected
+in a cup that never held Water, but not in an arch that started partly full of
+painted Water.
+
+**Probe findings:**
+
+- The behaviour is the same with `reference` and without ballistic Water, so it
+  is the PressureFlow gas model, not `cached_dormant` or ballistic Water.
+- Kernel-vacated cells are labelled vacuum, and labelling of open regions is
+  bounded. So a region open to the air can keep vacuum cells. When it seals,
+  its compartment counted only unresolved and atmosphere cells as gas.
+- In a drained 40×40 chamber, plugged and then touched by Water, the
+  compartment sealed with amount 1,489 for volume 1,496, gauge −38.
+- An inverted cup sealed by a pool while still holding Water keeps that Water
+  up (gauge about −300 to −650). That is correct physics and is unchanged.
+- A chamber larger than `kCompartmentVolumeLimit` is always atmosphere.
+
+**Rule (owner approved 2026-11-06):** a region with no prior compartment but
+some atmosphere-labelled cells seals with amount = volume, which is
+atmospheric, gauge 0. Water-born voids without atmosphere cells keep the vacuum
+rule, and the continue, merge, split, vent and collapse paths are unchanged.
+
+**Checks:**
+
+- The new native regression passes, and fails on the previous rule.
+- 188 native tests pass.
+- Ten Godot regressions pass unchanged on DLL `86bb4c72` (pressure reference
+  and optimization, Rapier pressure, solver policy, policy worker, retained
+  pressure, LCB physics contracts, scenario catalogue, WEX-001 and Water Feel).
+  No pinned baseline moved.
+
+This is a gas-law change on the experimental branch. It is not
+behaviour-preserving, and its protected-source transition is recorded as such.
+
 ## Remaining costs and next investigations
 
 1. **Gas BFS, about 2.4 ms serial.** This bounded atmosphere exploration
