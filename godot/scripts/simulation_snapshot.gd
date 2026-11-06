@@ -59,6 +59,9 @@ var actor_prototype_reset_serial: int = 0
 var actor_prototype_reset_applied: bool = false
 # Exact copied body input sample consumed by this worker publication.
 var current_rigid_body_states: PackedFloat32Array = PackedFloat32Array()
+# Main-thread body publication counter latched with current_rigid_body_states
+# (-1 before the owner loop publishes). Used by the opt-in lockstep fence.
+var consumed_rigid_body_publication: int = -1
 var rigid_body_epoch: int = 0 # Main-thread physical owner incarnation, or reference 0.
 var physical_actor_effects: Array = [] # Bounded copied native-owner receipts.
 var physical_actor_effect_admission: Dictionary = {} # Copied queue counts and last batch outcome.
