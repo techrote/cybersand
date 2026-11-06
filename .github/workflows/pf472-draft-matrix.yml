@@ -1,0 +1,107 @@
+# Supplemental Draft-only engineering evidence. This file does NOT replace,
+# waive or modify protected Native, Godot, documentation or MAT-AUTH gates.
+name: PF472 Draft Sanitizers and Source-Matched Native Proxy
+on:
+  push:
+    branches: [sol6/pf-run-head-repair-20261106-2100]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  native-sanitizers:
+    name: Full native sanitizer / ${{ matrix.family }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 300
+    strategy:
+      fail-fast: false
+      matrix:
+        family: [asan-ubsan, tsan]
+    env:
+      CXX: g++-13
+      CC: gcc-13
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Record exact source/compiler and validate provider policy
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          g++-13 --version
+          python3 tools/ci/check_ci_provider_policy.py
+      - name: Run the repository's complete unmodified sanitizer family
+        env:
+          FAMILY: ${{ matrix.family }}
+        run: |
+          set -euo pipefail
+          bash tools/ci/run_native_family.sh "$FAMILY" "build/pf472-sanitizers/$FAMILY"
+      - name: Retain failures, commands, timings and exact-source evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: pf472-sanitizer-${{ matrix.family }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/pf472-sanitizers/
+          if-no-files-found: warn
+          retention-days: 90
+  parent-candidate-proxy:
+    name: GCC13 pinned parent and candidate native host-scale proxy
+    runs-on: ubuntu-24.04
+    timeout-minutes: 330
+    env:
+      CXX: g++-13
+      PARENT_SHA: 4a80af2a891332176a3912a235582d77d076a185
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Prepare clean exact parent detached worktree
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          git fetch --no-tags --depth=1 origin "$PARENT_SHA"
+          git worktree add --detach "$RUNNER_TEMP/pf472-parent" "$PARENT_SHA"
+          test "$(git -C "$RUNNER_TEMP/pf472-parent" rev-parse HEAD)" = "$PARENT_SHA"
+          test -z "$(git -C "$RUNNER_TEMP/pf472-parent" status --porcelain)"
+          test -z "$(git status --porcelain)"
+          g++-13 --version
+          mkdir -p "$RUNNER_TEMP/pf472-proxy"
+      - name: Execute unmodified LCB201 native proxy parent vs candidate
+        run: |
+          set -euo pipefail
+          bash tools/lcb/pf_run_repair_compare.sh "$RUNNER_TEMP/pf472-parent" "$GITHUB_WORKSPACE" "$RUNNER_TEMP/pf472-proxy" g++-13
+      - name: Retain raw baseline/candidate timing vectors, summary and identities
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: pf472-parent-candidate-proxy-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/pf472-proxy/
+          if-no-files-found: warn
+          retention-days: 90
+  documentation-subgates:
+    name: Source-only docs, M11, retrieval and material parity subgates
+    runs-on: ubuntu-24.04
+    timeout-minutes: 200
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+      - name: Independently execute downstream validations; preserve each exit
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          mkdir -p build/pf472-doc-evidence
+          failures=0
+          for step in "python3 tools/ci/check_docs.py" "python3 tools/ci/check_m11_consistency.py" "python3 tools/ci/check_repository.py" "python3 tools/material_catalogue/compiler.py --check" "python3 tools/material_catalogue/check_native_parity.py --output build/pf472-doc-evidence/native-parity.json" "python3 tools/docs/retrieval_eval.py --output build/pf472-doc-evidence/retrieval.json" "python3 tools/docs/retrieval_eval.py --queries docs/reference/retrieval-challenges.json --output build/pf472-doc-evidence/retrieval-challenges.json" "python3 tools/material_catalogue/compatibility.py --check"; do
+            echo "START $step" | tee -a build/pf472-doc-evidence/commands.log
+            if bash -c "$step" >>build/pf472-doc-evidence/results.log 2>&1; then
+              echo "PASS $step" | tee -a build/pf472-doc-evidence/commands.log
+            else
+              echo "FAIL $step" | tee -a build/pf472-doc-evidence/commands.log
+              failures=1
+            fi
+          done
+          exit "$failures"
+      - name: Retain commands, genuine failures and receipts
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: pf472-source-subgates-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/pf472-doc-evidence/
+          if-no-files-found: warn
+          retention-days: 90
