@@ -315,6 +315,7 @@ bool CyberNativeCellWorld::reset_demo_world() {
 
         candidate->set_simulation_region(world_->simulation_region());
         world_.swap(candidate);
+        hard_surface_cache_valid_ = false; // Replacement World requires an unqualified full mask refresh.
         workbench_.reset(); extent_ = {kWorldWidth,kWorldHeight};
         retire_liquid_construction_identity();
         ++liquid_policy_session_generation_;
@@ -1194,7 +1195,11 @@ PackedInt32Array CyberNativeCellWorld::get_hard_surface_chunk_rectangles() const
     if (has_failed()) return hard_surface_chunk_rectangles_;
     if (world_ == nullptr) return {};
     const auto hard_revision = static_cast<std::uint64_t>(get_hard_surface_revision());
-    if (hard_surface_chunk_rectangles_revision_ == hard_revision) return hard_surface_chunk_rectangles_;
+    const auto native_revision = world_->hard_surface_revision();
+    if (hard_surface_chunk_rectangles_revision_ == hard_revision &&
+        hard_surface_cache_valid_ && hard_surface_cache_world_ == world_.get() &&
+        hard_surface_cache_native_revision_ == native_revision)
+        return hard_surface_chunk_rectangles_;
     // Same packet as hard_surface_chunks_from_cells(display projection): the
     // projection's hard mask equals the stored-material mask (see
     // World::copy_hard_surface_bits), and each chunk's rectangles depend only
@@ -1206,15 +1211,25 @@ PackedInt32Array CyberNativeCellWorld::get_hard_surface_chunk_rectangles() const
     const auto columns = extent_.x / chunk_size, rows = extent_.y / chunk_size;
     const auto chunk_count = static_cast<std::size_t>(columns) * static_cast<std::size_t>(rows);
     const auto bit_count = words * static_cast<std::size_t>(extent_.y);
-    bool cold = hard_surface_cache_extent_ != extent_ || hard_surface_chunk_cache_.size() != chunk_count;
+    const bool cold = hard_surface_cache_extent_ != extent_ ||
+        hard_surface_chunk_cache_.size() != chunk_count ||
+        hard_surface_cache_world_ != world_.get() ||
+        !hard_surface_cache_valid_ || native_revision < hard_surface_cache_native_revision_;
     if (cold) {
         hard_surface_bits_.assign(bit_count, 0U);
-        hard_surface_previous_bits_.assign(bit_count, 0U);
+        hard_surface_changed_tiles_.assign(chunk_count, 1U);
         hard_surface_chunk_cache_.assign(chunk_count, {});
         hard_surface_cache_extent_ = extent_;
+        hard_surface_cache_world_ = world_.get();
+        ++hard_surface_full_refreshes_;
+    } else {
+        world_->copy_hard_surface_changed_tiles(
+            {0, 0, extent_.x, extent_.y}, hard_surface_cache_native_revision_,
+            std::span<std::uint8_t>{hard_surface_changed_tiles_.data(), hard_surface_changed_tiles_.size()});
     }
-    world_->copy_hard_surface_bits({0, 0, extent_.x, extent_.y},
-                                   std::span<std::uint64_t>{hard_surface_bits_.data(), hard_surface_bits_.size()});
+    // Partial rebuilds are invalid on exception; next query starts cold.
+    hard_surface_cache_valid_ = false;
+    std::array<std::uint64_t, chunk_size> tile_bits{};
     const auto run_key = [](std::int32_t x, std::int32_t width) {
         return (static_cast<std::uint64_t>(static_cast<std::uint32_t>(x)) << 32U) | static_cast<std::uint32_t>(width);
     };
@@ -1229,10 +1244,19 @@ PackedInt32Array CyberNativeCellWorld::get_hard_surface_chunk_rectangles() const
                                      static_cast<std::size_t>(chunk_x);
             auto& completed = hard_surface_chunk_cache_[chunk_index];
             bool changed = cold;
-            for (std::int32_t row = 0; row < chunk_size && !changed; ++row) {
-                const auto word = static_cast<std::size_t>(chunk_y * chunk_size + row) * words +
-                                  static_cast<std::size_t>(chunk_x);
-                changed = hard_surface_bits_[word] != hard_surface_previous_bits_[word];
+            if (cold || hard_surface_changed_tiles_[chunk_index] != 0U) {
+                world_->copy_hard_surface_bits(
+                    {chunk_x * chunk_size, chunk_y * chunk_size, chunk_size, chunk_size},
+                    std::span<std::uint64_t>{tile_bits.data(), tile_bits.size()});
+                ++hard_surface_mask_tiles_copied_;
+                hard_surface_mask_cells_copied_ += static_cast<std::uint64_t>(chunk_size * chunk_size);
+                for (std::int32_t row = 0; row < chunk_size; ++row) {
+                    const auto word = static_cast<std::size_t>(chunk_y * chunk_size + row) * words +
+                                      static_cast<std::size_t>(chunk_x);
+                    if (tile_bits[static_cast<std::size_t>(row)] == hard_surface_bits_[word]) continue;
+                    hard_surface_bits_[word] = tile_bits[static_cast<std::size_t>(row)];
+                    changed = true;
+                }
             }
             if (!changed) {
                 ++hard_surface_chunks_reused_;
@@ -1280,7 +1304,6 @@ PackedInt32Array CyberNativeCellWorld::get_hard_surface_chunk_rectangles() const
             rectangle_count += completed.size();
         }
     }
-    std::swap(hard_surface_bits_, hard_surface_previous_bits_);
     const auto header_size = chunk_count + 2U;
     PackedInt32Array result;
     result.resize(static_cast<std::int64_t>(header_size + rectangle_count * 4U));
@@ -1299,6 +1322,8 @@ PackedInt32Array CyberNativeCellWorld::get_hard_surface_chunk_rectangles() const
     packed[1U + chunk_count] = static_cast<std::int32_t>(cursor);
     hard_surface_chunk_rectangles_ = result;
     hard_surface_chunk_rectangles_revision_ = hard_revision;
+    hard_surface_cache_native_revision_ = native_revision;
+    hard_surface_cache_valid_ = true;
     return hard_surface_chunk_rectangles_;
 }
 
@@ -1312,6 +1337,9 @@ Dictionary CyberNativeCellWorld::diagnostic_hard_surface_packet_stats() const {
     Dictionary out;
     out["chunks_rebuilt"] = static_cast<std::int64_t>(hard_surface_chunks_rebuilt_);
     out["chunks_reused"] = static_cast<std::int64_t>(hard_surface_chunks_reused_);
+    out["mask_tiles_copied"] = static_cast<std::int64_t>(hard_surface_mask_tiles_copied_);
+    out["mask_cells_copied"] = static_cast<std::int64_t>(hard_surface_mask_cells_copied_);
+    out["full_refreshes"] = static_cast<std::int64_t>(hard_surface_full_refreshes_);
     return out;
 }
 
@@ -1616,6 +1644,7 @@ bool CyberNativeCellWorld::diagnostic_reset(const Dictionary& options) {
         auto diagnostics = config.physics_diagnostics.enabled
             ? std::make_unique<BodyDiagnostics>() : nullptr;
         world_.swap(candidate);
+        hard_surface_cache_valid_ = false; // Replacement World requires an unqualified full mask refresh.
         workbench_.reset(); extent_ = {kWorldWidth,kWorldHeight};
         retire_liquid_construction_identity();
         ++liquid_policy_session_generation_;

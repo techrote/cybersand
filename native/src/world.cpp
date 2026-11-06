@@ -315,7 +315,9 @@ struct World::Chunk {
                 Cell::for_material(Material::Empty)),
           activity_blocks_per_axis((size + activity_block_size - 1) / activity_block_size),
           activity_blocks(static_cast<std::size_t>(activity_blocks_per_axis) *
-                          static_cast<std::size_t>(activity_blocks_per_axis)) {}
+                          static_cast<std::size_t>(activity_blocks_per_axis)),
+          hard_surface_tile_revisions(static_cast<std::size_t>((size + 63) / 64) *
+                                      static_cast<std::size_t>((size + 63) / 64), 0U) {}
 
     // Four-byte hot cell: byte material ID, two material-specific state
     // registers, and one update epoch. Temperature remains an optional
@@ -328,6 +330,8 @@ struct World::Chunk {
     std::unique_ptr<std::vector<std::uint64_t>> granular_arrivals;
     std::int32_t activity_blocks_per_axis = 0;
     std::vector<ActivityBlock> activity_blocks;
+    // Persistent chunk-local 64x64 occupancy stamps, preallocated at creation.
+    std::vector<std::uint64_t> hard_surface_tile_revisions;
     std::size_t non_empty_cell_count = 0;
     bool active = false;
     bool changed_this_tick = false;
@@ -355,6 +359,9 @@ struct World::JobEffects {
         std::int32_t maximum_x = 0;
         std::int32_t maximum_y = 0;
         std::int64_t non_empty_delta = 0;
+        bool hard_surface_dirty = false;
+        std::int32_t hard_min_x = 0, hard_min_y = 0;
+        std::int32_t hard_max_x = 0, hard_max_y = 0;
     };
     struct DiscoveryMutationReport {
         ChunkCoord chunk{};
@@ -521,6 +528,26 @@ struct World::JobEffects {
             address_value.local_y,
             non_empty_delta,
         };
+    }
+
+    // Job-local hard-only bounds. No shared metadata writes until the barrier.
+    void record_hard_surface(const Address& a) noexcept {
+        for (std::size_t index = 0; index < chunk_count; ++index) {
+            auto& effect = chunks[index];
+            if (effect.chunk != a.chunk) continue;
+            if (!effect.hard_surface_dirty) {
+                effect.hard_surface_dirty = true;
+                effect.hard_min_x = effect.hard_max_x = a.local_x;
+                effect.hard_min_y = effect.hard_max_y = a.local_y;
+            } else {
+                effect.hard_min_x = std::min(effect.hard_min_x, a.local_x);
+                effect.hard_min_y = std::min(effect.hard_min_y, a.local_y);
+                effect.hard_max_x = std::max(effect.hard_max_x, a.local_x);
+                effect.hard_max_y = std::max(effect.hard_max_y, a.local_y);
+            }
+            return;
+        }
+        overflow = true; // record() must precede this call.
     }
 
     void record_discovery_signal(const Address& address_value,
@@ -1972,6 +1999,7 @@ bool World::write_cell(std::int64_t x, std::int64_t y, Material material,
 
     if (effects != nullptr) {
         effects->record(target, delta);
+        if (hard_surface_changed) effects->record_hard_surface(target);
         effects->pressure_gas_changed = effects->pressure_gas_changed || before != material;
         if (settled_discovery_ != nullptr)
             effects->record_discovery_mutation(target, config_.activity_block_size);
@@ -1983,12 +2011,27 @@ bool World::write_cell(std::int64_t x, std::int64_t y, Material material,
         chunk->non_empty_cell_count = static_cast<std::size_t>(
             static_cast<std::int64_t>(chunk->non_empty_cell_count) + delta);
         chunk->changed_this_tick = true;
-    mark_cell_dirty(*chunk, target.local_x, target.local_y);
-    wake_cell_neighborhood(x, y);
-    if (hard_surface_changed) ++hard_surface_revision_;
-    dirty_discovery_cell(x, y, soliding::ProducerReason::DirectMutation);
+        mark_cell_dirty(*chunk, target.local_x, target.local_y);
+        wake_cell_neighborhood(x, y);
+        if (hard_surface_changed) {
+            ++hard_surface_revision_;
+            mark_hard_surface_tiles(*chunk, target.local_x, target.local_y,
+                                    target.local_x, target.local_y);
+        }
+        dirty_discovery_cell(x, y, soliding::ProducerReason::DirectMutation);
     }
     return true;
+}
+
+void World::mark_hard_surface_tiles(Chunk& chunk, std::int32_t minimum_x,
+                                     std::int32_t minimum_y, std::int32_t maximum_x,
+                                     std::int32_t maximum_y) noexcept {
+    constexpr std::int32_t tile_size = 64;
+    const auto tiles_per_axis = static_cast<std::size_t>((config_.chunk_size + tile_size - 1) / tile_size);
+    for (auto y = minimum_y / tile_size; y <= maximum_y / tile_size; ++y)
+        for (auto x = minimum_x / tile_size; x <= maximum_x / tile_size; ++x)
+            chunk.hard_surface_tile_revisions[static_cast<std::size_t>(y) * tiles_per_axis +
+                                              static_cast<std::size_t>(x)] = hard_surface_revision_;
 }
 
 void World::mark_cell_dirty(Chunk& chunk, std::int32_t local_x, std::int32_t local_y) {
@@ -2186,7 +2229,11 @@ void World::set_with_quantity_kind(std::int64_t x, std::int64_t y, Material mate
                               target.local_x, target.local_y, previous_material != material);
     mark_cell_dirty(chunk, target.local_x, target.local_y);
     wake_cell_neighborhood(x, y);
-    if (hard_surface_changed) ++hard_surface_revision_;
+    if (hard_surface_changed) {
+        ++hard_surface_revision_;
+        mark_hard_surface_tiles(chunk, target.local_x, target.local_y,
+                                target.local_x, target.local_y);
+    }
     dirty_discovery_cell(x, y, soliding::ProducerReason::DirectMutation);
 }
 
@@ -2947,6 +2994,7 @@ void World::clear() {
     tick_chunk_allocations_ = 0;
     tick_temperature_field_allocations_ = 0;
     ++hard_surface_revision_;
+    hard_surface_full_refresh_revision_ = hard_surface_revision_;
     if (pressure_ != nullptr) pressure_->reset();
     inertial_ledger_ = {};
     initialize_settled_discovery();
@@ -3002,11 +3050,13 @@ void World::move_cell(std::int64_t from_x, std::int64_t from_y, std::int64_t to_
     };
     const auto destination_delta = non_empty_delta(destination_material, source_material);
     const auto source_delta = non_empty_delta(source_material, source_replacement);
-    const bool hard_surface_changed =
+    const bool source_hard_changed =
         MaterialRules::is_hard_surface(source_material) !=
-            MaterialRules::is_hard_surface(source_replacement) ||
+        MaterialRules::is_hard_surface(source_replacement);
+    const bool destination_hard_changed =
         MaterialRules::is_hard_surface(destination_material) !=
-            MaterialRules::is_hard_surface(source_material);
+        MaterialRules::is_hard_surface(source_material);
+    const bool hard_surface_changed = source_hard_changed || destination_hard_changed;
     if (effects == nullptr) {
         destination.non_empty_cell_count = static_cast<std::size_t>(
             static_cast<std::int64_t>(destination.non_empty_cell_count) + destination_delta);
@@ -3066,6 +3116,8 @@ void World::move_cell(std::int64_t from_x, std::int64_t from_y, std::int64_t to_
     if (effects != nullptr) {
         effects->record(source_address, source_delta);
         effects->record(destination_address, destination_delta);
+        if (source_hard_changed) effects->record_hard_surface(source_address);
+        if (destination_hard_changed) effects->record_hard_surface(destination_address);
         effects->pressure_gas_changed = effects->pressure_gas_changed ||
             source_material != source_replacement || destination_material != source_material;
         if (settled_discovery_ != nullptr) {
@@ -3085,7 +3137,15 @@ void World::move_cell(std::int64_t from_x, std::int64_t from_y, std::int64_t to_
         mark_cell_dirty(destination, destination_address.local_x, destination_address.local_y);
         wake_cell_neighborhood(from_x, from_y);
         wake_cell_neighborhood(to_x, to_y);
-        if (hard_surface_changed) ++hard_surface_revision_;
+        if (hard_surface_changed) {
+            ++hard_surface_revision_;
+            if (source_hard_changed)
+                mark_hard_surface_tiles(source, source_address.local_x, source_address.local_y,
+                                        source_address.local_x, source_address.local_y);
+            if (destination_hard_changed)
+                mark_hard_surface_tiles(destination, destination_address.local_x, destination_address.local_y,
+                                        destination_address.local_x, destination_address.local_y);
+        }
         dirty_discovery_cell(from_x, from_y, soliding::ProducerReason::DirectMutation);
         dirty_discovery_cell(to_x, to_y, soliding::ProducerReason::DirectMutation);
     }
@@ -4701,6 +4761,10 @@ void World::merge_job_effects(const JobEffects& effects) {
         if (chunk == nullptr) {
             throw std::logic_error("job effect references missing chunk");
         }
+        if (effect.hard_surface_dirty) {
+            mark_hard_surface_tiles(*chunk, effect.hard_min_x, effect.hard_min_y,
+                                    effect.hard_max_x, effect.hard_max_y);
+        }
         const auto updated_non_empty =
             static_cast<std::int64_t>(chunk->non_empty_cell_count) + effect.non_empty_delta;
         if (updated_non_empty < 0 ||
@@ -5322,6 +5386,66 @@ void World::copy_hard_surface_bits(RectI64 region, std::span<std::uint64_t> dest
                 }
             }
             world_x += run;
+        }
+    }
+}
+
+void World::copy_hard_surface_changed_tiles(
+    RectI64 region, std::uint64_t since_revision,
+    std::span<std::uint8_t> destination) const {
+    require_healthy();
+    constexpr std::int64_t tile_size = 64;
+    if (region.width <= 0 || region.height <= 0 ||
+        region.x % tile_size != 0 || region.y % tile_size != 0 ||
+        region.width % tile_size != 0 || region.height % tile_size != 0 ||
+        region.x > std::numeric_limits<std::int64_t>::max() - region.width ||
+        region.y > std::numeric_limits<std::int64_t>::max() - region.height)
+        throw std::invalid_argument("Hard-surface tile region must be positive and 64-aligned");
+    const auto columns = static_cast<std::size_t>(region.width / tile_size);
+    const auto rows = static_cast<std::size_t>(region.height / tile_size);
+    if (rows > std::numeric_limits<std::size_t>::max() / columns ||
+        destination.size() < columns * rows)
+        throw std::invalid_argument("Hard-surface tile flag destination is too small");
+    const auto count = columns * rows;
+    std::fill_n(destination.begin(), count, std::uint8_t{0});
+    if (since_revision > hard_surface_revision_ ||
+        since_revision < hard_surface_full_refresh_revision_) {
+        std::fill_n(destination.begin(), count, std::uint8_t{1});
+        return;
+    }
+    const auto right = region.x + region.width;
+    const auto bottom = region.y + region.height;
+    const auto chunk_size = static_cast<std::int64_t>(config_.chunk_size);
+    const auto tiles_per_axis = (config_.chunk_size + 63) / 64;
+    // Commutative OR into output flags is independent of unordered-map order.
+    for (const auto& [coord, chunk] : chunks_) {
+        const auto chunk_left = coord.x * chunk_size;
+        const auto chunk_top = coord.y * chunk_size;
+        for (std::int32_t local_ty = 0; local_ty < tiles_per_axis; ++local_ty) {
+            for (std::int32_t local_tx = 0; local_tx < tiles_per_axis; ++local_tx) {
+                const auto index = static_cast<std::size_t>(local_ty * tiles_per_axis + local_tx);
+                if (chunk->hard_surface_tile_revisions[index] <= since_revision) continue;
+                const auto left = chunk_left + static_cast<std::int64_t>(local_tx) * tile_size;
+                const auto top = chunk_top + static_cast<std::int64_t>(local_ty) * tile_size;
+                const auto local_width = std::min(tile_size, chunk_size - static_cast<std::int64_t>(local_tx) * tile_size);
+                const auto local_height = std::min(tile_size, chunk_size - static_cast<std::int64_t>(local_ty) * tile_size);
+                const auto tile_right = left > std::numeric_limits<std::int64_t>::max() - local_width
+                    ? std::numeric_limits<std::int64_t>::max() : left + local_width;
+                const auto tile_bottom = top > std::numeric_limits<std::int64_t>::max() - local_height
+                    ? std::numeric_limits<std::int64_t>::max() : top + local_height;
+                const auto intersect_left = std::max(left, region.x);
+                const auto intersect_top = std::max(top, region.y);
+                const auto intersect_right = std::min(tile_right, right);
+                const auto intersect_bottom = std::min(tile_bottom, bottom);
+                if (intersect_left >= intersect_right || intersect_top >= intersect_bottom) continue;
+                const auto first_x = static_cast<std::size_t>((intersect_left - region.x) / tile_size);
+                const auto last_x = static_cast<std::size_t>((intersect_right - 1 - region.x) / tile_size);
+                const auto first_y = static_cast<std::size_t>((intersect_top - region.y) / tile_size);
+                const auto last_y = static_cast<std::size_t>((intersect_bottom - 1 - region.y) / tile_size);
+                for (auto y = first_y; y <= last_y; ++y)
+                    for (auto x = first_x; x <= last_x; ++x)
+                        destination[y * columns + x] = 1;
+            }
         }
     }
 }

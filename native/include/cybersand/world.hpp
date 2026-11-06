@@ -483,6 +483,11 @@ public:
     // only exchange Water and Empty, neither of which is a hard surface, so
     // this mask equals is_hard_surface of that projection cell by cell.
     void copy_hard_surface_bits(RectI64 region, std::span<std::uint64_t> destination) const;
+    // Non-destructive, world-aligned 64x64 collider invalidation. Independent
+    // from dirty render extraction/ACK. A zero guarantees unchanged occupancy.
+    void copy_hard_surface_changed_tiles(
+        RectI64 region, std::uint64_t since_revision,
+        std::span<std::uint8_t> destination) const;
 
 private:
     [[nodiscard]] std::uint64_t physical_state_hash_impl(
@@ -587,6 +592,8 @@ private:
     std::uint64_t tick_chunk_allocations_ = 0;
     std::uint64_t tick_temperature_field_allocations_ = 0;
     std::uint64_t hard_surface_revision_ = 0;
+    // Clears retire all former chunks, including formerly occupied tiles.
+    std::uint64_t hard_surface_full_refresh_revision_ = 0;
 
     [[nodiscard]] Address address(std::int64_t x, std::int64_t y) const noexcept;
     [[nodiscard]] Chunk* find_chunk(ChunkCoord coord) noexcept;
@@ -605,6 +612,9 @@ private:
     [[nodiscard]] bool exchange_permitted(Material source, Material target,
         std::int64_t x, std::int64_t y, std::int64_t target_x, std::int64_t target_y,
         JobEffects* effects, MotionFootprint* footprint = nullptr);
+    void mark_hard_surface_tiles(Chunk& chunk, std::int32_t minimum_x,
+                                 std::int32_t minimum_y, std::int32_t maximum_x,
+                                 std::int32_t maximum_y) noexcept;
     void mark_cell_dirty(Chunk& chunk, std::int32_t local_x, std::int32_t local_y);
     void move_cell(std::int64_t from_x, std::int64_t from_y, std::int64_t to_x,
                    std::int64_t to_y, bool swap, JobEffects* effects,

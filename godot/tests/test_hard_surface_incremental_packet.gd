@@ -22,8 +22,14 @@ func _expect(condition: bool, message: String) -> void:
 
 func _same(world: Object, label: String) -> void:
 	var incremental: PackedInt32Array = world.get_hard_surface_chunk_rectangles()
+	var stats_before: Dictionary = world.diagnostic_hard_surface_packet_stats()
 	var full: PackedInt32Array = world.diagnostic_full_hard_surface_chunk_rectangles()
-	_expect(incremental.size() > 0 and incremental == full, "incremental packet differs from the full rebuild: " + label)
+	_expect(incremental.size() > 0 and incremental == full, "incremental packet bytes differ from the full rebuild: " + label)
+	var repeated: PackedInt32Array = world.get_hard_surface_chunk_rectangles()
+	var stats_after: Dictionary = world.diagnostic_hard_surface_packet_stats()
+	_expect(repeated == incremental, "repeated query changed packed packet bytes: " + label)
+	_expect(int(stats_after.get("mask_tiles_copied", -1)) == int(stats_before.get("mask_tiles_copied", -2)),
+		"repeated query copied new hard-surface mask tiles: " + label)
 
 
 func _run() -> void:
@@ -51,9 +57,25 @@ func _run() -> void:
 			var y: int = rng.randi_range(8, 1015)
 			world.emit_disc(x, y, rng.randi_range(2, 18), materials[rng.randi_range(0, materials.size() - 1)])
 		_expect(bool(world.simulation_tick()), "native tick failed at step %d" % step)
+		# The render producer may drain native render dirtiness at independent
+		# cadence; collider invalidation must remain intact after that drain.
+		if step % 4 == 0:
+			var render_packet: Dictionary = world.take_render_snapshot(false)
+			_expect(not bool(render_packet.get("failed", false)),
+				"render publication failed at step %d" % step)
 		_same(world, "step %d" % step)
 	var stats: Dictionary = world.diagnostic_hard_surface_packet_stats()
 	_expect(int(stats.get("chunks_reused", 0)) > int(stats.get("chunks_rebuilt", 0)),
 		"unchanged collision chunks were not reused (%s)" % str(stats))
-	print("HARD_SURFACE_INCREMENTAL %d checks, %d failures, %s" % [_checks, _failures, JSON.stringify(stats)])
+	var tiles_before_reset: int = int(stats.get("mask_tiles_copied", 0))
+	var all_copies: int = 256 * 91
+	_expect(tiles_before_reset < all_copies,
+		"incremental tracking scanned full 1024x1024 hard-surface mask every tick (%s)" % str(stats))
+	var refreshes_before_reset: int = int(stats.get("full_refreshes", 0))
+	_expect(bool(world.reset_demo_world()), "native reset failed")
+	_same(world, "after replacing the native World")
+	var reset_stats: Dictionary = world.diagnostic_hard_surface_packet_stats()
+	_expect(int(reset_stats.get("full_refreshes", 0)) > refreshes_before_reset,
+		"World replacement reused a stale hard-surface cache")
+	print("HARD_SURFACE_INCREMENTAL %d checks, %d failures, %s" % [_checks, _failures, JSON.stringify(reset_stats)])
 	quit(_failures)

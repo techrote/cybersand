@@ -3810,6 +3810,154 @@ void test_hard_surface_bits_match_projection() {
     require(refused, "non-multiple-of-64 hard-surface region accepted");
 }
 
+// The tile invalidation is independent of render dirty extraction and keeps
+// one bit of history for edits that reverse before the next packet query.
+void test_hard_surface_changed_tiles() {
+    World world;
+    const cybersand::RectI64 region{-128, -128, 384, 384};
+    constexpr std::size_t columns = 6, rows = 6;
+    const auto flags = [&](std::uint64_t since) {
+        std::vector<std::uint8_t> out(columns * rows, 0xee);
+        world.copy_hard_surface_changed_tiles(region, since, out);
+        return out;
+    };
+    const auto at = [](const std::vector<std::uint8_t>& values, int x, int y) {
+        return values[static_cast<std::size_t>(y) * columns + static_cast<std::size_t>(x)];
+    };
+    const auto empty = flags(world.hard_surface_revision());
+    require(std::all_of(empty.begin(), empty.end(), [](auto v) { return v == 0; }),
+            "cold native tile flags should not invent changes");
+    const auto start = world.hard_surface_revision();
+    world.set(-64, -64, Material::Metal);
+    world.set(63, 63, Material::Wall);
+    world.set(64, 63, Material::Glass);
+    world.set(128, 128, Material::Concrete);
+    (void)world.take_dirty_chunks(); // only the renderer may consume render dirtiness
+    const auto dirty = flags(start);
+    require(at(dirty, 1, 1) && at(dirty, 2, 2) && at(dirty, 3, 2) && at(dirty, 4, 4),
+            "hard-surface edits on signed/64/128 seams failed to mark tiles");
+    require(std::count(dirty.begin(), dirty.end(), std::uint8_t{1}) == 4,
+            "direct hard-surface edits marked unrelated tiles");
+    require(flags(start) == dirty, "query destructively consumed occupancy invalidation");
+    const auto same_revision = flags(world.hard_surface_revision());
+    require(std::all_of(same_revision.begin(), same_revision.end(),
+                        [](auto v) { return v == 0; }),
+            "same-revision query marked unchanged tiles");
+    const auto soft_revision = world.hard_surface_revision();
+    world.set(20, 20, Material::Water);
+    world.set(20, 20, Material::Sand);
+    require(world.hard_surface_revision() == soft_revision,
+            "soft-only edits changed hard-surface revision");
+    std::vector<std::uint64_t> before(64), after(64);
+    world.copy_hard_surface_bits({0, 0, 64, 64}, before);
+    const auto reversal_revision = world.hard_surface_revision();
+    world.set(20, 20, Material::Wall);
+    world.set(20, 20, Material::Empty);
+    world.copy_hard_surface_bits({0, 0, 64, 64}, after);
+    require(before == after, "reversed edits changed final hard-surface mask bytes");
+    require(at(flags(reversal_revision), 2, 2),
+            "same-boundary reversal lost hard-surface invalidation");
+    const auto clear_revision = world.hard_surface_revision();
+    world.clear();
+    const auto cleared = flags(clear_revision);
+    require(std::all_of(cleared.begin(), cleared.end(), [](auto v) { return v == 1; }),
+            "chunk retirement did not request a full mask refresh");
+    std::vector<Material> generated(128U * 128U, Material::Empty);
+    generated[0] = Material::Wall;
+    const auto install_revision = world.hard_surface_revision();
+    require(world.install_generated_chunk({0, 0}, generated) ==
+                cybersand::ChunkInstallOutcome::Installed,
+            "generated chunk installation failed");
+    require(at(flags(install_revision), 2, 2),
+            "generated chunk omitted hard-surface invalidation");
+    const auto full_recovery = flags(std::numeric_limits<std::uint64_t>::max());
+    require(std::all_of(full_recovery.begin(), full_recovery.end(),
+                        [](auto v) { return v == 1; }),
+            "unknown future revision did not force full recovery");
+    bool rejected = false;
+    std::vector<std::uint8_t> scratch(columns * rows);
+    try { world.copy_hard_surface_changed_tiles({1, 0, 64, 64}, 0, scratch); }
+    catch (const std::invalid_argument&) { rejected = true; }
+    require(rejected, "unaligned hard-surface tile query was accepted");
+
+    // A late failed native tick quarantines the World; an unread/partial
+    // invalidation record must never escape into the collider consumer.
+    WorldConfig failing_config{};
+    failing_config.initial_chunk_reserve = 1;
+    failing_config.maximum_chunk_count = 1;
+    World failed(failing_config);
+    failed.set(80, 20, Material::Sand);
+    failed.set(10, 127, Material::Sand);
+    bool tick_failed = false;
+    try { (void)failed.tick(); } catch (const std::runtime_error&) { tick_failed = true; }
+    require(tick_failed && failed.has_failed(), "failed-tick quarantine fixture did not fail");
+    bool flags_failed = false;
+    std::vector<std::uint8_t> failed_flags(4);
+    try { failed.copy_hard_surface_changed_tiles({0, 0, 128, 128}, 0, failed_flags); }
+    catch (const std::logic_error&) { flags_failed = true; }
+    require(flags_failed, "failed World exposed unqualified collider invalidation");
+    failed.clear();
+    failed.copy_hard_surface_changed_tiles({0, 0, 128, 128}, 0, failed_flags);
+    require(std::all_of(failed_flags.begin(), failed_flags.end(),
+                        [](auto v) { return v == 1; }),
+            "failed-world reset did not force a complete mask refresh");
+}
+
+// Every changed bit must be covered by the invalidation flags for both
+// worker configurations; compare actual word bytes (not physical-state hashes).
+void test_hard_surface_tile_worker_parity() {
+    const cybersand::RectI64 region{0, 0, 256, 256};
+    constexpr std::size_t words = 4U * 256U;
+    const auto build = [](std::uint32_t workers) {
+        WorldConfig config{};
+        config.worker_threads = workers;
+        config.parallel_job_threshold = 1;
+        auto world = std::make_unique<World>(config);
+        world->reserve_region({0, 0, 256, 256});
+        for (int x = 32; x < 224; ++x) world->set(x, 160, Material::Wall);
+        world->set(63, 128, Material::Wood);
+        world->set(63, 127, Material::Fire);
+        world->set(127, 128, Material::Glass);
+        world->set(127, 127, Material::Lava);
+        world->set(191, 128, Material::Metal);
+        world->set(191, 127, Material::Acid);
+        require(world->set_cell_state(90, 80, Material::Water, 85, 0),
+                "fractional Water fixture setup failed");
+        return world;
+    };
+    auto serial = build(1), pooled = build(4);
+    std::vector<std::uint64_t> previous_a(words), previous_b(words);
+    serial->copy_hard_surface_bits(region, previous_a);
+    pooled->copy_hard_surface_bits(region, previous_b);
+    require(previous_a == previous_b, "worker fixture starts with different mask bytes");
+    for (int tick = 0; tick < 8; ++tick) {
+        const auto before_a = serial->hard_surface_revision();
+        const auto before_b = pooled->hard_surface_revision();
+        (void)serial->tick();
+        (void)pooled->tick();
+        std::vector<std::uint64_t> next_a(words), next_b(words);
+        serial->copy_hard_surface_bits(region, next_a);
+        pooled->copy_hard_surface_bits(region, next_b);
+        require(next_a == next_b, "one/four worker occupancy bytes diverged");
+        for (auto* candidate : {serial.get(), pooled.get()}) {
+            const auto since = candidate == serial.get() ? before_a : before_b;
+            const auto& old_mask = candidate == serial.get() ? previous_a : previous_b;
+            const auto& new_mask = candidate == serial.get() ? next_a : next_b;
+            std::vector<std::uint8_t> touched(16, 0U);
+            candidate->copy_hard_surface_changed_tiles(region, since, touched);
+            for (std::size_t ty = 0; ty < 4; ++ty)
+                for (std::size_t tx = 0; tx < 4; ++tx)
+                    for (std::size_t row = 0; row < 64; ++row) {
+                        const auto offset = (ty * 64U + row) * 4U + tx;
+                        require(old_mask[offset] == new_mask[offset] || touched[ty * 4U + tx] != 0U,
+                                "parallel job effect lost an actual changed occupancy word");
+                    }
+        }
+        previous_a.swap(next_a);
+        previous_b.swap(next_b);
+    }
+}
+
 // Active-core capacity bounds distinct scheduling cores, not active blocks:
 // sixteen active 32-cell blocks inside four 64-cell cores fit a capacity of
 // four, evolve exactly like an unbounded World, and a capacity of three still
@@ -4159,6 +4307,8 @@ int main(int argc, char** argv) {
         {"Pair reaction tables match the authored resolver", test_pair_reaction_tables_match_resolver},
         {"Active-core capacity counts distinct cores", test_active_core_capacity_counts_distinct_cores},
         {"Hard-surface bits match the display projection", test_hard_surface_bits_match_projection},
+        {"Hard-surface tiles independent of render dirty state", test_hard_surface_changed_tiles},
+        {"Hard-surface tile worker parity compares actual bytes", test_hard_surface_tile_worker_parity},
         {"LCB-002 PressureFlow pocket sealed from open air is atmospheric", test_pressure_seal_from_open_is_atmospheric},
     };
 
