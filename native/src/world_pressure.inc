@@ -549,11 +549,6 @@ void World::prepare_pressure_tick() {
                 }
                 U estimated=base_candidates;
                 if (!add(estimated,row_candidates) || estimated>budget) return refuse(false);
-                work.head_preflight_probes+=probes;
-                work.head_preflight_runs+=selected_runs;
-                work.head_preflight_dirty_spans+=dirty_spans;
-                work.head_candidate_base_cells+=base_candidates;
-                work.head_candidate_row_cells+=row_candidates;
                 return finish(true);
             };
             cache->use_heads = preflight();
