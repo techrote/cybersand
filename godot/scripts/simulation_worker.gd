@@ -67,9 +67,13 @@ var _rigid_body_epoch: int = 0
 var _rigid_body_publication: int = 0
 var _lockstep_enabled: bool = false
 var _lockstep_hold_timeout_usec: int = 250000
-var _lockstep_consumed_publication: int = 0 # Worker-exclusive.
-var _lockstep_snapshot_publication: int = -1 # Worker-exclusive; copied into snapshots.
+var _lockstep_consumed_publication: int = 0 # Worker-exclusive; fence comparison.
+# Worker-exclusive publication consumed by the last successfully completed
+# native tick (-1 before one). Paused, reset-only, failed and refused turns do
+# not advance it; snapshots copy it as consumed_rigid_body_publication.
+var _lockstep_completed_publication: int = -1
 var _lockstep_holds: int = 0 # Mutex-owned counters below.
+var _lockstep_superseded_publications: int = 0
 var _lockstep_hold_usec_total: int = 0
 var _lockstep_hold_usec_max: int = 0
 var _lockstep_timeouts: int = 0
@@ -1323,6 +1327,8 @@ func lockstep_metrics() -> Dictionary:
 	var values: Dictionary = {"enabled":_lockstep_enabled,"ticks":_lockstep_ticks,
 		"holds":_lockstep_holds,"hold_usec_total":_lockstep_hold_usec_total,
 		"hold_usec_max":_lockstep_hold_usec_max,"timeouts":_lockstep_timeouts,
+		"superseded_publications":_lockstep_superseded_publications,
+		"completed_publication":_lockstep_completed_publication,
 		"hold_timeout_usec":_lockstep_hold_timeout_usec}
 	_mutex.unlock()
 	return values
@@ -1332,6 +1338,24 @@ func _lockstep_fence_applies() -> bool:
 	# Worker-exclusive state; the fence covers only the ordinary coupling path.
 	return _lockstep_enabled and not _lab_active and _workbench_extent == Vector2i.ZERO \
 		and _pending_physical_liquid.is_empty()
+
+
+func _lockstep_record_tick(publication: int, succeeded: bool) -> bool:
+	# Owner-exclusive bookkeeping after a native tick attempt. Only a successful
+	# tick records its latched publication; a fenced tick that skipped newer
+	# publications (several main publications before one tick) counts them.
+	if not succeeded:
+		return false
+	var fenced: bool = _lockstep_fence_applies()
+	var superseded: int = maxi(0, publication - _lockstep_consumed_publication - 1)
+	_lockstep_consumed_publication = publication
+	_lockstep_completed_publication = publication
+	if fenced:
+		_mutex.lock()
+		_lockstep_ticks += 1
+		_lockstep_superseded_publications += superseded
+		_mutex.unlock()
+	return fenced
 
 
 func _lockstep_waiting() -> bool:
@@ -2140,13 +2164,7 @@ func _worker_loop() -> void:
 					_simulation_failed = not bool(_world.simulation_tick())
 				else:
 					_world.simulation_tick()
-				if not _simulation_failed:
-					_lockstep_consumed_publication = local_body_publication
-					if _lockstep_fence_applies():
-						lockstep_ticked = true
-						_mutex.lock()
-						_lockstep_ticks += 1
-						_mutex.unlock()
+				lockstep_ticked = _lockstep_record_tick(local_body_publication, not _simulation_failed)
 				if not _simulation_failed and _workbench_extent != Vector2i.ZERO:
 					_capture_workbench_result()
 					_workbench_completed_sample = workbench_serial
@@ -2160,7 +2178,6 @@ func _worker_loop() -> void:
 					_mutex.unlock()
 
 		var worker_step_time_ms: float = float(Time.get_ticks_usec() - step_start_usec) / 1000.0
-		_lockstep_snapshot_publication = local_body_publication
 		_publish_snapshot(
 			worker_step_time_ms,
 			local_paused,
@@ -2346,7 +2363,7 @@ func _publish_snapshot(
 	if not snapshot.actor_prototypes.is_empty():
 		snapshot.player_representation = "actor-prototype/" + str(snapshot.actor_prototypes.models[0])
 	snapshot.current_rigid_body_states = rigid_body_states.duplicate()
-	snapshot.consumed_rigid_body_publication = _lockstep_snapshot_publication
+	snapshot.consumed_rigid_body_publication = _lockstep_completed_publication
 	snapshot.character_runtime_recovery_enabled = (
 		_character.runtime_enclosure_recovery_enabled
 	)
