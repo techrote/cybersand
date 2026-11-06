@@ -181,7 +181,8 @@ void record(const World& w,const Fixture& extent,const std::string& scene,int va
             const std::string& phase,long long tick,long long initial,std::uint64_t tick_ns,
             const PressureOptimizationCounters& earlier,const std::string& failure,
             const std::string& save_path) {
-    const auto gas=w.gas_compartments(), g=w.gas_ledger();
+    const auto gas=w.gas_compartments();
+    const auto g=w.gas_ledger();
     const auto sample=describe(gas);
     const auto diag=w.pressure_flow_diagnostics();
     const auto opt=w.pressure_optimization_snapshot();
