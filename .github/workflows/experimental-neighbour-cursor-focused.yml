@@ -7,15 +7,14 @@ on:
     paths:
       - native/bench/neighbour_cursor_focused.cpp
       - native/bench/run_neighbour_cursor_focused.py
-      - .github/workflows/experimental-neighbour-cursor-focused.yml
   workflow_dispatch:
 
 permissions:
   contents: read
 
 concurrency:
-  group: neighbour-cursor-focused-${{ github.ref }}
-  cancel-in-progress: true
+  group: neighbour-cursor-focused-${{ github.ref }}-${{ github.run_id }}
+  cancel-in-progress: false
 
 jobs:
   independent-focused-replay:
