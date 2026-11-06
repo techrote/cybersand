@@ -41,7 +41,7 @@ func wrapper(item: Dictionary,obs: Dictionary,current: int,last: Dictionary) -> 
 	if not obs.get("ok",false) or not obs.get("complete",false):return "IdentityRefused"
 	for key: String in ["snapshot_serial","tick","physics_epoch","sample_serial","published_usec"]:
 		if not obs.get(key) is int:return "IdentityRefused"
-	if obs.snapshot_serial!=int(item.snapshot) or obs.tick!=int(item.tick) or obs.physics_epoch!=int(item.epoch) or obs.get("token")!=item.token or obs.get("body_generation")!=str(item.generation) or obs.get("revision")!=item.revision or obs.sample_serial!=int(item.sample) or obs.published_usec<0 or obs.published_usec>int(item.capture_usec):return "IdentityRefused"
+	if obs.snapshot_serial!=int(item.snapshot) or obs.tick!=int(item.tick) or obs.physics_epoch!=int(item.epoch) or obs.get("token")!=item.token or obs.get("body_generation")!=str(int(item.generation)) or obs.get("revision")!=item.revision or obs.sample_serial!=int(item.sample) or obs.published_usec<0 or obs.published_usec>int(item.capture_usec):return "IdentityRefused"
 	if current<0 or current>=1000000 or int(item.sample)<0 or int(item.sample)>=1000000:return "IdentityRefused"
 	if (current-int(item.sample)+1000000)%1000000>1:return "StaleContactSample"
 	if not last.is_empty():
