@@ -160,6 +160,13 @@ Source: `godot/native_extension/water_spray_coupling.inc` (CyberNativeCellWorld)
 `godot/scripts/workbench_water_spray_panel.gd`; options pass through `main.gd`,
 `microscenario_host.gd` and `cyber_prepared_liquid_world.hpp`.
 
+Runtime spray and jet settings are refused natively while the running World has
+no ballistic Water, which is a construction option applied on the next rebuild.
+On the #406 branch (2026-11-06), the panel re-sends its staged request once when
+a World with ballistic Water appears, so the order of the toggles no longer
+matters (`test_workbench_spray_rearm.gd`). Before that fix, spray enabled before
+the ballistic rebuild stayed off, and the status line showed `pending enabled`.
+
 - When a body overlap cell holds Water and the body surface pushes it faster than
   the **threshold** (cells/tick along the overlap normal), the Water leaves the body
   sideways, rises through the body mask and Water to the free surface, and launches

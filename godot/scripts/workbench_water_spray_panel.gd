@@ -7,6 +7,10 @@ extends RefCounted
 
 var host: Control
 var _requested: Dictionary = {}
+# A runtime spray request is refused while the running World lacks ballistic
+# Water (a construction option applied on rebuild). Re-send the staged
+# request once when a World with ballistic Water appears.
+var _had_ballistic := false
 var _ballistic := CheckButton.new()
 var _signed := CheckButton.new()
 var _spray := CheckButton.new()
@@ -140,6 +144,11 @@ func refresh(context: Dictionary) -> void:
 	var pending := []
 	for key: String in _requested:
 		if applied.has(key) and str(applied[key]) != str(_requested[key]): pending.append(key)
+	var has_ballistic: bool = spray.get("ballistic_enabled", false)
+	var worker: Variant = host.simulation_worker if host != null else null
+	if has_ballistic and not _had_ballistic and not pending.is_empty() and worker != null and worker.has_method(&"queue_water_spray"):
+		worker.queue_water_spray(_requested.duplicate(true))
+	_had_ballistic = has_ballistic
 	var receipt: Dictionary = spray.get("receipt", {})
 	var refusal: String = str(receipt.get("refusal", ""))
 	var ledger: Dictionary = spray.get("ledger", {})
