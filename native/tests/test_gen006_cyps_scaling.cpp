@@ -136,6 +136,127 @@ void cohort(std::uint32_t workers, int count, std::size_t& last_bytes) {
     std::cout << "],\"result\":\"PASS\"}\n";
 }
 
+
+// Follow-on negative/control: render dirtiness and cell equality are not a
+// durable mutation journal. The local generation receipt below is TEST-ONLY.
+struct DurableIntentControl {
+    std::uint64_t mutation_generation = 0;
+    std::uint64_t acknowledged_generation = 0;
+    void observe_owner_intent() { ++mutation_generation; }
+    [[nodiscard]] bool pending() const {
+        return mutation_generation != acknowledged_generation;
+    }
+    [[nodiscard]] bool acknowledge_if_current(std::uint64_t captured_generation) {
+        if (captured_generation != mutation_generation ||
+            captured_generation <= acknowledged_generation) return false;
+        acknowledged_generation = captured_generation;
+        return true;
+    }
+};
+
+void dirty_ack_cohort(std::uint32_t workers) {
+    const auto cfg = config(workers);
+    World actual(cfg);
+    const auto baseline = material_payload();
+    // Distinct native active cores, one signed negative chunk, and chunks beyond
+    // the finite viewer. This is a real World; it is NOT selective eviction.
+    for (int i = 0; i < 8; ++i) {
+        check(actual.install_generated_chunk({chunk_x(i), 0}, baseline) ==
+                  ChunkInstallOutcome::Installed, "dirty-probe native admission refused");
+    }
+    std::uint32_t observed = 0;
+    for (int i = 0; i < 2; ++i) {
+        const auto stats = actual.tick();
+        observed = std::max(observed, stats.worker_threads_observed);
+        check(!actual.has_failed(), "dirty-probe native tick failed");
+    }
+    (void)actual.take_dirty_chunks(); // rendering consumer clears initialization dirtiness
+    check(actual.dirty_chunk_count() == 0, "dirty-probe initial display flags remain");
+
+    const auto tombstone_x = chunk_x(0) * side + 26; // Wall at signed (-2,0)
+    const auto water_x = chunk_x(0) * side + 30;
+    const std::int64_t y = 30;
+    check(actual.stored_material(tombstone_x, y) == Material::Wall,
+          "dirty-probe expected original Wall");
+    DurableIntentControl owner;
+    owner.observe_owner_intent(); // same-value player edit intent, not a World claim
+    const bool same_value_changed =
+        actual.set_cell_state(tombstone_x, y, Material::Wall, 0, 0);
+    check(!same_value_changed, "same-value tuple unexpectedly changed physical World");
+    check(actual.dirty_chunk_count() == 0, "same-value action unexpectedly raised display dirtiness");
+    check(owner.pending(), "same-value user intent was not retained by owner control");
+    // A failed durable save has no ACK. Native render dirtiness cannot replace
+    // this owner journal. The following is a synthetic failure decision.
+    check(actual.take_dirty_chunks().empty(), "render channel invented an edit receipt");
+    check(owner.pending(), "render consumption incorrectly acknowledged durable intent");
+
+    owner.observe_owner_intent(); // explicit Wall -> Empty tombstone
+    check(actual.set_cell_state(tombstone_x, y, Material::Empty, 0, 0),
+          "native Wall->Empty edit refused");
+    check(actual.stored_material(tombstone_x, y) == Material::Empty,
+          "native explicit Empty edit failed");
+    check(actual.dirty_chunk_count() > 0, "true edit was not render-dirty");
+    const auto display_acks = actual.take_dirty_chunks();
+    check(!display_acks.empty() && actual.dirty_chunk_count() == 0,
+          "display consumption must not be a durable save acknowledgment");
+    check(owner.pending(), "unacknowledged tombstone lost from owner control");
+    check(!owner.acknowledge_if_current(1), "old same-value save ACK accepted over tombstone");
+
+    // The current native installer has strict fresh-only semantics, and
+    // baseline-only regeneration would resurrect a deleted Wall if the dirty
+    // tombstone had never been published. This is not actual eviction/reload.
+    World regenerated(cfg);
+    check(regenerated.install_generated_chunk({chunk_x(0), 0}, baseline) ==
+              ChunkInstallOutcome::Installed, "baseline-only reproduction refused");
+    check(regenerated.stored_material(tombstone_x, y) == Material::Wall,
+          "regeneration negative control failed to expose absent tombstone");
+    check(actual.install_generated_chunk({chunk_x(0), 0}, baseline) ==
+              ChunkInstallOutcome::AlreadyResident,
+          "existing resident chunk was improperly overwritten");
+
+    // A real complete native CYPS capture remains safe *when* it is committed.
+    // This copy is intentionally treated as still in-flight/unacknowledged.
+    const auto first_capture_generation = owner.mutation_generation;
+    const auto old_capture = actual.save_physical_state();
+    check(!old_capture.empty(), "in-flight native snapshot empty");
+    owner.observe_owner_intent(); // post-capture Water state/quantity mutation
+    check(actual.set_cell_state(water_x, y, Material::Water, 17, 0),
+          "native Water state_a=17 edit refused");
+    check(actual.stored_material(water_x, y) == Material::Water &&
+              actual.stored_state_a(water_x, y) == 17 &&
+              actual.liquid_mass(water_x, y) == 17,
+          "native partial Water amount/state mismatch");
+    (void)actual.take_dirty_chunks(); // another render consumption
+    check(actual.dirty_chunk_count() == 0 && owner.pending(),
+          "render drain incorrectly completed durable Water mutation");
+    check(!owner.acknowledge_if_current(first_capture_generation),
+          "stale asynchronous snapshot ACK overwrote a later mutation");
+    const auto newest_capture = actual.save_physical_state();
+    check(newest_capture != old_capture, "new native Water state not captured");
+    auto exact = World::restore_physical_state(cfg, newest_capture);
+    check(exact != nullptr && exact->physical_state_hash() == actual.physical_state_hash() &&
+              exact->stored_material(tombstone_x, y) == Material::Empty &&
+              exact->liquid_mass(water_x, y) == 17,
+          "complete native same-source restore lost tombstone/Water state");
+    check(owner.acknowledge_if_current(owner.mutation_generation) && !owner.pending(),
+          "test-only current-generation ACK could not complete");
+    check(!owner.acknowledge_if_current(owner.mutation_generation),
+          "duplicate durable ACK was not idempotently refused");
+
+    std::cout << "GEN006_NATIVE_DIRTY_ACK_JSON {\"probe\":\"gen006_native_dirty_ack\","
+              << "\"configured_workers\":" << workers << ","
+              << "\"observed_workers_max\":" << observed << ","
+              << "\"resident_chunks\":" << actual.chunk_count() << ","
+              << "\"same_value_world_changed\":" << (same_value_changed ? "true" : "false") << ","
+              << "\"render_dirty_after_drain\":" << actual.dirty_chunk_count() << ","
+              << "\"owner_intent_generation\":" << owner.mutation_generation << ","
+              << "\"owner_ack_generation\":" << owner.acknowledged_generation << ","
+              << "\"baseline_only_regenerated_wall\":true,"
+              << "\"native_restored_empty\":true,"
+              << "\"native_restored_water_mass\":17,"
+              << "\"result\":\"PASS\"}\n";
+}
+
 } // namespace
 int main() {
     try {
@@ -144,6 +265,7 @@ int main() {
             for (auto count : {1, 8, 32})
                 cohort(workers, count, last);
         }
+        for (auto workers : {1U, 4U}) dirty_ack_cohort(workers);
         std::cout << "GEN006_NATIVE_CYPS_SCALING_PASS assertions="
                   << assertions << "\n";
         return 0;

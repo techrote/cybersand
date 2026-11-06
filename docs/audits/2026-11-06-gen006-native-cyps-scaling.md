@@ -82,3 +82,59 @@ twice: the initial \`-O0\` debugging profile and an explicitly optimized \`-O2
 timings. Do not compare absolute wall times across uncalibrated machines or
 infer a user GPU or Windows throughput result. Treat the profile as provenance,
 not a production setting change.
+
+
+## Follow-on: actual native render-dirty versus durable intent/ACK boundary
+
+**New experimental question, separately qualified in the same native executable:** can
+display-oriented \`take_dirty_chunks()\`, physical equality and an in-flight
+whole-World CYPS byte copy establish durable user-edit intent, save failure
+recovery or a generation-fenced ACK? The source says **no**; the new native
+negative/control runs show the concrete reason.
+
+Each of 1- and 4-configured-worker cohorts installs eight real signed native
+chunks, executes two genuine native ticks, and reports observed participation
+rather than inferring four. The test then: (1) records an external same-value
+Wall edit intent while \`World::set_cell_state\` returns unchanged and render
+dirty remains zero; (2) performs a Wall-to-Empty tombstone and consumes its
+render dirty rectangle without durable persistence; (3) shows original native
+baseline-only regeneration would resurrect Wall, while strict resident install
+correctly refuses replacement; (4) stages a real complete CYPS snapshot,
+then mutates Water to quantity/state 17; (5) models an earlier save ACK and
+shows why it needs owner mutation-generation fencing; (6) verifies full native
+same-source CYPS restoration of the latest Empty/Water state.
+
+\`DurableIntentControl\` is an **isolated in-test owner-control model**:
+it increments on explicit edit intent (including same-value), permits ACK
+only for the current generation, and retains pending intent after a simulated
+persistence failure. No production API, new native journal, filesystem
+publication, OS process crash, actual eviction/reload, recipe migration,
+source identity or accepted persistence semantics are introduced.
+
+### Reproduce and qualify
+
+The existing branch-only \`gen006-native-cyps-scaling.yml\` compiles the same
+unchanged World and the augmented fixture with GCC 13 in \`-O0\` and \`-O2\`
+profiles. In addition to the previous six scaling rows per profile, each
+profile must emit and independently validate **two**
+\`GEN006_NATIVE_DIRTY_ACK_JSON\` rows (1/4 configured workers), each with
+\`owner_intent_generation=owner_ack_generation=3\`, true tombstone restoration,
+and restored Water quantity 17. Both raw logs and JSON lines are retained
+even if an earlier build or test fails.
+
+**Status on writing:** UNQUALIFIED until exact-head hosted artifacts and
+normal Documentation/provenance evidence are inspected. Existing #459
+scaling evidence is from the preceding immutable head; do not carry that
+pass forward as evidence for this follow-on.
+
+### Distinct production gate
+
+\`DirtyChunk\` and \`take_dirty_chunks\` are documented display notifications,
+not durable edit provenance or a save ACK channel. The real World has no
+public durable owner mutation-generation/intent/tombstone transaction.
+Before selective saving, the owner must admit a separate bounded mutation
+receipt and publication/ACK handshake that survives render consumption,
+same-value edits, edits-to-Empty and older asynchronous save completions.
+The current negative cases **do not demonstrate an existing production
+persistence bug**, because there is no production sparse persistence writer.
+No protected source, production codec or manual acceptance changed.

@@ -60,6 +60,9 @@ jobs:
           timeout 240s build/gen006-cyps-scaling/probe 2>&1 | tee build/gen006-cyps-scaling/observations.log
           grep -q 'GEN006_NATIVE_CYPS_SCALING_PASS' build/gen006-cyps-scaling/observations.log
           test "$(grep -c '"result":"PASS"' build/gen006-cyps-scaling/observations.log)" = 6
+          test "$(grep -c '^GEN006_NATIVE_DIRTY_ACK_JSON ' build/gen006-cyps-scaling/observations.log)" = 2
+          sed -n 's/^GEN006_NATIVE_DIRTY_ACK_JSON //p' build/gen006-cyps-scaling/observations.log > build/gen006-cyps-scaling/dirty-ack.jsonl
+          python3 -c 'import json; r=[json.loads(x) for x in open("build/gen006-cyps-scaling/dirty-ack.jsonl")]; assert len(r)==2 and all(x["result"]=="PASS" and x["native_restored_water_mass"]==17 and x["owner_intent_generation"]==x["owner_ack_generation"]==3 for x in r)'
           grep '^{"probe"' build/gen006-cyps-scaling/observations.log > build/gen006-cyps-scaling/observations.jsonl
           python3 - <<'PY' > build/gen006-cyps-scaling/analysis.json
           import json, pathlib, statistics
@@ -100,6 +103,9 @@ jobs:
           timeout 240s build/gen006-cyps-scaling/probe-optimized 2>&1 | tee build/gen006-cyps-scaling/observations-optimized.log
           grep -q 'GEN006_NATIVE_CYPS_SCALING_PASS' build/gen006-cyps-scaling/observations-optimized.log
           test "$(grep -c '"result":"PASS"' build/gen006-cyps-scaling/observations-optimized.log)" = 6
+          test "$(grep -c '^GEN006_NATIVE_DIRTY_ACK_JSON ' build/gen006-cyps-scaling/observations-optimized.log)" = 2
+          sed -n 's/^GEN006_NATIVE_DIRTY_ACK_JSON //p' build/gen006-cyps-scaling/observations-optimized.log > build/gen006-cyps-scaling/dirty-ack-optimized.jsonl
+          python3 -c 'import json; r=[json.loads(x) for x in open("build/gen006-cyps-scaling/dirty-ack-optimized.jsonl")]; assert len(r)==2 and all(x["result"]=="PASS" and x["native_restored_water_mass"]==17 and x["owner_intent_generation"]==x["owner_ack_generation"]==3 for x in r)'
           grep '^{"probe"' build/gen006-cyps-scaling/observations-optimized.log > build/gen006-cyps-scaling/observations-optimized.jsonl
           python3 - <<'PY' > build/gen006-cyps-scaling/analysis-optimized.json
           import json, pathlib, statistics
@@ -133,10 +139,12 @@ jobs:
             build/gen006-cyps-scaling/compile.log
             build/gen006-cyps-scaling/observations.log
             build/gen006-cyps-scaling/observations.jsonl
+            build/gen006-cyps-scaling/dirty-ack.jsonl
             build/gen006-cyps-scaling/analysis.json
             build/gen006-cyps-scaling/compile-optimized.log
             build/gen006-cyps-scaling/observations-optimized.log
             build/gen006-cyps-scaling/observations-optimized.jsonl
+            build/gen006-cyps-scaling/dirty-ack-optimized.jsonl
             build/gen006-cyps-scaling/analysis-optimized.json
           if-no-files-found: warn
           retention-days: 45
