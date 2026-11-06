@@ -14,6 +14,7 @@
 #include <exception>
 #include <iostream>
 #include <limits>
+#include <memory>
 #include <stdexcept>
 #include <string_view>
 #include <thread>
