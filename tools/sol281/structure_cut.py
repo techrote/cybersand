@@ -79,6 +79,79 @@ def build(run):
         for platform,row in zip(BINARIES,pool.map(host,BINARIES)):receipt['platforms'][platform]=row;write(folder/'receipt.json',receipt)
     assert info==identity();receipt['post_source_equality']=True;write(folder/'receipt.json',receipt)
     return int(not all(r['clean'] for r in receipt['platforms'].values()))
+def hosts(args):
+    info=identity();build_receipt=json.loads((OUT/'runtimes-001/receipt.json').read_text(encoding='utf-8'))
+    assert build_receipt['post_source_equality'] and info['source_inputs']==build_receipt['identity']['source_inputs']
+    assert info['material_inputs']==build_receipt['identity']['material_inputs']
+    folder=OUT/args.run;assert not folder.exists();folder.mkdir(parents=True)
+    copied={n:sha(ROOT/n) for n in git('ls-files','godot').decode().splitlines() if (ROOT/n).is_file()}
+    receipt=dict(identity=info,build_receipt_sha256=sha(OUT/'runtimes-001/receipt.json'),matrix=vars(args),hosts={},copied_inputs=copied,
+        qualification='Actual source-local SOL, not Workbench; sequential full-observer diagnostics, no originalCPU or MAT integration pass.')
+    def save():write(folder/'receipt.json',receipt)
+    save()
+    for platform in args.platforms.split(','):
+        assert platform in BINARIES
+        host=folder/platform;project=host/'godot';host.mkdir();rows=[]
+        for name in copied:
+            dst=project/Path(name).relative_to('godot');dst.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(ROOT/name,dst)
+        native=build_receipt['platforms'][platform];assert native['clean'] and sha(ROOT/native['output'])==native['sha256']
+        shutil.copyfile(ROOT/native['output'],project/'addons/cybersand_native/bin'/BINARIES[platform])
+        rapier=json.loads((ROOT/f'godot/addons/godot-rapier2d/runtime-provenance.{platform}.json').read_text(encoding='utf-8'))
+        assert sha(ROOT/rapier['artifact'])==rapier['sha256']
+        for name,digest in rapier['source_inputs'].items():assert lfsha(ROOT/name)==digest,name
+        inventory={p.relative_to(project).as_posix():sha(p) for p in project.rglob('*') if p.is_file()}
+        state=dict(commands=rows,effective_inputs=inventory,compiled_native=native,rapier=rapier);receipt['hosts'][platform]=state;save()
+        def run(name,script=None,extra=None,env=None,version=False):
+            forwarded=dict(CYBERSAND_SOURCE_REVISION=info['source_commit'],**(env or {}));argv=[ENGINES[platform]]
+            if version:argv+=['--version']
+            else:
+                argv+=['--headless','--audio-driver','Dummy','--path',str(project) if platform=='windows' else wsl(project)]
+                argv+=['--editor','--import','--quit'] if script is None else ['--max-fps','120','--script','res://tests/'+script+'.gd',*(extra or [])]
+            if platform=='linux':argv=['wsl.exe','-d','Ubuntu-24.04','--','env',*[k+'='+v for k,v in forwarded.items()],*argv]
+            row=command(name,argv,host,dict(os.environ,**forwarded),timeout=300);rows.append(row);save();return row
+        version=run('version',version=True);assert version['clean']
+        native_manifest=json.loads((ROOT/('godot/addons/cybersand_native/runtime-provenance'+('.linux' if platform=='linux' else '')+'.json')).read_text(encoding='utf-8'))
+        assert (ROOT/version['log']).read_text(encoding='utf-8').strip()==native_manifest['godot_version']
+        if platform=='windows':
+            engine=sha(ENGINES[platform].replace('_console.exe','.exe'));launcher=sha(ENGINES[platform])
+            assert launcher==native_manifest['godot_validation_executable_sha256']
+        else:
+            row=command('engine-hash',['wsl.exe','-d','Ubuntu-24.04','--','sha256sum',ENGINES[platform]],host);rows.append(row);assert row['clean']
+            engine=(ROOT/row['log']).read_text(encoding='utf-8').split()[0];launcher=engine
+        assert engine==native_manifest['godot_executable_sha256'];state['engine']=dict(sha256=engine,launcher_sha256=launcher,version=native_manifest['godot_version']);save()
+        imported=run('import')
+        if imported['clean']:
+            for worker in map(int,args.workers.split(',')):
+                assert worker in [1,4]
+                if args.suite=='original':
+                    output=host/('original-w'+str(worker)+'.json');path=str(output) if platform=='windows' else wsl(output)
+                    row=run('original-w'+str(worker),'test_solid_detachment',['--',path,'--workers='+str(worker)])
+                    if output.exists():row['report']=dict(path=str(output.relative_to(ROOT)),sha256=sha(output));save()
+                    continue
+                structures=['tree'] if args.suite=='smoke' else ['tree','building']
+                for structure in structures:
+                    for enabled in ([False,True] if args.suite=='packed' else [False]):
+                        surroundings='packed_sand' if args.suite=='packed' else 'empty'
+                        name=structure+'-'+surroundings+'-response'+str(int(enabled))+'-w'+str(worker)
+                        output=host/(name+'.json');path=str(output) if platform=='windows' else wsl(output)
+                        row=run(name,'test_sol_structure_cut',env=dict(SOL_STRUCTURE=structure,SOL_SURROUNDINGS=surroundings,SOL_SAND_RESPONSE=str(int(enabled)),SOL_WORKERS=str(worker),SOL_OUTPUT=path))
+                        if output.exists():
+                            row['report']=dict(path=str(output.relative_to(ROOT)),sha256=sha(output),bytes=output.stat().st_size)
+                            data=json.loads(output.read_text(encoding='utf-8'));row['report_complete']=not data['failures'] and len(data['steps'])==(360 if args.suite=='packed' else 720)
+                        save()
+        changes=[];normalized=[]
+        for name,digest in inventory.items():
+            p=project/name
+            if p.is_file() and sha(p)==digest:continue
+            original=ROOT/'godot'/name
+            if name.endswith('.import') and original.is_file() and p.is_file() and p.read_bytes().replace(b'\r\n',b'\n')==original.read_bytes().replace(b'\r\n',b'\n'):normalized.append(name)
+            else:changes.append(name)
+        state['post_inventory']=dict(unexpected_changes=changes,import_LF_normalization_only=normalized);save();assert not changes
+    assert info==identity() and copied=={n:sha(ROOT/n) for n in copied}
+    receipt['post_source_equality']=True;save()
+    return int(not all(c['clean'] and c.get('report_complete',True) for h in receipt['hosts'].values() for c in h['commands']))
+
 if __name__=='__main__':
-    parser=argparse.ArgumentParser(__doc__);parser.add_argument('action',choices=['build']);parser.add_argument('--run',required=True);args=parser.parse_args()
-    assert Path(args.run).name==args.run and args.run not in ['.','..'];raise SystemExit(build(args.run))
+    parser=argparse.ArgumentParser(__doc__);parser.add_argument('action',choices=['build','hosts']);parser.add_argument('--run',required=True)
+    parser.add_argument('--suite',choices=['original','smoke','dry','packed'],default='original');parser.add_argument('--platforms',default='windows,linux');parser.add_argument('--workers',default='1,4');args=parser.parse_args()
+    assert Path(args.run).name==args.run and args.run not in ['.','..'];raise SystemExit(build(args.run) if args.action=='build' else hosts(args))
