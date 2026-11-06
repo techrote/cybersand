@@ -3726,6 +3726,144 @@ void test_player_field_native_tick_quantity_and_worker_parity() {
     }
 }
 
+// MaterialRules' namespace-scope pair tables must answer exactly as the
+// authored InteractionRules resolver for every material pair and roll.
+// A chamber open to the air drains its Water, then both openings are plugged
+// and Water touches the sealed pocket. Sealing from the open atmosphere holds
+// atmospheric gas in the whole volume, including kernel-vacated cells the
+// bounded label pass had not relabelled (no under-pressure at seal; #406).
+void test_pressure_seal_from_open_is_atmospheric() {
+    for (const int variant : {0, 2}) {
+        auto words = cybersand::LiquidSolverPolicy::default_request();
+        words[21] = 3;
+        words[22] = variant;
+        const auto decoded = cybersand::LiquidSolverPolicy::decode(std::span<const std::int32_t>(words));
+        require(decoded.accepted(), "pressure policy accepted");
+        WorldConfig config{};
+        config.liquid_solver_policy = *decoded.policy;
+        config.maximum_rule_radius = 2;
+        config.worker_threads = 1;
+        World world(config);
+        world.reserve_region({0, 0, 256, 256});
+        const auto rect = [&](int x, int y, int w, int h, Material m) {
+            for (int j = 0; j < h; ++j) for (int i = 0; i < w; ++i) world.set(x + i, y + j, m);
+        };
+        rect(0, 248, 256, 8, Material::Wall);
+        rect(96, 96, 48, 4, Material::Wall);
+        rect(96, 140, 48, 4, Material::Wall);
+        rect(96, 100, 4, 40, Material::Wall);
+        rect(140, 100, 4, 40, Material::Wall);
+        rect(118, 96, 4, 4, Material::Empty);   // top vent to the open air
+        rect(136, 140, 4, 4, Material::Empty);  // bottom drain into the sump
+        rect(100, 100, 40, 40, Material::Water);
+        for (int t = 0; t < 900; ++t) (void)world.tick();
+        rect(118, 96, 4, 4, Material::Wall);
+        rect(136, 140, 4, 4, Material::Wall);
+        for (int t = 0; t < 3; ++t) (void)world.tick();
+        bool found = false;
+        for (const auto& c : world.gas_compartments()) {
+            if (c.anchor_x < 100 || c.anchor_x >= 140 || c.anchor_y < 100 || c.anchor_y >= 140) continue;
+            found = true;
+            require(c.amount >= c.volume && c.gauge >= 0,
+                    "a pocket sealed from the open air started under-pressured");
+        }
+        require(found, "the sealed chamber holds a gas compartment");
+    }
+}
+
+// The collider mask equals is_hard_surface of the display projection cell by
+// cell: every material id, dithered fractional Water and non-resident cells.
+void test_hard_surface_bits_match_projection() {
+    WorldConfig config{};
+    config.worker_threads = 1;
+    World world(config);
+    world.reserve_region({0, 0, 256, 128});
+    for (std::int64_t y = 0; y < 128; ++y)
+        for (std::int64_t x = 0; x < 256; ++x) {
+            const auto id = static_cast<std::uint8_t>((x * 7 + y * 13) % 132);
+            if (id == 10) continue;
+            const auto material = static_cast<Material>(id);
+            if (material == Material::Water) {
+                require(world.set_cell_state(x, y, Material::Water, static_cast<std::uint16_t>(1 + (x + y) % 200), 0),
+                        "fractional Water accepted");
+            } else {
+                world.set(x, y, material);
+            }
+        }
+    const cybersand::RectI64 region{-64, -64, 384, 256}; // includes non-resident chunks
+    std::vector<std::uint8_t> projection(static_cast<std::size_t>(region.width * region.height));
+    world.copy_material_cells(region, projection, static_cast<std::size_t>(region.width));
+    std::vector<std::uint64_t> bits(static_cast<std::size_t>(region.width / 64 * region.height));
+    world.copy_hard_surface_bits(region, bits);
+    std::size_t hard = 0;
+    for (std::int64_t y = 0; y < region.height; ++y)
+        for (std::int64_t x = 0; x < region.width; ++x) {
+            const auto expected = cybersand::MaterialRules::is_hard_surface(
+                static_cast<Material>(projection[static_cast<std::size_t>(y * region.width + x)]));
+            const auto word = bits[static_cast<std::size_t>(y * (region.width / 64) + x / 64)];
+            require(((word >> (x % 64)) & 1U) == (expected ? 1U : 0U), "hard-surface bit differs from projection");
+            hard += expected ? 1U : 0U;
+        }
+    require(hard > 0U, "fixture must contain hard surfaces");
+    bool refused = false;
+    try { world.copy_hard_surface_bits({0, 0, 100, 1}, bits); } catch (const std::invalid_argument&) { refused = true; }
+    require(refused, "non-multiple-of-64 hard-surface region accepted");
+}
+
+// Active-core capacity bounds distinct scheduling cores, not active blocks:
+// sixteen active 32-cell blocks inside four 64-cell cores fit a capacity of
+// four, evolve exactly like an unbounded World, and a capacity of three still
+// fails explicitly.
+void test_active_core_capacity_counts_distinct_cores() {
+    const auto build = [](std::size_t capacity) {
+        WorldConfig config{};
+        config.worker_threads = 1;
+        config.active_core_capacity = capacity;
+        auto world = std::make_unique<World>(config);
+        world->reserve_region({0, 0, 128, 128});
+        for (int by = 0; by < 4; ++by)
+            for (int bx = 0; bx < 4; ++bx) world->set(16 + 32 * bx, 8 + 32 * by, Material::Sand);
+        return world;
+    };
+    auto bounded = build(4);
+    auto reference = build(4096);
+    for (int tick = 0; tick < 6; ++tick) {
+        const auto stats = bounded->tick();
+        (void)reference->tick();
+        require(!bounded->has_failed() && stats.scheduled_cores <= 4,
+                "four distinct cores exhausted a four-core capacity");
+    }
+    require(bounded->physical_state_hash() == reference->physical_state_hash(),
+            "distinct-core capacity changed the simulated cells");
+    auto tight = build(3);
+    bool threw = false;
+    try { (void)tight->tick(); } catch (const std::runtime_error&) { threw = true; }
+    require(threw && tight->has_failed(), "a fourth distinct core did not exhaust a three-core capacity");
+}
+
+void test_pair_reaction_tables_match_resolver() {
+    std::size_t reacting = 0;
+    for (unsigned s = 0; s < 256U; ++s) {
+        const auto source = static_cast<cybersand::Material>(s);
+        require(cybersand::MaterialRules::has_pair_reactions(source) == cybersand::InteractionRules::has_pair_rule(source),
+                "pair participant table differs from the resolver");
+        for (unsigned t = 0; t < 256U; ++t) {
+            const auto target = static_cast<cybersand::Material>(t);
+            for (const unsigned roll : {0U, 1U, 63U, 127U, 128U, 200U, 254U, 255U}) {
+                const auto expected = cybersand::InteractionRules::resolve_pair(source, target, static_cast<std::uint8_t>(roll));
+                const auto actual = cybersand::MaterialRules::pair_reaction(source, target, static_cast<std::uint8_t>(roll));
+                require(actual.has_value() == expected.selected, "pair reaction selection differs from the resolver");
+                if (!actual) continue;
+                ++reacting;
+                require(actual->source_product == expected.source_product &&
+                        actual->target_product == expected.target_product &&
+                        actual->rule_index == expected.rule_index, "pair reaction products differ from the resolver");
+            }
+        }
+    }
+    require(reacting > 0U, "fixture must exercise reacting pairs");
+}
+
 } // namespace
 
 void test_liquid_policy_sha256_known_answers();
@@ -3743,6 +3881,24 @@ void test_lcb_inertial_reset_products();
 void test_lcb_inertial_storage_capture();
 void test_lcb_inertial_residual_motion();
 void test_lcb_inertial_admission();
+void test_ballistic_water_defaults_unchanged();
+void test_ballistic_water_face_release_dam_break();
+void test_ballistic_water_face_release_pooled_prepass();
+void test_ballistic_water_retained_rebuild_inheritance();
+void test_ballistic_water_engulfed_parcel_column();
+void test_ballistic_water_run_receipt_identity();
+void test_ballistic_water_upward_arc_and_return();
+void test_ballistic_water_ceiling_wall_no_tunnel();
+void test_ballistic_water_surface_merge_and_injection();
+void test_ballistic_water_families();
+void test_ballistic_water_capacity_mask_deferral();
+void test_ballistic_water_body_contact();
+void test_ballistic_water_persistence_and_parity();
+void test_ballistic_water_render_overlay_and_forced_age();
+void test_inertial_signed_vertical_control_and_identity();
+void test_inertial_signed_vertical_arc_ceiling_parity();
+void test_inertial_signed_vertical_support_and_hybrid();
+void test_workbench_pressure_heads_parallel_exact();
 void test_water_inertial_admission();
 void test_water_inertial_coherence_contact();
 void test_water_inertial_carrying();
@@ -3982,6 +4138,28 @@ int main(int argc, char** argv) {
         {"LCB-001 native run receipt identity", test_liquid_run_receipt_native_identity},
         {"LCB-001 native-issued construction refusals", test_liquid_construction_refusal_native_issuance},
         {"LCB-001 native quantity ledger", test_quantity_ledger},
+        {"BW-001 ballistic Water defaults unchanged", test_ballistic_water_defaults_unchanged},
+        {"BW-001 ballistic Water upward arc and return", test_ballistic_water_upward_arc_and_return},
+        {"BW-001 ballistic Water ceiling wall no tunnel", test_ballistic_water_ceiling_wall_no_tunnel},
+        {"BW-001 ballistic Water surface merge and injection", test_ballistic_water_surface_merge_and_injection},
+        {"BW-001 ballistic Water families", test_ballistic_water_families},
+        {"BW-001 ballistic Water capacity mask deferral", test_ballistic_water_capacity_mask_deferral},
+        {"BW-001 ballistic Water body contact", test_ballistic_water_body_contact},
+        {"BW-001 ballistic Water persistence and parity", test_ballistic_water_persistence_and_parity},
+        {"BW-001 ballistic Water render overlay and forced age", test_ballistic_water_render_overlay_and_forced_age},
+        {"BW-001 ballistic Water run receipt identity", test_ballistic_water_run_receipt_identity},
+        {"BW-001 ballistic Water engulfed parcel column", test_ballistic_water_engulfed_parcel_column},
+        {"BW-001 ballistic Water retained rebuild inheritance", test_ballistic_water_retained_rebuild_inheritance},
+        {"BW-001 ballistic Water face release dam break", test_ballistic_water_face_release_dam_break},
+        {"BW-001 ballistic Water face release pooled pre-pass matches serial", test_ballistic_water_face_release_pooled_prepass},
+        {"IN-B1 signed vertical control and identity", test_inertial_signed_vertical_control_and_identity},
+        {"IN-B1 signed vertical arc ceiling parity", test_inertial_signed_vertical_arc_ceiling_parity},
+        {"IN-B1 signed vertical support and hybrid", test_inertial_signed_vertical_support_and_hybrid},
+        {"Workbench parallel PressureFlow heads match serial (all variants)", test_workbench_pressure_heads_parallel_exact},
+        {"Pair reaction tables match the authored resolver", test_pair_reaction_tables_match_resolver},
+        {"Active-core capacity counts distinct cores", test_active_core_capacity_counts_distinct_cores},
+        {"Hard-surface bits match the display projection", test_hard_surface_bits_match_projection},
+        {"LCB-002 PressureFlow pocket sealed from open air is atmospheric", test_pressure_seal_from_open_is_atmospheric},
     };
 
     std::size_t passed = 0;

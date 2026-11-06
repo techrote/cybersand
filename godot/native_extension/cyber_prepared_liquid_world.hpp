@@ -1,6 +1,8 @@
 #pragma once
 
 #include "cyber_prepared_level_payload.hpp"
+
+#include <string_view>
 #include "workbench_retained_setup.hpp"
 #include "cybersand/default_demo_recipe.hpp"
 
@@ -153,11 +155,30 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
         config->workbench_parallel_pressure_heads = workbench;
         // Bound the finite reservation, halo, eligible chunks and active task list.
         // Ordinary controlled/demo replacements keep their established limits.
+        if (options.has("workbench_fine_cores") && (!workbench || options["workbench_fine_cores"].get_type() != Variant::BOOL))
+            throw std::invalid_argument("Fine scheduling cores require the workbench and a boolean value");
         if (workbench) {
             const auto halo_columns = (extent.x + config->chunk_size - 1) / config->chunk_size + 2;
             const auto halo_rows = (extent.y + config->chunk_size - 1) / config->chunk_size + 2;
             config->maximum_chunk_count = std::max<std::size_t>(128, halo_columns * halo_rows);
             config->active_chunk_capacity = config->maximum_chunk_count;
+            // Workbench performance option: 32-cell scheduling cores split the
+            // phased scan's critical path (the slowest core of each phase).
+            // A different, equally deterministic update geometry; never exact
+            // to the 64-cell default. Capacity covers every halo core.
+            if (static_cast<bool>(options.get("workbench_fine_cores", false))) {
+                constexpr std::int32_t kFineCore = 32;
+                if (config->chunk_size % kFineCore != 0 || kFineCore % config->activity_block_size != 0 ||
+                    config->maximum_rule_radius > kFineCore / 2)
+                    throw std::invalid_argument("Fine scheduling cores do not fit this chunk geometry");
+                config->scheduling_core_size = kFineCore;
+                const auto per_chunk = static_cast<std::size_t>(config->chunk_size / kFineCore);
+                config->active_core_capacity = std::max(config->active_core_capacity,
+                    static_cast<std::size_t>(halo_columns) * per_chunk * static_cast<std::size_t>(halo_rows) * per_chunk);
+            } else {
+                // Never inherit a previous build's fine geometry.
+                config->scheduling_core_size = cybersand::WorldConfig{}.scheduling_core_size;
+            }
         } else if (adapter->workbench_) {
             config->maximum_chunk_count = 128;
             config->active_chunk_capacity = 128;
@@ -177,6 +198,37 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
         config->interaction_policy = {};
         config->physics_diagnostics = {};
         config->physics_diagnostics.enabled = true;
+        // WCX/BW-001 experimental construction options: workbench only, explicit,
+        // never inherited from the replaced World. Absent keeps every default.
+        config->ballistic_water = {};
+        config->inertial_signed_vertical = false;
+        for (const char* key : {"workbench_ballistic", "workbench_inertial_signed", "workbench_face_release"}) {
+            if (!options.has(key)) continue;
+            if (!workbench || options[key].get_type() != Variant::BOOL)
+                throw std::invalid_argument("Experimental Water options require the workbench and a boolean value");
+        }
+        config->ballistic_water.enabled = options.get("workbench_ballistic", false);
+        config->inertial_signed_vertical = options.get("workbench_inertial_signed", false);
+        config->ballistic_water.face_release = config->ballistic_water.enabled &&
+            static_cast<bool>(options.get("workbench_face_release", false));
+        // WCX-FR workbench tuning: explicit integers inside the native admission
+        // bounds; absent keys keep the ballistic_water_v1 defaults.
+        struct FaceKnob { const char* key; std::int64_t low, high; };
+        for (const FaceKnob knob : {FaceKnob{"workbench_face_budget", 1, 1024}, FaceKnob{"workbench_face_speed", 0, 512},
+                                    FaceKnob{"workbench_face_period", 1, 64}, FaceKnob{"workbench_face_min_height", 2, 64}}) {
+            if (!options.has(knob.key)) continue;
+            if (!workbench || !config->ballistic_water.face_release || options[knob.key].get_type() != Variant::INT)
+                throw std::invalid_argument("Face release tuning requires the workbench, face release and an integer value");
+            const std::int64_t value = options[knob.key];
+            if (value < knob.low || value > knob.high)
+                throw std::invalid_argument("Face release tuning outside its native bounds");
+            auto& c = config->ballistic_water;
+            const std::string_view key = knob.key;
+            if (key == "workbench_face_budget") c.face_budget = static_cast<std::uint32_t>(value);
+            else if (key == "workbench_face_speed") c.face_speed = static_cast<std::int32_t>(value);
+            else if (key == "workbench_face_period") c.face_period = static_cast<std::uint32_t>(value);
+            else c.face_min_height = static_cast<std::int32_t>(value);
+        }
 
         cybersand::normalization::FinalSetupInput input;
         if (default_demo) {
@@ -399,14 +451,18 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
             const auto& norm = prepared.setup().normalization_receipt();
             const auto produced = (norm ? norm->totals().positive_delta : 0U) + transfer.halo_normalization_produced;
             const auto consumed = (norm ? norm->totals().negative_delta : 0U) + transfer.halo_normalization_consumed;
-            const auto water_before = before.water_visible + before.water_overfill;
-            const auto water_after = after.water_visible + after.water_overfill;
-            if (water_before + produced != water_after + consumed + transfer.discarded_overfill + transfer.clipped_visible_water)
+            // In-flight parcel Water is part of both owners' inventory (BW-001).
+            const auto water_before = before.water_visible + before.water_overfill + before.water_ballistic;
+            const auto water_after = after.water_visible + after.water_overfill + after.water_ballistic;
+            if (water_before + produced != water_after + consumed + transfer.discarded_overfill + transfer.clipped_visible_water +
+                    transfer.discarded_in_flight_water)
                 throw std::logic_error("Workbench conversion Water balance did not close");
             conversion_receipt["requested"] = convert;
             conversion_receipt["source_policy_sha256"] = prepared_liquid_detail::digest(adapter->world_->liquid_solver_policy().policy_hash());
             conversion_receipt["target_policy_sha256"] = prepared_liquid_detail::digest(pending->world->liquid_solver_policy().policy_hash());
             conversion_receipt["discarded_water_overfill"] = transfer.discarded_overfill;
+            conversion_receipt["preserved_in_flight_water"] = static_cast<std::int64_t>(transfer.preserved_in_flight_water);
+            conversion_receipt["discarded_in_flight_water"] = static_cast<std::int64_t>(transfer.discarded_in_flight_water);
             conversion_receipt["discarded_gas_amount"] = transfer.discarded_gas;
             conversion_receipt["preserved_water_overfill"] = transfer.preserved_overfill;
             conversion_receipt["preserved_gas_amount"] = transfer.preserved_gas;
@@ -574,6 +630,12 @@ inline bool CyberDemoBridge::commit_liquid_world(const Ref<CyberNativeCellWorld>
     std::swap(adapter->applied_liquid_construction_receipt_, pending->receipt);
     adapter->liquid_construction_attempt_.clear();
     ++adapter->liquid_policy_session_generation_;
+    // WCX/BW-001: counters describe one World; requested settings persist and are
+    // ignored by a World without ballistic Water.
+    adapter->spray_tick_ = {};
+    adapter->spray_total_ = {};
+    adapter->spray_budget_used_.fill(0);
+    adapter->spray_jet_phase_ = 0;
     adapter->simulation_window_enabled_ = pending->window;
     adapter->last_view_origin_ = pending->origin; adapter->last_view_size_ = pending->size;
     adapter->last_horizontal_buffer_ = adapter->last_vertical_buffer_ = 0;

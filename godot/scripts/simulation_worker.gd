@@ -19,6 +19,7 @@ const FIXED_TIMESTEP: float = 1.0 / SIMULATION_HZ
 const TICK_INTERVAL_USEC: int = 16667
 const MAX_BACKLOG_TICKS: int = 3
 const LOCKSTEP_POLL_USEC: int = 100
+const WORKBENCH_SAMPLE_POLL_USEC: int = 250
 const EMISSION_MATERIAL_MASK: int = 255
 const EMISSION_FLAGS_SHIFT: int = 8
 const DEFAULT_RENDER_SNAPSHOT_INTERVAL_USEC: int = 16667
@@ -150,6 +151,10 @@ var _workbench_last_emitter_sample := -1
 var _workbench_emitter_receipts: Array = []
 var _workbench_source_commands: Array = []
 var _workbench_source := preload("res://scripts/workbench_powder_source.gd").new()
+# WCX/BW-001 experimental Water spray: requested settings are applied by the
+# exclusive owner at the next tick boundary; the native receipt is published.
+var _water_spray_requests: Array = []
+var _water_spray_receipt: Dictionary = {}
 var _workbench_step_serial: int = 0
 var _workbench_completed_sample: int = -1
 var _workbench_result: Dictionary = {}
@@ -1202,6 +1207,13 @@ func set_frame_state(
 	_mutex.unlock()
 
 
+func _workbench_sample_pending() -> bool:
+	_mutex.lock()
+	var states: Variant = _workbench_sample.get("states",null)
+	var pending: bool = states != null and states.size() > 10 and int(states[10]) >= 0 		and int(states[10]) != _workbench_prepared_sample
+	_mutex.unlock()
+	return pending
+
 func set_workbench_sample(value: Dictionary) -> void:
 	_mutex.lock()
 	if not value.is_empty() and not _workbench_sample.is_empty() and _prepared_physical_frame_hold.is_empty() \
@@ -1232,6 +1244,13 @@ func _cancel_workbench_emission_locked() -> void:
 	_workbench_source_commands = _workbench_source_commands.filter(func(v: Dictionary) -> bool: return v.command == "configure")
 	if _workbench_extent != Vector2i.ZERO:
 		_workbench_source_commands.append({"command":"stop","origin":Vector2i.ZERO,"material":0})
+
+func queue_water_spray(settings: Dictionary) -> bool:
+	_mutex.lock()
+	var ok := _water_spray_requests.size() < 8
+	if ok: _water_spray_requests.append(settings.duplicate(true))
+	_mutex.unlock()
+	return ok
 
 func queue_workbench_source(origin: Vector2i, material: int, command: String) -> bool:
 	_mutex.lock()
@@ -1283,8 +1302,13 @@ func _consume_workbench_emissions(paused: bool, sample: Dictionary) -> void:
 	for request: Dictionary in _workbench_source_commands:
 		_workbench_source.command(request)
 	_workbench_source_commands.clear()
+	if _world.has_method(&"set_water_spray"):
+		for request: Dictionary in _water_spray_requests:
+			_water_spray_receipt = _world.set_water_spray(request)
+		_water_spray_requests.clear()
 	if not paused:
 		_workbench_source.before_tick(_world,sample)
+		if _world.has_method(&"water_spray_before_tick"): _world.water_spray_before_tick()
 		if not _paused and not _workbench_emitters.is_empty():
 			var serial := int(sample.states[10]) if not sample.states.is_empty() else -1
 			var matched: Array = []
@@ -2193,6 +2217,16 @@ func _worker_loop() -> void:
 			continue
 		next_tick_usec += TICK_INTERVAL_USEC
 		var now_usec: int = Time.get_ticks_usec()
+		if _workbench_extent != Vector2i.ZERO and not _simulation_failed:
+			# Workbench lock-step: Rapier steps only after this worker completes
+			# the published body sample. A free-running timer drifts in phase
+			# against the physics frame and misses alternate frames (exact 30 Hz
+			# plateaus) even for short ticks, so wake as soon as the next sample
+			# arrives. Still one tick per sample; never earlier than the sample.
+			while now_usec < next_tick_usec and not _workbench_sample_pending():
+				OS.delay_usec(WORKBENCH_SAMPLE_POLL_USEC)
+				now_usec = Time.get_ticks_usec()
+			next_tick_usec = mini(next_tick_usec, now_usec)
 		var wait_usec: int = next_tick_usec - now_usec
 		if wait_usec > 0:
 			OS.delay_usec(wait_usec)
@@ -2285,12 +2319,18 @@ func _publish_snapshot(
 			_pending_render_worker_overruns = _worker_overruns
 			render_generation_advanced = true
 	var current_hard_surface_revision: int = int(_world.hard_surface_revision)
+	# The workbench lock-step steps Rapier only against the current revision,
+	# so a throttled packet would cap the whole session at the throttle rate
+	# whenever reactions edit hard terrain every tick (about 4 ticks/s). Its
+	# native packet is cached per revision; other modes keep the throttle.
+	var workbench_lockstep: bool = _workbench_extent != Vector2i.ZERO
 	if (
 		force_render_full_refresh
 		or rigid_body_epoch != _snapshot_hard_surface_epoch
 		or _snapshot_hard_surface_revision < 0
 		or (current_hard_surface_revision != _snapshot_hard_surface_revision
-			and now_usec - _last_hard_surface_snapshot_usec >= HARD_SURFACE_SNAPSHOT_INTERVAL_USEC)
+			and (workbench_lockstep
+				or now_usec - _last_hard_surface_snapshot_usec >= HARD_SURFACE_SNAPSHOT_INTERVAL_USEC))
 	):
 		# A new physical owner/reset cannot acknowledge a retained terrain
 		# packet from its predecessor, even inside the ordinary edit throttle.
@@ -2475,6 +2515,10 @@ func _publish_snapshot(
 		snapshot.lab_context["workbench_emitters"] = _workbench_emitter_receipts.duplicate(true)
 		_mutex.unlock()
 		snapshot.lab_context["workbench_step_serial"] = _workbench_step_serial
+		if _world.has_method(&"get_water_spray"):
+			var spray: Dictionary = _world.get_water_spray()
+			spray["receipt"] = _water_spray_receipt.duplicate(true)
+			snapshot.lab_context["water_spray"] = spray
 	if render_generation_advanced:
 		var render_micro: Dictionary = snapshot.lab_context.get("microscenario", {})
 		var render_presentation: Dictionary = render_micro.get("presentation", {})

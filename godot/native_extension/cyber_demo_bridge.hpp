@@ -602,6 +602,33 @@ public:
         return result;
     }
 
+    // WCX-SURGE: the admitted pressure_flow_v1 family block v1 with gas topology
+    // on or off (atmospheric rows kept). In vented scenes gas is pure overhead.
+    [[nodiscard]] Dictionary liquid_policy_with_pressure_gas(const PackedInt32Array& request, bool gas_enabled) const {
+        auto decoded = cybersand::LiquidSolverPolicy::decode(std::span<const std::int32_t>(
+            request.ptr(),static_cast<std::size_t>(request.size())));
+        if (!decoded.accepted()) return validate_liquid_policy(request);
+        const bool used = std::any_of(decoded.policy->assignments().begin(),decoded.policy->assignments().end(),
+            [](const auto& item) { return item.family == cybersand::LiquidSolverFamily::PressureFlowV1; });
+        if (!used) {
+            Dictionary result; result["accepted"] = false; result["receipt"] = Variant();
+            result["refusal"] = refusal_dictionary({cybersand::LiquidPolicyRefusalCode::UnknownParameter, std::nullopt,
+                "PressureFlow gas selection requires an active pressure_flow_v1 assignment"});
+            return result;
+        }
+        std::int32_t rows = cybersand::LiquidPolicyBuild::kPressureDefaultAtmosphericRows;
+        std::vector<cybersand::LiquidParameterBlock> blocks;
+        for (const auto& block : decoded.policy->family_blocks()) {
+            if (block.owner != 3U) { blocks.push_back(block); continue; }
+            if (block.values.size() == 2U) rows = block.values[1];
+        }
+        blocks.push_back({3U,cybersand::LiquidPolicyBuild::kPressureBlockVersion,{gas_enabled ? 1 : 0, rows}});
+        auto edited = policy_request_values(*decoded.policy,decoded.policy->assignments(),blocks,decoded.policy->material_blocks());
+        auto result = validate_liquid_policy(edited);
+        result["request"] = edited;
+        return result;
+    }
+
     // Construction is deliberately split: the simulation owner may prepare
     // without holding its queue mutex, then fence the one-use commit under it.
     [[nodiscard]] std::int64_t prepare_liquid_world(const Ref<CyberNativeCellWorld>& adapter,
@@ -981,6 +1008,8 @@ protected:
                              &CyberDemoBridge::liquid_policy_assignment_choices);
         ClassDB::bind_method(D_METHOD("liquid_policy_with_inertial_damping", "request", "numerator"),
                              &CyberDemoBridge::liquid_policy_with_inertial_damping);
+        ClassDB::bind_method(D_METHOD("liquid_policy_with_pressure_gas", "request", "gas_enabled"),
+                             &CyberDemoBridge::liquid_policy_with_pressure_gas);
         ClassDB::bind_method(D_METHOD("prepare_liquid_world", "world", "rectangles", "profile", "policy",
             "water_fills", "liquid_policy", "options"), &CyberDemoBridge::prepare_liquid_world);
         ClassDB::bind_method(D_METHOD("prepare_liquid_level", "world", "payload", "profile", "policy",

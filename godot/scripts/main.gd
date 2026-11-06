@@ -10,6 +10,7 @@ const PlayerCourse = preload("res://scripts/player_playground_course.gd")
 const PlayableCourseLap = preload("res://scripts/playable_course_lap.gd")
 const PlayableCourseOverlay = preload("res://scripts/playable_course_overlay.gd")
 const SnapshotPublicationCounter = preload("res://scripts/snapshot_publication_counter.gd")
+const FACE_TUNING := ["workbench_face_budget","workbench_face_speed","workbench_face_period","workbench_face_min_height"]
 const PlayableSessionPanel = preload("res://scripts/playable_session_panel.gd")
 const DEFAULT_PLAYABLE_OPTIONS: Dictionary = {"controls":"keyboard_gamepad", "rules":"lap", "camera":"follow"}
 const PLAYABLE_RECOVERY_META: StringName = &"cybersand_playable_recovery"
@@ -38,6 +39,9 @@ var physical_actor_overlay: CyberPhysicalActorOverlay
 var _workbench_wait_sample: int = -1
 var _workbench_collider_frame: int = -1
 var shared_workbench: Control
+# WCX/BW-001 experimental construction options for the next workbench build
+# (ballistic Water parcels, IN-B1 signed law). Empty keeps every default.
+var workbench_water_options: Dictionary = {}
 var world_extent := Vector2i(CyberCellWorld.WORLD_WIDTH,CyberCellWorld.WORLD_HEIGHT)
 var playable_course_overlay: Control
 var _physical_epoch: int = 0
@@ -84,6 +88,11 @@ const TEST_RIGID_BODY_SIZE: Vector2 = Vector2(8.0, 14.0)
 const HARD_SURFACE_REBUILD_INTERVAL: float = 0.10
 const HARD_SURFACE_CHUNKS_PER_FRAME: int = 32
 const HARD_SURFACE_FRAME_BUDGET_USEC: int = 750
+# Workbench lock-step: Rapier cannot step until the current terrain is
+# installed, so a blocked frame spends a larger (still bounded) budget rather
+# than idling for several rendered frames per terrain revision.
+const WORKBENCH_HARD_SURFACE_CHUNKS_PER_FRAME: int = 128
+const WORKBENCH_HARD_SURFACE_FRAME_BUDGET_USEC: int = 4000
 const RENDER_PATCH_METADATA_STRIDE: int = 6
 const RENDER_SNAPSHOT_HZ_PRESETS: Array[int] = [30, 45, 60]
 const BRUSH_SHAPES: Array[String] = ["circle", "square", "rectangle"]
@@ -775,6 +784,12 @@ func workbench_apply(candidate: Dictionary, actors: Array, rectangles: Array, ex
 		"maximum_rule_radius":radius,"workbench_response":response,"workbench_retain_cells":preserve_cells,
 		"workbench_sample":{"session":_microscenario_request_serial+1,"epoch":_physical_epoch+1,
 			"states":PackedFloat64Array(),"geometry":PackedFloat64Array(),"bodies":[],"emitters":[]}}
+	for key: String in ["workbench_ballistic","workbench_inertial_signed","workbench_face_release","workbench_fine_cores"]:
+		if workbench_water_options.get(key,false) is bool and workbench_water_options.get(key,false):
+			settings[key] = true
+	if settings.get("workbench_face_release",false) and settings.get("workbench_ballistic",false):
+		for key: String in FACE_TUNING:
+			if workbench_water_options.get(key) is int: settings[key] = workbench_water_options[key]
 	# Lossy conversion belongs only to an explicit developer policy switch.
 	# Ordinary replacements (including Apply of an unchanged policy) keep
 	# all compatible native inventory and use the normal refusal contract.
@@ -3041,7 +3056,7 @@ func _workbench_terrain_installed(snapshot: CyberSimulationSnapshot) -> bool:
 		sync_hard_surface_colliders(snapshot)
 	if rapier_bridge.pending_hard_surface_chunks() > 0 and _workbench_collider_frame != Engine.get_process_frames():
 		_workbench_collider_frame = Engine.get_process_frames()
-		rapier_bridge.process_hard_surface_collider_budget(HARD_SURFACE_CHUNKS_PER_FRAME,HARD_SURFACE_FRAME_BUDGET_USEC)
+		rapier_bridge.process_hard_surface_collider_budget(WORKBENCH_HARD_SURFACE_CHUNKS_PER_FRAME,WORKBENCH_HARD_SURFACE_FRAME_BUDGET_USEC)
 	if last_hard_surface_revision != required or rapier_bridge.pending_hard_surface_chunks() != 0: return false
 	_physical_terrain_ready = true
 	return true
