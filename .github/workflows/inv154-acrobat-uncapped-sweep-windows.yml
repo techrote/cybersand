@@ -83,7 +83,7 @@ jobs:
           WINDOWS_CXX="$RUNNER_TEMP/thread-cpu-cxx"             CYBERSAND_NATIVE_OUTPUT="$PWD/build/cybersand_native.windows.x86_64.dll"             timeout 20m tools/build_native_extension_windows.sh
           git checkout -- godot/native_extension/register_types.cpp
           git diff --exit-code -- godot/native_extension/register_types.cpp
-          sha256sum build/cybersand_native.windows.x86_64.dll > build/runtime.sha256
+          (cd build && sha256sum cybersand_native.windows.x86_64.dll > runtime.sha256)
 
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
