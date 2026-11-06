@@ -1,0 +1,94 @@
+{
+  "schema": "in-tools-361-leak-flow-v1",
+  "id": "in-tools.leak-bottom-puncture.v1",
+  "domain": [
+    0,
+    0,
+    64,
+    64
+  ],
+  "workers": [
+    1,
+    4
+  ],
+  "maximum_rule_radius": 3,
+  "water_semantics": [
+    1,
+    8,
+    12,
+    0
+  ],
+  "wall_rectangles": [
+    0,
+    0,
+    64,
+    1,
+    1,
+    0,
+    63,
+    64,
+    1,
+    1,
+    0,
+    0,
+    1,
+    64,
+    1,
+    63,
+    0,
+    1,
+    64,
+    1,
+    8,
+    8,
+    25,
+    1,
+    1,
+    8,
+    40,
+    25,
+    1,
+    1,
+    8,
+    8,
+    1,
+    33,
+    1,
+    32,
+    8,
+    1,
+    33,
+    1
+  ],
+  "water_rectangle": [
+    13,
+    31,
+    15,
+    8,
+    3
+  ],
+  "aperture": [
+    20,
+    40
+  ],
+  "tank_interior": [
+    9,
+    9,
+    23,
+    31
+  ],
+  "released_region": [
+    1,
+    41,
+    62,
+    22
+  ],
+  "open_ticks_max": 300,
+  "post_close_ticks": 16,
+  "claim": {
+    "aperture": "1x1 authored Wall/Empty mutation",
+    "accounting": "aperture carries zero source and zero sink; stored Water quantity is invariant",
+    "cavity": "Empty-cell growth in the original tank interior is a geometric/material-state observation only",
+    "tail": "motion below the closed aperture is an IN velocity observation, not a gas-pressure claim"
+  }
+}

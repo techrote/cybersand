@@ -92,6 +92,10 @@ void CyberNativeCellWorld::_bind_methods() {
                          &CyberNativeCellWorld::water_experiment_fill_rect);
     ClassDB::bind_method(D_METHOD("water_experiment_erase_rect", "origin", "size"),
                          &CyberNativeCellWorld::water_experiment_erase_rect);
+    ClassDB::bind_method(D_METHOD("in_tools_inject_water_source", "point", "velocity_q"),
+                         &CyberNativeCellWorld::in_tools_inject_water_source);
+    ClassDB::bind_method(D_METHOD("in_tools_set_aperture", "point", "open"),
+                         &CyberNativeCellWorld::in_tools_set_aperture);
     ClassDB::bind_method(D_METHOD("water_experiment_observation", "origin", "size"),
                          &CyberNativeCellWorld::water_experiment_observation);
     ClassDB::bind_method(D_METHOD("get_physical_state_hash"), &CyberNativeCellWorld::get_physical_state_hash);
@@ -2078,6 +2082,149 @@ Dictionary CyberNativeCellWorld::get_liquid_solver_policy() const {
 
 std::int64_t CyberNativeCellWorld::get_liquid_policy_session_generation() const {
     return static_cast<std::int64_t>(liquid_policy_session_generation_);
+}
+
+Dictionary CyberNativeCellWorld::in_tools_inject_water_source(
+    Vector2i point, Vector2i velocity_q) {
+    Dictionary out;
+    out["schema"] = "in-tools-in-source-v1";
+    out["transport_mode"] = "inertial_cellular_source_v1";
+    out["ballistic_transport"] = false;
+    out["accepted"] = false;
+    out["changed"] = false;
+    out["reason"] = "unavailable";
+    out["point"] = point;
+    out["velocity_q"] = velocity_q;
+    out["quantity_added"] = static_cast<std::int64_t>(0);
+    out["completed_tick"] = get_tick_index();
+
+    if (world_ == nullptr || world_->has_failed() || !in_bounds(point.x, point.y)) {
+        out["reason"] = "world_unavailable";
+        return out;
+    }
+    if (world_->transient_obstacle_at(point.x, point.y) != 0U) {
+        out["reason"] = "body_masked";
+        return out;
+    }
+    if (!world_->inertial_family(cybersand::Material::Water)) {
+        out["reason"] = "water_not_inertial";
+        return out;
+    }
+    const auto parameters = world_->inertial_parameters();
+    constexpr std::int32_t vmax = cybersand::InertialParameters::kVmax;
+    if ((velocity_q.x == 0 && velocity_q.y == 0) ||
+        velocity_q.x < -vmax || velocity_q.x > vmax ||
+        velocity_q.y < -vmax || velocity_q.y > vmax) {
+        out["reason"] = "velocity_range";
+        return out;
+    }
+    if (velocity_q.y < 0 && !parameters.signed_vertical) {
+        out["reason"] = "upward_requires_signed_vertical";
+        return out;
+    }
+    if (world_->stored_material(point.x, point.y) != cybersand::Material::Empty) {
+        out["reason"] = "destination_occupied";
+        return out;
+    }
+
+    const auto maximum = world_->config().water_experiment_policy.maximum();
+    if (!world_->set_cell_state(point.x, point.y, cybersand::Material::Water,
+                                maximum, 0U)) {
+        out["reason"] = "whole_cell_ingress_refused";
+        return out;
+    }
+    if (!world_->impart_inertial_velocity(point.x, point.y, velocity_q.x, velocity_q.y)) {
+        const bool rolled_back = world_->set_cell_state(
+            point.x, point.y, cybersand::Material::Empty, 0U, 0U);
+        if (rolled_back) ++revision_;
+        out["reason"] = rolled_back ? "velocity_refused_rolled_back"
+                                     : "velocity_refused_rollback_failed";
+        out["rollback_complete"] = rolled_back;
+        return out;
+    }
+
+    ++revision_;
+    const auto motion = world_->inertial_cell(point.x, point.y);
+    out["accepted"] = true;
+    out["changed"] = true;
+    out["reason"] = "applied";
+    out["quantity_added"] = static_cast<std::int64_t>(
+        world_->stored_state_a(point.x, point.y));
+    out["vx"] = static_cast<std::int64_t>(motion.vx);
+    out["vy"] = static_cast<std::int64_t>(motion.vy);
+    out["signed_vertical"] = parameters.signed_vertical;
+    out["completed_tick"] = get_tick_index();
+    return out;
+}
+
+Dictionary CyberNativeCellWorld::in_tools_set_aperture(Vector2i point, bool open) {
+    Dictionary out;
+    out["schema"] = "in-tools-aperture-v1";
+    out["accepted"] = false;
+    out["changed"] = false;
+    out["reason"] = "unavailable";
+    out["point"] = point;
+    out["open"] = open;
+    out["quantity_delta"] = static_cast<std::int64_t>(0);
+    out["completed_tick"] = get_tick_index();
+
+    if (world_ == nullptr || world_->has_failed() || !in_bounds(point.x, point.y)) {
+        out["reason"] = "world_unavailable";
+        return out;
+    }
+    if (world_->transient_obstacle_at(point.x, point.y) != 0U) {
+        out["reason"] = "body_masked";
+        return out;
+    }
+
+    const auto previous = world_->stored_material(point.x, point.y);
+    out["previous_material"] = static_cast<std::int64_t>(previous);
+    if (open) {
+        if (previous == cybersand::Material::Empty) {
+            out["accepted"] = true;
+            out["reason"] = "already_open";
+            out["current_material"] = static_cast<std::int64_t>(previous);
+            return out;
+        }
+        if (previous != cybersand::Material::Wall) {
+            out["reason"] = "opening_requires_wall";
+            out["current_material"] = static_cast<std::int64_t>(previous);
+            return out;
+        }
+        if (!world_->set_cell_state(point.x, point.y, cybersand::Material::Empty, 0U, 0U)) {
+            out["reason"] = "opening_refused";
+            out["current_material"] = static_cast<std::int64_t>(previous);
+            return out;
+        }
+    } else {
+        if (previous == cybersand::Material::Wall) {
+            out["accepted"] = true;
+            out["reason"] = "already_closed";
+            out["current_material"] = static_cast<std::int64_t>(previous);
+            return out;
+        }
+        if (previous != cybersand::Material::Empty) {
+            // Occupied apertures fail closed: no liquid/material is overwritten.
+            out["reason"] = "occupied_aperture";
+            out["current_material"] = static_cast<std::int64_t>(previous);
+            return out;
+        }
+        if (!world_->set_cell_state(point.x, point.y, cybersand::Material::Wall, 0U, 0U)) {
+            out["reason"] = "closure_refused";
+            out["current_material"] = static_cast<std::int64_t>(previous);
+            return out;
+        }
+    }
+
+    ++revision_;
+    ++hard_surface_revision_;
+    out["accepted"] = true;
+    out["changed"] = true;
+    out["reason"] = open ? "opened" : "closed";
+    out["current_material"] = static_cast<std::int64_t>(
+        world_->stored_material(point.x, point.y));
+    out["completed_tick"] = get_tick_index();
+    return out;
 }
 
 bool CyberNativeCellWorld::water_experiment_fill_rect(

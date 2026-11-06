@@ -81,6 +81,7 @@ var _pending_physical_usables: Array = []
 var _physical_usable_inflight: Dictionary = {} # One unconsumed request per actor, including extracted work.
 var _physical_usable_admission: Dictionary = {}
 var _physical_usable_cancelled_generations := PackedInt64Array([-1, -1, -1, -1, -1, -1, -1, -1])
+var _experimental_owner_fault: Dictionary = {} # #361 destructive-owner quarantine evidence.
 
 var _pending_emissions: Array[Vector4i] = []
 var _pending_cell_emissions: Array[Dictionary] = []
@@ -1017,6 +1018,12 @@ func _activate_sampled_character(
 func start_worker(spawn_position: Vector2) -> Error:
 	if _thread.is_started():
 		return OK
+	_physical_usables.refresh_experimental_owner(_world)
+	if _physical_usables.experimental_terminal():
+		_mutex.lock()
+		_latch_experimental_fault_locked()
+		_mutex.unlock()
+		_publish_failure_snapshot()
 	if _world.has_method(&"get_worker_threads"):
 		_scheduler_thread_capacity_hint = int(_world.get_worker_threads())
 		_backend_name = str(_world.get_backend_name())
@@ -1039,11 +1046,16 @@ func start_worker(spawn_position: Vector2) -> Error:
 
 func stop_worker() -> void:
 	if not _thread.is_started():
+		_mutex.lock()
+		_running = false
+		_cancel_physical_usables_locked()
+		_mutex.unlock()
 		_retire_prepared_physical_liquid()
 		return
 	_mutex.lock()
 	_running = false
 	_lab_request_revision += 1
+	_cancel_physical_usables_locked()
 	_mutex.unlock()
 	_thread.wait_to_finish()
 	_actor_session.set_suspended(true)
@@ -1428,7 +1440,11 @@ func set_physical_usable_state(frame: Dictionary, requests: Array = [], states: 
 		_pending_physical_usables = _pending_physical_usables.filter(func(request: Dictionary) -> bool:
 			return PhysicalUsables.request_error(request, frame).is_empty())
 		if not requests.is_empty():
-			if _paused or bool(frame.suspended):
+			var has_experimental: bool = requests.any(func(value: Variant) -> bool:
+				return value is Dictionary and int(value.get("version", 1)) in [2, 3])
+			if has_experimental and not _running:
+				reason = "stopped"
+			elif _paused or bool(frame.suspended):
 				reason = "paused"
 			elif _reset_requested:
 				reason = "reset_pending"
@@ -1500,6 +1516,11 @@ func _consume_physical_usables(requests: Array, body_epoch: int, allowed: bool, 
 	# same mutex. Once cancellation returns, earlier pending work cannot commit.
 	# The material adapter still runs only on this exclusive worker thread.
 	_mutex.lock()
+	_physical_usables.refresh_experimental_owner(_world)
+	if _physical_usables.experimental_terminal():
+		_latch_experimental_fault_locked()
+		_mutex.unlock()
+		return
 	var frame: Dictionary = captured_frame.duplicate(true) if not captured_frame.is_empty() else _physical_usable_frame.duplicate(true)
 	if _physical_usable_frame.is_empty():
 		_physical_usables.reset(_physical_effect_epoch)
@@ -1511,7 +1532,8 @@ func _consume_physical_usables(requests: Array, body_epoch: int, allowed: bool, 
 			var owner: int = int(request.actor_id)
 			var current: Dictionary = _physical_usable_inflight.get(owner, {})
 			if current.get("request_id") == request.request_id \
-				and PhysicalUsables.request_error(request, _physical_usable_frame).is_empty():
+				and PhysicalUsables.request_error(request, _physical_usable_frame).is_empty() \
+				and (int(request.get("version", 1)) == 1 or _running):
 				admitted.append(request)
 				_physical_usable_inflight.erase(owner)
 		# Geometry remains matched to the native mask captured at the start of
@@ -1528,7 +1550,19 @@ func _consume_physical_usables(requests: Array, body_epoch: int, allowed: bool, 
 		else:
 			frame.suspended = true
 			_physical_usables.step(FIXED_TIMESTEP, _world, frame, admitted)
+		if _physical_usables.experimental_terminal():
+			_latch_experimental_fault_locked()
 	_mutex.unlock()
+
+
+func _latch_experimental_fault_locked() -> void:
+	_experimental_owner_fault = _physical_usables.snapshot().duplicate(true)
+	_simulation_failed = true
+	_paused = true
+	_pending_emissions.clear()
+	_pending_cell_emissions.clear()
+	_pending_physical_effects.clear()
+	_cancel_physical_usables_locked()
 
 
 func set_physical_actor_epoch(epoch: int) -> void:
@@ -1856,6 +1890,16 @@ func _worker_loop() -> void:
 			_retire_prepared_physical_liquid()
 			return
 
+		_physical_usables.refresh_experimental_owner(_world)
+		if not _physical_usables.experimental_terminal():
+			_experimental_owner_fault.clear()
+		elif not (local_reset_requested or local_lab.has("reset") or local_lab.has("water_reset") \
+			or local_lab.has("scenario_reset") or local_lab.has("default_liquid_reset")):
+			_publish_failure_snapshot()
+			OS.delay_usec(TICK_INTERVAL_USEC)
+			next_tick_usec = Time.get_ticks_usec()
+			continue
+
 		var step_start_usec: int = Time.get_ticks_usec()
 		if (
 			not local_actor_prototype_request
@@ -1890,6 +1934,8 @@ func _worker_loop() -> void:
 			next_tick_usec = Time.get_ticks_usec()
 			continue
 		if _apply_lab(local_lab):
+			_physical_usables.refresh_experimental_owner(_world)
+			_experimental_owner_fault.clear()
 			local_emissions.clear()
 			local_cell_emissions.clear()
 			# Candidate Worlds may reuse a hard-surface revision number. Their
@@ -1984,6 +2030,8 @@ func _worker_loop() -> void:
 			else:
 				_world.reset_demo_world()
 			if recovered:
+				_physical_usables.refresh_experimental_owner(_world)
+				_experimental_owner_fault.clear()
 				_world_generation += 1
 				_scenario_host.clear()
 				_lab_active = false
@@ -2056,6 +2104,11 @@ func _worker_loop() -> void:
 				_physical_effect_receipts = _physical_effects.apply(
 					_world, local_physical_effects, local_rigid_body_epoch)
 			_consume_physical_usables(local_physical_usables, local_rigid_body_epoch, physical_effects_allowed, local_physical_usable_frame)
+			if _physical_usables.experimental_terminal():
+				_publish_failure_snapshot()
+				OS.delay_usec(TICK_INTERVAL_USEC)
+				next_tick_usec = Time.get_ticks_usec()
+				continue
 			_apply_emissions(local_emissions,local_cell_emissions)
 
 			if not local_paused:
@@ -2473,6 +2526,11 @@ func _publish_failure_snapshot() -> void:
 	snapshot.failed_tick_index = int(_world.get_attempted_tick_index())
 	snapshot.tick_failure_count = int(_world.get_tick_failure_count())
 	snapshot.last_tick_error = str(_world.get_last_tick_error())
+	if not _experimental_owner_fault.is_empty():
+		snapshot.physical_usables = _physical_usables.snapshot()
+		snapshot.last_tick_error = "IN-TOOLS owner terminal: " + str(
+			_experimental_owner_fault.get("in_tools_fault",
+			_experimental_owner_fault.get("metered_fault", {})).get("reason", "interrupted_execution"))
 	_mutex.lock()
 	_pending_emissions.clear()
 	_published_snapshot = snapshot

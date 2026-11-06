@@ -11,6 +11,7 @@ const Catalog = preload("res://scripts/actor_rig_catalog.gd")
 const PhysicalCatalog = preload("res://scripts/physical_actor_catalog.gd")
 const Flight = preload("res://scripts/physical_flight_profile.gd")
 const UsableCatalog = preload("res://scripts/usable_catalog.gd")
+const PhysicalEquipment = preload("res://scripts/physical_usable_equipment.gd")
 
 var set_choice: OptionButton
 var model_choice: OptionButton
@@ -23,6 +24,7 @@ var usable_choice: OptionButton
 var usable_power_slider: HSlider
 var usable_power_label: Label
 var usable_description: Label
+var drain_profile_choice: OptionButton
 var _equipment_physical: bool = false
 var _equip_only_button: Button
 var status: Label
@@ -92,6 +94,16 @@ func _ready() -> void:
 		usable_choice.add_item("%s — %s" % [str(definition.id).to_upper(), str(definition.name)])
 	usable_choice.item_selected.connect(_refresh_usable)
 	column.add_child(usable_choice)
+	drain_profile_choice = OptionButton.new()
+	drain_profile_choice.name = "MeteredDrainProfile"
+	drain_profile_choice.add_item("Ordinary usable")
+	drain_profile_choice.add_item("Metered Water drain v1 — experimental")
+	drain_profile_choice.add_item("Metered Brine drain v1 — experimental")
+	drain_profile_choice.add_item("Reversible leak valve v1 — experimental")
+	drain_profile_choice.add_item("Directed IN Water nozzle v1 — experimental")
+	drain_profile_choice.item_selected.connect(func(_index: int) -> void: _refresh_usable(usable_choice.selected))
+	drain_profile_choice.visible = false
+	column.add_child(drain_profile_choice)
 	var usable_power_row := HBoxContainer.new()
 	column.add_child(usable_power_row)
 	usable_power_label = Label.new()
@@ -169,10 +181,21 @@ func restrict_prepared_default(enabled: bool) -> void:
 		status.text="Prepared native default: sampled baseline, barrel or Ripper. F5 restores the authored map and fresh pose; Liquids Apply retains live trial motion. Other actor constructors remain unavailable."
 
 
-func configure_equipment(usable_index: int, power: float, physical: bool = false) -> void:
+func configure_equipment(usable_index: int, power: float, physical: bool = false,
+	profile: String = "", material: int = 0) -> void:
 	_equipment_physical = physical
 	var item_index: int = clampi(usable_index + 1, 0, UsableCatalog.count())
 	usable_choice.select(item_index)
+	drain_profile_choice.select(0)
+	if physical and profile == PhysicalEquipment.METERED_PROFILE \
+		and usable_index == PhysicalEquipment.METERED_USABLE:
+		drain_profile_choice.select(1 if material == PhysicalEquipment.METERED_WATER else 2)
+	elif physical and profile == PhysicalEquipment.IN_TOOLS_LEAK_PROFILE \
+		and usable_index == PhysicalEquipment.IN_TOOLS_LEAK_USABLE:
+		drain_profile_choice.select(3)
+	elif physical and profile == PhysicalEquipment.IN_TOOLS_NOZZLE_PROFILE \
+		and usable_index == PhysicalEquipment.IN_TOOLS_NOZZLE_USABLE:
+		drain_profile_choice.select(4)
 	usable_power_slider.value = clampf(power, 0.0, 1.0)
 	_refresh_usable(item_index)
 
@@ -181,7 +204,39 @@ func selected_usable_index() -> int:
 	return usable_choice.selected - 1
 
 
+func selected_drain_profile() -> String:
+	if not _equipment_physical:
+		return ""
+	var usable: int = selected_usable_index()
+	match drain_profile_choice.selected:
+		1, 2:
+			return PhysicalEquipment.METERED_PROFILE if usable == PhysicalEquipment.METERED_USABLE else ""
+		3:
+			return PhysicalEquipment.IN_TOOLS_LEAK_PROFILE if usable == PhysicalEquipment.IN_TOOLS_LEAK_USABLE else ""
+		4:
+			return PhysicalEquipment.IN_TOOLS_NOZZLE_PROFILE if usable == PhysicalEquipment.IN_TOOLS_NOZZLE_USABLE else ""
+	return ""
+
+
+func selected_drain_material() -> int:
+	match selected_drain_profile():
+		PhysicalEquipment.METERED_PROFILE:
+			return PhysicalEquipment.METERED_WATER if drain_profile_choice.selected == 1 else PhysicalEquipment.METERED_BRINE
+		PhysicalEquipment.IN_TOOLS_NOZZLE_PROFILE:
+			return PhysicalEquipment.METERED_WATER
+	return 0
+
+
 func _refresh_usable(index: int) -> void:
+	var usable: int = index - 1
+	drain_profile_choice.visible = _equipment_physical and usable in [
+		PhysicalEquipment.METERED_USABLE, PhysicalEquipment.IN_TOOLS_NOZZLE_USABLE]
+	if not drain_profile_choice.visible:
+		drain_profile_choice.select(0)
+	elif usable == PhysicalEquipment.IN_TOOLS_NOZZLE_USABLE and drain_profile_choice.selected not in [0, 4]:
+		drain_profile_choice.select(0)
+	elif usable == PhysicalEquipment.METERED_USABLE and drain_profile_choice.selected == 4:
+		drain_profile_choice.select(0)
 	if index <= 0:
 		usable_description.text = "No actor equipment. Painting is available once the owner acknowledges unequip and pointer buttons are released."
 		return
@@ -192,6 +247,14 @@ func _refresh_usable(index: int) -> void:
 		if str(definition.category) == "object":
 			controls = "Left/M: deploy the carried processor. It works after settling. U: pick up when nearby. N: release without operating."
 		usable_description.text = "%s — %s\n%s" % [str(definition.name), str(definition.description), controls]
+		match selected_drain_profile():
+			PhysicalEquipment.METERED_PROFILE:
+				var quantity: String = "stored Water units" if selected_drain_material() == PhysicalEquipment.METERED_WATER else "Brine cells"
+				usable_description.text += "\nExperimental metering: %s; finite per-World allowance, up to 16 target cells per pulse. Hold left/M; release retires uncommitted removal. Right gives one 35%% precision pulse. Reselecting does not refill." % quantity
+			PhysicalEquipment.IN_TOOLS_LEAK_PROFILE:
+				usable_description.text += "\nIN-TOOLS leak: left/M opens the first aimed Wall cell as an owned aperture; right closes that same aperture. Closure refuses while occupied, preserving the world."
+			PhysicalEquipment.IN_TOOLS_NOZZLE_PROFILE:
+				usable_description.text += "\nIN-TOOLS nozzle: finite 32-cell whole-Water source owned by the current World. Left/M injects one IN Water cell with aimed native velocity. Upward aim requires the signed IN-B1 law. No ballistic fallback."
 
 
 func _refresh_usable_power(value: float) -> void:

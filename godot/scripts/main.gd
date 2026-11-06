@@ -1626,6 +1626,8 @@ var _actor_reset_receipt: int = 0
 var _actor_effort: float = 0.7
 var actor_usable_index: int = -1
 var _actor_usable_requested_index: int = -1
+var _actor_usable_requested_profile: String = ""
+var _actor_usable_requested_material: int = 0
 var _actor_usable_power: float = 0.8
 var _actor_usable_input_epoch: int = -1
 var _actor_usable_input_sequence: int = 0
@@ -2195,6 +2197,9 @@ func _unhandled_key_input(event: InputEvent) -> void:
 			if _playable_course_controls_active():
 				toggle_playable_course_pause()
 			else:
+				# Explicit IN-TOOLS profiles hold worker-owned source/sink/aperture
+				# authority. Revoke their uncommitted token before generic pause.
+				cancel_playable_course_input()
 				paused = not paused
 		KEY_ESCAPE:
 			if _playable_course_controls_active():
@@ -3190,7 +3195,10 @@ func toggle_actor_prototypes() -> void:
 	actor_prototype_panel.configure_selection(selected_model, actor_producer_selection, actor_demo_npcs)
 	actor_prototype_panel.set_context(str(microscenario_definition.get("id", "Sandbox")) if tower_context.get("micro_active", false) else "Sandbox")
 	actor_prototype_panel.effort_slider.value = _actor_effort
-	actor_prototype_panel.configure_equipment(actor_usable_index, _actor_usable_power, physical_actor_session != null)
+	var equipment: Dictionary = physical_actor_session.observation(0).get("equipment", {}) \
+		if physical_actor_session != null else {}
+	actor_prototype_panel.configure_equipment(actor_usable_index, _actor_usable_power,
+		physical_actor_session != null, str(equipment.get("profile", "")), int(equipment.get("material", 0)))
 	actor_prototype_panel.show_selection()
 
 
@@ -3308,6 +3316,8 @@ func _adopt_prepared_physical_candidate() -> void:
 	var loadout: Dictionary = PhysicalLoadouts.entry(physical_rig_id)
 	actor_usable_index = int(loadout.get("usable_index",-1))
 	_actor_usable_requested_index = actor_usable_index
+	_actor_usable_requested_profile = ""
+	_actor_usable_requested_material = 0
 	_actor_usable_power = float(loadout.get("power",0.8))
 	_actor_usable_transition_pending = false;_actor_usable_pointer_rearm = true
 	simulation_worker.set_physical_actor_epoch(_physical_epoch)
@@ -3345,6 +3355,8 @@ func _activate_articulated_actor_rigs(spawn: Vector2) -> bool:
 	var loadout: Dictionary = PhysicalLoadouts.entry(physical_rig_id)
 	actor_usable_index = int(loadout.get("usable_index", -1))
 	_actor_usable_requested_index = actor_usable_index
+	_actor_usable_requested_profile = ""
+	_actor_usable_requested_material = 0
 	_actor_usable_power = float(loadout.get("power", 0.8))
 	_actor_usable_transition_pending = false
 	_actor_usable_pointer_rearm = true
@@ -3514,7 +3526,9 @@ func cancel_playable_course_input() -> void:
 			physical_actor_session.cancel_input(shared_workbench.pilot_slot,_physical_epoch,&"human")
 		simulation_worker.cancel_workbench_emission()
 		return
-	if not _playable_course_controls_active(): return
+	var experimental: bool = physical_actor_session != null and actor_producer_selection == &"human" \
+		and not str(physical_actor_session.observation(0).get("equipment", {}).get("profile", "")).is_empty()
+	if not _playable_course_controls_active() and not experimental: return
 	_actor_input_rearm = true
 	_actor_usable_pointer_rearm = true
 	physical_actor_session.cancel_input(0, _physical_epoch, &"human")
@@ -3594,6 +3608,13 @@ func _publish_physical_keyboard_input(trigger_override: Variant = null, alternat
 			"alternate": alternate and not _actor_usable_transition_pending,
 			"drop": Input.is_key_pressed(KEY_N), "attach": Input.is_key_pressed(KEY_U)},
 	}
+	var equipment: Dictionary = physical_actor_session.observation(0).get("equipment", {})
+	var selected_profile: String = _actor_usable_requested_profile if _actor_usable_transition_pending \
+		else str(equipment.get("profile", ""))
+	if _actor_usable_transition_pending or not selected_profile.is_empty():
+		action.equipment["profile"] = selected_profile
+		action.equipment["material"] = _actor_usable_requested_material if _actor_usable_transition_pending \
+			else int(equipment.get("material", 0))
 	if playable:
 		# Movement/buttons/trim come from the same seven-preset input mapping
 		# without overwriting desktop pointer aim, equipment authority, effort
@@ -3604,6 +3625,10 @@ func _publish_physical_keyboard_input(trigger_override: Variant = null, alternat
 		# The reserved 4LY interpretation has exactly two velocity outputs.
 		action = {"move": action.move}
 	var admitted_course_action: bool = physical_actor_session.submit_local(0, action, &"human", 6)
+	if admitted_course_action and not str(equipment.get("profile", "")).is_empty() \
+		and bool(equipment.get("pending", false)) \
+		and not bool(physical_actor_session.observation(0).get("equipment", {}).get("pending", false)):
+		_publish_physical_body_state()
 	if admitted_course_action and playable and CyberPlayerPlaygroundInput.active(playable_action) \
 		and _playable_course_progress_identity():
 		var source_tick: int = int(latest_snapshot.tick_index)
@@ -3707,12 +3732,17 @@ func apply_actor_equipment_configuration(usable_index: int, power: float) -> boo
 		if not bool(equipment.get("attached", false)) or bool(equipment.get("pending", false)):
 			actor_prototype_panel.set_error("Recover the released device and finish its pending use before switching equipment.")
 			return false
+		var selected_profile: String = actor_prototype_panel.selected_drain_profile()
+		var selected_material: int = actor_prototype_panel.selected_drain_material()
 		if not physical_actor_session.submit_local(0, {"equipment": {
 			"usable_index": usable_index, "power": clampf(power, 0.0, 1.0),
-			"trigger": false, "alternate": false}}, &"human", 6):
+			"trigger": false, "alternate": false, "profile": selected_profile,
+			"material": selected_material}}, &"human", 6):
 			actor_prototype_panel.set_error("Equipment request refused: " + physical_actor_session.last_error)
 			return false
 		_actor_usable_requested_index = usable_index
+		_actor_usable_requested_profile = selected_profile
+		_actor_usable_requested_material = selected_material
 		_actor_usable_power = clampf(power, 0.0, 1.0)
 		_actor_usable_transition_pending = true
 		_actor_usable_pointer_rearm = true
@@ -3767,7 +3797,9 @@ func refresh_actor_usables() -> void:
 			physical_actor_session.accept_equipment_feedback(latest_snapshot.physical_usables)
 		var equipment: Dictionary = physical_actor_session.observation(0).get("equipment", {})
 		actor_usable_index = int(equipment.get("usable_index", -1))
-		if _actor_usable_transition_pending and actor_usable_index == _actor_usable_requested_index:
+		if _actor_usable_transition_pending and actor_usable_index == _actor_usable_requested_index \
+			and str(equipment.get("profile", "")) == _actor_usable_requested_profile \
+			and int(equipment.get("material", 0)) == _actor_usable_requested_material:
 			_actor_usable_transition_pending = false
 			_actor_usable_pointer_rearm = true
 		return
@@ -4011,6 +4043,26 @@ func refresh_actor_prototypes() -> void:
 		else:
 			actor_prototype_button.text += " | %s: %s" % [UsableCatalog.name_for(actor_usable_index), str(equipment.get("last_result", "ready"))]
 			actor_prototype_button.tooltip_text = PhysicalCatalog.controls_text(physical_rig_id) + "\nLeft/M use · right alternate · N release · U nearby pickup. Equipment uses the physical mount."
+			var selected_profile: String = str(equipment.get("profile", ""))
+			if selected_profile == PhysicalEquipment.METERED_PROFILE:
+				var meter: Dictionary = equipment.get("metered_drain", {})
+				var water: bool = int(equipment.get("material", 0)) == PhysicalEquipment.METERED_WATER
+				var units: String = "Water units" if water else "Brine cells"
+				actor_prototype_button.text += " | drain %d %s left" % [
+					int(meter.get("water_units_remaining" if water else "brine_cells_remaining", 0)), units]
+				actor_prototype_button.tooltip_text += "\nMetered drain v1 · native generation %d · policy %s" % [
+					int(meter.get("native_generation", -1)), str(meter.get("policy_hash", "")).left(16)]
+			elif selected_profile in [PhysicalEquipment.IN_TOOLS_NOZZLE_PROFILE, PhysicalEquipment.IN_TOOLS_LEAK_PROFILE]:
+				var owner: Dictionary = equipment.get("in_tools", {})
+				if selected_profile == PhysicalEquipment.IN_TOOLS_NOZZLE_PROFILE:
+					actor_prototype_button.text += " | IN source %d units left" % int(owner.get("water_units_remaining", 0))
+					actor_prototype_button.tooltip_text += "\nDirected IN nozzle; no ballistic fallback. Source admitted %d units; remaining %d." % [
+						int(owner.get("water_units_admitted", 0)), int(owner.get("water_units_remaining", 0))]
+				else:
+					actor_prototype_button.text += " | leak %s" % ("OPEN" if bool(owner.get("aperture_open", false)) else "closed")
+					actor_prototype_button.tooltip_text += "\nReversible leak aperture; occupied closure refuses without deleting material."
+				actor_prototype_button.tooltip_text += "\nNative generation %d · policy %s" % [
+					int(owner.get("native_generation", -1)), str(owner.get("policy_hash", "")).left(16)]
 		return
 	if not physical_trial_arm.is_empty():
 		actor_prototype_button.text = "Rapier %s / impulses + torque / F5" % physical_trial_arm

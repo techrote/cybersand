@@ -1,0 +1,146 @@
+{
+  "schema": "in-tools-361-source-admission-v2",
+  "id": "in-tools-361-current-main-implementation-20261106",
+  "parent_issue": 361,
+  "implementation_base": "7e2c2fd1aa2759590d63d5dfb53ce9e4c0a76e4b",
+  "admission_anchor": "79273490ba256a1bd7cc7ee5bfde68b5a8196cbd",
+  "predecessors": {
+    "frozen_preparation": {
+      "pr": 379,
+      "head": "e7e404b696fb9fc48cdadc95a69baf3a6f5fc6d1",
+      "disposition": "frozen-historical-unmerged"
+    },
+    "reviewed_admission": {
+      "pr": 404,
+      "head": "b9abf9aa0ad8fa0e189fe0e4d6a15eccf8c95c33",
+      "disposition": "selective-salvage-only"
+    },
+    "stale_implementation": {
+      "pr": 383,
+      "head": "8f99d391f35708e665810e6732a6777baa7c2cf5",
+      "disposition": "selective-salvage-only"
+    }
+  },
+  "authority_count": 17,
+  "authority": [
+    {
+      "path": "godot/scripts/usable_catalog.gd",
+      "base_blob": "f94d92bbeae0eb510ba5e5d0ed4dc83fd705e358",
+      "admitted_blob": "f94d92bbeae0eb510ba5e5d0ed4dc83fd705e358",
+      "status": "current",
+      "role": "existing U02/U10 gameplay identity, cost, range and operation"
+    },
+    {
+      "path": "godot/scripts/physical_usable_script.gd",
+      "base_blob": "f802aea7d80787db540a7e68ef2b3789b15dd0e1",
+      "admitted_blob": "f802aea7d80787db540a7e68ef2b3789b15dd0e1",
+      "status": "current",
+      "role": "physical usable material/script policy retained by the equipment path"
+    },
+    {
+      "path": "godot/scripts/physical_actor_session.gd",
+      "base_blob": "bde4503df99d7e317cfb0987004d525f72177316",
+      "admitted_blob": "0fdf40e430631e3d2b67e9cb67f004e25a789780",
+      "status": "changed",
+      "role": "physical command custody, release semantics and owner lifetime"
+    },
+    {
+      "path": "godot/scripts/physical_usable_equipment.gd",
+      "base_blob": "1c33a1b0cad5499161a997e13dfcf7df9a4f5616",
+      "admitted_blob": "372d8a690bb569c50e7ec1d91813725981489d0f",
+      "status": "changed",
+      "role": "explicit profile admission, copied owner identity and receipt validation"
+    },
+    {
+      "path": "godot/scripts/physical_usable_runtime.gd",
+      "base_blob": "207a53c7f57ba955cbfadbf5fae1a0af698548c2",
+      "admitted_blob": "7ca65742373cd272f9967731afba805c040c7ffc",
+      "status": "changed",
+      "role": "exclusive physical usable source/sink/aperture execution owner"
+    },
+    {
+      "path": "godot/scripts/in_tools_liquid_controller.gd",
+      "base_blob": null,
+      "admitted_blob": "827e76ab2a79d4fc5dd92f26b7456db632b7f551",
+      "status": "introduced",
+      "role": "finite #361 source budget, leak ownership and exact source accounting"
+    },
+    {
+      "path": "godot/scripts/simulation_worker.gd",
+      "base_blob": "d1f711a04a852ee1aaf7ceb46b96729355f47ba2",
+      "admitted_blob": "0e618e9bab43d118ed08e789b1f8b78d6768deb5",
+      "status": "changed",
+      "role": "exclusive mutable World ownership, consume fence and terminal quarantine"
+    },
+    {
+      "path": "godot/scripts/actor_prototype_panel.gd",
+      "base_blob": "a8ac890feb65dbb2a22c2b451d5b435b5342a28d",
+      "admitted_blob": "fc6f05352cd7fa4f6fb78ebcb610b6c55d4e0843",
+      "status": "changed",
+      "role": "explicit opt-in selector for drain, reversible leak and IN nozzle"
+    },
+    {
+      "path": "godot/scripts/main.gd",
+      "base_blob": "d720d7f11ffb090178803535bb2d4699df50957a",
+      "admitted_blob": "5bc7ca1866669b26576f3e22009c35cf2da1fdc7",
+      "status": "changed",
+      "role": "main-thread input cancellation, profile publication and visible owner readback"
+    },
+    {
+      "path": "godot/native_extension/cyber_native_cell_world.cpp",
+      "base_blob": "320639a6d9634733e2775f71fe284c2f192ebc31",
+      "admitted_blob": "e42575df24c0643318951c09522dc128beabfe3e",
+      "status": "changed",
+      "role": "bounded native source/aperture adapter and authoritative readback"
+    },
+    {
+      "path": "godot/native_extension/cyber_native_cell_world.hpp",
+      "base_blob": "5e971963f67848bf4bdcef3e6829cc091d937d98",
+      "admitted_blob": "ca5608c07e1c1e2003684aa0d942096b95eb394f",
+      "status": "changed",
+      "role": "native adapter method surface and ownership boundary"
+    },
+    {
+      "path": "native/include/cybersand/world.hpp",
+      "base_blob": "94e1c5f622611d9d5227a21978fb3f7ab89053e1",
+      "admitted_blob": "94e1c5f622611d9d5227a21978fb3f7ab89053e1",
+      "status": "current",
+      "role": "authoritative World mutation, quantity and IN velocity API"
+    },
+    {
+      "path": "native/src/world.cpp",
+      "base_blob": "90abfa0867f52c249bf59dcaf2e59cf38d48f8e5",
+      "admitted_blob": "90abfa0867f52c249bf59dcaf2e59cf38d48f8e5",
+      "status": "current",
+      "role": "authoritative cell-state mutation and external quantity ledger"
+    },
+    {
+      "path": "native/src/world_inertial.inc",
+      "base_blob": "da44b76b699bb459d88128b8dbc5106f24ddaa17",
+      "admitted_blob": "da44b76b699bb459d88128b8dbc5106f24ddaa17",
+      "status": "current",
+      "role": "IN motion law and bounded external velocity ledger used by the nozzle"
+    },
+    {
+      "path": "native/include/cybersand/inertial_cellular.hpp",
+      "base_blob": "8c37a80995a3dd7ed6343584608d5c36dea833c8",
+      "admitted_blob": "8c37a80995a3dd7ed6343584608d5c36dea833c8",
+      "status": "current",
+      "role": "IN velocity bounds and signed-vertical parameter contract"
+    },
+    {
+      "path": "native/include/cybersand/water_normalization.hpp",
+      "base_blob": "f295e74d7fcc5b442d68530f5b3cd99a14dac5c5",
+      "admitted_blob": "f295e74d7fcc5b442d68530f5b3cd99a14dac5c5",
+      "status": "current",
+      "role": "whole-cell Water maximum and normalization semantics"
+    },
+    {
+      "path": "native/include/cybersand/liquid_solver_policy.hpp",
+      "base_blob": "052b6ea6ba7c18ca5997c310abb1951f6b56cd77",
+      "admitted_blob": "052b6ea6ba7c18ca5997c310abb1951f6b56cd77",
+      "status": "current",
+      "role": "applied liquid-family identity distinguishing IN from ballistic paths"
+    }
+  ]
+}
