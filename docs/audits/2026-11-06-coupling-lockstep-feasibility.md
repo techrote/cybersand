@@ -2,7 +2,7 @@
 title: Coupled native/Rapier lockstep feasibility
 status: Current
 document-kind: evidence
-scope: Preregistered COUPLING-LOCKSTEP-001 measurement of desktop run-to-run determinism for native cells plus Rapier bodies, with a default-off lockstep fence; repeatability, Windows/WSL Linux agreement, cost, remaining non-determinism sources and a recommendation; no default, main.gd pacing, native or Rapier change
+scope: Preregistered COUPLING-LOCKSTEP-001 measurement of desktop run-to-run determinism for native cells plus Rapier bodies, with a default-off lockstep fence; repeatability, Windows/WSL Linux agreement, cost, remaining non-determinism sources and a recommendation; no default, native or Rapier change; addendum records the owner's opt-in decision, the opt-in main.gd wiring and amendment_002
 canonical-for: []
 last-reviewed: 2026-11-06
 related-documents: [../architecture/determinism-and-boundary-transfers.md, ../architecture/simulation-tick-and-threading.md, ../architecture/rigid-body-and-cellular-coupling.md, ../reference/level-saves-and-replay.md, 2026-11-04-workbench-boundary-and-pacing.md]
@@ -24,7 +24,8 @@ evidence follows the [remaining-source list](#remaining-non-determinism-sources)
 **Owner decision, 2026-11-06:** after the review repairs, the owner chose
 lockstep as an **opt-in mode**. Asynchronous coupling stays the default for
 ordinary play. Lockstep everywhere was not chosen. Wiring the mode and making
-the packed rotation deterministic are follow-up work in a separate Draft PR.
+the packed rotation deterministic are follow-up work in a separate Draft PR,
+recorded under [opt-in mode](#opt-in-mode-and-amendment_002--2026-11-06).
 
 These results survived an independent review and repair (see
 [review repairs](#review-repairs--2026-11-06)). The repaired reducer also compares
@@ -33,9 +34,9 @@ registered matrix; re-reducing the retained traces changed no decision. The
 1,800-tick Windows/Linux match is a qualified experimental result for one
 fixture on x86-64, not a guarantee.
 
-The opt-in fence is a prototype. The production default and `main.gd` are
-unchanged. This is evidence for a future design decision, not a replay format,
-strict runtime policy or multiplayer contract.
+The production default is unchanged. `main.gd` uses the fence only when
+launched with `--lockstep-coupling` (see the opt-in addendum). This is not a
+replay format, strict runtime policy or multiplayer contract.
 
 ## Context and claims
 
@@ -180,6 +181,61 @@ Validation notes from the v2 reducer:
 | horizon-001 | `1203edbd8411cfef3e50ff209cc154a008190d21184330f27c1bcecffd6d429e` |
 | load-0 / 8000 / 14000 / 20000 | `0bbb7576…`, `b6ef7a89…`, `232c7974…`, `3b7d01ee…` |
 
+## Opt-in mode and amendment_002 — 2026-11-06
+
+After the owner chose an opt-in mode, the stacked branch
+`claude/lockstep-opt-in-mode` wired it into the desktop game and moved the
+measured packing into production code. Neither change applies to a default
+launch.
+
+- `--lockstep-coupling` (desktop only) enables the worker fence before start.
+  `main.gd` skips an ordinary physics frame until the newest snapshot consumed
+  its last publication, and runs one counted stale step after a 500 ms hold.
+- `CyberRapierPhysicsBridge.deterministic_rotation_packing` (default off; on in
+  the mode) packs `atan2(float(basis.x.y), float(basis.x.x))` in double, stored
+  as float32: the `lockstep-f64rot` arithmetic.
+- `test_coupling_lockstep_desktop.gd` checks the real `main.tscn` host. On
+  Windows (source `a7236701`) the opt-in launch made 270 Rapier steps through
+  play, pause and a world reset. Every step applied the completion that consumed
+  the previous publication; there were 0 stale steps and 0 worker timeouts. A
+  mutation that dropped the publication comparison failed it with two
+  violations. WSL Linux gave the same outcome (270 steps, 0 stale steps, 0
+  worker timeouts). Windows and Linux also passed `test_coupling_lockstep`,
+  `test_coupling_lockstep_semantics`, `test_physics_async` and
+  `test_physical_actor_integration`; Windows also passed
+  `test_rem002_body_granular`, `test_physical_actor_effect_admission` and
+  `test_physical_usables_desktop` (600 s bound each, same engines).
+
+`amendment_002` was registered and committed (`a7236701`) before any episode.
+It adds a `lockstep-packed` arm that uses the bridge flag, and requires it to
+equal the validated `horizon-001` `lockstep-f64rot` arm. Run `packed-001`
+(Windows and WSL Linux, workers 1 and 4, 2 repeats, 1,800 ticks, 300 s
+per-episode bound, same engines and runtimes as above): 8/8 episodes were clean.
+
+| Decision | Result |
+|---|---|
+| Same-host repeats (each host) | Equal, 0 worker timeouts |
+| 1 versus 4 native workers (each host) | Equal |
+| Windows versus Linux (w1, w4) | **MATCH** on every recorded field, including final hashes |
+| Equal to `horizon-001` `lockstep-f64rot` (each host and worker count) | **Equal** on every per-step field, every per-tick native hash and the final hashes |
+| Cost | 59.9–60.0 Rapier steps/s, 0.2–0.4% held frames, result age always 0 |
+
+The production opt-in path therefore reproduces the measured exploratory arm
+bit for bit. This is still one x86-64 fixture, not a cross-platform guarantee:
+double libm `atan2`, native `cos`/`sin`, the Rapier build, inputs and terrain
+installation remain as listed below. The runner now hashes committed blobs, so
+this receipt has no CRLF identity note. Hashes: `receipt.json`
+`058e22d3c17d22bd6b727208f1128b2e379bbec0b6e67928011d380e9542ec6e`,
+`reduction-v2.json`
+`8aeadd6dfaa6b12b01e3ea5356509d327a1b5df77e8b2454cf4f3754ab531d4c`. The extended
+reducer re-reduced all eight earlier runs to byte-identical `reduction-v2.json`
+files. Raw `packed-001` evidence (20 files, 21.1 MiB, with a per-file
+manifest) is sealed host-locally as
+`C:/CyberSand-evidence/PR-lockstep-opt-in-packed-001-20261106-a7236701.zip`
+(3.8 MiB, SHA-256
+`c06081023a2a4cb6e179a1e879d11deca8458627e79f3e798d98b7f763aadaaf`). It is not
+part of the published #464 archive, and publishing it needs its own owner approval.
+
 ## Results
 
 ### (a) Same-host repeatability
@@ -262,9 +318,9 @@ semaphore would remove it.
 
 | # | Source | Evidence | Status after this work |
 |---|---|---|---|
-| 1 | Publication/tick race: worker prepares whichever sample main last published | Measured: 40/40 async pairs, RACE at steps 3–86 | Removed by the fence in the fixture only. `main.gd` is not wired, and labs, MicroScenarios and the workbench are excluded. |
+| 1 | Publication/tick race: worker prepares whichever sample main last published | Measured: 40/40 async pairs, RACE at steps 3–86 | Removed by the fence in the fixture and, since amendment_002, in the opt-in `--lockstep-coupling` desktop mode. The default launch, labs, MicroScenarios and the workbench are excluded. |
 | 2 | Godot physics-frame timing: catch-up frames step Rapier with no new result | Measured: async 601–605 steps per 600 ticks | Removed under lockstep: held frames do not step. |
-| 3 | Float32 `atan2` in `pack_body_states` (`Transform2D.get_rotation`) | Measured: 1-ulp Windows/Linux difference at step 39 | Fixture repack removes it. Production unchanged; candidate fixes are packing basis cos/sin or a double `atan2`. A double libm `atan2` matched here but is not guaranteed correctly rounded on every platform. |
+| 3 | Float32 `atan2` in `pack_body_states` (`Transform2D.get_rotation`) | Measured: 1-ulp Windows/Linux difference at step 39 | Fixture repack removes it. The opt-in mode now uses the double `atan2` (`packed-001` matched); default packing is unchanged. Packing basis cos/sin remains the alternative. A double libm `atan2` matched here but is not guaranteed correctly rounded on every platform. |
 | 4 | Native double `std::cos`/`std::sin` in rasterization and overlap tests (`cyber_native_cell_world.cpp` `rasterize_transform_in`, `cell_inside_body`, `overlap_normal`) and `granular_contact_response.hpp` | Inspection; not observed to differ in this fixture | Unverified. The same platform-libm class as #3. |
 | 5 | Rapier build: `parallel` on, `enhanced-determinism` off (`third_party/rapier-bvh-build.lock.json`); deferred BVH join is blocking | Same-host repeatable; Windows matched Linux on x86-64 | Not guaranteed across CPUs, ARM, Web/Wasm or other compilers. |
 | 6 | Wall-clock budgets on main: hard-terrain collider installation (`process_hard_surface_collider_budget`, 750 µs soft budget), render-snapshot cadence | Inspection; this fixture installs terrain once | Live terrain edits can change collider installation timing across runs. A lockstep mode needs a tick-counted budget or an installation fence, like the workbench terrain fence. |
@@ -293,10 +349,11 @@ ordinary play for now.
 Suggested next steps, each separately registered and owner-approved:
 
 1. Wire an opt-in mode in `main.gd`, mirroring the fixture's main hold.
-   Replace polling with a semaphore wake, and consider a bounded in-frame wait
-   of about 2 ms before skipping a frame.
-2. Make packed rotation deterministic. This is small and affects both modes.
-   Re-measure in the existing fixture.
+   **Done 2026-11-06 (opt-in addendum).** Still open: replace polling with a
+   semaphore wake, and consider a bounded in-frame wait of about 2 ms before
+   skipping a frame.
+2. Make packed rotation deterministic. **Done for the opt-in mode and
+   re-measured (`packed-001`).** Default packing is deliberately unchanged.
 3. Fence or tick-count the terrain collider installation in lockstep mode.
 4. Add a tick-keyed input stream and a combined native+body replay hash. This
    is the replay schema owned by F05.

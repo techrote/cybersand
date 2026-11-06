@@ -1287,8 +1287,28 @@ refused after `start_worker`. It fences only the ordinary coupling path; labs,
 MicroScenarios and the workbench keep their own pacing. `lockstep_metrics()`
 returns copied `ticks`, `holds`, hold time, `timeouts`, `superseded_publications`
 (publications replaced before a fenced tick consumed them) and
-`completed_publication`. No production caller
-enables it. See [coupled desktop determinism](../architecture/determinism-and-boundary-transfers.md#coupled-desktop-determinism--2026-11-06).
+`completed_publication`. See [coupled desktop determinism](../architecture/determinism-and-boundary-transfers.md#coupled-desktop-determinism--2026-11-06).
+
+**Current, opt-in desktop mode (owner decision 2026-11-06):** `main.gd` enables
+the fence only when the `--lockstep-coupling` user argument is present on a
+non-Web build (`lockstep_coupling_requested()`), before `start_worker`. The
+default launch is unchanged. In that mode:
+
+- each ordinary `_physics_process` peeks `take_latest_snapshot(0)` and skips the
+  frame (no Rapier step, no new publication) until the snapshot consumed main's
+  last publication and has not been applied;
+- a hold longer than `LOCKSTEP_MAIN_HOLD_LIMIT_MSEC` (500 ms) runs one counted
+  stale step instead of freezing;
+- `CyberRapierPhysicsBridge.deterministic_rotation_packing` (default `false`) is
+  set at every `pack_rigid_body_states()` call, so `pack_body_states()` stores
+  `atan2(float(basis.x.y), float(basis.x.x))` evaluated in double as float32
+  instead of `Transform2D.get_rotation()`;
+- `lockstep_coupling_status()` returns copied main counters
+  (`main_fenced_steps`, `main_held_frames`, `main_hold_timeouts`) with the worker's
+  `lockstep_metrics()`, and `recording_runtime_identity()` reports
+  `desktop_configuration.lockstep_coupling_enabled`.
+
+The workbench keeps its own sample fence and is not held by this mode.
 
 `physical_actor_effect_admission()` and the additive snapshot field of the same
 name return copied `capacity`, `pending_requests`, accepted/refused batch and

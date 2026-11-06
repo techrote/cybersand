@@ -22,6 +22,13 @@ audit's remaining-source list and its recommendation. An independent review
 they are recorded in the audit's review section, and every decision was
 unchanged on re-reduction. Promotion still needs exact-head runtime CI.
 
+The owner then chose lockstep as an **opt-in mode** (2026-11-06). Stacked Draft
+branch `claude/lockstep-opt-in-mode` adds `--lockstep-coupling` to the desktop
+game, opt-in deterministic rotation packing and registered run `packed-001`,
+which matched Windows and Linux. The default launch is unchanged. Remaining
+steps (input capture, terrain-installation fence, workbench measurement,
+semaphore wake) are separate and need their own registration.
+
 ## MAT-AUTH-002 Phase A integration gate — 2026-11-04
 
 The owner now authorizes current-main reconciliation, focused preflight, a
