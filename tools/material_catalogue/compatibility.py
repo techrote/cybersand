@@ -211,6 +211,20 @@ REVIEWED_TRANSITIONS: tuple[dict, ...] = ({'path': 'native/src/world_pressure.in
   'source_commit': '5fbf0a39c43a234fec2c092d52ea43066bf49335',
   'record': 'docs/audits/2026-11-06-stress-canvas.md',
   'issue': 362,
+  'pr': 406},
+ {'path': 'native/src/world.cpp',
+  'from_lf_sha256': '3c90c5887800f75936a3e75c57030dcf4c7809640652ea2fc03f3e6b597ab654',
+  'to_lf_sha256': '97e605b556c178f6169c1c89fff49041d5640b8fb0f728a6fc3d6c43506f4f00',
+  'source_commit': 'fd061dd098d2e4b277141b76ada7f4b340e02e97',
+  'record': 'docs/audits/2026-11-06-pf-ballistic-tick-cost.md',
+  'issue': 362,
+  'pr': 406},
+ {'path': 'native/src/world_pressure.inc',
+  'from_lf_sha256': 'af5bcaf27e4e7bd17d65279aaddb074359db20ff9c06cb5dfabf1a573e02be18',
+  'to_lf_sha256': '894068b587b17b215c993d0eea5c5f14a8a818d4c1430c246f13bdec66653738',
+  'source_commit': 'fd061dd098d2e4b277141b76ada7f4b340e02e97',
+  'record': 'docs/audits/2026-11-06-pf-ballistic-tick-cost.md',
+  'issue': 362,
   'pr': 406})
 
 

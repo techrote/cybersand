@@ -142,7 +142,8 @@ overlapped the WSL sanitizer builds on the same CPUs.
 
 These are execution-only edits. Cell results, hashes, receipts and pressure
 counters are unchanged. They are proposed reviewed transitions for issue 362
-and PR 406, pending independent review and the owner's admission.
+and PR 406, pending independent review and the owner's admission. The source edit and this record are commit `fd061dd098d2e4b277141b76ada7f4b340e02e97`, to which
+both transitions are pinned.
 
 | Path | From LF SHA-256 | To LF SHA-256 |
 |---|---|---|
