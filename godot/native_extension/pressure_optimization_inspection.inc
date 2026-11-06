@@ -139,6 +139,16 @@ Dictionary CyberNativeCellWorld::inspect_pressure_optimization() const {
     CYBERSAND_PRESSURE_COUNT(gas_relabel_cells);
     CYBERSAND_PRESSURE_COUNT(gas_identity_nodes);
     CYBERSAND_PRESSURE_COUNT(gas_stamp_clear_cells);
+    CYBERSAND_PRESSURE_COUNT(head_preflight_nanoseconds);
+    CYBERSAND_PRESSURE_COUNT(head_preflight_probes);
+    CYBERSAND_PRESSURE_COUNT(head_preflight_runs);
+    CYBERSAND_PRESSURE_COUNT(head_preflight_dirty_spans);
+    CYBERSAND_PRESSURE_COUNT(head_candidate_base_cells);
+    CYBERSAND_PRESSURE_COUNT(head_candidate_row_cells);
+    CYBERSAND_PRESSURE_COUNT(head_preflight_budget_rejections);
+    CYBERSAND_PRESSURE_COUNT(head_column_nanoseconds);
+    CYBERSAND_PRESSURE_COUNT(head_row_nanoseconds);
+    CYBERSAND_PRESSURE_COUNT(head_wake_worker_nanoseconds);
 #undef CYBERSAND_PRESSURE_COUNT
     out["counters"] = counters;
     return out;
