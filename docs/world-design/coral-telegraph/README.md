@@ -62,3 +62,11 @@ node docs/world-design/coral-telegraph/render_pack.mjs --write
 Future integration needs an independently admitted importer/schema, native initial-state assignment, host erase/undo contract, source checks, actor/collision clearance and measured sim/paint costs. Keep separate from PLAY, SOL, MAT-AUTH, IN-TOOLS and solver integrations.
 
 Prior collections inspected: #408, #410, #412, #414, #420, #425, #430, #434, #437, #439, #443, #445, #447. Next candidates: **Fallow Carnival**, **Saltwind Viaduct**, **Glassroot Labyrinth**.
+
+## C3 flagship refinement — Abyssal Splice Basilica (6 November 2026)
+
+The formerly separated eight dry modules now occupy a connected **abyssal cable-exchange basilica**. Unequal stratified escarpments enclose a broken copper-ceramic calibration crown, collapsed roof ribs, taut and torn catenary wires, damaged elevated route piers, the salt ledger transept, and an interrupted buried conductor. A failed centre splice is the narrative focus. The **`combined_scene.terrain_rectangles`** array adds **1619 ordered source-material inert rectangles behind the placed features**. Four original dry modules receive masonry abrasion, fastening and maintenance etching. All **8 modules, 16 variants, 3 patterns, 8 dry placements** and anchors remain; no active materials were added to the flagship.
+
+The deterministic **`preview.svg`** now includes two enlarged 2.15× dry-source-colour close studies beneath the atlas and original reusable-module gallery. Ordered-cell comparison: **121,849/443,880 scene cells changed**, **59,170 above y=190**, **60.1% unwritten air retained**. These measures are geometry evidence, not artistic certification.
+
+The exact fetched checked-in `validatePack` and `makeSvg` JavaScript function bodies passed isolated V8 execution using source-pinned native enum and catalogue, with **10/10 invalid test mutations rejected** and original SVG reproduced byte-exactly. Genuine full-checkout Node CLI process exits, Godot renders and all physics/clearance/performance tests are unexecuted; none are implied by a flat SVG. Underwater appearance, electrical operation, optics, buoyancy and fluid reaction are entirely illustrative. Next: an alternate descending cable-crypt arrangement reusing the same eight motifs, followed by native graphical comparison and independent human review.
