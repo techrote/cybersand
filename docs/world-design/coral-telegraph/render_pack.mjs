@@ -47,7 +47,7 @@ function makeSvg(p){
   for(const [a,b,w,h,id] of alt.foreground_rectangles)rect(sx+a*z,sy+b*z,w*z,h*z,colors.get(id));
   out.push('</g>');txt(x+10,y+223,label,12,"#e1edf4");
  }
- altCrop(46,1983,473,67,"A / fractured crown, cable joints and bearing seats","ct-alt-a");
+ altCrop(46,1983,558,209,"A / severed listening hoop and broken return bridge","ct-alt-a");
  altCrop(817,1983,800,265,"B / lower ledger chambers and petrified dry test basins","ct-alt-b");
  txt(36,2253,"Art only: no Godot image, physics, signals, reflection, pressure, fluid or clearance claims.",12,"#9aabbf");
 out.push("</svg>");return out.join("\n")+"\n";
