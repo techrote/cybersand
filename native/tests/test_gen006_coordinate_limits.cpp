@@ -172,11 +172,102 @@ void cohort(std::uint32_t workers) {
               <<",\"continuation_at_extreme\":\"three_native_ticks\""
               <<",\"result\":\"PASS\"}\n";
 }
+
+// Cross-seam queued-event continuation under an excluded native interest
+// region. Current interest filtering pauses ordinary rules; explicit owner
+// events still commit. Preserve this exact distinction across CYPS restart.
+// This is WHOLE-WORLD restore, not per-chunk eviction or saved edit intent.
+void pending_event_region_cohort(std::uint32_t workers) {
+    const auto c = config(workers);
+    const auto p = payload();
+    World original(c);
+    for (int i = 0; i < 8; ++i) {
+        require(original.install_generated_chunk(
+                    {static_cast<std::int64_t>(i-2), 0}, p) ==
+                    ChunkInstallOutcome::Installed,
+                "cross-seam native setup admission refused");
+    }
+    // The event blast spans the signed chunk seam x=-1/0. It must not be
+    // silently treated as a discardable generated resident region.
+    for (std::int64_t y = 36; y <= 44; ++y) {
+        for (std::int64_t x = -4; x <= 3; ++x) {
+            original.set(x, y, Material::Wall);
+        }
+    }
+    require(original.stored_material(-1, 40) == Material::Wall &&
+                original.stored_material(0, 40) == Material::Wall,
+            "cross-seam explosion setup lacks native walls");
+    original.set_simulation_region(RectI64{256, 0, 64, 64});
+    const auto before_event = original.physical_state_hash();
+    require(original.queue_explosion(-1, 40, 2, 255),
+            "signed-seam queued native explosion refused");
+    const auto queued_hash = original.physical_state_hash();
+    require(queued_hash != before_event,
+            "pending native event omitted from physical checkpoint identity");
+    const auto checkpoint = original.save_physical_state();
+    require(!checkpoint.empty() && checkpoint.size() < 16*1024*1024,
+            "cross-seam native checkpoint absent or oversized");
+    auto restored = World::restore_physical_state(c, checkpoint);
+    require(restored && restored->chunk_count() == 8 &&
+                restored->physical_state_hash() == queued_hash &&
+                restored->completed_tick_index() == original.completed_tick_index(),
+            "pending-event/restored-interest native state mismatch");
+    require(restored->save_physical_state() == checkpoint,
+            "pending-event CYPS roundtrip changed canonical bytes");
+
+    const auto a = original.tick();
+    const auto b = restored->tick();
+    require(!original.has_failed() && !restored->has_failed(),
+            "cross-seam event execution quarantined native World");
+    require(a.deferred_events == 1 && b.deferred_events == 1,
+            "pending event was lost or not executed once after restore");
+    require(original.stored_material(-1, 40) == Material::Fire &&
+                original.stored_material(0, 40) == Material::Empty,
+            "excluded-region external event did not update signed seam");
+    require(original.physical_state_hash() == restored->physical_state_hash(),
+            "cross-seam event original/restored native hash mismatch");
+
+    std::uint32_t observed_original = a.worker_threads_observed;
+    std::uint32_t observed_restored = b.worker_threads_observed;
+    for (int step=0; step<5; ++step) {
+        if (step==0 || step==3) {
+            const auto region = step==0
+                ? RectI64{-64, 0, 128, 128} : RectI64{256, 0, 64, 64};
+            original.set_simulation_region(region);
+            restored->set_simulation_region(region);
+        }
+        const auto x=original.tick(), y=restored->tick();
+        observed_original=std::max(observed_original,x.worker_threads_observed);
+        observed_restored=std::max(observed_restored,y.worker_threads_observed);
+        require(x.deferred_events==0 && y.deferred_events==0,
+                "previously executed native event replayed");
+        require(!original.has_failed() && !restored->has_failed() &&
+                    original.completed_tick_index()==restored->completed_tick_index() &&
+                    original.physical_state_hash()==restored->physical_state_hash(),
+                "native pause/re-entry event continuation diverged");
+    }
+    const auto final_bytes=original.save_physical_state();
+    auto next=World::restore_physical_state(c,final_bytes);
+    require(next && next->physical_state_hash()==original.physical_state_hash(),
+            "post-reentry native continuation checkpoint invalid");
+    require(observed_original<=workers && observed_restored<=workers,
+            "invalid reported native worker participation");
+    std::cout << "GEN006_NATIVE_EVENT_REGION_JSON {\"configured_workers\":" << workers
+              << ",\"observed_original\":" << observed_original
+              << ",\"observed_restored\":" << observed_restored
+              << ",\"chunks\":8,\"pending_events\":1,\"executed_events\":1"
+              << ",\"continuation_ticks\":6,\"interest_reentries\":1"
+              << ",\"signed_chunk_seam\":true,\"checkpoint_bytes\":" << checkpoint.size()
+              << ",\"result\":\"PASS\"}\n";
+}
+
 }
 int main() {
     try {
         cohort(1);
         cohort(4);
+        pending_event_region_cohort(1);
+        pending_event_region_cohort(4);
         std::cout<<"GEN006_NATIVE_COORD_LIMIT_PASS assertions="<<checks<<"\n";
         return 0;
     } catch (const std::exception& e) {
