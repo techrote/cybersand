@@ -1,0 +1,21 @@
+{
+  "registration": "SOL-WORKBENCH-LAW-001",
+  "owner_decision": "D1, 2026-11-06; subject to experiment, no default or integration promotion",
+  "parent": "cba3c0de35c4fae410b2fa16fa821524308c1ce8",
+  "main": "554d27b199e10613c01dbd7933f3fc6205d3ecdb",
+  "primary": {"hosts":["windows","linux"],"workers":[1],"structures":["tree","building"],"surroundings":["packed_sand","mixed"],"arms":["legacy-off","legacy-pre","workbench-LA-SELECTIVE"],"repeats":5},
+  "spot": {"hosts":["windows","linux"],"workers":[4],"structures":["tree","building"],"surroundings":["packed_sand","mixed"],"arms":["legacy-off","legacy-pre","workbench-LA-SELECTIVE"],"repeats":1,"scope":"ownership/material/worker compatibility, not repeated efficacy or deterministic parity"},
+  "episodes":144,"physical_steps_per_episode":720,"total_physical_steps":103680,
+  "rest_window":[600,719],
+  "rest_screen":{"max_com_speed":0.5,"max_abs_omega":0.02,"max_position_axis_span":0.5,"max_unwrapped_angle_span":0.05},
+  "sink_rate":"OLS slope of actual transformed COM-Y against actual physical step over600..719; positive down; report cells/step and cells/s at nominal60Hz",
+  "decision":"For EACH of four packed host/structure worker1 cells, all five complete source-valid repeats required, workbench rests>=3/5 AND median terminal Sand area AND depth <= corresponding legacy-pre medians. Any complete failing cell => NO-GO; missing/invalid evidence=>UNAVAILABLE/INCONCLUSIVE, no reduced denominator. If packed passes but mixed fails nonregression=>CONDITIONAL.",
+  "mixed_nonregression":"Each host/structure worker1 mixed cell: all5 complete, workbench median Sand area/depth<=legacy-pre medians and rest_count>=legacy-pre; exact native quantities/ownership/material policy pass. Preserve existing Water split x>=82; if no actual Water contact, qualify ambient split only.",
+  "statistics":"Each cell lists all5 values, median,min,max,IQR for area,depth,sink,acceptance and incoming ages; no efficacy claim from a single episode or pooled impulses.",
+  "order":"Fixed repeat-major cyclic arm rotation: repeat0 off/pre/WB,1 pre/WB/off,2 WB/off/pre,3 off/pre/WB,4 pre/WB/off; structures tree/building and surroundings packed/mixed fixed. Hosts may execute concurrently; timing remains advisory diagnostic, not original CPU gate.",
+  "controls":"Fresh nativeWorld/Rapier/session each repeat, unchanged tuple map, default World seed, pose, source shapes, unit member mass/native inertia, gravity_scale0.094, linear_damp0.04/angular_damp0.04. Legacy pre order and caps3/.5 unchanged. WB uses actual main LA-SELECTIVE,budget20,load scale and passive solver unchanged; one owner with6/5proxies; no SOL281Sand/ordinary second application. Water remains outside granular arrival/passive channel.",
+  "pacing":"Legacy independent loops retained. WB uses main completed-sample native/physics/terrain fence unchanged. Frozen priming sample retired and a new live serial published without physics warmstep; record both. This is a law+pacing package comparison, not isolated force-law causality. No post arm used.",
+  "attempts":{"maximum_main_attempts":14400,"wall_timeout_seconds":300,"all_no_step_attempts":"retain reason counts and cumulative elapsed time; 720 actual advances required"},
+  "resource":{"collection_cap_bytes":2147483648,"minimum_free_bytes":5368709120,"build_intermediate_cap_bytes":2147483648,"raw":"compact JSON: constant geometry/tuples/policies and endpoint RLE once; lossless body/application states per actual step, exact packets/modes/ages/ids/counters, no-step reason aggregates, distinct worker samples. Never delete previous collections; stop on reserve/cap."},
+  "scope":"No original SOL120+60 clearance, CPU24x3 admission, new restoration/E1/E2 authority or solved total material energy. Preserve84/84,64/84,36/36,1452/1452 and #365, hard exclusions/tinyRedBrick filter. F1 mechanism engaged causal role unproven; post NO-GO. No mass/budget/threshold tuning after outcomes."
+}
