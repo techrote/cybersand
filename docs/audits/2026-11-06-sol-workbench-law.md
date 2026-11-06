@@ -165,6 +165,10 @@ packed host/structure cells needs rest≥3/5 and median terminal area AND depth 
 worse than legacy-pre. Mixed has its separately fixed nonregression rule.
 No SOL364-D proposed120+60 clock is implemented. Rest600–719 uses speed≤0.5,
 |omega|≤0.02, position-axis spans≤0.5 and unwrapped angle span≤0.05.
+Original clearance references remain area≤1e-6 cell², depth≤2e-5 cells,
+embedded depth≤initial+0.25 and nonembedded depth≤1 cell, with complete coverage
+and60 additional recurrence-free60Hz steps for prospective success. These
+terminal overlaps are far outside clearance; no such original clock is claimed.
 
 Fresh sessions preserve input tuples, pose, exact geometry, native policy,
 gravity/damping, input drive and measurement windows. Repeat-major arm order is
@@ -356,6 +360,27 @@ not clearance. No original hash, denominator, acceptance threshold or material
 identity is refreshed. This experiment grants no new E1/E2 recovery authority.
 
 ## Next action and documentation map
+
+At documentation source`28b72d61c9204fe9835de9b3227877526b137e3e`,
+`checks-002` passes docs, historical M11, materialized repository, original
+material guard,3 adverse order-state tests,7 geometry controls,9 independent
+workbench-admission tests and diff checks. Original retrieval retains32/32
+top-five canonical routes (19 first); order-result questions3/3 first; new
+workbench questions3/3 top-five (2 first). These are lexical route checks, not
+scientific/answer correctness. Manual expected-fact review preserves package
+causality, zero-event passive response, negative rest and platform-floor gaps.
+Checks receipt SHA-256`ab78c7dd2d5a17cfa54a8a62e5fe0f19e31a449b3fec342e41785028059ba57d`.
+
+`checks-001` retains its docs/repository failure for five missing historical
+companion-workspace files. Exact-byte read-only-parent copies restore only
+those link targets outside this source repository; hashes are retained in
+`build/sol-workbench-law/companion-custody.json`. No fixture, original hash or
+source/provenance record is rewritten. Newly reviewed material transitions and
+full rebuilt native manifests resolve the current source's old material/runtime
+identity mismatches; the earlier failing-source receipts remain historical.
+Linux floor, original physical/CPU/storage and full release qualifications
+remain blockers. Final descendants receive their own clean-source check receipt;
+do not relabel this dated validation or the matrix as final-head execution.
 
 Request a separate independent adversarial review of the full repeated result,
 adapter ownership, MAT transitions, readback and the pacing-package qualifier
