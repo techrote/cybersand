@@ -24,7 +24,7 @@ function render(p){
  parts.push(`<rect x="${x+2}" y="${y+25}" width="278" height="137" fill="#09151f"/>`);
  const sc=Math.min(1.46,267/f.size[0],128/f.size[1]),ox=x+8+(268-f.size[0]*sc)/2,oy=y+29+(130-f.size[1]*sc);
  parts.push(`<g transform="translate(${ox.toFixed(3)} ${oy.toFixed(3)}) scale(${sc.toFixed(5)})">${f.rectangles.map(rect).join("")}</g>`)}
- const crops=[{name:"04 — FRACTURED TIDAL INDEX / SHAFT",x:460,y:217,w:332,h:150},{name:"05 — EAST SWITCHWORK / STRUCTURAL DAMAGE",x:692,y:240,w:332,h:122}];
+ const crops=[{name:"04 — SALT-LINE MEMORY LOOM / LOST WITNESSES",x:411,y:82,w:267,h:128},{name:"05 — EAST SWITCHWORK / STRUCTURAL DAMAGE",x:692,y:240,w:332,h:122}];
  for(let i=0;i<crops.length;i++){const c=crops[i],bx=48+i*652;
  parts.push(`<rect x="${bx}" y="1485" width="629" height="215" rx="8" fill="#101b25" stroke="#38505a" stroke-width="2"/>`);
  parts.push(`<text x="${bx+12}" y="1508" font-family="monospace" font-size="13" fill="#dbc58f">${c.name}</text>`);
