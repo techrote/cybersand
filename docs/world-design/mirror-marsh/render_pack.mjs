@@ -35,7 +35,7 @@ function renderSvg(p){
  for(const loc of p.combined_scene.placements){const f=p.features.find(q=>q.id===loc.feature_id);draw(f,loc.origin[0],loc.origin[1],1,loc.variant)}
  for(const r of p.combined_scene.foreground_rectangles||[])put(srcRect(r[0],r[1],r[2],r[3],r[4]));
  put("</svg>");};
- crop(51,"I / FERRYMAN'S LAST LEDGER / BROKEN PASSAGE",87,46);
+ crop(51,"I / FERRY-TO-CHAPEL TOLL LINE / SEVERED CROSSING",184,59);
  crop(767,"II / RUINED REED BANK, LENSES & SALT LEVEE",835,149);
  put(text(54,1316,"PINNED NATIVE MATERIAL PALETTE  ·  SOURCE CELL STAMPS  ·  NOT A GODOT IMAGE OR PHYSICAL PROOF",12,"#83a7a2"));
  const alt=p.alternate_scene;
