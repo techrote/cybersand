@@ -71,6 +71,44 @@ Linux OpenGL/llvmpipe and Windows ANGLE outputs preserved as workflow artifacts.
   which fails if the declaration does not match a clean checkout **or if any
   verified renderer/configuration source is dirty**.
 
+### R1-D live-owner recovery guard — corrective successor (6 November 2026)
+
+The independently executed Linux llvmpipe and Windows ANGLE adversary in
+[Draft #468](https://github.com/techrote/cybersand/pull/468)
+([negative run 42285063579](https://github.com/techrote/cybersand/actions/runs/42285063579))
+proved that the otherwise-passing `e9dc1da` claim protocol allowed a second
+capture with the **correct** `--recover-claim=<attempt-id>` to archive a claim
+**while the original publishing process was still alive**. Its 502/502 Linux
+and 230/230 Windows passing full-campaign controls did not establish this
+additional concurrency invariant; the negative test was 8/12 on each OS.
+
+This successor implementation changes claim transactions to **schema 2** and
+records a process ID plus a local operating-system/host identity. Explicit
+recovery now checks the exact attempt token, schema, recorded owner PID and
+matching output/host namespace, and then requires positive evidence that the
+owner process **has terminated** before archiving its claim. A live owner, a
+legacy/malformed record, a foreign host, an unsupported/uncertain process probe,
+or a mismatched token **must fail closed without modifying the old claim**.
+Linux checks the local `/proc` process table; Windows uses the system
+`Get-Process` query through PowerShell. Godot's
+`OS.is_process_running()` is not relied on because its documented contract
+only covers PIDs spawned through Godot itself, whereas capture instances are
+typically started by external CI/Python processes. A reused PID conservatively
+blocks recovery. Host identity is a same-machine safety guard, **not** a
+distributed lease or proof of ownership on a shared multi-host filesystem.
+
+Schema-1 claims made by earlier experimental versions are intentionally **not**
+automatically recoverable after upgrading. Preserve the original transaction
+and seek explicit manual custody/reconciliation; do not delete or rename an
+unknown claim based on a token alone. The actual-process acceptance test is
+`godot/tests/world_design_capture_live_claim_probe.py`, which requires
+live-owner denial, intact original claim, hard kill, then successful explicit
+dead-owner recovery with verified genuine framebuffer/RG8 and immutable
+generation hashes, plus invalid-transaction negatives. Fresh exact-head
+Linux/Windows test results must be recorded before marking this guard qualified.
+Neither the earlier failure nor the independent-acceptance gate is superseded
+by the presence of this source change.
+
 The fault-injection switches `--test-fail-publication=on`,
 `--test-fail-rollback=on`, `--test-pause-before-publication-ms=N` and
 `--test-pause-phase=framebuffer|validated|prepared|published-data` only work
