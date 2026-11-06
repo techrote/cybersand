@@ -12,17 +12,27 @@ repair checks are in `godot/tests/world_design_capture_repair_campaign.py` and
 `.github/workflows/world-design-capture-repair-qualification.yml`, with actual
 Linux OpenGL/llvmpipe and Windows ANGLE outputs preserved as workflow artifacts.
 
-- **R1 — fail closed:** extract absolute `--pack` and `--output` targets before
-  validating other switches. Disallow any output under the pack directory.
-  Invalidate an earlier `capture-manifest.json` and issue attempt-specific
-  `capture-status.json` **before** late argument validation. Write generated
-  PNG/RG8/metadata to a unique, adjacent staging directory, verify all hashes
-  and recorded byte counts, then publish the completed stage by filesystem
-  rename. The prior destination is moved to a unique backup sibling, preserving
-  old files including unrelated data rather than deleting them. Failed/interrupted
-  stages have no authoritative manifest at the requested destination. Directories
-  moved to sibling backups require explicit later user cleanup; the adapter does
-  not automatically delete them. Do not treat a failure status as success.
+- **R1 — fail closed transaction:** validate both directions of canonical
+  pack/output containment, the CyberSand workspace root, existing-directory
+  custody and every existing path component **before any output mutation**.
+  Symlinks, Windows junctions and other reparse-point aliases in either path are
+  rejected, including a nonexistent output child beneath a linked parent. A
+  non-empty existing output is accepted only when it is an already-owned
+  CyberSand capture root.
+  Each attempt acquires an atomic sibling `.world-capture-claim` directory.
+  Generated PNG/RG8/metadata remain in a unique sibling stage and never contain
+  a success manifest. Publication moves the validated stage to an immutable
+  `.world-capture-generations/<attempt>` directory inside the stable output
+  root; the **only authoritative commit point** is the subsequent atomic
+  replacement of root `capture-manifest.json`, whose entries point into that
+  generation. The requested output directory and any previous generation are
+  never renamed away. A malformed retry therefore leaves the previous committed
+  manifest untouched. Hard-killed attempts retain their claim/transaction
+  record; an operator may recover only by supplying the exact recorded
+  `--recover-claim=<attempt-id>` after confirming the old process is dead.
+  Fault-injected rollback failure retains both the non-authoritative generation
+  and transaction record with `requires_recovery=true` rather than claiming
+  restoration.
 - **R2 — schema identity:** `schema_id` must equal
   `cybersand.world-feature-pack.proposal` and `schema_version` must be numeric
   one (Godot JSON parses integer JSON tokens as float values). Missing IDs,
@@ -44,26 +54,37 @@ Linux OpenGL/llvmpipe and Windows ANGLE outputs preserved as workflow artifacts.
   detail variation, and a malformed same-destination second invocation.
 - **R5 — provenance:** `source_revision` and `design_pack_revision` are retained
   for backward discovery but are explicitly caller-declared. `source_identity`
-  distinguishes caller declaration from independently obtained clean Git HEAD.
+  distinguishes caller declaration from independently obtained clean Git HEAD
+  and now verifies `godot/project.godot` as well as capture tools, scripts and
+  shaders. `render_source_sha256` records the actual project configuration,
+  palette-selector, LUT and shader bytes that can affect a capture.
   `design_revision_verified` is null for read-only exported packs outside a
   Git checkout; `pack_sha256` is the immutable content address. For policy
   requiring a checked-out exact source, use `--require-verified-source=on`,
-  which fails if the declaration does not match a clean checkout.
+  which fails if the declaration does not match a clean checkout **or if any
+  verified renderer/configuration source is dirty**.
 
-The fault-injection switches `--test-fail-publication=on` and
-`--test-pause-before-publication-ms=N` only work with
-`CYBERSAND_CAPTURE_FAULT_INJECTION=1`; these are test-only knobs, never
-production capture defaults. The latter permits a real process to be killed
-after staged framebuffer files validate but before publication.
+The fault-injection switches `--test-fail-publication=on`,
+`--test-fail-rollback=on`, `--test-pause-before-publication-ms=N` and
+`--test-pause-phase=framebuffer|validated|prepared|published-data` only work
+with `CYBERSAND_CAPTURE_FAULT_INJECTION=1`; these are test-only knobs, never
+production capture defaults. Qualification hard-kills a real Godot process in
+all four windows. None of those pre-commit states contains authoritative
+complete-success metadata. `--recover-claim=<attempt-id>` is not automatic:
+it is an explicit stale-claim recovery action and archives the prior transaction
+record rather than deleting it.
 
 A fixed time repeats byte-identically on the same platform/rendering settings.
 Alternate tile sizes may produce tiny off-seam GLES3 floating-point differences
-without any boundary-band seams: the repair campaign retains exact pixel
-difference counts and failure history, requires zero changed pixels within
-32 physical pixels on each tested tile join, and bounds off-join rounding to
-5/255 per RGB channel affecting no more than 0.25% of pixels. This is *not*
-a cross-platform byte-equality claim and does not waive current production
-material presentation tests.
+without any boundary-band seams: the repair campaign retains exact differing
+pixel coordinates, counts, bounding boxes and maximum channel deltas. It tests
+horizontal **and** vertical joins at multiple tile sizes/scales in square, wide
+and tall material-varied fixtures on Linux llvmpipe and Windows ANGLE, alongside
+the historical Lumen comparison. The gate requires zero changed pixels within
+32 physical pixels on each tested join and bounds off-join rounding to 5/255
+per RGB channel affecting no more than 0.25% of pixels. This is *not* a
+cross-platform byte-equality claim and does not relabel the historical strict
+pixel mismatch as a parity pass.
 
 Evidence must be source-pinned to the actual tested commit; the workflow
 retains raw files with `SHA256SUMS.txt` recomputed **after** the runner's live

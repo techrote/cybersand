@@ -121,7 +121,8 @@ def main() -> int:
                   "godot/shaders/material_emission.gdshader",
                   "godot/shaders/glow_composite.gdshader",
                   "godot/scripts/palette_shader_selector.gd",
-                  "godot/scripts/material_appearance_lut.gd")
+                  "godot/scripts/material_appearance_lut.gd",
+                  "godot/project.godot")
               }}
     (evidence/"identity.json").write_text(json.dumps(identity,indent=2)+"\n")
     def check(value, label, detail=None):
@@ -162,19 +163,41 @@ def main() -> int:
         args1=["--headless"] if headless else ["--verbose",
             "--rendering-method","gl_compatibility","--rendering-driver",driver]
         return [godot,*args1,"--path","godot","--script","res://"+script,*extra]
-    def capture(name, slug, seconds="1.37",glow="on", tile=None, extra=(),
+    def capture(name, slug, seconds="1.37",glow="on", tile=None, scale=2, extra=(),
                 input_root=None, result_root=None, override=None, expectation="zero"):
         pack=(Path(input_root)/slug/"pack.json" if input_root else
               current/slug/"pack.json")
         output=(Path(result_root) if result_root else evidence/"captures"/name)
         opts=["--pack="+str(pack),"--output="+str(output),"--mode=both",
-              "--scale=2","--time="+seconds,"--glow="+glow,
+              "--scale="+str(scale),"--time="+seconds,"--glow="+glow,
               "--design-revision="+CURRENT_SHA]
         if tile: opts.append("--tile-cells="+str(tile))
         opts.extend(extra)
         run("capture_"+name,gcmd("tools/capture_world_design_pack.gd","--",*opts),
             expectation,600,override)
         return output
+    def manifest_file(directory, suffix):
+        mp=directory/"capture-manifest.json"
+        if not mp.exists():
+            return directory/suffix.lstrip("/")
+        record=json.loads(mp.read_text())
+        for entry in record.get("captures",[])+record.get("inputs",[]):
+            relative=str(entry.get("file",""))
+            if relative.endswith(suffix):
+                return directory/relative
+        return directory/suffix.lstrip("/")
+
+    def capture_fixture(name, pack, tile=128, scale=1, seconds="1.37", glow="on",
+                        extra=(), expectation="zero", override=None):
+        fixture=write_fixture(name+"-pack",pack)
+        target=evidence/"captures"/name
+        opts=["--pack="+str(fixture),"--output="+str(target),"--mode=combined",
+              "--scale="+str(scale),"--time="+seconds,"--glow="+glow,
+              "--tile-cells="+str(tile),"--design-revision=synthetic-qualification"]
+        run("capture_"+name,gcmd("tools/capture_world_design_pack.gd","--",*opts,*extra),
+            expectation,600,override)
+        return target
+
     def verify_capture(directory, slug):
         mp=directory/"capture-manifest.json"
         if not check(mp.exists(),"manifest:"+directory.name): return
@@ -223,7 +246,7 @@ def main() -> int:
             if check(f.is_file(),"file:"+directory.name+"/"+entry["file"]):
                 check(f.stat().st_size==entry.get("bytes") and sha(f)==entry.get("sha256"),
                       "sha-size:"+directory.name+"/"+entry["file"])
-        combined=directory/"combined.png"
+        combined=manifest_file(directory,"/combined.png")
         if combined.exists():
             with Image.open(combined) as img:
                 img.load()
@@ -238,48 +261,47 @@ def main() -> int:
             filename="combined" if fid is None else fid
             data=independent_rg8(pack,fid)
             expected_hash=hashlib.sha256(data).hexdigest()
-            inp=directory/"inputs"/(filename+".rg8")
+            inp=manifest_file(directory,"/inputs/"+filename+".rg8")
             same=inp.exists() and inp.read_bytes()==data
             check(same,"independent-rg8:"+directory.name+"/"+filename)
             summary[filename]={"sha256":expected_hash,"bytes":len(data),"matches_engine":same}
         native.write_text(json.dumps(summary,indent=2)+"\n")
-    def compare(a,b,label,same):
-        pa=evidence/"captures"/a/"combined.png"
-        pb=evidence/"captures"/b/"combined.png"
+    def compare(a,b,label,same,seams_x=(),seams_y=(),tolerance=None):
+        pa=manifest_file(evidence/"captures"/a,"/combined.png")
+        pb=manifest_file(evidence/"captures"/b,"/combined.png")
         if not check(pa.exists() and pb.exists(),"comparison-files:"+label):return
         with Image.open(pa) as ai, Image.open(pb) as bi:
             ia=ai.convert("RGB"); ib=bi.convert("RGB")
             if not check(ia.size==ib.size,"comparison-dimensions:"+label):return
             diff=ImageChops.difference(ia,ib)
-            changed=sum(px!=(0,0,0) for px in diff.getdata())
-            (evidence/"analysis"/(label+".json")).write_text(json.dumps(
-                {"changed_pixels":changed,"total_pixels":ia.size[0]*ia.size[1],
-                 "sha_a":sha(pa),"sha_b":sha(pb),"bbox":diff.getbbox()},indent=2)+"\n")
-            if label=="lumen-tiling":
-                # Tile size changes some remote single-copy shader rounding
-                # (< 1% of pixels in the original failed experiment), but
-                # must not create discontinuities AT either tile boundary.
-                # Preserve the exact mismatch independently of this gate.
-                max_error=max(max(abs(p[c]-q[c]) for c in range(3))
-                              for p,q in zip(ia.getdata(),ib.getdata()))
-                seam_deltas={}
-                for x in (512,1024): # 256 and 512 source-cell tile boundaries
-                    if 32<=x<=ia.size[0]-32:
-                        region=diff.crop((x-32,0,x+32,ia.size[1]))
-                        differences=sum(px!=(0,0,0) for px in region.getdata())
-                        seam_deltas[str(x)]=differences
-                        ia.crop((x-32,0,x+32,ia.size[1])).save(
-                            evidence/"analysis"/("lumen-seam-"+str(x)+".png"))
-                        check(differences==0,"tile-seam-32px-x"+str(x),differences)
-                (evidence/"analysis"/"lumen-tiling-strict-report.json").write_text(
-                    json.dumps({"changed_pixels":changed,"total_pixels":ia.size[0]*ia.size[1],
-                                "max_rgb_channel_delta":max_error,"seam_band_changes":seam_deltas,
-                                "exact_pixel_identity":changed==0,
-                                "acceptance_scope":"no 32px boundary-band differences; bounded off-seam rounding"},indent=2)+"\n")
-                check(changed<=int(ia.size[0]*ia.size[1]*0.0025) and max_error<=5,
-                      "tile-size-off-seam-rounding-budget",
+            pixels=list(diff.getdata())
+            changed_coords=[(i%ia.size[0],i//ia.size[0]) for i,p in enumerate(pixels) if p!=(0,0,0)]
+            changed=len(changed_coords)
+            max_error=max((max(px) for px in pixels),default=0)
+            seam_metrics={"x":{},"y":{}}
+            for x in seams_x:
+                if 32<=x<=ia.size[0]-32:
+                    region=diff.crop((x-32,0,x+32,ia.size[1]))
+                    n=sum(px!=(0,0,0) for px in region.getdata())
+                    seam_metrics["x"][str(x)]=n
+                    check(n==0,"tile-seam-32px-x"+str(x)+":"+label,n)
+            for y in seams_y:
+                if 32<=y<=ia.size[1]-32:
+                    region=diff.crop((0,y-32,ia.size[0],y+32))
+                    n=sum(px!=(0,0,0) for px in region.getdata())
+                    seam_metrics["y"][str(y)]=n
+                    check(n==0,"tile-seam-32px-y"+str(y)+":"+label,n)
+            report={"changed_pixels":changed,"total_pixels":ia.size[0]*ia.size[1],
+                    "max_rgb_channel_delta":max_error,"sha_a":sha(pa),"sha_b":sha(pb),
+                    "bbox":diff.getbbox(),"changed_coordinates":changed_coords,
+                    "seam_band_changes":seam_metrics,"exact_pixel_identity":changed==0}
+            (evidence/"analysis"/(label+".json")).write_text(json.dumps(report,indent=2)+"\n")
+            if tolerance is not None:
+                fraction,max_delta=tolerance
+                check(changed<=int(ia.size[0]*ia.size[1]*fraction) and max_error<=max_delta,
+                      "tile-size-off-seam-rounding-budget:"+label,
                       {"changed":changed,"max_error":max_error,
-                       "cap_pixels":int(ia.size[0]*ia.size[1]*0.0025),"max_delta":5})
+                       "cap_pixels":int(ia.size[0]*ia.size[1]*fraction),"max_delta":max_delta})
             else:
                 check((changed==0) if same else (changed>0),"pixel-comparison:"+label,changed)
             if diff.getbbox(): diff.save(evidence/"analysis"/(label+"-diff.png"))
@@ -287,7 +309,8 @@ def main() -> int:
         f=evidence/"fixtures"/(name+".json")
         f.write_text(json.dumps(pack,sort_keys=True)+"\n")
         return f
-    def adverse(name,pack,expectation="nonzero",out=None,extra=(),override=None):
+    def adverse(name,pack,expectation="nonzero",out=None,extra=(),override=None,
+                expect_manifest_absent=True):
         fixture=write_fixture(name,pack)
         target=out or evidence/"adversarial"/("out-"+name)
         cmd=gcmd("tools/capture_world_design_pack.gd","--",
@@ -295,7 +318,7 @@ def main() -> int:
                  "--mode=both","--scale=2","--time=1.37","--glow=on",
                  "--design-revision="+CURRENT_SHA,*extra)
         run("adverse_"+name,cmd,expectation,240,override)
-        if expectation!="zero":
+        if expectation!="zero" and expect_manifest_absent:
             check(not (target/"capture-manifest.json").exists(),"no-success-manifest:"+name)
         return target
 
@@ -307,6 +330,7 @@ def main() -> int:
         "--packs="+str(frozen),"--design-revision="+FROZEN_SHA,headless=True),timeout=240)
     run("material_presentation",gcmd("tests/test_material_presentation_render.gd"),timeout=360)
     run("graphical_smoke",gcmd("tests/capture_world_design_pack_smoke.gd"),timeout=420)
+
     if args.platform=="linux":
         run("material_review",gcmd("tests/capture_material_review.gd","--",
             "--output="+str(evidence/"material-review"),
@@ -315,25 +339,70 @@ def main() -> int:
             name=slug.split("-")[0]+"-a"
             directory=capture(name,slug)
             verify_capture(directory,slug)
+    else:
+        directory=capture("lumen-a","lumen-fault")
+        verify_capture(directory,"lumen-fault")
+
+    # Fixed-setting repeatability and deliberate shader-time/glow controls on
+    # both actual renderer families.
+    if args.platform=="linux":
         capture("lumen-b","lumen-fault")
-        capture("lumen-time","lumen-fault",seconds="2.13")
-        capture("lumen-noglow","lumen-fault",glow="off")
-        capture("lumen-tiles","lumen-fault",tile=256)
+    else:
+        capture("lumen-b","lumen-fault")
+    capture("lumen-time","lumen-fault",seconds="2.13")
+    capture("lumen-noglow","lumen-fault",glow="off")
+    capture("lumen-tiles","lumen-fault",tile=256)
+    compare("lumen-a","lumen-b",args.platform+"-lumen-repeat",True)
+    compare("lumen-a","lumen-time",args.platform+"-lumen-time-control",False)
+    compare("lumen-a","lumen-noglow",args.platform+"-lumen-glow-control",False)
+    # Preserve the historical strict mismatch as a measured bounded comparison.
+    compare("lumen-a","lumen-tiles",args.platform+"-lumen-tiling",False,
+            seams_x=(512,1024),tolerance=(0.0025,5))
+
+    if args.platform=="linux":
         capture("cathedral-b","cathedral-of-capacitors")
         capture("cathedral-time","cathedral-of-capacitors",seconds="2.13")
         capture("cathedral-noglow","cathedral-of-capacitors",glow="off")
-        compare("lumen-a","lumen-b","lumen-repeat",True)
-        compare("lumen-a","lumen-time","lumen-time-control",False)
-        compare("lumen-a","lumen-noglow","lumen-glow-control",False)
-        compare("lumen-a","lumen-tiles","lumen-tiling",True)
         compare("cathedral-a","cathedral-b","cathedral-repeat",True)
         compare("cathedral-a","cathedral-time","cathedral-time-control",False)
         compare("cathedral-a","cathedral-noglow","cathedral-glow-control",False)
-    else:
-        d=capture("lumen-a","lumen-fault")
-        verify_capture(d,"lumen-fault")
-        capture("lumen-b","lumen-fault")
-        compare("lumen-a","lumen-b","windows-lumen-repeat",True)
+
+    def seam_fixture(width,height):
+        return {"schema_id":SCHEMA,"schema_version":1,
+                "features":[
+                    {"id":"masonry","size":[48,48],"rectangles":[[0,0,48,48,43]],"variants":[]},
+                    {"id":"neon","size":[32,32],"rectangles":[[0,0,32,32,77]],"variants":[]},
+                    {"id":"water","size":[40,40],"rectangles":[[0,0,40,40,3]],"variants":[]}],
+                "scene":{"size":[width,height],
+                         "rectangles":[
+                             [0,0,width,max(1,height//5),4],
+                             [0,max(1,height//5),max(1,width//3),max(1,height//3),12],
+                             [max(1,width//3),max(1,height//3),max(1,width//3),max(1,height//4),36],
+                             [0,max(0,height-24),width,24,40]],
+                         "placements":[
+                             {"feature":"masonry","x":8,"y":max(8,height//2-24),"variant":None},
+                             {"feature":"neon","x":max(8,width-56),"y":16,"variant":None},
+                             {"feature":"water","x":max(8,width//2-20),"y":max(8,height-72),"variant":None}]}}
+
+    square=seam_fixture(384,384)
+    wide=seam_fixture(640,192)
+    tall=seam_fixture(192,640)
+    capture_fixture("tile-square-s1-a",square,tile=256,scale=1)
+    capture_fixture("tile-square-s1-b",square,tile=128,scale=1)
+    compare("tile-square-s1-a","tile-square-s1-b",args.platform+"-tile-square-s1",False,
+            seams_x=(128,256),seams_y=(128,256),tolerance=(0.0025,5))
+    capture_fixture("tile-square-s2-a",square,tile=256,scale=2)
+    capture_fixture("tile-square-s2-b",square,tile=128,scale=2)
+    compare("tile-square-s2-a","tile-square-s2-b",args.platform+"-tile-square-s2",False,
+            seams_x=(256,512),seams_y=(256,512),tolerance=(0.0025,5))
+    capture_fixture("tile-wide-a",wide,tile=256,scale=1)
+    capture_fixture("tile-wide-b",wide,tile=128,scale=1)
+    compare("tile-wide-a","tile-wide-b",args.platform+"-tile-wide",False,
+            seams_x=(128,256,384,512),seams_y=(128,),tolerance=(0.0025,5))
+    capture_fixture("tile-tall-a",tall,tile=256,scale=1)
+    capture_fixture("tile-tall-b",tall,tile=128,scale=1)
+    compare("tile-tall-a","tile-tall-b",args.platform+"-tile-tall",False,
+            seams_x=(128,),seams_y=(128,256,384,512),tolerance=(0.0025,5))
 
     small={"schema_id":SCHEMA,"schema_version":1,
            "features":[{"id":"brick","size":[16,16],
@@ -342,10 +411,15 @@ def main() -> int:
                     "placements":[{"feature":"brick","x":4,"y":2,"variant":None}]}}
     base=adverse("base",small,expectation="zero")
     check((base/"capture-manifest.json").exists(),"positive-adverse-fixture")
-    adverse("stale-scale",small,out=base,extra=("--scale=999",))
-    status=base/"capture-status.json"
-    check(status.exists() and not json.loads(status.read_text()).get("success",True),
-          "stale-scale-failed-status")
+    committed_hash=sha(base/"capture-manifest.json")
+    adverse("stale-scale",small,out=base,extra=("--scale=999",),
+            expect_manifest_absent=False)
+    check((base/"capture-manifest.json").exists() and
+          sha(base/"capture-manifest.json")==committed_hash,
+          "malformed-retry-preserves-committed-manifest")
+    check(not Path(str(base)+".world-capture-claim").exists(),
+          "malformed-retry-never-acquires-claim")
+
     x=copy.deepcopy(small);x["schema_id"]="cybersand.world-feature-pack.unknown"
     adverse("unknown-schema",x)
     x=copy.deepcopy(small);x["schema_version"]=999
@@ -360,6 +434,70 @@ def main() -> int:
     adverse("excessive-area",x,extra=("--scale=8",))
     x=copy.deepcopy(small);x["scene"]["size"]=[16385,10]
     adverse("invalid-dimensions",x)
+
+    # R1-A: both directions of containment and source/workspace roots reject
+    # before any output mutation.
+    containment_pack=write_fixture("containment-pack",small)
+    contain_dir=containment_pack.parent
+    containment_cases={
+        "output-inside-pack-dir":contain_dir/"generated-child",
+        "output-equals-pack-dir":contain_dir,
+        "output-ancestor-pack-dir":contain_dir.parent,
+        "output-source-root":root,
+    }
+    for label,target in containment_cases.items():
+        sentinel=(target/"capture-manifest.json") if target.exists() else None
+        sentinel_hash=sha(sentinel) if sentinel and sentinel.is_file() else None
+        cmd=gcmd("tools/capture_world_design_pack.gd","--",
+                 "--pack="+str(containment_pack),"--output="+str(target),
+                 "--mode=combined","--scale=1")
+        run("containment_"+label,cmd,"nonzero",120)
+        check(not Path(str(target)+".world-capture-claim").exists(),
+              "containment-no-claim:"+label)
+        if sentinel_hash:
+            check(sentinel.is_file() and sha(sentinel)==sentinel_hash,
+                  "containment-no-mutation:"+label)
+
+    unrelated=evidence/"adversarial"/"unrelated-nonempty"
+    unrelated.mkdir(parents=True,exist_ok=True)
+    unrelated_sentinel=unrelated/"keep-me.txt"
+    unrelated_sentinel.write_text("unrelated user data\n")
+    run("adverse_unrelated-output",gcmd("tools/capture_world_design_pack.gd","--",
+        "--pack="+str(write_fixture("unrelated-pack",small)),
+        "--output="+str(unrelated),"--mode=combined","--scale=1"),"nonzero",120)
+    check(unrelated_sentinel.read_text()=="unrelated user data\n" and
+          not (unrelated/"capture-manifest.json").exists(),
+          "non-capture-directory-custody-preserved")
+
+    # R1-B: actual filesystem alias coverage. Junctions avoid Windows symlink
+    # privilege requirements; Linux uses normal directory symlinks.
+    alias_real=evidence/"adversarial"/"alias-real"
+    alias_real.mkdir(parents=True,exist_ok=True)
+    alias_pack=alias_real/"pack.json"
+    alias_pack.write_text(json.dumps(small)+"\n")
+    alias_link=evidence/"adversarial"/"alias-link"
+    if args.platform=="windows":
+        junction=subprocess.run(["cmd","/c","mklink","/J",str(alias_link),str(alias_real)],
+                                capture_output=True,text=True,check=False)
+        check(junction.returncode==0,"windows-junction-created",
+              {"stdout":junction.stdout,"stderr":junction.stderr})
+    else:
+        os.symlink(alias_real,alias_link,target_is_directory=True)
+        check(alias_link.is_symlink(),"linux-symlink-created")
+    if alias_link.exists():
+        run("alias_input",gcmd("tools/capture_world_design_pack.gd","--",
+            "--pack="+str(alias_link/"pack.json"),
+            "--output="+str(evidence/"adversarial"/"alias-input-output"),
+            "--mode=combined","--scale=1"),"nonzero",120)
+        run("alias_output",gcmd("tools/capture_world_design_pack.gd","--",
+            "--pack="+str(alias_pack),"--output="+str(alias_link),
+            "--mode=combined","--scale=1"),"nonzero",120)
+        run("alias_output_child",gcmd("tools/capture_world_design_pack.gd","--",
+            "--pack="+str(alias_pack),"--output="+str(alias_link/"nonexistent-child"),
+            "--mode=combined","--scale=1"),"nonzero",120)
+        check(not (alias_real/"capture-manifest.json").exists(),
+              "alias-rejection-preserves-target")
+
     missing=(evidence/"fixtures"/"absent.json")
     run("adverse_missing-pack",gcmd("tools/capture_world_design_pack.gd","--",
         "--pack="+str(missing),"--output="+str(evidence/"adversarial"/"out-missing"),
@@ -371,14 +509,38 @@ def main() -> int:
         "--output="+str(inaccessible),"--mode=combined","--scale=2"),"nonzero",120)
     check(inaccessible.is_file() and inaccessible.read_text()=="not-a-directory\n",
           "inaccessible-output-does-not-delete-data")
+
+    # R1-D handled publication failure: generation publication rolls back to a
+    # failed non-authoritative stage and releases the claim.
     blocked=adverse("publication-failure",small,
                     extra=("--test-fail-publication=on",))
     staged=list(blocked.parent.glob(blocked.name+".world-capture-stage-*"))
     check(bool(staged),"failed-publication-retains-isolated-staging")
     check(all(not (folder/"capture-manifest.json").exists() and
               json.loads((folder/"capture-status.json").read_text()).get("success") is False
-              for folder in staged),
+              for folder in staged if (folder/"capture-status.json").exists()),
           "failed-publication-stage-does-not-claim-complete")
+    check(not Path(str(blocked)+".world-capture-claim").exists(),
+          "successful-rollback-releases-claim")
+
+    # Fault-injected rollback failure must be observable and recoverable, not
+    # silently reported as restoration.
+    rollback_target=adverse("rollback-failure",small,
+        extra=("--test-fail-publication=on","--test-fail-rollback=on"))
+    rollback_claim=Path(str(rollback_target)+".world-capture-claim")
+    check(rollback_claim.is_dir(),"rollback-failure-retains-claim")
+    rollback_tx=rollback_claim/"transaction.json"
+    rollback_record=json.loads(rollback_tx.read_text()) if rollback_tx.exists() else {}
+    check(rollback_record.get("requires_recovery") is True,
+          "rollback-failure-recorded-recovery-required",rollback_record)
+    rollback_id=str(rollback_record.get("attempt_id",""))
+    if rollback_id:
+        adverse("rollback-recovery",small,expectation="zero",out=rollback_target,
+                extra=("--recover-claim="+rollback_id,))
+        check((rollback_target/"capture-manifest.json").exists(),
+              "rollback-failure-explicit-recovery-succeeds")
+
+    # R5 caller declaration vs independently verified checkout.
     fake_env={"CYBERSAND_SOURCE_REVISION":"d"*40}
     lie=adverse("false-source-claim",small,expectation="zero",override=fake_env)
     lie_m=lie/"capture-manifest.json"
@@ -390,38 +552,108 @@ def main() -> int:
               "caller-revision-never-labeled-verified",record)
     adverse("require-verified-source",small,override=fake_env,
             extra=("--require-verified-source=on",))
-    # Interrupt AFTER both staging and rendered contents exist, before publication.
-    interrupted=evidence/"adversarial"/"interrupted"
-    cmd=gcmd("tools/capture_world_design_pack.gd","--",
-             "--pack="+str(write_fixture("to-interrupt",small)),
-             "--output="+str(interrupted),"--mode=both","--scale=2",
-             "--test-pause-before-publication-ms=12000")
-    log=evidence/"logs"/"adverse_interrupted.log"
-    proc=None
+
+    # A renderer-affecting project configuration change must dirty the verified
+    # source boundary and fail mandatory verification.
+    project_file=root/"godot/project.godot"
+    project_original=project_file.read_text()
     try:
-        with log.open("w",encoding="utf-8") as fp:
-            proc=subprocess.Popen([str(z) for z in cmd],stdout=fp,
-                                  stderr=subprocess.STDOUT,env=env)
-            deadline=time.monotonic()+60
-            stage_seen=False
-            while time.monotonic()<deadline and proc.poll() is None:
-                stage_seen=any(interrupted.parent.glob(interrupted.name+".world-capture-stage-*"))
-                if stage_seen and "validated staging, paused before publication" in log.read_text(errors="replace"):
-                    break
-                time.sleep(0.15)
-            observed_pause="validated staging, paused before publication" in log.read_text(errors="replace")
-            if proc.poll() is None: proc.kill()
-            process_code=proc.wait(timeout=10)
-            subprocesses.append({"name":"adverse_interrupted","command":[str(z) for z in cmd],
-                "expected":"killed-at-validated-stage","observed_exit":process_code,
-                "stage_seen":stage_seen,"validated_stage_pause":observed_pause})
-            check(stage_seen and observed_pause and process_code!=0,
-                  "interrupted-after-staged-framebuffer")
-    except Exception as ex:
-        check(False,"interrupted-control-exception",repr(ex))
-        if proc is not None and proc.poll() is None: proc.kill()
-    check(not (interrupted/"capture-manifest.json").exists(),
-          "interrupted-no-current-complete-manifest")
+        marker='textures/canvas_textures/default_texture_filter=0'
+        check(marker in project_original,"project-render-config-marker-present")
+        project_file.write_text(project_original.replace(marker,
+            'textures/canvas_textures/default_texture_filter=1',1))
+        adverse("dirty-render-config",small,
+                extra=("--require-verified-source=on",))
+    finally:
+        project_file.write_text(project_original)
+    check(sha(project_file)==identity["raw_shader_hashes"]["godot/project.godot"],
+          "project-render-config-restored")
+
+    def hard_kill_phase(phase):
+        target=evidence/"adversarial"/("kill-"+phase)
+        fixture=write_fixture("kill-"+phase,small)
+        cmd=gcmd("tools/capture_world_design_pack.gd","--",
+                 "--pack="+str(fixture),"--output="+str(target),
+                 "--mode=both","--scale=2",
+                 "--test-pause-before-publication-ms=12000",
+                 "--test-pause-phase="+phase)
+        log=evidence/"logs"/("kill-"+phase+".log")
+        proc=None
+        observed=False
+        code=None
+        try:
+            with log.open("w",encoding="utf-8") as fp:
+                proc=subprocess.Popen([str(z) for z in cmd],stdout=fp,
+                                      stderr=subprocess.STDOUT,env=env)
+                deadline=time.monotonic()+90
+                marker="test pause phase="+phase
+                while time.monotonic()<deadline and proc.poll() is None:
+                    observed=marker in log.read_text(errors="replace")
+                    if observed: break
+                    time.sleep(0.1)
+                if proc.poll() is None: proc.kill()
+                code=proc.wait(timeout=10)
+        finally:
+            if proc is not None and proc.poll() is None: proc.kill()
+        subprocesses.append({"name":"kill-"+phase,"command":[str(z) for z in cmd],
+            "expected":"hard-kill-at-"+phase,"observed_exit":code,"pause_observed":observed,
+            "log":log.relative_to(evidence).as_posix()})
+        check(observed and code not in (None,0),"hard-kill-observed:"+phase,
+              {"exit":code,"pause":observed})
+        check(not (target/"capture-manifest.json").exists(),
+              "hard-kill-no-authoritative-success:"+phase)
+        claim=Path(str(target)+".world-capture-claim")
+        check(claim.is_dir(),"hard-kill-retains-transaction:"+phase)
+        tx=claim/"transaction.json"
+        record=json.loads(tx.read_text()) if tx.exists() else {}
+        stale_id=str(record.get("attempt_id",""))
+        check(bool(stale_id),"hard-kill-transaction-id:"+phase,record)
+        if stale_id:
+            recovery_cmd=gcmd("tools/capture_world_design_pack.gd","--",
+                "--pack="+str(fixture),"--output="+str(target),
+                "--mode=both","--scale=2","--recover-claim="+stale_id)
+            run("recover_kill_"+phase,recovery_cmd,"zero",360)
+            check((target/"capture-manifest.json").exists(),
+                  "hard-kill-recovery-commits:"+phase)
+
+    for phase in ("framebuffer","validated","prepared","published-data"):
+        hard_kill_phase(phase)
+
+    # Two live processes on one destination must never mix generations.
+    concurrent=evidence/"adversarial"/"concurrent"
+    concurrent_pack=write_fixture("concurrent",small)
+    first_cmd=gcmd("tools/capture_world_design_pack.gd","--",
+        "--pack="+str(concurrent_pack),"--output="+str(concurrent),
+        "--mode=both","--scale=2","--test-pause-before-publication-ms=6000",
+        "--test-pause-phase=prepared")
+    first_log=evidence/"logs"/"concurrent-first.log"
+    with first_log.open("w",encoding="utf-8") as fp:
+        first=subprocess.Popen([str(z) for z in first_cmd],stdout=fp,
+                               stderr=subprocess.STDOUT,env=env)
+        deadline=time.monotonic()+90
+        paused=False
+        while time.monotonic()<deadline and first.poll() is None:
+            paused="test pause phase=prepared" in first_log.read_text(errors="replace")
+            if paused: break
+            time.sleep(0.1)
+        check(paused,"concurrent-first-acquired-claim")
+        second_cmd=gcmd("tools/capture_world_design_pack.gd","--",
+            "--pack="+str(concurrent_pack),"--output="+str(concurrent),
+            "--mode=both","--scale=2")
+        run("concurrent-second",second_cmd,"nonzero",180)
+        first_code=first.wait(timeout=30)
+    subprocesses.append({"name":"concurrent-first","command":[str(z) for z in first_cmd],
+        "expected":"zero-after-exclusive-pause","observed_exit":first_code,
+        "log":first_log.relative_to(evidence).as_posix()})
+    check(first_code==0,"concurrent-first-commits")
+    check((concurrent/"capture-manifest.json").exists(),
+          "concurrent-single-authoritative-manifest")
+    if (concurrent/"capture-manifest.json").exists():
+        concurrent_manifest=json.loads((concurrent/"capture-manifest.json").read_text())
+        check(concurrent_manifest.get("success") is True and
+              concurrent_manifest.get("generation"),
+              "concurrent-authoritative-generation",concurrent_manifest.get("generation"))
+
     (evidence/"commands-and-exits.json").write_text(json.dumps(subprocesses,indent=2)+"\n")
     (evidence/"checks.json").write_text(json.dumps(checks,indent=2)+"\n")
     summary={"platform":args.platform,"source_sha":source_sha,

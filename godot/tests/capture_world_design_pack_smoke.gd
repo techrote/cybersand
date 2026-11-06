@@ -37,6 +37,20 @@ func _invoke(pack: String, out_dir: String, time: String, bad_scale: bool = fals
 
 
 
+func _manifest_entry_path(out_dir: String, suffix: String) -> String:
+	var path: String = out_dir.path_join("capture-manifest.json")
+	if not FileAccess.file_exists(path):
+		return ""
+	var record: Variant = JSON.parse_string(FileAccess.get_file_as_string(path))
+	if typeof(record) != TYPE_DICTIONARY:
+		return ""
+	for entry: Dictionary in record.get("captures", []) + record.get("inputs", []):
+		var relative: String = str(entry.get("file", ""))
+		if relative.ends_with(suffix):
+			return out_dir.path_join(relative)
+	return ""
+
+
 func _check_manifest(out_dir: String, pack_hash: String) -> void:
 	var path: String = out_dir.path_join("capture-manifest.json")
 	_check(FileAccess.file_exists(path), "complete manifest exists: " + out_dir)
@@ -118,8 +132,8 @@ func _run() -> void:
 	var first_exit: int = _invoke(pack_path, run_a, "1.37")
 	var second_exit: int = _invoke(pack_path, run_b, "1.37")
 	_check(first_exit == 0 and second_exit == 0, "both real Godot child processes must exit 0")
-	var first_path: String = run_a.path_join("combined.png")
-	var second_path: String = run_b.path_join("combined.png")
+	var first_path: String = _manifest_entry_path(run_a, "/combined.png")
+	var second_path: String = _manifest_entry_path(run_b, "/combined.png")
 	_check(FileAccess.file_exists(first_path) and FileAccess.file_exists(second_path),
 		"combined framebuffer PNGs exist")
 	if FileAccess.file_exists(first_path) and FileAccess.file_exists(second_path):
@@ -140,22 +154,24 @@ func _run() -> void:
 	_check_manifest(run_a, pack_hash)
 	_check_manifest(run_b, pack_hash)
 	var input_bytes: PackedByteArray = FileAccess.get_file_as_bytes(
-		run_a.path_join("inputs/combined.rg8"))
+		_manifest_entry_path(run_a, "/inputs/combined.rg8"))
 	_check(input_bytes.size() == 80 * 40 * 2 and input_bytes.has(43) and input_bytes.has(77),
 		"real RG8 readback input contains valid, nonzero native material IDs")
 	_check(FileAccess.get_sha256(pack_path) == pack_hash,
 		"source pack remains byte-identical after both runs")
 	_check(not FileAccess.file_exists(input_dir.path_join("capture-manifest.json")),
 		"source pack directory has no generated capture manifest")
-	# The first invocation succeeded. A subsequent malformed option to the
-	# SAME destination must fail closed rather than retaining a success marker.
+	# A malformed retry must fail before publication ownership is acquired and
+	# must preserve the previously committed generation and root manifest.
+	var committed_manifest: String = run_a.path_join("capture-manifest.json")
+	var committed_hash: String = FileAccess.get_sha256(committed_manifest)
 	var reuse_exit: int = _invoke(pack_path, run_a, "1.37", true)
-	_check(reuse_exit != 0, "R1 bad scale after success is a real nonzero process exit")
-	_check(not FileAccess.file_exists(run_a.path_join("capture-manifest.json")),
-		"R1 previous success manifest invalidated before malformed --scale")
-	var failed_status: String = FileAccess.get_file_as_string(run_a.path_join("capture-status.json"))
-	_check('"success": false' in failed_status or '"success":false' in failed_status,
-		"R1 failed retry records an explicit non-success status")
+	_check(reuse_exit != 0, "R1 malformed retry is a real nonzero process exit")
+	_check(FileAccess.file_exists(committed_manifest) and
+		FileAccess.get_sha256(committed_manifest) == committed_hash,
+		"R1 malformed retry preserves the previous authoritative manifest")
+	_check(not DirAccess.dir_exists_absolute(run_a + ".world-capture-claim"),
+		"R1 malformed retry never acquires a publication claim")
 	var invalid_pack: String = input_dir.path_join("invalid.json")
 	file = FileAccess.open(invalid_pack, FileAccess.WRITE)
 	file.store_string('{"schema_id":"cybersand.world-feature-pack.proposal","schema_version":1,"scene":{"size":[16,16],"placements":[]},"features":[{"id":"bad","size":[4,4],"rectangles":[[0,0,9,4,1]]}]}')

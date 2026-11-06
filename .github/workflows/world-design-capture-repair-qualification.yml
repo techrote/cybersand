@@ -54,11 +54,13 @@ jobs:
           XVFB_PID=$!
           trap 'kill "$XVFB_PID" 2>/dev/null || :' EXIT
           sleep 2
+          python3 -m py_compile godot/tests/world_design_capture_repair_campaign.py
           python3 -m pip install --disable-pip-version-check --quiet pillow
           set +e
           python3 godot/tests/world_design_capture_repair_campaign.py --godot "$GODOT" --platform linux --evidence "$E" --frozen "$E/design-frozen/docs/world-design" --current "$E/design-current/docs/world-design" | tee "$E/logs/campaign-stdout.log"
           CAMPAIGN_EXIT=${PIPESTATUS[0]}
           set -e
+          git diff --exit-code -- godot/project.godot
           # Shell owns final evidence hashing, after tee flushes its live log.
           python - "$E" <<'PY'
           from pathlib import Path
@@ -77,7 +79,7 @@ jobs:
         with:
           name: world-design-capture-repair-linux
           path: ${{ runner.temp }}/world-design-capture-repair-linux
-          retention-days: 30
+          retention-days: 90
           if-no-files-found: error
 
   windows-angle:
@@ -113,11 +115,13 @@ jobs:
           git fetch --no-tags origin "$FROZEN_SHA" "$CURRENT_SHA"
           git archive "$FROZEN_SHA" docs/world-design | tar -xf - -C "$E/design-frozen"
           git archive "$CURRENT_SHA" docs/world-design | tar -xf - -C "$E/design-current"
+          python -m py_compile godot/tests/world_design_capture_repair_campaign.py
           python -m pip install --disable-pip-version-check --quiet pillow
           set +e
           python godot/tests/world_design_capture_repair_campaign.py --godot "$(cygpath -w "$GODOT")" --platform windows --evidence "$(cygpath -w "$E")" --frozen "$(cygpath -w "$E/design-frozen/docs/world-design")" --current "$(cygpath -w "$E/design-current/docs/world-design")" | tee "$E/logs/campaign-stdout.log"
           CAMPAIGN_EXIT=${PIPESTATUS[0]}
           set -e
+          git diff --exit-code -- godot/project.godot
           # Shell owns final evidence hashing, after tee flushes its live log.
           python - "$E" <<'PY'
           from pathlib import Path
@@ -136,5 +140,5 @@ jobs:
         with:
           name: world-design-capture-repair-windows-angle
           path: ${{ runner.temp }}/world-design-capture-repair-windows
-          retention-days: 30
+          retention-days: 90
           if-no-files-found: error
