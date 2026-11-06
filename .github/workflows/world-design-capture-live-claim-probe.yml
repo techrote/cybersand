@@ -1,0 +1,139 @@
+name: World-design capture live-claim recovery adversarial qualification
+
+on:
+  push:
+    branches:
+      - tools/world-design-capture-live-claim-probe-20261106
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: world-design-capture-live-claim-${{ github.sha }}
+  cancel-in-progress: false
+
+env:
+  GODOT_SILENCE_ROOT_WARNING: '1'
+  PYTHONUTF8: '1'
+
+jobs:
+  linux-x11-llvmpipe:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - name: Check out exact repair commit
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          lfs: false
+      - name: Execute Linux OpenGL llvmpipe source-matched graphical and adversarial campaign
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          E="$RUNNER_TEMP/world-design-capture-live-claim-linux"
+          mkdir -p "$E/logs"
+          python3 tools/ci/check_ci_provider_policy.py > "$E/logs/ci-provider-policy.json"
+          GODOT_ZIP="$RUNNER_TEMP/Godot_v4.7-stable_linux.x86_64.zip"
+          curl --fail --location --retry 3 --output "$GODOT_ZIP" "https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_linux.x86_64.zip"
+          echo "0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c  $GODOT_ZIP" | sha256sum -c - | tee "$E/logs/godot-archive-sha256.log"
+          unzip -q "$GODOT_ZIP" -d "$RUNNER_TEMP/godot-4.7"
+          GODOT="$RUNNER_TEMP/godot-4.7/Godot_v4.7-stable_linux.x86_64"
+          chmod +x "$GODOT"
+          "$GODOT" --version | tee "$E/logs/godot-version.log"
+          sha256sum "$GODOT" > "$E/logs/godot-executable-sha256.log"
+          export LIBGL_ALWAYS_SOFTWARE=1 GALLIUM_DRIVER=llvmpipe LP_NUM_THREADS=2 GALLIVM_PERF=nopt DISPLAY=:99
+          Xvfb :99 -screen 0 1920x1080x24 -nolisten tcp > "$E/logs/xvfb.log" 2>&1 &
+          XVFB_PID=$!
+          trap 'kill "$XVFB_PID" 2>/dev/null || :' EXIT
+          sleep 2
+          python3 -m py_compile godot/tests/world_design_capture_live_claim_probe.py
+          python3 -m pip install --disable-pip-version-check --quiet pillow
+          set +e
+          python3 godot/tests/world_design_capture_live_claim_probe.py --godot "$GODOT" --platform linux --evidence "$E" | tee "$E/logs/campaign-stdout.log"
+          CAMPAIGN_EXIT=${PIPESTATUS[0]}
+          set -e
+          git diff --exit-code -- godot/project.godot
+          # Shell owns final evidence hashing, after tee flushes its live log.
+          python - "$E" <<'PY'
+          from pathlib import Path
+          import hashlib, sys
+          root=Path(sys.argv[1])
+          rows=[]
+          for path in sorted(p for p in root.rglob("*") if p.is_file() and p.name!="SHA256SUMS.txt"):
+              rows.append(hashlib.sha256(path.read_bytes()).hexdigest()+"  "+path.relative_to(root).as_posix())
+          (root/"SHA256SUMS.txt").write_text("\n".join(rows)+"\n",encoding="utf-8")
+          print("Evidence SHA256SUMS.txt verified entries",len(rows))
+          PY
+          exit "$CAMPAIGN_EXIT"
+      - name: Retain entire Linux graphical evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: world-design-capture-live-claim-linux
+          path: ${{ runner.temp }}/world-design-capture-live-claim-linux
+          retention-days: 90
+          include-hidden-files: true
+          if-no-files-found: error
+
+  windows-angle:
+    runs-on: windows-2022
+    timeout-minutes: 70
+    steps:
+      - name: Check out exact repair commit
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          lfs: false
+      - name: Execute real Windows ANGLE shader/capture and adversarial campaign
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          E="$(cygpath -u "$RUNNER_TEMP")/world-design-capture-live-claim-windows"
+          mkdir -p "$E/logs"
+          GODOT_ZIP="$(cygpath -u "$RUNNER_TEMP")/Godot_v4.7-stable_win64.exe.zip"
+          curl --fail --location --retry 3 --output "$GODOT_ZIP" "https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip"
+          python - <<'PY'
+          import hashlib, os, pathlib
+          p=pathlib.Path(os.environ['RUNNER_TEMP'])/'Godot_v4.7-stable_win64.exe.zip'
+          actual=hashlib.sha512(p.read_bytes()).hexdigest()
+          expected='41645a908eb3181d6f2d1201ed7b6d6f095f6a23aaed8903d5d255277cc8d142814f3e6817f865b3cac142c39b8aff99280091d3bbdaa301517730b3ba0522b9'
+          assert actual==expected,(actual,expected)
+          print('Godot archive SHA-512 verified',actual)
+          PY
+          unzip -q "$GODOT_ZIP" -d "$(cygpath -u "$RUNNER_TEMP")/godot-4.7"
+          GODOT="$(cygpath -u "$RUNNER_TEMP")/godot-4.7/Godot_v4.7-stable_win64_console.exe"
+          "$GODOT" --version | tee "$E/logs/godot-version.log"
+          sha256sum "$GODOT" > "$E/logs/godot-executable-sha256.log"
+          python -m py_compile godot/tests/world_design_capture_live_claim_probe.py
+          python -m pip install --disable-pip-version-check --quiet pillow
+          set +e
+          python godot/tests/world_design_capture_live_claim_probe.py --godot "$(cygpath -w "$GODOT")" --platform windows --evidence "$(cygpath -w "$E")" | tee "$E/logs/campaign-stdout.log"
+          CAMPAIGN_EXIT=${PIPESTATUS[0]}
+          set -e
+          git diff --exit-code -- godot/project.godot
+          # Shell owns final evidence hashing, after tee flushes its live log.
+          python - "$E" <<'PY'
+          from pathlib import Path
+          import hashlib, sys
+          root=Path(sys.argv[1])
+          rows=[]
+          for path in sorted(p for p in root.rglob("*") if p.is_file() and p.name!="SHA256SUMS.txt"):
+              rows.append(hashlib.sha256(path.read_bytes()).hexdigest()+"  "+path.relative_to(root).as_posix())
+          (root/"SHA256SUMS.txt").write_text("\n".join(rows)+"\n",encoding="utf-8")
+          print("Evidence SHA256SUMS.txt verified entries",len(rows))
+          PY
+          exit "$CAMPAIGN_EXIT"
+      - name: Retain entire Windows ANGLE graphical evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: world-design-capture-live-claim-windows-angle
+          path: ${{ runner.temp }}/world-design-capture-live-claim-windows
+          retention-days: 90
+          include-hidden-files: true
+          if-no-files-found: error
