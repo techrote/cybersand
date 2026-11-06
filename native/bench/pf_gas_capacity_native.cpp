@@ -165,13 +165,75 @@ Sample describe(const std::vector<GasCompartmentSnapshot>& live) {
     }
     return s;
 }
+
+struct Digest final {
+    std::uint64_t value = 14695981039346656037ULL;
+    void word(std::uint64_t v) noexcept {
+        for(int i=0;i<8;++i) {
+            value ^= (v >> (i*8)) & 255U;
+            value *= 1099511628211ULL;
+        }
+    }
+    void gas(const GasCompartmentSnapshot& g) noexcept {
+        word(g.id);word(g.generation);word(g.parent_count);
+        for(const auto x:g.parents)word(x);
+        word(g.amount);word(g.volume);
+        word(static_cast<std::uint64_t>(g.anchor_x));
+        word(static_cast<std::uint64_t>(g.anchor_y));
+        word(g.created_tick);word(g.revision);
+        word(static_cast<std::uint64_t>(g.gauge));
+    }
+};
+std::uint64_t compartment_digest(const std::vector<GasCompartmentSnapshot>& live) noexcept {
+    Digest d;d.word(live.size());
+    for(const auto& g:live)d.gas(g);
+    return d.value;
+}
+std::uint64_t retirement_digest(const std::vector<GasHistoryRecord>& history) noexcept {
+    Digest d;d.word(history.size());
+    for(const auto& h:history) {
+        d.gas(h.compartment);
+        d.word(static_cast<std::uint64_t>(h.reason));
+        d.word(h.successor_count);
+        for(const auto successor:h.successors)d.word(successor);
+        d.word(h.tick);
+    }
+    return d.value;
+}
+std::string pipe_parents(const std::array<std::uint32_t,PressureFlowParameters::kMaximumParents>& vals) {
+    std::string result;
+    for(const auto v:vals) { if(!result.empty())result+="|";result+=std::to_string(v); }
+    return result;
+}
+void dump_gas_records(const World& w,const std::string& prefix) {
+    std::ofstream live(prefix+".gas.csv");
+    live<<"id,generation,parent_count,parents,amount,volume,anchor_x,anchor_y,created_tick,revision,gauge\n";
+    for(const auto& g:w.gas_compartments()) {
+        live<<g.id<<','<<g.generation<<','<<static_cast<int>(g.parent_count)<<','
+            <<pipe_parents(g.parents)<<','<<g.amount<<','<<g.volume<<','
+            <<g.anchor_x<<','<<g.anchor_y<<','<<g.created_tick<<','
+            <<g.revision<<','<<g.gauge<<'\n';
+    }
+    std::ofstream retired(prefix+".history.csv");
+    retired<<"id,generation,parent_count,parents,amount,volume,anchor_x,anchor_y,created_tick,revision,gauge,reason,successor_count,successors,retired_tick\n";
+    for(const auto& h:w.gas_history()) {
+        const auto& g=h.compartment;
+        retired<<g.id<<','<<g.generation<<','<<static_cast<int>(g.parent_count)<<','
+            <<pipe_parents(g.parents)<<','<<g.amount<<','<<g.volume<<','
+            <<g.anchor_x<<','<<g.anchor_y<<','<<g.created_tick<<','
+            <<g.revision<<','<<g.gauge<<','<<static_cast<int>(h.reason)<<','
+            <<static_cast<int>(h.successor_count)<<','<<pipe_parents(h.successors)<<','<<h.tick<<'\n';
+    }
+    if(!live || !retired)throw std::runtime_error("gas evidence export failed");
+}
+
 void output_header() {
     std::cout<<"capacity,scene,variant,workers,phase,tick,initial_census,live,region_min,region_p50,"
              <<"region_p90,region_p95,region_p99,region_max,one_cell,two_four,five_sixteen,"
              <<"other_regions,region_volume,max_live_id,next_id,topology_rev,gas_created,"
              <<"gas_absorbed,gas_vented,gas_collapsed,gas_live_amount,creations,merges,splits,"
              <<"vents,collapses,ledger_closes,water_quantity,physical_hash,cyps_bytes,"
-             <<"gas_regions,atmosphere_regions,gas_visited,gas_seed_cells,gas_bfs_cells,"
+             <<"pressure_variant_projection,gas_digest,history_digest,history_records,gas_regions,atmosphere_regions,gas_visited,gas_seed_cells,gas_bfs_cells,"
              <<"gas_cache_build_cells,gas_cache_components,gas_cache_reserved_bytes,"
              <<"topology_reserved_bytes,derived_reserved_bytes,vmrss_kib,vmhwm_kib,"
              <<"allocator_inuse_bytes,allocator_arena_bytes,prep_ns,gas_ns,head_ns,"
@@ -183,6 +245,7 @@ void record(const World& w,const Fixture& extent,const std::string& scene,int va
             const std::string& save_path) {
     const auto gas=w.gas_compartments();
     const auto g=w.gas_ledger();
+    const auto history=w.gas_history();
     const auto sample=describe(gas);
     const auto diag=w.pressure_flow_diagnostics();
     const auto opt=w.pressure_optimization_snapshot();
@@ -194,12 +257,14 @@ void record(const World& w,const Fixture& extent,const std::string& scene,int va
         std::ofstream out(save_path,std::ios::binary);
         out.write(reinterpret_cast<const char*>(b.data()),static_cast<std::streamsize>(b.size()));
         if(!out)throw std::runtime_error("could not save "+save_path);
+        dump_gas_records(w,save_path);
     }
-    std::uint64_t water=0,phys=0;
+    std::uint64_t water=0,phys=0,projection=0;
     // A failed World rejects publication. Its partial contents are not a completed result.
     if(!w.has_failed()){
         water=w.water_quantity({0,0,extent.width,extent.height});
         phys=w.physical_state_hash();
+        projection=w.liquid_comparison_hash(LiquidStateProjection::PressureVariantEquivalenceV1);
     }
     const auto diff=[&](auto a,auto b)->std::uint64_t{return a>=b?a-b:0;};
     std::cout<<PressureFlowParameters::kCompartmentCapacity<<','<<scene<<','<<variant<<','<<workers<<','
@@ -210,7 +275,9 @@ void record(const World& w,const Fixture& extent,const std::string& scene,int va
              <<w.gas_topology_revision()<<','<<g.created<<','<<g.absorbed<<','<<g.vented<<','
              <<g.collapsed<<','<<g.amount_live<<','<<g.creations<<','<<g.merges<<','
              <<g.splits<<','<<g.vents<<','<<g.collapses<<','<<closed<<','
-             <<water<<','<<phys<<','<<saved<<','<<diag.gas_regions<<','
+             <<water<<','<<phys<<','<<saved<<','<<projection<<','
+             <<compartment_digest(gas)<<','<<retirement_digest(history)<<','<<history.size()<<','
+             <<diag.gas_regions<<','
              <<diag.atmosphere_regions<<','<<diag.gas_visited<<','
              <<diff(opt.counters.gas_seed_cells,earlier.gas_seed_cells)<<','
              <<diff(opt.counters.gas_bfs_cells,earlier.gas_bfs_cells)<<','
