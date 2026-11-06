@@ -170,6 +170,60 @@ protected-source admission only after a positive benefit decision, and
 source-matched Godot/Native exact-head acceptance. The status remains
 **REVISE** rather than ACCEPT/merge.
 
+## Completed owner-side full native + guarded oracle gate
+
+**PASS:** PR #471's independent, newly added exact-head
+[workflow #42313096990](https://github.com/techrote/cybersand/actions/runs/42313096990),
+job `native-and-verify-oracle` (ID `128219159891`), compiled and executed
+the original full native suite and then the full suite built with
+`-DCYBERSAND_VERIFY_LOCAL_NEIGHBOUR` using GCC 13.3.0. The original logs show
+**188 tests passed** both times on candidate `cd26abd96bb4d620f123e3fbb199354b8ee2c482`.
+That commit adds no new `native/src/world.cpp` bytes relative to the cursor
+checkpoint originally measured; see the independent source-diff readback.
+[Native and oracle original evidence artifact](https://github.com/techrote/cybersand/actions/runs/42313096990/artifacts/13550106854).
+The source-owner's ASan/UBSan, TSan and new ABBA benchmark jobs are independent
+gates and not included in this completed-job PASS.
+
+## Original source-pinned Callgrind read-path attribution
+
+A fully executed preliminary [Callgrind source-pinned run #42313028634](https://github.com/techrote/cybersand/actions/runs/42313028634)
+sampled **exactly 16 `World::tick` calls, one worker**, excluding scene
+construction and post-run state hash, with the same 129 rectangles and source
+compiler flags. Its Python summary command failed with `ZeroDivisionError`
+because it mistakenly read the `summary: 0` header from outside the active
+instrumentation interval. The original raw profile files **are complete and
+independently inspected**, with actual `totals: Ir` (instruction counts).
+The parser is corrected on #477 and a separate rerun
+[#42314416637](https://github.com/techrote/cybersand/actions/runs/42314416637)
+is in progress at the time of this checkpoint. Do not mark that second run
+PASS until its logs are examined.
+
+| Callgrind property | Baseline #406 | Cursor #471 | Delta |
+|---|---:|---:|---:|
+| Complete 16-tick instruction count (`totals: Ir`) | 14,690,762,574 | 13,828,652,071 | **−862,110,503 (−5.87%)** |
+| `World::update_rule_kernel` inclusive instructions (same 6,460,155 calls) | 10,739,791,027 | 10,117,308,862 | −622,482,165 |
+| `World::schedule_pending_reaction_wake` inclusive instructions (same 2,401,754 calls) | 1,577,798,188 | 1,245,325,926 | −332,472,262 |
+| `World::address` attributed instruction count at its declaration | 185,922,904 | 128,426,822 | −57,496,082 |
+| `World::find_chunk` attributed instruction count at its declaration | 650,434,939 | 449,198,652 | −201,236,287 |
+
+All figures are copied from the archived `callgrind_annotate` original
+raw text and active instrumentation `totals: Ir`, not from compiler estimates.
+The inclusive function results overlap; **do not add rows together** or infer
+a corresponding elapsed-time/CPU speedup from instruction counts alone.
+Source callsite annotation also shows the hot
+`address`/`find_chunk` pathway's 38,937,445 attributed original calls
+falling to alternative paths in the cursor build; the call graph has changed
+and these attribution lines are not direct estimates of API-wide calls.
+Early-tick lower instruction count is mechanistically consistent with the
+changed read path; 6-worker/late-activity CPU profiles are **still missing**.
+
+Source exactness of the 16-tick profile is proven separately:
+`state_hash 777d7c77a080375c`,
+`physical_state_hash 7e75bdda37de5ca2`, visited 6,460,155,
+moved 4,059,127, scheduled cores 4,879, identical both builds.
+[Preserved raw Callgrind source and full line records](https://github.com/techrote/cybersand/actions/runs/42313028634/artifacts/13549667384).
+The accepted six-worker performance question is separate.
+
 ## Final remaining gates and reproduction handover
 
 **Completed and no longer outstanding:** full reference and candidate 188-test
