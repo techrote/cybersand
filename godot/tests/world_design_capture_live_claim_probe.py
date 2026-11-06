@@ -298,6 +298,54 @@ def main() -> int:
         check(False, "dead-owner-recovery-not-admissible-after-live-token-breach",
               {"denied": denied, "original_token": token})
 
+    # Fail-closed negative controls: an explicit attempt token alone cannot
+    # recover a legacy transaction or a transaction from another host namespace.
+    # These cases must not rename the original claim or create any output.
+    for label, schema, host in (
+        ("legacy-transaction", 1, ""),
+        ("foreign-host-transaction", 2, "foreign-host-that-is-not-the-runner"),
+    ):
+        fake_output = evidence / "adversarial" / label
+        fake_claim = Path(str(fake_output) + ".world-capture-claim")
+        fake_token = "12345-67890-123"
+        fake_transaction = fake_claim / "transaction.json"
+        write_json(fake_transaction, {
+            "schema": schema,
+            "state": "prepared",
+            "attempt_id": fake_token,
+            "output_path": str(fake_output),
+            "pack_path": str(pack_path),
+            "process_id": 123,
+            "owner_host": host,
+        })
+        prior_sha = sha256(fake_transaction)
+        fake_log = evidence / "logs" / (label + ".log")
+        fake_cmd = engine + [
+            "--pack=" + str(pack_path), "--output=" + str(fake_output),
+            "--mode=combined", "--scale=1",
+            "--recover-claim=" + fake_token,
+        ]
+        try:
+            with fake_log.open("wb") as stream:
+                finished = subprocess.run(fake_cmd, stdout=stream,
+                                          stderr=subprocess.STDOUT,
+                                          env=environment, timeout=90, check=False)
+            fake_code = finished.returncode
+        except subprocess.TimeoutExpired:
+            fake_code = 124
+            with fake_log.open("ab") as stream:
+                stream.write(b"TIMEOUT: invalid recovery did not finish\\n")
+        processes.append({
+            "name": label, "command": fake_cmd, "observed_exit": fake_code,
+            "log": str(fake_log.relative_to(evidence).as_posix()),
+        })
+        check(fake_code == 5, label + "-recovery-refused", fake_code)
+        check(fake_claim.is_dir() and fake_transaction.is_file() and
+              sha256(fake_transaction) == prior_sha and
+              not Path(str(fake_output) + ".world-capture-recovered-" + fake_token).exists() and
+              not (fake_output / "capture-manifest.json").exists(),
+              label + "-no-claim-mutation")
+
     # Failed and in-progress staging never becomes an authoritative complete
     # manifest. Do not delete negative artifacts even when this test fails.
     for stage in sorted(output.parent.glob(output.name + ".world-capture-stage-*")):
