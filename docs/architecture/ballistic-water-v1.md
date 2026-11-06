@@ -113,7 +113,12 @@ release is an exact launch transfer (`face_releases` counter). Measured on a
 CellularYield 42 → 44 and PressureFlow 35 → 41 cells, but IN 50 → 42 (IN already
 carries momentum). Released parcels mostly land on the spreading film and merge,
 losing momentum. It is an experimental option ("Face release" construction
-toggle), not a recommended default.
+toggle), not a recommended default. The workbench passes explicit integer tuning
+alongside it (`workbench_face_budget`, `workbench_face_speed`,
+`workbench_face_period`, `workbench_face_min_height`). The adapter admits these only
+with the workbench and face release, and only inside the native bounds. The panel
+seeds stronger values than the native defaults (320 / 288 / 1 / 4 against
+48 / 192 / 3 / 6). Native defaults and the ballistic identity are unchanged.
 
 `film_skim` (on): a fast parcel descending at a grazing angle onto a one-cell Water
 film slides over it with Coulomb friction (counted as `film_skims`) and merges once

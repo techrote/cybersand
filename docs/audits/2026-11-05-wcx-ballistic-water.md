@@ -177,6 +177,51 @@ land on the spreading film and merge without momentum. For IN the fixed-speed
 launches interrupt momentum the bulk already carries. The option stays off by
 default; letting fast grazing parcels skim over a thin film is the next variant to test.
 
+### Workbench face tuning and lock-step pacing (2026-11-06)
+
+**Source and build.** Source was #406 `21f56dd6` plus local edits. The Windows DLL
+(`679cc569…`, Clang 23.1.0) was built locally; this is not a published runtime.
+Each run used the built-in `my-canvas` start in a rendered 1920×1080 window on a
+TITAN RTX. The scripts were scratch only, not retained.
+
+**Face release amount.** Ballistic Water and face release were on, with Water
+FreeMass, run for 240 ticks.
+
+| Tuning (rate / speed / period / min height) | Quantity launched | Peak live parcels |
+|---|---|---|
+| Native defaults (48 / 192 / 3 / 6) | 57 268 | 83 |
+| 160 / 256 / 2 / 4 | 128 494 | 283 |
+| 320 / 288 / 1 / 4 (panel default) | 227 818 | 466 |
+
+The `face_releases` counter is not exported in the workbench ledger dictionary, so
+the table uses launched quantity instead. Airborne spray is still sparse, because
+released parcels land on the spreading film and merge.
+
+**Owner report of "slow motion" with dormant PressureFlow.** Each run was 30 s with
+the camera still, measuring native tick milliseconds and ticks per 3 s.
+
+| Water | Mean tick | p95 tick | Ticks per 3 s |
+|---|---|---|---|
+| FreeMass | 5.75 ms | 6.87 ms | 90–180 |
+| PF `cached_dormant` | 13.61 ms | 16.65 ms | 89–128, mostly 90 |
+| PF `cached_dormant`, gas off | 8.20 ms | 9.95 ms | 89–180 |
+
+A separate 10 s run panned the camera, with PF `cached_dormant` (gas on), across
+the 512 canvas. It caused one pressure index rebuild (`0 → 1`), the same as a
+still camera, so #201/#405's region-change discard is not the cause on this
+canvas.
+
+The cause is the workbench's exact lock-step. `main.gd` `_physics_process` steps
+Rapier only after the worker has completed the previous body sample, and the
+worker ticks once per sample. When a native tick plus frame work exceeds one
+60 Hz physics frame, cells, bodies and the flyer all drop to exactly 30 Hz: 90
+ticks per 3 s, which is half-speed motion. FreeMass shows the same 30 Hz plateaus
+while its surge is active.
+
+Gas-free PressureFlow is the immediate mitigation for vented canvases. A pipelined
+or decoupled pacing would need its own design and owner decision, because it
+changes the exact cell↔body coupling.
+
 ## WCX-SURGE: gas-free PressureFlow assessment
 
 `native/bench/wcx_surge_assessment.cpp` (`-O2`, 4 workers, 400 ticks): a 1024×192

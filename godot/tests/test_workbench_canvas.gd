@@ -122,6 +122,26 @@ func builtin_water() -> bool:
 			if main.image.get_pixel(x,y).r8 == Setup.WATER: water += 1
 	check(water > 4000,"built-in Water painted (%d sampled cells)" % water)
 	check(main.image.get_pixel(146,230).r8 == Setup.WALL and main.image.get_pixel(115,254).r8 == Setup.SAND,"weir and sand bank")
+	# WCX-FR face tuning: the panel seeds explicit integer construction options;
+	# the native adapter admits them only inside its bounds, with face release.
+	for key: String in main.FACE_TUNING:
+		check(main.workbench_water_options.get(key) is int,"panel seeds "+key)
+	var seeded: Dictionary = main.workbench_water_options.duplicate()
+	main.workbench_water_options.merge({"workbench_ballistic":true,"workbench_face_release":true,"workbench_face_budget":0},true)
+	panel._name.text = Setup.DEFAULT_LABEL
+	if panel.load_setup(): await until(func(): return main.pending_microscenario_apply.is_empty(),"out-of-bounds face tuning")
+	check(not str(main.microscenario_error).is_empty(),"face rate 0 refused by the native adapter")
+	main.workbench_water_options.workbench_face_budget = seeded.workbench_face_budget
+	loaded = check(panel.load_setup(),"face release rebuild / "+panel.message)
+	panel._name.text = test_name
+	if not loaded or not await until(installed,"face release start installed"): return false
+	panel.toggle_pause()
+	await until(func(): return int(main.latest_snapshot.tick_index) >= 60,"face release ticks")
+	panel.toggle_pause()
+	var launched := int(main.tower_context.get("water_spray",{}).get("ledger",{}).get("launched_quantity",0))
+	check(launched > 0,"tuned face release launches parcels (%d)" % launched)
+	await until(installed,"paused after face release")
+	main.workbench_water_options = seeded
 	for axis: int in 2: panel._extent[axis].value = 2048
 	if not check(panel.new_canvas(),"blank canvas after built-in start"): return false
 	return await until(func(): return installed() and panel.applied.actors.is_empty() and main.image.get_width() == 2048,"blank 2048 canvas")

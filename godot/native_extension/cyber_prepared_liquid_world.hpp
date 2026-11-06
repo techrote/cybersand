@@ -1,6 +1,8 @@
 #pragma once
 
 #include "cyber_prepared_level_payload.hpp"
+
+#include <string_view>
 #include "workbench_retained_setup.hpp"
 #include "cybersand/default_demo_recipe.hpp"
 
@@ -190,6 +192,24 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
         config->inertial_signed_vertical = options.get("workbench_inertial_signed", false);
         config->ballistic_water.face_release = config->ballistic_water.enabled &&
             static_cast<bool>(options.get("workbench_face_release", false));
+        // WCX-FR workbench tuning: explicit integers inside the native admission
+        // bounds; absent keys keep the ballistic_water_v1 defaults.
+        struct FaceKnob { const char* key; std::int64_t low, high; };
+        for (const FaceKnob knob : {FaceKnob{"workbench_face_budget", 1, 1024}, FaceKnob{"workbench_face_speed", 0, 512},
+                                    FaceKnob{"workbench_face_period", 1, 64}, FaceKnob{"workbench_face_min_height", 2, 64}}) {
+            if (!options.has(knob.key)) continue;
+            if (!workbench || !config->ballistic_water.face_release || options[knob.key].get_type() != Variant::INT)
+                throw std::invalid_argument("Face release tuning requires the workbench, face release and an integer value");
+            const std::int64_t value = options[knob.key];
+            if (value < knob.low || value > knob.high)
+                throw std::invalid_argument("Face release tuning outside its native bounds");
+            auto& c = config->ballistic_water;
+            const std::string_view key = knob.key;
+            if (key == "workbench_face_budget") c.face_budget = static_cast<std::uint32_t>(value);
+            else if (key == "workbench_face_speed") c.face_speed = static_cast<std::int32_t>(value);
+            else if (key == "workbench_face_period") c.face_period = static_cast<std::uint32_t>(value);
+            else c.face_min_height = static_cast<std::int32_t>(value);
+        }
 
         cybersand::normalization::FinalSetupInput input;
         if (default_demo) {

@@ -120,6 +120,8 @@ func install(world: Variant, value: Variant, mode: String = "Inspect", instrumen
 				options.workbench_convert_liquid_inventory = true
 			for key: String in ["workbench_ballistic","workbench_inertial_signed","workbench_face_release"]:
 				if controlled_setup.get(key,false): options[key] = true
+			for key: String in ["workbench_face_budget","workbench_face_speed","workbench_face_period","workbench_face_min_height"]:
+				if controlled_setup.get(key) is int: options[key] = controlled_setup[key]
 		# Only the exclusive owner retains this opaque token between its two
 		# preparation turns. Revalidation above still precedes final commit.
 		var token: int = prepared_token

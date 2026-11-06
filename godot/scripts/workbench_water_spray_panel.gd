@@ -27,6 +27,15 @@ const SPINS := [
 	["jet_speed", "Jet speed", 0.0, 6.0, 0.1, 3.2],
 	["jet_rate", "Jet rate", 0, 16, 1, 3],
 ]
+# WCX-FR face release tuning (construction options; apply on rebuild). The
+# workbench defaults shed more than the native ballistic_water_v1 defaults
+# (48 / 192 / 3 / 6): a fuller dam-break wall of spray.
+const FACE_SPINS := [
+	["workbench_face_budget", "Face rate", 1, 1024, 1, 320],
+	["workbench_face_speed", "Face speed", 0, 512, 8, 288],
+	["workbench_face_period", "Face period", 1, 64, 1, 1],
+	["workbench_face_min_height", "Face min h", 2, 64, 1, 4],
+]
 
 func build(owner: Control, parent: Control, row_factory: Callable, jet_point: Callable) -> void:
 	host = owner
@@ -71,6 +80,23 @@ func build(owner: Control, parent: Control, row_factory: Callable, jet_point: Ca
 		var integer: bool = spec[4] is int
 		field.value_changed.connect(func(value: float) -> void:
 			request({key: int(value) if integer else value}))
+		row.add_child(field)
+		_fields[key] = field
+	row = row_factory.call(parent)
+	for spec: Array in FACE_SPINS:
+		var label := Label.new()
+		label.text = spec[1]
+		row.add_child(label)
+		var field := SpinBox.new()
+		field.min_value = spec[2]
+		field.max_value = spec[3]
+		field.step = spec[4]
+		field.value = spec[5]
+		field.custom_minimum_size.x = 70
+		field.tooltip_text = "Face release tuning (rate = releases per tick, speed / 256 of sqrt(2gh), period in ticks per column, minimum Water face height). Applies on rebuild."
+		var key: String = spec[0]
+		host.workbench_water_options[key] = int(spec[5])
+		field.value_changed.connect(func(value: float) -> void: host.workbench_water_options[key] = int(value))
 		row.add_child(field)
 		_fields[key] = field
 	_status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART

@@ -10,6 +10,7 @@ const PlayerCourse = preload("res://scripts/player_playground_course.gd")
 const PlayableCourseLap = preload("res://scripts/playable_course_lap.gd")
 const PlayableCourseOverlay = preload("res://scripts/playable_course_overlay.gd")
 const SnapshotPublicationCounter = preload("res://scripts/snapshot_publication_counter.gd")
+const FACE_TUNING := ["workbench_face_budget","workbench_face_speed","workbench_face_period","workbench_face_min_height"]
 const PlayableSessionPanel = preload("res://scripts/playable_session_panel.gd")
 const DEFAULT_PLAYABLE_OPTIONS: Dictionary = {"controls":"keyboard_gamepad", "rules":"lap", "camera":"follow"}
 const PLAYABLE_RECOVERY_META: StringName = &"cybersand_playable_recovery"
@@ -781,6 +782,9 @@ func workbench_apply(candidate: Dictionary, actors: Array, rectangles: Array, ex
 	for key: String in ["workbench_ballistic","workbench_inertial_signed","workbench_face_release"]:
 		if workbench_water_options.get(key,false) is bool and workbench_water_options.get(key,false):
 			settings[key] = true
+	if settings.get("workbench_face_release",false) and settings.get("workbench_ballistic",false):
+		for key: String in FACE_TUNING:
+			if workbench_water_options.get(key) is int: settings[key] = workbench_water_options[key]
 	# Lossy conversion belongs only to an explicit developer policy switch.
 	# Ordinary replacements (including Apply of an unchanged policy) keep
 	# all compatible native inventory and use the normal refusal contract.
