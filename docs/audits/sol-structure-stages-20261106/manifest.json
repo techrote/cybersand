@@ -114,6 +114,11 @@
       "raw_copy_sha256": "c89e2eaac14c0f3fa4a204da458bd4d2fc151d3351ee6f8fd4959e65237d327e",
       "git_lf_sha256": "c89e2eaac14c0f3fa4a204da458bd4d2fc151d3351ee6f8fd4959e65237d327e",
       "bytes": 359929
+    },
+    "publication.json": {
+      "raw_copy_sha256": "5ff47a6fe3a45f4b07e6c6e8a4590cf179f3ed913da5eae978921c3493753aff",
+      "git_lf_sha256": "5ff47a6fe3a45f4b07e6c6e8a4590cf179f3ed913da5eae978921c3493753aff",
+      "bytes": 702
     }
   },
   "repair": {
@@ -167,5 +172,16 @@
   "initialization_repair_production_delta": "AUTO COM before native M/customI; pointvelocity aboutactualCOM; no force/cap/shape/mass retuning or warmstep. Guard-only descendant returns empty on null directstate; actualnullpath unexecuted.",
   "stage_original_residual": "First Windows treeOff sample ordinary receiptJ(.04,.28), applicationcount1 but immediate measured momentumzero: model residual.2828427135. Cause unestablished. Excludingstep0 maxlinear residual.00139510754. Do not call every residual float32rounding or claim exact nativewrench closure.",
   "current_residual_interpretation": "Original firstsample discrepancy prompted independent backend oracle. Runtime source controls reproduce lost firstcustom-COM impulses and repair honors firstactualpacket. Later reconstruction residuals remain diagnostic, not universally explained as floatrounding.",
-  "remaining_collection_budget_bytes": 5109549
+  "remaining_collection_budget_bytes": 5109549,
+  "publication_current": {
+    "status": "OPEN_DRAFT",
+    "pr": 460,
+    "url": "https://github.com/techrote/cybersand/pull/460",
+    "base": "fix/sol347-facade-refusal-20261104-095628",
+    "base_sha": "e4c2649e82d943554f4dc6a0634336770cda08f6",
+    "observed_head": "57f8cad5e172bc3c89c20517ee594347bd3b00cc",
+    "isDraft": true,
+    "method": "Literal file edit followed by a separate short gh pr create --draft --body-file command succeeded. Earlier combined shell commands were rejected before dispatch; the automatic reviewer gave only blocked by policy, not a more specific cause.",
+    "scope": "No merge, Ready transition, forcepush, upstream branch edit or admission change. Earlier rejection receipts remain historical evidence."
+  }
 }

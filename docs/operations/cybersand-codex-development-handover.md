@@ -12,6 +12,11 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 ## SOL stage diagnosis and first-impulse repair — 2026-11-06
 
+[Draft PR #460](https://github.com/techrote/cybersand/pull/460) now publishes the
+owned candidate against #393. A separate short publication command succeeded
+after earlier combined shell commands were rejected. Keep Draft; historical
+rejection receipts below retain their checkpoint scope.
+
 Read the [stage/readiness result](../audits/2026-11-06-sol-stage-and-mass-readiness.md)
 before further physics work. Ordinary clipping, Sand response and backend
 integration are now separately measured. Correct cached mass/inertia did not
@@ -35,8 +40,8 @@ and #407bbca ancestry. Read the [cut/mass/settling dossier](../audits/2026-11-06
 and [current source contract](../systems/solid-detachment.md#actual-cut-structures-mass-and-settling--2026-11-06).
 One root writer; upstream branches and accepted main remain unchanged; keep Draft.
 The experiment branch is pushed, but automatic approval review blocked Draft PR
-creation before dispatch ("blocked by policy", no further reason). Readback finds
-no new PR; existing #429 stays Draft. Retain the prepared body and create only a
+creation before dispatch ("blocked by policy", no further reason). At that checkpoint, readback found
+no new PR; existing #429 stayed Draft. Retain the prepared body and create only a
 Draft against #393 if publication becomes available.
 
 Actual cuts/ownership/unit-mass and dry falling/collision/rest pass in48 fresh

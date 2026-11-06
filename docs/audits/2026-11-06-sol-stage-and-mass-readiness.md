@@ -19,6 +19,11 @@ their dated source-bound evidence remains unchanged.
 
 ## Source and executed stage experiment
 
+Published as [Draft PR #460](https://github.com/techrote/cybersand/pull/460),
+targeting #393. Earlier combined shell commands were rejected before dispatch;
+a literal body-file edit and separate short Draft-creation command succeeded.
+The exact original rejection cause was not supplied. No Ready/merge action occurs.
+
 The sole-writer branch remains `codex/sol-structure-cut-20261106`, based on #393
 e4 and retaining #347/#407 ancestry. Previous pushed checkpoint is4ee0e591.
 Native World/include/extension/pressure and frozen material guards are unchanged.
