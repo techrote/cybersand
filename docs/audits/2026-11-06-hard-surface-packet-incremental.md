@@ -191,18 +191,30 @@ not authorized for merge by this record.**
 | Render payload/serial/status byte comparison in source | IMPLEMENTED |
 | Reproducible three-canvas profiler | IMPLEMENTED |
 | First Documentation/provenance run | EXPECTED REFUSAL — run 42291478159 rejected unadmitted `world.cpp` bytes; this directly motivated the chained transition above |
-| MAT compatibility after PR #470 transition | PENDING fresh hosted run |
-| Native C++ tests | PENDING fresh hosted run |
-| ASan/UBSan | PENDING fresh hosted run |
-| GDExtension/Godot regression | PENDING fresh hosted run |
+| MAT compatibility after PR #470 transition | PASS — Documentation/provenance run 42291943955 accepted the chained `world.cpp` transition on exact head `312761f6afa65f2eea9751293c7d8c9985272565` |
+| Documentation structure | PASS — run 42291943955 completed current documentation validation before the runtime-provenance gate |
+| Published-runtime provenance | EXPECTED HOLD — run 42291943955 correctly reported both tracked Linux/Windows native binaries require rebuild for the changed native inputs; binaries/provenance were not updated because this task forbids runtime publication without explicit approval |
+| Native source-scope advisory | PASS — run 42291943801 |
+| Native C++ tests | **NOT ESTABLISHED** — run 42291943861 remained pending with no jobs created at the stop boundary |
+| ASan/UBSan | **NOT ESTABLISHED** — same queued Native qualification had not executed |
+| GDExtension/Godot regression | **NOT ESTABLISHED** — run 42291944100 remained pending with no jobs created at the stop boundary |
+| Delayed render ACK/backpressure execution | **NOT ESTABLISHED** — the full Godot suite discovers the existing handoff regression, but the exact-head suite had not executed |
 | Exact-head three-canvas before/after performance | **NOT ESTABLISHED** |
-| Windows target-runtime qualification | **NOT ESTABLISHED** |
+| Linux/Windows target-runtime qualification | **NOT ESTABLISHED** |
 | Runtime binary publication | NOT PERFORMED |
 
 The first hosted Documentation/provenance refusal reported expected admitted
 `world.cpp` target `5a9de5e0...` and candidate `d743ca60...`. That is retained
 as useful negative evidence: the guard failed closed until this explicit chained
-transition was added.
+transition was added. On the later exact-head run 42291943955 the material shadow
+compatibility step passed. That run then stopped at the separate published-runtime
+provenance gate because the checked-in Linux and Windows native binaries predate
+the source change. No binary or provenance refresh was committed.
+
+At the stop boundary, Native C++ run 42291943861 and GDExtension/Godot run
+42291944100 were both still in GitHub Actions `pending` state with no jobs
+created. They therefore provide no compiler, sanitizer, native-test or Godot-test
+evidence for this candidate. Their mere presence in the queue is not qualification.
 
 ## Independent-review checklist
 
@@ -234,8 +246,14 @@ inspect the exact PR head and its executed evidence:
 
 ## Stop boundary
 
-If hosted source/sanitizer/Godot qualification cannot be established, or if the
-exact target runtime needed for comparable parent/candidate canvas measurements is
-unavailable, this work stops at the Draft PR with the unqualified items named
-above. A source implementation and passing byte oracle must not be converted into
-a runtime performance claim by inference.
+**STOP RECORDED.** Hosted Native C++/sanitizer and GDExtension/Godot qualification
+could not be established before the bounded session ended: exact-head runs
+42291943861 and 42291944100 remained pending without jobs. Exact parent/candidate
+three-canvas target-runtime measurements were also unavailable. The PR therefore
+returns to Draft with those gates unqualified.
+
+The runtime-provenance failure in run 42291943955 is intentionally not repaired by
+committing rebuilt binaries: this task explicitly forbids runtime binary
+publication without owner approval. A source implementation and source-level byte
+oracle must not be converted into a runtime exactness or performance claim by
+inference.
