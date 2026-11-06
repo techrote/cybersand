@@ -115,6 +115,7 @@ func physics_step() -> Dictionary:
 	if s.lab_context.get("workbench_completed_sample",-1)!=workbench_wait_sample:return _held("AwaitingCompletion")
 	workbench_packet=s.lab_context.get("workbench_gcr",{})
 	_coupling_snapshot_serial=s.serial;_coupling_last_native_tick=s.tick_index
+	_observe_native_snapshot(s)
 	_observe_worker_participation(s.native_worker_participation)
 	_record_contact_observation(s.solid_contact_observation,s.solid_contact_work)
 	(bridge as WorkbenchBridge).apply_packet(s.serial,workbench_packet)

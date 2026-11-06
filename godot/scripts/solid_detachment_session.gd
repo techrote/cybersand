@@ -505,6 +505,7 @@ func _consume_compound_results() -> Dictionary:
 	if snapshot.rigid_body_epoch != physics_epoch:
 		return {}
 	_record_contact_observation(snapshot.solid_contact_observation, snapshot.solid_contact_work)
+	_observe_native_snapshot(snapshot)
 	_observe_worker_participation(snapshot.native_worker_participation)
 	_last_worker_step_ms = snapshot.worker_step_time_ms
 	_last_native_tick_ms = snapshot.simulation_time_ms
@@ -607,6 +608,9 @@ func _observe_contact_boundary(_stage: String, _envelope: Dictionary, _advanced:
 	pass
 
 func _observe_worker_participation(_values: Dictionary) -> void:
+	pass
+
+func _observe_native_snapshot(_snapshot: CyberSimulationSnapshot) -> void:
 	pass
 
 func _record_deferred_drop(e: Dictionary, reason: String) -> void:

@@ -170,6 +170,7 @@ func _apply_lab(command: Dictionary) -> bool:
 				var tile: Dictionary=_world.diagnostic_snapshot(origin,Vector2i(512,512),false)
 				tile["origin"]=origin;tile["size"]=Vector2i(512,512);tiles.append(tile)
 			_solid_pending_reply["diagnostic_tiles"]=tiles
+			_solid_pending_reply["liquid_policy"]=_world.get_liquid_solver_policy()
 		if bool(input.get("include_body_metrics", false)):
 			_solid_pending_reply["body_metrics"] = _world.diagnostic_body_metrics()
 	_solid_pending_reply["request_id"] = _solid_last_request

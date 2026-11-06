@@ -1,5 +1,5 @@
 """Source-pinned repeated cut-structure law experiment; actual Windows/Linux."""
-import argparse,concurrent.futures,json,os,shutil,threading
+import argparse,concurrent.futures,gzip,hashlib,json,os,shutil,threading
 from pathlib import Path
 import structure_cut as p
 import workbench_common as w
@@ -54,7 +54,12 @@ def main():
                             row=run(name,'test_sol_workbench_law',dict(SOL_STRUCTURE=structure,SOL_SURROUNDINGS=surroundings,SOL_ARM=arm,SOL_WORKERS=str(workers),SOL_REPEAT=str(repeat),SOL_SMOKE=str(int(a.smoke)),SOL_OUTPUT=str(output) if platform=='windows' else p.wsl(output)))
                             row['report_complete']=False
                             if output.exists():
-                                d=json.loads(output.read_text(encoding='utf-8'));row['report']=dict(path=str(output.relative_to(w.ROOT)),sha256=p.sha(output),bytes=output.stat().st_size)
+                                raw=output.read_bytes();d=json.loads(raw.decode('utf-8'))
+                                archive=output.with_suffix('.json.gz');assert not archive.exists() and output.parent.resolve()==target.resolve()
+                                packed=gzip.compress(raw,compresslevel=6,mtime=0);assert gzip.decompress(packed)==raw
+                                archive.write_bytes(packed);assert gzip.decompress(archive.read_bytes())==raw
+                                row['report']=dict(path=str(archive.relative_to(w.ROOT)),sha256=p.sha(archive),bytes=archive.stat().st_size,raw_sha256=hashlib.sha256(raw).hexdigest(),raw_bytes=len(raw),staging_path=str(output.relative_to(w.ROOT)))
+                                output.unlink() # Registered lossless transport; all original bytes remain in archive.
                                 row['report_complete']=not d['failures'] and len(d['steps'])==(12 if a.smoke else 720)
                             save()
                             assert row['clean'] and row['report_complete'],'Retain incomplete/faulted episode; no threshold changes'

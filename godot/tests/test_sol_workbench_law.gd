@@ -51,6 +51,12 @@ class Probe:
 				if not native.diagnostic_fill_rect(Vector2i(r[0],r[1]),Vector2i(r[2],r[3]),BRICK):return false
 		return super._author_surroundings(native,kind)
 	func _observe_worker_participation(values: Dictionary) -> void:participation=values
+	func _observe_native_snapshot(value: CyberSimulationSnapshot) -> void:
+		frame["native_timing"]={"snapshot":value.serial,"tick":value.tick_index,"published_usec":value.published_usec,
+			"receipt_usec":Time.get_ticks_usec(),"worker_step_ms":value.worker_step_time_ms,"native_tick_ms":value.simulation_time_ms,
+			"snapshot_copy_ms":value.snapshot_copy_time_ms,"thread_capacity":value.scheduler_thread_capacity_hint,
+			"observation_outcome":value.solid_contact_observation.get("outcome","Unavailable"),
+			"observation_sample":value.solid_contact_observation.get("sample_serial",-1)}
 	func read() -> Dictionary:
 		if not is_instance_valid(body) or bridge==null:return {"valid":false}
 		var rid: RID=body.get_rid();var d:=PhysicsServer2D.body_get_direct_state(rid)
@@ -162,7 +168,7 @@ func run() -> void:
 		"body_rid":s.body.get_rid().get_id(),"body_instance":s.body.get_instance_id(),"provisional_sample":s.workbench_provisional,
 		"live_initial_sample":s._coupling_sample_serial,"authored":{"gravity_scale":s.body.gravity_scale,"linear_damp":s.body.linear_damp,"angular_damp":s.body.angular_damp,"ordinary_cap":3.,"correction_cap":.5,"workbench_budget":20.},
 		"steps":[],"no_step_attempts":0,"no_step_usec":0,"no_step_reasons":{},"attempts":0,"attempt_usec":0,"participation":[]}
-	var distinct: int=-1;var completed: int=0;var deadline: int=Time.get_ticks_msec()+295000
+	var distinct: int=-1;var completed: int=0;var episode_started: int=Time.get_ticks_usec();var deadline: int=Time.get_ticks_msec()+295000
 	while completed<target and int(report.attempts)<14400 and Time.get_ticks_msec()<deadline:
 		await physics_frame
 		var prior: int=s.bridge.manual_step_count();s.physics_step();var row: Dictionary=s.frame
@@ -190,6 +196,7 @@ func run() -> void:
 		if not s.participation.is_empty() and int(s.participation.get("sequence",-1))!=distinct:
 			distinct=int(s.participation.sequence);report.participation.append(plain(s.participation))
 		if s._failed:check(false,s.last_error);break
+	report["physical_episode_usec"]=Time.get_ticks_usec()-episode_started
 	s.set_paused(true)
 	var final: Dictionary=await s.full_census()
 	check(not final.is_empty(),"complete stable full-domain final census")
