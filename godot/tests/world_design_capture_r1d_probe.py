@@ -48,7 +48,8 @@ def main() -> int:
     e = a.evidence.resolve()
     e.mkdir(parents=True, exist_ok=True)
     (e / "logs").mkdir(exist_ok=True)
-    fixture = e / "pack.json"
+    fixture = e.parent / "fixtures" / "r1d-pack.json"
+    fixture.parent.mkdir(parents=True, exist_ok=True)
     fixture.write_text(json.dumps({
         "schema_id": "cybersand.world-feature-pack.proposal",
         "schema_version": 1,
