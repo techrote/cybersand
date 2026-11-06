@@ -4,8 +4,8 @@ status: Current
 document-kind: design
 scope: Accepted-main LCB-002 cached and cached_dormant implementation — derived head and sealed-component caches, conservative motion certificates, execution identity, source-qualified cost and remaining product/platform boundaries
 canonical-for: [pressure-optimization, pressure-motion-certificates]
-last-reviewed: 2026-10-25
-related-documents: [pressure-flow-v1.md, liquid-solver-family-policy.md, liquid-state-transition-matrix.md, liquid-prepared-setup-and-receipts.md, ../reference/configuration-reference.md, ../reference/invariants.md, ../audits/2026-10-25-lcb002-pressure-variants.md]
+last-reviewed: 2026-11-04
+related-documents: [pressure-flow-v1.md, liquid-solver-family-policy.md, liquid-state-transition-matrix.md, liquid-prepared-setup-and-receipts.md, ../reference/configuration-reference.md, ../reference/invariants.md, ../audits/2026-10-25-lcb002-pressure-variants.md, ../audits/2026-11-04-lcb201-pressure-idle-cost.md]
 ---
 
 # Bounded pressure cache and Water motion certificates
@@ -153,7 +153,7 @@ allocator overhead, shared engine storage and process RSS; they are not a
 complete World memory figure. C64-E8 and the default Cell carrier remain intact.
 
 The native optimization identity retains encoding version 1 and its domain,
-then hashes six little-endian u64 words: **execution version 3**, variant 1/2,
+then hashes six little-endian u64 words: **execution version 4**, variant 1/2,
 and the four requested budgets in table order. This distinguishes execution
 semantics from the pressure physical parameters. Reference has no optimization
 extension identity. Cache contents, timing counters and certificates are derived,
@@ -213,6 +213,70 @@ source and cannot be reattested as execution3 performance. Execution2 correctnes
 fixture qualification likewise keep their earlier source identity. Numerical prepared-head
 discrepancy and declared-region net Water boundary balance are separate observations;
 neither should be inferred merely from equal projections or work counts.
+
+## Current-main cost at host scale
+
+The [4 November #201 idle-cost record](../audits/2026-11-04-lcb201-pressure-idle-cost.md)
+measures accepted main `3da7e7be` at the #370 quiet-pool scale (1024² prepared
+domain, chunk 128, 100 resident chunks). It finds that Water sleeps in every
+variant. Reference cost is then entirely serial `prepare_pressure_tick()` work:
+a complete gas operator plus a full column/row rebuild over all resident cells.
+Cached and cached_dormant skip both after a gas fixed point. They still run the
+sleeping-block wake scan in `compute_pressure_heads()` every tick, which is their
+quiet floor. Dormancy adds nothing for sleeping Water.
+
+Any gas-flagged producer edit, including every native body-mask install/clear,
+forces a complete gas pass. Every gas pass marks all columns dirty and makes the
+certificates cold, so frequent boundary or mask changes return the cache to
+roughly reference cost. The numeric results, same-law parity and the
+**Planned** P1/P2 proposals (wake-summary elision; narrowed gas-triggered
+revocation) are owned by that record. **Execution version 4** (below)
+implements P1/P1b; P2 remains Planned.
+
+## Execution version 4: sleeping-segment wake summaries
+
+**Source state:** in this change set (#201 P1, PR #382). It is Current on main
+only once merged, and only with that PR's republished runtimes and gates.
+
+Cached and cached_dormant keep one derived **wake-clean bit per indexed cell**
+in `PressureCache` (`world_pressure_cache_state.inc`), reserved at construction.
+Every index rebuild zero-fills the bits within that reservation, so there is no
+tick-time allocation; they are never serialized. In `compute_pressure_heads()`,
+the state-only wake loop skips a sleeping row segment whose bits are all set.
+It sets bits only after a complete negative scan, and clears them for active
+blocks.
+
+Any change to a wake input clears bits:
+- producer, host and explosion writes and body-mask edits clear their rows, with
+  columns widened by ±2 across horizontal seams;
+- a changed final head clears its row at x±2;
+- every gas pass clears all bits;
+- membership changes, cold state, fallback and restore rebuild the index.
+
+Elision requires `sleep_after_quiet_ticks >= 2`. All bit writes happen on the
+serial owner. Wake samples in the scanning cell's own chunk read it directly,
+without a chunk-map lookup (P1b, all variants, identical values).
+
+Wake decisions, and therefore physics, equal reference. The certificate law
+above is unchanged from execution 3. The
+[P1 evidence record](../audits/2026-11-04-lcb201-p1-wake-summaries.md) owns its
+controls, mutation checks, cost and the remaining small overhead under
+continuous index churn.
+
+**In-app result (2026-11-04).** Before the desktop host fix below, the worker
+made the cache cold twice per step, and in-app cached/dormant cost more than
+reference. With the committed #390 fix and P1, the in-app cached quiet-pool
+step is ≈0.9 ms at the 60 Hz cap (one headless Windows run per variant, in the
+[P1 evidence](../audits/2026-11-04-lcb201-p1-wake-summaries.md#full-host-cohort-the-per-step-region-flip)).
+
+**Desktop host interaction (2026-11-04).** The desktop worker used to write the
+camera window and then the scenario's fixed interest on every step. Each
+`World::set_simulation_region` selected-core change calls `cache->cold()`, so
+in-app cached/dormant cost more than reference. The worker now leaves a
+fixed-interest scenario's region to the scenario
+([region-flip record](../audits/2026-11-04-lcb201-region-flip.md)). A moving
+camera window still makes the cache cold whenever its selected cores change.
+Narrowing that native invalidation is a separate, unimplemented follow-up.
 
 ## Acceptance and remaining application work
 

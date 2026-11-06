@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "id": "scooper",
+  "name": "Scooper",
+  "description": "U-shaped scoop with a thick continuous floor, side walls and inside-corner reserves. Afterglow flight controls with stronger bounded stabilization.",
+  "color": "ff6787",
+  "control_mode": "hoverboard",
+  "markings": "scoop",
+  "capabilities": {
+    "side_thrusters": false,
+    "reverse_thrust": true,
+    "dispenser_q": 0,
+    "dispenser_e": 0,
+    "dispenser_s": 0
+  },
+  "physics": {
+    "mass": 0.18,
+    "friction": 0.8,
+    "bounce": 0.04,
+    "gravity": 38,
+    "angular_drag": 0.18
+  },
+  "flight": {
+    "acceleration": 125,
+    "speed": 95,
+    "turn_speed": 2.8,
+    "turn_acceleration": 48,
+    "throttle_slew": 4,
+    "linear_drag": 0.55,
+    "force_limit": 23,
+    "torque_limit": 1200,
+    "attitude_gain": 40,
+    "attitude_damping": 12.5,
+    "trim_angle": 1.2
+  },
+  "hull": {
+    "kind": "rect_union",
+    "rects": [
+      [
+        -15,
+        0,
+        33,
+        4
+      ],
+      [
+        -15,
+        -8,
+        3,
+        8
+      ],
+      [
+        15,
+        -8,
+        3,
+        8
+      ],
+      [
+        -12,
+        -3,
+        2,
+        3
+      ],
+      [
+        13,
+        -3,
+        2,
+        3
+      ]
+    ]
+  }
+}

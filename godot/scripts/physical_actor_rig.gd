@@ -7,6 +7,7 @@ extends Node2D
 # player wheels explicitly use round Rapier collision and a square native mask.
 # Assistance is an authored game mechanic; no flywheel momentum model is implied.
 const MAX_PARTS: int = 8
+const MAX_COMPOUND_RECTS: int = 8
 const MAX_JOINTS: int = 14
 const MAX_MOUNTS: int = 3
 const MAX_RAYS: int = 24
@@ -19,6 +20,8 @@ const MAX_ROPE_LENGTH: float = 96.0
 const MIN_ROPE_LENGTH: float = 6.0
 const PROFILE_VERSION: int = 1
 const TERRAIN_MASK: int = 1
+const ReviewFleetController = preload("res://scripts/gcr_review_fleet_controller.gd")
+const ReviewFleet = preload("res://scripts/gcr_review_fleet.gd")
 const PlayerVehicle = preload("res://scripts/player_vehicle_controller.gd")
 const PlayerAcrobat = preload("res://scripts/player_acrobat_controller.gd")
 const FlightProfile = preload("res://scripts/physical_flight_profile.gd")
@@ -80,6 +83,7 @@ var _effect_sequence: int = 0
 var _tool_cooldown: float = 0.0
 var _last_impulse: Vector2 = Vector2.ZERO
 var _last_torque_impulse: float = 0.0
+var _review_boost_held: bool = false
 var _last_energy_used: float = 0.0
 var _movement_limited: bool = false
 var _charge_armed: bool = false
@@ -119,7 +123,7 @@ static func validate_definition(definition: Dictionary) -> String:
 		if id.is_empty() or names.has(id):
 			return "missing or duplicate part id"
 		names[id] = true
-		if str(item.get("shape", "rectangle")) not in ["rectangle", "rect", "circle"]:
+		if str(item.get("shape", "rectangle")) not in ["rectangle", "rect", "circle", "rectangle_union"]:
 			return "unsupported collider shape"
 		if not _finite_vector(item.get("offset", null)) or not _finite_vector(item.get("size", null)):
 			return "nonfinite part geometry"
@@ -128,8 +132,12 @@ static func validate_definition(definition: Dictionary) -> String:
 		if str(item.get("shape", "rectangle")) == "circle" and (not is_equal_approx(size.x, size.y) \
 			or str(item.get("native_mask", "")) != "circumscribed_rectangle"):
 			return "circle requires equal diameters and declared circumscribed native mask"
-		if size.x < 0.5 or size.y < 0.5 or size.x > 64.0 or size.y > 64.0 or offset.length() > 64.0:
+		var maximum_size: float=128.0 if str(item.get("shape","rectangle"))=="rectangle_union" else 64.0
+		if size.x < 0.5 or size.y < 0.5 or size.x > maximum_size or size.y > maximum_size or offset.length() > 64.0:
 			return "part geometry outside authored envelope"
+		if str(item.get("shape", "rectangle")) == "rectangle_union":
+			var compound_error: String = _validate_compound_part(item)
+			if not compound_error.is_empty(): return compound_error
 		if not _finite_number(item.get("mass", 1.0)) or float(item.get("mass", 1.0)) < 0.02 \
 			or float(item.get("mass", 1.0)) > 20.0:
 			return "invalid part mass"
@@ -228,6 +236,43 @@ static func validate_definition(definition: Dictionary) -> String:
 	return ""
 
 
+static func _validate_compound_part(part: Dictionary) -> String:
+	var rectangles: Variant = part.get("collision_rects")
+	if not rectangles is Array or rectangles.is_empty() or rectangles.size()>MAX_COMPOUND_RECTS:
+		return "compound rectangle capacity"
+	if Vector2(part.offset)!=Vector2.ZERO or float(part.get("angle",0.0))!=0.0:
+		return "compound part requires physical COM origin"
+	if not _finite_number(part.get("inertia")) or float(part.inertia)<=0.0:
+		return "compound requires positive authored inertia"
+	var area: float=0.0
+	var weighted:=Vector2.ZERO
+	var bounds:=Rect2()
+	for index: int in range(rectangles.size()):
+		var value: Variant=rectangles[index]
+		if not value is Dictionary or value.size()!=2 or not _finite_vector(value.get("center")) or not _finite_vector(value.get("size")):
+			return "invalid compound rectangle"
+		var dimensions: Vector2=value.size
+		var center: Vector2=value.center
+		if dimensions.x<1.0 or dimensions.y<1.0 or dimensions.x>128.0 or dimensions.y>128.0:
+			return "compound rectangle dimensions"
+		var rect:=Rect2(center-dimensions*0.5,dimensions)
+		if maxf(absf(rect.position.x),absf(rect.position.y))>128.0 or maxf(absf(rect.end.x),absf(rect.end.y))>128.0:
+			return "compound rectangle outside envelope"
+		for previous: int in range(index):
+			var other: Dictionary=rectangles[previous]
+			var shared: Rect2=rect.intersection(Rect2(Vector2(other.center)-Vector2(other.size)*0.5,other.size))
+			var tolerance: float=4.0*0.00000011920928955078125*maxf(1.0,maxf(rect.size.x,rect.size.y))
+			if shared.size.x>tolerance and shared.size.y>tolerance:
+				return "compound rectangles overlap"
+		var contribution: float=dimensions.x*dimensions.y
+		area+=contribution
+		weighted+=center*contribution
+		bounds=rect if index==0 else bounds.merge(rect)
+	if weighted.length()/area>0.0001 or not bounds.size.is_equal_approx(part.size) or bounds.size.x>128.0 or bounds.size.y>128.0:
+		return "compound mass origin or bounds mismatch"
+	return ""
+
+
 static func _finite_vector(value) -> bool:
 	return typeof(value) == TYPE_VECTOR2 and value.is_finite()
 
@@ -249,7 +294,26 @@ static func valid_action(action: Dictionary) -> bool:
 	return true
 
 
-func configure(definition: Dictionary, origin: Vector2, slot: int = 0, incarnation: int = 1) -> Error:
+static func valid_review_options(options: Dictionary) -> bool:
+	if options.is_empty(): return true # Retained RFT reference authoring.
+	if options.size()<4 or options.size()>7: return false
+	for key: Variant in options:
+		if key not in ["response","budget","mass_multiplier","inertia_multiplier","thrust_multiplier","torque_multiplier","boost_multiplier"]: return false
+	if not options.get("response") is String or options.response not in ["LA","LA-EVENT-OFF","LA-SELECTIVE","RFT"]: return false
+	for key: String in ["budget","mass_multiplier","inertia_multiplier"]:
+		if not _finite_number(options.get(key)): return false
+	if float(options.budget)<5.0 or float(options.budget)>80.0: return false
+	if options.response=="RFT" and float(options.budget)!=20.0: return false
+	for key: String in ["mass_multiplier","inertia_multiplier"]:
+		if float(options[key])<0.01 or float(options[key])>64.0: return false
+	for key: String in ["thrust_multiplier","torque_multiplier"]:
+		if options.has(key) and (not _finite_number(options[key]) or float(options[key])<0.0 or float(options[key])>64.0): return false
+	if options.has("boost_multiplier") and (not _finite_number(options.boost_multiplier) or float(options.boost_multiplier)<1.0 or float(options.boost_multiplier)>8.0): return false
+	return true
+
+
+func configure(definition: Dictionary, origin: Vector2, slot: int = 0, incarnation: int = 1,
+		review_fleet_index: int = -1, review_options: Dictionary = {}) -> Error:
 	if configured:
 		return ERR_ALREADY_IN_USE
 	if not is_inside_tree() or not origin.is_finite() or slot < 0 or slot >= 8 or incarnation <= 0:
@@ -258,6 +322,20 @@ func configure(definition: Dictionary, origin: Vector2, slot: int = 0, incarnati
 	if not invalid.is_empty():
 		fault = invalid
 		return ERR_INVALID_DATA
+	# Developer overrides apply only to the exact retained single-hull fleet.
+	# Validate ordinary authored mass first; never widen catalogue admission.
+	var passive: bool = definition.get("id") == &"reference_barrel"
+	if not valid_review_options(review_options) or (not review_options.is_empty() and review_fleet_index==-1 and not passive):
+		return ERR_INVALID_DATA
+	if review_fleet_index!=-1:
+		if not ReviewFleet.valid_index(review_fleet_index): return ERR_INVALID_DATA
+		var expected: Dictionary = ReviewFleet.definition(review_fleet_index)
+		expected["equipment_managed"]=true
+		if definition!=expected: return ERR_INVALID_DATA
+	elif definition.parts.any(func(part: Dictionary) -> bool: return str(part.get("shape","rectangle"))=="rectangle_union"):
+		# Other actor owners must explicitly select the matching compound native
+		# publication path before they may construct a compound body.
+		return ERR_UNAVAILABLE
 	var flight_gravity_scale: float = 0.0
 	if definition.has("flight_profile"):
 		var environment_gravity: Variant = ProjectSettings.get_setting("physics/2d/default_gravity", 980.0)
@@ -282,6 +360,12 @@ func configure(definition: Dictionary, origin: Vector2, slot: int = 0, incarnati
 			return ERR_INVALID_DATA
 	_definition = definition.duplicate(true)
 	_profile = _definition.get("profile", {})
+	if review_fleet_index!=-1:
+		# Only the already validated, exact retained fleet can change propulsion
+		# ceilings. Omitted controls preserve its authored force and torque.
+		_profile["fleet_force"] = float(_profile.fleet_force)*float(review_options.get("thrust_multiplier",1.0))
+		_profile["fleet_torque"] = float(_profile.fleet_torque)*float(review_options.get("torque_multiplier",1.0))
+		_profile["fleet_boost_multiplier"] = float(review_options.get("boost_multiplier",2.0))
 	_part_defs = _definition.parts
 	_player_controller = null
 	_flight_controller = null
@@ -295,6 +379,8 @@ func configure(definition: Dictionary, origin: Vector2, slot: int = 0, incarnati
 		_flight_capabilities["controller_hash"] = FlightController.controller_hash()
 	if str(_profile.get("player_controller", "")) == "acrobat":
 		_player_controller = PlayerAcrobat.new()
+	elif str(_profile.get("player_controller", "")) == "gcr_review_fleet":
+		_player_controller = ReviewFleetController.new()
 	elif str(_profile.get("player_controller", "")) == "vehicle":
 		_player_controller = PlayerVehicle.new()
 	rig_id = StringName(str(_definition.id))
@@ -309,12 +395,21 @@ func configure(definition: Dictionary, origin: Vector2, slot: int = 0, incarnati
 		body.name = "Part_%s" % str(part.id)
 		body.position = to_local(origin + Vector2(part.offset))
 		body.rotation = float(part.get("angle", 0.0))
-		body.mass = float(part.get("mass", 1.0))
+		body.mass = float(part.get("mass", 1.0))*float(review_options.get("mass_multiplier",1.0))
 		body.inertia = maxf(0.01, body.mass * Vector2(part.size).length_squared() / 12.0)
+		var compound: bool=str(part.get("shape","rectangle"))=="rectangle_union"
+		if compound:
+			body.center_of_mass_mode=RigidBody2D.CENTER_OF_MASS_MODE_CUSTOM
+			body.center_of_mass=Vector2.ZERO
+			body.inertia=float(part.inertia)*float(review_options.get("mass_multiplier",1.0))
 		if _flight_controller != null:
 			body.inertia = float(_definition.flight_profile.inertia)
 		if str(part.get("shape", "rectangle")) == "circle":
 			body.inertia = maxf(0.01, body.mass * pow(float(part.size.x) * 0.5, 2.0) * 0.5)
+		if not review_options.is_empty():
+			# Explicit positive inertia, including tiny developer masses, is set
+			# before all cached properties and the Rapier bridge are constructed.
+			body.inertia = (float(part.inertia)*float(review_options.get("mass_multiplier",1.0)) if compound else body.mass*Vector2(part.size).length_squared()/12.0)*float(review_options.inertia_multiplier)
 		body.gravity_scale = _gravity / maxf(1.0, float(ProjectSettings.get_setting("physics/2d/default_gravity", 980.0)))
 		if _flight_controller != null:
 			body.gravity_scale = flight_gravity_scale
@@ -330,17 +425,33 @@ func configure(definition: Dictionary, origin: Vector2, slot: int = 0, incarnati
 		var material: PhysicsMaterial = PhysicsMaterial.new()
 		material.friction = clampf(float(part.get("friction", 0.8)), 0.0, 1.0)
 		material.bounce = clampf(float(part.get("bounce", 0.02)), 0.0, 0.6)
+		if rig_id == &"reference_barrel":
+			body.gravity_scale = 0.094
+			_gravity = body.gravity_scale * float(ProjectSettings.get_setting("physics/2d/default_gravity"))
+			body.linear_damp_mode = RigidBody2D.DAMP_MODE_COMBINE
+			body.angular_damp_mode = RigidBody2D.DAMP_MODE_COMBINE
+			material.rough = true
+			material.absorbent = true
 		body.physics_material_override = material
-		var collider: CollisionShape2D = CollisionShape2D.new()
-		if str(part.get("shape", "rectangle")) == "circle":
-			var circle := CircleShape2D.new()
-			circle.radius = float(part.size.x) * 0.5
-			collider.shape = circle
+		if compound:
+			for rectangle: Dictionary in part.collision_rects:
+				var collider:=CollisionShape2D.new()
+				var shape:=RectangleShape2D.new()
+				shape.size=rectangle.size
+				collider.shape=shape
+				collider.position=rectangle.center
+				body.add_child(collider)
 		else:
-			var rectangle: RectangleShape2D = RectangleShape2D.new()
-			rectangle.size = part.size
-			collider.shape = rectangle
-		body.add_child(collider)
+			var collider: CollisionShape2D = CollisionShape2D.new()
+			if str(part.get("shape", "rectangle")) == "circle":
+				var circle := CircleShape2D.new()
+				circle.radius = float(part.size.x) * 0.5
+				collider.shape = circle
+			else:
+				var rectangle: RectangleShape2D = RectangleShape2D.new()
+				rectangle.size = part.size
+				collider.shape = rectangle
+			body.add_child(collider)
 		add_child(body)
 		_parts.append(body)
 		_sizes.append(part.size)
@@ -372,7 +483,7 @@ func configure(definition: Dictionary, origin: Vector2, slot: int = 0, incarnati
 	_tick = 0
 	_effect_sequence = 0
 	_tool_cooldown = 0.0
-	_power_enabled = true
+	_power_enabled = rig_id != &"reference_barrel"
 	_coast_mode = false
 	_previous_buttons = Vector3i.ZERO
 	_smoothed_move = Vector2.ZERO
@@ -474,8 +585,32 @@ func bodies() -> Array[RigidBody2D]:
 	return result
 
 
+func set_review_boost_held(held: bool) -> void:
+	# Only the review arena's accepted command lease may supply this modifier.
+	_review_boost_held = held and configured and str(_profile.get("player_controller",""))=="gcr_review_fleet"
+
+
+func review_boost_held() -> bool:
+	return _review_boost_held
+
+
 func body_sizes() -> PackedVector2Array:
 	return _sizes.duplicate()
+
+
+func uses_authored_compound() -> bool:
+	return configured and _part_defs.size()==1 and str(_part_defs[0].get("shape","rectangle"))=="rectangle_union"
+
+
+func collision_rects(part_index: int = 0) -> Array[Dictionary]:
+	var result: Array[Dictionary]=[]
+	if not configured or part_index<0 or part_index>=_part_defs.size(): return result
+	if str(_part_defs[part_index].get("shape","rectangle"))=="rectangle_union":
+		for rectangle: Dictionary in _part_defs[part_index].collision_rects:
+			result.append(rectangle.duplicate(true))
+	else:
+		result.append({"center":Vector2.ZERO,"size":_sizes[part_index]})
+	return result
 
 
 func centre() -> Vector2:
@@ -1351,6 +1486,8 @@ func _publish_observation() -> void:
 			"size": _sizes[index], "mass": _parts[index].mass, "detached": _detached.has(index),
 			"shape": str(_part_defs[index].get("shape", "rectangle")),
 			"native_mask": str(_part_defs[index].get("native_mask", "matching_rectangle"))})
+		if str(_part_defs[index].get("shape","rectangle"))=="rectangle_union":
+			part_states[-1]["collision_rects"]=collision_rects(index)
 	var joint_states: Array[Dictionary] = []
 	for joint: Dictionary in _joints:
 		var a: int = int(joint.a)
@@ -1654,6 +1791,7 @@ func _update_detached(dt: float) -> void:
 
 
 func cancel() -> void:
+	_review_boost_held = false
 	# Revocation discards future work/charge; it never performs a release action,
 	# erases momentum, resets a spring, or launches a charged leap.
 	charge = 0.0
@@ -1695,6 +1833,14 @@ func cancel() -> void:
 func draw_parts() -> Array[Dictionary]:
 	var result: Array[Dictionary] = []
 	for index: int in range(_parts.size()):
+		if str(_part_defs[index].get("shape","rectangle"))=="rectangle_union":
+			for rectangle: Dictionary in collision_rects(index):
+				var half: Vector2=Vector2(rectangle.size)*0.5
+				var pose: Transform2D=_transforms[index]*Transform2D(0.0,rectangle.center)
+				var polygon:=PackedVector2Array([pose*Vector2(-half.x,-half.y),pose*Vector2(half.x,-half.y),pose*half,pose*Vector2(-half.x,half.y)])
+				result.append({"id":str(_part_defs[index].id),"polygon":polygon,"shape":"rectangle",
+					"colour":_part_defs[index].get("color",Color.WHITE),"position":pose.origin,"rotation":pose.get_rotation()})
+			continue
 		var half: Vector2 = _sizes[index] * 0.5
 		var polygon: PackedVector2Array = PackedVector2Array([
 			Vector2(-half.x, -half.y), Vector2(half.x, -half.y),

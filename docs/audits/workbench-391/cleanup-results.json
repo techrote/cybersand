@@ -1,0 +1,550 @@
+{
+  "runtime_source": "a393a797ad7c535fdf177143e660838726ad9ba2",
+  "native_build_source": "1ca90de5181953f9ebd95ef19c920d8dee7e17e2",
+  "scope": "Cleanup runtime/tests only; raw local logs retained by SHA-256; no subjective acceptance or full hosted-release claim.",
+  "platforms": {
+    "windows": [
+      {
+        "name": "import",
+        "exit": 0,
+        "clean": true,
+        "seconds": 20.183347499987576,
+        "timeout_seconds": 180,
+        "log_sha256": "9558ec8a8c2dbca055c000a9ea5d049693dcf72195b0311b92916524ee05746f"
+      },
+      {
+        "name": "fleet_session",
+        "exit": 0,
+        "clean": true,
+        "seconds": 1.4744668999919668,
+        "timeout_seconds": 180,
+        "log_sha256": "6f474bee517a6ea065bc9fc3b7e599989790ca42a9c1ce3148266055a815ddcd"
+      },
+      {
+        "name": "pilot_ui",
+        "exit": 0,
+        "clean": true,
+        "seconds": 28.46590800001286,
+        "timeout_seconds": 180,
+        "log_sha256": "e552b6c8178f7e38044fd393dd14d44f2a98078dcdbef20afdf2eab323d76600"
+      },
+      {
+        "name": "desktop_interest",
+        "exit": 0,
+        "clean": true,
+        "seconds": 10.645562599995174,
+        "timeout_seconds": 180,
+        "log_sha256": "30e607d26b8998e6f91c1b1e1d5fa22b3448ba5a7e9605c3b41919c139a0d8a9"
+      },
+      {
+        "name": "physics_play",
+        "exit": 0,
+        "clean": true,
+        "seconds": 28.049749900004826,
+        "timeout_seconds": 180,
+        "log_sha256": "3f1e9eebc61aa1ed134ab70ce1b194c0cb6dcd099b5b19acc758ce7b6bdb552d"
+      },
+      {
+        "name": "hard_placement",
+        "exit": 0,
+        "clean": true,
+        "seconds": 1.0560895999660715,
+        "timeout_seconds": 180,
+        "log_sha256": "340180d107b6d009ee07cbec4e4cc25485479f8bcfee450266d3562b6990e842"
+      },
+      {
+        "name": "input",
+        "exit": 0,
+        "clean": true,
+        "seconds": 10.055874899961054,
+        "timeout_seconds": 180,
+        "log_sha256": "c0d75889f5b1d8f34e0ae717a251334f6b0c01e4e7d9aedbb748009c54278217"
+      },
+      {
+        "name": "live_liquid_edit",
+        "exit": 0,
+        "clean": true,
+        "seconds": 10.697916900040582,
+        "timeout_seconds": 180,
+        "log_sha256": "7c8f14adb2ccc0b5fdcfa44149299d23c7b1f30a36b7eebc812769d50c23d128"
+      },
+      {
+        "name": "retained_pressure",
+        "exit": 0,
+        "clean": true,
+        "seconds": 1.3934481000178494,
+        "timeout_seconds": 180,
+        "log_sha256": "407abc85b75d4e8f515b3a9dd886eb9ebe9e945b902bc122f28c814a0e0b0a60"
+      },
+      {
+        "name": "failure_recovery",
+        "exit": 0,
+        "clean": true,
+        "seconds": 8.106718700029887,
+        "timeout_seconds": 180,
+        "log_sha256": "092338f404816f7596a3d9d8b518d179c4f8bb54f1f65c4e2d450b91bb9911fa"
+      },
+      {
+        "name": "liquid_edges",
+        "exit": 0,
+        "clean": true,
+        "seconds": 22.126128099975176,
+        "timeout_seconds": 180,
+        "log_sha256": "318b0ff3a3f2ed9afd314e20294a9e130c0440eadf48cec0a88437c524ddb8af"
+      },
+      {
+        "name": "boundary_retention",
+        "exit": 0,
+        "clean": true,
+        "seconds": 0.9577515999553725,
+        "timeout_seconds": 180,
+        "log_sha256": "486faa242fded9853af3f83f3a235006317c4946c12ba18ef5fdabf2adb856fc"
+      },
+      {
+        "name": "canvas",
+        "exit": 0,
+        "clean": true,
+        "seconds": 41.18040100001963,
+        "timeout_seconds": 180,
+        "log_sha256": "58dd3fba1679f0e66377c12b34e2090b0828274f52ac8ada83ae088efdfedc55"
+      }
+    ],
+    "linux": [
+      {
+        "name": "import",
+        "exit": 0,
+        "clean": true,
+        "seconds": 71.32226889999583,
+        "timeout_seconds": 180,
+        "log_sha256": "8ff4ac2c9a5da9e0636f1a42157fccc6f465f8e34760f818825fb0d26749c456"
+      },
+      {
+        "name": "fleet_session",
+        "exit": 0,
+        "clean": true,
+        "seconds": 2.203087300003972,
+        "timeout_seconds": 180,
+        "log_sha256": "23e60d12b0d3c150ea3cb59ccae7008919a2bdc9684bf0ab3aaa5ba40e7f9737"
+      },
+      {
+        "name": "pilot_ui",
+        "exit": 0,
+        "clean": true,
+        "seconds": 37.23206549999304,
+        "timeout_seconds": 180,
+        "log_sha256": "05649b61218a5b7717c7bf1eb34041fc5811fdfe9cf24215b11008d0cfa961b7"
+      },
+      {
+        "name": "desktop_interest",
+        "exit": 0,
+        "clean": true,
+        "seconds": 18.562224799999967,
+        "timeout_seconds": 180,
+        "log_sha256": "1adaf48c25a51a84e38ec3cc74190f214361859695611bc0a7d178f6f9a4d7cf"
+      },
+      {
+        "name": "physics_play",
+        "exit": 0,
+        "clean": true,
+        "seconds": 38.44185300002573,
+        "timeout_seconds": 180,
+        "log_sha256": "3f3e66e31b21f09ab1377b83f8447b2953c8b5f042116732e0b6222f19435a78"
+      },
+      {
+        "name": "hard_placement",
+        "exit": 0,
+        "clean": true,
+        "seconds": 1.255776500038337,
+        "timeout_seconds": 180,
+        "log_sha256": "20c993e4b569ea2e16a5a2d3c7a594e0e037c3923381f94623ad3e2b7688b4ff"
+      },
+      {
+        "name": "input",
+        "exit": 0,
+        "clean": true,
+        "seconds": 15.123317199992016,
+        "timeout_seconds": 180,
+        "log_sha256": "8fd907b7c4f73472f6680d6b8fdfe6fe92abbebbefa778adb8ff6e11b2a4c6bc"
+      },
+      {
+        "name": "live_liquid_edit",
+        "exit": 0,
+        "clean": true,
+        "seconds": 13.1867188999895,
+        "timeout_seconds": 180,
+        "log_sha256": "c5d8a0f81c88e2e2f79336bbce5156fd71fc7b154f52e2e70482771f18776481"
+      },
+      {
+        "name": "retained_pressure",
+        "exit": 0,
+        "clean": true,
+        "seconds": 1.4186891000135802,
+        "timeout_seconds": 180,
+        "log_sha256": "3a6a19b8a36e99e6592b9ee6743b3b0a566fe31ae1a43fee1ab665783d939428"
+      },
+      {
+        "name": "failure_recovery",
+        "exit": 0,
+        "clean": true,
+        "seconds": 11.548929899989162,
+        "timeout_seconds": 180,
+        "log_sha256": "08e6c5e6fb7d8555647e13fa884c3beb069ab479dea751f1476517ff772ce093"
+      },
+      {
+        "name": "liquid_edges",
+        "exit": 0,
+        "clean": true,
+        "seconds": 25.38609839999117,
+        "timeout_seconds": 180,
+        "log_sha256": "a62ce2b3406b7997b66d3cd74010144f08b388d277da7631f2c47344c50046f9"
+      },
+      {
+        "name": "boundary_retention",
+        "exit": 0,
+        "clean": true,
+        "seconds": 1.133948800037615,
+        "timeout_seconds": 180,
+        "log_sha256": "591ecbd3e84fe7e5b31b2de8f5e0f49fc364a40f22416861c3ea4beb0fa62a3c"
+      },
+      {
+        "name": "canvas",
+        "exit": 0,
+        "clean": true,
+        "seconds": 45.265897100034636,
+        "timeout_seconds": 180,
+        "log_sha256": "c708f3c8dbff0a72fe807252a270c3ccc284833bd7a74db942cbe7aa69a71d41"
+      }
+    ]
+  },
+  "package": {
+    "source": "a393a797ad7c535fdf177143e660838726ad9ba2",
+    "manifest_sha256": "3711f24e5aca8bbdcd522d3ee5803578eef83988c92120204d8a9be51db34f8c",
+    "checks": [
+      {
+        "name": "import",
+        "command": [
+          "C:\\Users\\_\\.codex\\worktrees\\workbench-394-cleanup\\khybersand\\build\\workbench-owner-review-a393a797\\Godot.exe",
+          "--headless",
+          "--audio-driver",
+          "Dummy",
+          "--path",
+          "C:\\Users\\_\\.codex\\worktrees\\workbench-394-cleanup\\khybersand\\build\\workbench-owner-review-a393a797\\godot",
+          "--editor",
+          "--quit"
+        ],
+        "exit": 0,
+        "clean": true,
+        "seconds": 19.388445399992634,
+        "log_sha256": "9558ec8a8c2dbca055c000a9ea5d049693dcf72195b0311b92916524ee05746f"
+      },
+      {
+        "name": "fleet_session",
+        "command": [
+          "C:\\Users\\_\\.codex\\worktrees\\workbench-394-cleanup\\khybersand\\build\\workbench-owner-review-a393a797\\Godot.exe",
+          "--headless",
+          "--audio-driver",
+          "Dummy",
+          "--path",
+          "C:\\Users\\_\\.codex\\worktrees\\workbench-394-cleanup\\khybersand\\build\\workbench-owner-review-a393a797\\godot",
+          "--max-fps",
+          "120",
+          "--script",
+          "res://tests/test_workbench_fleet_session.gd"
+        ],
+        "exit": 0,
+        "clean": true,
+        "seconds": 1.417986500018742,
+        "log_sha256": "6f474bee517a6ea065bc9fc3b7e599989790ca42a9c1ce3148266055a815ddcd"
+      },
+      {
+        "name": "pilot_ui",
+        "command": [
+          "C:\\Users\\_\\.codex\\worktrees\\workbench-394-cleanup\\khybersand\\build\\workbench-owner-review-a393a797\\Godot.exe",
+          "--headless",
+          "--audio-driver",
+          "Dummy",
+          "--path",
+          "C:\\Users\\_\\.codex\\worktrees\\workbench-394-cleanup\\khybersand\\build\\workbench-owner-review-a393a797\\godot",
+          "--max-fps",
+          "120",
+          "--script",
+          "res://tests/test_workbench_pilot_ui.gd"
+        ],
+        "exit": 0,
+        "clean": true,
+        "seconds": 28.364566900010686,
+        "log_sha256": "e552b6c8178f7e38044fd393dd14d44f2a98078dcdbef20afdf2eab323d76600"
+      }
+    ]
+  },
+  "inactive_differential": {
+    "baseline_source": "751edc0b495dc85484ad5509a7c95f863651c76b",
+    "candidate_native_source": "1ca90de5181953f9ebd95ef19c920d8dee7e17e2",
+    "physical_bytes_equal": true,
+    "physical_bytes": 25478922,
+    "physical_sha256": "902dc1c553e6f49d6694c55c875143fd07c164e0d8452e5158beda3e9b7fa519",
+    "stats_and_legacy_contacts_equal": true,
+    "observations": 192
+  },
+  "native_scoped": [
+    {
+      "name": "pressure_heads",
+      "stage": "build",
+      "exit": 0,
+      "command": [
+        "g++",
+        "-std=c++20",
+        "-O1",
+        "-g1",
+        "-pthread",
+        "-Inative/include",
+        "build/cleanup394-native/normal-world.o",
+        "build/cleanup394-native/normal-material_rules.o",
+        "build/cleanup394-native/normal-scheduler_geometry.o",
+        "build/cleanup394-native/normal-settled_world_discovery.o",
+        "native/tests/test_workbench_pressure_heads.cpp",
+        "-o",
+        "build/cleanup394-native/pressure_heads"
+      ],
+      "seconds": 4.453336400038097,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "pressure_heads",
+      "stage": "run",
+      "exit": 0,
+      "command": [
+        "build/cleanup394-native/pressure_heads"
+      ],
+      "seconds": 0.7457383999717422,
+      "log_sha256": "0c0273e071ea87bcaa12d9727126db4c98823b88c585edd0e28f1abbaeb8c3c8"
+    },
+    {
+      "name": "arrivals",
+      "stage": "build",
+      "exit": 0,
+      "command": [
+        "g++",
+        "-std=c++20",
+        "-O1",
+        "-g1",
+        "-pthread",
+        "-Inative/include",
+        "build/cleanup394-native/normal-world.o",
+        "build/cleanup394-native/normal-material_rules.o",
+        "build/cleanup394-native/normal-scheduler_geometry.o",
+        "build/cleanup394-native/normal-settled_world_discovery.o",
+        "native/tests/test_workbench_arrivals.cpp",
+        "-o",
+        "build/cleanup394-native/arrivals"
+      ],
+      "seconds": 3.3884846000000834,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "arrivals",
+      "stage": "run",
+      "exit": 0,
+      "command": [
+        "build/cleanup394-native/arrivals"
+      ],
+      "seconds": 0.47729299997445196,
+      "log_sha256": "f4cf3e9ccfc7e4dd82164ea314df9f88b38ec1d9d6b33e19ee966a85b2acb9d3"
+    },
+    {
+      "name": "pressure_heads",
+      "stage": "build",
+      "exit": 0,
+      "command": [
+        "g++",
+        "-std=c++20",
+        "-O1",
+        "-g1",
+        "-pthread",
+        "-Inative/include",
+        "-fsanitize=address,undefined",
+        "-fno-omit-frame-pointer",
+        "build/cleanup394-native/asan-ubsan-world.o",
+        "build/cleanup394-native/asan-ubsan-material_rules.o",
+        "build/cleanup394-native/asan-ubsan-scheduler_geometry.o",
+        "build/cleanup394-native/asan-ubsan-settled_world_discovery.o",
+        "native/tests/test_workbench_pressure_heads.cpp",
+        "-o",
+        "build/cleanup394-native/san-pressure_heads"
+      ],
+      "seconds": 10.750469900027383,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "pressure_heads",
+      "stage": "run",
+      "exit": 0,
+      "command": [
+        "build/cleanup394-native/san-pressure_heads"
+      ],
+      "seconds": 6.028698900016025,
+      "log_sha256": "0c0273e071ea87bcaa12d9727126db4c98823b88c585edd0e28f1abbaeb8c3c8"
+    },
+    {
+      "name": "arrivals",
+      "stage": "build",
+      "exit": 0,
+      "command": [
+        "g++",
+        "-std=c++20",
+        "-O1",
+        "-g1",
+        "-pthread",
+        "-Inative/include",
+        "-fsanitize=address,undefined",
+        "-fno-omit-frame-pointer",
+        "build/cleanup394-native/asan-ubsan-world.o",
+        "build/cleanup394-native/asan-ubsan-material_rules.o",
+        "build/cleanup394-native/asan-ubsan-scheduler_geometry.o",
+        "build/cleanup394-native/asan-ubsan-settled_world_discovery.o",
+        "native/tests/test_workbench_arrivals.cpp",
+        "-o",
+        "build/cleanup394-native/san-arrivals"
+      ],
+      "seconds": 6.192027100012638,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "arrivals",
+      "stage": "run",
+      "exit": 0,
+      "command": [
+        "build/cleanup394-native/san-arrivals"
+      ],
+      "seconds": 0.8685363000258803,
+      "log_sha256": "f4cf3e9ccfc7e4dd82164ea314df9f88b38ec1d9d6b33e19ee966a85b2acb9d3"
+    }
+  ],
+  "retrieval": {
+    "frozen": {
+      "questions": 32,
+      "canonical_hit_at_1": 19,
+      "canonical_hit_at_k": 32,
+      "mrr_at_k": 0.7536,
+      "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+    },
+    "play": {
+      "questions": 12,
+      "canonical_hit_at_1": 12,
+      "canonical_hit_at_k": 12,
+      "mrr_at_k": 1.0,
+      "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+    },
+    "challenges": {
+      "questions": 157,
+      "canonical_hit_at_1": 124,
+      "canonical_hit_at_k": 156,
+      "mrr_at_k": 0.873,
+      "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+    }
+  },
+  "native_core": [
+    {
+      "name": "link-normal",
+      "command": [
+        "g++",
+        "-std=c++20",
+        "-O1",
+        "-g1",
+        "-pthread",
+        "-Inative/include",
+        "build/cleanup394-native/normal-world.o",
+        "build/cleanup394-native/normal-material_rules.o",
+        "build/cleanup394-native/normal-scheduler_geometry.o",
+        "build/cleanup394-native/normal-settled_world_discovery.o",
+        "native/src/render_snapshot.cpp",
+        "native/src/c_api.cpp",
+        "native/tests/test_lcb_inertial.cpp",
+        "native/tests/test_water_inertial.cpp",
+        "native/tests/test_world.cpp",
+        "native/tests/test_liquid_solver_policy.cpp",
+        "native/tests/test_lcb_pressure.cpp",
+        "native/tests/test_pressure_moving_mask.cpp",
+        "native/tests/test_pressure_setup_capacity.cpp",
+        "native/tests/test_water_cellular_yield.cpp",
+        "native/tests/test_water_normalization.cpp",
+        "native/tests/test_liquid_run_receipt.cpp",
+        "native/tests/test_liquid_construction_refusal.cpp",
+        "native/tests/test_quantity_ledger.cpp",
+        "-o",
+        "build/cleanup394-native/core-normal"
+      ],
+      "exit": 0,
+      "seconds": 57.91782480000984,
+      "timeout_seconds": 900,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "run-core-normal",
+      "command": [
+        "build/cleanup394-native/core-normal"
+      ],
+      "exit": 0,
+      "seconds": 127.63154480000958,
+      "timeout_seconds": 900,
+      "log_sha256": "688bf7106ad3990a03bed8ad78b3cf37bb3b6e1d4843a0a7ea9f108cf64b621a"
+    },
+    {
+      "name": "link-asan-ubsan",
+      "command": [
+        "g++",
+        "-std=c++20",
+        "-O1",
+        "-g1",
+        "-pthread",
+        "-Inative/include",
+        "-fno-omit-frame-pointer",
+        "-fsanitize=address,undefined",
+        "build/cleanup394-native/asan-ubsan-world.o",
+        "build/cleanup394-native/asan-ubsan-material_rules.o",
+        "build/cleanup394-native/asan-ubsan-scheduler_geometry.o",
+        "build/cleanup394-native/asan-ubsan-settled_world_discovery.o",
+        "native/src/render_snapshot.cpp",
+        "native/src/c_api.cpp",
+        "native/tests/test_lcb_inertial.cpp",
+        "native/tests/test_water_inertial.cpp",
+        "native/tests/test_world.cpp",
+        "native/tests/test_liquid_solver_policy.cpp",
+        "native/tests/test_lcb_pressure.cpp",
+        "native/tests/test_pressure_moving_mask.cpp",
+        "native/tests/test_pressure_setup_capacity.cpp",
+        "native/tests/test_water_cellular_yield.cpp",
+        "native/tests/test_water_normalization.cpp",
+        "native/tests/test_liquid_run_receipt.cpp",
+        "native/tests/test_liquid_construction_refusal.cpp",
+        "native/tests/test_quantity_ledger.cpp",
+        "-o",
+        "build/cleanup394-native/core-asan-ubsan"
+      ],
+      "exit": 0,
+      "seconds": 156.59306189999916,
+      "timeout_seconds": 900,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "run-core-asan-ubsan",
+      "command": [
+        "env",
+        "ASAN_OPTIONS=detect_leaks=1:halt_on_error=1",
+        "UBSAN_OPTIONS=halt_on_error=1",
+        "build/cleanup394-native/core-asan-ubsan"
+      ],
+      "exit": 0,
+      "seconds": 680.0420835000114,
+      "timeout_seconds": 900,
+      "log_sha256": "7348fff54dbcac0003e4ebfab79d8a0860a1ffd820ed23a735cb39f9cbe7f605"
+    }
+  ],
+  "native_test_tree_source": "1f968fa2ab403aa564aa6c816e60bf6c572b27a5",
+  "review": {
+    "verdict": "GO for exact three-entry technical MAT compatibility and cleanup runtime",
+    "runtime_checkpoint": "a393a797ad7c535fdf177143e660838726ad9ba2",
+    "owner_production_adoption": false,
+    "merge_authorized": false
+  }
+}

@@ -1,0 +1,151 @@
+{
+  "version": 1,
+  "reviewed": "2026-11-04",
+  "scope": "Additive MAT354 Phase A investigation and implementation-admission questions. Frozen32, challenge157 and historical material-authoring question versions remain unchanged. Exact run/platform results belong to the dated findings and PR ledger; production corrections remain unadmitted.",
+  "questions": [
+    {
+      "id": "MAT354-01",
+      "query": "What did the material liveness Phase A investigation establish about MoltenGlass cooling, mutual heating and generic CellularYield rest, and is production implementation authorized?",
+      "canonical": [
+        "architecture/material-authoring-catalogue-plan.md",
+        "operations/material-liveness-investigation.md"
+      ],
+      "facts": [
+        "H1 demonstrates loss of an isolated cooling opportunity after sleep in the real World.",
+        "H2 is the executed existing neighbor-heating law; H3 preserves documented generic yielding rest.",
+        "Only tests, tooling and documentation are admitted; production implementation remains pending and issue354 stays open."
+      ],
+      "sources": [
+        "architecture/material-authoring-catalogue-plan.md",
+        "operations/material-liveness-investigation.md"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "MAT354-02",
+      "query": "Do the material liveness fixtures execute the real native World, and how are actual kernel visits distinguished from inactive blocks or unchanged images?",
+      "canonical": [
+        "operations/material-liveness-investigation.md"
+      ],
+      "facts": [
+        "The apparatus compiles unchanged production World exactly once and uses existing read-only PrecisionProbe friendship and native counters.",
+        "A selected visit can be rejected by a source mask, and a sleeping block can still be scanned when another block selects its core.",
+        "Fixture-qualified kernel counters establish actual execution; pool/distributed counters remain aggregate, and potential deterministic draws do not prove consumption."
+      ],
+      "sources": [
+        "operations/material-liveness-investigation.md"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "MAT354-03",
+      "query": "Why can a cold touching MoltenGlass pool remain molten even when the material kernel keeps executing?",
+      "canonical": [
+        "systems/materials-and-rule-kernels.md",
+        "operations/material-liveness-investigation.md"
+      ],
+      "facts": [
+        "Visible Fire, Lava or MoltenGlass resets the countdown to180 on the four-tick thermal lane.",
+        "The predicate uses material identity rather than stored temperature and does not include Spark.",
+        "Bounded observed retention and a source-derived fixed point are distinct claims; changing mutual heating needs a separate owner decision."
+      ],
+      "sources": [
+        "systems/materials-and-rule-kernels.md",
+        "operations/material-liveness-investigation.md"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "MAT354-04",
+      "query": "Does a later legal mobility sample require generic Paste, Slush, Brine or Mercury to stay awake forever, as with an explicit Water-CY retry?",
+      "canonical": [
+        "systems/activity-dirty-regions-and-waking.md",
+        "systems/materials-and-rule-kernels.md",
+        "operations/material-liveness-investigation.md"
+      ],
+      "facts": [
+        "Generic sleep can suppress later deterministic mobility samples under the documented legacy resting approximation.",
+        "Different quiet-threshold trajectories alone do not establish a mandatory generic retry contract.",
+        "Water-CY has a separate explicit retry policy; generic changes require separately versioned admission."
+      ],
+      "sources": [
+        "systems/activity-dirty-regions-and-waking.md",
+        "systems/materials-and-rule-kernels.md",
+        "operations/material-liveness-investigation.md"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "MAT354-05",
+      "query": "What proves four-worker execution and physical parity in the material liveness campaign instead of only configuring four workers?",
+      "canonical": [
+        "operations/material-liveness-investigation.md"
+      ],
+      "facts": [
+        "Report configured capacity, actual native jobs and distinct task claimants separately.",
+        "Tiny fixtures may expose too little work; bounded distributed fixtures must supply actual claimant observations.",
+        "Compare complete per-step physical-state identities across matching worker/repeat arms, with source and executable identity authenticated."
+      ],
+      "sources": [
+        "operations/material-liveness-investigation.md"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "MAT354-06",
+      "query": "Can a MoltenGlass scheduler correction edit protected world.cpp and refresh the371 compatibility hashes now that the shadow compiler is merged?",
+      "canonical": [
+        "operations/material-catalogue-shadow.md",
+        "architecture/material-authoring-catalogue-plan.md"
+      ],
+      "facts": [
+        "Merged371 at7ef4856e leaves legacy production definitions authoritative and its27 protected source files locked.",
+        "A prospective world.cpp edit needs separate owner authorization and a narrowly reviewed compatibility transition.",
+        "Updating hashes cannot replace review; matching runtime rebuild, publication and provenance belong to future production implementation."
+      ],
+      "sources": [
+        "operations/material-catalogue-shadow.md",
+        "architecture/material-authoring-catalogue-plan.md"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "MAT354-07",
+      "query": "What bounded deadline design may repair missed cooling without keeping hot pools or inert blocks permanently awake?",
+      "canonical": [
+        "systems/activity-dirty-regions-and-waking.md",
+        "operations/material-liveness-investigation.md",
+        "architecture/material-authoring-catalogue-plan.md"
+      ],
+      "facts": [
+        "The proposal retains the earliest eligible existing coalesced block deadline; implementation is pending.",
+        "Preserve hot180 and inert rest, shared obligations, source/partner masks, region pause without catch-up and worker ownership.",
+        "No per-cell queue, artificial dirty write, extra material thread or generalized KernelOutcome framework is required."
+      ],
+      "sources": [
+        "systems/activity-dirty-regions-and-waking.md",
+        "operations/material-liveness-investigation.md",
+        "architecture/material-authoring-catalogue-plan.md"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "MAT354-08",
+      "query": "Can an EXECUTED material liveness receipt, a draft-skipped workflow or a LeakSanitizer environment failure be reported as complete qualification?",
+      "canonical": [
+        "reference/validation-evidence.md",
+        "operations/material-liveness-investigation.md"
+      ],
+      "facts": [
+        "Execution success does not override raw-identity failure; truncated evidence and incomplete attempts remain retained.",
+        "Apparatus corrections receive new source/run identities, and skipped draft jobs are not passes.",
+        "The audit and PR ledger identify exact completed, failed and unexecuted platform/sanitizer gates; no Windows or LeakSanitizer pass is inferred."
+      ],
+      "sources": [
+        "reference/validation-evidence.md",
+        "operations/material-liveness-investigation.md"
+      ],
+      "revision_sensitive": true
+    }
+  ]
+}

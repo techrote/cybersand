@@ -63,6 +63,11 @@ void exact_capacity() {
            "running topology was mislabeled a fresh setup capacity check");
 
     auto excessive = holes(1025, true);
+    expect(!PreparedWorldBuilder::validate_initial_pressure_capacity(*excessive,{0,0,64,64},64),
+           "canvas-only pressure census unexpectedly counted exterior pockets");
+    const auto boundary=PreparedWorldBuilder::validate_initial_pressure_capacity(*excessive,{0,0,64,64},64,true);
+    expect(boundary && boundary->policy_refusal()->code==LiquidPolicyRefusalCode::CapacityRefused,
+           "retained pressure halo missed actual 1025th compartment outside canvas");
     const auto untouched = excessive->save_physical_state();
     const auto refused = PreparedWorldBuilder::validate_initial_pressure_capacity(*excessive, domain);
     expect(initial_pressure_capacity(*excessive, domain).compartments == 1025 && refused &&
@@ -175,6 +180,18 @@ void default_recipe_and_nonpressure() {
 } // namespace
 
 void test_pressure_setup_capacity() {
+    // The workbench widens only prepared finite extent. The ordinary construction
+    // default still refuses >1024, and the compartment ceiling remains independent.
+    World large(*config());
+    large.set(1740,1620,Material::Water);
+    const setup::SetupDomain canvas{0,0,2048,2048};
+    expect(PreparedWorldBuilder::validate_initial_pressure_capacity(large,canvas).has_value(),
+           "ordinary initial pressure census admitted workbench-only extent");
+    expect(!PreparedWorldBuilder::validate_initial_pressure_capacity(large,canvas,2048),
+           "2048 workbench census refused a distant vented Water cell");
+    expect(PreparedWorldBuilder::validate_initial_pressure_capacity(large,{0,0,2049,2048},2048).has_value(),
+           "workbench allowed a census outside its finite limit");
+
     exact_capacity(); atmospheric_rules(); actual_masks(); default_recipe_and_nonpressure();
     std::cout << "PRESSURE_SETUP_CAPACITY: " << assertions << " assertions; 0 failures\n";
 }

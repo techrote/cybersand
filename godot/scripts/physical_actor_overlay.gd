@@ -5,6 +5,7 @@ extends Control
 # authoritative physics transform. This node owns no gameplay or collision.
 var outlines: bool = true
 var _parts: Array = []
+var source_origin: Vector2 = Vector2.INF
 var _origin: Vector2 = Vector2.ZERO
 var _view_size: Vector2 = Vector2.ONE
 
@@ -20,7 +21,7 @@ func present(parts: Array, origin: Vector2, view_size: Vector2i, content: Rect2)
 	_view_size = Vector2(view_size)
 	position = content.position
 	size = content.size
-	visible = not _parts.is_empty()
+	visible = not _parts.is_empty() or source_origin.is_finite()
 	queue_redraw()
 
 
@@ -40,9 +41,47 @@ func polygon(part: Dictionary) -> PackedVector2Array:
 	return result
 
 
+func show_workbench_source(receipt: Dictionary) -> void:
+	var origin: Vector2 = Vector2(receipt.origin) if receipt.get("armed",false) else Vector2.INF
+	if origin != source_origin:
+		source_origin = origin
+		visible = not _parts.is_empty() or source_origin.is_finite()
+		queue_redraw()
+
+
+func _point(world: Vector2) -> Vector2:
+	return (world - _origin) * size / _view_size
+
+
+func _draw_markings(part: Dictionary) -> void:
+	var pose: Transform2D = part.transform
+	var half: Vector2 = Vector2(part.size)*0.5
+	match part.markings:
+		"scoop":
+			if str(part.part_id) == "chassis":
+				draw_line(_point(pose*Vector2(-half.x*.8,0)),_point(pose*Vector2(half.x*.8,0)),Color("6ffff0"),1.0)
+		"board":
+			for side: float in [-.65,.65]:
+				draw_line(_point(pose*Vector2(half.x*side,-half.y)),_point(pose*Vector2(half.x*side,half.y)),Color("6ffff0"),3.0)
+			draw_line(_point(pose*Vector2(-half.x*.9,0)),_point(pose*Vector2(half.x*.9,0)),Color("f7f1c7"),1.0)
+		"science":
+			var radius: float = minf(half.x,half.y)*.65
+			draw_arc(_point(pose.origin),radius*size.x/_view_size.x,0.0,TAU,20,Color("223848"),2.0)
+			draw_line(_point(pose*Vector2(-radius,0)),_point(pose*Vector2(radius,0)),Color("8af6ec"),1.0)
+			for side: float in [-.75,.75]:
+				draw_line(_point(pose*Vector2(half.x*side,-half.y*.7)),_point(pose*Vector2(half.x*side,half.y*.7)),Color("526471"),2.0)
+		"scout":
+			draw_line(_point(pose*Vector2(0,-half.y*.75)),_point(pose*Vector2(0,half.y*.55)),Color("213448"),2.0)
+
+
 func _draw() -> void:
 	if _view_size.x <= 0.0 or _view_size.y <= 0.0:
 		return
+	if source_origin.is_finite():
+		var outline := PackedVector2Array()
+		for delta: Vector2 in [Vector2.ZERO,Vector2(4,0),Vector2(4,24),Vector2(0,24),Vector2.ZERO]:
+			outline.append(_point(source_origin + delta))
+		draw_polyline(outline,Color("80e9d1"),1.0)
 	for part: Dictionary in _parts:
 		var vertices: PackedVector2Array = polygon(part)
 		var color: Color = part.color
@@ -50,6 +89,7 @@ func _draw() -> void:
 		if outlines:
 			vertices.append(vertices[0])
 			draw_polyline(vertices, color.lightened(0.35), 1.0, false)
+		if part.has("markings"): _draw_markings(part)
 		# Cues derive exclusively from the admitted/applied actuator receipt
 		# and the real Rapier transform. They never integrate a separate pose.
 		if bool(part.get("flight_live", false)):

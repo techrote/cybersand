@@ -68,6 +68,9 @@ struct WorldConfig {
     // assignment is refused at construction and never reaches a kernel.
     LiquidSolverPolicy liquid_solver_policy{};
     PressureOptimizationConfig pressure_optimization{};
+    // Execution-only, opt-in for the finite desktop workbench. Each job owns
+    // complete x-columns of the reference head field before row interpolation.
+    bool workbench_parallel_pressure_heads = false;
 };
 
 struct ChunkCoord {
@@ -202,6 +205,24 @@ public:
     [[nodiscard]] bool granular_support_at(std::int64_t x, std::int64_t y,
                                            bool side = false,
                                            bool include_transient_obstacles = true) const noexcept;
+    enum class GranularAdmissionRefusal : std::uint8_t {
+        None, Invalid, FailedWorld, NoMaskFreeWitness, SourceMasked,
+        SourceNonCapable, SourceUnstable, PathMasked, PathNonCapable,
+        PathUnstable, Packing, Count
+    };
+    struct GranularContactAdmission {
+        bool admitted = false;
+        std::uint8_t selected_depth = 0;
+        std::int8_t witness_dx = 0, witness_dy = 0;
+        std::uint32_t source_candidates = 1, geometry_mask_checks = 0;
+        std::uint32_t mask_checks = 0, path_checks = 0, shared_witness_calls = 0;
+        GranularAdmissionRefusal refusal_reason = GranularAdmissionRefusal::None;
+    };
+    // GCR-A1 side/up-only serialized-owner query. Source/force geometry stays
+    // external; this copied witness carries no material or response ownership.
+    [[nodiscard]] GranularContactAdmission granular_contact_admission_at(
+        std::int64_t source_x, std::int64_t source_y,
+        double outward_x, double outward_y) const noexcept;
     [[nodiscard]] std::uint16_t stored_state_a(std::int64_t x, std::int64_t y) const noexcept;
     [[nodiscard]] std::uint8_t stored_state_b(std::int64_t x, std::int64_t y) const noexcept;
     [[nodiscard]] std::uint16_t liquid_mass(std::int64_t x, std::int64_t y) const noexcept;
@@ -239,7 +260,10 @@ public:
     // Dynamic rigid bodies are represented by a transient collision field,
     // separate from authoritative material storage. The field is immutable
     // during tick() and therefore safe for phased worker reads without locks.
-    void configure_transient_obstacles(RectI64 region);
+    // Full reservation is a construction-time option for a bounded authored
+    // workspace. A sweeping mask can touch each cell of its domain at most once.
+    void configure_transient_obstacles(RectI64 region, bool reserve_full_occupancy = false);
+    [[nodiscard]] std::size_t transient_occupancy_capacity() const noexcept;
     void clear_transient_obstacles();
     [[nodiscard]] bool set_transient_obstacle(std::int64_t x, std::int64_t y,
                                                std::uint16_t body_id);
@@ -259,6 +283,24 @@ public:
     [[nodiscard]] std::uint64_t transient_contact_count(std::uint16_t body_id) const noexcept;
     [[nodiscard]] std::int64_t transient_contact_impulse_x(std::uint16_t body_id) const noexcept;
     [[nodiscard]] std::int64_t transient_contact_impulse_y(std::uint16_t body_id) const noexcept;
+    // GCR-001 value-only moving-grain wrench. Moments use doubled world cell
+    // centres and integer density weights; the consumer translates to its COM.
+    void enable_transient_granular_wrenches(bool enabled) noexcept;
+    void clear_transient_contact_observations() noexcept;
+    [[nodiscard]] std::int64_t transient_granular_impulse_x(std::uint16_t body_id) const noexcept;
+    [[nodiscard]] std::int64_t transient_granular_impulse_y(std::uint16_t body_id) const noexcept;
+    [[nodiscard]] std::int64_t transient_granular_moment2(std::uint16_t body_id) const noexcept;
+    [[nodiscard]] bool transient_granular_wrench_refused(std::uint16_t body_id) const noexcept;
+    // GCR-SEL-001 optional, exact preceding-tick cellular transport witness.
+    // Enable/disable only on the serialized healthy owner before its first tick.
+    void enable_granular_arrival_witness(bool enabled);
+    [[nodiscard]] std::size_t granular_arrival_storage_bytes() const noexcept;
+    [[nodiscard]] std::int64_t transient_arrival_impulse_x(std::uint16_t body_id) const noexcept;
+    [[nodiscard]] std::int64_t transient_arrival_impulse_y(std::uint16_t body_id) const noexcept;
+    [[nodiscard]] std::int64_t transient_arrival_moment2(std::uint16_t body_id) const noexcept;
+    [[nodiscard]] std::uint64_t transient_arrival_count(std::uint16_t body_id) const noexcept;
+    [[nodiscard]] std::uint64_t transient_arrival_missing(std::uint16_t body_id) const noexcept;
+    [[nodiscard]] std::uint64_t transient_arrival_misaligned(std::uint16_t body_id) const noexcept;
     [[nodiscard]] bool queue_explosion(std::int64_t x, std::int64_t y,
                                        std::int32_t radius,
                                        std::uint8_t collapse_strength = 255);
@@ -286,6 +328,7 @@ public:
     // A thrown tick quarantines this World until clear() or replacement. No
     // rollback, in-place retry, or replay of pending/partially applied events.
     [[nodiscard]] bool has_failed() const noexcept;
+    void quarantine_external_coupling() noexcept;
     [[nodiscard]] std::uint64_t completed_tick_index() const noexcept;
     [[nodiscard]] std::uint64_t tick_index() const noexcept;
     [[nodiscard]] std::size_t chunk_count() const noexcept;
@@ -325,6 +368,21 @@ public:
     // liquid policy assigns Water to it. Serialized owner queries between ticks.
     [[nodiscard]] bool pressure_flow_enabled() const noexcept;
     [[nodiscard]] PressureFlowParameters pressure_flow_parameters() const noexcept;
+    // Starting-setup reconstruction only, between healthy exclusive owners.
+    // The destination is an unexposed, fresh prepared World with the final
+    // cell tuples and new hull masks installed. No solver may call this in tick().
+    struct WorkbenchLiquidTransfer {
+        std::uint64_t preserved_overfill = 0, discarded_overfill = 0;
+        std::uint64_t preserved_gas = 0, discarded_gas = 0, discarded_pressure_flow_cells = 0;
+        std::uint64_t preserved_inertial_cells = 0, discarded_inertial_cells = 0;
+        std::array<std::uint64_t,kQuantityMaterialSlots> preserved_halo_materials{}, clipped_materials{};
+        std::uint64_t preserved_halo_visible_water = 0, clipped_visible_water = 0;
+        std::uint64_t clipped_water_overfill = 0, clipped_gas_amount = 0, clipped_gas_labels = 0;
+        std::uint64_t clipped_pressure_flow_cells = 0, clipped_inertial_cells = 0, clipped_thermal_cells = 0;
+        std::uint64_t halo_normalization_produced = 0, halo_normalization_consumed = 0;
+    };
+    WorkbenchLiquidTransfer inherit_workbench_liquid_state(const World& source, RectI64 canvas,
+        bool allow_conversion, bool normalize_water);
     [[nodiscard]] PressureCellState pressure_cell(std::int64_t x, std::int64_t y) const noexcept;
     // Copies the last pre-kernel derived head slot without preparing/allocating.
     // May be stale after transport/writes or unprepared after restore; no
@@ -445,6 +503,8 @@ private:
     std::unique_ptr<soliding::SettledWorldDiscoveryCoordinator> settled_discovery_;
     std::unique_ptr<PressureState> pressure_;
     bool inertial_enabled_ = false;
+    bool granular_arrival_enabled_ = false;
+    std::size_t granular_arrival_storage_bytes_ = 0;
     std::array<bool,kMaterialDefinitions.size()> inertial_materials_{};
     InertialLedger inertial_ledger_{};
     InertialParameters inertial_parameters_{};
@@ -560,8 +620,11 @@ private:
                                           JobEffects* effects);
     [[nodiscard]] std::uint8_t deterministic_random(std::int64_t x, std::int64_t y,
                                                     std::uint32_t stream) const noexcept;
+    [[nodiscard]] bool granular_sample_stable(std::int64_t x, std::int64_t y,
+                                               bool include_transient_obstacles) const noexcept;
     void record_transient_contact(std::uint16_t body_id, Material material,
-                                  std::int64_t delta_x, std::int64_t delta_y) noexcept;
+                                  std::int64_t delta_x, std::int64_t delta_y,
+                                  std::int64_t source_x, std::int64_t source_y) noexcept;
     [[nodiscard]] std::int32_t deterministic_direction(std::int64_t x, std::int64_t y) const noexcept;
     void begin_tick(TickStats& stats);
     void require_healthy() const;

@@ -74,9 +74,17 @@ struct Refusal {
 // Absolute construction budgets, independent of caller allocation history.
 inline constexpr std::uint32_t kMaximumSetupSide = 1024;
 inline constexpr std::size_t kMaximumSetupCells = kMaximumSetupSide * kMaximumSetupSide;
+inline constexpr std::uint32_t kMaximumWorkbenchSide = setup::kMaximumFiniteSetupSide;
 struct PreparationLimits {
     std::size_t maximum_cells = kMaximumSetupCells;
+    std::uint32_t maximum_side = kMaximumSetupSide;
 };
+
+// water-normalize-v1 uses the same half-up threshold for the authored domain
+// and any retained native halo cells. Temperature survives down-rounding.
+inline constexpr std::uint16_t normalized_visible_water(std::uint16_t quantity, std::uint16_t maximum) noexcept {
+    return std::uint32_t{2} * quantity >= maximum ? maximum : 0U;
+}
 
 struct NormalizationTotals {
     std::uint64_t cells_up = 0, cells_down = 0, cells_unchanged = 0;
@@ -221,18 +229,18 @@ public:
             return refuse(RefusalCode::UnknownParameter, "unknown Water quantity regime", std::uint16_t{3});
         if (opt_in != NormalizationOptIn::None && opt_in != NormalizationOptIn::WaterNormalizeV1)
             return refuse(RefusalCode::UnknownParameter, "unknown Water setup normalization rule", std::uint16_t{3});
-        if (limits.maximum_cells > kMaximumSetupCells || input.cells.size() > limits.maximum_cells)
+        if (limits.maximum_side > kMaximumWorkbenchSide || limits.maximum_cells > std::size_t{limits.maximum_side} * limits.maximum_side || input.cells.size() > limits.maximum_cells)
             return refuse(RefusalCode::CapacityRefused, "final setup exceeds normalization preparation budget");
         try { setup::validate_setup_descriptor(input.setup); }
         catch (const std::invalid_argument& error) {
             return refuse(RefusalCode::MalformedPolicy, error.what());
         }
         const auto& domain = input.setup.domain;
-        if (domain.width == 0 || domain.height == 0 || domain.width > kMaximumSetupSide ||
-            domain.height > kMaximumSetupSide ||
+        if (domain.width == 0 || domain.height == 0 || domain.width > limits.maximum_side ||
+            domain.height > limits.maximum_side ||
             domain.x > std::numeric_limits<std::int64_t>::max() - static_cast<std::int64_t>(domain.width - 1U) ||
             domain.y > std::numeric_limits<std::int64_t>::max() - static_cast<std::int64_t>(domain.height - 1U))
-            return refuse(RefusalCode::MalformedPolicy, "final setup domain is invalid or exceeds 1024x1024");
+            return refuse(RefusalCode::MalformedPolicy, "final setup domain is invalid or exceeds configured side limit");
 
         auto cells = input.cells;
         std::sort(cells.begin(), cells.end(), [](const auto& left, const auto& right) {
@@ -287,7 +295,7 @@ public:
                     if (!detail::add_u64(totals.cells_unchanged, 1) || !detail::add_u64(totals.water_after, maximum))
                         return refuse(RefusalCode::CapacityRefused, "normalization unchanged counter overflow", std::uint16_t{3});
                     result.cells_.push_back(cell);
-                } else if (std::uint32_t{2} * cell.state_a >= maximum) {
+                } else if (normalized_visible_water(cell.state_a,maximum) != 0) {
                     if (!detail::add_u64(totals.cells_up, 1) ||
                         !detail::add_u64(totals.positive_delta, maximum - cell.state_a) ||
                         !detail::add_u64(totals.water_after, maximum))

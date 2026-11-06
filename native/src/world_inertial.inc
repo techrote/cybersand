@@ -166,7 +166,7 @@ bool World::update_inertial(Material material, std::int64_t x, std::int64_t y, J
             if ((body_contact_targets[normal] & target_bit) == 0U) {
                 body_contact_targets[normal] |= target_bit;
                 record_physics(PhysicsEvent::BodyContact, material, Material::Empty, dx, dy, effects);
-                record_transient_contact(body, material, dx, dy);
+                record_transient_contact(body, material, dx, dy, cx, cy);
             }
             return false;
         }

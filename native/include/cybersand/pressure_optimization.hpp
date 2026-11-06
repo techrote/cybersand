@@ -7,7 +7,9 @@ namespace cybersand {
 
 // Execution v3's deterministic certificate work budget is not a wall-clock
 // break-even model. Fixed weights and windows are bound by execution identity.
-inline constexpr std::uint64_t kPressureOptimizationExecutionVersion = 3;
+// Execution v4 (#201 P1) adds derived sleeping-segment wake summaries; physical
+// results are unchanged, derived work differs, so the identity changes.
+inline constexpr std::uint64_t kPressureOptimizationExecutionVersion = 4;
 inline constexpr std::uint8_t kPressureCertificateWarmupVisits = 1;
 inline constexpr std::uint8_t kPressureCertificateBackoffVisits = 8;
 inline constexpr std::uint8_t kPressureCertificateTrialTicks = 8;
@@ -99,6 +101,9 @@ struct PressureOptimizationSnapshot {
     std::size_t common_counter_bytes = 0;
     std::size_t gas_components = 0, gas_valid_components = 0, gas_members = 0, gas_member_capacity = 0;
     std::size_t gas_dirty_chunks = 0, gas_capacity_bytes = 0;
+    // #201 P1 derived wake summaries (experimental; not in the 53-counter schema).
+    std::uint64_t wake_segments_scanned = 0, wake_segments_skipped = 0, wake_resets = 0;
+    std::size_t wake_clean_cells = 0, wake_capacity_bytes = 0;
     std::uint64_t gas_invalidation_pair_budget = 0;
     PressureOptimizationCounters counters{};
 };

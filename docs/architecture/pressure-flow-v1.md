@@ -429,3 +429,8 @@ they do not describe source `349d593`.
   collapse it (booked, never silent).
 - A component that vents and seals in the same tick recreates its sealed part at
   atmospheric amount (declared simplification).
+
+
+## Desktop development workbench execution
+
+On Draft #394, the workbench reference variant can assign independent vertical head columns to the native worker pool during preparation. The serial-reference comparison covers identical heads, gas, quantity, wakes and physical state. Row repair and gas topology still run on the owner. The base scientific host and cached variants retain their existing execution paths. Fixed-work timings and the native parity fixture are in the [dated workbench audit](../audits/2026-11-04-workbench-boundary-and-pacing.md).

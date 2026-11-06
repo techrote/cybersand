@@ -4,7 +4,7 @@ status: Current
 document-kind: guide
 scope: Local repository policy and unresolved remote CI and release prerequisites
 canonical-for: [repository-policy, ci-contradictions, release-prerequisites]
-last-reviewed: 2026-10-31
+last-reviewed: 2026-11-06
 related-documents: [source-checkpoint-and-recovery.md, local-build-and-validation.md, documentation-maintenance.md, ../audits/2026-09-19-runner-routing-weekend-benchmark.md]
 ---
 
@@ -33,6 +33,29 @@ exports, tools, caches, logs and local configuration. See [.gitignore](../../.gi
 [CONTRIBUTING](../../CONTRIBUTING.md) and [dependency provenance](../../third_party/README.md).
 Do not change historical release hashes to accept a local rebuild.
 
+
+## Reconciliation and design choices
+
+**Current owner policy (2026-11-06):** agents reconcile long-running or stacked
+branches with main as needed, without stopping for owner approval. Integration
+must not silently decide a design question, though. When a conflict or merge has to
+choose between competing systems, laws or designs, or changes default behavior or
+feel, the agent:
+
+- chooses the best-supported option and continues;
+- records it under **Design choices** in the PR: what was chosen, the alternative,
+  why, and what reversing it would take, written in plain language for a
+  non-programmer owner;
+- keeps the evidence and qualification needed for that choice. Protected-source
+  transitions, provider policy and release gates still apply.
+
+Purely mechanical conflicts (text, docs, routing) need no entry. The owner reviews
+these notes asynchronously and may redirect later. This adds no gate: merging to
+main, Ready, deleting finished work and default promotion remain owner actions as
+before.
+
+To limit drift, prefer refreshing long-running branches from main after significant
+main merges, and land a base before stacking more than one dependent layer on it.
 
 ## Current CI provider and draft gating
 
