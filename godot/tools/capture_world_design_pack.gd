@@ -26,6 +26,7 @@ var design_revision: String = ""
 var max_working_mib: int = 256
 var require_verified_source: bool = false
 var test_fail_publication: bool = false
+var test_pause_before_publication_ms: int = 0
 var attempt_id: String = ""
 var staging_path: String = ""
 var manifest: Dictionary = {}
@@ -86,6 +87,13 @@ func _parse_arguments() -> String:
 			if OS.get_environment("CYBERSAND_CAPTURE_FAULT_INJECTION") != "1":
 				return "publication fault injection requires explicit test environment"
 			test_fail_publication = true
+		elif argument.begins_with("--test-pause-before-publication-ms="):
+			if OS.get_environment("CYBERSAND_CAPTURE_FAULT_INJECTION") != "1":
+				return "publication pause injection requires explicit test environment"
+			var number: String = argument.trim_prefix("--test-pause-before-publication-ms=")
+			if not number.is_valid_int() or int(number) < 1 or int(number) > 30000:
+				return "test pause must be between 1 and 30000 milliseconds"
+			test_pause_before_publication_ms = int(number)
 		else:
 			return "unknown argument: " + argument
 	if pack_path.is_empty() or output_path.is_empty():
@@ -294,6 +302,9 @@ func _verify_staging() -> bool:
 func _publish_capture() -> bool:
 	if not _verify_staging():
 		return false
+	if test_pause_before_publication_ms > 0:
+		print("WORLD_DESIGN_CAPTURE validated staging, paused before publication")
+		OS.delay_msec(test_pause_before_publication_ms)
 	manifest.status = "complete"
 	manifest.success = true
 	manifest.capture_count = manifest.captures.size()
