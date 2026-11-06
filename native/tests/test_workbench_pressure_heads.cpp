@@ -161,6 +161,7 @@ void gap_preflight_commit_bound() {
     cfg.liquid_solver_policy = *policy.policy;
     cfg.chunk_size = cfg.scheduling_core_size = cfg.activity_block_size = 8;
     cfg.maximum_chunk_count = cfg.active_chunk_capacity = cfg.active_core_capacity = 16;
+    cfg.initial_chunk_reserve = 2;
     cfg.worker_threads = 1;
     World w(cfg);
     w.reserve_region({0, 0, 8, 8});
