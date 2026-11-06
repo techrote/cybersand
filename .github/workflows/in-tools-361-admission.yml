@@ -1,0 +1,42 @@
+name: IN-TOOLS 361 source admission
+
+on:
+  push:
+    branches:
+      - feat/in-tools-361-implementation-20261106
+    paths:
+      - '.github/workflows/in-tools-361-admission.yml'
+      - 'tools/lcb/in_tools_361_source_admission.py'
+      - 'tools/lcb/test_in_tools_361_source_admission.py'
+      - 'godot/tests/fixtures/lcb/in_tools/in-tools-361-source-admission.2026-11-06.json'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  a01:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - name: Check out exact source with history
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+      - name: Execute adversarial source-admission controls
+        run: |
+          set -euo pipefail
+          mkdir -p build/in-tools-361-admission
+          python3 -m unittest tools/lcb/test_in_tools_361_source_admission.py 2>&1 | tee build/in-tools-361-admission/a01-tests.log
+          python3 tools/lcb/in_tools_361_source_admission.py | tee build/in-tools-361-admission/admission-result.json
+          git rev-parse HEAD > build/in-tools-361-admission/source-sha.txt
+          git rev-parse HEAD^{tree} > build/in-tools-361-admission/source-tree.txt
+      - name: Retain A01 evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: in-tools-361-source-admission-${{ github.run_id }}
+          path: build/in-tools-361-admission/
+          if-no-files-found: warn
+          retention-days: 90
