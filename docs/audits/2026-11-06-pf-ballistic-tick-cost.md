@@ -216,6 +216,12 @@ publication (2.9–3.1 ms), aligned to physics frames.
 - A last-slot hint in the diagnostic histogram. There was no measurable change
   beyond run-to-run noise of about ±1.5 ms.
 
+The source edit is commit `481011090a9a56fb06311144b5bfb26f8f1028a4`. It changes `native/src/world.cpp` from LF
+SHA-256 `97e605b556c178f6169c1c89fff49041d5640b8fb0f728a6fc3d6c43506f4f00` to
+`5f510058ae43c8dcf6adc2df62b7fde580d5f509012c8c7a358a54f2a7dc2129`. This is a
+proposed reviewed transition for issue 362 and PR 406, pending review and the
+owner's admission.
+
 **Checks:** 186 native tests pass (Windows), and ASan/UBSan pass the full suite.
 TSan is clean for worker parity, determinism, Workbench parallel, BW-001,
 explosion and phased. The same ten Godot regressions pass on DLL `85b08402`.
