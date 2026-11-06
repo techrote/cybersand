@@ -1,0 +1,73 @@
+name: Experimental neighbour cursor paired qualification
+
+on:
+  push:
+    branches:
+      - codex/neighbour-cursor-independent-qualification-20261106
+
+permissions:
+  contents: read
+
+concurrency:
+  group: neighbour-cursor-qualification-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  native-qualification:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 210
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Verify source checkout and compiler
+        shell: bash
+        run: |
+          set -euxo pipefail
+          git status --short
+          git rev-parse HEAD
+          g++-13 --version
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 -m py_compile native/bench/run_neighbour_cursor.py native/bench/verify_neighbour_stress.py
+
+      - name: Prove stress-canvas source / rectangle / raster identity
+        shell: bash
+        run: |
+          set -euxo pipefail
+          mkdir -p /tmp/neighbour-qualification
+          python3 native/bench/verify_neighbour_stress.py --out /tmp/neighbour-qualification/source_fixture.json
+
+      - name: Run source-pinned native tests, sanitizers, paired timing, cursor oracle and profiling
+        shell: bash
+        run: |
+          set -euxo pipefail
+          python3 native/bench/run_neighbour_cursor.py \
+            --repo . --out /tmp/neighbour-qualification/paired \
+            --baseline 4a80af2a891332176a3912a235582d77d076a185 \
+            --candidate "${GITHUB_SHA}" \
+            --cycles 6 --extended --native-tests --sanitizers --tsan --verify-cursor \
+            | tee /tmp/neighbour-qualification/driver.log
+
+      - name: Publish raw evidence (not source trees or built runtimes)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: neighbour-cursor-experimental-qualification-${{ github.sha }}
+          retention-days: 14
+          if-no-files-found: warn
+          path: |
+            /tmp/neighbour-qualification/*.json
+            /tmp/neighbour-qualification/*.log
+            /tmp/neighbour-qualification/paired/*.json
+            /tmp/neighbour-qualification/paired/*.log
+            /tmp/neighbour-qualification/paired/native_*/*.log
+            /tmp/neighbour-qualification/paired/asan_ubsan/*.log
+            /tmp/neighbour-qualification/paired/tsan/*.json
+            /tmp/neighbour-qualification/paired/tsan/*.log
+            /tmp/neighbour-qualification/paired/raw/*.json
+            /tmp/neighbour-qualification/paired/raw/*.log
+            /tmp/neighbour-qualification/paired/raw/*.csv
+            /tmp/neighbour-qualification/paired/perf/*.log
+            /tmp/neighbour-qualification/paired/perf/*.data
