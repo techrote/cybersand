@@ -44,7 +44,6 @@ jobs:
           chmod +x "$GODOT"
           "$GODOT" --version | tee "$E/logs/godot-version.log"
           sha256sum "$GODOT" > "$E/logs/godot-executable-sha256.log"
-          chmod -R a-w
           export LIBGL_ALWAYS_SOFTWARE=1 GALLIUM_DRIVER=llvmpipe LP_NUM_THREADS=2 GALLIVM_PERF=nopt DISPLAY=:99
           Xvfb :99 -screen 0 1920x1080x24 -nolisten tcp > "$E/logs/xvfb.log" 2>&1 &
           XVFB_PID=$!
