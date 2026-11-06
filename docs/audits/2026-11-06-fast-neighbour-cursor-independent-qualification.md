@@ -79,6 +79,59 @@ All four extended 1,800-tick runs matched exact checkpoint hashes and determinis
 3. Add independent focused regressions for negative coordinate seams, 128-chunk corners, transient mask mutation, missing chunks, rule write-followed-by-read, reaction wake, epoch wrap, and permitted non-power-of-two chunk geometry (e.g. 192 at six-worker aligned phase geometry); run candidate ASan/UBSan and relevant TSan again at exact source head.
 4. Have a separate reviewer inspect source correctness and resulting evidence. If six-worker improvement remains below a worthwhile practical threshold, **REJECT the optimization** rather than adding broader 3×3 caches or preparing protected source admission. Only if it demonstrates worthwhile benefit with independent acceptance should source transition ancestry, exact-head provenance, Native/Godot gates, and owner acceptance proceed.
 
+## Activity-window reanalysis of the archived 600/1800-tick runs
+
+**Independent post-run analysis, 6 November 2026.** Recomputed from the complete per-tick
+CSV streams in [artifact #13545494749](https://github.com/techrote/cybersand/actions/runs/42303273494/artifacts/13545494749)
+(no fresh simulation). For each 600-tick time window, calculate the mean of
+the six within-cycle paired speedups, where improvement is
+`100 * (baseline_mean_ms - candidate_mean_ms) / baseline_mean_ms`.
+These are descriptive window estimates, *not* independent windows or additional
+replicates for statistical inference.
+
+| 600-tick window | Mean baseline 1-worker | Mean cursor 1-worker | Paired gain, 1 worker | Mean baseline 6-worker | Mean cursor 6-worker | Paired gain, 6 workers | Mean scheduled cores |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| 1–180 | 76.180 ms | 74.438 ms | +2.21% | 34.393 ms | 33.921 ms | +1.35% | 292.35 |
+| 181–360 | 87.634 ms | 83.904 ms | +4.22% | 38.957 ms | 37.925 ms | +2.62% | 353.50 |
+| 361–600 | 91.367 ms | 86.505 ms | +5.27% | 40.100 ms | 39.079 ms | +2.53% | 398.40 |
+| 421–600 | 91.588 ms | 86.641 ms | +5.35% | 40.154 ms | 39.136 ms | +2.52% | 402.19 |
+
+The stronger later one-worker benefit supports the hypothesis that the read
+optimization is more useful under a larger active-core workload. The six-worker
+increase is weaker and variable on a four-logical-processor hosted machine.
+The scheduled-core counts are *exactly the same* in each comparison; changed
+work is not the cause of the measured timing differences. This is consistent
+with read-path cost reduction but does not prove a causal microarchitectural
+mechanism without function/line profiling.
+
+The **single** baseline/candidate 1,800-tick extension for each worker setting
+(additional descriptive information, `n=1`, not an inference) was:
+
+| 1,800-tick window | 1-worker baseline → candidate | Gain | 6-worker baseline → candidate | Gain | Mean scheduled cores |
+|---|---:|---:|---:|---:|---:|
+| 1–180 | 76.360 → 74.542 ms | +2.38% | 34.852 → 34.137 ms | +2.05% | 292.35 |
+| 721–900 | 94.621 → 90.437 ms | +4.42% | 42.766 → 40.320 ms | +5.72% | 441.20 |
+| 1621–1800 | 103.024 → 98.445 ms | +4.44% | 45.505 → 43.534 ms | +4.33% | 598.80 |
+| 1–1800 | 93.976 → 90.087 ms | +4.14% | 42.161 → 40.302 ms | +4.41% | 457.60 |
+
+A repeatable sustained 6-worker gain is still *not proven*, particularly on a
+machine with only four logical CPUs. If further perf effort is justified, prioritise
+steady-state/late-activity measurements on a true 6-core/12-logical-CPU host and
+keep the 600-tick early-growth and 1,800-tick results separately labeled.
+
+### Independent edge-case and non-perf profiling follow-up
+
+[Focused source-pinned CI #42312672077](https://github.com/techrote/cybersand/actions/runs/42312672077)
+compares all 520 ticks for the original and cursor under 1/6 workers in
+signed 128/192-cell chunk-seam, dynamic transient-mask/re-entry, non-resident/new
+chunk, and epoch-wrap cases; candidate sanitizers and guarded local oracle are
+included. [Callgrind CI #42313028634](https://github.com/techrote/cybersand/actions/runs/42313028634)
+uses identical 16 early stress-canvas ticks with the Valgrind instruction event
+to provide supplemental function/source-line attribution without elevated
+`perf_event` privileges. Neither makes a six-core speedup claim. Results require
+their own exact-head evidence readback; at the time of this report, both are
+running.
+
 ## Required follow-up and admission gate
 
 1. Decode all artifacts; classify full native/sanitizer/TSan results, including environmental failures. Compile and execute full native tests with `CYBERSAND_VERIFY_LOCAL_NEIGHBOUR` where practicable, concentrating on signed seams, nonpower-two chunks, transient masks, reaction wake, and changing material values in a rule. Non-power-two chunk size 192 is valid for six-worker phased geometry (aligned to 64-core), unlike 48.
