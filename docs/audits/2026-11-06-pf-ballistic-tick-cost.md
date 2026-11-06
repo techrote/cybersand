@@ -344,6 +344,11 @@ rule, and the continue, merge, split, vent and collapse paths are unchanged.
 This is a gas-law change on the experimental branch. It is not
 behaviour-preserving, and its protected-source transition is recorded as such.
 
+The source edit is commit `a2373e12fb87d8d5b28efcc6037316fb6f605a14`, and the transition is pinned to it.
+`native/src/world_pressure.inc` changes from LF SHA-256 `894068b587b17b215c993d0eea5c5f14a8a818d4c1430c246f13bdec66653738` to `26051b0d10ab10d65db822c993742e0a0bf13711f3bd56158e95d77735737aca`. The
+owner approved the rule, and the transition is proposed for issue 362 and PR
+406, pending independent review.
+
 ## Remaining costs and next investigations
 
 1. **Gas BFS, about 2.4 ms serial.** This bounded atmosphere exploration
