@@ -122,45 +122,62 @@ jobs:
       - name: Cross-capacity CYPS decoder and old-ceiling byte identity
         if: always()
         run: |
-          set -uo pipefail
+          set -euo pipefail
           root=build/pf-gas-capacity
           : > "$root/cyps-compat.tsv"
+          : > "$root/cyps-high.tsv"
+          # Capture expected negative return codes in an if statement: GitHub
+          # invokes bash with -e even when the step itself sets -u/pipefail.
           for cap in 1024 2048 4096; do
             for source in 1024 2048 4096; do
               file="$root/saves/C${source}_isolated_v0_w1_n1024-t1.cyps"
-              if [ ! -s "$file" ] || [ ! -x "$root/bin/C$cap" ]; then
-                printf '%s\t%s\tSKIPPED\n' "$cap" "$source" >> "$root/cyps-compat.tsv"
-                continue
+              log="$root/logs/restore-C${cap}-from-C${source}.log"
+              test -s "$file"
+              if "$root/bin/C$cap" --restore 0 1 "$file" >"$log" 2>&1; then
+                result=0
+              else
+                result=$?
               fi
-              "$root/bin/C$cap" --restore 0 1 "$file" >"$root/logs/restore-C${cap}-from-C${source}.log" 2>&1
-              printf '%s\t%s\t%s\n' "$cap" "$source" "$?" >> "$root/cyps-compat.tsv"
+              printf '%s\t%s\t%s\n' "$cap" "$source" "$result" >> "$root/cyps-compat.tsv"
+              if [ "$result" -ne 0 ]; then
+                echo "Old-ceiling CYPS was unexpectedly refused C$cap from C$source (exit $result)" >&2
+                cat "$log" >&2
+                exit 1
+              fi
             done
           done
           sha256sum "$root"/saves/C*_isolated_v0_w1_n1024-t1.cyps \
-            >"$root/identical-old-ceiling-sha256.txt" 2>/dev/null || true
+            >"$root/identical-old-ceiling-sha256.txt"
           cat "$root/cyps-compat.tsv"
-          # Saves containing 1175 compartments are valid for high-capacity builds,
-          # but must be explicitly refused by the unchanged C1024 decoder.
+          # The native default contains 1175 compartments. Old C1024 must
+          # refuse at the exact decoder bound; C2048 and C4096 must accept.
           for cap in 2048 4096; do
             file="$root/saves/C${cap}_default_v0_w1_n1025-t1.cyps"
-            if [ ! -s "$file" ]; then
-              printf 'old-decoder-from-%s\tMISSING\n' "$cap" >> "$root/cyps-high.tsv"
+            test -s "$file"
+            log="$root/logs/restore-C1024-from-C${cap}-default-high.log"
+            if "$root/bin/C1024" --restore 0 1 "$file" >"$log" 2>&1; then
+              result=0
+            else
+              result=$?
+            fi
+            printf 'old-decoder-from-%s\t%s\n' "$cap" "$result" >> "$root/cyps-high.tsv"
+            if [ "$result" -ne 7 ] || ! grep -Fq 'compartment count exceeds capacity' "$log"; then
+              echo "C1024 decoder did not give the required count-bound refusal (exit $result)" >&2
+              cat "$log" >&2
               exit 1
             fi
-            "$root/bin/C1024" --restore 0 1 "$file" \
-              >"$root/logs/restore-C1024-from-C${cap}-default-high.log" 2>&1
-            result="$?"
-            printf 'old-decoder-from-%s\t%s\n' "$cap" "$result" >> "$root/cyps-high.tsv"
-            if [ "$result" -eq 0 ]; then
-              echo "C1024 decoder unexpectedly accepted 1175 live compartments" >&2;exit 1
-            fi
             for target in 2048 4096; do
-              "$root/bin/C$target" --restore 0 1 "$file" \
-                >"$root/logs/restore-C${target}-from-C${cap}-default-high.log" 2>&1
-              result="$?"
+              log="$root/logs/restore-C${target}-from-C${cap}-default-high.log"
+              if "$root/bin/C$target" --restore 0 1 "$file" >"$log" 2>&1; then
+                result=0
+              else
+                result=$?
+              fi
               printf 'high-decoder-%s-from-%s\t%s\n' "$target" "$cap" "$result" >> "$root/cyps-high.tsv"
-              if [ "$result" -ne 0 ]; then
-                echo "Raised decoder failed on supported CYPS" >&2;exit 1
+              if [ "$result" -ne 0 ] || ! grep -Fq 'restore_accepted' "$log"; then
+                echo "Raised decoder failed on supported high-capacity CYPS" >&2
+                cat "$log" >&2
+                exit 1
               fi
             done
           done
