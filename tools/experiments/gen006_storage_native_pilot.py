@@ -203,6 +203,22 @@ def main() -> int:
     require(native_cyps(stage_records[-1])[1] ==
             native_cyps(final_record)[1],
             "G6J_NATIVE_REPLAY_PHYSICAL_BYTES_MISMATCH")
+    # Real native-generated payload comparison, not disk syscall, native tick,
+    # end-to-end ACK latency or production write-amplification measurement.
+    # Each of the five complete native G6SLICE1 files is from an actual
+    # source-matched World after the corresponding durable edit. G6J1 stores
+    # the original CYPS payload once plus 48 bytes per edit.
+    native_full_payload = sum(len(blob) for blob in stage_records)
+    journal_payload = (work / "edits.g6j").stat().st_size
+    require(native_full_payload > 0 and
+            journal_payload == 64 + len(cyps) + len(edits) * 48,
+            "G6J_NATIVE_STORAGE_PAYLOAD_ACCOUNTING_REFUSED")
+    print("GEN006_G6J1_REAL_NATIVE_PAYLOAD full_checkpoint_bytes={}"
+          " journal_baseline_plus_edits_bytes={}"
+          " journal_percent_of_full={:.2f}"
+          " no_latency_or_tick_speedup_claim=1".format(
+              native_full_payload, journal_payload,
+              100.0 * journal_payload / native_full_payload))
     require(Journal.open(work / "edits.g6j", *CHUNK, identity.incarnation)
             .state.generation == edits[-1].generation,
             "G6J_RECOVERED_JOURNAL_NOT_REOPENABLE")
