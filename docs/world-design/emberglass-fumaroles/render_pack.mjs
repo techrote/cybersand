@@ -69,8 +69,8 @@ function svgForPack(p){
   for(let yy=0;yy<80;yy++){let xx=0;while(xx<230){let id=mc[(sy+yy)*mw+sx+xx],end=xx+1;while(end<230&&mc[(sy+yy)*mw+sx+end]===id)end++;if(id>=0&&id!==0)parts.push(rect(xx,yy,end-xx,1,id));xx=end;}}
   parts.push('</g>');parts.push(`<text x="${px+3}" y="1666" font-family="monospace" font-size="11" fill="#d1a874">${label}</text>`);
  }
- parts.push('<text x="70" y="1694" font-family="monospace" font-size="13" fill="#d1a874">06 — BROKEN CALDERA DIADEM / SOURCE-CELL CLOSE STUDIES · 2.4×</text>');
- for(const [px,sx,sy,label] of [[64,394,48,'WESTERN CROSS-BEDS / QUENCH LEDGERS'],[646,615,48,'EASTERN SHEAR / FUSED-GLASS TEETH']]){
+ parts.push('<text x="70" y="1694" font-family="monospace" font-size="13" fill="#d1a874">06 — SHATTERED ROOF WITNESSES / SOURCE-CELL CLOSE STUDIES · 2.4×</text>');
+ for(const [px,sx,sy,label] of [[64,73,23,'WESTERN CROWN / FRACTURED SURVEY LENS'],[646,782,17,'EASTERN ROOF / FOUR DEAD QUENCH SLIPS']]){
   parts.push(`<rect x="${px}" y="1712" width="552" height="192" fill="#090c16" stroke="#343743"/>`);
   parts.push(`<g transform="translate(${px} 1712) scale(2.4)">`);
   for(let yy=0;yy<80;yy++){let xx=0;while(xx<230){let id=mc[(sy+yy)*mw+sx+xx],end=xx+1;while(end<230&&mc[(sy+yy)*mw+sx+end]===id)end++;if(id>=0&&id!==0)parts.push(rect(xx,yy,end-xx,1,id));xx=end;}}
