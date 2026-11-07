@@ -14,6 +14,10 @@ const FRAME_BYTES: int = SIDE * SIDE * 4
 const CONTROLLER_TICK_HZ: int = 30
 const FRAME_REFRESH_SECONDS: float = 0.10
 const IPC_TIMEOUT_MSEC: int = 5000
+# The interactive host never blocks the Godot render/input thread on native IPC.
+# One request is in flight; only 16 explicitly authored actions may be queued.
+# Camera refreshes coalesce into a single latest-position demand.
+const MAX_QUEUED_ACTIONS: int = 16
 
 var world_chunk := DEMO_START
 var selected_cell := Vector2i(18, 30)
@@ -37,6 +41,18 @@ var pin_notice: String = ""
 var request_sequence: int = 0
 var refresh_accumulator: float = 0.0
 var controller_started: bool = false
+var interactive_async: bool = false
+var ipc_outstanding: bool = false
+var ipc_request_chunk: Vector2i = DEMO_START
+var ipc_request_usec: int = 0
+var ipc_request_was_edit: bool = false
+var queued_actions: Array[Dictionary] = []
+var focus_dirty: bool = false
+var displayed_chunk: Vector2i = DEMO_START
+var input_refusal: String = ""
+var acknowledged_edits: int = 0
+var eviction_receipts: int = 0
+var reload_receipts: int = 0
 
 
 func _ready() -> void:
@@ -65,6 +81,12 @@ func _ready() -> void:
         return
     _invoke(PackedStringArray(), false, true)
     controller_started = failure.is_empty() and texture != null
+    # The synchronous path is retained only for deterministic scripted native
+    # and framebuffer qualification. Real gameplay uses the nonblocking pump.
+    interactive_async = OS.get_environment("GEN006_SLICE_FORCE_ASYNC_TEST") == "1" or (
+        OS.get_environment("GEN006_SLICE_VERIFY") != "1"
+        and OS.get_environment("GEN006_GRAPHICAL_EVIDENCE").is_empty()
+    )
     set_process(controller_started)
 
     # CI smoke uses exactly the same persistent controller and UI script.
@@ -150,6 +172,10 @@ func _read_response(started_usec: int) -> bool:
         failure = "Native command refused: " + last_receipts.right(350)
         return false
     for line in last_receipts.split("\n", false):
+        if line.begins_with("EVICT "):
+            eviction_receipts += 1
+        elif line.begins_with("RELOAD "):
+            reload_receipts += 1
         if line.begins_with("STATUS resident="):
             # Replace the complete roster per native STATUS, not just the
             # last pinned shard. A full budget is only two in this prototype.
@@ -223,7 +249,102 @@ func _invoke(actions: PackedStringArray, force_eviction: bool = false,
     if not _write_request(commands) or not _read_response(started):
         queue_redraw()
         return
-    _update_texture()
+    if _update_texture():
+        displayed_chunk = world_chunk
+
+
+func _queue_live_focus() -> void:
+    # Only the latest camera position is relevant. Never create unbounded
+    # intermediate native Worlds for rapid arrow-key navigation.
+    focus_dirty = true
+    queue_redraw()
+
+
+func _queue_live_action(action: String, is_edit: bool = true) -> void:
+    if queued_actions.size() >= MAX_QUEUED_ACTIONS:
+        input_refusal = "Input backpressure: 16 pending actions; edit NOT submitted."
+        queue_redraw()
+        return
+    # Bind the edit to the camera chunk at the instant of player input.
+    # Later navigation cannot silently paint the destination chunk instead.
+    queued_actions.append({
+        "chunk": world_chunk, "command": action, "edit": is_edit
+    })
+    input_refusal = ""
+    queue_redraw()
+
+
+func _start_live_request() -> void:
+    if ipc_outstanding or not failure.is_empty():
+        return
+    var target: Vector2i = world_chunk
+    var commands := PackedStringArray()
+    var action: Dictionary = {}
+    var has_action := not queued_actions.is_empty()
+    if has_action:
+        action = queued_actions.pop_front()
+        target = action["chunk"]
+    elif not focus_dirty:
+        return
+    else:
+        focus_dirty = false
+    commands.append("focus %d %d" % [target.x, target.y])
+    if has_action:
+        commands.append(str(action["command"]))
+    commands.append("render")
+    commands.append("status")
+    var started := Time.get_ticks_usec()
+    if not _write_request(commands):
+        # File publication failed: the action has NOT been handed to native.
+        if has_action:
+            queued_actions.push_front(action)
+        else:
+            focus_dirty = true
+        queue_redraw()
+        return
+    ipc_request_chunk = target
+    ipc_request_usec = started
+    ipc_request_was_edit = has_action and bool(action["edit"])
+    ipc_outstanding = true
+    queue_redraw()
+
+
+func _service_live_ipc() -> void:
+    if native_pid <= 0 or not OS.is_process_running(native_pid):
+        failure = "Persistent native controller stopped; queued edits unconfirmed."
+        queue_redraw()
+        return
+    if ipc_outstanding:
+        var response_path := ipc_root.path_join("response.txt")
+        if FileAccess.file_exists(response_path):
+            # _read_response returns immediately once the response exists.
+            var accepted := _read_response(ipc_request_usec)
+            ipc_outstanding = false
+            if not accepted:
+                # An ambiguous or refused edit must never be silently retried.
+                input_refusal = "Native response failed; last edit outcome UNKNOWN."
+                queue_redraw()
+                return
+            if ipc_request_was_edit:
+                if not last_receipts.contains("GEN006_EDIT_DURABLE_ACK "):
+                    failure = "Native edit has no durable ACK; outcome not confirmed."
+                    queue_redraw()
+                    return
+                acknowledged_edits += 1
+            if ipc_request_chunk == world_chunk:
+                if _update_texture():
+                    displayed_chunk = ipc_request_chunk
+            else:
+                # A response from an old camera demand must not be displayed
+                # as the current destination. Request the latest view next.
+                focus_dirty = true
+            queue_redraw()
+        elif Time.get_ticks_usec() - ipc_request_usec > IPC_TIMEOUT_MSEC * 1000:
+            failure = "Native IPC deadline exceeded; outstanding edit state UNKNOWN."
+            queue_redraw()
+            return
+    if not ipc_outstanding and failure.is_empty():
+        _start_live_request()
 
 
 func _send_quit() -> void:
@@ -248,10 +369,13 @@ func _exit_tree() -> void:
 func _process(delta: float) -> void:
     if not controller_started or not failure.is_empty():
         return
+    if not interactive_async:
+        return
     refresh_accumulator += delta
     if refresh_accumulator >= FRAME_REFRESH_SECONDS:
         refresh_accumulator = 0.0
-        _invoke(PackedStringArray())
+        _queue_live_focus()
+    _service_live_ipc()
 
 
 func _qualify_and_quit() -> void:
@@ -286,17 +410,31 @@ func _unhandled_key_input(event: InputEvent) -> void:
         KEY_UP: move = Vector2i(0, -1)
         KEY_DOWN: move = Vector2i(0, 1)
         KEY_HOME: world_chunk = DEMO_START
-        KEY_SPACE: _invoke(PackedStringArray(["tick 1"]))
-        KEY_R: _invoke(PackedStringArray())
+        KEY_SPACE:
+            if interactive_async:
+                _queue_live_action("tick 1", false)
+            else:
+                _invoke(PackedStringArray(["tick 1"]))
+        KEY_R:
+            if interactive_async:
+                _queue_live_focus()
+            else:
+                _invoke(PackedStringArray())
     if move != Vector2i.ZERO:
         world_chunk += move * (24 if key.shift_pressed else 1)
         failure = ""
         # A real camera miss demands one chunk. Do not manufacture an LRU
         # eviction by visiting two unrequested synthetic neighbor chunks.
-        _invoke(PackedStringArray(), false, true)
+        if interactive_async:
+            _queue_live_focus()
+        else:
+            _invoke(PackedStringArray(), false, true)
     elif key.keycode == KEY_HOME:
         failure = ""
-        _invoke(PackedStringArray(), false, true)
+        if interactive_async:
+            _queue_live_focus()
+        else:
+            _invoke(PackedStringArray(), false, true)
     elif key.keycode in [KEY_SPACE, KEY_R]:
         get_viewport().set_input_as_handled()
 
@@ -323,14 +461,17 @@ func _gui_input(event: InputEvent) -> void:
         MOUSE_BUTTON_MIDDLE:
             edit = "water %d %d 17" % [selected_cell.x, selected_cell.y]
     if not edit.is_empty():
-        _invoke(PackedStringArray([edit]), false, true)
+        if interactive_async:
+            _queue_live_action(edit)
+        else:
+            _invoke(PackedStringArray([edit]), false, true)
         accept_event()
 
 func _draw() -> void:
     draw_rect(Rect2(Vector2.ZERO, size), Color("#0d1220"), true)
     var font: Font = ThemeDB.fallback_font
     draw_string(font, Vector2(28, 30), "GEN-006 / Native World Stream [experimental]", HORIZONTAL_ALIGNMENT_LEFT, -1, 22, Color("#dee9fb"))
-    draw_string(font, Vector2(28, 54), "Arrows: chunk  |  Shift+arrows: 1536px  |  Home: terrain  |  L: wall  R-click: dig  Middle: Water17  Space: tick", HORIZONTAL_ALIGNMENT_LEFT, -1, 14, Color("#a3b5ce"))
+    draw_string(font, Vector2(28, 54), "Arrows: chunk  |  Shift+arrows: 1536px  |  Home: terrain  |  Left-click: Wall  |  Right-click: dig  |  Middle: Water17  |  Space: tick", HORIZONTAL_ALIGNMENT_LEFT, -1, 14, Color("#a3b5ce"))
     draw_rect(Rect2(DISPLAY_TOP_LEFT - Vector2(2, 2),
                    Vector2(DISPLAY_SIZE + 4, DISPLAY_SIZE + 4)),
                    Color("#3f5972"), false, 2.0)
@@ -365,6 +506,12 @@ func _draw() -> void:
             service_ticks, CONTROLLER_TICK_HZ, float(last_call_usec) / 1000.0
         ], HORIZONTAL_ALIGNMENT_LEFT, -1, 14, Color("#9caec9"))
     draw_string(font, Vector2(710, 233),
+        "IPC %s | queued: %d/%d | durable edit ACKs: %d | evict/reload: %d/%d" % [
+            "BUSY" if ipc_outstanding else "READY", queued_actions.size(),
+            MAX_QUEUED_ACTIONS, acknowledged_edits, eviction_receipts,
+            reload_receipts
+        ], HORIZONTAL_ALIGNMENT_LEFT, -1, 12, Color("#9caec9"))
+    draw_string(font, Vector2(710, 370),
         "Copied native RGBA 64x64 (not Godot production shader)",
         HORIZONTAL_ALIGNMENT_LEFT, -1, 14, Color("#9caec9"))
     draw_string(font, Vector2(710, 255),
@@ -381,14 +528,17 @@ func _draw() -> void:
         draw_string(font, Vector2(710, 302 + i * 20),
             "PIN %d/%d: %s" % [i + 1, pinned_chunks.size(), pinned_chunks[i].left(82)],
             HORIZONTAL_ALIGNMENT_LEFT, 540.0, 12, Color("#f4a261"))
+    if not input_refusal.is_empty():
+        draw_string(font, Vector2(710, 346), input_refusal,
+                    HORIZONTAL_ALIGNMENT_LEFT, 550.0, 14, Color("#ff967b"))
     if not failure.is_empty():
-        draw_string(font, Vector2(710, 349), failure,
+        draw_string(font, Vector2(710, 394), failure,
                     HORIZONTAL_ALIGNMENT_LEFT, 550.0, 15, Color("#ff967b"))
     else:
         var lines := last_receipts.split("\n", false)
         var tail := lines.slice(maxi(0, lines.size() - 14))
         for i in range(tail.size()):
-            draw_string(font, Vector2(710, 363 + i * 19),
+            draw_string(font, Vector2(710, 404 + i * 19),
                         tail[i].left(92), HORIZONTAL_ALIGNMENT_LEFT,
                         520.0, 13, Color("#a5be9d"))
     draw_string(font, Vector2(28, 751),
