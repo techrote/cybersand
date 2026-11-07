@@ -159,7 +159,7 @@ def main()->int:
         doc={
             "schema":"pf504-full-workbench-cpu-physics-v1",
             "status":status,"decision":"NO_MERGE_NO_FULL_FACTORIAL",
-            "base":historical["base_source"],"candidate":historical["optimized_source"],
+            "base":historic["base_source"],"candidate":historic["optimized_source"],
             "profile_probes":json.loads((root/"probe-patch-identities.json").read_text()),
             "host_source_probes":json.loads((root/"godot-source-probe.json").read_text()),
             "workload":historic["workload"],
