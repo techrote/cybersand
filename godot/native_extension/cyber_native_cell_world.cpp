@@ -1905,6 +1905,7 @@ Dictionary CyberNativeCellWorld::inspect_gas_compartments() const {
     if (world_ == nullptr || !world_->pressure_flow_enabled()) return out;
     const auto parameters = world_->pressure_flow_parameters();
     out["gas_enabled"] = parameters.gas_enabled;
+    out["compartment_capacity"] = static_cast<std::int64_t>(parameters.gas_compartment_capacity);
     out["atmospheric_head_rows"] = static_cast<std::int64_t>(parameters.atmospheric_head_rows);
     out["topology_revision"] = static_cast<std::int64_t>(world_->gas_topology_revision());
     out["next_id"] = static_cast<std::int64_t>(world_->gas_next_id());
