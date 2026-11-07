@@ -10,7 +10,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from atlas_agent import pilot_quality
-from atlas_agent.dryrun import DryRunBackend, load_plan
+from atlas_agent.dryrun import DryRunBackend, load_plan, _first_shot
 from atlas_agent.errors import ConfigError
 
 PLANS = Path(__file__).resolve().parent / "pilots"
@@ -35,6 +35,18 @@ class PilotTests(unittest.TestCase):
             self.assertIn("render_capture", tools)
             self.assertIn("compare_captures", tools)
             self.assertEqual(tools[-1], "submit_report")
+
+    def test_wide_map_uses_viewport_instead_of_oversized_full_image(self):
+        listing = {"list_captures": {"bundles": {"input": {"shots": [
+            {"shot_id": "full", "kind": "full", "collection": "wide",
+             "verified": True, "width": 2640, "height": 560},
+            {"shot_id": "viewport", "kind": "viewport", "collection": "wide",
+             "verified": True, "width": 1920, "height": 1080},
+            {"shot_id": "detail", "kind": "detail", "collection": "wide",
+             "verified": True, "width": 1920, "height": 768},
+        ]}}}}
+        shot = _first_shot(listing, "wide")
+        self.assertEqual(shot["shot_id"], "viewport")
 
     def test_malformed_rectangle_pilot_is_rejected(self):
         with tempfile.TemporaryDirectory() as root:
