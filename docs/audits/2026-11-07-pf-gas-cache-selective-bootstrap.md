@@ -70,6 +70,15 @@ The measured redundancy is instead in the final label publication sweep:
 the diagnostic examined ~2.17 million resident cells per gas tick for relabel
 while the BFS actually visited ~207 thousand cells per tick.
 
+The first real 2048x1024 Godot run exposed a second independent blocker:
+the head repair exceeded its budget every gas-enabled tick and the head fallback
+called the broad `cache->cold()`. That discarded the complete resident index
+and gas visit history even though the fallback concerned only head repair.
+Candidate relabel work therefore remained exactly 2,949,120 cells/tick. The
+final implementation narrows that transition: head-budget fallback invalidates
+head/certificate/wake reuse only; true membership, restore, policy or authority
+changes retain the full cold path.
+
 Execution v5 adds bounded derived bookkeeping to cached variants:
 
 1. Two construction-time bits per admitted resident cell retain the current
@@ -88,6 +97,9 @@ Execution v5 adds bounded derived bookkeeping to cached variants:
 6. Missing prior-visit history, dirty-set overflow, cache/index uncertainty,
    gas-cache replay, gas-pass chunk allocation, or a malformed visit/bit
    relation falls back to the original complete relabel sweep.
+7. An independent head-repair budget fallback does not revoke otherwise valid
+   resident-index or gas visit evidence; it clears head/certificate/wake reuse
+   only.
 
 The complete scan's dangling-label retirement rule is retained exactly. Sparse
 relabelling therefore does not infer topology from visible pixels, Water
