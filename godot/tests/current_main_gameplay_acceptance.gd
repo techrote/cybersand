@@ -47,6 +47,11 @@ class AcceptanceHarness:
 	var maximum_scheduler_jobs := 0
 	var maximum_parallel_phases := 0
 	var maximum_worker_overruns := 0
+	var worker_requested := -1
+	var worker_capacity := -1
+	var observed_worker_max := -1
+	var worker_samples: Array[Dictionary] = []
+	var _last_worker_sequence := -1
 	var _last_process_usec := 0
 	var _last_physics_usec := 0
 	var _last_snapshot_serial := -1
@@ -78,6 +83,11 @@ class AcceptanceHarness:
 		maximum_scheduler_jobs = 0
 		maximum_parallel_phases = 0
 		maximum_worker_overruns = 0
+		worker_requested = -1
+		worker_capacity = -1
+		observed_worker_max = -1
+		worker_samples.clear()
+		_last_worker_sequence = -1
 		_last_process_usec = 0
 		_last_physics_usec = 0
 		_last_snapshot_serial = latest_snapshot.serial if latest_snapshot != null else -1
@@ -139,6 +149,21 @@ class AcceptanceHarness:
 		if latest_snapshot.render_generated_usec > 0:
 			retained_render_age_ms.append(maxf(0.0,
 				float(now_usec - latest_snapshot.render_generated_usec) / 1000.0))
+		worker_requested = int(latest_snapshot.native_worker_request)
+		var participation: Dictionary = latest_snapshot.native_worker_participation
+		if not participation.is_empty() and int(participation.get("sequence", -1)) != _last_worker_sequence:
+			_last_worker_sequence = int(participation.get("sequence", -1))
+			worker_capacity = int(participation.get("worker_capacity", -1))
+			observed_worker_max = maxi(observed_worker_max, int(participation.get("workers_observed", -1)))
+			worker_samples.append({
+				"sequence":_last_worker_sequence,
+				"completed_tick":int(participation.get("completed_tick", -1)),
+				"world_generation":int(participation.get("world_generation", -1)),
+				"capacity":worker_capacity,
+				"observed":int(participation.get("workers_observed", -1)),
+				"phase_jobs":participation.get("phase_jobs", []).duplicate(),
+				"native_tick_ms":float(participation.get("native_tick_ms", -1.0)),
+			})
 		if latest_snapshot.serial == _last_snapshot_serial:
 			return
 		_last_snapshot_serial = int(latest_snapshot.serial)
@@ -358,6 +383,17 @@ func _profile(desktop, panel, profile: Dictionary) -> Dictionary:
 	var ballistic_ledger: Dictionary = spray.get("ledger", {})
 	expect(int(ballistic_ledger.get("launched_parcels", 0)) > 0,
 		name + " ballistic parcel transport was observed")
+	var configured_workers := int(OS.get_environment("CYBERSAND_GAMEPLAY_ACCEPTANCE_WORKERS"))
+	expect(desktop.worker_requested == configured_workers,
+		name + " worker requested readback must match configured policy")
+	expect(desktop.worker_capacity == configured_workers,
+		name + " native pool capacity readback must match configured policy")
+	expect(desktop.worker_samples.size() > 0,
+		name + " must retain actual completed-tick native participant samples")
+	expect(desktop.observed_worker_max >= 1 and desktop.observed_worker_max <= configured_workers,
+		name + " observed worker claimants must be within configured capacity")
+	expect(str(desktop.latest_snapshot.backend_name) == "native-phased",
+		name + " must run production native phased backend")
 	var screenshot := await _capture(name)
 	var assignment := _water_assignment(desktop)
 	return {
@@ -369,6 +405,11 @@ func _profile(desktop, panel, profile: Dictionary) -> Dictionary:
 		"lockstep_enabled":bool(desktop.lockstep_coupling_enabled),
 		"water_assignment":assignment,
 		"actors":desktop.physical_actor_session.bodies().size(),
+		"worker_request":desktop.worker_requested,
+		"worker_capacity":desktop.worker_capacity,
+		"workers_observed_max":desktop.observed_worker_max,
+		"worker_samples":desktop.worker_samples.duplicate(true),
+		"native_backend":str(desktop.latest_snapshot.backend_name),
 		"initial_snapshot_serial":initial_serial,
 		"snapshot_publications":desktop.snapshot_publications,
 		"render_publications":desktop.render_publications,
@@ -428,6 +469,13 @@ func _write_json(path: String, value: Variant) -> bool:
 	return true
 
 func run() -> void:
+	var configured_workers := int(OS.get_environment("CYBERSAND_GAMEPLAY_ACCEPTANCE_WORKERS"))
+	if not expect(configured_workers in [1, 4], "explicit worker matrix arm is either 1 or 4"):
+		quit(1)
+		return
+	# Must precede Main construction: the exclusive worker's native World reads
+	# ProjectSettings at initialization, never changed during active simulation.
+	ProjectSettings.set_setting("cybersand/native_worker_threads", configured_workers)
 	output_dir = OS.get_environment("CYBERSAND_GAMEPLAY_ACCEPTANCE_OUTPUT")
 	if output_dir.is_empty():
 		output_dir = ProjectSettings.globalize_path("user://current-main-gameplay-acceptance")
@@ -437,6 +485,7 @@ func run() -> void:
 	var desktop = load("res://main.tscn").instantiate()
 	desktop.set_script(AcceptanceHarness)
 	root.add_child(desktop)
+	desktop.simulation_worker.set_worker_participation_sampling(true)
 	await process_frame
 	var panel = desktop.shared_workbench
 	var ready := panel != null and await wait_for(Callable(self, "installed").bind(desktop, panel))
@@ -456,6 +505,11 @@ func run() -> void:
 	expect(final_session == null or not is_instance_valid(final_session),
 		"scene exit retired main-thread Rapier session")
 
+	var observed_workbench_workers := 0
+	for observed_row: Dictionary in rows:
+		observed_workbench_workers = maxi(observed_workbench_workers, int(observed_row.get("workers_observed_max", -1)))
+	expect(configured_workers == 1 or observed_workbench_workers >= 2,
+		"four-worker arm must demonstrate at least two real native task claimants")
 	var complete_rows := 0
 	var screenshots := 0
 	var impact_profiles := 0
@@ -475,6 +529,8 @@ func run() -> void:
 		"display_server":DisplayServer.get_name(),
 		"godot":str(Engine.get_version_info().get("string", "")),
 		"duration_seconds_per_profile":DURATION_SECONDS,
+		"configured_native_workers":configured_workers,
+		"observed_native_workers_max":observed_workbench_workers,
 		"profiles":rows,
 		"checks":checks,
 		"failures":failures,

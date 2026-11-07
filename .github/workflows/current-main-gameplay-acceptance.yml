@@ -2,7 +2,7 @@ name: Current-main integrated gameplay acceptance
 
 on:
   push:
-    branches: [qualification/current-main-gameplay-acceptance-20261106]
+    branches: [qualification/physics-worker-1v4-20261107]
   workflow_dispatch:
 
 permissions:
@@ -137,10 +137,10 @@ jobs:
           if-no-files-found: error
 
   windows-acceptance:
-    name: 3 x 60s real Windows workbench acceptance
+    name: same-host Godot 1-4-4-1 ABBA, three workbench canvases
     needs: windows-build
     runs-on: windows-2022
-    timeout-minutes: 35
+    timeout-minutes: 55
     steps:
       - name: Check out exact qualification head
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
@@ -183,61 +183,147 @@ jobs:
           GODOT="$(cygpath -u "$RUNNER_TEMP")/godot/Godot_v4.7-stable_win64_console.exe"
           "$GODOT" --version
           sha256sum "$GODOT"
-      - name: Run source-matched graphical acceptance and preserve first failure
+      - name: Four source-matched Godot processes on ONE Windows machine
         env:
           CYBERSAND_SOURCE_REVISION: ${{ github.sha }}
         run: |
           set -euo pipefail
-          E="$(cygpath -u "$RUNNER_TEMP")/current-main-gameplay-acceptance"
-          mkdir -p "$E"
+          E="$(cygpath -u "$RUNNER_TEMP")/current-main-gameplay-abba"
           GODOT="$(cygpath -u "$RUNNER_TEMP")/godot/Godot_v4.7-stable_win64_console.exe"
-          export CYBERSAND_GAMEPLAY_ACCEPTANCE_OUTPUT="$(cygpath -w "$E")"
+          mkdir -p "$E"
           cp build/current-main-runtime/source-identity.json "$E/source-identity.json"
           cp build/current-main-runtime/runtime.sha256 "$E/runtime.sha256"
           cp build/current-main-runtime/toolchain.txt "$E/toolchain.txt"
           cp godot/tests/current_main_gameplay_acceptance.gd "$E/current_main_gameplay_acceptance.gd"
           {
-            echo '# Reproduce this acceptance source'
-            echo
-            printf '%s\n' "- Production baseline: $REGISTERED_MAIN"
-            printf '%s\n' "- Qualification head: $GITHUB_SHA"
-            echo '- Use the retained Windows DLL whose SHA-256 is in runtime.sha256.'
-            printf '%s\n' "- Use official Godot 4.7 archive SHA-512 $GODOT_WINDOWS_SHA512."
-            echo '- Materialize the pinned Windows Rapier DLL and run the retained GDScript through the production Godot project with gl_compatibility / opengl3_angle.'
-            echo '- The three profiles are my-canvas and bench-canvas with PressureFlow gas on, stress-canvas with PressureFlow gas off; all use cached_dormant PressureFlow, ballistic Water, face release and runtime impact spray.'
-          } > "$E/REPRODUCE.md"
-          set +e
-          "$GODOT" --verbose --rendering-method gl_compatibility --rendering-driver opengl3_angle --path godot --script res://tests/current_main_gameplay_acceptance.gd > "$E/godot.log" 2>&1
-          RESULT=$?
-          set -e
-          cat "$E/godot.log"
-          if test -f "$E/results.json"; then
+            printf 'runner=%s\nos=%s\narchitecture=%s\nrun=%s\n' "$RUNNER_NAME" "$RUNNER_OS" "$RUNNER_ARCH" "$GITHUB_RUN_ID"
+            printf 'qualification_head=%s\nregistered_main=%s\n' "$GITHUB_SHA" "$REGISTERED_MAIN"
+            echo 'same_host=one_windows_2022_job'
+            echo 'process_order=1,4,4,1'
+          } > "$E/host.txt"
+          powershell.exe -NoProfile -Command 'Get-CimInstance Win32_Processor | Select-Object Name,NumberOfCores,NumberOfLogicalProcessors | Format-List' > "$E/cpu.txt"
+          printf '%s\n' 'Source-matched workbench (my, bench, stress) three ~60s profiles per fresh Godot process. Four runs on ONE Windows runner in 1,4,4,1 sequence. Each process has independent native World/Rapier state, actual participant sampling, exact Water ledger and screenshots. Same-host ABBA does NOT establish equal tick-count physical-state parity, main-thread CPU time or human feel.' > "$E/REPRODUCE.md"
+          workers=(1 4 4 1)
+          FAIL=0
+          for i in 0 1 2 3; do
+            w="${workers[$i]}"
+            ARM="$E/arm-$i-w$w"
+            mkdir -p "$ARM"
+            cp "$E/source-identity.json" "$ARM/source-identity.json"
+            cp "$E/runtime.sha256" "$ARM/runtime.sha256"
+            printf 'arm_index=%s\nworkers=%s\nrunner=%s\nsource=%s\n' "$i" "$w" "$RUNNER_NAME" "$GITHUB_SHA" > "$ARM/REPRODUCE.txt"
+            export CYBERSAND_GAMEPLAY_ACCEPTANCE_OUTPUT="$(cygpath -w "$ARM")"
+            export CYBERSAND_GAMEPLAY_ACCEPTANCE_WORKERS="$w"
+            echo "START same-host arm=$i workers=$w runner=$RUNNER_NAME"
             set +e
-            python tools/ci/current_main_gameplay_acceptance.py summarize --input "$E/results.json" --output "$E/SUMMARY.md" --csv "$E/summary.csv" --qualification "$E/qualification.json" | tee "$E/summary.log"
-            SUMMARY_RESULT=${PIPESTATUS[0]}
+            "$GODOT" --verbose --rendering-method gl_compatibility --rendering-driver opengl3_angle --path godot --script res://tests/current_main_gameplay_acceptance.gd > "$ARM/godot.log" 2>&1
+            rc=$?
             set -e
-          else
-            SUMMARY_RESULT=1
-            printf '# CyberSand current-main integrated gameplay acceptance\n\n**Verdict: REPAIR**\n\n- results.json was not produced; inspect godot.log.\n' > "$E/SUMMARY.md"
-          fi
+            if test -f "$ARM/results.json"; then
+              set +e
+              python tools/ci/current_main_gameplay_acceptance.py summarize --input "$ARM/results.json" --output "$ARM/SUMMARY.md" --csv "$ARM/summary.csv" --qualification "$ARM/qualification.json" > "$ARM/summarize.log" 2>&1
+              sr=$?
+              set -e
+            else
+              sr=1
+              echo 'Results missing; inspect original Godot log' > "$ARM/SUMMARY.md"
+            fi
+            printf 'godot_exit=%s\nsummary_exit=%s\n' "$rc" "$sr" > "$ARM/exit-status.txt"
+            if test "$rc" -ne 0 || test "$sr" -ne 0; then
+              FAIL=1
+              echo "REPAIR arm=$i workers=$w exit=$rc summary=$sr"
+              tail -n 40 "$ARM/godot.log" || true
+            else
+              echo "PASS arm=$i workers=$w"
+            fi
+          done
+          set +e
           python - "$E" <<'PY'
+          import json, sys
           from pathlib import Path
-          import hashlib, sys
+          sys.path.insert(0, "tools/ci")
+          import current_main_gameplay_acceptance as qa
+          root = Path(sys.argv[1])
+          order = (1, 4, 4, 1)
+          problems, runs = [], []
+          for i, w in enumerate(order):
+              p = root / f"arm-{i}-w{w}" / "results.json"
+              try:
+                  data = json.loads(p.read_text(encoding="utf-8"))
+                  verdict, errors = qa.evaluate(data)
+                  if data.get("configured_native_workers") != w:
+                      problems.append(f"arm {i}: wrong worker configuration")
+                  if verdict != "ACCEPT":
+                      problems.extend(f"arm {i}: {e}" for e in errors)
+                  runs.append(data)
+              except (OSError, ValueError) as e:
+                  problems.append(f"arm {i}: missing/unreadable actual gameplay results: {e}")
+          identity = {(r.get("source_revision"),r.get("registered_main"),
+                       r.get("godot"),r.get("platform"),r.get("display_server")) for r in runs}
+          if len(runs) != 4 or len(identity) != 1:
+              problems.append("same-source Godot/runtime identity incomplete or mismatched across arms")
+          lines = ["# Current-main same-Windows-runner ABBA 1-4-4-1", "",
+                   "**Functional verdict: " + ("REPAIR" if problems else "ACCEPT") + "; tuning decision: HOLD.**",
+                   "", "Four fresh Godot processes on one runner. Each profile runs ~60 seconds.",
+                   "Comparisons are descriptive: unequal physics tick counts and no owner-thread CPU-time samples.",
+                   ""]
+          report = {"schema":"cybersand-physics-same-host-abba-v1","source":runs[0].get("source_revision") if len(runs)==4 else None,
+                    "registered_main":qa.BASE_MAIN,"workers":list(order),"verdict":"REPAIR" if problems else "ACCEPT",
+                    "performance_decision":"HOLD","problems":problems,"profiles":{}}
+          for profile in qa.REQUIRED_PROFILES:
+              armrows = [next((x for x in r.get("profiles",[]) if x.get("name")==profile),{}) for r in runs]
+              metrics = {}
+              for label,field,percentile in (
+                      ("native tick p50 ms","native_tick_ms","p50"),
+                      ("native tick p95 ms","native_tick_ms","p95"),
+                      ("frame interval p95 ms","process_interval_ms","p95"),
+                      ("Main process callback wall p95 ms","process_callback_ms","p95"),
+                      ("Main snapshot consume wall p95 ms","snapshot_consume_ms","p95"),
+                      ("Main terrain gate wall p95 ms","main_workbench_terrain_gate_ms","p95"),
+                      ("Rapier callback wall p95 ms","physics_callback_ms","p95")):
+                  metrics[label] = [round(qa.stat(row,field,percentile),3) for row in armrows]
+              metrics["native tick Hz"] = [round(float(row.get("completed_native_hz",0)),3) for row in armrows]
+              metrics["Rapier tick Hz"] = [round(float(row.get("completed_rapier_hz",0)),3) for row in armrows]
+              metrics["observed claimants"] = [int(row.get("workers_observed_max",-1)) for row in armrows]
+              metrics["Water mismatches"] = [int(row.get("water_mismatches",-1)) for row in armrows]
+              report["profiles"][profile] = metrics
+              lines += [f"## {profile}","",
+                        "| Actual measure | w1 first | w4 first | w4 second | w1 second |",
+                        "|---|---:|---:|---:|---:|"]
+              for label, samples in metrics.items():
+                  lines.append(f"| {label} | " + " | ".join(map(str,samples)) + " |")
+              lines.append("")
+          lines += ["## Interpretation boundaries","",
+                    "- No default tuning/merge or claim of speedup follows from these measurements.",
+                    "- Godot callback elapsed wall time is not owner-thread CPU time.",
+                    "- Final materials occur at different ticks, so are not identical-state parity controls.",
+                    "- Every individual process must show native/Rapier progress, exact Water accounting and graphical captures.",
+                    "- Independent physical state/impulse parity, real target PC and human feel remain unqualified."]
+          if problems: lines += ["","## REPAIR"] + [f"- {p}" for p in problems]
+          (root/"CAMPAIGN.md").write_text("\n".join(lines)+"\n",encoding="utf-8")
+          (root/"campaign.json").write_text(json.dumps(report,indent=2)+"\n",encoding="utf-8")
+          print(json.dumps({"verdict":report["verdict"],"problems":problems},indent=2))
+          sys.exit(1 if problems else 0)
+          PY
+          rc_campaign=$?
+          set -e
+          python - "$E" <<'PY'
+          import hashlib,sys
+          from pathlib import Path
           root=Path(sys.argv[1])
           rows=[]
-          for p in sorted(x for x in root.rglob("*") if x.is_file() and x.name!="SHA256SUMS.txt"):
+          for p in sorted(p for p in root.rglob("*") if p.is_file() and p.name!="SHA256SUMS.txt"):
               rows.append(hashlib.sha256(p.read_bytes()).hexdigest()+"  "+p.relative_to(root).as_posix())
-          (root/"SHA256SUMS.txt").write_text("\n".join(rows)+"\n", encoding="utf-8")
-          print("evidence files", len(rows))
+          (root/"SHA256SUMS.txt").write_text("\n".join(rows)+"\n",encoding="utf-8")
+          print("evidence files",len(rows))
           PY
-          if test "$RESULT" -ne 0; then exit "$RESULT"; fi
-          exit "$SUMMARY_RESULT"
-      - name: Retain complete Windows acceptance package including failures
+          if test "$FAIL" -ne 0 || test "$rc_campaign" -ne 0; then exit 1; fi
+      - name: Preserve all original ABBA evidence including failed arms
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: current-main-integrated-gameplay-acceptance-${{ github.run_id }}
-          path: ${{ runner.temp }}/current-main-gameplay-acceptance/
+          name: current-main-gameplay-same-host-abba-${{ github.run_id }}
+          path: ${{ runner.temp }}/current-main-gameplay-abba/
           retention-days: 90
           include-hidden-files: true
           if-no-files-found: error

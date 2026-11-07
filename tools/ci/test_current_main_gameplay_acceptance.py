@@ -15,6 +15,11 @@ SPEC.loader.exec_module(acceptance)
 def profile(name):
     return {
         "name": name,
+        "worker_request": 1,
+        "worker_capacity": 1,
+        "workers_observed_max": 1,
+        "native_backend": "native-phased",
+        "worker_samples": [{"sequence": 1, "completed_tick": 10, "capacity": 1, "observed": 1}],
         "completed": True,
         "elapsed_wall_ms": 60000.0,
         "completed_native_ticks": 100,
@@ -48,6 +53,8 @@ def accepted():
         "profiles": [profile(name) for name in acceptance.REQUIRED_PROFILES],
         "failures": 0,
         "worker_joined": True,
+        "configured_native_workers": 1,
+        "observed_native_workers_max": 1,
     }
 
 
@@ -55,6 +62,28 @@ class AcceptanceEvaluationTests(unittest.TestCase):
     def test_complete_evidence_accepts_without_performance_thresholds(self):
         verdict, problems = acceptance.evaluate(accepted())
         self.assertEqual(("ACCEPT", []), (verdict, problems))
+
+    def test_four_worker_claimants_are_real_not_inferred_from_capacity(self):
+        data = accepted()
+        data["configured_native_workers"] = 4
+        for row in data["profiles"]:
+            row["worker_request"] = 4
+            row["worker_capacity"] = 4
+            row["worker_samples"][0]["capacity"] = 4
+        self.assertEqual("REPAIR", acceptance.evaluate(data)[0])
+        self.assertTrue(any("never observed" in msg for msg in acceptance.evaluate(data)[1]))
+        data["profiles"][1]["workers_observed_max"] = 2
+        data["profiles"][1]["worker_samples"][0]["observed"] = 2
+        self.assertEqual("ACCEPT", acceptance.evaluate(data)[0])
+
+    def test_false_capacity_and_missing_participation_are_rejected(self):
+        data = accepted()
+        data["profiles"][0]["worker_capacity"] = 4
+        data["profiles"][1]["worker_samples"] = []
+        verdict, problems = acceptance.evaluate(data)
+        self.assertEqual("REPAIR", verdict)
+        self.assertTrue(any("requested/resolved" in msg for msg in problems))
+        self.assertTrue(any("missing or invalid actual native" in msg for msg in problems))
 
     def test_default_async_coupling_is_required(self):
         data = accepted()
