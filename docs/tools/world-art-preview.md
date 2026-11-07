@@ -2,24 +2,51 @@
 
 **Experimental, independent presentation tool.** Open the native Godot window to inspect provisional world-design art through the **production RG8 material palette, appearance LUT, emission and glow shaders**. No CyberSand native simulation, native extension, Rapier actor or save format is required. Synthetic initial conditions are explicit, not measurements of physical state.
 
-## Launch from a fresh checkout
+## Launch an existing checkout (no additional downloads)
 
-Obtain both the preview branch and the separate **read-only art source**. Do not merge #454 into main or modify the original export. From a parent directory with Git and Godot 4.7 installed:
-
-~~~bash
-git clone https://github.com/techrote/cybersand.git cybersand-preview
-git -C cybersand-preview switch --track origin/tools/world-art-interactive-preview-20261107
-git clone --no-checkout https://github.com/techrote/cybersand.git art-source
-git -C art-source checkout 05632d52e8bfb6ac302da1158653505ae203fbf6
-cd cybersand-preview
-python3 tools/world_art_preview_launcher.py --godot=godot --art-root="$(cd ../art-source/docs/world-design && pwd)" --design-revision=05632d52e8bfb6ac302da1158653505ae203fbf6
-~~~
-
-On Windows, change the final line in PowerShell to the following, using your installed Godot 4.7 console executable:
+If you already cloned `cybersand-preview` and `art-source`, **keep both directories; do not clone again**. From `cybersand-preview` in Windows PowerShell:
 
 ~~~powershell
-python tools/world_art_preview_launcher.py --godot="C:\Tools\Godot_v4.7-stable_win64_console.exe" --rendering-driver=opengl3_angle "--art-root=$((Resolve-Path ..\art-source\docs\world-design).Path)" --design-revision=05632d52e8bfb6ac302da1158653505ae203fbf6
+Get-Command godot, godot4 -ErrorAction SilentlyContinue
 ~~~
+
+If this returns a Godot executable available on `PATH`, launch:
+
+~~~powershell
+python tools/world_art_preview_launcher.py --rendering-driver=opengl3_angle "--art-root=$((Resolve-Path ..\art-source\docs\world-design).Path)"
+~~~
+
+If no command is found, locate your actual Godot 4.7 desktop executable, for example:
+
+~~~powershell
+Get-ChildItem "$env:USERPROFILE\Downloads", "$env:USERPROFILE\Desktop", "$env:LOCALAPPDATA\Programs", "C:\Program Files" -Filter "Godot*.exe" -File -Recurse -ErrorAction SilentlyContinue | Select-Object -ExpandProperty FullName
+~~~
+
+Pass a **real path shown by that command** with `--godot="PATH_TO_YOUR_GODOT.EXE"`. Paths such as `C:\Tools\Godot_v4.7-stable_win64_console.exe` are *illustrations*, not automatically installed filenames. The launcher now validates the executable up front and fails with an actionable message if it cannot find Godot. It never downloads Godot itself.
+
+## Efficient fresh checkout — one small clone, no unnecessary Git LFS binaries
+
+Do **not** clone the entire CyberSand repository twice. A normal full clone can transfer hundreds of MiB of Git history plus separately downloaded Git LFS objects (native simulation/Rapier libraries and other assets) which **this previewer does not need**. For a fresh installation, use a shallow clone and a detached Git worktree sharing the same Git objects:
+
+~~~powershell
+$env:GIT_LFS_SKIP_SMUDGE = "1"
+git clone --depth 1 --single-branch --branch tools/world-art-interactive-preview-20261107 https://github.com/techrote/cybersand.git cybersand-preview
+git -C cybersand-preview fetch --depth 1 origin design/world-atlas-015-refinement-20261105
+git -C cybersand-preview worktree add --detach ..\art-source FETCH_HEAD
+Remove-Item Env:\GIT_LFS_SKIP_SMUDGE
+cd cybersand-preview
+python tools/world_art_preview_launcher.py --rendering-driver=opengl3_angle "--art-root=$((Resolve-Path ..\art-source\docs\world-design).Path)"
+~~~
+
+The worktree contains the **current fetched art-branch revision**, which can advance. To pin artwork for reproducible captures, record `git -C ..\art-source rev-parse HEAD` and pass that SHA with `--design-revision=...`. It is *not* necessary to download Git LFS binaries, build C++ or merge #454 to view the authored JSON and shaders. Git worktrees share repository history but have independent working directories. The first run still requires an **installed Godot 4.7 desktop executable**.
+
+On Linux/macOS with Godot installed on `PATH`, the corresponding launch from an existing checkout is:
+
+~~~bash
+python3 tools/world_art_preview_launcher.py --godot=godot --art-root="$(cd ../art-source/docs/world-design && pwd)"
+~~~
+
+The tool uses a separate **read-only art source checkout**; it does not modify the original #454 pack files or enable Scheduswarm. The revision label is caller-provided, while the displayed pack SHA-256 confirms the actual bytes loaded.
 
 Alternatively give an individual file with --pack=/absolute/path/pack.json rather than --art-root. You can paste a directory into the **World-design root** field, press Enter, or use **Choose directory**. The folder should contain lumen-fault/pack.json, coral-telegraph/pack.json, etc. The window lists the 15 known collections in their logical order; additional collection folders with pack files are discovered automatically.
 
