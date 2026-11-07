@@ -36,6 +36,166 @@ WorldConfig config_for(std::uint32_t workers) {
     return config;
 }
 
+// Explicit REAL-NATIVE selective-residency acceptance control. The live World
+// owns TWO physically exchanging signed chunks and a THIRD unrelated resident.
+// Public interest exclusion is not an eviction; this test must never label a
+// full-World restore, clone or clear as selective native memory reclamation.
+void selective_dynamic_residency_capacity_control(std::uint32_t workers) {
+    auto cfg = config_for(workers);
+    cfg.maximum_chunk_count = 3;
+    cfg.initial_chunk_reserve = 3;
+    auto live = std::make_unique<World>(cfg);
+    // The oracle is independently constructed and never deserialized.
+    auto uninterrupted = std::make_unique<World>(cfg);
+    const std::vector<Material> empty(64U * 64U, Material::Empty);
+    constexpr std::int64_t sx = -128, seam = -64;
+    auto populate = [&](World& w) {
+        check(w.install_generated_chunk({-2, -2}, empty) == ChunkInstallOutcome::Installed,
+              "GEN006_SELECTIVE_TOP_ADMISSION");
+        check(w.install_generated_chunk({-2, -1}, empty) == ChunkInstallOutcome::Installed,
+              "GEN006_SELECTIVE_LOWER_ADMISSION");
+        check(w.install_generated_chunk({8, 0}, empty) == ChunkInstallOutcome::Installed,
+              "GEN006_SELECTIVE_UNAFFECTED_ADMISSION");
+        for (std::int64_t x = 21; x < 29; ++x)
+            w.set(sx + x, seam - 1, Material::Sand);
+        for (std::int64_t x = 35; x < 40; ++x)
+            w.set(sx + x, seam - 1, Material::Water);
+        w.set(8 * 64 + 2, 2, Material::Wall);
+        w.set_temperature(8 * 64 + 2, 2, 417);
+    };
+    populate(*live);
+    populate(*uninterrupted);
+    check(live->chunk_count() == 3 &&
+          live->physical_state_hash() == uninterrupted->physical_state_hash() &&
+          live->quantity_ledger() == uninterrupted->quantity_ledger(),
+          "GEN006_SELECTIVE_INITIAL_NATIVE_ORACLE");
+
+    std::uint32_t observed = 0;
+    bool sand_crossed = false, water_crossed = false;
+    unsigned seam_tick = 0;
+    for (unsigned i = 0; i < 32; ++i) {
+        const auto ls = live->tick();
+        const auto rs = uninterrupted->tick();
+        observed = std::max(observed, ls.worker_threads_observed);
+        check(!live->has_failed() && !uninterrupted->has_failed() &&
+              ls.tick == rs.tick &&
+              live->physical_state_hash() == uninterrupted->physical_state_hash() &&
+              live->quantity_ledger() == uninterrupted->quantity_ledger() &&
+              live->chunk_count() == 3,
+              "GEN006_SELECTIVE_NATIVE_SEAM_ORACLE_DIVERGED");
+        for (std::int64_t y = seam; y < seam + 20; ++y) {
+            for (std::int64_t x = 19; x < 31; ++x)
+                sand_crossed |= live->stored_material(sx + x, y) == Material::Sand;
+            for (std::int64_t x = 30; x < 50; ++x)
+                water_crossed |= live->stored_material(sx + x, y) == Material::Water &&
+                                 live->liquid_mass(sx + x, y) != 0;
+        }
+        if (sand_crossed && water_crossed) { seam_tick = i + 1; break; }
+    }
+    check(sand_crossed && water_crossed && seam_tick != 0,
+          "GEN006_SELECTIVE_MOVING_SAND_WATER_NOT_PROVEN");
+
+    // Request ONLY the two moving adjacent chunks. A complete-World stage
+    // must refuse while the independent third resident remains alive.
+    const FullWorldFence lease{0x481U, 0x194U, 7U, 3U};
+    const std::vector<ChunkCoord> moving{{-2, -2}, {-2, -1}};
+    const std::vector<BundleSeam> seam_edges{{{-2, -2}, {-2, -1}}};
+    const auto original = live.get();
+    const auto before_tick = live->completed_tick_index();
+    const auto before_hash = live->physical_state_hash();
+    const auto before_ledger = live->quantity_ledger();
+    const auto before_count = live->chunk_count();
+    const auto before_allocated = live->resident_cell_bytes();
+    const auto before_cyps = live->save_physical_state();
+    bool rejected_partial = false;
+    try {
+        auto disallowed = FullResidentBundleStage::capture(
+            live, lease, moving, seam_edges, 4U * 1024U * 1024U);
+        (void)disallowed;
+    } catch (const BundleAdmissionError& e) {
+        rejected_partial = e.status() == BundleAdmissionStatus::RosterCountMismatch;
+    }
+    check(rejected_partial && live.get() == original &&
+          live->save_physical_state() == before_cyps &&
+          live->chunk_count() == before_count &&
+          live->resident_cell_bytes() == before_allocated &&
+          live->quantity_ledger() == before_ledger &&
+          live->completed_tick_index() == before_tick &&
+          live->physical_state_hash() == before_hash,
+          "GEN006_SELECTIVE_PARTIAL_REQUEST_CHANGED_LIVE_WORLD");
+
+    // Even after narrowing interest to the unaffected chunk, the two moving
+    // chunks retain their physical allocations and block a fourth admission.
+    live->set_simulation_region(RectI64{8 * 64, 0, 64, 64});
+    uninterrupted->set_simulation_region(RectI64{8 * 64, 0, 64, 64});
+    (void)live->tick();
+    (void)uninterrupted->tick();
+    check(!live->has_failed() && !uninterrupted->has_failed() &&
+          live->physical_state_hash() == uninterrupted->physical_state_hash() &&
+          live->quantity_ledger() == uninterrupted->quantity_ledger(),
+          "GEN006_SELECTIVE_INTEREST_NATIVE_TICK_DIVERGED");
+    const auto exclusion_hash = live->physical_state_hash();
+    const auto exclusion_tick = live->completed_tick_index();
+    const auto exclusion_ledger = live->quantity_ledger();
+    const auto exclusion_bytes = live->resident_cell_bytes();
+    const auto exclusion_image = live->save_physical_state();
+    const auto admission = live->install_generated_chunk({9, 0}, empty);
+    check(admission == ChunkInstallOutcome::CapacityFull &&
+          live->chunk_count() == before_count &&
+          live->resident_cell_bytes() == before_allocated &&
+          exclusion_bytes == before_allocated &&
+          live->completed_tick_index() == exclusion_tick &&
+          live->physical_state_hash() == exclusion_hash &&
+          live->quantity_ledger() == exclusion_ledger &&
+          live->save_physical_state() == exclusion_image &&
+          live->stored_material(8 * 64 + 2, 2) == Material::Wall &&
+          live->stored_temperature(8 * 64 + 2, 2) == 417,
+          "GEN006_SELECTIVE_INTEREST_FALSE_MEMORY_RECLAIM");
+
+    // Only global clear can reclaim these resident bytes through this public
+    // World interface. This copy is discarded, never presented as a selective
+    // transaction or used as the uninterrupted scientific oracle.
+    auto disposable = World::restore_physical_state(cfg, exclusion_image);
+    check(disposable && disposable->chunk_count() == 3 &&
+          disposable->resident_cell_bytes() == before_allocated,
+          "GEN006_SELECTIVE_GLOBAL_CLEAR_CONTROL_RESTORE");
+    disposable->clear();
+    check(disposable->chunk_count() == 0 &&
+          disposable->resident_cell_bytes() == 0 &&
+          live->chunk_count() == 3 &&
+          live->resident_cell_bytes() == before_allocated,
+          "GEN006_SELECTIVE_CLEAR_MISREPORTED_AS_PARTIAL");
+
+    live->set_simulation_region(std::nullopt);
+    uninterrupted->set_simulation_region(std::nullopt);
+    for (unsigned i = 0; i < 8; ++i) {
+        const auto ls = live->tick();
+        const auto rs = uninterrupted->tick();
+        observed = std::max(observed, ls.worker_threads_observed);
+        check(!live->has_failed() && !uninterrupted->has_failed() &&
+              ls.tick == rs.tick &&
+              live->physical_state_hash() == uninterrupted->physical_state_hash() &&
+              live->quantity_ledger() == uninterrupted->quantity_ledger() &&
+              live->chunk_count() == 3 &&
+              live->resident_cell_bytes() == before_allocated,
+              "GEN006_SELECTIVE_POST_REFUSAL_CONTINUATION_DIVERGED");
+    }
+    std::cout << "GEN006_DYNAMIC_SELECTIVE_CAPACITY_HOLD_PASS"
+              << " configured_workers=" << workers
+              << " observed_workers_max=" << observed
+              << " signed_sand_water_cross_tick=" << seam_tick
+              << " selected_dynamic_chunks=2 unaffected_live_chunks=1"
+              << " resident_count_before=" << before_count
+              << " resident_count_after=" << live->chunk_count()
+              << " allocated_cell_bytes_before=" << before_allocated
+              << " allocated_cell_bytes_after=" << live->resident_cell_bytes()
+              << " genuinely_selective_reclaimed_bytes=0"
+              << " extra_chunk_admission=CapacityFull"
+              << " global_clear_reclaimed_bytes=" << before_allocated
+              << " post_refusal_real_ticks=8"
+              << " selective_eviction_implemented=0" << '\n';
+}
+
 void actual_dynamic_frontier(std::uint32_t workers, const std::string& output_path) {
     const auto cfg = config_for(workers);
     auto live = std::make_unique<World>(cfg);
@@ -810,6 +970,7 @@ int main(int argc, char** argv) {
         check(argc == 3, "usage: gen006-dynamic-continuation 1|4 POSTFILE");
         const auto workers = static_cast<std::uint32_t>(std::stoul(argv[1]));
         check(workers == 1U || workers == 4U, "GEN006_DYNAMIC_WORKERS_MUST_BE_1_OR_4");
+        selective_dynamic_residency_capacity_control(workers);
         actual_dynamic_frontier(workers, argv[2]);
         return 0;
     } catch (const std::exception& error) {
