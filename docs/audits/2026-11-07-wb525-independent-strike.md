@@ -10,6 +10,39 @@ related-documents: [../systems/shared-workbench-agent-authoring.md, ../operation
 
 # WB525 independent integration, capacity repair and physical cause
 
+## Final owner handoff readback
+
+The existing #528 owner has consumed the two production repairs and three
+graphical regressions in its own Draft #531, head
+`4136fa68c89ebf867a2ecbb82800bf095e3546eb`, tree
+`fb32fd192ecff39b15655d494223c6d12daa7cf6`. Its
+[exact-head hosted native68/capacity28/mounted-hopper166 gate passed](https://github.com/techrote/cybersand/actions/runs/42411658093),
+with [original artifact13589892339](https://github.com/techrote/cybersand/actions/runs/42411658093/artifacts/13589892339).
+These source-identical fixes need no repeat implementation. They are still
+separate from complete current-main rebuild/merge admission.
+
+Refreshed source readback also inspected #529
+`eee30c00dec3a7885255a43b892bf0a3f540848d`, tree
+`41402ccfe2d3644939a2222a424ce39615bfe38e`, and #530
+`7f1740074a2656e53f47d208f8241c26c9f77bf0`, tree
+`3255c06bb0c227f62efc5bd9e33026687b86ba7f`. Current #529 authority and all
+native inputs match the isolated composition. Current #530 Step/Stop/control
+and #531 client/mount/panel blobs also match after the final byte-exact owner
+consumption checkpoint `1390c3e30ab7ffd2a3d6f4d2d621704eb0387022`, tree
+`d082e69e6324443dea4df267757cf2c28f2daa2b`. All three PRs remain open Drafts.
+
+The final owner-provided78-line authored-start extension is independently
+executed through the common runner on source-built Windows: **134/134**. After
+each unchanged480-tick trial, the complete agent-authored apparatus saves and
+reopens into a new native generation at tick0 with32 source Sand/17 protected
+Walls, matched PNG and old-task Step refusal. This is authored construction
+recovery, not evolved-state persistence. The package's two changed Godot files
+are refreshed to1390c3e3 and the manifest records that source; the native DLL
+remains the independently qualified accepted-main1f82 build. The generic
+CI correction is released as6718d544,4174dcc3 andf659e040 for the existing
+integrator to consume, with final GDExtension42412686929 still requiring its
+terminal aggregate result. Documentation/provenance42412688902 passed onf659.
+
 ## Production CI integration repair
 
 Full production GDExtension run42409683405 exposed a genuine additional blocker:
