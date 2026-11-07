@@ -379,7 +379,7 @@ updated on the Draft branch. Their CI/retrieval checks must still pass
 against the exact final head before acceptance.
 
 
-## Signed-domain repair: opt-in native-backed host frame — candidate, not admitted (7 November 2026)
+## Signed-domain repair: opt-in native-backed host frame — owner-admitted moved-hopper control, not accepted source (7 November 2026)
 
 **Current (isolated Draft #529 code):** The actual C++ native `World` accepts
 signed cells in the standalone frozen #527 reference, but the current shared
@@ -395,10 +395,11 @@ host now supports an **explicitly requested, host-only candidate**:
 
 - Exact `coordinate_frame_id`:
   `wb-agent-signed-frame-candidate-v1:origin=512,512:extent=2048x2048`.
-  This is **not** enabled by ordinary four-tool model dispatch or the current
-  #528 panel; the privileged host must pass it as the fifth parameter to
-  `authorize_task(task_id, scope, protected, [0,58], coordinate_frame_id)`.
-  Absent this parameter, the proven positive-native contract is unchanged.
+  This is **never** selected by model tool arguments or silently by ordinary
+  four-tool dispatch. The privileged host must explicitly pass it as the fifth
+  parameter to `authorize_task(task_id, scope, protected, [0,58], coordinate_frame_id)`;
+  #528's experimental mounted panel can request this opt-in host scope.
+  Absent that trusted selection, the positive-native contract is unchanged.
 - Signed logical cells map to the **same single native World** by
   `native=(logical.x+512,logical.y+512)`. Allowed logical coordinates are
   `-512..1535` on each axis, checked **before** 32-bit narrowing, addition
@@ -430,12 +431,15 @@ negative observe→prepare→apply via the exclusive paused native worker, verif
 matched original framebuffer and saved named-start cells, exact eight Wall
 readbacks, manual native Sand-protection refusal and signed duplicate
 receipt, and attempt both invalid-frame and overflow negative controls.
-This exercises the actual mounted native workbench **but it is NOT the
-frozen 32-Sand four-tool hopper**. Both Linux/Xvfb and real Windows Godot
-source-matched suites run this path; only actual *completed* CI evidence
-may be described as PASS. Retained native/Rapier LFS binaries are
-not rebuilt at this GDScript source revision; Draft Native/GDExtension
-production gates remain intentionally skipped.
+This exercises the actual mounted native workbench **but is not itself the
+frozen 32-Sand four-tool hopper**. Both Linux/Xvfb and Windows Godot
+source-matched suites passed on [#529 exact-head run 42421998283](https://github.com/techrote/cybersand/actions/runs/42421998283)
+(Linux owner, Windows owner and independent **fresh Linux native + godot-cpp
+source rebuild**). The source-built job stages its newly compiled ELF, verifies
+source and native/PNG identities, then reruns signed-frame and native-owner
+post-draw acceptance. The ordinary Linux/Windows owner jobs exercise retained
+source-pinned LFS binaries, not rebuilt binaries. Full production Native and
+GDExtension workflows remain **Draft-skipped**, not accepted-main qualification.
 
 **Independently measured physical distinction:** [#537](https://github.com/techrote/cybersand/pull/537)
 tested original signed frozen v2 against 256 positive offsets in 1,024
@@ -445,20 +449,20 @@ counts at every tick and the **480 TOTAL** completed-tick allowance.
 Nevertheless NORMAL sand-cell locations differ in 26 transient states
 (ticks 7–63), while REVISED has exact positions throughout; 0/256
 offsets preserved all registered intermediate positions in both layouts.
-These results make **translation-invariant native dynamics unproven**.
-The candidate is therefore **not silently equivalent** to #527's
-unchanged, signed native fixture.
+These results **disprove strict translation invariance for the unchanged
+NORMAL trajectory**, even though exact terminal/count equivalence holds.
+The independent [owner decision record](https://github.com/techrote/cybersand/issues/525#issuecomment-6712294815)
+identifies the existing native direction hash's dependence on **absolute
+coordinates**, not finite-world boundaries, as the cause. The largest
+NORMAL symmetric occupancy difference is four sites. Test-only normalization
+of that hash eliminated the differences across all 481 recorded states for
+both layouts with configured native worker counts 1 and 4; that diagnostic
+**was not applied to production code**.
 
-**OWNER CHOICE REQUIRED before admission to #527's frozen comparison or
-#528's live trial:** accept the *explicitly bounded outcome-and-count
-equivalence* despite measured transient Sand trajectories, or require
-exact intermediate physical parity and fund genuine signed-native
-canvas/camera/start support instead. The opt-in adapter is not a
-decision or permission to rerun/relabel the immutable fixture. #527
-must independently source-compose and validate **both** actual native
-hopper variants through the real Godot four-tool chain within 480 total
-ticks, capture original PNG/native cell receipts, then request full
-production admission. #528 should consume this frame ID and stable
-host/schema handoff only after that decision and independent review.
-No paid model attempts (0/3), human approval, Ready or merge follow
-from this checkpoint.
+**Owner decision (explicit, 7 November 2026):** [the human owner approved](https://github.com/techrote/cybersand/issues/525#issuecomment-6712294815) **using the moved +512 hopper and recording the grain-route differences** as the opt-in workbench engineering acceptance control. This permits **bounded terminal/count equivalence**; it does **not** authorize claiming strict signed-world trajectory equivalence, changing the #527 frozen v2 fixture, enabling the frame by default, changing native physics/direction hashing, merging the Draft PRs or running an unbounded live model. The unchanged frozen v2 TSV SHA-256 is `549a1db2520bcfb35f068f46b62320d7325d6297037ca2faf23c3b488d80347c`.
+
+**Measured original-v2 versus mapped-v2 acceptance packet:** For the independently replayed NORMAL and REVISED original signed and +512 native controls, both variants retain **32/32 Sand**, **17 protected cells** and exact destination catchment counts at every sampled state from tick 0 through 480. The original and mapped first-completion ticks are respectively **57 (NORMAL)** and **40 (REVISED)**, within the same **480 TOTAL acknowledged native-tick allowance per variant**; these are *not* four independently reset step budgets. NORMAL has **26 transient occupancy differences** at ticks 7–63 (maximum four symmetric-difference sites); REVISED is position-identical in this control. Independent unbounded-native comparison rules out a finite-host border/halo explanation for the identified differences. [#537 independent parity evidence](https://github.com/techrote/cybersand/pull/537) and [direct owner decision](https://github.com/techrote/cybersand/issues/525#issuecomment-6712294815) remain the provenance, not an assertion that the production solver was rewritten.
+
+**Independent mounted execution and source admission:** [#530 real native four-tool control](https://github.com/techrote/cybersand/actions/runs/42405114173) exercised the unchanged v2 through both mapped variants, with **106/106 native assertions** in its then-published revision; later #530 qualification includes stronger Step/Stop defenses and separate controls. [#531 composed source-built Linux owner job](https://github.com/techrote/cybersand/actions/runs/42416966919) completed Linux retained-native, Windows retained-native and **fresh Linux rebuilt-native** jobs on its recorded `93f63715c7960e5a3527d2108263989d2535ac5a` head, with 28/28 signed-frame and 141/141 native owner/post-draw checks; the source-built composed ELF was SHA-256 `23cb57d97b31aeb6720c4363dc90dfb437e6dd25566ae8a5865c2b6a4fafa605`. This binary identity applies **only** to that exact head; newer #530/#531 and isolated integration heads require their own evidence. Both owner and composed workflows must actually execute rather than silently report branch-conditioned skips.
+
+**Remaining hold:** independently qualified **final combined-source production Native/GDExtension and Windows source-built matrices**, three genuine bounded Responses trials (**0/3** at this checkpoint) and owner graphical/human acceptance remain distinct from the admitted moved-hopper control. #528 owns model-request budgets/transport, #527 owns Step/Stop and the frozen fixture, and the #525 integrator owns combined source. The +512 adapter stays off by default; #529, #530 and #531 remain **Draft/NO MERGE**, with #526 open until accepted-main integration. Do not reinterpret the 24-request **fake** hopper transcript as proof of live adequacy for the ordinary 12-request cap; [#528's independent budget finding](https://github.com/techrote/cybersand/pull/531#issuecomment-6714509075) requires a separate explicitly authorized, finite real-trial budget.
