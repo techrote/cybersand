@@ -163,7 +163,8 @@ class ToolExecutor:
     def __init__(self, cfg: dict, work_root: Path, policy: PathPolicy, collection: str, writable: bool,
                  extras: list[str], redactor, executables: dict[str, str] | None = None,
                  input_bundle: Path | None = None, launcher: Path | None = None, out_dir: Path | None = None,
-                 reference_bundle: Path | None = None):
+                 reference_bundle: Path | None = None, require_trusted_scripts: bool = False):
+        self.require_trusted_scripts = require_trusted_scripts
         self.cfg, self.limits, self.task = cfg, cfg["limits"], cfg["task"]
         self.work_root, self.policy, self.collection = Path(work_root), policy, collection
         self.writable, self.extras, self.redactor = writable, extras, redactor
@@ -306,7 +307,8 @@ class ToolExecutor:
             raise SandboxViolation("this lane has no write custody for the collection", "write_not_permitted")
         try:
             result = atlas.run_script(self.work_root, self.collection, a["kind"], self._budget_timeout(),
-                                      int(self.limits["max_tool_output_bytes"]) // 2, self.executables)
+                                      int(self.limits["max_tool_output_bytes"]) // 2, self.executables,
+                                      require_trusted=self.require_trusted_scripts)
         except ValidationFailed as exc:
             raise ToolError(exc.reason_code, exc.message) from None
         self.validation.append({"n": len(self.validation) + 1, "collection": self.collection, "kind": a["kind"],
