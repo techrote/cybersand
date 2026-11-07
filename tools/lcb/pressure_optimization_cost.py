@@ -34,7 +34,7 @@ PROFILES = (
 )
 FALLBACKS = ("index", "head", "member", "pair")
 ARMS = ("reference", "cached", "dormant")
-EXECUTION = 4
+EXECUTION = 5
 CERTIFICATE_WORK_MODEL = {
     "id": "certificate_work_credits_v1", "trial_ticks": 8, "suspension_ticks": 32,
     "warmup_visits": 1, "backoff_visits": 8,
