@@ -1,7 +1,7 @@
 extends SubViewport
 ## Presentation-only material renderer shared by the interactive window and its exports.
 ## The RG8 Image is the immutable source; no native simulation or CPU colour substitute.
-const BACKGROUND := Color(0.031, 0.043, 0.071, 1.0)
+const BACKGROUND = Color(0.031, 0.043, 0.071, 1.0)
 var _world: ImageTexture
 var _world_size := Vector2i.ONE
 var _background: ColorRect
@@ -154,3 +154,9 @@ func _sync() -> void:
 	_overlay.visible = _glow
 	_emission_viewport.render_target_update_mode = (
 		SubViewport.UPDATE_ALWAYS if _glow else SubViewport.UPDATE_DISABLED)
+
+func set_background_enabled(enabled: bool) -> void:
+	if _background == null:
+		return
+	_background.visible = enabled
+	_palette.set_shader_parameter("growth_decor", 1.0 if enabled else 0.0)
