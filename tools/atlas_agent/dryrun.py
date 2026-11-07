@@ -85,9 +85,15 @@ class DryRunBackend:
 def _first_shot(outputs: dict, collection: str) -> dict:
     listing = outputs.get("list_captures") or {}
     bundle = (listing.get("bundles") or {}).get("input") or {}
-    for shot in bundle.get("shots", []):
-        if shot.get("verified"):
-            return {"bundle": "input", "shot_id": shot["shot_id"], "collection": shot["collection"]}
+    # Full native-map renders can exceed the runner's 2,048 px model-image cap.
+    # Prefer a source-matched, inspectable viewport/detail capture; never pretend
+    # a failed image tool call supplied visual evidence.
+    shots = bundle.get("shots", [])
+    for kind in ("viewport", "detail", "full"):
+        for shot in shots:
+            if (shot.get("verified") and shot.get("kind") == kind
+                    and max(shot.get("width", 0), shot.get("height", 0)) <= 2048):
+                return {"bundle": "input", "shot_id": shot["shot_id"], "collection": shot["collection"]}
     return {"bundle": "input", "shot_id": "full", "collection": collection}
 
 
