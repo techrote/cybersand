@@ -101,6 +101,12 @@ func _run() -> void:
 	)
 	_expect(outside.reason == "outside_authorized_scope",
 		"partially out-of-scope disc was silently clipped")
+	var narrowed_int: Dictionary = Footprint.compile(
+		[{"shape":"disc", "x":4294968446, "y":90, "radius":0, "material":58}],
+		extent, scope, protection, allowed, palette
+	)
+	_expect(narrowed_int.reason == "outside_authorized_scope",
+		"64-bit coordinate was narrowed to an authorized Vector2i cell")
 	var large_rect: Dictionary = Footprint.compile(
 		[{"shape":"rectangle", "x0":1100, "y0":80, "x1":1199, "y1":179,
 			"material":58}],
@@ -132,6 +138,15 @@ func _run() -> void:
 		and repeated_disc.raster_operations.size() == 2,
 		"identical overlapping primitives should retain order but share footprint budget")
 
+	var over_union: Dictionary = Footprint.compile(
+		[
+			{"shape":"disc", "x":1350, "y":350, "radius":36, "material":58},
+			{"shape":"disc", "x":1351, "y":350, "radius":36, "material":0}
+		],
+		extent, scope, protection, allowed, palette
+	)
+	_expect(over_union.reason == "distinct_cell_budget_exceeded",
+		"overlapping but shifted discs silently exceeded 4096 distinct cells")
 	var huge_line: Dictionary = Footprint.compile(
 		[{"shape":"line", "x0":0, "y0":0, "x1":4096, "y1":0, "material":58}],
 		Vector2i(6000, 2048), Rect2i(Vector2i.ZERO, Vector2i(5000, 2048)),
