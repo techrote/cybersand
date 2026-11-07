@@ -128,9 +128,23 @@ def main() -> int:
             )
             require("EVICT " in crossed and "RELOAD " in crossed,
                     "camera-driven LRU eviction/reload receipts missing")
-            require("intent=1" in crossed, "restored edited Wall intent missing")
-            require("liquid=17 temp=417 intent=1" in crossed,
-                    "restored blocked Water17 state missing")
+            wall_line = next(
+                (line for line in crossed.splitlines()
+                 if "chunk=(-1,-3) local=(8,8)" in line),
+                "",
+            )
+            water_line = next(
+                (line for line in crossed.splitlines()
+                 if "chunk=(-1,-3) local=(18,30)" in line),
+                "",
+            )
+            require(wall_line and "intent=1" in wall_line,
+                    "restored edited Wall state/intent missing")
+            # Water is deliberately allowed to evolve under the autonomous
+            # service ticks; its player-edit authority bit must survive even
+            # when liquid mass has legitimately moved away from this cell.
+            require(water_line and "intent=1" in water_line,
+                    "restored Water edit intent missing after continuous simulation")
             require(int(state3.group(1)) == native_pid, "controller PID changed")
 
             stopped, _ = request("quit")
