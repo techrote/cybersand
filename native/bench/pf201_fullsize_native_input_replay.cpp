@@ -203,7 +203,8 @@ int main(int argc,char** argv) {
         std::cout<<"tick,physical_hash,quantity_digest,gas_digest,water_visible,water_overfill,"
                    "water_ballistic,water_expected,gas_live,gas_created,gas_absorbed,"
                    "gas_vented,gas_collapsed,gas_compartments,gas_reference_passes,"
-                   "gas_reuses,seed_cells,bfs_cells,relabel_cells,gas_component_reuses,"\n                   "gas_cache_builds,gas_member_validations,gas_cache_build_cells,workers_observed\n";
+                   "gas_reuses,seed_cells,bfs_cells,relabel_cells,gas_component_reuses,"
+                   "gas_cache_builds,gas_member_validations,gas_cache_build_cells,workers_observed\n";
         for(const auto& r:steps){
             apply(world,r,camera==1);
             const auto stats=world.tick();
@@ -231,7 +232,8 @@ int main(int argc,char** argv) {
                      <<g.absorbed<<','<<g.vented<<','<<g.collapsed<<','
                      <<world.gas_compartments().size()<<','<<a.gas_reference_passes<<','
                      <<a.gas_reuses<<','<<a.gas_seed_cells<<','<<a.gas_bfs_cells<<','
-                     <<a.gas_relabel_cells<<','<<a.gas_component_reuses<<','<<a.gas_cache_builds<<','\n                     <<a.gas_member_validations<<','<<a.gas_cache_build_cells<<','<<stats.worker_threads_observed<<'\n';
+                     <<a.gas_relabel_cells<<','<<a.gas_component_reuses<<','<<a.gas_cache_builds<<','
+                     <<a.gas_member_validations<<','<<a.gas_cache_build_cells<<','<<stats.worker_threads_observed<<'\n';
         }
         std::cerr<<"PF201_IDENTICAL_NATIVE_INPUT_REPLAY_PASS ticks="<<steps.size()
                  <<" workers="<<workers<<" camera="<<camera<<"\n";
