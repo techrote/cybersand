@@ -288,7 +288,14 @@ REVIEWED_TRANSITIONS: tuple[dict, ...] = ({'path': 'native/src/world_pressure.in
   'source_commit': 'e77ca8475bbe5333d1af520e44b400e70ba8570c',
   'record': 'docs/audits/2026-11-07-pr405-current-main-reconciliation.md',
   'issue': 201,
-  'pr': 405})
+  'pr': 405},
+ {'path': 'native/src/world_pressure.inc',
+  'from_lf_sha256': '71723fa32bbd29aafe93f1a8dd233cece1eec7ed295da81c1e021f635085c17a',
+  'to_lf_sha256': 'f575825e96e61caad200974a1f39396d4d09921e548719643145c5d2915abb2b',
+  'source_commit': 'f0fffc6a488f585ff10966427e87cfc3d23ed04b',
+  'record': 'docs/audits/2026-11-07-pf-gas-selective-cache-transition.md',
+  'issue': 201,
+  'pr': 532})
 
 
 class CompatibilityError(ValueError):
