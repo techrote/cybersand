@@ -1,7 +1,7 @@
 extends SceneTree
 ## Fake-provider protocol tests; NO real OpenAI calls and NO simulated native acceptance.
 const Client = preload("res://scripts/workbench_agent_client.gd")
-const Panel = preload("res://scripts/workbench_agent_panel.gd")
+const AgentPanel = preload("res://scripts/workbench_agent_panel.gd")
 
 var assertions := 0
 var failures := 0
@@ -89,8 +89,8 @@ func _test_tool_loop_and_stop() -> void:
 	var old_calls: Array = []
 	c2.tool_requested.connect(func(n: String, _a: Dictionary, _e: int, _id: String) -> void: old_calls.append(n))
 	_expect(c2.begin_task("Test Stop", "configured-vision-model", _scope()), "second task start")
-	var e := c2.current_epoch()
-	var s := c2._serial
+	var e: int = c2.current_epoch()
+	var s: int = c2._serial
 	c2.stop_task("slow response")
 	c2.receive_fake_response(e, s, 200, _response("late", [_tool("step", "late-1", {"ticks": 1})]))
 	_expect(old_calls.is_empty() and not c2.is_active(), "late response after Stop dispatched")
@@ -144,7 +144,7 @@ func _test_budget_and_duplicates() -> void:
 	p.queue_free()
 
 func _test_ui_shell() -> void:
-	var panel := Panel.new()
+	var panel := AgentPanel.new()
 	root.add_child(panel)
 	await process_frame
 	_expect(panel._start.disabled, "unbound panel must refuse Start")
