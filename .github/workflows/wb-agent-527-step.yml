@@ -6,6 +6,7 @@ on:
     paths:
       - 'godot/scripts/workbench_agent_step_sequence.gd'
       - 'godot/tests/test_workbench_agent_step_sequence.gd'
+      - 'docs/audits/2026-11-07-wb-agent-527-step-stop-native.md'
       - '.github/workflows/wb-agent-527-step.yml'
   workflow_dispatch:
 
@@ -23,6 +24,7 @@ jobs:
     env:
       SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
       EVIDENCE: build/wb-agent-527-step
+      WB_AGENT_527_IMAGE_DIR: ${{ github.workspace }}/build/wb-agent-527-step
       GODOT_SILENCE_ROOT_WARNING: '1'
     steps:
       - name: Checkout immutable PR head
