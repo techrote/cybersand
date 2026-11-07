@@ -48,6 +48,23 @@ class AcceptanceSubsetTests(unittest.TestCase):
             for group in gate.QUICK_GROUPS:
                 self.assertEqual({r["water_mode"] for r in selected if r["group"] == group}, modes)
 
+    def test_bounded_stage_cpu_profile_subset(self) -> None:
+        for rep in (0, 1):
+            selection = gate.selected(rep, "pfprofile")
+            self.assertEqual(len(selection), 16)
+            self.assertEqual(len({row["id"] for row in selection}), 16)
+            for group in gate.QUICK_GROUPS:
+                rows = [row for row in selection if row["group"] == group]
+                self.assertEqual(len(rows), 8)
+                pf = [r for r in rows if r["family"] == "pressure_flow_v1"]
+                self.assertEqual(len(pf), 6)
+                self.assertEqual({r["variant"] for r in pf},
+                                 {"reference", "cached", "cached_dormant"})
+                self.assertEqual({r["gas"] for r in pf}, {True, False})
+                self.assertEqual(
+                    {r["family"] for r in rows if r["family"] != "pressure_flow_v1"},
+                    {"freemass_v1", "cellular_yield_v1"})
+
     def test_repetitions_and_configuration_identity(self) -> None:
         first = gate.selection(0)
         second = gate.selection(1)
