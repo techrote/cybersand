@@ -88,11 +88,22 @@ func call_tool(name: String, args: Variant) -> Dictionary:
 	else:
 		receipt = await _authoring.call_tool(name,args)
 		if name == "prepare_edit":
-			_proposal_pending = receipt.get("status") == "proposed"
-		elif name in ["observe","apply_edit"]:
-			# #526 supersedes proposals on observe, and consumes them on
-			# apply (including a stale/refused consume).
-			_proposal_pending = false
+			if receipt.get("status") == "proposed":
+				_proposal_pending = true
+		elif name == "observe":
+			# A refused observe can be rejected before the #526 worker sees
+			# it. Only a proven native observation supersedes its proposal.
+			# A pending render join still carries the genuine native ID.
+			if receipt.get("status") == "observed" or (
+				receipt.get("status") == "pending"
+				and not str(receipt.get("observation_id","")).is_empty()):
+				_proposal_pending = false
+		elif name == "apply_edit":
+			# Invalid/wrong-ID apply is host-refused before native consume:
+			# it must NEVER unlock Step past the still-live proposal. A
+			# failed consume must be explicitly retired by a new observation.
+			if receipt.get("status") in ["applied","unconfirmed"]:
+				_proposal_pending = false
 	_busy = false
 	if receipt.get("status") == "unconfirmed":
 		_uncertain = true

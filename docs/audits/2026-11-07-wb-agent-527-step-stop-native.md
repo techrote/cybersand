@@ -140,3 +140,28 @@ qualified handoff, re-run this same composed regression, then integrate the
 actual #526 and #527 APIs in dependency order under exclusive write-set
 ownership. Do not treat this source-independent composition as a real live
 OpenAI task or as frozen Sand-hopper *agent* success.
+
+
+## 7 November 2026 — wrong-ID apply refusal must retain Step fence
+
+The #527 bridge cleared its tracked prepared-proposal fence on **every**
+`apply_edit` or `observe` response, including a refusal issued before #526's
+native owner had consumed the proposal. A wrong `proposal_id` is refused by
+the authoritative host with `proposal_not_preflight_recordable` while the
+legitimate proposal remains outstanding. Previously a subsequent `step`
+was locally admissible. This is an actual code-path ownership defect, not a
+new speculative fixture.
+
+The bridge now clears its fence only on an actually accepted native observe
+(with native ID, including post-draw pending) or an applied/unconfirmed
+consume. A refused call leaves Step blocked until a valid superseding observe
+or task retirement. The real native/Godot four-tool test now submits wrong-ID
+apply, checks the #526 refusal, then demands that Step be refused with **zero
+extra completed native ticks**, before applying the correct original proposal
+and continuing Step and Stop. No #526 worker/session/host file, physics,
+material default, GEN-006 branch or frozen hopper fixture was changed.
+
+Qualification is attached to the corresponding #530 exact-head progress
+comment. The composed CI's pinned #526 interface remains separate and Draft;
+post-step native/render matching and complete 32-Sand agent trial remain HOLD
+until separately executed.

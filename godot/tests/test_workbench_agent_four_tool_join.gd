@@ -100,6 +100,19 @@ func run() -> void:
 			and prepared.get("changed_cells",-1)==9,
 			"prepare mutated/refused real native nine-cell construction: "+str(prepared))
 		if prepared.get("status")=="proposed":
+			# Regression: wrong-ID apply is host-refused before #526 can
+			# consume the genuine native proposal; Step must remain fenced.
+			var wrong_apply: Dictionary = await bridge.call_tool("apply_edit",{
+				"proposal_id":"wrong-proposal-id-527"})
+			check(wrong_apply.get("status")=="refused"
+				and wrong_apply.get("reason")=="proposal_not_preflight_recordable",
+				"wrong-ID proposal was not refused by #526 owner: "+str(wrong_apply))
+			var refused_step: Dictionary = await bridge.call_tool("step",{"ticks":1})
+			check(refused_step.get("status")=="refused"
+				and refused_step.get("reason")==
+				"prepared_edit_must_be_applied_or_retired_before_step"
+				and main.latest_snapshot.tick_index==before_tick,
+				"wrong-ID apply unlocked native Step across pending proposal")
 			var blocked_step: Dictionary = await bridge.call_tool("step",{"ticks":1})
 			check(blocked_step.get("status")=="refused"
 				and blocked_step.get("reason")=="prepared_edit_must_be_applied_or_retired_before_step"
