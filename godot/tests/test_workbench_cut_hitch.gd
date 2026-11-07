@@ -11,6 +11,7 @@ func watch_frame() -> void:
 
 func history() -> void:
 	var setup: Dictionary=Setup.fresh(PackedInt32Array(ui.applied.liquid_policy),Vector2i(2048,2048))
+	setup.version=4
 	for i: int in range(24):
 		setup.edits.append([0,0,2048,2048,43]);setup.edits.append([0,0,2048,2048,0])
 	setup.edits.append([17,19,6,3,43])
