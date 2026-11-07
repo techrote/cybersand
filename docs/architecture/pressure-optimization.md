@@ -95,8 +95,10 @@ the ordinary gas BFS. A gas-dirty chunk, a chunk known to retain an occluded
 positive gas label, cache-membership uncertainty, dirty-proof overflow,
 component-cache replay, or gas-pass allocation still executes the complete
 reference relabel sweep. Only a clean chunk with no latent-label obligation may
-relabel exactly the cells marked by the authoritative BFS. The dirty set is
-retained through relabelling and then drained. Derived visit bits and hidden-
+relabel the union of cells marked by the current and immediately previous
+authoritative BFS. The prior set covers remote vent/split cases where a cell can
+become unvisited without a local dirty input; an unavailable prior set forces a
+complete sweep. The dirty set is retained through relabelling and then drained. Derived visit bits and hidden-
 label bytes are bounded at cache construction, are not serialized and cannot
 change gas IDs, lineage, amounts or CYPS/physical hashes.
 
