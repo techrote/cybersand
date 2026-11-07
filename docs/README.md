@@ -579,3 +579,7 @@ For final Gate Aâ€“E PASS, the landed stack, the bounded #200 policy founda
 the [current roadmap checkpoint](reference/status-and-roadmap.md#liquid-comparison-build-design-checkpoint--2026-10-23),
 the [pressure reference entry](reference/status-and-roadmap.md#lcb-001-pressure-reference--2026-10-24)
 and the [dated reconciliation](audits/2026-10-24-lcb000-landed-status-reconciliation.md).
+
+## Independent world-art preview (Draft tooling)
+
+[World Art Preview](tools/world-art-preview.md) is an independent Godot 4.7 desktop viewer for the provisional 15-collection #454 world-design atlas. It displays the source-native RG8 cells through the production material/emission/glow shaders, with zoom, pan, live reload, pinned visual comparisons and actual framebuffer PNG export. The preview neither imports the proposal schema into gameplay nor runs the native simulation.
