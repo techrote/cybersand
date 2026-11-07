@@ -299,6 +299,8 @@ bool CyberNativeCellWorld::reset_demo_world() {
         config.physics_diagnostics = {};
         config.interaction_policy = {};
         config.liquid_solver_policy = {}; // The ordinary demo runs every liquid's default.
+        // Resetting to FreeMass also retires the PF-only gas-capacity profile.
+        config.pressure_gas_compartment_capacity = cybersand::PressureFlowParameters::kCompartmentCapacity;
         config.maximum_rule_radius = kProtectedCurrentRuleRadius;
         if (workbench_) {
             config.maximum_chunk_count = 128;

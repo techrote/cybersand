@@ -82,6 +82,20 @@ func run() -> void:
             verify(gas.get("ledger", {}).get("closes", false) and
                     gas.get("compartments", []).size() <= 2048,
                     "C2048 gas ledger or compartment capacity failed after tick")
+            var saved_level: PackedByteArray = bridge.export_level(world)
+            verify(not saved_level.is_empty(), "C2048 level export failed")
+            # Ordinary reset must discard PF gas capacity along with the solver.
+            verify(world.reset_demo_world() and world.get_physical_state_hash_version() == 2 and
+                    not world.inspect_gas_compartments().get("available", false),
+                    "C2048 ordinary native reset retained PF-only capacity")
+            # An explicit re-adoption may still use C2048 after that reset.
+            var again: int = bridge.prepare_liquid_default_demo(world, requested, options(2048))
+            if verify(again > 0 and bridge.commit_liquid_world(world, again),
+                    "explicit C2048 re-adoption after ordinary reset failed"):
+                verify(bridge.import_level(world, saved_level) and
+                        world.get_physical_state_hash_version() == 2 and
+                        not world.inspect_gas_compartments().get("available", false),
+                        "lossy CYSD1 default-family import incorrectly retained C2048")
     finish()
 
 func finish() -> void:
