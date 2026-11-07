@@ -1,0 +1,20 @@
+{
+  "schema": "cybersand.workbench-cut-outcomes.001",
+  "date": "2026-11-07",
+  "parent": "dc4fe60fbd503a7043c7e63934da44015bd849b3",
+  "scope": "Uniform fresh authored post-cut representations, derived from genuine native cuts; not alternate live-cut execution or asynchronous admission",
+  "arms": ["core_sand", "all_sand", "core_only"],
+  "structures": ["tree520", "building356"],
+  "beds": ["packed_sand", "mixed"],
+  "primary": {"host": "windows", "workers": 1, "repeats": 5},
+  "spots": [{"host": "linux", "workers": 1, "repeats": 1, "beds": ["packed_sand"]}, {"host": "windows", "workers": 4, "repeats": 1, "beds": ["packed_sand"]}],
+  "steps": 120,
+  "nominal_hz": 60,
+  "tail_steps": 30,
+  "input": "Original source map, floor and eight-cell stump; exact same core and unit mass/inertia in rigid arms; fresh World per arm; current LA-SELECTIVE/liquid policy; no drive",
+  "accounting": {"tree": [208,312,520], "building": [152,204,356], "all_sand_material": 2, "core_only_fringe": "explicit312/204-cell sink"},
+  "observations": ["initial/final authoritative material maps", "every native/actual Rapier step", "pose/velocity/omega", "body kinetic/potential proxies", "actual response and sample age", "native/owner CPU", "exact source/core/fringe counts", "independent Sand/hard overlap geometry"],
+  "decision": "Descriptive medians and spreads only; no new rest/clearance or original SOL CPU acceptance. All-Sand body metrics are null. Preserve missing observations and failures. Stop after comparison and triage.",
+  "async": "Current native token and mixed-body roster globally fence ticks; do not remove pause checks. Record speculative preparation/local-reservation design as deferred investigation.",
+  "resource": {"cap_bytes": 1073741824, "minimum_free_bytes": 5368709120}
+}
