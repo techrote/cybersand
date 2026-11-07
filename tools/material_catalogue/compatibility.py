@@ -274,6 +274,13 @@ REVIEWED_TRANSITIONS: tuple[dict, ...] = ({'path': 'native/src/world_pressure.in
    'source_commit': '250f91bc4bb41d5ec0c8115933d87ade5648aa5e',
    'record': 'docs/audits/2026-11-07-pf-gas-exact-hotpath-transition.md',
    'issue': 504,
+   'pr': 504},
+  {'path': 'native/src/world_pressure.inc',
+   'from_lf_sha256': 'a71d593a7ce3831e96f8bae47f5ff520ea75220da0ce94314d6d9ffc57960641',
+   'to_lf_sha256': '3f044246d306c8c56b072d3d040beebaf8d2aa04fb713eaebdd2e6a231511a9d',
+   'source_commit': '6eab269bebd70e4bb4fa98dc108f77afbc919ae8',
+   'record': 'docs/audits/2026-11-07-pf-gas-cached-seed-transition.md',
+   'issue': 504,
    'pr': 504})
 
 
