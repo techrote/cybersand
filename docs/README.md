@@ -10,11 +10,19 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+IN-TOOLS #361: [renewed current-main admission](architecture/in-tools-gameplay-admission.md)
+and [six Planned/NOT_RUN fixture concepts](operations/in-tools-fixtures-and-playtest.md).
+The [2026-11-07 source authority audit](audits/2026-11-07-in-tools-361-source-authority-renewal.md)
+keeps the immutable #404 A01 witness separate from the new source and runtime gates.
+Ordinary U10 `liquid_drain` is Current; new exact-metered commands are not.
+
+
 Coupled determinism: [desktop lockstep feasibility](architecture/determinism-and-boundary-transfers.md#coupled-desktop-determinism--2026-11-06)
 records a default-off fence. With it, repeated same-host native-plus-Rapier runs
-were bit-identical, while the asynchronous default always diverged. Windows and
-Linux still differ. The [dated audit](audits/2026-11-06-coupling-lockstep-feasibility.md)
-is evidence only and changes no default.
+were bit-identical, while the asynchronous default always diverged. The owner
+chose it as an opt-in mode (`--lockstep-coupling`, desktop); the default is
+unchanged. The [dated audit](audits/2026-11-06-coupling-lockstep-feasibility.md)
+records the evidence and the opt-in packing re-measurement.
 
 Material authoring: [#357 is merged as an owner-adopted Planned baseline](architecture/material-authoring-catalogue-plan.md#12-owner-adoption-and-shadow-compiler-handover--2026-11-04).
 The [#353-A shadow compiler](operations/material-catalogue-shadow.md) merged in

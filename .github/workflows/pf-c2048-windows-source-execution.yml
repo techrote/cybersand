@@ -1,0 +1,144 @@
+name: PF C2048 exact-source Windows GDExtension execution (Draft)
+on:
+  push:
+    branches: [codex/pf-c2048-admitted-20261107]
+  workflow_dispatch:
+permissions:
+  contents: read
+env:
+  GODOT_CPP_COMMIT: 101ae38034304346a46ea9ea84ae156d3e860496
+  LLVM_MINGW_URL: https://github.com/mstorsjo/llvm-mingw/releases/download/20260826/llvm-mingw-20260826-ucrt-ubuntu-22.04-x86_64.tar.xz
+  LLVM_MINGW_SHA256: cee8d2ce3da5145ce4dc882e70d0b0719a783d53a99752c60948fc0659975a65
+jobs:
+  build-windows-candidate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 240
+    steps:
+      - name: Checkout exact PR source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Record identity and validate provider
+        run: |
+          set -euo pipefail
+          mkdir -p build/pf-c2048-windows
+          git rev-parse HEAD >build/pf-c2048-windows/source-sha.txt
+          python3 tools/ci/check_ci_provider_policy.py
+      - name: Install pinned SCons and godot-cpp
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/scons"
+          "$RUNNER_TEMP/scons/bin/python" -m pip install --require-hashes -r tools/requirements-build.txt
+          "$RUNNER_TEMP/scons/bin/python" -c 'import SCons; assert SCons.__version__ == "4.10.1"'
+          mkdir "$RUNNER_TEMP/godot-cpp"
+          git -C "$RUNNER_TEMP/godot-cpp" init
+          git -C "$RUNNER_TEMP/godot-cpp" remote add origin https://github.com/godotengine/godot-cpp.git
+          timeout "$(python3 tools/ci/execution_policy.py seconds dependency_prepare_seconds)" \
+            git -C "$RUNNER_TEMP/godot-cpp" fetch --depth=1 origin "$GODOT_CPP_COMMIT"
+          git -C "$RUNNER_TEMP/godot-cpp" checkout --detach FETCH_HEAD
+          test "$(git -C "$RUNNER_TEMP/godot-cpp" rev-parse HEAD)" = "$GODOT_CPP_COMMIT"
+      - name: Fetch exact LLVM-MinGW
+        run: |
+          set -euo pipefail
+          timeout "$(python3 tools/ci/execution_policy.py seconds dependency_prepare_seconds)" \
+            curl --fail --location --retry 3 -o "$RUNNER_TEMP/llvm-mingw.tar.xz" "$LLVM_MINGW_URL"
+          echo "$LLVM_MINGW_SHA256  $RUNNER_TEMP/llvm-mingw.tar.xz" | sha256sum --check --strict
+          mkdir "$RUNNER_TEMP/llvm-mingw"
+          tar -xJf "$RUNNER_TEMP/llvm-mingw.tar.xz" -C "$RUNNER_TEMP/llvm-mingw" --strip-components=1
+          test -x "$RUNNER_TEMP/llvm-mingw/bin/x86_64-w64-mingw32-g++"
+          if test ! -e "$RUNNER_TEMP/llvm-mingw/bin/x86_64-w64-mingw32-gcc-ar"; then
+            ln -s llvm-ar "$RUNNER_TEMP/llvm-mingw/bin/x86_64-w64-mingw32-gcc-ar"
+          fi
+      - name: Build actual source-matched Windows runtime DLL
+        env:
+          GODOT_CPP_ROOT: ${{ runner.temp }}/godot-cpp
+          SCONS_PYTHON: ${{ runner.temp }}/scons/bin/python
+          SCONS_JOBS: "2"
+          LLVM_MINGW_ROOT: ${{ runner.temp }}/llvm-mingw
+          WINDOWS_CXX: ${{ runner.temp }}/llvm-mingw/bin/x86_64-w64-mingw32-g++
+          CYBERSAND_NATIVE_OUTPUT: ${{ runner.temp }}/cybersand_native.windows.x86_64.dll
+        run: |
+          set -euo pipefail
+          python3 tools/ci/run_timed_command.py --policy-key native_compile_seconds \
+            --label pf-c2048-win-godotcpp --output-dir build/pf-c2048-windows/timing-godotcpp -- \
+            tools/build_pinned_godot_cpp.sh windows
+          python3 tools/ci/run_timed_command.py --policy-key native_compile_seconds \
+            --label pf-c2048-win-extension --output-dir build/pf-c2048-windows/timing-extension -- \
+            tools/build_native_extension_windows.sh
+          file "$CYBERSAND_NATIVE_OUTPUT" | tee build/pf-c2048-windows/dll-type.txt
+          grep -q 'PE32+ executable (DLL).*x86-64' build/pf-c2048-windows/dll-type.txt
+          cp "$CYBERSAND_NATIVE_OUTPUT" build/pf-c2048-windows/cybersand_native.windows.x86_64.dll
+          "$LLVM_MINGW_ROOT/bin/llvm-objdump" -p "$CYBERSAND_NATIVE_OUTPUT" >build/pf-c2048-windows/imports.txt
+          (cd build/pf-c2048-windows && sha256sum cybersand_native.windows.x86_64.dll >runtime.sha256 && sha256sum --check --strict runtime.sha256)
+      - name: Upload complete exact-head Windows runtime candidate
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: pf-c2048-source-windows-runtime
+          path: build/pf-c2048-windows/
+          retention-days: 90
+          if-no-files-found: error
+
+  run-windows-candidate:
+    needs: build-windows-candidate
+    runs-on: windows-2022
+    timeout-minutes: 90
+    defaults:
+      run:
+        shell: bash
+    env:
+      GODOT_WINDOWS_URL: https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip
+      GODOT_SILENCE_ROOT_WARNING: '1'
+      PYTHONUTF8: '1'
+    steps:
+      - name: Check out source and select Python 3.12
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Download same-run compiled Windows runtime
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: pf-c2048-source-windows-runtime
+          path: build/pf-c2048-windows
+      - name: Install candidate DLL, verify immutable source and pinned Rapier
+        run: |
+          set -euo pipefail
+          test "$(cat build/pf-c2048-windows/source-sha.txt)" = "$(git rev-parse HEAD)"
+          (cd build/pf-c2048-windows && sha256sum --check --strict runtime.sha256)
+          mkdir -p build/pf-c2048-windows/execution
+          cp build/pf-c2048-windows/cybersand_native.windows.x86_64.dll \
+             godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll
+          git lfs install --local
+          git lfs pull \
+            --include="godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll" \
+            --exclude=""
+          python -c "from pathlib import Path; p=Path('godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll');assert p.exists() and p.stat().st_size>100000"
+          sha256sum godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll \
+            godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll \
+            >build/pf-c2048-windows/execution/runtime.sha256
+      - name: Download and inspect official Godot 4.7 Windows binary
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 3 --connect-timeout 60 --max-time 1200 \
+            -o "$RUNNER_TEMP/c2048-godot.zip" "$GODOT_WINDOWS_URL"
+          python -m zipfile -e "$RUNNER_TEMP/c2048-godot.zip" "$RUNNER_TEMP/c2048-godot"
+          test -f "$RUNNER_TEMP/c2048-godot/Godot_v4.7-stable_win64_console.exe"
+          "$RUNNER_TEMP/c2048-godot/Godot_v4.7-stable_win64_console.exe" --version \
+            | tee build/pf-c2048-windows/execution/godot-version.txt
+      - name: Import project and execute actual native C2048 prepared-host regression
+        run: |
+          set -euo pipefail
+          GODOT_BIN="$RUNNER_TEMP/c2048-godot/Godot_v4.7-stable_win64_console.exe"
+          python -c 'import subprocess,sys; p=subprocess.run([sys.argv[1],"--headless","--path","godot","--editor","--quit"],timeout=240,stdout=open("build/pf-c2048-windows/execution/import.log","w"),stderr=subprocess.STDOUT);sys.exit(p.returncode)' "$GODOT_BIN" || {
+            tail -100 build/pf-c2048-windows/execution/import.log;exit 1; }
+          python -c 'import subprocess,sys; p=subprocess.run([sys.argv[1],"--headless","--path","godot","--script","res://tests/test_pf_c2048_prepared.gd"],timeout=300,stdout=open("build/pf-c2048-windows/execution/prepared.log","w"),stderr=subprocess.STDOUT);sys.exit(p.returncode)' "$GODOT_BIN" || {
+            tail -150 build/pf-c2048-windows/execution/prepared.log;exit 1; }
+          cat build/pf-c2048-windows/execution/prepared.log
+          grep -Eq 'PF_C2048_PREPARED: [0-9]+ checks; 0 failures' build/pf-c2048-windows/execution/prepared.log
+          echo PF_C2048_WINDOWS_ACTUAL_RUNTIME_PASS
+      - name: Retain original Windows logs and candidate source identity
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: pf-c2048-windows-execution
+          path: build/pf-c2048-windows/
+          retention-days: 90
+          if-no-files-found: warn

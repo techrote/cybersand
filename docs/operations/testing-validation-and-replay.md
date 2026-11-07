@@ -245,6 +245,7 @@ python tools/lockstep/run_coupling_lockstep.py --run NEW [--hosts windows,linux]
 python tools/lockstep/reduce_coupling_lockstep.py --run NEW
 python -m unittest discover -s tools/lockstep -p test_reduce_coupling_lockstep.py
 godot --headless --path godot --script res://tests/test_coupling_lockstep_semantics.gd
+godot --headless --path godot --script res://tests/test_coupling_lockstep_desktop.gd
 ```
 
 The reducer validates the complete registered matrix and every artifact
@@ -253,6 +254,25 @@ invariants) before deciding, and writes `reduction-v2.json`. Any validation
 error yields no decisions and exit 2. Its negative regressions run in
 Documentation CI. `test_coupling_lockstep_semantics.gd` checks pause, reset,
 failure and duplicate publications for the consumed-publication field.
+
+The opt-in desktop mode (amendment_002) adds two checks.
+`test_coupling_lockstep_desktop.gd` runs the real `main.tscn` worker and Rapier
+path. A default launch must leave lockstep and packing off. A child process
+launched with the real `--lockstep-coupling` argument must enable it. Through
+play, pause, a world reset and an articulated physical actor, every physics
+callback must publish at most one body sample. Every fenced Rapier step must
+apply the completion that consumed main's previous publication, and in steady
+play advance exactly one native tick, with no counted stale step. In the
+player-course MicroScenario and the Experiment Tower main must never hold while
+the worker reports its fence inactive, and a world reset out of the lab must
+restore the fence. A deliberately slow owner (600 ms per publication) must
+produce counted stale steps without freezing, and the fence must recover when
+the delay ends. Packed rotations must equal double `atan2` of the basis. Run
+`packed-001` with `--arms lockstep-packed --repeats 2 --ticks 1800`. Its
+reduction also validates `horizon-001` and requires repeat 0 of each host and
+worker count to equal that run's `lockstep-f64rot` arm. From amendment_002 on,
+the runner hashes committed blobs (not CRLF working-tree copies) and records the
+bridge identity.
 
 Evidence is written to uncommitted `build/coupling-lockstep/`. The sealed
 archive is published as the `evidence-coupling-lockstep-001-20261106`

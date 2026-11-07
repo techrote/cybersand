@@ -66,6 +66,9 @@ struct WorldConfig {
     // assignment is refused at construction and never reaches a kernel.
     LiquidSolverPolicy liquid_solver_policy{};
     PressureOptimizationConfig pressure_optimization{};
+    // Explicit native C2048 opt-in; 1024 is the unchanged ordinary default.
+    // There is no implicit growth or live resize.
+    std::uint16_t pressure_gas_compartment_capacity = PressureFlowParameters::kCompartmentCapacity;
     // Execution-only, opt-in for the finite desktop workbench. Each job owns
     // complete x-columns of the reference head field before row interpolation.
     bool workbench_parallel_pressure_heads = false;
@@ -447,7 +450,8 @@ public:
     static constexpr std::uint32_t kPhysicalStateHashVersion = 2;
     // BW-001 ballistic Worlds report and emit version4 (IN or not).
     [[nodiscard]] std::uint32_t physical_state_hash_version() const noexcept {
-        return config_.ballistic_water.enabled || inertial_parameters_.signed_vertical ? 4U
+        return config_.pressure_gas_compartment_capacity == PressureFlowParameters::kAdmittedCompartmentCapacity ? 5U
+             : config_.ballistic_water.enabled || inertial_parameters_.signed_vertical ? 4U
              : inertial_enabled_ ? 3U : 2U;
     }
     [[nodiscard]] std::uint64_t physical_state_hash() const;
@@ -469,7 +473,8 @@ public:
     // incompatible payloads; the caller's live World is never touched.
     static constexpr std::uint32_t kPhysicalStateFormatVersion = 2;
     [[nodiscard]] std::uint32_t physical_state_format_version() const noexcept {
-        return config_.ballistic_water.enabled || inertial_parameters_.signed_vertical ? 4U
+        return config_.pressure_gas_compartment_capacity == PressureFlowParameters::kAdmittedCompartmentCapacity ? 5U
+             : config_.ballistic_water.enabled || inertial_parameters_.signed_vertical ? 4U
              : inertial_enabled_ ? 3U : 2U;
     }
     [[nodiscard]] std::vector<std::uint8_t> save_physical_state() const;
@@ -508,6 +513,7 @@ private:
     struct PressureState;
     struct PressureCache;
     struct Address;
+    struct KernelReadCursor;
     struct JobEffects;
     struct ParallelState;
     struct TransientObstacleState;
@@ -616,7 +622,8 @@ private:
     void schedule_interaction_wake(std::int64_t x, std::int64_t y, std::uint64_t due,
                                    JobEffects* effects) noexcept;
     void schedule_pending_reaction_wake(Material material, std::int64_t x,
-                                        std::int64_t y, JobEffects* effects) noexcept;
+                                        std::int64_t y, JobEffects* effects,
+                                        const KernelReadCursor& cursor) noexcept;
     struct MotionFootprint;
     [[nodiscard]] bool exchange_permitted(Material source, Material target,
         std::int64_t x, std::int64_t y, std::int64_t target_x, std::int64_t target_y,
@@ -692,7 +699,7 @@ private:
                                       std::uint8_t state_b_value) const noexcept;
     [[nodiscard]] bool update_rule_kernel(RuleKernel kernel, Material source_material,
                                           std::int64_t x, std::int64_t y,
-                                          JobEffects* effects);
+                                          JobEffects* effects, const KernelReadCursor& cursor);
     [[nodiscard]] std::uint8_t deterministic_random(std::int64_t x, std::int64_t y,
                                                     std::uint32_t stream) const noexcept;
     [[nodiscard]] bool granular_sample_stable(std::int64_t x, std::int64_t y,
