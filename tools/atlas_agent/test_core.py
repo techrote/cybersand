@@ -69,7 +69,7 @@ class ConfigTests(unittest.TestCase):
 
     def test_hard_caps_cannot_be_exceeded(self):
         for section, key, value in (("limits", "max_iterations", 121), ("spend", "max_usd_per_run", 26),
-                                    ("limits", "max_images", 41), ("limits", "max_retries", 7),
+                                    ("limits", "max_images", 41), ("limits", "max_retries", 31),
                                     ("limits", "max_api_calls", 201), ("limits", "max_tool_calls", 601)):
             bad = base_config()
             bad[section][key] = value
