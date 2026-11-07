@@ -137,6 +137,7 @@ class Journal:
     def __init__(self, path: Path, state: Recovery):
         self.path = Path(path)
         self.state = state
+        self._poisoned = False
         # Bind the handle to the already-validated file, not just its length.
         # A same-sized checkpoint from another incarnation must never receive
         # this handle's edit record. This is not an interprocess writer lock.
@@ -266,8 +267,12 @@ class Journal:
         An I/O failure requires handle retirement and explicit recovery;
         complete unacknowledged frames may remain visible on the filesystem.
         """
-        edits = tuple(edits)
+        # Reject iterators before materialization: an unbounded iterable may
+        # otherwise exhaust memory before the declared batch cap is checked.
+        require(isinstance(edits, (tuple, list)), 'G6J_BATCH_SEQUENCE_REFUSED')
         require(0 < len(edits) <= MAX_BATCH, 'G6J_BATCH_SIZE_REFUSED')
+        require(not self._poisoned, 'G6J_HANDLE_POISONED')
+        edits = tuple(edits)
         state = self.state
         require(not state.torn_tail, 'G6J_TORN_TAIL_REPAIR_REQUIRED')
         require(state.generation == expected_generation and
@@ -290,29 +295,37 @@ class Journal:
             frames.append(record)
             prior = chain(record[:-4], prior)
         payload = b''.join(frames)
-        # Validate the actual descriptor used for append. Not a writer lock.
-        with self.path.open('r+b') as f:
-            st = os.fstat(f.fileno())
-            require(st.st_size == state.valid_length and
-                    (st.st_dev, st.st_ino) == self._file_identity,
-                    'G6J_EXTERNAL_WRITE_REFUSED')
-            require(f.read(HEADER.size) == self._header,
-                    'G6J_EXTERNAL_WRITE_REFUSED')
-            if state.edits:
-                f.seek(-EDIT.size, os.SEEK_END)
-                require(f.read(EDIT.size) == self._last_record,
+        committed = Recovery(state.identity, state.checkpoint,
+                             state.edits + edits, state.valid_length + len(payload),
+                             prior, False)
+        try:
+            # Validate the actual descriptor used for append. Not a writer lock.
+            with self.path.open('r+b') as f:
+                st = os.fstat(f.fileno())
+                require(st.st_size == state.valid_length and
+                        (st.st_dev, st.st_ino) == self._file_identity,
                         'G6J_EXTERNAL_WRITE_REFUSED')
-            f.seek(0, os.SEEK_END)
-            require(f.write(payload) == len(payload), 'G6J_BATCH_SHORT_WRITE')
-            f.flush()
-            os.fsync(f.fileno())  # one durability barrier for the entire group
-        post = self.path.stat()
-        require((post.st_dev, post.st_ino) == self._file_identity and
-                post.st_size == state.valid_length + len(payload),
-                'G6J_EXTERNAL_WRITE_REFUSED')
-        self.state = Recovery(state.identity, state.checkpoint,
-                              state.edits + edits, state.valid_length + len(payload),
-                              prior, False)
+                require(f.read(HEADER.size) == self._header,
+                        'G6J_EXTERNAL_WRITE_REFUSED')
+                if state.edits:
+                    f.seek(-EDIT.size, os.SEEK_END)
+                    require(f.read(EDIT.size) == self._last_record,
+                            'G6J_EXTERNAL_WRITE_REFUSED')
+                f.seek(0, os.SEEK_END)
+                require(f.write(payload) == len(payload), 'G6J_BATCH_SHORT_WRITE')
+                f.flush()
+                os.fsync(f.fileno())  # one durability barrier for the entire group
+            post = self.path.stat()
+            require((post.st_dev, post.st_ino) == self._file_identity and
+                    post.st_size == committed.valid_length,
+                    'G6J_EXTERNAL_WRITE_REFUSED')
+        except BaseException:
+            # A failed fsync can leave fully formed but unacknowledged records,
+            # and a retry would create an ambiguous generation/ACK boundary.
+            # Retire this handle even if an external repair restored its length.
+            self._poisoned = True
+            raise
+        self.state = committed
         self._last_record = frames[-1]
 
 
