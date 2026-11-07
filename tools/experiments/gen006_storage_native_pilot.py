@@ -102,8 +102,10 @@ def writer_child(meta: Path) -> None:
     info = json.loads(meta.read_text(encoding="utf-8"))
     p = Path(info["work"])
     ident = Identity(*info["identity"])
+    # CYPS alone omits the host G6SLICE1 envelope (recipe, coordinate,
+    # and explicit player Empty mask). Persist the complete native carrier.
     journal = Journal.create(p / "edits.g6j", ident,
-                             (p / "native-base.cyps").read_bytes())
+                             (p / "native-base.g6s").read_bytes())
     for x in info["edits"]:
         mutation = Mutation(*x)
         journal.append(mutation, journal.state.generation)
@@ -172,14 +174,20 @@ def main() -> int:
                            capture_output=True, text=True, timeout=30, check=False)
     require(child.returncode == 0, "G6J_ABRUPT_WRITER_CHILD_FAILED " + child.stderr)
     recovered = recover(work / "edits.g6j")
-    require(recovered.identity == identity and recovered.checkpoint == cyps and
+    require(recovered.identity == identity and recovered.checkpoint == base_record and
+            native_cyps(recovered.checkpoint) == (base_generation, cyps) and
             recovered.edits == tuple(edits) and recovered.torn_tail,
             "G6J_ABRUPT_WRITER_TORN_PREFIX_RECOVERY_REFUSED")
+    # Replay cannot rely on auxiliary baseline files. The original source
+    # record remains preserved under base/ for immutable failure evidence.
+    (work / "native-base.cyps").unlink()
+    (work / "native-base.g6s").unlink()
 
     # replay_checked calls the actual separately launched native World binary
     # for EACH cumulative prefix, never mutating a live World or trusting a
-    # synthetic hash oracle. The initial #486 G6SLICE1 carrier binds the native
-    # CYPS checkpoint, recipe, player Empty mask and real coordinate.
+    # synthetic hash oracle. The recovered G6J1 checkpoint now embeds the
+    # ENTIRE #486 G6SLICE1 host carrier, so native replay needs no external
+    # baseline file for CYPS, recipe, Empty intent or chunk coordinate.
     observed_hash = [base_hash]
     stage_records = []
     prefix: list[str] = []
@@ -188,7 +196,10 @@ def main() -> int:
         prefix.append(COMMANDS[len(prefix)][0])
         slot = work / ("native-replay-" + str(len(prefix)))
         slot.mkdir()
-        shutil.copy2(work / "native-base.g6s", native_record(slot))
+        require(not (work / "native-base.g6s").exists() and
+                not (work / "native-base.cyps").exists(),
+                "G6J_NATIVE_REPLAY_EXTERNAL_BASELINE_DEPENDENCY")
+        native_record(slot).write_bytes(recovered.checkpoint)
         out, blob = run_native(exe, slot, work, prefix, args.workers,
                                "replay-" + str(len(prefix)))
         receipts = [tuple(map(int, row)) for row in ACK.findall(out)]
@@ -234,16 +245,16 @@ def main() -> int:
     # end-to-end ACK latency or production write-amplification measurement.
     # Each of the five complete native G6SLICE1 files is from an actual
     # source-matched World after the corresponding durable edit. G6J1 stores
-    # the original CYPS payload once plus 48 bytes per edit.
+    # the complete G6SLICE1 host envelope once plus 48 bytes per edit.
     native_full_payload = sum(len(blob) for blob in stage_records)
     journal_payload = repaired_path.stat().st_size
     require(native_full_payload > 0 and
-            journal_payload == 64 + len(cyps) + len(edits) * 48,
+            journal_payload == 64 + len(base_record) + len(edits) * 48,
             "G6J_NATIVE_STORAGE_PAYLOAD_ACCOUNTING_REFUSED")
     print("GEN006_G6J1_REAL_NATIVE_PAYLOAD full_checkpoint_bytes={}"
           " journal_baseline_plus_edits_bytes={}"
           " journal_percent_of_full={:.2f}"
-          " no_latency_or_tick_speedup_claim=1".format(
+          " full_host_carrier_stored=1 no_external_base_replay=1 no_latency_or_tick_speedup_claim=1".format(
               native_full_payload, journal_payload,
               100.0 * journal_payload / native_full_payload))
     require(Journal.open(repaired_path, *CHUNK, identity.incarnation)
@@ -254,7 +265,7 @@ def main() -> int:
           " real_native_processes={} frozen_tick={} journaled_edits={}"
           " final_generation={} final_physical_hash={} Water17=17"
           " temperature417=417 Empty_intent=1"
-          " torn_suffix_repaired_after_native_replay=1".format(
+          " torn_suffix_repaired_after_native_replay=1 self_contained_host_envelope_replay=1".format(
               args.workers, args.native_sha, 2 + len(COMMANDS),
               tick, len(edits), edits[-1].generation, edits[-1].physical_hash))
     print("GEN006_G6J1_LIMITS journal_not_controller_integrated=1"
