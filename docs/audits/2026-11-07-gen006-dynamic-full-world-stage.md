@@ -344,3 +344,48 @@ eviction, multi-chunk halo or sidecar transfer, moving material persistence,
 or default playable streaming. The exact protected dynamic prepare/evict/
 reinstall source/API transfer request under issue #194 remains pending.
 All GEN-006 PRs stay Draft, opt-in, NO MERGE and no source-lock repin.
+
+## 7 November — real shared-World dynamic simulation WHILE a static resident is absent
+
+This #523-only test increment extends the independent source-built G6KC1
+static/dynamic bridge; it **does not** change any protected World code. After
+fenced, byte-readback-checked eviction of distant static `(8,0)`, the actual
+shared native World continues **eight native ticks with only the adjacent
+signed Sand/Water pair resident**. Its real native cells, liquid mass and
+temperature across the active seam are compared every tick to a separately
+constructed, never-restored three-resident World. The absent static chunk
+never reappears or reallocates cell storage during those ticks. Only after
+this genuine live interval does the same shared World restore the precise
+static record (no whole-World replacement). Complete physical/content/state
+hash, native clock, quantity ledger and cell-allocation parity then match
+the uninterrupted control and remain equal for **eight further ticks**.
+
+Tampered record contents and a valid record supplied for the wrong signed
+chunk are explicitly rejected **while the static resident is absent**, with
+full native CYPS unchanged on refusal. Post-restoration, the pre-eviction
+durable ACK is rejected against the new admission incarnation. The test
+requires both negative-coordinate Sand and Water seam movement *before*
+release; dynamic residents remain source-pinned against G6KC1 selection.
+
+**Actual source-built Ubuntu + Windows preliminary exact-head run:**
+[#42407694957](https://github.com/techrote/cybersand/actions/runs/42407694957)
+PASS 2/2 at test commit `b643cbbb07c55fa4cd96074425adc7d7c86a5c12`
+on read-only #512 `af5ab47e210bac53d70b51e923588a4ad630aea9`.
+Both platforms and worker settings report identical resident-cell bytes
+`107264 -> 66048 -> 107264`, static reclaimed `41216`, live absent
+ticks `8`, post-restore ticks `8`, final native tick `19` and physical
+hash `9217573846605726446`. Maximum actual pool participation during the
+absence was **1**, even with 4 workers configured; the broader preceding
+seam fixture observed 1/2 for settings 1/4. Linux and Windows runner logs
+supply the original compile, run and refusal results. The dedicated workflow
+now explicitly requires the absent-tick marker for **both configured worker
+settings on both operating systems**, rather than merely relying on the
+older static bridge pass label.
+
+This is the first measured proof of **ongoing native simulation during
+selective *static* chunk absence**, not proof of dynamic eviction, resuming
+the *evicted* chunk's physics, dynamic multichunk durable checkpoint or native
+memory reclamation of moving Sand/Water. Dynamic selective resident count
+remains unchanged (**3 -> 3**) and reclaimed dynamic bytes remain **zero**.
+The #194 exact protected three-file ownership/API handoff remains required.
+No source-lock repin, default physics change, new PR, Ready or merge.
