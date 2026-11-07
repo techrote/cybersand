@@ -2,6 +2,21 @@ extends "res://tests/test_workbench_agent_mounted.gd"
 ## Independent regression: real maximum native receipts survive fake Responses
 ## transport, and camera-only motion redraws without retiring a real proposal.
 
+func until(predicate: Callable, reason: String) -> bool:
+	# Cold Windows ANGLE initialization can block the first frame beyond the
+	# inherited fixture's 45-second cap. Use the existing bounded operation
+	# allowance; this still requires the actual native readiness/ack predicate.
+	var deadline: int = Time.get_ticks_msec() + Watchdogs.milliseconds("operation_seconds")
+	while Time.get_ticks_msec() < deadline:
+		if predicate.call():
+			if Time.get_ticks_msec() <= deadline:
+				return true
+			break
+		await process_frame
+	# A synchronous render frame may cross the deadline. Reject a late ACK
+	# when control returns instead of accepting a final post-deadline poll.
+	return check(false,reason + " exceeded its execution allowance")
+
 func _run() -> void:
 	evidence_dir = OS.get_environment("WB_AGENT_EVIDENCE_DIR")
 	host = load("res://main.tscn").instantiate()

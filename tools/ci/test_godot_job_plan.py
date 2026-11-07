@@ -16,7 +16,7 @@ class HostedBudgetTests(unittest.TestCase):
     def test_original_linux_and_windows_inventory_is_complete_and_fits(self):
         all_cases = runner.discover_cases()
         for platform in ("linux", "windows"):
-            cases = [case for case in all_cases if platform == "linux" or not case.requires_display]
+            cases = [case for case in all_cases if platform == "linux" or runner.windows_case_supported(case)]
             result = subject.plan(cases, platform=platform)
             with self.subTest(platform=platform):
                 self.assertEqual(Counter(row["name"] for shard in result["shards"] for row in shard["cases"]),
