@@ -213,6 +213,69 @@ func _run() -> void:
 	panel.client.receive_fake_response(stale_epoch,stale_serial,200,old_response)
 	check(not panel.client.is_active() and not mount._authorised,
 		"late API result revived a retired worker-authoring task")
+	# Real UI regression: hiding the opt-in panel must not leave an
+	# invisible live author. Hold a fake provider turn AFTER native prepare,
+	# then revoke via the actual toggle and require native Stop ACK.
+	print("WB528_STAGE explicit opt-out during native-prepared proposal")
+	if not await until(Callable(self,"_ready_native"),
+			"native worker not ready for opt-out regression"):
+		_finish()
+		return
+	panel._on_start()
+	if not await until(Callable(self,"_ready_panel_task"),
+			"fresh authorization after human Stop missing"):
+		_finish()
+		return
+	check(mount._authorised,"opt-out setup did not authorize real native owner")
+	s = panel.client._serial
+	_fake("observe","obs-optout",
+		{"region":{"x":1150,"y":264,"width":8,"height":8},"detail":"cells"})
+	if not await until(func() -> bool: return _next_request(s),
+			"opt-out setup native observation did not complete"):
+		_finish()
+		return
+	var opt_observation: Dictionary = _receipt()
+	check(opt_observation.get("status") == "observed",
+		"opt-out setup did not use an authoritative observation")
+	s = panel.client._serial
+	_fake("prepare_edit","prep-optout",
+		{"observation_id":opt_observation.get("observation_id",""),
+		"operations":[{"shape":"rectangle","x0":1150,"y0":264,
+			"x1":1151,"y1":265,"material":58,"replace_only_material":null}]})
+	if not await until(func() -> bool: return _next_request(s),
+			"opt-out setup native prepare did not complete"):
+		_finish()
+		return
+	var opt_proposal: Dictionary = _receipt()
+	check(opt_proposal.get("status") == "proposed"
+		and panel.proposal_overlay.visible,
+		"opt-out setup lacks an actual prepared footprint")
+	var opt_epoch: int = panel.client.current_epoch()
+	var opt_serial: int = panel.client._serial
+	var opt_edits: int = wb.applied.edits.size()
+	var opt_tick: int = host.latest_snapshot.tick_index
+	mount._toggle.button_pressed = false
+	check(not panel.visible and not panel.client.is_active(),
+		"turning off opt-in left a hidden live model task")
+	check(not panel.proposal_overlay.visible,
+		"world_view retained a hidden panel's proposal overlay")
+	if not await until(func() -> bool:
+		return not panel._retire_pending and not mount._authorised,
+		"opt-out lacked acknowledged native Stop"):
+		_finish()
+		return
+	panel.client.receive_fake_response(opt_epoch,opt_serial,200,{
+		"id":"late-optout","status":"completed","output":[{
+			"type":"function_call","name":"apply_edit",
+			"call_id":"late-optout-call",
+			"arguments":JSON.stringify({"proposal_id":opt_proposal.get("proposal_id","")})
+		}]
+	})
+	check(not panel.client.is_active() and not mount._authorised,
+		"late response recreated an opted-out native authoring task")
+	check(wb.applied.edits.size() == opt_edits
+		and host.latest_snapshot.tick_index == opt_tick,
+		"opt-out mutated authored terrain or advanced native ticks")
 	# No API keys or paid calls; actual native edit and Godot frame were used.
 	print("WB528_STAGE completed conflict and late-response checks")
 	_finish()
