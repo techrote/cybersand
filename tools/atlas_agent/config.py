@@ -76,6 +76,7 @@ DEFAULTS: dict = {
         "capture_bundle": None,
         "capture_launcher": None,
         "godot": None,
+        "directive": "",
         "capture_args": [],
         "read_extra_collections": [],
         "dry_run_plan": None,

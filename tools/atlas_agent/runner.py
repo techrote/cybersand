@@ -28,7 +28,7 @@ from .sandbox import PathPolicy, is_inside, sha256_bytes, sha256_file
 from .tools import ToolExecutor, tool_definitions, tools_sha256
 
 PACKAGE = Path(__file__).resolve().parent
-INSTRUCTIONS = PACKAGE / "instructions" / "atlas-agent-v1.md"
+INSTRUCTIONS = PACKAGE / "instructions" / "atlas-agent-instructions.md"
 DEFAULT_LAUNCHER = PACKAGE.parents[1] / "tools" / captures.LAUNCHER_NAME
 
 
@@ -99,12 +99,15 @@ def estimate_input_tokens(request: dict, sent_images: list[dict], rates: pricing
 
 def _task_prompt(cfg: dict, collection: str, lane: str, writable: bool, tool_names: list[str], has_images: bool) -> str:
     limits = cfg["limits"]
+    directive = cfg["task"]["directive"].strip()
+    owner = (f"\nOwner directive for this run (trusted operator instruction; it overrides any default 'one small edit' "
+             f"guidance, never the hard rules):\n{directive}\n") if directive else ""
     return (f"Collection: {collection}\nLane: {lane}\nEdit custody: "
             f"{'you may edit this collection (pack.json/README.md)' if writable else 'READ-ONLY critique; no edits possible'}\n"
             f"Image evidence provided: {'yes (list_captures)' if has_images else 'no'}\n"
             f"Tools: {', '.join(tool_names)}\n"
             f"Budget: at most {limits['max_iterations']} iterations, {limits['max_tool_calls']} tool calls, "
-            f"{limits['max_images']} images. Work efficiently and finish with submit_report.")
+            f"{limits['max_images']} images. Work efficiently and finish with submit_report." + owner)
 
 
 def execute(config_path: str | None, overrides: dict, out_dir: Path, *, env: dict | None = None, sdk=None,
@@ -202,6 +205,9 @@ def _run(cfg, rec, out_dir, ctx, env, sdk, sleep, clock, now, costs_probe, launc
     rec["policy"].update({"read_globs": policy.read_globs, "write_globs": policy.write_globs,
                           "generated_globs": generated})
     instructions = INSTRUCTIONS.read_text(encoding="utf-8")
+    directive = task["directive"].strip()
+    rec["policy"]["task_directive"] = ({"text": directive, "sha256": sha256_bytes(directive.encode("utf-8"))}
+                                       if directive else None)
     rec["policy"].update({"instructions_version": instructions.splitlines()[0].split(":", 1)[1].strip(),
                           "instructions_sha256": sha256_file(INSTRUCTIONS), "tool_schema_sha256": tools_sha256()})
 

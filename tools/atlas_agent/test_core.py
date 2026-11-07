@@ -429,6 +429,85 @@ class ToolBoundaryTests(unittest.TestCase):
         self.assertEqual(self.call("submit_report", report).report["outcome"], "no_change")
 
 
+class StructuredEditTests(unittest.TestCase):
+    """pack_add_rectangles: validated appends that preserve the file's own layout."""
+
+    def setUp(self):
+        self.pack_text = (FIXTURE / PACK).read_text(encoding="utf-8")
+        self.pack = json.loads(self.pack_text)
+
+    def layouts(self):
+        inline = self.pack_text
+        expanded = json.dumps(self.pack, indent=2) + "\n"  # one number per line, like the real Atlas packs
+        self.assertGreater(expanded.count("\n"), inline.count("\n") * 3)
+        return {"inline": inline, "expanded": expanded}
+
+    def test_append_preserves_each_layout_and_content(self):
+        for name, text in self.layouts().items():
+            new_text, info = atlas.add_rectangles(text, "granite-arch", [[10, 9, 2, 1, 54], [13, 9, 2, 1, 54]])
+            self.assertEqual(info["rectangles_added"], 2, msg=name)
+            parsed = json.loads(new_text)
+            arch = next(f for f in parsed["features"] if f["id"] == "granite-arch")
+            self.assertEqual(arch["rectangles"][-2:], [[10, 9, 2, 1, 54], [13, 9, 2, 1, 54]], msg=name)
+            arch["rectangles"] = arch["rectangles"][:-2]
+            self.assertEqual(parsed, json.loads(text), msg=f"{name}: only the rectangles may change")
+            if name == "expanded":  # layout preserved: every original line survives untouched
+                self.assertTrue(set(text.splitlines()) <= set(new_text.splitlines()))
+
+    def test_invalid_rectangles_are_refused_with_specific_codes(self):
+        text = self.layouts()["expanded"]
+        cases = [
+            ("granite-arch", [[0, 0, 25, 1, 40]], "rectangle_out_of_bounds"),
+            ("granite-arch", [[23, 15, 2, 2, 40]], "rectangle_out_of_bounds"),
+            ("granite-arch", [[-1, 0, 2, 2, 40]], "rectangle_out_of_bounds"),
+            ("granite-arch", [[0, 0, 0, 2, 40]], "rectangle_out_of_bounds"),
+            ("granite-arch", [[0, 0, 2, 2, 99]], "unknown_material"),
+            ("granite-arch", [[0, 0, 2, 2]], "bad_rectangles"),
+            ("granite-arch", [[0, 0, 2, 2, 40.0]], "bad_rectangles"),
+            ("granite-arch", [["0", 0, 2, 2, 40]], "bad_rectangles"),
+            ("granite-arch", [], "bad_rectangles"),
+            ("granite-arch", [[0, 0, 1, 1, 40]] * 61, "bad_rectangles"),
+            ("no-such-feature", [[0, 0, 1, 1, 40]], "unknown_feature"),
+        ]
+        for feature, rects, code in cases:
+            with self.assertRaises(ToolError, msg=f"{feature} {rects[:1]}") as ctx:
+                atlas.add_rectangles(text, feature, rects)
+            self.assertEqual(ctx.exception.code, code)
+        movable = json.loads(text)
+        movable["palette"].append({"id": 3, "name": "water", "rgba": [1, 2, 3, 255], "state": 3, "movable": True,
+                                   "kernel": 2})
+        with self.assertRaises(ToolError) as ctx:
+            atlas.add_rectangles(json.dumps(movable, indent=2), "granite-arch", [[0, 0, 1, 1, 3]])
+        self.assertEqual(ctx.exception.code, "movable_in_static")
+
+    def test_tool_edits_validates_and_records(self):
+        tmp, work, built, policy = make_workspace()
+        self.addCleanup(tmp.cleanup)
+        executor = ToolExecutor(base_config(), work, policy, COLLECTION, True, [], receipt_mod.Redactor([]))
+        self.assertIn("pack_add_rectangles", executor.tool_names())
+        outcome = executor.execute("pack_add_rectangles", json.dumps(
+            {"feature_id": "copper-rail", "rectangles": [[11, 3, 2, 2, 65], [15, 3, 2, 2, 65]], "note": "rust"}), 1)
+        self.assertTrue(outcome.ok, outcome.text)
+        self.assertEqual(executor.edits[0]["rectangles_added"], 2)
+        self.assertEqual(executor.edits[0]["kind"], "pack_add_rectangles")
+        good = json.loads(executor.execute("run_validator", json.dumps({"collection": COLLECTION, "kind": "validate"}), 2).text)
+        self.assertEqual(good["exit_code"], 0)
+        self.assertIn("10 rectangles", good["stdout"])
+        before = (work / PACK).read_bytes()
+        for bad in ({"feature_id": "copper-rail", "rectangles": [[0, 0, 99, 1, 65]], "note": "x"},
+                    {"feature_id": "copper-rail", "rectangles": [[0, 0, 1, 1, 7]], "note": "x"},
+                    {"feature_id": "../x", "rectangles": [[0, 0, 1, 1, 65]], "note": "x"},
+                    {"feature_id": "copper-rail", "rectangles": [[0, 0, 1, 1, 65]]},
+                    {"feature_id": "copper-rail", "rectangles": "[[0,0,1,1,65]]", "note": "x"}):
+            self.assertFalse(executor.execute("pack_add_rectangles", json.dumps(bad), 3).ok, msg=str(bad))
+        self.assertEqual((work / PACK).read_bytes(), before)
+        readonly = ToolExecutor(base_config(), work, PathPolicy(work, policy.read_globs, []), COLLECTION, False, [],
+                                receipt_mod.Redactor([]))
+        self.assertNotIn("pack_add_rectangles", readonly.tool_names())
+        self.assertFalse(readonly.execute("pack_add_rectangles", json.dumps(
+            {"feature_id": "copper-rail", "rectangles": [[0, 0, 1, 1, 65]], "note": "x"}), 1).ok)
+
+
 class CaptureTests(unittest.TestCase):
     def setUp(self):
         self.tmp = tempfile.TemporaryDirectory(prefix="atlas-cap-")

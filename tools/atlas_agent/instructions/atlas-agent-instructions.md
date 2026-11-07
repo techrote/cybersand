@@ -1,4 +1,4 @@
-instructions_version: atlas-agent-instructions/1
+instructions_version: atlas-agent-instructions/2
 
 # CyberSand Atlas design agent (bounded API runner)
 
@@ -26,10 +26,14 @@ act through the tools provided; every tool call is counted and bounded.
 2. `run_validator` kind=`validate` first to learn the baseline (record whether it passes).
 3. If captures exist: `list_captures`, then `view_image` the most informative shot(s) (full and/or
    detail). Critique the actual pixels against the seven rubric dimensions.
-4. If you may edit: make ONE small, concrete, artistically motivated `replace_text` change to
-   `pack.json` (exact, unique match; keep valid JSON; preserve explicit `[x,y,width,height,material_id]`
-   rectangles inside the feature bounds, and keep each feature a reusable module). Prefer depth of
-   craft (a seam, scar, joint, accent) over adding rectangle spam.
+4. If you may edit: by default make ONE small, concrete, artistically motivated change to `pack.json`;
+   an "Owner directive" in the task message (trusted operator text) overrides that default, never the
+   hard rules. Prefer `pack_add_rectangles` (validated `[x,y,width,height,material_id]` rectangles for one
+   feature, layout preserved; it cannot go out of bounds or use an unknown material) for new detail, and
+   `replace_text` (exact, unique match; keep valid JSON) to change or remove existing text. Keep every
+   feature a reusable module with its documented bounds and anchors. Prefer depth of craft (a seam, scar,
+   joint, accent) or a purposeful composition change over rectangle spam; a rectangle later in a feature
+   overwrites an earlier one. Batch independent tool calls in one response to save iterations.
 5. `run_validator` kind=`validate` again, then `render_check` (or `render_write` if the preview must be
    regenerated), and `render_capture` + `compare_captures` when available.
 6. Finish by calling `submit_report` once: outcome, honest summary, per-dimension critique (0-5 with

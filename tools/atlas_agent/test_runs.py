@@ -416,7 +416,7 @@ class LiveRunTests(RunCase):
             self.assertEqual(first["include"], ["reasoning.encrypted_content"])
             self.assertTrue(all(t["type"] == "function" and t["strict"] for t in first["tools"]))
             self.assertIn("submit_report", [t["name"] for t in first["tools"]])
-            self.assertTrue(first["instructions"].startswith("instructions_version: atlas-agent-instructions/1"))
+            self.assertTrue(first["instructions"].startswith("instructions_version: atlas-agent-instructions/2"))
             for post in posts:
                 self.assertNotIn(KEY, json.dumps(post["body"]))
                 self.assertEqual({k.lower(): v for k, v in post["headers"].items()}["authorization"], f"Bearer {KEY}")
@@ -550,6 +550,26 @@ class LiveRunTests(RunCase):
         replayed = second["input"][1]
         self.assertEqual((replayed["id"], replayed["encrypted_content"]), ("rs_1", "ENC-BLOB-123"))
         self.assertNotIn("parsed_arguments", second["input"][2])
+
+    def test_owner_directive_is_delivered_and_recorded(self):
+        directive = "Make several sweeping and detail edits; re-validate between batches."
+        stub = StubApi(models=good_models())
+        stub.queue = [ok(response_body([function_call("pack_add_rectangles", {
+            "feature_id": "granite-arch", "rectangles": [[1, 1, 1, 1, 40]], "note": "t"}, "c1")])),
+            ok(response_body([report_call()]))]
+        with stub:
+            ov = api_overrides(self.env, stub, task={"directive": directive})
+            result = self.env.run(ov, env={"OPENAI_API_KEY": KEY})
+            rec = self.verify(result)
+            first = stub.response_posts()[0]["body"]
+            prompt = first["input"][0]["content"][0]["text"]
+            self.assertIn("Owner directive", prompt)
+            self.assertIn(directive, prompt)
+            self.assertIn("pack_add_rectangles", [t["name"] for t in first["tools"]])
+            self.assertEqual(rec["policy"]["task_directive"]["text"], directive)
+            self.assertEqual(len(rec["policy"]["task_directive"]["sha256"]), 64)
+        plain = self.env.run(self.env.overrides())
+        self.assertIsNone(plain.receipt["policy"]["task_directive"])
 
     def test_model_that_never_reports_is_stopped(self):
         stub, result, rec = self.live([ok(response_body([message("I think it is fine.")]))] * 2, sleeps=[])

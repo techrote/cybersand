@@ -144,9 +144,17 @@ Enforced in code, not only in the prompt:
 ## Atlas tools and the capture hand-off
 
 Tools offered to the model: `list_files`, `read_file`, `inspect_pack`, `run_validator`, `list_captures`,
-`view_image`, `render_capture`, `compare_captures`, `replace_text` (only with write custody) and `submit_report`.
-After any edit the runner itself re-runs the collection's validator and `--check` render and refuses a patch that
-fails either.
+`view_image`, `render_capture`, `compare_captures`, `replace_text` and `pack_add_rectangles` (both only with write
+custody) and `submit_report`. `pack_add_rectangles` appends up to 60 validated `[x, y, width, height, material_id]`
+rectangles to one feature while preserving the file's own layout; it refuses out-of-bounds rectangles, unknown
+palette materials and movable materials in static features, and the spliced file must parse to exactly the old pack
+plus the new rectangles. After any edit the runner itself re-runs the collection's validator and `--check` render and
+refuses a patch that fails either.
+
+By default the agent makes one small edit. `task.directive` (up to 2,000 characters) carries a trusted operator
+instruction, for example to make several sweeping and detail edits; it overrides that default but never the hard
+rules, and its text and SHA-256 are recorded in the receipt (`policy.task_directive`). Instruction text is versioned
+(`atlas-agent-instructions/2`, hashed in every receipt).
 
 Capture bundles use the documented #498 layout (sealed `batch-manifest.json`, job manifests, PNG hashes); the
 runner re-verifies the seal, hashes and PNG structure itself, and invokes the #498 launcher only through the

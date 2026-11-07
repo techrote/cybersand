@@ -74,7 +74,7 @@ def skeleton(run_id: str, mode: str, started_utc: str, collection: str) -> dict:
                    "source_manifest_sha256": None, "collection": collection, "lane": None, "lane_writable": False,
                    "fixture": False, "files": {}, "head_after_run": None, "source_unchanged_after_run": None},
         "policy": {"instructions_version": None, "instructions_sha256": None, "tool_schema_sha256": None,
-                   "pricing_sha256": None, "read_globs": [], "write_globs": [], "generated_globs": [],
+                   "pricing_sha256": None, "read_globs": [], "write_globs": [], "generated_globs": [], "task_directive": None,
                    "tools_advertised": []},
         "model": {"requested": "", "observed": [], "reasoning_effort": None, "max_output_tokens_per_call": 0,
                   "image_detail": None, "api_endpoint": "none", "store": False, "truncation": "disabled"},

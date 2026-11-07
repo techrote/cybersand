@@ -12,7 +12,7 @@ import re
 import shutil
 from pathlib import Path
 
-from .errors import ConfigError, SandboxViolation, ValidationFailed
+from .errors import ConfigError, SandboxViolation, ToolError, ValidationFailed
 from .procs import resolve_executables, run_allowlisted
 from .sandbox import PathPolicy, is_link, sha256_file
 
@@ -216,3 +216,70 @@ def run_script(work_root: Path, collection: str, kind: str, timeout: float, max_
     if stray:
         raise SandboxViolation(f"script wrote outside its assignment: {stray[:5]}", "process_wrote_outside_assignment")
     return result
+
+
+# ------------------------------------------------------------------- structured edit
+
+_NUMBER = re.compile(r"-?\d+")
+
+
+def _array_end(text: str, open_index: int) -> int:
+    depth = 0
+    for index in range(open_index, len(text)):
+        if text[index] == "[":
+            depth += 1
+        elif text[index] == "]":
+            depth -= 1
+            if depth == 0:
+                return index
+    raise ToolError("pack_layout_unsupported", "unbalanced rectangles array")
+
+
+def add_rectangles(pack_text: str, feature_id: str, rects: list, max_rects: int = 60) -> tuple[str, dict]:
+    """Append validated ``[x, y, width, height, material]`` rectangles to one feature, preserving the
+    file's own layout (inline or one-number-per-line). The spliced text must parse to exactly the old
+    pack plus the new rectangles, otherwise the edit is refused."""
+    pack = json.loads(pack_text)
+    feature = next((f for f in pack.get("features", []) if f.get("id") == feature_id), None)
+    if feature is None:
+        raise ToolError("unknown_feature", f"no feature {feature_id!r}; use inspect_pack to list feature ids")
+    if not rects or len(rects) > max_rects:
+        raise ToolError("bad_rectangles", f"provide 1..{max_rects} rectangles per call")
+    palette = {m["id"]: m for m in pack.get("palette", [])}
+    width, height = feature["size"]
+    for rect in rects:
+        if not (isinstance(rect, list) and len(rect) == 5 and all(type(v) is int for v in rect)):
+            raise ToolError("bad_rectangles", f"each rectangle must be [x, y, width, height, material_id]: {rect!r}")
+        x, y, w, h, material = rect
+        if x < 0 or y < 0 or w <= 0 or h <= 0 or x + w > width or y + h > height:
+            raise ToolError("rectangle_out_of_bounds",
+                            f"{rect} lies outside the {width}x{height} feature (half-open bounds)")
+        if material not in palette:
+            raise ToolError("unknown_material", f"material {material} is not in the pack palette")
+        if feature.get("status") == "static" and palette[material].get("movable"):
+            raise ToolError("movable_in_static", f"material {material} is movable but the feature is static")
+    top = re.search(r'\n  "features":\s*\[', pack_text)
+    start = top.end() if top else pack_text.index('"features"')
+    ident = re.compile(r'"id":\s*"' + re.escape(feature_id) + '"').search(pack_text, start)
+    key = re.compile(r'"rectangles":\s*\[').search(pack_text, ident.end()) if ident else None
+    if key is None:
+        raise ToolError("pack_layout_unsupported", "could not locate the feature's rectangles array")
+    close = _array_end(pack_text, key.end() - 1)
+    inner = pack_text[key.end():close]
+    blocks = list(re.finditer(r"\[[^\[\]]*\]", inner))
+    if not blocks:
+        raise ToolError("pack_layout_unsupported", "feature has no existing rectangle to copy the layout from")
+    last = blocks[-1]
+    separator = inner[blocks[-2].end():last.start()] if len(blocks) > 1 else ", "
+    at = key.end() + last.end()
+    pieces = []
+    for rect in rects:
+        values = iter(str(v) for v in rect)
+        pieces.append(separator + _NUMBER.sub(lambda _m: next(values), last.group(0)))
+    new_text = pack_text[:at] + "".join(pieces) + pack_text[at:]
+    expected = json.loads(pack_text)
+    next(f for f in expected["features"] if f["id"] == feature_id)["rectangles"].extend(rects)
+    if json.loads(new_text) != expected:
+        raise ToolError("pack_layout_unsupported", "the spliced pack did not parse to the expected content; refused")
+    return new_text, {"feature_id": feature_id, "rectangles_added": len(rects),
+                      "bytes_added": len(new_text) - len(pack_text)}
