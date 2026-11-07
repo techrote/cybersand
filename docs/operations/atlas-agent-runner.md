@@ -166,7 +166,7 @@ palette materials and movable materials in static features, and the spliced file
 plus the new rectangles. After any edit the runner itself re-runs the collection's validator and `--check` render and
 refuses a patch that fails either.
 
-By default the agent makes one small edit. `task.directive` (up to 2,000 characters) carries a trusted operator
+By default the agent makes one small edit. `task.directive` (up to 4,000 characters) carries a trusted operator
 instruction, for example to make several sweeping and detail edits; it overrides that default but never the hard
 rules, and its text and SHA-256 are recorded in the receipt (`policy.task_directive`). Instruction text is versioned
 (`atlas-agent-instructions/2`, hashed in every receipt).
