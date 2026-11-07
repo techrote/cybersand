@@ -742,11 +742,11 @@ void World::resolve_gas_topology(bool allow_cache) {
     // seed_needed probe is false whatever the visit stamps or chunk nodes), and
     // Empty only with a live compartment label. Materials, labels, masks and
     // the chunk map do not change before the label pass. Skipped Water still
-    // books its four probes, so every counter matches the full scan. A cached
-    // replay can request a mid-scan restart, so that path keeps the full scan.
+    // books its four probes. Valid component-cache replay does not change seed
+    // eligibility; a stale replay requests exactly the existing uncached
+    // restart, and the candidate loop must stop immediately on that request.
     const bool pooled_seed = state.gas_tasks.capacity() != 0 &&
-                             coordinates.size() <= state.gas_tasks.capacity() &&
-                             !(allow_cache && gas_cache != nullptr && gas_cache->gas_ready);
+                             coordinates.size() <= state.gas_tasks.capacity();
     if (pooled_seed) {
         state.gas_tasks.clear();
         for (std::size_t position = 0; position < coordinates.size(); ++position)
@@ -816,13 +816,14 @@ void World::resolve_gas_topology(bool allow_cache) {
         }
         const auto cells = static_cast<std::uint64_t>(size) * static_cast<std::uint64_t>(size);
         for (const auto& task : state.gas_tasks) {
+            if (retry_requested) break;
             const auto coord = coordinates[task.position];
             const auto* chunk = find_chunk(coord);
             state.optimization.gas_seed_cells += cells;
             state.optimization.gas_seed_probes += 4U * task.skipped_water;
             const auto* bits = state.gas_seed_bits.data() + task.position * words;
-            for (std::size_t word = 0; word < words; ++word) {
-                for (auto pending = bits[word]; pending != 0U; pending &= pending - 1U) {
+            for (std::size_t word = 0; word < words && !retry_requested; ++word) {
+                for (auto pending = bits[word]; pending != 0U && !retry_requested; pending &= pending - 1U) {
                     const auto index = word * 64U + static_cast<std::size_t>(std::countr_zero(pending));
                     seed_cell(*chunk, index,
                               coord.x * size + static_cast<std::int64_t>(index % static_cast<std::size_t>(size)),
