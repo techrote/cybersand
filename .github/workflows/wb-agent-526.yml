@@ -61,7 +61,9 @@ jobs:
           set -euo pipefail
           git lfs install --local
           git lfs pull --include='godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so,godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so' --exclude='' 2>&1 | tee "$EVIDENCE/lfs.log"
-          git lfs fsck 2>&1 | tee "$EVIDENCE/lfs-fsck.log"
+          # A selective LFS pull deliberately leaves other-platform pointers absent.
+          # Global 'git lfs fsck' reports those unrelated absent objects as errors;
+          # verify the two materialized binaries and capture their exact hashes below.
           python - <<'PY'
           import hashlib, json
           from pathlib import Path
@@ -69,7 +71,12 @@ jobs:
               'godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so',
               'godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so',
           ]
-          hashes = {path: {'size':Path(path).stat().st_size, 'sha256':hashlib.sha256(Path(path).read_bytes()).hexdigest()} for path in files}
+          hashes = {}
+          for path in files:
+              data = Path(path).read_bytes()
+              assert len(data) > 1024, f'Native dependency is missing or still an LFS pointer: {path}'
+              assert not data.startswith(b'version https://git-lfs.github.com/spec/v1'), f'Unmaterialized LFS pointer: {path}'
+              hashes[path] = {'size':len(data), 'sha256':hashlib.sha256(data).hexdigest()}
           Path('build/wb-agent-526/runtime-hashes.json').write_text(json.dumps(hashes, indent=2) + '\n')
           PY
       - name: Download and authenticate the locked official Godot 4.7 editor
