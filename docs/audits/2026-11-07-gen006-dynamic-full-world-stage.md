@@ -145,3 +145,36 @@ adjacency is still the positive execution control.
 
 This correction supersedes the first bundle-admission CI result; the new
 exact-head CI must pass independently before claiming qualification.
+
+## 7 November follow-up: one-swap native cross-resident input transaction
+
+The same additive full-resident-set stage now supports a strictly bounded
+**owner-side in-memory native input batch** (1–64 material commands, restricted
+to Empty/Wall/Sand/Water) spanning multiple signed resident chunks. Every
+command's resident identity, local coordinate and material is preflighted
+before touching a PRIVATE deserialized native World. Duplicate targets,
+out-of-roster targets and bad local coordinates are explicit refusals with
+unchanged live World. The batch becomes visible in one existing full-World
+owner-pointer swap only after the source CYPS byte witness, exact original
+session/recipe/incarnation/generation fence and separately supplied canonical
+edit-list witness agree. Failed private edits discard the private candidate;
+they cannot partially change live native authority.
+
+The updated actual-native regression stages a Water edit in resident
+`(-2,-2)` and a Sand edit in `(-2,-1)`; the independent uninterrupted World
+applies the same edits directly. It requires state-hash/quantity parity at
+commit and after eight additional real ticks, with 1/4 configured workers
+on both Windows/Linux. Invalid duplicate/out-of-bundle/out-of-bounds commands,
+a missing edit witness and a wrong material witness must all refuse without
+changing the live native World.
+
+**Durability limit:** This edit batch is NOT a journal, fsync, storage protocol,
+new per-chunk ABI, selective dynamic eviction or memory reclamation. The
+independently retrieved base CYPS plus canonical edit-intent bytes must BOTH
+be durably published by a separate storage owner before any durable ACK.
+This prototype does not produce that ACK and does not integrate #518 or #486.
+It is opt-in code on a Draft branch, with no protected native source change.
+
+**CI status:** This new source revision requires its own exact-head
+Linux/Windows native and documentation/provenance qualification; prior
+a5625bab results do not qualify these added edits.
