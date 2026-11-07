@@ -18,10 +18,15 @@ The narrow read-only cursor saves about 1.12 ms per heavy tick there, with
 zero state/physical/work discrepancies across the native, sanitizer and
 focused signed/non-power-of-two/mask/epoch execution gates.
 
-**Prepared source admission is not historical acceptance.** A dedicated
-[2026-11-07 reviewed-transition record](2026-11-07-pf471-reviewed-world-transition.md)
-now accompanies the chained, exact Git-ancestry
-`REVIEWED_TRANSITIONS` entry prepared on independent Draft #477:
+**Reviewed transition — owner canonical source identity, no duplicate.**
+After the separate [#485 source-review ACCEPT](https://github.com/techrote/cybersand/issues/485#issuecomment-6699706678),
+the owner advanced #471 and added the canonical
+[2026-11-07 unadmitted transition record](https://github.com/techrote/cybersand/blob/codex/fast-in-chunk-neighbour-cursor-20261106/docs/audits/2026-11-07-pf471-world-transition-proposal.md)
+as the sole code-pinned `record` for the reviewed
+`REVIEWED_TRANSITIONS` entry. Draft #477's compatibility file was
+reconciled **byte-for-byte with the owner's #471 version**, eliminating a
+duplicate entry; its own [independent companion audit](2026-11-07-pf471-reviewed-world-transition.md)
+supplies corroboration only. The single authenticated transition is:
 `native/src/world.cpp`
 `5a9de5e09a8665392677902ab501696aafefb5bbd2d2800e3dc1059b87a6f17d`
 → `bbd9741311bc67905934048633846b8d011efd760033edd0ff9e88be5b262868`,
@@ -36,6 +41,42 @@ intermediate records.** Read the terminal disposition in conjunction with
 this section; do not treat earlier "unreviewed source" statements as
 current. The exact source-identity audit and all original raw evidence
 links are preserved.
+
+## Final owner-converged qualification update — 7 November 2026
+
+**Source-review ACCEPT / engineering ACCEPT FOR FURTHER ADMISSION.**
+The owner retargeted [PR #471](https://github.com/techrote/cybersand/pull/471)
+to `main` and marked it Ready for review at
+`aab74cd8ff2dad3a34243f5d477c29532750550c`, including the exact
+owner-controlled reviewed transition. **PR #471 is not merged.** The only
+protected `native/src/world.cpp` bytes are the reviewed
+`bbd9741311bc67905934048633846b8d011efd760033edd0ff9e88be5b262868`.
+PR #477 stays a separate Draft with benchmarks, exactness harnesses and
+independent evidence, using the owner's canonical transition rather than
+introducing a second entry. No transition or runtime has been merged/published
+by this follow-up.
+
+**Exact source-admission PASS, documented limitations:** branch-pinned
+[qualification #42320091908](https://github.com/techrote/cybersand/actions/runs/42320091908)
+verified the owner-equivalent chained LF transition, source commit ancestry
+and immutable-lock retention. Its first standalone `check_docs.py` invocation
+failed because the companion documentation workspace was not checked out.
+The **correctly isolated companion-workspace**
+[documentation/identity/parity run #42320254894](https://github.com/techrote/cybersand/actions/runs/42320254894)
+passed its complete assigned checks, including canonical docs, M11 history
+and retrieval evaluation, against the exact source revision. Neither the
+checker nor the lock was weakened.
+
+The same branch-pinned full Native and source-matched Linux Godot test jobs
+are recorded at [run #42320091908](https://github.com/techrote/cybersand/actions/runs/42320091908);
+do not label them PASS before their executed results are available.
+The owner's Ready-to-review [docs/provenance #42319740802](https://github.com/techrote/cybersand/actions/runs/42319740802)
+progressed through material-source checks but failed the separate
+`check_repository.py --require-materialized` source-matched retained runtime
+publication gate, reporting stale Linux Godot runtime input after the
+`world.cpp` change. That is an outstanding **runtime publication provenance**
+condition, not a source-transition failure. Original user scope expressly
+forbids production runtime publication or merge.
 
 ## Source identity and isolation
 
