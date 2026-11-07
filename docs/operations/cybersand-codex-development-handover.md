@@ -12,6 +12,14 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 ## WB-AGENT Stage-1 — first owner-side foundation checkpoint, 2026-11-07
 
+Refresh through the later [independent composed desktop handoff](../audits/2026-11-07-wb525-independent-strike.md)
+before using the initial source-only checkpoint below. #5318425758f consumes
+the signed #526/#527 handoffs; isolated patch5d5d8bc6 repairs maximum receipt
+transport and camera preview redraw with the human's explicit source ownership.
+Native laws and active worker branches remain untouched. The owner admitted
+the moved hopper with the differing grain routes recorded; production review,
+live and human acceptance gates are still separate.
+
 **Active Draft [#529](https://github.com/techrote/cybersand/pull/529); not
 merged or independently qualified.** Owner-scoped [#526](https://github.com/techrote/cybersand/issues/526)
 continues the **same** branch `feature/wb-agent-authoring-foundation-526-20261107`.

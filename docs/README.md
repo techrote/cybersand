@@ -10,6 +10,11 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+WB-AGENT #525: [refreshed composed desktop scope](systems/shared-workbench-agent-authoring.md#independent-composed-desktop-checkpoint--2026-11-07)
+and [independent source-built evidence, capacity/camera repairs and physical cause](audits/2026-11-07-wb525-independent-strike.md).
+The owner admitted the moved hopper with its trajectory differences recorded;
+these isolated Draft results do not supply live trials or human Windows acceptance.
+
 IN-TOOLS #361: [renewed current-main admission](architecture/in-tools-gameplay-admission.md)
 and [six Planned/NOT_RUN fixture concepts](operations/in-tools-fixtures-and-playtest.md).
 The [2026-11-07 source authority audit](audits/2026-11-07-in-tools-361-source-authority-renewal.md)

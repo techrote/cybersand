@@ -12,6 +12,14 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 ## WB-AGENT Stage-1 shared-workbench human+agent authoring (#525–#528) — 2026-11-07
 
+Later same-day [independent composed checkpoint](../audits/2026-11-07-wb525-independent-strike.md)
+qualifies substantial rebuilt desktop engineering and two owner-authorized
+isolated receipt/camera repairs on #5318425758f. The earlier first-foundation
+scope below is historical to its initial checkpoint. +512 NORMAL trajectory
+parity remains false; the owner admitted the moved test with that difference
+recorded. Resulting-head production/review,
+three genuine live attempts (0/3) and owner human verdict remain open.
+
 **Approved, partially implemented in isolated Draft PR #529; not on accepted main.**
 The [canonical Stage-1 contract](../systems/shared-workbench-agent-authoring.md)
 defines authoritative `observe` / `prepare_edit` / `apply_edit` / `step` in

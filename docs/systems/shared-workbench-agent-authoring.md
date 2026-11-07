@@ -11,6 +11,35 @@ related-documents: [../architecture/data-ownership-and-lifetimes.md, ../architec
 
 # Shared workbench Stage-1 agent authoring contract
 
+## Independent composed desktop checkpoint — 2026-11-07
+
+**Current on isolated strike checkpoint5d5d8bc6, not accepted main:** the
+refreshed #5318425758f composition consumes #5296a9967fb and #530ffde8198.
+The mounted panel, four tools, real native readback and post-draw framebuffer
+execute on rebuilt Windows/Linux extension source. The
+[independent evidence](../audits/2026-11-07-wb525-independent-strike.md)
+records exact source/runtime identities, retained failures and completion gates;
+earlier checkpoint statements below retain their original scope.
+
+The owner-authorized isolated repair raises the finite native text receipt
+allowance to524288 characters so valid4096-cell proposals/applied readbacks
+survive the client boundary. Images and paid request/token/tool limits remain
+separate. Scope/proposal previews redraw on camera/view transform changes,
+preserve world-space proposal validity and disconnect their frame callback on
+host exit. The native/worker owns every actual application; these UI repairs
+add no native capacity, physics law or mutable snapshot access.
+
+**Approved moved-fixture acceptance:** +512 preserves frozen Sand-hopper catchment
+counts at all481 states and terminal32/32, but NORMAL differs at26 transient
+occupancy states because the current direction hash consumes absolute native
+coordinates. A test-only hash normalization proves the cause; it is not a
+production fix. REVISED matches every sampled occupancy. The human explicitly
+[approved using the moved hopper with the difference recorded](https://github.com/techrote/cybersand/issues/525#issuecomment-6712294815).
+This admits the moved terminal/count control; literal signed trajectory
+qualification remains separate. Neither the mounted fake-provider hopper nor automated Windows
+graphics supplies the **0/3 live** or **pending human** gate. Current-source
+hosted production workflows and resulting-owner-head review remain separate.
+
 ## Source status: what works now and what is only Approved?
 
 **Approved / implementation in progress (7 November 2026).** The owner-approved

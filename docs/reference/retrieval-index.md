@@ -129,6 +129,8 @@ these distinctions without modifying the frozen32 or existing157 challenges.
 
 ## Shared workbench agent authoring — WB-AGENT (#525–#528)
 
+- [Composed desktop checkpoint, native receipt capacity and translated physics limits](../systems/shared-workbench-agent-authoring.md#independent-composed-desktop-checkpoint--2026-11-07): source-built isolated engineering with original evidence; 26 NORMAL transient differences, live0/3 and human verdict remain separate.
+
 - [Stage-1 agent authoring tools and qualification boundaries](../systems/shared-workbench-agent-authoring.md): **Approved, experimentally implemented** opt-in shared-workbench human+agent authoring. Native observe, prepare/apply, Step, Stop, post-draw image matching and panel have Linux source-matched tests; frozen signed 32-Sand Godot trial, 3 genuine OpenAI trials and owner Windows desktop verdict are **not accepted**. Keep #526, #527 and #528 owner-specific evidence separate from #525's three completion gates.
 
 ## Generation Workbench 2 and procedural quality
