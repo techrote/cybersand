@@ -117,6 +117,10 @@ struct Resident {
     std::uint64_t generation = 0;
     std::uint64_t use = 0;
     bool restored = false;
+    // Prototype-only volatile simulation quarantine: not a persistence
+    // schema change. Re-evaluate an unloaded chunk if it is later reloaded.
+    bool simulation_pinned = false;
+    std::string pin_reason;
 };
 
 class StreamingSlice {
@@ -139,6 +143,13 @@ public:
         return total;
     }
     bool contains(ChunkCoord c) const { return residents_.find(c) != residents_.end(); }
+    std::size_t pinned_count() const {
+        std::size_t pinned = 0;
+        for (const auto& [_, e] : residents_)
+            if (e.simulation_pinned) ++pinned;
+        return pinned;
+    }
+    bool simulation_pinned(ChunkCoord c) const { return residents_.at(c).simulation_pinned; }
     bool saved(ChunkCoord c) const { return fs::exists(path_for(c)); }
     // An on-demand occupancy receipt comes from the actual native World,
     // not the copied 64x64 framebuffer. Never scan on a simulation tick.
@@ -213,15 +224,53 @@ public:
         check(ticks <= 64, "GEN006_TICK_BUDGET");
         std::uint32_t maximum_observed = 0;
         for (unsigned t = 0; t < ticks; ++t) {
-            for (auto& [_, e] : residents_) {
-                check(!e.world->has_failed(), "GEN006_WORLD_QUARANTINED");
-                const auto stats = e.world->tick();
-                maximum_observed = std::max(maximum_observed, stats.worker_threads_observed);
-                check(e.world->chunk_count() == 1 && !e.world->has_failed(),
-                      "GEN006_CROSS_CHUNK_DOMAIN_PIN");
-                check(e.generation != std::numeric_limits<std::uint64_t>::max(),
-                      "GEN006_MUTATION_GENERATION_EXHAUSTED");
-                ++e.generation; // conservative: simulator can mutate without a host edit
+            for (auto& [coord, e] : residents_) {
+                if (e.simulation_pinned) continue; // explicit refusal; never tick a failed World
+                // The opt-in one-chunk demo cannot represent transport to a
+                // newly required neighboring chunk. CYPS is a real native
+                // pre-tick snapshot, not a synthetic model. Staging it under
+                // the declared 2 MiB cap makes failed ticks transactional per
+                // shard; only the failing shard is pinned. This bounded
+                // serializer cost is NOT a proposed production 30 Hz design.
+                std::vector<std::uint8_t> before;
+                try {
+                    check(!e.world->has_failed() && e.world->chunk_count() == 1,
+                          "GEN006_PRETICK_OWNER_REFUSED");
+                    check(e.generation != std::numeric_limits<std::uint64_t>::max(),
+                          "GEN006_MUTATION_GENERATION_EXHAUSTED");
+                    before = e.world->save_physical_state();
+                    check(!before.empty() && before.size() <= kMaximumRecordBytes - 1024,
+                          "GEN006_PRETICK_CHECKPOINT_BUDGET");
+                    const auto stats = e.world->tick();
+                    check(e.world->chunk_count() == 1 && !e.world->has_failed(),
+                          "GEN006_CROSS_CHUNK_DOMAIN_PIN");
+                    maximum_observed = std::max(maximum_observed, stats.worker_threads_observed);
+                    ++e.generation; // commit after successful native tick
+                } catch (const std::exception& error) {
+                    const std::string detail = error.what();
+                    if (!before.empty()) {
+                        // Fail closed if the pre-tick state itself cannot be
+                        // restored; never persist a partially failed World.
+                        auto restored = World::restore_physical_state(config_, before);
+                        check(restored && !restored->has_failed() &&
+                              restored->chunk_count() == 1,
+                              "GEN006_TICK_ROLLBACK_REFUSED");
+                        e.world = std::move(restored);
+                    } else {
+                        check(!e.world->has_failed(),
+                              "GEN006_UNSNAPSHOTTED_FAILED_WORLD");
+                    }
+                    e.simulation_pinned = true;
+                    e.pin_reason = "GEN006_UNSUPPORTED_NATIVE_TICK";
+                    std::cerr << "SIMULATION_PIN chunk=(" << coord.x << ","
+                              << coord.y << ") reason=" << e.pin_reason
+                              << " detail=" << detail
+                              << " generation=" << e.generation
+                              << " tick=" << e.world->completed_tick_index()
+                              << '\n';
+                    // No silent catch-up: all other healthy resident Worlds
+                    // continue their ordinary native simulation ticks.
+                }
             }
         }
         return maximum_observed;
@@ -236,12 +285,16 @@ public:
     std::uint64_t generation(ChunkCoord c) const { return residents_.at(c).generation; }
     void status() const {
         std::cout << "STATUS resident=" << resident() << "/" << capacity_
+                  << " pinned=" << pinned_count()
                   << " native_cell_bytes=" << bytes() << '\n';
         for (const auto& [c, e] : residents_)
             std::cout << "  chunk=(" << c.x << "," << c.y << ") gen="
                       << e.generation << " physical_hash="
                       << e.world->physical_state_hash() << " ticks="
-                      << e.world->completed_tick_index() << '\n';
+                      << e.world->completed_tick_index()
+                      << " pinned=" << int(e.simulation_pinned)
+                      << " reason=" << (e.simulation_pinned ? e.pin_reason : "none")
+                      << '\n';
     }
     fs::path path_for(ChunkCoord c) const {
         return directory_ / ("chunk_x" + std::to_string(c.x) +
@@ -560,7 +613,8 @@ CommandResult execute_commands(StreamingSlice& streamer, ChunkCoord& active,
                 commands >> n;
                 const auto observed = streamer.simulate(n);
                 std::cout << "TICK configured=" << workers
-                          << " observed=" << observed << '\n';
+                          << " observed=" << observed
+                          << " pinned=" << streamer.pinned_count() << '\n';
             } else if (command == "inspect") {
                 int x, y;
                 commands >> x >> y;
