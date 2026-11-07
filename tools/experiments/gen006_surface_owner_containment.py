@@ -167,10 +167,14 @@ def main() -> int:
         require(safe_cell_intent(owner) == 1, "pre-pin unsaved edit missing")
         first = owner.request("status")
         first_safe_tick = tick_index(first, (-2, 2))
-        admission = owner.request("focus -2 1")
+        admission = owner.request("focus -2 1\nstatus")
         require("GENERATE x=-2 y=1 resident=2" in admission,
                 "native surface chunk not generated/admitted")
         require("REFUSED " not in admission, "surface focus prematurely refused")
+        surface_before = status_line(admission, (-2, 1))
+        initial_hash = re.search(r"\bphysical_hash=(\d+)\b", surface_before)
+        initial_tick = tick_index(admission, (-2, 1))
+        require(initial_hash is not None, "native pre-tick physical hash missing")
         # The unsupported surface should try and fail at a real autonomous tick,
         # roll back its native CYPS checkpoint and become explicitly pinned.
         pinned = ""
@@ -192,6 +196,12 @@ def main() -> int:
         # Crucially: same native PID, safe World still ticking while the
         # quarantined World cannot perform another partial mutation.
         pinned_surface_tick = tick_index(pinned, (-2, 1))
+        final_hash = re.search(r"\bphysical_hash=(\d+)\b",
+                               status_line(pinned, (-2, 1)))
+        require(final_hash is not None and
+                final_hash.group(1) == initial_hash.group(1) and
+                pinned_surface_tick == initial_tick,
+                "native failed tick mutated/restamped quarantined World")
         time.sleep(1.20)
         later = owner.request("status")
         require(owner.proc.poll() is None and owner.pid == original_pid,
