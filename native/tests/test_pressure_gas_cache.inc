@@ -112,6 +112,51 @@ void test_affected_gas_components() {
     }
 }
 
+// The active-room edits prevent the whole gas resolver from settling. They
+// must not prevent a different, unchanged room from gaining a certificate.
+// Both variants still execute the global reference reducer every tick; the
+// certificate skips only independently proven discovery BFS.
+void test_active_gas_component_certificates() {
+    for (const auto workers : {1U, 4U}) {
+        World reference(gas_cache_config(0, workers)), cached(gas_cache_config(1, workers)),
+              dormant(gas_cache_config(2, workers));
+        for (auto* world : {&reference, &cached, &dormant})
+            gas_cache_rooms(*world, 0, 0);
+        for (int t = 0; t < 12; ++t) {
+            const auto ceiling = t % 2 == 0 ? Material::Empty : Material::Wall;
+            for (auto* world : {&reference, &cached, &dormant})
+                world->set(20, 1, ceiling);
+            tick(reference); tick(cached); tick(dormant);
+            require_gas_cache_equivalent(reference, cached);
+            require_gas_cache_equivalent(reference, dormant);
+            require(reference.physical_state_hash() == cached.physical_state_hash() &&
+                    reference.physical_state_hash() == dormant.physical_state_hash(),
+                    "active-room churn has exact physical parity");
+        }
+        const auto c = cached.pressure_optimization_snapshot().counters;
+        const auto d = dormant.pressure_optimization_snapshot().counters;
+        require(c.gas_reference_passes == 12U && d.gas_reference_passes == 12U &&
+                c.gas_reuses == 0U && d.gas_reuses == 0U,
+                "active edits require the global reference gas operator every tick");
+        require(c.gas_cache_builds > 0U && d.gas_cache_builds > 0U &&
+                c.gas_component_reuses > 0U && d.gas_component_reuses > 0U,
+                "isolated sealed gas component is reused without a global fixed point");
+        // Dirtying a formerly certified second room must conservatively revoke
+        // that component; global authority and deterministic hashes still match.
+        for (auto* world : {&reference, &cached, &dormant})
+            world->set(84, 3, Material::Wall);
+        tick(reference); tick(cached); tick(dormant);
+        require_gas_cache_equivalent(reference, cached);
+        require_gas_cache_equivalent(reference, dormant);
+        require(reference.physical_state_hash() == cached.physical_state_hash() &&
+                reference.physical_state_hash() == dormant.physical_state_hash(),
+                "new edit in formerly stable room falls back with exact identity");
+        require(cached.pressure_optimization_snapshot().counters.gas_component_invalidations >
+                    c.gas_component_invalidations,
+                "changing certified room invalidates its bounded component proof");
+    }
+}
+
 void test_gas_component_capacity_fallbacks() {
     for (int mode=0;mode<4;++mode) {
         auto config=gas_cache_config(1);
