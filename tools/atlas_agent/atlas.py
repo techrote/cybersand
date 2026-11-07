@@ -33,6 +33,20 @@ INSTRUCTION_FILES = (f"{WORLD_DESIGN}/QUALITY_BAR.md", f"{WORLD_DESIGN}/README.m
 EDITABLE = ("pack.json", "README.md")  # preview.svg is regenerated only by the collection's own script
 MAX_FILE_COPY = 6_000_000
 MAX_TREE_COPY = 40_000_000
+TRUSTED_SCRIPTS = Path(__file__).with_name("trusted_art_scripts.json")
+
+
+def verify_trusted_script(collection: str, script: Path) -> str:
+    """Enforce runner-owned executable identity; art cannot grant itself permission."""
+    approved = json.loads(TRUSTED_SCRIPTS.read_text(encoding="utf-8"))["collections"]
+    expected = approved.get(collection, {}).get(script.name)
+    data = script.read_bytes()
+    blob = hashlib.sha1(b"blob " + str(len(data)).encode("ascii") + b"\\0" + data).hexdigest()
+    if not expected or blob != expected:
+        raise ValidationFailed(f"unapproved Atlas executable {collection}/{script.name} (blob {blob}); "
+                               "review the script and update the runner-side pin before execution",
+                               "untrusted_art_script")
+    return blob
 
 
 def lanes(fixture: bool) -> dict[str, list[str]]:
@@ -195,12 +209,14 @@ def script_argv(script: Path, kind: str, executables: dict[str, str]) -> list[st
 
 
 def run_script(work_root: Path, collection: str, kind: str, timeout: float, max_output: int,
-               executables: dict[str, str] | None = None) -> dict:
+               executables: dict[str, str] | None = None, require_trusted: bool = False) -> dict:
     executables = executables or resolve_executables()
     stem = "validate_pack" if kind == "validate" else "render_pack"
     script = find_script(work_root, collection, stem)
     if script is None:
         raise ValidationFailed(f"{WORLD_DESIGN}/{collection}/{stem}.(py|mjs) not found", "script_not_found")
+    if require_trusted:
+        verify_trusted_script(collection, script)
     argv = script_argv(script, kind, executables)
     before = snapshot(work_root)
     result = run_allowlisted(argv, script.parent, timeout, max_output, executables)
