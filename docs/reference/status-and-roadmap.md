@@ -10,6 +10,18 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+## PressureFlow moving-camera integration candidate (#201) — 2026-11-07
+
+PR #405 retains the original three-optimization history. Its composed candidate
+removes selected-region-only PressureFlow cache invalidation, preserves the
+constant precomputed pair-eligibility fast path already on current main, and
+adapts Claude's generation-keyed thread-local lookup cache as a fallback behind
+main's newer dense chunk directory. Direct World move-assignment, interleaved
+Worlds, deterministic address reuse and threaded ticks now have regression
+coverage. This is **not** a merged/accepted runtime: exact-head CI, independent
+review and source-matched Windows/Linux native publication are pending.
+
+
 ## Ballistic Water, IN-B1 and workbench spray (#362) — 2026-11-05
 
 **Experimental draft, not on main; no default changed.** The

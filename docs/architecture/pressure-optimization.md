@@ -276,7 +276,11 @@ in-app cached/dormant cost more than reference. The worker now leaves a
 fixed-interest scenario's region to the scenario
 ([region-flip record](../audits/2026-11-04-lcb201-region-flip.md)). A moving
 camera window still makes the cache cold whenever its selected cores change.
-Narrowing that native invalidation is a separate, unimplemented follow-up.
+The #201 moving-camera invalidation narrowing is implemented on PR #405's
+reconciled candidate. Selection alone now retains derived caches, while
+tick-entry inclusion waking and real input invalidations remain. Independent
+review and source-matched Windows/Linux runtime qualification remain mandatory
+before adoption.
 
 ## Acceptance and remaining application work
 
