@@ -1,0 +1,77 @@
+name: PF471 reviewed-source full docs/provenance on pinned companion workspace
+on:
+  push:
+    branches:
+      - codex/neighbour-cursor-independent-qualification-20261106
+    paths:
+      - .github/workflows/pf471-reviewed-docs-exact-head.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: pf471-reviewed-docs-${{ github.run_id }}
+  cancel-in-progress: false
+
+jobs:
+  source-docs:
+    name: Complete docs/catalogue on exact source and pinned workspace
+    runs-on: ubuntu-24.04
+    timeout-minutes: 135
+    defaults:
+      run:
+        working-directory: workspace/source
+    steps:
+      - name: Check out original pinned companion workspace
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: 6a58311982941b75f46e22109a0829e5acb83c7e
+          path: workspace
+          persist-credentials: false
+      - name: Check out reviewed source at exact head, complete history and LFS
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          path: workspace/source
+          fetch-depth: 0
+          lfs: true
+          persist-credentials: false
+      - name: Verify source identity and GitHub-hosted workflow policy
+        run: |
+          set -euxo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          git status --porcelain
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 -m unittest discover -s tools/ci -p test_ci_provider_policy.py
+          python3 -m venv "$RUNNER_TEMP/ci-audit"
+          "$RUNNER_TEMP/ci-audit/bin/python" -m pip install --require-hashes -r tools/requirements-ci-audit.txt
+          "$RUNNER_TEMP/ci-audit/bin/python" tools/ci/test_ci_scheduling_policy.py
+          "$RUNNER_TEMP/ci-audit/bin/python" tools/ci/check_ci_scheduling_policy.py --output build/pf471-workflow-inventory.json
+      - name: Prove source-pinned reviewed compatibility, identity and native parity
+        run: |
+          set -euxo pipefail
+          python3 tools/material_catalogue/compatibility.py --check | tee "$RUNNER_TEMP/pf471-review-compatibility.json"
+          python3 tools/material_catalogue/compiler.py --check
+          python3 -m unittest discover -s tools/material_catalogue -p 'test_*.py'
+          python3 tools/material_catalogue/check_native_parity.py --output build/pf471-catalogue-parity.json
+      - name: Check canonical docs, retained M11 and frozen/challenge retrieval evidence
+        run: |
+          set -euxo pipefail
+          python3 tools/ci/check_docs.py
+          python3 tools/ci/check_m11_consistency.py
+          python3 -m unittest discover -s tools/ci -p test_validation_contracts.py
+          mkdir -p build/pf471-retrieval
+          python3 tools/docs/retrieval_eval.py --output build/pf471-retrieval/frozen.json
+          python3 tools/docs/retrieval_eval.py --queries docs/reference/retrieval-challenges.json --output build/pf471-retrieval/challenges.json
+          git diff --check HEAD
+      - name: Retain source-validated original docs evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: pf471-reviewed-docs-${{ github.sha }}
+          if-no-files-found: warn
+          retention-days: 30
+          path: |
+            ${{ runner.temp }}/pf471-review-compatibility.json
+            workspace/source/build/pf471-workflow-inventory.json
+            workspace/source/build/pf471-catalogue-parity.json
+            workspace/source/build/pf471-retrieval/
