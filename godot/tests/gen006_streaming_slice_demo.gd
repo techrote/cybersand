@@ -250,18 +250,24 @@ func _write_request(commands: PackedStringArray) -> bool:
     return true
 
 
-func _read_response(started_usec: int) -> bool:
+func _read_response(started_usec: int, response_file: FileAccess = null) -> bool:
     var response_path := ipc_root.path_join("response.txt")
     if not _wait_for_file(response_path, IPC_TIMEOUT_MSEC):
         failure = "Persistent native controller response timed out."
         return false
+    if response_file == null:
+        response_file = FileAccess.open(response_path, FileAccess.READ)
+    if response_file == null:
+        failure = "Persistent-controller response unreadable: " + str(FileAccess.get_open_error())
+        return false
     last_call_usec = Time.get_ticks_usec() - started_usec
     total_calls += 1
-    last_receipts = FileAccess.get_file_as_string(response_path)
-    DirAccess.remove_absolute(response_path)
+    last_receipts = response_file.get_as_text()
+    response_file.close()
     if not last_receipts.begins_with("SEQ %d\n" % request_sequence):
         failure = "Persistent-controller sequence mismatch: " + last_receipts.left(120)
         return false
+    DirAccess.remove_absolute(response_path)
     if last_receipts.contains("REFUSED "):
         failure = "Native command refused: " + last_receipts.right(350)
         return false
@@ -412,9 +418,13 @@ func _service_live_ipc() -> void:
         return
     if ipc_outstanding:
         var response_path := ipc_root.path_join("response.txt")
-        if FileAccess.file_exists(response_path):
-            # _read_response returns immediately once the response exists.
-            var accepted := _read_response(ipc_request_usec)
+        # Windows can expose a published filename while a scanner/other reader
+        # denies opening it. Keep the same request outstanding and use the
+        # existing soft/hard timeout; never consume an unreadable ACK or replay
+        # the mutation. Pass this open handle to avoid a second open race.
+        var response_file := FileAccess.open(response_path, FileAccess.READ)
+        if response_file != null:
+            var accepted := _read_response(ipc_request_usec, response_file)
             ipc_outstanding = false
             ipc_slow_warning = false
             ipc_pending_msec = 0

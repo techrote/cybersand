@@ -10,6 +10,15 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## GEN-006 Windows desktop evidence — 2026-11-07
+
+The existing #486 opt-in sharded streaming scene has actual Windows11/NVIDIA
+OpenGL execution and a bounded experimental response-read repair through #513.
+The [desktop record](../audits/2026-11-07-gen006-windows-desktop-playtest.md)
+retains source/binary identities, original failures and corrected tests. Human
+acceptance remains pending; this is not a second game client or #512 shared-World
+production streaming admission.
+
 ## Coupling lockstep feasibility — 2026-11-06
 
 Branch `claude/gifted-franklin-0cd8e3` (PR #464) holds registration
