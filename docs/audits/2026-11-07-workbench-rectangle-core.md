@@ -242,6 +242,45 @@ frozen physics frames and all existing ownership/terrain/sample fences remain.
 requires waking waits before owner/thread destruction. Native pool workers call
 no Godot APIs; the existing exclusive GDScript owner uses this value-only signal.
 
-Qualification is pending at this checkpoint. Native93+15 compiled/build inputs,
-material guards, physics/core mass/gravity/caps and all historical failures stay.
+Production3ad15e4a passes160 paused episodes across all32 host/worker/FPS/route
+cells, with lower medians in every cell and exact complete native-attempt,
+geometry/M-I and counter parity. The baseline reuses earlier immutable14f7
+production (byte-equivalent to c7af); this is a historical wall-clock cohort,
+not a simultaneous A/B run. Windows worker1: at60FPS tree179.138→110.899ms,
+building219.310→121.806, debris118.234→72.807; at30FPS tree269.204→159.855,
+building269.609→158.189, debris200.252→95.563, refusal100.541→32.447.
+See the [unrounded paused ledger](workbench-cut-wake-20261107/paused-comparison.csv).
+
+Fresh live runs pass216 checks per host and arm: worker1/60FPS, five fresh
+repeats for each tree/building cell. Windows first accepted physical-resume
+medians: tree285.434→152.495ms, existing-body building284.784→140.918.
+Linux150.856→133.996 and150.219→133.249. Exact first physical-step count,
+current cut-end sample, end-reply session/epoch and native-tick boundary coverage
+are verified. The live results are latency observations, not strict trajectory
+replay; an in-flight pre-cut tick is allowed. The
+[live median/range ledger](workbench-cut-wake-20261107/live-comparison.json),
+[cohorts](workbench-cut-wake-20261107/cohorts.json),
+[summary](workbench-cut-wake-20261107/summary.json) and
+[raw custody index](workbench-cut-wake-20261107/raw-artifact-index.json)
+preserve source/runtime identities, commands, statuses and missing qualifications.
+
+Native3ad15 production and unchanged dependencies also pass4206 core checks per
+host/worker,56 exact/core lifecycle checks per host/representation,19 notification
+checks and30 actual-worker transport checks per host, including stop from an
+empty semaphore wait. Canvas/fleet/pilot/input controls pass. New bounded-frontier
+tests pass1964 checks per host:41 anchored investigations complete normally;
+the larger81-seed frontier stops after64 Anchored attempts with explicit
+MemberCapacity/frontier_limited. Every request has at most8 native discoveries;
+full post-erase census remains exact, no bodies/custody/conversion occur, and
+direct census begin does not prefetch. Initial bounds-001 correctly converted a
+three-cell corner detached by the test's erase at the left edge, causing14
+assertion failures perhost. Those runs remain. Observer-only642aede3 moves centres
+one cell inward; production remains unchanged. Missing/non-dictionary or
+missing-ok/outcome prefetch is fail-stop; this is not exhaustive validation of
+all native payload fields.
+
+PASS for this bounded latency/correctness comparison; CONDITIONAL for eliminating
+all perceptible delay. Required physics frames and deferred/main/normal-tick
+pacing remain. Native93+15 compiled/build inputs, material guards, physics/core
+mass/gravity/caps and all historical failures stay.
 The fixed profile is `native/tests/fixtures/workbench_cut_wake_001.json`.

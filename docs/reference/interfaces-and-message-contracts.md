@@ -39,6 +39,10 @@ rectangle-core branch, RPC count and enqueue/worker/reply/consume timestamps
 separate scheduler delay from native work. A one-use deferred notification
 wakes main; copied replies still use the serial/generation mutex mailbox.
 Up to8 refused discovery attempts retain individual receipts under one request.
+Internal opt-in `prefetch_next` on begin returns a separate `prefetched_payload`;
+begin is recorded before its native next substeps, while publication follows
+the prefetch. Main consumes it once and retains every refusal. Cut-only semaphore
+wakes alter scheduling, never native command order or normal tick cadence.
 Timeout/stopped/stale transport is terminal, not an eligibility refusal.
 Post-completion census RPCs leave the cut timings frozen. See the
 [source/evidence correction](../audits/2026-11-07-workbench-cut-feedback.md).

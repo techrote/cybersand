@@ -537,3 +537,8 @@ For #394 owner acceptance, accepted-main pressure reconciliation and final gate 
 The [two additive cut-hitch questions](retrieval-questions-workbench-cut-hitch.json)
 route to the [freed-object contract](../architecture/workbench-freed-objects.md#cut-scheduling-and-exact-recipe-reconstruction).
 Older frozen query objects remain unchanged; score these new questions separately.
+
+
+The [cut-wake/live-resume questions](retrieval-questions-workbench-cut-wake.json)
+are a separate two-question development set for semaphore lifecycle and actual
+post-handoff motion latency. Keep earlier query objects unchanged.

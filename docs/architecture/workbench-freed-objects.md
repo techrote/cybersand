@@ -51,7 +51,11 @@ Physics, source eligibility and cell/body capacities remain unchanged here.
 On the dependent rectangle-core branch, the remaining hitch correction replaces
 frame-polled worker replies with deferred one-use main-thread notifications.
 Reply values still cross the mutex mailbox under exact serial/generation checks.
-Timeout/stop/stale transport leaves clocks held; retirement wakes pending work.
+A cut-only semaphore wakes the exclusive owner on requests/stop; only empty
+held turns wait after a mutex recheck. Opt-in normal begin prefetches the first
+bounded discovery, preserving begin then every native discovery receipt; census
+begins retain old semantics. Main consumes prefetch once.
+Absent/structurally incomplete prefetch or timeout/stop/stale transport leaves clocks held; retirement wakes pending work.
 The GDScript owner schedules notifications, never native pool workers. Up to8
 consecutive refused discovery attempts share a publication; every refusal and
 counter is retained. Accepted preparation, two frozen physics checks, terrain
@@ -62,6 +66,11 @@ writes erase spans; the4096 final-run budget,2048-stamp budget and disc raster
 are unchanged. Fragmented histories can still cost more; no universal60Hz or
 original SOL CPU qualification follows. Cut timings freeze before observer
 census. See the [registered correction and evidence](../audits/2026-11-07-workbench-rectangle-core.md#remaining-cut-hitch-correction--2026-11-07).
+
+Fresh live timing also measures the first accepted resumed Rapier step, with
+exact cut-end sample/session/epoch and first-step coverage checks. Its scope is
+Windows/Linux worker1/60FPS with five repeats per tree/building case; paused
+worker1/4 measurements remain separate. See the [wake/resume evidence](../audits/2026-11-07-workbench-rectangle-core.md#cut-wake-and-live-resume-follow-up--2026-11-07).
 
 ## Small native-debris tangent
 

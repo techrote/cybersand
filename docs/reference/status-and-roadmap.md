@@ -14,8 +14,9 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 Draft519 additionally removes frame-polled handoffs and dense paint-history
 replay under the same core geometry and physics. Source-qualified Windows/Linux
-workers1/4 pass160 matched episodes, with all native attempts retained. Tiny
-30FPS debris remains frame paced; fragmented-history memory and universal60Hz
+workers1/4 pass160 matched episodes, with all native attempts retained. A semaphore/prefetch follow-up reduces
+30FPS Windows debris from200ms to96ms and measures live resume separately;
+remaining deferred/physics pacing persists; fragmented-history memory and universal60Hz
 are unqualified. See the [correction dossier](../audits/2026-11-07-workbench-rectangle-core.md#remaining-cut-hitch-correction--2026-11-07).
 Keep Draft; original SOL/platform blockers remain.
 

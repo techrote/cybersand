@@ -14,7 +14,9 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 Draft519's rectangle geometry and physics stay fixed. The registered follow-up
 removes frame polling, batches at most8 refused investigations without skipping
-any, and reconstructs saved material rows as exact intervals. Read the
+any, and reconstructs saved material rows as exact intervals. Follow-up3ad15e4a
+adds cut-only semaphore wake and first-discovery prefetch; fresh live timing
+includes the first accepted resumed physics step, with exact sample checks. Read the
 [correction checkpoint](../audits/2026-11-07-workbench-rectangle-core.md#remaining-cut-hitch-correction--2026-11-07)
 for source-qualified timing, tests and retained gaps. Preserve open user canvases.
 

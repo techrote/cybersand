@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "frozen_date": "2026-11-07",
+  "purpose": "New cut-wake/live-resume development questions; all prior frozen objects retained.",
+  "questions": [
+    {
+      "id": "CUT-WAKE-001",
+      "query": "When may the held cut worker wait on its semaphore, and how do request, stop and World replacement prevent a lost wake or shutdown deadlock?",
+      "canonical": [
+        "architecture/workbench-freed-objects.md"
+      ],
+      "facts": [
+        "Only empty held turn waits after mutex recheck; request/stop/retired hold post after unlock.",
+        "Stop posts before join; normal cadence and all source/physics fences stay."
+      ],
+      "sources": [
+        "../godot/scripts/simulation_worker.gd"
+      ]
+    },
+    {
+      "id": "CUT-WAKE-002",
+      "query": "Does the cut-latency comparison measure until actual live Rapier motion resumes, and which Windows/Linux worker and FPS settings were tested?",
+      "canonical": [
+        "audits/2026-11-07-workbench-rectangle-core.md",
+        "architecture/workbench-freed-objects.md"
+      ],
+      "facts": [
+        "Fresh live Windows/Linux worker1 at60FPS, five repeats tree/building; paused matrix workers1/4 at60/30FPS.",
+        "Exact first actual step and current cut-end sample checked; residual delay, historical cohort and platform limits remain."
+      ],
+      "sources": [
+        "../godot/tests/test_workbench_cut_live_latency.gd",
+        "../native/tests/fixtures/workbench_cut_wake_001.json"
+      ]
+    }
+  ]
+}
