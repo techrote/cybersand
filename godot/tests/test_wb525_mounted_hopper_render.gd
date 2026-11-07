@@ -159,7 +159,7 @@ func run_variant(rows: Array, variant: String) -> void:
 		return
 	var saved_start: Dictionary = Setup.read_named(name)
 	check(saved_start.has("setup")
-		and saved_start.get("setup",{}).get("edits",[]).size()==workbench.applied.edits.size(),
+		and saved_start.setup.edits==workbench.applied.edits,
 		"mounted authored-start file did not retain human/agent geometry "+variant)
 	if not check(workbench.load_setup(),
 		"mounted authored-start load refused "+variant):
