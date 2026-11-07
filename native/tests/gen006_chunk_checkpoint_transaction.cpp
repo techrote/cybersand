@@ -268,11 +268,10 @@ void run(const fs::path& root,unsigned workers) {
 }
 }
 
-void sand_continuation_test(const fs::path& root,unsigned workers) {
-    // Real moving Sand settles within a sealed Wall perimeter. Only the
-    // inactive, no-future-deadline state is exportable; pre-settlement motion
-    // must never be captured. Compare native cell tuples against an
-    // uninterrupted whole-World CYPS reference after import.
+void sand_boundary_refusal_test(unsigned workers) {
+    // The real granular Sand rule can claim additional native boundary
+    // chunks even inside a visual Wall perimeter. A one-chunk checkpoint
+    // MUST refuse rather than erase the newly owned neighbour/halo.
     auto cfg=config(workers);
     cfg.maximum_chunk_count=2;
     const ChunkCoord sand_coord{-30,16};
@@ -288,71 +287,38 @@ void sand_continuation_test(const fs::path& root,unsigned workers) {
     World w(cfg);
     require(w.install_generated_chunk(sand_coord,cells)==ChunkInstallOutcome::Installed,
             "GEN006_SEALED_SAND_ADMISSION");
-    ChunkCheckpointCapture packet{};
-    bool observed_dynamic_refusal=false;
-    for(int t=0;t<192;++t) {
-        packet=w.capture_chunk_checkpoint(sand_coord);
-        if(packet.status==ChunkCheckpointStatus::PendingActivity)
-            observed_dynamic_refusal=true;
-        if(packet.status==ChunkCheckpointStatus::Captured)break;
-        if (packet.status!=ChunkCheckpointStatus::PendingActivity) {
-            std::uint64_t sand=0,wall=0,other=0;
-            for(int py=0;py<64;++py)for(int px=0;px<64;++px) {
-                const auto material=w.stored_material(sand_coord.x*64+px,sand_coord.y*64+py);
-                if(material==Material::Sand)++sand;
-                else if(material==Material::Wall)++wall;
-                else if(material!=Material::Empty)++other;
-            }
-            std::cerr<<"GEN006_SAND_REJECTION_DIAG status="<<static_cast<int>(packet.status)
-                     <<" tick="<<w.completed_tick_index()
-                     <<" sand="<<sand<<" wall="<<wall<<" other="<<other
-                     <<" active_chunks="<<w.active_chunk_count()<<'\n';
+    bool has_native_neighbour=false;
+    std::uint64_t requested_tick=0;
+    for(int t=0;t<96;++t) {
+        const auto before_hash=w.physical_state_hash();
+        const auto before_bytes=w.resident_cell_bytes();
+        const auto before_count=w.chunk_count();
+        auto capture=w.capture_chunk_checkpoint(sand_coord);
+        require(w.physical_state_hash()==before_hash &&
+                w.resident_cell_bytes()==before_bytes &&
+                w.chunk_count()==before_count,
+                "GEN006_SAND_CAPTURE_REFUSAL_MUTATED_WORLD");
+        require(capture.status!=ChunkCheckpointStatus::Captured,
+                "GEN006_DYNAMIC_SAND_UNSAFE_CHECKPOINT_ACCEPTED");
+        if(capture.status==ChunkCheckpointStatus::NeighbourPinned) {
+            has_native_neighbour=true;
+            requested_tick=w.completed_tick_index();
+            break;
         }
-        require(packet.status==ChunkCheckpointStatus::PendingActivity,
-                "GEN006_UNEXPECTED_SAND_PRESETTLEMENT_REFUSAL");
+        require(capture.status==ChunkCheckpointStatus::UnsupportedDomain ||
+                capture.status==ChunkCheckpointStatus::PendingActivity,
+                "GEN006_UNEXPECTED_DYNAMIC_SAND_REFUSAL");
         (void)w.tick();
     }
-    require(observed_dynamic_refusal,"GEN006_NO_SAND_MOVEMENT_REFUSAL");
-    require(packet.status==ChunkCheckpointStatus::Captured,
-            "GEN006_SEALED_SAND_DID_NOT_SETTLE");
-    auto reference=World::restore_physical_state(cfg,w.save_physical_state());
-    require(reference && !reference->has_failed(),
-            "GEN006_SAND_UNINTERRUPTED_REFERENCE");
-    const auto origin=packet.checkpoint.coord;
-    const auto digest_before=packet.checkpoint.sha256;
-    const auto file=root/"quiescent_sealed_sand.g6c";
-    persist_exactly(file,packet.checkpoint.bytes);
-    require(read_exactly(file)==packet.checkpoint.bytes,
-            "GEN006_SEALED_SAND_DURABLE_READBACK_DRIFT");
-    const auto ack=ack_for(packet.checkpoint);
-    require(w.evict_durable_checkpoint(packet.checkpoint,ack)==ChunkCheckpointStatus::Evicted,
-            "GEN006_QUIESCENT_SAND_RELEASE_REFUSED");
-    (void)w.tick();
-    (void)reference->tick();
-    require(w.restore_chunk_checkpoint(origin,packet.checkpoint.bytes)==
-            ChunkCheckpointStatus::Restored,
-            "GEN006_QUIESCENT_SAND_REHYDRATION_REFUSED");
-    for(int t=0;t<3;++t) {
-        (void)w.tick();
-        (void)reference->tick();
-    }
-    for(int y=0;y<64;++y)for(int x=0;x<64;++x) {
-        const auto xx=origin.x*64+x, yy=origin.y*64+y;
-        require(w.stored_material(xx,yy)==reference->stored_material(xx,yy) &&
-                w.stored_state_a(xx,yy)==reference->stored_state_a(xx,yy) &&
-                w.stored_state_b(xx,yy)==reference->stored_state_b(xx,yy) &&
-                w.stored_temperature(xx,yy)==reference->stored_temperature(xx,yy),
-                "GEN006_SEALED_SAND_CONTINUATION_DIVERGED");
-    }
-    require(w.quantity_ledger().material_cells==reference->quantity_ledger().material_cells,
-            "GEN006_SAND_QUANTITY_COUNT_DIVERGED");
-    std::cout<<"GEN006_SEALED_SAND_CHECKPOINT_CONTINUATION_PASS"
+    require(has_native_neighbour && w.chunk_count()==2 &&
+            !w.has_failed(),"GEN006_REAL_SAND_NEIGHBOUR_RACE_NOT_REPRODUCED");
+    std::cout<<"GEN006_DYNAMIC_SAND_HALO_REFUSAL_PASS"
              <<" configured_workers="<<workers
-             <<" motion_refused_until_quiescent=1"
-             <<" full_wall_boundary=1"
-             <<" SHA256="<<int(digest_before[0])
-             <<" resumed_native_cells=4096"
-             <<" continuation_ticks=3\n";
+             <<" native_tick="<<requested_tick
+             <<" resident_chunks=2"
+             <<" boundary_owner=PINNED"
+             <<" checkpoint=REFUSED"
+             <<" native_state=UNCHANGED_ON_REFUSAL\n";
 }
 
 int main(int argc,char** argv) {
@@ -361,7 +327,7 @@ int main(int argc,char** argv) {
         const auto workers=static_cast<unsigned>(std::stoul(argv[2]));
         require(workers==1||workers==4,"GEN006_INVALID_WORKERS");
         run(argv[1],workers);
-        sand_continuation_test(argv[1],workers);
+        sand_boundary_refusal_test(workers);
         return 0;
     } catch(const std::exception& ex) {
         std::cerr<<"GEN006_LOSSLESS_STATIC_CHUNK_TRANSACTION_FAIL "<<ex.what()<<'\n';

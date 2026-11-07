@@ -96,19 +96,22 @@ merge. Native scoped test passes cannot override that gate.
 The per-cell GEN-006 edit-intent mask is opt-in via gen006_track_edit_intent=false by default. It is allocated only under this experimental flag and serialized in G6KC1; old whole-World CYPS has no mask, so a restored historical World cannot silently claim admission into this checkpoint domain. Query gen006_player_edit_intent_at() to verify exact Empty tombstone coordinates after native restart.
 
 
-## Extension: genuinely settled, sealed Sand
 
-A non-liquid Sand cell is admitted **only when real native simulation has
-completed and all activity blocks are inactive with no scheduled deadline**,
-and the 64x64 chunk has a complete one-cell Wall perimeter. The whole native
-chunk is isolated from neighbours; a pre-settlement capture refuses. The
-checkpoint stores every exact Sand cell register/epoch and the global quantity
-ledger's Sand material count is adjusted on removal and restoration.
+## Real native Sand boundary negative control
 
-A dedicated regression runs the actual Sand simulation until quiescent,
-retains an uninterrupted whole-World CYPS control, evicts the settled Sand
-chunk, advances both Worlds, restores, then compares all 4096 authoritative
-native cell material/state/temperature tuples through further ticks. Sand
-with an open boundary, unfinished motion, or a neighbouring chunk remains
-unsupported. Gas, Water, inertial and ballistic solver states remain pinned;
-this is not yet general dynamic streaming.
+A Windows/Linux real-native experiment found the important boundary blocker
+for expanding G6KC1 beyond static Wall/Empty. A Sand sample inside a complete
+64x64 Wall perimeter caused the native solver to claim a neighbouring chunk
+before it became checkpoint-eligible (Windows witness: NeighbourPinned at
+completed tick 52, two resident chunks). The apparently sealed *material*
+perimeter does not itself prove isolated native scheduling/ownership.
+
+The strengthened test now insists that every attempted Sand checkpoint
+refuses **without changing physical hash, owned bytes or chunk count**, and
+verifies actual native neighbour admission. It cannot be promoted to a
+single-chunk lossless state transaction. The next dynamic milestone must
+implement an owner-admitted **multi-chunk/halo bundle checkpoint** with
+quantity and pending-work transfer, not bypass the refusal or fake stability.
+
+Only Wall/Empty + opt-in exact edit intent + inactive activity blocks and
+temperature are currently checkpoint-eligible.
