@@ -10,7 +10,7 @@ function renderSvg(pack){
  const rect=(x,y,w,h,fill,rx=0)=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${rx}" fill="${fill}"/>`;
  const txt=(x,y,t,size=14,fill="#e3ebe8",weight=400)=>`<text x="${x}" y="${y}" font-family="monospace" font-size="${size}" fill="${fill}" font-weight="${weight}">${esc(t)}</text>`;
  const draw=(f,x,y,scale,variant)=>{const v=f.variants.find(q=>q.id===variant);lines.push(`<g transform="translate(${x},${y}) scale(${scale})" shape-rendering="crispEdges">`);for(const [rx,ry,w,h,id] of f.rectangles){const target=v?.swap?.[String(id)]??id;lines.push(rect(rx,ry,w,h,tint(target)))}lines.push("</g>")};
- lines.push(`<svg xmlns="http://www.w3.org/2000/svg" width="1480" height="2800" viewBox="0 0 1480 2800" role="img" aria-label="Drowned Observatory two source-colour astronomical dioramas, four alternate and four flagship close details and eight reusable modules">`);
+ lines.push(`<svg xmlns="http://www.w3.org/2000/svg" width="1480" height="3180" viewBox="0 0 1480 3180" role="img" aria-label="Drowned Observatory two source-colour astronomical dioramas, four alternate and four flagship close details and eight reusable modules">`);
  lines.push(`<title>Drowned Observatory — Night of the Submerged Equator</title><desc>Source-colour illustration for staged map-authoring. Not a native simulation or Godot screenshot.</desc>`);
  lines.push(rect(0,0,1480,2800,"#091723"));
  lines.push(rect(30,20,1420,58,"#1d3041",7));lines.push(txt(51,57,"DROWNED OBSERVATORY / FRACTURED EQUATOR / SILENT MERIDIAN",24,"#ebebd9",700));
@@ -77,6 +77,11 @@ function renderSvg(pack){
  paintCrop(325,2,310,130,780,2430,"VIII / WEIGHTED ARMILLARY & EASTERN APPROACH",scene);
  lines.push(txt(51,2755,"Flat SVG geometry: source-colour only. Unwritten voids do not clear host terrain.",12,"#91abb8"));
 
+
+ lines.push(txt(51,2804,"TWO 2× WESTERN ASTROLABE STUDIES / HISTORICAL MATERIAL COLOURS, NOT OPTICS",14,"#c8d8d8",600));
+ paintCrop(154,7,310,130,65,2834,"IX / BROKEN HELIOSTAT TRIBUNAL AND COUNTERWEIGHTS",altScene);
+ paintCrop(401,66,310,130,780,2834,"X / DISCONTINUOUS DATUM CAUSEWAY TO THE GREAT WHEEL",altScene);
+ lines.push(txt(51,3149,"Design-only source-colour studies. Apparent optics, mechanics, clearing and support are untested.",12,"#91abb8"));
  lines.push("</svg>");
  return lines.join("\n")+"\n";
 }
