@@ -31,8 +31,15 @@ class DryRunBackend:
             batches.append([("list_captures", {})])
             batches.append([("view_image", lambda out: _first_shot(out, collection))])
         edits = plan.get("edits", []) if writable else []
+        rectangles = plan.get("rectangle_edits", []) if writable else []
         if edits:
             batches.append([("replace_text", {k: e[k] for k in ("path", "old_text", "new_text")}) for e in edits])
+        if rectangles:
+            for start in range(0, len(rectangles), 4):
+                batches.append([("pack_add_rectangles", {"feature_id": e["feature_id"],
+                                                       "rectangles": e["rectangles"], "note": e.get("note", "")})
+                                for e in rectangles[start:start + 4]])
+        if edits or rectangles:
             batches.append([("run_validator", {"collection": collection, "kind": "validate"}),
                             ("run_validator", {"collection": collection, "kind": "render_write"}),
                             ("run_validator", {"collection": collection, "kind": "render_check"})])
@@ -40,7 +47,7 @@ class DryRunBackend:
             batches.append([("render_capture", {"label": "after"})])
             if has_captures:
                 batches.append([("compare_captures", {})])
-        batches.append([("submit_report", lambda out: _report(collection, plan, bool(edits), has_captures))])
+        batches.append([("submit_report", lambda out: _report(collection, plan, bool(edits or rectangles), has_captures))])
         return batches
 
     def respond(self, budget: Budget, request: dict, input_tokens_ub: int, max_output_tokens: int) -> dict:
@@ -91,7 +98,7 @@ def _report(collection: str, plan: dict, edited: bool, saw_images: bool) -> dict
             "visual_evidence_used": saw_images,
             "critique": [{"dimension": "silhouette_scale_hierarchy", "score_0_to_5": 0,
                           "evidence": "dry-run placeholder: no model critique was produced"}],
-            "revision_proposals": [], "edits_applied": [e.get("note", "planned edit") for e in plan.get("edits", [])]
+            "revision_proposals": [], "edits_applied": [e.get("note", "planned edit") for e in (plan.get("edits", []) + plan.get("rectangle_edits", []))]
             if edited else [], "validation_notes": f"collection {collection}: see receipt validation entries"}
 
 
@@ -102,9 +109,21 @@ def load_plan(path: str | None) -> dict | None:
         plan = json.loads(Path(path).read_text(encoding="utf-8"))
     except (OSError, ValueError) as exc:
         raise ConfigError(f"cannot read dry-run plan: {exc}", "plan_unreadable") from None
+    if not isinstance(plan, dict):
+        raise ConfigError("dry-run plan must be a JSON object", "plan_unreadable")
     edits = plan.get("edits", [])
-    if not isinstance(plan, dict) or not isinstance(edits, list):
-        raise ConfigError("dry-run plan must be an object with an 'edits' list", "plan_unreadable")
+    rectangles = plan.get("rectangle_edits", [])
+    if not isinstance(edits, list) or not isinstance(rectangles, list) or len(rectangles) > 24:
+        raise ConfigError("dry-run edit collections must be bounded lists", "plan_unreadable")
+    for entry in rectangles:
+        if (not isinstance(entry, dict) or set(entry) - {"feature_id", "rectangles", "note"}
+                or not {"feature_id", "rectangles"} <= set(entry)
+                or not isinstance(entry["feature_id"], str) or not isinstance(entry["rectangles"], list)
+                or not 1 <= len(entry["rectangles"]) <= 60
+                or any(not isinstance(rect, list) or len(rect) != 5 or
+                       any(type(value) is not int for value in rect) for rect in entry["rectangles"])):
+            raise ConfigError("invalid rectangle_edits entry in dry-run plan", "plan_unreadable")
+    edits = plan.get("edits", [])
     for edit in edits:
         if set(edit) - {"path", "old_text", "new_text", "note"} or not {"path", "old_text", "new_text"} <= set(edit):
             raise ConfigError("each dry-run edit needs exactly path/old_text/new_text (+note)", "plan_unreadable")
