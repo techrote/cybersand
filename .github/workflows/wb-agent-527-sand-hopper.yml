@@ -6,6 +6,7 @@ on:
     paths:
       - 'native/tests/test_wb_agent_sand_hopper.cpp'
       - 'native/tests/fixtures/wb_agent_sand_hopper_v1.tsv'
+      - 'native/tests/fixtures/wb_agent_sand_hopper_v2.tsv'
       - 'tools/wb_agent/verify_sand_hopper.py'
       - '.github/workflows/wb-agent-527-sand-hopper.yml'
   workflow_dispatch:
@@ -40,7 +41,7 @@ jobs:
           test "$(git rev-parse HEAD)" = "$EXPECTED_SHA"
           git rev-parse HEAD > "$RESULT_DIR/source-sha.txt"
           git rev-parse 'HEAD^{tree}' > "$RESULT_DIR/source-tree.txt"
-          cp native/tests/fixtures/wb_agent_sand_hopper_v1.tsv "$RESULT_DIR/manifest.tsv"
+          cp native/tests/fixtures/wb_agent_sand_hopper_v2.tsv "$RESULT_DIR/manifest.tsv"
           sha256sum "$RESULT_DIR/manifest.tsv" > "$RESULT_DIR/manifest-sha256.txt"
           g++ --version | head -n 1 > "$RESULT_DIR/compiler.txt"
           python3 --version >> "$RESULT_DIR/compiler.txt"
