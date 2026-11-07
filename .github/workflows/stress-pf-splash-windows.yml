@@ -1,4 +1,4 @@
-name: Stress canvas PF / ballistic / splash — Windows headless simulation
+name: Stress canvas matched PF / gas / splash ablations — Windows
 
 on:
   push:
@@ -23,8 +23,15 @@ jobs:
     timeout-minutes: 18
     strategy:
       fail-fast: false
+      max-parallel: 3
       matrix:
-        case: [full-pf-off, half-pf-gas-on]
+        case:
+          - full-pf-off
+          - half-pf-off
+          - half-pf-gas-off
+          - half-pf-gas-on
+          - half-pf-gas-on-nospray
+          - half-pf-gas-on-noface
     defaults:
       run:
         shell: bash
@@ -65,7 +72,7 @@ jobs:
           test "$(stat -c %s godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll)" -gt 1000000
           test "$(stat -c %s godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll)" -gt 1000000
 
-      - name: Run actual graphical workbench
+      - name: Run real workbench / native worker / Rapier simulation
         env:
           CYBERSAND_STRESS_CASE: ${{ matrix.case }}
           CYBERSAND_STRESS_ALLOW_HEADLESS: '1'

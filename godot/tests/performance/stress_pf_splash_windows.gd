@@ -1,14 +1,23 @@
 extends SceneTree
 
-# Standalone current-main Windows graphical stress characterization. Runs the
-# actual Main/Workbench/native worker/Rapier ownership path. No source patches.
-# Selected case via CYBERSAND_STRESS_CASE=full-pf-off or half-pf-gas-on.
+# Standalone pinned-Windows headless simulation stress characterisation. Runs
+# unchanged Main/Workbench/native worker/Rapier through the physical 8-actor
+# stress-canvas, with size-, PressureFlow-, gas- and splash-matched controls.
+# No production changes. All arms share one exact source and simulation clock.
 const Setup = preload("res://scripts/workbench_setup.gd")
 const TARGET_SECONDS := 14.0
 const WARMUP_TICKS := 30
 const MAX_WAIT_MS := 90000
 const MAX_PHYS_ROWS := 8192
 const NUM_ACTORS := 8
+const CASES: Dictionary = {
+	"full-pf-off": {"half":false, "pf":false, "gas":false, "ballistic":true, "face":true, "spray":true},
+	"half-pf-off": {"half":true, "pf":false, "gas":false, "ballistic":true, "face":true, "spray":true},
+	"half-pf-gas-off": {"half":true, "pf":true, "gas":false, "ballistic":true, "face":true, "spray":true},
+	"half-pf-gas-on": {"half":true, "pf":true, "gas":true, "ballistic":true, "face":true, "spray":true},
+	"half-pf-gas-on-nospray": {"half":true, "pf":true, "gas":true, "ballistic":true, "face":true, "spray":false},
+	"half-pf-gas-on-noface": {"half":true, "pf":true, "gas":true, "ballistic":true, "face":false, "spray":true}
+}
 
 class ObservedMain:
 	extends "res://scripts/main.gd"
@@ -47,6 +56,7 @@ class ObservedMain:
 var host: Control
 var panel: Control
 var mode: String = ""
+var selected: Dictionary = {}
 var failures: Array[String] = []
 var stage := "init"
 var output_path: String = ""
@@ -126,20 +136,21 @@ func make_half_stress(policy: PackedInt32Array) -> Dictionary:
 	data.actors = actors
 	return data
 
-func select_policy(bridge: Object, selected_mode: String) -> PackedInt32Array:
+func select_policy(bridge: Object, config: Dictionary) -> PackedInt32Array:
 	var request: PackedInt32Array = bridge.default_liquid_policy()
-	if selected_mode == "full-pf-off":
+	if not bool(config.get("pf",false)):
 		return request
 	var matched := false
-	for option: Dictionary in bridge.liquid_policy_assignment_choices(request, Setup.WATER):
+	for option: Dictionary in bridge.liquid_policy_assignment_choices(request,Setup.WATER):
 		if str(option.get("family","")) == "pressure_flow_v1" and str(option.get("variant","")) == "cached_dormant" and bool(option.get("accepted",false)):
 			request = PackedInt32Array(option.request)
 			matched = true
 			break
 	if not require(matched,"native Water PF cached_dormant option unavailable"):
 		return PackedInt32Array()
-	var gas: Dictionary = bridge.liquid_policy_with_pressure_gas(request,true)
-	if not require(bool(gas.get("accepted",false)),"native PF gas request refused: " + str(gas)):
+	var gas_flag: bool = bool(config.get("gas",false))
+	var gas: Dictionary = bridge.liquid_policy_with_pressure_gas(request,gas_flag)
+	if not require(bool(gas.get("accepted",false)),"native PF gas "+str(gas_flag)+" request refused: "+str(gas)):
 		return PackedInt32Array()
 	return PackedInt32Array(gas.request)
 
@@ -214,7 +225,7 @@ func finish() -> void:
 func run() -> void:
 	mode = OS.get_environment("CYBERSAND_STRESS_CASE")
 	output_path = OS.get_environment("CYBERSAND_STRESS_OUTPUT")
-	if not require(mode in ["full-pf-off","half-pf-gas-on"], "unsupported case: "+mode):
+	if not require(CASES.has(mode), "unsupported case: "+mode):
 		await finish()
 		return
 	if not require(OS.get_name() == "Windows" and (
@@ -224,7 +235,8 @@ func run() -> void:
 		return
 	stage = "create_workbench"
 	set_meta("cybersand_feature","shared_workbench")
-	root.size = Vector2i(960,540) if mode == "half-pf-gas-on" else Vector2i(1920,1080)
+	selected = CASES[mode].duplicate(true)
+	root.size = Vector2i(960,540) if bool(selected.half) else Vector2i(1920,1080)
 	# Keep native and Rapier standard 60Hz; avoid changing solver timesteps.
 	Engine.max_fps = 0
 	Engine.physics_ticks_per_second = 60
@@ -241,12 +253,12 @@ func run() -> void:
 	if not require(bridge != null, "native policy bridge absent"):
 		await finish()
 		return
-	var policy: PackedInt32Array = select_policy(bridge,mode)
+	var policy: PackedInt32Array = select_policy(bridge,selected)
 	if policy.is_empty():
 		await finish()
 		return
-	var recipe: Dictionary = (Setup.stress_canvas(policy) if mode == "full-pf-off"
-		else make_half_stress(policy))
+	var recipe: Dictionary = (make_half_stress(policy) if bool(selected.half)
+		else Setup.stress_canvas(policy))
 	if recipe.is_empty():
 		await finish()
 		return
@@ -268,14 +280,16 @@ func run() -> void:
 		return
 	evidence["host"] = {"windows":OS.get_name(),"display_server":DisplayServer.get_name(),
 		"physics_hz":Engine.physics_ticks_per_second,"max_fps":Engine.max_fps}
-	evidence["recipe"] = {"original":"stress-canvas","scale":1.0 if mode=="full-pf-off" else 0.5,
+	evidence["selected"] = selected.duplicate(true)
+	evidence["recipe"] = {"original":"stress-canvas","scale":0.5 if bool(selected.half) else 1.0,
 		"extent":recipe.extent, "stamps":recipe.edits.size(), "rectangles":int(packed.runs.size()/5),
 		"materials":edit_materials.size(), "actors":recipe.actors.size(),
 		"policy_sha256":str(policy), "face_tuning":[320,288,1,4]}
-	# The same ballistic construction/tuning in both arms.
+	# Preserve identical face tuning; one variant removes only the face-release
+	# path and another disables only the run-time impact spray.
 	host.workbench_water_options.merge({
-		"workbench_ballistic":true,
-		"workbench_face_release":true,
+		"workbench_ballistic":bool(selected.ballistic),
+		"workbench_face_release":bool(selected.face),
 		"workbench_face_budget":320,
 		"workbench_face_speed":288,
 		"workbench_face_period":1,
@@ -291,17 +305,27 @@ func run() -> void:
 		await finish()
 		return
 	evidence["policy_readback"] = host.tower_context.get("liquid_solver_policy",{}).duplicate(true)
-	if mode == "half-pf-gas-on":
-		var found := false
-		for assignment: Dictionary in evidence.policy_readback.get("assignments",[]):
-			if int(assignment.get("material",-1)) == Setup.WATER:
-				found = str(assignment.get("applied_family","")) == "pressure_flow_v1" and str(assignment.get("applied_variant","")) == "cached_dormant"
-		if not require(found,"installed PF cached_dormant policy not read back"):
+	var actual_water_family := ""
+	var actual_water_variant := ""
+	for assignment: Dictionary in evidence.policy_readback.get("assignments",[]):
+		if int(assignment.get("material",-1)) == Setup.WATER:
+			actual_water_family = str(assignment.get("applied_family",""))
+			actual_water_variant = str(assignment.get("applied_variant",""))
+	var expected_family := "pressure_flow_v1" if bool(selected.pf) else "freemass_v1"
+	var expected_variant := "cached_dormant" if bool(selected.pf) else "reference"
+	if not require(actual_water_family == expected_family and actual_water_variant == expected_variant,
+		"installed Water solver does not match case: "+actual_water_family+"/"+actual_water_variant):
+		await finish()
+		return
+	if bool(selected.pf):
+		var pf_options: Dictionary = evidence.policy_readback.get("family_parameters",{}).get("pressure_flow_v1",{})
+		if not require(pf_options.has("gas_enabled") and bool(pf_options.gas_enabled) == bool(selected.gas),
+			"installed PF gas flag does not match case: "+str(pf_options)):
 			await finish()
 			return
 	# Impact spray; no synthetic jet or external force is introduced.
 	stage = "enable_spray"
-	var spray_request := {"enabled":true,"launch_scale":1.6,"threshold":0.3,
+	var spray_request := {"enabled":bool(selected.spray),"launch_scale":1.6,"threshold":0.3,
 		"upward_bias":0.72,"budget":64,"jet_enabled":false}
 	if not require(panel.water_spray.request(spray_request),"impact spray queue refused"):
 		await finish()
@@ -317,11 +341,12 @@ func run() -> void:
 		await finish()
 		return
 	var initial_spray: Dictionary = host.tower_context.get("water_spray",{})
-	if not require(bool(initial_spray.get("ballistic_enabled",false)), "ballistic Water not active"):
+	if not require(bool(initial_spray.get("ballistic_enabled",false)) == bool(selected.ballistic),
+		"ballistic Water readback mismatched requested state"):
 		await finish()
 		return
-	if not require(bool(initial_spray.get("settings",{}).get("enabled",false)),
-		"impact spray not enabled in actual native readback"):
+	if not require(bool(initial_spray.get("settings",{}).get("enabled",false)) == bool(selected.spray),
+		"impact spray readback mismatched requested state"):
 		await finish()
 		return
 	stage = "measure"
@@ -367,6 +392,7 @@ func run() -> void:
 			last_actor_pos.append(actor.get("position",[]))
 	var final_spray: Dictionary = host.tower_context.get("water_spray",{})
 	var summary: Dictionary = {
+		"case_config": selected.duplicate(true),
 		"duration_s":elapsed, "native_ticks":final_tick-begin_tick,
 		"native_ticks_per_s":float(final_tick-begin_tick)/elapsed if elapsed>0 else 0.0,
 		"rapier_ticks":int(host.physical_actor_session.tick)-begin_actor_tick,
@@ -402,8 +428,8 @@ func run() -> void:
 		"World failed during measurement: "+str(summary.workbench_refusal)):
 		await finish()
 		return
-	if not require(bool(summary.splash_enabled) and bool(summary.ballistic_enabled),
-		"ballistic/impact spray switched off unexpectedly"):
+	if not require(bool(summary.splash_enabled)==bool(selected.spray) and bool(summary.ballistic_enabled)==bool(selected.ballistic),
+		"ballistic/impact spray switched unexpectedly"):
 		await finish()
 		return
 	stage = "complete"
