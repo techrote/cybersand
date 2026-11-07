@@ -14,6 +14,9 @@ on:
       - 'godot/scripts/workbench_authoring_*.gd'
       - 'godot/tests/test_workbench_agent_mounted.gd'
       - 'godot/tests/test_workbench_authoring_*.gd'
+      # A new #528 acceptance receipt/contract revision requires genuine
+      # native+frame readback, not only documentation/provenance checks.
+      - 'docs/audits/2026-11-07-wb-agent-528-client-shell.md'
       - '.github/workflows/wb-agent-528-integrated.yml'
   workflow_dispatch:
 
