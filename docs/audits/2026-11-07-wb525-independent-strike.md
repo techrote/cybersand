@@ -10,6 +10,31 @@ related-documents: [../systems/shared-workbench-agent-authoring.md, ../operation
 
 # WB525 independent integration, capacity repair and physical cause
 
+## Final source-qualified delivery
+
+Final application code is`211898dc2b6a221b71d9f3ed249a8136f48c8891`, tree
+`923ce709abf6c396165d694dc6636bba8ade9ad8`. The **exact-head full**
+[GDExtension42420166998](https://github.com/techrote/cybersand/actions/runs/42420166998)
+is terminal **PASS**:275 applicable Windows and289 Linux cases, independent
+coverage reductions and both production extension builds. The exact-head
+[Documentation/provenance42420169650](https://github.com/techrote/cybersand/actions/runs/42420169650)
+also passes. Conditionally skipped unrelated scope/stress jobs are not counted.
+Full Native42409680857 separately passes the identical native input set.
+
+A final stable-source Linux/Xvfb run on211898 completes all11 processes and
+**522 scoped assertions**: client86, Step33, mounted68, capacity28, large scope71,
+dock/input37, mounted hopper166, manual input24 and authored save6/reopen3.
+Native-backed and fake-protocol counts are distinguished above; no paid calls.
+Its`linux-final-211898/qualification.json` confirms unchanged source/runtime
+fingerprints. The delivered Windows folder verifies all841 tracked Godot files
+against211898, retaining the explicit source-built Windows DLL override.
+No implementation PR was merged or made Ready; the original dirty MAT worktree
+is preserved. Registered live acceptance remains0/3. The owner is doing
+unregistered manual testing; their latest reported stops are429 and invalid
+model arguments, not physics failures. The owner requested finishing this
+execution and deprioritized API recovery. Diagnostics and a deferred fake-only
+test are retained under ignored build evidence; no retry-policy change shipped.
+
 ## Final independent qualification and usable delivery
 
 Final code checkpoint`bd1325bbd53b8ffe1fb1368f3eed8abbcc1a6112`, tree
