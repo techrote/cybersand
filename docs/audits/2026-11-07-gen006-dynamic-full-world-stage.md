@@ -207,3 +207,32 @@ CYPS. Neither fsync nor independent edit-intent durability is claimed.
 **Qualification:** Exact source-head Windows/Linux and documentation/source
 CI must pass before this revision can be called qualified. The protected
 #512 native World files, MAT-AUTH locks and gameplay defaults remain untouched.
+
+
+## 7 November same-run post-execution CYPS publication and cold-process control
+
+The additive full-resident coordinator now seals a real post-edit, post-private
+native-tick CYPS image with a source/post physical state receipt. A second
+native World restores and validates post ticks, hash, quantity ledger, memory,
+resident count and exact bytes. Legacy commit cannot bypass a sealed publication.
+The native fixture publishes those bytes to a local test file (NOT fsync or
+durability proof), rereads them, validates original base, canonical edit and
+preview-tick witness plus the new post-byte witness, and atomically swaps the
+whole live native owner. Premature, oversized and repeated seals, altered
+post-copy, altered post-tick receipt and stale fence all refuse unchanged live
+native state. An independently uninterrupted native control proves continuation.
+
+A second operating-system process is launched using only the post-CYPS file,
+restores production World and physically executes eight more Sand/Water ticks,
+comparing original source final tick, hash, Water quantity and resident count.
+A damaged native CYPS and forged expected physical hash are rejected by
+separate negative processes. Original compiled binary, hashes, source metadata,
+file images and stdout/stderr are retained in dedicated Windows/Linux artifacts.
+Configured 1 and 4 workers are tested separately; actual participants are
+reported, never inferred from configuration.
+
+This is a complete-World *post-execution* publication/readback control, not
+selective dynamic chunk eviction, capacity recovery, a disk-durable journal,
+host identity attestation or an admitted MAT-AUTH source transition. Source
+protected by #512 is unchanged. Check the exact-head hosted results before
+accepting this revision.

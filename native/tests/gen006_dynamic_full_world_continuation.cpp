@@ -5,10 +5,13 @@
 #include <algorithm>
 #include <cstdint>
 #include <cstdlib>
+#include <fstream>
 #include <iostream>
+#include <iterator>
 #include <limits>
 #include <memory>
 #include <stdexcept>
+#include <string>
 #include <vector>
 
 namespace {
@@ -33,7 +36,7 @@ WorldConfig config_for(std::uint32_t workers) {
     return config;
 }
 
-void actual_dynamic_frontier(std::uint32_t workers) {
+void actual_dynamic_frontier(std::uint32_t workers, const std::string& output_path) {
     const auto cfg = config_for(workers);
     auto live = std::make_unique<World>(cfg);
     // The control is a separately constructed, genuinely uninterrupted native
@@ -408,16 +411,99 @@ void actual_dynamic_frontier(std::uint32_t workers) {
           tick_receipt.resident_chunks == reference->chunk_count() &&
           tick_receipt.resident_cell_bytes == reference->resident_cell_bytes(),
           "GEN006_DYNAMIC_PREVIEW_RECEIPT_NOT_UNINTERRUPTED");
+    // Real POST preview state: file write, readback, independently restored
+    // World, and an exact post-state receipt before atomic owner publication.
+    bool premature_refused = false;
+    {
+        auto early = FullResidentBundleStage::capture(
+            live, preview_fence, full_roster, full_seams, kBoundedBytes);
+        try { (void)early.seal_publication(kBoundedBytes); }
+        catch (const BundleAdmissionError& e) {
+            premature_refused = e.status() == BundleAdmissionStatus::PublicationRequiresTicks;
+        }
+    }
+    check(premature_refused, "GEN006_PREMATURE_PUBLICATION_ACCEPTED");
+    bool oversize_refused = false;
+    try { (void)preview.seal_publication(1U); }
+    catch (const BundleAdmissionError& e) {
+        oversize_refused = e.status() == BundleAdmissionStatus::PublicationSnapshotOversized;
+    }
+    check(oversize_refused && live->save_physical_state() == preview_original_bytes,
+          "GEN006_PUBLICATION_SIZE_REFUSAL_MUTATED_LIVE");
+    const auto post_receipt = preview.seal_publication(kBoundedBytes);
+    check(post_receipt.source_fence == preview_fence &&
+          post_receipt.source_tick == preview_original_tick &&
+          post_receipt.source_physical_hash == preview_original_hash &&
+          post_receipt.completed_tick == tick_receipt.completed_tick &&
+          post_receipt.physical_hash == reference->physical_state_hash() &&
+          post_receipt.quantity == reference->quantity_ledger() &&
+          post_receipt.edit_count == preview_edits.size() &&
+          post_receipt.preview_ticks == 6 &&
+          post_receipt.resident_chunks == full_roster.size(),
+          "GEN006_POSTSTATE_RECEIPT_PARITY_FAILED");
+    bool reseal_refused = false;
+    try { (void)preview.seal_publication(kBoundedBytes); }
+    catch (const BundleAdmissionError& e) {
+        reseal_refused = e.status() == BundleAdmissionStatus::PublicationAlreadySealed;
+    }
+    check(reseal_refused, "GEN006_DUPLICATE_PUBLICATION_SEAL_ACCEPTED");
+    const std::vector<std::uint8_t> post(preview.publication_bytes().begin(),
+                                          preview.publication_bytes().end());
+    {
+        std::ofstream out(output_path, std::ios::binary | std::ios::trunc);
+        check(static_cast<bool>(out), "GEN006_POST_FILE_OPEN_FAILED");
+        out.write(reinterpret_cast<const char*>(post.data()),
+                  static_cast<std::streamsize>(post.size()));
+        out.flush();
+        check(static_cast<bool>(out), "GEN006_POST_FILE_WRITE_FAILED");
+    }
+    std::ifstream input(output_path, std::ios::binary);
+    check(static_cast<bool>(input), "GEN006_POST_READBACK_OPEN_FAILED");
+    const std::vector<std::uint8_t> reread(
+        (std::istreambuf_iterator<char>(input)), std::istreambuf_iterator<char>());
+    check(reread == post && reread.size() == post_receipt.snapshot_bytes,
+          "GEN006_POST_READBACK_MISMATCH");
+    auto cold = World::restore_physical_state(cfg, reread);
+    check(cold && !cold->has_failed() &&
+          cold->save_physical_state() == reread &&
+          cold->physical_state_hash() == post_receipt.physical_hash &&
+          cold->quantity_ledger() == post_receipt.quantity &&
+          cold->completed_tick_index() == post_receipt.completed_tick,
+          "GEN006_POST_CYPS_COLD_PARITY_FAILED");
+    auto wrong_post = reread;
+    wrong_post.back() ^= 1U;
+    auto wrong_receipt_post = post_receipt;
+    ++wrong_receipt_post.completed_tick;
     check(preview.commit(live, preview_fence, preview_base,
                          preview.staged_edits(), tick_receipt) ==
+              FullWorldCommitStatus::UnverifiedCopy &&
+          preview.commit_published(live, preview_fence, preview_base,
+                                   preview.staged_edits(), tick_receipt,
+                                   wrong_post, post_receipt) ==
+              FullWorldCommitStatus::UnverifiedCopy &&
+          preview.commit_published(live, preview_fence, preview_base,
+                                   preview.staged_edits(), tick_receipt,
+                                   reread, wrong_receipt_post) ==
+              FullWorldCommitStatus::UnverifiedCopy &&
+          preview.commit_published(live, wrong_recipe, preview_base,
+                                   preview.staged_edits(), tick_receipt,
+                                   reread, post_receipt) ==
+              FullWorldCommitStatus::StaleFence &&
+          live.get() == preview_original &&
+          live->save_physical_state() == preview_original_bytes,
+          "GEN006_POST_NEGATIVE_MUTATED_LIVE");
+    check(preview.commit_published(live, preview_fence, preview_base,
+                                   preview.staged_edits(), tick_receipt,
+                                   reread, post_receipt) ==
               FullWorldCommitStatus::Committed &&
-          preview.commit(live, preview_fence, preview_base,
-                         preview.staged_edits(), tick_receipt) ==
+          preview.commit_published(live, preview_fence, preview_base,
+                                   preview.staged_edits(), tick_receipt,
+                                   reread, post_receipt) ==
               FullWorldCommitStatus::AlreadyCommitted &&
           live->completed_tick_index() == reference->completed_tick_index() &&
           live->physical_state_hash() == reference->physical_state_hash() &&
           live->quantity_ledger() == reference->quantity_ledger(),
-          "GEN006_DYNAMIC_PRIVATE_TICK_COMMIT_DIVERGED");
+          "GEN006_POST_COMMIT_DIVERGED");
     for (unsigned i = 0; i < 8; ++i) {
         const auto lhs = live->tick();
         const auto rhs = reference->tick();
@@ -429,6 +515,16 @@ void actual_dynamic_frontier(std::uint32_t workers) {
               live->completed_tick_index() == reference->completed_tick_index(),
               "GEN006_DYNAMIC_PRIVATE_TICK_CONTINUATION_DIVERGED");
     }
+    std::cout << "GEN006_DYNAMIC_PUBLICATION_EXPECTED"
+              << " configured_workers=" << workers
+              << " published_tick=" << post_receipt.completed_tick
+              << " published_physical=" << post_receipt.physical_hash
+              << " final_tick=" << live->completed_tick_index()
+              << " final_physical=" << live->physical_state_hash()
+              << " final_water=" << live->quantity_ledger().water_visible
+              << " resident_chunks=" << live->chunk_count()
+              << " snapshot_bytes=" << reread.size()
+              << " scope=FULL_WORLD_READBACK_NOT_DURABLE" << '\n';
     std::cout << "GEN006_DYNAMIC_PRIVATE_NATIVE_TICKS_PASS"
               << " configured_workers=" << workers
               << " native_preview_ticks=" << tick_receipt.ticks
@@ -454,14 +550,57 @@ void actual_dynamic_frontier(std::uint32_t workers) {
     check(stale_owner.commit(live, b, old_owner) == FullWorldCommitStatus::StaleOwner &&
           live.get() == replacement, "GEN006_DYNAMIC_ABA_OWNER_ACCEPTED");
 }
+// A genuinely separate process consumes the post-edit/post-tick CYPS file.
+void cold_process(std::uint32_t workers, const std::string& path,
+                  std::uint64_t staged_tick, std::uint64_t staged_hash,
+                  std::uint64_t final_tick, std::uint64_t final_hash,
+                  std::uint64_t final_water, std::size_t resident_count) {
+    std::ifstream input(path, std::ios::binary);
+    check(static_cast<bool>(input), "GEN006_COLD_OPEN_FAILED");
+    const std::vector<std::uint8_t> bytes(
+        (std::istreambuf_iterator<char>(input)), std::istreambuf_iterator<char>());
+    check(!bytes.empty(), "GEN006_COLD_BYTES_EMPTY");
+    auto world = World::restore_physical_state(config_for(workers), bytes);
+    check(world && !world->has_failed() &&
+          world->save_physical_state() == bytes &&
+          world->completed_tick_index() == staged_tick &&
+          world->physical_state_hash() == staged_hash &&
+          world->chunk_count() == resident_count,
+          "GEN006_COLD_IDENTITY_INVALID");
+    std::uint32_t observed = 0;
+    for (unsigned i = 0; i < 8; ++i) {
+        const auto s = world->tick();
+        observed = std::max(observed, s.worker_threads_observed);
+        check(!world->has_failed(), "GEN006_COLD_TICK_FAILED");
+    }
+    check(world->completed_tick_index() == final_tick &&
+          world->physical_state_hash() == final_hash &&
+          world->quantity_ledger().water_visible == final_water &&
+          world->chunk_count() == resident_count,
+          "GEN006_COLD_CONTINUATION_DIVERGED");
+    std::cout << "GEN006_DYNAMIC_COLD_PROCESS_CONTINUATION_PASS"
+              << " configured_workers=" << workers
+              << " readback_bytes=" << bytes.size()
+              << " observed_workers_max=" << observed
+              << " continued_ticks=8 scope=FULL_WORLD_ONLY" << '\n';
+}
 } // namespace
 
 int main(int argc, char** argv) {
     try {
-        check(argc == 2, "usage: gen006-dynamic-continuation 1|4");
+        if (argc == 10 && std::string(argv[1]) == "--cold-restore") {
+            const auto workers = static_cast<std::uint32_t>(std::stoul(argv[2]));
+            check(workers == 1U || workers == 4U, "GEN006_COLD_WORKERS");
+            cold_process(workers, argv[3], std::stoull(argv[4]),
+                         std::stoull(argv[5]), std::stoull(argv[6]),
+                         std::stoull(argv[7]), std::stoull(argv[8]),
+                         static_cast<std::size_t>(std::stoull(argv[9])));
+            return 0;
+        }
+        check(argc == 3, "usage: gen006-dynamic-continuation 1|4 POSTFILE");
         const auto workers = static_cast<std::uint32_t>(std::stoul(argv[1]));
         check(workers == 1U || workers == 4U, "GEN006_DYNAMIC_WORKERS_MUST_BE_1_OR_4");
-        actual_dynamic_frontier(workers);
+        actual_dynamic_frontier(workers, argv[2]);
         return 0;
     } catch (const std::exception& error) {
         std::cerr << "GEN006_DYNAMIC_FULL_WORLD_CONTINUATION_FAIL " << error.what() << '\n';

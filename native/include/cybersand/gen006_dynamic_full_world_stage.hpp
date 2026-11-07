@@ -100,6 +100,13 @@ public:
         }
     }
 
+    // Read-only native candidate inspection, never mutable World exposure.
+    template<typename Inspector>
+    decltype(auto) inspect_private(Inspector&& inspect) const {
+        if (!candidate_) throw std::logic_error("GEN006_PRIVATE_STAGE_CONSUMED");
+        return std::forward<Inspector>(inspect)(*candidate_);
+    }
+
     [[nodiscard]] std::span<const std::uint8_t> bytes() const noexcept { return bytes_; }
     [[nodiscard]] std::uint64_t source_tick() const noexcept { return tick_; }
     [[nodiscard]] std::uint64_t physical_hash() const noexcept { return hash_; }
