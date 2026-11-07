@@ -11,6 +11,8 @@ const MAX_LOCAL_RECEIPTS: int = 64
 var _host: Control
 var _panel: Control
 var _busy: bool = false
+var _tool_busy: bool = false
+var _quarantined: bool = false
 var _task_id: String = ""
 var _plan: Dictionary = {}
 var _receipts: Dictionary = {}
@@ -28,6 +30,37 @@ func bind(host: Control) -> bool:
 	_host = host
 	_panel = host.shared_workbench
 	return true
+
+
+static func _keys_only(value: Dictionary, names: Array) -> bool:
+	for key: Variant in value.keys():
+		if typeof(key) != TYPE_STRING or key not in names:
+			return false
+	return true
+
+
+## Convert strict Responses JSON world-cell rectangle to typed Rect2i.
+## Reject before Vector2i narrowing; a null region selects task scope.
+static func _typed_region(value: Variant) -> Variant:
+	if value is Rect2i:
+		return value
+	if not value is Dictionary:
+		return null
+	if value.size() != 4 or not _keys_only(value,["x","y","width","height"]):
+		return null
+	for key: String in ["x","y","width","height"]:
+		if not value.has(key) or typeof(value[key]) != TYPE_INT:
+			return null
+	var x: int = value.x
+	var y: int = value.y
+	var width: int = value.width
+	var height: int = value.height
+	if x < 0 or y < 0 or width <= 0 or height <= 0:
+		return null
+	if x > 2147483647 or y > 2147483647 \
+			or width > 2147483647 - x or height > 2147483647 - y:
+		return null
+	return Rect2i(x,y,width,height)
 
 
 func _available() -> bool:
@@ -71,6 +104,8 @@ func _owner(command: Dictionary) -> Dictionary:
 ## Host-only authorization. NEVER route this through model tool dispatch.
 func authorize_task(task_id: String, scope: Rect2i, protected: Array,
 		allowed_materials: Array) -> Dictionary:
+	if _quarantined or _tool_busy:
+		return _refused("authoring_host_quarantined_or_busy")
 	if not _task_id.is_empty():
 		return _refused("retire_previous_task_first")
 	if not _receipts.is_empty() and _receipts.size() >= MAX_LOCAL_RECEIPTS:
@@ -87,6 +122,8 @@ func authorize_task(task_id: String, scope: Rect2i, protected: Array,
 
 ## Host-only task retirement; receipt history is intentionally retained.
 func retire_task() -> Dictionary:
+	if _quarantined or _tool_busy:
+		return _refused("authoring_host_quarantined_or_busy")
 	if _task_id.is_empty():
 		return _refused("no_active_task")
 	var answer: Dictionary = await _owner({"action":"retire_task"})
@@ -100,8 +137,11 @@ func _observe(args: Dictionary) -> Dictionary:
 	# An observation supersedes the previous worker-side proposal.
 	_plan.clear()
 	var command: Dictionary = {"action":"observe"}
-	if args.has("region"):
-		command["region"] = args.region
+	if args.has("region") and args.region != null:
+		var region: Variant = _typed_region(args.region)
+		if region == null:
+			return _refused("invalid_observation_region")
+		command["region"] = region
 	if args.has("detail"):
 		command["detail"] = args.detail
 	var native: Dictionary = await _owner(command)
@@ -137,10 +177,17 @@ func _observe(args: Dictionary) -> Dictionary:
 
 func _prepare(args: Dictionary) -> Dictionary:
 	_plan.clear()
+	var operations: Variant = args.get("operations",null)
+	if not operations is Array:
+		return _refused("invalid_operations")
+	var typed: Array = operations.duplicate(true)
+	for index: int in range(typed.size()):
+		if typed[index] is Dictionary and typed[index].get("replace_only_material",false) == null:
+			typed[index].erase("replace_only_material")
 	var native: Dictionary = await _owner({
 		"action":"prepare_edit",
 		"observation_id":args.get("observation_id",null),
-		"operations":args.get("operations",null)
+		"operations":typed
 	})
 	if native.get("status") != "proposed":
 		return native
@@ -178,6 +225,10 @@ func _apply(args: Dictionary) -> Dictionary:
 			answer["status"] = "unconfirmed"
 			answer["reason"] = "verified_native_apply_but_start_record_failed"
 			_task_id = ""
+	# On any uncertain owner result, bar all new authoring in this host;
+	# the native request might have completed after a missing ACK.
+	if answer.get("status") == "unconfirmed":
+		_quarantined = true
 	# The original native receipt remains visible even on a storage failure.
 	_receipts[proposal_id] = answer.duplicate(true)
 	return answer
@@ -188,16 +239,32 @@ func _apply(args: Dictionary) -> Dictionary:
 func call_tool(name: String, args: Dictionary) -> Dictionary:
 	if name == "apply_edit" and _receipts.has(args.get("proposal_id","")):
 		return _receipts[args.proposal_id].duplicate(true)
+	if _quarantined:
+		return _refused("authoring_host_quarantined_after_uncertain_outcome")
 	if _task_id.is_empty():
 		return _refused("no_host_authorized_task")
-	if _busy:
+	if _busy or _tool_busy:
 		return _refused("host_tool_busy")
+	var expected_keys: Array = []
 	match name:
 		"observe":
-			return await _observe(args)
+			expected_keys = ["region","detail"]
 		"prepare_edit":
-			return await _prepare(args)
+			expected_keys = ["observation_id","operations"]
 		"apply_edit":
-			return await _apply(args)
+			expected_keys = ["proposal_id"]
 		_:
 			return _refused("not_a_model_visible_526_tool")
+	if not _keys_only(args,expected_keys):
+		return _refused("unexpected_model_tool_argument")
+	_tool_busy = true
+	var result: Dictionary = {}
+	match name:
+		"observe":
+			result = await _observe(args)
+		"prepare_edit":
+			result = await _prepare(args)
+		"apply_edit":
+			result = await _apply(args)
+	_tool_busy = false
+	return result
