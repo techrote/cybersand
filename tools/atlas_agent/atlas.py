@@ -41,7 +41,7 @@ def verify_trusted_script(collection: str, script: Path) -> str:
     approved = json.loads(TRUSTED_SCRIPTS.read_text(encoding="utf-8"))["collections"]
     expected = approved.get(collection, {}).get(script.name)
     data = script.read_bytes()
-    blob = hashlib.sha1(b"blob " + str(len(data)).encode("ascii") + b"\\0" + data).hexdigest()
+    blob = hashlib.sha1(b"blob " + str(len(data)).encode("ascii") + b"\0" + data).hexdigest()
     if not expected or blob != expected:
         raise ValidationFailed(f"unapproved Atlas executable {collection}/{script.name} (blob {blob}); "
                                "review the script and update the runner-side pin before execution",
