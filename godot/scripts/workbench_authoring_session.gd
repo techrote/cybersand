@@ -123,6 +123,7 @@ func _observe(command: Dictionary, world: Object, extent: Vector2i,
 	var token: String = _token("observation",generation)
 	_observation = basis.duplicate()
 	_observation["id"] = token
+	_observation["frame_confirmed"] = false
 	_proposal.clear()
 	return {
 		"status":"native_observed",
@@ -140,6 +141,30 @@ func _observe(command: Dictionary, world: Object, extent: Vector2i,
 	}
 
 
+# Only a trusted MAIN-thread RenderJoin that has seen a real post-draw
+# framebuffer may call this internal bridge. The worker additionally verifies
+# the native identity is still current and the claimed render serial was ACKed.
+func _confirm_observation_frame(command: Dictionary, world: Object,
+		generation: int, manual_revision: int, acknowledged_render_serial: int) -> Dictionary:
+	if _observation.is_empty() or str(command.get("observation_id","")) != str(_observation.get("id","")):
+		return _refused("missing_or_stale_observation")
+	if not _current(world,generation,manual_revision,_observation):
+		return _refused("stale_observation")
+	var rendered: Variant = command.get("render_identity",null)
+	if not rendered is Dictionary:
+		return _refused("missing_render_identity")
+	var render_serial: int = int(rendered.get("render_snapshot_serial",0))
+	if render_serial <= 0 or render_serial > acknowledged_render_serial \
+			or int(rendered.get("world_generation",-1)) != generation \
+			or int(rendered.get("world_revision",-1)) != int(world.revision) \
+			or int(rendered.get("tick",-1)) != int(world.tick_index):
+		return _refused("unacknowledged_or_stale_frame")
+	_observation["frame_confirmed"] = true
+	_observation["render_snapshot_serial"] = render_serial
+	return {"status":"observation_confirmed", "observation_id":_observation.id,
+		"render_snapshot_serial":render_serial}
+
+
 func _prepare(command: Dictionary, world: Object, extent: Vector2i,
 		generation: int, manual_revision: int) -> Dictionary:
 	if str(command.get("observation_id","")) != str(_observation.get("id","")) \
@@ -148,6 +173,8 @@ func _prepare(command: Dictionary, world: Object, extent: Vector2i,
 	if not _current(world,generation,manual_revision,_observation):
 		_proposal.clear()
 		return _refused("stale_observation")
+	if not bool(_observation.get("frame_confirmed",false)):
+		return _refused("observation_not_matched_to_frame")
 	if not _proposal.is_empty():
 		return _refused("proposal_already_pending")
 	if _receipts.size() >= MAX_RETAINED_RECEIPTS:
@@ -283,7 +310,8 @@ func _apply(command: Dictionary, world: Object,
 ## Callable ONLY from the existing worker's exclusive owner loop.
 ## This is not a network/API dispatch and never provides a World reference.
 func execute(command: Dictionary, world: Object, generation: int,
-		extent: Vector2i, paused: bool, manual_revision: int) -> Dictionary:
+		extent: Vector2i, paused: bool, manual_revision: int,
+		acknowledged_render_serial: int = 0) -> Dictionary:
 	var action: String = str(command.get("action",""))
 	if typeof(command.get("schema_version",null)) != TYPE_INT \
 			or int(command.schema_version) != SCHEMA_VERSION:
@@ -314,6 +342,9 @@ func execute(command: Dictionary, world: Object, generation: int,
 	match action:
 		"observe":
 			return _observe(command,world,extent,generation,manual_revision)
+		"confirm_observation_frame":
+			return _confirm_observation_frame(
+				command,world,generation,manual_revision,acknowledged_render_serial)
 		"prepare_edit":
 			return _prepare(command,world,extent,generation,manual_revision)
 		"apply_edit":
