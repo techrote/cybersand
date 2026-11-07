@@ -233,7 +233,8 @@ jobs:
             'cl /nologo /std:c++20 /EHsc /O2 /MD /I native\include native\src\world.cpp native\src\material_rules.cpp native\src\scheduler_geometry.cpp native\src\settled_world_discovery.cpp native\src\render_snapshot.cpp native\src\c_api.cpp native\tests\test_copy_extreme_coordinates.cpp /Fe:build\copy-extreme-292\msvc\copy292.exe',
             'exit /b %errorlevel%'
           ) | Set-Content -Path "$env:EVIDENCE\build.cmd" -Encoding ascii
-          & cmd.exe /d /c "$env:EVIDENCE\build.cmd" 2>&1 | Tee-Object -FilePath "$env:EVIDENCE\compiler.log"
+          $buildFile = (Resolve-Path "$env:EVIDENCE\build.cmd").Path
+          & cmd.exe /d /c ('"' + $buildFile + '"') 2>&1 | Tee-Object -FilePath "$env:EVIDENCE\compiler.log"
           if ($LASTEXITCODE -ne 0) { throw "MSVC compilation exit=$LASTEXITCODE" }
           $exe = (Resolve-Path "$env:EVIDENCE\copy292.exe").Path
           (Get-FileHash $exe -Algorithm SHA256).Hash | Set-Content "$env:EVIDENCE\binary-sha256.txt"
