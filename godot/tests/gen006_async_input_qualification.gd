@@ -265,7 +265,7 @@ func _run() -> void:
         + " six_second_native_stall_recovered=1"
         + " slow_edit_durable_ack=1"
         + " slow_host_ipc_ms=%d" % int(demo.ipc_peak_latency_usec / 1000)
-        + " shutdown_drained_second_edit=1"
+        + " shutdown_drained_third_edit=1"
         + " native_restart_edit_preserved=1"
         + " captured_chunk_identity=1"
         + " coalesced_camera_requests=1"
