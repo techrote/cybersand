@@ -24,6 +24,8 @@ If the real streaming-slice executable has already been compiled using the exist
 
 Add -AutomatedOnly to capture real Windows framebuffer PNGs and original logs without prompting for human gameplay. Manual acceptance requires running without this switch.
 
+The dedicated Windows CI also builds a source-attested portable experimental streaming-slice.exe. If using its artifact, extract the binary, then provide its absolute path using -NativeExe and add -SkipBuild. When running the packaged copy of the PowerShell runner outside the source tree, pass -RepositoryRoot with the absolute path of the matching CyberSand checkout. The artifact alone is not a standalone game or a substitute for the Godot source scene.
+
 Build prerequisites: MSVC x64 Build Tools and LLVM clang++, same as existing hosted Windows native CI. Godot 4.7 local desktop executable, a real Windows user session with graphics device and sufficient disk space. The script refuses an existing evidence root and does not overwrite prior screenshot evidence. It builds or uses actual native World, stages a minimal Godot test project and records source SHA/tree, compiler, executable SHA-256, OS/GPU identity, Godot version, graphical logs and per-PNG hashes in one new evidence directory.
 
 ## Human checklist (requires explicit verdict)
