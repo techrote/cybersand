@@ -132,6 +132,30 @@ jobs:
             "$GODOT_BIN" --path godot --rendering-method gl_compatibility \
             --script res://tests/test_workbench_agent_owner.gd \
             2>&1 | tee "$EVIDENCE/real-owner-graphical.log"
+      - name: Regress agent-disabled manual editing, rendering and saved-start reopen
+        timeout-minutes: 18
+        shell: bash
+        env:
+          CYBERSAND_WORKBENCH_TEST_NAME: wb-agent-526-regression
+        run: |
+          set -euo pipefail
+          # These operate through the existing workbench without any #526
+          # agent task/authorization. Keep an original log for every process.
+          for script in test_native_render_bridge_regression.gd test_workbench_input.gd; do
+            timeout 210 xvfb-run --auto-servernum --server-args='-screen 0 1920x1080x24 -nolisten tcp' \
+              "$GODOT_BIN" --path godot --rendering-method gl_compatibility \
+              --script "res://tests/$script" \
+              2>&1 | tee "$EVIDENCE/$script.manual-regression.log"
+          done
+          timeout 440 xvfb-run --auto-servernum --server-args='-screen 0 1920x1080x24 -nolisten tcp' \
+            "$GODOT_BIN" --path godot --rendering-method gl_compatibility \
+            --script res://tests/test_workbench_canvas.gd \
+            2>&1 | tee "$EVIDENCE/test_workbench_canvas.gd.manual-save.log"
+          CYBERSAND_WORKBENCH_REOPEN=1 timeout 260 \
+            xvfb-run --auto-servernum --server-args='-screen 0 1920x1080x24 -nolisten tcp' \
+            "$GODOT_BIN" --path godot --rendering-method gl_compatibility \
+            --script res://tests/test_workbench_canvas.gd \
+            2>&1 | tee "$EVIDENCE/test_workbench_canvas.gd.manual-reopen.log"
       - name: Retain original execution logs and all failed checkpoints
         if: always()
         timeout-minutes: 5

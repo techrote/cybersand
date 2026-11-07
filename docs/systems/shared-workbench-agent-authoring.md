@@ -273,6 +273,34 @@ and Rapier binaries: **focused [run 42379815975](https://github.com/techrote/cyb
   rebuilt binary and does not establish Windows, broader regressions, independent
   review, human desktop acceptance or a working live OpenAI client.
 
+## #526 paused-step render-publication correction (7 November 2026)
+
+The existing worker's render exchange is **revision-driven** in ordinary
+play. After a legitimate acknowledged paused `step` on an unchanged Empty
+canvas, the native `tick_index` advances without a changed material revision:
+an `observe` for the new tick must **not** be matched to an old framebuffer.
+In Draft #529, host `_observe` detects this identity mismatch and requests
+**one** bounded read-only `request_render_full_refresh()` through the
+existing native-owner publishing path. The original post-draw `RenderJoin`
+and worker ACK still check exact World generation, native revision, completed
+tick, render publication serial and manual-intent identity. Missing, stale or
+unacknowledged frames remain `pending`; there is no synthetic PNG,
+physical tick, forced material revision or weakened provenance.
+
+At code HEAD `cff5dcc59ea089bc52f65b0c23448eb4d31bab61`, exact-source
+[Linux/Xvfb real native/Godot 4.7 CI](https://github.com/techrote/cybersand/actions/runs/42385630723)
+**PASS**: 24 pure raster + 20 envelope + 12 synthetic failure and **111
+real native/host assertions = 167/167**. The new regression performs
+four independent paused real-native single steps on a 2048-square Empty
+workbench, requires exactly four ACKed completed ticks and a genuinely new
+post-draw PNG/render identity at the final tick, then verifies a deliberately
+stale native-tick identity still refuses to join. Its [original retained
+framebuffer and native receipts](https://github.com/techrote/cybersand/actions/runs/42385630723/artifacts/13579199046)
+are evidence for this narrow Linux gate, **not** independent review,
+Windows, a rebuilt exact-head native runtime, live API trials or a merged
+feature. Current #526 source tests now also cover this #527-identified
+composition blocker; full four-tool Step/Stop remains owned by #527.
+
 ## #526 main-thread host dispatcher (isolated Draft)
 
 `godot/scripts/workbench_authoring_host.gd` is the **working non-HTTP
