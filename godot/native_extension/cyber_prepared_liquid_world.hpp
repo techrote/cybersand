@@ -3,6 +3,7 @@
 #include "cyber_prepared_level_payload.hpp"
 
 #include <string_view>
+#include <cmath>
 #include "workbench_retained_setup.hpp"
 #include "cybersand/default_demo_recipe.hpp"
 
@@ -476,11 +477,10 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
             input.setup.kind = cybersand::setup::SetupKind::MicroScenario;
             input.setup.definition_schema = 2;
             input.setup.definition_digest.emplace();
-            // A generated start's immutable identity is the exact accepted
-            // recipe, not the generic empty Workbench scenario definition.
-            const PackedByteArray recipe_bytes = generated
-                ? String(generated_claim["recipe_sha256"]).hex_decode() : definition_bytes;
-            std::copy(recipe_bytes.ptr(), recipe_bytes.ptr()+32, input.setup.definition_digest->begin());
+            // Retain the existing host-validated Workbench definition identity.
+            // Generator recipe and exact copied play-plane identities remain
+            // additional, independent receipt fields (not a false host digest).
+            std::copy(definition_bytes.ptr(), definition_bytes.ptr()+32, input.setup.definition_digest->begin());
             input.setup.seed = static_cast<std::uint64_t>(seed);
             input.setup.domain = {0, 0, static_cast<std::uint32_t>(extent.x), static_cast<std::uint32_t>(extent.y)};
             // Binding a host digest does not establish a native definition compiler.
