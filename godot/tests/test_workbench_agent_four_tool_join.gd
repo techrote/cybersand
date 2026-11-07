@@ -136,15 +136,42 @@ func run() -> void:
 			"Step returned an unexpected or falsely matched post-tick frame: "+str(matched))
 		print("WB_AGENT_527_POST_STEP_RENDER_HOLD "+
 			JSON.stringify({"reason":matched.get("reason"),"native_ticks":4}))
-	var stopped: Dictionary = await bridge.stop()
+	# Human Stop while the REAL fourth tool is inside a native tick
+	# sequence. The Stop coroutine begins at the second published ACK,
+	# prohibits a third command, then waits for #526 retirement before it
+	# signals acknowledgement. No main/worker/native source is patched.
+	var stop_receipts: Array = []
+	var native_step_driver: RefCounted = bridge.get("_step_driver")
+	var stop_at_second: Callable = func(ack: Dictionary) -> void:
+		if int(ack.completed)==2:
+			bridge.stop()
+	var consume_stop: Callable = func(answer: Dictionary) -> void:
+		stop_receipts.append(answer.duplicate(true))
+	native_step_driver.step_completed.connect(stop_at_second)
+	bridge.stop_acknowledged.connect(consume_stop)
+	var interrupted: Dictionary = await bridge.call_tool("step",{"ticks":10})
+	native_step_driver.step_completed.disconnect(stop_at_second)
+	check(interrupted.get("status")=="stopped"
+		and interrupted.get("reason")=="human_stop"
+		and interrupted.get("requested")==10
+		and interrupted.get("completed")==2
+		and interrupted.get("before_tick")==before_tick+4
+		and interrupted.get("after_tick")==before_tick+6,
+		"concurrent Stop did not fence remaining eight native ticks: "+str(interrupted))
+	await wait_until(func() -> bool: return stop_receipts.size()==1,
+		"Stop never received genuine #526 native retirement ACK")
+	var stopped: Dictionary = stop_receipts[0] if not stop_receipts.is_empty() else {}
 	check(stopped.get("status")=="stopped"
 		and stopped.get("no_further_agent_mutations")==true,
 		"Stop did not consume real #526 task retirement ACK: "+str(stopped))
+	bridge.stop_acknowledged.disconnect(consume_stop)
+	stop_at_second = Callable()
+	consume_stop = Callable()
 	for _frame: int in 4:
 		await process_frame
-	check(main.latest_snapshot.tick_index==before_tick+4
+	check(main.latest_snapshot.tick_index==before_tick+6
 		and main.latest_snapshot.render_world_generation==first_generation
-		and main.paused,"Stop ACK did not retain unchanged native owner/tick")
+		and main.paused,"Stop ACK allowed a seventh native tick")
 	var late: Dictionary = await bridge.call_tool("apply_edit",{
 		"proposal_id":prepared.get("proposal_id","old")})
 	check(late.get("status")=="refused",
@@ -189,6 +216,7 @@ func run() -> void:
 		"generation":first_generation,
 		"before_tick":before_tick,
 		"after_tick":main.latest_snapshot.tick_index,
+		"stop_mid_sequence_completed":interrupted.get("completed",-1),
 		"native_backend":main.latest_snapshot.backend_name,
 		"configured_workers":main.latest_snapshot.native_worker_request,
 		"first_task_status":stopped.get("status"),
