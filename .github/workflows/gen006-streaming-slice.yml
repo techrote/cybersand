@@ -5,6 +5,7 @@ on:
     types: [opened, synchronize, reopened]
     paths:
       - 'native/tests/gen006_streaming_slice.cpp'
+      - 'native/tests/gen006_restore_coordinate_binding_negative.cpp'
       - 'tools/experiments/gen006_cross_process_restart.py'
       - '.github/workflows/gen006-streaming-slice.yml'
       - 'native/src/**'
@@ -18,6 +19,9 @@ concurrency:
   group: gen006-slice-${{ github.event.pull_request.number || github.run_id }}
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
+env:
+  GEN006_EXPECTED_HEAD: ${{ github.event.pull_request.head.sha || github.sha }}
+
 jobs:
   native-stream-linux:
     name: Actual native / Ubuntu 24.04
@@ -27,6 +31,7 @@ jobs:
       - name: Checkout exact source
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
           fetch-depth: 1
           lfs: false
           persist-credentials: false
@@ -43,9 +48,11 @@ jobs:
                   "world_cpp_blob":git("hash-object","native/src/world.cpp"),
                   "world_hpp_blob":git("hash-object","native/include/cybersand/world.hpp"),
                   "slice_blob":git("hash-object","native/tests/gen006_streaming_slice.cpp"),
+                  "binding_regression_blob":git("hash-object","native/tests/gen006_restore_coordinate_binding_negative.cpp"),
+                  "expected_pr_head":os.environ["GEN006_EXPECTED_HEAD"],
                   "restart_fixture_blob":git("hash-object","tools/experiments/gen006_cross_process_restart.py"),
                   "scope":"experimental sharded native Worlds; no single-World selective eviction, Rapier, Godot or cross-shard physics"}
-          assert record["sha"]==record["github_sha"]
+          assert record["sha"]==record["expected_pr_head"]
           (out/"source.json").write_text(json.dumps(record,indent=2)+"\n")
           subprocess.run([sys.executable,"tools/ci/check_ci_provider_policy.py"],check=True,timeout=120)
       - name: Build and execute on Ubuntu
@@ -84,6 +91,21 @@ jobs:
             | tee build/gen006-streaming-slice/restart-four.log
           grep -q 'GEN006_CROSS_PROCESS_RESTART_PASS configured_workers=1' build/gen006-streaming-slice/restart-one.log
           grep -q 'GEN006_CROSS_PROCESS_RESTART_PASS configured_workers=4' build/gen006-streaming-slice/restart-four.log
+          g++-13 -std=c++20 -O0 -g0 -pthread -I native/include \
+            native/src/world.cpp native/src/material_rules.cpp \
+            native/src/scheduler_geometry.cpp native/src/settled_world_discovery.cpp \
+            native/src/world_generation.cpp native/src/generation_fields.cpp \
+            native/src/generation_typed_fields.cpp native/src/generation_spatial.cpp \
+            native/src/generation_grammar.cpp native/src/generation_planes.cpp \
+            native/tests/gen006_restore_coordinate_binding_negative.cpp \
+            -o build/gen006-streaming-slice/coordinate-regression \
+            > build/gen006-streaming-slice/coordinate-compile.log 2>&1 || { cat build/gen006-streaming-slice/coordinate-compile.log; exit 1; }
+          build/gen006-streaming-slice/coordinate-regression build/gen006-streaming-slice/binding-one 1 \
+            | tee build/gen006-streaming-slice/binding-one.log
+          build/gen006-streaming-slice/coordinate-regression build/gen006-streaming-slice/binding-four 4 \
+            | tee build/gen006-streaming-slice/binding-four.log
+          grep -q 'GEN006_RESTORE_COORDINATE_BINDING_PASS configured_workers=1' build/gen006-streaming-slice/binding-one.log
+          grep -q 'GEN006_RESTORE_COORDINATE_BINDING_PASS configured_workers=4' build/gen006-streaming-slice/binding-four.log
       - name: Preserve original native evidence and failures
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
@@ -99,6 +121,9 @@ jobs:
             build/gen006-streaming-slice/restart-four.log
             build/gen006-streaming-slice/restart-one/
             build/gen006-streaming-slice/restart-four/
+            build/gen006-streaming-slice/coordinate-compile.log
+            build/gen006-streaming-slice/binding-one.log
+            build/gen006-streaming-slice/binding-four.log
           if-no-files-found: warn
           retention-days: 45
   native-stream-windows:
@@ -117,6 +142,7 @@ jobs:
       - name: Checkout exact source
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
           fetch-depth: 1
           lfs: false
           persist-credentials: false
@@ -133,9 +159,11 @@ jobs:
                   "world_cpp_blob":git("hash-object","native/src/world.cpp"),
                   "world_hpp_blob":git("hash-object","native/include/cybersand/world.hpp"),
                   "slice_blob":git("hash-object","native/tests/gen006_streaming_slice.cpp"),
+                  "binding_regression_blob":git("hash-object","native/tests/gen006_restore_coordinate_binding_negative.cpp"),
+                  "expected_pr_head":os.environ["GEN006_EXPECTED_HEAD"],
                   "restart_fixture_blob":git("hash-object","tools/experiments/gen006_cross_process_restart.py"),
                   "scope":"experimental sharded native Worlds; no single-World selective eviction, Rapier, Godot or cross-shard physics"}
-          assert record["sha"]==record["github_sha"]
+          assert record["sha"]==record["expected_pr_head"]
           (out/"source.json").write_text(json.dumps(record,indent=2)+"\n")
           subprocess.run([sys.executable,"tools/ci/check_ci_provider_policy.py"],check=True,timeout=120)
       - name: Build and execute on Windows (MSVC environment, LLVM Clang)
@@ -178,6 +206,18 @@ jobs:
           if errorlevel 1 exit /b 1
           findstr /C:"GEN006_CROSS_PROCESS_RESTART_PASS configured_workers=4" build\gen006-streaming-slice\restart-four.log
           if errorlevel 1 exit /b 1
+          "%GEN006_CXX%" -std=c++20 -O0 -I native/include native/src/world.cpp native/src/material_rules.cpp native/src/scheduler_geometry.cpp native/src/settled_world_discovery.cpp native/src/world_generation.cpp native/src/generation_fields.cpp native/src/generation_typed_fields.cpp native/src/generation_spatial.cpp native/src/generation_grammar.cpp native/src/generation_planes.cpp native/tests/gen006_restore_coordinate_binding_negative.cpp -o build\gen006-streaming-slice\coordinate-regression.exe > build\gen006-streaming-slice\coordinate-compile.log 2>&1
+          if errorlevel 1 (type build\gen006-streaming-slice\coordinate-compile.log & exit /b 1)
+          build\gen006-streaming-slice\coordinate-regression.exe build\gen006-streaming-slice\binding-one 1 > build\gen006-streaming-slice\binding-one.log 2>&1
+          if errorlevel 1 (type build\gen006-streaming-slice\binding-one.log & exit /b 1)
+          build\gen006-streaming-slice\coordinate-regression.exe build\gen006-streaming-slice\binding-four 4 > build\gen006-streaming-slice\binding-four.log 2>&1
+          if errorlevel 1 (type build\gen006-streaming-slice\binding-four.log & exit /b 1)
+          type build\gen006-streaming-slice\binding-one.log
+          type build\gen006-streaming-slice\binding-four.log
+          findstr /C:"GEN006_RESTORE_COORDINATE_BINDING_PASS configured_workers=1" build\gen006-streaming-slice\binding-one.log
+          if errorlevel 1 exit /b 1
+          findstr /C:"GEN006_RESTORE_COORDINATE_BINDING_PASS configured_workers=4" build\gen006-streaming-slice\binding-four.log
+          if errorlevel 1 exit /b 1
       - name: Preserve original native evidence and failures
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
@@ -193,5 +233,8 @@ jobs:
             build/gen006-streaming-slice/restart-four.log
             build/gen006-streaming-slice/restart-one/
             build/gen006-streaming-slice/restart-four/
+            build/gen006-streaming-slice/coordinate-compile.log
+            build/gen006-streaming-slice/binding-one.log
+            build/gen006-streaming-slice/binding-four.log
           if-no-files-found: warn
           retention-days: 45
