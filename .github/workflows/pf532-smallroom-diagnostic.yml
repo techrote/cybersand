@@ -1,0 +1,28 @@
+name: PF532 small-room sparse relabel diagnostic
+on:
+  push:
+    branches: [sol/pf-gas-selective-bootstrap-20261107]
+    paths:
+      - '.github/workflows/pf532-smallroom-diagnostic.yml'
+      - 'tools/ci/pf532_smallroom_diag.cpp'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: pf532-smallroom-diagnostic-${{ github.run_id }}
+  cancel-in-progress: false
+jobs:
+  diag:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with: {fetch-depth: 0, lfs: false, persist-credentials: false}
+      - name: Build diagnostic
+        run: |
+          set -euo pipefail
+          flags=(-std=c++20 -O2 -DNDEBUG -pthread -Wall -Wextra -I native/include)
+          sources=(native/src/world.cpp native/src/material_rules.cpp native/src/scheduler_geometry.cpp native/src/settled_world_discovery.cpp)
+          g++-13 "${flags[@]}" "${sources[@]}" tools/ci/pf532_smallroom_diag.cpp -o /tmp/pf532-small
+      - name: Run diagnostic
+        run: /tmp/pf532-small
