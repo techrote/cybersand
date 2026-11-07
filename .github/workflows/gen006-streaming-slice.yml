@@ -10,6 +10,7 @@ on:
       - 'tools/experiments/gen006_persistent_controller.py'
       - 'tools/experiments/gen006_surface_owner_containment.py'
       - 'tools/experiments/gen006_durable_edit_ack.py'
+      - 'docs/audits/2026-11-07-gen006-streaming-vertical-slice.md'
       - 'godot/tests/gen006_streaming_slice_demo.gd'
       - 'godot/tests/gen006_streaming_slice_demo.tscn'
       - '.github/workflows/gen006-streaming-slice.yml'
