@@ -251,6 +251,73 @@ void actual_dynamic_frontier(std::uint32_t workers) {
               << " final_physical=" << live->physical_state_hash()
               << " final_water=" << live->quantity_ledger().water_visible << '\n';
 
+
+    // Real native Sand/Water edits spanning both signed residents are staged
+    // atomically in the private bundle. This is a NON-DURABLE owner-side input
+    // candidate; source CYPS and edited intent require a separate storage ACK.
+    const FullWorldFence edit_fence{a.session, a.recipe, a.incarnation + 1U, a.generation + 1U};
+    auto edit_stage = FullResidentBundleStage::capture(
+        live, edit_fence, full_roster, full_seams, kBoundedBytes);
+    const std::vector<BundleMaterialEdit> edits{
+        {{-2, -2}, 12, 15, Material::Water},
+        {{-2, -1}, 18, 11, Material::Sand},
+    };
+    auto invalid_batch = [&](std::vector<BundleMaterialEdit> attempt,
+                             BundleAdmissionStatus reason, const char* name) {
+        bool refused = false;
+        try { edit_stage.stage_material_edits(attempt); }
+        catch (const BundleAdmissionError& error) { refused = error.status() == reason; }
+        check(refused && live->physical_state_hash() == reference->physical_state_hash() &&
+              live->quantity_ledger() == reference->quantity_ledger(), name);
+    };
+    invalid_batch({edits[0], edits[0]}, BundleAdmissionStatus::DuplicateEdit,
+                  "GEN006_DYNAMIC_DUPLICATE_EDIT_ACCEPTED");
+    invalid_batch({{{-2, 1}, 2, 3, Material::Sand}},
+                  BundleAdmissionStatus::EditOutsideResident,
+                  "GEN006_DYNAMIC_OUTSIDE_EDIT_ACCEPTED");
+    invalid_batch({{{-2, -2}, 64, 3, Material::Water}},
+                  BundleAdmissionStatus::InvalidEditBatch,
+                  "GEN006_DYNAMIC_BAD_LOCAL_EDIT_ACCEPTED");
+    const auto edit_original = live.get();
+    const auto edit_base_hash = live->physical_state_hash();
+    edit_stage.stage_material_edits(edits);
+    check(live.get() == edit_original && live->physical_state_hash() == edit_base_hash,
+          "GEN006_DYNAMIC_EDIT_STAGE_MUTATED_LIVE");
+    const std::vector<std::uint8_t> edit_base(
+        edit_stage.bytes().begin(), edit_stage.bytes().end());
+    check(edit_stage.commit(live, edit_fence, edit_base) ==
+              FullWorldCommitStatus::UnverifiedCopy &&
+          live.get() == edit_original,
+          "GEN006_DYNAMIC_EDIT_MISSING_WITNESS_ACCEPTED");
+    auto wrong_edits = edits;
+    wrong_edits[0].material = Material::Sand;
+    check(edit_stage.commit(live, edit_fence, edit_base, wrong_edits) ==
+              FullWorldCommitStatus::UnverifiedCopy &&
+          live.get() == edit_original,
+          "GEN006_DYNAMIC_EDIT_WRONG_WITNESS_ACCEPTED");
+    reference->set(-128 + 12, -128 + 15, Material::Water);
+    reference->set(-128 + 18, -64 + 11, Material::Sand);
+    check(edit_stage.commit(live, edit_fence, edit_base, edit_stage.staged_edits()) ==
+              FullWorldCommitStatus::Committed &&
+          live->physical_state_hash() == reference->physical_state_hash() &&
+          live->quantity_ledger() == reference->quantity_ledger(),
+          "GEN006_DYNAMIC_BATCH_COMMIT_DIVERGED");
+    for (unsigned i = 0; i < 8; ++i) {
+        const auto lhs = live->tick();
+        const auto rhs = reference->tick();
+        observed = std::max(observed, lhs.worker_threads_observed);
+        check(!live->has_failed() && !reference->has_failed() &&
+              lhs.tick == rhs.tick &&
+              live->physical_state_hash() == reference->physical_state_hash() &&
+              live->quantity_ledger() == reference->quantity_ledger(),
+              "GEN006_DYNAMIC_BATCH_CONTINUATION_DIVERGED");
+    }
+    std::cout << "GEN006_DYNAMIC_ATOMIC_CROSS_SEAM_EDIT_PASS"
+              << " configured_workers=" << workers
+              << " edited_residents=2 edits=" << edit_stage.staged_edits().size()
+              << " continued_ticks=8 scope=FULL_WORLD_NON_DURABLE"
+              << " observed_workers_max=" << observed << '\\n';
+
     // Stale stage must not swap an owner changed by native tick. A separate
     // pointer-identity check rejects an equal-content new residency (ABA).
     const FullWorldFence b{a.session, a.recipe, a.incarnation + 1U, a.generation + 1U};
