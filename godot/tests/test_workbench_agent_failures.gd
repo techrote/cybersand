@@ -59,6 +59,15 @@ func _run() -> void:
 		"allowed_materials":[0,58]
 	})
 	_expect(a.get("status")=="authorized","authorize synthetic fault fixture")
+	var takeover: Dictionary = call_session(session,world,"authorize_task",{
+		"task_id":"other-host",
+		"scope":Rect2i(Vector2i(0,0),Vector2i(2,2)),
+		"protected":[],
+		"allowed_materials":[0]
+	})
+	_expect(takeover.get("status")=="refused"
+		and takeover.get("reason")=="task_already_authorized",
+		"second host replaced live task on the same World")
 	var obs: Dictionary = call_session(session,world,"observe",{
 		"region":Rect2i(Vector2i(100,100),Vector2i(3,3))
 	})

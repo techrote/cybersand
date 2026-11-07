@@ -312,6 +312,25 @@ func run() -> void:
 		and no_sand.get("reason")=="source_material_protected",
 		"agent attempted to erase an actual native Sand cell")
 
+	# Real owner regression: no second host may silently replace task scope,
+	# protection, allowlist, or pending authority. Retire explicitly before
+	# the following independent host task takes ownership.
+	var takeover: Dictionary = await issue({
+		"action":"authorize_task", "task_id":"illegal-second-task",
+		"scope":Rect2i(Vector2i(0,0),Vector2i(32,32)),
+		"protected":[], "allowed_materials":[0]
+	})
+	check(takeover.get("status")=="refused"
+		and takeover.get("reason")=="task_already_authorized",
+		"second host silently replaced the existing native authoring task")
+	var still_owned: Dictionary = await observe(1220,270,6,6)
+	check(still_owned.get("status")=="native_observed"
+		and still_owned.get("task_id")=="fixture-526",
+		"refused second host retired or replaced the current task")
+	var first_retired: Dictionary = await issue({"action":"retire_task"})
+	check(first_retired.get("status")=="retired",
+		"first native authoring task did not retire before handoff")
+
 	# Full user-facing #526 host path, not a direct worker bypass. Authorize
 	# locally, submit strict model-shaped JSON, await real owner/renderer,
 	# preflight the named-start, apply+verify, and test duplicate idempotence.

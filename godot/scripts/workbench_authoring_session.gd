@@ -337,6 +337,14 @@ func execute(command: Dictionary, world: Object, generation: int,
 	if world.has_method(&"has_failed") and bool(world.has_failed()):
 		return _refused("native_world_failed")
 	if action == "authorize_task":
+		# A second host must not replace an active task or its protections.
+		# A new World generation, however, invalidates the old task.
+		if not _task.is_empty():
+			if generation == int(_task.world_generation):
+				return _refused("task_already_authorized")
+			_task.clear()
+			_observation.clear()
+			_proposal.clear()
 		return _authorized(command,extent,generation)
 	if _task.is_empty() or generation != int(_task.world_generation):
 		_task.clear()
