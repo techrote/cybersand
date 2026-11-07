@@ -12,6 +12,7 @@ var _workbench: Control
 var _authoring: RefCounted
 var _step_driver: RefCounted = StepSequence.new()
 var _authorized: bool = false
+var _proposal_pending: bool = false
 var _busy: bool = false
 var _stopping: bool = false
 var _uncertain: bool = false
@@ -65,6 +66,8 @@ func call_tool(name: String, args: Variant) -> Dictionary:
 		return _refused("task_not_authorized_or_stopping")
 	if _busy:
 		return _refused("agent_tool_busy")
+	if name == "step" and _proposal_pending:
+		return _refused("prepared_edit_must_be_applied_or_retired_before_step")
 	if not args is Dictionary:
 		return _refused("invalid_tool_arguments")
 	if name not in ["observe","prepare_edit","apply_edit","step"]:
@@ -83,6 +86,12 @@ func call_tool(name: String, args: Variant) -> Dictionary:
 			receipt["observation_status"] = matched.get("status","unavailable")
 	else:
 		receipt = await _authoring.call_tool(name,args)
+		if name == "prepare_edit":
+			_proposal_pending = receipt.get("status") == "proposed"
+		elif name in ["observe","apply_edit"]:
+			# #526 supersedes proposals on observe, and consumes them on
+			# apply (including a stale/refused consume).
+			_proposal_pending = false
 	_busy = false
 	if receipt.get("status") == "unconfirmed":
 		_uncertain = true
@@ -120,6 +129,7 @@ func stop() -> Dictionary:
 		return {"status":"unconfirmed","reason":"native_task_retirement_not_acknowledged",
 			"owner_receipt":retired}
 	_authorized = false
+	_proposal_pending = false
 	_epoch += 1
 	_step_driver.retire()
 	return {"status":"stopped","reason":"native_task_retired_after_boundary",
