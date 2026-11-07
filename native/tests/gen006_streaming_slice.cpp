@@ -477,32 +477,33 @@ void self_test(const fs::path& path, std::uint32_t workers) {
               << " continuing_ticks=3 corruption=REFUSED\n";
 }
 
-void interactive(const fs::path& path, std::uint32_t workers) {
+void interactive(const fs::path& path, std::uint32_t workers,
+                 std::istream& commands) {
     StreamingSlice streamer(path, 2, workers);
     std::cout << "GEN006 experimental native stream (independent World per shard). "
                  "Commands: focus X Y | wall X Y | dig X Y | water X Y Q | "
                  "watertemp X Y Q T | "
-                 "tick N | inspect LOCAL_X LOCAL_Y | status | quit. " 
+                 "tick N | inspect LOCAL_X LOCAL_Y | render | status | quit. " 
                  "X/Y are world chunk coords for focus, "
                  "local 0..63 for edits. No cross-shard physics.\n";
     ChunkCoord active{-1,-3};
     streamer.focus(active);
     std::string command;
-    while (std::cin >> command) {
+    while (commands >> command) {
         try {
             if (command == "quit") break;
             if (command == "focus") {
-                std::cin >> active.x >> active.y;
+                commands >> active.x >> active.y;
                 streamer.focus(active);
             } else if (command == "wall" || command == "dig" ||
                        command == "water" || command == "watertemp") {
                 int x, y;
-                std::cin >> x >> y;
+                commands >> x >> y;
                 if (command == "water" || command == "watertemp") {
                     unsigned mass;
-                    std::cin >> mass;
+                    commands >> mass;
                     int temp = 200;
-                    if (command == "watertemp") std::cin >> temp;
+                    if (command == "watertemp") commands >> temp;
                     check(mass >= 1 && mass <= 31, "Water mass must be 1..31");
                     check(temp >= std::numeric_limits<std::int16_t>::min() &&
                           temp <= std::numeric_limits<std::int16_t>::max(),
@@ -514,12 +515,12 @@ void interactive(const fs::path& path, std::uint32_t workers) {
                                            Material::Wall : Material::Empty);
             } else if (command == "tick") {
                 unsigned n;
-                std::cin >> n;
+                commands >> n;
                 const auto observed = streamer.simulate(n);
                 std::cout << "TICK configured=" << workers << " observed=" << observed << '\n';
             } else if (command == "inspect") {
                 int x, y;
-                std::cin >> x >> y;
+                commands >> x >> y;
                 check(x >= 0 && x < kSide && y >= 0 && y < kSide,
                       "GEN006_INSPECT_LOCAL_COORDINATE");
                 const std::int64_t gx = active.x * kSide + x;
@@ -532,15 +533,37 @@ void interactive(const fs::path& path, std::uint32_t workers) {
                           << " temp=" << world.stored_temperature(gx, gy)
                           << " intent=" << int(streamer.intent(active, x, y))
                           << '\n';
+            } else if (command == "render") {
+                // Opt-in native RGBA byte handoff for the Godot demonstration.
+                // Native World remains authoritative; no native/Godot object or
+                // mutable storage crosses the process boundary. 64x64 only.
+                const std::int64_t gx = active.x * kSide;
+                const std::int64_t gy = active.y * kSide;
+                std::array<std::uint8_t, kSide * kSide * 4> rgba{};
+                streamer.at(active).copy_rgba(
+                    RectI64{gx, gy, kSide, kSide}, rgba, kSide * 4);
+                const fs::path image_file = path / "gen006-current.rgba";
+                std::ofstream output(image_file,
+                                     std::ios::binary | std::ios::trunc);
+                check(bool(output), "GEN006_RENDER_OPEN_REFUSED");
+                output.write(reinterpret_cast<const char*>(rgba.data()),
+                             static_cast<std::streamsize>(rgba.size()));
+                output.flush();
+                check(bool(output), "GEN006_RENDER_WRITE_REFUSED");
+                std::cout << "RENDER_RGBA chunk=(" << active.x << ","
+                          << active.y << ") width=64 height=64"
+                          << " bytes=" << rgba.size()
+                          << " checksum=" << checksum(rgba)
+                          << '\n';
             } else if (command == "status") {
                 streamer.status();
             } else {
                 std::cout << "UNKNOWN_COMMAND\n";
             }
-            check(bool(std::cin), "GEN006_INPUT_ERROR");
+            check(bool(commands), "GEN006_INPUT_ERROR");
         } catch (const std::exception& e) {
             std::cerr << "REFUSED " << e.what() << '\n';
-            if (!std::cin) break;
+            if (!commands) break;
         }
     }
     streamer.save_all();
@@ -551,12 +574,23 @@ void interactive(const fs::path& path, std::uint32_t workers) {
 
 int main(int argc, char** argv) {
     try {
-        check(argc >= 3 && argc <= 4, "usage: slice --self-test|--interactive DIRECTORY [1|4]");
-        const std::uint32_t workers = argc == 4 ?
-            static_cast<std::uint32_t>(std::stoul(argv[3])) : 1;
-        if (std::string(argv[1]) == "--self-test") self_test(argv[2], workers);
-        else if (std::string(argv[1]) == "--interactive") interactive(argv[2], workers);
-        else throw std::invalid_argument("GEN006_MODE");
+        const std::string mode(argv[1]);
+        const bool batch = mode == "--batch";
+        check(argc >= 3 && argc <= 5 &&
+              ((batch && (argc == 4 || argc == 5)) ||
+               (!batch && (argc == 3 || argc == 4))),
+              "usage: slice --self-test|--interactive DIRECTORY [1|4] OR "
+              "slice --batch DIRECTORY COMMAND_FILE [1|4]");
+        const std::uint32_t workers = (batch ? argc == 5 : argc == 4) ?
+            static_cast<std::uint32_t>(std::stoul(argv[batch ? 4 : 3])) : 1;
+        if (mode == "--self-test") self_test(argv[2], workers);
+        else if (mode == "--interactive") interactive(argv[2], workers, std::cin);
+        else if (batch) {
+            std::ifstream script(argv[3]);
+            check(bool(script), "GEN006_BATCH_UNREADABLE");
+            interactive(argv[2], workers, script);
+            check(!script.bad(), "GEN006_BATCH_READ_ERROR");
+        } else throw std::invalid_argument("GEN006_MODE");
         return 0;
     } catch (const std::exception& error) {
         std::cerr << "GEN006_NATIVE_SHARDED_STREAM_FAIL " << error.what() << '\n';
