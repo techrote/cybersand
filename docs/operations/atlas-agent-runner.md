@@ -108,8 +108,14 @@ by `max_retries` per call, `max_total_retries` per run (default 30) and the run 
 `usage.rate_limited_attempts` (`api_attempts` counts every request). Prompts above the 272K-token short-context pricing threshold are refused (`long_context_pricing_not_modelled`)
 because long-context rates are not modelled.
 
+Each `render_capture` writes a fresh bundle (`captures/after`, `after-2`, ...) and clears the previous comparison, so a
+model may refine and re-render several times; only a comparison of the latest render can support a cycle claim. A run
+stopped by a limit or an API failure keeps its unfinished edits as `partial-patch.diff` (`publishable: false`,
+`validated: false`) so that raising a limit and retrying need not discard the work.
+
 The defaults and hard caps live in [`config.schema.json`](../../tools/atlas_agent/schemas/config.schema.json) (unknown keys
-are rejected; each limit has a maximum). Limits: iterations, API calls, retries and exponential backoff, run
+are rejected; each limit has a maximum, raised on 2026-11-07 at the owner's request for long supervised runs: up to 120
+iterations, 200 calls, 600 tool calls, 4 hours, 50M input tokens; the money ceilings and the 272K short-context guard are unchanged). Limits: iterations, API calls, retries and exponential backoff, run
 seconds, input/output tokens per call and per run, USD per call and per run, tool calls, per-tool and total tool
 seconds, tool output bytes, malformed tool calls, sandbox violations, images, image bytes and edge, image resend
 window, read/edit bytes, files edited. The SDK's own retries are disabled so none is unbudgeted. `store` is

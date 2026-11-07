@@ -210,6 +210,21 @@ class DryRunTests(RunCase):
                              ("stopped", 4, reason), msg=str(extra))
             self.assertEqual(rec["status"]["phase"], "loop")
 
+    def test_stopped_run_keeps_its_unfinished_edits_as_a_partial_patch(self):
+        result = self.env.run(self.env.overrides(task={"dry_run_plan": str(self.env.plan)}, limits={"max_iterations": 2}))
+        rec = self.verify(result)
+        self.assertEqual((rec["status"]["final"], rec["status"]["reason_code"]), ("stopped", "max_iterations"))
+        self.assertIsNone(rec["artifacts"]["patch"], "a stopped run publishes no patch")
+        partial = rec["artifacts"]["partial_patch"]
+        self.assertFalse(partial["publishable"])
+        self.assertFalse(partial["validated"])
+        diff = result.receipt_path.parent / partial["path"]
+        self.assertEqual(partial["sha256"], __import__("hashlib").sha256(diff.read_bytes()).hexdigest())
+        git(self.env.repo, "apply", "--check", str(diff))
+        self.assertIn(PACK, diff.read_text(encoding="utf-8"))
+        clean = self.env.run(self.env.overrides(limits={"max_iterations": 1}))
+        self.assertIsNone(clean.receipt["artifacts"]["partial_patch"], "no edits, nothing to keep")
+
     def test_run_time_limit_uses_the_clock(self):
         ticks = {"n": 0}
 

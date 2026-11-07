@@ -68,8 +68,9 @@ class ConfigTests(unittest.TestCase):
             check_config(bad)
 
     def test_hard_caps_cannot_be_exceeded(self):
-        for section, key, value in (("limits", "max_iterations", 31), ("spend", "max_usd_per_run", 26),
-                                    ("limits", "max_images", 13), ("limits", "max_retries", 7)):
+        for section, key, value in (("limits", "max_iterations", 121), ("spend", "max_usd_per_run", 26),
+                                    ("limits", "max_images", 41), ("limits", "max_retries", 7),
+                                    ("limits", "max_api_calls", 201), ("limits", "max_tool_calls", 601)):
             bad = base_config()
             bad[section][key] = value
             with self.assertRaises(ConfigError, msg=key):
@@ -703,6 +704,39 @@ class CaptureTests(unittest.TestCase):
         self.assertFalse(report["godot_to_godot"])
         same = captures.compare_bundles(self.bundle, make_bundle(self.pack_dir, self.root / "same"))
         self.assertFalse(same["visual_change_observed"])
+
+    def test_repeated_renders_use_fresh_directories_and_reset_the_comparison(self):
+        launcher = self.root / captures.LAUNCHER_NAME
+        launcher.write_text(
+            "import json, sys\n"
+            "from pathlib import Path\n"
+            "sys.path.insert(0, %r)\n"
+            "from atlas_agent.fixtures.make_capture_bundle import make_bundle\n"
+            "a = sys.argv\n"
+            "out = Path(a[a.index('--output-dir') + 1]); pack = Path(a[a.index('--pack') + 1])\n"
+            "out.mkdir(parents=True); make_bundle(pack, out)\n"
+            "print('WORLD_ART_CAPTURE_RESULT ' + json.dumps({'status': 'completed', 'bundle': str(out)}))\n"
+            % str(Path(__file__).resolve().parents[1]), encoding="utf-8")
+        godot = self.root / "Godot_fake.exe"
+        godot.write_text("stand-in", encoding="utf-8")
+        tmp, work, built, policy = make_workspace()
+        self.addCleanup(tmp.cleanup)
+        cfg = base_config(godot=str(godot))
+        out_dir = self.root / "run-out"
+        out_dir.mkdir()
+        executor = ToolExecutor(cfg, work, policy, COLLECTION, True, [], receipt_mod.Redactor([]),
+                                input_bundle=self.bundle, launcher=launcher, out_dir=out_dir)
+        first = executor.execute("render_capture", json.dumps({"label": "after"}), 1)
+        self.assertEqual(json.loads(first.text)["status"], "completed")
+        executor.execute("compare_captures", "{}", 2)
+        self.assertIsNotNone(executor.comparison)
+        second = executor.execute("render_capture", json.dumps({"label": "after"}), 3)
+        self.assertEqual(json.loads(second.text)["status"], "completed", second.text)
+        self.assertTrue((out_dir / "captures" / "after" / "batch-manifest.json").is_file())
+        self.assertTrue((out_dir / "captures" / "after-2" / "batch-manifest.json").is_file())
+        self.assertEqual(executor.rendered_bundle, out_dir / "captures" / "after-2")
+        self.assertIsNone(executor.comparison, "the old comparison must not survive a new render")
+        self.assertEqual(len(executor.render_attempts), 2)
 
     def test_reference_bundle_is_listed_and_viewable(self):
         tmp, work, built, policy = make_workspace()

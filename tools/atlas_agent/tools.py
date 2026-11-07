@@ -369,7 +369,8 @@ class ToolExecutor:
     def _t_render_capture(self, a: dict) -> ToolOutcome:
         if self.launcher is None or self.out_dir is None:
             return ToolOutcome(json.dumps({"status": "unavailable", "reason": "no capture launcher configured"}), True)
-        target = self.out_dir / "captures" / "after"
+        attempt = len(self.render_attempts) + 1  # every render gets a fresh, empty directory
+        target = self.out_dir / "captures" / ("after" if attempt == 1 else f"after-{attempt}")
         pack_dir = self.work_root / atlas.WORLD_DESIGN / self.collection
         try:
             outcome = captures.run_capture(self.launcher, self.task.get("godot") or "", pack_dir, target,
@@ -380,6 +381,7 @@ class ToolExecutor:
         self.render_attempts.append({k: v for k, v in outcome.items() if k != "stderr_tail"})
         if outcome.get("status") == "completed":
             self.rendered_bundle = target
+            self.comparison = None  # a new render must be compared again before any cycle is claimed
             self.bundle_summaries.pop("rendered", None)
             try:
                 self._load_bundle("rendered")

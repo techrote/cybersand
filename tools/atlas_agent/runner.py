@@ -21,7 +21,7 @@ from .budget import Budget
 from .client import ApiClient, make_sdk_client, sdk_version, usage_of
 from .config import load_config
 from .dryrun import DryRunBackend, load_plan
-from .errors import (EXIT_OK, STATUS_FAILURE, STATUS_SUCCESS, AgentError, ApiFailure, ConfigError, LimitReached,
+from .errors import (EXIT_API, EXIT_LIMIT, EXIT_OK, STATUS_FAILURE, STATUS_SUCCESS, AgentError, ApiFailure, ConfigError, LimitReached,
                      SandboxViolation, SourceChanged, ValidationFailed)
 from .procs import resolve_executables
 from .sandbox import PathPolicy, is_inside, sha256_bytes, sha256_file
@@ -145,6 +145,8 @@ def execute(config_path: str | None, overrides: dict, out_dir: Path, *, env: dic
         rec["status"].update({"final": error.status, "exit_code": error.exit_code, "reason_code": error.reason_code,
                               "reason": redactor.text(error.message)[:1000]})
     rec["status"]["phase"] = ctx["phase"]
+    if error is not None and error.exit_code in (EXIT_LIMIT, EXIT_API):
+        _export_partial(rec, out_dir, ctx)
     path = _finalise(rec, out_dir, ctx, redactor, clock() - started, clock, now)
     ws = ctx.get("workspace")
     if ws:
@@ -204,6 +206,7 @@ def _run(cfg, rec, out_dir, ctx, env, sdk, sleep, clock, now, costs_probe, launc
     generated = atlas.generated_globs(collection, writable)
     rec["policy"].update({"read_globs": policy.read_globs, "write_globs": policy.write_globs,
                           "generated_globs": generated})
+    ctx.update({"source_root": source_root, "built_files": built["files"], "policy": policy, "generated": generated})
     instructions = INSTRUCTIONS.read_text(encoding="utf-8")
     directive = task["directive"].strip()
     rec["policy"]["task_directive"] = ({"text": directive, "sha256": sha256_bytes(directive.encode("utf-8"))}
@@ -427,6 +430,25 @@ def _build_patch(source_root: Path, work_root: Path, original: dict, policy: Pat
             policy.check_write(rel)  # a changed file must have been assigned to this lane/collection
         patches.append(gitops.unified_patch(rel, (source_root / rel).read_bytes(), (work_root / rel).read_bytes()))
     return "".join(patches)
+
+
+def _export_partial(rec: dict, out_dir: Path, ctx: dict) -> None:
+    """A run stopped by a limit or an API failure keeps its unfinished edits as a diagnostic, never-publishable patch,
+    so raising a limit and retrying does not have to throw the work away."""
+    executor = ctx.get("executor")
+    if executor is None or not executor.edits or "policy" not in ctx or not ctx.get("workspace"):
+        return
+    try:
+        text = _build_patch(ctx["source_root"], Path(ctx["workspace"]), ctx["built_files"], ctx["policy"], ctx["generated"])
+    except Exception:  # noqa: BLE001 - diagnostics must never turn a stop into a crash
+        return
+    if not text:
+        return
+    path = out_dir / "partial-patch.diff"
+    path.write_text(text, encoding="utf-8", newline="\n")
+    rec["artifacts"]["partial_patch"] = {
+        "path": "partial-patch.diff", "sha256": sha256_file(path), "publishable": False, "validated": False,
+        "reason": "the run did not finish: unvalidated work in progress kept for diagnosis and for resuming"}
 
 
 def _visual_cycle(rec: dict, executor: ToolExecutor, edited: bool) -> None:

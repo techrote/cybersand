@@ -94,7 +94,7 @@ def skeleton(run_id: str, mode: str, started_utc: str, collection: str) -> dict:
         "captures": {"input_bundle": None, "reference_bundle": None, "rendered_bundle": None, "comparison": None, "render_attempts": []},
         "visual_cycle": {"claimed": False, "reason": "no before/after Godot capture cycle was executed"},
         "final_report": None,
-        "artifacts": {"patch": None, "tool_log": None, "transcript": None},
+        "artifacts": {"patch": None, "partial_patch": None, "tool_log": None, "transcript": None},
         "publication": {"mode": "none", "performed": False},
     }
 
