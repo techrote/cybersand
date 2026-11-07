@@ -92,6 +92,25 @@ func run_variant(rows: Array, variant: String) -> void:
 		if not check(applied.get("status") == "applied" and applied.get("authored_start",{}).get("status") == "recorded",
 			"mounted native apply not confirmed "+variant):
 			break
+		if begin == 0:
+			# A genuinely completed apply must replay its original receipt if the
+			# model retries an opaque proposal, without issuing a second native edit.
+			# This extra fake HTTP turn fits the existing 24-call test-only budget.
+			var old_edits: Array = workbench.applied.edits.duplicate(true)
+			var old_revision: int = main.simulation_worker.agent_manual_intent_revision()
+			var old_generation: int = main.latest_snapshot.render_world_generation
+			var replayed: Dictionary = await _panel_call("apply_edit",{
+				"proposal_id":prepared.get("proposal_id","")})
+			check(replayed.get("status") == "applied"
+				and replayed.get("proposal_id","") == applied.get("proposal_id","")
+				and replayed.get("readback",[]) == applied.get("readback",[])
+				and replayed.get("changed_cells",-1) == applied.get("changed_cells",-2)
+				and replayed.get("authored_start",{}) == applied.get("authored_start",{})
+				and workbench.applied.edits == old_edits
+				and main.simulation_worker.agent_manual_intent_revision() == old_revision
+				and main.latest_snapshot.render_world_generation == old_generation
+				and main.latest_snapshot.tick_index == 0,
+				"mounted duplicate native apply did not replay exact receipt without second mutation "+variant)
 		batches += 1
 	check(batches == 4 and main.latest_snapshot.tick_index == 0,"mounted construction incomplete or stepped")
 	var total: int = 0
