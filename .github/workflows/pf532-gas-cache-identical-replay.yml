@@ -13,8 +13,8 @@ on:
 permissions:
   contents: read
 concurrency:
-  group: pf532-exact-native-replay
-  cancel-in-progress: true
+  group: pf532-exact-native-replay-${{ github.run_id }}
+  cancel-in-progress: false
 env:
   ACCEPTED_MAIN: 81bbd5ff5cf366159e2b8a630609359c13560080
   GODOT_URL: https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7
