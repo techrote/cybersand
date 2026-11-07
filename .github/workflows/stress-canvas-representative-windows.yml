@@ -139,13 +139,17 @@ jobs:
           (out/'command.json').write_text(json.dumps(argv,indent=2)+'\n',encoding='utf-8')
           log=(out/'godot.log').open('w',encoding='utf-8')
           p=subprocess.Popen(argv,stdout=log,stderr=subprocess.STDOUT,env=env)
-          handle=k32.OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION,False,p.pid)
-          if not handle: raise OSError(ctypes.get_last_error(),'OpenProcess')
+          handle=None
+          engine_pid=None
           start_marker=out/'measurement-start.json'; end_marker=out/'measurement-end.json'
           cpu_start=None; cpu_end=None
           deadline=time.monotonic()+220
           while time.monotonic()<deadline and p.poll() is None:
               if cpu_start is None and start_marker.exists():
+                  marker=json.loads(start_marker.read_text(encoding='utf-8'))
+                  engine_pid=int(marker['pid'])
+                  handle=k32.OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION,False,engine_pid)
+                  if not handle: raise OSError(ctypes.get_last_error(),'OpenProcess(engine)')
                   cpu_start=sample(handle)
               if cpu_start is not None and cpu_end is None and end_marker.exists():
                   cpu_end=sample(handle)
@@ -156,9 +160,15 @@ jobs:
               code=p.wait(timeout=max(1,int(deadline-time.monotonic())))
           except subprocess.TimeoutExpired:
               p.kill(); code=p.wait(); raise RuntimeError('Godot representative workload timed out')
-          if cpu_start is None and start_marker.exists(): cpu_start=sample(handle)
+          if cpu_start is None and start_marker.exists():
+              marker=json.loads(start_marker.read_text(encoding='utf-8'))
+              engine_pid=int(marker['pid'])
+              handle=k32.OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION,False,engine_pid)
+              if not handle: raise OSError(ctypes.get_last_error(),'OpenProcess(engine)')
+              cpu_start=sample(handle)
           if cpu_end is None and end_marker.exists(): cpu_end=sample(handle)
-          k32.CloseHandle(handle); log.close()
+          if handle: k32.CloseHandle(handle)
+          log.close()
           if code: raise RuntimeError('Godot representative workload exit '+str(code))
           result=json.loads((out/'fixture-result.json').read_text(encoding='utf-8'))
           if cpu_start is None or cpu_end is None:
@@ -180,6 +190,9 @@ jobs:
               'native_hz':result['native_ticks_per_second'],
               'rapier_hz':result['rapier_steps_per_second'],
               'cpu_cores':result['process_cpu']['equivalent_cores'],
+              'native_tick_p50':result['native_tick_ms'].get('p50'),
+              'native_tick_p95':result['native_tick_ms'].get('p95'),
+              'no_step_callbacks':result['no_step_callbacks'],
               'space_p95':result['space_step_ms'].get('p95'),
               'space_p99':result['space_step_ms'].get('p99'),
               'space_max':result['space_step_ms'].get('max'),
