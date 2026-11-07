@@ -144,8 +144,15 @@ func _test_full_serial_four_tool_loop() -> void:
 	_expect(calls.size() == 4 and calls[3].name == "step" and calls[3].args.ticks == 120,
 		"step must use exact bounded integer argument")
 	_expect(c.submit_tool_result(c.current_epoch(), "s1",
-		{"status": "stepped", "completed": 120, "start_tick": 48, "end_tick": 168}),
-		"acknowledged step receipt must continue")
+		{"status": "stepped", "requested": 120, "completed": 120,
+		"before_tick": 48, "after_tick": 168, "still_paused": true,
+		"observation": {"status": "observed", "image_status": "matched_post_draw",
+			"render_identity": {"tick": 168}},
+		"image_data_url": png}),
+		"acknowledged exact-step plus matched-image receipt must continue")
+	_expect(c.pending_fake_payload().input.size() == 2 and
+		c.pending_fake_payload().input[1].content[1].type == "input_image",
+		"step continuation must send a genuine matched image to the vision model")
 	_deliver(c, _response("r5", [{"type": "message", "content": [
 		{"type": "output_text", "text": "Model finished; native acceptance not implied."}]}]))
 	_expect(not c.is_active() and calls.size() == 4, "complete serial four-tool loop must terminate")
