@@ -8,7 +8,7 @@ on:
       - 'godot/scripts/workbench_agent_step_sequence.gd'
       - 'godot/tests/test_workbench_agent_four_tool_join.gd'
       - 'godot/tests/test_workbench_agent_step_sequence.gd'
-      - 'docs/audits/2026-11-07-wb-agent-527-join-stop-native.md'
+      - 'docs/audits/2026-11-07-wb-agent-527-step-stop-native.md'
       - '.github/workflows/wb-agent-527-join.yml'
   workflow_dispatch:
 
@@ -118,7 +118,7 @@ jobs:
             "$GODOT_BIN" --path godot --rendering-method gl_compatibility \
             --script res://tests/test_workbench_agent_four_tool_join.gd \
             2>&1 | tee "$EVIDENCE/real-four-tool-join-original.log"
-          grep -E 'WB_AGENT_527_JOIN: [0-9]+ assertions, 0 failures' "$EVIDENCE/real-native-step-original.log"
+          grep -E 'WB_AGENT_527_JOIN: [0-9]+ assertions, 0 failures' "$EVIDENCE/real-four-tool-join-original.log"
       - name: Preserve first-failure source/worker evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
