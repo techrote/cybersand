@@ -1,11 +1,6 @@
 name: CyberSand PF gas — bounded eight-barrel stage CPU profile
 
 on:
-  push:
-    branches: [perf/pf-gas-acceptance-20261107]
-    paths:
-      - '.github/workflows/pf-gas-stage-cpu-profile.yml'
-      - 'tools/ci/pf_gas_cpu_*.py'
   workflow_dispatch:
 
 permissions:
