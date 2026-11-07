@@ -100,6 +100,23 @@ func run() -> void:
 			and prepared.get("changed_cells",-1)==9,
 			"prepare mutated/refused real native nine-cell construction: "+str(prepared))
 		if prepared.get("status")=="proposed":
+			# #526 authority regression: a second host on this SAME live World
+			# cannot replace the authorized task or its prepared protection.
+			# An explicit native retire ACK is mandatory before a successor.
+			var competing = Bridge.new()
+			check(competing.bind(main), "competing host could not bind")
+			var takeover: Dictionary = await competing.authorize_task(
+				"unapproved-takeover-527", Rect2i(0,0,64,64), [], [0,58])
+			check(takeover.get("status")=="refused"
+				and takeover.get("reason")=="task_already_authorized"
+				and main.latest_snapshot.tick_index==before_tick,
+				"second host silently replaced the live protected task: "+str(takeover))
+			var still_prepared: Dictionary = await bridge.call_tool("step", {"ticks":1})
+			check(still_prepared.get("status")=="refused"
+				and still_prepared.get("reason")==
+				"prepared_edit_must_be_applied_or_retired_before_step"
+				and main.latest_snapshot.tick_index==before_tick,
+				"rejected second-host takeover invalidated pending edit fence")
 			# Regression: wrong-ID apply is host-refused before #526 can
 			# consume the genuine native proposal; Step must remain fenced.
 			var wrong_apply: Dictionary = await bridge.call_tool("apply_edit",{

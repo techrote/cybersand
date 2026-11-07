@@ -38,8 +38,8 @@ jobs:
           lfs: false
       - name: Compose exact tested foundation without touching either owned PR
         env:
-          FOUNDATION_SHA: b85691075c041f70f8b35bf9901fa14ef1b965aa
-          COMMON_BASE: 81bbd5ff5cf366159e2b8a630609359c13560080
+          FOUNDATION_SHA: e7afa264605c818a3ef0a17fcbe5fb611ee13fab
+          COMMON_BASE: 761dac3b657ca8970e817d18c2005fda9c416948
         run: |
           set -euo pipefail
           mkdir -p "$EVIDENCE"
