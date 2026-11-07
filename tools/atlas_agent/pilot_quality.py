@@ -80,7 +80,7 @@ def evaluate(before: dict, after: dict, allowed: set[str]) -> dict:
             continue
         if not added_rects:
             continue
-        if not (name.endswith("-static") or "static" in str(before_f.get("status", ""))):
+        if not str(before_f.get("status") or before_f.get("kind") or "").endswith("static"):
             # 'static' and 'inert-static' are explicitly accepted; dynamic feature families are denied.
             problems.append(f"{name}: edits to non-static features refused")
             continue
