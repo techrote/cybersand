@@ -147,6 +147,19 @@ func _run() -> void:
 	_expect(preview.pack_hash != first_hash, "loaded content identity changes")
 	preview.toggle_comparison()
 	_expect(preview.baseline_overlay.visible, "show pinned original framebuffer")
+	await preview.export_art("viewport")
+	var pinned_export: String = preview.last_export_dir
+	var pinned_image: Image = Image.load_from_file(pinned_export.path_join("viewport.png"))
+	if pinned_image != null:
+		pinned_image.convert(Image.FORMAT_RGB8)
+	_expect(pinned_image != null and pinned_image.get_data() == preview._baseline.get_data(),
+		"pinned-before screenshot exports original captured framebuffer pixels")
+	var pinned_meta: Variant = JSON.parse_string(FileAccess.get_file_as_string(
+		pinned_export.path_join("metadata.json")))
+	_expect(typeof(pinned_meta) == TYPE_DICTIONARY
+		and pinned_meta.get("pack_sha256", "") == first_hash
+		and pinned_meta.get("visible_frame", "") == "pinned-before",
+		"pinned-before PNG carries original source identity")
 	preview.toggle_comparison()
 	_expect(not preview.baseline_overlay.visible, "return to current framebuffer")
 	var good_hash: String = preview.pack_hash
