@@ -73,8 +73,11 @@ jobs:
           $ErrorActionPreference = 'Stop'
           $imageDir = (Resolve-Path artifacts/engine).Path
           $dump = (Resolve-Path artifacts/evidence/ab/trials/01-a/fixture/fault-4020-8020-677.dmp).Path
-          $commands = '.symopt+ 0x40; .reload /f; .ecxr; !analyze -v; .ecxr; r; kvn; lm; lmvm godot*; u @rip L12; q'
-          & $env:CDB_PATH -z $dump -y $imageDir -i $imageDir -lines -c $commands 2>&1 | Tee-Object -FilePath results/cdb-original-a.log
+          $cache = Join-Path $env:RUNNER_TEMP 'WinDbgSymbolCache'
+          New-Item -ItemType Directory -Force $cache | Out-Null
+          $symbolPath = "$imageDir;srv*$cache*https://msdl.microsoft.com/download/symbols"
+          $commands = '.symopt- 0x40; .reload /f; .ecxr; !analyze -v; .ecxr; r; kvn; lm; lmvm godot*; u @rip L12; q'
+          & $env:CDB_PATH -z $dump -y $symbolPath -i $imageDir -lines -c $commands 2>&1 | Tee-Object -FilePath results/cdb-original-a.log
           $result = $LASTEXITCODE
           if ($result -ne 0) { throw "CDB failed with exit $result" }
           $log = Get-Content results/cdb-original-a.log -Raw
@@ -82,6 +85,8 @@ jobs:
           if ($log -notmatch '(?i)GDScriptLanguage::finish') { throw "Godot shutdown stack caller not recovered from original dump" }
           if ($log -notmatch '(?i)ScriptServer::finish_languages') { throw "Higher shutdown stack caller not recovered" }
           if ($log -match '(?i)symbols could not be loaded.*godot') { throw "Engine PDB loading failure" }
+          if ($log -match '(?i)SYMOPT_LOAD_ANYTHING') { throw "Permissive PDB symbol option was not disabled" }
+          if ($log -notmatch '(?i)private pdb symbols') { throw "Engine private PDB was not loaded" }
           @"
           Original Windows dump: run 41958413986, trial 01-A, second-chance event 677
           Verified A EXE SHA256: f8238cda7f26d4b30c34a04d772985a31aacb39a7c33ca92dfa88a39bee83e42
