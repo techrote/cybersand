@@ -117,7 +117,7 @@ func run() -> void:
 						var name: String="cut-feedback-qualification-"+OS.get_environment("CYBERSAND_FREED_WORKERS")
 						check(Setup.write_named(name,ui.applied).is_empty(),"ordinary disk Save retains material appearance")
 						var saved: Dictionary=Setup.read_named(name)
-						check(saved.has("setup") and saved.setup.actors[0].body==actor.body,"ordinary disk readback appearance")
+						check(saved.has("setup") and saved.setup.actors[0].hash==actor.hash and Setup.CanvasBody.digest(saved.setup.actors[0].body)==actor.hash,"ordinary disk readback appearance")
 			evidence.cuts.append(row)
 			if kind=="tree": check(await run_steps(2),"resume current-body fence")
 			else:
