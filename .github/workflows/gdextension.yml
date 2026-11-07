@@ -363,7 +363,7 @@ jobs:
           test "$source_sha" = "$GITHUB_SHA"
           mkdir -p build/windows-candidate
           cp "$RUNNER_TEMP/cybersand_native.windows.x86_64.dll" build/windows-candidate/
-          printf '%s\\n' "$source_sha" > build/windows-candidate/source-sha.txt
+          echo "$source_sha" > build/windows-candidate/source-sha.txt
           {
             echo "godot_cpp_commit=$GODOT_CPP_COMMIT"
             echo "llvm_mingw_sha256=$LLVM_MINGW_SHA256"
