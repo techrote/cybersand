@@ -2,7 +2,7 @@
   "acceptance": "This exact source-matched runtime passed Integrated post-405 C2048 PressureFlow gas BFS/seed hotpath plus accepted camera-only cache retention, legacy C1024/explicit CYPS5 prepared-world compatibility, pressure reference/cached/cached_dormant exactness, Rapier/worker/canvas regression and genuine Linux/Windows Godot 4.7 execution. These development runtimes are not yet approved for production despite full-size measured benefit; representative eight-actor gameplay acceptance and final merge remain separate.. Every required helper completed with no skips or errors.",
   "artifact": "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
   "build_attempt": "1",
-  "build_commit": "af31d828ab680c52007cddae5525024fe0f31ff8",
+  "build_commit": "56e5a839d5b7a4f504910504699e43030b08fa0d",
   "build_inputs": {
     ".gitattributes": "05c9fbe5f823c51aec0ae542d0c7641a117fb0b95cd1d7fb511fffe9f8cbdbaa",
     ".github/workflows/gdextension.yml": "bf641ead09e4efc306ddfa7538681cf5e11b8ab537320e5f733665c50bf56d26",
@@ -688,7 +688,7 @@
     "native/tests/test_stage3b_sparse_mutation_witness.cpp": "8aa72bbb719fa8d9a778d8df41191c1c5075095a1218548d119aad449b1273cb",
     "native/tests/test_state_precision.cpp": "3e8e23398befaaed75aa92d16238a596b942cd2af5f31475a28bc1626e05e11d",
     "native/tests/test_water_cellular_yield.cpp": "da509c46a2beeca8071e7677514be588787c3a53dd34fd9afd4141ed2441e5db",
-    "native/tests/test_water_inertial.cpp": "c031a42ad647338114dcb4cf6f6849ac73615ff711df21e865901f764d0c1dea",
+    "native/tests/test_water_inertial.cpp": "a655f78cb8a48c5dfc924e06e44c3d06612b29d1b3ae198158189df6bd6ec187",
     "native/tests/test_water_normalization.cpp": "73c39111d269842b8f69f681fc0b926e10a41e2604d39b87e0d056c83590ae90",
     "native/tests/test_workbench_arrivals.cpp": "0a74a4b7fe53f631b05d77240ff200ab9b180a8b6e0d8bc46e677aea46d04842",
     "native/tests/test_workbench_pressure_heads.cpp": "b5c09ea63d984c1cf02e50a0cc0ee49f79b7dca34a0fcefb9e9cffadc55ac193",
@@ -711,7 +711,7 @@
     "tools/ci/godot_timeout_diagnostics.py": "3c0bf0552b8d1d4ed408f9ea3df94d2f3416aae51e37f644456da6594d1f7fcd",
     "tools/ci/lcb001_shared_contract_runtime_publication.py": "513d33b3fa3b4e2aa3e2af5abc65a253566111e1d25d505d86834b04c25922bd",
     "tools/ci/pf504_post405_runtime_publication.py": "ef48071ae74182c0564c9a0cfabb9bc623dbc5dd99b1cd1202dc7af853d7700e",
-    "tools/ci/pf504_post405_runtime_publish_request.json": "16df1af0aeb305403a500b24cc14bb1606792df399adee8aa05ad31335e82a4f",
+    "tools/ci/pf504_post405_runtime_publish_request.json": "e6e8588fe9fac4e772b39e182e65e4739cc68b80cf4af5f0ba012d751adf4f9c",
     "tools/ci/physical_progress_watchdog.py": "3e56def37106eabb44d8ce5e04eed82a431be66126cf7f365c0aac050cd3b379",
     "tools/ci/run_godot_regressions.py": "7ba05842826a1f395fa60109f077e8fd77b13ee2aa0db199a93de4002f7a2e12",
     "tools/ci/run_windows_godot_regressions.py": "2cf3490928b9996ab5689a52bae15b015da8113ace4cba1cf93a72a3c7c40519",
@@ -725,9 +725,9 @@
   "other_platforms": "This publisher claims only its recorded target-OS headless scope. It does not establish graphical pixel, browser/WebAssembly, owner visual, target-PC or GPU acceptance.",
   "platform": "windows",
   "schema_version": 1,
-  "sha256": "31375a02fde5cef10e0230858a3d892fb9198eea5a5c2664f8ecec499df24d8e",
+  "sha256": "87d3ef41e1565dac181876a655c4ace4bb86acbae1298eb5ea439f84c7435389",
   "size": 5079552,
-  "source_commit": "af31d828ab680c52007cddae5525024fe0f31ff8",
+  "source_commit": "56e5a839d5b7a4f504910504699e43030b08fa0d",
   "source_input_hash_kind": "SHA-256 of canonical Git blob bytes; CRLF working files normalize to LF",
   "source_inputs": {
     "godot/native_extension/cyber_demo_bridge.hpp": "20c2be1c558774aee431f72e2f7d2ac41ab26f6a4a3d9c0168ca490013c1d522",
@@ -818,12 +818,12 @@
     "native/src/world_pressure_state.inc": "e7444b96c7e03cbd83b352707e55d999fb939859b41783f5bf51bb40b4d2caa2",
     "native/src/world_quantity.inc": "d9e6835d092193e4976c728d90121c6dee4b421337e056b5fc3c74975491af6e"
   },
-  "source_tree": "9f1135e12b18386eb36bfd8c0a69e195494876b1",
+  "source_tree": "2dca7a12875ade8357d7136e5da2e53c2f3e50c1",
   "status": "validated-development-runtime",
-  "toolchain": "Build host: GitHub-hosted Ubuntu 24.04; Windows x86_64 target\ngodot-cpp=101ae38034304346a46ea9ea84ae156d3e860496; SCons=4.10.1\nLLVM-MinGW=20260826 UCRT; archive SHA-256=cee8d2ce3da5145ce4dc882e70d0b0719a783d53a99752c60948fc0659975a65\nclang version 23.1.0 (https://github.com/llvm/llvm-project.git ea7d852a70e8bdfaf601d6626a760f9771b2c4b4)\nLLD 23.1.0 (https://github.com/llvm/llvm-project.git ea7d852a70e8bdfaf601d6626a760f9771b2c4b4) (compatible with GNU linkers)\ndafb9b14416ba9cd9b71c5b5a64c5da97abc5e7d3acc671969e06397595fde5a  /home/runner/work/_temp/godot-cpp/bin/libgodot-cpp.windows.template_debug.x86_64.a",
+  "toolchain": "Build host: GitHub-hosted Ubuntu 24.04; Windows x86_64 target\ngodot-cpp=101ae38034304346a46ea9ea84ae156d3e860496; SCons=4.10.1\nLLVM-MinGW=20260826 UCRT; archive SHA-256=cee8d2ce3da5145ce4dc882e70d0b0719a783d53a99752c60948fc0659975a65\nclang version 23.1.0 (https://github.com/llvm/llvm-project.git ea7d852a70e8bdfaf601d6626a760f9771b2c4b4)\nLLD 23.1.0 (https://github.com/llvm/llvm-project.git ea7d852a70e8bdfaf601d6626a760f9771b2c4b4) (compatible with GNU linkers)\n9ba805dc986f7b032d2dd8ac257281aa1fcf6ab62a06afd00ed93a5277d6e5e0  /home/runner/work/_temp/godot-cpp/bin/libgodot-cpp.windows.template_debug.x86_64.a",
   "validated_platform": "Windows x86_64 Godot 4.7 (actual GitHub-hosted headless execution)",
-  "validation_output": "pf504-post405-runtime-attempt-1-windows-42364801824/validation.json",
-  "validation_sha256": "b6a9ae9695894c26a5a7cebf232739104df262ff84b25b8d2ff4f5a614340cbe",
+  "validation_output": "pf504-post405-runtime-attempt-1-windows-42376614107/validation.json",
+  "validation_sha256": "d108b7be051f064a661685628c181f6a459896c1d6f009843cd9be9e6b98ff0e",
   "workflow_attempt": "1",
-  "workflow_run": "https://github.com/techrote/cybersand/actions/runs/42364801824"
+  "workflow_run": "https://github.com/techrote/cybersand/actions/runs/42376614107"
 }
