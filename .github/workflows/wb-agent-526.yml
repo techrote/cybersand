@@ -5,6 +5,7 @@ on:
     types: [opened, synchronize, reopened, ready_for_review]
     paths:
       - 'godot/scripts/workbench_agent_footprint.gd'
+      - 'godot/scripts/workbench_agent_signed_frame.gd'
       - 'godot/scripts/workbench_authoring_*.gd'
       - 'godot/scripts/simulation_worker.gd'
       - 'godot/tests/test_workbench_agent_*.gd'
@@ -119,7 +120,7 @@ jobs:
           "$GODOT_BIN" --version | tee "$EVIDENCE/godot-version.txt"
           grep -Fx '4.7.stable.official.5b4e0cb0f' "$EVIDENCE/godot-version.txt"
           timeout 120 "$GODOT_BIN" --headless --path godot --editor --import --quit 2>&1 | tee "$EVIDENCE/import.log"
-          for script in test_workbench_agent_footprint.gd test_workbench_authoring_envelope.gd test_workbench_agent_failures.gd; do
+          for script in test_workbench_agent_footprint.gd test_workbench_agent_signed_frame.gd test_workbench_authoring_envelope.gd test_workbench_agent_failures.gd; do
             timeout 120 "$GODOT_BIN" --headless --path godot --script "res://tests/$script" 2>&1 | tee "$EVIDENCE/$script.log"
           done
       - name: Run real-worker native-ID and actual post-draw framebuffer acceptance
@@ -265,6 +266,7 @@ jobs:
               ('version',['--version'],30),
               ('import',['--headless','--path','godot','--editor','--import','--quit'],240),
               ('geometry',['--headless','--path','godot','--script','res://tests/test_workbench_agent_footprint.gd'],180),
+              ('signed-frame',['--headless','--path','godot','--script','res://tests/test_workbench_agent_signed_frame.gd'],180),
               ('envelope',['--headless','--path','godot','--script','res://tests/test_workbench_authoring_envelope.gd'],180),
               ('failure-controls',['--headless','--path','godot','--script','res://tests/test_workbench_agent_failures.gd'],180),
               # No --headless: this must produce an ACTUAL Windows render/draw.
