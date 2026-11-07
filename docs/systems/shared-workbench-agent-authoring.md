@@ -217,10 +217,14 @@ Godot 4/GDExtension:
 
 ```sh
 godot --headless --path godot --script res://tests/test_workbench_agent_footprint.gd
+godot --headless --path godot --script res://tests/test_workbench_agent_failures.gd
 godot --headless --path godot --script res://tests/test_workbench_agent_owner.gd
 ```
 
-The second test uses the real existing shared workbench, worker thread,
+The fault-injection script uses a synthetic refusal to exercise partial
+readback/quarantine/dedup semantics; it is **not** evidence that the native
+solver behaves identically. The final test uses the real existing shared
+workbench, worker thread,
 native `material_at` / `emit_disc`, post-draw image, Sand protection,
 deliberate manual-queued-intervention race, retained duplicate receipt and
 named authored-start reopen, not a model/native mock.
