@@ -141,7 +141,21 @@ REVIEWED_TRANSITIONS: tuple[dict, ...] = ({'path': 'native/src/world_pressure.in
   'source_commit': '89c7b5931dd18601b72c5ce0f77186eaac16cbc1',
   'record': 'docs/audits/2026-11-06-sol-workbench-material-transition.md',
   'issue': 364,
-  'pr': 466})
+  'pr': 466},
+ {'path': 'native/src/world.cpp',
+ 'from_lf_sha256': 'b0a8ad4b20b46fa005bbf7f594e3e96a40d8d5920a258e69d7c8c218262a77a1',
+ 'to_lf_sha256': 'ce67b7cc999d4163cb7c92f8089174a216f95e7129749b71fcc62a14545279dd',
+ 'source_commit': 'ca9a8287e29ad36c07ae6b5b76c5d6221c389ef8',
+ 'record': 'docs/audits/2026-11-07-workbench-freed-material-transition.md',
+ 'issue': 364,
+ 'pr': 466},
+ {'path': 'native/src/world_pressure.inc',
+ 'from_lf_sha256': '75c9897aa0eec69900d2e37d69a83b513d7c8ae2894d95e41a09cc0493195079',
+ 'to_lf_sha256': '9818ed10332a03eef99b53fba7a7e91448e792414541048ada1927f1ba168c48',
+ 'source_commit': 'ca9a8287e29ad36c07ae6b5b76c5d6221c389ef8',
+ 'record': 'docs/audits/2026-11-07-workbench-freed-material-transition.md',
+ 'issue': 364,
+ 'pr': 466})
 
 
 class CompatibilityError(ValueError):
