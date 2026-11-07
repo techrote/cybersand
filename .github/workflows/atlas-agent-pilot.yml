@@ -16,7 +16,7 @@ permissions:
 
 concurrency:
   group: atlas-pilot-${{ github.event.pull_request.number || github.run_id }}
-  cancel-in-progress: false
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   three-lanes:
