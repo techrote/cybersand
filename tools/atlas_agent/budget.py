@@ -79,6 +79,10 @@ class Budget:
         if input_tokens_ub > int(lim["max_input_tokens_per_call"]):
             raise LimitReached(f"estimated input {input_tokens_ub} tokens exceeds max_input_tokens_per_call="
                                f"{lim['max_input_tokens_per_call']}", "max_input_tokens_per_call")
+        if input_tokens_ub > self.rates.long_context_tokens:
+            raise LimitReached(f"estimated input {input_tokens_ub} tokens exceeds the short-context threshold "
+                               f"{self.rates.long_context_tokens}; long-context rates are not modelled",
+                               "long_context_pricing_not_modelled")
         if self.input_tokens + input_tokens_ub > int(lim["max_total_input_tokens"]):
             raise LimitReached("max_total_input_tokens would be exceeded", "max_total_input_tokens")
         if self.output_tokens + max_output_tokens > int(lim["max_total_output_tokens"]):

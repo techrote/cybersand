@@ -3,12 +3,19 @@
   "currency": "USD",
   "tokens_per_unit": 1000000,
   "tier": "standard",
+  "long_context_threshold_tokens": 272000,
   "source_url": "https://developers.openai.com/api/docs/pricing",
   "image_source_url": "https://developers.openai.com/api/docs/guides/images-vision",
   "retrieved_utc": "2026-11-07",
   "max_age_days": 45,
   "verification": "Rates were read from the published OpenAI developer pricing page on 2026-11-07 (standard tier, short-context). The page shows no version number. The owner must re-check them against the live page before the first charged run; the runner refuses live execution once retrieved_utc is older than max_age_days or when the model is not listed here.",
   "models": {
+    "gpt-6.1-sol": {
+      "input": 2.0, "cached_input": 0.1, "output": 10.0, "supports_reasoning": true,
+      "verified_utc": "2026-11-07", "verification_source": "https://developers.openai.com/api/docs/models/gpt-6.1-sol and the pricing page standard table row (short context, up to 272K input tokens; longer prompts are priced higher and are refused by the runner). Responses API, function calling and reasoning.effort low|medium|high|xhigh|max are listed.",
+      "image_note": "The vision guide does NOT state an image rule for gpt-6.1-sol. Conservative bound, not a published rule: the highest published multiplier (2.46) over the API's 30,000-patch rejection limit.",
+      "image": {"method": "patch", "patch_size": 32, "multiplier": 2.46, "patch_budget": {"low": 30000, "high": 30000, "auto": 30000}}
+    },
     "gpt-6-luna": {
       "input": 0.1, "cached_input": 0.01, "output": 0.5, "supports_reasoning": true,
       "verified_utc": "2026-11-07", "verification_source": "https://developers.openai.com/api/docs/models/gpt-6-luna and the pricing page standard table row (short context). Responses API, function calling and reasoning.effort none|low|medium|high|xhigh|max are listed for the model.",

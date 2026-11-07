@@ -35,6 +35,7 @@ class Rates:
     image: dict
     source_url: str
     retrieved_utc: str
+    long_context_tokens: int = 272000
 
     def cost(self, input_tokens: int, cached_tokens: int, output_tokens: int) -> float:
         cached = min(max(cached_tokens, 0), max(input_tokens, 0))
@@ -78,7 +79,8 @@ def rates_for(model: str, table: dict, today: dt.date | None = None, enforce_age
     return Rates(model=model, input=float(entry["input"]), cached_input=float(entry["cached_input"]),
                  output=float(entry["output"]), per_tokens=int(table["tokens_per_unit"]),
                  supports_reasoning=bool(entry.get("supports_reasoning", False)), image=dict(entry["image"]),
-                 source_url=table["source_url"], retrieved_utc=table["retrieved_utc"])
+                 source_url=table["source_url"], retrieved_utc=table["retrieved_utc"],
+                 long_context_tokens=int(table.get("long_context_threshold_tokens", 272000)))
 
 
 def image_tokens_upper_bound(rates: Rates, width: int, height: int, detail: str) -> int:

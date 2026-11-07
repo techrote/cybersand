@@ -91,7 +91,7 @@ def skeleton(run_id: str, mode: str, started_utc: str, collection: str) -> dict:
                  "simulated": mode == "dry-run"},
         "credit_gate": {"performed": False, "passed": None, "checks": [], "headroom_basis": None, "facts": {}},
         "calls": [], "tools": [], "validation": [], "edits": [], "images": [],
-        "captures": {"input_bundle": None, "rendered_bundle": None, "comparison": None, "render_attempts": []},
+        "captures": {"input_bundle": None, "reference_bundle": None, "rendered_bundle": None, "comparison": None, "render_attempts": []},
         "visual_cycle": {"claimed": False, "reason": "no before/after Godot capture cycle was executed"},
         "final_report": None,
         "artifacts": {"patch": None, "tool_log": None, "transcript": None},

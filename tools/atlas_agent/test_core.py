@@ -143,6 +143,20 @@ class PricingBudgetTests(unittest.TestCase):
         self.assertGreaterEqual(small, 6 * 3 * 2.46 - 1)
         self.assertGreaterEqual(pricing.image_tokens_upper_bound(luna, 6000, 6000, "high"), 73_000)
 
+    def test_gpt_6_1_sol_rates_and_long_context_guard(self):
+        sol = pricing.rates_for("gpt-6.1-sol", self.table, enforce_age=False)
+        self.assertAlmostEqual(sol.cost(1_000_000, 0, 1_000_000), 2.0 + 10.0)
+        self.assertAlmostEqual(sol.cost(1_000_000, 1_000_000, 0), 0.10)
+        self.assertEqual(sol.long_context_tokens, 272000)
+        cfg = copy.deepcopy(DEFAULTS)
+        cfg["limits"].update({"max_input_tokens_per_call": 400000, "max_total_input_tokens": 2000000})
+        cfg["spend"].update({"max_usd_per_call": 5, "max_usd_per_run": 25})
+        budget = Budget(cfg["limits"], cfg["spend"], sol, False)
+        budget.release(budget.reserve(270000, 100))
+        with self.assertRaises(LimitReached) as ctx:
+            budget.reserve(272001, 100)
+        self.assertEqual(ctx.exception.reason_code, "long_context_pricing_not_modelled")
+
     def make_budget(self, live=False, **overrides):
         cfg = copy.deepcopy(DEFAULTS)
         cfg["limits"].update(overrides.pop("limits", {}))
@@ -508,6 +522,66 @@ class StructuredEditTests(unittest.TestCase):
             {"feature_id": "copper-rail", "rectangles": [[0, 0, 1, 1, 65]], "note": "x"}), 1).ok)
 
 
+class RemoveRectanglesTests(unittest.TestCase):
+    def setUp(self):
+        pack = json.loads((FIXTURE / PACK).read_text(encoding="utf-8"))
+        self.layouts = {"inline": (FIXTURE / PACK).read_text(encoding="utf-8"),
+                        "expanded": json.dumps(pack, indent=2) + "\n"}
+
+    def test_add_then_remove_round_trips_each_layout(self):
+        for name, text in self.layouts.items():
+            added, _ = atlas.add_rectangles(text, "granite-arch", [[10, 9, 2, 1, 54], [13, 9, 2, 1, 54]])
+            removed, info = atlas.remove_rectangles(added, "granite-arch", [[13, 9, 2, 1, 54], [10, 9, 2, 1, 54]])
+            self.assertEqual(info["rectangles_removed"], 2, msg=name)
+            self.assertEqual(json.loads(removed), json.loads(text), msg=name)
+            if name == "expanded":
+                self.assertEqual(removed, text)
+
+    def test_remove_first_middle_and_last_entries(self):
+        for name, text in self.layouts.items():
+            base = json.loads(text)
+            rects = next(f for f in base["features"] if f["id"] == "granite-arch")["rectangles"]
+            for pick in ([rects[0]], [rects[2]], [rects[-1]], [rects[0], rects[1]], [rects[1], rects[-1]]):
+                new_text, _ = atlas.remove_rectangles(text, "granite-arch", [list(r) for r in pick])
+                expected = json.loads(text)
+                target = next(f for f in expected["features"] if f["id"] == "granite-arch")
+                target["rectangles"] = [r for r in target["rectangles"] if r not in pick]
+                self.assertEqual(json.loads(new_text), expected, msg=f"{name} {pick}")
+
+    def test_refusals(self):
+        text = self.layouts["expanded"]
+        cases = [("granite-arch", [[1, 1, 1, 1, 40]], "rectangle_not_found"),
+                 ("granite-arch", [[0, 10, 24, 6, 40], [0, 10, 24, 6, 40]], "rectangle_not_found"),
+                 ("granite-arch", [[0, 10, 24]], "bad_rectangles"), ("granite-arch", [], "bad_rectangles"),
+                 ("nope", [[0, 10, 24, 6, 40]], "unknown_feature")]
+        for feature, rects, code in cases:
+            with self.assertRaises(ToolError, msg=str(rects)) as ctx:
+                atlas.remove_rectangles(text, feature, rects)
+            self.assertEqual(ctx.exception.code, code)
+        base = json.loads(text)
+        every = [list(r) for r in next(f for f in base["features"] if f["id"] == "copper-rail")["rectangles"]]
+        with self.assertRaises(ToolError) as ctx:
+            atlas.remove_rectangles(text, "copper-rail", every)
+        self.assertEqual(ctx.exception.code, "feature_would_be_empty")
+
+    def test_tool_records_a_removal_and_stays_valid(self):
+        tmp, work, built, policy = make_workspace()
+        self.addCleanup(tmp.cleanup)
+        executor = ToolExecutor(base_config(), work, policy, COLLECTION, True, [], receipt_mod.Redactor([]))
+        self.assertIn("pack_remove_rectangles", executor.tool_names())
+        executor.execute("pack_add_rectangles", json.dumps(
+            {"feature_id": "copper-rail", "rectangles": [[11, 3, 2, 2, 65]], "note": "x"}), 1)
+        outcome = executor.execute("pack_remove_rectangles", json.dumps(
+            {"feature_id": "copper-rail", "rectangles": [[11, 3, 2, 2, 65]], "note": "undo"}), 2)
+        self.assertTrue(outcome.ok, outcome.text)
+        self.assertEqual(executor.edits[-1]["kind"], "pack_remove_rectangles")
+        self.assertEqual(executor.edits[-1]["before_sha256"], executor.edits[0]["after_sha256"])
+        self.assertEqual(executor.edits[-1]["after_sha256"], executor.edits[0]["before_sha256"])
+        good = json.loads(executor.execute("run_validator", json.dumps(
+            {"collection": COLLECTION, "kind": "validate"}), 3).text)
+        self.assertEqual(good["exit_code"], 0)
+
+
 class CaptureTests(unittest.TestCase):
     def setUp(self):
         self.tmp = tempfile.TemporaryDirectory(prefix="atlas-cap-")
@@ -566,6 +640,21 @@ class CaptureTests(unittest.TestCase):
         self.assertFalse(report["godot_to_godot"])
         same = captures.compare_bundles(self.bundle, make_bundle(self.pack_dir, self.root / "same"))
         self.assertFalse(same["visual_change_observed"])
+
+    def test_reference_bundle_is_listed_and_viewable(self):
+        tmp, work, built, policy = make_workspace()
+        self.addCleanup(tmp.cleanup)
+        executor = ToolExecutor(base_config(), work, policy, COLLECTION, True, [], receipt_mod.Redactor([]),
+                                reference_bundle=self.bundle)
+        self.assertIn("view_image", executor.tool_names())
+        listing = json.loads(executor.execute("list_captures", "{}", 1).text)
+        self.assertEqual(list(listing["bundles"]), ["reference"])
+        shown = executor.execute("view_image", json.dumps(
+            {"bundle": "reference", "shot_id": "full", "collection": COLLECTION}), 2)
+        self.assertTrue(shown.ok, shown.text)
+        self.assertEqual(next(iter(executor.images.values()))["bundle"], "reference")
+        self.assertFalse(executor.execute("view_image", json.dumps(
+            {"bundle": "input", "shot_id": "full", "collection": COLLECTION}), 3).ok)
 
     def test_launcher_contract_adapter(self):
         launcher = self.root / captures.LAUNCHER_NAME

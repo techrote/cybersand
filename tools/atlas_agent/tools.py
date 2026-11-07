@@ -58,7 +58,7 @@ TOOL_SPECS: dict[str, dict] = {
                             "kind": {"enum": ["validate", "render_check", "render_write"]}}),
     },
     "list_captures": {
-        "description": "List verified rendered image evidence (input bundle and any bundle rendered in this run), "
+        "description": "List verified rendered image evidence (the input bundle of the current source, an optional reference bundle of an earlier state, and any bundle rendered in this run), "
                        "including the evidence class: 'godot-capture' (real renderer) or 'fixture' (flat raster, "
                        "NOT Godot output).",
         "parameters": _obj({}),
@@ -66,7 +66,7 @@ TOOL_SPECS: dict[str, dict] = {
     "view_image": {
         "description": "Attach one verified PNG capture to the conversation so you can critique its pixels. "
                        "Limited number of images per run.",
-        "parameters": _obj({"bundle": {"enum": ["input", "rendered"]}, "shot_id": {"type": "string", "maxLength": 80},
+        "parameters": _obj({"bundle": {"enum": ["input", "rendered", "reference"]}, "shot_id": {"type": "string", "maxLength": 80},
                             "collection": {"type": "string", "maxLength": 64}}),
     },
     "render_capture": {
@@ -83,6 +83,16 @@ TOOL_SPECS: dict[str, dict] = {
                        "Only the files marked writable by list_files can be edited; the result must still parse.",
         "parameters": _obj({"path": _PATH, "old_text": {"type": "string", "minLength": 1, "maxLength": 20000},
                             "new_text": {"type": "string", "maxLength": 20000}}),
+    },
+    "pack_remove_rectangles": {
+        "description": "Remove up to 60 exact [x, y, width, height, material_id] rectangles (the last matching entry "
+                       "of each) from ONE feature of the collection's pack.json, preserving the file's layout. Cells "
+                       "those rectangles had overwritten show the earlier rectangles again. A feature must keep at "
+                       "least one rectangle.",
+        "parameters": _obj({"feature_id": {"type": "string", "minLength": 1, "maxLength": 80},
+                            "rectangles": {"type": "array", "minItems": 1, "maxItems": 60, "items": {
+                                "type": "array", "minItems": 5, "maxItems": 5, "items": {"type": "integer"}}},
+                            "note": _S(200)}),
     },
     "pack_add_rectangles": {
         "description": "Append up to 60 validated [x, y, width, height, material_id] rectangles to ONE feature of the "
@@ -143,12 +153,14 @@ class ToolOutcome:
 class ToolExecutor:
     def __init__(self, cfg: dict, work_root: Path, policy: PathPolicy, collection: str, writable: bool,
                  extras: list[str], redactor, executables: dict[str, str] | None = None,
-                 input_bundle: Path | None = None, launcher: Path | None = None, out_dir: Path | None = None):
+                 input_bundle: Path | None = None, launcher: Path | None = None, out_dir: Path | None = None,
+                 reference_bundle: Path | None = None):
         self.cfg, self.limits, self.task = cfg, cfg["limits"], cfg["task"]
         self.work_root, self.policy, self.collection = Path(work_root), policy, collection
         self.writable, self.extras, self.redactor = writable, extras, redactor
         self.executables = executables or resolve_executables()
         self.input_bundle, self.launcher, self.out_dir = input_bundle, launcher, out_dir
+        self.reference_bundle = reference_bundle
         self.rendered_bundle: Path | None = None
         self.tool_calls = 0
         self.malformed = 0
@@ -168,14 +180,14 @@ class ToolExecutor:
     # ------------------------------------------------------------- advertised set
     def tool_names(self) -> list[str]:
         names = ["list_files", "read_file", "inspect_pack", "run_validator"]
-        if self.input_bundle or self.launcher:
+        if self.input_bundle or self.reference_bundle or self.launcher:
             names += ["list_captures", "view_image"]
         if self.launcher:
             names.append("render_capture")
         if self.input_bundle and self.launcher:
             names.append("compare_captures")
         if self.writable:
-            names += ["replace_text", "pack_add_rectangles"]
+            names += ["replace_text", "pack_add_rectangles", "pack_remove_rectangles"]
         names.append("submit_report")
         return names
 
@@ -294,7 +306,7 @@ class ToolExecutor:
 
     # captures ------------------------------------------------------------------
     def _bundle_dir(self, which: str) -> Path | None:
-        return self.input_bundle if which == "input" else self.rendered_bundle
+        return {"input": self.input_bundle, "reference": self.reference_bundle}.get(which, self.rendered_bundle)
 
     def _load_bundle(self, which: str) -> dict:
         directory = self._bundle_dir(which)
@@ -308,7 +320,7 @@ class ToolExecutor:
 
     def _t_list_captures(self, a: dict) -> ToolOutcome:
         found = {}
-        for which in ("input", "rendered"):
+        for which in ("input", "reference", "rendered"):
             if self._bundle_dir(which) is not None:
                 found[which] = self._load_bundle(which)
         if not found:
@@ -415,6 +427,25 @@ class ToolExecutor:
                            "bytes_added": info["bytes_added"]})
         return ToolOutcome(json.dumps({"edited": clean, "feature_id": info["feature_id"],
                                        "rectangles_added": info["rectangles_added"],
+                                       "after_sha256": result["after_sha256"],
+                                       "note": "re-run run_validator before relying on this edit"}), True)
+
+    def _t_pack_remove_rectangles(self, a: dict) -> ToolOutcome:
+        clean, path = self.policy.check_write(f"{atlas.WORLD_DESIGN}/{self.collection}/pack.json")
+        if clean not in self.files_edited and len(self.files_edited) >= int(self.limits["max_files_edited"]):
+            raise LimitReached(f"max_files_edited={self.limits['max_files_edited']} reached", "max_files_edited")
+        text = path.read_bytes().decode("utf-8")
+        new_text, info = atlas.remove_rectangles(text, a["feature_id"], a["rectangles"])
+        encoded = new_text.encode("utf-8")
+        result = self.policy.write_bytes(clean, encoded, len(encoded) + 1)
+        self.files_edited.add(clean)
+        self.edits.append({"n": len(self.edits) + 1, "path": clean, "kind": "pack_remove_rectangles",
+                           "feature_id": info["feature_id"], "rectangles_removed": info["rectangles_removed"],
+                           "note": a["note"], "before_sha256": result["before_sha256"],
+                           "after_sha256": result["after_sha256"], "bytes_removed": -info["bytes_added"],
+                           "bytes_added": 0})
+        return ToolOutcome(json.dumps({"edited": clean, "feature_id": info["feature_id"],
+                                       "rectangles_removed": info["rectangles_removed"],
                                        "after_sha256": result["after_sha256"],
                                        "note": "re-run run_validator before relying on this edit"}), True)
 

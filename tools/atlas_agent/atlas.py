@@ -283,3 +283,53 @@ def add_rectangles(pack_text: str, feature_id: str, rects: list, max_rects: int 
         raise ToolError("pack_layout_unsupported", "the spliced pack did not parse to the expected content; refused")
     return new_text, {"feature_id": feature_id, "rectangles_added": len(rects),
                       "bytes_added": len(new_text) - len(pack_text)}
+
+
+def remove_rectangles(pack_text: str, feature_id: str, rects: list, max_rects: int = 60) -> tuple[str, dict]:
+    """Remove the last exact match of each rectangle from one feature, preserving layout. The spliced
+    text must parse to exactly the old pack minus those entries; a feature keeps at least one rectangle."""
+    pack = json.loads(pack_text)
+    feature = next((f for f in pack.get("features", []) if f.get("id") == feature_id), None)
+    if feature is None:
+        raise ToolError("unknown_feature", f"no feature {feature_id!r}; use inspect_pack to list feature ids")
+    if not rects or len(rects) > max_rects:
+        raise ToolError("bad_rectangles", f"provide 1..{max_rects} rectangles per call")
+    existing = [list(r) for r in feature["rectangles"]]
+    positions, taken = [], set()
+    for rect in rects:
+        if not (isinstance(rect, list) and len(rect) == 5 and all(type(v) is int for v in rect)):
+            raise ToolError("bad_rectangles", f"each rectangle must be [x, y, width, height, material_id]: {rect!r}")
+        index = next((i for i in range(len(existing) - 1, -1, -1) if existing[i] == rect and i not in taken), None)
+        if index is None:
+            raise ToolError("rectangle_not_found", f"{rect} is not in feature {feature_id!r} (or was already listed)")
+        taken.add(index)
+        positions.append(index)
+    if len(existing) - len(taken) < 1:
+        raise ToolError("feature_would_be_empty", "a feature must keep at least one rectangle")
+    top = re.search(r'\n  "features":\s*\[', pack_text)
+    start = top.end() if top else pack_text.index('"features"')
+    ident = re.compile(r'"id":\s*"' + re.escape(feature_id) + '"').search(pack_text, start)
+    key = re.compile(r'"rectangles":\s*\[').search(pack_text, ident.end()) if ident else None
+    if key is None:
+        raise ToolError("pack_layout_unsupported", "could not locate the feature's rectangles array")
+    close = _array_end(pack_text, key.end() - 1)
+    inner = pack_text[key.end():close]
+    blocks = list(re.finditer(r"\[[^\[\]]*\]", inner))
+    if len(blocks) != len(existing):
+        raise ToolError("pack_layout_unsupported", "rectangle layout did not match the parsed array")
+    # rebuild the array from the kept entries using the file's own first separator
+    separator = inner[blocks[0].end():blocks[1].start()] if len(blocks) > 1 else ", "
+    kept = [blocks[i].group(0) for i in range(len(blocks)) if i not in taken]
+    new_inner = inner[:blocks[0].start()] + separator.join(kept) + inner[blocks[-1].end():]
+    new_text = pack_text[:key.end()] + new_inner + pack_text[close:]
+    expected = json.loads(pack_text)
+    target = next(f for f in expected["features"] if f["id"] == feature_id)
+    target["rectangles"] = [r for i, r in enumerate(target["rectangles"]) if i not in taken]
+    try:
+        reparsed = json.loads(new_text)
+    except ValueError:
+        raise ToolError("pack_layout_unsupported", "the spliced pack did not parse; refused") from None
+    if reparsed != expected:
+        raise ToolError("pack_layout_unsupported", "the spliced pack did not parse to the expected content; refused")
+    return new_text, {"feature_id": feature_id, "rectangles_removed": len(taken),
+                      "bytes_added": len(new_text) - len(pack_text)}

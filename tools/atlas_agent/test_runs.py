@@ -656,6 +656,34 @@ class RendererIntegrationTests(RunCase):
         self.assertFalse(rec["visual_cycle"]["claimed"])
 
 
+class BundleEvidenceTests(RunCase):
+    def test_stale_input_bundle_is_refused_before_anything_runs(self):
+        pack = self.env.repo / "docs/world-design" / COL / "pack.json"
+        pack.write_text(pack.read_text(encoding="utf-8").replace("[9, 8, 6, 2, 65]", "[9, 8, 6, 2, 54]"), encoding="utf-8")
+        git(self.env.repo, "commit", "-qam", "pack changed after the capture was rendered")
+        result = self.env.run(self.env.overrides(task={"capture_bundle": str(self.env.bundle)}))
+        self.assertEqual((result.exit_code, result.receipt["status"]["reason_code"]), (2, "capture_bundle_stale"))
+        self.assertEqual(result.receipt["usage"]["api_attempts"], 0)
+
+    def test_reference_bundle_may_differ_from_the_current_pack(self):
+        older = make_bundle(self.env.repo / "docs/world-design" / COL, self.env.root / "older")
+        pack = self.env.repo / "docs/world-design" / COL / "pack.json"
+        pack.write_text(pack.read_text(encoding="utf-8").replace("[9, 8, 6, 2, 65]", "[9, 8, 6, 2, 54]"), encoding="utf-8")
+        git(self.env.repo, "commit", "-qam", "newer state")
+        current = make_bundle(self.env.repo / "docs/world-design" / COL, self.env.root / "current")
+        result = self.env.run(self.env.overrides(task={"capture_bundle": str(current), "reference_bundle": str(older)}))
+        rec = self.verify(result)
+        self.assertEqual(result.exit_code, 0, rec["status"])
+        self.assertTrue(rec["captures"]["reference_bundle"]["verified"])
+        self.assertNotEqual(rec["captures"]["reference_bundle"]["shots"][0]["pack_sha256"],
+                            rec["captures"]["input_bundle"]["shots"][0]["pack_sha256"])
+        broken = self.env.root / "broken"
+        shutil.copytree(older, broken)
+        (broken / "batch-manifest.json").write_text("{}", encoding="utf-8")
+        result = self.env.run(self.env.overrides(task={"capture_bundle": str(current), "reference_bundle": str(broken)}))
+        self.assertEqual(result.receipt["status"]["reason_code"], "capture_bundle_invalid")
+
+
 class VisualCycleLogicTests(unittest.TestCase):
     def cycle(self, comparison, edited=True, bundle=True, mode="live"):
         from types import SimpleNamespace

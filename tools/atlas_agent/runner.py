@@ -220,12 +220,25 @@ def _run(cfg, rec, out_dir, ctx, env, sdk, sleep, clock, now, costs_probe, launc
         if not summary["verified"]:
             raise ConfigError("input capture bundle failed verification: " + "; ".join(summary["problems"][:3]),
                               "capture_bundle_invalid")
+        expected_pack = built["files"][f"{atlas.WORLD_DESIGN}/{collection}/pack.json"]["sha256"]
+        stale = sorted({s["pack_sha256"] for s in summary["shots"]
+                        if s["collection"] == collection and s["pack_sha256"] != expected_pack})
+        if stale:
+            raise ConfigError("the input capture bundle was rendered from a different pack than the source being "
+                              "edited (stale evidence); re-render it from the current pack", "capture_bundle_stale")
+    reference = Path(task["reference_bundle"]) if task["reference_bundle"] else None
+    if reference is not None:
+        ref_summary = captures.summarize_bundle(reference, "reference")
+        rec["captures"]["reference_bundle"] = ref_summary
+        if not ref_summary["verified"]:
+            raise ConfigError("reference capture bundle failed verification: " + "; ".join(ref_summary["problems"][:3]),
+                              "capture_bundle_invalid")
     renderer = launcher or (Path(task["capture_launcher"]) if task["capture_launcher"] else
                             (DEFAULT_LAUNCHER if DEFAULT_LAUNCHER.is_file() and task["godot"] else None))
     if renderer is not None and not task["godot"]:
         renderer = None
     executor = ToolExecutor(cfg, work_root, policy, collection, writable, task["read_extra_collections"], redactor,
-                            resolve_executables(), bundle, renderer, out_dir)
+                            resolve_executables(), bundle, renderer, out_dir, reference)
     ctx["executor"] = executor
     tool_names = executor.tool_names()
     rec["policy"]["tools_advertised"] = tool_names

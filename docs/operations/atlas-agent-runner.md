@@ -103,6 +103,9 @@ priced and reconciled; reported usage above the reservation stops the run. Timeo
 keep their reservation as **possibly charged**; 429s and rejected requests are released. A 429 that mentions
 quota, billing, credit or a hard spend limit is treated as exhausted credit and is not retried.
 
+Prompts above the 272K-token short-context pricing threshold are refused (`long_context_pricing_not_modelled`)
+because long-context rates are not modelled.
+
 The defaults and hard caps live in [`config.schema.json`](../../tools/atlas_agent/schemas/config.schema.json) (unknown keys
 are rejected; each limit has a maximum). Limits: iterations, API calls, retries and exponential backoff, run
 seconds, input/output tokens per call and per run, USD per call and per run, tool calls, per-tool and total tool
@@ -145,7 +148,8 @@ Enforced in code, not only in the prompt:
 
 Tools offered to the model: `list_files`, `read_file`, `inspect_pack`, `run_validator`, `list_captures`,
 `view_image`, `render_capture`, `compare_captures`, `replace_text` and `pack_add_rectangles` (both only with write
-custody) and `submit_report`. `pack_add_rectangles` appends up to 60 validated `[x, y, width, height, material_id]`
+custody) and `submit_report`. `pack_remove_rectangles` removes exact rectangles (the last matching entry of each,
+never emptying a feature) by the same layout-preserving, parse-verified splice. `pack_add_rectangles` appends up to 60 validated `[x, y, width, height, material_id]`
 rectangles to one feature while preserving the file's own layout; it refuses out-of-bounds rectangles, unknown
 palette materials and movable materials in static features, and the spliced file must parse to exactly the old pack
 plus the new rectangles. After any edit the runner itself re-runs the collection's validator and `--check` render and
@@ -155,6 +159,10 @@ By default the agent makes one small edit. `task.directive` (up to 2,000 charact
 instruction, for example to make several sweeping and detail edits; it overrides that default but never the hard
 rules, and its text and SHA-256 are recorded in the receipt (`policy.task_directive`). Instruction text is versioned
 (`atlas-agent-instructions/2`, hashed in every receipt).
+
+An optional `task.reference_bundle` supplies a second verified bundle of an *earlier* state (for example the art
+before a previous agent's edit) that the model can list and view as bundle `reference`; the `input` bundle must have been
+rendered from the exact pack being edited, otherwise the run is refused as `capture_bundle_stale`.
 
 Capture bundles use the documented #498 layout (sealed `batch-manifest.json`, job manifests, PNG hashes); the
 runner re-verifies the seal, hashes and PNG structure itself, and invokes the #498 launcher only through the

@@ -95,6 +95,7 @@
         "allow_dirty_source": {"type": "boolean"},
         "critique_only": {"type": "boolean"},
         "capture_bundle": {"type": ["string", "null"]},
+        "reference_bundle": {"type": ["string", "null"]},
         "capture_launcher": {"type": ["string", "null"]},
         "godot": {"type": ["string", "null"]},
         "directive": {"type": "string", "maxLength": 2000},

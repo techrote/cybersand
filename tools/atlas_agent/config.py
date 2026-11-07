@@ -74,6 +74,7 @@ DEFAULTS: dict = {
         "allow_dirty_source": False,
         "critique_only": False,
         "capture_bundle": None,
+        "reference_bundle": None,
         "capture_launcher": None,
         "godot": None,
         "directive": "",
