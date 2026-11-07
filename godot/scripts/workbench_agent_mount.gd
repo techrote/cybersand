@@ -37,8 +37,16 @@ func mount(workbench: Control) -> bool:
 	_toggle.toggle_mode = true
 	_toggle.button_pressed = false
 	_toggle.toggled.connect(func(enabled: bool) -> void:
-		if is_instance_valid(_agent_panel):
-			_agent_panel.visible = enabled)
+		if not is_instance_valid(_agent_panel):
+			return
+		if not enabled:
+			# The overlay is parented under world_view, not the panel: hiding
+			# the controls alone would leave a live, invisible agent editing.
+			# Revoke pending model/authorization work and require native Stop
+			# acknowledgement before another task can be authorized.
+			_agent_panel.invalidate_due_to_owner_change("agent panel opted out")
+			_agent_panel.proposal_overlay.set_footprint([])
+		_agent_panel.visible = enabled)
 	row.add_child(_toggle)
 	_agent_panel.bind_authoritative_dispatcher(
 		Callable(self,"dispatch"),Callable(self,"project_cell"),
