@@ -117,3 +117,52 @@ candidate World. Then benchmark matched durable-ACK p50/p95/p99 latency,
 write amplification, and per-tick cost against the original #486 mechanism
 on both platforms, preserving full mutation/incarnation fencing. Do not
 merge or mark Ready without owner authorization.
+
+## 7 November 2026 — explicit torn-suffix recovery and native replay gate
+
+A killed writer can leave a final *incomplete, unacknowledged* edit frame. The
+previous G6J1 reader recovered the valid acknowledged prefix but deliberately
+refused to reopen it for appending, without a supported recovery transaction.
+`Journal.rollover_torn_tail(source, destination, x, y, incarnation,
+expected_generation, verify_staged_replay)` now adds a **manual, opt-in**
+continuation route that does **not truncate or overwrite** the crashed source.
+
+The serialized storage owner must first stop all access through old handles,
+choose a fresh destination in the same directory, and provide a replay callback
+which validates the exact recovered prefix in an **isolated native World**.
+The primitive rereads the one bounded source descriptor, validates every full
+record/CRC/generation, verifies identity and expected terminal generation,
+refuses a non-torn source, calls that native replay gate, rechecks the source
+identity/length/mtime, and writes the clean acknowledged prefix through a
+uniquely created, fsynced stage. No-clobber link publication and POSIX
+directory sync precede returning a new appendable handle. The original torn
+file and suffix are preserved for diagnosis.
+
+This is **not silent crash repair, automatic startup rollover, lossless
+simulation-tick continuation, multi-writer safety, power-loss recovery or a
+Windows directory-durability guarantee**. A torn *complete* record or corrupt
+acknowledged prefix fails closed. A different writer replacing a path while
+the serialized owner runs is still outside the supported contract. No new
+native API or protected World source is changed.
+
+The standard-library regression tests replay veto, stale generation, wrong
+incarnation, source mutation during callback, publication failure/retry,
+forensic-source immutability, successor reopening and subsequent append, and
+refusal to salvage a corrupt complete frame.
+
+The pinned native CYPS pilot now deliberately terminates its separate journal
+writer with a partial sixth frame after five fsynced native edit receipts. It
+recovers those five, verifies five real native World replay prefixes and exact
+final CYPS bytes, then publishes a separate, appendable verified-prefix journal.
+The crashed source must remain byte-for-byte unchanged. This exercises genuine
+source-matched native replay as the recovery gate but **does not** demonstrate
+crashing a journal-integrated native simulation owner or improve measured
+native tick/ACK performance. Execute on Linux and Windows with 1/4 workers
+using the existing `gen006-storage-native-pilot.yml` workflow, and run
+`python -m unittest -v test_gen006_storage_journal` for the standalone
+negative controls. Assess the exact-head hosted results before claiming PASS.
+
+**Next dependency-ready action:** wire a durable-write journal adapter to a
+privately staged, persistent native World, crash that actual native owner
+immediately after journal ACK (without normal save-all), and compare real
+recovery state plus matched fsync policy and p50/p95/p99 latency against #486.
