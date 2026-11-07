@@ -1,0 +1,93 @@
+name: GEN006 dynamic full-World native continuation (experimental)
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - 'native/include/cybersand/gen006_dynamic_full_world_stage.hpp'
+      - 'native/tests/gen006_dynamic_full_world_continuation.cpp'
+      - 'tools/experiments/gen006_dynamic_full_world_qualification.py'
+      - '.github/workflows/gen006-dynamic-full-world-continuation.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gen006-dynamic-${{ github.event.pull_request.number || github.run_id }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+env:
+  EXPECTED_HEAD: ${{ github.event.pull_request.head.sha || github.sha }}
+
+jobs:
+  ubuntu-native:
+    name: Ubuntu 24.04 native signed-seam continuation
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - name: Checkout exact candidate source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 1
+          lfs: false
+          persist-credentials: false
+      - name: Compile and execute original native World
+        shell: bash
+        timeout-minutes: 35
+        run: |
+          set -euo pipefail
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 tools/experiments/gen006_dynamic_full_world_qualification.py
+      - name: Preserve compiler, source and actual native results
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gen006-dynamic-ubuntu-${{ github.run_id }}
+          path: build/gen006-dynamic/
+          retention-days: 45
+          if-no-files-found: warn
+
+  windows-native:
+    name: Windows Server 2022 native signed-seam continuation
+    runs-on: windows-2022
+    timeout-minutes: 40
+    steps:
+      - name: Preserve LF source bytes
+        shell: cmd
+        run: |
+          git config --global core.autocrlf false
+          if errorlevel 1 exit /b 1
+          git config --global core.eol lf
+          if errorlevel 1 exit /b 1
+      - name: Checkout exact candidate source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 1
+          lfs: false
+          persist-credentials: false
+      - name: Compile actual native World using LLVM Clang under MSVC
+        shell: cmd
+        timeout-minutes: 35
+        run: |
+          for /f "tokens=*" %%i in ('"%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe" -latest -products * -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath') do set "GEN006_VSROOT=%%i"
+          if not defined GEN006_VSROOT exit /b 1
+          call "%GEN006_VSROOT%\Common7\Tools\VsDevCmd.bat" -no_logo -arch=x64 -host_arch=x64
+          if errorlevel 1 exit /b 1
+          set "GEN006_CXX=%ProgramFiles%\LLVM\bin\clang++.exe"
+          if not exist "%GEN006_CXX%" set "GEN006_CXX=%GEN006_VSROOT%\VC\Tools\Llvm\x64\bin\clang++.exe"
+          if not exist "%GEN006_CXX%" exit /b 1
+          python tools\ci\check_ci_provider_policy.py
+          if errorlevel 1 exit /b 1
+          python tools\experiments\gen006_dynamic_full_world_qualification.py
+          if errorlevel 1 exit /b 1
+      - name: Preserve compiler, source and actual native results
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gen006-dynamic-windows-${{ github.run_id }}
+          path: build/gen006-dynamic/
+          retention-days: 45
+          if-no-files-found: warn
