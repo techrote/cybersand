@@ -4,11 +4,25 @@ status: Current
 document-kind: guide
 scope: Short onboarding sequence and checkpoint protocol; product intent, source identity and contracts have canonical homes
 canonical-for: [development-onboarding]
-last-reviewed: 2026-11-04
+last-reviewed: 2026-11-07
 related-documents: [source-checkpoint-and-recovery.md, ../reference/product-intent-and-priorities.md, ../reference/status-and-roadmap.md, microscenarios-programme.md, development-claims-remediation-programme.md, water-hybrid-pressure-extension-programme.md, github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
 # Development handover
+
+## WB-AGENT released-source consumer — 2026-11-07
+
+The owner requested integration and qualification of all released fixes,
+including whole-canvas scope and the scrolling side dock. The #531-derived
+`codex/wb525-combined-qualification-20261107` consumes main1f82dac1,
+#529e44f7024, #53038f74d39 and #531b704a127 with strike211898 scope/UI source.
+Use the [canonical contract](../systems/shared-workbench-agent-authoring.md)
+and [consumer evidence](../audits/2026-11-07-wb525-combined-qualification.md).
+Native authority/MAT-AUTH remain exact main; newer owner tests are preserved.
+New combined-head qualification is required; historical strike passes are not
+relabelled. No merge/Ready is authorized. API recovery is deferred; LIVE0/3 and
+human Windows acceptance remain separate. Initial foundation text below is
+retained historical onboarding, superseded by this consumer status.
 
 ## WB-AGENT Stage-1 — first owner-side foundation checkpoint, 2026-11-07
 

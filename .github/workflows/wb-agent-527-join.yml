@@ -38,26 +38,36 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
           lfs: false
-      - name: Compose exact tested foundation without touching either owned PR
+      - name: Qualify integrated source or compose the isolated upstream foundation
         env:
           FOUNDATION_SHA: 6a9967fbd47c992c8f1bcd109163563d0f3ab18f
           COMMON_BASE: 761dac3b657ca8970e817d18c2005fda9c416948
         run: |
           set -euo pipefail
           mkdir -p "$EVIDENCE"
-          git fetch --no-tags --depth=100 origin "$FOUNDATION_SHA"
-          test "$(git merge-base HEAD "$FOUNDATION_SHA")" = "$COMMON_BASE"
-          # #526 and accepted main overlap in some documentation routes.
-          # Preserve accepted-main content for overlapping doc hunks;
-          # all Godot executable paths are independently owned and disjoint.
-          git -c user.name='WB-Agent CI' -c user.email='ci@users.noreply.github.com' \
-            merge -X ours --no-commit --no-ff "$FOUNDATION_SHA"
-          test -z "$(git diff --name-only --diff-filter=U)"
-          printf '%s\\n' "$FOUNDATION_SHA" > "$EVIDENCE/foundation-sha.txt"
-          git rev-parse "$FOUNDATION_SHA^{tree}" > "$EVIDENCE/foundation-tree.txt"
-          git write-tree > "$EVIDENCE/COMPOSED-UNCOMMITTED-TREE.txt"
-          git diff --cached --name-only "$COMMON_BASE" > "$EVIDENCE/composed-changed-paths.txt"
-          git status --short > "$EVIDENCE/uncommitted-status.txt"
+          if test -f godot/scripts/workbench_authoring_host.gd; then
+            # A composed consumer already owns its reviewed foundation. Never
+            # replace it or test an uncommitted merge of an older dependency.
+            git diff --exit-code HEAD
+            git rev-parse HEAD > "$EVIDENCE/foundation-sha.txt"
+            git rev-parse 'HEAD^{tree}' > "$EVIDENCE/foundation-tree.txt"
+            git rev-parse 'HEAD^{tree}' > "$EVIDENCE/QUALIFIED-INTEGRATED-TREE.txt"
+            git status --short > "$EVIDENCE/uncommitted-status.txt"
+          else
+            git fetch --no-tags --depth=100 origin "$FOUNDATION_SHA"
+            test "$(git merge-base HEAD "$FOUNDATION_SHA")" = "$COMMON_BASE"
+            # #526 and accepted main overlap in some documentation routes.
+            # Preserve accepted-main content for overlapping doc hunks;
+            # all Godot executable paths are independently owned and disjoint.
+            git -c user.name='WB-Agent CI' -c user.email='ci@users.noreply.github.com' \
+              merge -X ours --no-commit --no-ff "$FOUNDATION_SHA"
+            test -z "$(git diff --name-only --diff-filter=U)"
+            printf '%s\\n' "$FOUNDATION_SHA" > "$EVIDENCE/foundation-sha.txt"
+            git rev-parse "$FOUNDATION_SHA^{tree}" > "$EVIDENCE/foundation-tree.txt"
+            git write-tree > "$EVIDENCE/COMPOSED-UNCOMMITTED-TREE.txt"
+            git diff --cached --name-only "$COMMON_BASE" > "$EVIDENCE/composed-changed-paths.txt"
+            git status --short > "$EVIDENCE/uncommitted-status.txt"
+          fi
       - name: Record exact source and diff
         run: |
           set -euo pipefail

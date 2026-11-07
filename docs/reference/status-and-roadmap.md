@@ -4,7 +4,7 @@ status: Current
 document-kind: reference
 scope: Current implementation map, unresolved correctness and policy decisions, and bounded next checkpoints
 canonical-for: [implementation-status, foundational-priorities, open-decisions]
-last-reviewed: 2026-11-04
+last-reviewed: 2026-11-07
 related-documents: [validation-evidence.md, invariants.md, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/development-claims-remediation-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../operations/github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
@@ -12,22 +12,21 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 ## WB-AGENT Stage-1 shared-workbench human+agent authoring (#525–#528) — 2026-11-07
 
-**Approved, partially implemented in isolated Draft PR #529; not on accepted main.**
-The [canonical Stage-1 contract](../systems/shared-workbench-agent-authoring.md)
-defines authoritative `observe` / `prepare_edit` / `apply_edit` / `step` in
-the existing shared simulation workbench. Current source in #529 includes
-bounded integer footprint validation, owner-side native ID reads and readback
-receipts, a post-draw render join and verified-only authored-start stage/commit
-adapters. These are candidate source, **not qualified runtime proof**; published
-tests, reliable end-to-end UI wiring and complete provenance remain open.
+**Current source candidate; not accepted main.** Existing Drafts #529/#530/#531
+provide native-authoritative four tools, bounded Step/Stop and the mounted
+asynchronous panel. Owner-released whole-canvas scope and the scrolling side
+dock are consumed by an isolated #531-derived integration candidate. Each
+observation/edit remains bounded to4096 cells; native laws/defaults, material
+protection and authored-start semantics remain unchanged.
 
-Execution order is #526 authoritative tools -> #527 stepping/Stop plus registered
-32-Sand reference hopper -> #528 in-client asynchronous Responses API/panel.
-The parent #525 has separate engineering, three actual API trials and owner's
-physical Windows acceptance gates; none are accepted by this source checkpoint.
-This is not GEN-006 streaming, GEN-007 generation editing or a new simulation
-owner. Existing physics/defaults and named-start vs evolved-state distinctions
-remain unchanged.
+The [canonical Stage-1 contract](../systems/shared-workbench-agent-authoring.md)
+and [consumer qualification record](../audits/2026-11-07-wb525-combined-qualification.md)
+identify refreshed source heads and distinguish new exact-head qualification
+from earlier strike/owner runs. Dependency order remains #526 authority ->
+#527 Step/Stop/control -> #528 panel/API. No merge or Ready is authorized.
+Engineering gates must qualify actual combined source. Registered live attempts
+remain0/3 and explicit human Windows acceptance remains pending; API recovery
+is deferred by the owner. This is not GEN-006 streaming or a new simulation owner.
 
 
 ## Ballistic Water, IN-B1 and workbench spray (#362) — 2026-11-05

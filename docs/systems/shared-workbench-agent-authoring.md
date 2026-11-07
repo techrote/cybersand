@@ -11,6 +11,16 @@ related-documents: [../architecture/data-ownership-and-lifetimes.md, ../architec
 
 # Shared workbench Stage-1 agent authoring contract
 
+## Released-source consumer integration — 2026-11-07
+
+**Current candidate, not accepted main:** isolated #531-derived branch
+`codex/wb525-combined-qualification-20261107` combines main1f82dac1,
+#529e44f7024, #53038f74d39, #531b704a127 and owner-released whole-canvas
+and side-dock fixes through211898dc. Latest owner refusal/replay/reopen
+regressions are retained. The [consumer record](../audits/2026-11-07-wb525-combined-qualification.md)
+keeps new exact-head gates separate from historical strike evidence below.
+No merge/Ready, registered live trial or human verdict follows from composition.
+
 ## Independent composed desktop checkpoint — 2026-11-07
 
 **Current on isolated strike checkpoint5d5d8bc6, not accepted main:** the
