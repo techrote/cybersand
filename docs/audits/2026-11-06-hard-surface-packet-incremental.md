@@ -321,3 +321,32 @@ candidate execution is **not** the canonical retained-runtime result.
 The full three-canvas same-host before/after profiling remains required.
 Parallel full-mask copying remains rejected absent comparable measurements.
 Do not merge, publish replacement runtime binaries or claim acceptance.
+
+## Owner-authorised finishing phase: reconciled lockstep and native-runtime publication
+
+The owner explicitly authorised completing and integrating PR #470, including
+the source-matched retained Linux/Windows runtimes. The branch has now
+merged the accepted `main` lockstep change by an **ancestry-preserving
+merge commit** (do not squash or rebase away the two reviewed MAT-AUTH
+source-transition ancestors). The merged GDScript worker retains both
+lockstep fencing and independently instrumented hard-packet/render/publication
+stage timings; `native/src/world.cpp` and both native adapter files are
+unchanged from the previously independently accepted implementation.
+
+The dedicated `hs-pkt470-runtime-publication.yml` publisher is an
+**explicit, source-bound, branch-leased** four-path publishing workflow,
+using the existing audited shared publication engine. Its request records
+sequence 1 and does not release or push to `main`. Before the publisher can
+commit new runtime objects, it requires a fresh native hard-surface exactness
+group, pinned source-matched builds for Linux and Windows, actual target-OS
+Godot import and hard-packet byte oracle, both lockstep self-checks, render
+ACK/backpressure, workbench/worker tests, original raw-log receipts, shared
+native/build input SHA-256 ledgers and a four-path LFS pointer+manifest index
+check. The only branch write is a fast-forward to the unchanged built source
+tip protected by a `--force-with-lease` exact-SHA precondition.
+
+**This checkpoint describes the publication admission request, not an
+executed pass.** Confirm the final publisher run, source SHA and runtime
+manifest hashes before accepting the resulting publication commit and
+running the last Ready Native/GDExtension/Docs gates. Production merge remains
+conditional on those checks, not on prior-source greens.
