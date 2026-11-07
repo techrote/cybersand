@@ -416,7 +416,7 @@ class LiveRunTests(RunCase):
             self.assertEqual(first["include"], ["reasoning.encrypted_content"])
             self.assertTrue(all(t["type"] == "function" and t["strict"] for t in first["tools"]))
             self.assertIn("submit_report", [t["name"] for t in first["tools"]])
-            self.assertTrue(first["instructions"].startswith("instructions_version: atlas-agent-instructions/2"))
+            self.assertTrue(first["instructions"].startswith("instructions_version: atlas-agent-instructions/3"))
             for post in posts:
                 self.assertNotIn(KEY, json.dumps(post["body"]))
                 self.assertEqual({k.lower(): v for k, v in post["headers"].items()}["authorization"], f"Bearer {KEY}")
@@ -487,6 +487,36 @@ class LiveRunTests(RunCase):
         self.assertGreater(rec["cost"]["ambiguous_charge_assumed_usd"], 0)
         self.assertGreater(rec["cost"]["committed_usd"], rec["cost"]["computed_from_reported_usage_usd"])
         self.assertEqual([e["possibly_charged"] for e in rec["calls"][0]["retry_events"]], [True, True])
+
+    def test_rate_limit_rejections_do_not_consume_the_api_call_allowance(self):
+        sleeps: list = []
+        queue = [error(429, "rate_limit_exceeded", "slow"), error(429, "rate_limit_exceeded", "slow"),
+                 ok(response_body([function_call("list_files", {"prefix": ""}, "c1")])),
+                 error(429, "rate_limit_exceeded", "slow"), ok(response_body([report_call()]))]
+        stub = StubApi(models=good_models())
+        stub.queue = queue
+        with stub:
+            ov = api_overrides(self.env, stub, limits={"max_api_calls": 2})
+            result = self.env.run(ov, env={"OPENAI_API_KEY": KEY}, sleeps=sleeps)
+            rec = self.verify(result)
+            self.assertEqual((rec["status"]["final"], result.exit_code), ("success", 0), rec["status"])
+            self.assertEqual(len(stub.response_posts()), 5)
+            self.assertEqual(rec["usage"]["api_responses"], 2)
+            self.assertEqual(rec["usage"]["rate_limited_attempts"], 3)
+            self.assertEqual(rec["usage"]["api_attempts"], 5)
+            self.assertEqual(rec["cost"]["ambiguous_charge_assumed_usd"], 0.0)
+
+    def test_total_rate_limit_rejections_are_bounded_across_the_run(self):
+        sleeps: list = []
+        stub = StubApi(models=good_models())
+        stub.default = error(429, "rate_limit_exceeded", "slow")
+        with stub:
+            ov = api_overrides(self.env, stub, limits={"max_retries": 6, "max_total_retries": 2})
+            result = self.env.run(ov, env={"OPENAI_API_KEY": KEY}, sleeps=sleeps)
+            rec = self.verify(result)
+            self.assertEqual((rec["status"]["final"], result.exit_code, rec["status"]["reason_code"]),
+                             ("failure", 5, "rate_limit_retries_exhausted"))
+            self.assertEqual(len(stub.response_posts()), 3)  # two tolerated rejections, the third stops the run
 
     def test_exhausted_credit_or_spend_limit_does_not_retry(self):
         sleeps: list = []

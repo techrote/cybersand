@@ -1,0 +1,1522 @@
+{
+  "artifacts": {
+    "patch": null,
+    "tool_log": {
+      "entries": 47,
+      "path": "tool-log.jsonl",
+      "sha256": "916935d51017d4f9fe04538ce7a18165dc702cd5fde52ae7ec8491cfbffcbfa1"
+    },
+    "transcript": {
+      "entries": 15,
+      "path": "transcript.jsonl",
+      "sha256": "02bbb4c6df2f175205c3808a183623e2681c9f1671617d25413a37a91240a1ae"
+    }
+  },
+  "calls": [
+    {
+      "cached_input_tokens": 0,
+      "computed_from_reported_usage_usd": 0.004276,
+      "duration_ms": 2852,
+      "images_in_request": 0,
+      "input_tokens": 2018,
+      "input_tokens_estimated_upper": 6033,
+      "kind": "responses.create",
+      "model": "gpt-6.1-sol",
+      "n": 1,
+      "output_tokens": 24,
+      "reasoning_tokens": 0,
+      "request_id": "req_1f69749606374d9e874e29074abc0c82",
+      "reserved_worst_case_usd": 0.172066,
+      "response_id": "resp_0f66c24c237e0d37016aeee023a54c87d2b9755d19320cc67e",
+      "retries": 0,
+      "retry_events": [],
+      "status": "completed"
+    },
+    {
+      "cached_input_tokens": 2015,
+      "computed_from_reported_usage_usd": 0.0021675,
+      "duration_ms": 2686,
+      "images_in_request": 0,
+      "input_tokens": 2273,
+      "input_tokens_estimated_upper": 6581,
+      "kind": "responses.create",
+      "model": "gpt-6.1-sol",
+      "n": 2,
+      "output_tokens": 145,
+      "reasoning_tokens": 0,
+      "request_id": "req_d9a695b802a444409d2285cd965498aa",
+      "reserved_worst_case_usd": 0.173162,
+      "response_id": "resp_0f66c24c237e0d37016aeee025eb1487d2a2abe050987f62fb",
+      "retries": 0,
+      "retry_events": [],
+      "status": "completed"
+    },
+    {
+      "cached_input_tokens": 2270,
+      "computed_from_reported_usage_usd": 0.012841,
+      "duration_ms": 2575,
+      "images_in_request": 0,
+      "input_tokens": 7702,
+      "input_tokens_estimated_upper": 15654,
+      "kind": "responses.create",
+      "model": "gpt-6.1-sol",
+      "n": 3,
+      "output_tokens": 175,
+      "reasoning_tokens": 0,
+      "request_id": "req_deb083de4cba48f0bea6875eb427c07c",
+      "reserved_worst_case_usd": 0.191308,
+      "response_id": "resp_0f66c24c237e0d37016aeee028f21c87d2af6205eff1bc7671",
+      "retries": 0,
+      "retry_events": [],
+      "status": "completed"
+    },
+    {
+      "cached_input_tokens": 7699,
+      "computed_from_reported_usage_usd": 0.0182099,
+      "duration_ms": 5896,
+      "images_in_request": 2,
+      "input_tokens": 14829,
+      "input_tokens_estimated_upper": 31432,
+      "kind": "responses.create",
+      "model": "gpt-6.1-sol",
+      "n": 4,
+      "output_tokens": 318,
+      "reasoning_tokens": 40,
+      "request_id": "req_c87d0a9bf2004b7ba38fb50ffbd7cefe",
+      "reserved_worst_case_usd": 0.222864,
+      "response_id": "resp_0f66c24c237e0d37016aeee02b9ca887d2ac3836320509b547",
+      "retries": 0,
+      "retry_events": [],
+      "status": "completed"
+    },
+    {
+      "cached_input_tokens": 14826,
+      "computed_from_reported_usage_usd": 0.0332726,
+      "duration_ms": 7301,
+      "images_in_request": 3,
+      "input_tokens": 27351,
+      "input_tokens_estimated_upper": 53628,
+      "kind": "responses.create",
+      "model": "gpt-6.1-sol",
+      "n": 5,
+      "output_tokens": 674,
+      "reasoning_tokens": 42,
+      "request_id": "req_5d66e0e2594744b5946032107aef16c0",
+      "reserved_worst_case_usd": 0.267256,
+      "response_id": "resp_0f66c24c237e0d37016aeee031861487d289b30844325fa89c",
+      "retries": 0,
+      "retry_events": [],
+      "status": "completed"
+    },
+    {
+      "cached_input_tokens": 7699,
+      "computed_from_reported_usage_usd": 0.0497799,
+      "duration_ms": 4798,
+      "images_in_request": 1,
+      "input_tokens": 31284,
+      "input_tokens_estimated_upper": 59006,
+      "kind": "responses.create",
+      "model": "gpt-6.1-sol",
+      "n": 6,
+      "output_tokens": 184,
+      "reasoning_tokens": 47,
+      "request_id": "req_f317163bbe1645949c3d25f4351ddb89",
+      "reserved_worst_case_usd": 0.278012,
+      "response_id": "resp_0f66c24c237e0d37016aeee051e23087d29d57f97f8ae52b56",
+      "retries": 1,
+      "retry_events": [
+        {
+          "attempt": 1,
+          "delay_seconds": 24.0,
+          "kind": "rate_limited",
+          "possibly_charged": false
+        }
+      ],
+      "status": "completed"
+    },
+    {
+      "cached_input_tokens": 7699,
+      "computed_from_reported_usage_usd": 0.0532479,
+      "duration_ms": 4057,
+      "images_in_request": 1,
+      "input_tokens": 33033,
+      "input_tokens_estimated_upper": 63118,
+      "kind": "responses.create",
+      "model": "gpt-6.1-sol",
+      "n": 7,
+      "output_tokens": 181,
+      "reasoning_tokens": 65,
+      "request_id": "req_2c3172405e964dfcbdcfe76adefdbcf7",
+      "reserved_worst_case_usd": 0.286236,
+      "response_id": "resp_0f66c24c237e0d37016aeee07a368487d2ab54b38b285e5679",
+      "retries": 2,
+      "retry_events": [
+        {
+          "attempt": 1,
+          "delay_seconds": 30.0,
+          "kind": "rate_limited",
+          "possibly_charged": false
+        },
+        {
+          "attempt": 2,
+          "delay_seconds": 1.702,
+          "kind": "rate_limited",
+          "possibly_charged": false
+        }
+      ],
+      "status": "completed"
+    },
+    {
+      "cached_input_tokens": 33030,
+      "computed_from_reported_usage_usd": 0.011619,
+      "duration_ms": 4619,
+      "images_in_request": 2,
+      "input_tokens": 36338,
+      "input_tokens_estimated_upper": 69857,
+      "kind": "responses.create",
+      "model": "gpt-6.1-sol",
+      "n": 8,
+      "output_tokens": 170,
+      "reasoning_tokens": 46,
+      "request_id": "req_12e2433469914a2f920f80833da5c104",
+      "reserved_worst_case_usd": 0.299714,
+      "response_id": "resp_0f66c24c237e0d37016aeee0a5480c87d283f2a444b7790d6d",
+      "retries": 2,
+      "retry_events": [
+        {
+          "attempt": 1,
+          "delay_seconds": 30.0,
+          "kind": "rate_limited",
+          "possibly_charged": false
+        },
+        {
+          "attempt": 2,
+          "delay_seconds": 7.0,
+          "kind": "rate_limited",
+          "possibly_charged": false
+        }
+      ],
+      "status": "completed"
+    },
+    {
+      "cached_input_tokens": 7699,
+      "computed_from_reported_usage_usd": 0.0602739,
+      "duration_ms": 4245,
+      "images_in_request": 1,
+      "input_tokens": 36781,
+      "input_tokens_estimated_upper": 70799,
+      "kind": "responses.create",
+      "model": "gpt-6.1-sol",
+      "n": 9,
+      "output_tokens": 134,
+      "reasoning_tokens": 10,
+      "request_id": "req_ba1673c0d2064889813ad12fdf564dde",
+      "reserved_worst_case_usd": 0.301598,
+      "response_id": "resp_0f66c24c237e0d37016aeee0d2854087d298e51afa9abb7473",
+      "retries": 2,
+      "retry_events": [
+        {
+          "attempt": 1,
+          "delay_seconds": 30.0,
+          "kind": "rate_limited",
+          "possibly_charged": false
+        },
+        {
+          "attempt": 2,
+          "delay_seconds": 9.0,
+          "kind": "rate_limited",
+          "possibly_charged": false
+        }
+      ],
+      "status": "completed"
+    },
+    {
+      "cached_input_tokens": 7699,
+      "computed_from_reported_usage_usd": 0.0662279,
+      "duration_ms": 2211,
+      "images_in_request": 0,
+      "input_tokens": 40183,
+      "input_tokens_estimated_upper": 75496,
+      "kind": "responses.create",
+      "model": "gpt-6.1-sol",
+      "n": 10,
+      "output_tokens": 49,
+      "reasoning_tokens": 9,
+      "request_id": "req_befeac5f9d7f4884b5a53ef196df7da5",
+      "reserved_worst_case_usd": 0.310992,
+      "response_id": "resp_0f66c24c237e0d37016aeee10253ac87d2bc959d5cafd443fb",
+      "retries": 2,
+      "retry_events": [
+        {
+          "attempt": 1,
+          "delay_seconds": 30.0,
+          "kind": "rate_limited",
+          "possibly_charged": false
+        },
+        {
+          "attempt": 2,
+          "delay_seconds": 12.0,
+          "kind": "rate_limited",
+          "possibly_charged": false
+        }
+      ],
+      "status": "completed"
+    },
+    {
+      "cached_input_tokens": 40180,
+      "computed_from_reported_usage_usd": 0.006542,
+      "duration_ms": 2712,
+      "images_in_request": 0,
+      "input_tokens": 41252,
+      "input_tokens_estimated_upper": 78028,
+      "kind": "responses.create",
+      "model": "gpt-6.1-sol",
+      "n": 11,
+      "output_tokens": 38,
+      "reasoning_tokens": 0,
+      "request_id": "req_ae9e747ecd6347e196094ace42cf2e46",
+      "reserved_worst_case_usd": 0.316056,
+      "response_id": "resp_0f66c24c237e0d37016aeee13424cc87d2aa3e5fe79631da7c",
+      "retries": 2,
+      "retry_events": [
+        {
+          "attempt": 1,
+          "delay_seconds": 30.0,
+          "kind": "rate_limited",
+          "possibly_charged": false
+        },
+        {
+          "attempt": 2,
+          "delay_seconds": 16.0,
+          "kind": "rate_limited",
+          "possibly_charged": false
+        }
+      ],
+      "status": "completed"
+    },
+    {
+      "cached_input_tokens": 41249,
+      "computed_from_reported_usage_usd": 0.0095449,
+      "duration_ms": 5669,
+      "images_in_request": 0,
+      "input_tokens": 43039,
+      "input_tokens_estimated_upper": 80614,
+      "kind": "responses.create",
+      "model": "gpt-6.1-sol",
+      "n": 12,
+      "output_tokens": 184,
+      "reasoning_tokens": 144,
+      "request_id": "req_445cb795a521493f8a6b7e6bd3f3ccd4",
+      "reserved_worst_case_usd": 0.321228,
+      "response_id": "resp_0f66c24c237e0d37016aeee167709887d2a265ee565650a52f",
+      "retries": 2,
+      "retry_events": [
+        {
+          "attempt": 1,
+          "delay_seconds": 30.0,
+          "kind": "rate_limited",
+          "possibly_charged": false
+        },
+        {
+          "attempt": 2,
+          "delay_seconds": 17.0,
+          "kind": "rate_limited",
+          "possibly_charged": false
+        }
+      ],
+      "status": "completed"
+    },
+    {
+      "cached_input_tokens": 43036,
+      "computed_from_reported_usage_usd": 0.0149716,
+      "duration_ms": 9560,
+      "images_in_request": 0,
+      "input_tokens": 45160,
+      "input_tokens_estimated_upper": 85236,
+      "kind": "responses.create",
+      "model": "gpt-6.1-sol",
+      "n": 13,
+      "output_tokens": 642,
+      "reasoning_tokens": 172,
+      "request_id": "req_f6ec20f90dcc45dfba1c2e8cac56de5d",
+      "reserved_worst_case_usd": 0.330472,
+      "response_id": "resp_0f66c24c237e0d37016aeee19ddaf887d2a8d90adf81280ba0",
+      "retries": 2,
+      "retry_events": [
+        {
+          "attempt": 1,
+          "delay_seconds": 30.0,
+          "kind": "rate_limited",
+          "possibly_charged": false
+        },
+        {
+          "attempt": 2,
+          "delay_seconds": 17.0,
+          "kind": "rate_limited",
+          "possibly_charged": false
+        }
+      ],
+      "status": "completed"
+    },
+    {
+      "cached_input_tokens": 45157,
+      "computed_from_reported_usage_usd": 0.0122617,
+      "duration_ms": 10474,
+      "images_in_request": 0,
+      "input_tokens": 45845,
+      "input_tokens_estimated_upper": 87893,
+      "kind": "responses.create",
+      "model": "gpt-6.1-sol",
+      "n": 14,
+      "output_tokens": 637,
+      "reasoning_tokens": 222,
+      "request_id": "req_92d3e5317741435692edc3fab39735ad",
+      "reserved_worst_case_usd": 0.335786,
+      "response_id": "resp_0f66c24c237e0d37016aeee1d6377887d28b41ae6fff941b69",
+      "retries": 2,
+      "retry_events": [
+        {
+          "attempt": 1,
+          "delay_seconds": 30.0,
+          "kind": "rate_limited",
+          "possibly_charged": false
+        },
+        {
+          "attempt": 2,
+          "delay_seconds": 15.0,
+          "kind": "rate_limited",
+          "possibly_charged": false
+        }
+      ],
+      "status": "completed"
+    },
+    {
+      "cached_input_tokens": 45842,
+      "computed_from_reported_usage_usd": 0.0071182,
+      "duration_ms": 1947,
+      "images_in_request": 0,
+      "input_tokens": 46984,
+      "input_tokens_estimated_upper": 92052,
+      "kind": "responses.create",
+      "model": "gpt-6.1-sol",
+      "n": 15,
+      "output_tokens": 25,
+      "reasoning_tokens": 0,
+      "request_id": "req_c026cb571734459dab97a8e44a318d7e",
+      "reserved_worst_case_usd": 0.344104,
+      "response_id": "resp_0f66c24c237e0d37016aeee20f4a4c87d28111a908043fcdea",
+      "retries": 2,
+      "retry_events": [
+        {
+          "attempt": 1,
+          "delay_seconds": 30.0,
+          "kind": "rate_limited",
+          "possibly_charged": false
+        },
+        {
+          "attempt": 2,
+          "delay_seconds": 15.0,
+          "kind": "rate_limited",
+          "possibly_charged": false
+        }
+      ],
+      "status": "completed"
+    }
+  ],
+  "captures": {
+    "comparison": null,
+    "input_bundle": {
+      "art_revision": "unverified external design source",
+      "batch_manifest_sha256": "b83e204bdae6c9cb81498fb049dd77565310d386b673f6611ebcc0f2245c3b76",
+      "evidence_class": "godot-capture",
+      "label": "input",
+      "problems": [],
+      "renderer": "opengl3_angle",
+      "shots": [
+        {
+          "collection": "lumen-fault",
+          "height": 512,
+          "kind": "full",
+          "pack_sha256": "fb6e28a6f7dc7ef0436512399f462cbfe73a01790a9f6d6692b613af297114d5",
+          "png_sha256": "dcf088e0f9e2db332921f8969c0907d96aa6c6a90a31bf25339c99cf330c7412",
+          "shot_id": "full",
+          "verified": true,
+          "width": 1280
+        },
+        {
+          "collection": "lumen-fault",
+          "height": 1080,
+          "kind": "viewport",
+          "pack_sha256": "fb6e28a6f7dc7ef0436512399f462cbfe73a01790a9f6d6692b613af297114d5",
+          "png_sha256": "cca7ad9bddf95d8167be17d589a83bbda039bcee5b528579e34c117c44622883",
+          "shot_id": "viewport",
+          "verified": true,
+          "width": 1920
+        },
+        {
+          "collection": "lumen-fault",
+          "height": 768,
+          "kind": "detail",
+          "pack_sha256": "fb6e28a6f7dc7ef0436512399f462cbfe73a01790a9f6d6692b613af297114d5",
+          "png_sha256": "0218c5efe22dfb9fc82f9e4fff13ee06b1130afc16bb2e118c2e66bec54a7fae",
+          "shot_id": "detail",
+          "verified": true,
+          "width": 1920
+        }
+      ],
+      "verified": true
+    },
+    "reference_bundle": {
+      "art_revision": "c4aab63eed538a25687c66d368b0801d2d2e04d0",
+      "batch_manifest_sha256": "a81f9954ca61ab221db08cb8853f893a88a81644b743a7d59d75b9af65cde564",
+      "evidence_class": "godot-capture",
+      "label": "reference",
+      "problems": [],
+      "renderer": "opengl3_angle",
+      "shots": [
+        {
+          "collection": "lumen-fault",
+          "height": 512,
+          "kind": "full",
+          "pack_sha256": "828de8b69c437c3d2b4f108d3f79e9ce3f9a0d904e6b1dfedb1fd825cf508fdd",
+          "png_sha256": "a8a957f8824f654567752d0417068a65c1c072f696d65f63a81c248266035058",
+          "shot_id": "full",
+          "verified": true,
+          "width": 1280
+        },
+        {
+          "collection": "lumen-fault",
+          "height": 1080,
+          "kind": "viewport",
+          "pack_sha256": "828de8b69c437c3d2b4f108d3f79e9ce3f9a0d904e6b1dfedb1fd825cf508fdd",
+          "png_sha256": "0503a438a092b5ac86d66a1bc5b0293d5fcadd76f86576371cc640eb9011c358",
+          "shot_id": "viewport",
+          "verified": true,
+          "width": 1920
+        },
+        {
+          "collection": "lumen-fault",
+          "height": 768,
+          "kind": "detail",
+          "pack_sha256": "828de8b69c437c3d2b4f108d3f79e9ce3f9a0d904e6b1dfedb1fd825cf508fdd",
+          "png_sha256": "d392fe8c8f13ccd4c696dc3af685783c70b6f7179c25aea25a11491008bc69df",
+          "shot_id": "detail",
+          "verified": true,
+          "width": 1920
+        }
+      ],
+      "verified": true
+    },
+    "render_attempts": [],
+    "rendered_bundle": null
+  },
+  "cost": {
+    "ambiguous_charge_assumed_usd": 0.0,
+    "authorised_ceiling_usd": 1.0,
+    "basis": "token counts x published rates; the API reports tokens, not dollars",
+    "billing_reconciliation": "not-performed",
+    "committed_usd": 0.362354,
+    "computed_from_reported_usage_usd": 0.362354,
+    "currency": "USD",
+    "peak_reservation_usd": 0.344774,
+    "per_call_ceiling_usd": 0.5,
+    "per_run_ceiling_usd": 1.0,
+    "rates": {
+      "cached_input_usd_per_1m": 0.1,
+      "input_usd_per_1m": 2.0,
+      "model": "gpt-6.1-sol",
+      "output_usd_per_1m": 10.0,
+      "retrieved_utc": "2026-11-07",
+      "source_url": "https://developers.openai.com/api/docs/pricing"
+    },
+    "remaining_allowance_usd": 0.637646,
+    "reservation_overruns": 0,
+    "reserved_worst_case_total_usd": 10.810786,
+    "simulated": false
+  },
+  "credit_gate": {
+    "checks": [
+      {
+        "detail": "environment variable OPENAI_API_KEY is set",
+        "name": "api_key_present",
+        "ok": true
+      },
+      {
+        "detail": "authorised ceiling $1.00 vs per-run limit $1.00; authorisation reference present",
+        "name": "spend_authorised",
+        "ok": true
+      },
+      {
+        "detail": "rates for gpt-6.1-sol retrieved 2026-11-07",
+        "name": "pricing_known",
+        "ok": true
+      },
+      {
+        "detail": "source checkout is clean",
+        "name": "source_clean",
+        "ok": true
+      },
+      {
+        "detail": "owner credit attestation supplied",
+        "name": "credit_attestation",
+        "ok": true
+      },
+      {
+        "detail": "attestation age 2.4h (max 72h); expires 2026-11-27 (required margin 24h)",
+        "name": "credit_not_expired",
+        "ok": true
+      },
+      {
+        "detail": "attested remaining $88.00 vs per-run limit $1.00; grant attested to cover API usage",
+        "name": "credit_sufficient",
+        "ok": true
+      },
+      {
+        "detail": "auto-recharge attested disabled",
+        "name": "auto_recharge_disabled",
+        "ok": true
+      },
+      {
+        "detail": "gpt-6.1-sol is in the attested eligible list",
+        "name": "model_attested_eligible",
+        "ok": true
+      },
+      {
+        "detail": "models.retrieve(gpt-6.1-sol) returned HTTP 200",
+        "name": "model_retrievable",
+        "ok": true
+      }
+    ],
+    "facts": {
+      "credit_balance_programmatically_verifiable": false,
+      "headroom_basis": "owner-attestation-only",
+      "note": "grant balance/expiry/auto-recharge cannot be read via a supported API-key endpoint; the owner attestation is the only source for them",
+      "organization_id_sha256_12": null,
+      "project_id_sha256_12": null,
+      "rate_limit_headers": {}
+    },
+    "headroom_basis": "owner-attestation-only",
+    "passed": true,
+    "performed": true
+  },
+  "edits": [
+    {
+      "after_sha256": "81fab7c0ed61d7ada5d0d717e4add6448fcb261084adec0185194186d3e7cada",
+      "before_sha256": "fb6e28a6f7dc7ef0436512399f462cbfe73a01790a9f6d6692b613af297114d5",
+      "bytes_added": 0,
+      "bytes_removed": 706,
+      "feature_id": "fault-strata",
+      "kind": "pack_remove_rectangles",
+      "n": 1,
+      "note": "Remove luna's eight unsupported flank debris rectangles; retain attached seams.",
+      "path": "docs/world-design/lumen-fault/pack.json",
+      "rectangles_removed": 8
+    },
+    {
+      "after_sha256": "589ae0c76a02d20a3d4e52bd1d56e14100d67d1e61bc132fa3985252abe20904",
+      "before_sha256": "81fab7c0ed61d7ada5d0d717e4add6448fcb261084adec0185194186d3e7cada",
+      "bytes_added": 0,
+      "bytes_removed": 354,
+      "feature_id": "survey-tripod",
+      "kind": "pack_remove_rectangles",
+      "n": 2,
+      "note": "Remove detached rubble and gratuitous amber spur; retain attached instrument joints.",
+      "path": "docs/world-design/lumen-fault/pack.json",
+      "rectangles_removed": 4
+    },
+    {
+      "after_sha256": "0cc3b1cd0e1f09e2f0bc7ec8332bf0468817052ad2d00245ddb5d838d6f02043",
+      "before_sha256": "589ae0c76a02d20a3d4e52bd1d56e14100d67d1e61bc132fa3985252abe20904",
+      "bytes_added": 0,
+      "bytes_removed": 89,
+      "feature_id": "seal-gate",
+      "kind": "pack_remove_rectangles",
+      "n": 3,
+      "note": "Restore genuine portal void; keep shoulders and crown.",
+      "path": "docs/world-design/lumen-fault/pack.json",
+      "rectangles_removed": 1
+    },
+    {
+      "after_sha256": "316e3fdc0a95acaf08da7ddd5a86465782cea88814459e3f7892ed7bde4ce01a",
+      "before_sha256": "0cc3b1cd0e1f09e2f0bc7ec8332bf0468817052ad2d00245ddb5d838d6f02043",
+      "bytes_added": 0,
+      "bytes_removed": 710,
+      "feature_id": "sealed-cistern",
+      "kind": "pack_remove_rectangles",
+      "n": 4,
+      "note": "Undo all eight luna edits; restore original frame/seal and wet Water footprint without adding anything across enclosure.",
+      "path": "docs/world-design/lumen-fault/pack.json",
+      "rectangles_removed": 8
+    },
+    {
+      "after_sha256": "d1abee70d3d4786d570a4315dbdd02af1f38655d4ec951009375f2bdc561fa15",
+      "before_sha256": "316e3fdc0a95acaf08da7ddd5a86465782cea88814459e3f7892ed7bde4ce01a",
+      "bytes_added": 0,
+      "bytes_removed": 441,
+      "feature_id": "collapsed-gantry",
+      "kind": "pack_remove_rectangles",
+      "n": 5,
+      "note": "Remove detached signal flecks and scene-dependent rock caps that do not belong to standalone mechanical module.",
+      "path": "docs/world-design/lumen-fault/pack.json",
+      "rectangles_removed": 5
+    },
+    {
+      "after_sha256": "389f2ccd468db32fb8b258bfc8cd778f257df03aad0f37c67f0dc52175e22b87",
+      "before_sha256": "d1abee70d3d4786d570a4315dbdd02af1f38655d4ec951009375f2bdc561fa15",
+      "bytes_added": 0,
+      "bytes_removed": 265,
+      "feature_id": "archive-console",
+      "kind": "pack_remove_rectangles",
+      "n": 6,
+      "note": "Restore readable archive display and quiet foundation; keep panel weathering.",
+      "path": "docs/world-design/lumen-fault/pack.json",
+      "rectangles_removed": 3
+    },
+    {
+      "after_sha256": "8b791231d8356f3c204842d16e7771c65bc5938a844f3bbf3fedcadcbf757a51",
+      "before_sha256": "389f2ccd468db32fb8b258bfc8cd778f257df03aad0f37c67f0dc52175e22b87",
+      "bytes_added": 0,
+      "bytes_removed": 617,
+      "feature_id": "archive-console",
+      "kind": "pack_remove_rectangles",
+      "n": 7,
+      "note": "Restore original coherent archive panels rather than unrelated overlay bars.",
+      "path": "docs/world-design/lumen-fault/pack.json",
+      "rectangles_removed": 7
+    },
+    {
+      "after_sha256": "6bf405dc36db382050ee73e588dcc0b32552def00bb6cde8674145d9e8128967",
+      "before_sha256": "8b791231d8356f3c204842d16e7771c65bc5938a844f3bbf3fedcadcbf757a51",
+      "bytes_added": 0,
+      "bytes_removed": 265,
+      "feature_id": "fault-strata",
+      "kind": "pack_remove_rectangles",
+      "n": 8,
+      "note": "Remove broad decorative bars before crafting attached geological shoulders.",
+      "path": "docs/world-design/lumen-fault/pack.json",
+      "rectangles_removed": 3
+    },
+    {
+      "after_sha256": "ba2b832f94dfd3fee710ff075f36b68e4150ccd76eda8ceab5194531c8dcecaf",
+      "before_sha256": "6bf405dc36db382050ee73e588dcc0b32552def00bb6cde8674145d9e8128967",
+      "bytes_added": 0,
+      "bytes_removed": 354,
+      "feature_id": "survey-tripod",
+      "kind": "pack_remove_rectangles",
+      "n": 9,
+      "note": "Recover antenna's original narrow measurement silhouette.",
+      "path": "docs/world-design/lumen-fault/pack.json",
+      "rectangles_removed": 4
+    },
+    {
+      "after_sha256": "07cce47fb3887b587ae0ff964fbc1eed08e0390f6bca34aa5d6423ddb36a1d9e",
+      "before_sha256": "ba2b832f94dfd3fee710ff075f36b68e4150ccd76eda8ceab5194531c8dcecaf",
+      "bytes_added": 0,
+      "bytes_removed": 443,
+      "feature_id": "collapsed-gantry",
+      "kind": "pack_remove_rectangles",
+      "n": 10,
+      "note": "Recover truss construction and reduce distracting horizontal patch bars beside breach.",
+      "path": "docs/world-design/lumen-fault/pack.json",
+      "rectangles_removed": 5
+    },
+    {
+      "after_sha256": "6375199e89b3b982cd5f3b68a61966b17f0c7f80b11441af3990af8f2b35fabe",
+      "before_sha256": "07cce47fb3887b587ae0ff964fbc1eed08e0390f6bca34aa5d6423ddb36a1d9e",
+      "bytes_added": 0,
+      "bytes_removed": 88,
+      "feature_id": "seal-gate",
+      "kind": "pack_remove_rectangles",
+      "n": 11,
+      "note": "Quiet small rust patch; preserve gate crown, shoulders, and stone piers.",
+      "path": "docs/world-design/lumen-fault/pack.json",
+      "rectangles_removed": 1
+    }
+  ],
+  "final_report": null,
+  "images": [
+    {
+      "bundle": "reference",
+      "bytes": 236746,
+      "collection": "lumen-fault",
+      "evidence_class": "godot-capture",
+      "height": 512,
+      "sent_in_calls": [
+        4,
+        5
+      ],
+      "sha256": "a8a957f8824f654567752d0417068a65c1c072f696d65f63a81c248266035058",
+      "shot_id": "full",
+      "width": 1280
+    },
+    {
+      "bundle": "input",
+      "bytes": 246451,
+      "collection": "lumen-fault",
+      "evidence_class": "godot-capture",
+      "height": 512,
+      "sent_in_calls": [
+        4,
+        5,
+        8,
+        9
+      ],
+      "sha256": "dcf088e0f9e2db332921f8969c0907d96aa6c6a90a31bf25339c99cf330c7412",
+      "shot_id": "full",
+      "width": 1280
+    },
+    {
+      "bundle": "input",
+      "bytes": 107467,
+      "collection": "lumen-fault",
+      "evidence_class": "godot-capture",
+      "height": 768,
+      "sent_in_calls": [
+        5,
+        6
+      ],
+      "sha256": "0218c5efe22dfb9fc82f9e4fff13ee06b1130afc16bb2e118c2e66bec54a7fae",
+      "shot_id": "detail",
+      "width": 1920
+    },
+    {
+      "bundle": "reference",
+      "bytes": 96895,
+      "collection": "lumen-fault",
+      "evidence_class": "godot-capture",
+      "height": 768,
+      "sent_in_calls": [
+        7,
+        8
+      ],
+      "sha256": "d392fe8c8f13ccd4c696dc3af685783c70b6f7179c25aea25a11491008bc69df",
+      "shot_id": "detail",
+      "width": 1920
+    }
+  ],
+  "limits": {
+    "limits": {
+      "backoff_base_seconds": 1.0,
+      "backoff_max_seconds": 30.0,
+      "image_resend_calls": 2,
+      "max_api_calls": 36,
+      "max_edit_bytes": 20000,
+      "max_files_edited": 3,
+      "max_image_bytes": 5000000,
+      "max_image_edge_pixels": 2048,
+      "max_images": 8,
+      "max_input_tokens_per_call": 150000,
+      "max_iterations": 30,
+      "max_malformed_tool_calls": 3,
+      "max_output_tokens_per_call": 16000,
+      "max_read_bytes": 32768,
+      "max_retries": 3,
+      "max_run_seconds": 2400,
+      "max_sandbox_violations": 2,
+      "max_tool_calls": 100,
+      "max_tool_calls_per_response": 8,
+      "max_tool_output_bytes": 30000,
+      "max_tool_seconds": 300,
+      "max_total_image_bytes": 24000000,
+      "max_total_input_tokens": 1500000,
+      "max_total_output_tokens": 120000,
+      "max_total_tool_seconds": 1200,
+      "token_estimate_bytes_per_token": 2.0
+    },
+    "spend": {
+      "attestation_max_age_hours": 72,
+      "authorisation_ref": "Owner instruction in the Claude Code session chat on 2026-11-07: have Sol 6.1 critique and improve luna's attempt. Ceiling USD 1.00 per run chosen by the assistant; the owner approves it by running the command",
+      "authorised_ceiling_usd": 1.0,
+      "costs_key_env": "OPENAI_ADMIN_KEY",
+      "credit_expiry_margin_hours": 24,
+      "expected_project": null,
+      "max_usd_per_call": 0.5,
+      "max_usd_per_run": 1.0,
+      "require_costs_crosscheck": false
+    }
+  },
+  "model": {
+    "api_endpoint": "openai-default",
+    "image_detail": "high",
+    "max_output_tokens_per_call": 16000,
+    "observed": [
+      "gpt-6.1-sol"
+    ],
+    "reasoning_effort": "medium",
+    "requested": "gpt-6.1-sol",
+    "store": false,
+    "truncation": "disabled"
+  },
+  "policy": {
+    "generated_globs": [
+      "docs/world-design/lumen-fault/preview.svg"
+    ],
+    "instructions_sha256": "8d3ce511fad2a4cfbc5b0e49854e21c7a933919dc33021071f34939ef70156c3",
+    "instructions_version": "atlas-agent-instructions/2",
+    "pricing_sha256": "811ef7eb398c806aa6de51c12b13f45bf6b4c6b195093e0ca416ba12c8c3544c",
+    "read_globs": [
+      "docs/world-design/lumen-fault/**",
+      "docs/world-design/QUALITY_BAR.md",
+      "docs/world-design/README.md",
+      "native/include/cybersand/material.hpp",
+      "materials/catalogue/catalogue.json"
+    ],
+    "task_directive": {
+      "sha256": "d1c000125bca477fc359aa43696ded3b3615879afaff766d22cb4b1595f2fa0a",
+      "text": "You are reviewing and improving ANOTHER model's work. gpt-6-luna already edited this collection; its 66 added rectangles are ALREADY APPLIED in pack.json. The 'input' capture bundle shows the CURRENT state (luna's result) in real Godot pixels; the 'reference' bundle shows the ORIGINAL art before luna. Read docs/world-design/lumen-fault/luna-attempt-review.md and luna-added-rectangles.json first: they list every rectangle luna added (feature, array index, which cells float unattached, what each overwrote). 1) CRITIQUE luna's attempt: view reference and input images and judge honestly, against the seven-point rubric, what helped and what hurt. 2) IMPROVE on it. Keep what works (the attached quartz-fan pillars, the seal-gate shoulders and crown). Fix what does not: remove floating debris with pack_remove_rectangles, or re-anchor good ideas with pack_add_rectangles so they touch real structure; undo luna's edits to sealed-cistern that overwrote its frame/seal steel and (wet variant) Water cells, and respect that module's placement rule; calm the busy central breach so the paired broken register faces dominate; then add your own sweeping and detail improvements that stay attached to structure. 3) Validate after each batch. At the end run render_write, render_check, render_capture, compare_captures and view your rendered image next to the reference and input images. Report honestly whether your result beats BOTH the original and luna's version, with specifics, and what is still weak."
+    },
+    "tool_schema_sha256": "4bb105fb6fedca13d8fad009475774e80f420f808d4c032ef9187784559b952b",
+    "tools_advertised": [
+      "list_files",
+      "read_file",
+      "inspect_pack",
+      "run_validator",
+      "list_captures",
+      "view_image",
+      "render_capture",
+      "compare_captures",
+      "replace_text",
+      "pack_add_rectangles",
+      "pack_remove_rectangles",
+      "submit_report"
+    ],
+    "write_globs": [
+      "docs/world-design/lumen-fault/pack.json",
+      "docs/world-design/lumen-fault/README.md"
+    ]
+  },
+  "publication": {
+    "mode": "none",
+    "performed": false
+  },
+  "receipt_sha256": "55738e4339c5244cdb033a9ebebf02a9fd6dc0b317766f6c3f9a367b949b524d",
+  "run": {
+    "ci": false,
+    "duration_seconds": 550.639,
+    "finished_utc": "2026-11-07T08:33:07Z",
+    "id": "20261107T082356Z-d6a352ae",
+    "mode": "live",
+    "model_calls_simulated": false,
+    "openai_sdk": "3.46.0",
+    "python": "3.13.16",
+    "runner_git_head": "7814ff0c66f8549f5ab26793909fd6cf36d4ee4c",
+    "runner_tree_dirty": false,
+    "runner_version": "1.0.0",
+    "started_utc": "2026-11-07T08:23:56Z"
+  },
+  "schema": "cybersand.atlas-agent.receipt/1",
+  "source": {
+    "collection": "unknown",
+    "expected_source_sha": "381fb0bf0ea54e8b21141fbedeefee24c934e76c",
+    "files": {
+      "docs/world-design/QUALITY_BAR.md": {
+        "bytes": 9065,
+        "sha256": "92bb4c2a608a3b9af91aa050f85a7933380e965fd5a4bf434ea767590ee783f4"
+      },
+      "docs/world-design/README.md": {
+        "bytes": 5151,
+        "sha256": "9c82b5e2fe95244507507b45bb3b06f69628c6ecbc113144a5a2caf31919127b"
+      },
+      "docs/world-design/lumen-fault/README.md": {
+        "bytes": 16427,
+        "sha256": "5a9732c92f8d456c7a370e1b349d4f0267db3829d6d5ef2582a9ac9cd6887b5e"
+      },
+      "docs/world-design/lumen-fault/luna-added-rectangles.json": {
+        "bytes": 22698,
+        "sha256": "5dc0e69a91cd50bc85220dfeb026dea577f20a5c09284b2d279786a92bc69805"
+      },
+      "docs/world-design/lumen-fault/luna-attempt-review.md": {
+        "bytes": 1198,
+        "sha256": "1aeae02c7ec7c4892ff965728d05725ef5f91e1b393c6377793518cd7f42828a"
+      },
+      "docs/world-design/lumen-fault/pack.json": {
+        "bytes": 266379,
+        "sha256": "fb6e28a6f7dc7ef0436512399f462cbfe73a01790a9f6d6692b613af297114d5"
+      },
+      "docs/world-design/lumen-fault/preview.svg": {
+        "bytes": 324557,
+        "sha256": "1ae2e103418270bae130b6db1c895643c333fb50c0b273430d076c4bbf63c050"
+      },
+      "docs/world-design/lumen-fault/render_pack.mjs": {
+        "bytes": 6757,
+        "sha256": "90adf460c91a88f94ab56720a72a7875992953a1839fdf4425a8a522974422f3"
+      },
+      "docs/world-design/lumen-fault/validate_pack.py": {
+        "bytes": 4411,
+        "sha256": "3550472d18e9e99668af3e4356cd2f5ffe1ef1f81ba9c560653f24bd95507814"
+      },
+      "materials/catalogue/catalogue.json": {
+        "bytes": 195969,
+        "sha256": "3a5250a07912dc9530172cb2fccecd526606e242209d666cb2da202e1cfc9f14"
+      },
+      "native/include/cybersand/material.hpp": {
+        "bytes": 29262,
+        "sha256": "3e40f970e3205853a43643b4163041935ccd64d8a018d35a7473c3f95a1d0375"
+      }
+    },
+    "fixture": false,
+    "head_after_run": null,
+    "lane": "terrain-art",
+    "lane_writable": true,
+    "repository_head": "381fb0bf0ea54e8b21141fbedeefee24c934e76c",
+    "source_dirty": false,
+    "source_manifest_sha256": "e251516597252ef791c750350b2545e9ead477b130dd97e3d2bc093d59c85597",
+    "source_unchanged_after_run": null
+  },
+  "status": {
+    "exit_code": 4,
+    "final": "stopped",
+    "phase": "loop",
+    "reason": "reached max_api_calls=36",
+    "reason_code": "max_api_calls"
+  },
+  "tools": [
+    {
+      "args_sha256": "b611f81a15eff1af0f2e65e0d8419b40b47e66904b021902c67e5b35b6127273",
+      "duration_ms": 4,
+      "error_code": null,
+      "n": 1,
+      "name": "list_files",
+      "ok": true,
+      "output_bytes": 701,
+      "output_sha256": "6e4545ee4e7a885724cb8d77134b54ca6a69323e7b193160c5d819a87defe935"
+    },
+    {
+      "args_sha256": "f19545ae68894f6b526d84bc3ba7113645b1b3d76decefbc3036b4fd20161740",
+      "duration_ms": 0,
+      "error_code": null,
+      "n": 2,
+      "name": "read_file",
+      "ok": true,
+      "output_bytes": 1453,
+      "output_sha256": "75434747f91d25eb1fb3cc6828bf15227fe3881adc738446c0d2dee0724391d0"
+    },
+    {
+      "args_sha256": "1f28d6686c29bbc85ea770593409bae1c1de9559ea10cc9be3d0c6cc64e50ec7",
+      "duration_ms": 0,
+      "error_code": null,
+      "n": 3,
+      "name": "read_file",
+      "ok": true,
+      "output_bytes": 5559,
+      "output_sha256": "62c50adf5694f0d0a7953ac5bb082006759eb9774332b8bcba02e1f1f19f1b9f"
+    },
+    {
+      "args_sha256": "a0ee7d31d80a30ff536c2f69509f02151c9d72594906fb07bc0cc7b63c0c9385",
+      "duration_ms": 5,
+      "error_code": null,
+      "n": 4,
+      "name": "inspect_pack",
+      "ok": true,
+      "output_bytes": 5025,
+      "output_sha256": "7647ef27ea5777e190d5e7b8d38081dd6fd9e89522ea3d2871cf2ec911abf77c"
+    },
+    {
+      "args_sha256": "b1a1a2b3c2f0c83e3cf24fa90a7372a9ced546140d07a64ed59327a87628ab1c",
+      "duration_ms": 88,
+      "error_code": null,
+      "n": 5,
+      "name": "run_validator",
+      "ok": true,
+      "output_bytes": 300,
+      "output_sha256": "25f5fbf1ecce9103e74b240745cffce0963ca7eacb6f1b7d5b8c415fe67293ed"
+    },
+    {
+      "args_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "duration_ms": 249,
+      "error_code": null,
+      "n": 6,
+      "name": "list_captures",
+      "ok": true,
+      "output_bytes": 2296,
+      "output_sha256": "a382cb584e2b35eeff2b68c13f1a7090faebcbcb17d10d7b9dc328749a337811"
+    },
+    {
+      "args_sha256": "c5615e0c6d1f98dbf3228fd6be94f28538289e2f4e3d6ed1da9aeabab1d161ec",
+      "duration_ms": 0,
+      "error_code": null,
+      "n": 7,
+      "name": "view_image",
+      "ok": true,
+      "output_bytes": 210,
+      "output_sha256": "e49f69a9dee457784a2e74f0af437a545acb952eff1a8ad5ebc747945d0b4098"
+    },
+    {
+      "args_sha256": "93954f1a92cb35c3ba5a30e8c04f9fed0d97ca81d62ca94041e5f20443abf1fa",
+      "duration_ms": 0,
+      "error_code": null,
+      "n": 8,
+      "name": "view_image",
+      "ok": true,
+      "output_bytes": 210,
+      "output_sha256": "14fdd5d69f20839c9e86049aaa8652fa1294dacd555daffe2f455b2495d63f75"
+    },
+    {
+      "args_sha256": "9b5c554b1bd5d4ae893e9301fb920ef0fce8514c7bcc99465cde90fe3dec3361",
+      "duration_ms": 0,
+      "error_code": "malformed_arguments",
+      "n": 9,
+      "name": "read_file",
+      "ok": false,
+      "output_bytes": 81,
+      "output_sha256": "bfec82da7e2d8814ea2ee07ad32c343d6cd0eaf0b441d95f3dbe912d7882dad3"
+    },
+    {
+      "args_sha256": "055138f4a50b03b4e56f11e9f2807e98159d3aa649e2dcb23ad9e8c4ff59d921",
+      "duration_ms": 0,
+      "error_code": null,
+      "n": 10,
+      "name": "read_file",
+      "ok": true,
+      "output_bytes": 16832,
+      "output_sha256": "00be42de239a5e34c6558724d1195ac77059f921cfa20dc916543b8b71d28fc2"
+    },
+    {
+      "args_sha256": "341faad808dcbc278b72ba3a140a4120b3e29c3ca79a164e2109dd4c402feffd",
+      "duration_ms": 1,
+      "error_code": null,
+      "n": 11,
+      "name": "read_file",
+      "ok": true,
+      "output_bytes": 4657,
+      "output_sha256": "49b2d98639d1f127a82e24067e3aabbfdac4acc6c317688d1e5aee78db6d1c55"
+    },
+    {
+      "args_sha256": "c91866fe236824bf89b1fd747d5f5d53e812f6d986be78c38af81284fcb3a265",
+      "duration_ms": 0,
+      "error_code": null,
+      "n": 12,
+      "name": "read_file",
+      "ok": true,
+      "output_bytes": 7489,
+      "output_sha256": "1410be38173ca1ee6b9bdbfd4c89b557e64963a0eee79f3f0286d4267a27468a"
+    },
+    {
+      "args_sha256": "723daaa1d7f17d62f3da97da2a4636cac5bdfb2f594202337f1549b34fce84f4",
+      "duration_ms": 0,
+      "error_code": null,
+      "n": 13,
+      "name": "read_file",
+      "ok": true,
+      "output_bytes": 7485,
+      "output_sha256": "ed154e4d9c6e16bd1ef61933d41f51247cf82b6e245f7a950b992fb9d55d6008"
+    },
+    {
+      "args_sha256": "2c6cb0813207dd76302fcd39db393e97c1400f6d8c65a6269cc2a99b8f2f2af7",
+      "duration_ms": 0,
+      "error_code": null,
+      "n": 14,
+      "name": "read_file",
+      "ok": true,
+      "output_bytes": 6099,
+      "output_sha256": "0b541eb11a3479260b19fab66c8e0f52e11d88af1b0ea14a878b5bfd3f2409cf"
+    },
+    {
+      "args_sha256": "9ef7c360b007c8e822e1f40f8bf0a58c530adf853392fca06dfae7d4d10869aa",
+      "duration_ms": 2,
+      "error_code": null,
+      "n": 15,
+      "name": "read_file",
+      "ok": true,
+      "output_bytes": 6723,
+      "output_sha256": "5cf15ea37acca8c54dd52069f8fe6d372106454bf0349c22bcc08b878acfa268"
+    },
+    {
+      "args_sha256": "6d87e75af5fb3bcfd5d98dc7f4dcf710e3ed2c55e8a310f2302ce610c8e26dae",
+      "duration_ms": 0,
+      "error_code": null,
+      "n": 16,
+      "name": "view_image",
+      "ok": true,
+      "output_bytes": 210,
+      "output_sha256": "97057645183de50ccc4dab6a5e7b7e14fed88cd317fbbc3b4ef6ac5ee1404eba"
+    },
+    {
+      "args_sha256": "a05f99a7763a418248e499522e0cf192bbbddd8b3b17c97ebee693248beead35",
+      "duration_ms": 13,
+      "error_code": null,
+      "n": 17,
+      "name": "pack_remove_rectangles",
+      "ok": true,
+      "output_bytes": 252,
+      "output_sha256": "b1ca5246fb22aeba19ed5e23d3d442fc29e151687b7d14bda5a95f0cdd104791"
+    },
+    {
+      "args_sha256": "a51f7ef5746c368354247d3bffd92f36d75bb3d2cc444b4f04a69a7e7b9b5095",
+      "duration_ms": 15,
+      "error_code": null,
+      "n": 18,
+      "name": "pack_remove_rectangles",
+      "ok": true,
+      "output_bytes": 253,
+      "output_sha256": "4a0580dd448374bbb3a1872d7079a09f6715caaac7339d2e782d4c18c33bc062"
+    },
+    {
+      "args_sha256": "f88630b3b6591dae11e2a0dab6b3d9ab230183a542a31d9d10b8f5d0eb8894da",
+      "duration_ms": 16,
+      "error_code": null,
+      "n": 19,
+      "name": "pack_remove_rectangles",
+      "ok": true,
+      "output_bytes": 249,
+      "output_sha256": "a045bc1812f8c0103070ea749202532c1a25e19fa01f922b204f65c009910493"
+    },
+    {
+      "args_sha256": "a8c89cd8a3c7c2b8374ff9ede75e4da3af56f1fc08a7afc753dc7eced037ee99",
+      "duration_ms": 15,
+      "error_code": null,
+      "n": 20,
+      "name": "pack_remove_rectangles",
+      "ok": true,
+      "output_bytes": 254,
+      "output_sha256": "1aa1f6799ee65565ef72ad25e299e69389da73152505ccea4abef13396911bce"
+    },
+    {
+      "args_sha256": "890be9cd4bc09bfdd12f049cdbde65849fa4b8cb0a3bc1bea507ee119245921c",
+      "duration_ms": 16,
+      "error_code": null,
+      "n": 21,
+      "name": "pack_remove_rectangles",
+      "ok": true,
+      "output_bytes": 256,
+      "output_sha256": "bf88034d9549371b14d50c6374526313fd22ae25155842aa06b6b0b90153bd71"
+    },
+    {
+      "args_sha256": "f15f98c228fdf0b5fe08264037f3c78952cfe93e56fb5104bd0abd8c5eef34e0",
+      "duration_ms": 15,
+      "error_code": null,
+      "n": 22,
+      "name": "pack_remove_rectangles",
+      "ok": true,
+      "output_bytes": 255,
+      "output_sha256": "66546a7a8973c45388ade031095e4ec6b014b5bb9dd2f3cdd49471262de633e6"
+    },
+    {
+      "args_sha256": "b61bdcdeba88ce124f7fd53741767a1b56f6ffc44a7bf3c1b207e2178be6fa43",
+      "duration_ms": 7,
+      "error_code": null,
+      "n": 23,
+      "name": "read_file",
+      "ok": true,
+      "output_bytes": 2969,
+      "output_sha256": "f00d43119b6600f1699652c678b6ebf9959e1b62a29b00115f094ac610bd1f89"
+    },
+    {
+      "args_sha256": "44d34b256365fa857d18a96f85b19c342d62c1258f75910f5d5fda6ecf78b5c5",
+      "duration_ms": 1,
+      "error_code": null,
+      "n": 24,
+      "name": "read_file",
+      "ok": true,
+      "output_bytes": 5779,
+      "output_sha256": "bae72da1881f4e2a6244aa9e4bf226e4baa08ed91beae51b3a9fede25148610c"
+    },
+    {
+      "args_sha256": "b1a1a2b3c2f0c83e3cf24fa90a7372a9ced546140d07a64ed59327a87628ab1c",
+      "duration_ms": 147,
+      "error_code": null,
+      "n": 25,
+      "name": "run_validator",
+      "ok": true,
+      "output_bytes": 300,
+      "output_sha256": "25f5fbf1ecce9103e74b240745cffce0963ca7eacb6f1b7d5b8c415fe67293ed"
+    },
+    {
+      "args_sha256": "e3be344f2b0bece3ad1061ec898cfe0a9bb7bc818c34f30b6f2060715328ccff",
+      "duration_ms": 2,
+      "error_code": null,
+      "n": 26,
+      "name": "read_file",
+      "ok": true,
+      "output_bytes": 1421,
+      "output_sha256": "ab20014e4518f82ac58d6c4864bea47da895f791718f7c00ea1b45f728bc9a5d"
+    },
+    {
+      "args_sha256": "5fe490808d2d99166635c25cebd18652191365c943b62857ed2804b44b69572b",
+      "duration_ms": 2,
+      "error_code": null,
+      "n": 27,
+      "name": "read_file",
+      "ok": true,
+      "output_bytes": 2018,
+      "output_sha256": "5a8f864154b994c78799d1aed3c670f075dc1ecaee4b2277455670e75ea855c5"
+    },
+    {
+      "args_sha256": "391bc6c16868e2d1d319901f83a11d5ae0b77a44effe5809a59956b146d14744",
+      "duration_ms": 0,
+      "error_code": null,
+      "n": 28,
+      "name": "view_image",
+      "ok": true,
+      "output_bytes": 210,
+      "output_sha256": "5cb725cf8be0d8f5d0f8e7056876ba2af6c7b19baa311e14735579117788359c"
+    },
+    {
+      "args_sha256": "66570ae7bef5ef593ccce7ab102eaf5ef0fb36140fb0fd6e79cd9be920431e35",
+      "duration_ms": 1,
+      "error_code": null,
+      "n": 29,
+      "name": "read_file",
+      "ok": true,
+      "output_bytes": 3340,
+      "output_sha256": "1cb389b730ff4572265ae5c4747fbad67c6d496eb705b7c79714e07be63b323b"
+    },
+    {
+      "args_sha256": "c445bc0d9c0dca480a21c875ddc5a68058379280fb0d0d510f642939f817b608",
+      "duration_ms": 1,
+      "error_code": null,
+      "n": 30,
+      "name": "read_file",
+      "ok": true,
+      "output_bytes": 2400,
+      "output_sha256": "0f1689a9588c3ff22b92c198db51fc853184e340570c979dd7fcd6391e777d2c"
+    },
+    {
+      "args_sha256": "93954f1a92cb35c3ba5a30e8c04f9fed0d97ca81d62ca94041e5f20443abf1fa",
+      "duration_ms": 0,
+      "error_code": null,
+      "n": 31,
+      "name": "view_image",
+      "ok": true,
+      "output_bytes": 210,
+      "output_sha256": "14fdd5d69f20839c9e86049aaa8652fa1294dacd555daffe2f455b2495d63f75"
+    },
+    {
+      "args_sha256": "3aecb38c36b8de71e42392267b2fbd0ddde15f4bce17ffea1069e3ab75143476",
+      "duration_ms": 1,
+      "error_code": null,
+      "n": 32,
+      "name": "read_file",
+      "ok": true,
+      "output_bytes": 1660,
+      "output_sha256": "8b1e4f38fcdf719fa0d2663176646651a8a0f26cdc11f8d41d3e773d78f89659"
+    },
+    {
+      "args_sha256": "d8403955bd380e035d0de510d49936259536909060631d1d348d1882a02558c6",
+      "duration_ms": 1,
+      "error_code": null,
+      "n": 33,
+      "name": "read_file",
+      "ok": true,
+      "output_bytes": 1433,
+      "output_sha256": "a6bab123bc40df19ba602f7a57a58868bb108fcb11a081f771311f0bbbd6a419"
+    },
+    {
+      "args_sha256": "e8b02a066eb60b127c29f50337a715c422e1bc562377d3bec0953e6f92152d11",
+      "duration_ms": 1,
+      "error_code": null,
+      "n": 34,
+      "name": "read_file",
+      "ok": true,
+      "output_bytes": 2013,
+      "output_sha256": "b005a5dbd7dc46828a25507476e91314c8e477f5d253f3c6b7cdcfcead3a8624"
+    },
+    {
+      "args_sha256": "fbc9fd2cadef1c085d051afedc9ed8e9027ec54f4ceec511e4ac09b5d0ac3558",
+      "duration_ms": 2,
+      "error_code": null,
+      "n": 35,
+      "name": "read_file",
+      "ok": true,
+      "output_bytes": 2895,
+      "output_sha256": "a278b7a036b1448d6f09f4f87f5345c614f10c35f043e6a7070743baae3e60da"
+    },
+    {
+      "args_sha256": "aa35f821690fa37ffffbdc110153f9401bd64c68c6408b361507c82f826060c9",
+      "duration_ms": 1,
+      "error_code": null,
+      "n": 36,
+      "name": "read_file",
+      "ok": true,
+      "output_bytes": 3026,
+      "output_sha256": "5686e2b1bc78585f476a8962eced3fccdef92456d7edee6d77a68ec2a75ec5ff"
+    },
+    {
+      "args_sha256": "8fcc27b67140adc82af740f15f83e5ef46500eb0ad4085eb0f2cfcfc03a120c8",
+      "duration_ms": 1,
+      "error_code": null,
+      "n": 37,
+      "name": "read_file",
+      "ok": true,
+      "output_bytes": 3087,
+      "output_sha256": "8937e52fe6bbc969c06439347b70229749dbf1db5a22ec1fc2ee25c4402339fe"
+    },
+    {
+      "args_sha256": "bc099d445bb0a6785536b01bc6165f55326a04433258f31d4a1e1fe1b6427cbb",
+      "duration_ms": 1,
+      "error_code": null,
+      "n": 38,
+      "name": "read_file",
+      "ok": true,
+      "output_bytes": 2623,
+      "output_sha256": "7fc443bc55df28d20a251b620e4e3a897df2f62eef236cecdcc87619943be1aa"
+    },
+    {
+      "args_sha256": "a9ba99077e5f2937bcf49fa1aa35a4aa5a7f347d6f8a2b2ba93d4272e3d85b1a",
+      "duration_ms": 1,
+      "error_code": null,
+      "n": 39,
+      "name": "read_file",
+      "ok": true,
+      "output_bytes": 4389,
+      "output_sha256": "f17dbc04f1b19e6fb3e305f3626074f95e7acd55b81d84bb71bf8d654da6566d"
+    },
+    {
+      "args_sha256": "490ffce541f30590cfb26b6f199f0904f37d15832fac69adf2e8b8235520311c",
+      "duration_ms": 2,
+      "error_code": null,
+      "n": 40,
+      "name": "read_file",
+      "ok": true,
+      "output_bytes": 4982,
+      "output_sha256": "fbb9b7c972bca15d71b5a860731b8e6ad84d1157444631156f8fc3653e8880f9"
+    },
+    {
+      "args_sha256": "48d424a6b190c99442da0bc378257fa519306961a1446eeaa9b2e00b8a018357",
+      "duration_ms": 1,
+      "error_code": "file_too_large",
+      "n": 41,
+      "name": "replace_text",
+      "ok": false,
+      "output_bytes": 119,
+      "output_sha256": "c4ddfce21ba4cb6edb7479083672f208d8ce9ffb9c81cf6150dbd5a761b01595"
+    },
+    {
+      "args_sha256": "27bdf47dd22015041690a0d208ea031a32c4ecd156eb670a8c2f0c15c04029cf",
+      "duration_ms": 14,
+      "error_code": null,
+      "n": 42,
+      "name": "pack_remove_rectangles",
+      "ok": true,
+      "output_bytes": 255,
+      "output_sha256": "66a7842ae6c965805830f9521c246aa6597310206ce0333240427e457a0f8e62"
+    },
+    {
+      "args_sha256": "bae92a2580c540aca6e30a759357309eb8b259ed3fa34988db30f7a68795328c",
+      "duration_ms": 22,
+      "error_code": null,
+      "n": 43,
+      "name": "pack_remove_rectangles",
+      "ok": true,
+      "output_bytes": 252,
+      "output_sha256": "1a4048001873d75e9c039d1df72750d1f368619828bdf4417cf9bb1660b49b7d"
+    },
+    {
+      "args_sha256": "b2c56b9764125084789fa9e24fbdb73acfc1ad0a665ee7ab87401ab166ef436d",
+      "duration_ms": 21,
+      "error_code": null,
+      "n": 44,
+      "name": "pack_remove_rectangles",
+      "ok": true,
+      "output_bytes": 253,
+      "output_sha256": "b0ab58f0d329c8536df8291f0da7568ce1989aef23593383d17fcce3c840e8b6"
+    },
+    {
+      "args_sha256": "855e811edeb23586dd7f12a685bbb8d3380c0e3f12ece5ee5b4369ba3ec97acd",
+      "duration_ms": 22,
+      "error_code": null,
+      "n": 45,
+      "name": "pack_remove_rectangles",
+      "ok": true,
+      "output_bytes": 256,
+      "output_sha256": "032aff2dce5dd61780c66256b4b67976f3c3748e0ae3029ba5bdfb95c797012f"
+    },
+    {
+      "args_sha256": "2baddbffd995ede5c922a3c3c682bf3ff829f6303e799830358d0f0ed9dd028e",
+      "duration_ms": 21,
+      "error_code": null,
+      "n": 46,
+      "name": "pack_remove_rectangles",
+      "ok": true,
+      "output_bytes": 249,
+      "output_sha256": "c83ddec5ef082a821e9ddd4dd4d582d91dcc5cf28bb95c07ac90c0e335a3007d"
+    },
+    {
+      "args_sha256": "b1a1a2b3c2f0c83e3cf24fa90a7372a9ced546140d07a64ed59327a87628ab1c",
+      "duration_ms": 113,
+      "error_code": null,
+      "n": 47,
+      "name": "run_validator",
+      "ok": true,
+      "output_bytes": 300,
+      "output_sha256": "25f5fbf1ecce9103e74b240745cffce0963ca7eacb6f1b7d5b8c415fe67293ed"
+    }
+  ],
+  "usage": {
+    "api_attempts": 36,
+    "api_responses": 15,
+    "cached_input_tokens": 306100,
+    "image_bytes": 687559,
+    "image_sends": 10,
+    "images_loaded": 4,
+    "input_tokens": 454072,
+    "iterations": 16,
+    "malformed_tool_calls": 1,
+    "output_tokens": 3580,
+    "reasoning_tokens": 797,
+    "retries": 19,
+    "sandbox_violations": 0,
+    "tool_calls": 47,
+    "tool_seconds": 0.852
+  },
+  "validation": [
+    {
+      "argv": [
+        "python.exe",
+        "-I",
+        "docs/world-design/lumen-fault/validate_pack.py"
+      ],
+      "collection": "lumen-fault",
+      "duration_seconds": 0.072,
+      "exit_code": 0,
+      "kind": "validate",
+      "n": 1,
+      "passed": true,
+      "script": "docs/world-design/lumen-fault/validate_pack.py",
+      "script_sha256": "3550472d18e9e99668af3e4356cd2f5ffe1ef1f81ba9c560653f24bd95507814",
+      "stderr_tail": "",
+      "stdout_tail": "PASS: 8 source-checked authoring pieces, bounds/variant/classification checks; native execution NOT performed\r\n",
+      "timed_out": false
+    },
+    {
+      "argv": [
+        "python.exe",
+        "-I",
+        "docs/world-design/lumen-fault/validate_pack.py"
+      ],
+      "collection": "lumen-fault",
+      "duration_seconds": 0.128,
+      "exit_code": 0,
+      "kind": "validate",
+      "n": 2,
+      "passed": true,
+      "script": "docs/world-design/lumen-fault/validate_pack.py",
+      "script_sha256": "3550472d18e9e99668af3e4356cd2f5ffe1ef1f81ba9c560653f24bd95507814",
+      "stderr_tail": "",
+      "stdout_tail": "PASS: 8 source-checked authoring pieces, bounds/variant/classification checks; native execution NOT performed\r\n",
+      "timed_out": false
+    },
+    {
+      "argv": [
+        "python.exe",
+        "-I",
+        "docs/world-design/lumen-fault/validate_pack.py"
+      ],
+      "collection": "lumen-fault",
+      "duration_seconds": 0.087,
+      "exit_code": 0,
+      "kind": "validate",
+      "n": 3,
+      "passed": true,
+      "script": "docs/world-design/lumen-fault/validate_pack.py",
+      "script_sha256": "3550472d18e9e99668af3e4356cd2f5ffe1ef1f81ba9c560653f24bd95507814",
+      "stderr_tail": "",
+      "stdout_tail": "PASS: 8 source-checked authoring pieces, bounds/variant/classification checks; native execution NOT performed\r\n",
+      "timed_out": false
+    }
+  ],
+  "visual_cycle": {
+    "claimed": false,
+    "reason": "no before/after Godot capture cycle was executed"
+  }
+}

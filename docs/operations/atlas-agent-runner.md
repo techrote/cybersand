@@ -103,7 +103,9 @@ priced and reconciled; reported usage above the reservation stops the run. Timeo
 keep their reservation as **possibly charged**; 429s and rejected requests are released. A 429 that mentions
 quota, billing, credit or a hard spend limit is treated as exhausted credit and is not retried.
 
-Prompts above the 272K-token short-context pricing threshold are refused (`long_context_pricing_not_modelled`)
+Provider rate-limit rejections (HTTP 429, no model work, no charge) do **not** consume `max_api_calls`; they are bounded
+by `max_retries` per call, `max_total_retries` per run (default 30) and the run time, and are reported separately as
+`usage.rate_limited_attempts` (`api_attempts` counts every request). Prompts above the 272K-token short-context pricing threshold are refused (`long_context_pricing_not_modelled`)
 because long-context rates are not modelled.
 
 The defaults and hard caps live in [`config.schema.json`](../../tools/atlas_agent/schemas/config.schema.json) (unknown keys
@@ -149,7 +151,10 @@ Enforced in code, not only in the prompt:
 Tools offered to the model: `list_files`, `read_file`, `inspect_pack`, `run_validator`, `list_captures`,
 `view_image`, `render_capture`, `compare_captures`, `replace_text` and `pack_add_rectangles` (both only with write
 custody) and `submit_report`. `pack_remove_rectangles` removes exact rectangles (the last matching entry of each,
-never emptying a feature) by the same layout-preserving, parse-verified splice. `pack_add_rectangles` appends up to 60 validated `[x, y, width, height, material_id]`
+never emptying a feature) by the same layout-preserving, parse-verified splice. Both accept `feature_id` `@scene` for the
+combined scene's own foundation rectangles, and `list_rectangles` pages through either as compact
+`[array_index, x, y, width, height, material_id]` rows (the expanded pack is about 19,000 lines, far too costly to page
+through with `read_file`). Editable file size is capped at 2 MB independently of the read cap. `pack_add_rectangles` appends up to 60 validated `[x, y, width, height, material_id]`
 rectangles to one feature while preserving the file's own layout; it refuses out-of-bounds rectangles, unknown
 palette materials and movable materials in static features, and the spliced file must parse to exactly the old pack
 plus the new rectangles. After any edit the runner itself re-runs the collection's validator and `--check` render and

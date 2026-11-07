@@ -79,7 +79,7 @@ def skeleton(run_id: str, mode: str, started_utc: str, collection: str) -> dict:
         "model": {"requested": "", "observed": [], "reasoning_effort": None, "max_output_tokens_per_call": 0,
                   "image_detail": None, "api_endpoint": "none", "store": False, "truncation": "disabled"},
         "limits": {},
-        "usage": {"api_attempts": 0, "api_responses": 0, "retries": 0, "iterations": 0, "tool_calls": 0,
+        "usage": {"api_attempts": 0, "rate_limited_attempts": 0, "api_responses": 0, "retries": 0, "iterations": 0, "tool_calls": 0,
                   "malformed_tool_calls": 0, "sandbox_violations": 0, "images_loaded": 0, "image_sends": 0,
                   "image_bytes": 0, "input_tokens": 0, "cached_input_tokens": 0, "output_tokens": 0,
                   "reasoning_tokens": 0, "tool_seconds": 0.0},

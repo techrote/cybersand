@@ -20,6 +20,7 @@ from .procs import resolve_executables
 from .sandbox import PathPolicy, sha256_bytes
 from .schema import validate
 
+MAX_EDITABLE_FILE_BYTES = 2_000_000  # independent of how much the model may read per call
 RUBRIC = ["silhouette_scale_hierarchy", "architectural_geologic_richness", "authentic_micro_detail",
           "value_colour_discipline", "environmental_narrative", "coherent_integrated_composition",
           "cross_theme_distinctiveness"]
@@ -49,6 +50,14 @@ TOOL_SPECS: dict[str, dict] = {
         "description": "Summarise a pack.json: metadata, palette (material ids), features with sizes/statuses, "
                        "scenes and rectangle counts, plus the pack SHA-256.",
         "parameters": _obj({"collection": {"type": "string", "minLength": 2, "maxLength": 64}}),
+    },
+    "list_rectangles": {
+        "description": "Compactly list a page of rectangles of ONE feature, or of the combined scene foundation "
+                       "(feature_id '@scene'): rows of [array_index, x, y, width, height, material_id] plus material "
+                       "names. Far cheaper than reading pack.json; use it to find what to remove or build on.",
+        "parameters": _obj({"feature_id": {"type": "string", "minLength": 1, "maxLength": 80},
+                            "start_index": {"type": "integer", "minimum": 0},
+                            "count": {"type": "integer", "minimum": 1, "maximum": 200}}),
     },
     "run_validator": {
         "description": "Run the collection's own repository script with a fixed argument list. kind=validate runs "
@@ -86,7 +95,7 @@ TOOL_SPECS: dict[str, dict] = {
     },
     "pack_remove_rectangles": {
         "description": "Remove up to 60 exact [x, y, width, height, material_id] rectangles (the last matching entry "
-                       "of each) from ONE feature of the collection's pack.json, preserving the file's layout. Cells "
+                       "of each) from ONE feature (or feature_id '@scene' for the scene foundation) of the collection's pack.json, preserving the file's layout. Cells "
                        "those rectangles had overwritten show the earlier rectangles again. A feature must keep at "
                        "least one rectangle.",
         "parameters": _obj({"feature_id": {"type": "string", "minLength": 1, "maxLength": 80},
@@ -95,7 +104,7 @@ TOOL_SPECS: dict[str, dict] = {
                             "note": _S(200)}),
     },
     "pack_add_rectangles": {
-        "description": "Append up to 60 validated [x, y, width, height, material_id] rectangles to ONE feature of the "
+        "description": "Append up to 60 validated [x, y, width, height, material_id] rectangles to ONE feature (or feature_id '@scene' for the combined scene foundation) of the "
                        "collection's pack.json (bounds are the feature's size, half-open; materials must be in the pack "
                        "palette; static features cannot take movable materials). The file's own layout is preserved. "
                        "Later rectangles overwrite earlier ones. Use this for new detail; use replace_text to change or "
@@ -179,7 +188,7 @@ class ToolExecutor:
 
     # ------------------------------------------------------------- advertised set
     def tool_names(self) -> list[str]:
-        names = ["list_files", "read_file", "inspect_pack", "run_validator"]
+        names = ["list_files", "read_file", "inspect_pack", "list_rectangles", "run_validator"]
         if self.input_bundle or self.reference_bundle or self.launcher:
             names += ["list_captures", "view_image"]
         if self.launcher:
@@ -284,6 +293,12 @@ class ToolExecutor:
         self.policy.check_read(f"{atlas.WORLD_DESIGN}/{collection}/pack.json")
         return ToolOutcome(json.dumps(atlas.inspect_pack(self.work_root, collection)), True)
 
+    def _t_list_rectangles(self, a: dict) -> ToolOutcome:
+        rel = f"{atlas.WORLD_DESIGN}/{self.collection}/pack.json"
+        clean, path = self.policy.check_read(rel)
+        pack = json.loads(path.read_text(encoding="utf-8"))
+        return ToolOutcome(json.dumps(atlas.rectangle_listing(pack, a["feature_id"], a["start_index"], a["count"])), True)
+
     def _t_run_validator(self, a: dict) -> ToolOutcome:
         if a["collection"] != self.collection:
             raise SandboxViolation("validators run only for the selected collection", "read_not_permitted")
@@ -385,7 +400,7 @@ class ToolExecutor:
             raise LimitReached(f"max_files_edited={self.limits['max_files_edited']} reached", "max_files_edited")
         original = path.read_bytes() if path.is_file() else None
         result = self.policy.replace_text(clean, a["old_text"], a["new_text"], int(self.limits["max_edit_bytes"]),
-                                          int(self.limits["max_read_bytes"]) * 8)
+                                          MAX_EDITABLE_FILE_BYTES)
         problems = self._post_edit_problems(clean, path)
         if problems:
             path.write_bytes(original or b"")  # restore: the edit must leave a parseable pack

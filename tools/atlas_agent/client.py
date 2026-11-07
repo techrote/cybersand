@@ -94,10 +94,14 @@ class ApiClient:
                         "duration_ms": int((time.monotonic() - started) * 1000), "request_id": headers.get("x-request-id")}
             except openai.RateLimitError as exc:
                 code, message = _error_text(exc)
-                budget.release(reservation)
-                if code in _QUOTA_CODES or any(w in message.lower() for w in _QUOTA_WORDS):
+                quota = code in _QUOTA_CODES or any(w in message.lower() for w in _QUOTA_WORDS)
+                budget.release(reservation, rate_limited=not quota)
+                if quota:
                     raise ApiFailure(f"provider reports exhausted credit/spend limit ({code or 'rate-limit-error'}); "
                                      "stopping instead of retrying", "credit_exhausted") from None
+                if budget.rate_limited > int(self.limits["max_total_retries"]):
+                    raise ApiFailure(f"more than max_total_retries={self.limits['max_total_retries']} provider rate-limit "
+                                     "rejections in this run", "rate_limit_retries_exhausted") from None
                 failure, retry_after = "rate_limited", _retry_after(exc)
             except (openai.APITimeoutError, openai.APIConnectionError):
                 budget.mark_ambiguous(reservation)

@@ -522,6 +522,69 @@ class StructuredEditTests(unittest.TestCase):
             {"feature_id": "copper-rail", "rectangles": [[0, 0, 1, 1, 65]], "note": "x"}), 1).ok)
 
 
+class SceneAndListingTests(unittest.TestCase):
+    """The scene foundation is addressable as '@scene'; listing is compact; edit size cap is independent of reads."""
+
+    def setUp(self):
+        self.pack = json.loads((FIXTURE / PACK).read_text(encoding="utf-8"))
+        self.layouts = {"inline": (FIXTURE / PACK).read_text(encoding="utf-8"),
+                        "expanded": json.dumps(self.pack, indent=2) + "\n"}
+
+    def test_scene_add_and_remove_round_trip(self):
+        for name, text in self.layouts.items():
+            added, info = atlas.add_rectangles(text, "@scene", [[2, 2, 3, 1, 40], [10, 5, 1, 4, 54]])
+            self.assertEqual(info["rectangles_added"], 2, msg=name)
+            scene = json.loads(added)["scene"]
+            self.assertEqual(scene["foundation"][-2:], [[2, 2, 3, 1, 40], [10, 5, 1, 4, 54]], msg=name)
+            self.assertEqual(json.loads(added)["features"], json.loads(text)["features"], msg=name)
+            removed, _ = atlas.remove_rectangles(added, "@scene", [[10, 5, 1, 4, 54], [2, 2, 3, 1, 40]])
+            self.assertEqual(json.loads(removed), json.loads(text), msg=name)
+        with self.assertRaises(ToolError) as ctx:
+            atlas.add_rectangles(self.layouts["expanded"], "@scene", [[40, 20, 20, 10, 40]])  # scene is 48x24
+        self.assertEqual(ctx.exception.code, "rectangle_out_of_bounds")
+
+    def test_scene_rectangles_key_variant(self):
+        real = json.loads(self.layouts["expanded"])
+        real["scene"]["rectangles"] = real["scene"].pop("foundation")  # the real Atlas packs use 'rectangles'
+        text = json.dumps(real, indent=2) + "\n"
+        added, _ = atlas.add_rectangles(text, "@scene", [[1, 1, 2, 2, 65]])
+        self.assertEqual(json.loads(added)["scene"]["rectangles"][-1], [1, 1, 2, 2, 65])
+        listing = atlas.rectangle_listing(json.loads(added), "@scene", 0, 5)
+        self.assertEqual(listing["total_rectangles"], 2)
+        self.assertEqual(listing["rectangles"][-1], [1, 1, 1, 2, 2, 65])
+
+    def test_listing_is_compact_and_paged(self):
+        listing = atlas.rectangle_listing(self.pack, "granite-arch", 1, 2)
+        self.assertEqual(listing["start_index"], 1)
+        self.assertEqual([row[0] for row in listing["rectangles"]], [1, 2])
+        self.assertEqual(listing["rectangles"][0][1:], self.pack["features"][0]["rectangles"][1])
+        self.assertEqual(listing["total_rectangles"], 5)
+        self.assertEqual(listing["status"], "static")
+        self.assertEqual(atlas.rectangle_listing(self.pack, "granite-arch", 99, 5)["rectangles"], [])
+        with self.assertRaises(ToolError):
+            atlas.rectangle_listing(self.pack, "nope", 0, 5)
+        tmp, work, built, policy = make_workspace()
+        self.addCleanup(tmp.cleanup)
+        executor = ToolExecutor(base_config(), work, policy, COLLECTION, True, [], receipt_mod.Redactor([]))
+        out = executor.execute("list_rectangles", json.dumps({"feature_id": "@scene", "start_index": 0, "count": 10}), 1)
+        self.assertTrue(out.ok, out.text)
+        self.assertEqual(json.loads(out.text)["total_rectangles"], 1)
+        for bad in ({"feature_id": "granite-arch", "start_index": -1, "count": 5},
+                    {"feature_id": "granite-arch", "start_index": 0, "count": 999},
+                    {"feature_id": "granite-arch", "start_index": 0}):
+            self.assertFalse(executor.execute("list_rectangles", json.dumps(bad), 2).ok, msg=str(bad))
+
+    def test_edit_size_cap_does_not_depend_on_the_read_cap(self):
+        tmp, work, built, policy = make_workspace()
+        self.addCleanup(tmp.cleanup)
+        cfg = base_config()
+        cfg["limits"]["max_read_bytes"] = 256  # the pack is ~1.6 KB: the old read-derived cap would have refused edits
+        executor = ToolExecutor(cfg, work, policy, COLLECTION, True, [], receipt_mod.Redactor([]))
+        out = executor.execute("replace_text", json.dumps({"path": PACK, "old_text": "[9, 8, 6, 2, 65]",
+                                                           "new_text": "[9, 8, 6, 2, 54]"}), 1)
+        self.assertTrue(out.ok, out.text)
+
+
 class RemoveRectanglesTests(unittest.TestCase):
     def setUp(self):
         pack = json.loads((FIXTURE / PACK).read_text(encoding="utf-8"))

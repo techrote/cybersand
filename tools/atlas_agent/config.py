@@ -29,6 +29,7 @@ DEFAULTS: dict = {
         "max_iterations": 8,
         "max_api_calls": 10,
         "max_retries": 3,
+        "max_total_retries": 30,
         "backoff_base_seconds": 1.0,
         "backoff_max_seconds": 30.0,
         "max_run_seconds": 900,

@@ -44,6 +44,7 @@ class Budget:
     output_tokens: int = 0
     reasoning_tokens: int = 0
     overruns: int = 0
+    rate_limited: int = 0  # provider 429s: rejected before any model work, not counted as API calls
 
     def __post_init__(self) -> None:
         self.started = self.clock()
@@ -118,8 +119,14 @@ class Budget:
             self.overruns += 1
         return {"computed_usd": usd, "exceeded_reservation": exceeded}
 
-    def release(self, res: Reservation) -> None:
+    def release(self, res: Reservation, rate_limited: bool = False) -> None:
         res.state = "released"  # e.g. a 429/4xx the provider rejected before running the model
+        if rate_limited:
+            # A rate-limit rejection did no model work and cost nothing: it does not consume max_api_calls (bounded
+            # separately by limits.max_total_retries) and its worst-case reservation is not counted.
+            self.attempts -= 1
+            self.rate_limited += 1
+            self.reserved_total_usd -= res.usd
 
     def mark_ambiguous(self, res: Reservation) -> None:
         """Timeout / 5xx / dropped connection: assume the worst-case charge happened."""
@@ -131,7 +138,7 @@ class Budget:
 
     def snapshot(self) -> dict:
         return {
-            "attempts": self.attempts, "responses": self.responses, "iterations": self.iterations,
+            "attempts": self.attempts, "rate_limited_attempts": self.rate_limited, "responses": self.responses, "iterations": self.iterations,
             "input_tokens": self.input_tokens, "cached_input_tokens": self.cached_tokens,
             "output_tokens": self.output_tokens, "reasoning_tokens": self.reasoning_tokens,
             "reserved_worst_case_total_usd": round(self.reserved_total_usd, 8),

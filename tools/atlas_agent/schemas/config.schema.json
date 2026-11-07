@@ -26,6 +26,7 @@
         "max_iterations": {"type": "integer", "minimum": 1, "maximum": 30},
         "max_api_calls": {"type": "integer", "minimum": 1, "maximum": 40},
         "max_retries": {"type": "integer", "minimum": 0, "maximum": 6},
+        "max_total_retries": {"type": "integer", "minimum": 0, "maximum": 100},
         "backoff_base_seconds": {"type": "number", "minimum": 0, "maximum": 30},
         "backoff_max_seconds": {"type": "number", "minimum": 0, "maximum": 120},
         "max_run_seconds": {"type": "number", "minimum": 10, "maximum": 3600},

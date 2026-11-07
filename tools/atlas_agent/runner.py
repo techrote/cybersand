@@ -459,7 +459,8 @@ def _finalise(rec: dict, out_dir: Path, ctx: dict, redactor: receipt_mod.Redacto
     live = rec["run"]["mode"] == "live"
     if budget is not None:
         snap = budget.snapshot()
-        rec["usage"].update({"api_attempts": snap["attempts"], "api_responses": snap["responses"],
+        rec["usage"].update({"api_attempts": snap["attempts"] + snap["rate_limited_attempts"],
+                             "rate_limited_attempts": snap["rate_limited_attempts"], "api_responses": snap["responses"],
                              "iterations": snap["iterations"], "input_tokens": snap["input_tokens"],
                              "cached_input_tokens": snap["cached_input_tokens"], "output_tokens": snap["output_tokens"],
                              "reasoning_tokens": snap["reasoning_tokens"],

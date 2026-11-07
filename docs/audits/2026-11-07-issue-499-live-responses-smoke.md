@@ -94,6 +94,18 @@ additions and dropping the cistern edits would be a better candidate; the patch 
 The retained images are `review-diff-map.png` (magenta = changed pixels, yellow = floating components),
 `review-crop-left-modules.png` and `review-crop-cistern.png` (2-3x, before above after, floating fragments boxed).
 
+## Run 5: gpt-6.1-sol critique-and-improve attempt, first try (stopped)
+
+| Item | Value |
+|---|---|
+| Source | derived local commit `381fb0bf0ea54e8b21141fbedeefee24c934e76c` = art head `c4aab63e` + run 4's patch + two read-only context files (never published); input bundle = Godot captures of that exact pack, reference bundle = the original art before run 4 |
+| Model / limits | `gpt-6.1-sol` (USD 2.00 / 0.10 / 10.00 per 1M tokens), reasoning medium, 30 iterations, 36 API calls, USD 1.00 ceiling (set by the assistant, approved by the owner running the command) |
+| Outcome | `stopped` / `max_api_calls`, exit 4, no report, **no patch** (a stopped run exports nothing); 15 responses, 19 provider rate-limit rejections (waits of up to 30 s, none charged) which at the time counted against the 36-call allowance, 47 tool calls; 454,072 input (306,100 cached) / 3,580 output (797 reasoning) tokens; computed cost **USD 0.362** |
+| What it did | critiqued luna's work correctly from the reference and input images (taller quartz flanks and gate crown help; detached chips and bars clutter the void; the central register faces are still hard to read), then removed 49 of luna's rectangles in 11 batches; it then burned most of its allowance paging through the 19,000-line `pack.json` with `read_file` (about 24 reads) looking for the central breach, and one `replace_text` failed because the edit-size cap was derived from the read cap |
+| Fixes made after this run | rate-limit rejections no longer consume `max_api_calls` (new `max_total_retries`); `list_rectangles` compact reader and `@scene` addressing; edit-size cap decoupled from the read cap; instruction text v3 |
+
+The run's receipt is retained; the partial edits were lost with its disposable workspace.
+
 ## Retained evidence
 
 Directory `docs/audits/issue-499-live-smoke-2026-11-07/` (credential-scan clean, sealed receipts verify with
@@ -109,6 +121,7 @@ Directory `docs/audits/issue-499-live-smoke-2026-11-07/` (credential-scan clean,
 | `run4-pack-only.diff` | `03da6a9c380ba45c4106ac510dde7a7e64c8b9282bd548433a979ae8b9673684` | compact excerpt of the full patch (pack.json only) |
 | `run4-before-full.png` | `a8a957f8824f654567752d0417068a65c1c072f696d65f63a81c248266035058` | Godot capture, bundle seal `a81f9954ca61ab221db08cb8853f893a88a81644b743a7d59d75b9af65cde564` |
 | `run4-after-full.png` | `dcf088e0f9e2db332921f8969c0907d96aa6c6a90a31bf25339c99cf330c7412` | Godot capture, bundle seal `b83e204bdae6c9cb81498fb049dd77565310d386b673f6611ebcc0f2245c3b76` |
+| `run5-sol-first-attempt-stopped-receipt.json` | `b7809fa20913b3ecfb6453ae9d1a055a3869154a4f81924a7b5b41a876a400c8` | `55738e4339c5244cdb033a9ebebf02a9fd6dc0b317766f6c3f9a367b949b524d` |
 | `review-diff-map.png` | `d90bfddcefced959281f02472c6359b752ae06830c2713a06919f6f36ca7862d` | review analysis image, derived from the two Godot captures |
 | `review-crop-left-modules.png` | `faac05e92ae4c5351a68993f2e1caccfc3cec99fd3258ae1c3c24551a45655af` | review analysis image, derived from the two Godot captures |
 | `review-crop-cistern.png` | `04485005f9b2634ce3dc7fa6d9622466ab849e4b8b044371cd99c0bd5b3e973b` | review analysis image, derived from the two Godot captures |

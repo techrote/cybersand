@@ -154,7 +154,7 @@ def inspect_pack(work_root: Path, collection: str) -> dict:
         scene = pack.get(key)
         if isinstance(scene, dict):
             scenes[key] = {"size": scene.get("size"), "placements": len(scene.get("placements", [])),
-                           "foundation_rectangles": len(scene.get("foundation", scene.get("base", [])) or [])}
+                           "foundation_rectangles": len(scene.get("rectangles") or scene.get("foundation") or scene.get("base") or [])}
     return {"collection": collection, "title": pack.get("title"), "schema_id": pack.get("schema_id"),
             "schema_version": pack.get("schema_version"), "status": pack.get("status"),
             "source": pack.get("source"), "palette": palette, "features": features, "scenes": scenes,
@@ -220,6 +220,7 @@ def run_script(work_root: Path, collection: str, kind: str, timeout: float, max_
 
 # ------------------------------------------------------------------- structured edit
 
+SCENE_ID = "@scene"  # feature_id that addresses the combined scene's own (foundation) rectangle list
 _NUMBER = re.compile(r"-?\d+")
 
 
@@ -235,40 +236,66 @@ def _array_end(text: str, open_index: int) -> int:
     raise ToolError("pack_layout_unsupported", "unbalanced rectangles array")
 
 
-def add_rectangles(pack_text: str, feature_id: str, rects: list, max_rects: int = 60) -> tuple[str, dict]:
-    """Append validated ``[x, y, width, height, material]`` rectangles to one feature, preserving the
-    file's own layout (inline or one-number-per-line). The spliced text must parse to exactly the old
-    pack plus the new rectangles, otherwise the edit is refused."""
-    pack = json.loads(pack_text)
+def _container(pack: dict, feature_id: str) -> tuple[dict, str, list, str | None]:
+    """(object holding the list, list key, [width, height], status) for a feature or the scene."""
+    if feature_id == SCENE_ID:
+        scene = pack.get("scene")
+        name = next((k for k in ("rectangles", "foundation") if isinstance(scene, dict) and isinstance(scene.get(k), list)), None)
+        if name is None:
+            raise ToolError("pack_layout_unsupported", "this pack's scene has no rectangle list")
+        return scene, name, scene["size"], None
     feature = next((f for f in pack.get("features", []) if f.get("id") == feature_id), None)
     if feature is None:
-        raise ToolError("unknown_feature", f"no feature {feature_id!r}; use inspect_pack to list feature ids")
+        raise ToolError("unknown_feature", f"no feature {feature_id!r} (use '{SCENE_ID}' for the scene foundation); "
+                                           "use inspect_pack to list feature ids")
+    return feature, "rectangles", feature["size"], feature.get("status")
+
+
+def _locate(pack_text: str, feature_id: str, name: str):
+    """Regex match of the opening ``"<name>": [`` of the addressed list in the raw text."""
+    if feature_id == SCENE_ID:
+        top = re.search(r'\n  "scene":\s*\{', pack_text)
+        anchor = top.end() if top else None
+    else:
+        top = re.search(r'\n  "features":\s*\[', pack_text)
+        start = top.end() if top else pack_text.index('"features"')
+        ident = re.compile(r'"id":\s*"' + re.escape(feature_id) + '"').search(pack_text, start)
+        anchor = ident.end() if ident else None
+    key = re.compile(r'"' + name + r'":\s*\[').search(pack_text, anchor) if anchor is not None else None
+    if key is None:
+        raise ToolError("pack_layout_unsupported", "could not locate the rectangles array in the pack text")
+    return key
+
+
+def _check_rect(rect, size, palette, status, where):
+    if not (isinstance(rect, list) and len(rect) == 5 and all(type(v) is int for v in rect)):
+        raise ToolError("bad_rectangles", f"each rectangle must be [x, y, width, height, material_id]: {rect!r}")
+    x, y, w, h, material = rect
+    if x < 0 or y < 0 or w <= 0 or h <= 0 or x + w > size[0] or y + h > size[1]:
+        raise ToolError("rectangle_out_of_bounds", f"{rect} lies outside the {size[0]}x{size[1]} {where} (half-open bounds)")
+    if material not in palette:
+        raise ToolError("unknown_material", f"material {material} is not in the pack palette")
+    if status == "static" and palette[material].get("movable"):
+        raise ToolError("movable_in_static", f"material {material} is movable but the feature is static")
+
+
+def add_rectangles(pack_text: str, feature_id: str, rects: list, max_rects: int = 60) -> tuple[str, dict]:
+    """Append validated ``[x, y, width, height, material]`` rectangles to one feature (or the scene), preserving
+    the file's own layout (inline or one-number-per-line). The spliced text must parse to exactly the old pack
+    plus the new rectangles, otherwise the edit is refused."""
+    pack = json.loads(pack_text)
+    container, name, size, status = _container(pack, feature_id)
     if not rects or len(rects) > max_rects:
         raise ToolError("bad_rectangles", f"provide 1..{max_rects} rectangles per call")
     palette = {m["id"]: m for m in pack.get("palette", [])}
-    width, height = feature["size"]
     for rect in rects:
-        if not (isinstance(rect, list) and len(rect) == 5 and all(type(v) is int for v in rect)):
-            raise ToolError("bad_rectangles", f"each rectangle must be [x, y, width, height, material_id]: {rect!r}")
-        x, y, w, h, material = rect
-        if x < 0 or y < 0 or w <= 0 or h <= 0 or x + w > width or y + h > height:
-            raise ToolError("rectangle_out_of_bounds",
-                            f"{rect} lies outside the {width}x{height} feature (half-open bounds)")
-        if material not in palette:
-            raise ToolError("unknown_material", f"material {material} is not in the pack palette")
-        if feature.get("status") == "static" and palette[material].get("movable"):
-            raise ToolError("movable_in_static", f"material {material} is movable but the feature is static")
-    top = re.search(r'\n  "features":\s*\[', pack_text)
-    start = top.end() if top else pack_text.index('"features"')
-    ident = re.compile(r'"id":\s*"' + re.escape(feature_id) + '"').search(pack_text, start)
-    key = re.compile(r'"rectangles":\s*\[').search(pack_text, ident.end()) if ident else None
-    if key is None:
-        raise ToolError("pack_layout_unsupported", "could not locate the feature's rectangles array")
+        _check_rect(rect, size, palette, status, "scene" if feature_id == SCENE_ID else "feature")
+    key = _locate(pack_text, feature_id, name)
     close = _array_end(pack_text, key.end() - 1)
     inner = pack_text[key.end():close]
     blocks = list(re.finditer(r"\[[^\[\]]*\]", inner))
     if not blocks:
-        raise ToolError("pack_layout_unsupported", "feature has no existing rectangle to copy the layout from")
+        raise ToolError("pack_layout_unsupported", "list has no existing rectangle to copy the layout from")
     last = blocks[-1]
     separator = inner[blocks[-2].end():last.start()] if len(blocks) > 1 else ", "
     at = key.end() + last.end()
@@ -278,7 +305,7 @@ def add_rectangles(pack_text: str, feature_id: str, rects: list, max_rects: int 
         pieces.append(separator + _NUMBER.sub(lambda _m: next(values), last.group(0)))
     new_text = pack_text[:at] + "".join(pieces) + pack_text[at:]
     expected = json.loads(pack_text)
-    next(f for f in expected["features"] if f["id"] == feature_id)["rectangles"].extend(rects)
+    _container(expected, feature_id)[0][name].extend(rects)
     if json.loads(new_text) != expected:
         raise ToolError("pack_layout_unsupported", "the spliced pack did not parse to the expected content; refused")
     return new_text, {"feature_id": feature_id, "rectangles_added": len(rects),
@@ -286,45 +313,36 @@ def add_rectangles(pack_text: str, feature_id: str, rects: list, max_rects: int 
 
 
 def remove_rectangles(pack_text: str, feature_id: str, rects: list, max_rects: int = 60) -> tuple[str, dict]:
-    """Remove the last exact match of each rectangle from one feature, preserving layout. The spliced
-    text must parse to exactly the old pack minus those entries; a feature keeps at least one rectangle."""
+    """Remove the last exact match of each rectangle from one feature (or the scene), preserving layout. The
+    spliced text must parse to exactly the old pack minus those entries; a list keeps at least one rectangle."""
     pack = json.loads(pack_text)
-    feature = next((f for f in pack.get("features", []) if f.get("id") == feature_id), None)
-    if feature is None:
-        raise ToolError("unknown_feature", f"no feature {feature_id!r}; use inspect_pack to list feature ids")
+    container, name, size, status = _container(pack, feature_id)
     if not rects or len(rects) > max_rects:
         raise ToolError("bad_rectangles", f"provide 1..{max_rects} rectangles per call")
-    existing = [list(r) for r in feature["rectangles"]]
-    positions, taken = [], set()
+    existing = [list(r) for r in container[name]]
+    taken = set()
     for rect in rects:
         if not (isinstance(rect, list) and len(rect) == 5 and all(type(v) is int for v in rect)):
             raise ToolError("bad_rectangles", f"each rectangle must be [x, y, width, height, material_id]: {rect!r}")
         index = next((i for i in range(len(existing) - 1, -1, -1) if existing[i] == rect and i not in taken), None)
         if index is None:
-            raise ToolError("rectangle_not_found", f"{rect} is not in feature {feature_id!r} (or was already listed)")
+            raise ToolError("rectangle_not_found", f"{rect} is not in {feature_id!r} (or was already listed)")
         taken.add(index)
-        positions.append(index)
     if len(existing) - len(taken) < 1:
-        raise ToolError("feature_would_be_empty", "a feature must keep at least one rectangle")
-    top = re.search(r'\n  "features":\s*\[', pack_text)
-    start = top.end() if top else pack_text.index('"features"')
-    ident = re.compile(r'"id":\s*"' + re.escape(feature_id) + '"').search(pack_text, start)
-    key = re.compile(r'"rectangles":\s*\[').search(pack_text, ident.end()) if ident else None
-    if key is None:
-        raise ToolError("pack_layout_unsupported", "could not locate the feature's rectangles array")
+        raise ToolError("feature_would_be_empty", "a list must keep at least one rectangle")
+    key = _locate(pack_text, feature_id, name)
     close = _array_end(pack_text, key.end() - 1)
     inner = pack_text[key.end():close]
     blocks = list(re.finditer(r"\[[^\[\]]*\]", inner))
     if len(blocks) != len(existing):
         raise ToolError("pack_layout_unsupported", "rectangle layout did not match the parsed array")
-    # rebuild the array from the kept entries using the file's own first separator
     separator = inner[blocks[0].end():blocks[1].start()] if len(blocks) > 1 else ", "
     kept = [blocks[i].group(0) for i in range(len(blocks)) if i not in taken]
     new_inner = inner[:blocks[0].start()] + separator.join(kept) + inner[blocks[-1].end():]
     new_text = pack_text[:key.end()] + new_inner + pack_text[close:]
     expected = json.loads(pack_text)
-    target = next(f for f in expected["features"] if f["id"] == feature_id)
-    target["rectangles"] = [r for i, r in enumerate(target["rectangles"]) if i not in taken]
+    target = _container(expected, feature_id)[0]
+    target[name] = [r for i, r in enumerate(target[name]) if i not in taken]
     try:
         reparsed = json.loads(new_text)
     except ValueError:
@@ -333,3 +351,15 @@ def remove_rectangles(pack_text: str, feature_id: str, rects: list, max_rects: i
         raise ToolError("pack_layout_unsupported", "the spliced pack did not parse to the expected content; refused")
     return new_text, {"feature_id": feature_id, "rectangles_removed": len(taken),
                       "bytes_added": len(new_text) - len(pack_text)}
+
+
+def rectangle_listing(pack: dict, feature_id: str, start: int, count: int) -> dict:
+    """Compact page of one rectangle list: [array_index, x, y, width, height, material_id] rows."""
+    container, name, size, status = _container(pack, feature_id)
+    rects = container[name]
+    page = rects[start:start + count]
+    names = {m["id"]: m["name"] for m in pack.get("palette", [])}
+    return {"feature_id": feature_id, "size": size, "status": status, "total_rectangles": len(rects),
+            "start_index": start, "rectangles": [[start + i, *r] for i, r in enumerate(page)],
+            "materials": {str(m): names.get(m) for m in sorted({r[4] for r in page})},
+            "note": "array_index is the position in the list; later entries overwrite earlier ones"}

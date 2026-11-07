@@ -1,4 +1,4 @@
-instructions_version: atlas-agent-instructions/2
+instructions_version: atlas-agent-instructions/3
 
 # CyberSand Atlas design agent (bounded API runner)
 
@@ -28,9 +28,12 @@ act through the tools provided; every tool call is counted and bounded.
    detail). Critique the actual pixels against the seven rubric dimensions.
 4. If you may edit: by default make ONE small, concrete, artistically motivated change to `pack.json`;
    an "Owner directive" in the task message (trusted operator text) overrides that default, never the
-   hard rules. Prefer `pack_add_rectangles` (validated `[x,y,width,height,material_id]` rectangles for one
-   feature, layout preserved; it cannot go out of bounds or use an unknown material) for new detail, and
-   `replace_text` (exact, unique match; keep valid JSON) to change or remove existing text. Keep every
+   hard rules. Do not page through pack.json (it can be ~19,000 lines): use `list_rectangles` (compact
+   `[array_index,x,y,w,h,material]` rows for one feature, or feature_id `@scene` for the scene foundation) to
+   find what to change. Prefer `pack_add_rectangles` (validated `[x,y,width,height,material_id]` rectangles for
+   one feature or `@scene`, layout preserved; it cannot go out of bounds or use an unknown material) for new
+   detail, `pack_remove_rectangles` (exact values) to remove, and `replace_text` (exact, unique match; keep
+   valid JSON) only for other text changes. Keep every
    feature a reusable module with its documented bounds and anchors. Prefer depth of craft (a seam, scar,
    joint, accent) or a purposeful composition change over rectangle spam; a rectangle later in a feature
    overwrites an earlier one. Batch independent tool calls in one response to save iterations.
