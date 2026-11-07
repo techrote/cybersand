@@ -17,7 +17,7 @@ function renderSvg(p){
  rect(x+14,y+60,348,195,"#0a101d");const k=Math.min(2.02,334/f.size[0],180/f.size[1]);stamp(f,x+20+(336-f.size[0]*k)/2,y+66+(181-f.size[1]*k)/2,k,null);
  txt(x+15,y+277,"2 variants  |  ground anchor  |  no physics proof",11,"#b3b8d0")}
  txt(36,1112,"ENLARGED SOURCE-COLOUR STUDIES / LANDMARK + CRAFT DETAILS",15,"#d9c8e0");
- for(const c of [{x:28,title:"STALLED WHEEL / BROKEN SKYWAY",view:"135 60 420 137"},{x:812,title:"BROKEN MIDWAY / LOST PRIZES",view:"610 64 480 137"}]){
+ for(const c of [{x:28,title:"STALLED WHEEL / BROKEN SKYWAY",view:"135 60 420 137"},{x:812,title:"THE MISSING MINUTE / CLOCK AND GATEWORK",view:"550 20 450 155"}]){
    rect(c.x,1128,760,252,"#191b2a",'rx="8"');txt(c.x+12,1150,c.title,13,"#c6cadd");
    out.push(`<svg x="${c.x+12}" y="1161" width="736" height="203" viewBox="${c.view}">`);
    rect(0,0,sc.size[0],sc.size[1],"#090e1a");
