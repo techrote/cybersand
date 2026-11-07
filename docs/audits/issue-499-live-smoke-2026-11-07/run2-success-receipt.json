@@ -1,0 +1,838 @@
+{
+  "artifacts": {
+    "patch": {
+      "files": [
+        "docs/world-design/mini-vault/pack.json",
+        "docs/world-design/mini-vault/preview.svg"
+      ],
+      "path": "patch.diff",
+      "sha256": "bc0724037e26523014c07bd2e3195ae99ec950d3a3f8798c885b64109f78dc55"
+    },
+    "tool_log": {
+      "entries": 13,
+      "path": "tool-log.jsonl",
+      "sha256": "e724862568ea8c9a02c12024487ed25621df6dd9ffc96ce01c9032ef7bf57c83"
+    },
+    "transcript": {
+      "entries": 9,
+      "path": "transcript.jsonl",
+      "sha256": "6867052e2e102d3e20c5cf61c761c9bd12c997f0af6ec1fa90ef981c9cca9fe7"
+    }
+  },
+  "calls": [
+    {
+      "cached_input_tokens": 1158,
+      "computed_from_reported_usage_usd": 6.428e-05,
+      "duration_ms": 1648,
+      "images_in_request": 0,
+      "input_tokens": 1255,
+      "input_tokens_estimated_upper": 3843,
+      "kind": "responses.create",
+      "model": "gpt-6-luna",
+      "n": 1,
+      "output_tokens": 86,
+      "reasoning_tokens": 0,
+      "request_id": "req_7e44f2f833894386960c0f176738c33b",
+      "reserved_worst_case_usd": 0.0023843,
+      "response_id": "resp_009ae79005727dc0016aeebee11d7487d2928437df063c4de3",
+      "retries": 0,
+      "retry_events": [],
+      "status": "completed"
+    },
+    {
+      "cached_input_tokens": 1252,
+      "computed_from_reported_usage_usd": 0.00012402,
+      "duration_ms": 1488,
+      "images_in_request": 0,
+      "input_tokens": 2177,
+      "input_tokens_estimated_upper": 5713,
+      "kind": "responses.create",
+      "model": "gpt-6-luna",
+      "n": 2,
+      "output_tokens": 38,
+      "reasoning_tokens": 18,
+      "request_id": "req_874fa9c027874688b3f6648e3d41ebb0",
+      "reserved_worst_case_usd": 0.0025713,
+      "response_id": "resp_009ae79005727dc0016aeebee2a3c487d2b8f4d188c2d553fd",
+      "retries": 0,
+      "retry_events": [],
+      "status": "completed"
+    },
+    {
+      "cached_input_tokens": 2174,
+      "computed_from_reported_usage_usd": 7.034e-05,
+      "duration_ms": 1194,
+      "images_in_request": 0,
+      "input_tokens": 2475,
+      "input_tokens_estimated_upper": 7290,
+      "kind": "responses.create",
+      "model": "gpt-6-luna",
+      "n": 3,
+      "output_tokens": 37,
+      "reasoning_tokens": 0,
+      "request_id": "req_ac2f0c7bca1d4e06939b9d7a5c3386ec",
+      "reserved_worst_case_usd": 0.002729,
+      "response_id": "resp_009ae79005727dc0016aeebee4197487d2b8d60e264c4bf2f5",
+      "retries": 0,
+      "retry_events": [],
+      "status": "completed"
+    },
+    {
+      "cached_input_tokens": 2472,
+      "computed_from_reported_usage_usd": 0.00012402,
+      "duration_ms": 1017,
+      "images_in_request": 0,
+      "input_tokens": 3320,
+      "input_tokens_estimated_upper": 8686,
+      "kind": "responses.create",
+      "model": "gpt-6-luna",
+      "n": 4,
+      "output_tokens": 29,
+      "reasoning_tokens": 0,
+      "request_id": "req_0520f9d872c44c54a7dc19edb60c0697",
+      "reserved_worst_case_usd": 0.0028686,
+      "response_id": "resp_009ae79005727dc0016aeebee549e487d282e222e4d00cc6e2",
+      "retries": 0,
+      "retry_events": [],
+      "status": "completed"
+    },
+    {
+      "cached_input_tokens": 3317,
+      "computed_from_reported_usage_usd": 0.00017207,
+      "duration_ms": 3631,
+      "images_in_request": 1,
+      "input_tokens": 3496,
+      "input_tokens_estimated_upper": 9122,
+      "kind": "responses.create",
+      "model": "gpt-6-luna",
+      "n": 5,
+      "output_tokens": 242,
+      "reasoning_tokens": 128,
+      "request_id": "req_50160ec4d60f4d4993875935d74fe80e",
+      "reserved_worst_case_usd": 0.0029122,
+      "response_id": "resp_009ae79005727dc0016aeebee64b5c87d281a1f7850daa4850",
+      "retries": 0,
+      "retry_events": [],
+      "status": "completed"
+    },
+    {
+      "cached_input_tokens": 3493,
+      "computed_from_reported_usage_usd": 9.863e-05,
+      "duration_ms": 1873,
+      "images_in_request": 1,
+      "input_tokens": 3825,
+      "input_tokens_estimated_upper": 11183,
+      "kind": "responses.create",
+      "model": "gpt-6-luna",
+      "n": 6,
+      "output_tokens": 61,
+      "reasoning_tokens": 0,
+      "request_id": "req_924b4983df374a1095f8427affdc16d9",
+      "reserved_worst_case_usd": 0.0031183,
+      "response_id": "resp_009ae79005727dc0016aeebee9f26487d2be02cd3e4c79dbea",
+      "retries": 0,
+      "retry_events": [],
+      "status": "completed"
+    },
+    {
+      "cached_input_tokens": 3317,
+      "computed_from_reported_usage_usd": 0.00012277,
+      "duration_ms": 1137,
+      "images_in_request": 0,
+      "input_tokens": 4018,
+      "input_tokens_estimated_upper": 11713,
+      "kind": "responses.create",
+      "model": "gpt-6-luna",
+      "n": 7,
+      "output_tokens": 39,
+      "reasoning_tokens": 12,
+      "request_id": "req_375bf4fe79574a1dbe9151cb32f6acab",
+      "reserved_worst_case_usd": 0.0031713,
+      "response_id": "resp_009ae79005727dc0016aeebeebf7b087d28b8f65c7a89e806c",
+      "retries": 0,
+      "retry_events": [],
+      "status": "completed"
+    },
+    {
+      "cached_input_tokens": 4015,
+      "computed_from_reported_usage_usd": 6.435e-05,
+      "duration_ms": 920,
+      "images_in_request": 0,
+      "input_tokens": 4132,
+      "input_tokens_estimated_upper": 12957,
+      "kind": "responses.create",
+      "model": "gpt-6-luna",
+      "n": 8,
+      "output_tokens": 25,
+      "reasoning_tokens": 0,
+      "request_id": "req_b0f56825d26a4becb2a87e531652700a",
+      "reserved_worst_case_usd": 0.0032957,
+      "response_id": "resp_009ae79005727dc0016aeebeed2fcc87d2a1ec444981a6bec3",
+      "retries": 0,
+      "retry_events": [],
+      "status": "completed"
+    },
+    {
+      "cached_input_tokens": 4129,
+      "computed_from_reported_usage_usd": 0.00035569,
+      "duration_ms": 8693,
+      "images_in_request": 0,
+      "input_tokens": 4233,
+      "input_tokens_estimated_upper": 13262,
+      "kind": "responses.create",
+      "model": "gpt-6-luna",
+      "n": 9,
+      "output_tokens": 608,
+      "reasoning_tokens": 0,
+      "request_id": "req_3e63dfde230c4bc0a5a0b20c7c03ed19",
+      "reserved_worst_case_usd": 0.0033262,
+      "response_id": "resp_009ae79005727dc0016aeebeee2db487d28f1d4f9b7da34487",
+      "retries": 0,
+      "retry_events": [],
+      "status": "completed"
+    }
+  ],
+  "captures": {
+    "comparison": null,
+    "input_bundle": {
+      "art_revision": null,
+      "batch_manifest_sha256": "65ebd54fa5a4008cf8dfc5cf13208fcb3d54ebbd77ba3c1802fb1599da2fc4cd",
+      "evidence_class": "fixture",
+      "label": "input",
+      "problems": [],
+      "renderer": null,
+      "shots": [
+        {
+          "collection": "mini-vault",
+          "height": 96,
+          "kind": "full",
+          "pack_sha256": "5c7a0ed36357d9aad2af66e75f3e47e6412506d0816963709f25cad052c77a94",
+          "png_sha256": "9ad26e90c53d04a27c39d11c035acde54ce0e66de7f96aee030934b1993f9126",
+          "shot_id": "full",
+          "verified": true,
+          "width": 192
+        }
+      ],
+      "verified": true
+    },
+    "render_attempts": [],
+    "rendered_bundle": null
+  },
+  "cost": {
+    "ambiguous_charge_assumed_usd": 0.0,
+    "authorised_ceiling_usd": 0.25,
+    "basis": "token counts x published rates; the API reports tokens, not dollars",
+    "billing_reconciliation": "not-performed",
+    "committed_usd": 0.00119617,
+    "computed_from_reported_usage_usd": 0.00119617,
+    "currency": "USD",
+    "peak_reservation_usd": 0.0033262,
+    "per_call_ceiling_usd": 0.05,
+    "per_run_ceiling_usd": 0.25,
+    "rates": {
+      "cached_input_usd_per_1m": 0.01,
+      "input_usd_per_1m": 0.1,
+      "model": "gpt-6-luna",
+      "output_usd_per_1m": 0.5,
+      "retrieved_utc": "2026-11-07",
+      "source_url": "https://developers.openai.com/api/docs/pricing"
+    },
+    "remaining_allowance_usd": 0.24880383,
+    "reservation_overruns": 0,
+    "reserved_worst_case_total_usd": 0.0263769,
+    "simulated": false
+  },
+  "credit_gate": {
+    "checks": [
+      {
+        "detail": "environment variable OPENAI_API_KEY is set",
+        "name": "api_key_present",
+        "ok": true
+      },
+      {
+        "detail": "authorised ceiling $0.25 vs per-run limit $0.25; authorisation reference present",
+        "name": "spend_authorised",
+        "ok": true
+      },
+      {
+        "detail": "rates for gpt-6-luna retrieved 2026-11-07",
+        "name": "pricing_known",
+        "ok": true
+      },
+      {
+        "detail": "source checkout is clean",
+        "name": "source_clean",
+        "ok": true
+      },
+      {
+        "detail": "owner credit attestation supplied",
+        "name": "credit_attestation",
+        "ok": true
+      },
+      {
+        "detail": "attestation age 0.1h (max 72h); expires 2026-11-27 (required margin 24h)",
+        "name": "credit_not_expired",
+        "ok": true
+      },
+      {
+        "detail": "attested remaining $88.00 vs per-run limit $0.25; grant attested to cover API usage",
+        "name": "credit_sufficient",
+        "ok": true
+      },
+      {
+        "detail": "auto-recharge attested disabled",
+        "name": "auto_recharge_disabled",
+        "ok": true
+      },
+      {
+        "detail": "gpt-6-luna is in the attested eligible list",
+        "name": "model_attested_eligible",
+        "ok": true
+      },
+      {
+        "detail": "models.retrieve(gpt-6-luna) returned HTTP 200",
+        "name": "model_retrievable",
+        "ok": true
+      }
+    ],
+    "facts": {
+      "credit_balance_programmatically_verifiable": false,
+      "headroom_basis": "owner-attestation-only",
+      "note": "grant balance/expiry/auto-recharge cannot be read via a supported API-key endpoint; the owner attestation is the only source for them",
+      "organization_id_sha256_12": null,
+      "project_id_sha256_12": null,
+      "rate_limit_headers": {}
+    },
+    "headroom_basis": "owner-attestation-only",
+    "passed": true,
+    "performed": true
+  },
+  "edits": [
+    {
+      "after_sha256": "86e5ed4302f0d818ae38a4e52e6d417ff87358d34877c2cc9497a1e0771d2d14",
+      "before_sha256": "5c7a0ed36357d9aad2af66e75f3e47e6412506d0816963709f25cad052c77a94",
+      "bytes_added": 56,
+      "bytes_removed": 37,
+      "n": 1,
+      "path": "docs/world-design/mini-vault/pack.json"
+    }
+  ],
+  "final_report": {
+    "critique": [
+      {
+        "dimension": "silhouette_scale_hierarchy",
+        "evidence": "Fixture image and pack structure show a simple, readable arch as the primary mass with a smaller rail span; silhouettes are basic rectangles and lack shaped contours.",
+        "score_0_to_5": 2
+      },
+      {
+        "dimension": "architectural_geologic_richness",
+        "evidence": "Granite arch is represented by a few rectangular masses with no visible masonry variation or geological strata.",
+        "score_0_to_5": 1
+      },
+      {
+        "dimension": "authentic_micro_detail",
+        "evidence": "The original pack has very little hardware/detail. A small rusted-steel rail fastening accent was added, but remains schematic.",
+        "score_0_to_5": 1
+      },
+      {
+        "dimension": "value_colour_discipline",
+        "evidence": "The limited dark, granite, copper and rust palette is restrained, but large flat material areas provide little value modulation.",
+        "score_0_to_5": 2
+      },
+      {
+        "dimension": "environmental_narrative",
+        "evidence": "The scene contains a foundation and two modules, but no clear wear, setting-specific context, or narrative cues.",
+        "score_0_to_5": 1
+      },
+      {
+        "dimension": "coherent_integrated_composition",
+        "evidence": "Modules sit within the scene footprint and are distinguishable; the rail's new rust accent adds a small material contrast, while the overall layout remains sparse.",
+        "score_0_to_5": 2
+      },
+      {
+        "dimension": "cross_theme_distinctiveness",
+        "evidence": "As a deliberately synthetic fixture with a minimal palette and primitive forms, it does not establish a distinct world theme.",
+        "score_0_to_5": 1
+      }
+    ],
+    "edits_applied": [
+      "Added rectangle [11,3,2,2,65] to copper-rail as a small rusted fastening accent."
+    ],
+    "outcome": "improved",
+    "revision_proposals": [
+      {
+        "change": "Develop the arch with a few purposeful block joints and subtle edge irregularity while retaining its reusable 24×16 bounds.",
+        "rationale": "Would give the primary landmark more architectural construction and a less purely rectangular silhouette.",
+        "target": "granite-arch"
+      },
+      {
+        "change": "Introduce restrained contextual marks around the foundation and module contact points using existing palette materials.",
+        "rationale": "Would better anchor the structures and imply age/use without overloading the sparse composition.",
+        "target": "scene"
+      }
+    ],
+    "summary": "Added one compact rusted-steel fastening/accent to the verdigris rail module. The pack remains explicitly identified as a synthetic fixture, not production CyberSand art. The input image was fixture evidence only; no post-edit engine capture was available.",
+    "validation_notes": "Baseline validator passed (2 features / 8 rectangles / 2 placements). Post-edit validator passed (2 features / 9 rectangles / 2 placements). Initial render_check correctly detected stale preview; render_write regenerated preview.svg, and subsequent render_check passed. Only fixture image evidence was available; no Godot-rendered before/after claim is made.",
+    "visual_evidence_used": true
+  },
+  "images": [
+    {
+      "bundle": "input",
+      "bytes": 357,
+      "collection": "mini-vault",
+      "evidence_class": "fixture",
+      "height": 96,
+      "sent_in_calls": [
+        5,
+        6
+      ],
+      "sha256": "9ad26e90c53d04a27c39d11c035acde54ce0e66de7f96aee030934b1993f9126",
+      "shot_id": "full",
+      "width": 192
+    }
+  ],
+  "limits": {
+    "limits": {
+      "backoff_base_seconds": 1.0,
+      "backoff_max_seconds": 30.0,
+      "image_resend_calls": 2,
+      "max_api_calls": 16,
+      "max_edit_bytes": 20000,
+      "max_files_edited": 3,
+      "max_image_bytes": 3000000,
+      "max_image_edge_pixels": 2048,
+      "max_images": 4,
+      "max_input_tokens_per_call": 60000,
+      "max_iterations": 14,
+      "max_malformed_tool_calls": 3,
+      "max_output_tokens_per_call": 4000,
+      "max_read_bytes": 65536,
+      "max_retries": 3,
+      "max_run_seconds": 900,
+      "max_sandbox_violations": 2,
+      "max_tool_calls": 40,
+      "max_tool_calls_per_response": 4,
+      "max_tool_output_bytes": 20000,
+      "max_tool_seconds": 120,
+      "max_total_image_bytes": 8000000,
+      "max_total_input_tokens": 200000,
+      "max_total_output_tokens": 20000,
+      "max_total_tool_seconds": 600,
+      "token_estimate_bytes_per_token": 2.0
+    },
+    "spend": {
+      "attestation_max_age_hours": 72,
+      "authorisation_ref": "Owner go-ahead in the Claude Code session chat on 2026-11-07: live smoke test, ceiling USD 0.25, model gpt-6-luna",
+      "authorised_ceiling_usd": 0.25,
+      "costs_key_env": "OPENAI_ADMIN_KEY",
+      "credit_expiry_margin_hours": 24,
+      "expected_project": null,
+      "max_usd_per_call": 0.05,
+      "max_usd_per_run": 0.25,
+      "require_costs_crosscheck": false
+    }
+  },
+  "model": {
+    "api_endpoint": "openai-default",
+    "image_detail": "high",
+    "max_output_tokens_per_call": 4000,
+    "observed": [
+      "gpt-6-luna"
+    ],
+    "reasoning_effort": "low",
+    "requested": "gpt-6-luna",
+    "store": false,
+    "truncation": "disabled"
+  },
+  "policy": {
+    "generated_globs": [
+      "docs/world-design/mini-vault/preview.svg"
+    ],
+    "instructions_sha256": "e7a7bb11dddeb2ae38cc612435d5c78e4257297e5f55ff982c829914f3c8b5be",
+    "instructions_version": "atlas-agent-instructions/1",
+    "pricing_sha256": "ca99942d7c4f947fbf21b44ee5ac9b621b699372934b680c792df57753e7ca76",
+    "read_globs": [
+      "docs/world-design/mini-vault/**",
+      "docs/world-design/QUALITY_BAR.md",
+      "docs/world-design/README.md",
+      "native/include/cybersand/material.hpp",
+      "materials/catalogue/catalogue.json"
+    ],
+    "tool_schema_sha256": "4d3d03c9a6ccc49318679eb035e3279466f9fab3eaa5bdf05bf9e9a0699d3005",
+    "tools_advertised": [
+      "list_files",
+      "read_file",
+      "inspect_pack",
+      "run_validator",
+      "list_captures",
+      "view_image",
+      "replace_text",
+      "submit_report"
+    ],
+    "write_globs": [
+      "docs/world-design/mini-vault/pack.json",
+      "docs/world-design/mini-vault/README.md"
+    ]
+  },
+  "publication": {
+    "mode": "none",
+    "performed": false
+  },
+  "receipt_sha256": "1db066498047f7d7142d56eaa5b1a96be456e59d82b9f8e030bee6b343b11bd7",
+  "run": {
+    "ci": false,
+    "duration_seconds": 23.758,
+    "finished_utc": "2026-11-07T06:02:27Z",
+    "id": "20261107T060203Z-aac340a2",
+    "mode": "live",
+    "model_calls_simulated": false,
+    "openai_sdk": "3.46.0",
+    "python": "3.13.16",
+    "runner_version": "1.0.0",
+    "started_utc": "2026-11-07T06:02:03Z"
+  },
+  "schema": "cybersand.atlas-agent.receipt/1",
+  "source": {
+    "collection": "unknown",
+    "expected_source_sha": null,
+    "files": {
+      "docs/world-design/QUALITY_BAR.md": {
+        "bytes": 304,
+        "sha256": "47944388c52497f9e407a21d65cf2394c6d027f5c9f80eeb571000cab6a778de"
+      },
+      "docs/world-design/README.md": {
+        "bytes": 194,
+        "sha256": "e2fa86a3aaac73a567043b1c64cc3d8904150b6e7eb26c229667db66cc4c962d"
+      },
+      "docs/world-design/mini-vault/README.md": {
+        "bytes": 240,
+        "sha256": "e647d7baf4ec0aa87ea783a04ad902db0bfb808eb4dac95e7554a44d50a7b647"
+      },
+      "docs/world-design/mini-vault/pack.json": {
+        "bytes": 1611,
+        "sha256": "5c7a0ed36357d9aad2af66e75f3e47e6412506d0816963709f25cad052c77a94"
+      },
+      "docs/world-design/mini-vault/preview.svg": {
+        "bytes": 658,
+        "sha256": "744631c7d9a7f1d9eabd7bfe4b404497a667b15cbab6e527dae0c4968f9a6671"
+      },
+      "docs/world-design/mini-vault/render_pack.py": {
+        "bytes": 1359,
+        "sha256": "02a79f79f0ca5b07327ec8a432e6cdb45c11a71ab6e1e297fb6d2077ce24b5f6"
+      },
+      "docs/world-design/mini-vault/validate_pack.py": {
+        "bytes": 2329,
+        "sha256": "efc065ba4b72c3842673626744cd02a2335b692891f4eeccd0d03b4c48754193"
+      },
+      "materials/catalogue/catalogue.json": {
+        "bytes": 556,
+        "sha256": "58d7755a22223fba24f60db4fadc4d556d9a52853ad0f37b608f09e6a4214b6e"
+      },
+      "native/include/cybersand/material.hpp": {
+        "bytes": 276,
+        "sha256": "50abf351508dfcc8abbfb93e8be794faa75e4ee04c450ea7dbb3b1b7736c0d89"
+      }
+    },
+    "fixture": true,
+    "head_after_run": "a14ff2caf83b41bbc0dda65388cc40cc3d63f9fd",
+    "lane": "terrain-art",
+    "lane_writable": true,
+    "repository_head": "a14ff2caf83b41bbc0dda65388cc40cc3d63f9fd",
+    "source_dirty": false,
+    "source_manifest_sha256": "7db75ddc36801dd3e6efa0b3b8657055e5d2a1c7a467474ffe10b884b7f25647",
+    "source_unchanged_after_run": true
+  },
+  "status": {
+    "exit_code": 0,
+    "final": "success",
+    "phase": "done",
+    "reason": "report submitted, validations passed, limits respected",
+    "reason_code": "completed"
+  },
+  "tools": [
+    {
+      "args_sha256": "404c94c9c0e8a9e70c787a9ff4d78ea22e6db20e2492990d8a69abac3254fdff",
+      "duration_ms": 1,
+      "error_code": null,
+      "n": 1,
+      "name": "inspect_pack",
+      "ok": true,
+      "output_bytes": 1411,
+      "output_sha256": "25008de158552c5a313def13a66b227de7ca4779ae62c04a9b2aba56bed7b90c"
+    },
+    {
+      "args_sha256": "9f50745d1b739b2c0c076e3559a77e4c87f029596f3d943ee987ac83a7b438b2",
+      "duration_ms": 69,
+      "error_code": null,
+      "n": 2,
+      "name": "run_validator",
+      "ok": true,
+      "output_bytes": 236,
+      "output_sha256": "1039d014e984bde8b528cb26866155b66a45cb0cef1cc15e6baff12ecc1beadb"
+    },
+    {
+      "args_sha256": "e01bb6064d8b0b90ecc5bcafc23f647753e0186ec3629386cba2a3ee82ba34b8",
+      "duration_ms": 1,
+      "error_code": null,
+      "n": 3,
+      "name": "list_files",
+      "ok": true,
+      "output_bytes": 45,
+      "output_sha256": "6d75ec006a68dabdef5f5e99c27f34b760822c9cbf455da2e5e523407f96f5ca"
+    },
+    {
+      "args_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "duration_ms": 2,
+      "error_code": null,
+      "n": 4,
+      "name": "list_captures",
+      "ok": true,
+      "output_bytes": 525,
+      "output_sha256": "8ce736999687f2936f0617d635ea7c784129f369fa1500f56620c34d24b95f60"
+    },
+    {
+      "args_sha256": "07a8c76bdd9a11603b5535d4af9ef1b69a7258e238b8b61416a94cbf1a7f14a8",
+      "duration_ms": 5,
+      "error_code": null,
+      "n": 5,
+      "name": "list_files",
+      "ok": true,
+      "output_bytes": 801,
+      "output_sha256": "47ca920b304551f6800dfcedbc6ef0cd9370701ff55f3505e0c34fd230db70fe"
+    },
+    {
+      "args_sha256": "9a59559393394fe0a2862c6c46508244da5b8b2a4c1bac74d6fa41b1cbdbb137",
+      "duration_ms": 0,
+      "error_code": null,
+      "n": 6,
+      "name": "read_file",
+      "ok": true,
+      "output_bytes": 2032,
+      "output_sha256": "d004fd494f9008c0814bcc20acf70170d8fb956dc98dfda2bfe1004a7dcaa426"
+    },
+    {
+      "args_sha256": "2a31c1dd99453607623e7d5d688f6c4367314e82e91494bdb077390be0dfff4f",
+      "duration_ms": 0,
+      "error_code": null,
+      "n": 7,
+      "name": "view_image",
+      "ok": true,
+      "output_bytes": 202,
+      "output_sha256": "1fbde9aafa99a6e56bbeb712c8754b8b2013f6ef1cc235702b92053ec34ff96b"
+    },
+    {
+      "args_sha256": "0c4467b258abb77880942671133dc95891441cf8b9fc12d365b9aca858459eaf",
+      "duration_ms": 8,
+      "error_code": null,
+      "n": 8,
+      "name": "replace_text",
+      "ok": true,
+      "output_bytes": 196,
+      "output_sha256": "3fda9921c2135768384c9be1794dd229244f3434070c9ce754bd8a2b34d2017e"
+    },
+    {
+      "args_sha256": "9f50745d1b739b2c0c076e3559a77e4c87f029596f3d943ee987ac83a7b438b2",
+      "duration_ms": 69,
+      "error_code": null,
+      "n": 9,
+      "name": "run_validator",
+      "ok": true,
+      "output_bytes": 236,
+      "output_sha256": "4e2ee5b78ae84d5884d50236c0e0d330df299aa0a07a025818ecaa224d6998d2"
+    },
+    {
+      "args_sha256": "1a8d95f51a5ab00051836e48cf147421d62212164514e4b9b52d15fe9176ae08",
+      "duration_ms": 76,
+      "error_code": null,
+      "n": 10,
+      "name": "run_validator",
+      "ok": true,
+      "output_bytes": 219,
+      "output_sha256": "7009c2a8911c6954f6a4580da4d166bf8ae04299e3b08e5a588ac478e8588608"
+    },
+    {
+      "args_sha256": "25d0d3478f16e2c82c300d2e14771e22773bda1c25d7e70af820277b49877d19",
+      "duration_ms": 81,
+      "error_code": null,
+      "n": 11,
+      "name": "run_validator",
+      "ok": true,
+      "output_bytes": 209,
+      "output_sha256": "2bb271103307f085fc7b7e257cac66e70f3a4752a342e4010cd0e841c5fc7283"
+    },
+    {
+      "args_sha256": "1a8d95f51a5ab00051836e48cf147421d62212164514e4b9b52d15fe9176ae08",
+      "duration_ms": 69,
+      "error_code": null,
+      "n": 12,
+      "name": "run_validator",
+      "ok": true,
+      "output_bytes": 236,
+      "output_sha256": "6139ff2d967be2d2d106572917a72ab17c01a00177b7706789776c889ebbd5ba"
+    },
+    {
+      "args_sha256": "8172fd95ec6d9c1cbe8f1b5f1988918b9fd64ec37b69394fce2505c9d943a2fd",
+      "duration_ms": 0,
+      "error_code": null,
+      "n": 13,
+      "name": "submit_report",
+      "ok": true,
+      "output_bytes": 18,
+      "output_sha256": "46248d8383d58e9e01b587db1fbff8bd2c36b9fabaa984aaea5b50d03bcc6ca7"
+    }
+  ],
+  "usage": {
+    "api_attempts": 9,
+    "api_responses": 9,
+    "cached_input_tokens": 25327,
+    "image_bytes": 357,
+    "image_sends": 2,
+    "images_loaded": 1,
+    "input_tokens": 28931,
+    "iterations": 9,
+    "malformed_tool_calls": 0,
+    "output_tokens": 1165,
+    "reasoning_tokens": 158,
+    "retries": 0,
+    "sandbox_violations": 0,
+    "tool_calls": 13,
+    "tool_seconds": 0.388
+  },
+  "validation": [
+    {
+      "argv": [
+        "python.exe",
+        "-I",
+        "docs/world-design/mini-vault/validate_pack.py"
+      ],
+      "collection": "mini-vault",
+      "duration_seconds": 0.058,
+      "exit_code": 0,
+      "kind": "validate",
+      "n": 1,
+      "passed": true,
+      "script": "docs/world-design/mini-vault/validate_pack.py",
+      "script_sha256": "efc065ba4b72c3842673626744cd02a2335b692891f4eeccd0d03b4c48754193",
+      "stderr_tail": "",
+      "stdout_tail": "PASS: 2 features / 8 rectangles / 2 placements\r\n",
+      "timed_out": false
+    },
+    {
+      "argv": [
+        "python.exe",
+        "-I",
+        "docs/world-design/mini-vault/validate_pack.py"
+      ],
+      "collection": "mini-vault",
+      "duration_seconds": 0.056,
+      "exit_code": 0,
+      "kind": "validate",
+      "n": 2,
+      "passed": true,
+      "script": "docs/world-design/mini-vault/validate_pack.py",
+      "script_sha256": "efc065ba4b72c3842673626744cd02a2335b692891f4eeccd0d03b4c48754193",
+      "stderr_tail": "",
+      "stdout_tail": "PASS: 2 features / 9 rectangles / 2 placements\r\n",
+      "timed_out": false
+    },
+    {
+      "argv": [
+        "python.exe",
+        "-I",
+        "docs/world-design/mini-vault/render_pack.py",
+        "--check"
+      ],
+      "collection": "mini-vault",
+      "duration_seconds": 0.062,
+      "exit_code": 1,
+      "kind": "render_check",
+      "n": 3,
+      "passed": false,
+      "script": "docs/world-design/mini-vault/render_pack.py",
+      "script_sha256": "02a79f79f0ca5b07327ec8a432e6cdb45c11a71ab6e1e297fb6d2077ce24b5f6",
+      "stderr_tail": "",
+      "stdout_tail": "FAIL: preview.svg is stale\r\n",
+      "timed_out": false
+    },
+    {
+      "argv": [
+        "python.exe",
+        "-I",
+        "docs/world-design/mini-vault/render_pack.py"
+      ],
+      "collection": "mini-vault",
+      "duration_seconds": 0.06,
+      "exit_code": 0,
+      "kind": "render_write",
+      "n": 4,
+      "passed": true,
+      "script": "docs/world-design/mini-vault/render_pack.py",
+      "script_sha256": "02a79f79f0ca5b07327ec8a432e6cdb45c11a71ab6e1e297fb6d2077ce24b5f6",
+      "stderr_tail": "",
+      "stdout_tail": "WROTE preview.svg\r\n",
+      "timed_out": false
+    },
+    {
+      "argv": [
+        "python.exe",
+        "-I",
+        "docs/world-design/mini-vault/render_pack.py",
+        "--check"
+      ],
+      "collection": "mini-vault",
+      "duration_seconds": 0.057,
+      "exit_code": 0,
+      "kind": "render_check",
+      "n": 5,
+      "passed": true,
+      "script": "docs/world-design/mini-vault/render_pack.py",
+      "script_sha256": "02a79f79f0ca5b07327ec8a432e6cdb45c11a71ab6e1e297fb6d2077ce24b5f6",
+      "stderr_tail": "",
+      "stdout_tail": "PASS: preview matches deterministic renderer\r\n",
+      "timed_out": false
+    },
+    {
+      "argv": [
+        "python.exe",
+        "-I",
+        "docs/world-design/mini-vault/validate_pack.py"
+      ],
+      "collection": "mini-vault",
+      "duration_seconds": 0.055,
+      "exit_code": 0,
+      "kind": "validate",
+      "n": 6,
+      "passed": true,
+      "runner_final_check": true,
+      "script": "docs/world-design/mini-vault/validate_pack.py",
+      "script_sha256": "efc065ba4b72c3842673626744cd02a2335b692891f4eeccd0d03b4c48754193",
+      "stderr_tail": "",
+      "stdout_tail": "PASS: 2 features / 9 rectangles / 2 placements\r\n",
+      "timed_out": false
+    },
+    {
+      "argv": [
+        "python.exe",
+        "-I",
+        "docs/world-design/mini-vault/render_pack.py",
+        "--check"
+      ],
+      "collection": "mini-vault",
+      "duration_seconds": 0.054,
+      "exit_code": 0,
+      "kind": "render_check",
+      "n": 7,
+      "passed": true,
+      "runner_final_check": true,
+      "script": "docs/world-design/mini-vault/render_pack.py",
+      "script_sha256": "02a79f79f0ca5b07327ec8a432e6cdb45c11a71ab6e1e297fb6d2077ce24b5f6",
+      "stderr_tail": "",
+      "stdout_tail": "PASS: preview matches deterministic renderer\r\n",
+      "timed_out": false
+    }
+  ],
+  "visual_cycle": {
+    "claimed": false,
+    "reason": "no after-capture was rendered and compared (renderer unavailable or not invoked)"
+  }
+}

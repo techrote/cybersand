@@ -1,0 +1,10 @@
+{
+  "native": {
+    "materials": [
+      {"id": 0, "name": "empty", "rgba": [8, 11, 18, 255], "state": 0, "movable": false, "kernel": 0, "valid": true},
+      {"id": 40, "name": "granite-block", "rgba": [119, 119, 130, 255], "state": 1, "movable": false, "kernel": 0, "valid": true},
+      {"id": 54, "name": "verdigris-copper", "rgba": [79, 140, 121, 255], "state": 1, "movable": false, "kernel": 0, "valid": true},
+      {"id": 65, "name": "rusted-steel", "rgba": [124, 63, 43, 255], "state": 1, "movable": false, "kernel": 0, "valid": true}
+    ]
+  }
+}

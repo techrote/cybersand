@@ -121,6 +121,7 @@
     "systems/generation-workbench-2.md",
     "operations/procedural-qualification.md",
     "architecture/pressure-optimization.md",
+    "operations/atlas-agent-runner.md",
     "operations/ci-execution-and-performance.md",
     "operations/material-catalogue-shadow.md",
     "operations/material-liveness-investigation.md"
