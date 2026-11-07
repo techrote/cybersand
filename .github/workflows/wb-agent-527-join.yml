@@ -1,0 +1,129 @@
+name: WB-AGENT-527 real four-tool foundation composition
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - 'godot/scripts/workbench_agent_four_tool_bridge.gd'
+      - 'godot/scripts/workbench_agent_step_sequence.gd'
+      - 'godot/tests/test_workbench_agent_four_tool_join.gd'
+      - 'godot/tests/test_workbench_agent_step_sequence.gd'
+      - 'docs/audits/2026-11-07-wb-agent-527-join-stop-native.md'
+      - '.github/workflows/wb-agent-527-join.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: wb-agent-527-join-${{ github.event.pull_request.number || github.run_id }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  actual-native-godot-four-tool-join:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+      EVIDENCE: build/wb-agent-527-join
+      WB_AGENT_527_IMAGE_DIR: ${{ github.workspace }}/build/wb-agent-527-join
+      GODOT_SILENCE_ROOT_WARNING: '1'
+    steps:
+      - name: Checkout immutable PR head
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ env.SOURCE_SHA }}
+          fetch-depth: 0
+          persist-credentials: false
+          lfs: false
+      - name: Compose exact tested foundation without touching either owned PR
+        env:
+          FOUNDATION_SHA: eab1f59418023012f79637806d20b07f23c1ebe0
+          COMMON_BASE: 81bbd5ff5cf366159e2b8a630609359c13560080
+        run: |
+          set -euo pipefail
+          mkdir -p "$EVIDENCE"
+          git fetch --no-tags --depth=100 origin "$FOUNDATION_SHA"
+          test "$(git merge-base HEAD "$FOUNDATION_SHA")" = "$COMMON_BASE"
+          git -c user.name='WB-Agent CI' -c user.email='ci@users.noreply.github.com' \
+            merge --no-commit --no-ff "$FOUNDATION_SHA"
+          test -z "$(git diff --name-only --diff-filter=U)"
+          printf '%s\\n' "$FOUNDATION_SHA" > "$EVIDENCE/foundation-sha.txt"
+          git rev-parse "$FOUNDATION_SHA^{tree}" > "$EVIDENCE/foundation-tree.txt"
+          git write-tree > "$EVIDENCE/COMPOSED-UNCOMMITTED-TREE.txt"
+          git diff --cached --name-only "$COMMON_BASE" > "$EVIDENCE/composed-changed-paths.txt"
+          git status --short > "$EVIDENCE/uncommitted-status.txt"
+      - name: Record exact source and diff
+        run: |
+          set -euo pipefail
+          mkdir -p "$EVIDENCE"
+          test "$(git rev-parse HEAD)" = "$SOURCE_SHA"
+          git rev-parse HEAD | tee "$EVIDENCE/source-sha.txt"
+          git rev-parse 'HEAD^{tree}' | tee "$EVIDENCE/source-tree.txt"
+          git diff --check HEAD | tee "$EVIDENCE/diff-check.log"
+          python3 tools/ci/check_ci_provider_policy.py | tee "$EVIDENCE/provider.json"
+      - name: Materialize same-source pinned native and Rapier GDExtensions
+        run: |
+          set -euo pipefail
+          git lfs install --local
+          git lfs pull --include='godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so,godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so' --exclude='' 2>&1 | tee "$EVIDENCE/lfs.log"
+          python3 - <<'PY'
+          import json,hashlib
+          from pathlib import Path
+          paths=['godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so',
+                 'godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so']
+          result={}
+          for name in paths:
+              data=Path(name).read_bytes()
+              assert len(data)>1024 and not data.startswith(b'version https://git-lfs'),name
+              result[name]={'size':len(data),'sha256':hashlib.sha256(data).hexdigest()}
+          Path('build/wb-agent-527-join/runtime-hashes.json').write_text(json.dumps(result,indent=2)+'\n')
+          PY
+      - name: Fetch verified Godot 4.7 from locked upstream
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          lock=json.loads(Path('third_party/godot-runtime.lock.json').read_text())
+          Path('build/wb-agent-527-join/godot-lock.json').write_text(json.dumps(lock,indent=2)+'\n')
+          Path('build/wb-agent-527-join/godot-url.txt').write_text(lock['editor']['origin_url']+'\n')
+          PY
+          curl --fail --location --connect-timeout 45 --max-time 260 \
+            --output "$RUNNER_TEMP/wb-agent-527-godot.zip" "$(cat "$EVIDENCE/godot-url.txt")"
+          python3 - <<'PY'
+          import hashlib,json,os,zipfile
+          from pathlib import Path
+          lock=json.loads(Path('third_party/godot-runtime.lock.json').read_text())
+          archive=Path(os.environ['RUNNER_TEMP'])/'wb-agent-527-godot.zip'
+          assert archive.stat().st_size==lock['editor']['size']
+          assert hashlib.sha256(archive.read_bytes()).hexdigest()==lock['editor']['sha256']
+          binary='Godot_v4.7-stable_linux.x86_64'
+          dest=Path(os.environ['RUNNER_TEMP'])/'wb-agent-527-godot'
+          with zipfile.ZipFile(archive) as z:
+              assert z.testzip() is None and z.namelist().count(binary)==1
+              z.extract(binary,dest)
+          (dest/binary).chmod(0o755)
+          with open(os.environ['GITHUB_ENV'],'a') as out:
+              out.write('GODOT_BIN='+str(dest/binary)+'\n')
+          PY
+      - name: Import Godot and execute combined actual four-tool + native Stop acceptance
+        timeout-minutes: 10
+        run: |
+          set -euo pipefail
+          "$GODOT_BIN" --version | tee "$EVIDENCE/godot-version.txt"
+          grep -Fx '4.7.stable.official.5b4e0cb0f' "$EVIDENCE/godot-version.txt"
+          timeout 150 "$GODOT_BIN" --headless --path godot --editor --import --quit 2>&1 | tee "$EVIDENCE/import.log"
+          timeout 420 xvfb-run --auto-servernum --server-args='-screen 0 1920x1080x24 -nolisten tcp' \
+            "$GODOT_BIN" --path godot --rendering-method gl_compatibility \
+            --script res://tests/test_workbench_agent_four_tool_join.gd \
+            2>&1 | tee "$EVIDENCE/real-four-tool-join-original.log"
+          grep -E 'WB_AGENT_527_JOIN: [0-9]+ assertions, 0 failures' "$EVIDENCE/real-native-step-original.log"
+      - name: Preserve first-failure source/worker evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: wb-agent-527-join-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/wb-agent-527-join/
+          if-no-files-found: error
+          retention-days: 90
