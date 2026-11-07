@@ -1,0 +1,15 @@
+{
+  "schema": "cybersand.workbench-cut-responsiveness.001",
+  "registered": "2026-11-07",
+  "baseline_source": "2253eb2dd2e22f5dacb30cedd37084600e776656",
+  "scope": "Presentation and cut latency repair, no contact law or physical parameter changes",
+  "benchmark": {
+    "extent": [2048, 2048], "maximum_fps": 60,
+    "cases": ["original520-member tree", "16-cell native debris"],
+    "repeats": 5, "hosts": ["windows", "linux"], "workers": [1, 4],
+    "measure": ["wall_usec", "rendered_frames", "maximum_frame_gap_usec", "recipe_usec", "staging_usec", "RPC_usec", "terrain_changed_chunks", "terrain_wait_frames"],
+    "success": "Eliminate1024-chunk terrain scheduling for local cuts; report full before/after timing ranges without universal frame-time claim"
+  },
+  "oracles": ["unchanged/partial/superseded/shrinking/invalid terrain packets", "same native World/no hidden steps", "unchanged mass/inertia/gravity/caps", "exact material mask and saved appearance", "actual source pixel agreement <=2/255 and transparent holes", "rigid rotation carries texture"],
+  "resource": {"cap_bytes": 1073741824, "minimum_free_bytes": 5368709120}
+}

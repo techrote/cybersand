@@ -24,6 +24,8 @@ var _recipe: Dictionary={}
 var _retired: bool=false
 var _native_session: int=0
 var _native_epoch: int=0
+var timings: Dictionary={}
+var _started_usec: int=0
 
 func _alive() -> bool:
 	return not _retired and is_instance_valid(panel) and is_instance_valid(panel.host)
@@ -53,6 +55,8 @@ func finish_stroke(owner) -> bool:
 		last_disposition="Cut kept as terrain: stroke exceeds 256 dabs. Erase applied."
 		return panel.refuse(last_disposition)
 	busy=true;receipts.clear();_prior_paused=panel.host.paused
+	_started_usec=Time.get_ticks_usec()
+	timings={"recipe_usec":0,"stage_usec":0,"terrain_frames":0,"terrain_changed_chunks":0,"rpc_usec":0}
 	panel.host.paused=true
 	panel.host.cancel_playable_course_input()
 	panel.host.update_worker_frame_state()
@@ -64,6 +68,7 @@ func _rpc(command: Dictionary) -> Dictionary:
 	if not _alive(): return {"ok":false,"outcome":"Retired"}
 	var worker=panel.host.simulation_worker
 	var tree: SceneTree=panel.get_tree()
+	var started: int=Time.get_ticks_usec()
 	var serial: int=worker.queue_workbench_cut(command)
 	if serial==0: return {"ok":false,"outcome":"Worker admission refused"}
 	var deadline: int=Time.get_ticks_msec()+20000
@@ -71,6 +76,7 @@ func _rpc(command: Dictionary) -> Dictionary:
 		if not _alive(): return {"ok":false,"outcome":"Retired"}
 		var reply: Dictionary=worker.take_workbench_cut_reply(serial)
 		if not reply.is_empty():
+			timings["rpc_usec"]=int(timings.get("rpc_usec",0))+Time.get_ticks_usec()-started
 			receipts.append(reply.duplicate(true))
 			return reply
 		await tree.process_frame
@@ -87,6 +93,7 @@ func _prepare_recipe(payload: Dictionary) -> bool:
 		local.append([rectangles[i]-origin.x,rectangles[i+1]-origin.y,rectangles[i+2],rectangles[i+3]])
 		_recipe.edits.append([rectangles[i],rectangles[i+1],rectangles[i+2],rectangles[i+3],0])
 	var body: Dictionary={"name":"Freed %d" % int(_recipe.next_id),"rectangles":local}
+	body["appearance"]={"material":43,"origin":[origin.x,origin.y]}
 	var actor: Dictionary=Setup.instance(Setup.CanvasBody.MODEL,int(_recipe.next_id),payload.center)
 	actor["body"]=body;actor.hash=Setup.CanvasBody.digest(body)
 	_recipe.actors.append(actor);_recipe.next_id+=1;_recipe.version=4
@@ -110,6 +117,7 @@ func _stage() -> bool:
 	return not _sample.is_empty()
 
 func _crumble(payload: Dictionary) -> bool:
+	var recipe_start: int=Time.get_ticks_usec()
 	_recipe=panel.applied.duplicate(true)
 	var members: PackedInt32Array=payload.members
 	if members.size()!=int(payload.member_count)*6 or int(payload.member_count)<1 or int(payload.member_count)>SMALL_DEBRIS_CELLS:
@@ -120,6 +128,7 @@ func _crumble(payload: Dictionary) -> bool:
 	if not Setup.validate(_recipe).is_empty() or JSON.stringify(_recipe).to_utf8_buffer().size()>Setup.BYTE_LIMIT or Setup.rectangles(_recipe).has("error"):
 		await _abort("Small debris exceeds the saved-canvas budget; source retained.");return false
 	# After this request any unknown response must fail-stop, never cancel/retry.
+	timings.recipe_usec+=Time.get_ticks_usec()-recipe_start
 	_committed=true
 	var committed: Dictionary=await _rpc({"action":"crumble","token":_token})
 	if not _alive(): return false
@@ -132,9 +141,12 @@ func _crumble(payload: Dictionary) -> bool:
 		var bridge=host.rapier_bridge
 		if not bridge.queue_hard_surface_chunk_snapshot(committed.terrain_chunks):
 			await _abort("Small debris terrain installation refused.");return false
+		timings.terrain_changed_chunks+=bridge.pending_hard_surface_chunks()
 		while bridge.pending_hard_surface_chunks()>0:
 			bridge.process_hard_surface_collider_budget(8,2000)
-			await panel.get_tree().process_frame
+			if bridge.pending_hard_surface_chunks()>0:
+				timings.terrain_frames+=1
+				await panel.get_tree().process_frame
 			if not _alive(): return false
 	var final: Dictionary=await _rpc({"action":"finalize_debris","token":_token,"terrain_revision":committed.commit_revision})
 	if not _alive(): return false
@@ -168,6 +180,7 @@ func _abort(reason: String) -> void:
 func _finish() -> void:
 	if not _alive(): return
 	busy=false;_token="";_committed=false
+	timings["total_usec"]=Time.get_ticks_usec()-_started_usec
 	panel.host.paused=_prior_paused
 	panel.host.update_worker_frame_state()
 
@@ -219,7 +232,13 @@ func _run(input: PackedInt32Array) -> void:
 		for body: RigidBody2D in host.rigid_bodies: total_proxies+=PhysicsServer2D.body_get_shape_count(body.get_rid())
 		if total_proxies>64:
 			await _abort("Existing objects leave too few of the shared 64 collision-rectangle slots. Erase applied.");return
-		if not _prepare_recipe(payload) or not _stage():
+		var recipe_start: int=Time.get_ticks_usec()
+		var recipe_ok: bool=_prepare_recipe(payload)
+		timings.recipe_usec+=Time.get_ticks_usec()-recipe_start
+		var stage_start: int=Time.get_ticks_usec()
+		var stage_ok: bool=recipe_ok and _stage()
+		timings.stage_usec+=Time.get_ticks_usec()-stage_start
+		if not stage_ok:
 			await _abort("The piece exceeds the saved-canvas or physical-owner budget.");return
 		for frame: int in range(2):
 			await panel.get_tree().physics_frame
@@ -240,9 +259,12 @@ func _run(input: PackedInt32Array) -> void:
 		var bridge=host.rapier_bridge if _candidate==null else _candidate.physics_bridge()
 		if not bridge.queue_hard_surface_chunk_snapshot(committed.terrain_chunks):
 			await _abort("Post-cut terrain installation refused.");return
+		timings.terrain_changed_chunks+=bridge.pending_hard_surface_chunks()
 		while bridge.pending_hard_surface_chunks()>0:
 			bridge.process_hard_surface_collider_budget(8,2000)
-			await panel.get_tree().process_frame
+			if bridge.pending_hard_surface_chunks()>0:
+				timings.terrain_frames+=1
+				await panel.get_tree().process_frame
 			if not _alive(): return
 		var final: Dictionary=await _rpc({"action":"finalize","token":_token,"terrain_revision":committed.commit_revision,"sample":_sample})
 		if not _alive(): return
