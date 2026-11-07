@@ -480,7 +480,8 @@ void self_test(const fs::path& path, std::uint32_t workers) {
 void interactive(const fs::path& path, std::uint32_t workers) {
     StreamingSlice streamer(path, 2, workers);
     std::cout << "GEN006 experimental native stream (independent World per shard). "
-                 "Commands: focus X Y | wall X Y | dig X Y | water X Y Q | "
+                 "Commands: focus X Y | wall X Y | dig X Y | water X Y Q | 
+                 "watertemp X Y Q T | "
                  "tick N | inspect LOCAL_X LOCAL_Y | status | quit. " 
                  "X/Y are world chunk coords for focus, "
                  "local 0..63 for edits. No cross-shard physics.\n";
@@ -493,15 +494,22 @@ void interactive(const fs::path& path, std::uint32_t workers) {
             if (command == "focus") {
                 std::cin >> active.x >> active.y;
                 streamer.focus(active);
-            } else if (command == "wall" || command == "dig" || command == "water") {
+            } else if (command == "wall" || command == "dig" ||
+                       command == "water" || command == "watertemp") {
                 int x, y;
                 std::cin >> x >> y;
-                if (command == "water") {
+                if (command == "water" || command == "watertemp") {
                     unsigned mass;
                     std::cin >> mass;
+                    int temp = 200;
+                    if (command == "watertemp") std::cin >> temp;
                     check(mass >= 1 && mass <= 31, "Water mass must be 1..31");
+                    check(temp >= std::numeric_limits<std::int16_t>::min() &&
+                          temp <= std::numeric_limits<std::int16_t>::max(),
+                          "GEN006_WATER_TEMPERATURE_RANGE");
                     streamer.edit(active, x, y, Material::Water,
-                                  static_cast<std::uint16_t>(mass));
+                                  static_cast<std::uint16_t>(mass),
+                                  static_cast<std::int16_t>(temp));
                 } else streamer.edit(active, x, y, command == "wall" ?
                                            Material::Wall : Material::Empty);
             } else if (command == "tick") {
