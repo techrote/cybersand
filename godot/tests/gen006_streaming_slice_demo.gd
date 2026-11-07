@@ -75,7 +75,7 @@ func _invoke(actions: PackedStringArray, force_eviction: bool = false) -> void:
     )
     last_call_usec = Time.get_ticks_usec() - started
     total_calls += 1
-    last_receipts = "\n".join(stdout)
+    last_receipts = str(stdout[0]) if not stdout.is_empty() else ""
     if exit_code != 0 or last_receipts.contains("REFUSED "):
         failure = "Native command refused (exit %d): %s" % [
             exit_code, last_receipts.right(350)
@@ -96,10 +96,13 @@ func _invoke(actions: PackedStringArray, force_eviction: bool = false) -> void:
 
 
 func _unhandled_key_input(event: InputEvent) -> void:
-    if not (event is InputEventKey) or not event.pressed or event.echo:
+    if not (event is InputEventKey):
+        return
+    var key := event as InputEventKey
+    if not key.pressed or key.echo:
         return
     var move := Vector2i.ZERO
-    match event.keycode:
+    match key.keycode:
         KEY_LEFT: move = Vector2i(-1, 0)
         KEY_RIGHT: move = Vector2i(1, 0)
         KEY_UP: move = Vector2i(0, -1)
@@ -109,20 +112,23 @@ func _unhandled_key_input(event: InputEvent) -> void:
         KEY_R: _invoke(PackedStringArray())
     if move != Vector2i.ZERO:
         # Shift+arrow moves 24 chunks (1536 native world pixels).
-        world_chunk += move * (24 if event.shift_pressed else 1)
+        world_chunk += move * (24 if key.shift_pressed else 1)
         failure = ""
         _invoke(PackedStringArray(), true)
-    elif event.keycode == KEY_HOME:
+    elif key.keycode == KEY_HOME:
         failure = ""
         _invoke(PackedStringArray(), true)
-    elif event.keycode in [KEY_SPACE, KEY_R]:
+    elif key.keycode in [KEY_SPACE, KEY_R]:
         get_viewport().set_input_as_handled()
 
 
 func _gui_input(event: InputEvent) -> void:
-    if not (event is InputEventMouseButton) or not event.pressed:
+    if not (event is InputEventMouseButton):
         return
-    var local_point: Vector2 = (event.position - DISPLAY_TOP_LEFT) * (
+    var button := event as InputEventMouseButton
+    if not button.pressed:
+        return
+    var local_point: Vector2 = (button.position - DISPLAY_TOP_LEFT) * (
         float(SIDE) / DISPLAY_SIZE
     )
     if local_point.x < 0 or local_point.y < 0 or \
@@ -130,7 +136,7 @@ func _gui_input(event: InputEvent) -> void:
         return
     selected_cell = Vector2i(int(local_point.x), int(local_point.y))
     var edit: String = ""
-    match event.button_index:
+    match button.button_index:
         MOUSE_BUTTON_LEFT:
             edit = "wall %d %d" % [selected_cell.x, selected_cell.y]
         MOUSE_BUTTON_RIGHT:
