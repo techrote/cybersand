@@ -1,0 +1,67 @@
+{
+  "schema": "cybersand.atlas-agent.trusted-art-scripts/1",
+  "source_head": "c4aab63eed538a25687c66d368b0801d2d2e04d0",
+  "description": "Pinned Git blob identities of #454 executable validators/renderers. Changes require an independent code review and runner-side hash update; a source branch cannot authorize itself.",
+  "collections": {
+    "lumen-fault": {
+      "render_pack.mjs": "37cbd8aeff8c5a4155f7fa724e36d834d2f2bd94",
+      "validate_pack.py": "2abb3a2ec2719bb031c65881f130349d511e71ac"
+    },
+    "chalkbone-coast": {
+      "render_pack.py": "8b32aeeade8a655098a64a690788006698fe21dc",
+      "validate_pack.py": "79916a306f231d91e716bda30f01c9a08f0e00cd"
+    },
+    "carved-ice-choir": {
+      "render_pack.mjs": "97331c7886266ed79c69904481269a6583d1bdcd",
+      "validate_pack.mjs": "03aca8f9f9f37dfbc8a59cf05e75fc610b9e77c4"
+    },
+    "ashroot-nursery": {
+      "render_pack.mjs": "de301461e77dd29daa8c9b22882bd709171ae0be",
+      "validate_pack.mjs": "d4d508c0cd68c0219fb0ccf655f41b4c4c73fa47"
+    },
+    "emberglass-fumaroles": {
+      "render_pack.mjs": "ffdd923876c19dffc5c9cb255ed224dbf5ebacaa",
+      "validate_pack.mjs": "18179e4d160c57aeb1e3e34a43741949fbe22f92"
+    },
+    "silt-clockworks": {
+      "render_pack.mjs": "90eb84b097e02e62317270e4916c7ba25b75f838",
+      "validate_pack.mjs": "e0ffa813aabca057010e0c5a8110f2ec2e2d7ef7"
+    },
+    "signal-orchard": {
+      "render_pack.py": "d92874adf56297e7129f9cc7b739219e87445194",
+      "validate_pack.py": "6d948e0b23e808ee6ac417991c9c768b954ea508"
+    },
+    "dust-meridian": {
+      "render_pack.mjs": "14ba72e89dfb93ebd69082c0574cd5d99db415e0",
+      "validate_pack.mjs": "4e0ad054c20d5bba6bee3fd269548afa195648db"
+    },
+    "cathedral-of-capacitors": {
+      "render_pack.mjs": "af913e40d541297384eb44310c9ae233536a4b8f",
+      "validate_pack.mjs": "4e6e0403b3e0359960bc64958e8293313daa06c4"
+    },
+    "mirror-marsh": {
+      "render_pack.mjs": "f165d078260718e0e513bb22ca07c593bde73c8a",
+      "validate_pack.mjs": "0c9223f7ae669e7524d9290edcf42012a53434aa"
+    },
+    "drowned-observatory": {
+      "render_pack.mjs": "3283973fca2f201bbc44e7ca5428d68896034eb3",
+      "validate_pack.mjs": "31a49256a3cacd5acd1b44d6cfbd18ad740eeba8"
+    },
+    "ironroot-necropolis": {
+      "render_pack.mjs": "094f2b5435ab5d8b6d8bc36cdf580b49f73dbfd9",
+      "validate_pack.mjs": "9ff9777d3d6a785652a47e4a8a062685ac08a746"
+    },
+    "tectonic-archive": {
+      "render_pack.mjs": "fe6ea5f5243fe37b240215c123bbf6f6b5460562",
+      "validate_pack.mjs": "bd753be7226b815d6870dc7e5954ada1a00ccaf4"
+    },
+    "coral-telegraph": {
+      "render_pack.mjs": "adedb081cd1b3f8d9a6dc871bb3b55f62627d424",
+      "validate_pack.mjs": "dbb189d1b3ddc9369f0ecea04a2216f9565b3322"
+    },
+    "fallow-carnival": {
+      "render_pack.mjs": "c4b575a25ad44cf45c4299b3e45bd6e0aa196a3c",
+      "validate_pack.mjs": "b6c1043c6154763641c1574fe8fe2f44da50735d"
+    }
+  }
+}
