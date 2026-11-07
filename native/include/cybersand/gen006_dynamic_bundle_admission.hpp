@@ -25,6 +25,17 @@ struct BundleSeam {
     friend bool operator==(const BundleSeam&, const BundleSeam&) = default;
 };
 
+    
+// Explicit, canonical, native-owner edit intent inside one attested resident.
+// Not a persistence format and not an independently durable edit ACK.
+struct BundleMaterialEdit {
+    ChunkCoord resident;
+    std::int32_t local_x = 0;
+    std::int32_t local_y = 0;
+    Material material = Material::Empty;
+    friend bool operator==(const BundleMaterialEdit&, const BundleMaterialEdit&) = default;
+};
+
 enum class BundleAdmissionStatus : std::uint8_t {
     EmptyOrOversizedRoster,
     MissingOrFailedWorld,
@@ -37,6 +48,11 @@ enum class BundleAdmissionStatus : std::uint8_t {
     InvalidCoordinate,
     MissingResident,
     ProbeAlteredAuthority,
+    InvalidEditBatch,
+    DuplicateEdit,
+    EditOutsideResident,
+    PrivateMutationFailed,
+    EditsAlreadyStaged,
 };
 
 class BundleAdmissionError final : public std::runtime_error {
@@ -154,7 +170,7 @@ public:
                 std::vector<std::uint8_t>(transaction.bytes().begin(), transaction.bytes().end()))
             throw BundleAdmissionError(BundleAdmissionStatus::ProbeAlteredAuthority);
         return FullResidentBundleStage(std::move(transaction),
-                                       std::move(roster), std::move(required));
+                                       std::move(roster), std::move(required), size);
     }
 
     FullResidentBundleStage(const FullResidentBundleStage&) = delete;
@@ -171,22 +187,94 @@ public:
     [[nodiscard]] std::span<const BundleSeam> internal_seams() const noexcept {
         return seams_;
     }
+
+    // One-shot bounded material input into the PRIVATE native candidate only.
+    // Every command is validated before any candidate mutation. No live World
+    // edit occurs until the single owner swap. This remains a full-World
+    // transaction and requires external storage to persist BASE + EDITS.
+    static constexpr std::size_t kMaximumStagedEdits = 64;
+    void stage_material_edits(std::span<const BundleMaterialEdit> changes) {
+        if (!edits_.empty())
+            throw BundleAdmissionError(BundleAdmissionStatus::EditsAlreadyStaged);
+        if (changes.empty() || changes.size() > kMaximumStagedEdits)
+            throw BundleAdmissionError(BundleAdmissionStatus::InvalidEditBatch);
+        const auto size = static_cast<std::int64_t>(chunk_size_);
+        if (size <= 0 || size > 256)
+            throw BundleAdmissionError(BundleAdmissionStatus::InvalidEditBatch);
+        auto ordered = std::vector<BundleMaterialEdit>(changes.begin(), changes.end());
+        auto less = [](const BundleMaterialEdit& a, const BundleMaterialEdit& b) {
+            if (a.resident != b.resident) return a.resident < b.resident;
+            if (a.local_y != b.local_y) return a.local_y < b.local_y;
+            return a.local_x < b.local_x;
+        };
+        std::sort(ordered.begin(), ordered.end(), less);
+        for (std::size_t i = 0; i < ordered.size(); ++i) {
+            const auto& edit = ordered[i];
+            if (!std::binary_search(residents_.begin(), residents_.end(), edit.resident))
+                throw BundleAdmissionError(BundleAdmissionStatus::EditOutsideResident);
+            if (edit.local_x < 0 || edit.local_y < 0 ||
+                edit.local_x >= size || edit.local_y >= size ||
+                (edit.material != Material::Empty && edit.material != Material::Wall &&
+                 edit.material != Material::Sand && edit.material != Material::Water))
+                throw BundleAdmissionError(BundleAdmissionStatus::InvalidEditBatch);
+            if (i && edit.resident == ordered[i-1].resident &&
+                edit.local_x == ordered[i-1].local_x &&
+                edit.local_y == ordered[i-1].local_y)
+                throw BundleAdmissionError(BundleAdmissionStatus::DuplicateEdit);
+        }
+        try {
+            // Every resident coordinate was previously preflighted by the
+            // canonical native install_generated_chunk() signed-range check.
+            transaction_.mutate_private([&](World& candidate) {
+                for (const auto& edit : ordered) {
+                    const auto x = edit.resident.x * size + edit.local_x;
+                    const auto y = edit.resident.y * size + edit.local_y;
+                    candidate.set(x, y, edit.material);
+                    if (candidate.stored_material(x, y) != edit.material)
+                        throw std::runtime_error("GEN006_DYNAMIC_PRIVATE_EDIT_READBACK");
+                }
+            });
+        } catch (const std::exception&) {
+            throw BundleAdmissionError(BundleAdmissionStatus::PrivateMutationFailed);
+        }
+        edits_ = std::move(ordered);
+    }
+
+    [[nodiscard]] std::span<const BundleMaterialEdit> staged_edits() const noexcept {
+        return edits_;
+    }
+
+    // The legacy unedited commit refuses to publish an edited private World
+    // without an independently supplied, exact edit-list witness.
     [[nodiscard]] FullWorldCommitStatus commit(
             std::unique_ptr<World>& live, FullWorldFence current,
             std::span<const std::uint8_t> verified_copy) {
+        if (!edits_.empty()) return FullWorldCommitStatus::UnverifiedCopy;
         return transaction_.commit(live, current, verified_copy);
+    }
+    [[nodiscard]] FullWorldCommitStatus commit(
+            std::unique_ptr<World>& live, FullWorldFence current,
+            std::span<const std::uint8_t> verified_base_copy,
+            std::span<const BundleMaterialEdit> verified_edits) {
+        if (verified_edits.size() != edits_.size() ||
+            !std::equal(edits_.begin(), edits_.end(), verified_edits.begin()))
+            return FullWorldCommitStatus::UnverifiedCopy;
+        return transaction_.commit(live, current, verified_base_copy);
     }
 
 private:
     FullResidentBundleStage(FullWorldContinuationStage stage,
                             std::vector<ChunkCoord> roster,
-                            std::vector<BundleSeam> seams)
+                            std::vector<BundleSeam> seams,
+                            std::int32_t chunk_size)
         : transaction_(std::move(stage)), residents_(std::move(roster)),
-          seams_(std::move(seams)) {}
+          seams_(std::move(seams)), chunk_size_(chunk_size) {}
 
     FullWorldContinuationStage transaction_;
     std::vector<ChunkCoord> residents_;
     std::vector<BundleSeam> seams_;
+    std::vector<BundleMaterialEdit> edits_;
+    std::int32_t chunk_size_ = 0;
 };
 
 } // namespace cybersand::gen006
