@@ -125,6 +125,89 @@ class Tests(unittest.TestCase):
             Journal.create(self.path, ident(), b'overwrite-refused')
         self.assertEqual(recover(self.path).checkpoint, b'committed-checkpoint')
 
+    def test_explicit_torn_rollover_preserves_acknowledged_prefix(self):
+        j = Journal.create(self.path, ident(), b'native-source-checkpoint')
+        first = Mutation(4, 7, 9, 17, 417, 6, 42, 0x123456789)
+        j.append(first, 5)
+        # A crash interrupts an unacknowledged next record. Keep the entire
+        # original file as failure evidence; NEVER truncate it in place.
+        with self.path.open('ab') as f:
+            f.write(b'EDIT\\x00\\x00\\x00')
+        original = self.path.read_bytes()
+        torn = recover(self.path)
+        self.assertTrue(torn.torn_tail)
+        self.assertEqual(torn.edits, (first,))
+        with self.assertRaisesRegex(ValueError, 'G6J_TORN_TAIL_REPAIR_REQUIRED'):
+            Journal.open(self.path, ident().x, ident().y, ident().incarnation)
+
+        successor = self.path.with_name('repaired.g6j')
+        checked = []
+
+        def verify_staged(state):
+            checked.append(state)
+            return state.identity == ident() and state.edits == (first,)
+
+        with self.assertRaisesRegex(ValueError, 'G6J_IDENTITY_REFUSED'):
+            Journal.rollover_torn_tail(self.path, successor, -16, 201,
+                                       ident().incarnation, 6, verify_staged)
+        with self.assertRaisesRegex(ValueError, 'G6J_STALE_GENERATION'):
+            Journal.rollover_torn_tail(self.path, successor, -17, 201,
+                                       ident().incarnation, 7, verify_staged)
+        with self.assertRaisesRegex(ValueError, 'G6J_ROLLOVER_NATIVE_REPLAY_REFUSED'):
+            Journal.rollover_torn_tail(self.path, successor, -17, 201,
+                                       ident().incarnation, 6, lambda _: False)
+        with self.assertRaisesRegex(ValueError, 'G6J_ROLLOVER_PATH_REFUSED'):
+            Journal.rollover_torn_tail(self.path, self.path, -17, 201,
+                                       ident().incarnation, 6, verify_staged)
+        self.assertFalse(successor.exists())
+        self.assertEqual(self.path.read_bytes(), original)
+
+        # Interrupted publication is retryable; the original evidence stays
+        # untouched and unique failed stages are cleaned.
+        with mock.patch('gen006_storage_journal.os.link',
+                        side_effect=OSError('G6J_ROLLOVER_LINK_FAILURE')):
+            with self.assertRaisesRegex(OSError, 'G6J_ROLLOVER_LINK_FAILURE'):
+                Journal.rollover_torn_tail(self.path, successor, -17, 201,
+                                           ident().incarnation, 6, verify_staged)
+        self.assertFalse(successor.exists())
+        self.assertEqual(list(self.path.parent.glob('.repaired.g6j.g6j-*.staging')), [])
+
+        # A source changed during physical replay cannot be promoted.
+        def mutating_replay(state):
+            with self.path.open('ab') as f:
+                f.write(b'x')
+            return True
+
+        with self.assertRaisesRegex(ValueError, 'G6J_ROLLOVER_SOURCE_CHANGED'):
+            Journal.rollover_torn_tail(self.path, successor, -17, 201,
+                                       ident().incarnation, 6, mutating_replay)
+        self.assertFalse(successor.exists())
+        self.path.write_bytes(original)
+
+        repaired = Journal.rollover_torn_tail(self.path, successor, -17, 201,
+                                               ident().incarnation, 6, verify_staged)
+        self.assertEqual(self.path.read_bytes(), original)
+        self.assertEqual(recover(successor).checkpoint, torn.checkpoint)
+        self.assertEqual(recover(successor).edits, torn.edits)
+        self.assertFalse(recover(successor).torn_tail)
+        self.assertGreaterEqual(len(checked), 2)
+        repaired.append(Mutation(1, 4, 5, 0, 0, 7, 42, 0x887766), 6)
+        self.assertEqual(recover(successor).generation, 7)
+        self.assertEqual(recover(self.path).generation, 6)
+        with self.assertRaisesRegex(ValueError, 'G6J_DESTINATION_EXISTS'):
+            Journal.rollover_torn_tail(self.path, successor, -17, 201,
+                                       ident().incarnation, 6, verify_staged)
+
+        bad = self.path.with_name('corrupt-complete.g6j')
+        bad.write_bytes(original[:torn.valid_length])
+        raw = bytearray(bad.read_bytes())
+        raw[-1] ^= 0x80
+        bad.write_bytes(raw)
+        with self.assertRaisesRegex(ValueError, 'G6J_EDIT_INTEGRITY_REFUSED'):
+            Journal.rollover_torn_tail(
+                bad, self.path.with_name('bad-successor.g6j'), -17, 201,
+                ident().incarnation, 6, verify_staged)
+
     def test_separate_process_abrupt_exit(self):
         subprocess.run([sys.executable, __file__, '--child', str(self.path)], check=True)
         r = recover(self.path)
