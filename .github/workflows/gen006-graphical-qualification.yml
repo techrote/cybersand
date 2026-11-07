@@ -137,8 +137,11 @@ jobs:
               --path "$dir/project" --script res://tests/gen006_async_input_qualification.gd \
             2>&1 | tee "$dir/async-graphical.log"
           grep -q 'GEN006_GODOT_ASYNC_INPUT_PASS' "$dir/async-graphical.log"
+          grep -q 'six_second_native_stall_recovered=1' "$dir/async-graphical.log"
+          grep -q 'slow_edit_durable_ack=1' "$dir/async-graphical.log"
           test -s "$dir/async-screenshots/08-async-home.png"
-          sha256sum "$dir/async-screenshots/08-async-home.png" | tee "$dir/async-screenshot.sha256"
+          test -s "$dir/async-screenshots/09-slow-native-ack.png"
+          sha256sum "$dir"/async-screenshots/*.png | tee "$dir/async-screenshot.sha256"
           test "$(wc -c < "$dir/async-world/gen006-current.rgba")" = 16384
       - name: Preserve original graphical and native evidence
         if: always()
