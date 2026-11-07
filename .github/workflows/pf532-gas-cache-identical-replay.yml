@@ -5,7 +5,8 @@ on:
     paths:
       - '.github/workflows/pf532-gas-cache-identical-replay.yml'
       - 'native/**'
-      - 'tools/ci/pf532_*'
+      - 'tools/ci/pf532_emit_native_replay_tape.py'
+      - 'tools/ci/pf532_compare_native_input_replay.py'
       - 'tools/material_catalogue/compatibility.py'
       - 'docs/audits/2026-11-07-pf-gas-selective-cache-transition.md'
   workflow_dispatch:
