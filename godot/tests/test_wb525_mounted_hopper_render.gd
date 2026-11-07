@@ -98,7 +98,7 @@ func run_variant(rows: Array, variant: String) -> void:
 			# This extra fake HTTP turn fits the existing 24-call test-only budget.
 			var old_edits: Array = workbench.applied.edits.duplicate(true)
 			var old_revision: int = main.simulation_worker.agent_manual_intent_revision()
-			var old_generation: int = main.latest_snapshot.render_world_generation
+			var replay_generation: int = main.latest_snapshot.render_world_generation
 			var replayed: Dictionary = await _panel_call("apply_edit",{
 				"proposal_id":prepared.get("proposal_id","")})
 			check(replayed.get("status") == "applied"
@@ -108,7 +108,7 @@ func run_variant(rows: Array, variant: String) -> void:
 				and replayed.get("authored_start",{}) == applied.get("authored_start",{})
 				and workbench.applied.edits == old_edits
 				and main.simulation_worker.agent_manual_intent_revision() == old_revision
-				and main.latest_snapshot.render_world_generation == old_generation
+				and main.latest_snapshot.render_world_generation == replay_generation
 				and main.latest_snapshot.tick_index == 0,
 				"mounted duplicate native apply did not replay exact receipt without second mutation "+variant)
 		batches += 1
