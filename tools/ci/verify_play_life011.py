@@ -33,9 +33,9 @@ import inertial_parameter_contract as inertial_bytes
 RIG_BODIES = {"stuntbuggy": 8, "trialsbike": 8, "acrobat": 6,
               "arcadelander": 4, "jetbarrel": 2}
 MATERIALS = [3, 8, 12, 16, 20, 21, 24, 30, 32, 33, 36]
-# Pressure optimization execution identity (#201 P1 raised it from 3 to 4); it
-# must equal native kPressureOptimizationExecutionVersion.
-PRESSURE_OPTIMIZATION_EXECUTION = 4
+# Pressure optimization execution identity; v5 adds bounded selective gas-cache
+# bootstrap and must equal native kPressureOptimizationExecutionVersion.
+PRESSURE_OPTIMIZATION_EXECUTION = 5
 FAMILIES = {1: "freemass_v1", 2: "cellular_yield_v1",
             3: "pressure_flow_v1", 4: "inertial_cellular_v1"}
 VARIANTS = {0: "reference", 1: "cached", 2: "cached_dormant"}

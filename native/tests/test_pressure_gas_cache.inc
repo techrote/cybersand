@@ -112,6 +112,43 @@ void test_affected_gas_components() {
     }
 }
 
+void test_sparse_gas_relabel_matches_reference() {
+    for (const auto workers : {1U, 4U}) {
+        auto reference_config = gas_cache_config(0, workers);
+        auto cached_config = gas_cache_config(1, workers);
+        // Reproduce the full workbench's independent head-repair fallback.
+        // The gas relabel proof must survive this unrelated head-budget decision.
+        cached_config.pressure_optimization.head_repair_cell_budget = 1U;
+        World reference(reference_config), cached(cached_config);
+        for (auto* world : {&reference, &cached}) gas_cache_rooms(*world, 0, 0);
+
+        for (int tick_index = 0; tick_index < 12; ++tick_index) {
+            const auto material = (tick_index % 2) == 0 ? Material::Empty : Material::Wall;
+            for (auto* world : {&reference, &cached}) world->set(20, 1, material);
+            tick(reference);
+            tick(cached);
+            // Reference and cached are distinct execution-policy variants, so
+            // physical_state_hash() intentionally includes different policy metadata.
+            // require_gas_cache_equivalent() already uses the registered
+            // PressureVariantEquivalenceV1 physical projection plus complete gas,
+            // quantity, momentum and retirement ledgers for cross-variant parity.
+            require_gas_cache_equivalent(reference, cached);
+        }
+
+        const auto ref = reference.pressure_optimization_snapshot();
+        const auto opt = cached.pressure_optimization_snapshot();
+        require(opt.counters.gas_reference_passes == ref.counters.gas_reference_passes &&
+                    opt.counters.gas_component_reuses == 0U,
+                "continuous topology churn remains on the authoritative gas reference path");
+        require(opt.counters.reference_fallbacks > 0U,
+                "sparse gas relabel remains available through independent head-budget fallback");
+        require(opt.counters.gas_relabel_cells < ref.counters.gas_relabel_cells,
+                "cached reference passes relabel fewer cells without skipping gas discovery or identity");
+        require(opt.gas_capacity_bytes > opt.gas_member_capacity * sizeof(std::uint64_t),
+                "bounded sparse relabel proof storage is included in declared gas memory");
+    }
+}
+
 void test_gas_component_capacity_fallbacks() {
     for (int mode=0;mode<4;++mode) {
         auto config=gas_cache_config(1);

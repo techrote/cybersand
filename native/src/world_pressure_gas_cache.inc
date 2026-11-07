@@ -4,7 +4,7 @@ void World::prepare_pressure_gas_cache() {
     if (pressure_->cache == nullptr) return;
     auto& cache = *pressure_->cache;
     auto& work = pressure_->optimization;
-    if (!cache.complete || cache.membership_dirty) cache.gas_ready = false;
+    if (!cache.complete || cache.membership_dirty || cache.gas_dirty_overflow) cache.gas_ready = false;
     if (cache.gas_ready && !cache.gas_dirty_chunks.empty() &&
         cache.gas_components.size() > cache.config.gas_invalidation_pair_budget / cache.gas_dirty_chunks.size()) {
         cache.gas_ready = false;
@@ -25,9 +25,9 @@ void World::prepare_pressure_gas_cache() {
             if (dirty) { component.valid = false; ++work.gas_component_invalidations; }
         }
     }
-    for (const auto changed : cache.gas_dirty_chunks)
-        if (auto* chunk = find_chunk(changed)) chunk->pressure->gas_dirty_queued = false;
-    cache.gas_dirty_chunks.clear();
+    // Keep the owner-reduced dirty set through the authoritative pass. The
+    // relabel stage uses gas_dirty_queued to full-scan exactly chunks where
+    // unvisited/occluded labels may have changed, then drains the set.
 }
 
 bool World::replay_pressure_gas_region(std::int64_t x, std::int64_t y,

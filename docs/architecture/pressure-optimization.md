@@ -4,7 +4,7 @@ status: Current
 document-kind: design
 scope: Accepted-main LCB-002 cached and cached_dormant implementation — derived head and sealed-component caches, conservative motion certificates, execution identity, source-qualified cost and remaining product/platform boundaries
 canonical-for: [pressure-optimization, pressure-motion-certificates]
-last-reviewed: 2026-11-04
+last-reviewed: 2026-11-07
 related-documents: [pressure-flow-v1.md, liquid-solver-family-policy.md, liquid-state-transition-matrix.md, liquid-prepared-setup-and-receipts.md, ../reference/configuration-reference.md, ../reference/invariants.md, ../audits/2026-10-25-lcb002-pressure-variants.md, ../audits/2026-11-04-lcb201-pressure-idle-cost.md]
 ---
 
@@ -85,7 +85,28 @@ of unvisited labels whose compartment retired beneath a body mask; reference,
 cached and dormant variants share that authority repair. Still-live masked
 labels remain intact. The [repair evidence](../audits/2026-10-25-pressure-moving-mask-gas-retirement.md)
 retains the six-arm failing control and pending acceptance. Equal compartment amounts alone
-do not establish that fixed point. Gas resolution revokes all Water motion
+do not establish that fixed point.
+
+**Execution version 5 (PR #532, proposed)** leaves gas discovery, component
+identity/lineage reduction and whole-operator cache admission unchanged. Its
+bounded optimization is only the authoritative relabel bookkeeping after that
+reducer. Cached variants record one visit bit for each resident cell reached by
+the ordinary gas BFS. A gas-dirty chunk, a chunk known to retain an occluded
+positive gas label, cache-membership uncertainty, dirty-proof overflow,
+component-cache replay, or gas-pass allocation still executes the complete
+reference relabel sweep. Only a clean chunk with no latent-label obligation may
+relabel the union of cells marked by the current and immediately previous
+authoritative BFS. The prior set covers remote vent/split cases where a cell can
+become unvisited without a local dirty input; an unavailable prior set forces a
+complete sweep. The dirty set is retained through relabelling and then drained.
+An independent `ReferenceBudgetFallback` in the head-repair phase clears only
+head/certificate/wake reuse; it no longer revokes complete resident-index or gas
+visit evidence. True membership or authority changes still use full
+`cache->cold()`. Derived visit bits and hidden-label bytes are bounded at cache
+construction, are not serialized and cannot change gas IDs, lineage, amounts or
+CYPS/physical hashes.
+
+Gas resolution revokes all Water motion
 certificates because a remote volume/gauge change can alter a local gradient.
 
 ## Motion certificates preserve ordinary obligations

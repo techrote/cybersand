@@ -1158,7 +1158,11 @@ void test_lcb_pressure_comparison_rest() { test_comparison_projection_rest_and_a
 void test_lcb_pressure_comparison_policy() { test_comparison_projection_policy_scope(); }
 void test_lcb_pressure_cached_heads() { test_cached_incremental_heads(); }
 void test_lcb_pressure_cached_gas() { test_cached_gas_and_fallback(); }
-void test_lcb_pressure_affected_gas() { test_affected_gas_components(); test_gas_component_worker_parity(); }
+void test_lcb_pressure_affected_gas() {
+    test_affected_gas_components();
+    test_sparse_gas_relabel_matches_reference();
+    test_gas_component_worker_parity();
+}
 void test_lcb_pressure_gas_cache_capacity() { test_gas_component_capacity_fallbacks(); }
 void test_lcb_pressure_dormant_obligations() {
     test_dormant_motion_and_body_obligations();

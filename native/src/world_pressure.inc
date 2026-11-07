@@ -435,7 +435,8 @@ void World::prepare_pressure_tick() {
             // The reference operator replaces the entire snapshot this tick.
             // Any later cache reuse starts cold; no partially repaired answer.
             const auto status = cache->status;
-            cache->cold(); cache->status = status;
+            cache->head_reference_fallback();
+            cache->status = status;
         }
     }
     compute_pressure_heads();
@@ -532,6 +533,19 @@ void World::resolve_gas_topology(bool allow_cache) {
         return a.y != b.y ? a.y < b.y : a.x < b.x;
     });
 
+    bool track_gas_visits =
+        allow_cache && gas_cache != nullptr && !gas_cache->gas_ready &&
+        gas_cache->gas_relabel_storage_ready();
+    bool sparse_gas_relabel =
+        track_gas_visits && gas_cache->gas_previous_relabel_valid &&
+        !gas_cache->gas_dirty_overflow;
+    if (track_gas_visits) {
+        const auto words = gas_cache->column_order.size() * gas_cache->gas_relabel_words;
+        std::fill(gas_cache->gas_relabel_bits.begin(),
+                  gas_cache->gas_relabel_bits.begin() + static_cast<std::ptrdiff_t>(words),
+                  std::uint64_t{0});
+    }
+
     const auto compartment_index = [&state](std::uint32_t id) -> std::uint32_t {
         const auto found = std::lower_bound(
             state.compartments.begin(), state.compartments.end(), id,
@@ -617,6 +631,21 @@ void World::resolve_gas_topology(bool allow_cache) {
             return;
         }
         mark = stamp | current;
+        if (track_gas_visits) {
+            const auto slot = static_cast<std::size_t>(chunk->pressure->gas_chunk_slot);
+            if (slot >= gas_cache->column_order.size() ||
+                gas_cache->column_order[slot] != target.chunk) {
+                // Any slot/index doubt restores the original complete relabel scan
+                // and invalidates previous-visit authority for the next pass.
+                track_gas_visits = false;
+                sparse_gas_relabel = false;
+                gas_cache->gas_previous_relabel_valid = false;
+            } else {
+                gas_cache->gas_relabel_bits[slot * gas_cache->gas_relabel_words +
+                                            target.index / 64U] |=
+                    std::uint64_t{1} << (target.index % 64U);
+            }
+        }
         ++region.volume;
         ++state.diagnostics.gas_visited;
         ++state.optimization.gas_bfs_cells;
@@ -733,8 +762,11 @@ void World::resolve_gas_topology(bool allow_cache) {
                              !(allow_cache && gas_cache != nullptr && gas_cache->gas_ready);
     if (pooled_seed) {
         state.gas_tasks.clear();
-        for (std::size_t position = 0; position < coordinates.size(); ++position)
-            state.gas_tasks.push_back({position, 0U, false});
+        for (std::size_t position = 0; position < coordinates.size(); ++position) {
+            State::GasChunkTask task;
+            task.position = position;
+            state.gas_tasks.push_back(task);
+        }
         const auto words = state.gas_seed_words;
         const auto prefilter = [&](State::GasChunkTask& task) noexcept {
             const auto coord = coordinates[task.position];
@@ -1045,41 +1077,119 @@ void World::resolve_gas_topology(bool allow_cache) {
         for (auto& cell : chunk.pressure->cells) { cell.gas = label; ++state.optimization.gas_relabel_cells; }
     }
     bool labels_changed = false;
-    // Each chunk writes only its own labels from the now read-only region and
-    // compartment tables, so the workbench pool may run one task per chunk.
-    const auto relabel_chunk = [&](ChunkCoord coord) noexcept {
+    // A gas pass that allocated resident chunks changed cache membership after
+    // the scratch mapping was established. Fall back to the original complete
+    // relabel sweep for this pass.
+    if (state.diagnostics.chunk_allocations != 0U || gas_cache == nullptr ||
+        !gas_cache->complete || gas_cache->membership_dirty ||
+        !gas_cache->gas_relabel_storage_ready()) {
+        track_gas_visits = false;
+        sparse_gas_relabel = false;
+        if (gas_cache != nullptr) gas_cache->gas_previous_relabel_valid = false;
+    } else if (gas_cache->gas_dirty_overflow) {
+        // Tracking remains useful after a complete fallback sweep, but an
+        // incomplete dirty proof cannot authorize sparse relabelling this pass.
+        sparse_gas_relabel = false;
+    }
+
+    struct RelabelResult {
+        std::uint64_t cells = 0;
         bool changed = false;
+        bool hidden_labels = false;
+    };
+    const auto relabel_chunk = [&](ChunkCoord coord) noexcept {
+        RelabelResult result;
         auto* chunk = find_chunk(coord);
         auto& visits = chunk->pressure->visit;
         auto& cells = chunk->pressure->cells;
-        for (std::size_t index = 0; index < cells.size(); ++index) {
+        const auto slot = static_cast<std::size_t>(chunk->pressure->gas_chunk_slot);
+        const bool mapped = gas_cache != nullptr && gas_cache->complete &&
+                            slot < gas_cache->column_order.size() &&
+                            gas_cache->column_order[slot] == coord &&
+                            slot < gas_cache->gas_hidden_labels.size();
+        const auto relabel_one = [&](std::size_t index) {
             const auto mark = visits[index];
             if ((mark & 0xFFFF0000U) != stamp) {
-                // Masked Empty cells do not contribute volume or overlap, but
-                // can retain an old label while its compartment is retired by
-                // this pass. The reducer has already assigned all of that gas
-                // to successors or a vent/collapse sink. Retire only dangling
-                // labels to vacuum: unresolved would create atmospheric gas,
-                // and remapping to a successor would invent overlap identity.
-                // Still-live labels retain their continuity under the mask.
                 const auto label = cells[index].gas;
-                if (label != 0U && label != kAtmosphereLabel && label != kVacuumLabel &&
-                    state.find(label) == nullptr) {
-                    cells[index].gas = kVacuumLabel;
-                    changed = true;
+                if (label != 0U && label != kAtmosphereLabel && label != kVacuumLabel) {
+                    if (state.find(label) == nullptr) {
+                        cells[index].gas = kVacuumLabel;
+                        result.changed = true;
+                    } else {
+                        // A live positive label under material/mask occlusion can
+                        // become dangling after a remote split/merge. Keep this
+                        // chunk on the complete scan path until it disappears.
+                        result.hidden_labels = true;
+                    }
                 }
-                continue;
+                return;
             }
             const auto label = state.regions[mark & 0xFFFFU].label;
-            changed = changed || cells[index].gas != label;
+            result.changed = result.changed || cells[index].gas != label;
             cells[index].gas = label;
+        };
+
+        const bool full =
+            !sparse_gas_relabel || !mapped || chunk->pressure->gas_dirty_queued ||
+            gas_cache->gas_hidden_labels[slot] != 0U;
+        if (full) {
+            result.cells = cells.size();
+            for (std::size_t index = 0; index < cells.size(); ++index) relabel_one(index);
+            return result;
         }
-        return changed;
+
+        bool invalid = false;
+        const auto* current =
+            gas_cache->gas_relabel_bits.data() + slot * gas_cache->gas_relabel_words;
+        const auto* previous =
+            gas_cache->gas_previous_relabel_bits.data() + slot * gas_cache->gas_relabel_words;
+        for (std::size_t word = 0; word < gas_cache->gas_relabel_words && !invalid; ++word) {
+            for (auto pending = current[word] | previous[word];
+                 pending != 0U; pending &= pending - 1U) {
+                const auto bit = std::uint64_t{1} << std::countr_zero(pending);
+                const auto index =
+                    word * 64U + static_cast<std::size_t>(std::countr_zero(pending));
+                if (index >= cells.size()) {
+                    invalid = true;
+                    break;
+                }
+                const bool visited_now = (current[word] & bit) != 0U;
+                const bool stamped_now = (visits[index] & 0xFFFF0000U) == stamp;
+                if (visited_now != stamped_now) {
+                    invalid = true;
+                    break;
+                }
+                ++result.cells;
+                relabel_one(index);
+            }
+        }
+        if (invalid) {
+            // The sparse proof is derived only. A malformed bit/visit relation
+            // never becomes authority: redo this chunk with the reference sweep.
+            result = {};
+            result.cells = cells.size();
+            for (std::size_t index = 0; index < cells.size(); ++index) relabel_one(index);
+        }
+        return result;
     };
+    const auto publish_hidden = [&](ChunkCoord coord, bool hidden) {
+        if (gas_cache == nullptr || !gas_cache->complete) return;
+        const auto* chunk = find_chunk(coord);
+        const auto slot = static_cast<std::size_t>(chunk->pressure->gas_chunk_slot);
+        if (slot < gas_cache->column_order.size() && gas_cache->column_order[slot] == coord &&
+            slot < gas_cache->gas_hidden_labels.size())
+            gas_cache->gas_hidden_labels[slot] = hidden ? std::uint8_t{1} : std::uint8_t{0};
+    };
+
+    // Each chunk writes only its own labels, so worker tasks remain disjoint.
+    // Owner reduction publishes changed/hidden results and work counters.
     if (state.gas_tasks.capacity() != 0 && coordinates.size() <= state.gas_tasks.capacity()) {
         state.gas_tasks.clear();
-        for (std::size_t position = 0; position < coordinates.size(); ++position)
-            state.gas_tasks.push_back({position, 0U, false});
+        for (std::size_t position = 0; position < coordinates.size(); ++position) {
+            State::GasChunkTask task;
+            task.position = position;
+            state.gas_tasks.push_back(task);
+        }
         struct Batch {
             decltype(relabel_chunk)& run;
             std::vector<State::GasChunkTask>& tasks;
@@ -1089,17 +1199,50 @@ void World::resolve_gas_topology(bool allow_cache) {
         if (batch.tasks.size() >= config_.parallel_job_threshold) {
             parallel_->pool->dispatch(batch.tasks.size(), &batch, [](void* ptr, std::size_t i) noexcept {
                 auto& work = *static_cast<Batch*>(ptr);
-                work.tasks[i].labels_changed = work.run(work.order[work.tasks[i].position]);
+                const auto result = work.run(work.order[work.tasks[i].position]);
+                work.tasks[i].labels_changed = result.changed;
+                work.tasks[i].hidden_labels = result.hidden_labels;
+                work.tasks[i].relabel_cells = result.cells;
             });
         } else {
-            for (auto& task : batch.tasks) task.labels_changed = relabel_chunk(coordinates[task.position]);
+            for (auto& task : batch.tasks) {
+                const auto result = relabel_chunk(coordinates[task.position]);
+                task.labels_changed = result.changed;
+                task.hidden_labels = result.hidden_labels;
+                task.relabel_cells = result.cells;
+            }
         }
-        for (const auto& task : state.gas_tasks) labels_changed = labels_changed || task.labels_changed;
+        for (const auto& task : state.gas_tasks) {
+            labels_changed = labels_changed || task.labels_changed;
+            state.optimization.gas_relabel_cells += task.relabel_cells;
+            publish_hidden(coordinates[task.position], task.hidden_labels);
+        }
     } else {
-        for (const auto coord : coordinates) labels_changed = relabel_chunk(coord) || labels_changed;
+        for (const auto coord : coordinates) {
+            const auto result = relabel_chunk(coord);
+            labels_changed = labels_changed || result.changed;
+            state.optimization.gas_relabel_cells += result.cells;
+            publish_hidden(coord, result.hidden_labels);
+        }
     }
-    for (const auto coord : coordinates)
-        state.optimization.gas_relabel_cells += find_chunk(coord)->pressure->cells.size();
+
+    // Current and previous authoritative visit sets are both needed: a remote
+    // vent/split can make a clean chunk's formerly visited positive label
+    // unvisited on this pass. Only a complete current visit record can become
+    // previous-pass authority.
+    if (gas_cache != nullptr) {
+        if (track_gas_visits && gas_cache->gas_relabel_storage_ready()) {
+            gas_cache->gas_relabel_bits.swap(gas_cache->gas_previous_relabel_bits);
+            gas_cache->gas_previous_relabel_valid = true;
+        } else {
+            gas_cache->gas_previous_relabel_valid = false;
+        }
+        for (const auto changed : gas_cache->gas_dirty_chunks)
+            if (auto* chunk = find_chunk(changed)) chunk->pressure->gas_dirty_queued = false;
+        gas_cache->gas_dirty_chunks.clear();
+        gas_cache->gas_dirty_overflow = false;
+    }
+
     // Bounded atmosphere exploration can still extend its authoritative label
     // prefix after a topology edit. Unchanged Water/amount is insufficient for
     // reuse: require a complete reference pass that is a fixed point of the
