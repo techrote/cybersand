@@ -51,6 +51,15 @@ class InputValidationTests(unittest.TestCase):
         self.reject(IN_AUTH_REF="line1\nline2")
         self.reject(IN_COLLECTION="lumen-fault")  # fixture only offers mini-vault
 
+    def test_chargeable_actions_runs_require_manual_dispatch(self):
+        self.reject(IN_MODE="live", IN_MODEL="gpt-5.4-mini", GITHUB_ACTIONS="true",
+                    GITHUB_EVENT_NAME="pull_request")
+        self.reject(IN_MODE="live", IN_MODEL="gpt-5.4-mini", GITHUB_ACTIONS="true",
+                    GITHUB_EVENT_NAME="workflow_call")
+        ok = workflow_run.parse_inputs({**BASE, "IN_MODE": "live", "IN_MODEL": "gpt-5.4-mini",
+                                        "GITHUB_ACTIONS": "true", "GITHUB_EVENT_NAME": "workflow_dispatch"})
+        self.assertEqual(ok["mode"], "live")
+
     def test_live_requirements(self):
         self.reject(IN_MODE="live", IN_MODEL="")
         self.reject(IN_MODE="live", IN_MODEL="gpt-5.4-mini", IN_SOURCE="atlas-ref", IN_COLLECTION="lumen-fault")
