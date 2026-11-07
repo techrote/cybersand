@@ -35,6 +35,19 @@ class AcceptanceSubsetTests(unittest.TestCase):
         self.assertEqual({r["signed"] for r in rows if r["family"] == "inertial_cellular_v1"},
                          {False, True})
 
+    def test_two_core_godot_quick_subset_is_exact_factor_strata(self) -> None:
+        modes = {r["water_mode"] for r in gate.selection(0)}
+        for rep in range(2):
+            selected = gate.selected(rep, "quick")
+            self.assertEqual(len(selected), 20)
+            self.assertEqual(len({r["id"] for r in selected}), 20)
+            self.assertEqual({r["group"] for r in selected}, set(gate.QUICK_GROUPS))
+            self.assertEqual({r["fine"] for r in selected}, {False, True})
+            self.assertTrue(all(r["ballistic"] and r["face"] and r["spray"] for r in selected))
+            self.assertEqual([r["sequence"] for r in selected], list(range(20)))
+            for group in gate.QUICK_GROUPS:
+                self.assertEqual({r["water_mode"] for r in selected if r["group"] == group}, modes)
+
     def test_repetitions_and_configuration_identity(self) -> None:
         first = gate.selection(0)
         second = gate.selection(1)
