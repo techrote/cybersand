@@ -334,6 +334,8 @@ func _service_live_ipc() -> void:
             if ipc_request_chunk == world_chunk:
                 if _update_texture():
                     displayed_chunk = ipc_request_chunk
+                    if input_refusal.begins_with("Waiting for native chunk"):
+                        input_refusal = ""
             else:
                 # A response from an old camera demand must not be displayed
                 # as the current destination. Request the latest view next.
@@ -350,6 +352,28 @@ func _service_live_ipc() -> void:
 func _send_quit() -> void:
     if native_pid <= 0 or not OS.is_process_running(native_pid):
         return
+    if interactive_async:
+        # Stop issuing camera refreshes on shutdown. Flush all *submitted and
+        # locally queued* player commands through the same durable ACK path
+        # before asking the exclusive native owner to quit. Input/render must
+        # remain nonblocking during gameplay, but the bounded exit path may wait.
+        focus_dirty = false
+        var drain_deadline := Time.get_ticks_msec() + 7000
+        while (ipc_outstanding or not queued_actions.is_empty()) and \
+                Time.get_ticks_msec() < drain_deadline and \
+                OS.is_process_running(native_pid) and failure.is_empty():
+            _service_live_ipc()
+            OS.delay_msec(2)
+        if ipc_outstanding or not queued_actions.is_empty() or not failure.is_empty():
+            # No success claim: a timeout/exit creates an UNKNOWN edit outcome.
+            # Never replay an ambiguously published mutation automatically.
+            push_error("GEN006_SHUTDOWN_UNCONFIRMED_EDIT outstanding=%s queued=%d error=%s" % [
+                str(ipc_outstanding), queued_actions.size(), failure
+            ])
+            # Preserve the native process for its own recovery/quarantine path
+            # instead of publishing a conflicting second request.
+            if ipc_outstanding:
+                return
     var commands := PackedStringArray(["quit"])
     var started := Time.get_ticks_usec()
     if _write_request(commands):
@@ -422,7 +446,8 @@ func _unhandled_key_input(event: InputEvent) -> void:
                 _invoke(PackedStringArray())
     if move != Vector2i.ZERO:
         world_chunk += move * (24 if key.shift_pressed else 1)
-        failure = ""
+        if not interactive_async:
+            failure = ""
         # A real camera miss demands one chunk. Do not manufacture an LRU
         # eviction by visiting two unrequested synthetic neighbor chunks.
         if interactive_async:
@@ -430,7 +455,8 @@ func _unhandled_key_input(event: InputEvent) -> void:
         else:
             _invoke(PackedStringArray(), false, true)
     elif key.keycode == KEY_HOME:
-        failure = ""
+        if not interactive_async:
+            failure = ""
         if interactive_async:
             _queue_live_focus()
         else:
@@ -462,6 +488,13 @@ func _gui_input(event: InputEvent) -> void:
             edit = "water %d %d 17" % [selected_cell.x, selected_cell.y]
     if not edit.is_empty():
         if interactive_async:
+            if displayed_chunk != world_chunk:
+                # No edit may target unrendered terrain under a stale camera
+                # frame. The click was NOT sent and cannot be mistaken for ACK.
+                input_refusal = "Waiting for native chunk frame: edit NOT submitted."
+                queue_redraw()
+                accept_event()
+                return
             _queue_live_action(edit)
         else:
             _invoke(PackedStringArray([edit]), false, true)
@@ -493,6 +526,12 @@ func _draw() -> void:
     draw_string(font, Vector2(710, 132),
         "World origin (%d, %d) pixels" % [px_x, px_y],
         HORIZONTAL_ALIGNMENT_LEFT, -1, 15, Color("#b9c7e3"))
+    draw_string(font, Vector2(710, 696),
+        "Frame chunk (%d,%d)  |  requested (%d,%d)  |  %s" % [
+            displayed_chunk.x, displayed_chunk.y, world_chunk.x, world_chunk.y,
+            "LOADING" if displayed_chunk != world_chunk else "LIVE"
+        ], HORIZONTAL_ALIGNMENT_LEFT, 530.0, 13,
+        Color("#f4a261") if displayed_chunk != world_chunk else Color("#a5be9d"))
     draw_string(font, Vector2(710, 157),
         "Native residency: %d / 2 Worlds  |  cell bytes: %d" % [
             resident_native_shards, resident_native_bytes
