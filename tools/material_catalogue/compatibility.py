@@ -281,7 +281,14 @@ REVIEWED_TRANSITIONS: tuple[dict, ...] = ({'path': 'native/src/world_pressure.in
   'source_commit': '5f107db52a2c002e19f5f8ff284cf8f4ebeeb421',
   'record': 'docs/audits/2026-11-07-pf-c2048-mat-auth-transition.md',
   'issue': 200,
-  'pr': 491})
+  'pr': 491},
+  {'path': 'native/src/world_pressure.inc',
+   'from_lf_sha256': '71723fa32bbd29aafe93f1a8dd233cece1eec7ed295da81c1e021f635085c17a',
+   'to_lf_sha256': '899ada71b89d30ba063e047bdd5b02346948008f1b7c0bec9fa0f2272e4d86ec',
+   'source_commit': 'd8b314deb8164f9641117a13fce286d23340936b',
+   'record': 'docs/audits/2026-11-07-pf-gas-c2048-merge-transition.md',
+   'issue': 504,
+   'pr': 504})
 
 
 class CompatibilityError(ValueError):
