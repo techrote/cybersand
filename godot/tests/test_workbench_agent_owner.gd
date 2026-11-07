@@ -62,10 +62,24 @@ func authorize() -> Dictionary:
 
 
 func observe(x: int, y: int, width: int, height: int) -> Dictionary:
-	return await issue({
+	var native: Dictionary = await issue({
 		"action":"observe",
 		"region":Rect2i(Vector2i(x,y),Vector2i(width,height))
 	})
+	if native.get("status")!="native_observed":
+		return native
+	var joined: Dictionary = await RenderJoin.join_after_draw(main,native)
+	if not check(joined.get("status")=="observed",
+			"native/render post-draw join refused: "+str(joined.get("reason",""))):
+		return native
+	var confirmed: Dictionary = await issue({
+		"action":"confirm_observation_frame",
+		"observation_id":native.observation_id,
+		"render_identity":joined.render_identity
+	})
+	check(confirmed.get("status")=="observation_confirmed",
+		"worker did not confirm actual ACKed framebuffer: "+str(confirmed))
+	return native
 
 
 func run() -> void:
