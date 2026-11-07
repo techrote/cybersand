@@ -285,7 +285,7 @@ func _handle_transport(identity: int, nonce: int, result: int, http_status: int,
 	if not parsed.get("output", null) is Array:
 		_fail("Missing model output list.")
 		return
-	if str(parsed.get("status", "completed")) not in ["completed", "in_progress"]:
+	if str(parsed.get("status", "")) != "completed":
 		_fail("Model response incomplete or failed.")
 		return
 	var calls: Array = []
@@ -352,15 +352,31 @@ func submit_tool_result(epoch: int, call_id: String, receipt: Dictionary) -> boo
 		proposal_changed.emit(receipt.footprint)
 	if _pending_tool == "apply_edit" and status in ["applied", "refused", "error", "unconfirmed"]:
 		proposal_changed.emit([])
-	var output := JSON.stringify(receipt)
+	var bounded_receipt := receipt.duplicate(true)
+	# #526 supplies original viewport PNG matched to the native observation.
+	# Text-only base64 is NOT a vision input: send it as an input_image item.
+	var image_url := ""
+	if _pending_tool == "observe" and bounded_receipt.has("image_data_url"):
+		image_url = str(bounded_receipt["image_data_url"])
+		bounded_receipt.erase("image_data_url")
+		if not image_url.begins_with("data:image/png;base64,") or image_url.length() > 800000:
+			_fail("Invalid/oversized native viewport image.")
+			return false
+	var output := JSON.stringify(bounded_receipt)
 	if output.length() > MAX_TOOL_OUTPUT:
 		_fail("Native receipt exceeds bounded result limit.")
 		return false
 	status_changed.emit(status, "%s: %s" % [_pending_tool, status])
 	_pending_call_id = ""
 	_pending_tool = ""
-	# The API receives only bounded, previously verified authoritative results.
-	_send([{"type": "function_call_output", "call_id": call_id, "output": output}])
+	var next_input: Array = [{"type": "function_call_output", "call_id": call_id, "output": output}]
+	if not image_url.is_empty():
+		next_input.append({"role": "user", "content": [
+			{"type": "input_text", "text": "Native-observed viewport for this exact observation identity. Match it to the preceding facts; never infer material IDs from pixels."},
+			{"type": "input_image", "image_url": image_url, "detail": "low"}
+		]})
+	# All authority is still in #526/#527; no native call occurs here.
+	_send(next_input)
 	return true
 
 func _exit_tree() -> void:
