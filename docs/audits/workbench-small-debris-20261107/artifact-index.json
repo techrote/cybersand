@@ -1,0 +1,702 @@
+[
+  {
+    "path": "build/workbench-small-debris/corrected-test.gd",
+    "bytes": 6908,
+    "sha256": "6661d23ade4ccbd7508ede784164aaa7b5abe2e85f32782dce71602e0b3fd142"
+  },
+  {
+    "path": "build/workbench-small-debris/dossier.md",
+    "bytes": 8602,
+    "sha256": "e174b087ea9377df14f0bb056fa9c96d3dedb972be7a13a71fd54a6e0ef12cf9"
+  },
+  {
+    "path": "build/workbench-small-debris/finish.py",
+    "bytes": 12348,
+    "sha256": "00b707219874e79ce1a271a391e3097735ddb3b824487a9fe16bd311eb1f2bc8"
+  },
+  {
+    "path": "build/workbench-small-debris/materialization.json",
+    "bytes": 543,
+    "sha256": "eb79b9b6021aa87dc7eafff02c9e2872bece91885b96c1a0510e337a35399d73"
+  },
+  {
+    "path": "build/workbench-small-debris/preserved-cybersand_native.windows.x86_64.dll",
+    "bytes": 5087744,
+    "sha256": "d2084a0fcee00d8852b1cef4492b7166e7bc56b0fdfb5aba18e9bd742c88f6c3"
+  },
+  {
+    "path": "build/workbench-small-debris/preserved-libcybersand_native.linux.x86_64.so",
+    "bytes": 4535000,
+    "sha256": "7dac3e72a11bbc97e1e4b00a9db57d3e8e2781d984db052f724ff41fa23e521d"
+  },
+  {
+    "path": "build/workbench-small-debris/run_checks.py",
+    "bytes": 1472,
+    "sha256": "4135c76ebbe0d4215917f897d40a8d8eba11442603e428c0737eea9b398acf1d"
+  },
+  {
+    "path": "build/workbench-small-debris/abi/linux-floor.log",
+    "bytes": 100,
+    "sha256": "623746348b9a99748d32dcf6ac964eae7f209b5e29ef4b79e4c4d4dd0e25dfa0"
+  },
+  {
+    "path": "build/workbench-small-debris/abi/linux-floor.receipt.json",
+    "bytes": 537,
+    "sha256": "2c29eed2ef6bfe9f192fbe67235c7d5114eb983da407b4d76604486eb296a13a"
+  },
+  {
+    "path": "build/workbench-small-debris/abi/receipt.json",
+    "bytes": 718,
+    "sha256": "3a833be27efd7b51d11be7badf31159ab173462a3bc283947cdadbfcda6e6e1b"
+  },
+  {
+    "path": "build/workbench-small-debris/checks-001/compiler.log",
+    "bytes": 83,
+    "sha256": "d645a144c75f3517397c704fe81a8efb86fd092f64d93147bcfa35a1afc8bd3b"
+  },
+  {
+    "path": "build/workbench-small-debris/checks-001/compiler.receipt.json",
+    "bytes": 422,
+    "sha256": "8c6074d8ea99468b2c59017bf3916ed7d645aeeb530117fbc6aabb7e67674678"
+  },
+  {
+    "path": "build/workbench-small-debris/checks-001/diff-check.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "build/workbench-small-debris/checks-001/diff-check.receipt.json",
+    "bytes": 327,
+    "sha256": "ea5adfa18b28af8a1fcc94277aec641a8bcbd76ee7e8e93ce8507fc61b5dc806"
+  },
+  {
+    "path": "build/workbench-small-debris/checks-001/docs.json",
+    "bytes": 487,
+    "sha256": "0f086c9f083e88b69e8312e6d91a7a7986d19ce4882cb927fa8d7e533774c8d6"
+  },
+  {
+    "path": "build/workbench-small-debris/checks-001/docs.log",
+    "bytes": 733,
+    "sha256": "83884146b07fecc9e59e2232f18163e4515e681ef3ae4571b3aeaf5af3cdfb00"
+  },
+  {
+    "path": "build/workbench-small-debris/checks-001/docs.receipt.json",
+    "bytes": 513,
+    "sha256": "bce65a305ceb53c0c08c05fb722b687642ac11c81e55a8c73883d6b1baac9530"
+  },
+  {
+    "path": "build/workbench-small-debris/checks-001/m11.json",
+    "bytes": 318,
+    "sha256": "e5d2a8eecef5876957dc4ecff01b99af696053871616d2dea563371d44b2427b"
+  },
+  {
+    "path": "build/workbench-small-debris/checks-001/m11.log",
+    "bytes": 318,
+    "sha256": "e5d2a8eecef5876957dc4ecff01b99af696053871616d2dea563371d44b2427b"
+  },
+  {
+    "path": "build/workbench-small-debris/checks-001/m11.receipt.json",
+    "bytes": 521,
+    "sha256": "b383e2272975d3bd6e8dd29efe6e84a1955b870d06756ca84439b04719a64409"
+  },
+  {
+    "path": "build/workbench-small-debris/checks-001/material.log",
+    "bytes": 4305,
+    "sha256": "57d0a550fdfc2b0b758f8343650ba1e6519fb652924986a1800bd80419582e03"
+  },
+  {
+    "path": "build/workbench-small-debris/checks-001/material.receipt.json",
+    "bytes": 426,
+    "sha256": "96c239323ea8e5ce555dfa6208cd0c8463b7781d8c8af97a643c84e5acb8c36e"
+  },
+  {
+    "path": "build/workbench-small-debris/checks-001/receipt.json",
+    "bytes": 5155,
+    "sha256": "338712524ae829cac77e6117d1357c1c9a6ac1b7fc26527f695aae2e211e4b07"
+  },
+  {
+    "path": "build/workbench-small-debris/checks-001/repository.json",
+    "bytes": 2592,
+    "sha256": "319e59000e5b0e628462c95b5a03f41f76881d6ab1e86de8347afa78912cbbe2"
+  },
+  {
+    "path": "build/workbench-small-debris/checks-001/repository.log",
+    "bytes": 2592,
+    "sha256": "319e59000e5b0e628462c95b5a03f41f76881d6ab1e86de8347afa78912cbbe2"
+  },
+  {
+    "path": "build/workbench-small-debris/checks-001/repository.receipt.json",
+    "bytes": 566,
+    "sha256": "72f85acc83e87b9ff575725aab2172a8175079bcdef4ce369577e49ce5f7ef40"
+  },
+  {
+    "path": "build/workbench-small-debris/checks-001/retrieval-freed.contexts.md",
+    "bytes": 46726,
+    "sha256": "8dfe58a0469856de98e3af82af0ac9f6c6d6d11307ae28e184d4a9fc9501e0dc"
+  },
+  {
+    "path": "build/workbench-small-debris/checks-001/retrieval-freed.json",
+    "bytes": 77507,
+    "sha256": "b3daa47dc2ebf2c4cc09ba0048a9bf5e19382d2858b97f5ccc7970f7e775cac1"
+  },
+  {
+    "path": "build/workbench-small-debris/checks-001/retrieval-freed.log",
+    "bytes": 955,
+    "sha256": "3d62d8ef9b46d24b05baaa2b2123aaea70c0746317cb8b5beba45a76be6bc698"
+  },
+  {
+    "path": "build/workbench-small-debris/checks-001/retrieval-freed.receipt.json",
+    "bytes": 635,
+    "sha256": "092258c187f3467df6fba5dffd37fd8f1c2edc72e6ad6a36016b905d9e2f3c4d"
+  },
+  {
+    "path": "build/workbench-small-debris/checks-001/retrieval.contexts.md",
+    "bytes": 345770,
+    "sha256": "4769502991e1028256e15dd5b08112f05f70309e579a4b11ced7048fa45cf10a"
+  },
+  {
+    "path": "build/workbench-small-debris/checks-001/retrieval.json",
+    "bytes": 414856,
+    "sha256": "531adba5b47e07d1cb4a1e17396187395e9105bfc13a1f575c346fe3e0318110"
+  },
+  {
+    "path": "build/workbench-small-debris/checks-001/retrieval.log",
+    "bytes": 4388,
+    "sha256": "8eb5c747722c3afa9f4508441e08cdd5930f77e6b20a35affd7cd79cf537f498"
+  },
+  {
+    "path": "build/workbench-small-debris/checks-001/retrieval.receipt.json",
+    "bytes": 536,
+    "sha256": "8ebc8ae51462e943f8fd4ebb75dd0ad82a31c54e23d4a61eb5fa53583dc0554b"
+  },
+  {
+    "path": "build/workbench-small-debris/checks-001/runtime.log",
+    "bytes": 172,
+    "sha256": "2005b5d7e4601fb1359888f092b6989c2ee361e326192c52b1eeb4ee71099bd1"
+  },
+  {
+    "path": "build/workbench-small-debris/checks-001/runtime.receipt.json",
+    "bytes": 421,
+    "sha256": "5fbe59eda51ba25410dcbc81d76c1bf9b2e5bd5e7c392efd1c11c2f1d1a8b390"
+  },
+  {
+    "path": "build/workbench-small-debris/hosts-001/receipt.json",
+    "bytes": 251710,
+    "sha256": "4c82ca02c3f7571a5d0249073b792e8b08cfe3d1f1d14697454b284f17636e84"
+  },
+  {
+    "path": "build/workbench-small-debris/native-001/build-optimized-solid_detachment.log",
+    "bytes": 893,
+    "sha256": "9262b451983b20f121265334ee10d2be807681ca65513110f18a96e058e341e2"
+  },
+  {
+    "path": "build/workbench-small-debris/native-001/build-optimized-solid_detachment.receipt.json",
+    "bytes": 1111,
+    "sha256": "63f0324f35e9caa851592e365239a5a736b2c1295f74a23e4ac2fb693a4d75e1"
+  },
+  {
+    "path": "build/workbench-small-debris/native-001/build-optimized-workbench_freed.log",
+    "bytes": 893,
+    "sha256": "9262b451983b20f121265334ee10d2be807681ca65513110f18a96e058e341e2"
+  },
+  {
+    "path": "build/workbench-small-debris/native-001/build-optimized-workbench_freed.receipt.json",
+    "bytes": 1107,
+    "sha256": "216579db9879baf8a720e6d523ef4cac3421eeaf90cae3864eaca644dd8f716d"
+  },
+  {
+    "path": "build/workbench-small-debris/native-001/build-strict-asan-ubsan-solid_detachment.log",
+    "bytes": 3721,
+    "sha256": "8f9b5f1f17f75f7556b3ceec175abd6334d1cb83cb4184e86ef70421497e775d"
+  },
+  {
+    "path": "build/workbench-small-debris/native-001/build-strict-asan-ubsan-solid_detachment.receipt.json",
+    "bytes": 1196,
+    "sha256": "a19017cdd0a0d51fc68e63feaad921d6da8c3ed95d8f9d28e124fde06f37de60"
+  },
+  {
+    "path": "build/workbench-small-debris/native-001/build-strict-asan-ubsan-workbench_freed.log",
+    "bytes": 3720,
+    "sha256": "cce92f46e5d7909f2546241004b0df350d2f3bda2e4274e79ccdf541bf631eff"
+  },
+  {
+    "path": "build/workbench-small-debris/native-001/build-strict-asan-ubsan-workbench_freed.receipt.json",
+    "bytes": 1192,
+    "sha256": "258f4cd3898d5e3de2d1c88827b31b48abae7be2e98119295ee3b09d6a765867"
+  },
+  {
+    "path": "build/workbench-small-debris/native-001/optimized-solid_detachment",
+    "bytes": 913952,
+    "sha256": "da9c84cfd991569e7a43e5775c6dea75dce08ac1a03d720d894971cdc0fd3c77"
+  },
+  {
+    "path": "build/workbench-small-debris/native-001/optimized-workbench_freed",
+    "bytes": 879664,
+    "sha256": "e5e022004bf312af0ca575f5f5985606cb713ff8f4b400452b374100218abdcd"
+  },
+  {
+    "path": "build/workbench-small-debris/native-001/receipt.json",
+    "bytes": 39773,
+    "sha256": "0069f9c2d7b61e58d01730b471b8a5053ac2744cdd2e9334206876592f8c97c2"
+  },
+  {
+    "path": "build/workbench-small-debris/native-001/run-optimized-solid_detachment.log",
+    "bytes": 641,
+    "sha256": "7d393dd2e14c8d23b1f65962ec7dfb3a43d329c2250a99e89353ce17f312301d"
+  },
+  {
+    "path": "build/workbench-small-debris/native-001/run-optimized-solid_detachment.receipt.json",
+    "bytes": 798,
+    "sha256": "3c6197f32d0f725b4e2d14fbfe1426efa461f4913d9a9308a216aa6bd31adf24"
+  },
+  {
+    "path": "build/workbench-small-debris/native-001/run-optimized-workbench_freed.log",
+    "bytes": 43,
+    "sha256": "08ef993b485c5517582940175749e0aa60eb0f1d9900ffa3dda05be5796036d6"
+  },
+  {
+    "path": "build/workbench-small-debris/native-001/run-optimized-workbench_freed.receipt.json",
+    "bytes": 795,
+    "sha256": "bf2a5e9e49e4c60e2a850d63cb4d57255936e95a4accfaf254bb78ae40f4c245"
+  },
+  {
+    "path": "build/workbench-small-debris/native-001/run-strict-asan-ubsan-solid_detachment.log",
+    "bytes": 641,
+    "sha256": "7d393dd2e14c8d23b1f65962ec7dfb3a43d329c2250a99e89353ce17f312301d"
+  },
+  {
+    "path": "build/workbench-small-debris/native-001/run-strict-asan-ubsan-solid_detachment.receipt.json",
+    "bytes": 822,
+    "sha256": "851cf1a6386f61a91c933eb347bf9471dbef6031900d99b5990668a0477f8d15"
+  },
+  {
+    "path": "build/workbench-small-debris/native-001/run-strict-asan-ubsan-workbench_freed.log",
+    "bytes": 43,
+    "sha256": "08ef993b485c5517582940175749e0aa60eb0f1d9900ffa3dda05be5796036d6"
+  },
+  {
+    "path": "build/workbench-small-debris/native-001/run-strict-asan-ubsan-workbench_freed.receipt.json",
+    "bytes": 818,
+    "sha256": "7c2299c2886c5ddea1df18e04323b6d360afe47f77eac46d872ae7d538d46925"
+  },
+  {
+    "path": "build/workbench-small-debris/native-001/strict-asan-ubsan-solid_detachment",
+    "bytes": 50476944,
+    "sha256": "bb6a32307222be5a50fb2dd002e543ada45efbbdc6feb18f183e28ce938453b2"
+  },
+  {
+    "path": "build/workbench-small-debris/native-001/strict-asan-ubsan-workbench_freed",
+    "bytes": 50072136,
+    "sha256": "b6ad944c945a3e384ae5a9c1ff4a8ff1b8c5e958c9c0812ee1fd7cc1f83bb114"
+  },
+  {
+    "path": "build/workbench-small-debris/runtimes-001/receipt.json",
+    "bytes": 38911,
+    "sha256": "b5cac68beb24e41bd2dc43490f2d4936c25d74ea7b83dd784b5ff418c8877058"
+  },
+  {
+    "path": "build/workbench-small-debris/runtimes-001/linux/build.log",
+    "bytes": 25245,
+    "sha256": "1a7ddba5dfd29f6b74f98444493806a84cca51245f91c5897703a18226e5aae4"
+  },
+  {
+    "path": "build/workbench-small-debris/runtimes-001/linux/build.receipt.json",
+    "bytes": 1254,
+    "sha256": "32b4312e53b76f5d6129bcdc4567d715cdab203459082e9149ae0f55129f68b4"
+  },
+  {
+    "path": "build/workbench-small-debris/runtimes-001/linux/dependencies-after.log",
+    "bytes": 277933,
+    "sha256": "f5932993b7567792002074774ce4b93d886b2531e2f78af8024edadac0bc5622"
+  },
+  {
+    "path": "build/workbench-small-debris/runtimes-001/linux/dependencies-after.receipt.json",
+    "bytes": 802,
+    "sha256": "a7dc2bd1841718798cb19237737e5c357a448ec58b0b5b4dfd2b6df1e928d9e4"
+  },
+  {
+    "path": "build/workbench-small-debris/runtimes-001/linux/dependencies-before.log",
+    "bytes": 277933,
+    "sha256": "f5932993b7567792002074774ce4b93d886b2531e2f78af8024edadac0bc5622"
+  },
+  {
+    "path": "build/workbench-small-debris/runtimes-001/linux/dependencies-before.receipt.json",
+    "bytes": 804,
+    "sha256": "dd7864a814accc47966d3cabcbcda52ac3ec3d352bcb64df6c3b4174393adaf2"
+  },
+  {
+    "path": "build/workbench-small-debris/runtimes-001/linux/g++",
+    "bytes": 668,
+    "sha256": "eda84507126d2e657dfd20386a0da6eecc5ebe8d650102075f5b539da8334b09"
+  },
+  {
+    "path": "build/workbench-small-debris/runtimes-001/linux/libcybersand_native.linux.x86_64.so",
+    "bytes": 4543584,
+    "sha256": "ef05b4a63a1a8bc1bc3054b6a466d20c6ddf31f68a5e8dd707df7718e306742b"
+  },
+  {
+    "path": "build/workbench-small-debris/runtimes-001/linux/wrapper-mode.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "build/workbench-small-debris/runtimes-001/linux/wrapper-mode.receipt.json",
+    "bytes": 636,
+    "sha256": "6e7be024b7513f1398030e35a8ada71d51f0ff6c2eb4e0e19390ab7a7770dd9b"
+  },
+  {
+    "path": "build/workbench-small-debris/runtimes-001/windows/build.log",
+    "bytes": 2400,
+    "sha256": "596e552be4b70dbf937eba73512e193cd401189de8c4e60cf430c2eb08b1aca5"
+  },
+  {
+    "path": "build/workbench-small-debris/runtimes-001/windows/build.receipt.json",
+    "bytes": 377,
+    "sha256": "7539ec11074e6459432bc6c7721af46eb1567976d88a13737c4433e35bb39ae0"
+  },
+  {
+    "path": "build/workbench-small-debris/runtimes-001/windows/cybersand_native.windows.x86_64.dll",
+    "bytes": 5092864,
+    "sha256": "fd40f270cc659fae567c4b08cae6a6d55aaebc486a3760e63493fb23f7c417e6"
+  },
+  {
+    "path": "build/workbench-small-debris/runtimes-001/windows/dependencies-after.log",
+    "bytes": 2017524,
+    "sha256": "8b5e61d166ec1ae088970ef3147b259263fdeb5d838a000aa20c5b634213f294"
+  },
+  {
+    "path": "build/workbench-small-debris/runtimes-001/windows/dependencies-after.receipt.json",
+    "bytes": 727,
+    "sha256": "0e74f6f30f3dd0583457aa1dc82ed38247ed05921dc655f509f2537e521bdd6a"
+  },
+  {
+    "path": "build/workbench-small-debris/runtimes-001/windows/dependencies-before.log",
+    "bytes": 2017524,
+    "sha256": "8b5e61d166ec1ae088970ef3147b259263fdeb5d838a000aa20c5b634213f294"
+  },
+  {
+    "path": "build/workbench-small-debris/runtimes-001/windows/dependencies-before.receipt.json",
+    "bytes": 728,
+    "sha256": "b7363b02cbfb9e25091ef86a0a88608283515e925f5080c94d44a1360087b9af"
+  },
+  {
+    "path": "build/workbench-small-debris/hosts-001/linux/import.log",
+    "bytes": 37628,
+    "sha256": "3cd09906f89c10b53bc7cee0a120103c54a58bb6bfce162d508bbe20d40d6112"
+  },
+  {
+    "path": "build/workbench-small-debris/hosts-001/linux/import.receipt.json",
+    "bytes": 672,
+    "sha256": "2bd3debeaac5e763a71dd645f5b9f91a407f6b790f7b732cf85d8fbddeb52257"
+  },
+  {
+    "path": "build/workbench-small-debris/hosts-001/linux/test_workbench_brush_cuts-w1.json",
+    "bytes": 304414,
+    "sha256": "44c67596b1cf5852b16ad1e7379e7196e6d600c97e94c17a0b8df12410961a7c"
+  },
+  {
+    "path": "build/workbench-small-debris/hosts-001/linux/test_workbench_brush_cuts-w1.log",
+    "bytes": 261,
+    "sha256": "bd472bba9b430b9213406b9fd0b3504209897a83c85ee72d2d051dcc319533c8"
+  },
+  {
+    "path": "build/workbench-small-debris/hosts-001/linux/test_workbench_brush_cuts-w1.receipt.json",
+    "bytes": 947,
+    "sha256": "70f4217f5bb7da3a6b7b034430daa4891bcf18cea6deea4b3dfbe09563a73d26"
+  },
+  {
+    "path": "build/workbench-small-debris/hosts-001/linux/test_workbench_brush_cuts-w4.json",
+    "bytes": 304429,
+    "sha256": "c76f654135d59d81a7a918edf03f9c19ec2dc533ccac14d27da8f6138ff2dfa0"
+  },
+  {
+    "path": "build/workbench-small-debris/hosts-001/linux/test_workbench_brush_cuts-w4.log",
+    "bytes": 261,
+    "sha256": "bd472bba9b430b9213406b9fd0b3504209897a83c85ee72d2d051dcc319533c8"
+  },
+  {
+    "path": "build/workbench-small-debris/hosts-001/linux/test_workbench_brush_cuts-w4.receipt.json",
+    "bytes": 945,
+    "sha256": "e6f508b8c6840cbceeaa01c348fc36aab5692459256eda9ed1f02f8f19e51d61"
+  },
+  {
+    "path": "build/workbench-small-debris/hosts-001/linux/test_workbench_canvas.log",
+    "bytes": 597,
+    "sha256": "afb2ca35164579199d2f151231e595cc647b0e80b3a8f4319550791a29591a3d"
+  },
+  {
+    "path": "build/workbench-small-debris/hosts-001/linux/test_workbench_canvas.receipt.json",
+    "bytes": 732,
+    "sha256": "2dd2491c7a21cad65faf6f1a2b13fc5167b6ec48218eb6c784997a80be152c38"
+  },
+  {
+    "path": "build/workbench-small-debris/hosts-001/linux/test_workbench_canvas_body.log",
+    "bytes": 256,
+    "sha256": "3d710f26f38d2b7d5491482afe99b7d208ce9edcf87f54b5b2bb0672442d908d"
+  },
+  {
+    "path": "build/workbench-small-debris/hosts-001/linux/test_workbench_canvas_body.receipt.json",
+    "bytes": 748,
+    "sha256": "7453db3fd9dadb907f9cc259c570fdd1d45984b408114d85481cf3259a5ff875"
+  },
+  {
+    "path": "build/workbench-small-debris/hosts-001/linux/test_workbench_cut_lifecycle.log",
+    "bytes": 258,
+    "sha256": "433f98aa4b6d97f503bb2a0ba8ee99624ab5639d497719678768acc4a4956a5b"
+  },
+  {
+    "path": "build/workbench-small-debris/hosts-001/linux/test_workbench_cut_lifecycle.receipt.json",
+    "bytes": 754,
+    "sha256": "e030346e9b47277226a500ebcfe5d8abe11f35ee253188e4b32d547141d3517d"
+  },
+  {
+    "path": "build/workbench-small-debris/hosts-001/linux/test_workbench_fleet_session.log",
+    "bytes": 258,
+    "sha256": "de1a37723411ff3f440a3a7ffa1857ef7c78f992dfd435ead9e0af40307bae72"
+  },
+  {
+    "path": "build/workbench-small-debris/hosts-001/linux/test_workbench_fleet_session.receipt.json",
+    "bytes": 754,
+    "sha256": "e0fcbdf20b47ae16d5a7c4798e7bf65896614c053a85846173c874be2f476ebf"
+  },
+  {
+    "path": "build/workbench-small-debris/hosts-001/linux/test_workbench_freed-w1.json",
+    "bytes": 353321,
+    "sha256": "cde1e398198bd13f51a8942487c3a36920dbc6251af3666191cdd4f71fa982c1"
+  },
+  {
+    "path": "build/workbench-small-debris/hosts-001/linux/test_workbench_freed-w1.log",
+    "bytes": 260,
+    "sha256": "1e5514693589389f8a77a3890afab9d61b1ee2fb6aeb20267c8ec7b72fe704b2"
+  },
+  {
+    "path": "build/workbench-small-debris/hosts-001/linux/test_workbench_freed-w1.receipt.json",
+    "bytes": 927,
+    "sha256": "fbe673225f85de51fd6d94b18ebb032945326589d7957cf07a3a415e205384db"
+  },
+  {
+    "path": "build/workbench-small-debris/hosts-001/linux/test_workbench_freed-w4.json",
+    "bytes": 353328,
+    "sha256": "63b946747615ed7f91c92d8d611cce7fbdb25e5c055339b83afaf0036dda7ae2"
+  },
+  {
+    "path": "build/workbench-small-debris/hosts-001/linux/test_workbench_freed-w4.log",
+    "bytes": 260,
+    "sha256": "1e5514693589389f8a77a3890afab9d61b1ee2fb6aeb20267c8ec7b72fe704b2"
+  },
+  {
+    "path": "build/workbench-small-debris/hosts-001/linux/test_workbench_freed-w4.receipt.json",
+    "bytes": 927,
+    "sha256": "8b3af18866b5c61142be0e67ab6d7cab74b6a507a76b805224d02dd95e1d3f8e"
+  },
+  {
+    "path": "build/workbench-small-debris/hosts-001/linux/test_workbench_input.log",
+    "bytes": 1231,
+    "sha256": "9429938d6382e7b945217a27ddf1e97c513e7842c9ade2c28efd868b4cac6ed2"
+  },
+  {
+    "path": "build/workbench-small-debris/hosts-001/linux/test_workbench_input.receipt.json",
+    "bytes": 730,
+    "sha256": "d5a94765e44e4298d6c1d4624e297ef7b8f608d166fc71d3df1c969af6a06fe2"
+  },
+  {
+    "path": "build/workbench-small-debris/hosts-001/linux/test_workbench_pilot_ui.log",
+    "bytes": 846,
+    "sha256": "05649b61218a5b7717c7bf1eb34041fc5811fdfe9cf24215b11008d0cfa961b7"
+  },
+  {
+    "path": "build/workbench-small-debris/hosts-001/linux/test_workbench_pilot_ui.receipt.json",
+    "bytes": 739,
+    "sha256": "58cb5c73c025bde99e48cc2ffac8acd0ad183ede89eb98d870244e6d39c5ee64"
+  },
+  {
+    "path": "build/workbench-small-debris/hosts-001/linux/test_workbench_small_debris-w1.json",
+    "bytes": 381260,
+    "sha256": "dbd1d4ac796b9255383f7709c1a74691dd6d7f990da40a919d8995c73938c29c"
+  },
+  {
+    "path": "build/workbench-small-debris/hosts-001/linux/test_workbench_small_debris-w1.log",
+    "bytes": 261,
+    "sha256": "7876f7f46a2dd061e02a492da34b1d7fa6cc8a392d7fc1ef58866fa7675ba55f"
+  },
+  {
+    "path": "build/workbench-small-debris/hosts-001/linux/test_workbench_small_debris-w1.receipt.json",
+    "bytes": 954,
+    "sha256": "9e80170cf347c0681f10e609f91ddc4031bd16412e72a5cb5f9b54bbbf18602d"
+  },
+  {
+    "path": "build/workbench-small-debris/hosts-001/linux/test_workbench_small_debris-w4.json",
+    "bytes": 381264,
+    "sha256": "03b2efcd9c5f746ce9a686f2133ea347eb568cec7157748b6b3e42d027ff5b74"
+  },
+  {
+    "path": "build/workbench-small-debris/hosts-001/linux/test_workbench_small_debris-w4.log",
+    "bytes": 261,
+    "sha256": "7876f7f46a2dd061e02a492da34b1d7fa6cc8a392d7fc1ef58866fa7675ba55f"
+  },
+  {
+    "path": "build/workbench-small-debris/hosts-001/linux/test_workbench_small_debris-w4.receipt.json",
+    "bytes": 954,
+    "sha256": "75502989d25b24e570be115212947c2e0716f8baf1900a338c79c8d62649187e"
+  },
+  {
+    "path": "build/workbench-small-debris/hosts-001/windows/import.log",
+    "bytes": 38226,
+    "sha256": "6931a90ef41e40f8c9b01690155e23e3a59ec3d505c25e2f65db3061f5177c73"
+  },
+  {
+    "path": "build/workbench-small-debris/hosts-001/windows/import.receipt.json",
+    "bytes": 523,
+    "sha256": "67e1c64e571215739124232b55f2a987f63236d9baf483464559639eb8ed7907"
+  },
+  {
+    "path": "build/workbench-small-debris/hosts-001/windows/test_workbench_brush_cuts-w1.json",
+    "bytes": 304438,
+    "sha256": "a5e597a602e7f03f01bd7ee6a49afb0f8e5c6ffc08ed071739a3c972f52349ab"
+  },
+  {
+    "path": "build/workbench-small-debris/hosts-001/windows/test_workbench_brush_cuts-w1.log",
+    "bytes": 265,
+    "sha256": "c66147b2e5ae6d52d66fa531a773fc468f96995d5435481575618b5b38e1b7d2"
+  },
+  {
+    "path": "build/workbench-small-debris/hosts-001/windows/test_workbench_brush_cuts-w1.receipt.json",
+    "bytes": 602,
+    "sha256": "61f0868307c2a95e6cd82b687a4dcbbb562b1abf640a8ea0a9a1c0772dbe27cf"
+  },
+  {
+    "path": "build/workbench-small-debris/hosts-001/windows/test_workbench_brush_cuts-w4.json",
+    "bytes": 304438,
+    "sha256": "8c6b91c90c7d3b113e632b303f66c317df1cb45cecb16d13d40711cd6c39d34e"
+  },
+  {
+    "path": "build/workbench-small-debris/hosts-001/windows/test_workbench_brush_cuts-w4.log",
+    "bytes": 265,
+    "sha256": "c66147b2e5ae6d52d66fa531a773fc468f96995d5435481575618b5b38e1b7d2"
+  },
+  {
+    "path": "build/workbench-small-debris/hosts-001/windows/test_workbench_brush_cuts-w4.receipt.json",
+    "bytes": 602,
+    "sha256": "baa429d2848767eb8a203d58e9a77facaf973549161c79fb1d54295473a74bde"
+  },
+  {
+    "path": "build/workbench-small-debris/hosts-001/windows/test_workbench_canvas.log",
+    "bytes": 600,
+    "sha256": "1c1f00077beff8ac00a9b8766ae4185269f22bf1d38f0570ace8b297760d448c"
+  },
+  {
+    "path": "build/workbench-small-debris/hosts-001/windows/test_workbench_canvas.receipt.json",
+    "bytes": 584,
+    "sha256": "8597bfdc6045bee49ee8faf4ac39530454eba9cdef75b54f44ae18ef86d87dc4"
+  },
+  {
+    "path": "build/workbench-small-debris/hosts-001/windows/test_workbench_canvas_body.log",
+    "bytes": 260,
+    "sha256": "1cf91c3b35f42e2e9d16a51f73da1b8b81137cf257c11c9fc9f7424806682a6c"
+  },
+  {
+    "path": "build/workbench-small-debris/hosts-001/windows/test_workbench_canvas_body.receipt.json",
+    "bytes": 599,
+    "sha256": "d02684dd5a2cdaef33dcc2279be8ee65386dde920a824e088a4b8bdf4c337110"
+  },
+  {
+    "path": "build/workbench-small-debris/hosts-001/windows/test_workbench_cut_lifecycle.log",
+    "bytes": 262,
+    "sha256": "0e598e0ef33e91cc512dd500cecc398e8cd7c3afe481579263153a7320714fe4"
+  },
+  {
+    "path": "build/workbench-small-debris/hosts-001/windows/test_workbench_cut_lifecycle.receipt.json",
+    "bytes": 604,
+    "sha256": "fd06850efde149981fb4587a22fc9b385057fcac01291d8d4689ec1293a00fc2"
+  },
+  {
+    "path": "build/workbench-small-debris/hosts-001/windows/test_workbench_fleet_session.log",
+    "bytes": 262,
+    "sha256": "634f905ac03e58d4737bde7eb8adf6ec8d661ce01f04c9b26bb3fe581f4a3724"
+  },
+  {
+    "path": "build/workbench-small-debris/hosts-001/windows/test_workbench_fleet_session.receipt.json",
+    "bytes": 605,
+    "sha256": "f0a339a773a85d86b9d193dce94d7c5b7aa7107efb92c12b45caeb3e18c7df9c"
+  },
+  {
+    "path": "build/workbench-small-debris/hosts-001/windows/test_workbench_freed-w1.json",
+    "bytes": 353328,
+    "sha256": "63cdd60e3027ac6e6479639382aba69804ef7db6f3732719c7c4fd758e789b10"
+  },
+  {
+    "path": "build/workbench-small-debris/hosts-001/windows/test_workbench_freed-w1.log",
+    "bytes": 264,
+    "sha256": "d6dbca4fd4e0912d9f2881c46823a8522e82236b66a0083105764a43d69b4c0e"
+  },
+  {
+    "path": "build/workbench-small-debris/hosts-001/windows/test_workbench_freed-w1.receipt.json",
+    "bytes": 587,
+    "sha256": "c0c7c163a72fffca5a9af99c78b76e6ee1b35030fe5cc28b1ed39201dde39530"
+  },
+  {
+    "path": "build/workbench-small-debris/hosts-001/windows/test_workbench_freed-w4.json",
+    "bytes": 353326,
+    "sha256": "e18c7847c94bdf6fe7ddbbcb49b43895a8114efe88dea08170b5e8fc8cd1a0ba"
+  },
+  {
+    "path": "build/workbench-small-debris/hosts-001/windows/test_workbench_freed-w4.log",
+    "bytes": 264,
+    "sha256": "d6dbca4fd4e0912d9f2881c46823a8522e82236b66a0083105764a43d69b4c0e"
+  },
+  {
+    "path": "build/workbench-small-debris/hosts-001/windows/test_workbench_freed-w4.receipt.json",
+    "bytes": 586,
+    "sha256": "62be9dddda2318cb610bf0a771ed4cced63a003b3384f50a9923a7fc53a058a2"
+  },
+  {
+    "path": "build/workbench-small-debris/hosts-001/windows/test_workbench_input.log",
+    "bytes": 1235,
+    "sha256": "ca518ca3b034cdee306572222e1e2368f05b5f10cc6fca23bb8dd933d694aff7"
+  },
+  {
+    "path": "build/workbench-small-debris/hosts-001/windows/test_workbench_input.receipt.json",
+    "bytes": 580,
+    "sha256": "b5e049d2b773862ad75630147573b11dff5b85ad4edbdf5b5fa90b4bb92eb78d"
+  },
+  {
+    "path": "build/workbench-small-debris/hosts-001/windows/test_workbench_pilot_ui.log",
+    "bytes": 865,
+    "sha256": "e552b6c8178f7e38044fd393dd14d44f2a98078dcdbef20afdf2eab323d76600"
+  },
+  {
+    "path": "build/workbench-small-debris/hosts-001/windows/test_workbench_pilot_ui.receipt.json",
+    "bytes": 589,
+    "sha256": "d3fe33b92715128b3b67ac8644c304e4b09bd170b92265d1f0b44f179e0cb895"
+  },
+  {
+    "path": "build/workbench-small-debris/hosts-001/windows/test_workbench_small_debris-w1.json",
+    "bytes": 381271,
+    "sha256": "c168cd5434b2f079942dee6551fd43f3dab1ec3fd75e3f6bbed994f2be972b41"
+  },
+  {
+    "path": "build/workbench-small-debris/hosts-001/windows/test_workbench_small_debris-w1.log",
+    "bytes": 265,
+    "sha256": "24c55ca17d3b96fd57eff2b384c8252777222334be376a0804d0e68a3610dd2a"
+  },
+  {
+    "path": "build/workbench-small-debris/hosts-001/windows/test_workbench_small_debris-w1.receipt.json",
+    "bytes": 607,
+    "sha256": "3aabf1db4c918311d0b97c80ad009c5a4cd72f5dc71beccda13424a3ced32b4a"
+  },
+  {
+    "path": "build/workbench-small-debris/hosts-001/windows/test_workbench_small_debris-w4.json",
+    "bytes": 381268,
+    "sha256": "981b8f196195d9d978c7884025ab993b0bfdbd80aa9732bf59cce8a5ec7839f9"
+  },
+  {
+    "path": "build/workbench-small-debris/hosts-001/windows/test_workbench_small_debris-w4.log",
+    "bytes": 265,
+    "sha256": "24c55ca17d3b96fd57eff2b384c8252777222334be376a0804d0e68a3610dd2a"
+  },
+  {
+    "path": "build/workbench-small-debris/hosts-001/windows/test_workbench_small_debris-w4.receipt.json",
+    "bytes": 607,
+    "sha256": "a9eb3c7b96cd796fe4a334189794783a390700bac506f64882d39c7a0e17a1da"
+  }
+]

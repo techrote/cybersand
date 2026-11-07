@@ -138,3 +138,20 @@ material catalogue identity or liquid-IN design is selected. Ownership is the
 same exclusive native World, with main-thread-only collider installation and
 immutable copied worker replies. Source/runtime identity and repository gates
 remain separate from functional and physical acceptance.
+
+All nine source/documentation gates pass at the recorded checkpoint:
+[checks](workbench-small-debris-20261107/checks.json). The fresh rebuilt Linux
+artifact again fails the unchanged2.34 ABI floor with GLIBC2.35, separately
+retained in [ABI receipt](workbench-small-debris-20261107/abi.json). The
+[raw artifact index](workbench-small-debris-20261107/artifact-index.json)
+authenticates local logs, binaries, full censuses and source helpers. The
+measured evidence footprint is273,427,445 bytes with15,136,088,064 bytes free.
+The native optional store reports278,384 bytes, up176 from the brush build;
+no new per-cell sidecar is introduced. Both worker4 cohorts actually observe
+four workers; that is participation, not utilization or60Hz proof.
+
+Two read-only agent reviews found no production P1/P2 blocker. Their test
+feedback strengthened source-vacancy, disk round-trip and phase8 retirement
+checks before actual host qualification; no result-driven threshold or law
+tuning occurred. Request separate independent adversarial review before any
+owner integration decision. Existing workbench windows are not reset or closed.
