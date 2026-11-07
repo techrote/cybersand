@@ -5,6 +5,8 @@ on:
     types: [opened, synchronize, reopened]
     paths:
       - 'native/tests/test_wb_agent_coordinate_translation.cpp'
+      - 'godot/tests/test_wb_agent_positive_frame_candidate.gd'
+      - 'godot/tests/support/wb_agent_positive_frame_candidate.gd'
       - '.github/workflows/wb-agent-coordinate-parity.yml'
   workflow_dispatch:
 
@@ -123,5 +125,76 @@ jobs:
         with:
           name: wb-agent-coordinate-parity-${{ github.run_id }}-${{ github.run_attempt }}
           path: build/wb-agent-coordinate-parity/
+          if-no-files-found: error
+          retention-days: 90
+
+  godot_frame_candidate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+      EVIDENCE: build/wb-agent-positive-frame
+      GODOT_SILENCE_ROOT_WARNING: '1'
+    steps:
+      - name: Checkout immutable candidate
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ env.SOURCE_SHA }}
+          fetch-depth: 0
+          lfs: false
+          persist-credentials: false
+      - name: Capture source and authenticate official pinned Godot 4.7
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$EVIDENCE"
+          git rev-parse HEAD > "$EVIDENCE/source-sha.txt"
+          git rev-parse HEAD^{tree} > "$EVIDENCE/source-tree.txt"
+          test "$(git rev-parse HEAD)" = "$SOURCE_SHA"
+          git diff --check HEAD
+          python3 tools/ci/check_ci_provider_policy.py > "$EVIDENCE/ci-provider.json"
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          lock=json.loads(Path('third_party/godot-runtime.lock.json').read_text())
+          Path('build/wb-agent-positive-frame/godot-url.txt').write_text(lock['editor']['origin_url']+'\n')
+          PY
+          curl --fail --location --connect-timeout 45 --max-time 260 \
+            --output "$RUNNER_TEMP/wb-agent-positive-frame-godot.zip" \
+            "$(cat "$EVIDENCE/godot-url.txt")"
+          python3 - <<'PY'
+          import json,hashlib,os,zipfile
+          from pathlib import Path
+          lock=json.loads(Path('third_party/godot-runtime.lock.json').read_text())
+          zpath=Path(os.environ['RUNNER_TEMP'])/'wb-agent-positive-frame-godot.zip'
+          assert zpath.stat().st_size==lock['editor']['size']
+          assert hashlib.sha256(zpath.read_bytes()).hexdigest()==lock['editor']['sha256']
+          binary='Godot_v4.7-stable_linux.x86_64'
+          target=Path(os.environ['RUNNER_TEMP'])/'wb-agent-positive-frame-editor'
+          with zipfile.ZipFile(zpath) as z:
+            assert z.testzip() is None and z.namelist().count(binary)==1
+            z.extract(binary,target)
+          (target/binary).chmod(0o755)
+          with open(os.environ['GITHUB_ENV'],'a') as fp:
+            fp.write('GODOT_BIN='+str(target/binary)+'\n')
+          PY
+      - name: Execute reversible native-domain candidate as pure Godot code
+        shell: bash
+        timeout-minutes: 4
+        run: |
+          set -euo pipefail
+          "$GODOT_BIN" --version | tee "$EVIDENCE/godot-version.txt"
+          grep -Fx '4.7.stable.official.5b4e0cb0f' "$EVIDENCE/godot-version.txt"
+          timeout 160 "$GODOT_BIN" --headless --path godot \
+            --script res://tests/test_wb_agent_positive_frame_candidate.gd \
+            2>&1 | tee "$EVIDENCE/actual-godot-original.log"
+          grep -E '^WB_AGENT_POSITIVE_FRAME_CANDIDATE: [0-9]+ assertions, 0 failures' \
+            "$EVIDENCE/actual-godot-original.log"
+      - name: Preserve independent real Godot evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: wb-agent-positive-frame-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/wb-agent-positive-frame/
           if-no-files-found: error
           retention-days: 90
