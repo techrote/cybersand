@@ -5,6 +5,7 @@ on:
     types: [opened, synchronize, reopened]
     paths:
       - 'godot/tests/gen006_graphical_qualification.gd'
+      - 'godot/tests/gen006_async_input_qualification.gd'
       - '.github/workflows/gen006-graphical-qualification.yml'
       - 'godot/tests/gen006_streaming_slice_demo.gd'
       - 'godot/tests/gen006_streaming_slice_demo.tscn'
@@ -43,7 +44,7 @@ jobs:
           git rev-parse HEAD | tee "$dir/head.txt"
           git rev-parse 'HEAD^{tree}' | tee "$dir/tree.txt"
           test "$(git rev-parse HEAD)" = "$GEN006_EXPECTED_HEAD"
-          for f in native/src/world.cpp native/tests/gen006_streaming_slice.cpp godot/tests/gen006_streaming_slice_demo.gd godot/tests/gen006_graphical_qualification.gd; do
+          for f in native/src/world.cpp native/tests/gen006_streaming_slice.cpp godot/tests/gen006_streaming_slice_demo.gd godot/tests/gen006_graphical_qualification.gd godot/tests/gen006_async_input_qualification.gd; do
             git hash-object "$f" | tee -a "$dir/source-blobs.txt"
           done
           lsb_release -a 2>&1 | tee "$dir/os.txt"
@@ -86,7 +87,8 @@ jobs:
           "$godot_bin" --version | tee "$dir/godot-version.txt"
           cp godot/tests/gen006_streaming_slice_demo.gd \
              godot/tests/gen006_streaming_slice_demo.tscn \
-             godot/tests/gen006_graphical_qualification.gd "$dir/project/tests/"
+             godot/tests/gen006_graphical_qualification.gd \
+             godot/tests/gen006_async_input_qualification.gd "$dir/project/tests/"
           cat > "$dir/project/project.godot" <<'EOP'
           config_version=5
           [application]
@@ -115,6 +117,26 @@ jobs:
           done
           sha256sum "$dir"/screenshots/*.png | tee "$dir/screenshots.sha256"
           test "$(wc -c < "$dir/world/gen006-current.rgba")" = 16384
+      - name: Execute nonblocking live-input journey in actual Godot OpenGL
+        shell: bash
+        timeout-minutes: 12
+        run: |
+          set -euo pipefail
+          dir=build/gen006-graphical-qa
+          mkdir -p "$dir/async-screenshots"
+          export GEN006_SLICE_ROOT="$PWD/$dir/async-world"
+          export GEN006_ASYNC_EVIDENCE="$PWD/$dir/async-screenshots"
+          export GEN006_SLICE_FORCE_ASYNC_TEST=1
+          export LIBGL_ALWAYS_SOFTWARE=1
+          godot_bin="$(find "$dir/bin" -maxdepth 1 -type f -name 'Godot*' -print -quit)"
+          xvfb-run -a -s '-screen 0 1280x800x24' \
+            timeout 240 "$godot_bin" --rendering-driver opengl3 \
+              --path "$dir/project" --script res://tests/gen006_async_input_qualification.gd \
+            2>&1 | tee "$dir/async-graphical.log"
+          grep -q 'GEN006_GODOT_ASYNC_INPUT_PASS' "$dir/async-graphical.log"
+          test -s "$dir/async-screenshots/08-async-home.png"
+          sha256sum "$dir/async-screenshots/08-async-home.png" | tee "$dir/async-screenshot.sha256"
+          test "$(wc -c < "$dir/async-world/gen006-current.rgba")" = 16384
       - name: Preserve original graphical and native evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
@@ -131,6 +153,9 @@ jobs:
             build/gen006-graphical-qa/graphical.log
             build/gen006-graphical-qa/screenshots/*.png
             build/gen006-graphical-qa/screenshots.sha256
+            build/gen006-graphical-qa/async-graphical.log
+            build/gen006-graphical-qa/async-screenshots/*.png
+            build/gen006-graphical-qa/async-screenshot.sha256
             build/gen006-graphical-qa/world/gen006-current.rgba
           if-no-files-found: warn
           retention-days: 90
