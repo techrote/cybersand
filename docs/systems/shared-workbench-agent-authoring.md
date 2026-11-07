@@ -377,3 +377,88 @@ evidence to the PR; admit official source and iterate the handoff to #527/#528.
 Docs index, roadmap, handover and retrieval-manifest routes have been
 updated on the Draft branch. Their CI/retrieval checks must still pass
 against the exact final head before acceptance.
+
+
+## Signed-domain repair: opt-in native-backed host frame — candidate, not admitted (7 November 2026)
+
+**Current (isolated Draft #529 code):** The actual C++ native `World` accepts
+signed cells in the standalone frozen #527 reference, but the current shared
+Godot workbench registers an origin-zero **2048×2048 finite canvas**, and its
+named-start painter, camera bounds and native authoring task checks refuse
+negative native coordinates. Merely changing JSON signed-int validation
+cannot make a negative area drawable, observed and saveable. Bypassing only
+the worker scope guard would paint unrepresented space.
+
+To unblock executable *host engineering* without changing physics or
+silently redefining the frozen signed fixture, the existing #526 main-thread
+host now supports an **explicitly requested, host-only candidate**:
+
+- Exact `coordinate_frame_id`:
+  `wb-agent-signed-frame-candidate-v1:origin=512,512:extent=2048x2048`.
+  This is **not** enabled by ordinary four-tool model dispatch or the current
+  #528 panel; the privileged host must pass it as the fifth parameter to
+  `authorize_task(task_id, scope, protected, [0,58], coordinate_frame_id)`.
+  Absent this parameter, the proven positive-native contract is unchanged.
+- Signed logical cells map to the **same single native World** by
+  `native=(logical.x+512,logical.y+512)`. Allowed logical coordinates are
+  `-512..1535` on each axis, checked **before** 32-bit narrowing, addition
+  or raster allocation. Native extent must be exactly 2048²; wrong frame,
+  world extent, oversize rectangle, incomplete disc, noninteger/overflow
+  arguments and out-of-domain operations refuse rather than wrap or clip.
+- Scope and all protected rectangles are mapped at **trusted native
+  authorization**, then subject to the existing worker's full validation.
+  Every model `observe(region)` and ordered `prepare_edit` disc/line/
+  rectangle/filter uses the bound frame; source-ID/protection/4096-cell limits
+  remain native-owner checks. The owner-generated proposal is staged into
+  the **native-coordinate named-start construction** before apply; real
+  verified native readback is reverse-mapped to signed logical cells *only*
+  after storage commit. Original native `framebuffer_png` bytes and
+  post-draw ACK remain unchanged, with native render identity and explicit
+  signed viewport/cell-region metadata. No second World, material rule,
+  step rate, default solver or mock physical state is introduced.
+- The host binds its frame to the worker's **returned World generation**;
+  any world-epoch inconsistency or unmappable receipt becomes unconfirmed
+  and quarantined. Native task takeover remains prohibited until actual
+  `retire_task` ACK; retained apply receipt dedup and queued human-intent
+  fences are preserved.
+
+**Executable scope:** New `godot/scripts/workbench_agent_signed_frame.gd`
+and `godot/tests/test_workbench_agent_signed_frame.gd` cover 28 pure
+boundary/protection/round-trip assertions. The existing
+`test_workbench_agent_owner.gd` has been extended to issue a real signed
+negative observe→prepare→apply via the exclusive paused native worker, verify
+matched original framebuffer and saved named-start cells, exact eight Wall
+readbacks, manual native Sand-protection refusal and signed duplicate
+receipt, and attempt both invalid-frame and overflow negative controls.
+This exercises the actual mounted native workbench **but it is NOT the
+frozen 32-Sand four-tool hopper**. Both Linux/Xvfb and real Windows Godot
+source-matched suites run this path; only actual *completed* CI evidence
+may be described as PASS. Retained native/Rapier LFS binaries are
+not rebuilt at this GDScript source revision; Draft Native/GDExtension
+production gates remain intentionally skipped.
+
+**Independently measured physical distinction:** [#537](https://github.com/techrote/cybersand/pull/537)
+tested original signed frozen v2 against 256 positive offsets in 1,024
+actual native arms, then evaluated the candidate shift on all 481 tick
+states. It preserved final 32/32 Sand, 17 protections, both catchment
+counts at every tick and the **480 TOTAL** completed-tick allowance.
+Nevertheless NORMAL sand-cell locations differ in 26 transient states
+(ticks 7–63), while REVISED has exact positions throughout; 0/256
+offsets preserved all registered intermediate positions in both layouts.
+These results make **translation-invariant native dynamics unproven**.
+The candidate is therefore **not silently equivalent** to #527's
+unchanged, signed native fixture.
+
+**OWNER CHOICE REQUIRED before admission to #527's frozen comparison or
+#528's live trial:** accept the *explicitly bounded outcome-and-count
+equivalence* despite measured transient Sand trajectories, or require
+exact intermediate physical parity and fund genuine signed-native
+canvas/camera/start support instead. The opt-in adapter is not a
+decision or permission to rerun/relabel the immutable fixture. #527
+must independently source-compose and validate **both** actual native
+hopper variants through the real Godot four-tool chain within 480 total
+ticks, capture original PNG/native cell receipts, then request full
+production admission. #528 should consume this frame ID and stable
+host/schema handoff only after that decision and independent review.
+No paid model attempts (0/3), human approval, Ready or merge follow
+from this checkpoint.
