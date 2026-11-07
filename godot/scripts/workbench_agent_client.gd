@@ -183,10 +183,10 @@ func _valid_arguments(name: String, args: Variant) -> bool:
 				for key: String in coordinates:
 					if not _safe_integer(item[key]) or item[key] < 0 or item[key] > 2147483647:
 						return false
-				if not _safe_integer(item.material) or item.material not in [0,58]:
+				if not _safe_integer(item.material) or int(item.material) not in [0,58]:
 					return false
 				if item.replace_only_material != null and (
-						not _safe_integer(item.replace_only_material) 						or item.replace_only_material not in [0,58]):
+						not _safe_integer(item.replace_only_material) 						or int(item.replace_only_material) not in [0,58]):
 					return false
 				if item.shape == "disc" and item.radius > 36:
 					return false

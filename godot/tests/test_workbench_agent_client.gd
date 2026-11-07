@@ -75,6 +75,8 @@ func _test_tool_loop_and_stop() -> void:
 	_expect(c._response_id == "response-1" and c._serial == 2, "continuation must retain previous response")
 	var op := {"shape": "line", "x0": 1028, "y0": 25, "x1": 1031, "y1": 25,
 		"material": 58, "replace_only_material": null}
+	if not c._valid_arguments("prepare_edit", {"observation_id":"native-1","operations":[op]}):
+		print("WB528 DEBUG line pre-JSON rejected: ",JSON.stringify(op))
 	_deliver(c, _response("response-2",
 		[_tool("prepare_edit", "call-2", {"observation_id": "native-1", "operations": [op]})]))
 	_expect(invocations.size() == 2 and invocations[1].name == "prepare_edit", "prepare not dispatched")
@@ -123,6 +125,8 @@ func _test_full_serial_four_tool_loop() -> void:
 		"image base64 must not be duplicated as plain text tool result")
 	var op := {"shape": "rectangle", "x0": 1026, "y0": 33, "x1": 1029, "y1": 34,
 		"material": 58, "replace_only_material": null}
+	if not c._valid_arguments("prepare_edit", {"observation_id":"observed-native-1","operations":[op]}):
+		print("WB528 DEBUG rectangle pre-JSON rejected: ",JSON.stringify(op))
 	_deliver(c, _response("r2", [_tool("prepare_edit", "p1",
 		{"observation_id": "observed-native-1", "operations": [op]})]))
 	_expect(calls.size() == 2 and calls[1].name == "prepare_edit", "prepare in chain")
@@ -162,6 +166,8 @@ func _test_526_exact_envelopes() -> void:
 		"observed native result failed")
 	var disc := {"shape":"disc","x":1144,"y":245,"radius":2,"material":58,
 		"replace_only_material":null}
+	if not c._valid_arguments("prepare_edit", {"observation_id":"qualified-obs","operations":[disc]}):
+		print("WB528 DEBUG disc pre-JSON rejected: ",JSON.stringify(disc))
 	_deliver(c,_response("owner-2",[_tool("prepare_edit","owner-prepare",
 		{"observation_id":"qualified-obs","operations":[disc]})]))
 	_expect(calls.size() == 2 and not calls[1].args.operations[0].has("replace_only_material"),
