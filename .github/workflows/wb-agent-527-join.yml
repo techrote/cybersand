@@ -38,7 +38,7 @@ jobs:
           lfs: false
       - name: Compose exact tested foundation without touching either owned PR
         env:
-          FOUNDATION_SHA: eab1f59418023012f79637806d20b07f23c1ebe0
+          FOUNDATION_SHA: b85691075c041f70f8b35bf9901fa14ef1b965aa
           COMMON_BASE: 81bbd5ff5cf366159e2b8a630609359c13560080
         run: |
           set -euo pipefail
