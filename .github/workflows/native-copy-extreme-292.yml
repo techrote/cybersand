@@ -141,3 +141,123 @@ jobs:
           path: build/copy-extreme-292/candidate/
           if-no-files-found: error
           retention-days: 90
+
+  candidate_asan:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 18
+    env:
+      SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+      EVIDENCE: build/copy-extreme-292/asan
+    steps:
+      - name: Checkout exact HEAD
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ env.SOURCE_SHA }}
+          fetch-depth: 0
+          persist-credentials: false
+          lfs: false
+      - name: Compile and execute actual native copy paths under ASan
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$EVIDENCE"
+          test "$(git rev-parse HEAD)" = "$SOURCE_SHA"
+          git rev-parse HEAD > "$EVIDENCE/source-head.txt"
+          git rev-parse HEAD:native/src/world.cpp > "$EVIDENCE/world-blob.txt"
+          g++ --version | head -n 1 > "$EVIDENCE/compiler.txt"
+          g++ -std=c++20 -O1 -g1 -pthread -fsanitize=address \
+            -fno-omit-frame-pointer -I native/include \
+            native/src/world.cpp native/src/material_rules.cpp \
+            native/src/scheduler_geometry.cpp native/src/settled_world_discovery.cpp \
+            native/src/render_snapshot.cpp native/src/c_api.cpp \
+            native/tests/test_copy_extreme_coordinates.cpp -o "$EVIDENCE/candidate-asan"
+          sha256sum "$EVIDENCE/candidate-asan" > "$EVIDENCE/binary.sha256"
+          count=0
+          for fixture in material-max1 material-max2 material-ymax1 material-ymax2 \
+                         rgba-max1 rgba-max2 rgba-ymax1 rgba-ymax2 \
+                         cabi-max1 cabi-max2 cabi-ymax1 cabi-ymax2 \
+                         min2 zero pad-and-projection negative-extent render-control; do
+            ASAN_OPTIONS=halt_on_error=1:detect_leaks=0 \
+              timeout 35 "$EVIDENCE/candidate-asan" "$fixture" \
+              > "$EVIDENCE/$fixture.log" 2>&1 || {
+                cat "$EVIDENCE/$fixture.log"
+                exit 1
+              }
+            grep -Fx "COPY_EXTREME_PASS case=$fixture" "$EVIDENCE/$fixture.log"
+            count=$((count+1))
+          done
+          test "$count" -eq 17
+          echo "COPY_EXTREME_ASAN: 17/17 real native cases pass"
+      - name: Preserve source, executable and ASan stdout/stderr
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: native-copy292-candidate-asan-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/copy-extreme-292/asan/
+          if-no-files-found: error
+          retention-days: 90
+
+  windows_msvc:
+    runs-on: windows-2022
+    timeout-minutes: 30
+    env:
+      SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+      EVIDENCE: build/copy-extreme-292/msvc
+    steps:
+      - name: Checkout exact repaired candidate
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ env.SOURCE_SHA }}
+          fetch-depth: 0
+          persist-credentials: false
+          lfs: false
+      - name: Compile with actual Windows MSVC and execute all native / C ABI cases
+        shell: pwsh
+        timeout-minutes: 22
+        run: |
+          $ErrorActionPreference = 'Stop'
+          New-Item -ItemType Directory -Force -Path $env:EVIDENCE | Out-Null
+          if ((git rev-parse HEAD).Trim() -ne $env:SOURCE_SHA) { throw 'Wrong candidate SHA' }
+          (git rev-parse HEAD) | Set-Content "$env:EVIDENCE\source-head.txt"
+          (git rev-parse HEAD:native/src/world.cpp) | Set-Content "$env:EVIDENCE\world-blob.txt"
+          $vswhere = 'C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe'
+          if (-not (Test-Path $vswhere)) { throw 'vswhere unavailable on Windows runner' }
+          $installation = (& $vswhere -latest -products '*' -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath | Select-Object -First 1)
+          if (-not $installation) { throw 'MSVC C++ workload unavailable' }
+          $vcvars = Join-Path $installation 'VC\Auxiliary\Build\vcvars64.bat'
+          if (-not (Test-Path $vcvars)) { throw 'vcvars64.bat missing' }
+          @(
+            '@echo off',
+            ('call "' + $vcvars + '"'),
+            'if errorlevel 1 exit /b 11',
+            'cl /nologo /std:c++20 /EHsc /O2 /MD /I native\include native\src\world.cpp native\src\material_rules.cpp native\src\scheduler_geometry.cpp native\src\settled_world_discovery.cpp native\src\render_snapshot.cpp native\src\c_api.cpp native\tests\test_copy_extreme_coordinates.cpp /Fe:build\copy-extreme-292\msvc\copy292.exe',
+            'exit /b %errorlevel%'
+          ) | Set-Content -Path "$env:EVIDENCE\build.cmd" -Encoding ascii
+          & cmd.exe /d /c "$env:EVIDENCE\build.cmd" 2>&1 | Tee-Object -FilePath "$env:EVIDENCE\compiler.log"
+          if ($LASTEXITCODE -ne 0) { throw "MSVC compilation exit=$LASTEXITCODE" }
+          $exe = (Resolve-Path "$env:EVIDENCE\copy292.exe").Path
+          (Get-FileHash $exe -Algorithm SHA256).Hash | Set-Content "$env:EVIDENCE\binary-sha256.txt"
+          $cases = @('material-max1','material-max2','material-ymax1','material-ymax2',
+            'rgba-max1','rgba-max2','rgba-ymax1','rgba-ymax2',
+            'cabi-max1','cabi-max2','cabi-ymax1','cabi-ymax2',
+            'min2','zero','pad-and-projection','negative-extent','render-control')
+          $count=0
+          foreach($case in $cases) {
+            $actual = & $exe $case 2>&1
+            $code = $LASTEXITCODE
+            $actual | Set-Content "$env:EVIDENCE\$case.log"
+            if ($code -ne 0 -or $actual -notcontains "COPY_EXTREME_PASS case=$case") {
+              throw "Windows native case $case exit=$code detail=$actual"
+            }
+            $count++
+          }
+          if ($count -ne 17) { throw "Incomplete Windows matrix $count" }
+          Write-Output "COPY_EXTREME_MSVC: 17/17 cases PASS"
+      - name: Retain actual Windows MSVC build and process results
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: native-copy292-msvc-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/copy-extreme-292/msvc/
+          if-no-files-found: error
+          retention-days: 90
