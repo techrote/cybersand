@@ -1,0 +1,116 @@
+name: PF504 post405 full-size identical native input replay
+on:
+  push:
+    branches: [integration/pf504-after-405-20261107]
+    paths: ['.github/workflows/pf504-after405-identical-input-replay.yml','native/bench/pf504_fullsize_native_input_replay.cpp','tools/ci/pf504_compare_native_input_replay.py']
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: pf504-post405-exact-replay
+  cancel-in-progress: false
+env:
+  ACCEPTED_MAIN: 81bbd5ff5cf366159e2b8a630609359c13560080
+  GODOT_URL: https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7
+  GODOT_SHA256: 0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c
+  GODOT_SILENCE_ROOT_WARNING: '1'
+  GIT_LFS_SKIP_SMUDGE: '1'
+jobs:
+  native-exactness:
+    name: 2048x1024 same tape, source-locked C2048, one/four workers, two camera modes
+    runs-on: ubuntu-24.04
+    timeout-minutes: 130
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Checkout exact integration head
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+          lfs: false
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Verify two-parent history, protected source and material authority
+        run: |
+          set -euo pipefail
+          mkdir -p build/pf504-replay/{fixtures,logs}
+          git diff --check
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 tools/material_catalogue/compatibility.py --check >build/pf504-replay/compatibility.json
+          git merge-base --is-ancestor "$ACCEPTED_MAIN" HEAD
+          git merge-base --is-ancestor 9933c74403d83652ad9928070234767b09a7b1d3 HEAD
+          git diff --name-only "$ACCEPTED_MAIN" HEAD -- native/src native/include >build/pf504-replay/native-source-delta.txt
+          diff -u <(printf 'native/src/world_pressure.inc\n') build/pf504-replay/native-source-delta.txt
+          git worktree add --detach "$RUNNER_TEMP/pf-base" "$ACCEPTED_MAIN"
+          cmp native/src/world.cpp "$RUNNER_TEMP/pf-base/native/src/world.cpp"
+          ! cmp -s native/src/world_pressure.inc "$RUNNER_TEMP/pf-base/native/src/world_pressure.inc"
+          git rev-parse HEAD HEAD^{tree} "$ACCEPTED_MAIN" >build/pf504-replay/source-heads.txt
+          sha256sum native/src/world.cpp native/src/world_pressure.inc >build/pf504-replay/native-hashes.txt
+      - name: Export source-authored Godot stress-canvas and freeze eight-body input tape
+        timeout-minutes: 15
+        run: |
+          set -euo pipefail
+          curl -fL --retry 3 --max-time 600 -o "$RUNNER_TEMP/godot.zip" "$GODOT_URL"
+          echo "$GODOT_SHA256  $RUNNER_TEMP/godot.zip" | sha256sum -c --strict
+          mkdir -p "$RUNNER_TEMP/godot"
+          unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/godot"
+          GODOT_BIN="$(find "$RUNNER_TEMP/godot" -maxdepth 1 -type f -name 'Godot*' -print -quit)"
+          chmod +x "$GODOT_BIN"
+          "$GODOT_BIN" --version >build/pf504-replay/godot-version.txt
+          export PF_CAPACITY_FIXTURE_DIR="$GITHUB_WORKSPACE/build/pf504-replay/fixtures"
+          timeout 240 "$GODOT_BIN" --headless --path godot --script res://tests/pf_c2048_export_fixtures.gd \
+            >build/pf504-replay/logs/export.log 2>&1 || { tail -120 build/pf504-replay/logs/export.log;exit 1; }
+          python3 tools/ci/pf504_emit_native_replay_tape.py \
+            --workbench-setup godot/scripts/workbench_setup.gd \
+            --fixture build/pf504-replay/fixtures/stress-canvas.csv \
+            --out build/pf504-replay/replay-tape.csv
+      - name: Build exactly two current-main-equivalent native binaries
+        timeout-minutes: 35
+        run: |
+          set -euo pipefail
+          cp native/bench/pf504_fullsize_native_input_replay.cpp "$RUNNER_TEMP/pf-base/native/bench/"
+          cmp native/bench/pf504_fullsize_native_input_replay.cpp "$RUNNER_TEMP/pf-base/native/bench/pf504_fullsize_native_input_replay.cpp"
+          flags=(-std=c++20 -O2 -DNDEBUG -pthread -Wall -Wextra -I native/include)
+          sources=(native/src/world.cpp native/src/material_rules.cpp native/src/scheduler_geometry.cpp native/src/settled_world_discovery.cpp)
+          g++-13 --version | head -1 >build/pf504-replay/compiler.txt
+          (cd "$RUNNER_TEMP/pf-base" && timeout 1100 g++-13 "${flags[@]}" "${sources[@]}" native/bench/pf504_fullsize_native_input_replay.cpp \
+            -o "$GITHUB_WORKSPACE/build/pf504-replay/baseline") >build/pf504-replay/logs/build-baseline.log 2>&1 || {
+              tail -160 build/pf504-replay/logs/build-baseline.log;exit 1; }
+          timeout 1100 g++-13 "${flags[@]}" "${sources[@]}" native/bench/pf504_fullsize_native_input_replay.cpp \
+            -o build/pf504-replay/candidate >build/pf504-replay/logs/build-candidate.log 2>&1 || {
+              tail -160 build/pf504-replay/logs/build-candidate.log;exit 1; }
+          python3 - <<'PY'
+          import json,pathlib,hashlib
+          p=pathlib.Path('build/pf504-replay')
+          d={n:hashlib.sha256((p/n).read_bytes()).hexdigest() for n in ('baseline','candidate')}
+          assert d['baseline']!=d['candidate']
+          (p/'binaries.json').write_text(json.dumps(d,indent=2)+'\n')
+          print('PF504_TWO_IDENTICAL_HARNESS_BINARIES_PASS',d)
+          PY
+      - name: Replay 264 identical native inputs per source and worker/camera lane; compare every physics tick
+        timeout-minutes: 65
+        run: |
+          set -euo pipefail
+          root=build/pf504-replay
+          for workers in 1 4; do
+            for camera in 0 1; do
+              for role in baseline candidate; do
+                timeout 1000 "$root/$role" "$root/fixtures/stress-canvas.csv" "$root/replay-tape.csv" "$workers" "$camera" \
+                  >"$root/$role-w$workers-camera$camera.csv" 2>"$root/logs/$role-w$workers-camera$camera.log" || {
+                    tail -150 "$root/logs/$role-w$workers-camera$camera.log";exit 1; }
+                tail -1 "$root/logs/$role-w$workers-camera$camera.log"
+              done
+            done
+          done
+          python3 tools/ci/pf504_compare_native_input_replay.py "$root"
+      - name: Retain exact source, fixture, input, per-tick native traces and failures
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: pf504-post405-native-replay
+          path: build/pf504-replay/
+          if-no-files-found: warn
+          retention-days: 90
