@@ -177,6 +177,17 @@ func _run() -> void:
         _fail("Godot framebuffer did not restore the same native Wall pixel")
         return
 
+    # With autonomous native 30Hz simulation, uncontained Water may move
+    # before a rendered-frame readback. Construct a three-sided real native
+    # basin so the visual assertion genuinely samples Water, rather than
+    # vacuously passing when both native and viewport pixels are empty.
+    for wall_cell in [Vector2i(18, 31), Vector2i(17, 30), Vector2i(19, 30)]:
+        _click(demo, wall_cell.x, wall_cell.y, MOUSE_BUTTON_LEFT)
+        if not demo.failure.is_empty():
+            _fail("Water17 containment Wall refused: " + demo.failure)
+            return
+    var water_before: Color = _native_pixel(chunk_root, 18, 30)
+
     # Capture an actual native Water paint after World reload, using the
     # scene's real middle-button input path and real RGBA copy.
     _click(demo, 18, 30, MOUSE_BUTTON_MIDDLE)
@@ -186,6 +197,9 @@ func _run() -> void:
     var water: Dictionary = await _capture("05-water17", evidence, chunk_root, 18, 30)
     if water.has("error") or float(water.get("delta", 1.0)) > 0.20:
         _fail("native Water17 pixel missing from Godot viewport: " + str(water))
+        return
+    if _delta(water_before, water["native"]) < 0.12:
+        _fail("Water17 visual check would be false-positive: native cell is empty")
         return
 
     # The user-facing Home control returns to the terrain-bearing start.
