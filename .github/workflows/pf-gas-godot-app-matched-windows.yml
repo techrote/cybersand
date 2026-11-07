@@ -72,6 +72,7 @@ jobs:
           git -C "$RUNNER_TEMP/pf-gas-app" lfs install --local
           git -C "$RUNNER_TEMP/pf-gas-app" lfs pull \
             --include="godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll,godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll" --exclude=""
+          mkdir -p "$RUNNER_TEMP/pf-gas-app/godot/tests/performance"
           cp godot/tests/performance/water_factorial_stress.gd \
             "$RUNNER_TEMP/pf-gas-app/godot/tests/performance/"
           python tools/ci/pf_gas_godot_stage.py \
