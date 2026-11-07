@@ -13,7 +13,12 @@ const DISPLAY_TOP_LEFT: Vector2 = Vector2(28.0, 76.0)
 const FRAME_BYTES: int = SIDE * SIDE * 4
 const CONTROLLER_TICK_HZ: int = 30
 const FRAME_REFRESH_SECONDS: float = 0.10
+# Startup and deterministic synchronous QA retain their five-second deadline.
+# Interactive requests distinguish visible slowness from an ambiguous hard
+# failure: never resend a timed-out player edit automatically.
 const IPC_TIMEOUT_MSEC: int = 5000
+const IPC_SOFT_WARN_MSEC: int = 1500
+const IPC_HARD_TIMEOUT_MSEC: int = 30000
 # The interactive host never blocks the Godot render/input thread on native IPC.
 # One request is in flight; only 16 explicitly authored actions may be queued.
 # Camera refreshes coalesce into a single latest-position demand.
@@ -46,6 +51,10 @@ var ipc_outstanding: bool = false
 var ipc_request_chunk: Vector2i = DEMO_START
 var ipc_request_usec: int = 0
 var ipc_request_was_edit: bool = false
+var ipc_slow_warning: bool = false
+var ipc_slow_count: int = 0
+var ipc_pending_msec: int = 0
+var ipc_peak_latency_usec: int = 0
 var queued_actions: Array[Dictionary] = []
 var focus_dirty: bool = false
 var displayed_chunk: Vector2i = DEMO_START
@@ -305,6 +314,8 @@ func _start_live_request() -> void:
     ipc_request_chunk = target
     ipc_request_usec = started
     ipc_request_was_edit = has_action and bool(action["edit"])
+    ipc_pending_msec = 0
+    ipc_slow_warning = false
     ipc_outstanding = true
     queue_redraw()
 
@@ -320,6 +331,9 @@ func _service_live_ipc() -> void:
             # _read_response returns immediately once the response exists.
             var accepted := _read_response(ipc_request_usec)
             ipc_outstanding = false
+            ipc_slow_warning = false
+            ipc_pending_msec = 0
+            ipc_peak_latency_usec = maxi(ipc_peak_latency_usec, last_call_usec)
             if not accepted:
                 # An ambiguous or refused edit must never be silently retried.
                 input_refusal = "Native response failed; last edit outcome UNKNOWN."
@@ -341,10 +355,24 @@ func _service_live_ipc() -> void:
                 # as the current destination. Request the latest view next.
                 focus_dirty = true
             queue_redraw()
-        elif Time.get_ticks_usec() - ipc_request_usec > IPC_TIMEOUT_MSEC * 1000:
-            failure = "Native IPC deadline exceeded; outstanding edit state UNKNOWN."
-            queue_redraw()
-            return
+        else:
+            # Native checkpointing and disk publication can be slow. A soft
+            # threshold is UI backpressure, NOT permission to abandon, replay,
+            # or acknowledge the in-flight mutation. The owner must reply with
+            # its original sequence and durable ACK before another edit starts.
+            var age_msec := int((Time.get_ticks_usec() - ipc_request_usec) / 1000)
+            if age_msec >= ipc_pending_msec + 100:
+                ipc_pending_msec = age_msec
+                queue_redraw()
+            if age_msec >= IPC_SOFT_WARN_MSEC and not ipc_slow_warning:
+                ipc_slow_warning = true
+                ipc_slow_count += 1
+                queue_redraw()
+            if age_msec > IPC_HARD_TIMEOUT_MSEC:
+                failure = ("Native IPC exceeded 30 s; in-flight edit outcome UNKNOWN."
+                    + " Do not replay without inspecting the native save.")
+                queue_redraw()
+                return
     if not ipc_outstanding and failure.is_empty():
         _start_live_request()
 
@@ -547,7 +575,7 @@ func _draw() -> void:
         ], HORIZONTAL_ALIGNMENT_LEFT, -1, 14, Color("#9caec9"))
     draw_string(font, Vector2(710, 233),
         "IPC %s | queued: %d/%d | durable edit ACKs: %d | evict/reload: %d/%d" % [
-            "BUSY" if ipc_outstanding else "READY", queued_actions.size(),
+            "SLOW" if ipc_slow_warning else ("BUSY" if ipc_outstanding else "READY"), queued_actions.size(),
             MAX_QUEUED_ACTIONS, acknowledged_edits, eviction_receipts,
             reload_receipts
         ], HORIZONTAL_ALIGNMENT_LEFT, -1, 12, Color("#9caec9"))
@@ -581,6 +609,15 @@ func _draw() -> void:
             draw_string(font, Vector2(710, 404 + i * 19),
                         tail[i].left(92), HORIZONTAL_ALIGNMENT_LEFT,
                         520.0, 13, Color("#a5be9d"))
+    # These are host round-trip timings, not claimed checkpoint or disk timings.
+    # No false ACK is shown while a native edit is still in flight.
+    draw_string(font, Vector2(710, 721),
+        "Host IPC age %.1f s | peak %.1f ms | slow requests %d | soft/hard 1.5/30 s" % [
+            float(ipc_pending_msec) / 1000.0,
+            float(ipc_peak_latency_usec) / 1000.0,
+            ipc_slow_count
+        ], HORIZONTAL_ALIGNMENT_LEFT, 548.0, 12,
+        Color("#f4a261") if ipc_slow_warning else Color("#9caec9"))
     draw_string(font, Vector2(28, 751),
         "EXPERIMENT ONLY: one native World per shard; cross-shard effects, Rapier bodies and production streaming are unsupported.",
         HORIZONTAL_ALIGNMENT_LEFT, -1, 14, Color("#f4a261"))
