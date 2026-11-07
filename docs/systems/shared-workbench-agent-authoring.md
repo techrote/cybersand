@@ -43,6 +43,23 @@ qualification remains separate. Neither the mounted fake-provider hopper nor aut
 graphics supplies the **0/3 live** or **pending human** gate. Current-source
 hosted production workflows and resulting-owner-head review remain separate.
 
+## How does general CI execute the real-frame workbench tests?
+
+The shared CI runner explicitly classifies the five older WB framebuffer
+tests as graphical, alongside the `_render` convention. Its narrow Windows
+allowlist preserves all eight WB graphical cases there; Linux also executes
+them. Pure footprint, envelope, signed mapper, fake client and fault controls
+remain headless. Windows plans273 cases and Linux287, with no omitted prior
+Windows case or altered watchdog/provider. For the two hopper cases, common
+execution verifies and stages the exact frozen v2 native TSV at the expected
+Godot runtime path, retains its bytes, validates them after execution and
+cleans only an invocation-created copy. Both platform reducers verify that
+custody independently; passing engine logs alone are insufficient. The
+[CI repair evidence](../audits/2026-11-07-wb525-independent-strike.md#production-ci-integration-repair)
+preserves the original missing-fixture failure and the real common-runner
+Windows106/166 successes. This is a CI integration requirement, not a changed
+fixture or live-service acceptance claim.
+
 ## Source status: what works now and what is only Approved?
 
 **Approved / implementation in progress (7 November 2026).** The owner-approved

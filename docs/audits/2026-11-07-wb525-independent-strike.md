@@ -10,6 +10,56 @@ related-documents: [../systems/shared-workbench-agent-authoring.md, ../operation
 
 # WB525 independent integration, capacity repair and physical cause
 
+## Production CI integration repair
+
+Full production GDExtension run42409683405 exposed a genuine additional blocker:
+[Windows shard17](https://github.com/techrote/cybersand/actions/runs/42409683405/job/128515124797)
+ran the existing hopper headlessly without the runtime TSV that its focused
+workflow normally stages. It failed **immutable fixture file missing**, retained
+in [original artifact13589167125](https://github.com/techrote/cybersand/actions/runs/42409683405/artifacts/13589167125).
+The human explicitly authorized an additional isolated common-CI repair.
+
+Code checkpoint `6718d54499728bec0da101034bc26a027708382c` fixes discovery,
+input staging and platform custody without editing any worker's implementation
+or test script. The five older WB framebuffer cases receive real graphical
+commands; the three new `_render` cases retain that convention. All eight stay
+in Windows execution as a narrow supported graphical set, as well as Linux.
+The planned inventory is287 Linux and273 Windows cases; no existing Windows
+case is dropped. Fourteen other graphical cases retain their previous
+Linux-only scope. Watchdogs, hosted budgets, provider and runner labels are
+unchanged; the job planner, collector and independent reducer derive the same
+source inventory.
+
+For each of the two hopper cases, the common runner verifies the frozen native
+TSV hash, creates the expected runtime copy exclusively, refuses different
+existing bytes/symlinks, retains the original input with its images/receipts,
+checks source/runtime/artifact integrity after execution and removes only its
+invocation-created copy. The exact source TSV joins Windows tracked-input
+custody. Source/runtime/artifact paths, size/hash and completion/cleanup flags
+are recorded. Both independent platform reducers require this custody and
+reject contradictory, absent or replaced evidence.
+
+Independent review found that initial6718 Linux reduction did not yet inspect
+the new fixture fields. A forged passed record with explicit custody failure
+could reduce green. The follow-up adds the same mandatory contract to Linux;
+its negative controls preserve that reproduced weakness. Python tests pass:
+102 common runner,21 Windows collector,46 Windows reducer,11 hosted planner and
+13 Linux reducer (**193 total**). Initial test-harness mistakes and failed runs
+remain in the local record; none count as a passing production gate.
+
+The **actual common runner**, starting with the generated fixture absent,
+passes the original106-assertion and full mounted166-assertion hopper cases on
+the rebuilt Windows DLL. Both use genuine GL/native simulation, verify and
+retain the frozen bytes, and finish with the generated copy absent. This tests
+the same path that failed in production rather than only a Python stand-in.
+New full GDExtension [42411753603](https://github.com/techrote/cybersand/actions/runs/42411753603)
+was dispatched on6718; its aggregate is not assumed green. Full Native
+[42409680857](https://github.com/techrote/cybersand/actions/runs/42409680857)
+has **passed** on the unchanged accepted-main1f82 native source in28f5bd3b.
+The standalone review app's Godot/native payload is unchanged by this CI-only
+follow-up. #531's owner must consume the narrow repairs and require fresh
+resulting-head production gates before Ready/merge.
+
 ## Final accepted-main refresh and delivery
 
 Accepted main advanced during execution to

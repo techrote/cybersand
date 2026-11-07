@@ -56,6 +56,53 @@ class LinuxCoverageTests(unittest.TestCase):
     def test_complete_source_matched_originals_pass(self):
         self.assertEqual(self.verify()["case_count"], 2)
 
+    def install_hopper_fixture(self):
+        name = "test_workbench_agent_hopper_godot"
+        case = runner.Case(name, ("--script", "res://tests/" + name + ".gd"), 1200, 1, True)
+        self.cases[0] = case
+        data = (runner.ROOT / runner.WORKBENCH_HOPPER_FIXTURE_SOURCE).read_bytes()
+        for path in self.reports:
+            report = json.loads(path.read_text())
+            if "unit" not in report["assigned_cases"]:
+                continue
+            report["assigned_cases"] = [name if item == "unit" else item for item in report["assigned_cases"]]
+            row = next(row for row in report["results"] if row["name"] == "unit")
+            row.update(name=name, requires_display=True, command=runner.case_command("/controlled/Godot", case, "linux"))
+            relative = name + "-artifacts/wb_agent_sand_hopper_v2.tsv"
+            artifact = path.parent / relative
+            artifact.parent.mkdir()
+            artifact.write_bytes(data)
+            row["runtime_fixture"] = {"source":runner.WORKBENCH_HOPPER_FIXTURE_SOURCE,
+                "runtime":runner.WORKBENCH_HOPPER_FIXTURE_RUNTIME,"artifact":relative,
+                "sha256":runner.WORKBENCH_HOPPER_FIXTURE_SHA256,"size":len(data),
+                "created":True,"verified_after_execution":True,"runtime_cleaned_up":True}
+            path.write_text(json.dumps(report))
+            self.assertEqual(self.verify()["status"], "passed")
+            return path, artifact
+        self.fail("controlled hopper case was not installed")
+
+    def test_missing_hopper_custody_and_retained_input_refuse(self):
+        path, artifact = self.install_hopper_fixture()
+        artifact.unlink()
+        with self.assertRaisesRegex(ValueError, "Missing original artifact"):
+            self.verify()
+
+    def test_replaced_hopper_input_refuses_even_with_passing_engine(self):
+        path, artifact = self.install_hopper_fixture()
+        artifact.write_bytes(b"different fixture")
+        with self.assertRaisesRegex(ValueError, "retained Linux hopper fixture"):
+            self.verify()
+
+    def test_explicit_hopper_custody_failure_cannot_be_relabelled_passed(self):
+        path, artifact = self.install_hopper_fixture()
+        report = json.loads(path.read_text())
+        row = report["results"][1]
+        row["fixture_error"] = "Frozen hopper runtime fixture changed during execution"
+        row["runtime_fixture"]["verified_after_execution"] = False
+        path.write_text(json.dumps(report))
+        with self.assertRaisesRegex(ValueError, "naturally"):
+            self.verify()
+
     def test_missing_or_duplicate_shard_fails(self):
         self.change(lambda report: report["identity"].update(shard_index=0), index=1)
         with self.assertRaisesRegex(ValueError, "Duplicate"):
