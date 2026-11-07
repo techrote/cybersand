@@ -14,6 +14,7 @@ import struct
 import tempfile
 import zlib
 from dataclasses import dataclass
+from typing import Callable
 
 HEADER = struct.Struct('<4sqqQQQQIII')  # 64 bytes
 EDIT = struct.Struct('<4sQQQBBBBHhQI')  # 48 bytes
@@ -91,8 +92,7 @@ class Recovery:
         return self.edits[-1].generation if self.edits else self.identity.generation
 
 
-def recover(path: Path) -> Recovery:
-    raw = Path(path).read_bytes()
+def _recover_bytes(raw: bytes) -> Recovery:
     require(HEADER.size <= len(raw) <= HEADER.size + MAX_CHECKPOINT +
             MAX_EDITS * EDIT.size, 'G6J_FILE_LENGTH_REFUSED')
     magic, x, y, inc, gen, tick, physical_hash, length, base_crc, head_crc = HEADER.unpack_from(raw)
@@ -126,6 +126,10 @@ def recover(path: Path) -> Recovery:
         cursor += EDIT.size
     return Recovery(Identity(x, y, inc, gen, tick, physical_hash), base,
                     tuple(edits), cursor, prev, torn)
+
+
+def recover(path: Path) -> Recovery:
+    return _recover_bytes(Path(path).read_bytes())
 
 
 class Journal:
@@ -185,6 +189,68 @@ class Journal:
                 (x, y, incarnation), 'G6J_IDENTITY_REFUSED')
         require(not state.torn_tail, 'G6J_TORN_TAIL_REPAIR_REQUIRED')
         return cls(Path(path), state)
+
+    @classmethod
+    def rollover_torn_tail(cls, source: Path, destination: Path,
+                           x: int, y: int, incarnation: int,
+                           expected_generation: int,
+                           verify_staged_replay: Callable[[Recovery], bool]) -> Journal:
+        """Publish an appendable, no-clobber copy of a *verified* torn prefix.
+
+        The caller exclusively owns both paths, retires all source handles,
+        and must replay the prefix into an isolated native World before
+        returning True. Never silently truncate the original forensic record.
+        This is a new-file publication, not in-place repair or multiwriter lock.
+        """
+        source, destination = Path(source), Path(destination)
+        require(source != destination and
+                source.parent.resolve() == destination.parent.resolve() and
+                not source.is_symlink() and not destination.is_symlink(),
+                'G6J_ROLLOVER_PATH_REFUSED')
+        require(not destination.exists(), 'G6J_DESTINATION_EXISTS')
+        # Read from one open source descriptor; reject a changing source
+        # rather than rebuilding a successor from inconsistent file versions.
+        with source.open('rb') as f:
+            original = os.fstat(f.fileno())
+            raw = f.read(HEADER.size + MAX_CHECKPOINT + MAX_EDITS * EDIT.size + 1)
+            after_read = os.fstat(f.fileno())
+        signature = lambda st: (st.st_dev, st.st_ino, st.st_size, st.st_mtime_ns)
+        require(signature(original) == signature(after_read) and
+                signature(original) == signature(source.stat()),
+                'G6J_ROLLOVER_SOURCE_CHANGED')
+        state = _recover_bytes(raw)
+        require(state.torn_tail, 'G6J_ROLLOVER_NO_TORN_TAIL')
+        require((state.identity.x, state.identity.y, state.identity.incarnation) ==
+                (x, y, incarnation), 'G6J_IDENTITY_REFUSED')
+        require(state.generation == expected_generation,
+                'G6J_STALE_GENERATION')
+        clean = raw[:state.valid_length]
+        verified = _recover_bytes(clean)
+        require(not verified.torn_tail and verified.identity == state.identity and
+                verified.edits == state.edits and verified.tail_chain == state.tail_chain,
+                'G6J_ROLLOVER_PREFIX_REFUSED')
+        require(bool(verify_staged_replay(state)),
+                'G6J_ROLLOVER_NATIVE_REPLAY_REFUSED')
+        require(signature(original) == signature(source.stat()),
+                'G6J_ROLLOVER_SOURCE_CHANGED')
+        # Unique, same-directory, fully flushed staging file; the hard link
+        # can only create a NEW destination. Preserve the torn source as
+        # original failure evidence, including its unacknowledged suffix.
+        fd, stage_name = tempfile.mkstemp(prefix='.' + destination.name + '.g6j-',
+                                          suffix='.staging', dir=destination.parent)
+        stage = Path(stage_name)
+        try:
+            with os.fdopen(fd, 'wb') as f:
+                f.write(clean)
+                f.flush()
+                os.fsync(f.fileno())
+            require(signature(original) == signature(source.stat()),
+                    'G6J_ROLLOVER_SOURCE_CHANGED')
+            os.link(stage, destination)
+        finally:
+            stage.unlink(missing_ok=True)
+        sync_dir(destination.parent)
+        return cls.open(destination, x, y, incarnation)
 
     def append(self, edit: Mutation, expected_generation: int) -> None:
         edit.validate()
