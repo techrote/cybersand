@@ -331,9 +331,14 @@ def _run(cfg, rec, out_dir, ctx, env, sdk, sleep, clock, now, costs_probe, launc
                 history.add({"role": "user", "content": [{"type": "input_text", "text":
                              "You must finish by calling submit_report with your structured report."}]})
                 continue
-        if len(calls) > int(limits["max_tool_calls_per_response"]):
-            raise LimitReached(f"{len(calls)} tool calls in one response exceeds max_tool_calls_per_response",
-                               "max_tool_calls_per_response")
+        per_response = int(limits["max_tool_calls_per_response"])
+        for extra in calls[per_response:]:  # excess calls are not executed; the model is told and may resend them
+            history.add({"type": "function_call_output", "call_id": extra["call_id"], "output": json.dumps({
+                "error": "deferred", "message": f"only {per_response} tool calls are executed per response; "
+                                                "this call was NOT run, send it again in a later response"})})
+            ctx["tool_log"].append({"n": None, "name": str(extra.get("name"))[:60], "arguments": "", "ok": False,
+                                    "error_code": "deferred", "output": "not executed: over max_tool_calls_per_response"})
+        calls = calls[:per_response]
         attachments: list[tuple[dict, str]] = []
         for call in calls:
             tool_no += 1

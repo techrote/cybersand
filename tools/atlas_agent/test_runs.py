@@ -188,7 +188,6 @@ class DryRunTests(RunCase):
             ({"limits": {"max_iterations": 2}}, "max_iterations"),
             ({"limits": {"max_api_calls": 1}}, "max_api_calls"),
             ({"limits": {"max_tool_calls": 2}}, "max_tool_calls"),
-            ({"limits": {"max_tool_calls_per_response": 1}}, "max_tool_calls_per_response"),
             ({"limits": {"max_images": 0}}, "max_images"),
             ({"limits": {"max_image_edge_pixels": 16}}, "image_too_large"),
             ({"limits": {"max_input_tokens_per_call": 256}}, "max_input_tokens_per_call"),
