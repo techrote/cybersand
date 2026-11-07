@@ -46,10 +46,24 @@ func inspect_layout(screen: Vector2i, sequence: int) -> void:
 	check(dock.size.x <= 360 and not dock.intersects(shown),"dock overlaps or expands across canvas")
 	check(host.camera_origin == origin and host.current_view_size == view,"dock toggle changed camera")
 	var stop_rect: Rect2 = rect(panel._stop)
+	var stop_relative := Rect2(stop_rect.position-dock.position,stop_rect.size)
 	panel._form_scroll.scroll_vertical = 100000
 	await settle()
-	check(rect(panel._stop) == stop_rect and root.get_visible_rect().encloses(stop_rect),"Stop scrolled out of reach")
+	var stop_after: Rect2 = rect(panel._stop)
+	var stop_after_relative := Rect2(stop_after.position-rect(mount._dock).position,stop_after.size)
+	var scroll_bar: VScrollBar = panel._form_scroll.get_v_scroll_bar()
+	var scroll_limit: float = maxf(0.0,scroll_bar.max_value-scroll_bar.page)
+	# Async toolbar wrapping may move the entire dock after a window resize.
+	# Scrolling must leave Stop pinned inside that dock and inside the viewport.
+	check(stop_after_relative.is_equal_approx(stop_relative) \
+		and root.get_visible_rect().encloses(stop_after) \
+		and (scroll_limit <= 0.0 or panel._form_scroll.scroll_vertical > 0),"Stop scrolled out of reach or form did not scroll")
+	print("WB525_DOCK_STOP "+JSON.stringify({"logical_size":[screen.x,screen.y],
+		"before":str(stop_rect),"after":str(stop_after),"relative_before":str(stop_relative),
+		"relative_after":str(stop_after_relative),"visible":str(root.get_visible_rect()),
+		"scroll":panel._form_scroll.scroll_vertical,"scroll_limit":scroll_limit}))
 	panel._form_scroll.scroll_vertical = 0
+	dock = rect(mount._dock)
 	var p: Vector2 = dock.position+Vector2(3,3)
 	var edits: int = wb.applied.edits.size()
 	await mouse(p)

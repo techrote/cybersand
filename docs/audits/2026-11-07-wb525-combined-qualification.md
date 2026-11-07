@@ -70,6 +70,39 @@ Qualification and a new matching Windows bundle must complete before any propose
 fast-forward publication to the existing #531 branch is reviewed. A changed
 remote owner head prevents that publication; no force push is permitted.
 
+## Test-only corrections from actual execution
+
+The first immutable candidate `baecc773445e6990fa4efca20ff2be11ccd5fa92`
+has a retained negative result. Exact-head GDExtension run
+`42424055403`, Windows shard 14 / job `128558621313`, failed only the canonical
+mounted test's initial native readiness wait after a 62.321-second cold ANGLE
+startup. Its helper clamped the existing 300-second operation policy to 45
+seconds. The authorized correction uses that existing policy and rejects an
+acknowledgment returned after the deadline, including a synchronous frame that
+crosses it. Native readiness predicates, assertions and production budgets are
+unchanged. Original failure artifact `13595480073` remains available on that run.
+
+The same candidate's locally source-built Linux scoped run completed all 21
+processes with unchanged source/runtime fingerprints. Twenty passed; the dock
+test failed its combined absolute-position/enclosure assertion at 1280 by 720.
+Its original PNG shows Stop visible at the dock top. A diagnostic repeat passed
+and recorded Stop enclosed at both sizes, with the short form fitting at 1920
+and the overflowing form actually scrolling 400 pixels at 1280. This is an
+asynchronous parent-layout sensitivity: toolbar wrapping may translate the
+entire dock after resize. The authorized test correction compares Stop relative
+to its dock, separately requires its final global rectangle inside the viewport,
+and requires actual scrolling when the form overflows. It retains all real
+input, native paint and camera assertions and emits before/after geometry.
+There is no production layout change from this result.
+
+These two integration-owned test changes supersede the upstream mounted wait
+helper and root211 dock assertion only. All four released executable client,
+mount, panel and authoring-host blobs remain exact. Earlier result identities
+remain historical; the corrected candidate receives a new exact-head
+GDExtension/documentation result and scoped source-built execution. Native inputs
+are identical, so any retained Native result is explicitly tied to its tested
+head and this input comparison rather than relabeled as a new run.
+
 The moved +512 hopper is owner-admitted as the workbench control with the 26
 NORMAL intermediate occupancy differences recorded. It is not literal signed
 trajectory equivalence. Both variants retain 32 human-authored Sand, 17 protected

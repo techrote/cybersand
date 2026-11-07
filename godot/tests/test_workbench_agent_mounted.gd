@@ -11,7 +11,6 @@ var panel: Control
 var checks := 0
 var failed := 0
 var evidence_dir := ""
-const CASE_TIMEOUT_MSEC := 45000 # Explicit bounded diagnostic; not a physics timing claim.
 
 func _initialize() -> void:
 	set_meta("cybersand_feature","shared_workbench")
@@ -25,12 +24,17 @@ func check(ok: bool, reason: String) -> bool:
 	return ok
 
 func until(predicate: Callable, reason: String) -> bool:
-	var deadline: int = Time.get_ticks_msec() + mini(Watchdogs.milliseconds("operation_seconds"),CASE_TIMEOUT_MSEC)
+	# A cold Windows ANGLE frame may block beyond the former 45-second clamp.
+	# Use the existing operation policy and still require a timely native ACK.
+	var deadline: int = Time.get_ticks_msec() + Watchdogs.milliseconds("operation_seconds")
 	while Time.get_ticks_msec() < deadline:
 		if predicate.call():
-			return true
+			if Time.get_ticks_msec() <= deadline:
+				return true
+			break
 		await process_frame
-	return check(predicate.call(),reason)
+	# Synchronous frames can cross the deadline; never admit a late ACK.
+	return check(false,reason + " exceeded its execution allowance")
 
 func _ready_native() -> bool:
 	return wb != null and not wb.applied.is_empty() and not wb.busy() 		and host.latest_snapshot != null and host.paused
