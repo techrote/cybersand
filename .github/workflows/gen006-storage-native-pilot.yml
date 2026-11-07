@@ -6,6 +6,7 @@ on:
     paths:
       - 'tools/experiments/gen006_storage_native_pilot.py'
       - 'tools/experiments/gen006_storage_native_owner_control.py'
+      - 'tools/experiments/gen006_storage_native_owner_journal.py'
       - 'tools/experiments/gen006_storage_journal.py'
       - 'tools/experiments/GEN006_STORAGE_JOURNAL.md'
       - '.github/workflows/gen006-storage-native-pilot.yml'
@@ -13,6 +14,7 @@ on:
     paths:
       - 'tools/experiments/gen006_storage_native_pilot.py'
       - 'tools/experiments/gen006_storage_native_owner_control.py'
+      - 'tools/experiments/gen006_storage_native_owner_journal.py'
       - 'tools/experiments/gen006_storage_journal.py'
       - 'tools/experiments/GEN006_STORAGE_JOURNAL.md'
       - '.github/workflows/gen006-storage-native-pilot.yml'
@@ -97,6 +99,36 @@ jobs:
             --workers 4 --native-sha "$NATIVE_REFERENCE_SHA" | tee build/g6j-native/owner-control-four.txt
           grep -q GEN006_G6J1_NATIVE_OWNER_CRASH_CONTROL_PASS build/g6j-native/owner-control-one.txt
           grep -q GEN006_G6J1_NATIVE_OWNER_CRASH_CONTROL_PASS build/g6j-native/owner-control-four.txt
+      - name: Build source-pinned scratch native staging service (Linux)
+        shell: bash
+        timeout-minutes: 25
+        run: |
+          set -euo pipefail
+          python tools/experiments/gen006_storage_native_owner_journal.py --prepare-source \
+            native486/native/tests/gen006_streaming_slice.cpp build/g6j-native/streaming-slice-g6j.cpp \
+            | tee build/g6j-native/stage-source.txt
+          g++-13 -std=c++20 -O0 -g0 -pthread -I native486/native/include \
+            native486/native/src/world.cpp native486/native/src/material_rules.cpp \
+            native486/native/src/scheduler_geometry.cpp native486/native/src/settled_world_discovery.cpp \
+            native486/native/src/world_generation.cpp native486/native/src/generation_fields.cpp \
+            native486/native/src/generation_typed_fields.cpp native486/native/src/generation_spatial.cpp \
+            native486/native/src/generation_grammar.cpp native486/native/src/generation_planes.cpp \
+            build/g6j-native/streaming-slice-g6j.cpp -o build/g6j-native/streaming-slice-g6j \
+            > build/g6j-native/stage-compile.log 2>&1 || { cat build/g6j-native/stage-compile.log; exit 1; }
+      - name: Journal-ACK native owner hard-kill and exact native restart (Linux)
+        shell: bash
+        timeout-minutes: 12
+        run: |
+          set -euo pipefail
+          for workers in 1 4; do
+            python tools/experiments/gen006_storage_native_owner_journal.py \
+              --original-exe build/g6j-native/streaming-slice \
+              --staged-exe build/g6j-native/streaming-slice-g6j \
+              --root "build/g6j-native/staged-owner-$workers" \
+              --workers "$workers" --native-sha "$NATIVE_REFERENCE_SHA" \
+              | tee "build/g6j-native/staged-$workers.txt"
+            grep -q GEN006_G6J1_STAGED_NATIVE_OWNER_CRASH_PASS "build/g6j-native/staged-$workers.txt"
+          done
       - name: Preserve original runtime evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
@@ -169,6 +201,30 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw "Native owner crash control workers=4 failed" }
           if (-not ((Get-Content build/g6j-native/owner-control-one.txt) -match 'GEN006_G6J1_NATIVE_OWNER_CRASH_CONTROL_PASS')) { throw "Missing workers=1 hard-crash control receipt" }
           if (-not ((Get-Content build/g6j-native/owner-control-four.txt) -match 'GEN006_G6J1_NATIVE_OWNER_CRASH_CONTROL_PASS')) { throw "Missing workers=4 hard-crash control receipt" }
+      - name: Build source-pinned scratch native staging service (Windows)
+        shell: cmd
+        timeout-minutes: 30
+        run: |
+          python tools\experiments\gen006_storage_native_owner_journal.py --prepare-source native486\native\tests\gen006_streaming_slice.cpp build\g6j-native\streaming-slice-g6j.cpp > build\g6j-native\stage-source.txt
+          if errorlevel 1 (type build\g6j-native\stage-source.txt & exit /b 1)
+          for /f "tokens=*" %%i in ('"%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe" -latest -products * -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath') do set "GEN006_VSROOT=%%i"
+          if not defined GEN006_VSROOT exit /b 1
+          call "%GEN006_VSROOT%\Common7\Tools\VsDevCmd.bat" -no_logo -arch=x64 -host_arch=x64
+          if errorlevel 1 exit /b 1
+          set "GEN006_CXX=%ProgramFiles%\LLVM\bin\clang++.exe"
+          if not exist "%GEN006_CXX%" set "GEN006_CXX=%GEN006_VSROOT%\VC\Tools\Llvm\x64\bin\clang++.exe"
+          if not exist "%GEN006_CXX%" exit /b 1
+          "%GEN006_CXX%" -std=c++20 -O0 -I native486/native/include native486/native/src/world.cpp native486/native/src/material_rules.cpp native486/native/src/scheduler_geometry.cpp native486/native/src/settled_world_discovery.cpp native486/native/src/world_generation.cpp native486/native/src/generation_fields.cpp native486/native/src/generation_typed_fields.cpp native486/native/src/generation_spatial.cpp native486/native/src/generation_grammar.cpp native486/native/src/generation_planes.cpp build/g6j-native/streaming-slice-g6j.cpp -o build\g6j-native\streaming-slice-g6j.exe > build\g6j-native\stage-compile.log 2>&1
+          if errorlevel 1 (type build\g6j-native\stage-compile.log & exit /b 1)
+      - name: Journal-ACK native owner hard-kill and exact native restart (Windows)
+        shell: pwsh
+        timeout-minutes: 15
+        run: |
+          foreach ($workers in @(1,4)) {
+            python tools/experiments/gen006_storage_native_owner_journal.py --original-exe build/g6j-native/streaming-slice.exe --staged-exe build/g6j-native/streaming-slice-g6j.exe --root "build/g6j-native/staged-owner-$workers" --workers $workers --native-sha $env:NATIVE_REFERENCE_SHA | Tee-Object "build/g6j-native/staged-$workers.txt"
+            if ($LASTEXITCODE -ne 0) { throw "Staged native owner workers=$workers failed" }
+            if (-not ((Get-Content "build/g6j-native/staged-$workers.txt") -match 'GEN006_G6J1_STAGED_NATIVE_OWNER_CRASH_PASS')) { throw "Missing staged native owner receipt" }
+          }
       - name: Preserve original runtime evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
