@@ -260,7 +260,21 @@ REVIEWED_TRANSITIONS: tuple[dict, ...] = ({'path': 'native/src/world_pressure.in
   'source_commit': '9ad76b21854b3e44fc9444f8293d3c36c619746b',
   'record': 'docs/audits/2026-11-06-hard-surface-packet-incremental.md',
   'issue': 362,
-  'pr': 470})
+  'pr': 470},
+ {'path': 'native/src/world.cpp',
+  'from_lf_sha256': '8bf0cb0058b139c32c030f5bbbc7e7e4555814c601598e1d6c7abecf7397d7fb',
+  'to_lf_sha256': '7dcce6273aeb9726e8d4babce829440e61b5550344ad1504c46bb8ddcdb1eefb',
+  'source_commit': 'a14cbfe70633e4c761c5259e39fd7f2799120884',
+  'record': 'docs/audits/2026-11-07-pf-c2048-mat-auth-transition.md',
+  'issue': 200,
+  'pr': 491},
+ {'path': 'native/src/world_pressure.inc',
+  'from_lf_sha256': '26051b0d10ab10d65db822c993742e0a0bf13711f3bd56158e95d77735737aca',
+  'to_lf_sha256': '71723fa32bbd29aafe93f1a8dd233cece1eec7ed295da81c1e021f635085c17a',
+  'source_commit': 'a14cbfe70633e4c761c5259e39fd7f2799120884',
+  'record': 'docs/audits/2026-11-07-pf-c2048-mat-auth-transition.md',
+  'issue': 200,
+  'pr': 491})
 
 
 class CompatibilityError(ValueError):
