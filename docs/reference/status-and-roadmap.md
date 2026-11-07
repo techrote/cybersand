@@ -10,6 +10,15 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+## GEN-006 experimental Windows desktop checkpoint — 2026-11-07
+
+**Current scoped evidence:** #486's existing sharded-World test scene ran with
+actual Windows11/NVIDIA OpenGL, edited-chunk eviction/restoration, process restart
+and a Windows response-read regression/repair. The
+[execution record](../audits/2026-11-07-gen006-windows-desktop-playtest.md) owns
+identities, failures and limits. Human verdict remains pending; #512 shared-World
+streaming, cross-shard physics and production integration remain unqualified.
+
 ## Ballistic Water, IN-B1 and workbench spray (#362) — 2026-11-05
 
 **Experimental draft, not on main; no default changed.** The
