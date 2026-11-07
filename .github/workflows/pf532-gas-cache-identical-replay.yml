@@ -43,7 +43,7 @@ jobs:
           git diff --check
           python3 tools/material_catalogue/compatibility.py --check >build/pf532-replay/material-authority.json
           git diff --name-only "$ACCEPTED_MAIN" HEAD -- native/src native/include | sort >build/pf532-replay/native-source-delta.txt
-          diff -u <(printf '%s\n'             native/include/cybersand/pressure_optimization.hpp             native/src/world_pressure.inc             native/src/world_pressure_cache.inc             native/src/world_pressure_cache_state.inc             native/src/world_pressure_gas_cache.inc | sort) build/pf532-replay/native-source-delta.txt
+          diff -u <(printf '%s\n'             native/include/cybersand/pressure_optimization.hpp             native/src/world_pressure.inc             native/src/world_pressure_cache.inc             native/src/world_pressure_cache_state.inc             native/src/world_pressure_gas_cache.inc             native/src/world_pressure_state.inc | sort) build/pf532-replay/native-source-delta.txt
           git worktree add --detach "$RUNNER_TEMP/pf-base" "$ACCEPTED_MAIN"
           git rev-parse HEAD HEAD^{tree} "$ACCEPTED_MAIN" >build/pf532-replay/source-heads.txt
       - name: Export actual authored full-size fixture and frozen input tape
