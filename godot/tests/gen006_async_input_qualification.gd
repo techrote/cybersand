@@ -88,8 +88,15 @@ func _run() -> void:
         _fail("queued edit not drained or falsely refused")
         return
 
-    # Real native camera demand across 1536 px and beyond the 2-World budget.
+    # A frame still showing (-2,2) must never permit a click to paint the
+    # unrendered destination (22,2). This is an explicit refusal, not a queue.
     _key(demo, KEY_RIGHT, true)
+    _click(demo, 9, 9, MOUSE_BUTTON_LEFT)
+    if demo.queued_actions.size() != 0 or not demo.input_refusal.contains("NOT submitted") or \
+            demo.acknowledged_edits != 1:
+        _fail("stale-frame edit was misrouted or silently accepted")
+        return
+    # Real native camera demand across 1536 px and beyond the 2-World budget.
     if not await _await_render(demo, Vector2i(22, 2), 1):
         _fail("far requested native frame not displayed")
         return
