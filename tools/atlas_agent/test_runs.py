@@ -537,6 +537,20 @@ class LiveRunTests(RunCase):
         self.assertEqual(rec["status"]["reason_code"], "usage_missing")
         self.assertGreater(rec["cost"]["ambiguous_charge_assumed_usd"], 0)
 
+    def test_reasoning_items_are_replayed_statelessly_in_order(self):
+        reasoning = {"type": "reasoning", "id": "rs_1", "summary": [], "encrypted_content": "ENC-BLOB-123"}
+        queue = [ok(response_body([reasoning, function_call("list_files", {"prefix": ""}, "c1")])),
+                 ok(response_body([report_call()]))]
+        stub, result, rec = self.live(queue, sleeps=[])
+        self.assertEqual(result.exit_code, 0)
+        second = stub.response_posts()[1]["body"]
+        self.assertFalse(second["store"])
+        kinds = [i.get("type") or i.get("role") for i in second["input"]]
+        self.assertEqual(kinds, ["user", "reasoning", "function_call", "function_call_output"])
+        replayed = second["input"][1]
+        self.assertEqual((replayed["id"], replayed["encrypted_content"]), ("rs_1", "ENC-BLOB-123"))
+        self.assertNotIn("parsed_arguments", second["input"][2])
+
     def test_model_that_never_reports_is_stopped(self):
         stub, result, rec = self.live([ok(response_body([message("I think it is fine.")]))] * 2, sleeps=[])
         self.assertEqual((rec["status"]["final"], rec["status"]["reason_code"]), ("stopped", "no_report_submitted"))
