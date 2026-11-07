@@ -48,8 +48,11 @@ func _blank_ready() -> bool:
 
 
 func _manual_step_ack(target: int) -> bool:
+	# Serial/flags can settle before the new paused native snapshot is
+	# published. A second agent Step must not start at that transient boundary.
 	return not workbench.step_pending and not workbench.step_requested \
-		and int(main.tower_context.get("workbench_step_serial",-1)) == target
+		and int(main.tower_context.get("workbench_step_serial",-1)) == target \
+		and main.latest_snapshot != null and main.latest_snapshot.paused
 
 
 func _initialize() -> void:
@@ -106,8 +109,19 @@ func run() -> void:
 		and busy_result.get("completed")==0,
 		"agent stepped concurrently with manual owner step: "+str(busy_result))
 	var manual_serial: int = workbench.step_serial
-	await wait_until(_manual_step_ack.bind(manual_serial),
-		"manual step did not complete with actual native ACK")
+	if not await wait_until(_manual_step_ack.bind(manual_serial),
+			"manual step serial ACK did not publish its paused native snapshot"):
+		var actual_snapshot: CyberSimulationSnapshot = main.latest_snapshot
+		push_error("WB_AGENT_527_STEP manual pause-publication timeout: " +
+			"expected_serial=%d observed_serial=%d pending=%s requested=%s " % [
+				manual_serial, int(main.tower_context.get("workbench_step_serial",-1)),
+				str(workbench.step_pending), str(workbench.step_requested)] +
+			"host_paused=%s native_paused=%s native_tick=%d native_generation=%d" % [
+				str(main.paused), str(actual_snapshot != null and actual_snapshot.paused),
+				-1 if actual_snapshot == null else actual_snapshot.tick_index,
+				-1 if actual_snapshot == null else actual_snapshot.render_world_generation])
+		finish()
+		return
 	var after_manual: int = main.latest_snapshot.tick_index
 	check(after_manual==initial_tick+5,
 		"manual tick not exactly once after refusal")
