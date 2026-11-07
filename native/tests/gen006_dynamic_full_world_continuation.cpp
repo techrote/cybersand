@@ -318,9 +318,129 @@ void actual_dynamic_frontier(std::uint32_t workers) {
               << " continued_ticks=8 scope=FULL_WORLD_NON_DURABLE"
               << " observed_workers_max=" << observed << '\n';
 
+
+    // Real speculative native continuation: edit BOTH signed residents,
+    // advance private Sand/Water physics for six actual ticks, and compare
+    // the one-swap publication with a never-restored live control. The
+    // original resident World must remain byte-for-byte unchanged until
+    // the exact base+edits+tick receipt is presented.
+    const FullWorldFence preview_fence{
+        a.session, a.recipe, a.incarnation + 2U, a.generation + 2U};
+    auto preview = FullResidentBundleStage::capture(
+        live, preview_fence, full_roster, full_seams, kBoundedBytes);
+    const std::vector<BundleMaterialEdit> preview_edits{
+        {{-2, -2}, 4, 10, Material::Sand},
+        {{-2, -1}, 5, 30, Material::Water},
+    };
+    const auto preview_original = live.get();
+    const auto preview_original_bytes = live->save_physical_state();
+    const auto preview_original_hash = live->physical_state_hash();
+    const auto preview_original_tick = live->completed_tick_index();
+    const auto preview_original_ledger = live->quantity_ledger();
+    const auto preview_original_memory = live->resident_cell_bytes();
+    preview.stage_material_edits(preview_edits);
+    auto reject_ticks = [&](std::uint32_t count, BundleAdmissionStatus status) {
+        bool rejected = false;
+        try { (void)preview.stage_native_ticks(count); }
+        catch (const BundleAdmissionError& e) { rejected = e.status() == status; }
+        check(rejected, "GEN006_DYNAMIC_BAD_TICK_BUDGET_ACCEPTED");
+    };
+    reject_ticks(0, BundleAdmissionStatus::InvalidTickBatch);
+    reject_ticks(FullResidentBundleStage::kMaximumStagedTicks + 1U,
+                 BundleAdmissionStatus::InvalidTickBatch);
+    const auto tick_receipt = preview.stage_native_ticks(6);
+    check(tick_receipt.ticks == 6U &&
+          tick_receipt.completed_tick == preview_original_tick + 6U &&
+          tick_receipt.resident_chunks == full_roster.size(),
+          "GEN006_DYNAMIC_PRIVATE_TICK_RECEIPT_INVALID");
+    reject_ticks(1, BundleAdmissionStatus::TicksAlreadyStaged);
+    bool rejected_late_edit = false;
+    try { preview.stage_material_edits(preview_edits); }
+    catch (const BundleAdmissionError& e) {
+        rejected_late_edit = e.status() == BundleAdmissionStatus::EditsAfterTickBatch;
+    }
+    check(rejected_late_edit, "GEN006_DYNAMIC_LATE_EDIT_ACCEPTED");
+    const std::vector<std::uint8_t> preview_base(
+        preview.bytes().begin(), preview.bytes().end());
+    check(preview_base == preview_original_bytes &&
+          live.get() == preview_original &&
+          live->save_physical_state() == preview_original_bytes &&
+          live->physical_state_hash() == preview_original_hash &&
+          live->completed_tick_index() == preview_original_tick &&
+          live->quantity_ledger() == preview_original_ledger &&
+          live->resident_cell_bytes() == preview_original_memory,
+          "GEN006_DYNAMIC_PRIVATE_TICKS_MUTATED_LIVE");
+    check(preview.commit(live, preview_fence, preview_base) ==
+              FullWorldCommitStatus::UnverifiedCopy &&
+          preview.commit(live, preview_fence, preview_base, preview.staged_edits()) ==
+              FullWorldCommitStatus::UnverifiedCopy,
+          "GEN006_DYNAMIC_LEGACY_COMMIT_PUBLISHED_UNWITNESSED_TICKS");
+    auto wrong_receipt = tick_receipt;
+    ++wrong_receipt.completed_tick;
+    check(preview.commit(live, preview_fence, preview_base,
+                         preview.staged_edits(), wrong_receipt) ==
+              FullWorldCommitStatus::UnverifiedCopy,
+          "GEN006_DYNAMIC_WRONG_TICK_RECEIPT_ACCEPTED");
+    auto wrong_preview_edits = preview_edits;
+    wrong_preview_edits[0].material = Material::Water;
+    check(preview.commit(live, preview_fence, preview_base,
+                         wrong_preview_edits, tick_receipt) ==
+              FullWorldCommitStatus::UnverifiedCopy,
+          "GEN006_DYNAMIC_WRONG_PREVIEW_EDIT_WITNESS_ACCEPTED");
+    check(preview.commit(live, wrong_recipe, preview_base,
+                         preview.staged_edits(), tick_receipt) ==
+              FullWorldCommitStatus::StaleFence &&
+          live.get() == preview_original &&
+          live->save_physical_state() == preview_original_bytes,
+          "GEN006_DYNAMIC_PREVIEW_REFUSAL_MUTATED_LIVE");
+
+    reference->set(-128 + 4, -128 + 10, Material::Sand);
+    reference->set(-128 + 5, -64 + 30, Material::Water);
+    for (unsigned i = 0; i < tick_receipt.ticks; ++i) {
+        const auto stats = reference->tick();
+        observed = std::max(observed, stats.worker_threads_observed);
+        check(!reference->has_failed(),
+              "GEN006_DYNAMIC_PREVIEW_REFERENCE_TICK_FAILED");
+    }
+    check(tick_receipt.completed_tick == reference->completed_tick_index() &&
+          tick_receipt.physical_hash == reference->physical_state_hash() &&
+          tick_receipt.quantity == reference->quantity_ledger() &&
+          tick_receipt.resident_chunks == reference->chunk_count() &&
+          tick_receipt.resident_cell_bytes == reference->resident_cell_bytes(),
+          "GEN006_DYNAMIC_PREVIEW_RECEIPT_NOT_UNINTERRUPTED");
+    check(preview.commit(live, preview_fence, preview_base,
+                         preview.staged_edits(), tick_receipt) ==
+              FullWorldCommitStatus::Committed &&
+          preview.commit(live, preview_fence, preview_base,
+                         preview.staged_edits(), tick_receipt) ==
+              FullWorldCommitStatus::AlreadyCommitted &&
+          live->completed_tick_index() == reference->completed_tick_index() &&
+          live->physical_state_hash() == reference->physical_state_hash() &&
+          live->quantity_ledger() == reference->quantity_ledger(),
+          "GEN006_DYNAMIC_PRIVATE_TICK_COMMIT_DIVERGED");
+    for (unsigned i = 0; i < 8; ++i) {
+        const auto lhs = live->tick();
+        const auto rhs = reference->tick();
+        observed = std::max(observed, lhs.worker_threads_observed);
+        check(!live->has_failed() && !reference->has_failed() &&
+              lhs.tick == rhs.tick &&
+              live->physical_state_hash() == reference->physical_state_hash() &&
+              live->quantity_ledger() == reference->quantity_ledger() &&
+              live->completed_tick_index() == reference->completed_tick_index(),
+              "GEN006_DYNAMIC_PRIVATE_TICK_CONTINUATION_DIVERGED");
+    }
+    std::cout << "GEN006_DYNAMIC_PRIVATE_NATIVE_TICKS_PASS"
+              << " configured_workers=" << workers
+              << " native_preview_ticks=" << tick_receipt.ticks
+              << " observed_preview_workers=" << tick_receipt.observed_workers_max
+              << " post_commit_ticks=8"
+              << " residents=" << live->chunk_count()
+              << " final_native_tick=" << live->completed_tick_index()
+              << " scope=FULL_WORLD_NON_DURABLE" << '\\n';
+
     // Stale stage must not swap an owner changed by native tick. A separate
     // pointer-identity check rejects an equal-content new residency (ABA).
-    const FullWorldFence b{a.session, a.recipe, a.incarnation + 1U, a.generation + 1U};
+    const FullWorldFence b{a.session, a.recipe, a.incarnation + 3U, a.generation + 3U};
     auto stale = FullWorldContinuationStage::capture(live, b, kBoundedBytes);
     const std::vector<std::uint8_t> old(stale.bytes().begin(), stale.bytes().end());
     (void)live->tick();

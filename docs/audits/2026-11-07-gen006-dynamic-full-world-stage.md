@@ -178,3 +178,32 @@ It is opt-in code on a Draft branch, with no protected native source change.
 **CI status:** This new source revision requires its own exact-head
 Linux/Windows native and documentation/provenance qualification; prior
 a5625bab results do not qualify these added edits.
+
+## 7 November same-run follow-up: private native tick transaction
+
+The additive full-resident-set transaction can now advance **1–16 real native
+ticks in the privately restored World**, optionally after the earlier bounded
+cross-resident material edits. It records a native receipt with exact completed
+tick, physical-state hash, complete quantity ledger, resident memory/count and
+**observed** worker participation. The original World is neither ticked nor
+modified during this speculative computation. Any new native resident discovered
+during private ticking refuses the transaction and destroys the private World:
+the 2–8-resident manifest does not license additional halo ownership.
+
+Commit requires independently supplied original CYPS bytes, a canonical
+material-edit list (possibly empty), and an exact private native-tick receipt.
+Neither legacy no-tick overload may publish a ticked candidate. The test rejects
+zero/over-budget ticks, double staging, edits after ticks, wrong receipt, wrong
+edit witness and stale fence without changing original native bytes or identity.
+
+The real native signed-seam Sand/Water fixture stages two different material
+edits, advances six PRIVATE native ticks, and compares its receipt to the
+completely independent never-restored reference World, then publishes with one
+owner-pointer swap and compares eight further REAL native ticks. This is
+non-durable speculative **whole-World** execution, not selective chunk removal
+or physical parallelism evidence. Sidecars remain preserved only through full
+CYPS. Neither fsync nor independent edit-intent durability is claimed.
+
+**Qualification:** Exact source-head Windows/Linux and documentation/source
+CI must pass before this revision can be called qualified. The protected
+#512 native World files, MAT-AUTH locks and gameplay defaults remain untouched.

@@ -11,7 +11,9 @@
 #include <algorithm>
 #include <cstddef>
 #include <cstdint>
+#include <limits>
 #include <memory>
+#include <optional>
 #include <span>
 #include <stdexcept>
 #include <utility>
@@ -53,6 +55,25 @@ enum class BundleAdmissionStatus : std::uint8_t {
     EditOutsideResident,
     PrivateMutationFailed,
     EditsAlreadyStaged,
+    InvalidTickBatch,
+    TicksAlreadyStaged,
+    EditsAfterTickBatch,
+    PrivateTickFailed,
+    PrivateResidentSetExpanded,
+};
+
+// Native-only, non-durable receipt of actually simulated private ticks.
+// The FULL World owns the scheduler, pressure, inertial, ballistic and
+// quantity sidecars; this receipt is NOT a replacement for those records.
+struct BundleTickReceipt {
+    std::uint32_t ticks = 0;
+    std::uint32_t observed_workers_max = 0;
+    std::uint64_t completed_tick = 0;
+    std::uint64_t physical_hash = 0;
+    QuantityLedgerSnapshot quantity{};
+    std::size_t resident_chunks = 0;
+    std::size_t resident_cell_bytes = 0;
+    friend bool operator==(const BundleTickReceipt&, const BundleTickReceipt&) = default;
 };
 
 class BundleAdmissionError final : public std::runtime_error {
@@ -194,6 +215,8 @@ public:
     // transaction and requires external storage to persist BASE + EDITS.
     static constexpr std::size_t kMaximumStagedEdits = 64;
     void stage_material_edits(std::span<const BundleMaterialEdit> changes) {
+        if (tick_receipt_)
+            throw BundleAdmissionError(BundleAdmissionStatus::EditsAfterTickBatch);
         if (!edits_.empty())
             throw BundleAdmissionError(BundleAdmissionStatus::EditsAlreadyStaged);
         if (changes.empty() || changes.size() > kMaximumStagedEdits)
@@ -244,19 +267,85 @@ public:
         return edits_;
     }
 
+    // Speculatively advance the REAL privately restored World. This is
+    // native physical simulation (not a material-only predictor); all CYPS
+    // scheduler and solver sidecars continue in the private owner. The
+    // original World does not tick, lose a resident or change its clock.
+    // If a native tick discovers an additional chunk, discard the private
+    // World: this complete-resident-set contract cannot authorize its halo.
+    static constexpr std::uint32_t kMaximumStagedTicks = 16;
+    [[nodiscard]] BundleTickReceipt stage_native_ticks(std::uint32_t ticks) {
+        if (tick_receipt_)
+            throw BundleAdmissionError(BundleAdmissionStatus::TicksAlreadyStaged);
+        if (ticks == 0 || ticks > kMaximumStagedTicks ||
+            transaction_.source_tick() >
+                std::numeric_limits<std::uint64_t>::max() - ticks)
+            throw BundleAdmissionError(BundleAdmissionStatus::InvalidTickBatch);
+        BundleTickReceipt receipt{};
+        receipt.ticks = ticks;
+        try {
+            transaction_.mutate_private([&](World& candidate) {
+                if (candidate.chunk_count() != residents_.size())
+                    throw BundleAdmissionError(BundleAdmissionStatus::PrivateResidentSetExpanded);
+                for (std::uint32_t index = 0; index < ticks; ++index) {
+                    const auto stats = candidate.tick();
+                    receipt.observed_workers_max =
+                        std::max(receipt.observed_workers_max, stats.worker_threads_observed);
+                    if (candidate.chunk_count() != residents_.size())
+                        throw BundleAdmissionError(BundleAdmissionStatus::PrivateResidentSetExpanded);
+                    if (candidate.has_failed() ||
+                        candidate.completed_tick_index() !=
+                            transaction_.source_tick() + index + 1U)
+                        throw BundleAdmissionError(BundleAdmissionStatus::PrivateTickFailed);
+                }
+                receipt.completed_tick = candidate.completed_tick_index();
+                receipt.physical_hash = candidate.physical_state_hash();
+                receipt.quantity = candidate.quantity_ledger();
+                receipt.resident_chunks = candidate.chunk_count();
+                receipt.resident_cell_bytes = candidate.resident_cell_bytes();
+            });
+        } catch (const BundleAdmissionError&) {
+            // mutate_private discarded a partially advanced candidate.
+            throw;
+        } catch (const std::exception&) {
+            throw BundleAdmissionError(BundleAdmissionStatus::PrivateTickFailed);
+        }
+        tick_receipt_ = receipt;
+        return receipt;
+    }
+
+    [[nodiscard]] const std::optional<BundleTickReceipt>&
+    staged_tick_receipt() const noexcept { return tick_receipt_; }
+
     // The legacy unedited commit refuses to publish an edited private World
     // without an independently supplied, exact edit-list witness.
     [[nodiscard]] FullWorldCommitStatus commit(
             std::unique_ptr<World>& live, FullWorldFence current,
             std::span<const std::uint8_t> verified_copy) {
-        if (!edits_.empty()) return FullWorldCommitStatus::UnverifiedCopy;
+        if (!edits_.empty() || tick_receipt_) return FullWorldCommitStatus::UnverifiedCopy;
         return transaction_.commit(live, current, verified_copy);
     }
     [[nodiscard]] FullWorldCommitStatus commit(
             std::unique_ptr<World>& live, FullWorldFence current,
             std::span<const std::uint8_t> verified_base_copy,
             std::span<const BundleMaterialEdit> verified_edits) {
+        if (tick_receipt_) return FullWorldCommitStatus::UnverifiedCopy;
         if (verified_edits.size() != edits_.size() ||
+            !std::equal(edits_.begin(), edits_.end(), verified_edits.begin()))
+            return FullWorldCommitStatus::UnverifiedCopy;
+        return transaction_.commit(live, current, verified_base_copy);
+    }
+
+    // An actual private native-tick batch requires BOTH exact canonical
+    // input evidence and the independently checked intended tick receipt.
+    // No legacy call may publish a speculative future World without them.
+    [[nodiscard]] FullWorldCommitStatus commit(
+            std::unique_ptr<World>& live, FullWorldFence current,
+            std::span<const std::uint8_t> verified_base_copy,
+            std::span<const BundleMaterialEdit> verified_edits,
+            const BundleTickReceipt& verified_ticks) {
+        if (!tick_receipt_ || *tick_receipt_ != verified_ticks ||
+            verified_edits.size() != edits_.size() ||
             !std::equal(edits_.begin(), edits_.end(), verified_edits.begin()))
             return FullWorldCommitStatus::UnverifiedCopy;
         return transaction_.commit(live, current, verified_base_copy);
@@ -274,6 +363,7 @@ private:
     std::vector<ChunkCoord> residents_;
     std::vector<BundleSeam> seams_;
     std::vector<BundleMaterialEdit> edits_;
+    std::optional<BundleTickReceipt> tick_receipt_;
     std::int32_t chunk_size_ = 0;
 };
 
