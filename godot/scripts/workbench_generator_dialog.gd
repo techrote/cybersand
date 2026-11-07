@@ -390,12 +390,12 @@ func attests(packet: Dictionary) -> bool:
 		str(_configuration.get("plane_fingerprint","")) == str(packet.plane_revision)
 
 func _install() -> void:
-	if _phase != "ready" or _ready_packet.is_empty() or owner == null:
+	if _phase != "ready" or _ready_packet.is_empty() or _workbench == null:
 		return
 	var candidate: Dictionary
 	if _saved_setup.is_empty():
 		if _workbench._liquids == null or _workbench._liquids.bridge == null:
-			owner.refuse("Native liquid policy interface unavailable.")
+			_workbench.refuse("Native liquid policy interface unavailable.")
 			return
 		candidate = Setup.fresh(_workbench._liquids.bridge.default_liquid_policy(),_size)
 	else:
