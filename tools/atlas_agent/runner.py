@@ -242,7 +242,7 @@ def _run(cfg, rec, out_dir, ctx, env, sdk, sleep, clock, now, costs_probe, launc
         renderer = None
     executor = ToolExecutor(cfg, work_root, policy, collection, writable, task["read_extra_collections"], redactor,
                             resolve_executables(), bundle, renderer, out_dir, reference,
-                            require_trusted_scripts=not fixture)
+                            require_trusted_scripts=live and not fixture and not api["base_url"])
     ctx["executor"] = executor
     tool_names = executor.tool_names()
     rec["policy"]["tools_advertised"] = tool_names
@@ -384,7 +384,7 @@ def _run(cfg, rec, out_dir, ctx, env, sdk, sleep, clock, now, costs_probe, launc
             try:
                 final = atlas.run_script(work_root, collection, kind, float(limits["max_tool_seconds"]),
                                          int(limits["max_tool_output_bytes"]) // 2,
-                                         require_trusted=not fixture)
+                                         require_trusted=live and not fixture and not api["base_url"])
             except ValidationFailed as exc:
                 if kind == "render_check" and exc.reason_code == "render_check_unsupported":
                     continue  # this collection's render script has no --check mode: recorded by omission
