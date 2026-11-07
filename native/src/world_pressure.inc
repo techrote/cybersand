@@ -532,10 +532,13 @@ void World::resolve_gas_topology(bool allow_cache) {
         return a.y != b.y ? a.y < b.y : a.x < b.x;
     });
 
-    bool sparse_gas_relabel =
+    bool track_gas_visits =
         allow_cache && gas_cache != nullptr && !gas_cache->gas_ready &&
-        !gas_cache->gas_dirty_overflow && gas_cache->gas_relabel_storage_ready();
-    if (sparse_gas_relabel) {
+        gas_cache->gas_relabel_storage_ready();
+    bool sparse_gas_relabel =
+        track_gas_visits && gas_cache->gas_previous_relabel_valid &&
+        !gas_cache->gas_dirty_overflow;
+    if (track_gas_visits) {
         const auto words = gas_cache->column_order.size() * gas_cache->gas_relabel_words;
         std::fill(gas_cache->gas_relabel_bits.begin(),
                   gas_cache->gas_relabel_bits.begin() + static_cast<std::ptrdiff_t>(words),
@@ -627,12 +630,15 @@ void World::resolve_gas_topology(bool allow_cache) {
             return;
         }
         mark = stamp | current;
-        if (sparse_gas_relabel) {
+        if (track_gas_visits) {
             const auto slot = static_cast<std::size_t>(chunk->pressure->gas_chunk_slot);
             if (slot >= gas_cache->column_order.size() ||
                 gas_cache->column_order[slot] != target.chunk) {
-                // Any slot/index doubt restores the original complete relabel scan.
+                // Any slot/index doubt restores the original complete relabel scan
+                // and invalidates previous-visit authority for the next pass.
+                track_gas_visits = false;
                 sparse_gas_relabel = false;
+                gas_cache->gas_previous_relabel_valid = false;
             } else {
                 gas_cache->gas_relabel_bits[slot * gas_cache->gas_relabel_words +
                                             target.index / 64U] |=
@@ -1075,7 +1081,13 @@ void World::resolve_gas_topology(bool allow_cache) {
     // relabel sweep for this pass.
     if (state.diagnostics.chunk_allocations != 0U || gas_cache == nullptr ||
         !gas_cache->complete || gas_cache->membership_dirty ||
-        gas_cache->gas_dirty_overflow || !gas_cache->gas_relabel_storage_ready()) {
+        !gas_cache->gas_relabel_storage_ready()) {
+        track_gas_visits = false;
+        sparse_gas_relabel = false;
+        if (gas_cache != nullptr) gas_cache->gas_previous_relabel_valid = false;
+    } else if (gas_cache->gas_dirty_overflow) {
+        // Tracking remains useful after a complete fallback sweep, but an
+        // incomplete dirty proof cannot authorize sparse relabelling this pass.
         sparse_gas_relabel = false;
     }
 
@@ -1126,11 +1138,23 @@ void World::resolve_gas_topology(bool allow_cache) {
         }
 
         bool invalid = false;
-        const auto* bits = gas_cache->gas_relabel_bits.data() + slot * gas_cache->gas_relabel_words;
+        const auto* current =
+            gas_cache->gas_relabel_bits.data() + slot * gas_cache->gas_relabel_words;
+        const auto* previous =
+            gas_cache->gas_previous_relabel_bits.data() + slot * gas_cache->gas_relabel_words;
         for (std::size_t word = 0; word < gas_cache->gas_relabel_words && !invalid; ++word) {
-            for (auto pending = bits[word]; pending != 0U; pending &= pending - 1U) {
-                const auto index = word * 64U + static_cast<std::size_t>(std::countr_zero(pending));
-                if (index >= cells.size() || (visits[index] & 0xFFFF0000U) != stamp) {
+            for (auto pending = current[word] | previous[word];
+                 pending != 0U; pending &= pending - 1U) {
+                const auto bit = std::uint64_t{1} << std::countr_zero(pending);
+                const auto index =
+                    word * 64U + static_cast<std::size_t>(std::countr_zero(pending));
+                if (index >= cells.size()) {
+                    invalid = true;
+                    break;
+                }
+                const bool visited_now = (current[word] & bit) != 0U;
+                const bool stamped_now = (visits[index] & 0xFFFF0000U) == stamp;
+                if (visited_now != stamped_now) {
                     invalid = true;
                     break;
                 }
@@ -1201,9 +1225,17 @@ void World::resolve_gas_topology(bool allow_cache) {
         }
     }
 
-    // Dirty chunks were retained specifically through relabelling. Once the
-    // authoritative labels are complete, the next tick starts a fresh proof.
+    // Current and previous authoritative visit sets are both needed: a remote
+    // vent/split can make a clean chunk's formerly visited positive label
+    // unvisited on this pass. Only a complete current visit record can become
+    // previous-pass authority.
     if (gas_cache != nullptr) {
+        if (track_gas_visits && gas_cache->gas_relabel_storage_ready()) {
+            gas_cache->gas_relabel_bits.swap(gas_cache->gas_previous_relabel_bits);
+            gas_cache->gas_previous_relabel_valid = true;
+        } else {
+            gas_cache->gas_previous_relabel_valid = false;
+        }
         for (const auto changed : gas_cache->gas_dirty_chunks)
             if (auto* chunk = find_chunk(changed)) chunk->pressure->gas_dirty_queued = false;
         gas_cache->gas_dirty_chunks.clear();
