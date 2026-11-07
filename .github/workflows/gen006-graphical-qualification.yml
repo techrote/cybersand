@@ -124,6 +124,9 @@ jobs:
           set -euo pipefail
           dir=build/gen006-graphical-qa
           mkdir -p "$dir/async-screenshots"
+          # Each Actions step has a fresh environment; the prior GL step's
+          # executable export does NOT survive into this new test process.
+          export GEN006_SLICE_EXECUTABLE="$PWD/$dir/streaming-slice"
           export GEN006_SLICE_ROOT="$PWD/$dir/async-world"
           export GEN006_ASYNC_EVIDENCE="$PWD/$dir/async-screenshots"
           export GEN006_SLICE_FORCE_ASYNC_TEST=1
