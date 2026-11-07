@@ -1,0 +1,123 @@
+name: GEN006 independent native coordinate-binding negative control
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - 'native/tests/gen006_restore_coordinate_binding_negative.cpp'
+      - 'native/tests/gen006_streaming_slice.cpp'
+      - '.github/workflows/gen006-coordinate-binding-negative.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gen006-coordinate-negative-${{ github.event.pull_request.number || github.run_id }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  linux-native-negative:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+          lfs: false
+      - name: Source and provider identity
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/gen006-binding
+          git rev-parse HEAD | tee build/gen006-binding/head.txt
+          git rev-parse 'HEAD^{tree}' | tee build/gen006-binding/tree.txt
+          git hash-object native/tests/gen006_streaming_slice.cpp | tee build/gen006-binding/implementation_blob.txt
+          git hash-object native/tests/gen006_restore_coordinate_binding_negative.cpp | tee build/gen006-binding/probe_blob.txt
+          python3 tools/ci/check_ci_provider_policy.py
+      - name: Compile and execute unchanged native World plus probe
+        shell: bash
+        timeout-minutes: 25
+        run: |
+          set -euo pipefail
+          g++-13 --version | head -1 | tee build/gen006-binding/compiler.txt
+          g++-13 -std=c++20 -O0 -g0 -pthread -I native/include \
+            native/src/world.cpp native/src/material_rules.cpp \
+            native/src/scheduler_geometry.cpp native/src/settled_world_discovery.cpp \
+            native/src/world_generation.cpp native/src/generation_fields.cpp \
+            native/src/generation_typed_fields.cpp native/src/generation_spatial.cpp \
+            native/src/generation_grammar.cpp native/src/generation_planes.cpp \
+            native/tests/gen006_restore_coordinate_binding_negative.cpp \
+            -o build/gen006-binding/coordinate-probe \
+            > build/gen006-binding/compile.log 2>&1 || { cat build/gen006-binding/compile.log; exit 1; }
+          build/gen006-binding/coordinate-probe build/gen006-binding/negative-case \
+            | tee build/gen006-binding/probe.log
+          grep -q 'GEN006_REBIND_NEGATIVE_CONTROL_PASS' build/gen006-binding/probe.log
+      - name: Upload original execution evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gen006-coordinate-binding-linux-${{ github.run_id }}
+          path: build/gen006-binding/
+          if-no-files-found: warn
+          retention-days: 45
+
+  windows-native-negative:
+    runs-on: windows-2022
+    timeout-minutes: 30
+    steps:
+      - name: Preserve LF source
+        shell: cmd
+        run: |
+          git config --global core.autocrlf false
+          if errorlevel 1 exit /b 1
+          git config --global core.eol lf
+          if errorlevel 1 exit /b 1
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+          lfs: false
+      - name: Source and provider identity
+        shell: python
+        run: |
+          import pathlib,subprocess
+          out=pathlib.Path("build/gen006-binding")
+          out.mkdir(parents=True,exist_ok=True)
+          for label,parts in {
+            "head": ["rev-parse","HEAD"],
+            "tree": ["rev-parse","HEAD^{tree}"],
+            "implementation_blob": ["hash-object","native/tests/gen006_streaming_slice.cpp"],
+            "probe_blob": ["hash-object","native/tests/gen006_restore_coordinate_binding_negative.cpp"],
+          }.items():
+            (out/(label+".txt")).write_text(subprocess.check_output(["git",*parts],text=True).strip()+"\n")
+          subprocess.run(["python","tools/ci/check_ci_provider_policy.py"],check=True)
+      - name: Compile and execute native probe (LLVM-Clang under MSVC)
+        shell: cmd
+        timeout-minutes: 25
+        run: |
+          for /f "tokens=*" %%i in ('"%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe" -latest -products * -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath') do set "GEN006_VSROOT=%%i"
+          if not defined GEN006_VSROOT exit /b 1
+          call "%GEN006_VSROOT%\Common7\Tools\VsDevCmd.bat" -no_logo -arch=x64 -host_arch=x64
+          if errorlevel 1 exit /b 1
+          set "GEN006_CXX=%ProgramFiles%\LLVM\bin\clang++.exe"
+          if not exist "%GEN006_CXX%" set "GEN006_CXX=%GEN006_VSROOT%\VC\Tools\Llvm\x64\bin\clang++.exe"
+          if not exist "%GEN006_CXX%" exit /b 1
+          "%GEN006_CXX%" --version > build\gen006-binding\compiler.txt 2>&1
+          if errorlevel 1 exit /b 1
+          "%GEN006_CXX%" -std=c++20 -O0 -I native/include native/src/world.cpp native/src/material_rules.cpp native/src/scheduler_geometry.cpp native/src/settled_world_discovery.cpp native/src/world_generation.cpp native/src/generation_fields.cpp native/src/generation_typed_fields.cpp native/src/generation_spatial.cpp native/src/generation_grammar.cpp native/src/generation_planes.cpp native/tests/gen006_restore_coordinate_binding_negative.cpp -o build\gen006-binding\coordinate-probe.exe > build\gen006-binding\compile.log 2>&1
+          if errorlevel 1 (type build\gen006-binding\compile.log & exit /b 1)
+          build\gen006-binding\coordinate-probe.exe build\gen006-binding\negative-case > build\gen006-binding\probe.log 2>&1
+          if errorlevel 1 (type build\gen006-binding\probe.log & exit /b 1)
+          type build\gen006-binding\probe.log
+          findstr /C:"GEN006_REBIND_NEGATIVE_CONTROL_PASS" build\gen006-binding\probe.log
+          if errorlevel 1 exit /b 1
+      - name: Upload original execution evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gen006-coordinate-binding-windows-${{ github.run_id }}
+          path: build/gen006-binding/
+          if-no-files-found: warn
+          retention-days: 45
