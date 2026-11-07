@@ -3,9 +3,9 @@ extends SceneTree
 # #201 region-flip regression. A fixed-interest MicroScenario owns the native
 # simulation window; the worker must not first write the camera window and then
 # let apply_interest() write the scenario region, because every selected-core
-# change discards the derived pressure cache. The recording fake proves the
-# exact call sequence; the actual native cached PressureFlow pool proves the
-# consequence, with the previous ordering retained as a negative control.
+# change formerly discarded the derived pressure cache. The recording fake
+# proves call order; the native pool now checks that camera-only core changes
+# do not discard the cache. The prior ordering remains a positive control.
 const Worker = preload("res://scripts/simulation_worker.gd")
 const Contract = preload("res://scripts/microscenario_contract.gd")
 const Host = preload("res://scripts/microscenario_host.gd")
@@ -111,10 +111,10 @@ func _native_pressure_cache() -> void:
 	expect(settle >= 0, "settle completed")
 	var owned: int = _rebuilds(world, host, true, 16)
 	expect(owned == 0, "owned interest keeps the derived pressure index across quiet ticks (rebuilds=%d)" % owned)
-	# Negative control: the previous camera-then-scenario ordering really does
-	# discard the cache, so this test cannot pass vacuously.
+	# The previous camera-then-scenario ordering flips the selected cores,
+	# but region changes alone must now retain the derived pressure index.
 	var flipped: int = _rebuilds(world, host, false, 16)
-	expect(flipped >= 15, "previous ordering rebuilds the index every tick (rebuilds=%d)" % flipped)
+	expect(flipped == 0, "camera-only flips must not rebuild the index (rebuilds=%d)" % flipped)
 	print("SIMULATION_WORKER_INTEREST_OWNERSHIP_REBUILDS: " + JSON.stringify({"owned_16_ticks": owned, "previous_ordering_16_ticks": flipped}))
 	var region: Array = checked.definition.interest.region
 	expect(owned == 0 and int(world.inspect_pressure_optimization().counters.index_rebuilds) > 0,

@@ -532,18 +532,32 @@ void World::resolve_gas_topology(bool allow_cache) {
         return a.y != b.y ? a.y < b.y : a.x < b.x;
     });
 
-    const auto compartment_index = [&state](std::uint32_t id) -> std::uint32_t {
+    // A BFS usually visits many adjacent Empty cells bearing the *same* old
+    // compartment ID. The immutable old table can be memoized for the serial
+    // discovery phase, avoiding a sorted-table search for every visited cell.
+    // A new ID still uses the complete checked search and original refusal.
+    std::uint32_t last_compartment_id = 0U;
+    std::uint32_t last_compartment_index = 0U;
+    const auto compartment_index = [&state, &last_compartment_id,
+                                    &last_compartment_index](std::uint32_t id) -> std::uint32_t {
+        if (id == last_compartment_id) return last_compartment_index;
         const auto found = std::lower_bound(
             state.compartments.begin(), state.compartments.end(), id,
             [](const State::Compartment& c, std::uint32_t value) { return c.id < value; });
         if (found == state.compartments.end() || found->id != id)
             throw std::logic_error("pressure gas label refers to a retired compartment");
-        return static_cast<std::uint32_t>(found - state.compartments.begin());
+        last_compartment_id = id;
+        last_compartment_index = static_cast<std::uint32_t>(found - state.compartments.begin());
+        return last_compartment_index;
     };
 
     // Breadth-first labelling of one Empty region. A non-resident chunk is
     // uniformly Empty, so it is one node whatever its size and allocation never
     // changes the topology.
+    // The transient mask's occupied-index set is authoritative for this tick;
+    // body_ids are cleared together with that set. No geometry can change in
+    // the phased gas discovery and parallel read-only seed prepass.
+    const bool has_masks = !masks.occupied_indices.empty();
     std::size_t head = 0;
     bool stop = false;
     bool retry_requested = false;
@@ -569,14 +583,17 @@ void World::resolve_gas_topology(bool allow_cache) {
         if (coord != cached_coord) { cached_coord = coord; cached_chunk = find_chunk(coord); }
         return cached_chunk;
     };
-    const auto visit = [&](std::int64_t x, std::int64_t y) {
+    const auto visit = [&](std::int64_t x, std::int64_t y, const Address* known = nullptr) {
         ++state.optimization.gas_bfs_probes;
         if (stop) return;
         if (state.queue.size() == state.queue.capacity())
             throw std::logic_error("pressure gas queue exceeded its reserved bound");
-        if (transient_obstacle_at(x, y) != 0U) return;
+        if (has_masks && transient_obstacle_at(x, y) != 0U) return;
         auto& region = state.regions[current];
-        const auto target = address(x, y);
+        // A BFS dequeue already knows its own chunk address. Reuse direct
+        // in-chunk neighbour offsets without recalculating floor division,
+        // while boundary neighbours use the original World::address path.
+        const auto target = known == nullptr ? address(x, y) : *known;
         auto* chunk = chunk_at(target.chunk);
         if (chunk == nullptr) {
             for (const auto& node : state.nodes) {
@@ -653,7 +670,7 @@ void World::resolve_gas_topology(bool allow_cache) {
 
     const auto seed_needed = [&](std::int64_t x, std::int64_t y) {
         ++state.optimization.gas_seed_probes;
-        if (transient_obstacle_at(x, y) != 0U) return false;
+        if (has_masks && transient_obstacle_at(x, y) != 0U) return false;
         const auto target = address(x, y);
         const auto* chunk = chunk_at(target.chunk);
         if (chunk == nullptr) {
@@ -693,10 +710,26 @@ void World::resolve_gas_topology(bool allow_cache) {
                 }
                 continue;
             }
-            visit(entry.x, entry.y - 1);
-            visit(entry.x - 1, entry.y);
-            visit(entry.x + 1, entry.y);
-            visit(entry.x, entry.y + 1);
+            // Preserve north/west/east/south visitation order and all stamp,
+            // mask, volume and overlap rules. Only address calculation changes.
+            const auto source = address(entry.x, entry.y);
+            const auto stride = static_cast<std::size_t>(size);
+            const auto north = source.local_y > 0
+                ? Address{source.chunk, source.local_x, source.local_y - 1, source.index - stride}
+                : address(entry.x, entry.y - 1);
+            visit(entry.x, entry.y - 1, &north);
+            const auto west = source.local_x > 0
+                ? Address{source.chunk, source.local_x - 1, source.local_y, source.index - 1U}
+                : address(entry.x - 1, entry.y);
+            visit(entry.x - 1, entry.y, &west);
+            const auto east = source.local_x + 1 < size
+                ? Address{source.chunk, source.local_x + 1, source.local_y, source.index + 1U}
+                : address(entry.x + 1, entry.y);
+            visit(entry.x + 1, entry.y, &east);
+            const auto south = source.local_y + 1 < size
+                ? Address{source.chunk, source.local_x, source.local_y + 1, source.index + stride}
+                : address(entry.x, entry.y + 1);
+            visit(entry.x, entry.y + 1, &south);
         }
         if (state.regions[current].atmosphere) ++state.diagnostics.atmosphere_regions;
     };
@@ -707,7 +740,7 @@ void World::resolve_gas_topology(bool allow_cache) {
     const auto seed_cell = [&](const Chunk& chunk, std::size_t index, std::int64_t x, std::int64_t y) {
         const auto material = chunk.cells[index].material_value();
         if (material == Material::Water) {
-            if (transient_obstacle_at(x, y) != 0U) return;
+            if (has_masks && transient_obstacle_at(x, y) != 0U) return;
             const std::array<std::pair<std::int64_t, std::int64_t>, 4> around{{
                 {x, y - 1}, {x - 1, y}, {x + 1, y}, {x, y + 1}}};
             for (const auto& [nx, ny] : around) {
@@ -726,11 +759,11 @@ void World::resolve_gas_topology(bool allow_cache) {
     // seed_needed probe is false whatever the visit stamps or chunk nodes), and
     // Empty only with a live compartment label. Materials, labels, masks and
     // the chunk map do not change before the label pass. Skipped Water still
-    // books its four probes, so every counter matches the full scan. A cached
-    // replay can request a mid-scan restart, so that path keeps the full scan.
+    // books its four probes. Valid component-cache replay does not change seed
+    // eligibility; a stale replay requests exactly the existing uncached
+    // restart, and the candidate loop must stop immediately on that request.
     const bool pooled_seed = state.gas_tasks.capacity() != 0 &&
-                             coordinates.size() <= state.gas_tasks.capacity() &&
-                             !(allow_cache && gas_cache != nullptr && gas_cache->gas_ready);
+                             coordinates.size() <= state.gas_tasks.capacity();
     if (pooled_seed) {
         state.gas_tasks.clear();
         for (std::size_t position = 0; position < coordinates.size(); ++position)
@@ -743,11 +776,20 @@ void World::resolve_gas_topology(bool allow_cache) {
             std::fill(bits, bits + words, std::uint64_t{0});
             const auto origin_x = coord.x * size;
             const auto origin_y = coord.y * size;
+            const auto stride = static_cast<std::size_t>(size);
+            // occupied_indices is the authoritative sparse set maintained by
+            // set/clear_transient_obstacle; no mask probe is needed when empty.
             const auto open = [&](std::int64_t nx, std::int64_t ny) {
-                if (transient_obstacle_at(nx, ny) != 0U) return false;
+                if (has_masks && transient_obstacle_at(nx, ny) != 0U) return false;
                 const auto at = address(nx, ny);
                 const auto* other = at.chunk == coord ? &chunk : find_chunk(at.chunk);
                 return other == nullptr || other->cells[at.index].material_value() == Material::Empty;
+            };
+            const auto open_local = [&](std::size_t index, std::int64_t nx, std::int64_t ny) {
+                // Unlike the cross-chunk fallback, no address or directory
+                // lookup is needed for a neighbour inside this resident chunk.
+                return chunk.cells[index].material_value() == Material::Empty &&
+                       (!has_masks || transient_obstacle_at(nx, ny) == 0U);
             };
             for (std::int32_t local_y = 0; local_y < size; ++local_y) {
                 for (std::int32_t local_x = 0; local_x < size; ++local_x) {
@@ -758,8 +800,17 @@ void World::resolve_gas_topology(bool allow_cache) {
                     if (material == Material::Water) {
                         const auto x = origin_x + local_x;
                         const auto y = origin_y + local_y;
-                        if (transient_obstacle_at(x, y) != 0U) continue;
-                        candidate = open(x, y - 1) || open(x - 1, y) || open(x + 1, y) || open(x, y + 1);
+                        if (has_masks && transient_obstacle_at(x, y) != 0U) continue;
+                        if (local_x > 0 && local_x + 1 < size &&
+                            local_y > 0 && local_y + 1 < size) {
+                            candidate = open_local(index - stride, x, y - 1) ||
+                                        open_local(index - 1U, x - 1, y) ||
+                                        open_local(index + 1U, x + 1, y) ||
+                                        open_local(index + stride, x, y + 1);
+                        } else {
+                            candidate = open(x, y - 1) || open(x - 1, y) ||
+                                        open(x + 1, y) || open(x, y + 1);
+                        }
                         if (!candidate) ++task.skipped_water;
                     } else if (material == Material::Empty) {
                         const auto label = chunk.pressure->cells[index].gas;
@@ -781,13 +832,14 @@ void World::resolve_gas_topology(bool allow_cache) {
         }
         const auto cells = static_cast<std::uint64_t>(size) * static_cast<std::uint64_t>(size);
         for (const auto& task : state.gas_tasks) {
+            if (retry_requested) break;
             const auto coord = coordinates[task.position];
             const auto* chunk = find_chunk(coord);
             state.optimization.gas_seed_cells += cells;
             state.optimization.gas_seed_probes += 4U * task.skipped_water;
             const auto* bits = state.gas_seed_bits.data() + task.position * words;
-            for (std::size_t word = 0; word < words; ++word) {
-                for (auto pending = bits[word]; pending != 0U; pending &= pending - 1U) {
+            for (std::size_t word = 0; word < words && !retry_requested; ++word) {
+                for (auto pending = bits[word]; pending != 0U && !retry_requested; pending &= pending - 1U) {
                     const auto index = word * 64U + static_cast<std::size_t>(std::countr_zero(pending));
                     seed_cell(*chunk, index,
                               coord.x * size + static_cast<std::int64_t>(index % static_cast<std::size_t>(size)),

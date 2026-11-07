@@ -10,6 +10,13 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+IN-TOOLS #361: [renewed current-main admission](architecture/in-tools-gameplay-admission.md)
+and [six Planned/NOT_RUN fixture concepts](operations/in-tools-fixtures-and-playtest.md).
+The [2026-11-07 source authority audit](audits/2026-11-07-in-tools-361-source-authority-renewal.md)
+keeps the immutable #404 A01 witness separate from the new source and runtime gates.
+Ordinary U10 `liquid_drain` is Current; new exact-metered commands are not.
+
+
 Coupled determinism: [desktop lockstep feasibility](architecture/determinism-and-boundary-transfers.md#coupled-desktop-determinism--2026-11-06)
 records a default-off fence. With it, repeated same-host native-plus-Rapier runs
 were bit-identical, while the asynchronous default always diverged. The owner

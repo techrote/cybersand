@@ -40,8 +40,8 @@ The [region-flip record](../audits/2026-11-04-lcb201-region-flip.md) fixes a
 desktop worker ordering that discarded the PressureFlow cache twice per step in
 fixed-interest scenarios. In the real host on main's runtime, the cached quiet
 pool improves from ≈36 ms to ≈10 ms per worker step and reaches the 60 Hz cap;
-reference and FreeMass are unchanged. Camera-motion invalidation remains a
-separate follow-up.
+reference and FreeMass are unchanged. The camera-only follow-up is implemented on PR #405 (pending final-head
+qualification); see [the current-main source audit](../audits/2026-11-07-pr405-current-main-reconciliation.md).
 
 ## PressureFlow idle cost (#201) — 2026-11-04
 
