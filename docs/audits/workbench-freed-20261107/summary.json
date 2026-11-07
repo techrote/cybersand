@@ -867,5 +867,32 @@
         "_ZdlPvm"
       ]
     }
-  }
+  },
+  "repository_checks": {
+    "source_commit": "a1291feef11883a150e94e730ace5c126306d63a",
+    "passed": 9,
+    "receipt_sha256": "d57f86129af160bdd0b51060245f007e8895cb4cd019d6760d9fdefbef4c29ed"
+  },
+  "additional_controls": {
+    "source_commit": "a1291feef11883a150e94e730ace5c126306d63a",
+    "passed": 8,
+    "receipt_sha256": "ca285d7b0f9c494150d1a5ef29679e0a9913a5c84aeeb72024f61bfeedb35c6b"
+  },
+  "retrieval": {
+    "retrieval": {
+      "questions": 32,
+      "canonical_hit_at_1": 19,
+      "canonical_hit_at_k": 32,
+      "mrr_at_k": 0.7536,
+      "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+    },
+    "retrieval-freed": {
+      "questions": 3,
+      "canonical_hit_at_1": 1,
+      "canonical_hit_at_k": 3,
+      "mrr_at_k": 0.6667,
+      "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+    }
+  },
+  "retrieval_review": "Canonical destinations contain required facts; some rank-one navigation chunks require following linked contracts. No physics or retrieval-quality improvement inferred from lexical hits."
 }

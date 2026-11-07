@@ -114,6 +114,17 @@ instrument the native core, with leak checking explicitly disabled; no
 instrumented extension-host or MSVC claim is made. Linux material controls
 pass118 tests and native parity, plus the unchanged source/compiler guards.
 
+All nine committed-checkpoint documentation/M11/materialized-repository/
+material/provenance/retrieval/diff checks pass; see
+[checks](workbench-freed-20261107/checks.json). Eight additional actual-host
+failed-World recovery, boundary-retention, hard-placement and retained-pressure
+controls also pass on unchanged production inputs; see
+[controls](workbench-freed-20261107/controls.json). Frozen retrieval is19/32 at1
+and32/32 at5 (MRR0.7536); the three additive development questions are1/3 at1
+and3/3 at5 (MRR0.6667). Canonical destinations contain the required facts;
+rank-one navigation chunks sometimes require following the linked contracts.
+These lexical metrics do not prove answer correctness or physics acceptance.
+
 ## Mechanism, accounting and limits
 
 `LA-SELECTIVE` still selects the arrival-only transient event wrench rather than
