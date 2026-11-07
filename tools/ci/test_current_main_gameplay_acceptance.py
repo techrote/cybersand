@@ -19,6 +19,7 @@ def profile(name):
         "elapsed_wall_ms": 60000.0,
         "completed_native_ticks": 100,
         "completed_rapier_ticks": 100,
+        "lockstep_enabled": False,
         "completed_native_hz": 20.0,
         "completed_rapier_hz": 20.0,
         "water_checks": 100,
@@ -54,6 +55,15 @@ class AcceptanceEvaluationTests(unittest.TestCase):
     def test_complete_evidence_accepts_without_performance_thresholds(self):
         verdict, problems = acceptance.evaluate(accepted())
         self.assertEqual(("ACCEPT", []), (verdict, problems))
+
+    def test_default_async_coupling_is_required(self):
+        data = accepted()
+        data["profiles"][1]["lockstep_enabled"] = True
+        verdict, problems = acceptance.evaluate(data)
+        self.assertEqual("REPAIR", verdict)
+        self.assertTrue(any("default asynchronous" in problem for problem in problems))
+        del data["profiles"][1]["lockstep_enabled"]
+        self.assertEqual("REPAIR", acceptance.evaluate(data)[0])
 
     def test_water_mismatch_repairs(self):
         data = accepted()

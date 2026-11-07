@@ -93,6 +93,8 @@ def evaluate(data: dict[str, Any]) -> tuple[str, list[str]]:
             problems.append(f"{name}: no native progress")
         if int(row.get("completed_rapier_ticks", 0)) <= 0:
             problems.append(f"{name}: no Rapier progress")
+        if row.get("lockstep_enabled") is not False:
+            problems.append(f"{name}: default asynchronous coupling not evidenced")
         if int(row.get("water_checks", 0)) <= 0 or int(row.get("water_mismatches", 1)) != 0:
             problems.append(f"{name}: exact Water conservation was not continuously observed")
         if not str(row.get("screenshot", "")):
@@ -134,7 +136,7 @@ def write_summary(data: dict[str, Any], output: Path, csv_output: Path, qualific
         f"- Godot: {data.get('godot', '')}",
         "- Three production-workbench profiles, 60 seconds each.",
         "- Performance distributions are measurements, not pass/fail thresholds.",
-        "- Lockstep is not substituted: PR #474 remains a separate non-main source stack.",
+        "- PR #474 opt-in lockstep wiring is merged into production; this fixture asserts the default asynchronous path and does not test opt-in lockstep.",
         "- Collider extraction is not isolated on this source; terrain-gate timing, hard-packet sizes/revisions and the explicitly non-isolated worker residual are reported instead.",
         "",
         "| Profile | Native Hz | Rapier Hz | frame p95 ms | native p95 ms | snapshot age p95 ms | terrain gate p95 ms | Rapier wait | hard revs | Water mismatches |",

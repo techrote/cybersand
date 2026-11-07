@@ -312,6 +312,7 @@ func _profile(desktop, panel, profile: Dictionary) -> Dictionary:
 	var ok := await _load_profile(desktop, panel, profile)
 	if not ok:
 		return {"name":name, "completed":false, "setup_failed":true}
+	expect(not desktop.lockstep_coupling_enabled, name + " retains default asynchronous coupling")
 	var spray_request_ok: bool = bool(panel.water_spray.request({"enabled":true, "jet_enabled":false}))
 	expect(spray_request_ok, name + " impact-spray request queued")
 	if desktop.paused:
@@ -365,6 +366,7 @@ func _profile(desktop, panel, profile: Dictionary) -> Dictionary:
 		"duration_target_seconds":DURATION_SECONDS,
 		"elapsed_wall_ms":elapsed_ms,
 		"pressure_gas_requested":bool(profile.pressure_gas),
+		"lockstep_enabled":bool(desktop.lockstep_coupling_enabled),
 		"water_assignment":assignment,
 		"actors":desktop.physical_actor_session.bodies().size(),
 		"initial_snapshot_serial":initial_serial,
@@ -486,7 +488,7 @@ func run() -> void:
 			"rendered_windows_graphics":true,
 			"human_feel_qualified":false,
 			"physical_input_device_qualified":false,
-			"lockstep_comparison":"not substituted; #474 is a separate non-main source stack",
+			"lockstep_comparison":"#474 opt-in wiring is merged; default asynchronous path asserted, opt-in not tested",
 			"collider_extraction_isolated":false,
 			"collider_measurement":"published hard-packet size/revision plus Main terrain-gate timing; worker_pipeline_residual_ms is non-isolated and must not be relabelled collider extraction",
 			"performance_thresholds":"none; performance distributions are evidence, correctness gates are separate",
