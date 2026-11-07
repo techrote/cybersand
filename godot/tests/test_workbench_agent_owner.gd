@@ -3,6 +3,7 @@ extends SceneTree
 ## #526 source-matched integration: real shared-workbench owner and native World.
 ## Not a mock; this exercises the same worker command queue and real GDExtension.
 const Setup = preload("res://scripts/workbench_setup.gd")
+const RenderJoin = preload("res://scripts/workbench_authoring_render_join.gd")
 const Watchdogs = preload("res://tests/support/ci_execution_policy.gd")
 
 var main: Control
@@ -99,6 +100,15 @@ func run() -> void:
 		"native-only observation fabricated a matched frame")
 	check(original.get("identity",{}).get("world_generation",-1)>0,
 		"native observation omitted World identity")
+	var joined: Dictionary = await RenderJoin.join_after_draw(main,original)
+	check(joined.get("status")=="observed"
+		and joined.get("image_status")=="matched_post_draw"
+		and joined.get("framebuffer_png",PackedByteArray()).size()>8,
+		"real post-draw framebuffer was not matched to the native observation: "+str(joined.get("reason","")))
+	if joined.get("status")=="observed":
+		check(joined.render_identity.world_revision == original.identity.world_revision
+			and joined.render_identity.world_generation == original.identity.world_generation,
+			"native/frame render generation and revision differed")
 	var source_counts: Dictionary = original.get("native_counts",{})
 	check(int(source_counts.get(0,0))==96,
 		"blank fixture should contain 96 native Empty cells, observed "+str(source_counts))
