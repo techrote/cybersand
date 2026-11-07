@@ -30,6 +30,9 @@ var server_pid: int = -1
 var service_ticks: int = 0
 var occupied_native_cells: int = -1
 var pinned_native_shards: int = 0
+var pinned_chunks: PackedStringArray = PackedStringArray()
+var resident_native_shards: int = 0
+var resident_native_bytes: int = 0
 var pin_notice: String = ""
 var request_sequence: int = 0
 var refresh_accumulator: float = 0.0
@@ -148,12 +151,21 @@ func _read_response(started_usec: int) -> bool:
         return false
     for line in last_receipts.split("\n", false):
         if line.begins_with("STATUS resident="):
-            for field in line.split(" ", false):
-                if field.begins_with("pinned="):
-                    pinned_native_shards = int(field.split("=")[1])
+            # Replace the complete roster per native STATUS, not just the
+            # last pinned shard. A full budget is only two in this prototype.
+            pinned_chunks.clear()
             pin_notice = ""
+            for field in line.split(" ", false):
+                if field.begins_with("resident="):
+                    resident_native_shards = int(field.split("=")[1].split("/")[0])
+                elif field.begins_with("pinned="):
+                    pinned_native_shards = int(field.split("=")[1])
+                elif field.begins_with("native_cell_bytes="):
+                    resident_native_bytes = int(field.split("=")[1])
         elif line.begins_with("  chunk=") and line.contains("pinned=1"):
-            pin_notice = line.strip_edges()
+            var pinned_row: String = line.strip_edges()
+            pinned_chunks.append(pinned_row)
+            pin_notice = pinned_row
         if line.begins_with("GEN006_STREAM_SERVER_STATE "):
             for field in line.split(" ", false):
                 if field.begins_with("pid="):
@@ -279,10 +291,12 @@ func _unhandled_key_input(event: InputEvent) -> void:
     if move != Vector2i.ZERO:
         world_chunk += move * (24 if key.shift_pressed else 1)
         failure = ""
-        _invoke(PackedStringArray(), true, true)
+        # A real camera miss demands one chunk. Do not manufacture an LRU
+        # eviction by visiting two unrequested synthetic neighbor chunks.
+        _invoke(PackedStringArray(), false, true)
     elif key.keycode == KEY_HOME:
         failure = ""
-        _invoke(PackedStringArray(), true, true)
+        _invoke(PackedStringArray(), false, true)
     elif key.keycode in [KEY_SPACE, KEY_R]:
         get_viewport().set_input_as_handled()
 
@@ -339,7 +353,9 @@ func _draw() -> void:
         "World origin (%d, %d) pixels" % [px_x, px_y],
         HORIZONTAL_ALIGNMENT_LEFT, -1, 15, Color("#b9c7e3"))
     draw_string(font, Vector2(710, 157),
-        "Resident budget: 2 native Worlds",
+        "Native residency: %d / 2 Worlds  |  cell bytes: %d" % [
+            resident_native_shards, resident_native_bytes
+        ],
         HORIZONTAL_ALIGNMENT_LEFT, -1, 15, Color("#b9c7e3"))
     draw_string(font, Vector2(710, 184),
         "Persistent native PID: %d  |  Requests: %d" % [native_pid, total_calls],
@@ -358,18 +374,21 @@ func _draw() -> void:
     draw_string(font, Vector2(710, 277),
         "Native simulation pins: %d (unsupported shard tick)" % pinned_native_shards,
         HORIZONTAL_ALIGNMENT_LEFT, -1, 14, pin_color)
-    if not pin_notice.is_empty():
-        draw_string(font, Vector2(710, 299),
-            pin_notice.left(86), HORIZONTAL_ALIGNMENT_LEFT, 540.0, 12,
-            Color("#f4a261"))
+    # Show every native simulation pin instead of only the last warning.
+    # Pin receipts are taken from the owner-produced resident roster, and the
+    # two-shard capacity bounds the number of on-screen lines.
+    for i in range(pinned_chunks.size()):
+        draw_string(font, Vector2(710, 302 + i * 20),
+            "PIN %d/%d: %s" % [i + 1, pinned_chunks.size(), pinned_chunks[i].left(82)],
+            HORIZONTAL_ALIGNMENT_LEFT, 540.0, 12, Color("#f4a261"))
     if not failure.is_empty():
-        draw_string(font, Vector2(710, 292), failure,
+        draw_string(font, Vector2(710, 349), failure,
                     HORIZONTAL_ALIGNMENT_LEFT, 550.0, 15, Color("#ff967b"))
     else:
         var lines := last_receipts.split("\n", false)
         var tail := lines.slice(maxi(0, lines.size() - 14))
         for i in range(tail.size()):
-            draw_string(font, Vector2(710, 314 + i * 22),
+            draw_string(font, Vector2(710, 363 + i * 19),
                         tail[i].left(92), HORIZONTAL_ALIGNMENT_LEFT,
                         520.0, 13, Color("#a5be9d"))
     draw_string(font, Vector2(28, 751),
