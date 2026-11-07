@@ -16,7 +16,7 @@ For face connectivity, anchors, source eligibility, caps and handoff semantics,
 retrieve [freed objects](../architecture/workbench-freed-objects.md).
 [Workbench controls](../systems/player-control-playground.md#cutting-ordinary-workbench-structures),
 [protocol/format](interfaces-and-message-contracts.md#workbench-cut-protocol-and-version4-starts)
-and [qualification](../operations/local-build-and-validation.md#ordinary-workbench-cutting-qualification)
+and [qualification](../operations/local-build-and-validation.md#brush-cut-successor-qualification)
 own their respective surfaces. The dated audit preserves failures and platform
 limits. `retrieval-questions-workbench-freed.json` adds three post-implementation
 development questions; older frozen questions remain unchanged.

@@ -82,3 +82,10 @@ Keep466 Draft. Request separate independent adversarial review of geometry/capac
 ## Documentation checklist
 
 Update the canonical release rules, configuration capacities, copied-value interface, ordinary controls, build instructions, ownership, handover, roadmap, documentation route and additive retrieval question together. Preserve the old dated qualification as historical source-bound evidence with an explicit successor notice. No ABI wire shape, material catalogue identity, threading owner, ADR contact arithmetic, global default or CI policy change requires a new design in those homes.
+
+The first documentation/repository pass found one renamed qualification anchor;
+the retrieval route was corrected. Initial checks remain in
+[initial checks](workbench-brush-cut-20261107/initial-checks.json). The rebuilt
+Linux artifact freshly reproduces the supported-floor failure: GLIBC2.35
+versus2.34; its complete symbol census is retained separately. This is an
+explicit blocker, not a pass from successful Ubuntu24.04 execution.
