@@ -153,10 +153,65 @@ limits rather than a universal frame-time promise. Cut timing stops accumulating
 at completion; later census RPCs cannot inflate it. First render-parts observer
 CPU time can hit an existing cache and is not GPU first-presentation latency.
 
-Qualification is pending at this implementation checkpoint. New notification,
-actual-worker stop and independent dense-bitmap row-span tests join the retained
-ownership, tuple, material, lifecycle, replay and actual application controls.
+Production correction14f7c60c is qualified by160 fresh matched episodes per
+arm:32 host/worker/FPS/route cells with five repeats each. All32 candidate
+medians are lower under the registered rule, with exact ordered native-attempt,
+source/geometry, mass/inertia, frontier/discovery and conversion-counter parity
+in every episode. The [comparison ledger](workbench-cut-hitch-20261107/comparison.csv)
+retains unrounded microseconds and per-cell minimum/maximum. The
+[summary](workbench-cut-hitch-20261107/summary.json) and
+[raw custody index](workbench-cut-hitch-20261107/raw-artifact-index.json)
+retain all cohorts, commands, statuses, hashes, failed attempts and resource use.
+The reproducible analyzer is `tools/sol281/compare_workbench_cut_hitch.py`.
+
+Windows worker1 at60FPS: median first-tree hold309016→179138usec;
+appended-building278087→219310; refused cut254956→49867. The deliberately
+heavy2048-square history stress medians fall from8.018–9.281seconds to
+0.080–0.103seconds across the four host/worker combinations. These are starting
+recipe CPU costs, not the measured duration of the owner's particular pause.
+Tiny debris at30FPS remains approximately200ms on Windows: nominally lower
+medians do not establish a meaningful improvement there. The six-request handoff
+and deferred delivery still take frame opportunities; both frozen physics-frame
+checks remain. [Godot's deferred-call contract](https://docs.godotengine.org/en/stable/classes/class_callable.html#class-callable-method-call-deferred)
+explains idle delivery. This is no universal60Hz, zero-pause or original SOL CPU
+result. Fragmented histories may retain more temporary interval storage than
+the old dense bitmap; adversarial editor peak memory was not measured. Native
+arrival-history storage/capacity is unchanged, including42.47MB at2048square.
+
+Actual Windows/Linux workers1/4 each pass the597-check benchmark plus4206 core,
+230 debris,165 brush and83 whole-object checks. Both hosts also pass154 exact
+row-span oracle checks,18 notification/timeout checks and24 actual-worker
+transport checks, plus retained canvas/fleet/pilot/input controls. The initial
+Linux core lifecycle observer missed a short phase:50checks/1failure is retained
+in candidate-001. Observer-only a8649e99 holds a test subclass at pre-acknowledge
+or post-commit/pre-finalize, checks actual phase, then tears down the owner.
+All four Windows/Linux exact/core reruns pass56checks each against the unchanged
+14f7c60c production project. No production delay was added to rescue the observer.
+The replacement bookkeeping test runs after worker join; it does not prove a
+concurrent replacement/shutdown schedule. Actual before/after-publication stop,
+late/stale reply, timeout, retirement and discovery transport refusal are covered.
+
+All nine implementation-head docs/M11/material/compiler/repository/runtime/
+retrieval/diff gates pass at14f7c60c. Final documentation-head gates are recorded
+separately in the PR with exact head and receipt hash. New native compilation or
+sanitizer execution is unnecessary for unchanged compiled inputs and is not claimed.
 Native93-source plus15-build-input inventories, material guards and both compiled
 binaries remain unchanged. No fresh native compilation or sanitizer run is
 claimed for this GDScript-only correction. Draft519/510/466, historical SOL
 failures and platform admission blockers remain separate and unchanged.
+
+
+Performance decision: PASS for the registered lower-median comparison and exact
+functional/ownership equivalence; CONDITIONAL for a universally hitch-free
+workbench. Original whole-geometry SOL physical clearance remains NO-GO, and
+general integration remains blocked by the retained Linux ABI floor and other
+historical qualifications. No force, mass, gravity, contact law, material ID,
+capacity, accepted default or parent PR changed. Keep Draft and request separate
+independent adversarial review before owner integration.
+
+An immutable Windows preview from the tested production project is left open as
+“CyberSand · Faster cuts · Draft #519”. Existing user windows/drawings were not
+reset or closed. Existing local launchers now select this package. It starts the
+same native512-square cut canvas with one initial region Step before any body
+exists. OpenGL/NVIDIA581.80/TITAN RTX, Godot4.7 and Rapier0.35.2 startup/readback
+are recorded; this is a GUI startup observation, not a graphical latency cohort.

@@ -16,6 +16,9 @@ The [dependent core experiment](audits/2026-11-07-workbench-rectangle-core.md)
 implements the owner's lossy representation: one interior rigid brick rectangle,
 excess native Sand, full source eligibility and separate ownership counts.
 Physics coefficients remain fixed; original whole-shape SOL gates are separate.
+Its [remaining cut-hitch correction](audits/2026-11-07-workbench-rectangle-core.md#remaining-cut-hitch-correction--2026-11-07)
+records exact row reconstruction and bounded refusal batching, with full repeated
+Windows/Linux timings and retained limitations.
 
 ## Cut appearance and responsiveness
 

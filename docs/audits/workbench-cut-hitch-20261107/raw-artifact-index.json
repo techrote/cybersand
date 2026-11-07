@@ -1,0 +1,1030 @@
+{
+  "scope": "All retained campaign files outside copied projects/caches. Complete copied authored-project hash inventories are inside original cohort receipts. Logs remain local, not committed. Interactive logs/process state are mutable observations; startup-readback.log is the frozen startup copy.",
+  "files": [
+    {
+      "path": "build/workbench-cut-hitch/baseline-001/receipt.json",
+      "bytes": 128717,
+      "sha256": "32600430ca7d8cf7486c5e723cc8a3390a00aa458c194f22ef02c97466660624"
+    },
+    {
+      "path": "build/workbench-cut-hitch/baseline-001/windows/import.log",
+      "bytes": 38521,
+      "sha256": "60db921ccb4bfe46306f00887550a76eb2f8126f7c2973cde29777575c088f2a"
+    },
+    {
+      "path": "build/workbench-cut-hitch/baseline-001/windows/import.receipt.json",
+      "bytes": 523,
+      "sha256": "a4bcd23aa6d1ac468b9ff00a14ece80a65d775ffcb962d7b87d118ac88b4b62c"
+    },
+    {
+      "path": "build/workbench-cut-hitch/baseline-001/windows/test_workbench_cut_hitch-w1.log",
+      "bytes": 1161,
+      "sha256": "f42801d6ffcb0eba1d862dc3683e6e436314b75a952e1266ec51c36a34a1f814"
+    },
+    {
+      "path": "build/workbench-cut-hitch/baseline-002/receipt.json",
+      "bytes": 128720,
+      "sha256": "676e51c6762d098b0f2b388583dd8a923f61aa755f5969c904b1c42c63c7a070"
+    },
+    {
+      "path": "build/workbench-cut-hitch/baseline-002/windows/import.log",
+      "bytes": 38521,
+      "sha256": "60db921ccb4bfe46306f00887550a76eb2f8126f7c2973cde29777575c088f2a"
+    },
+    {
+      "path": "build/workbench-cut-hitch/baseline-002/windows/import.receipt.json",
+      "bytes": 523,
+      "sha256": "720f4b741ff193323691cffb265c927913c1ce42a6933a3f2754f5fa6c86191f"
+    },
+    {
+      "path": "build/workbench-cut-hitch/baseline-002/windows/test_workbench_cut_hitch-w1.log",
+      "bytes": 738,
+      "sha256": "89819ee1e27cf9112b1b2dcdeb453d8ec53baf95c99a46500a90b62e7629d3f0"
+    },
+    {
+      "path": "build/workbench-cut-hitch/baseline-003/linux/import.log",
+      "bytes": 37918,
+      "sha256": "21d9c981e506b46c72a1382ad0c6e44f2cc234a21196ee1b6129402ab48c2d7f"
+    },
+    {
+      "path": "build/workbench-cut-hitch/baseline-003/linux/import.receipt.json",
+      "bytes": 671,
+      "sha256": "13f630d4264773ec6b6b79efdc079de4ae2e2fed2dac76589eafedc7fb7c386c"
+    },
+    {
+      "path": "build/workbench-cut-hitch/baseline-003/linux/test_workbench_canvas.log",
+      "bytes": 596,
+      "sha256": "c7b2b32de06764f681226427539ec137db9ff541b83d8472c623b6c542492132"
+    },
+    {
+      "path": "build/workbench-cut-hitch/baseline-003/linux/test_workbench_canvas.receipt.json",
+      "bytes": 733,
+      "sha256": "6152927fcdb6e489c5afd1b9ad1d526c12e014103568198b148fa17150995ded"
+    },
+    {
+      "path": "build/workbench-cut-hitch/baseline-003/linux/test_workbench_canvas_body.log",
+      "bytes": 256,
+      "sha256": "3d710f26f38d2b7d5491482afe99b7d208ce9edcf87f54b5b2bb0672442d908d"
+    },
+    {
+      "path": "build/workbench-cut-hitch/baseline-003/linux/test_workbench_canvas_body.receipt.json",
+      "bytes": 748,
+      "sha256": "d22f8d9a10155bb26a55075a1dc713c6c26340b7fc95884b023e0bd65f387ca0"
+    },
+    {
+      "path": "build/workbench-cut-hitch/baseline-003/linux/test_workbench_cut_hitch-w1.json",
+      "bytes": 936993,
+      "sha256": "95eb9dcb198811ca9e5c9d0ca16b5f349975c9c6c346fc04034264b954d5c43d"
+    },
+    {
+      "path": "build/workbench-cut-hitch/baseline-003/linux/test_workbench_cut_hitch-w1.log",
+      "bytes": 1551,
+      "sha256": "bc3b510b56e56c9a7b988c7d9dde576d8489cb10cc55d5c3bcde07508f3c1f0e"
+    },
+    {
+      "path": "build/workbench-cut-hitch/baseline-003/linux/test_workbench_cut_hitch-w1.receipt.json",
+      "bytes": 943,
+      "sha256": "f8bcd95a01a473927bc1cad3146604b34b16fe15629c4a4e5656793321ab3054"
+    },
+    {
+      "path": "build/workbench-cut-hitch/baseline-003/linux/test_workbench_cut_hitch-w4.json",
+      "bytes": 937001,
+      "sha256": "7c790e482ab3a6e77a233e2422586531fe7dd1c86dfbf1a7025785ee637a521a"
+    },
+    {
+      "path": "build/workbench-cut-hitch/baseline-003/linux/test_workbench_cut_hitch-w4.log",
+      "bytes": 1551,
+      "sha256": "bc3b510b56e56c9a7b988c7d9dde576d8489cb10cc55d5c3bcde07508f3c1f0e"
+    },
+    {
+      "path": "build/workbench-cut-hitch/baseline-003/linux/test_workbench_cut_hitch-w4.receipt.json",
+      "bytes": 942,
+      "sha256": "98058dfa416184f23ecf6be6471ce6331e76a649ac4ca96a185cb72880251738"
+    },
+    {
+      "path": "build/workbench-cut-hitch/baseline-003/linux/test_workbench_cut_lifecycle.log",
+      "bytes": 258,
+      "sha256": "433f98aa4b6d97f503bb2a0ba8ee99624ab5639d497719678768acc4a4956a5b"
+    },
+    {
+      "path": "build/workbench-cut-hitch/baseline-003/linux/test_workbench_cut_lifecycle.receipt.json",
+      "bytes": 754,
+      "sha256": "9a6feb762c544a1d74f29a561b3d8b49fe01bb407a43cd148c2a92b7a80c6251"
+    },
+    {
+      "path": "build/workbench-cut-hitch/baseline-003/linux/test_workbench_fleet_session.log",
+      "bytes": 258,
+      "sha256": "de1a37723411ff3f440a3a7ffa1857ef7c78f992dfd435ead9e0af40307bae72"
+    },
+    {
+      "path": "build/workbench-cut-hitch/baseline-003/linux/test_workbench_fleet_session.receipt.json",
+      "bytes": 754,
+      "sha256": "4c37ed19f7e3a1d6b539d041d3afbb3cb260da8330c8a29bdc6b62a4a6c13786"
+    },
+    {
+      "path": "build/workbench-cut-hitch/baseline-003/linux/test_workbench_input.log",
+      "bytes": 1231,
+      "sha256": "6328828ab109cb6673d2be3cd316861f1b9c9ac927de39b9ac48905b1fcf04e1"
+    },
+    {
+      "path": "build/workbench-cut-hitch/baseline-003/linux/test_workbench_input.receipt.json",
+      "bytes": 730,
+      "sha256": "8023f64b102a383fe81f6a3a66a73bbba76789b9f65887f99e1a17d41e0c3c14"
+    },
+    {
+      "path": "build/workbench-cut-hitch/baseline-003/linux/test_workbench_pilot_ui.log",
+      "bytes": 846,
+      "sha256": "05649b61218a5b7717c7bf1eb34041fc5811fdfe9cf24215b11008d0cfa961b7"
+    },
+    {
+      "path": "build/workbench-cut-hitch/baseline-003/linux/test_workbench_pilot_ui.receipt.json",
+      "bytes": 738,
+      "sha256": "d50282d0db8edd29f6c2a49c9462d7484f991ce7aaf98f88fdaf20545e20f9c7"
+    },
+    {
+      "path": "build/workbench-cut-hitch/baseline-003/linux/test_workbench_rectangle_core_lifecycle.log",
+      "bytes": 258,
+      "sha256": "433f98aa4b6d97f503bb2a0ba8ee99624ab5639d497719678768acc4a4956a5b"
+    },
+    {
+      "path": "build/workbench-cut-hitch/baseline-003/linux/test_workbench_rectangle_core_lifecycle.receipt.json",
+      "bytes": 787,
+      "sha256": "ebb63d03f6e48c9b025c3944cf9eb7ed5e2743fd3ae65e6e74cebaf112a52f13"
+    },
+    {
+      "path": "build/workbench-cut-hitch/baseline-003/receipt.json",
+      "bytes": 244653,
+      "sha256": "3bda9b09adb783a09b3158c74bea9efc3d6988132b82e86c1b18b71f03c3f6bf"
+    },
+    {
+      "path": "build/workbench-cut-hitch/baseline-003/windows/import.log",
+      "bytes": 38521,
+      "sha256": "60db921ccb4bfe46306f00887550a76eb2f8126f7c2973cde29777575c088f2a"
+    },
+    {
+      "path": "build/workbench-cut-hitch/baseline-003/windows/import.receipt.json",
+      "bytes": 523,
+      "sha256": "dc98f72a21fc25fcce7aa7f762da2e431f5cf3c503fe194e0b7be259e7a60d22"
+    },
+    {
+      "path": "build/workbench-cut-hitch/baseline-003/windows/test_workbench_canvas.log",
+      "bytes": 600,
+      "sha256": "487306dbaba6960889504620671bbeac09bcd48165a1b434625b9d737e54a2d6"
+    },
+    {
+      "path": "build/workbench-cut-hitch/baseline-003/windows/test_workbench_canvas.receipt.json",
+      "bytes": 583,
+      "sha256": "be79156f491a1225597f4acbeb47a1ee6054e10314be74b48fdfa48b86f831f7"
+    },
+    {
+      "path": "build/workbench-cut-hitch/baseline-003/windows/test_workbench_canvas_body.log",
+      "bytes": 260,
+      "sha256": "1cf91c3b35f42e2e9d16a51f73da1b8b81137cf257c11c9fc9f7424806682a6c"
+    },
+    {
+      "path": "build/workbench-cut-hitch/baseline-003/windows/test_workbench_canvas_body.receipt.json",
+      "bytes": 599,
+      "sha256": "f835f4a7f79416d01b4879559b2c1db96871ca955abbd7acf9a90065c52d566a"
+    },
+    {
+      "path": "build/workbench-cut-hitch/baseline-003/windows/test_workbench_cut_hitch-w1.json",
+      "bytes": 937015,
+      "sha256": "a3743e1230c740221fcda8c957443c4f64a721eb710bbfe350c9b9f5be8af72b"
+    },
+    {
+      "path": "build/workbench-cut-hitch/baseline-003/windows/test_workbench_cut_hitch-w1.log",
+      "bytes": 1595,
+      "sha256": "1e168635641f80403586a2f5eedb5bf767f6b2d35140d3467e78a4446a201aac"
+    },
+    {
+      "path": "build/workbench-cut-hitch/baseline-003/windows/test_workbench_cut_hitch-w1.receipt.json",
+      "bytes": 599,
+      "sha256": "57c05083dd267ca25b4e789921ea3c29177571b5f1fe68c71dcd7f3159e6a30b"
+    },
+    {
+      "path": "build/workbench-cut-hitch/baseline-003/windows/test_workbench_cut_hitch-w4.json",
+      "bytes": 937027,
+      "sha256": "555733eb8eb8f957c6e5349766098250b13bb77c668f833a115b45e44ab3aae5"
+    },
+    {
+      "path": "build/workbench-cut-hitch/baseline-003/windows/test_workbench_cut_hitch-w4.log",
+      "bytes": 1595,
+      "sha256": "1e168635641f80403586a2f5eedb5bf767f6b2d35140d3467e78a4446a201aac"
+    },
+    {
+      "path": "build/workbench-cut-hitch/baseline-003/windows/test_workbench_cut_hitch-w4.receipt.json",
+      "bytes": 598,
+      "sha256": "673fefda62d53c9acd10be2c838f33821dcef85785c9f6b34a38e52f01b2f4fb"
+    },
+    {
+      "path": "build/workbench-cut-hitch/baseline-003/windows/test_workbench_cut_lifecycle.log",
+      "bytes": 262,
+      "sha256": "0e598e0ef33e91cc512dd500cecc398e8cd7c3afe481579263153a7320714fe4"
+    },
+    {
+      "path": "build/workbench-cut-hitch/baseline-003/windows/test_workbench_cut_lifecycle.receipt.json",
+      "bytes": 604,
+      "sha256": "fb30b46d7cdc700ebc3f8a0980c98e840bbf33150a2eb424dc7481bbadccb904"
+    },
+    {
+      "path": "build/workbench-cut-hitch/baseline-003/windows/test_workbench_fleet_session.log",
+      "bytes": 262,
+      "sha256": "634f905ac03e58d4737bde7eb8adf6ec8d661ce01f04c9b26bb3fe581f4a3724"
+    },
+    {
+      "path": "build/workbench-cut-hitch/baseline-003/windows/test_workbench_fleet_session.receipt.json",
+      "bytes": 605,
+      "sha256": "61f287ad07d78df1368586fe998dcb1638f68104365d820f7a4ea2ee82de94df"
+    },
+    {
+      "path": "build/workbench-cut-hitch/baseline-003/windows/test_workbench_input.log",
+      "bytes": 1235,
+      "sha256": "f4f5a3d6a97d5894bc5ffdcf4d00551e4ac5507abef950e2f25ba4b350668788"
+    },
+    {
+      "path": "build/workbench-cut-hitch/baseline-003/windows/test_workbench_input.receipt.json",
+      "bytes": 581,
+      "sha256": "c7197419fb767a7dcf6f8b44a34379efc032f3b2ec98f8c3a740f8c3ae315f46"
+    },
+    {
+      "path": "build/workbench-cut-hitch/baseline-003/windows/test_workbench_pilot_ui.log",
+      "bytes": 865,
+      "sha256": "e552b6c8178f7e38044fd393dd14d44f2a98078dcdbef20afdf2eab323d76600"
+    },
+    {
+      "path": "build/workbench-cut-hitch/baseline-003/windows/test_workbench_pilot_ui.receipt.json",
+      "bytes": 590,
+      "sha256": "233434415176a02bf74a5d9a05036c4c1477bbfc9a4d54e5b1640aa0790e353c"
+    },
+    {
+      "path": "build/workbench-cut-hitch/baseline-003/windows/test_workbench_rectangle_core_lifecycle.log",
+      "bytes": 262,
+      "sha256": "0e598e0ef33e91cc512dd500cecc398e8cd7c3afe481579263153a7320714fe4"
+    },
+    {
+      "path": "build/workbench-cut-hitch/baseline-003/windows/test_workbench_rectangle_core_lifecycle.receipt.json",
+      "bytes": 637,
+      "sha256": "1bb88cee0351d15303027ecf6f1b91098c0b8fe1da11ab68e221ba2a1ef18f84"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/linux/import.log",
+      "bytes": 38150,
+      "sha256": "180ad4fae38de804636446e9eb73b87f5d6a6cfb6bf53e2a054392095f42a45c"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/linux/import.receipt.json",
+      "bytes": 675,
+      "sha256": "ba25fd11179303b8c7942363dbb73550c4dc7b4212da35b80727a23a622f017f"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/linux/test_workbench_brush_cuts-w1.json",
+      "bytes": 248685,
+      "sha256": "0418f76a38c2dfeef80e554f08ce57018653f227f58427d92c110bddc190271d"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/linux/test_workbench_brush_cuts-w1.log",
+      "bytes": 261,
+      "sha256": "bd472bba9b430b9213406b9fd0b3504209897a83c85ee72d2d051dcc319533c8"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/linux/test_workbench_brush_cuts-w1.receipt.json",
+      "bytes": 950,
+      "sha256": "681c8a2b8156ef13c72c0645b2f46dead261c317051af9d12b2f6b3d5b8edd49"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/linux/test_workbench_brush_cuts-w4.json",
+      "bytes": 248675,
+      "sha256": "52c2bb929c91f6a6103931e26318d6e95449b3763921dd40f13e22c3cd7200d3"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/linux/test_workbench_brush_cuts-w4.log",
+      "bytes": 261,
+      "sha256": "bd472bba9b430b9213406b9fd0b3504209897a83c85ee72d2d051dcc319533c8"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/linux/test_workbench_brush_cuts-w4.receipt.json",
+      "bytes": 950,
+      "sha256": "901946cfad6a0ff8c08e40e2a98e4efb6008e6c67950754b383c1d27416049ac"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/linux/test_workbench_canvas.log",
+      "bytes": 597,
+      "sha256": "9abe3263a93bd0d5567d4ea168cefd63277577f4f6a9514588d8f0553e03345b"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/linux/test_workbench_canvas.receipt.json",
+      "bytes": 735,
+      "sha256": "7224eee525fd454dafe0cad330bb611dd73b2101cbc55f8ebefed4f454a379a8"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/linux/test_workbench_canvas_body.log",
+      "bytes": 256,
+      "sha256": "3d710f26f38d2b7d5491482afe99b7d208ce9edcf87f54b5b2bb0672442d908d"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/linux/test_workbench_canvas_body.receipt.json",
+      "bytes": 750,
+      "sha256": "9c8181e5321f0f47fa900e0461137f42d80111aa90c57b86c3f044acc519da9b"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/linux/test_workbench_cut_hitch-w1.json",
+      "bytes": 904545,
+      "sha256": "e163e34ea909c325521d6731f10c97dbe28c04e5648030c4b021c413f48c992f"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/linux/test_workbench_cut_hitch-w1.log",
+      "bytes": 1551,
+      "sha256": "bc3b510b56e56c9a7b988c7d9dde576d8489cb10cc55d5c3bcde07508f3c1f0e"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/linux/test_workbench_cut_hitch-w1.receipt.json",
+      "bytes": 945,
+      "sha256": "74c849c2ad442244783fc3cf8f94ea8189f4c88d363d5633e58a57a073a6fdc5"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/linux/test_workbench_cut_hitch-w4.json",
+      "bytes": 904553,
+      "sha256": "9e2471f269a91887ae193f1a150f05f37900a23efa628e5764507981f40436ae"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/linux/test_workbench_cut_hitch-w4.log",
+      "bytes": 1551,
+      "sha256": "bc3b510b56e56c9a7b988c7d9dde576d8489cb10cc55d5c3bcde07508f3c1f0e"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/linux/test_workbench_cut_hitch-w4.receipt.json",
+      "bytes": 945,
+      "sha256": "9ed8d803b97692c7a2c982799e7ba1df3e49079452d808abf11d714dabc1643e"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/linux/test_workbench_cut_lifecycle.log",
+      "bytes": 258,
+      "sha256": "433f98aa4b6d97f503bb2a0ba8ee99624ab5639d497719678768acc4a4956a5b"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/linux/test_workbench_cut_lifecycle.receipt.json",
+      "bytes": 756,
+      "sha256": "029c73773fabaa529898e24e3932b74350f4986585f5e8de86a11680fa82b796"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/linux/test_workbench_cut_transport.log",
+      "bytes": 260,
+      "sha256": "9783ff01cacbdfa67c48d469b2172ebc12fe15383edada1d4be6c36f7b9e7f19"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/linux/test_workbench_cut_transport.receipt.json",
+      "bytes": 756,
+      "sha256": "8777d5f291a759027122f76b783ef9395fbd5148e878174444feaf0e8dcafff3"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/linux/test_workbench_cut_wakeup.log",
+      "bytes": 255,
+      "sha256": "f1fd8db41cdc1e0bad4c46791969b40eb88576d3066350ca88fcb5f10ac94edf"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/linux/test_workbench_cut_wakeup.receipt.json",
+      "bytes": 746,
+      "sha256": "6b3011346284eeba470d1788cbfe9e1dab82216fed58ee0c315168be2fc04059"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/linux/test_workbench_fleet_session.log",
+      "bytes": 258,
+      "sha256": "de1a37723411ff3f440a3a7ffa1857ef7c78f992dfd435ead9e0af40307bae72"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/linux/test_workbench_fleet_session.receipt.json",
+      "bytes": 756,
+      "sha256": "62e0109a7cd6ff2c2477793b6d9f64bc49cbb910462aad720c1c985011617c98"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/linux/test_workbench_freed-w1.json",
+      "bytes": 249309,
+      "sha256": "df1d7bd0de8ab5f8381f3b4013ae1cbba0172d2917dc4852a9dd59fd90d39ad4"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/linux/test_workbench_freed-w1.log",
+      "bytes": 260,
+      "sha256": "1e5514693589389f8a77a3890afab9d61b1ee2fb6aeb20267c8ec7b72fe704b2"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/linux/test_workbench_freed-w1.receipt.json",
+      "bytes": 930,
+      "sha256": "3cbd665318d2e8ff842c982d42c473c2978f4cfc3b9b27608a0832e235f3c4d3"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/linux/test_workbench_freed-w4.json",
+      "bytes": 249319,
+      "sha256": "e506e214024100c9c778a4a2748b31444f4368c261a618d44e43fbae3f3d9b18"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/linux/test_workbench_freed-w4.log",
+      "bytes": 260,
+      "sha256": "1e5514693589389f8a77a3890afab9d61b1ee2fb6aeb20267c8ec7b72fe704b2"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/linux/test_workbench_freed-w4.receipt.json",
+      "bytes": 930,
+      "sha256": "0611ccb9b30d8ac7ff12f25a14408f6ad962d6cbde5596aa8a50ca42a68fde50"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/linux/test_workbench_input.log",
+      "bytes": 1231,
+      "sha256": "9429938d6382e7b945217a27ddf1e97c513e7842c9ade2c28efd868b4cac6ed2"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/linux/test_workbench_input.receipt.json",
+      "bytes": 732,
+      "sha256": "398f41c131bad439454fd22ecf91d5d1bce3e8b3d8ccc90a9ca87300ad673374"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/linux/test_workbench_pilot_ui.log",
+      "bytes": 846,
+      "sha256": "05649b61218a5b7717c7bf1eb34041fc5811fdfe9cf24215b11008d0cfa961b7"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/linux/test_workbench_pilot_ui.receipt.json",
+      "bytes": 741,
+      "sha256": "09b976d87e52a7f5a2249862b9f4a76d66e60e1edb62ab16959177016087eb23"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/linux/test_workbench_rectangle_core-w1.json",
+      "bytes": 143410,
+      "sha256": "9ef47b271a97f2b155eca63b73533212b5d494cfc4438edd63d9e73567e0637b"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/linux/test_workbench_rectangle_core-w1.log",
+      "bytes": 262,
+      "sha256": "9741b060bbbff1522cae62bd7d94a942307df1f69fba6f8d149a1367e6eb14a6"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/linux/test_workbench_rectangle_core-w1.receipt.json",
+      "bytes": 965,
+      "sha256": "a06ac9add73ec46b22fac341ce84fe358da78b6cd18f6af2d4bfcdf3680c82ef"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/linux/test_workbench_rectangle_core-w4.json",
+      "bytes": 143410,
+      "sha256": "38c6ac6c2db45f38f0d8a6f2043f49536c125340e8d7566a47459fa5ea19099e"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/linux/test_workbench_rectangle_core-w4.log",
+      "bytes": 262,
+      "sha256": "9741b060bbbff1522cae62bd7d94a942307df1f69fba6f8d149a1367e6eb14a6"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/linux/test_workbench_rectangle_core-w4.receipt.json",
+      "bytes": 966,
+      "sha256": "a414be7d040ee485ba9f2ad30c99574d2ed5a2ade6eb7bffcbb039b1e9c6d204"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/linux/test_workbench_rectangle_core_lifecycle.log",
+      "bytes": 624,
+      "sha256": "7abbbaaa96d111f2b576e8077182fd2ce20b8f7bc8451f08f02527a765aea032"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/linux/test_workbench_rectangle_core_lifecycle.receipt.json",
+      "bytes": 790,
+      "sha256": "32f4fbfd630377b73b16e7037f4b9134bda287c0af63faed174f1de6c395c569"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/linux/test_workbench_row_spans.log",
+      "bytes": 255,
+      "sha256": "6024be643d91a8963115cc9e7ee796362d0ecad50498bcea2bea21a6e142dabe"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/linux/test_workbench_row_spans.receipt.json",
+      "bytes": 744,
+      "sha256": "251d7232e17213615e75361ebe5fc3fa7d688e08d56aaf5d415f4bb8ad350113"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/linux/test_workbench_small_debris-w1.json",
+      "bytes": 406910,
+      "sha256": "33aa23f651edfd9eb144206e878791858cf905cd74d1d1c9cbf0912bf0e93521"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/linux/test_workbench_small_debris-w1.log",
+      "bytes": 261,
+      "sha256": "7876f7f46a2dd061e02a492da34b1d7fa6cc8a392d7fc1ef58866fa7675ba55f"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/linux/test_workbench_small_debris-w1.receipt.json",
+      "bytes": 956,
+      "sha256": "7c5d9c550ae2dec43174056b5d28d4fcf020132fee5609ba0ad49f2cc7d2b28e"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/linux/test_workbench_small_debris-w4.json",
+      "bytes": 406900,
+      "sha256": "b6ade42e079e8e216b2761d1046797906561079ef332874822f0ef17425349f7"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/linux/test_workbench_small_debris-w4.log",
+      "bytes": 261,
+      "sha256": "7876f7f46a2dd061e02a492da34b1d7fa6cc8a392d7fc1ef58866fa7675ba55f"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/linux/test_workbench_small_debris-w4.receipt.json",
+      "bytes": 957,
+      "sha256": "183badeecf7575efa817d3844f3f04d59189d16db23f10c2cc80a9f052affccf"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/receipt.json",
+      "bytes": 270744,
+      "sha256": "75f3453ab04e5a30bb5fecfc7686821f3973beb15ce3b319edded928792f36d9"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/windows/import.log",
+      "bytes": 38757,
+      "sha256": "940d265bf0b9e25017fc95baa8944a5c8315842f1ae023b1863319fda77377d3"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/windows/import.receipt.json",
+      "bytes": 525,
+      "sha256": "a85955849c063257e9c51f6a8b9e45984821e3ac73fa31b9807762345b962160"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/windows/test_workbench_brush_cuts-w1.json",
+      "bytes": 248659,
+      "sha256": "708479b69314fafe18d07e9964f2f6cfe640f95c657afbdd0286afa08f35ea1c"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/windows/test_workbench_brush_cuts-w1.log",
+      "bytes": 265,
+      "sha256": "c66147b2e5ae6d52d66fa531a773fc468f96995d5435481575618b5b38e1b7d2"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/windows/test_workbench_brush_cuts-w1.receipt.json",
+      "bytes": 604,
+      "sha256": "a5d6e3d808452ccf96eaaf47c825b911730fa4db377ede1ce9bb6bc9bad4fbf7"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/windows/test_workbench_brush_cuts-w4.json",
+      "bytes": 248648,
+      "sha256": "fb25f31fbfd2af704686f3d77b7542e00a007f3a44b09b945eeec0f9933bbb0c"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/windows/test_workbench_brush_cuts-w4.log",
+      "bytes": 265,
+      "sha256": "c66147b2e5ae6d52d66fa531a773fc468f96995d5435481575618b5b38e1b7d2"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/windows/test_workbench_brush_cuts-w4.receipt.json",
+      "bytes": 604,
+      "sha256": "262df4cfbea54df1f12b475d1f123867090743f4367b53e64f09fd2bae63c783"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/windows/test_workbench_canvas.log",
+      "bytes": 600,
+      "sha256": "4a52e5f4be33e82791c0cbcf100e526abfa0f948bbab10b669a268139d17e2fe"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/windows/test_workbench_canvas.receipt.json",
+      "bytes": 585,
+      "sha256": "7eefb59e5d0ddaca340ee944fef97a42f0267c037583d51efbc9b7e9e8a7c1bb"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/windows/test_workbench_canvas_body.log",
+      "bytes": 260,
+      "sha256": "1cf91c3b35f42e2e9d16a51f73da1b8b81137cf257c11c9fc9f7424806682a6c"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/windows/test_workbench_canvas_body.receipt.json",
+      "bytes": 601,
+      "sha256": "e91575b40a2420843bc390bba0725f8eadc25d0423f3b46681b96c2b564b0e03"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/windows/test_workbench_cut_hitch-w1.json",
+      "bytes": 904516,
+      "sha256": "a726911586fbe31d8af44697850b0dbb6a87fb473ed30addc893a02d516aafcf"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/windows/test_workbench_cut_hitch-w1.log",
+      "bytes": 1595,
+      "sha256": "1e168635641f80403586a2f5eedb5bf767f6b2d35140d3467e78a4446a201aac"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/windows/test_workbench_cut_hitch-w1.receipt.json",
+      "bytes": 600,
+      "sha256": "1a9f8bfc2147ed47b9df893ae6e08af10a53f42740190858b7fae5a226cfb2ea"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/windows/test_workbench_cut_hitch-w4.json",
+      "bytes": 904515,
+      "sha256": "414c8f26c39b4af6e9c1ba69b46b037b1e8034e11cfe7dbb0af37ca81d022cea"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/windows/test_workbench_cut_hitch-w4.log",
+      "bytes": 1595,
+      "sha256": "1e168635641f80403586a2f5eedb5bf767f6b2d35140d3467e78a4446a201aac"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/windows/test_workbench_cut_hitch-w4.receipt.json",
+      "bytes": 600,
+      "sha256": "0ee759c46d4c82537c16aed5dec491e797a7b98b8e24be9831ca214e9e00ca5c"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/windows/test_workbench_cut_lifecycle.log",
+      "bytes": 262,
+      "sha256": "0e598e0ef33e91cc512dd500cecc398e8cd7c3afe481579263153a7320714fe4"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/windows/test_workbench_cut_lifecycle.receipt.json",
+      "bytes": 605,
+      "sha256": "f6633aa901ba464c32522e64c9e9577b2b7d2de0cbe03fff5cee06eb7bd2c06f"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/windows/test_workbench_cut_transport.log",
+      "bytes": 264,
+      "sha256": "6b387d58e03ab3b299fb7aa5d56f4f2b5908761ddf84a2a6af400848e5fa9c33"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/windows/test_workbench_cut_transport.receipt.json",
+      "bytes": 606,
+      "sha256": "03ad6671c74bb8fd1a5f7b257060c29ef91f38c007c1ec2d1c9d6479cfcebeeb"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/windows/test_workbench_cut_wakeup.log",
+      "bytes": 259,
+      "sha256": "5e1f69c6eaca5a794d34884b599fa039a262aa18eee08f476f77628202497708"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/windows/test_workbench_cut_wakeup.receipt.json",
+      "bytes": 598,
+      "sha256": "2acb4b19c77afabe1259d0dcbf3d52f18d3b78cbf2fc6f08be2aa4d9ccdbb26c"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/windows/test_workbench_fleet_session.log",
+      "bytes": 262,
+      "sha256": "634f905ac03e58d4737bde7eb8adf6ec8d661ce01f04c9b26bb3fe581f4a3724"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/windows/test_workbench_fleet_session.receipt.json",
+      "bytes": 607,
+      "sha256": "d44a043861329e736f7ab1826d92abf4d8497b1da9048e50fbaf69986e154a02"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/windows/test_workbench_freed-w1.json",
+      "bytes": 249268,
+      "sha256": "586f23ef3660f0a66eeba7342c99175452e3963954337a0e20bd53bd9a73f7c8"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/windows/test_workbench_freed-w1.log",
+      "bytes": 264,
+      "sha256": "d6dbca4fd4e0912d9f2881c46823a8522e82236b66a0083105764a43d69b4c0e"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/windows/test_workbench_freed-w1.receipt.json",
+      "bytes": 589,
+      "sha256": "ea7a1cadb291a28b5e6ba933ae886e86dcda3b518fa359ee25e715320f949107"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/windows/test_workbench_freed-w4.json",
+      "bytes": 249267,
+      "sha256": "7561597c5647a1f46a9a53ce71d62b14876a31f5d89bbd3e5c201d6b5463e99a"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/windows/test_workbench_freed-w4.log",
+      "bytes": 264,
+      "sha256": "d6dbca4fd4e0912d9f2881c46823a8522e82236b66a0083105764a43d69b4c0e"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/windows/test_workbench_freed-w4.receipt.json",
+      "bytes": 589,
+      "sha256": "3f91b6c217b45b19eb05a21ebb656c8392c39830f78864e0ab301e1e6356f952"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/windows/test_workbench_input.log",
+      "bytes": 1235,
+      "sha256": "7b331ae972a1661248610a22217a9c8319a8d72ecba282368c7ac7ffde29167d"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/windows/test_workbench_input.receipt.json",
+      "bytes": 582,
+      "sha256": "b4bdff4adf9429e8fad1f80e2eb92168d3cbc6032fd705fc4fd83f6db2f9530a"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/windows/test_workbench_pilot_ui.log",
+      "bytes": 865,
+      "sha256": "e552b6c8178f7e38044fd393dd14d44f2a98078dcdbef20afdf2eab323d76600"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/windows/test_workbench_pilot_ui.receipt.json",
+      "bytes": 591,
+      "sha256": "b32cbd3bf2db04f6355865b1f881a0ed98845cee30e1311a9a987710dbbcbef7"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/windows/test_workbench_rectangle_core-w1.json",
+      "bytes": 143391,
+      "sha256": "c90b253b857d5b6be588c6e37afe50e03e68f8d663483d1d7221fc9d904b9931"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/windows/test_workbench_rectangle_core-w1.log",
+      "bytes": 266,
+      "sha256": "5a19811cdf59a105a9d50c78585d426027b2108ce456150551b7eba2f65c3757"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/windows/test_workbench_rectangle_core-w1.receipt.json",
+      "bytes": 616,
+      "sha256": "2545d38f40dada28facdd16c6820629c3eb6d554783e3fdac43d0154392ed92b"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/windows/test_workbench_rectangle_core-w4.json",
+      "bytes": 143394,
+      "sha256": "2d4e73678b51d7ce28b76c1ddad7f60de3155e0a9e2000a859570b40df216ad2"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/windows/test_workbench_rectangle_core-w4.log",
+      "bytes": 266,
+      "sha256": "5a19811cdf59a105a9d50c78585d426027b2108ce456150551b7eba2f65c3757"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/windows/test_workbench_rectangle_core-w4.receipt.json",
+      "bytes": 615,
+      "sha256": "0178d907652ccfc7a4c4576c623d27e59c86ecec893520bf2249ed011534edb1"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/windows/test_workbench_rectangle_core_lifecycle.log",
+      "bytes": 262,
+      "sha256": "0e598e0ef33e91cc512dd500cecc398e8cd7c3afe481579263153a7320714fe4"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/windows/test_workbench_rectangle_core_lifecycle.receipt.json",
+      "bytes": 639,
+      "sha256": "417047de120ff17409471e553e691a93a70f05a657f397bb4fe2e6f358ce4201"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/windows/test_workbench_row_spans.log",
+      "bytes": 259,
+      "sha256": "5a04f2b038bf87782f23031d8788e192a33f842167e4ef2b46533afa816ddb94"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/windows/test_workbench_row_spans.receipt.json",
+      "bytes": 594,
+      "sha256": "021aab765840840e999ab15b3356af7f80f5301c6adb980283d99d2522f8afad"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/windows/test_workbench_small_debris-w1.json",
+      "bytes": 406860,
+      "sha256": "7de682aa117179e3a501d3498c03f6b0ce83e1a0e03095f768808c7b794460b5"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/windows/test_workbench_small_debris-w1.log",
+      "bytes": 265,
+      "sha256": "24c55ca17d3b96fd57eff2b384c8252777222334be376a0804d0e68a3610dd2a"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/windows/test_workbench_small_debris-w1.receipt.json",
+      "bytes": 610,
+      "sha256": "15e1b13acb38181eca1ad4714c0a72807b62f6e0fff8c726a13d6dcfcac81be0"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/windows/test_workbench_small_debris-w4.json",
+      "bytes": 406857,
+      "sha256": "893b9a5b141f7c63ce97e78e4875d18b01a20aa3c2b7c68bcb09aa181ed7499f"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/windows/test_workbench_small_debris-w4.log",
+      "bytes": 265,
+      "sha256": "24c55ca17d3b96fd57eff2b384c8252777222334be376a0804d0e68a3610dd2a"
+    },
+    {
+      "path": "build/workbench-cut-hitch/candidate-001/windows/test_workbench_small_debris-w4.receipt.json",
+      "bytes": 610,
+      "sha256": "09f7c42519dcb2990e554ccb43e9ec65879af3af5ec570a3e7e78932b5c34578"
+    },
+    {
+      "path": "build/workbench-cut-hitch/checks-implementation/compiler.log",
+      "bytes": 83,
+      "sha256": "d645a144c75f3517397c704fe81a8efb86fd092f64d93147bcfa35a1afc8bd3b"
+    },
+    {
+      "path": "build/workbench-cut-hitch/checks-implementation/compiler.receipt.json",
+      "bytes": 429,
+      "sha256": "59b8eb0348aa9cc394967a5426d14d925f266e873193e5fe5607d2d9a4722b34"
+    },
+    {
+      "path": "build/workbench-cut-hitch/checks-implementation/diff-check.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/workbench-cut-hitch/checks-implementation/diff-check.receipt.json",
+      "bytes": 336,
+      "sha256": "07a76beef9d811f589ee3e76ada853ec5bb863f9e23326309d5764de100c2183"
+    },
+    {
+      "path": "build/workbench-cut-hitch/checks-implementation/docs.json",
+      "bytes": 487,
+      "sha256": "5106597a93ff319f3bfb4e5c0cf9bb92cf32ce0a979806fc40141098bf446222"
+    },
+    {
+      "path": "build/workbench-cut-hitch/checks-implementation/docs.log",
+      "bytes": 733,
+      "sha256": "da5bef745411ea3cb6eaf2ed54aad728a3d08045472c9e88598e471efc750071"
+    },
+    {
+      "path": "build/workbench-cut-hitch/checks-implementation/docs.receipt.json",
+      "bytes": 529,
+      "sha256": "bbe1e97c0717f61bd8b45781f42584866ac1ebcaf0324dbec2b7f72c9e52bd15"
+    },
+    {
+      "path": "build/workbench-cut-hitch/checks-implementation/m11.json",
+      "bytes": 318,
+      "sha256": "e5d2a8eecef5876957dc4ecff01b99af696053871616d2dea563371d44b2427b"
+    },
+    {
+      "path": "build/workbench-cut-hitch/checks-implementation/m11.log",
+      "bytes": 318,
+      "sha256": "e5d2a8eecef5876957dc4ecff01b99af696053871616d2dea563371d44b2427b"
+    },
+    {
+      "path": "build/workbench-cut-hitch/checks-implementation/m11.receipt.json",
+      "bytes": 537,
+      "sha256": "65f09ae38dad31143893597ef37d96d0ac2882f778355119735b6b8372596bb2"
+    },
+    {
+      "path": "build/workbench-cut-hitch/checks-implementation/material.log",
+      "bytes": 4750,
+      "sha256": "20a9dee5297b59fb6e51fbe5972b5839bc519f4ac70993fe7a322be10b301404"
+    },
+    {
+      "path": "build/workbench-cut-hitch/checks-implementation/material.receipt.json",
+      "bytes": 434,
+      "sha256": "6f102e8dbe38a1773bca1d8b16bca342e77cc6ec9fd972e04f788daa07464575"
+    },
+    {
+      "path": "build/workbench-cut-hitch/checks-implementation/receipt.json",
+      "bytes": 5157,
+      "sha256": "d8829ae4bdef208d27f0dcef278bcc2b2c2c588eee8fb76cc0c6d50a638307a5"
+    },
+    {
+      "path": "build/workbench-cut-hitch/checks-implementation/repository.json",
+      "bytes": 2592,
+      "sha256": "e26f0be083b2716acf64f1cd81cbfe77a78ce8f1e8ea6856a73ffa0cee8ee12b"
+    },
+    {
+      "path": "build/workbench-cut-hitch/checks-implementation/repository.log",
+      "bytes": 2592,
+      "sha256": "e26f0be083b2716acf64f1cd81cbfe77a78ce8f1e8ea6856a73ffa0cee8ee12b"
+    },
+    {
+      "path": "build/workbench-cut-hitch/checks-implementation/repository.receipt.json",
+      "bytes": 582,
+      "sha256": "58ba36b8a054968a14ea7bc3d2a5f2c99a856f3cf1331aaf9f7af9128619d4a8"
+    },
+    {
+      "path": "build/workbench-cut-hitch/checks-implementation/retrieval-freed.contexts.md",
+      "bytes": 62308,
+      "sha256": "2e9ad515b14144600080b48cc2ee13844d06379b0be1ce558b98a74b61d0d8b8"
+    },
+    {
+      "path": "build/workbench-cut-hitch/checks-implementation/retrieval-freed.json",
+      "bytes": 95898,
+      "sha256": "359073335af82c9281bc9b0fa0f740199cd6ec85cae8c9d25abb1e57ad583a4a"
+    },
+    {
+      "path": "build/workbench-cut-hitch/checks-implementation/retrieval-freed.log",
+      "bytes": 1221,
+      "sha256": "bdeab1d865f007f7575261c15609b1456387998ceb716b2ac8ad56ee0d8a8c3c"
+    },
+    {
+      "path": "build/workbench-cut-hitch/checks-implementation/retrieval-freed.receipt.json",
+      "bytes": 651,
+      "sha256": "ab473176dd1ce478e6ec63b85c23ea016633da4d52d68404758f3255357d5121"
+    },
+    {
+      "path": "build/workbench-cut-hitch/checks-implementation/retrieval.contexts.md",
+      "bytes": 344552,
+      "sha256": "5f335e10532ac5df2fa7a668912706fe657e315c914384314c6827c10771c178"
+    },
+    {
+      "path": "build/workbench-cut-hitch/checks-implementation/retrieval.json",
+      "bytes": 413585,
+      "sha256": "42c452e5be069801bb7e4e99c584ab23082f91ab479c6ebaffa975d246335197"
+    },
+    {
+      "path": "build/workbench-cut-hitch/checks-implementation/retrieval.log",
+      "bytes": 4388,
+      "sha256": "243022be15ebed887da98daaffc5b749f1bacaec4b95cf98f386b16bf4919a66"
+    },
+    {
+      "path": "build/workbench-cut-hitch/checks-implementation/retrieval.receipt.json",
+      "bytes": 552,
+      "sha256": "5441630807b672567f8789024ae7c7ef9b1b76f2052cbe0aa3ba8d81af3f3730"
+    },
+    {
+      "path": "build/workbench-cut-hitch/checks-implementation/runtime.log",
+      "bytes": 172,
+      "sha256": "0bf4bce8a14d1dda1e93e97f5d60d463c3ecaca4ef616c05a1e431d35113d470"
+    },
+    {
+      "path": "build/workbench-cut-hitch/checks-implementation/runtime.receipt.json",
+      "bytes": 429,
+      "sha256": "f76c0fc273571297e4c569bb532a0ec9e08aafbe7f6500d2ce4b1fab2a07647d"
+    },
+    {
+      "path": "build/workbench-cut-hitch/comparison.json",
+      "bytes": 108150,
+      "sha256": "8fea996fe182cc177745699c3a4617ab82aa628813f09fe83bb9e75e4bf0294e"
+    },
+    {
+      "path": "build/workbench-cut-hitch/dev/wakeup-smoke.log",
+      "bytes": 259,
+      "sha256": "5f4cee9c2a590a27eced917fd073fff81b17c4bc7fef8cb8ca5745f0b1be5949"
+    },
+    {
+      "path": "build/workbench-cut-hitch/dev/wakeup-smoke.receipt.json",
+      "bytes": 533,
+      "sha256": "c689a4428d3280f3137373e71fc98189e0d53a5a7344c6504eed62c224741442"
+    },
+    {
+      "path": "build/workbench-cut-hitch/lifecycle-001/linux/core.log",
+      "bytes": 258,
+      "sha256": "2aba299aa4857aae711efb04bcf723493364b86562e56b8b1928c921441487aa"
+    },
+    {
+      "path": "build/workbench-cut-hitch/lifecycle-001/linux/core.receipt.json",
+      "bytes": 806,
+      "sha256": "aa47a2e0a47b3d8270ffbd1e162506942bce9385efdcb0b88b090e86d768dc57"
+    },
+    {
+      "path": "build/workbench-cut-hitch/lifecycle-001/linux/exact.log",
+      "bytes": 258,
+      "sha256": "2aba299aa4857aae711efb04bcf723493364b86562e56b8b1928c921441487aa"
+    },
+    {
+      "path": "build/workbench-cut-hitch/lifecycle-001/linux/exact.receipt.json",
+      "bytes": 805,
+      "sha256": "1c49afa9514251fb7536905e3d5918b94218132249f294550cbad8aa7e6e470f"
+    },
+    {
+      "path": "build/workbench-cut-hitch/lifecycle-001/receipt.json",
+      "bytes": 33946,
+      "sha256": "5c98a4124773a44d9eaba8c8cea83cb49bb973a8cb5d6d723d970a94435f09cd"
+    },
+    {
+      "path": "build/workbench-cut-hitch/lifecycle-001/windows/core.log",
+      "bytes": 262,
+      "sha256": "e7a62b99be967c140d8cb8556d824c715ad0615390f4150c3197b09b9c7a8f6e"
+    },
+    {
+      "path": "build/workbench-cut-hitch/lifecycle-001/windows/core.receipt.json",
+      "bytes": 615,
+      "sha256": "d53e03511d2beee851d2310fbd48321dae4b030ab73e46be57812fd95297d0f6"
+    },
+    {
+      "path": "build/workbench-cut-hitch/lifecycle-001/windows/exact.log",
+      "bytes": 262,
+      "sha256": "e7a62b99be967c140d8cb8556d824c715ad0615390f4150c3197b09b9c7a8f6e"
+    },
+    {
+      "path": "build/workbench-cut-hitch/lifecycle-001/windows/exact.receipt.json",
+      "bytes": 618,
+      "sha256": "137fe1d052ebc8d701b6671856c83185be7067b83eb8e79462c8025473b40def"
+    },
+    {
+      "path": "build/workbench-cut-hitch/preview/import.log",
+      "bytes": 38816,
+      "sha256": "34694b060291faa0ffc394c3ec93cdcb561b0b94fdfc5fe2b53418cf1769f1f0"
+    },
+    {
+      "path": "build/workbench-cut-hitch/preview/import.receipt.json",
+      "bytes": 496,
+      "sha256": "999929103a372833cf4fdcca0aab0076a85407e841935d4a8f9298b380bb0a91"
+    },
+    {
+      "path": "build/workbench-cut-hitch/preview/interactive.log",
+      "bytes": 376,
+      "sha256": "6c7bc8e18c9892f4ad3ca30847ffd216ceac5ce55ffb7849be81b5055a039f1c"
+    },
+    {
+      "path": "build/workbench-cut-hitch/preview/interactive.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/workbench-cut-hitch/preview/process.json",
+      "bytes": 126,
+      "sha256": "200010ddf71b5dc2bd1b6cafb74e542333d741f01845e9f049b60d8d0b850c8e"
+    },
+    {
+      "path": "build/workbench-cut-hitch/preview/receipt.json",
+      "bytes": 30857,
+      "sha256": "fba323e9e6ceb935f7db57bc1ceef34cdce1d4f11792a6531140f2b9544b1c1b"
+    },
+    {
+      "path": "build/workbench-cut-hitch/preview/workbench.png",
+      "bytes": 67649,
+      "sha256": "0106c0271b36b6f8f67fe202ebf2b0fc9b2da36109dfca429ef09ff8f588d20e"
+    },
+    {
+      "path": "build/workbench-cut-hitch/unchanged-runtimes/receipt.json",
+      "bytes": 68948,
+      "sha256": "390b2769a083c94f4347ec199fc1e8c750445793c65ca433bdcb650adc8c8ea0"
+    },
+    {
+      "path": "build/workbench-cut-hitch/preview/startup-readback.log",
+      "bytes": 376,
+      "sha256": "6c7bc8e18c9892f4ad3ca30847ffd216ceac5ce55ffb7849be81b5055a039f1c"
+    }
+  ]
+}
