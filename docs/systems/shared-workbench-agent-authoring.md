@@ -93,9 +93,11 @@ directly editable, regardless of replacement filter.
 
 The three candidate owner actions are:
 
-- `observe`: `region: Rect2i` wholly within authorized scope,
-  <=4096 cells. Returns `native_observed` with row-major actual
-  `native_material_ids: Array[int]`, native counts, the task and
+- `observe`: optional `region: Rect2i` (defaults to the task
+  scope, but still must fit <=4096 cells), wholly within authorized scope;
+  `detail: "cells" | "counts"` defaults to `"cells"`. Returns `native_observed` with row-major actual
+  `native_material_ids: Array[int]` (empty for counts-only detail),
+  native counts, the task and
   `observation_id`, plus `identity` containing World generation,
   native revision, completed tick and manual-intent revision. Its
   `image_status` is `awaiting_matched_framebuffer`; the main-thread
