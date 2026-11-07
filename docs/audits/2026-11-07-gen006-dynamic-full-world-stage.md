@@ -33,13 +33,21 @@ peak serialization allocations are not pre-reserved or a formal memory budget.
 
 The independent `native/tests/gen006_dynamic_full_world_continuation.cpp` creates
 real signed adjacent native resident chunks `(-2,-2)` and `(-2,-1)` and ticks
-Sand at their shared Y seam until actual Sand crosses into the lower chunk. A
-separate sealed Water17/temperature417 fixture remains in the same native World.
-The test stages and byte-checks a real CYPS image, refuses incorrect bytes,
-session, recipe, generation and incarnation without mutating original native
-physical hash, ledger, count or clock, then swaps its privately restored World
-and advances eight physical ticks against an independently restored uninterrupted
-control, comparing exact physical state hash, full quantity ledger and tick.
+**moving Sand and Water** on non-overlapping parts of their shared Y seam until
+both materials are observed in the lower chunk. A separate sealed Water17 and
+temperature417 fixture remains in the same native World.
+
+**Corrected control:** a completely independent native `World` is constructed
+from the same explicit initial fixture *before any ticks*, and then kept running
+without CYPS save/restore. Source and control must match before staging and at
+every pre-stage native tick. The candidate stages and byte-checks a real CYPS
+image, refuses incorrect bytes, session, recipe, generation and incarnation
+without mutating original native physical hash, ledger, count or clock, then
+swaps its privately restored World and advances eight physical ticks against
+that genuinely uninterrupted control, comparing exact physical state hash,
+full quantity ledger and clock. Comparing two independently deserialized Worlds
+would not detect jointly lost scheduler/sidecar authority; this stronger control
+is specifically intended to detect that mistake.
 Further negative controls exercise a stale native tick, stale pointer/owner
 replacement, and already-consumed one-shot commit. Configurations 1 and 4 are
 executed separately; the test prints maximum **observed**, not configured,
@@ -69,3 +77,20 @@ bundle-preparation/commit API** with complete neighbour/halo/scheduler/ledger
 preflight, private staged candidate storage and one all-or-none publication
 boundary. Until then this independent full-World fixture establishes the
 correctness control, not the desired memory-reclamation capability.
+
+## 7 November follow-up: actual moving Water and uninterrupted-source control
+
+The original first-stage fixture had proved genuine **Sand** seam motion, but
+kept Water17 sealed and compared the candidate after restore to another World
+created by the same restoration path. This revision strengthens the test instead
+of widening production scope. Five additional Water source cells now start on
+the upper signed seam and are required to appear with positive native quantity
+below the seam; the sealed Water17/temperature417 state remains a separate check.
+A fresh native control is initialized independently and never serialized or
+restored during the comparison. This catches loss of activity/timing sidecars
+which could be invisible when both sides use the same broken restore path.
+
+This is still complete-World CYPS continuation, not multi-chunk selective
+release. The specific signed-seam Water workload is a bounded test only;
+regressions on the actual candidate must be reported by exact-head hosted CI,
+not inferred from these written expected outcomes.
