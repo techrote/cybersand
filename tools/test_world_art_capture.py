@@ -105,7 +105,8 @@ class UnitTests(unittest.TestCase):
         noisy = "Godot Engine v4.7\nSHADER ERROR: line 3: bad\nSCRIPT ERROR: Parse Error: x\nOpenGL API ok\n"
         self.assertEqual(len(support.scan_log(noisy)), 2)
         self.assertEqual(support.scan_log("Godot Engine v4.7\nOpenGL API OpenGL ES 3.0\nWORLD_ART_CAPTURE {}\n"), [])
-        self.assertTrue(support.scan_log("WORLD_ART_CAPTURE_ERROR job failed"))
+        # The runner's own WORLD_ART_CAPTURE_ERROR lines fail the run through its exit code instead.
+        self.assertEqual(support.scan_log("WORLD_ART_CAPTURE_ERROR job failed"), [])
 
     def test_argument_parsers_fail_closed(self):
         for bad in ("0x10", "100", "axb", "99999x10", "10000x10000"):
