@@ -218,3 +218,5 @@ candid Deepworks comparison are linked from the guide. Final acceptance is track
 ### World-art preview (experimental Draft tool)
 
 The [Godot World Art Preview](docs/tools/world-art-preview.md) opens provisional #454 map collections in an independent shader-rendered window for artists: choose scenes/features, zoom, pan, reload edited pack JSON, pin a comparison and export genuine framebuffer PNGs. The original art source remains outside the production branch and the preview does not execute physics. See the linked guide for the exact checkout and launch command.
+
+For automated agents and CI, [unattended capture](docs/tools/world-art-capture.md) renders the same maps without any GUI interaction (`python3 tools/world_art_preview_launcher.py --capture ...`) and returns genuine Godot PNGs plus a source-matched JSON manifest.

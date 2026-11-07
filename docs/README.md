@@ -583,3 +583,5 @@ and the [dated reconciliation](audits/2026-10-24-lcb000-landed-status-reconcilia
 ## Independent world-art preview (Draft tooling)
 
 [World Art Preview](tools/world-art-preview.md) is an independent Godot 4.7 desktop viewer for the provisional 15-collection #454 world-design atlas. It displays the source-native RG8 cells through the production material/emission/glow shaders, with zoom, pan, live reload, pinned visual comparisons and actual framebuffer PNG export. The preview neither imports the proposal schema into gameplay nor runs the native simulation.
+
+[World Art Unattended Capture](tools/world-art-capture.md) (MAP-AUTO-01, #498) renders the same packs through the same production shaders with **no GUI interaction**: one `world_art_preview_launcher.py --capture` command writes real Godot PNGs plus a hash-bound JSON manifest (pack SHA-256, art revision, renderer/shader identity, camera), supports batches, feature/variant selection, fixed presentation time and before/after comparison, and is qualified on Linux X11/Xvfb OpenGL/llvmpipe and Windows ANGLE. It is presentation evidence only, not simulation or four-native-plane output.

@@ -1,5 +1,7 @@
 # CyberSand World Art Preview — interactive Godot 4.7 workbench
 
+> **Unattended use:** agents and CI can render the same maps without this window via [`--capture`](world-art-capture.md) (PNG + JSON manifest, batch, feature/variant, fixed time, Linux and Windows qualified).
+
 **Experimental, independent presentation tool.** Open the native Godot window to inspect provisional world-design art through the **production RG8 material palette, appearance LUT, emission and glow shaders**. No CyberSand native simulation, native extension, Rapier actor or save format is required. Synthetic initial conditions are explicit, not measurements of physical state.
 
 ## Launch an existing checkout (no additional downloads)

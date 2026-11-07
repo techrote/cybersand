@@ -4,6 +4,7 @@ extends Control
 const Adapter = preload("res://tools/world_design_pack_adapter.gd")
 const RenderRig = preload("res://tools/world_art_render_rig.gd")
 const GridOverlay = preload("res://tools/world_art_grid.gd")
+const FullExport = preload("res://tools/world_art_full_export.gd")
 const COLLECTION_ORDER = [
 	"lumen-fault", "chalkbone-coast", "carved-ice-choir", "ashroot-nursery",
 	"emberglass-fumaroles", "silt-clockworks", "signal-orchard", "dust-meridian",
@@ -724,33 +725,6 @@ func _render_full(input: Dictionary, output_scale: int) -> Image:
 	var input_image: Image = _image_from_input(input)
 	if input_image == null:
 		return null
-	var output: Image = Image.create_empty(dims.x * scale, dims.y * scale, false, Image.FORMAT_RGB8)
-	var export_rig = RenderRig.new()
-	get_tree().root.add_child(export_rig)
-	export_rig.setup(input_image, Vector2i(2, 2))
-	export_rig.set_presentation(_presentation_time, _glow, _quality)
-	export_rig.set_background_enabled(_background_enabled)
-	for y: int in range(0, dims.y, EXPORT_TILE_CELLS):
-		for x: int in range(0, dims.x, EXPORT_TILE_CELLS):
-			var inner := Rect2i(x, y, mini(EXPORT_TILE_CELLS, dims.x - x),
-				mini(EXPORT_TILE_CELLS, dims.y - y))
-			var start: Vector2i = inner.position - Vector2i(EXPORT_HALO_CELLS, EXPORT_HALO_CELLS)
-			var world_view: Vector2i = inner.size + Vector2i(EXPORT_HALO_CELLS * 2, EXPORT_HALO_CELLS * 2)
-			if world_view.x % 2 != 0:
-				world_view.x += 1
-			if world_view.y % 2 != 0:
-				world_view.y += 1
-			export_rig.set_resolution(world_view * scale)
-			export_rig.set_view(Vector2(start), Vector2(world_view))
-			await RenderingServer.frame_post_draw
-			await RenderingServer.frame_post_draw
-			await RenderingServer.frame_post_draw
-			var tile: Image = export_rig.get_texture().get_image()
-			if tile == null or tile.is_empty() or tile.get_size() != world_view * scale:
-				export_rig.queue_free()
-				return null
-			tile.convert(Image.FORMAT_RGB8)
-			output.blit_rect(tile, Rect2i(Vector2i(EXPORT_HALO_CELLS * scale,
-				EXPORT_HALO_CELLS * scale), inner.size * scale), inner.position * scale)
-	export_rig.queue_free()
-	return output
+	# The tiled halo renderer is shared with the unattended capture runner.
+	return await FullExport.render(get_tree(), input_image, scale,
+		_presentation_time, _glow, _quality, _background_enabled)
