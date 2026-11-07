@@ -149,7 +149,6 @@ void World::rebuild_pressure_index() {
     cache.certificate_contents_cold=true; cache.certificate_layer_enabled=false;
     cache.gas_dirty_chunks.clear();
     cache.gas_dirty_overflow = false;
-    cache.gas_bootstrap_attempted = false;
     for (auto& [coord, chunk] : chunks_) {
         (void)coord;
         chunk->pressure->gas_dirty_queued = false;
@@ -199,6 +198,9 @@ void World::rebuild_pressure_index() {
         ++pressure_->optimization.gas_index_chunks;
     }
     cache.complete = true; cache.membership_dirty = false;
+    // Slot identities changed. Force one complete relabel scan per admitted
+    // chunk before sparse clean-chunk relabelling can be trusted.
+    std::fill(cache.gas_hidden_labels.begin(), cache.gas_hidden_labels.end(), std::uint8_t{1});
     if (++cache.incarnation == 0U) ++cache.incarnation;
     // Fresh slots: every wake bit starts cold, within the reserved capacity.
     const auto wake_words = cache.column_order.size() * cache.wake_words_per_chunk;
@@ -297,7 +299,9 @@ PressureOptimizationSnapshot World::pressure_optimization_snapshot() const {
     out.gas_invalidation_pair_budget = cache.config.gas_invalidation_pair_budget;
     out.gas_capacity_bytes = cache.gas_members.capacity() * sizeof(PressureCache::GasMember) +
         cache.gas_components.capacity() * sizeof(PressureCache::GasComponent) +
-        cache.gas_dirty_chunks.capacity() * sizeof(ChunkCoord);
+        cache.gas_dirty_chunks.capacity() * sizeof(ChunkCoord) +
+        cache.gas_relabel_bits.capacity() * sizeof(std::uint64_t) +
+        cache.gas_hidden_labels.capacity() * sizeof(std::uint8_t);
     out.wake_segments_scanned = cache.wake_segments_scanned; out.wake_segments_skipped = cache.wake_segments_skipped;
     out.wake_resets = cache.wake_resets;
     for (const auto word : cache.wake_clean) out.wake_clean_cells += static_cast<std::size_t>(std::popcount(word));
