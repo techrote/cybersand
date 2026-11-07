@@ -98,12 +98,14 @@ func _run() -> void:
             + demo.failure)
         return
     var native_pid: int = demo.native_pid
-    var initial_requests: int = demo.total_calls
     var before: Image = await _capture("00-live-before-stop", evidence)
     if before == null:
         _fail("could not capture initial actual GL framebuffer")
         return
     var before_orange := _orange_loading_pixels(before)
+    # Frame capture may complete an unrelated initial refresh request; capture
+    # the baseline only after it finishes, immediately before the native stall.
+    var initial_requests: int = demo.total_calls
 
     if not _signal_native(native_pid, "-STOP"):
         _fail("could not suspend the actual compiled native owner")
