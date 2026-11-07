@@ -379,6 +379,14 @@ jobs:
           cp "$CYBERSAND_NATIVE_OUTPUT" godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so
           sha256sum "$CYBERSAND_NATIVE_OUTPUT" | tee "$EVIDENCE/rebuilt-native.sha256"
           sha256sum godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so | tee "$EVIDENCE/staged-native.sha256"
+          # Preserve the actual fresh-built candidate, not only its hash and logs.
+          # This is CI evidence, never a commit or promotion of the retained LFS binary.
+          cp "$CYBERSAND_NATIVE_OUTPUT" "$EVIDENCE/libcybersand_native.linux.x86_64.so"
+          (
+            cd "$EVIDENCE"
+            sha256sum libcybersand_native.linux.x86_64.so > candidate-runtime.sha256
+            sha256sum --check --strict candidate-runtime.sha256
+          )
       - name: Retrieve hash-locked Godot 4.7 editor
         timeout-minutes: 8
         shell: bash
