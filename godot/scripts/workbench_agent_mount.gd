@@ -21,6 +21,8 @@ var _pending_retirement: bool = false
 var _task_serial: int = 0
 var _last_projection: Array = []
 var _projection_tree: SceneTree
+var _canvas_row: HBoxContainer
+var _dock: PanelContainer
 
 func mount(workbench: Control) -> bool:
 	if workbench == null or workbench.host == null:
@@ -30,11 +32,46 @@ func mount(workbench: Control) -> bool:
 	_bridge = FourToolBridge.new()
 	if not _bridge.bind(_host):
 		return false
+	# Preserve the actual World object, shaders and gui_input connection.
+	# Agent controls occupy a side dock, never extra canvas-height rows.
+	var layout: Node = _host.world_view.get_parent()
+	var world_index: int = _host.world_view.get_index()
+	_canvas_row = HBoxContainer.new()
+	_canvas_row.name = "WorkbenchCanvasDock"
+	_canvas_row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_canvas_row.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	_canvas_row.add_theme_constant_override("separation",10)
+	layout.add_child(_canvas_row)
+	layout.move_child(_canvas_row,world_index)
+	_host.world_view.reparent(_canvas_row,false)
+	_host.world_view.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_host.world_view.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	_dock = PanelContainer.new()
+	_dock.name = "AgentAuthoringDock"
+	_dock.custom_minimum_size.x = 340
+	_dock.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	_dock.theme = _workbench.theme
+	var style := StyleBoxFlat.new()
+	style.bg_color = Color(0.055,0.075,0.11,0.98)
+	style.content_margin_left = 10
+	style.content_margin_right = 10
+	style.content_margin_top = 10
+	style.content_margin_bottom = 10
+	_dock.add_theme_stylebox_override("panel",style)
+	_canvas_row.add_child(_dock)
+	_dock.hide()
 	_agent_panel = AgentPanel.new()
-	_workbench.add_child(_agent_panel)
+	_dock.add_child(_agent_panel)
 	_agent_panel.hide()
-	var row: HFlowContainer = _workbench._row(_workbench)
+	var row: HFlowContainer
+	for child: Node in _workbench.get_children():
+		if child is HFlowContainer:
+			row = child
+			break
+	if row == null:
+		row = _workbench._row(_workbench)
 	_toggle = Button.new()
+	_toggle.name = "AgentToggle"
 	_toggle.text = "Agent authoring (opt-in)"
 	_toggle.toggle_mode = true
 	_toggle.button_pressed = false
@@ -49,6 +86,7 @@ func mount(workbench: Control) -> bool:
 			_agent_panel.invalidate_due_to_owner_change("agent panel opted out")
 			_agent_panel.proposal_overlay.set_footprint([])
 		_agent_panel.visible = enabled
+		_dock.visible = enabled
 		_agent_panel.scope_overlay.set_active(enabled))
 	row.add_child(_toggle)
 	_agent_panel.bind_authoritative_dispatcher(
@@ -113,7 +151,8 @@ func project_cell(cell: Vector2i) -> Variant:
 	var dimensions: Vector2i = _host.current_view_size
 	if not content.has_area() or dimensions.x <= 0 or dimensions.y <= 0:
 		return null
-	var offset: Vector2 = Vector2(cell) + _presentation_origin() - _host.camera_origin
+	# Match the renderer and pointer map's integer camera origin exactly.
+	var offset: Vector2 = Vector2(cell) + _presentation_origin() - _host.camera_origin.floor()
 	if offset.x < 0 or offset.y < 0 or offset.x >= dimensions.x or offset.y >= dimensions.y:
 		return null
 	var scale: Vector2 = content.size / Vector2(dimensions)
@@ -128,7 +167,7 @@ func project_region(region: Rect2i) -> Variant:
 	var dimensions: Vector2i = _host.current_view_size
 	if not content.has_area() or dimensions.x <= 0 or dimensions.y <= 0:
 		return null
-	var visible_world: Rect2 = Rect2(_host.camera_origin,Vector2(dimensions))
+	var visible_world: Rect2 = Rect2(_host.camera_origin.floor(),Vector2(dimensions))
 	var clipped: Rect2 = visible_world.intersection(
 		Rect2(Vector2(region.position) + _presentation_origin(),Vector2(region.size)))
 	if not clipped.has_area():

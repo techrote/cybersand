@@ -37,6 +37,8 @@ var _state := Label.new()
 var _protection_label := Label.new()
 var _protected_regions: Array = []
 var _lines: Array[String] = []
+var _form_scroll := ScrollContainer.new()
+var _form := VBoxContainer.new()
 
 func _ready() -> void:
 	client = Client.new()
@@ -48,31 +50,75 @@ func _ready() -> void:
 	proposal_overlay = Overlay.new()
 	scope_overlay = ScopeOverlay.new()
 	name = "Agent authoring (opt-in)"
+	size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	size_flags_vertical = Control.SIZE_EXPAND_FILL
+	add_theme_constant_override("separation",8)
 	var heading := Label.new()
-	heading.text = "Agent authoring (experimental / opt-in)"
+	heading.name = "AgentHeading"
+	heading.text = "Agent authoring"
 	add_child(heading)
-	_task.custom_minimum_size = Vector2(240, 66)
+	# These controls remain visible while the bounded form scrolls.
+	var actions := HBoxContainer.new()
+	actions.name = "AgentActions"
+	_start.name = "AgentStart"
+	_start.text = "Start within scope"
+	_start.tooltip_text = "Authorize the selected task region and allowed materials."
+	_start.focus_mode = Control.FOCUS_NONE
+	_start.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_start.pressed.connect(_on_start)
+	_stop.text = "Stop"
+	_stop.name = "AgentStop"
+	_stop.focus_mode = Control.FOCUS_NONE
+	_stop.disabled = true
+	_stop.pressed.connect(_on_stop)
+	actions.add_child(_start)
+	actions.add_child(_stop)
+	add_child(actions)
+	_state.text = "Native dispatcher not bound."
+	_state.name = "AgentState"
+	_state.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_state.max_lines_visible = 3
+	add_child(_state)
+	_form_scroll.name = "AgentFormScroll"
+	_form_scroll.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_form_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	_form_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	_form_scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
+	_form_scroll.mouse_force_pass_scroll_events = false
+	add_child(_form_scroll)
+	_form.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_form.name = "AgentForm"
+	_form.add_theme_constant_override("separation",8)
+	_form_scroll.add_child(_form)
+	var task_label := Label.new()
+	task_label.text = "Task"
+	_form.add_child(task_label)
+	_task.custom_minimum_size = Vector2(240,110)
+	_task.wrap_mode = TextEdit.LINE_WRAPPING_BOUNDARY
 	_task.placeholder_text = "Describe the apparatus to build and test."
 	_task.text_changed.connect(_retire_on_human_change)
-	add_child(_task)
-	_model.placeholder_text = "Vision-capable Responses model ID (required)"
+	_form.add_child(_task)
+	var model_label := Label.new()
+	model_label.text = "Model"
+	_form.add_child(model_label)
+	_model.placeholder_text = "Vision-capable Responses model ID"
 	_model.text_changed.connect(func(_value: String) -> void: _retire_on_human_change())
-	add_child(_model)
-	_signed_frame.text = "EXPERIMENTAL +512 signed finite frame (trajectory NOT identical)"
+	_form.add_child(_model)
+	_signed_frame.text = "Experimental signed frame (+512)"
 	_signed_frame.tooltip_text = "Owner-admitted moved-hopper acceptance fixture (7 Nov 2026); 26 intermediate NORMAL trajectory differences remain. Host-only, opt-in, not strict signed-world parity. Genuine API trials and owner desktop acceptance remain separate."
 	_signed_frame.toggled.connect(func(_value: bool) -> void: _on_scope_change())
-	add_child(_signed_frame)
+	_form.add_child(_signed_frame)
 	_whole_canvas.text = "Use whole canvas"
 	_whole_canvas.tooltip_text = "Select the installed canvas as task scope. Each observation and edit remains limited to 4096 cells. Start authorizes the selected scope."
 	_whole_canvas.disabled = true
 	_whole_canvas.pressed.connect(_on_whole_canvas)
-	add_child(_whole_canvas)
+	_form.add_child(_whole_canvas)
 	var scope_help := Label.new()
 	scope_help.text = "Task scope may cover the canvas; each observation/edit uses at most 4096 cells."
 	scope_help.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	add_child(scope_help)
+	_form.add_child(scope_help)
 	var row := HFlowContainer.new()
-	add_child(row)
+	_form.add_child(row)
 	for spec: Array in [["X", -2147483648.0, 2147483647.0, 0.0],
 			["Y", -2147483648.0, 2147483647.0, 0.0],
 			["W", 1.0, 4096.0, 32.0], ["H", 1.0, 4096.0, 32.0]]:
@@ -98,14 +144,15 @@ func _ready() -> void:
 	row = HFlowContainer.new()
 	row.add_child(_wall)
 	row.add_child(_empty)
-	add_child(row)
+	_form.add_child(row)
 	_protection_label.text = "Protected areas: none (agent-edit exclusion)"
-	add_child(_protection_label)
-	_guard.text = "Protect a rectangle from agent edits"
+	_protection_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_form.add_child(_protection_label)
+	_guard.text = "Protect a rectangle"
 	_guard.toggled.connect(func(_value: bool) -> void: _on_scope_change())
-	add_child(_guard)
+	_form.add_child(_guard)
 	var protection_row := HFlowContainer.new()
-	add_child(protection_row)
+	_form.add_child(protection_row)
 	for spec: Array in [["PX",-2147483648.0,2147483647.0,0.0],
 			["PY",-2147483648.0,2147483647.0,0.0],
 			["PW",1.0,4096.0,4.0],["PH",1.0,4096.0,4.0]]:
@@ -123,22 +170,13 @@ func _ready() -> void:
 		protection_row.add_child(field)
 		_guard_region.append(field)
 	_sync_scope_overlay()
-	var actions := HBoxContainer.new()
-	_start.text = "Start (authorize within scope)"
-	_start.pressed.connect(_on_start)
-	_stop.text = "Stop"
-	_stop.disabled = true
-	_stop.pressed.connect(_on_stop)
-	actions.add_child(_start)
-	actions.add_child(_stop)
-	add_child(actions)
-	_state.text = "Unbound: native authoring dispatcher pending #526/#527 handoff."
-	_state.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	add_child(_state)
-	_log.custom_minimum_size.y = 96
+	var activity_label := Label.new()
+	activity_label.text = "Activity"
+	_form.add_child(activity_label)
+	_log.custom_minimum_size.y = 140
 	_log.fit_content = false
 	_log.scroll_following = true
-	add_child(_log)
+	_form.add_child(_log)
 	_refresh_buttons()
 
 func bind_authoritative_dispatcher(dispatcher: Callable, world_to_screen: Callable = Callable(),
@@ -301,6 +339,7 @@ func _log_status(status: String, detail: String) -> void:
 		_lines.pop_front()
 	_log.text = "\n".join(_lines)
 	_state.text = line
+	_state.tooltip_text = line
 	progress.emit(status, detail)
 	_refresh_buttons()
 

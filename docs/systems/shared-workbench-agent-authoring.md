@@ -69,14 +69,33 @@ Both rebuilt Windows and Linux execute the71-check whole-canvas regression;
 the [audit](../audits/2026-11-07-wb525-independent-strike.md#additional-owner-authorized-whole-canvas-scope)
 separates this follow-up from the preceding fully qualifiedbd1325 baseline.
 
+## How does the agent panel preserve the painting viewport?
+
+**Current on the isolated presentation follow-up:** agent controls live in a
+340-pixel side dock beside the existing World control. The form/log scroll;
+Start, Stop and a bounded status remain pinned. Opt-out restores canvas width.
+The mount preserves the same World object, shader, overlays and GUI-input
+connection. It does not change camera origin or logical view size. Cell and
+region previews use the same floored camera origin as rendering and pointer
+mapping, preventing a fractional pan/zoom from moving a preview by one cell.
+
+Actual offscreen geometry/input evidence shows1920x1080 content increasing
+from523x294 to1461x822, about7.8 times the visible area. Native1280x720 and
+the normal stretched1280 window are separately checked. The durable rendered
+regression dispatches real viewport wheel/pan/paint events, verifies native
+paint readback and checks that dock input cannot affect the canvas. The
+[presentation record](../audits/2026-11-07-wb525-independent-strike.md#owner-reported-viewport-and-camera-repair)
+retains source hashes, original PNGs and qualification limits. Human Windows
+acceptance remains separate.
+
 ## How does general CI execute the real-frame workbench tests?
 
 The shared CI runner explicitly classifies the five older WB framebuffer
 tests as graphical, alongside the `_render` convention. Its narrow Windows
-allowlist preserves all nine WB graphical cases there, including whole-canvas
-scope qualification; Linux also executes
+allowlist preserves all ten WB graphical cases there, including whole-canvas
+scope and real dock/input qualification; Linux also executes
 them. Pure footprint, envelope, signed mapper, fake client and fault controls
-remain headless. Windows plans274 cases and Linux288, with no omitted prior
+remain headless. Windows plans275 cases and Linux289, with no omitted prior
 Windows case or altered watchdog/provider. For the two hopper cases, common
 execution verifies and stages the exact frozen v2 native TSV at the expected
 Godot runtime path, retains its bytes, validates them after execution and

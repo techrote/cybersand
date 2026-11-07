@@ -120,7 +120,72 @@ passes Windows PowerShell5.1 and PowerShell7. Actual secret paste and real API
 remain human/live gates. Graphical tests are no longer opened on the owner's
 desktop during their interactive testing; Linux uses isolated Xvfb.
 
-## Final owner handoff readback
+## Owner-reported viewport and camera repair
+
+The owner actually tried the delivered application and reported that the
+full-width agent form crushed the canvas and made zoom/pan unusable. The
+original image shows that failure; automated transport/native tests alone
+had not established usable graphical acceptance. The follow-up changes only
+the panel/mount presentation and independent test/CI/docs, preserving the
+existing shared-workbench/main/native owners.
+
+The same World control now shares an expanding horizontal row with a340px
+dock. Its shader, GUI input and overlays stay on that object. Start/Stop and
+bounded status are pinned above the scrolling form/log; opting out restores
+canvas width. The toggle joins the existing toolbar rather than adding a row.
+Neither camera origin nor logical view size is changed by the dock. Main's
+cached World references remain valid; its literal startup overlay paths are
+consumed before this workbench-only reparenting.
+
+Independent real Godot4.7/Xvfb/Mesa measurement finds:
+
+| Configuration | Actual canvas content | Dock |
+|---|---|---|
+| Before,1920x1080 |522.67x294| full-width form1880x494 |
+| After,1920x1080 |1461.33x822|340x822 right dock |
+| Native1280x720 |771.56x434|340x434 right dock |
+| Physical1280x720, default stretch |974.22x548 physical pixels|1920 logical UI scaled2/3|
+
+Visible canvas area improves from153664 to1201216 pixels (about7.8x).
+At native1280 the form scroll moves0->41 while Start/Stop/status stay pinned.
+Canvas wheel changes480x270 to240x135; UI wheel does not change the camera;
+middle drag pans at the correct content scale. The original projection also
+used fractional camera origin while rendering/pointer conversion used floor:
+at720,667.5, preview cell840,734 read back840,733 even using cell centers.
+Both projection functions now floor the camera, and all sampled round trips
+pass. No production physics or camera movement law is changed.
+
+Probe evidence is`build/wb525-strike/geometry-probe`: before/final-1920 and
+after-1280-native/scaled logs, source hashes, JSON and unchanged original PNGs.
+The final loaded/disk source hashes agree. The durable new rendered test uses
+actual`Viewport.push_input`, not a direct input-handler call, at1920 and
+native1280: **37/37** passes. It verifies height preservation, canvas/dock
+bounds, pinned Stop, no dock click-through, real wheel zoom/center, real middle
+drag, fractional-cell projection, human brush native target/control readback,
+matched original PNG and native retirement. Tick remains0 throughout.
+The1280 durable fixture's longer live status wraps one extra line, leaving413
+pixels of World height; it still passes the useful-height bound. Existing
+mounted68/capacity28/large-scope71 also pass on the repaired source with stable
+source/runtime fingerprints (`linux-dock-attempt1`). No new Windows GUI was
+opened on the owner's desktop. Independent scaled-window event proof uses
+the actual stretch transform; the durable native fixtures use identity stretch.
+
+Whole-canvas checkpoint`c4b225692346290c1d5007b7ed8eb555dcbd6053`, tree
+`08dc5d53accdfec8f612badc979200e667cff3d5`, also completes the **full**
+[GDExtension42417763722](https://github.com/techrote/cybersand/actions/runs/42417763722)
+matrix:274 Windows/288 Linux, both production builds and independent reducers.
+[Exact-head Docs42417765782](https://github.com/techrote/cybersand/actions/runs/42417765782)
+passes. That fully green checkpoint precedes this layout patch; the new test
+adds one applicable case per platform (275 Windows/289 Linux). New resulting-
+head hosted qualification and human acceptance must be reported separately.
+
+The owner's screenshot also shows an actual HTTP429 response during manual
+model use. The local key path reaches the service; this is unregistered user
+testing, not one of the three preregistered formal trials. This execution
+neither receives the key nor runs a paid call. The rate/quota cause cannot be
+deduced from the screenshot alone.
+
+## Earlier owner handoff readback
 
 The existing #528 owner has consumed the two production repairs and three
 graphical regressions in its own Draft #531, head
