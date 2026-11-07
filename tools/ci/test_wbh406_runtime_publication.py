@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Adversarial checks of the reused #471 combined source-matched runtime publication profile.
+"""Adversarial checks of the isolated #406 ballistic-Water/workbench publication profile.
 
 The unchanged shared-engine suite separately covers Git/LFS staging, PE/ELF,
 source-ledger completeness and original log integrity. These tests prove this
@@ -22,7 +22,7 @@ import lcb001_shared_contract_runtime_publication as historical
 import wbh406_runtime_publication as profile
 
 subject = profile.engine
-BRANCH = "codex/fast-in-chunk-neighbour-cursor-20261106"
+BRANCH = "claude/water-ballistic-hybrid"
 WORKFLOW = ".github/workflows/wbh406-runtime-publication.yml"
 # Independent fixture: removing a case from the profile cannot change this list.
 SUCCESS_LOGS = {
