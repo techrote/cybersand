@@ -184,6 +184,44 @@ void run(const fs::path& file,std::uint32_t workers) {
     demand(live.stored_material(514,2)==Material::Empty &&
            !live.has_failed(),
            "GEN006_BRIDGE_STATIC_REMAINED_RESIDENT");
+    // Keep the genuine Sand/Water pair simulating in the SAME native World
+    // during selective release.  This closes the older fixture's no-tick gap:
+    // neither the native owner nor the neighboring dynamic seam is replaced.
+    // The independent control retains all three chunks for each matching tick.
+    const auto before_absent = live.save_physical_state();
+    auto damaged = readback;
+    damaged[damaged.size()/2] ^= 1U;
+    demand(live.restore_chunk_checkpoint({8,0},damaged)==
+               ChunkCheckpointStatus::InvalidRecord &&
+           live.restore_chunk_checkpoint({9,0},readback)==
+               ChunkCheckpointStatus::InvalidRecord &&
+           live.save_physical_state()==before_absent,
+           "GEN006_BRIDGE_ABSENT_RESTORE_NEGATIVES_CHANGED_WORLD");
+    const auto absent_tick_start=live.completed_tick_index();
+    std::uint32_t absent_worker_observed=0;
+    for (int i=0;i<8;++i) {
+        const auto a=live.tick(),b=control.tick();
+        observed=std::max(observed,a.worker_threads_observed);
+        absent_worker_observed=std::max(absent_worker_observed,a.worker_threads_observed);
+        demand(a.tick==b.tick && !live.has_failed() && !control.has_failed(),
+               "GEN006_BRIDGE_ABSENT_DYNAMIC_TICK_FAILED");
+        demand(live.chunk_count()==remaining_count &&
+               live.resident_cell_bytes()==remaining_bytes &&
+               live.stored_material(514,2)==Material::Empty,
+               "GEN006_BRIDGE_ABSENT_RELEASE_NOT_PRESERVED");
+        // Native seam Sand/Water must remain source-matched to the continuously
+        // simulated 3-resident oracle; no whole-World pointer substitution.
+        for (std::int64_t y=-65;y<-40;++y)
+            for (std::int64_t x=-128+18;x<-128+52;++x) {
+                demand(live.stored_material(x,y)==control.stored_material(x,y) &&
+                       live.liquid_mass(x,y)==control.liquid_mass(x,y) &&
+                       live.stored_temperature(x,y)==control.stored_temperature(x,y),
+                       "GEN006_BRIDGE_ABSENT_SEAM_DIVERGENCE");
+            }
+    }
+    demand(live.completed_tick_index()==absent_tick_start+8 &&
+           absent_worker_observed>0,
+           "GEN006_BRIDGE_ABSENT_NO_NATIVE_TICK");
     // Restore only the independently saved static resident, never swap World.
     demand(live.restore_chunk_checkpoint({8,0},readback)==
            ChunkCheckpointStatus::Restored &&
@@ -215,6 +253,8 @@ void run(const fs::path& file,std::uint32_t workers) {
              <<" selective_static_count="<<count<<"->"<<remaining_count<<"->"<<live.chunk_count()
              <<" selective_static_bytes="<<bytes<<"->"<<remaining_bytes<<"->"<<live.resident_cell_bytes()
              <<" static_bytes_reclaimed="<<(bytes-remaining_bytes)
+             <<" absent_dynamic_ticks=8"
+             <<" absent_observed_workers_max="<<absent_worker_observed
              <<" post_restore_ticks=8"
              <<" final_native_tick="<<live.completed_tick_index()
              <<" final_physical="<<live.physical_state_hash()<<"\n";
