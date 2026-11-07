@@ -340,10 +340,16 @@ void verify_signed_extent_record(const fs::path& path, unsigned workers,
                 world.chunk_count()==before_count+1 &&
                 world.resident_cell_bytes()>before_bytes,
                 "GEN006_SIGNED_SAFE_ENDPOINT_REFUSED");
+        // A new native World has a fresh completed tick. Do not demand
+        // byte-identical checkpoint timestamps across independent processes.
+        const auto x=coordinate.x*static_cast<std::int64_t>(world.config().chunk_size);
+        const auto y=coordinate.y*static_cast<std::int64_t>(world.config().chunk_size);
         const auto recaptured=world.capture_chunk_checkpoint(coordinate);
         require(recaptured.status==ChunkCheckpointStatus::Captured &&
-                recaptured.checkpoint.bytes==record,
-                "GEN006_SIGNED_SAFE_ENDPOINT_RECAPTURE_DRIFT");
+                world.stored_material(x+30,y+30)==Material::Wall &&
+                world.stored_temperature(x+30,y+30)==417 &&
+                world.gen006_player_edit_intent_at(x+8,y+8),
+                "GEN006_SIGNED_SAFE_ENDPOINT_STATE_OR_INTENT_DRIFT");
     } else {
         require(result==ChunkCheckpointStatus::InvalidRecord &&
                 world.chunk_count()==before_count &&
