@@ -10,7 +10,7 @@ const PREVIEW_CELLS_PER_FRAME := 8192
 const PLANE_CELLS_PER_TURN := 2048
 const PROFILE_MAX_BYTES := 1024 * 1024
 
-var owner: Control
+var _workbench: Control
 var _profile := OptionButton.new()
 var _seed := SpinBox.new()
 var _x := SpinBox.new()
@@ -54,7 +54,7 @@ func _row(parent: VBoxContainer) -> HBoxContainer:
 	return row
 
 func mount(workbench: Control) -> void:
-	owner = workbench
+	_workbench = workbench
 	title = "GEN-007 · New playable starting map"
 	ok_button_text = "Install into workbench"
 	cancel_button_text = "Keep current map"
@@ -141,7 +141,7 @@ func mount(workbench: Control) -> void:
 		if not visible: _stop())
 
 func open_new() -> void:
-	if owner == null: return
+	if _workbench == null: return
 	_saved_generation.clear()
 	_saved_setup.clear()
 	_saved_recipe.clear()
@@ -152,7 +152,7 @@ func open_new() -> void:
 func open_saved(starting_setup: Dictionary, generation: Dictionary) -> void:
 	var reason := Store.valid_provenance(generation, Setup.extent_of(starting_setup))
 	if not reason.is_empty():
-		owner.refuse(reason)
+		_workbench.refuse(reason)
 		return
 	_saved_generation = generation.duplicate(true)
 	_saved_setup = starting_setup.duplicate(true)
@@ -394,12 +394,12 @@ func _install() -> void:
 		return
 	var candidate: Dictionary
 	if _saved_setup.is_empty():
-		if owner._liquids == null or owner._liquids.bridge == null:
+		if _workbench._liquids == null or _workbench._liquids.bridge == null:
 			owner.refuse("Native liquid policy interface unavailable.")
 			return
-		candidate = Setup.fresh(owner._liquids.bridge.default_liquid_policy(),_size)
+		candidate = Setup.fresh(_workbench._liquids.bridge.default_liquid_policy(),_size)
 	else:
 		candidate = _saved_setup.duplicate(true)
-	if not owner.install_generated_start(candidate,_ready_packet):
-		_status.text = owner.message
+	if not _workbench.install_generated_start(candidate,_ready_packet):
+		_status.text = _workbench.message
 		popup_centered(Vector2i(720,610))
