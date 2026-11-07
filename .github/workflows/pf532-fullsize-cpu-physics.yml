@@ -53,7 +53,7 @@ jobs:
           test "$(git -C candidate rev-parse HEAD)" = "$CANDIDATE_SOURCE"
           (cd harness && python3 tools/material_catalogue/compatibility.py --check) > evidence/material-authority.json
           git -C harness diff --name-only "$BASE_SOURCE" "$CANDIDATE_SOURCE" -- native/src native/include | sort > evidence/native-source-delta.txt
-          diff -u <(printf '%s\n'             native/include/cybersand/pressure_optimization.hpp             native/src/world_pressure.inc             native/src/world_pressure_cache.inc             native/src/world_pressure_cache_state.inc             native/src/world_pressure_gas_cache.inc | sort) evidence/native-source-delta.txt
+          diff -u <(printf '%s\n'             native/include/cybersand/pressure_optimization.hpp             native/src/world_pressure.inc             native/src/world_pressure_cache.inc             native/src/world_pressure_cache_state.inc             native/src/world_pressure_gas_cache.inc             native/src/world_pressure_state.inc | sort) evidence/native-source-delta.txt
           cmp baseline/godot/scripts/workbench_setup.gd candidate/godot/scripts/workbench_setup.gd
           cmp baseline/godot/native_extension/pressure_optimization_inspection.inc candidate/godot/native_extension/pressure_optimization_inspection.inc
           cp harness/godot/tests/pf532_stress_canvas_actual_workbench.gd baseline/godot/tests/pf532_stress_canvas_actual_workbench.gd
