@@ -1160,7 +1160,7 @@ void test_lcb_pressure_cached_heads() { test_cached_incremental_heads(); }
 void test_lcb_pressure_cached_gas() { test_cached_gas_and_fallback(); }
 void test_lcb_pressure_affected_gas() {
     test_affected_gas_components();
-    test_gas_component_bootstrap_under_continuous_churn();
+    test_sparse_gas_relabel_matches_reference();
     test_gas_component_worker_parity();
 }
 void test_lcb_pressure_gas_cache_capacity() { test_gas_component_capacity_fallbacks(); }
