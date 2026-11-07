@@ -10,6 +10,35 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## WB-AGENT Stage-1 — first owner-side foundation checkpoint, 2026-11-07
+
+**Active Draft [#529](https://github.com/techrote/cybersand/pull/529); not
+merged or independently qualified.** Owner-scoped [#526](https://github.com/techrote/cybersand/issues/526)
+continues the **same** branch `feature/wb-agent-authoring-foundation-526-20261107`.
+Inspect its live HEAD and AGENTS.md before editing; the historical initial
+geometry seed was `335f7b2529eb8ea062303570030884bb0ac1bf86` on inspected
+main `81bbd5ff5cf366159e2b8a630609359c13560080`.
+
+#529 now contains source for pure edit geometry, a bounded native-owner
+authoring session, serialized worker request/result and manual-intent fence,
+actual native ID/readback semantics, an opt-in post-draw frame matching adapter
+and named-start commit only after a verified receipt. It is not connected to
+an in-client Agent panel. The new focused native/Godot/authoring tests and
+canonical [tool contract](../systems/shared-workbench-agent-authoring.md)
+need execution and reconciliation; the current worker invocation had no installed
+Godot binary and could not run actual source/runtimes locally. Neither a
+successful end-to-end native execution nor a screenshot is claimed.
+
+Next immediate #526 action: execute and repair the geometry and owner
+integration tests against built native/Godot; independently review source
+fencing, exact frame identity and authored-state race; finish tests/provenance
+and publish stabilized public schemas to #527/#528. #527 may build an
+independent 32-Sand hopper control before the handoff. #528 may build isolated
+panel/API transport but cannot bypass #526's native dispatcher or #527's
+step/Stop. All four tool, live-agent and owner acceptance gates stay separate
+on [#525](https://github.com/techrote/cybersand/issues/525).
+
+
 ## Coupling lockstep feasibility — 2026-11-06
 
 Branch `claude/gifted-franklin-0cd8e3` (PR #464) holds registration
