@@ -16,6 +16,7 @@ var _signed := CheckButton.new()
 var _spray := CheckButton.new()
 var _jet := CheckButton.new()
 var _pf_gas := CheckButton.new()
+var _pf_c2048 := CheckButton.new()
 var _face := CheckButton.new()
 var _fine := CheckButton.new()
 var _status := Label.new()
@@ -68,10 +69,15 @@ func build(owner: Control, parent: Control, row_factory: Callable, jet_point: Ca
 	_pf_gas.button_pressed = true
 	_pf_gas.tooltip_text = "PressureFlow gas topology. Off = gas-free PressureFlow: same surging in open/vented scenes at lower cost. Staged in the liquid selection; applies on Apply liquid selection."
 	_pf_gas.toggled.connect(_set_pressure_gas)
+	_pf_c2048.text = "PF 2048"
+	_pf_c2048.tooltip_text = "Explicit opt-in: 2048 gas compartments rather than 1024. Only available with gas-enabled PressureFlow Water; applies on next fresh Build/Apply. Not a production default."
+	_pf_c2048.button_pressed = int(host.workbench_water_options.get("pressure_gas_compartment_capacity",1024)) == 2048
+	_pf_c2048.toggled.connect(func(on: bool) -> void:
+		host.workbench_water_options["pressure_gas_compartment_capacity"] = 2048 if on else 1024)
 	_fine.text = "Fine cores"
 	_fine.tooltip_text = "Construction option: 32-cell scheduling cores (default 64). Splits the parallel scan's critical path, roughly halving tick cost with dense liquid. A different, equally deterministic update order. Applies on rebuild."
 	_fine.toggled.connect(func(on: bool) -> void: _construction("workbench_fine_cores", on))
-	for toggle: CheckButton in [_ballistic, _signed, _face, _spray, _jet, _pf_gas, _fine]:
+	for toggle: CheckButton in [_ballistic, _signed, _face, _spray, _jet, _pf_gas, _pf_c2048, _fine]:
 		toggle.focus_mode = Control.FOCUS_NONE
 		row.add_child(toggle)
 	for spec: Array in SPINS:

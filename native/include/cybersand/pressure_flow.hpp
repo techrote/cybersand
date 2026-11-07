@@ -21,6 +21,9 @@ struct PressureFlowParameters {
     // Gas regions larger than this many Empty cells are the vented atmosphere.
     static constexpr std::uint32_t kCompartmentVolumeLimit = 16384;
     static constexpr std::size_t kCompartmentCapacity = 1024;
+    // Explicit experimental C2048 profile. Production default remains C1024.
+    static constexpr std::uint16_t kAdmittedCompartmentCapacity = 2048;
+    static constexpr std::uint16_t kCapacityContractVersion = 1;
     static constexpr std::size_t kHistoryCapacity = 64;
     static constexpr std::size_t kMaximumParents = 8;
     // Gas gauge pressure saturates at this many mass units (declared bound).
@@ -43,6 +46,8 @@ struct PressureFlowParameters {
 
     bool gas_enabled = true;
     std::int32_t atmospheric_head_rows = 32;
+    // Construction-only capacity, distinct from the v1 family wire parameter block.
+    std::uint16_t gas_compartment_capacity = kCompartmentCapacity;
 
     [[nodiscard]] friend bool operator==(const PressureFlowParameters&, const PressureFlowParameters&) = default;
 };

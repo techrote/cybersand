@@ -1,0 +1,66 @@
+name: PF C2048 explicit native capacity qualification (Draft)
+on:
+  push:
+    branches: [codex/pf-c2048-admitted-20261107]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: pf-c2048-admit-${{ github.run_id }}
+  cancel-in-progress: false
+jobs:
+  native-qualification:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Exact source and compiler identity
+        run: |
+          set -euo pipefail
+          mkdir -p build/pf-c2048
+          git rev-parse HEAD | tee build/pf-c2048/source.txt
+          g++-13 --version | head -1 | tee build/pf-c2048/compiler.txt
+          git diff --check | tee build/pf-c2048/diff-check.txt
+          sha256sum native/include/cybersand/pressure_flow.hpp native/src/world_pressure.inc native/tests/test_pressure_setup_capacity.cpp > build/pf-c2048/source-sha256.txt
+      - name: Compile and run exact C1024/C2048 focused regression
+        run: |
+          set -euo pipefail
+          g++-13 -std=c++20 -O2 -DNDEBUG -pthread -I native/include -Wall -Wextra \
+            -DCYBERSAND_PRESSURE_SETUP_CAPACITY_STANDALONE \
+            native/src/world.cpp native/src/material_rules.cpp native/src/scheduler_geometry.cpp \
+            native/src/settled_world_discovery.cpp native/tests/test_pressure_setup_capacity.cpp \
+            -o build/pf-c2048/focused > build/pf-c2048/build.log 2>&1 || {
+              tail -120 build/pf-c2048/build.log; exit 1; }
+          timeout 300 build/pf-c2048/focused > build/pf-c2048/focused.log 2>&1 || {
+              tail -120 build/pf-c2048/focused.log; exit 1; }
+          cat build/pf-c2048/focused.log
+      - name: Full unchanged-default native suite
+        run: |
+          set -euo pipefail
+          make CXX=g++-13 build/tests >build/pf-c2048/all-build.log 2>&1 || {
+            tail -100 build/pf-c2048/all-build.log; exit 1; }
+          timeout 1200 ./build/tests >build/pf-c2048/all-native.log 2>&1 || {
+            tail -120 build/pf-c2048/all-native.log; exit 1; }
+          tail -30 build/pf-c2048/all-native.log
+      - name: Focused ASan and UBSan
+        run: |
+          set -euo pipefail
+          g++-13 -std=c++20 -O1 -g -fno-omit-frame-pointer \
+            -fsanitize=address,undefined -pthread -I native/include \
+            -DCYBERSAND_PRESSURE_SETUP_CAPACITY_STANDALONE \
+            native/src/world.cpp native/src/material_rules.cpp native/src/scheduler_geometry.cpp \
+            native/src/settled_world_discovery.cpp native/tests/test_pressure_setup_capacity.cpp \
+            -o build/pf-c2048/focused-sanitized >build/pf-c2048/asan-build.log 2>&1 || {
+              tail -100 build/pf-c2048/asan-build.log; exit 1; }
+          ASAN_OPTIONS=detect_leaks=0 UBSAN_OPTIONS=halt_on_error=1 \
+            timeout 300 build/pf-c2048/focused-sanitized >build/pf-c2048/asan.log 2>&1 || {
+              tail -120 build/pf-c2048/asan.log; exit 1; }
+          cat build/pf-c2048/asan.log
+      - name: Preserve original qualification results, including failures
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: pf-c2048-exact-head-native-evidence
+          path: build/pf-c2048/
+          retention-days: 90
+          if-no-files-found: warn
