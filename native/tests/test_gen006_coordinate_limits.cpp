@@ -975,6 +975,9 @@ void interest_exclusion_capacity_control_cohort(std::uint32_t workers) {
     auto restored=World::restore_physical_state(c,checkpoint);
     require(restored && restored->chunk_count()==2U &&
             restored->physical_state_hash()==live.physical_state_hash() &&
+            restored->stored_state_a(x,30)==17 &&
+            restored->stored_temperature(x,30)==417 &&
+            restored->stored_material(-kSide+26,34)==Material::Empty &&
             restored->install_generated_chunk(new_coord,p)==ChunkInstallOutcome::CapacityFull,
             "whole-World restore falsely reclaimed an excluded resident");
 
@@ -987,15 +990,15 @@ void interest_exclusion_capacity_control_cohort(std::uint32_t workers) {
             "destructive reset did not free native capacity as control");
     require(live.stored_material(x,30)==Material::Empty,
             "destructive reset retained prior native Water material unexpectedly");
-    std::cout<<"GEN006_INTEREST_CAPACITY_CONTROL_JSON {\\\"configured_workers\\\":"<<workers
-             <<",\\\"observed_workers\\\":"<<tick.worker_threads_observed
-             <<",\\\"resident_before\\\":2,\\\"resident_after_interest\\\":2"
-             <<",\\\"capacity_full_on_new_demand\\\":true"
-             <<",\\\"old_water17_and_empty_restored\\\":true"
-             <<",\\\"clear_drops_other_residents\\\":true"
-             <<",\\\"selective_native_eviction\\\":false"
-             <<",\\\"checkpoint_bytes\\\":"<<checkpoint.size()
-             <<",\\\"result\\\":\\\"PASS\\\"}\\n";
+    std::cout<<"GEN006_INTEREST_CAPACITY_CONTROL_JSON {\"configured_workers\":"<<workers
+             <<",\"observed_workers\":"<<tick.worker_threads_observed
+             <<",\"resident_before\":2,\"resident_after_interest\":2"
+             <<",\"capacity_full_on_new_demand\":true"
+             <<",\"old_water17_and_empty_restored\":true"
+             <<",\"clear_drops_other_residents\":true"
+             <<",\"selective_native_eviction\":false"
+             <<",\"checkpoint_bytes\":"<<checkpoint.size()
+             <<",\"result\":\"PASS\"}\n";
 }
 
 }
