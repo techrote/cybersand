@@ -419,7 +419,7 @@ jobs:
           path: build/windows-runtime
 
       - name: Materialize pinned Rapier runtime only
-        timeout-minutes: 20
+        timeout-minutes: 15
         run: |
           set -euo pipefail
           git lfs install --local
