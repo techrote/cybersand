@@ -233,6 +233,7 @@ def main() -> None:
         "native/src/world_pressure_cache.inc",
         "native/src/world_pressure_cache_state.inc",
         "native/src/world_pressure_gas_cache.inc",
+        "native/src/world_pressure_state.inc",
     }
     if base_diff!=expected_delta:
         raise RuntimeError("Unexpected production delta for PR532 gas-cache candidate: "+repr(base_diff))
