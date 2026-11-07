@@ -181,6 +181,10 @@ jobs:
               assert receipt['sand']==32 and receipt['protected']==17,receipt
               assert receipt['completed_ticks']==480 and receipt['applied_batches']==4,receipt
               assert receipt['genuine_api_calls']==0 and receipt['fake_requests_used']<=24,receipt
+              assert receipt['reopened_initial_sand']==32,receipt
+              assert receipt['reopened_protected']==17 and receipt['reopened_unapplied_empty']==1,receipt
+              assert receipt['reopened_native_tick']==0 and receipt['reopened_matched_png']=='matched_post_draw',receipt
+              assert receipt['reopen_fake_requests_used']<=24,receipt
           Path('build/wb-agent-528-integrated/mounted-hopper-summary.json').write_text(
               json.dumps(records,indent=2)+'\n')
           PY
