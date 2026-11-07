@@ -36,7 +36,6 @@ namespace fs = std::filesystem;
 constexpr std::int32_t kSide = 64;
 constexpr std::size_t kMaskBytes = kSide * kSide / 8;
 constexpr std::size_t kMaximumRecordBytes = 2'097'152;
-constexpr std::uint64_t kRealm = UINT64_C(0x947D000000000001);
 constexpr std::uint64_t kSeed = UINT64_C(0x74A612FF3E91B07D);
 
 void check(bool valid, const char* why) {
@@ -323,7 +322,7 @@ private:
 };
 
 void self_test(const fs::path& path, std::uint32_t workers) {
-    fs::remove_all(path);
+    check(!fs::exists(path), "GEN006_SELF_TEST_REQUIRES_FRESH_DIRECTORY");
     StreamingSlice controller(path, 2, workers);
     const ChunkCoord a{-1, -3}, b{0, -3}, far{24, -3};
     controller.focus(a);
