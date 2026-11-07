@@ -5,6 +5,7 @@ on:
     types: [opened, synchronize, reopened]
     paths:
       - 'native/tests/gen006_streaming_slice.cpp'
+      - 'tools/experiments/gen006_cross_process_restart.py'
       - '.github/workflows/gen006-streaming-slice.yml'
       - 'native/src/**'
       - 'native/include/**'
@@ -42,6 +43,7 @@ jobs:
                   "world_cpp_blob":git("hash-object","native/src/world.cpp"),
                   "world_hpp_blob":git("hash-object","native/include/cybersand/world.hpp"),
                   "slice_blob":git("hash-object","native/tests/gen006_streaming_slice.cpp"),
+                  "restart_fixture_blob":git("hash-object","tools/experiments/gen006_cross_process_restart.py"),
                   "scope":"experimental sharded native Worlds; no single-World selective eviction, Rapier, Godot or cross-shard physics"}
           assert record["sha"]==record["github_sha"]
           (out/"source.json").write_text(json.dumps(record,indent=2)+"\n")
@@ -68,6 +70,20 @@ jobs:
             | tee build/gen006-streaming-slice/four.log
           grep -q 'GEN006_NATIVE_SHARDED_STREAM_PASS configured_workers=1' build/gen006-streaming-slice/one.log
           grep -q 'GEN006_NATIVE_SHARDED_STREAM_PASS configured_workers=4' build/gen006-streaming-slice/four.log
+          grep -q 'GEN006_NATIVE_CHUNK_IDENTITY_PASS configured_workers=1' build/gen006-streaming-slice/one.log
+          grep -q 'GEN006_NATIVE_CHUNK_IDENTITY_PASS configured_workers=4' build/gen006-streaming-slice/four.log
+          python3 tools/experiments/gen006_cross_process_restart.py \
+            --exe build/gen006-streaming-slice/streaming-slice \
+            --root build/gen006-streaming-slice/process-one \
+            --logs build/gen006-streaming-slice/restart-one --workers 1 \
+            | tee build/gen006-streaming-slice/restart-one.log
+          python3 tools/experiments/gen006_cross_process_restart.py \
+            --exe build/gen006-streaming-slice/streaming-slice \
+            --root build/gen006-streaming-slice/process-four \
+            --logs build/gen006-streaming-slice/restart-four --workers 4 \
+            | tee build/gen006-streaming-slice/restart-four.log
+          grep -q 'GEN006_CROSS_PROCESS_RESTART_PASS configured_workers=1' build/gen006-streaming-slice/restart-one.log
+          grep -q 'GEN006_CROSS_PROCESS_RESTART_PASS configured_workers=4' build/gen006-streaming-slice/restart-four.log
       - name: Preserve original native evidence and failures
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
@@ -79,6 +95,10 @@ jobs:
             build/gen006-streaming-slice/compile.log
             build/gen006-streaming-slice/one.log
             build/gen006-streaming-slice/four.log
+            build/gen006-streaming-slice/restart-one.log
+            build/gen006-streaming-slice/restart-four.log
+            build/gen006-streaming-slice/restart-one/
+            build/gen006-streaming-slice/restart-four/
           if-no-files-found: warn
           retention-days: 45
   native-stream-windows:
@@ -113,6 +133,7 @@ jobs:
                   "world_cpp_blob":git("hash-object","native/src/world.cpp"),
                   "world_hpp_blob":git("hash-object","native/include/cybersand/world.hpp"),
                   "slice_blob":git("hash-object","native/tests/gen006_streaming_slice.cpp"),
+                  "restart_fixture_blob":git("hash-object","tools/experiments/gen006_cross_process_restart.py"),
                   "scope":"experimental sharded native Worlds; no single-World selective eviction, Rapier, Godot or cross-shard physics"}
           assert record["sha"]==record["github_sha"]
           (out/"source.json").write_text(json.dumps(record,indent=2)+"\n")
@@ -143,6 +164,20 @@ jobs:
           if errorlevel 1 exit /b 1
           findstr /C:"GEN006_NATIVE_SHARDED_STREAM_PASS configured_workers=4" build\gen006-streaming-slice\four.log
           if errorlevel 1 exit /b 1
+          findstr /C:"GEN006_NATIVE_CHUNK_IDENTITY_PASS configured_workers=1" build\gen006-streaming-slice\one.log
+          if errorlevel 1 exit /b 1
+          findstr /C:"GEN006_NATIVE_CHUNK_IDENTITY_PASS configured_workers=4" build\gen006-streaming-slice\four.log
+          if errorlevel 1 exit /b 1
+          python tools/experiments/gen006_cross_process_restart.py --exe build\gen006-streaming-slice\streaming-slice.exe --root build\gen006-streaming-slice\process-one --logs build\gen006-streaming-slice\restart-one --workers 1 > build\gen006-streaming-slice\restart-one.log 2>&1
+          if errorlevel 1 (type build\gen006-streaming-slice\restart-one.log & exit /b 1)
+          python tools/experiments/gen006_cross_process_restart.py --exe build\gen006-streaming-slice\streaming-slice.exe --root build\gen006-streaming-slice\process-four --logs build\gen006-streaming-slice\restart-four --workers 4 > build\gen006-streaming-slice\restart-four.log 2>&1
+          if errorlevel 1 (type build\gen006-streaming-slice\restart-four.log & exit /b 1)
+          type build\gen006-streaming-slice\restart-one.log
+          type build\gen006-streaming-slice\restart-four.log
+          findstr /C:"GEN006_CROSS_PROCESS_RESTART_PASS configured_workers=1" build\gen006-streaming-slice\restart-one.log
+          if errorlevel 1 exit /b 1
+          findstr /C:"GEN006_CROSS_PROCESS_RESTART_PASS configured_workers=4" build\gen006-streaming-slice\restart-four.log
+          if errorlevel 1 exit /b 1
       - name: Preserve original native evidence and failures
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
@@ -154,5 +189,9 @@ jobs:
             build/gen006-streaming-slice/compile.log
             build/gen006-streaming-slice/one.log
             build/gen006-streaming-slice/four.log
+            build/gen006-streaming-slice/restart-one.log
+            build/gen006-streaming-slice/restart-four.log
+            build/gen006-streaming-slice/restart-one/
+            build/gen006-streaming-slice/restart-four/
           if-no-files-found: warn
           retention-days: 45
