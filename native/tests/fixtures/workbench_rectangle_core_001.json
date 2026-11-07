@@ -1,0 +1,23 @@
+{
+  "schema": "cybersand.workbench-rectangle-core.001",
+  "registered": "2026-11-07",
+  "parent": "53d642b8b0c7b773318ed1660a657d38e9ec6800",
+  "owner_direction": "Retain an interior rigid rectangle; excess detached brick becomes native Sand",
+  "rule": {
+    "source": "Complete eligible face-connected ambient RedBrick component",
+    "small_source_cells": 16,
+    "small_rule": "Unchanged alternating Sand/Rust",
+    "larger_rule": "Largest cell-aligned all-occupied interior rectangle; every remaining source cell becomes Sand2",
+    "ties": ["maximum area", "minimum world y", "minimum world x", "maximum width", "maximum height"],
+    "additional_core_size_or_aspect_threshold": false,
+    "mass": "Retained cells at existing unit mass; native COM and inertia including cell1/6",
+    "unchanged": ["source eligibility", "source1024/62 limits", "8 bodies", "gravity", "damping", "contact law", "gain/cap/budget", "arrival provenance", "liquid policy"]
+  },
+  "tests": ["independent exhaustive prefix-sum rectangle oracle", "ties/seeds/holes/concavities/lattice", "discarded-tail anchor/hot/mask/foreign refusals", "core+Sand exact cell census", "cancel/stale/duplicate/rollback refusal", "one core owner/body/collider", "native optimized and ASan/UBSan", "Windows/Linux workers1/4", "Save/Restore lifecycle", "actual material rendering"],
+  "expected_source_fixtures": {
+    "tree520": {"core": [44,27,16,13], "core_cells": 208, "sand": 312},
+    "building356": {"core": [50,27,4,38], "core_cells": 152, "sand": 204}
+  },
+  "resource": {"cap_bytes": 1073741824, "minimum_free_bytes": 5368709120},
+  "success": "Exact custody/conversion and actual unpowered falling under unchanged law; no original whole-geometry SOL clearance or mass-conservation claim"
+}
