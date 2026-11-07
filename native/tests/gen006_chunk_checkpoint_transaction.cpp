@@ -268,12 +268,83 @@ void run(const fs::path& root,unsigned workers) {
 }
 }
 
+void sand_continuation_test(unsigned workers) {
+    // Real moving Sand settles within a sealed Wall perimeter. Only the
+    // inactive, no-future-deadline state is exportable; pre-settlement motion
+    // must never be captured. Compare native cell tuples against an
+    // uninterrupted whole-World CYPS reference after import.
+    auto cfg=config(workers);
+    cfg.maximum_chunk_count=2;
+    const ChunkCoord sand_coord{-30,16};
+    auto cells=std::vector<Material>(4096,Material::Empty);
+    for(int n=0;n<64;++n) {
+        cells[static_cast<std::size_t>(n)]=Material::Wall;
+        cells[63U*64U+static_cast<std::size_t>(n)]=Material::Wall;
+        cells[static_cast<std::size_t>(n)*64U]=Material::Wall;
+        cells[static_cast<std::size_t>(n)*64U+63U]=Material::Wall;
+    }
+    cells[10*64+30]=Material::Sand;
+    cells[11*64+30]=Material::Sand;
+    World w(cfg);
+    require(w.install_generated_chunk(sand_coord,cells)==ChunkInstallOutcome::Installed,
+            "GEN006_SEALED_SAND_ADMISSION");
+    ChunkCheckpointCapture packet{};
+    bool observed_dynamic_refusal=false;
+    for(int t=0;t<192;++t) {
+        packet=w.capture_chunk_checkpoint(sand_coord);
+        if(packet.status==ChunkCheckpointStatus::PendingActivity)
+            observed_dynamic_refusal=true;
+        if(packet.status==ChunkCheckpointStatus::Captured)break;
+        require(packet.status==ChunkCheckpointStatus::PendingActivity,
+                "GEN006_UNEXPECTED_SAND_PRESETTLEMENT_REFUSAL");
+        (void)w.tick();
+    }
+    require(observed_dynamic_refusal,"GEN006_NO_SAND_MOVEMENT_REFUSAL");
+    require(packet.status==ChunkCheckpointStatus::Captured,
+            "GEN006_SEALED_SAND_DID_NOT_SETTLE");
+    auto reference=World::restore_physical_state(cfg,w.save_physical_state());
+    require(reference && !reference->has_failed(),
+            "GEN006_SAND_UNINTERRUPTED_REFERENCE");
+    const auto origin=packet.checkpoint.coord;
+    const auto digest_before=packet.checkpoint.sha256;
+    const auto ack=ack_for(packet.checkpoint);
+    require(w.evict_durable_checkpoint(packet.checkpoint,ack)==ChunkCheckpointStatus::Evicted,
+            "GEN006_QUIESCENT_SAND_RELEASE_REFUSED");
+    (void)w.tick();
+    (void)reference->tick();
+    require(w.restore_chunk_checkpoint(origin,packet.checkpoint.bytes)==
+            ChunkCheckpointStatus::Restored,
+            "GEN006_QUIESCENT_SAND_REHYDRATION_REFUSED");
+    for(int t=0;t<3;++t) {
+        (void)w.tick();
+        (void)reference->tick();
+    }
+    for(int y=0;y<64;++y)for(int x=0;x<64;++x) {
+        const auto xx=origin.x*64+x, yy=origin.y*64+y;
+        require(w.stored_material(xx,yy)==reference->stored_material(xx,yy) &&
+                w.stored_state_a(xx,yy)==reference->stored_state_a(xx,yy) &&
+                w.stored_state_b(xx,yy)==reference->stored_state_b(xx,yy) &&
+                w.stored_temperature(xx,yy)==reference->stored_temperature(xx,yy),
+                "GEN006_SEALED_SAND_CONTINUATION_DIVERGED");
+    }
+    require(w.quantity_ledger().material_cells==reference->quantity_ledger().material_cells,
+            "GEN006_SAND_QUANTITY_COUNT_DIVERGED");
+    std::cout<<"GEN006_SEALED_SAND_CHECKPOINT_CONTINUATION_PASS"
+             <<" configured_workers="<<workers
+             <<" motion_refused_until_quiescent=1"
+             <<" full_wall_boundary=1"
+             <<" SHA256="<<int(digest_before[0])
+             <<" resumed_native_cells=4096"
+             <<" continuation_ticks=3\n";
+}
+
 int main(int argc,char** argv) {
     try {
         require(argc==3,"usage: gen006-chunk-transaction ROOT 1|4");
         const auto workers=static_cast<unsigned>(std::stoul(argv[2]));
         require(workers==1||workers==4,"GEN006_INVALID_WORKERS");
         run(argv[1],workers);
+        sand_continuation_test(workers);
         return 0;
     } catch(const std::exception& ex) {
         std::cerr<<"GEN006_LOSSLESS_STATIC_CHUNK_TRANSACTION_FAIL "<<ex.what()<<'\n';

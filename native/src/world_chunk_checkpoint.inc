@@ -44,10 +44,28 @@ ChunkCheckpointCapture World::capture_chunk_checkpoint(ChunkCoord coord) const {
             }
     // A moving or reactive material is an unsupported *physical* domain,
     // regardless of its present scheduling activity.
+    bool has_sand=false;
     for (const auto& c:chunk->cells) {
         const auto material=c.material_value();
-        if (material != Material::Empty && material != Material::Wall) {
+        if (material == Material::Sand) has_sand=true;
+        else if (material != Material::Empty && material != Material::Wall) {
             result.status = ChunkCheckpointStatus::UnsupportedDomain; return result;
+        }
+    }
+    // Sand is admitted only after its rules have genuinely gone to sleep
+    // inside a full one-cell WALL perimeter, preventing a missing-neighbour
+    // transport destination. No in-flight granular motion is checkpointed.
+    if (has_sand) {
+        for (std::int32_t n=0;n<config_.chunk_size;++n) {
+            const auto last=static_cast<std::size_t>(config_.chunk_size-1);
+            const auto k=static_cast<std::size_t>(n);
+            const auto w=static_cast<std::size_t>(config_.chunk_size);
+            if (chunk->cells[k].material_value()!=Material::Wall ||
+                chunk->cells[last*w+k].material_value()!=Material::Wall ||
+                chunk->cells[k*w].material_value()!=Material::Wall ||
+                chunk->cells[k*w+last].material_value()!=Material::Wall) {
+                result.status=ChunkCheckpointStatus::UnsupportedDomain;return result;
+            }
         }
     }
     if (!config_.gen006_track_edit_intent || chunk->pristine_generated_empty ||
@@ -131,11 +149,17 @@ ChunkCheckpointStatus World::evict_durable_checkpoint(
         staged.sha256 != current.checkpoint.sha256)
         return ChunkCheckpointStatus::StaleGeneration;
     const auto& chunk=*it->second;
-    // For this strict Wall/Empty domain, quantity is wholly material counts,
-    // with zero Water transfer and no construction ledger.
-    const auto wall_count=static_cast<std::uint64_t>(chunk.non_empty_cell_count);
-    const auto index=static_cast<std::uint8_t>(Material::Wall);
-    if (wall_count > quantity_.material_cells[index])
+    // Wall/settled Sand have only local material counts in the shared quantity
+    // ledger. Water and solver-owned nonlocal quantities remain pinned.
+    std::uint64_t wall_count=0,sand_count=0;
+    for(const auto& cell:chunk.cells) {
+        if(cell.material_value()==Material::Wall)++wall_count;
+        else if(cell.material_value()==Material::Sand)++sand_count;
+    }
+    const auto wi=static_cast<std::uint8_t>(Material::Wall);
+    const auto si=static_cast<std::uint8_t>(Material::Sand);
+    if (wall_count > quantity_.material_cells[wi] ||
+        sand_count > quantity_.material_cells[si])
         return ChunkCheckpointStatus::UnsupportedDomain;
     // From here on: no allocation or throws. Acknowledged checkpoint exists
     // outside World before its last native copy is destroyed.
@@ -146,7 +170,8 @@ ChunkCheckpointStatus World::evict_durable_checkpoint(
         chunk_directory_[static_cast<std::size_t>(
             dy*static_cast<std::uint64_t>(chunk_directory_width_)+dx)]=nullptr;
     }
-    quantity_.material_cells[index]-=wall_count;
+    quantity_.material_cells[wi]-=wall_count;
+    quantity_.material_cells[si]-=sand_count;
     chunks_.erase(it);
     ++hard_surface_revision_;
     hard_surface_full_refresh_required_=true;
@@ -211,14 +236,25 @@ ChunkCheckpointStatus World::restore_chunk_checkpoint(
         for(auto& block:candidate->activity_blocks)block.quiet_ticks=in.get<std::uint32_t>();
         if(in.get<std::uint32_t>()!=candidate->cells.size())
             return ChunkCheckpointStatus::InvalidRecord;
-        std::uint64_t wall_count=0;
+        std::uint64_t wall_count=0,sand_count=0;
         for(auto& cell:candidate->cells) {
             cell.bits=in.get<std::uint64_t>();
-            if(cell.material_value()!=Material::Empty && cell.material_value()!=Material::Wall)
-                return ChunkCheckpointStatus::InvalidRecord;
             if(cell.material_value()==Material::Wall)++wall_count;
+            else if(cell.material_value()==Material::Sand)++sand_count;
+            else if(cell.material_value()!=Material::Empty)
+                return ChunkCheckpointStatus::InvalidRecord;
         }
-        candidate->non_empty_cell_count=static_cast<std::size_t>(wall_count);
+        if(sand_count) {
+            const auto w=static_cast<std::size_t>(config_.chunk_size);
+            for(std::size_t k=0;k<w;++k) {
+                if(candidate->cells[k].material_value()!=Material::Wall ||
+                   candidate->cells[(w-1U)*w+k].material_value()!=Material::Wall ||
+                   candidate->cells[k*w].material_value()!=Material::Wall ||
+                   candidate->cells[k*w+w-1U].material_value()!=Material::Wall)
+                    return ChunkCheckpointStatus::InvalidRecord;
+            }
+        }
+        candidate->non_empty_cell_count=static_cast<std::size_t>(wall_count+sand_count);
         const auto temp=in.get<std::uint8_t>();
         if(temp>1U)return ChunkCheckpointStatus::InvalidRecord;
         if(temp) {
@@ -248,14 +284,17 @@ ChunkCheckpointStatus World::restore_chunk_checkpoint(
            !ballistic_parcels_.empty() || !pending_explosions_.empty() ||
            transient_occupancy_capacity()!=0 || quantity_.construction)
             return ChunkCheckpointStatus::UnsupportedDomain;
-        const auto index=static_cast<std::uint8_t>(Material::Wall);
-        if(wall_count>std::numeric_limits<std::uint64_t>::max()-quantity_.material_cells[index])
+        const auto wi=static_cast<std::uint8_t>(Material::Wall);
+        const auto si=static_cast<std::uint8_t>(Material::Sand);
+        if(wall_count>std::numeric_limits<std::uint64_t>::max()-quantity_.material_cells[wi] ||
+           sand_count>std::numeric_limits<std::uint64_t>::max()-quantity_.material_cells[si])
             return ChunkCheckpointStatus::UnsupportedDomain;
         // Allocation must finish before publishing the restored chunk.
         chunks_.reserve(chunks_.size()+1);
         auto [it,inserted]=chunks_.try_emplace(expected,std::move(candidate));
         if(!inserted)return ChunkCheckpointStatus::AlreadyResident;
-        quantity_.material_cells[index]+=wall_count;
+        quantity_.material_cells[wi]+=wall_count;
+        quantity_.material_cells[si]+=sand_count;
         const auto dx=static_cast<std::uint64_t>(expected.x-chunk_directory_x_);
         const auto dy=static_cast<std::uint64_t>(expected.y-chunk_directory_y_);
         if(dx < static_cast<std::uint64_t>(chunk_directory_width_) &&
