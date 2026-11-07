@@ -38,7 +38,10 @@ func _capture(folder: String, stem: String) -> String:
         return ""
     if image.save_png(folder.path_join(stem + ".png")) != OK:
         return ""
-    return image.get_data().sha256_text()
+    var hasher := HashingContext.new()
+    hasher.start(HashingContext.HASH_SHA256)
+    hasher.update(image.get_data())
+    return hasher.finish().hex_encode()
 
 
 func _run() -> void:
