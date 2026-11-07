@@ -115,6 +115,10 @@ func _observe(command: Dictionary, world: Object, extent: Vector2i,
 		var native_id: int = ids[point]
 		counts[native_id] = int(counts.get(native_id,0)) + 1
 		materials.append(native_id)
+	var palette: Array = []
+	for index: int in range(Setup.MATERIALS.size()):
+		palette.append({"id":int(Setup.MATERIALS[index]),
+			"name":str(Setup.MATERIAL_NAMES[index])})
 	var basis: Dictionary = _identity(world,generation,manual_revision)
 	var token: String = _token("observation",generation)
 	_observation = basis.duplicate()
@@ -128,7 +132,7 @@ func _observe(command: Dictionary, world: Object, extent: Vector2i,
 		"native_material_ids":materials,
 		"native_counts":counts,
 		# Palette is a named workbench source contract; no IDs from RGB pixels.
-		"palette_material_ids":Setup.MATERIALS.duplicate(),
+		"palette":palette,
 		"identity":basis,
 		# The main thread MUST join these values to a true post-draw image,
 		# with matching generation, World revision, tick and render ACK.
