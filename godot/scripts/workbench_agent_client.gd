@@ -33,6 +33,7 @@ var _pending_tool := ""
 var _pending_http: HTTPRequest
 var _seen_call_ids: Dictionary = {}
 var _fake_transport := false
+var _last_fake_payload: Dictionary = {}
 var _response_waiting := false
 
 func configure_fake_transport_for_tests(enabled: bool) -> void:
@@ -250,6 +251,7 @@ func _send(input_items: Array) -> void:
 	_response_waiting = true
 	if _fake_transport:
 		# Only explicit receive_fake_response calls can advance tests.
+		_last_fake_payload = payload.duplicate(true)
 		status_changed.emit("request", "Fake transport request %d" % _request_count)
 		return
 	var request := HTTPRequest.new()
@@ -275,12 +277,10 @@ func _send(input_items: Array) -> void:
 		_fail("Cannot start network request (%d)." % err)
 
 func pending_fake_payload() -> Dictionary:
-	# Used by fake-provider tests; never called by live path.
+	# Used by fake-provider tests only; never called by live transport.
 	if not _fake_transport or not _response_waiting:
 		return {}
-	var p := {"model": _model, "tools": strict_tools(), "parallel_tool_calls": false}
-	p["previous_response_id"] = _response_id
-	return p
+	return _last_fake_payload.duplicate(true)
 
 func receive_fake_response(epoch: int, serial: int, http_status: int, body: Dictionary) -> void:
 	if not _fake_transport:
