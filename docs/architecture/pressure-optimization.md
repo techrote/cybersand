@@ -87,18 +87,18 @@ labels remain intact. The [repair evidence](../audits/2026-10-25-pressure-moving
 retains the six-arm failing control and pending acceptance. Equal compartment amounts alone
 do not establish that fixed point.
 
-**Execution version 5 (PR #532, proposed)** preserves that global fixed-point
-requirement for whole-operator reuse, but removes it as a prerequisite for
-constructing every selective component certificate. After one complete
-authoritative gas pass, cached variants may perform one bounded bootstrap from
-the resulting sealed regions when the resident index is complete, no discovery
-allocation occurred and the owner retained a complete non-overflowing dirty-
-chunk set. Components whose one-chunk-expanded dependency bounds intersect any
-dirty chunk are immediately invalidated; only the remaining summaries may be
-replayed on later reference passes, and every member is still validated before
-stamping. Pair/member capacity uncertainty, stale replay or incomplete proof
-falls back to the complete reference operator. This derived state is not
-serialized and does not alter gas IDs, lineage, amount or CYPS/physical hashes.
+**Execution version 5 (PR #532, proposed)** leaves gas discovery, component
+identity/lineage reduction and whole-operator cache admission unchanged. Its
+bounded optimization is only the authoritative relabel bookkeeping after that
+reducer. Cached variants record one visit bit for each resident cell reached by
+the ordinary gas BFS. A gas-dirty chunk, a chunk known to retain an occluded
+positive gas label, cache-membership uncertainty, dirty-proof overflow,
+component-cache replay, or gas-pass allocation still executes the complete
+reference relabel sweep. Only a clean chunk with no latent-label obligation may
+relabel exactly the cells marked by the authoritative BFS. The dirty set is
+retained through relabelling and then drained. Derived visit bits and hidden-
+label bytes are bounded at cache construction, are not serialized and cannot
+change gas IDs, lineage, amounts or CYPS/physical hashes.
 
 Gas resolution revokes all Water motion
 certificates because a remote volume/gauge change can alter a local gradient.
