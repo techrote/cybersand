@@ -77,6 +77,15 @@ class PilotTests(unittest.TestCase):
         self.assertEqual(result["features"][0]["unsupported_components"], 0)
         self.assertEqual(result["artistic_acceptance"], "pending_independent_human_reference_review")
 
+    def test_inert_static_kind_from_real_art_schema_is_supported(self):
+        before = self.base()
+        before["features"][0].pop("status")
+        before["features"][0]["kind"] = "inert-static"
+        after = copy.deepcopy(before)
+        after["features"][0]["rectangles"].append([20, 10, 10, 10, 40])
+        result = pilot_quality.evaluate(before, after, {"gate"})
+        self.assertEqual(result["status"], "pass", result)
+
     def test_detached_overlay_and_cistern_changes_are_rejected(self):
         before = self.base()
         after = copy.deepcopy(before)
