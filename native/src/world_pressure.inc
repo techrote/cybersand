@@ -435,7 +435,8 @@ void World::prepare_pressure_tick() {
             // The reference operator replaces the entire snapshot this tick.
             // Any later cache reuse starts cold; no partially repaired answer.
             const auto status = cache->status;
-            cache->cold(); cache->status = status;
+            cache->head_reference_fallback();
+            cache->status = status;
         }
     }
     compute_pressure_heads();
