@@ -27,7 +27,7 @@ def main() -> int:
     if workers not in (1, 4):
         raise ValueError("expected workers 1 or 4")
     record = source.read_bytes()
-    if len(record) < 96 or record[:4] != b"G6KC" or record[4:8] != b"\\x01\\x00\\x00\\x00":
+    if len(record) < 96 or record[:4] != b"G6KC" or struct.unpack_from("<I", record, 4)[0] != 1:
         raise ValueError("not a G6KC1 static chunk record")
     if hashlib.sha256(record[:-32]).digest() != record[-32:]:
         raise ValueError("untrusted source record hash")
