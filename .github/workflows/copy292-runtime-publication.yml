@@ -1,4 +1,4 @@
-name: 'copy #292 PressureFlow C2048 opt-in source-matched runtime publication'
+name: 'Native #292 signed-copy source-matched runtime publication'
 
 # Temporary branch-scoped publisher. Runtime/manifests are deliberately absent
 # from this filter, and existing ready-for-review acceptance gates are unchanged.
@@ -429,6 +429,6 @@ jobs:
             echo '### copy #292 runtime publication'
             echo "Built source: $GITHUB_SHA"
             echo "Runtime publication commit: $(git rev-parse HEAD)"
-            echo 'Both exact runtimes passed import and the five scoped cases on their actual target OS; native LCB-002/LCB-001 pressure, parallel-heads and pair-table groups passed before the builds.'
+            echo 'Both exact runtimes passed import and the six scoped cases on their actual target OS; native LCB-002/LCB-001 pressure, parallel-heads and pair-table groups passed before the builds.'
             echo 'The existing full ready-for-review validation gates remain required on the resulting PR head.'
           } >> "$GITHUB_STEP_SUMMARY"
