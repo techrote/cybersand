@@ -27,6 +27,30 @@ LAUNCHER_NAME = "world_art_preview_launcher.py"
 ALLOWED_CAPTURE_FLAGS = {"--rendering-driver", "--display-driver", "--scale", "--shots", "--resolution", "--framing",
                          "--time", "--no-glow", "--no-detail", "--no-background", "--zoom", "--center", "--view",
                          "--crop", "--detail-zoom", "--timeout"}
+MAX_PNG_FILE_BYTES = 32 * 1024 * 1024
+MAX_PNG_RAW_BYTES = 128 * 1024 * 1024
+MAX_MANIFEST_BYTES = 4 * 1024 * 1024
+MAX_JOBS = 100
+MAX_SHOTS_PER_JOB = 100
+
+
+def _member(root: Path, relative: object) -> Path:
+    """Manifest-provided paths never escape their capture bundle or traverse symlinks."""
+    if not isinstance(relative, str) or not relative or len(relative) > 240 or "\\\\" in relative:
+        raise ToolError("capture_path_unsafe", "invalid capture member name")
+    parts = relative.split("/")
+    if relative.startswith("/") or any(x in ("", ".", "..") or ":" in x for x in parts):
+        raise ToolError("capture_path_unsafe", "capture member contains an absolute/traversal path")
+    root = Path(root).resolve()
+    target = root.joinpath(*parts)
+    for i in range(1, len(parts) + 1):
+        if root.joinpath(*parts[:i]).is_symlink():
+            raise ToolError("capture_path_unsafe", "capture member contains a symlink")
+    if not target.resolve().is_relative_to(root):
+        raise ToolError("capture_path_unsafe", "capture member leaves its bundle")
+    return target
+
+
 LAUNCHER_EXIT = {0: "completed", 2: "usage", 3: "engine_unusable", 4: "render_failed", 5: "evidence_invalid",
                  6: "source_changed", 7: "no_display"}
 
@@ -47,7 +71,9 @@ def is_sealed(manifest: dict) -> bool:
 
 
 def inspect_png(path: Path) -> dict:
-    """Independent PNG structure/CRC check; raises ValueError when invalid."""
+    """Validate CRCs, dimensions and bounded decompressed PNG data."""
+    if path.stat().st_size > MAX_PNG_FILE_BYTES:
+        raise ValueError("PNG file exceeds maximum size")
     data = path.read_bytes()
     if not data.startswith(PNG_SIGNATURE):
         raise ValueError("not a PNG (bad signature)")
@@ -64,10 +90,16 @@ def inspect_png(path: Path) -> dict:
         if zlib.crc32(kind + chunk) & 0xFFFFFFFF != crc:
             raise ValueError(f"PNG chunk {kind!r} CRC mismatch")
         if kind == b"IHDR":
+            if header is not None or length != 13 or position != len(PNG_SIGNATURE):
+                raise ValueError("invalid or duplicate PNG IHDR")
             header = struct.unpack(">IIBBBBB", chunk)
         elif kind == b"IDAT":
+            if header is None or len(compressed) + len(chunk) > MAX_PNG_FILE_BYTES:
+                raise ValueError("PNG compressed data exceeds bound")
             compressed += chunk
         elif kind == b"IEND":
+            if length != 0 or end + 4 != len(data):
+                raise ValueError("invalid PNG IEND or trailing data")
             ended = True
             break
         position = end + 4
@@ -77,9 +109,18 @@ def inspect_png(path: Path) -> dict:
     channels = {0: 1, 2: 3, 3: 1, 4: 2, 6: 4}.get(colour)
     if channels is None or interlace != 0 or depth != 8:
         raise ValueError(f"unsupported PNG layout (colour type {colour}, depth {depth}, interlace {interlace})")
-    raw = zlib.decompress(bytes(compressed))
-    if len(raw) != height * (1 + width * channels):
-        raise ValueError("PNG pixel stream has the wrong length")
+    if not (0 < width <= 8192 and 0 < height <= 8192):
+        raise ValueError("PNG dimensions exceed accepted bounds")
+    expected = height * (1 + width * channels)
+    if expected > MAX_PNG_RAW_BYTES:
+        raise ValueError("PNG decompressed pixel data exceeds bound")
+    decoder = zlib.decompressobj()
+    raw = decoder.decompress(bytes(compressed), expected + 1)
+    if len(raw) > expected or decoder.unconsumed_tail:
+        raise ValueError("PNG decompressed data exceeds IHDR dimensions")
+    raw += decoder.flush(expected + 1 - len(raw))
+    if len(raw) != expected or not decoder.eof or decoder.unused_data:
+        raise ValueError("PNG pixel stream has wrong length or truncated stream")
     diversity = len(set(raw[::max(1, len(raw) // 1_000_000)]))
     return {"width": width, "height": height, "bytes": len(data), "sha256": sha256_bytes(data),
             "raw_byte_diversity": diversity}
@@ -87,6 +128,8 @@ def inspect_png(path: Path) -> dict:
 
 def _read_json(path: Path) -> dict:
     try:
+        if path.stat().st_size > MAX_MANIFEST_BYTES:
+            raise ToolError("evidence_unreadable", "capture manifest exceeds size bound")
         value = json.loads(path.read_text(encoding="utf-8"))
     except (OSError, ValueError) as exc:
         raise ToolError("evidence_unreadable", f"cannot read {path.name}: {exc}") from None
@@ -106,8 +149,9 @@ def classify(batch: dict) -> str:
 
 
 def verify_bundle(bundle: Path) -> tuple[dict, list[dict], list[str]]:
-    """Return (batch manifest, shots, problems). ``shots`` rows are verified PNG records."""
-    path = Path(bundle) / "batch-manifest.json"
+    """Verify a bounded, hash-linked bundle without dereferencing external manifest paths."""
+    root = Path(bundle).resolve()
+    path = root / "batch-manifest.json"
     if not path.is_file():
         raise ToolError("bundle_missing", f"{path.name} not found; not a capture bundle")
     batch = _read_json(path)
@@ -118,19 +162,45 @@ def verify_bundle(bundle: Path) -> tuple[dict, list[dict], list[str]]:
         problems.append("batch manifest_sha256 does not match its content")
     if batch.get("status") != "completed":
         problems.append(f"batch status is {batch.get('status')!r}")
+    entries = batch.get("jobs")
+    if not isinstance(entries, list) or not 1 <= len(entries) <= MAX_JOBS:
+        problems.append("bundle has missing or excessive jobs")
+        entries = []
     shots: list[dict] = []
-    for entry in batch.get("jobs", []):
-        manifest_path = Path(bundle) / str(entry.get("manifest", ""))
+    for entry in entries:
+        if not isinstance(entry, dict):
+            problems.append("job entry is not an object")
+            continue
+        try:
+            manifest_path = _member(root, entry.get("manifest"))
+        except ToolError as exc:
+            problems.append(f"{entry.get('id')}: {exc.message}")
+            continue
         if not manifest_path.is_file():
             problems.append(f"{entry.get('id')}: job manifest missing")
             continue
-        if sha256_file(manifest_path) != entry.get("manifest_sha256"):
-            problems.append(f"{entry.get('id')}: job manifest differs from the batch record")
-        job = _read_json(manifest_path)
+        try:
+            if sha256_file(manifest_path) != entry.get("manifest_sha256"):
+                problems.append(f"{entry.get('id')}: job manifest differs from the batch record")
+            job = _read_json(manifest_path)
+        except (ToolError, OSError) as exc:
+            problems.append(f"{entry.get('id')}: invalid job manifest: {exc}")
+            continue
         if job.get("status") != "complete":
             problems.append(f"{entry.get('id')}: job status {job.get('status')!r}")
-        for shot in job.get("shots", []):
-            png = manifest_path.parent / str(shot.get("file", ""))
+        listed = job.get("shots")
+        if not isinstance(listed, list) or not 1 <= len(listed) <= MAX_SHOTS_PER_JOB:
+            problems.append(f"{entry.get('id')}: missing or excessive shots")
+            continue
+        for shot in listed:
+            if not isinstance(shot, dict):
+                problems.append(f"{entry.get('id')}: shot entry is not an object")
+                continue
+            try:
+                png = _member(manifest_path.parent, shot.get("file"))
+            except ToolError as exc:
+                problems.append(f"{entry.get('id')}/{shot.get('file')}: {exc.message}")
+                continue
             row = {"collection": entry.get("collection"), "shot_id": shot.get("id"), "kind": shot.get("kind"),
                    "path": png, "png_sha256": shot.get("png_sha256"), "width": shot.get("width"),
                    "height": shot.get("height"), "pack_sha256": (job.get("input_pack") or {}).get("sha256"),
@@ -143,16 +213,16 @@ def verify_bundle(bundle: Path) -> tuple[dict, list[dict], list[str]]:
                 shots.append(row)
                 continue
             if info["sha256"] != shot.get("png_sha256"):
-                problems.append(f"{entry.get('id')}/{shot.get('file')}: PNG SHA-256 differs from the manifest")
+                problems.append(f"{entry.get('id')}/{shot.get('file')}: PNG SHA-256 differs from manifest")
             elif (info["width"], info["height"]) != (shot.get("width"), shot.get("height")):
-                problems.append(f"{entry.get('id')}/{shot.get('file')}: PNG size differs from the manifest")
+                problems.append(f"{entry.get('id')}/{shot.get('file')}: PNG size differs from manifest")
             elif info["raw_byte_diversity"] < 4:
                 problems.append(f"{entry.get('id')}/{shot.get('file')}: image is blank")
             else:
                 row["verified"] = True
                 row["bytes"] = info["bytes"]
             shots.append(row)
-    if not batch.get("jobs") or not shots:
+    if not entries or not shots:
         problems.append("bundle records no jobs/shots")
     return batch, shots, problems
 
