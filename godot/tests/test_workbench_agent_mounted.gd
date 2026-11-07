@@ -11,6 +11,7 @@ var panel: Control
 var checks := 0
 var failed := 0
 var evidence_dir := ""
+const CASE_TIMEOUT_MSEC := 45000 # Explicit bounded diagnostic; not a physics timing claim.
 
 func _initialize() -> void:
 	set_meta("cybersand_feature","shared_workbench")
@@ -24,7 +25,7 @@ func check(ok: bool, reason: String) -> bool:
 	return ok
 
 func until(predicate: Callable, reason: String) -> bool:
-	var deadline: int = Time.get_ticks_msec() + Watchdogs.milliseconds("operation_seconds")
+	var deadline: int = Time.get_ticks_msec() + mini(Watchdogs.milliseconds("operation_seconds"),CASE_TIMEOUT_MSEC)
 	while Time.get_ticks_msec() < deadline:
 		if predicate.call():
 			return true
@@ -96,6 +97,7 @@ func _run() -> void:
 	evidence_dir = OS.get_environment("WB_AGENT_EVIDENCE_DIR")
 	host = load("res://main.tscn").instantiate()
 	root.add_child(host)
+	print("WB528_STAGE main instanced and mounted probe")
 	wb = host.shared_workbench
 	if not await until(Callable(self,"_ready_native"),"shared workbench startup/worker pause"):
 		_finish()
@@ -110,6 +112,7 @@ func _run() -> void:
 	check(mount._toggle.text.contains("opt-in"),"toggle absent from shared workbench")
 	mount._toggle.button_pressed = true
 	check(panel.visible,"user opt-in toggle cannot reveal panel")
+	print("WB528_STAGE panel present; building blank real World")
 	var fresh: Dictionary = Setup.fresh(PackedInt32Array(wb.applied.liquid_policy),Vector2i(2048,2048))
 	if not check(wb.apply(fresh),"real 2048-square native owner declined blank workbench") 			or not await until(Callable(self,"_ready_blank"),"native blank extent never installed"):
 		_finish()
@@ -121,12 +124,14 @@ func _run() -> void:
 	panel._region[2].value = 64
 	panel._region[3].value = 64
 	panel.client.configure_fake_transport_for_tests(true)
+	print("WB528_STAGE native authorization requested")
 	panel._on_start()
 	if not await until(Callable(self,"_ready_panel_task"),"native host authorization missing"):
 		_finish()
 		return
 	check(mount._authorised,"model started without native task authorization")
 	var s: int = panel.client._serial
+	print("WB528_STAGE native observe dispatched")
 	_fake("observe","obs1",{"region":{"x":1144,"y":260,"width":8,"height":8},"detail":"cells"})
 	if not await until(func() -> bool: return _next_request(s),
 			"native observe / real frame did not complete"):
@@ -137,6 +142,7 @@ func _run() -> void:
 		"matched native observation does not have 64 real cells")
 	_capture_original()
 	s = panel.client._serial
+	print("WB528_STAGE native prepare dispatched")
 	_fake("prepare_edit","prep1",{"observation_id":observed.get("observation_id",""),
 		"operations":[{"shape":"rectangle","x0":1144,"y0":260,
 			"x1":1146,"y1":262,"material":58,"replace_only_material":null}]})
@@ -152,6 +158,7 @@ func _run() -> void:
 	check(mount.project_cell(Vector2i(1144,260)) is Rect2,
 		"cell-to-screen projection missing after opt-in")
 	s = panel.client._serial
+	print("WB528_STAGE native apply dispatched")
 	_fake("apply_edit","apply1",{"proposal_id":prepared.get("proposal_id","")})
 	if not await until(func() -> bool: return _next_request(s),
 			"real native verified application did not complete"):
@@ -162,6 +169,7 @@ func _run() -> void:
 		"native readback and authored-start commit missing")
 	check(not panel.proposal_overlay.visible,"applied proposal overlay remained visible")
 	# The fake API is deliberately held after the real application receipt.
+	print("WB528_STAGE native applied; manual edit conflict")
 	var stale_epoch: int = panel.client.current_epoch()
 	var stale_serial: int = panel.client._serial
 	var edits_before: int = wb.applied.edits.size()
@@ -181,6 +189,7 @@ func _run() -> void:
 	check(not panel.client.is_active() and not mount._authorised,
 		"late API result revived a retired worker-authoring task")
 	# No API keys or paid calls; actual native edit and Godot frame were used.
+	print("WB528_STAGE completed conflict and late-response checks")
 	_finish()
 
 func _finish() -> void:
