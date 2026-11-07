@@ -196,3 +196,10 @@ dated audit in the default corpus and failed docs/repository. It is now in the
 excluded dated inventory, with canonical answers in the freed-object contract.
 The two new query strings remain unchanged; canonical expectations now name that
 contract. Earlier retrieval scores using the invalid corpus are not acceptance.
+
+The corrected-corpus checks at97bbea26 all exit0: docs, M11, materialized
+repository, material compatibility/compiler, runtime inventory, five retrieval
+sets and diff-check. Canonical top5 results are32/32 default,7/7 freed,2/2 hitch,
+**1/2 wake and1/2 cut-outcomes**. The latter two remain retrieval gaps even
+though the evaluation command exits0; source review is separate from ranking.
+The exact final publication-head checks and receipt hash are recorded in the PR.
