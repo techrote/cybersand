@@ -46,6 +46,7 @@ struct World::PressureCache {
             if (gas_relabel_words != 0U &&
                 capacity <= std::numeric_limits<std::size_t>::max() / gas_relabel_words) {
                 gas_relabel_bits.resize(capacity * gas_relabel_words);
+                gas_previous_relabel_bits.resize(capacity * gas_relabel_words);
                 gas_hidden_labels.resize(capacity, std::uint8_t{1});
             }
         }
@@ -99,7 +100,8 @@ struct World::PressureCache {
         return complete && gas_relabel_words != 0U &&
                column_order.size() <= gas_hidden_labels.size() &&
                column_order.size() <= std::numeric_limits<std::size_t>::max() / gas_relabel_words &&
-               column_order.size() * gas_relabel_words <= gas_relabel_bits.size();
+               column_order.size() * gas_relabel_words <= gas_relabel_bits.size() &&
+               column_order.size() * gas_relabel_words <= gas_previous_relabel_bits.size();
     }
 
     [[nodiscard]] GasComponent* gas_component(std::uint32_t id) noexcept {
@@ -165,6 +167,7 @@ struct World::PressureCache {
         certificate_tick_eligible=false;
         gas_ready = false;
         gas_dirty_overflow = false;
+        gas_previous_relabel_valid = false;
         status = PressureOptimizationStatus::Cold;
     }
 
@@ -200,6 +203,8 @@ struct World::PressureCache {
     std::vector<ChunkCoord> gas_dirty_chunks;
     std::size_t gas_relabel_words = 0;
     std::vector<std::uint64_t> gas_relabel_bits;
+    std::vector<std::uint64_t> gas_previous_relabel_bits;
+    bool gas_previous_relabel_valid = false;
     // One byte per indexed chunk is a conservative proof that an unvisited
     // positive gas label may still exist under material/mask occlusion.
     std::vector<std::uint8_t> gas_hidden_labels;
