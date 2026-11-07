@@ -121,6 +121,84 @@ def writer_child(meta: Path) -> None:
     os._exit(0)
 
 
+def benchmark_group_commit(work: Path, identity: Identity,
+                           baseline: bytes, edits: list[Mutation],
+                           native_sha: str, workers: int) -> None:
+    """Source-identical native receipts; journal-only durable group comparison.
+
+    One outcome is ONE group durable after five writes; the sequential path
+    additionally permits individual ACKs after each fsync, and is intentionally
+    not latency-equivalent per edit. This is NOT the native-owner benchmark.
+    """
+    modes = ('sequential', 'batch')
+    observations = {mode: [] for mode in modes}
+    trials = 16
+    for trial in range(trials):
+        # Alternate order to limit warm-cache/order bias. The same identity
+        # and source checkpoint are used for each pair, with fresh file paths.
+        trial_id = Identity(identity.x, identity.y, identity.incarnation + trial + 1,
+                            identity.generation, identity.tick, identity.physical_hash)
+        outputs = {}
+        order = modes if trial % 2 == 0 else modes[::-1]
+        for mode in order:
+            path = work / ('fsync-control-' + str(trial) + '-' + mode + '.g6j')
+            journal = Journal.create(path, trial_id, baseline)
+            start = time.perf_counter_ns()
+            if mode == 'batch':
+                journal.append_batch(tuple(edits), identity.generation)
+            else:
+                for edit in edits:
+                    journal.append(edit, journal.state.generation)
+            elapsed_ms = (time.perf_counter_ns() - start) / 1_000_000
+            state = recover(path)
+            require(state.edits == tuple(edits) and
+                    state.generation == edits[-1].generation and
+                    not state.torn_tail, 'G6J_NATIVE_BATCH_BENCH_RECOVERY_REFUSED')
+            observations[mode].append(elapsed_ms)
+            outputs[mode] = path.read_bytes()
+            path.unlink()
+        require(outputs['batch'] == outputs['sequential'],
+                'G6J_NATIVE_BATCH_BENCH_BYTE_PARITY_REFUSED')
+    def percentile(samples: list[float], ratio: float) -> float:
+        sorted_samples = sorted(samples)
+        return sorted_samples[max(0, min(len(samples)-1,
+                          int(len(samples)*ratio + 0.99999999)-1))]
+    result = {
+        'scope': 'journal-only 5-native-derived-edit group publication; NOT native owner ACK',
+        'native_reference_sha': native_sha, 'workers': workers,
+        'trials_per_mode': trials, 'edits_per_trial': len(edits),
+        'checkpoint_bytes': len(baseline),
+        'journal_record_bytes_per_trial': len(edits) * 48,
+        'same_source_same_bytes': True,
+        'fsync_calls_per_group': {'sequential': len(edits), 'batch': 1},
+        'ack_policy': 'individual ACK each fsync for sequential; one GROUP ACK for batch',
+        'observations_ms': observations,
+        'latency_ms': {k: {'p50': percentile(v, .5),
+                           'p95': percentile(v, .95),
+                           'p99': percentile(v, .99)}
+                       for k,v in observations.items()},
+        'native_owner_integrated': False,
+        'tick_cpu_measured': False,
+        'power_loss_claim': False,
+    }
+    (work / 'journal-fsync-batch-control.json').write_text(
+        json.dumps(result, indent=2) + '\n', encoding='utf-8')
+    print('GEN006_G6J1_GROUP_FSYNC_CONTROL_PASS'
+          ' workers={} native_sha={} trials={} journal_bytes_per_group={}'
+          ' seq_fsync_per_group={} batch_fsync_per_group=1'
+          ' seq_p50_ms={:.3f} batch_p50_ms={:.3f}'
+          ' seq_p95_ms={:.3f} batch_p95_ms={:.3f}'
+          ' seq_p99_ms={:.3f} batch_p99_ms={:.3f}'
+          ' no_native_owner_speedup_claim=1'.format(
+              workers, native_sha, trials, len(edits)*48, len(edits),
+              result['latency_ms']['sequential']['p50'],
+              result['latency_ms']['batch']['p50'],
+              result['latency_ms']['sequential']['p95'],
+              result['latency_ms']['batch']['p95'],
+              result['latency_ms']['sequential']['p99'],
+              result['latency_ms']['batch']['p99']))
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--exe", required=True, type=Path)
@@ -166,6 +244,8 @@ def main() -> int:
     # durably appended; the native process used above exited normally.
     identity = Identity(CHUNK[0], CHUNK[1], 0x63A19D170006,
                         base_generation, tick, base_hash)
+    benchmark_group_commit(work, identity, base_record, edits,
+                           args.native_sha, args.workers)
     meta = {"work": str(work), "identity": list(identity.__dict__.values()),
             "edits": [list(x.__dict__.values()) for x in edits]}
     metadata = work / "writer-input.json"
