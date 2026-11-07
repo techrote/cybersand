@@ -1,0 +1,75 @@
+name: PR405 native matched A/B evidence
+on:
+  push:
+    branches: [codex/pr405-matched-bench-20261107]
+permissions:
+  contents: read
+jobs:
+  compare:
+    name: Same-runner main versus composed #405 native timing
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - name: Checkout exact source with retained ancestry
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+          lfs: false
+      - name: Compile and execute source-matched baseline and candidate
+        shell: bash
+        env:
+          BASE_SHA: 3d953ed1c1f5bd0bcf582359d47863689b9e2310
+          CANDIDATE_SHA: 94961320c03863a7857f355d749850658ba5b12c
+        run: |
+          set -euo pipefail
+          mkdir -p results/baseline results/candidate
+          git rev-parse HEAD > results/workflow_head.txt
+          printf '%s\n' "$BASE_SHA" "$CANDIDATE_SHA" > results/arm_commits.txt
+          cp native/bench/lcb201_moving_camera.cpp "$RUNNER_TEMP/lcb201_moving_camera.cpp"
+          cp native/bench/wcx_surge_assessment.cpp "$RUNNER_TEMP/wcx_surge_assessment.cpp"
+          git worktree add --detach "$RUNNER_TEMP/pr405-base" "$BASE_SHA"
+          git worktree add --detach "$RUNNER_TEMP/pr405-candidate" "$CANDIDATE_SHA"
+          for side in baseline candidate; do
+            if test "$side" = baseline; then src="$RUNNER_TEMP/pr405-base"; else src="$RUNNER_TEMP/pr405-candidate"; fi
+            git -C "$src" rev-parse HEAD > "results/$side/source_sha.txt"
+            sha256sum "$src/native/src/world.cpp" > "results/$side/world_sha256.txt"
+            for bench in lcb201_moving_camera wcx_surge_assessment; do
+              timeout 900 g++-13 -std=c++20 -O2 -DNDEBUG -I"$src/native/include" \
+                "$src/native/src/world.cpp" "$src/native/src/material_rules.cpp" \
+                "$src/native/src/scheduler_geometry.cpp" "$src/native/src/settled_world_discovery.cpp" \
+                "$RUNNER_TEMP/$bench.cpp" -pthread -o "$RUNNER_TEMP/$side-$bench"
+              sha256sum "$RUNNER_TEMP/$side-$bench" > "results/$side/$bench.sha256"
+            done
+            timeout 300 "$RUNNER_TEMP/$side-lcb201_moving_camera" 64 1 quiet > "results/$side/moving-quiet-1.jsonl"
+            timeout 300 "$RUNNER_TEMP/$side-lcb201_moving_camera" 64 4 flow > "results/$side/moving-flow-4.jsonl"
+            for arm in freemass pressure_dormant_nogas pressure_ref_gas pressure_dormant_gas inertial; do
+              WCX_SURGE_ARM="$arm" timeout 240 "$RUNNER_TEMP/$side-wcx_surge_assessment" 96 4 \
+                > "results/$side/surge-$arm.jsonl" \
+                2> "results/$side/surge-$arm.stderr"
+            done
+          done
+          python3 - <<'PY'
+          import json, pathlib
+          root = pathlib.Path('results')
+          print('PR405_MATCHED_AB: same ubuntu-24.04 runner, g++13 -O2, bounded identical fixtures')
+          for name in ('moving-quiet-1','moving-flow-4'):
+              baseline = [json.loads(s) for s in (root/'baseline'/f'{name}.jsonl').read_text().splitlines()]
+              candidate = [json.loads(s) for s in (root/'candidate'/f'{name}.jsonl').read_text().splitlines()]
+              for a,b in zip(baseline,candidate,strict=True):
+                  assert (a['arm'],a['speed'],a['workers']) == (b['arm'],b['speed'],b['workers'])
+                  print(f"{name} arm={a['arm']} speed={a['speed']} p50_ms={a['p50_ms']:.4f}->{b['p50_ms']:.4f} p95_ms={a['p95_ms']:.4f}->{b['p95_ms']:.4f} index_rebuilds={a['index_rebuilds']}->{b['index_rebuilds']}")
+          for name in ('freemass','pressure_dormant_nogas','pressure_ref_gas','pressure_dormant_gas','inertial'):
+              file = f'surge-{name}.jsonl'
+              a = json.loads((root/'baseline'/file).read_text())
+              b = json.loads((root/'candidate'/file).read_text())
+              assert (a['arm'],a['workers'],a['ticks']) == (b['arm'],b['workers'],b['ticks'])
+              print(f"{name} p50_ms={a['tick_p50_ms']:.4f}->{b['tick_p50_ms']:.4f} p95_ms={a['tick_p95_ms']:.4f}->{b['tick_p95_ms']:.4f} surface_motion={a['surface_motion_per_tick']:.2f}->{b['surface_motion_per_tick']:.2f}")
+          PY
+      - name: Preserve source-matched timing inputs and outputs
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: pr405-native-matched-ab
+          path: results/
+          retention-days: 90
+          if-no-files-found: warn
