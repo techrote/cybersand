@@ -17,7 +17,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from atlas_agent import atlas, captures, gitops, pricing, receipt as receipt_mod  # noqa: E402
 from atlas_agent.budget import Budget  # noqa: E402
 from atlas_agent.config import DEFAULTS, check_config, deep_merge  # noqa: E402
-from atlas_agent.errors import ConfigError, LimitReached, SandboxViolation, SourceChanged, ToolError  # noqa: E402
+from atlas_agent.errors import ConfigError, LimitReached, SandboxViolation, SourceChanged, ToolError, ValidationFailed  # noqa: E402
 from atlas_agent.fixtures.make_capture_bundle import make_bundle  # noqa: E402
 from atlas_agent.procs import resolve_executables, run_allowlisted  # noqa: E402
 from atlas_agent.sandbox import PathPolicy  # noqa: E402
@@ -682,6 +682,52 @@ class CaptureTests(unittest.TestCase):
         self.assertTrue(any("manifest_sha256" in p for p in summary["problems"]))
         with self.assertRaises(ToolError):
             captures.verify_bundle(self.root / "missing")
+
+    def test_manifest_path_traversal_refused_after_resealing(self):
+        first = self.bundle / "batch-manifest.json"
+        batch = json.loads(first.read_text(encoding="utf-8"))
+        batch["jobs"][0]["manifest"] = "../outside.json"
+        captures.seal(batch)
+        first.write_text(json.dumps(batch), encoding="utf-8")
+        evidence = captures.summarize_bundle(self.bundle)
+        self.assertFalse(evidence["verified"])
+        self.assertTrue(any("traversal" in problem for problem in evidence["problems"]))
+
+        second = make_bundle(self.pack_dir, self.root / "shot-escape")
+        first = second / "batch-manifest.json"
+        batch = json.loads(first.read_text(encoding="utf-8"))
+        job_path = second / batch["jobs"][0]["manifest"]
+        job = json.loads(job_path.read_text(encoding="utf-8"))
+        job["shots"][0]["file"] = "../../outside.png"
+        job_path.write_text(json.dumps(job), encoding="utf-8")
+        batch["jobs"][0]["manifest_sha256"] = hashlib.sha256(job_path.read_bytes()).hexdigest()
+        captures.seal(batch)
+        first.write_text(json.dumps(batch), encoding="utf-8")
+        evidence = captures.summarize_bundle(second)
+        self.assertFalse(evidence["verified"])
+        self.assertTrue(any("traversal" in problem for problem in evidence["problems"]))
+
+    def test_png_inflate_bomb_rejected_at_dimensions_bound(self):
+        import struct
+        import zlib
+        def chunk(kind, data):
+            return (struct.pack(">I", len(data)) + kind + data +
+                    struct.pack(">I", zlib.crc32(kind + data) & 0xffffffff))
+        path = self.root / "inflation-bomb.png"
+        path.write_bytes(captures.PNG_SIGNATURE +
+                         chunk(b"IHDR", struct.pack(">IIBBBBB", 1, 1, 8, 2, 0, 0, 0)) +
+                         chunk(b"IDAT", zlib.compress(b"\\x00" * 10_000_000)) + chunk(b"IEND", b""))
+        with self.assertRaisesRegex(ValueError, "exceeds"):
+            captures.inspect_png(path)
+
+    def test_trusted_script_manifest_rejects_an_unreviewed_executable(self):
+        trusted = json.loads(atlas.TRUSTED_SCRIPTS.read_text(encoding="utf-8"))
+        self.assertEqual(len(trusted["collections"]), 15)
+        script = self.root / "validate_pack.py"
+        script.write_text("print('unapproved')", encoding="utf-8")
+        with self.assertRaises(ValidationFailed) as caught:
+            atlas.verify_trusted_script("lumen-fault", script)
+        self.assertEqual(caught.exception.reason_code, "untrusted_art_script")
 
     def test_godot_class_needs_engine_identity(self):
         godot = make_bundle(self.pack_dir, self.root / "godot-like")
