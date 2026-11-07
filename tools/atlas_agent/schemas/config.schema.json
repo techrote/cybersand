@@ -1,0 +1,105 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CyberSand Atlas API agent runner configuration",
+  "description": "Every limit has a hard upper bound so a mistaken value cannot silently open the run up. Unknown keys are rejected.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema"],
+  "properties": {
+    "schema": {"const": "cybersand.atlas-agent.config/1"},
+    "mode": {"enum": ["dry-run", "live"]},
+    "model": {"type": "string", "pattern": "^(?:[A-Za-z0-9][A-Za-z0-9._:-]{0,63})?$"},
+    "pricing_file": {"type": ["string", "null"]},
+    "api": {
+      "type": "object", "additionalProperties": false,
+      "properties": {
+        "key_env": {"type": "string", "pattern": "^[A-Z][A-Z0-9_]{2,63}$"},
+        "base_url": {"type": ["string", "null"]},
+        "timeout_seconds": {"type": "number", "minimum": 5, "maximum": 300},
+        "reasoning_effort": {"enum": [null, "none", "minimal", "low", "medium", "high"]},
+        "image_detail": {"enum": ["low", "high", "auto"]}
+      }
+    },
+    "limits": {
+      "type": "object", "additionalProperties": false,
+      "properties": {
+        "max_iterations": {"type": "integer", "minimum": 1, "maximum": 30},
+        "max_api_calls": {"type": "integer", "minimum": 1, "maximum": 40},
+        "max_retries": {"type": "integer", "minimum": 0, "maximum": 6},
+        "backoff_base_seconds": {"type": "number", "minimum": 0, "maximum": 30},
+        "backoff_max_seconds": {"type": "number", "minimum": 0, "maximum": 120},
+        "max_run_seconds": {"type": "number", "minimum": 10, "maximum": 3600},
+        "max_output_tokens_per_call": {"type": "integer", "minimum": 64, "maximum": 32000},
+        "max_input_tokens_per_call": {"type": "integer", "minimum": 256, "maximum": 400000},
+        "max_total_input_tokens": {"type": "integer", "minimum": 256, "maximum": 2000000},
+        "max_total_output_tokens": {"type": "integer", "minimum": 64, "maximum": 200000},
+        "token_estimate_bytes_per_token": {"type": "number", "minimum": 1.0, "maximum": 4.0},
+        "max_tool_calls": {"type": "integer", "minimum": 0, "maximum": 200},
+        "max_tool_calls_per_response": {"type": "integer", "minimum": 1, "maximum": 8},
+        "max_tool_seconds": {"type": "number", "minimum": 1, "maximum": 900},
+        "max_total_tool_seconds": {"type": "number", "minimum": 1, "maximum": 3600},
+        "max_tool_output_bytes": {"type": "integer", "minimum": 256, "maximum": 200000},
+        "max_malformed_tool_calls": {"type": "integer", "minimum": 0, "maximum": 20},
+        "max_sandbox_violations": {"type": "integer", "minimum": 1, "maximum": 10},
+        "max_images": {"type": "integer", "minimum": 0, "maximum": 12},
+        "max_image_bytes": {"type": "integer", "minimum": 1024, "maximum": 20000000},
+        "max_total_image_bytes": {"type": "integer", "minimum": 1024, "maximum": 60000000},
+        "max_image_edge_pixels": {"type": "integer", "minimum": 16, "maximum": 4096},
+        "image_resend_calls": {"type": "integer", "minimum": 1, "maximum": 6},
+        "max_read_bytes": {"type": "integer", "minimum": 256, "maximum": 262144},
+        "max_edit_bytes": {"type": "integer", "minimum": 16, "maximum": 262144},
+        "max_files_edited": {"type": "integer", "minimum": 0, "maximum": 10}
+      }
+    },
+    "spend": {
+      "type": "object", "additionalProperties": false,
+      "properties": {
+        "max_usd_per_call": {"type": "number", "exclusiveMinimum": 0, "maximum": 5},
+        "max_usd_per_run": {"type": "number", "exclusiveMinimum": 0, "maximum": 25},
+        "authorised_ceiling_usd": {"type": "number", "minimum": 0, "maximum": 25},
+        "authorisation_ref": {"type": "string", "maxLength": 300},
+        "require_costs_crosscheck": {"type": "boolean"},
+        "costs_key_env": {"type": "string", "pattern": "^[A-Z][A-Z0-9_]{2,63}$"},
+        "expected_project": {"type": ["string", "null"], "maxLength": 128},
+        "credit_expiry_margin_hours": {"type": "number", "minimum": 1, "maximum": 720},
+        "attestation_max_age_hours": {"type": "number", "minimum": 1, "maximum": 720},
+        "credit_attestation": {
+          "oneOf": [
+            {"type": "null"},
+            {
+              "type": "object", "additionalProperties": false,
+              "required": ["checked_utc", "remaining_usd", "expires_utc", "auto_recharge_disabled", "api_only", "source", "attested_by"],
+              "properties": {
+                "checked_utc": {"type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$"},
+                "remaining_usd": {"type": "number", "minimum": 0, "maximum": 100000},
+                "expires_utc": {"type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}(T\\d{2}:\\d{2}:\\d{2}Z)?$"},
+                "auto_recharge_disabled": {"type": "boolean"},
+                "api_only": {"type": "boolean"},
+                "eligible_models": {"type": "array", "items": {"type": "string"}, "maxItems": 40},
+                "source": {"type": "string", "minLength": 3, "maxLength": 200},
+                "attested_by": {"type": "string", "minLength": 2, "maxLength": 100}
+              }
+            }
+          ]
+        }
+      }
+    },
+    "task": {
+      "type": "object", "additionalProperties": false,
+      "properties": {
+        "collection": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]{1,62}$"},
+        "lane": {"enum": [null, "terrain-art", "ruin-detail", "art-curation"]},
+        "fixture": {"type": "boolean"},
+        "atlas_root": {"type": ["string", "null"]},
+        "expected_source_sha": {"type": ["string", "null"]},
+        "allow_dirty_source": {"type": "boolean"},
+        "critique_only": {"type": "boolean"},
+        "capture_bundle": {"type": ["string", "null"]},
+        "capture_launcher": {"type": ["string", "null"]},
+        "godot": {"type": ["string", "null"]},
+        "read_extra_collections": {"type": "array", "items": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]{1,62}$"}, "maxItems": 14},
+        "dry_run_plan": {"type": ["string", "null"]}
+      }
+    }
+  }
+}

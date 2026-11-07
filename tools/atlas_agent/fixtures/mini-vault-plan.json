@@ -1,0 +1,10 @@
+{
+  "edits": [
+    {
+      "path": "docs/world-design/mini-vault/pack.json",
+      "old_text": "[9, 8, 6, 2, 65]]},",
+      "new_text": "[9, 8, 6, 2, 65], [10, 9, 2, 1, 54], [13, 9, 2, 1, 54]]},",
+      "note": "add two verdigris seam accents under the arch keystone"
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "schema": "cybersand.atlas-agent.pricing/1",
+  "currency": "USD",
+  "tokens_per_unit": 1000000,
+  "tier": "standard",
+  "source_url": "https://developers.openai.com/api/docs/pricing",
+  "image_source_url": "https://developers.openai.com/api/docs/guides/images-vision",
+  "retrieved_utc": "2026-11-07",
+  "max_age_days": 45,
+  "verification": "Rates were read from the published OpenAI developer pricing page on 2026-11-07 (standard tier, short-context). The page shows no version number. The owner must re-check them against the live page before the first charged run; the runner refuses live execution once retrieved_utc is older than max_age_days or when the model is not listed here.",
+  "models": {
+    "gpt-5.4-mini": {
+      "input": 0.75, "cached_input": 0.075, "output": 4.5, "supports_reasoning": true,
+      "image": {"method": "patch", "patch_size": 32, "multiplier": 1.2, "patch_budget": {"low": 6144, "high": 2500, "auto": 6144}}
+    },
+    "gpt-5.4-nano": {
+      "input": 0.2, "cached_input": 0.02, "output": 1.25, "supports_reasoning": true,
+      "image": {"method": "patch", "patch_size": 32, "multiplier": 1.2, "patch_budget": {"low": 6144, "high": 2500, "auto": 6144}}
+    },
+    "gpt-5-mini": {
+      "input": 0.25, "cached_input": 0.025, "output": 2.0, "supports_reasoning": true,
+      "image": {"method": "patch", "patch_size": 32, "multiplier": 1.2, "patch_budget": {"low": 6144, "high": 2500, "auto": 6144}}
+    },
+    "gpt-5-nano": {
+      "input": 0.05, "cached_input": 0.005, "output": 0.4, "supports_reasoning": true,
+      "image": {"method": "patch", "patch_size": 32, "multiplier": 1.5, "patch_budget": {"low": 6144, "high": 2500, "auto": 6144}}
+    },
+    "gpt-4.1-mini": {
+      "input": 0.4, "cached_input": 0.1, "output": 1.6, "supports_reasoning": false,
+      "image": {"method": "patch", "patch_size": 32, "multiplier": 1.62, "patch_budget": {"low": 6144, "high": 2500, "auto": 6144}}
+    },
+    "gpt-4.1": {
+      "input": 2.0, "cached_input": 0.5, "output": 8.0, "supports_reasoning": false,
+      "image": {"method": "tile", "base_tokens": 85, "tile_tokens": 170}
+    }
+  }
+}
