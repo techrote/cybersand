@@ -15,8 +15,8 @@ permissions:
   contents: read
   actions: read
 concurrency:
-  group: pf532-fullsize-cpu
-  cancel-in-progress: true
+  group: pf532-fullsize-cpu-${{ github.run_id }}
+  cancel-in-progress: false
 env:
   BASE_SOURCE: 81bbd5ff5cf366159e2b8a630609359c13560080
   CANDIDATE_SOURCE: ${{ github.sha }}
