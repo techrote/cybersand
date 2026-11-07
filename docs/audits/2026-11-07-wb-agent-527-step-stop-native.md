@@ -297,3 +297,26 @@ tick allowance** are unchanged. The live OpenAI (0/3), Windows owner desktop,
 production Native/GDExtension and independent final review gates remain
 separate. Execute all relevant exact-head CI on the new source before claiming
 the experimental engineering lane passed.
+
+
+## 7 November 2026 — Frozen v2 through the experimental Godot four-tool pathway
+
+A second independent native-Godot regression now consumes the **unchanged**
+`native/tests/fixtures/wb_agent_sand_hopper_v2.tsv` directly, copied at CI
+runtime only after SHA-256 `549a1db2520bcfb35f068f46b62320d7325d6297037ca2faf23c3b488d80347c`
+matches. It stages only its existing manually authored Sand and wall rectangles,
+then uses #526's authoritative native proposal/apply receipts and #527's
+acknowledged bounded Step/Stop to execute the registered reference construction
+in both NORMAL and REVISED layouts. Each test arm has a strict **480 TOTAL**
+completed-tick budget: exactly four `step(120)` requests. Original matched
+framebuffers and actual native catchment/protection readbacks are archived.
+
+This is an **experimental translated-host integration**, NOT the original
+signed-World acceptance reference: the immutable TSV is unchanged, but the
+#526 finite host deliberately uses a +512,+512 coordinate frame. #537 measured
+26 differing intermediate states for NORMAL at +512. Even 32/32 terminal
+catchment from this experiment must NOT be counted as strict physical parity
+or authorize model live trials without an explicit owner decision. Any RED
+result is retained, diagnosed and repaired at the current head; the native
+signed fixture control remains separately authoritative. No Sand is exposed
+as an agent-edit material, no physics/defaults change, and no API key is used.
