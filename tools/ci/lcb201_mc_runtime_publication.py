@@ -75,7 +75,7 @@ OPTIMIZATION_SECTIONS = {
 NATIVE_FILTERS = ("LCB-002", "LCB-001 pressure")
 NATIVE_REQUIRED = (
     "LCB-002 P1 wake summaries skip quiet scans and stay exact",
-    "LCB-002 #201 moving region keeps exact warm pressure caches",
+    "LCB-002 #201 moving region and move-assignment exactness",
 )
 _verify_bundle = engine.verify_bundle
 _verify_shared = engine.verify_case_results
