@@ -75,6 +75,9 @@ jobs:
         run: |
           set -euxo pipefail
           python3 tools/ci/check_docs.py
+          test -f docs/audits/2026-11-06-fast-neighbour-cursor-independent-qualification.md
+          grep -Fq 'Final executed Native/Godot admission qualification' docs/audits/2026-11-06-fast-neighbour-cursor-independent-qualification.md
+          grep -Fq '266 unique' docs/audits/2026-11-06-fast-neighbour-cursor-independent-qualification.md
           python3 tools/ci/check_m11_consistency.py
           python3 -m unittest discover -s tools/ci -p test_validation_contracts.py
           mkdir -p build/pf471-retrieval
