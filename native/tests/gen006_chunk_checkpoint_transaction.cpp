@@ -393,6 +393,119 @@ void verify_separate_native_process(const fs::path& root,unsigned workers) {
 }
 
 
+void static_continuation_test(const fs::path& root,unsigned workers) {
+    // Compare the same native World source, same exact edits and same clock:
+    // one World never evicts, the other loses and restores native ownership.
+    auto cfg=config(workers);
+    cfg.maximum_chunk_count=3;
+    cfg.initial_chunk_reserve=3;
+    const ChunkCoord edited{-16,-8}, independent{16,8}, neighbour{-15,-8};
+    const std::int64_t x=edited.x*64,y=edited.y*64;
+    std::vector<Material> empty(4096,Material::Empty);
+    auto walls=empty;
+    walls[30*64+30]=Material::Wall;
+    World uninterrupted(cfg), recovered(cfg);
+    for(World* w:{&uninterrupted,&recovered}) {
+        require(w->install_generated_chunk(edited,empty)==ChunkInstallOutcome::Installed &&
+                w->install_generated_chunk(independent,walls)==ChunkInstallOutcome::Installed,
+                "GEN006_CONTINUATION_SETUP");
+        w->set(x+8,y+8,Material::Empty);
+        w->set(x+30,y+30,Material::Wall);
+        w->set_temperature(x+30,y+30,417);
+        w->set(x+9,y+9,Material::Empty);
+    }
+    auto parity=[&](const char* why) {
+        if(uninterrupted.physical_state_hash()!=recovered.physical_state_hash() ||
+           uninterrupted.content_hash()!=recovered.content_hash() ||
+           uninterrupted.state_hash()!=recovered.state_hash() ||
+           uninterrupted.quantity_ledger()!=recovered.quantity_ledger() ||
+           uninterrupted.completed_tick_index()!=recovered.completed_tick_index() ||
+           uninterrupted.chunk_count()!=recovered.chunk_count() ||
+           uninterrupted.resident_cell_bytes()!=recovered.resident_cell_bytes()) {
+            std::cerr<<"GEN006_CONTINUATION_PARITY_DIAGNOSTIC"
+                     <<" control_physical="<<uninterrupted.physical_state_hash()
+                     <<" restored_physical="<<recovered.physical_state_hash()
+                     <<" control_content="<<uninterrupted.content_hash()
+                     <<" restored_content="<<recovered.content_hash()
+                     <<" control_tick="<<uninterrupted.completed_tick_index()
+                     <<" restored_tick="<<recovered.completed_tick_index()
+                     <<" control_cells="<<uninterrupted.resident_cell_bytes()
+                     <<" restored_cells="<<recovered.resident_cell_bytes()<<"\\n";
+            require(false,why);
+        }
+    };
+    parity("GEN006_CONTINUATION_INITIAL_PARITY");
+    ChunkCheckpointCapture captured{};
+    std::uint32_t observed_control=0,observed_recovered=0;
+    for(int attempt=0;attempt<32;++attempt) {
+        auto a=uninterrupted.tick(),b=recovered.tick();
+        observed_control=std::max(observed_control,a.worker_threads_observed);
+        observed_recovered=std::max(observed_recovered,b.worker_threads_observed);
+        parity("GEN006_CONTINUATION_PRE_EVICTION_PARITY");
+        captured=recovered.capture_chunk_checkpoint(edited);
+        if(captured.status==ChunkCheckpointStatus::Captured)break;
+        require(captured.status==ChunkCheckpointStatus::PendingActivity,
+                "GEN006_CONTINUATION_UNEXPECTED_REFUSAL");
+    }
+    require(captured.status==ChunkCheckpointStatus::Captured,
+            "GEN006_CONTINUATION_CAPTURE_UNSETTLED");
+    const auto original_bytes=captured.checkpoint.bytes;
+    const auto original_incarnation=captured.checkpoint.admission_incarnation;
+    persist_exactly(root/"continuation.g6c",original_bytes);
+    require(read_exactly(root/"continuation.g6c")==original_bytes,
+            "GEN006_CONTINUATION_DURABLE_READBACK");
+    const auto prior_cells=recovered.resident_cell_bytes();
+    const auto prior_count=recovered.chunk_count();
+    require(recovered.evict_durable_checkpoint(
+                captured.checkpoint,ack_for(captured.checkpoint))==
+                ChunkCheckpointStatus::Evicted &&
+            recovered.resident_cell_bytes()<prior_cells &&
+            recovered.chunk_count()+1==prior_count,
+            "GEN006_CONTINUATION_CAPACITY_NOT_RECLAIMED");
+    require(recovered.restore_chunk_checkpoint(edited,original_bytes)==
+            ChunkCheckpointStatus::Restored &&
+            recovered.resident_cell_bytes()==prior_cells &&
+            recovered.chunk_count()==prior_count,
+            "GEN006_CONTINUATION_RESTORE_CAPACITY_DRIFT");
+    const auto recheck=recovered.capture_chunk_checkpoint(edited);
+    require(recheck.status==ChunkCheckpointStatus::Captured &&
+            recheck.checkpoint.bytes==original_bytes &&
+            recheck.checkpoint.admission_incarnation>original_incarnation &&
+            recovered.gen006_player_edit_intent_at(x+8,y+8) &&
+            recovered.gen006_player_edit_intent_at(x+9,y+9) &&
+            recovered.stored_temperature(x+30,y+30)==417,
+            "GEN006_CONTINUATION_SAVED_STATE_DRIFT");
+    parity("GEN006_CONTINUATION_POST_RESTORE_PARITY");
+
+    // Admit a formerly absent adjacent signed chunk in BOTH Worlds, then
+    // execute genuine native neighbour scheduling/reads for four ticks.
+    require(uninterrupted.install_generated_chunk(neighbour,empty)==
+                ChunkInstallOutcome::Installed &&
+            recovered.install_generated_chunk(neighbour,empty)==
+                ChunkInstallOutcome::Installed,
+            "GEN006_CONTINUATION_NEIGHBOUR_ADMISSION");
+    parity("GEN006_CONTINUATION_NEIGHBOUR_PARITY");
+    for(int tick=0;tick<4;++tick) {
+        const auto a=uninterrupted.tick(),b=recovered.tick();
+        observed_control=std::max(observed_control,a.worker_threads_observed);
+        observed_recovered=std::max(observed_recovered,b.worker_threads_observed);
+        parity("GEN006_CONTINUATION_TICK_PARITY");
+        require(recovered.stored_material(x+30,y+30)==Material::Wall &&
+                recovered.stored_temperature(x+30,y+30)==417 &&
+                recovered.gen006_player_edit_intent_at(x+8,y+8) &&
+                recovered.gen006_player_edit_intent_at(x+9,y+9),
+                "GEN006_CONTINUATION_EDIT_INTENT_DRIFT");
+    }
+    std::cout<<"GEN006_STATIC_CONTINUATION_PASS"
+             <<" configured_workers="<<workers
+             <<" observed_control="<<observed_control
+             <<" observed_recovered="<<observed_recovered
+             <<" fixed_ticks=4 neighbour_admission=1"
+             <<" physical_content_ledger_clock_equal=1"
+             <<" native_bytes_reclaimed=1 empty_intent=1 temperature417=1\\n";
+}
+
+
 int main(int argc,char** argv) {
     try {
         const bool extent=argc==7 && std::string(argv[1])=="--extent";
@@ -411,6 +524,7 @@ int main(int argc,char** argv) {
         else {
             run(argv[1],workers);
             sand_boundary_refusal_test(workers);
+            static_continuation_test(argv[1],workers);
         }
         return 0;
     } catch(const std::exception& ex) {
