@@ -2,7 +2,7 @@
 
 **Scope:** isolated, opt-in storage primitive for GEN-006 #194 (https://github.com/techrote/cybersand/issues/194), **not integrated** with the active PR #486 native controller or the separate shared-World residency engine. Keep this PR Draft and unmerged. No native physics, production storage, World ABI or default runtime is changed.
 
-This is a bounded Python prototype for durable edit logging, not a completed native optimization. It accepts an opaque real CYPS checkpoint (maximum 2 MiB) and up to 4,096 fixed-size mutation records (48 bytes each). The header carries signed native chunk coordinates, a nonzero residency incarnation, starting mutation generation, fixed native tick and physical hash. Each append validates the next generation, fixed tick, coordinates, edit kind, monotonic chain and CRC, then synchronously flushes/fsyncs the appended record. **Only after a successful append may the native caller issue its durable edit ACK.** The initial checkpoint uses same-directory no-clobber hard-link publication and POSIX parent-directory fsync.
+This is a bounded Python prototype for durable edit logging, not a completed native optimization. It accepts an opaque native baseline (maximum 2 MiB; for source-matched #486 replay this must be the **full G6SLICE1 host carrier**, including the CYPS snapshot and player-edit metadata) and up to 4,096 fixed-size mutation records (48 bytes each). The header carries signed native chunk coordinates, a nonzero residency incarnation, starting mutation generation, fixed native tick and physical hash. Each append validates the next generation, fixed tick, coordinates, edit kind, monotonic chain and CRC, then synchronously flushes/fsyncs the appended record. **Only after a successful append may the native caller issue its durable edit ACK.** The initial checkpoint uses same-directory no-clobber hard-link publication and POSIX parent-directory fsync.
 
 Recovery checks the baseline and each complete record. A torn final unacknowledged record returns the complete valid prefix, clearly marked as torn; opening for subsequent writes refuses until a separately authorized repair/rollover procedure exists. Complete record corruption refuses rather than pretending the data never existed. The digest chain is a bounded accidental-corruption detector, not an authenticated or multi-writer protocol. There is no cross-process lock; a single serialized owner is a **required precondition**.
 
@@ -75,7 +75,7 @@ The source is checked out separately and compiled for actual Windows/Linux
 execution. The dedicated workflow is
 `.github/workflows/gen006-storage-native-pilot.yml`.
 
-The pilot generates a real signed chunk, saves the genuine CYPS checkpoint,
+The pilot generates a real signed chunk, saves the genuine native CYPS checkpoint within its complete G6SLICE1 host carrier,
 collects five actual same-tick native edit receipts (Empty, three Walls,
 Water17/temperature417), binds a G6J1 checkpoint to the starting native hash
 and mutation generation, appends the receipts in a child storage process,
@@ -216,3 +216,43 @@ native hash/receipt policy. Bind journal append and fsync before externally
 visible ACK, then repeat this exact owner-crash test with no per-edit full
 CYPS publication. Measure matched ACK latency, native tick cost and recovery.
 Coordinate with #486; never edit its live branch or use a mock native World.
+
+
+## 7 November 2026 — complete native-carrier journal recovery (self-contained baseline)
+
+The earlier native pilot stored only the inner CYPS bytes in G6J1 while
+silently relying on a **separate `native-base.g6s` file** to restore
+#486's host envelope. CYPS does not alone capture the host-owned
+chunk/recipe binding and explicit player Empty-intent mask. A standalone
+journal therefore could not be sufficient to reconstruct the declared
+complete supported state after loss of that auxiliary file.
+
+The source-matched pilot now journals the **entire actual G6SLICE1
+record**, not just CYPS. Recovery validates the G6J1 header/checksums
+and the G6SLICE1 coordinate/schema/length preflight. It deletes both
+auxiliary `native-base.cyps` and `native-base.g6s` working copies
+before independently replaying all five edit prefixes into fresh
+native processes. Every replay now restores directly from
+`recovered.checkpoint`; the original unmodified native baseline
+remains under `base/` as forensic evidence, not a runtime dependency.
+
+A negative control creates a structurally valid G6J1 file with the
+former CYPS-only baseline. The native adapter must refuse it as
+`G6J_NATIVE_OUTER_SCHEMA_REFUSED`, rather than silently dropping
+host state. The generic G6J1 storage primitive intentionally accepts
+opaque checkpoint bytes; **format/domain admission belongs to its
+native host adapter**.
+
+The larger stored baseline increases byte counts relative to the
+earlier 81.15% payload-only reduction. Earlier figures must **not** be
+reused for the corrected journal format. Inspect the new exact-head
+Windows/Linux native-pilot run for observed payload totals; this remains
+a serialized-payload comparison, not an fsync, owner-ACK, per-tick,
+power-loss, or integrated streaming throughput result.
+
+**Next necessary implementation boundary:** make the builder-owned
+native edit owner commit an already staged candidate only after the
+complete-carrier journal append is durable, without republishing full
+CYPS per edit. Run the actual native-owner hard-kill control on that
+isolated adapter and compare source-matched end-to-end ACK latency,
+write amplification and tick cost. Keep #518 Draft and unmerged.
