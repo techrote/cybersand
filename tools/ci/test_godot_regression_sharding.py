@@ -122,14 +122,15 @@ class ShardingTests(unittest.TestCase):
         shards, _ = subject.build_shard_plan(cases, 4)
         self.assertCountEqual([case.name for shard in shards for case in shard], list(by_name))
 
-    def test_windows_workbench_display_support_is_narrow_and_keeps_nine_cases(self):
+    def test_windows_workbench_display_support_is_narrow_and_keeps_ten_cases(self):
         expected = subject.WORKBENCH_GRAPHICAL_CASES | {
             "test_wb525_capacity_and_camera_render", "test_wb525_mounted_hopper_render",
             "test_wb525_step_paused_boundary_render",
             "test_wb525_large_scope_render",
+            "test_wb525_dock_layout_render",
         }
         self.assertEqual(subject.WINDOWS_WORKBENCH_GRAPHICAL_CASES, expected)
-        self.assertEqual(len(expected), 9)
+        self.assertEqual(len(expected), 10)
         discovered = {case.name: case for case in subject.discover_cases()}
         for name in expected:
             self.assertTrue(discovered[name].requires_display)
