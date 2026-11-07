@@ -1,0 +1,78 @@
+name: WB-AGENT-528 fake-provider protocol and panel shell
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - 'godot/scripts/workbench_agent_client.gd'
+      - 'godot/scripts/workbench_agent_panel.gd'
+      - 'godot/scripts/workbench_agent_proposal_overlay.gd'
+      - 'godot/tests/test_workbench_agent_client.gd'
+      - '.github/workflows/wb-agent-528-client.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: wb-agent-528-${{ github.event.pull_request.head.sha || github.sha }}
+  cancel-in-progress: false
+
+jobs:
+  godot-fake-provider:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      GODOT_SILENCE_ROOT_WARNING: '1'
+      SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+    steps:
+      - name: Checkout exact source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ env.SOURCE_SHA }}
+          fetch-depth: 0
+          lfs: false
+          persist-credentials: false
+      - name: Verify provider, source and official pinned Godot 4.7
+        shell: bash
+        timeout-minutes: 7
+        run: |
+          set -euo pipefail
+          mkdir -p build/wb-agent-528
+          test "$(git rev-parse HEAD)" = "$SOURCE_SHA"
+          git rev-parse HEAD | tee build/wb-agent-528/source-head.txt
+          git rev-parse HEAD^{tree} | tee build/wb-agent-528/source-tree.txt
+          git diff --check
+          python3 tools/ci/check_ci_provider_policy.py | tee build/wb-agent-528/provider.json
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          lock = json.loads(Path("third_party/godot-runtime.lock.json").read_text())
+          assert lock["godot_version"] == "4.7.stable.official.5b4e0cb0f"
+          assert lock["editor"]["sha256"] == "0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c"
+          PY
+          curl -fL --retry 2 --max-time 200 'https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7' -o build/wb-agent-528/godot.zip
+          echo "0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c  build/wb-agent-528/godot.zip" | sha256sum -c -
+          unzip -q build/wb-agent-528/godot.zip -d build/wb-agent-528/runtime
+          GODOT_BIN="$(find build/wb-agent-528/runtime -type f -name 'Godot*' -print -quit)"
+          test -n "$GODOT_BIN"
+          chmod +x "$GODOT_BIN"
+          "$GODOT_BIN" --version | tee build/wb-agent-528/godot-version.txt
+          test "$("$GODOT_BIN" --version)" = "4.7.stable.official.5b4e0cb0f"
+          echo "GODOT_BIN=$GODOT_BIN" >> "$GITHUB_ENV"
+      - name: Execute actual GDScript protocol/panel tests without API credentials
+        shell: bash
+        timeout-minutes: 5
+        env:
+          OPENAI_API_KEY: ''
+        run: |
+          set -euo pipefail
+          timeout 180 "$GODOT_BIN" --headless --path godot --script res://tests/test_workbench_agent_client.gd 2>&1 | tee build/wb-agent-528/fake-provider.log
+      - name: Preserve source, original failures and runtime evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: wb-agent-528-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/wb-agent-528/
+          if-no-files-found: warn
+          retention-days: 60
