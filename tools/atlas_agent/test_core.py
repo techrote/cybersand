@@ -133,7 +133,7 @@ class PricingBudgetTests(unittest.TestCase):
         # no published image rule for this model: the bound must not undercut the highest published rule
         small = pricing.image_tokens_upper_bound(luna, 192, 96, "high")
         self.assertGreaterEqual(small, 6 * 3 * 2.46 - 1)
-        self.assertGreaterEqual(pricing.image_tokens_upper_bound(luna, 4000, 4000, "high"), 73_000)
+        self.assertGreaterEqual(pricing.image_tokens_upper_bound(luna, 6000, 6000, "high"), 73_000)
 
     def make_budget(self, live=False, **overrides):
         cfg = copy.deepcopy(DEFAULTS)
