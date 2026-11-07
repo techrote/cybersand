@@ -165,3 +165,29 @@ Qualification is attached to the corresponding #530 exact-head progress
 comment. The composed CI's pinned #526 interface remains separate and Draft;
 post-step native/render matching and complete 32-Sand agent trial remain HOLD
 until separately executed.
+
+## 7 November 2026 — between-call human-brush authority fence (new source checkpoint)
+
+The #527 four-tool bridge previously checked human manual-intent changes *inside*
+an active bounded Step sequence, but not **between** separate model tool calls.
+After a human queued a real workbench paint, a subsequent independent Step
+sequence could have adopted the already-changed manual revision as its initial
+baseline, permitting stale task execution. This was a lifecycle authority gap
+outside #526's authoritative prepared-edit consumption path.
+
+The isolated #527 bridge now captures the exclusive worker's manual-intent
+revision at host authorization, rejects further model calls if an intervening
+human admission changes it, and counts **only genuinely ACKed agent-owned
+single ticks** as permitted revision increments. An invalidated task must
+receive acknowledged Stop, then obtain fresh native host authorization and
+observation; the bridge does not retry, replay, reset or erase human work.
+
+The actual native/Godot four-tool composition regression now submits a real
+`queue_emit_disc` Hard Wall brush after revised-task observation, verifies the
+owner's manual revision advanced, asserts that old model Step and observe both
+refuse *without a native tick*, and retires the old task through the existing
+#526 worker ACK. No #526, physics, streaming, v2 fixture or material source was
+changed. **Qualification is pending exact-head CI on this checkpoint**;
+prior 21/21 evidence pertains only to the earlier source and is not silently
+repinned. Post-Step matching framebuffer and full 32-Sand tool-driven trial
+remain separate HOLD gates.
