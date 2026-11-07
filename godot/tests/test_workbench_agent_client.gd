@@ -39,6 +39,7 @@ func _new_client() -> Node:
 func _run() -> void:
 	await process_frame
 	_test_tool_loop_and_stop()
+	_test_full_serial_four_tool_loop()
 	_test_provider_errors()
 	_test_budget_and_duplicates()
 	await _test_ui_shell()
@@ -100,6 +101,50 @@ func _test_tool_loop_and_stop() -> void:
 	_expect(not c2.submit_tool_result(e, "late-1", {"status": "stepped"}),
 		"late native receipt after Stop was admitted")
 	c2.queue_free()
+
+func _test_full_serial_four_tool_loop() -> void:
+	var c := _new_client()
+	var calls: Array = []
+	c.tool_requested.connect(func(name: String, args: Dictionary, epoch: int, call_id: String) -> void:
+		calls.append({"name": name, "args": args, "epoch": epoch, "id": call_id}))
+	_expect(c.begin_task("Test full tool chain", "configured-model", _scope()), "full chain should start")
+	_deliver(c, _response("r1", [_tool("observe", "o1", {"region": null, "detail": "cells"})]))
+	_expect(calls.size() == 1 and calls[0].name == "observe", "first tool must be observe")
+	var png := "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAB"
+	_expect(c.submit_tool_result(c.current_epoch(), "o1", {"status": "observed",
+		"observation_id": "observed-native-1", "image_data_url": png, "native_counts": {"Sand": 32}}),
+		"source-supplied image observation should be accepted")
+	var continuation: Dictionary = c.pending_fake_payload()
+	_expect(continuation.previous_response_id == "r1", "API continuation must link prior response")
+	_expect(continuation.input.size() == 2, "observation continuation must attach actual image input")
+	_expect(continuation.input[1].content[1].type == "input_image", "image not presented as vision input")
+	_expect(str(continuation.input[0].output).find("image_data_url") < 0,
+		"image base64 must not be duplicated as plain text tool result")
+	var op := {"shape": "rectangle", "x": 1026, "y": -33, "x2": 1029, "y2": -32,
+		"radius": 0, "material_id": 3, "replace_only_material_id": null}
+	_deliver(c, _response("r2", [_tool("prepare_edit", "p1",
+		{"observation_id": "observed-native-1", "operations": [op]})]))
+	_expect(calls.size() == 2 and calls[1].name == "prepare_edit", "prepare in chain")
+	_expect(typeof(calls[1].args.operations[0].x) == TYPE_INT,
+		"exact integer-shaped model arguments must be normalized to integers")
+	_expect(c.submit_tool_result(c.current_epoch(), "p1",
+		{"status": "proposed", "proposal_id": "proposal-native-1",
+		"footprint": [{"x": 1026, "y": -33}]}), "prepare must continue")
+	_deliver(c, _response("r3", [_tool("apply_edit", "a1", {"proposal_id": "proposal-native-1"})]))
+	_expect(calls.size() == 3 and calls[2].name == "apply_edit", "apply in chain")
+	_expect(c.submit_tool_result(c.current_epoch(), "a1",
+		{"status": "applied", "readback": {"verified_cells": 1}, "native_tick": 48}),
+		"verified native-shaped apply receipt must continue")
+	_deliver(c, _response("r4", [_tool("step", "s1", {"ticks": 120})]))
+	_expect(calls.size() == 4 and calls[3].name == "step" and calls[3].args.ticks == 120,
+		"step must use exact bounded integer argument")
+	_expect(c.submit_tool_result(c.current_epoch(), "s1",
+		{"status": "stepped", "completed": 120, "start_tick": 48, "end_tick": 168}),
+		"acknowledged step receipt must continue")
+	_deliver(c, _response("r5", [{"type": "message", "content": [
+		{"type": "output_text", "text": "Model finished; native acceptance not implied."}]}]))
+	_expect(not c.is_active() and calls.size() == 4, "complete serial four-tool loop must terminate")
+	c.queue_free()
 
 func _test_provider_errors() -> void:
 	for http_status: int in [401, 403, 429, 500]:
