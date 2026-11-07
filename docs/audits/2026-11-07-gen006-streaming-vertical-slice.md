@@ -481,3 +481,49 @@ not imported; its independently reproduced stale-incarnation ACK defect
 remains an explicit integration blocker pending the Native Residency Engine
 owner's corrected contract. Current production defaults, materials, ABI and
 physics are unchanged.
+
+## Slow native checkpoint/ACK — responsive live Godot extension (7 November 2026)
+
+**Implementation, pending exact-head runtime qualification at source creation.**
+The existing nonblocking host used one five-second deadline for both
+deterministic synchronous QA and interactive persistent native requests. A
+slow disk checkpoint could therefore turn a still-running native owner into a
+terminal Godot error after five seconds, with an ambiguous player-edit
+outcome. The native process may later complete the original request, but the
+former Godot pump stopped reading it.
+
+The **opt-in interactive** pump now distinguishes two deadlines: an
+**observable 1.5-second soft warning** and an **explicit 30-second hard
+deadline**. Until the hard deadline, it holds the same one sequenced
+in-flight request, never acknowledges or automatically replays an edit,
+preserves the ordered bounded player-action queue, and keeps Godot
+camera/render input responsive. The HUD reports BUSY/SLOW/READY, host
+request age, peak completed round-trip time, and total slow requests.
+These are **host IPC elapsed times**, NOT native checkpoint, fsync,
+worker throughput or durable-publication timings. These will be integrated
+only from the separately qualified Persistence & Throughput contract.
+
+An implementation-owned extension of the **actual compiled native plus
+Godot 4.7 OpenGL** asynchronous test sends a second native Wall edit after
+stopping the *specific private native child* using Linux SIGSTOP. For
+6.2 seconds it requires an actual 1280x800 rendered framebuffer
+(`09-slow-native-ack.png`), visible soft warning, unchanged native PID,
+one in-flight request, **zero fabricated durable ACKs** and no fatal host
+timeout. SIGCONT must permit the *original* in-flight request to finish,
+deliver one native durable ACK with a measured >5s host round-trip, and
+preserve the new player intent in the authoritative native World. The
+existing shutdown/restart acceptance then verifies the separate final edit.
+The test resumes the child before asserting a failure; it never kills or
+modifies a shared native service.
+
+**Boundaries:** synchronous initial launch/render and deterministic fixture
+retain their existing five-second timeout; the experimental native
+checkpoint algorithm, save format, material rules, ABI, shared-World
+selective residency and default production behavior are unchanged.
+A 30-second hard timeout is fail-stop with an explicitly UNKNOWN native
+edit outcome; it must not be interpreted as rollback, recovery, or a
+license to replay. Orderly shutdown remains bounded at seven seconds
+with an UNKNOWN outcome on failure. Linux SIGSTOP is a deterministic
+test-only fixture, not an actual Windows/desktop power-loss result.
+The native Windows/Linux qualification and real Godot results must be
+checked at this exact final HEAD before claiming success.
