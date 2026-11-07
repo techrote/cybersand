@@ -1,6 +1,19 @@
 name: WB-AGENT-001 focused Godot owner qualification
 
 on:
+  # Dedicated source-owner coverage continues after a composed implementation
+  # merges; main's normal Native/GDExtension build provides source-build gates.
+  push:
+    branches: [main]
+    paths:
+      - 'godot/scripts/workbench_agent_footprint.gd'
+      - 'godot/scripts/workbench_agent_signed_frame.gd'
+      - 'godot/scripts/workbench_authoring_*.gd'
+      - 'godot/scripts/simulation_worker.gd'
+      - 'godot/native_extension/**'
+      - 'godot/tests/test_workbench_agent_*.gd'
+      - 'godot/tests/test_workbench_authoring_*.gd'
+      - '.github/workflows/wb-agent-526.yml'
   pull_request:
     types: [opened, synchronize, reopened, ready_for_review]
     paths:
@@ -8,6 +21,7 @@ on:
       - 'godot/scripts/workbench_agent_signed_frame.gd'
       - 'godot/scripts/workbench_authoring_*.gd'
       - 'godot/scripts/simulation_worker.gd'
+      - 'godot/native_extension/**'
       - 'godot/tests/test_workbench_agent_*.gd'
       - 'godot/tests/test_workbench_authoring_*.gd'
       - '.github/workflows/wb-agent-526.yml'
@@ -22,7 +36,6 @@ concurrency:
 
 jobs:
   linux-owner:
-    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.head.ref == 'feature/wb-agent-authoring-foundation-526-20261107'
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     env:
@@ -173,10 +186,8 @@ jobs:
           retention-days: 90
 
   windows-owner:
-    # An independent actual Windows Godot/GL owner run on the same exact
-    # GDScript source. This uses retained LFS native binaries; it is NOT
-    # a substitute for exact-head native source rebuild/production admission.
-    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.head.ref == 'feature/wb-agent-authoring-foundation-526-20261107'
+    # Actual Windows Godot/GL owner run on the same exact GDScript source.
+    # Uses retained LFS native binaries (not a Windows source build).
     runs-on: windows-2022
     timeout-minutes: 50
     defaults:
@@ -310,9 +321,10 @@ jobs:
           retention-days: 90
 
   linux-source-rebuild:
-    # Draft-owned qualification: production Native/GDExtension gates remain skipped.
-    # No retained CyberSand native LFS binary is used for this execution.
-    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.head.ref == 'feature/wb-agent-authoring-foundation-526-20261107'
+    # Dedicated fresh Linux native source-build on path-scoped PR or manual
+    # qualification. Main already builds the current production Native and
+    # GDExtension matrices: avoid redundant compilation on each main push.
+    if: github.event_name != 'push'
     runs-on: ubuntu-24.04
     timeout-minutes: 65
     env:
