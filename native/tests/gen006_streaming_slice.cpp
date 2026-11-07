@@ -8,17 +8,22 @@
 #include <algorithm>
 #include <array>
 #include <bit>
+#include <chrono>
 #include <cstdint>
 #include <cstdio>
 #include <filesystem>
 #include <fstream>
 #include <iostream>
+#include <iterator>
 #include <limits>
 #include <map>
 #include <memory>
 #include <span>
+#include <sstream>
 #include <stdexcept>
 #include <string>
+#include <system_error>
+#include <thread>
 #include <utility>
 #include <vector>
 #ifdef _WIN32
@@ -477,21 +482,23 @@ void self_test(const fs::path& path, std::uint32_t workers) {
               << " continuing_ticks=3 corruption=REFUSED\n";
 }
 
-void interactive(const fs::path& path, std::uint32_t workers,
-                 std::istream& commands) {
-    StreamingSlice streamer(path, 2, workers);
-    std::cout << "GEN006 experimental native stream (independent World per shard). "
-                 "Commands: focus X Y | wall X Y | dig X Y | water X Y Q | "
-                 "watertemp X Y Q T | "
-                 "tick N | inspect LOCAL_X LOCAL_Y | render | status | quit. " 
-                 "X/Y are world chunk coords for focus, "
-                 "local 0..63 for edits. No cross-shard physics.\n";
-    ChunkCoord active{-1,-3};
-    streamer.focus(active);
+
+struct CommandResult {
+    bool quit = false;
+    bool refused = false;
+};
+
+CommandResult execute_commands(StreamingSlice& streamer, ChunkCoord& active,
+                               std::uint32_t workers, std::istream& commands,
+                               const fs::path& path) {
+    CommandResult result;
     std::string command;
     while (commands >> command) {
         try {
-            if (command == "quit") break;
+            if (command == "quit") {
+                result.quit = true;
+                break;
+            }
             if (command == "focus") {
                 commands >> active.x >> active.y;
                 streamer.focus(active);
@@ -511,13 +518,16 @@ void interactive(const fs::path& path, std::uint32_t workers,
                     streamer.edit(active, x, y, Material::Water,
                                   static_cast<std::uint16_t>(mass),
                                   static_cast<std::int16_t>(temp));
-                } else streamer.edit(active, x, y, command == "wall" ?
+                } else {
+                    streamer.edit(active, x, y, command == "wall" ?
                                            Material::Wall : Material::Empty);
+                }
             } else if (command == "tick") {
                 unsigned n;
                 commands >> n;
                 const auto observed = streamer.simulate(n);
-                std::cout << "TICK configured=" << workers << " observed=" << observed << '\n';
+                std::cout << "TICK configured=" << workers
+                          << " observed=" << observed << '\n';
             } else if (command == "inspect") {
                 int x, y;
                 commands >> x >> y;
@@ -534,9 +544,8 @@ void interactive(const fs::path& path, std::uint32_t workers,
                           << " intent=" << int(streamer.intent(active, x, y))
                           << '\n';
             } else if (command == "render") {
-                // Opt-in native RGBA byte handoff for the Godot demonstration.
-                // Native World remains authoritative; no native/Godot object or
-                // mutable storage crosses the process boundary. 64x64 only.
+                // Opt-in copied native RGBA handoff. Native World remains
+                // authoritative; no mutable native storage crosses the IPC.
                 const std::int64_t gx = active.x * kSide;
                 const std::int64_t gy = active.y * kSide;
                 std::array<std::uint8_t, kSide * kSide * 4> rgba{};
@@ -553,8 +562,7 @@ void interactive(const fs::path& path, std::uint32_t workers,
                 std::cout << "RENDER_RGBA chunk=(" << active.x << ","
                           << active.y << ") width=64 height=64"
                           << " bytes=" << rgba.size()
-                          << " checksum=" << checksum(rgba)
-                          << '\n';
+                          << " checksum=" << checksum(rgba) << '\n';
             } else if (command == "status") {
                 streamer.status();
             } else {
@@ -562,35 +570,204 @@ void interactive(const fs::path& path, std::uint32_t workers,
             }
             check(bool(commands), "GEN006_INPUT_ERROR");
         } catch (const std::exception& e) {
+            result.refused = true;
             std::cerr << "REFUSED " << e.what() << '\n';
             if (!commands) break;
         }
     }
+    return result;
+}
+
+void print_interactive_banner() {
+    std::cout << "GEN006 experimental native stream (independent World per shard). "
+                 "Commands: focus X Y | wall X Y | dig X Y | water X Y Q | "
+                 "watertemp X Y Q T | tick N | inspect LOCAL_X LOCAL_Y | "
+                 "render | status | quit. X/Y are world chunk coords for focus, "
+                 "local 0..63 for edits. No cross-shard physics.\n";
+}
+
+void interactive(const fs::path& path, std::uint32_t workers,
+                 std::istream& commands) {
+    StreamingSlice streamer(path, 2, workers);
+    print_interactive_banner();
+    ChunkCoord active{-1,-3};
+    streamer.focus(active);
+    (void)execute_commands(streamer, active, workers, commands, path);
     streamer.save_all();
     std::cout << "SAVE_ALL resident=" << streamer.resident() << '\n';
+}
+
+std::uint64_t native_process_id() {
+#ifdef _WIN32
+    return static_cast<std::uint64_t>(GetCurrentProcessId());
+#else
+    return static_cast<std::uint64_t>(::getpid());
+#endif
+}
+
+void publish_ipc_text(const fs::path& destination, const std::string& text) {
+    fs::create_directories(destination.parent_path());
+    fs::path staging = destination;
+    staging += ".staging";
+    {
+        std::ofstream out(staging, std::ios::binary | std::ios::trunc);
+        check(bool(out), "GEN006_STREAM_IPC_OPEN_FAILED");
+        out.write(text.data(), static_cast<std::streamsize>(text.size()));
+        out.flush();
+        check(bool(out), "GEN006_STREAM_IPC_WRITE_FAILED");
+    }
+    std::error_code ec;
+    fs::remove(destination, ec);
+    ec.clear();
+    fs::rename(staging, destination, ec);
+    check(!ec, "GEN006_STREAM_IPC_PUBLISH_FAILED");
+}
+
+void persistent_service(const fs::path& path, const fs::path& ipc_directory,
+                        std::uint32_t workers, std::uint32_t tick_hz) {
+    check(tick_hz >= 1 && tick_hz <= 240, "GEN006_STREAM_TICK_RATE_RANGE");
+    StreamingSlice streamer(path, 2, workers);
+    ChunkCoord active{-1,-3};
+    streamer.focus(active);
+    fs::create_directories(ipc_directory);
+
+    const fs::path request = ipc_directory / "request.txt";
+    const fs::path processing = ipc_directory / "request.processing";
+    const fs::path response = ipc_directory / "response.txt";
+    const fs::path ready = ipc_directory / "ready.txt";
+    const fs::path stopped = ipc_directory / "stopped.txt";
+    std::error_code ec;
+    for (const auto& stale : {request, processing, response, ready, stopped}) {
+        fs::remove(stale, ec);
+        ec.clear();
+    }
+
+    const auto pid = native_process_id();
+    publish_ipc_text(ready,
+        "GEN006_STREAM_SERVER_READY pid=" + std::to_string(pid) +
+        " configured_workers=" + std::to_string(workers) +
+        " tick_hz=" + std::to_string(tick_hz) + "\n");
+
+    const auto tick_period =
+        std::chrono::microseconds(1'000'000 / tick_hz);
+    auto next_tick = std::chrono::steady_clock::now() + tick_period;
+    std::uint64_t continuous_ticks = 0;
+    std::uint64_t request_count = 0;
+    bool running = true;
+
+    while (running) {
+        bool did_work = false;
+        if (fs::exists(request)) {
+            fs::remove(processing, ec);
+            ec.clear();
+            fs::rename(request, processing, ec);
+            check(!ec, "GEN006_STREAM_REQUEST_CLAIM_FAILED");
+
+            std::ifstream input(processing);
+            check(bool(input), "GEN006_STREAM_REQUEST_UNREADABLE");
+            std::string sequence_tag;
+            std::uint64_t sequence = 0;
+            input >> sequence_tag >> sequence;
+            check(sequence_tag == "SEQ" && bool(input),
+                  "GEN006_STREAM_REQUEST_HEADER");
+            input.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            const std::string command_text(
+                std::istreambuf_iterator<char>(input),
+                std::istreambuf_iterator<char>());
+            check(!input.bad(), "GEN006_STREAM_REQUEST_READ_ERROR");
+
+            std::istringstream commands(command_text);
+            std::ostringstream captured_out;
+            std::ostringstream captured_err;
+            auto* old_out = std::cout.rdbuf(captured_out.rdbuf());
+            auto* old_err = std::cerr.rdbuf(captured_err.rdbuf());
+            CommandResult command_result;
+            try {
+                command_result = execute_commands(
+                    streamer, active, workers, commands, path);
+            } catch (...) {
+                std::cout.rdbuf(old_out);
+                std::cerr.rdbuf(old_err);
+                throw;
+            }
+            std::cout.rdbuf(old_out);
+            std::cerr.rdbuf(old_err);
+            ++request_count;
+
+            std::ostringstream packet;
+            packet << "SEQ " << sequence << '\n'
+                   << "GEN006_STREAM_SERVER_STATE pid=" << pid
+                   << " request=" << request_count
+                   << " continuous_ticks=" << continuous_ticks
+                   << " active=(" << active.x << "," << active.y << ")"
+                   << " resident=" << streamer.resident()
+                   << " configured_workers=" << workers
+                   << " tick_hz=" << tick_hz << '\n'
+                   << captured_out.str()
+                   << captured_err.str();
+            publish_ipc_text(response, packet.str());
+            fs::remove(processing, ec);
+            ec.clear();
+            running = !command_result.quit;
+            did_work = true;
+        }
+
+        auto now = std::chrono::steady_clock::now();
+        unsigned catch_up = 0;
+        while (running && now >= next_tick && catch_up < 8) {
+            (void)streamer.simulate(1);
+            ++continuous_ticks;
+            ++catch_up;
+            next_tick += tick_period;
+            now = std::chrono::steady_clock::now();
+        }
+        if (running && now >= next_tick)
+            next_tick = now + tick_period;
+
+        if (!did_work)
+            std::this_thread::sleep_for(std::chrono::milliseconds(2));
+    }
+
+    streamer.save_all();
+    publish_ipc_text(stopped,
+        "GEN006_STREAM_SERVER_STOPPED pid=" + std::to_string(pid) +
+        " requests=" + std::to_string(request_count) +
+        " continuous_ticks=" + std::to_string(continuous_ticks) + "\n");
 }
 
 } // namespace
 
 int main(int argc, char** argv) {
     try {
+        check(argc >= 2, "GEN006_ARGUMENTS");
         const std::string mode(argv[1]);
-        const bool batch = mode == "--batch";
-        check(argc >= 3 && argc <= 5 &&
-              ((batch && (argc == 4 || argc == 5)) ||
-               (!batch && (argc == 3 || argc == 4))),
-              "usage: slice --self-test|--interactive DIRECTORY [1|4] OR "
-              "slice --batch DIRECTORY COMMAND_FILE [1|4]");
-        const std::uint32_t workers = (batch ? argc == 5 : argc == 4) ?
-            static_cast<std::uint32_t>(std::stoul(argv[batch ? 4 : 3])) : 1;
-        if (mode == "--self-test") self_test(argv[2], workers);
-        else if (mode == "--interactive") interactive(argv[2], workers, std::cin);
-        else if (batch) {
+        if (mode == "--self-test" || mode == "--interactive") {
+            check(argc == 3 || argc == 4,
+                  "usage: slice --self-test|--interactive DIRECTORY [1|4]");
+            const std::uint32_t workers = argc == 4 ?
+                static_cast<std::uint32_t>(std::stoul(argv[3])) : 1;
+            if (mode == "--self-test") self_test(argv[2], workers);
+            else interactive(argv[2], workers, std::cin);
+        } else if (mode == "--batch") {
+            check(argc == 4 || argc == 5,
+                  "usage: slice --batch DIRECTORY COMMAND_FILE [1|4]");
+            const std::uint32_t workers = argc == 5 ?
+                static_cast<std::uint32_t>(std::stoul(argv[4])) : 1;
             std::ifstream script(argv[3]);
             check(bool(script), "GEN006_BATCH_UNREADABLE");
             interactive(argv[2], workers, script);
             check(!script.bad(), "GEN006_BATCH_READ_ERROR");
-        } else throw std::invalid_argument("GEN006_MODE");
+        } else if (mode == "--serve") {
+            check(argc >= 4 && argc <= 6,
+                  "usage: slice --serve DIRECTORY IPC_DIRECTORY [1|4] [TICK_HZ]");
+            const std::uint32_t workers = argc >= 5 ?
+                static_cast<std::uint32_t>(std::stoul(argv[4])) : 1;
+            const std::uint32_t tick_hz = argc == 6 ?
+                static_cast<std::uint32_t>(std::stoul(argv[5])) : 30;
+            persistent_service(argv[2], argv[3], workers, tick_hz);
+        } else {
+            throw std::invalid_argument("GEN006_MODE");
+        }
         return 0;
     } catch (const std::exception& error) {
         std::cerr << "GEN006_NATIVE_SHARDED_STREAM_FAIL " << error.what() << '\n';

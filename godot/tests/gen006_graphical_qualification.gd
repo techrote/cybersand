@@ -88,6 +88,10 @@ func _run() -> void:
     if not demo.failure.is_empty() or demo.texture == null:
         _fail("cannot start actual native image scene: " + demo.failure)
         return
+    var persistent_pid: int = demo.native_pid
+    if persistent_pid <= 0 or demo.server_pid != persistent_pid:
+        _fail("persistent native controller PID receipt missing")
+        return
 
     # First deliberately dig, then paint a Wall at exactly the same pixel.
     # These must produce changed native RGBA bytes AND changed *rendered*
@@ -161,7 +165,12 @@ func _run() -> void:
         _fail("native Water17 pixel missing from Godot viewport: " + str(water))
         return
 
+    if demo.native_pid != persistent_pid or demo.server_pid != persistent_pid:
+        _fail("native controller process changed during graphical interaction")
+        return
+
     print("GEN006_GODOT_GRAPHICAL_FRAME_PASS"
+        + " persistent_native_process=1"
         + " real_gl_framebuffer=1"
         + " native_world_rgba=1"
         + " paint_dig=1"

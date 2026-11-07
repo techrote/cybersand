@@ -1,23 +1,34 @@
 extends Control
 
-# GEN-006 opt-in, process-backed Godot demonstration.
-# The native executable owns all cells and native simulation. This view only
-# consumes copied RGBA bytes and issues synchronous, bounded commands.
-# NOT a production Godot streaming adapter, gameplay host, or shared-World API.
+# GEN-006 opt-in persistent native-controller demonstration.
+# One native process owns the StreamingSlice and its native Worlds for the whole
+# Godot scene lifetime. Godot exchanges bounded command/receipt files and copied
+# RGBA frames; it never receives mutable native cells. Still NOT production
+# shared-World streaming, production GDExtension ownership or cross-shard physics.
 const SIDE: int = 64
 const DISPLAY_SIZE: float = 640.0
 const DISPLAY_TOP_LEFT: Vector2 = Vector2(28.0, 76.0)
 const FRAME_BYTES: int = SIDE * SIDE * 4
+const CONTROLLER_TICK_HZ: int = 30
+const FRAME_REFRESH_SECONDS: float = 0.10
+const IPC_TIMEOUT_MSEC: int = 5000
 
 var world_chunk := Vector2i(-1, -3)
 var selected_cell := Vector2i(18, 30)
 var native_executable: String = ""
 var save_root: String = ""
+var ipc_root: String = ""
 var texture: ImageTexture
 var last_receipts: String = ""
 var failure: String = ""
 var total_calls: int = 0
 var last_call_usec: int = 0
+var native_pid: int = -1
+var server_pid: int = -1
+var service_ticks: int = 0
+var request_sequence: int = 0
+var refresh_accumulator: float = 0.0
+var controller_started: bool = false
 
 
 func _ready() -> void:
@@ -35,38 +46,140 @@ func _ready() -> void:
         failure = "Cannot create private GEN-006 save directory: " + save_root
         queue_redraw()
         return
+    ipc_root = save_root.path_join("controller-ipc-%d" % Time.get_ticks_usec())
+    if DirAccess.make_dir_recursive_absolute(ipc_root) != OK:
+        failure = "Cannot create persistent-controller IPC directory: " + ipc_root
+        queue_redraw()
+        return
+    _start_controller()
+    if not failure.is_empty():
+        queue_redraw()
+        return
     _invoke(PackedStringArray())
-    # Headless acceptance deliberately uses the same Godot UI script and the
-    # real native executable, then closes without requiring manual input.
+    controller_started = failure.is_empty() and texture != null
+    set_process(controller_started)
+
+    # CI smoke uses exactly the same persistent controller and UI script.
     if OS.get_environment("GEN006_SLICE_VERIFY") == "1":
         _invoke(PackedStringArray(), true)
         _qualify_and_quit()
 
 
-func _qualify_and_quit() -> void:
-    var qualified: bool = (
-        texture != null and failure.is_empty()
-        and last_receipts.contains("RENDER_RGBA ")
-        and last_receipts.contains("EVICT ")
-        and last_receipts.contains("RELOAD ")
+func _start_controller() -> void:
+    native_pid = OS.create_process(
+        native_executable,
+        PackedStringArray([
+            "--serve", save_root, ipc_root, "1", str(CONTROLLER_TICK_HZ)
+        ]),
+        false
     )
-    if qualified:
-        print("GEN006_GODOT_NATIVE_FRAME_PASS width=64 height=64"
-            + " actual_native_rgba=1 real_eviction=1")
+    if native_pid <= 0:
+        failure = "Cannot launch persistent native GEN-006 controller."
+        return
+    var ready_path := ipc_root.path_join("ready.txt")
+    if not _wait_for_file(ready_path, IPC_TIMEOUT_MSEC):
+        failure = "Persistent native controller did not become ready."
+        return
+    var ready := FileAccess.get_file_as_string(ready_path)
+    if not ready.contains("GEN006_STREAM_SERVER_READY"):
+        failure = "Invalid persistent-controller ready receipt: " + ready.right(240)
+        return
+    for field in ready.split(" ", false):
+        if field.begins_with("pid="):
+            server_pid = int(field.trim_suffix("\n").split("=")[1])
+    if server_pid <= 0 or server_pid != native_pid:
+        failure = "Persistent-controller PID receipt mismatch."
+        return
+
+
+func _wait_for_file(path: String, timeout_msec: int) -> bool:
+    var deadline := Time.get_ticks_msec() + timeout_msec
+    while Time.get_ticks_msec() < deadline:
+        if FileAccess.file_exists(path):
+            return true
+        if native_pid > 0 and not OS.is_process_running(native_pid):
+            return false
+        OS.delay_msec(2)
+    return false
+
+
+func _write_request(commands: PackedStringArray) -> bool:
+    request_sequence += 1
+    var request_path := ipc_root.path_join("request.txt")
+    var staging_path := ipc_root.path_join("request.staging")
+    var response_path := ipc_root.path_join("response.txt")
+    if FileAccess.file_exists(response_path):
+        DirAccess.remove_absolute(response_path)
+    if FileAccess.file_exists(request_path):
+        failure = "Previous persistent-controller request is still outstanding."
+        return false
+    var file := FileAccess.open(staging_path, FileAccess.WRITE)
+    if file == null:
+        failure = "Persistent request open failed: " + str(FileAccess.get_open_error())
+        return false
+    file.store_string("SEQ %d\n%s\n" % [request_sequence, "\n".join(commands)])
+    file.flush()
+    file.close()
+    if DirAccess.rename_absolute(staging_path, request_path) != OK:
+        failure = "Persistent request publication failed."
+        return false
+    return true
+
+
+func _read_response(started_usec: int) -> bool:
+    var response_path := ipc_root.path_join("response.txt")
+    if not _wait_for_file(response_path, IPC_TIMEOUT_MSEC):
+        failure = "Persistent native controller response timed out."
+        return false
+    last_call_usec = Time.get_ticks_usec() - started_usec
+    total_calls += 1
+    last_receipts = FileAccess.get_file_as_string(response_path)
+    DirAccess.remove_absolute(response_path)
+    if not last_receipts.begins_with("SEQ %d\n" % request_sequence):
+        failure = "Persistent-controller sequence mismatch: " + last_receipts.left(120)
+        return false
+    if last_receipts.contains("REFUSED "):
+        failure = "Native command refused: " + last_receipts.right(350)
+        return false
+    for line in last_receipts.split("\n", false):
+        if line.begins_with("GEN006_STREAM_SERVER_STATE "):
+            for field in line.split(" ", false):
+                if field.begins_with("pid="):
+                    server_pid = int(field.split("=")[1])
+                elif field.begins_with("continuous_ticks="):
+                    service_ticks = int(field.split("=")[1])
+    if server_pid != native_pid:
+        failure = "Persistent native process identity changed."
+        return false
+    return true
+
+
+func _update_texture() -> bool:
+    var bytes := FileAccess.get_file_as_bytes(save_root.path_join("gen006-current.rgba"))
+    if bytes.size() != FRAME_BYTES:
+        failure = "Expected %d authoritative native RGBA bytes, got %d" % [
+            FRAME_BYTES, bytes.size()
+        ]
+        return false
+    var image := Image.create_from_data(SIDE, SIDE, false, Image.FORMAT_RGBA8, bytes)
+    if texture == null:
+        texture = ImageTexture.create_from_image(image)
     else:
-        push_error("GEN006_GODOT_NATIVE_FRAME_FAIL " + failure
-            + " receipts=" + last_receipts.right(500))
-    get_tree().quit(0 if qualified else 1)
+        texture.update(image)
+    queue_redraw()
+    return true
 
 
 func _invoke(actions: PackedStringArray, force_eviction: bool = false) -> void:
-    if native_executable.is_empty() or not failure.is_empty():
+    if native_pid <= 0 or not OS.is_process_running(native_pid):
+        failure = "Persistent native controller is not running."
+        queue_redraw()
+        return
+    if not failure.is_empty():
         queue_redraw()
         return
     var commands := PackedStringArray()
     commands.append("focus %d %d" % [world_chunk.x, world_chunk.y])
-    # Only on camera movement: cross three native shards to demonstrate real
-    # capacity-bounded eviction/reload while remaining in the isolated domain.
     if force_eviction:
         commands.append("focus %d %d" % [world_chunk.x + 1, world_chunk.y])
         commands.append("focus %d %d" % [world_chunk.x + 2, world_chunk.y])
@@ -75,45 +188,58 @@ func _invoke(actions: PackedStringArray, force_eviction: bool = false) -> void:
         commands.append(action)
     commands.append("render")
     commands.append("status")
-    commands.append("quit")
-    var command_path: String = save_root.path_join("gen006-commands.txt")
-    var file := FileAccess.open(command_path, FileAccess.WRITE)
-    if file == null:
-        failure = "Command file open failed: " + str(FileAccess.get_open_error())
-        queue_redraw()
-        return
-    file.store_string("\n".join(commands) + "\n")
-    file.close()
-
-    var stdout: Array = []
     var started := Time.get_ticks_usec()
-    # Synchronous by design: the experimental CLI has no stream-safe,
-    # long-lived Godot/GDExtension transport yet. Do not run in gameplay.
-    var exit_code := OS.execute(
-        native_executable,
-        PackedStringArray(["--batch", save_root, command_path, "1"]),
-        stdout, true
-    )
-    last_call_usec = Time.get_ticks_usec() - started
-    total_calls += 1
-    last_receipts = str(stdout[0]) if not stdout.is_empty() else ""
-    if exit_code != 0 or last_receipts.contains("REFUSED "):
-        failure = "Native command refused (exit %d): %s" % [
-            exit_code, last_receipts.right(350)
-        ]
+    if not _write_request(commands) or not _read_response(started):
         queue_redraw()
         return
+    _update_texture()
 
-    var bytes := FileAccess.get_file_as_bytes(save_root.path_join("gen006-current.rgba"))
-    if bytes.size() != FRAME_BYTES:
-        failure = "Expected %d authoritative native RGBA bytes, got %d" % [
-            FRAME_BYTES, bytes.size()
-        ]
-        queue_redraw()
+
+func _send_quit() -> void:
+    if native_pid <= 0 or not OS.is_process_running(native_pid):
         return
-    var image := Image.create_from_data(SIDE, SIDE, false, Image.FORMAT_RGBA8, bytes)
-    texture = ImageTexture.create_from_image(image)
-    queue_redraw()
+    var commands := PackedStringArray(["quit"])
+    var started := Time.get_ticks_usec()
+    if _write_request(commands):
+        _read_response(started)
+    var deadline := Time.get_ticks_msec() + 1200
+    while OS.is_process_running(native_pid) and Time.get_ticks_msec() < deadline:
+        OS.delay_msec(5)
+    if OS.is_process_running(native_pid):
+        OS.kill(native_pid)
+
+
+func _exit_tree() -> void:
+    set_process(false)
+    _send_quit()
+
+
+func _process(delta: float) -> void:
+    if not controller_started or not failure.is_empty():
+        return
+    refresh_accumulator += delta
+    if refresh_accumulator >= FRAME_REFRESH_SECONDS:
+        refresh_accumulator = 0.0
+        _invoke(PackedStringArray())
+
+
+func _qualify_and_quit() -> void:
+    var qualified: bool = (
+        texture != null and failure.is_empty()
+        and last_receipts.contains("RENDER_RGBA ")
+        and last_receipts.contains("EVICT ")
+        and last_receipts.contains("RELOAD ")
+        and last_receipts.contains("GEN006_STREAM_SERVER_STATE ")
+        and native_pid > 0 and server_pid == native_pid
+    )
+    if qualified:
+        print("GEN006_GODOT_NATIVE_FRAME_PASS width=64 height=64"
+            + " actual_native_rgba=1 real_eviction=1"
+            + " persistent_native_process=1 continuous_service=1")
+    else:
+        push_error("GEN006_GODOT_NATIVE_FRAME_FAIL " + failure
+            + " receipts=" + last_receipts.right(500))
+    get_tree().quit(0 if qualified else 1)
 
 
 func _unhandled_key_input(event: InputEvent) -> void:
@@ -132,7 +258,6 @@ func _unhandled_key_input(event: InputEvent) -> void:
         KEY_SPACE: _invoke(PackedStringArray(["tick 1"]))
         KEY_R: _invoke(PackedStringArray())
     if move != Vector2i.ZERO:
-        # Shift+arrow moves 24 chunks (1536 native world pixels).
         world_chunk += move * (24 if key.shift_pressed else 1)
         failure = ""
         _invoke(PackedStringArray(), true)
@@ -168,7 +293,6 @@ func _gui_input(event: InputEvent) -> void:
         _invoke(PackedStringArray([edit]))
         accept_event()
 
-
 func _draw() -> void:
     draw_rect(Rect2(Vector2.ZERO, size), Color("#0d1220"), true)
     var font: Font = ThemeDB.fallback_font
@@ -199,20 +323,23 @@ func _draw() -> void:
         "Resident budget: 2 native Worlds",
         HORIZONTAL_ALIGNMENT_LEFT, -1, 15, Color("#b9c7e3"))
     draw_string(font, Vector2(710, 184),
-        "CLI calls: %d  |  Last round trip: %.1f ms" % [
-            total_calls, float(last_call_usec) / 1000.0
-        ], HORIZONTAL_ALIGNMENT_LEFT, -1, 15, Color("#b9c7e3"))
+        "Persistent native PID: %d  |  Requests: %d" % [native_pid, total_calls],
+        HORIZONTAL_ALIGNMENT_LEFT, -1, 15, Color("#b9c7e3"))
     draw_string(font, Vector2(710, 211),
+        "Continuous ticks: %d @ %d Hz  |  Last IPC: %.1f ms" % [
+            service_ticks, CONTROLLER_TICK_HZ, float(last_call_usec) / 1000.0
+        ], HORIZONTAL_ALIGNMENT_LEFT, -1, 14, Color("#9caec9"))
+    draw_string(font, Vector2(710, 233),
         "Copied native RGBA 64x64 (not Godot production shader)",
         HORIZONTAL_ALIGNMENT_LEFT, -1, 14, Color("#9caec9"))
     if not failure.is_empty():
-        draw_string(font, Vector2(710, 245), failure,
+        draw_string(font, Vector2(710, 267), failure,
                     HORIZONTAL_ALIGNMENT_LEFT, 550.0, 15, Color("#ff967b"))
     else:
         var lines := last_receipts.split("\n", false)
         var tail := lines.slice(maxi(0, lines.size() - 14))
         for i in range(tail.size()):
-            draw_string(font, Vector2(710, 255 + i * 22),
+            draw_string(font, Vector2(710, 277 + i * 22),
                         tail[i].left(92), HORIZONTAL_ALIGNMENT_LEFT,
                         520.0, 13, Color("#a5be9d"))
     draw_string(font, Vector2(28, 751),

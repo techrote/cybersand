@@ -9,6 +9,7 @@ on:
       - 'godot/tests/gen006_streaming_slice_demo.gd'
       - 'godot/tests/gen006_streaming_slice_demo.tscn'
       - 'native/tests/gen006_streaming_slice.cpp'
+      - 'tools/experiments/gen006_persistent_controller.py'
   workflow_dispatch:
 
 permissions:

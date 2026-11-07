@@ -264,3 +264,38 @@ actual framebuffer readback, mouse dig/Wall/Water interaction, a 1536-pixel
 camera jump, real shard eviction/reload and restored pixels. These screenshots
 are prototype evidence only; they are not production renderer or human desktop
 gameplay acceptance.
+
+
+## Persistent Godot/native controller — implementation continuation
+
+The opt-in Godot scene now launches **one long-lived native process** with
+\`--serve WORLD_ROOT IPC_ROOT [1|4] [TICK_HZ]\` instead of invoking a new
+\`--batch\` process for every click or key. That process owns one
+\`StreamingSlice\` and its resident native Worlds for the entire scene lifetime.
+Godot sends monotonically sequenced request files and receives atomic response
+receipts plus the existing copied 64×64 RGBA frame. The process identity is
+checked on every response; mutable native cell storage still never crosses the
+process boundary.
+
+The service runs native simulation continuously at 30 Hz by default even when
+Godot sends no command. The Godot view refreshes the authoritative copied RGBA
+frame at 10 Hz. Camera arrow input immediately changes signed chunk demand;
+moving beyond the two-shard budget invokes the same save/destroy/reload LRU
+path inside the **same native process**. Mouse Wall/dig/Water edits therefore
+act on a persistent native World rather than a reconstructed process per input.
+The service saves every resident shard on orderly shutdown.
+
+\`tools/experiments/gen006_persistent_controller.py\` is the source-matched
+acceptance fixture. It requires one stable native PID across requests, autonomous
+tick advancement while idle, real camera-driven eviction/reload, restored edit
+intent/Water17 state and an orderly shutdown receipt on both configured worker
+counts. The existing cross-process persistence test remains separately valuable:
+persistent interactive ownership and restart durability test different failure
+boundaries.
+
+This is a substantial playability improvement but deliberately remains an
+**experimental IPC controller**. It is not production GDExtension ownership,
+does not provide one shared native World across chunks, and still has no
+cross-shard cellular transport, Rapier body persistence, async proposal
+cancellation, multi-plane bundle transaction or recipe reconciliation. Those
+remain follow-on GEN-006 production architecture work.
