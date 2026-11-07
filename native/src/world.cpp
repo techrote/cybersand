@@ -675,6 +675,12 @@ World::World(WorldConfig config)
     inertial_parameters_ = inertial_parameters_for_policy(config_.liquid_solver_policy);
     inertial_parameters_.signed_vertical = config_.inertial_signed_vertical;
     const bool pressure_requested = policy_selects_pressure(config_.liquid_solver_policy);
+    if (config_.pressure_gas_compartment_capacity != PressureFlowParameters::kCompartmentCapacity &&
+        config_.pressure_gas_compartment_capacity != PressureFlowParameters::kAdmittedCompartmentCapacity)
+        throw std::invalid_argument("unsupported pressure gas compartment capacity (1024 or 2048)");
+    if (config_.pressure_gas_compartment_capacity != PressureFlowParameters::kCompartmentCapacity &&
+        (!pressure_requested || !pressure_parameters_from(config_.liquid_solver_policy).gas_enabled))
+        throw std::invalid_argument("C2048 requires an applied gas-enabled PressureFlow Water policy");
     for (const auto& item : config_.liquid_solver_policy.assignments()) {
         if (item.family != LiquidSolverFamily::InertialCellularV1) continue;
         inertial_materials_[item.material] = true;
@@ -798,7 +804,9 @@ World::World(WorldConfig config)
         ballistic_face_water_.resize(config_.maximum_chunk_count);
     }
     if (pressure_requested) {
-        pressure_ = std::make_unique<PressureState>(pressure_parameters_from(config_.liquid_solver_policy));
+        auto parameters = pressure_parameters_from(config_.liquid_solver_policy);
+        parameters.gas_compartment_capacity = config_.pressure_gas_compartment_capacity;
+        pressure_ = std::make_unique<PressureState>(parameters);
         pressure_->sorted_coordinates.reserve(config_.maximum_chunk_count);
         if (parallel_ != nullptr) {
             pressure_->job_optimization.resize(parallel_->results.size());
@@ -822,7 +830,8 @@ World::World(WorldConfig config)
                 throw std::invalid_argument("pressure index capacity must be positive");
             pressure_->cache = std::make_unique<PressureCache>(config_.maximum_chunk_count,
                 static_cast<std::size_t>(config_.chunk_size) * static_cast<std::size_t>(config_.chunk_size),
-                pressure_->parameters.gas_enabled, config_.pressure_optimization);
+                pressure_->parameters.gas_enabled, config_.pressure_optimization,
+                config_.pressure_gas_compartment_capacity);
             pressure_->cache->dormant = selection->variant == LiquidSolverVariant::CachedDormant;
         }
     }

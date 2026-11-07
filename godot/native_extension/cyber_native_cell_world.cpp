@@ -1826,7 +1826,8 @@ Dictionary CyberNativeCellWorld::liquid_policy_receipt(
         pressure["compartment_volume_limit"] =
             static_cast<std::int64_t>(cybersand::PressureFlowParameters::kCompartmentVolumeLimit);
         pressure["compartment_capacity"] =
-            static_cast<std::int64_t>(cybersand::PressureFlowParameters::kCompartmentCapacity);
+            static_cast<std::int64_t>(actual ? actual->config().pressure_gas_compartment_capacity
+                                              : cybersand::PressureFlowParameters::kCompartmentCapacity);
         pressure["acceleration"] = static_cast<std::int64_t>(cybersand::PressureFlowParameters::kAccelNumerator);
         pressure["retain_per_256"] = static_cast<std::int64_t>(cybersand::PressureFlowParameters::kRetain);
         pressure["friction"] = static_cast<std::int64_t>(cybersand::PressureFlowParameters::kFriction);

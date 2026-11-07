@@ -66,6 +66,9 @@ struct WorldConfig {
     // assignment is refused at construction and never reaches a kernel.
     LiquidSolverPolicy liquid_solver_policy{};
     PressureOptimizationConfig pressure_optimization{};
+    // Explicit native C2048 opt-in; 1024 is the unchanged ordinary default.
+    // There is no implicit growth or live resize.
+    std::uint16_t pressure_gas_compartment_capacity = PressureFlowParameters::kCompartmentCapacity;
     // Execution-only, opt-in for the finite desktop workbench. Each job owns
     // complete x-columns of the reference head field before row interpolation.
     bool workbench_parallel_pressure_heads = false;
@@ -438,7 +441,8 @@ public:
     static constexpr std::uint32_t kPhysicalStateHashVersion = 2;
     // BW-001 ballistic Worlds report and emit version4 (IN or not).
     [[nodiscard]] std::uint32_t physical_state_hash_version() const noexcept {
-        return config_.ballistic_water.enabled || inertial_parameters_.signed_vertical ? 4U
+        return config_.pressure_gas_compartment_capacity == PressureFlowParameters::kAdmittedCompartmentCapacity ? 5U
+             : config_.ballistic_water.enabled || inertial_parameters_.signed_vertical ? 4U
              : inertial_enabled_ ? 3U : 2U;
     }
     [[nodiscard]] std::uint64_t physical_state_hash() const;
@@ -460,7 +464,8 @@ public:
     // incompatible payloads; the caller's live World is never touched.
     static constexpr std::uint32_t kPhysicalStateFormatVersion = 2;
     [[nodiscard]] std::uint32_t physical_state_format_version() const noexcept {
-        return config_.ballistic_water.enabled || inertial_parameters_.signed_vertical ? 4U
+        return config_.pressure_gas_compartment_capacity == PressureFlowParameters::kAdmittedCompartmentCapacity ? 5U
+             : config_.ballistic_water.enabled || inertial_parameters_.signed_vertical ? 4U
              : inertial_enabled_ ? 3U : 2U;
     }
     [[nodiscard]] std::vector<std::uint8_t> save_physical_state() const;
