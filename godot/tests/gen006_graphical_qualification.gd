@@ -111,7 +111,7 @@ func _run() -> void:
     # The original fixed-sky Water17 diagnostic remains a valuable native
     # control, but it should no longer dictate the player's starting view.
     demo.world_chunk = Vector2i(-1, -3)
-    demo._invoke(PackedStringArray(), true, true)
+    demo._invoke(PackedStringArray(), false, true)
     if not demo.failure.is_empty() or demo.world_chunk != Vector2i(-1, -3):
         _fail("cannot enter signed sky qualification shard: " + demo.failure)
         return
@@ -146,24 +146,41 @@ func _run() -> void:
         _fail("painted native Wall colour not present in Godot framebuffer")
         return
 
-    # Navigate beyond the old 1024px finite scene. The scene's own action
-    # crosses a two-native-World LRU budget and must log real eviction/reload.
+    # Real camera misses, not artificial prefetched neighbors, must drive LRU.
+    # Start and painted sky occupy two actual native Worlds. Shift+Right demands
+    # one far chunk at 1472px, forcing the first real eviction only.
     _key(demo, KEY_RIGHT, true)
     if not demo.failure.is_empty() or demo.world_chunk != Vector2i(23, -3):
-        _fail("Shift+Right 1536-pixel navigation/eviction failed: " + demo.failure)
+        _fail("Shift+Right 1536-pixel navigation failed: " + demo.failure)
         return
-    if not demo.last_receipts.contains("EVICT ") or not demo.last_receipts.contains("RELOAD "):
-        _fail("actual native LRU receipts missing from movement action")
+    if not demo.last_receipts.contains("EVICT x=-2 y=2") or not \
+            demo.last_receipts.contains("GENERATE x=23 y=-3") or \
+            demo.last_receipts.contains("RELOAD x=23 y=-3"):
+        _fail("camera-driven native miss did not evict oldest real resident")
         return
     var distant: Dictionary = await _capture("03-distant-chunk", evidence, chunk_root, 8, 8)
     if distant.has("error"):
         _fail(str(distant["error"]))
         return
 
-    # Return to the first signed chunk and prove saved native Wall really
-    # reappears as the same on-screen pixel, not just the same CLI receipt.
+    # A second independent camera position now exceeds the two-World budget,
+    # evicting the EDITED sky chunk. No synthetic focus/prefetch is permitted.
+    _key(demo, KEY_RIGHT)
+    if not demo.failure.is_empty() or demo.world_chunk != Vector2i(24, -3) or \
+            not demo.last_receipts.contains("EVICT x=-1 y=-3"):
+        _fail("third distinct camera demand failed to evict edited sky: "
+            + demo.failure + " / " + demo.last_receipts.right(400))
+        return
+    _key(demo, KEY_LEFT)
+    if not demo.failure.is_empty() or demo.world_chunk != Vector2i(23, -3):
+        _fail("camera return through live far resident failed")
+        return
+
+    # Return 1536px via actual input and require native RELOAD of the
+    # previously evicted edited sky, not mere presentation of cached pixels.
     _key(demo, KEY_LEFT, true)
-    if not demo.failure.is_empty() or demo.world_chunk != Vector2i(-1, -3):
+    if not demo.failure.is_empty() or demo.world_chunk != Vector2i(-1, -3) or \
+            not demo.last_receipts.contains("RELOAD x=-1 y=-3"):
         _fail("reverse 1536-pixel native restore failed: " + demo.failure)
         return
     var restored: Dictionary = await _capture("04-reloaded-wall", evidence, chunk_root, 8, 8)
@@ -177,11 +194,16 @@ func _run() -> void:
         _fail("Godot framebuffer did not restore the same native Wall pixel")
         return
 
-    # With autonomous native 30Hz simulation, uncontained Water may move
-    # before a rendered-frame readback. Construct a three-sided real native
-    # basin so the visual assertion genuinely samples Water, rather than
-    # vacuously passing when both native and viewport pixels are empty.
-    for wall_cell in [Vector2i(18, 31), Vector2i(17, 30), Vector2i(19, 30)]:
+    # With autonomous native 30Hz simulation, even a three-sided basin
+    # permits upward/diagonal transport between input and framebuffer sampling
+    # (original failure preserved in run #42343367577). Enclose all eight
+    # neighboring cells using actual player Wall edits before Water17 paint.
+    # This is a stronger, static native containment fixture, not a weaker
+    # colour-only renderer assertion.
+    for wall_cell in [
+            Vector2i(17, 29), Vector2i(18, 29), Vector2i(19, 29),
+            Vector2i(17, 30), Vector2i(19, 30),
+            Vector2i(17, 31), Vector2i(18, 31), Vector2i(19, 31)]:
         _click(demo, wall_cell.x, wall_cell.y, MOUSE_BUTTON_LEFT)
         if not demo.failure.is_empty():
             _fail("Water17 containment Wall refused: " + demo.failure)
@@ -220,16 +242,65 @@ func _run() -> void:
         _fail("native controller process changed during graphical interaction")
         return
 
+    # Integrate the previously independent visible-pin recovery scenario
+    # into the primary playable demo acceptance. The native owner must remain
+    # alive and the HUD must expose its actual complete pin roster.
+    _key(demo, KEY_UP)
+    if not demo.failure.is_empty() or demo.world_chunk != Vector2i(-2, 1):
+        _fail("surface camera navigation failed: " + demo.failure)
+        return
+    await create_timer(0.70).timeout
+    demo._invoke(PackedStringArray(), false, true)
+    if not demo.failure.is_empty() or demo.pinned_native_shards < 1 or \
+            demo.pinned_chunks.size() != demo.pinned_native_shards:
+        _fail("native pin roster missing/inconsistent: " + demo.failure
+            + " count=" + str(demo.pinned_native_shards)
+            + " rows=" + str(demo.pinned_chunks.size()))
+        return
+    var target_pin := false
+    for row in demo.pinned_chunks:
+        if row.contains("chunk=(-2,1)") and row.contains("pinned=1"):
+            target_pin = true
+    if not target_pin:
+        _fail("active camera's pinned native chunk missing from complete HUD roster")
+        return
+    var pin_frame: Dictionary = await _capture(
+        "07-visible-simulation-pin", evidence, chunk_root, 8, 50)
+    if pin_frame.has("error"):
+        _fail("could not capture actual pinned surface framebuffer")
+        return
+    var pin_image: Image = Image.load_from_file(str(pin_frame["png"]))
+    if pin_image == null or pin_image.get_width() < 1280:
+        _fail("pinned HUD image cannot be read")
+        return
+    var orange_pin_pixels := 0
+    for y in range(270, 341):
+        for x in range(710, 1240):
+            var p: Color = pin_image.get_pixel(x, y)
+            if p.r > 0.70 and p.r > 1.18 * p.g and p.g > 1.25 * p.b:
+                orange_pin_pixels += 1
+    if orange_pin_pixels < 40:
+        _fail("native pin exists but no visible orange HUD warning")
+        return
+    _key(demo, KEY_HOME)
+    if not demo.failure.is_empty() or demo.native_pid != persistent_pid or \
+            demo.server_pid != persistent_pid or demo.occupied_native_cells < 512:
+        _fail("native owner or terrain did not recover after visible pin")
+        return
+
     print("GEN006_GODOT_GRAPHICAL_FRAME_PASS"
         + " persistent_native_process=1"
         + " real_gl_framebuffer=1"
         + " native_world_rgba=1"
         + " paint_dig=1"
         + " camera_pixel_x=1472"
+        + " real_camera_lru=1"
         + " real_eviction_reload=1"
         + " restored_pixels=1"
         + " water17_visual=1"
         + " native_surface_first_frame=1"
         + " native_surface_home_restore=1"
-        + " screenshots=7")
+        + " native_pin_roster_visible=1"
+        + " pin_orange_pixels=%d" % orange_pin_pixels
+        + " screenshots=8")
     quit(0)

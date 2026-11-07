@@ -362,3 +362,252 @@ and restore chunks while respecting cross-chunk mass, events and activity;
 then switch the Godot demo adapter to that shared-World owner. The present
 rollback/pin is a safe experimental refusal, not completion of general
 GEN-006 streaming or replacement for approved source-owner admission.
+
+## Acknowledged player edits survive abrupt process termination — 7 November 2026
+
+**Opt-in one-native-World-per-shard demonstrator only.** Previous restart
+acceptance exercised orderly `save_all()` and/or LRU eviction. A successful
+`dig`/`wall`/`water` command previously could be acknowledged solely in RAM
+and lost if the owner was killed before save or eviction. This is distinct
+from the independently repaired surface-tick failure in #507.
+
+Each player edit is now applied to a **privately restored real CYPS World**.
+The candidate retains material, state, Water quantity, temperature, scheduler
+state, monotonic mutation generation and explicit Empty/same-value intent.
+The owner persists the candidate via the existing bounded file sync/replace,
+then swaps it into the live resident and emits the receipt:
+
+    GEN006_EDIT_DURABLE_ACK chunk=(X,Y) local=(X,Y) generation=N physical_hash=H native_tick=T file_published=1
+
+Preparation and pre-publication failures retain the old live native World,
+and cannot return the successful edit ACK. This remains a serialized single
+owner and synchronous filesystem mechanism; it is not an async, multiwriter
+or crash-proof transaction. A rename that succeeds followed by a directory
+sync failure is still a commit-uncertainty boundary requiring future work.
+
+The actual-native fixture `tools/experiments/gen006_durable_edit_ack.py`
+drives two separate operating-system processes. Process one applies five
+edits to signed chunk (-1,-3), including Empty intent and a native contained
+Water17/temperature417, demands five monotonically increasing file-published
+ACKs, and is then **killed without quit, save_all or resident eviction**.
+Process two must reload the identical saved record with original edit intent,
+Water17, temperature417, mutation generation and record SHA-256. The
+`gen006-streaming-slice.yml` workflow runs the fixture with configured
+native workers 1 and 4 on actual hosted Ubuntu and Windows. Check results
+before claiming PASS; source creation alone is not execution.
+
+**Limits:** Simulation proceeds after the last edit, and subsequent native
+simulation-only changes are not automatically disk-committed each tick.
+Hardware power loss, Windows directory durability, cross-shard mass, Rapier
+actors, sidecars, historic MAT-AUTH import and a shared-World native API
+remain unqualified. Per-click native clone/serialization + sync imposes
+measurable cost; replace with a qualified batching/journaling policy before
+production adoption. No production ABI, defaults or CYPS codec were changed.
+
+## Nonblocking camera/edit Godot host — 7 November 2026
+
+**Experimental opt-in prototype; not default game integration or a replacement
+for the protected shared-native-World residency engine.** The first persistent
+Godot scene synchronized every 10 Hz render request, camera move and paint
+command with a blocking five-second native IPC wait on the Godot input/render
+thread. A slow native checkpoint therefore froze interactive camera movement
+and rendering, even though native simulation ran in a separate process.
+
+The standalone `godot/tests/gen006_streaming_slice_demo.gd` now uses an
+**actual per-frame asynchronous file-IPC state machine** for interactive play:
+one explicitly sequenced native request in flight, a coalesced latest-demand
+camera refresh, at most **16** ordered player commands, and native command
+responses sampled without waiting on the input/render thread. Every queued
+player edit carries the signed chunk coordinate of its input event and is
+preceded by native owner `focus` before the edit; later camera motion cannot
+silently paint a different chunk. Each render response is accepted for the
+requested chunk only if it still matches the latest camera target. The HUD
+shows copied-frame versus requested coordinates, BUSY/READY IPC state, queue
+depth/backpressure, successful **native durable-edit ACK** count, request
+latency and actual resident eviction/reload receipt counts.
+
+**Correctness/failure boundaries:** A mouse edit while the requested camera
+chunk is not yet rendered is visibly refused rather than painting a stale
+frame's invisible destination. A full command queue visibly refuses new edits
+(no false ACK). Only the exact native
+`GEN006_EDIT_DURABLE_ACK` receipt counts as successful edit publication.
+Timeout, mismatch, missing ACK or native disappearance is treated as an
+ambiguous/failed outcome; the host never transparently replays an ambiguous
+edit. On orderly scene exit, native pending responses and queued player edits
+are drained within a bounded seven seconds before quit; an unresponsive owner
+is explicitly diagnosed and fail-stopped rather than orphaned. This is not
+hardware power-loss or arbitrary process-kill durability, and the separate
+experimental Persistence & Throughput worker owns future storage optimization.
+
+The existing `godot/tests/gen006_graphical_qualification.gd` retains its
+deliberate synchronous deterministic fixture; this does **not** describe the
+normal player-input execution path. A new isolated, **actual OpenGL** test
+`godot/tests/gen006_async_input_qualification.gd` checks zero synchronous
+native requests during rapid signed-coordinate arrow input, ordered
+asynchronous Wall ACK, coalesced camera demands, refusal of a click on a
+not-yet-rendered chunk, 1536-pixel movement through more than two genuinely
+resident native Worlds, native eviction/reload, original native PID survival,
+correct original-chunk edit intent on native readback, and a real framebuffer
+PNG. `gen006-graphical-qualification.yml` builds the actual native
+World/generator and executes both paths in independently started Godot 4.7
+OpenGL/Xvfb processes, retaining original frame/source/runtime hashes.
+
+**Execution provenance:** The first combined Actions
+[run #42347311372](https://github.com/techrote/cybersand/actions/runs/42347311372)
+passed its preexisting eight-frame real Godot workload but **FAILED** the new
+second step due to the step-local GitHub Actions environment not inheriting
+`GEN006_SLICE_EXECUTABLE`. No native/Godot correctness claim is made for that
+failed step. The corrected, exact-head
+[run #42347430238](https://github.com/techrote/cybersand/actions/runs/42347430238)
+passed both real OpenGL tests: the asynchronous test reported one native PID,
+82 microseconds for the input burst, a durable edit ACK, two actual native
+evictions, one reload and an original 1280×800 PNG (SHA-256
+`0b3872ef2a5cfb129333f7f5c669567ddbd64edc0842cf1c8fd066fcf423830d`).
+Its [original evidence ZIP](https://github.com/techrote/cybersand/actions/runs/42347430238/artifacts/13563879166)
+is preserved. **These results precede the later stale-frame/refusal and
+bounded shutdown corrections**; those must receive their own final exact-head
+qualification before claiming their execution succeeded. No assertion of four
+actually participating native workers is made.
+
+**Remaining limitations:** A single initial synchronous startup/render handshake
+still runs before interactive control begins. The serial file transport is a
+prototype and accepts at most one in-flight request; the cost of each native
+checkpoint remains with the separate persistence lane. Continuous native
+simulation may advance beyond the last acknowledged edit without a committed
+simulation-only checkpoint. The demo still uses one real native World per
+shard, not selective chunk eviction from the same shared World, nor
+cross-boundary Water/actor/semantic sidecar persistence. Protected #512 was
+not imported; its independently reproduced stale-incarnation ACK defect
+remains an explicit integration blocker pending the Native Residency Engine
+owner's corrected contract. Current production defaults, materials, ABI and
+physics are unchanged.
+
+## Slow native checkpoint/ACK — responsive live Godot extension (7 November 2026)
+
+**Implementation, pending exact-head runtime qualification at source creation.**
+The existing nonblocking host used one five-second deadline for both
+deterministic synchronous QA and interactive persistent native requests. A
+slow disk checkpoint could therefore turn a still-running native owner into a
+terminal Godot error after five seconds, with an ambiguous player-edit
+outcome. The native process may later complete the original request, but the
+former Godot pump stopped reading it.
+
+The **opt-in interactive** pump now distinguishes two deadlines: an
+**observable 1.5-second soft warning** and an **explicit 30-second hard
+deadline**. Until the hard deadline, it holds the same one sequenced
+in-flight request, never acknowledges or automatically replays an edit,
+preserves the ordered bounded player-action queue, and keeps Godot
+camera/render input responsive. The HUD reports BUSY/SLOW/READY, host
+request age, peak completed round-trip time, and total slow requests.
+These are **host IPC elapsed times**, NOT native checkpoint, fsync,
+worker throughput or durable-publication timings. These will be integrated
+only from the separately qualified Persistence & Throughput contract.
+
+An implementation-owned extension of the **actual compiled native plus
+Godot 4.7 OpenGL** asynchronous test sends a second native Wall edit after
+stopping the *specific private native child* using Linux SIGSTOP. For
+6.2 seconds it requires an actual 1280x800 rendered framebuffer
+(`09-slow-native-ack.png`), visible soft warning, unchanged native PID,
+one in-flight request, **zero fabricated durable ACKs** and no fatal host
+timeout. SIGCONT must permit the *original* in-flight request to finish,
+deliver one native durable ACK with a measured >5s host round-trip, and
+preserve the new player intent in the authoritative native World. The
+existing shutdown/restart acceptance then verifies the separate final edit.
+The test resumes the child before asserting a failure; it never kills or
+modifies a shared native service.
+
+**Boundaries:** synchronous initial launch/render and deterministic fixture
+retain their existing five-second timeout; the experimental native
+checkpoint algorithm, save format, material rules, ABI, shared-World
+selective residency and default production behavior are unchanged.
+A 30-second hard timeout is fail-stop with an explicitly UNKNOWN native
+edit outcome; it must not be interpreted as rollback, recovery, or a
+license to replay. Orderly shutdown remains bounded at seven seconds
+with an UNKNOWN outcome on failure. Linux SIGSTOP is a deterministic
+test-only fixture, not an actual Windows/desktop power-loss result.
+The native Windows/Linux qualification and real Godot results must be
+checked at this exact final HEAD before claiming success.
+
+## Experimental native-backed continuous brush (7 November 2026)
+
+The opt-in Godot demo now interpolates held-mouse Wall/dig/Water strokes across coalesced pointer events. Every cell is submitted separately through the existing single-owner native ACK queue. The maximum 16 pending player actions, signed-chunk binding, stale-frame refusal and original native durable ACK requirements remain unchanged. When queue admission fails, interpolation stops instead of silently skipping cells. The new actual-Godot/OpenGL acceptance tests one coalesced five-cell stroke, genuine native ACKs, signed World cell intent and restoration after a separate native process restart, preserving an original framebuffer PNG. Tests must pass on the exact resulting source before claiming qualification. This is a Draft, sharded-World-only Godot host feature; production Native, ABI, solver and default physics remain unchanged, and independent storage/residency owners retain their respective interfaces.
+
+
+## Signed chunk x/y + Go UI (7 November 2026)
+
+Opt-in Godot prototype adds a signed-chunk X/Y LineEdit pair and Go button,
+also Enter-activated. Bounded signed integer validation accepts at most
+±4096 chunks (±262144 native world pixels), rejects malformed/out-of-range
+input before native IPC, and never silently clips. Each camera jump requests
+one coalesced latest target; existing queued edits remain bound to their
+original signed source chunk, with the same strict backpressure, stale-frame
+refusal and real native durable acknowledgments. Arrow/Home navigation shares
+the new camera transition helper and cancels a held mouse stroke. No protected
+native/physics, MAT-AUTH source lock, storage, default, ABI or producer
+branch was modified.
+
+The new actual-native/Godot OpenGL regression exercises the real Go button,
+three invalid-coordinate refusals, Wall editing, positive (22,2), next
+(23,2), negative (-24,2), and return (-2,2). It requires stable native
+PID, bounded resident Worlds, actual evictions/reload, authoritative
+persistent Wall intent and three original framebuffer PNGs. This remains a
+SHARDED native-World experimental capability, NOT in-place selective
+shared-World eviction or cross-shard Water continuation. Final exact-head
+Windows/Linux and Godot CI evidence must be checked before declaring PASS.
+
+
+## Builder-owned multi-material executable acceptance (7 November 2026)
+
+The existing Draft #486 graphical workflow now incorporates the **exact source
+bytes** of the previously independently qualified #511 Godot regression
+`godot/tests/gen006_drag_material_roundtrip_qa.gd`, from QA commit
+`d78dd695544a6859ee2aa5034bc1ed32c9cd276b` (original blob
+`651f27a6dc977aebd15ce6726aab8f6dde45b8e7`). This is adoption of an
+existing implementation-driven test, not a new test-only research programme.
+The original independent Ubuntu Godot/native evidence is
+[run #42358729277](https://github.com/techrote/cybersand/actions/runs/42358729277).
+
+The newly added builder-workflow step recompiles the **builder's exact native
+World source**, performs a left-Wall/right-Empty/middle-Water17 drag with
+20 genuine durable native edit acknowledgments, inspects four explicit Empty
+tombstones and Water quantity 34, traverses distant signed chunks to force
+native sharded-World eviction/reload under the two-resident budget, checks the
+same native PID and material/quantity restoration, and retains two original
+Godot OpenGL screenshots compared against native RGBA bytes. It uses a private
+save root isolated from the other graphical tests, records the executable
+SHA-256 and uploads compiler, source-tree, screenshot and runtime evidence.
+The test is **not** proof of shared-World selective eviction, cross-boundary
+Water transport, general dynamic-state continuation or production readiness.
+
+The source change only registers the executable test; its **new builder exact-head
+PASS/FAIL** must be taken from the resulting GitHub Actions run. Prior QA
+success is not automatically evidence for the new builder head. No accepted
+production native or GDExtension/default source is modified, and this entire
+prototype remains experimental/Draft.
+
+## Optional subchunk signed-seam roaming — 7 November 2026
+
+The experimental Godot host now has a Roam ON/OFF button and continuous WASD
+subchunk visual movement. It composes copied real native 64x64 RGBA frames;
+up to eight cached tiles amount to 131072 raw RGBA bytes before GPU texture
+overhead. Actual native residency remains a separate two-shard-World budget.
+Before moving into an uncached signed-adjacent tile, the visual camera
+freezes, requests the tile via the existing single native owner and only
+continues when the real frame arrives. Floor-based signed chunk indexing
+avoids negative-coordinate truncation.
+
+Roam deliberately does NOT paint/dig into cached visual images. Editing in
+Roam ON is explicitly refused; Roam OFF restores the existing authoritative
+native Wall/dig/Water action path. Cached frames can be visually stale;
+they are never presented as a durable edit acknowledgment. This milestone
+is visual subchunk movement, NOT shared-World selective chunk eviction,
+cross-shard Water transport, synchronized multi-World simulation or exact-tick
+state continuation. No protected native, physics, MAT-AUTH, solver, storage,
+ABI, default Godot or production behavior changes.
+
+The source-qualified Godot 4.7/OpenGL test newly exercises real positive and
+negative signed chunk seams, the native-request-before-camera-motion fence,
+actual framebuffer composition, strict read-only cache rejection, stable
+native PID, bounded resident Worlds, and two original PNG screenshots.
+Exact-head execution evidence must be checked before describing the result
+as qualified. CI-pending is not success.
