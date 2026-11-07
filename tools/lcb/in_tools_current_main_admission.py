@@ -116,7 +116,7 @@ def validate_record(record: dict[str, Any]) -> None:
         "disposition": "historical-draft-a01-source-witnessed-unmerged",
     }:
         raise AdmissionError("historical A01 successor identity changed")
-    if record["assignment_pin"] != "ab12ccef49ba2afaed2520d4d9a86eb14c7779cb":
+    if record["assignment_pin"] != "24a8bbe8ccf0d17196ebbab580b924930a964584":
         raise AdmissionError("assignment pin changed")
     if record["adopted_main"] != record["assignment_pin"]:
         raise AdmissionError("adopted main differs from authenticated assignment pin")

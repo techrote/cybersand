@@ -1,5 +1,6 @@
 #include "cybersand/default_demo_recipe.hpp"
 #include "cybersand/prepared_world.hpp"
+#include "cybersand/liquid_run_receipt_native_capture.hpp"
 
 #include <iostream>
 #include <memory>
@@ -177,6 +178,127 @@ void default_recipe_and_nonpressure() {
            !PreparedWorldBuilder::validate_initial_pressure_capacity(*disabled, domain),
            "explicit gas-disabled policy incorrectly acquired a compartment limit");
 }
+
+void c2048_capacity_contract() {
+    // No silent opt-in: a high budget is legal only with gas-enabled PF Water.
+    {
+        auto invalid = std::make_unique<WorldConfig>();
+        invalid->pressure_gas_compartment_capacity = 2048;
+        bool refused = false;
+        try { World candidate(*invalid); } catch (const std::invalid_argument&) { refused = true; }
+        expect(refused, "non-pressure World silently admitted C2048");
+        auto disabled = config(3, 0, false);
+        disabled->pressure_gas_compartment_capacity = 2048;
+        refused = false;
+        try { World candidate(*disabled); } catch (const std::invalid_argument&) { refused = true; }
+        expect(refused, "gas-disabled PF silently admitted C2048");
+        auto unsupported = config();
+        unsupported->pressure_gas_compartment_capacity = 2049;
+        refused = false;
+        try { World candidate(*unsupported); } catch (const std::invalid_argument&) { refused = true; }
+        expect(refused, "unsupported C2049 profile did not fail closed");
+    }
+    const auto high_config = []() {
+        auto cfg = config();
+        cfg->pressure_gas_compartment_capacity = PressureFlowParameters::kAdmittedCompartmentCapacity;
+        return cfg;
+    };
+    const auto wide_holes = [&](std::size_t count, int variant) {
+        auto cfg = config(3, variant);
+        cfg->pressure_gas_compartment_capacity = 2048;
+        auto world = std::make_unique<World>(*cfg);
+        constexpr std::size_t columns = 64;
+        const std::uint32_t height = static_cast<std::uint32_t>(((count + columns - 1) / columns) * 4 + 4);
+        const setup::SetupDomain domain{0, 0, 194, height};
+        fill(*world, domain, Material::Wall);
+        for (std::size_t i = 0; i < count; ++i) {
+            const auto x = static_cast<std::int64_t>(1 + (i % columns) * 3);
+            const auto y = static_cast<std::int64_t>(1 + (i / columns) * 4);
+            world->set(x, y, Material::Empty);
+            world->set(x, y + 1, Material::Water);
+        }
+        return std::pair<std::unique_ptr<World>, setup::SetupDomain>(std::move(world), domain);
+    };
+    auto [at_limit, domain] = wide_holes(2048, 0);
+    const auto preflight = initial_pressure_capacity(*at_limit, domain);
+    expect(preflight.applicable && preflight.capacity == 2048 && preflight.compartments == 2048 &&
+           !preflight.exceeds_capacity(), "explicit C2048 exact boundary not admitted");
+    expect(!PreparedWorldBuilder::validate_initial_pressure_capacity(*at_limit, domain),
+           "C2048 preflight refused its exact capacity");
+    (void)at_limit->tick();
+    expect(!at_limit->has_failed() && at_limit->gas_compartments().size() == 2048 &&
+           at_limit->physical_state_hash_version() == 5 && at_limit->physical_state_format_version() == 5 &&
+           at_limit->pressure_flow_parameters().gas_compartment_capacity == 2048,
+           "C2048 native tick, applied readback or versioned hash/format incorrect");
+    auto cfg = high_config();
+    const auto saved = at_limit->save_physical_state();
+    auto restored = World::restore_physical_state(*cfg, saved);
+    expect(restored->physical_state_hash() == at_limit->physical_state_hash() &&
+           restored->save_physical_state() == saved,
+           "CYPS5 exact C2048 continuation failed");
+    auto ordinary = config();
+    bool refused = false;
+    try { (void)World::restore_physical_state(*ordinary, saved); }
+    catch (const std::invalid_argument& e) {
+        refused = std::string(e.what()).find("gas capacity profile mismatch") != std::string::npos;
+    }
+    expect(refused, "C1024 receiver silently imported C2048 CYPS5");
+    World old(*ordinary);
+    const auto old_save = old.save_physical_state();
+    expect(old.physical_state_format_version() == 2 && old.physical_state_hash_version() == 2,
+           "ordinary C1024 physical identity drifted");
+    refused = false;
+    try { (void)World::restore_physical_state(*cfg, old_save); }
+    catch (const std::invalid_argument& e) {
+        refused = std::string(e.what()).find("legacy save requires default gas capacity profile") != std::string::npos;
+    }
+    expect(refused, "C2048 receiver silently reinterpreted historical CYPS2");
+    auto [over_limit, excess_domain] = wide_holes(2049, 0);
+    const auto expected = initial_pressure_capacity(*over_limit, excess_domain);
+    const auto refusal = PreparedWorldBuilder::validate_initial_pressure_capacity(*over_limit, excess_domain);
+    expect(expected.compartments == 2049 && expected.exceeds_capacity() && refusal &&
+           refusal->policy_refusal()->code == LiquidPolicyRefusalCode::CapacityRefused &&
+           refusal->policy_refusal()->detail.find("2048") != std::string::npos,
+           "C2048+1 did not produce typed capacity refusal with actual declared limit");
+    refused = false;
+    try { (void)over_limit->tick(); }
+    catch (const std::runtime_error& e) {
+        refused = std::string(e.what()) == "pressure gas compartment capacity exhausted";
+    }
+    expect(refused && over_limit->has_failed() && over_limit->completed_tick_index() == 0,
+           "C2048+1 tick did not quarantine at the correct boundary");
+
+    // Native receipt identity is extended *only* for the opt-in capacity.
+    setup::SetupDescriptor descriptor;
+    descriptor.domain = {0, 0, 8, 8};
+    World low_receipt(*ordinary), high_receipt(*cfg);
+    const auto before = receipt::capture_native_facts(low_receipt, descriptor);
+    const auto after = receipt::capture_native_facts(high_receipt, descriptor);
+    receipt::encoding::Writer default_bytes, raised_bytes;
+    receipt::detail::native_facts(default_bytes, before);
+    receipt::detail::native_facts(raised_bytes, after);
+    expect(default_bytes.bytes != raised_bytes.bytes &&
+           after.values().physical_hash_version == 5 &&
+           before.values().physical_hash_version == 2,
+           "explicit C2048 native fact/receipt identity absent");
+
+    // Actual authored demo previously fails for C1024 (retained control above).
+    const setup::SetupDomain demo_domain{0, 0, demo::kWidth, demo::kHeight};
+    for (int variant = 0; variant < 3; ++variant) {
+        auto variant_config = config(3, variant);
+        variant_config->pressure_gas_compartment_capacity = 2048;
+        World demo_world(*variant_config);
+        demo::visit_default_demo_recipe([&](auto x, auto y, auto material) { demo_world.set(x, y, material); });
+        demo_world.configure_transient_obstacles({0, 0, demo::kWidth, demo::kHeight});
+        expect(demo_world.set_transient_obstacle(124, 92, 1), "default C2048 mask not installed");
+        const auto actual = initial_pressure_capacity(demo_world, demo_domain);
+        expect(actual.compartments == 1175 && !actual.exceeds_capacity() &&
+               !PreparedWorldBuilder::validate_initial_pressure_capacity(demo_world, demo_domain),
+               "C2048 default native demo did not admit the complete 1175-compartment census");
+        (void)demo_world.tick();
+        expect(!demo_world.has_failed(), "C2048 default native demo quarantined on its first tick");
+    }
+}
 } // namespace
 
 void test_pressure_setup_capacity() {
@@ -193,6 +315,7 @@ void test_pressure_setup_capacity() {
            "workbench allowed a census outside its finite limit");
 
     exact_capacity(); atmospheric_rules(); actual_masks(); default_recipe_and_nonpressure();
+    c2048_capacity_contract();
     std::cout << "PRESSURE_SETUP_CAPACITY: " << assertions << " assertions; 0 failures\n";
 }
 

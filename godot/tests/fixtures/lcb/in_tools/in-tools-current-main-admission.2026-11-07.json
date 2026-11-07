@@ -8,8 +8,8 @@
     "tree": "3b5acd41fd7fb49ac8b06c94719fa1a700d8fd57",
     "disposition": "frozen-historical-unmerged"
   },
-  "assignment_pin": "ab12ccef49ba2afaed2520d4d9a86eb14c7779cb",
-  "adopted_main": "ab12ccef49ba2afaed2520d4d9a86eb14c7779cb",
+  "assignment_pin": "24a8bbe8ccf0d17196ebbab580b924930a964584",
+  "adopted_main": "24a8bbe8ccf0d17196ebbab580b924930a964584",
   "authority": [
     {
       "path": "godot/scripts/usable_catalog.gd",
@@ -43,12 +43,12 @@
     },
     {
       "path": "godot/scripts/simulation_worker.gd",
-      "git_blob": "1845e3fd92a0df708108a155c20a57d07eff66ce",
+      "git_blob": "0e2471d72906cffffdc0a52431e20074dfd3ee4a",
       "role": "exclusive World worker ownership and execution settings"
     },
     {
       "path": "godot/native_extension/cyber_native_cell_world.cpp",
-      "git_blob": "b85e411f527bc1f5a75521e7c8c1cfcfeedecb41",
+      "git_blob": "b43ac4421cf45f6684e2febcad0e793fd1312c16",
       "role": "Godot/native World adapter, readback and mutation surface"
     },
     {
@@ -58,12 +58,12 @@
     },
     {
       "path": "native/include/cybersand/world.hpp",
-      "git_blob": "511cc65313ea903d8ddb2f0ba6ad6bf8f6d991b2",
+      "git_blob": "c44f766e9d3a4d070466952e03807b4a2a97669f",
       "role": "authoritative World API and quantity ledger contract"
     },
     {
       "path": "native/src/world.cpp",
-      "git_blob": "247d6d96e96cdb4d4f48ca98c3bbec6e9997366b",
+      "git_blob": "3cfc1b47c32dacd00f864cf031588ab637a6b2bd",
       "role": "authoritative cell/material/quantity execution"
     },
     {

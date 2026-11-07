@@ -8,7 +8,7 @@ related-documents: [../architecture/in-tools-gameplay-admission.md, ../audits/20
 
 # IN-TOOLS successor fixtures and playtest
 
-All six fixtures are **Planned / NOT_RUN** on newly adopted main `ab12ccef49ba2afaed2520d4d9a86eb14c7779cb`. These preserve useful concepts from #379 and Draft #404, but are defined against the renewed current-main owner architecture. Historical #379/#404 source or runtime outcomes do **not** qualify any new executable #361 gameplay command.
+All six fixtures are **Planned / NOT_RUN** on newly adopted main `24a8bbe8ccf0d17196ebbab580b924930a964584`. These preserve useful concepts from #379 and Draft #404, but are defined against the renewed current-main owner architecture. Historical #379/#404 source or runtime outcomes do **not** qualify any new executable #361 gameplay command.
 
 ## Common acceptance rules
 

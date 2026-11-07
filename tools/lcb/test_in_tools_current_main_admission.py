@@ -25,7 +25,7 @@ class AdmissionTests(unittest.TestCase):
     def test_current_checkout_and_minimal_authority(self) -> None:
         result = subject.check()
         self.assertEqual(result["status"], "admitted")
-        self.assertEqual(result["adopted_main"], "ab12ccef49ba2afaed2520d4d9a86eb14c7779cb")
+        self.assertEqual(result["adopted_main"], "24a8bbe8ccf0d17196ebbab580b924930a964584")
         self.assertEqual(result["authority_count"], 13)
         self.assertEqual(result["planned_count"], 6)
         self.assertEqual(result["planned_execution"], "NOT_RUN")
