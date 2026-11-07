@@ -23,6 +23,8 @@ var _start_nonce := 0
 var _task := TextEdit.new()
 var _model := LineEdit.new()
 var _signed_frame := CheckBox.new()
+var _whole_canvas := Button.new()
+var _canvas_region_provider: Callable
 var _region: Array[SpinBox] = []
 var _guard_region: Array[SpinBox] = []
 var _guard := CheckBox.new()
@@ -60,6 +62,15 @@ func _ready() -> void:
 	_signed_frame.tooltip_text = "Owner-admitted moved-hopper acceptance fixture (7 Nov 2026); 26 intermediate NORMAL trajectory differences remain. Host-only, opt-in, not strict signed-world parity. Genuine API trials and owner desktop acceptance remain separate."
 	_signed_frame.toggled.connect(func(_value: bool) -> void: _on_scope_change())
 	add_child(_signed_frame)
+	_whole_canvas.text = "Use whole canvas"
+	_whole_canvas.tooltip_text = "Select the installed canvas as task scope. Each observation and edit remains limited to 4096 cells. Start authorizes the selected scope."
+	_whole_canvas.disabled = true
+	_whole_canvas.pressed.connect(_on_whole_canvas)
+	add_child(_whole_canvas)
+	var scope_help := Label.new()
+	scope_help.text = "Task scope may cover the canvas; each observation/edit uses at most 4096 cells."
+	scope_help.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	add_child(scope_help)
 	var row := HFlowContainer.new()
 	add_child(row)
 	for spec: Array in [["X", -2147483648.0, 2147483647.0, 0.0],
@@ -146,6 +157,23 @@ func set_protected_regions(regions: Array) -> void:
 	_protected_regions = regions.duplicate(true)
 	_on_scope_change()
 
+func set_canvas_region_provider(provider: Callable) -> void:
+	_canvas_region_provider = provider
+	_whole_canvas.disabled = not provider.is_valid()
+
+func _on_whole_canvas() -> void:
+	if not _canvas_region_provider.is_valid():
+		return
+	var region: Variant = _canvas_region_provider.call()
+	if not region is Rect2i or not region.has_area():
+		_log_status("refused","Installed canvas is unavailable for the selected coordinate frame.")
+		return
+	_region[0].value = region.position.x
+	_region[1].value = region.position.y
+	_region[2].value = region.size.x
+	_region[3].value = region.size.y
+	_on_scope_change()
+
 func _rect_from_fields(fields: Array[SpinBox]) -> Rect2i:
 	return Rect2i(int(fields[0].value),int(fields[1].value),
 		int(fields[2].value),int(fields[3].value))
@@ -216,9 +244,6 @@ func _on_start() -> void:
 	if _signed_frame.button_pressed:
 		# Host-only experiment; it does not add any model-visible tool.
 		scope["coordinate_frame_id"] = SignedFrame.FRAME_ID
-	if scope.region.width * scope.region.height > 4096:
-		_log_status("refused","Authorized scope exceeds 4096 native cells.")
-		return
 	if _authorizer.is_valid():
 		_start_pending = true
 		var nonce: int = _start_nonce

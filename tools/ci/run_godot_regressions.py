@@ -39,6 +39,7 @@ WINDOWS_WORKBENCH_GRAPHICAL_CASES = WORKBENCH_GRAPHICAL_CASES | frozenset({
     "test_wb525_capacity_and_camera_render",
     "test_wb525_mounted_hopper_render",
     "test_wb525_step_paused_boundary_render",
+    "test_wb525_large_scope_render",
 })
 WORKBENCH_HOPPER_CASES = frozenset({
     "test_workbench_agent_hopper_godot",

@@ -10,6 +10,116 @@ related-documents: [../systems/shared-workbench-agent-authoring.md, ../operation
 
 # WB525 independent integration, capacity repair and physical cause
 
+## Final independent qualification and usable delivery
+
+Final code checkpoint`bd1325bbd53b8ffe1fb1368f3eed8abbcc1a6112`, tree
+`be57653657ac8595be28cd1ddf8f796d2690d1f2`, is published on
+`codex/wb525-strike-evidence-20261107`. All native inputs match accepted
+main`1f82dac1`; current owner implementation blobs match the heads below.
+The final cold-start test correction is independently reviewed and runs on
+both rebuilt platforms. Windows completes all nine processes and414 scoped
+assertions, including86 fake-provider checks, native Step33, mounted68,
+capacity28, mounted hopper166, manual input24 and authored save6/reopen3.
+Linux repeats native Step33, latest owner hopper134, mounted68 and capacity28
+on the same code checkpoint. Both qualification reports state unchanged
+source/runtime fingerprints and all processes passed. Original logs, PNGs and
+native receipts are in`build/wb525-strike/windows-final-bd1325` and
+`linux-final-bd1325`.
+
+The final GitHub readback also finds a newer #530 **test-only** head
+`e249775c7765adfd56098dad8e10466bd0af6874`, tree
+`6b28a0826f92aec7078e358ecbb28ee10c495215`. Its sole41-line addition leaves
+a valid proposal unapplied across Stop/reload and checks late-apply refusal
+and Empty readback. Production source, fixture, bridge and Step blobs are
+unchanged. The root retains its qualified134-assertion test snapshot;
+the owner's[new146-assertion exact-head run](https://github.com/techrote/cybersand/actions/runs/42413942007)
+passes, with[original artifact13590244697](https://github.com/techrote/cybersand/actions/runs/42413942007/artifacts/13590244697).
+That owner evidence uses retained extensions and is not relabeled as the
+root's rebuilt Windows run. The integrator should consume the released
+new test blob`8559f072d59eee26d8b161ed9653c43de20ee573` from its owner.
+
+The actual Windows delivery is
+`C:/CyberSand-evidence/WB525-review-20261107-main1f82`. All839 tracked Godot
+files are verified byte-identical to the final code source; the manifest
+explicitly records the separately rebuilt Windows DLL override. Its own
+offline launcher again completes166/166, both variants32/32 Sand,17 walls and
+480 native ticks each, preserving original evidence under
+`evidence/offline-20261107-211025-750`. The adjacent ordinary launch keeps
+agent features opt-in. A separate local`Run Live Workbench.cmd` helper prompts
+for a key in a native masked-password dialog, passes`OPENAI_API_KEY` only through the
+process environment and restores that environment on exit. Its syntax is
+checked; no key was entered or live call made. The user still chooses the
+model/task/scope and presses Start. No key is stored in source, bundle files
+or this record. Existing12-request/32-tool/2048-output-token defaults remain.
+
+Exact-head[Documentation/provenance42414324170](https://github.com/techrote/cybersand/actions/runs/42414324170)
+passes onbd1325. The replacement full
+[GDExtension42414321750](https://github.com/techrote/cybersand/actions/runs/42414321750)
+is now **PASS**: all273 applicable Windows and287 Linux cases plus independent
+coverage reduction and both source-build jobs complete successfully. Windows
+coverage verifies294 original logs across21 shards; its
+[artifact13591725152](https://github.com/techrote/cybersand/actions/runs/42414321750/artifacts/13591725152)
+retains the original receipt. Broad Windows shards consume the provenance-
+checked retained DLL; the production Windows build and local rebuilt-DLL414
+checks are separate evidence. Linux shards consume the fresh build. The two
+conditionally skipped scope/stress jobs are not counted as executed gates.
+Prior full Native42409680857 passes the identical native input set.
+Resulting implementation-owner source admission remains separate from this
+isolated branch. All PRs remain Draft; no merge, Ready or closure occurred.
+
+## Additional owner-authorized whole-canvas scope
+
+The owner then requested a usable larger authoring region and explicitly
+authorized isolated ownership of panel/adapter/host changes: whole installed
+canvas authorization with observations/edits still bounded to4096 cells.
+The native authority already accepts an in-canvas rectangle without scanning
+it; the two UI area restrictions are removed in favor of actual installed
+bounds. A **Use whole canvas** control selects that rectangle without starting
+a task. The default selection is not silently enlarged.
+
+Null observations for larger tasks inspect at most64x64 cells centered on the
+native camera and clamped inside the acknowledged scope; small task behavior
+is unchanged. Step's fresh counts/PNG observation uses the same bounded path.
+Explicit oversized reads/edits still refuse in native authority. Receipts
+identify inspected area, full authorization and captured native/logical/pixel
+viewport mapping. Generation comes from actual native admission. Projection
+changes retry inside the existing bound; original PNGs are not cropped or
+replaced. An independent safety reviewer found no blocking implementation
+defect and required the model-tool description/null semantics to be updated.
+
+The actual Windows test passes71/71:4,194,304-cell authorization, distant four-
+cell native apply/readback at1800,1800, duplicate receipt, oversized-read/edit
+and protected-edit refusals, ordinary/signed Step/Stop, camera inspection and
+both scope-edge clamps. Existing mounted68 and capacity28 also pass. The first
+test run's four failed expected origins are retained: ordinary workbench
+camera clamping places the viewport at0..1792, so expected inspection origins
+are96/1888 (signed1376), not0/1984. A separate partial128x128 authorization
+then proves real inspection-window clamps at1000/1064. Product code did not
+need changing for that test correction.
+
+This additional source is distinct from the fully greenbd1325 baseline.
+New CI inventory is288 Linux/274 Windows with the additional real graphical
+case; prior cases are retained. Native laws, workers, per-call capacities,
+image/receipt budgets and paid limits remain unchanged. Final qualification
+and delivery identities for this additional patch are recorded separately.
+
+The rebuilt Linux run also passes whole-canvas71, mounted68, capacity28 and
+the full unchanged mounted hopper166 with stable source/runtime fingerprints.
+Windows whole-canvas71/mounted68/capacity28 is likewise stable. The remaining
+client change is model-facing description text explaining bounded/null reads;
+no paid transport or limits are changed. All194 focused CI Python tests pass.
+
+The owner reported unreliable console key entry. Independent Windows5.1
+probes prove the console wrapper inherits a dummy-only environment, waits for
+the actual child (1206ms for a1s timer), and forwards exit37. No real key or
+service is involved. The replacement local launcher uses a masked WinForms
+dialog with Paste/Launch/Cancel, rejects empty/whitespace input before launch,
+clears/disposes the field, restores its process environment on exit and pauses
+the command window on errors. Its noninteractive control/validation self-test
+passes Windows PowerShell5.1 and PowerShell7. Actual secret paste and real API
+remain human/live gates. Graphical tests are no longer opened on the owner's
+desktop during their interactive testing; Linux uses isolated Xvfb.
+
 ## Final owner handoff readback
 
 The existing #528 owner has consumed the two production repairs and three
@@ -381,8 +491,8 @@ Run the graphical application from PowerShell:
 
 Ordinary brush, Step and named authored starts work with agent features disabled.
 Enable **Agent authoring (opt-in)** for the panel. Choose task, model, bounded
-region, protection and Hard Wall/Empty permissions. The experimental +512
-checkbox is off by default; selecting it is not physical acceptance. Start
+region, protection and Hard Wall/Empty permissions. The owner-admitted +512
+checkbox is off by default; selecting it does not establish signed trajectory parity. Start
 needs a process-local `OPENAI_API_KEY`; do not store a key in project/saves/logs.
 Stop retires native authority before another task can begin. No credentials or
 genuine service attempts were used by this execution.
@@ -391,11 +501,12 @@ From that source root, run the offline automated native/UI gate (output must be
 a new directory):
 
 ```powershell
-python tools/wb_agent/qualify_integrated.py --godot C:/Godot47/Godot_v4.7-stable_win64.exe --output build/wb525-new-run --cases client capacity-camera step-paused-boundary mounted mounted-hopper manual-input render-bridge manual-save manual-reopen
+python tools/wb_agent/qualify_integrated.py --godot C:/Godot47/Godot_v4.7-stable_win64_console.exe --output build/wb525-new-run --cases client capacity-camera step mounted mounted-hopper manual-input manual-save manual-reopen
 ```
 
-The generic default also runs the original Step test and deliberately preserves
-its failure if its publication race occurs. The wrapper is separately named.
+The current canonical Step test includes its owner's paused-publication fix
+and passes33/33 on both rebuilt platforms. The separately named diagnostic
+wrapper and earlier failed test logs remain retained evidence.
 Graphical cases have420-second process bounds; headless/import cases240.
 The runner removes `OPENAI_API_KEY` from child environments and makes no paid
 calls. For Linux use the same Python entry point with the locked Linux Godot
@@ -414,9 +525,11 @@ PNGs, logs and machine-local toolchains are excluded from the commit.
 
 ## Completion and shortest remaining route
 
-Engineering has substantial source-built desktop evidence, with full hosted
-production results, canonical Step-test correction and resulting #531 owner
-consumption/review still separately required. MAT-AUTH and GEN-006 files,
+Engineering has substantial source-built desktop evidence; the canonical
+Step-test correction and initial #531 receipt/camera consumption are complete.
+The latest common-CI handoff and #527 authored-start test still require
+consumption into the actual integration head, its full hosted production
+results and independent source admission. MAT-AUTH and GEN-006 files,
 native laws/defaults, failure quarantine and immutable render authority were
 not modified. Save/reopen qualification concerns authored starts, never evolved
 runtime persistence. No new ADR is needed for these bounded UI/transport repairs.
@@ -428,8 +541,10 @@ at most one repair each, must be preserved. This offline fake transport cannot
 supply that gate. Human Windows graphical preview/intervention/recovery verdict
 is **PENDING** and cannot be supplied by automated input or CI.
 
-The shortest route is for #528 to consume the isolated repair commit into its
-existing PR, for #527 to correct its paused-publication test predicate, to read
-the exact resulting-head production gates, then perform the three registered
+The shortest route is for the existing integrator/#528 owner to consume
+released6718d544/4174dcc3/f659e040/bd1325bb CI corrections and #527's exact
+e249775c authored-start/pending-proposal test, reconcile latest owner heads onto accepted main,
+make the source-build workflow eligible for that branch and read exact
+resulting-head production gates plus independent admission, then perform the three registered
 bounded live trials plus human review using the owner-admitted moved fixture. No
 parent/child closure or merge is authorized by this record.

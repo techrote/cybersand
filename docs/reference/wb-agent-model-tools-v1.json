@@ -50,7 +50,7 @@
                 "type": "null"
               }
             ],
-            "description": "null selects the authorized task region; must still fit 4096 native cells."
+            "description": "Each inspection is limited to 4096 native cells. null selects the whole acknowledged task scope when it fits, otherwise a camera-centered window of at most 64x64 cells clamped inside that scope. The response identifies the exact inspected region and original viewport mapping. An explicit region selects another bounded window inside the task."
           },
           "detail": {
             "type": "string",

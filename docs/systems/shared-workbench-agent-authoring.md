@@ -23,6 +23,12 @@ earlier checkpoint statements below retain their original scope.
 The later isolated refresh28f5bd3b incorporates accepted main1f82dac1's #292
 copy safety/MAT-AUTH transition and #527's canonical Step predicate1593b635;
 the independent audit keeps each source/runtime qualification separate.
+Final isolated code checkpointbd1325bb consumes #527's7f174007 authored-start
+save/reopen test and #531 owner-admission tooltip. It independently repeats
+the414-assertion scoped Windows suite and Linux Step33/hopper134/mounted68/
+capacity28 on source-built native libraries, with unchanged source/runtime
+fingerprints. The initial receipt/camera fixes are already consumed by #531
+4136fa68; its next composed source head still requires its own admission.
 
 The owner-authorized isolated repair raises the finite native text receipt
 allowance to524288 characters so valid4096-cell proposals/applied readbacks
@@ -43,13 +49,34 @@ qualification remains separate. Neither the mounted fake-provider hopper nor aut
 graphics supplies the **0/3 live** or **pending human** gate. Current-source
 hosted production workflows and resulting-owner-head review remain separate.
 
+## How large can the agent's authorized working area be?
+
+**Current on the owner-authorized isolated scope follow-up:** click **Use whole
+canvas** to select the installed finite canvas, up to2048x2048 cells. This
+changes the task fields; human **Start** still grants authority. A smaller
+hand-selected scope remains valid. Selection changes retire an active task
+through the existing intervention/Stop path. Protected regions and the
+Hard Wall/Empty source/output allowlists continue to apply across the area.
+
+The4096-cell bounds apply separately to each native observation and each edit,
+not to the task rectangle. For a large task, null inspection selects a
+camera-centered64x64 window clamped inside its acknowledged scope. Explicit
+bounded windows let the agent inspect other areas. Counts refer only to the
+returned region; the original full viewport PNG and its mapping are separately
+identified. Step returns a new matched bounded inspection. No full-canvas
+cell scan, larger receipt/image allowance or increased paid budget is added.
+Both rebuilt Windows and Linux execute the71-check whole-canvas regression;
+the [audit](../audits/2026-11-07-wb525-independent-strike.md#additional-owner-authorized-whole-canvas-scope)
+separates this follow-up from the preceding fully qualifiedbd1325 baseline.
+
 ## How does general CI execute the real-frame workbench tests?
 
 The shared CI runner explicitly classifies the five older WB framebuffer
 tests as graphical, alongside the `_render` convention. Its narrow Windows
-allowlist preserves all eight WB graphical cases there; Linux also executes
+allowlist preserves all nine WB graphical cases there, including whole-canvas
+scope qualification; Linux also executes
 them. Pure footprint, envelope, signed mapper, fake client and fault controls
-remain headless. Windows plans273 cases and Linux287, with no omitted prior
+remain headless. Windows plans274 cases and Linux288, with no omitted prior
 Windows case or altered watchdog/provider. For the two hopper cases, common
 execution verifies and stages the exact frozen v2 native TSV at the expected
 Godot runtime path, retains its bytes, validates them after execution and
@@ -157,8 +184,10 @@ directly editable, regardless of replacement filter.
 
 The three candidate owner actions are:
 
-- `observe`: optional `region: Rect2i` (defaults to the task
-  scope, but still must fit <=4096 cells), wholly within authorized scope;
+- `observe`: optional `region: Rect2i` (native worker default is task scope;
+  the trusted host resolves null to the acknowledged whole scope when <=4096
+  cells, otherwise a camera-centered window of at most64x64 cells clamped
+  inside that scope), wholly within authorized scope;
   `detail: "cells" | "counts"` defaults to `"cells"`. Returns `native_observed` with row-major actual
   `native_material_ids: Array[int]` (empty for counts-only detail),
   native counts, the task and
@@ -344,7 +373,12 @@ confirmation, not merely each queue submission.
 
 The bridge accepts strict Responses JSON rectangle objects with exact integer
 `x,y,width,height`, or an already-validated Godot `Rect2i`. The required
-model-visible `region:null` means the authorized task scope. A nullable
+model-visible `region:null` means the acknowledged task scope when it fits4096
+cells, otherwise a bounded camera-centered window inside it. The response
+names the exact inspected rectangle, `region_selection`, `authorized_scope`,
+the4096-cell limit, native/logical viewport rectangles and the viewport's
+pixel rectangle in the unchanged original PNG. A capture-time projection
+change causes a bounded retry; a changed World generation refuses. A nullable
 `replace_only_material:null` becomes **absence of the filter**, never
 native material ID 0. Floats, unknown tool arguments, overflowed world
 coordinates, malformed operations and unauthorized host-only commands refuse.

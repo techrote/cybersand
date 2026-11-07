@@ -2982,7 +2982,7 @@
       ],
       "facts": [
         "The generic runner must stage the exact frozen native TSV at the Godot runtime path and retain/verify its bytes through execution.",
-        "Five legacy WB framebuffer cases are explicitly graphical; all eight supported WB graphical cases remain in Windows coverage as well as Linux, with273 and287 planned cases respectively.",
+        "Five legacy WB framebuffer cases are explicitly graphical; all nine supported WB graphical cases including whole-canvas scope remain in Windows coverage as well as Linux, with274 and288 planned cases respectively.",
         "Both independent reducers reject missing, changed or contradictory hopper fixture custody; fake-provider/native tests do not supply live or human acceptance."
       ],
       "sources": [

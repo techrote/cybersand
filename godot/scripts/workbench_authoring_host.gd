@@ -8,6 +8,8 @@ const SignedFrame = preload("res://scripts/workbench_agent_signed_frame.gd")
 
 const RESPONSE_TIMEOUT_MSEC: int = 10000
 const MAX_LOCAL_RECEIPTS: int = 64
+const MAX_OBSERVATION_CELLS: int = 4096
+const DEFAULT_OBSERVATION_SIDE: int = 64
 
 var _host: Control
 var _panel: Control
@@ -15,6 +17,9 @@ var _busy: bool = false
 var _tool_busy: bool = false
 var _quarantined: bool = false
 var _task_id: String = ""
+# Copied only from acknowledged native task admission, never model arguments.
+var _native_task_scope: Rect2i = Rect2i()
+var _task_generation: int = -1
 # Experimental opt-in host-only frame: NEVER silently reinterpret an ordinary task.
 var _coordinate_frame_id: String = ""
 var _coordinate_frame_generation: int = -1
@@ -28,11 +33,17 @@ static func _refused(reason: String) -> Dictionary:
 
 ## Call on main before using this bridge. The panel/client never sees the World.
 func bind(host: Control) -> bool:
-	if _busy or host == null or host.simulation_worker == null \
+	if _busy or _tool_busy or not _task_id.is_empty() \
+			or not is_instance_valid(host) or host.simulation_worker == null \
 			or host.shared_workbench == null:
 		return false
 	_host = host
 	_panel = host.shared_workbench
+	_native_task_scope = Rect2i()
+	_task_generation = -1
+	_coordinate_frame_id = ""
+	_coordinate_frame_generation = -1
+	_plan.clear()
 	return true
 
 
@@ -44,7 +55,7 @@ static func _keys_only(value: Dictionary, names: Array) -> bool:
 
 
 ## Convert strict Responses JSON world-cell rectangle to typed Rect2i.
-## Reject before Vector2i narrowing; a null region selects task scope.
+## Reject before Vector2i narrowing; null is resolved separately from task scope.
 static func _typed_region(value: Variant) -> Variant:
 	if value is Rect2i:
 		return value
@@ -79,12 +90,43 @@ func _signed_frame_available() -> bool:
 
 
 func _frame_matches_owner(native: Dictionary) -> bool:
-	if _coordinate_frame_id.is_empty():
-		return true
 	var identity: Dictionary = native.get("identity",
 		native.get("identity_after",{}))
-	return int(identity.get("world_generation",-1)) == _coordinate_frame_generation \
+	if _task_generation < 0 or int(identity.get("world_generation",-1)) != _task_generation:
+		return false
+	if _coordinate_frame_id.is_empty():
+		return true
+	return _task_generation == _coordinate_frame_generation \
 		and _coordinate_frame_id == SignedFrame.FRAME_ID and _signed_frame_available()
+
+
+func _default_observation_region() -> Rect2i:
+	if _native_task_scope.size.x * _native_task_scope.size.y <= MAX_OBSERVATION_CELLS:
+		return _native_task_scope
+	var size: Vector2i = _native_task_scope.size.min(
+		Vector2i(DEFAULT_OBSERVATION_SIDE,DEFAULT_OBSERVATION_SIDE))
+	var center: Vector2 = _host.camera_origin + Vector2(_host.current_view_size) * 0.5
+	var origin: Vector2i = Vector2i((center - Vector2(size) * 0.5).floor())
+	origin = origin.clamp(_native_task_scope.position,_native_task_scope.end-size)
+	return Rect2i(origin,size)
+
+
+func _viewport_mapping() -> Dictionary:
+	if not is_instance_valid(_host) or not is_instance_valid(_host.world_view):
+		return {}
+	var viewport: Viewport = _host.get_viewport()
+	if viewport == null or _host.current_view_size.x <= 0 or _host.current_view_size.y <= 0:
+		return {}
+	var visible: Rect2 = viewport.get_visible_rect()
+	var content: Rect2 = _host.world_view.get_global_transform_with_canvas() * _host.view_content_rect()
+	if not visible.has_area() or not content.has_area():
+		return {}
+	return {
+		"native_region":Rect2i(Vector2i(_host.camera_origin.floor()),_host.current_view_size),
+		# Normalize now, then use the actual original PNG dimensions below.
+		"normalized_content":Rect2((content.position-visible.position)/visible.size,
+			content.size/visible.size)
+	}
 
 
 func _signed_rows(native_rows: Variant) -> Dictionary:
@@ -170,7 +212,14 @@ func authorize_task(task_id: String, scope: Rect2i, protected: Array,
 		"protected":native_protection,"allowed_materials":allowed_materials
 	})
 	if answer.get("status") == "authorized":
+		var acknowledged_scope: Variant = answer.get("scope",null)
+		var generation: int = int(answer.get("generation",-1))
+		if not acknowledged_scope is Rect2i or acknowledged_scope != native_scope or generation < 0:
+			_quarantined = true
+			return {"status":"unconfirmed","reason":"native_authorization_identity_mismatch"}
 		_task_id = task_id
+		_native_task_scope = acknowledged_scope
+		_task_generation = generation
 		_plan.clear()
 		_coordinate_frame_id = coordinate_frame_id
 		_coordinate_frame_generation = int(answer.get("generation",-1))
@@ -191,6 +240,8 @@ func retire_task() -> Dictionary:
 	var answer: Dictionary = await _owner({"action":"retire_task"})
 	if answer.get("status") == "retired":
 		_task_id = ""
+		_native_task_scope = Rect2i()
+		_task_generation = -1
 		_plan.clear()
 		_coordinate_frame_id = ""
 		_coordinate_frame_generation = -1
@@ -200,9 +251,17 @@ func retire_task() -> Dictionary:
 func _observe(args: Dictionary) -> Dictionary:
 	# An observation supersedes the previous worker-side proposal.
 	_plan.clear()
+	if not _available():
+		return _refused("paused_workbench_unavailable")
 	var command: Dictionary = {"action":"observe"}
+	if _task_generation < 0 or not _native_task_scope.has_area():
+		return _refused("missing_acknowledged_task_scope")
+	if _host.latest_snapshot == null \
+			or _host.latest_snapshot.render_world_generation != _task_generation:
+		return _refused("authorized_task_world_epoch_changed")
 	if not _coordinate_frame_id.is_empty() and not _signed_frame_available():
 		return _refused("signed_frame_lost_finite_world")
+	var selection: String = "explicit_region"
 	if args.has("region") and args.region != null:
 		var region: Variant = null
 		if _coordinate_frame_id.is_empty():
@@ -214,6 +273,9 @@ func _observe(args: Dictionary) -> Dictionary:
 		if region == null:
 			return _refused("invalid_observation_region")
 		command["region"] = region
+	else:
+		command["region"] = _default_observation_region()
+		selection = "task_scope" if command.region == _native_task_scope else "camera_window"
 	if args.has("detail"):
 		command["detail"] = args.detail
 	var native: Dictionary = await _owner(command)
@@ -224,16 +286,25 @@ func _observe(args: Dictionary) -> Dictionary:
 		return {"status":"unconfirmed","reason":"coordinate_frame_world_epoch_changed"}
 	var deadline: int = Time.get_ticks_msec() + RESPONSE_TIMEOUT_MSEC
 	var joined: Dictionary = {}
+	var captured_mapping: Dictionary = {}
 	var requested_fresh_render: bool = false
 	while Time.get_ticks_msec() < deadline and _available():
+		var projection: Dictionary = _viewport_mapping()
+		if projection.is_empty():
+			return {"status":"pending","reason":"viewport_mapping_unavailable",
+				"observation_id":native.observation_id}
 		joined = await RenderJoin.join_after_draw(_host,native)
 		if joined.get("status") == "observed":
-			break
+			if projection == _viewport_mapping():
+				captured_mapping = projection
+				break
+			joined = {"status":"pending","reason":"viewport_projection_changed_during_capture"}
 		var reason: String = str(joined.get("reason",""))
 		if reason not in [
 			"native_and_uploaded_render_not_matched",
 			"publication_changed_during_draw",
-			"publication_changed_after_capture"
+			"publication_changed_after_capture",
+			"viewport_projection_changed_during_capture"
 		]:
 			return joined
 		# A paused native step can complete without changing any material ID.
@@ -258,6 +329,19 @@ func _observe(args: Dictionary) -> Dictionary:
 		# Do not disclose an apparently trustworthy PNG with unconfirmed IDs.
 		return {"status":"pending","reason":"owner_did_not_confirm_frame",
 			"observation_id":native.observation_id,"owner_receipt":ack}
+	var frame_origin: Vector2i = SignedFrame.ORIGIN if not _coordinate_frame_id.is_empty() else Vector2i.ZERO
+	var captured_view: Rect2i = captured_mapping.native_region
+	var normalized: Rect2 = captured_mapping.normalized_content
+	var png_size: Vector2 = Vector2(joined.render_identity.viewport_width,joined.render_identity.viewport_height)
+	var pixels: Rect2 = Rect2(normalized.position*png_size,normalized.size*png_size)
+	joined["region_selection"] = selection
+	joined["observation_cell_limit"] = MAX_OBSERVATION_CELLS
+	joined["authorized_scope"] = Rect2i(_native_task_scope.position-frame_origin,_native_task_scope.size)
+	joined["viewport_native_region"] = captured_view
+	joined["viewport_logical_region"] = Rect2i(captured_view.position-frame_origin,captured_view.size)
+	joined["viewport_framebuffer_rect"] = {
+		"x":pixels.position.x,"y":pixels.position.y,
+		"width":pixels.size.x,"height":pixels.size.y}
 	if not _coordinate_frame_id.is_empty():
 		var local_region: Rect2i = joined.region
 		joined["native_region"] = local_region
@@ -265,11 +349,6 @@ func _observe(args: Dictionary) -> Dictionary:
 			local_region.size)
 		joined["coordinate_frame_id"] = _coordinate_frame_id
 		joined["coordinate_frame_generation"] = _coordinate_frame_generation
-		# This is the genuine camera origin of the ORIGINAL native framebuffer,
-		# reverse-mapped; never crop or synthesize a substitute PNG.
-		joined["viewport_logical_region"] = Rect2i(
-			Vector2i(_host.camera_origin.floor())-SignedFrame.ORIGIN,
-			_host.current_view_size)
 	return joined
 
 
