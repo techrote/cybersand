@@ -10,7 +10,7 @@ func bounded_case(centres: int) -> void:
 	if not check(await until(func():return not ui.step_pending and host.latest_snapshot.tick_index>0),"region admitted"): return
 	var tick: int=host.latest_snapshot.tick_index;var generation: int=host.latest_snapshot.render_world_generation
 	ui.applied.brush=2
-	for i: int in range(centres): check(ui.paint(Vector2i(52+6*i,66),0),"separated real erases")
+	for i: int in range(centres): check(ui.paint(Vector2i(53+6*i,66),0),"separated real erases")
 	check(ui.cut.finish_stroke(ui),"normal opt-in prefetch path")
 	if not check(await until(installed),"bounded refusals finish"): return
 	var receipts: Array=ui.cut.receipts.duplicate(true)
@@ -23,7 +23,7 @@ func bounded_case(centres: int) -> void:
 			if row.outcome=="Anchored": anchored+=1
 			limited=limited or row.get("frontier_limited",false)
 	for count: int in counts.values(): check(count<=8,"at most8 native discoveries per request")
-	check(attempts==(40 if centres==4 else 64) and anchored==attempts,"all native refusals retained including over8 work")
+	check(attempts==(41 if centres==4 else 64) and anchored==attempts,"all native refusals retained including over8 work")
 	check(limited==(centres==8),"64-investigation capacity outcome explicit")
 	check(host.rigid_bodies.is_empty() and ui.cut.capture_count==0,"safe refusal retires no source")
 	check(host.latest_snapshot.tick_index==tick and host.latest_snapshot.render_world_generation==generation,"no hidden tick or World replacement")
@@ -38,7 +38,7 @@ func bounded_case(centres: int) -> void:
 		elif Rect2i(50,64,50,8).has_point(point):
 			expected=43
 			for cut: int in range(centres):
-				if (point-Vector2i(52+6*cut,66)).length_squared()<=4: expected=0
+				if (point-Vector2i(53+6*cut,66)).length_squared()<=4: expected=0
 		check(values[i+2]==expected,"exact erased/retained material map")
 		brick+=int(values[i+2]==43)
 	check(brick==(348 if centres==4 else 296),"no failed source became Sand/Rust")
