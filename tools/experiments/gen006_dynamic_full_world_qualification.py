@@ -92,56 +92,65 @@ def run() -> None:
             f"GEN006_DYNAMIC_PRIVATE_NATIVE_TICKS_PASS configured_workers={configured} ",
             f"GEN006_DYNAMIC_FULL_WORLD_CONTINUATION_PASS configured_workers={configured} ",
             f"GEN006_DYNAMIC_PUBLICATION_EXPECTED configured_workers={configured} ",
+            f"GEN006_DYNAMIC_ORDERED_REPLAY_PASS configured_workers={configured} ",
+            f"GEN006_DYNAMIC_REPLAY_EXPECTED configured_workers={configured} ",
         )
         if result.returncode or any(marker not in result.stdout for marker in markers):
             raise RuntimeError(f"actual native workers={configured} failed (rc={result.returncode}); "
                                f"stdout={result.stdout[-2000:]} stderr={result.stderr[-2000:]}")
         for marker in markers:
             print(next(line for line in result.stdout.splitlines() if line.startswith(marker)))
-        spec = next(line for line in result.stdout.splitlines()
-                    if line.startswith(markers[-1]))
-        fields = dict(part.split("=", 1) for part in spec.split()[1:] if "=" in part)
-        cold_cmd = [
-            str(exe), "--cold-restore", str(configured), str(postpath),
-            fields["published_tick"], fields["published_physical"],
-            fields["final_tick"], fields["final_physical"],
-            fields["final_water"], fields["resident_chunks"],
-        ]
-        cold = subprocess.run(cold_cmd, capture_output=True, text=True,
-                              errors="replace", timeout=300)
-        (OUTPUT / f"workers-{configured}.cold.stdout").write_text(
-            cold.stdout, encoding="utf-8")
-        (OUTPUT / f"workers-{configured}.cold.stderr").write_text(
-            cold.stderr, encoding="utf-8")
-        marker = (f"GEN006_DYNAMIC_COLD_PROCESS_CONTINUATION_PASS "
-                  f"configured_workers={configured} ")
-        if cold.returncode or marker not in cold.stdout:
-            raise RuntimeError(f"native separate-process continuation failed: "
-                               f"workers={configured}, rc={cold.returncode}, "
-                               f"stdout={cold.stdout[-1200:]}, stderr={cold.stderr[-1200:]}")
-        corrupted = OUTPUT / f"poststate-corrupt-{configured}.cyps"
-        changed = bytearray(postpath.read_bytes())
-        if not changed:
-            raise RuntimeError("empty post-CYPS image")
-        changed[-1] ^= 1
-        corrupted.write_bytes(changed)
-        bad_cold = subprocess.run(
-            cold_cmd[:3] + [str(corrupted)] + cold_cmd[4:],
-            capture_output=True, text=True, errors="replace", timeout=300)
-        (OUTPUT / f"workers-{configured}.corrupt.stderr").write_text(
-            bad_cold.stderr, encoding="utf-8")
-        forged_cmd = cold_cmd.copy()
-        forged_cmd[7] = str(int(fields["final_physical"]) ^ 1)
-        bad_receipt = subprocess.run(forged_cmd, capture_output=True, text=True,
-                                     errors="replace", timeout=300)
-        (OUTPUT / f"workers-{configured}.forged.stderr").write_text(
-            bad_receipt.stderr, encoding="utf-8")
-        if bad_cold.returncode == 0 or bad_receipt.returncode == 0:
-            raise RuntimeError("corrupt CYPS or forged physical receipt accepted")
-        print(next(line for line in cold.stdout.splitlines() if line.startswith(marker)))
-        print(f"GEN006_DYNAMIC_COLD_PROCESS_NEGATIVE_PASS "
-              f"configured_workers={configured} corrupt_cyps_refused=1 "
-              f"forged_final_hash_refused=1")
+        for label, spec_marker, image in (
+            ("post", f"GEN006_DYNAMIC_PUBLICATION_EXPECTED configured_workers={configured} ", postpath),
+            ("replay", f"GEN006_DYNAMIC_REPLAY_EXPECTED configured_workers={configured} ",
+             Path(str(postpath) + ".replay")),
+        ):
+            spec = next(line for line in result.stdout.splitlines()
+                        if line.startswith(spec_marker))
+            fields = dict(part.split("=", 1) for part in spec.split()[1:] if "=" in part)
+            if not image.is_file() or image.stat().st_size != int(fields["snapshot_bytes"]):
+                raise RuntimeError(f"{label} native CYPS publication not created correctly")
+            cold_cmd = [
+                str(exe), "--cold-restore", str(configured), str(image),
+                fields["published_tick"], fields["published_physical"],
+                fields["final_tick"], fields["final_physical"],
+                fields["final_water"], fields["resident_chunks"],
+            ]
+            cold = subprocess.run(cold_cmd, capture_output=True, text=True,
+                                  errors="replace", timeout=300)
+            (OUTPUT / f"workers-{configured}.{label}.cold.stdout").write_text(
+                cold.stdout, encoding="utf-8")
+            (OUTPUT / f"workers-{configured}.{label}.cold.stderr").write_text(
+                cold.stderr, encoding="utf-8")
+            marker = (f"GEN006_DYNAMIC_COLD_PROCESS_CONTINUATION_PASS "
+                      f"configured_workers={configured} ")
+            if cold.returncode or marker not in cold.stdout:
+                raise RuntimeError(f"{label} native separate-process continuation failed: "
+                                   f"workers={configured}, rc={cold.returncode}, "
+                                   f"stdout={cold.stdout[-1200:]}, stderr={cold.stderr[-1200:]}")
+            corrupted = OUTPUT / f"poststate-{label}-corrupt-{configured}.cyps"
+            changed = bytearray(image.read_bytes())
+            if not changed:
+                raise RuntimeError("empty post-CYPS image")
+            changed[-1] ^= 1
+            corrupted.write_bytes(changed)
+            bad_cold = subprocess.run(
+                cold_cmd[:3] + [str(corrupted)] + cold_cmd[4:],
+                capture_output=True, text=True, errors="replace", timeout=300)
+            (OUTPUT / f"workers-{configured}.{label}.corrupt.stderr").write_text(
+                bad_cold.stderr, encoding="utf-8")
+            forged_cmd = cold_cmd.copy()
+            forged_cmd[7] = str(int(fields["final_physical"]) ^ 1)
+            bad_receipt = subprocess.run(forged_cmd, capture_output=True, text=True,
+                                         errors="replace", timeout=300)
+            (OUTPUT / f"workers-{configured}.{label}.forged.stderr").write_text(
+                bad_receipt.stderr, encoding="utf-8")
+            if bad_cold.returncode == 0 or bad_receipt.returncode == 0:
+                raise RuntimeError(f"{label}: corrupt CYPS or forged physical receipt accepted")
+            print(next(line for line in cold.stdout.splitlines() if line.startswith(marker)))
+            print(f"GEN006_DYNAMIC_COLD_PROCESS_NEGATIVE_PASS "
+                  f"configured_workers={configured} label={label} "
+                  f"corrupt_cyps_refused=1 forged_final_hash_refused=1")
     print("GEN006_DYNAMIC_FULL_WORLD_NATIVE_QUALIFICATION_PASS exact_head=" + head)
 
 
