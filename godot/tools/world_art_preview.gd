@@ -68,7 +68,7 @@ var viewport_container: SubViewportContainer
 var canvas_frame: Control
 var baseline_overlay: TextureRect
 var grid_overlay: Control
-var rig: SubViewport
+var rig
 var directory_dialog: FileDialog
 
 func _ready() -> void:
@@ -710,7 +710,7 @@ func _render_full(input: Dictionary, output_scale: int) -> Image:
 	if input_image == null:
 		return null
 	var output: Image = Image.create_empty(dims.x * scale, dims.y * scale, false, Image.FORMAT_RGB8)
-	var export_rig: SubViewport = RenderRig.new()
+	var export_rig = RenderRig.new()
 	get_tree().root.add_child(export_rig)
 	export_rig.setup(input_image, Vector2i(2, 2))
 	export_rig.set_presentation(_presentation_time, _glow, _quality)
