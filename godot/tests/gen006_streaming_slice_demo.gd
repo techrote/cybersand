@@ -23,6 +23,8 @@ const IPC_HARD_TIMEOUT_MSEC: int = 30000
 # One request is in flight; only 16 explicitly authored actions may be queued.
 # Camera refreshes coalesce into a single latest-position demand.
 const MAX_QUEUED_ACTIONS: int = 16
+# Explicit signed chunk range; finite prototype prevents cell-coordinate overflow.
+const MAX_ABS_JUMP_CHUNK: int = 4096
 
 var world_chunk := DEMO_START
 var selected_cell := Vector2i(18, 30)
@@ -65,11 +67,15 @@ var reload_receipts: int = 0
 var drag_button: int = 0
 var drag_last_cell := Vector2i(-1, -1)
 var drag_last_chunk := DEMO_START
+var jump_x_edit: LineEdit
+var jump_y_edit: LineEdit
+var jump_go_button: Button
 
 
 func _ready() -> void:
     mouse_filter = Control.MOUSE_FILTER_STOP
     set_process_unhandled_key_input(true)
+    _install_jump_controls()
     native_executable = OS.get_environment("GEN006_SLICE_EXECUTABLE")
     if native_executable.is_empty() or not FileAccess.file_exists(native_executable):
         failure = "Set GEN006_SLICE_EXECUTABLE to the compiled streaming-slice executable."
@@ -105,6 +111,82 @@ func _ready() -> void:
     if OS.get_environment("GEN006_SLICE_VERIFY") == "1":
         _invoke(PackedStringArray(), true)
         _qualify_and_quit()
+
+
+
+# Product-facing controls belong only to this opt-in Godot test scene.
+func _install_jump_controls() -> void:
+    jump_x_edit = LineEdit.new()
+    jump_x_edit.name = "SignedChunkX"
+    jump_x_edit.position = Vector2(784, 654)
+    jump_x_edit.size = Vector2(112, 34)
+    jump_x_edit.max_length = 6
+    jump_x_edit.text = str(world_chunk.x)
+    jump_x_edit.tooltip_text = "Signed chunk X (-4096 to 4096)"
+    add_child(jump_x_edit)
+    jump_y_edit = LineEdit.new()
+    jump_y_edit.name = "SignedChunkY"
+    jump_y_edit.position = Vector2(906, 654)
+    jump_y_edit.size = Vector2(112, 34)
+    jump_y_edit.max_length = 6
+    jump_y_edit.text = str(world_chunk.y)
+    jump_y_edit.tooltip_text = "Signed chunk Y (-4096 to 4096)"
+    add_child(jump_y_edit)
+    jump_go_button = Button.new()
+    jump_go_button.name = "JumpToChunk"
+    jump_go_button.text = "Go"
+    jump_go_button.position = Vector2(1028, 654)
+    jump_go_button.size = Vector2(74, 34)
+    jump_go_button.tooltip_text = "Demand the exact signed native chunk"
+    add_child(jump_go_button)
+    jump_go_button.pressed.connect(_jump_to_coordinates)
+    jump_x_edit.text_submitted.connect(_on_jump_text_submitted)
+    jump_y_edit.text_submitted.connect(_on_jump_text_submitted)
+
+
+func _on_jump_text_submitted(_value: String) -> void:
+    _jump_to_coordinates()
+
+
+func _bounded_jump_number(raw: String) -> Dictionary:
+    var value := raw.strip_edges()
+    # Limit text length before int conversion; avoid overflow on pasted input.
+    if value.is_empty() or value.length() > 6 or not value.is_valid_int():
+        return {"ok": false}
+    var parsed := int(value)
+    if absi(parsed) > MAX_ABS_JUMP_CHUNK:
+        return {"ok": false}
+    return {"ok": true, "value": parsed}
+
+
+func _jump_to_coordinates() -> void:
+    if not controller_started or not failure.is_empty():
+        input_refusal = "Jump refused: native owner unavailable."
+        queue_redraw()
+        return
+    var x := _bounded_jump_number(jump_x_edit.text)
+    var y := _bounded_jump_number(jump_y_edit.text)
+    if not bool(x.get("ok", false)) or not bool(y.get("ok", false)):
+        input_refusal = "Jump refused: signed chunk x/y must be within -4096..4096."
+        queue_redraw()
+        return
+    input_refusal = ""
+    _request_camera_chunk(Vector2i(int(x["value"]), int(y["value"])))
+
+
+func _request_camera_chunk(target: Vector2i) -> void:
+    # A single latest-target demand; no intermediate shards or edit rebinding.
+    world_chunk = target
+    drag_button = 0
+    drag_last_cell = Vector2i(-1, -1)
+    drag_last_chunk = target
+    jump_x_edit.text = str(target.x)
+    jump_y_edit.text = str(target.y)
+    if interactive_async:
+        _queue_live_focus()
+    else:
+        failure = ""
+        _invoke(PackedStringArray(), false, true)
 
 
 func _start_controller() -> void:
@@ -465,7 +547,7 @@ func _unhandled_key_input(event: InputEvent) -> void:
         KEY_RIGHT: move = Vector2i(1, 0)
         KEY_UP: move = Vector2i(0, -1)
         KEY_DOWN: move = Vector2i(0, 1)
-        KEY_HOME: world_chunk = DEMO_START
+        KEY_HOME: pass
         KEY_SPACE:
             if interactive_async:
                 _queue_live_action("tick 1", false)
@@ -477,22 +559,9 @@ func _unhandled_key_input(event: InputEvent) -> void:
             else:
                 _invoke(PackedStringArray())
     if move != Vector2i.ZERO:
-        world_chunk += move * (24 if key.shift_pressed else 1)
-        if not interactive_async:
-            failure = ""
-        # A real camera miss demands one chunk. Do not manufacture an LRU
-        # eviction by visiting two unrequested synthetic neighbor chunks.
-        if interactive_async:
-            _queue_live_focus()
-        else:
-            _invoke(PackedStringArray(), false, true)
+        _request_camera_chunk(world_chunk + move * (24 if key.shift_pressed else 1))
     elif key.keycode == KEY_HOME:
-        if not interactive_async:
-            failure = ""
-        if interactive_async:
-            _queue_live_focus()
-        else:
-            _invoke(PackedStringArray(), false, true)
+        _request_camera_chunk(DEMO_START)
     elif key.keycode in [KEY_SPACE, KEY_R]:
         get_viewport().set_input_as_handled()
 
@@ -600,7 +669,7 @@ func _draw() -> void:
     draw_rect(Rect2(Vector2.ZERO, size), Color("#0d1220"), true)
     var font: Font = ThemeDB.fallback_font
     draw_string(font, Vector2(28, 30), "GEN-006 / Native World Stream [experimental]", HORIZONTAL_ALIGNMENT_LEFT, -1, 22, Color("#dee9fb"))
-    draw_string(font, Vector2(28, 54), "Arrows: chunk  |  Shift+arrows: 1536px  |  Home: terrain  |  Left-click: Wall  |  Right-click: dig  |  Middle: Water17  |  Drag: stroke  |  Space: tick", HORIZONTAL_ALIGNMENT_LEFT, -1, 14, Color("#a3b5ce"))
+    draw_string(font, Vector2(28, 54), "Arrows: chunk  |  Shift+arrows: 1536px  |  Signed x/y + Go: jump  |  Home: terrain  |  Left-click: Wall  |  Right-click: dig  |  Middle: Water17  |  Drag: stroke  |  Space: tick", HORIZONTAL_ALIGNMENT_LEFT, -1, 14, Color("#a3b5ce"))
     draw_rect(Rect2(DISPLAY_TOP_LEFT - Vector2(2, 2),
                    Vector2(DISPLAY_SIZE + 4, DISPLAY_SIZE + 4)),
                    Color("#3f5972"), false, 2.0)
@@ -622,6 +691,8 @@ func _draw() -> void:
     draw_string(font, Vector2(710, 132),
         "World origin (%d, %d) pixels" % [px_x, px_y],
         HORIZONTAL_ALIGNMENT_LEFT, -1, 15, Color("#b9c7e3"))
+    draw_string(font, Vector2(710, 676), "Jump x/y:",
+        HORIZONTAL_ALIGNMENT_LEFT, -1, 13, Color("#dee9fb"))
     draw_string(font, Vector2(710, 696),
         "Frame chunk (%d,%d)  |  requested (%d,%d)  |  %s" % [
             displayed_chunk.x, displayed_chunk.y, world_chunk.x, world_chunk.y,

@@ -7,6 +7,7 @@ on:
       - 'godot/tests/gen006_graphical_qualification.gd'
       - 'godot/tests/gen006_async_input_qualification.gd'
       - 'godot/tests/gen006_drag_stroke_qualification.gd'
+      - 'godot/tests/gen006_signed_jump_qualification.gd'
       - '.github/workflows/gen006-graphical-qualification.yml'
       - 'godot/tests/gen006_streaming_slice_demo.gd'
       - 'godot/tests/gen006_streaming_slice_demo.tscn'
@@ -45,7 +46,7 @@ jobs:
           git rev-parse HEAD | tee "$dir/head.txt"
           git rev-parse 'HEAD^{tree}' | tee "$dir/tree.txt"
           test "$(git rev-parse HEAD)" = "$GEN006_EXPECTED_HEAD"
-          for f in native/src/world.cpp native/tests/gen006_streaming_slice.cpp godot/tests/gen006_streaming_slice_demo.gd godot/tests/gen006_graphical_qualification.gd godot/tests/gen006_async_input_qualification.gd godot/tests/gen006_drag_stroke_qualification.gd; do
+          for f in native/src/world.cpp native/tests/gen006_streaming_slice.cpp godot/tests/gen006_streaming_slice_demo.gd godot/tests/gen006_graphical_qualification.gd godot/tests/gen006_async_input_qualification.gd godot/tests/gen006_drag_stroke_qualification.gd godot/tests/gen006_signed_jump_qualification.gd; do
             git hash-object "$f" | tee -a "$dir/source-blobs.txt"
           done
           lsb_release -a 2>&1 | tee "$dir/os.txt"
@@ -90,7 +91,8 @@ jobs:
              godot/tests/gen006_streaming_slice_demo.tscn \
              godot/tests/gen006_graphical_qualification.gd \
              godot/tests/gen006_async_input_qualification.gd \
-             godot/tests/gen006_drag_stroke_qualification.gd "$dir/project/tests/"
+             godot/tests/gen006_drag_stroke_qualification.gd \
+             godot/tests/gen006_signed_jump_qualification.gd "$dir/project/tests/"
           cat > "$dir/project/project.godot" <<'EOP'
           config_version=5
           [application]
@@ -165,6 +167,28 @@ jobs:
           grep -q GEN006_GODOT_BRUSH_PASS "$dir/drag-graphical.log"
           test -s "$dir/drag-screenshots/10-native-drag.png"
           sha256sum "$dir"/drag-screenshots/*.png | tee "$dir/drag-screenshot.sha256"
+      - name: Qualify signed world jump and true native eviction in Godot OpenGL
+        shell: bash
+        timeout-minutes: 12
+        run: |
+          set -euo pipefail
+          dir=build/gen006-graphical-qa
+          mkdir -p "$dir/jump-screenshots"
+          export GEN006_SLICE_EXECUTABLE="$PWD/$dir/streaming-slice"
+          export GEN006_SLICE_ROOT="$PWD/$dir/jump-world"
+          export GEN006_JUMP_EVIDENCE="$PWD/$dir/jump-screenshots"
+          export GEN006_SLICE_FORCE_ASYNC_TEST=1
+          export LIBGL_ALWAYS_SOFTWARE=1
+          godot_bin="$(find "$dir/bin" -maxdepth 1 -type f -name 'Godot*' -print -quit)"
+          xvfb-run -a -s '-screen 0 1280x800x24' \
+            timeout 240 "$godot_bin" --rendering-driver opengl3 \
+              --path "$dir/project" --script res://tests/gen006_signed_jump_qualification.gd \
+            2>&1 | tee "$dir/jump-graphical.log"
+          grep -q GEN006_SIGNED_JUMP_PASS "$dir/jump-graphical.log"
+          for name in 11-positive-jump 12-negative-jump 13-restored-edit; do
+            test -s "$dir/jump-screenshots/$name.png"
+          done
+          sha256sum "$dir"/jump-screenshots/*.png | tee "$dir/jump-screenshot.sha256"
       - name: Preserve original graphical and native evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
@@ -187,6 +211,9 @@ jobs:
             build/gen006-graphical-qa/drag-graphical.log
             build/gen006-graphical-qa/drag-screenshots/*.png
             build/gen006-graphical-qa/drag-screenshot.sha256
+            build/gen006-graphical-qa/jump-graphical.log
+            build/gen006-graphical-qa/jump-screenshots/*.png
+            build/gen006-graphical-qa/jump-screenshot.sha256
             build/gen006-graphical-qa/world/gen006-current.rgba
           if-no-files-found: warn
           retention-days: 90

@@ -531,3 +531,26 @@ checked at this exact final HEAD before claiming success.
 ## Experimental native-backed continuous brush (7 November 2026)
 
 The opt-in Godot demo now interpolates held-mouse Wall/dig/Water strokes across coalesced pointer events. Every cell is submitted separately through the existing single-owner native ACK queue. The maximum 16 pending player actions, signed-chunk binding, stale-frame refusal and original native durable ACK requirements remain unchanged. When queue admission fails, interpolation stops instead of silently skipping cells. The new actual-Godot/OpenGL acceptance tests one coalesced five-cell stroke, genuine native ACKs, signed World cell intent and restoration after a separate native process restart, preserving an original framebuffer PNG. Tests must pass on the exact resulting source before claiming qualification. This is a Draft, sharded-World-only Godot host feature; production Native, ABI, solver and default physics remain unchanged, and independent storage/residency owners retain their respective interfaces.
+
+
+## Signed chunk x/y + Go UI (7 November 2026)
+
+Opt-in Godot prototype adds a signed-chunk X/Y LineEdit pair and Go button,
+also Enter-activated. Bounded signed integer validation accepts at most
+±4096 chunks (±262144 native world pixels), rejects malformed/out-of-range
+input before native IPC, and never silently clips. Each camera jump requests
+one coalesced latest target; existing queued edits remain bound to their
+original signed source chunk, with the same strict backpressure, stale-frame
+refusal and real native durable acknowledgments. Arrow/Home navigation shares
+the new camera transition helper and cancels a held mouse stroke. No protected
+native/physics, MAT-AUTH source lock, storage, default, ABI or producer
+branch was modified.
+
+The new actual-native/Godot OpenGL regression exercises the real Go button,
+three invalid-coordinate refusals, Wall editing, positive (22,2), next
+(23,2), negative (-24,2), and return (-2,2). It requires stable native
+PID, bounded resident Worlds, actual evictions/reload, authoritative
+persistent Wall intent and three original framebuffer PNGs. This remains a
+SHARDED native-World experimental capability, NOT in-place selective
+shared-World eviction or cross-shard Water continuation. Final exact-head
+Windows/Linux and Godot CI evidence must be checked before declaring PASS.
