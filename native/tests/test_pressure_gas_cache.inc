@@ -112,6 +112,35 @@ void test_affected_gas_components() {
     }
 }
 
+void test_gas_component_bootstrap_under_continuous_churn() {
+    for (const auto workers : {1U, 4U}) {
+        World reference(gas_cache_config(0, workers)), cached(gas_cache_config(1, workers));
+        for (auto* world : {&reference, &cached}) gas_cache_rooms(*world, 0, 0);
+
+        for (int tick_index = 0; tick_index < 8; ++tick_index) {
+            const auto material = (tick_index % 2) == 0 ? Material::Empty : Material::Wall;
+            for (auto* world : {&reference, &cached})
+                world->set(20, 1, material);
+            tick(reference);
+            tick(cached);
+            require_gas_cache_equivalent(reference, cached);
+            require(reference.physical_state_hash() == cached.physical_state_hash(),
+                    "continuous-churn selective gas bootstrap preserves the complete physical state");
+        }
+
+        const auto snapshot = cached.pressure_optimization_snapshot();
+        require(snapshot.counters.gas_reference_passes == 8U,
+                "continuous topology churn keeps whole-gas reuse on the authoritative reference path");
+        require(snapshot.counters.gas_cache_builds > 0U &&
+                    snapshot.counters.gas_component_reuses > 0U &&
+                    snapshot.counters.gas_member_validations > 0U,
+                "unchanged remote gas can bootstrap and replay while another component changes every tick");
+        require(snapshot.counters.gas_invalidation_pairs > 0U &&
+                    snapshot.counters.gas_component_invalidations > 0U,
+                "dirty-component proof rejects the changing room rather than globally admitting it");
+    }
+}
+
 void test_gas_component_capacity_fallbacks() {
     for (int mode=0;mode<4;++mode) {
         auto config=gas_cache_config(1);
