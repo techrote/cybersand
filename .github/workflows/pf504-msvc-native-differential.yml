@@ -1,0 +1,115 @@
+name: PF504 differential native MSVC replay from retained source-matched executables
+on:
+  push:
+    branches: [experiment/pf504-current-msvc-baseline-20261107]
+    paths:
+      - '.github/workflows/pf504-msvc-native-differential.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: pf504-msvc-differential-${{ github.run_id }}
+  cancel-in-progress: false
+jobs:
+  same-windows-host-differential:
+    runs-on: windows-2025
+    timeout-minutes: 55
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Restore exact accepted #405 main MSVC binary, 191/191 earlier PASS
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          repository: techrote/cybersand
+          run-id: 42366673315
+          name: pf504-accepted-main-msvc-42366673315-1
+          github-token: ${{ github.token }}
+          path: bin/baseline
+      - name: Restore exact #504+#405 integrated MSVC binary, failed Current deadline twice
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          repository: techrote/cybersand
+          run-id: 42364806735
+          name: pf-gas-windows-native-42364806735-2
+          github-token: ${{ github.token }}
+          path: bin/candidate
+      - name: Recheck executable SHA, run focused worker/deadline and full 191-test suites on one host
+        timeout-minutes: 48
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import hashlib,json,os,pathlib,subprocess
+          root=pathlib.Path.cwd()
+          evidence=root/'evidence'
+          evidence.mkdir(exist_ok=True)
+          expected={
+             "baseline":{
+                "sha":"077ce15bd770de067ca6f1696658d46e720be7ef86191eb97b3918d7a99765d6",
+                "source":"334d1a8f308cf9e62f562a5bb0387a3d414c9eac"},
+             "candidate":{
+                "sha":"196f559ff98efcc0c5bdd233518927dfd428ad7160c2e8b2e70cc5dfbf736929",
+                "source":"af31d828ab680c52007cddae5525024fe0f31ff8"},
+          }
+          for role,expected_info in expected.items():
+             directory=root/'bin'/role
+             exe=directory/'pf_gas_exact_windows_tests.exe'
+             assert exe.is_file(),exe
+             sha=hashlib.sha256(exe.read_bytes()).hexdigest()
+             assert sha==expected_info['sha'],(role,sha)
+             identity=(directory/'pf-gas-windows'/'identity.txt').read_text()
+             assert 'source_sha='+expected_info['source'] in identity,(role,identity)
+          print('MSVC_DIFFERENTIAL_EXACT_SOURCE_BINARIES_PASS',expected,flush=True)
+          roles=('baseline','candidate','candidate','baseline')
+          records=[]
+          for scope in ('focus','full'):
+             for i,role in enumerate(roles):
+                exe=root/'bin'/role/'pf_gas_exact_windows_tests.exe'
+                args=([str(exe),"worker activity publication and observer independence"]
+                      if scope=='focus' else [str(exe)])
+                print('MSVC_DIFFERENTIAL_BEGIN',scope,role,i,flush=True)
+                try:
+                   p=subprocess.run(args,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,
+                                    text=True,errors='replace',timeout=1000,cwd=root)
+                   code=p.returncode;output=p.stdout
+                except subprocess.TimeoutExpired as err:
+                   code=124;output=str(err)
+                logfile=evidence/f'{scope}-{i}-{role}.log'
+                logfile.write_text(output,encoding='utf-8')
+                failure=[line for line in output.splitlines() if '[fail]' in line]
+                passes=[line for line in output.splitlines() if '[pass]' in line]
+                row={"source":expected[role]['source'],"exe_sha256":expected[role]['sha'],
+                     "role":role,"scope":scope,"order":i,"returncode":code,
+                     "passed_tests":len(passes),"failure":failure,
+                     "log_sha256":hashlib.sha256(logfile.read_bytes()).hexdigest()}
+                records.append(row)
+                print('MSVC_DIFFERENTIAL_END',json.dumps(row,sort_keys=True),flush=True)
+          out={"schema":"pf504-post405-current-msvc-same-host-v1",
+               "baseline_main_source":"81bbd5ff5cf366159e2b8a630609359c13560080",
+               "candidate_input_source":"af31d828ab680c52007cddae5525024fe0f31ff8",
+               "reused_artifacts":["42366673315/13571689534",
+                                   "42364806735/13572080725"],
+               "runner":"windows-2025","compiler":"original exact MSVC source-built binaries",
+               "records":records}
+          (evidence/'differential.json').write_text(json.dumps(out,indent=2,sort_keys=True)+'\n')
+          print('MSVC_DIFFERENTIAL_COMPLETE',json.dumps({
+                "focus": {role:[x['returncode'] for x in records if x['scope']=='focus' and x['role']==role]
+                          for role in expected},
+                "full":{role:[x['returncode'] for x in records if x['scope']=='full' and x['role']==role]
+                          for role in expected}},sort_keys=True),flush=True)
+          PY
+      - name: Always retain both original executable identities and each full diagnostic stdout
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: pf504-post405-msvc-controlled-differential-${{ github.run_id }}
+          path: evidence/
+          if-no-files-found: warn
+          retention-days: 90
