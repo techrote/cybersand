@@ -204,21 +204,58 @@ public:
     void edit(ChunkCoord c, int x, int y, Material material,
               std::uint16_t amount = 0, std::int16_t temp = 200) {
         check(x >= 0 && y >= 0 && x < kSide && y < kSide, "invalid local edit");
-        auto& world = focus(c);
-        auto& e = residents_.at(c);
+        (void)focus(c);
+        auto& live = residents_.at(c);
+        check(live.generation != std::numeric_limits<std::uint64_t>::max(),
+              "GEN006_MUTATION_GENERATION_EXHAUSTED");
+        check(live.world && !live.world->has_failed() &&
+              live.world->chunk_count() == 1, "GEN006_EDIT_WORLD_REFUSED");
+
+        // Acknowledged player edits must survive an abrupt owner-process exit,
+        // not just a graceful save_all or eventual LRU eviction. Stage a real
+        // native CYPS copy, modify it, persist its complete state+Empty intent,
+        // and only then replace the live owner. Disk/codec/write failures before
+        // successful publication leave the original native World untouched.
+        // This is an explicit slow opt-in prototype transaction, not a
+        // production per-click checkpoint design or a power-loss guarantee.
+        const auto original = live.world->save_physical_state();
+        check(!original.empty() &&
+              original.size() <= kMaximumRecordBytes - 1024,
+              "GEN006_EDIT_CHECKPOINT_BUDGET");
+        Resident staged;
+        staged.world = World::restore_physical_state(config_, original);
+        check(staged.world && !staged.world->has_failed() &&
+              staged.world->chunk_count() == 1, "GEN006_EDIT_STAGE_REFUSED");
+        staged.edit_intent = live.edit_intent;
+        staged.generation = live.generation;
+        staged.use = live.use;
+        staged.restored = live.restored;
+        staged.simulation_pinned = live.simulation_pinned;
+        staged.pin_reason = live.pin_reason;
         const std::int64_t gx = c.x * kSide + x, gy = c.y * kSide + y;
         if (material == Material::Water) {
-            check(world.set_cell_state(gx, gy, material, amount, 0),
+            check(staged.world->set_cell_state(gx, gy, material, amount, 0),
                   "GEN006_WATER_STATE_REFUSED");
-            world.set_temperature(gx, gy, temp);
+            staged.world->set_temperature(gx, gy, temp);
         } else {
-            world.set(gx, gy, material);
+            staged.world->set(gx, gy, material);
         }
         const std::size_t index = static_cast<std::size_t>(y * kSide + x);
-        e.edit_intent[index / 8] |= static_cast<std::uint8_t>(1U << (index % 8));
-        check(e.generation != std::numeric_limits<std::uint64_t>::max(),
-              "GEN006_MUTATION_GENERATION_EXHAUSTED");
-        ++e.generation; // even if content returns to a previous value
+        staged.edit_intent[index / 8] |= static_cast<std::uint8_t>(1U << (index % 8));
+        ++staged.generation; // preserve explicit same-value/Empty intent
+        persist(c, staged); // synchronous file flush, replace and POSIX dir sync
+
+        // All remaining member updates are noexcept: the player receives no
+        // successful receipt for an unpublished mutation.
+        live.world.swap(staged.world);
+        live.edit_intent = staged.edit_intent;
+        live.generation = staged.generation;
+        std::cout << "GEN006_EDIT_DURABLE_ACK chunk=(" << c.x << ","
+                  << c.y << ") local=(" << x << "," << y
+                  << ") generation=" << live.generation
+                  << " physical_hash=" << live.world->physical_state_hash()
+                  << " native_tick=" << live.world->completed_tick_index()
+                  << " file_published=1\n";
     }
     std::uint32_t simulate(unsigned ticks) {
         check(ticks <= 64, "GEN006_TICK_BUDGET");
