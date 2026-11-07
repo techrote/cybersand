@@ -1,0 +1,100 @@
+name: CyberSand PF gas — real Godot CPU profile using verified diagnostic binaries
+
+on:
+  push:
+    branches: [perf/pf-gas-acceptance-20261107]
+    paths:
+      - '.github/workflows/pf-gas-stage-cpu-profile-reuse.yml'
+      - 'tools/ci/pf_gas_cpu_run.py'
+      - 'tools/ci/pf_gas_cpu_report.py'
+      - 'tools/ci/pf_gas_cpu_host.py'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: pf-gas-cpu-gameplay-${{ github.run_id }}
+  cancel-in-progress: false
+
+env:
+  BASELINE_SHA: 24a8bbe8ccf0d17196ebbab580b924930a964584
+  GODOT_WINDOWS_URL: https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip
+  GODOT_WINDOWS_SHA512: 41645a908eb3181d6f2d1201ed7b6d6f095f6a23aaed8903d5d255277cc8d142814f3e6817f865b3cac142c39b8aff99280091d3bbdaa301517730b3ba0522b9
+  GODOT_VERSION: 4.7.stable.official.5b4e0cb0f
+  GIT_LFS_SKIP_SMUDGE: '1'
+  GODOT_SILENCE_ROOT_WARNING: '1'
+  PYTHONUTF8: '1'
+
+jobs:
+  real-eight-barrel-profile:
+    name: CPU and pressure-stage profiling — 16 legal eight-actor cases on one Windows host
+    runs-on: windows-2022
+    timeout-minutes: 120
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Preserve exact LF line endings
+        run: |
+          git config --global core.autocrlf false
+          git config --global core.eol lf
+      - name: Check out same acceptance harness
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          lfs: false
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Reuse immutable same-compiler source-built CPU-probe binaries from run 42342476788
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          repository: techrote/cybersand
+          run-id: 42342476788
+          name: pf-gas-cpu-instrumented-runtimes-42342476788
+          github-token: ${{ github.token }}
+          path: build/pf-stage-cpu
+      - name: Check original source and prepare test-only Godot worker/simulation receipts
+        timeout-minutes: 18
+        run: |
+          set -euo pipefail
+          git diff --check
+          python tools/ci/check_ci_provider_policy.py
+          python tools/ci/pf_gas_acceptance.py check > build/pf-gas-profile-plan.json
+          python -m unittest discover -s tools/ci -p test_pf_gas_acceptance.py -v
+          git worktree add --detach "$RUNNER_TEMP/pf-cpu-app" "$BASELINE_SHA"
+          git -C "$RUNNER_TEMP/pf-cpu-app" lfs install --local
+          git -C "$RUNNER_TEMP/pf-cpu-app" lfs pull \
+            --include="godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll" --exclude=""
+          python tools/ci/pf_gas_cpu_host.py \
+            --app "$RUNNER_TEMP/pf-cpu-app" \
+            --original-fixture godot/tests/performance/water_factorial_stress.gd \
+            --out build/pf-stage-cpu/host-evidence
+      - name: Execute source-matched B-C-C-B and independent gas-stage CPU attribution
+        timeout-minutes: 105
+        run: |
+          set -euo pipefail
+          python tools/ci/pf_gas_cpu_run.py \
+            --app "$RUNNER_TEMP/pf-cpu-app" --binaries build/pf-stage-cpu \
+            --out build/pf-stage-cpu/experiment \
+            --godot-url "$GODOT_WINDOWS_URL" \
+            --godot-sha512 "$GODOT_WINDOWS_SHA512" \
+            --godot-version "$GODOT_VERSION"
+      - name: Preserve full source, runtime, profiling, actor and splash evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: pf-gas-eight-barrel-cpu-profile-${{ github.run_id }}
+          path: |
+            build/pf-gas-profile-plan.json
+            build/pf-stage-cpu/source/probe-patch-identities.json
+            build/pf-stage-cpu/host-evidence/
+            build/pf-stage-cpu/experiment/identities/*.json
+            build/pf-stage-cpu/experiment/toolchain/
+            build/pf-stage-cpu/experiment/ABBA/
+          if-no-files-found: warn
+          retention-days: 90
