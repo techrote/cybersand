@@ -14,13 +14,28 @@ permissions:
   contents: read
 
 jobs:
-  journal:
-    name: G6J1 journal
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-24.04, windows-2022]
+  journal-linux:
+    name: G6J1 journal ubuntu-24.04
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Source and interpreter identity
+        shell: bash
+        run: |
+          python --version
+          git rev-parse HEAD
+          git rev-parse HEAD^{tree}
+          git hash-object tools/experiments/gen006_storage_journal.py
+          git hash-object tools/experiments/test_gen006_storage_journal.py
+      - name: Test durable append, corruption and process crash
+        working-directory: tools/experiments
+        run: python -m unittest -v test_gen006_storage_journal
+  journal-windows:
+    name: G6J1 journal windows-2022
+    runs-on: windows-2022
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
