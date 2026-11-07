@@ -85,13 +85,36 @@ for v,w,ticks in ((0,1,300),(1,4,300),(2,4,120)):
     rows=get(2048,"stress-canvas",v,w,0)
     require(len(rows)==ticks+1 and rows[-1]["world_failed"]=="0",
             f"C2048 stress v{v},w{w}: requested {ticks} ticks not completed")
+# Worker participation is an actual native TickStats counter, not a requested configuration.
+# Four configured workers may legitimately execute with fewer participants in a
+# particular dispatch; require actual parallel participation over the stress run.
+def observed(cap,scene,variant,workers,rooms):
+    rows=get(cap,scene,variant,workers,rooms)
+    counts=[int(row["worker_threads_observed"]) for row in rows
+            if row["world_failed"]=="0"]
+    require(all(0<=n<=workers for n in counts),
+            f"C{cap}/{scene} v{variant} worker participation exceeds configured count")
+    return max(counts,default=0)
+
+worker_participation={
+    "C2048_stress_reference_w1_peak":observed(2048,"stress-canvas",0,1,0),
+    "C2048_stress_cached_w4_peak":observed(2048,"stress-canvas",1,4,0),
+    "C2048_stress_cached_dormant_w4_peak":observed(2048,"stress-canvas",2,4,0),
+    "C2048_default_cached_w4_peak":observed(2048,"default",1,4,1025),
+}
+require(worker_participation["C2048_stress_reference_w1_peak"]==1,
+        "one-worker native stress did not record actual participation")
+require(max(worker_participation[k] for k in (
+    "C2048_stress_cached_w4_peak","C2048_stress_cached_dormant_w4_peak"))>=2,
+        "four-worker native stress never engaged multiple distinct native workers")
 report={"schema":"pf-c2048-native-production-v1",
         "exact_source":(root/"source.txt").read_text().strip(),
         "cases":len(cases),"parity_rows_compared":compared,
+        "worker_participation":worker_participation,
         "c1024_stress_failure_tick":int(old[-1]["tick"]),
         "c1024_stress_error":old[-1]["exception"],
         "c2048_peak":peak,"c2048_end_live":int(new[-1]["live"]),
         "c2048_complete_ticks":900,
-        "limitations":"this matrix exercises real native World and authored export; configured workers do not prove actual parallel participation; live Rapier actor stress separately required"}
+        "limitations":"this matrix captures actual participating native worker threads per tick; live Rapier actor stress separately required"}
 (root/"readback.json").write_text(json.dumps(report,indent=2,sort_keys=True)+"\n")
 print("PF_C2048_AUTHORED_NATIVE_PASS",json.dumps(report,sort_keys=True))

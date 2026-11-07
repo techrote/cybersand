@@ -229,20 +229,20 @@ void dump_gas_records(const World& w,const std::string& prefix) {
 }
 
 void output_header() {
-    std::cout<<"capacity,scene,variant,workers,phase,tick,initial_census,live,region_min,region_p50,"
+    std::cout<<"capacity,scene,variant,workers,worker_threads_observed,phase,tick,initial_census,live,region_min,region_p50,"
              <<"region_p90,region_p95,region_p99,region_max,one_cell,two_four,five_sixteen,"
              <<"other_regions,region_volume,max_live_id,next_id,topology_rev,gas_created,"
              <<"gas_absorbed,gas_vented,gas_collapsed,gas_live_amount,creations,merges,splits,"
              <<"vents,collapses,ledger_closes,water_quantity,physical_hash,cyps_bytes,"
              <<"pressure_variant_projection,gas_digest,history_digest,history_records,gas_regions,atmosphere_regions,gas_visited,gas_seed_cells,gas_bfs_cells,"
              <<"gas_cache_build_cells,gas_cache_components,gas_cache_reserved_bytes,"
-             <<"topology_reserved_bytes,derived_reserved_bytes,vmrss_kib,vmhwm_kib,"
+             <<"derived_reserved_bytes,vmrss_kib,vmhwm_kib,"
              <<"allocator_inuse_bytes,allocator_arena_bytes,prep_ns,gas_ns,head_ns,"
              <<"native_tick_ns,world_failed,exception\n";
 }
 void record(const World& w,const Fixture& extent,const std::string& scene,int variant,int workers,
             const std::string& phase,long long tick,long long initial,std::uint64_t tick_ns,
-            const PressureOptimizationCounters& earlier,const std::string& failure,
+            std::uint32_t observed_workers,const PressureOptimizationCounters& earlier,const std::string& failure,
             const std::string& save_path) {
     const auto gas=w.gas_compartments();
     const auto g=w.gas_ledger();
@@ -268,7 +268,7 @@ void record(const World& w,const Fixture& extent,const std::string& scene,int va
         projection=w.liquid_comparison_hash(LiquidStateProjection::PressureVariantEquivalenceV1);
     }
     const auto diff=[&](auto a,auto b)->std::uint64_t{return a>=b?a-b:0;};
-    std::cout<<w.config().pressure_gas_compartment_capacity<<','<<scene<<','<<variant<<','<<workers<<','
+    std::cout<<w.config().pressure_gas_compartment_capacity<<','<<scene<<','<<variant<<','<<workers<<','<<observed_workers<<','
              <<phase<<','<<tick<<','<<initial<<','<<sample.n<<','<<sample.min<<','
              <<sample.p50<<','<<sample.p90<<','<<sample.p95<<','<<sample.p99<<','
              <<sample.max<<','<<sample.one<<','<<sample.two_four<<','<<sample.five_sixteen<<','
@@ -284,7 +284,7 @@ void record(const World& w,const Fixture& extent,const std::string& scene,int va
              <<diff(opt.counters.gas_bfs_cells,earlier.gas_bfs_cells)<<','
              <<diff(opt.counters.gas_cache_build_cells,earlier.gas_cache_build_cells)<<','
              <<opt.gas_components<<','<<opt.gas_capacity_bytes<<','
-             <<0U<<','<<opt.derived_capacity_bytes<<','
+             <<opt.derived_capacity_bytes<<','
              <<linux_kib("VmRSS:")<<','<<linux_kib("VmHWM:")<<','
              <<allocator_used()<<','<<allocator_arena()<<','
              <<diff(opt.counters.preparation_nanoseconds,earlier.preparation_nanoseconds)<<','
@@ -336,7 +336,7 @@ int run(int argc,char** argv) {
              <<" typed_capacity_refusal="<<(admission.has_value()?"yes":"no")<<"\n";
     output_header();
     PressureOptimizationCounters earlier{};
-    record(*w,extent,scene,variant,workers,"initial",0,count,0,earlier,"","");
+    record(*w,extent,scene,variant,workers,"initial",0,count,0,0,earlier,"","");
     for(int tick=1;tick<=ticks;++tick){
         if(scene=="dynamic" && tick==2) {
             for(const auto& pt:holes.corridors) place(*w,pt.first,pt.second,static_cast<int>(Material::Wall));
@@ -344,7 +344,8 @@ int run(int argc,char** argv) {
         const auto previous=w->pressure_optimization_snapshot().counters;
         const auto start=std::chrono::steady_clock::now();
         std::string failure;
-        try{(void)w->tick();}
+        std::uint32_t observed_workers=0;
+        try{observed_workers=w->tick().worker_threads_observed;}
         catch(const std::exception& e){failure=e.what();}
         const auto dt=static_cast<std::uint64_t>(
             std::chrono::duration_cast<std::chrono::nanoseconds>(
@@ -354,7 +355,7 @@ int run(int argc,char** argv) {
            (tick==1||tick==10||tick==30||tick==60||tick==120||tick==300||tick==ticks))
             path=save_prefix+"-t"+std::to_string(tick)+".cyps";
         record(*w,extent,scene,variant,workers,
-               scene=="dynamic"&&tick>=2?"after_split":"tick",tick,count,dt,previous,failure,path);
+               scene=="dynamic"&&tick>=2?"after_split":"tick",tick,count,dt,observed_workers,previous,failure,path);
         if(!failure.empty() || w->has_failed()) {
             std::cerr<<"refusal_scene="<<scene<<" tick="<<tick<<" failed="<<w->has_failed()
                      <<" error="<<failure<<"\n";
