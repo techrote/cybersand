@@ -1130,6 +1130,76 @@ void test_default_policy_untouched() {
             "default policy has no pressure state");
 }
 
+void test_gas_exact_hotpath_seams_and_masks() {
+    // Exercises intra-chunk fast reads, every +/- chunk seam (including
+    // negative coordinates), empty/unallocated frontiers, and the body-mask
+    // slow path. The optimization must not change worker or variant physics.
+    for (const bool gas_enabled : {false, true}) {
+        for (std::int32_t variant : {0, 1, 2}) {
+            const auto make_config = [&](std::uint32_t workers) {
+                auto config = small_gas_config();
+                config.worker_threads = workers;
+                config.parallel_job_threshold = 1;
+                config.workbench_parallel_pressure_heads = true;
+                const auto words = pressure_request(std::pair{gas_enabled ? 1 : 0, 32}, variant);
+                const auto decoded = LiquidSolverPolicy::decode(std::span<const std::int32_t>(words));
+                require(decoded.accepted(), "gas hotpath policy admitted");
+                config.liquid_solver_policy = *decoded.policy;
+                return config;
+            };
+            World one(make_config(1));
+            World four(make_config(4));
+            const auto build = [](World& world) {
+                world.reserve_region({-64, 0, 160, 96});
+                room(world, -32);  // first Water/Empty edge at a negative seam
+                room(world, 23);   // spans positive x=31/32 seam
+                rect(world, -48, 62, 128, 2, Material::Wall);
+                rect(world, -48, 44, 1, 20, Material::Wall);
+                rect(world, 79, 44, 1, 20, Material::Wall);
+                rect(world, -40, 52, 92, 10, Material::Water);
+                world.configure_transient_obstacles({-64, 0, 160, 96});
+            };
+            build(one);
+            build(four);
+            const auto compare = [&](std::int32_t step) {
+                require(one.physical_state_hash() == four.physical_state_hash() &&
+                        one.state_hash() == four.state_hash(),
+                        "pressure hotpath 1/4-worker exact parity at step " + std::to_string(step));
+                require(one.gas_compartments() .size() == four.gas_compartments().size(),
+                        "pressure hotpath exact compartment count");
+                const auto first = one.gas_compartments(), second = four.gas_compartments();
+                for (std::size_t i = 0; i < first.size(); ++i)
+                    require(first[i].id == second[i].id && first[i].volume == second[i].volume &&
+                            first[i].amount == second[i].amount && first[i].gauge == second[i].gauge &&
+                            first[i].anchor_x == second[i].anchor_x && first[i].anchor_y == second[i].anchor_y,
+                            "pressure hotpath exact gas identity/amount/gauge");
+                require(one.gas_ledger().amount_live == four.gas_ledger().amount_live,
+                        "pressure hotpath exact gas ledger");
+            };
+            for (std::int32_t step = 0; step < 24; ++step) {
+                if (step == 4) {
+                    for (World* w : {&one, &four})
+                        require(w->set_transient_obstacle(31, 11, 1),
+                                "gas hotpath moving-mask fixture installed");
+                }
+                if (step == 8) {
+                    for (World* w : {&one, &four}) w->clear_transient_obstacles();
+                }
+                if (step == 12) {
+                    for (World* w : {&one, &four}) {
+                        (void)w->set_cell_state(23, 13, Material::Empty, 0, 0);
+                        (void)w->set_cell_state(-32, 13, Material::Empty, 0, 0);
+                    }
+                }
+                tick(one);
+                tick(four);
+                compare(step);
+            }
+        }
+    }
+}
+
+
 }  // namespace
 
 void test_lcb_pressure_admission() { test_pressure_admission_and_refusal(); }
@@ -1139,6 +1209,7 @@ void test_lcb_pressure_gas_id_split_exhaustion() { test_gas_id_split_exhaustion(
 void test_lcb_pressure_quantity_bounds() { test_quantity_rectangle_bounds(); }
 void test_lcb_pressure_event_restore_bounds() { test_pending_event_restore_bounds(); }
 void test_lcb_pressure_gas_pockets() { test_gas_single_and_twin_pockets(); }
+void test_lcb_pressure_gas_exact_hotpath() { test_gas_exact_hotpath_seams_and_masks(); }
 void test_lcb_pressure_gas_merge() { test_gas_unequal_merge(); }
 void test_lcb_pressure_gas_vent_reseal() { test_gas_compress_vent_reseal(); }
 void test_lcb_pressure_gas_split() { test_gas_split(); }

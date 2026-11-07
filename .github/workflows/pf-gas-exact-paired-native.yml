@@ -1,0 +1,141 @@
+name: PressureFlow exact gas paired native benchmark
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - 'native/src/world_pressure.inc'
+      - 'native/bench/pf_gas_exact_pairs.cpp'
+      - '.github/workflows/pf-gas-exact-paired-native.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pf-gas-exact-${{ github.event.pull_request.number || github.run_id }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  matched-native:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    env:
+      BASELINE_SHA: 24a8bbe8ccf0d17196ebbab580b924930a964584
+    steps:
+      - name: Checkout exact PR head with complete history
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Verify provenance and construct frozen baseline source
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/pf-gas-paired
+          echo "candidate_source=$(git rev-parse HEAD)" | tee build/pf-gas-paired/identity.txt
+          echo "baseline_source=$BASELINE_SHA" | tee -a build/pf-gas-paired/identity.txt
+          echo "runner_os=$RUNNER_OS runner_arch=$RUNNER_ARCH" | tee -a build/pf-gas-paired/identity.txt
+          g++-13 --version | head -n 1 | tee -a build/pf-gas-paired/identity.txt
+          git worktree add --detach "$RUNNER_TEMP/pf-gas-base" "$BASELINE_SHA"
+          cp native/bench/pf_gas_exact_pairs.cpp "$RUNNER_TEMP/pf-gas-base/native/bench/"
+          sha256sum native/bench/pf_gas_exact_pairs.cpp "$RUNNER_TEMP/pf-gas-base/native/bench/pf_gas_exact_pairs.cpp" |
+            tee build/pf-gas-paired/harness-sha256.txt
+      - name: Build same optimized native harness against baseline and candidate
+        shell: bash
+        run: |
+          set -euo pipefail
+          sources=(native/src/world.cpp native/src/material_rules.cpp native/src/scheduler_geometry.cpp native/src/settled_world_discovery.cpp)
+          flags=(-std=c++20 -O3 -DNDEBUG -flto -pthread -I native/include)
+          (
+            cd "$RUNNER_TEMP/pf-gas-base"
+            g++-13 "${flags[@]}" "${sources[@]}" native/bench/pf_gas_exact_pairs.cpp -o "$GITHUB_WORKSPACE/build/pf-gas-paired/baseline"
+          )
+          g++-13 "${flags[@]}" "${sources[@]}" native/bench/pf_gas_exact_pairs.cpp -o build/pf-gas-paired/candidate
+          sha256sum build/pf-gas-paired/baseline build/pf-gas-paired/candidate |
+            tee build/pf-gas-paired/runtime-sha256.txt
+      - name: Compare exact 40-tick native traces and repeated paired timings
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import itertools, json, os, pathlib, statistics, subprocess
+          out = pathlib.Path('build/pf-gas-paired')
+          binary = {'baseline': str((out / 'baseline').resolve()),
+                    'candidate': str((out / 'candidate').resolve())}
+          rows = []
+          worker_parity = {}
+          for gas, variant, workers, mask in itertools.product((0, 1), (0, 1, 2), (1, 4), (0, 1)):
+              for repetition in range(3):
+                  pair = {}
+                  # Alternate order within each exact workload to suppress warm-up drift.
+                  order = ('baseline', 'candidate') if repetition % 2 == 0 else ('candidate', 'baseline')
+                  for label in order:
+                      command = [binary[label], str(gas), str(variant), str(workers),
+                                 str(mask), str(repetition)]
+                      result = subprocess.run(command, check=True, capture_output=True,
+                                              text=True, timeout=180)
+                      pair[label] = json.loads(result.stdout)
+                  left, right = pair['baseline'], pair['candidate']
+                  if left['hashes'] != right['hashes']:
+                      position = next(i for i, (a, b) in enumerate(zip(left['hashes'], right['hashes'])) if a != b)
+                      raise RuntimeError(f'PHYSICAL HASH MISMATCH {gas=} {variant=} {workers=} '
+                                         f'{mask=} {repetition=} tick={position}')
+                  for key in ('gas_seed_cells', 'gas_bfs_cells', 'gas_relabel_cells'):
+                      if left[key] != right[key]:
+                          raise RuntimeError(f'WORK COUNT MISMATCH {key} {gas=} {variant=} {workers=} {mask=}')
+                  for label, record in pair.items():
+                      parity_key = (label, gas, variant, mask, repetition)
+                      if workers == 1:
+                          worker_parity[parity_key] = record['hashes']
+                      elif worker_parity[parity_key] != record['hashes']:
+                          raise RuntimeError(f'WORKER PHYSICAL HASH MISMATCH {parity_key}')
+                  rows.append({'gas': gas, 'variant': variant, 'workers': workers, 'mask': mask,
+                               'repeat': repetition,
+                               'baseline_p50_ms': left['median_ms'],
+                               'candidate_p50_ms': right['median_ms'],
+                               'baseline_p95_ms': left['p95_ms'],
+                               'candidate_p95_ms': right['p95_ms'],
+                               'baseline_gas_ns': left['gas_ns'],
+                               'candidate_gas_ns': right['gas_ns'],
+                               'same_40_physical_hashes': True,
+                               'gas_seed_cells': left['gas_seed_cells'],
+                               'gas_bfs_cells': left['gas_bfs_cells'],
+                               'gas_relabel_cells': left['gas_relabel_cells']})
+          report = {}
+          for gas in (0, 1):
+              subset = [r for r in rows if r['gas'] == gas]
+              differences = [100.0 * (1.0 - r['candidate_p50_ms']/r['baseline_p50_ms']) for r in subset]
+              phase = [100.0 * (1.0-r['candidate_gas_ns']/r['baseline_gas_ns'])
+                       for r in subset if r['baseline_gas_ns'] != 0]
+              report['gas_on' if gas else 'gas_off'] = {
+                  'pairs': len(subset),
+                  'median_baseline_tick_ms': statistics.median(r['baseline_p50_ms'] for r in subset),
+                  'median_candidate_tick_ms': statistics.median(r['candidate_p50_ms'] for r in subset),
+                  'median_paired_tick_improvement_percent': statistics.median(differences),
+                  'min_paired_tick_improvement_percent': min(differences),
+                  'max_paired_tick_improvement_percent': max(differences),
+                  'median_gas_phase_improvement_percent': statistics.median(phase) if phase else None}
+          bundle = {'baseline_source': os.environ['BASELINE_SHA'],
+                    'candidate_source': os.environ['GITHUB_SHA'],
+                    'method': 'same 1024x512 360-pocket input, 8 warmup+32 measured native ticks, '
+                              'one/four workers, PF reference/cached/dormant, gas on/off, '
+                              'mask on/off, three repetitions, alternated A/B',
+                    'hash_and_worker_parity': 'PASS',
+                    'summary': report, 'pairs': rows}
+          (out / 'paired-results.json').write_text(json.dumps(bundle, indent=2) + '\n')
+          print(json.dumps(report, indent=2))
+          print(f'PASS: {len(rows)} identical 40-tick source pairs + worker parity')
+          PY
+      - name: Retain exact source and paired timing evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: pf-gas-exact-paired-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            build/pf-gas-paired/identity.txt
+            build/pf-gas-paired/harness-sha256.txt
+            build/pf-gas-paired/runtime-sha256.txt
+            build/pf-gas-paired/paired-results.json
+          if-no-files-found: warn
+          retention-days: 90

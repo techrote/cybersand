@@ -1,0 +1,8 @@
+{
+  "schema": "pf504-post405-runtime-publish-request-v1",
+  "family": "pressure_flow_v1",
+  "variant": "C2048-optimized-gas-hotpath-plus-accepted-camera-retention",
+  "scope": "pf504-post405-integrated-source-matched-linux-windows",
+  "intent": "publish-source-matched-runtimes",
+  "request_sequence": 1
+}
