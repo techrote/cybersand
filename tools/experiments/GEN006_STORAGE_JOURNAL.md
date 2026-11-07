@@ -21,3 +21,28 @@ The synthetic 512 KiB baseline plus 200 edits uses **533,952 bytes** in total, c
 ## Builder handoff
 
 The #486 owner should not adopt this utility as-is for continuous 30 Hz physics. The next substantive integration experiment is to bridge it to a real staged native World under strict frozen-tick admission, test a durable ACK followed by actual process restart and equal physical state, and measure matched baseline-vs-candidate edit latency and write volume on Windows and Linux. The Native Residency Engine separately owns all actual shared-World chunk deletion/restore. Keep all experiments isolated and Draft; do not merge or change default physics.
+
+
+## 7 November 2026 — interrupted checkpoint-publication recovery
+
+A fixed `<target>.staging` path could be orphaned by a killed publisher and
+permanently block subsequent safe `Journal.create()` attempts for that target.
+The experimental creator now obtains a unique, exclusively created same-directory
+stage using `tempfile.mkstemp`, syncs its contents, publishes using the same
+no-clobber hard link, removes only its own stage, and syncs the parent directory
+before returning success. A stranded old stage is not treated as permission to
+overwrite an existing checkpoint or to assume cross-process exclusive ownership.
+
+The regression leaves both a legacy fixed-name stage and an interrupted unique
+stage, injects a failing `os.link`, proves that the failed candidate creates
+no destination and cleans its own stage, then retries and proves successful
+recovery without changing the old stages. It also verifies destination
+no-clobber after publication. No power-loss or multi-writer guarantee is added.
+
+**Exact-head source/test qualification:** `2f7ff2f29e86440f8820632f9dc32d2e918d1323`;
+[GitHub Actions run 42353310465](https://github.com/techrote/cybersand/actions/runs/42353310465)
+completed **PASS** on both Ubuntu 24.04 and Windows Server 2022 using
+Python 3.12. The dedicated native source-scope advisory also passed.
+General Native/GDExtension production matrices were Draft-skipped, not passed.
+The separate documentation/provenance check must be assessed on the final
+documentation commit before any stronger exact-head statement.
