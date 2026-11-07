@@ -139,8 +139,7 @@ func run_variant(rows: Array, variant: String) -> void:
 	var stop_generation: int = main.latest_snapshot.render_world_generation
 	agent_panel._on_stop()
 	if not await wait_for(func() -> bool:
-		return not agent_panel._retire_pending and not agent_mount._authorised
-			and not agent_panel.client.is_active(),
+		return not agent_panel._retire_pending and not agent_mount._authorised and not agent_panel.client.is_active(),
 		"mounted native Stop did not acknowledge "+variant):
 		return
 	var stopped_tick: int = main.latest_snapshot.tick_index
@@ -165,8 +164,7 @@ func run_variant(rows: Array, variant: String) -> void:
 		"mounted authored-start load refused "+variant):
 		return
 	if not await wait_for(func() -> bool:
-		return _native_ready() and main.latest_snapshot.render_world_generation != stop_generation
-			and main.latest_snapshot.tick_index==0,
+		return _native_ready() and main.latest_snapshot.render_world_generation != stop_generation and main.latest_snapshot.tick_index==0,
 		"mounted authored-start load did not create a fresh paused World "+variant):
 		return
 	var reopened_generation: int = main.latest_snapshot.render_world_generation
@@ -175,8 +173,7 @@ func run_variant(rows: Array, variant: String) -> void:
 	agent_panel._task.text = "Read-only audit of reopened authored start; do not mutate."
 	agent_panel._on_start()
 	if not await wait_for(func() -> bool:
-		return agent_panel.client.is_active() and not agent_panel._start_pending
-			and agent_mount._authorised,
+		return agent_panel.client.is_active() and not agent_panel._start_pending and agent_mount._authorised,
 		"mounted panel could not authorize new generation after Save/Load "+variant):
 		return
 	agent_panel.client.receive_fake_response(obsolete_epoch,obsolete_serial,200,{
@@ -209,8 +206,7 @@ func run_variant(rows: Array, variant: String) -> void:
 	var reopened_request_count: int = agent_panel.client._request_count
 	agent_panel._on_stop()
 	await wait_for(func() -> bool:
-		return not agent_panel._retire_pending and not agent_mount._authorised
-			and not agent_panel.client.is_active(),
+		return not agent_panel._retire_pending and not agent_mount._authorised and not agent_panel.client.is_active(),
 		"mounted reopened task did not receive native Stop ACK "+variant)
 	check(main.latest_snapshot.tick_index==0
 		and main.latest_snapshot.render_world_generation==reopened_generation,
