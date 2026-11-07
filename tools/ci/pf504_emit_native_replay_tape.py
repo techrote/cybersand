@@ -24,9 +24,17 @@ def main():
     a.add_argument("--out",required=True)
     args=a.parse_args()
     src=pathlib.Path(args.workbench_setup).read_text()
-    match=re.search(r"var spots := (\[\[[0-9,\[\] ]+\]\])",src)
-    if not match: raise ValueError("Authored eight actor stress positions missing")
+    # Restrict the actor origins to the actual stress_canvas recipe, not the
+    # first 'var spots' occurrence in water_evaluation/my-canvas.
+    begin=src.find("static func stress_canvas(")
+    finish=src.find("static func builtin(",begin)
+    if begin<0 or finish<=begin: raise ValueError("Canonical stress_canvas function missing")
+    stress=src[begin:finish]
+    match=re.search(r"var spots := (\[\[[0-9,\[\] ]+\]\])",stress)
+    if not match: raise ValueError("Stress-canvas eight actor positions missing")
     origins=json.loads(match.group(1))
+    if origins[0]!=[350,560] or origins[-1]!=[1980,640]:
+        raise ValueError("Expected authored stress-canvas roster not found")
     if len(origins)!=8 or any(len(pair)!=2 for pair in origins):
         raise ValueError("Wrong Godot physical actor roster")
     fixture=pathlib.Path(args.fixture).read_bytes()
