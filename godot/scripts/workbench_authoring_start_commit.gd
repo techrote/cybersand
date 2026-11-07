@@ -106,8 +106,12 @@ static func commit(panel: Control, plan: Dictionary, receipt: Dictionary) -> Dic
 			or str(receipt.get("status","")) != "applied" \
 			or str(plan.get("proposal_id","")) != str(receipt.get("proposal_id","")):
 		return _refused("no_matched_verified_native_receipt")
-	if not panel.has_method(&"save_setup") or panel.applied.is_empty():
+	if not panel.has_method(&"save_setup") or panel.applied.is_empty() \
+			or panel.host == null or panel.host.simulation_worker == null:
 		return _refused("workbench_not_available")
+	if panel.host.simulation_worker.agent_manual_intent_revision() != \
+			int(receipt.get("identity_after",{}).get("manual_intent_revision",-1)):
+		return _refused("human_or_owner_intent_changed_after_native_receipt")
 	if _signature(panel.applied) != str(plan.start_signature):
 		return _refused("manual_start_changed_before_recording")
 	var expected: Array = plan.footprint
