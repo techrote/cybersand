@@ -1,22 +1,22 @@
 ---
-title: "MAP-AUTO-02 #499 live Responses API smoke tests (2026-11-07)"
+title: "MAP-AUTO-02 #499 live Responses API runs (2026-11-07)"
 status: Current
 document-kind: evidence
-scope: Dated record of three real, charged gpt-6-luna runs of the Atlas agent runner (two on the bundled synthetic fixture, one critique-only run on real Atlas art with genuine Godot captures), with retained receipts, hashes and explicit gaps
+scope: Dated record of four real, charged gpt-6-luna runs of the Atlas agent runner (two on the bundled synthetic fixture, one critique-only and one owner-directed editing run on real Atlas art with genuine Godot captures), with retained receipts, hashes and explicit gaps
 canonical-for: [issue-499-live-smoke-2026-11-07]
 last-reviewed: 2026-11-07
 related-documents: [../operations/atlas-agent-runner.md, ../operations/github-development-and-release.md]
 ---
 
-# MAP-AUTO-02 #499 live Responses API smoke tests
+# MAP-AUTO-02 #499 live Responses API runs
 
-**Result.** Three genuine runs through the official `openai` SDK (3.46.0) against the live Responses API with model
+**Result.** Four genuine runs through the official `openai` SDK (3.46.0) against the live Responses API with model
 `gpt-6-luna`: run 1 was cleanly **stopped** by its own iteration limit; run 2 **succeeded** with a verifiable receipt,
 at about **USD 0.0012** computed from reported usage (ceiling USD 0.25). This proves the live request shape, the
 credit gate, stateless (`store: false`) reasoning replay, strict function tools, image input, the bounded edit and
-the receipt on this fixture. It does **not** prove a Godot-rendered improvement, a model-made edit on real Atlas art, the
-optional Costs API cross-check, or a reconciliation with the billing dashboard. Run 3 (below) additionally shows a
-critique of genuine Godot captures of the real `lumen-fault` collection.
+the receipt on this fixture. It does **not** prove that the art is better (that is a human judgement), the optional Costs API cross-check, or a
+reconciliation with the billing dashboard. Run 3 (below) shows a critique of genuine Godot captures of the real
+`lumen-fault` collection; run 4 shows the first complete model-made edit, real Godot re-render and comparison cycle.
 
 ## Identity and authorisation
 
@@ -63,6 +63,27 @@ A separate no-cost dry run on the same real collection exercised the whole pipel
 Python and Node validators, an after-capture rendered by the real launcher (class `godot-capture`), and a
 before/after comparison showing the pack and all three images changed. It is not a model result and claims nothing.
 
+## Run 4: owner-directed editing cycle on real art
+
+| Item | Value |
+|---|---|
+| Source / runner | art head `c4aab63eed538a25687c66d368b0801d2d2e04d0` (pinned, unchanged after the run); runner `0c1f0d67e635d3181a0a8e953ad04128056ce2ed`, tree clean; instruction text `atlas-agent-instructions/2` |
+| Owner directive (recorded with its SHA-256 in the receipt) | make several sweeping and several detail edits, work in validated batches, regenerate the preview, re-render with Godot, compare and view the new image, and report honestly which edits helped or regressed |
+| Limits | 30 iterations, 36 calls, 100 tool calls, USD 0.25 ceiling; same attestation and authorisation |
+| Outcome | `success`, exit 0, report `improved`: 15 responses over 20 attempts (**5 provider rate-limit 429s**, each retried after 1-12 s with the provider's delay, none charged), 24 tool calls, 3 images viewed, no malformed calls or violations; 139,865 input (121,082 cached) / 2,441 output (163 reasoning) tokens; computed cost **USD 0.004310** |
+| Edits | 7 `pack_add_rectangles` calls adding 66 rectangles across 7 of the 8 features (`fault-strata` 11, `seal-gate` 11, `collapsed-gantry` 10, `archive-console` 10, `quartz-fan` 8, `survey-tripod` 8, `sealed-cistern` 8), +5,833 bytes of pack text; validators re-run after each batch, then `render_write` and `render_check` |
+| Runner's own final gate | patched collection passed `validate_pack.py` and the `--check` render |
+| Godot cycle | after-capture rendered by the #498 launcher through the runner (class `godot-capture`, same `opengl3_angle` driver and framing as the before bundle), comparison reported full, viewport and detail as comparable with the pack, RG8 cells and PNG changed; `visual_cycle.claimed` is **true**, meaning the cycle executed and was verified, not that the result is accepted as better |
+| Patch | full patch SHA-256 `b5887c121aa8f8302088c86351dac9a3a037e9658fcfbbaa53cce80454ecc55b` (644,832 bytes, almost all of it the single-line regenerated `preview.svg`); `git apply --check` passes on the art content and the patched pack passes `validate_pack.py` and, run from its own directory, `render_pack.mjs --check`; a compact `pack.json`-only diff is retained |
+
+**Reviewer's reading of the images (author's judgement, not acceptance).** The retained before/after `full` shots
+show real, readable changes: the quartz fan gains a taller, more jagged silhouette, the seal gate gets shoulders
+and inner bars, and several modules gain seams and small accents; the model's own report says "modestly better, with
+some risk of extra noise". Against the QUALITY_BAR rule to reject noise, several additions also read as small
+**floating fragments in the void** (above the leftmost module, in the lower middle and above the gate), and the
+busy central breach is unchanged although the directive named it. Treat the patch as a candidate for the owning
+lane's human review, not as an accepted improvement; the reference-gallery comparison gate remains untested.
+
 ## Retained evidence
 
 Directory `docs/audits/issue-499-live-smoke-2026-11-07/` (credential-scan clean, sealed receipts verify with
@@ -74,6 +95,10 @@ Directory `docs/audits/issue-499-live-smoke-2026-11-07/` (credential-scan clean,
 | `run2-success-receipt.json` | `5da47c7cd4359fcc9d2a401e1f3377648d489499e9b8f5eda490600d3001c3ed` | `1db066498047f7d7142d56eaa5b1a96be456e59d82b9f8e030bee6b343b11bd7` |
 | `run2-patch.diff` | `bc0724037e26523014c07bd2e3195ae99ec950d3a3f8798c885b64109f78dc55` | patch hash recorded in the receipt |
 | `run3-real-art-critique-receipt.json` | `f524ca6b2bff45cf63f73805175b286f18d1cd1a6840a435e734896577529f25` | `fd59274c63f2c5074e2ab24a59cd326a25ad854cca56390b3e2feb85102de322` |
+| `run4-directed-real-art-receipt.json` | `f11c10a31b5d9c777826bb1f2a7fbc8e17f9cec35b0f7a047abcfef5912ced4c` | `5a0623e9068ddf26942285e699254c6de7e31d1c7a53d8e4fdd4f59507779439` |
+| `run4-pack-only.diff` | `03da6a9c380ba45c4106ac510dde7a7e64c8b9282bd548433a979ae8b9673684` | compact excerpt of the full patch (pack.json only) |
+| `run4-before-full.png` | `a8a957f8824f654567752d0417068a65c1c072f696d65f63a81c248266035058` | Godot capture, bundle seal `a81f9954ca61ab221db08cb8853f893a88a81644b743a7d59d75b9af65cde564` |
+| `run4-after-full.png` | `dcf088e0f9e2db332921f8969c0907d96aa6c6a90a31bf25339c99cf330c7412` | Godot capture, bundle seal `b83e204bdae6c9cb81498fb049dd77565310d386b673f6611ebcc0f2245c3b76` |
 
 Command shape (key only in the environment): `python tools/atlas_agent_runner.py run --config <live config> --output-dir <new dir>`.
 
@@ -82,5 +107,6 @@ Command shape (key only in the environment): `python tools/atlas_agent_runner.py
 - Cost is token counts times published rates, **not a bill**; compare the dashboard's usage for the day to confirm.
 - `x-ratelimit-*` and organisation/project headers were not returned by the model probe, so no project identity was recorded.
 - The live Costs API cross-check was not exercised (no admin key); `expected_project` was not set.
-- Runs 1-2 used a flat fixture raster. Run 3 used genuine Godot captures but the model made no edit, so no model-driven before/after Godot cycle has been demonstrated; the #498 PR (#506) is still an unmerged Draft that the runner reads only through its documented CLI.
+- Runs 1-2 used a flat fixture raster. Runs 3-4 used genuine Godot captures; the #498 PR (#506) is still an unmerged Draft that the runner reads only through its documented CLI (a local worktree of its head was used, unmodified).
+- Run 4's patch is a local candidate only: it was not published, no human lane review or reference-gallery comparison has happened, and one before/after pair at one renderer (NVIDIA via ANGLE) is not a quality or cross-platform result.
 - One model, one machine: not a quality, performance or Linux-hosted run. Real art was read with the pack formatted one number per line (about 19,000 lines).

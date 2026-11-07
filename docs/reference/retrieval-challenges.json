@@ -2937,7 +2937,7 @@
       "facts": [
         "Live execution is refused with exit 3 and zero requests unless an API key, an explicit authorised spending ceiling, a priced and fresh-rate model, an unexpired sufficient owner credit attestation with auto-recharge disabled, a clean source checkout and a retrievable model are all present.",
         "No documented API-key endpoint exposes grant balance, expiry or auto-recharge, so the runner never assumes them; an optional admin-key Costs API cross-check can measure spend since the attestation.",
-        "Real gpt-6-luna smoke tests on 2026-11-07 stopped cleanly at the iteration limit in run 1, succeeded in run 2 on the synthetic fixture (about USD 0.0012) and critiqued genuine Godot captures of real lumen-fault art in run 3 without editing (about USD 0.003); they prove the live request shape, gate and image input, not a model-made Godot before/after improvement or a dashboard reconciliation."
+        "Real gpt-6-luna runs on 2026-11-07 stopped cleanly at the iteration limit in run 1, succeeded on the synthetic fixture in run 2, critiqued genuine Godot captures of real lumen-fault art in run 3, and in run 4 made validated edits followed by a real Godot before/after comparison for about USD 0.004; they prove the live request shape, gate, image input and edit cycle, not that the edits are artistically accepted or a dashboard reconciliation."
       ],
       "sources": [
         "operations/atlas-agent-runner.md",

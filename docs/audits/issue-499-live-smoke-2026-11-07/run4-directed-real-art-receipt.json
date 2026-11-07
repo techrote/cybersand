@@ -1,0 +1,1343 @@
+{
+  "artifacts": {
+    "patch": {
+      "files": [
+        "docs/world-design/lumen-fault/pack.json",
+        "docs/world-design/lumen-fault/preview.svg"
+      ],
+      "path": "patch.diff",
+      "sha256": "b5887c121aa8f8302088c86351dac9a3a037e9658fcfbbaa53cce80454ecc55b"
+    },
+    "tool_log": {
+      "entries": 24,
+      "path": "tool-log.jsonl",
+      "sha256": "3da4d76b40f8339f11799489f6a2a55ebff9e71cc78d8d77337d3075b56d56a6"
+    },
+    "transcript": {
+      "entries": 15,
+      "path": "transcript.jsonl",
+      "sha256": "12094325689d6c4e4063f94c41ef46b1c99014857196d8d3c87e2ec56620eeb4"
+    }
+  },
+  "calls": [
+    {
+      "cached_input_tokens": 0,
+      "computed_from_reported_usage_usd": 0.0001928,
+      "duration_ms": 2402,
+      "images_in_request": 0,
+      "input_tokens": 1838,
+      "input_tokens_estimated_upper": 5525,
+      "kind": "responses.create",
+      "model": "gpt-6-luna",
+      "n": 1,
+      "output_tokens": 18,
+      "reasoning_tokens": 0,
+      "request_id": "req_0e6f31d97a114117938f7e639ebd6449",
+      "reserved_worst_case_usd": 0.0065525,
+      "response_id": "resp_07a12a9339edaf35016aeecdcda32087d289de5a1694ca1a97",
+      "retries": 0,
+      "retry_events": [],
+      "status": "completed"
+    },
+    {
+      "cached_input_tokens": 1835,
+      "computed_from_reported_usage_usd": 9.915e-05,
+      "duration_ms": 1846,
+      "images_in_request": 0,
+      "input_tokens": 2123,
+      "input_tokens_estimated_upper": 6127,
+      "kind": "responses.create",
+      "model": "gpt-6-luna",
+      "n": 2,
+      "output_tokens": 104,
+      "reasoning_tokens": 0,
+      "request_id": "req_7154f5f7c1004e75aed0980d1afa7384",
+      "reserved_worst_case_usd": 0.0066127,
+      "response_id": "resp_07a12a9339edaf35016aeecdcf6fb887d290b17b3d69d081d9",
+      "retries": 0,
+      "retry_events": [],
+      "status": "completed"
+    },
+    {
+      "cached_input_tokens": 2120,
+      "computed_from_reported_usage_usd": 0.00064,
+      "duration_ms": 3301,
+      "images_in_request": 0,
+      "input_tokens": 8158,
+      "input_tokens_estimated_upper": 18879,
+      "kind": "responses.create",
+      "model": "gpt-6-luna",
+      "n": 3,
+      "output_tokens": 30,
+      "reasoning_tokens": 0,
+      "request_id": "req_4f4cf62756c34660b20886fd9a240bdf",
+      "reserved_worst_case_usd": 0.0078879,
+      "response_id": "resp_07a12a9339edaf35016aeecdd22bc487d2b13f9b1b5e7b9e6f",
+      "retries": 0,
+      "retry_events": [],
+      "status": "completed"
+    },
+    {
+      "cached_input_tokens": 8155,
+      "computed_from_reported_usage_usd": 0.00018955,
+      "duration_ms": 2105,
+      "images_in_request": 1,
+      "input_tokens": 9085,
+      "input_tokens_estimated_upper": 20855,
+      "kind": "responses.create",
+      "model": "gpt-6-luna",
+      "n": 4,
+      "output_tokens": 30,
+      "reasoning_tokens": 0,
+      "request_id": "req_a0bfda7ffa5a4953a62747fff0ffe004",
+      "reserved_worst_case_usd": 0.0080855,
+      "response_id": "resp_07a12a9339edaf35016aeecdd4e87087d2b565e9383fed95cf",
+      "retries": 0,
+      "retry_events": [],
+      "status": "completed"
+    },
+    {
+      "cached_input_tokens": 9082,
+      "computed_from_reported_usage_usd": 0.00042042,
+      "duration_ms": 4842,
+      "images_in_request": 2,
+      "input_tokens": 10973,
+      "input_tokens_estimated_upper": 24808,
+      "kind": "responses.create",
+      "model": "gpt-6-luna",
+      "n": 5,
+      "output_tokens": 281,
+      "reasoning_tokens": 112,
+      "request_id": "req_bf386a581cfa4196a65ca2b2f03f486d",
+      "reserved_worst_case_usd": 0.0084808,
+      "response_id": "resp_07a12a9339edaf35016aeecdd6f5c887d2b77420776206334e",
+      "retries": 0,
+      "retry_events": [],
+      "status": "completed"
+    },
+    {
+      "cached_input_tokens": 8155,
+      "computed_from_reported_usage_usd": 0.00040795,
+      "duration_ms": 3271,
+      "images_in_request": 1,
+      "input_tokens": 10584,
+      "input_tokens_estimated_upper": 25334,
+      "kind": "responses.create",
+      "model": "gpt-6-luna",
+      "n": 6,
+      "output_tokens": 167,
+      "reasoning_tokens": 0,
+      "request_id": "req_51abeb92cb654658b38645c31e2c562e",
+      "reserved_worst_case_usd": 0.0085334,
+      "response_id": "resp_07a12a9339edaf35016aeecddbc84c87d2bfdfec409bbb6788",
+      "retries": 0,
+      "retry_events": [],
+      "status": "completed"
+    },
+    {
+      "cached_input_tokens": 8155,
+      "computed_from_reported_usage_usd": 0.00025625,
+      "duration_ms": 2651,
+      "images_in_request": 0,
+      "input_tokens": 9122,
+      "input_tokens_estimated_upper": 22230,
+      "kind": "responses.create",
+      "model": "gpt-6-luna",
+      "n": 7,
+      "output_tokens": 156,
+      "reasoning_tokens": 0,
+      "request_id": "req_cb883a78ae4944aeaa5b77f0a9066ab4",
+      "reserved_worst_case_usd": 0.008223,
+      "response_id": "resp_07a12a9339edaf35016aeecddf10dc87d29e1ab86b15e3aac6",
+      "retries": 0,
+      "retry_events": [],
+      "status": "completed"
+    },
+    {
+      "cached_input_tokens": 9119,
+      "computed_from_reported_usage_usd": 0.00012989,
+      "duration_ms": 1126,
+      "images_in_request": 0,
+      "input_tokens": 9381,
+      "input_tokens_estimated_upper": 22696,
+      "kind": "responses.create",
+      "model": "gpt-6-luna",
+      "n": 8,
+      "output_tokens": 25,
+      "reasoning_tokens": 0,
+      "request_id": "req_eacbd54d25d64d84b505075939b67c6d",
+      "reserved_worst_case_usd": 0.0082696,
+      "response_id": "resp_07a12a9339edaf35016aeecde1bb1487d2a715f17b862dec86",
+      "retries": 0,
+      "retry_events": [],
+      "status": "completed"
+    },
+    {
+      "cached_input_tokens": 9378,
+      "computed_from_reported_usage_usd": 0.00040528,
+      "duration_ms": 7411,
+      "images_in_request": 0,
+      "input_tokens": 9498,
+      "input_tokens_estimated_upper": 23031,
+      "kind": "responses.create",
+      "model": "gpt-6-luna",
+      "n": 9,
+      "output_tokens": 599,
+      "reasoning_tokens": 37,
+      "request_id": "req_bd54e50dae3d4d0492882d803877ddc8",
+      "reserved_worst_case_usd": 0.0083031,
+      "response_id": "resp_07a12a9339edaf35016aeecdec884087d2bc604daa248972a4",
+      "retries": 1,
+      "retry_events": [
+        {
+          "attempt": 1,
+          "delay_seconds": 9.0,
+          "kind": "rate_limited",
+          "possibly_charged": false
+        }
+      ],
+      "status": "completed"
+    },
+    {
+      "cached_input_tokens": 9495,
+      "computed_from_reported_usage_usd": 0.00020785,
+      "duration_ms": 1092,
+      "images_in_request": 0,
+      "input_tokens": 10499,
+      "input_tokens_estimated_upper": 25900,
+      "kind": "responses.create",
+      "model": "gpt-6-luna",
+      "n": 10,
+      "output_tokens": 25,
+      "reasoning_tokens": 0,
+      "request_id": "req_e56e7d39d1264257871ac04265559c22",
+      "reserved_worst_case_usd": 0.00859,
+      "response_id": "resp_07a12a9339edaf35016aeecdf981e887d2a0a14026b56a8481",
+      "retries": 1,
+      "retry_events": [
+        {
+          "attempt": 1,
+          "delay_seconds": 5.0,
+          "kind": "rate_limited",
+          "possibly_charged": false
+        }
+      ],
+      "status": "completed"
+    },
+    {
+      "cached_input_tokens": 10496,
+      "computed_from_reported_usage_usd": 0.00015646,
+      "duration_ms": 1614,
+      "images_in_request": 0,
+      "input_tokens": 10616,
+      "input_tokens_estimated_upper": 26236,
+      "kind": "responses.create",
+      "model": "gpt-6-luna",
+      "n": 11,
+      "output_tokens": 79,
+      "reasoning_tokens": 14,
+      "request_id": "req_9ddfa819be3146fab6479e3aae1e801b",
+      "reserved_worst_case_usd": 0.0086236,
+      "response_id": "resp_07a12a9339edaf35016aeece0633b887d291faf9e3d00185d5",
+      "retries": 1,
+      "retry_events": [
+        {
+          "attempt": 1,
+          "delay_seconds": 11.0,
+          "kind": "rate_limited",
+          "possibly_charged": false
+        }
+      ],
+      "status": "completed"
+    },
+    {
+      "cached_input_tokens": 10613,
+      "computed_from_reported_usage_usd": 0.00015973,
+      "duration_ms": 1290,
+      "images_in_request": 0,
+      "input_tokens": 10869,
+      "input_tokens_estimated_upper": 27848,
+      "kind": "responses.create",
+      "model": "gpt-6-luna",
+      "n": 12,
+      "output_tokens": 56,
+      "reasoning_tokens": 0,
+      "request_id": "req_a45823fe08fd41b1ab78b00ef68f2376",
+      "reserved_worst_case_usd": 0.0087848,
+      "response_id": "resp_07a12a9339edaf35016aeece14944087d2a18b5df708bf5c17",
+      "retries": 1,
+      "retry_events": [
+        {
+          "attempt": 1,
+          "delay_seconds": 12.0,
+          "kind": "rate_limited",
+          "possibly_charged": false
+        }
+      ],
+      "status": "completed"
+    },
+    {
+      "cached_input_tokens": 10866,
+      "computed_from_reported_usage_usd": 0.00015076,
+      "duration_ms": 1474,
+      "images_in_request": 0,
+      "input_tokens": 11052,
+      "input_tokens_estimated_upper": 28389,
+      "kind": "responses.create",
+      "model": "gpt-6-luna",
+      "n": 13,
+      "output_tokens": 47,
+      "reasoning_tokens": 0,
+      "request_id": "req_464b9d7dc0124815afbbd538e2b5b037",
+      "reserved_worst_case_usd": 0.0088389,
+      "response_id": "resp_07a12a9339edaf35016aeece3da3e487d29cc495a06c82dffa",
+      "retries": 0,
+      "retry_events": [],
+      "status": "completed"
+    },
+    {
+      "cached_input_tokens": 11049,
+      "computed_from_reported_usage_usd": 0.00027779,
+      "duration_ms": 1452,
+      "images_in_request": 0,
+      "input_tokens": 12567,
+      "input_tokens_estimated_upper": 30546,
+      "kind": "responses.create",
+      "model": "gpt-6-luna",
+      "n": 14,
+      "output_tokens": 31,
+      "reasoning_tokens": 0,
+      "request_id": "req_aa245a453b6643bc809f12941a6b4283",
+      "reserved_worst_case_usd": 0.0090546,
+      "response_id": "resp_07a12a9339edaf35016aeece3f26ec87d2ab9403d706ba5303",
+      "retries": 0,
+      "retry_events": [],
+      "status": "completed"
+    },
+    {
+      "cached_input_tokens": 12564,
+      "computed_from_reported_usage_usd": 0.00061574,
+      "duration_ms": 9756,
+      "images_in_request": 1,
+      "input_tokens": 13500,
+      "input_tokens_estimated_upper": 32525,
+      "kind": "responses.create",
+      "model": "gpt-6-luna",
+      "n": 15,
+      "output_tokens": 793,
+      "reasoning_tokens": 0,
+      "request_id": "req_1a4a3ec187d549b7872f6ef35dc4640c",
+      "reserved_worst_case_usd": 0.0092525,
+      "response_id": "resp_07a12a9339edaf35016aeece4245e887d28e763b8906063753",
+      "retries": 1,
+      "retry_events": [
+        {
+          "attempt": 1,
+          "delay_seconds": 1.0,
+          "kind": "rate_limited",
+          "possibly_charged": false
+        }
+      ],
+      "status": "completed"
+    }
+  ],
+  "captures": {
+    "comparison": {
+      "after_problems": [],
+      "before_problems": [],
+      "comparable": true,
+      "evidence_classes": [
+        "godot-capture",
+        "godot-capture"
+      ],
+      "godot_to_godot": true,
+      "shots": [
+        {
+          "after_png_sha256": "0218c5efe22dfb9fc82f9e4fff13ee06b1130afc16bb2e118c2e66bec54a7fae",
+          "before_png_sha256": "d392fe8c8f13ccd4c696dc3af685783c70b6f7179c25aea25a11491008bc69df",
+          "collection": "lumen-fault",
+          "comparable": true,
+          "pack_changed": true,
+          "png_changed": true,
+          "rg8_changed": true,
+          "shot_id": "detail"
+        },
+        {
+          "after_png_sha256": "dcf088e0f9e2db332921f8969c0907d96aa6c6a90a31bf25339c99cf330c7412",
+          "before_png_sha256": "a8a957f8824f654567752d0417068a65c1c072f696d65f63a81c248266035058",
+          "collection": "lumen-fault",
+          "comparable": true,
+          "pack_changed": true,
+          "png_changed": true,
+          "rg8_changed": true,
+          "shot_id": "full"
+        },
+        {
+          "after_png_sha256": "cca7ad9bddf95d8167be17d589a83bbda039bcee5b528579e34c117c44622883",
+          "before_png_sha256": "0503a438a092b5ac86d66a1bc5b0293d5fcadd76f86576371cc640eb9011c358",
+          "collection": "lumen-fault",
+          "comparable": true,
+          "pack_changed": true,
+          "png_changed": true,
+          "rg8_changed": true,
+          "shot_id": "viewport"
+        }
+      ],
+      "visual_change_observed": true
+    },
+    "input_bundle": {
+      "art_revision": "c4aab63eed538a25687c66d368b0801d2d2e04d0",
+      "batch_manifest_sha256": "a81f9954ca61ab221db08cb8853f893a88a81644b743a7d59d75b9af65cde564",
+      "evidence_class": "godot-capture",
+      "label": "input",
+      "problems": [],
+      "renderer": "opengl3_angle",
+      "shots": [
+        {
+          "collection": "lumen-fault",
+          "height": 512,
+          "kind": "full",
+          "pack_sha256": "828de8b69c437c3d2b4f108d3f79e9ce3f9a0d904e6b1dfedb1fd825cf508fdd",
+          "png_sha256": "a8a957f8824f654567752d0417068a65c1c072f696d65f63a81c248266035058",
+          "shot_id": "full",
+          "verified": true,
+          "width": 1280
+        },
+        {
+          "collection": "lumen-fault",
+          "height": 1080,
+          "kind": "viewport",
+          "pack_sha256": "828de8b69c437c3d2b4f108d3f79e9ce3f9a0d904e6b1dfedb1fd825cf508fdd",
+          "png_sha256": "0503a438a092b5ac86d66a1bc5b0293d5fcadd76f86576371cc640eb9011c358",
+          "shot_id": "viewport",
+          "verified": true,
+          "width": 1920
+        },
+        {
+          "collection": "lumen-fault",
+          "height": 768,
+          "kind": "detail",
+          "pack_sha256": "828de8b69c437c3d2b4f108d3f79e9ce3f9a0d904e6b1dfedb1fd825cf508fdd",
+          "png_sha256": "d392fe8c8f13ccd4c696dc3af685783c70b6f7179c25aea25a11491008bc69df",
+          "shot_id": "detail",
+          "verified": true,
+          "width": 1920
+        }
+      ],
+      "verified": true
+    },
+    "render_attempts": [
+      {
+        "bundle": "C:\\Users\\_\\AppData\\Local\\Temp\\claude\\12e7e2abf23ee6b7\\9ba7741f-6f5e-4119-bad6-2183d1c4b91a\\scratchpad\\live-real2-out\\captures\\after",
+        "exit_code": 0,
+        "reason": "completed",
+        "result_line_present": true,
+        "status": "completed",
+        "timed_out": false
+      }
+    ],
+    "rendered_bundle": {
+      "art_revision": "unverified external design source",
+      "batch_manifest_sha256": "b83e204bdae6c9cb81498fb049dd77565310d386b673f6611ebcc0f2245c3b76",
+      "evidence_class": "godot-capture",
+      "label": "rendered",
+      "problems": [],
+      "renderer": "opengl3_angle",
+      "shots": [
+        {
+          "collection": "lumen-fault",
+          "height": 512,
+          "kind": "full",
+          "pack_sha256": "fb6e28a6f7dc7ef0436512399f462cbfe73a01790a9f6d6692b613af297114d5",
+          "png_sha256": "dcf088e0f9e2db332921f8969c0907d96aa6c6a90a31bf25339c99cf330c7412",
+          "shot_id": "full",
+          "verified": true,
+          "width": 1280
+        },
+        {
+          "collection": "lumen-fault",
+          "height": 1080,
+          "kind": "viewport",
+          "pack_sha256": "fb6e28a6f7dc7ef0436512399f462cbfe73a01790a9f6d6692b613af297114d5",
+          "png_sha256": "cca7ad9bddf95d8167be17d589a83bbda039bcee5b528579e34c117c44622883",
+          "shot_id": "viewport",
+          "verified": true,
+          "width": 1920
+        },
+        {
+          "collection": "lumen-fault",
+          "height": 768,
+          "kind": "detail",
+          "pack_sha256": "fb6e28a6f7dc7ef0436512399f462cbfe73a01790a9f6d6692b613af297114d5",
+          "png_sha256": "0218c5efe22dfb9fc82f9e4fff13ee06b1130afc16bb2e118c2e66bec54a7fae",
+          "shot_id": "detail",
+          "verified": true,
+          "width": 1920
+        }
+      ],
+      "verified": true
+    }
+  },
+  "cost": {
+    "ambiguous_charge_assumed_usd": 0.0,
+    "authorised_ceiling_usd": 0.25,
+    "basis": "token counts x published rates; the API reports tokens, not dollars",
+    "billing_reconciliation": "not-performed",
+    "committed_usd": 0.00430962,
+    "computed_from_reported_usage_usd": 0.00430962,
+    "currency": "USD",
+    "peak_reservation_usd": 0.0092525,
+    "per_call_ceiling_usd": 0.05,
+    "per_run_ceiling_usd": 0.25,
+    "rates": {
+      "cached_input_usd_per_1m": 0.01,
+      "input_usd_per_1m": 0.1,
+      "model": "gpt-6-luna",
+      "output_usd_per_1m": 0.5,
+      "retrieved_utc": "2026-11-07",
+      "source_url": "https://developers.openai.com/api/docs/pricing"
+    },
+    "remaining_allowance_usd": 0.24569038,
+    "reservation_overruns": 0,
+    "reserved_worst_case_total_usd": 0.1676469,
+    "simulated": false
+  },
+  "credit_gate": {
+    "checks": [
+      {
+        "detail": "environment variable OPENAI_API_KEY is set",
+        "name": "api_key_present",
+        "ok": true
+      },
+      {
+        "detail": "authorised ceiling $0.25 vs per-run limit $0.25; authorisation reference present",
+        "name": "spend_authorised",
+        "ok": true
+      },
+      {
+        "detail": "rates for gpt-6-luna retrieved 2026-11-07",
+        "name": "pricing_known",
+        "ok": true
+      },
+      {
+        "detail": "source checkout is clean",
+        "name": "source_clean",
+        "ok": true
+      },
+      {
+        "detail": "owner credit attestation supplied",
+        "name": "credit_attestation",
+        "ok": true
+      },
+      {
+        "detail": "attestation age 1.1h (max 72h); expires 2026-11-27 (required margin 24h)",
+        "name": "credit_not_expired",
+        "ok": true
+      },
+      {
+        "detail": "attested remaining $88.00 vs per-run limit $0.25; grant attested to cover API usage",
+        "name": "credit_sufficient",
+        "ok": true
+      },
+      {
+        "detail": "auto-recharge attested disabled",
+        "name": "auto_recharge_disabled",
+        "ok": true
+      },
+      {
+        "detail": "gpt-6-luna is in the attested eligible list",
+        "name": "model_attested_eligible",
+        "ok": true
+      },
+      {
+        "detail": "models.retrieve(gpt-6-luna) returned HTTP 200",
+        "name": "model_retrievable",
+        "ok": true
+      }
+    ],
+    "facts": {
+      "credit_balance_programmatically_verifiable": false,
+      "headroom_basis": "owner-attestation-only",
+      "note": "grant balance/expiry/auto-recharge cannot be read via a supported API-key endpoint; the owner attestation is the only source for them",
+      "organization_id_sha256_12": null,
+      "project_id_sha256_12": null,
+      "rate_limit_headers": {}
+    },
+    "headroom_basis": "owner-attestation-only",
+    "passed": true,
+    "performed": true
+  },
+  "edits": [
+    {
+      "after_sha256": "0a2911689df3739673f1e5ae74207a2703f2ee4cdd2159ac6705c6fdf7d1e87b",
+      "before_sha256": "828de8b69c437c3d2b4f108d3f79e9ce3f9a0d904e6b1dfedb1fd825cf508fdd",
+      "bytes_added": 971,
+      "bytes_removed": 0,
+      "feature_id": "fault-strata",
+      "kind": "pack_add_rectangles",
+      "n": 1,
+      "note": "Broadened staggered basalt/obsidian banks for stronger mass hierarchy; restrained strata joints and oxidised/rusted fault scars.",
+      "path": "docs/world-design/lumen-fault/pack.json",
+      "rectangles_added": 11
+    },
+    {
+      "after_sha256": "3e4c2a99c191b729da1db966ea3b4def40f1d1076792dbffcdffd7f3c9e3dd7c",
+      "before_sha256": "0a2911689df3739673f1e5ae74207a2703f2ee4cdd2159ac6705c6fdf7d1e87b",
+      "bytes_added": 969,
+      "bytes_removed": 0,
+      "feature_id": "seal-gate",
+      "kind": "pack_add_rectangles",
+      "n": 2,
+      "note": "Shifted portal hierarchy toward asymmetric broken crown and heavier dark shoulders; added lintel scars, interrupted joints and a grating threshold.",
+      "path": "docs/world-design/lumen-fault/pack.json",
+      "rectangles_added": 11
+    },
+    {
+      "after_sha256": "d890d3125dd0ffb47161b8b7dab7f0821034d3e7371f8627a47daa971232e550",
+      "before_sha256": "3e4c2a99c191b729da1db966ea3b4def40f1d1076792dbffcdffd7f3c9e3dd7c",
+      "bytes_added": 884,
+      "bytes_removed": 0,
+      "feature_id": "collapsed-gantry",
+      "kind": "pack_add_rectangles",
+      "n": 3,
+      "note": "Strengthened the unequal fallen truss ends and broken dark mass silhouette; added localized corrosion, cable and sparse instrument accents.",
+      "path": "docs/world-design/lumen-fault/pack.json",
+      "rectangles_added": 10
+    },
+    {
+      "after_sha256": "4e6a785bb811d73ef2c130d8f9a55586030c81cde5e0db839ef2234e3b5bdacc",
+      "before_sha256": "d890d3125dd0ffb47161b8b7dab7f0821034d3e7371f8627a47daa971232e550",
+      "bytes_added": 709,
+      "bytes_removed": 0,
+      "feature_id": "quartz-fan",
+      "kind": "pack_add_rectangles",
+      "n": 4,
+      "note": "Sharpened the asymmetric quartz datum with dark fissure bases, stepped pale shard bands and tiny restrained copper inclusions.",
+      "path": "docs/world-design/lumen-fault/pack.json",
+      "rectangles_added": 8
+    },
+    {
+      "after_sha256": "742aa772bba7d4e4b29a6058ff816e35737731a35736f353829506dcae333447",
+      "before_sha256": "4e6a785bb811d73ef2c130d8f9a55586030c81cde5e0db839ef2234e3b5bdacc",
+      "bytes_added": 882,
+      "bytes_removed": 0,
+      "feature_id": "archive-console",
+      "kind": "pack_add_rectangles",
+      "n": 5,
+      "note": "Added console shadow mass, panel seam rhythm, rusted service scars and sparse cyan/white readout accents.",
+      "path": "docs/world-design/lumen-fault/pack.json",
+      "rectangles_added": 10
+    },
+    {
+      "after_sha256": "577c87da4478aedc9d11f2f6d80372de49f25a158327dac0a10296dace23726c",
+      "before_sha256": "742aa772bba7d4e4b29a6058ff816e35737731a35736f353829506dcae333447",
+      "bytes_added": 708,
+      "bytes_removed": 0,
+      "feature_id": "survey-tripod",
+      "kind": "pack_add_rectangles",
+      "n": 6,
+      "note": "Rebalanced upper silhouette into unequal hood shoulders and added pivot seams, oxidised leg marks and selective sensor lamps.",
+      "path": "docs/world-design/lumen-fault/pack.json",
+      "rectangles_added": 8
+    },
+    {
+      "after_sha256": "fb6e28a6f7dc7ef0436512399f462cbfe73a01790a9f6d6692b613af297114d5",
+      "before_sha256": "577c87da4478aedc9d11f2f6d80372de49f25a158327dac0a10296dace23726c",
+      "bytes_added": 710,
+      "bytes_removed": 0,
+      "feature_id": "sealed-cistern",
+      "kind": "pack_add_rectangles",
+      "n": 7,
+      "note": "Emphasized dark top framing and paired corroded inspection seams; restrained greenish joints on the contained specimen enclosure.",
+      "path": "docs/world-design/lumen-fault/pack.json",
+      "rectangles_added": 8
+    }
+  ],
+  "final_report": {
+    "critique": [
+      {
+        "dimension": "silhouette_scale_hierarchy",
+        "evidence": "Godot full capture: ceiling banks and floor/platform spans establish a strong horizontal scene; new feature edits sharpened some component silhouettes but did not reshape the scene-scale composition.",
+        "score_0_to_5": 3
+      },
+      {
+        "dimension": "architectural_geologic_richness",
+        "evidence": "Layered dark geological wall, broken platforms, supports and fragmented central structures read clearly in the rendered scene; new rock and portal edits reinforce material masses.",
+        "score_0_to_5": 4
+      },
+      {
+        "dimension": "authentic_micro_detail",
+        "evidence": "The rendered scene contains numerous joints, rust marks, cables and console marks. Added details add craft but some overlap with the already high-density center.",
+        "score_0_to_5": 3
+      },
+      {
+        "dimension": "value_colour_discipline",
+        "evidence": "Dark basalt/obsidian stays dominant with quartz and cyan highlights and sparse amber/rust; new accents remain localized overall.",
+        "score_0_to_5": 4
+      },
+      {
+        "dimension": "environmental_narrative",
+        "evidence": "Broken survey equipment, separated platforms and a deep central breach convey a damaged subterranean facility.",
+        "score_0_to_5": 4
+      },
+      {
+        "dimension": "coherent_integrated_composition",
+        "evidence": "Strong left/right platform language and central rupture, but several small luminous/mechanical marks compete around the breach; edits affected reusable modules rather than scene foundation.",
+        "score_0_to_5": 3
+      },
+      {
+        "dimension": "cross_theme_distinctiveness",
+        "evidence": "Basalt faulting paired with industrial survey apparatus and quartz makes a recognizable subterranean survey-station identity.",
+        "score_0_to_5": 4
+      }
+    ],
+    "edits_applied": [
+      "Added 11 rectangles to fault-strata: uneven basalt/obsidian mass bands and seam/scar details.",
+      "Added 11 rectangles to seal-gate: asymmetric crown/shoulders, threshold and corrosion/joint details.",
+      "Added 10 rectangles to collapsed-gantry: stronger dark ends, corrosion/cable marks and two restrained accents.",
+      "Added 8 rectangles each to quartz-fan, survey-tripod, sealed-cistern, and 10 to archive-console for shard, panel, joint, rust and instrumentation detail.",
+      "Regenerated preview.svg and verified it byte-for-byte with render_check."
+    ],
+    "outcome": "improved",
+    "revision_proposals": [
+      {
+        "change": "Edit scene-level rectangles to consolidate the breach's paired broken register faces and reduce incidental competing marks.",
+        "rationale": "The owner directive's dominant focal cue remains visually crowded; reusable feature edits cannot alone establish the desired scene hierarchy.",
+        "target": "scene flagship center"
+      },
+      {
+        "change": "Replace near-continuous orange edge trim with a few spaced instrumented or damaged sections.",
+        "rationale": "More deliberate interruptions would distinguish functional markers from continuous decorative edging.",
+        "target": "deck edge bands"
+      },
+      {
+        "change": "Review overlaps and remove one or two redundant micro marks after matched-scale inspection.",
+        "rationale": "Current changes improve texture but risk noise at full-scene scale.",
+        "target": "all feature detail additions"
+      }
+    ],
+    "summary": "Applied broad material/shape changes across three reusable features plus meso-detail work across all eight modules. The Godot before/after captures are comparable and visibly changed. The revised scene has more distinct dark shoulders, broken mass edges, seams and localized accents, though the overall flagship scene itself was not directly edited and the focal breach remains visually busy. I judge the after image modestly better, with some risk of extra noise.",
+    "validation_notes": "Baseline validator passed. Validator passed after each of two edit batches and at completion. render_write and render_check passed. Godot after capture completed; compare_captures confirmed changed PNG and RG8 for full, viewport and detail with godot-capture evidence before and after. Viewed the rendered full image. No physics, water or runtime behavior was tested.",
+    "visual_evidence_used": true
+  },
+  "images": [
+    {
+      "bundle": "input",
+      "bytes": 236746,
+      "collection": "lumen-fault",
+      "evidence_class": "godot-capture",
+      "height": 512,
+      "sent_in_calls": [
+        4,
+        5
+      ],
+      "sha256": "a8a957f8824f654567752d0417068a65c1c072f696d65f63a81c248266035058",
+      "shot_id": "full",
+      "width": 1280
+    },
+    {
+      "bundle": "input",
+      "bytes": 96895,
+      "collection": "lumen-fault",
+      "evidence_class": "godot-capture",
+      "height": 768,
+      "sent_in_calls": [
+        5,
+        6
+      ],
+      "sha256": "d392fe8c8f13ccd4c696dc3af685783c70b6f7179c25aea25a11491008bc69df",
+      "shot_id": "detail",
+      "width": 1920
+    },
+    {
+      "bundle": "rendered",
+      "bytes": 246451,
+      "collection": "lumen-fault",
+      "evidence_class": "godot-capture",
+      "height": 512,
+      "sent_in_calls": [
+        15
+      ],
+      "sha256": "dcf088e0f9e2db332921f8969c0907d96aa6c6a90a31bf25339c99cf330c7412",
+      "shot_id": "full",
+      "width": 1280
+    }
+  ],
+  "limits": {
+    "limits": {
+      "backoff_base_seconds": 1.0,
+      "backoff_max_seconds": 30.0,
+      "image_resend_calls": 2,
+      "max_api_calls": 36,
+      "max_edit_bytes": 20000,
+      "max_files_edited": 3,
+      "max_image_bytes": 5000000,
+      "max_image_edge_pixels": 2048,
+      "max_images": 6,
+      "max_input_tokens_per_call": 200000,
+      "max_iterations": 30,
+      "max_malformed_tool_calls": 3,
+      "max_output_tokens_per_call": 12000,
+      "max_read_bytes": 32768,
+      "max_retries": 3,
+      "max_run_seconds": 1800,
+      "max_sandbox_violations": 2,
+      "max_tool_calls": 100,
+      "max_tool_calls_per_response": 8,
+      "max_tool_output_bytes": 30000,
+      "max_tool_seconds": 300,
+      "max_total_image_bytes": 12000000,
+      "max_total_input_tokens": 1500000,
+      "max_total_output_tokens": 80000,
+      "max_total_tool_seconds": 1200,
+      "token_estimate_bytes_per_token": 2.0
+    },
+    "spend": {
+      "attestation_max_age_hours": 72,
+      "authorisation_ref": "Owner go-ahead in the Claude Code session chat on 2026-11-07: live smoke test, ceiling USD 0.25, model gpt-6-luna",
+      "authorised_ceiling_usd": 0.25,
+      "costs_key_env": "OPENAI_ADMIN_KEY",
+      "credit_expiry_margin_hours": 24,
+      "expected_project": null,
+      "max_usd_per_call": 0.05,
+      "max_usd_per_run": 0.25,
+      "require_costs_crosscheck": false
+    }
+  },
+  "model": {
+    "api_endpoint": "openai-default",
+    "image_detail": "high",
+    "max_output_tokens_per_call": 12000,
+    "observed": [
+      "gpt-6-luna"
+    ],
+    "reasoning_effort": "low",
+    "requested": "gpt-6-luna",
+    "store": false,
+    "truncation": "disabled"
+  },
+  "policy": {
+    "generated_globs": [
+      "docs/world-design/lumen-fault/preview.svg"
+    ],
+    "instructions_sha256": "8d3ce511fad2a4cfbc5b0e49854e21c7a933919dc33021071f34939ef70156c3",
+    "instructions_version": "atlas-agent-instructions/2",
+    "pricing_sha256": "ca99942d7c4f947fbf21b44ee5ac9b621b699372934b680c792df57753e7ca76",
+    "read_globs": [
+      "docs/world-design/lumen-fault/**",
+      "docs/world-design/QUALITY_BAR.md",
+      "docs/world-design/README.md",
+      "native/include/cybersand/material.hpp",
+      "materials/catalogue/catalogue.json"
+    ],
+    "task_directive": {
+      "sha256": "2cc49ef0cc60de85781039824dd7e9ccd706d5b29c652f8063c4ffa91cf248d9",
+      "text": "Make several sweeping AND several detail edits to this collection's pack.json - not one small tweak. SWEEPING edits (at least 3): change the large-scale composition - silhouettes, mass distribution, landmark hierarchy and value/colour contrast across the scene; for example reshape or add large masses, spans, voids, ceiling teeth or banding with feature-scale rectangles, and consolidate the busy centre around the breach so the paired broken register faces read as the dominant focal cue. DETAIL edits (at least 8): add meso/micro craft - seams, scars, joints, rust, cable and rail marks, strata variation, restrained bright accents; group the near-continuous thin orange deck-edge marks into a few purposeful damaged or instrumented sections. Start from the problems your own image critique found. Work in batches: after each batch run the validator, and fix or undo anything that fails. When the edits are done, regenerate the preview (render_write), run render_check, re-render with Godot (render_capture), compare_captures, and view the new image before you report. Keep every feature inside its documented bounds and reusable. In your report state honestly which edits helped, which regressed or added noise, and whether the after image is better than the before image."
+    },
+    "tool_schema_sha256": "3f1a7d778f57801c8ef2a3560729fb6a5bc7cf1d7736dac661c440f78de7d682",
+    "tools_advertised": [
+      "list_files",
+      "read_file",
+      "inspect_pack",
+      "run_validator",
+      "list_captures",
+      "view_image",
+      "render_capture",
+      "compare_captures",
+      "replace_text",
+      "pack_add_rectangles",
+      "submit_report"
+    ],
+    "write_globs": [
+      "docs/world-design/lumen-fault/pack.json",
+      "docs/world-design/lumen-fault/README.md"
+    ]
+  },
+  "publication": {
+    "mode": "none",
+    "performed": false
+  },
+  "receipt_sha256": "5a0623e9068ddf26942285e699254c6de7e31d1c7a53d8e4fdd4f59507779439",
+  "run": {
+    "ci": false,
+    "duration_seconds": 129.15,
+    "finished_utc": "2026-11-07T07:07:52Z",
+    "id": "20261107T070542Z-477323f4",
+    "mode": "live",
+    "model_calls_simulated": false,
+    "openai_sdk": "3.46.0",
+    "python": "3.13.16",
+    "runner_git_head": "0c1f0d67e635d3181a0a8e953ad04128056ce2ed",
+    "runner_tree_dirty": false,
+    "runner_version": "1.0.0",
+    "started_utc": "2026-11-07T07:05:42Z"
+  },
+  "schema": "cybersand.atlas-agent.receipt/1",
+  "source": {
+    "collection": "unknown",
+    "expected_source_sha": "c4aab63eed538a25687c66d368b0801d2d2e04d0",
+    "files": {
+      "docs/world-design/QUALITY_BAR.md": {
+        "bytes": 9065,
+        "sha256": "92bb4c2a608a3b9af91aa050f85a7933380e965fd5a4bf434ea767590ee783f4"
+      },
+      "docs/world-design/README.md": {
+        "bytes": 5151,
+        "sha256": "9c82b5e2fe95244507507b45bb3b06f69628c6ecbc113144a5a2caf31919127b"
+      },
+      "docs/world-design/lumen-fault/README.md": {
+        "bytes": 16427,
+        "sha256": "5a9732c92f8d456c7a370e1b349d4f0267db3829d6d5ef2582a9ac9cd6887b5e"
+      },
+      "docs/world-design/lumen-fault/pack.json": {
+        "bytes": 260546,
+        "sha256": "828de8b69c437c3d2b4f108d3f79e9ce3f9a0d904e6b1dfedb1fd825cf508fdd"
+      },
+      "docs/world-design/lumen-fault/preview.svg": {
+        "bytes": 312836,
+        "sha256": "fcfd056940d465b80acb79e714529f9a464073a55e0b8762d0393ca735be8523"
+      },
+      "docs/world-design/lumen-fault/render_pack.mjs": {
+        "bytes": 6757,
+        "sha256": "90adf460c91a88f94ab56720a72a7875992953a1839fdf4425a8a522974422f3"
+      },
+      "docs/world-design/lumen-fault/validate_pack.py": {
+        "bytes": 4411,
+        "sha256": "3550472d18e9e99668af3e4356cd2f5ffe1ef1f81ba9c560653f24bd95507814"
+      },
+      "materials/catalogue/catalogue.json": {
+        "bytes": 195969,
+        "sha256": "3a5250a07912dc9530172cb2fccecd526606e242209d666cb2da202e1cfc9f14"
+      },
+      "native/include/cybersand/material.hpp": {
+        "bytes": 29262,
+        "sha256": "3e40f970e3205853a43643b4163041935ccd64d8a018d35a7473c3f95a1d0375"
+      }
+    },
+    "fixture": false,
+    "head_after_run": "c4aab63eed538a25687c66d368b0801d2d2e04d0",
+    "lane": "terrain-art",
+    "lane_writable": true,
+    "repository_head": "c4aab63eed538a25687c66d368b0801d2d2e04d0",
+    "source_dirty": false,
+    "source_manifest_sha256": "22c08a607e4c985945ee8a9a626e0ed74ddbba787a3e36da34eb42d513659b46",
+    "source_unchanged_after_run": true
+  },
+  "status": {
+    "exit_code": 0,
+    "final": "success",
+    "phase": "done",
+    "reason": "report submitted, validations passed, limits respected",
+    "reason_code": "completed"
+  },
+  "tools": [
+    {
+      "args_sha256": "07a8c76bdd9a11603b5535d4af9ef1b69a7258e238b8b61416a94cbf1a7f14a8",
+      "duration_ms": 5,
+      "error_code": null,
+      "n": 1,
+      "name": "list_files",
+      "ok": true,
+      "output_bytes": 821,
+      "output_sha256": "f749bb1ed093c1050ee4200b287fa7107b7078c7a992cb38c603d8e95e30ac4e"
+    },
+    {
+      "args_sha256": "a0ee7d31d80a30ff536c2f69509f02151c9d72594906fb07bc0cc7b63c0c9385",
+      "duration_ms": 5,
+      "error_code": null,
+      "n": 2,
+      "name": "inspect_pack",
+      "ok": true,
+      "output_bytes": 5025,
+      "output_sha256": "4cc0aacdd1c40dd5f0c67d10930398567842cfd6429e93e39acd554818b5ef1e"
+    },
+    {
+      "args_sha256": "b1a1a2b3c2f0c83e3cf24fa90a7372a9ced546140d07a64ed59327a87628ab1c",
+      "duration_ms": 80,
+      "error_code": null,
+      "n": 3,
+      "name": "run_validator",
+      "ok": true,
+      "output_bytes": 300,
+      "output_sha256": "25f5fbf1ecce9103e74b240745cffce0963ca7eacb6f1b7d5b8c415fe67293ed"
+    },
+    {
+      "args_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "duration_ms": 122,
+      "error_code": null,
+      "n": 4,
+      "name": "list_captures",
+      "ok": true,
+      "output_bytes": 1154,
+      "output_sha256": "cf8f95c0271077653950f5c51a550bbf335cd5f550bbd22fdbab46cee386fbef"
+    },
+    {
+      "args_sha256": "cc59406bb33e49c2c501c676e4122c5808e5e7dd0f572df590ca83d96ca91663",
+      "duration_ms": 0,
+      "error_code": null,
+      "n": 5,
+      "name": "read_file",
+      "ok": true,
+      "output_bytes": 16832,
+      "output_sha256": "00be42de239a5e34c6558724d1195ac77059f921cfa20dc916543b8b71d28fc2"
+    },
+    {
+      "args_sha256": "93954f1a92cb35c3ba5a30e8c04f9fed0d97ca81d62ca94041e5f20443abf1fa",
+      "duration_ms": 0,
+      "error_code": null,
+      "n": 6,
+      "name": "view_image",
+      "ok": true,
+      "output_bytes": 210,
+      "output_sha256": "e49f69a9dee457784a2e74f0af437a545acb952eff1a8ad5ebc747945d0b4098"
+    },
+    {
+      "args_sha256": "6d87e75af5fb3bcfd5d98dc7f4dcf710e3ed2c55e8a310f2302ce610c8e26dae",
+      "duration_ms": 0,
+      "error_code": null,
+      "n": 7,
+      "name": "view_image",
+      "ok": true,
+      "output_bytes": 210,
+      "output_sha256": "5cb725cf8be0d8f5d0f8e7056876ba2af6c7b19baa311e14735579117788359c"
+    },
+    {
+      "args_sha256": "bd73396b23de8120a9f39c9d413571306729f2b081227b08af30441379f5ff46",
+      "duration_ms": 13,
+      "error_code": null,
+      "n": 8,
+      "name": "pack_add_rectangles",
+      "ok": true,
+      "output_bytes": 251,
+      "output_sha256": "14e0d2ba4af61ea01387d47a30c3c94b83ca56a5b781c6535e9fa6738917a9a4"
+    },
+    {
+      "args_sha256": "005cdc204ea8fee7d9bfa5f3eea08e044aa784fd250a88070ce724df32c968ac",
+      "duration_ms": 16,
+      "error_code": null,
+      "n": 9,
+      "name": "pack_add_rectangles",
+      "ok": true,
+      "output_bytes": 248,
+      "output_sha256": "0a6d6bf81e47a9a942e5980aa467a090c43d4b3d4211dbd3b1304a0563e28639"
+    },
+    {
+      "args_sha256": "3fe6238ef73824e8060e50fee41481dfef9cbc907bfaa3ff2bb90b887d1d348c",
+      "duration_ms": 16,
+      "error_code": null,
+      "n": 10,
+      "name": "pack_add_rectangles",
+      "ok": true,
+      "output_bytes": 255,
+      "output_sha256": "fc0a19559cdeb384c706bd81329aea74bb2e024d9a03f815552bfe8fa7edf676"
+    },
+    {
+      "args_sha256": "b1a1a2b3c2f0c83e3cf24fa90a7372a9ced546140d07a64ed59327a87628ab1c",
+      "duration_ms": 84,
+      "error_code": null,
+      "n": 11,
+      "name": "run_validator",
+      "ok": true,
+      "output_bytes": 300,
+      "output_sha256": "25f5fbf1ecce9103e74b240745cffce0963ca7eacb6f1b7d5b8c415fe67293ed"
+    },
+    {
+      "args_sha256": "3b58fd05e7c65b22031c3e21ff363421a210b9f443fdbeee7d876444ebf2d3e6",
+      "duration_ms": 9,
+      "error_code": null,
+      "n": 12,
+      "name": "pack_add_rectangles",
+      "ok": true,
+      "output_bytes": 248,
+      "output_sha256": "d7cc4d3913e3362153f173c7ba969d34c1f7b2fc09715ea9e5e8186ce688f8eb"
+    },
+    {
+      "args_sha256": "3ef24d61e3ddbe0d48deea05820313cfe35c8a0749be1cda560b2080ccdba50b",
+      "duration_ms": 17,
+      "error_code": null,
+      "n": 13,
+      "name": "pack_add_rectangles",
+      "ok": true,
+      "output_bytes": 254,
+      "output_sha256": "67287d22a2a9290b58fc009740e6cf644b820735e34e04c1da017494da4f279b"
+    },
+    {
+      "args_sha256": "ce11de2dad2597d92ded25cc225f4cc582c2c3d66e3e26d97476aa4a3775c7c8",
+      "duration_ms": 14,
+      "error_code": null,
+      "n": 14,
+      "name": "pack_add_rectangles",
+      "ok": true,
+      "output_bytes": 251,
+      "output_sha256": "10414cf942438b2f957049a5c2454fbb3d61f52d5c84e53508b3a0fe60a9a62c"
+    },
+    {
+      "args_sha256": "2d21325a32034eb4e2845a5e9053b677490431c7479c8964d278b1ede2ecf271",
+      "duration_ms": 16,
+      "error_code": null,
+      "n": 15,
+      "name": "pack_add_rectangles",
+      "ok": true,
+      "output_bytes": 252,
+      "output_sha256": "20841b6102a7e4c1233a4d76cb2f3ba7f0cdb0507ef800d2121ccc518c753a97"
+    },
+    {
+      "args_sha256": "b1a1a2b3c2f0c83e3cf24fa90a7372a9ced546140d07a64ed59327a87628ab1c",
+      "duration_ms": 86,
+      "error_code": null,
+      "n": 16,
+      "name": "run_validator",
+      "ok": true,
+      "output_bytes": 300,
+      "output_sha256": "25f5fbf1ecce9103e74b240745cffce0963ca7eacb6f1b7d5b8c415fe67293ed"
+    },
+    {
+      "args_sha256": "3730393e70e4b05106a6561ef4785026daa6111bb5e50ca48d187b76862d2a65",
+      "duration_ms": 77,
+      "error_code": null,
+      "n": 17,
+      "name": "run_validator",
+      "ok": true,
+      "output_bytes": 235,
+      "output_sha256": "e01b7c2faae65875515c93a16b4095b70168975a27bdaf04fa5258ce2fa86baf"
+    },
+    {
+      "args_sha256": "b1a1a2b3c2f0c83e3cf24fa90a7372a9ced546140d07a64ed59327a87628ab1c",
+      "duration_ms": 79,
+      "error_code": null,
+      "n": 18,
+      "name": "run_validator",
+      "ok": true,
+      "output_bytes": 300,
+      "output_sha256": "25f5fbf1ecce9103e74b240745cffce0963ca7eacb6f1b7d5b8c415fe67293ed"
+    },
+    {
+      "args_sha256": "1534f641444edf3531a1014ed71cb542c4f4982b23f24155bec49d871a10009a",
+      "duration_ms": 72,
+      "error_code": null,
+      "n": 19,
+      "name": "run_validator",
+      "ok": true,
+      "output_bytes": 247,
+      "output_sha256": "9dc79cb29ffb22bd5f194b8c19871a50a7bb58b03e70a90a1391aa2fe075d33a"
+    },
+    {
+      "args_sha256": "f60f8e424b670bf955f6cda97ecd90e11832d97a2fc340253ccad44372149c5e",
+      "duration_ms": 39683,
+      "error_code": null,
+      "n": 20,
+      "name": "render_capture",
+      "ok": true,
+      "output_bytes": 130,
+      "output_sha256": "6e8af8dd05a6da6d0280c47d2ca9d4ae70f9a54eb40f475d1803d428a3fbdcbf"
+    },
+    {
+      "args_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "duration_ms": 126,
+      "error_code": null,
+      "n": 21,
+      "name": "compare_captures",
+      "ok": true,
+      "output_bytes": 1127,
+      "output_sha256": "347ee849addcbbcb9b9e768be32a6599a4cdbe6d1b835e760b26ef90812247fe"
+    },
+    {
+      "args_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "duration_ms": 0,
+      "error_code": null,
+      "n": 22,
+      "name": "list_captures",
+      "ok": true,
+      "output_bytes": 2294,
+      "output_sha256": "c8057adfd9b52c66188dd1f07a5e2c0c966b70f66ef37ccd65d46e4192bafef0"
+    },
+    {
+      "args_sha256": "66f8c9dba338da6339568d14442e102911c2528919f35849be1bdd748a421fc4",
+      "duration_ms": 0,
+      "error_code": null,
+      "n": 23,
+      "name": "view_image",
+      "ok": true,
+      "output_bytes": 210,
+      "output_sha256": "14fdd5d69f20839c9e86049aaa8652fa1294dacd555daffe2f455b2495d63f75"
+    },
+    {
+      "args_sha256": "e09997050fc735972a7ca5903cc95f2e18eae0398d884d8bc1e081b281641472",
+      "duration_ms": 0,
+      "error_code": null,
+      "n": 24,
+      "name": "submit_report",
+      "ok": true,
+      "output_bytes": 18,
+      "output_sha256": "46248d8383d58e9e01b587db1fbff8bd2c36b9fabaa984aaea5b50d03bcc6ca7"
+    }
+  ],
+  "usage": {
+    "api_attempts": 20,
+    "api_responses": 15,
+    "cached_input_tokens": 121082,
+    "image_bytes": 580092,
+    "image_sends": 5,
+    "images_loaded": 3,
+    "input_tokens": 139865,
+    "iterations": 15,
+    "malformed_tool_calls": 0,
+    "output_tokens": 2441,
+    "reasoning_tokens": 163,
+    "retries": 5,
+    "sandbox_violations": 0,
+    "tool_calls": 24,
+    "tool_seconds": 40.532
+  },
+  "validation": [
+    {
+      "argv": [
+        "python.exe",
+        "-I",
+        "docs/world-design/lumen-fault/validate_pack.py"
+      ],
+      "collection": "lumen-fault",
+      "duration_seconds": 0.068,
+      "exit_code": 0,
+      "kind": "validate",
+      "n": 1,
+      "passed": true,
+      "script": "docs/world-design/lumen-fault/validate_pack.py",
+      "script_sha256": "3550472d18e9e99668af3e4356cd2f5ffe1ef1f81ba9c560653f24bd95507814",
+      "stderr_tail": "",
+      "stdout_tail": "PASS: 8 source-checked authoring pieces, bounds/variant/classification checks; native execution NOT performed\r\n",
+      "timed_out": false
+    },
+    {
+      "argv": [
+        "python.exe",
+        "-I",
+        "docs/world-design/lumen-fault/validate_pack.py"
+      ],
+      "collection": "lumen-fault",
+      "duration_seconds": 0.066,
+      "exit_code": 0,
+      "kind": "validate",
+      "n": 2,
+      "passed": true,
+      "script": "docs/world-design/lumen-fault/validate_pack.py",
+      "script_sha256": "3550472d18e9e99668af3e4356cd2f5ffe1ef1f81ba9c560653f24bd95507814",
+      "stderr_tail": "",
+      "stdout_tail": "PASS: 8 source-checked authoring pieces, bounds/variant/classification checks; native execution NOT performed\r\n",
+      "timed_out": false
+    },
+    {
+      "argv": [
+        "python.exe",
+        "-I",
+        "docs/world-design/lumen-fault/validate_pack.py"
+      ],
+      "collection": "lumen-fault",
+      "duration_seconds": 0.067,
+      "exit_code": 0,
+      "kind": "validate",
+      "n": 3,
+      "passed": true,
+      "script": "docs/world-design/lumen-fault/validate_pack.py",
+      "script_sha256": "3550472d18e9e99668af3e4356cd2f5ffe1ef1f81ba9c560653f24bd95507814",
+      "stderr_tail": "",
+      "stdout_tail": "PASS: 8 source-checked authoring pieces, bounds/variant/classification checks; native execution NOT performed\r\n",
+      "timed_out": false
+    },
+    {
+      "argv": [
+        "node.EXE",
+        "docs/world-design/lumen-fault/render_pack.mjs"
+      ],
+      "collection": "lumen-fault",
+      "duration_seconds": 0.054,
+      "exit_code": 0,
+      "kind": "render_write",
+      "n": 4,
+      "passed": true,
+      "script": "docs/world-design/lumen-fault/render_pack.mjs",
+      "script_sha256": "90adf460c91a88f94ab56720a72a7875992953a1839fdf4425a8a522974422f3",
+      "stderr_tail": "",
+      "stdout_tail": "RENDERED: preview.svg (324526 UTF-16 units)\n",
+      "timed_out": false
+    },
+    {
+      "argv": [
+        "python.exe",
+        "-I",
+        "docs/world-design/lumen-fault/validate_pack.py"
+      ],
+      "collection": "lumen-fault",
+      "duration_seconds": 0.067,
+      "exit_code": 0,
+      "kind": "validate",
+      "n": 5,
+      "passed": true,
+      "script": "docs/world-design/lumen-fault/validate_pack.py",
+      "script_sha256": "3550472d18e9e99668af3e4356cd2f5ffe1ef1f81ba9c560653f24bd95507814",
+      "stderr_tail": "",
+      "stdout_tail": "PASS: 8 source-checked authoring pieces, bounds/variant/classification checks; native execution NOT performed\r\n",
+      "timed_out": false
+    },
+    {
+      "argv": [
+        "node.EXE",
+        "docs/world-design/lumen-fault/render_pack.mjs",
+        "--check"
+      ],
+      "collection": "lumen-fault",
+      "duration_seconds": 0.058,
+      "exit_code": 0,
+      "kind": "render_check",
+      "n": 6,
+      "passed": true,
+      "script": "docs/world-design/lumen-fault/render_pack.mjs",
+      "script_sha256": "90adf460c91a88f94ab56720a72a7875992953a1839fdf4425a8a522974422f3",
+      "stderr_tail": "",
+      "stdout_tail": "PASS: deterministic SVG matches pack.json byte-for-byte\n",
+      "timed_out": false
+    },
+    {
+      "argv": [
+        "python.exe",
+        "-I",
+        "docs/world-design/lumen-fault/validate_pack.py"
+      ],
+      "collection": "lumen-fault",
+      "duration_seconds": 0.066,
+      "exit_code": 0,
+      "kind": "validate",
+      "n": 7,
+      "passed": true,
+      "runner_final_check": true,
+      "script": "docs/world-design/lumen-fault/validate_pack.py",
+      "script_sha256": "3550472d18e9e99668af3e4356cd2f5ffe1ef1f81ba9c560653f24bd95507814",
+      "stderr_tail": "",
+      "stdout_tail": "PASS: 8 source-checked authoring pieces, bounds/variant/classification checks; native execution NOT performed\r\n",
+      "timed_out": false
+    },
+    {
+      "argv": [
+        "node.EXE",
+        "docs/world-design/lumen-fault/render_pack.mjs",
+        "--check"
+      ],
+      "collection": "lumen-fault",
+      "duration_seconds": 0.049,
+      "exit_code": 0,
+      "kind": "render_check",
+      "n": 8,
+      "passed": true,
+      "runner_final_check": true,
+      "script": "docs/world-design/lumen-fault/render_pack.mjs",
+      "script_sha256": "90adf460c91a88f94ab56720a72a7875992953a1839fdf4425a8a522974422f3",
+      "stderr_tail": "",
+      "stdout_tail": "PASS: deterministic SVG matches pack.json byte-for-byte\n",
+      "timed_out": false
+    }
+  ],
+  "visual_cycle": {
+    "claimed": true,
+    "reason": "Godot before/after captured with equivalent framing; pack and PNG changed; patched pack re-validated"
+  }
+}
