@@ -346,6 +346,13 @@ struct World::Chunk {
     // including same-value external Empty intent, permanently clears this
     // unpersisted witness. A restored chunk starts pinned by default.
     bool pristine_generated_empty = false;
+    // Exclusive owner monotonic mutation fence. Never serialized in CYPS;
+    // fresh restored Worlds are conservatively pinned unless imported through
+    // the dedicated GEN-006 checkpoint.
+    std::uint64_t mutation_generation = 0;
+    // Only populated when opt-in GEN-006 owner is enabled. A bit represents
+    // external player edit intent, including same-value Empty tombstones.
+    std::vector<std::uint8_t> gen006_edit_intent;
     std::int32_t dirty_min_x = 0;
     std::int32_t dirty_min_y = 0;
     std::int32_t dirty_max_x = 0;
@@ -1748,6 +1755,8 @@ World::Chunk& World::ensure_chunk(ChunkCoord coord) {
         throw std::runtime_error("maximum chunk capacity exhausted");
     }
     auto chunk = std::make_unique<Chunk>(config_.chunk_size, config_.activity_block_size);
+    if (config_.gen006_track_edit_intent)
+        chunk->gen006_edit_intent.assign((chunk->cells.size() + 7U) / 8U, 0U);
     if (pressure_ != nullptr) {
         chunk->pressure = std::make_unique<PressureChunk>(chunk->cells.size(), pressure_->cache != nullptr,
             pressure_->cache != nullptr && pressure_->cache->dormant);
@@ -2130,6 +2139,8 @@ void World::mark_hard_surface_dirty(const Address& target) noexcept {
 
 void World::mark_cell_dirty(Chunk& chunk, std::int32_t local_x, std::int32_t local_y) {
     chunk.pristine_generated_empty = false;
+    if (chunk.mutation_generation < std::numeric_limits<std::uint64_t>::max())
+        ++chunk.mutation_generation;
     if (chunk.pressure != nullptr)
         invalidate_pressure_input(chunk.pressure->coordinate, local_x, local_y, local_x, local_y, false);
     const auto block_x = local_x / config_.activity_block_size;
@@ -2283,6 +2294,12 @@ void World::set_with_quantity_kind(std::int64_t x, std::int64_t y, Material mate
     // Preserve explicit no-op player edits: a later Empty release must not
     // silently discard intent merely because material bytes stayed Empty.
     chunk.pristine_generated_empty = false;
+    if (chunk.mutation_generation < std::numeric_limits<std::uint64_t>::max())
+        ++chunk.mutation_generation;
+    if (config_.gen006_track_edit_intent && kind == QuantityKind::ExternalEdit &&
+        chunk.gen006_edit_intent.size() == (chunk.cells.size()+7U)/8U)
+        chunk.gen006_edit_intent[target.index/8U] |=
+            static_cast<std::uint8_t>(1U << (target.index%8U));
     if (chunk.granular_arrivals) (*chunk.granular_arrivals)[target.index] = 0;
     const auto previous_material = chunk.cells[target.index].material_value();
     const auto previous_overfill = chunk.pressure == nullptr ? std::uint16_t{0}
@@ -2357,7 +2374,16 @@ bool World::set_cell_state(std::int64_t x, std::int64_t y, Material material,
     const auto mark_on_success = [this, x, y](bool accepted) {
         if (accepted)
             if (auto* chunk = find_chunk(address(x, y).chunk))
-                chunk->pristine_generated_empty = false;
+                {
+                    chunk->pristine_generated_empty = false;
+                    if (chunk->mutation_generation < std::numeric_limits<std::uint64_t>::max())
+                        ++chunk->mutation_generation;
+                    const auto index=address(x,y).index;
+                    if (config_.gen006_track_edit_intent &&
+                        chunk->gen006_edit_intent.size() == (chunk->cells.size()+7U)/8U)
+                        chunk->gen006_edit_intent[index/8U] |=
+                            static_cast<std::uint8_t>(1U << (index%8U));
+                }
         return accepted;
     };
     if (material == Material::Water && state_a_value == 0U) {
@@ -2851,6 +2877,10 @@ void World::set_temperature(std::int64_t x, std::int64_t y, std::int16_t value) 
         return;
     }
     (*chunk.temperatures)[target.index] = value;
+    if (config_.gen006_track_edit_intent &&
+        chunk.gen006_edit_intent.size() == (chunk.cells.size()+7U)/8U)
+        chunk.gen006_edit_intent[target.index/8U] |=
+            static_cast<std::uint8_t>(1U << (target.index%8U));
     chunk.changed_this_tick = true;
     mark_cell_dirty(chunk, target.local_x, target.local_y);
     wake_cell_neighborhood(x, y);
@@ -5657,5 +5687,6 @@ void World::copy_rgba(RectI64 region, std::span<std::uint8_t> destination, std::
 #include "world_pressure.inc"
 #include "world_inertial.inc"
 #include "world_ballistic.inc"
+#include "world_chunk_checkpoint.inc"
 
 }  // namespace cybersand

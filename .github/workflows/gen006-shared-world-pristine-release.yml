@@ -1,4 +1,4 @@
-name: GEN006 shared-World pristine release
+name: GEN006 shared-World checkpoint and durable eviction
 
 on:
   pull_request:
@@ -7,6 +7,8 @@ on:
       - 'native/include/cybersand/world.hpp'
       - 'native/src/world.cpp'
       - 'native/tests/gen006_shared_world_pristine_release.cpp'
+      - 'native/tests/gen006_chunk_checkpoint_transaction.cpp'
+      - 'native/src/world_chunk_checkpoint.inc'
       - '.github/workflows/gen006-shared-world-pristine-release.yml'
   workflow_dispatch:
 
@@ -40,7 +42,7 @@ jobs:
           git rev-parse HEAD | tee "$d/head.txt"
           git rev-parse 'HEAD^{tree}' | tee "$d/tree.txt"
           test "$(git rev-parse HEAD)" = "$EXPECTED_HEAD"
-          for f in native/src/world.cpp native/include/cybersand/world.hpp native/tests/gen006_shared_world_pristine_release.cpp; do
+          for f in native/src/world.cpp native/include/cybersand/world.hpp native/src/world_chunk_checkpoint.inc native/tests/gen006_shared_world_pristine_release.cpp native/tests/gen006_chunk_checkpoint_transaction.cpp; do
             git hash-object "$f" | tee -a "$d/blobs.txt"
           done
           python3 tools/ci/check_ci_provider_policy.py
@@ -63,6 +65,22 @@ jobs:
           "$d/shared-release" 4 | tee "$d/four.log"
           grep -q 'GEN006_SHARED_WORLD_PRISTINE_RELEASE_PASS configured_workers=1' "$d/one.log"
           grep -q 'GEN006_SHARED_WORLD_PRISTINE_RELEASE_PASS configured_workers=4' "$d/four.log"
+          g++-13 -std=c++20 -O0 -g0 -pthread -I native/include \
+            native/src/world.cpp native/src/material_rules.cpp \
+            native/src/scheduler_geometry.cpp native/src/settled_world_discovery.cpp \
+            native/src/world_generation.cpp native/src/generation_fields.cpp \
+            native/src/generation_typed_fields.cpp native/src/generation_spatial.cpp \
+            native/src/generation_grammar.cpp native/src/generation_planes.cpp \
+            native/tests/gen006_chunk_checkpoint_transaction.cpp \
+            -o "$d/chunk-transaction" > "$d/transaction-compile.log" 2>&1 || { cat "$d/transaction-compile.log"; exit 1; }
+          "$d/chunk-transaction" "$d/transaction-one" 1 | tee "$d/transaction-one.log"
+          "$d/chunk-transaction" "$d/transaction-four" 4 | tee "$d/transaction-four.log"
+          "$d/chunk-transaction" --reopen "$d/transaction-one" 1 | tee "$d/restart-one.log"
+          "$d/chunk-transaction" --reopen "$d/transaction-four" 4 | tee "$d/restart-four.log"
+          grep -q 'GEN006_CHUNK_RESTART_PROCESS_PASS configured_workers=1' "$d/restart-one.log"
+          grep -q 'GEN006_CHUNK_RESTART_PROCESS_PASS configured_workers=4' "$d/restart-four.log"
+          grep -q 'GEN006_LOSSLESS_STATIC_CHUNK_TRANSACTION_PASS configured_workers=1' "$d/transaction-one.log"
+          grep -q 'GEN006_LOSSLESS_STATIC_CHUNK_TRANSACTION_PASS configured_workers=4' "$d/transaction-four.log"
       - name: Preserve native evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
@@ -94,7 +112,7 @@ jobs:
           d=pathlib.Path("build/gen006-shared-release");d.mkdir(parents=True,exist_ok=True)
           def git(*args):return subprocess.check_output(["git",*args],text=True).strip()
           assert git("rev-parse","HEAD")==os.environ["EXPECTED_HEAD"]
-          for k,a in {"head":["rev-parse","HEAD"],"tree":["rev-parse","HEAD^{tree}"],"world":["hash-object","native/src/world.cpp"],"header":["hash-object","native/include/cybersand/world.hpp"],"test":["hash-object","native/tests/gen006_shared_world_pristine_release.cpp"]}.items():
+          for k,a in {"head":["rev-parse","HEAD"],"tree":["rev-parse","HEAD^{tree}"],"world":["hash-object","native/src/world.cpp"],"header":["hash-object","native/include/cybersand/world.hpp"],"test":["hash-object","native/tests/gen006_shared_world_pristine_release.cpp"],"checkpoint":["hash-object","native/src/world_chunk_checkpoint.inc"],"transaction":["hash-object","native/tests/gen006_chunk_checkpoint_transaction.cpp"]}.items():
             (d/(k+".txt")).write_text(git(*a)+"\n")
           subprocess.run([sys.executable,"tools/ci/check_ci_provider_policy.py"],check=True)
       - name: MSVC LLVM Clang actual native test
@@ -121,6 +139,28 @@ jobs:
           findstr /C:"GEN006_SHARED_WORLD_PRISTINE_RELEASE_PASS configured_workers=1" build\gen006-shared-release\one.log
           if errorlevel 1 exit /b 1
           findstr /C:"GEN006_SHARED_WORLD_PRISTINE_RELEASE_PASS configured_workers=4" build\gen006-shared-release\four.log
+          if errorlevel 1 exit /b 1
+          "%GEN006_CXX%" -std=c++20 -O0 -I native/include native/src/world.cpp native/src/material_rules.cpp native/src/scheduler_geometry.cpp native/src/settled_world_discovery.cpp native/src/world_generation.cpp native/src/generation_fields.cpp native/src/generation_typed_fields.cpp native/src/generation_spatial.cpp native/src/generation_grammar.cpp native/src/generation_planes.cpp native/tests/gen006_chunk_checkpoint_transaction.cpp -o build\gen006-shared-release\chunk-transaction.exe > build\gen006-shared-release\transaction-compile.log 2>&1
+          if errorlevel 1 (type build\gen006-shared-release\transaction-compile.log & exit /b 1)
+          build\gen006-shared-release\chunk-transaction.exe build\gen006-shared-release\transaction-one 1 > build\gen006-shared-release\transaction-one.log 2>&1
+          if errorlevel 1 (type build\gen006-shared-release\transaction-one.log & exit /b 1)
+          build\gen006-shared-release\chunk-transaction.exe build\gen006-shared-release\transaction-four 4 > build\gen006-shared-release\transaction-four.log 2>&1
+          if errorlevel 1 (type build\gen006-shared-release\transaction-four.log & exit /b 1)
+          build\gen006-shared-release\chunk-transaction.exe --reopen build\gen006-shared-release\transaction-one 1 > build\gen006-shared-release\restart-one.log 2>&1
+          if errorlevel 1 (type build\gen006-shared-release\restart-one.log & exit /b 1)
+          build\gen006-shared-release\chunk-transaction.exe --reopen build\gen006-shared-release\transaction-four 4 > build\gen006-shared-release\restart-four.log 2>&1
+          if errorlevel 1 (type build\gen006-shared-release\restart-four.log & exit /b 1)
+          type build\gen006-shared-release\transaction-one.log
+          type build\gen006-shared-release\transaction-four.log
+          type build\gen006-shared-release\restart-one.log
+          type build\gen006-shared-release\restart-four.log
+          findstr /C:"GEN006_CHUNK_RESTART_PROCESS_PASS configured_workers=1" build\gen006-shared-release\restart-one.log
+          if errorlevel 1 exit /b 1
+          findstr /C:"GEN006_CHUNK_RESTART_PROCESS_PASS configured_workers=4" build\gen006-shared-release\restart-four.log
+          if errorlevel 1 exit /b 1
+          findstr /C:"GEN006_LOSSLESS_STATIC_CHUNK_TRANSACTION_PASS configured_workers=1" build\gen006-shared-release\transaction-one.log
+          if errorlevel 1 exit /b 1
+          findstr /C:"GEN006_LOSSLESS_STATIC_CHUNK_TRANSACTION_PASS configured_workers=4" build\gen006-shared-release\transaction-four.log
           if errorlevel 1 exit /b 1
       - name: Preserve native evidence
         if: always()

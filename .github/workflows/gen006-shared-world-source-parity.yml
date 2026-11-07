@@ -8,6 +8,8 @@ on:
       - 'tools/experiments/gen006_shared_world_source_parity.py'
       - '.github/workflows/gen006-shared-world-source-parity.yml'
       - 'native/src/world.cpp'
+      - 'native/tests/gen006_residency_ack_aba.cpp'
+      - 'tools/experiments/gen006_residency_aba_qa.py'
       - 'native/include/cybersand/world.hpp'
   workflow_dispatch:
 
@@ -51,6 +53,7 @@ jobs:
           cd candidate
           python3 tools/ci/check_ci_provider_policy.py
           python3 tools/experiments/gen006_shared_world_source_parity.py
+          python3 tools/experiments/gen006_residency_aba_qa.py
       - name: Preserve original source and execution evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
@@ -102,6 +105,8 @@ jobs:
           python candidate\tools\ci\check_ci_provider_policy.py
           if errorlevel 1 exit /b 1
           python candidate\tools\experiments\gen006_shared_world_source_parity.py
+          if errorlevel 1 exit /b 1
+          python candidate\tools\experiments\gen006_residency_aba_qa.py
           if errorlevel 1 exit /b 1
       - name: Preserve original source and execution evidence
         if: always()
