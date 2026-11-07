@@ -816,7 +816,16 @@ void World::resolve_gas_topology(bool allow_cache) {
         // derived discovery and run exactly one complete uncached operator.
         if (!allow_cache) throw std::logic_error("uncached gas discovery requested cache restart");
         ++state.optimization.gas_restart_fallbacks;
-        if (gas_cache != nullptr) gas_cache->gas_ready = false;
+        if (gas_cache != nullptr) {
+            gas_cache->gas_ready = false;
+            // The failed replay may have observed only a prefix of the old
+            // certificate. Its dirty-chunk proof cannot authorize a bootstrap
+            // in the recursive complete-reference restart.
+            for (const auto changed : gas_cache->gas_dirty_chunks)
+                if (auto* chunk = find_chunk(changed)) chunk->pressure->gas_dirty_queued = false;
+            gas_cache->gas_dirty_chunks.clear();
+            gas_cache->gas_dirty_overflow = false;
+        }
         state.diagnostics = discovery_diagnostics;
         resolve_gas_topology(false);
         return;
