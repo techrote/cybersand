@@ -16,6 +16,7 @@ const DEFAULT_ACK_TIMEOUT_MS: int = 20000
 var _active: bool = false
 var _stop_requested: bool = false
 var _uncertain: bool = false
+var _retired: bool = false
 var _run_epoch: int = 0
 var _host: Control
 var _workbench: Control
@@ -37,8 +38,9 @@ func request_stop() -> void:
 
 
 func retire() -> void:
-	# Scene/session exit: fence this driver's continuation. No delayed callback
-	# is permitted to submit another step; unresolved in-flight work is not ACKed.
+	# Scene/session exit / task revision permanently revokes this driver's
+	# authority. The original object cannot be reused by a late API callback.
+	_retired = true
 	_stop_requested = true
 	_run_epoch += 1
 	if _active:
@@ -114,6 +116,8 @@ func step(host: Control, workbench: Control, requested: Variant,
 			"requested":requested,"completed":0}
 	if timeout_ms < 1 or timeout_ms > 120000:
 		return {"status":"refused","reason":"invalid_step_timeout","completed":0}
+	if _retired:
+		return {"status":"refused","reason":"task_lifecycle_retired","completed":0}
 	if _active:
 		return {"status":"refused","reason":"step_sequence_busy","completed":0}
 	if _uncertain:
