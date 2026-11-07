@@ -9,6 +9,7 @@ on:
       - 'godot/tests/gen006_drag_stroke_qualification.gd'
       - 'godot/tests/gen006_signed_jump_qualification.gd'
       - 'godot/tests/gen006_drag_material_roundtrip_qa.gd'
+      - 'godot/tests/gen006_roam_seam_qualification.gd'
       - '.github/workflows/gen006-graphical-qualification.yml'
       - 'godot/tests/gen006_streaming_slice_demo.gd'
       - 'godot/tests/gen006_streaming_slice_demo.tscn'
@@ -47,7 +48,7 @@ jobs:
           git rev-parse HEAD | tee "$dir/head.txt"
           git rev-parse 'HEAD^{tree}' | tee "$dir/tree.txt"
           test "$(git rev-parse HEAD)" = "$GEN006_EXPECTED_HEAD"
-          for f in native/src/world.cpp native/tests/gen006_streaming_slice.cpp godot/tests/gen006_streaming_slice_demo.gd godot/tests/gen006_graphical_qualification.gd godot/tests/gen006_async_input_qualification.gd godot/tests/gen006_drag_stroke_qualification.gd godot/tests/gen006_signed_jump_qualification.gd godot/tests/gen006_drag_material_roundtrip_qa.gd; do
+          for f in native/src/world.cpp native/tests/gen006_streaming_slice.cpp godot/tests/gen006_streaming_slice_demo.gd godot/tests/gen006_graphical_qualification.gd godot/tests/gen006_async_input_qualification.gd godot/tests/gen006_drag_stroke_qualification.gd godot/tests/gen006_signed_jump_qualification.gd godot/tests/gen006_drag_material_roundtrip_qa.gd godot/tests/gen006_roam_seam_qualification.gd; do
             git hash-object "$f" | tee -a "$dir/source-blobs.txt"
           done
           lsb_release -a 2>&1 | tee "$dir/os.txt"
@@ -95,7 +96,8 @@ jobs:
              godot/tests/gen006_async_input_qualification.gd \
              godot/tests/gen006_drag_stroke_qualification.gd \
              godot/tests/gen006_signed_jump_qualification.gd \
-             godot/tests/gen006_drag_material_roundtrip_qa.gd "$dir/project/tests/"
+             godot/tests/gen006_drag_material_roundtrip_qa.gd \
+              godot/tests/gen006_roam_seam_qualification.gd "$dir/project/tests/"
           cat > "$dir/project/project.godot" <<'EOP'
           config_version=5
           [application]
@@ -216,6 +218,28 @@ jobs:
             test -s "$dir/material-screenshots/$name.png"
           done
           sha256sum "$dir"/material-screenshots/*.png | tee "$dir/material-screenshot.sha256"
+      - name: Qualify subchunk native-backed signed roaming in real Godot OpenGL
+        shell: bash
+        timeout-minutes: 12
+        run: |
+          set -euo pipefail
+          dir=build/gen006-graphical-qa
+          mkdir -p "$dir/roam-screenshots"
+          export GEN006_SLICE_EXECUTABLE="$PWD/$dir/streaming-slice"
+          export GEN006_SLICE_ROOT="$PWD/$dir/roam-world"
+          export GEN006_ROAM_EVIDENCE="$PWD/$dir/roam-screenshots"
+          export GEN006_SLICE_FORCE_ASYNC_TEST=1
+          export LIBGL_ALWAYS_SOFTWARE=1
+          godot_bin="$(find "$dir/bin" -maxdepth 1 -type f -name 'Godot*' -print -quit)"
+          xvfb-run -a -s '-screen 0 1280x800x24' \
+            timeout 240 "$godot_bin" --rendering-driver opengl3 \
+              --path "$dir/project" --script res://tests/gen006_roam_seam_qualification.gd \
+            2>&1 | tee "$dir/roam-graphical.log"
+          grep -q 'GEN006_ROAM_SEAM_PASS' "$dir/roam-graphical.log"
+          for name in 14-positive-seam 15-negative-seam; do
+            test -s "$dir/roam-screenshots/$name.png"
+          done
+          sha256sum "$dir"/roam-screenshots/*.png | tee "$dir/roam-screenshot.sha256"
       - name: Preserve original graphical and native evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
@@ -245,6 +269,9 @@ jobs:
             build/gen006-graphical-qa/material-graphical.log
             build/gen006-graphical-qa/material-screenshots/*.png
             build/gen006-graphical-qa/material-screenshot.sha256
+            build/gen006-graphical-qa/roam-graphical.log
+            build/gen006-graphical-qa/roam-screenshots/*.png
+            build/gen006-graphical-qa/roam-screenshot.sha256
             build/gen006-graphical-qa/world/gen006-current.rgba
           if-no-files-found: warn
           retention-days: 90
