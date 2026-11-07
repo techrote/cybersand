@@ -27,15 +27,22 @@ immutable worker snapshots and an acknowledged single-step sequence.
 queue admission, **not** verified native application. Nothing in accepted main
 proves an agent may author and inspect or that an OpenAI model has run.
 
-**New isolated #526 source checkpoint (not accepted main):**
-`godot/scripts/workbench_agent_footprint.gd` supplies a *pure* deterministic
-integer-cell footprint compiler. It returns `validated_geometry` or
-`refused`; it does NOT read/mutate the native World, retain prepared proposal
-identity, take a framebuffer, validate current native material filters, or issue
-an `applied` receipt. The focused source test is
-`godot/tests/test_workbench_agent_footprint.gd`.
-This checkpoint is source-only until exact-head Godot qualification is run.
-Do not promote the stage from Approved to Current on the strength of this helper.
+**Isolated #526 Draft [PR #529](https://github.com/techrote/cybersand/pull/529), not accepted main:**
+The pure `workbench_agent_footprint.gd` compiler validates bounded
+integer geometry; `workbench_authoring_session.gd` now calls the actual
+`material_at` and `emit_disc` native methods from the existing
+`simulation_worker.gd` owner request loop. A separate
+`workbench_authoring_render_join.gd` matches real framebuffer capture
+**after** post-draw publication; it returns `pending` when no exact
+world-revision/generation/tick/upload match exists. A
+`workbench_authoring_start_commit.gd` adapter stages the existing
+named-start representation and records it only after an actual readback.
+
+This is real implementation **source**, with two focused Godot test
+scripts, but it is NOT source-matched executable qualification, final UI
+integration, live model or human acceptance. Current main has none of
+these features. In particular, native-only `native_observed` is NOT a
+matched visual `observed`; the render join is mandatory for that claim.
 
 ## Approved four-tool contract
 
@@ -65,11 +72,78 @@ Unknown or partially applied native results are explicitly unconfirmed/error,
 retain bounded receipts where possible and follow existing quarantine;
 there is no fabricated rollback, implicit retry or universal undo.
 
+## #526 versioned local worker contract (Draft source, unqualified)
+
+The main/UI owner sends a **Godot Dictionary** to
+`CyberSimulationWorker.queue_agent_authoring_command(command)`, which
+returns a positive monotonic request serial or `-1` for refused admission.
+Every request contains integer `schema_version: 1` and a string `action`.
+`latest_agent_authoring_result(previous_serial)` returns a copied Dictionary
+with `schema_version: 1`, `request_serial`, status and bounded typed values;
+this atomically acknowledges its one retained result. A second request may
+not overwrite an unconsumed result. No World pointer leaves the owner.
+
+The first request is a trusted host-only `authorize_task` with
+`task_id: String` (nonempty, <=128 chars), `scope: Rect2i`,
+`protected: Array[Rect2i]` (<=32), `allowed_materials: Array[int]`
+from **0 Empty / 58 Hard Wall**. Model calls cannot extend this authority.
+The owner remembers a single active task/generation. Source-cell
+allowlist also restricts changes to IDs **0 and 58**; Sand ID 2 is never
+directly editable, regardless of replacement filter.
+
+The three candidate owner actions are:
+
+- `observe`: `region: Rect2i` wholly within authorized scope,
+  <=4096 cells. Returns `native_observed` with row-major actual
+  `native_material_ids: Array[int]`, native counts, the task and
+  `observation_id`, plus `identity` containing World generation,
+  native revision, completed tick and manual-intent revision. Its
+  `image_status` is `awaiting_matched_framebuffer`; the main-thread
+  `RenderJoin.join_after_draw` separately converts that to `observed`
+  with PNG bytes and full render identity, or returns `pending`.
+- `prepare_edit`: `observation_id: String`,
+  `operations: Array[Dictionary]`, fields below. Returns `proposed`,
+  `proposal_id`, identity, exact owner-read `footprint` rows
+  `{x,y,before,after}`, final distinct changed count, and operation
+  filter-exclusion count. It does **not** mutate. It rejects any
+  unauthorized actual native source material even with a filter.
+- `apply_edit`: `proposal_id: String`. Before any native write, the
+  owner rereads every original cell and checks generation/tick/revision
+  and queued-manual-intent. It then applies the ordered native
+  zero-radius placements and verifies their actual `material_at` values.
+  `applied` includes immutable `readback` with actual IDs,
+  `identity_before` / `identity_after`, issued/confirmed writes,
+  changed/excluded/distinct counts. A repeated consumed proposal returns
+  that exact retained receipt, even after task retirement, never
+  another native emission. Bounded 64 receipts; further work refuses
+  before dedup evidence could be lost. Unexpected partial/readback
+  mismatch is `unconfirmed` and quarantines further authoring.
+
+Also available: host-only `retire_task` (does not erase history).
+A manual brush, queued level/source event, pause transition or settings
+change increments the worker-side manual-intent serial. While a native
+authoring request is in flight, a competing human brush admission refuses,
+rather than overtaking a readback. Host task-authoring source commits
+must call `StartCommit.stage` before native `apply_edit`, then
+`StartCommit.commit` only after an `applied` receipt and unchanged human
+construction/manual-intent; they do not automatically save files. The
+Panel/API worker must implement this handshake, including honest
+`unconfirmed` if authored-start recording itself becomes unavailable.
+
+These are typed **Godot owner adapter values**, not directly JSON-serializable
+wire objects: `Rect2i` becomes an exact JSON integer
+`{x,y,width,height}` object only at the future #528 API boundary.
+The model sees exactly the four tools named in #525, **not**
+`authorize_task`, `retire_task` or unrestricted native APIs.
+The fourth `step` tool and Stop ACK remain exclusively owned by #527.
+`schema_version: 1` is the supported owner-request boundary; future
+incompatible contracts must use a new version.
+
 ## #526 candidate integer operation geometry
 
-The isolated pure compiler currently accepts an array of literal Dictionaries
-with these exact fields; the session's final authoritative schema and JSON
-serialization remain to be admitted by #526 before other workers depend on them.
+The isolated pure compiler and actual native-owner prepare path accept
+arrays of literal Dictionaries with these exact integer fields. Full
+#528 strict Responses JSON declarations are a separate downstream adapter.
 
 - `{"shape":"disc","x":1150,"y":100,"radius":3,"material":58}`
 - `{"shape":"line","x0":1150,"y0":100,"x1":1170,"y1":103,"material":58}`
@@ -95,10 +169,12 @@ check the actual native cell material and replacement eligibility; the helper
 alone does NOT protect Sand from an Empty replacement. Authoring protection
 does not arrest natural Sand/Water physics.
 
-The native owner must perform prepare-time current-cell inspection, then recheck
-the full material/geometry/scope/revisions after claiming the serialized consume
-boundary. Compute exact changed/excluded counts and actual readback there;
-no main-thread World pointers and no unverified brush queue receipts.
+The Draft owner-side code now performs current-cell read, prepare-time
+counts and exclusive consume-time revision/manual-queue/reread fencing.
+This is subject to source-matched test and independent review. No main-thread
+World pointers, queue-only success receipts or native screenshot inference
+are permitted. The existing named-start representation is staged and validated
+separately before actual application and committed only after readback.
 
 ## #527 step/Stop and fixed reference control
 
@@ -136,11 +212,18 @@ If credentials or desktop are unavailable, mark live/human HOLD, not PASS.
 
 ## Validation and engineering handoff
 
-Focused pure geometry runner, from a checkout with Godot 4 installed:
+Focused execution targets, from a source-matched checkout with built
+Godot 4/GDExtension:
 
 ```sh
 godot --headless --path godot --script res://tests/test_workbench_agent_footprint.gd
+godot --headless --path godot --script res://tests/test_workbench_agent_owner.gd
 ```
+
+The second test uses the real existing shared workbench, worker thread,
+native `material_at` / `emit_disc`, post-draw image, Sand protection,
+deliberate manual-queued-intervention race, retained duplicate receipt and
+named authored-start reopen, not a model/native mock.
 
 **7 Nov 2026 execution status:** NOT RUN in this preparation environment
 (no Godot executable or container access to GitHub source). Source was
@@ -153,5 +236,6 @@ applicable native and Godot tests, manual-intervention race/readback,
 real matched framebuffer and agent-disabled regressions. Attach exact commit,
 tree, native/Godot runtime hashes, OS, test command and raw failed/passed
 evidence to the PR; admit official source and iterate the handoff to #527/#528.
-The remaining docs navigation/retrieval/roadmap synchronization must be
-completed before marking the implementation merged/accepted.
+Docs index, roadmap, handover and retrieval-manifest routes have been
+updated on the Draft branch. Their CI/retrieval checks must still pass
+against the exact final head before acceptance.
