@@ -77,7 +77,8 @@ void publish_file(const fs::path& destination, std::span<const std::uint8_t> byt
     fs::path staging = destination;
     staging += ".staging";
 #ifdef _WIN32
-    std::FILE* f = _wfopen(staging.c_str(), L"wb");
+    std::FILE* f = nullptr;
+    if (_wfopen_s(&f, staging.c_str(), L"wb") != 0) f = nullptr;
 #else
     std::FILE* f = std::fopen(staging.c_str(), "wb");
 #endif
@@ -329,7 +330,7 @@ private:
 void self_test(const fs::path& path, std::uint32_t workers) {
     check(!fs::exists(path), "GEN006_SELF_TEST_REQUIRES_FRESH_DIRECTORY");
     StreamingSlice controller(path, 2, workers);
-    const ChunkCoord a{-1, -3}, b{0, -3}, far{24, -3};
+    const ChunkCoord a{-1, -3}, b{0, -3}, distant{24, -3};
     controller.focus(a);
     // Single-chunk walled basin; no unrepresented cross-boundary effects.
     for (int x = 12; x <= 24; ++x) controller.edit(a, x, 36, Material::Wall);
@@ -353,7 +354,7 @@ void self_test(const fs::path& path, std::uint32_t workers) {
     check(uninterrupted->physical_state_hash() == before_hash,
           "native same-World checkpoint did not restore");
     controller.focus(b);
-    controller.focus(far); // x = 1536; forces genuine native World destruction
+    controller.focus(distant); // x = 1536; forces genuine native World destruction
     check(controller.resident() == 2 && !controller.contains(a) &&
           controller.saved(a), "capacity miss did not actually evict and save");
     controller.focus(a); // restores from disk, not fresh generator
@@ -373,7 +374,7 @@ void self_test(const fs::path& path, std::uint32_t workers) {
     }
     // Corruption must fail closed before any LRU resident is destroyed.
     controller.focus(b);
-    controller.focus(far);
+    controller.focus(distant);
     check(!controller.contains(a), "corruption precondition: victim must be unloaded");
     auto packet = read_record(controller.path_for(a));
     check(packet.size() > 100, "checkpoint too short for corruption test");
