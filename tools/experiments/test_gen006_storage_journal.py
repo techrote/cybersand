@@ -214,6 +214,10 @@ class Tests(unittest.TestCase):
         edits = tuple(Mutation(1, i, 1, 0, 0, i + 6, 42, i + 100)
                       for i in range(5))
         pristine = self.path.read_bytes()
+        # A generator that would otherwise be eagerly materialized without
+        # a hard memory bound is refused, not silently drained.
+        with self.assertRaisesRegex(ValueError, 'G6J_BATCH_SEQUENCE_REFUSED'):
+            j.append_batch(iter(edits), 5)
         with self.assertRaisesRegex(ValueError, 'G6J_BATCH_SIZE_REFUSED'):
             j.append_batch((), 5)
         with self.assertRaisesRegex(ValueError, 'G6J_BATCH_SIZE_REFUSED'):
@@ -250,8 +254,14 @@ class Tests(unittest.TestCase):
         self.assertEqual(j.state.generation, 5)  # No durable group ACK.
         # A complete *unacknowledged* suffix may be visible from OS cache.
         # The original handle must not append after an uncertain publication.
-        with self.assertRaisesRegex(ValueError, 'G6J_EXTERNAL_WRITE_REFUSED'):
+        with self.assertRaisesRegex(ValueError, 'G6J_HANDLE_POISONED'):
             j.append(Mutation(1, 1, 1, 0, 0, 6, 42, 1), 5)
+        # Even if another component restores the old file bytes/length,
+        # the original failed-flush writer remains poisoned.
+        with self.path.open('r+b') as f:
+            f.truncate(HEADER.size + len(b'native-host-envelope'))
+        with self.assertRaisesRegex(ValueError, 'G6J_HANDLE_POISONED'):
+            j.append_batch(edits, 5)
 
     def test_group_hard_exit_fresh_recovery(self):
         subprocess.run([sys.executable, __file__, '--batch-child',
