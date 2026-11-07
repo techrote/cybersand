@@ -99,6 +99,14 @@ void World::rebuild_pressure_gas_cache(std::uint32_t stamp) {
     // During churn, retain unaffected certificates rather than rescanning the
     // entire resident World just to rebuild identical derived member lists.
     if (cache->gas_ready && !pressure_->gas_fixed_point) return;
+    // Never repeatedly pay for full-world certificate construction when
+    // completed replays have not amortised even a fraction of the scan cost.
+    // This derived cost gate changes no gas physics and is bypassed after a
+    // global fixed point, where the existing certificate policy applies.
+    const auto& prior_work = pressure_->optimization;
+    if (!pressure_->gas_fixed_point && prior_work.gas_cache_build_cells != 0U &&
+        prior_work.gas_member_validations <= prior_work.gas_cache_build_cells / 16U)
+        return;
     cache->gas_ready = false;
     cache->gas_components.clear(); cache->gas_members.clear();
     auto& work = pressure_->optimization;
@@ -130,6 +138,18 @@ void World::rebuild_pressure_gas_cache(std::uint32_t stamp) {
         component.anchor_x = region.lowest_x; component.anchor_y = region.lowest_y;
         total += component.count;
         cache->gas_components.push_back(component);
+    }
+    // A full member scan is worthwhile during active global churn only if
+    // independently stable, sealed membership is large relative to resident
+    // cells. Tiny pockets cannot pay back a whole-world scan with BFS savings.
+    // A small resident World may still admit an active-change cache for tests
+    // and genuinely small workloads; this is a cost policy, not a proof rule.
+    const auto side = static_cast<std::size_t>(config_.chunk_size);
+    const auto resident_cells = cache->column_order.size() * side * side;
+    if (!pressure_->gas_fixed_point && resident_cells >= (1U << 16U) &&
+        total < resident_cells / 4U) {
+        cache->gas_components.clear();
+        return;
     }
     // No independently stable sealed compartment: do not spend a complete
     // resident-cell pass building an empty certificate table.
