@@ -56,7 +56,9 @@ variables and are validated with strict patterns by `tools/atlas_agent/workflow_
 `contents: read` and `actions: read`. The secret `OPENAI_API_KEY` is visible to the live step only. A refused,
 failed or rejected run is a **red job** and still uploads its diagnostics.
 [`atlas-agent-ci.yml`](../../.github/workflows/atlas-agent-ci.yml) runs the deterministic tests and the complete
-dry-run workflow on every relevant pull request, with no key.
+dry-run workflow on every relevant pull request, with no key. GitHub cannot start a `workflow_dispatch` for a
+workflow file that is not yet on the default branch (the API answers 404), so before merge the identical workflow
+is exercised through its `workflow_call` entry by that CI job; the manual button appears once the file is merged.
 
 ## Live runs: what must be true first
 
