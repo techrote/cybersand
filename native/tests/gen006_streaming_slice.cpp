@@ -140,6 +140,17 @@ public:
     }
     bool contains(ChunkCoord c) const { return residents_.find(c) != residents_.end(); }
     bool saved(ChunkCoord c) const { return fs::exists(path_for(c)); }
+    // An on-demand occupancy receipt comes from the actual native World,
+    // not the copied 64x64 framebuffer. Never scan on a simulation tick.
+    std::size_t occupied_cells(ChunkCoord c) const {
+        const World& world = at(c);
+        std::size_t occupied = 0;
+        for (std::int32_t y = 0; y < kSide; ++y)
+            for (std::int32_t x = 0; x < kSide; ++x)
+                if (world.get(c.x * kSide + x, c.y * kSide + y) !=
+                    Material::Empty) ++occupied;
+        return occupied;
+    }
     bool intent(ChunkCoord c, int x, int y) const {
         check(x >= 0 && y >= 0 && x < kSide && y < kSide, "invalid local cell");
         const auto& e = residents_.at(c);
@@ -475,6 +486,20 @@ void self_test(const fs::path& path, std::uint32_t workers) {
                   << workers << " wrong_record=REFUSED live_owner=PRESERVED"
                   << " valid_target=RESTORED source_Water17=17\n";
     }
+    // Production-facing visual smoke prerequisite: a new Godot session must
+    // open where the compiled Strata generator actually has visible terrain.
+    // No painting or fabricated palette content is permitted in this check.
+    {
+        const ChunkCoord surface{-1, 1};
+        StreamingSlice demo(path / "surface-start", 1, workers);
+        demo.focus(surface);
+        const auto occupied = demo.occupied_cells(surface);
+        check(occupied >= 512 && occupied < kSide * kSide,
+              "GEN006_DEMO_START_NO_VISIBLE_GENERATED_SURFACE");
+        std::cout << "GEN006_DEMO_START_SURFACE_PASS configured_workers="
+                  << workers << " chunk=(-1,1) occupied=" << occupied
+                  << " total=" << kSide * kSide << '\n';
+    }
     std::cout << "GEN006_NATIVE_SHARDED_STREAM_PASS configured_workers=" << workers
               << " initial_observed=" << first_observed
               << " continuation_observed=" << second_observed
@@ -543,6 +568,15 @@ CommandResult execute_commands(StreamingSlice& streamer, ChunkCoord& active,
                           << " temp=" << world.stored_temperature(gx, gy)
                           << " intent=" << int(streamer.intent(active, x, y))
                           << '\n';
+            } else if (command == "survey") {
+                // Only run when explicitly requested by the host: native
+                // material identity is counted, not inferred from RGBA.
+                const auto occupied = streamer.occupied_cells(active);
+                std::cout << "CHUNK_SURVEY x=" << active.x
+                          << " y=" << active.y
+                          << " occupied=" << occupied
+                          << " empty=" << (kSide * kSide - occupied)
+                          << " total=" << kSide * kSide << '\n';
             } else if (command == "render") {
                 // Opt-in copied native RGBA handoff. Native World remains
                 // authoritative; no mutable native storage crosses the IPC.
@@ -582,7 +616,7 @@ void print_interactive_banner() {
     std::cout << "GEN006 experimental native stream (independent World per shard). "
                  "Commands: focus X Y | wall X Y | dig X Y | water X Y Q | "
                  "watertemp X Y Q T | tick N | inspect LOCAL_X LOCAL_Y | "
-                 "render | status | quit. X/Y are world chunk coords for focus, "
+                 "survey | render | status | quit. X/Y are world chunk coords for focus, "
                  "local 0..63 for edits. No cross-shard physics.\n";
 }
 
@@ -627,7 +661,9 @@ void persistent_service(const fs::path& path, const fs::path& ipc_directory,
                         std::uint32_t workers, std::uint32_t tick_hz) {
     check(tick_hz >= 1 && tick_hz <= 240, "GEN006_STREAM_TICK_RATE_RANGE");
     StreamingSlice streamer(path, 2, workers);
-    ChunkCoord active{-1,-3};
+    // Match the opt-in Godot demo's terrain-bearing first frame. Historical
+    // high-altitude (-1,-3) native fixtures still select their own focus.
+    ChunkCoord active{-1, 1};
     streamer.focus(active);
     fs::create_directories(ipc_directory);
 
