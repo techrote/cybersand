@@ -4104,6 +4104,7 @@ void test_lcb_pressure_gas_id_split_exhaustion();
 void test_lcb_pressure_quantity_bounds();
 void test_lcb_pressure_event_restore_bounds();
 void test_lcb_pressure_gas_pockets();
+void test_lcb_pressure_gas_exact_hotpath();
 void test_lcb_pressure_gas_merge();
 void test_lcb_pressure_gas_vent_reseal();
 void test_lcb_pressure_gas_split();
@@ -4276,6 +4277,7 @@ int main(int argc, char** argv) {
         {"LCB-001 pressure quantity rectangle bounds", test_lcb_pressure_quantity_bounds},
         {"LCB-001 pressure pending event restore bounds", test_lcb_pressure_event_restore_bounds},
         {"LCB-001 pressure gas single and twin pockets", test_lcb_pressure_gas_pockets},
+        {"LCB-001 gas exact hotpath seams, masks and worker parity", test_lcb_pressure_gas_exact_hotpath},
         {"LCB-001 pressure gas unequal merge", test_lcb_pressure_gas_merge},
         {"LCB-001 pressure gas compress, vent and reseal", test_lcb_pressure_gas_vent_reseal},
         {"LCB-001 pressure gas split", test_lcb_pressure_gas_split},
