@@ -10,6 +10,14 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+## Small detached-material tangent
+
+A separate branch from Draft466 tests <=16-cell RedBrick fragments as loose
+Sand/Rust under existing native granular rules. Larger rigid behavior and the
+Noita geometry redesign remain unchanged. See [small cut-debris tangent](../audits/2026-11-07-workbench-small-debris.md). Draft466 itself stays
+at b140265d; no main/default promotion or SOL clearance claim follows.
+
+
 ## Bounded ordinary cutting — Draft466
 
 The owner exposed an ordinary-brush gap after the initial rectangular fixtures.

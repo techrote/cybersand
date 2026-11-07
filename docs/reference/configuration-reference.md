@@ -12,6 +12,16 @@ related-documents: [../operations/configuration-and-capacity-budgets.md, ../syst
 
 ## Normal workbench release bounds
 
+On the separate small-debris tangent, fixed threshold16 counts actual
+remaining members, inclusively. Zero retains the old native route. Outputs
+are ceil(N/2) Sand and floor(N/2) Rust; no rigid slots/proxies are consumed.
+The normal stroke limit64 investigations bounds conversion to at most1024
+cells per stroke. Existing World activity/capacity quarantine remains. No new
+per-cell motion sidecar or material/solver parameter is added. The measured
+native custody store is278,384 bytes in this tangent, versus278,208 in the
+prior brush build. See [small cut-debris tangent](../audits/2026-11-07-workbench-small-debris.md).
+
+
 The [normal cut lane](../architecture/workbench-freed-objects.md) admits
 256 erase dabs of radius at most24,64 actual bounded investigations, eight
 active bodies and64 total proxies. Lazy frontier traversal includes at most

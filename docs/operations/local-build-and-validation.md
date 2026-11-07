@@ -10,6 +10,17 @@ related-documents: [source-checkpoint-and-recovery.md, testing-validation-and-re
 
 # Local build and validation
 
+## Small cut-debris tangent qualification
+
+`python tools/sol281/workbench_small_debris.py build --run NAME`, then
+`native --run NAME` and `hosts --run NAME --build-run BUILD` execute the
+registered16-cell profile, new native cases and retained workbench suites.
+Each run requires a committed clean source and retains command/log/artifact
+identity. The independent1GiB/5GiB resource registration preserves older caps.
+The [small cut-debris tangent](../audits/2026-11-07-workbench-small-debris.md) separates actual host/native evidence from inherited source-proof
+coverage and retained Linux/MSVC/extension-sanitizer blockers.
+
+
 ## Brush-cut successor qualification
 
 Use `python tools/sol281/workbench_brush_cut.py build --run NAME`, then

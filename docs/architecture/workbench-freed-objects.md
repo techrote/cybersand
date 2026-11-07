@@ -10,6 +10,26 @@ related-documents: [data-ownership-and-lifetimes.md, rigid-body-and-cellular-cou
 
 # Freed objects in the ordinary workbench
 
+## Small native-debris tangent
+
+Current only on dependent branch `codex/workbench-small-cut-debris-20261107`,
+from unchanged Draft466 b140265d: a detached RedBrick component of1..16
+remaining cells converts in place to alternating Sand2/Rust29 in sorted y,x
+order, starting with Sand. This is the owner-selected existing granular path,
+not the liquid inertial solver. Larger pieces retain the existing rigid route.
+Native callers default to threshold0; the tangent workbench profile uses16.
+No new menu or threshold setting is added.
+
+Full eligibility precedes classification. Anchors and unknown/hot/masked/stateful
+geometry still refuse. Main preflights exact version4 one-cell material stamps;
+native revalidates all tuples and converts without aggregate removal/restoration
+or Rapier allocation. DebrisCommitted phase8 fences ticks and mutations until
+the updated terrain is installed; end re-primes the unchanged live roster.
+Normal granular motion follows with no injected velocity or fabricated arrival.
+Cell counts are preserved; material identity/density changes intentionally.
+See the [small cut-debris tangent](../audits/2026-11-07-workbench-small-debris.md) for execution, source and limits.
+
+
 ## Brush admission correction
 
 The owner found a real ordinary-painting gap in the initial qualification. The

@@ -66,6 +66,22 @@
         "../godot/scripts/workbench_cut.gd",
         "../native/tests/fixtures/workbench_brush_cut_001.json"
       ]
+    },
+    {
+      "id": "FREED-SMALL-DEBRIS-001",
+      "query": "How does the small-cut tangent route detached RedBrick pieces of16 cells or fewer to Sand/Rust, and does it extend the inertial liquid solver?",
+      "canonical": [
+        "architecture/workbench-freed-objects.md",
+        "reference/configuration-reference.md"
+      ],
+      "facts": [
+        "Inclusive remaining-cell threshold16; alternating Sand2/Rust29, native pixels, no Rapier allocation; larger rigid.",
+        "Existing granular law, not liquid IN; eligibility, terrain fence and authored replay remain."
+      ],
+      "sources": [
+        "../native/src/world_solid_detachment.inc",
+        "../godot/scripts/workbench_cut.gd"
+      ]
     }
   ]
 }

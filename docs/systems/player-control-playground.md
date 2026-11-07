@@ -12,6 +12,13 @@ related-documents: [physical-actor-rigs.md, ../architecture/data-ownership-and-l
 
 ## Cutting ordinary workbench structures
 
+The separate [small cut-debris tangent](../audits/2026-11-07-workbench-small-debris.md) uses the same controls: fragments up to16 remaining
+RedBrick cells crumble into native Sand/Rust pixels;17 or more use the existing
+rigid-body route. This is a fixed experimental profile with no new menu.
+Anchored pieces remain brick. Save start records the converted material map;
+Restore is a fresh authored replay, not live-state continuation.
+
+
 Choose RedBrick in the existing material picker. Build face-connected pieces
 with Wall/Hard wall supports, then erase a support using the existing RMB or
 Erase tool. Release the mouse to check adjacent pieces. A cold paused canvas

@@ -13,6 +13,18 @@ last-reviewed: 2026-11-07
 
 ## Workbench cut protocol and version4 starts
 
+The small-debris dependent branch adds optional `small_debris_limit`0 or16
+to begin (absent defaults0), `crumble` and `finalize_debris`, and phase8
+DebrisCommitted. The pending `representation` field is granular for qualified
+small pieces; after finalization the snapshot is Idle, so that field no longer
+classifies the completed output. Use the conversion receipt and cumulative
+brick/Sand/Rust/piece counters. A bounded held-owner `census` returns copied
+x,y,material values for at most64x64 resident cells; it changes no material.
+Version4 ordered one-cell rectangle stamps replay the blend without a new
+root field or active aggregate restoration. The private protocol remains
+source-qualified, not a public material-IN admission.
+
+
 `CyberNativeCellWorld.workbench_cut_command` is a copied-value adapter for the
 exclusive worker. `cybersand.workbench-cut.v1` supports begin/next/acknowledge/
 commit/finalize/cancel/end/fail. One pending command/reply carries a monotonic

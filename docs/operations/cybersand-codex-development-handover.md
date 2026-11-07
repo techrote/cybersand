@@ -10,6 +10,16 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## Small cut-debris tangent — 2026-11-07
+
+The owner explicitly chose existing Sand/Rust granular rules after clarifying
+that liquid IN supports only Water/Brine. The sole writer continues in this
+owned checkout on `codex/workbench-small-cut-debris-20261107`, dependent on
+unchanged Draft466 b140265d. Read the [small cut-debris tangent](../audits/2026-11-07-workbench-small-debris.md). The rule is fixed16 cells;
+no material law, rigid mass/gravity/caps or accepted default changes. Keep the
+new PR Draft and preserve current workbench windows.
+
+
 ## Ordinary cut checkpoint — 2026-11-07
 
 Read the [brush regression and correction](../audits/2026-11-07-workbench-brush-cut.md)
