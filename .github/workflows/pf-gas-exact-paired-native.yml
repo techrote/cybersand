@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 90
     env:
-      BASELINE_SHA: 24a8bbe8ccf0d17196ebbab580b924930a964584
+      BASELINE_SHA: 81bbd5ff5cf366159e2b8a630609359c13560080
     steps:
       - name: Checkout exact PR head with complete history
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
@@ -117,7 +117,7 @@ jobs:
                   'max_paired_tick_improvement_percent': max(differences),
                   'median_gas_phase_improvement_percent': statistics.median(phase) if phase else None}
           bundle = {'baseline_source': os.environ['BASELINE_SHA'],
-                    'candidate_source': os.environ['GITHUB_SHA'],
+                    'candidate_source': subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip(),
                     'method': 'same 1024x512 360-pocket input, 8 warmup+32 measured native ticks, '
                               'one/four workers, PF reference/cached/dormant, gas on/off, '
                               'mask on/off, three repetitions, alternated A/B',
