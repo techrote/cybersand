@@ -95,7 +95,10 @@ func _authorized(command: Dictionary, extent: Vector2i, generation: int) -> Dict
 
 func _observe(command: Dictionary, world: Object, extent: Vector2i,
 		generation: int, manual_revision: int) -> Dictionary:
-	var region: Variant = command.get("region",null)
+	var detail: String = str(command.get("detail","cells"))
+	if detail not in ["cells","counts"]:
+		return _refused("invalid_observation_detail")
+	var region: Variant = command.get("region",_task.scope)
 	if not region is Rect2i or not _scope_ok(region,extent):
 		return _refused("invalid_observation_region")
 	var scope: Rect2i = _task.scope
@@ -130,8 +133,9 @@ func _observe(command: Dictionary, world: Object, extent: Vector2i,
 		"observation_id":token,
 		"task_id":_task.task_id,
 		"region":region,
-		"native_material_ids":materials,
+		"native_material_ids":materials if detail == "cells" else [],
 		"native_counts":counts,
+		"detail":detail,
 		# Palette is a named workbench source contract; no IDs from RGB pixels.
 		"palette":palette,
 		"identity":basis,
