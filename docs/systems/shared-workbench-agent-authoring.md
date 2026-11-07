@@ -20,6 +20,9 @@ execute on rebuilt Windows/Linux extension source. The
 [independent evidence](../audits/2026-11-07-wb525-independent-strike.md)
 records exact source/runtime identities, retained failures and completion gates;
 earlier checkpoint statements below retain their original scope.
+The later isolated refresh28f5bd3b incorporates accepted main1f82dac1's #292
+copy safety/MAT-AUTH transition and #527's canonical Step predicate1593b635;
+the independent audit keeps each source/runtime qualification separate.
 
 The owner-authorized isolated repair raises the finite native text receipt
 allowance to524288 characters so valid4096-cell proposals/applied readbacks

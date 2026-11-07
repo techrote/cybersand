@@ -10,6 +10,87 @@ related-documents: [../systems/shared-workbench-agent-authoring.md, ../operation
 
 # WB525 independent integration, capacity repair and physical cause
 
+## Final accepted-main refresh and delivery
+
+Accepted main advanced during execution to
+`1f82dac1cebc9b38a319153354e4bcc774289417`, tree
+`ea78c459535b7806de8e200656aa78f97de539e4` (#292 material/RGBA copy endpoint
+safety and its approved MAT-AUTH source transition). The isolated branch
+consumes it through merge3686dd43, preserving that accepted change rather than
+continuing against the older native source. It also consumes the #527 owner's
+canonical paused-publication test correction1593b635 in source checkpoint
+`28f5bd3bf7731e2ad7114625896caa6763583d67`, tree
+`1a931e07612b09b94d51776a5308d69926f034cd`. #529 advanced to953f0c79 with
+source-rebuild CI only; its authority blobs remain the consumed versions.
+#531's examined head remains8425758f. Earlier source identities and failures
+below are retained as earlier checkpoints, not current-main equivalence claims.
+
+Both extension builds were repeated after this source change. Current local
+Windows DLL SHA256 is
+`a733ee35ce68fd6bf3b5cb50a3e5b11bd61e198238c1ead36e307605b8146647`;
+Linux SO is
+`c848253ea7a249fb745ee6b439337940a4067d5cb08d9cf0cf460d837cf207b2`.
+The Linux rebuilt bytes again match the new committed runtime. Local cached
+godot-cpp libraries use the locked source revision but differ from historical
+M11 library byte identities: Windows SHA256
+`2629ba35adc7b1263deeb1155d674252e1e4188c2c89d1d7158e816d18f957df`,
+Linux `bc5f860471475c745ebad2b45988607a15c9a35c6996b0f08fea37570e6ef666`.
+Source ledger and compiler/version checks passed; this is current local build
+qualification, not historical M11 byte reproduction or runtime publication.
+
+The first complete Linux run passed all individual cases, but accepted-main
+refresh occurred before its final source-identity readback. Its aggregate
+correctly refused source/runtime drift. A fresh bounded Windows/Linux run on
+28f5bd3b is retained under `build/wb525-strike/*-main1f82`; only a report with
+`source_and_runtimes_unchanged=true` and `all_processes_passed=true` is an
+aggregate pass. The new canonical Step predicate is exercised directly.
+
+**Final local result:** both `windows-main1f82/qualification.json` and
+`linux-main1f82/qualification.json` report both booleans true. All nine processes
+pass on each platform: import, client86, canonical Step33, mounted client68,
+capacity/camera28, mounted hopper166, manual input24, manual save6 and separate
+reopen3. The414 assertions include86 fake-provider protocol checks; they are
+not414 live-service or all-native assertions. Both native hopper variants
+complete480 ticks with32 catchment Sand/17 protected Walls and Stop; original
+PNG files and all serialized panel native receipts are retained. No API key
+is present and genuine attempts remain0/3.
+
+Fresh hosted source28f5bd3b dispatches are
+[Native42409680857](https://github.com/techrote/cybersand/actions/runs/42409680857)
+and [GDExtension42409683405](https://github.com/techrote/cybersand/actions/runs/42409683405).
+[Current28f5bd3b hosted mounted gate42409685781](https://github.com/techrote/cybersand/actions/runs/42409685781)
+passed. The older5d5d8bc6 full Native aggregate42408005905 also passed, but
+predates the accepted #292 copy change and does not replace the current run.
+Previous exact29932 mounted Linux gate
+[42408865575 passed](https://github.com/techrote/cybersand/actions/runs/42408865575),
+with [original native/frame artifact13588940986](https://github.com/techrote/cybersand/actions/runs/42408865575/artifacts/13588940986),
+and [Documentation/provenance42408863667 passed](https://github.com/techrote/cybersand/actions/runs/42408863667).
+Production aggregate conclusions must still be read; partial green shards are
+not a complete Native/GDExtension pass.
+
+Local docs and materialized-retained-runtime repository checks pass after
+staging the same pinned companion documentation as hosted CI
+(6a58311982941b75f46e22109a0829e5acb83c7e). Initial missing-companion failures
+and rebuilt-Windows-DLL identity mismatch remain in their original logs. The
+rebuilt DLL is restored after source validation and remains uncommitted.
+M11 retained-history integrity passes. Frozen lexical retrieval is18/32 at1,
+32/32 at5,MRR0.738; supplementary160-question results are126 at1,158 at5,
+MRR0.8714. The additive WB525 question retrieves the canonical answer at1;
+this is lexical routing, not answer-correctness or a live retrieval claim.
+
+A standalone Windows review project is assembled outside source, with an
+explicit local rebuilt-runtime override in its manifest. Its ordinary
+`Open Workbench.cmd` and `Run Offline Native Demo.cmd` require no project/editor
+setup; the latter preserves a fresh output directory per execution and never
+calls an AI service. The first package passed its actual4096-cell test28/28
+and complete mounted hopper166/166 through its launcher. The current-main
+delivery must use the refreshed package and current runtime identities above.
+The refreshed folder is `C:/CyberSand-evidence/WB525-review-20261107-main1f82`;
+it independently passes its actual native capacity/camera smoke28/28. Its
+manifest records source28f5bd3b, Godot4.7, local DLL override and console wrapper
+hash. Double-click `Open Workbench.cmd` for ordinary use or
+`Run Offline Native Demo.cmd` for the scripted no-service hopper demonstration.
+
 ## Source and ownership
 
 Inspected on 7 November 2026: accepted main
