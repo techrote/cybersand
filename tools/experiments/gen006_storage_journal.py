@@ -20,6 +20,7 @@ HEADER = struct.Struct('<4sqqQQQQIII')  # 64 bytes
 EDIT = struct.Struct('<4sQQQBBBBHhQI')  # 48 bytes
 MAX_CHECKPOINT = 2_097_152
 MAX_EDITS = 4_096
+MAX_BATCH = 64
 MAGIC = b'G6J1'
 KINDS = {1, 2, 3, 4}  # Wall, Dig, Water, WaterTemp
 
@@ -253,19 +254,43 @@ class Journal:
         return cls.open(destination, x, y, incarnation)
 
     def append(self, edit: Mutation, expected_generation: int) -> None:
-        edit.validate()
+        """Original single-edit ACK, now a one-element durable group."""
+        self.append_batch((edit,), expected_generation)
+
+    def append_batch(self, edits: tuple[Mutation, ...],
+                     expected_generation: int) -> None:
+        """Preflight a bounded frozen-tick group; fsync once before group ACK.
+
+        The serialized native owner must stage all edits before this call.
+        No member can be individually ACKed until the whole group is durable.
+        An I/O failure requires handle retirement and explicit recovery;
+        complete unacknowledged frames may remain visible on the filesystem.
+        """
+        edits = tuple(edits)
+        require(0 < len(edits) <= MAX_BATCH, 'G6J_BATCH_SIZE_REFUSED')
         state = self.state
         require(not state.torn_tail, 'G6J_TORN_TAIL_REPAIR_REQUIRED')
-        require(state.generation == expected_generation and expected_generation < 2**64 - 1 and
-                edit.generation == expected_generation + 1, 'G6J_STALE_GENERATION')
-        require(edit.tick == state.identity.tick, 'G6J_TICK_DOMAIN_REFUSED')
-        require(len(state.edits) < MAX_EDITS, 'G6J_MAX_EDITS_REFUSED')
-        frame = EDIT.pack(b'EDIT', edit.generation, edit.tick, edit.physical_hash,
-                          edit.kind, edit.x, edit.y, 0, edit.amount,
-                          edit.temperature, state.tail_chain, 0)
-        record = frame[:-4] + struct.pack('<I', crc(frame[:-4]))
-        # Open an EXISTING file and verify the same descriptor that receives
-        # the append. File length alone cannot fence same-sized replacement.
+        require(state.generation == expected_generation and
+                expected_generation < 2**64 - len(edits),
+                'G6J_STALE_GENERATION')
+        require(len(state.edits) + len(edits) <= MAX_EDITS,
+                'G6J_MAX_EDITS_REFUSED')
+        prior = state.tail_chain
+        frames: list[bytes] = []
+        # Validate ALL edits before modifying the file: no partial preflight.
+        for index, edit in enumerate(edits):
+            edit.validate()
+            require(edit.generation == expected_generation + index + 1,
+                    'G6J_GENERATION_SEQUENCE_REFUSED')
+            require(edit.tick == state.identity.tick, 'G6J_TICK_DOMAIN_REFUSED')
+            frame = EDIT.pack(b'EDIT', edit.generation, edit.tick,
+                              edit.physical_hash, edit.kind, edit.x, edit.y,
+                              0, edit.amount, edit.temperature, prior, 0)
+            record = frame[:-4] + struct.pack('<I', crc(frame[:-4]))
+            frames.append(record)
+            prior = chain(record[:-4], prior)
+        payload = b''.join(frames)
+        # Validate the actual descriptor used for append. Not a writer lock.
         with self.path.open('r+b') as f:
             st = os.fstat(f.fileno())
             require(st.st_size == state.valid_length and
@@ -278,17 +303,17 @@ class Journal:
                 require(f.read(EDIT.size) == self._last_record,
                         'G6J_EXTERNAL_WRITE_REFUSED')
             f.seek(0, os.SEEK_END)
-            f.write(record)
+            require(f.write(payload) == len(payload), 'G6J_BATCH_SHORT_WRITE')
             f.flush()
-            os.fsync(f.fileno())  # only now may native owner ACK
+            os.fsync(f.fileno())  # one durability barrier for the entire group
         post = self.path.stat()
         require((post.st_dev, post.st_ino) == self._file_identity and
-                post.st_size == state.valid_length + EDIT.size,
+                post.st_size == state.valid_length + len(payload),
                 'G6J_EXTERNAL_WRITE_REFUSED')
-        self.state = Recovery(state.identity, state.checkpoint, state.edits + (edit,),
-                              state.valid_length + EDIT.size,
-                              chain(record[:-4], state.tail_chain), False)
-        self._last_record = record
+        self.state = Recovery(state.identity, state.checkpoint,
+                              state.edits + edits, state.valid_length + len(payload),
+                              prior, False)
+        self._last_record = frames[-1]
 
 
 def replay_checked(recovery: Recovery, apply, physical_hash) -> None:
