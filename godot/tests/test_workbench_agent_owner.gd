@@ -4,6 +4,7 @@ extends SceneTree
 ## Not a mock; this exercises the same worker command queue and real GDExtension.
 const Setup = preload("res://scripts/workbench_setup.gd")
 const RenderJoin = preload("res://scripts/workbench_authoring_render_join.gd")
+const StartCommit = preload("res://scripts/workbench_authoring_start_commit.gd")
 const Watchdogs = preload("res://tests/support/ci_execution_policy.gd")
 
 var main: Control
@@ -143,12 +144,26 @@ func run() -> void:
 	if not check(prepared.get("status")=="proposed","second prepare refused"):
 		finish()
 		return
+	var record_plan: Dictionary = StartCommit.stage(ui.applied,prepared)
+	check(record_plan.get("status")=="recordable",
+		"accepted native footprint must fit authored-start representation: "+str(record_plan))
 	var applied: Dictionary = await issue({
 		"action":"apply_edit","proposal_id":prepared.proposal_id
 	})
 	check(applied.get("status")=="applied"
 		and applied.get("confirmed_writes",0)>0,
 		"native apply was not readback-verified: "+str(applied))
+	if record_plan.get("status")=="recordable":
+		var recorded: Dictionary = StartCommit.commit(ui,record_plan,applied)
+		check(recorded.get("status")=="recorded",
+			"native applied geometry was not admitted to authored-start: "+str(recorded))
+		var saved_label := "wb-agent-526-source-matched"
+		ui._name.text = saved_label
+		check(ui.save_setup(),"verified agent edit did not save named authored start")
+		var reopened: Dictionary = Setup.read_named(saved_label)
+		check(not reopened.has("error") and reopened.get("setup",{}).get("edits",[]).size()>0,
+			"named authored start did not reopen agent geometry")
+		DirAccess.remove_absolute(ProjectSettings.globalize_path(Setup._path(saved_label)))
 	var repeated: Dictionary = await issue({
 		"action":"apply_edit","proposal_id":prepared.proposal_id
 	})
