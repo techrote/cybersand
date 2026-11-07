@@ -117,6 +117,10 @@ func _run() -> void:
 	if not check(wb.apply(fresh),"real 2048-square native owner declined blank workbench") 			or not await until(Callable(self,"_ready_blank"),"native blank extent never installed"):
 		_finish()
 		return
+	# Place the qualified native footprint within the actual visible viewport.
+	# Camera movement changes presentation only, never native edit authority.
+	wb._set_view(Vector2(1080,200),host.current_view_size)
+	await process_frame
 	panel._task.text = "Construct an exact native Wall and verify it."
 	panel._model.text = "test-vision-model-not-called"
 	panel._region[0].value = 1120
