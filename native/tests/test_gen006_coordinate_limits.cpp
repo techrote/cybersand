@@ -922,6 +922,82 @@ void same_content_save_ack_aba_cohort(std::uint32_t workers) {
 }
 
 
+
+// GEN-006 vertical-slice admission gate: excluding a chunk from interest is
+// neither native eviction nor reclaimed capacity. This concrete source-guarded
+// control rejects a prospective implementation that only hides distant terrain.
+// No selective removal is implemented; clear() is deliberately destructive.
+void interest_exclusion_capacity_control_cohort(std::uint32_t workers) {
+    auto c=config(workers);
+    c.maximum_chunk_count=2;
+    c.initial_chunk_reserve=2;
+    World live(c);
+    const auto p=payload();
+    const auto initial=live.chunk_count();
+    require(initial==0U,"capacity control did not start without native residents");
+    require(live.install_generated_chunk({-1,0},p)==ChunkInstallOutcome::Installed &&
+            live.install_generated_chunk({0,0},p)==ChunkInstallOutcome::Installed,
+            "native two-chunk capacity setup refused");
+    const auto x=-kSide+30;
+    require(live.set_cell_state(x,30,Material::Water,17,0) &&
+            live.set_cell_state(-kSide+26,34,Material::Empty,0,0),
+            "capacity fixture native Water17 or explicit Empty rejected");
+    live.set_temperature(x,30,417);
+    const auto bytes_before=live.resident_cell_bytes();
+    require(live.chunk_count()==2U && bytes_before>0U &&
+            live.stored_state_a(x,30)==17 &&
+            live.stored_temperature(x,30)==417 &&
+            live.stored_material(-kSide+26,34)==Material::Empty,
+            "capacity fixture missing resident authoritative state");
+
+    // In this PhasedInPlace cohort, the positive chunk remains in interest,
+    // while the changed negative chunk is outside. A tick really executes.
+    live.set_simulation_region(RectI64{0,0,kSide,kSide});
+    const auto tick=live.tick();
+    require(!live.has_failed() && tick.worker_threads_observed>=1 &&
+            tick.worker_threads_observed<=workers,
+            "capacity control lacked valid native tick worker participation");
+    (void)live.take_dirty_chunks();
+    const auto state_before_refusal=live.physical_state_hash();
+    const auto count_before_refusal=live.chunk_count();
+    const auto new_coord=ChunkCoord{8,0}; // far beyond 1024 world pixels
+    require(live.install_generated_chunk(new_coord,p)==ChunkInstallOutcome::CapacityFull,
+            "excluded native chunk incorrectly freed resident budget");
+    require(live.chunk_count()==count_before_refusal &&
+            live.resident_cell_bytes()==bytes_before &&
+            live.physical_state_hash()==state_before_refusal &&
+            live.install_generated_chunk({-1,0},p)==ChunkInstallOutcome::AlreadyResident,
+            "interest-only capacity refusal changed World or resurrected a resident");
+
+    const auto checkpoint=live.save_physical_state();
+    require(!checkpoint.empty() && checkpoint.size()<1024*1024,
+            "capacity refusal checkpoint absent/unbounded");
+    auto restored=World::restore_physical_state(c,checkpoint);
+    require(restored && restored->chunk_count()==2U &&
+            restored->physical_state_hash()==live.physical_state_hash() &&
+            restored->install_generated_chunk(new_coord,p)==ChunkInstallOutcome::CapacityFull,
+            "whole-World restore falsely reclaimed an excluded resident");
+
+    // The sole current public destructive reset frees budget but drops BOTH
+    // chunks. It is not a substitute for preserving one live chunk during eviction.
+    live.clear();
+    require(live.chunk_count()==0U &&
+            live.install_generated_chunk(new_coord,p)==ChunkInstallOutcome::Installed &&
+            live.chunk_count()==1U,
+            "destructive reset did not free native capacity as control");
+    require(live.stored_material(x,30)==Material::Empty,
+            "destructive reset retained prior native Water material unexpectedly");
+    std::cout<<"GEN006_INTEREST_CAPACITY_CONTROL_JSON {\\\"configured_workers\\\":"<<workers
+             <<",\\\"observed_workers\\\":"<<tick.worker_threads_observed
+             <<",\\\"resident_before\\\":2,\\\"resident_after_interest\\\":2"
+             <<",\\\"capacity_full_on_new_demand\\\":true"
+             <<",\\\"old_water17_and_empty_restored\\\":true"
+             <<",\\\"clear_drops_other_residents\\\":true"
+             <<",\\\"selective_native_eviction\\\":false"
+             <<",\\\"checkpoint_bytes\\\":"<<checkpoint.size()
+             <<",\\\"result\\\":\\\"PASS\\\"}\\n";
+}
+
 }
 int main() {
     try {
@@ -937,6 +1013,8 @@ int main() {
         recipe_intent_ambiguity_cohort(4);
         same_content_save_ack_aba_cohort(1);
         same_content_save_ack_aba_cohort(4);
+        interest_exclusion_capacity_control_cohort(1);
+        interest_exclusion_capacity_control_cohort(4);
         pending_event_region_cohort(1, false);
         pending_event_region_cohort(4, false);
         pending_event_region_cohort(1, true);
