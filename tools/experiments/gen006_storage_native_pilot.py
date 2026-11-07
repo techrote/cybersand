@@ -107,6 +107,13 @@ def writer_child(meta: Path) -> None:
     for x in info["edits"]:
         mutation = Mutation(*x)
         journal.append(mutation, journal.state.generation)
+    # Deliberately crash with an additional unacknowledged partial frame;
+    # all five complete, fsynced edits must remain recoverable. The caller
+    # must prove native physical replay before publishing an appendable copy.
+    with (p / "edits.g6j").open("ab") as f:
+        f.write(b"EDIT" + bytes((0, 0, 0)))
+        f.flush()
+        os.fsync(f.fileno())
     # No destructor, final save, atexit or orderly writer shutdown.
     os._exit(0)
 
@@ -166,8 +173,8 @@ def main() -> int:
     require(child.returncode == 0, "G6J_ABRUPT_WRITER_CHILD_FAILED " + child.stderr)
     recovered = recover(work / "edits.g6j")
     require(recovered.identity == identity and recovered.checkpoint == cyps and
-            recovered.edits == tuple(edits) and not recovered.torn_tail,
-            "G6J_ABRUPT_WRITER_RECOVERY_REFUSED")
+            recovered.edits == tuple(edits) and recovered.torn_tail,
+            "G6J_ABRUPT_WRITER_TORN_PREFIX_RECOVERY_REFUSED")
 
     # replay_checked calls the actual separately launched native World binary
     # for EACH cumulative prefix, never mutating a live World or trusting a
@@ -203,13 +210,33 @@ def main() -> int:
     require(native_cyps(stage_records[-1])[1] ==
             native_cyps(final_record)[1],
             "G6J_NATIVE_REPLAY_PHYSICAL_BYTES_MISMATCH")
+    # The previous process stopped with an unacknowledged torn suffix. We
+    # have now replayed every acknowledged edit in real, independently
+    # launched native Worlds. Only this exact prefix is allowed to become
+    # appendable, at a NEW no-clobber path. Keep the crashed original intact.
+    crashed_path = work / "edits.g6j"
+    original_crash_bytes = crashed_path.read_bytes()
+    repaired_path = work / "recovered-verified.g6j"
+    repaired = Journal.rollover_torn_tail(
+        crashed_path, repaired_path, *CHUNK, identity.incarnation,
+        edits[-1].generation,
+        lambda candidate: (candidate.identity == recovered.identity and
+                           candidate.checkpoint == recovered.checkpoint and
+                           candidate.edits == recovered.edits and
+                           candidate.tail_chain == recovered.tail_chain))
+    require(repaired.state.edits == recovered.edits and
+            repaired.state.generation == edits[-1].generation and
+            not repaired.state.torn_tail and
+            crashed_path.read_bytes() == original_crash_bytes and
+            recover(crashed_path).torn_tail,
+            "G6J_NATIVE_ROLLOVER_DAMAGED_ACK_OR_EVIDENCE")
     # Real native-generated payload comparison, not disk syscall, native tick,
     # end-to-end ACK latency or production write-amplification measurement.
     # Each of the five complete native G6SLICE1 files is from an actual
     # source-matched World after the corresponding durable edit. G6J1 stores
     # the original CYPS payload once plus 48 bytes per edit.
     native_full_payload = sum(len(blob) for blob in stage_records)
-    journal_payload = (work / "edits.g6j").stat().st_size
+    journal_payload = repaired_path.stat().st_size
     require(native_full_payload > 0 and
             journal_payload == 64 + len(cyps) + len(edits) * 48,
             "G6J_NATIVE_STORAGE_PAYLOAD_ACCOUNTING_REFUSED")
@@ -219,14 +246,15 @@ def main() -> int:
           " no_latency_or_tick_speedup_claim=1".format(
               native_full_payload, journal_payload,
               100.0 * journal_payload / native_full_payload))
-    require(Journal.open(work / "edits.g6j", *CHUNK, identity.incarnation)
+    require(Journal.open(repaired_path, *CHUNK, identity.incarnation)
             .state.generation == edits[-1].generation,
             "G6J_RECOVERED_JOURNAL_NOT_REOPENABLE")
     print("GEN006_G6J1_NATIVE_CYPS_REPLAY_PASS"
           " workers={} native_sha={} child_hard_exit=1"
           " real_native_processes={} frozen_tick={} journaled_edits={}"
           " final_generation={} final_physical_hash={} Water17=17"
-          " temperature417=417 Empty_intent=1".format(
+          " temperature417=417 Empty_intent=1"
+          " torn_suffix_repaired_after_native_replay=1".format(
               args.workers, args.native_sha, 2 + len(COMMANDS),
               tick, len(edits), edits[-1].generation, edits[-1].physical_hash))
     print("GEN006_G6J1_LIMITS journal_not_controller_integrated=1"
