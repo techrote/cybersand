@@ -27,9 +27,19 @@ func _save_frame(preview: Variant, name: String) -> void:
 	if image != null and not image.is_empty():
 		image.convert(Image.FORMAT_RGB8)
 		_expect(image.save_png(output.path_join(name + ".png")) == OK, "write actual pixels " + name)
-		var center := image.get_pixel(image.get_width() / 2, image.get_height() / 2)
-		var corner := image.get_pixel(1, 1)
-		_expect(Vector3(center.r, center.g, center.b).distance_to(Vector3(corner.r, corner.g, corner.b)) > 0.005, "nonblank pixel variation " + name)
+		var reference: Color = image.get_pixel(0, 0)
+		var variation := false
+		for gy: int in range(1, 16):
+			for gx: int in range(1, 32):
+				var pixel: Color = image.get_pixel((gx * (image.get_width() - 1)) / 32,
+					(gy * (image.get_height() - 1)) / 16)
+				if Vector3(pixel.r, pixel.g, pixel.b).distance_to(
+						Vector3(reference.r, reference.g, reference.b)) > 0.025:
+					variation = true
+					break
+			if variation:
+				break
+		_expect(variation, "nonblank pixel variation " + name)
 
 func _run() -> void:
 	if DisplayServer.get_name() == "headless":
@@ -170,6 +180,13 @@ func _run() -> void:
 	await preview.export_art("viewport")
 	_expect(first_dir != preview.last_export_dir, "new unique directory for second export")
 	_expect(FileAccess.file_exists(first_dir.path_join("viewport.png")), "first export retained")
+	await _frame()
+	var ui_image: Image = root.get_texture().get_image()
+	_expect(ui_image != null and not ui_image.is_empty(), "actual desktop application window framebuffer")
+	if ui_image != null and not ui_image.is_empty():
+		ui_image.convert(Image.FORMAT_RGB8)
+		_expect(ui_image.save_png(output.path_join("application-window.png")) == OK,
+			"save full UI window screenshot")
 	var summary := {"status": "pass" if failures == 0 else "fail", "failures": failures,
 		"collections": preview._collections.size(), "features": inspected_features,
 		"display": DisplayServer.get_name(), "backend": RenderingServer.get_current_rendering_driver_name(),
