@@ -4,6 +4,7 @@ extends RefCounted
 ## All mutations are serialized and read back by CyberSimulationWorker.
 const RenderJoin = preload("res://scripts/workbench_authoring_render_join.gd")
 const StartCommit = preload("res://scripts/workbench_authoring_start_commit.gd")
+const SignedFrame = preload("res://scripts/workbench_agent_signed_frame.gd")
 
 const RESPONSE_TIMEOUT_MSEC: int = 10000
 const MAX_LOCAL_RECEIPTS: int = 64
@@ -14,6 +15,9 @@ var _busy: bool = false
 var _tool_busy: bool = false
 var _quarantined: bool = false
 var _task_id: String = ""
+# Experimental opt-in host-only frame: NEVER silently reinterpret an ordinary task.
+var _coordinate_frame_id: String = ""
+var _coordinate_frame_generation: int = -1
 var _plan: Dictionary = {}
 var _receipts: Dictionary = {}
 
@@ -63,6 +67,32 @@ static func _typed_region(value: Variant) -> Variant:
 	return Rect2i(x,y,width,height)
 
 
+static func _region_value(rect: Rect2i) -> Dictionary:
+	return {"x":rect.position.x,"y":rect.position.y,
+		"width":rect.size.x,"height":rect.size.y}
+
+
+func _signed_frame_available() -> bool:
+	return _panel != null and not _panel.applied.is_empty() \
+		and _panel.applied.get("extent",[]) == [2048,2048] \
+		and _host != null and _host.world_extent == SignedFrame.EXTENT
+
+
+func _frame_matches_owner(native: Dictionary) -> bool:
+	if _coordinate_frame_id.is_empty():
+		return true
+	var identity: Dictionary = native.get("identity",
+		native.get("identity_after",{}))
+	return int(identity.get("world_generation",-1)) == _coordinate_frame_generation \
+		and _coordinate_frame_id == SignedFrame.FRAME_ID and _signed_frame_available()
+
+
+func _signed_rows(native_rows: Variant) -> Dictionary:
+	if _coordinate_frame_id.is_empty():
+		return {"status":"mapped","logical":native_rows}
+	return SignedFrame.readback_to_logical(native_rows)
+
+
 func _available() -> bool:
 	return is_instance_valid(_host) and is_instance_valid(_panel) \
 		and _host.simulation_worker != null and _host.paused \
@@ -103,20 +133,52 @@ func _owner(command: Dictionary) -> Dictionary:
 
 ## Host-only authorization. NEVER route this through model tool dispatch.
 func authorize_task(task_id: String, scope: Rect2i, protected: Array,
-		allowed_materials: Array) -> Dictionary:
+		allowed_materials: Array, coordinate_frame_id: String = "") -> Dictionary:
 	if _quarantined or _tool_busy:
 		return _refused("authoring_host_quarantined_or_busy")
 	if not _task_id.is_empty():
 		return _refused("retire_previous_task_first")
 	if not _receipts.is_empty() and _receipts.size() >= MAX_LOCAL_RECEIPTS:
 		return _refused("receipt_history_full")
+
+	# Only a trusted host can explicitly opt in; model dispatch cannot supply
+	# this parameter.  Do not conflate independently measured end-state equivalence
+	# with exact native physical parity of the frozen original negative-world run.
+	if coordinate_frame_id != "" and coordinate_frame_id != SignedFrame.FRAME_ID:
+		return _refused("unsupported_coordinate_frame")
+	var native_scope: Rect2i = scope
+	var native_protection: Array = protected.duplicate(true)
+	if coordinate_frame_id != "":
+		if not _signed_frame_available():
+			return _refused("signed_frame_requires_2048_finite_workbench")
+		var checked: Dictionary = SignedFrame.region(_region_value(scope))
+		if checked.get("status") != "mapped":
+			return _refused("invalid_signed_task_scope:" + str(checked.get("reason","")))
+		native_scope = checked.native
+		native_protection.clear()
+		if protected.size() > 32:
+			return _refused("invalid_signed_protection")
+		for guard: Variant in protected:
+			if not guard is Rect2i:
+				return _refused("invalid_signed_protection")
+			checked = SignedFrame.region(_region_value(guard))
+			if checked.get("status") != "mapped":
+				return _refused("invalid_signed_protection:" + str(checked.get("reason","")))
+			native_protection.append(checked.native)
 	var answer: Dictionary = await _owner({
-		"action":"authorize_task","task_id":task_id,"scope":scope,
-		"protected":protected,"allowed_materials":allowed_materials
+		"action":"authorize_task","task_id":task_id,"scope":native_scope,
+		"protected":native_protection,"allowed_materials":allowed_materials
 	})
 	if answer.get("status") == "authorized":
 		_task_id = task_id
 		_plan.clear()
+		_coordinate_frame_id = coordinate_frame_id
+		_coordinate_frame_generation = int(answer.get("generation",-1))
+		if coordinate_frame_id != "":
+			answer["coordinate_frame_id"] = coordinate_frame_id
+			answer["logical_scope"] = scope
+			answer["logical_protection"] = protected.duplicate(true)
+			answer["native_scope"] = native_scope
 	return answer
 
 
@@ -130,6 +192,8 @@ func retire_task() -> Dictionary:
 	if answer.get("status") == "retired":
 		_task_id = ""
 		_plan.clear()
+		_coordinate_frame_id = ""
+		_coordinate_frame_generation = -1
 	return answer
 
 
@@ -137,8 +201,16 @@ func _observe(args: Dictionary) -> Dictionary:
 	# An observation supersedes the previous worker-side proposal.
 	_plan.clear()
 	var command: Dictionary = {"action":"observe"}
+	if not _coordinate_frame_id.is_empty() and not _signed_frame_available():
+		return _refused("signed_frame_lost_finite_world")
 	if args.has("region") and args.region != null:
-		var region: Variant = _typed_region(args.region)
+		var region: Variant = null
+		if _coordinate_frame_id.is_empty():
+			region = _typed_region(args.region)
+		else:
+			var mapped: Dictionary = SignedFrame.region(args.region)
+			if mapped.get("status") == "mapped":
+				region = mapped.native
 		if region == null:
 			return _refused("invalid_observation_region")
 		command["region"] = region
@@ -147,6 +219,9 @@ func _observe(args: Dictionary) -> Dictionary:
 	var native: Dictionary = await _owner(command)
 	if native.get("status") != "native_observed":
 		return native
+	if not _frame_matches_owner(native):
+		_quarantined = true
+		return {"status":"unconfirmed","reason":"coordinate_frame_world_epoch_changed"}
 	var deadline: int = Time.get_ticks_msec() + RESPONSE_TIMEOUT_MSEC
 	var joined: Dictionary = {}
 	var requested_fresh_render: bool = false
@@ -183,6 +258,18 @@ func _observe(args: Dictionary) -> Dictionary:
 		# Do not disclose an apparently trustworthy PNG with unconfirmed IDs.
 		return {"status":"pending","reason":"owner_did_not_confirm_frame",
 			"observation_id":native.observation_id,"owner_receipt":ack}
+	if not _coordinate_frame_id.is_empty():
+		var local_region: Rect2i = joined.region
+		joined["native_region"] = local_region
+		joined["region"] = Rect2i(local_region.position-SignedFrame.ORIGIN,
+			local_region.size)
+		joined["coordinate_frame_id"] = _coordinate_frame_id
+		joined["coordinate_frame_generation"] = _coordinate_frame_generation
+		# This is the genuine camera origin of the ORIGINAL native framebuffer,
+		# reverse-mapped; never crop or synthesize a substitute PNG.
+		joined["viewport_logical_region"] = Rect2i(
+			Vector2i(_host.camera_origin.floor())-SignedFrame.ORIGIN,
+			_host.current_view_size)
 	return joined
 
 
@@ -195,6 +282,11 @@ func _prepare(args: Dictionary) -> Dictionary:
 	for index: int in range(typed.size()):
 		if typed[index] is Dictionary and typed[index].get("replace_only_material",false) == null:
 			typed[index].erase("replace_only_material")
+	if not _coordinate_frame_id.is_empty():
+		var mapped: Dictionary = SignedFrame.operations(typed)
+		if mapped.get("status") != "mapped":
+			return _refused("invalid_signed_operations:" + str(mapped.get("reason","")))
+		typed = mapped.native
 	var native: Dictionary = await _owner({
 		"action":"prepare_edit",
 		"observation_id":args.get("observation_id",null),
@@ -202,12 +294,24 @@ func _prepare(args: Dictionary) -> Dictionary:
 	})
 	if native.get("status") != "proposed":
 		return native
+	if not _frame_matches_owner(native):
+		_quarantined = true
+		return {"status":"unconfirmed","reason":"coordinate_frame_world_epoch_changed"}
 	# Preflight the NAMED-START history *before* any native mutation. A
 	# readback-applied edit that cannot be saved is not a usable authoring tool.
 	var plan: Dictionary = StartCommit.stage(_panel.applied,native)
 	if plan.get("status") != "recordable":
 		return _refused("authored_start_preflight_failed:" + str(plan.get("reason","unknown")))
 	_plan = plan.duplicate(true)
+	if not _coordinate_frame_id.is_empty():
+		var translated: Dictionary = _signed_rows(native.footprint)
+		if translated.get("status") != "mapped":
+			_plan.clear()
+			_quarantined = true
+			return {"status":"unconfirmed","reason":"native_footprint_unmappable"}
+		native["footprint"] = translated.logical
+		native["coordinate_frame_id"] = _coordinate_frame_id
+		native["coordinate_frame_generation"] = _coordinate_frame_generation
 	return native
 
 
@@ -227,7 +331,12 @@ func _apply(args: Dictionary) -> Dictionary:
 		"action":"apply_edit","proposal_id":proposal_id
 	})
 	var answer: Dictionary = native.duplicate(true)
-	if native.get("status") == "applied":
+	if not _coordinate_frame_id.is_empty() and native.get("status") == "applied" \
+			and not _frame_matches_owner(native):
+		_quarantined = true
+		answer["status"] = "unconfirmed"
+		answer["reason"] = "coordinate_frame_world_epoch_changed"
+	if answer.get("status") == "applied":
 		var recorded: Dictionary = StartCommit.commit(_panel,planned,native)
 		answer["authored_start"] = recorded
 		if recorded.get("status") != "recorded":
@@ -236,6 +345,16 @@ func _apply(args: Dictionary) -> Dictionary:
 			answer["status"] = "unconfirmed"
 			answer["reason"] = "verified_native_apply_but_start_record_failed"
 			_task_id = ""
+	if not _coordinate_frame_id.is_empty():
+		answer["coordinate_frame_id"] = _coordinate_frame_id
+		answer["coordinate_frame_generation"] = _coordinate_frame_generation
+		if answer.has("readback"):
+			var translated: Dictionary = _signed_rows(answer.readback)
+			if translated.get("status") != "mapped":
+				answer["status"] = "unconfirmed"
+				answer["reason"] = "native_readback_unmappable"
+			else:
+				answer["readback"] = translated.logical
 	# On any uncertain owner result, bar all new authoring in this host;
 	# the native request might have completed after a missing ACK.
 	if answer.get("status") == "unconfirmed":
