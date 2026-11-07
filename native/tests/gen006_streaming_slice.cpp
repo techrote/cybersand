@@ -494,6 +494,27 @@ void self_test(const fs::path& path, std::uint32_t workers) {
         StreamingSlice demo(path / "surface-start", 1, workers);
         demo.focus(surface);
         const auto occupied = demo.occupied_cells(surface);
+        if (occupied < 512 || occupied >= kSide * kSide) {
+            // A one-chunk display can straddle an unlucky generator seam.
+            // Emit bounded *real generated-cell* occupancy evidence before
+            // choosing a nonempty deterministic display starting coordinate.
+            generation::Recipe recipe;
+            recipe.seed = kSeed;
+            recipe.chunk_size = kSide;
+            recipe.candidate = generation::Candidate::Strata;
+            const auto generator = generation::Generator::compile(recipe);
+            for (int y = 0; y <= 2; ++y) {
+                for (int x = -6; x <= 6; ++x) {
+                    const auto chunk = generator->generate({x, y});
+                    std::size_t count = 0;
+                    for (const auto mat : chunk.cells)
+                        if (mat != Material::Empty) ++count;
+                    std::cout << "GEN006_SURFACE_DIAGNOSTIC x=" << x
+                              << " y=" << y << " occupied=" << count
+                              << " total=" << kSide * kSide << '\n';
+                }
+            }
+        }
         check(occupied >= 512 && occupied < kSide * kSide,
               "GEN006_DEMO_START_NO_VISIBLE_GENERATED_SURFACE");
         std::cout << "GEN006_DEMO_START_SURFACE_PASS configured_workers="
