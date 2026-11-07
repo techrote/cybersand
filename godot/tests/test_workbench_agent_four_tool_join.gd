@@ -212,6 +212,30 @@ func run() -> void:
 		print("WB_AGENT_527_REVISED_RENDER_HOLD "+
 			JSON.stringify({"reason":new_observation.get("reason"),
 				"native_ticks":main.latest_snapshot.tick_index}))
+	# A real human paint admission BETWEEN model calls must retire the
+	# previous authorized model task. The old Step driver would otherwise
+	# capture the already-changed owner revision as a new baseline and
+	# incorrectly step on the human's canvas. No native tick may be queued.
+	var paint_revision: int = main.simulation_worker.agent_manual_intent_revision()
+	var paint_tick: int = main.latest_snapshot.tick_index
+	check(main.simulation_worker.queue_emit_disc(44,44,0,58),
+		"real human Hard Wall brush intent was refused")
+	check(main.simulation_worker.agent_manual_intent_revision()==paint_revision+1,
+		"human brush did not advance exclusive native manual-intent fence")
+	var stale_step: Dictionary = await second.call_tool("step",{"ticks":1})
+	check(stale_step.get("status")=="refused"
+		and stale_step.get("reason")=="manual_intent_changed_requires_reauthorization"
+		and main.latest_snapshot.tick_index==paint_tick,
+		"stale model Step ran across human brush admission: "+str(stale_step))
+	var stale_observe: Dictionary = await second.call_tool("observe",{
+		"region":{"x":28,"y":28,"width":8,"height":8},"detail":"counts"})
+	check(stale_observe.get("status")=="refused"
+		and stale_observe.get("reason")=="manual_intent_changed_requires_reauthorization",
+		"old task received a new observation after human brush: "+str(stale_observe))
+	for _settle: int in 12:
+		await process_frame
+	check(main.latest_snapshot.tick_index==paint_tick,
+		"agent left an unacknowledged native tick after human brush refusal")
 	var second_stopped: Dictionary = await second.stop()
 	check(second_stopped.get("status")=="stopped",
 		"revised task retirement was not acknowledged")
