@@ -112,32 +112,30 @@ void test_affected_gas_components() {
     }
 }
 
-void test_gas_component_bootstrap_under_continuous_churn() {
+void test_sparse_gas_relabel_matches_reference() {
     for (const auto workers : {1U, 4U}) {
         World reference(gas_cache_config(0, workers)), cached(gas_cache_config(1, workers));
         for (auto* world : {&reference, &cached}) gas_cache_rooms(*world, 0, 0);
 
-        for (int tick_index = 0; tick_index < 8; ++tick_index) {
+        for (int tick_index = 0; tick_index < 12; ++tick_index) {
             const auto material = (tick_index % 2) == 0 ? Material::Empty : Material::Wall;
-            for (auto* world : {&reference, &cached})
-                world->set(20, 1, material);
+            for (auto* world : {&reference, &cached}) world->set(20, 1, material);
             tick(reference);
             tick(cached);
             require_gas_cache_equivalent(reference, cached);
             require(reference.physical_state_hash() == cached.physical_state_hash(),
-                    "continuous-churn selective gas bootstrap preserves the complete physical state");
+                    "sparse gas relabel preserves the complete physical state");
         }
 
-        const auto snapshot = cached.pressure_optimization_snapshot();
-        require(snapshot.counters.gas_reference_passes == 8U,
-                "continuous topology churn keeps whole-gas reuse on the authoritative reference path");
-        require(snapshot.counters.gas_cache_builds > 0U &&
-                    snapshot.counters.gas_component_reuses > 0U &&
-                    snapshot.counters.gas_member_validations > 0U,
-                "unchanged remote gas can bootstrap and replay while another component changes every tick");
-        require(snapshot.counters.gas_invalidation_pairs > 0U &&
-                    snapshot.counters.gas_component_invalidations > 0U,
-                "dirty-component proof rejects the changing room rather than globally admitting it");
+        const auto ref = reference.pressure_optimization_snapshot();
+        const auto opt = cached.pressure_optimization_snapshot();
+        require(opt.counters.gas_reference_passes == ref.counters.gas_reference_passes &&
+                    opt.counters.gas_component_reuses == 0U,
+                "continuous topology churn remains on the authoritative gas reference path");
+        require(opt.counters.gas_relabel_cells < ref.counters.gas_relabel_cells,
+                "cached reference passes relabel fewer cells without skipping gas discovery or identity");
+        require(opt.gas_capacity_bytes > opt.gas_member_capacity * sizeof(std::uint64_t),
+                "bounded sparse relabel proof storage is included in declared gas memory");
     }
 }
 
