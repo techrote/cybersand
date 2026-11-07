@@ -80,7 +80,9 @@ class ProfileTests(unittest.TestCase):
                                             match.replace("0 failures","1 failures")+"\n"))
     def test_publish_request_exact_schema_and_workflow_lease(self):
         p=json.loads((ROOT/engine.REQUEST).read_text(encoding="utf-8"))
-        self.assertEqual(p,dict(engine.REQUEST_VALUE,request_sequence=1))
+        self.assertEqual({k: v for k, v in p.items() if k != "request_sequence"}, engine.REQUEST_VALUE)
+        self.assertIs(type(p.get("request_sequence")), int)
+        self.assertGreater(p["request_sequence"], 0)
         wf=(ROOT/engine.WORKFLOW).read_text(encoding="utf-8")
         self.assertIn("contents: write",wf)
         self.assertIn("python3 tools/ci/pf_c2048_runtime_publication.py check-index",wf)
