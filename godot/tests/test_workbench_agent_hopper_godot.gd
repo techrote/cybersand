@@ -266,6 +266,84 @@ func run_variant(rows: Array, variant: String) -> void:
 		and main.latest_snapshot.tick_index==TOTAL_TICKS
 		and main.latest_snapshot.render_world_generation==generation,
 		"native Stop did not acknowledge after fixed budget "+variant)
+	# An authored-start save is a *construction recipe*, not a checkpoint
+	# of the evolved physics. Preserve the completed 480-tick receipts, then
+	# save and reopen the FULL agent-authored apparatus in a fresh native World.
+	# Only the trusted workbench Save/Load APIs may perform this operation.
+	var evolved_generation: int = main.latest_snapshot.render_world_generation
+	var name: String = "wb-agent-527-hopper-" + variant
+	workbench._name.text = name
+	if not check(workbench.save_setup(),
+			"agent-authored hopper could not be saved as named start " + variant):
+		return
+	var saved_start: Dictionary = Setup.read_named(name)
+	if not check(saved_start.has("setup"),
+			"saved hopper start did not reopen from named disk file " +
+			variant + " " + str(saved_start)):
+		return
+	check(saved_start.setup.edits == workbench.applied.edits,
+		"saved authored-start edits changed on disk " + variant)
+	check(saved_start.setup.edits.size() > 0,
+		"saved hopper lost all authored edit geometry " + variant)
+	if not check(workbench.load_setup(),
+			"real shared workbench refused named hopper start reload " + variant):
+		return
+	if not await wait_for(
+			func() -> bool:
+				return _native_ready() and \
+					main.latest_snapshot.render_world_generation != evolved_generation \
+					and main.latest_snapshot.tick_index == 0,
+			"named hopper reopen did not reset a new paused native World " + variant):
+		return
+	var reopened_generation: int = main.latest_snapshot.render_world_generation
+	var reopened = Bridge.new()
+	if not check(reopened.bind(main),
+			"reopened hopper failed to bind exclusive native authoring " + variant):
+		return
+	var reopened_auth: Dictionary = await reopened.authorize_task(
+		"fixture-527-reopened-" + variant, Rect2i(-40,-5,80,48),
+		Array(PROTECTION), [0,58], SignedFrame.FRAME_ID)
+	if not check(reopened_auth.get("status")=="authorized",
+			"reopened hopper rejected new task authorization " + variant +
+			" " + str(reopened_auth)):
+		return
+	var reopened_sand: Dictionary = await reopened.call_tool("observe",{
+		"region":SOURCE_OBSERVATION,"detail":"cells"})
+	check(reopened_sand.get("status")=="observed"
+		and reopened_sand.get("image_status")=="matched_post_draw"
+		and reopened_sand.get("native_material_ids",[]).size()==32
+		and int(reopened_sand.get("native_counts",{}).get(2,-1))==32
+		and int(reopened_sand.get("identity",{}).get("completed_tick",-1))==0,
+		"reopened authored start did not restore the original 32 Sand at tick zero " +
+		variant + " " + str(reopened_sand.get("reason","")))
+	preserve_png(variant,"reopened-authored-start",reopened_sand)
+	var reopened_protection: Dictionary = await reopened.call_tool("observe",{
+		"region":{"x":30,"y":-3,"width":5,"height":7},"detail":"cells"})
+	check(reopened_protection.get("status")=="observed"
+		and int(reopened_protection.get("native_counts",{}).get(58,-1))==17,
+		"reopened authored start changed the protected 17-cell motif " + variant)
+	var stale_step: Dictionary = await bridge.call_tool("step",{"ticks":1})
+	check(stale_step.get("status")=="refused"
+		and main.latest_snapshot.tick_index==0
+		and main.latest_snapshot.render_world_generation==reopened_generation,
+		"retired hopper task executed an extra tick after named start reload " + variant)
+	var reopened_stop: Dictionary = await reopened.stop()
+	check(reopened_stop.get("status")=="stopped"
+		and reopened_stop.get("no_further_agent_mutations")==true
+		and main.latest_snapshot.tick_index==0,
+		"reopened hopper task did not retire without evolved physics " + variant)
+	print("WB_AGENT_527_HOPPER_AUTHORED_START_REOPEN " + JSON.stringify({
+		"variant":variant, "saved_named_start":name,
+		"previous_completed_ticks":TOTAL_TICKS,
+		"reopened_native_tick":main.latest_snapshot.tick_index,
+		"reopened_generation":reopened_generation,
+		"reopened_initial_sand":reopened_sand.get("native_counts",{}).get(2,-1),
+		"protected_hard_wall":reopened_protection.get("native_counts",{}).get(58,-1),
+		"reopened_framebuffer":reopened_sand.get("image_status","")}))
+	check(DirAccess.remove_absolute(ProjectSettings.globalize_path(
+		Setup._path(name)))==OK,
+		"test-only named authored-start file could not be cleaned " + variant)
+
 	print("WB_AGENT_527_HOPPER_GODOT_RESULT "+JSON.stringify({
 		"variant":variant,
 		"experimental_translation_not_strict_physical_parity":true,

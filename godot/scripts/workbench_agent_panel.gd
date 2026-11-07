@@ -57,7 +57,7 @@ func _ready() -> void:
 	_model.text_changed.connect(func(_value: String) -> void: _retire_on_human_change())
 	add_child(_model)
 	_signed_frame.text = "EXPERIMENTAL +512 signed finite frame (trajectory NOT identical)"
-	_signed_frame.tooltip_text = "Explicit host-only native mapping; 26 NORMAL transient trajectory differences. Not approved as equivalent for live trials."
+	_signed_frame.tooltip_text = "Owner-admitted moved-hopper acceptance fixture (7 Nov 2026); 26 intermediate NORMAL trajectory differences remain. Host-only, opt-in, not strict signed-world parity. Genuine API trials and owner desktop acceptance remain separate."
 	_signed_frame.toggled.connect(func(_value: bool) -> void: _on_scope_change())
 	add_child(_signed_frame)
 	var row := HFlowContainer.new()
