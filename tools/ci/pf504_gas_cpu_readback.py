@@ -163,6 +163,12 @@ def compare(root: Path) -> dict:
     check(len(contexts) == 1, "different hosts or dependencies in same-host pairing")
     pressure_hashes = {x["pressure"].get("policy_hash", "") for x in rows.values()}
     check(len(pressure_hashes) == 1 and "" not in pressure_hashes, "pressure policy changed")
+    # Real workbench asynchronous actor scheduling may vary, but the source
+    # comparison must still retain identical cumulative ballistic receipts.
+    ledger_identity = {json.dumps(x.get("ballistic_ledger", {}), sort_keys=True)
+                       for x in rows.values()}
+    check(len(ledger_identity) == 1 and "{}" not in ledger_identity,
+          "ballistic ledger drift: cannot attribute the complete workload")
     def paired(fn):
         return [speedup(fn(rows["B1"]), fn(rows["C1"])),
                 speedup(fn(rows["B2"]), fn(rows["C2"]))]
@@ -177,8 +183,29 @@ def compare(root: Path) -> dict:
              for key in rows["B1"]["_profile_means_ms_per_tick"]}
     wall = {metric: {p: group(lambda row, m=metric, q=p: float(row[m][q]))
                      for p in ("p50_ms", "p95_ms")} for metric in METRICS}
-    work = {k: group(lambda row, f=k: float(row["_profile_delta"][f]) / row["_profile_ticks"])
-            for k in WORK}
+    # A zero reference count is an important result: this workload repeatedly
+    # falls back to reference gas topology and never reuses its gas cache.
+    # Do not divide by zero or manufacture a "speedup" for a 0/0 comparison.
+    def work_group(field: str) -> dict:
+        values = {name: float(row["_profile_delta"][field]) / row["_profile_ticks"]
+                  for name, row in rows.items()}
+        changes = []
+        for bname, cname in (("B1", "C1"), ("B2", "C2")):
+            before, after = values[bname], values[cname]
+            if before == 0:
+                changes.append(0.0 if after == 0 else None)
+            else:
+                changes.append((before - after) / before * 100.0)
+        valid = [x for x in changes if x is not None]
+        return {
+            "baseline_per_tick": median([values["B1"], values["B2"]]),
+            "candidate_per_tick": median([values["C1"], values["C2"]]),
+            "paired_work_reduction_percent": changes,
+            "median_work_reduction_percent": median(valid) if valid else None,
+            "zero_baseline": values["B1"] == 0 or values["B2"] == 0,
+            "interpretation": "counts, not elapsed time; 0/0 is unchanged zero work",
+        }
+    work = {k: work_group(k) for k in WORK}
     gas_share = group(lambda row: row["_gas_process_cpu_share_percent"])
     b = stage["native_process_cpu"]["base_median"]
     c = stage["native_process_cpu"]["candidate_median"]

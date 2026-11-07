@@ -2,6 +2,11 @@ name: PF504 stress-canvas real gas-stage process CPU BCCB (experimental)
 on:
   push:
     branches: [codex/pf504-stress-gas-cpu-20261107]
+    # Only profiler instrumentation changes justify rebuilding both large native binaries.
+    # Analysis/readback corrections operate on immutable archived B-C-C-B evidence.
+    paths:
+      - tools/ci/pf504_gas_cpu_overlay.py
+      - godot/tests/pf504_profile_workbench.gd
   workflow_dispatch:
 permissions:
   contents: read
