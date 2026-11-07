@@ -135,7 +135,7 @@ def main() -> int:
             return checked_run([args.godot, "--headless", "--path", str(project),
                                 "--script", "res://tests/test_world_design_pack_adapter.gd"],
                                os.environ.copy())
-        command = [args.godot, "--path", str(project)]
+        command = [args.godot, "--path", str(project), "--audio-driver", "Dummy"]
         if args.rendering_driver:
             command += ["--rendering-driver", args.rendering_driver]
         if args.quit_after:
