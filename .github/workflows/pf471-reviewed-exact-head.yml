@@ -1,0 +1,251 @@
+name: PF471 reviewed source exact-head qualification (Draft, no merge)
+on:
+  push:
+    branches:
+      - codex/neighbour-cursor-independent-qualification-20261106
+    paths:
+      - .github/workflows/pf471-reviewed-exact-head.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: pf471-reviewed-exact-head-${{ github.run_id }}
+  cancel-in-progress: false
+env:
+  GODOT_URL: https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7
+  GODOT_SHA256: 0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c
+  GODOT_VERSION: 4.7.stable.official.5b4e0cb0f
+  GODOT_CPP_COMMIT: 101ae38034304346a46ea9ea84ae156d3e860496
+
+jobs:
+  admission:
+    name: Reviewed compatibility, documentation and source ancestry
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Exact-head source admission and documentation checks
+        run: |
+          set -euxo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          git status --porcelain
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 tools/material_catalogue/compatibility.py --check | tee "$RUNNER_TEMP/pf471-reviewed-guard.json"
+          python3 - <<'PY'
+          import json,os
+          from pathlib import Path
+          x=json.loads((Path(os.environ['RUNNER_TEMP'])/'pf471-reviewed-guard.json').read_text())
+          records=[r for r in x.get('reviewed_transitions',[]) if r.get('path')=='native/src/world.cpp']
+          r=records[-1]
+          assert (r['from_lf_sha256']=='5a9de5e09a8665392677902ab501696aafefb5bbd2d2800e3dc1059b87a6f17d' and
+                  r['to_lf_sha256']=='bbd9741311bc67905934048633846b8d011efd760033edd0ff9e88be5b262868' and
+                  r['source_commit']=='b51f01536db6408458442c532d75256d33422fba' and
+                  r['record']=='docs/audits/2026-11-07-pf471-reviewed-world-transition.md' and
+                  r['issue']==485 and r['pr']==471),r
+          assert x['status']=='PASS' and x['production_cutover'] is False
+          print('PF471_REVIEWED_TRANSITION source/ancestry/lock PASS')
+          PY
+          python3 tools/ci/check_docs.py
+          python3 tools/ci/check_repository.py
+          python3 tools/ci/check_m11_consistency.py
+          git diff --check
+      - name: Retain compatibility receipt and source identity
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: pf471-reviewed-admission-${{ github.sha }}
+          retention-days: 30
+          if-no-files-found: warn
+          path: ${{ runner.temp }}/pf471-reviewed-guard.json
+
+  native:
+    name: Exact-head full Native and guarded local-neighbour oracle
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Run full native suites against reviewed transition head
+        run: |
+          set -euxo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          g++-13 --version
+          make CXX=g++-13 build/tests
+          ./build/tests | tee "$RUNNER_TEMP/pf471-exact-native.log"
+          make BUILD_DIR=build/pf471-reviewed-oracle CXX='g++-13 -DCYBERSAND_VERIFY_LOCAL_NEIGHBOUR' build/pf471-reviewed-oracle/tests
+          ./build/pf471-reviewed-oracle/tests | tee "$RUNNER_TEMP/pf471-exact-oracle.log"
+      - name: Preserve original native execution logs only
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: pf471-reviewed-native-${{ github.sha }}
+          retention-days: 30
+          if-no-files-found: warn
+          path: |
+            ${{ runner.temp }}/pf471-exact-native.log
+            ${{ runner.temp }}/pf471-exact-oracle.log
+
+  linux-build:
+    name: Exact-head Linux GDExtension (no production publication)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 240
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Verify exact source and fetch pinned Rapier
+        run: |
+          set -euxo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          git lfs install --local
+          git lfs pull --include="godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so" --exclude=""
+          echo "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a  godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so" | sha256sum --check --strict
+      - name: Install pinned SCons and godot-cpp
+        run: |
+          set -euxo pipefail
+          python3 -m venv "$RUNNER_TEMP/scons"
+          "$RUNNER_TEMP/scons/bin/python" -m pip install --require-hashes -r tools/requirements-build.txt
+          "$RUNNER_TEMP/scons/bin/python" -c 'import SCons; assert SCons.__version__ == "4.10.1"'
+          mkdir "$RUNNER_TEMP/godot-cpp"
+          git -C "$RUNNER_TEMP/godot-cpp" init
+          git -C "$RUNNER_TEMP/godot-cpp" remote add origin https://github.com/godotengine/godot-cpp.git
+          timeout "$(python3 tools/ci/execution_policy.py seconds dependency_prepare_seconds)" git -C "$RUNNER_TEMP/godot-cpp" fetch --depth=1 origin "$GODOT_CPP_COMMIT"
+          git -C "$RUNNER_TEMP/godot-cpp" checkout --detach FETCH_HEAD
+          test "$(git -C "$RUNNER_TEMP/godot-cpp" rev-parse HEAD)" = "$GODOT_CPP_COMMIT"
+      - name: Build source-matched Linux runtime
+        env:
+          GODOT_CPP_ROOT: ${{ runner.temp }}/godot-cpp
+          SCONS_PYTHON: ${{ runner.temp }}/scons/bin/python
+          SCONS_JOBS: "2"
+          CYBERSAND_REAL_CXX: /usr/bin/g++-13
+          LINUX_CXX: /usr/bin/g++-13
+          CYBERSAND_NATIVE_OUTPUT: ${{ runner.temp }}/libcybersand_native.linux.x86_64.so
+        run: |
+          set -euxo pipefail
+          python3 tools/ci/run_timed_command.py --policy-key native_compile_seconds --label godot-cpp-linux --output-dir build/pf471-reviewed-timing/cpp -- tools/build_pinned_godot_cpp.sh linux
+          python3 tools/ci/run_timed_command.py --policy-key native_compile_seconds --label extension-linux --output-dir build/pf471-reviewed-timing/extension -- tools/build_native_extension.sh
+          file "$CYBERSAND_NATIVE_OUTPUT"
+          mkdir -p build/pf471-reviewed-runtime
+          cp "$CYBERSAND_NATIVE_OUTPUT" build/pf471-reviewed-runtime/libcybersand_native.linux.x86_64.so
+          cp godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so build/pf471-reviewed-runtime/
+          git rev-parse HEAD > build/pf471-reviewed-runtime/source-sha.txt
+          (cd build/pf471-reviewed-runtime && sha256sum libcybersand_native.linux.x86_64.so libgodot_rapier.linux.x86_64-unknown-linux-gnu.so > runtime.sha256 && sha256sum --check --strict runtime.sha256)
+      - name: Transfer run-private binaries only to regression jobs (not production)
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: linux-runtime-${{ github.run_id }}
+          path: build/pf471-reviewed-runtime/
+          retention-days: 1
+          if-no-files-found: error
+      - name: Preserve exact build timings
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: pf471-reviewed-linux-build-logs-${{ github.sha }}
+          path: build/pf471-reviewed-timing/
+          retention-days: 30
+          if-no-files-found: warn
+
+  linux-regression:
+    name: Source-matched Linux Godot regression shard ${{ matrix.shard }}
+    needs: [linux-build]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 150
+    strategy:
+      fail-fast: false
+      max-parallel: 8
+      matrix:
+        shard: [0, 1, 2, 3, 4, 5, 6, 7]
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: linux-runtime-${{ github.run_id }}
+          path: build/pf471-reviewed-runtime
+      - name: Verify exact native source/runtime identity and install
+        run: |
+          set -euxo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test "$(cat build/pf471-reviewed-runtime/source-sha.txt)" = "$GITHUB_SHA"
+          (cd build/pf471-reviewed-runtime && sha256sum --check --strict runtime.sha256)
+          cp build/pf471-reviewed-runtime/libcybersand_native.linux.x86_64.so godot/addons/cybersand_native/bin/
+          cp build/pf471-reviewed-runtime/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so godot/addons/godot-rapier2d/bin/
+          timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" tools/check_linux_runtime_floor.sh
+      - name: Download pinned Godot 4.7 and prepare software display
+        run: |
+          set -euxo pipefail
+          timeout "$(python3 tools/ci/execution_policy.py seconds dependency_prepare_seconds)" curl --fail --location --retry 3 -o "$RUNNER_TEMP/godot.zip" "$GODOT_URL"
+          echo "$GODOT_SHA256  $RUNNER_TEMP/godot.zip" | sha256sum --check --strict
+          mkdir "$RUNNER_TEMP/godot"
+          unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/godot"
+          GODOT_BIN="$(find "$RUNNER_TEMP/godot" -maxdepth 1 -type f -name 'Godot*' -print -quit)"
+          test -n "$GODOT_BIN"
+          chmod +x "$GODOT_BIN"
+          test "$("$GODOT_BIN" --version)" = "$GODOT_VERSION"
+          echo "GODOT_BIN=$GODOT_BIN" >> "$GITHUB_ENV"
+          bash tools/ci/prepare_linux_display.sh
+      - name: Run complete assigned regression shard and retain case readbacks
+        env:
+          LIBGL_ALWAYS_SOFTWARE: "1"
+          LP_NUM_THREADS: "2"
+          GALLIVM_PERF: nopt
+          CYBERSAND_PRESENTATION_EVIDENCE: ${{ github.workspace }}/build/godot-regressions/shard-${{ matrix.shard }}/presentation
+        run: |
+          set -euxo pipefail
+          xvfb-run --auto-servernum --server-args="-screen 0 1920x1080x24 -nolisten tcp" python3 tools/ci/run_godot_regressions.py --godot "$GODOT_BIN" --output "build/godot-regressions/shard-${{ matrix.shard }}" --shard-count 8 --shard-index "${{ matrix.shard }}" --keep-going
+          git diff --exit-code -- . ':!godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so' ':!godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so'
+      - name: Preserve exact Godot case/readback evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: linux-godot-shard-${{ matrix.shard }}-${{ github.run_id }}
+          path: |
+            build/godot-regressions/shard-${{ matrix.shard }}/
+            build/pf471-reviewed-runtime/source-sha.txt
+            build/pf471-reviewed-runtime/runtime.sha256
+          if-no-files-found: warn
+          retention-days: 30
+
+  linux-coverage:
+    name: Exact-head full Linux Godot coverage
+    needs: [linux-build, linux-regression]
+    if: always()
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          pattern: linux-godot-shard-*-${{ github.run_id }}
+          path: build/pf471-linux-coverage
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: linux-runtime-${{ github.run_id }}
+          path: build/pf471-reviewed-runtime
+      - name: Independently check 8-shard unique/complete source-matched evidence
+        env:
+          SHARDS_RESULT: ${{ needs.linux-regression.result }}
+        run: |
+          set -euxo pipefail
+          python3 tools/ci/verify_linux_godot_shards.py --root build/pf471-linux-coverage --runtime build/pf471-reviewed-runtime --source-sha "$GITHUB_SHA" --run-id "${{ github.run_id }}" --attempt "${{ github.run_attempt }}" --shard-count 8 --godot-version "$GODOT_VERSION" --output build/pf471-linux-coverage.json
+          test "$SHARDS_RESULT" = "success"
+      - name: Retain Linux complete coverage receipt
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: pf471-reviewed-linux-coverage-${{ github.sha }}
+          path: build/pf471-linux-coverage.json
+          retention-days: 30
+          if-no-files-found: warn
