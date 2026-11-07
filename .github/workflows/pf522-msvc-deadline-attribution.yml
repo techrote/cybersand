@@ -1,0 +1,78 @@
+name: PF522 same-host MSVC Current deadline predicates and original suites
+on:
+  push:
+    branches: [integration/pf504-after-405-20261107]
+    paths:
+      - '.github/workflows/pf522-msvc-deadline-attribution.yml'
+      - 'tools/ci/pf522_msvc_deadline_probe.py'
+      - 'tools/ci/pf522_msvc_build_bccb.cmd'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: pf522-msvc-predicates-${{ github.run_id }}
+  cancel-in-progress: false
+env:
+  GIT_LFS_SKIP_SMUDGE: '1'
+  PYTHONUTF8: '1'
+jobs:
+  strict-source-differential:
+    runs-on: windows-2025
+    timeout-minutes: 120
+    steps:
+      - name: Disable git CRLF conversion
+        shell: bash
+        run: |
+          git config --global core.autocrlf false
+          git config --global core.eol lf
+      - name: Check out exact accepted camera-only main
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: 81bbd5ff5cf366159e2b8a630609359c13560080
+          path: baseline
+          lfs: false
+          persist-credentials: false
+      - name: Check out exact combined candidate source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          path: candidate
+          lfs: false
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Build baseline and candidate ORIGINAL MSVC native tests, no injected changes
+        shell: cmd
+        timeout-minutes: 35
+        run: |
+          call candidate\tools\ci\pf522_msvc_build_bccb.cmd original
+          if errorlevel 1 exit /b 1
+      - name: Apply identical test-only per-predicate instrumentation to both checked-out worktrees
+        shell: bash
+        timeout-minutes: 5
+        run: |
+          set -euo pipefail
+          python candidate/tools/ci/pf522_msvc_deadline_probe.py stage \
+            --base baseline --candidate candidate --out evidence
+      - name: Build independent diagnostic binaries; preserve ORIGINAL binaries separately
+        shell: cmd
+        timeout-minutes: 35
+        run: |
+          call candidate\tools\ci\pf522_msvc_build_bccb.cmd probe
+          if errorlevel 1 exit /b 1
+      - name: Run B-C-C-B unmodified focused and full 191/192-test gates plus strict predicate probe
+        shell: bash
+        timeout-minutes: 35
+        run: |
+          set -euo pipefail
+          python candidate/tools/ci/pf522_msvc_deadline_probe.py run \
+            --base baseline --candidate candidate --out evidence
+      - name: Preserve every exact source/toolchain/predicate/binary/log and failure
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: pf522-msvc-strict-deadline-predicates-${{ github.run_id }}
+          path: evidence/
+          if-no-files-found: warn
+          retention-days: 90

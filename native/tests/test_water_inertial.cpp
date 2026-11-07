@@ -556,7 +556,7 @@ void unaligned_and_serial_activity() {
 
 void current_deadline_activity() {
     WorldConfig a;a.chunk_size=64;a.scheduling_core_size=16;a.activity_block_size=16;
-    a.active_core_capacity=128;a.sleep_after_quiet_ticks=1;a.parallel_job_threshold=1;
+    a.active_core_capacity=512;a.sleep_after_quiet_ticks=1;a.parallel_job_threshold=1;
     a.physics_diagnostics.enabled=true;auto b=a;b.worker_threads=4;
     auto awake_config=a;awake_config.backend=SimulationBackend::SerialInPlace;
     awake_config.sleep_after_quiet_ticks=1024;
@@ -564,7 +564,7 @@ void current_deadline_activity() {
     auto awake=std::make_unique<World>(awake_config);
     for(auto* world:{one.get(),four.get(),awake.get()}) {
         world->reserve_region({-64,-64,256,192});
-        for(int origin:{0,32,64,96})for(int row:{0,8}) {
+        for(int origin:{-32,0,32,64,96,128,160})for(int row:{-48,-32,-16,0,8,24,40,56,72,88}) {
             rect(*world,origin+3,row+3,4,3,Material::Wall);
             world->set(origin+4,row+4,Material::Ice);world->set(origin+5,row+4,Material::Water);
         }
@@ -579,13 +579,20 @@ void current_deadline_activity() {
                     one->save_physical_state()==four->save_physical_state(),
                 "Current earliest block deadlines diverged across workers");
         same_diagnostics(*one,*four);
-        for(int origin:{0,32,64,96})for(int row:{0,8}) {
+        for(int origin:{-32,0,32,64,96,128,160})for(int row:{-48,-32,-16,0,8,24,40,56,72,88}) {
             const auto actual=four->stored_material(origin+5,row+4);
             require(actual==awake->stored_material(origin+5,row+4),
                     "Current pending contact missed its awake serial reference opportunity");
             reacted|=actual==Material::Ice;
         }
     }
+    // This is a recorded native-worker claim, not configured worker intent.
+    // 70 isolated rooms preserve the original 8 and supply enough independent
+    // active cores to exercise real shared-worker scheduling on Windows.
+    std::cout<<"CURRENT_DEADLINE_PREDICATES workers_ok="<<(participants>1)
+             <<" max_actual_workers="<<participants
+             <<" sleep_observed="<<slept<<" reaction_observed="<<reacted
+             <<" checked_ticks=128 independent_rooms=70\n";
     require(participants>1&&slept&&reacted,
             "Current deadline fixture missed real workers, quiet sleep or a future reaction");
 }

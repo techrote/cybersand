@@ -1,0 +1,86 @@
+name: PressureFlow source-built Windows native qualification
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - 'native/src/world_pressure.inc'
+      - 'native/tests/test_lcb_pressure.cpp'
+      - 'native/tests/test_world.cpp'
+      - 'native/tests/test_water_inertial.cpp'
+      - '.github/workflows/pf-gas-exact-windows-native.yml'
+  push:
+    branches: [integration/pf504-after-405-20261107]
+    paths:
+      - '.github/workflows/pf-gas-exact-windows-native.yml'
+      - 'native/tests/test_water_inertial.cpp'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pf-gas-windows-${{ github.event.pull_request.number || github.run_id }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  native-windows-source:
+    runs-on: windows-2025
+    timeout-minutes: 120
+    steps:
+      - name: Checkout exact head for Windows executable build
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - name: Build and execute complete native test binary with hosted MSVC
+        shell: cmd
+        run: |
+          @echo on
+          where git
+          git rev-parse HEAD
+          for /f "tokens=*" %%I in ('"%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe" -latest -products * -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath') do set "VS_ROOT=%%I"
+          if not defined VS_ROOT exit /b 1
+          echo Found MSVC installation at %VS_ROOT%
+          call "%VS_ROOT%\VC\Auxiliary\Build\vcvars64.bat"
+          if errorlevel 1 exit /b 1
+          where cl
+          if errorlevel 1 exit /b 1
+          if not exist build mkdir build
+          cl /nologo /std:c++20 /EHsc /W4 /I native\include /O2 /DNDEBUG native\src\world.cpp native\src\material_rules.cpp native\src\scheduler_geometry.cpp native\src\settled_world_discovery.cpp native\src\render_snapshot.cpp native\src\c_api.cpp native\tests\test_world.cpp native\tests\test_liquid_solver_policy.cpp native\tests\test_lcb_inertial.cpp native\tests\test_water_inertial.cpp native\tests\test_lcb_pressure.cpp native\tests\test_pressure_moving_mask.cpp native\tests\test_pressure_setup_capacity.cpp native\tests\test_water_cellular_yield.cpp native\tests\test_water_normalization.cpp native\tests\test_liquid_run_receipt.cpp native\tests\test_liquid_construction_refusal.cpp native\tests\test_quantity_ledger.cpp native\tests\test_ballistic_water.cpp native\tests\test_workbench_pressure_heads.cpp /Fe:build\pf_gas_exact_windows_tests.exe
+          if errorlevel 1 exit /b 1
+          build\pf_gas_exact_windows_tests.exe
+          if errorlevel 1 exit /b 1
+      - name: Strict Current deadline predicate reliability — 12 separate original-binary executions
+        shell: cmd
+        timeout-minutes: 10
+        run: |
+          @echo on
+          for /L %%I in (1,1,12) do (
+            echo PF522_STRICT_CURRENT_DEADLINE_REPEAT %%I
+            build\pf_gas_exact_windows_tests.exe "worker activity publication and observer independence"
+            if errorlevel 1 exit /b 1
+          )
+          echo PF522_STRICT_CURRENT_DEADLINE_STABILITY_PASS 12/12
+      - name: Record executable SHA256 and source identity
+        if: always()
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path build/pf-gas-windows | Out-Null
+          $info = @("source_sha=${{ github.event.pull_request.head.sha || github.sha }}",
+                    "runner_os=$env:RUNNER_OS", "runner_arch=$env:RUNNER_ARCH")
+          $info | Set-Content -Path build/pf-gas-windows/identity.txt
+          if (Test-Path build/pf_gas_exact_windows_tests.exe) {
+            Get-FileHash build/pf_gas_exact_windows_tests.exe -Algorithm SHA256 |
+              Format-List | Out-String | Add-Content build/pf-gas-windows/identity.txt
+          }
+          Get-Content build/pf-gas-windows/identity.txt
+      - name: Publish source-built Windows native runtime and proof
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: pf-gas-windows-native-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            build/pf-gas-windows/identity.txt
+            build/pf_gas_exact_windows_tests.exe
+          if-no-files-found: warn
+          retention-days: 90
