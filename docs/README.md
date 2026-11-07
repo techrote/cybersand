@@ -10,6 +10,12 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+Coupled determinism: [desktop lockstep feasibility](architecture/determinism-and-boundary-transfers.md#coupled-desktop-determinism--2026-11-06)
+records a default-off fence. With it, repeated same-host native-plus-Rapier runs
+were bit-identical, while the asynchronous default always diverged. Windows and
+Linux still differ. The [dated audit](audits/2026-11-06-coupling-lockstep-feasibility.md)
+is evidence only and changes no default.
+
 Material authoring: [#357 is merged as an owner-adopted Planned baseline](architecture/material-authoring-catalogue-plan.md#12-owner-adoption-and-shadow-compiler-handover--2026-11-04).
 The [#353-A shadow compiler](operations/material-catalogue-shadow.md) merged in
 [#371](https://github.com/techrote/cybersand/pull/371), accepted main `7ef4856e`;

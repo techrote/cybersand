@@ -10,6 +10,18 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## Coupling lockstep feasibility — 2026-11-06
+
+Branch `claude/gifted-franklin-0cd8e3` (PR #464) holds registration
+`coupling_lockstep_001.json`, its amendment, a default-off
+`set_lockstep_coupling` worker fence and the
+[feasibility audit](../audits/2026-11-06-coupling-lockstep-feasibility.md).
+No default or `main.gd` pacing changed. Before adopting a lockstep mode, read the
+audit's remaining-source list and its recommendation. An independent review
+(2026-11-06) required reducer, validation and publication-semantics repairs;
+they are recorded in the audit's review section, and every decision was
+unchanged on re-reduction. Promotion still needs exact-head runtime CI.
+
 ## Ballistic Water experiment (#362) — 2026-11-05
 
 Experimental branch `claude/water-ballistic-hybrid` (Draft PR) adds BW-001
