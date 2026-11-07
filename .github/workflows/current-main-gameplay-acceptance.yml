@@ -2,7 +2,7 @@ name: Current-main integrated gameplay acceptance
 
 on:
   push:
-    branches: [qualification/current-main-gameplay-acceptance-20261106]
+    branches: [qualification/physics-worker-1v4-20261107]
   workflow_dispatch:
 
 permissions:
@@ -137,10 +137,15 @@ jobs:
           if-no-files-found: error
 
   windows-acceptance:
-    name: 3 x 60s real Windows workbench acceptance
+    name: real Windows 3x60s / worker arm ${{ matrix.native_workers }}
     needs: windows-build
     runs-on: windows-2022
     timeout-minutes: 35
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        native_workers: [1, 4]
     steps:
       - name: Check out exact qualification head
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
@@ -186,6 +191,7 @@ jobs:
       - name: Run source-matched graphical acceptance and preserve first failure
         env:
           CYBERSAND_SOURCE_REVISION: ${{ github.sha }}
+          CYBERSAND_GAMEPLAY_ACCEPTANCE_WORKERS: ${{ matrix.native_workers }}
         run: |
           set -euo pipefail
           E="$(cygpath -u "$RUNNER_TEMP")/current-main-gameplay-acceptance"
@@ -205,6 +211,7 @@ jobs:
             printf '%s\n' "- Use official Godot 4.7 archive SHA-512 $GODOT_WINDOWS_SHA512."
             echo '- Materialize the pinned Windows Rapier DLL and run the retained GDScript through the production Godot project with gl_compatibility / opengl3_angle.'
             echo '- The three profiles are my-canvas and bench-canvas with PressureFlow gas on, stress-canvas with PressureFlow gas off; all use cached_dormant PressureFlow, ballistic Water, face release and runtime impact spray.'
+            printf '%s\n' "- Native worker arm: ${CYBERSAND_GAMEPLAY_ACCEPTANCE_WORKERS}; observed task-claimant samples are in results.json."
           } > "$E/REPRODUCE.md"
           set +e
           "$GODOT" --verbose --rendering-method gl_compatibility --rendering-driver opengl3_angle --path godot --script res://tests/current_main_gameplay_acceptance.gd > "$E/godot.log" 2>&1
@@ -236,7 +243,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: current-main-integrated-gameplay-acceptance-${{ github.run_id }}
+          name: current-main-integrated-gameplay-acceptance-w${{ matrix.native_workers }}-${{ github.run_id }}
           path: ${{ runner.temp }}/current-main-gameplay-acceptance/
           retention-days: 90
           include-hidden-files: true
