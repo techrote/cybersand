@@ -104,6 +104,49 @@ func exercise_saved() -> void:
 	await until(func() -> bool: return int(host.latest_snapshot.tick_index)>=prior_tick+8,"reopened native ticks")
 	panel.toggle_pause()
 
+# A second native source genuinely generates and installs 512² Water plus hard
+# terrain, without using the rich semantic fixture's non-play scripted water.
+func exercise_small() -> void:
+	var fixture: Dictionary = {"schema":1,"seed":917,"chunk_size":64,
+		"candidate":"strata",
+		"parameters":{"surface_y":0,"relief":0,"fluid_level":64},
+		"themes":{"weights":{"basalt":1},"exclude":[]},
+		"overrides":[
+			{"id":"explore001-water","bounds":[48,300,160,56],"material":3},
+			{"id":"explore001-floor","bounds":[16,420,464,18],"material":58}]}
+	dialog.open_new()
+	dialog._saved_recipe = fixture
+	dialog._extent.select(0)
+	dialog._x.set_value_no_signal(0)
+	dialog._y.set_value_no_signal(0)
+	dialog._start()
+	if not await until(func() -> bool: return dialog._phase=="ready" or dialog._status.text.begins_with("Refused"),
+			"512² Water/native material fixture",180): return
+	if not require(dialog._phase=="ready","512 native generation preview"): return
+	var source: Dictionary=dialog._ready_packet.duplicate(true)
+	require(source.cells.size()==512*512 and source.cells.find(3)>=0 and source.cells.find(58)>=0,
+		"genuinely generated Water and hard rock exist")
+	var candidate: Dictionary=Setup.fresh(panel._liquids.bridge.default_liquid_policy(),Vector2i(512,512))
+	if not require(panel.install_generated_start(candidate,source),"512 native World constructor"): return
+	dialog.hide()
+	if not await until(installed,"512 native World and Rapier installed"): return
+	await until(func() -> bool: return host.image.get_width()==512,"512 pixel publication")
+	compare_materials(source.cells,512,512,"512 native generated Water and hard surface")
+	var tick: int=host.latest_snapshot.tick_index
+	require(panel.toggle_pause(),"512 Water Play")
+	await until(func() -> bool: return host.latest_snapshot.tick_index>=tick+18,"512 Water native ticks")
+	panel.toggle_pause()
+	if not require(panel.restore_start(),"512 generated initial-state reset"): return
+	if not await until(installed,"512 generated reset acknowledged"): return
+	compare_materials(source.cells,512,512,"512 exact generated reset after evolved Water")
+	var old: Dictionary=panel.applied.duplicate(true)
+	dialog.open_new()
+	dialog._saved_recipe=fixture
+	dialog._extent.select(0)
+	dialog._start()
+	dialog.hide()
+	require(panel.applied==old and installed(),"cancelled native generation left existing map unchanged")
+
 func exercise_new() -> void:
 	dialog.open_new()
 	for i: int in dialog._profile.item_count:
@@ -234,6 +277,7 @@ func run() -> void:
 		if OS.get_environment("CYBERSAND_EXPLORE_REOPEN")=="1":
 			await exercise_saved()
 		else:
+			await exercise_small()
 			await exercise_new()
 	print("EXPLORE001_RESULTS checks=",checks," failures=",failed," elapsed_ms=",Time.get_ticks_msec()-start_ms)
 	host.queue_free()
