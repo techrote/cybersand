@@ -265,7 +265,7 @@ func run() -> void:
 		host.measurement_active = true
 		write_json("measurement-start.json",{
 			"ticks_usec":start_usec,"unix_usec":roundi(Time.get_unix_time_from_system()*1000000.0),
-			"native_tick":start_tick,"rapier_step":start_rapier,"actor_tick":start_actor_tick,
+			"native_tick":start_tick,"rapier_step":start_rapier,"actor_tick":start_actor_tick,"pid":OS.get_process_id(),
 		})
 		var native_samples: Array[float] = []
 		var worker_samples: Array[float] = []
