@@ -11,6 +11,14 @@ last-reviewed: 2026-11-07
 
 # Interfaces and message contracts
 
+## Three-outcome comparison interface scope
+
+No production adapter or native command changes in the three-outcome checkpoint.
+All arms are fresh version4 authored starts derived from native cut witnesses.
+All-Sand removes the authored core actor and paints its exact core Sand2;
+core-only clears exact fringe spans and records a material sink. Neither is a
+new native live-cut disposition. See the [comparison and asynchronous boundary](../audits/2026-11-07-cut-outcomes-and-triage.md).
+
 ## Interior core cut protocol
 
 The dependent rectangle experiment adds optional Boolean `rectangle_core` to

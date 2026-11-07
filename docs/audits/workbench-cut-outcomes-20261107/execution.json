@@ -1,0 +1,124 @@
+{
+  "identity": {
+    "source_commit": "5b56b41683c4dd86b12464006cd444df13d0b434",
+    "source_tree": "055ffe2204855fdef2685e9f7b630bfa36fe0374",
+    "parent": "dc4fe60fbd503a7043c7e63934da44015bd849b3",
+    "profile_sha256": "f26cad133d27d96dd46fa3236961f99aee86a30d8dadc3b3a6d622f2f8c39c21",
+    "runner_sha256": "35ed1281e5f3ec23f640ac4b44be3e9a1839d804f0b5778b0fccf6b58f0fa3f3",
+    "campaign_runner_sha256": "c687893ec758539ce3ff888dc719e114e6b5bb6ecc22cf6ac1eef9a28832649e",
+    "hitch_runner_sha256": "21804615ca247e003f82f9d39af88ba7e223421c5777f925b7a04d6256d96ca3",
+    "hitch_test_sha256": "7cb4f7241cfde4488064e737850e7fd9f7d257f8416b98314000f9a71d9d9bc0",
+    "outcome_runner_sha256": "a27076619b193dd474933aa4fcc75e908f74254894a2b850dd5dac24834c0c9b",
+    "outcome_test_sha256": "1842a7a839905778f9799a0d9c16ebeb4b950543bbe5dd6df0d66132f261b733"
+  },
+  "scope": "External test-only authored states on unchanged source3ad15 production project and native artifacts",
+  "hosts": {
+    "windows-w1": {
+      "commands": [
+        {
+          "name": "outcomes",
+          "command": [
+            "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+            "--headless",
+            "--path",
+            "C:\\khybersand\\build\\sol466-order-owned\\khybersand\\build\\workbench-cut-wake\\hosts-001\\windows\\godot",
+            "--script",
+            "C:\\khybersand\\build\\sol466-order-owned\\khybersand\\godot\\tests\\test_workbench_cut_outcomes.gd"
+          ],
+          "exit": 0,
+          "seconds": 370.07890569989104,
+          "timeout_seconds": 1800,
+          "log": "build\\workbench-cut-outcomes\\outcomes-001\\windows-w1\\outcomes.log",
+          "log_sha256": "e6d956174bcb7e6dfa68eeef391ad256c0b6267276caa983572cc707619a16cd",
+          "clean": true,
+          "report_complete": true,
+          "report": {
+            "path": "build/workbench-cut-outcomes/outcomes-001/windows-w1/outcomes.json",
+            "sha256": "6da438401d272a9b61af685aef7fa5e65841fc3a33cf6d048e969f37766e2eb4",
+            "checks": 54084,
+            "episodes": 60
+          }
+        }
+      ],
+      "runtime_sha256": "fc64e67268972bfa83c3014ba9d23a9c633cb53563c49e37a3886d0c7b63c777",
+      "rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+      "spot": false
+    },
+    "linux-w1": {
+      "commands": [
+        {
+          "name": "outcomes",
+          "command": [
+            "wsl.exe",
+            "-d",
+            "Ubuntu-24.04",
+            "--",
+            "timeout",
+            "--signal=TERM",
+            "--kill-after=5s",
+            "1800s",
+            "env",
+            "CYBERSAND_FREED_WORKERS=1",
+            "CYBERSAND_OUTCOMES_SPOT=1",
+            "CYBERSAND_FREED_REPORT=/mnt/c/khybersand/build/sol466-order-owned/khybersand/build/workbench-cut-outcomes/outcomes-001/linux-w1/outcomes.json",
+            "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+            "--headless",
+            "--path",
+            "/mnt/c/khybersand/build/sol466-order-owned/khybersand/build/workbench-cut-wake/hosts-001/linux/godot",
+            "--script",
+            "/mnt/c/khybersand/build/sol466-order-owned/khybersand/godot/tests/test_workbench_cut_outcomes.gd"
+          ],
+          "exit": 0,
+          "seconds": 52.51837780000642,
+          "timeout_seconds": 1800,
+          "log": "build\\workbench-cut-outcomes\\outcomes-001\\linux-w1\\outcomes.log",
+          "log_sha256": "214ffc7cc04d685644d4083f5b05f0e2abc643d342a918f78b776fae150e42f5",
+          "clean": true,
+          "report_complete": true,
+          "report": {
+            "path": "build/workbench-cut-outcomes/outcomes-001/linux-w1/outcomes.json",
+            "sha256": "2b37a9f50b9b37344e53462851ac48b1dc67ebce08fe966fda4f2bb89b1c3914",
+            "checks": 5434,
+            "episodes": 6
+          }
+        }
+      ],
+      "runtime_sha256": "1499e7c7d7d093536b92ca552ed148deb837a2395e91d0bccfac9e0db4f404d3",
+      "rapier_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+      "spot": true
+    },
+    "windows-w4": {
+      "commands": [
+        {
+          "name": "outcomes",
+          "command": [
+            "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+            "--headless",
+            "--path",
+            "C:\\khybersand\\build\\sol466-order-owned\\khybersand\\build\\workbench-cut-wake\\hosts-001\\windows\\godot",
+            "--script",
+            "C:\\khybersand\\build\\sol466-order-owned\\khybersand\\godot\\tests\\test_workbench_cut_outcomes.gd"
+          ],
+          "exit": 0,
+          "seconds": 41.490721500013024,
+          "timeout_seconds": 1800,
+          "log": "build\\workbench-cut-outcomes\\outcomes-001\\windows-w4\\outcomes.log",
+          "log_sha256": "46728e4b614cbb489ceb3268a37ce4c60e50b4816673b6789418ef789f78f935",
+          "clean": true,
+          "report_complete": true,
+          "report": {
+            "path": "build/workbench-cut-outcomes/outcomes-001/windows-w4/outcomes.json",
+            "sha256": "06656e34c10953037bf4e07c6c9f41f6bd6632d7793ced7faf58015ab1f7af22",
+            "checks": 5434,
+            "episodes": 6
+          }
+        }
+      ],
+      "runtime_sha256": "fc64e67268972bfa83c3014ba9d23a9c633cb53563c49e37a3886d0c7b63c777",
+      "rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+      "spot": true
+    }
+  },
+  "post_source_equality": true,
+  "original_receipt_sha256": "8c7a38ddb2e99e6a3505e2a48fe8702e88c888c24cb6555a5690fca52f587ff3"
+}

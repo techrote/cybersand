@@ -124,7 +124,8 @@
     "operations/ci-execution-and-performance.md",
     "systems/solid-detachment.md",
     "operations/material-catalogue-shadow.md",
-    "operations/material-liveness-investigation.md"
+    "operations/material-liveness-investigation.md",
+    "audits/2026-11-07-cut-outcomes-and-triage.md"
   ],
   "navigation": [
     "README.md",

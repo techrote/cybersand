@@ -542,3 +542,8 @@ Older frozen query objects remain unchanged; score these new questions separatel
 The [cut-wake/live-resume questions](retrieval-questions-workbench-cut-wake.json)
 are a separate two-question development set for semaphore lifecycle and actual
 post-handoff motion latency. Keep earlier query objects unchanged.
+
+
+The [outcome/async/triage questions](retrieval-questions-cut-outcomes.json) are
+a new two-question development set. The [dated outcome dossier](../audits/2026-11-07-cut-outcomes-and-triage.md)
+separates post-cut recipe behaviour from native conversion and async admission.

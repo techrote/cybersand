@@ -10,6 +10,26 @@ related-documents: [data-ownership-and-lifetimes.md, rigid-body-and-cellular-cou
 
 # Freed objects in the ordinary workbench
 
+## Asynchronous cut status and post-cut outcome comparison
+
+Current capture globally fences native ticks, commit requires the original tick
+and terrain revision, and mixed-body append requires suspension with unchanged
+old-body samples. Full non-pausing cutting is unavailable through this contract.
+Speculative copied-value and isolated first-body preparation is a Planned design
+option, followed by authoritative revalidation/hold; mixed-body staging and local
+reservation/epoch semantics require a separately admitted contract. No pause or
+safety gate is removed in the current comparison checkpoint.
+
+The [dated comparison and triage](../audits/2026-11-07-cut-outcomes-and-triage.md)
+uses uniformly fresh authored post-cut starts for all three outcomes. Existing
+live conversion does not support all-Sand520/356 or discarded fringe. All-Sand
+has no body; core-only explicitly loses312/204 cells. Both rigid arms retain the
+same208/152 core mass and native inertia. All preserve the eight-cell stump.
+Five-repeat Windows1 primary and Linux1/Windows4 spots observe120 exact native
+steps. First contact is age-refused in each fresh rigid episode, then119 are
+accepted; no warm-up is inserted. These starts are not strict live-cut replay.
+Keep the material/fidelity choices provisional and stop for owner triage.
+
 ## Interior rectangle experiment
 
 On `codex/workbench-rectangle-core-20261107` only, ordinary cuts request one

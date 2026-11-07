@@ -10,6 +10,16 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## Stop for cut-outcome and SOL triage — 2026-11-07
+
+Owner directs stopping after the three-outcome comparison. Read the
+[comparison/async boundary/triage dossier](../audits/2026-11-07-cut-outcomes-and-triage.md).
+72 fresh authored post-cut episodes are complete, with physics unchanged.
+Full non-pausing handoff is not admitted; current normal cutter remains held.
+The six-chamber ordinary comparison canvas is open locally; preserve other
+windows. No winner/default or alternative native cut mode is selected. Request
+independent review and owner triage before further tangents or integration.
+
 ## Remaining cut hitch — 2026-11-07
 
 Draft519's rectangle geometry and physics stay fixed. The registered follow-up

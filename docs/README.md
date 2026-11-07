@@ -10,6 +10,14 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+## Cut outcomes and triage checkpoint
+
+The [three-outcome comparison and triage](audits/2026-11-07-cut-outcomes-and-triage.md)
+compares fresh authored rectangle+Sand, all-Sand and rectangle-only starts.
+It records the current asynchronous ownership blocker, first-response age
+refusal, exact material sink and the stop-for-owner-assessment boundary.
+No alternative live-cut mode, physics/default change or new menu is added.
+
 ## Interior rectangle plus Sand
 
 The [dependent core experiment](audits/2026-11-07-workbench-rectangle-core.md)

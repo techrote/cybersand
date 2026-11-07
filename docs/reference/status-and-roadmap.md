@@ -10,6 +10,16 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+## Cut outcomes and explicit triage stop
+
+The [three-outcome dossier](../audits/2026-11-07-cut-outcomes-and-triage.md)
+records72 fresh authored comparisons, material loss, actual motion/cost and
+first-response age refusals. Fully non-pausing capture needs new ownership/
+staging semantics; no gate was removed. All-Sand/core-only are comparison
+recipes, not implemented live-cut modes. The next action is owner assessment of
+material outcome, structural fidelity, asynchronous contract and separable
+correctness repairs. Stop new tangents; keep Draft and historical blockers.
+
 ## Remaining cut hitch
 
 Draft519 additionally removes frame-polled handoffs and dense paint-history

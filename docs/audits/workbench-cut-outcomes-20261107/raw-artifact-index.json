@@ -1,0 +1,95 @@
+{
+  "scope": "Raw logs/maps/step traces remain local. Immutable production-project inventory is in referenced prior cohort. Live GUI logs mutable; separate startup copy retained.",
+  "files": [
+    {
+      "path": "build/workbench-cut-outcomes/analysis.json",
+      "bytes": 115118,
+      "sha256": "7a15fb8178fb8d60af9f525c1b9706edfc3c347f31ef0726ba8b8fc195dd68ec"
+    },
+    {
+      "path": "build/workbench-cut-outcomes/outcomes-001/linux-w1/outcomes.json",
+      "bytes": 2541865,
+      "sha256": "2b37a9f50b9b37344e53462851ac48b1dc67ebce08fe966fda4f2bb89b1c3914"
+    },
+    {
+      "path": "build/workbench-cut-outcomes/outcomes-001/linux-w1/outcomes.log",
+      "bytes": 518,
+      "sha256": "214ffc7cc04d685644d4083f5b05f0e2abc643d342a918f78b776fae150e42f5"
+    },
+    {
+      "path": "build/workbench-cut-outcomes/outcomes-001/linux-w1/outcomes.receipt.json",
+      "bytes": 985,
+      "sha256": "5dfae690c5889355648e313a3866c60def5b2c3f9da9bbbbe92950fec0c0add7"
+    },
+    {
+      "path": "build/workbench-cut-outcomes/outcomes-001/receipt.json",
+      "bytes": 34783,
+      "sha256": "8c7a38ddb2e99e6a3505e2a48fe8702e88c888c24cb6555a5690fca52f587ff3"
+    },
+    {
+      "path": "build/workbench-cut-outcomes/outcomes-001/windows-w1/outcomes.json",
+      "bytes": 23331139,
+      "sha256": "6da438401d272a9b61af685aef7fa5e65841fc3a33cf6d048e969f37766e2eb4"
+    },
+    {
+      "path": "build/workbench-cut-outcomes/outcomes-001/windows-w1/outcomes.log",
+      "bytes": 2707,
+      "sha256": "e6d956174bcb7e6dfa68eeef391ad256c0b6267276caa983572cc707619a16cd"
+    },
+    {
+      "path": "build/workbench-cut-outcomes/outcomes-001/windows-w1/outcomes.receipt.json",
+      "bytes": 624,
+      "sha256": "b9c423b59d26ee2999d76962ecea917b71a3f0a77bd589f621b3cd2240557a7c"
+    },
+    {
+      "path": "build/workbench-cut-outcomes/outcomes-001/windows-w4/outcomes.json",
+      "bytes": 2540538,
+      "sha256": "06656e34c10953037bf4e07c6c9f41f6bd6632d7793ced7faf58015ab1f7af22"
+    },
+    {
+      "path": "build/workbench-cut-outcomes/outcomes-001/windows-w4/outcomes.log",
+      "bytes": 528,
+      "sha256": "46728e4b614cbb489ceb3268a37ce4c60e50b4816673b6789418ef789f78f935"
+    },
+    {
+      "path": "build/workbench-cut-outcomes/outcomes-001/windows-w4/outcomes.receipt.json",
+      "bytes": 624,
+      "sha256": "3fcf64548c56014a60d7044b582e11d126d93117280e93eb0b0c6902324b933c"
+    },
+    {
+      "path": "build/workbench-cut-outcomes/preview/import-summary.json",
+      "bytes": 501,
+      "sha256": "4d66661286f5849bef7a8d4a89dc6858d8cbd2d541499b9f55d3950b3c2c7c2b"
+    },
+    {
+      "path": "build/workbench-cut-outcomes/preview/import.log",
+      "bytes": 38875,
+      "sha256": "24de43e512f24da5509d5b2532c363a9f2fb7a55ffb344d5a035511ce107438b"
+    },
+    {
+      "path": "build/workbench-cut-outcomes/preview/import.receipt.json",
+      "bytes": 501,
+      "sha256": "4d66661286f5849bef7a8d4a89dc6858d8cbd2d541499b9f55d3950b3c2c7c2b"
+    },
+    {
+      "path": "build/workbench-cut-outcomes/preview/mixed.json",
+      "bytes": 59847,
+      "sha256": "f1901820529cbce6e0750bc7eaab9174f1ffd6bc875bf0c97b03a1e51418c618"
+    },
+    {
+      "path": "build/workbench-cut-outcomes/preview/packed_sand.json",
+      "bytes": 58217,
+      "sha256": "23f1a6ac92f44b30c8eed190daa8134e98e0b07b72be649a7623d11cffbeaa58"
+    },
+    {
+      "path": "build/workbench-cut-outcomes/preview/process.json",
+      "bytes": 70,
+      "sha256": "c22bd0c8fce9f928ce047c4f7e2f56276ff85b9e9cf144f6fcb70826d4fd213e"
+    },
+    {
+      "path": "build/workbench-cut-outcomes/preview/workbench.png",
+      "bytes": 100818,
+      "sha256": "53c187d84af743259b0d3142494ccaa5c16d8770a37ffa58a4540bb869dcf37c"
+    }
+  ]
+}
