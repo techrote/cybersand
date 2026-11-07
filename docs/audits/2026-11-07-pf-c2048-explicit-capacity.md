@@ -5,7 +5,7 @@ document-kind: evidence
 scope: Isolated Draft implementation from main 4c2c9732; opt-in C2048 native World profile with versioned physical identity and persistence; no production adoption or merge
 canonical-for: []
 last-reviewed: 2026-11-07
-related-documents: [../architecture/pressure-flow-v1.md, liquid-prepared-setup-and-receipts.md, ../operations/configuration-and-capacity-budgets.md, ../reference/invariants.md, 2026-11-06-pf-gas-capacity-native-qualification.md]
+related-documents: [../architecture/pressure-flow-v1.md, ../architecture/liquid-prepared-setup-and-receipts.md, ../operations/configuration-and-capacity-budgets.md, ../reference/invariants.md]
 ---
 
 # PF-C2048 — explicit capacity profile (experimental)

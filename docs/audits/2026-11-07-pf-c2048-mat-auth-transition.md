@@ -5,7 +5,7 @@ document-kind: evidence
 scope: Reviewed opt-in versioned C2048 per-World capacity transition for MAT-AUTH protected native sources; immutable C1024 identity and historic test contracts preserved
 canonical-for: []
 last-reviewed: 2026-11-07
-related-documents: [../operations/material-catalogue-shadow.md, 2026-11-07-pf-c2048-explicit-capacity.md, 2026-11-06-pf-gas-capacity-native-qualification.md, ../architecture/pressure-flow-v1.md]
+related-documents: [../operations/material-catalogue-shadow.md, 2026-11-07-pf-c2048-explicit-capacity.md, ../architecture/pressure-flow-v1.md]
 ---
 
 # PF-C2048 MAT-AUTH protected-source transition — 7 November 2026
