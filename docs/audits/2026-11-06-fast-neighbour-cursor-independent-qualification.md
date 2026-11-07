@@ -4,6 +4,78 @@
 **Decision (7 November 2026): ACCEPT FOR FURTHER ADMISSION — independent #485 source review ACCEPT; code-pinned LF-verified transition prepared on Draft #477. Exactness PASS, modest but statistically positive multiworker gain +2.677% on the tested 4-logical-CPU host; not a 5–10% claim or a production/merge approval. Deployment 6-core/12-thread performance and actual Godot/Rapier FPS remain untested.**  
 **Scope:** `techrote/cybersand` PR [#471](https://github.com/techrote/cybersand/pull/471); isolated follow-up Draft [#477](https://github.com/techrote/cybersand/pull/477); no merge or production publication.
 
+## Final executed Native/Godot admission qualification — 7 November 2026 01:06 UTC
+
+**Engineering decision: ACCEPT FOR FURTHER ADMISSION; no merge and no
+production runtime publication by this independent work.** The user-requested
+qualify/repair/measure/evidence scope is closed for the **source-identical**
+cursor implementation. Its native deterministic/physical exactness is
+demonstrated by the original full Native/ASan/TSan/guarded-oracle runs and
+independent extra edge-case replay; the slower-than-target but statistically
+significant +2.677% six-worker 1,800-tick whole-native-tick improvement
+(95% paired CI +2.086%..+3.268%) is accurately recorded without a
+5–10% benefit claim or extrapolation to a 6-physical-core host.
+
+### Final original source-pinned CI result ledger
+
+| Gate | Exact executed source / run | Actual result |
+|---|---|---|
+| Owner-reviewed LF source transition / immutable-lock authority | [#485 independent ACCEPT](https://github.com/techrote/cybersand/issues/485#issuecomment-6699706678); owner `world.cpp` introducing `b51f01536db6408458442c532d75256d33422fba` | **ACCEPT** for reviewed transition; unchanged historical lock |
+| Canonical source guard, ancestry, LF bytes | [Branch-pinned run #42320091908](https://github.com/techrote/cybersand/actions/runs/42320091908), at `843270b002efbfa0defa894d087a075f72f8b531` | **PASS** guard; its *combined admission job* failed later because standalone docs lacked companion workspace |
+| Full canonical docs/material catalogue/native parity/M11/retrieval with required companion workspace | [Current-head run #42321183242](https://github.com/techrote/cybersand/actions/runs/42321183242), at `76f30996d86f0f867ea2d0471ebf8a11a17bb6da` | **PASS** including owner canonical `REVIEWED_TRANSITIONS` and exactly committed canonical transition record |
+| Full native C++ | [Run #42320091908](https://github.com/techrote/cybersand/actions/runs/42320091908), source `843270...` | **188/188 PASS** |
+| Full native with `CYBERSAND_VERIFY_LOCAL_NEIGHBOUR` | Same run, [raw logs artifact #13553890278](https://github.com/techrote/cybersand/actions/runs/42320091908/artifacts/13553890278) | **188/188 PASS** |
+| Source-matched Linux x86_64 GDExtension compiled with pinned GCC13, Godot-cpp and SCons | Same run, source `843270...` | **PASS**; run-private binary artifact only, never production-published by this review |
+| Source-matched Linux Godot 4.7 rendered/headless regression suite | Same run, 8 isolated shards, source/runtime SHA `843270...` | **8/8 PASS**, all **266 unique** regression cases plus per-shard Godot import preflight |
+| Independent unique/complete eight-shard evidence and runtime-source identity | Same run, [coverage artifact #13552839934](https://github.com/techrote/cybersand/actions/runs/42320091908/artifacts/13552839934) | **PASS**; eight complete shard artifacts with no duplicate/missing cases |
+
+This result is **source-byte matched** across the reviewed cursor
+`world.cpp`, but the Native/Godot run's original Git commit `843270...`
+precedes later **documentation-only/workflow/owner-canonical-record**
+reconciliation on the independent Draft branch. The current-head docs/guard
+run `76f309...` did qualify that canonical record and historical
+source-commit ancestry. This distinction is retained explicitly: do **not**
+mislabel the older Native/Godot run as having tested the later documentation
+commit itself, or represent those test-only CI binaries as published runtimes.
+
+**Original failure classification:** the first `#42320091908` admission
+job checked `compatibility.py` successfully and then called `check_docs.py`
+without the mandatory companion workspace, generating six missing-path
+errors. The corrected pinned-workspace documents run initially exposed that
+the owner canonical record had not yet been committed on the independent
+branch; the exact owner-authored record was copied **unchanged** and
+then accepted by the source guard and full docs runner at `76f309...`.
+No test assertion, provenance guard, retained lock or source bytes were
+weakened. The independent Draft's compatibility source is byte-for-byte
+identical to owner #471's reviewed transition, and the companion
+independent audit is not a duplicate canonical `record`.
+
+**Concurrent owner branch update:** owner #471 was later retargeted toward
+`main` and updated with separate runtime-provenance/LFS changes, last
+observed `783a2571477c50fd2a3d3b538bde4dbe0b76ec85`. These were
+made by another actor, **not by this independent qualification**, and do
+not change the protected cursor source bytes; no owner-side merge is
+performed here. Whether those owner-managed release artifacts are
+acceptable for publication remains outside this task.
+
+### Final handover
+
+1. **This independent engineering package is complete:** validated source
+   semantics, 600/1,800-tick paired speedups and uncertainty, full native
+   + ASan/UBSan + TSan + same-chunk oracle, signed/mask/192/epoch regressions,
+   line-level Callgrind and clearly recorded unavailable Linux `perf`,
+   exact Godot fixture, canonical MAT-AUTH reviewed transition and
+   source-matched 266-case Linux Godot acceptance.
+2. The final owner-controlled integration is deliberately separate from
+   this no-merge task: approve the measured approximately 2–3% gain, ensure
+   its own current-main/Windows/retained-runtime gates meet release policies,
+   and preserve Git ancestry if later merging. No production-FPS claim is
+   made from native-only timing.
+3. **Both PRs remain unmerged by this work; PR #477 remains Draft.** No
+   production runtime publication or baseline-lock refresh was performed by
+   this independent reviewer. Any later merge/publication requires the
+   owner's explicit decision.
+
 ## Final transition-preparation status — 7 November 2026
 
 **Accepted for further admission only, not merge or production publication.**
