@@ -12,6 +12,11 @@ const MAX_LOG_LINES := 32
 var client: Node
 var proposal_overlay: Control
 var _dispatcher: Callable
+var _authorizer: Callable
+var _retirement: Callable
+var _start_pending := false
+var _retire_pending := false
+var _start_nonce := 0
 var _task := TextEdit.new()
 var _model := LineEdit.new()
 var _region: Array[SpinBox] = []
@@ -46,8 +51,8 @@ func _ready() -> void:
 	add_child(_model)
 	var row := HFlowContainer.new()
 	add_child(row)
-	for spec: Array in [["X", -2147483647.0, 2147483647.0, 0.0],
-			["Y", -2147483647.0, 2147483647.0, 0.0],
+	for spec: Array in [["X", 0.0, 2147483647.0, 0.0],
+			["Y", 0.0, 2147483647.0, 0.0],
 			["W", 1.0, 4096.0, 32.0], ["H", 1.0, 4096.0, 32.0]]:
 		var text := Label.new()
 		text.text = str(spec[0])
@@ -92,10 +97,13 @@ func _ready() -> void:
 	add_child(_log)
 	_refresh_buttons()
 
-func bind_authoritative_dispatcher(dispatcher: Callable, world_to_screen: Callable = Callable()) -> void:
+func bind_authoritative_dispatcher(dispatcher: Callable, world_to_screen: Callable = Callable(),
+		authorizer: Callable = Callable(), retirement: Callable = Callable()) -> void:
 	# Expected dispatcher(name,args,epoch,call_id,client). It MUST return via
 	# client.submit_tool_result after the exclusive owner supplies a native receipt.
 	_dispatcher = dispatcher
+	_authorizer = authorizer
+	_retirement = retirement
 	proposal_overlay.set_world_to_screen(world_to_screen)
 	_state.text = "Dispatcher bound; waiting for human Start."
 	_refresh_buttons()
@@ -107,11 +115,13 @@ func set_protected_regions(regions: Array) -> void:
 	_retire_on_human_change()
 
 func invalidate_due_to_owner_change(reason: String) -> void:
+	_start_nonce += 1
 	if client != null:
 		client.invalidate_after_human_change(reason)
 	_refresh_buttons()
 
 func _retire_on_human_change() -> void:
+	_start_nonce += 1
 	if client != null and client.is_active():
 		client.invalidate_after_human_change("Task/scope/material configuration changed.")
 	_refresh_buttons()
@@ -119,11 +129,11 @@ func _retire_on_human_change() -> void:
 func _refresh_buttons() -> void:
 	if client == null:
 		return
-	_start.disabled = client.is_active() or not _dispatcher.is_valid()
-	_stop.disabled = not client.is_active()
+	_start.disabled = client.is_active() or _start_pending or _retire_pending or not _dispatcher.is_valid()
+	_stop.disabled = not client.is_active() and not _start_pending
 
 func _on_start() -> void:
-	if not _dispatcher.is_valid() or client.is_active():
+	if not _dispatcher.is_valid() or client.is_active() or _start_pending or _retire_pending:
 		_log_status("refused", "No native dispatcher or task already active.")
 		return
 	var materials: Array[String] = []
@@ -142,10 +152,34 @@ func _on_start() -> void:
 		"protected_regions": _protected_regions.duplicate(true),
 		"allowed_materials": materials
 	}
-	client.begin_task(_task.text, _model.text, scope)
+	if scope.region.width * scope.region.height > 4096:
+		_log_status("refused","Authorized scope exceeds 4096 native cells.")
+		return
+	if _authorizer.is_valid():
+		_start_pending = true
+		var nonce: int = _start_nonce
+		_refresh_buttons()
+		var authorization: Dictionary = await _authorizer.call(scope)
+		_start_pending = false
+		if nonce != _start_nonce:
+			if authorization.get("status") == "authorized" and _retirement.is_valid():
+				_retire_pending = true
+				await _retirement.call()
+				_retire_pending = false
+			_refresh_buttons()
+			return
+		if authorization.get("status") != "authorized":
+			_log_status("refused","Native task authorization: " + str(authorization.get("reason","unknown")))
+			return
+	if not client.begin_task(_task.text, _model.text, scope) and _retirement.is_valid():
+		_retire_pending = true
+		var cleanup: Dictionary = await _retirement.call()
+		_retire_pending = false
+		_log_status("retirement",str(cleanup.get("status","unconfirmed")))
 	_refresh_buttons()
 
 func _on_stop() -> void:
+	_start_nonce += 1
 	# #527 adapter must separately confirm stop at its bounded native boundary.
 	# Client Stop cancels new API dispatch; does not claim a native Stop ACK.
 	client.stop_task("Human Stop — API dispatch revoked; native Stop ACK is separate.")
@@ -177,7 +211,18 @@ func _log_status(status: String, detail: String) -> void:
 	_refresh_buttons()
 
 func _task_finished(_outcome: String) -> void:
+	if _retirement.is_valid() and not _retire_pending:
+		_retire_pending = true
+		_complete_retirement.call_deferred()
 	_refresh_buttons()
+
+func _complete_retirement() -> void:
+	var result: Dictionary = await _retirement.call()
+	_retire_pending = false
+	if is_instance_valid(self):
+		_log_status("native_retirement",str(result.get("status","unconfirmed")) +
+			": " + str(result.get("reason","")))
+		_refresh_buttons()
 
 func _exit_tree() -> void:
 	if client != null and client.is_active():
