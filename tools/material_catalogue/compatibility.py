@@ -246,7 +246,14 @@ REVIEWED_TRANSITIONS: tuple[dict, ...] = ({'path': 'native/src/world_pressure.in
   'source_commit': 'a2373e12fb87d8d5b28efcc6037316fb6f605a14',
   'record': 'docs/audits/2026-11-06-pf-ballistic-tick-cost.md',
   'issue': 362,
-  'pr': 406})
+  'pr': 406},
+ {'path': 'native/src/world.cpp',
+  'from_lf_sha256': '5a9de5e09a8665392677902ab501696aafefb5bbd2d2800e3dc1059b87a6f17d',
+  'to_lf_sha256': 'bbd9741311bc67905934048633846b8d011efd760033edd0ff9e88be5b262868',
+  'source_commit': 'b51f01536db6408458442c532d75256d33422fba',
+  'record': 'docs/audits/2026-11-07-pf471-world-transition-proposal.md',
+  'issue': 485,
+  'pr': 471})
 
 
 class CompatibilityError(ValueError):

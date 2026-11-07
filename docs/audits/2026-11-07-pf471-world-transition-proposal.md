@@ -1,18 +1,19 @@
 ---
 title: PF471 neighbour cursor — unadmitted MAT-AUTH world.cpp transition proposal
-status: Proposed
+status: Current
 document-kind: audit
-scope: Source-pinned transition proposal for independent read-only review; no compatibility admission
+scope: Independently accepted and code-pinned MAT-AUTH transition for PR #471; frozen compatibility lock unchanged
 canonical-for: []
 last-reviewed: 2026-11-07
 related-documents: [2026-11-06-fast-neighbour-cursor-draft.md, 2026-11-04-mat-auth-reviewed-transitions.md, ../operations/material-catalogue-shadow.md]
 ---
 
-# PF471 proposed reviewed transition for `native/src/world.cpp`
+# PF471 reviewed transition for `native/src/world.cpp`
 
-**Status: UNADMITTED.** This record does not modify `REVIEWED_TRANSITIONS`,
-the frozen compatibility lock, production defaults or runtimes. Independent
-read-only review is tracked by [#485](https://github.com/techrote/cybersand/issues/485).
+**Status: ADMITTED BY REVIEWED_TRANSITIONS; RUNTIME PUBLICATION STILL SEPARATE.**
+Independent read-only MAT-AUTH review [#485](https://github.com/techrote/cybersand/issues/485)
+returned **ACCEPT** on 7 November 2026. The frozen compatibility lock remains
+unchanged; this record authorizes only the exact protected bytes below.
 
 | Field | Proposal |
 |---|---|
@@ -25,7 +26,7 @@ read-only review is tracked by [#485](https://github.com/techrote/cybersand/issu
 | Exact source commit introducing candidate bytes | `b51f01536db6408458442c532d75256d33422fba` |
 | Candidate blob identity | Git blob `dcacf99d62c472becd929617f4a7034f889aaeb9`; unchanged through qualification descendants |
 | Frozen lock/baseline | **Unchanged** |
-| Admission | **Independent review required** |
+| Admission | **ACCEPTED — #485; code-pinned REVIEWED_TRANSITIONS entry** |
 
 ## Protected-source delta
 
@@ -51,7 +52,7 @@ The protected change:
 Compile-time `CYBERSAND_VERIFY_LOCAL_NEIGHBOUR` independently compares every
 executed fast same-chunk load with `World::get` and terminates on disagreement.
 
-These observations are technical scope evidence, not MAT-AUTH admission.
+These observations were independently reviewed in #485 and accepted as execution-only.
 
 ## Actual qualification attached to the proposal
 
@@ -101,10 +102,9 @@ The reviewer should independently verify:
 7. the change does not alter the protected path's material identity, policy,
    physical-hash, persistence or scheduling authority.
 
-Only after an independent ACCEPT and owner admission may a separately authorized
-change add the code-pinned transition entry with this path, hashes, source commit,
-record, issue #485 and PR #471. A subsequent current-main reconciliation must
-preserve authenticated ancestry or separately repoint the reviewed source commit,
-then rerun exact resulting-head Native/Godot/provenance gates.
+The independent review is complete and the code-pinned transition entry now
+admits exactly this path/hash/source-commit/record/issue/PR tuple. The current-main
+reconciliation preserves `b51f0153...` in two-parent ancestry. Exact resulting-head
+Native/Godot/provenance qualification remains mandatory before merge.
 
-**Do not merge or publish runtime artifacts from this proposal.**
+**This admission does not publish or authorize stale retained runtime artifacts.**
