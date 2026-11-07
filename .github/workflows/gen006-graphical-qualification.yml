@@ -64,7 +64,7 @@ jobs:
             native/tests/gen006_streaming_slice.cpp \
             -o "$dir/streaming-slice" \
             > "$dir/native-compile.log" 2>&1 || { cat "$dir/native-compile.log"; exit 1; }
-      - name: Execute actual Godot graphical viewport and preserve five PNGs
+      - name: Execute actual Godot graphical viewport and preserve seven PNGs
         shell: bash
         timeout-minutes: 12
         run: |
@@ -109,7 +109,8 @@ jobs:
               --path "$dir/project" --script res://tests/gen006_graphical_qualification.gd \
             2>&1 | tee "$dir/graphical.log"
           grep -q 'GEN006_GODOT_GRAPHICAL_FRAME_PASS' "$dir/graphical.log"
-          for name in 01-dug 02-painted-wall 03-distant-chunk 04-reloaded-wall 05-water17; do
+          grep -q 'GEN006_TERRAIN_FIRST_FRAME_PASS' "$dir/graphical.log"
+          for name in 00-generated-terrain 01-dug 02-painted-wall 03-distant-chunk 04-reloaded-wall 05-water17 06-reloaded-terrain; do
             test -s "$dir/screenshots/$name.png"
           done
           sha256sum "$dir"/screenshots/*.png | tee "$dir/screenshots.sha256"
