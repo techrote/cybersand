@@ -130,6 +130,17 @@ func run() -> void:
 	var after_manual: int = main.latest_snapshot.tick_index
 	check(after_manual==initial_tick+5,
 		"manual tick not exactly once after refusal")
+	# Failure-before controls for the serial-only/paused-only race: a valid
+	# serial and paused snapshot MUST NOT acknowledge a different native tick
+	# or a replacement native World generation.
+	check(_manual_step_ack(manual_serial,after_manual,source.render_world_generation),
+		"exact serial, paused native tick and generation were not acknowledged")
+	check(not _manual_step_ack(manual_serial,after_manual+1,
+			source.render_world_generation),
+		"stale paused native snapshot falsely ACKed a future tick")
+	check(not _manual_step_ack(manual_serial,after_manual,
+			source.render_world_generation+1),
+		"paused native snapshot falsely ACKed another World generation")
 
 	# Stop after the third *ACKed real native tick*, not after scheduling.
 	# The callback is synchronous at this acknowledgment boundary; it
