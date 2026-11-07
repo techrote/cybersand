@@ -59,6 +59,7 @@ jobs:
           cp harness/godot/tests/pf532_stress_canvas_actual_workbench.gd baseline/godot/tests/pf532_stress_canvas_actual_workbench.gd
           python3 -m py_compile harness/tools/ci/pf532_stress_workbench_readback.py             harness/tools/ci/pf532_full_cpu_probe.py harness/tools/ci/pf532_fullsize_host_probe.py             harness/tools/ci/pf532_fullsize_cpu_physics_readback.py
           python3 harness/tools/ci/check_ci_provider_policy.py
+          git -C baseline fetch --no-tags origin "$CANDIDATE_SOURCE"
           python3 harness/tools/ci/pf532_full_cpu_probe.py --baseline baseline --candidate candidate --out evidence
           python3 harness/tools/ci/pf532_fullsize_host_probe.py --app baseline --out evidence
           printf 'baseline=%s\ncandidate=%s\nharness=%s\n' "$BASE_SOURCE" "$CANDIDATE_SOURCE" "$(git -C harness rev-parse HEAD)" > evidence/source-identities.txt
