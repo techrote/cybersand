@@ -133,10 +133,46 @@ func run() -> void:
 	check(main.latest_snapshot.tick_index==after_manual+3,
 		"native World continued AFTER Stop ACK")
 
+	# The fourth model-visible tool must enforce the exact #526 JSON
+	# contract. Neither malformed arguments nor unknown fields may queue a
+	# native tick; a genuine accepted tool call remains stoppable at a
+	# completed tick ACK, not at command admission.
+	var tool_driver = Driver.new()
+	var tick_before_tool: int = main.latest_snapshot.tick_index
+	for invalid_args: Variant in [null,[],{},{"ticks":"2"},{"ticks":2.0},
+			{"ticks":0},{"ticks":121},{"ticks":2,"unexpected":true}]:
+		var rejected: Dictionary = await tool_driver.call_step(
+			main,workbench,invalid_args)
+		check(rejected.get("status")=="refused" and rejected.get("completed",-1)==0,
+			"malformed fourth-tool arguments queued native work: "+str(invalid_args))
+	check(main.latest_snapshot.tick_index==tick_before_tool,
+		"malformed tool arguments changed real native tick")
+	var stop_tool_on_two: Callable = func(receipt: Dictionary) -> void:
+		if int(receipt.completed)==2:
+			tool_driver.request_stop()
+	tool_driver.step_completed.connect(stop_tool_on_two)
+	var tool_stopped: Dictionary = await tool_driver.call_step(
+		main,workbench,{"ticks":5})
+	tool_driver.step_completed.disconnect(stop_tool_on_two)
+	check(tool_stopped.get("status")=="stopped"
+		and tool_stopped.get("reason")=="human_stop"
+		and tool_stopped.get("requested")==5 and tool_stopped.get("completed")==2
+		and tool_stopped.get("before_tick")==tick_before_tool
+		and tool_stopped.get("after_tick")==tick_before_tool+2
+		and tool_stopped.get("still_paused")==true,
+		"strict model fourth-tool Stop ACK was not actual two native ticks: "
+		+str(tool_stopped))
+	for _check_frame: int in 4:
+		await process_frame
+	check(main.latest_snapshot.tick_index==tick_before_tool+2,
+		"model-tool Stop completed with an unauthorized later native tick")
+	stop_tool_on_two = Callable()
+	tool_driver = null
+
 	var max_call = Driver.new()
 	var cap: Dictionary = await max_call.step(main,workbench,120)
 	check(cap.get("status")=="completed" and cap.get("completed")==120
-		and cap.get("after_tick")==after_manual+123
+		and cap.get("after_tick")==after_manual+125
 		and cap.get("still_paused")==true,
 		"maximum bounded real native 120-tick call failed: "+str(cap))
 	var idle_stop: Dictionary = await max_call.stop()
@@ -151,7 +187,7 @@ func run() -> void:
 		and stale_driver.get("completed",0)==0,
 		"retired task re-admitted late native Step: "+str(stale_driver))
 	var final_snapshot: CyberSimulationSnapshot = main.latest_snapshot
-	check(final_snapshot.tick_index==initial_tick+128
+	check(final_snapshot.tick_index==initial_tick+130
 		and final_snapshot.paused and not final_snapshot.simulation_failed,
 		"native completed tick total differs from ACKs")
 	# Original OpenGL viewport evidence; image is a visual receipt, not
@@ -163,7 +199,7 @@ func run() -> void:
 		if check(image != null and not image.is_empty(),
 				"actual OpenGL viewport capture returned no image"):
 			check(image.save_png(image_dir.path_join(
-					"actual-paused-native-after-128-ticks.png")) == OK,
+					"actual-paused-native-after-130-ticks.png")) == OK,
 				"could not preserve original workbench PNG")
 	print("WB_AGENT_527_STEP_RESULT " + JSON.stringify({
 		"checks":checks,"failures":failures,
