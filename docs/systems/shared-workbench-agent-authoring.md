@@ -273,12 +273,66 @@ and Rapier binaries: **focused [run 42379815975](https://github.com/techrote/cyb
   rebuilt binary and does not establish Windows, broader regressions, independent
   review, human desktop acceptance or a working live OpenAI client.
 
+## #526 main-thread host dispatcher (isolated Draft)
+
+`godot/scripts/workbench_authoring_host.gd` is the **working non-HTTP
+main-thread bridge** to the existing paused Godot simulation owner, not a new
+World, physics loop or duplicate UI. Bind it once with
+`bridge.bind(main)` on the existing shared workbench. A privileged human/UI
+controller calls `await bridge.authorize_task(task_id, Rect2i, protected, [0,58])`
+and later `await bridge.retire_task()`; these methods are **not model tools**.
+
+Only `await bridge.call_tool("observe", args)`,
+`await bridge.call_tool("prepare_edit", args)` and
+`await bridge.call_tool("apply_edit", args)` are exposed by #526. `step`
+is **not** implemented there: #527 owns its stopped/acknowledged native
+step lifecycle. Requests travel as copied bounded values through the
+existing `CyberSimulationWorker.queue_agent_authoring_command()`, with a
+unique owner serial and a real owner result; they never hand a World or
+mutable proposal to model/UI code. The bridge serializes a **complete**
+tool call, including the asynchronous GPU render join and owner-side
+confirmation, not merely each queue submission.
+
+The bridge accepts strict Responses JSON rectangle objects with exact integer
+`x,y,width,height`, or an already-validated Godot `Rect2i`. The required
+model-visible `region:null` means the authorized task scope. A nullable
+`replace_only_material:null` becomes **absence of the filter**, never
+native material ID 0. Floats, unknown tool arguments, overflowed world
+coordinates, malformed operations and unauthorized host-only commands refuse.
+Observe returns the actual copied post-draw PNG and matched native IDs,
+counts, palette, generation/revision/tick and render serial. The host confirms
+the matched framebuffer with the owner **after capture**; pending/unconfirmed
+receipts never impersonate observed image/native evidence.
+
+On prepare, the bridge stages the exact worker-proposed footprint against
+the existing named-start representation **before** native application. If
+that history cannot represent the change, it refuses the prospective apply
+without modifying the World. On apply, the existing worker executes and
+readback-verifies the native mutation; the host commits the staged start only
+after a verified receipt. A mismatch after native application returns
+`unconfirmed` and quarantines the host instead of pretending rollback or
+retry. Duplicate consumed proposal IDs replay retained original receipts.
+A timeout or ambiguous native result likewise must never be retried
+blindly. Human brush admission, manual revision and generation fences are
+still enforced by the worker at exclusive consume, not by UI optimism.
+
+The focused real-Godot owner regression now covers this **host JSON ->
+native IDs/frame -> typed owner request -> authored-start commit** route,
+strict float refusal, duplicate idempotence and queued human intent conflict
+in addition to the direct native-owner controls. This is an **isolated Draft
+engineering slice**, not a mounted #528 panel, a complete #527 Step/Stop,
+an exact-head rebuilt Windows DLL/so or accepted live/human testing.
+
 For the downstream #527 and #528 owners, the **versioned proposed strict
 model-visible four-tool JSON declarations** are in
 [`wb-agent-model-tools-v1.json`](../reference/wb-agent-model-tools-v1.json).
-The three #526 internal worker actions are exercised, but the JSON->typed Godot
-translation/client adapter is exclusively #528, and `step`/Stop remain #527.
-No consumer may treat this declaration file as a deployed four-tool API.
+The three #526 internal worker actions and host-side strict JSON-to-Godot
+translation are exercised. #528 still exclusively owns actual panel/network
+wiring, strict Responses tool dispatch, PNG transport and model-facing error
+presentation; it must consume this actual source-locked bridge rather than
+invent a second World/controller. `step`/Stop remain #527. No consumer may
+treat the declaration file or this isolated host bridge as an already mounted
+four-tool API in production.
 
 Before accepting #526, run source-exact docs/provenance/M11/retrieval,
 applicable native and Godot tests, manual-intervention race/readback,
