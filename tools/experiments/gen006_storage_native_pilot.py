@@ -106,11 +106,12 @@ def writer_child(meta: Path) -> None:
     # and explicit player Empty mask). Persist the complete native carrier.
     journal = Journal.create(p / "edits.g6j", ident,
                              (p / "native-base.g6s").read_bytes())
-    for x in info["edits"]:
-        mutation = Mutation(*x)
-        journal.append(mutation, journal.state.generation)
+    # Five pre-staged native receipts receive ONE group ACK only after a
+    # single shared fsync. These are not five independent durable edit ACKs.
+    journal.append_batch(tuple(Mutation(*x) for x in info["edits"]),
+                         journal.state.generation)
     # Deliberately crash with an additional unacknowledged partial frame;
-    # all five complete, fsynced edits must remain recoverable. The caller
+    # all five group-committed edits must remain recoverable. The caller
     # must prove native physical replay before publishing an appendable copy.
     with (p / "edits.g6j").open("ab") as f:
         f.write(b"EDIT" + bytes((0, 0, 0)))
