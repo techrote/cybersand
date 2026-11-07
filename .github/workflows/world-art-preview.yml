@@ -65,6 +65,17 @@ jobs:
           "$GODOT" --headless --path godot --editor --import --quit > /tmp/world-art-import.log 2>&1 || { cat /tmp/world-art-import.log; exit 1; }
           "$GODOT" --headless --path godot --script res://tests/test_world_design_pack_adapter.gd \
             2>&1 | tee build-world-art-adapter.log
+      - name: Launch the standalone scene via the documented Godot CLI
+        shell: bash
+        run: |
+          set -euo pipefail
+          xvfb-run --auto-servernum --server-args='-screen 0 1920x1080x24 -nolisten tcp' \
+            timeout 180 "$RUNNER_TEMP/engine/Godot_v4.7-stable_linux.x86_64" \
+            --path godot --rendering-driver opengl3 --quit-after 120 \
+            res://tools/world_art_preview.tscn -- \
+            --art-root="$GITHUB_WORKSPACE/art-source/docs/world-design" \
+            --design-revision="$ART_REVISION" \
+            2>&1 | tee build-world-art-launch.log
       - name: Run actual interactive GUI with screenshot and 120-feature coverage
         shell: bash
         run: |
@@ -76,6 +87,7 @@ jobs:
             --script res://tests/world_art_preview_smoke.gd -- \
             --art-root="$GITHUB_WORKSPACE/art-source/docs/world-design" \
             --design-revision="$ART_REVISION" \
+            --export-root="$GITHUB_WORKSPACE/build/world-art-linux/exports" \
             --smoke-output="$GITHUB_WORKSPACE/build/world-art-linux" \
             2>&1 | tee build/world-art-linux/execution.log
       - name: Preserve Godot framebuffer evidence
@@ -86,6 +98,7 @@ jobs:
           path: |
             build/world-art-linux/
             build-world-art-adapter.log
+            build-world-art-launch.log
           if-no-files-found: warn
           retention-days: 30
 
@@ -130,6 +143,7 @@ jobs:
             --script res://tests/world_art_preview_smoke.gd -- \
             --art-root="$GITHUB_WORKSPACE/art-source/docs/world-design" \
             --design-revision="$ART_REVISION" \
+            --export-root="$GITHUB_WORKSPACE/build/world-art-windows/exports" \
             --smoke-output="$GITHUB_WORKSPACE/build/world-art-windows" \
             2>&1 | tee build/world-art-windows/execution.log
       - name: Preserve ANGLE original framebuffer evidence
