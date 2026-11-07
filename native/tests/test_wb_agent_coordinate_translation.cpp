@@ -30,10 +30,18 @@ struct Trace {
 constexpr std::array<int,16> kSnapshotTicks{
     0,1,2,3,4,8,12,16,20,40,60,80,120,240,360,480
 };
-constexpr std::array<Shift,7> kProposedTranslations{{
-    {48,16}, {64,64}, {96,32}, {128,128},
-    {192,64}, {256,256}, {512,512}
-}};
+const std::vector<Shift> kProposedTranslations=[] {
+    std::vector<Shift> offsets;
+    offsets.reserve(256);
+    // 16x16 repeatable grid, covers 64..1024 in each world axis. Every
+    // combination keeps the immutable signed fixture inside 2048-square
+    // finite coordinates. Look for a genuine exact-parity mapping rather
+    // than cherry-picking the nearest successful final count.
+    for (int x=64;x<=1024;x+=64)
+        for (int y=64;y<=1024;y+=64)
+            offsets.push_back({x,y});
+    return offsets;
+}();
 
 Operation shifted(Operation op, Shift s) {
     op.a += s.x;
