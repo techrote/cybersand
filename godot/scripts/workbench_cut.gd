@@ -145,7 +145,9 @@ func _run(input: PackedInt32Array) -> void:
 	if not _alive(): return
 	if not begun.get("ok",false):
 		panel.refuse(str(begun.outcome))
-		if not str(begun.outcome).contains("timeout"): _finish()
+		if not str(begun.outcome).contains("timeout"):
+			var ended: Dictionary=await _end()
+			if _alive() and ended.get("ok",false): _finish()
 		return
 	_native_session=int(begun.roster_session);_native_epoch=int(begun.roster_epoch)
 	var released: int=0

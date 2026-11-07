@@ -129,12 +129,13 @@ Dictionary CyberNativeCellWorld::workbench_cut_command(const Dictionary& request
                 if (dabs[i]<0 || dabs[i]>=extent_.x || dabs[i+1]<0 || dabs[i+1]>=extent_.y ||
                     dabs[i+2]<1 || dabs[i+2]>24) return finish(SolidOutcome::Invalid);
             const Dictionary sample=request["sample"];
+            WorkbenchSample checked;
             if (!sample.is_empty()) {
                 if (sample.get("states",Variant()).get_type()!=Variant::PACKED_FLOAT64_ARRAY ||
                     sample.get("geometry",Variant()).get_type()!=Variant::PACKED_FLOAT64_ARRAY ||
                     sample.get("bodies",Variant()).get_type()!=Variant::ARRAY) return finish(SolidOutcome::Invalid);
-                if (!prepare_workbench_coupling(sample["states"],sample["geometry"],sample["bodies"],
-                    sample.get("session",0),sample.get("epoch",0),false)) return finish(SolidOutcome::Stale);
+                if (!parse_workbench_sample(checked,*workbench_,sample["states"],sample["geometry"],sample["bodies"],
+                    sample.get("session",0),sample.get("epoch",0))) return finish(SolidOutcome::Stale);
             } else {
                 for (const auto& owner:workbench_->sample.owners)
                     if (owner.instance) return finish(SolidOutcome::Stale);
@@ -163,9 +164,13 @@ Dictionary CyberNativeCellWorld::workbench_cut_command(const Dictionary& request
                     }
                 }
             }
+            if (!sample.is_empty() && !prepare_workbench_coupling(sample["states"],sample["geometry"],sample["bodies"],
+                sample.get("session",0),sample.get("epoch",0),false)) return finish(SolidOutcome::Stale);
             auto result=finish(SolidOutcome::Accepted);result["seed_count"]=static_cast<std::int64_t>(cut.count);return result;
         }
-        if (!cut.held) return finish(SolidOutcome::Stale);
+        // A failed begin still owns the worker hold until an unchanged roster
+        // is re-primed. No source tuple or transaction is cancelled by end.
+        if (!cut.held && action!="end") return finish(SolidOutcome::Stale);
         if (action=="next") {
             if (world_->inspect_solid_detachment().phase!=SolidPhase::Idle) return finish(SolidOutcome::Busy);
             if (cut.cursor==cut.count) {auto r=finish(SolidOutcome::Accepted);r["done"]=true;return r;}
@@ -174,7 +179,8 @@ Dictionary CyberNativeCellWorld::workbench_cut_command(const Dictionary& request
             auto result=finish(outcome,outcome==SolidOutcome::Accepted);result["seed"]=point;return result;
         }
         if (action=="end") {
-            if (world_->inspect_solid_detachment().phase!=SolidPhase::Idle) return finish(SolidOutcome::Busy);
+            const auto phase=world_->inspect_solid_detachment().phase;
+            if (phase!=SolidPhase::Idle && phase!=SolidPhase::Disabled) return finish(SolidOutcome::Busy);
             if (request.get("sample",Variant()).get_type()!=Variant::DICTIONARY) return finish(SolidOutcome::Invalid);
             const Dictionary sample=request["sample"];
             if (sample.is_empty()) {

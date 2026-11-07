@@ -131,6 +131,20 @@ func run() -> void:
 	if not check(await until(installed),"zero-release handoff ends"): finish();return
 	check(host.rigid_bodies.size()==bodies and ui.cut.capture_count==2,"zero release preserves custody")
 	if not await run_steps(5): finish();return
+	# A wide ring exceeds the 64-seed preflight before native can consume the
+	# held body sample. Both refusals must leave the old roster usable.
+	for manual: bool in [false,true]:
+		ui.applied.brush=24
+		check(ui.paint(Vector2i(350,160),43),"author wide structural sheet")
+		ui.applied.brush=16
+		check(ui.paint(Vector2i(350,160),0) and ui.cut.finish_stroke(ui),"overflowing erase stroke")
+		if not check(await until(installed),"capacity refusal releases the hold safely"): finish();return
+		check(ui.cut.receipts[0].outcome=="MemberCapacity" and host.rigid_bodies.size()==2,"seed capacity is a refusal, not clearance")
+		if manual:
+			var count: int=host.rapier_bridge.manual_step_count()
+			check(ui.step_once(),"Step after begin refusal")
+			if not check(await until(func():return not ui.step_pending and host.rapier_bridge.manual_step_count()==count+1),"Step survives capacity refusal"): finish();return
+		elif not await run_steps(3): finish();return
 	check(host.tower_context.workbench_gcr.response=="LA-SELECTIVE" and host.tower_context.workbench_gcr.rows.size()==2,"applied native law and complete roster")
 	evidence["states"]=[]
 	for id: int in [1,2]:

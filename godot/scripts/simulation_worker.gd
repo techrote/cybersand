@@ -172,6 +172,7 @@ func take_workbench_cut_reply(serial: int) -> Dictionary:
 	return output
 
 func _apply_workbench_cut(command: Dictionary, emissions: Array[Vector4i], cells: Array[Dictionary]) -> void:
+	var started: int=Time.get_ticks_usec()
 	if command.get("action")=="begin": _apply_emissions(emissions,cells)
 	var reply: Dictionary={"ok":false,"outcome":"Unavailable"}
 	if command.world_generation==_world_generation and _world.has_method(&"workbench_cut_command"):
@@ -190,15 +191,21 @@ func _apply_workbench_cut(command: Dictionary, emissions: Array[Vector4i], cells
 		_workbench_prepared_sample=-1;_workbench_completed_sample=-1
 		_workbench_last_emitter_sample=-1
 		_workbench_cut_admitted_sample={};_workbench_cut_prime=false
-	_snapshot_hard_surface_revision=-1
-	_publish_snapshot(0.0,true,DEFAULT_RENDER_SNAPSHOT_INTERVAL_USEC,true,PackedFloat32Array(),_rigid_body_epoch)
+	reply["command_usec"]=Time.get_ticks_usec()-started
+	var publishing: int=Time.get_ticks_usec()
+	var committed: bool=command.get("action")=="commit" and reply.get("ok",false)
+	if command.get("action")=="begin" or committed: _snapshot_hard_surface_revision=-1
+	# One full source-retirement publication per accepted piece. Observations
+	# and refused seeds use normal immutable patches, not repeated full canvases.
+	_publish_snapshot(0.0,true,DEFAULT_RENDER_SNAPSHOT_INTERVAL_USEC,committed,PackedFloat32Array(),_rigid_body_epoch)
 	reply["terrain_chunks"]=_snapshot_hard_surface_chunk_rectangles.duplicate()
 	reply["terrain_chunks_valid"]=_snapshot_hard_surface_chunk_rectangles_valid
 	reply["terrain_snapshot_revision"]=str(_snapshot_hard_surface_revision)
 	reply["request_id"]=command.request_id
 	reply["world_generation"]=_world_generation
+	reply["publication_usec"]=Time.get_ticks_usec()-publishing
 	_mutex.lock()
-	if command.get("action")=="end" and reply.get("ok",false) or command.get("action")=="begin" and not reply.get("ok",false): _workbench_cut_hold=false
+	if command.get("action")=="end" and reply.get("ok",false): _workbench_cut_hold=false
 	_workbench_cut_reply=reply
 	_mutex.unlock()
 var _scenario_request_serial: int = 0
