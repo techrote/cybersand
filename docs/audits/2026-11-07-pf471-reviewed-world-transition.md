@@ -1,5 +1,5 @@
 ---
-title: PF471 independently reviewed in-chunk neighbour cursor source transition
+title: PF471 independent qualification companion to owner source transition
 status: Approved design
 document-kind: audit
 scope: Explicitly reviewed legacy World source update, source-pinned exactness and native-tick performance; no merge or runtime publication
@@ -8,9 +8,9 @@ last-reviewed: 2026-11-07
 related-documents: [2026-11-06-fast-neighbour-cursor-independent-qualification.md, 2026-11-04-mat-auth-reviewed-transitions.md, ../operations/material-catalogue-shadow.md]
 ---
 
-# PF471 — reviewed, source-pinned `world.cpp` per-file transition
+# PF471 — independent qualification companion for owner `world.cpp` transition
 
-**Current status: prepared in a separate Draft PR for compatibility qualification, not merged or released.** The original cursor implementation lives in [#471](https://github.com/techrote/cybersand/pull/471); implementation qualification, focused tests and the present guarded transition are held in independent [Draft #477](https://github.com/techrote/cybersand/pull/477). The source-review issue is [#485](https://github.com/techrote/cybersand/issues/485).
+**Current status: supplementary independent qualification evidence on a separate Draft PR; the owner has since prepared the canonical transition record on #471, still unmerged and not released.** The original cursor implementation lives in [#471](https://github.com/techrote/cybersand/pull/471); implementation qualification, focused tests and the present guarded transition are held in independent [Draft #477](https://github.com/techrote/cybersand/pull/477). The source-review issue is [#485](https://github.com/techrote/cybersand/issues/485).
 
 | Required authenticated field | Reviewed value |
 |---|---|
@@ -18,9 +18,11 @@ related-documents: [2026-11-06-fast-neighbour-cursor-independent-qualification.m
 | `from_lf_sha256` | `5a9de5e09a8665392677902ab501696aafefb5bbd2d2800e3dc1059b87a6f17d` |
 | `to_lf_sha256` | `bbd9741311bc67905934048633846b8d011efd760033edd0ff9e88be5b262868` |
 | `source_commit` | `b51f01536db6408458442c532d75256d33422fba` |
-| `record` | `docs/audits/2026-11-07-pf471-reviewed-world-transition.md` |
+| `record` (canonical owner source guard) | `docs/audits/2026-11-07-pf471-world-transition-proposal.md` |
 | `issue` | `485` |
 | `pr` | `471` |
+
+**No duplicate MAT-AUTH transition:** This companion audit does **not** claim to be the code-pinned `record` for the current guard. The owner #471 `REVIEWED_TRANSITIONS` entry references `docs/audits/2026-11-07-pf471-world-transition-proposal.md`. Draft #477 has reconciled its guard entry to those exact owner-controlled bytes; the independent evidence and analysis remain separate here. This preserves one and only one reviewed transition for the same protected source hash. No merge has been performed by this work.
 
 **Ancestry:** Source introducing the exact new bytes is one commit after accepted #406 baseline `4a80af2a891332176a3912a235582d77d076a185`; its most recent admitted `world.cpp` predecessor is `0b408ae97c061d7263a3322022429aa32a0385a6`. A separate direct Git comparison establishes the predecessor as an ancestor of the new source commit and the source commit as an ancestor of both #471 and #477. The current code-pinned reviewed-transition chain for `world.cpp` ends at exactly the `from_lf_sha256` above. Only the new transition entry permits the `to_lf_sha256`; the retained `BASELINE` and immutable `materials/catalogue/compatibility-lock.json` are unchanged.
 
