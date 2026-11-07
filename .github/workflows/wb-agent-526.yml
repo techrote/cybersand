@@ -147,15 +147,20 @@ jobs:
               --script "res://tests/$script" \
               2>&1 | tee "$EVIDENCE/$script.manual-regression.log"
           done
-          timeout 440 xvfb-run --auto-servernum --server-args='-screen 0 1920x1080x24 -nolisten tcp' \
+          # The older test_workbench_canvas.gd exercises the separate feature-
+          # launcher and controlled-liquid replacement handshake. On the
+          # published Draft-pinned Linux binary it refused before any editing
+          # (original RED run 42385916349). Exercise the *same real* main.tscn
+          # entrypoint already qualified by #526 owner, with no agent present.
+          timeout 150 xvfb-run --auto-servernum --server-args='-screen 0 1920x1080x24 -nolisten tcp' \
             "$GODOT_BIN" --path godot --rendering-method gl_compatibility \
-            --script res://tests/test_workbench_canvas.gd \
-            2>&1 | tee "$EVIDENCE/test_workbench_canvas.gd.manual-save.log"
-          CYBERSAND_WORKBENCH_REOPEN=1 timeout 260 \
+            --script res://tests/test_workbench_agent_disabled.gd \
+            2>&1 | tee "$EVIDENCE/agent-disabled-manual-save.log"
+          WB_AGENT_DISABLED_REOPEN=1 timeout 150 \
             xvfb-run --auto-servernum --server-args='-screen 0 1920x1080x24 -nolisten tcp' \
             "$GODOT_BIN" --path godot --rendering-method gl_compatibility \
-            --script res://tests/test_workbench_canvas.gd \
-            2>&1 | tee "$EVIDENCE/test_workbench_canvas.gd.manual-reopen.log"
+            --script res://tests/test_workbench_agent_disabled.gd \
+            2>&1 | tee "$EVIDENCE/agent-disabled-manual-reopen.log"
       - name: Retain original execution logs and all failed checkpoints
         if: always()
         timeout-minutes: 5
