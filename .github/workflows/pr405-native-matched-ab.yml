@@ -29,6 +29,10 @@ jobs:
           cp native/bench/wcx_surge_assessment.cpp "$RUNNER_TEMP/wcx_surge_assessment.cpp"
           git worktree add --detach "$RUNNER_TEMP/pr405-base" "$BASE_SHA"
           git worktree add --detach "$RUNNER_TEMP/pr405-candidate" "$CANDIDATE_SHA"
+
+          # Compile both before measuring. ABBA interleaving mitigates
+          # host clock/thermal drift and preserves independent raw samples.
+          lscpu > results/runner-cpu.txt
           for side in baseline candidate; do
             if test "$side" = baseline; then src="$RUNNER_TEMP/pr405-base"; else src="$RUNNER_TEMP/pr405-candidate"; fi
             git -C "$src" rev-parse HEAD > "results/$side/source_sha.txt"
@@ -40,30 +44,42 @@ jobs:
                 "$RUNNER_TEMP/$bench.cpp" -pthread -o "$RUNNER_TEMP/$side-$bench"
               sha256sum "$RUNNER_TEMP/$side-$bench" > "results/$side/$bench.sha256"
             done
-            timeout 300 "$RUNNER_TEMP/$side-lcb201_moving_camera" 64 1 quiet > "results/$side/moving-quiet-1.jsonl"
-            timeout 300 "$RUNNER_TEMP/$side-lcb201_moving_camera" 64 4 flow > "results/$side/moving-flow-4.jsonl"
+          done
+          sequence=(baseline candidate candidate baseline)
+          for i in 0 1 2 3; do
+            side="${sequence[$i]}"
+            timeout 300 "$RUNNER_TEMP/$side-lcb201_moving_camera" 64 1 quiet \
+              > "results/$side/rep-$i-moving-quiet-1.jsonl"
+            timeout 300 "$RUNNER_TEMP/$side-lcb201_moving_camera" 64 4 flow \
+              > "results/$side/rep-$i-moving-flow-4.jsonl"
             for arm in freemass pressure_dormant_nogas pressure_ref_gas pressure_dormant_gas inertial; do
               WCX_SURGE_ARM="$arm" timeout 240 "$RUNNER_TEMP/$side-wcx_surge_assessment" 96 4 \
-                > "results/$side/surge-$arm.jsonl" \
-                2> "results/$side/surge-$arm.stderr"
+                > "results/$side/rep-$i-surge-$arm.jsonl" \
+                2> "results/$side/rep-$i-surge-$arm.stderr"
             done
           done
           python3 - <<'PY'
-          import json, pathlib
+          import json, pathlib, statistics
           root = pathlib.Path('results')
-          print('PR405_MATCHED_AB: same ubuntu-24.04 runner, g++13 -O2, bounded identical fixtures')
+          groups = {'baseline': (0,3), 'candidate': (1,2)}
+          print('PR405_MATCHED_ABBA: two observations per arm/source in ABBA order, one ubuntu-24.04 runner, g++13 -O2; C++ kernels are source-matched')
           for name in ('moving-quiet-1','moving-flow-4'):
-              baseline = [json.loads(s) for s in (root/'baseline'/f'{name}.jsonl').read_text().splitlines()]
-              candidate = [json.loads(s) for s in (root/'candidate'/f'{name}.jsonl').read_text().splitlines()]
-              for a,b in zip(baseline,candidate,strict=True):
-                  assert (a['arm'],a['speed'],a['workers']) == (b['arm'],b['speed'],b['workers'])
-                  print(f"{name} arm={a['arm']} speed={a['speed']} p50_ms={a['p50_ms']:.4f}->{b['p50_ms']:.4f} p95_ms={a['p95_ms']:.4f}->{b['p95_ms']:.4f} index_rebuilds={a['index_rebuilds']}->{b['index_rebuilds']}")
-          for name in ('freemass','pressure_dormant_nogas','pressure_ref_gas','pressure_dormant_gas','inertial'):
-              file = f'surge-{name}.jsonl'
-              a = json.loads((root/'baseline'/file).read_text())
-              b = json.loads((root/'candidate'/file).read_text())
-              assert (a['arm'],a['workers'],a['ticks']) == (b['arm'],b['workers'],b['ticks'])
-              print(f"{name} p50_ms={a['tick_p50_ms']:.4f}->{b['tick_p50_ms']:.4f} p95_ms={a['tick_p95_ms']:.4f}->{b['tick_p95_ms']:.4f} surface_motion={a['surface_motion_per_tick']:.2f}->{b['surface_motion_per_tick']:.2f}")
+              source = {side: [[json.loads(s) for s in (root/side/f'rep-{i}-{name}.jsonl').read_text().splitlines()] for i in indices] for side,indices in groups.items()}
+              for idx in range(len(source['baseline'][0])):
+                  a = [run[idx] for run in source['baseline']]
+                  b = [run[idx] for run in source['candidate']]
+                  assert all((v['arm'],v['speed'],v['workers']) == (a[0]['arm'],a[0]['speed'],a[0]['workers']) for v in a+b)
+                  before = statistics.median(v['p50_ms'] for v in a)
+                  after = statistics.median(v['p50_ms'] for v in b)
+                  print(f"{name} arm={a[0]['arm']} speed={a[0]['speed']} main_p50={before:.4f} candidate_p50={after:.4f} delta_pct={(after/before-1)*100:.1f} main_raw={[v['p50_ms'] for v in a]} candidate_raw={[v['p50_ms'] for v in b]} main_rebuilds={[v['index_rebuilds'] for v in a]} candidate_rebuilds={[v['index_rebuilds'] for v in b]}")
+          for arm in ('freemass','pressure_dormant_nogas','pressure_ref_gas','pressure_dormant_gas','inertial'):
+              values = {side:[json.loads((root/side/f'rep-{i}-surge-{arm}.jsonl').read_text()) for i in indices] for side,indices in groups.items()}
+              a,b = values['baseline'],values['candidate']
+              assert all((v['arm'],v['workers'],v['ticks']) == (a[0]['arm'],a[0]['workers'],a[0]['ticks']) for v in a+b)
+              assert all(v['surface_motion_per_tick'] == a[0]['surface_motion_per_tick'] for v in a+b)
+              before = statistics.median(v['tick_p50_ms'] for v in a)
+              after = statistics.median(v['tick_p50_ms'] for v in b)
+              print(f"{arm} main_p50={before:.4f} candidate_p50={after:.4f} delta_pct={(after/before-1)*100:.1f} main_raw={[v['tick_p50_ms'] for v in a]} candidate_raw={[v['tick_p50_ms'] for v in b]} surface_motion={a[0]['surface_motion_per_tick']:.2f}")
           PY
       - name: Preserve source-matched timing inputs and outputs
         if: always()
