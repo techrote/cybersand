@@ -187,3 +187,51 @@ valuable next implementation step is an opt-in Godot host for the same native
 cells while preserving these exact save/refusal controls, coordinated with
 the production adapter owner; subsequently replace sharded Worlds with an
 owner-admitted shared-World selective eviction transaction.
+
+## First opt-in Godot visualization path — isolated executable handoff
+
+The Draft branch now includes `godot/tests/gen006_streaming_slice_demo.tscn`
+and its companion GDScript, **not linked from the ordinary feature launcher**.
+This separate proof uses the existing real native `World::copy_rgba` renderer
+to emit a 64×64×4 = 16,384-byte copied RGBA frame. The Godot host reads that
+bounded byte array into an `ImageTexture` and draws it in a 640×640 viewport.
+It never receives mutable native cells or shares any native memory.
+
+Because a production GDExtension/world owner has not admitted the streaming
+adapter, this first visualization uses a **synchronous subprocess**. The native
+CLI's `--batch DIRECTORY COMMANDS_FILE [1|4]` reads a local command script;
+the earlier interactive command remains supported. Godot writes the script
+into a private save root and invokes the exact compiled native executable via
+`OS.execute`. Each input action starts and closes a real native World session,
+reloads the saved physical state, applies its action, exports the native RGBA
+cells and saves resident chunks before returning. Mouse: left Wall, right
+Empty/dig, middle Water17. Arrow keys change the signed chunk coordinate;
+Shift+arrow jumps 24 chunks (1536 world pixels); Space ticks native simulation,
+R reloads; Home returns to (-1,-3). Moving through a three-shard focus cycle
+forces actual native eviction/reload, displayed in the receipt panel.
+
+**Manual desktop launch** (after building the native command; ordinary gameplay
+defaults are untouched):
+
+```sh
+export GEN006_SLICE_EXECUTABLE="$PWD/build/gen006-streaming-slice/streaming-slice"
+# Optional: export GEN006_SLICE_ROOT="$PWD/build/gen006-streaming-slice/manual-save"
+godot --path godot res://tests/gen006_streaming_slice_demo.tscn
+```
+
+The hosted smoke copies the scene/script into a minimal standalone Godot 4.7
+project, downloads the exact pinned Godot binary/checksum from the repo's
+Godot CI policy, and runs the same script headlessly with
+`GEN006_SLICE_VERIFY=1`. It requires a real native frame and eviction/reload
+receipt. **A headless image/scene acceptance is not an actual graphical desktop
+playtest or proof of production shader rendering.** Manual interaction,
+native-to-Godot frame latency and graphical capture qualification remain open.
+
+**Major scope HOLD:** Restarting a synchronous process on every UI input is a
+prototype bridge, not a production GDExtension streaming runtime. The
+two-World budget applies inside each subprocess; the Godot host does not keep
+a continuous native World across frames. Cross-shard Water transport, Rapier,
+shared-World selective chunk deletion, async job fencing, power-cut recovery
+and recipe reconciliation remain unimplemented. The next product-facing step
+is an owner-coordinated live GDExtension/World controller, preserving the
+no-default-change and explicit unsupported-domain refusal contracts.
