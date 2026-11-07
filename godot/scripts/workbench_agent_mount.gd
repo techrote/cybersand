@@ -2,7 +2,7 @@ extends RefCounted
 ## #528 opt-in attachment for the existing shared Godot workbench.
 ## The native authority stays in #526 WorkbenchAuthoringHost; this class
 ## only binds UI, converts copied receipts and enforces local response fences.
-const Panel = preload("res://scripts/workbench_agent_panel.gd")
+const AgentPanel = preload("res://scripts/workbench_agent_panel.gd")
 const AuthoringHost = preload("res://scripts/workbench_authoring_host.gd")
 
 const MAX_IMAGE_BYTES: int = 590000
@@ -26,7 +26,7 @@ func mount(workbench: Control) -> bool:
 	_bridge = AuthoringHost.new()
 	if not _bridge.bind(_host):
 		return false
-	_agent_panel = Panel.new()
+	_agent_panel = AgentPanel.new()
 	_workbench.add_child(_agent_panel)
 	_agent_panel.hide()
 	var row: HFlowContainer = _workbench._row(_workbench)
