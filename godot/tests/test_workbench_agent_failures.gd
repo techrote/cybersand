@@ -42,7 +42,7 @@ func call_session(session: RefCounted, world: RefCounted,
 	var command: Dictionary = arguments.duplicate(true)
 	command["action"] = action
 	command["schema_version"] = 1
-	return session.execute(command,world,1,Vector2i(512,512),true,0)
+	return session.execute(command,world,1,Vector2i(512,512),true,0,1)
 
 
 func _initialize() -> void:
@@ -63,6 +63,17 @@ func _run() -> void:
 		"region":Rect2i(Vector2i(100,100),Vector2i(3,3))
 	})
 	_expect(obs.get("status")=="native_observed","observe synthetic fixture")
+	# This synthetic ACK is confined to the error-injection test. The real
+	# owner integration test uses actual post-draw screenshot and upload ACK.
+	var confirmed: Dictionary = call_session(session,world,"confirm_observation_frame",{
+		"observation_id":obs.observation_id,
+		"render_identity":{
+			"render_snapshot_serial":1, "world_generation":1,
+			"world_revision":world.revision, "tick":world.tick_index
+		}
+	})
+	_expect(confirmed.get("status")=="observation_confirmed",
+		"synthetic frame ACK did not establish the fixture premise")
 	var proposal: Dictionary = call_session(session,world,"prepare_edit",{
 		"observation_id":obs.observation_id,
 		"operations":[{"shape":"line","x0":100,"y0":100,
