@@ -19,6 +19,7 @@ var _extent := OptionButton.new()
 var _preview_button := Button.new()
 var _browse := FileDialog.new()
 var _status := Label.new()
+var _composition := Label.new()
 var _preview := TextureRect.new()
 var _generator: Variant = null
 var _phase := "idle"
@@ -124,6 +125,9 @@ func mount(workbench: Control) -> void:
 	_status.text = "Select a recipe, seed and finite region. No installed World is changed until confirmation."
 	_status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	root.add_child(_status)
+	_composition.text = "Native material composition will appear after complete generation."
+	_composition.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	root.add_child(_composition)
 	_preview.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	_preview.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	_preview.custom_minimum_size = Vector2(540,290)
@@ -180,11 +184,13 @@ func _stop() -> void:
 func _invalidate() -> void:
 	_stop()
 	_preview.texture = null
+	_composition.text = "No accepted material proposal."
 	_status.text = "Generate a complete native preview before replacing the current map."
 
 func _fail(reason: String) -> void:
 	_stop()
 	_status.text = "Refused · " + reason
+	_composition.text = "No installable material proposal."
 
 func _start() -> void:
 	_stop()
@@ -357,6 +363,14 @@ func _complete() -> void:
 			if saved[key] != fresh.get(key):
 				_fail("Saved source identity mismatch at %s; existing map preserved." % key)
 				return
+	var ranked: Array = _material_counts.keys()
+	ranked.sort_custom(func(a: Variant, b: Variant) -> bool:
+		return int(_material_counts[a]) > int(_material_counts[b]))
+	var top: Array[String] = []
+	for i: int in mini(ranked.size(),7):
+		top.append("ID %d: %d" % [int(ranked[i]),int(_material_counts[ranked[i]])])
+	_composition.text = "%d distinct material IDs · %s · final PLAY plane only" % [
+		ranked.size(),", ".join(top)]
 	var nonempty: int = _cells.size() - int(_material_counts.get(0,0))
 	_phase = "ready"
 	_status.text = "Verified native proposal · %dx%d · %d nonempty cells · %d source receipts · %.2fs to preview. Install replaces unsaved work." % [
