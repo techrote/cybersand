@@ -82,7 +82,7 @@ def main() -> int:
         executable, root, args.workers, "01-create",
         "\n".join([
             "wall 18 31", "wall 17 30", "wall 19 30",
-            "tick 2", "water 18 30 17", "dig 5 5",
+            "tick 2", "watertemp 18 30 17 417", "dig 5 5",
             "inspect 18 30", "inspect 5 5", "status",
         ]), logs,
     )
