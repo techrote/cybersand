@@ -1,9 +1,10 @@
 extends SceneTree
 
 # COUPLING-LOCKSTEP-001 (native/tests/fixtures/coupling_lockstep_001.json).
-# Usage: --script res://tests/test_coupling_lockstep.gd -- <output-dir|-> <async|lockstep|lockstep-f64rot> <workers> <ticks> [native_delay_usec]
+# Usage: --script res://tests/test_coupling_lockstep.gd -- <output-dir|-> <async|lockstep|lockstep-f64rot|lockstep-packed> <workers> <ticks> [native_delay_usec]
 # lockstep-f64rot (amendment_001, fixture-only) repacks each rotation from the
-# basis with double-precision atan2; production packing is unchanged.
+# basis with double-precision atan2. lockstep-packed (amendment_002) uses the
+# bridge's opt-in deterministic_rotation_packing, the production lockstep path.
 # Geometry is test_physics_async.gd seed 0 with three 8x14 bodies. Every Rapier
 # step records lossless body bits plus the exact consumed native publication.
 # Without arguments it runs a short lockstep self-check and exits 0 on success.
@@ -51,8 +52,8 @@ func _run() -> void:
 	var workers: int = 1 if args.size() < 3 else int(args[2])
 	var ticks: int = 90 if args.size() < 4 else int(args[3])
 	var delay_usec: int = 0 if args.size() < 5 else int(args[4])
-	if mode not in ["async", "lockstep", "lockstep-f64rot"] or delay_usec < 0 or delay_usec > 50000 or workers < 1 or workers > 8 or ticks < 2 or ticks > CyberPhysicsCharacterisation.MAX_TICKS:
-		_fail("usage: <output|-> <async|lockstep|lockstep-f64rot> <workers 1..8> <ticks 2..7200> [delay_usec 0..50000]")
+	if mode not in ["async", "lockstep", "lockstep-f64rot", "lockstep-packed"] or delay_usec < 0 or delay_usec > 50000 or workers < 1 or workers > 8 or ticks < 2 or ticks > CyberPhysicsCharacterisation.MAX_TICKS:
+		_fail("usage: <output|-> <async|lockstep|lockstep-f64rot|lockstep-packed> <workers 1..8> <ticks 2..7200> [delay_usec 0..50000]")
 		return
 	var world: Object = ClassDB.instantiate(&"CyberNativeCellWorld")
 	if not world.diagnostic_reset({"workers": workers}):
@@ -96,6 +97,7 @@ func _run() -> void:
 	for index: int in starts.size():
 		bridge.reset_body(index, starts[index], 0.0)
 	bridge.enable_diagnostics()
+	bridge.deterministic_rotation_packing = mode == "lockstep-packed"
 	bridge.rebuild_hard_surface_colliders_from_rectangles(world.get_hard_surface_rectangles())
 	var rids: Array[RID] = []
 	for body: RigidBody2D in bodies:

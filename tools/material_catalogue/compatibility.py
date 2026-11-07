@@ -263,11 +263,25 @@ REVIEWED_TRANSITIONS: tuple[dict, ...] = ({'path': 'native/src/world_pressure.in
   'pr': 470},
  {'path': 'native/src/world.cpp',
   'from_lf_sha256': '8bf0cb0058b139c32c030f5bbbc7e7e4555814c601598e1d6c7abecf7397d7fb',
-  'to_lf_sha256': '84817f013e8689d26ee584d45102610d058c864a5b3de9194efdb0d3a152cfdd',
-  'source_commit': '6d567730038ae45b6634ab35dccfeab008a0c6b0',
-  'record': 'docs/audits/2026-11-07-pr405-current-main-reconciliation.md',
-  'issue': 201,
-  'pr': 405})
+  'to_lf_sha256': 'e23935738a1424b6e0009ae935e6f79fdc0d56c4162766061acb0ae2ec3de6ee',
+  'source_commit': '484b48f67ba4db68b1b4c73cd63f1a187594523d',
+  'record': 'docs/audits/2026-11-07-pf471-world-transition-proposal.md',
+  'issue': 492,
+  'pr': 471},
+ {'path': 'native/src/world.cpp',
+  'from_lf_sha256': 'e23935738a1424b6e0009ae935e6f79fdc0d56c4162766061acb0ae2ec3de6ee',
+  'to_lf_sha256': '8a40c7dff894a121a234fbd18de6fa21a43c0c5330ccdc9e12b200af14a4f37d',
+  'source_commit': '5f107db52a2c002e19f5f8ff284cf8f4ebeeb421',
+  'record': 'docs/audits/2026-11-07-pf-c2048-mat-auth-transition.md',
+  'issue': 200,
+  'pr': 491},
+ {'path': 'native/src/world_pressure.inc',
+  'from_lf_sha256': '26051b0d10ab10d65db822c993742e0a0bf13711f3bd56158e95d77735737aca',
+  'to_lf_sha256': '71723fa32bbd29aafe93f1a8dd233cece1eec7ed295da81c1e021f635085c17a',
+  'source_commit': '5f107db52a2c002e19f5f8ff284cf8f4ebeeb421',
+  'record': 'docs/audits/2026-11-07-pf-c2048-mat-auth-transition.md',
+  'issue': 200,
+  'pr': 491})
 
 
 class CompatibilityError(ValueError):

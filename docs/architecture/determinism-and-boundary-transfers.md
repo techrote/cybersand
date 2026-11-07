@@ -104,12 +104,23 @@ The two timelines therefore race, and the [COUPLING-LOCKSTEP-001 measurement](..
 found that every pair of repeated asynchronous runs diverged by that race, on
 Windows and on WSL Linux.
 
-**Current, opt-in prototype only:** `CyberSimulationWorker.set_lockstep_coupling(true)`
+**Current, opt-in only:** `CyberSimulationWorker.set_lockstep_coupling(true)`
 is default off and refused after start. It makes native tick N wait, without
 blocking main, for the body publication made after Rapier step N−1. A main-side
-hold that skips a physics frame until the newest snapshot consumed its last
-publication exists only in the [fixture](../../godot/tests/test_coupling_lockstep.gd).
-`main.gd` does not use it. Under that pair of fences, repeated runs were
+hold skips a physics frame until the newest snapshot consumed main's last
+publication. The [fixture](../../godot/tests/test_coupling_lockstep.gd) and,
+since the owner chose lockstep as an **opt-in mode** on 2026-11-06, the desktop
+game launched with `--lockstep-coupling` use this pair. In the game the hold is
+bounded: past 500 ms of consecutive held frames one counted stale step runs
+instead of a freeze; a frame that skipped the decision (pause, reset, actor
+install) restarts that bound. Main
+follows the worker's reported applicability (`lockstep_fence_active`): labs and
+MicroScenarios step asynchronously and are counted as unfenced, not held, as is
+a step after a refused publication or with another body owner's result. The
+default launch keeps asynchronous pacing; lockstep everywhere was not chosen.
+[`test_coupling_lockstep_desktop.gd`](../../godot/tests/test_coupling_lockstep_desktop.gd)
+checks the real host through play, pause and a world reset. Under the fixture's
+fences, repeated runs were
 bit-identical on each host, and 1 and 4 native workers gave identical results.
 The comparison covered per-step lossless body bits, consumed samples, native
 results and the per-tick `physical_state_hash`. The fixture's steps per second
@@ -126,8 +137,12 @@ changed no decision.
 lockstep runs diverged. Rapier transforms were still bit-equal when the packed
 float32 rotation from `Transform2D.get_rotation()` (platform `atan2f`) differed
 by one ulp. A fixture-only repack with a double `atan2` then matched Windows and
-WSL Linux on every recorded field for 1,800 ticks on x86-64. That shows the
-remaining gap can be closed in principle; it does not guarantee it. The [audit](../audits/2026-11-06-coupling-lockstep-feasibility.md) lists
+WSL Linux on every recorded field for 1,800 ticks on x86-64. The opt-in mode
+now packs rotation that way in production code
+(`CyberRapierPhysicsBridge.deterministic_rotation_packing`, on only in the mode).
+Registered run `packed-001` (amendment_002) matched Windows and Linux and
+equalled the earlier repack bit for bit. That shows the remaining gap can be
+closed for this fixture; it does not guarantee it on other platforms. The [audit](../audits/2026-11-06-coupling-lockstep-feasibility.md) lists
 the remaining sources. They include platform transcendental math in packing
 and native rasterization, a Rapier build without `enhanced-determinism`, the
 coverage of hashes and saves, and the omission of input capture.
@@ -135,8 +150,9 @@ coverage of hashes and saves, and the omission of input capture.
 The workbench host has a narrower Current fence: `_workbench_wait_sample` is
 matched against `workbench_completed_sample`. Its pacing is recorded in the
 [workbench audit](../audits/2026-11-04-workbench-boundary-and-pacing.md); its
-repeatability has not been measured. **Planned:** a production lockstep mode,
-input capture, and complete replay identity. Exact multiplayer lockstep across
+repeatability has not been measured. **Planned:** input capture, a fenced or
+tick-counted terrain collider installation for the opt-in mode, and complete
+replay identity. Exact multiplayer lockstep across
 platforms is not admitted.
 
 ## Which boundaries still limit the guarantee?

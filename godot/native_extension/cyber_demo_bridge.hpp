@@ -465,6 +465,8 @@ public:
             config.interaction_policy = {};
             config.water_experiment_policy = cybersand::WaterExperimentPolicy{};
             config.liquid_solver_policy = {};
+            // A default-family rebuild cannot inherit a PF-only C2048 budget.
+            config.pressure_gas_compartment_capacity = cybersand::PressureFlowParameters::kCompartmentCapacity;
             config.maximum_rule_radius = CyberNativeCellWorld::kProtectedCurrentRuleRadius;
             auto candidate=cybersand::demo::construct(config,
                 {rectangles.ptr(),static_cast<std::size_t>(rectangles.size())});
@@ -929,6 +931,8 @@ public:
             // A CYSD1 level is a finite-level reconstruction on default families.
             auto config = adapter->world_->config();
             config.liquid_solver_policy = {};
+            // A default-family rebuild cannot inherit a PF-only C2048 budget.
+            config.pressure_gas_compartment_capacity = cybersand::PressureFlowParameters::kCompartmentCapacity;
             config.maximum_rule_radius = CyberNativeCellWorld::kProtectedCurrentRuleRadius;
             auto candidate = cybersand::demo::reconstruct(config,
                 {bytes.ptr(), static_cast<std::size_t>(bytes.size())});
@@ -951,6 +955,8 @@ public:
             config.transport_policy = {}; // Ordinary demos retain production Baseline.
             config.water_experiment_policy = cybersand::WaterExperimentPolicy{};
             config.liquid_solver_policy = {};
+            // A default-family rebuild cannot inherit a PF-only C2048 budget.
+            config.pressure_gas_compartment_capacity = cybersand::PressureFlowParameters::kCompartmentCapacity;
             config.maximum_rule_radius = CyberNativeCellWorld::kProtectedCurrentRuleRadius;
             auto candidate = cybersand::demo::construct(config,
                 {rectangles.ptr(), static_cast<std::size_t>(rectangles.size())});

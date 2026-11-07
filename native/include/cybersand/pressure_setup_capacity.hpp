@@ -14,8 +14,9 @@ namespace cybersand {
 struct InitialPressureCapacity final {
     bool applicable = false;
     std::size_t compartments = 0;
+    std::size_t capacity = PressureFlowParameters::kCompartmentCapacity;
     bool exceeds_capacity() const noexcept {
-        return compartments > PressureFlowParameters::kCompartmentCapacity;
+        return compartments > capacity;
     }
 };
 
@@ -33,6 +34,7 @@ inline InitialPressureCapacity initial_pressure_capacity(const World& world,
     InitialPressureCapacity result;
     if (!world.pressure_flow_enabled() || !world.pressure_flow_parameters().gas_enabled) return result;
     result.applicable = true;
+    result.capacity = world.config().pressure_gas_compartment_capacity;
     if (world.tick_index() != 0U || (!retained_workbench && (world.gas_topology_revision() != 0U || world.gas_next_id() != 1U)))
         throw std::invalid_argument("initial pressure capacity requires a fresh prepared World");
     if (maximum_side > setup::kMaximumFiniteSetupSide || domain.width == 0U || domain.height == 0U || domain.width > maximum_side ||
@@ -104,7 +106,7 @@ inline InitialPressureCapacity initial_pressure_capacity(const World& world,
             if (y + 1U < scan.height) visit(index + width);
         }
         if (seeded && !boundary && queue.size() <= PressureFlowParameters::kCompartmentVolumeLimit) {
-            if (++result.compartments > PressureFlowParameters::kCompartmentCapacity) return result;
+            if (++result.compartments > result.capacity) return result;
         }
     }
     return result;

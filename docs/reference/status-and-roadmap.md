@@ -10,18 +10,6 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
-## PressureFlow moving-camera integration candidate (#201) — 2026-11-07
-
-PR #405 retains the original three-optimization history. Its composed candidate
-removes selected-region-only PressureFlow cache invalidation, preserves the
-constant precomputed pair-eligibility fast path already on current main, and
-adapts Claude's generation-keyed thread-local lookup cache as a fallback behind
-main's newer dense chunk directory. Direct World move-assignment, interleaved
-Worlds, deterministic address reuse and threaded ticks now have regression
-coverage. This is **not** a merged/accepted runtime: exact-head CI, independent
-review and source-matched Windows/Linux native publication are pending.
-
-
 ## Ballistic Water, IN-B1 and workbench spray (#362) — 2026-11-05
 
 **Experimental draft, not on main; no default changed.** The
@@ -52,8 +40,8 @@ The [region-flip record](../audits/2026-11-04-lcb201-region-flip.md) fixes a
 desktop worker ordering that discarded the PressureFlow cache twice per step in
 fixed-interest scenarios. In the real host on main's runtime, the cached quiet
 pool improves from ≈36 ms to ≈10 ms per worker step and reaches the 60 Hz cap;
-reference and FreeMass are unchanged. Camera-motion invalidation remains a
-separate follow-up.
+reference and FreeMass are unchanged. The camera-only follow-up is implemented on PR #405 (pending final-head
+qualification); see [the current-main source audit](../audits/2026-11-07-pr405-current-main-reconciliation.md).
 
 ## PressureFlow idle cost (#201) — 2026-11-04
 
@@ -1072,9 +1060,9 @@ evidence defines each fix's platform acceptance.
 |---|---|---|
 | F01 — failed ticks | Current fix: latch failed World, distinguish attempted/completed ticks, suppress partial publication, stop desktop/Web owners; explicit reset/validated replacement, no replay/rollback | Windows/native acceptance and browser limits: [issue #1 evidence](../audits/2026-09-08-issue-1-failed-ticks.md); [tick contract](../architecture/simulation-tick-and-threading.md) |
 | F02 — region re-entry | Current fix: phased exclusion retains activity/quiet state; new core coverage wakes resident blocks once without catch-up. Serial still ignores the region | Separate and combined acceptance: [issue #2 evidence](../audits/2026-09-08-issue-2-interest-regions.md); [storage](../systems/world-storage-and-interest-region.md). Future field/streaming semantics remain open |
-| F03 — tick ownership | Desktop moves character before cells with async Rapier samples; Web moves character after cells and gates on terrain backlog | Decide which ordering differences are acceptable before a common physics/replay contract; [threading](../architecture/simulation-tick-and-threading.md). 2026-11-06: default-off desktop lockstep fence measured bit-identical same-host repeats; [feasibility audit](../audits/2026-11-06-coupling-lockstep-feasibility.md) |
+| F03 — tick ownership | Desktop moves character before cells with async Rapier samples; Web moves character after cells and gates on terrain backlog | Decide which ordering differences are acceptable before a common physics/replay contract; [threading](../architecture/simulation-tick-and-threading.md). 2026-11-06: default-off desktop lockstep fence measured bit-identical same-host repeats; the owner chose it as an opt-in desktop mode (`--lockstep-coupling`), with asynchronous pacing kept as the default; [feasibility audit](../audits/2026-11-06-coupling-lockstep-feasibility.md) |
 | F04 — delayed rules and sleep | Current MAT-001 fix retains future compact-pair and Ice reaction opportunities across sleep and wakes the center block on body-mask changes; other specialized waiting paths remain material-specific | [Scoped #158 evidence](../audits/2026-10-18-mat001-material-reaction-progress.md), [materials](../systems/materials-and-rule-kernels.md); characterize further lifecycle/feel changes separately rather than claiming every material is accepted |
-| F05 — replay and fidelity | Current hashes omit some future-affecting state; CYSD1 omits more; no selectable strict runtime policy | Specify complete input/configuration identity, fidelity policy and replay schema before promising continuation; [determinism](../architecture/determinism-and-boundary-transfers.md). Coupled same-host repeatability needs a lockstep mode; cross-platform identity is not established ([2026-11-06](../architecture/determinism-and-boundary-transfers.md#coupled-desktop-determinism--2026-11-06)) |
+| F05 — replay and fidelity | Current hashes omit some future-affecting state; CYSD1 omits more; no selectable strict runtime policy | Specify complete input/configuration identity, fidelity policy and replay schema before promising continuation; [determinism](../architecture/determinism-and-boundary-transfers.md). Coupled same-host repeatability needs the opt-in lockstep mode; input capture and a replay schema are still missing, and cross-platform identity is not established ([2026-11-06](../architecture/determinism-and-boundary-transfers.md#coupled-desktop-determinism--2026-11-06)) |
 | F06 — bounded operations | Native lazy allocation and partial failure coexist with Approved prepared/no-allocation goals; desktop input Array is unbounded | Define command backpressure, setup/reconfiguration and allocation accounting; [capacity](../operations/configuration-and-capacity-budgets.md) |
 | F07 — body physics scope | Rectangle proof does not settle general shapes, sweep/CCD, force/torque units, sample-age policy or particle overflow | Name units and fixture tolerances, extend one bounded coupling case at a time; [coupling](../architecture/rigid-body-and-cellular-coupling.md) |
 | F08 — build/release identity | CI 4.0.11 versus builder 4.0.20; missing native binding argument; compile-only skips runtime; historical template lock and base-only export identity | Current/M11 gate separation is implemented; remaining Web work stays in issue #3. [CI contradictions](../operations/github-development-and-release.md#unresolved-ci-contradictions) |
