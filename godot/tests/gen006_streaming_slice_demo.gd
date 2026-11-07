@@ -29,6 +29,8 @@ var native_pid: int = -1
 var server_pid: int = -1
 var service_ticks: int = 0
 var occupied_native_cells: int = -1
+var pinned_native_shards: int = 0
+var pin_notice: String = ""
 var request_sequence: int = 0
 var refresh_accumulator: float = 0.0
 var controller_started: bool = false
@@ -145,6 +147,13 @@ func _read_response(started_usec: int) -> bool:
         failure = "Native command refused: " + last_receipts.right(350)
         return false
     for line in last_receipts.split("\n", false):
+        if line.begins_with("STATUS resident="):
+            for field in line.split(" ", false):
+                if field.begins_with("pinned="):
+                    pinned_native_shards = int(field.split("=")[1])
+            pin_notice = ""
+        elif line.begins_with("  chunk=") and line.contains("pinned=1"):
+            pin_notice = line.strip_edges()
         if line.begins_with("GEN006_STREAM_SERVER_STATE "):
             for field in line.split(" ", false):
                 if field.begins_with("pid="):
@@ -345,6 +354,14 @@ func _draw() -> void:
     draw_string(font, Vector2(710, 255),
         "Native occupied cells: %d / 4096" % occupied_native_cells,
         HORIZONTAL_ALIGNMENT_LEFT, -1, 14, Color("#b6dcaa"))
+    var pin_color := Color("#f4a261") if pinned_native_shards > 0 else Color("#9caec9")
+    draw_string(font, Vector2(710, 277),
+        "Native simulation pins: %d (unsupported shard tick)" % pinned_native_shards,
+        HORIZONTAL_ALIGNMENT_LEFT, -1, 14, pin_color)
+    if not pin_notice.is_empty():
+        draw_string(font, Vector2(710, 299),
+            pin_notice.left(86), HORIZONTAL_ALIGNMENT_LEFT, 540.0, 12,
+            Color("#f4a261"))
     if not failure.is_empty():
         draw_string(font, Vector2(710, 292), failure,
                     HORIZONTAL_ALIGNMENT_LEFT, 550.0, 15, Color("#ff967b"))
