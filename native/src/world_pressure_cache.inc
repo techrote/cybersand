@@ -148,6 +148,8 @@ void World::rebuild_pressure_index() {
     cache.gas_ready = false;
     cache.certificate_contents_cold=true; cache.certificate_layer_enabled=false;
     cache.gas_dirty_chunks.clear();
+    cache.gas_dirty_overflow = false;
+    cache.gas_bootstrap_attempted = false;
     for (auto& [coord, chunk] : chunks_) {
         (void)coord;
         chunk->pressure->gas_dirty_queued = false;
@@ -252,6 +254,7 @@ void World::invalidate_pressure_input(ChunkCoord coord, std::int32_t min_x, std:
     if (gas && pressure_->parameters.gas_enabled && !chunk->pressure->gas_dirty_queued) {
         if (cache.gas_dirty_chunks.size() == cache.gas_dirty_chunks.capacity()) {
             cache.gas_ready = false;
+            cache.gas_dirty_overflow = true;
             ++pressure_->optimization.gas_capacity_fallbacks;
         } else {
             cache.gas_dirty_chunks.push_back(coord);
