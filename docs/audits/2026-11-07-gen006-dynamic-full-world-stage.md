@@ -94,3 +94,40 @@ This is still complete-World CYPS continuation, not multi-chunk selective
 release. The specific signed-seam Water workload is a bounded test only;
 regressions on the actual candidate must be reported by exact-head hosted CI,
 not inferred from these written expected outcomes.
+
+## 7 November follow-up: complete resident-set bundle admission (experimental)
+
+An additive `gen006_dynamic_bundle_admission.hpp` now implements a
+conservative complete-residency preflight for the real signed Sand/Water
+frontier, without touching protected World or G6KC1 #512 source. It requires
+2–8 unique signed chunk coordinates, an exact resident-count witness, and a
+canonical exhaustive list of every internal orthogonal seam. Duplicated or
+omitted seams and nonadjacent edges are explicitly refused.
+
+The stage privately restores an actual complete CYPS native World and uses
+`install_generated_chunk(...)` on this **disposable** World to attest
+`AlreadyResident` for every supplied coordinate. This also invokes the
+canonical native signed-multiplication/rule-radius preflight, refusing
+overflow. A missing coordinate may be installed into that disposable probe,
+which is then destroyed without touching the live World; it can never be a
+positive witness. The complete private probe must match the original
+source's CYPS bytes, physical hash, native tick and quantity ledger before
+an atomic owner-swap stage is returned.
+
+The existing genuine Sand/Water signed-seam fixture now includes negative
+controls for a partial roster, repeated chunk, missing seam, invalid seam,
+repeated seam, phantom resident and signed-coordinate overflow. Every
+refusal checks the unchanged original World pointer, physical hash, full
+quantity ledger, completed tick, resident count and resident bytes.
+The admitted complete-roster positive stage is followed by the original
+eight physical ticks against the independently uninterrupted native World.
+
+**What this does not do:** release selected chunks, reclaim resident memory,
+prove exterior halo demand, transfer partial native scheduler/pressure/ballistic
+sidecars or write durable multi-chunk checkpoint files. Full native CYPS
+retains those states only as a *whole World*. Host persistence is #518's
+responsibility. This is the first bounded executable resident-bundle
+admission/negative-control layer, not the native selective transaction.
+
+**CI qualification:** Pending this revision's exact-head Linux/Windows
+workflow. Earlier #523 runs apply to earlier heads, not this revision.
