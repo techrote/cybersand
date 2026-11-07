@@ -25,6 +25,10 @@ func history() -> void:
 	evidence["history_usec"]=values
 
 func fresh_case(kind: String) -> bool:
+	change_scene_to_file("res://feature_launcher.tscn");await scene_changed
+	current_scene.launch("shared_workbench");await scene_changed
+	host=current_scene;ui=host.shared_workbench
+	if not check(await until(installed),"new native World installed"): return false
 	var recipe: Dictionary=Setup.fresh(PackedInt32Array(ui.applied.liquid_policy),Vector2i(512,512))
 	recipe.version=4;recipe.edits=[[0,72,512,4,58]]
 	if kind=="first-tree-core" or kind=="anchored-refusal": structure(recipe,0,false)
@@ -32,8 +36,7 @@ func fresh_case(kind: String) -> bool:
 		structure(recipe,0,true)
 		recipe.actors=[Setup.instance(Setup.BARREL,1,Vector2(400,32))];recipe.next_id=2
 	else: recipe.edits.append([50,54,1,18,43])
-	check(host.workbench_restart(recipe,true),"fresh authoritative owner for each repeat");await scene_changed
-	host=current_scene;ui=host.shared_workbench
+	check(ui.apply(recipe),"fresh authoritative recipe for each repeat")
 	if not check(await until(installed),"fresh canvas installed"): return false
 	check(ui.cut.rectangle_core,"unchanged normal rectangle-core route")
 	host.simulation_worker.set_worker_participation_sampling(true)
