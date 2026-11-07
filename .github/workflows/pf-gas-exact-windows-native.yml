@@ -7,6 +7,10 @@ on:
       - 'native/tests/test_lcb_pressure.cpp'
       - 'native/tests/test_world.cpp'
       - '.github/workflows/pf-gas-exact-windows-native.yml'
+  push:
+    branches: [integration/pf504-after-405-20261107]
+    paths:
+      - '.github/workflows/pf-gas-exact-windows-native.yml'
   workflow_dispatch:
 
 permissions:
