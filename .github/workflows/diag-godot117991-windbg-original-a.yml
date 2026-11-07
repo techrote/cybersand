@@ -1,0 +1,101 @@
+name: One-off Godot 117991 original-A WinDbg check
+on:
+  push:
+    branches:
+      - diagnostics/godot117991-windbg-oneoff-20261107
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: godot117991-windbg-${{ github.run_id }}
+  cancel-in-progress: false
+
+jobs:
+  original-a-windbg:
+    runs-on: windows-2022
+    timeout-minutes: 45
+    defaults:
+      run:
+        shell: pwsh
+    env:
+      GH_TOKEN: ${{ github.token }}
+      ORIGINAL_RUN_ID: '41958413986'
+    steps:
+      - name: Retrieve exact retained A binary PDB and original evidence
+        run: |
+          $ErrorActionPreference = 'Stop'
+          New-Item -ItemType Directory -Force artifacts/engine,artifacts/evidence,results | Out-Null
+          gh run download $env:ORIGINAL_RUN_ID --repo "$env:GITHUB_REPOSITORY" --name 'pr379-godot117991-control-a-41958413986-1' --dir artifacts/engine
+          if ($LASTEXITCODE -ne 0) { throw "Cannot download original A engine/PDB" }
+          gh run download $env:ORIGINAL_RUN_ID --repo "$env:GITHUB_REPOSITORY" --name 'pr379-godot117991-ab-evidence-41958413986-1' --dir artifacts/evidence
+          if ($LASTEXITCODE -ne 0) { throw "Cannot download original evidence" }
+
+      - name: Authenticate original executable PDB and fault dump
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $exe = 'artifacts/engine/godot.windows.editor.x86_64.llvm.exe'
+          $pdb = 'artifacts/engine/godot.windows.editor.x86_64.llvm.pdb'
+          $dump = 'artifacts/evidence/ab/trials/01-a/fixture/fault-4020-8020-677.dmp'
+          $expected = @{
+            $exe = 'f8238cda7f26d4b30c34a04d772985a31aacb39a7c33ca92dfa88a39bee83e42'
+            $pdb = 'f3033be9d9c54154038800e23cf66d86a7872ee29054842bdd121c4b6e7a4536'
+            $dump = 'fd04ab72604a3e3a84ce17e7af32432543d4baf04cad45b5a6cdfc7be11be41e'
+          }
+          $receipts = @()
+          foreach ($path in $expected.Keys) {
+            if (-not (Test-Path $path)) { throw "Missing original file: $path" }
+            $got = (Get-FileHash $path -Algorithm SHA256).Hash.ToLowerInvariant()
+            $receipts += [pscustomobject]@{path=$path; sha256=$got; size=(Get-Item $path).Length}
+            if ($got -ne $expected[$path]) { throw "Original file SHA256 mismatch: $path" }
+          }
+          $receipts | ConvertTo-Json | Set-Content -Encoding utf8 results/original-file-identities.json
+          Copy-Item $exe artifacts/engine/Godot_v4.7-stable_win64.exe -Force
+          Write-Output "Original A EXE, PDB and original second-chance dump authenticated"
+
+      - name: Locate or install genuine Microsoft Debugging Tools for Windows
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $cdb = 'C:/Program Files (x86)/Windows Kits/10/Debuggers/x64/cdb.exe'
+          if (-not (Test-Path $cdb)) {
+            $sdk = Join-Path $env:RUNNER_TEMP 'winsdksetup.exe'
+            Invoke-WebRequest -Uri 'https://go.microsoft.com/fwlink/?linkid=2272610' -OutFile $sdk
+            $p = Start-Process -FilePath $sdk -ArgumentList @('/features','OptionId.WindowsDesktopDebuggers','/quiet','/norestart') -Wait -PassThru
+            if ($p.ExitCode -ne 0) { throw "Windows SDK debugging tools installation failed: $($p.ExitCode)" }
+          }
+          if (-not (Test-Path $cdb)) { throw "No genuine Microsoft cdb.exe is available" }
+          & $cdb -version 2>&1 | Out-File -Encoding utf8 results/cdb-version.txt
+          "CDB_PATH=$cdb" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+
+      - name: Symbolize exact A-engine fault and original fault-thread stack
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $imageDir = (Resolve-Path artifacts/engine).Path
+          $dump = (Resolve-Path artifacts/evidence/ab/trials/01-a/fixture/fault-4020-8020-677.dmp).Path
+          $commands = '.symopt+ 0x40; .reload /f; .ecxr; !analyze -v; .ecxr; r; kvn; lm; lmvm godot*; u @rip L12; q'
+          & $env:CDB_PATH -z $dump -y $imageDir -i $imageDir -lines -c $commands 2>&1 | Tee-Object -FilePath results/cdb-original-a.log
+          $result = $LASTEXITCODE
+          if ($result -ne 0) { throw "CDB failed with exit $result" }
+          $log = Get-Content results/cdb-original-a.log -Raw
+          if ($log -notmatch '(?i)RefCounted::reference') { throw "Exact A fault not symbolized to RefCounted::reference" }
+          if ($log -notmatch '(?i)GDScriptLanguage::finish') { throw "Godot shutdown stack caller not recovered from original dump" }
+          if ($log -notmatch '(?i)ScriptServer::finish_languages') { throw "Higher shutdown stack caller not recovered" }
+          if ($log -match '(?i)symbols could not be loaded.*godot') { throw "Engine PDB loading failure" }
+          @"
+          Original Windows dump: run 41958413986, trial 01-A, second-chance event 677
+          Verified A EXE SHA256: f8238cda7f26d4b30c34a04d772985a31aacb39a7c33ca92dfa88a39bee83e42
+          Verified A PDB SHA256: f3033be9d9c54154038800e23cf66d86a7872ee29054842bdd121c4b6e7a4536
+          Verified original DMP SHA256: fd04ab72604a3e3a84ce17e7af32432543d4baf04cad45b5a6cdfc7be11be41e
+          Assertions: fault RefCounted::reference and GDScriptLanguage::finish, ScriptServer::finish_languages recovered by Microsoft CDB
+          This dump cannot establish exact allocation/free provenance.
+          "@ | Set-Content -Encoding utf8 results/qualification.txt
+
+      - name: Preserve original debugger output, including failures
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: godot117991-windbg-original-A-${{ github.run_id }}-${{ github.run_attempt }}
+          path: results/
+          if-no-files-found: warn
+          retention-days: 90
