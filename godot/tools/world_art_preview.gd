@@ -168,7 +168,7 @@ func _build_ui() -> void:
 	middle.add_child(canvas_frame)
 	viewport_container = SubViewportContainer.new()
 	viewport_container.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	viewport_container.stretch = true
+	viewport_container.stretch = false
 	viewport_container.mouse_filter = Control.MOUSE_FILTER_STOP
 	viewport_container.gui_input.connect(_on_canvas_input)
 	canvas_frame.add_child(viewport_container)
