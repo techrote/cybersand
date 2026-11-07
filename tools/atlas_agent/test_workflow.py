@@ -60,6 +60,11 @@ class InputValidationTests(unittest.TestCase):
                                         "GITHUB_ACTIONS": "true", "GITHUB_EVENT_NAME": "workflow_dispatch"})
         self.assertEqual(ok["mode"], "live")
 
+    def test_hosted_live_atlas_source_refused_until_no_secret_execution_sandbox(self):
+        self.reject(IN_MODE="live", IN_MODEL="gpt-5.4-mini", IN_SOURCE="atlas-ref",
+                    IN_COLLECTION="lumen-fault", IN_ATLAS_SHA="a" * 40,
+                    GITHUB_ACTIONS="true", GITHUB_EVENT_NAME="workflow_dispatch")
+
     def test_live_requirements(self):
         self.reject(IN_MODE="live", IN_MODEL="")
         self.reject(IN_MODE="live", IN_MODEL="gpt-5.4-mini", IN_SOURCE="atlas-ref", IN_COLLECTION="lumen-fault")
