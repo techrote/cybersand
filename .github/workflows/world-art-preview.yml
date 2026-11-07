@@ -12,6 +12,7 @@ on:
       - 'godot/tests/world_art_preview_smoke.gd'
       - 'godot/tests/test_world_design_pack_adapter.gd'
       - 'docs/tools/world-art-preview.md'
+      - 'tools/world_art_preview_launcher.py'
       - '.github/workflows/world-art-preview.yml'
   workflow_dispatch:
 
@@ -62,34 +63,33 @@ jobs:
         run: |
           set -euo pipefail
           GODOT="$RUNNER_TEMP/engine/Godot_v4.7-stable_linux.x86_64"
-          "$GODOT" --headless --path godot --editor --import --quit > /tmp/world-art-import.log 2>&1 || { cat /tmp/world-art-import.log; exit 1; }
-          "$GODOT" --headless --path godot --script res://tests/test_world_design_pack_adapter.gd \
+          python3 tools/world_art_preview_launcher.py --godot "$GODOT" --adapter-oracle \
             2>&1 | tee build-world-art-adapter.log
       - name: Launch the standalone scene via the documented Godot CLI
         shell: bash
         run: |
           set -euo pipefail
           xvfb-run --auto-servernum --server-args='-screen 0 1920x1080x24 -nolisten tcp' \
-            timeout 180 "$RUNNER_TEMP/engine/Godot_v4.7-stable_linux.x86_64" \
-            --path godot --rendering-driver opengl3 --quit-after 120 \
-            res://tools/world_art_preview.tscn -- \
+            timeout 180 python3 tools/world_art_preview_launcher.py \
+            --godot "$RUNNER_TEMP/engine/Godot_v4.7-stable_linux.x86_64" \
             --art-root="$GITHUB_WORKSPACE/art-source/docs/world-design" \
-            --design-revision="$ART_REVISION" \
+            --design-revision="$ART_REVISION" --rendering-driver=opengl3 --quit-after=120 \
             2>&1 | tee build-world-art-launch.log
+          if grep -Eq 'SCRIPT ERROR|Parse Error|ERROR: Error loading extension' build-world-art-launch.log; then exit 1; fi
       - name: Run actual interactive GUI with screenshot and 120-feature coverage
         shell: bash
         run: |
           set -euo pipefail
           mkdir -p build/world-art-linux
           xvfb-run --auto-servernum --server-args='-screen 0 1920x1080x24 -nolisten tcp' \
-            timeout 1500 "$RUNNER_TEMP/engine/Godot_v4.7-stable_linux.x86_64" \
-            --path godot --rendering-driver opengl3 \
-            --script res://tests/world_art_preview_smoke.gd -- \
+            timeout 1500 python3 tools/world_art_preview_launcher.py \
+            --godot "$RUNNER_TEMP/engine/Godot_v4.7-stable_linux.x86_64" \
             --art-root="$GITHUB_WORKSPACE/art-source/docs/world-design" \
-            --design-revision="$ART_REVISION" \
+            --design-revision="$ART_REVISION" --rendering-driver=opengl3 \
             --export-root="$GITHUB_WORKSPACE/build/world-art-linux/exports" \
             --smoke-output="$GITHUB_WORKSPACE/build/world-art-linux" \
             2>&1 | tee build/world-art-linux/execution.log
+          if grep -Eq 'SCRIPT ERROR|Parse Error|ERROR: Error loading extension' build/world-art-linux/execution.log; then exit 1; fi
       - name: Preserve Godot framebuffer evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
@@ -138,14 +138,16 @@ jobs:
           set -euo pipefail
           mkdir -p build/world-art-windows
           ENGINE="$RUNNER_TEMP/world-art-engine/Godot_v4.7-stable_win64_console.exe"
-          "$ENGINE" --headless --path godot --editor --import --quit 2>&1 | tee build/world-art-windows/import.log
-          "$ENGINE" --path godot --rendering-driver opengl3_angle \
-            --script res://tests/world_art_preview_smoke.gd -- \
+          python tools/world_art_preview_launcher.py --godot "$ENGINE" --adapter-oracle \
+            2>&1 | tee build/world-art-windows/import.log
+          python tools/world_art_preview_launcher.py --godot "$ENGINE" \
+            --rendering-driver=opengl3_angle \
             --art-root="$GITHUB_WORKSPACE/art-source/docs/world-design" \
             --design-revision="$ART_REVISION" \
             --export-root="$GITHUB_WORKSPACE/build/world-art-windows/exports" \
             --smoke-output="$GITHUB_WORKSPACE/build/world-art-windows" \
             2>&1 | tee build/world-art-windows/execution.log
+          if grep -Eq 'SCRIPT ERROR|Parse Error|ERROR: Error loading extension' build/world-art-windows/execution.log; then exit 1; fi
       - name: Preserve ANGLE original framebuffer evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
