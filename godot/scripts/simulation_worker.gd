@@ -528,6 +528,7 @@ func _apply_prepared_default_liquid(command: Dictionary) -> bool:
 		"simulation_window_enabled":owner.simulation_window_enabled,"cadence_lod_enabled":owner.cadence_lod_enabled,
 		"liquid_surface_adhesion_enabled":owner.liquid_surface_adhesion_enabled,
 		"normalization":setup.get("normalization",""),"maximum_rule_radius":setup.get("maximum_rule_radius",2),
+		"pressure_gas_compartment_capacity":setup.get("pressure_gas_compartment_capacity",1024),
 		"initial_bodies":physical.initial_bodies}
 	var token: int = _prepared_liquid_continuation_token(command)
 	if token < 0: return false

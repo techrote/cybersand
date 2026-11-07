@@ -111,7 +111,7 @@ void World::rebuild_pressure_gas_cache(std::uint32_t stamp) {
         const auto* live = pressure_->find(region.label);
         if (live == nullptr || live->volume != region.volume || live->anchor_x != region.lowest_x ||
             live->anchor_y != region.lowest_y) continue;
-        if (cache->gas_components.size() >= PressureFlowParameters::kCompartmentCapacity ||
+        if (cache->gas_components.size() >= pressure_->parameters.gas_compartment_capacity ||
             region.volume > cache->gas_member_limit - total) { fail(); return; }
         PressureCache::GasComponent component;
         component.id = region.label; component.source_region = static_cast<std::uint32_t>(r);
