@@ -5,7 +5,7 @@ var host: Control
 var ui
 var checks: int=0
 var failures: Array[String]=[]
-var evidence: Dictionary={"cuts":[]}
+var evidence: Dictionary={"cuts":[],"refused_strokes":[]}
 var observed_workers: int=0
 
 func _initialize() -> void:
@@ -79,7 +79,8 @@ func cut(offset: int, members: int, proxies: int) -> bool:
 		check(PhysicsServer2D.body_get_state(rid,PhysicsServer2D.BODY_STATE_TRANSFORM)==old_values[slot][0],"old pose retained")
 		check(PhysicsServer2D.body_get_state(rid,PhysicsServer2D.BODY_STATE_LINEAR_VELOCITY)==old_values[slot][1] and PhysicsServer2D.body_get_state(rid,PhysicsServer2D.BODY_STATE_ANGULAR_VELOCITY)==old_values[slot][2],"old motion retained")
 		check(host.rigid_bodies[slot].mass==old_values[slot][3] and host.rigid_bodies[slot].inertia==old_values[slot][4],"old M/I retained")
-	evidence.cuts.back().merge({"mass":body.mass,"inertia":body.inertia,"world_generation":generation,"manual_steps":host.rapier_bridge.manual_step_count(),"proxy_count":proxies})
+	evidence.cuts.back().merge({"body_rid":str(body.get_rid().get_id()),"retained_rids":old_rids.map(func(rid: RID):return str(rid.get_id())),"retained_values":old_values,
+		"mass":body.mass,"inertia":body.inertia,"world_generation":generation,"manual_steps":host.rapier_bridge.manual_step_count(),"proxy_count":proxies})
 	return true
 
 func run_steps(count: int) -> bool:
@@ -129,6 +130,7 @@ func run() -> void:
 	var bodies: int=host.rigid_bodies.size()
 	check(ui.paint(Vector2i(300,30),0) and ui.cut.finish_stroke(ui),"empty erase starts ordinary zero-release transaction")
 	if not check(await until(installed),"zero-release handoff ends"): finish();return
+	evidence.refused_strokes.append(ui.cut.receipts.duplicate(true))
 	check(host.rigid_bodies.size()==bodies and ui.cut.capture_count==2,"zero release preserves custody")
 	if not await run_steps(5): finish();return
 	# A wide ring exceeds the 64-seed preflight before native can consume the
@@ -139,6 +141,7 @@ func run() -> void:
 		ui.applied.brush=16
 		check(ui.paint(Vector2i(350,160),0) and ui.cut.finish_stroke(ui),"overflowing erase stroke")
 		if not check(await until(installed),"capacity refusal releases the hold safely"): finish();return
+		evidence.refused_strokes.append(ui.cut.receipts.duplicate(true))
 		check(ui.cut.receipts[0].outcome=="MemberCapacity" and host.rigid_bodies.size()==2,"seed capacity is a refusal, not clearance")
 		if manual:
 			var count: int=host.rapier_bridge.manual_step_count()
@@ -165,12 +168,25 @@ func run() -> void:
 		check(ui.cut.capture_count==0 and host.rigid_bodies.size()==2 and host.rapier_bridge.manual_step_count()==0,"fresh replay has two bodies and no stale native archive")
 	finish()
 
+func json_values(value: Variant) -> Variant:
+	if value is Vector2 or value is Vector2i: return [value.x,value.y]
+	if value is Transform2D: return [value.x.x,value.x.y,value.y.x,value.y.y,value.origin.x,value.origin.y]
+	if value is Dictionary:
+		var result: Dictionary={}
+		for key: Variant in value: result[key]=json_values(value[key])
+		return result
+	if value is Array:
+		var result: Array=[]
+		for item: Variant in value: result.append(json_values(item))
+		return result
+	return value
+
 func finish() -> void:
 	if host!=null: host.queue_free()
 	await process_frame;await process_frame
 	var output: String=OS.get_environment("CYBERSAND_FREED_REPORT")
 	if not output.is_empty():
 		var file:=FileAccess.open(output,FileAccess.WRITE)
-		file.store_string(JSON.stringify({"checks":checks,"failures":failures,"evidence":evidence},"",true,true));file.close()
+		file.store_string(JSON.stringify(json_values({"checks":checks,"failures":failures,"evidence":evidence}),"",true,true));file.close()
 	print("WORKBENCH_FREED ",checks," checks / ",failures.size()," failures")
 	quit(int(not failures.is_empty()))

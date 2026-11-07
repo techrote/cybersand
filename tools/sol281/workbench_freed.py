@@ -100,9 +100,39 @@ def hosts(run,build_run):
     receipt['post_source_equality']=info==identity();receipt['resource_after']=resource();save()
     return int(not receipt['post_source_equality'] or not all(c['clean'] and c.get('report_complete',True) for h in receipt['hosts'].values() for c in h['commands']))
 
+def observe(run,reuse):
+    info=identity();previous=OUT/reuse;cohort=json.loads((previous/'receipt.json').read_text())
+    assert cohort['post_source_equality'] and cohort['identity']['source_inputs']==info['source_inputs']
+    resource(16*1024**2)
+    folder=OUT/run;assert not folder.exists();folder.mkdir()
+    receipt=dict(identity=info,reused_receipt_sha256=p.sha(previous/'receipt.json'),scope='New external value observer; unchanged immutable production project inputs, fresh process/World/session per run. No duplicate project copies within the registered cap.',hosts={})
+    script=ROOT/'godot/tests/test_workbench_freed.gd'
+    for platform in ['windows','linux']:
+        host=previous/platform;project=host/'godot'
+        # Import records and caches are generated; all runtime/source/resources
+        # used by the previous cohort must still be byte-identical.
+        inputs={n:d for n,d in cohort['hosts'][platform]['project_files'].items() if not n.endswith(('.import','.uid'))}
+        assert all(p.sha(project/n)==d for n,d in inputs.items())
+        target=folder/platform;target.mkdir();rows=[];receipt['hosts'][platform]=dict(commands=rows,project_inputs_equal=True)
+        for worker in [1,4]:
+            output=target/f'freed-w{worker}.json'
+            values=dict(CYBERSAND_FREED_WORKERS=str(worker),CYBERSAND_FREED_REPORT=str(output) if platform=='windows' else p.wsl(output))
+            args=[p.ENGINES[platform],'--headless','--path',str(project) if platform=='windows' else p.wsl(project),'--script',str(script) if platform=='windows' else p.wsl(script)]
+            if platform=='linux':args=['wsl.exe','-d','Ubuntu-24.04','--','env',*[k+'='+v for k,v in values.items()],*args]
+            row=p.command(f'freed-w{worker}',args,target,dict(os.environ,**values),timeout=300);rows.append(row)
+            row['report_complete']=False
+            if output.exists():
+                data=json.loads(output.read_text());row['report_complete']=not data['failures'] and len(data['evidence']['cuts'])==2 and len(data['evidence']['refused_strokes'])==3
+                row['report']=dict(path=str(output.relative_to(ROOT)),sha256=p.sha(output),checks=data['checks'])
+            p.write(folder/'receipt.json',receipt)
+        assert all(p.sha(project/n)==d for n,d in inputs.items())
+    receipt['post_source_equality']=info==identity();receipt['resource_after']=resource();p.write(folder/'receipt.json',receipt)
+    return int(not receipt['post_source_equality'] or not all(c['clean'] and c['report_complete'] for h in receipt['hosts'].values() for c in h['commands']))
+
 if __name__=='__main__':
-    parser=argparse.ArgumentParser(__doc__);parser.add_argument('mode',choices=['build','native','hosts']);parser.add_argument('--run',required=True);parser.add_argument('--build-run',default='runtimes-001');a=parser.parse_args()
+    parser=argparse.ArgumentParser(__doc__);parser.add_argument('mode',choices=['build','native','hosts','observe']);parser.add_argument('--run',required=True);parser.add_argument('--build-run',default='runtimes-001');parser.add_argument('--reuse-run',default='hosts-005');a=parser.parse_args()
     assert Path(a.run).name==a.run
-    resource(256*1024**2)
+    resource(16*1024**2 if a.mode=='observe' else 256*1024**2)
+    if a.mode=='observe':sys.exit(observe(a.run,a.reuse_run))
     if a.mode=='build':p.OUT=OUT;p.identity=identity;sys.exit(p.build(a.run))
     sys.exit(native(a.run) if a.mode=='native' else hosts(a.run,a.build_run))
