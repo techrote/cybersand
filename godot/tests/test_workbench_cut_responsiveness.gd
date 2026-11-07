@@ -62,6 +62,7 @@ func fresh(kind: String) -> bool:
 		host=current_scene;ui=host.shared_workbench
 	else: check(ui.apply(recipe),"fresh2048 ordinary canvas")
 	if not check(await until(installed),"canvas installed"): return false
+	if not baseline: ui.cut.rectangle_core=false # Registered exact-body timing control.
 	host.simulation_worker.set_worker_participation_sampling(true)
 	check(ui.step_once(),"apply native region")
 	return check(await until(func():return not ui.step_pending and host.latest_snapshot.tick_index>0),"native region applied")

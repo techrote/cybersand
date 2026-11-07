@@ -1,0 +1,140 @@
+{
+  "source": "072994bb32c6dce4ad1d705e539f5af835eb29e0",
+  "tree": "c8c5c1274a20bcfdbe8f50a87dd1d636df9cb376",
+  "commands": [
+    {
+      "name": "docs",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/ci/check_docs.py",
+        "--json",
+        "C:\\khybersand\\build\\sol466-order-owned\\khybersand\\build\\workbench-rectangle-core\\checks-001\\docs.json"
+      ],
+      "exit": 0,
+      "seconds": 1.9728220000397414,
+      "timeout_seconds": 180,
+      "log": "build\\workbench-rectangle-core\\checks-001\\docs.log",
+      "log_sha256": "6db759081833af7b24b9f0619f5638ac7c895854d79db2d7df8444eff6ce7d9a",
+      "clean": true
+    },
+    {
+      "name": "m11",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/ci/check_m11_consistency.py",
+        "--json",
+        "C:\\khybersand\\build\\sol466-order-owned\\khybersand\\build\\workbench-rectangle-core\\checks-001\\m11.json"
+      ],
+      "exit": 0,
+      "seconds": 0.9953454000642523,
+      "timeout_seconds": 180,
+      "log": "build\\workbench-rectangle-core\\checks-001\\m11.log",
+      "log_sha256": "e5d2a8eecef5876957dc4ecff01b99af696053871616d2dea563371d44b2427b",
+      "clean": true
+    },
+    {
+      "name": "repository",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/ci/check_repository.py",
+        "--require-materialized",
+        "--json",
+        "C:\\khybersand\\build\\sol466-order-owned\\khybersand\\build\\workbench-rectangle-core\\checks-001\\repository.json"
+      ],
+      "exit": 0,
+      "seconds": 2.967426700051874,
+      "timeout_seconds": 180,
+      "log": "build\\workbench-rectangle-core\\checks-001\\repository.log",
+      "log_sha256": "c2c175ba0a565c2ac504a78a6fb569c9aa2670bbc23d26a1dc76d5e264426768",
+      "clean": true
+    },
+    {
+      "name": "material",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/material_catalogue/compatibility.py",
+        "--check"
+      ],
+      "exit": 0,
+      "seconds": 2.4225586999673396,
+      "timeout_seconds": 180,
+      "log": "build\\workbench-rectangle-core\\checks-001\\material.log",
+      "log_sha256": "20a9dee5297b59fb6e51fbe5972b5839bc519f4ac70993fe7a322be10b301404",
+      "clean": true
+    },
+    {
+      "name": "compiler",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/material_catalogue/compiler.py",
+        "--check"
+      ],
+      "exit": 0,
+      "seconds": 0.12253749999217689,
+      "timeout_seconds": 180,
+      "log": "build\\workbench-rectangle-core\\checks-001\\compiler.log",
+      "log_sha256": "d645a144c75f3517397c704fe81a8efb86fd092f64d93147bcfa35a1afc8bd3b",
+      "clean": true
+    },
+    {
+      "name": "runtime",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/sol281/workbench_check.py",
+        "--runtime-only"
+      ],
+      "exit": 0,
+      "seconds": 0.4811026999959722,
+      "timeout_seconds": 180,
+      "log": "build\\workbench-rectangle-core\\checks-001\\runtime.log",
+      "log_sha256": "0bf4bce8a14d1dda1e93e97f5d60d463c3ecaca4ef616c05a1e431d35113d470",
+      "clean": true
+    },
+    {
+      "name": "retrieval",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/docs/retrieval_eval.py",
+        "--output",
+        "C:\\khybersand\\build\\sol466-order-owned\\khybersand\\build\\workbench-rectangle-core\\checks-001\\retrieval.json"
+      ],
+      "exit": 0,
+      "seconds": 0.5137048000469804,
+      "timeout_seconds": 180,
+      "log": "build\\workbench-rectangle-core\\checks-001\\retrieval.log",
+      "log_sha256": "f17666b1f55a1657fae729f9243d71461b72147b7e81484d25f19e843dfeacc5",
+      "clean": true
+    },
+    {
+      "name": "retrieval-freed",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/docs/retrieval_eval.py",
+        "--queries",
+        "docs/reference/retrieval-questions-workbench-freed.json",
+        "--output",
+        "C:\\khybersand\\build\\sol466-order-owned\\khybersand\\build\\workbench-rectangle-core\\checks-001\\retrieval-freed.json"
+      ],
+      "exit": 0,
+      "seconds": 0.43822739995084703,
+      "timeout_seconds": 180,
+      "log": "build\\workbench-rectangle-core\\checks-001\\retrieval-freed.log",
+      "log_sha256": "f7525a7a66a4c72c81eb4bf436ea744101d212e44ff70c38812da4bdb1cb849b",
+      "clean": true
+    },
+    {
+      "name": "diff-check",
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit": 0,
+      "seconds": 0.04078509996179491,
+      "timeout_seconds": 180,
+      "log": "build\\workbench-rectangle-core\\checks-001\\diff-check.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "clean": true
+    }
+  ]
+}

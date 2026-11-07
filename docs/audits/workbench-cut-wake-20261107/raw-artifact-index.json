@@ -1,0 +1,480 @@
+{
+  "scope": "Raw local logs/reports/receipts; immutable copied project hash inventories are inside cohort receipts",
+  "files": [
+    {
+      "path": "build/workbench-cut-wake/baseline-live-001/linux/live-w1.json",
+      "bytes": 319550,
+      "sha256": "57b72a572cd36194d2bf9f10edc7bff72f67f861493f12e701b9a77f01efcdc3"
+    },
+    {
+      "path": "build/workbench-cut-wake/baseline-live-001/linux/live-w1.log",
+      "bytes": 646,
+      "sha256": "2d2914988f21338916b1b15559c047894acc6700082c0f3ffb82fe0709e913bd"
+    },
+    {
+      "path": "build/workbench-cut-wake/baseline-live-001/linux/live-w1.receipt.json",
+      "bytes": 952,
+      "sha256": "d0fa1329f018b02a84b720468e67d982e94c5cfa179da6f43a77d2b65450bffb"
+    },
+    {
+      "path": "build/workbench-cut-wake/baseline-live-001/receipt.json",
+      "bytes": 33131,
+      "sha256": "70dcd247f12e045bd51a941cfbcb44fd67a1613ddf9130beedf2402e09300bfd"
+    },
+    {
+      "path": "build/workbench-cut-wake/baseline-live-001/windows/live-w1.json",
+      "bytes": 319508,
+      "sha256": "8937cf78416696f9cac60fd25ce0851b88562425d1f6788e1a11ebb06f49328a"
+    },
+    {
+      "path": "build/workbench-cut-wake/baseline-live-001/windows/live-w1.log",
+      "bytes": 660,
+      "sha256": "e9fd93c4dc405065be6f6281a35dab1e7484a075db8a5d3c31a1d3e3bab89d1c"
+    },
+    {
+      "path": "build/workbench-cut-wake/baseline-live-001/windows/live-w1.receipt.json",
+      "bytes": 627,
+      "sha256": "f53e02d890c9d41ce9851523e07d2d9c9fe1568c2ecb2093e44463157e8f37a0"
+    },
+    {
+      "path": "build/workbench-cut-wake/bounds-001/linux/bounds.json",
+      "bytes": 146459,
+      "sha256": "f1f8a1923513bf3ccd3f6d130dc320f970e26e897b4f42920afd3c45cbddb15c"
+    },
+    {
+      "path": "build/workbench-cut-wake/bounds-001/linux/bounds.log",
+      "bytes": 6541,
+      "sha256": "e56af5b0b788c469495fa765d9ddb96ee7a5362116bdd52d639d51ec9e5cf3ed"
+    },
+    {
+      "path": "build/workbench-cut-wake/bounds-001/linux/bounds.receipt.json",
+      "bytes": 935,
+      "sha256": "6a2113e6bde7547f37777b5d20fe4f3490b462144f63b9a542674b5c88284b2a"
+    },
+    {
+      "path": "build/workbench-cut-wake/bounds-001/receipt.json",
+      "bytes": 32703,
+      "sha256": "b326527a90ee7107e3d69d2638bb7a0576aed58d97a477b4b73be671e8ac16d5"
+    },
+    {
+      "path": "build/workbench-cut-wake/bounds-001/windows/bounds.json",
+      "bytes": 146414,
+      "sha256": "d18b6d2f57845da5191804a9eef65f4065f9ba167f5bef033b3717928025cc03"
+    },
+    {
+      "path": "build/workbench-cut-wake/bounds-001/windows/bounds.log",
+      "bytes": 6581,
+      "sha256": "13e0a367c27c6cf449fb49a0d44cc91371029c0ad13bdb3084b8d37405a76e79"
+    },
+    {
+      "path": "build/workbench-cut-wake/bounds-001/windows/bounds.receipt.json",
+      "bytes": 617,
+      "sha256": "9b00f9d8ecc2916bc078ee871e2dbb2841b72632e72774ffec73973306ed2f52"
+    },
+    {
+      "path": "build/workbench-cut-wake/bounds-002/linux/bounds.json",
+      "bytes": 140210,
+      "sha256": "5dbe3b17e193cffb5a2c7735608209cb073bc77b00ecbff3e89515a300a497e9"
+    },
+    {
+      "path": "build/workbench-cut-wake/bounds-002/linux/bounds.log",
+      "bytes": 262,
+      "sha256": "8d699a80d42c16dd6965fd58ed1be05d6bdee47b83f4b4944dfd3c4f8eafc3a0"
+    },
+    {
+      "path": "build/workbench-cut-wake/bounds-002/linux/bounds.receipt.json",
+      "bytes": 934,
+      "sha256": "051d7d132e9942dc8f7ebb75eb3457a5feaef573512b4ef77ea52a1cb7b83b03"
+    },
+    {
+      "path": "build/workbench-cut-wake/bounds-002/receipt.json",
+      "bytes": 32732,
+      "sha256": "b132d8ef91a9d8723ceed7c4514efb76c0d4ffaa3b7ce14d90334e7b8a8588f1"
+    },
+    {
+      "path": "build/workbench-cut-wake/bounds-002/windows/bounds.json",
+      "bytes": 140210,
+      "sha256": "b48d213429d0c3b1afc3b88ee77f5a1ae632f4cd58a6d0ce8b919e4b40d8e4b6"
+    },
+    {
+      "path": "build/workbench-cut-wake/bounds-002/windows/bounds.log",
+      "bytes": 266,
+      "sha256": "094ac9a19b1dae3a0d52a527a874dc904664102d54f1785275e953e5d17bc5bf"
+    },
+    {
+      "path": "build/workbench-cut-wake/bounds-002/windows/bounds.receipt.json",
+      "bytes": 616,
+      "sha256": "aa4a3eb830456c3b6780439f46689cf6fd52446429508f86168592ea3afd873f"
+    },
+    {
+      "path": "build/workbench-cut-wake/comparison.json",
+      "bytes": 107883,
+      "sha256": "bdababbbaa8e8c288a7a3353553f1a55cd95a1043c8466712142928ed053fd16"
+    },
+    {
+      "path": "build/workbench-cut-wake/hosts-001/linux/import.log",
+      "bytes": 38208,
+      "sha256": "8c4a5208069c72c86368124145b569a617ca1f9998f6daa6333d19a44c1c1eaa"
+    },
+    {
+      "path": "build/workbench-cut-wake/hosts-001/linux/import.receipt.json",
+      "bytes": 663,
+      "sha256": "d17a1a68763cc2c3048a920ccad375324269d2eb9c5642a7e78ee68446d4d425"
+    },
+    {
+      "path": "build/workbench-cut-wake/hosts-001/linux/test_workbench_canvas.log",
+      "bytes": 597,
+      "sha256": "c3b18db05fc7f059bae11e80114bcc5c8a381252ed0e686550195a1e7ec70dd5"
+    },
+    {
+      "path": "build/workbench-cut-wake/hosts-001/linux/test_workbench_canvas.receipt.json",
+      "bytes": 725,
+      "sha256": "0b5494316ded3f959609f3426b9234836a48c1ab7701638ff4eb80e082613afe"
+    },
+    {
+      "path": "build/workbench-cut-wake/hosts-001/linux/test_workbench_canvas_body.log",
+      "bytes": 256,
+      "sha256": "3d710f26f38d2b7d5491482afe99b7d208ce9edcf87f54b5b2bb0672442d908d"
+    },
+    {
+      "path": "build/workbench-cut-wake/hosts-001/linux/test_workbench_canvas_body.receipt.json",
+      "bytes": 739,
+      "sha256": "36262e71f882f821430fd61450e2841ad24414b4647116b6479d868f0dcaf715"
+    },
+    {
+      "path": "build/workbench-cut-wake/hosts-001/linux/test_workbench_cut_hitch-w1.json",
+      "bytes": 886011,
+      "sha256": "224168fa45d7e4f28ac40c1d37d9c466212e09090f00bafb6f8d190d41baa970"
+    },
+    {
+      "path": "build/workbench-cut-wake/hosts-001/linux/test_workbench_cut_hitch-w1.log",
+      "bytes": 1551,
+      "sha256": "bc3b510b56e56c9a7b988c7d9dde576d8489cb10cc55d5c3bcde07508f3c1f0e"
+    },
+    {
+      "path": "build/workbench-cut-wake/hosts-001/linux/test_workbench_cut_hitch-w1.receipt.json",
+      "bytes": 930,
+      "sha256": "8699147daac9603ca95e4ffbfee6f63f6a1d5e0a29af6e0374bad22b10feb384"
+    },
+    {
+      "path": "build/workbench-cut-wake/hosts-001/linux/test_workbench_cut_hitch-w4.json",
+      "bytes": 885985,
+      "sha256": "3c9344b8f3285442877965721937a24aa1332c411401e91e61cef804c46f1e57"
+    },
+    {
+      "path": "build/workbench-cut-wake/hosts-001/linux/test_workbench_cut_hitch-w4.log",
+      "bytes": 1551,
+      "sha256": "bc3b510b56e56c9a7b988c7d9dde576d8489cb10cc55d5c3bcde07508f3c1f0e"
+    },
+    {
+      "path": "build/workbench-cut-wake/hosts-001/linux/test_workbench_cut_hitch-w4.receipt.json",
+      "bytes": 930,
+      "sha256": "776be33a58c3b2d8230c0e99aeb3a1b7907a749efe4d8b6d645610f6b4b40923"
+    },
+    {
+      "path": "build/workbench-cut-wake/hosts-001/linux/test_workbench_cut_lifecycle.log",
+      "bytes": 258,
+      "sha256": "2aba299aa4857aae711efb04bcf723493364b86562e56b8b1928c921441487aa"
+    },
+    {
+      "path": "build/workbench-cut-wake/hosts-001/linux/test_workbench_cut_lifecycle.receipt.json",
+      "bytes": 746,
+      "sha256": "c12c22be1744aca0fb0d53b6994f4c8715eb57dc1ed0b9ef925f58b7fc118057"
+    },
+    {
+      "path": "build/workbench-cut-wake/hosts-001/linux/test_workbench_cut_transport.log",
+      "bytes": 260,
+      "sha256": "006d30c5647121a04b0708e25af33cbbeb820d400ba48aa9e8787977c9222376"
+    },
+    {
+      "path": "build/workbench-cut-wake/hosts-001/linux/test_workbench_cut_transport.receipt.json",
+      "bytes": 746,
+      "sha256": "330e51a1ad0cb222ef8af508d42a93e4a0442261939b3d67f7d88c39a08abbcc"
+    },
+    {
+      "path": "build/workbench-cut-wake/hosts-001/linux/test_workbench_cut_wakeup.log",
+      "bytes": 255,
+      "sha256": "9779dd7a965235aab439a16ee2b993b480d2ae05b611d5e17094a7908b957bea"
+    },
+    {
+      "path": "build/workbench-cut-wake/hosts-001/linux/test_workbench_cut_wakeup.receipt.json",
+      "bytes": 737,
+      "sha256": "13db3f4611d122273b927b822ccb8426b5e3c875679b6718aee4b13c2ac7fab6"
+    },
+    {
+      "path": "build/workbench-cut-wake/hosts-001/linux/test_workbench_fleet_session.log",
+      "bytes": 258,
+      "sha256": "de1a37723411ff3f440a3a7ffa1857ef7c78f992dfd435ead9e0af40307bae72"
+    },
+    {
+      "path": "build/workbench-cut-wake/hosts-001/linux/test_workbench_fleet_session.receipt.json",
+      "bytes": 745,
+      "sha256": "81cadbef5809a08bdfa364790eb03c012629aee6527eed70178070e9cc604f00"
+    },
+    {
+      "path": "build/workbench-cut-wake/hosts-001/linux/test_workbench_input.log",
+      "bytes": 1231,
+      "sha256": "7069ef8e0598f723bef75fc51182bccc7310dde23354c77e636f2799dcd3cd40"
+    },
+    {
+      "path": "build/workbench-cut-wake/hosts-001/linux/test_workbench_input.receipt.json",
+      "bytes": 720,
+      "sha256": "5c21166459cb338a3acea3fec88753e97c94f31137e3c87ded414c0410a91b96"
+    },
+    {
+      "path": "build/workbench-cut-wake/hosts-001/linux/test_workbench_pilot_ui.log",
+      "bytes": 846,
+      "sha256": "05649b61218a5b7717c7bf1eb34041fc5811fdfe9cf24215b11008d0cfa961b7"
+    },
+    {
+      "path": "build/workbench-cut-wake/hosts-001/linux/test_workbench_pilot_ui.receipt.json",
+      "bytes": 731,
+      "sha256": "9774ed95d23edd05b48d1ad79c953f981127c6bec0759e7e916d8f844e682eeb"
+    },
+    {
+      "path": "build/workbench-cut-wake/hosts-001/linux/test_workbench_rectangle_core-w1.json",
+      "bytes": 141141,
+      "sha256": "a6645bfce8a619bba91b4a9af053f9f65ff8d6160b3f9e885a9017fdc6e742a9"
+    },
+    {
+      "path": "build/workbench-cut-wake/hosts-001/linux/test_workbench_rectangle_core-w1.log",
+      "bytes": 262,
+      "sha256": "9741b060bbbff1522cae62bd7d94a942307df1f69fba6f8d149a1367e6eb14a6"
+    },
+    {
+      "path": "build/workbench-cut-wake/hosts-001/linux/test_workbench_rectangle_core-w1.receipt.json",
+      "bytes": 951,
+      "sha256": "e9bc5f83cf9a0942af17590915ec8d41fef60f6d994b1d69a8c9576adba88f9c"
+    },
+    {
+      "path": "build/workbench-cut-wake/hosts-001/linux/test_workbench_rectangle_core-w4.json",
+      "bytes": 141142,
+      "sha256": "75f9e51ad6cdc90d448ae4d8a4717690c1f88958f3e508817fecbac560b06760"
+    },
+    {
+      "path": "build/workbench-cut-wake/hosts-001/linux/test_workbench_rectangle_core-w4.log",
+      "bytes": 262,
+      "sha256": "9741b060bbbff1522cae62bd7d94a942307df1f69fba6f8d149a1367e6eb14a6"
+    },
+    {
+      "path": "build/workbench-cut-wake/hosts-001/linux/test_workbench_rectangle_core-w4.receipt.json",
+      "bytes": 951,
+      "sha256": "ea7cebf442962c561ffc9e0cb3d72887c347eadb703796fcf24070759e98e699"
+    },
+    {
+      "path": "build/workbench-cut-wake/hosts-001/linux/test_workbench_rectangle_core_lifecycle.log",
+      "bytes": 258,
+      "sha256": "2aba299aa4857aae711efb04bcf723493364b86562e56b8b1928c921441487aa"
+    },
+    {
+      "path": "build/workbench-cut-wake/hosts-001/linux/test_workbench_rectangle_core_lifecycle.receipt.json",
+      "bytes": 779,
+      "sha256": "c65159da2f2f77da147afe6c84c0dd12e4b2b48879c5a5026205aa09e582c381"
+    },
+    {
+      "path": "build/workbench-cut-wake/hosts-001/receipt.json",
+      "bytes": 254182,
+      "sha256": "561d7d50f349e0d0541f4d9e194ad847f8e339cab93954820f83a4933712bd84"
+    },
+    {
+      "path": "build/workbench-cut-wake/hosts-001/windows/import.log",
+      "bytes": 38816,
+      "sha256": "34694b060291faa0ffc394c3ec93cdcb561b0b94fdfc5fe2b53418cf1769f1f0"
+    },
+    {
+      "path": "build/workbench-cut-wake/hosts-001/windows/import.receipt.json",
+      "bytes": 515,
+      "sha256": "eeade440fea2139de2c79eb228456981933bcad7783729a6d1d8047d8e60435c"
+    },
+    {
+      "path": "build/workbench-cut-wake/hosts-001/windows/test_workbench_canvas.log",
+      "bytes": 600,
+      "sha256": "2b22a367123e17d1ece8c840e8e3163994494bcf417ce7fb8441b6ff1443cf64"
+    },
+    {
+      "path": "build/workbench-cut-wake/hosts-001/windows/test_workbench_canvas.receipt.json",
+      "bytes": 575,
+      "sha256": "0fad3dfab270f7291a9fd1b6378d378a322681c82d4a8f64551774c31bcce321"
+    },
+    {
+      "path": "build/workbench-cut-wake/hosts-001/windows/test_workbench_canvas_body.log",
+      "bytes": 260,
+      "sha256": "1cf91c3b35f42e2e9d16a51f73da1b8b81137cf257c11c9fc9f7424806682a6c"
+    },
+    {
+      "path": "build/workbench-cut-wake/hosts-001/windows/test_workbench_canvas_body.receipt.json",
+      "bytes": 590,
+      "sha256": "9c97aeb40db22e081d1afc73a998f0bd0fcb6c70a0c6a2dde539a217afa7fb53"
+    },
+    {
+      "path": "build/workbench-cut-wake/hosts-001/windows/test_workbench_cut_hitch-w1.json",
+      "bytes": 885917,
+      "sha256": "54a64aed01335a7122eef15fdf7d3fde624fe01738842616a7a977fa66b27836"
+    },
+    {
+      "path": "build/workbench-cut-wake/hosts-001/windows/test_workbench_cut_hitch-w1.log",
+      "bytes": 1595,
+      "sha256": "1e168635641f80403586a2f5eedb5bf767f6b2d35140d3467e78a4446a201aac"
+    },
+    {
+      "path": "build/workbench-cut-wake/hosts-001/windows/test_workbench_cut_hitch-w1.receipt.json",
+      "bytes": 590,
+      "sha256": "854653d35cd7daec9f1e453f79de8ae9ae218d3c3c8f8ead4a0830c845b44518"
+    },
+    {
+      "path": "build/workbench-cut-wake/hosts-001/windows/test_workbench_cut_hitch-w4.json",
+      "bytes": 885917,
+      "sha256": "9ff64dde131d914dec664a1d546a3d48c44f2cc86faecda50f809fb39dea0e00"
+    },
+    {
+      "path": "build/workbench-cut-wake/hosts-001/windows/test_workbench_cut_hitch-w4.log",
+      "bytes": 1595,
+      "sha256": "1e168635641f80403586a2f5eedb5bf767f6b2d35140d3467e78a4446a201aac"
+    },
+    {
+      "path": "build/workbench-cut-wake/hosts-001/windows/test_workbench_cut_hitch-w4.receipt.json",
+      "bytes": 590,
+      "sha256": "fd7041db2dd1df7de1c6cc3b03fceeb6dcd5c188b0e77cb97ce816b0e38b1ce7"
+    },
+    {
+      "path": "build/workbench-cut-wake/hosts-001/windows/test_workbench_cut_lifecycle.log",
+      "bytes": 262,
+      "sha256": "e7a62b99be967c140d8cb8556d824c715ad0615390f4150c3197b09b9c7a8f6e"
+    },
+    {
+      "path": "build/workbench-cut-wake/hosts-001/windows/test_workbench_cut_lifecycle.receipt.json",
+      "bytes": 596,
+      "sha256": "5151341584199e10e2a77260ab8736eae0c62a30d4bb112a6d0f4d94208c0ebc"
+    },
+    {
+      "path": "build/workbench-cut-wake/hosts-001/windows/test_workbench_cut_transport.log",
+      "bytes": 264,
+      "sha256": "092db488c985b3d815c4ed8f1cfefc47e8bffc2804dc055c25a15df7d6100ccf"
+    },
+    {
+      "path": "build/workbench-cut-wake/hosts-001/windows/test_workbench_cut_transport.receipt.json",
+      "bytes": 596,
+      "sha256": "58efb95cca38377d7979664cdb316555c7b78ced0fe6778a94d9dfb52dd16fde"
+    },
+    {
+      "path": "build/workbench-cut-wake/hosts-001/windows/test_workbench_cut_wakeup.log",
+      "bytes": 259,
+      "sha256": "2171aae9d88873785e3b52f58d7f686f748f6112d977bac7190d915e7644a476"
+    },
+    {
+      "path": "build/workbench-cut-wake/hosts-001/windows/test_workbench_cut_wakeup.receipt.json",
+      "bytes": 588,
+      "sha256": "ed63feb876ac64bb56c5e8a6ed218459baa28723db0e96ecf69c0f964979645b"
+    },
+    {
+      "path": "build/workbench-cut-wake/hosts-001/windows/test_workbench_fleet_session.log",
+      "bytes": 262,
+      "sha256": "634f905ac03e58d4737bde7eb8adf6ec8d661ce01f04c9b26bb3fe581f4a3724"
+    },
+    {
+      "path": "build/workbench-cut-wake/hosts-001/windows/test_workbench_fleet_session.receipt.json",
+      "bytes": 597,
+      "sha256": "09a597cec04d025c2f956c6bd6671fd8e9bc1dc22041563c273b2f41db7c1967"
+    },
+    {
+      "path": "build/workbench-cut-wake/hosts-001/windows/test_workbench_input.log",
+      "bytes": 1235,
+      "sha256": "75b49982fe516c07aa0a1f68a552f49bae40cc56a4578cc1655cb9b1f5affcdb"
+    },
+    {
+      "path": "build/workbench-cut-wake/hosts-001/windows/test_workbench_input.receipt.json",
+      "bytes": 572,
+      "sha256": "8b908575e3b3b3768ee1d9e21880c6fbe87b8110800350cc66a83c5c76c36e2e"
+    },
+    {
+      "path": "build/workbench-cut-wake/hosts-001/windows/test_workbench_pilot_ui.log",
+      "bytes": 865,
+      "sha256": "e552b6c8178f7e38044fd393dd14d44f2a98078dcdbef20afdf2eab323d76600"
+    },
+    {
+      "path": "build/workbench-cut-wake/hosts-001/windows/test_workbench_pilot_ui.receipt.json",
+      "bytes": 581,
+      "sha256": "7cafae0e9cba75b4feb2c246ff7924f2c984dbe18672471408499bea78262877"
+    },
+    {
+      "path": "build/workbench-cut-wake/hosts-001/windows/test_workbench_rectangle_core-w1.json",
+      "bytes": 141125,
+      "sha256": "472e0db1ca3ff628057281c5a837fc27c4e7c38b625e72aef0874df0a0eaa039"
+    },
+    {
+      "path": "build/workbench-cut-wake/hosts-001/windows/test_workbench_rectangle_core-w1.log",
+      "bytes": 266,
+      "sha256": "5a19811cdf59a105a9d50c78585d426027b2108ce456150551b7eba2f65c3757"
+    },
+    {
+      "path": "build/workbench-cut-wake/hosts-001/windows/test_workbench_rectangle_core-w1.receipt.json",
+      "bytes": 606,
+      "sha256": "bf21f4ac39c301504ace85abc6f378fcc1809431fb1f5f7dd21d50bce99aa51f"
+    },
+    {
+      "path": "build/workbench-cut-wake/hosts-001/windows/test_workbench_rectangle_core-w4.json",
+      "bytes": 141125,
+      "sha256": "33b82b6b279962d86184a4f6aec93b79d01e4e2ba75472d330c4d376a408c581"
+    },
+    {
+      "path": "build/workbench-cut-wake/hosts-001/windows/test_workbench_rectangle_core-w4.log",
+      "bytes": 266,
+      "sha256": "5a19811cdf59a105a9d50c78585d426027b2108ce456150551b7eba2f65c3757"
+    },
+    {
+      "path": "build/workbench-cut-wake/hosts-001/windows/test_workbench_rectangle_core-w4.receipt.json",
+      "bytes": 606,
+      "sha256": "ddf953efe2fb073686337051ea70de433b26c242543917e5ad313de0c4abb41a"
+    },
+    {
+      "path": "build/workbench-cut-wake/hosts-001/windows/test_workbench_rectangle_core_lifecycle.log",
+      "bytes": 262,
+      "sha256": "e7a62b99be967c140d8cb8556d824c715ad0615390f4150c3197b09b9c7a8f6e"
+    },
+    {
+      "path": "build/workbench-cut-wake/hosts-001/windows/test_workbench_rectangle_core_lifecycle.receipt.json",
+      "bytes": 629,
+      "sha256": "7815dd3d55b543ca8ae0b7994352ba9f0fd716168989e2a7c07d58e3d8089616"
+    },
+    {
+      "path": "build/workbench-cut-wake/live-001/linux/live-w1.json",
+      "bytes": 315382,
+      "sha256": "944512bd60474c5d953adc4e224ea7ee77978e986154d03b2e5234462788633a"
+    },
+    {
+      "path": "build/workbench-cut-wake/live-001/linux/live-w1.log",
+      "bytes": 646,
+      "sha256": "2d2914988f21338916b1b15559c047894acc6700082c0f3ffb82fe0709e913bd"
+    },
+    {
+      "path": "build/workbench-cut-wake/live-001/linux/live-w1.receipt.json",
+      "bytes": 928,
+      "sha256": "25b4028de2260723f9987d52cd6d302054fa7de6d5fb36a104fb053f2fe0a3b1"
+    },
+    {
+      "path": "build/workbench-cut-wake/live-001/receipt.json",
+      "bytes": 33079,
+      "sha256": "084a9cde2db04e08bf6065069f764fb8875d93560deb9db7e84f331fcca33bf0"
+    },
+    {
+      "path": "build/workbench-cut-wake/live-001/windows/live-w1.json",
+      "bytes": 315329,
+      "sha256": "2c2a650aab9ed4b7683b677dc87f77f10a6a118a8abf651aa89d40f9c9e497b2"
+    },
+    {
+      "path": "build/workbench-cut-wake/live-001/windows/live-w1.log",
+      "bytes": 660,
+      "sha256": "e9fd93c4dc405065be6f6281a35dab1e7484a075db8a5d3c31a1d3e3bab89d1c"
+    },
+    {
+      "path": "build/workbench-cut-wake/live-001/windows/live-w1.receipt.json",
+      "bytes": 613,
+      "sha256": "18b19bafcf0b7ddd3aa7b8bf92f877b6a378a26e3b03da6bda053a8e05499412"
+    },
+    {
+      "path": "build/workbench-cut-wake/unchanged-runtimes/receipt.json",
+      "bytes": 69138,
+      "sha256": "d10ce05a8212abd6985cb594233660160c588c1938f823321e5c28fc55c28a2f"
+    }
+  ]
+}

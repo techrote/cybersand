@@ -6,7 +6,7 @@ status: Current
 scope: Rectangle occupancy, bounded displacement/impulses and Rapier hard contact, plus an opt-in detached-aggregate Sand constraint; generalized physics and exact replay remain absent
 keywords: [Rapier2D, occupancy mask, sweep, CCD, terrain budget, impulse, unresolved overlap]
 related-documents: [simulation-tick-and-threading.md, data-ownership-and-lifetimes.md, ../reference/interfaces-and-message-contracts.md, ../operations/rapier-2d-migration-runbook.md, ../systems/solid-detachment.md, ../audits/2026-09-24-rem002-issue11-integration-forensics.md, ../audits/2026-09-25-pchar001-player-representation-experiment.md]
-last-reviewed: 2026-11-06
+last-reviewed: 2026-11-07
 ---
 
 # Rigid-body and cellular coupling
@@ -70,6 +70,15 @@ show first impulse/torque recovery without advancing native handoff or altering
 forces. Automatic COM has a small measured local residual; actual world COM is
 checked against proxy centroid within the existing four-float32-ULP bound.
 This does not admit heterogeneous density or new restoration/support physics.
+
+**Reusable diagnostic lesson, source-qualified:** the oracle measures immediate
+and post-step linear/angular response to a known wrench in an isolated actual
+backend space with zero gravity/damping. A warmed control does not authorize a
+warm step in a real ownership transfer. The separate
+[planner precision repair](../systems/solid-detachment.md#planner-energy-precision--dependent-candidate-2026-11-05)
+computes guard energy from actual rounded components using scalar64 products;
+binary32 vector norms produced both false acceptances and false refusals. Keep
+those numerical/backend repairs distinct from force-law or settling changes.
 
 ## Opt-in detached compounds — 2026-11-01
 
@@ -191,6 +200,13 @@ Mass and returned central impulses use the Godot physics adapter's quantities;
 there is no approved production SI calibration or generalized force/torque
 unit contract. Packed fields are documented in
 [interfaces](../reference/interfaces-and-message-contracts.md).
+
+**Source-qualified SOL lesson for material/actor work:** structural mass is one
+unit per retained member; catalogue density ranks do not calibrate relative
+Sand/object weight, and Sand has no calibrated per-grain Newtonian mass/velocity.
+An ordinary impulse-cap/gravity ratio alone also omits hard contacts, correction
+and velocity clipping. See [the actual-cut mass and settling contract](../systems/solid-detachment.md#actual-cut-structures-mass-and-settling--2026-11-06).
+This is a measurement limitation, not permission to tune masses or force caps.
 
 | Operation | Current bound or response |
 |---|---|

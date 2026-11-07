@@ -10,6 +10,48 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+## SOL deferred while major physics integrations reconcile
+
+**Deferred by owner, 2026-11-07:** bench the SOL cutting/recovery experiment
+stack until the majority of major physics integrations are reconciled with main.
+Record reusable findings now; keep PRs Draft. This replaces earlier SOL next-step
+recommendations below, without rewriting their results or the programme graph.
+See [owner intent](product-intent-and-priorities.md#sol-deferred-during-physics-reconciliation--2026-11-07)
+and the [findings handoff](../audits/2026-11-07-cut-outcomes-and-triage.md#owner-pause-and-reusable-findings--2026-11-07).
+No main reconciliation, physics/default change or runtime requalification is
+performed here. A later restart needs fresh source inspection and a defined
+cutting contract; no count of remaining integrations or restart date is asserted.
+
+## Cut outcomes and explicit triage stop
+
+The [three-outcome dossier](../audits/2026-11-07-cut-outcomes-and-triage.md)
+records72 fresh authored comparisons, material loss, actual motion/cost and
+first-response age refusals. Fully non-pausing capture needs new ownership/
+staging semantics; no gate was removed. All-Sand/core-only are comparison
+recipes, not implemented live-cut modes. The next action is owner assessment of
+material outcome, structural fidelity, asynchronous contract and separable
+correctness repairs. Stop new tangents; keep Draft and historical blockers.
+
+## Remaining cut hitch
+
+Draft519 additionally removes frame-polled handoffs and dense paint-history
+replay under the same core geometry and physics. Source-qualified Windows/Linux
+workers1/4 pass160 matched episodes, with all native attempts retained. A semaphore/prefetch follow-up reduces
+30FPS Windows debris from200ms to96ms and measures live resume separately;
+remaining deferred/physics pacing persists; fragmented-history memory and universal60Hz
+are unqualified. See the [correction dossier](../audits/2026-11-07-workbench-rectangle-core.md#remaining-cut-hitch-correction--2026-11-07).
+Keep Draft; original SOL/platform blockers remain.
+
+## Interior core approximation
+
+Owner-directed dependent experiment retains one inscribed rigid rectangle and
+converts excess eligible RedBrick to native Sand. Actual Windows/Linux1/4,
+native optimized/sanitizer and lifecycle/replay controls pass source-bound.
+The [dossier](../audits/2026-11-07-workbench-rectangle-core.md) separates changed
+geometry/material and reduced rigid mass from unchanged coefficients and
+historical SOL failures. Next is owner feel and independent adversarial review;
+no main/default/Ready/merge or full SOL acceptance.
+
 ## Cut feedback and next approximation
 
 Dependent Draft510's [cut feedback correction](../audits/2026-11-07-workbench-cut-feedback.md)

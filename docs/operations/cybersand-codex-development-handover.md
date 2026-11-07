@@ -10,6 +10,50 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## SOL benched; findings handoff only — 2026-11-07
+
+The [latest owner direction](../reference/product-intent-and-priorities.md#sol-deferred-during-physics-reconciliation--2026-11-07)
+defers this SOL experiment stack until the majority of major physics integrations
+are reconciled with main. It supersedes earlier next-experiment instructions in
+this handover. No further cutting, mesh, support-law or async implementation is
+active. Keep all PRs Draft and preserve source/evidence; do not merge or promote.
+
+The [reusable findings and custody inventory](../audits/2026-11-07-cut-outcomes-and-triage.md#owner-pause-and-reusable-findings--2026-11-07)
+separates backend/numerical repairs, contact observations, rendering and scheduling
+lessons from provisional material choices. Other integration work must compare
+actual receiving source, preserve ownership/MAT contracts, and run focused
+source-matched checks. This docs-only checkpoint does not reconcile main itself.
+
+## Stop for cut-outcome and SOL triage — 2026-11-07
+
+Owner directs stopping after the three-outcome comparison. Read the
+[comparison/async boundary/triage dossier](../audits/2026-11-07-cut-outcomes-and-triage.md).
+72 fresh authored post-cut episodes are complete, with physics unchanged.
+Full non-pausing handoff is not admitted; current normal cutter remains held.
+The six-chamber ordinary comparison canvas is open locally; preserve other
+windows. No winner/default or alternative native cut mode is selected. Request
+independent review and owner triage before further tangents or integration.
+
+## Remaining cut hitch — 2026-11-07
+
+Draft519's rectangle geometry and physics stay fixed. The registered follow-up
+removes frame polling, batches at most8 refused investigations without skipping
+any, and reconstructs saved material rows as exact intervals. Follow-up3ad15e4a
+adds cut-only semaphore wake and first-discovery prefetch; fresh live timing
+includes the first accepted resumed physics step, with exact sample checks. Read the
+[correction checkpoint](../audits/2026-11-07-workbench-rectangle-core.md#remaining-cut-hitch-correction--2026-11-07)
+for source-qualified timing, tests and retained gaps. Preserve open user canvases.
+
+## Interior core experiment — 2026-11-07
+
+Owner's rectangle-plus-Sand request is on `codex/workbench-rectangle-core-20261107`,
+dependent on stable Draft51053d642b8; Draft466 remains b140265d. Read the
+[dossier](../audits/2026-11-07-workbench-rectangle-core.md). Builddf5fa14e and
+corrected observer25f79e5a qualify4206 checks per Windows/Linux worker1/4,
+native optimized/strict12314+19338 and retained controls. Source520 tree becomes
+208 rigid/312 Sand;356 building152/204. Do not label this original-shape SOL
+clearance or unchanged whole-body mass. Keep law/gains/caps fixed and PR Draft.
+
 ## Cut feedback correction — 2026-11-07
 
 Draft510 now retains new cuts' RedBrick appearance and skips unchanged terrain

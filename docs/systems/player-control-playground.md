@@ -10,6 +10,14 @@ related-documents: [physical-actor-rigs.md, ../architecture/data-ownership-and-l
 
 # Player control playground
 
+## Rectangle core cutting experiment
+
+The dependent core branch uses ordinary RedBrick erase strokes. Small pieces
+retain Sand/Rust crumble; larger eligible pieces retain one interior rigid brick
+rectangle and shed all excess as loose native Sand. A hollow building may retain
+one wall segment. Brick image, normal paint/powder/liquid/Save/Restore controls
+remain; no new testing menu. See [rule and evidence](../audits/2026-11-07-workbench-rectangle-core.md).
+
 ## Cut material appearance
 
 Newly freed RedBrick on dependent Draft510 keeps its brick shading as one

@@ -10,6 +10,34 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+## SOL pause and reusable physics findings
+
+The [owner has deferred SOL](reference/product-intent-and-priorities.md#sol-deferred-during-physics-reconciliation--2026-11-07)
+while major physics integrations reconcile with main. The
+[findings inventory](audits/2026-11-07-cut-outcomes-and-triage.md#owner-pause-and-reusable-findings--2026-11-07)
+routes mass/energy diagnostics, unresolved contact/sample observations, carried
+material rendering and worker/terrain latency repairs to their canonical homes.
+These are source-qualified reuse candidates, not accepted-main changes.
+Keep the stack Draft; earlier SOL continuation suggestions are deferred.
+
+## Cut outcomes and triage checkpoint
+
+The [three-outcome comparison and triage](audits/2026-11-07-cut-outcomes-and-triage.md)
+compares fresh authored rectangle+Sand, all-Sand and rectangle-only starts.
+It records the current asynchronous ownership blocker, first-response age
+refusal, exact material sink and the stop-for-owner-assessment boundary.
+No alternative live-cut mode, physics/default change or new menu is added.
+
+## Interior rectangle plus Sand
+
+The [dependent core experiment](audits/2026-11-07-workbench-rectangle-core.md)
+implements the owner's lossy representation: one interior rigid brick rectangle,
+excess native Sand, full source eligibility and separate ownership counts.
+Physics coefficients remain fixed; original whole-shape SOL gates are separate.
+Its [remaining cut-hitch correction](audits/2026-11-07-workbench-rectangle-core.md#remaining-cut-hitch-correction--2026-11-07)
+records exact row reconstruction and bounded refusal batching, with full repeated
+Windows/Linux timings and retained limitations.
+
 ## Cut appearance and responsiveness
 
 The [Draft510 correction](audits/2026-11-07-workbench-cut-feedback.md) replaces

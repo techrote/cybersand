@@ -24,6 +24,37 @@ bool fenced(soliding::SolidPhase phase) noexcept {
         phase == soliding::SolidPhase::DebrisCommitted ||
         phase == soliding::SolidPhase::Quarantined;
 }
+
+// Fixed64x64 row-pair intersection. Only fully occupied rectangles compete;
+// ties: top, left, width descending, height descending. No allocation.
+soliding::SolidShape interior_rectangle(const soliding::SolidStore& store,
+    soliding::SolidBounds domain) noexcept {
+    using namespace soliding;
+    SolidShape best{};
+    std::array<bool,kSolidDomainSide> columns{};
+    for (int top=0;top<domain.height;++top) {
+        columns.fill(true);
+        for (int bottom=top;bottom<domain.height;++bottom) {
+            for (int x=0;x<domain.width;++x)
+                columns[static_cast<std::size_t>(x)]=columns[static_cast<std::size_t>(x)] &&
+                    store.seen[static_cast<std::size_t>(bottom)*domain.width+static_cast<std::size_t>(x)];
+            for (int x=0;x<domain.width;) {
+                if (!columns[static_cast<std::size_t>(x)]) {++x;continue;}
+                const int left=x;
+                while (x<domain.width && columns[static_cast<std::size_t>(x)]) ++x;
+                const SolidShape candidate{domain.x+left,domain.y+top,
+                    static_cast<std::uint16_t>(x-left),static_cast<std::uint16_t>(bottom-top+1)};
+                const auto area=static_cast<unsigned>(candidate.width)*candidate.height;
+                const auto old=static_cast<unsigned>(best.width)*best.height;
+                if (area>old || (area==old && (candidate.y<best.y ||
+                    (candidate.y==best.y && (candidate.x<best.x || (candidate.x==best.x &&
+                    (candidate.width>best.width || (candidate.width==best.width && candidate.height>best.height))))))))
+                    best=candidate;
+            }
+        }
+    }
+    return best;
+}
 } // namespace solid_detail
 
 bool World::solid_detachment_fenced() const noexcept {
@@ -55,9 +86,15 @@ soliding::SolidOutcome World::configure_solid_detachment(soliding::SolidLimits l
 }
 
 soliding::SolidOutcome World::prepare_solid_detachment(const soliding::SolidRequest& request) {
+    return prepare_solid_detachment_impl(request,false,0);
+}
+
+soliding::SolidOutcome World::prepare_solid_detachment_impl(const soliding::SolidRequest& request,
+    bool rectangle_core, std::size_t small_debris_limit) {
     using namespace soliding;
     if (tick_failed_) return SolidOutcome::WorldFailed;
     if (!solid_detachment_) return SolidOutcome::Disabled;
+    if (rectangle_core && !workbench_solids_) return SolidOutcome::Invalid;
     auto& store = *solid_detachment_;
     auto& out = store.snapshot;
     if (tick_in_progress_ || out.phase != SolidPhase::Idle) return SolidOutcome::Busy;
@@ -155,8 +192,32 @@ soliding::SolidOutcome World::prepare_solid_detachment(const soliding::SolidRequ
     }
     std::sort(store.members.begin(), store.members.begin() + static_cast<std::ptrdiff_t>(out.member_count),
         [](const SolidMember& a, const SolidMember& b) { return a.y < b.y || (a.y == b.y && a.x < b.x); });
+    out.source_member_count=out.member_count;
+    out.source_digest=1469598103934665603ULL;
+    for (std::size_t i=0;i<out.source_member_count;++i) {
+        const auto& m=store.members[i];
+        hash_integer(out.source_digest,m.x);hash_integer(out.source_digest,m.y);
+        hash_integer(out.source_digest,static_cast<std::uint8_t>(m.material));
+        hash_integer(out.source_digest,m.state_a);hash_integer(out.source_digest,m.state_b);
+        hash_integer(out.source_digest,m.temperature);
+    }
+    if (rectangle_core && out.member_count>small_debris_limit) {
+        const auto shape=solid_detail::interior_rectangle(store,domain);
+        const SolidBounds core{shape.x,shape.y,shape.width,shape.height};
+        const auto middle=std::partition(store.members.begin(),
+            store.members.begin()+static_cast<std::ptrdiff_t>(out.member_count),
+            [core](const SolidMember& m) {return solid_detail::contains(core,m.x,m.y);});
+        out.member_count=static_cast<std::size_t>(middle-store.members.begin());
+        if (!out.member_count) return refuse(SolidOutcome::Invalid);
+        const auto order=[](const SolidMember& a,const SolidMember& b) {return a.y<b.y || (a.y==b.y && a.x<b.x);};
+        std::sort(store.members.begin(),middle,order);
+        std::sort(middle,store.members.begin()+static_cast<std::ptrdiff_t>(out.source_member_count),order);
+        out.fringe_count=out.source_member_count-out.member_count;
+        out.rectangle_core=true;
+        store.shapes[0]=shape;out.shape_count=1;
+    }
     // Exact horizontal runs, vertically merged only for identical spans.
-    for (std::size_t i = 0; i < out.member_count;) {
+    for (std::size_t i = 0; !out.rectangle_core && i < out.member_count;) {
         const auto first = store.members[i];
         std::size_t end = i + 1;
         while (end < out.member_count && store.members[end].y == first.y &&
@@ -188,6 +249,13 @@ soliding::SolidOutcome World::prepare_solid_detachment(const soliding::SolidRequ
         hash_integer(out.payload_digest, m.temperature);
     }
     out.com_x /= out.mass; out.com_y /= out.mass;
+    if (out.rectangle_core) {
+        // Bind the complete original tuple set and its selected core, not just
+        // the retained rectangle. Exact control digests remain unchanged.
+        hash_integer(out.payload_digest,out.source_digest);
+        hash_integer(out.payload_digest,out.source_member_count);
+        hash_integer(out.payload_digest,out.member_count);
+    }
     for (std::size_t i = 0; i < out.member_count; ++i) {
         const auto& m = store.members[i];
         const double dx = static_cast<double>(m.x - domain.x) + 0.5 - out.com_x;
@@ -200,7 +268,7 @@ soliding::SolidOutcome World::prepare_solid_detachment(const soliding::SolidRequ
         hash_integer(out.shape_digest, shape.width); hash_integer(out.shape_digest, shape.height);
     }
     // Reserve revision room for BOTH commit and a failed-body rollback.
-    if (hard_surface_revision_ > std::numeric_limits<std::uint64_t>::max() - 2U * out.member_count)
+    if (hard_surface_revision_ > std::numeric_limits<std::uint64_t>::max() - 2U * out.source_member_count)
         return refuse(SolidOutcome::GenerationExhausted);
     out.source_tick = tick_index_;
     out.source_terrain_revision = hard_surface_revision_;
@@ -247,20 +315,34 @@ soliding::SolidOutcome World::commit_solid_detachment(soliding::SolidToken token
     if (tick_in_progress_ || s.source_tick != tick_index_ ||
         s.source_terrain_revision != hard_surface_revision_ || !pending_explosions_.empty())
         return SolidOutcome::Stale;
-    for (std::size_t i = 0; i < s.member_count; ++i) {
+    if (s.rectangle_core && selected_core_region_!=applied_core_region_) return SolidOutcome::Excluded;
+    if (s.rectangle_core) {
+        for (const auto value:workbench_solids_->rectangle_core)
+            if (value>std::numeric_limits<std::uint64_t>::max()-s.source_member_count)
+                return SolidOutcome::GenerationExhausted;
+    }
+    for (std::size_t i = 0; i < s.source_member_count; ++i) {
         const auto& m = store.members[i];
+        if (s.rectangle_core && !contact_cell_available(m.x,m.y)) return SolidOutcome::NotResident;
         if (transient_obstacle_at(m.x, m.y) != 0 || stored_material(m.x, m.y) != m.material ||
             stored_state_a(m.x, m.y) != m.state_a || stored_state_b(m.x, m.y) != m.state_b ||
             stored_temperature(m.x, m.y) != m.temperature) return SolidOutcome::Stale;
     }
     // Existing resident inert cells, ambient thermal state, fixed metadata.
     // No material authority is moved before every source/resource check passes.
+    const auto prior=workbench_solids_ ? workbench_solids_->rectangle_core : std::array<std::uint64_t,4>{};
     try {
         for (std::size_t i = 0; i < s.member_count; ++i) {
             const auto& m = store.members[i];
             if (!write_cell(m.x, m.y, Material::Empty, 0, 0, nullptr, true))
                 throw std::logic_error("solid source unexpectedly refused retirement");
             ++s.aggregate_owned_count;
+        }
+        for (std::size_t i=s.member_count;i<s.source_member_count;++i) {
+            const auto& m=store.members[i];
+            if (!write_cell(m.x,m.y,Material::Sand,0,0,nullptr,true))
+                throw std::logic_error("rectangle fringe unexpectedly refused conversion");
+            ++s.fringe_converted_count;
         }
     } catch (...) {
         // Preserve diagnostic exact prefix ownership; never silently retry a
@@ -269,11 +351,20 @@ soliding::SolidOutcome World::commit_solid_detachment(soliding::SolidToken token
         for (std::size_t i = 0; i < s.member_count; ++i)
             if (stored_material(store.members[i].x, store.members[i].y) == Material::Empty)
                 ++s.aggregate_owned_count;
+        if (s.rectangle_core) {
+            s.fringe_converted_count=0;
+            for (std::size_t i=s.member_count;i<s.source_member_count;++i)
+                if (stored_material(store.members[i].x,store.members[i].y)==Material::Sand) ++s.fringe_converted_count;
+            workbench_solids_->rectangle_core={prior[0],prior[1]+s.aggregate_owned_count+s.fringe_converted_count,
+                prior[2]+s.aggregate_owned_count,prior[3]+s.fringe_converted_count};
+        }
         s.phase = SolidPhase::Quarantined;
         tick_failed_ = true;
         if (settled_discovery_) settled_discovery_->fail();
         return SolidOutcome::Quarantined;
     }
+    if (s.rectangle_core) workbench_solids_->rectangle_core={prior[0]+1,prior[1]+s.source_member_count,
+        prior[2]+s.aggregate_owned_count,prior[3]+s.fringe_converted_count};
     s.committed_terrain_revision = hard_surface_revision_;
     s.phase = SolidPhase::Committed; // Native AND main-thread physics stay fenced.
     return SolidOutcome::Accepted;
@@ -284,6 +375,7 @@ soliding::SolidOutcome World::finalize_solid_detachment(const soliding::SolidCol
     if (tick_failed_) return SolidOutcome::WorldFailed;
     if (!solid_detachment_) return SolidOutcome::Disabled;
     auto& s = solid_detachment_->snapshot;
+    if (s.rectangle_core && (s.fringe_converted_count!=s.fringe_count || s.aggregate_owned_count!=s.member_count)) return SolidOutcome::Stale;
     if (s.phase != SolidPhase::Committed || receipt.token != s.token ||
         receipt.body_id != s.body_id || receipt.body_generation != s.body_generation ||
         receipt.terrain_revision != s.committed_terrain_revision ||
@@ -316,6 +408,8 @@ soliding::SolidOutcome World::rollback_solid_detachment(soliding::SolidToken tok
     // This is cancellation of an INACTIVE staged body, not arbitrary dynamic
     // desoliding. The main-thread gate must remain held through terrain repair.
     if (token != s.token || s.phase != SolidPhase::Committed) return SolidOutcome::Stale;
+    // A committed material conversion has no generic rollback/restoration.
+    if (s.rectangle_core) return SolidOutcome::Ineligible;
     if (hard_surface_revision_ > std::numeric_limits<std::uint64_t>::max() - s.member_count)
         return SolidOutcome::GenerationExhausted;
     for (std::size_t i = 0; i < s.member_count; ++i) {
@@ -397,7 +491,7 @@ soliding::SolidOutcome World::configure_workbench_solids(soliding::SolidBounds c
 }
 
 soliding::SolidOutcome World::prepare_workbench_solid(std::int64_t x, std::int64_t y,
-    std::size_t small_debris_limit) {
+    std::size_t small_debris_limit, bool rectangle_core) {
     using namespace soliding;
     if (tick_failed_) return SolidOutcome::WorldFailed;
     if (!workbench_solids_) return SolidOutcome::Disabled;
@@ -453,11 +547,11 @@ soliding::SolidOutcome World::prepare_workbench_solid(std::int64_t x, std::int64
             } else if (material!=Material::Empty) return SolidOutcome::Ineligible;
         }
     }
-    const auto prepared=prepare_solid_detachment({{min_x-1,min_y-1,static_cast<std::uint16_t>(max_x-min_x+3),
-        static_cast<std::uint16_t>(max_y-min_y+3)}, {0,work.canvas.height-1,work.canvas.width,1},x,y});
+    const auto prepared=prepare_solid_detachment_impl({{min_x-1,min_y-1,static_cast<std::uint16_t>(max_x-min_x+3),
+        static_cast<std::uint16_t>(max_y-min_y+3)}, {0,work.canvas.height-1,work.canvas.width,1},x,y},rectangle_core,small_debris_limit);
     if (prepared!=SolidOutcome::Accepted) return prepared;
     auto& pending=solid_detachment_->snapshot;
-    pending.granular_piece=small_debris_limit && pending.member_count<=small_debris_limit;
+    pending.granular_piece=small_debris_limit && pending.source_member_count<=small_debris_limit;
     if (pending.granular_piece) return SolidOutcome::Accepted;
     if (work.count==kWorkbenchSolids) {
         (void)cancel_solid_detachment(pending.token);
@@ -528,6 +622,17 @@ soliding::SolidOutcome World::finalize_workbench_crumble(soliding::SolidToken to
 
 std::array<std::uint64_t,4> World::workbench_debris_ledger() const noexcept {
     return workbench_solids_ ? workbench_solids_->debris : std::array<std::uint64_t,4>{};
+}
+
+std::array<std::uint64_t,4> World::workbench_rectangle_core_ledger() const noexcept {
+    return workbench_solids_ ? workbench_solids_->rectangle_core : std::array<std::uint64_t,4>{};
+}
+
+std::size_t World::copy_solid_detachment_fringe(std::span<soliding::SolidMember> output) const noexcept {
+    if (!solid_detachment_ || output.size()<solid_detachment_->snapshot.fringe_count) return 0;
+    const auto& s=solid_detachment_->snapshot;
+    std::copy_n(solid_detachment_->members.begin()+static_cast<std::ptrdiff_t>(s.member_count),s.fringe_count,output.begin());
+    return s.fringe_count;
 }
 
 soliding::SolidOutcome World::archive_workbench_solid(soliding::SolidToken token) {

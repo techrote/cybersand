@@ -11,6 +11,26 @@ last-reviewed: 2026-11-07
 
 # Interfaces and message contracts
 
+## Three-outcome comparison interface scope
+
+No production adapter or native command changes in the three-outcome checkpoint.
+All arms are fresh version4 authored starts derived from native cut witnesses.
+All-Sand removes the authored core actor and paints its exact core Sand2;
+core-only clears exact fringe spans and records a material sink. Neither is a
+new native live-cut disposition. See the [comparison and asynchronous boundary](../audits/2026-11-07-cut-outcomes-and-triage.md).
+
+## Interior core cut protocol
+
+The dependent rectangle experiment adds optional Boolean `rectangle_core` to
+ordinary cut begin, default false in native. Prepared/committed replies expose
+`source_member_count`, `source_digest`, `rectangle_core`, `fringe_count` and
+`fringe_converted_count`; core-only `member_count`, M/I and rectangle describe
+the actual aggregate. Copied `fringe` uses the existing six-integer tuple stride.
+`rectangle_core_ledger` reports completed splits, processed source, owned core
+and native Sand. Full source proof/digest binds both sides; only core is archived.
+The saved recipe records Empty core plus exact Sand fringe row spans. See
+[contract](../architecture/workbench-freed-objects.md#interior-rectangle-experiment).
+
 ## Carried RedBrick appearance and cut timing
 
 Draft510 version4 canvas bodies optionally include `appearance` with exactly
@@ -22,7 +42,17 @@ with one Empty-cell pad and follows the bridge's displayed pose. No mutable
 native data or new physics writer crosses this interface.
 `workbench_cut.timings` exposes total, recipe, staging and RPC usec plus changed
 terrain chunks and yielded terrain frames. Whole transaction time includes
-polling/physics-frame waits; it is not native CPU cost. See the
+transport/physics-frame waits; it is not native CPU cost. On the dependent
+rectangle-core branch, RPC count and enqueue/worker/reply/consume timestamps
+separate scheduler delay from native work. A one-use deferred notification
+wakes main; copied replies still use the serial/generation mutex mailbox.
+Up to8 refused discovery attempts retain individual receipts under one request.
+Internal opt-in `prefetch_next` on begin returns a separate `prefetched_payload`;
+begin is recorded before its native next substeps, while publication follows
+the prefetch. Main consumes it once and retains every refusal. Cut-only semaphore
+wakes alter scheduling, never native command order or normal tick cadence.
+Timeout/stopped/stale transport is terminal, not an eligibility refusal.
+Post-completion census RPCs leave the cut timings frozen. See the
 [source/evidence correction](../audits/2026-11-07-workbench-cut-feedback.md).
 
 ## Workbench cut protocol and version4 starts

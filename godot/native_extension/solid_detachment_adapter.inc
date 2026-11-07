@@ -50,6 +50,11 @@ Dictionary reply(const cybersand::World* world, SolidOutcome outcome, bool paylo
     result["payload_digest"] = decimal(s.payload_digest);
     result["shape_digest"] = decimal(s.shape_digest);
     result["member_count"] = static_cast<std::int64_t>(s.member_count);
+    result["rectangle_core"]=s.rectangle_core;
+    result["source_member_count"]=static_cast<std::int64_t>(s.source_member_count);
+    result["source_digest"]=decimal(s.source_digest);
+    result["fringe_count"]=static_cast<std::int64_t>(s.fringe_count);
+    result["fringe_converted_count"]=static_cast<std::int64_t>(s.fringe_converted_count);
     result["shape_count"] = static_cast<std::int64_t>(s.shape_count);
     result["aggregate_owned"] = static_cast<std::int64_t>(s.aggregate_owned_count);
     result["body_id"] = static_cast<std::int64_t>(s.body_id);
@@ -89,6 +94,22 @@ Dictionary reply(const cybersand::World* world, SolidOutcome outcome, bool paylo
         result["members"] = pixels;
         result["rectangles"] = rectangles;
         result["native_source_members"] = static_cast<std::int64_t>(still_native);
+        if (s.fringe_count) {
+            std::array<SolidMember,kSolidMembers> fringe{};
+            (void)world->copy_solid_detachment_fringe(fringe);
+            PackedInt32Array values;
+            values.resize(static_cast<std::int64_t>(s.fringe_count*6));
+            std::int64_t brick=0,sand=0;
+            for (std::size_t i=0;i<s.fringe_count;++i) {
+                const auto& m=fringe[i];const auto p=static_cast<std::int64_t>(i*6);
+                values.set(p,static_cast<std::int32_t>(m.x));values.set(p+1,static_cast<std::int32_t>(m.y));
+                values.set(p+2,static_cast<std::int32_t>(m.material));values.set(p+3,m.state_a);
+                values.set(p+4,m.state_b);values.set(p+5,m.temperature);
+                brick+=world->stored_material(m.x,m.y)==cybersand::Material::RedBrick;
+                sand+=world->stored_material(m.x,m.y)==cybersand::Material::Sand;
+            }
+            result["fringe"]=values;result["native_fringe_brick"]=brick;result["native_fringe_sand"]=sand;
+        }
     }
     return result;
 }

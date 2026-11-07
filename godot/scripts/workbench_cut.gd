@@ -4,9 +4,11 @@ extends RefCounted
 const Setup=preload("res://scripts/workbench_setup.gd")
 const Prepared=preload("res://scripts/prepared_physical_session.gd")
 const Bridge=preload("res://scripts/workbench_physics_bridge.gd")
+const Wakeup=preload("res://scripts/workbench_cut_wakeup.gd")
 const SMALL_DEBRIS_CELLS: int=16
 # Fixed experimental profile. Zero is retained for matched legacy controls.
 var small_debris_limit: int=SMALL_DEBRIS_CELLS
+var rectangle_core: bool=true
 var panel
 var busy: bool=false
 var capture_count: int=0
@@ -26,6 +28,7 @@ var _native_session: int=0
 var _native_epoch: int=0
 var timings: Dictionary={}
 var _started_usec: int=0
+var _waiting: RefCounted
 
 func _alive() -> bool:
 	return not _retired and is_instance_valid(panel) and is_instance_valid(panel.host)
@@ -36,6 +39,7 @@ func retire() -> void:
 	# no captured payload is restored into cells.
 	_discard()
 	busy=false;panel=null
+	if _waiting!=null: _waiting.resolve("Retired")
 
 func note_erase(position: Vector2i, radius: int) -> void:
 	if dabs.size()>=256*3: overflow=true;return
@@ -67,20 +71,39 @@ func finish_stroke(owner) -> bool:
 func _rpc(command: Dictionary) -> Dictionary:
 	if not _alive(): return {"ok":false,"outcome":"Retired"}
 	var worker=panel.host.simulation_worker
-	var tree: SceneTree=panel.get_tree()
 	var started: int=Time.get_ticks_usec()
-	var serial: int=worker.queue_workbench_cut(command)
-	if serial==0: return {"ok":false,"outcome":"Worker admission refused"}
-	var deadline: int=Time.get_ticks_msec()+20000
-	while Time.get_ticks_msec()<deadline:
-		if not _alive(): return {"ok":false,"outcome":"Retired"}
-		var reply: Dictionary=worker.take_workbench_cut_reply(serial)
-		if not reply.is_empty():
-			timings["rpc_usec"]=int(timings.get("rpc_usec",0))+Time.get_ticks_usec()-started
-			receipts.append(reply.duplicate(true))
-			return reply
-		await tree.process_frame
-	return {"ok":false,"outcome":"Worker reply timeout; clocks remain held"}
+	var wakeup=Wakeup.new()
+	_waiting=wakeup
+	var timer: SceneTreeTimer=panel.get_tree().create_timer(20.0,true,false,true)
+	var expired: Callable=wakeup.resolve.bind("Worker reply timeout; clocks remain held",wakeup)
+	timer.timeout.connect(expired,CONNECT_ONE_SHOT)
+	var serial: int=worker.queue_workbench_cut(command,wakeup)
+	if serial!=0 and not wakeup.done: await wakeup.completed
+	if timer.timeout.is_connected(expired): timer.timeout.disconnect(expired)
+	timer.time_left=0
+	_waiting=null
+	if not _alive(): return {"ok":false,"outcome":"Retired"}
+	if serial==0: return {"ok":false,"outcome":"Worker admission refused","transport_failure":true}
+	if wakeup.outcome!="Reply": return {"ok":false,"outcome":wakeup.outcome,"transport_failure":true}
+	var reply: Dictionary=worker.take_workbench_cut_reply(serial)
+	if reply.is_empty() or int(reply.get("world_generation",-1))!=wakeup.generation:
+		return {"ok":false,"outcome":"Stale worker reply; clocks remain held","transport_failure":true}
+	reply["consumed_usec"]=Time.get_ticks_usec()
+	# Census observations after completion must not contaminate cut timings.
+	if busy:
+		timings["rpc_usec"]=int(timings.get("rpc_usec",0))+Time.get_ticks_usec()-started
+		timings["rpc_count"]=int(timings.get("rpc_count",0))+1
+	for refusal: Dictionary in reply.get("batched_refusals",[]): receipts.append(refusal.duplicate(true))
+	reply.erase("batched_refusals")
+	var prefetched: Variant=reply.get("prefetched_payload",{})
+	reply.erase("prefetched_payload")
+	receipts.append(reply.duplicate(true))
+	if prefetched is Dictionary and not prefetched.is_empty():
+		for refusal: Dictionary in prefetched.get("batched_refusals",[]): receipts.append(refusal.duplicate(true))
+		prefetched.erase("batched_refusals")
+		receipts.append(prefetched.duplicate(true))
+		reply["prefetched_payload"]=prefetched
+	return reply
 
 func _prepare_recipe(payload: Dictionary) -> bool:
 	_recipe=panel.applied.duplicate(true)
@@ -93,6 +116,16 @@ func _prepare_recipe(payload: Dictionary) -> bool:
 		local.append([rectangles[i]-origin.x,rectangles[i+1]-origin.y,rectangles[i+2],rectangles[i+3]])
 		_recipe.edits.append([rectangles[i],rectangles[i+1],rectangles[i+2],rectangles[i+3],0])
 	var body: Dictionary={"name":"Freed %d" % int(_recipe.next_id),"rectangles":local}
+	if payload.get("rectangle_core",false):
+		var fringe: PackedInt32Array=payload.get("fringe",PackedInt32Array())
+		if rectangles.size()!=4 or fringe.size()!=int(payload.fringe_count)*6 or int(payload.source_member_count)!=int(payload.member_count)+int(payload.fringe_count): return false
+		# Native returns sorted full tuples. Coalesce only contiguous row spans;
+		# holes/unrelated cells never become Sand on authored replay.
+		var i: int=0
+		while i<fringe.size():
+			var end: int=i+6
+			while end<fringe.size() and fringe[end+1]==fringe[i+1] and fringe[end]==fringe[end-6]+1: end+=6
+			_recipe.edits.append([fringe[i],fringe[i+1],(end-i)/6,1,2]);i=end
 	body["appearance"]={"material":43,"origin":[origin.x,origin.y]}
 	var actor: Dictionary=Setup.instance(Setup.CanvasBody.MODEL,int(_recipe.next_id),payload.center)
 	actor["body"]=body;actor.hash=Setup.CanvasBody.digest(body)
@@ -197,27 +230,38 @@ func _end() -> Dictionary:
 func _run(input: PackedInt32Array) -> void:
 	var host=panel.host
 	var old_sample: Dictionary={} if host.physical_actor_session==null else host.rapier_bridge.pack_held_sample()
-	var begun: Dictionary=await _rpc({"action":"begin","dabs":input,"sample":old_sample,"small_debris_limit":small_debris_limit})
+	var begun: Dictionary=await _rpc({"action":"begin","dabs":input,"sample":old_sample,"small_debris_limit":small_debris_limit,"rectangle_core":rectangle_core,"prefetch_next":true})
 	if not _alive(): return
 	if not begun.get("ok",false):
 		last_disposition="Cut kept as terrain: "+_reason(begun)+". Erase applied."
 		panel.refuse(str(begun.outcome))
-		if not str(begun.outcome).contains("timeout"):
+		if not begun.get("transport_failure",false) and not str(begun.outcome).contains("timeout"):
 			var ended: Dictionary=await _end()
 			if _alive() and ended.get("ok",false): _finish()
 		return
+	var prefetched: Variant=begun.get("prefetched_payload")
+	if not prefetched is Dictionary or not prefetched.has_all(["ok","outcome"]):
+		last_disposition="Cut stopped: missing or malformed prefetched discovery; clocks remain held"
+		panel.refuse(last_disposition);return
 	_native_session=int(begun.roster_session);_native_epoch=int(begun.roster_epoch)
 	var released: int=0
 	var crumbled: int=0
 	var loose_pixels: int=0
+	var fringe_pixels: int=0
 	var refused: Dictionary={}
+	var first_payload: Dictionary=prefetched
 	for attempt: int in range(65):
-		var payload: Dictionary=await _rpc({"action":"next"})
+		var payload: Dictionary=first_payload
+		first_payload={}
+		if payload.is_empty(): payload=await _rpc({"action":"next","batch_refusals":true})
 		if not _alive(): return
+		for refusal: Dictionary in payload.get("refusal_summaries",[]):
+			var refused_reason: String=_reason(refusal)
+			refused[refused_reason]=int(refused.get(refused_reason,0))+1
 		if not payload.get("ok",false):
 			var reason: String=_reason(payload)
-			refused[reason]=int(refused.get(reason,0))+1
-			if str(payload.outcome) in ["WorldFailed","Quarantined"] or reason.contains("timeout"):
+			if not payload.get("transport_failure",false): refused[reason]=int(refused.get(reason,0))+1
+			if payload.get("transport_failure",false) or str(payload.outcome) in ["WorldFailed","Quarantined"] or reason.contains("timeout"):
 				last_disposition="Cut stopped: "+reason
 				panel.refuse(reason);return
 			if payload.get("done",false): break
@@ -284,10 +328,12 @@ func _run(input: PackedInt32Array) -> void:
 		panel.adopt_cut_recipe(_recipe)
 		_sample={};_recipe={};_committed=false;_token=""
 		released+=1;capture_count=int(final.active_count)
+		fringe_pixels+=int(payload.get("fringe_count",0))
 	var ended: Dictionary=await _end()
 	if not _alive(): return
 	if not ended.get("ok",false): panel.refuse(str(ended.outcome));return
 	last_disposition="Cut: %d piece(s) freed" % released
+	if fringe_pixels>0: last_disposition+="; %d excess pixel(s) became Sand" % fringe_pixels
 	if crumbled>0: last_disposition+="; %d small piece(s) crumbled into %d Sand/Rust pixels" % [crumbled,loose_pixels]
 	if not refused.is_empty():
 		last_disposition+="; kept as terrain: "+"; ".join(refused.keys())+". Erase applied."

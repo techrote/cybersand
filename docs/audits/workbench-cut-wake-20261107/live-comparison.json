@@ -1,0 +1,154 @@
+[
+  {
+    "host": "windows",
+    "kind": "first-tree-core",
+    "baseline": {
+      "held_usec": {
+        "median": 237625,
+        "minimum": 204131,
+        "maximum": 268863
+      },
+      "visible_resume_usec": {
+        "median": 285434,
+        "minimum": 235612,
+        "maximum": 301323
+      },
+      "resume_after_hold_usec": {
+        "median": 47809,
+        "minimum": 31481,
+        "maximum": 48736
+      }
+    },
+    "candidate": {
+      "held_usec": {
+        "median": 121211,
+        "minimum": 100898,
+        "maximum": 128372
+      },
+      "visible_resume_usec": {
+        "median": 152495,
+        "minimum": 140521,
+        "maximum": 169792
+      },
+      "resume_after_hold_usec": {
+        "median": 39623,
+        "minimum": 29621,
+        "maximum": 41787
+      }
+    }
+  },
+  {
+    "host": "windows",
+    "kind": "appended-building-core",
+    "baseline": {
+      "held_usec": {
+        "median": 251286,
+        "minimum": 209206,
+        "maximum": 253923
+      },
+      "visible_resume_usec": {
+        "median": 284784,
+        "minimum": 241451,
+        "maximum": 300169
+      },
+      "resume_after_hold_usec": {
+        "median": 32245,
+        "minimum": 31206,
+        "maximum": 48883
+      }
+    },
+    "candidate": {
+      "held_usec": {
+        "median": 101156,
+        "minimum": 100864,
+        "maximum": 111732
+      },
+      "visible_resume_usec": {
+        "median": 140918,
+        "minimum": 130492,
+        "maximum": 150880
+      },
+      "resume_after_hold_usec": {
+        "median": 39148,
+        "minimum": 29336,
+        "maximum": 39842
+      }
+    }
+  },
+  {
+    "host": "linux",
+    "kind": "first-tree-core",
+    "baseline": {
+      "held_usec": {
+        "median": 133294,
+        "minimum": 116607,
+        "maximum": 149910
+      },
+      "visible_resume_usec": {
+        "median": 150856,
+        "minimum": 135229,
+        "maximum": 167429
+      },
+      "resume_after_hold_usec": {
+        "median": 17562,
+        "minimum": 17467,
+        "maximum": 18622
+      }
+    },
+    "candidate": {
+      "held_usec": {
+        "median": 101248,
+        "minimum": 84132,
+        "maximum": 117557
+      },
+      "visible_resume_usec": {
+        "median": 133996,
+        "minimum": 116966,
+        "maximum": 150858
+      },
+      "resume_after_hold_usec": {
+        "median": 33007,
+        "minimum": 32748,
+        "maximum": 33588
+      }
+    }
+  },
+  {
+    "host": "linux",
+    "kind": "appended-building-core",
+    "baseline": {
+      "held_usec": {
+        "median": 132746,
+        "minimum": 117588,
+        "maximum": 132916
+      },
+      "visible_resume_usec": {
+        "median": 150219,
+        "minimum": 133756,
+        "maximum": 150322
+      },
+      "resume_after_hold_usec": {
+        "median": 17341,
+        "minimum": 16168,
+        "maximum": 17551
+      }
+    },
+    "candidate": {
+      "held_usec": {
+        "median": 100413,
+        "minimum": 83708,
+        "maximum": 100899
+      },
+      "visible_resume_usec": {
+        "median": 133249,
+        "minimum": 116497,
+        "maximum": 133797
+      },
+      "resume_after_hold_usec": {
+        "median": 32992,
+        "minimum": 32350,
+        "maximum": 33116
+      }
+    }
+  }
+]

@@ -1,0 +1,287 @@
+{
+  "parent": "53d642b8b0c7b773318ed1660a657d38e9ec6800",
+  "compiled_source": "df5fa14ebac93852660489437e270064120cb346",
+  "observer_recovery_commit": "25f79e5a27e50661bcc747e460c692338f89de92",
+  "native_optimized_and_strict_checks": [
+    12314,
+    19338
+  ],
+  "facade": {
+    "linux-facade-w1": {
+      "checks": 3260,
+      "failures": 0
+    },
+    "linux-facade-w4": {
+      "checks": 3260,
+      "failures": 0
+    },
+    "windows-facade-w1": {
+      "checks": 3260,
+      "failures": 0
+    },
+    "windows-facade-w4": {
+      "checks": 3260,
+      "failures": 0
+    }
+  },
+  "hosts": {
+    "linux-core-w1": {
+      "checks": 4206,
+      "failures": 0,
+      "observed_workers": 1,
+      "scenarios": [
+        {
+          "building": false,
+          "source_count": 520,
+          "core_count": 208,
+          "fringe_count": 312,
+          "position_before": [
+            52.0,
+            33.5
+          ],
+          "position_after": [
+            36.68635559082031,
+            61.84772872924805
+          ]
+        },
+        {
+          "building": false,
+          "source_count": 520,
+          "core_count": 208,
+          "fringe_count": 312,
+          "position_before": [
+            52.0,
+            33.5
+          ],
+          "position_after": [
+            31.79291534423828,
+            59.61561584472656
+          ]
+        },
+        {
+          "building": true,
+          "source_count": 356,
+          "core_count": 152,
+          "fringe_count": 204,
+          "position_before": [
+            52.0,
+            46.0
+          ],
+          "position_after": [
+            51.9998779296875,
+            51.00031280517578
+          ]
+        },
+        {
+          "building": true,
+          "source_count": 356,
+          "core_count": 152,
+          "fringe_count": 204,
+          "position_before": [
+            52.0,
+            46.0
+          ],
+          "position_after": [
+            51.9998893737793,
+            51.00031280517578
+          ]
+        }
+      ]
+    },
+    "linux-core-w4": {
+      "checks": 4206,
+      "failures": 0,
+      "observed_workers": 4,
+      "scenarios": [
+        {
+          "building": false,
+          "source_count": 520,
+          "core_count": 208,
+          "fringe_count": 312,
+          "position_before": [
+            52.0,
+            33.5
+          ],
+          "position_after": [
+            36.68635559082031,
+            61.84772872924805
+          ]
+        },
+        {
+          "building": false,
+          "source_count": 520,
+          "core_count": 208,
+          "fringe_count": 312,
+          "position_before": [
+            52.0,
+            33.5
+          ],
+          "position_after": [
+            31.79291534423828,
+            59.61561584472656
+          ]
+        },
+        {
+          "building": true,
+          "source_count": 356,
+          "core_count": 152,
+          "fringe_count": 204,
+          "position_before": [
+            52.0,
+            46.0
+          ],
+          "position_after": [
+            51.9998779296875,
+            51.00031280517578
+          ]
+        },
+        {
+          "building": true,
+          "source_count": 356,
+          "core_count": 152,
+          "fringe_count": 204,
+          "position_before": [
+            52.0,
+            46.0
+          ],
+          "position_after": [
+            51.9998893737793,
+            51.00031280517578
+          ]
+        }
+      ]
+    },
+    "windows-core-w1": {
+      "checks": 4206,
+      "failures": 0,
+      "observed_workers": 1,
+      "scenarios": [
+        {
+          "building": false,
+          "source_count": 520,
+          "core_count": 208,
+          "fringe_count": 312,
+          "position_before": [
+            52.0,
+            33.5
+          ],
+          "position_after": [
+            36.68635559082031,
+            61.84772872924805
+          ]
+        },
+        {
+          "building": false,
+          "source_count": 520,
+          "core_count": 208,
+          "fringe_count": 312,
+          "position_before": [
+            52.0,
+            33.5
+          ],
+          "position_after": [
+            31.79291534423828,
+            59.61561584472656
+          ]
+        },
+        {
+          "building": true,
+          "source_count": 356,
+          "core_count": 152,
+          "fringe_count": 204,
+          "position_before": [
+            52.0,
+            46.0
+          ],
+          "position_after": [
+            51.9998779296875,
+            51.00031280517578
+          ]
+        },
+        {
+          "building": true,
+          "source_count": 356,
+          "core_count": 152,
+          "fringe_count": 204,
+          "position_before": [
+            52.0,
+            46.0
+          ],
+          "position_after": [
+            51.9998893737793,
+            51.00031280517578
+          ]
+        }
+      ]
+    },
+    "windows-core-w4": {
+      "checks": 4206,
+      "failures": 0,
+      "observed_workers": 4,
+      "scenarios": [
+        {
+          "building": false,
+          "source_count": 520,
+          "core_count": 208,
+          "fringe_count": 312,
+          "position_before": [
+            52.0,
+            33.5
+          ],
+          "position_after": [
+            36.68635559082031,
+            61.84772872924805
+          ]
+        },
+        {
+          "building": false,
+          "source_count": 520,
+          "core_count": 208,
+          "fringe_count": 312,
+          "position_before": [
+            52.0,
+            33.5
+          ],
+          "position_after": [
+            31.79291534423828,
+            59.61561584472656
+          ]
+        },
+        {
+          "building": true,
+          "source_count": 356,
+          "core_count": 152,
+          "fringe_count": 204,
+          "position_before": [
+            52.0,
+            46.0
+          ],
+          "position_after": [
+            51.9998779296875,
+            51.00031280517578
+          ]
+        },
+        {
+          "building": true,
+          "source_count": 356,
+          "core_count": 152,
+          "fringe_count": 204,
+          "position_before": [
+            52.0,
+            46.0
+          ],
+          "position_after": [
+            51.9998893737793,
+            51.00031280517578
+          ]
+        }
+      ]
+    }
+  },
+  "resource": {
+    "bytes": 289917214,
+    "free_bytes": 14086070272,
+    "cap_bytes": 1073741824,
+    "minimum_free_bytes": 5368709120
+  }
+}

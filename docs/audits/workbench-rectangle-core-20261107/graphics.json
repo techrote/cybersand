@@ -1,0 +1,56 @@
+{
+  "source": "25f79e5a27e50661bcc747e460c692338f89de92",
+  "hosts": {
+    "windows": {
+      "name": "carried-material",
+      "command": [
+        "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+        "--path",
+        "C:\\khybersand\\build\\sol466-order-owned\\khybersand\\build\\workbench-rectangle-core\\hosts-001\\windows\\godot",
+        "--audio-driver",
+        "Dummy",
+        "--rendering-method",
+        "gl_compatibility",
+        "--script",
+        "res://tests/test_workbench_carried_material_render.gd"
+      ],
+      "exit": 0,
+      "seconds": 1.8803804999915883,
+      "timeout_seconds": 300,
+      "log": "build\\workbench-rectangle-core\\graphics-001\\windows\\carried-material.log",
+      "log_sha256": "f91d9ac22b9ddb9d00e2e8ccc7ae07de457543026516363f55f0e0123e683d43",
+      "clean": true
+    },
+    "linux": {
+      "name": "carried-material",
+      "command": [
+        "wsl.exe",
+        "-d",
+        "Ubuntu-24.04",
+        "--",
+        "timeout",
+        "--signal=TERM",
+        "--kill-after=5s",
+        "300s",
+        "env",
+        "CYBERSAND_SHADER_CAPTURE=/mnt/c/khybersand/build/sol466-order-owned/khybersand/build/workbench-rectangle-core/graphics-001/linux/captures",
+        "CYBERSAND_SOURCE_REVISION=25f79e5a27e50661bcc747e460c692338f89de92",
+        "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+        "--path",
+        "/mnt/c/khybersand/build/sol466-order-owned/khybersand/build/workbench-rectangle-core/hosts-001/linux/godot",
+        "--audio-driver",
+        "Dummy",
+        "--rendering-method",
+        "gl_compatibility",
+        "--script",
+        "res://tests/test_workbench_carried_material_render.gd"
+      ],
+      "exit": 0,
+      "seconds": 11.342083199997433,
+      "timeout_seconds": 300,
+      "log": "build\\workbench-rectangle-core\\graphics-001\\linux\\carried-material.log",
+      "log_sha256": "840129d530420c2007ed02a068be049c536f2cfaef1b6513e6ea745148e09409",
+      "clean": true
+    }
+  }
+}

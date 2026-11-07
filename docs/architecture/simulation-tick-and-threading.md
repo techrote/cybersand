@@ -6,10 +6,29 @@ status: Current
 scope: Desktop, Web and native stage ordering, fixed quanta, failure behavior and permitted thread access
 keywords: [fixed tick, desktop worker, Web synchronous, Rapier order, character order, tick failure, backlog]
 related-documents: [data-ownership-and-lifetimes.md, determinism-and-boundary-transfers.md, rigid-body-and-cellular-coupling.md, ../operations/web-threading.md]
-last-reviewed: 2026-11-05
+last-reviewed: 2026-11-07
 ---
 
 # Simulation tick and threading
+
+## Held-cut scheduling lessons for other integrations
+
+**Current only on dependent Draft #519:** `CyberSimulationWorker` uses a
+cut-only semaphore for an empty held turn, rechecks the mailbox under its mutex,
+and wakes on request/stop/retirement. Deferred one-use notifications replace
+frame-polled replies. Opt-in begin prefetches the first bounded discovery while
+retaining begin, every refused attempt and terminal receipts in order. Source:
+[queue_workbench_cut and _apply_workbench_cut](../../godot/scripts/simulation_worker.gd).
+This does not replace the normal tick scheduler or make capture non-pausing.
+
+The [source-qualified timings](../audits/2026-11-07-workbench-rectangle-core.md#cut-wake-and-live-resume-follow-up--2026-11-07)
+separate paused held time from live cut-to-first-accepted-Rapier-step latency.
+Refused work remains in denominators. A receiving integration must preserve
+serial/generation checks, stop wake before join, stale/timeout failure handling
+and the native tick/terrain/roster fences. The current native Prepared phase
+globally fences ticks; background dispatch is not concurrent simulation. These
+lessons remain available during the [SOL deferral](../reference/product-intent-and-priorities.md#sol-deferred-during-physics-reconciliation--2026-11-07);
+no general scheduler promotion, GPU timing or universal60Hz claim follows.
 
 ## PLAY native worker observation and reference measurements
 

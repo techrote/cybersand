@@ -1,0 +1,90 @@
+[
+  {
+    "arm": "baseline",
+    "platform": "windows",
+    "workers": 1,
+    "usec": {
+      "median": 8018191,
+      "minimum": 7969973,
+      "maximum": 8035944,
+      "samples": 5
+    }
+  },
+  {
+    "arm": "candidate",
+    "platform": "windows",
+    "workers": 1,
+    "usec": {
+      "median": 103156,
+      "minimum": 102443,
+      "maximum": 111692,
+      "samples": 5
+    }
+  },
+  {
+    "arm": "baseline",
+    "platform": "windows",
+    "workers": 4,
+    "usec": {
+      "median": 8481131,
+      "minimum": 8176117,
+      "maximum": 8540526,
+      "samples": 5
+    }
+  },
+  {
+    "arm": "candidate",
+    "platform": "windows",
+    "workers": 4,
+    "usec": {
+      "median": 98690,
+      "minimum": 97325,
+      "maximum": 102819,
+      "samples": 5
+    }
+  },
+  {
+    "arm": "baseline",
+    "platform": "linux",
+    "workers": 1,
+    "usec": {
+      "median": 9281218,
+      "minimum": 9157790,
+      "maximum": 9510288,
+      "samples": 5
+    }
+  },
+  {
+    "arm": "candidate",
+    "platform": "linux",
+    "workers": 1,
+    "usec": {
+      "median": 80229,
+      "minimum": 79089,
+      "maximum": 85721,
+      "samples": 5
+    }
+  },
+  {
+    "arm": "baseline",
+    "platform": "linux",
+    "workers": 4,
+    "usec": {
+      "median": 8817999,
+      "minimum": 8702471,
+      "maximum": 9251285,
+      "samples": 5
+    }
+  },
+  {
+    "arm": "candidate",
+    "platform": "linux",
+    "workers": 4,
+    "usec": {
+      "median": 95011,
+      "minimum": 85179,
+      "maximum": 107578,
+      "samples": 5
+    }
+  }
+]

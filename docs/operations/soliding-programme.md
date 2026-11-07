@@ -10,6 +10,17 @@ related-documents: [architecture-programme.md, ../architecture/soliding-lifecycl
 
 # Scalable reversible soliding programme
 
+## Owner deferral of the SOL experiment stack — 2026-11-07
+
+**Deferred:** the cutting/recovery stack discussed in this chat is benched until
+the majority of major physics integrations are reconciled with main. The
+[owner-intent record](../reference/product-intent-and-priorities.md#sol-deferred-during-physics-reconciliation--2026-11-07)
+supersedes earlier immediate continuations on this track. Preserve its Draft PRs,
+negative experiments and [reusable findings](../audits/2026-11-07-cut-outcomes-and-triage.md#owner-pause-and-reusable-findings--2026-11-07).
+Documenting candidates grants no integration or recovery authority. This is an
+execution-priority deferral of this stack, not a rewrite of Stage 3B, Stage 4,
+E1/E2, material-admission dependencies or issue completion states.
+
 ## Bounded normal-workbench release continuation — 2026-11-07
 
 Current dependent Draft #466 adds [ordinary RedBrick release](../architecture/workbench-freed-objects.md)

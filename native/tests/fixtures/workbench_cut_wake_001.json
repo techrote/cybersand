@@ -1,0 +1,12 @@
+{
+  "schema": "cybersand.workbench-cut-wake.001",
+  "date": "2026-11-07",
+  "baseline": "c7af580978fba3ae21229fda46e9dd89c39ad8e8",
+  "changes": ["cut-only semaphore wake, empty held turns only", "bounded begin-to-first-next prefetch with complete primitive receipts"],
+  "unchanged": ["native commands and order", "two frozen physics frames", "commit/terrain/adoption/fresh-sample fences", "geometry", "mass/inertia", "gravity", "contact/force caps", "normal simulation cadence"],
+  "paused": "Reuse prior candidate-001 as historical source-equivalent baseline; execute identical test_workbench_cut_hitch on candidate, Windows/Linux workers1/4,60/30FPS, four routes, five fresh repeats. Disclose different wall-clock cohorts.",
+  "live": {"hosts": ["windows", "linux"], "workers": 1, "fps": 60, "cases": ["first-tree-core", "appended-building-core"], "repeats": 5, "fresh_baseline_and_candidate": true},
+  "metrics": ["held usec", "enqueue/worker/reply/consume usec", "first observed resumed native tick", "first accepted current-roster Rapier step", "sample/session/epoch", "full primitive sequence and source/geometry/M-I counters"],
+  "decision": "Require exact primitive/source/counter parity and passing ownership/teardown/stop tests. Report all medians/ranges, including any regression. Performance remains conditional where differences are within run spread; no universal zero-delay or60Hz claim.",
+  "resource": {"cap_bytes": 1073741824, "minimum_free_bytes": 5368709120}
+}

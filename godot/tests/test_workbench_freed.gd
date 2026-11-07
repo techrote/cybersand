@@ -104,6 +104,7 @@ func run() -> void:
 	host=current_scene;ui=host.shared_workbench
 	host.simulation_worker.set_worker_participation_sampling(true)
 	if not check(await until(installed),"normal workbench starts"): finish();return
+	ui.cut.rectangle_core=false # Preserve original whole-tree/building control.
 	var recipe: Dictionary=Setup.fresh(PackedInt32Array(ui.applied.liquid_policy),Vector2i(512,512))
 	recipe.version=4
 	recipe.edits=[[0,72,512,4,58],[32,68,64,4,2],[160,68,32,4,2],[192,68,32,4,3]]

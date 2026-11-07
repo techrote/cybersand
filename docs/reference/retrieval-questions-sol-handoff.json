@@ -1,0 +1,85 @@
+{
+  "version": 1,
+  "frozen_date": "2026-11-07",
+  "purpose": "Additive post-result development questions for owner deferral and findings useful outside SOL; no scientific acceptance or changes to older query objects.",
+  "questions": [
+    {
+      "id": "SOL-HANDOFF-001",
+      "query": "Why is SOL benched, what work is deferred while major physics integrations reconcile with main, and when can it resume?",
+      "canonical": [
+        "reference/product-intent-and-priorities.md"
+      ],
+      "facts": [
+        "Owner defers SOL pending majority major physics reconciliation, with no numerical majority or automatic date.",
+        "Document reusable findings now, preserve Draft/source-bound failures; fresh main inspection and a defined cutting contract precede restart."
+      ],
+      "sources": [
+        "reference/product-intent-and-priorities.md",
+        "operations/soliding-programme.md"
+      ]
+    },
+    {
+      "id": "SOL-HANDOFF-002",
+      "query": "Why can correct cached Rapier mass and inertia still fail the first impulse, and are catalogue density ranks calibrated Sand object weight?",
+      "canonical": [
+        "architecture/rigid-body-and-cellular-coupling.md",
+        "systems/solid-detachment.md"
+      ],
+      "facts": [
+        "Immediate and post-step known-wrench backend checks distinguish effective readiness from cached properties; no warm real handoff.",
+        "Scalar64 rounded-component energy and unit structural mass do not establish per-grain Newtonian weight or whole-system conservation."
+      ],
+      "sources": [
+        "../godot/scripts/solid_contact_response.gd",
+        "architecture/rigid-body-and-cellular-coupling.md"
+      ]
+    },
+    {
+      "id": "SOL-HANDOFF-003",
+      "query": "Does the latest native granular row prove an impulse was applied when a fresh authored body rejects its first response for age?",
+      "canonical": [
+        "architecture/data-ownership-and-lifetimes.md"
+      ],
+      "facts": [
+        "All48 source-qualified fresh rigid episodes reject the first contact application while physics steps; this is not proved live-cut equivalence.",
+        "Native published rows may lead application; match accepted body/session/epoch/sample actions before work attribution. Guard and warm-up unchanged."
+      ],
+      "sources": [
+        "../godot/scripts/workbench_physics_bridge.gd",
+        "../godot/tests/test_workbench_cut_outcomes.gd"
+      ]
+    },
+    {
+      "id": "SOL-HANDOFF-004",
+      "query": "How did carried RedBrick material rendering remove visible collision rectangle stripes without changing physics?",
+      "canonical": [
+        "systems/material-appearance-and-rendering.md",
+        "architecture/workbench-freed-objects.md"
+      ],
+      "facts": [
+        "Draft510/519 uses bounded cached RG8, transparent holes, original coordinates and shared palette/shader; no per-frame rebuild.",
+        "Old bodies without appearance keep prior presentation; this is source-qualified RedBrick, not main or reactive-material promotion."
+      ],
+      "sources": [
+        "../godot/scripts/workbench_cut.gd",
+        "../godot/scripts/physical_actor_session.gd"
+      ]
+    },
+    {
+      "id": "SOL-HANDOFF-005",
+      "query": "What did cut-only semaphore wake and discovery prefetch change, and why is asynchronous command dispatch still a globally paused simulation?",
+      "canonical": [
+        "architecture/simulation-tick-and-threading.md",
+        "architecture/workbench-freed-objects.md"
+      ],
+      "facts": [
+        "Exclusive owner keeps cut-only empty-held wait/mutex checks, serial notifications, stop wake and ordered complete refusals.",
+        "Native Prepared tick/terrain/roster fences remain; native timing, held latency, live resume and GPU work are different measures."
+      ],
+      "sources": [
+        "../godot/scripts/simulation_worker.gd",
+        "../native/src/world_solid_detachment.inc"
+      ]
+    }
+  ]
+}

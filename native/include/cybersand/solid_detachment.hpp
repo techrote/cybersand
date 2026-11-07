@@ -67,6 +67,9 @@ struct SolidSnapshot {
     std::uint64_t inspected_cells{}, neighbour_probes{};
     bool granular_piece{};
     std::size_t granular_converted_count{};
+    bool rectangle_core{};
+    std::size_t source_member_count{}, fringe_count{}, fringe_converted_count{};
+    std::uint64_t source_digest{};
 };
 // Trusted main-thread bridge receipt for RESERVED INACTIVE objects. These values
 // are bindings, not native proof that a live Rapier RID has been constructed.
@@ -110,6 +113,8 @@ struct SolidWorkbenchStore {
     std::uint64_t inspected{}, probes{};
     // Completed pieces, RedBrick consumed, Sand produced, Rust produced.
     std::array<std::uint64_t,4> debris{};
+    // Completed splits, source cells processed, core owned, native Sand fringe.
+    std::array<std::uint64_t,4> rectangle_core{};
     std::array<SolidOwnedRecord, kWorkbenchSolids> owned{};
     std::array<std::array<std::int64_t, 2>, kSolidMembers> queue{};
     std::array<std::int16_t, kSolidDomainCells> lookup{};

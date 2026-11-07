@@ -10,6 +10,23 @@ related-documents: [status-and-roadmap.md, ../decisions/ADR-008-bounded-approxim
 
 # Product intent and priorities
 
+## SOL deferred during physics reconciliation — 2026-11-07
+
+**Approved owner direction:** bench this chat's SOL cutting/recovery work until
+the majority of major physics integrations are reconciled with main. Record
+findings useful to other work now; keep the experiment stack Draft. This
+supersedes the earlier continuation instructions below. It does not authorize
+merging or promoting candidates, changing physics, or starting more SOL tests.
+No numerical definition of majority or automatic restart date is supplied.
+
+**Deferred:** further SOL mechanism design, geometry/mesh changes, recutting,
+asynchronous handoff implementation and settling/recovery experiments. Preserve
+the intended LA-SELECTIVE direction and historical negative results separately.
+The [cross-work findings inventory](../audits/2026-11-07-cut-outcomes-and-triage.md#owner-pause-and-reusable-findings--2026-11-07)
+routes reusable repairs and unresolved observations to their canonical homes.
+Before resuming, reassess reconciliation against fresh main and define the
+cutting contract; existing tests do not qualify that receiving source.
+
 ## Normal workbench and SOL owner direction — 2026-11-07
 
 **Approved owner direction:** define freed-object rules, then implement cutting

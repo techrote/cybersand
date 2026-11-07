@@ -6,6 +6,22 @@ var panel
 var failures: int=0
 var checks: int=0
 
+class ObservedCut extends "res://scripts/workbench_cut.gd":
+	signal owner_retired
+	var after_commit: bool=false
+	var phase_seen: bool=false
+	func _rpc(command: Dictionary) -> Dictionary:
+		if command.get("action")==("finalize" if after_commit else "acknowledge"):
+			phase_seen=true
+			# Test-only boundary: do not race a once-per-frame observer against
+			# a production continuation that can now finish within that frame.
+			await owner_retired
+			return {"ok":false,"outcome":"Retired"}
+		return await super._rpc(command)
+	func retire() -> void:
+		super.retire()
+		owner_retired.emit()
+
 func _initialize() -> void:
 	ProjectSettings.set_setting("cybersand/native_worker_threads",1)
 	run.call_deferred()
@@ -30,6 +46,7 @@ func one(append: bool, committed: bool) -> void:
 	current_scene.launch("shared_workbench");await scene_changed
 	host=current_scene;panel=host.shared_workbench
 	if not check(await until(installed),"normal workbench starts"): return
+	panel.cut.rectangle_core=OS.get_environment("CYBERSAND_RECTANGLE_CORE_LIFECYCLE")=="1"
 	var setup: Dictionary=Setup.fresh(PackedInt32Array(panel.applied.liquid_policy),Vector2i(512,512))
 	setup.version=4;setup.edits=[[0,72,512,4,58],[50,40,4,32,43],[44,27,29,13,43],[54,40,11,4,43],[60,32,1,1,0]]
 	if append:
@@ -38,12 +55,16 @@ func one(append: bool, committed: bool) -> void:
 	if not check(await until(installed),"source installed"): return
 	check(panel.step_once(),"ordinary Step applies source region")
 	if not check(await until(func():return not panel.step_pending and host.latest_snapshot.tick_index>0),"source eligibility applied"): return
+	var observed=ObservedCut.new();observed.after_commit=committed
+	observed.rectangle_core=panel.cut.rectangle_core
+	panel.cut.retire();panel.cut=observed
 	panel.applied.brush=2
 	for x: int in range(50,54): check(panel.paint(Vector2i(x,67),0),"accepted ordinary erase dab")
 	var cut=panel.cut
 	check(cut.finish_stroke(panel),"ordinary stroke completion")
-	var seen: bool=await until(func():return cut._committed if committed else not cut._sample.is_empty())
+	var seen: bool=await until(func():return cut.phase_seen)
 	if not check(seen,"held phase observed before scene departure"): return
+	check(cut._committed==committed and not cut._sample.is_empty(),"exact held ownership phase before departure")
 	change_scene_to_file("res://feature_launcher.tscn");await scene_changed
 	host=null;panel=null
 	await create_timer(.1).timeout

@@ -4,11 +4,32 @@ document-kind: contract
 canonical-for: [material-visual-projection, palette-program-appearance, render-upload-cost]
 status: Current
 scope: Native RG8 presentation, palette/program LUTs, shader flair, temporal smoothing, glow, and current GPU upload limitation
-last-reviewed: 2026-10-19
+last-reviewed: 2026-11-07
 related-documents: [material-visual-pattern-library.md, ../reference/material-effects-register.md, themed-construction-materials.md, materials-and-rule-kernels.md, ../architecture/rendering-and-gameplay-bridges.md, ../architecture/item-authored-material-programs.md]
 ---
 
 # Material appearance and rendering
+
+## Carried RedBrick appearance on the experimental cutting stack
+
+**Current only on dependent Draft #510 and its #519 successor:** newly captured
+RedBrick uses one cached cropped RG8 material image with transparent holes and
+original source-coordinate pattern. The existing palette/program LUTs and
+`material_palette.gdshader` supply its appearance; collision rectangles need not
+be drawn as visible stripes. Source: [_prepare_recipe](../../godot/scripts/workbench_cut.gd),
+[session](../../godot/scripts/physical_actor_session.gd) and its carried visuals.
+No material identity, contact arithmetic or per-frame image rebuild/GPU readback
+is added. This projection does not replace world-anchored terrain rendering.
+
+The [bounded ownership/appearance contract](../architecture/workbench-freed-objects.md#cut-responsiveness-and-carried-material)
+owns image limits and optional saved appearance metadata. The
+[actual-host rendering/scheduling evidence](../audits/2026-11-07-workbench-cut-feedback.md)
+and [reviewed shader transition](../audits/2026-11-07-workbench-carried-shader-transition.md)
+retain source/platform qualifications. Old authored bodies without metadata keep
+their placeholder appearance. Reuse on another actor/material needs its own
+projection/lifetime/format review; this is not general reactive-body rendering
+or accepted-main integration. SOL development is deferred, with this repair
+retained for independent review.
 
 **Current:** native material identity and one derived condition byte form an
 immutable RG8 presentation stream. GPU shaders create variation, animation,

@@ -1,0 +1,36 @@
+{
+  "attempts": [
+    {
+      "run": "baseline-001",
+      "source": "35f41ba7",
+      "status": "ABORTED",
+      "reason": "History observer omitted v4; validate correctly refused rectangle history. No complete benchmark result.",
+      "stop_command": [
+        "taskkill",
+        "/PID",
+        "6888",
+        "/T",
+        "/F"
+      ],
+      "stop_utility_exit": 0
+    },
+    {
+      "run": "baseline-002",
+      "source": "40c36b41",
+      "status": "ABORTED",
+      "reason": "Observer tried custody-only workbench_restart without live custody and awaited scene change. No complete benchmark result.",
+      "stop_command": [
+        "taskkill",
+        "/PID",
+        "3804",
+        "/T",
+        "/F"
+      ],
+      "stop_utility_exit": 0
+    }
+  ],
+  "development": [
+    "Scratch check-only exit1: nested Panel class hid a native class; renamed TestPanel before qualified candidate. Original stream only in tool transcript chunk76e766; exact exploratory source delta not retained.",
+    "Scratch wakeup-smoke16 checks passed; raw log retained but exploratory source delta not fully captured, excluded from qualification. Qualified source14f7c60c executes expanded18-check test."
+  ]
+}

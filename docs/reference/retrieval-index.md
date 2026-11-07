@@ -10,6 +10,18 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 
 # Retrieval question index
 
+## SOL pause and findings useful to other work
+
+For why SOL is benched and what permits a later restart, retrieve
+[owner intent](product-intent-and-priorities.md#sol-deferred-during-physics-reconciliation--2026-11-07).
+The [dated inventory](../audits/2026-11-07-cut-outcomes-and-triage.md#owner-pause-and-reusable-findings--2026-11-07)
+links reusable findings to [backend coupling](../architecture/rigid-body-and-cellular-coupling.md#source-local-sol-mass-readiness--2026-11-06),
+[applied-sample ownership](../architecture/data-ownership-and-lifetimes.md#fresh-response-age-and-application-chronology),
+[scheduling](../architecture/simulation-tick-and-threading.md#held-cut-scheduling-lessons-for-other-integrations)
+and [carried appearance](../systems/material-appearance-and-rendering.md#carried-redbrick-appearance-on-the-experimental-cutting-stack).
+`retrieval-questions-sol-handoff.json` is an additive post-result development set;
+older query objects remain unchanged. Main reconciliation is not performed here.
+
 ## Freed-object rules and ordinary cutting
 
 For face connectivity, anchors, source eligibility, caps and handoff semantics,
@@ -530,3 +542,20 @@ coalesced publication counts, use the [player-control contract](../systems/playe
 How do I place multiple independently configured flyers with a passive barrel, select granular and liquid responses, paint a large canvas and save an authored start? Use the [desktop workbench controls and format](../systems/player-control-playground.md#development-workbench-on-desktop) and its [qualification record](../audits/2026-11-04-workbench-consolidation.md). Tuning retention and lifetime corrections are in the [cleanup evidence](../audits/2026-11-04-workbench394-cleanup.md); MAT source admission is [separate](../audits/2026-11-04-workbench394-material-source-transition.md).
 
 For #394 owner acceptance, accepted-main pressure reconciliation and final gate status, use the [resulting-source qualification record](../audits/2026-11-04-workbench394-ready-validation.md). Current workbench controls remain in the player playground guide.
+
+
+## Remaining cut-hitch development queries
+
+The [two additive cut-hitch questions](retrieval-questions-workbench-cut-hitch.json)
+route to the [freed-object contract](../architecture/workbench-freed-objects.md#cut-scheduling-and-exact-recipe-reconstruction).
+Older frozen query objects remain unchanged; score these new questions separately.
+
+
+The [cut-wake/live-resume questions](retrieval-questions-workbench-cut-wake.json)
+are a separate two-question development set for semaphore lifecycle and actual
+post-handoff motion latency. Keep earlier query objects unchanged.
+
+
+The [outcome/async/triage questions](retrieval-questions-cut-outcomes.json) are
+a new two-question development set. The [dated outcome dossier](../audits/2026-11-07-cut-outcomes-and-triage.md)
+separates post-cut recipe behaviour from native conversion and async admission.

@@ -311,6 +311,7 @@ private:
         std::array<Vector2i,64> seeds{};
         std::size_t count = 0;
         std::size_t small_debris_limit = 0;
+        bool rectangle_core = false;
         std::uint64_t frontier_checks = 0, frontier_candidates = 0;
         bool frontier_complete = false, frontier_limited = false;
         WorkbenchSample next{};

@@ -99,6 +99,23 @@
         "../godot/scripts/physical_actor_overlay.gd",
         "../godot/scripts/workbench_canvas_body.gd"
       ]
+    },
+    {
+      "id": "FREED-RECTANGLE-CORE-001",
+      "query": "How does the interior rectangle experiment keep a rigid RedBrick core and convert excess to Sand without filling holes or weakening full-source eligibility?",
+      "canonical": [
+        "architecture/workbench-freed-objects.md",
+        "reference/interfaces-and-message-contracts.md"
+      ],
+      "facts": [
+        "Largest all-occupied rectangle after full-source proof; original1\u201316 crumble first; excess ordinary Sand, only core owned and masked.",
+        "Core mass/inertia follow retained unit cells; original geometry and material change intentionally; no law/gravity/cap tuning or SOL clearance claim."
+      ],
+      "sources": [
+        "../native/src/world_solid_detachment.inc",
+        "../godot/scripts/workbench_cut.gd",
+        "../native/tests/fixtures/workbench_rectangle_core_001.json"
+      ]
     }
   ]
 }

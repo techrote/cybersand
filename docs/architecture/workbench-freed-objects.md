@@ -10,6 +10,54 @@ related-documents: [data-ownership-and-lifetimes.md, rigid-body-and-cellular-cou
 
 # Freed objects in the ordinary workbench
 
+## Implementation paused by owner — 2026-11-07
+
+Further SOL cutting, representation, asynchronous handoff and response work is
+**Deferred** until the majority of major physics integrations reconcile with main.
+The [owner decision](../reference/product-intent-and-priorities.md#sol-deferred-during-physics-reconciliation--2026-11-07)
+supersedes earlier continuation suggestions. Existing Draft implementations and
+failures stay source-bound; [the findings handoff](../audits/2026-11-07-cut-outcomes-and-triage.md#owner-pause-and-reusable-findings--2026-11-07)
+identifies independently useful work. This documentation does not select a
+material outcome, change physics or admit a new ownership contract.
+
+## Asynchronous cut status and post-cut outcome comparison
+
+Current capture globally fences native ticks, commit requires the original tick
+and terrain revision, and mixed-body append requires suspension with unchanged
+old-body samples. Full non-pausing cutting is unavailable through this contract.
+Speculative copied-value and isolated first-body preparation is a Planned design
+option, followed by authoritative revalidation/hold; mixed-body staging and local
+reservation/epoch semantics require a separately admitted contract. No pause or
+safety gate is removed in the current comparison checkpoint.
+
+The [dated comparison and triage](../audits/2026-11-07-cut-outcomes-and-triage.md)
+uses uniformly fresh authored post-cut starts for all three outcomes. Existing
+live conversion does not support all-Sand520/356 or discarded fringe. All-Sand
+has no body; core-only explicitly loses312/204 cells. Both rigid arms retain the
+same208/152 core mass and native inertia. All preserve the eight-cell stump.
+Five-repeat Windows1 primary and Linux1/Windows4 spots observe120 exact native
+steps. First contact is age-refused in each fresh rigid episode, then119 are
+accepted; no warm-up is inserted. These starts are not strict live-cut replay.
+Keep the material/fidelity choices provisional and stop for owner triage.
+
+## Interior rectangle experiment
+
+On `codex/workbench-rectangle-core-20261107` only, ordinary cuts request one
+largest cell-aligned rectangle entirely inside the proven source. Full-source
+eligibility and the1024-cell/62-span limits remain. Original sources1–16 still
+crumble; larger sources keep the rectangle as one body and convert all excess
+cells to native Sand2. Ties prefer top, left, width then height descending.
+Unit-cell mass/inertia use only retained cells. Geometry/material deliberately
+change; contact law, gravity, damping and force caps do not. Exact native/control
+mode remains available with `rectangle_core=false` before a fresh cut.
+
+One native transaction revalidates full core/fringe tuples, retires core and
+converts fringe, then waits for matching terrain/roster before activation.
+Generic committed rollback refuses; partial failures quarantine. Saved fringe
+row spans and core-only appearance prevent duplicate brick on fresh replay.
+See [source and qualification](../audits/2026-11-07-workbench-rectangle-core.md).
+This lossy approximation is separate from exact whole-object SOL acceptance.
+
 ## Cut responsiveness and carried material
 
 Dependent Draft510 now draws newly freed RedBrick from one exact cropped RG8
@@ -27,6 +75,32 @@ Native commit, terrain revision and fresh-roster sample fences remain mandatory.
 The [dated correction](../audits/2026-11-07-workbench-cut-feedback.md) records
 2048² five-repeat Windows/Linux1/4 comparisons and the separate shader transition.
 Physics, source eligibility and cell/body capacities remain unchanged here.
+
+## Cut scheduling and exact recipe reconstruction
+
+On the dependent rectangle-core branch, the remaining hitch correction replaces
+frame-polled worker replies with deferred one-use main-thread notifications.
+Reply values still cross the mutex mailbox under exact serial/generation checks.
+A cut-only semaphore wakes the exclusive owner on requests/stop; only empty
+held turns wait after a mutex recheck. Opt-in normal begin prefetches the first
+bounded discovery, preserving begin then every native discovery receipt; census
+begins retain old semantics. Main consumes prefetch once.
+Absent/structurally incomplete prefetch or timeout/stop/stale transport leaves clocks held; retirement wakes pending work.
+The GDScript owner schedules notifications, never native pool workers. Up to8
+consecutive refused discovery attempts share a publication; every refusal and
+counter is retained. Accepted preparation, two frozen physics checks, terrain
+installation, adoption and fresh-sample fences are unchanged.
+
+Authored history reconstructs exact ordered material row intervals. Empty
+writes erase spans; the4096 final-run budget,2048-stamp budget and disc raster
+are unchanged. Fragmented histories can still cost more; no universal60Hz or
+original SOL CPU qualification follows. Cut timings freeze before observer
+census. See the [registered correction and evidence](../audits/2026-11-07-workbench-rectangle-core.md#remaining-cut-hitch-correction--2026-11-07).
+
+Fresh live timing also measures the first accepted resumed Rapier step, with
+exact cut-end sample/session/epoch and first-step coverage checks. Its scope is
+Windows/Linux worker1/60FPS with five repeats per tree/building case; paused
+worker1/4 measurements remain separate. See the [wake/resume evidence](../audits/2026-11-07-workbench-rectangle-core.md#cut-wake-and-live-resume-follow-up--2026-11-07).
 
 ## Small native-debris tangent
 

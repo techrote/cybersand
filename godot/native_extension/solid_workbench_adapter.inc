@@ -112,6 +112,10 @@ Dictionary CyberNativeCellWorld::workbench_cut_command(const Dictionary& request
         result["sand_produced"]=static_cast<std::int64_t>(debris[2]);
         result["rust_produced"]=static_cast<std::int64_t>(debris[3]);
         result["small_debris_limit"]=static_cast<std::int64_t>(workbench_cut_.small_debris_limit);
+        const auto core=world_ ? world_->workbench_rectangle_core_ledger() : std::array<std::uint64_t,4>{};
+        Array core_ledger;
+        for (const auto value:core) core_ledger.push_back(static_cast<std::int64_t>(value));
+        result["rectangle_core_ledger"]=core_ledger;
         if (world_) {
             const auto source=world_->inspect_solid_detachment();
             result["representation"]=source.granular_piece ? "granular" : "rigid";
@@ -137,6 +141,8 @@ Dictionary CyberNativeCellWorld::workbench_cut_command(const Dictionary& request
         if (action=="begin") {
             if (cut.held || world_->solid_detachment_fenced()) return finish(SolidOutcome::Busy);
             std::int64_t debris_limit=0;
+            if (request.has("rectangle_core") && request.get("rectangle_core",Variant()).get_type()!=Variant::BOOL)
+                return finish(SolidOutcome::Invalid);
             if (request.has("small_debris_limit") &&
                 (!integer(request,"small_debris_limit",0,kWorkbenchSmallDebrisCells,debris_limit) ||
                  (debris_limit!=0 && debris_limit!=static_cast<std::int64_t>(kWorkbenchSmallDebrisCells))))
@@ -165,6 +171,7 @@ Dictionary CyberNativeCellWorld::workbench_cut_command(const Dictionary& request
             if (configured!=SolidOutcome::Accepted) return finish(configured);
             cut={};cut.held=true;
             cut.small_debris_limit=static_cast<std::size_t>(debris_limit);
+            cut.rectangle_core=request.get("rectangle_core",false);
             // Traverse the frontier lazily after each handoff. Other boundary
             // cells of a retired piece are then Empty, not extra investigations.
             // All storage and work remain bounded by the validated stroke.
@@ -223,7 +230,7 @@ Dictionary CyberNativeCellWorld::workbench_cut_command(const Dictionary& request
                     auto r=finish(SolidOutcome::MemberCapacity);r["done"]=true;return r;
                 }
                 cut.seeds[cut.count++]=point;
-                const auto outcome=world_->prepare_workbench_solid(point.x,point.y,cut.small_debris_limit);
+                const auto outcome=world_->prepare_workbench_solid(point.x,point.y,cut.small_debris_limit,cut.rectangle_core);
                 auto result=finish(outcome,outcome==SolidOutcome::Accepted);result["seed"]=point;return result;
             }
             cut.frontier_complete=true;

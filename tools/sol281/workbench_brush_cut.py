@@ -15,7 +15,7 @@ def identity():
     return dict(**original_identity(),campaign_runner_sha256=p.sha(__file__))
 f.identity=identity
 
-def hosts(run,build_run,scripts=None):
+def hosts(run,build_run,scripts=None,additional_scripts=None):
     info=identity();folder=f.OUT/run
     assert not folder.exists();folder.mkdir()
     build=json.loads((f.OUT/build_run/'receipt.json').read_text())
@@ -55,7 +55,7 @@ def hosts(run,build_run,scripts=None):
                         data=json.loads(output.read_text());row['report_complete']=not data['failures']
                         row['report']=dict(path=str(output.relative_to(p.ROOT)),sha256=p.sha(output),checks=data['checks'])
                     save()
-            for script in ['test_workbench_cut_lifecycle','test_workbench_canvas_body','test_workbench_fleet_session','test_workbench_canvas','test_workbench_pilot_ui','test_workbench_input']:
+            for script in ['test_workbench_cut_lifecycle','test_workbench_canvas_body','test_workbench_fleet_session','test_workbench_canvas','test_workbench_pilot_ui','test_workbench_input']+(additional_scripts or []):
                 execute(script,script)
         save();f.resource()
     receipt['post_source_equality']=info==identity();receipt['resource_after']=f.resource();save()

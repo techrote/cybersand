@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "frozen_date": "2026-11-07",
+  "purpose": "New outcome/async/triage development questions, older frozen objects unchanged.",
+  "questions": [
+    {
+      "id": "CUT-OUTCOME-001",
+      "query": "Can the current cutter run without globally pausing native Sand and Rapier bodies, and what ownership contract prevents it?",
+      "canonical": [
+        "architecture/workbench-freed-objects.md"
+      ],
+      "facts": [
+        "Prepared globally fences tick; source tick/terrain and old-body pose must match.",
+        "Speculative first-body preparation remains Planned; mixed-body local reservation/staging is a new contract."
+      ],
+      "sources": [
+        "../native/src/world_solid_detachment.inc",
+        "../godot/scripts/physical_actor_session.gd"
+      ]
+    },
+    {
+      "id": "CUT-OUTCOME-002",
+      "query": "What does rectangle plus Sand versus all Sand versus rectangle-only discard compare, and which SOL decisions remain for owner triage?",
+      "canonical": [
+        "architecture/workbench-freed-objects.md"
+      ],
+      "facts": [
+        "Fresh authored starts, not alternative live cut admission;520=208+312,356=152+204; stump8 preserved.",
+        "All-Sand rigid metrics N/A; discard is material loss; first fresh response age-refused; no solver/default winner."
+      ],
+      "sources": [
+        "../godot/tests/test_workbench_cut_outcomes.gd",
+        "../native/tests/fixtures/workbench_cut_outcomes_001.json"
+      ]
+    }
+  ]
+}

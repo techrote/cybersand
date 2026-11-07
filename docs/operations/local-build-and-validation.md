@@ -10,6 +10,16 @@ related-documents: [source-checkpoint-and-recovery.md, testing-validation-and-re
 
 # Local build and validation
 
+## Interior core qualification
+
+Run `tools/sol281/workbench_rectangle_core.py build|native|hosts --run <new-id>`
+for the preregistered profile. The [dossier](../audits/2026-11-07-workbench-rectangle-core.md)
+records fresh Native93-input binaries, original and core controls, actual host
+matrix and corrected cold-Restore observer. The copied native render image is
+observed at tick0 with matching generation/serial; do not weaken contact-cell
+admission or step moving Sand merely to make that census pass. Preserve all
+initial failures. ABI/MSVC/parent graphics and original SOL gates remain separate.
+
 ## Cut feedback qualification
 
 `tools/sol281/workbench_cut_feedback.py` runs baseline/hosts/observe/graphics

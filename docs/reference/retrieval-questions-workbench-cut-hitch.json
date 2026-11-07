@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "frozen_date": "2026-11-07",
+  "purpose": "Two new post-implementation cut-hitch development queries; older frozen queries unchanged.",
+  "questions": [
+    {
+      "id": "CUT-HITCH-001",
+      "query": "Why can workbench cuts pause after rectangle-core conversion, and how are frame-polled replies and dense paint history fixed without changing physics?",
+      "canonical": [
+        "architecture/workbench-freed-objects.md"
+      ],
+      "facts": [
+        "Deferred one-use notification; mutex serial/generation reply; up to8 refused investigations retain every attempt.",
+        "Exact ordered row intervals preserve disc/erase/final4096-run semantics; frozen physics/terrain/sample fences remain."
+      ],
+      "sources": [
+        "../godot/scripts/workbench_cut.gd",
+        "../godot/scripts/workbench_setup.gd"
+      ]
+    },
+    {
+      "id": "CUT-HITCH-002",
+      "query": "Does faster workbench cutting prove zero hitch, universal60Hz or original SOL CPU clearance?",
+      "canonical": [
+        "architecture/workbench-freed-objects.md",
+        "reference/status-and-roadmap.md"
+      ],
+      "facts": [
+        "Headless matched timing is source-bound; tiny debris remains frame paced; fragmented-history peak memory is unmeasured.",
+        "Native runtime and all historical SOL/ABI blockers remain separate."
+      ],
+      "sources": [
+        "../godot/scripts/simulation_worker.gd",
+        "../native/tests/fixtures/workbench_cut_hitch_001.json"
+      ]
+    }
+  ]
+}

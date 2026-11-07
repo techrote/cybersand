@@ -1,0 +1,32 @@
+{
+  "command": {
+    "name": "linux-floor",
+    "command": [
+      "wsl.exe",
+      "-d",
+      "Ubuntu-24.04",
+      "--cd",
+      "/mnt/c/khybersand/build/sol466-order-owned/khybersand",
+      "--",
+      "timeout",
+      "--signal=TERM",
+      "--kill-after=5s",
+      "300s",
+      "bash",
+      "tools/check_linux_runtime_floor.sh"
+    ],
+    "exit": 1,
+    "seconds": 3.5097787000704557,
+    "timeout_seconds": 300,
+    "log": "build\\workbench-rectangle-core\\abi-001\\linux-floor.log",
+    "log_sha256": "623746348b9a99748d32dcf6ac964eae7f209b5e29ef4b79e4c4d4dd0e25dfa0",
+    "clean": false
+  },
+  "extension_versions": {
+    "GLIBC": "2.35",
+    "GLIBCXX": "3.4.31",
+    "CXXABI": "1.3.9"
+  },
+  "windows_sdk_library_sha256": "2629ba35adc7b1263deeb1155d674252e1e4188c2c89d1d7158e816d18f957df",
+  "linux_sdk_library_sha256": "bc5f860471475c745ebad2b45988607a15c9a35c6996b0f08fea37570e6ef666"
+}
