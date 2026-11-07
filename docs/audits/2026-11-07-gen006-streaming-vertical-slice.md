@@ -527,3 +527,7 @@ with an UNKNOWN outcome on failure. Linux SIGSTOP is a deterministic
 test-only fixture, not an actual Windows/desktop power-loss result.
 The native Windows/Linux qualification and real Godot results must be
 checked at this exact final HEAD before claiming success.
+
+## Experimental native-backed continuous brush (7 November 2026)
+
+The opt-in Godot demo now interpolates held-mouse Wall/dig/Water strokes across coalesced pointer events. Every cell is submitted separately through the existing single-owner native ACK queue. The maximum 16 pending player actions, signed-chunk binding, stale-frame refusal and original native durable ACK requirements remain unchanged. When queue admission fails, interpolation stops instead of silently skipping cells. The new actual-Godot/OpenGL acceptance tests one coalesced five-cell stroke, genuine native ACKs, signed World cell intent and restoration after a separate native process restart, preserving an original framebuffer PNG. Tests must pass on the exact resulting source before claiming qualification. This is a Draft, sharded-World-only Godot host feature; production Native, ABI, solver and default physics remain unchanged, and independent storage/residency owners retain their respective interfaces.

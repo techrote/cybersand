@@ -62,6 +62,9 @@ var input_refusal: String = ""
 var acknowledged_edits: int = 0
 var eviction_receipts: int = 0
 var reload_receipts: int = 0
+var drag_button: int = 0
+var drag_last_cell := Vector2i(-1, -1)
+var drag_last_chunk := DEMO_START
 
 
 func _ready() -> void:
@@ -495,11 +498,68 @@ func _unhandled_key_input(event: InputEvent) -> void:
 
 
 func _gui_input(event: InputEvent) -> void:
+    if event is InputEventMouseMotion:
+        var motion_event := event as InputEventMouseMotion
+        var held := (
+            (drag_button == MOUSE_BUTTON_LEFT and
+                (motion_event.button_mask & MOUSE_BUTTON_MASK_LEFT) != 0)
+            or (drag_button == MOUSE_BUTTON_RIGHT and
+                (motion_event.button_mask & MOUSE_BUTTON_MASK_RIGHT) != 0)
+            or (drag_button == MOUSE_BUTTON_MIDDLE and
+                (motion_event.button_mask & MOUSE_BUTTON_MASK_MIDDLE) != 0)
+        )
+        if not held:
+            return
+        var local := (motion_event.position - DISPLAY_TOP_LEFT) * (
+            float(SIDE) / DISPLAY_SIZE
+        )
+        if local.x < 0 or local.y < 0 or local.x >= SIDE or local.y >= SIDE:
+            drag_last_cell = Vector2i(-1, -1)
+            return
+        var target := Vector2i(int(local.x), int(local.y))
+        if drag_last_cell.x < 0 or drag_last_chunk != world_chunk:
+            drag_last_cell = target
+            drag_last_chunk = world_chunk
+            return
+        var origin := drag_last_cell
+        var steps := maxi(absi(target.x - origin.x), absi(target.y - origin.y))
+        for i in range(1, steps + 1):
+            var fraction := float(i) / float(steps)
+            var cell := Vector2i(
+                roundi(lerpf(float(origin.x), float(target.x), fraction)),
+                roundi(lerpf(float(origin.y), float(target.y), fraction))
+            )
+            if cell == drag_last_cell:
+                continue
+            var before := queued_actions.size()
+            var synthetic := InputEventMouseButton.new()
+            synthetic.button_index = drag_button
+            synthetic.pressed = true
+            synthetic.position = DISPLAY_TOP_LEFT + Vector2(
+                (float(cell.x) + 0.5) * DISPLAY_SIZE / float(SIDE),
+                (float(cell.y) + 0.5) * DISPLAY_SIZE / float(SIDE)
+            )
+            _gui_input(synthetic)
+            # No room or stale display: leave the last accepted position
+            # intact so later motion can resume, not silently skip cells.
+            if interactive_async and queued_actions.size() == before:
+                break
+            if not failure.is_empty():
+                break
+            drag_last_cell = cell
+            drag_last_chunk = world_chunk
+        accept_event()
+        return
     if not (event is InputEventMouseButton):
         return
     var button := event as InputEventMouseButton
     if not button.pressed:
+        if button.button_index == drag_button:
+            drag_button = 0
+            drag_last_cell = Vector2i(-1, -1)
         return
+    if button.button_index in [MOUSE_BUTTON_LEFT, MOUSE_BUTTON_RIGHT, MOUSE_BUTTON_MIDDLE]:
+        drag_button = button.button_index
     var local_point: Vector2 = (button.position - DISPLAY_TOP_LEFT) * (
         float(SIDE) / DISPLAY_SIZE
     )
@@ -524,16 +584,23 @@ func _gui_input(event: InputEvent) -> void:
                 queue_redraw()
                 accept_event()
                 return
+            var old_pending := queued_actions.size()
             _queue_live_action(edit)
+            if queued_actions.size() > old_pending:
+                drag_last_cell = selected_cell
+                drag_last_chunk = world_chunk
         else:
             _invoke(PackedStringArray([edit]), false, true)
+            if failure.is_empty():
+                drag_last_cell = selected_cell
+                drag_last_chunk = world_chunk
         accept_event()
 
 func _draw() -> void:
     draw_rect(Rect2(Vector2.ZERO, size), Color("#0d1220"), true)
     var font: Font = ThemeDB.fallback_font
     draw_string(font, Vector2(28, 30), "GEN-006 / Native World Stream [experimental]", HORIZONTAL_ALIGNMENT_LEFT, -1, 22, Color("#dee9fb"))
-    draw_string(font, Vector2(28, 54), "Arrows: chunk  |  Shift+arrows: 1536px  |  Home: terrain  |  Left-click: Wall  |  Right-click: dig  |  Middle: Water17  |  Space: tick", HORIZONTAL_ALIGNMENT_LEFT, -1, 14, Color("#a3b5ce"))
+    draw_string(font, Vector2(28, 54), "Arrows: chunk  |  Shift+arrows: 1536px  |  Home: terrain  |  Left-click: Wall  |  Right-click: dig  |  Middle: Water17  |  Drag: stroke  |  Space: tick", HORIZONTAL_ALIGNMENT_LEFT, -1, 14, Color("#a3b5ce"))
     draw_rect(Rect2(DISPLAY_TOP_LEFT - Vector2(2, 2),
                    Vector2(DISPLAY_SIZE + 4, DISPLAY_SIZE + 4)),
                    Color("#3f5972"), false, 2.0)
