@@ -1,4 +1,4 @@
-name: PF532 selective gas-cache exact native replay
+name: PF532 sparse gas relabel exact native replay
 on:
   push:
     branches: [sol/pf-gas-selective-bootstrap-20261107]

@@ -1,4 +1,4 @@
-name: PF532 full-size gas-cache CPU and gameplay qualification
+name: PF532 sparse gas relabel full-size CPU and gameplay qualification
 on:
   push:
     branches: [sol/pf-gas-selective-bootstrap-20261107]

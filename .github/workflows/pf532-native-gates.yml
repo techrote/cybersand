@@ -1,4 +1,4 @@
-name: PF532 native correctness and sanitizer gates
+name: PF532 sparse gas relabel native correctness and sanitizer gates
 on:
   push:
     branches: [sol/pf-gas-selective-bootstrap-20261107]
