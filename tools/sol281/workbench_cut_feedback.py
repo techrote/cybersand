@@ -4,6 +4,7 @@ import json
 import os
 from pathlib import Path
 import shutil
+import subprocess
 import sys
 import workbench_brush_cut as b
 
@@ -22,9 +23,16 @@ def reuse():
     folder=f.OUT/'unchanged-runtimes';folder.mkdir(exist_ok=True)
     prior=p.ROOT/'build/workbench-small-debris/runtimes-001/receipt.json'
     receipt=json.loads(prior.read_text())
-    assert receipt['identity']['source_inputs']==identity()['source_inputs']
-    assert receipt['identity']['material_inputs']==identity()['material_inputs']
+    info=identity()
+    assert receipt['identity']['source_inputs']==info['source_inputs']
+    changes={n for n in info['material_inputs'] if info['material_inputs'][n]!=receipt['identity']['material_inputs'][n]}
+    assert changes=={'godot/shaders/material_palette.gdshader','tools/material_catalogue/compatibility.py'}
+    subprocess.run([sys.executable,'tools/material_catalogue/compatibility.py','--check'],cwd=p.ROOT,check=True)
     for row in receipt['platforms'].values(): assert p.sha(p.ROOT/row['output'])==row['sha256']
+    receipt['scope']='Reuse unchanged native artifacts after exact compiled-input equality and independent shader consumer admission; no compilation executed'
+    receipt['original_build_identity']=receipt['identity']
+    receipt['reuse_of_receipt_sha256']=p.sha(prior)
+    receipt['identity']=info
     p.write(folder/'receipt.json',receipt)
 
 def baseline(run):
@@ -36,7 +44,11 @@ def baseline(run):
         f.resource(256*1024**2)
         target=folder/platform;project=target/'godot'
         shutil.copytree(prior/platform/'godot',project,ignore=shutil.ignore_patterns('.godot'))
-        for name,digest in cohort['hosts'][platform]['project_files'].items(): assert p.sha(project/name)==digest,name
+        for name,digest in cohort['hosts'][platform]['project_files'].items():
+            if not (project/name).exists():
+                (project/name).parent.mkdir(parents=True,exist_ok=True)
+                shutil.copyfile(prior/platform/'godot'/name,project/name)
+            assert p.sha(project/name)==digest,name
         shutil.copyfile(p.ROOT/'godot/tests/test_workbench_cut_responsiveness.gd',project/'tests/test_workbench_cut_responsiveness.gd')
         rows=[];result['hosts'][platform]=dict(commands=rows,runtime_sha256=cohort['hosts'][platform]['runtime_sha256'])
         for worker in [1,4]:
