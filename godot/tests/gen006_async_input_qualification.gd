@@ -115,6 +115,80 @@ func _run() -> void:
             + str(demo.reload_receipts))
         return
 
+    # Slow native checkpoint/ACK simulation: pause the ACTUAL compiled native
+    # owner process, submit a real Wall edit and let Godot render for >5 seconds.
+    # This used to turn a recoverable slow reply into a sticky failed scene.
+    # The native child is always resumed before checking any failure condition.
+    demo.set_process(false)
+    demo.focus_dirty = false
+    var pre_stall_deadline := Time.get_ticks_msec() + 6000
+    while demo.ipc_outstanding and Time.get_ticks_msec() < pre_stall_deadline:
+        demo._service_live_ipc()
+        await process_frame
+    if demo.ipc_outstanding or not demo.failure.is_empty():
+        _fail("could not drain native camera refresh before slow checkpoint test")
+        return
+    var stop_result := OS.execute("/usr/bin/kill", PackedStringArray([
+        "-STOP", str(native_pid)
+    ]))
+    if stop_result != 0:
+        _fail("could not stop isolated native test child")
+        return
+    var ack_before_stall: int = demo.acknowledged_edits
+    _click(demo, 10, 10, MOUSE_BUTTON_LEFT)
+    demo._service_live_ipc()
+    var submitted: bool = demo.ipc_outstanding and demo.queued_actions.is_empty()
+    demo.set_process(true)
+    await create_timer(6.2).timeout
+    await RenderingServer.frame_post_draw
+    var slow_image: Image = root.get_texture().get_image()
+    var slow_frame_valid: bool = (
+        slow_image != null and slow_image.get_width() >= 1280
+        and slow_image.get_height() >= 800
+    )
+    var slow_saved: bool = false
+    if slow_frame_valid:
+        slow_saved = slow_image.save_png(
+            evidence.path_join("09-slow-native-ack.png")
+        ) == OK
+    var survived: bool = (
+        submitted and demo.failure.is_empty() and demo.ipc_outstanding
+        and demo.ipc_slow_warning and demo.ipc_slow_count >= 1
+        and demo.ipc_pending_msec >= 5000
+        and demo.acknowledged_edits == ack_before_stall
+        and demo.native_pid == native_pid and demo.server_pid == native_pid
+        and OS.is_process_running(native_pid)
+        and slow_frame_valid and slow_saved
+    )
+    var resume_result := OS.execute("/usr/bin/kill", PackedStringArray([
+        "-CONT", str(native_pid)
+    ]))
+    if resume_result != 0 or not survived:
+        _fail("slow native checkpoint falsely failed, ACKed or froze the Godot"
+            + " framebuffer: " + demo.failure
+            + " age_ms=" + str(demo.ipc_pending_msec)
+            + " ack=" + str(demo.acknowledged_edits)
+            + " slow=" + str(demo.ipc_slow_warning))
+        return
+    demo.set_process(false)
+    demo.focus_dirty = false
+    var resume_deadline := Time.get_ticks_msec() + 12000
+    while demo.ipc_outstanding and Time.get_ticks_msec() < resume_deadline:
+        demo._service_live_ipc()
+        await process_frame
+    if demo.ipc_outstanding or not demo.failure.is_empty() or \
+            demo.acknowledged_edits != ack_before_stall + 1 or \
+            demo.ipc_slow_warning or demo.last_call_usec < 5000000 or \
+            demo.native_pid != native_pid:
+        _fail("resumed native owner did not deliver the original durable ACK"
+            + " / " + demo.failure + " / " + demo.last_receipts.right(280))
+        return
+    demo.interactive_async = false
+    demo._invoke(PackedStringArray(["inspect 10 10"]), false, true)
+    if not demo.failure.is_empty() or not demo.last_receipts.contains("intent=1"):
+        _fail("slow-ACK Wall edit missing from authoritative native cells")
+        return
+
     # Finish the asynchronous pipeline before using the retained synchronous
     # diagnostic path solely to inspect the real authoritative native cell.
     var deadline := Time.get_ticks_msec() + 6000
@@ -154,7 +228,7 @@ func _run() -> void:
         _fail("shutdown durability edit was not queued")
         return
     demo._send_quit()
-    if demo.acknowledged_edits != 2 or demo.ipc_outstanding or \
+    if demo.acknowledged_edits != 3 or demo.ipc_outstanding or \
             not demo.queued_actions.is_empty() or OS.is_process_running(native_pid):
         _fail("bounded graceful shutdown lost queued native ACK or live PID")
         return
@@ -188,6 +262,9 @@ func _run() -> void:
         + " stable_native_pid=%d" % native_pid
         + " enqueue_usec=%d" % input_usec
         + " queued_player_edit_ack=1"
+        + " six_second_native_stall_recovered=1"
+        + " slow_edit_durable_ack=1"
+        + " slow_host_ipc_ms=%d" % int(demo.ipc_peak_latency_usec / 1000)
         + " shutdown_drained_second_edit=1"
         + " native_restart_edit_preserved=1"
         + " captured_chunk_identity=1"
