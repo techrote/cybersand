@@ -52,6 +52,17 @@ var stage := "init"
 var output_path: String = ""
 var evidence: Dictionary = {}
 var native_rows: Array[Dictionary] = []
+var expected_install_epoch: int = -1
+var expected_warmup_tick: int = -1
+
+func has_installed_session() -> bool:
+	return host != null and host.pending_microscenario_apply.is_empty() and host._physical_epoch > expected_install_epoch \
+		and host.physical_actor_session != null and host._physical_terrain_ready \
+		and panel != null and panel.applied.actors.size() == NUM_ACTORS
+
+func has_completed_warmup() -> bool:
+	return host != null and host.latest_snapshot != null \
+		and int(host.latest_snapshot.tick_index) >= expected_warmup_tick + WARMUP_TICKS
 
 func _initialize() -> void:
 	run.call_deferred()
@@ -204,9 +215,11 @@ func run() -> void:
 	mode = OS.get_environment("CYBERSAND_STRESS_CASE")
 	output_path = OS.get_environment("CYBERSAND_STRESS_OUTPUT")
 	if not require(mode in ["full-pf-off","half-pf-gas-on"], "unsupported case: "+mode):
-		return await finish()
+		await finish()
+		return
 	if not require(OS.get_name() == "Windows" and DisplayServer.get_name() != "headless", "actual Windows graphical execution required"):
-		return await finish()
+		await finish()
+		return
 	stage = "create_workbench"
 	set_meta("cybersand_feature","shared_workbench")
 	root.size = Vector2i(1920,1080)
@@ -219,29 +232,38 @@ func run() -> void:
 	root.add_child(host)
 	if not await until(func() -> bool: return host.shared_workbench != null and not host.shared_workbench.applied.is_empty(),
 		"initial workbench initialized", 45000):
-		return await finish()
+		await finish()
+		return
 	panel = host.shared_workbench
 	var bridge: Object = panel._liquids.bridge
 	if not require(bridge != null, "native policy bridge absent"):
-		return await finish()
+		await finish()
+		return
 	var policy: PackedInt32Array = select_policy(bridge,mode)
-	if policy.is_empty(): return await finish()
+	if policy.is_empty():
+		await finish()
+		return
 	var recipe: Dictionary = (Setup.stress_canvas(policy) if mode == "full-pf-off"
 		else make_half_stress(policy))
-	if recipe.is_empty(): return await finish()
+	if recipe.is_empty():
+		await finish()
+		return
 	var edit_materials := {}
 	for edit: Array in recipe.edits:
 		edit_materials[int(edit[4])] = true
 	if not require(recipe.actors.size() == 8 and edit_materials.size() >= 50,
 		"stress material/actor inventory lost during scaling"):
-		return await finish()
+		await finish()
+		return
 	var err: String = Setup.validate(recipe)
 	if not require(err.is_empty(), "native workbench recipe refused: "+err):
-		return await finish()
+		await finish()
+		return
 	var packed: Dictionary = Setup.rectangles(recipe)
 	if not require(not packed.has("error") and int(packed.get("runs",[]).size()/5) <= Setup.MAX_RUNS,
 		"converted starting rectangles not admitted: "+str(packed.get("error","capacity"))):
-		return await finish()
+		await finish()
+		return
 	evidence["recipe"] = {"original":"stress-canvas","scale":1.0 if mode=="full-pf-off" else 0.5,
 		"extent":recipe.extent, "stamps":recipe.edits.size(), "rectangles":int(packed.runs.size()/5),
 		"materials":edit_materials.size(), "actors":recipe.actors.size(),
@@ -255,16 +277,15 @@ func run() -> void:
 		"workbench_face_period":1,
 		"workbench_face_min_height":4
 	},true)
-	var epoch_before: int = host._physical_epoch
+	expected_install_epoch = host._physical_epoch
 	stage = "install"
 	if not require(panel.apply(recipe), "workbench refused install: "+panel.message+" / "+host.microscenario_error):
-		return await finish()
-	if not await until(func() -> bool:
-		return host.pending_microscenario_apply.is_empty() and host._physical_epoch > epoch_before
-			and host.physical_actor_session != null and host._physical_terrain_ready
-			and panel.applied.actors.size() == 8,
+		await finish()
+		return
+	if not await until(Callable(self,"has_installed_session"),
 		"fresh stress World and Rapier actors installed",60000):
-		return await finish()
+		await finish()
+		return
 	evidence["policy_readback"] = host.tower_context.get("liquid_solver_policy",{}).duplicate(true)
 	if mode == "half-pf-gas-on":
 		var found := false
@@ -272,28 +293,33 @@ func run() -> void:
 			if int(assignment.get("material",-1)) == Setup.WATER:
 				found = str(assignment.get("applied_family","")) == "pressure_flow_v1" and str(assignment.get("applied_variant","")) == "cached_dormant"
 		if not require(found,"installed PF cached_dormant policy not read back"):
-			return await finish()
+			await finish()
+			return
 	# Impact spray; no synthetic jet or external force is introduced.
 	stage = "enable_spray"
 	var spray_request := {"enabled":true,"launch_scale":1.6,"threshold":0.3,
 		"upward_bias":0.72,"budget":64,"jet_enabled":false}
 	if not require(panel.water_spray.request(spray_request),"impact spray queue refused"):
-		return await finish()
+		await finish()
+		return
 	if not require(panel.toggle_pause(),"unpause refused: "+panel.message):
-		return await finish()
+		await finish()
+		return
 	stage = "warmup"
-	var warm_start_tick: int = int(host.latest_snapshot.tick_index)
-	if not await until(func() -> bool:
-		return (host.latest_snapshot != null and int(host.latest_snapshot.tick_index) >= warm_start_tick + WARMUP_TICKS),
+	expected_warmup_tick = int(host.latest_snapshot.tick_index)
+	if not await until(Callable(self,"has_completed_warmup"),
 		"warmup 30 real native ticks",60000):
 		evidence["worker_failure"] = host.tower_context.get("workbench_refusal",host.microscenario_error)
-		return await finish()
+		await finish()
+		return
 	var initial_spray: Dictionary = host.tower_context.get("water_spray",{})
 	if not require(bool(initial_spray.get("ballistic_enabled",false)), "ballistic Water not active"):
-		return await finish()
+		await finish()
+		return
 	if not require(bool(initial_spray.get("settings",{}).get("enabled",false)),
 		"impact spray not enabled in actual native readback"):
-		return await finish()
+		await finish()
+		return
 	stage = "measure"
 	host.physics_rows.clear()
 	host.process_callbacks = 0
@@ -366,12 +392,15 @@ func run() -> void:
 	evidence["summary"] = summary
 	if not require(elapsed > 8.0 and final_tick-begin_tick >= 15 and counted >= 15 and not host.overflow,
 		"insufficient real native/Rapier progress or sample overflow"):
-		return await finish()
+		await finish()
+		return
 	if not require(not summary.native_failure and str(summary.workbench_refusal).is_empty(),
 		"World failed during measurement: "+str(summary.workbench_refusal)):
-		return await finish()
+		await finish()
+		return
 	if not require(bool(summary.splash_enabled) and bool(summary.ballistic_enabled),
 		"ballistic/impact spray switched off unexpectedly"):
-		return await finish()
+		await finish()
+		return
 	stage = "complete"
 	await finish()
