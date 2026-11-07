@@ -18,6 +18,18 @@ var _busy: bool = false
 var _stopping: bool = false
 var _uncertain: bool = false
 var _epoch: int = 0
+var _manual_intent_revision: int = -1
+var _manual_intent_conflict: bool = false
+
+
+## The exclusive #526 owner counts admitted human paint/Step/settings intent.
+## Agent-owned bounded Step also increments it exactly once per ACKed tick.
+func _owner_manual_revision() -> int:
+	if not is_instance_valid(_main) or _main.simulation_worker == null:
+		return -1
+	if not _main.simulation_worker.has_method("agent_manual_intent_revision"):
+		return -1
+	return int(_main.simulation_worker.agent_manual_intent_revision())
 
 
 static func _refused(reason: String) -> Dictionary:
@@ -56,6 +68,8 @@ func authorize_task(task_id: String, scope: Rect2i, protected: Array,
 	if answer.get("status") == "authorized":
 		_authorized = true
 		_epoch += 1
+		_manual_intent_revision = _owner_manual_revision()
+		_manual_intent_conflict = false
 	return answer
 
 
@@ -67,6 +81,15 @@ func call_tool(name: String, args: Variant) -> Dictionary:
 		return _refused("task_not_authorized_or_stopping")
 	if _busy:
 		return _refused("agent_tool_busy")
+	# A human brush/Step that arrives BETWEEN model calls must not be
+	# legitimized by constructing a fresh StepSequence baseline. The owner
+	# still validates native mutations; this additionally revokes *this*
+	# model task's authority until acknowledged Stop and reauthorization.
+	var live_manual_revision: int = _owner_manual_revision()
+	if _manual_intent_conflict or _manual_intent_revision < 0 \
+			or live_manual_revision != _manual_intent_revision:
+		_manual_intent_conflict = true
+		return _refused("manual_intent_changed_requires_reauthorization")
 	if name == "step" and _proposal_pending:
 		return _refused("prepared_edit_must_be_applied_or_retired_before_step")
 	if not args is Dictionary:
@@ -78,6 +101,13 @@ func call_tool(name: String, args: Variant) -> Dictionary:
 	var receipt: Dictionary = {}
 	if name == "step":
 		receipt = await _step_driver.call_step(_main,_workbench,args)
+		# An admitted native single tick bumps the owner's intent counter.
+		# Account for only the number with real completed tick ACKs; an
+		# intervening human edit adds a distinct bump and permanently fences
+		# this task instead of treating the new value as a fresh baseline.
+		_manual_intent_revision += int(receipt.get("completed",0))
+		if _owner_manual_revision() != _manual_intent_revision:
+			_manual_intent_conflict = true
 		if receipt.get("status") == "completed":
 			# A successful tick receipt is not itself a fresh *matched*
 			# framebuffer/native observation; #526 performs that join.
@@ -107,6 +137,8 @@ func call_tool(name: String, args: Variant) -> Dictionary:
 	_busy = false
 	if receipt.get("status") == "unconfirmed":
 		_uncertain = true
+	if _owner_manual_revision() != _manual_intent_revision:
+		_manual_intent_conflict = true
 	if epoch != _epoch or _stopping:
 		# Preserve actual applied/completed status; do not erase evidence of
 		# an operation that finished before the Stop consume boundary.
@@ -142,6 +174,8 @@ func stop() -> Dictionary:
 			"owner_receipt":retired}
 	_authorized = false
 	_proposal_pending = false
+	_manual_intent_revision = -1
+	_manual_intent_conflict = false
 	_epoch += 1
 	_step_driver.retire()
 	var receipt: Dictionary = {
