@@ -78,9 +78,8 @@ static func stage(setup: Dictionary, proposal: Dictionary) -> Dictionary:
 	candidate.edits.append_array(additions)
 	# The existing authoring system can represent boxes, even though an
 	# ordinary manual brush uses 4-value disc stamps.
-	var error: String = Setup.validate(candidate)
-	if error != "":
-		return _refused("starting_history_capacity: "+error)
+	# Compact first: a large but highly rectangular edit can fit even when
+	# its temporary unmerged one-row boxes exceed MAX_STAMPS.
 	var compact: Dictionary = Setup.compact_edits(candidate)
 	if compact.has("error"):
 		return _refused(str(compact.error))
