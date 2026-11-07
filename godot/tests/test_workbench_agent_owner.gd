@@ -13,6 +13,7 @@ var worker: CyberSimulationWorker
 var checks: int = 0
 var failures: int = 0
 var last_serial: int = 0
+var saved_frame_count: int = 0
 
 
 func _initialize() -> void:
@@ -81,6 +82,40 @@ func join_when_published(native: Dictionary) -> Dictionary:
 	return latest
 
 
+# Preserve *original* post-draw PNG bytes and the exact native/render identity
+# pair; never generate an image from the native cell IDs or a screenshot mock.
+func retain_matched_frame(native: Dictionary, joined: Dictionary) -> void:
+	var evidence_dir: String = OS.get_environment("WB_AGENT_EVIDENCE_DIR")
+	if evidence_dir.is_empty() or str(joined.get("status","")) != "observed":
+		return
+	if not check(DirAccess.make_dir_recursive_absolute(evidence_dir)==OK,
+			"cannot create frame evidence directory"):
+		return
+	saved_frame_count += 1
+	var prefix: String = evidence_dir.path_join("owner-frame-%02d" % saved_frame_count)
+	var png: PackedByteArray = joined.framebuffer_png
+	var image_file: FileAccess = FileAccess.open(prefix + ".png",FileAccess.WRITE)
+	if not check(image_file != null,"cannot write original framebuffer PNG"):
+		return
+	image_file.store_buffer(png)
+	image_file.close()
+	var region: Rect2i = native.region
+	var evidence: Dictionary = {
+		"observation_id":str(native.observation_id),
+		"native_identity":native.identity.duplicate(true),
+		"render_identity":joined.render_identity.duplicate(true),
+		"region":[region.position.x,region.position.y,region.size.x,region.size.y],
+		"native_counts":native.native_counts.duplicate(true),
+		"native_cell_count":native.get("native_material_ids",[]).size(),
+		"original_png_bytes":png.size()
+	}
+	var receipt_file: FileAccess = FileAccess.open(prefix + ".json",FileAccess.WRITE)
+	if not check(receipt_file != null,"cannot write frame identity receipt"):
+		return
+	receipt_file.store_string(JSON.stringify(evidence,"  ")+"\n")
+	receipt_file.close()
+
+
 func observe(x: int, y: int, width: int, height: int) -> Dictionary:
 	var native: Dictionary = await issue({
 		"action":"observe",
@@ -99,6 +134,8 @@ func observe(x: int, y: int, width: int, height: int) -> Dictionary:
 	})
 	check(confirmed.get("status")=="observation_confirmed",
 		"worker did not confirm actual ACKed framebuffer: "+str(confirmed))
+	if confirmed.get("status")=="observation_confirmed":
+		retain_matched_frame(native,joined)
 	return native
 
 
