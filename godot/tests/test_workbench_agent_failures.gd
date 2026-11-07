@@ -63,6 +63,12 @@ func _run() -> void:
 		"region":Rect2i(Vector2i(100,100),Vector2i(3,3))
 	})
 	_expect(obs.get("status")=="native_observed","observe synthetic fixture")
+	var unconfirmed_image: Dictionary = call_session(session,world,"prepare_edit",{
+		"observation_id":obs.observation_id,
+		"operations":[{"shape":"disc","x":100,"y":100,"radius":0,"material":58}]
+	})
+	_expect(unconfirmed_image.get("reason")=="observation_not_matched_to_frame",
+		"native-only observation was incorrectly sufficient to prepare an edit")
 	# This synthetic ACK is confined to the error-injection test. The real
 	# owner integration test uses actual post-draw screenshot and upload ACK.
 	var confirmed: Dictionary = call_session(session,world,"confirm_observation_frame",{
