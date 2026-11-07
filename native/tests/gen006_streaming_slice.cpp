@@ -481,7 +481,8 @@ void interactive(const fs::path& path, std::uint32_t workers) {
     StreamingSlice streamer(path, 2, workers);
     std::cout << "GEN006 experimental native stream (independent World per shard). "
                  "Commands: focus X Y | wall X Y | dig X Y | water X Y Q | "
-                 "tick N | status | quit. X/Y are world chunk coords for focus, "
+                 "tick N | inspect LOCAL_X LOCAL_Y | status | quit. " 
+                 "X/Y are world chunk coords for focus, "
                  "local 0..63 for edits. No cross-shard physics.\n";
     ChunkCoord active{-1,-3};
     streamer.focus(active);
@@ -508,6 +509,21 @@ void interactive(const fs::path& path, std::uint32_t workers) {
                 std::cin >> n;
                 const auto observed = streamer.simulate(n);
                 std::cout << "TICK configured=" << workers << " observed=" << observed << '\n';
+            } else if (command == "inspect") {
+                int x, y;
+                std::cin >> x >> y;
+                check(x >= 0 && x < kSide && y >= 0 && y < kSide,
+                      "GEN006_INSPECT_LOCAL_COORDINATE");
+                const std::int64_t gx = active.x * kSide + x;
+                const std::int64_t gy = active.y * kSide + y;
+                const auto& world = streamer.at(active);
+                std::cout << "CELL chunk=(" << active.x << "," << active.y
+                          << ") local=(" << x << "," << y << ")"
+                          << " material=" << static_cast<int>(world.get(gx, gy))
+                          << " liquid=" << world.liquid_mass(gx, gy)
+                          << " temp=" << world.stored_temperature(gx, gy)
+                          << " intent=" << int(streamer.intent(active, x, y))
+                          << '\\n';
             } else if (command == "status") {
                 streamer.status();
             } else {
