@@ -142,8 +142,12 @@ func run() -> void:
 	var repeated: Dictionary = await issue({
 		"action":"apply_edit","proposal_id":prepared.proposal_id
 	})
-	check(repeated == applied or repeated.duplicate().erase("request_serial") == null,
-		"duplicate receipt comparison needs the same owner receipt")
+	var original_receipt: Dictionary = applied.duplicate(true)
+	var duplicate_receipt: Dictionary = repeated.duplicate(true)
+	original_receipt.erase("request_serial")
+	duplicate_receipt.erase("request_serial")
+	check(duplicate_receipt == original_receipt,
+		"duplicate apply must return identical retained native receipt")
 	check(repeated.get("status")=="applied"
 		and repeated.get("identity_after",{})==applied.get("identity_after",{}),
 		"duplicate apply must return original native state identity")
