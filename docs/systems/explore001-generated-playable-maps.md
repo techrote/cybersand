@@ -1,7 +1,7 @@
 ---
 title: EXPLORE-001 generated playable starting maps (source candidate)
-status: Draft / requires rebuilt native, Godot and graphical acceptance
-document-kind: implementation-and-acceptance
+status: Planned
+document-kind: contract
 scope: GEN-007 final play plane to existing prepared finite shared-workbench World
 keywords: [EXPLORE-001, GEN-007, playable, workbench, native, map, save, reopen]
 related-documents: [generation-workbench-2.md, ../architecture/data-ownership-and-lifetimes.md, ../operations/github-development-and-release.md]
