@@ -48,9 +48,9 @@ def patch(path: str, code: str) -> str:
             "    std::uint64_t pf_probe_identity_process_cpu_ns = 0;\n"
             "    std::uint64_t pf_probe_relabel_process_cpu_ns = 0;\n", path)
     elif path == "native/src/world.cpp":
-        code = replace_one(code, "#include <utility>\\n",
-            "#include <utility>\\n"
-            "#include <time.h>\\n", path)
+        code = replace_one(code, "#include <utility>\n",
+            "#include <utility>\n"
+            "#include <time.h>\n", path)
     elif path == "native/src/world_pressure.inc":
         code = replace_one(code, "void World::prepare_pressure_tick() {",
             """// Diagnostic Linux CPU clocks. These are observational only.
@@ -130,7 +130,7 @@ void World::prepare_pressure_tick() {""", path)
             "#endif\n", path)
     elif path == "godot/native_extension/cyber_native_cell_world.cpp":
         # read-only native quantity ledger at exclusive World owner, not a new physics law
-        marker = '    out["last_tick"] = diagnostics;\\n    return out;\\n}'
+        marker = '    out["last_tick"] = diagnostics;\n    return out;\n}'
         addition = """    out["last_tick"] = diagnostics;
 #ifdef CYBERSAND_PF_GAS_CPU_PROBE
     if (world_ != nullptr && !world_->has_failed()) {
