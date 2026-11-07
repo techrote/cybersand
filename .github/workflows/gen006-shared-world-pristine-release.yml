@@ -9,6 +9,7 @@ on:
       - 'native/tests/gen006_shared_world_pristine_release.cpp'
       - 'native/tests/gen006_chunk_checkpoint_transaction.cpp'
       - 'native/src/world_chunk_checkpoint.inc'
+      - 'tools/experiments/gen006_chunk_signed_extent_qa.py'
       - '.github/workflows/gen006-shared-world-pristine-release.yml'
   workflow_dispatch:
 
@@ -81,6 +82,12 @@ jobs:
           grep -q 'GEN006_CHUNK_RESTART_PROCESS_PASS configured_workers=4' "$d/restart-four.log"
           grep -q 'GEN006_LOSSLESS_STATIC_CHUNK_TRANSACTION_PASS configured_workers=1' "$d/transaction-one.log"
           grep -q 'GEN006_LOSSLESS_STATIC_CHUNK_TRANSACTION_PASS configured_workers=4' "$d/transaction-four.log"
+          python3 tools/experiments/gen006_chunk_signed_extent_qa.py \
+            "$d/chunk-transaction" "$d/transaction-one/chunk_x-16_y-8.g6c" "$d/extent-one" 1 | tee "$d/extent-one.log"
+          python3 tools/experiments/gen006_chunk_signed_extent_qa.py \
+            "$d/chunk-transaction" "$d/transaction-four/chunk_x-16_y-8.g6c" "$d/extent-four" 4 | tee "$d/extent-four.log"
+          grep -q 'GEN006_REHASHED_SIGNED_EXTENT_QA_PASS workers=1' "$d/extent-one.log"
+          grep -q 'GEN006_REHASHED_SIGNED_EXTENT_QA_PASS workers=4' "$d/extent-four.log"
       - name: Preserve native evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
@@ -161,6 +168,16 @@ jobs:
           findstr /C:"GEN006_LOSSLESS_STATIC_CHUNK_TRANSACTION_PASS configured_workers=1" build\gen006-shared-release\transaction-one.log
           if errorlevel 1 exit /b 1
           findstr /C:"GEN006_LOSSLESS_STATIC_CHUNK_TRANSACTION_PASS configured_workers=4" build\gen006-shared-release\transaction-four.log
+          if errorlevel 1 exit /b 1
+          python tools/experiments/gen006_chunk_signed_extent_qa.py build\gen006-shared-release\chunk-transaction.exe build\gen006-shared-release\transaction-one\chunk_x-16_y-8.g6c build\gen006-shared-release\extent-one 1 > build\gen006-shared-release\extent-one.log 2>&1
+          if errorlevel 1 (type build\gen006-shared-release\extent-one.log & exit /b 1)
+          python tools/experiments/gen006_chunk_signed_extent_qa.py build\gen006-shared-release\chunk-transaction.exe build\gen006-shared-release\transaction-four\chunk_x-16_y-8.g6c build\gen006-shared-release\extent-four 4 > build\gen006-shared-release\extent-four.log 2>&1
+          if errorlevel 1 (type build\gen006-shared-release\extent-four.log & exit /b 1)
+          type build\gen006-shared-release\extent-one.log
+          type build\gen006-shared-release\extent-four.log
+          findstr /C:"GEN006_REHASHED_SIGNED_EXTENT_QA_PASS workers=1" build\gen006-shared-release\extent-one.log
+          if errorlevel 1 exit /b 1
+          findstr /C:"GEN006_REHASHED_SIGNED_EXTENT_QA_PASS workers=4" build\gen006-shared-release\extent-four.log
           if errorlevel 1 exit /b 1
       - name: Preserve native evidence
         if: always()
