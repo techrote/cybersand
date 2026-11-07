@@ -184,6 +184,45 @@ func run_variant(rows: Array, variant: String) -> void:
 		and source.get("native_material_ids",[]).size()==32,
 		"initial authored Sand !=32 from native readback "+variant)
 	preserve_png(variant,"initial",source)
+	# The SAME native hopper used for acceptance must reject an agent
+	# attempt to manufacture Sand and a mutating edit to the pre-existing
+	# human-protected Hard Wall. A mere refused status is insufficient:
+	# re-read the wall cells and retain the exact authored-start edit list.
+	var human_edits: Array = workbench.applied.edits.duplicate(true)
+	var unauthorized_sand: Dictionary = await bridge.call_tool("prepare_edit",{
+		"observation_id":source.get("observation_id",""),
+		"operations":[{"shape":"rectangle","x0":-8,"y0":0,
+			"x1":-8,"y1":0,"material":2}]})
+	check(unauthorized_sand.get("status")=="refused"
+		and main.latest_snapshot.tick_index==initial_tick
+		and workbench.applied.edits==human_edits,
+		"agent manufactured Sand or changed authored start on refused preflight "
+		+variant+" "+str(unauthorized_sand))
+	var protected_before: Dictionary = await bridge.call_tool("observe",{
+		"region":{"x":30,"y":-3,"width":5,"height":7},"detail":"cells"})
+	check(protected_before.get("status")=="observed"
+		and protected_before.get("image_status")=="matched_post_draw"
+		and int(protected_before.get("native_counts",{}).get(58,-1))==17,
+		"human-protected 17 native Hard Walls missing before refusal "+variant)
+	var unauthorized_wall: Dictionary = await bridge.call_tool("prepare_edit",{
+		"observation_id":protected_before.get("observation_id",""),
+		"operations":[{"shape":"rectangle","x0":30,"y0":-3,
+			"x1":30,"y1":-3,"material":0,"replace_only_material":58}]})
+	check(unauthorized_wall.get("status")=="refused"
+		and main.latest_snapshot.tick_index==initial_tick,
+		"agent proposed removal of a human-protected Wall "+variant+
+		" "+str(unauthorized_wall))
+	var protected_after: Dictionary = await bridge.call_tool("observe",{
+		"region":{"x":30,"y":-3,"width":5,"height":7},"detail":"cells"})
+	check(protected_after.get("status")=="observed"
+		and protected_after.get("image_status")=="matched_post_draw"
+		and protected_after.get("native_material_ids",[]) ==
+			protected_before.get("native_material_ids",[])
+		and int(protected_after.get("native_counts",{}).get(58,-1))==17
+		and main.latest_snapshot.tick_index==initial_tick
+		and workbench.applied.edits==human_edits,
+		"native protected material or authored start mutated during refusals "
+		+variant)
 	var operations: Array = author_ops(rows,variant)
 	check(operations.size()==26,
 		"frozen reference construction operations changed "+variant+
@@ -212,6 +251,25 @@ func run_variant(rows: Array, variant: String) -> void:
 				" at="+str(begin)+" "+str(apply)):
 			break
 		applied_batches += 1
+		if begin==0:
+			# Repeating a successfully consumed ID is an idempotent *receipt
+			# replay*, not a second native edit or an error. Preserve that
+			# distinction and require the exact original apply/readback.
+			var saved_edits: Array = workbench.applied.edits.duplicate(true)
+			var applied_revision: int = main.simulation_worker.agent_manual_intent_revision()
+			var replay: Dictionary = await bridge.call_tool("apply_edit",{
+				"proposal_id":prepared.proposal_id})
+			check(replay.get("status")=="applied"
+				and replay.get("proposal_id","")==apply.get("proposal_id","")
+				and replay.get("readback",[])==apply.get("readback",[])
+				and replay.get("authored_start",{})==apply.get("authored_start",{})
+				and replay.get("changed_cells",-1)==apply.get("changed_cells",-2)
+				and workbench.applied.edits==saved_edits
+				and main.simulation_worker.agent_manual_intent_revision()==applied_revision
+				and main.latest_snapshot.tick_index==initial_tick
+				and main.latest_snapshot.render_world_generation==generation,
+				"duplicate apply changed real native/material/start state "+variant+
+				" "+str(replay.get("reason","")))
 	if not check(applied_batches==4,"incomplete four-tool native apparatus "+variant):
 		await bridge.stop()
 		return
