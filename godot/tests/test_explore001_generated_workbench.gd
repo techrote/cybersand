@@ -112,13 +112,13 @@ func exercise_small() -> void:
 		"parameters":{"surface_y":0,"relief":0,"fluid_level":64},
 		"themes":{"weights":{"basalt":1},"exclude":[]},
 		"overrides":[
-			{"id":"explore001-water","bounds":[48,300,160,56],"material":3},
-			{"id":"explore001-floor","bounds":[16,420,464,18],"material":58}]}
+			{"id":"explore001-water","bounds":[320,420,150,56],"material":3},
+			{"id":"explore001-floor","bounds":[304,620,464,18],"material":58}]}
 	dialog.open_new()
 	dialog._saved_recipe = fixture
 	dialog._extent.select(0)
-	dialog._x.set_value_no_signal(0)
-	dialog._y.set_value_no_signal(0)
+	dialog._x.set_value_no_signal(256)
+	dialog._y.set_value_no_signal(256)
 	dialog._start()
 	if not await until(func() -> bool: return dialog._phase=="ready" or dialog._status.text.begins_with("Refused"),
 			"512² Water/native material fixture",180): return
@@ -126,6 +126,9 @@ func exercise_small() -> void:
 	var source: Dictionary=dialog._ready_packet.duplicate(true)
 	require(source.cells.size()==512*512 and source.cells.find(3)>=0 and source.cells.find(58)>=0,
 		"genuinely generated Water and hard rock exist")
+	var global_chunk: Dictionary=dialog._generator.generate_chunk(Vector2i(4,4))
+	require(global_chunk.get("ok",false) and global_chunk.cells[0]==source.cells[0],
+		"global (256,256) native sampler maps exactly to destination local (0,0)")
 	var candidate: Dictionary=Setup.fresh(panel._liquids.bridge.default_liquid_policy(),Vector2i(512,512))
 	if not require(panel.install_generated_start(candidate,source),"512 native World constructor"): return
 	dialog.hide()
