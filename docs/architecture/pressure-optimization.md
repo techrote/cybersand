@@ -98,9 +98,13 @@ reference relabel sweep. Only a clean chunk with no latent-label obligation may
 relabel the union of cells marked by the current and immediately previous
 authoritative BFS. The prior set covers remote vent/split cases where a cell can
 become unvisited without a local dirty input; an unavailable prior set forces a
-complete sweep. The dirty set is retained through relabelling and then drained. Derived visit bits and hidden-
-label bytes are bounded at cache construction, are not serialized and cannot
-change gas IDs, lineage, amounts or CYPS/physical hashes.
+complete sweep. The dirty set is retained through relabelling and then drained.
+An independent `ReferenceBudgetFallback` in the head-repair phase clears only
+head/certificate/wake reuse; it no longer revokes complete resident-index or gas
+visit evidence. True membership or authority changes still use full
+`cache->cold()`. Derived visit bits and hidden-label bytes are bounded at cache
+construction, are not serialized and cannot change gas IDs, lineage, amounts or
+CYPS/physical hashes.
 
 Gas resolution revokes all Water motion
 certificates because a remote volume/gauge change can alter a local gradient.
