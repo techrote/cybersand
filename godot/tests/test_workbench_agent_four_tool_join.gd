@@ -132,23 +132,20 @@ func run() -> void:
 		and stepped.get("after_tick")==before_tick+4
 		and stepped.get("still_paused")==true,
 		"fourth tool did not ACK exactly four completed native ticks: "+str(stepped))
-	# The exact #526 source may not republish a frame on a paused tick
-	# without a material change. Do not fabricate a matched image. Native
-	# Step is separately executable; post-step visual identity stays HOLD
-	# until #526 provides an actual same-tick render publication.
+	# #526 corrected post-Step publication: an acknowledged native tick
+	# must have a newly rendered, owner-confirmed PNG at that exact tick.
+	# A merely pending image is no longer sufficient for this acceptance.
 	var matched: Dictionary = stepped.get("observation",{})
 	var matched_frame: bool = stepped.get("observation_status")=="observed"
-	if matched_frame:
-		check(matched.get("image_status")=="matched_post_draw"
-			and int(matched.get("native_counts",{}).get(58,0))>=9,
-			"Step's purported matched observation lacked real native facts")
-	else:
-		check(stepped.get("observation_status")=="pending"
-			and matched.get("reason")=="matching_post_draw_frame_not_available"
-			and matched.get("framebuffer_png",PackedByteArray()).is_empty(),
-			"Step returned an unexpected or falsely matched post-tick frame: "+str(matched))
-		print("WB_AGENT_527_POST_STEP_RENDER_HOLD "+
-			JSON.stringify({"reason":matched.get("reason"),"native_ticks":4}))
+	check(matched_frame
+		and matched.get("image_status")=="matched_post_draw"
+		and matched.get("framebuffer_png",PackedByteArray()).size()>8
+		and int(matched.get("identity",{}).get("completed_tick",-1))==before_tick+4
+		and int(matched.get("render_identity",{}).get("tick",-1))==before_tick+4
+		and int(matched.get("native_counts",{}).get(58,0))>=9,
+		"post-Step native/PNG identity mismatch or stale frame: "+
+		str(stepped.get("observation_status","missing"))+" "+
+		str(matched.get("reason","")))
 	# Human Stop while the REAL fourth tool is inside a native tick
 	# sequence. The Stop coroutine begins at the second published ACK,
 	# prohibits a third command, then waits for #526 retirement before it
@@ -200,18 +197,13 @@ func run() -> void:
 	var new_observation: Dictionary = await second.call_tool("observe",{
 		"region":{"x":28,"y":28,"width":8,"height":8},"detail":"counts"})
 	var revised_matched: bool = new_observation.get("status")=="observed"
-	if revised_matched:
-		check(int(new_observation.get("native_counts",{}).get(58,0))==9,
-			"revised task lost nine authenticated Hard Wall cells")
-	else:
-		check(new_observation.get("status")=="pending"
-			and new_observation.get("reason")=="matching_post_draw_frame_not_available"
-			and new_observation.get("framebuffer_png",PackedByteArray()).is_empty(),
-			"revised task returned stale/invalid post-step framebuffer: "+
-			str(new_observation))
-		print("WB_AGENT_527_REVISED_RENDER_HOLD "+
-			JSON.stringify({"reason":new_observation.get("reason"),
-				"native_ticks":main.latest_snapshot.tick_index}))
+	check(revised_matched
+		and new_observation.get("image_status")=="matched_post_draw"
+		and int(new_observation.get("identity",{}).get("completed_tick",-1))==before_tick+6
+		and int(new_observation.get("render_identity",{}).get("tick",-1))==before_tick+6
+		and int(new_observation.get("native_counts",{}).get(58,0))==9,
+		"revised task lost native walls or accepted an old post-Step framebuffer: "+
+		str(new_observation.get("reason","")))
 	# A real human paint admission BETWEEN model calls must retire the
 	# previous authorized model task. The old Step driver would otherwise
 	# capture the already-changed owner revision as a new baseline and
@@ -239,6 +231,31 @@ func run() -> void:
 	var second_stopped: Dictionary = await second.stop()
 	check(second_stopped.get("status")=="stopped",
 		"revised task retirement was not acknowledged")
+	# Previously only the human queue admission was measured. Independently
+	# reauthorize the SAME native World after Stop and read the exact cell
+	# back through #526's exclusive worker plus a newly matched framebuffer.
+	# The human brush must survive the blocked agent calls and retirement.
+	var third = Bridge.new()
+	check(third.bind(main),"post-intervention native owner rebind failed")
+	var after_human_authorized: Dictionary = await third.authorize_task(
+		"joined-human-readback-527",Rect2i(40,40,16,16),[],[0,58])
+	check(after_human_authorized.get("status")=="authorized",
+		"human paint readback task authorization refused: "+str(after_human_authorized))
+	var human_readback: Dictionary = await third.call_tool("observe",{
+		"region":{"x":44,"y":44,"width":1,"height":1},"detail":"cells"})
+	var human_ids: Array = human_readback.get("native_material_ids",[])
+	check(human_readback.get("status")=="observed"
+		and human_readback.get("image_status")=="matched_post_draw"
+		and human_ids.size()==1 and int(human_ids[0])==58
+		and int(human_readback.get("native_counts",{}).get(58,0))==1
+		and int(human_readback.get("identity",{}).get("completed_tick",-1))==paint_tick
+		and int(human_readback.get("render_identity",{}).get("tick",-1))==paint_tick,
+		"human Hard Wall was not preserved in native/material+image readback: "+
+		str(human_readback.get("reason","")))
+	var third_stopped: Dictionary = await third.stop()
+	check(third_stopped.get("status")=="stopped"
+		and main.latest_snapshot.tick_index==paint_tick,
+		"human-readback task did not retire without extra ticks")
 	if observation.get("status")=="observed":
 		var evidence_dir: String = OS.get_environment("WB_AGENT_527_IMAGE_DIR")
 		if not evidence_dir.is_empty():
@@ -258,6 +275,8 @@ func run() -> void:
 		"configured_workers":main.latest_snapshot.native_worker_request,
 		"first_task_status":stopped.get("status"),
 		"revised_task_status":second_stopped.get("status"),
+		"human_native_readback":human_readback.get("native_material_ids",[]),
+		"human_readback_status":human_readback.get("status"),
 		"post_step_matched_render_gate":"PASS" if matched_frame else "HOLD",
 		"revised_matched_render_gate":"PASS" if revised_matched else "HOLD"}))
 	finish()
