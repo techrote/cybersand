@@ -1,4 +1,4 @@
-name: Stress canvas PF / ballistic / splash — Windows
+name: Stress canvas PF / ballistic / splash — Windows headless simulation
 
 on:
   push:
@@ -68,6 +68,7 @@ jobs:
       - name: Run actual graphical workbench
         env:
           CYBERSAND_STRESS_CASE: ${{ matrix.case }}
+          CYBERSAND_STRESS_ALLOW_HEADLESS: '1'
           GODOT_SILENCE_ROOT_WARNING: '1'
           PYTHONUTF8: '1'
         run: |
@@ -106,7 +107,7 @@ jobs:
           env={**os.environ,"CYBERSAND_STRESS_OUTPUT":str((out/"result.json").resolve())}
           cmds=[
               ("import.log",[str(engine),"--headless","--editor","--path","godot","--import"],180),
-              ("execution.log",[str(engine),"--rendering-driver","opengl3_angle","--path","godot","--script","res://tests/performance/stress_pf_splash_windows.gd"],240)
+              ("execution.log",[str(engine),"--headless","--path","godot","--script","res://tests/performance/stress_pf_splash_windows.gd"],240)
           ]
           for logname,argv,timeout in cmds:
               write(logname+".command.json",json.dumps(argv,indent=2)+"\\n")

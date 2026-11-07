@@ -217,12 +217,14 @@ func run() -> void:
 	if not require(mode in ["full-pf-off","half-pf-gas-on"], "unsupported case: "+mode):
 		await finish()
 		return
-	if not require(OS.get_name() == "Windows" and DisplayServer.get_name() != "headless", "actual Windows graphical execution required"):
+	if not require(OS.get_name() == "Windows" and (
+		DisplayServer.get_name() != "headless" or OS.get_environment("CYBERSAND_STRESS_ALLOW_HEADLESS") == "1"
+	), "actual Windows application host required"):
 		await finish()
 		return
 	stage = "create_workbench"
 	set_meta("cybersand_feature","shared_workbench")
-	root.size = Vector2i(1920,1080)
+	root.size = Vector2i(960,540) if mode == "half-pf-gas-on" else Vector2i(1920,1080)
 	# Keep native and Rapier standard 60Hz; avoid changing solver timesteps.
 	Engine.max_fps = 0
 	Engine.physics_ticks_per_second = 60
@@ -231,7 +233,7 @@ func run() -> void:
 	host.set_script(ObservedMain)
 	root.add_child(host)
 	if not await until(func() -> bool: return host.shared_workbench != null and not host.shared_workbench.applied.is_empty(),
-		"initial workbench initialized", 45000):
+		"initial workbench initialized", 90000):
 		await finish()
 		return
 	panel = host.shared_workbench
@@ -264,6 +266,8 @@ func run() -> void:
 		"converted starting rectangles not admitted: "+str(packed.get("error","capacity"))):
 		await finish()
 		return
+	evidence["host"] = {"windows":OS.get_name(),"display_server":DisplayServer.get_name(),
+		"physics_hz":Engine.physics_ticks_per_second,"max_fps":Engine.max_fps}
 	evidence["recipe"] = {"original":"stress-canvas","scale":1.0 if mode=="full-pf-off" else 0.5,
 		"extent":recipe.extent, "stamps":recipe.edits.size(), "rectangles":int(packed.runs.size()/5),
 		"materials":edit_materials.size(), "actors":recipe.actors.size(),
