@@ -75,6 +75,23 @@ class Tests(unittest.TestCase):
         print('G6J_BYTES', r.valid_length, 'full_rewrite_bytes', (HEADER.size+512*1024)*200,
               'static_ticking_only=1 not_integrated_native_benchmark=1')
 
+    def test_same_length_replacement_refuses_stale_handle(self):
+        stale = Journal.create(self.path, ident(), b'checkpoint-a')
+        other = self.path.with_name('other.g6j')
+        foreign = Identity(ident().x, ident().y, ident().incarnation + 1,
+                           ident().generation, ident().tick, ident().physical_hash)
+        Journal.create(other, foreign, b'checkpoint-b')
+        self.assertEqual(self.path.stat().st_size, other.stat().st_size)
+        # External owner improperly replaces the path without closing a stale
+        # Journal handle. The stale handle must not damage the new incarnation.
+        os.replace(other, self.path)
+        with self.assertRaisesRegex(ValueError, 'G6J_EXTERNAL_WRITE_REFUSED'):
+            stale.append(Mutation(1, 1, 1, 0, 0, 6, 42, 1), 5)
+        preserved = recover(self.path)
+        self.assertEqual(preserved.identity, foreign)
+        self.assertEqual(preserved.checkpoint, b'checkpoint-b')
+        self.assertEqual(preserved.edits, ())
+
     def test_crash_orphan_stage_and_failed_publication_retry(self):
         # Simulate an old interrupted fixed-name stage and a crashed unique
         # stage. Neither may block a fresh, safely exclusive checkpoint.

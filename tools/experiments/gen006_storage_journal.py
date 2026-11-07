@@ -132,6 +132,19 @@ class Journal:
     def __init__(self, path: Path, state: Recovery):
         self.path = Path(path)
         self.state = state
+        # Bind the handle to the already-validated file, not just its length.
+        # A same-sized checkpoint from another incarnation must never receive
+        # this handle's edit record. This is not an interprocess writer lock.
+        st = self.path.stat()
+        self._file_identity = (st.st_dev, st.st_ino)
+        with self.path.open('rb') as f:
+            self._header = f.read(HEADER.size)
+            self._last_record = b''
+            if state.edits:
+                f.seek(-EDIT.size, os.SEEK_END)
+                self._last_record = f.read(EDIT.size)
+        require(st.st_size == state.valid_length and len(self._header) == HEADER.size,
+                'G6J_EXTERNAL_WRITE_REFUSED')
 
     @classmethod
     def create(cls, path: Path, identity: Identity, checkpoint: bytes) -> Journal:
@@ -181,19 +194,35 @@ class Journal:
                 edit.generation == expected_generation + 1, 'G6J_STALE_GENERATION')
         require(edit.tick == state.identity.tick, 'G6J_TICK_DOMAIN_REFUSED')
         require(len(state.edits) < MAX_EDITS, 'G6J_MAX_EDITS_REFUSED')
-        require(self.path.stat().st_size == state.valid_length,
-                'G6J_EXTERNAL_WRITE_REFUSED')
         frame = EDIT.pack(b'EDIT', edit.generation, edit.tick, edit.physical_hash,
                           edit.kind, edit.x, edit.y, 0, edit.amount,
                           edit.temperature, state.tail_chain, 0)
         record = frame[:-4] + struct.pack('<I', crc(frame[:-4]))
-        with self.path.open('ab') as f:
+        # Open an EXISTING file and verify the same descriptor that receives
+        # the append. File length alone cannot fence same-sized replacement.
+        with self.path.open('r+b') as f:
+            st = os.fstat(f.fileno())
+            require(st.st_size == state.valid_length and
+                    (st.st_dev, st.st_ino) == self._file_identity,
+                    'G6J_EXTERNAL_WRITE_REFUSED')
+            require(f.read(HEADER.size) == self._header,
+                    'G6J_EXTERNAL_WRITE_REFUSED')
+            if state.edits:
+                f.seek(-EDIT.size, os.SEEK_END)
+                require(f.read(EDIT.size) == self._last_record,
+                        'G6J_EXTERNAL_WRITE_REFUSED')
+            f.seek(0, os.SEEK_END)
             f.write(record)
             f.flush()
             os.fsync(f.fileno())  # only now may native owner ACK
+        post = self.path.stat()
+        require((post.st_dev, post.st_ino) == self._file_identity and
+                post.st_size == state.valid_length + EDIT.size,
+                'G6J_EXTERNAL_WRITE_REFUSED')
         self.state = Recovery(state.identity, state.checkpoint, state.edits + (edit,),
                               state.valid_length + EDIT.size,
                               chain(record[:-4], state.tail_chain), False)
+        self._last_record = record
 
 
 def replay_checked(recovery: Recovery, apply, physical_hash) -> None:

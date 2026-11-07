@@ -46,3 +46,20 @@ Python 3.12. The dedicated native source-scope advisory also passed.
 General Native/GDExtension production matrices were Draft-skipped, not passed.
 The separate documentation/provenance check must be assessed on the final
 documentation commit before any stronger exact-head statement.
+
+## Same-size external replacement guard
+
+A stale open `Journal` handle previously only checked `st_size`. An external
+replacement checkpoint of exactly the same length but a different residency
+incarnation could accept an edit with the old chain, corrupting the successor's
+recovery. The experimental append path now requires the original file identity,
+verified header, prior record and expected size on the actual opened descriptor;
+it rechecks the path's file identity and resulting length before permitting ACK.
+A dedicated negative regression replaces the checkpoint with a different
+incarnation of equal length and verifies refusal without modifying the successor.
+
+**Boundary:** This is single-owner protection against accidental stale-handle
+reuse, not interprocess synchronization. An adversarial or independently live
+writer can still race a path replacement, and same-inode external tampering is
+not a supported storage ownership model. No claim of multiwriter safety, power-loss
+atomicity, integrated native correctness or improved throughput follows.
