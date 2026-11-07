@@ -176,6 +176,7 @@ func _build_ui() -> void:
 	grid_overlay.set_script(GridOverlay)
 	grid_overlay.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	grid_overlay.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	grid_overlay.visible = false
 	canvas_frame.add_child(grid_overlay)
 	baseline_overlay = TextureRect.new()
 	baseline_overlay.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -649,6 +650,7 @@ func export_art(kind: String) -> void:
 	_status("Exporting " + kind + " …")
 	var exported: Image
 	var source_size: Vector2i = _native_size
+	var source_rg8_hash: String = _result.get("rg8_sha256", "")
 	if kind in ["viewport", "detail"]:
 		await RenderingServer.frame_post_draw
 		await RenderingServer.frame_post_draw
@@ -663,6 +665,7 @@ func export_art(kind: String) -> void:
 			else Adapter.build_feature(_pack, _chosen_feature(), _chosen_variant()))
 		if input.ok:
 			source_size = input["size"]
+			source_rg8_hash = input.get("rg8_sha256", "")
 			exported = await _render_full(input, export_scale_picker.get_selected_id())
 	if exported == null or exported.is_empty():
 		_busy = false
@@ -681,7 +684,7 @@ func export_art(kind: String) -> void:
 		"pixels": [exported.get_width(), exported.get_height()],
 		"framebuffer": "Godot SubViewportTexture.get_image",
 		"input_format": "Image.FORMAT_RG8; native material IDs and synthetic conditions",
-		"source_rg8_sha256": _result.get("rg8_sha256", ""),
+		"source_rg8_sha256": source_rg8_hash,
 		"presentation": {"time": _presentation_time, "glow": _glow,
 			"structured_detail": _quality, "background": _background_enabled,
 			"zoom": _zoom, "camera_origin": [_origin.x, _origin.y]},
