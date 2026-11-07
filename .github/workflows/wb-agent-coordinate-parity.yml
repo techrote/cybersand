@@ -1,0 +1,127 @@
+name: WB-AGENT independent signed-to-finite coordinate parity
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - 'native/tests/test_wb_agent_coordinate_translation.cpp'
+      - '.github/workflows/wb-agent-coordinate-parity.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: wb-agent-coordinate-parity-${{ github.event.pull_request.number || github.run_id }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  real_native_translation:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    env:
+      RESULT_DIR: build/wb-agent-coordinate-parity
+      SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+      FROZEN_STEP_SHA: 7753c3b1fa281a4ad412f0d98e9a482c9d4f5656
+      FROZEN_FIXTURE_SHA256: 549a1db2520bcfb35f068f46b62320d7325d6297037ca2faf23c3b488d80347c
+    steps:
+      - name: Checkout exact experimental branch (no owner branch mutation)
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ env.SOURCE_SHA }}
+          fetch-depth: 0
+          persist-credentials: false
+          lfs: false
+      - name: Guard frozen owner source, current repository state and manifest
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RESULT_DIR"
+          test "$(git rev-parse HEAD)" = "$SOURCE_SHA"
+          git rev-parse HEAD > "$RESULT_DIR/source-head.txt"
+          git rev-parse 'HEAD^{tree}' > "$RESULT_DIR/source-tree.txt"
+          git fetch --no-tags origin "$FROZEN_STEP_SHA"
+          test "$(git merge-base HEAD "$FROZEN_STEP_SHA")" = "$FROZEN_STEP_SHA"
+          for file in \
+            native/tests/test_wb_agent_sand_hopper.cpp \
+            native/tests/fixtures/wb_agent_sand_hopper_v1.tsv \
+            native/tests/fixtures/wb_agent_sand_hopper_v2.tsv \
+            tools/wb_agent/verify_sand_hopper.py; do
+            test "$(git rev-parse "HEAD:$file")" = "$(git rev-parse "$FROZEN_STEP_SHA:$file")"
+          done
+          printf '%s  %s\n' "$FROZEN_FIXTURE_SHA256" \
+            native/tests/fixtures/wb_agent_sand_hopper_v2.tsv | sha256sum -c -
+          git diff --check "$FROZEN_STEP_SHA" HEAD
+          python3 tools/ci/check_ci_provider_policy.py | tee "$RESULT_DIR/ci-provider.json"
+          cp native/tests/fixtures/wb_agent_sand_hopper_v2.tsv "$RESULT_DIR/frozen-v2.tsv"
+          sha256sum "$RESULT_DIR/frozen-v2.tsv" > "$RESULT_DIR/frozen-v2.sha256"
+          g++ --version | head -n 1 | tee "$RESULT_DIR/compiler.txt"
+      - name: Compile real native World with frozen original and independent parity runner
+        shell: bash
+        timeout-minutes: 12
+        run: |
+          set -euo pipefail
+          COMMON=(
+            native/src/world.cpp native/src/material_rules.cpp
+            native/src/scheduler_geometry.cpp native/src/settled_world_discovery.cpp
+            native/src/render_snapshot.cpp native/src/c_api.cpp
+          )
+          FLAGS=(-std=c++20 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -O1 -g -pthread -I native/include)
+          g++ "${FLAGS[@]}" "${COMMON[@]}" \
+            native/tests/test_wb_agent_sand_hopper.cpp \
+            -o "$RESULT_DIR/frozen_control"
+          g++ "${FLAGS[@]}" "${COMMON[@]}" \
+            native/tests/test_wb_agent_coordinate_translation.cpp \
+            -o "$RESULT_DIR/coordinate_parity"
+          sha256sum "$RESULT_DIR/frozen_control" "$RESULT_DIR/coordinate_parity" \
+            > "$RESULT_DIR/native-binary-sha256.txt"
+          ldd "$RESULT_DIR/coordinate_parity" > "$RESULT_DIR/linked-libraries.txt"
+      - name: Execute unchanged frozen native baseline with four arms
+        shell: bash
+        timeout-minutes: 3
+        run: |
+          set -euo pipefail
+          timeout 150s "$RESULT_DIR/frozen_control" "$RESULT_DIR/frozen-v2.tsv" \
+            2>&1 | tee "$RESULT_DIR/original-frozen-native-control.log"
+          python3 tools/wb_agent/verify_sand_hopper.py \
+            --manifest "$RESULT_DIR/frozen-v2.tsv" \
+            --native-log "$RESULT_DIR/original-frozen-native-control.log" \
+            2>&1 | tee "$RESULT_DIR/independent-original-verification.log"
+      - name: Independently execute native translations for both destinations and both worker settings
+        shell: bash
+        timeout-minutes: 5
+        run: |
+          set -euo pipefail
+          timeout 240s "$RESULT_DIR/coordinate_parity" "$RESULT_DIR/frozen-v2.tsv" \
+            2>&1 | tee "$RESULT_DIR/coordinate-parity-original.log"
+      - name: Check recorded equivalence and keep explicit HOLD for unequal physics
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json,re
+          from pathlib import Path
+          path=Path('build/wb-agent-coordinate-parity')
+          log=(path/'coordinate-parity-original.log').read_text()
+          baselines=re.findall(r'^BASELINE variant=(\w+) workers=(\d+) caught=(\d+)',log,re.M)
+          trials=re.findall(r'^TRIAL variant=(\w+) workers=(\d+) shift_x=(\d+) shift_y=(\d+).*exact_physics=(PASS|HOLD)$',log,re.M)
+          offsets=re.findall(r'^OFFSET_SUMMARY shift_x=(\d+) shift_y=(\d+) all_four_exact=(PASS|HOLD) all_four_final_32=(PASS|HOLD)$',log,re.M)
+          assert len(baselines)==4 and all(x[2]=='32' for x in baselines),baselines
+          assert len(trials)==28, (len(trials),trials)
+          assert len(offsets)==7, (len(offsets),offsets)
+          eligible=[(int(x),int(y)) for x,y,exact,final in offsets if exact=='PASS' and final=='PASS']
+          result={'frozen_native_reference':'PASS','candidate_translations':7,
+                  'both_destinations_workers_1_4':4,'trial_arms':28,
+                  'strictly_equivalent_offsets':eligible,
+                  'status':'PHYSICALLY_EQUIVALENT' if eligible else 'NO_STRICT_TRANSLATION_EQUIVALENCE'}
+          (path/'conclusion.json').write_text(json.dumps(result,indent=2)+'\n')
+          print('WB_AGENT_TRANSLATION_ELIGIBILITY',json.dumps(result,sort_keys=True))
+          PY
+      - name: Preserve original binaries, fixture, all positive and negative evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: wb-agent-coordinate-parity-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/wb-agent-coordinate-parity/
+          if-no-files-found: error
+          retention-days: 90
