@@ -15,18 +15,22 @@ PR #532 changes one MAT-AUTH protected consumer while preserving the material ca
 
 - Path: `native/src/world_pressure.inc`
 - Previously admitted LF SHA-256: `71723fa32bbd29aafe93f1a8dd233cece1eec7ed295da81c1e021f635085c17a`
-- Proposed LF SHA-256: `f575825e96e61caad200974a1f39396d4d09921e548719643145c5d2915abb2b`
-- Source commit holding those bytes: `f0fffc6a488f585ff10966427e87cfc3d23ed04b`
+- First investigative LF SHA-256: `f575825e96e61caad200974a1f39396d4d09921e548719643145c5d2915abb2b`
+- First investigative source commit: `f0fffc6a488f585ff10966427e87cfc3d23ed04b`
+- Final implementation LF SHA-256: `af72f8e71c0f6b155e2e78f188f956f06af383217df6ccc23d28087ea1c63abf`
+- Final implementation source commit: `d281bb41700197539f313190f7b4d68844686cf1`
 - Parent issue: #201
 - Implementation PR: #532
 
-The protected-file edit is limited to the stale-cache retry path. When an optimistic component replay requests a complete uncached restart, the owner now discards the retained dirty-chunk proof before recursively resolving gas topology. That proof belongs to the failed replay attempt and must not authorize the new selective bootstrap.
+The first transition implemented the bounded selective-component bootstrap experiment. Exact workbench-derived replay then proved that the mechanism could not admit a single component: 1,659 component proof checks and one 2,097,152-cell build scan produced zero members/builds/reuses, while all source-paired physical ticks remained exact. That path is retained in history as an explicitly reviewed investigation but is not the final production mechanism.
+
+The second transition replaces that NO-GO with a lower-cost authoritative relabel path. The gas BFS and identity reducer remain unchanged. For cached variants with a complete resident index, a bounded bitset records cells actually visited by the authoritative BFS. Relabelling still performs the original complete scan for every gas-dirty chunk and every chunk known to contain an occluded positive label; only clean/no-hidden-label chunks may relabel from the exact visited-cell bitset. Dirty-proof overflow, cache membership uncertainty, gas-cache replay, allocation, or any bit/index inconsistency falls back to the original complete relabel sweep.
 
 ## Authority boundary
 
 This transition does **not** change material IDs, catalogue bytes, pressure law, gas quantity law, compartment identity/lineage rules, CYPS semantics, C1024/C2048 capacity identities, physical-state hashing, Water defaults or the MAT-AUTH lock. The cache remains derived and nonserialized. An uncertain or incomplete proof falls back to the complete reference gas operator.
 
-The wider PR advances only the pressure-optimization **execution identity** from v4 to v5 because derived cache work changes. The physical-state/save identity remains unchanged.
+The wider PR advances only the pressure-optimization **execution identity** from v4 to v5 because derived gas bookkeeping work changes. The physical-state/save identity remains unchanged.
 
 ## Review and merge constraint
 
