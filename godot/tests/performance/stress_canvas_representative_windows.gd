@@ -145,7 +145,7 @@ func actor_states() -> Array:
 	var result: Array = []
 	if host.physical_actor_session == null:
 		return result
-	var count := host.physical_actor_session.bodies().size()
+	var count: int = host.physical_actor_session.bodies().size()
 	for id: int in range(1,count + 1):
 		var state: Dictionary = host.physical_actor_session.workbench_actor_state(id)
 		if not state.is_empty():
@@ -189,7 +189,7 @@ func install_workload(kind: String) -> bool:
 		"workbench_face_period":1,
 		"workbench_face_min_height":4,
 	}
-	var epoch := host._physical_epoch
+	var epoch: int = host._physical_epoch
 	if not expect(ui.apply(recipe), "representative workbench apply requested"):
 		return false
 	var adopted := await wait_for(func() -> bool:
@@ -252,8 +252,8 @@ func run() -> void:
 			"representative warmup")
 	if opened and failures.is_empty():
 		var start_tick := int(host.latest_snapshot.tick_index)
-		var start_rapier := host.rapier_bridge.manual_step_count()
-		var start_actor_tick := host.physical_actor_session.tick
+		var start_rapier: int = host.rapier_bridge.manual_step_count()
+		var start_actor_tick: int = host.physical_actor_session.tick
 		var start_actors := actor_states()
 		var start_spray: Dictionary = host.tower_context.get("water_spray",{}).duplicate(true)
 		var start_usec := Time.get_ticks_usec()
@@ -278,8 +278,8 @@ func run() -> void:
 		host.measurement_active = false
 		var end_usec := Time.get_ticks_usec()
 		var end_tick := int(host.latest_snapshot.tick_index)
-		var end_rapier := host.rapier_bridge.manual_step_count()
-		var end_actor_tick := host.physical_actor_session.tick
+		var end_rapier: int = host.rapier_bridge.manual_step_count()
+		var end_actor_tick: int = host.physical_actor_session.tick
 		var end_actors := actor_states()
 		var spray: Dictionary = host.tower_context.get("water_spray",{}).duplicate(true)
 		write_json("measurement-end.json",{
