@@ -468,7 +468,7 @@ void self_test(const fs::path& path, std::uint32_t workers) {
               "source Water17 failed exact identity-backed native restore");
         std::cout << "GEN006_NATIVE_CHUNK_IDENTITY_PASS configured_workers="
                   << workers << " wrong_record=REFUSED live_owner=PRESERVED"
-                  << " valid_target=RESTORED source_Water17=17\\n";
+                  << " valid_target=RESTORED source_Water17=17\n";
     }
     std::cout << "GEN006_NATIVE_SHARDED_STREAM_PASS configured_workers=" << workers
               << " initial_observed=" << first_observed
@@ -523,7 +523,7 @@ void interactive(const fs::path& path, std::uint32_t workers) {
                           << " liquid=" << world.liquid_mass(gx, gy)
                           << " temp=" << world.stored_temperature(gx, gy)
                           << " intent=" << int(streamer.intent(active, x, y))
-                          << '\\n';
+                          << '\n';
             } else if (command == "status") {
                 streamer.status();
             } else {
