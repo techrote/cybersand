@@ -2,7 +2,7 @@ name: PF504 post405 full-size identical native input replay
 on:
   push:
     branches: [integration/pf504-after-405-20261107]
-    paths: ['.github/workflows/pf504-after405-identical-input-replay.yml','native/bench/pf504_fullsize_native_input_replay.cpp','tools/ci/pf504_compare_native_input_replay.py']
+    paths: ['.github/workflows/pf504-after405-identical-input-replay.yml','native/bench/pf504_fullsize_native_input_replay.cpp','tools/ci/pf504_compare_native_input_replay.py','tools/ci/pf504_emit_native_replay_tape.py']
   workflow_dispatch:
 permissions:
   contents: read
