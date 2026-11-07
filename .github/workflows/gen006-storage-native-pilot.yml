@@ -1,0 +1,151 @@
+name: GEN006 G6J1 real-native frozen-tick replay pilot
+on:
+  push:
+    branches:
+      - experiment/gen006-storage-journal-20261107
+    paths:
+      - 'tools/experiments/gen006_storage_native_pilot.py'
+      - 'tools/experiments/gen006_storage_journal.py'
+      - '.github/workflows/gen006-storage-native-pilot.yml'
+  pull_request:
+    paths:
+      - 'tools/experiments/gen006_storage_native_pilot.py'
+      - 'tools/experiments/gen006_storage_journal.py'
+      - '.github/workflows/gen006-storage-native-pilot.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  NATIVE_REFERENCE_SHA: 876859839df581b400b24a0a182b95d8ed259b1c
+
+jobs:
+  native-pilot-linux:
+    name: Real native CYPS replay / Ubuntu 24.04
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - name: Checkout storage experiment at exact head
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - name: Checkout read-only pinned native #486 implementation
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          repository: techrote/cybersand
+          ref: 876859839df581b400b24a0a182b95d8ed259b1c
+          path: native486
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Provenance and provider policy
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/g6j-native
+          python tools/ci/check_ci_provider_policy.py
+          test "$(git -C native486 rev-parse HEAD)" = "$NATIVE_REFERENCE_SHA"
+          git rev-parse HEAD | tee build/g6j-native/journal-head.txt
+          git rev-parse HEAD^{tree} | tee build/g6j-native/journal-tree.txt
+          git -C native486 rev-parse HEAD | tee build/g6j-native/native-head.txt
+          git hash-object tools/experiments/gen006_storage_native_pilot.py | tee build/g6j-native/pilot-blob.txt
+          g++-13 --version | head -n 1 | tee build/g6j-native/compiler.txt
+      - name: Compile actual pinned native World and stream owner
+        shell: bash
+        timeout-minutes: 25
+        run: |
+          set -euo pipefail
+          g++-13 -std=c++20 -O0 -g0 -pthread -I native486/native/include \
+            native486/native/src/world.cpp native486/native/src/material_rules.cpp \
+            native486/native/src/scheduler_geometry.cpp native486/native/src/settled_world_discovery.cpp \
+            native486/native/src/world_generation.cpp native486/native/src/generation_fields.cpp \
+            native486/native/src/generation_typed_fields.cpp native486/native/src/generation_spatial.cpp \
+            native486/native/src/generation_grammar.cpp native486/native/src/generation_planes.cpp \
+            native486/native/tests/gen006_streaming_slice.cpp \
+            -o build/g6j-native/streaming-slice \
+            > build/g6j-native/compile.log 2>&1 || { cat build/g6j-native/compile.log; exit 1; }
+      - name: Source-matched native CYPS journal replay, workers 1 and 4
+        shell: bash
+        timeout-minutes: 12
+        run: |
+          set -euo pipefail
+          python tools/experiments/gen006_storage_native_pilot.py \
+            --exe build/g6j-native/streaming-slice --root build/g6j-native/one \
+            --workers 1 --native-sha "$NATIVE_REFERENCE_SHA" | tee build/g6j-native/one.txt
+          python tools/experiments/gen006_storage_native_pilot.py \
+            --exe build/g6j-native/streaming-slice --root build/g6j-native/four \
+            --workers 4 --native-sha "$NATIVE_REFERENCE_SHA" | tee build/g6j-native/four.txt
+          grep -q GEN006_G6J1_NATIVE_CYPS_REPLAY_PASS build/g6j-native/one.txt
+          grep -q GEN006_G6J1_NATIVE_CYPS_REPLAY_PASS build/g6j-native/four.txt
+      - name: Preserve original runtime evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gen006-g6j1-native-linux
+          path: build/g6j-native/
+          if-no-files-found: warn
+
+  native-pilot-windows:
+    name: Real native CYPS replay / Windows Server 2022
+    runs-on: windows-2022
+    timeout-minutes: 50
+    steps:
+      - name: Checkout storage experiment at exact head
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - name: Checkout read-only pinned native #486 implementation
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          repository: techrote/cybersand
+          ref: 876859839df581b400b24a0a182b95d8ed259b1c
+          path: native486
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Provenance and provider policy
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force build/g6j-native | Out-Null
+          python tools/ci/check_ci_provider_policy.py
+          if ((git -C native486 rev-parse HEAD).Trim() -ne $env:NATIVE_REFERENCE_SHA) { throw "Native reference SHA mismatch" }
+          git rev-parse HEAD | Set-Content build/g6j-native/journal-head.txt
+          git rev-parse 'HEAD^{tree}' | Set-Content build/g6j-native/journal-tree.txt
+          git -C native486 rev-parse HEAD | Set-Content build/g6j-native/native-head.txt
+          git hash-object tools/experiments/gen006_storage_native_pilot.py | Set-Content build/g6j-native/pilot-blob.txt
+      - name: Compile actual pinned native World and stream owner
+        shell: cmd
+        timeout-minutes: 30
+        run: |
+          for /f "tokens=*" %%i in ('"%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe" -latest -products * -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath') do set "GEN006_VSROOT=%%i"
+          if not defined GEN006_VSROOT exit /b 1
+          call "%GEN006_VSROOT%\Common7\Tools\VsDevCmd.bat" -no_logo -arch=x64 -host_arch=x64
+          if errorlevel 1 exit /b 1
+          set "GEN006_CXX=%ProgramFiles%\LLVM\bin\clang++.exe"
+          if not exist "%GEN006_CXX%" set "GEN006_CXX=%GEN006_VSROOT%\VC\Tools\Llvm\x64\bin\clang++.exe"
+          if not exist "%GEN006_CXX%" exit /b 1
+          "%GEN006_CXX%" --version > build\g6j-native\compiler.txt 2>&1
+          "%GEN006_CXX%" -std=c++20 -O0 -I native486/native/include native486/native/src/world.cpp native486/native/src/material_rules.cpp native486/native/src/scheduler_geometry.cpp native486/native/src/settled_world_discovery.cpp native486/native/src/world_generation.cpp native486/native/src/generation_fields.cpp native486/native/src/generation_typed_fields.cpp native486/native/src/generation_spatial.cpp native486/native/src/generation_grammar.cpp native486/native/src/generation_planes.cpp native486/native/tests/gen006_streaming_slice.cpp -o build\g6j-native\streaming-slice.exe > build\g6j-native\compile.log 2>&1
+          if errorlevel 1 (type build\g6j-native\compile.log & exit /b 1)
+      - name: Source-matched native CYPS journal replay, workers 1 and 4
+        shell: pwsh
+        timeout-minutes: 15
+        run: |
+          python tools/experiments/gen006_storage_native_pilot.py --exe build/g6j-native/streaming-slice.exe --root build/g6j-native/one --workers 1 --native-sha $env:NATIVE_REFERENCE_SHA | Tee-Object build/g6j-native/one.txt
+          if ($LASTEXITCODE -ne 0) { throw "Native pilot workers=1 failed" }
+          python tools/experiments/gen006_storage_native_pilot.py --exe build/g6j-native/streaming-slice.exe --root build/g6j-native/four --workers 4 --native-sha $env:NATIVE_REFERENCE_SHA | Tee-Object build/g6j-native/four.txt
+          if ($LASTEXITCODE -ne 0) { throw "Native pilot workers=4 failed" }
+          if (-not ((Get-Content build/g6j-native/one.txt) -match 'GEN006_G6J1_NATIVE_CYPS_REPLAY_PASS')) { throw "Missing workers=1 receipt" }
+          if (-not ((Get-Content build/g6j-native/four.txt) -match 'GEN006_G6J1_NATIVE_CYPS_REPLAY_PASS')) { throw "Missing workers=4 receipt" }
+      - name: Preserve original runtime evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gen006-g6j1-native-windows
+          path: build/g6j-native/
+          if-no-files-found: warn
