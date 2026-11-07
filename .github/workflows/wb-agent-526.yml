@@ -10,6 +10,7 @@ on:
       - 'godot/scripts/simulation_worker.gd'
       - 'godot/tests/test_workbench_agent_*.gd'
       - 'godot/tests/test_workbench_authoring_*.gd'
+      - 'godot/tests/test_wb525_*.gd'
       - '.github/workflows/wb-agent-526.yml'
   workflow_dispatch:
 
@@ -22,7 +23,7 @@ concurrency:
 
 jobs:
   linux-owner:
-    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.head.ref == 'feature/wb-agent-authoring-foundation-526-20261107'
+    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.head.ref == 'feature/wb-agent-authoring-foundation-526-20261107' || github.event.pull_request.head.ref == 'codex/wb-agent-528-panel-openai-20261107'
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     env:
@@ -176,7 +177,7 @@ jobs:
     # An independent actual Windows Godot/GL owner run on the same exact
     # GDScript source. This uses retained LFS native binaries; it is NOT
     # a substitute for exact-head native source rebuild/production admission.
-    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.head.ref == 'feature/wb-agent-authoring-foundation-526-20261107'
+    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.head.ref == 'feature/wb-agent-authoring-foundation-526-20261107' || github.event.pull_request.head.ref == 'codex/wb-agent-528-panel-openai-20261107'
     runs-on: windows-2022
     timeout-minutes: 50
     defaults:
@@ -307,4 +308,143 @@ jobs:
           name: wb-agent-526-windows-${{ github.run_id }}-${{ github.run_attempt }}
           path: build/wb-agent-526-windows/
           if-no-files-found: error
+          retention-days: 90
+
+  linux-source-rebuild:
+    # Draft-owned qualification: production Native/GDExtension gates remain skipped.
+    # No retained CyberSand native LFS binary is used for this execution.
+    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.head.ref == 'feature/wb-agent-authoring-foundation-526-20261107' || github.event.pull_request.head.ref == 'codex/wb-agent-528-panel-openai-20261107'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 65
+    env:
+      SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+      EVIDENCE: build/wb-agent-526-source-rebuilt
+      WB_AGENT_EVIDENCE_DIR: ${{ github.workspace }}/build/wb-agent-526-source-rebuilt
+      GODOT_CPP_COMMIT: 101ae38034304346a46ea9ea84ae156d3e860496
+      GODOT_SILENCE_ROOT_WARNING: '1'
+      PYTHONUTF8: '1'
+    steps:
+      - name: Checkout exact PR source, no retained native binaries
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ env.SOURCE_SHA }}
+          fetch-depth: 0
+          lfs: false
+          persist-credentials: false
+      - name: Pin Python 3.12
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Verify source and materialize pinned Rapier only
+        timeout-minutes: 8
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$EVIDENCE"
+          test "$(git rev-parse HEAD)" = "$SOURCE_SHA"
+          git rev-parse HEAD | tee "$EVIDENCE/source-commit.txt"
+          git rev-parse 'HEAD^{tree}' | tee "$EVIDENCE/source-tree.txt"
+          git diff --check HEAD
+          python3 tools/ci/check_ci_provider_policy.py 2>&1 | tee "$EVIDENCE/provider.log"
+          git lfs install --local
+          git lfs pull --include='godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so' --exclude='' 2>&1 | tee "$EVIDENCE/rapier-lfs.log"
+          echo '566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a  godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so' | sha256sum --check --strict
+          sha256sum godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so | tee "$EVIDENCE/rapier.sha256"
+      - name: Fresh source-build of godot-cpp and CyberSand native extension
+        timeout-minutes: 42
+        shell: bash
+        env:
+          GODOT_CPP_ROOT: ${{ runner.temp }}/godot-cpp
+          SCONS_PYTHON: ${{ runner.temp }}/scons/bin/python
+          SCONS_JOBS: '2'
+          CYBERSAND_REAL_CXX: /usr/bin/g++-13
+          LINUX_CXX: /usr/bin/g++-13
+          CYBERSAND_NATIVE_OUTPUT: ${{ runner.temp }}/libcybersand_native.linux.x86_64.so
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/scons"
+          "$RUNNER_TEMP/scons/bin/python" -m pip install --require-hashes -r tools/requirements-build.txt 2>&1 | tee "$EVIDENCE/scons-install.log"
+          "$RUNNER_TEMP/scons/bin/python" -c 'import SCons; assert SCons.__version__ == "4.10.1"'
+          mkdir "$GODOT_CPP_ROOT"
+          git -C "$GODOT_CPP_ROOT" init
+          git -C "$GODOT_CPP_ROOT" remote add origin https://github.com/godotengine/godot-cpp.git
+          timeout 600 git -C "$GODOT_CPP_ROOT" fetch --depth=1 origin "$GODOT_CPP_COMMIT"
+          git -C "$GODOT_CPP_ROOT" checkout --detach FETCH_HEAD
+          test "$(git -C "$GODOT_CPP_ROOT" rev-parse HEAD)" = "$GODOT_CPP_COMMIT"
+          printf 'godot_cpp=%s\nscons=4.10.1\n' "$GODOT_CPP_COMMIT" > "$EVIDENCE/build-toolchain.txt"
+          g++-13 --version | head -n 1 | tee -a "$EVIDENCE/build-toolchain.txt"
+          timeout 1400 tools/build_pinned_godot_cpp.sh linux 2>&1 | tee "$EVIDENCE/godot-cpp-build.log"
+          timeout 1400 tools/build_native_extension.sh 2>&1 | tee "$EVIDENCE/native-build.log"
+          file "$CYBERSAND_NATIVE_OUTPUT" | tee "$EVIDENCE/native-file.txt"
+          grep -q 'ELF 64-bit.*x86-64' "$EVIDENCE/native-file.txt"
+          cp "$CYBERSAND_NATIVE_OUTPUT" godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so
+          sha256sum "$CYBERSAND_NATIVE_OUTPUT" | tee "$EVIDENCE/rebuilt-native.sha256"
+          sha256sum godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so | tee "$EVIDENCE/staged-native.sha256"
+          # Preserve the actual fresh-built candidate, not only its hash and logs.
+          # This is CI evidence, never a commit or promotion of the retained LFS binary.
+          cp "$CYBERSAND_NATIVE_OUTPUT" "$EVIDENCE/libcybersand_native.linux.x86_64.so"
+          (
+            cd "$EVIDENCE"
+            sha256sum libcybersand_native.linux.x86_64.so > candidate-runtime.sha256
+            sha256sum --check --strict candidate-runtime.sha256
+          )
+      - name: Retrieve hash-locked Godot 4.7 editor
+        timeout-minutes: 8
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          lock=json.loads(Path("third_party/godot-runtime.lock.json").read_text())
+          Path("build/wb-agent-526-source-rebuilt/godot-lock.json").write_text(json.dumps(lock,indent=2)+"\n")
+          Path("build/wb-agent-526-source-rebuilt/godot-url.txt").write_text(lock["editor"]["origin_url"]+"\n")
+          PY
+          curl --fail --location --connect-timeout 45 --max-time 260 --output "$RUNNER_TEMP/wb-agent-526-built-godot.zip" "$(cat "$EVIDENCE/godot-url.txt")"
+          python3 - <<'PY'
+          import hashlib,json,os,zipfile
+          from pathlib import Path
+          lock=json.loads(Path("third_party/godot-runtime.lock.json").read_text())["editor"]
+          zpath=Path(os.environ["RUNNER_TEMP"])/"wb-agent-526-built-godot.zip"
+          assert zpath.stat().st_size==lock["size"]
+          assert hashlib.sha256(zpath.read_bytes()).hexdigest()==lock["sha256"]
+          name="Godot_v4.7-stable_linux.x86_64"
+          dest=Path(os.environ["RUNNER_TEMP"])/"wb-agent-526-built-godot"
+          with zipfile.ZipFile(zpath) as z:
+              assert z.testzip() is None and z.namelist().count(name)==1
+              z.extract(name,dest)
+          (dest/name).chmod(0o755)
+          with open(os.environ["GITHUB_ENV"],"a") as e:
+              e.write("GODOT_BIN="+str(dest/name)+"\n")
+          PY
+      - name: Exercise signed authoring host against freshly built native World
+        timeout-minutes: 9
+        shell: bash
+        run: |
+          set -euo pipefail
+          "$GODOT_BIN" --version | tee "$EVIDENCE/godot-version.txt"
+          grep -Fx '4.7.stable.official.5b4e0cb0f' "$EVIDENCE/godot-version.txt"
+          timeout 120 "$GODOT_BIN" --headless --path godot --editor --import --quit 2>&1 | tee "$EVIDENCE/import-rebuilt.log"
+          timeout 120 "$GODOT_BIN" --headless --path godot --script res://tests/test_workbench_agent_signed_frame.gd 2>&1 | tee "$EVIDENCE/signed-bounds-rebuilt.log"
+          timeout 360 xvfb-run --auto-servernum --server-args='-screen 0 1920x1080x24 -nolisten tcp' \
+            "$GODOT_BIN" --path godot --rendering-method gl_compatibility \
+            --script res://tests/test_workbench_agent_owner.gd 2>&1 | tee "$EVIDENCE/real-signed-owner-rebuilt.log"
+          python3 - <<'PY'
+          import hashlib,json,os
+          from pathlib import Path
+          path=Path("godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so")
+          Path(os.environ["EVIDENCE"],"runtime-identities.json").write_text(json.dumps({
+              "source":os.environ["SOURCE_SHA"],
+              "sha256":hashlib.sha256(path.read_bytes()).hexdigest(),
+              "bytes":path.stat().st_size,
+              "origin":"rebuilt_from_exact_checkout_not_retained_native_LFS",
+          },indent=2)+"\n")
+          PY
+      - name: Preserve source build logs and original native/render evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: wb-agent-526-source-rebuilt-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/wb-agent-526-source-rebuilt/
+          if-no-files-found: warn
           retention-days: 90
