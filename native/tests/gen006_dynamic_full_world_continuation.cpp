@@ -316,7 +316,7 @@ void actual_dynamic_frontier(std::uint32_t workers) {
               << " configured_workers=" << workers
               << " edited_residents=2 edits=" << edit_stage.staged_edits().size()
               << " continued_ticks=8 scope=FULL_WORLD_NON_DURABLE"
-              << " observed_workers_max=" << observed << '\\n';
+              << " observed_workers_max=" << observed << '\n';
 
     // Stale stage must not swap an owner changed by native tick. A separate
     // pointer-identity check rejects an equal-content new residency (ABA).
