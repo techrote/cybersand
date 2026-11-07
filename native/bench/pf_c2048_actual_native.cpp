@@ -367,8 +367,10 @@ int run(int argc,char** argv) {
 }
 int main(int argc,char** argv) {
     if(argc == 6 && std::string(argv[1]) == "--restore") {
+        int capacity = -1;
         try {
-            const int capacity=std::stoi(argv[2]),variant=std::stoi(argv[3]),workers=std::stoi(argv[4]);
+            capacity = std::stoi(argv[2]);
+            const int variant=std::stoi(argv[3]),workers=std::stoi(argv[4]);
             std::ifstream input(argv[5],std::ios::binary);
             if(!input) throw std::runtime_error("restore input missing");
             const std::vector<std::uint8_t> bytes(
