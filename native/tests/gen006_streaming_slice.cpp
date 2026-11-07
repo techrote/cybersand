@@ -308,8 +308,24 @@ private:
         check(checksum(body) == digest, "GEN006_RECORD_INTEGRITY");
         std::copy_n(body.begin(), kMaskBytes, e.edit_intent.begin());
         e.world = World::restore_physical_state(config_, body.subspan(kMaskBytes));
-        check(e.world && !e.world->has_failed() && e.world->chunk_count() == 1,
+        check(e.world && !e.world->has_failed() && e.world->chunk_count() == 1 &&
+              config_.maximum_chunk_count == 1,
               "GEN006_RESTORED_WORLD_REFUSED");
+        // This prototype contains exactly one native World chunk per shard.
+        // The outer record's coordinates are insufficient: a valid checkpoint
+        // for A could be relabelled as B without changing its body checksum.
+        // At single-chunk capacity the real native installer's preflight is
+        // read-only: AlreadyResident means c is the chunk, CapacityFull means
+        // the one resident chunk belongs elsewhere. Never use this temporary
+        // probe as a general multi-chunk native residency API.
+        const std::array<Material, kSide * kSide> empty_materials = [] {
+            std::array<Material, kSide * kSide> materials{};
+            materials.fill(Material::Empty);
+            return materials;
+        }();
+        check(e.world->install_generated_chunk(c, empty_materials) ==
+                  ChunkInstallOutcome::AlreadyResident,
+              "GEN006_RESTORED_CHUNK_COORDINATE");
         e.restored = true;
         return e;
     }
@@ -392,6 +408,68 @@ void self_test(const fs::path& path, std::uint32_t workers) {
     try { controller.focus(a); } catch (const std::exception&) { refused = true; }
     check(refused && controller.resident() == residents_before_refusal &&
           !controller.contains(a), "malformed saved record must preserve live owners");
+    // Independent negative and positive coordinate-binding controls against
+    // the actual native CYPS decoder and one-shard World. The same valid A
+    // checkpoint cannot be laundered into B by relabelling its outer envelope.
+    {
+        StreamingSlice binding(path / "coordinate-binding", 1, workers);
+        const ChunkCoord source{-1, -3}, target{0, -3}, other{1, -3};
+        binding.focus(source);
+        binding.edit(source, 18, 30, Material::Water, 17, 417);
+        const auto source_hash = binding.at(source).physical_state_hash();
+        binding.focus(target); // preserves and evicts source
+        binding.focus(other); // preserves and evicts target
+        check(binding.saved(source) && binding.saved(target) &&
+              binding.contains(other), "coordinate fixture not resident");
+
+        const auto valid_target = read_record(binding.path_for(target));
+        auto relabelled = read_record(binding.path_for(source));
+        check(relabelled.size() > 68, "coordinate fixture truncated");
+        constexpr std::size_t coordinate_offset = 8 + 4; // magic, schema
+        const auto requested_x = std::bit_cast<std::uint64_t>(target.x);
+        for (unsigned byte = 0; byte < 8; ++byte)
+            relabelled[coordinate_offset + byte] =
+                static_cast<std::uint8_t>(requested_x >> (8 * byte));
+        // Test-only record injection: native bytes/checksum are not modified.
+        {
+            std::ofstream out(binding.path_for(target),
+                              std::ios::binary | std::ios::trunc);
+            out.write(reinterpret_cast<const char*>(relabelled.data()),
+                      static_cast<std::streamsize>(relabelled.size()));
+            check(static_cast<bool>(out), "coordinate injection write failed");
+        }
+        const auto other_hash = binding.at(other).physical_state_hash();
+        bool refused_coordinate = false;
+        try { binding.focus(target); }
+        catch (const std::exception& e) {
+            refused_coordinate =
+                std::string(e.what()) == "GEN006_RESTORED_CHUNK_COORDINATE";
+        }
+        check(refused_coordinate && binding.resident() == 1 &&
+              binding.contains(other) && !binding.contains(target) &&
+              binding.at(other).physical_state_hash() == other_hash,
+              "relabelled native shard must refuse before resident eviction");
+
+        // Restore original B record and check real positive reconstitution.
+        {
+            std::ofstream out(binding.path_for(target),
+                              std::ios::binary | std::ios::trunc);
+            out.write(reinterpret_cast<const char*>(valid_target.data()),
+                      static_cast<std::streamsize>(valid_target.size()));
+            check(static_cast<bool>(out), "valid record repair failed");
+        }
+        binding.focus(target);
+        check(binding.contains(target) && binding.resident() == 1,
+              "valid native target refused by coordinate guard");
+        binding.focus(source);
+        check(binding.contains(source) &&
+              binding.at(source).physical_state_hash() == source_hash &&
+              binding.at(source).liquid_mass(-64 + 18, -192 + 30) == 17,
+              "source Water17 failed exact identity-backed native restore");
+        std::cout << "GEN006_NATIVE_CHUNK_IDENTITY_PASS configured_workers="
+                  << workers << " wrong_record=REFUSED live_owner=PRESERVED"
+                  << " valid_target=RESTORED source_Water17=17\\n";
+    }
     std::cout << "GEN006_NATIVE_SHARDED_STREAM_PASS configured_workers=" << workers
               << " initial_observed=" << first_observed
               << " continuation_observed=" << second_observed
