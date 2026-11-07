@@ -12,6 +12,12 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 ## Bounded ordinary cutting — Draft466
 
+The owner exposed an ordinary-brush gap after the initial rectangular fixtures.
+The [brush correction](../audits/2026-11-07-workbench-brush-cut.md) admits
+64 exact shared proxies and uses lazy frontier traversal. Each actual host/worker
+passes165 checks. General larger-component cutting remains Planned:1,024-cell/
+62-span limits still apply. No additional contact-law tuning follows this defect.
+
 The [freed rules and same-World release](../architecture/workbench-freed-objects.md)
 are implemented and functionally qualified for RedBrick in the ordinary
 workbench. Actual520/6 tree and356/5 building, workers1/4, retained motion,

@@ -12,6 +12,13 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 ## Ordinary cut checkpoint — 2026-11-07
 
+Read the [brush regression and correction](../audits/2026-11-07-workbench-brush-cut.md)
+first. Source1b15f343 rebuilds normal-brush admission; observer2253fad0 passes
+165 checks on Windows/Linux workers1/4, with4 workers observed. Old fixture
+failures are retained. Shared64 exact proxies replace the per-canvas eight-shape
+limit; member/span limits remain explicit. The original owner window is kept
+open on its mapped prior build; launch a fresh process to use the correction.
+
 Rules were committed before implementation. The sole writer remains
 `C:/khybersand/build/sol466-order-owned/khybersand`, branch
 `codex/sol-workbench-law-20261106`, Draft #466 against unchanged #461.

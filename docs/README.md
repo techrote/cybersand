@@ -12,6 +12,11 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 ## Ordinary workbench cutting
 
+The [normal-brush correction](audits/2026-11-07-workbench-brush-cut.md) fixes
+the old eight-rectangle refusal and eager frontier cap. Round/sloped strokes
+and a64-proxy ring pass on both hosts/workers; larger pieces still have
+explicit member/span limits and persistent refusal status.
+
 The [freed-object rules](architecture/workbench-freed-objects.md) now drive
 ordinary erase-stroke cutting on Draft #466. Exact tree/building ownership,
 moving-body retention and lifecycle tests pass on actual Windows/Linux;

@@ -16,7 +16,10 @@ last-reviewed: 2026-11-07
 The [normal-workbench release contract](workbench-freed-objects.md) adds a
 separate bounded native capture lane. One exclusive worker drains accepted
 stroke edits, prepares exact source tuples and retains up to eight active
-records. Only main constructs/appends RIDs. Commit retires native source before
+records. Brush capture admits up to64 exact shapes in the unchanged shared
+64-proxy budget; native acknowledgement rejects archived interval overlap
+before retirement. Lazy frontier work remains fixed and includes refusals.
+Only main constructs/appends RIDs. Commit retires native source before
 matching terrain, roster/session/epoch and activation are admitted; old RIDs
 and motion survive. Every completed/refused transaction re-primes fresh actual
 sample authority. Synchronous scene retirement invalidates all awaiting

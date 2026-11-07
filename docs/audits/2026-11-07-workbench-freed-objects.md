@@ -10,6 +10,12 @@ related-documents: [../architecture/workbench-freed-objects.md, ../systems/solid
 
 # Ordinary workbench cutting and freed objects
 
+**Successor notice:** these initial source-qualified rectangle-fixture outcomes
+remain historical. The owner subsequently exposed a real default-brush
+ShapeCapacity refusal. Read the [brush correction](2026-11-07-workbench-brush-cut.md)
+for the reproduced failure, expanded geometry admission and remaining limits.
+Do not treat this initial pass as evidence for arbitrary hand-painted shapes.
+
 **Implemented on dependent Draft #466:** completing an ordinary erase stroke
 now discovers bounded eligible RedBrick components and transfers each into one
 real compound Rapier body. The existing material picker includes RedBrick;

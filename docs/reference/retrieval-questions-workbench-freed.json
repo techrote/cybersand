@@ -49,6 +49,23 @@
         "../native/tests/fixtures/workbench_freed_001.json",
         "../godot/tests/test_workbench_freed.gd"
       ]
+    },
+    {
+      "id": "FREED-BRUSH-001",
+      "query": "Why could a normal round-brush RedBrick cut stay suspended, what was corrected, and what size or capacity limits still refuse release?",
+      "canonical": [
+        "architecture/workbench-freed-objects.md",
+        "reference/configuration-reference.md"
+      ],
+      "facts": [
+        "Old eight-rectangle admission rejected default brush; canvas64 exact rectangles share64 total proxies.",
+        "Lazy frontier allows64 investigations;1024 members and62-cell span remain. Persistent refusal is not clearance."
+      ],
+      "sources": [
+        "../godot/native_extension/solid_workbench_adapter.inc",
+        "../godot/scripts/workbench_cut.gd",
+        "../native/tests/fixtures/workbench_brush_cut_001.json"
+      ]
     }
   ]
 }

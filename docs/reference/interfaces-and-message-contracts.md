@@ -21,6 +21,11 @@ source tick/revision and body reservation. Native `body_id` names the first
 mask proxy, while workbench instance/physical-body IDs remain separate.
 The complete prospective roster is validated before retirement. End re-primes
 the unchanged/current roster even after zero release or begin refusal.
+Replies include cumulative `frontier_checks` (all enumerated face checks),
+`frontier_candidates` (outward directed incidences, including duplicates and
+non-RedBrick/out-of-canvas points), `discovery_attempts`, `frontier_complete`
+and `frontier_limited`. End preserves final counters. Incomplete discovery
+is a refusal, not evidence that remaining geometry is clear.
 No RID or scene object crosses this boundary; see [ownership](../architecture/workbench-freed-objects.md).
 Version4 retains the version2/3 root fields, adding numeric rectangle stamps
 `[x,y,width,height,material]` alongside discs `[x,y,radius,material]`.
@@ -32,7 +37,9 @@ record. Replay creates fresh bodies, not archived live material custody.
 Version3 workbench starts preserve the version2 root fields. An actor with
 model `canvas_body` has the usual id/hash/spawn/options plus `body`, exactly
 `{name,rectangles}`. Each rectangle is integer `[x,y,width,height]` in a128-cell
-authoring box;1-8 nonoverlapping rectangles and area<=4096. Unit mass/COM/inertia
+authoring box;1-64 nonoverlapping rectangles and area<=4096, within the shared
+64-proxy scene limit. This expands canvas-only validation; authored-fleet and
+original diagnostic eight-shape admission remain unchanged. Unit mass/COM/inertia
 derive from the union; arbitrary mass or extra fields refuse. Hashes normalize
 integer-valued JSON coordinates. The physical definition is rederived and
 checked exactly before the scoped mass/compound admission; ordinary catalogue

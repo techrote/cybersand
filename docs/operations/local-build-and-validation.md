@@ -10,7 +10,19 @@ related-documents: [source-checkpoint-and-recovery.md, testing-validation-and-re
 
 # Local build and validation
 
-## Ordinary workbench cutting qualification
+## Brush-cut successor qualification
+
+Use `python tools/sol281/workbench_brush_cut.py build --run NAME`, then
+`native` and `hosts --build-run NAME`. After test-only observer corrections,
+`observe --reuse-run HOST-RUN --run NAME` checks unchanged production resources
+and compiled inputs, then runs a fresh process/World/session for each host and
+worker. Its separate1GiB evidence cap and5GiB reserve leave the original2GiB
+registration unchanged. The [brush dossier](../audits/2026-11-07-workbench-brush-cut.md)
+records165 checks per host/worker, four retained initial fixture failures,
+1,246 new and19,338 original optimized/strict native checks. Do not relabel
+old rectangle-fixture results as coverage for ordinary painting.
+
+## Initial ordinary workbench cutting qualification
 
 Use `python tools/sol281/workbench_freed.py build --run NAME`, then its
 `native`, `hosts --build-run NAME` and `observe --reuse-run HOST-RUN` modes.

@@ -17,7 +17,11 @@ with Wall/Hard wall supports, then erase a support using the existing RMB or
 Erase tool. Release the mouse to check adjacent pieces. A cold paused canvas
 needs one ordinary Step or Play first to apply its simulation region. Eligible
 unanchored pieces become passive bodies; refused pieces stay native and report
-why. No new test menu is present. See the [rules and limits](../architecture/workbench-freed-objects.md).
+why at the start of the existing status display until another cut or complete
+canvas replacement. Default round-brush and sloped strokes are covered by the
+[brush correction](../audits/2026-11-07-workbench-brush-cut.md). Pieces above
+1,024 cells or62 cells across remain terrain; do not expect arbitrary-size
+structures to release. No new test menu is present. See the [rules and limits](../architecture/workbench-freed-objects.md).
 After capture, retained body/settings replacements refuse until an admitted
 transfer exists. Save keeps an authored start; Restore/Load/New blank retire
 the complete old owner and start fresh. Existing painting, palette, powder,
@@ -34,7 +38,8 @@ start reconstructs the paused start. `--workbench --workbench-start=NAME` loads
 an installed named recipe directly. The repository canvas JSON can be copied to
 `user://workbench/setup-sol-fresh-structures-20261106.json` on another machine.
 
-A body uses strict name/rectangle data, one Rapier body with at most8 proxies,
+A body uses strict name/rectangle data, one Rapier body with at most64 exact
+proxies within the shared64-proxy scene budget,
 unit-area mass/inertia, AUTO COM, gravity scale0.094 and combined0.04 damping.
 It is observer-only and has no drive/equipment authority. Geometry and content
 hashes persist through normal save/load. Version2 recipes, palette, existing

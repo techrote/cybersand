@@ -10,7 +10,17 @@ related-documents: [data-ownership-and-lifetimes.md, rigid-body-and-cellular-cou
 
 # Freed objects in the ordinary workbench
 
-## Implementation checkpoint
+## Brush admission correction
+
+The owner found a real ordinary-painting gap in the initial qualification. The
+old eight-rectangle limit rejected even the default radius-8 brush. The
+[brush regression dossier](../audits/2026-11-07-workbench-brush-cut.md) records
+the correction: up to 64 exact shapes within the shared proxy budget, lazy
+frontier traversal and persistent plain-language refusal status. Actual
+Windows/Linux worker-1/4 runs each pass 165 checks. The 1,024-member and
+62-cell occupied-span limits remain; arbitrary-size cutting is not supported.
+
+## Initial rectangle-fixture implementation checkpoint
 
 Current on Draft #466: the registered release rules are implemented. Actual
 Windows/Linux workers1/4 pass83 checks each and52 lifecycle checks per host.
@@ -67,12 +77,19 @@ erase and the existing Erase paint selection use the same stroke-end operation.
 ## Bounded discovery and admission
 
 Native owns discovery, eligibility and complete tuples. Inspect at most256
-admitted erase dabs (radius<=24),64 distinct adjacent seeds and8 result pieces
-per stroke. Duplicate seeds/components do not spend capture authority twice.
-Overflow is explicit; do not silently discard work and report success.
+admitted erase dabs (radius<=24), up to64 actual native investigations and8
+result pieces per stroke. Traverse the erased-disc frontier lazily after each
+handoff; retired cells no longer consume investigations. Suppress repeated
+seed coordinates. Refused components may consume several investigations;
+these are not distinct-component counts. A 65th candidate records incomplete
+discovery and retains its source. At most2,458,624 face checks and50,176
+outward face incidences are enumerated; both counters include refused work.
+Overflow is explicit; do not discard work and report complete discovery.
 
 Each candidate has at most1,024 members, a padded64x64 discovery domain and at
-most8 exact nonoverlapping rectangle proxies. Discovery first obtains a bounded
+most64 exact nonoverlapping rectangle proxies within the shared64-proxy
+scene budget. The authored fleet and original SOL diagnostic retain their
+eight-rectangle guards. Discovery first obtains a bounded
 component box using fixed scratch, then invokes the existing native ownership
 kernel. Do not substitute an AABB or impose a hardcoded tree search position.
 Unknown boundaries and oversized components remain native. The existing
