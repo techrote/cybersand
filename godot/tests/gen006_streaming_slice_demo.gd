@@ -28,6 +28,10 @@ const MAX_ABS_JUMP_CHUNK: int = 4096
 # Optional visual-only subchunk view; never changes native World authority.
 const ROAM_CELLS_PER_SECOND: float = 36.0
 const MAX_ROAM_FRAME_TILES: int = 8
+# Only one speculative request; urgent camera and player edits take priority.
+const ROAM_PREFETCH_LEAD_CELLS: float = 24.0
+const ROAM_PREFETCH_REFRESH_MSEC: int = 1500
+const ROAM_PREFETCH_REFUSAL_BACKOFF_MSEC: int = 2000
 
 var world_chunk := DEMO_START
 var selected_cell := Vector2i(18, 30)
@@ -78,6 +82,16 @@ var roam_enabled: bool = false
 var roam_origin: Vector2 = Vector2(DEMO_START.x * SIDE, DEMO_START.y * SIDE)
 var roam_frame_cache: Dictionary = {}
 var roam_frame_order: Array[Vector2i] = []
+var roam_frame_msec: Dictionary = {}
+var roam_prefetch_pending: bool = false
+var roam_prefetch_chunk: Vector2i = DEMO_START
+var roam_prefetch_requests: int = 0
+var roam_prefetch_completions: int = 0
+var roam_prefetch_refusals: int = 0
+var roam_prefetch_refused_chunk: Vector2i = DEMO_START
+var roam_prefetch_retry_after_msec: int = 0
+var focus_urgent: bool = false
+var ipc_request_is_prefetch: bool = false
 
 
 func _ready() -> void:
@@ -166,10 +180,12 @@ func _remember_roam_frame(chunk: Vector2i, image: Image) -> void:
     if roam_frame_cache.has(chunk):
         roam_frame_order.erase(chunk)
     roam_frame_cache[chunk] = ImageTexture.create_from_image(image)
+    roam_frame_msec[chunk] = Time.get_ticks_msec()
     roam_frame_order.append(chunk)
     while roam_frame_order.size() > MAX_ROAM_FRAME_TILES:
         var expired: Vector2i = roam_frame_order.pop_front()
         roam_frame_cache.erase(expired)
+        roam_frame_msec.erase(expired)
 
 
 func _visible_roam_tiles(origin: Vector2) -> Array[Vector2i]:
@@ -182,6 +198,37 @@ func _visible_roam_tiles(origin: Vector2) -> Array[Vector2i]:
         for x in range(first.x, last.x + 1):
             tiles.append(Vector2i(x, y))
     return tiles
+
+
+# Missing directional pixels outrank old copied frames. A single pending
+# speculative target prevents unbounded prefetch admission/IPC.
+func _schedule_roam_prefetch(origin: Vector2, direction: Vector2) -> void:
+    if not roam_enabled or direction == Vector2.ZERO or roam_prefetch_pending:
+        return
+    if ipc_outstanding and ipc_request_is_prefetch:
+        return
+    var predicted := origin + direction.normalized() * ROAM_PREFETCH_LEAD_CELLS
+    var candidates := _visible_roam_tiles(predicted)
+    var now := Time.get_ticks_msec()
+    for stale_only in [false, true]:
+        for tile in candidates:
+            if tile == world_chunk or absi(tile.x) > MAX_ABS_JUMP_CHUNK or \
+                    absi(tile.y) > MAX_ABS_JUMP_CHUNK:
+                continue
+            if tile == roam_prefetch_refused_chunk and \
+                    now < roam_prefetch_retry_after_msec:
+                continue
+            var cached := roam_frame_cache.has(tile)
+            if stale_only:
+                if not cached or now - int(roam_frame_msec.get(tile, now)) < \
+                        ROAM_PREFETCH_REFRESH_MSEC:
+                    continue
+            elif cached:
+                continue
+            roam_prefetch_chunk = tile
+            roam_prefetch_pending = true
+            queue_redraw()
+            return
 
 
 func _toggle_roam_mode() -> void:
@@ -201,9 +248,11 @@ func _toggle_roam_mode() -> void:
     if roam_enabled and texture != null:
         _remember_roam_frame(displayed_chunk, texture.get_image())
     if not roam_enabled:
+        roam_prefetch_pending = false
         roam_frame_cache.clear()
         roam_frame_order.clear()
-        _queue_live_focus()
+        roam_frame_msec.clear()
+        _queue_live_focus(true)
     input_refusal = ""
     queue_redraw()
 
@@ -227,13 +276,16 @@ func _advance_roam(delta: float, direction: Vector2) -> void:
                 world_chunk = tile
                 jump_x_edit.text = str(tile.x)
                 jump_y_edit.text = str(tile.y)
-            _queue_live_focus()
+            if roam_prefetch_pending and roam_prefetch_chunk == tile:
+                roam_prefetch_pending = false
+            _queue_live_focus(true)
             input_refusal = "Roam waiting for signed native tile (%d,%d)." % [
                 tile.x, tile.y
             ]
             queue_redraw()
             return
     roam_origin = proposed
+    _schedule_roam_prefetch(roam_origin, direction)
     if input_refusal.begins_with("Roam waiting"):
         input_refusal = ""
     queue_redraw()
@@ -296,10 +348,11 @@ func _request_camera_chunk(target: Vector2i) -> void:
     drag_button = 0
     drag_last_cell = Vector2i(-1, -1)
     drag_last_chunk = target
+    roam_prefetch_pending = false
     jump_x_edit.text = str(target.x)
     jump_y_edit.text = str(target.y)
     if interactive_async:
-        _queue_live_focus()
+        _queue_live_focus(true)
     else:
         failure = ""
         _invoke(PackedStringArray(), false, true)
@@ -366,7 +419,7 @@ func _write_request(commands: PackedStringArray) -> bool:
     return true
 
 
-func _read_response(started_usec: int) -> bool:
+func _read_response(started_usec: int, allow_prefetch_refusal: bool = false) -> bool:
     var response_path := ipc_root.path_join("response.txt")
     if not _wait_for_file(response_path, IPC_TIMEOUT_MSEC):
         failure = "Persistent native controller response timed out."
@@ -379,7 +432,10 @@ func _read_response(started_usec: int) -> bool:
         failure = "Persistent-controller sequence mismatch: " + last_receipts.left(120)
         return false
     if last_receipts.contains("REFUSED "):
-        failure = "Native command refused: " + last_receipts.right(350)
+        if allow_prefetch_refusal:
+            input_refusal = "Prefetch refused (no edit lost): " + last_receipts.right(170)
+        else:
+            failure = "Native command refused: " + last_receipts.right(350)
         return false
     for line in last_receipts.split("\n", false):
         if line.begins_with("EVICT "):
@@ -465,10 +521,11 @@ func _invoke(actions: PackedStringArray, force_eviction: bool = false,
         displayed_chunk = world_chunk
 
 
-func _queue_live_focus() -> void:
-    # Only the latest camera position is relevant. Never create unbounded
-    # intermediate native Worlds for rapid arrow-key navigation.
+func _queue_live_focus(urgent: bool = false) -> void:
+    # Real camera requests outrank speculative native tile requests.
     focus_dirty = true
+    if urgent:
+        focus_urgent = true
     queue_redraw()
 
 
@@ -493,13 +550,21 @@ func _start_live_request() -> void:
     var commands := PackedStringArray()
     var action: Dictionary = {}
     var has_action := not queued_actions.is_empty()
+    var is_prefetch := false
     if has_action:
         action = queued_actions.pop_front()
         target = action["chunk"]
-    elif not focus_dirty:
-        return
-    else:
+    elif focus_urgent:
+        focus_urgent = false
         focus_dirty = false
+    elif roam_enabled and roam_prefetch_pending:
+        target = roam_prefetch_chunk
+        roam_prefetch_pending = false
+        is_prefetch = true
+    elif focus_dirty:
+        focus_dirty = false
+    else:
+        return
     commands.append("focus %d %d" % [target.x, target.y])
     if has_action:
         commands.append(str(action["command"]))
@@ -510,12 +575,17 @@ func _start_live_request() -> void:
         # File publication failed: the action has NOT been handed to native.
         if has_action:
             queued_actions.push_front(action)
+        elif is_prefetch:
+            roam_prefetch_pending = true
         else:
             focus_dirty = true
         queue_redraw()
         return
     ipc_request_chunk = target
     ipc_request_usec = started
+    ipc_request_is_prefetch = is_prefetch
+    if is_prefetch:
+        roam_prefetch_requests += 1
     ipc_request_was_edit = has_action and bool(action["edit"])
     ipc_pending_msec = 0
     ipc_slow_warning = false
@@ -532,14 +602,44 @@ func _service_live_ipc() -> void:
         var response_path := ipc_root.path_join("response.txt")
         if FileAccess.file_exists(response_path):
             # _read_response returns immediately once the response exists.
-            var accepted := _read_response(ipc_request_usec)
+            var accepted := _read_response(ipc_request_usec, ipc_request_is_prefetch)
             ipc_outstanding = false
             ipc_slow_warning = false
             ipc_pending_msec = 0
             ipc_peak_latency_usec = maxi(ipc_peak_latency_usec, last_call_usec)
             if not accepted:
+                if ipc_request_is_prefetch and failure.is_empty():
+                    roam_prefetch_refusals += 1
+                    roam_prefetch_refused_chunk = ipc_request_chunk
+                    roam_prefetch_retry_after_msec = Time.get_ticks_msec() + \
+                        ROAM_PREFETCH_REFUSAL_BACKOFF_MSEC
+                    queue_redraw()
+                    return
                 # An ambiguous or refused edit must never be silently retried.
                 input_refusal = "Native response failed; last edit outcome UNKNOWN."
+                queue_redraw()
+                return
+            if ipc_request_is_prefetch:
+                if not last_receipts.contains(
+                        "RENDER_RGBA chunk=(%d,%d)" % [
+                            ipc_request_chunk.x, ipc_request_chunk.y
+                        ]):
+                    failure = "Native prefetch rendered wrong signed chunk."
+                    queue_redraw()
+                    return
+                var rgba := FileAccess.get_file_as_bytes(
+                    save_root.path_join("gen006-current.rgba"))
+                if rgba.size() != FRAME_BYTES:
+                    failure = "Native prefetch RGBA length mismatch."
+                    queue_redraw()
+                    return
+                if roam_enabled:
+                    var image := Image.create_from_data(
+                        SIDE, SIDE, false, Image.FORMAT_RGBA8, rgba)
+                    _remember_roam_frame(ipc_request_chunk, image)
+                    roam_prefetch_completions += 1
+                if input_refusal.begins_with("Prefetch refused"):
+                    input_refusal = ""
                 queue_redraw()
                 return
             if ipc_request_was_edit:
@@ -556,7 +656,7 @@ func _service_live_ipc() -> void:
             else:
                 # A response from an old camera demand must not be displayed
                 # as the current destination. Request the latest view next.
-                focus_dirty = true
+                _queue_live_focus(true)
             queue_redraw()
         else:
             # Native checkpointing and disk publication can be slow. A soft
@@ -852,10 +952,12 @@ func _draw() -> void:
             reload_receipts
         ], HORIZONTAL_ALIGNMENT_LEFT, -1, 12, Color("#9caec9"))
     draw_string(font, Vector2(710, 370),
-        ("Roam origin %.1f,%.1f | %d/8 copied RGBA tiles | editing OFF" % [
-            roam_origin.x, roam_origin.y, roam_frame_cache.size()
+        ("Roam %.1f,%.1f | tiles %d/8 | prefetch %d/%d refused %d | edit OFF" % [
+            roam_origin.x, roam_origin.y, roam_frame_cache.size(),
+            roam_prefetch_completions, roam_prefetch_requests,
+            roam_prefetch_refusals
         ]) if roam_enabled else "Copied native RGBA 64x64 (not Godot production shader)",
-        HORIZONTAL_ALIGNMENT_LEFT, -1, 14, Color("#9caec9"))
+        HORIZONTAL_ALIGNMENT_LEFT, 540.0, 13, Color("#9caec9"))
     draw_string(font, Vector2(710, 255),
         "Native occupied cells: %d / 4096" % occupied_native_cells,
         HORIZONTAL_ALIGNMENT_LEFT, -1, 14, Color("#b6dcaa"))
