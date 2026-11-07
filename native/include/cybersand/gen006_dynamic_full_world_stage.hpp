@@ -82,6 +82,24 @@ public:
     FullWorldContinuationStage(FullWorldContinuationStage&&) noexcept = default;
     FullWorldContinuationStage& operator=(FullWorldContinuationStage&&) noexcept = default;
 
+    // Opt-in non-durable owner-side batch mutation. The callback may only be
+    // supplied by the exclusive host after its complete native preflight.
+    // A failed partial mutation destroys the PRIVATE candidate, never live.
+    // Original CYPS bytes remain the BASE witness, not a durable edit receipt.
+    template <typename Apply>
+    void mutate_private(Apply&& apply) {
+        if (!candidate_)
+            throw std::logic_error("GEN006_DYNAMIC_PRIVATE_STAGE_CONSUMED");
+        try {
+            apply(*candidate_);
+            if (candidate_->has_failed())
+                throw std::runtime_error("GEN006_DYNAMIC_PRIVATE_WORLD_FAILED");
+        } catch (...) {
+            candidate_.reset();
+            throw;
+        }
+    }
+
     [[nodiscard]] std::span<const std::uint8_t> bytes() const noexcept { return bytes_; }
     [[nodiscard]] std::uint64_t source_tick() const noexcept { return tick_; }
     [[nodiscard]] std::uint64_t physical_hash() const noexcept { return hash_; }
