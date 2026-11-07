@@ -212,8 +212,10 @@ void run(const fs::path& root,unsigned workers) {
             "GEN006_DUPLICATE_RESTORE_ADMITTED");
     const auto restored_checkpoint=world.capture_chunk_checkpoint(edited);
     require(restored_checkpoint.status==ChunkCheckpointStatus::Captured &&
-            restored_checkpoint.checkpoint.generation==staged.checkpoint.generation,
-            "GEN006_LOSSLESS_GENERATION_RESTORE_DRIFT");
+            restored_checkpoint.checkpoint.generation==staged.checkpoint.generation &&
+            restored_checkpoint.checkpoint.bytes==staged.checkpoint.bytes &&
+            restored_checkpoint.checkpoint.sha256==staged.checkpoint.sha256,
+            "GEN006_LOSSLESS_BYTE_FOR_BYTE_ROUNDTRIP_DRIFT");
     const auto after_restore=world.save_physical_state();
     require(!after_restore.empty(),"GEN006_RESTORED_LEDGER_INVALID");
 
@@ -257,6 +259,7 @@ void run(const fs::path& root,unsigned workers) {
              <<" temperature417=RESTORED"
              <<" cell_registers=RESTORED"
              <<" cell_specific_Empty_intent=RESTORED"
+             <<" exact_checkpoint_bytes=IDENTICAL"
              <<" mutation_generation="<<staged.checkpoint.generation
              <<" durable_fsync_atomic_rename=1"
              <<" stale_edit=REFUSED stale_tick=REFUSED"
@@ -321,13 +324,46 @@ void sand_boundary_refusal_test(unsigned workers) {
              <<" native_state=UNCHANGED_ON_REFUSAL\n";
 }
 
+void verify_separate_native_process(const fs::path& root,unsigned workers) {
+    // CI invokes this mode through a NEW operating-system process, after the
+    // previous command published the file with fsync/atomic rename and exited.
+    const auto bytes=read_exactly(root/"chunk_x-16_y-8.g6c");
+    World fresh(config(workers));
+    const ChunkCoord wanted{-16,-8};
+    const auto x=wanted.x*64,y=wanted.y*64;
+    require(fresh.restore_chunk_checkpoint(wanted,bytes)==
+            ChunkCheckpointStatus::Restored,"GEN006_NEW_PROCESS_RESTORE_REFUSED");
+    require(fresh.chunk_count()==1 &&
+            fresh.stored_material(x+30,y+30)==Material::Wall &&
+            fresh.stored_temperature(x+30,y+30)==417 &&
+            fresh.gen006_player_edit_intent_at(x+8,y+8) &&
+            fresh.gen006_player_edit_intent_at(x+9,y+9) &&
+            fresh.gen006_player_edit_intent_at(x+30,y+30),
+            "GEN006_CROSS_PROCESS_LOSSLESS_STATE_OR_INTENT_DRIFT");
+    require(!fresh.save_physical_state().empty(),
+            "GEN006_CROSS_PROCESS_QUANTITY_LEDGER_INVALID");
+    std::cout<<"GEN006_CHUNK_RESTART_PROCESS_PASS"
+             <<" configured_workers="<<workers
+             <<" disk_source=G6KC1"
+             <<" actual_new_os_process=1"
+             <<" wall_temp417=RESTORED"
+             <<" exact_Empty_tombstones=RESTORED"
+             <<" source_authority=SHA256_VERIFIED\n";
+}
+
+
 int main(int argc,char** argv) {
     try {
-        require(argc==3,"usage: gen006-chunk-transaction ROOT 1|4");
-        const auto workers=static_cast<unsigned>(std::stoul(argv[2]));
+        const bool reopen=argc==4 && std::string(argv[1])=="--reopen";
+        require((reopen && argc==4) || (!reopen && argc==3),
+                "usage: gen006-chunk-transaction ROOT 1|4 OR --reopen ROOT 1|4");
+        const auto workers=static_cast<unsigned>(std::stoul(argv[reopen?3:2]));
         require(workers==1||workers==4,"GEN006_INVALID_WORKERS");
-        run(argv[1],workers);
-        sand_boundary_refusal_test(workers);
+        if (reopen) verify_separate_native_process(argv[2],workers);
+        else {
+            run(argv[1],workers);
+            sand_boundary_refusal_test(workers);
+        }
         return 0;
     } catch(const std::exception& ex) {
         std::cerr<<"GEN006_LOSSLESS_STATIC_CHUNK_TRANSACTION_FAIL "<<ex.what()<<'\n';

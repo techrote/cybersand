@@ -115,3 +115,18 @@ quantity and pending-work transfer, not bypass the refusal or fake stability.
 
 Only Wall/Empty + opt-in exact edit intent + inactive activity blocks and
 temperature are currently checkpoint-eligible.
+
+
+## Cross-process and byte-identical final acceptance
+
+The static transaction now asserts that re-capturing the original native
+World immediately after eviction+restore yields the **exact same entire G6KC1
+byte sequence and SHA-256 digest**, not merely the same displayed materials.
+
+The hosted Windows and Linux workflow then launches the native transaction
+executable **a second time** in --reopen mode for each worker configuration.
+That independent OS process reads the file published by the first process,
+validates its SHA-256 and restores Wall state, temperature417, both precise
+Empty tombstones and quantity accounting into a new native World. Full
+new-process custody remains test-only; production host save scheduling,
+multiwriter power-cut resolution and dynamic-state bundles are still separate.

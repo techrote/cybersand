@@ -1,4 +1,4 @@
-name: GEN006 shared-World pristine release
+name: GEN006 shared-World checkpoint and durable eviction
 
 on:
   pull_request:
@@ -75,6 +75,10 @@ jobs:
             -o "$d/chunk-transaction" > "$d/transaction-compile.log" 2>&1 || { cat "$d/transaction-compile.log"; exit 1; }
           "$d/chunk-transaction" "$d/transaction-one" 1 | tee "$d/transaction-one.log"
           "$d/chunk-transaction" "$d/transaction-four" 4 | tee "$d/transaction-four.log"
+          "$d/chunk-transaction" --reopen "$d/transaction-one" 1 | tee "$d/restart-one.log"
+          "$d/chunk-transaction" --reopen "$d/transaction-four" 4 | tee "$d/restart-four.log"
+          grep -q 'GEN006_CHUNK_RESTART_PROCESS_PASS configured_workers=1' "$d/restart-one.log"
+          grep -q 'GEN006_CHUNK_RESTART_PROCESS_PASS configured_workers=4' "$d/restart-four.log"
           grep -q 'GEN006_LOSSLESS_STATIC_CHUNK_TRANSACTION_PASS configured_workers=1' "$d/transaction-one.log"
           grep -q 'GEN006_LOSSLESS_STATIC_CHUNK_TRANSACTION_PASS configured_workers=4' "$d/transaction-four.log"
       - name: Preserve native evidence
@@ -142,8 +146,18 @@ jobs:
           if errorlevel 1 (type build\gen006-shared-release\transaction-one.log & exit /b 1)
           build\gen006-shared-release\chunk-transaction.exe build\gen006-shared-release\transaction-four 4 > build\gen006-shared-release\transaction-four.log 2>&1
           if errorlevel 1 (type build\gen006-shared-release\transaction-four.log & exit /b 1)
+          build\gen006-shared-release\chunk-transaction.exe --reopen build\gen006-shared-release\transaction-one 1 > build\gen006-shared-release\restart-one.log 2>&1
+          if errorlevel 1 (type build\gen006-shared-release\restart-one.log & exit /b 1)
+          build\gen006-shared-release\chunk-transaction.exe --reopen build\gen006-shared-release\transaction-four 4 > build\gen006-shared-release\restart-four.log 2>&1
+          if errorlevel 1 (type build\gen006-shared-release\restart-four.log & exit /b 1)
           type build\gen006-shared-release\transaction-one.log
           type build\gen006-shared-release\transaction-four.log
+          type build\gen006-shared-release\restart-one.log
+          type build\gen006-shared-release\restart-four.log
+          findstr /C:"GEN006_CHUNK_RESTART_PROCESS_PASS configured_workers=1" build\gen006-shared-release\restart-one.log
+          if errorlevel 1 exit /b 1
+          findstr /C:"GEN006_CHUNK_RESTART_PROCESS_PASS configured_workers=4" build\gen006-shared-release\restart-four.log
+          if errorlevel 1 exit /b 1
           findstr /C:"GEN006_LOSSLESS_STATIC_CHUNK_TRANSACTION_PASS configured_workers=1" build\gen006-shared-release\transaction-one.log
           if errorlevel 1 exit /b 1
           findstr /C:"GEN006_LOSSLESS_STATIC_CHUNK_TRANSACTION_PASS configured_workers=4" build\gen006-shared-release\transaction-four.log
