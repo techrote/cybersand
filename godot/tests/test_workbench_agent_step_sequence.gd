@@ -142,6 +142,14 @@ func run() -> void:
 	var idle_stop: Dictionary = await max_call.stop()
 	check(idle_stop.get("status")=="refused" and idle_stop.get("reason")=="no_active_step_sequence",
 		"idle local Stop forged a native boundary ACK")
+	# Task revision / scene lifecycle must fence *all* future delayed uses of
+	# the old driver even if no native tick was in flight at retirement.
+	max_call.retire()
+	var stale_driver: Dictionary = await max_call.step(main,workbench,1)
+	check(stale_driver.get("status")=="refused"
+		and stale_driver.get("reason")=="task_lifecycle_retired"
+		and stale_driver.get("completed",0)==0,
+		"retired task re-admitted late native Step: "+str(stale_driver))
 	var final_snapshot: CyberSimulationSnapshot = main.latest_snapshot
 	check(final_snapshot.tick_index==initial_tick+128
 		and final_snapshot.paused and not final_snapshot.simulation_failed,
