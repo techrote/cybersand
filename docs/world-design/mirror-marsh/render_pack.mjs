@@ -36,7 +36,7 @@ function renderSvg(p){
  for(const r of p.combined_scene.foreground_rectangles||[])put(srcRect(r[0],r[1],r[2],r[3],r[4]));
  put("</svg>");};
  crop(51,"I / FERRY-TO-CHAPEL TOLL LINE / SEVERED CROSSING",184,59);
- crop(767,"II / RUINED REED BANK, LENSES & SALT LEVEE",835,149);
+ crop(767,"II / THE UNANSWERED LUNAR REGISTER / FRACTURED ORBIT",657,31);
  put(text(54,1316,"PINNED NATIVE MATERIAL PALETTE  ·  SOURCE CELL STAMPS  ·  NOT A GODOT IMAGE OR PHYSICAL PROOF",12,"#83a7a2"));
  const alt=p.alternate_scene;
  put(text(51,1360,"02 / THE RECEDING MIRROR  ·  ALTERNATE INLAND RELIQUARY",15,"#a8c8c3",600));
