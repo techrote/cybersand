@@ -19,6 +19,8 @@ var _authorizing: bool = false
 var _authorised: bool = false
 var _pending_retirement: bool = false
 var _task_serial: int = 0
+var _last_projection: Array = []
+var _projection_tree: SceneTree
 
 func mount(workbench: Control) -> bool:
 	if workbench == null or workbench.host == null:
@@ -59,7 +61,29 @@ func mount(workbench: Control) -> bool:
 	_agent_panel.proposal_overlay.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_host.world_view.resized.connect(_agent_panel.scope_overlay.queue_redraw)
 	_host.world_view.resized.connect(_agent_panel.proposal_overlay.queue_redraw)
+	# CanvasItem draw commands are cached. A camera pan can leave the viewport
+	# size unchanged, so resize alone cannot refresh world-space previews.
+	_projection_tree = _host.get_tree()
+	_projection_tree.process_frame.connect(_refresh_projection)
+	_host.tree_exiting.connect(_disconnect_projection)
 	return true
+
+func _disconnect_projection() -> void:
+	if is_instance_valid(_projection_tree) and _projection_tree.process_frame.is_connected(_refresh_projection):
+		_projection_tree.process_frame.disconnect(_refresh_projection)
+	_projection_tree = null
+
+func _refresh_projection() -> void:
+	if not is_instance_valid(_host) or not is_instance_valid(_agent_panel) \
+			or not is_instance_valid(_host.world_view):
+		return
+	var projection: Array = [_host.camera_origin, _host.current_view_size,
+		_host.view_content_rect(), _presentation_origin()]
+	if projection == _last_projection:
+		return
+	_last_projection = projection
+	_agent_panel.scope_overlay.queue_redraw()
+	_agent_panel.proposal_overlay.queue_redraw()
 
 func panel() -> Control:
 	return _agent_panel

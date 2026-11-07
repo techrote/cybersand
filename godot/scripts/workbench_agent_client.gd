@@ -12,7 +12,10 @@ const ENDPOINT := "https://api.openai.com/v1/responses"
 const NAMES := ["observe", "prepare_edit", "apply_edit", "step"]
 const MAX_TEXT := 8192
 const MAX_BODY := 2 * 1024 * 1024
-const MAX_TOOL_OUTPUT := 65536
+## 4096 native rows may each contain two signed 32-bit coordinates and
+## before/after IDs. Reserve 112 characters per row plus 64 KiB for bounded
+## identity/count/palette metadata. Images have their separate existing cap.
+const MAX_TOOL_OUTPUT := 4096 * 112 + 65536
 # Transport parses signed native coordinates without granting out-of-domain
 # authority. #526's exclusive worker still validates its finite canvas.
 const MIN_WORLD_COORD: int = -2147483648
