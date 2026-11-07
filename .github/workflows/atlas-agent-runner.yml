@@ -159,7 +159,7 @@ jobs:
         if: ${{ inputs.mode != 'live' }}
         run: python3 tools/atlas_agent/workflow_run.py
       - name: Live run (charged API calls; refuses unless every gate passes)
-        if: ${{ inputs.mode == 'live' }}
+        if: ${{ inputs.mode == 'live' && github.event_name == 'workflow_dispatch' }}
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           OPENAI_ADMIN_KEY: ${{ secrets.OPENAI_ADMIN_KEY }}
