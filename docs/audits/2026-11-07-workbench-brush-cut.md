@@ -89,3 +89,24 @@ the retrieval route was corrected. Initial checks remain in
 Linux artifact freshly reproduces the supported-floor failure: GLIBC2.35
 versus2.34; its complete symbol census is retained separately. This is an
 explicit blocker, not a pass from successful Ubuntu24.04 execution.
+
+The corrected checkpoint passes all nine required source/documentation gates:
+[exact command receipt](workbench-brush-cut-20261107/checks.json). The
+[ABI symbol census](workbench-brush-cut-20261107/abi-symbols.json) independently
+records GLIBC2.35, GLIBCXX3.4.31 and CXXABI1.3.9. The first two exceed the
+accepted2.34/3.4.30 floors; no floor or frozen guard was relaxed.
+
+| Source-bound decision | Status | Meaning |
+|---|---|---|
+| Ordinary brush cutting |PASS|Executed bounded geometry and ownership only|
+| LA-SELECTIVE intended primary response |CONDITIONAL|Owner direction retained; physics unchanged|
+| New measured SOL collision-law benefit |UNAVAILABLE|This is an admission regression, not a new law comparison|
+| Original SOL physical clearance |NO-GO|Historical failures remain; no new clearance claim|
+| General supported-desktop integration |NO-GO|Linux floor, wider geometry and independent admission remain open|
+
+A read-only second-agent source review found no remaining actionable P1/P2 in
+the production delta. This is not a substitute for the requested separate
+independent adversarial review or an owner integration decision. The existing
+interactive drawing remains open; the previous mapped DLL was preserved by
+renaming it before materializing the new runtime, so no running module was
+overwritten. A fresh normal-workbench process uses the corrected build.
