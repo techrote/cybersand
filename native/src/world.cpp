@@ -342,6 +342,10 @@ struct World::Chunk {
     bool changed_this_tick = false;
     std::uint32_t quiet_ticks = 0;
     bool dirty = false;
+    // An exclusively generated Empty chunk may be released. Any native write,
+    // including same-value external Empty intent, permanently clears this
+    // unpersisted witness. A restored chunk starts pinned by default.
+    bool pristine_generated_empty = false;
     std::int32_t dirty_min_x = 0;
     std::int32_t dirty_min_y = 0;
     std::int32_t dirty_max_x = 0;
@@ -2125,6 +2129,7 @@ void World::mark_hard_surface_dirty(const Address& target) noexcept {
 }
 
 void World::mark_cell_dirty(Chunk& chunk, std::int32_t local_x, std::int32_t local_y) {
+    chunk.pristine_generated_empty = false;
     if (chunk.pressure != nullptr)
         invalidate_pressure_input(chunk.pressure->coordinate, local_x, local_y, local_x, local_y, false);
     const auto block_x = local_x / config_.activity_block_size;
@@ -2275,6 +2280,9 @@ void World::set_with_quantity_kind(std::int64_t x, std::int64_t y, Material mate
         preflight_absent_quantity(material, material == Material::Water
             ? config_.water_experiment_policy.maximum() : std::uint16_t{0}, {kind, kQuantityNoRule});
     auto& chunk = ensure_chunk(target.chunk);
+    // Preserve explicit no-op player edits: a later Empty release must not
+    // silently discard intent merely because material bytes stayed Empty.
+    chunk.pristine_generated_empty = false;
     if (chunk.granular_arrivals) (*chunk.granular_arrivals)[target.index] = 0;
     const auto previous_material = chunk.cells[target.index].material_value();
     const auto previous_overfill = chunk.pressure == nullptr ? std::uint16_t{0}
@@ -2344,6 +2352,9 @@ bool World::set_cell_state(std::int64_t x, std::int64_t y, Material material,
         throw std::invalid_argument("invalid material identifier");
     }
     if (material != Material::Empty && transient_obstacle_at(x, y) != 0U) return false;
+    // Even a successful same-value Empty set is an external mutation intent.
+    if (auto* chunk = find_chunk(address(x, y).chunk))
+        chunk->pristine_generated_empty = false;
     if (material == Material::Water && state_a_value == 0U) {
         if (find_chunk(address(x, y).chunk) == nullptr) return false;
         return write_cell(x, y, Material::Empty, 0U, 0U, nullptr, true);
@@ -2956,7 +2967,12 @@ ChunkInstallOutcome World::install_generated_chunk(
     // They preserve Water defaults, activity, dirtiness, hard-surface revision
     // and discovery semantics instead of introducing a second cell writer.
     preflight_generated_quantity(row_major_materials);
-    (void)ensure_chunk(coord);
+    auto& installed = ensure_chunk(coord);
+    // Only the exact, never-edited generated Empty admission can later be
+    // released. Nonempty proposals are never reclassified by later erosion.
+    installed.pristine_generated_empty = std::all_of(
+        row_major_materials.begin(), row_major_materials.end(),
+        [](Material m) { return m == Material::Empty; });
     for (std::size_t index = 0; index < cell_count; ++index) {
         if (row_major_materials[index] == Material::Empty) continue;
         const auto x = origin_x + static_cast<std::int64_t>(index %
@@ -2966,6 +2982,75 @@ ChunkInstallOutcome World::install_generated_chunk(
         set_with_quantity_kind(x, y, row_major_materials[index], QuantityKind::GeneratedChunk);
     }
     return ChunkInstallOutcome::Installed;
+}
+
+
+ChunkReleaseOutcome World::release_pristine_empty_chunk(ChunkCoord coord) noexcept {
+    // Refusal-first prototype of genuine in-place SAME-World release.
+    // Dynamic/modified chunks require a separate owned checkpoint transaction.
+    if (tick_failed_) return ChunkReleaseOutcome::WorldFailed;
+    if (tick_in_progress_) return ChunkReleaseOutcome::TickInProgress;
+    auto it = chunks_.find(coord);
+    if (it == chunks_.end()) return ChunkReleaseOutcome::NotResident;
+
+    // No serializable proof of these external/derived domains exists yet.
+    // Never release a shard while any such domain may own its boundary state.
+    if (settled_discovery_ || pressure_ || inertial_enabled_ ||
+        granular_arrival_enabled_ || physics_totals_ ||
+        config_.ballistic_water.enabled || !ballistic_parcels_.empty() ||
+        !pending_explosions_.empty() || transient_occupancy_capacity() != 0U)
+        return ChunkReleaseOutcome::SidecarOrOwnerPinned;
+
+    const auto& chunk = *it->second;
+    if (!chunk.pristine_generated_empty || chunk.non_empty_cell_count != 0U ||
+        chunk.active || chunk.changed_this_tick || chunk.dirty ||
+        chunk.quiet_ticks != 0 || chunk.temperatures ||
+        chunk.pressure || chunk.inertial || chunk.granular_arrivals ||
+        std::any_of(chunk.hard_surface_dirty_tiles.begin(),
+                    chunk.hard_surface_dirty_tiles.end(),
+                    [](std::uint64_t bits) { return bits != 0U; }))
+        return ChunkReleaseOutcome::NotPristine;
+    const auto expected = Chunk::Cell::for_material(Material::Empty).bits;
+    if (std::any_of(chunk.cells.begin(), chunk.cells.end(),
+                    [expected](const Chunk::Cell& cell) {
+                        return cell.bits != expected;
+                    }) ||
+        std::any_of(chunk.activity_blocks.begin(), chunk.activity_blocks.end(),
+                    [](const Chunk::ActivityBlock& block) {
+                        return block.active || block.changed_this_tick ||
+                               block.next_interaction_tick != 0U ||
+                               block.quiet_ticks != 0U;
+                    }))
+        return ChunkReleaseOutcome::NotPristine;
+
+    // Conservative whole one-chunk halo: no adjacent World cell can carry
+    // activity or a future transport destination into this released shard.
+    if (coord.x == std::numeric_limits<std::int64_t>::min() ||
+        coord.x == std::numeric_limits<std::int64_t>::max() ||
+        coord.y == std::numeric_limits<std::int64_t>::min() ||
+        coord.y == std::numeric_limits<std::int64_t>::max())
+        return ChunkReleaseOutcome::NeighbourPinned;
+    for (std::int64_t dy = -1; dy <= 1; ++dy) {
+        for (std::int64_t dx = -1; dx <= 1; ++dx) {
+            if (dx == 0 && dy == 0) continue;
+            if (find_chunk({coord.x + dx, coord.y + dy}))
+                return ChunkReleaseOutcome::NeighbourPinned;
+        }
+    }
+
+    // No throws or allocations after preflight. The dense fast directory
+    // retains stable pointers only while the corresponding resident exists.
+    const auto dx = static_cast<std::uint64_t>(coord.x - chunk_directory_x_);
+    const auto dy = static_cast<std::uint64_t>(coord.y - chunk_directory_y_);
+    if (dx < static_cast<std::uint64_t>(chunk_directory_width_) &&
+        dy < static_cast<std::uint64_t>(chunk_directory_height_)) {
+        const auto index = dy * static_cast<std::uint64_t>(chunk_directory_width_) + dx;
+        chunk_directory_[static_cast<std::size_t>(index)] = nullptr;
+    }
+    chunks_.erase(it); // Actual native chunk and activity memory freed.
+    ++hard_surface_revision_;
+    hard_surface_full_refresh_required_ = true;
+    return ChunkReleaseOutcome::Released;
 }
 
 bool World::queue_explosion(std::int64_t x, std::int64_t y, std::int32_t radius,

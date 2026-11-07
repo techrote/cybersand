@@ -103,6 +103,11 @@ enum class ChunkInstallOutcome : std::uint8_t {
     TickInProgress,
 };
 
+enum class ChunkReleaseOutcome : std::uint8_t {
+    Released, NotResident, WorldFailed, TickInProgress,
+    NotPristine, SidecarOrOwnerPinned, NeighbourPinned,
+};
+
 struct RectI64 {
     std::int64_t x = 0;
     std::int64_t y = 0;
@@ -259,6 +264,13 @@ public:
     // generator/session revision check; this material-only API is not a receipt.
     [[nodiscard]] ChunkInstallOutcome install_generated_chunk(
         ChunkCoord coord, std::span<const Material> row_major_materials);
+    // GEN-006 first real SAME-World residency release. Only a newly generated
+    // completely Empty chunk with no edits, native activity, sidecars, pending
+    // events or neighbouring resident chunk may be released. The pristine
+    // marker is intentionally NOT restored from whole-World checkpoints, so
+    // historic/modified chunks fail closed. No serializer or default changes.
+    // Exclusive World owner, between ticks. Not a dynamic-state checkpoint API.
+    [[nodiscard]] ChunkReleaseOutcome release_pristine_empty_chunk(ChunkCoord coord) noexcept;
     void set_simulation_region(std::optional<RectI64> region);
     [[nodiscard]] std::optional<RectI64> simulation_region() const noexcept;
     [[nodiscard]] std::optional<SimulationCoreRange> selected_simulation_cores() const noexcept {
