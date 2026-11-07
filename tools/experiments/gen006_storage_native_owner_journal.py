@@ -62,7 +62,8 @@ def prepare_staging_source(source: Path, destination: Path) -> str:
 
 
 def serve(exe: Path, root: Path, ipc: Path, workers: int):
-    root.mkdir(parents=True)
+    require(root.is_dir() and native_record(root).is_file(),
+            "G6J_STAGE_SERVER_REQUIRES_EXISTING_NATIVE_BASELINE")
     ipc.mkdir(parents=True)
     proc = subprocess.Popen(
         [str(exe), "--serve", str(root), str(ipc),
