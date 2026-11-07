@@ -1,0 +1,14 @@
+{
+  "id": "workbench-small-debris-001",
+  "date": "2026-11-07",
+  "parent": "b140265d1a2ef2fd76787f8048dbcc5e9fa545ac",
+  "status": "registered before candidate execution",
+  "owner_choice": "Existing Sand/Rust granular rules; no liquid inertial-solver extension",
+  "rule": "On ordinary completed erase stroke, eligible face-connected RedBrick components with 1..16 remaining cells convert in place to alternating Sand/Rust in sorted y,x order, starting with Sand. Other components retain the existing rigid-body route. Zero disables the tangent as a scientific control.",
+  "output": "ceil(N/2) Sand2 and floor(N/2) Rust29 at the N original occupied coordinates, zero initial state, ambient temperature, no added velocity/impulse and no fabricated arrival provenance",
+  "resource": {"cap_bytes": 1073741824, "minimum_free_bytes": 5368709120},
+  "evidence_directory": "build/workbench-small-debris",
+  "matrix": {"hosts": ["windows", "linux"], "workers": [1, 4], "steps": 120},
+  "cases": ["1,15,16,17 cells and threshold0 control", "anchored/hot/foreign/masked/pending-event/unresident refusals", "no Rapier owner/proxy allocation for small debris, including exhausted rigid slots", "actual Sand/Rust falls and settles on hard floor and Sand using ordinary Step/Play", "mixed small/native plus larger/Rapier handoff, retained RID and moving owner", "exact conversion ledger, non-arrival write then true transport, duplicate-token refusal", "post-cut static terrain update before resumed physics, cancellation/failure and scene retirement", "post-cut authored-start save/Restore retains the blend without duplicate brick or body"],
+  "invariants": ["No change to existing granular/contact law, gains/caps, gravity or rigid member M/I", "No accepted main default, frozen catalogue or protected source guard change", "No conversion before full eligibility and recipe admission", "Same native World remains pixel owner; no aggregate removal/restoration for debris", "Explicit material conversion, not a material-identity or physical-mass conservation claim"]
+}

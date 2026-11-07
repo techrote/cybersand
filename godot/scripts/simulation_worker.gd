@@ -193,7 +193,7 @@ func _apply_workbench_cut(command: Dictionary, emissions: Array[Vector4i], cells
 		_workbench_cut_admitted_sample={};_workbench_cut_prime=false
 	reply["command_usec"]=Time.get_ticks_usec()-started
 	var publishing: int=Time.get_ticks_usec()
-	var committed: bool=command.get("action")=="commit" and reply.get("ok",false)
+	var committed: bool=command.get("action") in ["commit","crumble"] and reply.get("ok",false)
 	if command.get("action")=="begin" or committed: _snapshot_hard_surface_revision=-1
 	# One full source-retirement publication per accepted piece. Observations
 	# and refused seeds use normal immutable patches, not repeated full canvases.

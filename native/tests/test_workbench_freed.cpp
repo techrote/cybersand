@@ -56,6 +56,12 @@ static void exercise(unsigned workers) {
     fill(100,10,2,2,Material::RedBrick);
     expect(w.prepare_workbench_solid(100,10)==SolidOutcome::MemberCapacity,"ninth refuses before removal");
     expect(w.stored_material(100,10)==Material::RedBrick,"capacity retains source");
+    expect(w.prepare_workbench_solid(100,10,16)==SolidOutcome::Accepted,"small debris remains available with eight occupied rigid slots");
+    const auto debris=w.inspect_solid_detachment();
+    expect(debris.granular_piece,"small representation selected before body capacity");
+    expect(w.crumble_workbench_solid(debris.token)==SolidOutcome::Accepted,"native conversion with full roster");
+    expect(w.finalize_workbench_crumble(debris.token,w.hard_surface_revision())==SolidOutcome::Accepted,"full-roster terrain receipt");
+    expect(w.workbench_solid_count()==8 && w.workbench_debris_ledger()==std::array<std::uint64_t,4>{1,4,2,2},"no additional body slot, exact material ledger");
     expect(w.rebind_workbench_solids(99,3)==SolidOutcome::Stale,"stale epoch refused");
     expect(w.rebind_workbench_solids(2,3)==SolidOutcome::Accepted,"held explicit epoch rebind");
     w.clear();expect(w.workbench_solid_count()==0 && w.solid_detachment_storage_bytes()==0,"whole owner reset retires custody");
@@ -127,5 +133,6 @@ static void brush_geometry(unsigned workers) {
     expect(w.prepare_workbench_solid(10,10)==SolidOutcome::ShapeCapacity,"over-64 exact geometry refuses");
     expect(w.stored_material(10,10)==Material::RedBrick,"no geometry fallback or source retirement");
 }
-int main() {try{exercise(1);exercise(4);refusals();brush_geometry(1);brush_geometry(4);std::cout<<"workbench freed native: "<<checks<<" checks passed\n";return 0;}
+#include "workbench_small_debris_cases.inc"
+int main() {try{exercise(1);exercise(4);refusals();brush_geometry(1);brush_geometry(4);small_debris(1);small_debris(4);std::cout<<"workbench freed native: "<<checks<<" checks passed\n";return 0;}
 catch(const std::exception& e){std::cerr<<"FAIL "<<checks<<": "<<e.what()<<'\n';return 1;}}

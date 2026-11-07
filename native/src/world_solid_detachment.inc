@@ -21,6 +21,7 @@ bool fenced(soliding::SolidPhase phase) noexcept {
         phase == soliding::SolidPhase::Acknowledged ||
         phase == soliding::SolidPhase::Committed ||
         phase == soliding::SolidPhase::Restored ||
+        phase == soliding::SolidPhase::DebrisCommitted ||
         phase == soliding::SolidPhase::Quarantined;
 }
 } // namespace solid_detail
@@ -214,6 +215,7 @@ soliding::SolidOutcome World::acknowledge_solid_detachment(const soliding::Solid
     if (!solid_detachment_) return SolidOutcome::Disabled;
     auto& s = solid_detachment_->snapshot;
     if (s.phase != SolidPhase::Prepared || body.token != s.token) return SolidOutcome::Stale;
+    if (s.granular_piece) return SolidOutcome::Invalid;
     if (body.body_id == 0 || body.body_id > kMaximumTransientBodies || body.body_generation == 0 ||
         body.shape_count > static_cast<std::size_t>(kMaximumTransientBodies - body.body_id + 1U) ||
         body.shape_count != s.shape_count || body.payload_digest != s.payload_digest ||
@@ -394,7 +396,8 @@ soliding::SolidOutcome World::configure_workbench_solids(soliding::SolidBounds c
     return result;
 }
 
-soliding::SolidOutcome World::prepare_workbench_solid(std::int64_t x, std::int64_t y) {
+soliding::SolidOutcome World::prepare_workbench_solid(std::int64_t x, std::int64_t y,
+    std::size_t small_debris_limit) {
     using namespace soliding;
     if (tick_failed_) return SolidOutcome::WorldFailed;
     if (!workbench_solids_) return SolidOutcome::Disabled;
@@ -402,7 +405,8 @@ soliding::SolidOutcome World::prepare_workbench_solid(std::int64_t x, std::int64
     if (selected_core_region_ != applied_core_region_) return SolidOutcome::Excluded;
     auto& work = *workbench_solids_;
     work.inspected=work.probes=0;
-    if (work.count == kWorkbenchSolids) return SolidOutcome::MemberCapacity;
+    if (small_debris_limit!=0 && small_debris_limit!=kWorkbenchSmallDebrisCells) return SolidOutcome::Invalid;
+    if (!small_debris_limit && work.count==kWorkbenchSolids) return SolidOutcome::MemberCapacity;
     if (!solid_detail::contains(work.canvas,x,y)) return SolidOutcome::Invalid;
     if (!contact_cell_available(x,y)) return SolidOutcome::NotResident;
     if (stored_material(x,y) != Material::RedBrick) return SolidOutcome::Ineligible;
@@ -452,6 +456,13 @@ soliding::SolidOutcome World::prepare_workbench_solid(std::int64_t x, std::int64
     const auto prepared=prepare_solid_detachment({{min_x-1,min_y-1,static_cast<std::uint16_t>(max_x-min_x+3),
         static_cast<std::uint16_t>(max_y-min_y+3)}, {0,work.canvas.height-1,work.canvas.width,1},x,y});
     if (prepared!=SolidOutcome::Accepted) return prepared;
+    auto& pending=solid_detachment_->snapshot;
+    pending.granular_piece=small_debris_limit && pending.member_count<=small_debris_limit;
+    if (pending.granular_piece) return SolidOutcome::Accepted;
+    if (work.count==kWorkbenchSolids) {
+        (void)cancel_solid_detachment(pending.token);
+        return SolidOutcome::MemberCapacity;
+    }
     std::size_t total_shapes=solid_detachment_->snapshot.shape_count;
     for (std::size_t i=0;i<work.count;++i) total_shapes+=work.owned[i].snapshot.shape_count;
     if (total_shapes>kWorkbenchSolidShapes) {
@@ -459,6 +470,64 @@ soliding::SolidOutcome World::prepare_workbench_solid(std::int64_t x, std::int64
         return SolidOutcome::ShapeCapacity;
     }
     return SolidOutcome::Accepted;
+}
+
+soliding::SolidOutcome World::crumble_workbench_solid(soliding::SolidToken token) {
+    using namespace soliding;
+    if (tick_failed_) return SolidOutcome::WorldFailed;
+    if (!workbench_solids_ || !solid_detachment_) return SolidOutcome::Disabled;
+    auto& store=*solid_detachment_;auto& s=store.snapshot;auto& ledger=workbench_solids_->debris;
+    if (s.phase!=SolidPhase::Prepared || s.token!=token) return SolidOutcome::Stale;
+    if (!s.granular_piece || !s.member_count || s.member_count>kWorkbenchSmallDebrisCells) return SolidOutcome::Invalid;
+    if (tick_in_progress_ || s.source_tick!=tick_index_ || s.source_terrain_revision!=hard_surface_revision_ ||
+        selected_core_region_!=applied_core_region_ || !pending_explosions_.empty()) return SolidOutcome::Stale;
+    for (std::size_t i=0;i<s.member_count;++i) {
+        const auto& m=store.members[i];
+        if (!contact_cell_available(m.x,m.y) || transient_obstacle_at(m.x,m.y) || m.material!=Material::RedBrick ||
+            m.state_a || m.state_b || m.temperature!=config_.ambient_temperature ||
+            stored_material(m.x,m.y)!=m.material || stored_state_a(m.x,m.y)!=m.state_a ||
+            stored_state_b(m.x,m.y)!=m.state_b || stored_temperature(m.x,m.y)!=m.temperature)
+            return SolidOutcome::Stale;
+    }
+    for (std::size_t i=0;i<ledger.size();++i)
+        if (ledger[i]>std::numeric_limits<std::uint64_t>::max()-kWorkbenchSmallDebrisCells)
+            return SolidOutcome::GenerationExhausted;
+    try {
+        // Explicit owner-authorized material conversion. No body reservation,
+        // source erase/restoration, transport event, kick or new motion law.
+        for (std::size_t i=0;i<s.member_count;++i) {
+            const auto& m=store.members[i];const auto output=i%2 ? Material::Rust : Material::Sand;
+            if (!write_cell(m.x,m.y,output,0,0,nullptr,true))
+                throw std::logic_error("small debris source refused conversion");
+            ++s.granular_converted_count;++ledger[1];++ledger[i%2 ? 3 : 2];
+        }
+        ++ledger[0];
+    } catch (...) {
+        s.phase=SolidPhase::Quarantined;tick_failed_=true;
+        if (settled_discovery_) settled_discovery_->fail();
+        return SolidOutcome::Quarantined;
+    }
+    s.committed_terrain_revision=hard_surface_revision_;
+    s.phase=SolidPhase::DebrisCommitted; // Hold clocks until terrain installation.
+    return SolidOutcome::Accepted;
+}
+
+soliding::SolidOutcome World::finalize_workbench_crumble(soliding::SolidToken token,
+    std::uint64_t terrain_revision) {
+    using namespace soliding;
+    if (tick_failed_) return SolidOutcome::WorldFailed;
+    if (!workbench_solids_ || !solid_detachment_) return SolidOutcome::Disabled;
+    auto& s=solid_detachment_->snapshot;
+    if (s.phase!=SolidPhase::DebrisCommitted || s.token!=token || s.source_tick!=tick_index_ ||
+        terrain_revision!=s.committed_terrain_revision || terrain_revision!=hard_surface_revision_)
+        return SolidOutcome::Stale;
+    const auto incarnation=s.token.incarnation;
+    s={};s.phase=SolidPhase::Idle;s.token.incarnation=incarnation;
+    return SolidOutcome::Accepted;
+}
+
+std::array<std::uint64_t,4> World::workbench_debris_ledger() const noexcept {
+    return workbench_solids_ ? workbench_solids_->debris : std::array<std::uint64_t,4>{};
 }
 
 soliding::SolidOutcome World::archive_workbench_solid(soliding::SolidToken token) {

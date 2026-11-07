@@ -106,6 +106,17 @@ Dictionary CyberNativeCellWorld::workbench_cut_command(const Dictionary& request
         auto result=reply(world_.get(),outcome,payload);
         result["schema"]="cybersand.workbench-cut.v1";
         result["active_count"]=world_ ? static_cast<std::int64_t>(world_->workbench_solid_count()) : 0;
+        const auto debris=world_ ? world_->workbench_debris_ledger() : std::array<std::uint64_t,4>{};
+        result["debris_pieces"]=static_cast<std::int64_t>(debris[0]);
+        result["brick_converted"]=static_cast<std::int64_t>(debris[1]);
+        result["sand_produced"]=static_cast<std::int64_t>(debris[2]);
+        result["rust_produced"]=static_cast<std::int64_t>(debris[3]);
+        result["small_debris_limit"]=static_cast<std::int64_t>(workbench_cut_.small_debris_limit);
+        if (world_) {
+            const auto source=world_->inspect_solid_detachment();
+            result["representation"]=source.granular_piece ? "granular" : "rigid";
+            result["granular_converted_count"]=static_cast<std::int64_t>(source.granular_converted_count);
+        }
         const auto work=world_ ? world_->workbench_solid_discovery_work() : std::array<std::uint64_t,2>{};
         result["discovery_cells"]=static_cast<std::int64_t>(work[0]);
         result["discovery_neighbours"]=static_cast<std::int64_t>(work[1]);
@@ -125,6 +136,11 @@ Dictionary CyberNativeCellWorld::workbench_cut_command(const Dictionary& request
     try {
         if (action=="begin") {
             if (cut.held || world_->solid_detachment_fenced()) return finish(SolidOutcome::Busy);
+            std::int64_t debris_limit=0;
+            if (request.has("small_debris_limit") &&
+                (!integer(request,"small_debris_limit",0,kWorkbenchSmallDebrisCells,debris_limit) ||
+                 (debris_limit!=0 && debris_limit!=static_cast<std::int64_t>(kWorkbenchSmallDebrisCells))))
+                return finish(SolidOutcome::Invalid);
             if (request.get("dabs",Variant()).get_type()!=Variant::PACKED_INT32_ARRAY ||
                 request.get("sample",Variant()).get_type()!=Variant::DICTIONARY) return finish(SolidOutcome::Invalid);
             const PackedInt32Array dabs=request["dabs"];
@@ -148,6 +164,7 @@ Dictionary CyberNativeCellWorld::workbench_cut_command(const Dictionary& request
             const auto configured=world_->configure_workbench_solids({0,0,static_cast<std::uint16_t>(extent_.x),static_cast<std::uint16_t>(extent_.y)});
             if (configured!=SolidOutcome::Accepted) return finish(configured);
             cut={};cut.held=true;
+            cut.small_debris_limit=static_cast<std::size_t>(debris_limit);
             // Traverse the frontier lazily after each handoff. Other boundary
             // cells of a retired piece are then Empty, not extra investigations.
             // All storage and work remain bounded by the validated stroke.
@@ -161,6 +178,22 @@ Dictionary CyberNativeCellWorld::workbench_cut_command(const Dictionary& request
         // A failed begin still owns the worker hold until an unchanged roster
         // is re-primed. No source tuple or transaction is cancelled by end.
         if (!cut.held && action!="end") return finish(SolidOutcome::Stale);
+        // Bounded paused-owner value observer; no UI or mutable storage escape.
+        if (action=="census") {
+            if (request.get("area",Variant()).get_type()!=Variant::RECT2I) return finish(SolidOutcome::Invalid);
+            const Rect2i area=request["area"];
+            if (area.position.x<0 || area.position.y<0 || area.position.x>=extent_.x || area.position.y>=extent_.y ||
+                area.size.x<1 || area.size.y<1 || area.size.x>64 || area.size.y>64 ||
+                area.size.x>extent_.x-area.position.x || area.size.y>extent_.y-area.position.y)
+                return finish(SolidOutcome::Invalid);
+            PackedInt32Array pixels;
+            for (int y=area.position.y;y<area.position.y+area.size.y;++y)
+                for (int x=area.position.x;x<area.position.x+area.size.x;++x) {
+                if (!world_->contact_cell_available(x,y)) return finish(SolidOutcome::NotResident);
+                pixels.push_back(x);pixels.push_back(y);pixels.push_back(static_cast<int>(world_->stored_material(x,y)));
+            }
+            auto result=finish(SolidOutcome::Accepted);result["pixels"]=pixels;result["area"]=area;return result;
+        }
         if (action=="next") {
             if (world_->inspect_solid_detachment().phase!=SolidPhase::Idle) return finish(SolidOutcome::Busy);
             if (cut.frontier_limited) {auto r=finish(SolidOutcome::MemberCapacity);r["done"]=true;return r;}
@@ -190,7 +223,7 @@ Dictionary CyberNativeCellWorld::workbench_cut_command(const Dictionary& request
                     auto r=finish(SolidOutcome::MemberCapacity);r["done"]=true;return r;
                 }
                 cut.seeds[cut.count++]=point;
-                const auto outcome=world_->prepare_workbench_solid(point.x,point.y);
+                const auto outcome=world_->prepare_workbench_solid(point.x,point.y,cut.small_debris_limit);
                 auto result=finish(outcome,outcome==SolidOutcome::Accepted);result["seed"]=point;return result;
             }
             cut.frontier_complete=true;
@@ -221,6 +254,18 @@ Dictionary CyberNativeCellWorld::workbench_cut_command(const Dictionary& request
             const auto result=world_->cancel_solid_detachment(source.token);
             if (result==SolidOutcome::Accepted) cut.staged=false;
             return finish(result);
+        }
+        if (action=="crumble") {
+            const auto result=cut.staged ? SolidOutcome::Stale : world_->crumble_workbench_solid(source.token);
+            if (result==SolidOutcome::Accepted) {
+                ++revision_;render_snapshot_full_refresh_required_=true;
+                workbench_->sampled=false;workbench_->valid=false;workbench_->bins={};
+            }
+            return finish(result,result==SolidOutcome::Accepted);
+        }
+        if (action=="finalize_debris") {
+            if (!text_matches(request,"terrain_revision",decimal(source.committed_terrain_revision))) return finish(SolidOutcome::Stale);
+            return finish(world_->finalize_workbench_crumble(source.token,source.committed_terrain_revision));
         }
         if (action=="acknowledge") {
             if (source.phase!=SolidPhase::Prepared || request.get("sample",Variant()).get_type()!=Variant::DICTIONARY)

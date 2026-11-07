@@ -4,6 +4,9 @@ extends RefCounted
 const Setup=preload("res://scripts/workbench_setup.gd")
 const Prepared=preload("res://scripts/prepared_physical_session.gd")
 const Bridge=preload("res://scripts/workbench_physics_bridge.gd")
+const SMALL_DEBRIS_CELLS: int=16
+# Fixed experimental profile. Zero is retained for matched legacy controls.
+var small_debris_limit: int=SMALL_DEBRIS_CELLS
 var panel
 var busy: bool=false
 var capture_count: int=0
@@ -106,6 +109,41 @@ func _stage() -> bool:
 		_sample=host.rapier_bridge.pack_held_sample()
 	return not _sample.is_empty()
 
+func _crumble(payload: Dictionary) -> bool:
+	_recipe=panel.applied.duplicate(true)
+	var members: PackedInt32Array=payload.members
+	if members.size()!=int(payload.member_count)*6 or int(payload.member_count)<1 or int(payload.member_count)>SMALL_DEBRIS_CELLS:
+		await _abort("Invalid small-piece payload.");return false
+	for i: int in range(0,members.size(),6):
+		_recipe.edits.append([members[i],members[i+1],1,1,2 if (i/6)%2==0 else 29])
+	_recipe.version=4
+	if not Setup.validate(_recipe).is_empty() or JSON.stringify(_recipe).to_utf8_buffer().size()>Setup.BYTE_LIMIT or Setup.rectangles(_recipe).has("error"):
+		await _abort("Small debris exceeds the saved-canvas budget; source retained.");return false
+	# After this request any unknown response must fail-stop, never cancel/retry.
+	_committed=true
+	var committed: Dictionary=await _rpc({"action":"crumble","token":_token})
+	if not _alive(): return false
+	if not committed.get("ok",false) or committed.get("granular_converted_count",-1)!=payload.member_count:
+		await _abort("Small debris conversion: "+str(committed.get("outcome","unknown")));return false
+	if not committed.get("terrain_chunks_valid",false) or committed.terrain_snapshot_revision!=committed.commit_revision:
+		await _abort("Small debris terrain publication mismatch.");return false
+	var host=panel.host
+	if host.physical_actor_session!=null:
+		var bridge=host.rapier_bridge
+		if not bridge.queue_hard_surface_chunk_snapshot(committed.terrain_chunks):
+			await _abort("Small debris terrain installation refused.");return false
+		while bridge.pending_hard_surface_chunks()>0:
+			bridge.process_hard_surface_collider_budget(8,2000)
+			await panel.get_tree().process_frame
+			if not _alive(): return false
+	var final: Dictionary=await _rpc({"action":"finalize_debris","token":_token,"terrain_revision":committed.commit_revision})
+	if not _alive(): return false
+	if not final.get("ok",false): await _abort("Small debris finalization: "+str(final.outcome));return false
+	host.last_hard_surface_revision=int(committed.commit_revision)
+	panel.adopt_cut_recipe(_recipe)
+	_recipe={};_committed=false;_token=""
+	return true
+
 func _discard() -> void:
 	if _candidate!=null: _candidate.close();_candidate=null
 	if not _staged.is_empty(): panel.host.physical_actor_session.discard_workbench_piece(_staged);_staged={}
@@ -146,7 +184,7 @@ func _end() -> Dictionary:
 func _run(input: PackedInt32Array) -> void:
 	var host=panel.host
 	var old_sample: Dictionary={} if host.physical_actor_session==null else host.rapier_bridge.pack_held_sample()
-	var begun: Dictionary=await _rpc({"action":"begin","dabs":input,"sample":old_sample})
+	var begun: Dictionary=await _rpc({"action":"begin","dabs":input,"sample":old_sample,"small_debris_limit":small_debris_limit})
 	if not _alive(): return
 	if not begun.get("ok",false):
 		last_disposition="Cut kept as terrain: "+_reason(begun)+". Erase applied."
@@ -157,6 +195,8 @@ func _run(input: PackedInt32Array) -> void:
 		return
 	_native_session=int(begun.roster_session);_native_epoch=int(begun.roster_epoch)
 	var released: int=0
+	var crumbled: int=0
+	var loose_pixels: int=0
 	var refused: Dictionary={}
 	for attempt: int in range(65):
 		var payload: Dictionary=await _rpc({"action":"next"})
@@ -171,6 +211,10 @@ func _run(input: PackedInt32Array) -> void:
 			continue
 		if payload.get("done",false): break
 		_token=payload.token
+		if payload.get("representation")=="granular":
+			if not await _crumble(payload): return
+			crumbled+=1;loose_pixels+=int(payload.member_count)
+			continue
 		var total_proxies: int=int(payload.shape_count)
 		for body: RigidBody2D in host.rigid_bodies: total_proxies+=PhysicsServer2D.body_get_shape_count(body.get_rid())
 		if total_proxies>64:
@@ -222,9 +266,10 @@ func _run(input: PackedInt32Array) -> void:
 	if not _alive(): return
 	if not ended.get("ok",false): panel.refuse(str(ended.outcome));return
 	last_disposition="Cut: %d piece(s) freed" % released
+	if crumbled>0: last_disposition+="; %d small piece(s) crumbled into %d Sand/Rust pixels" % [crumbled,loose_pixels]
 	if not refused.is_empty():
 		last_disposition+="; kept as terrain: "+"; ".join(refused.keys())+". Erase applied."
-	elif released==0: last_disposition+="; no adjacent RedBrick piece found."
+	elif released==0 and crumbled==0: last_disposition+="; no adjacent RedBrick piece found."
 	panel.message=last_disposition
 	_finish()
 
