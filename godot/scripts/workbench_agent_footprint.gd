@@ -165,6 +165,36 @@ static func compile(
 					or op["replace_only_material"] not in native_palette_ids:
 				return _refused("invalid_replace_filter", index)
 
+
+		# Reject raw integer coordinates BEFORE constructing Vector2i (which can
+		# narrow an adversarial 64-bit value) or computing an unbounded span.
+		# No in-range geometry is ever silently clipped to the task scope.
+		if shape == "disc":
+			var cx: int = op["x"]
+			var cy: int = op["y"]
+			var radius_check: int = op["radius"]
+			if radius_check < 0 or radius_check > MAX_DISC_RADIUS:
+				return _refused("disc_exceeds_cell_budget", index)
+			if cx < 0 or cy < 0 or cx >= extent.x or cy >= extent.y:
+				return _refused("outside_authorized_scope", index)
+			var upper_left := Vector2i(cx - radius_check, cy - radius_check)
+			var lower_right := Vector2i(cx + radius_check, cy + radius_check)
+			if not world.has_point(upper_left) or not world.has_point(lower_right) \
+					or not scope.has_point(upper_left) or not scope.has_point(lower_right):
+				return _refused("outside_authorized_scope", index)
+		else:
+			var x0: int = op["x0"]
+			var y0: int = op["y0"]
+			var x1: int = op["x1"]
+			var y1: int = op["y1"]
+			if x0 < 0 or y0 < 0 or x1 < 0 or y1 < 0 \
+					or x0 >= extent.x or x1 >= extent.x \
+					or y0 >= extent.y or y1 >= extent.y:
+				return _refused("outside_authorized_scope", index)
+			if not scope.has_point(Vector2i(x0, y0)) \
+					or not scope.has_point(Vector2i(x1, y1)):
+				return _refused("outside_authorized_scope", index)
+
 		var points: Array[Vector2i] = []
 		match shape:
 			"disc":
