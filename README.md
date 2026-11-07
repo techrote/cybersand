@@ -33,17 +33,14 @@ for every preset's controls, gamepad mapping, focus/reset behavior and current
 qualification. `--player=acrobat` selects a preset at launch. These are experimental
 controls; headless regressions do not establish target-PC human feel acceptance.
 
-**Manual PLAY continuation, 31 October 2026:** the owner now prioritizes
-qualification and integration of Claude's #326 shader improvement and replaces
-historical short CI deadlines with generous shared watchdogs. The
-[execution and performance contract](docs/operations/ci-execution-and-performance.md)
-separates correctness, complete execution and advisory timing history. Accepted
-main `adaaa37` has complete original post-merge gates; the active successors
-require their own source-matched review and full Windows/Linux and Native gates.
-Physical displays, controller devices and human feel remain unqualified. The
-[development handover](docs/operations/cybersand-codex-development-handover.md)
-and [#305 ledger](https://github.com/techrote/cybersand/issues/305) record active
-ownership. Scheduswarm remains paused.
+**Development coordination:** the
+[development handover](docs/operations/cybersand-codex-development-handover.md),
+[current roadmap](docs/reference/status-and-roadmap.md) and
+[#305 coordination ledger](https://github.com/techrote/cybersand/issues/305)
+own live priorities, source identity and acceptance status. Earlier dated
+PLAY/shader instructions are historical checkpoints, not standing work orders.
+The [CI execution contract](docs/operations/ci-execution-and-performance.md)
+separates correctness, complete execution and timing. Scheduswarm remains paused.
 
 ## Deepworks — the exhibition below
 
@@ -101,11 +98,11 @@ construction details and reproducible captures.
 
 ## Development
 
-**Current source, reviewed 2026-09-08:** this checkout preserves the acquired
-`web-demo-m11` history plus existing local work, checkpointed before the RAG
-rewrite as `126175c`. Inspect current HEAD/status; historical M11 `BUILD_ID` and
-Web export base fields are different identities. See
-[source checkpoint](docs/operations/source-checkpoint-and-recovery.md).
+**Source identity:** inspect the actual HEAD, dirty paths, dependency pins,
+required LFS state and CI provenance rather than treating the September 2026
+M11 source checkpoint as the current revision. See the
+[source checkpoint guide](docs/operations/source-checkpoint-and-recovery.md);
+historical `BUILD_ID` and Web-export identities are separate records.
 
 Start with [AGENTS.md](AGENTS.md), the [handover](docs/operations/cybersand-codex-development-handover.md)
 and [focused documentation](docs/README.md). Use the

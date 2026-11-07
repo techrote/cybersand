@@ -51,21 +51,15 @@ CI scheduling and capacity: [canonical execution contract](operations/ci-executi
 
 ## Current owner policy and accepted baseline — 2026-10-31
 
-The owner supersedes the earlier shader deferral and short immutable deadline
-restrictions below. Integrate and qualify #326 on accepted main `adaaa37`; use the
-[shared execution watchdog and advisory performance policy](operations/ci-execution-and-performance.md).
-Its original attempt-1 post-merge Docs41204873388, scope41204873081,
-Native41204873121 and Godot41204873192 all passed. #269 is closed;
-#268/#270/#263 still require their remaining actual acceptance evidence.
-#324/#325 were already included and are administratively closed.
-
-The focused timeout/telemetry source requires fresh full CI and independent
-review. Shader integration and the source-preserving Windows crash diagnostic
-remain separate work packages. Historical failures keep their original status.
-The physical/human packet still has 51 untested rows. Scheduswarm stays paused;
-[#305](https://github.com/techrote/cybersand/issues/305) owns current coordination.
-Earlier dated checkpoints below describe their original restrictions and source,
-not today's superseding owner decision.
+**Historical coordination checkpoint — not a current dispatch instruction.**
+The original October shader, CI watchdog, crash-diagnostic and PLAY instructions
+are retained in dated source-qualified records. For present ownership, scope
+and qualification, use the [development handover](operations/cybersand-codex-development-handover.md),
+[current roadmap](reference/status-and-roadmap.md) and
+[#305 coordination ledger](https://github.com/techrote/cybersand/issues/305).
+The [CI execution contract](operations/ci-execution-and-performance.md) and
+[dated CI integration record](audits/2026-10-31-ci-parallel-production-integration.md)
+preserve the relevant decision trail. Scheduswarm remains paused.
 
 
 ## CI parallel production integration — 2026-10-31
