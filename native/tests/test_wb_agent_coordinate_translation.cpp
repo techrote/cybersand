@@ -73,7 +73,7 @@ int count_target(const World& world, const Operation& frozen_target, Shift s) {
 }
 
 Trace real_control(const std::vector<Operation>& immutable_recipe,
-                   const std::string& variant, int workers, Shift translation) {
+                   const std::string& variant, int workers, Shift translation, bool every_tick=false) {
     WorldConfig configuration;
     configuration.worker_threads = static_cast<std::uint32_t>(workers);
     World world(configuration);
@@ -153,7 +153,8 @@ Trace real_control(const std::vector<Operation>& immutable_recipe,
         const int caught=count_target(world,*target,translation);
         if (caught==32 && output.first_full_catchment_tick<0)
             output.first_full_catchment_tick=tick;
-        if (std::find(kSnapshotTicks.begin(),kSnapshotTicks.end(),tick)!=kSnapshotTicks.end())
+        if (every_tick ||
+            std::find(kSnapshotTicks.begin(),kSnapshotTicks.end(),tick)!=kSnapshotTicks.end())
             sample(tick);
     }
     output.completed=world.completed_tick_index();
@@ -258,6 +259,44 @@ int main(int argc, char** argv) {
             std::cout<<"OFFSET_SUMMARY shift_x="<<shift.x<<" shift_y="<<shift.y
                      <<" all_four_exact="<<(offset_equal?"PASS":"HOLD")
                      <<" all_four_final_32="<<(all_final_catchments?"PASS":"HOLD")<<'\n';
+        }
+        // Independent 481-frame, every-completed-tick physical validation of
+        // the best identified positive-domain translation. This is deliberately
+        // more rigorous than the 16-frame discovery grid, and never mutates
+        // the frozen original recipe or accepts a count-only result as parity.
+        for(const std::string variant : {"normal","revised"}) {
+            for(const int workers : {1,4}) {
+                const auto original=real_control(recipe,variant,workers,Shift{0,0},true);
+                const auto mapped=real_control(recipe,variant,workers,Shift{512,512},true);
+                int exact_positions=0,exact_catchment=0;
+                int first_difference=-1,last_difference=-1,max_symdiff=0;
+                for(int tick=0;tick<=480;++tick) {
+                    const auto& a=original.sand.at(tick);
+                    const auto& b=mapped.sand.at(tick);
+                    if(a==b) ++exact_positions;
+                    else {
+                        if(first_difference<0) first_difference=tick;
+                        last_difference=tick;
+                        std::vector<Cell> diff;
+                        std::set_symmetric_difference(a.begin(),a.end(),b.begin(),b.end(),
+                                                     std::back_inserter(diff));
+                        max_symdiff=std::max(max_symdiff,static_cast<int>(diff.size()));
+                    }
+                    exact_catchment+=original.catchment.at(tick)==mapped.catchment.at(tick);
+                }
+                std::cout<<"DETAILED variant="<<variant<<" workers="<<workers
+                         <<" shift_x=512 shift_y=512"
+                         <<" exact_position_ticks="<<exact_positions<<"/481"
+                         <<" exact_catchment_ticks="<<exact_catchment<<"/481"
+                         <<" first_position_difference_tick="<<first_difference
+                         <<" last_position_difference_tick="<<last_difference
+                         <<" max_symmetric_difference="<<max_symdiff
+                         <<" original_first_full_tick="<<original.first_full_catchment_tick
+                         <<" mapped_first_full_tick="<<mapped.first_full_catchment_tick
+                         <<" final_caught="<<mapped.caught
+                         <<" protected="<<mapped.protected_cells
+                         <<" total_completed="<<mapped.completed<<'\n';
+            }
         }
         std::cout<<"WB_AGENT_TRANSLATION_PARITY fully_equivalent_offsets="
                  <<fully_equivalent_offsets<<"/"<<kProposedTranslations.size()
