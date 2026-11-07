@@ -176,6 +176,7 @@ func _apply_workbench_cut(command: Dictionary, emissions: Array[Vector4i], cells
 	if command.world_generation==_world_generation and _world.has_method(&"workbench_cut_command"):
 		reply=_world.workbench_cut_command(command)
 	if command.get("action")=="acknowledge" and reply.get("ok",false): _workbench_cut_admitted_sample=command.sample.duplicate(true)
+	if command.get("action")=="cancel" and reply.get("ok",false): _workbench_cut_admitted_sample={}
 	if command.get("action")=="finalize" and reply.get("ok",false):
 		_workbench_sample=_workbench_cut_admitted_sample.duplicate(true)
 		_rigid_body_epoch=int(_workbench_sample.epoch)

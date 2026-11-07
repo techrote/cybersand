@@ -36,6 +36,7 @@ var physical_rig_id: StringName = &""
 var physical_actor_session: CyberPhysicalActorSession
 var physical_actor_overlay: CyberPhysicalActorOverlay
 var _workbench_wait_sample: int = -1
+var _workbench_cut_wait: bool = false
 var _workbench_collider_frame: int = -1
 var shared_workbench: Control
 var world_extent := Vector2i(CyberCellWorld.WORLD_WIDTH,CyberCellWorld.WORLD_HEIGHT)
@@ -1868,6 +1869,7 @@ func _notification(what: int) -> void:
 
 
 func _exit_tree() -> void:
+	if shared_workbench!=null: shared_workbench.cut.retire()
 	if gameplay_recorder.is_active():
 		var stopped: Dictionary = gameplay_recorder.stop_recording()
 		print("REC-001 recording finalized at exit: ", JSON.stringify(stopped))
@@ -1955,6 +1957,13 @@ func _physics_process(_delta: float) -> void:
 		if physics_snapshot == null or physics_snapshot.simulation_failed or physics_snapshot.rigid_body_epoch != _body_owner_epoch(): return
 		if not str(physics_snapshot.lab_context.get("workbench_refusal","")).is_empty(): return
 		if not _workbench_terrain_installed(physics_snapshot): return
+		if _workbench_cut_wait:
+			if paused and not single_step: return
+			var packet: Dictionary=physics_snapshot.lab_context.get("workbench_gcr",{})
+			if _workbench_wait_sample<0 or physics_snapshot.lab_context.get("workbench_completed_sample",-1)!=_workbench_wait_sample or not packet.get("valid",false): return
+			for row: Dictionary in packet.get("rows",[]):
+				if row.get("sample")!=_workbench_wait_sample: return
+			_workbench_cut_wait=false
 		if paused and not single_step:
 			_workbench_wait_sample = -1
 			return
@@ -3345,6 +3354,7 @@ func _activate_articulated_actor_rigs(spawn: Vector2) -> bool:
 
 
 func _close_physical_actors() -> void:
+	_workbench_cut_wait=false
 	_physical_terrain_ready = false
 	_playable_course_observation_valid = false
 	if playable_course_overlay != null:

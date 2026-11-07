@@ -110,6 +110,8 @@ Dictionary CyberNativeCellWorld::workbench_cut_command(const Dictionary& request
         result["discovery_cells"]=static_cast<std::int64_t>(work[0]);
         result["discovery_neighbours"]=static_cast<std::int64_t>(work[1]);
         result["held"]=workbench_cut_.held;
+        result["roster_session"]=workbench_ ? workbench_->sample.session : 0;
+        result["roster_epoch"]=workbench_ ? workbench_->sample.epoch : 0;
         return result;
     };
     if (!world_ || world_->has_failed()) return finish(SolidOutcome::WorldFailed);
@@ -133,7 +135,10 @@ Dictionary CyberNativeCellWorld::workbench_cut_command(const Dictionary& request
                     sample.get("bodies",Variant()).get_type()!=Variant::ARRAY) return finish(SolidOutcome::Invalid);
                 if (!prepare_workbench_coupling(sample["states"],sample["geometry"],sample["bodies"],
                     sample.get("session",0),sample.get("epoch",0),false)) return finish(SolidOutcome::Stale);
-            } else if (workbench_->sample.session) return finish(SolidOutcome::Stale);
+            } else {
+                for (const auto& owner:workbench_->sample.owners)
+                    if (owner.instance) return finish(SolidOutcome::Stale);
+            }
             const auto configured=world_->configure_workbench_solids({0,0,static_cast<std::uint16_t>(extent_.x),static_cast<std::uint16_t>(extent_.y)});
             if (configured!=SolidOutcome::Accepted) return finish(configured);
             cut={};cut.held=true;

@@ -55,6 +55,8 @@ func cut(offset: int, members: int, proxies: int) -> bool:
 	for x: int in range(51,54): event_at(Vector2(x+offset,67),true,true)
 	event_at(Vector2(53+offset,67),false)
 	if not check(await until(installed),"ordinary cut completes: "+ui.message): return false
+	evidence.cuts.append({"receipts":ui.cut.receipts.duplicate(true),"message":ui.message})
+	if not check(host.physical_actor_session!=null and not host.rigid_bodies.is_empty(),"cut creates an actual owner: "+ui.message): return false
 	check(host.paused,"paused state retained")
 	check(host.latest_snapshot.render_world_generation==generation,"same native World generation")
 	check(host.rapier_bridge.manual_step_count()==(steps if old_rids.size()>0 else 0),"no hidden physical step")
@@ -62,8 +64,8 @@ func cut(offset: int, members: int, proxies: int) -> bool:
 	for receipt: Dictionary in ui.cut.receipts:
 		if receipt.get("member_count")==members and receipt.get("members",PackedInt32Array()).size()>0 and receipt.get("phase")==2: prepared=receipt
 		if receipt.get("phase")==4 and receipt.get("ok",false): committed=receipt
-	check(not prepared.is_empty() and prepared.get("shape_count")==proxies,"exact original member and proxy counts")
-	check(not committed.is_empty() and committed.get("native_source_members",-1)==0 and committed.get("aggregate_owned")==members,"single authoritative native retirement")
+	if not check(not prepared.is_empty() and prepared.get("shape_count")==proxies,"exact original member and proxy counts"): return false
+	if not check(not committed.is_empty() and committed.get("native_source_members",-1)==0 and committed.get("aggregate_owned")==members,"single authoritative native retirement"): return false
 	var body: RigidBody2D=host.rigid_bodies.back()
 	check(body.mass==members and PhysicsServer2D.body_get_shape_count(body.get_rid())==proxies,"one real compound body")
 	check(is_equal_approx(body.inertia,float(prepared.get("inertia",-1))),"actual native inertia retained")
@@ -74,12 +76,18 @@ func cut(offset: int, members: int, proxies: int) -> bool:
 		check(PhysicsServer2D.body_get_state(rid,PhysicsServer2D.BODY_STATE_TRANSFORM)==old_values[slot][0],"old pose retained")
 		check(PhysicsServer2D.body_get_state(rid,PhysicsServer2D.BODY_STATE_LINEAR_VELOCITY)==old_values[slot][1] and PhysicsServer2D.body_get_state(rid,PhysicsServer2D.BODY_STATE_ANGULAR_VELOCITY)==old_values[slot][2],"old motion retained")
 		check(host.rigid_bodies[slot].mass==old_values[slot][3] and host.rigid_bodies[slot].inertia==old_values[slot][4],"old M/I retained")
-	evidence.cuts.append({"receipts":ui.cut.receipts.duplicate(true),"mass":body.mass,"inertia":body.inertia,"world_generation":generation,"manual_steps":host.rapier_bridge.manual_step_count(),"proxy_count":proxies})
+	evidence.cuts.back().merge({"mass":body.mass,"inertia":body.inertia,"world_generation":generation,"manual_steps":host.rapier_bridge.manual_step_count(),"proxy_count":proxies})
 	return true
 
 func run_steps(count: int) -> bool:
 	var target: int=host.rapier_bridge.manual_step_count()+count
+	var fresh: int=host._workbench_wait_sample
+	var first: int=host.rapier_bridge.manual_step_count()+1
 	check(ui.toggle_pause(),"unpause existing controls")
+	if not check(await until(func():return host.rapier_bridge.manual_step_count()>=first),"first physical step completes after fresh native result"): return false
+	check(host.rapier_bridge.last_application.get("accepted",false),"first post-cut step applies a current-roster response")
+	for row: Dictionary in host.rapier_bridge.last_application.get("bodies",[]):
+		check(row.get("sample")==fresh and not row.has("refusal"),"first post-cut application uses the fresh sample")
 	if not check(await until(func():return host.rapier_bridge.manual_step_count()>=target),"native/Rapier completed-sample fence advances"): return false
 	check(ui.toggle_pause(),"pause existing controls")
 	return true
