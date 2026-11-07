@@ -249,11 +249,18 @@ REVIEWED_TRANSITIONS: tuple[dict, ...] = ({'path': 'native/src/world_pressure.in
   'pr': 406},
  {'path': 'native/src/world.cpp',
   'from_lf_sha256': '5a9de5e09a8665392677902ab501696aafefb5bbd2d2800e3dc1059b87a6f17d',
-  'to_lf_sha256': 'bbd9741311bc67905934048633846b8d011efd760033edd0ff9e88be5b262868',
-  'source_commit': 'b51f01536db6408458442c532d75256d33422fba',
-  'record': 'docs/audits/2026-11-07-pf471-world-transition-proposal.md',
-  'issue': 485,
-  'pr': 471})
+  'to_lf_sha256': 'd743ca60406fc8f220206e005b37996f1d182005b1b86e0ed6591f050608fe1c',
+  'source_commit': '51d462537480324a4c11b3bf92f1ecb1882d8685',
+  'record': 'docs/audits/2026-11-06-hard-surface-packet-incremental.md',
+  'issue': 362,
+  'pr': 470},
+ {'path': 'native/src/world.cpp',
+  'from_lf_sha256': 'd743ca60406fc8f220206e005b37996f1d182005b1b86e0ed6591f050608fe1c',
+  'to_lf_sha256': '8bf0cb0058b139c32c030f5bbbc7e7e4555814c601598e1d6c7abecf7397d7fb',
+  'source_commit': '9ad76b21854b3e44fc9444f8293d3c36c619746b',
+  'record': 'docs/audits/2026-11-06-hard-surface-packet-incremental.md',
+  'issue': 362,
+  'pr': 470})
 
 
 class CompatibilityError(ValueError):

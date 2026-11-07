@@ -14,6 +14,7 @@
 #include <exception>
 #include <iostream>
 #include <limits>
+#include <memory>
 #include <stdexcept>
 #include <string_view>
 #include <thread>
@@ -1311,6 +1312,11 @@ void test_failed_tick_stops_until_clear() {
             require(threw && world.tick_index() == 2, "capacity failure lost attempted identity");
             require(world.has_failed() && world.completed_tick_index() == 1,
                     "partial tick was reported as completed");
+            bool hard_invalidation_threw = false;
+            try { (void)world.take_hard_surface_invalidation(); }
+            catch (const std::logic_error&) { hard_invalidation_threw = true; }
+            require(hard_invalidation_threw,
+                    "failed World exposed partial collider invalidation");
             require(with_event ? world.get(20, 20) == Material::Fire &&
                                      world.get(21, 20) == Material::Empty
                                : world.content_hash() == before_content,
@@ -1327,6 +1333,9 @@ void test_failed_tick_stops_until_clear() {
             try { world.set(40, 20, Material::Sand); } catch (const std::logic_error&) { threw = true; }
             require(threw && world.state_hash() == failed_state, "failed mutation was not rejected");
             world.clear();
+            const auto reset_hard = world.take_hard_surface_invalidation();
+            require(reset_hard.full_refresh,
+                    "failed-World clear did not request collider full refresh");
             require(!world.has_failed() && world.completed_tick_index() == 0, "clear retained failure");
             world.set(20, 20, Material::Sand);
             const auto recovered = world.tick();
@@ -3810,6 +3819,178 @@ void test_hard_surface_bits_match_projection() {
     require(refused, "non-multiple-of-64 hard-surface region accepted");
 }
 
+// Collider invalidation is a separate consumer from render dirtiness. The
+// default 128x128 storage geometry maps to fixed 64x64 tile coordinates, keeps
+// ABA mutations dirty, and falls back explicitly for non-aligned storage.
+void test_hard_surface_invalidation_tracking() {
+    const auto has_tile = [](const cybersand::HardSurfaceInvalidation& invalidation,
+                             std::int64_t x, std::int64_t y) {
+        return std::any_of(
+            invalidation.tiles.begin(), invalidation.tiles.end(),
+            [x, y](const cybersand::ChunkCoord tile) {
+                return tile.x == x && tile.y == y;
+            });
+    };
+
+    WorldConfig config{};
+    config.worker_threads = 1;
+    World world(config);
+    world.reserve_region({0, 0, 256, 128});
+    auto invalidation = world.take_hard_surface_invalidation();
+    require(invalidation.full_refresh && invalidation.tiles.empty(),
+            "fresh World did not require one collider full refresh");
+    invalidation = world.take_hard_surface_invalidation();
+    require(!invalidation.full_refresh && invalidation.tiles.empty(),
+            "fresh collider full refresh did not retire");
+
+    (void)world.take_dirty_chunks();
+    world.set(63, 63, Material::Wood);
+    world.set(64, 63, Material::Glass);
+    world.set(127, 64, Material::Metal);
+    world.set(128, 64, Material::Wall);
+    const auto render_dirty = world.dirty_chunk_count();
+    invalidation = world.take_hard_surface_invalidation();
+    require(!invalidation.full_refresh && invalidation.tiles.size() == 4U &&
+                has_tile(invalidation, 0, 0) && has_tile(invalidation, 1, 0) &&
+                has_tile(invalidation, 1, 1) && has_tile(invalidation, 2, 1),
+            "cross-boundary hard edits did not name exactly four collider tiles");
+    require(world.dirty_chunk_count() == render_dirty && render_dirty != 0U,
+            "collider invalidation consumed render dirty state");
+
+    // The inverse ownership check: render ACK cannot consume collider evidence.
+    (void)world.take_dirty_chunks();
+    world.set(10, 10, Material::Wood);
+    (void)world.take_dirty_chunks();
+    invalidation = world.take_hard_surface_invalidation();
+    require(!invalidation.full_refresh && invalidation.tiles.size() == 1U &&
+                has_tile(invalidation, 0, 0),
+            "render dirty consumption lost collider invalidation");
+
+    std::array<std::uint64_t, 64> before{};
+    std::array<std::uint64_t, 64> after{};
+    world.copy_hard_surface_bits({0, 0, 64, 64}, before);
+    world.set(10, 10, Material::Fire);
+    world.set(10, 10, Material::Wood);
+    invalidation = world.take_hard_surface_invalidation();
+    world.copy_hard_surface_bits({0, 0, 64, 64}, after);
+    require(!invalidation.full_refresh && invalidation.tiles.size() == 1U &&
+                has_tile(invalidation, 0, 0) && before == after,
+            "hard-surface ABA change was not retained while final mask stayed exact");
+
+    // Representative hard/non-hard interaction endpoints all invalidate their
+    // containing tile; fractional Water remains non-hard and creates no event.
+    world.set(70, 10, Material::Glass);
+    (void)world.take_hard_surface_invalidation();
+    world.set(70, 10, Material::Lava);
+    invalidation = world.take_hard_surface_invalidation();
+    require(invalidation.tiles.size() == 1U && has_tile(invalidation, 1, 0),
+            "Glass/Lava hard transition missed its collider tile");
+
+    world.set(130, 10, Material::Metal);
+    (void)world.take_hard_surface_invalidation();
+    world.set(130, 10, Material::Acid);
+    invalidation = world.take_hard_surface_invalidation();
+    require(invalidation.tiles.size() == 1U && has_tile(invalidation, 2, 0),
+            "Metal/Acid hard transition missed its collider tile");
+
+    world.set(20, 10, Material::Wood);
+    (void)world.take_hard_surface_invalidation();
+    world.set(20, 10, Material::Fire);
+    invalidation = world.take_hard_surface_invalidation();
+    require(invalidation.tiles.size() == 1U && has_tile(invalidation, 0, 0),
+            "Wood/Fire hard transition missed its collider tile");
+
+    const auto water_revision = world.hard_surface_revision();
+    require(world.set_cell_state(200, 10, Material::Water, 1, 0),
+            "fractional Water setup was refused");
+    invalidation = world.take_hard_surface_invalidation();
+    require(world.hard_surface_revision() == water_revision &&
+                !invalidation.full_refresh && invalidation.tiles.empty(),
+            "fractional Water spuriously invalidated hard terrain");
+    invalidation = world.take_hard_surface_invalidation();
+    require(!invalidation.full_refresh && invalidation.tiles.empty(),
+            "repeated collider query replayed consumed invalidation");
+
+    // Generated-chunk installation reaches the same direct mutation bookkeeping.
+    World generated(config);
+    (void)generated.take_hard_surface_invalidation();
+    std::vector<Material> payload(128U * 128U, Material::Empty);
+    payload.back() = Material::Glass;
+    require(generated.install_generated_chunk({1, 0}, payload) ==
+                cybersand::ChunkInstallOutcome::Installed,
+            "generated hard chunk was not installed");
+    invalidation = generated.take_hard_surface_invalidation();
+    require(!invalidation.full_refresh && invalidation.tiles.size() == 1U &&
+                has_tile(invalidation, 3, 1),
+            "generated chunk lifecycle missed its hard collider tile");
+
+    world.clear();
+    invalidation = world.take_hard_surface_invalidation();
+    require(invalidation.full_refresh && invalidation.tiles.empty(),
+            "destructive World reset did not request collider full refresh");
+
+    WorldConfig unaligned_config{};
+    unaligned_config.chunk_size = 16;
+    World unaligned(unaligned_config);
+    (void)unaligned.take_hard_surface_invalidation();
+    unaligned.set(0, 0, Material::Wall);
+    invalidation = unaligned.take_hard_surface_invalidation();
+    require(invalidation.full_refresh,
+            "non-64-aligned storage geometry did not use conservative full refresh");
+}
+
+void test_hard_surface_parallel_invalidation_parity() {
+    const auto build = [](std::uint32_t workers) {
+        WorldConfig config{};
+        config.worker_threads = workers;
+        config.parallel_job_threshold = 1;
+        config.maximum_chunk_count = 64;
+        config.active_chunk_capacity = 64;
+        config.active_core_capacity = 512;
+        auto world = std::make_unique<World>(config);
+        world->reserve_region({0, 0, 256, 256});
+        for (int y : {20, 84, 148, 212}) {
+            for (int x : {20, 84, 148, 212}) {
+                world->set(x, y, Material::Glass);
+                world->set(x + 1, y, Material::Lava);
+                world->set(x, y + 2, Material::Metal);
+                world->set(x + 1, y + 2, Material::Acid);
+                world->set(x, y + 4, Material::Wood);
+                world->set(x + 1, y + 4, Material::Fire);
+            }
+        }
+        (void)world->take_hard_surface_invalidation();
+        (void)world->take_dirty_chunks();
+        return world;
+    };
+
+    auto serial = build(1);
+    auto parallel = build(4);
+    const auto starting_revision = serial->hard_surface_revision();
+    bool observed_hard_change = false;
+    std::vector<std::uint64_t> serial_bits(4U * 256U);
+    std::vector<std::uint64_t> parallel_bits(4U * 256U);
+    for (int tick = 0; tick < 8; ++tick) {
+        (void)serial->tick();
+        (void)parallel->tick();
+        const auto serial_invalidation = serial->take_hard_surface_invalidation();
+        const auto parallel_invalidation = parallel->take_hard_surface_invalidation();
+        require(serial_invalidation.full_refresh == parallel_invalidation.full_refresh &&
+                    serial_invalidation.tiles == parallel_invalidation.tiles,
+                "hard-surface invalidation differs by worker count");
+        serial->copy_hard_surface_bits({0, 0, 256, 256}, serial_bits);
+        parallel->copy_hard_surface_bits({0, 0, 256, 256}, parallel_bits);
+        require(serial_bits == parallel_bits &&
+                    serial->hard_surface_revision() == parallel->hard_surface_revision() &&
+                    serial->content_hash() == parallel->content_hash(),
+                "hard-surface bytes or native state differ by worker count");
+        observed_hard_change =
+            observed_hard_change || serial->hard_surface_revision() > starting_revision;
+    }
+    require(observed_hard_change,
+            "parallel fixture did not exercise a hard-surface job-effect change");
+}
+
 // Active-core capacity bounds distinct scheduling cores, not active blocks:
 // sixteen active 32-cell blocks inside four 64-cell cores fit a capacity of
 // four, evolve exactly like an unbounded World, and a capacity of three still
@@ -4159,6 +4340,8 @@ int main(int argc, char** argv) {
         {"Pair reaction tables match the authored resolver", test_pair_reaction_tables_match_resolver},
         {"Active-core capacity counts distinct cores", test_active_core_capacity_counts_distinct_cores},
         {"Hard-surface bits match the display projection", test_hard_surface_bits_match_projection},
+        {"Hard-surface invalidation is independent and tile exact", test_hard_surface_invalidation_tracking},
+        {"Hard-surface invalidation matches across worker counts", test_hard_surface_parallel_invalidation_parity},
         {"LCB-002 PressureFlow pocket sealed from open air is atmospheric", test_pressure_seal_from_open_is_atmospheric},
     };
 

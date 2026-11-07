@@ -137,6 +137,15 @@ struct DirtyChunk {
     RectI64 local_rect;
 };
 
+// Collider invalidation is deliberately independent from render dirty chunks.
+// Each coordinate names a fixed 64x64 hard-surface tile in world tile space.
+// full_refresh is the explicit recovery/reset path; consumers must rebuild all
+// tiles in their finite viewport and may ignore the coordinate list.
+struct HardSurfaceInvalidation {
+    bool full_refresh = false;
+    std::vector<ChunkCoord> tiles;
+};
+
 // Optional, serialized player control over ordinary native Sand/Water cells.
 // A field selects material by location/type, not by a hidden particle identity.
 // It never creates material, exchanges with occupied cells or changes a kernel.
@@ -469,6 +478,10 @@ public:
 
     [[nodiscard]] std::size_t dirty_chunk_count() const noexcept;
     [[nodiscard]] std::vector<DirtyChunk> take_dirty_chunks();
+    // Serialized collider owner only. This consumes a separate hard-surface
+    // invalidation stream and never acknowledges or mutates render dirtiness.
+    // Normal 128x128 storage chunks map exactly to four 64x64 collider tiles.
+    [[nodiscard]] HardSurfaceInvalidation take_hard_surface_invalidation();
     void copy_render_cells(RectI64 region, std::span<std::uint8_t> destination,
                            std::size_t stride_bytes) const;
     // One display material byte per cell. Fractional Water uses stable
@@ -588,6 +601,9 @@ private:
     std::uint64_t tick_chunk_allocations_ = 0;
     std::uint64_t tick_temperature_field_allocations_ = 0;
     std::uint64_t hard_surface_revision_ = 0;
+    // True for construction/destructive reset and as a conservative recovery
+    // when storage geometry cannot be represented by aligned 64x64 tile bits.
+    bool hard_surface_full_refresh_required_ = true;
 
     [[nodiscard]] Address address(std::int64_t x, std::int64_t y) const noexcept;
     [[nodiscard]] Chunk* find_chunk(ChunkCoord coord) noexcept;
@@ -608,6 +624,7 @@ private:
         std::int64_t x, std::int64_t y, std::int64_t target_x, std::int64_t target_y,
         JobEffects* effects, MotionFootprint* footprint = nullptr);
     void mark_cell_dirty(Chunk& chunk, std::int32_t local_x, std::int32_t local_y);
+    void mark_hard_surface_dirty(const Address& target) noexcept;
     void move_cell(std::int64_t from_x, std::int64_t from_y, std::int64_t to_x,
                    std::int64_t to_y, bool swap, JobEffects* effects,
                    PhysicsEvent swap_event = PhysicsEvent::DensitySwap);
