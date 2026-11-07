@@ -299,3 +299,66 @@ does not provide one shared native World across chunks, and still has no
 cross-shard cellular transport, Rapier body persistence, async proposal
 cancellation, multi-plane bundle transaction or recipe reconciliation. Those
 remain follow-on GEN-006 production architecture work.
+
+
+## Native unsupported-tick containment and player-edit continuity — 7 November 2026
+
+**Candidate scope: opt-in experimental one-World-per-64x64-shard controller only.**
+Independent real-process failure [#507](https://github.com/techrote/cybersand/pull/507)
+showed that camera demand to the native surface chunk `(-2,1)` could overflow the
+one-chunk simulation capacity, terminate the persistent native process and lose
+a still-resident acknowledged Empty player edit in healthy chunk `(-2,2)`.
+Original Ubuntu/Windows negative [run #42332574666](https://github.com/techrote/cybersand/actions/runs/42332574666)
+remains preserved. The repair **does not** claim cross-shard transfer.
+
+`StreamingSlice::simulate()` now creates a bounded, actual native CYPS physical
+checkpoint **before each shard tick**, with a hard per-shard 2 MiB source cap.
+Successful native ticks commit the conservative mutation generation. A tick
+that throws or violates the one-chunk native domain rolls back the affected
+World from the same pre-tick native checkpoint and marks only that resident
+`simulation_pinned=1` with reason `GEN006_UNSUPPORTED_NATIVE_TICK`. This
+explicitly refuses further simulation for that shard; its material, Water,
+temperature, edit-intent, activity/deadline state and native tick index are
+preserved rather than saving a partially failed World. Other healthy resident
+shards continue ordinary native ticks, and a clean controller shutdown saves
+the restored pinned shard alongside all surviving player edits.
+
+The native service publishes an explicit `SIMULATION_PIN` diagnostic. The
+`status` receipt includes `pinned=N`, per-chunk `pinned=0/1` and the
+reason. The opt-in Godot HUD displays pin count and the affected chunk. Pins
+are **volatile per residency**, not a silently new saved-state schema: an
+evicted/reloaded unsupported shard may be probed, refused and pinned again.
+There is no catch-up while pinned, and no validation of cross-shard physics
+continuity. The snapshot-per-tick approach is deliberately bounded for this
+**prototype** and incurs real serializer/restore overhead; it is not a
+production-friendly 30 Hz transaction design.
+
+The integrated `tools/experiments/gen006_surface_owner_containment.py`
+converts #507's genuine expected-crash scenario into a **positive** native
+owner-survival acceptance. It launches separate real native OS processes,
+creates an explicit Empty tombstone, generates the known unsupported surface,
+requires a visible pin with unchanged pre/post failure native physical hash
+and native tick index, checks the original PID survives, confirms the safe
+native World keeps ticking and proves clean quit/restart preserves the
+tombstone. Both configured worker counts (1 and 4) run on hosted Ubuntu and
+Windows, with exact native `World`/generator compilation, source receipts,
+native stdout/stderr and original test evidence retained.
+
+At the first repair checkpoint, [native run #42334885058](https://github.com/techrote/cybersand/actions/runs/42334885058)
+passed on **Ubuntu 24.04 and Windows Server 2022**, including all four new
+containment cases (configured workers 1/4 per platform). Both reported
+`native_pid_survived=1 unsupported_surface_pinned=1
+safe_native_ticks_continued=1 Empty_intent_restart=1`; the successful
+regular streaming/restart/coordinate-binding tests are retained. The
+source-matched [actual Godot OpenGL framebuffer run #42334885107](https://github.com/techrote/cybersand/actions/runs/42334885107)
+also passed. These are bounded draft-source results; the full production
+Native/GDExtension/physical desktop matrix remains skipped or unqualified.
+Do not misreport four **configured** workers as four actually participating
+native workers: the small existing fixture observes only one.
+
+**Next architectural gate:** Replace the one-World-per-shard substrate with
+a properly owned single native World that can selectively checkpoint, delete
+and restore chunks while respecting cross-chunk mass, events and activity;
+then switch the Godot demo adapter to that shared-World owner. The present
+rollback/pin is a safe experimental refusal, not completion of general
+GEN-006 streaming or replacement for approved source-owner admission.
