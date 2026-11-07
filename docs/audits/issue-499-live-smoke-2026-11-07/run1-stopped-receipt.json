@@ -1,0 +1,687 @@
+{
+  "artifacts": {
+    "patch": null,
+    "tool_log": {
+      "entries": 12,
+      "path": "tool-log.jsonl",
+      "sha256": "2d9a6fb9d0a1b71333a228c9cad01c60ee11da249317a1b2b9736699104103d0"
+    },
+    "transcript": {
+      "entries": 8,
+      "path": "transcript.jsonl",
+      "sha256": "abefa673ccafc023ddbf40a16182aaa5ddac6ab7fb98ee22b9890231874a5049"
+    }
+  },
+  "calls": [
+    {
+      "cached_input_tokens": 0,
+      "computed_from_reported_usage_usd": 0.0001685,
+      "duration_ms": 3491,
+      "images_in_request": 0,
+      "input_tokens": 1255,
+      "input_tokens_estimated_upper": 3843,
+      "kind": "responses.create",
+      "model": "gpt-6-luna",
+      "n": 1,
+      "output_tokens": 86,
+      "reasoning_tokens": 0,
+      "request_id": "req_05fbb1737e42494980d26a8a6b177d98",
+      "reserved_worst_case_usd": 0.0023843,
+      "response_id": "resp_0bc3c573095461f3016aeebe62c12087d294ce1128126e92ec",
+      "retries": 0,
+      "retry_events": [],
+      "status": "completed"
+    },
+    {
+      "cached_input_tokens": 1252,
+      "computed_from_reported_usage_usd": 0.00011702,
+      "duration_ms": 1790,
+      "images_in_request": 0,
+      "input_tokens": 2177,
+      "input_tokens_estimated_upper": 5713,
+      "kind": "responses.create",
+      "model": "gpt-6-luna",
+      "n": 2,
+      "output_tokens": 24,
+      "reasoning_tokens": 0,
+      "request_id": "req_bbfa0a4837f843dca6f1cf637b802f03",
+      "reserved_worst_case_usd": 0.0025713,
+      "response_id": "resp_0bc3c573095461f3016aeebe652db487d281ab487d5b893a1b",
+      "retries": 0,
+      "retry_events": [],
+      "status": "completed"
+    },
+    {
+      "cached_input_tokens": 2174,
+      "computed_from_reported_usage_usd": 5.544e-05,
+      "duration_ms": 1378,
+      "images_in_request": 0,
+      "input_tokens": 2366,
+      "input_tokens_estimated_upper": 6144,
+      "kind": "responses.create",
+      "model": "gpt-6-luna",
+      "n": 3,
+      "output_tokens": 29,
+      "reasoning_tokens": 0,
+      "request_id": "req_57d2aad54efa4ec7b4489cc1b987c4b7",
+      "reserved_worst_case_usd": 0.0026144,
+      "response_id": "resp_0bc3c573095461f3016aeebe66fdf887d2a0f96b33d156185f",
+      "retries": 0,
+      "retry_events": [],
+      "status": "completed"
+    },
+    {
+      "cached_input_tokens": 2363,
+      "computed_from_reported_usage_usd": 6.003e-05,
+      "duration_ms": 2172,
+      "images_in_request": 1,
+      "input_tokens": 2542,
+      "input_tokens_estimated_upper": 6580,
+      "kind": "responses.create",
+      "model": "gpt-6-luna",
+      "n": 4,
+      "output_tokens": 37,
+      "reasoning_tokens": 0,
+      "request_id": "req_70596fc367b842d2945dca3aa60cde28",
+      "reserved_worst_case_usd": 0.002658,
+      "response_id": "resp_0bc3c573095461f3016aeebe6856ec87d29d0fb582a5e4b756",
+      "retries": 0,
+      "retry_events": [],
+      "status": "completed"
+    },
+    {
+      "cached_input_tokens": 2539,
+      "computed_from_reported_usage_usd": 0.00012869,
+      "duration_ms": 3621,
+      "images_in_request": 1,
+      "input_tokens": 3387,
+      "input_tokens_estimated_upper": 7976,
+      "kind": "responses.create",
+      "model": "gpt-6-luna",
+      "n": 5,
+      "output_tokens": 37,
+      "reasoning_tokens": 0,
+      "request_id": "req_a507ae38ba0448dfa0495bc8b7bd23af",
+      "reserved_worst_case_usd": 0.0027976,
+      "response_id": "resp_0bc3c573095461f3016aeebe6c241487d28f2fede43ce19df5",
+      "retries": 0,
+      "retry_events": [],
+      "status": "completed"
+    },
+    {
+      "cached_input_tokens": 2363,
+      "computed_from_reported_usage_usd": 0.00025023,
+      "duration_ms": 3612,
+      "images_in_request": 0,
+      "input_tokens": 3559,
+      "input_tokens_estimated_upper": 8340,
+      "kind": "responses.create",
+      "model": "gpt-6-luna",
+      "n": 6,
+      "output_tokens": 214,
+      "reasoning_tokens": 147,
+      "request_id": "req_73f944c521784aefb5a0ee113f4b741d",
+      "reserved_worst_case_usd": 0.002834,
+      "response_id": "resp_0bc3c573095461f3016aeebe6e250087d2a021b86989578acd",
+      "retries": 0,
+      "retry_events": [],
+      "status": "completed"
+    },
+    {
+      "cached_input_tokens": 3556,
+      "computed_from_reported_usage_usd": 9.626e-05,
+      "duration_ms": 1163,
+      "images_in_request": 0,
+      "input_tokens": 3858,
+      "input_tokens_estimated_upper": 10412,
+      "kind": "responses.create",
+      "model": "gpt-6-luna",
+      "n": 7,
+      "output_tokens": 61,
+      "reasoning_tokens": 0,
+      "request_id": "req_cf1532d3709b475f83f6b34da5db993c",
+      "reserved_worst_case_usd": 0.0030412,
+      "response_id": "resp_0bc3c573095461f3016aeebe71c7a887d29b1a85e6ef99d373",
+      "retries": 0,
+      "retry_events": [],
+      "status": "completed"
+    },
+    {
+      "cached_input_tokens": 3855,
+      "computed_from_reported_usage_usd": 9.615e-05,
+      "duration_ms": 1537,
+      "images_in_request": 0,
+      "input_tokens": 4076,
+      "input_tokens_estimated_upper": 11012,
+      "kind": "responses.create",
+      "model": "gpt-6-luna",
+      "n": 8,
+      "output_tokens": 71,
+      "reasoning_tokens": 44,
+      "request_id": "req_77ad1919f8374aa0a13419cc054e6c5a",
+      "reserved_worst_case_usd": 0.0031012,
+      "response_id": "resp_0bc3c573095461f3016aeebe73185887d29822251dcaa98984",
+      "retries": 0,
+      "retry_events": [],
+      "status": "completed"
+    }
+  ],
+  "captures": {
+    "comparison": null,
+    "input_bundle": {
+      "art_revision": null,
+      "batch_manifest_sha256": "65ebd54fa5a4008cf8dfc5cf13208fcb3d54ebbd77ba3c1802fb1599da2fc4cd",
+      "evidence_class": "fixture",
+      "label": "input",
+      "problems": [],
+      "renderer": null,
+      "shots": [
+        {
+          "collection": "mini-vault",
+          "height": 96,
+          "kind": "full",
+          "pack_sha256": "5c7a0ed36357d9aad2af66e75f3e47e6412506d0816963709f25cad052c77a94",
+          "png_sha256": "9ad26e90c53d04a27c39d11c035acde54ce0e66de7f96aee030934b1993f9126",
+          "shot_id": "full",
+          "verified": true,
+          "width": 192
+        }
+      ],
+      "verified": true
+    },
+    "render_attempts": [],
+    "rendered_bundle": null
+  },
+  "cost": {
+    "ambiguous_charge_assumed_usd": 0.0,
+    "authorised_ceiling_usd": 0.25,
+    "basis": "token counts x published rates; the API reports tokens, not dollars",
+    "billing_reconciliation": "not-performed",
+    "committed_usd": 0.00097232,
+    "computed_from_reported_usage_usd": 0.00097232,
+    "currency": "USD",
+    "peak_reservation_usd": 0.0031012,
+    "per_call_ceiling_usd": 0.05,
+    "per_run_ceiling_usd": 0.25,
+    "rates": {
+      "cached_input_usd_per_1m": 0.01,
+      "input_usd_per_1m": 0.1,
+      "model": "gpt-6-luna",
+      "output_usd_per_1m": 0.5,
+      "retrieved_utc": "2026-11-07",
+      "source_url": "https://developers.openai.com/api/docs/pricing"
+    },
+    "remaining_allowance_usd": 0.24902768,
+    "reservation_overruns": 0,
+    "reserved_worst_case_total_usd": 0.022002,
+    "simulated": false
+  },
+  "credit_gate": {
+    "checks": [
+      {
+        "detail": "environment variable OPENAI_API_KEY is set",
+        "name": "api_key_present",
+        "ok": true
+      },
+      {
+        "detail": "authorised ceiling $0.25 vs per-run limit $0.25; authorisation reference present",
+        "name": "spend_authorised",
+        "ok": true
+      },
+      {
+        "detail": "rates for gpt-6-luna retrieved 2026-11-07",
+        "name": "pricing_known",
+        "ok": true
+      },
+      {
+        "detail": "source checkout is clean",
+        "name": "source_clean",
+        "ok": true
+      },
+      {
+        "detail": "owner credit attestation supplied",
+        "name": "credit_attestation",
+        "ok": true
+      },
+      {
+        "detail": "attestation age 0.0h (max 72h); expires 2026-11-27 (required margin 24h)",
+        "name": "credit_not_expired",
+        "ok": true
+      },
+      {
+        "detail": "attested remaining $88.00 vs per-run limit $0.25; grant attested to cover API usage",
+        "name": "credit_sufficient",
+        "ok": true
+      },
+      {
+        "detail": "auto-recharge attested disabled",
+        "name": "auto_recharge_disabled",
+        "ok": true
+      },
+      {
+        "detail": "gpt-6-luna is in the attested eligible list",
+        "name": "model_attested_eligible",
+        "ok": true
+      },
+      {
+        "detail": "models.retrieve(gpt-6-luna) returned HTTP 200",
+        "name": "model_retrievable",
+        "ok": true
+      }
+    ],
+    "facts": {
+      "credit_balance_programmatically_verifiable": false,
+      "headroom_basis": "owner-attestation-only",
+      "note": "grant balance/expiry/auto-recharge cannot be read via a supported API-key endpoint; the owner attestation is the only source for them",
+      "organization_id_sha256_12": null,
+      "project_id_sha256_12": null,
+      "rate_limit_headers": {}
+    },
+    "headroom_basis": "owner-attestation-only",
+    "passed": true,
+    "performed": true
+  },
+  "edits": [
+    {
+      "after_sha256": "b73b5a8efb8b9b64a08239e434986a957fa9bcfa8003484546387e4e96b8daea",
+      "before_sha256": "5c7a0ed36357d9aad2af66e75f3e47e6412506d0816963709f25cad052c77a94",
+      "bytes_added": 17,
+      "bytes_removed": 16,
+      "n": 1,
+      "path": "docs/world-design/mini-vault/pack.json"
+    }
+  ],
+  "final_report": null,
+  "images": [
+    {
+      "bundle": "input",
+      "bytes": 357,
+      "collection": "mini-vault",
+      "evidence_class": "fixture",
+      "height": 96,
+      "sent_in_calls": [
+        4,
+        5
+      ],
+      "sha256": "9ad26e90c53d04a27c39d11c035acde54ce0e66de7f96aee030934b1993f9126",
+      "shot_id": "full",
+      "width": 192
+    }
+  ],
+  "limits": {
+    "limits": {
+      "backoff_base_seconds": 1.0,
+      "backoff_max_seconds": 30.0,
+      "image_resend_calls": 2,
+      "max_api_calls": 10,
+      "max_edit_bytes": 20000,
+      "max_files_edited": 3,
+      "max_image_bytes": 3000000,
+      "max_image_edge_pixels": 2048,
+      "max_images": 4,
+      "max_input_tokens_per_call": 60000,
+      "max_iterations": 8,
+      "max_malformed_tool_calls": 3,
+      "max_output_tokens_per_call": 4000,
+      "max_read_bytes": 65536,
+      "max_retries": 3,
+      "max_run_seconds": 900,
+      "max_sandbox_violations": 2,
+      "max_tool_calls": 40,
+      "max_tool_calls_per_response": 4,
+      "max_tool_output_bytes": 20000,
+      "max_tool_seconds": 120,
+      "max_total_image_bytes": 8000000,
+      "max_total_input_tokens": 200000,
+      "max_total_output_tokens": 20000,
+      "max_total_tool_seconds": 600,
+      "token_estimate_bytes_per_token": 2.0
+    },
+    "spend": {
+      "attestation_max_age_hours": 72,
+      "authorisation_ref": "Owner go-ahead in the Claude Code session chat on 2026-11-07: live smoke test, ceiling USD 0.25, model gpt-6-luna",
+      "authorised_ceiling_usd": 0.25,
+      "costs_key_env": "OPENAI_ADMIN_KEY",
+      "credit_expiry_margin_hours": 24,
+      "expected_project": null,
+      "max_usd_per_call": 0.05,
+      "max_usd_per_run": 0.25,
+      "require_costs_crosscheck": false
+    }
+  },
+  "model": {
+    "api_endpoint": "openai-default",
+    "image_detail": "high",
+    "max_output_tokens_per_call": 4000,
+    "observed": [
+      "gpt-6-luna"
+    ],
+    "reasoning_effort": "low",
+    "requested": "gpt-6-luna",
+    "store": false,
+    "truncation": "disabled"
+  },
+  "policy": {
+    "generated_globs": [
+      "docs/world-design/mini-vault/preview.svg"
+    ],
+    "instructions_sha256": "e7a7bb11dddeb2ae38cc612435d5c78e4257297e5f55ff982c829914f3c8b5be",
+    "instructions_version": "atlas-agent-instructions/1",
+    "pricing_sha256": "ca99942d7c4f947fbf21b44ee5ac9b621b699372934b680c792df57753e7ca76",
+    "read_globs": [
+      "docs/world-design/mini-vault/**",
+      "docs/world-design/QUALITY_BAR.md",
+      "docs/world-design/README.md",
+      "native/include/cybersand/material.hpp",
+      "materials/catalogue/catalogue.json"
+    ],
+    "tool_schema_sha256": "4d3d03c9a6ccc49318679eb035e3279466f9fab3eaa5bdf05bf9e9a0699d3005",
+    "tools_advertised": [
+      "list_files",
+      "read_file",
+      "inspect_pack",
+      "run_validator",
+      "list_captures",
+      "view_image",
+      "replace_text",
+      "submit_report"
+    ],
+    "write_globs": [
+      "docs/world-design/mini-vault/pack.json",
+      "docs/world-design/mini-vault/README.md"
+    ]
+  },
+  "publication": {
+    "mode": "none",
+    "performed": false
+  },
+  "receipt_sha256": "273eafb7e3e1eb61665323be97542ab10343c98efc70723146d3f8968d3dbed7",
+  "run": {
+    "ci": false,
+    "duration_seconds": 21.041,
+    "finished_utc": "2026-11-07T06:00:16Z",
+    "id": "20261107T055955Z-d7b86143",
+    "mode": "live",
+    "model_calls_simulated": false,
+    "openai_sdk": "3.46.0",
+    "python": "3.13.16",
+    "runner_version": "1.0.0",
+    "started_utc": "2026-11-07T05:59:55Z"
+  },
+  "schema": "cybersand.atlas-agent.receipt/1",
+  "source": {
+    "collection": "unknown",
+    "expected_source_sha": null,
+    "files": {
+      "docs/world-design/QUALITY_BAR.md": {
+        "bytes": 304,
+        "sha256": "47944388c52497f9e407a21d65cf2394c6d027f5c9f80eeb571000cab6a778de"
+      },
+      "docs/world-design/README.md": {
+        "bytes": 194,
+        "sha256": "e2fa86a3aaac73a567043b1c64cc3d8904150b6e7eb26c229667db66cc4c962d"
+      },
+      "docs/world-design/mini-vault/README.md": {
+        "bytes": 240,
+        "sha256": "e647d7baf4ec0aa87ea783a04ad902db0bfb808eb4dac95e7554a44d50a7b647"
+      },
+      "docs/world-design/mini-vault/pack.json": {
+        "bytes": 1611,
+        "sha256": "5c7a0ed36357d9aad2af66e75f3e47e6412506d0816963709f25cad052c77a94"
+      },
+      "docs/world-design/mini-vault/preview.svg": {
+        "bytes": 658,
+        "sha256": "744631c7d9a7f1d9eabd7bfe4b404497a667b15cbab6e527dae0c4968f9a6671"
+      },
+      "docs/world-design/mini-vault/render_pack.py": {
+        "bytes": 1359,
+        "sha256": "02a79f79f0ca5b07327ec8a432e6cdb45c11a71ab6e1e297fb6d2077ce24b5f6"
+      },
+      "docs/world-design/mini-vault/validate_pack.py": {
+        "bytes": 2329,
+        "sha256": "efc065ba4b72c3842673626744cd02a2335b692891f4eeccd0d03b4c48754193"
+      },
+      "materials/catalogue/catalogue.json": {
+        "bytes": 556,
+        "sha256": "58d7755a22223fba24f60db4fadc4d556d9a52853ad0f37b608f09e6a4214b6e"
+      },
+      "native/include/cybersand/material.hpp": {
+        "bytes": 276,
+        "sha256": "50abf351508dfcc8abbfb93e8be794faa75e4ee04c450ea7dbb3b1b7736c0d89"
+      }
+    },
+    "fixture": true,
+    "head_after_run": null,
+    "lane": "terrain-art",
+    "lane_writable": true,
+    "repository_head": "a14ff2caf83b41bbc0dda65388cc40cc3d63f9fd",
+    "source_dirty": false,
+    "source_manifest_sha256": "7db75ddc36801dd3e6efa0b3b8657055e5d2a1c7a467474ffe10b884b7f25647",
+    "source_unchanged_after_run": null
+  },
+  "status": {
+    "exit_code": 4,
+    "final": "stopped",
+    "phase": "loop",
+    "reason": "reached max_iterations=8",
+    "reason_code": "max_iterations"
+  },
+  "tools": [
+    {
+      "args_sha256": "e01bb6064d8b0b90ecc5bcafc23f647753e0186ec3629386cba2a3ee82ba34b8",
+      "duration_ms": 1,
+      "error_code": null,
+      "n": 1,
+      "name": "list_files",
+      "ok": true,
+      "output_bytes": 45,
+      "output_sha256": "6d75ec006a68dabdef5f5e99c27f34b760822c9cbf455da2e5e523407f96f5ca"
+    },
+    {
+      "args_sha256": "404c94c9c0e8a9e70c787a9ff4d78ea22e6db20e2492990d8a69abac3254fdff",
+      "duration_ms": 1,
+      "error_code": null,
+      "n": 2,
+      "name": "inspect_pack",
+      "ok": true,
+      "output_bytes": 1411,
+      "output_sha256": "25008de158552c5a313def13a66b227de7ca4779ae62c04a9b2aba56bed7b90c"
+    },
+    {
+      "args_sha256": "9f50745d1b739b2c0c076e3559a77e4c87f029596f3d943ee987ac83a7b438b2",
+      "duration_ms": 72,
+      "error_code": null,
+      "n": 3,
+      "name": "run_validator",
+      "ok": true,
+      "output_bytes": 236,
+      "output_sha256": "1039d014e984bde8b528cb26866155b66a45cb0cef1cc15e6baff12ecc1beadb"
+    },
+    {
+      "args_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "duration_ms": 2,
+      "error_code": null,
+      "n": 4,
+      "name": "list_captures",
+      "ok": true,
+      "output_bytes": 525,
+      "output_sha256": "8ce736999687f2936f0617d635ea7c784129f369fa1500f56620c34d24b95f60"
+    },
+    {
+      "args_sha256": "15e20b78eb067f5828c41fc4ec782c8424726b7696cc92e9e55b04203acbb77a",
+      "duration_ms": 3,
+      "error_code": null,
+      "n": 5,
+      "name": "list_files",
+      "ok": true,
+      "output_bytes": 483,
+      "output_sha256": "1843ae2721d26037d3e854dfa178f60691e36b6bc860afcfe8bc6de8e6837651"
+    },
+    {
+      "args_sha256": "2a31c1dd99453607623e7d5d688f6c4367314e82e91494bdb077390be0dfff4f",
+      "duration_ms": 0,
+      "error_code": null,
+      "n": 6,
+      "name": "view_image",
+      "ok": true,
+      "output_bytes": 202,
+      "output_sha256": "1fbde9aafa99a6e56bbeb712c8754b8b2013f6ef1cc235702b92053ec34ff96b"
+    },
+    {
+      "args_sha256": "a6122020657ddc4ac4d28f030066911eaf28e07d2105b0c1eb07ebd8ab546185",
+      "duration_ms": 0,
+      "error_code": null,
+      "n": 7,
+      "name": "read_file",
+      "ok": true,
+      "output_bytes": 2032,
+      "output_sha256": "d004fd494f9008c0814bcc20acf70170d8fb956dc98dfda2bfe1004a7dcaa426"
+    },
+    {
+      "args_sha256": "327a6788439a583b974f26e1a9da0e84c549abbcb9fe061103461740bda9a5aa",
+      "duration_ms": 0,
+      "error_code": null,
+      "n": 8,
+      "name": "read_file",
+      "ok": true,
+      "output_bytes": 466,
+      "output_sha256": "2f1c81890175a39dbfaf134e119f530530d62eef84d9d202b373e785353ed87c"
+    },
+    {
+      "args_sha256": "d1b6745aaf0807f9788a12e08bf34444afa3a9631dc22512b2c275c55cc789a5",
+      "duration_ms": 8,
+      "error_code": null,
+      "n": 9,
+      "name": "replace_text",
+      "ok": true,
+      "output_bytes": 196,
+      "output_sha256": "5d07334dd1127dafd7e24f3b890d26d4c0c4c041f86d648529c77368cb4307a5"
+    },
+    {
+      "args_sha256": "9f50745d1b739b2c0c076e3559a77e4c87f029596f3d943ee987ac83a7b438b2",
+      "duration_ms": 77,
+      "error_code": null,
+      "n": 10,
+      "name": "run_validator",
+      "ok": true,
+      "output_bytes": 236,
+      "output_sha256": "1039d014e984bde8b528cb26866155b66a45cb0cef1cc15e6baff12ecc1beadb"
+    },
+    {
+      "args_sha256": "1a8d95f51a5ab00051836e48cf147421d62212164514e4b9b52d15fe9176ae08",
+      "duration_ms": 75,
+      "error_code": null,
+      "n": 11,
+      "name": "run_validator",
+      "ok": true,
+      "output_bytes": 219,
+      "output_sha256": "7009c2a8911c6954f6a4580da4d166bf8ae04299e3b08e5a588ac478e8588608"
+    },
+    {
+      "args_sha256": "25d0d3478f16e2c82c300d2e14771e22773bda1c25d7e70af820277b49877d19",
+      "duration_ms": 136,
+      "error_code": null,
+      "n": 12,
+      "name": "run_validator",
+      "ok": true,
+      "output_bytes": 209,
+      "output_sha256": "2bb271103307f085fc7b7e257cac66e70f3a4752a342e4010cd0e841c5fc7283"
+    }
+  ],
+  "usage": {
+    "api_attempts": 8,
+    "api_responses": 8,
+    "cached_input_tokens": 18102,
+    "image_bytes": 357,
+    "image_sends": 2,
+    "images_loaded": 1,
+    "input_tokens": 23220,
+    "iterations": 8,
+    "malformed_tool_calls": 0,
+    "output_tokens": 559,
+    "reasoning_tokens": 191,
+    "retries": 0,
+    "sandbox_violations": 0,
+    "tool_calls": 12,
+    "tool_seconds": 0.383
+  },
+  "validation": [
+    {
+      "argv": [
+        "python.exe",
+        "-I",
+        "docs/world-design/mini-vault/validate_pack.py"
+      ],
+      "collection": "mini-vault",
+      "duration_seconds": 0.061,
+      "exit_code": 0,
+      "kind": "validate",
+      "n": 1,
+      "passed": true,
+      "script": "docs/world-design/mini-vault/validate_pack.py",
+      "script_sha256": "efc065ba4b72c3842673626744cd02a2335b692891f4eeccd0d03b4c48754193",
+      "stderr_tail": "",
+      "stdout_tail": "PASS: 2 features / 8 rectangles / 2 placements\r\n",
+      "timed_out": false
+    },
+    {
+      "argv": [
+        "python.exe",
+        "-I",
+        "docs/world-design/mini-vault/validate_pack.py"
+      ],
+      "collection": "mini-vault",
+      "duration_seconds": 0.063,
+      "exit_code": 0,
+      "kind": "validate",
+      "n": 2,
+      "passed": true,
+      "script": "docs/world-design/mini-vault/validate_pack.py",
+      "script_sha256": "efc065ba4b72c3842673626744cd02a2335b692891f4eeccd0d03b4c48754193",
+      "stderr_tail": "",
+      "stdout_tail": "PASS: 2 features / 8 rectangles / 2 placements\r\n",
+      "timed_out": false
+    },
+    {
+      "argv": [
+        "python.exe",
+        "-I",
+        "docs/world-design/mini-vault/render_pack.py",
+        "--check"
+      ],
+      "collection": "mini-vault",
+      "duration_seconds": 0.063,
+      "exit_code": 1,
+      "kind": "render_check",
+      "n": 3,
+      "passed": false,
+      "script": "docs/world-design/mini-vault/render_pack.py",
+      "script_sha256": "02a79f79f0ca5b07327ec8a432e6cdb45c11a71ab6e1e297fb6d2077ce24b5f6",
+      "stderr_tail": "",
+      "stdout_tail": "FAIL: preview.svg is stale\r\n",
+      "timed_out": false
+    },
+    {
+      "argv": [
+        "python.exe",
+        "-I",
+        "docs/world-design/mini-vault/render_pack.py"
+      ],
+      "collection": "mini-vault",
+      "duration_seconds": 0.109,
+      "exit_code": 0,
+      "kind": "render_write",
+      "n": 4,
+      "passed": true,
+      "script": "docs/world-design/mini-vault/render_pack.py",
+      "script_sha256": "02a79f79f0ca5b07327ec8a432e6cdb45c11a71ab6e1e297fb6d2077ce24b5f6",
+      "stderr_tail": "",
+      "stdout_tail": "WROTE preview.svg\r\n",
+      "timed_out": false
+    }
+  ],
+  "visual_cycle": {
+    "claimed": false,
+    "reason": "no before/after Godot capture cycle was executed"
+  }
+}

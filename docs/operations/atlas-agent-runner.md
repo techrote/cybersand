@@ -5,17 +5,20 @@ document-kind: runbook
 scope: How to run, budget, secure and audit the bounded OpenAI Responses API agent that critiques and edits one Atlas collection; what is verified offline and what is not yet verified against the live API
 canonical-for: [atlas-agent-runner]
 last-reviewed: 2026-11-07
-related-documents: [github-development-and-release.md, documentation-maintenance.md, ../reference/status-and-roadmap.md, ../reference/retrieval-index.md]
+related-documents: [github-development-and-release.md, documentation-maintenance.md, ../reference/status-and-roadmap.md, ../reference/retrieval-index.md, ../audits/2026-11-07-issue-499-live-responses-smoke.md]
 ---
 
 # Atlas agent runner (MAP-AUTO-02, [#499](https://github.com/techrote/cybersand/issues/499))
 
 **Status.** The runner, its budget/sandbox/credit gates, receipts, workflows and tests are
-**Current on the implementing branch** and qualified offline (see [Qualification record](#qualification-record)).
-A **real, charged API call has not been made**: no API credentials or verified credit were available, so the
-live smoke test is an **external blocker**, not a pass. The Godot capture hand-off follows the documented
-contract of [#498](https://github.com/techrote/cybersand/issues/498) but has only been exercised with a
-contract double, not with real Godot output. No schedule is activated and no ChatGPT scheduled chat is replaced.
+**Current on the implementing branch**, qualified offline and by a **real, charged live smoke test** on
+2026-11-07 (see [Qualification record](#qualification-record) and the
+[dated evidence](../audits/2026-11-07-issue-499-live-responses-smoke.md)): `gpt-6-luna`, two runs, about
+USD 0.0012, on the bundled synthetic fixture only. Not yet verified: any real Atlas art through the live API, the
+optional Costs API cross-check, and a reconciliation with the billing dashboard. The Godot capture hand-off
+follows the documented contract of [#498](https://github.com/techrote/cybersand/issues/498) but has only been
+exercised with a contract double, not with real Godot output. No schedule is activated and no ChatGPT scheduled
+chat is replaced.
 
 ## What it is, in plain words
 
@@ -170,10 +173,11 @@ Exit codes: 0 success; 2 usage/config; 3 live gate refused; 4 stopped (a limit, 
 | Date | Item | Result |
 |---|---|---|
 | 2026-11-07 | Deterministic suite (`python3 -m unittest discover -s tools/atlas_agent -p "test_*.py"`): config, pricing/budget, sandbox, malformed tool calls, validators, captures, real Git custody, the real SDK against a loopback API double, workflow entry | Exact-head results are recorded in the pull request. |
-| 2026-11-07 | Live Responses API smoke test | **Not run. External blocker:** no API credentials or verifiable credit were available to this implementation. Remaining owner steps: add the `OPENAI_API_KEY` repository secret, check the dashboard grant, record an attestation, re-verify `pricing.json`, then run the workflow in `live` mode with a small ceiling. |
+| 2026-11-07 | Live Responses API smoke test, `gpt-6-luna`, synthetic fixture, owner-supplied key and attestation | **Passed** ([evidence](../audits/2026-11-07-issue-499-live-responses-smoke.md)). Run 1 was stopped by `max_iterations` (fail-closed limit); run 2 succeeded with a verifiable receipt: 9 real responses, 13 tool calls, one image, one bounded edit re-validated, about USD 0.0012 against a USD 0.25 ceiling. Fixture evidence only; no Godot visual claim. |
+| open | Live run on real Atlas art, Costs API cross-check, dashboard reconciliation, Actions-hosted live run (needs the `OPENAI_API_KEY` repository secret and the workflow on `main`) | **Not yet run.** |
 
 The loopback double (`testing_stub_api.py`) speaks HTTP to the real SDK; it proves request shape, retries,
-error mapping and accounting logic, **not** that the live service accepts these requests or that the published
-rates in `pricing.json` still hold. The Costs API response shape used by the optional cross-check was written
+error mapping and accounting logic. The live smoke test above is what showed the live service accepts these
+requests for one model; the published rates in `pricing.json` still need re-checking when they age (45 days). The Costs API response shape used by the optional cross-check was written
 from documentation that could not be read in full and is tested only against the double; it fails closed on any
 parse problem.
