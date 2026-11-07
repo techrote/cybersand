@@ -415,7 +415,7 @@ def main(argv: list[str] | None = None) -> int:
                 raise support.CaptureError(support.EXIT_ENGINE, f"Godot executable not found: {args.godot!r}. Supply --godot=PATH "
                                            "or set GODOT. On Windows prefer the *_console.exe build so Godot's log is captured.")
             if platform.system() == "Windows" and "console" not in Path(exe).name.lower():
-                print("WORLD_ART_NOTE: this Godot build has no console; its log cannot be captured "
+                print("WORLD_ART_NOTE: this Godot build has no console; its log may not be captured "
                       "(results are still verified from the evidence files). Prefer Godot_v4.7-stable_win64_console.exe.",
                       file=sys.stderr, flush=True)
             return run_capture(args, exe)

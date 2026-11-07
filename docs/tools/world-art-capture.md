@@ -6,7 +6,7 @@ Downstream pipeline this enables: `Atlas source → unattended capture → PNG +
 
 ## Quick start (copy-paste)
 
-Prerequisites: Python 3.10+, an installed **Godot 4.7 desktop executable** (never downloaded for you), and a **read-only checkout of the art source** (`docs/world-design/<collection>/pack.json`, see [the checkout guide](world-art-preview.md#efficient-fresh-checkout--one-small-clone-no-unnecessary-git-lfs-binaries)). Windows: prefer the `*_console.exe` build (its log is captured); the GUI build works but cannot stream its log.
+Prerequisites: Python 3.10+, an installed **Godot 4.7 desktop executable** (never downloaded for you), and a **read-only checkout of the art source** (`docs/world-design/<collection>/pack.json`, see [the checkout guide](world-art-preview.md#efficient-fresh-checkout--one-small-clone-no-unnecessary-git-lfs-binaries)). Windows: prefer the `*_console.exe` build (its log is captured); the GUI build works too (verified locally) but its log may not reach the launcher on every host; results are always verified from the evidence files.
 
 One collection, default shots (`full`, `viewport`, `detail`):
 
