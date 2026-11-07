@@ -90,6 +90,30 @@ func strict_tools() -> Array:
 			"strict": true, "parameters": _object({"ticks": {"type": "integer", "minimum": 1, "maximum": 120}}, ["ticks"])}
 	]
 
+func _safe_integer(value: Variant) -> bool:
+	# Godot JSON.parse_string can decode integer-shaped JSON numbers as floats.
+	# Convert only exactly representable finite integers, NEVER truncated fractions.
+	if typeof(value) == TYPE_INT:
+		return abs(float(value)) <= 9007199254740991.0
+	if typeof(value) == TYPE_FLOAT:
+		return is_finite(value) and abs(value) <= 9007199254740991.0 and floor(value) == value
+	return false
+
+func _normalise_arguments(name: String, args: Dictionary) -> Dictionary:
+	var result := args.duplicate(true)
+	if name == "step":
+		result.ticks = int(args.ticks)
+	elif name == "observe" and args.region is Dictionary:
+		for k: String in ["x", "y", "width", "height"]:
+			result.region[k] = int(args.region[k])
+	elif name == "prepare_edit":
+		for op: Dictionary in result.operations:
+			for k: String in ["x", "y", "x2", "y2", "radius", "material_id"]:
+				op[k] = int(op[k])
+			if op.replace_only_material_id != null:
+				op.replace_only_material_id = int(op.replace_only_material_id)
+	return result
+
 func _valid_arguments(name: String, args: Variant) -> bool:
 	if not args is Dictionary:
 		return false
@@ -113,7 +137,7 @@ func _valid_arguments(name: String, args: Variant) -> bool:
 				if not args.region is Dictionary or args.region.size() != 4:
 					return false
 				for k: String in ["x", "y", "width", "height"]:
-					if not args.region.has(k) or typeof(args.region[k]) != TYPE_INT:
+					if not args.region.has(k) or not _safe_integer(args.region[k]):
 						return false
 				if args.region.width < 1 or args.region.height < 1 or args.region.width > 64 or args.region.height > 64:
 					return false
@@ -131,15 +155,15 @@ func _valid_arguments(name: String, args: Variant) -> bool:
 				if op.shape not in ["disc", "line", "rectangle"]:
 					return false
 				for field: String in ["x", "y", "x2", "y2", "radius", "material_id"]:
-					if typeof(op[field]) != TYPE_INT:
+					if not _safe_integer(op[field]):
 						return false
-				if op.replace_only_material_id != null and typeof(op.replace_only_material_id) != TYPE_INT:
+				if op.replace_only_material_id != null and not _safe_integer(op.replace_only_material_id):
 					return false
 		"apply_edit":
 			if not args.proposal_id is String or args.proposal_id.is_empty():
 				return false
 		"step":
-			if typeof(args.ticks) != TYPE_INT or args.ticks < 1 or args.ticks > 120:
+			if not _safe_integer(args.ticks) or args.ticks < 1 or args.ticks > 120:
 				return false
 	return true
 
@@ -328,7 +352,7 @@ func _handle_transport(identity: int, nonce: int, result: int, http_status: int,
 	_pending_call_id = call_id
 	_pending_tool = name
 	status_changed.emit("queued", "%s proposed; awaiting authoritative dispatcher." % name)
-	tool_requested.emit(name, args, _epoch, call_id)
+	tool_requested.emit(name, _normalise_arguments(name, args), _epoch, call_id)
 
 func submit_tool_result(epoch: int, call_id: String, receipt: Dictionary) -> bool:
 	# Called asynchronously only by the shared #526/#527 adapter.
