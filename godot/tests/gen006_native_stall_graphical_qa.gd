@@ -109,9 +109,16 @@ func _run() -> void:
         _fail("could not suspend the actual compiled native owner")
         return
     suspended_pid = native_pid
-    var proc_status := FileAccess.get_file_as_string("/proc/%d/status" % native_pid)
-    if not proc_status.contains("T (stopped)"):
-        _fail("native process not actually stopped: " + proc_status.left(160))
+    # Godot FileAccess may refuse Linux procfs paths even when the PID is
+    # stopped. Use the actual host's ps(1) process-state receipt instead.
+    var process_state_output: Array = []
+    var process_state_rc := OS.execute("/bin/ps",
+        PackedStringArray(["-o", "stat=", "-p", str(native_pid)]),
+        process_state_output, true)
+    var process_state: String = str(process_state_output[0]).strip_edges() \
+        if not process_state_output.is_empty() else ""
+    if process_state_rc != 0 or not process_state.begins_with("T"):
+        _fail("native process not actually stopped: " + process_state)
         return
 
     # Send one real player edit to the stopped native owner. It cannot ACK
