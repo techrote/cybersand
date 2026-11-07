@@ -5,12 +5,14 @@ on:
       - experiment/gen006-storage-journal-20261107
     paths:
       - 'tools/experiments/gen006_storage_native_pilot.py'
+      - 'tools/experiments/gen006_storage_native_owner_control.py'
       - 'tools/experiments/gen006_storage_journal.py'
       - 'tools/experiments/GEN006_STORAGE_JOURNAL.md'
       - '.github/workflows/gen006-storage-native-pilot.yml'
   pull_request:
     paths:
       - 'tools/experiments/gen006_storage_native_pilot.py'
+      - 'tools/experiments/gen006_storage_native_owner_control.py'
       - 'tools/experiments/gen006_storage_journal.py'
       - 'tools/experiments/GEN006_STORAGE_JOURNAL.md'
       - '.github/workflows/gen006-storage-native-pilot.yml'
@@ -82,6 +84,19 @@ jobs:
             --workers 4 --native-sha "$NATIVE_REFERENCE_SHA" | tee build/g6j-native/four.txt
           grep -q GEN006_G6J1_NATIVE_CYPS_REPLAY_PASS build/g6j-native/one.txt
           grep -q GEN006_G6J1_NATIVE_CYPS_REPLAY_PASS build/g6j-native/four.txt
+      - name: Actual 30 Hz native owner hard-crash baseline (full-CYPS control)
+        shell: bash
+        timeout-minutes: 12
+        run: |
+          set -euo pipefail
+          python tools/experiments/gen006_storage_native_owner_control.py \
+            --exe build/g6j-native/streaming-slice --root build/g6j-native/owner-control-one \
+            --workers 1 --native-sha "$NATIVE_REFERENCE_SHA" | tee build/g6j-native/owner-control-one.txt
+          python tools/experiments/gen006_storage_native_owner_control.py \
+            --exe build/g6j-native/streaming-slice --root build/g6j-native/owner-control-four \
+            --workers 4 --native-sha "$NATIVE_REFERENCE_SHA" | tee build/g6j-native/owner-control-four.txt
+          grep -q GEN006_G6J1_NATIVE_OWNER_CRASH_CONTROL_PASS build/g6j-native/owner-control-one.txt
+          grep -q GEN006_G6J1_NATIVE_OWNER_CRASH_CONTROL_PASS build/g6j-native/owner-control-four.txt
       - name: Preserve original runtime evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
@@ -144,6 +159,16 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw "Native pilot workers=4 failed" }
           if (-not ((Get-Content build/g6j-native/one.txt) -match 'GEN006_G6J1_NATIVE_CYPS_REPLAY_PASS')) { throw "Missing workers=1 receipt" }
           if (-not ((Get-Content build/g6j-native/four.txt) -match 'GEN006_G6J1_NATIVE_CYPS_REPLAY_PASS')) { throw "Missing workers=4 receipt" }
+      - name: Actual 30 Hz native owner hard-crash baseline (full-CYPS control)
+        shell: pwsh
+        timeout-minutes: 15
+        run: |
+          python tools/experiments/gen006_storage_native_owner_control.py --exe build/g6j-native/streaming-slice.exe --root build/g6j-native/owner-control-one --workers 1 --native-sha $env:NATIVE_REFERENCE_SHA | Tee-Object build/g6j-native/owner-control-one.txt
+          if ($LASTEXITCODE -ne 0) { throw "Native owner crash control workers=1 failed" }
+          python tools/experiments/gen006_storage_native_owner_control.py --exe build/g6j-native/streaming-slice.exe --root build/g6j-native/owner-control-four --workers 4 --native-sha $env:NATIVE_REFERENCE_SHA | Tee-Object build/g6j-native/owner-control-four.txt
+          if ($LASTEXITCODE -ne 0) { throw "Native owner crash control workers=4 failed" }
+          if (-not ((Get-Content build/g6j-native/owner-control-one.txt) -match 'GEN006_G6J1_NATIVE_OWNER_CRASH_CONTROL_PASS')) { throw "Missing workers=1 hard-crash control receipt" }
+          if (-not ((Get-Content build/g6j-native/owner-control-four.txt) -match 'GEN006_G6J1_NATIVE_OWNER_CRASH_CONTROL_PASS')) { throw "Missing workers=4 hard-crash control receipt" }
       - name: Preserve original runtime evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
