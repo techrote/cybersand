@@ -13,6 +13,8 @@ on:
       - 'godot/scripts/shared_workbench.gd'
       - 'godot/scripts/workbench_authoring_*.gd'
       - 'godot/tests/test_workbench_agent_mounted.gd'
+      - 'godot/tests/test_wb525_capacity_and_camera_render.gd'
+      - 'godot/tests/test_wb525_mounted_hopper_render.gd'
       - 'godot/tests/test_workbench_authoring_*.gd'
       # A new #528 acceptance receipt/contract revision requires genuine
       # native+frame readback, not only documentation/provenance checks.
@@ -30,7 +32,7 @@ concurrency:
 jobs:
   linux-owner:
     runs-on: ubuntu-24.04
-    timeout-minutes: 30
+    timeout-minutes: 50
     env:
       SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
       EVIDENCE: build/wb-agent-528-integrated
@@ -139,6 +141,49 @@ jobs:
             "$GODOT_BIN" --path godot --rendering-method gl_compatibility \
             --script res://tests/test_workbench_agent_mounted.gd \
             2>&1 | tee "$EVIDENCE/real-owner-graphical.log"
+      - name: Verify maximum native receipts, camera pan, and panel-driven frozen hopper
+        timeout-minutes: 24
+        shell: bash
+        env:
+          OPENAI_API_KEY: ''
+          WB_AGENT_527_IMAGE_DIR: \${{ github.workspace }}/build/wb-agent-528-integrated
+        run: |
+          set -euo pipefail
+          # Real Godot/OpenGL/native World, ASYNC FAKE Responses, no paid calls.
+          printf '%s  %s\n' \
+            '549a1db2520bcfb35f068f46b62320d7325d6297037ca2faf23c3b488d80347c' \
+            'native/tests/fixtures/wb_agent_sand_hopper_v2.tsv' | sha256sum --check -
+          cp native/tests/fixtures/wb_agent_sand_hopper_v2.tsv \
+            godot/tests/wb-agent-527-v2-runtime.tsv
+          timeout 600 xvfb-run --auto-servernum --server-args='-screen 0 1920x1080x24 -nolisten tcp' \
+            "$GODOT_BIN" --path godot --audio-driver Dummy --rendering-method gl_compatibility \
+            --script res://tests/test_wb525_capacity_and_camera_render.gd \
+            2>&1 | tee "$EVIDENCE/real-4096-receipt-camera.log"
+          grep -E 'WB_AGENT_528 mounted real-native checks [0-9]+, failures 0' \
+            "$EVIDENCE/real-4096-receipt-camera.log"
+          grep -F 'WB525_CAPACITY_CAMERA' "$EVIDENCE/real-4096-receipt-camera.log"
+          timeout 1000 xvfb-run --auto-servernum --server-args='-screen 0 1920x1080x24 -nolisten tcp' \
+            "$GODOT_BIN" --path godot --audio-driver Dummy --rendering-method gl_compatibility \
+            --script res://tests/test_wb525_mounted_hopper_render.gd \
+            2>&1 | tee "$EVIDENCE/panel-async-fake-native-32-sand.log"
+          grep -E 'WB_AGENT_527_HOPPER_GODOT: [0-9]+ assertions, 0 failures' \
+            "$EVIDENCE/panel-async-fake-native-32-sand.log"
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          path=Path('build/wb-agent-528-integrated/panel-async-fake-native-32-sand.log')
+          records=[json.loads(line.split('WB525_MOUNTED_HOPPER ',1)[1])
+                   for line in path.read_text(errors='replace').splitlines()
+                   if line.startswith('WB525_MOUNTED_HOPPER ')]
+          assert len(records)==2, f'Expected two mounted hopper receipts; got {len(records)}'
+          assert {r['variant'] for r in records}=={'normal','revised'},records
+          for receipt in records:
+              assert receipt['sand']==32 and receipt['protected']==17,receipt
+              assert receipt['completed_ticks']==480 and receipt['applied_batches']==4,receipt
+              assert receipt['genuine_api_calls']==0 and receipt['fake_requests_used']<=24,receipt
+          Path('build/wb-agent-528-integrated/mounted-hopper-summary.json').write_text(
+              json.dumps(records,indent=2)+'\n')
+          PY
       - name: Retain original execution logs and all failed checkpoints
         if: always()
         timeout-minutes: 5
