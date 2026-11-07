@@ -287,3 +287,22 @@ isolated journal writer* on the five-record fixture. It does **not** yet
 reduce native owner ACK latency or tick cost: #486 continues to produce
 full-checkpoint ACKs independently, and the journal remains outside that
 live owner. No production adoption or general 30 Hz state durability claim.
+
+### Source-matched journal-only fsync timing control
+
+The native replay harness now executes 16 alternating-order paired trials,
+each using the same **real-native G6SLICE1 checkpoint and five validated native
+edit receipts** from pinned #486 source. One fresh journal uses five independent
+fsync-after-each-edit calls; a second journal uses one group commit. Each trial
+requires byte-identical recovered files and the exact five native mutations.
+It records the full raw timing series and nearest-rank p50/p95/p99 in
+`journal-fsync-batch-control.json`, alongside the actual fsync-call counts,
+source SHA, worker configuration, sample count and payload size.
+
+The timed interval deliberately excludes the separately and equally executed
+new-checkpoint publication; both variants use the same host baseline and OS.
+Only **journal append/fdatasync-style cost** is measured, not native ownership,
+World-clone overhead, 30 Hz ticks, memory, end-to-end IPC ACKs, power loss or
+simulated workload throughput. The **batch** path admits only one group-wide
+ACK after all five edits, whereas the sequential path admits each edit
+individually; group latency must not be misreported as per-edit ACK latency.
