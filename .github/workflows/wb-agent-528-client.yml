@@ -73,6 +73,11 @@ jobs:
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: wb-agent-528-${{ github.run_id }}-${{ github.run_attempt }}
-          path: build/wb-agent-528/
+          path: |
+            build/wb-agent-528/source-head.txt
+            build/wb-agent-528/source-tree.txt
+            build/wb-agent-528/provider.json
+            build/wb-agent-528/godot-version.txt
+            build/wb-agent-528/fake-provider.log
           if-no-files-found: warn
           retention-days: 60
