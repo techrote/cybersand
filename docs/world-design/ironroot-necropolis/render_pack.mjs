@@ -42,7 +42,7 @@ for(let i=0;i<crops.length;i++){
  lines.push('<rect x="'+ix+'" y="'+iy+'" width="680" height="250" fill="#0c131d"/>');
  lines.push('<g clip-path="url(#crop'+i+')">'+sceneDraw(ix-c.x*s,iy-c.y*s,s,c)+'</g>');
 }
-const alternateCrops=[{x:355,y:35,w:340,h:125,name:'03 / DESCENDING STAIR AND SEVERED REGISTER'},{x:735,y:110,w:340,h:125,name:'04 / COUNTERSTAIR AND OSSUARY FACE'}];
+const alternateCrops=[{x:145,y:51,w:340,h:125,name:'03 / THE UNCAST BELLS / BROKEN WESTERN VIADUCT'},{x:790,y:58,w:340,h:125,name:'04 / SLUMPED REGISTRY / EASTERN MOURNING SPAN'}];
 for(let i=0;i<alternateCrops.length;i++){
  const c=alternateCrops[i],bx=60+i*770,by=1960,ix=bx+18,iy=by+44,s=2;
  lines.push('<rect x="'+bx+'" y="'+by+'" width="735" height="310" rx="10" fill="#141c25" stroke="#384651"/>');
