@@ -215,3 +215,49 @@ This Draft does not change the #526 worker, native simulation, physics,
 production defaults or protected upstream branches. Live trials remain 0/3;
 human desktop acceptance remains pending. Update this record with actual
 new-run receipts rather than assuming any CI outcome from source edits.
+
+## Follow-up: UI opt-out, verified native Stop and new-task reauthorization (7 November 2026)
+
+A real lifecycle defect was found in the mounted opt-in panel: deselecting
+`Agent authoring (opt-in)` previously hid only the controls. The proposal
+overlay lives under the native viewport, and a held model request could remain
+authorized and later edit the native World invisibly. The #528 mount now
+immediately revokes client/API callbacks, clears the detached footprint and
+requests the *existing* #527 bounded Stop, rather than equating panel hiding
+with a native Stop ACK. Start stays fenced until native retirement.
+
+The first new real-native graphical regression **failed** on the next
+authorization: the #527 StepSequence is deliberately terminal after Stop,
+and the bridge retains its stopping state. Reusing that same bridge therefore
+refused any subsequent task. The #528 host adapter now creates and binds a
+**fresh instance of the existing #527 bridge only after** the exclusive native
+owner returns `stopped + no_further_agent_mutations=true`. A missing Stop ACK
+never permits the replacement; bind failure is explicit and fail-closed. The
+upstream bridge, session, worker, native engine and protected branches are
+unchanged. This is a consumption/lifecycle fix, not a competing dispatcher.
+
+Original RED: [mounted graphical run 42396644393](https://github.com/techrote/cybersand/actions/runs/42396644393)
+(31 assertions, 1 failure: "fresh authorization after human Stop missing").
+The genuine real-native retry after the adapter repair passed:
+[mounted Linux Godot 4.7 OpenGL run 42396974502](https://github.com/techrote/cybersand/actions/runs/42396974502),
+**37/37 assertions**, original
+[framebuffer/native source/runtime evidence artifact 13584056417](https://github.com/techrote/cybersand/actions/runs/42396974502/artifacts/13584056417).
+The extended journey retains the first four actual workbench tools (native
+Hard Wall readback and four exact completed ticks), human manual painting and
+old model callback rejection; then deliberately authorizes a new task,
+prepares a second actual native footprint, opts out while the fake API is
+held, verifies native Stop/retirement ACK and late-call refusal, and checks
+that existing authored changes/tick counts did not advance. Native/world
+simulation was real; the model/network provider was fake and credentials
+were absent. The source for that passed execution was
+`dbc3826c2340fcaa9d487c0faf71ebb1082345e2`.
+
+The [Godot fake-provider protocol run 42396974492](https://github.com/techrote/cybersand/actions/runs/42396974492)
+retained 86/86 PASS, [documentation/provenance run 42396974666](https://github.com/techrote/cybersand/actions/runs/42396974666)
+and [native source advisory 42396974509](https://github.com/techrote/cybersand/actions/runs/42396974509)
+passed at the same source. Native/GDExtension production gates remained
+Draft-skipped, and this Linux Xvfb test is **not** independent Windows desktop
+acceptance. At this checkpoint the immutable signed-native 32-Sand hopper
+remains blocked by #526's finite nonnegative host domain; actual live
+OpenAI trials remain **0/3** and human acceptance **PENDING**. Retain parent
+#525's engineering, live-model and human gates separately. No merge/Ready.
