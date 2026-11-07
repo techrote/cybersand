@@ -1,21 +1,19 @@
 ---
-title: WB-AGENT #528 Responses client and independent panel checkpoint
+title: WB-AGENT #528 existing-workbench mounting and Responses native-owner integration
 status: Planned
 document-kind: evidence
-scope: WB-AGENT-003 isolated transport/UI shell; not native/tool integration
+scope: WB-AGENT-003 opt-in mounted UI, real #526 native tool integration, #527 step pending
 related-documents: [../operations/cybersand-codex-development-handover.md, ../reference/status-and-roadmap.md, ../architecture/data-ownership-and-lifetimes.md]
 last-reviewed: 2026-11-07
 ---
 
-# WB-AGENT #528 — isolated client implementation checkpoint (7 November 2026)
+# WB-AGENT #528 — mounted shared-workbench panel checkpoint (7 November 2026)
 
 ## Source and current claim
 
 Accepted main at branch creation: `81bbd5ff5cf366159e2b8a630609359c13560080`.
 Review target: existing workbench, parent #525, upstream #526/#527.
-This checkpoint is **source implementation only until the exact-head Godot job passes**.
-It does not alter `shared_workbench.gd`, `main.gd`, simulation worker,
-native code, materials, GEN-006, or production behavior.
+This checkpoint contains the first **actual opt-in mount** into `shared_workbench.gd` on the existing #531 Draft. It stacks the real #526 implementation Draft as a source ancestor for isolated execution, without changing the #526 branch or accepted main. It changes no native physics, material law, GEN-006, production default or upstream branch. Mounted, real native acceptance is distinct from standalone fake-provider qualification.
 
 - `godot/scripts/workbench_agent_client.gd` owns nonblocking
   Responses HTTP and unique-request callback epochs, four strict function
@@ -23,14 +21,13 @@ native code, materials, GEN-006, or production behavior.
   fake transport, local environment credentials, Stop, late-response
   rejection, and bounded response/error handling.
 - `godot/scripts/workbench_agent_panel.gd` constructs task/model,
-  signed X/Y/W/H scope, Hard Wall/Empty allowlist, Start/Stop, activity
-  log, protected-region count and an exclusively host-bound dispatch port.
-  It cannot authorize native edits by itself. It is **not yet mounted**
-  inside the existing workbench; the #526/#527 shared-host owner must
-  hand off the narrow hook and native receipt schema first.
+  finite nonnegative X/Y/W/H scope, Hard Wall/Empty allowlist, Start/Stop,
+  protected-region count and a strictly host-bound dispatch port.
+  It waits for actual #526 host-only authorization before API dispatch,
+  and refuses new tasks until an old task has been retired.
 - `godot/scripts/workbench_agent_proposal_overlay.gd` draws only
-  exact prepared-cell coordinates supplied by the authoritative owner
-  through an explicit world-to-screen projection. It does not infer
+  actual native-prepared cell coordinates supplied by the authoritative owner
+  through the existing workbench camera, viewport content rect and scale. It does not infer
   footprint/material IDs from colours or authorize edits from cached
   images.
 - `godot/tests/test_workbench_agent_client.gd` exercises strict
@@ -39,6 +36,25 @@ native code, materials, GEN-006, or production behavior.
   wrong-ID receipt, unverified native application and Stop epoch fencing,
   and panel invalidation. Fake native receipts in this test are **not**
   evidence of real World application.
+- `godot/scripts/workbench_agent_mount.gd` binds the existing shared-workbench
+  `main` and #526 `workbench_authoring_host.gd`; only that native-authoritative
+  bridge may observe, preflight, or apply. The host-only task scope/protection
+  authorization and retirement are never exposed as model tools. Actual
+  post-draw PNG bytes are copied to an input_image data URL (never rendered
+  from synthetic cell values); native IDs, revisions, world generation and
+  verified apply/readback are preserved in the function result.
+- `godot/scripts/shared_workbench.gd` adds an opt-in, default-hidden panel
+  toggle and synchronous human-intent fences for painting, Play/Pause,
+  canvas/load/start restore and settings. Ordinary manual controls remain
+  available when the agent is disabled.
+- `godot/tests/test_workbench_agent_mounted.gd` launches the existing
+  `res://main.tscn` in shared-workbench mode, uses the real native owner and
+  original GL framebuffer under Xvfb, drives fake HTTP observe/preflight/apply,
+  then tests preserved human painting and late-model refusal. Synthetic
+  provider input is NOT evidence of a real model-driven trial.
+- `.github/workflows/wb-agent-528-integrated.yml` executes Godot 4.7
+  and source-pinned native/Rapier LFS runtimes with real graphical Xvfb,
+  retaining copied original PNG/native receipts and test logs.
 - `.github/workflows/wb-agent-528-client.yml` pins the repository's
   official Godot 4.7 editor hash and records exact source/tool identities.
   All protocol CI uses a fake provider and an empty API key.
@@ -70,31 +86,35 @@ settings, scenes, saved setups, logs or CI. Model ID is a human-entered
 configuration, not a hardcoded presumptive entitlement. HTTP messages
 exclude mutable World/worker objects and any shell or filesystem tool.
 
-**Outstanding schema handshake:** #526 has not yet published an
-authoritatively qualified observe/prepare/apply receipt and raster
-format; #527 has not yet published integrated step/Stop epoch contract.
-The operation arguments in this source are an explicitly replaceable
-strict *transport adapter*, not a competing native API. Before
-integration, map exact material IDs, cell shape/filter keys,
-observation image/render identity, task/World/revision tokens,
-proposal footprint encoding and `readback` to #526, and treat
-native Stop ACK as distinct from local cancellation. Do not invent
-or downgrade a native applied receipt.
+**Source-specific handshake:** the #526 Draft contract is now implemented
+and explicitly consumed in this isolated #531 stacked source: native
+material IDs 0 (Empty) and 58 (Hard Wall), shape-specific integer disc/
+line/rectangle, null replacement filter removed rather than rewritten
+as Empty, source-joined PNG and verified native readback. The #527 bounded
+native stepping and Stop acknowledgement are **not yet** integrated;
+`step` explicitly refuses until an independently qualified #527 handoff.
+Local HTTP cancellation is not native Stop ACK. No physics, owner worker
+loop or scheduler is implemented by #528.
 
 ## Acceptance separation and next safe action
 
-**Engineering:** test workflow outcome pending exact-head execution;
-UI source is standalone, not yet visibly mounted in shared workbench.
+**Engineering:** mounted UI and actual #526 owner integration are now
+code-bearing on #531; the [72/72 fake-provider Godot 4.7 run](https://github.com/techrote/cybersand/actions/runs/42383086609)
+passed after preserving the first [RED 51-check run](https://github.com/techrote/cybersand/actions/runs/42382896235).
+The [mounted real-native Godot/Xvfb run](https://github.com/techrote/cybersand/actions/runs/42383086585)
+was launched at source `914aee31684d2cb419e6f1b888a405b739594972`;
+its result must be verified before asserting end-to-end PASS. #527 Step/Stop
+is missing and engineering overall remains HOLD for the full four-tool task.
 **Live:** HOLD, no API key/model/service/paid trial supplied by this job;
 there have been zero genuine API-driven Sand-hopper attempts.
 **Human:** PENDING owner-visible shared-workbench assessment. No
 headless test is desktop responsiveness or human approval.
 
-After qualified #526 and #527 handoffs, connect this panel to the
-*same* shared-workbench dispatcher, pass actual native image/count/receipt
-and footprint projection, then execute the existing manual workbench,
-Stop under held network and native operations, and frozen v1/v2
-32-Sand reference tests before any three predeclared paid trials.
+After #527 publishes and independently qualifies its bounded step/Stop
+contract, reconcile it onto this existing Draft #531; run the same native
+owner path with all four tools, native Stop at an acknowledged boundary,
+manual workbench regressions and the immutable v2 32-Sand control before
+any three predeclared paid trials.
 Retain failed reference controls unmodified. No live trials until the
 reference controls and their total tick budgets are accepted.
 
