@@ -10,6 +10,16 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+## Interior core approximation
+
+Owner-directed dependent experiment retains one inscribed rigid rectangle and
+converts excess eligible RedBrick to native Sand. Actual Windows/Linux1/4,
+native optimized/sanitizer and lifecycle/replay controls pass source-bound.
+The [dossier](../audits/2026-11-07-workbench-rectangle-core.md) separates changed
+geometry/material and reduced rigid mass from unchanged coefficients and
+historical SOL failures. Next is owner feel and independent adversarial review;
+no main/default/Ready/merge or full SOL acceptance.
+
 ## Cut feedback and next approximation
 
 Dependent Draft510's [cut feedback correction](../audits/2026-11-07-workbench-cut-feedback.md)

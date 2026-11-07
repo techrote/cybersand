@@ -10,6 +10,13 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+## Interior rectangle plus Sand
+
+The [dependent core experiment](audits/2026-11-07-workbench-rectangle-core.md)
+implements the owner's lossy representation: one interior rigid brick rectangle,
+excess native Sand, full source eligibility and separate ownership counts.
+Physics coefficients remain fixed; original whole-shape SOL gates are separate.
+
 ## Cut appearance and responsiveness
 
 The [Draft510 correction](audits/2026-11-07-workbench-cut-feedback.md) replaces

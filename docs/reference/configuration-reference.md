@@ -10,6 +10,16 @@ related-documents: [../operations/configuration-and-capacity-budgets.md, ../syst
 
 # Configuration reference
 
+## Interior rectangle profile
+
+The dependent core experiment keeps1024 source cells,62-cell occupied span,
+8 bodies and64 shared proxies. One selected rectangle consumes one proxy;
+source1–16 uses the existing crumble rule before core selection. No minimum
+core aspect/area is added. Unit mass/inertia derive from retained cells; gains,
+gravity, damping and force caps stay. Native custody storage is278776 bytes
+(392 above parent); per-cell arrival storage is unchanged. See
+[profile evidence](../audits/2026-11-07-workbench-rectangle-core.md).
+
 ## Cut presentation and terrain work
 
 Draft510 retains existing cell/body/proxy limits and the cut's8-chunk/2000-usec

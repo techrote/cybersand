@@ -10,6 +10,24 @@ related-documents: [data-ownership-and-lifetimes.md, rigid-body-and-cellular-cou
 
 # Freed objects in the ordinary workbench
 
+## Interior rectangle experiment
+
+On `codex/workbench-rectangle-core-20261107` only, ordinary cuts request one
+largest cell-aligned rectangle entirely inside the proven source. Full-source
+eligibility and the1024-cell/62-span limits remain. Original sources1–16 still
+crumble; larger sources keep the rectangle as one body and convert all excess
+cells to native Sand2. Ties prefer top, left, width then height descending.
+Unit-cell mass/inertia use only retained cells. Geometry/material deliberately
+change; contact law, gravity, damping and force caps do not. Exact native/control
+mode remains available with `rectangle_core=false` before a fresh cut.
+
+One native transaction revalidates full core/fringe tuples, retires core and
+converts fringe, then waits for matching terrain/roster before activation.
+Generic committed rollback refuses; partial failures quarantine. Saved fringe
+row spans and core-only appearance prevent duplicate brick on fresh replay.
+See [source and qualification](../audits/2026-11-07-workbench-rectangle-core.md).
+This lossy approximation is separate from exact whole-object SOL acceptance.
+
 ## Cut responsiveness and carried material
 
 Dependent Draft510 now draws newly freed RedBrick from one exact cropped RG8

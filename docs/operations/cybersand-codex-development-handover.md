@@ -10,6 +10,16 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## Interior core experiment — 2026-11-07
+
+Owner's rectangle-plus-Sand request is on `codex/workbench-rectangle-core-20261107`,
+dependent on stable Draft51053d642b8; Draft466 remains b140265d. Read the
+[dossier](../audits/2026-11-07-workbench-rectangle-core.md). Builddf5fa14e and
+corrected observer25f79e5a qualify4206 checks per Windows/Linux worker1/4,
+native optimized/strict12314+19338 and retained controls. Source520 tree becomes
+208 rigid/312 Sand;356 building152/204. Do not label this original-shape SOL
+clearance or unchanged whole-body mass. Keep law/gains/caps fixed and PR Draft.
+
 ## Cut feedback correction — 2026-11-07
 
 Draft510 now retains new cuts' RedBrick appearance and skips unchanged terrain

@@ -11,6 +11,18 @@ last-reviewed: 2026-11-07
 
 # Interfaces and message contracts
 
+## Interior core cut protocol
+
+The dependent rectangle experiment adds optional Boolean `rectangle_core` to
+ordinary cut begin, default false in native. Prepared/committed replies expose
+`source_member_count`, `source_digest`, `rectangle_core`, `fringe_count` and
+`fringe_converted_count`; core-only `member_count`, M/I and rectangle describe
+the actual aggregate. Copied `fringe` uses the existing six-integer tuple stride.
+`rectangle_core_ledger` reports completed splits, processed source, owned core
+and native Sand. Full source proof/digest binds both sides; only core is archived.
+The saved recipe records Empty core plus exact Sand fringe row spans. See
+[contract](../architecture/workbench-freed-objects.md#interior-rectangle-experiment).
+
 ## Carried RedBrick appearance and cut timing
 
 Draft510 version4 canvas bodies optionally include `appearance` with exactly

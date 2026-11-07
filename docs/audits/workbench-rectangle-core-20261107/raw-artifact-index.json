@@ -1,0 +1,666 @@
+{
+  "build\\workbench-rectangle-core\\preserved-cybersand_native.windows.x86_64.dll": {
+    "bytes": 5092864,
+    "sha256": "fd40f270cc659fae567c4b08cae6a6d55aaebc486a3760e63493fb23f7c417e6"
+  },
+  "build\\workbench-rectangle-core\\preserved-libcybersand_native.linux.x86_64.so": {
+    "bytes": 4543584,
+    "sha256": "ef05b4a63a1a8bc1bc3054b6a466d20c6ddf31f68a5e8dd707df7718e306742b"
+  },
+  "build\\workbench-rectangle-core\\abi-001\\linux-floor.log": {
+    "bytes": 100,
+    "sha256": "623746348b9a99748d32dcf6ac964eae7f209b5e29ef4b79e4c4d4dd0e25dfa0"
+  },
+  "build\\workbench-rectangle-core\\abi-001\\linux-floor.receipt.json": {
+    "bytes": 544,
+    "sha256": "127be0bce257e4d99243d1ab994884a37d51990d8547faec23f936c983638bdc"
+  },
+  "build\\workbench-rectangle-core\\abi-001\\receipt.json": {
+    "bytes": 902,
+    "sha256": "dc2dea0b7f2d431e138c380e70a7740e43bec2524db8feee22a85ecec89e2bcb"
+  },
+  "build\\workbench-rectangle-core\\facade-001\\receipt.json": {
+    "bytes": 33430,
+    "sha256": "82e4f8caf5ded07ccc1e73e1433384a26d97e5a8a3fd1dc57f8099cc57330e89"
+  },
+  "build\\workbench-rectangle-core\\graphics-001\\receipt.json": {
+    "bytes": 2000,
+    "sha256": "fa320d3912c5071340097bdff061909523a3c511cc185bc545adafa2161f0b6a"
+  },
+  "build\\workbench-rectangle-core\\hosts-001\\receipt.json": {
+    "bytes": 259736,
+    "sha256": "280735ea1f9361d994839a0a5d93c083c63a265e8585d5fdc0f8b786e71b46c7"
+  },
+  "build\\workbench-rectangle-core\\native-001\\build-optimized-solid_detachment.log": {
+    "bytes": 893,
+    "sha256": "9262b451983b20f121265334ee10d2be807681ca65513110f18a96e058e341e2"
+  },
+  "build\\workbench-rectangle-core\\native-001\\build-optimized-solid_detachment.receipt.json": {
+    "bytes": 1116,
+    "sha256": "98ea9ad40c4e8178c92f40a32cd9ba41c299a802c8923cda25bbe4f75716da54"
+  },
+  "build\\workbench-rectangle-core\\native-001\\build-optimized-workbench_freed.log": {
+    "bytes": 893,
+    "sha256": "9262b451983b20f121265334ee10d2be807681ca65513110f18a96e058e341e2"
+  },
+  "build\\workbench-rectangle-core\\native-001\\build-optimized-workbench_freed.receipt.json": {
+    "bytes": 1112,
+    "sha256": "d3ddbaeb99f3ce31a359ebf72acc85a2a80c4834615a59b314c6a2281ffa42b1"
+  },
+  "build\\workbench-rectangle-core\\native-001\\build-strict-asan-ubsan-solid_detachment.log": {
+    "bytes": 3721,
+    "sha256": "8f9b5f1f17f75f7556b3ceec175abd6334d1cb83cb4184e86ef70421497e775d"
+  },
+  "build\\workbench-rectangle-core\\native-001\\build-strict-asan-ubsan-solid_detachment.receipt.json": {
+    "bytes": 1199,
+    "sha256": "40b99cffcd2869ed857005038d4e2075182f8cc64680ef9f19da36ae69269d9a"
+  },
+  "build\\workbench-rectangle-core\\native-001\\build-strict-asan-ubsan-workbench_freed.log": {
+    "bytes": 3720,
+    "sha256": "cce92f46e5d7909f2546241004b0df350d2f3bda2e4274e79ccdf541bf631eff"
+  },
+  "build\\workbench-rectangle-core\\native-001\\build-strict-asan-ubsan-workbench_freed.receipt.json": {
+    "bytes": 1196,
+    "sha256": "f506182001759aa7ca473fc1f2bc8abd0bf6e3f88bd6bca0ec352815926cc438"
+  },
+  "build\\workbench-rectangle-core\\native-001\\optimized-solid_detachment": {
+    "bytes": 923008,
+    "sha256": "e45c788b252305d23cd3f05ce2d329ff15d9e90a6d86af5d77c7a01aa4150f9f"
+  },
+  "build\\workbench-rectangle-core\\native-001\\optimized-workbench_freed": {
+    "bytes": 897128,
+    "sha256": "8df5a4ddf83868b4e5a855338e41e80f7249df4d97005938e3843093d8e176a3"
+  },
+  "build\\workbench-rectangle-core\\native-001\\receipt.json": {
+    "bytes": 39811,
+    "sha256": "5abf50276394f90920de19259ebe545dc4087ed7958951c5658248bf7df58d52"
+  },
+  "build\\workbench-rectangle-core\\native-001\\run-optimized-solid_detachment.log": {
+    "bytes": 641,
+    "sha256": "7d393dd2e14c8d23b1f65962ec7dfb3a43d329c2250a99e89353ce17f312301d"
+  },
+  "build\\workbench-rectangle-core\\native-001\\run-optimized-solid_detachment.receipt.json": {
+    "bytes": 801,
+    "sha256": "241e9a1f22871d781ec143ab911547fa28a76fb8b745f1efeb059c994e839acb"
+  },
+  "build\\workbench-rectangle-core\\native-001\\run-optimized-workbench_freed.log": {
+    "bytes": 44,
+    "sha256": "dd502e705b6118d4b5392467ec9f11ab1a3ad96ed9f0a2cbe62a1a8c15d36e1b"
+  },
+  "build\\workbench-rectangle-core\\native-001\\run-optimized-workbench_freed.receipt.json": {
+    "bytes": 799,
+    "sha256": "171e6e9f5c999af3f1dfe9ef5e04a15535866253e95ef2e51ea53218b90eb2f4"
+  },
+  "build\\workbench-rectangle-core\\native-001\\run-strict-asan-ubsan-solid_detachment.log": {
+    "bytes": 641,
+    "sha256": "7d393dd2e14c8d23b1f65962ec7dfb3a43d329c2250a99e89353ce17f312301d"
+  },
+  "build\\workbench-rectangle-core\\native-001\\run-strict-asan-ubsan-solid_detachment.receipt.json": {
+    "bytes": 825,
+    "sha256": "131c6bcbc51742f84c19b46a60d31587e09b0933b2a4edc465a3b3b70ba5f21c"
+  },
+  "build\\workbench-rectangle-core\\native-001\\run-strict-asan-ubsan-workbench_freed.log": {
+    "bytes": 44,
+    "sha256": "dd502e705b6118d4b5392467ec9f11ab1a3ad96ed9f0a2cbe62a1a8c15d36e1b"
+  },
+  "build\\workbench-rectangle-core\\native-001\\run-strict-asan-ubsan-workbench_freed.receipt.json": {
+    "bytes": 822,
+    "sha256": "b50d83ce7f3aa89febc342ff333d5e0c7a059448026fe0fcc2f261327d67809c"
+  },
+  "build\\workbench-rectangle-core\\native-001\\strict-asan-ubsan-solid_detachment": {
+    "bytes": 50798232,
+    "sha256": "cd62e775361f2d68370584648a589aadc9bed43bed034d606844a7e2285216f4"
+  },
+  "build\\workbench-rectangle-core\\native-001\\strict-asan-ubsan-workbench_freed": {
+    "bytes": 50548976,
+    "sha256": "4c44264dc273fbaac62b5ec7b2cb4c5e6a22697c71032ef1c148f4563aa47d45"
+  },
+  "build\\workbench-rectangle-core\\observer-001\\observer-source.json": {
+    "bytes": 412,
+    "sha256": "e0d059281d625d1d15db6304d7845ed94d80e9167dc414db24dfb76801677d9f"
+  },
+  "build\\workbench-rectangle-core\\observer-001\\receipt.json": {
+    "bytes": 34945,
+    "sha256": "811d2c4c15251790f0241d09b6ae4e20c0272fc1af855251c215ffc39f739301"
+  },
+  "build\\workbench-rectangle-core\\observer-001\\test_workbench_rectangle_core_observer.gd": {
+    "bytes": 9081,
+    "sha256": "e16ee34a7a092f810c46c7ea00eae094ecffca870d60bbd9b67a1fd0937dd139"
+  },
+  "build\\workbench-rectangle-core\\runtimes-001\\receipt.json": {
+    "bytes": 38954,
+    "sha256": "aee240d71f0163e23980a8329659f8432cf7e88dc79c2304b22cdc9a4c6baf86"
+  },
+  "build\\workbench-rectangle-core\\runtimes-001\\linux\\build.log": {
+    "bytes": 25251,
+    "sha256": "372cdb2b552f8add309597cab7f4fabb292faf2af2f0551e2df12d712daab15b"
+  },
+  "build\\workbench-rectangle-core\\runtimes-001\\linux\\build.receipt.json": {
+    "bytes": 1260,
+    "sha256": "eb48e3b0ac9b24a893de35756513a06e93ed6f6ec13acd48eaaa61814f16156f"
+  },
+  "build\\workbench-rectangle-core\\runtimes-001\\linux\\dependencies-after.log": {
+    "bytes": 277935,
+    "sha256": "ac49988f861ebba8ce0dc37e521e7476c3439f84258eb5ec690cecfd6a7aae29"
+  },
+  "build\\workbench-rectangle-core\\runtimes-001\\linux\\dependencies-after.receipt.json": {
+    "bytes": 807,
+    "sha256": "55c62acfb57706c88c2bfbe3c95afe6f4fae23d74875fa52f6eebcb67e9c676c"
+  },
+  "build\\workbench-rectangle-core\\runtimes-001\\linux\\dependencies-before.log": {
+    "bytes": 277935,
+    "sha256": "ac49988f861ebba8ce0dc37e521e7476c3439f84258eb5ec690cecfd6a7aae29"
+  },
+  "build\\workbench-rectangle-core\\runtimes-001\\linux\\dependencies-before.receipt.json": {
+    "bytes": 808,
+    "sha256": "e9a273cbe5de148aefcfeab02c76d64e090991d9857009d7a6a303f6addb9cac"
+  },
+  "build\\workbench-rectangle-core\\runtimes-001\\linux\\g++": {
+    "bytes": 668,
+    "sha256": "eda84507126d2e657dfd20386a0da6eecc5ebe8d650102075f5b539da8334b09"
+  },
+  "build\\workbench-rectangle-core\\runtimes-001\\linux\\libcybersand_native.linux.x86_64.so": {
+    "bytes": 4556768,
+    "sha256": "1499e7c7d7d093536b92ca552ed148deb837a2395e91d0bccfac9e0db4f404d3"
+  },
+  "build\\workbench-rectangle-core\\runtimes-001\\linux\\wrapper-mode.log": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "build\\workbench-rectangle-core\\runtimes-001\\linux\\wrapper-mode.receipt.json": {
+    "bytes": 641,
+    "sha256": "e737a5f5d3e61d43d06e42e4ecf77d892831245411db44fc9fd84b199906aeb5"
+  },
+  "build\\workbench-rectangle-core\\runtimes-001\\windows\\build.log": {
+    "bytes": 2404,
+    "sha256": "888a8461fa484505678cc98fd2ef03f044ab2ce31e26b3e572e8faa6fd5075a8"
+  },
+  "build\\workbench-rectangle-core\\runtimes-001\\windows\\build.receipt.json": {
+    "bytes": 379,
+    "sha256": "9043c2e245b1caa0db5db7813b6e74ce56cfc97c099351e73096e4803778e5cc"
+  },
+  "build\\workbench-rectangle-core\\runtimes-001\\windows\\cybersand_native.windows.x86_64.dll": {
+    "bytes": 5108736,
+    "sha256": "fc64e67268972bfa83c3014ba9d23a9c633cb53563c49e37a3886d0c7b63c777"
+  },
+  "build\\workbench-rectangle-core\\runtimes-001\\windows\\dependencies-after.log": {
+    "bytes": 2017524,
+    "sha256": "8b5e61d166ec1ae088970ef3147b259263fdeb5d838a000aa20c5b634213f294"
+  },
+  "build\\workbench-rectangle-core\\runtimes-001\\windows\\dependencies-after.receipt.json": {
+    "bytes": 728,
+    "sha256": "fafdf523552115313bcf65d9c20c8f8fafbe9260638642a27bb407410bdc45cd"
+  },
+  "build\\workbench-rectangle-core\\runtimes-001\\windows\\dependencies-before.log": {
+    "bytes": 2017524,
+    "sha256": "8b5e61d166ec1ae088970ef3147b259263fdeb5d838a000aa20c5b634213f294"
+  },
+  "build\\workbench-rectangle-core\\runtimes-001\\windows\\dependencies-before.receipt.json": {
+    "bytes": 730,
+    "sha256": "0e66131a34cdce6312dcbc3ec9c5f35140e68e6373a6aadb72d0dc18ffa570e1"
+  },
+  "build\\workbench-rectangle-core\\observer-001\\linux\\core-w1.json": {
+    "bytes": 144770,
+    "sha256": "d67dd8d61e0a186c0dbfbf4992db4c34d066a8fa67e85309d59a441eed169e5d"
+  },
+  "build\\workbench-rectangle-core\\observer-001\\linux\\core-w1.log": {
+    "bytes": 262,
+    "sha256": "9741b060bbbff1522cae62bd7d94a942307df1f69fba6f8d149a1367e6eb14a6"
+  },
+  "build\\workbench-rectangle-core\\observer-001\\linux\\core-w1.receipt.json": {
+    "bytes": 995,
+    "sha256": "7ddfc03fc2d9220a32870ac2477a62c61a54d1bb5363cf37f42f739a88b2a798"
+  },
+  "build\\workbench-rectangle-core\\observer-001\\linux\\core-w4.json": {
+    "bytes": 144767,
+    "sha256": "7e02b4818ff89b1432383d23df04284548e539a9138a45c5efe5f29f202d12a7"
+  },
+  "build\\workbench-rectangle-core\\observer-001\\linux\\core-w4.log": {
+    "bytes": 262,
+    "sha256": "9741b060bbbff1522cae62bd7d94a942307df1f69fba6f8d149a1367e6eb14a6"
+  },
+  "build\\workbench-rectangle-core\\observer-001\\linux\\core-w4.receipt.json": {
+    "bytes": 995,
+    "sha256": "2b60165b6463ed63b29c27fc1774ee43c48816fca315d8efaa43ec1dff0bdca1"
+  },
+  "build\\workbench-rectangle-core\\observer-001\\windows\\core-w1.json": {
+    "bytes": 144782,
+    "sha256": "98d24ab7f23867e86347af17ad54a688e86c9dd3011fedeac33f02f7aa656b1e"
+  },
+  "build\\workbench-rectangle-core\\observer-001\\windows\\core-w1.log": {
+    "bytes": 266,
+    "sha256": "5a19811cdf59a105a9d50c78585d426027b2108ce456150551b7eba2f65c3757"
+  },
+  "build\\workbench-rectangle-core\\observer-001\\windows\\core-w1.receipt.json": {
+    "bytes": 670,
+    "sha256": "6d50bda79014e6e25345d67d0a08912859ee0317445988ad4a807e7dd41c7d2f"
+  },
+  "build\\workbench-rectangle-core\\observer-001\\windows\\core-w4.json": {
+    "bytes": 144782,
+    "sha256": "9ef0582eb5f327c4ea31736d507d318ebd0c0b8e3ed4fe973f7f467d2b216487"
+  },
+  "build\\workbench-rectangle-core\\observer-001\\windows\\core-w4.log": {
+    "bytes": 266,
+    "sha256": "5a19811cdf59a105a9d50c78585d426027b2108ce456150551b7eba2f65c3757"
+  },
+  "build\\workbench-rectangle-core\\observer-001\\windows\\core-w4.receipt.json": {
+    "bytes": 670,
+    "sha256": "1fd033fa8aa9c87907fcd35d26396807da96ea705f7dd3e9502bb6e7b666c8c7"
+  },
+  "build\\workbench-rectangle-core\\hosts-001\\linux\\import.log": {
+    "bytes": 37860,
+    "sha256": "a0ed62bccc3bfde56445381785db68deafe50c2ae33b843e2ee0c9d2fa37c503"
+  },
+  "build\\workbench-rectangle-core\\hosts-001\\linux\\import.receipt.json": {
+    "bytes": 676,
+    "sha256": "ff063b3859fac8ccbaea1858548f7e7cb638c2bb141fbbd968308d715869a29c"
+  },
+  "build\\workbench-rectangle-core\\hosts-001\\linux\\test_workbench_brush_cuts-w1.json": {
+    "bytes": 320756,
+    "sha256": "d6ef2778e862929f0a9c47ef0ae63d102de9a0265224e98c249b7a6d417437a8"
+  },
+  "build\\workbench-rectangle-core\\hosts-001\\linux\\test_workbench_brush_cuts-w1.log": {
+    "bytes": 261,
+    "sha256": "bd472bba9b430b9213406b9fd0b3504209897a83c85ee72d2d051dcc319533c8"
+  },
+  "build\\workbench-rectangle-core\\hosts-001\\linux\\test_workbench_brush_cuts-w1.receipt.json": {
+    "bytes": 952,
+    "sha256": "01ea370fae0b95249b296b1030ad650a5725bece3e6b65372bd852345d8fd802"
+  },
+  "build\\workbench-rectangle-core\\hosts-001\\linux\\test_workbench_brush_cuts-w4.json": {
+    "bytes": 320750,
+    "sha256": "a9f996933938faa0ba029b38763d77c780674dacc3953bc7ca0e7e5cc48f847f"
+  },
+  "build\\workbench-rectangle-core\\hosts-001\\linux\\test_workbench_brush_cuts-w4.log": {
+    "bytes": 261,
+    "sha256": "bd472bba9b430b9213406b9fd0b3504209897a83c85ee72d2d051dcc319533c8"
+  },
+  "build\\workbench-rectangle-core\\hosts-001\\linux\\test_workbench_brush_cuts-w4.receipt.json": {
+    "bytes": 953,
+    "sha256": "6b285be15b961c4e43f841ab933955f9b1fcb6105d3e241c61c23bbba8fdbfcd"
+  },
+  "build\\workbench-rectangle-core\\hosts-001\\linux\\test_workbench_canvas.log": {
+    "bytes": 597,
+    "sha256": "96e528d59eadb11696dbb32f52245eb431434963197db3da81817cabdeb3a451"
+  },
+  "build\\workbench-rectangle-core\\hosts-001\\linux\\test_workbench_canvas.receipt.json": {
+    "bytes": 736,
+    "sha256": "f28481d26591bb6fea6ef4d96bd73671bcaaefc5979ff19f0a38efb91beacd8c"
+  },
+  "build\\workbench-rectangle-core\\hosts-001\\linux\\test_workbench_canvas_body.log": {
+    "bytes": 256,
+    "sha256": "3d710f26f38d2b7d5491482afe99b7d208ce9edcf87f54b5b2bb0672442d908d"
+  },
+  "build\\workbench-rectangle-core\\hosts-001\\linux\\test_workbench_canvas_body.receipt.json": {
+    "bytes": 751,
+    "sha256": "1a3c6d77f68957aa54a8de841ff170077d1b76590f66fb31733fd958dec70847"
+  },
+  "build\\workbench-rectangle-core\\hosts-001\\linux\\test_workbench_cut_lifecycle.log": {
+    "bytes": 258,
+    "sha256": "433f98aa4b6d97f503bb2a0ba8ee99624ab5639d497719678768acc4a4956a5b"
+  },
+  "build\\workbench-rectangle-core\\hosts-001\\linux\\test_workbench_cut_lifecycle.receipt.json": {
+    "bytes": 758,
+    "sha256": "155bba943d42327c0129f9626e468f9a73510ab59bfe9edccc049340cab7c063"
+  },
+  "build\\workbench-rectangle-core\\hosts-001\\linux\\test_workbench_fleet_session.log": {
+    "bytes": 258,
+    "sha256": "de1a37723411ff3f440a3a7ffa1857ef7c78f992dfd435ead9e0af40307bae72"
+  },
+  "build\\workbench-rectangle-core\\hosts-001\\linux\\test_workbench_fleet_session.receipt.json": {
+    "bytes": 758,
+    "sha256": "a2068925094a43bffabb7f215dd4d027e898239cb180dc34cb121c5636bb9de6"
+  },
+  "build\\workbench-rectangle-core\\hosts-001\\linux\\test_workbench_freed-w1.json": {
+    "bytes": 376499,
+    "sha256": "c46d60efff76daeffa90581f058340968fc8f6e373e45db35788c79d28e29df1"
+  },
+  "build\\workbench-rectangle-core\\hosts-001\\linux\\test_workbench_freed-w1.log": {
+    "bytes": 260,
+    "sha256": "1e5514693589389f8a77a3890afab9d61b1ee2fb6aeb20267c8ec7b72fe704b2"
+  },
+  "build\\workbench-rectangle-core\\hosts-001\\linux\\test_workbench_freed-w1.receipt.json": {
+    "bytes": 933,
+    "sha256": "af9e9fe0a32b445d5fffff930c81e46e49d7ff67bea1e794191ca5d437cee5d4"
+  },
+  "build\\workbench-rectangle-core\\hosts-001\\linux\\test_workbench_freed-w4.json": {
+    "bytes": 376504,
+    "sha256": "b996855b2b713c66cbc463c43d11635de6c88d3998fa7834542acce92bd1ced6"
+  },
+  "build\\workbench-rectangle-core\\hosts-001\\linux\\test_workbench_freed-w4.log": {
+    "bytes": 260,
+    "sha256": "1e5514693589389f8a77a3890afab9d61b1ee2fb6aeb20267c8ec7b72fe704b2"
+  },
+  "build\\workbench-rectangle-core\\hosts-001\\linux\\test_workbench_freed-w4.receipt.json": {
+    "bytes": 933,
+    "sha256": "86871c60d439f662713b9364cd1285cb78cfa7a772b25c775ba23e009c1e5b24"
+  },
+  "build\\workbench-rectangle-core\\hosts-001\\linux\\test_workbench_input.log": {
+    "bytes": 1231,
+    "sha256": "33c73d987e0e2d62487e0005703f1f0b732f9bc726f10de955db420e32259657"
+  },
+  "build\\workbench-rectangle-core\\hosts-001\\linux\\test_workbench_input.receipt.json": {
+    "bytes": 734,
+    "sha256": "a8d21512c8062cbd21c559aac37d12df6c65cc08e81caea776422a13c06b4f84"
+  },
+  "build\\workbench-rectangle-core\\hosts-001\\linux\\test_workbench_pilot_ui.log": {
+    "bytes": 846,
+    "sha256": "05649b61218a5b7717c7bf1eb34041fc5811fdfe9cf24215b11008d0cfa961b7"
+  },
+  "build\\workbench-rectangle-core\\hosts-001\\linux\\test_workbench_pilot_ui.receipt.json": {
+    "bytes": 743,
+    "sha256": "3183c4ad33284f68403f5fd5c7ff983e9759053408036d4fd6feae8a1e2153ca"
+  },
+  "build\\workbench-rectangle-core\\hosts-001\\linux\\test_workbench_rectangle_core-w1.json": {
+    "bytes": 257026,
+    "sha256": "5883b6ae7f8cf5d27cad953d632fc03d125743c0ab14fabb08a647e38d52e4fe"
+  },
+  "build\\workbench-rectangle-core\\hosts-001\\linux\\test_workbench_rectangle_core-w1.log": {
+    "bytes": 879389,
+    "sha256": "0704cc4e120a974bf6d5f748546b0dffc0001ccf94e5acf330ac2060d31e3738"
+  },
+  "build\\workbench-rectangle-core\\hosts-001\\linux\\test_workbench_rectangle_core-w1.receipt.json": {
+    "bytes": 969,
+    "sha256": "1f57d81aa24322c596fbd44bafcba744439788fc2d001f5973f8605d0821e0ac"
+  },
+  "build\\workbench-rectangle-core\\hosts-001\\linux\\test_workbench_rectangle_core-w4.json": {
+    "bytes": 257024,
+    "sha256": "decd207dc1508d726f5aef2a40ccff58ff7ce04cceaca19f84a180bfc292300a"
+  },
+  "build\\workbench-rectangle-core\\hosts-001\\linux\\test_workbench_rectangle_core-w4.log": {
+    "bytes": 879389,
+    "sha256": "0704cc4e120a974bf6d5f748546b0dffc0001ccf94e5acf330ac2060d31e3738"
+  },
+  "build\\workbench-rectangle-core\\hosts-001\\linux\\test_workbench_rectangle_core-w4.receipt.json": {
+    "bytes": 970,
+    "sha256": "b0a831096a807a8768dbc078d456fa041b7cb27f372123c94fb1ec6aa45067ba"
+  },
+  "build\\workbench-rectangle-core\\hosts-001\\linux\\test_workbench_rectangle_core_lifecycle.log": {
+    "bytes": 258,
+    "sha256": "433f98aa4b6d97f503bb2a0ba8ee99624ab5639d497719678768acc4a4956a5b"
+  },
+  "build\\workbench-rectangle-core\\hosts-001\\linux\\test_workbench_rectangle_core_lifecycle.receipt.json": {
+    "bytes": 790,
+    "sha256": "64f4fef7aec22e1abe02cecf89e889f006116c4875ed9570609ed6ee59150d79"
+  },
+  "build\\workbench-rectangle-core\\hosts-001\\linux\\test_workbench_small_debris-w1.json": {
+    "bytes": 394700,
+    "sha256": "ca25be127c17ba1473d91937f46488c9c489822149f43cca835e0ef3e9845f38"
+  },
+  "build\\workbench-rectangle-core\\hosts-001\\linux\\test_workbench_small_debris-w1.log": {
+    "bytes": 261,
+    "sha256": "7876f7f46a2dd061e02a492da34b1d7fa6cc8a392d7fc1ef58866fa7675ba55f"
+  },
+  "build\\workbench-rectangle-core\\hosts-001\\linux\\test_workbench_small_debris-w1.receipt.json": {
+    "bytes": 960,
+    "sha256": "e6aa9bda8c35eaac153ca5f5751cfe0689e74fe179d82530363b13a23f89cd48"
+  },
+  "build\\workbench-rectangle-core\\hosts-001\\linux\\test_workbench_small_debris-w4.json": {
+    "bytes": 394704,
+    "sha256": "4a07c036778a6e19e6a3c6b1e1b3e9275a91bd201a07a343461dd585fa2c71de"
+  },
+  "build\\workbench-rectangle-core\\hosts-001\\linux\\test_workbench_small_debris-w4.log": {
+    "bytes": 261,
+    "sha256": "7876f7f46a2dd061e02a492da34b1d7fa6cc8a392d7fc1ef58866fa7675ba55f"
+  },
+  "build\\workbench-rectangle-core\\hosts-001\\linux\\test_workbench_small_debris-w4.receipt.json": {
+    "bytes": 960,
+    "sha256": "e0357ba407e0db10649a65f6359d216ee36d8a2151e29dbad45f2cefdf33912d"
+  },
+  "build\\workbench-rectangle-core\\hosts-001\\windows\\import.log": {
+    "bytes": 38462,
+    "sha256": "e45a515926c406a36ba40101a12e5fe0e8dc4d7a7c40a83eaec64bc195415ff8"
+  },
+  "build\\workbench-rectangle-core\\hosts-001\\windows\\import.receipt.json": {
+    "bytes": 526,
+    "sha256": "84a3009bae1bd649e88c134953318c709219525b2604d364e839e9704e8a38d9"
+  },
+  "build\\workbench-rectangle-core\\hosts-001\\windows\\test_workbench_brush_cuts-w1.json": {
+    "bytes": 320776,
+    "sha256": "92b5c7b06c54868c1704a97671ce67cf6e8a19faf6b51aea0012dd3cdae9f89a"
+  },
+  "build\\workbench-rectangle-core\\hosts-001\\windows\\test_workbench_brush_cuts-w1.log": {
+    "bytes": 265,
+    "sha256": "c66147b2e5ae6d52d66fa531a773fc468f96995d5435481575618b5b38e1b7d2"
+  },
+  "build\\workbench-rectangle-core\\hosts-001\\windows\\test_workbench_brush_cuts-w1.receipt.json": {
+    "bytes": 606,
+    "sha256": "2ebcac7c2207ed2694c9f8ab95c24c2af7f78fdf77812fd512f9ece87a5e9424"
+  },
+  "build\\workbench-rectangle-core\\hosts-001\\windows\\test_workbench_brush_cuts-w4.json": {
+    "bytes": 320775,
+    "sha256": "2eea33ebfc300160073110825871041fe53074f94b148ee70da34c9ebea8858e"
+  },
+  "build\\workbench-rectangle-core\\hosts-001\\windows\\test_workbench_brush_cuts-w4.log": {
+    "bytes": 265,
+    "sha256": "c66147b2e5ae6d52d66fa531a773fc468f96995d5435481575618b5b38e1b7d2"
+  },
+  "build\\workbench-rectangle-core\\hosts-001\\windows\\test_workbench_brush_cuts-w4.receipt.json": {
+    "bytes": 606,
+    "sha256": "cd7bdda1d48c202439695af37e5fb5d4f6846ae9a4729588ea0794e3309fdfd2"
+  },
+  "build\\workbench-rectangle-core\\hosts-001\\windows\\test_workbench_canvas.log": {
+    "bytes": 600,
+    "sha256": "6dac2577c7fec68d5e278bf9dd1df3cdd302864ab2f9fa4880c948aa2f964b09"
+  },
+  "build\\workbench-rectangle-core\\hosts-001\\windows\\test_workbench_canvas.receipt.json": {
+    "bytes": 587,
+    "sha256": "8a09961aebb029cfc5365e9d79fddd2ff98419481d1ab47b8fa84d03c9929151"
+  },
+  "build\\workbench-rectangle-core\\hosts-001\\windows\\test_workbench_canvas_body.log": {
+    "bytes": 260,
+    "sha256": "1cf91c3b35f42e2e9d16a51f73da1b8b81137cf257c11c9fc9f7424806682a6c"
+  },
+  "build\\workbench-rectangle-core\\hosts-001\\windows\\test_workbench_canvas_body.receipt.json": {
+    "bytes": 602,
+    "sha256": "8b426e88291aebc516fa3751e13724250738b3cae9d93e00804c3bb031969845"
+  },
+  "build\\workbench-rectangle-core\\hosts-001\\windows\\test_workbench_cut_lifecycle.log": {
+    "bytes": 262,
+    "sha256": "0e598e0ef33e91cc512dd500cecc398e8cd7c3afe481579263153a7320714fe4"
+  },
+  "build\\workbench-rectangle-core\\hosts-001\\windows\\test_workbench_cut_lifecycle.receipt.json": {
+    "bytes": 608,
+    "sha256": "9ed483804cd71608d67d928d0c1671b709a58070480d8a4a3d9fa6b8fd8cf6f7"
+  },
+  "build\\workbench-rectangle-core\\hosts-001\\windows\\test_workbench_fleet_session.log": {
+    "bytes": 262,
+    "sha256": "634f905ac03e58d4737bde7eb8adf6ec8d661ce01f04c9b26bb3fe581f4a3724"
+  },
+  "build\\workbench-rectangle-core\\hosts-001\\windows\\test_workbench_fleet_session.receipt.json": {
+    "bytes": 609,
+    "sha256": "965afd54c9382f148035facfcd649922f882be943fb6f899068b1b960fcf03e8"
+  },
+  "build\\workbench-rectangle-core\\hosts-001\\windows\\test_workbench_freed-w1.json": {
+    "bytes": 376508,
+    "sha256": "d6167d847742468362c10072fe287c15117953b4b596b8e733456ef5816a0a50"
+  },
+  "build\\workbench-rectangle-core\\hosts-001\\windows\\test_workbench_freed-w1.log": {
+    "bytes": 264,
+    "sha256": "d6dbca4fd4e0912d9f2881c46823a8522e82236b66a0083105764a43d69b4c0e"
+  },
+  "build\\workbench-rectangle-core\\hosts-001\\windows\\test_workbench_freed-w1.receipt.json": {
+    "bytes": 591,
+    "sha256": "ab3f1b764a453bcb4aa9ce72cad53b61f91ff1b1ff0bc98bbcc6e8b857bd909a"
+  },
+  "build\\workbench-rectangle-core\\hosts-001\\windows\\test_workbench_freed-w4.json": {
+    "bytes": 376506,
+    "sha256": "b05166ad7a5f63c539b75b37af89bccf8a0582621153f24a86285627b62ec6e7"
+  },
+  "build\\workbench-rectangle-core\\hosts-001\\windows\\test_workbench_freed-w4.log": {
+    "bytes": 264,
+    "sha256": "d6dbca4fd4e0912d9f2881c46823a8522e82236b66a0083105764a43d69b4c0e"
+  },
+  "build\\workbench-rectangle-core\\hosts-001\\windows\\test_workbench_freed-w4.receipt.json": {
+    "bytes": 590,
+    "sha256": "d538389dfd48d8b01ae7f3b0d877e9bf57cae847079c40cd683bbd4728f9d9ec"
+  },
+  "build\\workbench-rectangle-core\\hosts-001\\windows\\test_workbench_input.log": {
+    "bytes": 1235,
+    "sha256": "f5e73965f5ceb0a759ef086551aaea14e41f60a66d8a9d9c9e5f6183e20a88c0"
+  },
+  "build\\workbench-rectangle-core\\hosts-001\\windows\\test_workbench_input.receipt.json": {
+    "bytes": 584,
+    "sha256": "ec62454f10a0714947ad0818bbd433af845527871d53947b910185afdd910634"
+  },
+  "build\\workbench-rectangle-core\\hosts-001\\windows\\test_workbench_pilot_ui.log": {
+    "bytes": 865,
+    "sha256": "e552b6c8178f7e38044fd393dd14d44f2a98078dcdbef20afdf2eab323d76600"
+  },
+  "build\\workbench-rectangle-core\\hosts-001\\windows\\test_workbench_pilot_ui.receipt.json": {
+    "bytes": 594,
+    "sha256": "06bd3a8e13d276ab7de462bba287449e62a4cfe7b5cc700c5896eecd36e2cfbd"
+  },
+  "build\\workbench-rectangle-core\\hosts-001\\windows\\test_workbench_rectangle_core-w1.json": {
+    "bytes": 257042,
+    "sha256": "51a88cfcfb33300572fb379b33e4b4528c02315cb41f4fb688ecfbd564a69026"
+  },
+  "build\\workbench-rectangle-core\\hosts-001\\windows\\test_workbench_rectangle_core-w1.log": {
+    "bytes": 893433,
+    "sha256": "dc79cdda3ec210578eb7fca5213838c08ffe31ed537fe02dccc2249028d2ee43"
+  },
+  "build\\workbench-rectangle-core\\hosts-001\\windows\\test_workbench_rectangle_core-w1.receipt.json": {
+    "bytes": 619,
+    "sha256": "ad768a96fa75bc39b25f64231449d47f110c8a9eb4aab0efbd5e6166b9adc55d"
+  },
+  "build\\workbench-rectangle-core\\hosts-001\\windows\\test_workbench_rectangle_core-w4.json": {
+    "bytes": 257042,
+    "sha256": "2c12537e626e0d918a0547689ede48a0fddf30fd972e0e2a68ae03d54a7499f8"
+  },
+  "build\\workbench-rectangle-core\\hosts-001\\windows\\test_workbench_rectangle_core-w4.log": {
+    "bytes": 893433,
+    "sha256": "dc79cdda3ec210578eb7fca5213838c08ffe31ed537fe02dccc2249028d2ee43"
+  },
+  "build\\workbench-rectangle-core\\hosts-001\\windows\\test_workbench_rectangle_core-w4.receipt.json": {
+    "bytes": 619,
+    "sha256": "117d8d770eac90427f6d681b7385fa7e746c1cc6c5d7e4c4bc410fbc06c61312"
+  },
+  "build\\workbench-rectangle-core\\hosts-001\\windows\\test_workbench_rectangle_core_lifecycle.log": {
+    "bytes": 262,
+    "sha256": "0e598e0ef33e91cc512dd500cecc398e8cd7c3afe481579263153a7320714fe4"
+  },
+  "build\\workbench-rectangle-core\\hosts-001\\windows\\test_workbench_rectangle_core_lifecycle.receipt.json": {
+    "bytes": 641,
+    "sha256": "bd1582f5facfc8e64c22639277e91af66b3a39a0c2bf32839f66ad46826e45db"
+  },
+  "build\\workbench-rectangle-core\\hosts-001\\windows\\test_workbench_small_debris-w1.json": {
+    "bytes": 394721,
+    "sha256": "983a7a35657ca80a2748547440ac86f6fa5950bb833f3b642c9b9779923128bb"
+  },
+  "build\\workbench-rectangle-core\\hosts-001\\windows\\test_workbench_small_debris-w1.log": {
+    "bytes": 265,
+    "sha256": "24c55ca17d3b96fd57eff2b384c8252777222334be376a0804d0e68a3610dd2a"
+  },
+  "build\\workbench-rectangle-core\\hosts-001\\windows\\test_workbench_small_debris-w1.receipt.json": {
+    "bytes": 612,
+    "sha256": "635e87c99354e8b22e46e0b82703cd4fd823c4218b51495585c138438f814f59"
+  },
+  "build\\workbench-rectangle-core\\hosts-001\\windows\\test_workbench_small_debris-w4.json": {
+    "bytes": 394713,
+    "sha256": "0db4bdb9a55d7e568ff95baf14787349d79d1cb47259027c955a4b3623450647"
+  },
+  "build\\workbench-rectangle-core\\hosts-001\\windows\\test_workbench_small_debris-w4.log": {
+    "bytes": 265,
+    "sha256": "24c55ca17d3b96fd57eff2b384c8252777222334be376a0804d0e68a3610dd2a"
+  },
+  "build\\workbench-rectangle-core\\hosts-001\\windows\\test_workbench_small_debris-w4.receipt.json": {
+    "bytes": 611,
+    "sha256": "754e26f4525f4c16fdd4ff8b06d25dcb634cddd1e111337e03ec9206a751b425"
+  },
+  "build\\workbench-rectangle-core\\graphics-001\\linux\\carried-material.log": {
+    "bytes": 3233,
+    "sha256": "840129d530420c2007ed02a068be049c536f2cfaef1b6513e6ea745148e09409"
+  },
+  "build\\workbench-rectangle-core\\graphics-001\\linux\\carried-material.receipt.json": {
+    "bytes": 1033,
+    "sha256": "58a8c23149660ea060368029610184891f4dd60ce7cc4a3e41620a82e4a17f29"
+  },
+  "build\\workbench-rectangle-core\\graphics-001\\windows\\carried-material.log": {
+    "bytes": 2998,
+    "sha256": "f91d9ac22b9ddb9d00e2e8ccc7ae07de457543026516363f55f0e0123e683d43"
+  },
+  "build\\workbench-rectangle-core\\graphics-001\\windows\\carried-material.receipt.json": {
+    "bytes": 665,
+    "sha256": "5a4ffec86ceb1308fd77c67535b34da042cea8611be0a4909424451ee58ecccf"
+  },
+  "build\\workbench-rectangle-core\\graphics-001\\windows\\captures\\carried-brick.png": {
+    "bytes": 1411,
+    "sha256": "7b131b3cbf76b49580706d943ca1f5c0e5771793a0c58bb63cab1d11264181de"
+  },
+  "build\\workbench-rectangle-core\\graphics-001\\windows\\captures\\carried-brick.raw": {
+    "bytes": 3600,
+    "sha256": "58f3f2ace5e998fba5bd68b8ce6da149d4a1ace11863fe5a6f403f36cc4eaa7d"
+  },
+  "build\\workbench-rectangle-core\\graphics-001\\windows\\captures\\rotated-brick.png": {
+    "bytes": 1417,
+    "sha256": "6fa6027f18bf6ed8204b6cc4f55553bf1878ebf38eec6d6c4e1f680bd1fae4d6"
+  },
+  "build\\workbench-rectangle-core\\graphics-001\\windows\\captures\\rotated-brick.raw": {
+    "bytes": 3600,
+    "sha256": "a11778f884babc835fe4ddfe5caba2d9918eafcfcae0a448350f1a0218f6e7f7"
+  },
+  "build\\workbench-rectangle-core\\graphics-001\\windows\\captures\\source-brick.png": {
+    "bytes": 1455,
+    "sha256": "5a314e19e713eabe7be2d082480870814a8107aa32b358f55a4003eee94a5aaa"
+  },
+  "build\\workbench-rectangle-core\\graphics-001\\windows\\captures\\source-brick.raw": {
+    "bytes": 3600,
+    "sha256": "83a07f4980f902cb098fecc3e297e107bd33ee1622ded223c63c60c4ecf918d2"
+  },
+  "build\\workbench-rectangle-core\\graphics-001\\linux\\captures\\carried-brick.png": {
+    "bytes": 1413,
+    "sha256": "1ede5a1d9a80a7e3dc39da769318bb939f55858a0ecac5a5ac488f2d1ca6ba86"
+  },
+  "build\\workbench-rectangle-core\\graphics-001\\linux\\captures\\carried-brick.raw": {
+    "bytes": 3600,
+    "sha256": "aa2c34057279cc6e9af37797483f4d25774f52048ff042a0616b44624f262698"
+  },
+  "build\\workbench-rectangle-core\\graphics-001\\linux\\captures\\rotated-brick.png": {
+    "bytes": 1411,
+    "sha256": "f469eb3d892da220f82db00e98068a0e561372e489fa66a948cb71ab98b2fcd4"
+  },
+  "build\\workbench-rectangle-core\\graphics-001\\linux\\captures\\rotated-brick.raw": {
+    "bytes": 3600,
+    "sha256": "4c32b60bd23dc0a49770f5a90cd7c9e6fa307bd1dd2b07d95b502d6c750ff2b4"
+  },
+  "build\\workbench-rectangle-core\\graphics-001\\linux\\captures\\source-brick.png": {
+    "bytes": 1457,
+    "sha256": "3c5555aa08370bde2be6afd55827ddaf434671705219908c59780dc07a8bfc3c"
+  },
+  "build\\workbench-rectangle-core\\graphics-001\\linux\\captures\\source-brick.raw": {
+    "bytes": 3600,
+    "sha256": "c6c3f00d027de0e05183182cd8b04ca97a5fa30a94842841452350e0dce820d4"
+  },
+  "build\\workbench-rectangle-core\\facade-001\\linux\\facade-w1.log": {
+    "bytes": 107516,
+    "sha256": "14d540436e4b54137c0a0f7000985df8f6a0c3b3ff291be0d7f98584c113c0ee"
+  },
+  "build\\workbench-rectangle-core\\facade-001\\linux\\facade-w1.receipt.json": {
+    "bytes": 734,
+    "sha256": "5538a0d7ba36eeb16e6494349c1a8be1d229f129b46e56446d6d1c10f0b480fc"
+  },
+  "build\\workbench-rectangle-core\\facade-001\\linux\\facade-w4.log": {
+    "bytes": 107516,
+    "sha256": "cc62e976507cd8b7df7ba9b05c2ebece0d674321580f9bd856194fa41ba5fe8d"
+  },
+  "build\\workbench-rectangle-core\\facade-001\\linux\\facade-w4.receipt.json": {
+    "bytes": 733,
+    "sha256": "6ac18c33aa43b1f90fa3bb4a7e9a562c2c917d312958c80b741abf4b7137add0"
+  },
+  "build\\workbench-rectangle-core\\facade-001\\windows\\facade-w1.log": {
+    "bytes": 106717,
+    "sha256": "0e2d11ba2e93559b49c8c83d4b11563eeeb6a64b9d5f48e3ddd5dee5d636e756"
+  },
+  "build\\workbench-rectangle-core\\facade-001\\windows\\facade-w1.receipt.json": {
+    "bytes": 597,
+    "sha256": "d916b8bef43705c6322d4f6bc239710d5aee77aec3d5c2f19f65aa3733527bd4"
+  },
+  "build\\workbench-rectangle-core\\facade-001\\windows\\facade-w4.log": {
+    "bytes": 106717,
+    "sha256": "8b60a34b8d79ad228f861127db0c911fdb95a9b7b69c890ccc27a6444f00f52a"
+  },
+  "build\\workbench-rectangle-core\\facade-001\\windows\\facade-w4.receipt.json": {
+    "bytes": 596,
+    "sha256": "85f2331698f513b9df1334d62a18640c9713b0745c707f128650261d94afab85"
+  }
+}
