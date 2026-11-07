@@ -14,7 +14,7 @@ from pathlib import Path
 import subprocess
 
 BASE = "24a8bbe8ccf0d17196ebbab580b924930a964584"
-CANDIDATE_BUILD = "b7f151f85676ffc6b2ea87f3e5c6165b890727e0"
+CANDIDATE_BUILD = "186452b9f035961325ad71917a76ba8834e30bcf"
 CANDIDATE_PR = "186452b9f035961325ad71917a76ba8834e30bcf"
 
 def digest(b: bytes) -> str:
