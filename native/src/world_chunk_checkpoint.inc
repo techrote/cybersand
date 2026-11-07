@@ -166,9 +166,13 @@ ChunkCheckpointStatus World::restore_chunk_checkpoint(
             return ChunkCheckpointStatus::InvalidRecord;
         const auto generation=in.get<std::uint64_t>();
         const auto saved_tick=in.get<std::uint64_t>();
-        if(generation==std::numeric_limits<std::uint64_t>::max() ||
-           saved_tick>completed_tick_index_)
+        // This domain has no active scheduling deadline or dynamic cell.
+        // The source tick is a provenance/fence receipt, not elapsed-time
+        // catch-up: an otherwise empty fresh World may import the static
+        // checkpoint after a full process restart.
+        if(generation==std::numeric_limits<std::uint64_t>::max())
             return ChunkCheckpointStatus::InvalidRecord;
+        (void)saved_tick;
         auto candidate=std::make_unique<Chunk>(config_.chunk_size,config_.activity_block_size);
         candidate->mutation_generation=generation;
         candidate->pristine_generated_empty=false; // historic origin is unknown
