@@ -1,7 +1,7 @@
 # CyberSand — fast in-chunk neighbour cursor independent qualification
 
 **Date:** 2026-11-06  
-**Decision:** REVISE — completed native/paired evidence; gain is modest and six-worker benefit unproven; no protected-source admission.  
+**Decision:** REVISE — correctness strongly qualified and six-worker benefit repeatably positive **on an oversubscribed hosted machine**, but only +2.68% versus the 5–10% target; six-core deployment-host testing, independent review and source admission remain open.  
 **Scope:** `techrote/cybersand` PR [#471](https://github.com/techrote/cybersand/pull/471); isolated follow-up Draft [#477](https://github.com/techrote/cybersand/pull/477); no merge or production publication.
 
 ## Source identity and isolation
@@ -28,8 +28,8 @@
 - GCC baseline & candidate profiling build: PASS.
 - First hosted combined qualification [run #42301283868](https://github.com/techrote/cybersand/actions/runs/42301283868): fixture PASS, metadata JSON serialization setup FAILED, repaired. No native simulation executed in that attempt.
 - First timing-only [run #42302869232](https://github.com/techrote/cybersand/actions/runs/42302869232): both native build PASS, benchmark CSV output directory missing; repaired. No simulation ticks in that attempt.
-- Corrected balanced timing-only run: [#42303273494](https://github.com/techrote/cybersand/actions/runs/42303273494). **PENDING** at time report first authored; update this before admitting.
-- Full native / ASan / UBSan / focused TSan / deterministic worker parity: isolated qualification [#42301379645](https://github.com/techrote/cybersand/actions/runs/42301379645). **PENDING** at time report first authored; update this before admitting.
+- Corrected balanced timing-only run: [#42303273494](https://github.com/techrote/cybersand/actions/runs/42303273494). **PASS**, 24×600 ticks, four 1,800-tick extensions and guarded oracle; raw evidence cited below.
+- Full native / ASan / UBSan / focused TSan / deterministic worker parity: isolated qualification [#42301379645](https://github.com/techrote/cybersand/actions/runs/42301379645). **188+188+188 native/sanitizer tests PASS and seven focused TSan selections PASS**; overall job red was a benchmark output-directory defect after tests.
 - Original PR #471 documentation provenance: FAIL due missing `world.cpp` protected reviewed transition; deliberately not bypassed.
 - Exact-head Godot/native PR checks: skipped while Draft; these are not passes.
 
@@ -41,7 +41,7 @@ For performance builds compile `native/src/world.cpp`, `native/src/material_rule
 
 ## Measurement results
 
-Pending completion and extraction from run #42303273494. **Do not report speedup or exact hashes without raw execution evidence.** Retain all raw CSV/JSON, CI logs and `perf` reports, including explicit `perf_event` permission or availability failures.
+The paired 600/1,800-tick measurements and full hashes are in the **Post-run qualification readback** below; the six-pair extended 1,800-tick campaign and final confidence intervals are in the concluding readback. All reported timings derive from raw host execution, not synthetic estimates.
 
 ## Post-run qualification readback — 2026-11-06, hosted runs completed
 
@@ -233,6 +233,109 @@ moved 4,059,127, scheduled cores 4,879, identical both builds.
 [Preserved raw Callgrind source and full line records](https://github.com/techrote/cybersand/actions/runs/42313028634/artifacts/13549667384).
 The accepted six-worker performance question is separate.
 
+## Final cross-owner, profiling, and sustained-tick evidence — 6 November 2026
+
+**Technical disposition: REVISE.** The narrow cursor is demonstrably exact under
+the exercised domains and does produce a repeatable positive performance change.
+However, the 5–10% total-tick working target is not met on the tested multiworker
+host; the target six-core/12-thread CPU, permitted Linux `perf` elapsed-CPU
+function/line attribution, protected-source admission, exact-head Godot runtime
+qualification, and independent acceptance remain unresolved.
+
+### Six paired 1,800-tick six-worker trials: PASS
+
+[Completed GitHub Actions #42313589873](https://github.com/techrote/cybersand/actions/runs/42313589873)
+and [artifact #13549909353](https://github.com/techrote/cybersand/actions/runs/42313589873/artifacts/13549909353)
+cover 12 total 1,800-tick runs (six balanced A/B pairs, always **six**
+configured workers) against unmodified, LF-SHA-verified world source commits
+`4a80af2a891332176a3912a235582d77d076a185` and
+`eadbc96fa466cdfd0a2956d4a72a0c04d35dd279`, respectively.
+The candidate SHA is an apparatus branch descendant of the exact original
+cursor engine bytes; its source `world.cpp` LF SHA-256 remains
+`bbd9741311bc67905934048633846b8d011efd760033edd0ff9e88be5b262868`.
+Raw CSVs and machine/provenance logs are retained; both arms use the same fixture,
+flags, compiler, benchmark and 600-tick analytic window selected *before*
+repeated measurement. **All hashes, physical hashes and per-tick deterministic
+work records match across every run**, with up to six actual task claimants.
+
+| Window | Baseline elapsed mean | Cursor elapsed mean | Mean of six paired speedups | 95% paired Student-t CI | Verdict |
+|---|---:|---:|---:|---|---|
+| Complete 1–1800 | 41.775095 ms/tick | 40.655751 ms/tick | **+2.6771%** | **+2.0865 to +3.2677%** | Positive on this host, below target |
+| Activity-grown 1201–1800 | 44.562861 ms/tick | 43.415197 ms/tick | **+2.5714%** | **+1.7409 to +3.4018%** | Positive on this host, below target |
+
+All twelve run executions completed, with **6/6 paired wins** in each
+analysis. Complete-run paired gains were 3.340%, 2.613%, 3.356%, 2.119%,
+2.085%, 2.550%; activity-grown paired gains were 3.439%, 2.000%, 3.243%,
+2.105%, 1.528%, 3.113%. The mean scheduled-core count across the last 600
+ticks was 563.86; mean visited cells 428,780.48. These figures extend the
+prior 600-tick observation without assuming that activity growth itself
+proves a large gain.
+
+**Hardware warning:** GitHub-hosted Ubuntu 24.04 AMD EPYC runner exposed only
+four logical processors while running six configured workers. The experiment
+establishes a real gain under that specific oversubscribed configuration, **not**
+on the owner's Ryzen 5600X or another real six-core/12-logical-CPU host. It is
+scientifically inappropriate to extrapolate a 5–10% full-tick effect from it.
+
+### Independently executed owner #471 current-head gates: ALL PASS
+
+[The owner-side current-head workflow #42313096990](https://github.com/techrote/cybersand/actions/runs/42313096990)
+at cursor branch source `cd26abd96bb4d620f123e3fbb199354b8ee2c482`
+ran these **four completed jobs** on Linux with GCC 13.3.0:
+
+| Job | Result | Original evidence |
+|---|---|---|
+| Full native C++ | **188 tests passed** | [Native artifact #13550106854](https://github.com/techrote/cybersand/actions/runs/42313096990/artifacts/13550106854) |
+| Native with `CYBERSAND_VERIFY_LOCAL_NEIGHBOUR` | **188 tests passed** | Same native artifact |
+| Full native ASan + UBSan | **188 tests passed** | [Sanitizer artifact #13548879500](https://github.com/techrote/cybersand/actions/runs/42313096990/artifacts/13548879500) |
+| Full native TSan | **188 tests passed** (1048.433 s, exit 0) | [TSan artifact #13550043815](https://github.com/techrote/cybersand/actions/runs/42313096990/artifacts/13550043815) |
+| Original 96-tick signed/mask/chunk-seam adversary, workers 1/6 | **PASS**, exact baseline/candidate hashes, work and multiple worker claimants | [ABBA/adversary artifact #13549754379](https://github.com/techrote/cybersand/actions/runs/42313096990/artifacts/13549754379) |
+| Owner source-pinned 3-cycle ABBA, workers 1/6 | **PASS**, checkpoint/hash/work parity | Same ABBA/adversary artifact |
+
+Owner-side ABBA mean tick timings (three cycles, baseline/candidate each
+twice per cycle; *different and smaller campaign* than our six-cycle analysis):
+one worker `82.969 → 80.803 ms`, approximately **+2.61%**, and six workers
+`37.593 → 36.791 ms`, approximately **+2.13%**. The respective median
+candidate/baseline ratios are 0.977659 and 0.979403. This is further
+independent evidence of modest improvements, **not** an additional set of
+six unbiased independent pairs for our 1,800-tick CI.
+
+### Corrected Callgrind source-line profile: PASS
+
+[Callgrind exact-head #42314416637](https://github.com/techrote/cybersand/actions/runs/42314416637),
+[artifact #13549687979](https://github.com/techrote/cybersand/actions/runs/42314416637/artifacts/13549687979):
+original and cursor **identical hashes, work and 16 first ticks** on one worker.
+Active `Ir` counts are 14,690,762,574 vs 13,828,652,071 instructions:
+**862,110,503 fewer (−5.868385%)**. Source-line and function annotations
+attribute major savings to `update_rule_kernel`,
+`schedule_pending_reaction_wake` and `address/find_chunk` call reductions
+under the cursor. Full raw source-level `.callgrind` files retained.
+Do not add overlapping inclusive counts, or treat −5.87% instructions as
+elapsed-time speedup. Native `perf` still blocked by
+`perf_event_paranoid=4` on hosted runner.
+
+### Source admission and CI boundary
+
+All engineering source bytes tested remained under the original #471 cursor
+`world.cpp` LF SHA-256. The owner-added `.github/workflows/pf471-neighbour-qualification.yml`
+still has unconditional `cancel-in-progress: true` with `workflow_dispatch`,
+which violates `tools/ci/check_ci_scheduling_policy.py`, as independently
+confirmed at #477's synthetic merge [documentation run #42313898697](https://github.com/techrote/cybersand/actions/runs/42313898697).
+The owner was notified on [#471](https://github.com/techrote/cybersand/pull/471#issuecomment-6698907311).
+**Do not bypass or weaken this guard**. Our three independent workflows have
+been repaired to use non-cancelling, per-run groups and not self-trigger
+unnecessary expensive qualification. Even after that orchestration issue is
+fixed, `world.cpp` protected-source admission remains a deliberate blocker.
+
+**No owner-approved `REVIEWED_TRANSITIONS` entry; no immutable compatibility
+lock refresh; no modifications or merge of #471 or `main` by this review.
+PRs #471 and #477 remain Draft.** Formal independent third-party source and
+performance acceptance plus real six-core/12-thread replication remain
+required before considering **ACCEPT FOR FURTHER ADMISSION**. If the
+deployment-representative effect remains around 2–3%, decide explicitly
+whether approximately 1 ms per stress-canvas tick warrants the protected-source
+and maintenance complexity, or **REJECT** the production change.
+
 ## Final remaining gates and reproduction handover
 
 **Completed and no longer outstanding:** full reference and candidate 188-test
@@ -302,5 +405,5 @@ Keep the target machine otherwise idle where possible, capture CPU topology,
 kernel/compiler/tool versions, six actual pool claimants, all raw CSVs and paired
 CIs, and preserve the evidence outside Actions artifact retention.
 
-**Final disposition pending ongoing profile/sustained timing: REVISE.**
+**Final disposition after both profiling and sustained host timing: REVISE.** A positive but modest six-worker improvement is demonstrated for the hosted four-logical-CPU environment; six-core/12-thread target-host effect remains untested.
 **No merge. No production runtime publication.**
