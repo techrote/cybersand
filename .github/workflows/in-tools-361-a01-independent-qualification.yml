@@ -58,3 +58,36 @@ jobs:
           path: ${{ runner.temp }}/in-tools-a01/
           if-no-files-found: warn
           retention-days: 90
+
+
+  successor-current-main-source:
+    name: Renewed current-main source admission
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Check out exact successor head
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+          lfs: false
+      - name: Validate successor source and adversarial suite
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/in-tools-361-new-main"
+          git rev-parse HEAD | tee "$RUNNER_TEMP/in-tools-361-new-main/head.txt"
+          git rev-parse 'HEAD^{tree}' | tee "$RUNNER_TEMP/in-tools-361-new-main/tree.txt"
+          python3 tools/lcb/in_tools_current_main_admission.py | tee "$RUNNER_TEMP/in-tools-361-new-main/admission.json"
+          python3 tools/lcb/test_in_tools_current_main_admission.py -v 2>&1 | tee "$RUNNER_TEMP/in-tools-361-new-main/tests.log"
+          grep -Eq 'Ran 15 tests' "$RUNNER_TEMP/in-tools-361-new-main/tests.log"
+          grep -Eq '^OK$' "$RUNNER_TEMP/in-tools-361-new-main/tests.log"
+          git diff --exit-code
+      - name: Preserve exact successor source report
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: in-tools-361-new-main-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/in-tools-361-new-main/
+          if-no-files-found: warn
+          retention-days: 90
