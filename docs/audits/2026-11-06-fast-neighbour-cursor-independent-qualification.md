@@ -317,15 +317,20 @@ elapsed-time speedup. Native `perf` still blocked by
 ### Source admission and CI boundary
 
 All engineering source bytes tested remained under the original #471 cursor
-`world.cpp` LF SHA-256. The owner-added `.github/workflows/pf471-neighbour-qualification.yml`
-still has unconditional `cancel-in-progress: true` with `workflow_dispatch`,
-which violates `tools/ci/check_ci_scheduling_policy.py`, as independently
-confirmed at #477's synthetic merge [documentation run #42313898697](https://github.com/techrote/cybersand/actions/runs/42313898697).
-The owner was notified on [#471](https://github.com/techrote/cybersand/pull/471#issuecomment-6698907311).
-**Do not bypass or weaken this guard**. Our three independent workflows have
-been repaired to use non-cancelling, per-run groups and not self-trigger
-unnecessary expensive qualification. Even after that orchestration issue is
-fixed, `world.cpp` protected-source admission remains a deliberate blocker.
+`world.cpp` LF SHA-256. The owner initially added a `workflow_dispatch` plus
+unconditional-cancellation conflict that the repository CI scheduling-policy
+checker correctly rejected. After independent notification, the owner **retired
+both temporary `pf471-neighbour-qualification.yml` and `pf471-neighbour-perf.yml`
+workflows** (while retaining their immutable successful Action run artifacts)
+in the successor commit
+`6c58a736f814faf48e9a616652760a45467d8d16`. The new
+[documentation/provenance run #42315943431](https://github.com/techrote/cybersand/actions/runs/42315943431)
+progressed past scheduling checks and fails only at the **expected**
+`Check material catalogue shadow compatibility` gate: the modified
+`native/src/world.cpp` bytes do not yet have an owner-reviewed
+`REVIEWED_TRANSITIONS` entry. **This is the intended fail-closed boundary.**
+No scheduling-policy checker was weakened, and no immutable source lock changed.
+Our independent qualification workflows use non-cancelling, per-run groups.
 
 **No owner-approved `REVIEWED_TRANSITIONS` entry; no immutable compatibility
 lock refresh; no modifications or merge of #471 or `main` by this review.
@@ -336,74 +341,63 @@ deployment-representative effect remains around 2–3%, decide explicitly
 whether approximately 1 ms per stress-canvas tick warrants the protected-source
 and maintenance complexity, or **REJECT** the production change.
 
-## Final remaining gates and reproduction handover
+## Final current-head status and independent handover
 
-**Completed and no longer outstanding:** full reference and candidate 188-test
-native suites, full candidate ASan/UBSan 188-test suite, seven focused original
-TSan selections, 24 source-pinned stress-canvas 600-tick runs, four
-1,800-tick extensions, guarded cursor-oracle runs, and 16 additional independent
-520-tick signed/mask/non-power-of-two/epoch replays plus 8 sanitizer and 2 TSan
-edge-case replays. Details and source identities are in the exact-head records
-above, with failures of the original *benchmark runner* separated from actual
-engine execution.
+**State observed 7 November 2026 00:05 UTC:**
 
-**Current repository-state qualification:** PR #406 was merged by an independent
-actor at 22:08 UTC; PR #471 subsequently advanced from `0df569bf` to
-`cd26abd96bb4d620f123e3fbb199354b8ee2c482` by adding only the
-`native/bench/neighbour_cursor_adversary.cpp` fixture and
-`.github/workflows/pf471-neighbour-qualification.yml`. Our measured
-`native/src/world.cpp` bytes and `native/bench/neighbour_cursor_bench.cpp`
-are unchanged, so previous engine-level outcomes remain source-relevant. The
-new separate #471 workflow [#42313096990](https://github.com/techrote/cybersand/actions/runs/42313096990)
-requires its own final exact-head result and must not be silently counted green.
+- PR #406 was merged by a different actor on 6 November at 22:08 UTC.
+- PR #471 is **Draft, unmerged**; latest reviewed owner branch
+  `6c58a736f814faf48e9a616652760a45467d8d16` includes only additional
+  test-workflow and audit changes since the source-pinned measured cursor
+  candidate. Both temporary owner workflows have since been retired, preserving
+  their original hosted evidence. The protected `native/src/world.cpp` LF
+  SHA-256 remains `bbd9741311bc67905934048633846b8d011efd760033edd0ff9e88be5b262868`.
+- PR #477 is a **separate Draft, unmerged**, with the independently corrected
+  benchmark apparatus, edge fixtures, scoped workflows and this dated audit.
+  This work has not changed the original implementation branch or protected
+  catalogue lock.
+- Owner's review-ready source note now states **ACCEPT FOR INDEPENDENT
+  SOURCE-ADMISSION REVIEW** — a request for strictly read-only review rather
+  than admitting protected bytes, issuing a production runtime, or merging.
+  This independent report's disposition remains **REVISE** for production
+  qualification pending deployment-representative perf/benefit acceptance.
 
-1. **Profile the actual read path.** CI [#42313028634](https://github.com/techrote/cybersand/actions/runs/42313028634)
-   collects bounded early-tick `Callgrind` instruction counts/function/source
-   annotations on the identical stress scene and source pair. Its interpretation
-   must remain instruction-level, not a wall-time speedup or an equivalent
-   Linux `perf` profile. Run permitted `perf` on a capable host for full
-   elapsed-CPU and function/line profiles; do not circumvent host security.
-2. **Decide sustained worker benefit.** CI [#42313589873](https://github.com/techrote/cybersand/actions/runs/42313589873)
-   adds six balanced pairs of 1,800-tick 6-worker replays (12 runs total) and
-   reports both complete and late-activity 1201–1800 tick speedup and confidence
-   intervals. This is still an oversubscribed 4-logical-CPU hosted environment;
-   the critical target remains a repeat on actual 6-core/12-logical-CPU hardware.
-3. **Independent review.** Have a separate reviewer read #471's unchanged
-   `KernelReadCursor` code, the owner-side adversary, and the original artifact
-   evidence against the exact source, distinguishing existing baseline issues
-   from cursor regressions. Do not expand into a 3×3 cached chunk directory on
-   speculation.
-4. **Decision:** ACCEPT FOR FURTHER ADMISSION only if exactness remains established,
-   the 6-worker total-tick effect is reproducible and worthwhile, and independent
-   review agrees the risk/complexity is justified. REJECT if neutral, slower, or
-   practically marginal on the deployment workload; otherwise keep REVISE with
-   the concrete missing profile/hardware result.
-5. **Protected-source admission**, if and only if the decision is positive:
-   independently review the LF SHA-256 transition
+**No native correctness or benchmark apparatus gates remain pending on the
+pinned source.** Proven exactness includes both full native 188-test builds,
+188 full ASan/UBSan tests and 188 full TSan tests at the owner-controlled
+exact cursor source, separate independent 1/6-worker signed/mask/nonpower2/epoch
+replays with sanitizers, 24 standard 600-tick measurements, 12 sustained
+1,800-tick measurements, the source-derived 129-rectangle fixture, and
+verified original/candidate Callgrind Ir with full line annotations.
+All state hashes, physical hashes and compared deterministic work counts
+match. The 1/6-worker elapsed-time benefit is positive, but only
+**+2.677% six-worker sustained on an oversubscribed four-logical-CPU host.**
+Host system `perf` still returns `perf_record_exit=255` with
+`perf_event_paranoid=4`; this is not a successful `perf` profile.
+
+**Next bounded owner decisions, not another speculative implementation:**
+
+1. Conduct a **strictly read-only independent source-admission review** of
+   the unchanged cursor source, full original GitHub Actions evidence and the
+   ABI/phase/worker safety contracts. Reconcile the conclusion with the
+   owner-requested admission review; do not change the protected lock.
+2. On a quiet six-core/12-logical-CPU host (with permitted native Linux
+   `perf` sampling), run the same source-pinned 1/6-worker, 600/1800-tick
+   campaign and gather actual function/line CPU attribution. Preserve
+   failures as well as successful raw records.
+3. Owner makes an explicit **risk/benefit** choice: retain the narrow
+   cursor if ~1 ms/tick or the measured target-host gain is worthwhile,
+   or REJECT the production optimisation if complexity outweighs benefits.
+   The original 5–10% target is not automatically met by a 2–3% gain.
+4. **Only following independent acceptance and owner approval**, prepare a
+   reviewed source-ancestry transition from the verified LF baseline
    `5a9de5e09a8665392677902ab501696aafefb5bbd2d2800e3dc1059b87a6f17d`
-   to `bbd9741311bc67905934048633846b8d011efd760033edd0ff9e88be5b262868`,
-   establish required ancestry of the actual byte-identical source commit, and
-   prepare an authorized `REVIEWED_TRANSITIONS` entry with this audit.
-   **Never** bypass the guard or refresh the retained immutable lock. Exact-head
-   documentation/provenance, Native and Godot regression checks and owner
-   acceptance are still required after any transition.
+   to the verified candidate LF hash above, record exact commit identity,
+   preserve immutable compatibility locks, and execute exact-head
+   documentation/provenance, Native and Godot/GDExtension acceptance.
+   Never bypass source admission.
+5. Leave **both PRs Draft and unmerged** until these separate requirements
+   are satisfied. No production runtime publication by this independent work.
 
-For a native Linux/WSL machine with six physical cores, 12 logical CPUs,
-`g++-13` and access to both source revisions, the existing branch contains
-the source-identical bounded six-worker comparison script:
-
-```sh
-git fetch origin claude/water-ballistic-hybrid codex/fast-in-chunk-neighbour-cursor-20261106
-python3 tools/perf/paired_extended_neighbour_cursor.py \
-  --repo . \
-  --out "/var/tmp/cybersand-nr-$(date -u +%Y%m%d-%H%M%S)" \
-  --baseline 4a80af2a891332176a3912a235582d77d076a185 \
-  --candidate cd26abd96bb4d620f123e3fbb199354b8ee2c482
-```
-
-Keep the target machine otherwise idle where possible, capture CPU topology,
-kernel/compiler/tool versions, six actual pool claimants, all raw CSVs and paired
-CIs, and preserve the evidence outside Actions artifact retention.
-
-**Final disposition after both profiling and sustained host timing: REVISE.** A positive but modest six-worker improvement is demonstrated for the hosted four-logical-CPU environment; six-core/12-thread target-host effect remains untested.
-**No merge. No production runtime publication.**
+**Repository audit / raw evidence URLs and benchmark commands are linked
+throughout this report and the #477 Draft PR.**
