@@ -18,6 +18,8 @@ const SIMULATION_HZ: float = 60.0
 const FIXED_TIMESTEP: float = 1.0 / SIMULATION_HZ
 const TICK_INTERVAL_USEC: int = 16667
 const MAX_BACKLOG_TICKS: int = 3
+const LOCKSTEP_POLL_USEC: int = 100
+const WORKBENCH_SAMPLE_POLL_USEC: int = 250
 const EMISSION_MATERIAL_MASK: int = 255
 const EMISSION_FLAGS_SHIFT: int = 8
 const DEFAULT_RENDER_SNAPSHOT_INTERVAL_USEC: int = 16667
@@ -61,6 +63,22 @@ var _liquid_surface_adhesion_enabled: bool = true
 var _render_snapshot_interval_usec: int = DEFAULT_RENDER_SNAPSHOT_INTERVAL_USEC
 var _rigid_body_states: PackedFloat32Array = PackedFloat32Array()
 var _rigid_body_epoch: int = 0
+# COUPLING-LOCKSTEP-001 opt-in fence (default off; see set_lockstep_coupling).
+# Every main-thread body publication increments this mutex-owned counter.
+var _rigid_body_publication: int = 0
+var _lockstep_enabled: bool = false
+var _lockstep_hold_timeout_usec: int = 250000
+var _lockstep_consumed_publication: int = 0 # Worker-exclusive; fence comparison.
+# Worker-exclusive publication consumed by the last successfully completed
+# native tick (-1 before one). Paused, reset-only, failed and refused turns do
+# not advance it; snapshots copy it as consumed_rigid_body_publication.
+var _lockstep_completed_publication: int = -1
+var _lockstep_holds: int = 0 # Mutex-owned counters below.
+var _lockstep_superseded_publications: int = 0
+var _lockstep_hold_usec_total: int = 0
+var _lockstep_hold_usec_max: int = 0
+var _lockstep_timeouts: int = 0
+var _lockstep_ticks: int = 0
 var _physical_effect_epoch: int = 0
 var _physical_effect_generations := PackedInt64Array([0, 0, 0, 0, 0, 0, 0, 0])
 var _pending_physical_effects: Array = []
@@ -133,6 +151,10 @@ var _workbench_last_emitter_sample := -1
 var _workbench_emitter_receipts: Array = []
 var _workbench_source_commands: Array = []
 var _workbench_source := preload("res://scripts/workbench_powder_source.gd").new()
+# WCX/BW-001 experimental Water spray: requested settings are applied by the
+# exclusive owner at the next tick boundary; the native receipt is published.
+var _water_spray_requests: Array = []
+var _water_spray_receipt: Dictionary = {}
 var _workbench_step_serial: int = 0
 var _workbench_completed_sample: int = -1
 var _workbench_result: Dictionary = {}
@@ -1185,6 +1207,13 @@ func set_frame_state(
 	_mutex.unlock()
 
 
+func _workbench_sample_pending() -> bool:
+	_mutex.lock()
+	var states: Variant = _workbench_sample.get("states",null)
+	var pending: bool = states != null and states.size() > 10 and int(states[10]) >= 0 		and int(states[10]) != _workbench_prepared_sample
+	_mutex.unlock()
+	return pending
+
 func set_workbench_sample(value: Dictionary) -> void:
 	_mutex.lock()
 	if not value.is_empty() and not _workbench_sample.is_empty() and _prepared_physical_frame_hold.is_empty() \
@@ -1215,6 +1244,13 @@ func _cancel_workbench_emission_locked() -> void:
 	_workbench_source_commands = _workbench_source_commands.filter(func(v: Dictionary) -> bool: return v.command == "configure")
 	if _workbench_extent != Vector2i.ZERO:
 		_workbench_source_commands.append({"command":"stop","origin":Vector2i.ZERO,"material":0})
+
+func queue_water_spray(settings: Dictionary) -> bool:
+	_mutex.lock()
+	var ok := _water_spray_requests.size() < 8
+	if ok: _water_spray_requests.append(settings.duplicate(true))
+	_mutex.unlock()
+	return ok
 
 func queue_workbench_source(origin: Vector2i, material: int, command: String) -> bool:
 	_mutex.lock()
@@ -1266,8 +1302,13 @@ func _consume_workbench_emissions(paused: bool, sample: Dictionary) -> void:
 	for request: Dictionary in _workbench_source_commands:
 		_workbench_source.command(request)
 	_workbench_source_commands.clear()
+	if _world.has_method(&"set_water_spray"):
+		for request: Dictionary in _water_spray_requests:
+			_water_spray_receipt = _world.set_water_spray(request)
+		_water_spray_requests.clear()
 	if not paused:
 		_workbench_source.before_tick(_world,sample)
+		if _world.has_method(&"water_spray_before_tick"): _world.water_spray_before_tick()
 		if not _paused and not _workbench_emitters.is_empty():
 			var serial := int(sample.states[10]) if not sample.states.is_empty() else -1
 			var matched: Array = []
@@ -1285,6 +1326,72 @@ func _consume_workbench_emissions(paused: bool, sample: Dictionary) -> void:
 				_workbench_emitter_receipts = retired + preload("res://scripts/workbench_emitter.gd").apply(_world,matched,_workbench_extent)
 	_mutex.unlock()
 
+func set_lockstep_coupling(enabled: bool, hold_timeout_usec: int = 250000) -> bool:
+	# COUPLING-LOCKSTEP-001 prototype, default off. When enabled, the ordinary
+	# coupling path ticks only after a body publication newer than the one its
+	# previous tick consumed; it never blocks main and never ticks on a stale
+	# sample. Labs, MicroScenarios and the workbench keep their own pacing.
+	# Refused after start: the fence changes pacing semantics of a live owner.
+	if _thread.is_started() or hold_timeout_usec < 1000 or hold_timeout_usec > 10000000:
+		return false
+	_lockstep_enabled = enabled
+	_lockstep_hold_timeout_usec = hold_timeout_usec
+	return true
+
+
+func rigid_body_publication() -> int:
+	_mutex.lock()
+	var value: int = _rigid_body_publication
+	_mutex.unlock()
+	return value
+
+
+func lockstep_metrics() -> Dictionary:
+	_mutex.lock()
+	var values: Dictionary = {"enabled":_lockstep_enabled,"ticks":_lockstep_ticks,
+		"holds":_lockstep_holds,"hold_usec_total":_lockstep_hold_usec_total,
+		"hold_usec_max":_lockstep_hold_usec_max,"timeouts":_lockstep_timeouts,
+		"superseded_publications":_lockstep_superseded_publications,
+		"completed_publication":_lockstep_completed_publication,
+		"hold_timeout_usec":_lockstep_hold_timeout_usec}
+	_mutex.unlock()
+	return values
+
+
+func _lockstep_fence_applies() -> bool:
+	# Worker-exclusive state; the fence covers only the ordinary coupling path.
+	return _lockstep_enabled and not _lab_active and _workbench_extent == Vector2i.ZERO \
+		and _pending_physical_liquid.is_empty()
+
+
+func _lockstep_record_tick(publication: int, succeeded: bool) -> bool:
+	# Owner-exclusive bookkeeping after a native tick attempt. Only a successful
+	# tick records its latched publication; a fenced tick that skipped newer
+	# publications (several main publications before one tick) counts them.
+	if not succeeded:
+		return false
+	var fenced: bool = _lockstep_fence_applies()
+	var superseded: int = maxi(0, publication - _lockstep_consumed_publication - 1)
+	_lockstep_consumed_publication = publication
+	_lockstep_completed_publication = publication
+	if fenced:
+		_mutex.lock()
+		_lockstep_ticks += 1
+		_lockstep_superseded_publications += superseded
+		_mutex.unlock()
+	return fenced
+
+
+func _lockstep_waiting() -> bool:
+	if not _lockstep_fence_applies():
+		return false
+	_mutex.lock()
+	var waiting: bool = (_running and not _paused and not _reset_requested
+		and _lab_request.is_empty() and _rigid_body_publication <= _lockstep_consumed_publication)
+	_mutex.unlock()
+	return waiting
+
+
 func set_rigid_body_states(states: PackedFloat32Array, body_epoch: int = 0, effects: Array = []) -> Dictionary:
 	# Packed value data is copied at the bridge; scene-tree nodes and Physics RIDs
 	# remain exclusively on the main/physics thread. Body publication is independent
@@ -1298,6 +1405,7 @@ func set_rigid_body_states(states: PackedFloat32Array, body_epoch: int = 0, effe
 		return held
 	_rigid_body_states = states.duplicate()
 	_rigid_body_epoch = body_epoch
+	_rigid_body_publication += 1
 	var requested: int = effects.size()
 	var result: Dictionary = {"epoch": body_epoch, "status": "no_effects", "reason": "",
 		"requested": requested, "queued": 0, "refused": 0}
@@ -1396,6 +1504,7 @@ func set_physical_usable_state(frame: Dictionary, requests: Array = [], states: 
 		if not states.is_empty():
 			_rigid_body_states = states.duplicate()
 			_rigid_body_epoch = int(frame.epoch)
+			_rigid_body_publication += 1
 		# A changed generation/selection or cancelled lease invalidates packets
 		# even if the worker already extracted them from the pending array.
 		for actor: Variant in _physical_usable_inflight.keys():
@@ -1747,7 +1856,32 @@ func _apply_emissions(local_emissions: Array, local_cell_emissions: Array) -> vo
 
 func _worker_loop() -> void:
 	var next_tick_usec: int = Time.get_ticks_usec()
+	var lockstep_hold_start_usec: int = -1
+	var lockstep_hold_timed_out: bool = false
 	while true:
+		if _lockstep_waiting():
+			# Bounded non-blocking hold: no latch, no extraction, no tick.
+			var hold_now_usec: int = Time.get_ticks_usec()
+			if lockstep_hold_start_usec < 0:
+				lockstep_hold_start_usec = hold_now_usec
+			elif not lockstep_hold_timed_out and hold_now_usec - lockstep_hold_start_usec > _lockstep_hold_timeout_usec:
+				lockstep_hold_timed_out = true
+				_mutex.lock()
+				_lockstep_timeouts += 1
+				_mutex.unlock()
+			OS.delay_usec(LOCKSTEP_POLL_USEC)
+			continue
+		if lockstep_hold_start_usec >= 0:
+			var held_usec: int = Time.get_ticks_usec() - lockstep_hold_start_usec
+			_mutex.lock()
+			_lockstep_holds += 1
+			_lockstep_hold_usec_total += held_usec
+			_lockstep_hold_usec_max = maxi(_lockstep_hold_usec_max, held_usec)
+			_mutex.unlock()
+			lockstep_hold_start_usec = -1
+			lockstep_hold_timed_out = false
+		var local_body_publication: int = 0
+		var lockstep_ticked: bool = false
 		var local_running: bool = false
 		var local_paused: bool = false
 		var local_horizontal_input: float = 0.0
@@ -1797,6 +1931,7 @@ func _worker_loop() -> void:
 			or not _lab_request.get("controlled_liquid_setup",{}).get("physical_owner",{}).is_empty()
 		local_rigid_body_states = _rigid_body_states
 		local_rigid_body_epoch = _rigid_body_epoch
+		local_body_publication = _rigid_body_publication
 		if not physical_wait:
 			local_physical_effects = _pending_physical_effects
 			_pending_physical_effects = []
@@ -2053,6 +2188,7 @@ func _worker_loop() -> void:
 					_simulation_failed = not bool(_world.simulation_tick())
 				else:
 					_world.simulation_tick()
+				lockstep_ticked = _lockstep_record_tick(local_body_publication, not _simulation_failed)
 				if not _simulation_failed and _workbench_extent != Vector2i.ZERO:
 					_capture_workbench_result()
 					_workbench_completed_sample = workbench_serial
@@ -2075,8 +2211,22 @@ func _worker_loop() -> void:
 			local_rigid_body_epoch
 		)
 
+		if lockstep_ticked:
+			# Main's publications pace a fenced owner; no wall-clock deadline.
+			next_tick_usec = Time.get_ticks_usec()
+			continue
 		next_tick_usec += TICK_INTERVAL_USEC
 		var now_usec: int = Time.get_ticks_usec()
+		if _workbench_extent != Vector2i.ZERO and not _simulation_failed:
+			# Workbench lock-step: Rapier steps only after this worker completes
+			# the published body sample. A free-running timer drifts in phase
+			# against the physics frame and misses alternate frames (exact 30 Hz
+			# plateaus) even for short ticks, so wake as soon as the next sample
+			# arrives. Still one tick per sample; never earlier than the sample.
+			while now_usec < next_tick_usec and not _workbench_sample_pending():
+				OS.delay_usec(WORKBENCH_SAMPLE_POLL_USEC)
+				now_usec = Time.get_ticks_usec()
+			next_tick_usec = mini(next_tick_usec, now_usec)
 		var wait_usec: int = next_tick_usec - now_usec
 		if wait_usec > 0:
 			OS.delay_usec(wait_usec)
@@ -2098,6 +2248,8 @@ func _publish_snapshot(
 		return
 	var copy_start_usec: int = Time.get_ticks_usec()
 	var now_usec: int = Time.get_ticks_usec()
+	var render_exchange_time_ms: float = 0.0
+	var hard_surface_packet_time_ms: float = 0.0
 	var render_serial_before: int = _pending_render_snapshot_serial
 	var render_generation_advanced: bool = false
 	var acknowledged_render_serial: int = 0
@@ -2124,6 +2276,7 @@ func _publish_snapshot(
 			and now_usec - _last_render_snapshot_usec >= render_snapshot_interval_usec
 		)
 	):
+		var render_exchange_start_usec: int = Time.get_ticks_usec()
 		if _world.has_method(&"take_render_snapshot"):
 			var render_packet: Dictionary = _take_native_render_snapshot(
 				force_render_full_refresh
@@ -2168,14 +2321,24 @@ func _publish_snapshot(
 			_pending_render_worker_step_time_ms = worker_step_time_ms
 			_pending_render_worker_overruns = _worker_overruns
 			render_generation_advanced = true
+		render_exchange_time_ms = float(
+			Time.get_ticks_usec() - render_exchange_start_usec
+		) / 1000.0
 	var current_hard_surface_revision: int = int(_world.hard_surface_revision)
+	# The workbench lock-step steps Rapier only against the current revision,
+	# so a throttled packet would cap the whole session at the throttle rate
+	# whenever reactions edit hard terrain every tick (about 4 ticks/s). Its
+	# native packet is cached per revision; other modes keep the throttle.
+	var workbench_lockstep: bool = _workbench_extent != Vector2i.ZERO
 	if (
 		force_render_full_refresh
 		or rigid_body_epoch != _snapshot_hard_surface_epoch
 		or _snapshot_hard_surface_revision < 0
 		or (current_hard_surface_revision != _snapshot_hard_surface_revision
-			and now_usec - _last_hard_surface_snapshot_usec >= HARD_SURFACE_SNAPSHOT_INTERVAL_USEC)
+			and (workbench_lockstep
+				or now_usec - _last_hard_surface_snapshot_usec >= HARD_SURFACE_SNAPSHOT_INTERVAL_USEC))
 	):
+		var hard_surface_start_usec: int = Time.get_ticks_usec()
 		# A new physical owner/reset cannot acknowledge a retained terrain
 		# packet from its predecessor, even inside the ordinary edit throttle.
 		if _world.has_method(&"get_hard_surface_chunk_rectangles"):
@@ -2191,7 +2354,11 @@ func _publish_snapshot(
 		_snapshot_hard_surface_revision = current_hard_surface_revision
 		_snapshot_hard_surface_epoch = rigid_body_epoch
 		_last_hard_surface_snapshot_usec = now_usec
+		hard_surface_packet_time_ms = float(
+			Time.get_ticks_usec() - hard_surface_start_usec
+		) / 1000.0
 	var copy_time_ms: float = float(Time.get_ticks_usec() - copy_start_usec) / 1000.0
+	var publication_start_usec: int = Time.get_ticks_usec()
 
 	var snapshot: CyberSimulationSnapshot = CyberSimulationSnapshot.new()
 	snapshot.actor_prototypes = _actor_session.snapshot()
@@ -2247,6 +2414,7 @@ func _publish_snapshot(
 	if not snapshot.actor_prototypes.is_empty():
 		snapshot.player_representation = "actor-prototype/" + str(snapshot.actor_prototypes.models[0])
 	snapshot.current_rigid_body_states = rigid_body_states.duplicate()
+	snapshot.consumed_rigid_body_publication = _lockstep_completed_publication
 	snapshot.character_runtime_recovery_enabled = (
 		_character.runtime_enclosure_recovery_enabled
 	)
@@ -2285,6 +2453,8 @@ func _publish_snapshot(
 	snapshot.simulation_time_ms = _world.simulation_time_ms
 	snapshot.worker_step_time_ms = worker_step_time_ms
 	snapshot.snapshot_copy_time_ms = copy_time_ms
+	snapshot.render_exchange_time_ms = render_exchange_time_ms
+	snapshot.hard_surface_packet_time_ms = hard_surface_packet_time_ms
 	snapshot.worker_overruns = _worker_overruns
 	if _world.has_method(&"get_tick_failure_count"):
 		snapshot.tick_failure_count = int(_world.get_tick_failure_count())
@@ -2358,6 +2528,10 @@ func _publish_snapshot(
 		snapshot.lab_context["workbench_emitters"] = _workbench_emitter_receipts.duplicate(true)
 		_mutex.unlock()
 		snapshot.lab_context["workbench_step_serial"] = _workbench_step_serial
+		if _world.has_method(&"get_water_spray"):
+			var spray: Dictionary = _world.get_water_spray()
+			spray["receipt"] = _water_spray_receipt.duplicate(true)
+			snapshot.lab_context["water_spray"] = spray
 	if render_generation_advanced:
 		var render_micro: Dictionary = snapshot.lab_context.get("microscenario", {})
 		var render_presentation: Dictionary = render_micro.get("presentation", {})
@@ -2389,6 +2563,9 @@ func _publish_snapshot(
 			_pending_render_context["workbench_display"] = _workbench_display
 		_freeze_capture(_pending_render_context)
 	snapshot.render_context = _pending_render_context
+	snapshot.snapshot_publication_time_ms = float(
+		Time.get_ticks_usec() - publication_start_usec
+	) / 1000.0
 
 	_mutex.lock()
 	_published_snapshot = snapshot

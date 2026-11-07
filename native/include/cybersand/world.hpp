@@ -7,6 +7,7 @@
 #include "cybersand/liquid_comparison.hpp"
 #include "cybersand/pressure_flow.hpp"
 #include "cybersand/inertial_cellular.hpp"
+#include "cybersand/ballistic_water.hpp"
 #include "cybersand/pressure_optimization.hpp"
 #include "cybersand/quantity_ledger.hpp"
 #include "cybersand/transport_policy.hpp"
@@ -68,6 +69,12 @@ struct WorldConfig {
     // Execution-only, opt-in for the finite desktop workbench. Each job owns
     // complete x-columns of the reference head field before row interpolation.
     bool workbench_parallel_pressure_heads = false;
+    // BW-001 ballistic_water_v1: opt-in, bounded parcel owner for Water in
+    // flight. Disabled leaves every Current hash, format and ledger unchanged.
+    BallisticWaterConfig ballistic_water{};
+    // IN-B1 (experimental): signed-vertical inertial law for every IN material.
+    // Requires an applied IN assignment; false keeps inertial_cellular_v1 exact.
+    bool inertial_signed_vertical = false;
 };
 
 struct ChunkCoord {
@@ -128,6 +135,15 @@ struct TickStats {
 struct DirtyChunk {
     ChunkCoord chunk;
     RectI64 local_rect;
+};
+
+// Collider invalidation is deliberately independent from render dirty chunks.
+// Each coordinate names a fixed 64x64 hard-surface tile in world tile space.
+// full_refresh is the explicit recovery/reset path; consumers must rebuild all
+// tiles in their finite viewport and may ignore the coordinate list.
+struct HardSurfaceInvalidation {
+    bool full_refresh = false;
+    std::vector<ChunkCoord> tiles;
 };
 
 // Optional, serialized player control over ordinary native Sand/Water cells.
@@ -273,6 +289,10 @@ public:
     [[nodiscard]] std::uint64_t transient_contact_count(std::uint16_t body_id) const noexcept;
     [[nodiscard]] std::int64_t transient_contact_impulse_x(std::uint16_t body_id) const noexcept;
     [[nodiscard]] std::int64_t transient_contact_impulse_y(std::uint16_t body_id) const noexcept;
+    // BW-001: momentum (quantity * q256 velocity) parcels delivered to a body
+    // since the last contact-observation reset. Serialized owner reads only.
+    [[nodiscard]] std::int64_t transient_ballistic_impulse_x(std::uint16_t body_id) const noexcept;
+    [[nodiscard]] std::int64_t transient_ballistic_impulse_y(std::uint16_t body_id) const noexcept;
     // GCR-001 value-only moving-grain wrench. Moments use doubled world cell
     // centres and integer density weights; the consumer translates to its COM.
     void enable_transient_granular_wrenches(bool enabled) noexcept;
@@ -353,6 +373,8 @@ public:
         std::uint64_t clipped_water_overfill = 0, clipped_gas_amount = 0, clipped_gas_labels = 0;
         std::uint64_t clipped_pressure_flow_cells = 0, clipped_inertial_cells = 0, clipped_thermal_cells = 0;
         std::uint64_t halo_normalization_produced = 0, halo_normalization_consumed = 0;
+        // BW-001: in-flight parcel Water carried into (or refused by) the new owner.
+        std::uint64_t preserved_in_flight_water = 0, discarded_in_flight_water = 0;
     };
     WorkbenchLiquidTransfer inherit_workbench_liquid_state(const World& source, RectI64 canvas,
         bool allow_conversion, bool normalize_water);
@@ -393,6 +415,26 @@ public:
     [[nodiscard]] InertialLedger inertial_ledger() const noexcept;
     [[nodiscard]] InertialStorageUsage inertial_storage_usage() const noexcept;
     // Serialized diagnostic owner only; true no-op seeds retain all witnesses.
+    // BW-001 ballistic_water_v1. Serialized external owner, between ticks.
+    // launch moves the exact Water quantity of one source cell (at most
+    // maximum_quantity; whole-cell families take the whole cell) into one
+    // parcel spawned at an unmasked Empty/gas cell, in q256 units. A masked
+    // source is admitted (the body overlap is the usual reason to launch).
+    // inject creates a parcel from a booked ExternalEdit source. Refusals are
+    // explicit outcomes and never mutate authority.
+    [[nodiscard]] bool ballistic_water_enabled() const noexcept { return config_.ballistic_water.enabled; }
+    [[nodiscard]] BallisticLaunchResult launch_ballistic_water(std::int64_t source_x, std::int64_t source_y,
+        std::int64_t spawn_x_q, std::int64_t spawn_y_q, std::int32_t vx_q, std::int32_t vy_q,
+        std::uint16_t source_body = 0, std::uint32_t maximum_quantity = 0xFFFF'FFFFU);
+    [[nodiscard]] BallisticLaunchResult inject_ballistic_water(std::int64_t spawn_x_q, std::int64_t spawn_y_q,
+        std::int32_t vx_q, std::int32_t vy_q, std::uint32_t quantity);
+    [[nodiscard]] std::size_t ballistic_parcel_count() const noexcept { return ballistic_parcels_.size(); }
+    // Copies at most output.size() live parcels in slot order; returns the live count.
+    [[nodiscard]] std::size_t copy_ballistic_parcels(std::span<BallisticParcel> output) const noexcept;
+    [[nodiscard]] BallisticWaterSnapshot ballistic_water_snapshot() const noexcept;
+    // IN-B1: add a bounded external velocity impulse to an IN carrier (booked
+    // as external). Upward components require the signed law; refused otherwise.
+    [[nodiscard]] bool impart_inertial_velocity(std::int64_t x, std::int64_t y, std::int32_t dvx, std::int32_t dvy);
     [[nodiscard]] bool diagnostic_set_inertial_cell(std::int64_t x,std::int64_t y,
         std::int16_t vx,std::int16_t vy,std::int8_t ax,std::int8_t ay);
 
@@ -403,7 +445,11 @@ public:
     // state_hash() keep their historical definitions.
     // Legacy non-IN stream. IN instances report and emit version3.
     static constexpr std::uint32_t kPhysicalStateHashVersion = 2;
-    [[nodiscard]] std::uint32_t physical_state_hash_version() const noexcept { return inertial_enabled_ ? 3U : 2U; }
+    // BW-001 ballistic Worlds report and emit version4 (IN or not).
+    [[nodiscard]] std::uint32_t physical_state_hash_version() const noexcept {
+        return config_.ballistic_water.enabled || inertial_parameters_.signed_vertical ? 4U
+             : inertial_enabled_ ? 3U : 2U;
+    }
     [[nodiscard]] std::uint64_t physical_state_hash() const;
 
     // Explicit diagnostic domains. Same-tick equivalence normalizes only the
@@ -422,13 +468,20 @@ public:
     // a new World and throws std::invalid_argument for unknown, corrupt or
     // incompatible payloads; the caller's live World is never touched.
     static constexpr std::uint32_t kPhysicalStateFormatVersion = 2;
-    [[nodiscard]] std::uint32_t physical_state_format_version() const noexcept { return inertial_enabled_ ? 3U : 2U; }
+    [[nodiscard]] std::uint32_t physical_state_format_version() const noexcept {
+        return config_.ballistic_water.enabled || inertial_parameters_.signed_vertical ? 4U
+             : inertial_enabled_ ? 3U : 2U;
+    }
     [[nodiscard]] std::vector<std::uint8_t> save_physical_state() const;
     [[nodiscard]] static std::unique_ptr<World> restore_physical_state(
         const WorldConfig& execution, std::span<const std::uint8_t> bytes);
 
     [[nodiscard]] std::size_t dirty_chunk_count() const noexcept;
     [[nodiscard]] std::vector<DirtyChunk> take_dirty_chunks();
+    // Serialized collider owner only. This consumes a separate hard-surface
+    // invalidation stream and never acknowledges or mutates render dirtiness.
+    // Normal 128x128 storage chunks map exactly to four 64x64 collider tiles.
+    [[nodiscard]] HardSurfaceInvalidation take_hard_surface_invalidation();
     void copy_render_cells(RectI64 region, std::span<std::uint8_t> destination,
                            std::size_t stride_bytes) const;
     // One display material byte per cell. Fractional Water uses stable
@@ -436,6 +489,13 @@ public:
     void copy_material_cells(RectI64 region, std::span<std::uint8_t> destination,
                              std::size_t stride_bytes) const;
     void copy_rgba(RectI64 region, std::span<std::uint8_t> destination, std::size_t stride_bytes) const;
+    // One bit per cell (bit x % 64 of word x / 64 in each row), set where the
+    // stored material is a hard surface (MaterialRules::is_hard_surface).
+    // region.width must be a positive multiple of 64; non-resident cells are
+    // Empty. The display dithering and parcel overlay of copy_material_cells
+    // only exchange Water and Empty, neither of which is a hard surface, so
+    // this mask equals is_hard_surface of that projection cell by cell.
+    void copy_hard_surface_bits(RectI64 region, std::span<std::uint64_t> destination) const;
 
 private:
     [[nodiscard]] std::uint64_t physical_state_hash_impl(
@@ -464,9 +524,16 @@ private:
     bool flow_mixing_enabled_ = false;
     bool flow_carrying_enabled_ = false;
     std::unordered_map<ChunkCoord, std::unique_ptr<Chunk>, ChunkCoordHash> chunks_;
-    // #201: identity of the current chunk-map contents for the per-thread
-    // find_chunk cache. Every insertion, clear and move takes a fresh, never
-    // reused value, so a cached pointer can only match the map that produced it.
+    // Dense, authoritative mirror of chunks_ inside one reserved coordinate
+    // window (owner-maintained; read-only during jobs). Coordinates outside it
+    // use the hash map. Pointers are stable: chunks are only inserted or
+    // cleared all together.
+    std::vector<Chunk*> chunk_directory_;
+    std::int64_t chunk_directory_x_ = 0, chunk_directory_y_ = 0;
+    std::int64_t chunk_directory_width_ = 0, chunk_directory_height_ = 0;
+    void cover_chunk_directory(ChunkCoord first, ChunkCoord last);
+    // One-entry TLS fallback cache. Generations fence insertion, clear,
+    // move construction, assignment and same-address World reuse.
     struct ChunkLookupGeneration {
         std::uint64_t value;
         ChunkLookupGeneration() noexcept;
@@ -475,6 +542,8 @@ private:
         void advance() noexcept;
     };
     ChunkLookupGeneration chunk_generation_{};
+    // log2(chunk_size) for power-of-two chunk sizes, else -1 (exact division).
+    std::int32_t chunk_shift_ = -1;
     std::vector<ChunkCoord> active_chunk_scratch_;
     std::vector<SchedulingCoreCoord> active_core_scratch_;
     std::vector<ExplosionCommand> pending_explosions_;
@@ -491,6 +560,36 @@ private:
     InertialLedger inertial_ledger_{};
     InertialParameters inertial_parameters_{};
     QuantityLedgerSnapshot quantity_{};
+    std::vector<BallisticParcel> ballistic_parcels_;
+    BallisticLedger ballistic_ledger_{};
+    std::uint64_t ballistic_advance_nanoseconds_ = 0; // diagnostic only
+    std::array<std::int64_t, kMaximumTransientBodies + 1U> ballistic_body_px_{}, ballistic_body_py_{};
+    enum class BallisticCell : std::uint8_t { Free, Water, Solid, Body, Outside };
+    void validate_ballistic_config() const;
+    void validate_ballistic_ledger() const;
+    void reset_ballistic_water() noexcept;
+    void reset_ballistic_body_impulses() noexcept;
+    void advance_ballistic_water();
+    [[nodiscard]] bool step_ballistic_parcel(BallisticParcel& parcel);
+    [[nodiscard]] bool deposit_ballistic_parcel(BallisticParcel& parcel, std::int64_t cx, std::int64_t cy,
+                                                const std::pair<std::int64_t, std::int64_t>* merge);
+    void ballistic_write_water(std::int64_t x, std::int64_t y, std::uint16_t visible);
+    [[nodiscard]] BallisticCell classify_ballistic_cell(std::int64_t x, std::int64_t y,
+        const BallisticParcel& parcel, std::uint16_t& body) const noexcept;
+    [[nodiscard]] BallisticLaunchResult admit_ballistic_spawn(std::int64_t spawn_x, std::int64_t spawn_y,
+        std::int32_t vx, std::int32_t vy, bool internal = false) const noexcept;
+    [[nodiscard]] BallisticLaunchResult launch_ballistic_water_internal(std::int64_t source_x, std::int64_t source_y,
+        std::int64_t spawn_x, std::int64_t spawn_y, std::int32_t vx, std::int32_t vy,
+        std::uint16_t source_body, std::uint32_t maximum_quantity, bool internal);
+    void release_water_faces();
+    std::vector<ChunkCoord> ballistic_face_chunks_;
+    // Face-release pre-pass: per listed chunk, one bit per activity block that
+    // holds any Water (pooled; reserved with face release when blocks <= 64).
+    std::vector<std::uint64_t> ballistic_face_water_;
+    void overlay_ballistic_render(RectI64 region, std::span<std::uint8_t> destination,
+                                  std::size_t stride_bytes, std::size_t bytes_per_cell) const noexcept;
+    // Extends only the render dirty rectangle (no activity, wake or pressure input).
+    void mark_ballistic_render_dirty(std::int64_t x, std::int64_t y) noexcept;
     void record_physics(PhysicsEvent kind, Material source, Material target,
                         std::int64_t dx, std::int64_t dy, JobEffects* effects,
                         std::uint64_t count = 1) noexcept;
@@ -511,6 +610,9 @@ private:
     std::uint64_t tick_chunk_allocations_ = 0;
     std::uint64_t tick_temperature_field_allocations_ = 0;
     std::uint64_t hard_surface_revision_ = 0;
+    // True for construction/destructive reset and as a conservative recovery
+    // when storage geometry cannot be represented by aligned 64x64 tile bits.
+    bool hard_surface_full_refresh_required_ = true;
 
     [[nodiscard]] Address address(std::int64_t x, std::int64_t y) const noexcept;
     [[nodiscard]] Chunk* find_chunk(ChunkCoord coord) noexcept;
@@ -530,6 +632,7 @@ private:
         std::int64_t x, std::int64_t y, std::int64_t target_x, std::int64_t target_y,
         JobEffects* effects, MotionFootprint* footprint = nullptr);
     void mark_cell_dirty(Chunk& chunk, std::int32_t local_x, std::int32_t local_y);
+    void mark_hard_surface_dirty(const Address& target) noexcept;
     void move_cell(std::int64_t from_x, std::int64_t from_y, std::int64_t to_x,
                    std::int64_t to_y, bool swap, JobEffects* effects,
                    PhysicsEvent swap_event = PhysicsEvent::DensitySwap);

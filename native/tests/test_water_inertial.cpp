@@ -587,8 +587,7 @@ void current_deadline_activity() {
         }
     }
     require(participants>1&&slept&&reacted,
-            "Current deadline fixture missed real workers, quiet sleep or a future reaction (participants=" +
-            std::to_string(participants) + " slept=" + std::to_string(slept) + " reacted=" + std::to_string(reacted) + ")");
+            "Current deadline fixture missed real workers, quiet sleep or a future reaction");
 }
 } // namespace
 

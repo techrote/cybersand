@@ -26,8 +26,16 @@ struct InertialParameters {
     static constexpr std::int32_t kDragNumerator = 1, kDragDenominator = 4;
     static constexpr std::int32_t kExecutionRadius = 3;
     static constexpr std::int32_t kRest = 1;
+    // IN-B1 signed-vertical law only: an upward-blocked cell keeps this
+    // fraction of its rise as a downward rebound.
+    static constexpr std::int32_t kCeilingNumerator = 1, kCeilingDenominator = 4;
+    // IN-B1 flight gravity (q per tick^2): half of v1, so the radius-bounded
+    // 2-cell/tick launch reaches a visible ~16-row apex before damping.
+    static constexpr std::int32_t kSignedGravity = 2;
     static constexpr std::uint16_t kFamilyBlockVersion = LiquidPolicyBuild::kInertialBlockVersion;
     std::int32_t damping_numerator = kDampingNumerator;
+    // IN-B1 (experimental, #362): signed vertical law. False is v1 exactly.
+    bool signed_vertical = false;
     [[nodiscard]] bool operator==(const InertialParameters&) const = default;
 };
 
@@ -56,7 +64,9 @@ struct InertialCellState {
 
 // Exact per-component momentum and separate L1 speed-loss accounting:
 //   sum(v_after - v_before) == gravity + sum(impulses)  (per component)
-//   sum(|v_after| - |v_before|) == gravity_y - sum(loss)
+//   sum(|v_after| - |v_before|) == gravity_speed - sum(loss)
+// gravity_speed is the exact signed L1 change from gravity; it equals gravity_y
+// under v1 (vy >= 0) and separates gravitational work under the signed law.
 struct InertialLedger {
     std::int64_t gravity_y = 0;
     std::int64_t impulse_x = 0; // every non-gravity signed impulse
@@ -76,6 +86,7 @@ struct InertialLedger {
     std::int64_t external_y = 0;
     std::uint64_t maximum_read_reach = 0, maximum_write_reach = 0;
     std::int64_t external_speed = 0; // signed change of L1 speed, before aggregation
+    std::int64_t gravity_speed = 0;  // signed L1 speed change from gravity alone
     [[nodiscard]] bool operator==(const InertialLedger &) const = default;
 };
 
@@ -92,8 +103,13 @@ struct InertialStorageUsage {
 // Canonical LE int32 values follow the domain; independent of C++ padding.
 [[nodiscard]] inline Sha256::Digest inertial_extension_identity(InertialParameters parameters = {}) noexcept {
     Sha256 hash;
+    // The signed law (IN-B1) is a different update contract with its own domain.
     constexpr char domain[] = "cybersand-inertial-update-v1-state-v1-identity-v1";
-    hash.update({reinterpret_cast<const std::uint8_t *>(domain), sizeof(domain) - 1U});
+    constexpr char signed_domain[] = "cybersand-inertial-update-b1-signed-vertical-state-v2-identity-v1";
+    if (parameters.signed_vertical)
+        hash.update({reinterpret_cast<const std::uint8_t *>(signed_domain), sizeof(signed_domain) - 1U});
+    else
+        hash.update({reinterpret_cast<const std::uint8_t *>(domain), sizeof(domain) - 1U});
     using P = InertialParameters;
     for (const std::int32_t value :
          {16, 16, 8, 8, P::kQ, P::kGravity, P::kVmax, P::kTurnNumerator, P::kTurnDenominator,
@@ -103,6 +119,14 @@ struct InertialStorageUsage {
         for (unsigned i = 0; i < 4; ++i)
             bytes[i] = static_cast<std::uint8_t>(static_cast<std::uint32_t>(value) >> (8U * i));
         hash.update(bytes);
+    }
+    if (parameters.signed_vertical) {
+        for (const std::int32_t value : {P::kCeilingNumerator, P::kCeilingDenominator, P::kSignedGravity}) {
+            std::array<std::uint8_t, 4> bytes{};
+            for (unsigned i = 0; i < 4; ++i)
+                bytes[i] = static_cast<std::uint8_t>(static_cast<std::uint32_t>(value) >> (8U * i));
+            hash.update(bytes);
+        }
     }
     return hash.finish();
 }

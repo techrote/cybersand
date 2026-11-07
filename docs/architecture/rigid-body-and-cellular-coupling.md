@@ -90,6 +90,13 @@ Water conservation does not establish general body/cell energy conservation.
 Duplicate sample serials are not applied twice. Sample wrap and age constants
 are in [Rapier `apply_cellular_results`](../../godot/scripts/rapier_physics_bridge.gd).
 
+Packed rotation is `Transform2D.get_rotation()`, a float32 `atan2` from the
+platform libm, stored in `PackedFloat32Array`. Native rasterization then uses
+double `std::cos`/`std::sin`. On 2026-11-06, Windows and WSL Linux packed
+different last-ulp rotations from bit-identical Rapier transforms; see the
+[lockstep feasibility audit](../audits/2026-11-06-coupling-lockstep-feasibility.md).
+Same-host runs are unaffected. Cross-platform replay is not a Current claim.
+
 The internal [4LY free-flight chassis](../systems/physical-free-flight.md) reuses
 this same rectangle publication and cellular response. Its authored propulsion
 force cap is separate from the native impulse cap above. Raising a flight thrust
@@ -110,7 +117,12 @@ Hard-terrain extraction creates 64×64 packets: 256 units for the 1024² demo.
 The consumer checks a 32-chunk/750-microsecond soft rebuild budget between units.
 The preceding native `get_hard_surface_chunk_rectangles` extraction is outside
 that budget, and one indivisible changed chunk may exceed it. This is bounded
-consumer granularity, not an end-to-end frame-time guarantee. Source:
+consumer granularity, not an end-to-end frame-time guarantee. On the #406 branch,
+the extraction reads a one-bit hard-surface mask straight from stored cells
+(`World::copy_hard_surface_bits`). It rebuilds only the 64×64 packets whose mask
+changed since the previous revision, and reuses the others. The packet is
+byte-identical to a full rebuild from the display projection
+([evidence](../audits/2026-11-06-pf-ballistic-tick-cost.md)). Source:
 [native extraction](../../godot/native_extension/cyber_native_cell_world.cpp),
 [Rapier `process_hard_surface_collider_budget`](../../godot/scripts/rapier_physics_bridge.gd).
 

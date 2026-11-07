@@ -10,6 +10,19 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+## Ballistic Water, IN-B1 and workbench spray (#362) — 2026-11-05
+
+**Experimental draft, not on main; no default changed.** The
+[ballistic Water reference](../architecture/ballistic-water-v1.md) adds an opt-in
+native parcel owner (BW-001 `ballistic_water_v1`) that moves exact Water quantity
+between any bulk family and ballistic flight, an opt-in signed-vertical IN law
+(IN-B1), and a workbench impact-spray/jet law. The
+[dated evidence](../audits/2026-11-05-wcx-ballistic-water.md) shows identical
+Water trajectories across LA-SA/LA/events-off/RFT in pure Water, an exact
+closed-system Water total during real Rapier splashes in four families, and a
+≈52–55-row crown splash. Human gameplay acceptance, platform CI, runtime
+publication, reviewed protected-source transitions and independent review remain open.
+
 ## MAT-AUTH reviewed per-file transitions — 2026-11-04
 
 The owner approved a narrow way to admit a reviewed, behaviour-preserving edit
@@ -20,23 +33,6 @@ Entries are code-pinned, authenticated against retained Git history and a
 committed record, and refused for identity inputs. The table starts empty;
 the lock, baseline and digests are unchanged. #382 (#201 P1) is the first PR
 to add an entry, together with its source change.
-
-## PressureFlow moving-camera invalidation (#201) — 2026-11-05
-
-**Experimental draft, not on main.** The [moving-camera record](../audits/2026-11-05-lcb201-moving-camera-invalidation.md)
-removes the cache `cold()` that every selected-core change triggered. No cache
-structure reads the region; reference/cached/cached_dormant stay bit-identical
-at 1 and 4 workers, and pure camera motion no longer rebuilds the index, gas or
-heads. Natively, cached p99 at 1–4 cells/tick falls from ≈32–37 ms to ≈11–14 ms
-and p50 at 16 cells/tick from ≈26 ms to ≈11 ms. The unchanged tick-entry
-inclusion wake is now the dominant moving-camera cost. The same draft also
-caches the exact `may_pair`/`has_pair_rule` results that were rebuilt on every
-neighbour probe: an active dam break's tick falls by ≈39–68 % (gas-free
-cached_dormant PressureFlow 8.1 → 3.8 ms, FreeMass 8.0 → 2.6 ms, 4 workers) with
-identical results. A per-thread chunk lookup cache then removes most map
-lookups: cumulatively gas-free cached_dormant PressureFlow falls from 8.1 to
-2.9 ms (Linux GCC) and 3.1 to 2.0 ms (Windows Clang), FreeMass from 8.0 to
-2.4 ms and 2.3 to 1.3 ms. In-app, platform and independent-review gates remain open.
 
 ## PressureFlow desktop region flip (#201) — 2026-11-04
 
@@ -1064,9 +1060,9 @@ evidence defines each fix's platform acceptance.
 |---|---|---|
 | F01 — failed ticks | Current fix: latch failed World, distinguish attempted/completed ticks, suppress partial publication, stop desktop/Web owners; explicit reset/validated replacement, no replay/rollback | Windows/native acceptance and browser limits: [issue #1 evidence](../audits/2026-09-08-issue-1-failed-ticks.md); [tick contract](../architecture/simulation-tick-and-threading.md) |
 | F02 — region re-entry | Current fix: phased exclusion retains activity/quiet state; new core coverage wakes resident blocks once without catch-up. Serial still ignores the region | Separate and combined acceptance: [issue #2 evidence](../audits/2026-09-08-issue-2-interest-regions.md); [storage](../systems/world-storage-and-interest-region.md). Future field/streaming semantics remain open |
-| F03 — tick ownership | Desktop moves character before cells with async Rapier samples; Web moves character after cells and gates on terrain backlog | Decide which ordering differences are acceptable before a common physics/replay contract; [threading](../architecture/simulation-tick-and-threading.md) |
+| F03 — tick ownership | Desktop moves character before cells with async Rapier samples; Web moves character after cells and gates on terrain backlog | Decide which ordering differences are acceptable before a common physics/replay contract; [threading](../architecture/simulation-tick-and-threading.md). 2026-11-06: default-off desktop lockstep fence measured bit-identical same-host repeats; [feasibility audit](../audits/2026-11-06-coupling-lockstep-feasibility.md) |
 | F04 — delayed rules and sleep | Current MAT-001 fix retains future compact-pair and Ice reaction opportunities across sleep and wakes the center block on body-mask changes; other specialized waiting paths remain material-specific | [Scoped #158 evidence](../audits/2026-10-18-mat001-material-reaction-progress.md), [materials](../systems/materials-and-rule-kernels.md); characterize further lifecycle/feel changes separately rather than claiming every material is accepted |
-| F05 — replay and fidelity | Current hashes omit some future-affecting state; CYSD1 omits more; no selectable strict runtime policy | Specify complete input/configuration identity, fidelity policy and replay schema before promising continuation; [determinism](../architecture/determinism-and-boundary-transfers.md) |
+| F05 — replay and fidelity | Current hashes omit some future-affecting state; CYSD1 omits more; no selectable strict runtime policy | Specify complete input/configuration identity, fidelity policy and replay schema before promising continuation; [determinism](../architecture/determinism-and-boundary-transfers.md). Coupled same-host repeatability needs a lockstep mode; cross-platform identity is not established ([2026-11-06](../architecture/determinism-and-boundary-transfers.md#coupled-desktop-determinism--2026-11-06)) |
 | F06 — bounded operations | Native lazy allocation and partial failure coexist with Approved prepared/no-allocation goals; desktop input Array is unbounded | Define command backpressure, setup/reconfiguration and allocation accounting; [capacity](../operations/configuration-and-capacity-budgets.md) |
 | F07 — body physics scope | Rectangle proof does not settle general shapes, sweep/CCD, force/torque units, sample-age policy or particle overflow | Name units and fixture tolerances, extend one bounded coupling case at a time; [coupling](../architecture/rigid-body-and-cellular-coupling.md) |
 | F08 — build/release identity | CI 4.0.11 versus builder 4.0.20; missing native binding argument; compile-only skips runtime; historical template lock and base-only export identity | Current/M11 gate separation is implemented; remaining Web work stays in issue #3. [CI contradictions](../operations/github-development-and-release.md#unresolved-ci-contradictions) |

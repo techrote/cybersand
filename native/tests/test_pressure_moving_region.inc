@@ -79,3 +79,53 @@ void test_chunk_lookup_cache_invalidation() {
     World moved = std::move(b);
     require(moved.get(5, 5) == Material::Water, "move lost the chunk map");
 }
+
+
+// Direct move-assignment regression: populated destination TLS entry, an
+// interleaved second World, deterministic same-address reuse and worker ticks.
+void test_chunk_lookup_cache_direct_move_assignment() {
+    for (auto workers : {1U, 4U}) {
+        WorldConfig cfg{};
+        cfg.worker_threads = workers;
+        cfg.parallel_job_threshold = 1;
+        cfg.maximum_chunk_count = 128;
+        cfg.active_chunk_capacity = 128;
+        cfg.active_core_capacity = 2048;
+        World destination(cfg), source(cfg), reference(cfg), other(cfg);
+        for (int x = -48; x < 48; ++x) {
+            source.set(x, 40, Material::Wall); reference.set(x, 40, Material::Wall);
+            if (x % 3 == 0) {
+                source.set(x, -20, Material::Sand);
+                reference.set(x, -20, Material::Sand);
+            }
+        }
+        other.set(1, 1, Material::Water);
+        destination.set(1, 1, Material::Stone);
+        require(destination.get(1, 1) == Material::Stone &&
+                other.get(1, 1) == Material::Water, "TLS move setup failed");
+        const auto original = source.physical_state_hash();
+        destination = std::move(source);
+        require(destination.physical_state_hash() == original &&
+                destination.get(1, 1) == Material::Empty &&
+                destination.get(0, -20) == Material::Sand &&
+                other.get(1, 1) == Material::Water,
+                "move assignment retained a stale destination chunk");
+        for (int t = 0; t < 8; ++t) {
+            const auto d = destination.tick(), e = reference.tick();
+            require(d.tick == e.tick &&
+                    destination.content_hash() == reference.content_hash() &&
+                    destination.physical_state_hash() == reference.physical_state_hash(),
+                    "move-assigned World diverged during worker ticks");
+        }
+        alignas(World) std::byte bytes[sizeof(World)];
+        auto* before = std::construct_at(reinterpret_cast<World*>(bytes), cfg);
+        before->set(2, 2, Material::Sand);
+        require(before->get(2, 2) == Material::Sand, "address reuse setup failed");
+        std::destroy_at(before);
+        auto* after = std::construct_at(reinterpret_cast<World*>(bytes), cfg);
+        require(after->get(2, 2) == Material::Empty, "same-address stale chunk");
+        after->set(2, 2, Material::Water);
+        require(after->get(2, 2) == Material::Water, "same-address new chunk invisible");
+        std::destroy_at(after);
+    }
+}

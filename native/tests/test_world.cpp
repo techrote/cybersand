@@ -14,6 +14,7 @@
 #include <exception>
 #include <iostream>
 #include <limits>
+#include <memory>
 #include <stdexcept>
 #include <string_view>
 #include <thread>
@@ -1311,6 +1312,11 @@ void test_failed_tick_stops_until_clear() {
             require(threw && world.tick_index() == 2, "capacity failure lost attempted identity");
             require(world.has_failed() && world.completed_tick_index() == 1,
                     "partial tick was reported as completed");
+            bool hard_invalidation_threw = false;
+            try { (void)world.take_hard_surface_invalidation(); }
+            catch (const std::logic_error&) { hard_invalidation_threw = true; }
+            require(hard_invalidation_threw,
+                    "failed World exposed partial collider invalidation");
             require(with_event ? world.get(20, 20) == Material::Fire &&
                                      world.get(21, 20) == Material::Empty
                                : world.content_hash() == before_content,
@@ -1327,6 +1333,9 @@ void test_failed_tick_stops_until_clear() {
             try { world.set(40, 20, Material::Sand); } catch (const std::logic_error&) { threw = true; }
             require(threw && world.state_hash() == failed_state, "failed mutation was not rejected");
             world.clear();
+            const auto reset_hard = world.take_hard_surface_invalidation();
+            require(reset_hard.full_refresh,
+                    "failed-World clear did not request collider full refresh");
             require(!world.has_failed() && world.completed_tick_index() == 0, "clear retained failure");
             world.set(20, 20, Material::Sand);
             const auto recovered = world.tick();
@@ -3726,6 +3735,316 @@ void test_player_field_native_tick_quantity_and_worker_parity() {
     }
 }
 
+// MaterialRules' namespace-scope pair tables must answer exactly as the
+// authored InteractionRules resolver for every material pair and roll.
+// A chamber open to the air drains its Water, then both openings are plugged
+// and Water touches the sealed pocket. Sealing from the open atmosphere holds
+// atmospheric gas in the whole volume, including kernel-vacated cells the
+// bounded label pass had not relabelled (no under-pressure at seal; #406).
+void test_pressure_seal_from_open_is_atmospheric() {
+    for (const int variant : {0, 2}) {
+        auto words = cybersand::LiquidSolverPolicy::default_request();
+        words[21] = 3;
+        words[22] = variant;
+        const auto decoded = cybersand::LiquidSolverPolicy::decode(std::span<const std::int32_t>(words));
+        require(decoded.accepted(), "pressure policy accepted");
+        WorldConfig config{};
+        config.liquid_solver_policy = *decoded.policy;
+        config.maximum_rule_radius = 2;
+        config.worker_threads = 1;
+        World world(config);
+        world.reserve_region({0, 0, 256, 256});
+        const auto rect = [&](int x, int y, int w, int h, Material m) {
+            for (int j = 0; j < h; ++j) for (int i = 0; i < w; ++i) world.set(x + i, y + j, m);
+        };
+        rect(0, 248, 256, 8, Material::Wall);
+        rect(96, 96, 48, 4, Material::Wall);
+        rect(96, 140, 48, 4, Material::Wall);
+        rect(96, 100, 4, 40, Material::Wall);
+        rect(140, 100, 4, 40, Material::Wall);
+        rect(118, 96, 4, 4, Material::Empty);   // top vent to the open air
+        rect(136, 140, 4, 4, Material::Empty);  // bottom drain into the sump
+        rect(100, 100, 40, 40, Material::Water);
+        for (int t = 0; t < 900; ++t) (void)world.tick();
+        rect(118, 96, 4, 4, Material::Wall);
+        rect(136, 140, 4, 4, Material::Wall);
+        for (int t = 0; t < 3; ++t) (void)world.tick();
+        bool found = false;
+        for (const auto& c : world.gas_compartments()) {
+            if (c.anchor_x < 100 || c.anchor_x >= 140 || c.anchor_y < 100 || c.anchor_y >= 140) continue;
+            found = true;
+            require(c.amount >= c.volume && c.gauge >= 0,
+                    "a pocket sealed from the open air started under-pressured");
+        }
+        require(found, "the sealed chamber holds a gas compartment");
+    }
+}
+
+// The collider mask equals is_hard_surface of the display projection cell by
+// cell: every material id, dithered fractional Water and non-resident cells.
+void test_hard_surface_bits_match_projection() {
+    WorldConfig config{};
+    config.worker_threads = 1;
+    World world(config);
+    world.reserve_region({0, 0, 256, 128});
+    for (std::int64_t y = 0; y < 128; ++y)
+        for (std::int64_t x = 0; x < 256; ++x) {
+            const auto id = static_cast<std::uint8_t>((x * 7 + y * 13) % 132);
+            if (id == 10) continue;
+            const auto material = static_cast<Material>(id);
+            if (material == Material::Water) {
+                require(world.set_cell_state(x, y, Material::Water, static_cast<std::uint16_t>(1 + (x + y) % 200), 0),
+                        "fractional Water accepted");
+            } else {
+                world.set(x, y, material);
+            }
+        }
+    const cybersand::RectI64 region{-64, -64, 384, 256}; // includes non-resident chunks
+    std::vector<std::uint8_t> projection(static_cast<std::size_t>(region.width * region.height));
+    world.copy_material_cells(region, projection, static_cast<std::size_t>(region.width));
+    std::vector<std::uint64_t> bits(static_cast<std::size_t>(region.width / 64 * region.height));
+    world.copy_hard_surface_bits(region, bits);
+    std::size_t hard = 0;
+    for (std::int64_t y = 0; y < region.height; ++y)
+        for (std::int64_t x = 0; x < region.width; ++x) {
+            const auto expected = cybersand::MaterialRules::is_hard_surface(
+                static_cast<Material>(projection[static_cast<std::size_t>(y * region.width + x)]));
+            const auto word = bits[static_cast<std::size_t>(y * (region.width / 64) + x / 64)];
+            require(((word >> (x % 64)) & 1U) == (expected ? 1U : 0U), "hard-surface bit differs from projection");
+            hard += expected ? 1U : 0U;
+        }
+    require(hard > 0U, "fixture must contain hard surfaces");
+    bool refused = false;
+    try { world.copy_hard_surface_bits({0, 0, 100, 1}, bits); } catch (const std::invalid_argument&) { refused = true; }
+    require(refused, "non-multiple-of-64 hard-surface region accepted");
+}
+
+// Collider invalidation is a separate consumer from render dirtiness. The
+// default 128x128 storage geometry maps to fixed 64x64 tile coordinates, keeps
+// ABA mutations dirty, and falls back explicitly for non-aligned storage.
+void test_hard_surface_invalidation_tracking() {
+    const auto has_tile = [](const cybersand::HardSurfaceInvalidation& invalidation,
+                             std::int64_t x, std::int64_t y) {
+        return std::any_of(
+            invalidation.tiles.begin(), invalidation.tiles.end(),
+            [x, y](const cybersand::ChunkCoord tile) {
+                return tile.x == x && tile.y == y;
+            });
+    };
+
+    WorldConfig config{};
+    config.worker_threads = 1;
+    World world(config);
+    world.reserve_region({0, 0, 256, 128});
+    auto invalidation = world.take_hard_surface_invalidation();
+    require(invalidation.full_refresh && invalidation.tiles.empty(),
+            "fresh World did not require one collider full refresh");
+    invalidation = world.take_hard_surface_invalidation();
+    require(!invalidation.full_refresh && invalidation.tiles.empty(),
+            "fresh collider full refresh did not retire");
+
+    (void)world.take_dirty_chunks();
+    world.set(63, 63, Material::Wood);
+    world.set(64, 63, Material::Glass);
+    world.set(127, 64, Material::Metal);
+    world.set(128, 64, Material::Wall);
+    const auto render_dirty = world.dirty_chunk_count();
+    invalidation = world.take_hard_surface_invalidation();
+    require(!invalidation.full_refresh && invalidation.tiles.size() == 4U &&
+                has_tile(invalidation, 0, 0) && has_tile(invalidation, 1, 0) &&
+                has_tile(invalidation, 1, 1) && has_tile(invalidation, 2, 1),
+            "cross-boundary hard edits did not name exactly four collider tiles");
+    require(world.dirty_chunk_count() == render_dirty && render_dirty != 0U,
+            "collider invalidation consumed render dirty state");
+
+    // The inverse ownership check: render ACK cannot consume collider evidence.
+    (void)world.take_dirty_chunks();
+    world.set(10, 10, Material::Wood);
+    (void)world.take_dirty_chunks();
+    invalidation = world.take_hard_surface_invalidation();
+    require(!invalidation.full_refresh && invalidation.tiles.size() == 1U &&
+                has_tile(invalidation, 0, 0),
+            "render dirty consumption lost collider invalidation");
+
+    std::array<std::uint64_t, 64> before{};
+    std::array<std::uint64_t, 64> after{};
+    world.copy_hard_surface_bits({0, 0, 64, 64}, before);
+    world.set(10, 10, Material::Fire);
+    world.set(10, 10, Material::Wood);
+    invalidation = world.take_hard_surface_invalidation();
+    world.copy_hard_surface_bits({0, 0, 64, 64}, after);
+    require(!invalidation.full_refresh && invalidation.tiles.size() == 1U &&
+                has_tile(invalidation, 0, 0) && before == after,
+            "hard-surface ABA change was not retained while final mask stayed exact");
+
+    // Representative hard/non-hard interaction endpoints all invalidate their
+    // containing tile; fractional Water remains non-hard and creates no event.
+    world.set(70, 10, Material::Glass);
+    (void)world.take_hard_surface_invalidation();
+    world.set(70, 10, Material::Lava);
+    invalidation = world.take_hard_surface_invalidation();
+    require(invalidation.tiles.size() == 1U && has_tile(invalidation, 1, 0),
+            "Glass/Lava hard transition missed its collider tile");
+
+    world.set(130, 10, Material::Metal);
+    (void)world.take_hard_surface_invalidation();
+    world.set(130, 10, Material::Acid);
+    invalidation = world.take_hard_surface_invalidation();
+    require(invalidation.tiles.size() == 1U && has_tile(invalidation, 2, 0),
+            "Metal/Acid hard transition missed its collider tile");
+
+    world.set(20, 10, Material::Wood);
+    (void)world.take_hard_surface_invalidation();
+    world.set(20, 10, Material::Fire);
+    invalidation = world.take_hard_surface_invalidation();
+    require(invalidation.tiles.size() == 1U && has_tile(invalidation, 0, 0),
+            "Wood/Fire hard transition missed its collider tile");
+
+    const auto water_revision = world.hard_surface_revision();
+    require(world.set_cell_state(200, 10, Material::Water, 1, 0),
+            "fractional Water setup was refused");
+    invalidation = world.take_hard_surface_invalidation();
+    require(world.hard_surface_revision() == water_revision &&
+                !invalidation.full_refresh && invalidation.tiles.empty(),
+            "fractional Water spuriously invalidated hard terrain");
+    invalidation = world.take_hard_surface_invalidation();
+    require(!invalidation.full_refresh && invalidation.tiles.empty(),
+            "repeated collider query replayed consumed invalidation");
+
+    // Generated-chunk installation reaches the same direct mutation bookkeeping.
+    World generated(config);
+    (void)generated.take_hard_surface_invalidation();
+    std::vector<Material> payload(128U * 128U, Material::Empty);
+    payload.back() = Material::Glass;
+    require(generated.install_generated_chunk({1, 0}, payload) ==
+                cybersand::ChunkInstallOutcome::Installed,
+            "generated hard chunk was not installed");
+    invalidation = generated.take_hard_surface_invalidation();
+    require(!invalidation.full_refresh && invalidation.tiles.size() == 1U &&
+                has_tile(invalidation, 3, 1),
+            "generated chunk lifecycle missed its hard collider tile");
+
+    world.clear();
+    invalidation = world.take_hard_surface_invalidation();
+    require(invalidation.full_refresh && invalidation.tiles.empty(),
+            "destructive World reset did not request collider full refresh");
+
+    WorldConfig unaligned_config{};
+    unaligned_config.chunk_size = 16;
+    World unaligned(unaligned_config);
+    (void)unaligned.take_hard_surface_invalidation();
+    unaligned.set(0, 0, Material::Wall);
+    invalidation = unaligned.take_hard_surface_invalidation();
+    require(invalidation.full_refresh,
+            "non-64-aligned storage geometry did not use conservative full refresh");
+}
+
+void test_hard_surface_parallel_invalidation_parity() {
+    const auto build = [](std::uint32_t workers) {
+        WorldConfig config{};
+        config.worker_threads = workers;
+        config.parallel_job_threshold = 1;
+        config.maximum_chunk_count = 64;
+        config.active_chunk_capacity = 64;
+        config.active_core_capacity = 512;
+        auto world = std::make_unique<World>(config);
+        world->reserve_region({0, 0, 256, 256});
+        for (int y : {20, 84, 148, 212}) {
+            for (int x : {20, 84, 148, 212}) {
+                world->set(x, y, Material::Glass);
+                world->set(x + 1, y, Material::Lava);
+                world->set(x, y + 2, Material::Metal);
+                world->set(x + 1, y + 2, Material::Acid);
+                world->set(x, y + 4, Material::Wood);
+                world->set(x + 1, y + 4, Material::Fire);
+            }
+        }
+        (void)world->take_hard_surface_invalidation();
+        (void)world->take_dirty_chunks();
+        return world;
+    };
+
+    auto serial = build(1);
+    auto parallel = build(4);
+    const auto starting_revision = serial->hard_surface_revision();
+    bool observed_hard_change = false;
+    std::vector<std::uint64_t> serial_bits(4U * 256U);
+    std::vector<std::uint64_t> parallel_bits(4U * 256U);
+    for (int tick = 0; tick < 8; ++tick) {
+        (void)serial->tick();
+        (void)parallel->tick();
+        const auto serial_invalidation = serial->take_hard_surface_invalidation();
+        const auto parallel_invalidation = parallel->take_hard_surface_invalidation();
+        require(serial_invalidation.full_refresh == parallel_invalidation.full_refresh &&
+                    serial_invalidation.tiles == parallel_invalidation.tiles,
+                "hard-surface invalidation differs by worker count");
+        serial->copy_hard_surface_bits({0, 0, 256, 256}, serial_bits);
+        parallel->copy_hard_surface_bits({0, 0, 256, 256}, parallel_bits);
+        require(serial_bits == parallel_bits &&
+                    serial->hard_surface_revision() == parallel->hard_surface_revision() &&
+                    serial->content_hash() == parallel->content_hash(),
+                "hard-surface bytes or native state differ by worker count");
+        observed_hard_change =
+            observed_hard_change || serial->hard_surface_revision() > starting_revision;
+    }
+    require(observed_hard_change,
+            "parallel fixture did not exercise a hard-surface job-effect change");
+}
+
+// Active-core capacity bounds distinct scheduling cores, not active blocks:
+// sixteen active 32-cell blocks inside four 64-cell cores fit a capacity of
+// four, evolve exactly like an unbounded World, and a capacity of three still
+// fails explicitly.
+void test_active_core_capacity_counts_distinct_cores() {
+    const auto build = [](std::size_t capacity) {
+        WorldConfig config{};
+        config.worker_threads = 1;
+        config.active_core_capacity = capacity;
+        auto world = std::make_unique<World>(config);
+        world->reserve_region({0, 0, 128, 128});
+        for (int by = 0; by < 4; ++by)
+            for (int bx = 0; bx < 4; ++bx) world->set(16 + 32 * bx, 8 + 32 * by, Material::Sand);
+        return world;
+    };
+    auto bounded = build(4);
+    auto reference = build(4096);
+    for (int tick = 0; tick < 6; ++tick) {
+        const auto stats = bounded->tick();
+        (void)reference->tick();
+        require(!bounded->has_failed() && stats.scheduled_cores <= 4,
+                "four distinct cores exhausted a four-core capacity");
+    }
+    require(bounded->physical_state_hash() == reference->physical_state_hash(),
+            "distinct-core capacity changed the simulated cells");
+    auto tight = build(3);
+    bool threw = false;
+    try { (void)tight->tick(); } catch (const std::runtime_error&) { threw = true; }
+    require(threw && tight->has_failed(), "a fourth distinct core did not exhaust a three-core capacity");
+}
+
+void test_pair_reaction_tables_match_resolver() {
+    std::size_t reacting = 0;
+    for (unsigned s = 0; s < 256U; ++s) {
+        const auto source = static_cast<cybersand::Material>(s);
+        require(cybersand::MaterialRules::has_pair_reactions(source) == cybersand::InteractionRules::has_pair_rule(source),
+                "pair participant table differs from the resolver");
+        for (unsigned t = 0; t < 256U; ++t) {
+            const auto target = static_cast<cybersand::Material>(t);
+            for (const unsigned roll : {0U, 1U, 63U, 127U, 128U, 200U, 254U, 255U}) {
+                const auto expected = cybersand::InteractionRules::resolve_pair(source, target, static_cast<std::uint8_t>(roll));
+                const auto actual = cybersand::MaterialRules::pair_reaction(source, target, static_cast<std::uint8_t>(roll));
+                require(actual.has_value() == expected.selected, "pair reaction selection differs from the resolver");
+                if (!actual) continue;
+                ++reacting;
+                require(actual->source_product == expected.source_product &&
+                        actual->target_product == expected.target_product &&
+                        actual->rule_index == expected.rule_index, "pair reaction products differ from the resolver");
+            }
+        }
+    }
+    require(reacting > 0U, "fixture must exercise reacting pairs");
+}
+
 } // namespace
 
 void test_liquid_policy_sha256_known_answers();
@@ -3743,6 +4062,24 @@ void test_lcb_inertial_reset_products();
 void test_lcb_inertial_storage_capture();
 void test_lcb_inertial_residual_motion();
 void test_lcb_inertial_admission();
+void test_ballistic_water_defaults_unchanged();
+void test_ballistic_water_face_release_dam_break();
+void test_ballistic_water_face_release_pooled_prepass();
+void test_ballistic_water_retained_rebuild_inheritance();
+void test_ballistic_water_engulfed_parcel_column();
+void test_ballistic_water_run_receipt_identity();
+void test_ballistic_water_upward_arc_and_return();
+void test_ballistic_water_ceiling_wall_no_tunnel();
+void test_ballistic_water_surface_merge_and_injection();
+void test_ballistic_water_families();
+void test_ballistic_water_capacity_mask_deferral();
+void test_ballistic_water_body_contact();
+void test_ballistic_water_persistence_and_parity();
+void test_ballistic_water_render_overlay_and_forced_age();
+void test_inertial_signed_vertical_control_and_identity();
+void test_inertial_signed_vertical_arc_ceiling_parity();
+void test_inertial_signed_vertical_support_and_hybrid();
+void test_workbench_pressure_heads_parallel_exact();
 void test_water_inertial_admission();
 void test_water_inertial_coherence_contact();
 void test_water_inertial_carrying();
@@ -3967,7 +4304,7 @@ int main(int argc, char** argv) {
         {"LCB-002 acceptance isolated vent into certified target", test_lcb_pressure_variants_vent_acceptance},
         {"LCB-002 moving gas masks retire and preserve exact identities", test_pressure_moving_mask_retired_labels},
         {"LCB-002 P1 wake summaries skip quiet scans and stay exact", test_lcb_pressure_wake_summaries},
-        {"LCB-002 #201 moving region keeps exact warm pressure caches", test_lcb_pressure_moving_region},
+        {"LCB-002 #201 moving region and move-assignment exactness", test_lcb_pressure_moving_region},
         {"LCB-003 prepared initial pressure gas capacity", test_pressure_setup_capacity},
         {"LCB-001 liquid policy C API allocation failures", test_liquid_policy_c_api_allocation_failures},
         {"LCB-001 W-CY admission and ingress", test_water_cy_admission_ingress},
@@ -3984,6 +4321,30 @@ int main(int argc, char** argv) {
         {"LCB-001 native run receipt identity", test_liquid_run_receipt_native_identity},
         {"LCB-001 native-issued construction refusals", test_liquid_construction_refusal_native_issuance},
         {"LCB-001 native quantity ledger", test_quantity_ledger},
+        {"BW-001 ballistic Water defaults unchanged", test_ballistic_water_defaults_unchanged},
+        {"BW-001 ballistic Water upward arc and return", test_ballistic_water_upward_arc_and_return},
+        {"BW-001 ballistic Water ceiling wall no tunnel", test_ballistic_water_ceiling_wall_no_tunnel},
+        {"BW-001 ballistic Water surface merge and injection", test_ballistic_water_surface_merge_and_injection},
+        {"BW-001 ballistic Water families", test_ballistic_water_families},
+        {"BW-001 ballistic Water capacity mask deferral", test_ballistic_water_capacity_mask_deferral},
+        {"BW-001 ballistic Water body contact", test_ballistic_water_body_contact},
+        {"BW-001 ballistic Water persistence and parity", test_ballistic_water_persistence_and_parity},
+        {"BW-001 ballistic Water render overlay and forced age", test_ballistic_water_render_overlay_and_forced_age},
+        {"BW-001 ballistic Water run receipt identity", test_ballistic_water_run_receipt_identity},
+        {"BW-001 ballistic Water engulfed parcel column", test_ballistic_water_engulfed_parcel_column},
+        {"BW-001 ballistic Water retained rebuild inheritance", test_ballistic_water_retained_rebuild_inheritance},
+        {"BW-001 ballistic Water face release dam break", test_ballistic_water_face_release_dam_break},
+        {"BW-001 ballistic Water face release pooled pre-pass matches serial", test_ballistic_water_face_release_pooled_prepass},
+        {"IN-B1 signed vertical control and identity", test_inertial_signed_vertical_control_and_identity},
+        {"IN-B1 signed vertical arc ceiling parity", test_inertial_signed_vertical_arc_ceiling_parity},
+        {"IN-B1 signed vertical support and hybrid", test_inertial_signed_vertical_support_and_hybrid},
+        {"Workbench parallel PressureFlow heads match serial (all variants)", test_workbench_pressure_heads_parallel_exact},
+        {"Pair reaction tables match the authored resolver", test_pair_reaction_tables_match_resolver},
+        {"Active-core capacity counts distinct cores", test_active_core_capacity_counts_distinct_cores},
+        {"Hard-surface bits match the display projection", test_hard_surface_bits_match_projection},
+        {"Hard-surface invalidation is independent and tile exact", test_hard_surface_invalidation_tracking},
+        {"Hard-surface invalidation matches across worker counts", test_hard_surface_parallel_invalidation_parity},
+        {"LCB-002 PressureFlow pocket sealed from open air is atmospheric", test_pressure_seal_from_open_is_atmospheric},
     };
 
     std::size_t passed = 0;

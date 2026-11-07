@@ -148,6 +148,13 @@ public:
                                                   bool include_histogram = false) const;
     [[nodiscard]] Array diagnostic_body_metrics() const;
     [[nodiscard]] std::int64_t get_tick_failure_count() const;
+    // WCX/BW-001 experimental Water spray (adapter launch law over the native
+    // ballistic_water_v1 owner). Exclusive owner only, between ticks.
+    [[nodiscard]] Dictionary set_water_spray(const Dictionary& settings);
+    [[nodiscard]] Dictionary get_water_spray() const;
+    void water_spray_before_tick();
+    [[nodiscard]] String inject_water_parcel(Vector2 position, Vector2 velocity_cells_per_tick, std::int64_t quantity);
+    [[nodiscard]] PackedFloat64Array inspect_ballistic_parcels(std::int64_t maximum) const;
 
 protected:
     static void _bind_methods();
@@ -211,6 +218,23 @@ private:
     mutable PackedByteArray render_cells_;
     mutable PackedInt32Array hard_surface_rectangles_;
     mutable PackedInt32Array hard_surface_chunk_rectangles_;
+    // Incremental chunk packet: the hard-surface mask behind the last packet
+    // and each 64x64 collision chunk's rectangles, a pure function of its mask
+    // block. A chunk whose block is unchanged reuses its rectangles.
+    struct HardSurfaceRectangle { std::int32_t x = 0, y = 0, width = 0, height = 0; };
+    mutable std::vector<std::uint64_t> hard_surface_bits_;
+    mutable std::vector<std::vector<HardSurfaceRectangle>> hard_surface_chunk_cache_;
+    // The invalidation stream is consumed before packet assembly. A partial
+    // rebuild must not allow the next query to trust residual tile bits.
+    mutable bool hard_surface_cache_valid_ = false;
+    mutable const cybersand::World* hard_surface_cache_world_ = nullptr;
+    mutable Vector2i hard_surface_cache_extent_{};
+    mutable std::uint64_t hard_surface_chunks_rebuilt_ = 0, hard_surface_chunks_reused_ = 0;
+    mutable std::uint64_t hard_surface_full_mask_copies_ = 0;
+    mutable std::uint64_t hard_surface_tile_mask_copies_ = 0;
+    mutable std::uint64_t hard_surface_recovery_full_refreshes_ = 0;
+    mutable std::uint64_t hard_surface_last_invalidated_tiles_ = 0;
+    mutable std::uint64_t hard_surface_last_changed_tiles_ = 0;
     mutable std::uint64_t render_cells_revision_ = UINT64_MAX;
     mutable std::uint64_t hard_surface_rectangles_revision_ = UINT64_MAX;
     mutable std::uint64_t hard_surface_chunk_rectangles_revision_ = UINT64_MAX;
@@ -248,6 +272,40 @@ private:
         cybersand::gcr::CompoundWorkspace workspace{};
     };
     std::unique_ptr<Workbench> workbench_;
+    struct WaterSpraySettings {
+        bool enabled = false;          // impact spray from body overlap
+        double launch_scale = 1.6;     // parcel speed per unit of body push speed
+        double threshold = 0.3;        // push (cells/tick) needed to launch
+        double upward_bias = 0.72;     // 0: along the push normal; 1: straight up
+        double spread = 0.55;          // lateral outward component when biased up
+        double jitter = 0.35;          // deterministic angle/speed variation
+        std::int64_t budget = 64;      // launches per body per coupling cycle
+        double reaction_gain = 0.0;    // extra stylized body reaction (0 keeps accepted feel)
+        double droplet_gain = 2e-7;    // droplet->body impulse per quantity*q256 momentum
+        bool submerged_lift = true;    // lift otherwise-unresolved submerged Water to the surface
+        std::int64_t lift_reach = 48;  // rows searched upward
+        bool jet_enabled = false;
+        Vector2i jet_origin{256, 320};
+        double jet_angle = -75.0;      // degrees; -90 is straight up
+        double jet_speed = 3.2;        // cells per tick
+        std::int64_t jet_rate = 3;     // parcels per tick
+        std::int64_t jet_quantity = 128;
+        double jet_spread = 5.0;       // degrees
+        double nozzle_speed = 2.5;     // flyer Water nozzle parcel speed, cells per tick
+    };
+    struct WaterSprayCounters {
+        std::int64_t launched = 0, lifted = 0, budget_hits = 0, refused = 0, jet = 0, jet_refused = 0;
+    };
+    WaterSpraySettings spray_{};
+    WaterSprayCounters spray_tick_{}, spray_total_{};
+    std::array<std::int64_t, cybersand::World::kMaximumTransientBodies + 1U> spray_budget_used_{};
+    std::uint64_t spray_jet_phase_ = 0;
+    [[nodiscard]] static Dictionary water_spray_settings_dictionary(const WaterSpraySettings& settings);
+    [[nodiscard]] Vector2i find_spray_lift_spawn(std::int32_t x, std::int32_t y, std::uint16_t body_id,
+                                                 std::int32_t lateral) const;
+    [[nodiscard]] bool try_water_spray(const BodyState& body, std::uint16_t body_id, std::int32_t x, std::int32_t y,
+                                       Vector2 outward, Vector2i target);
+    [[nodiscard]] Vector2 spray_droplet_impulse(std::uint16_t body_id) const;
     static bool parse_workbench_sample(WorkbenchSample& out, const Workbench& retained,
         const PackedFloat64Array& states, const PackedFloat64Array& geometry, const Array& owners,
         std::int64_t session, std::int64_t epoch);
@@ -297,6 +355,9 @@ private:
     void clear_observations();
     [[nodiscard]] static BodyStates parse_body_state_values(const PackedFloat32Array& states, bool strict);
     [[nodiscard]] static PackedInt32Array hard_surface_chunks_from_cells(const PackedByteArray& cells, Vector2i extent);
+    // Diagnostic: the chunk packet rebuilt in full from the display projection.
+    [[nodiscard]] PackedInt32Array diagnostic_full_hard_surface_chunk_rectangles() const;
+    [[nodiscard]] Dictionary diagnostic_hard_surface_packet_stats() const;
     static void rasterize_transform_in(cybersand::World& world, Vector2i extent, std::vector<std::int32_t>* indices,
         std::uint16_t body_id, Vector2 center, double rotation, Vector2 half_size);
     void parse_body_states(const PackedFloat32Array& states);

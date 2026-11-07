@@ -9,6 +9,7 @@ namespace {
 
 struct InertialDelta {
     std::int64_t gravity_y = 0;
+    std::int64_t gravity_speed = 0;
     std::int64_t impulse_x = 0;
     std::int64_t impulse_y = 0;
     std::int64_t loss = 0;
@@ -81,7 +82,8 @@ bool World::diagnostic_set_inertial_cell(std::int64_t x, std::int64_t y, std::in
     if (tick_failed_ || tick_in_progress_ || !inertial_enabled_)
         return false;
     using P = InertialParameters;
-    if (vy < 0 || vy > P::kVmax || vx < -P::kVmax || vx > P::kVmax || ax <= -P::kQ || ax >= P::kQ ||
+    if ((vy < 0 && !inertial_parameters_.signed_vertical) || vy < -P::kVmax || vy > P::kVmax ||
+        vx < -P::kVmax || vx > P::kVmax || ax <= -P::kQ || ax >= P::kQ ||
         ay <= -P::kQ || ay >= P::kQ)
         return false;
     const auto target = address(x, y);
@@ -102,6 +104,21 @@ bool World::diagnostic_set_inertial_cell(std::int64_t x, std::int64_t y, std::in
     keep_cell_active(x, y, nullptr);
     dirty_discovery_cell(x, y, soliding::ProducerReason::DirectMutation);
     return true;
+}
+
+bool World::impart_inertial_velocity(std::int64_t x, std::int64_t y, std::int32_t dvx, std::int32_t dvy) {
+    if (tick_failed_ || tick_in_progress_ || !inertial_enabled_ ||
+        (dvy < 0 && !inertial_parameters_.signed_vertical))
+        return false;
+    using P = InertialParameters;
+    const auto target = address(x, y);
+    auto *chunk = find_chunk(target.chunk);
+    if (chunk == nullptr || chunk->inertial == nullptr || !inertial_family(chunk->cells[target.index].material_value()))
+        return false;
+    const auto &state = (*chunk->inertial)[target.index];
+    const auto vx = std::clamp<std::int32_t>(state.vx + dvx, -P::kVmax, P::kVmax);
+    const auto vy = std::clamp<std::int32_t>(state.vy + dvy, inertial_parameters_.signed_vertical ? -P::kVmax : 0, P::kVmax);
+    return diagnostic_set_inertial_cell(x, y, static_cast<std::int16_t>(vx), static_cast<std::int16_t>(vy), state.ax, state.ay);
 }
 
 bool World::update_inertial(Material material, std::int64_t x, std::int64_t y, JobEffects *effects) {
@@ -125,7 +142,8 @@ bool World::update_inertial(Material material, std::int64_t x, std::int64_t y, J
     std::int32_t vy = initial.vy;
     std::int32_t ax = initial.ax;
     std::int32_t ay = initial.ay;
-    if (vy < 0)
+    const bool signed_law = inertial_parameters_.signed_vertical;
+    if (vy < 0 && !signed_law)
         throw std::logic_error("inertial_cellular_v1 holds a negative vy");
     InertialDelta book;
     const auto speed = [&]() { return static_cast<std::int64_t>(std::abs(vx) + std::abs(vy)); };
@@ -217,11 +235,16 @@ bool World::update_inertial(Material material, std::int64_t x, std::int64_t y, J
     const auto carried = vy;
     // U1 support, before any velocity change.
     const bool supported = !eligible(0, 1);
-    // U2 exactly one gravity application.
-    vy += P::kGravity;
-    book.gravity_y += P::kGravity;
-    // U3 vertical resolution of a supported cell.
-    if (supported) {
+    // U2 exactly one gravity application. Its L1 effect is booked separately:
+    // under the signed law a rising cell loses speed to gravity, not to loss.
+    const std::int32_t gravity = signed_law ? P::kSignedGravity : P::kGravity;
+    vy += gravity;
+    book.gravity_y += gravity;
+    book.gravity_speed += static_cast<std::int64_t>(std::abs(vy)) - std::abs(carried);
+    // U3 vertical resolution of a supported cell. Under the signed law a cell
+    // still rising (carried < 0) is leaving its support: support never
+    // destroys upward motion and gravity alone turns it around.
+    if (supported && (!signed_law || carried >= 0)) {
         if (const auto diagonal = side(1); diagonal != 0) {
             const Snapshot before{vx, vy};
             const auto in = std::abs(vx) + std::abs(vy);
@@ -233,9 +256,9 @@ bool World::update_inertial(Material material, std::int64_t x, std::int64_t y, J
             booked(before);
         } else {
             const Snapshot before{vx, vy};
-            vy -= P::kGravity;
+            vy -= gravity;
             booked(before);
-            book.support += P::kGravity;
+            book.support += gravity;
             land(carried);
         }
     }
@@ -303,7 +326,16 @@ bool World::update_inertial(Material material, std::int64_t x, std::int64_t y, J
                 !exchange_permitted(material, target, cx, cy, tx, ty, effects, &footprint))
                 permitted = false;
             if (!permitted) {
-                if (dy != 0) {
+                if (signed_law && dy < 0) {
+                    // Ceiling or overhead body: reverse a quarter of the rise.
+                    const Snapshot before{vx, vy};
+                    const auto rebound = trunc_mul(-vy, P::kCeilingNumerator, P::kCeilingDenominator);
+                    vy = rebound.applied;
+                    book.remainder += rebound.remainder;
+                    ay = 0;
+                    booked(before);
+                    ++book.contacts;
+                } else if (dy != 0) {
                     land(vy);
                     saturate();
                 } else {
@@ -388,6 +420,7 @@ bool World::update_inertial(Material material, std::int64_t x, std::int64_t y, J
         keep_cell_active(cx, cy, effects);
     if (effects != nullptr) {
         effects->inertial.gravity_y += book.gravity_y;
+        effects->inertial.gravity_speed += book.gravity_speed;
         effects->inertial.impulse_x += book.impulse_x;
         effects->inertial.impulse_y += book.impulse_y;
         effects->inertial.loss += book.loss;
@@ -405,6 +438,7 @@ bool World::update_inertial(Material material, std::int64_t x, std::int64_t y, J
     } else {
         auto &ledger = inertial_ledger_;
         ledger.gravity_y += book.gravity_y;
+        ledger.gravity_speed += book.gravity_speed;
         ledger.impulse_x += book.impulse_x;
         ledger.impulse_y += book.impulse_y;
         ledger.loss += book.loss;
@@ -474,7 +508,8 @@ void World::validate_inertial_ledger() const {
     if (l.velocity_retired > static_cast<std::uint64_t>(std::numeric_limits<std::int64_t>::max()) ||
         x != sub(add(l.impulse_x, l.external_x), l.retired_x) ||
         y != sub(add(add(l.gravity_y, l.impulse_y), l.external_y), l.retired_y) ||
-        speed != sub(add(sub(l.gravity_y, l.loss), l.external_speed),
+        (!inertial_parameters_.signed_vertical && l.gravity_speed != l.gravity_y) ||
+        speed != sub(add(sub(l.gravity_speed, l.loss), l.external_speed),
                      static_cast<std::int64_t>(l.velocity_retired)))
         throw std::invalid_argument("IN ledger does not close");
 }

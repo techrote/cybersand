@@ -92,12 +92,9 @@ Source: [CyberSimulationWorker `_worker_loop`](../../godot/scripts/simulation_wo
    the mutex; apply selected window and Water options on the exclusive owner
    (`CyberSimulationWorker.apply_world_execution_settings`). While a
    fixed-interest MicroScenario is active, its `apply_interest()` alone writes
-   the window flag and region. The camera window is not written first
+   the window flag and region. The camera window is not written first, because
+   every selected-core change discards the derived pressure cache
    ([#201 region-flip record](../audits/2026-11-04-lcb201-region-flip.md)).
-   On main a selected-core change still discards the derived pressure cache.
-   Draft PR #405 removes that discard; on that branch the ordering no longer
-   affects cache warmth, but it is kept as the fixed-interest window owner
-   ([moving-camera record](../audits/2026-11-05-lcb201-moving-camera-invalidation.md)).
 2. Reset if requested. Prepare body coupling, including overlap response when
    unpaused. Apply material emissions even while paused.
 3. If unpaused, advance the sampled character by `1/60` second, then call the
@@ -116,6 +113,14 @@ state to the worker. Body and cellular timelines may lag by multiple samples;
 serial checks prevent duplicate application. See
 [main `_physics_process`](../../godot/scripts/main.gd) and
 [Rapier `step`](../../godot/scripts/rapier_physics_bridge.gd).
+
+**Opt-in prototype, default off (2026-11-06):** with `set_lockstep_coupling(true)` the
+ordinary coupling path ticks only after a body publication newer than its
+previous tick's. It does not wait on the wall-clock deadline. Holds poll every
+100 µs and count a timeout once a hold exceeds 250 ms, but stale input is still
+refused. Only the [COUPLING-LOCKSTEP-001 fixture](../../godot/tests/test_coupling_lockstep.gd)
+pairs it with a main-side frame hold. See
+[coupled desktop determinism](determinism-and-boundary-transfers.md#coupled-desktop-determinism--2026-11-06).
 
 ## Physical actor scheduling
 
@@ -308,7 +313,7 @@ Actual platform execution evidence is in the
 
 ## Desktop development workbench on #394
 
-The main-thread Rapier owner takes its completion acknowledgement and body wrench from the same immutable worker publication in the physics callback. Render can retain its previous publication independently. Owner epoch, sample and result serial checks still guard delivery. The physics callback confirms the current native hard-surface revision and drains the bounded Rapier collider queue before stepping against edited terrain. This check advances even while the renderer holds a frame. The desktop simulation owner drives the native World, whose persistent pool handles eligible phased material jobs. The workbench also dispatches independent chunk columns for vertical head preparation in reference PressureFlow when the pool has enough work. Columns have disjoint output storage and task-local counters. The owner joins them before row interpolation and wake decisions. Gas topology and the row pass remain serial. The default outside the workbench retains its existing execution policy.
+The main-thread Rapier owner takes its completion acknowledgement and body wrench from the same immutable worker publication in the physics callback. Render can retain its previous publication independently. Owner epoch, sample and result serial checks still guard delivery. The physics callback confirms the current native hard-surface revision and drains the bounded Rapier collider queue before stepping against edited terrain. This check advances even while the renderer holds a frame. The desktop simulation owner drives the native World, whose persistent pool handles eligible phased material jobs. The workbench also dispatches independent chunk columns for vertical head preparation in every PressureFlow variant when the pool has enough work. Columns have disjoint output storage, task-local counters and private row-dirty records, which the owner OR-merges after the join. Row interpolation and wake decisions then run as (chunk row, activity-block row) sub-bands. Each sub-band owns its heads, wake bits and block activation flags. Physics wake events and counts are replayed in serial order, and certificate invalidation is applied by the owner as coalesced runs. Gas topology remains serial. While the workbench lock-step is active, the worker wakes on the next body sample in 250 µs polls instead of sleeping out a free-running 60 Hz interval. That interval's phase drift had produced exact 30 Hz plateaus. It still advances one tick per sample. See the [2026-11-06 tick-cost evidence](../audits/2026-11-06-workbench-pf-tick-cost.md). Under the lock-step, Rapier also steps only against the current hard-surface revision. The worker therefore publishes every changed hard-surface packet; other modes keep the 250 ms throttle. A blocked physics callback installs it with a 4 ms/128-chunk budget ([whole-engine benchmark](../audits/2026-11-06-whole-engine-bench.md)). The default outside the workbench retains its existing execution policy.
 
 The [dated workbench measurements](../audits/2026-11-04-workbench-boundary-and-pacing.md) separate render cadence, completed physics ticks, fixed-work native throughput and process CPU usage.
 

@@ -57,6 +57,7 @@ template<class Writer> void quantity_write(Writer& out, const QuantityLedgerSnap
     out.put(value.baseline_water);
     out.put(value.water_visible);
     out.put(value.water_overfill);
+    if (value.schema_version == kQuantityLedgerBallisticSchemaVersion) out.put(value.water_ballistic);
     const auto flow = [&](const auto& items) {
         for (const auto& item : items) { out.put(item.produced); out.put(item.consumed); }
     };
@@ -84,12 +85,15 @@ template<class Writer> void quantity_write(Writer& out, const QuantityLedgerSnap
 template<class Reader> QuantityLedgerSnapshot quantity_read(Reader& in) {
     QuantityLedgerSnapshot value;
     value.schema_version = in.template get<std::uint16_t>();
-    if (value.schema_version != kQuantityLedgerSchemaVersion)
+    if (value.schema_version != kQuantityLedgerSchemaVersion &&
+        value.schema_version != kQuantityLedgerBallisticSchemaVersion)
         throw std::invalid_argument("unknown quantity accounting schema");
     value.mass_bits = in.template get<std::uint8_t>();
     value.baseline_water = in.template get<std::uint64_t>();
     value.water_visible = in.template get<std::uint64_t>();
     value.water_overfill = in.template get<std::uint64_t>();
+    if (value.schema_version == kQuantityLedgerBallisticSchemaVersion)
+        value.water_ballistic = in.template get<std::uint64_t>();
     const auto flow = [&](auto& items) {
         for (auto& item : items) {
             item.produced = in.template get<std::uint64_t>();
@@ -136,6 +140,7 @@ struct QuantityHashWriter {
 void World::reset_quantity_ledger() noexcept {
     quantity_ = {};
     quantity_.mass_bits = config_.water_experiment_policy.mass_bits();
+    if (config_.ballistic_water.enabled) quantity_.schema_version = kQuantityLedgerBallisticSchemaVersion;
 }
 
 QuantityLedgerSnapshot World::quantity_ledger() const {
@@ -153,6 +158,7 @@ void World::initialize_quantity_ledger(const QuantityConstructionSeed& seed) {
     quantity_validate_seed(seed);
     validate_quantity_ledger(true);
     if (seed.mass_bits != quantity_.mass_bits ||
+        quantity_.water_ballistic != 0U ||
         seed.expected_final_water != quantity_add(quantity_.water_visible, quantity_.water_overfill))
         throw std::invalid_argument("quantity construction does not match actual World");
     auto initialized = quantity_;
@@ -230,7 +236,7 @@ void World::record_quantity_transition(Material before, std::uint16_t before_vis
             // category separately fits. Paired transport may temporarily open
             // conservation, so only representability is checked here.
             auto produced = quantity_.baseline_water;
-            auto consumed = quantity_add(visible, overfill);
+            auto consumed = quantity_add(quantity_add(visible, overfill), quantity_.water_ballistic);
             for (std::size_t i = 0; i < quantity_.kinds.size(); ++i) {
                 const auto& candidate = i == kind ? next_kind : quantity_.kinds[i];
                 produced = quantity_add(produced, candidate.produced);
@@ -316,7 +322,7 @@ void World::merge_quantity_effects(const JobEffects& effects, bool commit) {
     // individual category still fits. Conservation may be temporarily open
     // inside a paired transport, so equality is checked only at boundaries.
     auto produced = next.baseline_water;
-    auto consumed = quantity_add(next.water_visible, next.water_overfill);
+    auto consumed = quantity_add(quantity_add(next.water_visible, next.water_overfill), next.water_ballistic);
     for (const auto& flow : next.kinds) {
         produced = quantity_add(produced, flow.produced);
         consumed = quantity_add(consumed, flow.consumed);
@@ -325,11 +331,15 @@ void World::merge_quantity_effects(const JobEffects& effects, bool commit) {
 }
 
 void World::validate_quantity_ledger(bool scan_authority) const {
-    if (quantity_.schema_version != kQuantityLedgerSchemaVersion ||
-        quantity_.mass_bits != config_.water_experiment_policy.mass_bits())
+    const auto schema = config_.ballistic_water.enabled ? kQuantityLedgerBallisticSchemaVersion
+                                                        : kQuantityLedgerSchemaVersion;
+    if (quantity_.schema_version != schema ||
+        quantity_.mass_bits != config_.water_experiment_policy.mass_bits() ||
+        (!config_.ballistic_water.enabled && quantity_.water_ballistic != 0U))
         throw std::invalid_argument("quantity accounting identity mismatch");
     std::uint64_t produced = quantity_.baseline_water;
-    std::uint64_t consumed = quantity_add(quantity_.water_visible, quantity_.water_overfill);
+    std::uint64_t consumed = quantity_add(quantity_add(quantity_.water_visible, quantity_.water_overfill),
+                                          quantity_.water_ballistic);
     for (const auto& flow : quantity_.kinds) {
         produced = quantity_add(produced, flow.produced);
         consumed = quantity_add(consumed, flow.consumed);
@@ -427,4 +437,5 @@ void World::validate_quantity_ledger(bool scan_authority) const {
     }
     if (visible != quantity_.water_visible || overfill != quantity_.water_overfill || cells != quantity_.material_cells)
         throw std::invalid_argument("quantity accounting differs from stored authority");
+    validate_ballistic_ledger();
 }
