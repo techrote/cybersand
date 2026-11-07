@@ -389,3 +389,32 @@ memory reclamation of moving Sand/Water. Dynamic selective resident count
 remains unchanged (**3 -> 3**) and reclaimed dynamic bytes remain **zero**.
 The #194 exact protected three-file ownership/API handoff remains required.
 No source-lock repin, default physics change, new PR, Ready or merge.
+
+
+## 7 November — independent process-cold continuation from an ACTUALLY partially evicted World (experimental)
+
+The native bridge now persists a genuine CYPS carrier **while** only two active
+signed-adjacent moving Sand/Water chunks remain in the original shared World
+after in-place selective removal of the unrelated static G6KC1 resident.
+This is a snapshot of the **two still-allocated active native chunks**, not a
+full-three-resident replacement and not selective moving-chunk eviction.
+
+An entirely new process loads the two-resident native image, constructs a
+separate never-restored native World from the initial materials, advances the
+reference by the original completed ticks and checks all moving-chunk
+material/Water mass/temperatures. It then executes four further actual native
+ticks **while the static resident stays absent**, checks every moving cell
+against the independent oracle, restores only the previously durable static
+G6KC1 into the same World, and compares complete native physical/content/state
+hashes, quantity ledger, tick and allocated resident bytes. Eight subsequent
+native ticks must remain exact. Corrupted native dynamic CYPS and wrong static
+coordinate are negative controls, never admission authority. The existing
+static-only separate-process readback is retained as an additional control.
+The added Windows/Linux workflow gate requires the new native PASS marker in
+both configured 1/4-worker executions and retains original binary/source/logs.
+
+No per-moving-chunk bytes are reclaimed: the selected dynamic pair stays
+resident, and the only released capacity is the 41,216-byte static chunk.
+A process-cold CYPS restore of the *remaining* World is explicitly not a
+native-authoritative atomic two-chunk eviction transaction, and does not
+establish persistence of external actors or unsupported solver sidecars.

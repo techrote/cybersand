@@ -69,8 +69,10 @@ jobs:
           for workers in 1 4; do
             build/gen006-dynamic/bridge "build/gen006-dynamic/static-$workers.g6c" "$workers" | tee "build/gen006-dynamic/bridge-$workers.log"
             build/gen006-dynamic/bridge "build/gen006-dynamic/static-$workers.g6c" "$workers" --reopen | tee "build/gen006-dynamic/bridge-cold-$workers.log"
+            build/gen006-dynamic/bridge "build/gen006-dynamic/static-$workers.g6c" "$workers" --resume-partial | tee "build/gen006-dynamic/bridge-partial-$workers.log"
             grep -q "GEN006_BRIDGE_SHARED_WORLD_STATIC_WITH_LIVE_DYNAMIC_PASS configured_workers=$workers" "build/gen006-dynamic/bridge-$workers.log"
             grep -q "GEN006_BRIDGE_COLD_STATIC_READBACK_PASS configured_workers=$workers" "build/gen006-dynamic/bridge-cold-$workers.log"
+            grep -q "GEN006_BRIDGE_COLD_PARTIAL_DYNAMIC_REJOIN_PASS configured_workers=$workers" "build/gen006-dynamic/bridge-partial-$workers.log"
             grep -q "absent_dynamic_ticks=8 absent_observed_workers_max=1" "build/gen006-dynamic/bridge-$workers.log"
           done
       - name: Preserve compiler, source and actual native results
@@ -140,21 +142,31 @@ jobs:
           if errorlevel 1 (type build\gen006-dynamic\bridge-1.log & exit /b 1)
           build\gen006-dynamic\bridge.exe build\gen006-dynamic\static-1.g6c 1 --reopen > build\gen006-dynamic\bridge-cold-1.log 2>&1
           if errorlevel 1 (type build\gen006-dynamic\bridge-cold-1.log & exit /b 1)
+          build\gen006-dynamic\bridge.exe build\gen006-dynamic\static-1.g6c 1 --resume-partial > build\gen006-dynamic\bridge-partial-1.log 2>&1
+          if errorlevel 1 (type build\gen006-dynamic\bridge-partial-1.log & exit /b 1)
           build\gen006-dynamic\bridge.exe build\gen006-dynamic\static-4.g6c 4 > build\gen006-dynamic\bridge-4.log 2>&1
           if errorlevel 1 (type build\gen006-dynamic\bridge-4.log & exit /b 1)
           build\gen006-dynamic\bridge.exe build\gen006-dynamic\static-4.g6c 4 --reopen > build\gen006-dynamic\bridge-cold-4.log 2>&1
           if errorlevel 1 (type build\gen006-dynamic\bridge-cold-4.log & exit /b 1)
+          build\gen006-dynamic\bridge.exe build\gen006-dynamic\static-4.g6c 4 --resume-partial > build\gen006-dynamic\bridge-partial-4.log 2>&1
+          if errorlevel 1 (type build\gen006-dynamic\bridge-partial-4.log & exit /b 1)
           type build\gen006-dynamic\bridge-1.log
           type build\gen006-dynamic\bridge-cold-1.log
+          type build\gen006-dynamic\bridge-partial-1.log
           type build\gen006-dynamic\bridge-4.log
           type build\gen006-dynamic\bridge-cold-4.log
+          type build\gen006-dynamic\bridge-partial-4.log
           findstr /C:"GEN006_BRIDGE_SHARED_WORLD_STATIC_WITH_LIVE_DYNAMIC_PASS configured_workers=1" build\gen006-dynamic\bridge-1.log
           if errorlevel 1 exit /b 1
           findstr /C:"GEN006_BRIDGE_SHARED_WORLD_STATIC_WITH_LIVE_DYNAMIC_PASS configured_workers=4" build\gen006-dynamic\bridge-4.log
           if errorlevel 1 exit /b 1
           findstr /C:"GEN006_BRIDGE_COLD_STATIC_READBACK_PASS configured_workers=1" build\gen006-dynamic\bridge-cold-1.log
           if errorlevel 1 exit /b 1
+          findstr /C:"GEN006_BRIDGE_COLD_PARTIAL_DYNAMIC_REJOIN_PASS configured_workers=1" build\gen006-dynamic\bridge-partial-1.log
+          if errorlevel 1 exit /b 1
           findstr /C:"GEN006_BRIDGE_COLD_STATIC_READBACK_PASS configured_workers=4" build\gen006-dynamic\bridge-cold-4.log
+          if errorlevel 1 exit /b 1
+          findstr /C:"GEN006_BRIDGE_COLD_PARTIAL_DYNAMIC_REJOIN_PASS configured_workers=4" build\gen006-dynamic\bridge-partial-4.log
           if errorlevel 1 exit /b 1
           findstr /C:"absent_dynamic_ticks=8 absent_observed_workers_max=1" build\gen006-dynamic\bridge-1.log
           if errorlevel 1 exit /b 1

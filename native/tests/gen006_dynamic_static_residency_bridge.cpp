@@ -222,6 +222,19 @@ void run(const fs::path& file,std::uint32_t workers) {
     demand(live.completed_tick_index()==absent_tick_start+8 &&
            absent_worker_observed>0,
            "GEN006_BRIDGE_ABSENT_NO_NATIVE_TICK");
+    // Preserve the two ACTIVE native dynamic residents while the distant
+    // static G6KC1 owner is absent. Unlike the old static-only cold process
+    // control, this image is of the genuine in-place, partially evicted World
+    // AFTER it has continued eight real Sand/Water ticks without its third
+    // resident. A second process must reconstitute that owner without a
+    // full-three-resident image or a mocked chunk lifecycle.
+    const auto absent_active_image = live.save_physical_state();
+    demand(live.chunk_count() == 2 && live.resident_cell_bytes() == remaining_bytes,
+           "GEN006_BRIDGE_ACTIVE_CHECKPOINT_NOT_SELECTIVE");
+    durable_write(fs::path(file.string()+".active.cyps"), absent_active_image);
+    demand(read_exact(fs::path(file.string()+".active.cyps")) == absent_active_image,
+           "GEN006_BRIDGE_ACTIVE_CHECKPOINT_READBACK");
+
     // Restore only the independently saved static resident, never swap World.
     demand(live.restore_chunk_checkpoint({8,0},readback)==
            ChunkCheckpointStatus::Restored &&
@@ -280,6 +293,93 @@ void reopen(const fs::path& file,std::uint32_t workers) {
              <<workers<<" resident_chunks="<<restored.chunk_count()
              <<" water_dynamic_bundle_cold_recovery=NOT_PROVEN\n";
 }
+
+void resume_partial(const fs::path& file,std::uint32_t workers) {
+    // This is a new OS process. No original native World object survives.
+    // Its authoritative two moving chunks were saved WHILE the static chunk
+    // was selectively absent and Sand/Water simulation had continued.
+    const auto active=read_exact(fs::path(file.string()+".active.cyps"));
+    const auto static_record=read_exact(file);
+    auto invalid=active;
+    invalid.back() ^= 1U;
+    auto corrupt=World::restore_physical_state(config(workers),invalid);
+    demand(!corrupt,"GEN006_BRIDGE_COLD_CORRUPT_DYNAMIC_CYPS_ADMITTED");
+    auto resumed=World::restore_physical_state(config(workers),active);
+    demand(resumed && !resumed->has_failed() &&
+           resumed->chunk_count()==2 &&
+           resumed->save_physical_state()==active,
+           "GEN006_BRIDGE_COLD_PARTIAL_DYNAMIC_READBACK");
+    const auto dynamic_bytes=resumed->resident_cell_bytes();
+    demand(dynamic_bytes>0 && dynamic_bytes<107264 &&
+           resumed->stored_material(514,2)==Material::Empty,
+           "GEN006_BRIDGE_COLD_STATIC_NOT_ABSENT");
+
+    // Independent scientific oracle is CONSTRUCTED FROM INITIAL MATERIALS,
+    // never deserialized from either the staged or saved World.
+    World reference(config(workers));
+    populate(reference);
+    const auto resume_tick=resumed->completed_tick_index();
+    demand(resume_tick>=8 && resume_tick<=72,
+           "GEN006_BRIDGE_COLD_SOURCE_TICK_OUTSIDE_BOUNDS");
+    std::uint32_t observed=0;
+    for(std::uint64_t i=0;i<resume_tick;++i) {
+        const auto t=reference.tick();
+        observed=std::max(observed,t.worker_threads_observed);
+        demand(!reference.has_failed(),"GEN006_BRIDGE_COLD_ORACLE_TICK_FAILED");
+    }
+    auto match_moving=[&](const char* failure) {
+        for(std::int64_t y=-128;y<0;++y)
+            for(std::int64_t x=-128;x<-64;++x)
+                demand(resumed->stored_material(x,y)==reference.stored_material(x,y) &&
+                       resumed->liquid_mass(x,y)==reference.liquid_mass(x,y) &&
+                       resumed->stored_temperature(x,y)==reference.stored_temperature(x,y),
+                       failure);
+    };
+    match_moving("GEN006_BRIDGE_COLD_MATERIAL_SEAM_MISMATCH");
+
+    // Additional, genuinely executed native dynamics while STILL partially
+    // resident after process-cold restoration; then re-admit the static record
+    // into the SAME two-resident native World, not a full-World pointer swap.
+    for(unsigned i=0;i<4;++i) {
+        const auto a=resumed->tick(),b=reference.tick();
+        observed=std::max(observed,a.worker_threads_observed);
+        demand(a.tick==b.tick && !resumed->has_failed() && !reference.has_failed() &&
+               resumed->chunk_count()==2 &&
+               resumed->resident_cell_bytes()==dynamic_bytes,
+               "GEN006_BRIDGE_COLD_ABSENT_TICK_FAILED");
+        match_moving("GEN006_BRIDGE_COLD_ABSENT_SEAM_DIVERGENCE");
+    }
+    const auto before=resumed->save_physical_state();
+    demand(resumed->restore_chunk_checkpoint({9,0},static_record)==
+               ChunkCheckpointStatus::InvalidRecord &&
+           resumed->save_physical_state()==before,
+           "GEN006_BRIDGE_COLD_WRONG_STATIC_CHUNK_ADMITTED");
+    demand(resumed->restore_chunk_checkpoint({8,0},static_record)==
+               ChunkCheckpointStatus::Restored &&
+           resumed->chunk_count()==3 &&
+           resumed->resident_cell_bytes()==107264,
+           "GEN006_BRIDGE_COLD_PARTIAL_READMISSION_FAILED");
+    parity(*resumed,reference,"GEN006_BRIDGE_COLD_REJOIN_DIVERGED");
+    for(unsigned i=0;i<8;++i) {
+        const auto a=resumed->tick(),b=reference.tick();
+        observed=std::max(observed,a.worker_threads_observed);
+        demand(a.tick==b.tick && !resumed->has_failed() && !reference.has_failed(),
+               "GEN006_BRIDGE_COLD_CONTINUED_TICK_FAILED");
+        parity(*resumed,reference,"GEN006_BRIDGE_COLD_CONTINUATION_DIVERGED");
+    }
+    std::cout<<"GEN006_BRIDGE_COLD_PARTIAL_DYNAMIC_REJOIN_PASS"
+             <<" configured_workers="<<workers
+             <<" observed_workers_max="<<observed
+             <<" cold_source_tick="<<resume_tick
+             <<" active_residents=2"
+             <<" active_resident_bytes="<<dynamic_bytes
+             <<" resumed_absent_ticks=4"
+             <<" rejoined_residents="<<resumed->chunk_count()
+             <<" post_readmission_ticks=8"
+             <<" final_native_tick="<<resumed->completed_tick_index()
+             <<" final_physical="<<resumed->physical_state_hash()
+             <<" moving_bundle_selective_eviction=NOT_PROVEN\n";
+}
 }
 int main(int argc,char** argv) {
     try {
@@ -288,8 +388,11 @@ int main(int argc,char** argv) {
         const auto workers=static_cast<std::uint32_t>(std::stoul(argv[2]));
         demand(workers==1 || workers==4,"GEN006_BRIDGE_BAD_WORKER_ARGUMENT");
         if(argc==4) {
-            demand(std::string(argv[3])=="--reopen","GEN006_BRIDGE_BAD_MODE");
-            reopen(argv[1],workers);
+            const std::string mode=argv[3];
+            demand(mode=="--reopen" || mode=="--resume-partial",
+                   "GEN006_BRIDGE_BAD_MODE");
+            if(mode=="--reopen") reopen(argv[1],workers);
+            else resume_partial(argv[1],workers);
         } else run(argv[1],workers);
         return 0;
     } catch(const std::exception& e) {
