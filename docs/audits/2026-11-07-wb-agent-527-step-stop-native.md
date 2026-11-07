@@ -265,3 +265,35 @@ not full rebuilt production Native/GDExtension, Windows desktop, a 32-Sand
 four-tool Godot trial, three live OpenAI tasks or owner-human acceptance.
 No #526 session/worker/host files, #528 panel files, GEN-006, native physics,
 defaults or frozen fixture were modified. The one #527 Draft remains unmerged.
+
+
+## 7 November 2026 — #526 signed-frame handoff consumption (experimental, not admitted)
+
+The #527 narrow bridge now accepts an **optional trusted-host-only coordinate_frame_id**
+parameter to delegate to #526's native-owned authorizer. It is not a fifth
+model-visible tool, and the model cannot select it. Existing four-argument
+calls retain their behavior. The CI-only composition now pins the later #526
+signed-frame candidate `6a9967fbd47c992c8f1bcd109163563d0f3ab18f`
+rather than the obsolete pre-signed source. Explicit source composition
+preserves current-main documentation for mechanically overlapping hunks, while
+source-owning Godot scripts stay wholly upstream.
+
+New independent Godot/native OpenGL experiment
+`godot/tests/test_workbench_agent_signed_join.gd` exercises the single
+authorized 2048-square native World through **all four actual tools** using
+logical negative coordinates: observed/material IDs + original matched frame,
+protected and Sand-authoring refusal, nine native-applied Hard Wall cells and
+signed readback, exact two acknowledged paused steps + post-Step native/render
+join, and acknowledged Stop/late-call refusal. Original rendered PNGs, worker
+identity/ticks and the source-composition tree are captured in the existing
+#527 join artifact. This is deliberately **not** the frozen 32-Sand fixture
+nor a claim that native translation preserves the source fixture's intermediate
+physics. #537 recorded 26 nonidentical transient states for NORMAL at +512;
+that strict-parity discrepancy remains a HOLD for model trials until owner
+admission or a genuinely signed physical canvas is qualified.
+
+The immutable v2 geometry/verifier/positive/negative evidence and **480 TOTAL
+tick allowance** are unchanged. The live OpenAI (0/3), Windows owner desktop,
+production Native/GDExtension and independent final review gates remain
+separate. Execute all relevant exact-head CI on the new source before claiming
+the experimental engineering lane passed.

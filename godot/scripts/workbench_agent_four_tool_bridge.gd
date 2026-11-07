@@ -57,15 +57,18 @@ func bind(main: Control) -> bool:
 
 
 func authorize_task(task_id: String, scope: Rect2i, protected: Array,
-		allowed_materials: Array) -> Dictionary:
+		allowed_materials: Array, coordinate_frame_id: String = "") -> Dictionary:
 	if _authorized or _busy or _stopping or _uncertain:
 		return _refused("task_or_transition_busy")
 	if not is_instance_valid(_main) or _authoring == null:
 		return _refused("foundation_not_bound")
 	_busy = true
 	_authorization_pending = true
+	# Only the trusted host can opt into the upstream experimental signed
+	# finite frame. This parameter is NEVER accepted from a model-visible
+	# call_tool invocation, and does not imply physical-equivalence admission.
 	var answer: Dictionary = await _authoring.authorize_task(
-		task_id,scope,protected,allowed_materials)
+		task_id,scope,protected,allowed_materials,coordinate_frame_id)
 	_authorization_pending = false
 	_busy = false
 	if answer.get("status") == "unconfirmed":
