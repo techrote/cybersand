@@ -1290,7 +1290,8 @@ failed turns keep the previous value, even though they latch a newer sample
 refused after `start_worker`. It fences only the ordinary coupling path; labs,
 MicroScenarios and the workbench keep their own pacing. `lockstep_metrics()`
 returns copied `ticks`, `holds`, hold time, `timeouts`, `superseded_publications`
-(publications replaced before a fenced tick consumed them) and
+(publications replaced before a fenced tick consumed them, including samples
+main keeps publishing while the worker is paused) and
 `completed_publication`. See [coupled desktop determinism](../architecture/determinism-and-boundary-transfers.md#coupled-desktop-determinism--2026-11-06).
 
 **Current, opt-in desktop mode (owner decision 2026-11-06):** `main.gd` enables
@@ -1301,10 +1302,15 @@ default launch is unchanged. In that mode:
 - each ordinary `_physics_process` peeks `take_latest_snapshot(0)` and skips the
   frame (no Rapier step, no new publication) until the snapshot consumed main's
   last publication and has not been applied;
-- a hold longer than `LOCKSTEP_MAIN_HOLD_LIMIT_MSEC` (500 ms) runs one counted
-  stale step instead of freezing;
+- a hold longer than `LOCKSTEP_MAIN_HOLD_LIMIT_MSEC` (500 ms) of consecutive
+  physics frames runs one counted stale step instead of freezing; a frame that
+  skipped the decision (pause, reset, actor install, early return) restarts
+  the bound;
+- a step after a refused body publication, or whose fresh result belongs to
+  another body owner epoch, is counted as unfenced, not held or fenced;
 - `CyberRapierPhysicsBridge.deterministic_rotation_packing` (default `false`) is
-  set at every `pack_rigid_body_states()` call, so `pack_body_states()` stores
+  set on every bridge main adopts (the `rapier_bridge` setter: sandbox, actor,
+  prepared and replacement bridges), so all its `pack_body_states()` callers store
   `atan2(float(basis.x.y), float(basis.x.x))` evaluated in double as float32
   instead of `Transform2D.get_rotation()`;
 - `lockstep_coupling_status()` returns copied main counters

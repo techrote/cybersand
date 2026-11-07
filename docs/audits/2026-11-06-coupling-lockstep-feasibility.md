@@ -266,6 +266,40 @@ after it left Draft (67 checks). Full-game exactness
 is still not claimed: inputs, terrain installation and labs remain outside the
 fence.
 
+### Second review of #474 — 2026-11-07
+
+After #464 merged (`4c2c9732`), the owner asked Claude to give #474 its second
+review. Claude wrote this code, so the review is not independent of the author.
+It reviewed `e621f9d7` against main.
+
+| Finding | Disposition |
+|---|---|
+| The main hold timer survived frames that skipped the fence decision. A pause longer than 500 ms that began while main was holding produced a counted stale step on resume | Fixed: `_lockstep_hold` restarts the bound when the previous physics frame made no fence decision. The desktop test now pauses for 800 ms while main is holding (a 40 ms owner delay makes the hold certain) and requires no timeout. Removing the fix failed it (1 timeout, stale step) |
+| `superseded_publications` grows by every sample published while paused | Not changed: that is its documented meaning, and the merged #464 `test_coupling_lockstep_semantics.gd` requires it. A worker change failed that test and was reverted. The contract now says so explicitly |
+| Rotation packing was set only inside `pack_rigid_body_states()`, so other `pack_body_states()` callers on a newly adopted bridge could see the old value | Fixed: the `rapier_bridge` setter applies the launch mode to every adopted bridge. The test checks it on the actor session's bridge |
+| A refused body publication left main waiting for a completion that could not arrive | Fixed defensively: main counts that step as unfenced. Current prepared-physical routes run inside labs, where the fence is already inactive, so this was not reachable in tested routes |
+| A fresh result with another body-owner epoch was counted as a fenced step although `apply_latest_rigid_body_results` drops it | Fixed: counted as unfenced |
+| Slow-owner recovery baseline could include one in-flight 600 ms publication | Fixed: the baseline is taken after the first fenced step |
+| The CLI child ran through a blocking `OS.execute` without a deadline | Fixed: `OS.create_process`, a `complex_fixture_seconds` deadline, kill on timeout, and the result read from a file |
+| Dead store in the slow-owner phase; an extra worker lock per frame in default play | Fixed: removed; the publication is re-read only in lockstep mode |
+
+While running this, the lab phase once counted a worker hold timeout (253 ms):
+launching the player course does about 190 ms of synchronous main-thread work
+(measured gap between publications, Windows), so the still-fenced worker waits
+past its 250 ms counter. That is a counter, not a stale tick, and the lab phase
+allows one such count. `packed-001` is not affected: none of these paths is in
+its fixture.
+
+Regressions after these fixes (same engines; 600 s Windows and 900 s Linux
+bound per test): the desktop test passed on Windows and WSL Linux (64
+assertions; its real-CLI child, 9). Windows also passed `test_coupling_lockstep`,
+`test_coupling_lockstep_semantics`, `test_physics_async`,
+`test_physical_actor_integration`, `test_physical_usables_desktop`,
+`test_microscenario_controllers` and `test_workbench_desktop_interest`. Linux
+also passed `test_coupling_lockstep`, `test_physics_async` and
+`test_physical_actor_integration`. The two mutation checks above were run on
+Windows only. #474's exact-head CI has not run yet; it is still a Draft.
+
 ## Results
 
 ### (a) Same-host repeatability

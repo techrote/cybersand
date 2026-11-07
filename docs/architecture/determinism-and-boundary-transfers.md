@@ -111,9 +111,12 @@ hold skips a physics frame until the newest snapshot consumed main's last
 publication. The [fixture](../../godot/tests/test_coupling_lockstep.gd) and,
 since the owner chose lockstep as an **opt-in mode** on 2026-11-06, the desktop
 game launched with `--lockstep-coupling` use this pair. In the game the hold is
-bounded: past 500 ms one counted stale step runs instead of a freeze. Main
+bounded: past 500 ms of consecutive held frames one counted stale step runs
+instead of a freeze; a frame that skipped the decision (pause, reset, actor
+install) restarts that bound. Main
 follows the worker's reported applicability (`lockstep_fence_active`): labs and
-MicroScenarios step asynchronously and are counted as unfenced, not held. The
+MicroScenarios step asynchronously and are counted as unfenced, not held, as is
+a step after a refused publication or with another body owner's result. The
 default launch keeps asynchronous pacing; lockstep everywhere was not chosen.
 [`test_coupling_lockstep_desktop.gd`](../../godot/tests/test_coupling_lockstep_desktop.gd)
 checks the real host through play, pause and a world reset. Under the fixture's

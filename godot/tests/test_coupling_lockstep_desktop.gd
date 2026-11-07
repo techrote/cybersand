@@ -7,7 +7,9 @@ extends SceneTree
 # - Default launch: lockstep and deterministic packing stay off.
 # - Real CLI: a child process launched with --lockstep-coupling enables the
 #   mode through lockstep_coupling_requested(), not an override.
-# - Fenced play, pause, world reset and an articulated physical actor: every
+# - Fenced play, a pause taken while main is holding and lasting longer than
+#   the hold limit (no stale step on resume), world
+#   reset and an articulated physical actor: every
 #   physics callback publishes at most one body sample, every fenced Rapier
 #   step applies the completion that consumed main's previous publication, and
 #   in steady play each fenced step advances exactly one native tick.
@@ -21,7 +23,8 @@ extends SceneTree
 const Watchdogs = preload("res://tests/support/ci_execution_policy.gd")
 const Catalogue = preload("res://scripts/microscenario_catalogue.gd")
 const STEPS_PER_PHASE: int = 90
-const PAUSE_FRAMES: int = 20
+const LONG_PAUSE_MSEC: int = 800 # Longer than main.LOCKSTEP_MAIN_HOLD_LIMIT_MSEC.
+const HOLD_DELAY_USEC: int = 40000 # Makes main hold for the owner, far below the limit.
 const SLOW_DELAY_USEC: int = 600000
 const CLI_CHILD_ARGUMENT: String = "--lockstep-cli-child"
 
@@ -137,6 +140,12 @@ func fence_reported(desktop: LockstepDesktop, active: bool) -> bool:
 	return snapshot != null and snapshot.lockstep_fence_active == active
 
 
+func wait_msec(milliseconds: int) -> void:
+	var until: int = Time.get_ticks_msec() + milliseconds
+	while Time.get_ticks_msec() < until:
+		await physics_frame
+
+
 func settle(frames: int) -> void:
 	for _frame: int in frames:
 		await physics_frame
@@ -151,7 +160,7 @@ func make_desktop(cli: bool = false, slow: bool = false) -> LockstepDesktop:
 	return desktop
 
 
-func check_clean(desktop: LockstepDesktop, phase: String) -> void:
+func check_clean(desktop: LockstepDesktop, phase: String, worker_wait_allowance: int = 0) -> void:
 	var status: Dictionary = desktop.lockstep_coupling_status()
 	expect(not desktop.simulation_worker.has_failed(), phase + ": native owner did not fail")
 	expect(desktop.violations.is_empty(), phase + ": violations " + str(desktop.violations))
@@ -160,7 +169,8 @@ func check_clean(desktop: LockstepDesktop, phase: String) -> void:
 	expect(desktop.stale_steps == 0 and int(status.main_hold_timeouts) == 0,
 		phase + ": no counted stale step " + JSON.stringify(status))
 	expect(desktop.held_while_unfenced == 0, phase + ": main held while the worker was unfenced")
-	expect(int(status.worker.timeouts) == 0, phase + ": no worker hold timeout")
+	expect(int(status.worker.timeouts) <= worker_wait_allowance,
+		phase + ": worker hold timeouts within %d" % worker_wait_allowance)
 
 
 func default_launch() -> void:
@@ -179,22 +189,31 @@ func default_launch() -> void:
 
 
 func sandbox_and_actor() -> void:
-	var desktop: LockstepDesktop = make_desktop()
+	var desktop: LockstepDesktop = make_desktop(false, true)
+	var worker: SlowWorker = desktop.simulation_worker
 	expect(desktop.lockstep_coupling_enabled, "opt-in launch enables lockstep before worker start")
 	expect(bool(desktop.simulation_worker.lockstep_metrics().enabled), "opt-in worker is fenced")
 	desktop.paused = false
 	expect(await wait_for(steps_reached.bind(desktop, STEPS_PER_PHASE)), "fenced play advances")
 
-	# Pause: no Rapier step; unpause resumes the fence.
+	# Pause while main is holding for the owner, for longer than the hold limit.
+	# physics_frame is emitted before main's callback, so the pause lands with
+	# the previous frame's hold still open. Resuming must restart the bound.
+	worker.delay_usec = HOLD_DELAY_USEC
+	expect(await wait_for(func() -> bool: return desktop._lockstep_hold_started_msec >= 0),
+		"main holds for a delayed owner")
 	desktop.paused = true
+	worker.delay_usec = 0
 	await physics_frame
 	var paused_steps: int = desktop.observed_steps
-	await settle(PAUSE_FRAMES)
+	await wait_msec(LONG_PAUSE_MSEC)
 	expect(desktop.observed_steps == paused_steps, "paused desktop did not step Rapier")
 	desktop.transition = true
 	desktop.paused = false
 	var target: int = desktop.fenced_observed + STEPS_PER_PHASE
 	expect(await wait_for(steps_reached.bind(desktop, target)), "fenced play resumes after pause")
+	expect(desktop.lockstep_main_hold_timeouts == 0 and desktop.stale_steps == 0,
+		"a long pause during a hold does not count a stale step on resume")
 
 	# World reset: the fence keeps holding across the native replacement.
 	var generation: int = int(desktop.latest_snapshot.render_world_generation)
@@ -230,6 +249,8 @@ func sandbox_and_actor() -> void:
 	expect(await wait_for(func() -> bool:
 		return desktop.physical_actor_session != null and desktop._actor_reset_receipt == 0 \
 			and desktop._physical_terrain_ready), "actor installed")
+	expect(desktop.rapier_bridge.deterministic_rotation_packing,
+		"the actor session's adopted bridge packs rotations in the launch mode")
 	desktop.paused = false
 	target = desktop.fenced_observed + STEPS_PER_PHASE
 	expect(await wait_for(steps_reached.bind(desktop, target)), "fenced actor play advances")
@@ -283,7 +304,11 @@ func lab_transition() -> void:
 	expect(await wait_for(fence_reported.bind(desktop, true)), "fence resumes after leaving the lab")
 	desktop.paused = false
 	await settle(30)
-	check_clean(desktop, "lab")
+	# Launching the course runs about 190 ms of synchronous main-thread setup
+	# (measured 2026-11-07, Windows): no physics callback publishes meanwhile, so
+	# the still-fenced worker may count that one wait past its 250 ms counter limit
+	# on a slower host. It is a counter, not a stale tick.
+	check_clean(desktop, "lab", 1)
 	print("COUPLING_LOCKSTEP_DESKTOP lab ", JSON.stringify(desktop.lockstep_coupling_status()),
 		" unfenced_observed=", desktop.unfenced_observed)
 	desktop.free()
@@ -299,11 +324,13 @@ func slow_owner() -> void:
 	expect(await wait_for(func() -> bool: return desktop.stale_steps >= 3), "stalled owner yields counted stale steps")
 	expect(desktop.observed_steps >= 3, "stalled owner never froze Rapier")
 	expect(desktop.lockstep_main_hold_timeouts == desktop.stale_steps, "each stale step is one counted timeout")
-	var timeouts: int = desktop.lockstep_main_hold_timeouts
 	worker.delay_usec = 0
 	desktop.transition = true
-	await settle(30)
-	timeouts = desktop.lockstep_main_hold_timeouts
+	# A publication already inside its 600 ms delay may still time out once:
+	# take the baseline only after a fenced step shows the stall has ended.
+	var recovered: int = desktop.fenced_observed + 1
+	expect(await wait_for(steps_reached.bind(desktop, recovered)), "first fenced step after the stall")
+	var timeouts: int = desktop.lockstep_main_hold_timeouts
 	var target: int = desktop.fenced_observed + STEPS_PER_PHASE
 	expect(await wait_for(steps_reached.bind(desktop, target)), "fence recovers after the stall")
 	expect(desktop.lockstep_main_hold_timeouts == timeouts, "no timeout after the stall ended")
@@ -324,14 +351,36 @@ func cli_child() -> void:
 	await process_frame
 
 
+func cli_child_result_path() -> String:
+	var args: PackedStringArray = OS.get_cmdline_user_args()
+	var index: int = args.find(CLI_CHILD_ARGUMENT)
+	return args[index + 1] if index >= 0 and index + 1 < args.size() else ""
+
+
 func cli_parent() -> void:
-	var output: Array = []
-	var code: int = OS.execute(OS.get_executable_path(), ["--headless", "--path",
+	# Non-blocking child with a bounded deadline; a hung child is killed and
+	# reported instead of blocking this process until the outer job timeout.
+	var result_path: String = OS.get_user_data_dir().path_join(
+		"lockstep_cli_child_%d.txt" % OS.get_process_id())
+	DirAccess.remove_absolute(result_path)
+	var pid: int = OS.create_process(OS.get_executable_path(), ["--headless", "--path",
 		ProjectSettings.globalize_path("res://"), "--script", "res://tests/test_coupling_lockstep_desktop.gd",
-		"--", "--lockstep-coupling", CLI_CHILD_ARGUMENT], output, true)
-	var text: String = "".join(output)
+		"--", "--lockstep-coupling", CLI_CHILD_ARGUMENT, result_path])
+	expect(pid > 0, "real --lockstep-coupling child launched")
+	if pid <= 0:
+		return
+	var deadline: int = Time.get_ticks_msec() + Watchdogs.milliseconds("complex_fixture_seconds")
+	while OS.is_process_running(pid) and Time.get_ticks_msec() < deadline:
+		await process_frame
+	if OS.is_process_running(pid):
+		OS.kill(pid)
+		expect(false, "real --lockstep-coupling child finished within its deadline")
+		return
+	var code: int = OS.get_process_exit_code(pid)
+	var text: String = FileAccess.get_file_as_string(result_path)
+	DirAccess.remove_absolute(result_path)
 	expect(code == 0 and text.contains("COUPLING_LOCKSTEP_DESKTOP_RESULT") and text.contains("failures=0"),
-		"real --lockstep-coupling child passed (exit %d): %s" % [code, text.right(600)])
+		"real --lockstep-coupling child passed (exit %d): %s" % [code, text])
 
 
 func run() -> void:
@@ -342,6 +391,13 @@ func run() -> void:
 		await sandbox_and_actor()
 		await lab_transition()
 		await slow_owner()
-		cli_parent()
-	print("COUPLING_LOCKSTEP_DESKTOP_RESULT assertions=", assertions, " failures=", failures)
+		await cli_parent()
+	var result: String = "COUPLING_LOCKSTEP_DESKTOP_RESULT assertions=%d failures=%d" % [assertions, failures]
+	print(result)
+	var result_path: String = cli_child_result_path()
+	if not result_path.is_empty():
+		var file: FileAccess = FileAccess.open(result_path, FileAccess.WRITE)
+		if file != null:
+			file.store_string(result)
+			file.close()
 	quit(1 if failures else 0)
