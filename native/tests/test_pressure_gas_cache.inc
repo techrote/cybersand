@@ -114,7 +114,12 @@ void test_affected_gas_components() {
 
 void test_sparse_gas_relabel_matches_reference() {
     for (const auto workers : {1U, 4U}) {
-        World reference(gas_cache_config(0, workers)), cached(gas_cache_config(1, workers));
+        auto reference_config = gas_cache_config(0, workers);
+        auto cached_config = gas_cache_config(1, workers);
+        // Reproduce the full workbench's independent head-repair fallback.
+        // The gas relabel proof must survive this unrelated head-budget decision.
+        cached_config.pressure_optimization.head_repair_cell_budget = 1U;
+        World reference(reference_config), cached(cached_config);
         for (auto* world : {&reference, &cached}) gas_cache_rooms(*world, 0, 0);
 
         for (int tick_index = 0; tick_index < 12; ++tick_index) {
@@ -135,6 +140,8 @@ void test_sparse_gas_relabel_matches_reference() {
         require(opt.counters.gas_reference_passes == ref.counters.gas_reference_passes &&
                     opt.counters.gas_component_reuses == 0U,
                 "continuous topology churn remains on the authoritative gas reference path");
+        require(opt.counters.reference_fallbacks > 0U,
+                "sparse gas relabel remains available through independent head-budget fallback");
         require(opt.counters.gas_relabel_cells < ref.counters.gas_relabel_cells,
                 "cached reference passes relabel fewer cells without skipping gas discovery or identity");
         require(opt.gas_capacity_bytes > opt.gas_member_capacity * sizeof(std::uint64_t),
