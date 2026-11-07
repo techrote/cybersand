@@ -12,18 +12,27 @@ related-documents: [../operations/play-desktop-manual-qualification.md, 2026-11-
 
 ## Registered source
 
-This campaign is pinned to accepted production `main`
-`7e2c2fd1aa2759590d63d5dfb53ce9e4c0a76e4b` (tree
-`9460c007eee2f3864cbb40d63800db3f85c0b858`), the merge of #406.
-All six ordinary post-merge workflows on that commit passed before this
-qualification branch was created.
+The final campaign is pinned to accepted production `main`
+`4c2c97323d862afdd3ec6730017127cc8e4ec05c` (tree
+`8e970762a3678483a6fbb4c981005b0631315e1b`). This is the merge of #464's default-off
+COUPLING-LOCKSTEP-001 worker/snapshot groundwork on top of the already accepted
+#406 ballistic-Water baseline. Ordinary asynchronous desktop coupling remains
+the default; #474's opt-in desktop lockstep wiring is still a separate Draft
+and is not enabled or substituted by this package.
+
+The campaign originally registered the then-current #406 main
+`7e2c2fd1aa2759590d63d5dfb53ce9e4c0a76e4b`. While its exact-head acceptance run was executing, #464
+merged into `main`. That earlier successful package remains retained evidence
+for its pinned source but is not treated as final current-main acceptance.
+This branch therefore merges the newer `main` without rewriting its earlier
+evidence and reruns the complete source-matched campaign.
 
 The qualification branch may change only this audit, its dedicated workflow,
 its GDScript observation harness and its small Python guard/summary tests.
-It must not modify native physics, Main, the worker, Rapier ownership,
+It must not modify native physics, Main, the worker/Rapier ownership logic,
 materials, solver defaults, built-in canvases, retained runtime binaries or
-production launch behaviour. The workflow independently enforces that
-boundary before building or executing anything.
+production launch behaviour. The workflow independently enforces that boundary
+relative to the final registered main before building or executing anything.
 
 ## Objective
 
@@ -110,11 +119,7 @@ converted into a physics-correctness failure.
 
 ## Lockstep boundary
 
-PR #474 is stacked on the separate #464 source line rather than current main.
-It is therefore not a valid control for this exact-main acceptance package and
-is not cherry-picked, substituted or used to explain away asynchronous
-results. A future lockstep comparison must first reconcile that feature onto
-the accepted baseline and run as a separately identified source arm.
+#464's default-off lockstep worker/snapshot groundwork is now part of the registered current main, but ordinary asynchronous coupling remains the default. PR #474's opt-in desktop wiring is still separate and is not enabled, cherry-picked or substituted in this campaign. A future lockstep A/B must run as a separately identified source arm against the same accepted baseline.
 
 ## Human gate
 

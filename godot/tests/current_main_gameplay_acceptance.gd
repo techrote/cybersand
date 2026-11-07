@@ -5,7 +5,7 @@ extends SceneTree
 # built-in canvases and #406 ballistic Water/spray all remain unchanged.
 const Setup = preload("res://scripts/workbench_setup.gd")
 const Watchdogs = preload("res://tests/support/ci_execution_policy.gd")
-const BASE_MAIN_SHA := "7e2c2fd1aa2759590d63d5dfb53ce9e4c0a76e4b"
+const BASE_MAIN_SHA := "4c2c97323d862afdd3ec6730017127cc8e4ec05c"
 const DURATION_SECONDS := 60
 const PROFILES := [
 	{"name":"my-canvas", "label":Setup.DEFAULT_LABEL, "pressure_gas":true},

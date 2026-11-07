@@ -14,7 +14,7 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  REGISTERED_MAIN: 7e2c2fd1aa2759590d63d5dfb53ce9e4c0a76e4b
+  REGISTERED_MAIN: 4c2c97323d862afdd3ec6730017127cc8e4ec05c
   GODOT_CPP_COMMIT: 101ae38034304346a46ea9ea84ae156d3e860496
   LLVM_MINGW_URL: https://github.com/mstorsjo/llvm-mingw/releases/download/20260826/llvm-mingw-20260826-ucrt-ubuntu-22.04-x86_64.tar.xz
   LLVM_MINGW_SHA256: cee8d2ce3da5145ce4dc882e70d0b0719a783d53a99752c60948fc0659975a65
@@ -165,7 +165,7 @@ jobs:
           echo "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7  godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll" | sha256sum --check --strict
           (cd build/current-main-runtime && sha256sum --check --strict runtime.sha256)
           cp build/current-main-runtime/cybersand_native.windows.x86_64.dll godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll
-          test "$(git rev-parse "$REGISTERED_MAIN^{tree}")" = "9460c007eee2f3864cbb40d63800db3f85c0b858"
+          test "$(git rev-parse "$REGISTERED_MAIN^{tree}")" = "8e970762a3678483a6fbb4c981005b0631315e1b"
           python tools/ci/current_main_gameplay_acceptance.py verify-source --expected-base "$REGISTERED_MAIN"
       - name: Download and authenticate Godot 4.7 Windows
         run: |

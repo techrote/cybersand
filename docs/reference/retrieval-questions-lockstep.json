@@ -1,0 +1,55 @@
+{
+  "version": 1,
+  "frozen_date": "2026-11-06",
+  "purpose": "Bounded coupled-determinism development retrieval; separate from the frozen historical development set and held-outs.",
+  "questions": [
+    {
+      "id": "LOCKSTEP-001",
+      "query": "Are repeated desktop runs of native cells and Rapier bodies bit-identical, and what makes them diverge?",
+      "canonical": [
+        "architecture/determinism-and-boundary-transfers.md"
+      ],
+      "facts": [
+        "The default independently paced worker prepares whichever body sample main last published; every repeated asynchronous pair diverged by that race.",
+        "A default-off lockstep fence (set_lockstep_coupling) plus a main-side frame hold made same-host repeats and 1/4 native workers bit-identical in one fixture; main.gd does not use it."
+      ],
+      "sources": [
+        "../godot/scripts/simulation_worker.gd",
+        "../godot/tests/test_coupling_lockstep.gd",
+        "../native/tests/fixtures/coupling_lockstep_001.json"
+      ]
+    },
+    {
+      "id": "LOCKSTEP-002",
+      "query": "Can Windows and Linux replay the same coupled sand and rigid body simulation bit for bit for multiplayer lockstep?",
+      "canonical": [
+        "architecture/determinism-and-boundary-transfers.md",
+        "architecture/rigid-body-and-cellular-coupling.md"
+      ],
+      "facts": [
+        "Not established in production: registered Windows and Linux lockstep runs diverged after a one-ulp float32 rotation difference from Transform2D.get_rotation() packed from bit-identical Rapier transforms; a fixture-only double atan2 repack matched both hosts for 1800 ticks.",
+        "The Rapier build enables parallel and lacks enhanced-determinism; cross-platform replay and multiplayer remain Planned/not admitted."
+      ],
+      "sources": [
+        "../godot/scripts/rapier_physics_bridge.gd",
+        "../godot/addons/godot-rapier2d/runtime-provenance.windows.json"
+      ]
+    },
+    {
+      "id": "LOCKSTEP-003",
+      "query": "How do I enable the lockstep coupling fence and read its holds and timeouts?",
+      "canonical": [
+        "reference/interfaces-and-message-contracts.md",
+        "architecture/simulation-tick-and-threading.md"
+      ],
+      "facts": [
+        "set_lockstep_coupling(enabled, hold_timeout_usec=250000) is default off and refused after start_worker; it covers only the ordinary coupling path.",
+        "rigid_body_publication(), the snapshot field consumed_rigid_body_publication and lockstep_metrics() expose publications, holds, hold time and timeouts."
+      ],
+      "sources": [
+        "../godot/scripts/simulation_worker.gd",
+        "../godot/scripts/simulation_snapshot.gd"
+      ]
+    }
+  ]
+}
