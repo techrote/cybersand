@@ -6,11 +6,13 @@ on:
     paths:
       - 'tools/experiments/gen006_storage_native_pilot.py'
       - 'tools/experiments/gen006_storage_journal.py'
+      - 'tools/experiments/GEN006_STORAGE_JOURNAL.md'
       - '.github/workflows/gen006-storage-native-pilot.yml'
   pull_request:
     paths:
       - 'tools/experiments/gen006_storage_native_pilot.py'
       - 'tools/experiments/gen006_storage_journal.py'
+      - 'tools/experiments/GEN006_STORAGE_JOURNAL.md'
       - '.github/workflows/gen006-storage-native-pilot.yml'
   workflow_dispatch:
 
