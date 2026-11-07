@@ -74,6 +74,18 @@ there is no fabricated rollback, implicit retry or universal undo.
 
 ## #526 versioned local worker contract (Draft source, unqualified)
 
+**Queue-admission hardening (Draft #529):** Before copying an untrusted
+Dictionary into the mutex-owned command queue,
+`workbench_authoring_envelope.gd::valid` now checks exact action-specific
+fields, a versioned envelope, bounded identifier lengths, at most eight
+small primitive dictionaries, at most 32 protection rectangles and at most
+two allowlisted material entries. Unknown/nested payloads, unsupported shapes
+and non-integer coordinates are refused at admission (`-1`), before
+`duplicate(true)`. The gate does not replace exclusive-owner native
+validation, nor does acceptance of an envelope mean an edit was applied.
+`godot/tests/test_workbench_authoring_envelope.gd` covers its permitted and
+malformed inputs; test remains **NOT RUN** until source-matched Godot execution.
+
 The main/UI owner sends a **Godot Dictionary** to
 `CyberSimulationWorker.queue_agent_authoring_command(command)`, which
 returns a positive monotonic request serial or `-1` for refused admission.
@@ -224,6 +236,7 @@ Godot 4/GDExtension:
 
 ```sh
 godot --headless --path godot --script res://tests/test_workbench_agent_footprint.gd
+godot --headless --path godot --script res://tests/test_workbench_authoring_envelope.gd
 godot --headless --path godot --script res://tests/test_workbench_agent_failures.gd
 godot --headless --path godot --script res://tests/test_workbench_agent_owner.gd
 ```
