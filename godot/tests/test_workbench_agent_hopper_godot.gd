@@ -260,12 +260,40 @@ func run_variant(rows: Array, variant: String) -> void:
 	check(guard.get("status")=="observed"
 		and int(guard.get("native_counts",{}).get(58,-1))==17,
 		"native protected wall motif changed "+variant)
+	# Leave a valid proposal deliberately UNCONSUMED across Stop and named
+	# authored-start reload. A late model apply must never survive retirement
+	# into either the old World or the freshly loaded native generation.
+	var pending_site: Dictionary = {"x":-39,"y":-4,"width":1,"height":1}
+	var pending_before: Dictionary = await bridge.call_tool("observe",{
+		"region":pending_site,"detail":"cells"})
+	check(pending_before.get("status")=="observed"
+		and pending_before.get("image_status")=="matched_post_draw"
+		and int(pending_before.get("native_counts",{}).get(0,-1))==1,
+		"unconsumed proposal control site is not real native Empty "+variant)
+	var unconsumed: Dictionary = await bridge.call_tool("prepare_edit",{
+		"observation_id":pending_before.get("observation_id",""),
+		"operations":[{
+			"shape":"rectangle","x0":-39,"y0":-4,"x1":-39,"y1":-4,
+			"material":58,"replace_only_material":0}]})
+	check(unconsumed.get("status")=="proposed"
+		and not str(unconsumed.get("proposal_id","")).is_empty(),
+		"valid pending Hard Wall proposal was not prepared "+variant+
+		" "+str(unconsumed.get("reason","")))
+	var pending_tick: int = main.latest_snapshot.tick_index
+	check(pending_tick==TOTAL_TICKS,
+		"prepare without apply changed the frozen tick budget "+variant)
 	var stopped: Dictionary = await bridge.stop()
 	check(stopped.get("status")=="stopped"
 		and stopped.get("no_further_agent_mutations")==true
 		and main.latest_snapshot.tick_index==TOTAL_TICKS
 		and main.latest_snapshot.render_world_generation==generation,
 		"native Stop did not acknowledge after fixed budget "+variant)
+	var late_unconsumed: Dictionary = await bridge.call_tool("apply_edit",{
+		"proposal_id":unconsumed.get("proposal_id","")})
+	check(late_unconsumed.get("status")=="refused"
+		and main.latest_snapshot.tick_index==pending_tick
+		and main.latest_snapshot.render_world_generation==generation,
+		"retired task consumed a pending authoring proposal after Stop ACK "+variant)
 	# An authored-start save is a *construction recipe*, not a checkpoint
 	# of the evolved physics. Preserve the completed 480-tick receipts, then
 	# save and reopen the FULL agent-authored apparatus in a fresh native World.
@@ -322,6 +350,19 @@ func run_variant(rows: Array, variant: String) -> void:
 	check(reopened_protection.get("status")=="observed"
 		and int(reopened_protection.get("native_counts",{}).get(58,-1))==17,
 		"reopened authored start changed the protected 17-cell motif " + variant)
+	var reopened_pending_site: Dictionary = await reopened.call_tool("observe",{
+		"region":pending_site,"detail":"cells"})
+	check(reopened_pending_site.get("status")=="observed"
+		and reopened_pending_site.get("image_status")=="matched_post_draw"
+		and int(reopened_pending_site.get("native_counts",{}).get(0,-1))==1
+		and reopened_pending_site.get("native_material_ids",[]).size()==1,
+		"pending pre-Stop Hard Wall leaked into the named authored start "+variant)
+	var obsolete_apply: Dictionary = await bridge.call_tool("apply_edit",{
+		"proposal_id":unconsumed.get("proposal_id","")})
+	check(obsolete_apply.get("status")=="refused"
+		and main.latest_snapshot.tick_index==0
+		and main.latest_snapshot.render_world_generation==reopened_generation,
+		"retired pre-reload proposal applied to a new native generation "+variant)
 	var stale_step: Dictionary = await bridge.call_tool("step",{"ticks":1})
 	check(stale_step.get("status")=="refused"
 		and main.latest_snapshot.tick_index==0
