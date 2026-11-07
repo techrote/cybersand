@@ -430,7 +430,7 @@ void static_continuation_test(const fs::path& root,unsigned workers) {
                      <<" control_tick="<<uninterrupted.completed_tick_index()
                      <<" restored_tick="<<recovered.completed_tick_index()
                      <<" control_cells="<<uninterrupted.resident_cell_bytes()
-                     <<" restored_cells="<<recovered.resident_cell_bytes()<<"\\n";
+                     <<" restored_cells="<<recovered.resident_cell_bytes()<<"\n";
             require(false,why);
         }
     };
@@ -502,7 +502,7 @@ void static_continuation_test(const fs::path& root,unsigned workers) {
              <<" observed_recovered="<<observed_recovered
              <<" fixed_ticks=4 neighbour_admission=1"
              <<" physical_content_ledger_clock_equal=1"
-             <<" native_bytes_reclaimed=1 empty_intent=1 temperature417=1\\n";
+             <<" native_bytes_reclaimed=1 empty_intent=1 temperature417=1\n";
 }
 
 
