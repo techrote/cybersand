@@ -73,7 +73,7 @@ jobs:
         run: |
           set -euo pipefail
           python - <<'PY'
-          import os, pathlib, subprocess, hashlib, json, sys, urllib.request, zipfile
+          import os, pathlib, subprocess, hashlib, json, sys, urllib.request, zipfile, time
           root=pathlib.Path.cwd()
           out=root/"build/stress-pf-splash"/os.environ["CYBERSAND_STRESS_CASE"]
           out.mkdir(parents=True,exist_ok=True)
@@ -106,19 +106,36 @@ jobs:
           env={**os.environ,"CYBERSAND_STRESS_OUTPUT":str((out/"result.json").resolve())}
           cmds=[
               ("import.log",[str(engine),"--headless","--editor","--path","godot","--import"],180),
-              ("execution.log",[str(engine),"--rendering-driver","opengl3_angle","--path","godot","--script","res://tests/performance/stress_pf_splash_windows.gd"],420)
+              ("execution.log",[str(engine),"--rendering-driver","opengl3_angle","--path","godot","--script","res://tests/performance/stress_pf_splash_windows.gd"],240)
           ]
           for logname,argv,timeout in cmds:
-              write(logname+".command.json",json.dumps(argv,indent=2)+"\n")
-              try:
-                  p=subprocess.run(argv,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,text=True,timeout=timeout,env=env)
+              write(logname+".command.json",json.dumps(argv,indent=2)+"\\n")
+              if logname=="execution.log":
+                  logpath=out/logname
+                  with logpath.open("w",encoding="utf-8") as stream:
+                      p=subprocess.Popen(argv,stdout=stream,stderr=subprocess.STDOUT,text=True,env=env)
+                      try:
+                          deadline=time.monotonic()+timeout
+                          while p.poll() is None:
+                              if time.monotonic()>=deadline:
+                                  raise RuntimeError(logname+" timed out after "+str(timeout)+" seconds")
+                              time.sleep(1)
+                              stream.flush()
+                              observed=logpath.read_text(encoding="utf-8",errors="replace")
+                              if "SCRIPT ERROR:" in observed or "Failed to load script" in observed:
+                                  raise RuntimeError("GDScript runtime error: "+observed[-5000:])
+                      except BaseException:
+                          p.kill()
+                          p.wait(timeout=15)
+                          raise
+                  if p.returncode:
+                      raise RuntimeError(logname+" exit "+str(p.returncode)+": "+logpath.read_text(encoding="utf-8",errors="replace")[-5000:])
+              else:
+                  p=subprocess.run(argv,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,
+                      text=True,timeout=timeout,env=env)
                   write(logname,p.stdout)
-              except subprocess.TimeoutExpired as e:
-                  write(logname,(e.stdout or b"").decode(errors="replace") if isinstance(e.stdout,bytes) else (e.stdout or ""))
-                  raise RuntimeError(logname+" timeout after "+str(timeout)+" sec")
-              if p.returncode:
-                  print(p.stdout[-12000:])
-                  raise RuntimeError(logname+" exit "+str(p.returncode))
+                  if p.returncode:
+                      raise RuntimeError(logname+" exit "+str(p.returncode)+": "+p.stdout[-5000:])
           record=json.loads((out/"result.json").read_text(encoding="utf-8"))
           if record.get("stage")!="complete" or record.get("failures"):
               raise RuntimeError("invalid or incomplete workbench receipt: "+repr(record.get("failures")))

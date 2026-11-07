@@ -44,7 +44,7 @@ class ObservedMain:
 			"native_tick": int(latest_snapshot.tick_index) if latest_snapshot != null else -1
 		})
 
-var host: ObservedMain
+var host: Control
 var panel: Control
 var mode: String = ""
 var failures: Array[String] = []
