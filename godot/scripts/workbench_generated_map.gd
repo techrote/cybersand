@@ -16,7 +16,13 @@ static func digest(bytes: PackedByteArray) -> String:
 	return h.finish().hex_encode()
 
 static func recipe_hash(recipe: Dictionary) -> String:
-	return digest(JSON.stringify(recipe).to_utf8_buffer())
+	# JSON round-trip canonicalization matters: Godot parses persisted JSON
+	# integers as floats. A saved seed (19337) must hash identically after
+	# fresh-process load (19337.0) without changing native sampling semantics.
+	var encoded: String = JSON.stringify(recipe)
+	var normalized: Variant = JSON.parse_string(encoded)
+	if not normalized is Dictionary: return ""
+	return digest(JSON.stringify(normalized).to_utf8_buffer())
 
 static func _hex(value: Variant, length: int) -> bool:
 	if not value is String or value.length() != length:
