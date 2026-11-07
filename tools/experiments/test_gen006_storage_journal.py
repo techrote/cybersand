@@ -6,6 +6,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from unittest import mock
 from gen006_storage_journal import (EDIT, HEADER, Identity, Mutation, Journal,
                                      recover, replay_checked)
 
@@ -73,6 +74,39 @@ class Tests(unittest.TestCase):
             recover(corrupt)
         print('G6J_BYTES', r.valid_length, 'full_rewrite_bytes', (HEADER.size+512*1024)*200,
               'static_ticking_only=1 not_integrated_native_benchmark=1')
+
+    def test_crash_orphan_stage_and_failed_publication_retry(self):
+        # Simulate an old interrupted fixed-name stage and a crashed unique
+        # stage. Neither may block a fresh, safely exclusive checkpoint.
+        stale_fixed = self.path.with_name(self.path.name + '.staging')
+        stale_fixed.write_bytes(b'previous-writer-unpublished')
+        stale_unique = self.path.with_name('.' + self.path.name + '.g6j-dead.staging')
+        stale_unique.write_bytes(b'crashed-before-publish')
+        stages = list(self.path.parent.glob('.test.g6j.g6j-*.staging'))
+        self.assertEqual(stages, [stale_unique])
+
+        # A link failure is not a durable ACK and must clean up its own stage,
+        # without modifying any unrelated crashed stage or creating a target.
+        with mock.patch('gen006_storage_journal.os.link',
+                        side_effect=OSError('G6J_INJECTED_LINK_FAILURE')):
+            with self.assertRaisesRegex(OSError, 'G6J_INJECTED_LINK_FAILURE'):
+                Journal.create(self.path, ident(), b'candidate-checkpoint')
+        self.assertFalse(self.path.exists())
+        self.assertEqual(list(self.path.parent.glob('.test.g6j.g6j-*.staging')),
+                         [stale_unique])
+        self.assertEqual(stale_fixed.read_bytes(), b'previous-writer-unpublished')
+
+        Journal.create(self.path, ident(), b'committed-checkpoint')
+        restored = recover(self.path)
+        self.assertEqual(restored.checkpoint, b'committed-checkpoint')
+        self.assertEqual(restored.identity, ident())
+        self.assertEqual(stale_unique.read_bytes(), b'crashed-before-publish')
+        self.assertEqual(stale_fixed.read_bytes(), b'previous-writer-unpublished')
+        self.assertEqual(list(self.path.parent.glob('.test.g6j.g6j-*.staging')),
+                         [stale_unique])
+        with self.assertRaisesRegex(ValueError, 'G6J_DESTINATION_EXISTS'):
+            Journal.create(self.path, ident(), b'overwrite-refused')
+        self.assertEqual(recover(self.path).checkpoint, b'committed-checkpoint')
 
     def test_separate_process_abrupt_exit(self):
         subprocess.run([sys.executable, __file__, '--child', str(self.path)], check=True)
