@@ -194,11 +194,16 @@ func _run() -> void:
         _fail("Godot framebuffer did not restore the same native Wall pixel")
         return
 
-    # With autonomous native 30Hz simulation, uncontained Water may move
-    # before a rendered-frame readback. Construct a three-sided real native
-    # basin so the visual assertion genuinely samples Water, rather than
-    # vacuously passing when both native and viewport pixels are empty.
-    for wall_cell in [Vector2i(18, 31), Vector2i(17, 30), Vector2i(19, 30)]:
+    # With autonomous native 30Hz simulation, even a three-sided basin
+    # permits upward/diagonal transport between input and framebuffer sampling
+    # (original failure preserved in run #42343367577). Enclose all eight
+    # neighboring cells using actual player Wall edits before Water17 paint.
+    # This is a stronger, static native containment fixture, not a weaker
+    # colour-only renderer assertion.
+    for wall_cell in [
+            Vector2i(17, 29), Vector2i(18, 29), Vector2i(19, 29),
+            Vector2i(17, 30), Vector2i(19, 30),
+            Vector2i(17, 31), Vector2i(18, 31), Vector2i(19, 31)]:
         _click(demo, wall_cell.x, wall_cell.y, MOUSE_BUTTON_LEFT)
         if not demo.failure.is_empty():
             _fail("Water17 containment Wall refused: " + demo.failure)
