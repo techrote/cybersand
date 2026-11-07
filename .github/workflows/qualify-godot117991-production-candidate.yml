@@ -1,0 +1,76 @@
+name: Godot 117991 production candidate - current-main Windows
+on:
+  push:
+    branches:
+      - qualification/godot117991-production-candidate-20261107
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: godot117991-candidate-${{ github.run_id }}
+  cancel-in-progress: false
+
+jobs:
+  windows-current-main:
+    runs-on: windows-2022
+    timeout-minutes: 180
+    env:
+      GH_TOKEN: ${{ github.token }}
+      PYTHONUTF8: '1'
+      GODOT_SILENCE_ROOT_WARNING: '1'
+      CYBERSAND_CI_WATCHDOG_SCALE: '1'
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - name: Check out candidate's exact current-main source snapshot
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          lfs: false
+          persist-credentials: false
+
+      - name: Prepare Python 3.12
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+
+      - name: Qualify CI policy and candidate script
+        run: |
+          python tools/ci/check_ci_provider_policy.py
+          if ($LASTEXITCODE -ne 0) { throw 'CI provider policy failed' }
+          python tools/ci/check_ci_scheduling_policy.py
+          if ($LASTEXITCODE -ne 0) { throw 'CI scheduling policy failed' }
+          python -m py_compile tools/play/qualify_godot117991_candidate.py
+          if ($LASTEXITCODE -ne 0) { throw 'Candidate script syntax failed' }
+
+      - name: Materialize original source-matched retained Windows native and Rapier DLLs
+        run: |
+          git lfs install --local
+          if ($LASTEXITCODE -ne 0) { throw 'Git LFS install failed' }
+          git lfs pull --include="godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll,godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll" --exclude=""
+          if ($LASTEXITCODE -ne 0) { throw 'Git LFS runtime retrieval failed' }
+
+      - name: Materialize original patched B engine and matching PDB
+        run: |
+          New-Item -ItemType Directory -Force -Path build/godot117991-retained-b | Out-Null
+          gh run download 41958413986 --repo "$env:GITHUB_REPOSITORY" --name 'pr379-godot117991-counterfactual-b-41958413986-1' --dir build/godot117991-retained-b
+          if ($LASTEXITCODE -ne 0) { throw 'Original B engine/PDB retrieval failed' }
+
+      - name: Execute source-bound patched B Windows acceptance against current CyberSand
+        timeout-minutes: 145
+        run: |
+          python tools/play/qualify_godot117991_candidate.py --godot build/godot117991-retained-b/godot.windows.editor.x86_64.llvm.exe --pdb build/godot117991-retained-b/godot.windows.editor.x86_64.llvm.pdb --expected-source-sha "$env:GITHUB_SHA" --output build/godot117991-candidate
+          if ($LASTEXITCODE -ne 0) { throw 'Candidate failed representative current-main Windows acceptance' }
+
+      - name: Retain source-bound original Windows runtime and fixture receipts
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: godot117991-candidate-current-main-windows-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/godot117991-candidate/
+          if-no-files-found: warn
+          retention-days: 90
