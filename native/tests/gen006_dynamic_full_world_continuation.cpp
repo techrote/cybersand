@@ -436,7 +436,7 @@ void actual_dynamic_frontier(std::uint32_t workers) {
               << " post_commit_ticks=8"
               << " residents=" << live->chunk_count()
               << " final_native_tick=" << live->completed_tick_index()
-              << " scope=FULL_WORLD_NON_DURABLE" << '\\n';
+              << " scope=FULL_WORLD_NON_DURABLE" << '\n';
 
     // Stale stage must not swap an owner changed by native tick. A separate
     // pointer-identity check rejects an equal-content new residency (ABA).

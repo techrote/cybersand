@@ -88,6 +88,7 @@ def run() -> None:
         markers = (
             f"GEN006_DYNAMIC_COMPLETE_RESIDENT_BUNDLE_PASS configured_workers={configured} ",
             f"GEN006_DYNAMIC_ATOMIC_CROSS_SEAM_EDIT_PASS configured_workers={configured} ",
+            f"GEN006_DYNAMIC_PRIVATE_NATIVE_TICKS_PASS configured_workers={configured} ",
             f"GEN006_DYNAMIC_FULL_WORLD_CONTINUATION_PASS configured_workers={configured} ",
         )
         if result.returncode or any(marker not in result.stdout for marker in markers):
