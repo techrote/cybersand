@@ -32,7 +32,10 @@ jobs:
           @echo on
           where git
           git rev-parse HEAD
-          call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
+          for /f "tokens=*" %%I in ('"%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe" -latest -products * -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath') do set "VS_ROOT=%%I"
+          if not defined VS_ROOT exit /b 1
+          echo Found MSVC installation at %VS_ROOT%
+          call "%VS_ROOT%\VC\Auxiliary\Build\vcvars64.bat"
           if errorlevel 1 exit /b 1
           cl /Bv
           if errorlevel 1 exit /b 1
