@@ -155,6 +155,41 @@ class ShardingTests(unittest.TestCase):
 
 
 class WorkbenchFixtureCustodyTests(unittest.TestCase):
+    def test_frozen_checkout_bytes_survive_windows_autocrlf(self):
+        import hashlib
+        import subprocess
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            relative = subject.WORKBENCH_HOPPER_FIXTURE_SOURCE
+            fixture = root / relative
+            fixture.parent.mkdir(parents=True)
+            data = (subject.ROOT / relative).read_bytes()
+            fixture.write_bytes(data)
+            attributes = root / ".gitattributes"
+            attributes.write_bytes(b"* text=auto\n")
+            def git(*args):
+                return subprocess.run(["git", "-C", str(root), *args], check=True,
+                                      stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            git("init", "-q")
+            git("config", "user.name", "fixture")
+            git("config", "user.email", "fixture@example.invalid")
+            git("config", "core.autocrlf", "true")
+            git("add", ".")
+            git("commit", "-qm", "original control")
+            fixture.unlink()
+            git("checkout", "HEAD", "--", relative)
+            self.assertIn(b"\r\n", fixture.read_bytes())
+            self.assertNotEqual(hashlib.sha256(fixture.read_bytes()).hexdigest(),
+                                subject.WORKBENCH_HOPPER_FIXTURE_SHA256)
+            attributes.write_bytes(b"* text=auto\n" + relative.encode() + b" text eol=lf\n")
+            git("add", ".gitattributes")
+            git("commit", "-qm", "pin frozen LF checkout")
+            fixture.unlink()
+            git("checkout", "HEAD", "--", relative)
+            self.assertEqual(fixture.read_bytes(), data)
+            self.assertEqual(hashlib.sha256(fixture.read_bytes()).hexdigest(),
+                             subject.WORKBENCH_HOPPER_FIXTURE_SHA256)
+
     def setUp(self):
         self.data = (subject.ROOT / subject.WORKBENCH_HOPPER_FIXTURE_SOURCE).read_bytes()
         self.directory = tempfile.TemporaryDirectory()

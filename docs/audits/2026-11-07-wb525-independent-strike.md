@@ -43,8 +43,8 @@ Independent review found that initial6718 Linux reduction did not yet inspect
 the new fixture fields. A forged passed record with explicit custody failure
 could reduce green. The follow-up adds the same mandatory contract to Linux;
 its negative controls preserve that reproduced weakness. Python tests pass:
-102 common runner,21 Windows collector,46 Windows reducer,11 hosted planner and
-13 Linux reducer (**193 total**). Initial test-harness mistakes and failed runs
+103 common runner,21 Windows collector,46 Windows reducer,11 hosted planner and
+13 Linux reducer (**194 total**). Initial test-harness mistakes and failed runs
 remain in the local record; none count as a passing production gate.
 
 The **actual common runner**, starting with the generated fixture absent,
@@ -59,6 +59,16 @@ has **passed** on the unchanged accepted-main1f82 native source in28f5bd3b.
 The standalone review app's Godot/native payload is unchanged by this CI-only
 follow-up. #531's owner must consume the narrow repairs and require fresh
 resulting-head production gates before Ready/merge.
+
+Hosted Windows then exposed a portability failure in6718: its automatic CRLF
+checkout changed the TSV's worktree byte hash, correctly refused by staging.
+The original source Git blob was unchanged. A temporary Git repository with
+`core.autocrlf=true` reproduces that exact failure mechanism and verifies its
+correction. An exact-path `.gitattributes` LF rule pins only v2's checkout bytes;
+the frozen TSV itself remains byte-identical in Git and retains SHA256549a1db2….
+No hash relaxation or geometry change is used. Failed jobs128521421991,
+128521422013 and128521422073 in42411753603 remain recorded. The194 Python
+controls include this real Git checkout regression, not a string-only surrogate.
 
 ## Final accepted-main refresh and delivery
 
