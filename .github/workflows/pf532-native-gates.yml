@@ -1,4 +1,4 @@
-# Qualification generation: final-v2 after cross-variant test correction
+# Qualification generation: final-v3 head-budget separation
 name: PF532 sparse gas relabel native correctness and sanitizer gates
 on:
   push:
