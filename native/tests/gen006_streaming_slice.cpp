@@ -209,6 +209,11 @@ public:
         }
         return maximum_observed;
     }
+    void save_all() {
+        // Normal interactive quit/EOF must preserve currently loaded edits,
+        // not merely those removed by capacity pressure.
+        for (auto& [coordinate, entry] : residents_) persist(coordinate, entry);
+    }
     const World& at(ChunkCoord c) const { return *residents_.at(c).world; }
     World& at(ChunkCoord c) { return *residents_.at(c).world; }
     std::uint64_t generation(ChunkCoord c) const { return residents_.at(c).generation; }
@@ -435,6 +440,8 @@ void interactive(const fs::path& path, std::uint32_t workers) {
             if (!std::cin) break;
         }
     }
+    streamer.save_all();
+    std::cout << "SAVE_ALL resident=" << streamer.resident() << '\n';
 }
 
 } // namespace
