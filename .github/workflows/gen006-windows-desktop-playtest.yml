@@ -118,7 +118,9 @@ jobs:
           & "$d/streaming-slice.exe" --self-test "$d/selftest-four" 4 > "$d/native-four.log" 2>&1
           if ($LASTEXITCODE -ne 0) { Get-Content "$d/native-four.log"; throw "Native selftest 4 failed" }
           foreach ($w in @(1,4)) {
-            if (-not (Select-String -Quiet -Path "$d/native-$(@{1='one';4='four'}[$w]).log" -Pattern "GEN006_NATIVE_SHARDED_STREAM_PASS configured_workers=$w")) {
+            $label = if ($w -eq 1) { "one" } else { "four" }
+            $log = Join-Path $d ("native-" + $label + ".log")
+            if (-not (Select-String -Quiet -Path $log -Pattern "GEN006_NATIVE_SHARDED_STREAM_PASS configured_workers=$w")) {
               throw "Missing real native PASS for workers=$w"
             }
           }
