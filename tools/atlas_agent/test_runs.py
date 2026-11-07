@@ -654,6 +654,7 @@ class VisualCycleLogicTests(unittest.TestCase):
         self.assertFalse(self.cycle(None)["claimed"])
 
 
+@needs_sdk
 class CreditCheckCliTests(RunCase):
     def test_credit_check_reports_without_any_charged_request(self):
         import contextlib
