@@ -1,10 +1,7 @@
 name: PF471 reviewed source exact-head qualification (Draft, no merge)
 on:
-  push:
-    branches:
-      - codex/neighbour-cursor-independent-qualification-20261106
-    paths:
-      - .github/workflows/pf471-reviewed-exact-head.yml
+  # Manual-only after the source-pinned initial campaign. Never duplicate the
+  # expensive native/Godot matrix merely for evidence/docs follow-up commits.
   workflow_dispatch:
 permissions:
   contents: read
@@ -44,7 +41,7 @@ jobs:
           assert (r['from_lf_sha256']=='5a9de5e09a8665392677902ab501696aafefb5bbd2d2800e3dc1059b87a6f17d' and
                   r['to_lf_sha256']=='bbd9741311bc67905934048633846b8d011efd760033edd0ff9e88be5b262868' and
                   r['source_commit']=='b51f01536db6408458442c532d75256d33422fba' and
-                  r['record']=='docs/audits/2026-11-07-pf471-reviewed-world-transition.md' and
+                  r['record']=='docs/audits/2026-11-07-pf471-world-transition-proposal.md' and
                   r['issue']==485 and r['pr']==471),r
           assert x['status']=='PASS' and x['production_cutover'] is False
           print('PF471_REVIEWED_TRANSITION source/ancestry/lock PASS')
