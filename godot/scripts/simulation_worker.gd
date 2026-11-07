@@ -29,6 +29,7 @@ const MAX_PENDING_RENDER_PATCHES: int = 256
 const MAX_BRUSH_FOOTPRINT_CELLS: int = 4096
 const MAX_PENDING_BRUSH_COMMANDS: int = 8
 const AgentAuthoring = preload("res://scripts/workbench_authoring_session.gd")
+const AgentEnvelope = preload("res://scripts/workbench_authoring_envelope.gd")
 const PARTICIPATION_SAMPLE_INTERVAL_USEC: int = 250000
 
 var _thread: Thread = Thread.new()
@@ -1706,6 +1707,11 @@ func set_render_snapshot_hz(render_hz: int) -> void:
 # These are narrow, non-blocking main->owner->main value interfaces.
 # No UI/model client is given direct mutable World or session access.
 func queue_agent_authoring_command(command: Dictionary) -> int:
+	# Do not deepcopy arbitrarily large or nested caller-owned dictionaries
+	# under the worker mutex. Model/host values remain untrusted until the
+	# exclusive native owner rechecks World authority and revisions.
+	if not AgentEnvelope.valid(command):
+		return -1
 	_mutex.lock()
 	if not _running or not _paused or _workbench_extent == Vector2i.ZERO \
 			or _simulation_failed or not _agent_request.is_empty() or _agent_inflight \
